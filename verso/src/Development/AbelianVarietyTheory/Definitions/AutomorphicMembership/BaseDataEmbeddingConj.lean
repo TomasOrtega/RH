@@ -49,12 +49,12 @@ namespace Base
 variable (B : Base)
 
 /- English proof (translation)
-The claim follows from `bridge_star_holds B.R B.host x`.
+A detailed English derivation is pending.
 -/
 theorem fields_star (x : B.host.E) : letI := B.fields.starE; star x = B.host.conj x := bridge_star_holds B.R B.host x
 
 /- English proof (translation)
-The claim follows from `bridge_star_holds B.R B.host x`.
+A detailed English derivation is pending.
 -/
 theorem fields_sig (x : B.host.E) : B.fields.sig x = B.host.conj x := bridge_star_holds B.R B.host x
 
@@ -65,12 +65,12 @@ theorem fields_emb_apply (τ : Tau B.R) (x : B.host.E) :
     B.fields.emb τ x = B.embE (B.host.sigmaOf (τ : B.R.GG) x) := rfl
 
 /- English proof (translation)
-The claim follows from `card_Tau B.host`.
+A detailed English derivation is pending.
 -/
 theorem fields_f : B.fields.f = B.R.f := card_Tau B.host
 
 /- English proof (translation)
-Unfold `Fields.embC Host.emb`. Rewrite using `[← B.embE_φ₀]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fields_embC (τ : Tau B.R) : B.fields.embC B.embLL τ = B.host.emb (τ : B.R.GG) := by
   unfold Fields.embC Host.emb
@@ -78,19 +78,19 @@ theorem fields_embC (τ : Tau B.R) : B.fields.embC B.embLL τ = B.host.emb (τ :
   rfl
 
 /- English proof (translation)
-The claim follows from `B.fields_star (x : B.host.E)`.
+A detailed English derivation is pending.
 -/
 theorem fields_conjO_coe (x : 𝓞 B.host.E) :
     ((B.fields.conjO x : 𝓞 B.host.E) : B.host.E) = B.host.conj (x : B.host.E) :=
   B.fields_star (x : B.host.E)
 
 /- English proof (translation)
-The claim follows from `X.piG_cong`.
+A detailed English derivation is pending.
 -/
 theorem primes_piGCong (X : PreX B.toPre) : (B.primes X).PiGCong := X.piG_cong
 
 /- English proof (translation)
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `h` using `X.piG_norm i`. Rewrite `h` using `[← B.fields_conjO_coe]`. Simplify using `using h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem primes_piG_norm (X : PreX B.toPre) (i : Fin 2) :
     (B.primes X).piG i * B.fields.conjO ((B.primes X).piG i) = ((B.primes X).g i : 𝓞 B.fields.E) := by
@@ -100,7 +100,7 @@ theorem primes_piG_norm (X : PreX B.toPre) (i : Fin 2) :
   simpa using h
 
 /- English proof (translation)
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `h` using `X.piT_norm u`. Rewrite `h` using `[← B.fields_conjO_coe]`. Simplify using `using h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem primes_piT_norm (X : PreX B.toPre) (u : B.Word) :
     (B.primes X).piT u * B.fields.conjO ((B.primes X).piT u) = ((B.primes X).T u : 𝓞 B.fields.E) := by
@@ -110,14 +110,14 @@ theorem primes_piT_norm (X : PreX B.toPre) (u : B.Word) :
   simpa using h
 
 /- English proof (translation)
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_wts_tops (τ : Tau B.R) : τ ∈ B.wts.tops ↔ (τ : B.R.GG) ∈ B.host.topPlaces := by
   classical
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨B.hc τ, rfl⟩ hc_row u τ := by show RowPar.of (B.hcW u τ) = RowPar.of (B.hc τ) unfold RowPar.of rw [B.hcW_v, B.hcW_b, B.hcW_e] u_first u u' τ h := (B.hcW_first u τ h).trans (B.hcW_first u' τ h).symm u_last u u' τ h := (B.hcW_last u τ (by omega)).trans (B.hcW_last u' τ (by omega)) …`.
+Supply the required witnesses or components.
 -/
 theorem wts_isOk : B.wts.Ok where
   row_ok τ := ⟨B.hc τ, rfl⟩
@@ -129,7 +129,7 @@ theorem wts_isOk : B.wts.Ok where
   u_last u u' τ h := (B.hcW_last u τ (by omega)).trans (B.hcW_last u' τ (by omega)).symm
 
 /- English proof (translation)
-Rewrite using `[B.fields_f]; exact X.g_big i T_gt := X.T_gt a_gt := by rw [B.fields_f]; exact X.a_gt spread_le u j hj τ := by`. Unfold `Wts.lamTrue`. Rewrite using `[spread_shiftW]`. Conclude with `X.spread_le u j hj τ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primes_sizes (X : PreX B.toPre) : Sizes (B.primes X) B.wts X.a where
   g_big i := by rw [B.fields_f]; exact X.g_big i
@@ -141,13 +141,13 @@ theorem primes_sizes (X : PreX B.toPre) : Sizes (B.primes X) B.wts X.a where
     exact X.spread_le u j hj τ
 
 /- English proof (translation)
-The claim follows from `B.starLL_cx x`.
+A detailed English derivation is pending.
 -/
 theorem baseData_embedding_conj (X : PreX B.toPre) (Ch : Chars B.fields (B.primes X) B.R.m) (x : (B.dat X Ch).X.K) :
     (B.dat X Ch).sig0 (star x) = starRingEnd ℂ ((B.dat X Ch).sig0 x) := B.starLL_cx x
 
 /- English proof (translation)
-The claim follows from `(X.e_even j).even`.
+A detailed English derivation is pending.
 -/
 theorem dat_e_even (X : PreX B.toPre) (Ch : Chars B.fields (B.primes X) B.R.m) (j : Fin (B.dat X Ch).R.m) :
     ∃ z : ℤ, ∑ τ, ((B.dat X Ch).W.row τ).e j = 2 * (z : ℚ) := (X.e_even j).even
@@ -155,18 +155,18 @@ theorem dat_e_even (X : PreX B.toPre) (Ch : Chars B.fields (B.primes X) B.R.m) (
 end Base
 
 /- English proof (translation)
-The claim follows from `B.fields_f`.
+A detailed English derivation is pending.
 -/
 example (B : Base) : B.fields.f = 2 * B.R.n := B.fields_f
 
 /- English proof (translation)
-The claim follows from `(B.primes_piGCong X).g_cong (B.primes_piG_norm X) i`.
+A detailed English derivation is pending.
 -/
 example (B : Base) (X : PreX B.toPre) (i : Fin 2) : B.host.g i ≡ 1 [MOD B.host.QS * B.host.q * B.host.d] :=
   (B.primes_piGCong X).g_cong (B.primes_piG_norm X) i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(B.primes_sizes X).a_pos, (B.primes_sizes X).T_big u⟩`.
+Supply the required witnesses or components.
 -/
 example (B : Base) (X : PreX B.toPre) (Ch : Chars B.fields (B.primes X) B.R.m) (u : B.Word) :
     0 < (B.dat X Ch).a ∧ 2 * B.fields.f * B.R.N B.R.m + 1 < B.T u :=

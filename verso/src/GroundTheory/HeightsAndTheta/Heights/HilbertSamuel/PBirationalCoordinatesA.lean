@@ -19,15 +19,15 @@ include hμ hx
 omit [Fintype κ] in
 
 /- English proof (translation)
-Set `φ : MvPolynomial Unit Ω →ₐ[Ω] MvPolynomial Unit Ω` to `aeval fun k => C μ * X k`. Set `ψ : MvPolynomial Unit Ω →ₐ[Ω] MvPolynomial Unit Ω` to `aeval fun k => C μ⁻¹ * X k`. Establish `hψφ : ∀ q, ψ (φ q) = q`. Establish `h : ψ.comp φ = AlgHom.id Ω _`. Use `MvPolynomial.algHom_ext fun k => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, φ, ψ, aeval_X, map_mul, algHom_C, algebraMap_eq]`. Rewrite using `[← mul_assoc, ← C_mul, mul_inv_cancel₀ hμ, C_1, one_mul]`. Introduce `q`. Conclude with `AlgHom.congr_fun h q`. Establish `hcomp : (mConeMap (ι` using `GlobalTheory κ) x).toRingHom = (φ.toRingHom.comp (MvPolynomial.map j)).comp (mConeMap (ι := GlobalTheory κ) y).toRingHom := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MvPolynomial.ringHom_ext (fun n => by simp) (fun p => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, mConeMap, aeval_X, map_mul, map_C, map_X, φ, algHom_C, algebraMap_eq, hx p, ]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `f`. Simplify using `only [mCoordIdeal, RingHom.mem_ker]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf : mConeMap (ι` using `GlobalTheory κ) x f = φ (MvPolynomial.map j (mConeMap (ι := GlobalTheory κ) y f)) := congrArg (fun F : MRing (GlobalTheory κ) →+* MvPolynomial Unit Ω => F f) hcomp`. Rewrite using `[hf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1 : MvPolynomial.map j (mConeMap (ι` using `GlobalTheory κ) y f) = 0 := by`. Rewrite using `[← hψφ (MvPolynomial.map j _), h, map_zero]`. Conclude with `MvPolynomial.map_injective j j.injective (by rw [h1, map_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_eq : mCoordIdeal (ι := GlobalTheory κ) y = mCoordIdeal (ι := GlobalTheory κ) x := by
   let φ : MvPolynomial Unit Ω →ₐ[Ω] MvPolynomial Unit Ω := aeval fun k => C μ * X k
@@ -61,11 +61,11 @@ theorem mCoordIdeal_eq : mCoordIdeal (ι := GlobalTheory κ) y = mCoordIdeal (ι
 omit hμ in
 
 /- English proof (translation)
-Establish `hsum : ∀ m ∈ g.support, ∑ p ∈ m.support, m p = d ()`. Introduce `m hm`. Rewrite using `[Finset.sum_subset (Finset.subset_univ m.support) (fun p _ hp => by simpa using hp), Fintype.sum_sigma]`. Simplify using `using hg m hm ()`. Establish `hjx : j (aeval y g) = aeval (fun p => j (y p)) g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.toIntAlgHom_apply, comp_aeval_apply]`. Both sides reduce to the same expression. Rewrite using `[hjx, show x = fun p => μ * j (y p) from funext hx]`. Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, aeval_monomial, Finsupp.prod, Finsupp.prod]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hsum m hm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_homog {g : MRing (GlobalTheory κ)} {d : Unit → ℕ} (hg : IsMultiHomog g d) :
     aeval x g = μ ^ d () * j (aeval y g) := by
@@ -89,7 +89,7 @@ theorem aeval_homog {g : MRing (GlobalTheory κ)} {d : Unit → ℕ} (hg : IsMul
 omit [Fintype κ] in
 
 /- English proof (translation)
-Rewrite using `[chartRingZ, chartRingZ, AlgHom.map_adjoin, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, RingHom.toIntAlgHom_apply, map_div₀, hx, mul_div_mul_left _ _ hμ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem chartRingZ_eq (c' : Unit → κ) :
     chartRingZ (ι := GlobalTheory κ) x c' = (chartRingZ (ι := GlobalTheory κ) y c').map j.toIntAlgHom := by
@@ -101,11 +101,11 @@ theorem chartRingZ_eq (c' : Unit → κ) :
 omit [Fintype κ] in
 
 /- English proof (translation)
-Establish `hne : ∀ c' : Unit → κ, (∀ k, x ⟨k, c' k⟩ ≠ 0) ↔ (∀ k, y ⟨k, c' k⟩ ≠ 0)` using `fun c' => forall_congr' fun k => by rw [hx, mul_ne_zero_iff, map_ne_zero]; exact and_iff_right hμ`. Establish `hval : ∀ c' : Unit → κ, μ ^ ((τ : ℤ) * a ()) * j s' * ∏ k, x ⟨k, c' k⟩ ^ (-((τ : ℤ) * a k)) = j (s' * ∏ k, y ⟨k, c' k⟩ ^ (-((τ : ℤ) * a k)))`. Introduce `c'`. Simplify using `only [Fintype.prod_unique, hx, map_mul, map_zpow₀, mul_zpow]`. Establish `h1 : μ ^ ((τ : ℤ) * a ()) * μ ^ (-((τ : ℤ) * a default)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← zpow_add₀ hμ]`. Simplify using the standard rewrite rules. Take the linear combination `(j s' * j (y ⟨default, c' default⟩) ^ (-((τ : ℤ) * a default))) * h1`. Express the relevant statement in the definitionally equal form `(∀ c' : Unit → κ, _ → _) ↔ (∀ c' : Unit → κ, _ → _)`. Use `forall_congr' fun c' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hne c', hval c', chartRingZ_eq j hμ hx c', Subalgebra.mem_map]`. Use `imp_congr_right fun _ => ⟨fun ⟨t, ht, he⟩ => ?_, fun h => ⟨_, h, rfl⟩⟩` and prove the remaining obligations. Rewrite `he` using `[RingHom.toIntAlgHom_apply]`. Rewrite `ht` using `[j.injective he]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_chartLat_iff (a : Unit → ℤ) (τ : ℕ) (s' : Ω'') :
     μ ^ ((τ : ℤ) * a ()) * j s' ∈ chartLat (ι := GlobalTheory κ) x a τ ↔ s' ∈ chartLat (ι := GlobalTheory κ) y a τ := by
@@ -129,11 +129,11 @@ theorem mem_chartLat_iff (a : Unit → ℤ) (τ : ℕ) (s' : Ω'') :
 omit [Fintype κ] in
 
 /- English proof (translation)
-Establish `h` using `hs (fun _ => c) (fun _ => hc)`. Simplify using `only [Fintype.prod_unique] at h`. Rewrite `h` using `[chartRingZ_eq j hμ hx, Subalgebra.mem_map]`. Take `⟨t, -, ht⟩` from `h`. Rewrite `ht` using `[RingHom.toIntAlgHom_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyc : y ⟨(), c⟩ ≠ 0` using `fun h0 => hc (by rw [hx, h0, map_zero, mul_zero])`. Use `⟨t * y ⟨(), c⟩ ^ ((τ : ℤ) * a ()), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ht, map_zpow₀]`. Express the relevant statement in the definitionally equal form `μ ^ ((τ : ℤ) * a ()) * (s * x ⟨(), c⟩ ^ (-((τ : ℤ) * a ())) * j (y ⟨(), c⟩) ^ ((τ : ℤ) * a ())) = s`. Rewrite using `[hx, mul_zpow, zpow_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : μ ^ ((τ : ℤ) * a ()) ≠ 0` using `zpow_ne_zero _ hμ`. Establish `h2 : j (y ⟨(), c⟩) ^ ((τ : ℤ) * a ()) ≠ 0` using `zpow_ne_zero _ (map_ne_zero j |>.2 hyc)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[zpow_neg, inv_mul_cancel_right₀ h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_of_mem_chartLat {c : κ} (hc : x ⟨(), c⟩ ≠ 0) (a : Unit → ℤ) (τ : ℕ) {s : Ω}
     (hs : s ∈ chartLat (ι := GlobalTheory κ) x a τ) : ∃ s' : Ω'', μ ^ ((τ : ℤ) * a ()) * j s' = s := by
@@ -153,7 +153,7 @@ theorem exists_of_mem_chartLat {c : κ} (hc : x ⟨(), c⟩ ≠ 0) (a : Unit →
   rw [zpow_neg, inv_mul_cancel_right₀ h2]
 
 /- English proof (translation)
-Rewrite using `[aeval_homog j hx hg, aeval_homog j hx hh, ← zpow_natCast, ← zpow_natCast, hd (), add_comm, zpow_add₀ hμ, mul_assoc, mul_assoc]`. Establish `hm : μ ^ ((τ : ℤ) * A.a ()) * μ ^ ((dh () : ℕ) : ℤ) ≠ 0` using `mul_ne_zero (zpow_ne_zero _ hμ) (zpow_ne_zero _ hμ)`. Rewrite using `[show μ ^ ((τ : ℤ) * A.a ()) * (j s' * (μ ^ ((dh () : ℕ) : ℤ) * j (aeval y h))) = μ ^ ((τ : ℤ) * A.a ()) * μ ^ ((dh () : ℕ) : ℤ) * j (s' * aeval y h) by rw [map_mul]; ring, ← mul_assoc, mul_right_inj' hm]`. Conclude with `j.injective.eq_iff`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_iff (A : HermLine (GlobalTheory κ)) (τ : ℕ) (s' : Ω'') {dg dh : Unit → ℕ} {g h : MRing (GlobalTheory κ)}
     (hg : IsMultiHomog g dg) (hh : IsMultiHomog h dh) (hd : ∀ k, (dg k : ℤ) = dh k + τ * A.a k) :
@@ -167,7 +167,7 @@ theorem rep_iff (A : HermLine (GlobalTheory κ)) (τ : ℕ) (s' : Ω'') {dg dh :
   exact j.injective.eq_iff
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H dg dh g h z hg hh hd he hz`. Conclude with `H dg dh g h z hg hh hd ((rep_iff j hμ hx A τ s' hg hh hd).2 he) hz`. Introduce `H dg dh g h z hg hh hd he hz`. Conclude with `H dg dh g h z hg hh hd ((rep_iff j hμ hx A τ s' hg hh hd).1 he) hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmallH_iff (P : Ideal (MRing (GlobalTheory κ))) (A : HermLine (GlobalTheory κ)) (τ : ℕ) (s' : Ω'') :
     IsSmallH P x A τ (μ ^ ((τ : ℤ) * A.a ()) * j s') ↔ IsSmallH P y A τ s' := by
@@ -178,11 +178,11 @@ theorem isSmallH_iff (P : Ideal (MRing (GlobalTheory κ))) (A : HermLine (Global
     exact H dg dh g h z hg hh hd ((rep_iff j hμ hx A τ s' hg hh hd).1 he) hz
 
 /- English proof (translation)
-Rewrite using `[mCoordIdeal_eq j hμ hx]`. Use `set P := mCoordIdeal (ι := GlobalTheory κ) x`. Unfold `smallSectionCount`. Use `congr 2`. Set `F : {s : chartLat (ι` to `GlobalTheory κ) y A.a τ // IsSmallH P y A τ (s : Ω'')} → {s : chartLat (ι := GlobalTheory κ) x A.a τ // IsSmallH P x A τ (s : Ω)} := fun s => ⟨⟨μ ^ ((τ : ℤ) * A.a ()) * j s.1.1, (mem_chartLat_iff j hμ hx A.a τ _).2 s.1.2⟩, (isSmallH_iff j hμ hx P A τ _).2 s.2⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.card_congr (Equiv.ofBijective F ⟨fun s t hst => ?_, fun s => ?_⟩)` and prove the remaining obligations. Establish `h1 : μ ^ ((τ : ℤ) * A.a ()) * j s.1.1 = μ ^ ((τ : ℤ) * A.a ()) * j t.1.1` using `congrArg (fun u : {s : chartLat (ι := GlobalTheory κ) x A.a τ // IsSmallH P x A τ (s : Ω)} => (u.1 : Ω)) hst`. Conclude with `Subtype.ext (Subtype.ext (j.injective (mul_left_cancel₀ (zpow_ne_zero _ hμ) h1)))`. Take `⟨s', hs'⟩` from `exists_of_mem_chartLat j hμ hx hc A.a τ s.1.2`. Establish `hm : s' ∈ chartLat (ι` using `GlobalTheory κ) y A.a τ := (mem_chartLat_iff j hμ hx A.a τ s').1 (hs' ▸ s.1.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hsm : IsSmallH P y A τ s'` using `(isSmallH_iff j hμ hx P A τ s').1 (hs' ▸ s.2)`. Conclude with `⟨⟨⟨s', hm⟩, hsm⟩, Subtype.ext (Subtype.ext hs')⟩`.
+A detailed English derivation is pending.
 -/
 theorem smallSectionCount_eq_of_birational {c : κ} (hc : x ⟨(), c⟩ ≠ 0) (A : HermLine (GlobalTheory κ)) (τ : ℕ) :
     smallSectionCount (IsSmallH (mCoordIdeal (ι := GlobalTheory κ) y) y A) (chartLat (ι := GlobalTheory κ) y A.a) τ =

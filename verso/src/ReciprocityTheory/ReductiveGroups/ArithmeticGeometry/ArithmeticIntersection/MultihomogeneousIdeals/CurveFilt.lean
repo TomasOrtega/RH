@@ -15,17 +15,15 @@ variable [DecidableEq K]
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hxd, hx⟩` from `Submodule.mem_inf.mp hx`. Rewrite `hx` using `[Submodule.restrictScalars_mem, Submodule.mem_sup]`. Take `⟨a, ha, b, hb, rfl⟩` from `hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hb`. Establish `hdd : d - δ + δ = d` using `tsub_add_cancel_of_le hd`. Establish `key` using `DirectSum.coe_decompose_mul_add_of_right_mem (𝒜 := weightedHomogeneousSubmodule F (mw (ι := ι))) (a := c) (i := d - δ) hg`. Rewrite `key` using `[hdd]`. Establish `hx'` using `DirectSum.decompose_of_mem_same (ℳ := weightedHomogeneousSubmodule F (mw (ι := ι))) hxd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx'` using `[DirectSum.decompose_add, DirectSum.add_apply, Submodule.coe_add, key]`. Rewrite using `[← hx']`. Use `Submodule.add_mem_sup (Submodule.mem_inf.mpr ⟨SetLike.coe_mem _, ?_⟩) (Submodule.mem_map.mpr ⟨_, SetLike.coe_mem ((DirectSum.decompose (weightedHomogeneousSubmodule F (mw (ι := ι))) c) (d - δ)), ?_⟩)` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `hI d ha`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mulLeft_apply, mul_comm]`. Use `sup_le (inf_le_inf_left _ ?_) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx`, the goal using `[Submodule.restrictScalars_mem]`. Conclude with `Ideal.mem_sup_left hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨z, hz, rfl⟩`. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulLeft_apply]`. Use `SetLike.GradedMul.mul_mem hg hz` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le hd]`. Then use the resulting hypothesis.
-
-Rewrite using `[Submodule.restrictScalars_mem, LinearMap.mulLeft_apply]`. Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self g))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_span_inf_eq' {I : Ideal (MRingOver F ι)}
     (hI : I.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι := ι)))) {g : MRingOver F ι}
@@ -66,13 +64,11 @@ theorem sup_span_inf_eq' {I : Ideal (MRingOver F ι)}
         exact Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self g))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.mp hy`. Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.mp hy2`. Establish `hyI` using `(Submodule.mem_inf.mp hy1).2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Submodule.mem_map.mpr ⟨b, Submodule.mem_inf.mpr ⟨hb, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite `hyI` using `[Submodule.restrictScalars_mem, LinearMap.mulLeft_apply]`. Rewrite using `[Submodule.restrictScalars_mem, Submodule.mem_colon_singleton, smul_eq_mul, mul_comm]`. Conclude with `hyI`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hbc', rfl⟩` from `Submodule.mem_map.mp hy`. Take `⟨hb, hbc⟩` from `Submodule.mem_inf.mp hbc'`. Use `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨hB (Submodule.mem_map_of_mem hb), ?_⟩, Submodule.mem_map_of_mem hb⟩` and prove the remaining obligations. Rewrite `hbc` using `[Submodule.restrictScalars_mem, Submodule.mem_colon_singleton, smul_eq_mul]`. Rewrite using `[Submodule.restrictScalars_mem, LinearMap.mulLeft_apply, mul_comm]`.
-
-Conclude with `hbc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_map_mul_colon (I : Ideal (MRingOver F ι)) (g : MRingOver F ι)
     (A B : Submodule F (MRingOver F ι)) (hB : B.map (LinearMap.mulLeft F g) ≤ A) :
@@ -97,11 +93,11 @@ theorem inf_map_mul_colon (I : Ideal (MRingOver F ι)) (g : MRingOver F ι)
     exact hbc
 
 /- English proof (translation)
-Establish `hB : (weightedHomogeneousSubmodule F (mw (ι` using `ι)) (d - δ)).map (LinearMap.mulLeft F g) ≤ weightedHomogeneousSubmodule F (mw (ι := ι)) d := by`. Introduce and unpack `y ⟨z, hz, rfl⟩`. Rewrite using `[LinearMap.mulLeft_apply]`. Use `SetLike.GradedMul.mul_mem hg hz` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le hd]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hinj : Function.Injective (LinearMap.mulLeft F g)`. Introduce `a b hab`. Simplify using `only [LinearMap.mulLeft_apply] at hab`. Conclude with `mul_left_cancel₀ hg0 hab`. Establish `hmap : ∀ S : Submodule F (MRingOver F ι), Module.finrank F ↥(S.map (LinearMap.mulLeft F g)) = Module.finrank F ↥S` using `fun S => (Submodule.equivMapOfInjective _ hinj S).finrank_eq.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hfd : ∀ e, FiniteDimensional F ↥(weightedHomogeneousSubmodule F (mw (ι := ι)) e) := fun e => inferInstance`. Use `haveI : FiniteDimensional F ↥(weightedHomogeneousSubmodule F (mw (ι := ι)) d ⊓ I.restrictScalars F) := Submodule.finiteDimensional_of_le inf_le_left`. Use `haveI : FiniteDimensional F ↥((weightedHomogeneousSubmodule F (mw (ι := ι)) (d - δ)).map (LinearMap.mulLeft F g)) := Submodule.finiteDimensional_of_le hB`. Rewrite using `[sup_span_inf_eq' hI hg hd, ← hmap (weightedHomogeneousSubmodule F (mw (ι := ι)) (d - δ) ⊓ (I.colon {g}).restrictScalars F), ← inf_map_mul_colon I g _ _ hB, ← hmap (weightedHomogeneousSubmodule F (mw (ι := ι)) (d - δ))]`. Conclude with `Submodule.finrank_sup_add_finrank_inf_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem finrank_colon_step {I : Ideal (MRingOver F ι)}
     (hI : I.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι := ι)))) {g : MRingOver F ι}
@@ -139,7 +135,7 @@ theorem finrank_colon_step {I : Ideal (MRingOver F ι)}
   exact Submodule.finrank_sup_add_finrank_inf_eq _ _
 
 /- English proof (translation)
-Introduce `i x hx`. Rewrite `hx`, the goal using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Use `hI (i + δ) hx` as an intermediate fact. Rewrite `this` using `[DirectSum.coe_decompose_mul_add_of_right_mem (𝒜 := weightedHomogeneousSubmodule F (mw (ι := ι))) hg]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem colon_isHomogeneous {I : Ideal (MRingOver F ι)}
     (hI : I.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι := ι)))) {g : MRingOver F ι}
@@ -163,7 +159,7 @@ def lexDeg : (K → ℕ) →+ Lex (Fin (Fintype.card K) → ℕ) where
 instance lexDecEq : DecidableEq (Lex (Fin (Fintype.card K) → ℕ)) := LinearOrder.toDecidableEq
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h' : (fun i => a ((Fintype.equivFin K).symm i)) = fun i => b ((Fintype.equivFin K).symm i)` using `toLex.injective h`. Use function extensionality and compare the values at `k`. Simplify using `using congrFun h' (Fintype.equivFin K k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lexDeg_injective : Function.Injective (lexDeg (K := K)) := by
   intro a b h
@@ -177,14 +173,14 @@ variable [DecidableEq K]
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, map_sum, map_nsmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weight_lex (m : (Σ k, ι k) →₀ ℕ) :
     Finsupp.weight (fun p => lexDeg (mw (ι := ι) p)) m = lexDeg (Finsupp.weight (mw (ι := ι)) m) := by
   simp only [Finsupp.weight_apply, Finsupp.sum, map_sum, map_nsmul]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_weightedHomogeneousSubmodule]`. Introduce `m hm`. Rewrite using `[weight_lex, hx hm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lex_of_mem {x : MRingOver F ι} {d : K → ℕ}
     (hx : x ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) d) :
@@ -194,11 +190,9 @@ theorem mem_lex_of_mem {x : MRingOver F ι} {d : K → ℕ}
   rw [weight_lex, hx hm]
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_weightedHomogeneousSubmodule]`. Distinguish the cases in `h : ∃ m, coeff m x ≠ 0`. Take `⟨m₀, hm₀⟩` from `h`. Use `⟨Finsupp.weight (mw (ι := ι)) m₀, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Conclude with `lexDeg_injective (by rw [← weight_lex, ← weight_lex, hx hm, hx hm₀])`. Use `push_neg at h`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
-
-Introduce `m hm`. Conclude with `absurd (h m) hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem homog_of_lex {x : MRingOver F ι} {l : Lex (Fin (Fintype.card K) → ℕ)}
     (hx : x ∈ weightedHomogeneousSubmodule F (fun p => lexDeg (mw (ι := ι) p)) l) :
@@ -217,9 +211,9 @@ theorem homog_of_lex {x : MRingOver F ι} {l : Lex (Fin (Fintype.card K) → ℕ
     exact absurd (h m) hm
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `r hr`. Rewrite using `[← DirectSum.sum_support_decompose (weightedHomogeneousSubmodule F (mw (ι := ι))) r]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.subset_span ⟨hP i hr, i, SetLike.coe_mem _⟩`. Rewrite using `[Ideal.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨hx, -⟩`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem span_forms_eq {P : Ideal (MRingOver F ι)}
     (hP : P.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι := ι)))) :
@@ -234,7 +228,7 @@ theorem span_forms_eq {P : Ideal (MRingOver F ι)}
     exact hx
 
 /- English proof (translation)
-Rewrite using `[span_forms_eq hP]`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce and unpack `x ⟨-, d, hd⟩`. Conclude with `⟨lexDeg d, mem_lex_of_mem hd⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isHomogeneous_lex {P : Ideal (MRingOver F ι)}
     (hP : P.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι := ι)))) :
@@ -245,9 +239,9 @@ theorem isHomogeneous_lex {P : Ideal (MRingOver F ι)}
   exact ⟨lexDeg d, mem_lex_of_mem hd⟩
 
 /- English proof (translation)
-Use `(isHomogeneous_lex hP).isPrime_of_homogeneous_mem_or_mem hne ?_` and prove the remaining obligations. Introduce `x y hx hy hxy`. Take `⟨l, hl⟩` from `hx`. Take `⟨l', hl'⟩` from `hy`. Take `⟨a, ha⟩` from `homog_of_lex hl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `homog_of_lex hl'`. Conclude with `h x y a b ha hb hxy`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPrime_of_forms {P : Ideal (MRingOver F ι)}
     (hP : P.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι := ι)))) (hne : P ≠ ⊤)
@@ -263,21 +257,19 @@ theorem isPrime_of_forms {P : Ideal (MRingOver F ι)}
   exact h x y a b ha hb hxy
 
 /- English proof (translation)
-Establish `hone : (1 : MRingOver F ι) ∈ weightedHomogeneousSubmodule F (mw (ι` using `ι)) 0 := by`. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `isWeightedHomogeneous_one _ _`. Establish `h1I : (1 : MRingOver F ι) ∉ I` using `(Ideal.ne_top_iff_one I).mp hIt`. Set `S : Set (Ideal (MRingOver F ι))` to `{J | ∃ (g : MRingOver F ι) (δ : K → ℕ), g ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) δ ∧ g ∉ I ∧ J = I.colon {g}}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : S.Nonempty` using `⟨I.colon {1}, 1, 0, hone, h1I, rfl⟩`. Take `⟨J, ⟨g, δ, hg, hgI, rfl⟩, hmax⟩` from `set_has_maximal_iff_noetherian.mpr (inferInstance : IsNoetherianRing (MRingOver F ι)) S hS`. Use `⟨g, δ, hg, hgI, ?_⟩` and prove the remaining obligations. Use `isPrime_of_forms (colon_isHomogeneous hI hg) ?_ ?_` and prove the remaining obligations. Introduce `htop`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hgI` to reduce the goal to its premises. Establish `h1 : (1 : MRingOver F ι) ∈ I.colon {g}`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Rewrite `h1` using `[Submodule.mem_colon_singleton, smul_eq_mul, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `h1`. Introduce `x y a b hx hy hxy`. Distinguish the cases in `hxJ : x ∈ I.colon {g}`. Conclude with `Or.inl hxJ`. Use `right`.
+Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxg : x * g ∉ I`. Rewrite `hxJ` using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hle : I.colon {g} ≤ I.colon {x * g}`. Introduce `z hz`. Rewrite `hz`, the goal using `[Submodule.mem_colon_singleton, smul_eq_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hz' : z * (x * g) = x * (z * g)` using `by ring`. Rewrite using `[hz']`. Conclude with `I.mul_mem_left x hz`. Establish `hmem : x * g ∈ weightedHomogeneousSubmodule F (mw (ι` using `ι)) (a + δ) := by`. Rewrite `hx`, `hg`, the goal using `[mem_weightedHomogeneousSubmodule]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx.mul hg`. Establish `heq : I.colon {g} = I.colon {x * g}`. Assume the negation of the conclusion as `hne`. Conclude with `hmax _ ⟨x * g, a + δ, hmem, hxg, rfl⟩ (lt_of_le_of_ne hle hne)`. Rewrite using `[heq, Submodule.mem_colon_singleton, smul_eq_mul]`.
-
-Rewrite `hxy` using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Establish `hyx : y * (x * g) = x * y * g` using `by ring`. Rewrite using `[hyx]`. Conclude with `hxy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_colon {I : Ideal (MRingOver F ι)}
     (hI : I.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι := ι)))) (hIt : I ≠ ⊤) :
@@ -328,17 +320,15 @@ theorem exists_prime_colon {I : Ideal (MRingOver F ι)}
       exact hxy
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[mem_weightedHomogeneousSubmodule]`. Rewrite using `[Submodule.restrictScalars_mem, x.as_sum]`. Use `Ideal.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hw` using `hx (mem_support_iff.mp hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, m ⟨k, i⟩ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h0 : Finsupp.weight (mw (ι` using `ι)) m k = 0 := by`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Break down `p with ⟨k', j⟩` into its components or cases. Simplify using `only [mw, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hcon j]`. Simplify using `[Pi.single_apply, Ne.symm hk]`. Rewrite `h0` using `[hw]`. Use linear arithmetic over natural numbers and integers. Establish `hle : Finsupp.single (⟨k, i⟩ : Σ k, ι k) 1 ≤ m`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hmono : monomial m (coeff m x) = monomial (m - Finsupp.single ⟨k, i⟩ 1) (coeff m x) * X ⟨k, i⟩`. Rewrite using `[X, monomial_mul, mul_one, tsub_add_cancel_of_le hle]`. Rewrite using `[hmono]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (hk i)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weighted_le_of_irrel {P : Ideal (MRingOver F ι)} {k : K}
     (hk : ∀ i, (X ⟨k, i⟩ : MRingOver F ι) ∈ P) {e : K → ℕ} (he : 1 ≤ e k) :
@@ -385,9 +375,9 @@ def colonMul (I : Ideal R) (g : R) : (R ⧸ I.colon {g}) →ₗ[R] (R ⧸ I) :=
     exact hx
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker, colonMul, Submodule.mapQ_apply, LinearMap.mulLeft_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero, Submodule.mem_colon_singleton, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem colonMul_injective (I : Ideal R) (g : R) : Function.Injective (colonMul I g) := by
   rw [← LinearMap.ker_eq_bot, eq_bot_iff]
@@ -400,13 +390,13 @@ theorem colonMul_injective (I : Ideal R) (g : R) : Function.Injective (colonMul 
   exact hx
 
 /- English proof (translation)
-Introduce `y`. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk r : R ⧸ (I ⊔ Ideal.span {g})) = 0 at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_sup]`. Take `⟨a, ha, b, hb, rfl⟩` from `h`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hb`. Use `⟨Submodule.Quotient.mk c, ?_⟩` and prove the remaining obligations. Rewrite using `[colonMul, Submodule.mapQ_apply, LinearMap.mulLeft_apply, Submodule.Quotient.eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : g * c - (a + c * g) = -a` using `by ring`. Rewrite using `[hc]`. Conclude with `I.neg_mem ha`. Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[colonMul, Submodule.mapQ_apply, LinearMap.mulLeft_apply]`. Rewrite using `[← hx]`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (g * x) : R ⧸ (I ⊔ Ideal.span {g})) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨x, mul_comm x g⟩)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colonMul_exact (I : Ideal R) (g : R) :
     Function.Exact (colonMul I g) (Submodule.factor (le_sup_left : I ≤ I ⊔ Ideal.span {g})) := by
@@ -432,9 +422,9 @@ theorem colonMul_exact (I : Ideal R) (g : R) :
     exact Ideal.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨x, mul_comm x g⟩)
 
 /- English proof (translation)
-Unfold `locLen`. Use `Module.length_eq_add_of_exact (LocalizedModule.map p.asIdeal.primeCompl (colonMul I g)) (LocalizedModule.map p.asIdeal.primeCompl (Submodule.factor (le_sup_left : I ≤ I ⊔ Ideal.span {g}))) ?_ ?_ ?_` and prove the remaining obligations. Apply `LocalizedModule.map_injective` to reduce the goal to its premises. Conclude with `colonMul_injective I g`. Apply `LocalizedModule.map_surjective` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk r, rfl⟩`. Apply `LocalizedModule.map_exact` to reduce the goal to its premises. Conclude with `colonMul_exact I g`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem locLen_colon (I : Ideal R) (g : R) (p : PrimeSpectrum R) :
     locLen (R ⧸ I) p = locLen (R ⧸ I.colon {g}) p + locLen (R ⧸ (I ⊔ Ideal.span {g})) p := by
@@ -453,11 +443,11 @@ theorem locLen_colon (I : Ideal R) (g : R) (p : PrimeSpectrum R) :
     exact colonMul_exact I g
 
 /- English proof (translation)
-Unfold `locLen`. Rewrite using `[Module.length_eq_zero_iff]`. Establish `hz : ∀ z : LocalizedModule p.asIdeal.primeCompl (R ⧸ P), z = 0`. Introduce `z`. Use `LocalizedModule.induction_on (fun m t => ?_) z` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]`. Use `⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `hm : (s : R) • (Submodule.Quotient.mk r : R ⧸ P) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.mul_mem_right r hsP`. Rewrite using `[smul_zero, smul_zero, Submonoid.smul_def, Submonoid.smul_def, smul_comm]`. Express the relevant statement in the definitionally equal form `(t : R) • (s : R) • (Submodule.Quotient.mk r : R ⧸ P) = 0`. Rewrite using `[hm, smul_zero]`. Conclude with `⟨fun a b => by rw [hz a, hz b]⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locLen_quot_prime_eq_zero {P : Ideal R} (p : PrimeSpectrum R) {s : R} (hsP : s ∈ P)
     (hs : s ∉ p.asIdeal) : locLen (R ⧸ P) p = 0 := by
@@ -478,17 +468,17 @@ theorem locLen_quot_prime_eq_zero {P : Ideal R} (p : PrimeSpectrum R) {s : R} (h
   exact ⟨fun a b => by rw [hz a, hz b]⟩
 
 /- English proof (translation)
-Unfold `locLen`. Rewrite using `[Module.length_eq_one_iff]`. Express the relevant statement in the definitionally equal form `IsSimpleModule (Localization.AtPrime P) (LocalizedModule P.primeCompl (R ⧸ P))`. Rewrite using `[isSimpleModule_iff_toSpanSingleton_surjective]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨⟨LocalizedModule.mk (Submodule.Quotient.mk 1) 1, 0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← LocalizedModule.zero_mk 1, Ne, LocalizedModule.mk_eq]`. Introduce and unpack `⟨v, hv⟩`. Rewrite `hv` using `[smul_zero, smul_zero, one_smul, Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul, mul_one]`. Conclude with `v.2 hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `LocalizedModule.induction_on (fun m t => ?_) x` and prove the remaining obligations. Introduce `hx y`. Use `LocalizedModule.induction_on (fun n u => ?_) y` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ n`. Establish `ha : a ∉ P`. Introduce `haP`. Apply `hx` to reduce the goal to its premises. Rewrite using `[(Submodule.Quotient.mk_eq_zero P).mpr haP, LocalizedModule.zero_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hau : a * (u : R) ∈ P.primeCompl` using `fun h => (hP.mem_or_mem h).elim ha u.2`. Use `⟨Localization.mk (b * t) ⟨a * u, hau⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, LocalizedModule.mk_smul_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, one_smul, Submonoid.smul_def, Submonoid.smul_def, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [smul_eq_mul, Submonoid.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locLen_quot_self (P : Ideal R) [hP : P.IsPrime] : locLen (R ⧸ P) ⟨P, hP⟩ = 1 := by
   unfold locLen

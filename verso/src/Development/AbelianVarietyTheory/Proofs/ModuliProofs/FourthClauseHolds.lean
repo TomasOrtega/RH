@@ -20,7 +20,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.LN
 
 /- English proof (translation)
-Take `⟨L, L2, L3, L4, L5, L6⟩` from `GlobalTheory.T.all_six_abelian_scheme_laws_hold`. Conclude with `GlobalTheory.T.arcFamily_fourthCondition_invertible_pushforward GlobalTheory.T.twistedPrincipalPolarisation_sections_baseChange L L2 L3 L4 L5 L6 GlobalTheory.LN.ega_holds GlobalTheory.T.uniformisation_completeDVR GlobalTheory.T.linearUniformisation_triples_torsion GlobalTheory.T. …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fourth_clause_holds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (p : ℕ), Y.LevelStructureConditions p → GlobalTheory.LN.Amp Y → Y.N4 := by
   obtain ⟨L, L2, L3, L4, L5, L6⟩ := GlobalTheory.T.all_six_abelian_scheme_laws_hold

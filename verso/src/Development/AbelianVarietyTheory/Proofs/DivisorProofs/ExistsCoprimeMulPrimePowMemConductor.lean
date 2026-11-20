@@ -16,9 +16,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (a0)
 namespace GlobalTheory.HilbFam.CondNumber
 
 /- English proof (translation)
-Establish `h0 : Ideal.absNorm I ≠ 0` using `fun h => hI (Ideal.absNorm_eq_zero_iff.1 h)`. Take `⟨j, M, hM, he⟩` from `Nat.exists_eq_pow_mul_and_not_dvd h0 l hl.ne_one`. Use `⟨M, j, hM, ?_⟩` and prove the remaining obligations. Use `Ideal.absNorm_mem I` as an intermediate fact. Rewrite `this` using `[he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at this`. Rewrite `this` using `[mul_comm]`. Then use the resulting hypothesis.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_mul_pow_mem {K : Type} [Field K] [NumberField K] {l : ℕ} (hl : l.Prime) {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
     ∃ M j : ℕ, ¬ l ∣ M ∧ (M : 𝓞 K) * (l : 𝓞 K) ^ j ∈ I := by
@@ -31,9 +31,9 @@ theorem exists_mul_pow_mem {K : Type} [Field K] [NumberField K] {l : ℕ} (hl : 
   rwa [mul_comm] at this
 
 /- English proof (translation)
-Establish `e` using `Ideal.iInf_maxPowDividing_eq (I := I) hI`. Rewrite using `[← e, Submodule.mem_iInf]`. Introduce `v`. Apply `h v` to reduce the goal to its premises. Rewrite using `[Ideal.dvd_iff_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.ge.trans (iInf_le _ v)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_forall_pow {R : Type} [CommRing R] [IsDedekindDomain R] {I : Ideal R} (hI : I ≠ ⊥) {x : R}
     (h : ∀ (v : HeightOneSpectrum R) (n : ℕ), v.asIdeal ^ n ∣ I → x ∈ v.asIdeal ^ n) : x ∈ I := by
@@ -45,19 +45,17 @@ theorem mem_of_forall_pow {R : Type} [CommRing R] [IsDedekindDomain R] {I : Idea
   exact e.ge.trans (iInf_le _ v)
 
 /- English proof (translation)
-Introduce `E _ _ _ l 𝔣 Q hl h𝔣 hQ`. Take `⟨M₁, j, hM₁, hj⟩` from `exists_mul_pow_mem hl h𝔣.1`. Establish `h1 : (M₁ : OF E) * (l : OF E) ^ a0 𝔣 l ∈ 𝔣`. Use `mem_of_forall_pow h𝔣.1 fun v n hn => ?_` and prove the remaining obligations. Distinguish the cases in `hv : (l : OF E) ∈ v.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hfin : FiniteMultiplicity v.asIdeal 𝔣` using `FiniteMultiplicity.of_not_isUnit v.irreducible.not_isUnit h𝔣.1`. Establish `hle : n ≤ a0 𝔣 l` using `(hfin.le_multiplicity_of_pow_dvd hn).trans (GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.expIn_le_maxConductorExponentOverPrime h𝔣 hv)`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_le_pow_right hle (Ideal.pow_mem_pow hv _))`. Establish `h2` using `Ideal.le_of_dvd hn hj`. Use `v.isPrime` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Ideal.IsPrime.mem_pow_mul v.asIdeal h2 with h3 | h3` into its components or cases. Conclude with `Ideal.mul_mem_right _ _ h3`. Conclude with `absurd (v.isPrime.mem_of_pow_mem _ h3) hv`. Establish `h2 : ∀ q : HeightOneSpectrum (OF E), ∃ M : ℕ, ¬ l ∣ M ∧ (q ∈ Q → (M : OF E) ∈ q.asIdeal)`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨M, i, hM, hi⟩` from `exists_mul_pow_mem hl q.ne_bot`. Use `⟨M, hM, fun hq => ?_⟩` and prove the remaining obligations. Break down `q.isPrime.mem_or_mem hi with h3 | h3` into its components or cases. Conclude with `h3`. Conclude with `absurd (q.isPrime.mem_of_pow_mem _ h3) (hQ q hq)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose N hN hNq using h2`. Use `⟨M₁ * ∏ q ∈ Q, N q, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `(Nat.Prime.dvd_mul hl).1 h with h | h` into its components or cases. Conclude with `hM₁ h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨q, -, hq⟩` from `(Prime.dvd_finset_prod_iff hl.prime _).1 h`. Conclude with `hN q hq`. Establish `h3 : (∏ q ∈ Q, (N q : OF E)) ∈ ∏ q ∈ Q, q.asIdeal` using `Ideal.prod_mem_prod fun q hq => hNq q hq`. Establish `h4` using `Ideal.mul_mem_mul h1 h3`. Unfold `condQ`.
-
-Use `h4 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_condQ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) (𝔣 : Ideal (OF E)) (Q : Finset (HeightOneSpectrum (OF E))), l.Prime → IsBaseCond 𝔣 → (∀ q ∈ Q, (l : OF E) ∉ q.asIdeal) → ∃ M : ℕ, ¬ l ∣ M ∧ ((M * l ^ a0 𝔣 l : ℕ) : OF E) ∈ condQ 𝔣 Q := by
   intro E _ _ _ l 𝔣 Q hl h𝔣 hQ

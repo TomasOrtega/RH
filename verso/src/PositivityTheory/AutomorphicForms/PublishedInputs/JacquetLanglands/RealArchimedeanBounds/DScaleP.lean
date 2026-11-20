@@ -12,19 +12,17 @@ namespace UpperTheory.Esk.CentralScalingLemmas
 def cb (K P1 P2 : ℝ) (n : ℕ) : ℝ := max (max 1 (K ^ n * P2)) (min 1 (P1 / K ^ n))⁻¹
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le one_pos (le_trans (le_max_left _ _) (le_max_left _ _))`.
+A detailed English derivation is pending.
 -/
 theorem cb_pos (K P1 P2 : ℝ) (n : ℕ) : 0 < cb K P1 P2 n :=
   lt_of_lt_of_le one_pos (le_trans (le_max_left _ _) (le_max_left _ _))
 
 /- English proof (translation)
-Establish `hn : Fintype.card ι ≠ 0` using `Fintype.card_ne_zero`. Establish `hKn : 0 < K ^ Fintype.card ι` using `pow_pos hK _`. Establish `hup : a v ^ Fintype.card ι ≤ K ^ Fintype.card ι * P2`. Combine the equalities or inequalities in the displayed calculation. Establish `hlo : P1 / K ^ Fintype.card ι ≤ a v ^ Fintype.card ι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hKn]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_const, Finset.card_univ, mul_comm]`. Establish `hm : 0 < min 1 (P1 / K ^ Fintype.card ι)` using `lt_min one_pos (div_pos hP1 hKn)`. Establish `hmv : min 1 (P1 / K ^ Fintype.card ι) ≤ a v`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `le_total (a v) 1 with h | h` into its components or cases. Conclude with `le_trans (min_le_right _ _) (le_trans hlo (pow_le_of_le_one (ha v).le h hn))`. Conclude with `le_trans (min_le_left _ _) h`. Use `⟨le_trans (inv_le_of_inv_le₀ hm (le_max_right _ _)) hmv, ?_⟩` and prove the remaining obligations. Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations.
-
-Break down `le_total (a v) 1 with h | h` into its components or cases. Conclude with `le_trans h (le_max_left _ _)`. Conclude with `le_trans (le_self_pow₀ h hn) (le_trans hup (le_max_right _ _))`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem bal {ι : Type} [Fintype ι] [Nonempty ι] (a : ι → ℝ) {K P1 P2 : ℝ} (hK : 0 < K) (hP1 : 0 < P1)
     (ha : ∀ v, 0 < a v) (hb : ∀ v v', a v ≤ K * a v') (h1 : P1 ≤ ∏ v, a v) (h2 : ∏ v, a v ≤ P2) (v : ι) :
@@ -58,7 +56,7 @@ variable {F : Type} [Field F] [NumberField F]
 def good (N : ℕ) (A : GF F) : Prop := ∀ i j, (N : Af F) * A.val i j ∈ Ohat F
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, Nat.cast_mul]`. Establish `e : (a : Af F) * b * (A.val i 0 * B.val 0 j + A.val i 1 * B.val 1 j) = (a * A.val i 0) * (b * B.val 0 j) + (a * A.val i 1) * (b * B.val 1 j)` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (hA i 0) (hB 0 j)) (mul_mem (hA i 1) (hB 1 j))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_mul {a b : ℕ} {A B : GF F} (hA : good a A) (hB : good b B) : good (a * b) (A * B) := by
   intro i j
@@ -69,7 +67,7 @@ theorem good_mul {a b : ℕ} {A B : GF F} (hA : good a A) (hB : good b B) : good
   exact add_mem (mul_mem (hA i 0) (hB 0 j)) (mul_mem (hA i 1) (hB 1 j))
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Introduce `i j`. Rewrite using `[Nat.cast_mul, mul_comm (a : Af F), mul_assoc]`. Conclude with `mul_mem (natCast_mem _ c) (hA i j)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_dvd {a b : ℕ} {A : GF F} (hA : good a A) (h : a ∣ b) : good b A := by
   obtain ⟨c, rfl⟩ := h
@@ -79,20 +77,20 @@ theorem good_dvd {a b : ℕ} {A : GF F} (hA : good a A) (h : a ∣ b) : good b A
 
 omit [NumberField F] in
 /- English proof (translation)
-The claim follows from `Subgroup.mem_center_iff.2 fun g => Units.ext (Matrix.scalar_commute (n := Fin 2) (s : F) (fun _ => Commute.all _ _) g.val).symm.eq`.
+A detailed English derivation is pending.
 -/
 theorem scal_center (s : Fˣ) : Matrix.GeneralLinearGroup.scalar (Fin 2) s ∈ Subgroup.center (GL (Fin 2) F) :=
   Subgroup.mem_center_iff.2 fun g => Units.ext (Matrix.scalar_commute (n := Fin 2) (s : F) (fun _ => Commute.all _ _) g.val).symm.eq
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [jF, zc, ratU]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jF_scalar (s : Fˣ) : jF F (Matrix.GeneralLinearGroup.scalar (Fin 2) s) = zc F (ratU F s) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [jF, zc, ratU]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[jF, ratU, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_jF (g : GL (Fin 2) F) :
     Matrix.GeneralLinearGroup.det (jF F g) = ratU F (Matrix.GeneralLinearGroup.det g) := by
@@ -100,13 +98,13 @@ theorem det_jF (g : GL (Fin 2) F) :
   simp [jF, ratU, Matrix.det_fin_two]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [zc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zc_val (a : (Af F)ˣ) (i j : Fin 2) : (zc F a).val i j = if i = j then (a : Af F) else 0 := by
   fin_cases i <;> fin_cases j <;> simp [zc]
 
 /- English proof (translation)
-Rewrite using `[reAt, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reAt_eq [IsTotallyReal F] (v : InfinitePlace F) (t : F) : reAt v t = sg v t := by
   rw [reAt, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]
@@ -117,47 +115,37 @@ namespace UpperTheory.Esk
 
 open CentralScalingLemmas in
 /- English proof (translation)
-Introduce `hM hC hU F _ _ _ c hc χ ω`. Take `⟨hK0, -, hKc, hHc, hdet, hint, hN, hunit⟩` from `hM F`. Take `⟨T, hT⟩` from `hC F`. Take `⟨C0, hC0, hU'⟩` from `hU F`. Take `⟨x, rfl⟩ : ∃ x : GF F, (x : GF F ⧸ Hc c) = ω` from `QuotientGroup.mk_surjective ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N1, hN1, hx1⟩` from `hN x`. Take `⟨N2, hN2, hx2⟩` from `hN x⁻¹`. Use `choose Nf hNf0 hNf using hN`. Establish `hzK : ∀ a : (Af F)ˣ, (a : Af F) ∈ Ohat F → ((a⁻¹ : (Af F)ˣ) : Af F) ∈ Ohat F → zc F a ∈ K0 F`. Introduce `a h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hK0 _).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[zc_val]`. Use `split_ifs`. Conclude with `h1`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[← map_inv, zc_val]`. Use `split_ifs`. Conclude with `h2`. Conclude with `zero_mem _`. Use `⟨N1 * (∏ r ∈ T, Nf (zc F r)) * N2, cb (C0 ^ 2) (∑ r ∈ T, absF (Matrix.GeneralLinearGroup.det (zc F r)))⁻¹ (∑ r ∈ T, (absF (Matrix.GeneralLinearGroup.det (zc F r)))⁻¹) (Fintype.card (InfinitePlace F)), ?_, cb_pos _ _ _ _, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Nat.mul_ne_zero (Nat.mul_ne_zero hN1 (Finset.prod_ne_zero_iff.2 fun r _ => hNf0 _)) hN2`. Introduce `γ hγ`. Proceed by induction on `γ using QuotientGroup.induction_on with`. Consider the case `H γ₀`. Establish `h1 : x⁻¹ * (jF F γ₀ * x) ∈ Hc c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : ((jF F γ₀ * x : GF F) : GF F ⧸ Hc c) = (x : GF F ⧸ Hc c)` using `hγ`. Use `inv_mem (QuotientGroup.eq.1 e)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Take `⟨k, hk, z, hkz⟩` from `(hHc c _).1 h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, u, r, hr, hu, hz⟩` from `hT z`. Use `set d : F := γ₀.val.det * ((y⁻¹ : Fˣ) : F) ^ 2 with hd`. Establish `hd0 : d ≠ 0` using `mul_ne_zero γ₀.det_ne_zero (pow_ne_zero _ (Units.ne_zero _))`. Take `⟨ε, hε0, hεi, hεi', hεb⟩` from `hU' (fun v => Real.sqrt (abs (sg v d))) (fun v => (Real.sqrt_pos.2 (abs_pos.2 ((map_ne_zero (sg v)).2 hd0))).ne')`. Take `⟨g, hg⟩ : ∃ g : GL (Fin 2) F, g = γ₀ * Matrix.GeneralLinearGroup.scalar (Fin 2) (y⁻¹ * Units.mk0 ε hε0)` from `⟨_, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK' : k * zc F (u * ratU F (Units.mk0 ε hε0)) ∈ K0 F`. Use `mul_mem (hKc c hk) ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `mul_mem (hunit u hu).1 (hzK _ ?_ ?_)` and prove the remaining obligations. Conclude with `(hint ε).1 hεi`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Simplify `(hint ε⁻¹).1 hεi'` using `[ratU]`. Establish `hconj : x⁻¹ * (jF F g * x) = (k * zc F (u * ratU F (Units.mk0 ε hε0))) * zc F r`. Establish `hjγ : jF F γ₀ = x * (k * zc F z) * x⁻¹` using `by rw [← hkz]; group`. Establish `hcomm` using `Subgroup.mem_center_iff.1 (zc_center (ratU F (y⁻¹ * Units.mk0 ε hε0))) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzS : z * ratU F (y⁻¹ * Units.mk0 ε hε0) = r * (u * ratU F (Units.mk0 ε hε0))`. Rewrite using `[hz, map_mul, map_inv]`. Rewrite using `[show ratU F y * r * u * ((ratU F y)⁻¹ * ratU F (Units.mk0 ε hε0)) = (ratU F y * (ratU F y)⁻¹) * (r * (u * ratU F (Units.mk0 ε hε0))) by ac_rfl, mul_inv_cancel, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, map_mul, jF_scalar, hjγ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = x⁻¹ * (x * (k * zc F z) * x⁻¹ * (x * zc F (ratU F (y⁻¹ * Units.mk0 ε hε0)))) := by`. Rewrite using `[mul_assoc _ (zc F _) x, ← hcomm]`. Use `_ = k * (zc F z * zc F (ratU F (y⁻¹ * Units.mk0 ε hε0))) := by group`. Use `_ = k * zc F (r * (u * ratU F (Units.mk0 ε hε0))) := by rw [← map_mul, hzS]`. Use `_ = k * zc F (u * ratU F (Units.mk0 ε hε0)) * zc F r := by rw [mul_comm r, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjg : jF F g = x * ((k * zc F (u * ratU F (Units.mk0 ε hε0))) * zc F r) * x⁻¹`. Rewrite using `[← hconj]`. Use `group`. Use `⟨g, ?_, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, QuotientGroup.mk_mul, (QuotientGroup.eq_one_iff _).2 (scal_center _), mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgood : good (N1 * 1 * Nf (zc F r) * N2) (jF F g)`. Rewrite using `[hjg, ← mul_assoc x]`. Use `good_mul (good_mul (good_mul hx1 ?_) (hNf _)) hx2` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Nat.cast_one, one_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hK0 _).1 hK').1 i j`. Establish `hg2` using `good_dvd (b := N1 * (∏ r ∈ T, Nf (zc F r)) * N2) hgood (by`. Rewrite using `[mul_one]`. Conclude with `Nat.mul_dvd_mul (Nat.mul_dvd_mul_left _ (Finset.dvd_prod_of_mem _ hr)) dvd_rfl) i j`. Use `(hint _).2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_natCast]`. Conclude with `hg2`. Establish `hV : ∀ r' : (Af F)ˣ, 0 < absF (Matrix.GeneralLinearGroup.det (zc F r'))` using `fun r' => (Hm.absf F).1 _`. Establish `habs : absF (ratU F (Matrix.GeneralLinearGroup.det g)) = absF (Matrix.GeneralLinearGroup.det (zc F r))`. Rewrite using `[← det_jF, hjg, map_mul, map_mul, map_inv, mul_comm (Matrix.GeneralLinearGroup.det x), mul_assoc, mul_inv_cancel, mul_one, map_mul, (Hm.absf F).2.1, (Hm.absf F).2.2.1 _ fun w => (hdet _ hK' w).1, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : ∏ v, |sg v g.val.det| = (absF (Matrix.GeneralLinearGroup.det (zc F r)))⁻¹`. Use `(Hm.absf F).2.2.2 (Matrix.GeneralLinearGroup.det g)` as an intermediate fact. Establish `e : ∀ v, |reAt v ((Matrix.GeneralLinearGroup.det g : Fˣ) : F)| = |sg v g.val.det|` using `fun v => by`. Rewrite using `[reAt_eq, Matrix.GeneralLinearGroup.val_det_apply]`. Simplify using `only [e] at this`.
-
-Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← habs]`. Conclude with `this`. Establish `hdg : g.val.det = d * ε ^ 2`. Rewrite using `[hg, Units.val_mul, Matrix.det_mul, hd]`.
-
-Simplify using `[Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `ha : ∀ v, |sg v g.val.det| = |sg v ε * Real.sqrt (abs (sg v d))| ^ 2`. Introduce `v`. Rewrite using `[hdg, map_mul, map_pow, abs_mul, sq_abs, mul_pow, Real.sq_sqrt (abs_nonneg _), abs_pow, sq_abs, mul_comm]`.
-
-Introduce `v`. Use `bal (fun v => |sg v g.val.det|) (pow_pos hC0 2) ?_ ?_ ?_ ?_ ?_ v` and prove the remaining obligations. Conclude with `inv_pos.2 (lt_of_lt_of_le (hV r) (Finset.single_le_sum (fun r' _ => (hV r').le) hr))`. Introduce `v`. Conclude with `abs_pos.2 ((map_ne_zero (sg v)).2 g.det_ne_zero)`.
-
-Introduce `v v'`. Rewrite using `[ha, ha, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hεb v v') 2`. Rewrite using `[hprod]`. Conclude with `inv_anti₀ (hV r) (Finset.single_le_sum (fun r' _ => (hV r').le) hr)`.
-
-Rewrite using `[hprod]`. Conclude with `Finset.single_le_sum (fun r' _ => (inv_pos.2 (hV r')).le) hr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dScale : AMem → ACls → AUnit → DScale := by
   intro hM hC hU F _ _ _ c hc χ ω

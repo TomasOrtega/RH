@@ -7,7 +7,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL NumberField IsDedekindDomain
 namespace UpperTheory.Lit.Mix
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgUd.bern k`.
+A detailed English derivation is pending.
 -/
 theorem twoAt_charZero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] :
     TwoAt k :=

@@ -20,7 +20,7 @@ structure IsSplitting (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) : Prop wher
   resB : ResEta D χB B.rank
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.heckeB, h.heckeA, h.resB, h.resA⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSplitting.symm {A B : HSp D} {χA χB : (AE D)ˣ →* Circle} (h : IsSplitting A B χA χB) :
     IsSplitting B A χB χA := ⟨h.heckeB, h.heckeA, h.resB, h.resA⟩
@@ -101,9 +101,9 @@ def OffSig (X : ThetaX D) : Prop :=
   ∀ (V W : HSp D) (χ χ' : X.Chr), ¬ V.SigOK → X.th V W χ χ' = 0
 
 /- English proof (translation)
-Establish `h1` using `X.Ys_rank D.R.t j hj.le`. Establish `h2` using `X.Ys_rank D.R.t (j + 1) hj`. Rewrite `h1` using `[X.Ys_rec j hj.le]`. Rewrite `h2` using `[X.Ys_rec (j + 1) hj]`. Establish `h3` using `D.R.three_m_lt_t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, add_mul]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_Y_lt (X : ThetaX D) {j : ℕ} (hj : j < D.R.m) : (D.sp.Y j).rank < (D.sp.Y (j + 1)).rank := by
   have h1 := X.Ys_rank D.R.t j hj.le
@@ -173,7 +173,7 @@ section
 variable {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χA χB : (AE D)ˣ →* Circle} {om : Rep ψ A B}
 
 /- English proof (translation)
-Establish `: om (g * g', h * h') = om (g, h) * om (g', h')` using `by rw [← map_mul]; rfl`. Simplify using `only [kern, this, Module.End.mul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem kern_right (f : Theta ψ A B) (g g' : GA D A) (h h' : GA D B) :
     kern om f (g * g') (h * h') = kern om (om (g', h') f) g h := by
@@ -181,7 +181,7 @@ theorem kern_right (f : Theta ψ A B) (g g' : GA D A) (h h' : GA D B) :
   simp only [kern, this, Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[kern_right]`. Conclude with `hw.rat γ hγ δ hδ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kern_left (hw : IsWeil ψ χA χB om) (f : Theta ψ A B) {γ : GA D A} (hγ : γ ∈ GQ A) {δ : GA D B} (hδ : δ ∈ GQ B)
     (g : GA D A) (h : GA D B) : kern om f (γ * g) (δ * h) = kern om f g h := by
@@ -189,7 +189,7 @@ theorem kern_left (hw : IsWeil ψ χA χB om) (f : Theta ψ A B) {γ : GA D A} (
   exact hw.rat γ hγ δ hδ _
 
 /- English proof (translation)
-The claim follows from `hw.cont f 0`.
+A detailed English derivation is pending.
 -/
 theorem kern_cont (hw : IsWeil ψ χA χB om) (f : Theta ψ A B) : Continuous fun p : GA D A × GA D B => kern om f p.1 p.2 :=
   hw.cont f 0

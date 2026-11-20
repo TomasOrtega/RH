@@ -12,13 +12,13 @@ variable {X T : Type} [Group X] [MeasurableSpace X] [MeasurableMul₂ X] [Group 
   [MeasurableInv T]
 
 /- English proof (translation)
-Establish `hmul : Measurable fun p : T × X => i p.1 * p.2` using `(hi.comp measurable_fst).mul measurable_snd`. Establish `e1 : ∫⁻ x, F x * ρ x ∂μ = ∫⁻ t, ∫⁻ x, F x * ρ x * ρ' (i t * x) ∂μ ∂ν`. Rewrite using `[lintegral_lintegral_swap]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul, hρ'1 x, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hρ'.comp (hi.mul_const x)`. Conclude with `(((hF.comp measurable_snd).mul (hρ.comp measurable_snd)).mul (hρ'.comp hmul)).aemeasurable`. Establish `e2 : ∀ t : T, ∫⁻ x, F x * ρ x * ρ' (i t * x) ∂μ = ∫⁻ x, F x * ρ' x * ρ (i t⁻¹ * x) ∂μ`. Introduce `t`. Rewrite using `[← lintegral_mul_left_eq_self (fun x => F x * ρ x * ρ' (i t * x)) (i t)⁻¹]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [mul_inv_cancel_left]`. Rewrite using `[← map_inv, hFi]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, lintegral_congr e2, ← lintegral_lintegral_swap]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul, lintegral_inv_eq_self (fun t : T => ρ (i t * x)), hρ1 x, mul_one]`. Conclude with `hρ.comp ((hi.comp measurable_inv).mul_const x)`. Establish `hm : Measurable fun p : X × T => i p.2⁻¹ * p.1` using `(hi.comp (measurable_snd.inv)).mul measurable_fst`. Conclude with `(((hF.comp measurable_fst).mul (hρ'.comp measurable_fst)).mul (hρ.comp hm)).aemeasurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lint_eq {μ : Measure X} [μ.IsMulLeftInvariant] [SFinite μ] {ν : Measure T} [SFinite ν]
     [ν.IsInvInvariant] {i : T →* X} (hi : Measurable i) {F : X → ℝ≥0∞} (hF : Measurable F)
@@ -56,11 +56,11 @@ section QuotAnyReal
 variable {X : Type} [MeasurableSpace X]
 
 /- English proof (translation)
-Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun x => mul_nonneg (h0 x) ENNReal.toReal_nonneg) (hg.mul hρ.ennreal_toReal).aestronglyMeasurable]`. Use `congr 1`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Establish `hae` using `ae_lt_top (hg.enorm.mul hρ) hfin.ne`. Use `filter_upwards [hae] with x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.ofReal_mul (h0 x), ← Real.enorm_of_nonneg (h0 x)]`. Distinguish the cases in `h : ρ x = ⊤`. Establish `hz : ‖g x‖ₑ = 0`. Assume the negation of the conclusion as `hne`. Simplify using `only [Pi.mul_apply] at hx`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[h, ENNReal.mul_top hne]`. Conclude with `lt_irrefl _ hx`. Simplify using `[hz]`. Rewrite using `[ENNReal.ofReal_toReal h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nn_int {μ : Measure X} {g : X → ℝ} (hg : Measurable g) (h0 : ∀ x, 0 ≤ g x)
     {ρ : X → ℝ≥0∞} (hρ : Measurable ρ) (hfin : ∫⁻ x, ‖g x‖ₑ * ρ x ∂μ < ⊤) :
@@ -83,7 +83,7 @@ private theorem nn_int {μ : Measure X} {g : X → ℝ} (hg : Measurable g) (h0 
   · rw [ENNReal.ofReal_toReal h]
 
 /- English proof (translation)
-Use `⟨(hg.mul hρ.ennreal_toReal).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) hfin` and prove the remaining obligations. Rewrite using `[enorm_mul, Real.enorm_of_nonneg ENNReal.toReal_nonneg]`. Use `gcongr`. Conclude with `ENNReal.ofReal_toReal_le`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_of {μ : Measure X} {g : X → ℝ} (hg : Measurable g) {ρ : X → ℝ≥0∞}
     (hρ : Measurable ρ) (hfin : ∫⁻ x, ‖g x‖ₑ * ρ x ∂μ < ⊤) :
@@ -102,17 +102,15 @@ variable {X T : Type} [Group X] [MeasurableSpace X] [MeasurableMul₂ X] [Group 
   [MeasurableInv T]
 
 /- English proof (translation)
-Establish `hpm : Measurable fun x => max (g x) 0` using `hg.max measurable_const`. Establish `hnm : Measurable fun x => max (-g x) 0` using `hg.neg.max measurable_const`. Establish `hpi : ∀ t x, max (g (i t * x)) 0 = max (g x) 0` using `fun t x => by rw [hgi]`. Establish `hni : ∀ t x, max (-g (i t * x)) 0 = max (-g x) 0` using `fun t x => by rw [hgi]`. Establish `hple : ∀ x, ‖max (g x) 0‖ₑ ≤ ‖g x‖ₑ` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.enorm_eq_ofReal_abs, Real.enorm_eq_ofReal_abs]`. Conclude with `ENNReal.ofReal_le_ofReal (by`. Rewrite using `[abs_of_nonneg (le_max_right _ _)]`. Conclude with `max_le (le_abs_self _) (abs_nonneg _))`. Establish `hnle : ∀ x, ‖max (-g x) 0‖ₑ ≤ ‖g x‖ₑ` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.enorm_eq_ofReal_abs, Real.enorm_eq_ofReal_abs]`. Conclude with `ENNReal.ofReal_le_ofReal (by`. Rewrite using `[abs_of_nonneg (le_max_right _ _)]`. Conclude with `max_le (neg_le_abs _) (abs_nonneg _))`. Establish `hfin' : ∫⁻ x, ‖g x‖ₑ * ρ' x ∂μ < ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← lint_eq hi hg.enorm (fun t x => by rw [hgi]) hρ hρ1 hρ' hρ'1]`. Conclude with `hfin`. Establish `split : ∀ r : X → ℝ≥0∞, Measurable r → ∫⁻ x, ‖g x‖ₑ * r x ∂μ < ⊤ → ∫ x, g x * (r x).toReal ∂μ = (∫⁻ x, ‖max (g x) 0‖ₑ * r x ∂μ).toReal - (∫⁻ x, ‖max (-g x) 0‖ₑ * r x ∂μ).toReal`. Introduce `r hr hf`. Establish `fp : ∫⁻ x, ‖max (g x) 0‖ₑ * r x ∂μ < ⊤` using `lt_of_le_of_lt (lintegral_mono fun x => by gcongr; exact hple x) hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `fn : ∫⁻ x, ‖max (-g x) 0‖ₑ * r x ∂μ < ⊤` using `lt_of_le_of_lt (lintegral_mono fun x => by gcongr; exact hnle x) hf`. Rewrite using `[← nn_int hpm (fun x => le_max_right _ _) hr fp, ← nn_int hnm (fun x => le_max_right _ _) hr fn, ← integral_sub (int_of hpm hr fp) (int_of hnm hr fn)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show g x * (r x).toReal = max (g x) 0 * (r x).toReal - max (-g x) 0 * (r x).toReal`. Rewrite using `[← sub_mul, max_zero_sub_max_neg_zero_eq_self]`.
-
-Rewrite using `[split ρ hρ hfin, split ρ' hρ' hfin', lint_eq hi hpm.enorm (fun t x => by rw [hpi]) hρ hρ1 hρ' hρ'1, lint_eq hi hnm.enorm (fun t x => by rw [hni]) hρ hρ1 hρ' hρ'1]`.
+A detailed English derivation is pending.
 -/
 private theorem real_eq {μ : Measure X} [μ.IsMulLeftInvariant] [SFinite μ] {ν : Measure T} [SFinite ν]
     [ν.IsInvInvariant] {i : T →* X} (hi : Measurable i) {g : X → ℝ} (hg : Measurable g)
@@ -155,7 +153,7 @@ private theorem real_eq {μ : Measure X} [μ.IsMulLeftInvariant] [SFinite μ] {�
     lint_eq hi hnm.enorm (fun t x => by rw [hni]) hρ hρ1 hρ' hρ'1]
 
 /- English proof (translation)
-Establish `h` using `int_of (μ := μ) (g := fun x => ‖Φ x‖) hΦ.norm hρ (by simpa [enorm_norm] using hfin)`. Use `h.mono (hΦ.mul (Complex.measurable_ofReal.comp hρ.ennreal_toReal)).aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[abs_of_nonneg ENNReal.toReal_nonneg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem cpx_int {μ : Measure X} {Φ : X → ℂ} (hΦ : Measurable Φ) {ρ : X → ℝ≥0∞}
     (hρ : Measurable ρ) (hfin : ∫⁻ x, ‖Φ x‖ₑ * ρ x ∂μ < ⊤) :
@@ -166,13 +164,13 @@ private theorem cpx_int {μ : Measure X} {Φ : X → ℂ} (hΦ : Measurable Φ) 
   simp [abs_of_nonneg ENNReal.toReal_nonneg]
 
 /- English proof (translation)
-Establish `hfin' : ∫⁻ x, ‖Φ x‖ₑ * ρ' x ∂μ < ⊤`. Rewrite using `[← lint_eq hi hΦ.enorm (fun t x => by rw [hΦi]) hρ hρ1 hρ' hρ'1]`. Conclude with `hfin`. Establish `h1` using `cpx_int hΦ hρ hfin`. Establish `h2` using `cpx_int hΦ hρ' hfin'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bre : ∫⁻ x, ‖(Φ x).re‖ₑ * ρ x ∂μ < ⊤` using `lt_of_le_of_lt (lintegral_mono fun x => by gcongr`. Conclude with `enorm_le_iff_norm_le.2 (Complex.abs_re_le_norm _)) hfin`. Establish `bim : ∫⁻ x, ‖(Φ x).im‖ₑ * ρ x ∂μ < ⊤` using `lt_of_le_of_lt (lintegral_mono fun x => by gcongr`. Conclude with `enorm_le_iff_norm_le.2 (Complex.abs_im_le_norm _)) hfin`. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `a` using `Complex.reCLM.integral_comp_comm h1`. Establish `b` using `Complex.reCLM.integral_comp_comm h2`. Simplify using `only [Complex.reCLM_apply, Complex.re_mul_ofReal] at a b`. Rewrite using `[← a, ← b]`. Conclude with `real_eq hi (Complex.measurable_re.comp hΦ) (fun t x => by simp [hΦi]) hρ hρ1 hρ' hρ'1 bre`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `a` using `Complex.imCLM.integral_comp_comm h1`. Establish `b` using `Complex.imCLM.integral_comp_comm h2`. Simplify using `only [Complex.imCLM_apply, Complex.im_mul_ofReal] at a b`. Rewrite using `[← a, ← b]`. Conclude with `real_eq hi (Complex.measurable_im.comp hΦ) (fun t x => by simp [hΦi]) hρ hρ1 hρ' hρ'1 bim`.
+A detailed English derivation is pending.
 -/
 private theorem cpx_eq {μ : Measure X} [μ.IsMulLeftInvariant] [SFinite μ] {ν : Measure T} [SFinite ν]
     [ν.IsInvInvariant] {i : T →* X} (hi : Measurable i) {Φ : X → ℂ} (hΦ : Measurable Φ)
@@ -210,7 +208,7 @@ end QuotAnyMain
 end UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Introduce `X T _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ i hi Φ ρ hΦ hinv hρ hfin`. Establish `hex : ∃ ρ, PositivityTheory.Rg.Tf.Geo.IsNormAlong id i ν ρ` using `⟨ρ, hρ⟩`. Rewrite using `[PositivityTheory.Rg.Tf.Geo.quotInt, dif_pos hex]`. Establish `hc` using `hex.choose_spec`. Conclude with `(UpperTheory.ConvolutionTheory.L1.cpx_eq hi hΦ hinv hρ.1 hρ.2 hc.1 hc.2 hfin).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.quotAny :
     UpperTheory.ConvolutionTheory.L1.QuotAny := by

@@ -8,31 +8,25 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `a b _ C _ _ _ ζ F hab hζ hunr`. Establish `hb0 : b ≠ 0` using `right_ne_zero_of_mul (NeZero.ne (a * b))`. Use `haveI : IsGalois ℚ C := IsCyclotomicExtension.isGalois {a * b} ℚ C`. Use `set χ := IsCyclotomicExtension.Rat.galEquivZMod (a * b) C with hχ`. Establish `hcomm : ∀ σ τ : Gal(C/ℚ), τ * σ * τ⁻¹ = σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `σ τ`. Apply `χ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (χ τ), mul_assoc, mul_inv_cancel, mul_one]`. Use `haveI : F.fixingSubgroup.Normal := ⟨fun σ hσ τ => by rw [hcomm]; exact hσ⟩`. Establish `hFF : fixedField F.fixingSubgroup = F` using `IsGalois.fixedField_fixingSubgroup F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `haveI hgF : IsGalois ℚ F := by`. Establish `h` using `IsGalois.of_fixedField_normal_subgroup F.fixingSubgroup`. Rewrite `h` using `[hFF]`. Use `h` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : ∀ p : ℕ, p.Prime → p ∣ b → ∀ w : HeightOneSpectrum (𝓞 C), (p : 𝓞 C) ∈ w.asIdeal → w.asIdeal.inertia Gal(C/ℚ) ≤ F.fixingSubgroup`. Introduce `p hp hpb w hw σ hσ`. Establish `hk` using `(UpperTheory.V.CF.ineFixQ F C p hp).mp (hunr p hp hpb) w hw hσ`. Rewrite `hk` using `[MonoidHom.mem_ker]`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `hc` using `UpperTheory.V.CF.resTo_commutes ℚ F C σ ⟨x, hx⟩`. Rewrite `hc` using `[hk, AlgEquiv.one_apply]`. Conclude with `hc.symm`. Establish `hsup : ⨆ p ∈ b.primeFactors, KStar.Ram.inertiaUnits (a * b) p ≤ F.fixingSubgroup.map χ.toMonoidHom`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `iSup₂_le fun p hp => ?_` and prove the remaining obligations. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`. Establish `hpb : p ∣ b` using `Nat.dvd_of_mem_primeFactors hp`. Use `haveI : Fact p.Prime := ⟨hpp⟩`. Use `haveI : (Ideal.span {(p : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hpp).irreducible`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hPm, hPl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 C) (Ideal.span {(p : ℤ)})`. Use `haveI := hPm`. Use `haveI := hPl`. Establish `hpP : (p : 𝓞 C) ∈ P`. Establish `h1 : (p : ℤ) ∈ Ideal.span {(p : ℤ)}` using `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Ideal.LiesOver.over (P := P) (p := Ideal.span {(p : ℤ)}), Ideal.under_def, Ideal.mem_comap]`. Simplify using `using h1`. Set `w : HeightOneSpectrum (𝓞 C)` to `⟨P, hPm.isPrime, fun h => by`. Rewrite `hpP` using `[h, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.mpr hpp.ne_zero) hpP⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← KStar.Ram.map_inertia_eq p P]`. Conclude with `Subgroup.map_mono (hin p hpp hpb w hpP)`. Rewrite using `[← IsGalois.fixedField_fixingSubgroup ℚ⟮ζ ^ b⟯, IntermediateField.le_iff_le]`. Introduce `σ hσ`. Establish `hfix : σ (ζ ^ b) = ζ ^ b` using `(IntermediateField.mem_fixingSubgroup_iff _ σ).mp hσ _ (IntermediateField.mem_adjoin_simple_self ℚ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hker : χ σ ∈ (ZMod.unitsMap (Dvd.intro b rfl : a ∣ a * b)).ker`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, ZMod.unitsMap_val, ZMod.cast_eq_val, Units.val_one]`. Rewrite `hfix` using `[map_pow, IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq (a * b) C σ hζ.pow_eq_one, ← pow_mul]`. Establish `hmod : (χ σ).val.val * b ≡ 1 * b [MOD a * b]`. Rewrite using `[one_mul]`.
-
-Establish `h2` using `(hζ.isOfFinOrder (NeZero.ne _)).pow_inj_mod.mp hfix`. Rewrite `h2` using `[← hζ.eq_orderOf]`. Conclude with `h2`. Establish `hk` using `Nat.ModEq.mul_right_cancel' hb0 hmod`. Rewrite using `[← Nat.cast_one]`.
-
-Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).mpr hk`. Establish `hmem` using `hsup (UpperTheory.V.CF.unitsGen a b hab hker)`. Rewrite `hmem` using `[Subgroup.mem_map]`. Take `⟨τ, hτ, hτσ⟩` from `hmem`. Establish `hτσ' : τ = σ` using `χ.injective hτσ`.
-
-Rewrite `hτ` using `[hτσ']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.cycDescend :
     ∀ (a b : ℕ) [NeZero (a * b)] (C : Type) [Field C] [NumberField C] [IsCyclotomicExtension {a * b} ℚ C] (ζ : C) (F : IntermediateField ℚ C), a.Coprime b → IsPrimitiveRoot ζ (a * b) → (∀ p : ℕ, p.Prime → p ∣ b → UnramAt F p) → F ≤ ℚ⟮ζ ^ b⟯ := by

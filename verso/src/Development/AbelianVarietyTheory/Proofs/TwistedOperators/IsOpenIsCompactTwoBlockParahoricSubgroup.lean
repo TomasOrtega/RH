@@ -11,7 +11,7 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 namespace GlobalTheory.ParahoricOpenCompact
 
 /- English proof (translation)
-Introduce `g hg`. Use `mem_parahoric.2 ⟨StepData.KOne_le_KO hg, fun i j => ?_⟩` and prove the remaining obligations. Establish `h` using `StepData.mem_KOne.1 hg`. Establish `h' : valuation k ((g.val - 1) (.inr i) (.inl j)) < 1` using `h _ _`. Simplify using `using h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem KOne_le_parahoric (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] :
@@ -23,7 +23,7 @@ theorem KOne_le_parahoric (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   simpa using h'
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _`. Establish `ho : IsOpen (parahoric k A D : Set (GL (A ⊕ D) k))` using `Subgroup.isOpen_mono (KOne_le_parahoric k A D) StepData.isOpen_KOne`. Conclude with `⟨ho, SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) fun _ hg => (mem_parahoric.1 hg).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isOpen_isCompact_parahoric : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k]

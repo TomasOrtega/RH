@@ -17,7 +17,7 @@ namespace GlobalTheory.GraphLocal
 open GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `[Place.ord] at he`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_ord_pos {K : Type} [Field K] [Algebra ℂ K] (E : Place (algebraMap ℂ K)) {e : K}
     (he : 0 < E.ord e) : e ≠ 0 := by
@@ -25,17 +25,15 @@ theorem ne_zero_of_ord_pos {K : Type} [Field K] [Algebra ℂ K] (E : Place (alge
   simp [Place.ord] at he
 
 /- English proof (translation)
-Use `letI : Algebra ℂ F := (β.comp (algebraMap ℂ κ')).toAlgebra`. Set `j : placeAlg E →+* E.ring` to `{ toFun := fun x => ⟨x.1, x.2⟩, map_one' := rfl, map_mul' := fun _ _ => rfl, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Set `α' : placeAlg E →ₐ[ℂ] F` to `{ α.comp j with commutes' := fun a => by`. Use `hα ⟨algebraMap ℂ K a, h2 a⟩` as an intermediate fact. Rewrite `this` using `[h1, ρ.commutes]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this }`. Set `β' : κ' →ₐ[ℂ] F` to `{ β with commutes' := fun _ => rfl }`. Set `Φ` to `Algebra.TensorProduct.lift α' β' (fun _ _ => Commute.all _ _)`. Set `Ψ : tens (κ'` to `κ') (placeAlg E) →+* F := (Φ.comp (tensEquiv (κ' := κ') (placeAlg E)).symm.toAlgHom).toRingHom`. Establish `hΨ : ∀ w, Ψ (tensEquiv (placeAlg E) w) = Φ w` using `fun w => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Ψ]`. Introduce `htop`. Establish `hle : graphIdeal (κ'` using `κ') E R π ρ ≤ RingHom.ker Ψ := by`. Rewrite using `[graphIdeal, Ideal.span_le]`. Introduce and unpack `b (⟨e, he, hb⟩ | ⟨a, hb⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hmem : e ∈ E.ring` using `(E.ord_nonneg_iff (ne_zero_of_ord_pos E he)).1 he.le`. Establish `hb' : b = tensEquiv (κ'` using `κ') (placeAlg E) (⟨e, hmem⟩ ⊗ₜ 1) := Subtype.ext (by rw [hb]; rfl)`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, hb', hΨ]`. Simplify using `only [Φ, Algebra.TensorProduct.lift_tmul, map_one, mul_one]`. Conclude with `hpos ⟨e, hmem⟩ he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb' : b = tensEquiv (κ'` using `κ') (placeAlg E) (⟨a, h4 _ a.2⟩ ⊗ₜ 1 - 1 ⊗ₜ ρ (π a)) := Subtype.ext (by rw [hb, coe_tensEquiv, map_sub]; rfl)`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, hb', hΨ]`. Simplify using `only [Φ, map_sub, Algebra.TensorProduct.lift_tmul, map_one, mul_one, one_mul]`. Rewrite using `[sub_eq_zero]`. Conclude with `hα a`.
-
-Establish `h1mem : (1 : tens (κ'` using `κ') (placeAlg E)) ∈ graphIdeal (κ' := κ') E R π ρ := htop ▸ Submodule.mem_top`. Conclude with `one_ne_zero ((RingHom.mem_ker).1 (hle h1mem) |>.symm.trans (map_one Ψ)).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem graphIdeal_ne_top_of_hom {K κ κ' F : Type} [Field K] [Field κ] [Field κ'] [Field F]
     [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ']
@@ -89,29 +87,25 @@ namespace GlobalTheory.GraphLocal
 open GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `K κ κ' _ _ _ _ _ _ R π ρ E h1 h2 h3 h4 h5`. Set `kE` to `IsLocalRing.ResidueField E.ring`. Set `inc : R →+* E.ring` to `R.subtype.codRestrict E.ring (fun r => h4 _ r.2)`. Set `g : R →+* kE` to `(IsLocalRing.residue E.ring).comp inc`. Establish `hnu : ∀ x : E.ring, (x : K) ≠ 0 → (0 < E.ord x ↔ x ∈ IsLocalRing.maximalIdeal E.ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hpos hu`. Use `E.ord_eq_zero hu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `hnu'`. Establish `h0 : 0 ≤ E.ord x` using `(E.ord_nonneg_iff hx).2 x.2`. Break down `h0.lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Apply `hnu'` to reduce the goal to its premises. Establish `hinv : (x : K)⁻¹ ∈ E.ring` using `(E.ord_nonneg_iff (inv_ne_zero hx)).1 (by rw [E.ord_inv, ← h]; simp)`. Conclude with `IsUnit.of_mul_eq_one (b := ⟨_, hinv⟩) (Subtype.ext (mul_inv_cancel₀ hx))`. Establish `hker : ∀ r : R, π r = 0 ↔ g r = 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `r`. Distinguish the cases in `hr : (r : K) = 0`. Establish `: r = 0` using `Subtype.ext hr`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h5 r hr, show g r = IsLocalRing.residue E.ring (inc r) from rfl, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hnu (inc r) hr`. Establish `hsurj : Function.Surjective π.rangeRestrict` using `π.rangeRestrict_surjective`. Set `φ₀ : π.range →+* kE` to `π.rangeRestrict.liftOfSurjective hsurj ⟨g, fun r hr => by`. Rewrite `hr`, the goal using `[RingHom.mem_ker]`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hker r).1 (congrArg Subtype.val hr)⟩`. Establish `hφ₀ : ∀ r, φ₀ (π.rangeRestrict r) = g r` using `fun r => RingHom.liftOfSurjective_comp_apply _ hsurj _ r`. Establish `hinj : Function.Injective φ₀` using `(injective_iff_map_eq_zero φ₀).2 fun s hs => by`. Take `⟨r, rfl⟩` from `hsurj s`. Rewrite `hs` using `[hφ₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Subtype.ext ((hker r).2 hs)`. Use `haveI : IsFractionRing π.range κ := IsFractionRing.of_field π.range κ fun z => by`. Take `⟨a, b, hb, e⟩` from `h3 z`. Use `⟨π.rangeRestrict a, π.rangeRestrict b, ?_⟩` and prove the remaining obligations. Use `show z = π a / π b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_div_iff hb, e]`. Set `ι : κ →+* kE` to `IsFractionRing.lift hinj`. Establish `hι : ∀ r, ι (π r) = g r` using `fun r => by`. Rewrite using `[← hφ₀]`. Conclude with `IsFractionRing.lift_algebraMap hinj (π.rangeRestrict r)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra κ kE := ι.toAlgebra`. Use `letI : Algebra κ κ' := ρ.toRingHom.toAlgebra`. Use `haveI : Nontrivial (kE ⊗[κ] κ') := Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_isDomain κ kE κ' ι.injective ρ.toRingHom.injective`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (kE ⊗[κ] κ')`. Use `letI : Field (kE ⊗[κ] κ' ⧸ M) := Ideal.Quotient.field M`.
-
-Set `q` to `Ideal.Quotient.mk M`. Set `α : E.ring →+* (kE ⊗[κ] κ' ⧸ M)` to `q.comp (Algebra.TensorProduct.includeLeftRingHom.comp (IsLocalRing.residue E.ring))`. Set `β : κ' →+* (kE ⊗[κ] κ' ⧸ M)` to `q.comp (Algebra.TensorProduct.includeRight (R := κ) (A := kE)).toRingHom`. Use `graphIdeal_ne_top_of_hom R π ρ E h1 h2 h4 α β (fun r => ?_) (fun x hx => ?_)` and prove the remaining obligations. Use `show q (IsLocalRing.residue E.ring (inc r) ⊗ₜ 1) = q (1 ⊗ₜ ρ (π r))`.
-
-Use `congr 1`. Rewrite using `[show IsLocalRing.residue E.ring (inc r) = g r from rfl, ← hι, show ι (π r) = π r • (1 : kE) by rw [Algebra.smul_def, mul_one]; rfl, TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Use `show q (IsLocalRing.residue E.ring x ⊗ₜ 1) = 0`. Rewrite using `[(IsLocalRing.residue_eq_zero_iff x).2 ((hnu x (ne_zero_of_ord_pos E hx)).1 hx), TensorProduct.zero_tmul, map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphIdeal_ne_top : ∀ {K κ κ' : Type} [Field K] [Field κ] [Field κ'] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ']
     (R : Subring K) (π : R →+* κ) (ρ : κ →ₐ[ℂ] κ') (E : Place (algebraMap ℂ K)),

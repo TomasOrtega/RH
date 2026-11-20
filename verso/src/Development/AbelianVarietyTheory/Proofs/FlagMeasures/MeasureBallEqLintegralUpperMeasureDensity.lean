@@ -7,19 +7,15 @@ open scoped ENNReal NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ l ν _ _ η C hC ρ hρ`. Use `set U : Set V := Metric.ball (0 : V) η with hUdef`. Establish `hUo : IsOpen U` using `Metric.isOpen_ball`. Establish `key : ∀ x ∈ U, ∀ᶠ r in 𝓝[>] (0 : ℝ), ν (Metric.closedBall x r) ≤ ((C : ℝ≥0) • l) (Metric.closedBall x r)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : limsup (fun r : ℝ => ν (Metric.closedBall x r) / l (Metric.closedBall x r)) (𝓝[>] (0 : ℝ)) < (C : ℝ≥0∞)` using `hC x (mem_ball_zero_iff.1 hx)`. Use `filter_upwards [Filter.eventually_lt_of_limsup_lt h0, self_mem_nhdsWithin] with r hr hr0`. Establish `hpos : l (Metric.closedBall x r) ≠ 0` using `(Metric.measure_closedBall_pos l x hr0).ne'`. Establish `hfin : l (Metric.closedBall x r) ≠ ⊤` using `measure_closedBall_lt_top.ne`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((ENNReal.div_lt_iff (Or.inl hpos) (Or.inl hfin)).1 hr).le`. Establish `hle : ∀ s ⊆ U, ν s ≤ ((C : ℝ≥0) • l) s` using `fun s hs => (Besicovitch.vitaliFamily ν).measure_le_of_frequently_le ((C : ℝ≥0) • l) Measure.AbsolutelyContinuous.rfl s (fun x hx => (Besicovitch.tendsto_filterAt ν x).frequently (key x (hs hx)).frequently)`. Establish `hac : ν.restrict U ≪ l`. Introduce `s hs`. Rewrite using `[Measure.restrict_apply' hUo.measurableSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `le_antisymm ?_ (by simp)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hae : ∀ᵐ x ∂l, x ∈ U → GlobalTheory.HaarDensChart.upperDens l ν x = (ν.restrict U).rnDeriv l x` using `by filter_upwards [Besicovitch.ae_tendsto_rnDeriv (ν.restrict U) l] with x hx hxU`. Establish `hev : (fun r : ℝ => ν.restrict U (Metric.closedBall x r) / l (Metric.closedBall x r)) =ᶠ[𝓝[>] (0 : ℝ)] (fun r : ℝ => ν (Metric.closedBall x r) / l (Metric.closedBall x r))`. Take `⟨ε, εpos, hε⟩` from `Metric.isOpen_iff.1 hUo x hxU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [Ioo_mem_nhdsGT εpos] with r hr`. Rewrite using `[Measure.restrict_eq_self _ ((Metric.closedBall_subset_ball hr.2).trans hε)]`. Use `show limsup (fun r : ℝ => ν (Metric.closedBall x r) / l (Metric.closedBall x r)) (𝓝[>] (0 : ℝ)) = _`. Conclude with `(hx.congr' hev).limsup_eq`. Establish `hsub : Metric.ball (0 : V) ρ ⊆ U` using `Metric.ball_subset_ball hρ`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.withDensity_rnDeriv_eq _ _ hac]`. Use `_ = ∫⁻ x in Metric.ball 0 ρ, (ν.restrict U).rnDeriv l x ∂l := withDensity_apply _ Metric.isOpen_ball.measurableSet`. Use `_ = ∫⁻ x in Metric.ball 0 ρ, GlobalTheory.HaarDensChart.upperDens l ν x ∂l := by`. Use `setLIntegral_congr_fun_ae Metric.isOpen_ball.measurableSet ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hae] with x hx hxρ`. Conclude with `(hx (hsub hxρ)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measure_ball_eq_lintegral_upperDens : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (l ν : Measure V) [l.IsAddHaarMeasure] [IsFiniteMeasure ν] (η : ℝ) (C : ℝ≥0), (∀ x : V, ‖x‖ < η → GlobalTheory.HaarDensChart.upperDens l ν x < C) → ∀ ρ : ℝ, ρ ≤ η → ν (Metric.ball 0 ρ) = ∫⁻ x in Metric.ball 0 ρ, GlobalTheory.HaarDensChart.upperDens l ν x ∂l := by
   intro V _ _ _ _ _ l ν _ _ η C hC ρ hρ

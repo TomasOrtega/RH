@@ -11,7 +11,7 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField IsDedeki
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.GoodPts GlobalTheory.GoodTransfer
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.EqCharGood.inV_of_extIn_eqChar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSectionIntegralEqualCharAbelianLocus.lean&line=83#L83)
 -/

@@ -9,13 +9,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.HW
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
 
 /- English proof (translation)
-Establish `h1 : (univ.filter fun x => b < x ∧ ε x = ε b).card + 1 ≤ (univ.filter fun x => a < x ∧ ε x = ε a).card`. Apply `Nat.succ_le_of_lt` to reduce the goal to its premises. Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset]`. Conclude with `⟨b, by simp [hab, he], by simp⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Conclude with `⟨hab.trans hx.1, hx.2.trans he.symm⟩`. Establish `h2 : (univ.filter fun x => x < a ∧ ε x = ε a).card + 1 ≤ (univ.filter fun x => x < b ∧ ε x = ε b).card`. Apply `Nat.succ_le_of_lt` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset]`. Conclude with `⟨a, by simp [hab, he], by simp⟩`. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hx.1.trans hab, hx.2.trans he⟩`. Establish `h1' : ((univ.filter fun x => b < x ∧ ε x = ε b).card : ℝ) + 1 ≤ ((univ.filter fun x => a < x ∧ ε x = ε a).card : ℝ)` using `by exact_mod_cast h1`. Establish `h2' : ((univ.filter fun x => x < a ∧ ε x = ε a).card : ℝ) + 1 ≤ ((univ.filter fun x => x < b ∧ ε x = ε b).card : ℝ)` using `by exact_mod_cast h2`. Simplify using `only [rhoC]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem weylRatio_rhoC_sub_ge_one {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (hab : a < b)
     (he : ε a = ε b) : 1 ≤ rhoC ε a - rhoC ε b := by
@@ -45,15 +45,15 @@ theorem weylRatio_rhoC_sub_ge_one {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} 
   linarith
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase univ _ (Finset.mem_univ s)]`. Establish `h1 : ∏ b ∈ univ.filter (fun b => s < b ∧ ε s = ε b), (if b = s then h s else if s = s then h b else 1) = ∏ b ∈ univ.filter (fun b => s < b ∧ ε s = ε b), h b` using `Finset.prod_congr rfl fun b hb => by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Simplify using `[ne_of_gt hb.1]`. Establish `h2 : ∏ a ∈ univ.erase s, ∏ b ∈ univ.filter (fun b => a < b ∧ ε a = ε b), (if b = s then h a else if a = s then h b else 1) = ∏ a ∈ univ.filter (fun a => a < s ∧ ε a = ε s), h a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_filter, ← Finset.mul_prod_erase univ (fun a => if a < s ∧ ε a = ε s then h a else 1) (Finset.mem_univ s)]`. Simplify using `only [lt_self_iff_false, false_and, ↓reduceIte, one_mul]`. Use `Finset.prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `has : a ≠ s` using `Finset.ne_of_mem_erase ha`. Simplify using `only [has, ↓reduceIte]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_ite_eq']`. Simplify using `[Finset.mem_filter]`. Rewrite using `[h1, h2, ← Finset.prod_union]`. Use `congr 1`. Use extensionality with `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨h1, h2⟩ | ⟨h1, h2⟩)`. Conclude with `⟨ne_of_gt h1, h2.symm⟩`. Conclude with `⟨ne_of_lt h1, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Break down `lt_or_gt_of_ne h1 with h | h` into its components or cases. Conclude with `Or.inr ⟨h, h2⟩`. Conclude with `Or.inl ⟨h, h2.symm⟩`. Conclude with `Finset.disjoint_filter.mpr fun b _ h1 h2 => lt_asymm h1.1 h2.1`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem weylRatio_prodW {n : ℕ} (ε : Fin n → Bool) (s : Fin n) (h : Fin n → ℝ) :
     ∏ a, ∏ b ∈ univ.filter (fun b => a < b ∧ ε a = ε b),
@@ -92,13 +92,13 @@ theorem weylRatio_prodW {n : ℕ} (ε : Fin n → Bool) (s : Fin n) (h : Fin n �
   · exact Finset.disjoint_filter.mpr fun b _ h1 h2 => lt_asymm h1.1 h2.1
 
 /- English proof (translation)
-Rewrite using `[← weylRatio_prodW ε s (fun b => (Λ + rhoC ε) s - (Λ + rhoC ε) b), ← weylRatio_prodW ε s (fun b => (Λ + rhoC ε) s - (Λ + rhoC ε) b + c)]`. Simplify using `only [weylK]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `hab : a ≠ b` using `ne_of_lt hb.1`. Distinguish the cases in `hbs : b = s`. Substitute `hbs` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Pi.add_apply, Pi.single_apply, hab, ↓reduceIte]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `has : a = s`. Substitute `has` using the available equality. Simplify using `only [Pi.add_apply, Pi.single_apply, hbs, ↓reduceIte]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.add_apply, Pi.single_apply, hbs, has, ↓reduceIte]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weylK_shift_mul {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (s : Fin n) (c : ℝ) :
     weylK ε (Λ + Pi.single s c) *
@@ -126,9 +126,9 @@ theorem weylK_shift_mul {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (s 
       ring
 
 /- English proof (translation)
-Introduce `h`. Simplify using `only [Pi.add_apply] at h`. Break down `lt_or_gt_of_ne hbs with hlt | hlt` into its components or cases. Establish `h1` using `weylRatio_rhoC_sub_ge_one ε hlt he`. Establish `h2` using `hΛ b s hlt he`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `weylRatio_rhoC_sub_ge_one ε hlt he.symm`. Establish `h2` using `hΛ s b hlt he.symm`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem weylRatio_ell_ne {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ) {s b : Fin n}
     (hbs : b ≠ s) (he : ε b = ε s) : (Λ + rhoC ε) s - (Λ + rhoC ε) b ≠ 0 := by
@@ -143,7 +143,7 @@ theorem weylRatio_ell_ne {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (h
     linarith
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun b hb => by simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb exact weylRatio_ell_ne ε Λ hΛ hb.1 hb.2`.
+A detailed English derivation is pending.
 -/
 theorem weylRatio_prod_ne {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ) (s : Fin n) :
     ∏ b ∈ univ.filter (fun b => b ≠ s ∧ ε b = ε s), ((Λ + rhoC ε) s - (Λ + rhoC ε) b) ≠ 0 :=
@@ -152,7 +152,7 @@ theorem weylRatio_prod_ne {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (
     exact weylRatio_ell_ne ε Λ hΛ hb.1 hb.2
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_div_distrib, ← mul_div_assoc, eq_div_iff (weylRatio_prod_ne ε Λ hΛ s)]`. Conclude with `weylK_shift_mul ε Λ s c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weylK_shift {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ) (s : Fin n) (c : ℝ) :
     weylK ε (Λ + Pi.single s c) =
@@ -162,7 +162,7 @@ theorem weylK_shift {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : 
   exact weylK_shift_mul ε Λ s c
 
 /- English proof (translation)
-Establish `h : c • (Pi.single s (1 : ℝ) : Fin n → ℝ) = Pi.single s c`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x = s <;> simp [hx]`. Rewrite using `[h]`. Conclude with `weylK_shift ε Λ hΛ s c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weylK_add_smul_single {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ) (s : Fin n)
     (c : ℝ) :
@@ -176,11 +176,11 @@ theorem weylK_add_smul_single {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → �
   exact weylK_shift ε Λ hΛ s c
 
 /- English proof (translation)
-Establish `hji : j ≠ i` using `fun h => hij (by rw [h])`. Establish `hF : ∀ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j), (Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) j - (Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) b = (Λ + rhoC ε) j - (Λ + rhoC ε) b`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `hbi : b ≠ i` using `fun h => hij (by rw [← h, hb.2])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.single_apply, hji, hbi, ↓reduceIte]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP0 : ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j), ((Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) j - (Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) b) = ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j), ((Λ + rhoC ε) j - (Λ + rhoC ε) b)` using `Finset.prod_congr rfl hF`. Establish `hP1 : ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j), ((Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) j - (Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) b + -1) = ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j), ((Λ + rhoC ε) j - (Λ + rhoC ε) b - 1)` using `Finset.prod_congr rfl fun b hb => by rw [hF b hb]; ring`. Establish `hmul` using `weylK_shift_mul ε (Λ + Pi.single i 1) j (-1)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmul` using `[hP0, hP1, weylK_shift ε Λ hΛ i 1]`. Establish `hΛe : Λ + (Pi.single i 1 - Pi.single j 1) = Λ + Pi.single i 1 + Pi.single j (-1)`. Rewrite using `[sub_eq_add_neg, ← Pi.single_neg, add_assoc]`. Rewrite using `[hΛe, Finset.prod_div_distrib (s := univ.filter (fun b => b ≠ j ∧ ε b = ε j)), ← mul_div_assoc, eq_div_iff (weylRatio_prod_ne ε Λ hΛ j), hmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem weylK_two {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ) {i j : Fin n}
     (hij : ε i ≠ ε j) :
@@ -214,7 +214,7 @@ theorem weylK_two {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KD
   rw [hΛe, Finset.prod_div_distrib (s := univ.filter (fun b => b ≠ j ∧ ε b = ε j)), ← mul_div_assoc, eq_div_iff (weylRatio_prod_ne ε Λ hΛ j), hmul]
 
 /- English proof (translation)
-The claim follows from `weylK_two ε Λ hΛ hij`.
+A detailed English derivation is pending.
 -/
 theorem weylK_add_single_sub_single {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ)
     (i j : Fin n) (hij : ε i ≠ ε j) :

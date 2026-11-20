@@ -122,16 +122,16 @@ def Statement : Prop :=
     StepSize ∧ GapStepSize ∧ GapSubsetSize ∧ DegreeProportional
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : a = s <;> simp [eSet, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example {n : ℕ} (s : Fin n) : eSet {s} = Pi.single s 1 := by
   funext a
   by_cases h : a = s <;> simp [eSet, h]
 
 /- English proof (translation)
-Introduce `i μ _`. Use `⟨Finsupp.single 1 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[comb, Finsupp.support_single_ne_zero, zpow_add₀, mul_comm]`. Introduce `ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hν` using `[Finsupp.support_single_ne_zero _ one_ne_zero, mem_singleton]`. Simplify using `[hν]`. Simplify using `[l1, Finsupp.support_single_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example : OneStep (A := ℤ) (V := ℂˣ → ℂ) (ι := Unit) (fun k => |(k : ℝ)|) (fun k => |(k : ℝ)|)
     (fun k x => ((x ^ k : ℂˣ) : ℂ)) (fun _ => LinearMap.mulLeft ℂ (fun x : ℂˣ => (x : ℂ))) (fun _ => 1) 0 5 1 := by

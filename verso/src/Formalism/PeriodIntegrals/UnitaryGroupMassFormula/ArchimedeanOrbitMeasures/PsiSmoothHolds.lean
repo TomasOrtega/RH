@@ -23,7 +23,7 @@ def reLin (n : ℕ) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] EuclideanSpace ℝ 
     ext q; rcases q with ⟨i, j, b⟩; cases b <;> simp [realifyFun]
 
 /- English proof (translation)
-Use extensionality with `q`. Break down `q with ⟨i, j, b⟩` into its components or cases. Apply the tactic sequence `cases b <;> simp [reLin, unrLin, realifyFun, unrealify, LinearMap.coe_mk, AddHom.coe_mk] <;> rfl`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem re_unr (n : ℕ) (v : EuclideanSpace ℝ (Fin n × Fin n × Bool)) : reLin n (unrLin n v) = v := by
   ext q
@@ -37,37 +37,29 @@ def unit2 (n : ℕ) : (Matrix (Fin n) (Fin n) ℂ)ˣ where
   inv_val := by rw [Matrix.smul_mul, one_mul, smul_add, ← add_smul]; norm_num
 
 /- English proof (translation)
-Introduce `n ε m h hmh horth ι η _ _ L₀ L₁`. Use `set P := EuclideanSpace ℝ ι`. Use `set Q := EuclideanSpace ℝ η`. Use `set A : P × Q →L[ℝ] Matrix (Fin n) (Fin n) ℂ := (unrLin n).toContinuousLinearMap ∘L m.subtypeL ∘L (L₀.toContinuousLinearEquiv : P →L[ℝ] m) ∘L ContinuousLinearMap.fst ℝ P Q with hA`. Use `set Bm : P × Q →L[ℝ] Matrix (Fin n) (Fin n) ℂ := (unrLin n).toContinuousLinearMap ∘L h.subtypeL ∘L (L₁.toContinuousLinearEquiv : Q →L[ℝ] h) ∘L ContinuousLinearMap.snd ℝ P Q with hBm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `set Gm : Matrix (Fin n) (Fin n) ℂ →L[ℝ] P × Q := ((L₀.symm.toContinuousLinearEquiv : m →L[ℝ] P) ∘L m.orthogonalProjectionOnto ∘L (reLin n).toContinuousLinearMap).prod ((L₁.symm.toContinuousLinearEquiv : h →L[ℝ] Q) ∘L h.orthogonalProjectionOnto ∘L (reLin n).toContinuousLinearMap) …`. Use `set Mf : P × Q → Matrix (Fin n) (Fin n) ℂ := fun p => NormedSpace.exp (A p) * NormedSpace.exp (Bm p) with hMf`. Use `set Ff : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ := fun M => (2 : ℂ) • ((M - 1) * Ring.inverse (M + 1)) with hFf`. Establish `hpsi : psiE ε m h L₀ L₁ = fun p => Gm (Ff (Mf p))`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [psiE, hGm, hFf, hMf, hA, hBm, Matrix.nonsing_inv_eq_ringInverse]`. Both sides reduce to the same expression. Establish `hM0 : Mf 0 = 1` using `by simp [hMf]`. Establish `hexpA : HasFDerivAt (fun p => NormedSpace.exp (A p)) A 0`. Establish `h0 : HasFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] _) (A 0)` using `by rw [map_zero]; exact hasFDerivAt_exp_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h0.comp (0 : P × Q) A.hasFDerivAt`. Conclude with `h1.congr_fderiv (ContinuousLinearMap.ext fun v => rfl)`. Establish `hexpB : HasFDerivAt (fun p => NormedSpace.exp (Bm p)) Bm 0`. Establish `h0 : HasFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] _) (Bm 0)` using `by rw [map_zero]; exact hasFDerivAt_exp_zero`. Establish `h1` using `h0.comp (0 : P × Q) Bm.hasFDerivAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.congr_fderiv (ContinuousLinearMap.ext fun v => rfl)`. Establish `hMd : HasFDerivAt Mf (A + Bm) 0`. Establish `h1` using `hexpA.mul' hexpB`. Establish `e1 : NormedSpace.exp (A 0) = 1` using `by rw [map_zero, NormedSpace.exp_zero]`. Establish `e2 : NormedSpace.exp (Bm 0) = 1` using `by rw [map_zero, NormedSpace.exp_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1.congr_fderiv (ContinuousLinearMap.ext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `NormedSpace.exp (A 0) * Bm v + A v * NormedSpace.exp (Bm 0) = A v + Bm v`. Rewrite using `[e1, e2, one_mul, mul_one, add_comm]`. Establish `hFd : HasFDerivAt Ff (ContinuousLinearMap.id ℝ (Matrix (Fin n) (Fin n) ℂ)) 1`. Establish `hs : HasFDerivAt (fun M : Matrix (Fin n) (Fin n) ℂ => M - 1) (ContinuousLinearMap.id ℝ _) 1` using `(hasFDerivAt_id (1 : Matrix (Fin n) (Fin n) ℂ)).sub_const 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hi` using `(hasFDerivAt_ringInverse (𝕜 := ℝ) (unit2 n)).comp (1 : Matrix (Fin n) (Fin n) ℂ) ((hasFDerivAt_id (1 : Matrix (Fin n) (Fin n) ℂ)).add_const 1)`. Establish `hp` using `(hs.mul' hi).const_smul (2 : ℂ)`. Use `hp.congr_fderiv ?_` and prove the remaining obligations. Establish `hinv : Ring.inverse ((1 : Matrix (Fin n) (Fin n) ℂ) + 1) = (1 / 2 : ℂ) • 1`. Rewrite using `[show (1 : Matrix (Fin n) (Fin n) ℂ) + 1 = ((unit2 n : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix _ _ ℂ) from rfl, Ring.inverse_unit]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `ContinuousLinearMap.ext fun X => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(2 : ℂ) • (((1 : Matrix (Fin n) (Fin n) ℂ) - 1) * _ + X * Ring.inverse ((1 : Matrix (Fin n) (Fin n) ℂ) + 1)) = X`. Rewrite using `[sub_self, zero_mul, zero_add, hinv, Matrix.mul_smul, mul_one, smul_smul]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : HasFDerivAt (psiE ε m h L₀ L₁) (Gm ∘L (ContinuousLinearMap.id ℝ _) ∘L (A + Bm)) 0`. Rewrite using `[hpsi]`. Establish `hF' : HasFDerivAt Ff (ContinuousLinearMap.id ℝ (Matrix (Fin n) (Fin n) ℂ)) (Mf 0)` using `by rw [hM0]; exact hFd`. Conclude with `Gm.hasFDerivAt.comp (0 : P × Q) (hF'.comp (0 : P × Q) hMd)`. Establish `hid : Gm ∘L (ContinuousLinearMap.id ℝ _) ∘L (A + Bm) = ContinuousLinearMap.id ℝ (P × Q)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ContinuousLinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨x, y⟩` from `q`. Establish `hre : reLin n (A (x, y) + Bm (x, y)) = (L₀ x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ y : _)` using `by show reLin n (unrLin n (L₀ x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + unrLin n (L₁ y : EuclideanSpace ℝ (Fin n × Fin n × Bool))) = _`. Rewrite using `[map_add, re_unr, re_unr]`. Establish `h1 : (L₁ y : EuclideanSpace ℝ (Fin n × Fin n × Bool)) ∈ mᗮ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Conclude with `horth u hu _ (L₁ y).2`. Establish `h2 : (L₀ x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) ∈ hᗮ`. Rewrite using `[Submodule.mem_orthogonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Rewrite using `[real_inner_comm]`. Conclude with `horth _ (L₀ x).2 u hu`. Simplify using `only [hGm, ContinuousLinearMap.comp_apply, ContinuousLinearMap.prod_apply, ContinuousLinearMap.id_apply, ContinuousLinearMap.add_apply, LinearMap.coe_toContinuousLinearMap']`. Rewrite using `[hre]`.
-
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show L₀.symm (m.orthogonalProjectionOnto ((L₀ x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ y : _))) = x`. Rewrite using `[map_add, Submodule.orthogonalProjectionOnto_mem_subspace_eq_self, Submodule.orthogonalProjectionOnto_apply_of_mem_orthogonal h1, add_zero, LinearIsometryEquiv.symm_apply_apply]`. Use `show L₁.symm (h.orthogonalProjectionOnto ((L₀ x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ y : _))) = y`. Rewrite using `[map_add, Submodule.orthogonalProjectionOnto_mem_subspace_eq_self, Submodule.orthogonalProjectionOnto_apply_of_mem_orthogonal h2, zero_add, LinearIsometryEquiv.symm_apply_apply]`.
-
-Use `⟨?_, by rw [hall.fderiv, hid]⟩` and prove the remaining obligations. Rewrite using `[hpsi]`. Establish `hMc : ContDiffAt ℝ 1 Mf 0`. Establish `ha : ContDiffAt ℝ 1 (fun p => NormedSpace.exp (A p)) 0` using `((NormedSpace.exp_analytic (𝕂 := ℝ) (A 0)).contDiffAt).comp (0 : P × Q) A.contDiff.contDiffAt`. Establish `hb : ContDiffAt ℝ 1 (fun p => NormedSpace.exp (Bm p)) 0` using `((NormedSpace.exp_analytic (𝕂 := ℝ) (Bm 0)).contDiffAt).comp (0 : P × Q) Bm.contDiff.contDiffAt`.
-
-Conclude with `ha.mul hb`. Establish `hFc : ContDiffAt ℝ 1 Ff (Mf 0)`. Rewrite using `[hM0]`. Establish `hi : ContDiffAt ℝ 1 (fun M : Matrix (Fin n) (Fin n) ℂ => Ring.inverse (M + 1)) 1` using `(contDiffAt_ringInverse ℝ (unit2 n)).comp (1 : Matrix (Fin n) (Fin n) ℂ) (contDiffAt_id.add contDiffAt_const)`. Conclude with `((contDiffAt_id.sub contDiffAt_const).mul hi).const_smul (2 : ℂ)`.
-
-Conclude with `Gm.contDiff.contDiffAt.comp (0 : P × Q) (hFc.comp (0 : P × Q) hMc)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psiSmooth_holds : PsiSmoothU := by
   intro n ε m h hmh horth ι η _ _ L₀ L₁
@@ -168,7 +160,7 @@ theorem psiSmooth_holds : PsiSmoothU := by
   exact Gm.contDiff.contDiffAt.comp (0 : P × Q) (hFc.comp (0 : P × Q) hMc)
 
 /- English proof (translation)
-The claim follows from `expProdU_of_parts hC psiSmooth_holds hM hI`.
+A detailed English derivation is pending.
 -/
 theorem expProdU_of_two (hC : CayProdU) (hM : PsiMeasU) (hI : PsiInvU) : ExpProdU :=
   expProdU_of_parts hC psiSmooth_holds hM hI

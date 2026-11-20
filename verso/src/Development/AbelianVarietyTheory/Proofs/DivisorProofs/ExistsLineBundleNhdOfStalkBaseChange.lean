@@ -15,13 +15,13 @@ namespace GlobalTheory.StalkLB
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-Introduce `S X _ h _ _ x N hN`. Establish `hpb` using `IsPullback.of_hasPullback h (S.fromSpecStalk x)`. Establish `hlim : IsLimit (GlobalTheory.schemeConeOfFamily (GlobalTheory.StalkLimit.diagram x h) (fun V => (GlobalTheory.StalkLimit.cone hpb).π.app V) (fun f => (GlobalTheory.StalkLimit.cone hpb).w f))` using `(GlobalTheory.StalkLimit.nonempty_isLimit hpb).some`. Establish `hcpt : ∀ V : GlobalTheory.StalkLimit.AffNhd x, CompactSpace ((GlobalTheory.StalkLimit.diagram x h).obj V)`. Introduce `V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsAffine V.1.toScheme := V.2.2`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd h V.1.ι)`. Establish `hqs : ∀ V : GlobalTheory.StalkLimit.AffNhd x, QuasiSeparatedSpace ((GlobalTheory.StalkLimit.diagram x h).obj V)`. Introduce `V`. Use `haveI : IsAffine V.1.toScheme := V.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `quasiSeparatedSpace_of_quasiSeparated (pullback.snd h V.1.ι)`. Take `⟨j, M, hM, -, hall⟩` from `GlobalTheory.LBLimit.exists_lb_of_isLimit (GlobalTheory.StalkLimit.diagram x h) (fun V => (GlobalTheory.StalkLimit.cone hpb).π.app V) (fun f => (GlobalTheory.StalkLimit.cone hpb).w f) hlim N hN`. Use `⟨j.1, j.2.1, M.pull (pullbackRestrictIsoRestrict h j.1).inv, pull_isLB hM _, fun a ha => ?_⟩` and prove the remaining obligations. Use `LBIso.symm (hall _ a (pullbackRestrictIsoRestrict h j.1).inv ?_)` and prove the remaining obligations. Establish `hfst : (GlobalTheory.StalkLimit.cone hpb).π.app j ≫ pullback.fst h j.1.ι = pullback.fst h (S.fromSpecStalk x)` using `GlobalTheory.StalkLimit.cone_π_fst hpb j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullbackRestrictIsoRestrict_inv_fst, ha, hfst]`. Rewrite using `[← cancel_mono j.1.ι]`. Simplify using `only [Category.assoc]`. Rewrite using `[← pullback.condition, pullbackRestrictIsoRestrict_inv_fst_assoc, reassoc_of% ha, reassoc_of% hfst]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lb_nhd : ∀ {S X : Scheme.{0}} [IsLocallyNoetherian S] (h : X ⟶ S) [QuasiCompact h]
     [QuasiSeparated h] (x : S) (N : LB (pullback h (S.fromSpecStalk x))), N.IsLB →

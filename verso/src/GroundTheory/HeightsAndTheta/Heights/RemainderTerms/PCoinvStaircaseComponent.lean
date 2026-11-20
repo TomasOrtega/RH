@@ -9,15 +9,15 @@ open MvPolynomial Coinv
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ f n v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨e, he, rfl⟩` from `hx`. Establish `hhom : monomial e (1 : K) ∈ homogeneousSubmodule (Fin f × Fin n) K e.degree` using `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_monomial 1 rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hle, heq⟩` from `h1 f n e he`. Use `⟨fun d hd => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[homogeneousComponent_of_mem hhom, if_neg (by omega)]`. Rewrite using `[homogeneousComponent_of_mem hhom]`. Distinguish the cases in `h : coinvTop f n = e.degree`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos h, heq h.symm, C_1, one_mul]`. Conclude with `⟨0, by rw [if_neg h, C_0, zero_mul]⟩`. Consider the case `zero => exact ⟨fun d _ => map_zero _, 0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨hx1, cx, hx2⟩` from `hx`. Take `⟨hy1, cy, hy2⟩` from `hy`. Use `⟨fun d hd => by rw [map_add, hx1 d hd, hy1 d hd, add_zero], cx + cy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hx2, hy2, C_add, add_mul]`. Consider the case `smul a x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨hx1, cx, hx2⟩` from `hx`. Use `⟨fun d hd => by rw [map_smul, hx1 d hd, smul_zero], a * cx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hx2, smul_eq_C_mul, C_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem CoinvStaircaseComponent.proof (h1 : CoinvStaircaseDegree.Statement) :
     CoinvStaircaseComponent.Statement := by

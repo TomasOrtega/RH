@@ -23,7 +23,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {y : (Σ k, J k) → Ω} {w : (Σ k, J k) → ℂ}
 
 /- English proof (translation)
-Take `⟨k, i⟩` from `p`. Take `⟨r, hr, e⟩` from `(hw.2 k (c k) (hc k)).2 i`. Use `show ValAt ξ z _ (w ⟨k, i⟩ / w ⟨k, c k⟩)`. Rewrite using `[e, mul_div_cancel_right₀ _ (hc k).ne_zero]`. Conclude with `hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_ratio (hw : CoordsAt ξ y z w) (c : ∀ k, J k) (hc : ∀ k, IsUnit (w ⟨k, c k⟩)) (p : Σ k, J k) :
     ValAt ξ z (y p / y ⟨p.1, c p.1⟩) (w p / w ⟨p.1, c p.1⟩) := by
@@ -34,9 +34,9 @@ theorem valAt_ratio (hw : CoordsAt ξ y z w) (c : ∀ k, J k) (hc : ∀ k, IsUni
   exact hr
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C n => simpa using valAt_intCast hz n`. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add]`. Conclude with `valAt_add ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X a p ha`. Rewrite using `[map_mul, map_mul, aeval_X, aeval_X]`. Conclude with `valAt_mul ha (valAt_ratio hw c hc p)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_aeval (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) (c : ∀ k, J k)
     (hc : ∀ k, IsUnit (w ⟨k, c k⟩)) (g : MRing J) :
@@ -52,7 +52,7 @@ theorem valAt_aeval (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) (c : �
     exact valAt_mul ha (valAt_ratio hw c hc p)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.aeval_scaled_homog (fun p : Σ k, J k => v p / v ⟨p.1, c p.1⟩) (fun k => v ⟨k, c k⟩) hG`. Rewrite using `[← h]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Conclude with `(div_mul_cancel₀ _ (hv p.1)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem aeval_form_ratio {L : Type} [Field L] (v : (Σ k, J k) → L) (c : ∀ k, J k) (hv : ∀ k, v ⟨k, c k⟩ ≠ 0)
     {G : MRing J} {d : K → ℕ} (hG : IsMultiHomog G d) :
@@ -65,9 +65,9 @@ theorem aeval_form_ratio {L : Type} [Field L] (v : (Σ k, J k) → L) (c : ∀ k
   exact (div_mul_cancel₀ _ (hv p.1)).symm
 
 /- English proof (translation)
-Take `⟨h, s, hs, hsr⟩` from `valAt_iff.1 ha`. Establish `hu : IsUnit s` using `GlobalTheory.CompanionTheory.Ar.CxVal.isUnit _ (by rw [show (Scheme.stalkClosedPointTo z).hom s = r from hsr]; exact hr)`. Take `⟨t, ht⟩` from `hu.exists_right_inv`. Establish `e : a * genMap ξ ⟨centre z, hz⟩ t = 1`. Use `congrArg (genMap ξ ⟨centre z, hz⟩) ht` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_one, hs]`. Then use the resulting hypothesis. Use `⟨left_ne_zero_of_mul_eq_one e, ⟨s, hs⟩, ⟨t, ?_⟩⟩` and prove the remaining obligations. Conclude with `eq_inv_of_mul_eq_one_right e`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unitAt_of_valAt (hz : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (ha : ValAt ξ z a r) (hr : r ≠ 0) :
     unitAt ξ ⟨centre z, hz⟩ a := by
@@ -81,7 +81,7 @@ theorem unitAt_of_valAt (hz : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (ha : Va
   exact eq_inv_of_mul_eq_one_right e
 
 /- English proof (translation)
-Use `⟨div_ne_zero ha.1 hb.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem ha.2.1 hb.2.2`. Rewrite using `[inv_div, div_eq_mul_inv]`. Conclude with `mul_mem hb.2.1 ha.2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_div {p : Cpt ξ} {a b : Ω} (ha : unitAt ξ p a) (hb : unitAt ξ p b) : unitAt ξ p (a / b) := by
   refine ⟨div_ne_zero ha.1 hb.1, ?_, ?_⟩
@@ -91,13 +91,13 @@ theorem unitAt_div {p : Cpt ξ} {a b : Ω} (ha : unitAt ξ p a) (hb : unitAt ξ 
     exact mul_mem hb.2.1 ha.2.2
 
 /- English proof (translation)
-Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hw.2 k (c k) (hc k)).1`. Establish `hw0 : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k => (hc k).ne_zero`. Establish `uG` using `unitAt_of_valAt hz (valAt_aeval hz hw c hc G) (by`. Introduce `h0`. Apply `hGw` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[aeval_form_ratio w c hw0 hG, h0, zero_mul])`. Establish `uH` using `unitAt_of_valAt hz (valAt_aeval hz hw c hc Hf) (by`. Introduce `h0`. Apply `hHw` to reduce the goal to its premises. Rewrite using `[aeval_form_ratio w c hw0 hH, h0, zero_mul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : ∏ k, y ⟨k, c k⟩ ^ d k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)`. Establish `e : ε = aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) G / aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) Hf`. Rewrite `hGy` using `[aeval_form_ratio y c hy hG, aeval_form_ratio y c hy hH, ← mul_assoc]`. Establish `h1` using `mul_right_cancel₀ hM hGy`. Rewrite using `[h1, mul_div_cancel_right₀ _ uH.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `unitAt_div uG uH`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_of_forms (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) (c : ∀ k, J k)
     (hc : ∀ k, IsUnit (w ⟨k, c k⟩)) {d : K → ℕ} {G Hf : MRing J} (hG : IsMultiHomog G d) (hH : IsMultiHomog Hf d)
@@ -127,27 +127,23 @@ end GlobalTheory.CompanionTheory.Ar.Small.OffForm
 open GlobalTheory.CompanionTheory.Ar.Small.OffForm in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or`. Take `⟨cc, hch⟩` from `Or.𝔐.tie.cover ⟨genPt Or.𝔐.ξ, specializes_rfl⟩`. Establish `hy : ∀ k, RM.y ⟨k, cc k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hch.1 k (Finset.mem_univ k)`. Establish `ya : Or.g (Fx.yf (Or.ix.symm (cc Or.k₀))) = RM.y ⟨Or.k₀, cc Or.k₀⟩`. Rewrite using `[← Or.y_eq, Equiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : (∏ r, ((∏ k, RM.y ⟨k, cc k⟩ ^ RM.xdeg r k) • Or.e r) ^ (-Fx.n r)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun r _ => zpow_ne_zero _ (smul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)) (Or.lines r).1)`. Establish `hε : Or.g Fx.sE * Or.g (Fx.yf (Or.ix.symm (cc Or.k₀))) ^ Fx.q' / (∏ r, ((∏ k, RM.y ⟨k, cc k⟩ ^ RM.xdeg r k) • Or.e r) ^ (-Fx.n r)) ≠ 0`. Use `div_ne_zero (mul_ne_zero ((map_ne_zero Or.g).2 Fx.sE_ne) (pow_ne_zero _ ?_)) ht0` and prove the remaining obligations. Rewrite using `[ya]`. Conclude with `hy _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨d, G, Hf, hG, hH, hHy, hGy⟩` from `RM.birational (Or.g Fx.sE * Or.g (Fx.yf (Or.ix.symm (cc Or.k₀))) ^ Fx.q' / (∏ r, ((∏ k, RM.y ⟨k, cc k⟩ ^ RM.xdeg r k) • Or.e r) ^ (-Fx.n r)))`. Establish `hGy0 : MvPolynomial.aeval RM.y G ≠ 0`. Rewrite using `[hGy]`. Conclude with `mul_ne_zero hε hHy`. Establish `hform` using `GlobalTheory.CompanionTheory.Ar.AlgPoly.form_mul (GlobalTheory.CompanionTheory.Ar.AlgPoly.form_mul hG hH) (GlobalTheory.CompanionTheory.Ar.Small.RepAt.form_mono cc fun _ => 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨G * Hf * GlobalTheory.CompanionTheory.Ar.Small.RepAt.mono cc (fun _ => 1), ⟨⟨_, hform⟩, fun hm => ?_⟩, fun w hw hf x hso => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.aeval_scaled RM.y (fun _ => 1) (G * Hf * GlobalTheory.CompanionTheory.Ar.Small.RepAt.mono cc (fun _ => 1))`. Establish `h0 : mConeMap RM.y (G * Hf * GlobalTheory.CompanionTheory.Ar.Small.RepAt.mono cc (fun _ => 1)) = 0` using `hm`. Rewrite `h` using `[h0, map_zero]`. Simplify using `only [mul_one] at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_mul, map_mul, GlobalTheory.CompanionTheory.Ar.Small.RepAt.aeval_mono]`. Conclude with `mul_ne_zero (mul_ne_zero hGy0 hHy) (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)) h`. Take `⟨cs, hcs, he⟩` from `hso`. Establish `hw' : Or.Re.R.lift x x ∈ mcPts (mCoordIdeal RM.y)` using `Or.Re.R.mem x x (Or.Re.R.mem_U x)`. Establish `hf' : MvPolynomial.aeval (Or.Re.R.lift x x) (G * Hf * GlobalTheory.CompanionTheory.Ar.Small.RepAt.mono cc (fun _ => 1)) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.aeval_scaled_homog w cs hform`. Establish `e2 : Or.Re.R.lift x x = fun p => w p * cs p.1`. Rewrite using `[he]`. Use function extensionality and compare the values at `p`. Conclude with `mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2, h]`. Conclude with `mul_ne_zero hf (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hcs k))`. Rewrite `hf'` using `[map_mul, map_mul, GlobalTheory.CompanionTheory.Ar.Small.RepAt.aeval_mono]`. Establish `hGw` using `left_ne_zero_of_mul (left_ne_zero_of_mul hf')`. Establish `hHw` using `right_ne_zero_of_mul (left_ne_zero_of_mul hf')`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcc : ∀ k, IsUnit (Or.Re.R.lift x x ⟨k, cc k⟩)` using `fun k => IsUnit.mk0 _ (by`. Use `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hf') k (Finset.mem_univ k)` as an intermediate fact. Simplify using `using this)`. Take `⟨z, hz, hco⟩` from `(mem_mcPts_iff_exists_coordsAt Or.𝔐.X RM.Ω Or.𝔐.ξ RM.K RM.ι RM.y Or.𝔐.tie _).1 hw'`. Establish `hch'` using `GlobalTheory.CompanionTheory.Ar.Small.RepAt.inChart_of_coords hz hco cc hcc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `gens : ∀ r, (Or.Fl.rootLat r).IsGenAt ⟨GlobalTheory.CompanionTheory.Ar.centre z, hz⟩ ((∏ k, RM.y ⟨k, cc k⟩ ^ RM.xdeg r k) • Or.e r)` using `fun r => ⟨smul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)) (Or.lines r).1, (Or.lines r).2 _ trivial cc hch'⟩`. Establish `ht` using `GlobalTheory.CompanionTheory.Ar.Chg.CoverEff.tens_isGenAt (fun r => -Fx.n r) gens`. Establish `hchi : InChart Or.𝔐.ξ (fun i' => Or.g (Fx.yf i')) (Or.ix.symm (cc Or.k₀)) ⟨GlobalTheory.CompanionTheory.Ar.centre z, hz⟩`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Use `show Or.g (Fx.yf (Or.ix.symm (cc Or.k₀))) ≠ 0`.
-
-Rewrite using `[ya]`. Conclude with `hy _`. Use `show Or.g (Fx.yf j) / Or.g (Fx.yf (Or.ix.symm (cc Or.k₀))) ∈ _`. Rewrite using `[ya, ← Or.y_eq]`. Conclude with `Lat.block_ratio_mem hch' Or.k₀ (Or.ix j)`.
-
-Establish `heff` using `(Or.eff ⟨GlobalTheory.CompanionTheory.Ar.centre z, hz⟩ (fun r hr => GlobalTheory.CompanionTheory.Ar.Small.RepAt.not_inFibre hz hr) _ _ hchi ht).2`. Establish `hu` using `unitAt_of_forms hz hco cc hcc hG hH hHy hGy hGw hHw`. Conclude with `(Or.interior x z hco).1 (not_not.1 fun h => heff h hu)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.RootForm.exists_form : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (GlobalTheory.CompanionTheory.Ar.CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (GlobalTheory.CompanionTheory.Ar.CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx), ∃ f : MRing RM.ι, Small.IsFormOff (mCoordIdeal RM.y) f ∧ ∀ w ∈ mcPts (mCoordIdeal RM.y), MvPolynomial.aeval w f ≠ 0 → ∀ x : Or.Re.R.X, SameOrbit (Or.Re.R.lift x x) w → Or.Re.π x ∈ Sys.open' := by
   intro E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or

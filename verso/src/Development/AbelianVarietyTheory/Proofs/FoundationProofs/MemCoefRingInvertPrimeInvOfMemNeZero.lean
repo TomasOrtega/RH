@@ -8,25 +8,23 @@ noncomputable section
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Introduce `l _ c d hd hd0`. Use `set x : c.O := ⟨d, hd⟩ with hxdef`. Establish `hx0 : x ≠ 0` using `fun h => hd0 (congrArg Subtype.val h)`. Use `set L : c.O := ((l : ℕ) : c.O) with hLdef`. Establish `hLval : (L : Qbar l) = ((l : ℕ) : Qbar l)` using `by simp [hLdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL0 : L ≠ 0`. Introduce `h`. Establish `: ((l : ℕ) : Qbar l) = 0` using `by rw [← hLval, h]; rfl`. Establish `h1` using `(norm_natCast_l (l := l))`. Rewrite `h1` using `[this, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (0:ℝ) < (l:ℝ)⁻¹` using `inv_pos.2 (by exact_mod_cast (Fact.out : l.Prime).pos)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLnu : ¬ IsUnit L`. Introduce and unpack `⟨u, hu⟩`. Establish `h1 : ((u : c.O) : Qbar l) * ((u⁻¹ : c.Oˣ) : c.O) = 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Subalgebra.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression. Establish `hn2 : ‖(((u⁻¹ : c.Oˣ) : c.O) : Qbar l)‖ ≤ 1` using `norm_le_one_of_mem_coef c (SetLike.coe_mem _)`. Establish `hu' : ((u : c.O) : Qbar l) = ((l : ℕ) : Qbar l)` using `by rw [hu, hLval]`. Rewrite `h1` using `[hu']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, norm_one]`. Establish `h3` using `norm_natCast_l_lt_one (l := l)`. Establish `h4 : ‖((l : ℕ) : Qbar l)‖ * ‖(((u⁻¹ : c.Oˣ) : c.O) : Qbar l)‖ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) hn2) h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`. Take `⟨v, u, hxu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Take `⟨m, u', hLu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hL0 hϖ`. Establish `hm : m ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hLnu` to reduce the goal to its premises. Rewrite using `[hLu, pow_zero, mul_one]`. Conclude with `u'.isUnit`. Establish `hϖL : ϖ ∣ L`. Rewrite using `[hLu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Dvd.dvd.mul_left (dvd_pow_self ϖ hm) _`. Establish `hdiv : x ∣ L ^ v`. Rewrite using `[hxu]`. Conclude with `(Units.mul_left_dvd).2 (pow_dvd_pow_of_dvd hϖL v)`. Take `⟨q, hq⟩` from `hdiv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `hq' : ((l : ℕ) : Qbar l) ^ v = d * (q : Qbar l)`. Use `congrArg (fun y : c.O => (y : Qbar l)) hq` as an intermediate fact. Simplify `this` using `[hLval, hxdef]`. Rewrite using `[hq', mul_comm d, mul_assoc, mul_inv_cancel₀ hd0, mul_one]`.
-
-Conclude with `q.2`.
+A detailed English derivation is pending.
 -/
 theorem memE_inv_of_mem : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (d : Qbar l), d ∈ c.O → d ≠ 0 → MemE c d⁻¹ := by
   intro l _ c d hd hd0

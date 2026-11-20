@@ -16,41 +16,35 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 /- English proof (translation)
-Take `⟨W, hW, hWF⟩` from `unifLC hF.1`. Take `⟨j, hj⟩` from `lat_small hL ht hW`. Establish `hLat' : IsLat Z ((((t ^ j : kˣ) : k) • L : AddSubgroup (Matrix (Fin n) (Fin n) k)))` using `isLat_smul hL (t ^ j)`. Use `set L' : AddSubgroup (Matrix (Fin n) (Fin n) k) := (((t ^ j : kˣ) : k) • L) with hLe`. Establish `hL'W : ∀ w ∈ L', w ∈ W` using `fun w hw => hj (by rw [← AddSubgroup.coe_pointwise_smul]; exact hw)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hUo, hU0, hUZ⟩` from `hLat'.nhd`. Establish `hK : IsCompact (Prod.fst '' tsupport F)` using `hF.1.2.image continuous_fst`. Take `⟨S0, hS0, hS0Z, hS0K⟩` from `exists_cpt hZ hK`. Take `⟨S1, hS1⟩` from `hS0.elim_finite_subcover (fun c : S0 => (fun a => a + (c : Matrix (Fin n) (Fin n) k)) '' U) (fun c => isOpenMap_add_right _ U hUo) (fun s hs => Set.mem_iUnion.2 ⟨⟨s, hs⟩, 0, hU0, zero_add s⟩)`. Set `g : Matrix (Fin n) (Fin n) k → Matrix (Fin n) (Fin n) k` to `fun c => Quotient.out (QuotientAddGroup.mk c : Matrix (Fin n) (Fin n) k ⧸ L')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ c, g c - c ∈ L'`. Introduce `c`. Establish `h1` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (QuotientAddGroup.mk c : Matrix (Fin n) (Fin n) k ⧸ L'))`. Establish `h2 : g c - c = -(-(g c) + c)` using `by abel`. Rewrite using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `L'.neg_mem h1`. Establish `hgeq : ∀ c c', c - c' ∈ L' → g c = g c'`. Introduce `c c' h`. Use `show Quotient.out _ = Quotient.out _`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `QuotientAddGroup.eq.2 ?_` and prove the remaining obligations. Rewrite using `[show -c + c' = -(c - c') by abel]`. Conclude with `L'.neg_mem h`. Establish `hgg : ∀ a a', g a - g a' ∈ L' → g a = g a'`. Introduce `a a' h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hgeq` to reduce the goal to its premises. Establish `e : a - a' = (g a - g a') - (g a - a) + (g a' - a')` using `by abel`. Rewrite using `[e]`. Conclude with `L'.add_mem (L'.sub_mem h (hg a)) (hg a')`. Establish `hmemI : ∀ z c, z ∈ (fun a => a + c) '' (L' : Set (Matrix (Fin n) (Fin n) k)) ↔ z - c ∈ L'`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`. Simplify using `using hm`. Introduce `hz`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨z - c, hz, by simp⟩`. Use `⟨j, S1.image (fun c : S0 => g (c : Matrix (Fin n) (Fin n) k)), ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨i, _, rfl⟩` from `Finset.mem_image.1 hc`. Establish `e : g (i : Matrix (Fin n) (Fin n) k) = (i : Matrix (Fin n) (Fin n) k) + (g i - i)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e]`. Conclude with `Z.add_mem (hS0Z i.2) (hLat'.sub (hg _))`. Introduce and unpack `⟨x, v⟩ hp`. Establish `hx : x ∈ CC Z` using `hp.1`. Simplify using `only [psi_of_mem (p := (x, v)) hx, tr]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hA : ∃ c ∈ S1.image (fun c : S0 => g (c : Matrix (Fin n) (Fin n) k)), zpart Z x - c ∈ L'`. Take `⟨c, hcS, hcz⟩` from `hA`. Rewrite using `[Finset.sum_eq_single c]`. Rewrite using `[Set.indicator_of_mem ((hmemI _ _).2 hcz), Pi.one_apply, one_mul]`. Establish `e : x - zpart Z x + c = x + (c - zpart Z x)` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Establish `hw : c - zpart Z x ∈ L'`. Rewrite using `[show c - zpart Z x = -(zpart Z x - c) by abel]`. Conclude with `L'.neg_mem hcz`. Conclude with `(hWF _ (hL'W _ hw) (x, v)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `c' hc' hne`. Rewrite using `[Set.indicator_of_notMem, zero_mul]`. Introduce `h'`. Apply `hne` to reduce the goal to its premises. Take `⟨a', _, rfl⟩` from `Finset.mem_image.1 hc'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨a, _, rfl⟩` from `Finset.mem_image.1 hcS`. Apply `hgg` to reduce the goal to its premises. Establish `e : g (a' : Matrix (Fin n) (Fin n) k) - g a = (zpart Z x - g a) - (zpart Z x - g a')` using `by abel`. Rewrite using `[e]`. Conclude with `L'.sub_mem hcz ((hmemI _ _).1 h')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd hcS h`. Use `push_neg at hA`. Rewrite using `[Finset.sum_eq_zero]`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hsupp : (x, v) ∈ tsupport F` using `subset_tsupport F hne`. Establish `hz` using `hS0K x ⟨⟨(x, v), hsupp, rfl⟩, hx⟩`. Take `⟨i, hi, hzi⟩` from `Set.mem_iUnion₂.1 (hS1 hz)`. Take `⟨u, hu, hue⟩` from `hzi`. Simplify using `only at hue`.
-
-Establish `huZ : u ∈ Z`. Establish `e : u = zpart Z x - i` using `by rw [← hue]; abel`. Rewrite using `[e]`. Conclude with `Z.sub_mem (hS0Z hz) (hS0Z i.2)`. Establish `huL : u ∈ L'` using `hUZ ⟨hu, huZ⟩`.
-
-Apply `hA (g i) (Finset.mem_image.2 ⟨i, hi, rfl⟩)` to reduce the goal to its premises. Establish `e : zpart Z x - g i = u - (g i - i)` using `by rw [← hue]; abel`. Rewrite using `[e]`. Conclude with `L'.sub_mem huL (hg _)`. Introduce `c hc`.
-
-Rewrite using `[Set.indicator_of_notMem, zero_mul]`. Introduce `h'`. Conclude with `hA c hc ((hmemI _ _).1 h')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dec (hZ : CR Z) {L : AddSubgroup (Matrix (Fin n) (Fin n) k)} (hL : IsLat Z L) {t : kˣ}
     (ht : nabs k t < 1) {F : Sp k n → ℂ} (hF : F ∈ supportedIn (UU : Set (Sp k n))) :

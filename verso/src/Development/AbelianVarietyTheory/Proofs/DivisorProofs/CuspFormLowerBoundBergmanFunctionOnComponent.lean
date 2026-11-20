@@ -24,13 +24,11 @@ open MeasureTheory ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheor
 open scoped ENNReal
 
 /- English proof (translation)
-Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inr ha0) (Or.inr hat)]`. Distinguish the cases in `h0 : v = 0`. Establish `hJ0 : J = 0`. Rewrite `hJ` using `[hI h0]`. Conclude with `(mul_eq_zero.1 hJ).resolve_right hS0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN` using `[hJ0, mul_zero, nonpos_iff_eq_zero]`. Simplify using `[hN]`. Establish `h1 : N * v ≤ I`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gcongr`. Conclude with `ENNReal.inv_mul_le_one m`. Use `_ = I := one_mul _`. Establish `h2 : β * N * v ≤ a * v`. Rewrite using `[mul_assoc]`.
-
-Conclude with `le_trans (by gcongr) hβ`. Conclude with `(ENNReal.mul_le_mul_iff_left h0 hv).1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_div_of_mean {β a I v S m J N : ℝ≥0∞} (ha0 : a ≠ 0) (hat : a ≠ ⊤) (hS0 : S ≠ 0) (hv : v ≠ ⊤)
     (hI : v = 0 → I = 0) (hβ : β * I ≤ a * v) (hJ : J * S = I) (hm : v ≤ m * S) (hN : N ≤ m⁻¹ * J) :
@@ -56,9 +54,9 @@ theorem le_div_of_mean {β a I v S m J N : ℝ≥0∞} (ha0 : a ≠ 0) (hat : a 
     exact (ENNReal.mul_le_mul_iff_left h0 hv).1 h2
 
 /- English proof (translation)
-Establish `hd : ∀ τ i, dmin X.Gm x τ i ≠ 0` using `fun τ i h => by`. Use `(hx τ).2 i` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`. Unfold `Data.pnorm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `mul_pos (norm_pos_iff.2 hP) (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (hd _ _) (hd _ _))) _)`.
+A detailed English derivation is pending.
 -/
 theorem pnorm_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (la : Wt X.Ψ r)
     {P : Frame X.Ψ r → ℂ} {x : Frame X.Ψ r} (hx : x ∈ X.dom) (hP : P x ≠ 0) : 0 < X.pnorm la P x := by
@@ -71,33 +69,27 @@ theorem pnorm_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (
     Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (hd _ _) (hd _ _))) _)
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c U dict hL σ hσ G Z y hy β hβ`. Establish `hU : IsUnf (U σ)` using `hL.unf σ hσ`. Take `⟨Kf, th, hr, -, -, hDU, -⟩` from `hL.dictU σ hσ`. Establish `hdom : ∀ g, (dict σ g).2 ∈ ((U σ).X (dict σ g).1).dom` using `Formalism.L2.Pj.dict_dom_of hDU`. Establish `hex : ∀ (X : Data D.host.E D.R.r), ∃ x0, IsOrth X x0 ∧ ∃ FF, IsFundSet X x0 FF` using `fun X => by choose P _ hG using X.signature`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨fun τ => P τ, fun τ => hG τ, GlobalTheory.MetricWeightTest.exists_fundSet_orth X (fun τ => hG τ)⟩`. Use `choose x0 hx0 FF hFF using fun k => hex ((U σ).X k)`. Take `⟨P, hP, hPy, hle⟩` from `hβ (x0 y.1) (FF y.1) (hx0 _) (hFF _)`. Use `set la := modelWt (U σ) G with hla`. Take `⟨hS0, hST, hI⟩` from `GlobalTheory.LevGeo.adelicProb_mul_volFund D j H Dw l Xo c U dict hL σ hσ x0 FF (fun k => ⟨hx0 k, hFF k⟩)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q : Frame ((U σ).X y.1).Ψ D.R.r → ℂ := ((U σ).X y.1).dom.indicator P with hQ`. Establish `hQP : ∀ x ∈ ((U σ).X y.1).dom, ((U σ).X y.1).pnorm (la y.1) Q x = ((U σ).X y.1).pnorm (la y.1) P x` using `fun x hx => by unfold Data.pnorm; rw [hQ, Set.indicator_of_mem hx]`. Establish `hQS : Q ∈ ((U σ).X y.1).SS (la y.1)` using `(GlobalTheory.DomCongr.bddSec_cusp_congr D.host.E D.R.r _ _ P Q (fun x hx => (Set.indicator_of_mem hx _).symm)).2 hP`. Use `set P' : Formalism.L2.Pj.FDSec (U σ).X := Function.update (fun _ => 0) y.1 Q with hP'`. Establish `hP'y : P' y.1 = Q` using `Function.update_self _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hP'n : ∀ k, k ≠ y.1 → P' k = 0` using `fun k hk => Function.update_of_ne hk _ _`. Establish `hP'S : ∀ k, P' k ∈ ((U σ).X k).SS (la k)` using `fun k => by`. Distinguish the cases in `hk : k = y.1`. Substitute `hk` using the available equality. Rewrite using `[hP'y]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hQS`. Rewrite using `[hP'n k hk]`. Conclude with `(ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds (E := D.host.E) D.R.r ((U σ).X k) (la k) (la k) 0).1.1`. Establish `hP'0 : ∀ k, ∀ x ∉ ((U σ).X k).dom, P' k x = 0` using `fun k x hx => by`. Distinguish the cases in `hk : k = y.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hk` using the available equality. Rewrite using `[hP'y]`. Conclude with `Set.indicator_of_notMem hx _`. Rewrite using `[hP'n k hk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP'm : P' ∈ Formalism.L2.Pj.holSub (U σ).X la` using `Formalism.L2.Pj.holCusp_mem_holSub _ _ hP'S`. Establish `hsf : ∀ k, ((U σ).X k).IsSec (la k) (P' k)` using `fun k => (hP'S k).1.1`. Establish `hJ` using `hI (fun k x => ENNReal.ofReal (((U σ).X k).pnorm (la k) (P' k) x ^ 2)) (fun k => ENNReal.measurable_ofReal.comp ((GlobalTheory.PeterssonCompare.measurable_pnorm _ _ (hsf k).1.continuousOn (hP'0 k)).pow_const 2)) (fun k γ hγ x hx => by simp only [GlobalTheory.PeterssonCompare.pnor …`. Rewrite `hJ` using `[Finset.sum_eq_single y.1 (f := fun k => ∫⁻ z in FF k, ENNReal.ofReal (((U σ).X k).pnorm (la k) (P' k) (cpt ((U σ).X k) (x0 k) z) ^ 2) ∂(muF ((U σ).X k) (x0 k))) (fun k _ hk => by simp [hP'n k hk, Formalism.L2.Pj.pnorm_zero]) (fun h => absurd (Finset.mem_univ _) h), hP'y, setLInt …`. Establish `hM` using `hI (fun k _ => if k = y.1 then 1 else 0) (fun _ => measurable_const) (fun _ _ _ _ _ => rfl) (fun _ _ _ _ _ => rfl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Rewrite `hM` using `[Finset.sum_eq_single y.1 (f := fun k => ∫⁻ z in FF k, (if k = y.1 then (1 : ℝ≥0∞) else 0) ∂(muF ((U σ).X k) (x0 k))) (fun k _ hk => by simp [hk]) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, setLIntegral_one]`. Use `set Cl := classesOver (D.sp.W j) (dict σ) (framesOn (U σ) Z) with hCl`. Establish `hm : ∫⁻ q : AutQ (D.sp.W j), (if (dict σ q.out).1 = y.1 then (1 : ℝ≥0∞) else 0) ∂(muQ1 (D.sp.W j)) ≤ muQ1 (D.sp.W j) Cl`. Use `le_trans (lintegral_mono fun q => ?_) (lintegral_indicator_one_le Cl)` and prove the remaining obligations. Use `split_ifs with hq`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: q ∈ Cl`. Establish `h1` using `hdom q.out`. Use `show dict σ q.out ∈ framesOn (U σ) Z`. Generalize the expression as in `dict σ q.out = z at hq h1`. Take `⟨k, x⟩` from `z`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : k = y.1` from `hq`. Conclude with `GlobalTheory.FramesUnion.framesOn_of_mem D.host.E H Dw l Xo c D.R.r U σ hU Z _ _ x h1 hy`. Simplify using `[this]`. Conclude with `zero_le`. Establish `hN : petE (D.sp.W j) (dict σ) (muOn (U σ) (D.sp.W j) (dict σ) Z) la P' ^ 2 ≤ (muQ1 (D.sp.W j) Cl)⁻¹ * ∫⁻ q : AutQ (D.sp.W j), ENNReal.ofReal (((U σ).X (dict σ q.out).1).pnorm (la (dict σ q.out).1) (P' (dict σ q.out).1) (dict σ q.out).2 ^ 2) ∂(muQ1 (D.sp.W j))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : petE (D.sp.W j) (dict σ) (muOn (U σ) (D.sp.W j) (dict σ) Z) la P' ^ 2 = ∫⁻ q : AutQ (D.sp.W j), ‖ptN la P' (dict σ q.out)‖ₑ ^ 2 ∂(muOn (U σ) (D.sp.W j) (dict σ) Z)`. Use `eLpNorm_nnreal_pow_eq_lintegral (p := 2) (μ := muOn (U σ) (D.sp.W j) (dict σ) Z) (f := fun q : AutQ (D.sp.W j) => ptN la P' (dict σ q.out)) two_ne_zero` as an intermediate fact. Simplify `this` using `[petE]`. Rewrite using `[e]`. Use `show ∫⁻ q, _ ∂((muQ1 (D.sp.W j) Cl)⁻¹ • (muQ1 (D.sp.W j)).restrict Cl) ≤ _`.
-
-Rewrite using `[lintegral_smul_measure, smul_eq_mul]`. Use `mul_le_mul_right (le_trans (lintegral_mono' Measure.restrict_le_self le_rfl) (le_of_eq (lintegral_congr fun q => ?_))) _` and prove the remaining obligations. Rewrite using `[Real.enorm_eq_ofReal (ptN_nonneg _ _ _), ← ENNReal.ofReal_pow (ptN_nonneg _ _ _)]`. Both sides reduce to the same expression. Establish `hpos` using `pnorm_pos ((U σ).X y.1) (la y.1) y.2.2 hPy`.
-
-Establish `hpt : ENNReal.ofReal (ptN la P' ⟨y.1, y.2.1⟩) ^ 2 = ENNReal.ofReal (((U σ).X y.1).pnorm (la y.1) P y.2.1 ^ 2)`. Rewrite using `[ENNReal.ofReal_pow hpos.le]`. Use `show ENNReal.ofReal (((U σ).X y.1).pnorm (la y.1) (P' y.1) y.2.1) ^ 2 = _`. Rewrite using `[hP'y, hQP _ y.2.2]`. Use `le_trans ?_ (le_iSup₂_of_le (f := fun P (_ : P ∈ Formalism.L2.Pj.holSub (U σ).X la) => ENNReal.ofReal (ptN la P ⟨y.1, y.2.1⟩) ^ 2 / petE (D.sp.W j) (dict σ) (muOn (U σ) (D.sp.W j) (dict σ) Z) la P ^ 2) P' hP'm le_rfl)` and prove the remaining obligations.
-
-Rewrite using `[hpt]`. Use `le_div_of_mean (ENNReal.ofReal_pos.2 (pow_pos hpos 2)).ne' ENNReal.ofReal_ne_top hS0 (ne_top_of_le_ne_top hST (Finset.single_le_sum (f := fun k => muF ((U σ).X k) (x0 k) (FF k)) (fun _ _ => zero_le) (Finset.mem_univ y.1))) (fun h => setLIntegral_measure_zero _ _ h) hle hJ ?_ hN` and prove the remaining obligations. Rewrite using `[← hM]`. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_bergOn : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), GlobalTheory.LevGeo.Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ (G : WTZ D.host.E) (Z : Comp Xo c) (y : FPt (U σ).X), (⟨y.1, y.2.1⟩ : Σ k, Frame ((U σ).X k).Ψ D.R.r) ∈ framesOn (U σ) Z → ∀ β : ENNReal, (∀ (x0 : Frame ((U σ).X y.1).Ψ D.R.r) (FF : Set (ReciprocityTheory.L2DbarEstimates.V (ReciprocityTheory.ChartRestriction.G.AR.Inst.nd ((U σ).X y.1)))), ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth ((U σ).X y.1) x0 → ReciprocityTheory.ChartRestriction.G.AR.Up.IsFundSet ((U σ).X y.1) x0 FF → ∃ P ∈ ((U σ).X y.1).SS (modelWt (U σ) G y.1), P y.2.1 ≠ 0 ∧ β * ∫⁻ z in FF, ENNReal.ofReal (((U σ).X y.1).pnorm (modelWt (U σ) G y.1) P (ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt ((U σ).X y.1) x0 z) ^ 2) ∂(ReciprocityTheory.ChartRestriction.G.AR.Up.muF ((U σ).X y.1) x0) ≤ ENNReal.ofReal (((U σ).X y.1).pnorm (modelWt (U σ) G y.1) P y.2.1 ^ 2) * ReciprocityTheory.ChartRestriction.G.AR.Up.muF ((U σ).X y.1) x0 FF) → β ≤ bergOn (U σ) (D.sp.W j) (dict σ) Z G y := by
   intro D j H Dw l Xo c U dict hL σ hσ G Z y hy β hβ

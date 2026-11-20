@@ -25,7 +25,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {G : Over (Sp R)} {D
   {A : PolAV (Sp (FractionRing R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.FormalExt.map_eq_iff I e g.b _).2 ((hg e).1.trans (Category.assoc _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem map_b_eq {U : UnifPre I D A G} {T : Over (Sp R)} {x : T ⟶ G} {g : GtPt D.toPre T}
     (hg : GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U x g) (e : ℕ) :
@@ -33,9 +33,9 @@ theorem map_b_eq {U : UnifPre I D A G} {T : Over (Sp R)} {x : T ⟶ G} {g : GtPt
   (GlobalTheory.FormalExt.map_eq_iff I e g.b _).2 ((hg e).1.trans (Category.assoc _ _ _).symm)
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D A G _ _ _ U h h' g g' g'' hg hg' hg''`. Use `hV.1` as an intermediate fact. Use `hV.2.2.1` as an intermediate fact. Use `D.toPre.P.isAb.proper` as an intermediate fact. Establish `h1 : Smooth (𝟙_ (Over (Spec (CommRingCat.of V)))).hom` using `inferInstanceAs (Smooth (𝟙 _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : GeometricallyConnected (𝟙_ (Over (Spec (CommRingCat.of V)))).hom` using `inferInstanceAs (GeometricallyConnected (𝟙 _))`. Use `GlobalTheory.FormalExt.hom_ext_thick (maximalIdeal V) (IsAdicComplete.le_jacobson_bot _) _ fun e => ?_` and prove the remaining obligations. Use `(U.gt e).q_hom` as an intermediate fact. Rewrite using `[Functor.map_mul, map_b_eq hg, map_b_eq hg', map_b_eq hg'', Functor.map_mul, MonObj.mul_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem b_mul : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G), ∀ (h h' : (𝟙_ (Over (Sp V))) ⟶ G) (g g' g'' : GtPt D.toPre (𝟙_ (Over (Sp V)))), GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U.toUnifPre h g → GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U.toUnifPre h' g' → GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U.toUnifPre (h * h') g'' → g''.b = g.b * g'.b := by
   intro V _ _ _ hV D A G _ _ _ U h h' g g' g'' hg hg' hg''

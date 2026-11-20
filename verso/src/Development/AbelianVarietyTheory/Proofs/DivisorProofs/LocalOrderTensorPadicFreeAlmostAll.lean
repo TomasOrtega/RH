@@ -10,7 +10,7 @@ open GlobalTheory.LKInvGood
 namespace GlobalTheory.LocMatrix
 
 /- English proof (translation)
-Rewrite using `[cenMap_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_smul_eq_cenMap_mul {F B : Type} [Field F] [NumberField F] [Ring B] [Algebra F B]
     [Algebra ℚ B] [IsScalarTower ℚ F B] (ℓ : ℕ) [Fact ℓ.Prime] (q : ℚ_[ℓ]) (c : F) (v : B) :
@@ -33,9 +33,9 @@ theorem combMap_apply {F B : Type} [Field F] [NumberField F] [Ring B] [Algebra F
     combMap ℓ v c = ∑ i, cenMap ℓ F B (c i) * ((1 : ℚ_[ℓ]) ⊗ₜ v i) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul q b`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← v.sum_repr b, TensorProduct.tmul_sum]`. Use `Submodule.sum_mem _ fun i _ => ⟨Pi.single i (q ⊗ₜ[ℚ] v.repr b i), ?_⟩` and prove the remaining obligations. Rewrite using `[combMap_apply, Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero, zero_mul]) (by simp), Pi.single_eq_same, ← tmul_smul_eq_cenMap_mul]`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem combMap_surjective {F B : Type} [Field F] [NumberField F] [Ring B] [Algebra F B]
     [Algebra ℚ B] [IsScalarTower ℚ F B] (ℓ : ℕ) [Fact ℓ.Prime] {d : ℕ} (v : Module.Basis (Fin d) F B) :
@@ -53,7 +53,7 @@ theorem combMap_surjective {F B : Type} [Field F] [NumberField F] [Ring B] [Alge
   | add x y hx hy => exact add_mem hx hy
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ B := Module.Finite.trans F B`. Establish `hdim : Module.finrank ℚ_[ℓ] (Fin d → ℚ_[ℓ] ⊗[ℚ] F) = Module.finrank ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] B)`. Rewrite using `[Module.finrank_pi_fintype, Module.finrank_baseChange, Module.finrank_baseChange, ← Module.finrank_mul_finrank ℚ F B, Module.finrank_eq_card_basis v]`. Simplify using `[mul_comm]`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).2 (combMap_surjective ℓ v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem combMap_injective {F B : Type} [Field F] [NumberField F] [Ring B] [Algebra F B]
     [Algebra ℚ B] [IsScalarTower ℚ F B] [FiniteDimensional F B] (ℓ : ℕ) [Fact ℓ.Prime] {d : ℕ}
@@ -70,9 +70,9 @@ end GlobalTheory.LocMatrix
 namespace GlobalTheory.LocMatrix
 
 /- English proof (translation)
-Set `e` to `Module.finBasis F B`. Use `choose m hm hmΛ using hspan`. Set `u : Fin (Module.finrank F B) → Fˣ` to `fun i => Units.mk0 (m (e i) : F) (Nat.cast_ne_zero.2 (hm (e i)).ne')`. Use `⟨e.unitsSMul u, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.unitsSMul_apply, Units.smul_def]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : (u i : F) • e i = (m (e i) : B) * e i`. Simplify using `[u, Algebra.smul_def]`. Rewrite using `[h]`. Conclude with `hmΛ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_mem {F B : Type} [Field F] [CharZero F] [Ring B] [Algebra F B] [FiniteDimensional F B]
     (Λ : Subring B) (hspan : ∀ b : B, ∃ m : ℕ, 0 < m ∧ (m : B) * b ∈ Λ) :
@@ -89,17 +89,13 @@ theorem exists_basis_mem {F B : Type} [Field F] [CharZero F] [Ring B] [Algebra F
   exact hmΛ _
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hfin.fg_top`. Take `⟨D, hD, hDs⟩` from `GlobalTheory.SepModel.exists_nat_integral (Finset.univ.image fun p : s × ι => v.repr ((p.1 : Λ) : B) p.2)`. Use `⟨D, hD, fun x hx => ?_⟩` and prove the remaining obligations. Set `P : Submodule ℤ Λ` to `{ carrier := {y | ∀ i, IsIntegral ℤ ((D : F) * v.repr (y : B) i)} add_mem' := by`. Introduce `y z hy hz i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq, Subring.coe_add, map_add, Finsupp.add_apply, mul_add] at hy hz ⊢`. Conclude with `(hy i).add (hz i)`. Use the proof step `zero_mem' := by`. Introduce `i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `isIntegral_zero`. Use the proof step `smul_mem' := by`. Introduce `c y hy i`. Simplify using `only [Set.mem_setOf_eq] at hy ⊢`. Establish `h2 : v.repr ((c • y : Λ) : B) i = (c : F) * v.repr (y : B) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((c • y : Λ) : B) = c • (y : B) from rfl, map_zsmul, Finsupp.smul_apply, zsmul_eq_mul]`. Establish `hc : IsIntegral ℤ (c : F)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := F) (x := c))`. Rewrite using `[h2, mul_left_comm]`. Conclude with `hc.mul (hy i) }`.
-
-Establish `hsP : (s : Set Λ) ⊆ P` using `fun y hy i => hDs _ (Finset.mem_image.2 ⟨(⟨y, hy⟩, i), Finset.mem_univ _, rfl⟩)`. Establish `hmem : (⟨x, hx⟩ : Λ) ∈ P`. Establish `h` using `Submodule.span_le.mpr hsP`. Rewrite `h` using `[hs]`. Conclude with `h Submodule.mem_top`.
-
-Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den {F B : Type} [Field F] [NumberField F] [Ring B] [Algebra F B]
     (Λ : Subring B) (hfin : Module.Finite ℤ Λ) {ι : Type} [Fintype ι] (v : Module.Basis ι F B) :
@@ -142,17 +138,15 @@ end GlobalTheory.LocMatrix
 namespace GlobalTheory.LocMatrix
 
 /- English proof (translation)
-Set `S : Submodule ℤ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] B)` to `{ carrier := {z | ∃ c : Fin d → cenOrder ℓ F, z = ∑ i, cenMap ℓ F B (c i) * ((1 : ℚ_[ℓ]) ⊗ₜ v i)} add_mem' := by`. Introduce and unpack `_ _ ⟨c, rfl⟩ ⟨c', rfl⟩`. Conclude with `⟨c + c', by simp [add_mul, Finset.sum_add_distrib]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `r _ ⟨c, rfl⟩`. Use `⟨r • c, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, Subalgebra.coe_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul ℚ_[ℓ] r ((c i : cenOrder ℓ F) : ℚ_[ℓ] ⊗[ℚ] F), map_smul, smul_mul_assoc, algebraMap_smul] }`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `gen : ∀ x ∈ Λ, (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] x ∈ S`. Introduce `x hx`. Use `⟨fun i => ⟨_, GlobalTheory.SepModel.tmul_mem_cenOrder ℓ hℓ (hD x hx i)⟩, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← v.sum_repr x, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `tmul_smul_eq_cenMap_mul ℓ 1 _ _`. Establish `hz' : z ∈ Subalgebra.toSubmodule (locOrder ℓ Λ)` using `hz`. Rewrite `hz'` using `[locOrder, Algebra.adjoin_eq_span]`. Establish `hcl : (Submonoid.closure ((fun b : B => (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] b) '' (Λ : Set B)) : Set (ℚ_[ℓ] ⊗[ℚ] B)) ⊆ S`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hy' : y ∈ Λ.toSubmonoid.map (Algebra.TensorProduct.includeRight : B →ₐ[ℚ] ℚ_[ℓ] ⊗[ℚ] B)`. Use `(Submonoid.closure_le.2 ?_) hy` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`. Take `⟨x, hx, rfl⟩` from `hy'`.
-
-Conclude with `gen x hx`. Conclude with `Submodule.span_le.2 hcl hz'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_coeffs {F B : Type} [Field F] [NumberField F] [Ring B] [Algebra F B]
     [Algebra ℚ B] [IsScalarTower ℚ F B] (ℓ : ℕ) [Fact ℓ.Prime] (Λ : Subring B) {d : ℕ}
@@ -194,17 +188,17 @@ theorem exists_coeffs {F B : Type} [Field F] [NumberField F] [Ring B] [Algebra F
   exact Submodule.span_le.2 hcl hz'
 
 /- English proof (translation)
-Introduce `F B _ _ _ _ _ _ _ Λ hΛ hfin hspan`. Take `⟨v, hvΛ⟩` from `exists_basis_mem (F := F) Λ hspan`. Take `⟨D, hD, hDΛ⟩` from `exists_den Λ hfin v`. Use `⟨D, hD, fun ℓ _ hℓ => ?_⟩` and prove the remaining obligations. Use `letI := GlobalTheory.LocMatrix.cenAlgebra ℓ F B Λ hΛ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Set `w : Fin (Module.finrank F B) → locOrder ℓ Λ` to `fun i => ⟨(1 : ℚ_[ℓ]) ⊗ₜ v i, Algebra.subset_adjoin ⟨_, hvΛ i, rfl⟩⟩`. Establish `hsmul : ∀ (c : cenOrder ℓ F) (x : locOrder ℓ Λ), ((c • x : locOrder ℓ Λ) : ℚ_[ℓ] ⊗[ℚ] B) = cenMap ℓ F B c * x` using `fun c x => rfl`. Establish `hsum : ∀ c : Fin (Module.finrank F B) → cenOrder ℓ F, ((∑ i, c i • w i : locOrder ℓ Λ) : ℚ_[ℓ] ⊗[ℚ] B) = combMap (F` using `F) ℓ v (fun i => (c i : ℚ_[ℓ] ⊗[ℚ] F)) := by`. Introduce `c`. Rewrite using `[AddSubmonoidClass.coe_finset_sum, combMap_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hsmul _ _`. Establish `hli : LinearIndependent (cenOrder ℓ F) w`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h0 : combMap (F` using `F) ℓ v (fun i => (g i : ℚ_[ℓ] ⊗[ℚ] F)) = combMap (F := F) ℓ v 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsum, hg, map_zero]`. Both sides reduce to the same expression. Conclude with `Subtype.ext (congrFun (combMap_injective ℓ v h0) i)`. Establish `hsp : ⊤ ≤ Submodule.span (cenOrder ℓ F) (Set.range w)`. Introduce and unpack `⟨z, hz⟩ -`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `exists_coeffs ℓ Λ v D hDΛ hℓ z hz`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `⟨c, Subtype.ext ((hsum c).trans hc.symm)⟩`. Use `haveI : Nontrivial (ℚ_[ℓ] ⊗[ℚ] F) := by`. Apply `Module.nontrivial_of_finrank_pos (R := ℚ_[ℓ])` to reduce the goal to its premises.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Rewrite using `[Module.finrank_baseChange]`. Conclude with `Module.finrank_pos`. Set `bas` to `Module.Basis.mk hli hsp`. Conclude with `⟨Module.Free.of_basis bas, by rw [Module.finrank_eq_card_basis bas, Fintype.card_fin]⟩`.
+A detailed English derivation is pending.
 -/
 theorem locOrder_free : ∀ (F B : Type) [Field F] [NumberField F] [Ring B] [Algebra F B] [Algebra ℚ B]
     [IsScalarTower ℚ F B] [FiniteDimensional F B] (Λ : Subring B)

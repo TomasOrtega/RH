@@ -35,31 +35,31 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-The claim follows from `freshChar powChar inertiaGen decPow (freshPrime splitPlace rootMod)`.
+A detailed English derivation is pending.
 -/
 theorem freshChar_holds : FreshChar := freshChar powChar inertiaGen decPow (freshPrime splitPlace rootMod)
 /- English proof (translation)
-The claim follows from `layerOf inclOf indexComap`.
+A detailed English derivation is pending.
 -/
 theorem layerOf_holds : LayerOf := layerOf inclOf indexComap
 /- English proof (translation)
-The claim follows from `noSelfTwist_of normRam`.
+A detailed English derivation is pending.
 -/
 theorem noSelfTwist_holds : NoSelfTwist := noSelfTwist_of normRam
 /- English proof (translation)
-The claim follows from `quadraticCharTwist_of_exists_of_infinity (quad0Ex sqrtFix mkQ unrLarge) infOf`.
+A detailed English derivation is pending.
 -/
 theorem infinitely_many_real_quadratic_steps : Quad0 := quadraticCharTwist_of_exists_of_infinity (quad0Ex sqrtFix mkQ unrLarge) infOf
 /- English proof (translation)
-The claim follows from `allUnr splitIff`.
+A detailed English derivation is pending.
 -/
 theorem allUnr_holds : AllUnr := allUnr splitIff
 /- English proof (translation)
-The claim follows from `threeApart_of double apartUp`.
+A detailed English derivation is pending.
 -/
 theorem threeApart_holds : ThreeApart := threeApart_of double apartUp
 /- English proof (translation)
-The claim follows from `satSplit`.
+A detailed English derivation is pending.
 -/
 theorem satSplit_holds : SatSplit := satSplit
 

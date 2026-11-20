@@ -16,21 +16,21 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Set `g : ℕ → ℕ` to `fun i => if i < d then i else if i = d + r then d else i + 1`. Establish `hg : ∀ i, i < d + r + 1 → g i < d + r + 1`. Introduce `i hi`. Simplify using `only [g]`. Apply the tactic sequence `split_ifs <;> omega`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `f : Fin (d + r + 1) → Fin (d + r + 1)` to `fun i => ⟨g i, hg i i.2⟩`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Establish `hab' : g a = g b` using `congrArg Fin.val hab`. Establish `ha` using `a.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `b.2`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [g] at hab'`. Apply the tactic sequence `split_ifs at hab' <;> omega`. Use `⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hf), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp, Equiv.ofBijective_apply]`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Establish `e : Fin.cast h (f (Fin.last (d + r))) = Fin.castAdd r (Fin.last d)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[f, g]`. Rewrite using `[e, Fin.append_left, Fin.snoc_last, Fin.snoc_last]`. Consider the case `cast j`. Rewrite using `[Fin.snoc_castSucc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `j using Fin.addCases with`. Consider the case `left i`. Establish `e : Fin.cast h (f (Fin.castSucc (Fin.castAdd r i))) = Fin.castAdd r (Fin.castSucc i)`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[f, g]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Fin.append_left, Fin.append_left, Fin.snoc_castSucc]`. Consider the case `right i`. Establish `e : Fin.cast h (f (Fin.castSucc (Fin.natAdd d i))) = Fin.natAdd (d + 1) i`. Apply `Fin.ext` to reduce the goal to its premises. Use `i.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `[f, g]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[e, Fin.append_right, Fin.append_right]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_perm_append_snoc {α : Type*} {d r : ℕ} (A : Fin d → α) (B : Fin r → α) (c : α)
     (h : d + r + 1 = d + 1 + r) :
@@ -77,14 +77,14 @@ theorem exists_perm_append_snoc {α : Type*} {d r : ℕ} (A : Fin d → α) (B :
       rw [e, Fin.append_right, Fin.append_right]
 
 /- English proof (translation)
-The claim follows from `show ContDiffOn ℝ _ (fun _ => Real.exp (-c)) _ from contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_constLine {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] (c : ℝ) :
     IsSmoothHerm (ReciprocityTheory.ChartRestriction.G.AI.I2.constLine c : HermLine ι) :=
   show ContDiffOn ℝ _ (fun _ => Real.exp (-c)) _ from contDiffOn_const
 
 /- English proof (translation)
-Use `⟨?_, fun _ => rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k'`. Use `show (0 : K' → ℤ) k' = Function.extend κ (0 : K → ℤ) 0 k'`. Rewrite using `[Function.extend_def]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isPullHerm_constLine {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     {K' : Type*} [Fintype K'] {ι' : K' → Type*} [∀ k, Fintype (ι' k)]
@@ -98,31 +98,27 @@ theorem isPullHerm_constLine {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, 
   split_ifs <;> rfl
 
 /- English proof (translation)
-Introduce `hPF hEx K _ ι _ K' _ ι' _ κ v P' d r G J L L' N hb hP' hZ hJ hL hLL hN`. Take `⟨I, hI⟩` from `hEx`. Establish `hn : d + r + 1 = d + 1 + r` using `by omega`. Establish `hL' : ∀ j, IsSmoothHerm (L' j)` using `fun j => GroundTheory.Heights₂.Heights.Inter.IsPullHerm.isSmoothHerm hb (hLL j) (hL j)`. Set `c : ℝ` to `-Real.log ((2 : ℕ) : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `cZ : HermLine ι` to `ReciprocityTheory.ChartRestriction.G.AI.I2.constLine c`. Set `cZ' : HermLine ι'` to `ReciprocityTheory.ChartRestriction.G.AI.I2.constLine c`. Establish `hcZ' : IsSmoothHerm cZ'` using `isSmoothHerm_constLine c`. Establish `hcZ : IsSmoothHerm cZ` using `isSmoothHerm_constLine c`. Establish `hAN : ∀ j, IsSmoothHerm (Fin.append L' N j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left i => rw [Fin.append_left]`. Conclude with `hL' i`. Consider the case `right i => rw [Fin.append_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hN i`. Establish `hpf` using `hPF I hI K ι K' ι' κ v P' (d + 1) r G J (Fin.snoc (α := fun _ => HermLine ι) L cZ) (Fin.snoc (α := fun _ => HermLine ι') L' cZ') N hb (hn ▸ hP') hZ hJ (fun j => by`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [Fin.snoc_last]`. Conclude with `hcZ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i => rw [Fin.snoc_castSucc]`. Conclude with `hL i)`. Use the proof step `(fun j => by`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [Fin.snoc_last, Fin.snoc_last]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `isPullHerm_constLine κ v c`. Consider the case `cast i => rw [Fin.snoc_castSucc, Fin.snoc_castSucc]`. Conclude with `hLL i)`. Use `hN`. Take `⟨σ, hσ⟩` from `exists_perm_append_snoc L' N cZ' hn`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcast : ∀ {m n : ℕ} (e : n = m) (M : Fin m → HermLine ι'), I K' ι' P' m M = I K' ι' P' n (M ∘ Fin.cast e)`. Introduce `m n e M`. Substitute `e` using the available equality. Both sides reduce to the same expression. Establish `hsmooth : ∀ j, IsSmoothHerm ((Fin.append (Fin.snoc (α` using `fun _ => HermLine ι') L' cZ') N ∘ Fin.cast hn) j) := by`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Introduce `j`. Establish `hall : ∀ i, IsSmoothHerm (Fin.append (Fin.snoc (α` using `fun _ => HermLine ι') L' cZ') N i) := by`. Introduce `i`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.append_left]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => rw [Fin.snoc_last]`. Conclude with `hcZ'`. Consider the case `cast i => rw [Fin.snoc_castSucc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hL' i`. Consider the case `right i => rw [Fin.append_right]`. Conclude with `hN i`. Conclude with `hall _`. Establish `hleft : I K' ι' P' (d + 1 + r) (Fin.append (Fin.snoc (α` using `fun _ => HermLine ι') L' cZ') N) = I K' ι' P' (d + r + 1) (Fin.snoc (α := fun _ => HermLine ι') (Fin.append L' N) cZ') := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hcast hn, ← hσ]`. Conclude with `((hI K' ι').1 P' (d + r + 1) _ σ hP' hsmooth).symm`. Establish `h2 : Nat.Prime 2` using `Nat.prime_two`. Establish `hconsL` using `(GroundTheory.Heights₂.Heights.Inter.Conservation.proof K' ι' (I K' ι') (hI K' ι') P' (d + r) (Fin.append L' N) 2 hP' hAN h2).2`. Establish `hconsR` using `(GroundTheory.Heights₂.Heights.Inter.Conservation.proof K ι (I K ι) (hI K ι) (imageZ v P') d L 2 hZ hL h2).2`.
-
-Establish `hlog : Real.log ((2 : ℕ) : ℝ) ≠ 0`. Establish `: (1 : ℝ) < ((2 : ℕ) : ℝ)` using `by norm_num`. Conclude with `(Real.log_pos this).ne'`. Rewrite `hpf` using `[hleft]`. Establish `e1 : Real.log ((2 : ℕ) : ℝ) * ptsIntegral P' (pot (Fin.append L' N)) (fun _ => 1) = Real.log ((2 : ℕ) : ℝ) * ((J (fibreIdeal κ G) r (fun j => fibreDeg κ (N j).a) : ℝ) * ptsIntegral (imageZ v P') (pot L) (fun _ => 1))`.
-
-Rewrite using `[← hconsL]`. Use `hpf.trans ?_` and prove the remaining obligations. Rewrite using `[hconsR]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ hlog e1`.
+A detailed English derivation is pending.
 -/
 theorem ptsIntegral_projection : PFStatement → ReciprocityTheory.ChartRestriction.G.AI.I2.ExistsStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (MRing ι')) (d r : ℕ) (G : GenFibre v P') (J : IFamily G.Φ (fibreIdx ι' κ)) (L : Fin d → HermLine ι) (L' : Fin d → HermLine ι') (N : Fin r → HermLine ι'), IsBlockMap κ v → IsArithVar P' (d + r + 1) → IsArithVar (imageZ v P') (d + 1) → IsFieldIntersection J → (∀ j, IsSmoothHerm (L j)) → (∀ j, IsPullHerm κ v (L j) (L' j)) → (∀ j, IsSmoothHerm (N j)) → ptsIntegral P' (pot (Fin.append L' N)) (fun _ => 1) = (J (fibreIdeal κ G) r (fun j => fibreDeg κ (N j).a) : ℝ) * ptsIntegral (imageZ v P') (pot L) (fun _ => 1) := by
   intro hPF hEx K _ ι _ K' _ ι' _ κ v P' d r G J L L' N hb hP' hZ hJ hL hLL hN

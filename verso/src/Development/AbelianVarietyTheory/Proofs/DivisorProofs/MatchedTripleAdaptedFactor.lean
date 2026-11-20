@@ -17,15 +17,11 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM N hN _hI f φ hf hφ hφc hp`. Use `set Pol := G.M.Pol B.ψ B.emb with hPol`. Establish `hK` using `GlobalTheory.T.matched_pair_theta_identity hKP F E σ B a a' G X om om' R Rf hM`. Establish `hKne : Pol ⊓ LinearMap.ker R.p ≠ Pol`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := hM.real.nontriv`. Establish `hon` using `hM.real.quot.onto`. Establish `h0 : Submodule.map R.p Pol = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: g ∈ Pol ⊓ LinearMap.ker R.p` using `by rw [h]; exact hg`. Conclude with `(Submodule.mem_bot ℂ).2 (LinearMap.mem_ker.1 (Submodule.mem_inf.1 this).2)`. Conclude with `bot_ne_top (h0.symm.trans hon)`. Establish `hfK : f ∈ Pol ⊓ LinearMap.ker R.p` using `Submodule.mem_inf.2 ⟨hf, LinearMap.mem_ker.2 hp⟩`. Establish `key : f ∈ N.comap (GlobalTheory.ThetaFacInf.pureL φ)`.
-
-Distinguish the cases in `hF : Pol ⊓ N.comap (GlobalTheory.ThetaFacInf.pureL φ) = Pol`. Establish `: f ∈ Pol ⊓ N.comap (GlobalTheory.ThetaFacInf.pureL φ)` using `by rw [hF]; exact hf`. Conclude with `(Submodule.mem_inf.1 this).2`. Establish `hle : Pol ⊓ N.comap (GlobalTheory.ThetaFacInf.pureL φ) ≤ Pol ⊓ LinearMap.ker R.p` using `le_inf inf_le_left (GlobalTheory.T.matched_pair_theta_convergence hKP F E σ B a a' G X om om' R Rf hM _ (GlobalTheory.T.matched_pair_theta_vanishing hKP F E σ B a a' G X om om' R Rf hM N hN φ hφ hφc) hF)`. Conclude with `GlobalTheory.T.matched_pair_theta_nonvanishing hKP F E σ B a a' G X om om' R Rf hM N hN φ hφ hφc _ hK hle hKne hfK`.
-
-Conclude with `key`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pure_mem_of_realKer : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ N, GlobalTheory.ThetaFac.IsMaxTh B om (GlobalTheory.ThK.PolData B G.M) N → (∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, G.M.I om Ψ = 0 → Ψ ∈ N) → ∀ (f : SInf F (Fin a × Fin (a + a'))) (φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ), f ∈ G.M.Pol B.ψ B.emb → (∀ v, φ v ∈ SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M.vac v) → R.p f = 0 → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ N := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM N hN _hI f φ hf hφ hφc hp

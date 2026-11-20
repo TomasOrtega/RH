@@ -20,17 +20,17 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.CMVal.Euler Gl
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨h2, hef⟩` from `GlobalTheory.CMVal.Euler.SplitPlace.split_place E v hs`. Establish `hmul` using `loc_mul_loc hF hP hP' hne (h2 P P' hP hP' hne)`. Take `⟨m, hm⟩` from `GlobalTheory.Mem.UnrAe.exists_levelLe χ P'`. Take `⟨a, h4⟩` from `exists_cong hs hP' (m + 1) u hu.le`. Establish `hlt : WithZero.exp (-((m + 1 : ℕ) : ℤ)) < 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hlt1 : WithZero.exp (-((1 : ℕ) : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h5 : Valued.v (iota a P') = 1`. Rewrite using `[Valuation.map_eq_of_sub_lt _ (hu ▸ h4.trans_lt hlt), hu]`. Establish `hav : a ∉ v.asIdeal ^ 1` using `fun h => (h5 ▸ val_iota_le_of_mem hP' 1 h).not_gt hlt1`. Establish `ha0 : a ≠ 0` using `fun h => hav (h ▸ zero_mem _)`. Establish `hunit : Valued.v (iota a P) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_exp_of_le (m := 0) (by simpa using val_iota_le_one P a) fun h3 => hav (by` as an intermediate fact. Rewrite using `[← (hef P hP).2.1, ← val_iota_le_iff]`. Simplify using `using h3)`. Simplify using `using this`. Establish `h8 : χ.loc P' (locF P' a ha0 / u) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hm _ ?_ ?_` and prove the remaining obligations. Use `show Valued.v ((locF P' a ha0 / u : (P'.adicCompletion E)ˣ) : P'.adicCompletion E) = 1`. Rewrite using `[Units.val_div_eq_div_val, map_div₀, coe_locF, h5, hu, div_one]`. Rewrite using `[Units.val_div_eq_div_val, div_sub_one u.ne_zero, map_div₀, hu, div_one, coe_locF]`. Conclude with `h4.trans (WithZero.exp_le_exp.2 (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h8` using `[map_div, div_eq_one]`. Conclude with `⟨locF P a ha0, hunit, h8 ▸ hmul a ha0⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_conj [IsCMField E] {χ : HChar E} (hF : TrivOnF χ) {v : HeightOneSpectrum (OF E)} (hs : Splits v)
     {P P' : HeightOneSpectrum (𝓞 E)} (hP : Over P v) (hP' : Over P' v) (hne : P ≠ P') (u : (P'.adicCompletion E)ˣ)
@@ -66,15 +66,13 @@ def TeichTriv (χ : Formalism.L2.Host.HChar E) (v : HeightOneSpectrum (𝓞 E)) 
   ∀ x : (v.adicCompletion E)ˣ, x ^ (Ideal.absNorm v.asIdeal - 1) = 1 → χ.loc v x = 1
 
 /- English proof (translation)
-Distinguish the cases in `hne : P = P'`. Conclude with `hne ▸ h`. Introduce `x hx`. Rewrite `hx` using `[hN']`. Establish `h1 : p - 1 ≠ 0` using `by have := hp.two_le; omega`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Valued.v (x : P'.adicCompletion E) = 1`. Use `congrArg (fun y : (P'.adicCompletion E)ˣ => Valued.v (y : P'.adicCompletion E)) hx` as an intermediate fact. Simplify using `only [Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one] at this`. Conclude with `(pow_eq_one_iff_left h1).1 this`. Take `⟨u, hu', e⟩` from `exists_unit_conj hF hs hP hP' hne x hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `(GlobalTheory.Mem.WildChar.orders_on_units _ χ P).2 h u hu'`. Establish `e1 : χ.loc P' x ^ (p ^ n) = 1`. Use `congrArg (· ^ (p ^ n)) e` as an intermediate fact. Rewrite `hn` using `[hN]`. Simplify `this` using `only [mul_pow, hn, one_mul, one_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : χ.loc P' x ^ (p - 1) = 1` using `by rw [← map_pow, hx, map_one]`. Establish `hc : Nat.Coprime (p ^ n) (p - 1)` using `Nat.Coprime.pow_left _ (by`. Take `⟨k, rfl⟩ : ∃ k, p = k + 1` from `⟨p - 1, by have := hp.two_le; omega⟩`. Use the proof step `simp)`. Use `pow_gcd_eq_one.2 ⟨e1, e2⟩` as an intermediate fact.
-
-Rewrite `this` using `[hc, pow_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem teichTriv_of_split [IsCMField E] {χ : HChar E} (hF : TrivOnF χ) {v : HeightOneSpectrum (OF E)} (hs : Splits v)
     {P P' : HeightOneSpectrum (𝓞 E)} (hP : Over P v) (hP' : Over P' v) {p : ℕ} (hp : p.Prime)
@@ -111,7 +109,7 @@ open GlobalTheory.HeckeGal GlobalTheory.GalChar GlobalTheory.HeightCounting
 attribute [local instance 10000] GlobalTheory.GalChar.isTorsionFree_field
 
 /- English proof (translation)
-Set `K : Subfield ℂ` to `φ.fieldRange ⊓ φ.fieldRange.comap (starRingEnd ℂ)`. Set `e` to `φ.rangeRestrictFieldEquiv`. Establish `he : ∀ y, φ (e.symm y) = y` using `fun y => congrArg Subtype.val (e.apply_symm_apply y)`. Conclude with `⟨K, e.symm.toRingHom.comp (K.subtype.codRestrict φ.fieldRange fun x => x.2.1), e.symm.toRingHom.comp (((starRingEnd ℂ).comp K.subtype).codRestrict φ.fieldRange fun x => x.2.2), fun x => he _, fun x => he _, fun z h h' => ⟨h, h'⟩⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_two_readings {L : Type} [Field L] (φ : L →+* ℂ) :
     ∃ (K : Subfield ℂ) (f f' : K →+* L), (∀ x, φ (f x) = K.subtype x) ∧ (∀ x, φ (f' x) = starRingEnd ℂ (K.subtype x)) ∧
@@ -124,7 +122,7 @@ theorem exists_two_readings {L : Type} [Field L] (φ : L →+* ℂ) :
     fun x => he _, fun x => he _, fun z h h' => ⟨h, h'⟩⟩
 
 /- English proof (translation)
-Introduce `v hv` and use `by obtain ⟨y, hy⟩ := h v hv have h1 : ‖χ.valTw 0 v‖ = 1 := by simp only [HChar.valTw, Complex.ofReal_zero, neg_zero, Complex.cpow_zero, mul_one] exact hu _ exact ⟨⟨_, hK _ ⟨y, hy⟩ ⟨y⁻¹, by rw [map_inv₀, hy, Complex.inv_eq_conj h1]⟩⟩, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valuesIn_of_unitary {E L : Type} [Field E] [NumberField E] [Field L] {φ : L →+* ℂ} {K : Subfield ℂ}
     (hK : ∀ z, z ∈ φ.fieldRange → starRingEnd ℂ z ∈ φ.fieldRange → z ∈ K) {χ : Formalism.L2.Host.HChar E} (hu : χ.IsUnitary)
@@ -136,7 +134,7 @@ theorem valuesIn_of_unitary {E L : Type} [Field E] [NumberField E] [Field L] {φ
   exact ⟨⟨_, hK _ ⟨y, hy⟩ ⟨y⁻¹, by rw [map_inv₀, hy, Complex.inv_eq_conj h1]⟩⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `v hv` and use `by have e := h.frob ha (Or.inr rfl) hv (isPlaceOver_placeOf Ω v) (isFrob_frobOf Ω v) refine ⟨(algebraMap O _ (r (frobOf Ω v) : Oˣ))⁻¹, ?_⟩ rw [map_inv₀] simp only [HChar.valTw, Complex.ofReal_zero, neg_zero, Complex.cpow_zero, mul_one] exact inv_eq_iff_eq_inv.2 e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valuesIn_of_isGal {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime]
     {O : Type} [CommRing O] [IsDomain O] [TopologicalSpace O] {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art)
@@ -151,9 +149,9 @@ theorem valuesIn_of_isGal {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Al
 variable {D : D7} {N : NData D.R D.host D.what₂}
 
 /- English proof (translation)
-Use `(hZ.aux a).unr P (fun h4 => h ?_) fun e => h (e ▸ dvd_mul_left _ _)` and prove the remaining obligations. Use `(dvd_pow ?_ two_ne_zero).mul_right _` and prove the remaining obligations. Rewrite using `[Ideal.dvd_span_singleton, ExpCond.mem_below]`. Use `push_cast`. Break down `h4 with ⟨k, hk⟩ | hk | hk` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ hk))`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hk))`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hk)`. Conclude with `Ideal.mul_mem_left _ _ hk`.
+A detailed English derivation is pending.
 -/
 theorem chi_unr {Z : LamDat D} (hZ : Z.Ok) (a : Fin D.R.m) {P : HeightOneSpectrum (𝓞 D.host.E)}
     (h : ¬ (below P).asIdeal ∣ cond0 D.host Z.w0) : (Z.chi a).UnrAt P := by
@@ -169,7 +167,7 @@ theorem chi_unr {Z : LamDat D} (hZ : Z.Ok) (a : Fin D.R.m) {P : HeightOneSpectru
   · exact Ideal.mul_mem_left _ _ hk
 
 /- English proof (translation)
-Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Take `⟨p, hp, hw⟩ : ∃ p ∈ [D.host.g 0, D.host.g 1, D.host.pde, D.host.pde', Z.q0], (p : 𝓞 D.host.E) ∈ w.asIdeal` from `hw.elim (fun h => ⟨_, by simp, h⟩) fun h => ⟨_, by simp, h⟩`. Take `⟨h1, -, h2, h3⟩` from `hZ.places.splits p hp`. Establish `hw' : (p : 𝓞 D.host.E) ∈ w'.asIdeal` using `by rwa [← ExpCond.mem_below, e, ExpCond.mem_below]`. Conclude with `teichTriv_of_split (hZ.aux a).triv (SplitBelow.splits_below_of_absNorm _ p h1 h2 h3 w hw) (e ▸ over_below w') (over_below w) h1 (h3 w' hw') (h3 w hw) h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chi_teich {Z : LamDat D} (hZ : Z.Ok) (a : Fin D.R.m) {w w' : HeightOneSpectrum (𝓞 D.host.E)}
     (hw : OverP D.host D.host.pde w ∨ OverP D.host D.host.pde' w) (e : below w' = below w) (h : TeichTriv (Z.chi a) w') :
@@ -183,13 +181,11 @@ theorem chi_teich {Z : LamDat D} (hZ : Z.Ok) (a : Fin D.R.m) {w w' : HeightOneSp
     (over_below w) h1 (h3 w' hw') (h3 w hw) h
 
 /- English proof (translation)
-Set `_ : Algebra (FractionRing (X.O0 i)) (Qbar (X.l i))` to `e.toAlgebra`. Set `_ : Algebra (FractionRing (X.O0 i)) (Kbar X i)` to `(toBar X i).toAlgebra`. Establish `: Algebra.IsAlgebraic (FractionRing (X.O0 i)) (Qbar (X.l i))` using `⟨fun x => by`. Establish `h1 : IsAlgebraic ℤ_[X.l i] x` using `(IsFractionRing.isAlgebraic_iff ℤ_[X.l i] ℚ_[X.l i] _).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Use `h1.ringHom_of_comp_eq ((algebraMap (X.O0 i) _).comp (algebraMap ℤ_[X.l i] (X.O0 i))) (RingHom.id _) (fun a b hab => ?_) (RingHom.ext he)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg e hab` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, RingHom.comp_apply, he, he]`. Conclude with `Subtype.ext ((algebraMap ℚ_[X.l i] (Qbar (X.l i))).injective this)⟩`. Set `J : Qbar (X.l i) →ₐ[FractionRing (X.O0 i)] Kbar X i` to `IsAlgClosed.lift`. Establish `hJ : ∀ x, J (e x) = toBar X i x` using `J.commutes`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨J.toRingHom.comp ι.symm.toRingHom, fun b x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hJ]`. Consider the cases of `b`. Use `show J (ι.symm (starRingEnd ℂ (starRingEnd ℂ (ι _)))) = _`. Rewrite using `[Complex.conj_conj, ι.symm_apply_apply]`.
-
-Conclude with `congrArg J (ι.symm_apply_apply _)`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reading (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) (e : FractionRing (X.O0 i) →+* Qbar (X.l i))
     (ι : Qbar (X.l i) ≃+* ℂ) (he : ∀ z : ℤ_[X.l i], e (algebraMap (X.O0 i) _ (algebraMap ℤ_[X.l i] (X.O0 i) z)) =
@@ -215,7 +211,7 @@ theorem exists_reading (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) (e : Fr
   · exact congrArg J (ι.symm_apply_apply _)
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_isFrob (N.plOm.2 P)`. Establish `h3` using `congrArg ι' (hr.frob ha (Or.inl fun h => hP (X.twistExcludedPlaces_contains_residueChar i h)) hu (N.plOm.2 P) hσ)`. Rewrite `h3` using `[map_inv₀, toQ, RingHom.comp_apply, hι, toBar_algebraMap]`. Rewrite using `[X.Xv_def i lam P hP σ hσ, hG]`. Conclude with `(congrArg (· * _) h3).trans (inv_mul_cancel₀ ((map_ne_zero _).2 (Units.ne_zero _)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xv_mul_val (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) {e : FractionRing (X.O0 i) →+* Qbar (X.l i)}
     {ι : Qbar (X.l i) ≃+* ℂ} {ι' : ℂ →+* Kbar X i} (hι : ∀ x, ι' (ι (e x)) = toBar X i x)

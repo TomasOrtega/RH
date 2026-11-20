@@ -19,7 +19,7 @@ open GlobalTheory.AbLaw
 namespace GlobalTheory.AmpleBaseChange
 
 /- English proof (translation)
-Establish `hp : IsProper (Over.mk f).hom` using `MorphismProperty.of_isPullback (P := @IsProper) h ‹_›`. Use `AmpleLocal.relAmple_of_locally S' (Over.mk f) (M.pull π) (pull_isLB hM π) inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨V, hV, hs, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := t s) trivial`. Conclude with `⟨t ⁻¹ᵁ V, hs, PolBaseChange.relAmple_restrict (A' := Over.mk f) h hM hA V hV⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem relAmple_of_isPullback {S S' : Scheme.{0}} {B : Over S} [IsProper B.hom] {M : LB B.left}
     (hM : M.IsLB) (hA : Out.RelAmple B M) {t : S' ⟶ S} {X : Scheme.{0}} {π : X ⟶ B.left}
@@ -31,9 +31,9 @@ theorem relAmple_of_isPullback {S S' : Scheme.{0}} {B : Over S} [IsProper B.hom]
   exact ⟨t ⁻¹ᵁ V, hs, PolBaseChange.relAmple_restrict (A' := Over.mk f) h hM hA V hV⟩
 
 /- English proof (translation)
-Introduce `S B _ M hB hM hA R _ t X π f h`. Use `hB.proper` as an intermediate fact. Establish `hs : Smooth f` using `MorphismProperty.of_isPullback (P := @Smooth) h hB.smooth`. Use `⟨?_, hs, MorphismProperty.of_isPullback (P := @IsProper) h hB.proper, forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ f hs (MorphismProperty.of_isPullback (P := @GeometricallyConnected) h hB.geomConnected)⟩` and prove the remaining obligations. Take `⟨N, -, m, s, hN, hv⟩` from `veryAmpleBy_of_relAmple (A := Over.mk f) (pull_isLB hM π) (relAmple_of_isPullback hM hA h) (𝟙 X) (Category.id_comp f) (pull_isLB hM π) (LBIso.chartPull (chartPullId _) (chartPullPull (M.pull π) (𝟙 X) (𝟙 X) rfl) (PolBaseChange.lbIso_refl (pull_isLB hM π)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, hN, m, s, hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem isProjBy_smooth_isProper_geometricallyIntegral :
     ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B] (M : LB B.left), IsAbelianScheme B → M.IsLB → Out.RelAmple B M → ∀ (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ S) (X : Scheme.{0}) (π : X ⟶ B.left) (f : X ⟶ Spec (CommRingCat.of R)), IsPullback π f B.hom t → IsProjBy f ∧ Smooth f ∧ IsProper f ∧ GeometricallyIntegral f := by

@@ -27,13 +27,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 open Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.JoinChr in
 
 /- English proof (translation)
-Establish `hχ` using `(GlobalTheory.ChrEqUnique.chrEq_unique D).2.2 c χ h`. Take `⟨Θ, hc, hinc, hloc⟩` from `GlobalTheory.CharTransport.exists_hom D`. Set `u : (Formalism.L2.Theta.AE D)ˣ →* Neutral.B1.Ideles D.host.E` to `Units.map Θ.toMonoidHom`. Establish `hu : Continuous u` using `Continuous.units_map _ hc`. Set `c' : (Formalism.L2.Theta.AE D)ˣ →* Circle` to `{ toFun := fun x => ⟨((χ.1 (u x) : ℂˣ) : ℂ), mem_sphere_zero_iff_norm.2 (hχ _)⟩ map_one' := Circle.ext (by simp) map_mul' := fun x y => Circle.ext (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `((χ.1 (u (x * y)) : ℂˣ) : ℂ) = ((χ.1 (u x) : ℂˣ) : ℂ) * ((χ.1 (u y) : ℂˣ) : ℂ)`. Rewrite using `[map_mul, map_mul, Units.val_mul]) }`. Establish `hcoe : ∀ x, ((c' x : Circle) : ℂ) = ((χ.1 (u x) : ℂˣ) : ℂ)` using `fun x => rfl`. Establish `h' : ChrEq c' χ`. Use `⟨⟨?_, fun x => Circle.ext ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Continuous.subtype_mk (Units.continuous_val.comp (χ.2.1.comp hu)) _`. Use `(hcoe _).trans ?_` and prove the remaining obligations. Use `congrArg (fun y => ((χ.1 y : ℂˣ) : ℂ)) (Units.ext (hinc x) : u (Units.map (Formalism.L2.Theta.incA D).toMonoidHom x) = Units.map (algebraMap D.host.E _).toMonoidHom x)` as an intermediate fact. Conclude with `this.trans (congrArg (fun y : ℂˣ => (y : ℂ)) (χ.2.2 x))`. Use `(hcoe _).trans (congrArg (fun y => ((χ.1 y : ℂˣ) : ℂ)) (Units.ext ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Θ (x : Formalism.L2.Theta.AE D) = _`. Rewrite using `[hx, hloc P e he]`. Conclude with `⟨u x, by rw [(GlobalTheory.ChrEqUnique.chrEq_unique D).2.1 c c' χ h h', hcoe]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_val_of_chrEq {c : (Formalism.L2.Theta.AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (h : ChrEq c χ)
     (x : (Formalism.L2.Theta.AE D)ˣ) : ∃ y, ((c x : Circle) : ℂ) = ((χ.1 y : ℂˣ) : ℂ) := by
@@ -61,9 +61,9 @@ theorem exists_val_of_chrEq {c : (Formalism.L2.Theta.AE D)ˣ →* Circle} {χ : 
   exact ⟨u x, by rw [(GlobalTheory.ChrEqUnique.chrEq_unique D).2.1 c c' χ h h', hcoe]⟩
 
 /- English proof (translation)
-Establish `hprod` using `T.Q.l.prod`. Use `GlobalTheory.CoverHalf.eq_prod_of_squarefree ?_ _ fun PP => ?_` and prove the remaining obligations. Rewrite `hprod` using `[hT.pins.2.1.1]`. Conclude with `(hprod ▸ GlobalTheory.CoverHalf.squarefree_span_g D : Squarefree (T.Q.l.Mb * _)).of_mul_left`. Rewrite using `[hL.Pg, hT.half.2, GlobalTheory.CoverHalf.prod_map_le_iff, hO]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem level_of_is {T : Core D} (hT : LawsM T) {Lc : LevCh D T0} {μ0 : T0} (hL : Lc.Is μ0) (hO : T.pb = Lc.C.P.pb) :
     T.Q.l.Mb = ∏ PP ∈ Lc.Pg, PP.asIdeal := by
@@ -75,11 +75,11 @@ theorem level_of_is {T : Core D} (hT : LawsM T) {Lc : LevCh D T0} {μ0 : T0} (hL
     rfl
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `hL.Q_de p hp`. Distinguish the cases in `h : ∃ t, ∃ PP ∈ Lc.Q t, (p : 𝓞 D.host.E) ∈ PP.asIdeal`. Take `⟨t, PP, h1, h2⟩` from `h`. Use `⟨P, ?_, fun t PP h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP t PP h1 h2]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (p : 𝓞 D.host.K) ∈ PP.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Rewrite using `[← hP t PP h1 h2]`. Conclude with `Ideal.map_comap_le`. Establish `hpp : p.Prime`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hp with rfl | rfl` into its components or cases. Use `exacts [D.host.pde_prime, D.host.pde'_prime]`. Take `⟨P', hP'⟩` from `GlobalTheory.exists_heightOneSpectrum_natCast_mem D.host.K hpp`. Conclude with `⟨P', hP', fun t PP h1 h2 => absurd ⟨t, PP, h1, h2⟩ h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_half_of_is {Lc : LevCh D T0} {μ0 : T0} (hL : Lc.Is μ0) {p : ℕ} (hp : p = D.host.pde ∨ p = D.host.pde') :
     ∃ P : HeightOneSpectrum (𝓞 D.host.K), (p : 𝓞 D.host.K) ∈ P.asIdeal ∧ ∀ t, ∀ PP ∈ Lc.Q t, (p : 𝓞 D.host.E) ∈ PP.asIdeal →
@@ -100,7 +100,7 @@ theorem exists_half_of_is {Lc : LevCh D T0} {μ0 : T0} (hL : Lc.Is μ0) {p : ℕ
     exact ⟨P', hP', fun t PP h1 h2 => absurd ⟨t, PP, h1, h2⟩ h⟩
 
 /- English proof (translation)
-Unfold `ownAt`. Use `split_ifs`. Use `exacts [Or.inr rfl, Or.inl rfl]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ownAt_special (v : HeightOneSpectrum (𝓞 D.what₂.LL)) : ownAt D v = D.host.pde ∨ ownAt D v = D.host.pde' := by
   unfold ownAt
@@ -108,9 +108,7 @@ theorem ownAt_special (v : HeightOneSpectrum (𝓞 D.what₂.LL)) : ownAt D v = 
   exacts [Or.inr rfl, Or.inl rfl]
 
 /- English proof (translation)
-Use `choose P h1 h2 using fun (p : ℕ) (hp : p = D.host.pde ∨ p = D.host.pde') => exists_half_of_is hL hp`. Use `⟨fun p => if hp : p = D.host.pde ∨ p = D.host.pde' then P p hp else R.C.P.pb 0, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos (ownAt_special v)]`. Use `⟨h1 _ _, fun PP hPP => ?_⟩` and prove the remaining obligations. Establish `h3` using `Finset.mem_filter.1 hPP`.
-
-Conclude with `h2 _ _ _ PP h3.1 h3.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oneHalf_of_is {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) {μ0 : T0}
     (hL : R.toLevCh.Is μ0) : ∃ Pk : ℕ → HeightOneSpectrum (𝓞 D.host.K), ∀ v,
@@ -125,7 +123,7 @@ theorem oneHalf_of_is {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what
   exact h2 _ _ _ PP h3.1 h3.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc, hcan, hr, hE, h₁, h₂, hs, level_of_is hc.toLawsM hL hO, (oneHalf_of_is R hL).imp fun _ h v _ => h v, v₁, v₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem coreTies_of_is {L : SizeData₂ D} {EX : ErrX D} {J : CoreJ D} [Algebra J.Q.c.F D.what₂.LL] {R : RealDat D A J.Q.c.F} {μ0 : T0}
     (hL : R.toLevCh.Is μ0) (hO : J.pb = R.C.P.pb) (hc : LawsCore J.toCore) (hcan : J.Q.Canon)
@@ -135,9 +133,9 @@ theorem coreTies_of_is {L : SizeData₂ D} {EX : ErrX D} {J : CoreJ D} [Algebra 
   ⟨hc, hcan, hr, hE, h₁, h₂, hs, level_of_is hc.toLawsM hL hO, (oneHalf_of_is R hL).imp fun _ h v _ => h v, v₁, v₂⟩
 
 /- English proof (translation)
-Use `choose pb g1 g2 using exists_prime_bar_piG D EX`. Take `⟨C, hC⟩` from `exists_charFrame D ⟨pb, g1⟩ h.1 h.2.1 h.2.2.1`. Take `⟨P₁, hP₁⟩` from `GlobalTheory.exists_heightOneSpectrum_natCast_mem D.host.K D.host.pde_prime`. Take `⟨P₂, hP₂⟩` from `GlobalTheory.exists_heightOneSpectrum_natCast_mem D.host.K D.host.pde'_prime`. Take `⟨Lc, a1, a2, a3, a4, a5, a6⟩` from `exists_levCh_twisted C h.1 h.2.1 h₁.split h₂.split P₁ P₂ hP₁ hP₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₁, hw₁⟩` from `aboveK_nonempty P₁`. Take `⟨w₂, hw₂⟩` from `aboveK_nonempty P₂`. Conclude with `⟨C, by rw [hC]; exact g2, isDelta_mem C.isDel h.2.2.2, isDelta_mem C.isDel' h.2.2.2, Lc, a1, a2, a3, a4, ⟨w₁, a5 ▸ hw₁, overP_of_under hP₁ (mem_aboveK.1 hw₁)⟩, w₂, a6 ▸ hw₂, overP_of_under hP₂ (mem_aboveK.1 hw₂)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frame_of_richRec (D : D7) (EX : ErrX D) (h : RichRec D) (h₁ : FieldOK0 D D.host.pde)
     (h₂ : FieldOK0 D D.host.pde') : ∃ C : Formalism.L2.Host.CharFrame D,
@@ -157,9 +155,9 @@ theorem exists_frame_of_richRec (D : D7) (EX : ErrX D) (h : RichRec D) (h₁ : F
     ⟨w₁, a5 ▸ hw₁, overP_of_under hP₁ (mem_aboveK.1 hw₁)⟩, w₂, a6 ▸ hw₂, overP_of_under hP₂ (mem_aboveK.1 hw₂)⟩
 
 /- English proof (translation)
-Take `⟨x₀, hrun⟩` from `GlobalTheory.FinalJoin.runHolds_of_parOK`. Take `⟨CK, hCK⟩` from `GlobalTheory.FinalJoin.RecordRun.exists_pageRun_record_sub_four`. Use `⟨CK, max ((10 : ℝ) ^ 60) (x₀ 20 CK), ?_⟩` and prove the remaining obligations. Introduce and unpack `D G J r EX L Pm Tp hK hpar ⟨S, hCnW, hg, hC, hCZ, hx⟩ hF v h hinj j hj`. Establish `hP` using `hCK D L Pm Tp hK S hCnW hg ((le_max_left _ _).trans hx) hC hCZ _ _ j (recPJ h j hj) hj ((GlobalTheory.FinalJoin2.fieldSmall_iff_opo D _ h L).1 hF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(hrun D _ h hinj EX _ (hpar v) j hj L _ _ _ _ _ _ _ _ _ _ _ hP ((le_max_right _ _).trans hx)).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_runsHold : ∃ CK x₁ : ℝ, ∀ (D : D7) (G : Type) (J : CoreJ D) (r : TwoRuns J G) (EX : ErrX D) (L : SizeData₂ D)
     (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D),
@@ -174,21 +172,19 @@ theorem exists_runsHold : ∃ CK x₁ : ℝ, ∀ (D : D7) (G : Type) (J : CoreJ 
   exact (hrun D _ h hinj EX _ (hpar v) j hj L _ _ _ _ _ _ _ _ _ _ _ hP ((le_max_right _ _).trans hx)).2
 
 /- English proof (translation)
-Take `⟨CK, x₁, H⟩` from `exists_runsHold`. Use `⟨CK, x₁, fun D hD hR G _ _ => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hext⟩` from `GlobalTheory.FinalJoin2.exists_full_runHolds_of_core`. Take `⟨EX⟩` from `hD.err`. Take `⟨C, c1, c2, c3, c4⟩` from `exists_frame_of_richRec D EX hR hD.one hD.two`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, hC, hcan, hJpb, hrk, -⟩` from `exists_coreJ_of_chiOK_noVol D hD.one.full hD.one.zetaM C.P.pb C.P.pb_over _ (chiOK_one D)`. Establish `hE : HalfEX J.toCore EX` using `fun i => by show barE D (EX.piG i) ∈ (J.pb i).asIdeal.map _`. Rewrite using `[hJpb]`. Conclude with `c1 i`. Take `⟨T, -, -, hT⟩` from `hext D J EX hJ hC hcan hrk hE hD.one.kpsi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P₁, hP₁⟩` from `GlobalTheory.exists_heightOneSpectrum_natCast_mem D.host.K D.host.pde_prime`. Take `⟨P₂, hP₂⟩` from `GlobalTheory.exists_heightOneSpectrum_natCast_mem D.host.K D.host.pde'_prime`. Take `⟨xi₁, hxi₁⟩` from `hD.xi1`. Take `⟨xi₂, hxi₂⟩` from `hD.xi2`. Take `⟨_, T₁, h₁, -, hJ₁, -, -, -, hpar₁, -⟩` from `hT _ hD.one P₁ hP₁ xi₁ hxi₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, T₂, h₂, -, hJ₂, -, -, -, hpar₂, -⟩` from `hT _ hD.two P₂ hP₂ xi₂ hxi₂`. Substitute `hJ₁` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨r₂, hr₂⟩ : ∃ r₂ : RunData T₁.J, r₂.full = T₂ := by`. Rewrite using `[← hJ₂]`. Conclude with `⟨RunData.of T₂, rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨L, Pm, Tp, hK, S, hCnW, hg, hCP, hCZ, hx, hF⟩` from `hD.num`. Set `r : TwoRuns T₁.J G` to `⟨RunData.of T₁, r₂, fun _ _ => 1⟩`. Establish `hpar : ∀ v j, InR D j → ParOK (r.used v).full.toTop EX (ownAt D v) j`. Introduce `v j hj`. Unfold `TwoRuns.used ownAt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Use `show ParOK r₂.full.toTop EX _ j`. Rewrite using `[hr₂]`. Conclude with `hpar₂ j hj`. Conclude with `hpar₁ j hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hnum : PageNum Tp x₁` using `⟨S, hCnW, hg, hCP, hCZ, hx⟩`. Use `⟨L, Pm, Tp, hK, EX, C, T₁.J, r, hJ, hJpb, fun v => ?_, fun v j n hj => (hpar v j hj).own n, hnum, H D G _ r EX L Pm Tp hK hpar hnum hF, c4, ⟨_, algTie_algTop _ hJ.pins.2.2.1⟩, ?_⟩` and prove the remaining obligations. Unfold `TwoRuns.used split_ifs`. Use `show LawsFull r₂.full`. Rewrite using `[hr₂]`.
-
-Conclude with `h₂`. Conclude with `h₁`. Introduce and unpack `Pl0 T0 A _ R μ0 rfl hL mu S`. Conclude with `⟨coreTies_of_is hL hJpb hC hcan hrk hE hD.one hD.two hF c2 c3, coreTies_of_is (R := { R with mu := mu, twPl := S }) hL hJpb hC hcan hrk hE hD.one hD.two hF c2 c3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_all : ∃ CK x₁ : ℝ, ∀ (D : D7), RecOK D x₁ → RichRec D → ∀ (G : Type) [Group G] [Fintype G],
     ∃ (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (EX : ErrX D) (C : Formalism.L2.Host.CharFrame D)

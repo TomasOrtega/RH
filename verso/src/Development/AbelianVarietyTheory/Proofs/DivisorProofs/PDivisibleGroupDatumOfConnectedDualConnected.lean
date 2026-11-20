@@ -11,9 +11,7 @@ open CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGroup GlobalTh
 namespace GlobalTheory.PDivLat
 
 /- English proof (translation)
-Introduce `n`. Establish `hs : Function.Surjective (f.app n)` using `fun a => ⟨r.app n a, by`. Use `congrArg (fun g => Hom.app g n) h` as an intermediate fact. Conclude with `DFunLike.congr_fun this a⟩`. Use `haveI : Nontrivial (H.A n) := (Bialgebra.counitAlgHom O (H.A n) : H.A n →+* O).domain_nontrivial`.
-
-Use `haveI := hG n`. Conclude with `IsLocalRing.of_surjective' (f.app n : G.A n →+* H.A n) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isConn_of_retract {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [Nontrivial O] {G H : PDivGroup p O}
@@ -28,9 +26,9 @@ theorem isConn_of_retract {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact
   exact IsLocalRing.of_surjective' (f.app n : G.A n →+* H.A n) hs
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε hyp G`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Take `⟨G₁, G₂, hs, hc₁, hk₂⟩` from `GlobalTheory.ConnConstSplit.exists_isSum_conn_const p C v O hv G`. Take `⟨H₁, H₂, hs', hcH, hkH⟩` from `GlobalTheory.ConnConstSplit.exists_isSum_conn_const p C v O hv G₁.dual`. Take `⟨i₁, -, q₁, -, e₁, -⟩` from `id hs'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD : GlobalTheory.PDivLat.IsConn H₁.dual` using `isConn_of_retract (dualHom _ _ q₁ ≫ G₁.bidual.inv) (G₁.bidual.hom ≫ dualHom _ _ i₁) (by rw [Category.assoc, Iso.inv_hom_id_assoc, ← dualHom_comp, e₁, dualHom_id]) hc₁`. Establish `dD` using `GlobalTheory.SumDatum.hasDatum_of_isSum p C v O hv ε hε _ _ _ hs' (hyp H₁ hcH hD) (GlobalTheory.PDivLat.hasDatum_of_isConst p C v O hv ε hε H₂ hkH)`. Establish `d₁` using `GlobalTheory.PDivLat.hasDatum_of_iso p C v O hv ε hε _ _ ⟨G₁.bidual.symm⟩ (GlobalTheory.DualDatum.hasDatum_dual p C v O hv ε hε _ dD)`. Conclude with `GlobalTheory.SumDatum.hasDatum_of_isSum p C v O hv ε hε G G₁ G₂ hs d₁ (GlobalTheory.PDivLat.hasDatum_of_isConst p C v O hv ε hε G₂ hk₂)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDatum_of_conn_dual_conn : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), (∀ G : PDivGroup p O, GlobalTheory.PDivLat.IsConn G → GlobalTheory.PDivLat.IsConn G.dual → HasDatum hε G) → ∀ G : PDivGroup p O, HasDatum hε G := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε hyp G

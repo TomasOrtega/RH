@@ -7,9 +7,9 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch
 
 /- English proof (translation)
-Introduce `W _ n s hs ν hν`. Set `μ₀ : Measure (hermC n)` to `Measure.addHaar`. Establish `hf : ∀ _w : W, Integrable (fun b : hermC n => detW (b : Matrix (Fin n) (Fin n) ℂ) ^ (-s)) μ₀` using `fun _ => GlobalTheory.T.hua_determinant_integrable_of_lt n s hs μ₀ inferInstance`. Establish `hpi` using `Integrable.fintype_prod (μ := fun _ : W => μ₀) (f := fun _ : W => fun b : hermC n => detW (b : Matrix (Fin n) (Fin n) ℂ) ^ (-s)) hf`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul ν (Measure.pi fun _ : W => μ₀)]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpi.smul_measure_nnreal`.
+A detailed English derivation is pending.
 -/
 theorem integrable_prod_detW_rpow : ∀ (W : Type) [Fintype W] (n : ℕ) (s : ℝ), (n : ℝ) - 1 / 2 < s →
     ∀ ν : Measure (W → hermC n), ν.IsAddHaarMeasure →

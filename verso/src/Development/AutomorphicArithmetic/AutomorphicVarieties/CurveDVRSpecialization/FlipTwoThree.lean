@@ -108,7 +108,7 @@ def GlobOfCharts : Prop :=
       ((∃ I ∈ L.Good, I ∈ L.TI ∧ (L.D1 : WithBot ℕ∞) ≤ qdim I.asIdeal) → ∃ Y, M.CompI Y ∧ Y ⊆ M.Good)
 
 /- English proof (translation)
-The claim follows from `subset_rfl`.
+A detailed English derivation is pending.
 -/
 example : (⟨∅, ∅, ∅, ∅, ∅⟩ : GlobData PUnit).Cl ⊆ (⟨∅, ∅, ∅, ∅, ∅⟩ : GlobData PUnit).Core := subset_rfl
 

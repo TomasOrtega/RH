@@ -18,9 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UU.ImagePairing
 
 /- English proof (translation)
-Set `ρ : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk r hr`. Establish `a` using `cubWeil_map S S' f G G' P P' F hw w h N T' x' y' ζ' h'`. Establish `ex : toBase hw x' = ρ ≫ x` using `Over.OverMorphism.ext hx`. Establish `ey : toBase hw y' = ρ ≫ y` using `Over.OverMorphism.ext hy`. Rewrite `a` using `[ex, ey]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `a.unique (h₀.comp ρ)`.
+A detailed English derivation is pending.
 -/
 theorem eq_map_of_isCPMap {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] [IsCommMonObj G] {G' : Over S'}
     [GrpObj G'] [IsCommMonObj G'] {P : CP G} {P' : CP G'} {F : G'.left ⟶ G.left} {hw} {w}
@@ -36,9 +36,9 @@ theorem eq_map_of_isCPMap {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpOb
   exact a.unique (h₀.comp ρ)
 
 /- English proof (translation)
-Set `ρ : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk r hr`. Set `β : (T' ⟶ (Over.pullback f).obj G) →* (Over.mk (T'.hom ≫ f) ⟶ G)` to `MonoidHom.mk' (toBase (A := G) (A' := (Over.pullback f).obj G) (g := pullback.fst G.hom f) pullback.condition) (toBase_mul_pullback G f T')`. Establish `ex : β x' = ρ ≫ x` using `Over.OverMorphism.ext hx`. Establish `e : β (x' ^ N) = β 1` using `by rw [map_pow, map_one, ex, ← MonObj.comp_pow, h, MonObj.comp_one]`. Use `Over.OverMorphism.ext (pullback.hom_ext (congrArg (fun q => q.left) e) ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Over.w (x' ^ N)).trans (Over.w (1 : T' ⟶ (Over.pullback f).obj G)).symm`.
+A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [GrpObj G] {N : ℕ} {T' : Over S'}
     {T : Over S} (r : T'.left ⟶ T.left) (hr : r ≫ T.hom = T'.hom ≫ f) {x' : T' ⟶ (Over.pullback f).obj G}
@@ -53,7 +53,7 @@ theorem pow_eq_one_of_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [
   exact (Over.w (x' ^ N)).trans (Over.w (1 : T' ⟶ (Over.pullback f).obj G)).symm
 
 /- English proof (translation)
-Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).hom).1` to reduce the goal to its premises. Establish `key : ∀ (e : ℕ) (c : Γ(Spec (CommRingCat.of R), ⊤)), Ideal.Quotient.mk (I ^ (e + 1)) ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom c) = (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ I ^ (e + 1)))).hom.hom ((thick R I e).appTop.hom c)` using `fun e c => (congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (e + 1)))))).symm`. Use `IsHausdorff.StrictMono.funext' I (a := fun n => n + 1) (strictMono_id.add_const 1) (f := fun _ : Unit => (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom a) (g := fun _ : Unit => (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom b) (fun n _ => (key n a).trans ((congrArg _ (h n)).trans (ke …` as an intermediate fact. Conclude with `congrFun this ()`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fn_eq_of_thick {R : Type} [CommRing R] (I : Ideal R) [IsHausdorff I R]
     (a b : Γ(Spec (CommRingCat.of R), ⊤))
@@ -71,7 +71,7 @@ theorem fn_eq_of_thick {R : Type} [CommRing R] (I : Ideal R) [IsHausdorff I R]
   exact congrFun this ()
 
 /- English proof (translation)
-Use `⟨Spec.map (CommRingCat.ofHom (Ideal.quotientMap _ (algebraMap V W) ?_)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.le_comap_map`. Simplify using `only [thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_thick_hom {V W : Type} [CommRing V] [CommRing W] [Algebra V W] (I : Ideal V) (e : ℕ) :
     ∃ φ : Spec (CommRingCat.of (W ⧸ (I.map (algebraMap V W)) ^ (e + 1))) ⟶ Spec (CommRingCat.of (V ⧸ I ^ (e + 1))),
@@ -81,13 +81,13 @@ theorem exists_thick_hom {V W : Type} [CommRing V] [CommRing W] [Algebra V W] (I
   · simp only [thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]
 
 /- English proof (translation)
-Introduce `V _ _ _ A G _ _ s t a W _ _ _ hW _ N x x' b b' ζ hx hx' hb hb' h`. Take `⟨ξ, hξ, -⟩` from `existsUnique_cubWeil a.M.c hb hb'`. It suffices to establish `e : ζ = ξ from e ▸ hξ`. Use `Units.ext (fn_eq_of_thick ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) _ _ fun e => ?_)` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `exists_thick_hom (W := W) (IsLocalRing.maximalIdeal V) e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `r` to `thick W ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) e`. Establish `lifts : ∀ y : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G, ∃ ye : Over.mk φ ⟶ thickObj V (IsLocalRing.maximalIdeal V) e G, ye.left ≫ pullback.fst G.hom (thick V _ e) = r ≫ y.left` using `fun y => ⟨Over.homMk (pullback.lift (r ≫ y.left) φ ((Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (Over.w y)).trans hφ))) (pullback.lift_snd _ _ _), pullback.lift_fst _ _ _⟩`. Take `⟨y, hy⟩` from `lifts x`. Take `⟨y', hy'⟩` from `lifts x'`. Take `⟨θ, hθ, -⟩` from `existsUnique_cubWeil (t.l e).Pe.c (pow_eq_one_of_pullback (T' := Over.mk φ) (T := Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))) _ r hφ hy h.1) (pow_eq_one_of_pullback (T' := Over.mk φ) (T := Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))) _ r hφ hy' h.2.1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(t.l e).lev`. Take `⟨hp, v, hv⟩` from `a.b_pb e`. Establish `e₁` using `eq_map_of_isCPMap hw (T' := Over.mk φ) (T := Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))) r hφ hy hy' hθ h`. Take `⟨u, -, hu⟩` from `hv.exists_comp (t.l e).D.map (by`. Rewrite using `[Category.assoc, hp.1.w, ← Category.assoc, Over.w, Category.id_comp])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂` using `eq_map_of_isCPMap hu (T' := Over.mk φ) (T := Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))) r (hφ.trans (congrArg (φ ≫ ·) (Category.id_comp _).symm)) (hx e _ r y.left hy) (hx' e _ r y'.left hy') hθ hξ`. Conclude with `congrArg Units.val (e₁.symm.trans e₂)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cubWeil_image : AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (a : t.Alg) (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W], IsAdicComplete ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) W → IsLocalHom (algebraMap V W) → ∀ (N : ℕ) (x x' : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G) (b b' : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ a.B) (ζ), (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ (x).left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ (b).left) → (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ (x').left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ (b').left) → b ^ N = 1 → b' ^ N = 1 → CubWeil s.P.c N x x' ζ → CubWeil a.M.c N b b' ζ := by
   intro V _ _ _ A G _ _ s t a W _ _ _ hW _ N x x' b b' ζ hx hx' hb hb' h

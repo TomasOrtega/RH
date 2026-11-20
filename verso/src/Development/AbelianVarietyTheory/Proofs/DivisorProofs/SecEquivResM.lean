@@ -46,13 +46,13 @@ def fam (U : T.Opens) : AddSubgroup (∀ W : AffIn U, D.M W.1 W.2.1) where
   neg_mem' {a} ha W W' h := by simp only [Pi.neg_apply, map_neg, ha W W' h]
 
 /- English proof (translation)
-The claim follows from `m.2 W W' h`.
+A detailed English derivation is pending.
 -/
 theorem fam_rel {U : T.Opens} (m : fam D U) (W W' : AffIn U) (h : W'.1 ≤ W.1) :
     D.ρ W.2.1 W'.2.1 h (m.1 W) = m.1 W' := m.2 W W' h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(T.presheaf.map (homOfLE h₁).op ≫ T.presheaf.map (homOfLE h₂).op).hom a = _`. Rewrite using `[← T.presheaf.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resG_resG' {U V W : T.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (h₃ : W ≤ U) (a : Γ(T, U)) :
     resG T h₂ (resG T h₁ a) = resG T h₃ a := by
@@ -97,7 +97,7 @@ Both sides reduce to the same expression.
     (famRes D h m).1 W = m.1 ⟨W.1, W.2.1, W.2.2.trans h⟩ := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun W => by change resG T (W.2.2.trans h) a • m.1 ⟨W.1, W.2.1, W.2.2.trans h⟩ = resG T W.2.2 (resG T h a) • m.1 ⟨W.1, W.2.1, W.2.2.trans h⟩ rw [resG_resG']`.
+A detailed English derivation is pending.
 -/
 theorem famRes_smul {U U' : T.Opens} (h : U' ≤ U) (a : Γ(T, U)) (m : fam D U) :
     famRes D h (a • m) = resG T h a • famRes D h m :=
@@ -142,7 +142,7 @@ def secEquiv (hD : (famPresheaf D).IsSheaf) {V : T.Opens} (hV : IsAffineOpen V) 
   affEquiv D hV
 
 /- English proof (translation)
-The claim follows from `(fam_rel D (show fam D V from s) ⟨V, hV, le_rfl⟩ ⟨V', hV', h⟩ h).symm`.
+A detailed English derivation is pending.
 -/
 theorem secEquiv_resM (hD : (famPresheaf D).IsSheaf) {V V' : T.Opens} (hV : IsAffineOpen V)
     (hV' : IsAffineOpen V') (h : V' ≤ V) (s : Γ(toModules D hD, V)) :

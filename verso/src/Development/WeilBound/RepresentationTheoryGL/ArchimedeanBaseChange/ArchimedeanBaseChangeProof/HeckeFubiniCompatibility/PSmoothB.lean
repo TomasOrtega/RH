@@ -19,7 +19,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 abbrev gI (v : InfinitePlace E) : GA E n →* G n := Matrix.GeneralLinearGroup.map (PositivityTheory.Rg.BcB.cV v)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pInf₀ : Continuous (pInf E) :=
   continuous_pi fun w =>
@@ -27,20 +27,20 @@ theorem continuous_pInf₀ : Continuous (pInf E) :=
       ((continuous_apply w).comp continuous_fst)
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map ((continuous_apply v).comp continuous_pInf₀))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gI (v : InfinitePlace E) : Continuous (gI (n := n) v : GA E n → G n) :=
   Continuous.units_map _ (continuous_id.matrix_map ((continuous_apply v).comp continuous_pInf₀))
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map ((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infGL₀ : Continuous (infGL E n) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map ((continuous_infEq E).prodMk continuous_const :
     Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))))
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `congrArg (fun y : GL (Fin n) (Cinf E) => y.val i j v) (pInf_infGL (E := E) (a := n) u)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gI_infGL_val (v : InfinitePlace E) (u : GL (Fin n) (Cinf E)) :
     (gI v (infGL E n u)).val = fun i j => u.val i j v := by
@@ -49,14 +49,14 @@ theorem gI_infGL_val (v : InfinitePlace E) (u : GL (Fin n) (Cinf E)) :
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `isOpen_ne.preimage (Continuous.matrix_det continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_GLs₀ : IsOpen (GLs n) :=
   isOpen_ne.preimage (Continuous.matrix_det continuous_id)
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_mem_GLs₀ (y : G n) : y.val ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
@@ -67,7 +67,7 @@ def xv (v : InfinitePlace E) (x : Lie E n) : Mat n := fun i j => x i j v
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `contDiff_pi.2 fun i => contDiff_pi.2 fun j => (contDiff_apply ℝ ℂ v).comp ((contDiff_apply ℝ _ j).comp (contDiff_apply ℝ _ i))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_xv (v : InfinitePlace E) : ContDiff ℝ ∞ (xv (n := n) v) :=
   contDiff_pi.2 fun i => contDiff_pi.2 fun j =>
@@ -75,7 +75,7 @@ theorem contDiff_xv (v : InfinitePlace E) : ContDiff ℝ ∞ (xv (n := n) v) :=
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Use `contDiffAt_pi.2 fun i => contDiffAt_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffAt.sum fun k _ => (contDiffAt_pi.1 (contDiffAt_pi.1 hf i) k).mul (contDiffAt_pi.1 (contDiffAt_pi.1 hg k) j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_matMul {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {f g : X → Mat n} {x : X}
     (hf : ContDiffAt ℝ ∞ f x) (hg : ContDiffAt ℝ ∞ g x) : ContDiffAt ℝ ∞ (fun y => f y * g y) x := by
@@ -91,7 +91,7 @@ def uOf (x : Lie E n) : GL (Fin n) (Cinf E) := if h : IsUnit (Matrix.of x) then 
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `h : IsUnit (Matrix.of x)` using `hx`. Rewrite using `[uOf, dif_pos h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uOf_val {x : Lie E n} (hx : x ∈ invSet E n) : (uOf x).val = Matrix.of x := by
   have h : IsUnit (Matrix.of x) := hx
@@ -99,7 +99,7 @@ theorem uOf_val {x : Lie E n} (hx : x ∈ invSet E n) : (uOf x).val = Matrix.of 
   rfl
 
 /- English proof (translation)
-Establish `h : IsUnit (Matrix.of x)` using `hx`. Rewrite using `[chart, dif_pos h, uOf, dif_pos h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_eq {φ : GA E n → ℂ} {g : GA E n} {x : Lie E n} (hx : x ∈ invSet E n) :
     chart φ g x = φ (g * infGL E n (uOf x)) := by
@@ -108,11 +108,11 @@ theorem chart_eq {φ : GA E n → ℂ} {g : GA E n} {x : Lie E n} (hx : x ∈ in
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Use `show Continuous fun x : invSet E n => uOf x.1`. Establish `hv : Continuous fun x : invSet E n => (Matrix.of x.1 : Matrix (Fin n) (Fin n) (Cinf E))` using `continuous_subtype_val`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (Units.val ∘ fun x : invSet E n => uOf x.1) = fun x => Matrix.of x.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun x => uOf_val x.2`. Rewrite using `[e]`. Conclude with `hv`. Establish `e : (fun x : invSet E n => ((uOf x.1)⁻¹ : GL (Fin n) (Cinf E)).val) = fun x => Ring.inverse (Matrix.of x.1).det • (Matrix.of x.1).adjugate` using `funext fun x => by`. Rewrite using `[Matrix.coe_units_inv, uOf_val x.2, Matrix.inv_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `Continuous.smul (M := Cinf E) ?_ (Continuous.matrix_adjugate hv)` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Establish `hu : IsUnit (Matrix.of x.1).det` using `(Matrix.isUnit_iff_isUnit_det _).1 x.2`. Conclude with `ContinuousAt.comp (f := fun x : invSet E n => (Matrix.of x.1).det) (g := Ring.inverse) (NormedRing.inverse_continuousAt (R := Cinf E) hu.unit) (Continuous.matrix_det hv).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_uOf : ContinuousOn (uOf (E := E) (n := n)) (invSet E n) := by
   rw [continuousOn_iff_continuous_domRestrict]
@@ -135,7 +135,7 @@ theorem continuousOn_uOf : ContinuousOn (uOf (E := E) (n := n)) (invSet E n) := 
       (NormedRing.inverse_continuousAt (R := Cinf E) hu.unit) (Continuous.matrix_det hv).continuousAt
 
 /- English proof (translation)
-Rewrite using `[gI_infGL_val, uOf_val hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem xv_eq {x : Lie E n} (hx : x ∈ invSet E n) (v : InfinitePlace E) :
     (gI v (infGL E n (uOf x))).val = xv v x := by
@@ -143,7 +143,7 @@ theorem xv_eq {x : Lie E n} (hx : x ∈ invSet E n) (v : InfinitePlace E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← xv_eq hx v]`. Conclude with `val_mem_GLs₀ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xv_mem {x : Lie E n} (hx : x ∈ invSet E n) (v : InfinitePlace E) : xv v x ∈ GLs n := by
   rw [← xv_eq hx v]
@@ -151,7 +151,7 @@ theorem xv_mem {x : Lie E n} (hx : x ∈ invSet E n) (v : InfinitePlace E) : xv 
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Use `show (A⁻¹ * B).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (inv_ne_zero hA) hB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mul_mem {A B : Mat n} (hA : A ∈ GLs n) (hB : B ∈ GLs n) : A⁻¹ * B ∈ GLs n := by
   show (A⁻¹ * B).det ≠ 0
@@ -166,15 +166,15 @@ def Wset (E : Type) [Field E] [NumberField E] (n : ℕ) : Set ((InfinitePlace E 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `(isOpen_set_pi Set.finite_univ fun _ _ => isOpen_GLs₀).prod isOpen_univ`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Wset : IsOpen (Wset E n) :=
   (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_GLs₀).prod isOpen_univ
 
 /- English proof (translation)
-Introduce and unpack `⟨x, m, b⟩ ⟨hx, hm, -⟩`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Use `(contDiffAt_prod fun v _ => ?_).mul (contDiff_snd.comp contDiff_snd).contDiffAt` and prove the remaining obligations. Establish `hinv : ContDiffAt ℝ ∞ (fun q : Lie E n × ((InfinitePlace E → Mat n) × ℂ) => (xv v q.1)⁻¹) (x, m, b)` using `ContDiffAt.comp (g := fun A : Mat n => A⁻¹) (f := fun q : Lie E n × ((InfinitePlace E → Mat n) × ℂ) => xv v q.1) (x, m, b) (GlobalTheory.CompanionTheory.WaveCp.Rep.Frame.contDiffOn_inv_real.contDiffAt (isOpen_GLs₀.mem_nhds (xv_mem hx v))) ((contDiff_xv v).comp contDiff_fst).contD …`. Establish `hmv : ContDiffAt ℝ ∞ (fun q : Lie E n × ((InfinitePlace E → Mat n) × ℂ) => q.2.1 v) (x, m, b)` using `((contDiff_apply ℝ (Mat n) v).comp (contDiff_fst.comp contDiff_snd)).contDiffAt`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ContDiffAt.comp (g := κ v) (f := fun q : Lie E n × ((InfinitePlace E → Mat n) × ℂ) => (xv v q.1)⁻¹ * q.2.1 v) (x, m, b) ((hκ v).contDiffAt (isOpen_GLs₀.mem_nhds (inv_mul_mem (xv_mem hx v) (hm v trivial)))) (contDiffAt_matMul (f := fun q : Lie E n × ((InfinitePlace E → Mat n) × ℂ) …`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_kerQ {κ : InfinitePlace E → Mat n → ℂ} (hκ : ∀ v, ContDiffOn ℝ ∞ (κ v) (GLs n)) :
     ContDiffOn ℝ ∞ (kerQ κ) (invSet E n ×ˢ Wset E n) := by
@@ -197,21 +197,19 @@ variable {T : Type} [TopologicalSpace T] [Group T] [IsTopologicalGroup T] [T2Spa
   [BorelSpace T]
 
 /- English proof (translation)
-Use `fun g => ?_` and prove the remaining obligations. Set `p : T → (InfinitePlace E → Mat n) × ℂ` to `fun y => (fun v => (gI v (ρ ((t₀ * ι g)⁻¹ * y))).val, C ((t₀ * ι g)⁻¹ * y) * F y)`. Establish `hp : Continuous p`. Establish `hl : Continuous fun y : T => (t₀ * ι g)⁻¹ * y` using `continuous_const.mul continuous_id`. Conclude with `(continuous_pi fun v => Units.continuous_val.comp ((continuous_gI v).comp (hρ.comp hl))).prodMk ((hC.comp hl).mul hF)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpW : ∀ y, p y ∈ Wset E n` using `fun y => ⟨fun v _ => val_mem_GLs₀ _, trivial⟩`. Establish `key : ∀ x ∈ invSet E n, ∀ y, kerQ κ (x, p y) = Φ ((ι (infGL E n (uOf x)))⁻¹ * ((t₀ * ι g)⁻¹ * y)) * F y`. Introduce `x hx y`. Rewrite using `[hΦ, ← map_inv ι, ← map_inv (infGL E n), hρι, hCι, mul_assoc]`. Use `show (∏ v, κ v ((xv v x)⁻¹ * (gI v (ρ ((t₀ * ι g)⁻¹ * y))).val)) * (C ((t₀ * ι g)⁻¹ * y) * F y) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, map_inv, Units.val_mul, Matrix.coe_units_inv, xv_eq hx v]`. Establish `hsupp : ∀ x ∈ invSet E n, ∃ K, IsCompact K ∧ ∀ᶠ x' in 𝓝 x, ∀ y ∉ K, kerQ κ (x', p y) = 0`. Introduce `x₀ hx₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 isOpen_invSet x₀ hx₀`. Establish `hS : closedBall x₀ (r / 2) ⊆ invSet E n` using `(closedBall_subset_ball (half_lt_self hr)).trans hrU`. Set `L : Lie E n × T → T` to `fun q => t₀ * ι g * ι (infGL E n (uOf q.1)) * q.2`. Use `⟨L '' (closedBall x₀ (r / 2) ×ˢ tsupport Φ), ((isCompact_closedBall x₀ (r / 2)).prod hΦc).image_of_continuousOn ?_, ?_⟩` and prove the remaining obligations. Establish `hu : ContinuousOn (fun q : Lie E n × T => ι (infGL E n (uOf q.1))) (closedBall x₀ (r / 2) ×ˢ tsupport Φ)` using `(hι.comp continuous_infGL₀).comp_continuousOn (continuousOn_uOf.comp continuous_fst.continuousOn fun q hq => hS hq.1)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(continuousOn_const.mul hu).mul continuous_snd.continuousOn`. Use `filter_upwards [closedBall_mem_nhds x₀ (half_pos hr)] with x' hx' y hy`. Rewrite using `[key x' (hS hx') y]`. Establish `hw : (ι (infGL E n (uOf x')))⁻¹ * ((t₀ * ι g)⁻¹ * y) ∉ tsupport Φ`. Introduce `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hy` to reduce the goal to its premises. Use `⟨(x', _), ⟨hx', hw⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [L, mul_assoc, mul_inv_rev, mul_inv_cancel_left]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hw, zero_mul]`. Use `(contDiffOn_integral (μ := μ) isOpen_invSet isOpen_Wset hp hpW (contDiffOn_kerQ hκ) hsupp).congr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Rewrite using `[chart_eq hx]`. Establish `h2` using `integral_mul_left_eq_self (μ := μ) (fun y => Φ ((t₀ * ι (g * infGL E n (uOf x)))⁻¹ * y) * F y) (t₀ * ι (g * infGL E n (uOf x)))`. Simplify using `only [inv_mul_cancel_left] at h2`. Rewrite using `[h2]`.
-
-Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[key x hx y]`. Simplify using `only [map_mul, mul_inv_rev, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Sm_conv (μ : Measure T) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
     (ι : GA E n →* T) (hι : Continuous ι) (ρ : T → GA E n) (hρ : Continuous ρ)

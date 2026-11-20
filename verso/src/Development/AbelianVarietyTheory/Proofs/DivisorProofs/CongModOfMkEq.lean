@@ -15,9 +15,9 @@ namespace GlobalTheory.Poinc.GalLab
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
 
 /- English proof (translation)
-Establish `hN` using `X₁.ρ.N_eq`. Establish `hn` using `X₁.ρ.n_prime.two_le`. Establish `hk` using `X₁.ρ.two_le`. Establish `hr` using `X₁.S.r_pos`. Establish `h4 : 4 ≤ X₁.S.N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hN]`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem three_le_level (X₁ : Setup F W i) : 3 ≤ X₁.S.r * X₁.S.N := by
   have hN := X₁.ρ.N_eq
@@ -32,7 +32,7 @@ theorem three_le_level (X₁ : Setup F W i) : 3 ≤ X₁.S.r * X₁.S.N := by
   nlinarith
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', -, -, -, y₀, -, u, l, j, -, hyy, -⟩` from `h`. Take `⟨a, ha⟩` from `l.yy_onto (QuotientAddGroup.mk (j.symm μ))`. Conclude with `⟨a, by rw [hyy a _ ha, AddEquiv.apply_symm_apply]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLab_onto (X : Setup F W i) (ε : Matrix (Fin 8) (Fin 8) ℤ → (X.ρ.P.A ⟶ X.ρ.P.A)) {p : ℕ} [Fact p.Prime]
     {z : X.M.Z} (c : CTrait X p z) (yy : X.S.Gam →+ ModN (X.S.r * X.S.N) (Fin 8 → c.T.D.toPre.X))
@@ -42,9 +42,9 @@ theorem isLab_onto (X : Setup F W i) (ε : Matrix (Fin 8) (Fin 8) ℤ → (X.ρ.
   exact ⟨a, by rw [hyy a _ ha, AddEquiv.apply_symm_apply]⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `QuotientAddGroup.eq.1 h`. Establish `hw0` using `congrFun hw 0`. Simplify using `only [nsmulAddMonoidHom_apply, Pi.smul_apply, Pi.add_apply, Pi.neg_apply, Pi.single_eq_same, map_nsmul] at hw0`. Use `⟨w 0, ?_⟩` and prove the remaining obligations. Establish `key : (d : ℤ) • ((L₁ : ℤ) • w 0) = (d : ℤ) • (κ x - x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← mul_smul, ← Nat.cast_mul, ← hm, natCast_zsmul, hw0, smul_sub, natCast_zsmul, natCast_zsmul]`. Normalize the expressions using the abelian group laws. Use `smul_right_injective X (show (d : ℤ) ≠ 0 by exact_mod_cast hd) key` as an intermediate fact. Rewrite using `[← natCast_zsmul, this]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem congMod_of_mk_eq {X : Type} [AddCommGroup X] [Module.Free ℤ X] (κ : X ≃+ X) (m d L₁ : ℕ) (hm : m = d * L₁)
     (hd : d ≠ 0) (x : X)
@@ -61,17 +61,17 @@ theorem congMod_of_mk_eq {X : Type} [AddCommGroup X] [Module.Free ℤ X] (κ : X
   rw [← natCast_zsmul, this]; abel
 
 /- English proof (translation)
-Take `⟨κ, hκβ, hκ⟩` from `LabUniq.main g n F W Z i D.X D.ε D.diag p (y (cPt p)) (D.lift c y h) yy yy' hl hl'`. Establish `hdvd : X₁.S.r * X₁.S.N ∣ D.X.S.r * D.X.S.N`. Rewrite using `[D.sq]`. Conclude with `D.dvd.trans ((dvd_pow_self D.m two_ne_zero).mul_left _)`. Establish `hdL : D.X.S.r * D.X.S.N = D.X.S.r * D.X.S.N / (X₁.S.r * X₁.S.N) * (X₁.S.r * X₁.S.N)` using `(Nat.div_mul_cancel hdvd).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : D.X.S.r * D.X.S.N / (X₁.S.r * X₁.S.N) ≠ 0`. Introduce `h0`. Establish `h3` using `three_le_level D.X`. Rewrite `h3` using `[hdL, h0, zero_mul]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hcong : ∀ x, CongMod (X₁.S.r * X₁.S.N) (κ x) x`. Introduce `x`. Take `⟨a, ha⟩` from `isLab_onto X₁ ε₁ c yy₁ h₁ (Pi.single 0 x)`. Establish `e1` using `hc a _ ha`. Establish `e2` using `hc' a _ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `hκ (D.lab a) _ e1`. Rewrite `e3` using `[e2]`. Conclude with `congMod_of_mk_eq κ _ _ _ hdL hd0 x e3`. Set `e : c.T.D.toPre.X ≃ₗ[ℤ] c.T.D.toPre.X` to `κ.toIntLinearEquiv`. Establish `he : e = LinearEquiv.refl ℤ _` using `eq_refl_of_isometry_congMod _ c.T.β (fun x hx => Trait.beta_pos g n _ _ F c.T x hx) e hκβ _ (three_le_level X₁) hcong`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ1 : ∀ x, κ x = x` using `fun x => by`. Use `congrArg (fun f : c.T.D.toPre.X ≃ₗ[ℤ] c.T.D.toPre.X => f x) he` as an intermediate fact. Simplify `this` using `[e]`. Use `AddMonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `QuotientAddGroup.mk_surjective (yy x)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hκ x μ hμ.symm, ← hμ]`. Simplify using `[hκ1]`.
+A detailed English derivation is pending.
 -/
 theorem rigid {X₁ : Setup F W i} {ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (D : Deep X₁ ε₁)
     {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (c : CTrait X₁ p z₁)
@@ -114,9 +114,9 @@ theorem rigid {X₁ : Setup F W i} {ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁
 end GlobalTheory.Poinc.GalLab
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D σ s hs`. Take `⟨a, hfix, htr⟩` from `GlobalTheory.T.galois_transport_torsion_labels_thetaSetup g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D σ s hs`. Use `⟨a, hfix, ?_⟩` and prove the remaining obligations. Introduce `p _ z₁ c yy₁ h₁ y h h' yy yy' hl hc hl' hc' x`. Establish `hl2` using `htr p z₁ c y h h' yy hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc2 : D.Compat yy₁ (yy.comp a.toAddMonoidHom)` using `fun b μ hb => by`. Simplify using `only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, hfix]`. Conclude with `hc b μ hb`. Use `GalLab.rigid D c yy₁ h₁ (y ≫ s) h' (yy.comp a.toAddMonoidHom) yy' hl2 hc2 hl' hc'` as an intermediate fact. Conclude with `(DFunLike.congr_fun this x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.GalLab.main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (D : Deep X₁ ε₁) (σ : D.X.Ω₁ ≃ₐ[X₁.Ω₁] D.X.Ω₁) (s : D.X.M.Z ⟶ D.X.M.Z), D.X.M.pt ≫ s = spMap (σ : D.X.Ω₁ →+* D.X.Ω₁) ≫ D.X.M.pt → ∃ a : D.X.S.Gam ≃+ D.X.S.Gam, (∀ x, a (D.lab x) = D.lab x) ∧ ∀ (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (c : CTrait X₁ p z₁) (yy₁ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c.T.D.toPre.X)), IsLab X₁ ε₁ c yy₁ → ∀ (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = c.y) (h' : (y ≫ s) ≫ D.q = c.y) (yy yy' : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) (Fin 8 → c.T.D.toPre.X)), IsLab D.X D.ε (D.lift c y h) yy → D.Compat yy₁ yy → IsLab D.X D.ε (D.lift c (y ≫ s) h') yy' → D.Compat yy₁ yy' → ∀ x, yy' x = yy (a x) := by
   intro g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D σ s hs

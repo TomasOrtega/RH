@@ -19,19 +19,17 @@ open ValuativeRel
 namespace GlobalTheory.ChiGrid.GridData
 
 /- English proof (translation)
-Introduce `D T L sc G v hv`. Take `⟨e, he⟩` from `G.pl.w_split v (Finset.mem_insert.2 (G.pl.mem_S0_of_sum_eq.1 hv))`. Establish `hconj : Formalism.DivisionValues.conjPl (G.pl.w v) ≠ G.pl.w v` using `GlobalTheory.ModulusNorm.conjPl_ne_of_isIdemAt he`. Establish `eqOf : ∀ (v' : HeightOneSpectrum (𝓞 D.host.F)) (Q : HeightOneSpectrum (𝓞 D.host.E)), (G.pl.w v').asIdeal ≤ Q.asIdeal → G.pl.w v' = Q` using `fun v' Q h => HeightOneSpectrum.ext ((G.pl.w v').isMaximal.eq_of_le Q.isPrime.ne_top h)`. Establish `hmod : G.modul = ∏ v' ∈ G.pl.S0, (G.pl.w v').asIdeal ^ G.pl.depth sc v'` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and, not_not] at hcon`. Establish `hle : G.modul ≤ (G.pl.w v).asIdeal ^ (G.pl.depth sc v + 1)` using `fun m hm => hcon m hm`. Rewrite `hle` using `[hmod, ← Finset.mul_prod_erase _ _ hv]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set J := ∏ v' ∈ G.pl.S0.erase v, (G.pl.w v').asIdeal ^ G.pl.depth sc v'`. Establish `hd : (G.pl.w v).asIdeal ^ G.pl.depth sc v * (G.pl.w v).asIdeal ∣ (G.pl.w v).asIdeal ^ G.pl.depth sc v * J`. Rewrite using `[← pow_succ]`. Conclude with `Ideal.dvd_iff_le.2 hle`. Establish `hJ : (G.pl.w v).asIdeal ∣ J` using `(mul_dvd_mul_iff_left (pow_ne_zero _ (G.pl.w v).ne_bot)).1 hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hJle : J ≤ (G.pl.w v).asIdeal` using `Ideal.le_of_dvd hJ`. Take `⟨v', hv'S, hpow⟩` from `(Ideal.IsPrime.prod_le (G.pl.w v).isPrime).1 hJle`. Establish `hvv` using `Finset.mem_erase.1 hv'S`. Use `eqOf v' (G.pl.w v) (Ideal.IsPrime.le_of_pow_le hpow)` as an intermediate fact. Apply `hvv.1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← G.pl.under_w hvv.2, ← G.pl.under_w hv, this]`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and, not_not] at hcon`. Establish `hle : G.modul ≤ (Formalism.DivisionValues.conjPl (G.pl.w v)).asIdeal` using `fun m hm => hcon m hm`. Rewrite `hle` using `[hmod]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v', hv'S, hpow⟩` from `(Ideal.IsPrime.prod_le (Formalism.DivisionValues.conjPl (G.pl.w v)).isPrime).1 hle`. Establish `h1` using `eqOf v' _ (Ideal.IsPrime.le_of_pow_le hpow)`. Establish `h2 : v' = v`. Rewrite using `[← G.pl.under_w hv'S, ← G.pl.under_w hv, h1, GlobalTheory.ChainTw.ParInv.under_conjPl]`. Substitute `h2` using the available equality.
-
-Conclude with `hconj h1.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem modul_witness : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc), ∀ v ∈ G.pl.S0,
   (∃ m ∈ G.modul, m ∉ (G.pl.w v).asIdeal ^ (G.pl.depth sc v + 1)) ∧ ∃ m ∈ G.modul, m ∉ (Formalism.DivisionValues.conjPl (G.pl.w v)).asIdeal := by

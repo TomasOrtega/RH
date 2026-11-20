@@ -7,31 +7,29 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 namespace GlobalTheory.PsType
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n ψ r ϖ hϖ hv z hz g hg hup`. Use `set d : Fin n → k := fun i => if (i : ℕ) < r then ϖ else 1 with hd`. Establish `hd0 : ∀ i, d i ≠ 0`. Apply the tactic sequence `intro i; simp only [hd]; split_ifs <;> simp [hϖ]`. Establish `h2 : diagonal (fun i => (d i)⁻¹) * z.val = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, diagonal_mul_diagonal]`. Use extensionality with `i j`. Simplify using `[diagonal, one_apply, hd0]`. Establish `hzi : (z⁻¹).val = diagonal (fun i => (d i)⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Establish `hent : ∀ i j, (z⁻¹ * g * z).val i j = (d i)⁻¹ * g.val i j * d j`. Introduce `i j`. Rewrite using `[Units.val_mul, Units.val_mul, hzi, hz, mul_diagonal, diagonal_mul]`. Establish `hupper : ∀ i j : Fin n, i < j → (z⁻¹ * g * z).val i j = g.val i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Rewrite using `[hent]`. Establish `hij' : (i : ℕ) < j` using `hij`. Distinguish the cases in `hi : (i : ℕ) < r`. Distinguish the cases in `hj : (j : ℕ) < r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd, if_pos hi, if_pos hj]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hup i j hi (not_lt.1 hj)]`. Simplify using the standard rewrite rules. Establish `hj : ¬ (j : ℕ) < r` using `by omega`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd, if_neg hi, if_neg hj]`. Simplify using the standard rewrite rules. Establish `hle : ∀ i j, valuation k ((z⁻¹ * g * z).val i j) ≤ valuation k (g.val i j)`. Introduce `i j`. Rewrite using `[hent]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : (i : ℕ) < r`. Distinguish the cases in `hj : (j : ℕ) < r`. Simplify using `only [hd, if_pos hi, if_pos hj]`. Establish `: ϖ⁻¹ * g.val i j * ϖ = g.val i j` using `by field_simp`. Rewrite using `[this]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hup i j hi (not_lt.1 hj)]`. Simplify using the standard rewrite rules. Distinguish the cases in `hj : (j : ℕ) < r`. Simplify using `only [hd, if_neg hi, if_pos hj, inv_one, one_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd, if_neg hi, if_neg hj]`. Simplify using the standard rewrite rules. Establish `hdet : (z⁻¹ * g * z).val.det = g.val.det`. Rewrite using `[Units.val_mul, Units.val_mul, det_mul, det_mul, mul_comm, ← mul_assoc, ← det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, det_one, one_mul]`. Establish `hminor : ∀ m, minor (z⁻¹ * g * z) m = minor g m`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Simplify using `only [minor]`. Use `set G := g.val.toSquareBlockProp (fun i => i ≤ m) with hG`. Establish `e : (z⁻¹ * g * z).val.toSquareBlockProp (fun i => i ≤ m) = of fun (i j : {a // a ≤ m}) => (d i)⁻¹ * (of fun (i j : {a // a ≤ m}) => d j * G i j) i j`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hG, toSquareBlockProp_def, toBlock_apply, of_apply, hent]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, det_mul_column (fun i : {a // a ≤ m} => (d i)⁻¹), det_mul_row (fun j : {a // a ≤ m} => d j) G, ← mul_assoc, ← Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_eq_one (fun (i : {a // a ≤ m}) _ => inv_mul_cancel₀ (hd0 i.1)), one_mul]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgk` using `(GlobalTheory.LocStd.mem_KO_iff_det.1 hg.1)`. Use `GlobalTheory.LocStd.mem_KO_iff_det.2 ⟨fun i j => ?_, by rw [hdet]; exact hgk.2⟩` and prove the remaining obligations. Conclude with `(Valuation.mem_integer_iff _ _).2 ((hle i j).trans ((Valuation.mem_integer_iff _ _).1 (hgk.1 i j)))`. Introduce `i j hij`. Rewrite using `[hupper i j hij]`.
-
-Conclude with `hg.2 i j hij`. Simplify using `only [theta, hminor]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_blockLower_mem_theta : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ) (r : ℕ) (ϖ : k), ϖ ≠ 0 → valuation k ϖ < 1 → ∀ (z : GL (Fin n) k), z.val = Matrix.diagonal (fun i : Fin n => if (i : ℕ) < r then ϖ else 1) → ∀ g ∈ grp ψ, (∀ a b : Fin n, (a : ℕ) < r → r ≤ (b : ℕ) → g.val a b = 0) → z⁻¹ * g * z ∈ grp ψ ∧ theta ψ (z⁻¹ * g * z) = theta ψ g := by
   intro k _ _ _ _ n ψ r ϖ hϖ hv z hz g hg hup

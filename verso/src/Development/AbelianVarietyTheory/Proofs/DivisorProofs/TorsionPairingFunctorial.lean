@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [torsMap_val, ← spOver_comp, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem torsMap_comp_of_pair {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
     {B C D : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] [CommRing D] [Algebra R D]
@@ -26,15 +26,15 @@ private theorem torsMap_comp_of_pair {R : Type} [CommRing R] {G : Over (Sp R)} [
   simp only [torsMap_val, ← spOver_comp, Category.assoc]
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N N' hN hN' σ hnat hK B _ _ x y`. Take `⟨Idx, _, q, c, hc⟩` from `GlobalTheory.T.exists_finite_torsion_prechart_cover R K G hG N hN`. Take `⟨Idx', _, q', c', hc'⟩` from `GlobalTheory.T.exists_finite_torsion_prechart_cover R K G hG N' hN'`. Use `eq_zero_of_localization (σ B x y) (fun P hP => ?_)` and prove the remaining obligations. Set `L` to `Localization.AtPrime P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `φ : B →ₐ[R] L` to `IsScalarTower.toAlgHom R B L`. Take `⟨i, hi⟩` from `hc (IsLocalRing.ResidueField L) (torsMap (IsScalarTower.toAlgHom R L (IsLocalRing.ResidueField L)) (torsMap φ x))`. Take `⟨k, hk⟩` from `hc' (IsLocalRing.ResidueField L) (torsMap (IsScalarTower.toAlgHom R L (IsLocalRing.ResidueField L)) (torsMap φ y))`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.prechart_lift_local_points R G N (q i) (c i) L (torsMap φ x) hi`. Take `⟨ψ', hψ'⟩` from `GlobalTheory.T.prechart_lift_local_points R G N' (q' k) (c' k) L (torsMap φ y) hk`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `flat' : Module.Flat R (c' k).C` using `Module.Flat.trans R (Localization.Away (c' k).r) (c' k).C`. Set `D` to `(c i).C ⊗[R] (c' k).C`. Set `u : (c i).C →ₐ[R] D` to `Algebra.TensorProduct.includeLeft`. Set `v : (c' k).C →ₐ[R] D` to `Algebra.TensorProduct.includeRight`. Set `Ψ : D →ₐ[R] L` to `Algebra.TensorProduct.productMap ψ ψ'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hu : Ψ.comp u = ψ` using `Algebra.TensorProduct.productMap_left ψ ψ'`. Establish `hv : Ψ.comp v = ψ'` using `Algebra.TensorProduct.productMap_right ψ ψ'`. Establish `h0 : σ D (torsMap u (c i).j) (torsMap v (c' k).j) = 0`. Take `⟨hfin, hsep⟩` from `GlobalTheory.T.torsion_prechart_points_separate R K G hG N hN (q i) (c i)`. Take `⟨-, hsep'⟩` from `GlobalTheory.T.torsion_prechart_points_separate R K G hG N' hN' (q' k) (c' k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.tensor_points_separate R K (c i).C (c' k).C hfin hsep hsep' _ (fun χ => ?_)` and prove the remaining obligations. Rewrite using `[← hnat, ← torsMap_comp_of_pair, ← torsMap_comp_of_pair]`. Conclude with `hK _ _`. Use `show φ (σ B x y) = 0`. Rewrite using `[← hnat, ← hψ, ← hψ', ← hu, ← hv, torsMap_comp_of_pair, torsMap_comp_of_pair, hnat, h0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natFn_pair_eq_zero : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N N' : ℕ), N ≠ 0 → N' ≠ 0 → ∀ σ : ∀ (B : Type) [CommRing B] [Algebra R B], Tors G N B → Tors G N' B → B, (∀ (B C : Type) [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) (x : Tors G N B) (y : Tors G N' B), σ C (torsMap φ x) (torsMap φ y) = φ (σ B x y)) → (∀ x y, σ K x y = 0) → ∀ (B : Type) [CommRing B] [Algebra R B] (x : Tors G N B) (y : Tors G N' B), σ B x y = 0 := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N N' hN hN' σ hnat hK B _ _ x y

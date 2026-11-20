@@ -22,7 +22,7 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) [Fintype 
 include ℓ k hℓ hnk hS hμ in
 
 /- English proof (translation)
-The claim follows from `gsRoots_ρ_apply_of_mem S n hμ nonempty_addEquiv := nonempty_addEquiv_gsRoots S n hμ loc_one v := (bijective_gsLocalPairing_one S ιs n hμ v).2 loc_two v := bijective_gsLocalPairing_two S ιs n hμ v bijective_alt := bijective_gsCompactInv_of_mem S n ιs ℓ k hℓ hnk hS hμ hodd h3 T_loc …`.
+A detailed English derivation is pending.
 -/
 theorem BaseDualityHypotheses.of_gs
     (h3Z : Subsingleton (cohomology (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 3))
@@ -57,7 +57,7 @@ theorem BaseDualityHypotheses.of_gs
 include ℓ k hℓ hnk hS hμ in
 
 /- English proof (translation)
-The claim follows from `(BaseDualityHypotheses.of_gs S ιs n ℓ k hℓ hnk hS hμ hodd h3 h3Z hfin1 hfin2 hleft hright).bijective_compactZmodDualityMap h`.
+A detailed English derivation is pending.
 -/
 theorem bijective_gs_compactZmodDualityMap
     (h3Z : Subsingleton (cohomology (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 3))

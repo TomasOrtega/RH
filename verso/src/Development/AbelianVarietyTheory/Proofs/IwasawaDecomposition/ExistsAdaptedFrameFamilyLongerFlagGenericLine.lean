@@ -17,9 +17,9 @@ abbrev blk (k : ι → ℕ) (τ : ι) (P : Mat m K) : Matrix (Rest m k τ) (Rest
   (P τ).submatrix Subtype.val Subtype.val
 
 /- English proof (translation)
-Rewrite using `[Pi.mul_apply, Matrix.mul_apply, ← Fintype.sum_subtype_add_sum_subtype (fun l : Fin (m τ) => k τ ≤ (l : ℕ))]`. Establish `: ∑ l : {l : Fin (m τ) // ¬ k τ ≤ (l : ℕ)}, g τ a l.1 * P τ l.1 j.1 = 0` using `Finset.sum_eq_zero fun l _ => by`. Establish `h1` using `l.2`. Establish `h2` using `j.2`. Rewrite using `[(hP τ).2.2.2 l.1 j.1 (by omega) (by show (l.1 : ℕ) < j.1; omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mul_apply_rest {P : Mat m K} (hP : Par k O P) (g : Mat m K) (a : Fin (m τ)) (j : Rest m k τ) :
     (g * P) τ a j.1 = Matrix.vecMul (fun l : Rest m k τ => g τ a l.1) (blk k τ P) j := by
@@ -33,9 +33,9 @@ theorem mul_apply_rest {P : Mat m K} (hP : Par k O P) (g : Mat m K) (a : Fin (m 
   rfl
 
 /- English proof (translation)
-Use extensionality with `a j`. Use `mul_apply_rest hP.inv P a.1 j` as an intermediate fact. Rewrite `this` using `[Mat.mul_inv hP.det_ne]`. Use `this.symm.trans ?_` and prove the remaining obligations. Use `show (1 : Matrix _ _ K) a.1 j.1 = _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.one_apply, Subtype.ext_iff]`.
+A detailed English derivation is pending.
 -/
 theorem blk_mul_inv {P : Mat m K} (hP : Par k O P) : blk k τ P * blk k τ P⁻¹ = 1 := by
   ext a j
@@ -46,15 +46,15 @@ theorem blk_mul_inv {P : Mat m K} (hP : Par k O P) : blk k τ P * blk k τ P⁻�
   simp only [Matrix.one_apply, Subtype.ext_iff]
 
 /- English proof (translation)
-Establish `e : ∀ (x : K) (j : Rest m k τ), Matrix.vecMul (Pi.single (⟨⟨k τ, hk⟩, le_rfl⟩ : Rest m k τ) x) (blk k τ Q) j = x * Q τ ⟨k τ, hk⟩ j.1` using `fun x j => by`. Rewrite using `[Matrix.single_vecMul]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩ j hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : Matrix.vecMul (fun l : Rest m k τ => g τ ⟨k τ, hk⟩ l.1) (blk k τ Q) = Matrix.vecMul (Pi.single (⟨⟨k τ, hk⟩, le_rfl⟩ : Rest m k τ) (a * b)) (blk k τ Q)`. Use function extensionality and compare the values at `l`. Rewrite using `[← mul_apply_rest hQ, ha, e, hs, mul_assoc]`. Establish `h2` using `congrArg (Matrix.vecMul · (blk k τ Q⁻¹)) h1`. Simplify using `only [Matrix.vecMul_vecMul, blk_mul_inv hQ, Matrix.vecMul_one] at h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrFun h2 ⟨j, hj.le⟩`. Rewrite `h3` using `[Pi.single_eq_of_ne (fun h => hj.ne' (congrArg (fun x : Rest m k τ => (x.1 : ℕ)) h))]`. Then use the resulting hypothesis. Introduce `h`. Use `⟨g τ ⟨k τ, hk⟩ ⟨k τ, hk⟩ / b, fun j => ?_⟩` and prove the remaining obligations. Establish `h1 : (fun l : Rest m k τ => g τ ⟨k τ, hk⟩ l.1) = Pi.single (⟨⟨k τ, hk⟩, le_rfl⟩ : Rest m k τ) (g τ ⟨k τ, hk⟩ ⟨k τ, hk⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = ⟨⟨k τ, hk⟩, le_rfl⟩`. Rewrite using `[hl, Pi.single_eq_same]`. Rewrite using `[Pi.single_eq_of_ne hl]`. Conclude with `h _ (lt_of_le_of_ne l.2 fun h' => hl (Subtype.ext (Fin.ext h'.symm)))`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_apply_rest hQ, h1, e, hs, ← mul_assoc, div_mul_cancel₀ _ hb]`.
+A detailed English derivation is pending.
 -/
 theorem line_iff {Q : Mat m K} (hQ : Par k O Q) (hk : k τ < m τ) {s : Rest m k τ → K} {b : K}
     (hs : ∀ j : Rest m k τ, s j = b * Q τ ⟨k τ, hk⟩ j.1) (hb : b ≠ 0) (g : Mat m K) :
@@ -86,13 +86,11 @@ theorem line_iff {Q : Mat m K} (hQ : Par k O Q) (hk : k τ < m τ) {s : Rest m k
     rw [mul_apply_rest hQ, h1, e, hs, ← mul_assoc, div_mul_cancel₀ _ hb]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨h.mono (fun t => ?_) le_rfl, fun j hj => (h τ).2.2.2 _ j (by rw [h1]; exact Nat.lt_succ_self _) hj⟩` and prove the remaining obligations. Distinguish the cases in `ht : t = τ`. Rewrite using `[ht, h1]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.le_succ _`. Conclude with `(h2 t ht).ge`. Introduce and unpack `⟨h, h'⟩ t`. Use `⟨(h t).1, (h t).2.1, (h t).2.2.1, fun i j hi hij => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ht : t = τ`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `ht` using the available equality. Rewrite `hi` using `[h1]`. Break down `(Nat.lt_succ_iff.1 hi).lt_or_eq with hi | hi` into its components or cases. Conclude with `(h t).2.2.2 i j hi hij`. Take `rfl : i = ⟨k t, hk⟩` from `Fin.ext hi`.
-
-Conclude with `h' j hij`. Conclude with `(h t).2.2.2 i j (h2 t ht ▸ hi) hij`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem par_succ_iff {k' : ι → ℕ} (hk : k τ < m τ) (h1 : k' τ = k τ + 1) (h2 : ∀ τ', τ' ≠ τ → k' τ' = k τ')
     (g : Mat m K) :
@@ -115,19 +113,15 @@ theorem par_succ_iff {k' : ι → ℕ} (hk : k τ < m τ) (h1 : k' τ = k τ + 1
     · exact (h t).2.2.2 i j (h2 t ht ▸ hi) hij
 
 /- English proof (translation)
-Set `v : Fin (m τ) → K` to `fun j => if h : k τ ≤ (j : ℕ) then c ⟨j, h⟩ else 0`. Establish `hv : ∀ j : Rest m k τ, v j.1 = c j` using `fun j => dif_pos j.2`. Set `T : Matrix (Fin (m τ)) (Fin (m τ)) K` to `((1 : Matrix _ _ K).updateRow i.1 v).submatrix (Equiv.swap ⟨k τ, hk⟩ i.1) id`. Establish `hd : T.det * T.det = 1`. Establish `e : ((1 : Matrix _ _ K).updateRow i.1 v).det = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.cramer_transpose_apply, Matrix.transpose_one, Matrix.cramer_one]`. Conclude with `(hv i).trans hi`. Rewrite using `[Matrix.det_permute, e, mul_one, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Use `⟨Function.update (1 : Mat m K) τ T, fun j => ?_, fun O hO t => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self] show ((1 : Matrix _ _ K).updateRow i.1 v) (Equiv.swap ⟨k τ, hk⟩ i.1 ⟨k τ, hk⟩) j.1 = _`. Rewrite using `[Equiv.swap_apply_left, Matrix.updateRow_self, hv]`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality. Rewrite using `[Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ a b, T a b ∈ O` using `fun a b => by show ((1 : Matrix _ _ K).updateRow i.1 v) _ b ∈ O`. Rewrite using `[Matrix.updateRow_apply]`. Use `split_ifs`. Use `show dite _ _ _ ∈ O split_ifs exacts [hO _, O.zero_mem]`. Rewrite using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs`. Use `exacts [O.one_mem, O.zero_mem]`. Use `⟨hm, left_ne_zero_of_mul_eq_one hd, ?_, fun a b ha hab => ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_left hd]`. Conclude with `det_mem hm`.
-
-Establish `h1 : a ≠ ⟨k t, hk⟩` using `fun h => ha.ne (congrArg Fin.val h)`. Establish `h2 : a ≠ i.1` using `fun h => (h ▸ ha).not_ge i.2`. Use `show ((1 : Matrix _ _ K).updateRow i.1 v) (Equiv.swap ⟨k t, hk⟩ i.1 a) b = 0`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2, Matrix.updateRow_ne h2, Matrix.one_apply_ne hab.ne]`. Rewrite using `[Function.update_of_ne ht]`.
-
-Conclude with `Par.one t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_completion (hk : k τ < m τ) (c : Rest m k τ → K) (i : Rest m k τ) (hi : c i = 1) :
     ∃ N : Mat m K, (∀ j : Rest m k τ, N τ ⟨k τ, hk⟩ j.1 = c j) ∧
@@ -172,23 +166,21 @@ end StepLoc
 open StepLoc in
 
 /- English proof (translation)
-Use `⟨⟨stepSet S τ hk A₀ M' φ f s, fun z' => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Take `⟨U, A, hz, hA, hU⟩` from `S.loc (f z')`. Establish `hAU : ∀ w ∈ U, A ∈ S.S w` using `fun w hw => (hU w hw A).2 (by rw [Mat.mul_inv hA]; exact Par.one)`. Take `⟨hd, hE'⟩` from `hE _ A (hAU _ hz)`. Take `⟨i, hi⟩` from `hP.cover z' _ hd hE'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set c := ((dualBlock k τ A₀ A).map φ).mulVec s with hc`. Set `ψ : Ω →+* Ω'` to `φ`. Take `⟨N, hN, hNO⟩` from `exists_completion hk (fun j => c j / c i) i (div_self hi.1)`. Establish `hAφ : ∀ t, (A.map ψ t).det ≠ 0` using `fun t => by rw [Mat.det_map]; exact (map_ne_zero ψ).2 (hA t)`. Establish `hN0 : Par k ⊤ N` using `hNO ⊤ fun _ => trivial`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : Par k ⊤ ((A * A₀⁻¹).map ψ)` using `((Fr.mem_iff hA₀).1 (Fr.mem_genericPoint (hAU _ hz))).map ψ fun _ _ => trivial`. Establish `hs : s = Matrix.vecMul c (blk k τ ((A * A₀⁻¹).map ψ))`. Establish `hP1` using `(Fr.mem_iff hA₀).1 (Fr.mem_genericPoint (hAU _ hz))`. Establish `e1 : (blk k τ (A * A₀⁻¹))⁻¹ * blk k τ (A * A₀⁻¹) = 1` using `Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse (blk_mul_inv hP1))`. Establish `e2 : c = Matrix.vecMul s ((blk k τ (A * A₀⁻¹))⁻¹.map ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← Matrix.mulVec_transpose]`. Both sides reduce to the same expression. Establish `e3 : blk k τ ((A * A₀⁻¹).map ψ) = (blk k τ (A * A₀⁻¹)).map ψ` using `rfl`. Rewrite using `[e2, e3, Matrix.vecMul_vecMul, ← Matrix.map_mul, e1, Matrix.map_one _ ψ.map_zero ψ.map_one, Matrix.vecMul_one]`. Establish `hQ : ∀ j : Rest m k τ, s j = c i * (N * (A * A₀⁻¹).map ψ) τ ⟨k τ, hk⟩ j.1` using `fun j => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun l : Rest m k τ => N τ ⟨k τ, hk⟩ l.1) = (c i)⁻¹ • c`. Use function extensionality and compare the values at `l`. Rewrite using `[hN, Pi.smul_apply, smul_eq_mul, div_eq_inv_mul]`. Rewrite using `[mul_apply_rest hP0, e, Matrix.smul_vecMul, ← hs, Pi.smul_apply, smul_eq_mul, mul_inv_cancel_left₀ hi.1]`. Establish `hA₁ : ∀ t, ((N * A.map ψ) t).det ≠ 0` using `fun t => by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mul_apply, Matrix.det_mul]`. Conclude with `mul_ne_zero (hN0.det_ne t) (hAφ t)`. Use `⟨f ⁻¹ᵁ U ⊓ ⟨_, M'.isOpen_setOf_div c i⟩, N * A.map ψ, ⟨hz, hi⟩, hA₁, fun w hw A' => ?_⟩` and prove the remaining obligations. Establish `hNw : Par k (M'.O w).toSubring N` using `hNO _ hw.2.2`. Establish `hAw : A ∈ S.S (f w)` using `hAU _ hw.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[par_succ_iff hk h1 h2, ← line_iff (hN0.mul hP0) hk hQ hi.1]`. Establish `e1 : A' * (N * A.map ψ)⁻¹ * (N * (A * A₀⁻¹).map ψ) = A' * (A₀.map ψ)⁻¹`. Rewrite using `[Mat.map_mul, Mat.map_inv, ← mul_assoc N, mul_assoc A', ← mul_assoc _ (N * A.map ψ), Mat.inv_mul hA₁, one_mul]`. Rewrite using `[e1]`. Use `and_congr_left' ⟨fun h => ?_, fun h B hB => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `(h A hAw).mul hNw.inv` as an intermediate fact. Rewrite using `[Mat.mul_inv_rev, ← mul_assoc]` and apply the resulting hypothesis. Establish `h3 : Par k (M'.O w).toSubring ((A * B⁻¹).map ψ)` using `((Fr.mem_iff hB).1 hAw).map ψ fun _ hx => hP.hom.map_mem_O hx`. Use `h.mul (hNw.mul h3)` as an intermediate fact. Rewrite `this` using `[Mat.map_mul, Mat.map_inv, ← mul_assoc N, mul_assoc A', ← mul_assoc _ (N * A.map ψ), Mat.inv_mul hA₁, one_mul]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fr_stepSet (F Ω Ω' : Type) [Field F] [Field Ω] [Algebra F Ω] [Field Ω'] [Algebra F Ω']
     (M : RatModel F Ω) (M' : RatModel F Ω') (φ : Ω →ₐ[F] Ω') (f : M'.Z ⟶ M.Z) (ι : Type) [Finite ι]

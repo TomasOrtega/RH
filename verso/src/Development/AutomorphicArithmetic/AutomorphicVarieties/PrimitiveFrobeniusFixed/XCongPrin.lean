@@ -13,20 +13,20 @@ section
 variable {K' k : Type} [Field K'] [NumberField K'] [Field k] {π : 𝓞 K' →+* k}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, 1, hx, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem rel_int (x : 𝓞 K') (hx : π x ≠ 0) : Rel π (x : K') (π x) :=
   ⟨x, 1, hx, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 1, by simp, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem rel_one : Rel π 1 1 := ⟨1, 1, by simp, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Take `⟨n, d, hn, hd, h1, h2⟩` from `h`. Take `⟨n', d', hn', hd', h1', h2'⟩` from `h'`. Use `⟨n * n', d * d', by simp [hn, hn'], by simp [hd, hd'], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← h1, ← h1']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, map_mul, ← h2, ← h2']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem rel_mul {a a' : K'} {b b' : k} (h : Rel π a b) (h' : Rel π a' b') : Rel π (a * a') (b * b') := by
   obtain ⟨n, d, hn, hd, h1, h2⟩ := h
@@ -36,11 +36,11 @@ private theorem rel_mul {a a' : K'} {b b' : k} (h : Rel π a b) (h' : Rel π a' 
   · rw [map_mul, map_mul, ← h2, ← h2']; ring
 
 /- English proof (translation)
-Take `⟨n, d, hn, hd, h1, h2⟩` from `h`. Establish `hn0 : algebraMap _ K' n ≠ 0`. Introduce `h`. Establish `: n = 0` using `by simpa using h`. Conclude with `hn (by simp [this])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a ≠ 0` using `by rintro rfl; exact hn0 (by simpa using h1.symm)`. Establish `hb : b ≠ 0` using `by rintro rfl; exact hn (by simpa using h2.symm)`. Use `⟨d, n, hd, hn, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem rel_inv {a : K'} {b : k} (h : Rel π a b) : Rel π a⁻¹ b⁻¹ := by
   obtain ⟨n, d, hn, hd, h1, h2⟩ := h
@@ -55,7 +55,7 @@ private theorem rel_inv {a : K'} {b : k} (h : Rel π a b) : Rel π a⁻¹ b⁻¹
   · rw [← h2]; field_simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using rel_one`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `rel_mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem rel_pow {a : K'} {b : k} (h : Rel π a b) (n : ℕ) : Rel π (a ^ n) (b ^ n) := by
   induction n with
@@ -63,7 +63,7 @@ private theorem rel_pow {a : K'} {b : k} (h : Rel π a b) (n : ℕ) : Rel π (a 
   | succ n ih => rw [pow_succ, pow_succ]; exact rel_mul ih h
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Simplify using `using rel_pow h m`. Simplify using `using rel_inv (rel_pow h m)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem rel_zpow {a : K'} {b : k} (h : Rel π a b) (n : ℤ) : Rel π (a ^ n) (b ^ n) := by
   obtain ⟨m, rfl | rfl⟩ := Int.eq_nat_or_neg n
@@ -71,7 +71,7 @@ private theorem rel_zpow {a : K'} {b : k} (h : Rel π a b) (n : ℤ) : Rel π (a
   · simpa using rel_inv (rel_pow h m)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using rel_one`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `rel_mul (h i) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem rel_prod {ι : Type} (s : Finset ι) {a : ι → K'} {b : ι → k} (h : ∀ i, Rel π (a i) (b i)) :
     Rel π (∏ i ∈ s, a i) (∏ i ∈ s, b i) := by
@@ -81,11 +81,11 @@ private theorem rel_prod {ι : Type} (s : Finset ι) {a : ι → K'} {b : ι →
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi]; exact rel_mul (h i) ih
 
 /- English proof (translation)
-Take `⟨n, d, hn, hd, h1, h2⟩` from `h`. Take `⟨n', d', hn', hd', h1', h2'⟩` from `h'`. Establish `e : (a - a') * algebraMap _ K' (d * d') = algebraMap _ K' (n * d' - n' * d)`. Rewrite using `[map_mul, map_sub, map_mul, map_mul, ← h1, ← h1']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : v.valuation K' (algebraMap _ K' (d * d')) = 1`. Rewrite using `[HeightOneSpectrum.valuation_eq_one_iff_notMem, ← hv]`. Simplify using `[hd, hd']`. Establish `e2 : v.valuation K' (algebraMap _ K' (n * d' - n' * d)) < 1`. Rewrite using `[HeightOneSpectrum.valuation_lt_one_iff_mem, ← hv, map_sub, map_mul, map_mul, ← h2, ← h2']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `e2` using `[← e, map_mul, e1, mul_one]`. Then use the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem rel_val (v : HeightOneSpectrum (𝓞 K')) (hv : ∀ x, π x = 0 ↔ x ∈ v.asIdeal) {a a' : K'} {b : k}
     (h : Rel π a b) (h' : Rel π a' b) : v.valuation K' (a - a') < 1 := by
@@ -102,9 +102,7 @@ private theorem rel_val (v : HeightOneSpectrum (𝓞 K')) (hv : ∀ x, π x = 0 
   rwa [← e, map_mul, e1, mul_one] at e2
 
 /- English proof (translation)
-Use `haveI := Fact.mk hq`. Establish `h1 : φ hζ.toInteger = ψ hζ.toInteger` using `frobenius_inj k q h`. Establish `h2 : φ.toIntAlgHom = ψ.toIntAlgHom` using `AlgHom.ext_of_adjoin_eq_top (IsCyclotomicExtension.Rat.adjoin_singleton_eq_top hζ) (by`. Introduce and unpack `_ rfl`. Conclude with `h1)`.
-
-Use extensionality with `x`. Conclude with `DFunLike.congr_fun h2 x`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem hom_ext {N q : ℕ} [NeZero N] [IsCyclotomicExtension {N} ℚ K'] (hq : q.Prime) [CharP k q]
     {ζ : K'} (hζ : IsPrimitiveRoot ζ N) (φ ψ : 𝓞 K' →+* k) (h : φ hζ.toInteger ^ q = ψ hζ.toInteger ^ q) :
@@ -120,7 +118,7 @@ private theorem hom_ext {N q : ℕ} [NeZero N] [IsCyclotomicExtension {N} ℚ K'
 end
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ K := IsCyclotomicExtension.isGalois {M} ℚ K`. Establish `h1` using `IsCyclotomicExtension.Rat.galEquivZMod_restrictNormal_apply N K' K h (sg N K' t)`. Rewrite `h1` using `[sg, MulEquiv.apply_symm_apply]`. Rewrite using `[← h1, sg, sg, MulEquiv.symm_apply_apply, AlgEquiv.restrictNormal_commutes]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem compat (M N : ℕ) [NeZero M] [NeZero N] (K K' : Type) [Field K] [NumberField K]
     [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {N} ℚ K'] [Algebra K K']
@@ -132,11 +130,11 @@ private theorem compat (M N : ℕ) [NeZero M] [NeZero N] (K K' : Type) [Field K]
   rw [← h1, sg, sg, MulEquiv.symm_apply_apply, AlgEquiv.restrictNormal_commutes]
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ p]`. Establish `h1 : ∀ t, ∏ t' ∈ Finset.univ.filter (fun t' => p t' = t), f (p t') ^ a' t' = f t ^ a t / f t ^ a (u⁻¹ * t)`. Introduce `t`. Rewrite using `[← zpow_sub₀ (hf t), ← ha, Finset.prod_congr rfl (g := fun t' => f t ^ a' t') (fun t' ht' => by rw [(Finset.mem_filter.1 ht').2])]`. Proceed by induction on `(Finset.univ.filter (fun t' => p t' = t)) using Finset.cons_induction with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `empty => simp`. Consider the case `cons i s hi ih => rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ (hf t)]`. Rewrite using `[Finset.prod_congr rfl (fun t _ => h1 t), Finset.prod_div_distrib, ← Equiv.prod_comp (Equiv.mulLeft u) (fun t => f t ^ a (u⁻¹ * t)), ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, inv_mul_cancel_left]`.
+Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← div_zpow, hfu t]`. Use `congr 1`. Take `⟨q, rfl⟩ : ∃ r, q = r + 1` from `⟨q - 1, by omega⟩`. Use `hf (u * t)` as an intermediate fact. Rewrite using `[pow_succ, Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -165,7 +163,7 @@ private theorem comb {G G' k : Type} [CommGroup G] [Fintype G] [DecidableEq G] [
   field_simp
 
 /- English proof (translation)
-Establish `h1` using `Module.finrank_mul_finrank ℚ K K'`. Rewrite `h1` using `[IsCyclotomicExtension.Rat.finrank M K, IsCyclotomicExtension.Rat.finrank (q * M) K', Nat.totient_mul hc, Nat.totient_prime hq, mul_comm]`. Rewrite using `[Fintype.card_eq_nat_card, IsGalois.card_aut_eq_finrank]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.totient_pos.2 (NeZero.pos M)) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_gal (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K]
     [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K']
@@ -180,39 +178,33 @@ end UpperTheory.V.ML.XCP
 
 open UpperTheory.V.ML.XCP in
 /- English proof (translation)
-Introduce `M q _ _ K K' _ _ _ _ _ _ _ hq u hu b hb y hy v hv`. Use `haveI := Fact.mk hq`. Use `haveI : IsGalois ℚ K' := IsCyclotomicExtension.isGalois {q * M} ℚ K'`. Use `haveI : IsGalois K K' := IsGalois.tower_top_of_isGalois ℚ K K'`. Use `haveI := v.isMaximal`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `letI : Field (𝓞 K' ⧸ v.asIdeal) := Ideal.Quotient.field _`. Take `⟨π, hπ⟩ : ∃ π : 𝓞 K' →+* (𝓞 K' ⧸ v.asIdeal), ∀ x, π x = 0 ↔ x ∈ v.asIdeal` from `⟨Ideal.Quotient.mk _, fun x => Ideal.Quotient.eq_zero_iff_mem⟩`. Use `haveI : CharP (𝓞 K' ⧸ v.asIdeal) q := (CharP.charP_iff_prime_eq_zero hq).2 (by`. Rewrite using `[← map_natCast π, hπ]`. Conclude with `hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : q.Coprime M`. Rewrite using `[← ZMod.isUnit_iff_coprime, ← hu]`. Conclude with `u.isUnit`. Establish `hd : M ∣ q * M` using `Dvd.intro_left q rfl`. Set `act : Gal(K'/ℚ) → 𝓞 K' →+* 𝓞 K'` to `fun σ => (RingOfIntegers.mapRingEquiv σ.toRingEquiv).toRingHom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hact : ∀ σ x, ((act σ x : 𝓞 K') : K') = σ (x : K')` using `fun _ _ => rfl`. Establish `hmul : ∀ σ τ x, act (σ * τ) x = act σ (act τ x)` using `fun _ _ _ => rfl`. Establish `hne : ∀ σ, π (act σ y) ≠ 0`. Introduce `σ h`. Establish `hq0 : (q : 𝓞 K') ∈ RingHom.ker (π.comp (act σ))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_natCast]`. Conclude with `CharP.cast_eq_zero _ q`. Use `hy ⟨RingHom.ker (π.comp (act σ)), RingHom.ker_isPrime _, fun h0 => ?_⟩ hq0 h` and prove the remaining obligations. Rewrite `hq0` using `[h0, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hq0)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hζ` using `IsCyclotomicExtension.zeta_spec (q * M) ℚ K'`. Use `set ζ := IsCyclotomicExtension.zeta (q * M) ℚ K'`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hwζ⟩ : ∃ w : K, w ^ M = 1 ∧ algebraMap K K' w = ζ ^ q := by`. Establish `h0` using `IsCyclotomicExtension.zeta_spec M ℚ K`. Establish `h1` using `h0.map_of_injective (algebraMap K K').injective`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨i, -, hi⟩` from `h1.eq_pow_of_pow_eq_one (ξ := ζ ^ q) (by rw [← pow_mul, hζ.pow_eq_one])`. Conclude with `⟨_ ^ i, by rw [pow_right_comm, h0.pow_eq_one, one_pow], by rw [map_pow, hi]⟩`. Establish `hcoe : ((hζ.toInteger : 𝓞 K') : K') = ζ` using `rfl`. Establish `hA : ∀ σ τ : Gal(K'/ℚ), σ (algebraMap K K' w) = τ (algebraMap K K' w) → ∀ x, π (act σ x) = π (act τ x)`. Introduce `σ τ h x`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: π.comp (act σ) = π.comp (act τ)`. Use `hom_ext hq hζ _ _ ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, RingHom.comp_apply, RingHom.comp_apply]`. Use `congr 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact, hact]`. Rewrite `h` using `[hwζ]`. Conclude with `h`. Conclude with `DFunLike.congr_fun this x`. Use `choose s hs using ZMod.unitsMap_surjective hd`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ x, π (act (sg (q * M) K' (s u)) x) = π x ^ q`. Introduce `x`. Establish `: π.comp (act (sg (q * M) K' (s u))) = (frobenius _ q).comp π`. Use `hom_ext hq hζ _ _ ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, RingHom.comp_apply, RingHom.comp_apply, frobenius_def, ← map_pow π]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hact]`. Express the relevant statement in the definitionally equal form `sg (q * M) K' (s u) (ζ ^ q) = (ζ ^ q) ^ q`. Rewrite using `[← hwζ, compat M (q * M) K K' hd, hs, sg_apply M K u hw, ← map_pow, hu, ZMod.val_natCast, ← pow_eq_pow_mod _ hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DFunLike.congr_fun this x`. Set `f : (ZMod M)ˣ → 𝓞 K' ⧸ v.asIdeal` to `fun t => π (act (sg (q * M) K' (s t)⁻¹) y)`. Establish `hf : ∀ t' : (ZMod (q * M))ˣ, π (act (sg (q * M) K' t'⁻¹) y) = f (ZMod.unitsMap hd t')`. Introduce `t'`. Use `hA _ _ ?_ y` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[compat M (q * M) K K' hd, compat M (q * M) K K' hd, map_inv (ZMod.unitsMap hd), map_inv (ZMod.unitsMap hd), hs]`. Establish `hfu : ∀ t, f t = f (u * t) ^ q`. Introduce `t`. Establish `h1` using `hf ((s u)⁻¹ * s (u * t))`. Rewrite `h1` using `[map_mul (ZMod.unitsMap hd), map_inv (ZMod.unitsMap hd), hs, hs, inv_mul_cancel_left, mul_inv, inv_inv, map_mul, hmul, hB]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1.symm`. Establish `hcomb` using `comb (ZMod.unitsMap hd) u q hq.pos f (fun t => hne _) hfu (fun t => th M b t) (fun t => th (q * M) b t) (fun t => by convert thDist M q b hq hb u hu t)`. Use `rel_val v hπ (b := ∏ t' : (ZMod (q * M))ˣ, f (ZMod.unitsMap hd t') ^ th (q * M) b t') ?_ ?_` and prove the remaining obligations. Use `rel_prod _ fun t => rel_zpow ?_ _` and prove the remaining obligations. Rewrite using `[← hf, ← map_inv, ← hact]`.
-
-Conclude with `rel_int _ (hne _)`. Rewrite using `[hcomb, map_prod, map_prod]`. Use `rel_prod _ fun t => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, map_zpow₀]`. Use `rel_zpow ?_ _` and prove the remaining obligations.
-
-Establish `h1 : (sg M K u)⁻¹ ((sg M K t)⁻¹ (Algebra.norm K (y : K'))) = sg M K (ZMod.unitsMap hd (s (u * t))⁻¹) (Algebra.norm K (y : K'))`. Rewrite using `[map_inv (ZMod.unitsMap hd), hs, mul_inv, map_mul, map_inv, map_inv]`. Both sides reduce to the same expression. Rewrite using `[h1, ← compat M (q * M) K K' hd, Algebra.norm_eq_prod_automorphisms, map_prod, ← card_gal M q K K' hq hc, ← Finset.card_univ, ← Finset.prod_const]`. Use `rel_prod _ fun σ => ?_` and prove the remaining obligations.
-
-Establish `h2 : f (u * t) = π (act (sg (q * M) K' (s (u * t))⁻¹ * σ.restrictScalars ℚ) y)`. Use `hA _ _ ?_ y` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.restrictScalars_apply, AlgEquiv.commutes]`. Rewrite using `[h2]`. Conclude with `rel_int (act (sg (q * M) K' (s (u * t))⁻¹ * σ.restrictScalars ℚ) y) (hne _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.xCongPrin :
     ∀ (M q : ℕ) [NeZero M] [NeZero (q * M)] (K K' : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] [Field K'] [NumberField K'] [IsCyclotomicExtension {q * M} ℚ K'] [Algebra K K'], q.Prime → ∀ u : (ZMod M)ˣ, (u : ZMod M) = q → ∀ (b : ℕ), b < q → ∀ y : 𝓞 K', (∀ v : HeightOneSpectrum (𝓞 K'), (q : 𝓞 K') ∈ v.asIdeal → y ∉ v.asIdeal) →

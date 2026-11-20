@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.FewEq
 open GlobalTheory.SmallExtLift
 
 /- English proof (translation)
-Use `(congrArg (fun u => gr r z _ hm (Units.val u)) ((Fintype.prod_unique (fun _ : PUnit => _ ^ (1 : ℤ))).trans (zpow_one _))).trans ?_` and prove the remaining obligations. Conclude with `gr_res r z _ hm _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gr_pull_g {X Y Z : Scheme.{0}} (M : LB X) (F : Y ⟶ X) (r : Z ⟶ Y) (z : Z) {i j : M.ι}
     (hi : F (r z) ∈ M.U i) (hj : F (r z) ∈ M.U j)
@@ -29,7 +29,7 @@ theorem gr_pull_g {X Y Z : Scheme.{0}} (M : LB X) (F : Y ⟶ X) (r : Z ⟶ Y) (z
   exact gr_res r z _ hm _
 
 /- English proof (translation)
-Establish `hle : ext s J U ≤ RingHom.ker ((pullback.fst s (spMap (Ideal.Quotient.mk J))).app U).hom`. Use `Ideal.map_le_iff_le_comap.2 fun r hr => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, app_cst (IsPullback.of_hasPullback s (spMap (Ideal.Quotient.mk J))).w U r, Ideal.Quotient.eq_zero_iff_mem.2 hr, map_zero]`. Conclude with `hle ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_eq_zero_of_mem_ext {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (J : Ideal R)
     (U : X.Opens) {a : Γ(X, U)} (ha : a ∈ ext s J U) :
@@ -43,11 +43,11 @@ theorem app_eq_zero_of_mem_ext {R : Type} [CommRing R] {X : Scheme.{0}} (s : X �
   exact hle ha
 
 /- English proof (translation)
-Use `set π := pullback.fst s (spMap (Ideal.Quotient.mk J)) with hπ`. Establish `cov : ⨆ a, π ⁻¹ᵁ V a = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, hV]`. Both sides reduce to the same expression. Use `gen_of_refine (pull_isLB hM π) (fun a => π ⁻¹ᵁ V a) cov (fun a _ => j a) (fun a => pull_le M π (j a) (hj a)) (fun a => (π.app (V a)).hom (y a)) (fun a => IsUnit.of_mul_eq_one ((π.app (V a)).hom (z a)) ?_) fun a b x ha hb => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `app_eq_zero_of_mem_ext s J (V a) (hyz a)`. Rewrite `h` using `[map_sub, map_mul, map_one, sub_eq_zero]`. Conclude with `h`. Establish `hab : (𝟙 _ : pullback s (spMap (Ideal.Quotient.mk J)) ⟶ _) x ∈ π ⁻¹ᵁ (V a ⊓ V b)` using `⟨ha, hb⟩`. Establish `h` using `congrArg (gr (𝟙 _) x (π ⁻¹ᵁ (V a ⊓ V b)) hab) (app_eq_zero_of_mem_ext s J (V a ⊓ V b) (hc a b))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[map_zero, gr_app, map_sub, map_mul, tr, gr_res, gr_res, gr_res, sub_eq_zero]`. Use `(gr_app _ _ _ _ _ _).trans (h.trans ?_)` and prove the remaining obligations. Rewrite using `[gr_app]`. Conclude with `congrArg (· * _) (gr_pull_g M π (𝟙 _) x (hj a ha) (hj b hb) _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_of_compatible_mod (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (J : Ideal R)
     (M : LB X) (hM : M.IsLB) (A : Type) (V : A → X.Opens) (j : A → M.ι)

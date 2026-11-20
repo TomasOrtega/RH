@@ -9,55 +9,45 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Take `⟨hne, hfin, hcompl, hinv⟩` from `hν`. Establish `hae : ∀ᵐ m ∂ν, m ∈ (N : Set G)`. Rewrite using `[ae_iff]`. Conclude with `hcompl`. Establish `horb : ∀ (h : G → ENNReal) (a : G), a ∈ N → ∀ y, ∫⁻ z, h (z⁻¹ * (a⁻¹ * y)) ∂ν = ∫⁻ z, h (z⁻¹ * y) ∂ν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a ha y`. Establish `hmap : ν.map (MeasurableEquiv.mulLeft a) = ν` using `hinv a ha`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `z`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[_root_.mul_inv_rev, mul_assoc]`. Use `_ = ∫⁻ z, h (z⁻¹ * y) ∂(ν.map (MeasurableEquiv.mulLeft a)) := (lintegral_map_equiv (fun z => h (z⁻¹ * y)) _).symm`. Use `_ = ∫⁻ z, h (z⁻¹ * y) ∂ν := by rw [hmap]`. Establish `hpos : ∀ O : Set G, IsOpen O → ∀ x ∈ O, x ∈ N → 0 < ν O`. Introduce `O hO x hxO hxN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `set U : G → Set G := fun n => (fun z => (x * n⁻¹) * z) ⁻¹' O with hU`. Establish `hUo : ∀ n ∈ (N : Set G), IsOpen (U n)` using `fun n _ => hO.preimage (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU0 : ∀ n ∈ (N : Set G), ν (U n) = 0`. Introduce `n hn`. Establish `hxn : x * n⁻¹ ∈ N` using `N.mul_mem hxN (N.inv_mem hn)`. Use `hinv _ hxn` as an intermediate fact. Rewrite `h0` using `[← this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[Measure.map_apply (measurable_const_mul _) hO.measurableSet]`. Then use the resulting hypothesis. Take `⟨T, hTN, hTc, hTU⟩` from `TopologicalSpace.isOpen_biUnion_countable (N : Set G) U hUo`. Establish `hNsub : (N : Set G) ⊆ ⋃ n ∈ T, U n`. Rewrite using `[hTU]`. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Set.mem_biUnion hn (by simpa [hU, mul_assoc] using hxO)`. Establish `hN0 : ν (N : Set G) = 0` using `measure_mono_null hNsub ((measure_biUnion_null_iff hTc).2 fun n hn => hU0 n (hTN hn))`. Rewrite using `[← Measure.measure_univ_eq_zero, ← Set.union_compl_self (N : Set G)]`. Conclude with `measure_union_null hN0 hcompl`. Set `E` to `CompactExhaustion.choice G`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `F : ℕ → G → ENNReal` to `fun k y => ∫⁻ m, (E k).indicator 1 (m⁻¹ * y) ∂ν`. Establish `hFm : ∀ k, Measurable (F k)`. Introduce `k`. Use `Measurable.lintegral_prod_right' (f := fun p : G × G => (E k).indicator 1 (p.2⁻¹ * p.1)) ?_` and prove the remaining obligations. Conclude with `(measurable_one.indicator (E.isCompact k).isClosed.measurableSet).comp (measurable_snd.inv.mul measurable_fst)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hFeq : ∀ k y, F k y = ν ((fun m => m⁻¹ * y) ⁻¹' E k)`. Introduce `k y`. Rewrite using `[← lintegral_indicator_one ((E.isCompact k).isClosed.measurableSet.preimage (measurable_inv.mul_const y))]`. Both sides reduce to the same expression. Establish `hFtop : ∀ k y, F k y ≠ ⊤`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k y`. Rewrite using `[hFeq]`. Use `ne_of_lt (lt_of_le_of_lt (measure_mono ?_) (((E.isCompact k).image (f := fun u : G => y * u⁻¹) (continuous_const.mul continuous_inv)).measure_lt_top (μ := ν)))` and prove the remaining obligations. Introduce `m hm`. Conclude with `⟨m⁻¹ * y, hm, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hFpos : ∀ y, ∃ k, 0 < F k y`. Introduce `y`. Take `⟨k, hk⟩` from `E.exists_mem_nhds y`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hFeq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `lt_of_lt_of_le (hpos ((fun m => m⁻¹ * y) ⁻¹' interior (E k)) (isOpen_interior.preimage (continuous_inv.mul continuous_const)) 1 ?_ N.one_mem) (measure_mono (Set.preimage_mono interior_subset))` and prove the remaining obligations. Simplify `hk` using `[mem_interior_iff_mem_nhds]`. Establish `hFinv : ∀ k y, ∀ᵐ m ∂ν, F k (m⁻¹ * y) = F k y`. Introduce `k y`. Use `filter_upwards [hae] with m hm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `horb ((E k).indicator 1) m hm y`. Set `w : ℕ → G → ENNReal` to `fun k y => (2⁻¹ : ENNReal) ^ k * (E k).indicator 1 y * (1 + F k y)⁻¹`. Establish `hwm : ∀ k, Measurable (w k)` using `fun k => (measurable_const.mul (measurable_one.indicator (E.isCompact k).isClosed.measurableSet)).mul (measurable_const.add (hFm k)).inv`. Set `f : G → ENNReal` to `fun y => ∑' k, w k y`. Establish `hfm : Measurable f` using `Measurable.ennreal_tsum hwm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Set `T : G → ENNReal` to `fun y => ∫⁻ m, f (m⁻¹ * y) ∂ν`. Establish `hTm : Measurable T` using `Measurable.lintegral_prod_right' (f := fun p : G × G => f (p.2⁻¹ * p.1)) (hfm.comp (measurable_snd.inv.mul measurable_fst))`. Establish `hTinv : ∀ y, ∀ᵐ m ∂ν, T (m⁻¹ * y) = T y`. Introduce `y`. Use `filter_upwards [hae] with m hm`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `horb f m hm y`. Establish `hTsum : ∀ y, T y = ∑' k, (2⁻¹ : ENNReal) ^ k * (1 + F k y)⁻¹ * F k y`. Introduce `y`. Use `show ∫⁻ m, ∑' k, w k (m⁻¹ * y) ∂ν = _`. Rewrite using `[lintegral_tsum (f := fun k m => w k (m⁻¹ * y)) fun k => ((hwm k).comp (measurable_inv.mul_const y)).aemeasurable]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use extensionality with `k`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hFinv k y] with m hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [w, hm]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (2⁻¹ : ENNReal) ^ k * (1 + F k y)⁻¹ * F k y := by`. Rewrite using `[lintegral_const_mul]`. Conclude with `(measurable_one.indicator (E.isCompact k).isClosed.measurableSet).comp (measurable_inv.mul_const y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgeom : ∑' k : ℕ, (2⁻¹ : ENNReal) ^ k ≠ ⊤`. Rewrite using `[ENNReal.tsum_geometric]`. Rewrite using `[ENNReal.one_sub_inv_two, inv_inv]`. Conclude with `ENNReal.ofNat_ne_top`. Establish `hTtop : ∀ y, T y ≠ ⊤`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Rewrite using `[hTsum]`. Use `ne_top_of_le_ne_top hgeom (ENNReal.tsum_le_tsum fun k => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, ← div_eq_mul_inv]`. Conclude with `ENNReal.div_le_of_le_mul (by rw [one_mul]; exact le_add_self)`. Establish `hT0 : ∀ y, T y ≠ 0`. Introduce `y`. Take `⟨k, hk⟩` from `hFpos y`.
-
-Rewrite using `[hTsum]`. Use `(lt_of_lt_of_le ?_ (ENNReal.le_tsum k)).ne'` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_comm ((1 + F k y)⁻¹), ← div_eq_mul_inv]`. Use `ENNReal.mul_pos (pow_ne_zero _ (ENNReal.inv_ne_zero.2 ENNReal.ofNat_ne_top)) ?_` and prove the remaining obligations. Conclude with `(ENNReal.div_pos_iff.2 ⟨hk.ne', ENNReal.add_ne_top.2 ⟨ENNReal.one_ne_top, hFtop k y⟩⟩).ne'`.
-
-Establish `hfle : ∀ y, f y ≠ ⊤`. Introduce `y`. Use `ne_top_of_le_ne_top hgeom (ENNReal.tsum_le_tsum fun k => ?_)` and prove the remaining obligations. Use `show (2⁻¹ : ENNReal) ^ k * (E k).indicator 1 y * (1 + F k y)⁻¹ ≤ _`. Rewrite using `[mul_assoc]`.
-
-Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Use `mul_le_one' ?_ (ENNReal.inv_le_one.2 le_self_add)` and prove the remaining obligations. Apply the tactic sequence `by_cases hy : y ∈ E k <;> simp [hy]`. Use `⟨fun y => f y * (T y)⁻¹, hfm.mul hTm.inv, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.mul_ne_top (hfle y) (ENNReal.inv_ne_top.2 (hT0 y))`.
-
-Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hTinv y] with m hm`. Rewrite using `[hm]`. Use `_ = T y * (T y)⁻¹ := lintegral_mul_const _ (hfm.comp (measurable_inv.mul_const y))`.
-
-Use `_ = 1 := ENNReal.mul_inv_cancel (hT0 y) (hTtop y)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_measurable_cutoff_fibre_integral_one (G : Type) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]

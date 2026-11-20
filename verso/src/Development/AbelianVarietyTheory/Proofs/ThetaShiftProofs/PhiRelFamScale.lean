@@ -20,7 +20,7 @@ def scaleSec {M : LB Y} (c : Γ(Y, ⊤)ˣ) (s : LB.Sec M) : LB.Sec M where
     rw [map_mul, map_mul, s.compat i j, e, e, mul_left_comm]
 
 /- English proof (translation)
-The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg₂ (· * ·) ((gs_unit r z _ (hJ.mem φ r) _).trans (congrArg Units.val (gm_res r z le_top (hJ.mem φ r) c))) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem sval_scaleSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} (c : Γ(Y, ⊤)ˣ) (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) {z : Z}
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) : sval (scaleSec c s) r z J = (gm r z ⊤ c).val * sval s r z J :=
@@ -32,15 +32,15 @@ variable {F : Type} [Field F]
 def constUnit (p : Y ⟶ Sp F) (a : Fˣ) : Γ(Y, ⊤)ˣ := pullU p ⊤ (unitOn a)
 
 /- English proof (translation)
-The claim follows from `gm_pull r p z ⊤ trivial (unitOn a)`.
+A detailed English derivation is pending.
 -/
 theorem gm_constUnit (p : Y ⟶ Sp F) (a : Fˣ) (r : Z ⟶ Y) (z : Z) : gm r z ⊤ (constUnit p a) = unitAt (r ≫ p) z a :=
   gm_pull r p z ⊤ trivial (unitOn a)
 
 /- English proof (translation)
-Establish `H₀` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ _).1 (H (scaleGen (constUnit p c⁻¹) u) (scaleGen_isGen _ _ hu) (corr_of_val hL fun y J hJ => by`. Establish `e₁` using `(val_pull hJ _ _ _).symm.trans ((val_corr hJ hc (𝟙 _)).trans (hv y J hJ))`. Rewrite using `[val_pull hJ, val_scaleGen _ _ _ hJ, gm_constUnit, e₁, Category.assoc, he, Category.id_comp, map_inv, inv_mul_cancel_left]))`. Use `(secRel_iff hL _ _ _ _ _ _ _ _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[sval_scaleSec _ _ _ hJ, sval_scaleSec _ _ _ hJ, H₀ _ _ y J hJ, val_scaleGen _ _ _ hJ, gm_constUnit, gm_constUnit, gm_constUnit, Category.assoc, hp, habc, map_mul, map_inv, Units.val_mul, Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(unitAt (𝟙 Y ≫ p) y c).mul_inv` as an intermediate fact. Take the linear combination `((unitAt (𝟙 Y ≫ p) y b).val * sval s₂ (𝟙 Y ≫ h) y J * (val u (𝟙 Y) y J).val) * this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem secRel_scale (hL : L.IsLB) (p : Y ⟶ Sp F) {h : Y ⟶ Y} (hp : h ≫ p = p) {e : Sp F ⟶ Y} (he : e ≫ p = 𝟙 _)
     {φ₁ : K₁ → (Y ⟶ X)} {ε₁ : K₁ → ℤ} {φ₂ : K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ} {φ₃ : K₃ → (Y ⟶ X)} {ε₃ : K₃ → ℤ}
@@ -96,7 +96,7 @@ def famScale (hw : w + star w = 1) (ht : IsScalarForm O t) (hq : PsiRel D ψ fun
 variable (hw : w + star w = 1) (ht : IsScalarForm O t) (hq : PsiRel D ψ fun y => t y (w • y)) (hr : IsRootForm O k t r)
 
 /- English proof (translation)
-Introduce `α` and use `by refine secRel_scale D.P.isLB (fst (TF (R := R) F) D.P.A).left (congrArg (fun q => q.left) (lift_fst _ _ : DegPre.trPt D F p.g.b ≫ _ = _)) (congrArg (fun q => q.left) (lift_fst _ _ : DegPre.zF D F ≫ _ = _)) _ _ (c := r p.y α * r p.y (w • p.y)) ?_ (fun y J hJ => ?_) (h α) · show …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phiRel_famScale (p : QkPt D F k)
     (v : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p.g.b) (DegPre.lineε k))) {s s' : Fam D F k}
@@ -117,7 +117,7 @@ theorem phiRel_famScale (p : QkPt D F k)
 include hw ht hq hr
 
 /- English proof (translation)
-Take `rfl` from `(qkRel_qkScale hw ht hq hr p).unique hp`. Take `rfl` from `(qkRel_qkScale hw ht hq hr q).unique hq'`. Introduce `v v' hv hv' s s₁ s₂ s₃ s₄ h₁ h₂ h₃ h₄ α j`. Establish `e` using `h _ _ (scaleGen_isGen _ _ hv) (scaleGen_isGen _ _ hv') _ _ _ _ _ (phiRel_famScale hw ht hq hr q v' h₁) (phiRel_famScale hw ht hq hr p v h₂) (phiRel_famScale hw ht hq hr p v h₃) (phiRel_famScale hw ht hq hr q v' h₄) α j`. Conclude with `(Units.mul_right_inj _).1 (e.trans (mul_left_comm _ _ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem QkRel.weilQkIs_of {p q : QkPt D F k} {p' q' : QkPt (withPsi D ψ hψ) F k} (hp : QkRel r p p') (hq' : QkRel r q q')
     {ζ : F} (h : WeilQkIs (withPsi D ψ hψ) F k p' q' ζ) : WeilQkIs D F k p q ζ := by
@@ -129,7 +129,7 @@ theorem QkRel.weilQkIs_of {p q : QkPt D F k} {p' q' : QkPt (withPsi D ψ hψ) F 
   exact (Units.mul_right_inj _).1 (e.trans (mul_left_comm _ _ _))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hp.weilQkIs_of hw ht hq hr hq', QkRel.weilQkIs_of (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv hp.symm hq'.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem QkRel.weilQkIs_iff {p q : QkPt D F k} {p' q' : QkPt (withPsi D ψ hψ) F k} (hp : QkRel r p p')
     (hq' : QkRel r q q') (ζ : F) : WeilQkIs (withPsi D ψ hψ) F k p' q' ζ ↔ WeilQkIs D F k p q ζ :=

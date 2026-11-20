@@ -6,23 +6,23 @@ noncomputable section
 namespace UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `X _ B V hV`. Set `L` to `WithLp.linearEquiv 2 ℂ (X → ℂ)`. Set `V' : Submodule ℂ (EuclideanSpace ℂ X)` to `V.map (L.symm : (X → ℂ) →ₗ[ℂ] EuclideanSpace ℂ X)`. Establish `hfr : Module.finrank ℂ V' = Module.finrank ℂ V` using `LinearEquiv.finrank_map_eq L.symm V`. Set `e` to `stdOrthonormalBasis ℂ V'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : Fin (Module.finrank ℂ V') → EuclideanSpace ℂ X` to `fun i => (e i : EuclideanSpace ℂ X)`. Apply the tactic sequence `have hf : Orthonormal ℂ f := e.orthonormal.comp_linearIsometry V'.subtypeₗᵢ`. Establish `hfix : ∀ i x, ∑ y, B x y * f i y = f i x`. Introduce `i x`. Take `⟨v, hv, hvf⟩` from `(e i).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ y, f i y = v y`. Introduce `y`. Establish `: f i = L.symm v` using `hvf.symm`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `congrFun (hV v hv) x`. Simplify using `only [Matrix.mulVec, dotProduct] at h2`. Simplify using `only [h1]`. Conclude with `h2`. Set `r : X → EuclideanSpace ℂ X` to `fun x => WithLp.toLp 2 (fun y => starRingEnd ℂ (B x y))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinner : ∀ i x, inner ℂ (r x) (f i) = f i x`. Introduce `i x`. Rewrite using `[← hfix i x, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `[r, RCLike.inner_apply, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hbessel : ∀ x, ∑ i, ‖f i x‖ ^ 2 ≤ ∑ y, ‖B x y‖ ^ 2`. Introduce `x`. Establish `h` using `hf.sum_inner_products_le (x := r x) (s := Finset.univ)`. Establish `h3 : ‖r x‖ ^ 2 = ∑ y, ‖B x y‖ ^ 2`. Rewrite using `[EuclideanSpace.norm_sq_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[r]`. Rewrite `h` using `[h3]`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_inner_symm, hinner]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hone : ∀ i, ∑ x, ‖f i x‖ ^ 2 = 1`. Introduce `i`. Rewrite using `[← EuclideanSpace.norm_sq_eq, hf.1 i]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `[hone, hfr]`. Use `_ = ∑ x, ∑ i, ‖f i x‖ ^ 2 := Finset.sum_comm`. Use `_ ≤ ∑ x, ∑ y, ‖B x y‖ ^ 2 := Finset.sum_le_sum fun x _ => hbessel x`.
+A detailed English derivation is pending.
 -/
 theorem hS_pf : HS := by
   classical

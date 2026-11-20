@@ -25,9 +25,9 @@ section Frame
 variable {D : D7} {V : HSp D} {n : ℕ}
 
 /- English proof (translation)
-Establish `hex : ∃ κ, (finHom V).rangeRestrict (PV.ψ κ) = k`. Take `⟨κ, hκ, e⟩` from `Formalism.IndefR.Eqv.Act.exists_finLift V k`. Take `⟨h, rfl⟩` from `PV.onto κ hκ`. Conclude with `⟨h, Subtype.ext e⟩`. Unfold `preF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_preF (PV : principalLevelFrame.RowPsi V n) (k : Bridge.Gf V) :
     (finHom V).rangeRestrict (PV.ψ (preF PV k)) = k := by
@@ -40,7 +40,7 @@ theorem fin_preF (PV : principalLevelFrame.RowPsi V n) (k : Bridge.Gf V) :
   exact hex.choose_spec
 
 /- English proof (translation)
-Apply `PV.inj` to reduce the goal to its premises. Establish `e1 : finHom V (PV.ψ (preF PV ((finHom V).rangeRestrict (PV.ψ x)))) = finHom V (PV.ψ x)` using `congrArg Subtype.val (fin_preF PV _)`. Use `inv_mul_eq_one.1 (GlobalTheory.AutFunCounterexample.GfC_inf_GinfC V ((GfC V).mul_mem ((GfC V).inv_mem (PV.into _)) (PV.into _)) ?_)` and prove the remaining obligations. Use `show finHom V _ = 1`. Rewrite using `[map_mul, map_inv, e1, inv_mul_cancel]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preF_fin (PV : principalLevelFrame.RowPsi V n) (x : Formalism.AUTREP.GAf D.host.E n) :
     preF PV ((finHom V).rangeRestrict (PV.ψ x)) = x := by
@@ -53,7 +53,7 @@ theorem preF_fin (PV : principalLevelFrame.RowPsi V n) (x : Formalism.AUTREP.GAf
   rw [map_mul, map_inv, e1, inv_mul_cancel]
 
 /- English proof (translation)
-Establish `h` using `preF_fin PV (preF PV k₁ * preF PV k₂)`. Rewrite `h` using `[map_mul, map_mul, fin_preF, fin_preF]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem preF_mul (PV : principalLevelFrame.RowPsi V n) (k₁ k₂ : Bridge.Gf V) :
     preF PV (k₁ * k₂) = preF PV k₁ * preF PV k₂ := by
@@ -67,7 +67,7 @@ theorem ext_apply (c : CoefA V) (f : Bridge.Gf V → c.W) (h : GA D V) :
     c.ext f h = c.ρ h⁻¹ (f ((finHom V).rangeRestrict h)) := rfl
 
 /- English proof (translation)
-Introduce `γ h k`. Establish `e1` using `hJ k k.2 ((finHom V).rangeRestrict (γ : GA D V) * h)`. Establish `e2` using `hf γ γ.2 h`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, MonoidHom.comp_apply, Subgroup.coe_subtype]`. Conclude with `e1.trans e2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_adForms_one (c : CoefA V) (f : Bridge.Gf V → c.W)
     (hf : ∀ γ ∈ GQ V, ∀ k, f ((finHom V).rangeRestrict γ * k) = c.ρ γ (f k))
@@ -86,7 +86,7 @@ section Forms
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {P : Pin hL D} {X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp}
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Conclude with `A.wt μ hμ j h γ hγ he v`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eW_cast_wt (A : GlobalTheory.NJoin.Agree X P.M P.rep) {μ : D.what₂.Tup} (hμ : Formalism.IndefR.RecTie.Used0 D μ)
     (j : Fin D.R.m) (k : ℕ) (hk : j.1 + 1 = k) (p1 : 1 ≤ k) (p2 : k ≤ D.R.m)
@@ -100,7 +100,7 @@ theorem eW_cast_wt (A : GlobalTheory.NJoin.Agree X P.M P.rep) {μ : D.what₂.Tu
   exact A.wt μ hμ j h γ hγ he v
 
 /- English proof (translation)
-The claim follows from `eW_cast_wt A hμ j _ hj _ _ h hγ he v`.
+A detailed English derivation is pending.
 -/
 theorem eWloc_wt (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (h : ReciprocityTheory.Aut.GQ D.host.E D.R.nV) {γ : GA D (Vc D j)}
@@ -136,13 +136,11 @@ theorem fV_eq_ext (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j :
     fV A i j hj hμ F = (X.R.cV j).ext (fFin A i j hj hμ F) := rfl
 
 /- English proof (translation)
-Use `set x := preF (A.PV j) ((finHom (Vc D j)).rangeRestrict γ) with hxdef`. Establish `hx : finHom (Vc D j) γ = finHom (Vc D j) ((A.PV j).ψ x)` using `(congrArg Subtype.val (GlobalTheory.ThetaFormV.fin_preF (A.PV j) ((finHom (Vc D j)).rangeRestrict γ))).symm`. Establish `e0 : (A.a j)⁻¹ * (A.a j * x * (A.a j)⁻¹) * A.a j = x` using `by group`. Establish `hrat : A.a j * x * (A.a j)⁻¹ ∈ ReciprocityTheory.Aut.GQ D.host.E D.R.nV` using `(A.rat j _).2 ⟨γ, hγ, by rw [e0]; exact hx⟩`. Establish `he : finHom (Vc D j) γ = finHom (Vc D j) ((A.PV j).ψ ((A.a j)⁻¹ * ((⟨_, hrat⟩ : ReciprocityTheory.Aut.GQ D.host.E D.R.nV) : GAf D.host.E D.R.nV) * A.a j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0]`. Conclude with `hx`. Establish `e1 : A.a j * preF (A.PV j) ((finHom (Vc D j)).rangeRestrict γ * k) = (A.a j * x * (A.a j)⁻¹) * (A.a j * preF (A.PV j) k)`. Rewrite using `[GlobalTheory.ThetaFormV.preF_mul, ← hxdef]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hF` using `F.2.1 ⟨_, hrat⟩ (A.a j * preF (A.PV j) k)`. Unfold `fFin`. Rewrite using `[e1]`. Use `(LinearEquiv.symm_apply_eq _).2 ?_` and prove the remaining obligations. Rewrite using `[eWloc_wt A i j hj hμ ⟨_, hrat⟩ hγ he, LinearEquiv.apply_symm_apply]`.
-
-Conclude with `hF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fFin_rat (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ))
@@ -168,9 +166,9 @@ theorem fFin_rat (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : 
   exact hF
 
 /- English proof (translation)
-Introduce `γ hγ h`. Rewrite using `[fV_eq_ext, GlobalTheory.ThetaFormV.ext_apply, GlobalTheory.ThetaFormV.ext_apply, map_mul, fFin_rat A i j hj hμ F hγ]`. Establish `e : (X.R.cV j).ρ (γ * h)⁻¹ * (X.R.cV j).ρ γ = (X.R.cV j).ρ h⁻¹`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Conclude with `congrArg (fun T : Module.End ℂ (X.R.cV j).W => T _) e`.
+A detailed English derivation is pending.
 -/
 theorem fV_invariant (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)) :
@@ -184,11 +182,11 @@ theorem fV_invariant (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (
 end Main
 
 /- English proof (translation)
-Take `⟨N', hN', himg⟩` from `GlobalTheory.LatCongImage.finCong_mem_levN D V n PV hF hstd N hN`. Use `filter_upwards [GlobalTheory.Member.PrincLevel.finCong_mem_nhds V hN'] with κ hκ`. Take `⟨κ', hκ', e⟩` from `Formalism.IndefR.Eqv.Act.exists_finLift V ((finHom V).rangeRestrict κ)`. Establish `hc : GlobalTheory.Member.FinCong V N' κ'`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e' : finHom V κ' = finHom V κ` using `e`. Rewrite using `[e']`. Conclude with `hκ z hz`. Take `⟨x, hx, hxe⟩` from `himg κ' hκ' hc`. Establish `e2 : (finHom V).rangeRestrict κ = (finHom V).rangeRestrict (PV.ψ x)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxe]`. Conclude with `(Subtype.ext e).symm`. Rewrite using `[e2, GlobalTheory.ThetaFormV.preF_fin]`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem eventually_cong_preF {D : D7} {V : HSp D} {n : ℕ} (PV : principalLevelFrame.RowPsi V n)
     (hF : D.host.F = maximalRealSubfield D.host.E) (hstd : GlobalTheory.NJoin.StdFrame hF PV) {N : ℕ} (hN : 0 < N) :
@@ -212,11 +210,9 @@ section Cont
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {P : Pin hL D} {X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp}
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Use `haveI : IsTopologicalGroup (GA D (Vc D j)) := inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig (Vc D j).gram))`. Take `⟨N, hN, hlev⟩` from `F.2.2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `J : Subgroup (Bridge.Gf (Vc D j))` to `{ carrier := {q | ∀ k, fFin A i j hj hμ F (k * q) = fFin A i j hj hμ F k} mul_mem' := fun {a b} ha hb k => by simp only [Set.mem_setOf_eq] at ha hb ⊢; rw [← mul_assoc, hb, ha] one_mem' := fun k => by rw [mul_one] inv_mem' := fun {a} ha k => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Rewrite using `[← ha (k * a⁻¹), inv_mul_cancel_right] }`. Establish `hfJ : fFin A i j hj hμ F ∈ Bridge.AdForms ((finHom (Vc D j)).rangeRestrict.comp (GQ (Vc D j)).subtype) ((X.R.cV j).ρ.comp (GQ (Vc D j)).subtype) J 1`. Conclude with `GlobalTheory.ThetaFormV.mem_adForms_one _ _ (fun γ hγ k => fFin_rat A i j hj hμ F hγ k) J (fun q hq => hq)`.
-
-Establish `hJ : ∀ᶠ κ in 𝓝 (1 : GA D (Vc D j)), ∃ h : (finHom (Vc D j)).rangeRestrict κ ∈ J, (1 : J →* ℂˣ) ⟨_, h⟩ = 1` using `by filter_upwards [eventually_cong_preF (A.PV j) A.hF (A.stdV j) hN] with κ hκ`. Use `⟨fun k => ?_, rfl⟩` and prove the remaining obligations. Use `show fFin A i j hj hμ F (k * (finHom (Vc D j)).rangeRestrict κ) = fFin A i j hj hμ F k`. Rewrite using `[fFin_apply, fFin_apply, GlobalTheory.ThetaFormV.preF_mul, ← mul_assoc, hlev _ hκ]`. Conclude with `(GlobalTheory.ThetaIntegrand.form_continuous (finHom (Vc D j)).rangeRestrict (GQ (Vc D j)) (X.R.cV j).ρ ((X.given.core.models.cV j).2.2.1) hJ hfJ).congr fun g => (GlobalTheory.ThetaFormV.ext_apply _ _ _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fV_continuous (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)) :
@@ -249,7 +245,7 @@ theorem fV_continuous (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) 
 end Cont
 
 /- English proof (translation)
-Introduce `_ _ _ _ A i j hj hμ F` and use `⟨fV_continuous A i j hj hμ F, fV_invariant A i j hj hμ F⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fV_continuous_invariant : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp)
     (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)

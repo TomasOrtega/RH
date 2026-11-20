@@ -13,7 +13,7 @@ variable {O : Type*} [CommRing O] [IsLocalRing O]
 
 variable (O) in
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_iff_constantCoeff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem maximalIdeal_eq_comap :
     maximalIdeal O⟦X⟧ = (maximalIdeal O).comap (constantCoeff (R := O)) := by
@@ -22,13 +22,13 @@ theorem maximalIdeal_eq_comap :
     isUnit_iff_constantCoeff]
 
 /- English proof (translation)
-Simplify using `[maximalIdeal_eq_comap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem X_mem_maximalIdeal : (X : O⟦X⟧) ∈ maximalIdeal O⟦X⟧ := by
   simp [maximalIdeal_eq_comap]
 
 /- English proof (translation)
-Rewrite using `[maximalIdeal_eq_comap, Ideal.mem_comap, constantCoeff_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem C_mem_maximalIdeal_iff {a : O} : (C a : O⟦X⟧) ∈ maximalIdeal O⟦X⟧ ↔ a ∈ maximalIdeal O := by
   rw [maximalIdeal_eq_comap, Ideal.mem_comap, constantCoeff_C]
@@ -39,7 +39,7 @@ instance isAdicComplete_maximalIdeal [IsAdicComplete (maximalIdeal O) O] :
   exact isAdicComplete_comap_constantCoeff _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hf'`. Establish `h1 : f ∈ (maximalIdeal O).comap (constantCoeff (R` using `O)) := by`. Rewrite using `[← maximalIdeal_eq_comap]`. Conclude with `hf'`. Conclude with `map_comap_constantCoeff_le (maximalIdeal O) (maximalIdeal O) φ (by simp) h (Ideal.mem_map_of_mem _ h1) hf`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_X_mem (φ : O⟦X⟧ →ₐ[O] O) (h : φ X ∈ maximalIdeal O) : IsLocalHom φ where
   map_nonunit f hf := by
@@ -56,7 +56,7 @@ section DVR
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {π : O}
 
 /- English proof (translation)
-Rewrite using `[maximalIdeal_eq_comap, ← map_C_sup_span_X, hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.span_insert]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem maximalIdeal_eq_span (hπ : Irreducible π) :
     maximalIdeal O⟦X⟧ = Ideal.span {C π, X} := by
@@ -64,9 +64,7 @@ theorem maximalIdeal_eq_span (hπ : Irreducible π) :
     Set.image_singleton, Ideal.span_insert]
 
 /- English proof (translation)
-Rewrite using `[maximalIdeal_eq_span hπ]`. Use `le_antisymm (Ideal.span_le.2 ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ (rfl | rfl)`. Conclude with `Ideal.subset_span (by simp)`. Conclude with `Ideal.mem_span_pair.2 ⟨1, 1, by ring⟩`.
-
-Introduce and unpack `_ (rfl | rfl)`. Conclude with `Ideal.subset_span (by simp)`. Conclude with `Ideal.mem_span_pair.2 ⟨-1, 1, by ring⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_eq_span_X_sub_C (hπ : Irreducible π) :
     maximalIdeal O⟦X⟧ = Ideal.span {C π, X - C π} := by
@@ -80,9 +78,9 @@ theorem maximalIdeal_eq_span_X_sub_C (hπ : Irreducible π) :
     · exact Ideal.mem_span_pair.2 ⟨-1, 1, by ring⟩
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[RingHom.mem_ker, Ideal.mem_span_singleton, PowerSeries.ext_iff]`. Simplify using `only [coeff_map, map_zero, residue_eq_zero_iff, hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose g hg using h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨mk g, by ext n; simp [hg]⟩`. Introduce and unpack `⟨g, rfl⟩ n`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ker_map_residue (hπ : Irreducible π) :
     RingHom.ker (PowerSeries.map (residue O)) = Ideal.span {(C π : O⟦X⟧)} := by
@@ -98,42 +96,42 @@ theorem ker_map_residue (hπ : Irreducible π) :
     simp
 
 /- English proof (translation)
-Introduce `h` and use `hπ.ne_zero (by simpa using congr(constantCoeff $h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem C_ne_zero (hπ : Irreducible π) : (C π : O⟦X⟧) ≠ 0 := fun h =>
   hπ.ne_zero (by simpa using congr(constantCoeff $h))
 
 /- English proof (translation)
-Rewrite using `[← Ideal.span_singleton_prime (C_ne_zero hπ), ← ker_map_residue hπ]`. Conclude with `RingHom.ker_isPrime _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_C (hπ : Irreducible π) : Prime (C π : O⟦X⟧) := by
   rw [← Ideal.span_singleton_prime (C_ne_zero hπ), ← ker_map_residue hπ]
   exact RingHom.ker_isPrime _
 
 /- English proof (translation)
-Simplify `hπ.ne_zero` using `[X_dvd_iff]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_X_dvd_C (hπ : Irreducible π) : ¬ (X : O⟦X⟧) ∣ C π := by
   simpa [X_dvd_iff] using hπ.ne_zero
 
 /- English proof (translation)
-Introduce `h` and use `not_X_dvd_C hπ h.dvd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_associated_X_C (hπ : Irreducible π) : ¬ Associated (X : O⟦X⟧) (C π) :=
   fun h => not_X_dvd_C hπ h.dvd
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (C_ne_zero hπ) X_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem C_mul_X_ne_zero (hπ : Irreducible π) : (C π * X : O⟦X⟧) ≠ 0 :=
   mul_ne_zero (C_ne_zero hπ) X_ne_zero
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Distinguish the cases in `h : C π ∈ P`. Use `Or.inr (le_antisymm (le_maximalIdeal hP.ne_top) ?_)` and prove the remaining obligations. Rewrite using `[maximalIdeal_eq_span hπ, Ideal.span_le]`. Introduce and unpack `_ (rfl | rfl)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `exacts [h, hX]`. Use `Or.inl (le_antisymm (fun f hf => ?_) (by rwa [Ideal.span_singleton_le_iff_mem]))` and prove the remaining obligations. Rewrite using `[mem_span_X_iff]`. Assume the negation of the conclusion as `h0`. Establish `h1 : C (constantCoeff f) ∈ P`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_iff_eq_add'.mpr f.eq_X_mul_shift_add_const]`. Conclude with `sub_mem hf (P.mul_mem_right _ hX)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hπ`. Rewrite `h1` using `[hu, map_mul, map_pow, Ideal.unit_mul_mem_iff_mem _ (u.isUnit.map _)]`. Conclude with `h (hP.mem_of_pow_mem n h1)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_span_X_or_eq_maximalIdeal (P : Ideal O⟦X⟧) [hP : P.IsPrime] (hX : X ∈ P) :
     P = Ideal.span {X} ∨ P = maximalIdeal O⟦X⟧ := by
@@ -154,9 +152,9 @@ theorem eq_span_X_or_eq_maximalIdeal (P : Ideal O⟦X⟧) [hP : P.IsPrime] (hX :
     exact h (hP.mem_of_pow_mem n h1)
 
 /- English proof (translation)
-Distinguish the cases in `hX : X ∈ P`. Rewrite using `[(eq_span_X_or_eq_maximalIdeal P hX).resolve_right hP]`. Conclude with `⟨⟨X, rfl⟩⟩`. Take `⟨_, h⟩` from `(IsPrincipalIdealRing.principal (P.map constantCoeff)).principal`. Take `⟨_, rfl, _, h⟩` from `exist_eq_span_eq_ncard_of_X_notMem hX h.symm (Set.finite_singleton _)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.ncard_singleton, Set.ncard_eq_one] at h`. Take `⟨a, rfl⟩` from `h`. Conclude with `⟨⟨a, rfl⟩⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPrincipal_of_ne_maximalIdeal (P : Ideal O⟦X⟧) [P.IsPrime]
     (hP : P ≠ maximalIdeal O⟦X⟧) : P.IsPrincipal := by
@@ -171,7 +169,7 @@ theorem isPrincipal_of_ne_maximalIdeal (P : Ideal O⟦X⟧) [P.IsPrime]
 
 variable (O) in
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Rewrite using `[maximalIdeal_eq_span hπ]`. Use `(Submodule.spanFinrank_span_le_ncard_of_finite (Set.toFinite _)).trans ?_` and prove the remaining obligations. Conclude with `(Set.ncard_insert_le _ _).trans (by simp)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spanFinrank_maximalIdeal_le : (maximalIdeal O⟦X⟧).spanFinrank ≤ 2 := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -181,7 +179,7 @@ theorem spanFinrank_maximalIdeal_le : (maximalIdeal O⟦X⟧).spanFinrank ≤ 2 
 
 variable (O) in
 /- English proof (translation)
-Establish `h` using `ringKrullDim_succ_le_ringKrullDim_powerseries (R := O)`. Rewrite `h` using `[IsDiscreteValuationRing.ringKrullDim_eq_one, one_add_one_eq_two]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem two_le_ringKrullDim : 2 ≤ ringKrullDim O⟦X⟧ := by
   have h := ringKrullDim_succ_le_ringKrullDim_powerseries (R := O)
@@ -190,7 +188,7 @@ theorem two_le_ringKrullDim : 2 ≤ ringKrullDim O⟦X⟧ := by
 variable (O) in
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((ringKrullDim_le_spanFinrank_maximalIdeal _).trans (by exact_mod_cast spanFinrank_maximalIdeal_le O)) (two_le_ringKrullDim O)`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_two : ringKrullDim O⟦X⟧ = 2 :=
   le_antisymm ((ringKrullDim_le_spanFinrank_maximalIdeal _).trans
@@ -202,9 +200,9 @@ instance isRegularLocalRing : IsRegularLocalRing O⟦X⟧ :=
     exact_mod_cast spanFinrank_maximalIdeal_le O
 
 /- English proof (translation)
-Use `IsPrincipalIdealRing.of_prime fun P hP => ?_` and prove the remaining obligations. Establish `hne : P.under O⟦X⟧ ≠ maximalIdeal O⟦X⟧`. Introduce `h`. Rewrite `hf` using `[← h]`. Conclude with `hP.ne_top (P.eq_top_of_isUnit_mem hf (IsLocalization.map_units S (⟨f, hfM⟩ : M)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, ha⟩⟩` from `isPrincipal_of_ne_maximalIdeal _ hne`. Rewrite using `[← IsLocalization.map_under M S P, ha, Ideal.submodule_span_eq, Ideal.map_span, Set.image_singleton]`. Conclude with `⟨⟨_, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPrincipalIdealRing_of_isLocalization (M : Submonoid O⟦X⟧) {f : O⟦X⟧} (hfM : f ∈ M)
     (hf : f ∈ maximalIdeal O⟦X⟧) (S : Type*) [CommRing S] [Algebra O⟦X⟧ S] [IsLocalization M S] :
@@ -220,7 +218,7 @@ theorem isPrincipalIdealRing_of_isLocalization (M : Submonoid O⟦X⟧) {f : O�
   exact ⟨⟨_, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `isPrincipalIdealRing_of_isLocalization (Submonoid.powers f) (Submonoid.mem_powers f) hf S`.
+A detailed English derivation is pending.
 -/
 theorem isPrincipalIdealRing_away {f : O⟦X⟧} (hf : f ∈ maximalIdeal O⟦X⟧)
     (S : Type*) [CommRing S] [Algebra O⟦X⟧ S] [IsLocalization.Away f S] :
@@ -234,18 +232,18 @@ variable (hπ : Irreducible π) (T : Type*) [CommRing T] [Algebra O⟦X⟧ T]
 include hπ
 
 /- English proof (translation)
-The claim follows from `isDomain_away (C_ne_zero hπ) T`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_away_C : IsDomain T := isDomain_away (C_ne_zero hπ) T
 
 /- English proof (translation)
-The claim follows from `isPrincipalIdealRing_away (C_mem_maximalIdeal_iff.2 hπ.not_isUnit) T`.
+A detailed English derivation is pending.
 -/
 theorem isPrincipalIdealRing_away_C : IsPrincipalIdealRing T :=
   isPrincipalIdealRing_away (C_mem_maximalIdeal_iff.2 hπ.not_isUnit) T
 
 /- English proof (translation)
-Rewrite using `[← Set.image_singleton, ← Ideal.map_span]`. Use `IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers (C π)) T _ inferInstance (Set.disjoint_left.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩ h`. Conclude with `not_X_dvd_C hπ (X_prime.dvd_of_dvd_pow (Ideal.mem_span_singleton.1 h))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isPrime_span_X_away_C : (Ideal.span {algebraMap O⟦X⟧ T X}).IsPrime := by
   rw [← Set.image_singleton, ← Ideal.map_span]
@@ -255,7 +253,7 @@ theorem isPrime_span_X_away_C : (Ideal.span {algebraMap O⟦X⟧ T X}).IsPrime :
   exact not_X_dvd_C hπ (X_prime.dvd_of_dvd_pow (Ideal.mem_span_singleton.1 h))
 
 /- English proof (translation)
-The claim follows from `(Ideal.span_singleton_prime ((map_ne_zero_iff _ (algebraMap_injective_away (C_ne_zero hπ) T)).2 X_ne_zero)).1 (isPrime_span_X_away_C hπ T)`.
+A detailed English derivation is pending.
 -/
 theorem prime_algebraMap_X_away_C : Prime (algebraMap O⟦X⟧ T X) :=
   (Ideal.span_singleton_prime
@@ -263,9 +261,9 @@ theorem prime_algebraMap_X_away_C : Prime (algebraMap O⟦X⟧ T X) :=
     (isPrime_span_X_away_C hπ T)
 
 /- English proof (translation)
-Use `isDomain_away_C hπ T` as an intermediate fact. Use `isPrincipalIdealRing_away_C hπ T` as an intermediate fact. Use `IsPrincipalIdealRing.ringKrullDim_eq_one T fun h => ?_` and prove the remaining obligations. Establish `hp` using `prime_algebraMap_X_away_C hπ T`. Take `⟨b, hb⟩` from `h.mul_inv_cancel hp.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hp.not_unit (IsUnit.of_mul_eq_one _ hb)`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_away_C : ringKrullDim T = 1 := by
   have := isDomain_away_C hπ T
@@ -282,7 +280,7 @@ section Eval
 variable [IsAdicComplete (maximalIdeal O) O]
 
 /- English proof (translation)
-Rewrite using `[← maximalIdeal_eq_span hπ]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_span_C_X (hπ : Irreducible π) :
     IsAdicComplete (Ideal.span {C π, X} : Ideal O⟦X⟧) O⟦X⟧ := by
@@ -295,27 +293,27 @@ def ev (hπ : Irreducible π) : O⟦X⟧ →ₐ[O] O :=
 variable (hπ : Irreducible π)
 
 /- English proof (translation)
-The claim follows from `evalAdic_X _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ev_X : ev hπ X = π := evalAdic_X _ _
 
 /- English proof (translation)
-The claim follows from `(ev hπ).commutes a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ev_C (a : O) : ev hπ (C a) = a := (ev hπ).commutes a
 
 /- English proof (translation)
-The claim follows from `eq_evalAdic _ _ φ h`.
+A detailed English derivation is pending.
 -/
 theorem eq_ev (φ : O⟦X⟧ →ₐ[O] O) (h : φ X = π) : φ = ev hπ := eq_evalAdic _ _ φ h
 
 /- English proof (translation)
-Introduce `a` and use `⟨C a, ev_C hπ a⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ev_surjective : Function.Surjective (ev hπ) := fun a => ⟨C a, ev_C hπ a⟩
 
 /- English proof (translation)
-Rewrite using `[ker_eq_span_X_sub_C, ev_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_ev : RingHom.ker (ev hπ) = Ideal.span {X - C π} := by
   rw [ker_eq_span_X_sub_C, ev_X]
@@ -327,27 +325,27 @@ instance isLocalHom_ev_toRingHom : IsLocalHom (ev hπ : O⟦X⟧ →+* O) :=
   ⟨(isLocalHom_ev hπ).map_nonunit⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.map_le_iff_le_comap.2 fun _ hf => map_nonunit (ev hπ : O⟦X⟧ →+* O) _ hf`.
+A detailed English derivation is pending.
 -/
 theorem map_ev_maximalIdeal_le :
     (maximalIdeal O⟦X⟧).map (ev hπ : O⟦X⟧ →+* O) ≤ maximalIdeal O :=
   Ideal.map_le_iff_le_comap.2 fun _ hf => map_nonunit (ev hπ : O⟦X⟧ →+* O) _ hf
 
 /- English proof (translation)
-The claim follows from `continuous_adicTopology_of_map_le _ _ (ev hπ : O⟦X⟧ →+* O) (map_ev_maximalIdeal_le hπ)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ev :
     @Continuous _ _ (maximalIdeal O⟦X⟧).adicTopology (maximalIdeal O).adicTopology (ev hπ) :=
   continuous_adicTopology_of_map_le _ _ (ev hπ : O⟦X⟧ →+* O) (map_ev_maximalIdeal_le hπ)
 
 /- English proof (translation)
-Simplify using `using map_dvd (ev hπ) h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_dvd_ev {a : ℕ} {f : O⟦X⟧} (h : X ^ a ∣ f) : π ^ a ∣ ev hπ f := by
   simpa using map_dvd (ev hπ) h
 
 /- English proof (translation)
-Rewrite using `[← hπ.addVal_pow a, IsDiscreteValuationRing.addVal_le_iff_dvd]`. Conclude with `pow_dvd_ev hπ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_addVal_ev_vw {a : ℕ} {f : O⟦X⟧} (h : X ^ a ∣ f) :
     (a : ℕ∞) ≤ IsDiscreteValuationRing.addVal O (ev hπ f) := by
@@ -358,7 +356,7 @@ variable (K : Type*) [Field K] [Algebra O K] [IsFractionRing O K]
   (U : Type*) [CommRing U] [Algebra O⟦X⟧ U] [IsLocalization.Away (C π * X : O⟦X⟧) U]
 
 /- English proof (translation)
-Establish `: algebraMap O K π ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hπ.ne_zero`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_ev_C_mul_X :
     IsUnit (((algebraMap O K).comp (ev hπ : O⟦X⟧ →+* O)) (C π * X)) := by
@@ -370,14 +368,14 @@ def evFrac : U →+* K :=
   IsLocalization.Away.lift (C π * X : O⟦X⟧) (isUnit_ev_C_mul_X hπ K)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem evFrac_algebraMap (f : O⟦X⟧) :
     evFrac hπ K U (algebraMap O⟦X⟧ U f) = algebraMap O K (ev hπ f) :=
   IsLocalization.Away.lift_eq _ _ _
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (C π * X : O⟦X⟧)) (RingHom.ext fun f => by simp [h])`.
+A detailed English derivation is pending.
 -/
 theorem eq_evFrac (ψ : U →+* K)
     (h : ∀ f, ψ (algebraMap O⟦X⟧ U f) = algebraMap O K (ev hπ f)) : ψ = evFrac hπ K U :=
@@ -399,7 +397,7 @@ Both sides reduce to the same expression.
 end Eval
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨connectedSpace_primeSpectrum_away (C_mul_X_ne_zero hπ) U, denseRange_comap_away (C_mul_X_ne_zero hπ) U⟩`.
+Supply the required witnesses or components.
 -/
 theorem connected_dense_away_C_mul_X (hπ : Irreducible π) (U : Type*) [CommRing U]
     [Algebra O⟦X⟧ U] [IsLocalization.Away (C π * X : O⟦X⟧) U] :
@@ -408,7 +406,7 @@ theorem connected_dense_away_C_mul_X (hπ : Irreducible π) (U : Type*) [CommRin
     denseRange_comap_away (C_mul_X_ne_zero hπ) U⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨connectedSpace_primeSpectrum_away (X_ne_zero (R := O)) U, denseRange_comap_away (X_ne_zero (R := O)) U⟩`.
+Supply the required witnesses or components.
 -/
 theorem connected_dense_away_X (U : Type*) [CommRing U]
     [Algebra O⟦X⟧ U] [IsLocalization.Away (X : O⟦X⟧) U] :
@@ -417,7 +415,7 @@ theorem connected_dense_away_X (U : Type*) [CommRing U]
     denseRange_comap_away (X_ne_zero (R := O)) U⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ringKrullDim_eq_two O, maximalIdeal_eq_span hπ, maximalIdeal_eq_span_X_sub_C hπ⟩, ⟨isAdicComplete_span_C_X hπ, inferInstance⟩, ⟨X_prime, prime_C hπ, not_associated_X_C hπ⟩, ⟨ev_X hπ, continuous_ev hπ, eq …`.
+Supply the required witnesses or components.
 -/
 theorem powerSeries_completeDVR (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] (K : Type*) [Field K] [Algebra O K] [IsFractionRing O K]
@@ -477,7 +475,7 @@ theorem powerSeries_completeDVR (O : Type*) [CommRing O] [IsDomain O] [IsDiscret
     fun f => ⟨order_map_algebraMap K f, addVal_algebraMap_atPrime_X _ f⟩⟩
 
 /- English proof (translation)
-The claim follows from `(powerSeries_completeDVR ℤ_[p] ℚ_[p] PadicInt.irreducible_p).2.2.2.1.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] :
     RingHom.ker (ev (PadicInt.irreducible_p (p := p))) = Ideal.span {X - C (p : ℤ_[p])} :=

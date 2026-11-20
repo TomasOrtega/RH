@@ -16,13 +16,13 @@ def radMeas (N : ℕ) : Measure ℂ := (volume : Measure ℂ).withDensity fun c 
 instance (N : ℕ) : SFinite (radMeas N) := by unfold radMeas; infer_instance
 
 /- English proof (translation)
-Establish `hm : Measurable (fun c : ℂ => (t : ℂ) * c)` using `measurable_const_mul _`. Use `Measure.ext_of_lintegral _ fun g hg => ?_` and prove the remaining obligations. Establish `hw : Measurable fun c : ℂ => ENNReal.ofReal (‖c‖ ^ (2 * N))` using `by fun_prop`. Rewrite using `[lintegral_map hg hm, lintegral_smul_measure]`. Unfold `radMeas`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hgl : Measurable fun a : ℂ => g ((t : ℂ) * a)` using `hg.comp hm`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hw hg, lintegral_withDensity_eq_lintegral_mul _ hw hgl]`. Establish `hmap : (volume : Measure ℂ).map (fun c => (t : ℂ) * c) = ENNReal.ofReal ((t ^ 2)⁻¹) • volume`. Establish `h` using `Measure.map_addHaar_smul (volume : Measure ℂ) ht.ne'`. Rewrite `h` using `[Complex.finrank_real_complex, abs_of_pos (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `h1` using `lintegral_map (μ := (volume : Measure ℂ)) (hw.mul hg) hm`. Rewrite `h1` using `[hmap, lintegral_smul_measure]`. Establish `h2 : ∀ c : ℂ, ((fun c : ℂ => ENNReal.ofReal (‖c‖ ^ (2 * N))) * fun a => g ((t : ℂ) * a)) c = ENNReal.ofReal ((t ^ (2 * N))⁻¹) * (ENNReal.ofReal (‖(t : ℂ) * c‖ ^ (2 * N)) * g ((t : ℂ) * c))`. Introduce `c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mul_apply, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), norm_mul, Complex.norm_real, Real.norm_of_nonneg ht.le, mul_pow, ← mul_assoc, inv_mul_cancel₀ (by positivity), one_mul]`. Rewrite using `[lintegral_congr h2, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Simplify using `only [Pi.mul_apply] at h1 ⊢`. Rewrite using `[← h1, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), ← mul_inv, ← pow_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma radMeas_map (N : ℕ) (t : ℝ) (ht : 0 < t) :
     (radMeas N).map (fun c => (t : ℂ) * c) = ENNReal.ofReal ((t ^ (2 * N + 2))⁻¹) • radMeas N := by
@@ -53,7 +53,7 @@ def par (k r' : ℕ) (p : ℂ × HPar k r') : Fin (2 * (1 + r') + k + 1) → ℂ
   p.1 • (es0 k r' + liftVec k 1 r' p.2.1 + hb k r' p.2.1 p.2.2 • e0 k r')
 
 /- English proof (translation)
-Establish `: par k r' = Ψt k r' ∘ cm1Θ k r'` using `funext fun p => parametrisation_eq_scaled_sum p`. Rewrite using `[this]`. Conclude with `Ψt_meas.comp parametrisation_map_measurable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma par_meas (k r' : ℕ) : Measurable (par k r') := by
   have : par k r' = Ψt k r' ∘ cm1Θ k r' := funext fun p => parametrisation_eq_scaled_sum p
@@ -70,15 +70,15 @@ instance hparSFinite (k r' : ℕ) : SFinite (volume : Measure (HPar k r')) := by
   rw [Measure.volume_eq_prod]; infer_instance
 
 /- English proof (translation)
-Rewrite using `[cone_def]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cone_sfinite (k r' : ℕ) : SFinite (coneMeas k r') := by
   rw [cone_def]; infer_instance
 
 /- English proof (translation)
-Establish `hm : Measurable (fun c : ℂ => (t : ℂ) * c)` using `measurable_const_mul _`. Establish `hs : Measurable (fun v : Fin (2 * (1 + r') + k + 1) → ℂ => (t : ℂ) • v)` using `measurable_const_smul _`. Rewrite using `[cone_def, Measure.map_map hs (par_meas k r')]`. Establish `e : (fun v : Fin (2 * (1 + r') + k + 1) → ℂ => (t : ℂ) • v) ∘ par k r' = par k r' ∘ Prod.map (fun c : ℂ => (t : ℂ) * c) id`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp, par, Prod.map, id, smul_smul]`. Rewrite using `[e, ← Measure.map_map (par_meas k r') (hm.prodMap measurable_id), ← Measure.map_prod_map _ _ hm measurable_id, radMeas_map _ t ht, Measure.map_id, Measure.prod_smul_left, Measure.map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma cone_map (k r' : ℕ) (t : ℝ) (ht : 0 < t) :
     (coneMeas k r').map (fun v => (t : ℂ) • v) =
@@ -94,20 +94,20 @@ lemma cone_map (k r' : ℕ) (t : ℝ) (ht : 0 < t) :
     radMeas_map _ t ht, Measure.map_id, Measure.prod_smul_left, Measure.map_smul]
 
 /- English proof (translation)
-Unfold `sqLen`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma sqLen_cont {n : ℕ} : Continuous (sqLen : (Fin n → ℂ) → ℝ) := by
   unfold sqLen
   fun_prop
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma sqLen_nonneg {n : ℕ} (v : Fin n → ℂ) : 0 ≤ sqLen v :=
   Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
 
 /- English proof (translation)
-Unfold `sqLen`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, Complex.normSq_ofReal, sq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma sqLen_smul {n : ℕ} (t : ℝ) (v : Fin n → ℂ) : sqLen ((t : ℂ) • v) = t ^ 2 * sqLen v := by
   unfold sqLen
@@ -116,9 +116,9 @@ lemma sqLen_smul {n : ℕ} (t : ℝ) (v : Fin n → ℂ) : sqLen ((t : ℂ) • 
   rw [Pi.smul_apply, smul_eq_mul, map_mul, Complex.normSq_ofReal, sq]
 
 /- English proof (translation)
-Establish `ht : 0 < Real.sqrt s` using `Real.sqrt_pos.2 hs`. Establish `hsm : Measurable (fun v : Fin (2 * (1 + r') + k + 1) → ℂ => ((Real.sqrt s : ℝ) : ℂ) • v)` using `measurable_const_smul _`. Establish `h1` using `lintegral_map (μ := coneMeas k r') (hf.comp sqLen_cont.measurable) hsm`. Rewrite `h1` using `[cone_map k r' _ ht, lintegral_smul_measure]`. Simplify using `only [Function.comp, sqLen_smul, Real.sq_sqrt hs.le] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, smul_eq_mul]`. Use `congr 2`. Rewrite using `[Real.rpow_neg hs.le, Real.rpow_natCast, show 2 * (2 * r' + k + 1) + 2 = 2 * (2 * (1 + r') + k) by ring, pow_mul, Real.sq_sqrt hs.le]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma cone_homog (k r' : ℕ) (s : ℝ) (hs : 0 < s) (f : ℝ → ℝ≥0∞) (hf : Measurable f) :
     (∫⁻ v, f (s * sqLen v) ∂(coneMeas k r')) =
@@ -135,7 +135,7 @@ lemma cone_homog (k r' : ℕ) (s : ℝ) (hs : 0 < s) (f : ℝ → ℝ≥0∞) (h
     show 2 * (2 * r' + k + 1) + 2 = 2 * (2 * (1 + r') + k) by ring, pow_mul, Real.sq_sqrt hs.le]
 
 /- English proof (translation)
-Unfold `par mk3`. Use `congr 1`. Rewrite using `[one_smul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma par_eq (k r' : ℕ) (p : ℂ × HPar k r') :
     par k r' p = p.1 • mk3 k r' (hb k r' p.2.1 p.2.2) p.2.1 1 := by
@@ -145,17 +145,15 @@ lemma par_eq (k r' : ℕ) (p : ℂ × HPar k r') :
   abel
 
 /- English proof (translation)
-Rewrite using `[cone_def]`. Establish `hc : Continuous fun v : Fin (2 * (1 + r') + k + 1) → ℂ => herm (Hpk k (1 + r')) v v` using `hermitian_quadratic_continuous (k := k) (r' := 1 + r')`. Establish `hS : MeasurableSet {v : Fin (2 * (1 + r') + k + 1) → ℂ | v ≠ 0 ∧ herm (Hpk k (1 + r')) v v = 0}` using `(MeasurableSet.singleton 0).compl.inter (isClosed_eq hc continuous_const).measurableSet`. Rewrite using `[ae_map_iff (par_meas k r').aemeasurable hS]`. Establish `h0 : ∀ᵐ p : ℂ × HPar k r' ∂((radMeas (2 * r' + k + 1)).prod (volume : Measure (HPar k r'))), p.1 ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ae_iff]`. Establish `: {p : ℂ × HPar k r' | ¬ p.1 ≠ 0} = {(0 : ℂ)} ×ˢ Set.univ`. Use extensionality with `p`. Simplify using the standard rewrite rules. Rewrite using `[this, Measure.prod_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : radMeas (2 * r' + k + 1) {(0 : ℂ)} = 0`. Unfold `radMeas`. Conclude with `withDensity_absolutelyContinuous _ _ (by simp)`. Rewrite using `[h0, zero_mul]`. Use `filter_upwards [h0] with p hp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[par_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `hp` to reduce the goal to its premises. Use `congrArg cL h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[three_block_smul, three_block_last, mul_one]`. Conclude with `this`. Rewrite using `[herm_smul_left, herm_smul_right, hermitian_three_block]`. Use `hb_add_conj (k := k) (r' := r') p.2.1 p.2.2` as an intermediate fact. Simplify using `only [map_one, mul_one, one_mul]`.
-
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cone_ae (k r' : ℕ) : ∀ᵐ v ∂(coneMeas k r'), v ≠ 0 ∧ herm (Hpk k (1 + r')) v v = 0 := by
   rw [cone_def]
@@ -188,13 +186,13 @@ lemma cone_ae (k r' : ℕ) : ∀ᵐ v ∂(coneMeas k r'), v ≠ 0 ∧ herm (Hpk 
     simp
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : coneMeas k r' Set.univ = 0` using `by rw [h]; rfl`. Rewrite `h1` using `[cone_def, Measure.map_apply (par_meas k r') MeasurableSet.univ, Set.preimage_univ, ← Set.univ_prod_univ, Measure.prod_prod, mul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases. Unfold `radMeas at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, lintegral_eq_zero_iff (by fun_prop)]`. Establish `h2 : ∀ᵐ c : ℂ, c ≠ 0` using `by rw [ae_iff]; simp`. Establish `h3 : ∀ᵐ _c : ℂ, False` using `by filter_upwards [h1, h2] with c hc hc0`. Establish `: 0 < ‖c‖ ^ (2 * (2 * r' + k + 1))` using `pow_pos (norm_pos_iff.2 hc0) _`. Simplify using `only [Pi.zero_apply, ENNReal.ofReal_eq_zero] at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h3` using `[Filter.eventually_false_iff_eq_bot, ae_eq_bot]`. Conclude with `NeZero.ne _ h3`. Rewrite `h1` using `[Measure.volume_eq_prod, ← Set.univ_prod_univ, Measure.prod_prod, mul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `(isOpen_univ.measure_pos (volume : Measure (Fin (2 * r' + k + 1) → ℂ)) Set.univ_nonempty).ne' h1`. Simplify using `at h1`.
+A detailed English derivation is pending.
 -/
 lemma cone_ne_zero (k r' : ℕ) : coneMeas k r' ≠ 0 := by
   intro h
@@ -218,9 +216,9 @@ lemma cone_ne_zero (k r' : ℕ) : coneMeas k r' ≠ 0 := by
     · simp at h1
 
 /- English proof (translation)
-Use `(isCompact_closedBall (0 : Fin n → ℂ) 1).of_isClosed_subset (isClosed_le sqLen_cont continuous_const) ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `i`. Establish `h1 : Complex.normSq (v i) ≤ sqLen v` using `Finset.single_le_sum (f := fun i => Complex.normSq (v i)) (fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : sqLen v ≤ 1` using `hv`. Rewrite `h1` using `[Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[norm_nonneg (v i)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma ball_compact {n : ℕ} : IsCompact {v : Fin n → ℂ | sqLen v ≤ 1} := by
   refine (isCompact_closedBall (0 : Fin n → ℂ) 1).of_isClosed_subset (isClosed_le sqLen_cont continuous_const) ?_
@@ -234,19 +232,17 @@ lemma ball_compact {n : ℕ} : IsCompact {v : Fin n → ℂ | sqLen v ≤ 1} := 
   nlinarith [norm_nonneg (v i)]
 
 /- English proof (translation)
-Use `set f : ℝ → ℝ≥0∞ := (Set.Iic (1 : ℝ)).indicator 1 with hf`. Establish `hfm : Measurable f` using `measurable_const.indicator measurableSet_Iic`. Establish `hM : (∫⁻ v, f (q v) ∂m) = m {v | q v ≤ 1}`. Rewrite using `[← lintegral_indicator_one (measurableSet_le hq measurable_const)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hle : ∀ v, ENNReal.ofReal (Real.exp (-q v)) ≤ ∑' n : ℕ, ENNReal.ofReal (Real.exp (-(n : ℝ))) * f (((n : ℝ) + 1)⁻¹ * q v)`. Introduce `v`. Use `le_trans ?_ (ENNReal.le_tsum ⌊q v⌋₊)` and prove the remaining obligations. Establish `h1 : ((⌊q v⌋₊ : ℝ) + 1)⁻¹ * q v ≤ 1`. Rewrite using `[inv_mul_le_iff₀ (by positivity), mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.lt_floor_add_one _).le`. Rewrite using `[hf, Set.indicator_of_mem (show _ ∈ Set.Iic (1 : ℝ) from h1), Pi.one_apply, mul_one]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 (neg_le_neg (Nat.floor_le (h0 v))))`. Use `ne_top_of_le_ne_top ?_ (lintegral_mono hle)` and prove the remaining obligations. Establish `hmeas : ∀ n : ℕ, AEMeasurable (fun v => ENNReal.ofReal (Real.exp (-(n : ℝ))) * f (((n : ℝ) + 1)⁻¹ * q v)) m` using `fun n => ((hfm.comp (hq.const_mul _)).const_mul _).aemeasurable`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lintegral_tsum hmeas]`. Establish `hterm : ∀ n : ℕ, (∫⁻ v, ENNReal.ofReal (Real.exp (-(n : ℝ))) * f (((n : ℝ) + 1)⁻¹ * q v) ∂m) = ENNReal.ofReal (Real.exp (-(n : ℝ)) * ((n : ℝ) + 1) ^ d) * m {v | q v ≤ 1}`. Introduce `n`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, hh _ (by positivity) f hfm, hM, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), Real.rpow_neg (by positivity), Real.rpow_natCast, inv_pow, inv_inv]`. Simplify using `only [hterm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.tsum_mul_right]`. Use `ENNReal.mul_ne_top ?_ hfin.ne` and prove the remaining obligations. Establish `hsum : Summable fun n : ℕ => Real.exp (-(n : ℝ)) * ((n : ℝ) + 1) ^ d`. Establish `h1` using `(summable_nat_add_iff 1).2 (Real.summable_pow_mul_exp_neg_nat_mul d (r := 1) one_pos)`. Use `(h1.mul_left (Real.exp 1)).congr fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Rewrite using `[mul_left_comm, ← Real.exp_add, mul_comm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun n => by positivity) hsum]`.
-
-Conclude with `ENNReal.ofReal_ne_top`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gauss_finite {X : Type*} [MeasurableSpace X] (m : Measure X) (q : X → ℝ) (hq : Measurable q) (h0 : ∀ v, 0 ≤ q v)
     (d : ℕ) (hh : ∀ s : ℝ, 0 < s → ∀ f : ℝ → ℝ≥0∞, Measurable f →
@@ -296,11 +292,11 @@ namespace GlobalTheory.HCXi
 open ConeOne Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.B2x8
 
 /- English proof (translation)
-Introduce `k r'`. Establish `hG : Measurable fun v : Fin (2 * (1 + r') + k + 1) → ℂ => ENNReal.ofReal (Real.exp (-sqLen v))` using `(Real.measurable_exp.comp sqLen_cont.measurable.neg).ennreal_ofReal`. Use `⟨coneMeas k r', cone_sfinite k r', cone_ae k r', cone_homog k r', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[lintegral_eq_zero_iff hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `cone_ne_zero k r'` to reduce the goal to its premises. Rewrite using `[← ae_eq_bot, ← Filter.eventually_false_iff_eq_bot]`. Use `filter_upwards [h] with v hv`. Simplify using `only [Pi.zero_apply, ENNReal.ofReal_eq_zero] at hv`. Conclude with `absurd hv (not_le.2 (Real.exp_pos _))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `gauss_finite _ _ sqLen_cont.measurable sqLen_nonneg _ (cone_homog k r') (isotropic_cone_finite_measure k r' _ ball_compact)`. Introduce `g hg`. Establish `h1` using `lintegral_map (μ := coneMeas k r') hG (cf_mulVec_meas g)`. Rewrite `h1` using `[isotropic_cone_invariance k r' g hg]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cone_measure_pos_rank : ∀ k r' : ℕ, ∃ m : Measure (Fin (2 * (1 + r') + k + 1) → ℂ), SFinite m ∧ (∀ᵐ v ∂m, v ≠ 0 ∧ herm (Hpk k (1 + r')) v v = 0) ∧ (∀ s : ℝ, 0 < s → ∀ f : ℝ → ℝ≥0∞, Measurable f → (∫⁻ v, f (s * sqLen v) ∂m) = ENNReal.ofReal (s ^ (-((2 * (1 + r') + k : ℕ) : ℝ))) * ∫⁻ v, f (sqLen v) ∂m) ∧ (∫⁻ v, ENNReal.ofReal (Real.exp (-sqLen v)) ∂m) ≠ 0 ∧ (∫⁻ v, ENNReal.ofReal (Real.exp (-sqLen v)) ∂m) ≠ ∞ ∧ ∀ g ∈ GV k (1 + r'), (∫⁻ v, ENNReal.ofReal (Real.exp (-sqLen (g *ᵥ v))) ∂m) = ∫⁻ v, ENNReal.ofReal (Real.exp (-sqLen v)) ∂m := by
   intro k r'

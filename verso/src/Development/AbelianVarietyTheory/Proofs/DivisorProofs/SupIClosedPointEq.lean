@@ -9,17 +9,15 @@ open Classical
 namespace GlobalTheory.ZH.ThetaSys
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S M hD V _ _ _ ξ emb hemb`. Use `set z := ξ (IsLocalRing.closedPoint V) with hzdef`. Establish `hs : ξ (IsLocalRing.closedPoint V) ⤳ z` using `specializes_rfl`. Establish `key : ∀ (x : Ω) (hx : x ∈ M.O z), emb x = algebraMap V (FractionRing V) (RatModel.valLoc ξ z hs ⟨x, hx⟩)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨U, f, hz, rfl⟩` from `hx`. Rewrite using `[RatModel.valLoc_valF ξ hs hz f]`. Conclude with `hemb U f hz`. Use extensionality with `a`. Simplify using `only [supI, Set.mem_setOf_eq]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb⟩`. Use `⟨ha, fun b => ⟨RatModel.valLoc ξ z hs ⟨_, hb b⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← key _ (hb b), ← map_mul, div_mul_cancel₀ _ ha]`. Introduce and unpack `⟨ha, hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, hx₀⟩` from `hD z`. Take `⟨v, hv⟩` from `hc x₀`. Establish `hea : emb (S.th a) ≠ 0` using `(map_ne_zero emb).2 ha`. Establish `hw` using `key _ (hx₀.2 a)`. Establish `hunit : IsUnit (RatModel.valLoc ξ z hs ⟨_, hx₀.2 a⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsUnit.of_mul_eq_one v (IsFractionRing.injective V (FractionRing V) ?_)` and prove the remaining obligations. Establish `hv0 : algebraMap V (FractionRing V) v ≠ 0`. Introduce `h0`. Conclude with `(map_ne_zero emb).2 hx₀.1 (by rw [hv, h0, zero_mul])`. Rewrite using `[map_mul, map_one, ← hw, map_div₀, hv]`.
-
-Clear the denominators using the available nonvanishing facts. Establish `hu : IsUnit (⟨S.th a / S.th x₀, hx₀.2 a⟩ : M.O z)` using `(RatModel.isUnit_valLoc_iff ξ hzdef.symm _).1 hunit`. Conclude with `(hx₀.div_iff_isUnit a).2 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem supI_closedPoint_eq : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω),
     M.HasDiv S.th → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ξ : Sp V ⟶ M.Z)

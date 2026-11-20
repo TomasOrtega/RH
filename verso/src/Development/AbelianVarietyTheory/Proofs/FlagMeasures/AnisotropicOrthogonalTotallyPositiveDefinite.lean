@@ -13,11 +13,11 @@ namespace GlobalTheory.RowsOrb
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hw`. Establish `hc : ∀ b, c b = 0`. Introduce `b`. Establish `h` using `hf b`. Simplify using `only [map_sum, map_smul, smul_eq_mul] at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfe : ∀ a, (VS D).hT (X.fY b) (X.eX a) = if a = b then 1 else 0`. Introduce `a`. Rewrite using `[a_herm, X.ef a b]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [hfe, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_span_eX (X : HidaSetting D) (w : (VS D).V)
     (hw : w ∈ Submodule.span D.host.E (Set.range X.eX)) (hf : ∀ b, (VS D).hT (X.fY b) w = 0) : w = 0 := by
@@ -35,19 +35,17 @@ theorem eq_zero_of_mem_span_eX (X : HidaSetting D) (w : (VS D).V)
   simp [hc]
 
 /- English proof (translation)
-Introduce `D X u τ x hx`. Establish `hpos : (GlobalTheory.TypeAsm.F0 X u).PosDefAt τ` using `Formalism.MainNotions.KappaEndpoints.nf_pos (lf D (X.Fu u)) (GlobalTheory.TypeAsm.tu_ne D u) (p_posX D (Tu D u) (D.mem u).A.T_prime.pos _) τ`. Use `set w : (VS D).V := ((x : Wb X) : (VS D).V) with hwdef`. Establish `hWb` using `(mem_Wb X _).1 (x : Wb X).2`. Establish `hUb` using `(mem_Ub X u _).1 x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : w ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Conclude with `Subtype.ext (Subtype.ext h)`. Establish `h1 : ∀ a : Fin (D.R.rS + 1), (GlobalTheory.TypeAsm.HV D).B ((GlobalTheory.TypeAsm.F0 X u).e a) w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `a`. Express the relevant statement in the definitionally equal form `(VS D).hT w ((X.Fu u).fvec a) = 0`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[FlagG.fvec, Fin.snoc_last, X.flagZVector]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `p_symm_zero (VS D) hUb`. Consider the case `cast b`. Rewrite using `[FlagG.fvec, Fin.snoc_castSucc, X.Fu_e]`. Conclude with `p_symm_zero (VS D) (hWb b).1`. Establish `h2 : w ∉ (GlobalTheory.TypeAsm.F0 X u).X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hX`. Apply `hw0` to reduce the goal to its premises. Use `eq_zero_of_mem_span_eX X w ?_ (fun b => (hWb b).2)` and prove the remaining obligations. Use `(Submodule.span_le.2 ?_) hX` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(X.Fu u).fvec b.castSucc ∈ _`. Rewrite using `[FlagG.fvec, Fin.snoc_castSucc, X.Fu_e]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Use `hpos w h1 h2` as an intermediate fact. Rewrite using `[hU_apply]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem pd_hU : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), GlobalTheory.Mass.PD (GlobalTheory.RowsOrb.hU X u) := by
   intro D X u τ x hx

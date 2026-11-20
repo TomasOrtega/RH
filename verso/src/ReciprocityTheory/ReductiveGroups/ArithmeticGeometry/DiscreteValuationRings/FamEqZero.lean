@@ -16,9 +16,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
 
 /- English proof (translation)
-Establish `key : ∀ t : Finset Ix, ((∑ i ∈ t, c i • s i).s α).f j = ∑ i ∈ t, resTop _ (gF D.toPre F (c i)) * ((s i).s α).f j`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, add_f, smul_f, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `key Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem fam_sum_f {k : ℕ} {Ix : Type} [Fintype Ix] (c : Ix → F) (s : Ix → Fam D.toPre F k) (α : D.toPre.X) (j) :
     ((∑ i, c i • s i).s α).f j = ∑ i, resTop _ (gF D.toPre F (c i)) * ((s i).s α).f j := by
@@ -32,9 +32,9 @@ theorem fam_sum_f {k : ℕ} {Ix : Type} [Fintype Ix] (c : Ix → F) (s : Ix → 
   exact key Finset.univ
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Use `DVR.fam_ext fun χ j => ?_` and prove the remaining obligations. Take `⟨α, mu, hα, rfl⟩` from `hP χ`. Take `⟨⟨u, hu, hc⟩, -⟩` from `gen_fe (D := D.toPre) (F := F) hG k mu α`. Establish `hrel` using `s.fe mu α u hu hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `sec_ext_val hL (s' := (0 : Fam D.toPre F k).s (α + k • mu)) (fun y J hJ => ?_) j` and prove the remaining obligations. Rewrite using `[(secRel_iff hL _ _ _ _ _ _ _ _ _ u).1 hrel _ (𝟙 _) y J hJ, sval_zero_of (h0 α hα) _ y J (hJ.mem _ _), MulZeroClass.zero_mul, sval_zero_of (fun j => rfl) _ y J (hJ.mem _ _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fam_eq_zero (hG : GlobalFnsSt) {k : ℕ} (P : D.toPre.X → Prop) (hP : ∀ χ, ∃ α mu, P α ∧ α + k • mu = χ)
     (s : Fam D.toPre F k) (h0 : ∀ α, P α → ∀ j, (s.s α).f j = 0) : s = 0 := by
@@ -48,13 +48,13 @@ theorem fam_eq_zero (hG : GlobalFnsSt) {k : ℕ} (P : D.toPre.X → Prop) (hP : 
     MulZeroClass.zero_mul, sval_zero_of (fun j => rfl) _ y J (hJ.mem _ _)]
 
 /- English proof (translation)
-Take `⟨n, a, σ, σF, hscal, hva, hsum⟩` from `ht`. Establish `hσ : ∀ l, ∃ c' : Fin m → F, (∀ i, (0 : WithTop ℚ) ≤ v (c' i)) ∧ RepF bF (σF l) c'` using `fun l => coordsO hϖ hv b hb bF hbF (σ l) (σF l) fun y J hJ => by`. Rewrite using `[← secScal_sval (hscal l) (𝟙 _) y hJ, Category.id_comp]`. Use `choose c' hc'v hc' using hσ`. Establish `hrep : RepF bF t (fun i => ∑ l, a l * c' l i)` using `fun y J hJ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sval_lin (fun l => gF D.toPre F (a l)) σF (fun j => hsum j) (𝟙 _) y hJ]`. Simplify using `only [map_sum, map_mul, gs_sum _ y ⊤ trivial, gs_mul _ y ⊤ trivial, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hc' l y J hJ, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `e` using `repF_unique hU hc hrep`. Introduce `i`. Rewrite using `[e]`. Use `AddValuation.map_le_sum v fun l _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[AddValuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem vge_coords {ϖ : V} (hϖ : Irreducible ϖ) {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
     {k : ℕ} {ρ : D.toPre.X} {m : ℕ} (b : Fin m → D.toPre.SecB k ρ)

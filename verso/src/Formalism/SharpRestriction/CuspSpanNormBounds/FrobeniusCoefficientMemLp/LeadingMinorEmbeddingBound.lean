@@ -18,18 +18,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable (D : D7)
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le zero_lt_one (one_le_rdE D)`.
+A detailed English derivation is pending.
 -/
 theorem rdE_pos' : 0 < D.host.rdE := lt_of_lt_of_le zero_lt_one (one_le_rdE D)
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.BesselShellMomentBounds.prod_absV_ge_one D x hx h0`.
+A detailed English derivation is pending.
 -/
 theorem one_le_prod_norm (x : D.host.E) (hx : x ∈ intS D) (h0 : x ≠ 0) : 1 ≤ ∏ τ, ‖embS D τ x‖ :=
   Formalism.MainNotions.BesselShellMomentBounds.prod_absV_ge_one D x hx h0
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.mpr ((map_ne_zero _).mpr h0)`.
+A detailed English derivation is pending.
 -/
 theorem norm_embS_pos {x : D.host.E} (h0 : x ≠ 0) (τ : D.what₂.Tau) : 0 < ‖embS D τ x‖ :=
   norm_pos_iff.mpr ((map_ne_zero _).mpr h0)
@@ -37,18 +37,18 @@ theorem norm_embS_pos {x : D.host.E} (h0 : x ≠ 0) (τ : D.what₂.Tau) : 0 < �
 def qS : ℝ := D.host.rdE ^ (-(D.R.rS : ℝ))
 
 /- English proof (translation)
-The claim follows from `Real.rpow_pos_of_pos (rdE_pos' D) _`.
+A detailed English derivation is pending.
 -/
 theorem qS_pos : 0 < qS D := Real.rpow_pos_of_pos (rdE_pos' D) _
 
 /- English proof (translation)
-The claim follows from `Real.rpow_le_one_of_one_le_of_nonpos (one_le_rdE D) (by have : (0 : ℝ) ≤ D.R.rS := Nat.cast_nonneg _; linarith)`.
+A detailed English derivation is pending.
 -/
 theorem qS_le_one : qS D ≤ 1 :=
   Real.rpow_le_one_of_one_le_of_nonpos (one_le_rdE D) (by have : (0 : ℝ) ≤ D.R.rS := Nat.cast_nonneg _; linarith)
 
 /- English proof (translation)
-Unfold `rhoF`. Apply `Real.rpow_le_one_of_one_le_of_nonpos (one_le_rdE D)` to reduce the goal to its premises. Establish `: ((a : ℕ) : ℝ) ≤ D.R.rS` using `by exact_mod_cast Nat.lt_succ_iff.1 a.2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rhoF_le_one (a : Fin (D.R.rS + 1)) : rhoF D a ≤ 1 := by
   unfold rhoF
@@ -57,7 +57,7 @@ theorem rhoF_le_one (a : Fin (D.R.rS + 1)) : rhoF D a ≤ 1 := by
   linarith
 
 /- English proof (translation)
-Unfold `rhoF qS`. Apply `Real.rpow_le_rpow_of_exponent_le (one_le_rdE D)` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ ((a : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem qS_le_rhoF (a : Fin (D.R.rS + 1)) : qS D ≤ rhoF D a := by
   unfold rhoF qS
@@ -66,7 +66,7 @@ theorem qS_le_rhoF (a : Fin (D.R.rS + 1)) : qS D ≤ rhoF D a := by
   linarith
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (qS_pos D) (qS_le_rhoF D a)`.
+A detailed English derivation is pending.
 -/
 theorem rhoF_pos' (a : Fin (D.R.rS + 1)) : 0 < rhoF D a :=
   lt_of_lt_of_le (qS_pos D) (qS_le_rhoF D a)
@@ -74,7 +74,7 @@ theorem rhoF_pos' (a : Fin (D.R.rS + 1)) : 0 < rhoF D a :=
 def R0 : ℝ := ((qS D)⁻¹) ^ (2 * (D.R.rS + 1))
 
 /- English proof (translation)
-The claim follows from `one_le_pow₀ ((one_le_inv₀ (qS_pos D)).mpr (qS_le_one D))`.
+A detailed English derivation is pending.
 -/
 theorem one_le_R0 : 1 ≤ R0 D :=
   one_le_pow₀ ((one_le_inv₀ (qS_pos D)).mpr (qS_le_one D))
@@ -82,24 +82,24 @@ theorem one_le_R0 : 1 ≤ R0 D :=
 def rhoIJ {j : ℕ} (I J : Fin j ↪o Fin (D.R.rS + 1)) : ℝ := ∏ a, (rhoF D (I a) * rhoF D (J a))
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun a _ => mul_pos (rhoF_pos' D _) (rhoF_pos' D _)`.
+A detailed English derivation is pending.
 -/
 theorem rhoIJ_pos {j : ℕ} (I J : Fin j ↪o Fin (D.R.rS + 1)) : 0 < rhoIJ D I J :=
   Finset.prod_pos fun a _ => mul_pos (rhoF_pos' D _) (rhoF_pos' D _)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_le_one (fun a _ => (mul_pos (rhoF_pos' D _) (rhoF_pos' D _)).le) (fun a _ => mul_le_one₀ (rhoF_le_one D _) (rhoF_pos' D _).le (rhoF_le_one D _))`.
+A detailed English derivation is pending.
 -/
 theorem rhoIJ_le_one {j : ℕ} (I J : Fin j ↪o Fin (D.R.rS + 1)) : rhoIJ D I J ≤ 1 :=
   Finset.prod_le_one (fun a _ => (mul_pos (rhoF_pos' D _) (rhoF_pos' D _)).le)
     (fun a _ => mul_le_one₀ (rhoF_le_one D _) (rhoF_pos' D _).le (rhoF_le_one D _))
 
 /- English proof (translation)
-Establish `hj : j ≤ D.R.rS + 1`. Simplify using `using Fintype.card_le_of_embedding I.toEmbedding`. Establish `hq` using `qS_pos D`. Establish `hq1` using `qS_le_one D`. Establish `h1 : (qS D * qS D) ^ j ≤ rhoIJ D I J`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `rhoIJ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `_ ≤ _ := Finset.prod_le_prod (fun a _ => (mul_pos hq hq).le) (fun a _ => mul_le_mul (qS_le_rhoF D _) (qS_le_rhoF D _) hq.le (rhoF_pos' D _).le)`. Establish `h2 : (qS D * qS D) ^ (D.R.rS + 1) ≤ (qS D * qS D) ^ j` using `pow_le_pow_of_le_one (mul_pos hq hq).le (mul_le_one₀ hq1 hq.le hq1) hj`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 < (qS D * qS D) ^ (D.R.rS + 1)` using `pow_pos (mul_pos hq hq) _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rhoIJ_inv_le {j : ℕ} (I J : Fin j ↪o Fin (D.R.rS + 1)) : (rhoIJ D I J)⁻¹ ≤ R0 D := by
   have hj : j ≤ D.R.rS + 1 := by
@@ -125,7 +125,7 @@ theorem absMinor_eq {j : ℕ} (Z : GramM D) (I J : Fin j ↪o Fin (D.R.rS + 1)) 
     Formalism.MainNotions.S.UnitaryVolumeMass.absMinor D Z I J τ = ‖embS D τ (Z.submatrix I J).det‖ * rhoIJ D I J := rfl
 
 /- English proof (translation)
-Unfold `frameExp`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem frameExp_le (l : ℕ) (hl : l ≤ D.R.rS + 1) : frameExp D.R.rS l ≤ (D.R.rS + 1) ^ 2 := by
   unfold frameExp
@@ -137,16 +137,16 @@ theorem frameExp_le (l : ℕ) (hl : l ≤ D.R.rS + 1) : frameExp D.R.rS l ≤ (D
 def R1 : ℝ := D.host.rdE ^ (2 * ((D.R.rS : ℝ) + 1) ^ 2)
 
 /- English proof (translation)
-The claim follows from `Real.one_le_rpow (one_le_rdE D) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_R1 : 1 ≤ R1 D := Real.one_le_rpow (one_le_rdE D) (by positivity)
 
 /- English proof (translation)
-Unfold `absDl absReal R1`. Establish `hrd` using `rdE_pos' D`. Establish `e : ‖embS D τ (leadMinorE Z l)‖ = ‖embS D τ (leadMinorE Z l)‖ * D.host.rdE ^ (-(2 * (frameExp D.R.rS l : ℝ))) * D.host.rdE ^ (2 * (frameExp D.R.rS l : ℝ))`. Rewrite using `[mul_assoc, ← Real.rpow_add hrd]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hexp : D.host.rdE ^ (2 * (frameExp D.R.rS l : ℝ)) ≤ D.host.rdE ^ (2 * ((D.R.rS : ℝ) + 1) ^ 2)`. Apply `Real.rpow_le_rpow_of_exponent_le (one_le_rdE D)` to reduce the goal to its premises. Use `frameExp_le D l hl` as an intermediate fact. Establish `h2 : (frameExp D.R.rS l : ℝ) ≤ ((D.R.rS : ℝ) + 1) ^ 2` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_absDl (Z : GramM D) (l : ℕ) (hl : l ≤ D.R.rS + 1) (τ : D.what₂.Tau) :
     ‖embS D τ (leadMinorE Z l)‖ ≤ absDl D Z l τ * R1 D := by
@@ -167,7 +167,7 @@ theorem norm_le_absDl (Z : GramM D) (l : ℕ) (hl : l ≤ D.R.rS + 1) (τ : D.wh
         mul_le_mul_of_nonneg_left hexp (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg hrd.le _))
 
 /- English proof (translation)
-Establish `hH0 : 0 < H` using `by linarith`. Establish `e : H * max 1 (x / H) = max H x`. Rewrite using `[mul_max_of_nonneg _ _ hH0.le, mul_one, mul_div_cancel₀ _ hH0.ne']`. Rewrite using `[e]`. Conclude with `max_le_max hH le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem max_one_le_mul {H x : ℝ} (hH : 1 ≤ H) (hx : 0 ≤ x) : max 1 x ≤ H * max 1 (x / H) := by
   have hH0 : 0 < H := by linarith
@@ -177,11 +177,9 @@ theorem max_one_le_mul {H x : ℝ} (hH : 1 ≤ H) (hx : 0 ≤ x) : max 1 x ≤ H
   exact max_le_max hH le_rfl
 
 /- English proof (translation)
-Establish `hH : 1 ≤ b ^ (C * (D.R.m : ℝ) ^ 2)` using `Real.one_le_rpow hb (by positivity)`. Establish `hR` using `one_le_R1 D`. Establish `hl' : l ≤ D.R.rS + 1` using `(Finset.mem_Icc.1 hl).2`. Establish `h0 : 0 ≤ absDl D Z l τ`. Unfold `absDl absReal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (rdE_pos' D).le _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`. Use `le_trans (max_mul_le (by linarith) h0) ?_` and prove the remaining obligations. Rewrite using `[max_eq_right hR]`.
-
-Use `_ ≤ R1 D * (b ^ (C * (D.R.m : ℝ) ^ 2) * max 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))) := mul_le_mul_of_nonneg_left (max_one_le_mul hH h0) (by linarith)`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leading_minor_embedding_bound (Z : GramM D) (b C : ℝ) (hb : 1 ≤ b) (hC : 0 ≤ C) (τ : D.what₂.Tau) (l : ℕ)
     (hl : l ∈ Finset.Icc 1 (D.R.rS + 1)) : max 1 ‖embS D τ (leadMinorE Z l)‖ ≤
@@ -201,9 +199,9 @@ theorem leading_minor_embedding_bound (Z : GramM D) (b C : ℝ) (hb : 1 ≤ b) (
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hH : 1 ≤ b ^ (C * (D.R.m : ℝ) ^ 2)` using `Real.one_le_rpow hb (by positivity)`. Establish `hR` using `one_le_R1 D`. Unfold `Formalism.MainNotions.GramProductBounds.Pt`. Establish `hc : (Finset.Icc 1 (D.R.rS + 1)).card = D.R.rS + 1` using `by simp`. Establish `step : ∀ l ∈ Finset.Icc 1 (D.R.rS + 1), max 1 ‖embS D τ (leadMinorE Z l)‖ ≤ (R1 D * b ^ (C * (D.R.m : ℝ) ^ 2)) * max 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l hl`. Conclude with `leading_minor_embedding_bound D Z b C hb hC τ l hl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const]`. Use `_ = _ := by rw [hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_lead_le (Z : GramM D) (b C : ℝ) (hb : 1 ≤ b) (hC : 0 ≤ C) (τ : D.what₂.Tau) :
     ∏ l ∈ Finset.Icc 1 (D.R.rS + 1), max 1 ‖embS D τ (leadMinorE Z l)‖ ≤

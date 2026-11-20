@@ -23,13 +23,13 @@ open scoped Pointwise
 namespace GlobalTheory.SeeConjZMod
 
 /- English proof (translation)
-Establish `hI : Ideal.span {x} ≠ ⊥` using `by simpa using hx`. Establish `hsq : Squarefree (Ideal.span {x})`. Rewrite using `[squarefree_iff_irreducible_sq_not_dvd_of_ne_zero hI]`. Introduce `p hp hd`. Establish `hpr : Prime p` using `hp.prime`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `P : HeightOneSpectrum A` to `⟨p, Ideal.isPrime_of_prime hpr, hpr.ne_zero⟩`. Establish `h2 : x ∈ p ^ 2`. Rewrite using `[sq, ← Ideal.dvd_span_singleton]`. Conclude with `hd`. Conclude with `(h P (Ideal.pow_le_self two_ne_zero h2)).1 h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrad : (Ideal.span {x}).IsRadical`. Introduce `y ⟨n, hn⟩`. Rewrite `hn`, the goal using `[← Ideal.dvd_span_singleton]`. Rewrite `hn` using `[← Ideal.span_singleton_pow]`. Conclude with `hsq.isRadical n _ hn`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.mem_span_singleton]`. Apply `hrad` to reduce the goal to its premises. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `J ⟨hJ, hp⟩`. Conclude with `(h ⟨J, hp, fun h0 => hI (le_bot_iff.1 (h0 ▸ hJ))⟩ (hJ (Ideal.mem_span_singleton_self x))).2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dvd_of_mem_primes {A : Type} [CommRing A] [IsDedekindDomain A] {x b : A} (hx : x ≠ 0)
     (h : ∀ P : HeightOneSpectrum A, x ∈ P.asIdeal → x ∉ P.asIdeal ^ 2 ∧ b ∈ P.asIdeal) : x ∣ b := by
@@ -54,9 +54,9 @@ theorem dvd_of_mem_primes {A : Type} [CommRing A] [IsDedekindDomain A] {x b : A}
   exact (h ⟨J, hp, fun h0 => hI (le_bot_iff.1 (h0 ▸ hJ))⟩ (hJ (Ideal.mem_span_singleton_self x))).2
 
 /- English proof (translation)
-Establish `hle : D.host.conj • P.asIdeal ≤ P'.asIdeal`. Introduce `y hy`. Rewrite `hy` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Conclude with `(hc _ y ((GlobalTheory.TypePlaces.star_eq_conj D _).trans (D.host.conj.apply_symm_apply (y : D.host.E))).symm).1 hy`. Establish `hmax : (D.host.conj • P.asIdeal).IsMaximal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `P.isPrime` as an intermediate fact. Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => P.ne_bot ?_` and prove the remaining obligations. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h0` as an intermediate fact. Simplify using `using this`. Conclude with `(GlobalTheory.Mem.Chr.conjPl_iff_smul D.host.conj P P').2 (hmax.eq_of_le P'.isPrime.ne_top hle)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conj_of_isConj {D : D7} {P P' : Pl D.host.E} (hc : Formalism.L2.DIV.IsConjPl P P') :
     GlobalTheory.Mem.Chr.ConjPl D.host.conj.toRingEquiv P P' := by
@@ -72,20 +72,18 @@ theorem conj_of_isConj {D : D7} {P P' : Pl D.host.E} (hc : Formalism.L2.DIV.IsCo
   exact (GlobalTheory.Mem.Chr.conjPl_iff_smul D.host.conj P P').2 (hmax.eq_of_le P'.isPrime.ne_top hle)
 
 /- English proof (translation)
-The claim follows from `Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)`.
+A detailed English derivation is pending.
 -/
 theorem g_coprime (D : D7) :
     IsCoprime ((D.host.g 0 : ℕ) : 𝓞 D.host.E) ((D.host.g 1 : ℕ) : 𝓞 D.host.E) :=
   Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[Nat.cast_mul]`. Establish `key : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal ^ 2` using `fun k hk => (GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) P hk).2.1`. Establish `hno : ¬ (((D.host.g 0 : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal ∧ ((D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal)`. Introduce and unpack `⟨h0, h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨a, b, hab⟩` from `g_coprime D`. Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ h0) (Ideal.mul_mem_left _ _ h1)`. Establish `hP` using `P.isPrime`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `P.isPrime.mem_or_mem (Ideal.pow_le_self two_ne_zero h) with h0 | h1` into its components or cases. Break down `Ideal.IsPrime.mul_mem_pow P.asIdeal (mul_comm (_ : 𝓞 D.host.E) _ ▸ h) with h' | h'` into its components or cases. Conclude with `hno ⟨h0, h'⟩`. Conclude with `key 0 h0 h'`. Break down `Ideal.IsPrime.mul_mem_pow P.asIdeal h with h' | h'` into its components or cases.
-
-Conclude with `hno ⟨h', h1⟩`. Conclude with `key 1 h1 h'`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem g_not_mem_sq (D : D7) (P : Pl D.host.E) :
     ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal ^ 2 := by
@@ -109,13 +107,13 @@ theorem g_not_mem_sq (D : D7) (P : Pl D.host.E) :
     · exact key 1 h1 h'
 
 /- English proof (translation)
-Establish `hm0 : ((m : ℕ) : 𝓞 E) ≠ 0` using `by exact_mod_cast hm`. Take `⟨q, hq⟩` from `cmpS_surj (F := F) (Ideal.span {((m : ℕ) : 𝓞 E)}) (by simpa using hm0) (Ideal.Quotient.mk _ s)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `hb : oToS F E b - s ∈ idS F (Ideal.span {((m : ℕ) : 𝓞 E)})` using `Ideal.Quotient.eq.1 hq`. Rewrite `hb` using `[idS, Ideal.map_span, Set.image_singleton, map_natCast, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu⟩` from `hb`. Establish `hd : ((m : ℕ) : 𝓞 E) ∣ b`. Use `dvd_of_mem_primes hm0 fun P hP => ⟨hsq P, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (resS F P) hu`. Rewrite `e` using `[map_sub, h P hP, sub_zero, resS_oToS, map_mul, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0 : ((m : ℕ) : kP P) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk P.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hP`. Rewrite `e` using `[e0, zero_mul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, rfl⟩` from `hd`. Use `⟨oToS F E w - u, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[map_mul, map_natCast]`. Take the linear combination `-hu`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m : ℕ}
     (hm : m ≠ 0) (hsq : ∀ P : Pl E, ((m : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (s : Formalism.L2.Herm.intAf F E)
@@ -143,9 +141,9 @@ theorem exists_eq_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   linear_combination -hu
 
 /- English proof (translation)
-Establish `key : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → Pb.Div k P ∨ Pb.Div k (Formalism.L2.DIV.conjPl P)`. Introduce `k hk`. Establish `h` using `((GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) P hk).2.2.2 (Pb.pb k) (Pb.pb_over k) _ (conj_of_isConj (Formalism.L2.DIV.isConjPl_conjPl P))).2`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_or]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hn.1 (h.2 hn.2)`. Rewrite `hP` using `[Nat.cast_mul]`. Conclude with `(P.isPrime.mem_or_mem hP).elim (fun h => ⟨0, key 0 h⟩) (fun h => ⟨1, key 1 h⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_or_conj {D : D7} (Pb : Formalism.L2.Host.PiBar D.host) (P : Pl D.host.E)
     (hP : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) :
@@ -161,13 +159,11 @@ theorem div_or_conj {D : D7} (Pb : Formalism.L2.Host.PiBar D.host) (P : Pl D.hos
   exact (P.isPrime.mem_or_mem hP).elim (fun h => ⟨0, key 0 h⟩) (fun h => ⟨1, key 1 h⟩)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hIs _`. Establish `hPg : ∀ PP, PP ∈ R.Pg ↔ ∃ k, R.C.P.Div k PP` using `hIs.Pg`. Use `⟨fun PP hPP => ?_, fun c hc hc' h => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(hPg PP).1 hPP`. Establish `ho : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `R.C.P.overP hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ ho`. Conclude with `Ideal.mul_mem_left _ _ ho`. Take `⟨t, ht⟩` from `exists_eq_mul (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero) (g_not_mem_sq D) ⟨c, hc⟩ fun P hP => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨k, hk | hk⟩` from `div_or_conj R.C.P P hP`. Conclude with `(h P ((hPg P).2 ⟨k, hk⟩)).1`. Conclude with `(resS_sigS_eq_zero_iff (II D).cm (Formalism.L2.DIV.isConjPl_conjPl P) ⟨c, hc⟩).1 (h _ ((hPg _).2 ⟨k, hk⟩)).2`. Use `⟨t.1, t.2, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val ht`.
-
-Rewrite `e` using `[Subring.coe_mul, Subring.coe_natCast]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.toLevCh.Is A.μ0 → R.IsGrp F → (∀ PP ∈ R.Pg, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) ∧ ∀ (c : EAf D) (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hc' : sigA (II D) c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), (∀ PP ∈ R.Pg, resS D.host.F PP ⟨c, hc⟩ = 0 ∧ resS D.host.F PP ⟨sigA (II D) c, hc'⟩ = 0) → ZMod' (II D) (D.host.g 0 * D.host.g 1) c := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hIs _

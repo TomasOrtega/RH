@@ -20,17 +20,15 @@ open GlobalTheory.CompanionTheory.MirPair
 namespace GlobalTheory.CompanionTheory.MirPair
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ h1 n s V V' _ _ _ _ T T' hT hT' B hB hnd`. Use `borelize k`. Set `ν : Measure k` to `Measure.addHaar`. Take `⟨c, hc⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Establish `hinv : TwInv T T' B s` using `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin` using `GlobalTheory.T.mirabolic_evaluation_linear ν ψ T B hψ hT`. Establish `hex` using `GlobalTheory.T.mirabolic_pairing_exists_eventual_value ν ψ c T T' B s hψ hc hT hT' hinv`. Establish `huniq : ∀ {v v' A A'}, EvVal ν ψ T B v v' A → EvVal ν ψ T B v v' A' → A = A'`. Introduce and unpack `v v' A A' ⟨t₀, h₀⟩ ⟨t₁, h₁⟩`. Break down `le_total (valuation k (t₀ : k)) (valuation k (t₁ : k)) with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h₀ t₁ h, h₁ t₁ le_rfl]`. Rewrite using `[← h₀ t₀ le_rfl, h₁ t₀ h]`. Use `choose f hf using hex`. Set `B₀ : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ f (fun v₁ v₂ v' => huniq (hf _ _) (hlin.1 _ _ _ _ _ (hf _ _) (hf _ _))) (fun z v v' => huniq (hf _ _) (hlin.2.1 _ _ _ _ (hf _ _))) (fun v v₁ v₂ => huniq (hf _ _) (hlin.2.2.1 _ _ _ _ _ (hf _ _) (hf _ _))) (fun z v v' => huniq (hf _ _) (hlin.2.2.2 _ _ _ _ (hf _ _)))`. Establish `hB₀ : ∀ v v', B₀ v v' = f v v'` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.twisted_invariant_pairing_character ψ n s V V' T T' B₀ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y v v'`. Rewrite using `[hB₀, hB₀]`. Conclude with `huniq (hf _ _) (GlobalTheory.T.mirabolic_pairing_depth_induction ν ψ T T' B s hψ hT hinv y v v' _ (hf _ _)).1`. Introduce `y v v'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB₀, hB₀]`. Conclude with `huniq (hf _ _) (GlobalTheory.T.mirabolic_pairing_depth_induction ν ψ T T' B s hψ hT hinv y v v' _ (hf _ _)).2`. Introduce `p v v'`. Rewrite using `[hB₀, hB₀]`. Conclude with `huniq (hf _ _) (GlobalTheory.T.mirabolic_pairing_conductor_shift ν ψ c T T' B s hψ hc hT hT' hinv p v v' _ (hf _ _))`.
-
-Introduce `v hv`. Take `⟨v', A, hA, hA0⟩` from `GlobalTheory.T.mirabolic_pairing_conductor_extension ν ψ c T T' B s hψ hc hT hT' hinv hnd v hv`. Conclude with `⟨v', by rw [hB₀, huniq (hf _ _) hA]; exact hA0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pairing_phi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (n s : ℕ) (V V' : Type) [AddCommGroup V] [Module ℂ V]

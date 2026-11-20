@@ -58,7 +58,7 @@ section Trivial
 open GlobalTheory.PRep GlobalTheory.UnitaryBC.Model
 
 /- English proof (translation)
-Establish `e1 : ((((3 : ℕ) : ℂ) - 1) / 2 - ((0 : Fin 3) : ℕ)) = 1` using `by norm_num`. Establish `e2 : ((((3 : ℕ) : ℂ) - 1) / 2 - ((1 : Fin 3) : ℕ)) = 0` using `by norm_num`. Establish `e3 : ((((3 : ℕ) : ℂ) - 1) / 2 - ((2 : Fin 3) : ℕ)) = -1` using `by norm_num`. Rewrite using `[Fin.sum_univ_three, e1, e2, e3, Complex.cpow_neg, add_right_comm]`. Simplify using `[GlobalTheory.LGrp.bcParam]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {q : ℕ} (hq : q ≠ 0) :
     ∑ k : Fin 3, ({1} : Multiset ℂˣ).map (fun z : ℂˣ => (z : ℂ) * ((q ^ 2 : ℕ) : ℂ) ^ ((((3 : ℕ) : ℂ) - 1) / 2 - (k : ℕ))) =

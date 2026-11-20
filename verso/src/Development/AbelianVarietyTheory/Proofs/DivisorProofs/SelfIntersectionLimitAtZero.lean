@@ -8,9 +8,9 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Unfold `evS`. Use `(MvPolynomial.continuous_eval P).comp (continuous_pi fun o => ?_)` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact continuous_id`. Consider the case `some x`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Option.elim, SlopeTestRemainingChoices.sh]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_evS_shift {D : D7} {Y : ShimX D.what₂.Tau} (A : SlopeTestRemainingChoices Y)
     (P : MvPolynomial (Option (D.what₂.Tau × Fin Y.N)) ℝ) (u : Wt Y) :
@@ -24,11 +24,9 @@ theorem continuous_evS_shift {D : D7} {Y : ShimX D.what₂.Tau} (A : SlopeTestRe
     fun_prop
 
 /- English proof (translation)
-Unfold `Dominant`. Use `eventually_all.2 fun τ => eventually_all.2 fun a => eventually_all.2 fun b => ?_` and prove the remaining obligations. Break down `lt_or_ge a b with h | h` into its components or cases. Establish `h1 : Continuous fun s : ℝ => A.sh u s τ b`. Simplify using `only [SlopeTestRemainingChoices.sh]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Establish `h2 : Continuous fun s : ℝ => A.sh u s τ a`. Simplify using `only [SlopeTestRemainingChoices.sh]`. Use `fun_prop`. Establish `h3 : A.sh u 0 τ b < A.sh u 0 τ a` using `by simpa [SlopeTestRemainingChoices.sh] using hu τ a b h`.
-
-Conclude with `(h1.continuousAt.eventually_lt h2.continuousAt h3).mono fun s hs _ => hs.le`. Conclude with `Eventually.of_forall fun s hab => by rw [le_antisymm hab h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_dominant_shift {D : D7} {Y : ShimX D.what₂.Tau} (A : SlopeTestRemainingChoices Y) (u : Wt Y) (hu : RegDom u) :
     ∀ᶠ s : ℝ in 𝓝 0, Dominant Y (A.sh u s) := by
@@ -44,13 +42,13 @@ theorem eventually_dominant_shift {D : D7} {Y : ShimX D.what₂.Tau} (A : SlopeT
   · exact Eventually.of_forall fun s hab => by rw [le_antisymm hab h]
 
 /- English proof (translation)
-Introduce `D Y A hA B hB u hr hu c`. Take `⟨s₀, hs₀, C, hC⟩` from `hA (supAbs Y u)`. Establish `hcast : Tendsto (fun s : ℚ => (s : ℝ)) (𝓝[>] (0 : ℚ)) (𝓝 0)`. Establish `h` using `(Rat.continuous_coe_real.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℚ)))`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : A.sh u 0 = u`. Use function extensionality and compare the values at `τ i`. Simplify using `[SlopeTestRemainingChoices.sh]`. Establish `hP : Tendsto (fun s : ℚ => evS Y (A.Ps B c) (A.sh u s) s) (𝓝[>] (0 : ℚ)) (𝓝 (evS Y (A.Ps B c) u 0))`. Establish `h` using `((continuous_evS_shift A (A.Ps B c) u).tendsto 0).comp hcast`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[h0]`. Conclude with `h`. Establish `hE : Tendsto (fun s : ℚ => Y.arSelfC (Y.Mbar B u s) c - evS Y (A.Ps B c) (A.sh u s) s) (𝓝[>] (0 : ℚ)) (𝓝 0)`. Establish `hb : Tendsto (fun s : ℚ => C * (s : ℝ)) (𝓝[>] (0 : ℚ)) (𝓝 0)`. Simplify using `using hcast.const_mul C`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `squeeze_zero_norm' ?_ hb` and prove the remaining obligations. Use `filter_upwards [hcast.eventually (eventually_dominant_shift A u hu), hcast.eventually (eventually_le_nhds hs₀), self_mem_nhdsWithin] with s h1 h2 h3`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `hC B hB u s hr le_rfl h3 h2 h1 c`. Simplify using `using hE.add hP`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_arSelfC_of_agree : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (A : SlopeTestRemainingChoices Y), Agree A → ∀ B : ℝ, 2 ≤ B →
     ∀ u : Wt Y, IsRat Y u → RegDom u → ∀ c,

@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.HSApp.AmpleTwist
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `cls_common_add C 0 0`. Simplify using `only [add_zero] at h`. Simplify using `only [zero_nsmul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `left_eq_add.1 h`. Consider the case `succ n ih => rw [succ_nsmul, cls_common_add C, ih, succ_nsmul]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cls_nsmul_of_common {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y} (C : Common B) (n : ℕ)
     (a : Λ) : cls (B (n • a)) (C.isLB (n • a)) = n • cls (B a) (C.isLB a) := by
@@ -39,17 +39,17 @@ theorem cls_nsmul_of_common {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : 
   | succ n ih => rw [succ_nsmul, cls_common_add C, ih, succ_nsmul]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z A hA ρ χ n m hamp y s hs`. Establish `hAg : (A.pull (inc₀ TF.X Z ≫ TF.X.π)).IsLB` using `pull_isLB hA _`. Establish `hP : (lbPow (A.pull (inc₀ TF.X Z ≫ TF.X.π)) n).IsLB` using `isLB_lbPow hAg n`. Establish `hρ` using `isLB_L₀ TF.X Z ρ`. Establish `hB : (LB.div (lbPow (A.pull (inc₀ TF.X Z ≫ TF.X.π)) n) (L₀ TF.X Z ρ)).IsLB` using `hamp.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `isLB_L₀ TF.X Z (m • χ - ρ)`. Establish `hN1` using `isLB_lbPow hN 1`. Establish `hD` using `LB.isLB_div hN1 hB`. Establish `hχ` using `isLB_L₀ TF.X Z χ`. Establish `hχm` using `isLB_lbPow hχ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAn` using `isLB_lbPow hA n`. Establish `hAng : ((lbPow A n).pull (inc₀ TF.X Z ≫ TF.X.π)).IsLB` using `pull_isLB hAn _`. Establish `hT` using `LB.isLB_div hχm hAng`. Establish `hiso : LBIso (LB.div (lbPow (L₀ TF.X Z (m • χ - ρ)) 1) (LB.div (lbPow (A.pull (inc₀ TF.X Z ≫ TF.X.π)) n) (L₀ TF.X Z ρ))) (LB.div (lbPow (L₀ TF.X Z χ) m) ((lbPow A n).pull (inc₀ TF.X Z ≫ TF.X.π)))`. Use `(cls_eq_iff hD hT).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `cls_common_add (common₀ TF.X Z) (m • χ - ρ) ρ`. Rewrite `e` using `[sub_add_cancel]`. Establish `e2` using `cls_nsmul_of_common (common₀ TF.X Z) m χ`. Rewrite using `[cls_div hN1 hB hD, cls_div hP hρ hB, cls_lbPow hN 1 hN1, cls_lbPow hAg n hP, cls_pull hA _ hAg, cls_div hχm hAng hT, cls_pull hAn _ hAng, cls_lbPow hA n hAn, cls_lbPow hχ m hχm, map_nsmul]`. Establish `e3 : cls (L₀ TF.X Z (m • χ - ρ)) hN = m • cls (L₀ TF.X Z χ) hχ - cls (L₀ TF.X Z ρ) hρ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e2, e, add_sub_cancel_right]`. Rewrite using `[e3]`. Normalize the expressions using the abelian group laws. Take `⟨s', hs'⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso hD hT hiso s`. Use `⟨1, LB.div (lbPow (A.pull (inc₀ TF.X Z ≫ TF.X.π)) n) (L₀ TF.X Z ρ), s', one_pos, hB, hamp, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs']`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampleAt_of_sec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (A : LB TF.Y.X), A.IsLB → ∀ (ρ χ : AllWt.Weight Dw) (n m : ℕ), IsAmpleLB (LB.div (lbPow (A.pull (inc₀ TF.X Z ≫ TF.X.π)) n) (L₀ TF.X Z ρ)) → ∀ (y : Y₀ TF.X Z) (s : (LB.div (lbPow (L₀ TF.X Z χ) m) ((lbPow A n).pull (inc₀ TF.X Z ≫ TF.X.π))).Sec), y ∈ nonzeroLocus s → AmpleAt (L₀ TF.X Z (m • χ - ρ)) y := by
   intro E _ _ _ H Dw l Xo c TF Z A hA ρ χ n m hamp y s hs

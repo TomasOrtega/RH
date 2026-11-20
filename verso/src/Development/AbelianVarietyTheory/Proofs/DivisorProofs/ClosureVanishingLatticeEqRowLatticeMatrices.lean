@@ -36,19 +36,17 @@ def prods {m n : ℕ} (X : Set (Fin m → k)) (Y : Set (Fin n → k)) : Set (Mat
   {Z | ∃ x ∈ X, ∃ y ∈ Y, Z = vecMulVec x y}
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨x, hx, y, hy, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: vecMulVec x (0 : Fin n → k) = 0` using `by ext i j; simp [vecMulVec_apply]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ h h'`. Establish `: vecMulVec x (y + y') = vecMulVec x y + vecMulVec x y'` using `by ext i j; simp [vecMulVec_apply, mul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `add_mem h h'`. Consider the case `smul c y _ h`. Establish `: vecMulVec x (c • y) = c • vecMulVec x y`. Use extensionality with `i j`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[vecMulVec_apply, Submonoid.smul_def, smul_eq_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c h`. Consider the case `zero`. Establish `: vecMulVec (0 : Fin m → k) y = 0` using `by ext i j; simp [vecMulVec_apply]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ h h'`. Establish `: vecMulVec (x + x') y = vecMulVec x y + vecMulVec x' y` using `by ext i j; simp [vecMulVec_apply, add_mul]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `add_mem h h'`. Consider the case `smul c x _ h`. Establish `: vecMulVec (c • x) y = c • vecMulVec x y`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, Submonoid.smul_def, smul_eq_mul]`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_mem_span {m n : ℕ} {X : Set (Fin m → k)} {Y : Set (Fin n → k)} {x : Fin m → k} {y : Fin n → k}
     (hx : x ∈ Submodule.span 𝒪[k] X) (hy : y ∈ Submodule.span 𝒪[k] Y) :
@@ -79,9 +77,7 @@ theorem prod_mem_span {m n : ℕ} {X : Set (Fin m → k)} {Y : Set (Fin n → k)
     rw [this]; exact Submodule.smul_mem _ c h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨t, ht, hto, h0t⟩` from `mem_nhds_iff.1 hU`. Establish `e : t = {0}` using `Set.Subset.antisymm (fun s hs => h s (ht hs)) (Set.singleton_subset_iff.2 h0t)`. Use `haveI : DiscreteTopology k := discreteTopology_of_isOpen_singleton_zero (e ▸ hto)`.
-
-Establish `hfin : (𝒪[k] : Set k).Finite` using `(GlobalTheory.SplitWeil.Model.isCompact_int (k := k)).finite_of_discrete`. Use `haveI : Finite 𝒪[k] := hfin.to_subtype`. Conclude with `IsDiscreteValuationRing.not_isField 𝒪[k] (Finite.isField_of_domain 𝒪[k])`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_mem_nhds {U : Set k} (hU : U ∈ 𝓝 (0 : k)) : ∃ t ∈ U, t ≠ 0 := by
   by_contra h
@@ -94,19 +90,15 @@ theorem exists_ne_zero_of_mem_nhds {U : Set k} (hU : U ∈ 𝓝 (0 : k)) : ∃ t
   exact IsDiscreteValuationRing.not_isField 𝒪[k] (Finite.isField_of_domain 𝒪[k])
 
 /- English proof (translation)
-Use `haveI : Nonempty {c : 𝒪[k] // c ≠ 0} := ⟨⟨1, one_ne_zero⟩⟩`. Establish `hO : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer (v := valuation k)`. Establish `hd : ∀ x : k, ∃ d : 𝒪[k], d ≠ 0 ∧ (d : k) * x ∈ 𝒪[k]`. Introduce `x`. Distinguish the cases in `hx : x ∈ 𝒪[k]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_ne_zero, by simpa using hx⟩`. Establish `hx0 : x ≠ 0` using `fun h0 => hx (h0 ▸ zero_mem _)`. Establish `hlt : 1 < valuation k x` using `lt_of_not_ge hx`. Establish `hinv : x⁻¹ ∈ 𝒪[k]`. Express the relevant statement in the definitionally equal form `valuation k x⁻¹ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀]`. Conclude with `(inv_lt_one_of_one_lt₀ hlt).le`. Use `⟨⟨x⁻¹, hinv⟩, fun h0 => inv_ne_zero hx0 (congrArg Subtype.val h0), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x⁻¹ * x ∈ 𝒪[k]`. Rewrite using `[inv_mul_cancel₀ hx0]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `one_mem _`. Use `choose d hd0 hdx using hd`. Take `⟨⟨c, hc⟩, h⟩` from `hC.elim_directed_cover (fun c : {c : 𝒪[k] // c ≠ 0} => {Z : Matrix (Fin m) (Fin n) k | ∀ i j, (c.1 : k) * Z i j ∈ 𝒪[k]}) (fun c => by`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.preimage (f := fun Z : Matrix (Fin m) (Fin n) k => (c.1 : k) * Z i j) (by fun_prop) hO)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `(fun Z _ => by`. Use `Set.mem_iUnion.2 ⟨⟨∏ i, ∏ j, d (Z i j), Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun j _ => hd0 _⟩, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩ : d (Z i j) ∣ ∏ i, ∏ j, d (Z i j)` from `(Finset.dvd_prod_of_mem (fun j => d (Z i j)) (Finset.mem_univ j)).trans (Finset.dvd_prod_of_mem (fun i => ∏ j, d (Z i j)) (Finset.mem_univ i))`. Express the relevant statement in the definitionally equal form `((∏ i, ∏ j, d (Z i j) : 𝒪[k]) : k) * Z i j ∈ 𝒪[k]`. Rewrite using `[hr, Subring.coe_mul, mul_comm ((d (Z i j) : k)), mul_assoc]`.
-
-Conclude with `mul_mem r.2 (hdx _))`. Use the proof step `(fun a b => ⟨⟨a.1 * b.1, mul_ne_zero a.2 b.2⟩, fun Z hZ i j => by`. Express the relevant statement in the definitionally equal form `((a.1 * b.1 : 𝒪[k]) : k) * Z i j ∈ 𝒪[k]`. Rewrite using `[Subring.coe_mul, mul_comm (a.1 : k), mul_assoc]`. Conclude with `mul_mem b.1.2 (hZ i j),`.
-
-Use `fun Z hZ i j => by`. Express the relevant statement in the definitionally equal form `((a.1 * b.1 : 𝒪[k]) : k) * Z i j ∈ 𝒪[k]`. Rewrite using `[Subring.coe_mul, mul_assoc]`. Conclude with `mul_mem a.1.2 (hZ i j)⟩)`. Conclude with `⟨c, hc, fun Z hZ => h hZ⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bound {m n : ℕ} {C : Set (Matrix (Fin m) (Fin n) k)} (hC : IsCompact C) :
     ∃ c : 𝒪[k], c ≠ 0 ∧ ∀ Z ∈ C, ∀ i j, (c : k) * Z i j ∈ 𝒪[k] := by
@@ -152,7 +144,7 @@ theorem exists_bound {m n : ℕ} {C : Set (Matrix (Fin m) (Fin n) k)} (hC : IsCo
   exact ⟨c, hc, fun Z hZ => h hZ⟩
 
 /- English proof (translation)
-Apply the tactic sequence `let φ : (Fin m → 𝒪[k]) →ₗ[𝒪[k]] (Fin m → k) := { toFun := fun a i => d⁻¹ * (a i : k) map_add' := fun a b => by funext i; simp [mul_add] map_smul' := fun c a => by funext i; first | (simp [Subring.smul_def, smul_eq_mul]; ring) | simp [Subring.smul_def, smul_eq_mul, mul_left_comm] …`. Establish `hle : M ≤ LinearMap.range φ` using `fun x hx => ⟨fun i => ⟨d * x i, h x hx i⟩, by funext i; simp [φ, inv_mul_cancel_left₀ hd]⟩`. Rewrite using `[← Submodule.map_comap_eq_self hle]`. Conclude with `(IsNoetherian.noetherian _).map φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_of_bound {m : ℕ} (M : Submodule 𝒪[k] (Fin m → k)) (d : k) (hd : d ≠ 0)
     (h : ∀ x ∈ M, ∀ i, d * x i ∈ 𝒪[k]) : M.FG := by
@@ -172,11 +164,11 @@ section Core2
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩ i`. Establish `e : (g⁻¹).val *ᵥ (((Matrix.mulVecLin g.val).restrictScalars 𝒪[k]) w) = w`. Simplify using `only [LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite using `[e]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `Submodule.mem_one.1 ((Submodule.mem_pi.1 hw) i (Set.mem_univ i))`. Rewrite using `[← hy]`. Conclude with `y.2`. Introduce `h`. Use `⟨(g⁻¹).val *ᵥ x, Submodule.mem_pi.2 fun i _ => Submodule.mem_one.2 ⟨⟨_, h i⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem mem_act_std {ι : Type} [Fintype ι] [DecidableEq ι] (g : GL ι k) (x : ι → k) :
     x ∈ GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.act g (GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.stdLat k ι) ↔ ∀ i, ((g⁻¹).val *ᵥ x) i ∈ 𝒪[k] := by
@@ -194,25 +186,23 @@ theorem mem_act_std {ι : Type} [Fintype ι] [DecidableEq ι] (g : GL ι k) (x :
       Matrix.one_mulVec]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hne) inferInstance`. Use `set ℓ : Fin m → k := fun i => f fun j => if i = j then 1 else 0 with hℓ`. Establish `hfx : ∀ x, f x = ∑ i, x i * ℓ i` using `fun x => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f x]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hℓ, smul_eq_mul]`. Establish `hX : ∀ x ∈ X, ∑ i, x i * ℓ i = 0` using `fun x hx => by`. Rewrite using `[← hfx]`. Establish `: f x ∈ (Submodule.span k X).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span hx)`. Rewrite `this` using `[hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.mem_bot k).1 this`. Set `H : Submodule 𝒪[k] (Matrix (Fin m) (Fin n) k)` to `{ carrier := {Z | ∀ j, ∑ i, Z i j * ℓ i = 0} add_mem' := fun {A B} hA hB j => by`. Simplify using `only [Set.mem_setOf_eq, Matrix.add_apply, add_mul, Finset.sum_add_distrib, hA j, hB j, add_zero]`. Use the proof step `zero_mem' := fun j => by simp`. Use the proof step `smul_mem' := fun c A hA j => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `hA j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Subring.smul_def, smul_eq_mul, mul_assoc, ← Finset.mul_sum, this, mul_zero] }`. Establish `hsub : Submodule.span 𝒪[k] (prods X Y) ≤ H` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩ j`. Use `show ∑ i, vecMulVec x y i j * ℓ i = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [vecMulVec_apply]`. Establish `: ∑ i, x i * y j * ℓ i = y j * ∑ i, x i * ℓ i`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[this, hX x hx, mul_zero])`. Establish `hHc : IsClosed (H : Set (Matrix (Fin m) (Fin n) k))` using `by show IsClosed {Z : Matrix (Fin m) (Fin n) k | ∀ j, ∑ i, Z i j * ℓ i = 0}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun j => isClosed_eq (by fun_prop) continuous_const`. Establish `hcl : closure (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k)) ⊆ (H : Set (Matrix (Fin m) (Fin n) k))` using `closure_minimal (fun Z hZ => hsub hZ) hHc`. Establish `hℓ0 : ∀ i, ℓ i = 0`. Introduce `i₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Set `j₀ : Fin n` to `⟨0, hn⟩`. Set `φ : k → Matrix (Fin m) (Fin n) k` to `fun t => Matrix.of fun i j => if i = i₀ ∧ j = j₀ then t else 0`. Establish `hφ : Continuous φ`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = i₀ ∧ j = j₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [φ, Matrix.of_apply, if_pos h]`. Conclude with `continuous_id`. Simplify using `only [φ, Matrix.of_apply, if_neg h]`. Conclude with `continuous_const`. Establish `h0 : φ 0 ∈ closure (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: φ 0 = 0` using `by ext i j; simp [φ]`. Rewrite using `[this]`. Conclude with `subset_closure (zero_mem _)`. Take `⟨t, ht, ht0⟩` from `exists_ne_zero_of_mem_nhds (hφ.continuousAt.preimage_mem_nhds (ho.mem_nhds h0))`. Use `hcl ht j₀` as an intermediate fact.
-
-Simplify `this` using `[φ, ht0]`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[hfx]`. Simplify using `[hℓ0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_eq_top_left {m n : ℕ} (hn : 0 < n) {X : Set (Fin m → k)} {Y : Set (Fin n → k)}
     (ho : IsOpen (closure (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k)))) :
@@ -269,25 +259,23 @@ theorem span_eq_top_left {m n : ℕ} (hn : 0 < n) {X : Set (Fin m → k)} {Y : S
   simp [hℓ0]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hne) inferInstance`. Use `set ℓ : Fin n → k := fun i => f fun j => if i = j then 1 else 0 with hℓ`. Establish `hfx : ∀ y, f y = ∑ j, y j * ℓ j` using `fun y => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f y]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hℓ, smul_eq_mul]`. Establish `hY : ∀ y ∈ Y, ∑ j, y j * ℓ j = 0` using `fun y hy => by`. Rewrite using `[← hfx]`. Establish `: f y ∈ (Submodule.span k Y).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span hy)`. Rewrite `this` using `[hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.mem_bot k).1 this`. Set `H : Submodule 𝒪[k] (Matrix (Fin m) (Fin n) k)` to `{ carrier := {Z | ∀ i, ∑ j, Z i j * ℓ j = 0} add_mem' := fun {A B} hA hB i => by`. Simplify using `only [Set.mem_setOf_eq, Matrix.add_apply, add_mul, Finset.sum_add_distrib, hA i, hB i, add_zero]`. Use the proof step `zero_mem' := fun i => by simp`. Use the proof step `smul_mem' := fun c A hA i => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `hA i` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Subring.smul_def, smul_eq_mul, mul_assoc, ← Finset.mul_sum, this, mul_zero] }`. Establish `hsub : Submodule.span 𝒪[k] (prods X Y) ≤ H` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩ i`. Use `show ∑ j, vecMulVec x y i j * ℓ j = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [vecMulVec_apply]`. Establish `: ∑ j, x i * y j * ℓ j = x i * ∑ j, y j * ℓ j`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this, hY y hy, mul_zero])`. Establish `hHc : IsClosed (H : Set (Matrix (Fin m) (Fin n) k))` using `by show IsClosed {Z : Matrix (Fin m) (Fin n) k | ∀ i, ∑ j, Z i j * ℓ j = 0}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_eq (by fun_prop) continuous_const`. Establish `hcl : closure (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k)) ⊆ (H : Set (Matrix (Fin m) (Fin n) k))` using `closure_minimal (fun Z hZ => hsub hZ) hHc`. Establish `hℓ0 : ∀ j, ℓ j = 0`. Introduce `j₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Set `i₀ : Fin m` to `⟨0, hm⟩`. Set `φ : k → Matrix (Fin m) (Fin n) k` to `fun t => Matrix.of fun i j => if i = i₀ ∧ j = j₀ then t else 0`. Establish `hφ : Continuous φ`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = i₀ ∧ j = j₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [φ, Matrix.of_apply, if_pos h]`. Conclude with `continuous_id`. Simplify using `only [φ, Matrix.of_apply, if_neg h]`. Conclude with `continuous_const`. Establish `h0 : φ 0 ∈ closure (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: φ 0 = 0` using `by ext i j; simp [φ]`. Rewrite using `[this]`. Conclude with `subset_closure (zero_mem _)`. Take `⟨t, ht, ht0⟩` from `exists_ne_zero_of_mem_nhds (hφ.continuousAt.preimage_mem_nhds (ho.mem_nhds h0))`. Use `hcl ht i₀` as an intermediate fact.
-
-Simplify `this` using `[φ, ht0]`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[hfx]`. Simplify using `[hℓ0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_eq_top_right {m n : ℕ} (hm : 0 < m) {X : Set (Fin m → k)} {Y : Set (Fin n → k)}
     (ho : IsOpen (closure (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k)))) :
@@ -350,47 +338,39 @@ section Core3
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality. Use `⟨1, ⊤, fun Z => ?_⟩` and prove the remaining obligations. Establish `hZ : Z = 0` using `by ext i; exact i.elim0`. Conclude with `iff_of_true (by rw [hZ]; exact subset_closure (zero_mem _)) (GlobalTheory.SplitFlip.mem_matLat.2 fun _ => Submodule.mem_top)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use `⟨1, ⊤, fun Z => ?_⟩` and prove the remaining obligations. Establish `hZ : Z = 0` using `by ext i j; exact j.elim0`. Conclude with `iff_of_true (by rw [hZ]; exact subset_closure (zero_mem _)) (GlobalTheory.SplitFlip.mem_matLat.2 fun _ => Submodule.mem_top)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `span_eq_top_left hn ho`. Establish `h2` using `span_eq_top_right hm ho`. Take `⟨c, hc0, hcb⟩` from `exists_bound hc`. Establish `hc0' : (c : k) ≠ 0` using `fun h => hc0 (Subtype.ext h)`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀, i₀, hxi⟩ : ∃ x ∈ X, ∃ i, x i ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Establish `hle : Submodule.span k X ≤ ⊥` using `Submodule.span_le.2 fun x hx => by`. Rewrite using `[SetLike.mem_coe, Submodule.mem_bot]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hh x hx i`. Rewrite `hle` using `[h1]`. Establish `e` using `(Submodule.mem_bot k).1 (hle (Submodule.mem_top (x := fun _ : Fin m => (1 : k))))`. Conclude with `one_ne_zero (congrFun e ⟨0, hm⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀, j₀, hyj⟩ : ∃ y ∈ Y, ∃ j, y j ≠ 0 := by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Establish `hle : Submodule.span k Y ≤ ⊥` using `Submodule.span_le.2 fun y hy => by`. Rewrite using `[SetLike.mem_coe, Submodule.mem_bot]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `hh y hy j`. Rewrite `hle` using `[h2]`. Establish `e` using `(Submodule.mem_bot k).1 (hle (Submodule.mem_top (x := fun _ : Fin n => (1 : k))))`. Conclude with `one_ne_zero (congrFun e ⟨0, hn⟩)`. Establish `hb₁ : ∀ x ∈ Submodule.span 𝒪[k] X, ∀ i, ((c : k) * y₀ j₀) * x i ∈ 𝒪[k]` using `fun x hx i => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hcb _ (subset_closure (prod_mem_span hx (Submodule.subset_span hy₀))) i j₀` as an intermediate fact. Rewrite `this` using `[vecMulVec_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hb₂ : ∀ y ∈ Submodule.span 𝒪[k] Y, ∀ j, ((c : k) * x₀ i₀) * y j ∈ 𝒪[k]` using `fun y hy j => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hcb _ (subset_closure (prod_mem_span (Submodule.subset_span hx₀) hy)) i₀ j` as an intermediate fact. Rewrite `this` using `[vecMulVec_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hL₁ : Submodule.IsLattice k (Submodule.span 𝒪[k] X)` using `⟨fg_of_bound _ _ (mul_ne_zero hc0' hyj) hb₁, by rw [Submodule.span_span_of_tower]; exact h1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL₂ : Submodule.IsLattice k (Submodule.span 𝒪[k] Y)` using `⟨fg_of_bound _ _ (mul_ne_zero hc0' hxi) hb₂, by rw [Submodule.span_span_of_tower]; exact h2⟩`. Take `⟨P₀, hP₀⟩` from `GlobalTheory.RootEx.UnfoldShape.exists_eq_act_stdLat k (Fin m) _ hL₁`. Take `⟨Q₀, hQ₀⟩` from `GlobalTheory.RootEx.UnfoldShape.exists_eq_act_stdLat k (Fin n) _ hL₂`. Establish `mem₁ : ∀ x, x ∈ Submodule.span 𝒪[k] X ↔ ∀ i, ((P₀⁻¹).val *ᵥ x) i ∈ 𝒪[k]` using `fun x => by`. Rewrite using `[hP₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `mem_act_std P₀ x`. Establish `mem₂ : ∀ y, y ∈ Submodule.span 𝒪[k] Y ↔ ∀ j, ((Q₀⁻¹).val *ᵥ y) j ∈ 𝒪[k]` using `fun y => by`. Rewrite using `[hQ₀]`. Conclude with `mem_act_std Q₀ y`. Establish `key : ∀ Z, Z ∈ Submodule.span 𝒪[k] (prods X Y) ↔ (P₀⁻¹).val * Z ∈ GlobalTheory.SplitFlip.matLat (Fin m) (Submodule.span 𝒪[k] Y)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z`. Prove the components needed by the constructor for the conclusion. Introduce `hZ`. Set `N : Submodule 𝒪[k] (Matrix (Fin m) (Fin n) k)` to `{ carrier := {W | (P₀⁻¹).val * W ∈ GlobalTheory.SplitFlip.matLat (Fin m) (Submodule.span 𝒪[k] Y)} add_mem' := fun {A B} hA hB => by`. Simplify using `only [Set.mem_setOf_eq, Matrix.mul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hA hB`. Use the proof step `zero_mem' := by simp only [Set.mem_setOf_eq, Matrix.mul_zero]; exact zero_mem _`. Use the proof step `smul_mem' := fun c A hA => by`. Simplify using `only [Set.mem_setOf_eq, Matrix.mul_smul]`. Conclude with `Submodule.smul_mem _ c hA }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `(Submodule.span_le.2 ?_ : Submodule.span 𝒪[k] (prods X Y) ≤ N) hZ` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Use `show (P₀⁻¹).val * vecMulVec x y ∈ GlobalTheory.SplitFlip.matLat (Fin m) (Submodule.span 𝒪[k] Y)`. Rewrite using `[GlobalTheory.SplitFlip.mem_matLat]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxi` using `(mem₁ x).1 (Submodule.subset_span hx) i`. Establish `e : ((P₀⁻¹).val * vecMulVec x y).row i = (⟨_, hxi⟩ : 𝒪[k]) • y`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.row, Matrix.mul_apply, vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, Pi.smul_apply, Subring.smul_def, smul_eq_mul, mul_assoc]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hy)`. Introduce `hZ`. Establish `e : Z = ∑ i, vecMulVec (fun a => P₀.val a i) (((P₀⁻¹).val * Z) i)`. Establish `hPZ : P₀.val * ((P₀⁻¹).val * Z) = Z`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [vecMulVec_apply]`. Use `conv_lhs => rw [← hPZ]`. Rewrite using `[Matrix.mul_apply]`.
-
-Rewrite using `[e]`. Use `Submodule.sum_mem _ fun i _ => prod_mem_span ((mem₁ _).2 fun j => ?_) (hZ i)` and prove the remaining obligations. Establish `e2 : ((P₀⁻¹).val *ᵥ fun a => P₀.val a i) j = ((P₀⁻¹).val * P₀.val) j i` using `rfl`. Rewrite using `[e2, Units.inv_mul, Matrix.one_apply]`. Use `split_ifs`.
-
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hclosed : IsClosed (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k))`. Establish `e : (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k)) = {Z | ∀ i j, ((Q₀⁻¹).val *ᵥ ((P₀⁻¹).val * Z) i) j ∈ 𝒪[k]}`. Use extensionality with `Z`.
-
-Rewrite using `[SetLike.mem_coe, key, GlobalTheory.SplitFlip.mem_matLat]`. Conclude with `forall_congr' fun i => mem₂ _`. Rewrite using `[e]`. Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => IsClosed.preimage ?_ (Valuation.isClosed_integer (v := valuation k))` and prove the remaining obligations.
-
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Use `fun_prop`. Use `⟨P₀⁻¹, Submodule.span 𝒪[k] Y, fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[hclosed.closure_eq]`. Conclude with `key Z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_eq {m n : ℕ} (X : Set (Fin m → k)) (Y : Set (Fin n → k))
     (ho : IsOpen (closure (Submodule.span 𝒪[k] (prods X Y) : Set (Matrix (Fin m) (Fin n) k))))
@@ -511,7 +491,7 @@ section Adelic
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (piW incM AE latAtV At)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[vecMulVec_apply, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulVec_map {R S G : Type} [CommRing R] [CommRing S] [FunLike G R S] [RingHomClass G R S] {p q : Type} (t : G)
     (x : p → R) (y : q → R) :
@@ -519,21 +499,21 @@ theorem vecMulVec_map {R S G : Type} [CommRing R] [CommRing S] [FunLike G R S] [
   ext i j; simp [vecMulVec_apply, map_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[vecMulVec_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulVec_neg_left {R : Type} [CommRing R] {p q : Type} (x : p → R) (y : q → R) :
     vecMulVec (-x) y = -vecMulVec x y := by
   ext i j; simp [vecMulVec_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[vecMulVec_apply, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulVec_neg_smul {R : Type} [CommRing R] {p q : Type} (c : R) (x : p → R) (y : q → R) :
     vecMulVec (-(c • x)) y = c • vecMulVec (-x) y := by
   ext i j; simp [vecMulVec_apply, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, vecMulVec_apply, Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_vecMulVec_mul {R : Type} [CommRing R] {p q r s : Type} [Fintype q] [Fintype r] (A : Matrix p q R)
     (B : Matrix s r R) (x : q → R) (y : r → R) : A * vecMulVec x y * Bᵀ = vecMulVec (A *ᵥ x) (B *ᵥ y) := by
@@ -545,7 +525,7 @@ theorem mul_vecMulVec_mul {R : Type} [CommRing R] {p q r s : Type} [Fintype q] [
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `haveI : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (Fv F v)) (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int_iff {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (x : Fv F v) : x ∈ 𝒪[Fv F v] ↔ x ∈ v.adicCompletionIntegers F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
@@ -555,9 +535,9 @@ theorem mem_int_iff {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModel
     (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, mul_add]`. Consider the case `tmul b e`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `show evFin F v (a * b) * t e = evFin F v a * (evFin F v b * t e)`. Rewrite using `[map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_smul {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v) (a : AF F) (z : AE F E) :
     piW t (a • z) = evFin F v a * piW t z := by
@@ -570,14 +550,14 @@ theorem piW_smul {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.P
     rw [map_mul, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[piW_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_piW_smul {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v) (a : AF F) {p q : Type} (u : Matrix p q (AE F E)) :
     (a • u).map (piW t) = evFin F v a • u.map (piW t) := by
   ext i j; simp [piW_smul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, incM, GlobalTheory.VacIndic.smul_inclR_eq, smul_eq_mul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_piW_smul_incM {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v) (a : AF F) {p q : Type} (J : Matrix p q E) :
     (a • incM F J).map (piW t) = evFin F v a • J.map t := by
@@ -592,9 +572,9 @@ section Shape
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (piW incM AE latAtV At)
 
 /- English proof (translation)
-Use `⟨fun h0 => ?_, fun e => star_star e, fun e he => ?_⟩` and prove the remaining obligations. Establish `hs : Function.Surjective (algebraMap D.host.F D.host.E)` using `fun e => (D.sp.cm.fixed e).1 (AlgHom.congr_fun h0 e)`. Establish `h1 : Module.finrank D.host.F D.host.E = 1` using `(LinearEquiv.finrank_eq (LinearEquiv.ofBijective (Algebra.linearMap D.host.F D.host.E) ⟨(algebraMap D.host.F D.host.E).injective, hs⟩)).symm.trans (Module.finrank_self _)`. Use `D.sp.cm.deg2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `(D.sp.cm.fixed e).1 he`.
+A detailed English derivation is pending.
 -/
 theorem isConjOf_sig (D : D7) : Formalism.L2.DIV.IsConjOf D.sp.cm.sig := by
   refine ⟨fun h0 => ?_, fun e => star_star e, fun e he => ?_⟩
@@ -608,13 +588,13 @@ theorem isConjOf_sig (D : D7) : Formalism.L2.DIV.IsConjOf D.sp.cm.sig := by
   · exact (D.sp.cm.fixed e).1 he
 
 /- English proof (translation)
-Use `haveI := hU`. Take `⟨b, hb⟩` from `GlobalTheory.TwU.IntegralHilbert90Unramified.exists_sub_sig_notMem D.sp.cm.sig (isConjOf_sig D) (splitPrime τ)`. Rewrite `hb` using `[mem_splitPrime]`. Establish `hle` using `apply_coe_mem τ (b - RingOfIntegers.mapAlgHom D.sp.cm.sig b)`. Rewrite `hle` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `le_antisymm hle (not_lt.1 hb)`. Establish `e : ((b - RingOfIntegers.mapAlgHom D.sp.cm.sig b : 𝓞 D.host.E) : D.host.E) = (b : D.host.E) - D.sp.cm.sig (b : D.host.E)`. Both sides reduce to the same expression. Establish `hδ : Valued.v (τ (D.sp.cm.sig (b : D.host.E)) - τ (b : D.host.E)) = 1`. Establish `: τ (D.sp.cm.sig (b : D.host.E)) - τ (b : D.host.E) = -τ ((b - RingOfIntegers.mapAlgHom D.sp.cm.sig b : 𝓞 D.host.E) : D.host.E)`.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Valuation.map_neg, h1]`. Establish `hδ0 : τ (D.sp.cm.sig (b : D.host.E)) - τ (b : D.host.E) ≠ 0` using `fun h => by`. Rewrite `hδ` using `[h, map_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_ne_one hδ`. Use `⟨b, (τ (D.sp.cm.sig (b : D.host.E)) - τ (b : D.host.E))⁻¹, ?_, inv_mul_cancel₀ hδ0⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hδ, inv_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_diff {D : D7} {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (hU : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E)) :
@@ -642,7 +622,7 @@ theorem exists_unit_diff {D : D7} {v : GlobalTheory.IndefiniteRowSideFullHecke.W
 variable {D : D7} {a a' : ℕ}
 
 /- English proof (translation)
-Unfold `GlobalTheory.VacShape.coBar`. Simplify using `only [Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem coBar_eq (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (u : Matrix (Fin a') (Fin (a + a')) (AE D.host.F D.host.E)) :
@@ -652,7 +632,7 @@ theorem coBar_eq (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.
   simp only [Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `GlobalTheory.VacShape.coBar_add Bs Γ u (-u)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, GlobalTheory.VacShape.coBar_zero]`. Conclude with `(neg_eq_of_add_eq_zero_right this.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coBar_neg (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (u : Matrix (Fin a') (Fin (a + a')) (AE D.host.F D.host.E)) :
@@ -662,7 +642,7 @@ theorem coBar_neg (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
   exact (neg_eq_of_add_eq_zero_right this.symm).symm
 
 /- English proof (translation)
-Rewrite using `[coBar_eq, coBar_eq, map_piW_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coBar_smul (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (c : AF D.host.F) (u : Matrix (Fin a') (Fin (a + a')) (AE D.host.F D.host.E)) :
@@ -670,7 +650,7 @@ theorem coBar_smul (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModel
   rw [coBar_eq, coBar_eq, map_piW_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]
 
 /- English proof (translation)
-Rewrite using `[coBar_eq, map_piW_smul_incM, vecMulVec_map (Bs.τ₁.comp D.sp.cm.sig), Matrix.mul_smul, Matrix.smul_mul, mul_vecMulVec_mul, vecMulVec_neg_left, smul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coBar_gen (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (c : AF D.host.F) (x : Fin a' → D.host.E) (y : Fin (a + a') → D.host.E) :
@@ -697,15 +677,15 @@ def Ys (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.hos
   {z | ∃ y ∈ L₂, z = Γ.W.J.map Bs.τ₁ *ᵥ fun j => (Bs.τ₁.comp D.sp.cm.sig) (y j)}
 
 /- English proof (translation)
-Take `⟨b, α, hα, hb⟩` from `exists_unit_diff Bs.τ₁ hU`. Establish `hτb` using `apply_coe_mem Bs.τ₁ b`. Use `⟨GlobalTheory.LatVac.liftV Bs.v₁ α • incM D.host.F (vecMulVec (b • x) y) - GlobalTheory.LatVac.liftV Bs.v₁ (α * Bs.τ₁ (b : D.host.E)) • incM D.host.F (vecMulVec x y), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `sub_mem (AddSubgroup.subset_closure ⟨_, GlobalTheory.LatVac.at_liftV Bs.v₁ α, ?_, b • x, L₁.smul_mem b hx, y, hy, rfl⟩) (AddSubgroup.subset_closure ⟨_, GlobalTheory.LatVac.at_liftV Bs.v₁ _, ?_, x, hx, y, hy, rfl⟩)` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatVac.evFin_liftV]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hα`. Rewrite using `[GlobalTheory.LatVac.evFin_liftV]`. Conclude with `mul_mem hα hτb`. Rewrite using `[Matrix.map_sub _ (map_sub _), map_piW_smul_incM, map_piW_smul_incM, GlobalTheory.LatVac.evFin_liftV, GlobalTheory.LatVac.evFin_liftV]`. Establish `hbx : ∀ i, (b • x) i = (b : D.host.E) * x i` using `fun i => rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, Matrix.map_apply, vecMulVec_apply, Matrix.zero_apply, hbx, map_mul, smul_eq_mul]`. Put the polynomial expressions in normal form. Rewrite using `[sub_eq_add_neg, GlobalTheory.VacShape.coBar_add, coBar_neg, coBar_gen, coBar_gen, GlobalTheory.LatVac.evFin_liftV, GlobalTheory.LatVac.evFin_liftV, ← sub_eq_add_neg]`. Establish `e1 : (fun i => (Bs.τ₁.comp D.sp.cm.sig) ((b • x) i)) = Bs.τ₁ (D.sp.cm.sig (b : D.host.E)) • fun i => (Bs.τ₁.comp D.sp.cm.sig) (x i)`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, map_mul]`. Establish `e3 : (Γ.V'.J.map Bs.τ₁ *ᵥ fun i => (Bs.τ₁.comp D.sp.cm.sig) ((b • x) i)) = Bs.τ₁ (D.sp.cm.sig (b : D.host.E)) • (Γ.V'.J.map Bs.τ₁ *ᵥ fun i => (Bs.τ₁.comp D.sp.cm.sig) (x i))`. Rewrite using `[e1]`. Conclude with `Matrix.mulVec_smul _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, vecMulVec_neg_smul, smul_smul, ← sub_smul]`. Establish `e2 : α * Bs.τ₁ (D.sp.cm.sig (b : D.host.E)) - α * Bs.τ₁ (b : D.host.E) = 1` using `by rw [← hb]; ring`. Rewrite using `[e2, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem_Sa (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (L₁ : Submodule (𝓞 D.host.E) (Fin a' → D.host.E)) (L₂ : Submodule (𝓞 D.host.E) (Fin (a + a') → D.host.E))
@@ -742,15 +722,13 @@ theorem gen_mem_Sa (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModel
     rw [e2, one_smul]
 
 /- English proof (translation)
-Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, hu, -, rfl⟩`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c, -, hcint, x, hx, y, hy, rfl⟩` from `hz`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[coBar_gen]`. Conclude with `Submodule.smul_mem _ (⟨evFin D.host.F Bs.v₁ c, (mem_int_iff _).2 hcint⟩ : 𝒪[Fv D.host.F Bs.v₁]) (Submodule.subset_span ⟨_, ⟨x, hx, rfl⟩, _, ⟨y, hy, rfl⟩, rfl⟩)`. Consider the case `zero => rw [GlobalTheory.VacShape.coBar_zero]`. Conclude with `zero_mem _`. Consider the case `add u u' _ _ h h' => rw [GlobalTheory.VacShape.coBar_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Conclude with `add_mem h h'`. Consider the case `neg u _ h => rw [coBar_neg]`. Conclude with `neg_mem h`. Set `SM : Submodule 𝒪[Fv D.host.F Bs.v₁] (Matrix (Fin a') (Fin (a + a')) (Fv D.host.F Bs.v₁))` to `{ carrier := GlobalTheory.VacShape.Sa Bs Γ L₁ L₂ add_mem' := fun hA hB => add_mem hA hB zero_mem' := zero_mem _ smul_mem' := by`. Introduce and unpack `c _ ⟨u, hu, hu0, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (c : Fv D.host.F Bs.v₁) ∈ Bs.v₁.adicCompletionIntegers D.host.F` using `(mem_int_iff _).1 c.2`. Use `⟨GlobalTheory.LatVac.liftV Bs.v₁ c • u, (GlobalTheory.LatVac.latAtV_at_stable _ _ _).2 _ hc u hu, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_piW_smul, hu0, smul_zero]`. Rewrite using `[coBar_smul, GlobalTheory.LatVac.evFin_liftV]`. Use `rfl }`.
-
-Establish `hle : Submodule.span 𝒪[Fv D.host.F Bs.v₁] (prods (Xs Bs Γ L₁) (Ys Bs Γ L₂)) ≤ SM` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, _, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `gen_mem_Sa Bs Γ L₁ L₂ hU x hx y hy)`. Conclude with `fun Z hZ => hle hZ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem Sa_eq (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (L₁ : Submodule (𝓞 D.host.E) (Fin a' → D.host.E)) (L₂ : Submodule (𝓞 D.host.E) (Fin (a + a') → D.host.E))
@@ -792,7 +770,7 @@ end GlobalTheory.VacShapeCl
 open GlobalTheory.VacShapeCl in
 
 /- English proof (translation)
-Introduce `D a a' Bs Γ X om om' hTr L₁ L₂ ho hc`. Rewrite `ho`, `hc`, the goal using `[GlobalTheory.VacShapeCl.Sa_eq Bs Γ L₁ L₂ hTr.base.unram]`. Conclude with `GlobalTheory.VacShapeCl.closure_eq _ _ ho hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VacShapeCl.closure_Sa_eq_matLat : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

@@ -55,12 +55,12 @@ def GTCPhCurv : Prop :=
     ∀ ζ : ℂ, TT < Complex.normSq ζ → (NF.dZb (fun w => star (u w) * NF.dZ u w) ζ).re = 0
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const Complex.continuous_normSq`.
+A detailed English derivation is pending.
 -/
 theorem ann_isOpen (P : M.Par) : IsOpen (Ann P) := isOpen_lt continuous_const Complex.continuous_normSq
 
 /- English proof (translation)
-Introduce `w hw`. Establish `h : ‖w‖ = R` using `by simpa using hw`. Use `show P.TT < Complex.normSq w`. Rewrite using `[Complex.normSq_eq_norm_sq, h]`. Conclude with `hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphere_sub_ann (P : M.Par) {R : ℝ} (hR0 : 0 < R) (hR : P.TT < R ^ 2) :
     Metric.sphere (0 : ℂ) R ⊆ Ann P := by
@@ -71,7 +71,7 @@ theorem sphere_sub_ann (P : M.Par) {R : ℝ} (hR0 : 0 < R) (hR : P.TT < R ^ 2) :
   exact hR
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Φ ρ`. Unfold `trR rawR`. Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[h ρ q.1.2 q.2.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem trR_congr {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
@@ -84,7 +84,7 @@ theorem trR_congr {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ 
   rw [h ρ q.1.2 q.2.2]
 
 /- English proof (translation)
-Establish `hOK` using `h.1.1`. Use `show (0 : ℝ) ≤ P.T * P.T'`. Conclude with `(mul_pos hOK.T_pos hOK.T'_pos).le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tt_nonneg_of_hyp {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
@@ -95,11 +95,9 @@ theorem tt_nonneg_of_hyp {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpa
   exact (mul_pos hOK.T_pos hOK.T'_pos).le
 
 /- English proof (translation)
-Take `⟨e0, he0, hk0, A0, B0, hAB0, hConn0, hcurv, hhol⟩` from `hRef Wp Wq P Bs X d hyp`. Take `⟨u, hu, heu⟩` from `hPR Wp Wq P Bs X d hyp e e0 he hk he0 hk0`. Take `⟨hAB1, hConn1⟩` from `hCP Wp Wq P Bs X d hyp e0 A0 B0 u hAB0 hu hConn0`. Establish `htr : trR P Bs (fun ρ ζ => u ρ ζ • e0 ρ ζ) = trR P Bs e` using `trR_congr P Bs _ _ (fun ρ ζ hζ => (heu ρ ζ hζ).symm)`. Establish `hConn1' : ConnF P Bs d e (fun ρ ζ => A0 ρ ζ + star (u ρ ζ) * NF.dZ (u ρ) ζ) (fun ρ ζ => B0 ρ ζ - star (u ρ ζ) * NF.dZb (u ρ) ζ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ConnF at hConn1 ⊢`. Rewrite using `[← htr]`. Conclude with `hConn1`. Establish `hA` using `hU Wp Wq P Bs X d hyp e he A B _ _ hAB hAB1 hConn hConn1'`. Use `⟨A0, u, fun ρ => (hAB0 ρ).1, hu, fun ρ => ?_, hcurv, hhol, hA⟩` and prove the remaining obligations.
-
-Conclude with `((hAB1 ρ).1.sub (hAB0 ρ).1).congr (fun ζ _ => by ring)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gauge_rel (hRef : GTCRef) (hPR : GTCPhaseRel) (hU : GTCConnUniq) (hCP : GTCConnPhase)
     (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -132,13 +130,13 @@ theorem gauge_rel (hRef : GTCRef) (hPR : GTCPhaseRel) (hU : GTCConnUniq) (hCP : 
 def GTCHolOfCut : Prop := GTCRef → GTCPhaseRel → GTCConnUniq → GTCConnPhase → GTCPhHol → GTCHol
 
 /- English proof (translation)
-Introduce `hRef hPR hU hCP hPh Wp Wq _ _ _ _ _ _ P Bs X d hyp e he hk A B hAB hConn ρ R hR0 hR`. Take `⟨A0, u, hA0s, hu, hws, -, hhol, hA⟩` from `gauge_rel hRef hPR hU hCP Wp Wq P Bs X d hyp e he hk A B hAB hConn`. Establish `hTT` using `tt_nonneg_of_hyp hyp`. Take `⟨n1, hn1⟩` from `hhol ρ R hR0 hR`. Take `⟨n2, hn2⟩` from `hPh P.TT (u ρ) (hu ρ).1 (hu ρ).2 R hR0 hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsph` using `sphere_sub_ann P hR0 hR`. Establish `hf : CircleIntegrable (fun w => modA P ρ w - A0 ρ w) 0 R` using `ContinuousOn.circleIntegrable hR0.le (((modA_smooth P ρ hTT).sub (hA0s ρ)).continuousOn.mono hsph)`. Establish `hg : CircleIntegrable (fun w => star (u ρ w) * NF.dZ (u ρ) w) 0 R` using `ContinuousOn.circleIntegrable hR0.le ((hws ρ).continuousOn.mono hsph)`. Establish `heq : (∮ w in C(0, R), modA P ρ w - A ρ w) = ∮ w in C(0, R), (modA P ρ w - A0 ρ w) - star (u ρ w) * NF.dZ (u ρ) w`. Apply `circleIntegral.integral_congr hR0.le` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w hw`. Apply the tactic sequence `try dsimp only`. Rewrite using `[hA ρ w (hsph hw)]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨n1 - n2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq, circleIntegral.integral_sub hf hg, Complex.sub_im, hn1, hn2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gTCHol_of_cut : GTCHolOfCut := by
   intro hRef hPR hU hCP hPh Wp Wq _ _ _ _ _ _ P Bs X d hyp e he hk A B hAB hConn ρ R hR0 hR
@@ -167,13 +165,13 @@ theorem gTCHol_of_cut : GTCHolOfCut := by
 def GTCCurvOfCut : Prop := GTCRef → GTCPhaseRel → GTCConnUniq → GTCConnPhase → GTCPhCurv → GTCCurv
 
 /- English proof (translation)
-Introduce `hRef hPR hU hCP hPc Wp Wq _ _ _ _ _ _ P Bs X d hyp e he hk A B hAB hConn ρ ζ hζ`. Take `⟨A0, u, hA0s, hu, hws, hcurv, -, hA⟩` from `gauge_rel hRef hPR hU hCP Wp Wq P Bs X d hyp e he hk A B hAB hConn`. Establish `hTT` using `tt_nonneg_of_hyp hyp`. Establish `hnhds : Ann P ∈ nhds ζ` using `(ann_isOpen P).mem_nhds hζ`. Establish `hev : (fun w => modA P ρ w - A ρ w) =ᶠ[nhds ζ] fun w => (modA P ρ w - A0 ρ w) - star (u ρ w) * NF.dZ (u ρ) w` using `by filter_upwards [hnhds] with w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA ρ w hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfd : DifferentiableAt ℝ (fun w => modA P ρ w - A0 ρ w) ζ` using `(((modA_smooth P ρ hTT).sub (hA0s ρ)).differentiableOn (by simp)).differentiableAt hnhds`. Establish `hgd : DifferentiableAt ℝ (fun w => star (u ρ w) * NF.dZ (u ρ) w) ζ` using `((hws ρ).differentiableOn (by simp)).differentiableAt hnhds`. Establish `hder : fderiv ℝ (fun w => modA P ρ w - A ρ w) ζ = fderiv ℝ (fun w => modA P ρ w - A0 ρ w) ζ - fderiv ℝ (fun w => star (u ρ w) * NF.dZ (u ρ) w) ζ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hev.fderiv_eq.trans (hfd.hasFDerivAt.sub hgd.hasFDerivAt).fderiv`. Establish `h1` using `hcurv ρ ζ hζ`. Establish `h2` using `hPc P.TT (u ρ) (hu ρ).1 (hu ρ).2 ζ hζ`. Unfold `NF.dZb at h1 h2 ⊢`. Rewrite using `[hder, ContinuousLinearMap.sub_apply, ContinuousLinearMap.sub_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ a b c d : ℂ, (1 / 2 : ℂ) * ((a - b) + Complex.I * (c - d)) = (1 / 2 : ℂ) * (a + Complex.I * c) - (1 / 2 : ℂ) * (b + Complex.I * d)` using `by intros; ring`. Rewrite using `[key, Complex.sub_re, h1, h2, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gTCCurv_of_cut : GTCCurvOfCut := by
   intro hRef hPR hU hCP hPc Wp Wq _ _ _ _ _ _ P Bs X d hyp e he hk A B hAB hConn ρ ζ hζ

@@ -12,37 +12,31 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Classical
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hfac K hK μKi μi μKf μf hμKi hμi hμKf hμf T hXT f₁ φ₁ h₁ hφ₁ hφ₁T hI`. Establish `hcof : ∀ᶠ v in cofinite, φ₁ v = G₁.M.vac v` using `(T.finite_toSet.eventually_cofinite_notMem).mono fun v hv => hφ₁T v hv`. Take `⟨l, hl, hlinv⟩` from `GlobalTheory.T.exists_restricted_tensor_representative hKP F E σ B b a' G₁ X om₁ om₁' hT₁ φ₁ h₁ hφ₁ hcof`. Establish `hl0 : l ≠ 0` using `fun h0 => hI (by rw [← hl f₁, h0, ContinuousLinearMap.zero_apply])`. Take `⟨f, hfPol, hf⟩` from `GlobalTheory.T.triple_transfer_along_config_a_second hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hfac K hK μKi μi hμKi hμi l hl0 hlinv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hf` using `[hl]`. Use `set fI := coneInf B G.M om ei K μKi μi (shiftA H H') X.ν ((b + 2 - a') / 2) f with hfI`. Use `set cF : ∀ v : Pl F, ((Fin (b + 2) × Fin (b + 2 + a') → Fv F v) → ℂ) → (Fin b × Fin (b + a') → Fv F v) → ℂ := fun v => coneFin B G.M om v (ev v) K (μKf v) (μf v) (shiftA H H') X.ν ((b + 2 - a') / 2) with hcF`. Establish `hvac : ∀ v, G.M.vac v ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v)` using `fun v => (hT.geo.hM.vac v).1`. Establish `key : ∀ S : Finset (Pl F), S ⊆ T → ∃ φ : ∀ v : Pl F, (Fin (b + 2) × Fin (b + 2 + a') → Fv F v) → ℂ, (∀ v, φ v ∈ SB _) ∧ (∀ v ∉ T, φ v = G.M.vac v) ∧ (∀ v ∈ S, cF v (φ v) ∈ SB _) ∧ G₁.M.I om₁ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure fI (fun v => if v ∈ S then …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Use `⟨G.M.vac, hvac, fun _ _ => rfl, fun v hv => absurd hv (Finset.notMem_empty v), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e0 : (fun v => if v ∈ (∅ : Finset (Pl F)) then cF v (G.M.vac v) else φ₁ v) = φ₁`. Use function extensionality and compare the values at `fun v => if_neg (Finset.notMem_empty v)`. Rewrite using `[e0]`. Conclude with `hf`. Consider the case `@insert a s han ih`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `hsub`. Establish `haT : a ∈ T` using `hsub (Finset.mem_insert_self a s)`. Take `⟨φ, hφSB, hφT, hφs, hIs⟩` from `ih ((Finset.subset_insert a s).trans hsub)`. Use `set φ' : ∀ v : Pl F, (Fin b × Fin (b + a') → Fv F v) → ℂ := fun v => if v ∈ s then cF v (φ v) else φ₁ v with hφ'`. Establish `hφ'SB : ∀ w, φ' w ∈ SB _` using `fun w => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w ∈ s`. Simplify using `only [hφ', if_pos hw]`. Conclude with `hφs w hw`. Simplify using `only [hφ', if_neg hw]`. Conclude with `hφ₁ w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hφ'cof : ∀ᶠ w in cofinite, φ' w = G₁.M.vac w` using `(T.finite_toSet.eventually_cofinite_notMem).mono fun w hw => by`. Establish `hws : w ∉ s` using `fun h => hw (hsub (Finset.mem_insert_of_mem h))`. Simplify using `only [hφ', if_neg hws]`. Conclude with `hφ₁T w hw`. Take `⟨hadd, hsmul, hinv⟩` from `GlobalTheory.T.restricted_tensor_schwartz_function hKP F E σ B b a' G₁ X om₁ om₁' hT₁ fI φ' h₁ a hφ'SB hφ'cof`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hupd : Function.update φ' a (φ₁ a) = φ'`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = a`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hφ', if_neg han]`. Rewrite using `[Function.update_of_ne hw]`. Take `⟨p, hpSB, hcp, hne⟩` from `GlobalTheory.T.triple_transfer_along_config_a hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hfac K hK a (μKf a) (μf a) (hμKf a) (hμf a) (fun q => G₁.M.I om₁ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure fI (Function.update φ' a q)) h …`. Use `⟨Function.update φ a p, fun w => ?_, fun w hw => ?_, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hpSB`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hφSB w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hwa : w ≠ a` using `fun h => hw (h ▸ haT)`. Rewrite using `[Function.update_of_ne hwa]`. Conclude with `hφT w hw`. Distinguish the cases in `hwa : w = a`. Substitute `hwa` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self]`. Conclude with `hcp`. Rewrite using `[Function.update_of_ne hwa]`. Conclude with `hφs w ((Finset.mem_insert.1 hw).resolve_left hwa)`. Establish `e1 : (fun w => if w ∈ insert a s then cF w (Function.update φ a p w) else φ₁ w) = Function.update φ' a (cF a p)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `w`. Distinguish the cases in `hwa : w = a`. Substitute `hwa` using the available equality. Rewrite using `[Function.update_self, Function.update_self, if_pos (Finset.mem_insert_self _ _)]`. Rewrite using `[Function.update_of_ne hwa, Function.update_of_ne hwa]`.
-
-Simplify using `only [hφ', Finset.mem_insert, hwa, false_or]`. Rewrite using `[e1]`. Conclude with `hne`. Take `⟨φ, h1, h2, -, h4⟩` from `key T subset_rfl`. Use `⟨f, hfPol, φ, h1, h2, ?_⟩` and prove the remaining obligations.
-
-Establish `e2 : (fun v => if v ∈ T then cF v (φ v) else G₁.M.vac v) = (fun v => if v ∈ T then cF v (φ v) else φ₁ v)`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ T`. Rewrite using `[if_pos hv, if_pos hv]`. Rewrite using `[if_neg hv, if_neg hv, hφ₁T v hv]`.
-
-Use `show G₁.M.I om₁ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure fI (fun v => if v ∈ T then cF v (φ v) else G₁.M.vac v)) h₁ ≠ 0`. Rewrite using `[e2]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.exists_local_data_cone_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

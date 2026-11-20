@@ -13,11 +13,11 @@ namespace UpperTheory.ConvolutionTheory.BW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hu : u ∈ Algebra.adjoin ℂ {x : UC E n | ∃ τ i j, x = genC τ i j}` using `by rw [adjoin_genC]; trivial`. Establish `hs : ∀ (c : ℂ) x, P x → P (c • x)` using `fun c x hx => by`. Rewrite using `[Algebra.smul_def]`. Conclude with `hmul _ _ (h1 c) hx`. Proceed by induction on `hu using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨τ, i, j, rfl⟩` from `hx`. Rewrite using `[genC, UpperTheory.V.AlgRepEndIrreducible.eL, sub_eq_add_neg, ← neg_smul]`. Conclude with `hs _ _ (hadd _ _ (hι _) (hs _ _ (hι _)))`. Consider the case `algebraMap c => exact h1 c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact hadd x y hx hy`. Consider the case `mul x y _ _ hx hy => exact hmul x y hx hy`.
+A detailed English derivation is pending.
 -/
 private theorem uc_ind {P : UC E n → Prop} (h1 : ∀ c : ℂ, P (algebraMap ℂ _ c)) (hι : ∀ X, P (ιC E n X))
     (hadd : ∀ x y, P x → P y → P (x + y)) (hmul : ∀ x y, P x → P y → P (x * y)) (u : UC E n) : P u := by
@@ -34,9 +34,9 @@ private theorem uc_ind {P : UC E n → Prop} (h1 : ∀ c : ℂ, P (algebraMap �
   | mul x y _ _ hx hy => exact hmul x y hx hy
 
 /- English proof (translation)
-Proceed by induction on `u using uc_ind with`. Consider the case `h1 c => rw [AlgHom.commutes]`. Conclude with `Algebra.commutes c _`. Consider the case `hι X => rw [uC_ιC]`. Conclude with `lie_rt_fin X k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `hadd x y hx hy => rw [map_add]`. Conclude with `hx.add_left hy`. Consider the case `hmul x y hx hy => rw [map_mul]`. Conclude with `hx.mul_left hy`.
+A detailed English derivation is pending.
 -/
 private theorem uc_fin (u : UC E n) (k : GL (Fin n) (Af E)) : Commute (uC E n u) (rt E n (finGL E n k)) := by
   induction u using uc_ind with
@@ -46,13 +46,13 @@ private theorem uc_fin (u : UC E n) (k : GL (Fin n) (Af E)) : Commute (uC E n u)
   | hmul x y hx hy => rw [map_mul]; exact hx.mul_left hy
 
 /- English proof (translation)
-Proceed by induction on `u using uc_ind with`. Consider the case `h1 c => exact ⟨algebraMap ℂ _ c, by rw [AlgHom.commutes]; exact Algebra.commutes c _⟩`. Consider the case `hι X`. Use `⟨ιC E n (toL ((y⁻¹).val * Matrix.of X * y.val)), ?_⟩` and prove the remaining obligations. Rewrite using `[uC_ιC, uC_ιC, GlobalTheory.CapAdInv.rt_lie]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul, mul_assoc, Units.mul_inv, mul_one]`. Both sides reduce to the same expression. Consider the case `hadd a b ha hb`. Take `⟨a', ha⟩` from `ha`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb⟩` from `hb`. Conclude with `⟨a' + b', by rw [map_add, map_add, add_mul, mul_add, ha, hb]⟩`. Consider the case `hmul a b ha hb`. Take `⟨a', ha⟩` from `ha`. Take `⟨b', hb⟩` from `hb`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a' * b', by rw [map_mul, map_mul, mul_assoc, hb, ← mul_assoc, ha, mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem uc_inf (y : GL (Fin n) (Cinf E)) (u : UC E n) :
     ∃ u', uC E n u * rt E n (infGL E n y) = rt E n (infGL E n y) * uC E n u' := by
@@ -74,7 +74,7 @@ private theorem uc_inf (y : GL (Fin n) (Cinf E)) (u : UC E n) :
     exact ⟨a' * b', by rw [map_mul, map_mul, mul_assoc, hb, ← mul_assoc, ha, mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨y, l, rfl⟩ : ∃ y l, infGL E n y * finGL E n l = g` from `⟨_, _, infGL_mul_finGL g⟩`. Take `⟨u', h⟩` from `uc_inf y u`. Conclude with `⟨u', by rw [map_mul, ← mul_assoc, h, mul_assoc, (uc_fin u' l).eq, mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem uc_rt (g : GA E n) (u : UC E n) : ∃ u', uC E n u * rt E n g = rt E n g * uC E n u' := by
   obtain ⟨y, l, rfl⟩ : ∃ y l, infGL E n y * finGL E n l = g := ⟨_, _, infGL_mul_finGL g⟩
@@ -82,15 +82,13 @@ private theorem uc_rt (g : GA E n) (u : UC E n) : ∃ u', uC E n u * rt E n g = 
   exact ⟨u', by rw [map_mul, ← mul_assoc, h, mul_assoc, (uc_fin u' l).eq, mul_assoc]⟩
 
 /- English proof (translation)
-Proceed by induction on `u using uc_ind with`. Consider the case `h1 c`. Introduce `φ hφ g`. Rewrite using `[AlgHom.commutes]`. Conclude with `congrArg (c * ·) (hφ g)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `hι X`. Introduce `φ hφ g`. Rewrite using `[uC_ιC]`. Rewrite using `[lie_val X φ (smEq E n φ).2, AutomorphicForm.uAction_ι_apply, AutomorphicForm.uAction_ι_apply]`. Establish `: AutomorphicForm.archSlice φ.1 (h * g) = AutomorphicForm.archSlice φ.1 g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [AutomorphicForm.archSlice_apply, mul_assoc, hφ]`. Simplify using `only [this]`. Consider the case `hadd a b ha hb`. Introduce `φ hφ g`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `congrArg₂ (· + ·) (ha φ hφ g) (hb φ hφ g)`. Consider the case `hmul a b ha hb`. Introduce `φ hφ g`. Rewrite using `[map_mul]`.
-
-Conclude with `ha _ (hb φ hφ) g`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem uc_left (h : GA E n) (u : UC E n) : ∀ φ : Sm E n, (∀ g, φ.1 (h * g) = φ.1 g) →
     ∀ g, (uC E n u φ).1 (h * g) = (uC E n u φ).1 g := by
@@ -128,11 +126,11 @@ private def stab (ψ : Sm E n) : Subgroup (GL (Fin n) (Af E)) where
     rw [← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Take `⟨y, l, rfl⟩ : ∃ y l, infGL E n y * finGL E n l = g` from `⟨_, _, infGL_mul_finGL g⟩`. Establish `hc : Continuous fun k : GL (Fin n) (Af E) => l⁻¹ * k * l` using `by fun_prop`. Establish `ho : IsOpen ((fun k : GL (Fin n) (Af E) => l⁻¹ * k * l) ⁻¹' (stab ψ : Set _))` using `IsOpen.preimage hc h`. Use `Subgroup.isOpen_of_mem_nhds (stab (rt E n (infGL E n y * finGL E n l) ψ)) (g := 1) (Filter.mem_of_superset (ho.mem_nhds ?_) fun k hk => ?_)` and prove the remaining obligations. Simplify using `using (stab ψ).one_mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hk' : rt E n (finGL E n (l⁻¹ * k * l)) ψ = ψ` using `hk`. Express the relevant statement in the definitionally equal form `rt E n (finGL E n k) (rt E n (infGL E n y * finGL E n l) ψ) = rt E n (infGL E n y * finGL E n l) ψ`. Establish `e : finGL E n k * (infGL E n y * finGL E n l) = infGL E n y * finGL E n l * finGL E n (l⁻¹ * k * l)`. Rewrite using `[← mul_assoc, ← infGL_comm, mul_assoc, mul_assoc (infGL E n y), ← map_mul, ← map_mul]`. Use `congr 2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hk']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_rt (g : GA E n) (ψ : Sm E n) (h : IsOpen (stab ψ : Set (GL (Fin n) (Af E)))) :
     IsOpen (stab (rt E n g ψ) : Set (GL (Fin n) (Af E))) := by
@@ -152,17 +150,17 @@ private theorem lev_rt (g : GA E n) (ψ : Sm E n) (h : IsOpen (stab ψ : Set (GL
     rw [← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hk']
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, by simp, 0, fun u => ⟨0, fun g => by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem umg_zero : Umg (0 : Sm E n) :=
   ⟨fun _ _ => rfl, by simp, 0, fun u => ⟨0, fun g => by simp⟩⟩
 
 /- English proof (translation)
-Use `⟨fun γ g => congrArg₂ (· + ·) (h.left γ g) (h'.left γ g), ?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := stab φ ⊓ stab ψ) (H₂ := stab (φ + ψ)) (fun k hk => ?_) (h.level.inter h'.level)` and prove the remaining obligations. Conclude with `(map_add _ _ _).trans (congrArg₂ (· + ·) hk.1 hk.2)`. Take `⟨N, hN⟩` from `h.growth`. Take `⟨M, hM⟩` from `h'.growth`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max N M, fun u => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hN u`. Take `⟨C, hC⟩` from `hM u`. Use `⟨|B| + |C|, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `AutomorphicForm.one_le_height g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, add_mul]`. Use `(norm_add_le _ _).trans (add_le_add ((hB g).trans ?_) ((hC g).trans ?_))` and prove the remaining obligations. Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h1 (le_max_left _ _)) (by positivity) (abs_nonneg _)`. Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h1 (le_max_right _ _)) (by positivity) (abs_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem umg_add {φ ψ : Sm E n} (h : Umg φ) (h' : Umg ψ) : Umg (φ + ψ) := by
   refine ⟨fun γ g => congrArg₂ (· + ·) (h.left γ g) (h'.left γ g), ?_, ?_⟩
@@ -181,9 +179,9 @@ private theorem umg_add {φ ψ : Sm E n} (h : Umg φ) (h' : Umg ψ) : Umg (φ + 
     · exact mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h1 (le_max_right _ _)) (by positivity) (abs_nonneg _)
 
 /- English proof (translation)
-Use `⟨fun γ g => uc_left _ u φ (h.left γ) g, ?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := stab φ) (H₂ := stab (uC E n u φ)) (fun k hk => ?_) h.level` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (uc_fin u k).eq φ).symm.trans (congrArg (uC E n u) hk)`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun v => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hN (v * u)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem umg_uC {φ : Sm E n} (h : Umg φ) (u : UC E n) : Umg (uC E n u φ) := by
   refine ⟨fun γ g => uc_left _ u φ (h.left γ) g, ?_, ?_⟩
@@ -196,7 +194,7 @@ private theorem umg_uC {φ : Sm E n} (h : Umg φ) (u : UC E n) : Umg (uC E n u �
     exact this
 
 /- English proof (translation)
-Use `umg_uC h (algebraMap ℂ _ c)` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem umg_smul {φ : Sm E n} (h : Umg φ) (c : ℂ) : Umg (c • φ) := by
   have := umg_uC h (algebraMap ℂ _ c)
@@ -204,11 +202,11 @@ private theorem umg_smul {φ : Sm E n} (h : Umg φ) (c : ℂ) : Umg (c • φ) :
   exact this
 
 /- English proof (translation)
-Use `⟨fun γ g => ?_, lev_rt x φ h.level, ?_⟩` and prove the remaining obligations. Use `show φ.1 (_ * g * x) = φ.1 (g * x)`. Rewrite using `[mul_assoc]`. Conclude with `h.left γ _`. Take `⟨N, hN⟩` from `h.growth`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨N, fun u => ?_⟩` and prove the remaining obligations. Take `⟨u', hu⟩` from `uc_rt x u`. Take `⟨B, hB⟩` from `hN u'`. Use `⟨|B| * (AutomorphicForm.heightConst E n * AutomorphicForm.height x) ^ N, fun g => ?_⟩` and prove the remaining obligations. Establish `e : uC E n u (rt E n x φ) = rt E n x (uC E n u' φ)` using `LinearMap.congr_fun hu φ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `(hB (g * x)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow, mul_right_comm]`. Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (AutomorphicForm.height_pos _).le (AutomorphicForm.height_mul_le _ _) N) (pow_nonneg (AutomorphicForm.height_pos _).le N) (abs_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem umg_rt {φ : Sm E n} (h : Umg φ) (x : GA E n) : Umg (rt E n x φ) := by
   refine ⟨fun γ g => ?_, lev_rt x φ h.level, ?_⟩
@@ -228,7 +226,7 @@ private theorem umg_rt {φ : Sm E n} (h : Umg φ) (x : GA E n) : Umg (rt E n x �
       (AutomorphicForm.height_mul_le _ _) N) (pow_nonneg (AutomorphicForm.height_pos _).le N) (abs_nonneg _)
 
 /- English proof (translation)
-Unfold `hk`. Rewrite using `[LinearMap.smul_apply]`. Use `umg_smul ?_ _` and prove the remaining obligations. Use `finsum_induction (fun T : Module.End ℂ (Sm E n) => Umg (T φ)) umg_zero (fun _ _ => umg_add) fun c => ?_` and prove the remaining obligations. Conclude with `umg_smul (umg_rt h (finGL E n (locGL E n w c.out))) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem umg_hk {φ : Sm E n} (h : Umg φ) (w : Pl E) (j : ℕ) : Umg (hk n w j φ) := by
   unfold hk
@@ -240,7 +238,7 @@ private theorem umg_hk {φ : Sm E n} (h : Umg φ) (w : Pl E) (j : ℕ) : Umg (hk
 end UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Conclude with `⟨umg_zero, fun φ h => ⟨ContAut.continuous_of_isOpen_stab E n φ h.level, fun _ => umg_add h, umg_smul h, umg_uC h, umg_rt h, umg_hk h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.umgOps :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.UmgOps E := by

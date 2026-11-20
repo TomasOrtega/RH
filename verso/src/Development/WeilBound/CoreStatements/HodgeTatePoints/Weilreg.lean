@@ -17,7 +17,7 @@ theorem valAt_top {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCa
   rfl
 
 /- English proof (translation)
-Simplify using `[unitOn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_unitOn {R : Type} [CommRing R] (u : Rˣ) :
     (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((unitOn u : Γ(Sp R, ⊤)ˣ) : Γ(Sp R, ⊤)) = (u : R) := by
@@ -33,7 +33,7 @@ def toAmb (h : Γ.IsTorsionAlong G y N i) {Y : Over (Spec (CommRingCat.of R))} (
     rw [Category.assoc, h.isOver, ← Category.assoc, Over.w x])
 
 /- English proof (translation)
-The claim follows from `(h.kernel Y _).2 ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem toAmb_pow (h : Γ.IsTorsionAlong G y N i) {Y : Over (Spec (CommRingCat.of R))} (x : Y ⟶ Γ.G) :
     toAmb h x ^ N = 1 :=
@@ -46,7 +46,7 @@ def overMap (y : Spec (CommRingCat.of R) ⟶ S) {Y Y' : Over (Spec (CommRingCat.
     rw [← Category.assoc, Over.w f])
 
 /- English proof (translation)
-Use `ext1`. Simplify using `[overMap, toAmb]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem overMap_toAmb (h : Γ.IsTorsionAlong G y N i) {Y Y' : Over (Spec (CommRingCat.of R))} (f : Y' ⟶ Y)
     (x : Y ⟶ Γ.G) : overMap y f ≫ toAmb h x = toAmb h (f ≫ x) := by
@@ -54,15 +54,15 @@ theorem overMap_toAmb (h : Γ.IsTorsionAlong G y N i) {Y Y' : Over (Spec (CommRi
   simp [overMap, toAmb]
 
 /- English proof (translation)
-Introduce `E _ _ _ H S _ t p _ O _ _ _ y La _ X B ζ hP hWe n`. Establish `hpos : 1 ≤ p ^ n` using `Nat.one_le_pow _ _ (Fact.out : p.Prime).pos`. Take `⟨w, hnat, hval⟩` from `hW E H S t (p ^ n) hpos`. Set `Y : Over (Spec (CommRingCat.of O))` to `(X.Γ n).G ⊗ (X.Γ n).G`. Set `a0 : Over.mk (Y.hom ≫ y) ⟶ t.G` to `toAmb (X.tors n) (fst (X.Γ n).G (X.Γ n).G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b0 : Over.mk (Y.hom ≫ y) ⟶ t.G` to `toAmb (X.tors n) (snd (X.Γ n).G (X.Γ n).G)`. Use `⟨(w (Over.mk (Y.hom ≫ y)) a0 b0 (toAmb_pow _ _) (toAmb_pow _ _)).val, ?_⟩` and prove the remaining obligations. Introduce `a b`. Set `q : BT.genPt O ⟶ Y` to `lift ((X.Γ n).pt (lev p n a)) ((X.Γ n).pt (lev p n b))`. Establish `ha : overMap y q ≫ a0 = toAmb (X.tors n) ((X.Γ n).pt (lev p n a))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [a0, overMap_toAmb, q, lift_fst]`. Establish `hb : overMap y q ≫ b0 = toAmb (X.tors n) ((X.Γ n).pt (lev p n b))`. Simplify using `only [b0, overMap_toAmb, q, lift_snd]`. Establish `key` using `hnat _ _ (overMap y q) a0 b0 (toAmb_pow _ _) (toAmb_pow _ _) (by rw [ha]; exact toAmb_pow _ _) (by rw [hb]; exact toAmb_pow _ _)`. Establish `hw` using `hval (FractionRing O) ((BT.genPt O).hom ≫ y) hP (toAmb (X.tors n) ((X.Γ n).pt (lev p n a))) (toAmb (X.tors n) ((X.Γ n).pt (lev p n b))) (toAmb_pow _ _) (toAmb_pow _ _) _ (hWe n a b _ _ rfl rfl)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[valAt_top]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of (FractionRing O))).hom.hom ((overMap y q).left.appTop.hom (w (Over.mk (Y.hom ≫ y)) a0 b0 _ _).val) = _`. Rewrite using `[← key]`. Establish `e : w _ (overMap y q ≫ a0) (overMap y q ≫ b0) (by rw [ha]; exact toAmb_pow _ _) (by rw [hb]; exact toAmb_pow _ _) = w _ (toAmb (X.tors n) ((X.Γ n).pt (lev p n a))) (toAmb (X.tors n) ((X.Γ n).pt (lev p n b))) (toAmb_pow _ _) (toAmb_pow _ _)`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e, hw, val_unitOn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weil_regular_of_fun (hW : type_of% @PositivityTheory.HtPt.Weilfun.weil_fun) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) [IsLocallyNoetherian S] (t : SAB H S) (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsAlgClosed (FractionRing O)] (y : Sp O ⟶ S) (La : Type) [AddCommGroup La] (X : TorsTower p t.G y La) (B : La →ₗ[ℤ] La →ₗ[ℤ] ℤ) (ζ : ℕ → Oˣ), IsProper (Limits.pullback.snd t.G.hom ((BT.genPt O).hom ≫ y)) → (∀ n (a b : La) (ga gb : Over.mk ((BT.genPt O).hom ≫ y) ⟶ t.G), ga.left = ((X.Γ n).pt (lev p n a)).left ≫ X.i n → gb.left = ((X.Γ n).pt (lev p n b)).left ≫ X.i n → Out.WeilIs t.G t.PP.L ((p ^ n : ℕ) : ℤ) ga gb (unitOn (Units.map (algebraMap O (FractionRing O) : O →* FractionRing O) (ζ n ^ B a b)))) → X.PairingRegular B ζ := by
   intro E _ _ _ H S _ t p _ O _ _ _ y La _ X B ζ hP hWe n
@@ -96,7 +96,7 @@ theorem weil_regular_of_fun (hW : type_of% @PositivityTheory.HtPt.Weilfun.weil_f
   rfl
 
 /- English proof (translation)
-The claim follows from `weil_regular_of_fun @PositivityTheory.HtPt.Weilfun.weil_fun`.
+A detailed English derivation is pending.
 -/
 theorem weil_regular : type_of% (weil_regular_of_fun @PositivityTheory.HtPt.Weilfun.weil_fun) :=
   weil_regular_of_fun @PositivityTheory.HtPt.Weilfun.weil_fun

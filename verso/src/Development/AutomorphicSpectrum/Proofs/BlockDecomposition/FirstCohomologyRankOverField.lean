@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.AbelianFirstCohomologyOverField
 
 /- English proof (translation)
-Set `K` to `AlgebraicClosure k`. Establish `hφ` using `isGrpPullback_pullback A (spMap (algebraMap k K))`. Establish `hab'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hab hφ`. Establish `hsm' : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap k K))).obj A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hφ.1 hsm`. Take `⟨hfin, hle⟩` from `hLe k A g hab hsm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin', hle'⟩` from `hLe K _ g hab' hsm'`. Establish `hge` using `hGe K _ g hab' hsm' hfin'`. Use `hab.proper` as an intermediate fact. Take `⟨e, -⟩` from `hFlat k K _ _ A.hom _ _ hφ.1 inferInstance inferInstance`. Establish `hrank : Module.finrank k (HO1 A.hom) = g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `e.finrank_eq`. Rewrite `h1` using `[Module.finrank_baseChange]`. Use linear arithmetic over natural numbers and integers. Use `⟨hfin, inferInstance, fun p ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Module.rankAtStalk_eq_finrank_of_free, hrank]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -45,7 +45,7 @@ theorem vb_of_field (hFlat : FlatBCSt) (hLe : PositivityTheory.ObstructionTrivia
   rfl
 
 /- English proof (translation)
-Introduce `hFlat hLe hGe R _ A _ g hab hsm hR`. Use `letI := hR.toField`. Conclude with `vb_of_field hFlat hLe hGe R A g hab hsm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem first_cohomology_rank_over_field : FlatBCSt → PositivityTheory.ObstructionTrivialLocus.H1StructureDimLe → H1DimGeAbelianDim → H1StructureFieldDim := by
   intro hFlat hLe hGe R _ A _ g hab hsm hR

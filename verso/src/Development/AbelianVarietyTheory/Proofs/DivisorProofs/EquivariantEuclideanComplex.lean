@@ -16,7 +16,7 @@ section Lin
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (v : InfinitePlace K)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i = k <;> simp [cpt, hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpt_single {n : ℕ} (k : Fin n) : cpt v.embedding (Pi.single k (1 : K)) = Pi.single k 1 := by
   funext i
@@ -25,7 +25,7 @@ theorem cpt_single {n : ℕ} (k : Fin n) : cpt v.embedding (Pi.single k (1 : K))
 variable {E : Type} [AddCommGroup E] [Module ℂ E]
 
 /- English proof (translation)
-Rewrite using `[← lin_basis f, ← lin_basis g]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← cpt_single v i, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_cpt {n : ℕ} {f g : (Fin n → ℂ) →ₗ[ℂ] E}
     (h : ∀ x : Fin n → K, f (cpt v.embedding x) = g (cpt v.embedding x)) : f = g := by
@@ -64,9 +64,9 @@ variable (X : CxData F.amb) {fc : DefSub F.amb → DefFace F.base} (cr : Crd F.a
   (P : Subgroup G) (ψ : P →* Kˣ)
 
 /- English proof (translation)
-Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => exact hf x hx`. Consider the case `zero => exact inner_zero_left _`. Consider the case `add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [inner_smul_left, hx, mul_zero]`.
+Treat this case separately.
 -/
 theorem orth_span {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] {S : Set A} {f : A}
     (hf : ∀ p ∈ S, ⟪p, f⟫_ℂ = 0) : ∀ p ∈ Submodule.span ℂ S, ⟪p, f⟫_ℂ = 0 := by
@@ -90,7 +90,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (Zsc : DefSub A.fam.amb → IndefScale A.fam.base)
 
 /- English proof (translation)
-Introduce `t` and use `⟨(A.fam.R t).toF_injective _ _, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isCoord_base (Zs : DefSub A.fam.amb) : IsCoord (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) false Zs P0 ψ0 :=
   fun t => ⟨(A.fam.R t).toF_injective _ _, rfl⟩
@@ -144,9 +144,9 @@ include hF
 end Onto
 
 /- English proof (translation)
-Introduce `i k`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `h : ¬ ∃ y, (0 : (Fin 1 → ℂ) →ₗ[ℂ] (Fin 1 → ℂ)) y = Pi.single k 1`. Introduce and unpack `⟨y, hy⟩`. Simplify using `using congrFun hy k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [relMat, Matrix.of_apply, LinearMap.id_apply, solve, dif_neg h, map_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 example {K : Type} [Field K] (σ : K →+* ℂ) :
     IsRat σ (relMat (0 : (Fin 1 → ℂ) →ₗ[ℂ] (Fin 1 → ℂ)) LinearMap.id) := by

@@ -28,19 +28,19 @@ variable {D : D7}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Establish `key : ∀ y, Formalism.L2.Host.IsUnitAt w y → finPart D (GlobalTheory.LFun.locIdele D.host.F w y : (AE D)ˣ) ∈ intAE D` using `fun y hy => (GlobalTheory.LFun.mem_int_iff _).2 fun P => by`. Rewrite using `[show GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (finPart D (GlobalTheory.LFun.locIdele D.host.F w y : (AE D)ˣ)) = Neutral.B1.finiteSingle _ w y from GlobalTheory.LFun.finTens_locIdele w y]`. Distinguish the cases in `e : P = w`. Substitute `e` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[GlobalTheory.LFun.finSingle_self]`. Conclude with `hy.le`. Rewrite using `[GlobalTheory.LFun.finSingle_ne e, map_one]`. Take `⟨α, rfl, h1, -⟩` from `hε`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) * ((GlobalTheory.LFun.locIdele D.host.F w y : AE D) - 1) = (GlobalTheory.LFun.locIdele D.host.F w y : AE D) - 1`. Use `GlobalTheory.LFun.tens_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_sub, map_one, GlobalTheory.LFun.infTens_locIdele, sub_self, mul_zero]`. Apply `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective` to reduce the goal to its premises. Establish `e2` using `GlobalTheory.LFun.finTens_locIdele (F := D.host.F) w y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `FiniteAdeleRing.ext _ fun P => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_sub, map_one, e2]`. Establish `hA : GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (GlobalTheory.LFun.finTens D.host.F D.host.E (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α))) = GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (α ⊗ₜ[D.host.F] (1 : D.host.E))` using `rfl`. Rewrite using `[hA]`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (α ⊗ₜ[D.host.F] (1 : D.host.E)) P * (Neutral.B1.finiteSingle D.host.E w y P - 1) = Neutral.B1.finiteSingle D.host.E w y P - 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LFun.finAdEquiv_tmul, map_one, mul_one]`. Distinguish the cases in `hP : P = w`. Substitute `hP` using the available equality. Rewrite using `[GlobalTheory.LFun.finSingle_self]`. Establish `: α (P.under (𝓞 D.host.F)) = 1` using `h1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_one, one_mul]`. Rewrite using `[GlobalTheory.LFun.finSingle_ne hP, sub_self, mul_zero]`. Establish `h` using `hc _ hs (key y hy) (by`. Rewrite using `[← map_inv]`. Use `key _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.Host.IsUnitAt at hy ⊢`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hy, inv_one])`. Conclude with `(congrArg Circle.toUnits h).trans (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unrAt_of_unramAt {c : (AE D)ˣ →* Circle} {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}
     (hε : IsPlaceIdem D v ε) (hc : GlobalTheory.WeilParts.UnramAt ε c) {w : HeightOneSpectrum (𝓞 D.host.E)}
@@ -87,19 +87,17 @@ open Formalism.L2.JoinChr in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V W B hB χ hc bad hbad`. Use `⟨fun Q hQ => ?_, fun Q hQ k => ?_⟩` and prove the remaining obligations. Establish `hPg : GlobalTheory.ExportSeries.SplitSet B.G.Pg`. Take `⟨P, h1, -, h3⟩` from `hB.places.split`. Conclude with `h3.mono h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : GlobalTheory.StepLaw.UnrOff (B.mu * B.eta⁻¹) (B.G.Pg ∪ B.de.Q)` using `(GlobalTheory.StepLaw.UnrOff.mul (GlobalTheory.ExportSeries.TupleChars.unrOff_of_unram hB.unram hPg Finset.subset_union_left) (GlobalTheory.ExportSeries.TupleChars.unrOff_of_unram hB.de.unram hB.de.split Finset.subset_union_right)).mul (GlobalTheory.ExportSeries.TupleChars.unrOff …`. Take `⟨ε, hε⟩` from `GlobalTheory.IdemSupport.exists_placeIdem (D := D) (Q.under (𝓞 D.host.F))`. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq hc Q).1 (unrAt_of_unramAt hε (hu _ ε hε fun PP hPP he => ?_) rfl)` and prove the remaining obligations. Establish `hm : (bad : 𝓞 D.host.E) ∈ PP.asIdeal` using `hbad PP (Finset.mem_union.1 hPP)`. Break down `GlobalTheory.IdemSupport.eq_or_eq_cP he with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hQ (h ▸ hm)`. Rewrite `hm` using `[h, GlobalTheory.IdemSupport.mem_cP, map_natCast]`. Conclude with `hQ hm`. Take `⟨e, he⟩` from `GlobalTheory.StdFrames.exists_isIdemAt hQ`. Establish `he' : Formalism.L2.NTheta.IsIdemAt (cA D e) (GlobalTheory.IdemSupport.cP Q)` using `GlobalTheory.MovedIdem.isIdemAt_conj he fun x => GlobalTheory.IdemSupport.mem_cP Q x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1` using `GlobalTheory.HeckeDetChar.isPlIdem he`. Establish `p2` using `GlobalTheory.HeckeDetChar.isPlIdem he'`. Establish `hs : star ((Formalism.L2.Host.upF D.host.F k : D.host.Eˣ) : D.host.E) = (Formalism.L2.Host.upF D.host.F k : D.host.Eˣ)` using `(D.sp.cm.fixed _).2 ⟨k, rfl⟩`. Set `y : (AE D)ˣ` to `locU p1.1 (Formalism.L2.Host.upF D.host.F k)`. Establish `h1` using `hc.2 Q e p1 _ y (locU_val p1.1 _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hc.2 _ (cA D e) p2 (Formalism.L2.Host.upF D.host.F k) (Units.map (cA D).toMonoidHom y) (by`. Express the relevant statement in the definitionally equal form `cA D (y : AE D) = _`. Rewrite using `[locU_val, locE, locE, map_add, map_one, map_mul, map_sub, map_one, GlobalTheory.IdemSupport.cA_incA, hs])`. Establish `r2 : ResEta D B.eta 1` using `hB.eta.2.2.1`. Establish `r0 : ResEta D B.mu0 0` using `GlobalTheory.SplitChange.resEta_zero_of_triv r2 hB.real`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `r1 : ResEta D B.de.chi 0` using `GlobalTheory.SplitChange.resEta_zero_of_triv r2 hB.de.real`. Establish `hconj : (B.mu * B.eta⁻¹) (Units.map (cA D).toMonoidHom y) = ((B.mu * B.eta⁻¹) y)⁻¹`. Simplify using `only [GlobalTheory.ExportSeries.Base.mu, MonoidHom.mul_apply, MonoidHom.inv_apply, GlobalTheory.ConjAdjWeil.chi_conj r0, GlobalTheory.ConjAdjWeil.chi_conj r1, GlobalTheory.ConjAdjWeil.chi_conj r2, mul_inv, inv_inv]`. Rewrite using `[Formalism.L2.Host.HChar.resFin_apply, GlobalTheory.ClassScalarValue.above_eq, Finset.prod_pair hQ.symm]`. Apply `Units.ext` to reduce the goal to its premises.
-
-Rewrite using `[Units.val_mul, Units.val_one, ← h1, ← h2, hconj, ← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_pair_char : ∀ (D : D7) (V W : HSp D) (B : Base V W), B.Good → ∀ χ : Formalism.L2.Host.HChar D.host.E, ChrEq (B.mu * B.eta⁻¹) χ → ∀ bad : ℕ, (∀ PP, PP ∈ B.G.Pg ∨ PP ∈ B.de.Q → (bad : 𝓞 D.host.E) ∈ PP.asIdeal) → (∀ Q : HeightOneSpectrum (𝓞 D.host.E), (bad : 𝓞 D.host.E) ∉ Q.asIdeal → χ.UnrAt Q) ∧ ∀ Q : HeightOneSpectrum (𝓞 D.host.E), GlobalTheory.IdemSupport.cP Q ≠ Q → ∀ k, χ.resFin (Q.under (𝓞 D.host.F)) k = 1 := by
   intro D V W B hB χ hc bad hbad

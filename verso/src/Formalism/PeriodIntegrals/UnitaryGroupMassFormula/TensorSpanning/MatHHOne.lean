@@ -37,7 +37,7 @@ def repl {n : Type} {N N' : ℕ} (t0 : n → ℂ) (s : Finset (Fin N' × Fin N))
   fun τ i j => if (i, j) ∈ s then t0 τ else z τ i j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [upd, Pi.add_apply, blk_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upd_eq {n : Type} {N N' : ℕ} (z : n → Fin N' → Fin N → ℂ) (b : Fin N' × Fin N) (t : n → ℂ) :
     upd z b t = (fun τ i j => if (i, j) = b then 0 else z τ i j) + blk b t := by
@@ -46,7 +46,7 @@ theorem upd_eq {n : Type} {N N' : ℕ} (z : n → Fin N' → Fin N → ℂ) (b :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [upd, Pi.add_apply, blk_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upd_add {n : Type} {N N' : ℕ} (z : n → Fin N' → Fin N → ℂ) (b : Fin N' × Fin N) (t x : n → ℂ) :
     upd z b t + blk b x = upd z b (t + x) := by
@@ -55,9 +55,9 @@ theorem upd_add {n : Type} {N N' : ℕ} (z : n → Fin N' → Fin N → ℂ) (b 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [upd, part]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem upd_part {n : Type} {N N' : ℕ} (z : n → Fin N' → Fin N → ℂ) (b : Fin N' × Fin N) :
     upd z b (part z b) = z := by
@@ -69,7 +69,7 @@ theorem upd_part {n : Type} {N N' : ℕ} (z : n → Fin N' → Fin N → ℂ) (b
   · rfl
 
 /- English proof (translation)
-Simplify using `only [formV, LinearMap.mk₂'ₛₗ_apply, blk_apply, Prod.ext_iff, ite_and]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[apply_ite (starRingEnd ℂ), mul_ite, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem formV_blk (A : ℝ) {n : Type} [Fintype n] {N N' : ℕ} (w : n → Fin N' → Fin N → ℂ)
     (b : Fin N' × Fin N) (x : n → ℂ) :
@@ -80,7 +80,7 @@ theorem formV_blk (A : ℝ) {n : Type} [Fintype n] {N N' : ℕ} (w : n → Fin N
   simp [apply_ite (starRingEnd ℂ), mul_ite, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Unfold `matH hOne`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem matH_hOne (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (t x : n → ℂ) :
     matH (hOne L n) t x = (∑ τ, t τ * conj (x τ)) / ((Formalism.L2.Th1.F.area L : ℝ) : ℂ) := by
@@ -92,17 +92,17 @@ theorem matH_hOne (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (t x :
   ring
 
 /- English proof (translation)
-Take `⟨hFa, hFf⟩` from `hF`. Establish `hA : AnalyticOnNhd ℂ (fun t : n → ℂ => upd z b t) Set.univ`. Introduce `t _`. Rewrite using `[show (fun t : n → ℂ => upd z b t) = fun t => (fun τ i j => if (i, j) = b then 0 else z τ i j) + blk b t from`. Use function extensionality and compare the values at `fun t => upd_eq z b t]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `analyticAt_const.add ((LinearMap.toContinuousLinearMap (blk b)).analyticAt t)`. Use `⟨hFa.comp hA (Set.mapsTo_univ _ _), ?_⟩` and prove the remaining obligations. Introduce `x hx t`. Establish `hX : blk b x ∈ powLat ΛM N N'`. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : (i, j) = b`. Establish `e : (fun τ => blk b x τ i j) = x` using `funext fun τ => by simp [blk_apply, h]`. Rewrite using `[e]`. Conclude with `hx`. Establish `e : (fun τ => blk b x τ i j) = 0` using `funext fun τ => by simp [blk_apply, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `ΛM.zero_mem`. Establish `key` using `hFf (blk b x) hX (upd z b t)`. Simplify using `only [opU] at key ⊢`. Establish `e2 : formV (Formalism.L2.Th1.F.area L) n N N' (upd z b t) (blk b x) = matH (hOne L n) t x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[formV_blk, matH_hOne]`. Simplify using `[upd]`. Establish `e3 : formV (Formalism.L2.Th1.F.area L) n N N' (blk b x) (blk b x) = matH (hOne L n) x x`. Rewrite using `[formV_blk, matH_hOne]`. Simplify using `[blk_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4 : alphaQ c (formV (Formalism.L2.Th1.F.area L) n N N') (blk b x) = alphaQ c (matH (hOne L n)) x`. Simplify using `only [alphaQ, qOf, e3]`. Rewrite `key` using `[upd_add, e2, e3, e4]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem slice_th (c : ℝ) (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (ΛM : AddSubgroup (n → ℂ))
     {N N' : ℕ} (F : (n → Fin N' → Fin N → ℂ) → ℂ)

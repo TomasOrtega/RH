@@ -44,7 +44,7 @@ def XL (X : HidaSetting a.D) : HidaSetting (reL a Z).D := (reX Z X)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(h)`.
+A detailed English derivation is pending.
 -/
 theorem hL {X : HidaSetting a.D} (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf a.D) :
     (XL a Z X).B.I = Formalism.L2.SG.InstExistsPf.instOf (reL a Z).D := (h)

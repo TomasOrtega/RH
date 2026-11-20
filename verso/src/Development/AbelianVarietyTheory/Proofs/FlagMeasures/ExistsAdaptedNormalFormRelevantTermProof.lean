@@ -19,9 +19,9 @@ noncomputable def cb (b : K × ℕ) : Kˣ × ℕ+ :=
   if h : b.1 ≠ 0 ∧ 1 ≤ b.2 then (Units.mk0 (star b.1) (star_ne_zero.2 h.1), ⟨b.2, h.2⟩) else (1, 1)
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing a c with`. Consider the case `nil => simp [Formalism.MainNotions.S.Loc.ptEntryL, Formalism.MainNotions.S.ptEntry]`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Establish `h` using `hb (t, s) (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun b hb' => hb b (by simp [hb']))`. Simplify using `only [List.map_cons, cb, dif_pos h, Formalism.MainNotions.S.Loc.ptEntryL, Formalism.MainNotions.S.ptEntry, PNat.mk_coe, Units.val_mk0]`. Simplify using `only [ih', apply_ite star, star_zero]`. Conclude with `if_congr Iff.rfl (if_congr Iff.rfl rfl rfl) (if_congr Iff.rfl rfl rfl)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entry_cb (bs : List (K × ℕ)) (hb : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) (a c : ℕ) :
     Formalism.MainNotions.S.Loc.ptEntryL (bs.map cb) a c = star (Formalism.MainNotions.S.ptEntry bs a c) := by
@@ -36,9 +36,9 @@ theorem entry_cb (bs : List (K × ℕ)) (hb : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ 
     exact if_congr Iff.rfl (if_congr Iff.rfl rfl rfl) (if_congr Iff.rfl rfl rfl)
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => simp`. Consider the case `cons b bs ih`. Establish `h` using `hb b (by simp)`. Establish `ih'` using `ih (fun b hb' => hb b (by simp [hb']))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [List.map_cons, List.sum_cons, cb, dif_pos h, PNat.mk_coe, ih']`.
+Simplify using the standard rewrite rules.
 -/
 theorem size_cb (bs : List (K × ℕ)) (hb : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) :
     ((bs.map cb).map (fun b => (b.2 : ℕ))).sum = (bs.map Prod.snd).sum := by
@@ -61,7 +61,7 @@ noncomputable def toPt {n : ℕ} (p : Formalism.MainNotions.S.Point K n) : Forma
   size := (size_cb p.1 p.2.1).trans p.2.2
 
 /- English proof (translation)
-The claim follows from `entry_cb p.1 p.2.1 a.val b.val`.
+A detailed English derivation is pending.
 -/
 theorem toPt_mat {n : ℕ} (p : Formalism.MainNotions.S.Point K n) (a b : Fin n) :
     (toPt p).mat a b = star (Formalism.MainNotions.S.ptMat p a b) :=
@@ -70,21 +70,21 @@ theorem toPt_mat {n : ℕ} (p : Formalism.MainNotions.S.Point K n) (a b : Fin n)
 def sgnR (r : ℕ) {n : ℕ} (b : Fin n) : ℤˣ := (-1) ^ (r - b.val)
 
 /- English proof (translation)
-Take `⟨L, U, hL, hU, hZ⟩` from `h`. Use `set s : Fin n → K := fun b => (-1 : K) ^ (r - b.val) with hs_def`. Establish `hs : ∀ b, s b * s b = 1` using `fun b => by`. Simplify using `only [hs_def, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]`. Establish `hss : ∀ b, star (s b) = s b` using `fun b => by simp [hs_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsg : ∀ b : Fin n, (((sgnR r b : ℤˣ) : ℤ) : K) = s b` using `fun b => by`. Simplify using `[sgnR, hs_def]`. Establish `hZ' : Z = L * Formalism.MainNotions.S.ptMat p * U * Matrix.diagonal s`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, ← hZ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Z a b = s b * Z a b * s b`. Rewrite using `[mul_comm (s b), mul_assoc, hs, mul_one]`. Establish `hD : Matrix.diagonal s * Matrix.diagonal s = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[hs]`. Simplify using `[Matrix.diagonal_apply_ne _ hab, Matrix.one_apply_ne hab]`. Establish `hDs : (Matrix.diagonal s).map star = Matrix.diagonal s`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[hss]`. Simplify using `[Matrix.diagonal_apply_ne _ hab]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨L.map star, Matrix.diagonal s * U.map star * Matrix.diagonal s, fun a b hab => ⟨?_, ?_⟩, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[(hL a b).1 hab]`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `[(hU b a).1 hab]`. Simplify using `[(hL a a).2 rfl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `[(hU a a).2 rfl, hs]`. Establish `hP : Matrix.of (fun a b => (toPt p).mat a b * (((sgnR r b : ℤˣ) : ℤ) : K)) = (Formalism.MainNotions.S.ptMat p).map star * Matrix.diagonal s`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.of_apply, toPt_mat, hsg, Matrix.map_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : ∀ M N : Matrix (Fin n) (Fin n) K, (M * N).map star = M.map star * N.map star` using `fun M N => (Matrix.map_mul (f := starRingEnd K) (L := M) (M := N))`. Rewrite using `[hP, hZ', hmap, hmap, hmap, hDs]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decomp {n r : ℕ} (Z : Matrix (Fin n) (Fin n) K) (p : Formalism.MainNotions.S.Point K n)
     (h : Formalism.MainNotions.S.IsInCell (fun a b => (-1 : K) ^ (r - b.val) * Z a b) p) :
@@ -142,7 +142,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Conclude with `a_herm (S := VS D) ((F0 X u).e (Fin.castLE hj a)) ((Ft t).e (Fin.castLE hj b))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem zhat_eq {D : D7} {X : HidaSetting D} {Y : Full X} {u : D.what₂.Word} (t : GTu Y u)
     (j : ℕ) (hj : j ≤ D.R.rS + 1) :
@@ -160,13 +160,13 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D large₂ X Y u hStd t ht`. Take `⟨hr, hG, -⟩` from `relevantSet_zeroG_not_identity ht`. Take `⟨j, hj, c, hN⟩` from `exists_nfFull_of_relevant_of_G_eq_zero Y t hr hG`. Establish `hjT` using `index_eq_normalForm t hN`. Establish `hH` using `hHost D large₂ hStd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hrel, -⟩` from `relRepC D X Y u u t hr hG`. Establish `hTu` using `tie_Tu_pos D u`. Establish `hj' : j ≤ D.R.rS + 1` using `hj.trans (Nat.le_succ _)`. Establish `geo` using `cell_geom D.host.F D.host.E (hS D) D.R.rS _ _ (lf D (X.Fu u)).fl (frq X t.rep).fl (tie_trace D.sp.cm) (tie_aniso D _ hTu (lf D (X.Fu u))) (tie_aniso D _ hTu (frq X t.rep)) hrel`. Establish `hDG : Formalism.MainNotions.S.Dl (lf D (X.Fu u)).fl (frq X t.rep).fl j ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[nf_Dl _ _ (fixedFlag_level_ne_zero D u) (nf_T_ne D u) j hj']`. Conclude with `star_ne_zero.2 hN.2.2.1`. Take `⟨p, hp⟩` from `cell_of_matRel cell_inv cell_sign cell_bruhat cell_mono cell_point hj' ((Formalism.MainNotions.S.Zhat (lf D (X.Fu u)).fl (frq X t.rep).fl).submatrix (Fin.castLE hj') (Fin.castLE hj')) (by rw [← tie_Dl_eq']; exact hDG) (geo j hj' (Or.inl ⟨hj, hDG⟩))`. Take `⟨A, B, h0, h1, hZ⟩` from `decomp _ p hp`. Take `⟨N, hNj, -, hNT, hN𝔡, hF, hF'⟩` from `GlobalTheory.DegCnt.RatNormal.exists_nf D.host.E (VS D).V (HV D) hH.1 D.R.rS (F0 X u) (Ft t) j hj c (Tu D u) (dI D) (toPt p) (fun b => sgnR D.R.rS b) A B hN rfl rfl (fun σ => nf_pos _ _ (p_posX D _ hTu _) σ) hH.2.2.2.2.2.2.2.1 hH.2.2.2.2.2.2.2.2.1 h0 h1 (by rw [zhat_eq t j hj']; …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨N, ⟨hN𝔡, hF, hF'⟩, hNj.trans hjT.symm, hNT⟩`.
+A detailed English derivation is pending.
 -/
 theorem nfExC (hHost : HostC) : NFExC := by
   intro D large₂ X Y u hStd t ht
@@ -195,6 +195,6 @@ theorem nfExC (hHost : HostC) : NFExC := by
 end GlobalTheory.TypeAsm.NFEx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TypeAsm.NFEx.nfExC GlobalTheory.T.unitaryHostFieldArithmeticConditions`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TypeAsm.nfExC_holds : GlobalTheory.TypeAsm.NFExC := GlobalTheory.TypeAsm.NFEx.nfExC GlobalTheory.T.unitaryHostFieldArithmeticConditions

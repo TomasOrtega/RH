@@ -11,23 +11,21 @@ set_option autoImplicit false
 namespace GlobalTheory.HSAmp.TraceHom
 
 /- English proof (translation)
-Introduce `K _ _ D x hx hind hfd q w hint`. Use `set y : Fin D → K := fun j => x j.succ / x 0 with hydef`. Establish `hyF : ∀ j, y j ∈ ratF x` using `fun j => Subfield.subset_closure ⟨j, rfl⟩`. Establish `hzF : ∀ l k, x k / x l ∈ ratF x`. Introduce `l k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ∀ k, x k / x 0 ∈ ratF x`. Introduce `k`. Use `Fin.cases ?_ (fun i => hyF i) k` and prove the remaining obligations. Rewrite using `[div_self (hx 0)]`. Conclude with `one_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: x k / x l = (x k / x 0) / (x l / x 0)` using `by field_simp [hx 0, hx l]`. Rewrite using `[this]`. Conclude with `div_mem (e k) (e l)`. Use `set t : K := (Algebra.trace (ratF x) K (w / x 0 ^ q) : K) with htdef`. Take `⟨f₀, hf₀, hft₀⟩` from `GlobalTheory.T.exists_monic_root_trace_of_isIntegral_closure (ratF x) (fun k => x k / x 0) (hzF 0) _ (hint 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hz0 : ∀ k, ∃ p : MvPolynomial (Fin D) ℤ, aeval y p = x k / x 0`. Introduce `k`. Use `Fin.cases ⟨1, ?_⟩ (fun i => ⟨X i, by simp [y]⟩) k` and prove the remaining obligations. Rewrite using `[map_one, div_self (hx 0)]`. Take `⟨T₀, hT₀⟩` from `GlobalTheory.T.mem_polyring_of_integral_closure_range' y hind t (Algebra.trace (ratF x) K (w / x 0 ^ q)).2 _ hz0 f₀ hf₀ hft₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg : T₀.totalDegree ≤ q`. Break down `Nat.eq_zero_or_pos D with hD | hD` into its components or cases. Substitute `hD` using the available equality. Rewrite using `[MvPolynomial.eq_C_of_isEmpty T₀, totalDegree_C]`. Conclude with `Nat.zero_le _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set j : Fin D := ⟨0, hD⟩`. Establish `hyj : y j ≠ 0` using `div_ne_zero (hx _) (hx 0)`. Take `⟨f₁, hf₁, hft₁⟩` from `GlobalTheory.T.exists_monic_root_trace_of_isIntegral_closure (ratF x) (fun k => x k / x j.succ) (hzF j.succ) _ (hint j.succ)`. Establish `hc : (⟨(x 0 / x j.succ) ^ q, pow_mem (hzF _ 0) q⟩ : ratF x) • (w / x 0 ^ q) = w / x j.succ ^ q`. Apply the tactic sequence `rw [Subfield.smul_def]; simp only [smul_eq_mul, div_pow]; field_simp [hx 0, hx j.succ] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htr : (Algebra.trace (ratF x) K (w / x j.succ ^ q) : K) = aeval y T₀ / y j ^ q`. Rewrite using `[← hc, LinearMap.map_smul, smul_eq_mul, Subfield.coe_mul, ← htdef, hT₀]`. Apply the tactic sequence `simp only [y, j, div_pow]; field_simp [hx 0, hx _] <;> ring`. Rewrite `hft₁` using `[htr]`. Use `GlobalTheory.T.totalDegree_le_of_root_of_monic_eval y hind j hyj T₀ q _ ?_ f₁ hf₁ hft₁` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `k`. Use `Fin.cases ⟨1, 1, by simp, ?_⟩ (fun i => ⟨1, X i, ?_, ?_⟩) k` and prove the remaining obligations. Simplify using `only [y, pow_one, map_one]`. Clear denominators, using `[hx 0, hx _]` for the nonvanishing conditions. Simplify using `[totalDegree_X]`.
-
-Simplify using `only [y, pow_one, aeval_X]`. Clear denominators, using `[hx 0, hx _]` for the nonvanishing conditions. Take `⟨T, hT, hTa⟩` from `GlobalTheory.T.exists_isHomogeneous_aeval_eq_of_first_eq_one T₀ q hdeg`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Rewrite using `[hTa K _ (div_self (hx 0)), ← hT₀]`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_homog : ∀ (K : Type) [Field K] [CharZero K] (D : ℕ) (x : Fin (D + 1) → K), (∀ j, x j ≠ 0) →
     AlgebraicIndependent ℤ (fun j : Fin D => x j.succ / x 0) → FiniteDimensional (ratF x) K →

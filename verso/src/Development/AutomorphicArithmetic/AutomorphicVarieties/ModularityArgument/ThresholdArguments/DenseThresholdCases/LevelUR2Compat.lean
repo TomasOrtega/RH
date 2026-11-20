@@ -14,7 +14,7 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 /- English proof (translation)
-Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R') := by refine le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N) show f y ∈ maximalIdeal R' rw [← Alg.res_eq_zero_iff O, Alg.res_map, Alg.res_eq_zero_iff] exact hy exact (ha N).c …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_adic {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [Alg.IsCO O R]
     [CommRing R'] [Algebra O R'] [Alg.IsCO O R'] (f : R →ₐ[O] R') {Γ : Type} [TopologicalSpace Γ] {a : Γ → R}
@@ -26,7 +26,7 @@ private theorem lc_adic {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [C
     exact hy
   exact (ha N).comp (Ideal.quotientMap _ (f : R →+* R') hle)
 /- English proof (translation)
-Establish `h` using `(CA.d_gmap D).2.2.1 f (MonoidAlgebra.single g 1)`. Rewrite `h` using `[MonoidAlgebra.mapRingHom_single, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem lc_chi {n : ℕ} {R R' G : Type} [CommRing R] [CommRing R'] [Group G] (D : W.GDet n R G) (f : R →+* R') (g : G) :
     (D.map f).chi (MonoidAlgebra.single g 1) = (D.chi (MonoidAlgebra.single g 1)).map f ∧
@@ -34,7 +34,7 @@ private theorem lc_chi {n : ℕ} {R R' G : Type} [CommRing R] [CommRing R'] [Gro
   have h := (CA.d_gmap D).2.2.1 f (MonoidAlgebra.single g 1)
   rwa [MonoidAlgebra.mapRingHom_single, map_one] at h
 /- English proof (translation)
-Simplify using `[Hi.heckePol, Polynomial.map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lc_pol {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (n q : ℕ) (a : ℕ → A) :
     (Hi.heckePol n q a).map f = Hi.heckePol n q fun j => f (a j) := by
@@ -44,7 +44,7 @@ variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAl
     {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) {T' T : Type} [CommRing T'] [CommRing T] [Algebra c.O T'] [Algebra c.O T]
     (Φ : T' →ₐ[c.O] T) (v : H.V) (g : Dec (F := L) (H.pl v))
 /- English proof (translation)
-Rewrite using `[map_mul, map_pow]`. Use `congr 2`. Conclude with `Units.ext (Φ.commutes _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem lc_eps (p : T'ˣ) (i : ℕ) :
     (Units.map Φ.toRingHom.toMonoidHom p * H.epsV T v g ^ i : Tˣ) = Units.map Φ.toRingHom.toMonoidHom (p * H.epsV T' v g ^ i) := by
@@ -52,7 +52,7 @@ private theorem lc_eps (p : T'ˣ) (i : ℕ) :
   congr 2
   exact Units.ext (Φ.commutes _).symm
 /- English proof (translation)
-Establish `e` using `congrArg Φ h`. Rewrite `e` using `[map_mul, map_one, hb]`. Rewrite using `[← e]`. Conclude with `congrArg (fun u : Tˣ => (u : T) * b) (lc_eps H Φ v g (p g) i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lc_unit (p : Dec (F := L) (H.pl v) →* T'ˣ) (i : ℕ) (b' : T') (b : T) (hb : Φ b' = b)
     (h : (p g * H.epsV T' v g ^ i : T'ˣ) * b' = 1) : (W.pushCh Φ.toRingHom p g * H.epsV T v g ^ i : Tˣ) * b = 1 := by
@@ -61,9 +61,9 @@ private theorem lc_unit (p : Dec (F := L) (H.pl v) →* T'ˣ) (i : ℕ) (b' : T'
   rw [← e]
   exact congrArg (fun u : Tˣ => (u : T) * b) (lc_eps H Φ v g (p g) i)
 /- English proof (translation)
-Rewrite using `[← hb, ← h]`. Establish `e : (∏ i with i ≤ j, W.pushCh Φ.toRingHom (p i) g * H.epsV T v g ^ (i : ℕ) : Tˣ) = Units.map Φ.toRingHom.toMonoidHom (∏ i with i ≤ j, p i g * H.epsV T' v g ^ (i : ℕ))`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => lc_eps H Φ v g (p i g) i`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem lc_unif (p : Fin n → Dec (F := L) (H.pl v) →* T'ˣ) (j : Fin n) (b' : T') (b : T) (hb : Φ b' = b)
     (h : ((∏ i with i ≤ j, p i g * H.epsV T' v g ^ (i : ℕ) : T'ˣ) : T') = b') :
@@ -77,7 +77,7 @@ private theorem lc_unif (p : Fin n → Dec (F := L) (H.pl v) →* T'ˣ) (j : Fin
   rfl
 end
 /- English proof (translation)
-Introduce `i` and use `by rw [funext fun g => (lc_chi D f.toRingHom g).2 i] exact lc_adic f (h i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_cont {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [Alg.IsCO O R]
     [CommRing R'] [Algebra O R'] [Alg.IsCO O R'] (f : R →ₐ[O] R') {n : ℕ} {G : Type} [Group G] [TopologicalSpace G]
@@ -85,7 +85,7 @@ private theorem lc_cont {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [C
   rw [funext fun g => (lc_chi D f.toRingHom g).2 i]
   exact lc_adic f (h i)
 /- English proof (translation)
-The claim follows from `lc_adic f h`.
+A detailed English derivation is pending.
 -/
 private theorem lc_pcont {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [Alg.IsCO O R]
     [CommRing R'] [Algebra O R'] [Alg.IsCO O R'] (f : R →ₐ[O] R') {G : Type} [Group G] [TopologicalSpace G]
@@ -93,7 +93,7 @@ private theorem lc_pcont {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [
     Alg.AdicCont (maximalIdeal R') fun g => (W.pushCh f.toRingHom p g : R') :=
   lc_adic f h
 /- English proof (translation)
-Rewrite using `[(lc_chi D f.toRingHom _).1, h, lc_pol]`. Use `congrArg _ (funext fun j => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `hb _ _`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem lc_frob {O : Type} [CommRing O] {R R' : Type} [CommRing R] [Algebra O R]
     [CommRing R'] [Algebra O R'] (f : R →ₐ[O] R') {n : ℕ} {G : Type} [Group G]
@@ -107,7 +107,7 @@ private theorem lc_frob {O : Type} [CommRing O] {R R' : Type} [CommRing R] [Alge
   · exact hb _ _
   · exact map_one _
 /- English proof (translation)
-Rewrite using `[hu f (Φ.comp f') (h.1.trans ((CA.d_gmap D).2.1 _ _)) fun v i => congrFun (congrFun h.2 v) i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem lc_comp {O : Type} [CommRing O] {R T' T : Type} [CommRing R] [Algebra O R] [CommRing T'] [Algebra O T']
     [CommRing T] [Algebra O T] (f' : R →ₐ[O] T') (Φ : T' →ₐ[O] T) (f : R →ₐ[O] T) {n : ℕ} {G V : Type} {Γ : V → Type} [Group G]
@@ -121,7 +121,7 @@ private theorem lc_comp {O : Type} [CommRing O] {R T' T : Type} [CommRing R] [Al
   rfl
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-The claim follows from `lc_cont Φ D hU.cont ψ_cont v i := lc_pcont Φ (ψ v i) (hU.ψ_cont v i) frob w B σ hB hσ := lc_frob Φ D _ _ (fun j => 0 < j ∧ j - 1 < n) _ _ (fun _ _ => hΦg _) (hU.frob w B σ hB hσ) ψ_unit v i s g u hg hs := lc_unit H Φ v g (ψ v i) i _ _ (hΦA _) (hU.ψ_unit v i s g u hg hs) ψ_unif v …`.
+A detailed English derivation is pending.
 -/
 private theorem lc_univ {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) {A : Type} [CommRing A] [Algebra c.O A] [IsLocalRing A] (θ : H.X.I.T →* Aˣ)
@@ -138,9 +138,9 @@ private theorem lc_univ {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Alge
   ψ_unif v j s g hg hs := lc_unif H Φ v g (ψ v) j _ _ (hΦg _) (hU.ψ_unif v j s g hg hs)
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `hN L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ a K K' _ _ _ _ R _ _ D₀ ψ₀ huniq f f' hf hf' φ hφ hgen t y`. Take `⟨Ψ, hΨg, hΨ⟩` from `levelUR2HeckeMap A _ _ _ _ (H.MK θ a K) (H.MK θ a K') (H.op A) (H.op A) φ id hφ hgen`. Take `⟨Φ, hΦ⟩ : ∃ Φ : H.TK θ a K' →ₐ[c.O] H.TK θ a K, ∀ x, Φ x = Ψ x` from `⟨Ψ.restrictScalars c.O, fun _ => rfl⟩`. Establish `hM` using `lc_univ H θ a K K' Φ (fun i => (hΦ _).trans (hΨg i)) (fun b => (hΦ _).trans (Ψ.commutes b)) _ _ hf'`. Establish `e` using `lc_comp f' Φ f D₀ ψ₀ (huniq _) (_root_.UpperTheory.V.Hi.core_unique_of_axioms_weight_char hN L Ω l n c H hA A θ hθ a K _ _ hM _ _ hf) t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hΦ]`. Conclude with `hΨ (f' t) y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.level_change_compat_rank_two_of_dense_weight :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →

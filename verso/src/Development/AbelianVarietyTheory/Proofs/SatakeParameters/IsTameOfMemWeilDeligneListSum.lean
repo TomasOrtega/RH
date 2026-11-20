@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.TameSum
 
 /- English proof (translation)
-Take `⟨n, a, rfl⟩` from `WD.exists_rep x`. Take `⟨m, b, rfl⟩` from `WD.exists_rep y`. Take `⟨k, c, hc, hw⟩` from `hxy`. Rewrite `hc` using `[WD.lpSum_mk, WD.mk_eq_mk]`. Establish `H : ∀ σ : Weil h, Formalism.MainNotions.BlochKatoReduction.IsWild A (σ : G E Ω) → (a.ρ σ).prodMap (b.ρ σ) = 1` using `fun σ hσ => hc.ρ_eq_one (hw σ hσ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨⟨n, a, rfl, fun σ hσ => LinearMap.ext fun u => ?_⟩, ⟨m, b, rfl, fun σ hσ => LinearMap.ext fun u => ?_⟩⟩` and prove the remaining obligations. Simplify using `using congrArg Prod.fst (LinearMap.congr_fun (H σ hσ) (u, 0))`. Simplify using `using congrArg Prod.snd (LinearMap.congr_fun (H σ hσ) (0, u))`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isTameWD_of_lpSum {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {x y : WD h}
@@ -35,9 +35,9 @@ theorem isTameWD_of_lpSum {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Al
   · simpa using congrArg Prod.snd (LinearMap.congr_fun (H σ hσ) (0, u))
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h l`. Proceed by induction on `l with`. Consider the case `nil => intro _ y hy`. Simplify using `at hy`. Consider the case `cons z l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `H y hy`. Establish `H2` using `isTameWD_of_lpSum (x := z) (y := sumList l) H`. Break down `List.mem_cons.1 hy with rfl | hy` into its components or cases. Conclude with `H2.1`. Conclude with `ih H2.2 y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isTameWD_of_mem_sumList : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}

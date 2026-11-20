@@ -15,7 +15,7 @@ variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [M
   [IsScalarTower k⟦X⟧ k⸨X⸩ V]
 
 /- English proof (translation)
-Take `⟨a, u, h⟩` from `IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible (R := k⟦X⟧) (K := k⸨X⸩) PowerSeries.X_irreducible hc`. Use `⟨a, u, ?_⟩` and prove the remaining obligations. Rewrite using `[h, Units.smul_def, Algebra.smul_def, vv_eq_coe_X]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_unit_zpow {c : k⸨X⸩} (hc : c ≠ 0) :
     ∃ (a : ℤ) (u : (k⟦X⟧)ˣ), c = ((u : k⟦X⟧) : k⸨X⸩) * vv k ^ a := by
@@ -26,16 +26,16 @@ theorem exists_unit_zpow {c : k⸨X⸩} (hc : c ≠ 0) :
   rfl
 
 /- English proof (translation)
-The claim follows from `algebraMap_smul k⸨X⸩ a x`.
+A detailed English derivation is pending.
 -/
 theorem coe_smul (a : k⟦X⟧) (x : V) : (a : k⸨X⸩) • x = a • x := algebraMap_smul k⸨X⸩ a x
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hab`. Establish `h1 : N ≤ sh 1 N`. Establish `h2` using `sh_le_sh (-a) h`. Rewrite `h2` using `[sh_sh_eq, sh_sh_eq, neg_add_cancel, sh_zero_eq]`. Conclude with `h2.trans (sh_le_sh_of_le (by omega) N)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h0` to reduce the goal to its premises. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (Ideal.span {(PowerSeries.X : k⟦X⟧)}) N hN ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `mem_sh_iff_exists.1 (h1 hx)`. Rewrite using `[zpow_one, vv_eq_coe_X, coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hy`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, PowerSeries.maximalIdeal_eq_span_X]`.
+A detailed English derivation is pending.
 -/
 theorem le_of_sh_le_sh {N : Submodule k⟦X⟧ V} (hN : N.FG) (h0 : N ≠ ⊥) {a b : ℤ} (h : sh a N ≤ sh b N) :
     b ≤ a := by
@@ -53,7 +53,7 @@ theorem le_of_sh_le_sh {N : Submodule k⟦X⟧ V} (hN : N.FG) (h0 : N ≠ ⊥) {
   · rw [IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, PowerSeries.maximalIdeal_eq_span_X]
 
 /- English proof (translation)
-Rewrite using `[sh, Submodule.map_span, Set.image_singleton, mul_smul, coe_smul, Submodule.span_singleton_smul_eq u.isUnit]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem span_unit_zpow (a : ℤ) (u : (k⟦X⟧)ˣ) (y : V) :
     Submodule.span k⟦X⟧ {(((u : k⟦X⟧) : k⸨X⸩) * vv k ^ a) • y} = sh a (Submodule.span k⟦X⟧ {y}) := by
@@ -62,9 +62,9 @@ theorem span_unit_zpow (a : ℤ) (u : (k⟦X⟧)ˣ) (y : V) :
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `R.φ_v`. Use `⟨u ^ a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, hu, mul_zpow, zpow_mul, zpow_natCast]`. Use `congr 1`. Use `map_zpow (Units.map (HahnSeries.ofPowerSeries ℤ k : k⟦X⟧ →+* k⸨X⸩).toMonoidHom) u a` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Units.val this`. Rewrite `h2` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φ_zpow {l : ℕ} (R : RingPG k l) (a : ℤ) :
     ∃ u : (k⟦X⟧)ˣ, R.φ (vv k ^ a) = ((u : k⟦X⟧) : k⸨X⸩) * vv k ^ (l * a) := by
@@ -80,9 +80,9 @@ theorem φ_zpow {l : ℕ} (R : RingPG k l) (a : ℤ) :
 variable [Module k V]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨y, hy, rfl⟩` from `mem_sh_iff_exists.1 hx`. Take `⟨u, hu⟩` from `φ_zpow R a`. Rewrite using `[hf, hu, mul_smul, coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (mem_sh_iff_exists.2 ⟨f y, Submodule.subset_span ⟨y, hy, rfl⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem pull_sh_le {l : ℕ} (R : RingPG k l) {f : V →ₗ[k] V} (hf : Semi R.φ f) (a : ℤ) (N : Submodule k⟦X⟧ V) :
     pull f (sh a N) ≤ sh (l * a) (pull f N) := by
@@ -94,7 +94,7 @@ theorem pull_sh_le {l : ℕ} (R : RingPG k l) {f : V →ₗ[k] V} (hf : Semi R.�
   exact Submodule.smul_mem _ _ (mem_sh_iff_exists.2 ⟨f y, Submodule.subset_span ⟨y, hy, rfl⟩, rfl⟩)
 
 /- English proof (translation)
-Use `le_antisymm (pull_sh_le R hf a N) ?_` and prove the remaining obligations. Establish `h` using `sh_le_sh (l * a) (pull_sh_le R hf (-a) (sh a N))`. Rewrite `h` using `[sh_sh_eq, sh_sh_eq, neg_add_cancel, sh_zero_eq, mul_neg, add_neg_cancel, sh_zero_eq]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pull_sh {l : ℕ} (R : RingPG k l) {f : V →ₗ[k] V} (hf : Semi R.φ f) (a : ℤ) (N : Submodule k⟦X⟧ V) :
     pull f (sh a N) = sh (l * a) (pull f N) := by
@@ -108,7 +108,7 @@ section
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `h0 : y 0 ≠ 0` using `fun h => hy (funext fun j => by rw [Subsingleton.elim j 0]; exact h)`. Use `⟨x 0 / y 0, funext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim j 0, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_eq {y : Vc k 1} (hy : y ≠ 0) (x : Vc k 1) : ∃ c : k⸨X⸩, x = c • y := by
   have h0 : y 0 ≠ 0 := fun h => hy (funext fun j => by rw [Subsingleton.elim j 0]; exact h)
@@ -116,7 +116,7 @@ theorem exists_smul_eq {y : Vc k 1} (hy : y ≠ 0) (x : Vc k 1) : ∃ c : k⸨X�
   rw [Subsingleton.elim j 0, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ h0]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `exists_smul_eq hy x`. Take `⟨a, u, rfl⟩` from `exists_unit_zpow (c := c) (by rintro rfl; exact hx (zero_smul _ _))`. Conclude with `⟨a, span_unit_zpow a u y⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem span_eq_sh {x y : Vc k 1} (hx : x ≠ 0) (hy : y ≠ 0) :
     ∃ a : ℤ, Submodule.span k⟦X⟧ {x} = sh a (Submodule.span k⟦X⟧ {y}) := by
@@ -125,11 +125,9 @@ theorem span_eq_sh {x y : Vc k 1} (hx : x ≠ 0) (hy : y ≠ 0) :
   exact ⟨a, span_unit_zpow a u y⟩
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Use `left`. Simplify using `[hx]`. Distinguish the cases in `hy : y = 0`. Use `right`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[hy]`. Take `⟨a, h⟩` from `span_eq_sh hx hy`. Rewrite using `[h]`. Break down `le_total 0 a with ha | ha` into its components or cases. Use `left`.
-
-Conclude with `(sh_le_sh_of_le ha _).trans (sh_zero_eq _).le`. Use `right`. Conclude with `(sh_zero_eq _).ge.trans (sh_le_sh_of_le ha _)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem span_total (x y : Vc k 1) : Submodule.span k⟦X⟧ {x} ≤ Submodule.span k⟦X⟧ {y} ∨
     Submodule.span k⟦X⟧ {y} ≤ Submodule.span k⟦X⟧ {x} := by
@@ -144,9 +142,9 @@ theorem span_total (x y : Vc k 1) : Submodule.span k⟦X⟧ {x} ≤ Submodule.sp
   · right; exact (sh_zero_eq _).ge.trans (sh_le_sh_of_le ha _)
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hN`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨x, hx⟩` from `ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.coe_insert, Submodule.span_insert, hx]`. Break down `span_total a x with h | h` into its components or cases. Conclude with `⟨x, sup_eq_right.2 h⟩`. Conclude with `⟨a, sup_eq_left.2 h⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_gen {N : Submodule k⟦X⟧ (Vc k 1)} (hN : N.FG) : ∃ x, N = Submodule.span k⟦X⟧ {x} := by
   classical
@@ -161,7 +159,7 @@ theorem exists_gen {N : Submodule k⟦X⟧ (Vc k 1)} (hN : N.FG) : ∃ x, N = Su
     · exact ⟨a, sup_eq_left.2 h⟩
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `h` using `hN.2`. Simplify using `at h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ne_bot_of_isLat {N : Submodule k⟦X⟧ (Vc k 1)} (hN : IsLat N) : N ≠ ⊥ := by
   rintro rfl
@@ -169,7 +167,7 @@ theorem ne_bot_of_isLat {N : Submodule k⟦X⟧ (Vc k 1)} (hN : IsLat N) : N ≠
   simp at h
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `exists_gen hN.1`. Take `⟨y, rfl⟩` from `exists_gen hN'.1`. Use `span_eq_sh ?_ ?_` and prove the remaining obligations. Introduce and unpack `rfl; exact ne_bot_of_isLat hN (by simp)`. Introduce and unpack `rfl; exact ne_bot_of_isLat hN' (by simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem exists_eq_sh {N N' : Submodule k⟦X⟧ (Vc k 1)} (hN : IsLat N) (hN' : IsLat N') : ∃ a : ℤ, N = sh a N' := by
   obtain ⟨x, rfl⟩ := exists_gen hN.1
@@ -181,25 +179,25 @@ theorem exists_eq_sh {N N' : Submodule k⟦X⟧ (Vc k 1)} (hN : IsLat N) (hN' : 
 end
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F r Dt M h1 _ _ e he0 het N hN`. Take `⟨-, hL, hAB, -⟩` from `GlobalTheory.T.obj_and_abc_of_model F M (chr (M.ω ^ (-e))) N hN`. Take `⟨-, hL0, hAB0, -⟩` from `GlobalTheory.T.obj_and_abc_of_model F M (chr (M.ω ^ (-e))) (M.Nχ e) (M.χ_model e he0 het)`. Establish `hχ` using `M.χ_lat e (by omega) het`. Use `choose κ hκ using fun i => exists_eq_sh (hL i) (hL0 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ i {a b : ℤ}, sh a (M.Nχ e i) ≤ sh b (M.Nχ e i) → b ≤ a` using `fun i a b h => le_of_sh_le_sh (hL0 i).1 (ne_bot_of_isLat (hL0 i)) h`. Establish `habs : ∀ i, |κ i| ≤ Dt.sg l i`. Introduce `i`. Establish `a1` using `GlobalTheory.PhiGam.CloseTw.main (F.D (chr (M.ω ^ (-e)))) Dt.h Dt.w N (M.Nχ e) hL hL0 hAB hAB0 i`. Establish `a2` using `GlobalTheory.PhiGam.CloseTw.main (F.D (chr (M.ω ^ (-e)))) Dt.h Dt.w (M.Nχ e) N hL0 hL hAB0 hAB i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a1` using `[hκ i, sh_sh_eq]`. Rewrite `a2` using `[hκ i]`. Establish `b1` using `key i (a1.trans (sh_zero_eq _).ge)`. Establish `b2` using `key i a2`. Unfold `TopData.sg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> omega`. Establish `hJ : ∀ i, -Dt.w i + κ i ≤ l * κ (i - 1) + e ∧ l * κ (i - 1) + e ≤ Dt.wst i + κ i`. Introduce `i`. Take `⟨a1, a2⟩` from `hAB i`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : pull ((F.D (chr (M.ω ^ (-e)))).φ i) (N (i - 1)) = sh (l * κ (i - 1) + e) (M.Nχ e i)`. Rewrite using `[hκ (i - 1), pull_sh R ((F.D (chr (M.ω ^ (-e)))).φ_semi i), (hχ i).2.2.1, sh_sh_eq]`. Rewrite `a1`, `a2` using `[hp, hκ i, sh_sh_eq]`. Conclude with `⟨key i a1, key i a2⟩`. Use `⟨κ, fun i => ⟨hκ i, habs i, fun hi => ?_, fun hi => ?_, fun x => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hneg`. Establish `c1` using `(Dt.lowG i hi (Dt.w i + e) (Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨by omega, by omega⟩)))).2`. Establish `c2 : (Dt.η i : ℤ) + 4 * Dt.sg l i + 6 < l` using `by exact_mod_cast h1 i`. Establish `c3` using `abs_le.1 (habs i)`. Establish `c4` using `(hJ i).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c5 : (l : ℤ) * κ (i - 1) ≤ l * (-1)` using `mul_le_mul_of_nonneg_left (by omega) (by positivity)`. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hneg`. Establish `c1` using `(Dt.lowBd i hi (Dt.w i + e) (Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨by omega, by omega⟩)))).1`. Establish `c2 : (Dt.η i : ℤ) + 4 * Dt.sg l i + 6 < l` using `by exact_mod_cast h1 i`.
+Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3` using `abs_le.1 (habs i)`. Establish `c4` using `(hJ i).2`. Unfold `TopData.wst at c4`. Establish `c5 : (l : ℤ) * 1 ≤ l * κ (i - 1)` using `mul_le_mul_of_nonneg_left (by omega) (by positivity)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκ i, GlobalTheory.PhiGam.SenShift.sen_sh R _ ((F.D (chr (M.ω ^ (-e)))).γ_semi i) _ (hχ i).1 (hχ i).2.1, (hχ i).2.2.2]`. Unfold `resCount`. Establish `: (((e - 0 : ℤ) : k) = x + (κ i : k)) ↔ (((e - κ i - 0 : ℤ) : k) = x)`. Use `push_cast`. Rewrite using `[sub_zero, sub_zero, sub_eq_iff_eq_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Multiset.filter_singleton, this]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem model_char_sign : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt), Dt.T1 l → Dt.T2 l → Dt.T3 l → ∀ (e : ℤ), 0 ≤ e → e < Dt.t → ∀ N : Lats k n 1, M.Model (chr (M.ω ^ (-e))) N → ∃ κ : ZMod n → ℤ, ∀ i, N i = sh (κ i) (M.Nχ e i) ∧ |κ i| ≤ Dt.sg l i ∧ (Dt.ty i = LType.G → 0 ≤ κ (i - 1)) ∧ (Dt.ty i = LType.Bd → κ (i - 1) ≤ 0) ∧ ∀ x, sen ((F.D (chr (M.ω ^ (-e)))).γ i) (N i) x = resCount {e - κ i} 0 x := by
   intro k G _ _ l n _ _ _ R F r Dt M h1 _ _ e he0 het N hN

@@ -24,17 +24,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar} {M : DSModel V S} {M' : DSModel W S'}
 
 /- English proof (translation)
-Establish `hne : ∃ p y, multi I p y ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h0 (span_multi I fun p y => by rw [← multi_apply]; exact hc p y)`. Establish `hsrc : ∀ τ (X : lieAt V τ) (q : D.what₂.Tau → LPol W.rank V.rank) (w : KVec M'), multi I (Function.update q τ (sOp M M' τ (aT τ) X (q τ))) w = intersection_update_fsHerm_neg_one τ (a τ X) (multi I q w)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ X q w`. Rewrite using `[multi_apply, multi_apply, ← srcOp_glue]`. Conclude with `hIs τ X X.2 (glue q) (PiTensorProduct.tprod ℂ w)`. Establish `hpair : ∀ τ (L : KT M →ₗ[ℂ] kFin M τ), IsContr τ L → ∀ (p : D.what₂.Tau → LPol W.rank V.rank) (y : KVec M'), IsLocPair M M' τ (aS τ) (aT τ) (a' τ) ((slice (multi I) τ p y).compr₂ L)`. Introduce `τ L hL p y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hmove : ∀ X (hX : X ∈ lieAt V τ) (P : LPol W.rank V.rank) (z : kFin M' τ), (slice (multi I) τ p y).compr₂ L (sOp M M' τ (aT τ) X P) z = a τ X ((slice (multi I) τ p y).compr₂ L P z)`. Introduce `X hX P z`. Simplify using `only [LinearMap.compr₂_apply, slice_apply]`. Establish `hq : Function.update p τ (sOp M M' τ (aT τ) X P) = Function.update (Function.update p τ P) τ (sOp M M' τ (aT τ) X ((Function.update p τ P) τ))` using `by simp`. Rewrite using `[hq, hsrc τ ⟨X, hX⟩]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.congr_fun (hL (a τ X)) _`. Use `⟨fun X hX P P' z z' => ?_, fun Y hY P z => ?_⟩` and prove the remaining obligations. Rewrite using `[hmove X hX, hmove X hX]`. Conclude with `(ha τ).skew X hX _ _`. Simplify using `only [LinearMap.compr₂_apply, slice_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : Function.update p τ (tOp M M' τ (aS τ) Y P) = Function.update (Function.update p τ P) τ (tOp M M' τ (aS τ) Y ((Function.update p τ P) τ))` using `by simp`. Establish `hz : PiTensorProduct.tprod ℂ (Function.update y τ (a' τ Y z)) = intersection_update_fsHerm_neg_one τ (a' τ Y) (PiTensorProduct.tprod ℂ (Function.update y τ z))`. Rewrite using `[position_tprod]`. Simplify using the standard rewrite rules. Rewrite using `[hq, multi_apply, multi_apply, ← tgtOp_glue, hz, ← map_add, hIt τ Y hY, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `key` using `(exists_factor (P := fun _ : D.what₂.Tau => LPol W.rank V.rank) (Y := fun τ => kFin M' τ) (K := fun τ => kFin M τ) (Z := ℂ) (G := fun τ => lieAt V τ) (fun τ X => sOp M M' τ (aT τ) X) (fun τ X => a τ X) hirr (multi I) 0 hne (fun τ X p y => hsrc τ X p y) (fun τ L hL p y hL0 => ⟨fun …`. Rewrite using `[eq_top_iff, ← key]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `x ⟨p, y, rfl⟩`. Conclude with `⟨glue p, PiTensorProduct.tprod ℂ y, (multi_apply I p y).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_top
     {aS aT : D.what₂.Tau → ℚ} {a : ∀ τ, Matrix (Fin V.rank) (Fin V.rank) ℂ → Module.End ℂ (kFin M τ)}
@@ -101,57 +101,53 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hD hH D k a b hab hb V W M M' θ ψ hθ hC ω f hω hf It hIt`. Substitute `hab hb` using the available equality. Take `⟨X, hX, -, -, -, -, h3, -⟩` from `GlobalTheory.T.exists_provA_discreteSeries_archimedeanRallis hD hH`. Establish `hB` using `GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra hD hH D`. Establish `hloc : ∀ τ, (kFin M τ ≤ M.sm τ ∧ kFin M' τ ≤ M'.sm τ) ∧ ∃ a a', IsKAct M τ a ∧ IsKAct M' τ a' ∧ AbsIrr (fun X : lieAt V τ => a X) ∧ LocKer M M' τ (expS D k τ) (expT D k τ) a'`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Take `⟨al, be, ga, de, hd, -, hA, hA'⟩` from `hC τ`. Use `exists_local hX h3 hH hB M M' τ hd ?_ ?_` and prove the remaining obligations. Use `show dualPar (parA (Ptw D) k τ) = _`. Rewrite using `[hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show dualPar (parA (Ptw D) (k + 1) τ) = _`. Rewrite using `[hA']`. Use `choose hsm a a' ha ha' hirr hker using hloc`. Establish `h : KSm M` using `fun τ => (hsm τ).1`. Establish `h' : KSm M'` using `fun τ => (hsm τ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨h, h', ?_⟩` and prove the remaining obligations. Take `⟨χS, χT, hW, hexp⟩` from `hω`. Establish `hvc : ∀ τ, _` using `fun τ => GlobalTheory.T.thetaVacuumCharacters_realPlaces D V W _ _ M M' θ ψ χS χT ω f τ (expS D k τ) (expT D k τ) hθ hW (hexp τ).1 (hexp τ).2 hf`. Establish `hinj : Function.Injective (ptOf ψ θ M M' f)` using `(GlobalTheory.VacuumFockLaws.vacuumFock_onObjects D V W _ _ M M' ψ θ hW.std hθ f hf).2.2.2.2`. Establish `h0K : ∃ φ y, It φ (inclK h' y) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hs : ∀ τ φ (v : M'.Vec), ∃ (n : ℕ) (φs : Fin n → PolF D W.rank V.rank) (u : Fin n → M'.sm τ), (∀ i, (u i : M'.H τ) ∈ kFin M' τ) ∧ It φ (PiTensorProduct.tprod ℂ v) = ∑ i, It (φs i) (PiTensorProduct.tprod ℂ (Function.update v τ (u i)))`. Introduce `τ φ v`. Take `⟨n, φs, c, hc, hωc⟩` from `FockOrbit.fock_orbit_coefFam D V W _ _ M M' θ ψ ω f τ (expS D k τ) (expT D k τ) hθ hinj (hvc τ).2.1 φ`. Use `⟨n, φs, fun i => ⟨kMean M' τ (c i) (v τ), (GlobalTheory.SmoothAverage.kMean_smooth D W _ M' τ (c i) (hc.1 i) (v τ) (v τ).2).1⟩, fun i => kMean_mem_kFin_of_coefFam D W _ M' τ n c hc (v τ) i, ?_⟩` and prove the remaining obligations. Conclude with `it_eq_sum_kMean D V W _ _ M M' θ ω (ptOf ψ θ M M' f) It hIt τ n c φ φs v _ hc.1 hωc fun i => rfl`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hspan : Submodule.span ℂ {z | ∃ φ y, It φ (inclK h' y) = z} = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨φ, y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hc φ y`. Use `hIt.ne (LinearMap.ext fun φ => LinearMap.ext fun x => ?_)` and prove the remaining obligations. Establish `hx` using `mem_span_of_average It h' hs φ x`. Rewrite `hx` using `[hspan, Submodule.mem_bot]`. Simplify using `using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hK : ∀ φ y, It φ (inclK h' y) ∈ LinearMap.range (inclK h)`. Introduce `φ y`. Apply `mem_range_inclK h` to reduce the goal to its premises. Introduce `τ`. Use `⟨Submodule.map ((inclT M) ∘ₗ It.flip (inclK h' y)) (MvPolynomial.restrictTotalDegree (FVar D W.rank V.rank) ℂ φ.totalDegree), inferInstance, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hκ : M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ)` using `hg`. Establish `hFu : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)`. Establish `hg' : g = (M.fr τ)⁻¹ * (M.fr τ * g * (M.fr τ)⁻¹) * M.fr τ`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hFu, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hFu, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hUH : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)`. Take `⟨hu, hJ⟩` from `hκ`. Establish `e3 : (M.fr τ * g * (M.fr τ)⁻¹)ᴴ * (M.fr τ * g * (M.fr τ)⁻¹) = 1`. Use `(Matrix.mem_unitaryGroup_iff').mp hu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ Z : Matrix (Fin V.rank) (Fin V.rank) ℂ, ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hFu, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `e2 : ∀ Z : Matrix (Fin V.rank) (Fin V.rank) ℂ, M.fr τ * ((M.fr τ)⁻¹ * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hFu, Matrix.one_mul]`. Use `show gᴴ * gramAt D V τ * g = gramAt D V τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `hk : M.fr τ * g * (M.fr τ)⁻¹ = κ at e3 hJ hg'`. Rewrite using `[← M.fr_gram τ, hg']`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, e1, e2]`. Rewrite using `[← Matrix.mul_assoc (Formalism.REAL.Jm (M.ε τ)) κ, ← hJ, Matrix.mul_assoc, ← Matrix.mul_assoc κᴴ κ, e3, Matrix.one_mul]`. Establish `helt : GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M τ (M.fr τ * g * (M.fr τ)⁻¹) = atTau θ V τ g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt]`. Rewrite using `[← hg']`. Establish `h1 : (1 : Matrix (Fin W.rank) (Fin W.rank) ℂ) ∈ Formalism.REAL.Kset (M'.ε τ)` using `⟨one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩`. Take `⟨xx, yy, -, -, hcf⟩` from `(hvc τ).2.1`. Establish `hcf1` using `hcf _ hκ 1 h1 φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hcf1` using `[elt_one hθ, helt]`. Take `⟨c, Q, hQ, hcQ⟩ : ∃ (c : ℂ) (Q : PolF D W.rank V.rank), Q.totalDegree ≤ φ.totalDegree ∧ ω (atTau θ V τ g, 1) (ptOf ψ θ M M' f φ) = c • ptOf ψ θ M M' f Q` from `⟨_, _, GlobalTheory.Chain.RealIt.SubstDeg.totalDegree_subst_le _ _ _ _ _ _ _ _ φ, hcf1⟩`. Establish `hpt : ptOf ψ θ M M' f (c • Q) = ω (atTau θ V τ g, 1) (ptOf ψ θ M M' f φ)`. Rewrite using `[hcQ]`. Simplify using `only [ptOf, map_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hIt.eqK τ g hUH φ (c • Q) hpt (inclK h' y)]`. Conclude with `Submodule.mem_map_of_mem ((MvPolynomial.mem_restrictTotalDegree _ _ _).mpr ((MvPolynomial.totalDegree_smul_le _ _).trans hQ))`. Choose the witnesses or unpack the hypotheses as in `⟨I, hI⟩ : ∃ I : PolF D W.rank V.rank →ₗ[ℂ] KT M' →ₗ[ℂ] KT M, ∀ φ y, inclK h (I φ y) = It φ (inclK h' y) := by`. Set `e` to `LinearEquiv.ofInjective (inclK h) (inclK_injective h)`. Establish `he : ∀ z : LinearMap.range (inclK h), inclK h (e.symm z) = z` using `fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg Subtype.val (e.apply_symm_apply z)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.ofInjective_apply]`. Conclude with `this`. Use `⟨LinearMap.mk₂ ℂ (fun φ y => e.symm ⟨It φ (inclK h' y), hK φ y⟩) ?_ ?_ ?_ ?_, fun φ y => he _⟩` and prove the remaining obligations. Introduce `φ₁ φ₂ y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `inclK_injective h` to reduce the goal to its premises. Simplify using `only [map_add, he, LinearMap.add_apply]`. Introduce `c φ y`. Apply `inclK_injective h` to reduce the goal to its premises. Simplify using `only [map_smul, he, LinearMap.smul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ y₁ y₂`. Apply `inclK_injective h` to reduce the goal to its premises. Simplify using `only [map_add, he]`. Introduce `c φ y`. Apply `inclK_injective h` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_smul, he]`. Establish `hI0 : I ≠ 0`. Take `⟨φ, y, hne⟩` from `h0K`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hI, h0]`. Simplify using the standard rewrite rules. Establish `hIs : ∀ τ, ∀ X ∈ lieAt V τ, ∀ φ y, I (srcOp M M' τ (expT D k τ) X φ) y = intersection_update_fsHerm_neg_one τ (a τ X) (I φ y)`. Introduce `τ X hX φ y`. Apply `inclK_injective h` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ptOf ψ θ M M' f (srcOp M M' τ (expT D k τ) X φ) = ptOf ψ θ M M' f (fockS τ (M.ε τ) (M'.ε τ) ((M.fr τ * X * (M.fr τ)⁻¹).map (starRingEnd ℂ)) φ - ((expT D k τ : ℂ) * X.trace) • φ)`. Use `congr 1`. Simplify using `only [srcOp, LinearMap.add_apply, LinearMap.neg_apply, LinearMap.smul_apply, Module.End.one_apply, neg_smul, sub_eq_add_neg]`. Establish `d1` using `hIt.eqg τ X hX φ (srcOp M M' τ (expT D k τ) X φ) (fun z => by rw [e1]; exact (hvc τ).2.2.1 X hX φ z) (inclK h' y)`. Establish `d2` using `FinTensor.derT_mapFactor h τ (a τ) (ha τ) X hX (I φ y)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `d2` using `[hI]`. Rewrite using `[hI]`. Conclude with `derT_unique d1 d2`. Establish `hIt' : ∀ τ, ∀ Y ∈ lieAt W τ, ∀ φ y, I (tgtOp M M' τ (expS D k τ) Y φ) y + I φ (intersection_update_fsHerm_neg_one τ (a' τ Y) y) = 0`. Introduce `τ Y hY φ y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `inclK_injective h` to reduce the goal to its premises. Establish `e1 : ptOf ψ θ M M' f (tgtOp M M' τ (expS D k τ) Y φ) = ptOf ψ θ M M' f (fockT τ (M.ε τ) (M'.ε τ) (M'.fr τ * Y * (M'.fr τ)⁻¹) φ + ((expS D k τ : ℂ) * Y.trace) • φ)`. Both sides reduce to the same expression. Establish `hd : ∀ z, HasDerivAt (fun t : ℝ => ω (1, oneP θ W τ Y t) (ptOf ψ θ M M' f φ) z) (ptOf ψ θ M M' f (tgtOp M M' τ (expS D k τ) Y φ) z) 0` using `fun z => by`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(hvc τ).2.2.2 Y hY φ z`. Establish `hd2` using `FinTensor.derT_mapFactor h' τ (a' τ) (ha' τ) Y hY y`. Establish `hsum` using `hIt.invg τ Y hY φ _ _ _ hd hd2`. Rewrite using `[LinearMap.map_add (inclK h), hI, hI, LinearMap.map_zero]`. Conclude with `hsum`.
-
-Establish `hspanI` using `span_eq_top (aS := fun τ => expS D k τ) (aT := fun τ => expT D k τ) ha hirr hker I hI0 hIs hIt'`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `ht : t ∈ Submodule.span ℂ {x | ∃ φ y, I φ y = x}` using `by rw [hspanI]; exact Submodule.mem_top`. Establish `hmap` using `Submodule.mem_map_of_mem (f := inclK h) ht`. Rewrite `hmap` using `[Submodule.map_span]`.
-
-Use `Submodule.span_mono ?_ hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨φ, y, rfl⟩, rfl⟩`. Conclude with `⟨φ, y, (hI φ y).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem itW_onto_kFin : ∀ (hD : GlobalTheory.Published.DiscreteSeriesCover) (hH : GlobalTheory.Published.HarishChandraModules) (D : D7)
     (k : Fin D.R.m) (a b : ℕ),

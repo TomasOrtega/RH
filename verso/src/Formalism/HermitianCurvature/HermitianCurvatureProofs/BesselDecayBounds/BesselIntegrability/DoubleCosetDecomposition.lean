@@ -11,15 +11,15 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Introduce `k r` and use `⟨(Formalism.MainNotions.InverseNormDecayBounds.normInvP k r).2, (Formalism.MainNotions.InverseNormDecayBounds.normInvP k r).1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem norm_inverse_bound : Formalism.FourierDecayAlt.ThreeDimData.NormInv := fun k r =>
   ⟨(Formalism.MainNotions.InverseNormDecayBounds.normInvP k r).2, (Formalism.MainNotions.InverseNormDecayBounds.normInvP k r).1⟩
 
 /- English proof (translation)
-Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS x hx y hy`. Take `⟨hHC, hσ, hgap, hOK, hw0, -⟩` from `hS`. Establish `hσ' : Formalism.MainNotions.S.IsDSHpk k r ε lam σ` using `hσ`. Take `⟨P, hP, hw⟩` from `hw0`. Take `⟨C, hC⟩` from `hIn.1 k r hOK.1 ε lam h H σ hHC hσ hgap hOK.2.1 P hP w0 w0 hw.2 hw.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hD : Formalism.MainNotions.InverseNormDecayBounds.DiagonalMatrixCoefficientPowerDecay σ w0 (Formalism.FourierDecayAlt.ThreeDimData.aOf r h)` using `⟨C, fun g hg => hC g hg⟩`. Establish `hh : 0 ≤ h` using `le_trans (by positivity) hOK.2.1`. Establish `ha : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.aOf r h` using `div_nonneg hh (by positivity)`. Conclude with `Formalism.MainNotions.InverseNormDecayBounds.decDD hσ' ha hD x hx y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem double_coset_decomposition : Formalism.FourierDecayAlt.ThreeDimData.DecDD := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS x hx y hy

@@ -16,19 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ScalW
 
 /- English proof (translation)
-Introduce `D X u c h hef hz hh`. Establish `hfixV : ∀ v ∈ fixSet X u, GlobalTheory.ScalW.prj X u (incl X.B.I v) = incl X.B.I v`. Introduce and unpack `v ((⟨a, rfl⟩ | ⟨a, rfl⟩) | hv)`. Conclude with `(hef a).1`. Conclude with `(hef a).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_singleton_iff.1 hv]`. Conclude with `hz`. Establish `hmem : h ∈ Hfin X u`. Introduce `v hv`. Use `show X.B.I.fmat h *ᵥ incl X.B.I v = incl X.B.I v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hh, hMat_mulVec, hfixV v hv, ← add_smul, add_sub_cancel, one_smul]`. Use `⟨hmem, fun h' hh' => ?_⟩` and prove the remaining obligations. Establish `hg : ∀ v ∈ fixSet X u, X.B.I.fmat h' *ᵥ incl X.B.I v = incl X.B.I v` using `Formalism.L2.SG.PoincareInHH.Cut.hfin_fix X u ⟨h', hh'⟩`. Establish `hgi : ∀ v ∈ fixSet X u, X.B.I.fmat h'⁻¹ *ᵥ incl X.B.I v = incl X.B.I v` using `Formalism.L2.SG.PoincareInHH.Cut.hfin_fix_inv X u ⟨h', hh'⟩`. Establish `hE` using `Formalism.L2.SG.PoincareInHH.Cut.eR_mem_fix X u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF` using `Formalism.L2.SG.PoincareInHH.Cut.fR_mem_fix X u`. Establish `hZ` using `Formalism.L2.SG.PoincareInHH.Cut.zR_mem_fix X u`. Establish `hmv : ∀ v, v ∈ fixSet X u → ∀ y, hA X.B.I (incl X.B.I v) (X.B.I.fmat h' *ᵥ y) = hA X.B.I (incl X.B.I v) y`. Introduce `v hv y`. Rewrite using `[GlobalTheory.St.G.FrameClose.hA_move, hgi v hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hprj : ∀ y, prj X u (X.B.I.fmat h' *ᵥ y) = prj X u y`. Introduce `y`. Simplify using `only [prj, eV, fV, zV, hmv _ (hE _), hmv _ (hF _), hmv _ hZ]`. Establish `hprj2 : ∀ y, X.B.I.fmat h' *ᵥ prj X u y = prj X u y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [prj, Matrix.mulVec_sub, Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul, eV, fV, zV, hg _ (hE _), hg _ (hF _), hg _ hZ]`. Establish `hM : X.B.I.fmat (h * h') = X.B.I.fmat (h' * h)`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.fmat_mul, Formalism.L2.SG.PoincareInHH.Cut.fmat_mul, hh]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hMat_mulVec, hMat_mulVec, hprj, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hprj2]`. Conclude with `Subtype.ext (Units.ext hM)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hMat_mem_hfin_comm : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (h : X.B.I.Gf), (∀ a, GlobalTheory.ScalW.prj X u (GlobalTheory.ScalW.eV X a) = GlobalTheory.ScalW.eV X a ∧ GlobalTheory.ScalW.prj X u (GlobalTheory.ScalW.fV X a) = GlobalTheory.ScalW.fV X a) → GlobalTheory.ScalW.prj X u (GlobalTheory.ScalW.zV X u) = GlobalTheory.ScalW.zV X u → X.B.I.fmat h = GlobalTheory.ScalW.hMat X u c → h ∈ Hfin X u ∧ ∀ h' ∈ Hfin X u, h * h' = h' * h := by
   intro D X u c h hef hz hh

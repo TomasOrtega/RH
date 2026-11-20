@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV NumberField I
 namespace GlobalTheory.Mem.Top.Bl
 
 /- English proof (translation)
-Introduce `D L Del h0 hK y j` and use `(ofRecord_Fj_succ D L Del h0 hK y j).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem forcedContent_eq_closedContent_numericalDatum : ∀ (D : D7) (L : SizeData₂ D) (Del h0 : ℕ), DV.KapDef D →
     ∀ (y : HeightOneSpectrum (𝓞 D.what₂.LL)) (j : Fin D.R.m),

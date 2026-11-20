@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hc`. Take `⟨w, hw⟩` from `hd`. Establish `hπ : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).mpr hϖ.ne_zero`. Use `⟨u * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, hw, zpow_add₀ hπ, Units.val_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,7 +32,7 @@ def valE (hϖ : Irreducible ϖ) (c : FractionRing V) : ℤ :=
   if h : c = 0 then 0 else (hasVal_of_ne_zero hϖ h).choose
 
 /- English proof (translation)
-Unfold `valE`. Rewrite using `[dif_neg hc]`. Conclude with `(hasVal_of_ne_zero hϖ hc).choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasVal_valE (hϖ : Irreducible ϖ) {c : FractionRing V} (hc : c ≠ 0) : HasVal ϖ c (valE hϖ c) := by
   unfold valE
@@ -103,9 +103,9 @@ def vK (hϖ : Irreducible ϖ) : AddValuation (FractionRing V) (WithTop ℚ) :=
       rfl)
 
 /- English proof (translation)
-Introduce `c n hc`. Establish `hπ : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).mpr hϖ.ne_zero`. Establish `hc0 : c ≠ 0`. Take `⟨u, hu⟩` from `hc`. Rewrite using `[hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero (zpow_ne_zero _ hπ) ?_` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).mpr u.ne_zero`. Express the relevant statement in the definitionally equal form `vK hϖ c = _`. Simplify using `only [vK, AddValuation.of_apply, if_neg hc0]`. Rewrite using `[hasVal_unique hϖ (hasVal_valE hϖ hc0) hc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma valOver_vK (hϖ : Irreducible ϖ) : ValOver ϖ (FractionRing V) (vK hϖ) := by
   intro c n hc

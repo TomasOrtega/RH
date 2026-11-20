@@ -21,22 +21,22 @@ structure AwR (x y : WD h) : Prop where
   n0 : y.mono0 → x = y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => by rw [e], fun _ => e⟩`.
+Supply the required witnesses or components.
 -/
 theorem AwR.of_eq {x y : WD h} (e : x = y) : AwR x y := ⟨fun _ => by rw [e], fun _ => e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨k.pol, k.n0⟩`.
+Supply the required witnesses or components.
 -/
 theorem AwR.of_aw {x y : WD h} (k : Aw x y) : AwR x y := ⟨k.pol, k.n0⟩
 
 /- English proof (translation)
-The claim follows from `k.n0 (WD.unr_mono0 _ hy)`.
+A detailed English derivation is pending.
 -/
 theorem AwR.eq_unr {x y : WD h} (k : AwR x y) (hy : y.unr) : x = y := k.n0 (WD.unr_mono0 _ hy)
 
 /- English proof (translation)
-The claim follows from `k.n0 (monodromyFree_of_noRatio (g := g) (by simpa only [NoRatio, WD.eig, k.pol] using hx))`.
+A detailed English derivation is pending.
 -/
 theorem AwR.eq_of_noRatio {x y : WD h} (k : AwR x y) {g : ↥(Weil h)} (hx : NoRatio x g) : x = y :=
   k.n0 (monodromyFree_of_noRatio (g := g) (by simpa only [NoRatio, WD.eig, k.pol] using hx))
@@ -94,7 +94,7 @@ def ExRN : Prop :=
       ∀ r' : G F Ω →* GL (Fin n) (Qbar l), Continuous r' → AttR ι r' π → IsGalRU π ι r' wt HT
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ ι a _` and use `h F Ω l ι a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem galoisRepRankTwo_of_real (h : GaloisRepRealN) : GaloisRepRankTwo := fun F Ω _ _ _ _ _ _ l _ ι a _ => h F Ω l ι a
 

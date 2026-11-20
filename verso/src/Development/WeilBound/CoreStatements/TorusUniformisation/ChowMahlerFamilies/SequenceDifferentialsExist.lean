@@ -9,15 +9,13 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 namespace PositivityTheory.Xgn.SequenceDifferentials
 
 /- English proof (translation)
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : IsIntegral ℤ (σ (a : E))` using `(RingOfIntegers.isIntegral_coe a).map σ.toIntAlgHom`. Take `⟨b, hb⟩` from `(IsIntegralClosure.isIntegral_iff (A := A)).1 h1`. Conclude with `⟨algebraMap A O b, by rw [← IsScalarTower.algebraMap_apply, hb]⟩`. Use `set n : ℕ := (NumberField.discr E).natAbs with hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hx : ((n : ℕ) : 𝓞 E) ∈ differentIdeal ℤ (𝓞 E)`. Rewrite using `[hn, ← NumberField.absNorm_differentIdeal E (𝓞 E)]`. Conclude with `Ideal.absNorm_mem _`. Establish `hpn : ¬ p ∣ n` using `fun h => hp (Int.natCast_dvd.2 h)`. Establish `hnm : ((n : ℕ) : A) ∉ m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `hc : IsCoprime (p : A) (n : A)` using `Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd hpp.out).2 hpn)`. Take `⟨u, v, huv⟩` from `hc`. Conclude with `Ideal.IsPrime.ne_top ‹_› ((Ideal.eq_top_iff_one m).2 (huv ▸ m.add_mem (m.mul_mem_left u hm) (m.mul_mem_left v h)))`. Establish `hu : IsUnit (algebraMap A O (n : A))` using `IsLocalization.map_units O (⟨(n : A), hnm⟩ : m.primeCompl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨o, ho⟩` from `hu.exists_left_inv`. Use `⟨(n : 𝓞 E), hx, o, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (algebraMap O Ω) ho`. Simplify using `only [map_mul, map_natCast, map_one] at h2`. Establish `h3 : σ (((n : ℕ) : 𝓞 E) : E) = (n : Ω)` using `by simp`.
-
-Rewrite using `[h3, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (E : Type) [Field E] [NumberField E] (Ω : Type) [Field Ω] (p : ℕ) [hpp : Fact p.Prime]
     (hp : ¬ (p : ℤ) ∣ NumberField.discr E) (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω]
@@ -53,7 +51,7 @@ theorem main (E : Type) [Field E] [NumberField E] (Ω : Type) [Field Ω] (p : �
 end PositivityTheory.Xgn.SequenceDifferentials
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ _ p _ _ hp A _ _ _ m _ hm O _ _ _ _ _ _ _ σ`. Conclude with `PositivityTheory.Xgn.SequenceDifferentials.main E Ω p hp A m hm O σ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.sequence_differentials_exist : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ σ : E →+* Ω, (∀ a : 𝓞 E, ∃ o : O, algebraMap O Ω o = σ (a : E)) ∧ ∃ x ∈ differentIdeal ℤ (𝓞 E), ∃ o : O, algebraMap O Ω o * σ (x : E) = 1 := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ _ p _ _ hp A _ _ _ m _ hm O _ _ _ _ _ _ _ σ

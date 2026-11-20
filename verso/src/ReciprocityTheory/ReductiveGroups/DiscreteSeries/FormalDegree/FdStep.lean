@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [Pi.add_apply]`. Conclude with `add_lt_add_of_lt_of_le (hlam hij) (by exact_mod_cast hc hij.le)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fdS_strictAnti {lam : Fin n → ℝ} (hlam : StrictAnti lam) {c : Fin n → ℕ} (hc : Antitone c) :
     StrictAnti (lam + fun i => (c i : ℝ)) := by
@@ -21,9 +21,9 @@ theorem fdS_strictAnti {lam : Fin n → ℝ} (hlam : StrictAnti lam) {c : Fin n 
   exact add_lt_add_of_lt_of_le (hlam hij) (by exact_mod_cast hc hij.le)
 
 /- English proof (translation)
-Unfold `IsHCParam at hlam ⊢`. Use `⟨fdS_strictAnti hlam.1 hc, fun a => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hlam.2 a`. Use `⟨m + (c a : ℤ), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem fdS_hc {lam : Fin n → ℝ} (hlam : IsHCParam lam) {c : Fin n → ℕ} (hc : Antitone c) :
     IsHCParam (lam + fun i => (c i : ℝ)) := by
@@ -36,13 +36,13 @@ theorem fdS_hc {lam : Fin n → ℝ} (hlam : IsHCParam lam) {c : Fin n → ℕ} 
   linarith
 
 /- English proof (translation)
-Unfold `GapAtLeast at hgap ⊢`. Introduce `a b hab`. Establish `h0` using `hgap a b hab`. Simplify using `only [Pi.add_apply]`. Break down `lt_trichotomy a b with hlt | heq | hgt` into its components or cases.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `hlam hlt`. Establish `h2 : (c b : ℝ) ≤ c a` using `by exact_mod_cast hc hlt.le`. Rewrite `h0` using `[abs_of_pos (by linarith)]`. Rewrite using `[abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `absurd (congrArg ε heq) hab`. Establish `h1` using `hlam hgt`. Establish `h2 : (c a : ℝ) ≤ c b` using `by exact_mod_cast hc hgt.le`. Rewrite `h0` using `[abs_of_neg (by linarith)]`. Rewrite using `[abs_of_neg (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem fdS_gap {ε : Fin n → Bool} {h : ℝ} {lam : Fin n → ℝ} (hlam : StrictAnti lam)
     (hgap : GapAtLeast ε lam h) {c : Fin n → ℕ} (hc : Antitone c) :
@@ -65,7 +65,7 @@ theorem fdS_gap {ε : Fin n → Bool} {h : ℝ} {lam : Fin n → ℝ} (hlam : St
     linarith
 
 /- English proof (translation)
-Unfold `Vand`. Use `Finset.prod_ne_zero_iff.mpr (fun a _ => Finset.prod_ne_zero_iff.mpr (fun b hb => ?_))` and prove the remaining obligations. Establish `hab : a < b` using `(Finset.mem_filter.mp hb).2`. Conclude with `sub_ne_zero.mpr (hμ hab).ne'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem vand_ne_zero_of_strictAnti {μ : Fin n → ℝ} (hμ : StrictAnti μ) : Vand μ ≠ 0 := by
   unfold Vand
@@ -74,7 +74,7 @@ private theorem vand_ne_zero_of_strictAnti {μ : Fin n → ℝ} (hμ : StrictAnt
   exact sub_ne_zero.mpr (hμ hab).ne'
 
 /- English proof (translation)
-Establish `hμ1 : StrictAnti μ` using `by unfold IsHCParam at hμ; exact hμ.1`. Rewrite using `[hstep μ s hμ hg hg' hs, ratioV_eq_vand hμ1 s]`. Establish `h1` using `vand_ne_zero_of_strictAnti hμ1`. Establish `h2` using `vand_ne_zero_of_strictAnti hs`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem fdS_stepQ {ε : Fin n → Bool} {h : ℝ} (dfun : (Fin n → ℝ) → ℝ)
     (hstep : ∀ (μ : Fin n → ℝ) (s : Fin n), IsHCParam μ → GapAtLeast ε μ h → GapAtLeast ε (μ + Pi.single s 1) h →
@@ -89,29 +89,29 @@ theorem fdS_stepQ {ε : Fin n → Bool} {h : ℝ} (dfun : (Fin n → ℝ) → �
   field_simp
 
 /- English proof (translation)
-Establish `hlam1 : StrictAnti lam` using `by unfold IsHCParam at hlam; exact hlam.1`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `c _ hsum`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc0 : ∀ i, c i = 0` using `fun i => (Finset.sum_eq_zero_iff.mp hsum) i (Finset.mem_univ i)`. Establish `hfun : (lam + fun i => (c i : ℝ)) = lam`. Use function extensionality and compare the values at `i`. Simplify using `[hc0 i]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ N ih`. Introduce `c hc hsum`. Establish `hne : (univ.filter (fun i => c i ≠ 0)).Nonempty`. Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : ∑ i, c i = 0` using `Finset.sum_eq_zero (fun i hi => by simpa using hemp hi)`. Use linear arithmetic over natural numbers and integers. Take `⟨s, hs_mem, hs_max⟩ : ∃ s ∈ univ.filter (fun i => c i ≠ 0), ∀ j ∈ univ.filter (fun i => c i ≠ 0), j ≤ s` from `⟨_, Finset.max'_mem _ hne, fun j hj => Finset.le_max' _ j hj⟩`. Establish `hcs : c s ≠ 0` using `(Finset.mem_filter.mp hs_mem).2`. Establish `hbig : ∀ j, s < j → c j = 0`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j hj`. Assume the negation of the conclusion as `hcj`. Conclude with `absurd hj (not_lt.mpr (hs_max j (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hcj⟩)))`. Use `set c' : Fin n → ℕ := fun i => if i = s then c i - 1 else c i with hc'_def`. Establish `hcc : ∀ i, c i = c' i + (if i = s then 1 else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `only [hc'_def]`. Distinguish the cases in `h : i = s`. Rewrite using `[if_pos h, if_pos h, h]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_neg h, if_neg h]`. Both sides reduce to the same expression. Establish `hc' : Antitone c'`. Introduce `i j hij`. Simplify using `only [hc'_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases eq_or_ne i s with hi | hi <;> rcases eq_or_ne j s with hj | hj`. Rewrite using `[hi, hj]`. Establish `hsj : s < j` using `lt_of_le_of_ne (hi ▸ hij) (Ne.symm hj)`. Rewrite using `[if_neg hj, hbig j hsj]`. Conclude with `Nat.zero_le _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h'` using `hc hij`. Rewrite using `[if_pos hj, if_neg hi]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hj, if_neg hi]`. Conclude with `hc hij`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsum' : ∑ i, c' i = N`. Establish `h' : ∑ i, c i = ∑ i, c' i + 1`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hcc i), Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (lam + fun i => (c' i : ℝ)) + Pi.single s 1 = lam + fun i => (c i : ℝ)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.single_apply]`. Rewrite using `[hcc i]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> ring`. Establish `hQ` using `fdS_stepQ dfun hstep (fdS_hc hlam hc') (fdS_gap hlam1 hgap hc') s (by rw [hfun]; exact fdS_gap hlam1 hgap hc) (by rw [hfun]; exact fdS_strictAnti hlam1 hc)`. Rewrite `hQ` using `[hfun]`. Rewrite using `[hQ, ih c' hc' hsum']`.
+A detailed English derivation is pending.
 -/
 theorem fdS_main {ε : Fin n → Bool} {h : ℝ} (dfun : (Fin n → ℝ) → ℝ)
     (hstep : ∀ (μ : Fin n → ℝ) (s : Fin n), IsHCParam μ → GapAtLeast ε μ h → GapAtLeast ε (μ + Pi.single s 1) h →
@@ -180,13 +180,11 @@ theorem fdS_main {ε : Fin n → Bool} {h : ℝ} (dfun : (Fin n → ℝ) → ℝ
     rw [hQ, ih c' hc' hsum']
 
 /- English proof (translation)
-Establish `hD : ∀ a : Fin n, ((n : ℝ) - 1) - ((a : ℕ) : ℝ) = ((n - 1 - (a : ℕ) : ℕ) : ℝ)`. Introduce `a`. Establish `ha` using `a.2`. Rewrite using `[Nat.cast_sub (by omega : (a : ℕ) ≤ n - 1), Nat.cast_sub (by omega : 1 ≤ n), Nat.cast_one]`. Establish `hc : Antitone (fun a : Fin n => t * (n - 1 - (a : ℕ)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j hij`. Establish `h'` using `Fin.le_iff_val_le_val.mp hij`. Conclude with `Nat.mul_le_mul le_rfl (by omega)`. Establish `hfun : lamT lam t = lam + fun i => (((fun a : Fin n => t * (n - 1 - (a : ℕ))) i : ℕ) : ℝ)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [lamT, Pi.add_apply, Pi.smul_apply, Dvec, smul_eq_mul]`. Rewrite using `[hD i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`.
-
-Conclude with `fdS_main dfun hstep hlam hgap _ _ hc rfl`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fd_step {ε : Fin n → Bool} {h : ℝ} (dfun : (Fin n → ℝ) → ℝ)
     (hstep : ∀ (μ : Fin n → ℝ) (s : Fin n), IsHCParam μ → GapAtLeast ε μ h →

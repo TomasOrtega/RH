@@ -14,13 +14,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.RunIn
 
 /- English proof (translation)
-Introduce `D T h hG large₂ j hj w hw hL hrn hf σ hσ`. Establish `hne0 : Nonempty (T.U j σ).Comp` using `⟨(T.dict j σ 1).1⟩`. Take `⟨-, hlrd, hd, hcc, hlf, -, -, -, hn⟩` from `id hw`. Take `⟨-, -, -, -, -, hfdeg, hdE, -, hfr, hf1, -, -, -⟩` from `GlobalTheory.T.exists_clearing_integers_principalDatum_host D large₂.sc.L hL hlrd hd hcc`. Take `⟨e, M, wg, hM1, hMl, hwg, hwgl, -, hk⟩` from `GlobalTheory.T.exists_rankOne_cuspData_log_bounds D T h hG large₂ j hj w hw hL hrn σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcard` using `GlobalTheory.T.log_card_components_le_at_good_embedding D T h large₂ j hj w hw hL hrn hf σ hσ`. Establish `hL1 : (1 : ℝ) ≤ large₂.sc.L` using `by linarith`. Establish `hr1 : 1 ≤ D.R.r` using `le_trans hf1 hfr`. Establish `hF1 : (1 : ℝ) ≤ (fdeg D.host.E : ℝ)` using `by rw [hfdeg]; exact_mod_cast hf1`. Establish `hZ : Zb D large₂ = (fdeg D.host.E : ℝ) * D.R.r * large₂.sc.L` using `by rw [hfdeg]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogr : Real.log (D.R.r : ℝ) ≤ large₂.sc.L`. Use `le_trans (Real.log_le_log (by exact_mod_cast hr1) (by exact_mod_cast hrn)) hn` and prove the remaining obligations. Establish `hlogf : Real.log (fdeg D.host.E : ℝ) ≤ 2 * large₂.sc.L` using `by rw [hfdeg]; exact hlf`. Take `⟨NN, hne, hP, hlog⟩` from `GlobalTheory.NetMax.exists_net_all_components_max D.host.E D.R.r (T.U j σ).Comp (fun k => (e k).toX) (laU (T.U j σ) (wtA w) w.n) M wg large₂.sc.L hr1 hL1 hM1 hwg (fun k => (hk k).1) (fun k => (hk k).2.1) hlogf hlogr hMl hwgl hdE (fun k => ⟨(hk k).2.2.1, le_trans (hk k).2.2.2.1 (b …`. Use `⟨NN, hne, hP, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hZ]`. Conclude with `hlog`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_net_max_at_goodEmb : ∀ (D : D7) (T : Top D) (_h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → 16 ≤ D.R.f → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∃ NN : Finset (FPt (T.U j σ).X), NN.Nonempty ∧ (∀ P ∈ holSub (T.U j σ).X (laU (T.U j σ) (wtA w) w.n), ∃ p ∈ NN, supN (T.U j σ).X (laU (T.U j σ) (wtA w) w.n) P ≤ 4 * ((T.U j σ).X p.1).pnorm (laU (T.U j σ) (wtA w) w.n p.1) (P p.1) p.2) ∧ Real.log (16 * NN.card) ≤ 1041 * Zb D large₂ ^ 3 := by
   intro D T h hG large₂ j hj w hw hL hrn hf σ hσ

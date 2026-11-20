@@ -6,9 +6,9 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (e.toLinearMap ∘ₗ f ∘ₗ g)` using `e.surjective.comp (hf.comp hg)`. Establish `hi` using `OrzechProperty.injective_of_surjective_endomorphism _ hs`. Introduce `a b hab`. Take `⟨x, rfl⟩` from `hg a`. Take `⟨y, rfl⟩` from `hg b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: x = y` using `hi (by simp [hab])`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inj_of_sandwich {R Q F ι : Type*} [CommRing R] [AddCommGroup Q] [Module R Q]
     [AddCommGroup F] [Module R F] [Fintype ι] (g : (ι → R) →ₗ[R] Q) (f : Q →ₗ[R] F)
@@ -23,27 +23,25 @@ private theorem inj_of_sandwich {R Q F ι : Type*} [CommRing R] [AddCommGroup Q]
   rw [this]
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _ l hl hlm σ _ _ e φ hφ hsurj`. Use `haveI : ∀ s, NeZero (l ^ e s) := fun s => ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `set w : σ → MvPowerSeries σ Λ := fun s => (1 + MvPowerSeries.X s) ^ l ^ e s - 1 with hw`. Use `set I : Ideal (MvPowerSeries σ Λ) := Ideal.span (Set.range w) with hI`. Establish `hle : I ≤ RingHom.ker φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hI, Ideal.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Establish `h1 : (Pi.mulSingle s (Multiplicative.ofAdd (1 : ZMod (l ^ e s))) : ∀ s, Multiplicative (ZMod (l ^ e s))) ^ (l ^ e s) = 1`. Rewrite using `[← Pi.mulSingle_pow, ← ofAdd_nsmul, nsmul_one, ZMod.natCast_self, ofAdd_zero, Pi.mulSingle_one]`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, hw, map_sub, map_pow, hφ, map_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_pow, h1, map_one, sub_self]`. Establish `hwm : ∀ s, w s - MvPowerSeries.X s ^ (l ^ e s) ∈ Ideal.map MvPowerSeries.C (IsLocalRing.maximalIdeal Λ)`. Introduce `s`. Take `⟨m, hm⟩ : ∃ m, l ^ e s = m + 1` from `⟨l ^ e s - 1, (Nat.succ_pred_eq_of_pos (pow_pos hl.pos _)).symm⟩`. Establish `hlC : ((l : ℕ) : MvPowerSeries σ Λ) ∈ Ideal.map MvPowerSeries.C (IsLocalRing.maximalIdeal Λ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (MvPowerSeries.C (σ := σ) (R := Λ))]`. Conclude with `Ideal.mem_map_of_mem _ hlm`. Simplify using `only [hw]`. Rewrite using `[add_comm, add_pow, hm, Finset.sum_range_succ, Finset.sum_range_succ']`. Establish `key : ∀ k ∈ Finset.range m, MvPowerSeries.X s ^ (k + 1) * (1 : MvPowerSeries σ Λ) ^ (m + 1 - (k + 1)) * (((m + 1).choose (k + 1) : ℕ) : MvPowerSeries σ Λ) ∈ Ideal.map MvPowerSeries.C (IsLocalRing.maximalIdeal Λ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Establish `hd : l ∣ (m + 1).choose (k + 1)`. Rewrite using `[← hm]`. Use `hl.dvd_choose_pow (Nat.succ_ne_zero k) ?_` and prove the remaining obligations. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.mem_range.mp hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨t, ht⟩` from `hd`. Rewrite using `[ht, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ hlC)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hsum` using `Ideal.sum_mem _ key`. Simplify using `only [pow_zero, one_pow, mul_one, Nat.choose_zero_right, Nat.choose_self, Nat.cast_one, Nat.sub_zero, one_mul] at hsum ⊢`. Use `hsum using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hIφ : ∀ a ∈ I, φ a = 0` using `fun a ha => hle ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_antisymm ?_ hle` and prove the remaining obligations. Establish `hspan` using `UpperTheory.V.AlgebraTools.mvPowerSeries_span_monomials Λ σ (fun s => l ^ e s) w hwm`. Set `ψ` to `Ideal.Quotient.liftₐ I φ hIφ`. Establish `hψs : Function.Surjective ψ`. Introduce `y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hsurj y`. Conclude with `⟨Ideal.Quotient.mk I x, rfl⟩`. Set `v` to `fun α : ((s : σ) → Fin (l ^ e s)) => Ideal.Quotient.mk I (∏ s, MvPowerSeries.X s ^ (α s : ℕ))`. Establish `hg : Function.Surjective (Fintype.linearCombination Λ v)`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hspan`. Set `eqv : ((s : σ) → Fin (l ^ e s)) ≃ (∀ s, Multiplicative (ZMod (l ^ e s)))` to `Equiv.piCongrRight fun s => (ZMod.finEquiv (l ^ e s)).toEquiv.trans Multiplicative.ofAdd`. Set `E : MonoidAlgebra Λ (∀ s, Multiplicative (ZMod (l ^ e s))) ≃ₗ[Λ] (((s : σ) → Fin (l ^ e s)) → Λ)` to `(MonoidAlgebra.coeffLinearEquiv Λ).trans ((Finsupp.linearEquivFunOnFinite Λ Λ _).trans (LinearEquiv.funCongrLeft Λ Λ eqv))`. Establish `hinj` using `inj_of_sandwich (Fintype.linearCombination Λ v) ψ.toLinearMap E hg hψs`. Introduce `x hx`.
-
-Establish `h0 : ψ (Ideal.Quotient.mk I x) = 0` using `hx`. Establish `: Ideal.Quotient.mk I x = 0` using `hinj (by simpa using h0)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.groupRing_ker :
     ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (IsLocalRing.maximalIdeal Λ) Λ] (l : ℕ), l.Prime → (l : Λ) ∈ IsLocalRing.maximalIdeal Λ → ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (e : σ → ℕ) (φ : MvPowerSeries σ Λ →ₐ[Λ] MonoidAlgebra Λ (∀ s, Multiplicative (ZMod (l ^ e s)))), (∀ s : σ, φ (1 + MvPowerSeries.X s) = MonoidAlgebra.of Λ (∀ s, Multiplicative (ZMod (l ^ e s))) (Pi.mulSingle s (Multiplicative.ofAdd (1 : ZMod (l ^ e s))))) → Function.Surjective φ →

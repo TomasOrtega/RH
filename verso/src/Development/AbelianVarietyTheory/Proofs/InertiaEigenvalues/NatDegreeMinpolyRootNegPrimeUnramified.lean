@@ -12,29 +12,25 @@ namespace GlobalTheory.InertiaDeg
 open Polynomial
 
 /- English proof (translation)
-Introduce `l _ N π hN hπ E _ _ hE`. Establish `hl0 : (0 : ℝ) < l` using `by linarith [Formalism.MainNotions.N.PreambleDegrees.Loc.one_lt_l (l := l)]`. Use `set Q : E[X] := Polynomial.X ^ N + Polynomial.C ((l : ℕ) : E) with hQ`. Establish `hQm : Q.Monic`. Rewrite using `[hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `monic_X_pow_add_C _ hN.ne'`. Establish `hQr : aeval π Q = 0`. Rewrite using `[hQ]`. Simplify using `[hπ]`. Establish `hint : IsIntegral E π` using `⟨Q, hQm, by rwa [aeval_def] at hQr⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : minpoly E π ∣ Q` using `minpoly.dvd _ _ hQr`. Establish `hQdeg : Q.natDegree = N` using `by rw [hQ]; exact natDegree_X_pow_add_C`. Establish `hle : (minpoly E π).natDegree ≤ N`. Rewrite using `[← hQdeg]`. Conclude with `natDegree_le_of_dvd hdvd hQm.ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < (minpoly E π).natDegree` using `minpoly.natDegree_pos hint`. Establish `hmon` using `minpoly.monic hint`. Use `set P := (minpoly E π).map (algebraMap E (Om l)) with hP`. Establish `hsp : P.Splits` using `IsAlgClosed.splits P`. Establish `hPm : P.Monic` using `hmon.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπn : ‖π‖ ^ N = (l : ℝ)⁻¹`. Rewrite using `[← norm_pow, hπ, norm_neg, Formalism.MainNotions.N.PreambleDegrees.Loc.norm_l]`. Establish `hroots : ∀ a ∈ P.roots, ‖a‖ = ‖π‖`. Introduce `a ha`. Establish `h1 : P ∣ Q.map (algebraMap E (Om l))` using `Polynomial.map_dvd _ hdvd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (Q.map (algebraMap E (Om l))).IsRoot a` using `(Polynomial.isRoot_of_mem_roots ha).dvd h1`. Establish `h3 : a ^ N = -(l : Om l)`. Rewrite `h2` using `[hQ]`. Simplify using `[Polynomial.IsRoot] at h2`. Take the linear combination `h2`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ‖a‖ ^ N = ‖π‖ ^ N`. Rewrite using `[← norm_pow, h3, ← hπ, norm_pow]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) hN.ne').1 h4`. Establish `heval : ‖P.eval 0‖ = ‖π‖ ^ (minpoly E π).natDegree`. Rewrite using `[hsp.eval_eq_prod_roots_of_monic hPm, ← Polynomial.natDegree_map (algebraMap E (Om l)), ← hP, hsp.natDegree_eq_card_roots]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `map_multiset_prod (normHom : Om l →*₀ ℝ) (P.roots.map (fun a => 0 - a))`. Establish `h4 : ‖(P.roots.map (fun a => 0 - a)).prod‖ = ((P.roots.map (fun a => 0 - a)).map (normHom : Om l →*₀ ℝ)).prod` using `h3`. Establish `h5 : Multiset.map ((normHom : Om l →*₀ ℝ) ∘ fun a => 0 - a) P.roots = Multiset.map (fun _ => ‖π‖) P.roots` using `Multiset.map_congr rfl (fun a ha => by simpa using hroots a ha)`. Rewrite using `[h4, Multiset.map_map, h5, Multiset.map_const', Multiset.prod_replicate]`. Establish `hy : P.eval 0 = algebraMap E (Om l) ((minpoly E π).eval 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP, Polynomial.eval_map, ← map_zero (algebraMap E (Om l)), Polynomial.eval₂_at_apply]`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[zero_pow hN.ne', eq_comm, neg_eq_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) hπ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hρ : 0 < ‖π‖` using `norm_pos_iff.2 hπ0`. Establish `hy0 : algebraMap E (Om l) ((minpoly E π).eval 0) ≠ 0`. Rewrite using `[← hy, ← norm_pos_iff, heval]`. Conclude with `pow_pos hρ _`. Take `⟨m, hm⟩` from `Formalism.MainNotions.N.PreambleDegrees.Loc.norm_Kur_zpow (hE ((minpoly E π).eval 0)) hy0`.
-
-Rewrite `hm` using `[← hy, heval]`. Establish `h8 : (l : ℝ) ^ (m * (N : ℤ)) = (l : ℝ) ^ (-((minpoly E π).natDegree : ℤ))`. Rewrite using `[_root_.zpow_mul, ← hm, zpow_natCast, ← pow_mul, mul_comm, pow_mul, hπn, _root_.zpow_neg, zpow_natCast, inv_pow]`. Establish `h9 : m * (N : ℤ) = -((minpoly E π).natDegree : ℤ)` using `zpow_right_injective₀ hl0 (Formalism.MainNotions.N.PreambleDegrees.Loc.one_lt_l (l := l)).ne' h8`. Establish `h10 : (N : ℤ) ∣ ((minpoly E π).natDegree : ℤ)` using `⟨-m, by linarith⟩`.
-
-Conclude with `le_antisymm hle (Nat.le_of_dvd hpos (Int.natCast_dvd_natCast.1 h10))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_root_neg_l : ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) (π : Om l), 0 < N → π ^ N = -(l : Om l) → ∀ (E : Type) [Field E] [Algebra E (Om l)], (∀ y : E, algebraMap E (Om l) y ∈ MaximalUnramifiedExtension l) → (minpoly E π).natDegree = N := by
   intro l _ N π hN hπ E _ _ hE

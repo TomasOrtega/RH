@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Take `⟨L, hL, rfl⟩` from `hx`. Rewrite using `[← hL]`. Conclude with `SetLike.list_prod_map_mem_graded L _ _ fun s _ => h s.1 s.2.1 s.2.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mon_part {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {k : Type} [Field k] {F : Frame l k} {n : ℕ}
     {R : Type} [CommRing R] [Algebra O R] (ρ : NRep F n R) (W : WPres O ℤ R)
@@ -17,7 +17,7 @@ private theorem mon_part {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {k : T
   exact SetLike.list_prod_map_mem_graded L _ _ fun s _ => h s.1 s.2.1 s.2.2
 
 /- English proof (translation)
-Take `⟨L1, h1, rfl⟩` from `hx`. Take `⟨L2, h2, rfl⟩` from `hy`. Conclude with `⟨L1 ++ L2, by simp [h1, h2], by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem mono_lemma {l : ℕ} [Fact l.Prime] {K : Type} [Field K] {F : Frame l K} {n : ℕ}
     {R : Type} [CommRing R] (ρ : NRep F n R) {a b : ℤ} {x y : R} (hx : x ∈ ρ.mon a) (hy : y ∈ ρ.mon b) :
@@ -27,11 +27,11 @@ private theorem mono_lemma {l : ℕ} [Fact l.Prime] {K : Type} [Field K] {F : Fr
   exact ⟨L1 ++ L2, by simp [h1, h2], by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => exact ⟨1, D.one_mem, 1, ⟨[], by simp, by simp⟩, by simp⟩`. Consider the case `succ e ih`. Take `⟨b, hb, x, hx, hbx⟩` from `ih`. Break down `h s with ⟨g, i, j, hz, hw⟩ | ⟨hw, hz⟩` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hs : ρ.r g i j ∈ ρ.mon (W.wt s)` using `⟨[(g, i, j)], by simp [hw], by simp⟩`. Use `⟨b, hb, x * ρ.r g i j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[succ_nsmul]`. Conclude with `mono_lemma ρ hx hs`. Rewrite using `[pow_succ, hbx, hz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨b * W.z s, D.mul_mem hb hz, x, ?_, ?_⟩` and prove the remaining obligations. Simplify `hx` using `[hw]`. Rewrite using `[pow_succ, hbx]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem mono_lemma_2 {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {K : Type} [Field K] {F : Frame l K} {n : ℕ}
     {R : Type} [CommRing R] [Algebra O R] (ρ : NRep F n R) (W : WPres O ℤ R) (D : Subalgebra O R)
@@ -54,11 +54,11 @@ private theorem mono_lemma_2 {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {K
         ring
 
 /- English proof (translation)
-Proceed by induction on `m using Finsupp.induction with`. Consider the case `zero => exact ⟨1, D.one_mem, 1, ⟨[], by simp, by simp⟩, by simp⟩`. Consider the case `single_add a e f _ _ ih`. Take `⟨b, hb, x, hx, hbx⟩` from `ih`. Take `⟨b', hb', x', hx', hbx'⟩` from `mono_lemma_2 ρ W D h a e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b' * b, D.mul_mem hb' hb, x' * x, ?_, ?_⟩` and prove the remaining obligations. Establish `hw : Finsupp.weight W.wt (Finsupp.single a e) = e • W.wt a`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_single_index]`. Rewrite using `[map_add, hw]`. Conclude with `mono_lemma ρ hx' hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : MvPowerSeries.monomial (Finsupp.single a e + f) (1 : O) = MvPowerSeries.X a ^ e * MvPowerSeries.monomial f 1`. Rewrite using `[MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, one_mul]`. Simplify using `only [WPres.z] at hbx'`. Rewrite using `[hm, map_mul, map_pow, hbx, hbx']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem mono {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {k : Type} [Field k] {F : Frame l k} {n : ℕ}
     {R : Type} [CommRing R] [Algebra O R] (ρ : NRep F n R) (W : WPres O ℤ R) (D : Subalgebra O R)
@@ -82,23 +82,21 @@ private theorem mono {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {k : Type}
       ring
 
 /- English proof (translation)
-Use `haveI := W.fin`. Simplify using `only [WPres.part, Submodule.mem_map] at hy`. Take `⟨f, hf, rfl⟩` from `hy`. Establish `hf' : ∀ m, Finsupp.weight W.wt m ≠ 0 → MvPowerSeries.coeff m f = 0` using `hf`. Establish `key : ∀ m, W.π (MvPowerSeries.monomial m (MvPowerSeries.coeff m f)) ∈ D`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Distinguish the cases in `hm : Finsupp.weight W.wt m = 0`. Establish `e : MvPowerSeries.monomial m (MvPowerSeries.coeff m f) = MvPowerSeries.coeff m f • MvPowerSeries.monomial m (1 : O)`. Rewrite using `[← LinearMap.map_smul, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `D.smul_mem (hD m hm) _`. Rewrite using `[hf' m hm, map_zero, map_zero]`. Conclude with `D.zero_mem`. Simplify using `only [AlgHom.toLinearMap_apply]`. Use `show ∀ N : ℕ, ∃ d ∈ D, W.π f - d ∈ maximalIdeal R ^ N`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `N`. Set `c : W.σ →₀ ℕ` to `Finsupp.equivFunOnFinite.symm fun _ => N`. Set `low` to `∑ m ∈ Finset.Iic c, MvPowerSeries.monomial m (MvPowerSeries.coeff m f)`. Set `S : Set (W.σ →₀ ℕ)` to `{m | Finsupp.weight W.wt m = 0 ∧ ∃ s, N ≤ m s}`. Establish `hg : ∀ m ∉ S, MvPowerSeries.coeff m (f - low) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `m hm`. Simplify using `only [S, Set.mem_setOf_eq, not_and, not_exists, not_le] at hm`. Establish `hl : MvPowerSeries.coeff m low = if m ∈ Finset.Iic c then MvPowerSeries.coeff m f else 0`. Simplify using `[low, map_sum, MvPowerSeries.coeff_monomial]`. Rewrite using `[map_sub, hl]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hw : Finsupp.weight W.wt m = 0`. Establish `hmc : m ∈ Finset.Iic c`. Rewrite using `[Finset.mem_Iic]`. Introduce `s`. Conclude with `(hm hw s).le.trans_eq (by simp [c])`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hmc]`. Simplify using `[hf' m hw]`. Take `⟨μ, hμ, hspan⟩` from `part_span O R ℤ W S 0 (fun m hm => hm.1)`. Take `⟨b, hb, hfb⟩` from `hspan (f - low) hg`. Use `⟨W.π low, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Conclude with `Subalgebra.sum_mem _ fun m _ => key m`. Rewrite using `[← map_sub, hfb, map_sum]`. Use `Ideal.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `(hμ (Finset.mem_coe.mpr hm)).2`.
-
-Establish `e : MvPowerSeries.monomial m (1 : O) = MvPowerSeries.X s ^ N * MvPowerSeries.monomial (m - Finsupp.single s N) 1`. Rewrite using `[MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, one_mul, add_tsub_cancel_of_le (Finsupp.single_le_iff.mpr hs)]`. Rewrite using `[map_mul, e, map_mul, map_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (hz s) N))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dense {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Algebra O R] (W : WPres O ℤ R)
     (hz : ∀ s, W.z s ∈ maximalIdeal R) (D : Subalgebra O R)
@@ -154,11 +152,11 @@ private theorem dense {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Al
     exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (hz s) N))
 
 /- English proof (translation)
-Establish `hm : Ideal.map f.toRingHom (maximalIdeal R) ≤ maximalIdeal R'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Use `show f x ∈ maximalIdeal R'`. Rewrite using `[← res_eq_zero_iff O R', res_map, res_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Introduce `N`. Establish `hN : maximalIdeal R ^ N ≤ Ideal.comap f.toRingHom (maximalIdeal R' ^ N)`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hm N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e : (fun g => Ideal.Quotient.mk (maximalIdeal R' ^ N) (c * f (a g))) = (fun q => Ideal.Quotient.mk (maximalIdeal R' ^ N) c * Ideal.quotientMap (maximalIdeal R' ^ N) f.toRingHom hN q) ∘ (fun g => Ideal.Quotient.mk (maximalIdeal R ^ N) (a g))`. Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`. Rewrite using `[e]`. Conclude with `(ha N).comp _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_map {O Γ R R' : Type} [CommRing O] [IsLocalRing O] [TopologicalSpace Γ] [CommRing R] [Algebra O R]
     [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') (c : R') {a : Γ → R}
@@ -183,11 +181,9 @@ private theorem cont_map {O Γ R R' : Type} [CommRing O] [IsLocalRing O] [Topolo
   exact (ha N).comp _
 
 /- English proof (translation)
-Take `⟨⟨hc1, hc2⟩, ⟨hb1, hb2⟩, hd⟩` from `S.lift`. Use `⟨⟨fun i j => ?_, fun v i => ?_⟩, ⟨fun g i => ?_, fun v i g => ?_⟩, fun g i j hij => ?_⟩` and prove the remaining obligations. Simplify `cont_map f (c i j) (hc1 i j)` using `only [hr]`. Simplify `cont_map f 1 (hc2 v i)` using `only [hψ, one_mul]`. Use `show (res O C) (ρ'.r g i i) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, hc, one_mul, res_map]`. Conclude with `hb1 g i`. Use `show (res O C) ((ρ'.ψ v i g : Cˣ) : C) = _`. Rewrite using `[hψ, res_map]`. Conclude with `hb2 v i g`.
-
-Use `show (res O C) (ρ'.r g i j) = 0`. Rewrite using `[hr, map_mul, res_map]`. Establish `h0 : (res O S.R) (S.ρ.r g i j) = 0` using `hd g i j hij`. Rewrite using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem twist_lemma {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)}
     {n : ℕ} (S : Space O F n) (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (f : S.R →ₐ[O] C)
@@ -210,9 +206,9 @@ private theorem twist_lemma {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Is
     rw [h0, mul_zero]
 
 /- English proof (translation)
-Take `⟨ρ', hr, hψ⟩` from `alg_twist u (S.ρ.map (f : S.R →+* C))`. Establish `hl : IsLift O ρ'` using `twist_lemma S C f (fun i j => ((u ^ (w n i - w n j) : Cˣ) : C)) (by simp) ρ' (fun g i j => by rw [hr]; rfl) (fun v i g => by rw [hψ]; rfl)`. Take `⟨f', hf', -⟩` from `S.univ C ρ' hl`. Use `⟨f', fun g i j => ?_, fun v i g => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem twist {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)}
     {n : ℕ} (S : Space O F n) (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (f : S.R →ₐ[O] C) (u : Cˣ) :
@@ -231,7 +227,7 @@ private theorem twist {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalR
       _ = _ := by rw [hψ]; rfl
 
 /- English proof (translation)
-Establish `hl : IsLift O (S.ρ.map (f : S.R →+* C))` using `twist_lemma S C f (fun _ _ => 1) (fun _ => rfl) _ (fun g i j => by rw [one_mul]; rfl) (fun v i g => rfl)`. Use `(S.univ C _ hl).unique rfl (NRep.ext ?_ ?_)` and prove the remaining obligations. Conclude with `MonoidHom.ext fun g => Matrix.ext fun i j => (h1 g i j).symm`. Use function extensionality and compare the values at `v i`. Conclude with `MonoidHom.ext fun g => Units.ext (h2 v i g).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem uniq {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)}
     {n : ℕ} (S : Space O F n) (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (f f' : S.R →ₐ[O] C)
@@ -245,41 +241,35 @@ private theorem uniq {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRi
     exact MonoidHom.ext fun g => Units.ext (h2 v i g).symm
 
 /- English proof (translation)
-Set `a : S.R → O` to `fun x => Classical.choose (IsCO.res_surj (O := O) x)`. Establish `ha : ∀ x, x - algebraMap O S.R (a x) ∈ maximalIdeal S.R` using `fun x => Classical.choose_spec (IsCO.res_surj (O := O) x)`. Set `e : (F.G0 × Fin n × Fin n) ⊕ (Σ v : F.V, Fin n × F.Gv v) → S.R` to `Sum.elim (fun p => if p.2.1 = p.2.2 then S.ρ.r p.1 p.2.1 p.2.2 - algebraMap O S.R (a (S.ρ.r p.1 p.2.1 p.2.2)) else S.ρ.r p.1 p.2.1 p.2.2) (fun q => (S.ρ.ψ q.1 q.2.1 q.2.2 : S.R) - algebraMap O S.R (a (S.ρ.ψ q.1 q.2.1 q.2.2)))`. Set `wt : (F.G0 × Fin n × Fin n) ⊕ (Σ v : F.V, Fin n × F.Gv v) → ℤ` to `Sum.elim (fun p => w n p.2.1 - w n p.2.2) (fun _ => 0)`. Establish `eon : ∀ g i, e (Sum.inl (g, i, i)) = S.ρ.r g i i - algebraMap O S.R (a (S.ρ.r g i i))` using `fun g i => if_pos rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `eoff : ∀ g i j, i ≠ j → e (Sum.inl (g, i, j)) = S.ρ.r g i j` using `fun g i j h => if_neg h`. Establish `eψ : ∀ v i g, e (Sum.inr ⟨v, i, g⟩) = (S.ρ.ψ v i g : S.R) - algebraMap O S.R (a (S.ρ.ψ v i g))` using `fun v i g => rfl`. Establish `hoff : ∀ g i j, i ≠ j → S.ρ.r g i j ∈ maximalIdeal S.R` using `fun g i j h => (res_eq_zero_iff O S.R _).mp (by exact S.lift.2.2 g i j h)`. Establish `he : ∀ s, e s ∈ maximalIdeal S.R`. Introduce and unpack `(⟨g, i, j⟩ | ⟨v, i, g⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[eon]`. Conclude with `ha _`. Rewrite using `[eoff g i j h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hoff g i j h`. Rewrite using `[eψ]`. Conclude with `ha _`. Establish `huniq : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f f' : S.R →ₐ[O] R'), (∀ s, f (e s) = f' (e s)) → f = f'`. Introduce `R' _ _ _ f f' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Apply `uniq S R' f f'` to reduce the goal to its premises. Introduce `g i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `h1` using `h (Sum.inl (g, i, i))`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[eon, map_sub, map_sub, AlgHom.commutes, AlgHom.commutes]`. Conclude with `sub_left_injective h1`. Establish `h1` using `h (Sum.inl (g, i, j))`. Rewrite `h1` using `[eoff g i j hij]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v i g`. Establish `h1` using `h (Sum.inr ⟨v, i, g⟩)`. Rewrite `h1` using `[eψ, map_sub, map_sub, AlgHom.commutes, AlgHom.commutes]`. Conclude with `sub_left_injective h1`. Establish `htw : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : S.R →ₐ[O] R') (t : Multiplicative ℤ →* R'ˣ), (∀ j, res O R' (t j) = 1) → ∃ f' : S.R →ₐ[O] R', ∀ s, f' (e s) = (t (Multiplicative.ofAdd (wt s)) : R') * f (e s)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `R' _ _ _ f t _`. Take `⟨f', h1, h2⟩` from `twist S R' f (t (Multiplicative.ofAdd 1))`. Establish `ht : ∀ k : ℤ, t (Multiplicative.ofAdd k) = t (Multiplicative.ofAdd 1) ^ k`. Introduce `k`. Rewrite using `[← map_zpow, ← ofAdd_zsmul, smul_eq_mul, mul_one]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨f', ?_⟩` and prove the remaining obligations. Introduce and unpack `(⟨g, i, j⟩ | ⟨v, i, g⟩)`. Distinguish the cases in `hij : i = j`. Substitute `hij show f' (e (Sum.inl (g, i, i))) = (t (Multiplicative.ofAdd (w n i - w n i)) : R') * _` using the available equality. Rewrite using `[sub_self, eon, map_sub, map_sub, AlgHom.commutes, AlgHom.commutes, h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `show f' (e (Sum.inl (g, i, j))) = (t (Multiplicative.ofAdd (w n i - w n j)) : R') * _`. Rewrite using `[eoff g i j hij, h1, ht (w n i - w n j)]`. Use `show f' (e (Sum.inr ⟨v, i, g⟩)) = (t (Multiplicative.ofAdd 0) : R') * _`. Rewrite using `[eψ, map_sub, map_sub, AlgHom.commutes, AlgHom.commutes, h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Take `⟨W, u, hWu, hpart⟩` from `coord_grading O ℤ S.R _ e wt he huniq htw`. Establish `h1mem : ∀ c : O, algebraMap O S.R c ∈ W.part 0` using `fun c => by`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ c SetLike.GradedOne.one_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `⟨W, fun s => by rw [(hWu s).1]; exact he _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `hp : S.ρ.r g i i - algebraMap O S.R (a (S.ρ.r g i i)) ∈ W.part 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hpart (Sum.inl (g, i, i))` as an intermediate fact. Rewrite `this` using `[eon]`. Simplify `this` using `[wt]`. Rewrite using `[sub_self, ← sub_add_cancel (S.ρ.r g i i) (algebraMap O S.R (a (S.ρ.r g i i)))]`. Conclude with `add_mem hp (h1mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hp` using `hpart (Sum.inl (g, i, j))`. Rewrite `hp` using `[eoff g i j hij]`. Conclude with `hp`. Introduce `v i g`. Establish `hp : (S.ρ.ψ v i g : S.R) - algebraMap O S.R (a (S.ρ.ψ v i g)) ∈ W.part 0` using `hpart (Sum.inr ⟨v, i, g⟩)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← sub_add_cancel (S.ρ.ψ v i g : S.R) (algebraMap O S.R (a (S.ρ.ψ v i g)))]`. Conclude with `add_mem hp (h1mem _)`. Introduce `s`. Take `⟨hz, hw⟩` from `hWu s`. Break down `hs : u s with ⟨g, i, j⟩ | ⟨v, i, g⟩` into its components or cases.
-
-Rewrite `hz`, `hw` using `[hs]`. Distinguish the cases in `hij : i = j`. Substitute `hij right` using the available equality. Use `⟨by rw [hw]; exact sub_self _, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, eon]`.
-
-Conclude with `Subalgebra.sub_mem _ (Algebra.subset_adjoin (Or.inl ⟨[(g, i, i)], by simp, by simp⟩)) (Subalgebra.algebraMap_mem _ _)`. Use `left`. Conclude with `⟨g, i, j, by rw [hz, eoff g i j hij], hw⟩`. Rewrite `hz`, `hw`, `right` using `[hs]`. Use `⟨hw, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hz, eψ]`. Conclude with `Subalgebra.sub_mem _ (Algebra.subset_adjoin (Or.inr ⟨v, i, g, rfl⟩)) (Subalgebra.algebraMap_mem _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coord {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] {F : Frame l (ResidueField O)} {n : ℕ} (S : Space O F n) :
@@ -394,7 +384,7 @@ private theorem coord {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalR
         (Subalgebra.algebraMap_mem _ _)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Simplify using `only [List.map_cons, List.prod_cons, Subalgebra.coe_mul, ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem val_prod {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)}
     {n : ℕ} (S : Space O F n) (L : List (F.G0 × Fin n × Fin n)) :
@@ -406,41 +396,37 @@ private theorem val_prod {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLoc
     rfl
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n _ _ S`. Take `⟨W, hz, hr, hψ, hgen⟩` from `coord S`. Set `D : Subalgebra O S.R` to `Algebra.adjoin O (S.ρ.mon 0 ∪ {x | ∃ v i g, x = (S.ρ.ψ v i g : S.R)})`. Establish `hmon : ∀ m, ∃ b ∈ D, ∃ x ∈ S.ρ.mon (Finsupp.weight W.wt m), W.π (MvPowerSeries.monomial m 1) = b * x` using `mono S.ρ W D hgen`. Establish `hD : ∀ m, Finsupp.weight W.wt m = 0 → W.π (MvPowerSeries.monomial m 1) ∈ D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m hm`. Take `⟨b, hb, x, hx, e⟩` from `hmon m`. Rewrite using `[e]`. Rewrite `hx` using `[hm]`. Conclude with `D.mul_mem hb (Algebra.subset_adjoin (Or.inl hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `P0 : ∀ y, y ∈ W.part 0 → y ∈ S.B` using `fun y hy => dense W hz D hD hy`. Set `P : Subalgebra O S.R` to `(W.part 0).toSubalgebra SetLike.GradedOne.one_mem (fun x y hx hy => by`. Use `SetLike.GradedMul.mul_mem hx hy` as an intermediate fact. Rewrite using `[add_zero] at this)` and apply the resulting hypothesis. Establish `BP : ∀ y, y ∈ S.B → y ∈ W.part 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hDP : D ≤ P` using `Algebra.adjoin_le (by`. Introduce and unpack `x (hx | ⟨v, i, g, rfl⟩)`. Conclude with `mon_part S.ρ W hr hx`. Conclude with `hψ v i g)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hy' : ∀ N : ℕ, ∃ d ∈ D, y - d ∈ maximalIdeal S.R ^ N` using `hy`. Use `part_closed O ℤ S.R W hz 0 y fun N => ?_` and prove the remaining obligations. Take `⟨d, hd, hyd⟩` from `hy' N`. Conclude with `⟨d, hDP hd, hyd⟩`. Establish `dec : ∀ j y, y ∈ W.part j → ∃ μ : Finset (W.σ →₀ ℕ), ∃ c x : (W.σ →₀ ℕ) → S.R, (∀ m, c m ∈ S.B) ∧ (∀ m ∈ μ, x m ∈ S.ρ.mon j) ∧ y = ∑ m ∈ μ, c m * x m`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `j y hy`. Simplify using `only [WPres.part, Submodule.mem_map] at hy`. Take `⟨f, hf, rfl⟩` from `hy`. Take `⟨μ, hμ, hspan⟩` from `part_span O S.R ℤ W {m | Finsupp.weight W.wt m = j} j (fun m hm => hm)`. Take `⟨b, hb, hfb⟩` from `hspan f (fun m hm => hf m hm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose B hB X hX hBX using hmon`. Use `⟨μ, fun m => W.π (b m) * B m, X, fun m => S.B.mul_mem (P0 _ (Submodule.mem_map_of_mem (hb m))) (le_adicClosure D (hB m)), fun m hm => ?_, ?_⟩` and prove the remaining obligations. Use `hX m` as an intermediate fact. Establish `hw : Finsupp.weight W.wt m = j` using `hμ (Finset.mem_coe.mpr hm)`. Rewrite `this` using `[hw]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AlgHom.toLinearMap_apply]`. Rewrite using `[hfb, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hBX, mul_assoc]`. Use `⟨W, hz, hr, fun y => ⟨BP y, P0 y⟩, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `x (hx | ⟨g, i, j, rfl⟩)`. Conclude with `W.part_le_A (BP x hx)`. Conclude with `W.part_le_A (hr g i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Establish `hx' : x ∈ ⨆ j, W.part j` using `hx`. Establish `hle : (⨆ j, W.part j) ≤ Subalgebra.toSubmodule S.A`. Use `iSup_le fun j y hy => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.mem_toSubmodule]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨μ, c, X, hc, hX, rfl⟩` from `dec j y hy`. Use `Subalgebra.sum_mem _ fun m hm => S.A.mul_mem (Algebra.subset_adjoin (Or.inl (hc m))) ?_` and prove the remaining obligations. Take `⟨L, -, hXL⟩` from `hX m hm`. Rewrite using `[hXL, ← val_prod S L]`. Conclude with `SetLike.coe_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hle hx'`. Introduce `j a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Use `Submodule.span_induction (p := fun (a : S.A) _ => (a : S.R) ∈ W.part j) ?_ ?_ ?_ ?_ (show a ∈ Submodule.span S.B (S.u.mon j) from ha)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `x ⟨L, hL, rfl⟩`. Rewrite using `[val_prod]`. Conclude with `mon_part S.ρ W hr ⟨L, hL, rfl⟩`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using add_mem hx hy`. Introduce `b x _ hx`. Use `SetLike.GradedMul.mul_mem (BP b b.2) hx` as an intermediate fact. Rewrite `this` using `[zero_add]`. Apply the tactic sequence `have hbx : ((b • x : S.A) : S.R) = (b : S.R) * (x : S.R) := by first | rfl | simp [Algebra.smul_def] | simp [Subalgebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hbx]`. Conclude with `this`. Introduce `ha`. Take `⟨μ, c, X, hc, hX, e⟩` from `dec j _ ha`. Establish `hXu : ∀ m ∈ μ, ∃ a' ∈ S.u.mon j, (a' : S.R) = X m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `m hm`. Take `⟨L, hL, e'⟩` from `hX m hm`. Conclude with `⟨_, ⟨L, hL, rfl⟩, by rw [val_prod, e']⟩`. Use `choose! A' hA' hA'e using hXu`. Establish `hsum : a = ∑ m ∈ μ, (⟨c m, hc m⟩ : S.B) • A' m`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[← hA'e m hm]`.
-
-Both sides reduce to the same expression. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun m hm => Submodule.smul_mem _ _ (Submodule.subset_span (hA' m hm))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.wpres :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∃ W : WPres O ℤ S.R, (∀ s, W.z s ∈ maximalIdeal S.R) ∧ (∀ g i j, S.ρ.r g i j ∈ W.part (w n i - w n j)) ∧ (∀ y, y ∈ S.B ↔ y ∈ W.part 0) ∧ S.A = W.A ∧ ∀ j (a : S.A), a ∈ S.gr j ↔ (a : S.R) ∈ W.part j := by

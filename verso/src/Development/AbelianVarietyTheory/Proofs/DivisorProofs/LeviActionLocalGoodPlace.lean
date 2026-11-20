@@ -31,24 +31,24 @@ Both sides reduce to the same expression.
 theorem mat_one : mat (1 : UA σ X.J) = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `Units.inv_mul g.1`.
+A detailed English derivation is pending.
 -/
 theorem mat_inv_mul (g : UA σ X.J) : mat g⁻¹ * mat g = 1 := Units.inv_mul g.1
 
 /- English proof (translation)
-The claim follows from `Units.mul_inv g.1`.
+A detailed English derivation is pending.
 -/
 theorem mat_mul_inv (g : UA σ X.J) : mat g * mat g⁻¹ = 1 := Units.mul_inv g.1
 
 /- English proof (translation)
-Introduce `c _`. Rewrite using `[mat_one, sub_self, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_mem_UAt (v : Pl F) : (1 : UA σ X.J) ∈ UAt σ X (evFin F v) := by
   intro c _
   rw [mat_one, sub_self, smul_zero]
 
 /- English proof (translation)
-Introduce `c hc`. Establish `e : mat (g * h) - 1 = mat g * (mat h - 1) + (mat g - 1)`. Rewrite using `[mat_mul, Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_add, ← Matrix.mul_smul, hh c hc, hg c hc, Matrix.mul_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_UAt {v : Pl F} {g h : UA σ X.J} (hg : g ∈ UAt σ X (evFin F v)) (hh : h ∈ UAt σ X (evFin F v)) :
     g * h ∈ UAt σ X (evFin F v) := by
@@ -58,7 +58,7 @@ theorem mul_mem_UAt {v : Pl F} {g h : UA σ X.J} (hg : g ∈ UAt σ X (evFin F v
   rw [e, smul_add, ← Matrix.mul_smul, hh c hc, hg c hc, Matrix.mul_zero, add_zero]
 
 /- English proof (translation)
-Introduce `c hc`. Establish `e : mat (g * u * g⁻¹) - 1 = mat g * (mat u - 1) * mat g⁻¹`. Rewrite using `[mat_mul, mat_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, mat_mul_inv]`. Rewrite using `[e, ← Matrix.smul_mul, ← Matrix.mul_smul, hu c hc, Matrix.mul_zero, Matrix.zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_UAt {v : Pl F} (g : UA σ X.J) {u : UA σ X.J} (hu : u ∈ UAt σ X (evFin F v)) :
     g * u * g⁻¹ ∈ UAt σ X (evFin F v) := by
@@ -70,19 +70,17 @@ theorem conj_mem_UAt {v : Pl F} (g : UA σ X.J) {u : UA σ X.J} (hu : u ∈ UAt 
 end Groups
 
 /- English proof (translation)
-Use `set x : Fin d → AE F E := incV F H'.x with hxdef`. Use `set ι : Matrix (Fin d) (Fin d₁) (AE F E) := incM F H'.ι with hιdef`. Establish `hx : mat m *ᵥ x = (t : AE F E) • x` using `hm.1`. Establish `hι : mat m * ι = ι`. Establish `h` using `hm.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[mat_one, Matrix.mul_one]`. Conclude with `h`. Establish `hx' : mat m⁻¹ *ᵥ x = ((t⁻¹ : (AE F E)ˣ) : AE F E) • x`. Establish `h1 : mat m⁻¹ *ᵥ (mat m *ᵥ x) = x` using `by rw [Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]`. Rewrite `h1` using `[hx, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [h1]`. Establish `hι' : mat m⁻¹ * ι = ι`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `gen : ∀ w : UA σ W.J, (mat w *ᵥ x = x ∧ ∀ z, ∃ a : AE F E, mat w *ᵥ (ι *ᵥ z) = ι *ᵥ z + a • x) → (mat (m * w * m⁻¹) *ᵥ x = x ∧ ∀ z, ∃ a : AE F E, mat (m * w * m⁻¹) *ᵥ (ι *ᵥ z) = ι *ᵥ z + a • x)`. Introduce and unpack `w ⟨h1, h2⟩`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, mat_mul]`. Simplify using `only [← Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hx', Matrix.mulVec_smul, h1, Matrix.mulVec_smul, hx, smul_smul, Units.inv_mul, one_smul]`. Take `⟨b, hb⟩` from `h2 z`. Use `⟨b * t, ?_⟩` and prove the remaining obligations. Establish `e1 : mat m⁻¹ *ᵥ (ι *ᵥ z) = ι *ᵥ z` using `by rw [Matrix.mulVec_mulVec, hι']`. Establish `e2 : mat m *ᵥ (ι *ᵥ z) = ι *ᵥ z` using `by rw [Matrix.mulVec_mulVec, hι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mat_mul, mat_mul]`. Simplify using `only [← Matrix.mulVec_mulVec]`. Rewrite using `[e1, hb, Matrix.mulVec_add, e2, Matrix.mulVec_smul, hx, smul_smul]`. Establish `hle : unip σ W H' ≤ (unip σ W H').comap (MulAut.conj m).toMonoidHom`. Use `(Subgroup.closure_le _).2 fun w hw => ?_` and prove the remaining obligations.
-
-Use `show (MulAut.conj m) w ∈ unip σ W H'`. Rewrite using `[MulAut.conj_apply]`. Conclude with `Subgroup.subset_closure (gen w hw)`. Use `hle hu` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conj_mem_unip {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {t : (AE F E)ˣ}
     {m : UA σ W.J} (hm : IsLevi (W₁ := W₁) H' t 1 m) {u : UA σ W.J} (hu : u ∈ unip σ W H') :
@@ -136,17 +134,15 @@ section Local
 variable {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `hs : a • φ + b • ψ ∈ SB (κ → Fv F v)` using `add_mem ((SB _).smul_mem a hφ) ((SB _).smul_mem b hψ)`. Take `⟨χ, -, hχ⟩` from `hex _ hs`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest κ v`. Establish `e : tens (evFin F v) (a • φ + b • ψ) R = a • tens (evFin F v) φ R + b • tens (evFin F v) ψ R`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e' : tens (evFin F v) (a • φ₁ + b • ψ₁) R = a • tens (evFin F v) φ₁ R + b • tens (evFin F v) ψ₁ R`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : tens (evFin F v) χ R = tens (evFin F v) (a • φ₁ + b • ψ₁) R`. Rewrite using `[← hχ R (hR _ hs), e, map_add, map_smul, map_smul, h₁ R (hR φ hφ), h₂ R (hR ψ hψ), e']`. Establish `hχe : χ = a • φ₁ + b • ψ₁`. Use function extensionality and compare the values at `t`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i))`. Introduce `u' hu'`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`. Establish `hRz : R (fun i => GlobalTheory.LatVac.liftV v (t i)) = R 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hR φ hφ).1 0 _ hz`. Use `congrFun key (fun i => GlobalTheory.LatVac.liftV v (t i))` as an intermediate fact. Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, hRz] at this`. Conclude with `mul_right_cancel₀ hR0 this`. Rewrite using `[← hχe]`.
-
-Conclude with `hχ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_lin (v : Pl F) (T : Module.End ℂ ((κ → AF F) → ℂ))
     (hex : ∀ φ ∈ SB (κ → Fv F v), ∃ φ₁ ∈ SB (κ → Fv F v), Acts (evFin F v) T φ φ₁)
@@ -175,7 +171,7 @@ theorem acts_lin (v : Pl F) (T : Module.End ℂ ((κ → AF F) → ℂ))
   exact hχ
 
 /- English proof (translation)
-Introduce `r hr`. Establish `hr1 : Rest (evFin F v) φ₁ r` using `⟨hr.1, by rw [← a r hr]; exact h₁ _ hr.2⟩`. Use `show T₂ (T₁ _) = _`. Rewrite using `[a r hr, b r hr1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_mul (v : Pl F) {T₁ T₂ : Module.End ℂ ((κ → AF F) → ℂ)}
     (h₁ : ∀ Φ ∈ schA F κ, T₁ Φ ∈ schA F κ) {φ φ₁ φ₂ : (κ → Fv F v) → ℂ}
@@ -192,33 +188,31 @@ section Core
 variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Establish `ex : ∀ g ∈ UAt σ X (evFin F v), ∀ h ∈ UAt σ W (evFin F v), ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ∃ φ₁ ∈ SB (Fin n × Fin d → Fv F v), Acts (evFin F v) (om (g, h)) φ φ₁` using `fun g hg h hh φ hφ =>`. Set `⟨φ₁, h1, _⟩` to `hEx g hg h hh φ hφ`. Use the proof step `⟨φ₁, h1.1, h1.2⟩`. Establish `uq : ∀ g ∈ UAt σ X (evFin F v), ∀ h ∈ UAt σ W (evFin F v), ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ∀ φ₁ φ₂, φ₁ ∈ SB (Fin n × Fin d → Fv F v) → Acts (evFin F v) (om (g, h)) φ φ₁ → φ₂ ∈ SB (Fin n × Fin d → Fv F v) → Acts (evFin F v) (om (g, h)) φ φ₂ → φ₁ = φ₂` using `fun g hg h hh φ hφ φ₁ φ₂ h1 a1 h2 a2 => (hEx g hg h hh φ hφ).unique ⟨h1, a1⟩ ⟨h2, a2⟩`. Establish `h1X` using `one_mem_UAt (σ := σ) (X := X) v`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1W` using `one_mem_UAt (σ := σ) (X := W) v`. Establish `exT` using `ex 1 h1X m hmv`. Establish `sub : ∀ {φ ψ φ₁ ψ₁}, φ ∈ SB (Fin n × Fin d → Fv F v) → ψ ∈ SB (Fin n × Fin d → Fv F v) → Acts (evFin F v) (om (1, m)) φ φ₁ → Acts (evFin F v) (om (1, m)) ψ ψ₁ → Acts (evFin F v) (om (1, m)) (φ - ψ) (φ₁ - ψ₁)` using `fun hφ hψ a b => by`. Simplify `acts_lin v _ exT hφ hψ a b 1 (-1)` using `only [one_smul, neg_one_smul, ← sub_eq_add_neg]`. Establish `add : ∀ {φ ψ φ₁ ψ₁}, φ ∈ SB (Fin n × Fin d → Fv F v) → ψ ∈ SB (Fin n × Fin d → Fv F v) → Acts (evFin F v) (om (1, m)) φ φ₁ → Acts (evFin F v) (om (1, m)) ψ ψ₁ → Acts (evFin F v) (om (1, m)) (φ + ψ) (φ₁ + ψ₁)` using `fun hφ hψ a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `acts_lin v _ exT hφ hψ a b 1 1` using `only [one_smul]`. Establish `smul : ∀ (c : ℂ) {φ φ₁}, φ ∈ SB (Fin n × Fin d → Fv F v) → Acts (evFin F v) (om (1, m)) φ φ₁ → Acts (evFin F v) (om (1, m)) (c • φ) (c • φ₁)` using `fun c φ φ₁ hφ a => by`. Simplify `acts_lin v _ exT hφ hφ a a c 0` using `only [zero_smul, add_zero]`. Establish `augSB : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.augAt om v ≤ SB (Fin n × Fin d → Fv F v)`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.augAt, Submodule.span_le]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `sub_mem hφ₁ hφ`. Establish `unSB : GlobalTheory.JacquetLine.unipAug om H' v ≤ SB (Fin n × Fin d → Fv F v)`. Rewrite using `[GlobalTheory.JacquetLine.unipAug, Submodule.span_le]`. Introduce and unpack `_ ⟨u, -, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Conclude with `sub_mem hφ₁ hφ`. Establish `jSB : GlobalTheory.JacquetLine.jacKer om H' v ≤ SB (Fin n × Fin d → Fv F v)` using `sup_le augSB unSB`. It suffices to establish `key : z ∈ SB (Fin n × Fin d → Fv F v) ∧ ∃ z₁ ∈ SB (Fin n × Fin d → Fv F v), Acts (evFin F v) (om (1, m)) z z₁ ∧ z₁ ∈ GlobalTheory.JacquetLine.jacKer om H' v from key.2`. Rewrite `hz` using `[GlobalTheory.JacquetLine.jacKer, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.augAt, GlobalTheory.JacquetLine.unipAug, ← Submodule.span_union]`. Proceed by induction on `hz using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Consider the case `mem y hy`. Break down `hy with ⟨g, hg, φ, hφ, φ₁, hφ₁, hact, rfl⟩ | ⟨u, hu, huv, φ, hφ, φ₁, hφ₁, hact, rfl⟩` into its components or cases. Take `⟨χ, hχ, aχ⟩` from `exT φ hφ`. Take `⟨χ₁, hχ₁, aχ₁⟩` from `exT φ₁ hφ₁`. Take `⟨χ', hχ', aχ'⟩` from `ex g hg 1 h1W χ hχ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `c1 : Acts (evFin F v) (om (g, m)) φ χ₁`. Use `acts_mul v (hpres _) hact aχ₁` as an intermediate fact. Rewrite `this` using `[← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`. Then use the resulting hypothesis. Establish `c2 : Acts (evFin F v) (om (g, m)) φ χ'`. Use `acts_mul v (hpres _) aχ aχ'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`. Then use the resulting hypothesis. Establish `e` using `uq g hg m hmv φ hφ χ₁ χ' hχ₁ c1 hχ' c2`. Use `⟨sub_mem hφ₁ hφ, χ₁ - χ, sub_mem hχ₁ hχ, sub hφ₁ hφ aχ₁ aχ, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.JacquetLine.augAt_le_jacKer om H' v (Submodule.subset_span ⟨g, hg, χ, hχ, χ₁, hχ₁, ?_, rfl⟩)` and prove the remaining obligations. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `aχ'`. Take `⟨χ, hχ, aχ⟩` from `exT φ hφ`. Take `⟨χ₁, hχ₁, aχ₁⟩` from `exT φ₁ hφ₁`. Establish `hu'` using `conj_mem_UAt (v := v) m huv`. Take `⟨χ', hχ', aχ'⟩` from `ex 1 h1X _ hu' χ hχ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmu` using `mul_mem_UAt hmv huv`. Establish `c1 : Acts (evFin F v) (om (1, m * u)) φ χ₁`. Use `acts_mul v (hpres _) hact aχ₁` as an intermediate fact. Rewrite `this` using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Then use the resulting hypothesis. Establish `c2 : Acts (evFin F v) (om (1, m * u)) φ χ'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `acts_mul v (hpres _) aχ aχ'` as an intermediate fact. Rewrite `this` using `[← map_mul, Prod.mk_mul_mk, one_mul, inv_mul_cancel_right]`. Then use the resulting hypothesis. Establish `e` using `uq 1 h1X (m * u) hmu φ hφ χ₁ χ' hχ₁ c1 hχ' c2`. Use `⟨sub_mem hφ₁ hφ, χ₁ - χ, sub_mem hχ₁ hχ, sub hφ₁ hφ aχ₁ aχ, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.JacquetLine.unipAug_le_jacKer om H' v (Submodule.subset_span ⟨_, conj_mem_unip hm hu, hu', χ, hχ, χ₁, hχ₁, ?_, rfl⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `aχ'`. Consider the case `zero`. Take `⟨χ, hχ, aχ⟩` from `exT 0 (SB _).zero_mem`. Use `⟨(SB _).zero_mem, 0, (SB _).zero_mem, ?_, Submodule.zero_mem _⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify `smul 0 (SB _).zero_mem aχ` using `only [zero_smul]`. Consider the case `add x y _ _ hx hy`. Take `⟨hxs, x₁, hx₁, ax, jx⟩` from `hx`. Take `⟨hys, y₁, hy₁, ay, jy⟩` from `hy`. Conclude with `⟨add_mem hxs hys, x₁ + y₁, add_mem hx₁ hy₁, add hxs hys ax ay, add_mem jx jy⟩`.
-
-Consider the case `smul c x _ hx`. Take `⟨hxs, x₁, hx₁, ax, jx⟩` from `hx`. Conclude with `⟨(SB _).smul_mem c hxs, c • x₁, (SB _).smul_mem c hx₁, smul c hxs ax, Submodule.smul_mem _ c jx⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem image_jacKer (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F)
     (hEx : ∀ g ∈ UAt σ X (evFin F v), ∀ h ∈ UAt σ W (evFin F v), ∀ φ ∈ SB (Fin n × Fin d → Fv F v),
@@ -312,13 +306,13 @@ end GlobalTheory.JacquetLevi
 namespace GlobalTheory.JacquetLevi
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ _ v _ t m hm hmv φ hφ ψ hψ ψ' hψ' hker φ₁ hφ₁ hact`. Establish `P` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hEx` using `(GlobalTheory.T.theta_action_exists hKP.base F E σ B _ _ G.V G.W G.M _ _ om _ _ _ _ P v).1`. Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), om x Φ ∈ schA F (Fin a × Fin (a + a'))` using `fun x Φ hΦ => (GlobalTheory.WeilM.IsUWeilPair.isUSplitting P.weil).pres x Φ hΦ`. Establish `h1X` using `one_mem_UAt (σ := σ) (X := G.V) v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `exT : ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, m)) φ φ₁` using `fun φ hφ =>`. Set `⟨φ₁, h1, _⟩` to `hEx 1 h1X m hmv φ hφ`. Use the proof step `⟨φ₁, h1.1, h1.2⟩`. Take `⟨ψ₁, hψ₁, aψ⟩` from `exT ψ hψ`. Take `⟨ψ₁', hψ₁', aψ'⟩` from `exT ψ' hψ'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sub : ∀ {φ ψ φ₁ ψ₁}, φ ∈ SB (Fin a × Fin (a + a') → Fv F v) → ψ ∈ SB (Fin a × Fin (a + a') → Fv F v) → Acts (evFin F v) (om (1, m)) φ φ₁ → Acts (evFin F v) (om (1, m)) ψ ψ₁ → Acts (evFin F v) (om (1, m)) (φ - ψ) (φ₁ - ψ₁)` using `fun hφ hψ a b => by`. Simplify `acts_lin v _ exT hφ hψ a b 1 (-1)` using `only [one_smul, neg_one_smul, ← sub_eq_add_neg]`. Establish `hs1 : φ - ψ ∈ SB (Fin a × Fin (a + a') → Fv F v)` using `sub_mem hφ hψ`. Establish `hs2 : φ - ψ - ψ' ∈ SB (Fin a × Fin (a + a') → Fv F v)` using `sub_mem hs1 hψ'`. Establish `a2 : Acts (evFin F v) (om (1, m)) (φ - ψ - ψ') (φ₁ - ψ₁ - ψ₁')` using `sub hs1 hψ' (sub hφ hψ hact aψ) aψ'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z₁, hz₁, az, jz⟩` from `image_jacKer om H' v hEx hpres hm hmv hker`. Establish `e : z₁ = φ₁ - ψ₁ - ψ₁'` using `(hEx 1 h1X m hmv _ hs2).unique ⟨hz₁, az⟩ ⟨sub_mem (sub_mem hφ₁ hψ₁) hψ₁', a2⟩`. Conclude with `⟨ψ₁, hψ₁, ψ₁', hψ₁', aψ, aψ', e ▸ jz⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transport : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ v, X.Good v → ∀ (t : (AE F E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := W₁) H' t 1 m → m ∈ UAt σ G.W (evFin F v) → ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ ψ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ ψ' ∈ SB (Fin a × Fin (a + a') → Fv F v), φ - ψ - ψ' ∈ GlobalTheory.JacquetLine.jacKer om H' v → ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, m)) φ φ₁ → ∃ ψ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ ψ₁' ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, m)) ψ ψ₁ ∧ Acts (evFin F v) (om (1, m)) ψ' ψ₁' ∧ φ₁ - ψ₁ - ψ₁' ∈ GlobalTheory.JacquetLine.jacKer om H' v := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ _ v _ t m hm hmv φ hφ ψ hψ ψ' hψ' hker φ₁ hφ₁ hact

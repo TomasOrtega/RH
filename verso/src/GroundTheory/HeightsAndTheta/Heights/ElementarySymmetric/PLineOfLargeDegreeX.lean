@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-The claim follows from `LineOfLargeDegreeFromZ.ofOpen hVI hSN hEnergy hBasis hStacked hSDeg hBC hGL hCharts hGChart hMass hDeg hInd (LowerBoundFree.Z1.proof hM HilbertSamuel.BirationalModelExists.full) hZ2 hI`.
+A detailed English derivation is pending.
 -/
 theorem LineOfLargeDegree.proof (hM : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement) (hZ2 : SuccessiveMinimaUpperBound)
     (hI : ReciprocityTheory.ChartRestriction.G.AI.I2.ExistsStatement)

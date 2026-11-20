@@ -28,17 +28,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `d Λ hd hΛ`. Take `⟨a, τ, ha, h⟩` from `exists_lattice_eq_mul_tau Λ`. Establish `hj` using `g₂_cube_div_eq_modularJ ha h`. Establish `hL : latDisc Λ = Λ.g₂ ^ 3 - 27 * Λ.g₃ ^ 2` using `rfl`. Rewrite using `[hL, hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set w : ℂ := Complex.I * (Real.sqrt d : ℝ) with hw`. Establish `hsq : w ^ 2 = -(d : ℂ)`. Rewrite using `[hw, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (by positivity)]`. Simplify using the standard rewrite rules. Establish `hwint : IsIntegral ℤ w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℤ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_add_C _ two_ne_zero`. Simplify using `[Polynomial.eval₂_add, hsq]`. Use `isIntegral_modularJ_of_mul_mem (α := w) (fun m hm => ?_) fun x hx ↦ ?_` and prove the remaining obligations. Use `congrArg Complex.im hm` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hw] at this`. Conclude with `hd.ne_zero this`. Establish `key : ∀ y : ℂ, y ∈ Submodule.span ℤ {(τ : ℂ), 1} ↔ a * y ∈ Λ.lattice` using `fun y ↦ by`. Rewrite using `[h, Submodule.mem_span_pair]`. Simplify using `[mul_right_inj' ha]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[key]`. Take `⟨hi, p, q, hpq⟩` from `(hΛ _).1 hx`. Rewrite using `[mul_left_comm]`. Use `(hΛ _).2 ⟨hwint.mul hi, -(d : ℚ) * q, p, ?_⟩` and prove the remaining obligations. Rewrite using `[hpq]`.
-
-Use `push_cast`. Take the linear combination `(q : ℂ) * hsq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isIntegral_j_of_isIntLattice : ∀ (d : ℕ) (Λ : PeriodPair), d.Prime → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice d Λ →
     IsIntegral ℤ (1728 * Λ.g₂ ^ 3 / latDisc Λ) := by

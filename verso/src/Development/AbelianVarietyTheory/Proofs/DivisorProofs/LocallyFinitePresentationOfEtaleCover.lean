@@ -6,17 +6,17 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.LfpDescent
 
 /- English proof (translation)
-Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' B C`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Establish `hsum : ∀ x : C, ∑ i, s x i • π (Pi.single i 1) = x`. Introduce `x`. Establish `h1 : π (s x) = x` using `LinearMap.congr_fun hs x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `conv_rhs => rw [← h1]`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ π (s x)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, eq_comm]`. Set `T : Ideal B` to `LinearMap.range (LinearMap.applyₗ (R := B) (M₂ := B) (1 : C))`. Establish `hT : ∀ x i, s x i ∈ T` using `fun x i => ⟨(LinearMap.proj i) ∘ₗ s ∘ₗ (LinearMap.mulRight B x), by simp⟩`. Establish `hle : (⊤ : Submodule B C) ≤ T • (⊤ : Submodule B C)`. Introduce `x _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsum x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hT x i) trivial`. Take `⟨r, hr, hr0⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul T ⊤ Module.Finite.fg_top hle`. Establish `hr1 : r = 0`. Apply `hinj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hr0 1 trivial` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, mul_one]`. Simplify using `using this`. Establish `h1 : (1 : B) ∈ T`. Use `T.neg_mem hr` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[hr1]`. Take `⟨l, hl⟩` from `h1`. Conclude with `⟨l, hl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linear_retraction (B C : Type*) [CommRing B] [CommRing C] [Algebra B C]
     [Module.Finite B C] [Module.Projective B C] (hinj : Function.Injective (algebraMap B C)) :
@@ -53,15 +53,15 @@ theorem exists_linear_retraction (B C : Type*) [CommRing B] [CommRing C] [Algebr
   exact ⟨l, hl⟩
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `exists_linear_retraction B C hinj`. Establish `: Module.FinitePresentation A C` using `(Module.FinitePresentation.iff_finitePresentation_of_finite (R := A) (S := C)).2 inferInstance`. Set `l' : C →ₗ[A] B` to `l.restrictScalars A`. Set `i : B →ₗ[A] C` to `(Algebra.linearMap B C).restrictScalars A`. Establish `hli : ∀ b, l' (i b) = b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `b`. Express the relevant statement in the definitionally equal form `l (algebraMap B C b) = b`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, hl, smul_eq_mul, mul_one]`. Establish `hsurj : Function.Surjective l'` using `fun b => ⟨i b, hli b⟩`. Establish `hker : LinearMap.ker l' = LinearMap.range (LinearMap.id - i ∘ₗ l')`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.mem_range, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x, by rw [hx, map_zero, sub_zero]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[map_sub, hli, sub_self]`. Establish `hfg : (LinearMap.ker l').FG`. Rewrite using `[hker, LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Module.FinitePresentation A B` using `Module.finitePresentation_of_surjective l' hsurj hfg`. Conclude with `(Module.FinitePresentation.iff_finitePresentation_of_finite (R := A) (S := B)).1 this`.
+A detailed English derivation is pending.
 -/
 theorem finitePresentation_of_retract (A B C : Type*) [CommRing A] [CommRing B] [CommRing C]
     [Algebra A B] [Algebra B C] [Algebra A C] [IsScalarTower A B C] [Module.Finite A B]
@@ -94,9 +94,7 @@ theorem finitePresentation_of_retract (A B C : Type*) [CommRing A] [CommRing B] 
   exact (Module.FinitePresentation.iff_finitePresentation_of_finite (R := A) (S := B)).1 this
 
 /- English proof (translation)
-Establish `hgfin : g.Finite` using `RingHom.Finite.of_comp_finite hgf`. Establish `hgp : g.FinitePresentation` using `RingHom.FinitePresentation.of_comp_finiteType f hgfp hf.finiteType`. Use `algebraize [f, g, g.comp f]`. Establish `: Module.FinitePresentation B C` using `(Module.FinitePresentation.iff_finitePresentation_of_finite (R := B) (S := C)).2 inferInstance`. Establish `: Module.Projective B C` using `Module.Flat.projective_of_finitePresentation`.
-
-Conclude with `finitePresentation_of_retract A B C hg.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringHom_finitePresentation {A B C : Type*} [CommRing A] [CommRing B] [CommRing C]
     (f : A →+* B) (g : B →+* C) (hf : f.Finite) (hgf : (g.comp f).Finite)
@@ -115,9 +113,9 @@ end GlobalTheory.LfpDescent
 namespace GlobalTheory.LfpDescent
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.iff_of_isAffine (P := @LocallyOfFinitePresentation)]`. Establish `hff : h.appTop.hom.FaithfullyFlat` using `(Flat.flat_and_surjective_iff_faithfullyFlat_of_isAffine h).1 ⟨inferInstance, inferInstance⟩`. Establish `hfp : (h ≫ f).appTop.hom.FinitePresentation` using `HasRingHomProperty.appTop (P := @LocallyOfFinitePresentation) _ inferInstance`. Establish `hfin1 : f.appTop.hom.Finite` using `f.finite_appTop`. Establish `hfin2 : (h ≫ f).appTop.hom.Finite` using `(h ≫ f).finite_appTop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfp`, `hfin2` using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Conclude with `ringHom_finitePresentation _ _ hfin1 hfin2 hfp hff`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affine_case {X Y Z : Scheme.{0}} [IsAffine X] [IsAffine Y] [IsAffine Z] (h : X ⟶ Y)
     (f : Y ⟶ Z) [Flat h] [Surjective h] [IsFinite f] [IsFinite (h ≫ f)]
@@ -140,13 +138,13 @@ open LfpDescent in
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Introduce `X Y Z h f _ _ _ _ _ _`. Establish `: IsFinite f` using `GlobalTheory.isFinite_of_comp_surjective h f`. Rewrite using `[IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := @LocallyOfFinitePresentation) (f := f) _ (iSup_affineOpens_eq_top Z)]`. Introduce `U`. Establish `hU : IsAffine U` using `U.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `morphismRestrict_comp h f U`. Establish `h1 : IsFinite ((h ≫ f) ∣_ U)` using `IsZariskiLocalAtTarget.restrict ‹_› _`. Establish `h2 : LocallyOfFinitePresentation ((h ≫ f) ∣_ U)` using `IsZariskiLocalAtTarget.restrict (P := @LocallyOfFinitePresentation) inferInstance _`. Establish `: IsAffine (f ⁻¹ᵁ (U : Z.Opens))` using `isAffine_of_isAffineHom (f ∣_ U)`. Establish `: IsAffine ((h ≫ f) ⁻¹ᵁ (U : Z.Opens))` using `isAffine_of_isAffineHom ((h ≫ f) ∣_ U)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffine (h ⁻¹ᵁ f ⁻¹ᵁ (U : Z.Opens))` using `this`. Establish `: Surjective (h ∣_ f ⁻¹ᵁ (U : Z.Opens))` using `IsZariskiLocalAtTarget.restrict (P := @Surjective) ‹_› _`. Establish `: Flat (h ∣_ f ⁻¹ᵁ (U : Z.Opens))` using `IsZariskiLocalAtTarget.restrict (P := @Flat) inferInstance _`. Establish `: IsFinite (f ∣_ U)` using `IsZariskiLocalAtTarget.restrict ‹_› _`. Establish `h1' : IsFinite (h ∣_ f ⁻¹ᵁ (U : Z.Opens) ≫ f ∣_ U)` using `e ▸ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : LocallyOfFinitePresentation (h ∣_ f ⁻¹ᵁ (U : Z.Opens) ≫ f ∣_ U)` using `e ▸ h2`. Conclude with `affine_case (h ∣_ f ⁻¹ᵁ U) (f ∣_ U)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyOfFinitePresentation_of_etale_surjective_comp_finite_etale :
     ∀ (X Y Z : Scheme.{0}) (h : X ⟶ Y) (f : Y ⟶ Z), Etale h → Surjective h → Etale (h ≫ f) →

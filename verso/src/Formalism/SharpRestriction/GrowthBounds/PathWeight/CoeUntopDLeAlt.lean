@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.G.symbolGeneratorData
 open Formalism.MainNotions.G Formalism.MainNotions.SourceCleaning Formalism.MainNotions.G.WittFrameLocaliserOrders Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `top => exact le_top`. Consider the case `coe z => simp`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem coe_untopD_le_alt (x : WithTop ℤ) (d : ℤ) : ((x.untopD d : ℤ) : WithTop ℤ) ≤ x := by
   cases x with
@@ -17,7 +17,7 @@ theorem coe_untopD_le_alt (x : WithTop ℤ) (d : ℤ) : ((x.untopD d : ℤ) : Wi
   | coe z => simp
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `top => simpa using hd`. Consider the case `coe z => simpa using h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem le_untopD_of_coe_le {x : WithTop ℤ} {c d : ℤ} (h : ((c : ℤ) : WithTop ℤ) ≤ x) (hd : c ≤ d) : c ≤ x.untopD d := by
   cases x with
@@ -25,7 +25,7 @@ theorem le_untopD_of_coe_le {x : WithTop ℤ} {c d : ℤ} (h : ((c : ℤ) : With
   | coe z => simpa using h
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `bot => exact bot_le`. Consider the case `coe z => simp`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem le_coe_unbotD' (x : WithBot ℤ) (d : ℤ) : x ≤ ((x.unbotD d : ℤ) : WithBot ℤ) := by
   cases x with
@@ -33,7 +33,7 @@ theorem le_coe_unbotD' (x : WithBot ℤ) (d : ℤ) : x ≤ ((x.unbotD d : ℤ) :
   | coe z => simp
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `bot => simpa using hd`. Consider the case `coe z => simpa using h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem unbotD_le_of_le_coe {x : WithBot ℤ} {c d : ℤ} (h : x ≤ ((c : ℤ) : WithBot ℤ)) (hd : d ≤ c) : x.unbotD d ≤ c := by
   cases x with
@@ -41,11 +41,11 @@ theorem unbotD_le_of_le_coe {x : WithBot ℤ} {c d : ℤ} (h : x ≤ ((c : ℤ) 
   | coe z => simpa using h
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `hs _ a`. Establish `h0 : (⟨0, hs⟩ : Fin (N + 1)) = 0` using `by ext; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0, P.zero]`. Simplify using the standard rewrite rules. Consider the case `succ s ih`. Introduce `hs hv a`. Establish `hsN : s < N` using `by omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `P.step ⟨s, hsN⟩`. Rewrite `h1` using `[if_pos (hv ⟨s, hsN⟩ (by simp))]`. Establish `h2` using `ih (by omega) (fun i hi => hv i (by omega)) a`. Establish `h3` using `h1.1 a`. Conclude with `le_trans h2 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lattice_path_nonneg_prefix {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} (P : PPath n N LL B) :
     ∀ (s : ℕ) (hs : s < N + 1), (∀ i : Fin N, i.val < s → LL.vec i = true) → ∀ a, 0 ≤ P.mu ⟨s, hs⟩ a := by
@@ -65,13 +65,13 @@ theorem lattice_path_nonneg_prefix {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N
     exact le_trans h2 h3
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `hs _`. Establish `h0 : (⟨0, hs⟩ : Fin (N + 1)) = 0` using `by ext; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0, P.zero]`. Consider the case `succ s ih`. Introduce `hs hv`. Establish `hsN : s < N` using `by omega`. Establish `h1` using `P.step ⟨s, hsN⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[if_pos (hv ⟨s, hsN⟩ (by simp)).1, (hv ⟨s, hsN⟩ (by simp)).2]`. Establish `h2 : P.mu (Fin.castSucc ⟨s, hsN⟩) = 0` using `ih (by omega) (fun i hi => hv i (by omega))`. Take `⟨g1, _, g3⟩` from `h1`. Establish `g4` using `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => sub_nonneg.2 (g1 a))).1 (by simpa using g3)`. Use function extensionality and compare the values at `a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `g5` using `g4 a (Finset.mem_univ a)`. Rewrite `g5` using `[h2]`. Establish `g6 : P.mu (Fin.succ ⟨s, hsN⟩) a = 0` using `by simpa using g5`. Conclude with `g6`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lattice_path_zero_prefix {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} (P : PPath n N LL B) :
     ∀ (s : ℕ) (hs : s < N + 1), (∀ i : Fin N, i.val < s → LL.vec i = true ∧ B i = 0) → P.mu ⟨s, hs⟩ = 0 := by
@@ -100,13 +100,11 @@ section Fr
 variable {n' r : ℕ} [NeZero n'] (F : Frames n' r) {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Take `⟨hx1, hx2⟩` from `Finset.mem_filter.1 hx`. Establish `hx3` using `(Finset.mem_Icc.1 hx1).1`. Establish `claim : ∀ i, i < r → x ≤ F.fr (j - 1) i → ∃ i', i' < r ∧ x = F.fr (j - 1) i'`. Introduce `i`. Proceed by induction on `i with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro h0 h`. Conclude with `⟨0, h0, le_antisymm h hx3⟩`. Consider the case `succ i ih`. Introduce `hi h`. Distinguish the cases in `h1 : x ≤ F.fr (j - 1) i`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `ih (by omega) h1`. Distinguish the cases in `h2 : x = F.fr (j - 1) (i + 1)`. Conclude with `⟨i + 1, hi, h2⟩`. Conclude with `absurd hx2 (hV.2.2.2.2.2.1 (j - 1) i x hi (by omega) (by omega))`. Take `⟨i', hi', rfl⟩` from `claim (r - 1) (by omega) hW`.
-
-Conclude with `(hV.2.2.2.2.1 (j - 1) i' hi').2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem even_of_lower_letter (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j x : ℤ) (hx : x ∈ F.letters j) (hW : F.IsW j x) : Even x := by
   obtain ⟨hx1, hx2⟩ := Finset.mem_filter.1 hx
@@ -126,23 +124,23 @@ theorem even_of_lower_letter (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j x : ℤ)
   exact (hV.2.2.2.2.1 (j - 1) i' hi').2
 
 /- English proof (translation)
-The claim follows from `((F.letters j).orderEmbOfFin rfl).monotone h`.
+A detailed English derivation is pending.
 -/
 theorem letter_enum_mono (j : ℤ) {i i' : Fin (Mj F j)} (h : i ≤ i') : eL F j i ≤ eL F j i' :=
   ((F.letters j).orderEmbOfFin rfl).monotone h
 
 /- English proof (translation)
-The claim follows from `Finset.orderEmbOfFin_mem _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem letter_enum_mem (j : ℤ) (i : Fin (Mj F j)) : eL F j i ∈ F.letters j :=
   Finset.orderEmbOfFin_mem _ _ _
 
 /- English proof (translation)
-Establish `h1` using `frame_first_entry_le hV (j - 1) (r - 1) (by omega)`. Establish `h2` using `hV.2.2.2.1 (j - 1)`. Establish `h3` using `frame_first_entry_le hV j (r - 1) (by omega)`. Rewrite `h2` using `[sub_add_cancel]`. Establish `hmem : F.fr (j - 1) 0 ∈ F.letters j` using `Finset.mem_filter.2 ⟨Finset.mem_Icc.2 ⟨le_rfl, by omega⟩, (hV.2.2.2.2.1 (j - 1) 0 (by omega)).1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr' : F.fr (j - 1) 0 ∈ Set.range ((F.letters j).orderEmbOfFin rfl)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hmem`. Take `⟨i0, hi0⟩` from `hr'`. Establish `h4 : eL F j i ≤ eL F j i0` using `letter_enum_mono F j (by rw [Fin.le_def]; omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : eL F j i0 = F.fr (j - 1) 0` using `hi0`. Unfold `Frames.IsW`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem first_letter_is_lower (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (i : Fin (Mj F j)) (hi : i.val = 0) :
     F.IsW j (eL F j i) := by
@@ -165,13 +163,11 @@ end Fr
 section Main
 
 /- English proof (translation)
-Establish `step1 : ∀ a ∈ SA, e (f a * h G) ∈ Submodule.span O T`. Introduce `a ha`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem b hb => exact key a ha b hb`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, mul_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul, mul_smul_comm, map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Proceed by induction on `hA using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem a ha => exact step1 a ha`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, add_mul, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul, smul_mul_assoc, map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_mul_image_mem_span {O : Type} [CommRing O] {σ τ υ : Type} (f : MvPolynomial σ O →ₐ[O] MvPolynomial υ O)
     (h : MvPolynomial τ O →ₐ[O] MvPolynomial υ O) {ρ : Type} (e : MvPolynomial υ O →ₐ[O] MvPolynomial ρ O)
@@ -193,37 +189,35 @@ theorem span_mul_image_mem_span {O : Type} [CommRing O] {σ τ υ : Type} (f : M
   | smul c x _ hx => rw [map_smul, smul_mul_assoc, map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ _ O _ _ _ _ X j P hP`. Take `⟨d', d'', A, G, Mx, hA, hG, hW, hC, rfl⟩` from `hP`. Establish `hr : 1 ≤ r` using `by have := X.hH.2.1; omega`. Establish `hMK : Mj X.Fr j + r ≤ K`. Establish `h1 : Mj X.Fr j ≤ X.N₁` using `X.hV.2.2.2.2.2.2.2.1 j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `X.hK`. Use linear arithmetic over natural numbers and integers. Set `nxt : Fin (Mj X.Fr j) → Fin (Mj X.Fr j)` to `fun i => if h : i.val + 1 < Mj X.Fr j then ⟨i.val + 1, h⟩ else i`. Set `thA : Fin (Mj X.Fr j) → ℤ` to `fun i => (valS (LLs X.Fr j).toLetters {y | y ≤ i} A).untopD (max (Mx i) (Mx (nxt i)))`. Set `MA : Fin (Mj X.Fr j) → ℤ` to `fun i => (lam1S (LLs X.Fr j).toLetters {y | y ≤ i} A).unbotD 0`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `thG : Fin (Mj X.Fr j) → ℤ` to `fun i => (valS (LLs X.Fr j).toLetters {y | y ≤ i} G).untopD 0`. Set `MG : Fin (Mj X.Fr j) → ℤ` to `fun i => (lam1S (LLs X.Fr j).toLetters {y | y ≤ i} G).unbotD (min (Mx i) (Mx (nxt i)))`. Establish `hAs` using `(hA3 p O X.S (Mj X.Fr j) r (LLs X.Fr j).toLetters d' thA MA).1`. Establish `hGs` using `(hA3 p O X.S (Mj X.Fr j) K (LLs X.Fr j).toLetters d'' thG MG).1`. Unfold `A3at at hAs hGs`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hA'` using `(Set.ext_iff.1 hAs A).1 ⟨hA, fun i => ⟨coe_untopD_le_alt _ _, le_coe_unbotD' _ _⟩⟩`. Establish `hG'` using `(Set.ext_iff.1 hGs G).1 ⟨hG, fun i => ⟨coe_untopD_le_alt _ _, le_coe_unbotD' _ _⟩⟩`. Use `span_mul_image_mem_span (rename (plVar (K := K))) (rename (tanVar (r := r))) (plnm X.Fr j O K) _ _ _ ?_ hA' hG'` and prove the remaining obligations. Introduce and unpack `_ ⟨P1, I', hI', h1, rfl⟩ _ ⟨P2, I'', hI'', h2, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpred : ∀ i : Fin (Mj X.Fr j), ¬ X.Fr.IsW j (eL X.Fr j i) → ∃ i' : Fin (Mj X.Fr j), i'.succ = i.castSucc ∧ nxt i' = i ∧ ({y | y < i} : Set (Fin (Mj X.Fr j))) = {y | y ≤ i'}`. Introduce `i hi`. Establish `h0 : i.val ≠ 0` using `fun h => hi (first_letter_is_lower X.Fr X.hV hr j i h)`. Use `⟨⟨i.val - 1, by omega⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `ext`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `h3 : i.val - 1 + 1 < Mj X.Fr j` using `by have := i.2; omega show (if h : i.val - 1 + 1 < Mj X.Fr j then (⟨i.val - 1 + 1, h⟩ : Fin (Mj X.Fr j)) else _) = i`. Rewrite using `[dif_pos h3]`. Use `ext`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use extensionality with `y show y < i ↔ y ≤ (⟨i.val - 1, by omega⟩ : Fin (Mj X.Fr j))`. Rewrite using `[Fin.lt_def, Fin.le_def]`. Use `show y.val < i.val ↔ y.val ≤ i.val - 1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hCond : ∀ i, CondC (LLs X.Fr j).toLetters P1.mu P2.mu i`. Introduce `i`. Unfold `CondC`. Distinguish the cases in `hiW : X.Fr.IsW j (eL X.Fr j i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hWle : ∀ i' : Fin (Mj X.Fr j), i'.val < i.val + 1 → X.Fr.IsW j (eL X.Fr j i')`. Introduce `i' hi'`. Use `letter_enum_mono X.Fr j (show i' ≤ i by rw [Fin.le_def]; omega)` as an intermediate fact. Unfold `Frames.IsW at hiW ⊢`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hvec : ∀ i' : Fin (Mj X.Fr j), i'.val < i.val + 1 → (LLs X.Fr j).toLetters.vec i' = true`. Introduce `i' hi'`. Use `show decide (Even (eL X.Fr j i')) = true`. Conclude with `decide_eq_true (even_of_lower_letter X.Fr X.hV hr j _ (letter_enum_mem X.Fr j i') (hWle i' hi'))`. Rewrite using `[if_pos (hvec i (by omega))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : P2.mu i.succ = 0` using `lattice_path_zero_prefix P2 (i.val + 1) (by have := i.2; omega) (fun i' hi' => ⟨hvec i' hi', hW i' (hWle i' hi')⟩)`. Establish `hn : 0 ≤ P1.mu i.castSucc (lastIdx r)` using `lattice_path_nonneg_prefix P1 i.val (by have := i.2; omega) (fun i' hi' => hvec i' (by omega)) _`. Rewrite using `[hz]`. Conclude with `hn`. Take `⟨i', e1, e2, e3⟩` from `hpred i hiW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c1, c2⟩` from `hC i hiW`. Distinguish the cases in `hE : Even (eL X.Fr j i)`. Establish `hv : (LLs X.Fr j).toLetters.vec i = true` using `decide_eq_true hE`. Rewrite using `[if_pos hv]`. Take `⟨g1, g2⟩` from `c1 hE`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `g2` using `[add_zero, e3]`. Establish `k1 : P2.mu i.succ 0 ≤ Mx i` using `le_trans (h2 i).2 (unbotD_le_of_le_coe g1 (min_le_left _ _))`. Establish `k2 : Mx i ≤ P1.mu i'.succ (lastIdx r)` using `le_trans (le_untopD_of_coe_le g2 (by rw [e2]; exact le_max_right _ _)) (h1 i').1`. Rewrite using `[← e1]`. Conclude with `le_trans k1 k2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : ¬ (LLs X.Fr j).toLetters.vec i = true`. Introduce `h`. Conclude with `hE (of_decide_eq_true h)`. Rewrite using `[if_neg hv]`. Take `⟨g1, g2⟩` from `c2 hE`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `g2` using `[add_zero]`. Rewrite `g1` using `[e3]`. Establish `k1 : P2.mu i'.succ 0 ≤ Mx i` using `le_trans (h2 i').2 (unbotD_le_of_le_coe g1 (by rw [e2]; exact min_le_right _ _))`. Establish `k2 : Mx i ≤ P1.mu i.succ (lastIdx r)` using `le_trans (le_untopD_of_coe_le g2 (le_max_left _ _)) (h1 i).1`. Rewrite using `[← e1]`.
-
-Conclude with `le_trans k1 k2`. Take `⟨Pth, hPth⟩` from `(hB1 (Mj X.Fr j) r K (LLs X.Fr j).toLetters (fun i => d' i + d'' i) hMK P1.mu P2.mu).2 ⟨d', d'', fun _ => rfl, ⟨P1, rfl⟩, ⟨P2, rfl⟩, hCond⟩`. Conclude with `⟨_, Pth, P1.mu, P2.mu, I', I'', hPth, hI', hI'', rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem generator_pair_conditions_of_admitted (D : Formalism.BasicNotions.D7) (hA3 : Formalism.MainNotions.SourceCleaning.StandardMonomialSpanBis D) (hB1 : Formalism.MainNotions.SourceCleaning.PathPairCorrespondence D) : GeneratorSpanInclusion := by
   intro p n' r K _ _ _ _ O _ _ _ _ X j P hP

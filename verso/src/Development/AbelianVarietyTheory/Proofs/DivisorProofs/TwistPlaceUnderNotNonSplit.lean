@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitTwistPlaces
 
 /- English proof (translation)
-Introduce `D T Lc sc G μ₀ hμ t v e he PP hPP hv hns`. Take `⟨f, hf⟩` from `GlobalTheory.ParahoricLift.exists_isIdemAt ((hμ.Q_pl t PP hPP).2 PP hPP)`. Conclude with `GlobalTheory.AdTh.RecPair.under_ne hf hns hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_nonSplitAt : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T), Lc.Is μ₀ → ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AF D.host.F), IsPlaceIdem D v e → ∀ PP ∈ Lc.Q t, PP.under (𝓞 D.host.F) = v → ¬ GlobalTheory.WeilParts.NonSplitAt D v e := by
   intro D T Lc sc G μ₀ hμ t v e he PP hPP hv hns

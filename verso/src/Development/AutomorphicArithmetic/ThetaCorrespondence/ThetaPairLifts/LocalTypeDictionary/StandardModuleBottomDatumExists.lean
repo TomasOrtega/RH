@@ -33,31 +33,29 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdRead
 /- English proof (translation)
-Introduce `_ _ _ hInp _`. Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `W hW i j A A' WW X δ t0 hX hβ r rc _ hr hrc _`. Establish `hI` using `hInp D`. Distinguish the cases in `hC : Crv D ⊤ δ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Conclude with `⟨1, one_ne_zero, fun s Q P _ _ => absurd P.crv hC⟩`. Take `rfl` from `hr hC`. Establish `hcc : D.host.ccK = ⊤` using `hR.size.2.2.2.2.2.2.2.2.2.2.2.2.2`. Establish `hIs` using `hX.is`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ : IsInfFam W.θ` using `hIs.isVac.2.inf`. Establish `hsc : GlobalTheory.NormExact.IsScale D ⊤ 1` using `hcc ▸ GlobalTheory.NormExact.isScale_one D`. Establish `hs : GlobalTheory.NormExact.Setup W.ψ W.θ A WW ⊤ δ 1` using `⟨hW, hθ, hX.std.1, hX.stdW.1, hC, hsc⟩`. Establish `hδ` using `GlobalTheory.NormExact.delta_ne_zero hC`. Establish `hrc' : rc = (area (lamOf D ⊤ δ))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Establish `h1` using `hrc τ`. Establish `h2` using `GlobalTheory.NormExact.normSq_scale top_ne_bot hsc δ τ`. Establish `hA` using `GlobalTheory.NormExact.area_pos hC`. Establish `hx` using `GlobalTheory.NormExact.xiR_pos D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_one, mul_one]`. Rewrite `h1` using `[norm_neg, ← Complex.normSq_eq_norm_sq, h2, GlobalTheory.FockPos.norm_embedding_xi0_eq]`. Clear the denominators using the available nonvanishing facts. Establish `: 2 * Formalism.L2.Pj.xiR D * (rc * area (lamOf D ⊤ δ) - 1) = 0` using `by linear_combination h1`. Establish `h3` using `(mul_eq_zero.1 this).resolve_left (by positivity)`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Substitute `hrc'` using the available equality. Establish `hΛ : ∀ {V : HSp D} (ρ : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V), ρ.IsStd → ρ.Λ = stdL D V.rank` using `fun ρ h => by`. Use extensionality with `y`. Rewrite using `[h.2.1]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[stdL, Submodule.mem_pi, Submodule.mem_one]`. Establish `hΛA` using `hΛ X.rA hX.std`. Establish `hΛW` using `hΛ X.rW hX.stdW`. Establish `hv : IsVacO W.ψ W.θ A WW (fun _ => 1) (fun _ => 1) (stdL D A.rank : Set (Fin A.rank → D.host.E)) (stdL D WW.rank : Set (Fin WW.rank → D.host.E)) (fun w => starRingEnd ℂ (X.vac w))`. Establish `h` using `GlobalTheory.VacConj.isVacO_conj_negSp W.ψ W.θ A WW X.rA.s X.rW.s _ _ X.vac hIs.isVac`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[hΛA, hΛW, show X.rA.s = fun _ => 1 from funext fun τ => (hX.std.2.2 τ).1, show X.rW.s = fun _ => 1 from funext fun τ => (hX.stdW.2.2 τ).1]`. Then use the resulting hypothesis. Take `⟨G0, hG0, hne, hread⟩` from `GlobalTheory.T.adelicVacuum_standardLattices_readsTheta W.ψ W.θ A WW rfl rfl δ hcc hs _ hv`. Take `⟨κ, hκ, hc⟩` from `exists_const hI δ t0 G0 hG0 hne`. Establish `hc' : ∀ (a d : ℕ) (ea : a = A.rank) (ed : d = WW.rank) (e0 : VC D a d → ℂ), GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D ⊤ δ) t0 → oddE0 D ⊤ δ t0 a d e0 → e0 ≠ 0 → ∃ u, IsPh u ∧ (κ * u) • e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d) ∧ GlobalTheory.NormExact.Reads W.ψ W.θ ea.symm …`. Introduce and unpack `a d rfl rfl e0 h1 h2 h3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, e⟩` from `hc e0 hC h1 h2 h3`. Conclude with `⟨u, hu, e ▸ hG0, e ▸ hread⟩`. Use `⟨κ, hκ, fun s Q P P' hB => ?_⟩` and prove the remaining obligations. Establish `ea : P.a = A.rank` using `hB.rank.1.trans hX.rank.symm`. Establish `ed : P.d = WW.rank` using `by rw [hB.rank.2.2.1, ← hIs.rank, hX.rank, hX.rank']`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hTh, hrd⟩` from `hc' _ _ ea ed P.e0 P.pt0 P.vac P.W.nz`. Take `⟨c0, cI⟩` from `GlobalTheory.T.squareNuConductorExponents_pos_prod_eq_modulus G hL s i j (X.c s) (hIs.expo s)`. Take `⟨q1, q2⟩` from `GlobalTheory.SqTop.BotT.pde_ne_q hR`. Establish `hm : GoodMod (X.e s) (GlobalTheory.SqTop.modT G s)` using `⟨_, _, hIs.idem s, c0, cI.symm, GlobalTheory.FunObj.StdDatum.TwBig.modT_isCoprime_bb hL G s (GlobalTheory.T.gridConductorIdealCM_isCoprime_halfDifferent G.pl q1 q2)⟩`. Establish `hν : GlobalTheory.NormExact.HasFinPart (G.nu s i (j + 1))⁻¹ P.W.chV' P.W.ep'` using `fun x y hxy => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB.chars.2 y, MonoidHom.inv_apply, Circle.coe_inv, GlobalTheory.T.heckeCharacter_finiteIdele_value_eq _ _ (chrEq_nu G s i j hL) x y hxy]`. Conclude with `(Units.val_inv_eq_inv_val _).symm`. Take `⟨Tm, hTm, hf⟩` from `GlobalTheory.T.schrodingerModel_complexConjugate_negForm W.ψ hW A WW _ _ _ _ _ _ (hIs.fst s)`. Establish `eν : Lc.mu s (j + 1) * Lc.eta ^ (rankV D i j % 2) / (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)) = G.nu s i (j + 1)` using `mul_div_mul_right_eq_div _ _ _`. Establish `eI : X.ideal (locPl G) s = GlobalTheory.SqTop.modT G s` using `cI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hTm` using `[hΛA, hΛW]`. Rewrite `hf` using `[eν, eI, hβ]`. Take `⟨u', hu', hrf⟩` from `reads_std hI P ea.symm ed.symm hcc hs hv hTh hrd hm hν (killsCong hL G s i j) (hΛA ▸ hIs.rigA.2.1) hB.std hTm hf`. Establish `hw` using `(hu.mul hu').conj`. Use `⟨_, fun h => by simpa [h] using hw.1, hw.2.1, fun p _ _ lam => hw.2.2 p lam, fun ea' ed' => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[xiN_eq hθ _ _ hδ hrf, Complex.conj_conj, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standard_module_bottom_datum : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
@@ -160,7 +158,7 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.StdRead.standard_module_bottom_datum | exact _root_.GlobalTheory.StdRead.standard_module_bottom_datum | (intros; apply _root_.GlobalTheory.StdRead.standard_module_bottom_datum <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.standard_module_bottom_datum_exists : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

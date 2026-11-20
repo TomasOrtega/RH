@@ -12,15 +12,15 @@ variable {ι : Type} [DecidableEq ι] {B M P : Type} [CommRing B] [AddCommGroup 
   [AddCommGroup P] [Module B P] (ℳ : ι → Submodule B M) [Decomposition ℳ]
 
 /- English proof (translation)
-Set `φ : ∀ m, ((ℳ m).comap f) →+ ℳ m` to `fun m => (f.restrict (p := (ℳ m).comap f) (q := ℳ m) (fun x hx => hx)).toAddMonoidHom`. Establish `key : ∀ y : ⨁ m, ((ℳ m).comap f), DirectSum.coeAddMonoidHom ℳ (DirectSum.map φ y) = f (DirectSum.coeAddMonoidHom (fun m => (ℳ m).comap f) y)`. Introduce `y`. Proceed by induction on `y using DirectSum.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `of i x => simp [DirectSum.map_of, φ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Prove the components needed by the constructor for the conclusion. Introduce `y y' h`. Establish `h1 : DirectSum.map φ y = DirectSum.map φ y'` using `(Decomposition.isInternal ℳ).injective (by rw [key, key, h])`.
+Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(DirectSum.map_injective φ).2 (fun m a b hab => ?_) h1` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hf` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hab`. Introduce `x choose g hg using hN`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ m ∈ (decompose ℳ (f x)).support, DirectSum.of (fun m => ((ℳ m).comap f)) m ⟨g x m, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show f (g x m) ∈ ℳ m`. Rewrite using `[hg]`. Conclude with `(decompose ℳ (f x) m).2`. Apply `hf` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, map_sum]`. Use `conv_rhs => rw [← DirectSum.sum_support_decompose ℳ (f x)]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[DirectSum.coeAddMonoidHom_of]`. Conclude with `hg x m`.
+A detailed English derivation is pending.
 -/
 theorem isInternal_comap (f : P →ₗ[B] M) (hf : Function.Injective f)
     (hN : ∀ (x : P) (m : ι), ∃ y : P, f y = (decompose ℳ (f x) m : M)) :
@@ -58,17 +58,17 @@ theorem isInternal_comap (f : P →ₗ[B] M) (hf : Function.Injective f)
       exact hg x m
 
 /- English proof (translation)
-Set `φ : ∀ m, ℳ m →+ ((ℳ m).map g)` to `fun m => (g.restrict (p := ℳ m) (q := (ℳ m).map g) (fun x hx => Submodule.mem_map_of_mem hx)).toAddMonoidHom`. Establish `hφ : ∀ m, Function.Surjective (φ m)`. Introduce and unpack `m ⟨_, x, hx, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `key : ∀ y : ⨁ m, ℳ m, DirectSum.coeAddMonoidHom (fun m => (ℳ m).map g) (DirectSum.map φ y) = g (DirectSum.coeAddMonoidHom ℳ y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `y`. Proceed by induction on `y using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i x => simp [DirectSum.map_of, φ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `(DirectSum.map_surjective φ).2 hφ y`. Rewrite `hy` using `[key]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : decompose ℳ (DirectSum.coeAddMonoidHom ℳ x) = x` using `Decomposition.right_inv x`. Establish `h3` using `hN _ hy`. Rewrite `h3` using `[h2]`. Use `DFinsupp.ext (fun m => ?_)` and prove the remaining obligations. Rewrite using `[DirectSum.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h3 m`. Introduce `p`. Take `⟨x, rfl⟩` from `hg p`. Use `⟨DirectSum.map φ (decompose ℳ x), ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use `congr 1`. Conclude with `Decomposition.left_inv x`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isInternal_map (g : M →ₗ[B] P) (hg : Function.Surjective g)
     (hN : ∀ x : M, g x = 0 → ∀ m : ι, g (decompose ℳ x m : M) = 0) :
@@ -115,33 +115,29 @@ variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
   (𝒜 : Deg k → Submodule B R)
 
 /- English proof (translation)
-Use `h.noeth` as an intermediate fact. Use `choose G hG using h.fg`. Use `set S : Subalgebra B R := Algebra.adjoin B (⋃ i, (G i : Set R)) with hSdef`. Establish `hS1 : ∀ i, 𝒜 (e i) ≤ Subalgebra.toSubmodule S`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hG i, Submodule.span_le]`. Introduce `x hx`. Conclude with `Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨i, hx⟩)`. Establish `hS : ∀ (n : ℕ) (m : Deg k), 0 ≤ m → ∑ i, m i = (n : ℤ) → 𝒜 m ≤ Subalgebra.toSubmodule S`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `m hm hs`. Establish `h0 : m = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately.
 
-Conclude with `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => hm i)).1 (by simpa using hs) i (Finset.mem_univ i)`. Rewrite using `[h0, h.zero]`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `S.algebraMap_mem b`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `m hm hs`. Establish `hex : ∃ i, 0 < m i`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `: ∑ i, m i ≤ 0` using `Finset.sum_nonpos (fun i _ => hcon i)`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hs]`. Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `hex`. Establish `hm' : 0 ≤ m - e i`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[e]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e, hj]`. Conclude with `hm j`. Establish `hs' : ∑ j, (m - e i) j = (n : ℤ)`. Simplify using `only [Pi.sub_apply, Finset.sum_sub_distrib, hs]`. Simplify using `[e, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hdec : 𝒜 m = 𝒜 (m - e i) * 𝒜 (e i)`. Rewrite using `[← h.gen (m - e i) i hm', sub_add_cancel]`. Rewrite using `[hdec, Submodule.mul_le]`. Introduce `a ha b hb`. Conclude with `S.mul_mem (ih _ hm' hs' ha) (hS1 i hb)`.
+Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ x : R, x ∈ S`. Introduce `x`. Proceed by induction on `x using DirectSum.Decomposition.inductionOn 𝒜 with`. Consider the case `zero => exact S.zero_mem`. Consider the case `@homogeneous m a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : 0 ≤ m`. Establish `hn : 0 ≤ ∑ i, m i` using `Finset.sum_nonneg (fun i _ => hm i)`. Conclude with `hS (∑ i, m i).toNat m hm (Int.toNat_of_nonneg hn).symm a.2`. Establish `h0 : (a : R) ∈ (⊥ : Submodule B R)` using `(h.nonneg m hm).le a.2`. Rewrite using `[(Submodule.mem_bot B).1 h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `S.zero_mem`. Consider the case `add a b ha hb => exact S.add_mem ha hb`. Establish `htop : S = ⊤` using `eq_top_iff.2 (fun x _ => hall x)`. Establish `hfg : (⊤ : Subalgebra B R).FG`. Rewrite using `[← htop]`.
-
-Use `⟨Finset.univ.biUnion G, ?_⟩` and prove the remaining obligations. Rewrite using `[hSdef]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
-
-Establish `: Algebra.FiniteType B R` using `⟨hfg⟩`. Conclude with `Algebra.FiniteType.isNoetherianRing B R`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Std.isNoetherianRing [IsLocalRing B] [GradedAlgebra 𝒜] (h : Std 𝒜) :
     IsNoetherianRing R := by
@@ -220,9 +216,9 @@ variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
   (𝒜 : Deg k → Submodule B R) (F : GMod B R k) [Decomposition F.gr]
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.Decomposition.inductionOn F.gr with`. Consider the case `zero => simp`. Consider the case `@homogeneous n y`. Distinguish the cases in `hnm : n = m`. Substitute `hnm` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[decompose_of_mem_same F.gr (hs ha y.2), decompose_of_mem_same F.gr y.2]`. Rewrite using `[decompose_of_mem_ne F.gr (hs ha y.2) (fun hh => hnm (add_left_cancel hh)), decompose_of_mem_ne F.gr y.2 hnm, smul_zero]`. Consider the case `add x y hx hy`. Simplify using `only [smul_add, decompose_add, DirectSum.add_apply, Submodule.coe_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem comp_smul
     (hs : ∀ {d m : Deg k} {a : R} {x : F.M}, a ∈ 𝒜 d → x ∈ F.gr m → a • x ∈ F.gr (d + m))
@@ -242,17 +238,15 @@ theorem comp_smul
 variable [GradedAlgebra 𝒜]
 
 /- English proof (translation)
-Establish `hx' : x ∈ Submodule.span R {x | x ∈ N ∧ ∃ m, x ∈ F.gr m}` using `hN.le hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction generalizing m with`. Consider the case `mem x hx`. Take `⟨hxN, n, hn⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hnm : n = m`. Substitute `hnm` using the available equality. Rewrite using `[decompose_of_mem_same F.gr hn]`. Conclude with `hxN`. Rewrite using `[decompose_of_mem_ne F.gr hn hnm]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `N.zero_mem`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [decompose_add, DirectSum.add_apply, Submodule.coe_add]`. Conclude with `N.add_mem (hx m) (hy m)`.
+Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx`. Proceed by induction on `a using DirectSum.Decomposition.inductionOn 𝒜 generalizing m with`. Consider the case `zero => simp`. Consider the case `@homogeneous d a`. Use `comp_smul 𝒜 F hs a.2 x (m - d)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this]`. Conclude with `N.smul_mem _ (hx _)`. Consider the case `add a b ha hb`. Simplify using `only [add_smul, decompose_add, DirectSum.add_apply, Submodule.coe_add]`.
-
-Conclude with `N.add_mem (ha m) (hb m)`.
+A detailed English derivation is pending.
 -/
 theorem comp_mem_of_isHomSub
     (hs : ∀ {d m : Deg k} {a : R} {x : F.M}, a ∈ 𝒜 d → x ∈ F.gr m → a • x ∈ F.gr (d + m))
@@ -285,7 +279,7 @@ theorem comp_mem_of_isHomSub
 omit [GradedAlgebra 𝒜] in
 
 /- English proof (translation)
-Use `le_antisymm (fun x hx => ?_) (Submodule.span_le.2 (fun x hx => hx.1))` and prove the remaining obligations. Rewrite using `[← DirectSum.sum_support_decompose F.gr x]`. Conclude with `Submodule.sum_mem _ (fun m _ => Submodule.subset_span ⟨hN x hx m, m, (decompose F.gr x m).2⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomSub_of_comp_mem {N : Submodule R F.M}
     (hN : ∀ x ∈ N, ∀ m, (decompose F.gr x m : F.M) ∈ N) : F.IsHomSub N := by
@@ -303,9 +297,9 @@ variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
   (𝒜 : Deg k → Submodule B R) [GradedAlgebra 𝒜] {F : GMod B R k}
 
 /- English proof (translation)
-Set `` to `hF.internal.chooseDecomposition`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `d m a x ha hx`. Conclude with `hF.smul_mem ha hx`. Conclude with `isInternal_comap F.gr (N.subtype.restrictScalars B) N.injective_subtype (fun x m => ⟨⟨_, comp_mem_of_isHomSub 𝒜 F hF.smul_mem hN x.2 m⟩, rfl⟩)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hF.fin` as an intermediate fact. Establish `: IsNoetherian R F.M` using `isNoetherian_of_isNoetherianRing_of_finite R F.M`. Conclude with `(inferInstance : Module.Finite R N)`.
+A detailed English derivation is pending.
 -/
 theorem sub_isGr [IsNoetherianRing R] (hF : F.IsGr 𝒜) {N : Submodule R F.M} (hN : F.IsHomSub N) :
     (F.sub N).IsGr 𝒜 := by
@@ -320,9 +314,9 @@ theorem sub_isGr [IsNoetherianRing R] (hF : F.IsGr 𝒜) {N : Submodule R F.M} (
     exact (inferInstance : Module.Finite R N)
 
 /- English proof (translation)
-Set `` to `hF.internal.chooseDecomposition`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `d m a _ ha ⟨x, hx, rfl⟩`. Conclude with `⟨a • x, hF.smul_mem ha hx, rfl⟩`. Use `isInternal_map F.gr (N.mkQ.restrictScalars B) N.mkQ_surjective (fun x hx m => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : x ∈ N` using `(Submodule.Quotient.mk_eq_zero N).1 hx`. Conclude with `(Submodule.Quotient.mk_eq_zero N).2 (comp_mem_of_isHomSub 𝒜 F hF.smul_mem hN hx' m)`. Use `hF.fin` as an intermediate fact. Conclude with `(inferInstance : Module.Finite R (F.M ⧸ N))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quo_isGr (hF : F.IsGr 𝒜) {N : Submodule R F.M} (hN : F.IsHomSub N) :
     (F.quo N).IsGr 𝒜 := by
@@ -338,9 +332,9 @@ theorem quo_isGr (hF : F.IsGr 𝒜) {N : Submodule R F.M} (hN : F.IsHomSub N) :
 
 omit [GradedAlgebra 𝒜] in
 /- English proof (translation)
-Use `⟨?_, ?_, hF.fin⟩` and prove the remaining obligations. Introduce `d' m a x ha hx`. Use `hF.smul_mem ha (show x ∈ F.gr (m - d) from hx)` as an intermediate fact. Rewrite `this` using `[← add_sub_assoc]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top F.gr).1 hF.internal`. Use `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top (fun m => F.gr (m - d))).2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `h.1.comp (f := fun m : Deg k => m - d) sub_left_injective`. Rewrite using `[← h.2]`. Conclude with `(Equiv.subRight d).iSup_comp (g := F.gr)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_isGr (hF : F.IsGr 𝒜) (d : Deg k) : (F.shift d).IsGr 𝒜 := by
   refine ⟨?_, ?_, hF.fin⟩
@@ -356,9 +350,9 @@ theorem shift_isGr (hF : F.IsGr 𝒜) (d : Deg k) : (F.shift d).IsGr 𝒜 := by
       exact (Equiv.subRight d).iSup_comp (g := F.gr)
 
 /- English proof (translation)
-Set `` to `hF.internal.chooseDecomposition`. Use `isHomSub_of_comp_mem F ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩ m`. Use `⟨(decompose F.gr y (m - d) : F.M), ?_⟩` and prove the remaining obligations. Use `comp_smul 𝒜 F hF.smul_mem hs y (m - d)` as an intermediate fact.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[add_sub_cancel]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_isHomSub (hF : F.IsGr 𝒜) {d : Deg k} {s : R} (hs : s ∈ 𝒜 d) :
     F.IsHomSub (LinearMap.range (LinearMap.lsmul R F.M s)) := by
@@ -371,9 +365,9 @@ theorem range_isHomSub (hF : F.IsGr 𝒜) {d : Deg k} {s : R} (hs : s ∈ 𝒜 d
   exact this.symm
 
 /- English proof (translation)
-Set `` to `hF.internal.chooseDecomposition`. Use `isHomSub_of_comp_mem F ?_` and prove the remaining obligations. Introduce `x hx m`. Establish `hx' : s • x = 0` using `hx`. Use `comp_smul 𝒜 F hF.smul_mem hs x m` as an intermediate fact.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hx']`. Use `show s • (decompose F.gr x m : F.M) = 0`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_isHomSub (hF : F.IsGr 𝒜) {d : Deg k} {s : R} (hs : s ∈ 𝒜 d) :
     F.IsHomSub (LinearMap.ker (LinearMap.lsmul R F.M s)) := by
@@ -389,7 +383,7 @@ theorem ker_isHomSub (hF : F.IsGr 𝒜) {d : Deg k} {s : R} (hs : s ∈ 𝒜 d) 
 end Main
 
 /- English proof (translation)
-Introduce `k X F hF`. Establish `: IsNoetherianRing X.R` using `Std.isNoetherianRing X.𝒜 X.std`. Use `⟨fun N hN => ⟨sub_isGr X.𝒜 hF hN, quo_isGr X.𝒜 hF hN⟩, fun d => shift_isGr X.𝒜 hF d, fun d s hs => ⟨quo_isGr X.𝒜 hF (range_isHomSub X.𝒜 hF hs), shift_isGr X.𝒜 (sub_isGr X.𝒜 hF (ker_isHomSub X.𝒜 hF hs)) d⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ruleGr : RuleGr := by
   intro k X F hF

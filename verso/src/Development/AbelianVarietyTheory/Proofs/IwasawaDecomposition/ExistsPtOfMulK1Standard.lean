@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.TopCh.KStd
 
 /- English proof (translation)
-Introduce `t ht`. Establish `h1` using `principal_le_congruence_subgroup B.sp.cm n ST SG ht`. Unfold `J0 at h1 ⊢`. Simplify using `only [Subgroup.mem_inf] at h1 ⊢`. Use `⟨h1.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules.
 -/
@@ -24,9 +24,9 @@ theorem K1_le_J0_empty {B : Base} (n : ℕ) [NeZero n] (ST SG : Finset (HeightOn
   simp
 
 /- English proof (translation)
-Introduce `B n _ ST SG k t ht ⟨p, hp, hN⟩`. Establish `hz : t ∈ J0 B.sp.cm n ∅` using `K1_le_J0_empty n ST SG ht`. Establish `h2` using `(isPtOf_mul_J0 B.host.F B.host.E B.sp.cm n ∅ ∅ ∅ k t p p (redG B.sp.cm n ∅ ∅ ⟨t, hz⟩)⁻¹).2.1 rfl hp hz (by rw [inv_inv])`. Establish `e : (((1, (redG B.sp.cm n ∅ ∅ ⟨t, hz⟩)⁻¹, 1) : UF B.fields.E n × GLG B.fields.E n ∅ × GLQ B.fields.E n ∅) • p) = p`. Establish `: (redG B.sp.cm n ∅ ∅ ⟨t, hz⟩)⁻¹ = 1` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `one_smul _ p`. Rewrite `h2` using `[e]`. Conclude with `⟨p, h2, hN⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ptOf_mul_K1 : ∀ {B : Base} (n : ℕ) [NeZero n] (ST SG : Finset (HeightOneSpectrum (𝓞 B.host.E))) (k t : GA B n), t ∈ K1 B.sp.cm n ST SG → (∃ p : DecoF B.fields.E n ∅ ∅ ∅, PtOf k p ∧ p.deco.1.N = stdLat B.fields.E n) → ∃ p : DecoF B.fields.E n ∅ ∅ ∅, PtOf (k * t) p ∧ p.deco.1.N = stdLat B.fields.E n := by
   intro B n _ ST SG k t ht ⟨p, hp, hN⟩

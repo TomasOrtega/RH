@@ -7,9 +7,9 @@ namespace LateralTheory.E.GluedCurveChartOverlaps
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply `IsZariskiLocalAtTarget.of_openCover (Scheme.Pullback.openCoverOfLeftRight U U f f)` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Rewrite using `[← MorphismProperty.cancel_left_of_respectsIso @IsClosedImmersion (pullbackDiagonalMapIdIso (U.f i) (U.f j) f).inv]`. Establish `e : (pullbackDiagonalMapIdIso (U.f i) (U.f j) f).inv ≫ (Scheme.Pullback.openCoverOfLeftRight U U f f).pullbackHom (pullback.diagonal f) (i, j) = pullback.map (U.f i) (U.f j) (U.f i ≫ f) (U.f j ≫ f) (𝟙 _) (𝟙 _) f (by simp) (by simp)`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `apply pullback.hom_ext <;> simp only [Scheme.Cover.pullbackHom, Category.assoc, limit.lift_π, PullbackCone.mk_π_app, pullback.lift_fst, pullback.lift_snd, Category.comp_id]`. Conclude with `pullbackDiagonalMapIdIso_inv_snd_fst (U.f i) (U.f j) f`. Conclude with `pullbackDiagonalMapIdIso_inv_snd_snd (U.f i) (U.f j) f`. Rewrite using `[e]`. Conclude with `H i j`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_of_cover {X S : Scheme.{0}} (f : X ⟶ S) (U : X.OpenCover)
     (H : ∀ i j, IsClosedImmersion (pullback.map (U.f i) (U.f j) (U.f i ≫ f) (U.f j ≫ f) (𝟙 _) (𝟙 _) f
@@ -29,9 +29,9 @@ theorem sep_of_cover {X S : Scheme.{0}} (f : X ⟶ S) (U : X.OpenCover)
   rw [e]; exact H i j
 
 /- English proof (translation)
-Substitute `hga hgb` using the available equality. Establish `e : pullback.map ia ib (ia ≫ f) (ib ≫ f) (𝟙 _) (𝟙 _) f (by simp) (by simp) = hp.isoPullback.inv ≫ pullback.lift pa pb w`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.comp_id, Category.assoc, pullback.lift_fst, IsPullback.isoPullback_inv_fst]`. Rewrite using `[pullback.lift_snd, Category.comp_id, Category.assoc, pullback.lift_snd, IsPullback.isoPullback_inv_snd]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closed_of_pb {X S W P Q : Scheme.{0}} (f : X ⟶ S) (ia : P ⟶ X) (ib : Q ⟶ X) (pa : W ⟶ P)
     (pb : W ⟶ Q) (hp : IsPullback pa pb ia ib) (ga : P ⟶ S) (gb : Q ⟶ S) (hga : ia ≫ f = ga)
@@ -53,7 +53,7 @@ def LeafGluePullback : Prop := ∀ (Ω L : Type) [Field Ω] [Field L] [Algebra �
     G.iA G.iB
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem spec_w {Ω L : Type} [Field Ω] [Field L] [Algebra Ω L] (A B D : Subalgebra Ω L) (hA : A ≤ D) (hB : B ≤ D) :
     Spec.map (CommRingCat.ofHom (Subalgebra.inclusion hA).toRingHom) ≫
@@ -67,18 +67,16 @@ def LeafSpecGenClosed : Prop := ∀ (Ω L : Type) [Field Ω] [Field L] [Algebra 
   IsClosedImmersion (pullback.lift _ _ (spec_w A B D hA hB))
 
 /- English proof (translation)
-The claim follows from `Algebra.adjoin_mono (Set.union_subset_union_right _ (Set.singleton_subset_iff.mpr hu))`.
+A detailed English derivation is pending.
 -/
 theorem dr_le {Ω L : Type} [Field Ω] [Field L] [Algebra Ω L] (A B : Subalgebra Ω L) (u : L) (hu : u⁻¹ ∈ B) :
     Dr Ω A u ≤ Algebra.adjoin Ω ((A : Set L) ∪ B) :=
   Algebra.adjoin_mono (Set.union_subset_union_right _ (Set.singleton_subset_iff.mpr hu))
 
 /- English proof (translation)
-Introduce `Ω L _ _ _ A B u h G`. Use `haveI := G.hiA`. Use `haveI := G.hiB`. Establish `hD` using `dr_le A B u h.2.2.1`. Apply `sep_of_cover G.c0 (LateralTheory.E.LeafGlueIsProperPf.cov G)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `i j`. Apply the tactic sequence `cases i <;> cases j`. Conclude with `closed_of_pb G.c0 G.iB G.iB (𝟙 _) (𝟙 _) (IsKernelPair.id_of_mono G.iB) _ _ G.hcB G.hcB (by simp) (by exact (inferInstance : IsClosedImmersion (pullback.diagonal (Spec.map (CommRingCat.ofHom (algebraMap Ω B))))))`. Conclude with `closed_of_pb G.c0 G.iB G.iA _ _ (hP Ω L A B u h G).flip _ _ G.hcB G.hcA _ (hC Ω L B A _ _ _ (by rw [Set.union_comm]; exact hD))`. Conclude with `closed_of_pb G.c0 G.iA G.iB _ _ (hP Ω L A B u h G) _ _ G.hcA G.hcB _ (hC Ω L A B _ _ _ hD)`.
-
-Conclude with `closed_of_pb G.c0 G.iA G.iA (𝟙 _) (𝟙 _) (IsKernelPair.id_of_mono G.iA) _ _ G.hcA G.hcA (by simp) (by exact (inferInstance : IsClosedImmersion (pullback.diagonal (Spec.map (CommRingCat.ofHom (algebraMap Ω A))))))`.
+A detailed English derivation is pending.
 -/
 theorem LeafGlueSep_of (hP : LeafGluePullback) (hC : LeafSpecGenClosed) :
     LateralTheory.E.LeafGlueIsProperPf.LeafGlueSep := by

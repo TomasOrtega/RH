@@ -10,7 +10,7 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.exists_cover_root | exact GlobalTheory.OmegaHT.exists_cover_root | (intros; apply GlobalTheory.OmegaHT.exists_cover_root <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.OmegaRootStatement : GlobalTheory.OmegaHT.RootSt := by
   first | exact @GlobalTheory.OmegaHT.exists_cover_root | exact GlobalTheory.OmegaHT.exists_cover_root | (intros; apply GlobalTheory.OmegaHT.exists_cover_root <;> assumption)

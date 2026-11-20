@@ -7,39 +7,33 @@ namespace GroundTheory.Heights₂.Heights
 open Filter Topology
 
 /- English proof (translation)
-Introduce `D f hD hf hinj a ha hder`. Establish `hDa : D ∈ 𝓝 a` using `hD.mem_nhds ha`. Use `set g : ℂ → ℂ := fun z ↦ f z - f a with hg`. Establish `hga : AnalyticAt ℂ g a` using `(hf.analyticAt hDa).sub analyticAt_const`. Establish `hntop : analyticOrderAt g a ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `htop`. Rewrite `htop` using `[analyticOrderAt_eq_top]`. Establish `hev : ∀ᶠ z in 𝓝[≠] a, (g z = 0 ∧ z ∈ D) ∧ z ∈ ({a}ᶜ : Set ℂ)` using `((htop.and (hDa : ∀ᶠ z in 𝓝 a, z ∈ D)).filter_mono nhdsWithin_le_nhds).and self_mem_nhdsWithin`. Take `⟨z, ⟨hz0, hzD⟩, hza⟩` from `hev.exists`. Conclude with `hza (hinj hzD ha (sub_eq_zero.mp hz0))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hntop`. Take `⟨u, hu, hua, hfac⟩` from `hga.analyticOrderAt_eq_natCast.mp hn.symm`. Simplify using `only [smul_eq_mul] at hfac`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hfac.self_of_nhds` as an intermediate fact. Simplify using `[hg] at this`. Conclude with `hua this.symm`. Establish `hn1 : n ≠ 1`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : HasDerivAt (fun z ↦ (z - a) ^ 1 * u z) (u a) a`. Use `((hasDerivAt_id' a).sub_const a).mul hu.differentiableAt.hasDerivAt` as an intermediate fact. Simplify using `only [pow_one]`. Conclude with `this.congr_deriv (by simp)`. Establish `: deriv g a = u a` using `(EventuallyEq.deriv_eq (hfac : g =ᶠ[𝓝 a] fun z ↦ (z - a) ^ 1 * u z)).trans hd.deriv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hg, deriv_sub_const, hder]`. Conclude with `hua this.symm`. Use `set c : ℂ := u a ^ ((n : ℂ)⁻¹) with hc`. Use `set v : ℂ → ℂ := fun z ↦ c * (u z / u a) ^ ((n : ℂ)⁻¹) with hv`. Establish `hva : AnalyticAt ℂ v a` using `analyticAt_const.mul ((hu.div analyticAt_const hua).cpow analyticAt_const (by simp [hua, Complex.one_mem_slitPlane]))`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hvpow : ∀ z, v z ^ n = u z`. Introduce `z`. Rewrite using `[hv, mul_pow, hc, Complex.cpow_nat_inv_pow _ hn0, Complex.cpow_nat_inv_pow _ hn0]`. Clear the denominators using the available nonvanishing facts. Establish `hv0 : v a ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Use `hvpow a` as an intermediate fact. Rewrite `this` using `[h, zero_pow hn0]`. Conclude with `hua this.symm`. Use `set w : ℂ → ℂ := fun z ↦ (z - a) * v z with hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwd : HasDerivAt w (v a) a`. Use `((hasDerivAt_id' a).sub_const a).mul hva.differentiableAt.hasDerivAt` as an intermediate fact. Conclude with `this.congr_deriv (by simp)`. Establish `hwa : w a = 0` using `by simp [hw]`. Establish `hgw : ∀ z, g z = (z - a) ^ n * u z → g z = w z ^ n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Rewrite using `[hz, ← hvpow z, ← mul_pow]`. Establish `hmap : 𝓝 (w a) ≤ map w (𝓝 a)`. Establish `hwan : AnalyticAt ℂ w a` using `(analyticAt_id.sub analyticAt_const).mul hva`. Use `hwan.eventually_constant_or_nhds_le_map_nhds.resolve_left ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hconst`. Establish `h1 : deriv w a = 0`. Rewrite using `[EventuallyEq.deriv_eq (hconst : w =ᶠ[𝓝 a] fun _ ↦ w a)]`. Simplify using the standard rewrite rules. Conclude with `hv0 (hwd.deriv.symm.trans h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.mp (hmap (image_mem_map (inter_mem hDa hfac)))`. Rewrite `hball` using `[hwa]`. Establish `hk : 1 < n` using `by omega`. Use `set ζ : ℂ := Complex.exp (2 * Real.pi * Complex.I / n) with hζ`. Establish `hprim : IsPrimitiveRoot ζ n` using `Complex.isPrimitiveRoot_exp n hn0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set t : ℂ := ((ε / 2 : ℝ) : ℂ) with ht`. Establish `htn : ‖t‖ = ε / 2` using `by rw [ht, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Establish `ht0 : t ≠ 0`. Introduce `h`. Rewrite `htn` using `[h, norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z₁, ⟨hz₁D, hz₁⟩, hw₁⟩` from `hball (by`. Rewrite using `[Metric.mem_ball, dist_zero_right, htn]`. Use the proof step `linarith)`. Take `⟨z₂, ⟨hz₂D, hz₂⟩, hw₂⟩` from `hball (show ζ * t ∈ Metric.ball 0 ε by`.
-
-Rewrite using `[Metric.mem_ball, dist_zero_right, norm_mul, hprim.norm'_eq_one hn0, htn]`. Use the proof step `linarith)`. Establish `hg₁` using `hgw z₁ hz₁`. Establish `hg₂` using `hgw z₂ hz₂`. Rewrite `hg₁` using `[hw₁]`.
-
-Rewrite `hg₂` using `[hw₂, mul_pow, hprim.pow_eq_one, one_mul]`. Establish `hf12 : f z₁ = f z₂`. Establish `: g z₁ = g z₂` using `hg₁.trans hg₂.symm`. Simplify `this` using `[hg]`. Establish `h12` using `hinj hz₁D hz₂D hf12`.
-
-Rewrite `hw₁` using `[h12, hw₂]`. Establish `: (ζ - 1) * t = 0` using `by rw [sub_mul, one_mul, hw₁, sub_self]`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `hprim.ne_one hk (sub_eq_zero.mp h)`. Conclude with `ht0 h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem InjectiveHolomorphicDerivNeZero.proof : InjectiveHolomorphicDerivNeZero.Statement := by
   intro D f hD hf hinj a ha hder

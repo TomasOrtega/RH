@@ -5,7 +5,7 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Polynomial Matrix
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_eq_sum_range, Matrix.trace_sum, Finset.sum_range_succ', Finset.sum_eq_zero]`. Simplify using `[Matrix.trace_one]`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.mp hi`. Rewrite using `[Matrix.trace_smul, hN (i + 1) (by omega) (by omega), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unip_trace_aeval_zero {K : Type*} [Field K] {r : ℕ} (N : Matrix (Fin r) (Fin r) K)
     (hN : ∀ k, 1 ≤ k → k ≤ r → (N ^ k).trace = 0) (P : K[X]) (hP : P.natDegree ≤ r) :
@@ -17,13 +17,11 @@ theorem unip_trace_aeval_zero {K : Type*} [Field K] {r : ℕ} (N : Matrix (Fin r
     rw [Matrix.trace_smul, hN (i + 1) (by omega) (by omega), smul_zero]
 
 /- English proof (translation)
-Use `set f := Matrix.toLin' E with hfdef`. Establish `hf : LinearMap.IsProj (LinearMap.range f) f`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Conclude with `LinearMap.mem_range_self f x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨y, rfl⟩` from `hx`. Simplify using `only [hfdef, Matrix.toLin'_apply, Matrix.mulVec_mulVec, hE]`. Establish `htr : LinearMap.trace K _ f = E.trace`. Rewrite using `[LinearMap.trace_eq_matrix_trace K (Pi.basisFun K (Fin r)), LinearMap.toMatrix_eq_toMatrix', hfdef, LinearMap.toMatrix'_toLin']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ((Module.finrank K (LinearMap.range f) : ℕ) : K) = 0`. Rewrite using `[← hf.trace, htr, ht]`. Establish `h1 : Module.finrank K (LinearMap.range f) = 0` using `by exact_mod_cast h0`. Establish `h2 : LinearMap.range f = ⊥` using `Submodule.finrank_eq_zero.mp h1`. Establish `h3 : f = 0` using `LinearMap.range_eq_bot.mp h2`.
-
-Conclude with `Matrix.toLin'.injective (h3.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unip_idem_eq_zero {K : Type*} [Field K] [CharZero K] {r : ℕ} (E : Matrix (Fin r) (Fin r) K)
     (hE : E * E = E) (ht : E.trace = 0) : E = 0 := by
@@ -46,35 +44,31 @@ theorem unip_idem_eq_zero {K : Type*} [Field K] [CharZero K] {r : ℕ} (E : Matr
   exact Matrix.toLin'.injective (h3.trans (map_zero _).symm)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Conclude with `Subsingleton.elim _ _`. Establish `hint : IsIntegral K N` using `IsIntegral.of_finite K N`. Use `set m := minpoly K N with hm`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : m.Monic` using `minpoly.monic hint`. Establish `hm0 : aeval N m = 0` using `minpoly.aeval K N`. Establish `hmdeg : m.natDegree ≤ r`. Establish `h2` using `Polynomial.natDegree_le_of_dvd (Matrix.minpoly_dvd_charpoly N) (Matrix.charpoly_monic N).ne_zero`. Rewrite `h2` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrK : (r : K) ≠ 0` using `Nat.cast_ne_zero.mpr hr.ne'`. Establish `hmc : m.coeff 0 = 0`. Establish `h` using `unip_trace_aeval_zero N hN m hmdeg`. Rewrite `h` using `[hm0, Matrix.trace_zero]`. Conclude with `(mul_eq_zero.mp h.symm).resolve_right hrK`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hXm : X ∣ m` using `Polynomial.X_dvd_iff.mpr hmc`. Take `⟨q, hq, hXq⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd m hmon.ne_zero 0`. Simplify using `only [map_zero, sub_zero] at hq hXq`. Use `set k := m.rootMultiplicity 0 with hkdef`. Establish `hk : 1 ≤ k`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `hk0 : k = 0` using `by omega`. Rewrite `hq` using `[hk0, pow_zero, one_mul]`. Conclude with `hXq (hq ▸ hXm)`. Establish `hcop : IsCoprime (X ^ k) q` using `((Polynomial.irreducible_X.coprime_iff_not_dvd).mpr hXq).pow_left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, v, huv⟩` from `hcop`. Take `⟨P, hP⟩ : ∃ P : K[X], P = u * X ^ k` from `⟨_, rfl⟩`. Establish `hPP : aeval N P * aeval N P = aeval N P`. Establish `hsub : P - 1 = -(v * q)` using `by rw [hP, ← huv]; ring`. Establish `hfac : P * P - P = -(u * v) * m`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h` using `congrArg (aeval N) hfac`. Rewrite `h` using `[map_sub, map_mul, map_mul, hm0, mul_zero]`. Conclude with `sub_eq_zero.mp h`. Take `⟨P', hP'⟩ : ∃ P' : K[X], P' = P %ₘ m` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : P' + m * (P /ₘ m) = P`. Rewrite using `[hP']`. Use `first`. Consider the case `exact Polynomial.modByMonic_add_div P hmon`. Consider the case `exact Polynomial.modByMonic_add_div P m`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Establish `hPeq : aeval N P' = aeval N P`. Establish `h` using `congrArg (aeval N) hdiv`. Rewrite `h` using `[map_add, map_mul, hm0, zero_mul, add_zero]`. Conclude with `h`. Establish `hP'deg : P'.natDegree ≤ r`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP']`. Use `le_trans ?_ hmdeg` and prove the remaining obligations. Use `first`. Consider the case `exact Polynomial.natDegree_modByMonic_le P hmon`. Consider the case `exact Polynomial.natDegree_modByMonic_le P m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP'0 : P'.coeff 0 = 0`. Establish `h` using `congrArg (fun p => Polynomial.coeff p 0) hdiv`. Simplify using `only [Polynomial.coeff_add, Polynomial.mul_coeff_zero, hmc, zero_mul, add_zero] at h`. Rewrite using `[h, hP, Polynomial.mul_coeff_zero, Polynomial.coeff_X_pow, if_neg (by omega), mul_zero]`. Establish `htr : (aeval N P).trace = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hPeq, unip_trace_aeval_zero N hN P' hP'deg, hP'0, zero_mul]`. Establish `hE : aeval N P = 0` using `unip_idem_eq_zero _ hPP htr`. Establish `hmP : m ∣ P` using `minpoly.dvd K N hE`. Establish `hqu : q ∣ u`. Rewrite `hmP` using `[hq, hP, mul_comm u]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `(mul_dvd_mul_iff_left (pow_ne_zero k Polynomial.X_ne_zero)).mp hmP`. Establish `hq1 : IsUnit q`. Apply `isUnit_of_dvd_one` to reduce the goal to its premises. Rewrite using `[← huv]`. Conclude with `(dvd_mul_of_dvd_left hqu _).add (dvd_mul_left q v)`.
-
-Establish `hNk : N ^ k = 0`. Establish `h` using `hm0`. Rewrite `h` using `[hq, map_mul, map_pow, Polynomial.aeval_X]`. Conclude with `((hq1.map (aeval N)).mul_left_eq_zero).mp h`. Establish `hkm : k ≤ m.natDegree`.
-
-Establish `h` using `Polynomial.natDegree_le_of_dvd ⟨q, hq⟩ hmon.ne_zero`. Rewrite `h` using `[Polynomial.natDegree_X_pow]`. Then use the resulting hypothesis. Conclude with `pow_eq_zero_of_le (le_trans hkm hmdeg) hNk`.
+A detailed English derivation is pending.
 -/
 theorem unip_pow_card_eq_zero {K : Type*} [Field K] [CharZero K] {r : ℕ} (N : Matrix (Fin r) (Fin r) K)
     (hN : ∀ k, 1 ≤ k → k ≤ r → (N ^ k).trace = 0) : N ^ r = 0 := by

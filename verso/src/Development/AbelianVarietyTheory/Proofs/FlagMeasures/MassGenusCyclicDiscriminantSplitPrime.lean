@@ -21,9 +21,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hp τ x hne` as an intermediate fact. Rewrite `this` using `[hx x]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Assume the negation of the conclusion as `hne`. Use `hp τ x hne` as an intermediate fact. Rewrite `this` using `[hx x]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nondeg_of_pd (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : PD h) : h.Nondegenerate := by
   obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance
@@ -39,13 +39,11 @@ theorem nondeg_of_pd (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : PD h) : h.Nondegen
 
 omit [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Take `⟨e, -, hsp, -, he⟩` from `hI`. Introduce `τ x hx`. Establish `hx' : x ∈ Submodule.span K (Set.range e)` using `by rw [hsp]; trivial`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx'`. Establish `hc : ∃ i, c i ≠ 0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `hx (by simp [hn])`. Establish `e1 : h (∑ i, c i • e i) (∑ i, c i • e i) = ∑ i, star (c i) * c i`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, he, smul_eq_mul, RingHom.id_apply, starRingEnd_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`. Rewrite using `[e1, map_sum, Complex.re_sum]`. Establish `e2 : ∀ i, (τ (star (c i) * c i)).re = Complex.normSq (τ (c i))` using `fun i => by`. Rewrite using `[map_mul, hK.2.1, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`. Simplify using `only [e2]`.
-
-Take `⟨i, hi⟩` from `hc`. Conclude with `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.2 ((map_ne_zero τ).2 hi)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pd_of_ortho (hK : IsCMUnram K) (h : V →ₗ⋆[K] V →ₗ[K] K) (I : Submodule (𝓞 K) V) (n : ℕ)
     (hI : IsOrthoLattice h I n) : PD h := by
@@ -71,7 +69,7 @@ theorem pd_of_ortho (hK : IsCMUnram K) (h : V →ₗ⋆[K] V →ₗ[K] K) (I : S
 
 omit [NumberField K] in
 /- English proof (translation)
-Establish `: IsIntegral ℤ (starRingEnd K (algebraMap (𝓞 K) K r))` using `map_isIntegral_int _ (RingOfIntegers.isIntegral_coe r)`. Conclude with `⟨⟨_, this⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem star_mem_range (r : 𝓞 K) : star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K) := by
   have : IsIntegral ℤ (starRingEnd K (algebraMap (𝓞 K) K r)) :=
@@ -84,11 +82,11 @@ def Over (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) (L M : Submo
 
 omit [NumberField K] in
 /- English proof (translation)
-Take `⟨h1, h2, h3, ⟨e⟩⟩` from `H`. Establish `A` using `final_isomAct (𝓞 K) K V h g.1 g.2 M`. Use `⟨A.2.2.2.2.2 h1, A.2.2.2.1.2 h2, Submodule.map_mono h3, ⟨?_⟩⟩` and prove the remaining obligations. Set `g' : V ≃ₗ[𝓞 K] V` to `(g : V ≃ₗ[K] V).restrictScalars (𝓞 K)`. Set `f : M ≃ₗ[𝓞 K] ↥(g • M)` to `g'.submoduleMap M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `(Submodule.Quotient.equiv _ _ f ?_).symm.trans e` and prove the remaining obligations. Use extensionality with `⟨x, hx⟩`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y.1, hy, congrArg Subtype.val hxy⟩`. Introduce and unpack `⟨y, hy, hxy⟩`. Conclude with `⟨⟨y, h3 hy⟩, hy, Subtype.ext hxy⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem over_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) (g : isom h) (L M : Submodule (𝓞 K) V)
     (H : Over h 𝔓 L M) : Over h 𝔓 (g • L) (g • M) := by
@@ -108,7 +106,7 @@ theorem over_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) (g 
 
 omit [NumberField K] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => by simpa using over_smul h 𝔓 g⁻¹ _ _ H, over_smul h 𝔓 g L M⟩`.
+Supply the required witnesses or components.
 -/
 theorem over_smul_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) (g : isom h) (L M : Submodule (𝓞 K) V) :
     Over h 𝔓 (g • L) (g • M) ↔ Over h 𝔓 L M :=
@@ -119,11 +117,11 @@ noncomputable def up (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) 
 
 omit [NumberField K] in
 /- English proof (translation)
-Establish `key : ∀ (g : isom h) (L : Submodule (𝓞 K) V), g • up h 𝔓 L ≤ up h 𝔓 (g • L)`. Introduce `g L`. Express the relevant statement in the definitionally equal form `Submodule.map _ _ ≤ _`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `sSup_le fun M hM => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Submodule.map_le_iff_le_comap]`. Conclude with `le_sSup (over_smul h 𝔓 g L M hM)`. Use `le_antisymm ?_ (key g L)` and prove the remaining obligations. Establish `h1` using `key g⁻¹ (g • L)`. Rewrite `h1` using `[inv_smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : g • g⁻¹ • up h 𝔓 (g • L) ≤ g • up h 𝔓 L` using `Submodule.map_mono h1`. Rewrite `h2` using `[smul_inv_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem up_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) (g : isom h) (L : Submodule (𝓞 K) V) :
     up h 𝔓 (g • L) = g • up h 𝔓 L := by
@@ -142,7 +140,7 @@ theorem up_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) (g : 
 
 omit [NumberField K] in
 /- English proof (translation)
-Establish `: {M | Over h 𝔓 L M} = {M}`. Use extensionality with `N`. Conclude with `⟨fun hN => hu.unique hN hM, fun hN => by rw [Set.mem_singleton_iff.1 hN]; exact hM⟩`. Rewrite using `[up, this, sSup_singleton]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_eq (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) (L M : Submodule (𝓞 K) V)
     (hu : ∃! M, Over h 𝔓 L M) (hM : Over h 𝔓 L M) : up h 𝔓 L = M := by
@@ -154,27 +152,25 @@ theorem up_eq (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔓 : Ideal (𝓞 K)) (L M : 
 end
 
 /- English proof (translation)
-Introduce `hMM K V _ _ _ _ _ _ _ _ h hK hs hp hn V' _ _ _ _ _ h' hs' I hI T hT hsp L hL hLq`. Establish `hnd` using `nondeg_of_pd h hp`. Establish `hp'` using `pd_of_ortho hK h' I _ hI`. Establish `hnd'` using `nondeg_of_pd h' hp'`. Take `⟨⟨s, hcard, hsP, hcop, hprod⟩, hgen⟩` from `GlobalTheory.T.cyclicDiscriminant_lattices_form_one_genus K V h hK hs hnd T hT hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT0 : (T : 𝓞 K) ≠ 0` using `Nat.cast_ne_zero.2 hT.ne_zero`. Establish `hP0 : (∏ P ∈ s, P) ≠ ⊥`. Introduce `h0`. Rewrite `hprod` using `[h0, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Conclude with `hT0 hprod`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨o1, o2⟩` from `GlobalTheory.T.exists_unimodular_overlattice_cyclic_split_discriminant K V h hK hs hnd _ hP0 hcop`. Rewrite `o1`, `o2` using `[hprod]`. Establish `hex : ∀ N ∈ genus h L, ∃! M, Over h (∏ P ∈ s, P) N M` using `fun N hN => o1 N ((hgen L N hL hLq).1 hN).1 ((hgen L N hL hLq).1 hN).2`. Take `⟨M0, hM0, -⟩` from `o1 L hL hLq`. Take `⟨-, m2, -⟩` from `GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V h hK hs hnd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, m2', m3'⟩` from `GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V' h' hK hs' hnd'`. Take `⟨c, hc⟩` from `hMM K hK _ hn`. Take `⟨iL, iU, iR⟩` from `m3' I _ hI`. Establish `e0 : mass h M0 = mass h' I`. Rewrite using `[hc V h hs hp rfl M0 (m2 M0 hM0.1 hM0.2.1).1, (m2 M0 hM0.1 hM0.2.1).2.2, hc V' h' hs' hp' iR I (m2' I iL iU).1, (m2' I iL iU).2.2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2, b3, b4, -⟩` from `GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp L hL.1`. Take `⟨a1, a2, a3, -, -⟩` from `GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp M0 hM0.1`. Establish `hmaps : Set.MapsTo (up h (∏ P ∈ s, P)) (genus h L) (genus h M0)`. Introduce `N hN`. Take `⟨M, hM, -⟩` from `hex N hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[up_eq h _ N M (hex N hN) hM]`. Conclude with `(GlobalTheory.T.mem_genus_iff_maximalIntegralHermitianLattice K V h hK hs hp M0 M (m2 M0 hM0.1 hM0.2.1).1).2 (m2 M hM.1 hM.2.1).1`. Establish `hfib` using `GlobalTheory.T.orbitStabilizerMass_eq_weightedSum_fibres (isom h) _ _ (genus h L) (genus h M0) (up h (∏ P ∈ s, P)) (up_smul h _) b3 a3 hmaps (fun y hy => b4 y hy.1)`. Use `set B : ℕ := (∑ i ∈ Finset.range (Module.finrank K V), T ^ i) ^ s.card with hB`. Establish `hconst : ∀ M ∈ genus h M0, ((((genus h L) ∩ (up h (∏ P ∈ s, P)) ⁻¹' {M}).encard : ℕ∞) : ℝ≥0∞) = (B : ℝ≥0∞)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `M hM`. Establish `hU : IsUnimodular h M` using `(((final_genusBasic (𝓞 K) K V h hs star_mem_range).2.2 M0 M hM0.1.fg hM.1.fg hM.2).1).1 hM0.2.1`. Establish `hset : (genus h L) ∩ (up h (∏ P ∈ s, P)) ⁻¹' {M} = {N : Submodule (𝓞 K) V | N ≤ M ∧ Nonempty ((↥M ⧸ N.comap M.subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ ∏ P ∈ s, P))}`. Use extensionality with `N`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨hN, hNM⟩`. Take `⟨M1, hM1, -⟩` from `hex N hN`. Establish `: M1 = M` using `(up_eq h _ N M1 (hex N hN) hM1).symm.trans hNM`. Substitute `this` using the available equality. Conclude with `hM1.2.2`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Establish `hN : N ∈ genus h L` using `(hgen L N hL hLq).2 (o2 M N hM.1 hU h1 h2)`. Conclude with `⟨hN, up_eq h _ N M (hex N hN) ⟨hM.1, hU, h1, h2⟩⟩`. Rewrite using `[hset, GlobalTheory.T.card_sublattices_quotient_prod_degree_one_primes K V M hM.1 T s hT hsP]`. Conclude with `ENat.toENNReal_coe _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨p1, p2, -⟩` from `GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (isom h) (Submodule (𝓞 K) V)`. Establish `hsum : orbMass (isom h) (genus h L) = (B : ℝ≥0∞) * orbMass (isom h) (genus h M0)`. Rewrite using `[hfib, ← p2]`. Conclude with `le_antisymm (p1 _ _ _ _ subset_rfl fun x hx => (hconst x hx).le) (p1 _ _ _ _ subset_rfl fun x hx => (hconst x hx).ge)`. Rewrite `hsum` using `[← b1, ← a1, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_eq_ofReal_iff b2.le (by positivity)]`.
-
-Establish `hT1 : (T : ℝ) ≠ 1` using `by exact_mod_cast hT.one_lt.ne'`. Rewrite using `[hsum, e0, hB, hcard, mul_comm, ← geom_sum_eq hT1]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → PD h → 1 ≤ Module.finrank K V → ∀ (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] (h' : V' →ₗ⋆[K] V' →ₗ[K] K), h'.IsSymm → ∀ I : Submodule (𝓞 K) V', IsOrthoLattice h' I (Module.finrank K V) → ∀ T : ℕ, T.Prime → (∀ P : Ideal (𝓞 K), P.IsMaximal → (T : 𝓞 K) ∈ P → Ideal.absNorm P = T ∧ (T : 𝓞 K) ∉ P ^ 2) → ∀ L : Submodule (𝓞 K) V, IsIntLat h L → Nonempty ((↥(dual h L) ⧸ L.comap (dual h L).subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ Ideal.span {(T : 𝓞 K)})) → mass h L = mass h' I * (((T : ℝ) ^ Module.finrank K V - 1) / ((T : ℝ) - 1)) ^ fDeg K := by
   intro hMM K V _ _ _ _ _ _ _ _ h hK hs hp hn V' _ _ _ _ _ h' hs' I hI T hT hsp L hL hLq

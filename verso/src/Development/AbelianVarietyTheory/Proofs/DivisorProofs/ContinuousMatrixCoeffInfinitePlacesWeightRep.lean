@@ -11,13 +11,11 @@ noncomputable section
 namespace GlobalTheory.BCT.TrKer
 
 /- English proof (translation)
-Set `bc` to `fun c => Module.Free.chooseBasis ℂ (M c)`. Set `B` to `Basis.piTensorProduct bc`. Establish `key : ∀ k k', Continuous fun g => B.repr (PiTensorProduct.map (f g) (B k)) k'`. Introduce `k k'`. Simplify using `only [B, Basis.piTensorProduct_apply, PiTensorProduct.map_tprod, Basis.piTensorProduct_repr_tprod_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_finset_prod _ fun c _ => by`. Simplify `hf c (bc c (k c)) ((bc c).coord (k' c))` using `[Module.Basis.coord_apply]`. Establish `h : ∀ g, ℓ (PiTensorProduct.map (f g) u) = ∑ k, ∑ k', B.repr u k * (B.repr (PiTensorProduct.map (f g) (B k)) k' * ℓ (B k'))`. Introduce `g`. Use `conv_lhs => rw [← B.sum_repr u]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr (PiTensorProduct.map (f g) (B k))]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, Finset.mul_sum]`. Repeatedly rewrite using `[h]`.
-
-Conclude with `continuous_finset_sum _ fun k _ => continuous_finset_sum _ fun k' _ => continuous_const.mul ((key k k').mul continuous_const)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coef_piTensorMap {X ι : Type} [TopologicalSpace X] [Fintype ι] {M : ι → Type}
     [∀ c, AddCommGroup (M c)] [∀ c, Module ℂ (M c)] [∀ c, Module.Finite ℂ (M c)]
@@ -46,7 +44,7 @@ theorem continuous_coef_piTensorMap {X ι : Type} [TopologicalSpace X] [Fintype 
     continuous_const.mul ((key k k').mul continuous_const)
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `GlobalTheory.Branching.exists_coef_sqRep n mu x ℓ`. Simplify using `only [hP]`. Conclude with `(Units.continuous_val.matrix_det.zpow₀ _ fun a : GL (Fin n) ℂ => Or.inl (Matrix.GeneralLinearGroup.det a).ne_zero).mul ((MvPolynomial.continuous_eval P).comp (continuous_pi fun i => Units.continuous_val.matrix_elem i.1 i.2))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_coef_sqRep (n : ℕ) (mu : DomWeight n) (x : nablaSq ℂ n mu) (ℓ : Module.Dual ℂ (nablaSq ℂ n mu)) :
     Continuous fun a : GL (Fin n) ℂ => ℓ (GlobalTheory.Branching.sqRep ℂ n mu a x) := by
@@ -57,7 +55,7 @@ theorem continuous_coef_sqRep (n : ℕ) (mu : DomWeight n) (x : nablaSq ℂ n mu
     ((MvPolynomial.continuous_eval P).comp (continuous_pi fun i => Units.continuous_val.matrix_elem i.1 i.2))
 
 /- English proof (translation)
-Introduce `E _ _ _ n lam u ℓ`. Conclude with `continuous_coef_piTensorMap (fun g v => GlobalTheory.Branching.sqRep ℂ n (lam v) (cEmb v.embedding g)) (fun v x ℓ' => (continuous_coef_sqRep n (lam v) x ℓ').comp (GlobalTheory.AutRec.continuous_cEmb_emb _)) u ℓ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_coef_wInf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     (lam : InfinitePlace E → DomWeight n) (u : Wsp lam) (ℓ : Module.Dual ℂ (Wsp lam)),

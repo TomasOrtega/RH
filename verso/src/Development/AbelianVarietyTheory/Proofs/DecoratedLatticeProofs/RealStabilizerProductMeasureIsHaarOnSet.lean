@@ -24,9 +24,9 @@ open Formalism.L2.SG.Pf Formalism.L2.SG.Pf.Sinf Formalism.L2.SG.PoincareInHH.Poi
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Establish `hNc : IsClosed (X.NinfU u)` using `isClosed_ninfU X u`. Establish `hHc : IsCompact ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)` using `hinf_compact X u`. Take `⟨-, hfin, hpos⟩` from `haarOnSet_isHaar_inst X.B.I (NinfSub X.eR (X.zR u)) (isClosed_ninfU X u) (X.muN u) (X.muN_haar u)`. Establish `hgN : QPK.IsGrp (X.NinfU u)` using `⟨(NinfSub X.eR (X.zR u)).one_mem, fun a ha b hb => (NinfSub X.eR (X.zR u)).mul_mem ha hb, fun a ha => (NinfSub X.eR (X.zR u)).inv_mem ha⟩`. Establish `hgH : QPK.IsGrp ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)` using `⟨(Hinf X u).one_mem, fun a ha b hb => (Hinf X u).mul_mem ha hb, fun a ha => (Hinf X u).inv_mem ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `QPK.conjugation_invariant_measure X.B.I.Ginf (X.NinfU u) _ hNc hHc hgN hgH (fun h hh m hm => conj_ninf X u hh hm) (X.muN u) (X.muN_haar u) ⟨fun K hK => hfin K hK⟩ (fun U hU hne => (hpos U hU hne).ne') h hh`.
+A detailed English derivation is pending.
 -/
 theorem muN_conj (h : X.B.I.Ginf) (hh : h ∈ Hinf X u) :
     (X.muN u).map (fun x => h * x * h⁻¹) = X.muN u := by
@@ -44,11 +44,9 @@ theorem muN_conj (h : X.B.I.Ginf) (hh : h ∈ Hinf X u) :
     (fun U hU hne => (hpos U hU hne).ne') h hh
 
 /- English proof (translation)
-Use `haveI := (X.muN_haar u).1`. Use `haveI := (X.muH_haar u).1`. Establish `hmul : Measurable (fun p : X.B.I.Ginf × X.B.I.Ginf => p.1 * p.2)` using `measurable_fst.mul measurable_snd`. Use `set L : Set X.B.I.Ginf := (K * ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)⁻¹) ∩ X.NinfU u with hL`. Establish `hLc : IsCompact L` using `(hK.mul (hinf_compact X u).inv).inter_right (isClosed_ninfU X u)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Measure.map_apply hmul hK.isClosed.measurableSet]`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_NH X u] with p hp hpK`. Use `⟨⟨?_, hp.1⟩, Set.mem_univ _⟩` and prove the remaining obligations.
-
-Establish `e : p.1 = (p.1 * p.2) * p.2⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `Set.mul_mem_mul hpK (Set.inv_mem_inv.2 hp.2)`. Use `_ = X.muN u L * X.muH u Set.univ := Measure.prod_prod _ _`. Use `_ < ⊤ := ENNReal.mul_lt_top (muN_compact X u hLc) (hFinite_holds X u)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muS_compact {K : Set X.B.I.Ginf} (hK : IsCompact K) :
     ((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2) K < ⊤ := by
@@ -70,17 +68,15 @@ theorem muS_compact {K : Set X.B.I.Ginf} (hK : IsCompact K) :
     _ < ⊤ := ENNReal.mul_lt_top (muN_compact X u hLc) (hFinite_holds X u)
 
 /- English proof (translation)
-Introduce `D X u`. Take `⟨hNσ, hN0, -, hNinv⟩` from `X.muN_haar u`. Take `⟨hHσ, hH0, -, hHinv⟩` from `X.muH_haar u`. Use `haveI := hNσ`. Use `haveI := hHσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmul : Measurable (fun p : X.B.I.Ginf × X.B.I.Ginf => p.1 * p.2)` using `measurable_fst.mul measurable_snd`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsFiniteMeasureOnCompacts (((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2)) := ⟨fun K hK => muS_compact X u hK⟩ infer_instance`. Introduce `h0`. Establish `h1` using `congrArg (fun μ : Measure X.B.I.Ginf => μ Set.univ) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Measure.map_apply hmul MeasurableSet.univ, Set.preimage_univ, Measure.coe_zero, Pi.zero_apply] at h1`. Rewrite `h1` using `[← Set.univ_prod_univ, Measure.prod_prod, mul_eq_zero, Measure.measure_univ_eq_zero, Measure.measure_univ_eq_zero]`. Conclude with `h1.elim hN0 hH0`. Conclude with `ae_iff.1 (Formalism.L2.SG.WuDecayPf.muSOn X u)`. Introduce `s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨h0, hh0, n0, hn0, rfl⟩` from `levi X u hs`. Establish `hf : (X.muN u).map (fun x => h0 * (n0 * x) * h0⁻¹) = X.muN u`. Establish `e : (fun x => h0 * (n0 * x) * h0⁻¹) = (fun x => h0 * x * h0⁻¹) ∘ (fun x => n0 * x)` using `rfl`. Rewrite using `[e, ← Measure.map_map (by fun_prop) (by fun_prop), hNinv n0 hn0, muN_conj X u h0 hh0]`. Establish `hg : (X.muH u).map (fun y => h0 * y) = X.muH u` using `hHinv h0 hh0`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfm : Measurable (fun x : X.B.I.Ginf => h0 * (n0 * x) * h0⁻¹)` using `by fun_prop`. Establish `hgm : Measurable (fun y : X.B.I.Ginf => h0 * y)` using `by fun_prop`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `p`.
-
-Simplify using `only [Function.comp, Prod.map]`. Use `group`. Use `_ = (((X.muN u).prod (X.muH u)).map (Prod.map (fun x => h0 * (n0 * x) * h0⁻¹) (fun y => h0 * y))).map (fun p => p.1 * p.2) := (Measure.map_map hmul (hfm.prodMap hgm)).symm`. Use `_ = (((X.muN u).map (fun x => h0 * (n0 * x) * h0⁻¹)).prod ((X.muH u).map (fun y => h0 * y))).map (fun p => p.1 * p.2) := by rw [Measure.map_prod_map _ _ hfm hgm]`. Use `_ = ((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2) := by rw [hf, hg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem muS_isHaarOnSet : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word),
     IsHaarOnSet X.B.I (X.SinfU u) (((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2)) := by

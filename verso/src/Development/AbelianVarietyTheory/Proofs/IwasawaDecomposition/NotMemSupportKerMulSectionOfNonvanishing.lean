@@ -19,11 +19,11 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 namespace GlobalTheory.KernelCut
 
 /- English proof (translation)
-Establish `hmono : Mono ((kernel.ι φ).app V)`. Establish `h1 : Mono ((Scheme.Modules.toPresheaf Y).map (kernel.ι φ))` using `inferInstance`. Conclude with `(NatTrans.mono_iff_mono_app _).1 h1 (Opposite.op V)`. Establish `hinj` using `(AddCommGrpCat.mono_iff_injective _).1 hmono`. Establish `key : ∀ c : Γ(kernel φ, V), c = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `hφ` to reduce the goal to its premises. Establish `h2 : (kernel.ι φ ≫ φ).app V c = 0` using `by simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply]`. Conclude with `h2`. Conclude with `⟨fun a b => by rw [key a, key b]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem subsingleton_kernel_sections_of_app_injective {Y : Scheme.{0}} {M N : Y.Modules} (φ : M ⟶ N)
     (V : Y.Opens) (hφ : ∀ t, φ.app V t = 0 → t = 0) : Subsingleton Γ(kernel φ, V) := by
@@ -42,9 +42,9 @@ private theorem subsingleton_kernel_sections_of_app_injective {Y : Scheme.{0}} {
   exact ⟨fun a b => by rw [key a, key b]⟩
 
 /- English proof (translation)
-Unfold `support`. Simplify using `only [Set.mem_ofPred_eq, not_nontrivial_iff_subsingleton]`. Establish `key : ∀ c : K.presheaf.stalk x, c = 0`. Introduce `c`. Take `⟨U, hxU, t, rfl⟩` from `K.presheaf.exists_germ_eq c`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← K.presheaf.germ_res_apply (homOfLE (inf_le_left : U ⊓ W ≤ U)) x ⟨hxU, hxW⟩ t]`. Use `h (U ⊓ W) inf_le_right` as an intermediate fact. Rewrite using `[Subsingleton.elim (K.presheaf.map (homOfLE (inf_le_left : U ⊓ W ≤ U)).op t) 0, map_zero]`. Conclude with `⟨fun a b => by rw [key a, key b]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem notMem_support_of_subsingleton_sections {Y : Scheme.{0}} (K : Y.Modules) {x : Y} (W : Y.Opens)
     (hxW : x ∈ W) (h : ∀ V : Y.Opens, V ≤ W → Subsingleton Γ(K, V)) : x ∉ support K := by
@@ -59,13 +59,13 @@ private theorem notMem_support_of_subsingleton_sections {Y : Scheme.{0}} (K : Y.
   exact ⟨fun a b => by rw [key a, key b]⟩
 
 /- English proof (translation)
-Introduce `Y L hL s G _ x hx`. Establish `hx' : x ∈ ⨆ k, Y.basicOpen (s.f k)`. Unfold `Out.nonzeroLocus at hx`. Conclude with `hx`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : Y.basicOpen (s.f k) ≤ Out.nonzeroLocus s`. Unfold `Out.nonzeroLocus`. Conclude with `le_iSup (fun j => Y.basicOpen (s.f j)) k`. Use `notMem_support_of_subsingleton_sections _ (Y.basicOpen (s.f k)) hk fun V hV => ?_` and prove the remaining obligations. Establish `hVU : V ≤ L.U k` using `hV.trans (Y.basicOpen_le _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmb` using `isMulBy_cutHom G hL s`. Take `⟨e, he⟩` from `hmb k V hVU`. Establish `hunit : IsUnit (resG Y hVU (s.f k))`. Establish `h3` using `isUnit_resG_zfun (zofSec s) k hVU (by rw [nonzeroLocus_zofSec hL s]; exact hV.trans hle)`. Simplify using `using h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `subsingleton_kernel_sections_of_app_injective _ V fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[he]`. Establish `h4 : e t = 0` using `hunit.smul_eq_zero.1 ht`. Conclude with `e.injective (h4.trans e.map_zero.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem notMem_support_kernel_cutHom : ∀ {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (s : L.Sec) (G : Y.Modules) [G.IsQuasicoherent], ∀ x ∈ Out.nonzeroLocus s, x ∉ support (kernel (cutHom G hL s)) := by
   intro Y L hL s G _ x hx

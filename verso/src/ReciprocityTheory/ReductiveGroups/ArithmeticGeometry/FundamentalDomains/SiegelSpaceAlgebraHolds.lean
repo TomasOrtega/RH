@@ -7,7 +7,7 @@ namespace ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-The claim follows from `BoundedSectionAlgebra.siegelSpaceAlgebra_of moderateCoefficientPositivity_holds coefficientConvolution_holds`.
+A detailed English derivation is pending.
 -/
 theorem siegelSpaceAlgebra_holds : SiegelSpaceAlgebra (E := E) := BoundedSectionAlgebra.siegelSpaceAlgebra_of moderateCoefficientPositivity_holds coefficientConvolution_holds
 

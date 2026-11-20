@@ -5,75 +5,65 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `l _ 𝔞 Γ _ _ r u pr g0 ν hs h2 hν hr hu X u' hX hu' hoff hdiag h00 hdet`. Establish `gspAdj : ∀ {R : Type} [CommRing R] (μ : R) (g : M4 R), IsUnit μ → IsGSp μ g → IsGSp μ (adj g)`. Introduce `R _ μ g hμ hg`. Take `⟨c, rfl⟩` from `hμ`. Establish `hg' : adj g * g = (c : R) • (1 : M4 R)` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (((c⁻¹ : Rˣ) : R) • adj g) * g = 1`. Rewrite using `[Matrix.smul_mul, hg', smul_smul, Units.inv_mul, one_smul]`. Establish `h2 : g * (((c⁻¹ : Rˣ) : R) • adj g) = 1` using `mul_eq_one_comm.mp h1`. Use `show adj (adj g) * adj g = (c : R) • (1 : M4 R)`. Rewrite using `[adj_adj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_smul, smul_smul, Units.mul_inv, one_smul]`. Use `_ = (c : R) • (1 : M4 R) := by rw [h2]`. Take `⟨S, _, _, _, f, P₁, hf, hc, hmap⟩` from `hs`. Use `haveI := hf.complete`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hf.loc`. Establish `unitS : ∀ x : S, IsUnit (f x) ↔ IsUnit x` using `fun x => isUnit_map_iff f x`. Establish `memS : ∀ x : S, x ∈ maximalIdeal S ↔ f x ∈ maximalIdeal 𝔞.V`. Introduce `x`. Rewrite using `[IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, unitS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr_eq : ∀ g, r g = (P₁.r g).map f`. Introduce `g`. Use `congrArg (fun P : PD Unit Γ 𝔞.V => P.r g) hmap` as an intermediate fact. Conclude with `this.symm`. Establish `hu_eq : u = (P₁.n ()).map f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (fun P : PD Unit Γ 𝔞.V => P.n ()) hmap` as an intermediate fact. Conclude with `this.symm`. Establish `gspDown : ∀ (g : M4 S) (μ : S), IsGSp (f μ) (g.map f) → IsGSp μ g`. Introduce `g μ h`. Establish `h' : adj (g.map f) * g.map f = f μ • (1 : M4 𝔞.V)` using `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h'` using `[adj_map, ← Matrix.map_mul]`. Use `show adj g * g = μ • (1 : M4 S)`. Use `Matrix.ext fun i j => hf.inj ?_` and prove the remaining obligations. Use `congrFun (congrFun h' i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Use `set w₁ := wM S pr with hw₁`. Use `set r₀ := P₁.r g0 with hr₀def`. Use `set u₁ := P₁.n () with hu₁def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hwmap : wM 𝔞.V pr = w₁.map f` using `(wM_map f pr).symm`. Establish `hXmap : X = (adj w₁ * r₀ * w₁).map f`. Rewrite using `[hX, hr_eq, hwmap, adj_map, Matrix.map_mul, Matrix.map_mul]`. Establish `hu'map : u' = (adj w₁ * u₁).map f`. Rewrite using `[hu', hu_eq, hwmap, adj_map, Matrix.map_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set ν₁ := (adj r₀ * r₀) 0 0 with hν₁def`. Establish `hE : (adj r₀ * r₀).map f = ν • (1 : M4 𝔞.V)`. Rewrite using `[Matrix.map_mul, ← adj_map, ← hr_eq]`. Conclude with `hr`. Establish `hν₁ : f ν₁ = ν`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun hE 0) 0` as an intermediate fact. Simplify using `using this`. Establish `hr₀ : IsGSp ν₁ r₀`. Apply `gspDown` to reduce the goal to its premises. Rewrite using `[hν₁, ← hr_eq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr`. Establish `hu₁ : IsGSp 1 u₁`. Apply `gspDown` to reduce the goal to its premises. Rewrite using `[map_one, ← hu_eq]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h2S : IsUnit (2 : S)` using `(unitS 2).mp (by rw [map_ofNat]; exact h2)`. Establish `hνS : IsUnit ν₁` using `(unitS ν₁).mp (hν₁ ▸ hν)`. Establish `hadjw₁ : IsGSp 1 (adj w₁)` using `gspAdj 1 w₁ isUnit_one (wM_sp pr)`. Establish `hX₁ : IsGSp ν₁ (adj w₁ * r₀ * w₁)`. Use `gsp_mul (gsp_mul hadjw₁ hr₀) (wM_sp (R := S) pr)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hoff₁ : ∀ i j, i ≠ j → (adj w₁ * r₀ * w₁) i j ∈ maximalIdeal S`. Introduce `i j hij`. Rewrite using `[memS]`. Use `hoff i j hij` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hXmap]`. Conclude with `this`. Establish `hd₁ : ∀ i j, i ≠ j → IsUnit ((adj w₁ * r₀ * w₁) i i - (adj w₁ * r₀ * w₁) j j)`. Introduce `i j hij`. Rewrite using `[← unitS]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hdiag i j hij` as an intermediate fact. Rewrite `this` using `[hXmap]`. Simplify using `using this`. Take `⟨v₁, hv₁, hv₁m, hv₁d, -⟩` from `normal S ν₁ (adj w₁ * r₀ * w₁) h2S hX₁ hoff₁ hd₁ hνS`. Establish `hcg : Cg (maximalIdeal S) v₁ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Use `hv₁m i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply]`. Then use the resulting hypothesis. Establish `hadjv : Cg (maximalIdeal S) (adj v₁) 1`. Use `Cg.adj hcg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[adj_one]`. Then use the resulting hypothesis. Establish `hcgu : Cg (maximalIdeal S) (adj v₁ * (adj w₁ * u₁)) (adj w₁ * u₁)`. Use `Cg.mul hadjv (Cg.refl (adj w₁ * u₁))` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hq : ∀ i j, Ideal.Quotient.mk (maximalIdeal S) ((adj v₁ * (adj w₁ * u₁)) i j) = Ideal.Quotient.mk (maximalIdeal S) ((adj w₁ * u₁) i j)` using `fun i j => Ideal.Quotient.eq.mpr (hcgu i j)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `unitOf : ∀ a b : S, Ideal.Quotient.mk (maximalIdeal S) a = Ideal.Quotient.mk (maximalIdeal S) b → IsUnit b → IsUnit a`. Introduce `a b hab hb`. Assume the negation of the conclusion as `ha`. Establish `ha' : a ∈ maximalIdeal S` using `(IsLocalRing.mem_maximalIdeal a).mpr ha`. Establish `hb' : b ∈ maximalIdeal S`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd` using `Ideal.Quotient.eq.mp hab`. Use `(maximalIdeal S).sub_mem ha' hd` as an intermediate fact. Simplify using `using this`. Conclude with `(IsLocalRing.mem_maximalIdeal b).mp hb' hb`. Establish `h00₁ : IsUnit ((adj w₁ * u₁) 0 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← unitS]`. Rewrite `h00` using `[hu'map]`. Conclude with `h00`. Establish `hdet₁ : IsUnit ((adj w₁ * u₁) 0 0 * (adj w₁ * u₁) 1 1 - (adj w₁ * u₁) 0 1 * (adj w₁ * u₁) 1 0)`. Rewrite using `[← unitS]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hdet` using `[hu'map]`. Simplify using `using hdet`. Establish `h00'' : IsUnit ((adj v₁ * (adj w₁ * u₁)) 0 0)` using `unitOf _ _ (hq 0 0) h00₁`. Establish `hdet'' : IsUnit ((adj v₁ * (adj w₁ * u₁)) 0 0 * (adj v₁ * (adj w₁ * u₁)) 1 1 - (adj v₁ * (adj w₁ * u₁)) 0 1 * (adj v₁ * (adj w₁ * u₁)) 1 0)`. Use `unitOf _ _ ?_ hdet₁` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_sub, map_mul, hq]`. Establish `hg'' : IsGSp 1 (adj v₁ * (adj w₁ * u₁))`. Use `gsp_mul (gspAdj 1 v₁ isUnit_one hv₁) (gsp_mul hadjw₁ hu₁)` as an intermediate fact. Simplify using `using this`. Take `⟨n₁, b₁, hn₁, hb₁, hbu₁, hnb⟩` from `Lab.luSp S _ hg'' h00'' hdet''`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `set p₁ := w₁ * v₁ with hp₁def`. Establish `hp₁ : IsGSp 1 p₁`. Use `gsp_mul (wM_sp (R := S) pr) hv₁` as an intermediate fact. Simplify using `using this`. Establish `hleft : adj p₁ * p₁ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : adj p₁ * p₁ = (1 : S) • (1 : M4 S)` using `hp₁`. Rewrite using `[h, one_smul]`. Establish `hright : p₁ * adj p₁ = 1`. Establish `h : adj (adj p₁) * adj p₁ = (1 : S) • (1 : M4 S)` using `gspAdj 1 p₁ isUnit_one hp₁`. Rewrite `h` using `[adj_adj, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Set `r₂ : Γ →* M4 S` to `{ toFun := fun g => adj p₁ * P₁.r g * p₁ map_one' := by`. Simplify using `only [map_one, mul_one]`. Conclude with `hleft`. Use the proof step `map_mul' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b`. Simplify using `only [map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hright, mul_one]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `_ = adj p₁ * P₁.r a * p₁ * (adj p₁ * P₁.r b * p₁) := by simp only [mul_assoc] }`. Set `P₂ : PD Unit Γ S` to `⟨r₂, fun _ => n₁⟩`. Establish `hcont : P₂.Cont (maximalIdeal S)` using `Lab.contConj Γ S (maximalIdeal S) (fun g => P₁.r g) (adj p₁) p₁ hc`. Establish `hone : ∀ i j, (1 : M4 𝔞.V) i j = f ((1 : M4 S) i j)`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Use `⟨P₂.map f, v₁.map f, b₁.map f, ⟨S, _, _, _, f, P₂, hf, hcont, rfl⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `gsp_map f hv₁` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Introduce `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(memS _).mp (hcg i j)` as an intermediate fact. Rewrite `this` using `[map_sub, ← hone]`. Conclude with `this`. Introduce `g show (adj p₁ * P₁.r g * p₁).map f = _`. Rewrite using `[hr_eq g, hwmap, ← Matrix.map_mul, adj_map, Matrix.map_mul, Matrix.map_mul]`.
-
-Use `show (adj p₁ * r₀ * p₁).map f |>.IsDiag`. Establish `he : adj p₁ * r₀ * p₁ = adj v₁ * (adj w₁ * r₀ * w₁) * v₁`. Rewrite using `[hp₁def, adj_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[he]`.
-
-Conclude with `hv₁d.map (map_zero f)`. Use `show IsLow (n₁.map f)`. Take `⟨hn1, hn2, hn3⟩` from `hn₁`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `gsp_map f hn1` as an intermediate fact.
-
-Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Introduce `i`. Simplify using `[Matrix.map_apply, hn2 i]`. Introduce `i j hij`. Simplify using `[Matrix.map_apply, hn3 i j hij]`.
-
-Use `gsp_map f hb₁` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Introduce `i j hij`. Simplify using `[Matrix.map_apply, hbu₁ i j hij]`. Use `show adj (wM 𝔞.V pr * v₁.map f) * u = n₁.map f * b₁.map f`.
-
-Rewrite using `[hu_eq, hwmap, ← Matrix.map_mul, adj_map, ← Matrix.map_mul, ← Matrix.map_mul, ← hnb]`. Use `congr 1`. Rewrite using `[adj_mul]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lab.exNorm :
     ∀ {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) (Γ : Type) [Group Γ] [TopologicalSpace Γ] (r : Γ →* M4 𝔞.V) (u : M4 𝔞.V) (pr : Bool) (g0 : Γ) (ν : 𝔞.V),

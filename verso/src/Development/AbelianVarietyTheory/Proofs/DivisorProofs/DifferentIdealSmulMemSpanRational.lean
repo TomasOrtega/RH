@@ -4,19 +4,17 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : Module.FinitePresentation (𝓞 K) (𝓞 L) := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Projective (𝓞 K) (𝓞 L) := Module.Flat.projective_of_finitePresentation`. Take `⟨m, F, G, -, -, hFG⟩` from `Module.Finite.exists_comp_eq_id_of_projective (𝓞 K) (𝓞 L)`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid (𝓞 L) (nonZeroDivisors (𝓞 K))) L := IsIntegralClosure.isLocalization (𝓞 K) K L (𝓞 L)`. Establish `hbc : IsBaseChange K (IsScalarTower.toAlgHom (𝓞 K) (𝓞 L) L).toLinearMap` using `IsLocalizedModule.isBaseChange (nonZeroDivisors (𝓞 K)) K _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : Fin m → Module.Dual K L` to `fun i => hbc.lift ((Algebra.linearMap (𝓞 K) K) ∘ₗ (LinearMap.proj i) ∘ₗ G)`. Establish `hf : ∀ i (a : 𝓞 L), f i (a : L) = algebraMap (𝓞 K) K (G a i)` using `fun i a => hbc.lift_eq _ a`. Set `η : Fin m → L` to `fun i => ((Algebra.traceForm K L).toDual (traceForm_nondegenerate K L)).symm (f i)`. Establish `hη : ∀ i t, Algebra.trace K L (η i * t) = f i t` using `fun i t => LinearMap.BilinForm.apply_toDual_symm_apply (hB := traceForm_nondegenerate K L) (f i) t`. Use `⟨m, fun i => F (Pi.single i 1), η, fun i => ?_, fun t => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Submodule.mem_one.mp ha`. Use `⟨G b i, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, hη]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hf i b).symm`. Repeatedly rewrite using `[hη]`. Establish `h` using `hbc.algHom_ext (LinearMap.id : L →ₗ[K] L) (∑ i, (f i).smulRight ((F (Pi.single i 1) : 𝓞 L) : L)) (fun a => by`. Establish `ha : a = ∑ i, G a i • F (Pi.single i 1)`. Establish `h1 : a = F (G a)` using `(LinearMap.congr_fun hFG a).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [h1, LinearMap.pi_apply_eq_sum_univ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(a : L) = (∑ i, (f i).smulRight ((F (Pi.single i 1) : 𝓞 L) : L)) (a : L)`. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, hf, algebraMap_smul]`. Use `conv_lhs => rw [ha]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 L) L _ = _`. Rewrite using `[map_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(IsScalarTower.toAlgHom (𝓞 K) (𝓞 L) L).toLinearMap.map_smul _ _)`. Establish `h2` using `LinearMap.congr_fun h t`. Simplify `h2` using `[LinearMap.sum_apply, Algebra.smul_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_trace_dual_system (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K L] :
@@ -67,27 +65,23 @@ theorem exists_trace_dual_system (K L : Type) [Field K] [NumberField K] [Field L
 
 open NumberField in
 /- English proof (translation)
-Take `⟨N, F, hF⟩` from `Module.Finite.exists_fin' (𝓞 K) (𝓞 L)`. Establish `: Module.FinitePresentation (𝓞 K) (𝓞 L)` using `Module.finitePresentation_of_finite _ _`. Establish `hP : Module.Projective (𝓞 K) (𝓞 L)` using `Module.Flat.projective_of_finitePresentation`. Take `⟨h, hh⟩` from `Module.projective_lifting_property F LinearMap.id hF`. Choose the witnesses or unpack the hypotheses as in `⟨e, hdec⟩ : ∃ e : Fin N → 𝓞 L, ∀ b : 𝓞 L, b = ∑ k, h b k • e k := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun k => F (Pi.single k 1), fun b => ?_⟩` and prove the remaining obligations. Establish `hb` using `LinearMap.congr_fun hh b`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at hb`. Use `conv_lhs => rw [← hb, ← Finset.univ_sum_single (h b)]`. Simplify using `only [map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single k (h b k) : Fin N → 𝓞 K) = h b k • Pi.single k 1 by`. Rewrite using `[← Pi.single_smul', smul_eq_mul, mul_one], map_smul]`. Set `φ : Fin N → (𝓞 L →ₗ[𝓞 K] 𝓞 K)` to `fun k => LinearMap.proj k ∘ₗ h`. Take `⟨ψ, hψ⟩ : ∃ ψ : Fin N → Module.Dual K L, ∀ k (b : 𝓞 L), ψ k (algebraMap (𝓞 L) L b) = algebraMap (𝓞 K) K (h b k)` from `⟨fun k => IsLocalizedModule.mapExtendScalars (nonZeroDivisors (𝓞 K)) (IsScalarTower.toAlgHom (𝓞 K) (𝓞 L) L).toLinearMap (Algebra.linearMap (𝓞 K) K) K (φ k), fun k b => IsLocalizedModule.map_apply (nonZeroDivisors (𝓞 K)) (IsScalarTower.toAlgHom (𝓞 K) (𝓞 L) L).toLinearMap (Algebra. …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB` using `traceForm_nondegenerate K L`. Take `⟨c, hc⟩ : ∃ c : Fin N → L, ∀ k y, Algebra.trace K L (c k * y) = ψ k y` from `⟨fun k => ((Algebra.traceForm K L).toDual hB).symm (ψ k), fun k y => by`. Rewrite using `[← Algebra.traceForm_apply]`. Conclude with `LinearMap.BilinForm.apply_toDual_symm_apply _ _⟩`. Use `clear hh hF F this hP`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hexpO : ∀ b : 𝓞 L, algebraMap (𝓞 L) L b = ∑ k, ψ k (algebraMap (𝓞 L) L b) • algebraMap (𝓞 L) L (e k)`. Introduce `b`. Use `conv_lhs => rw [hdec b]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hψ, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 L) L, IsScalarTower.algebraMap_apply (𝓞 K) K L, Algebra.smul_def]`. Establish `hexp : ∀ y : L, y = ∑ k, ψ k y • algebraMap (𝓞 L) L (e k)`. Introduce `y`. Take `⟨⟨b, s⟩, hbs⟩` from `IsLocalization.surj (Algebra.algebraMapSubmonoid (𝓞 L) (nonZeroDivisors (𝓞 K))) y`. Take `⟨a, ha, has⟩` from `s.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ha0 : algebraMap (𝓞 K) K a ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors ha`. Establish `hy : y = (algebraMap (𝓞 K) K a)⁻¹ • algebraMap (𝓞 L) L b`. Rewrite using `[← hbs, ← has, ← IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 L) L, IsScalarTower.algebraMap_apply (𝓞 K) K L, mul_comm, ← Algebra.smul_def, smul_smul, inv_mul_cancel₀ ha0, one_smul]`. Use `clear hbs has`. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hexpO b]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_assoc]`. Use `⟨N, e, c, fun k => ?_, fun y => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.mem_traceDual]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[Algebra.traceForm_apply]`. Conclude with `⟨h b k, by simpa [hψ, Algebra.smul_def, mul_comm] using (hc k (algebraMap (𝓞 L) L b)).symm⟩`. Rewrite using `[← sub_eq_zero]`.
-
-Use `hB.1 _ fun u => ?_` and prove the remaining obligations. Establish `h1 : Algebra.trace K L (y * u) = ∑ k, Algebra.trace K L (algebraMap (𝓞 L) L (e k) * y) * Algebra.trace K L (c k * u)` using `by conv_lhs => rw [hexp u]`. Simplify using `only [Finset.mul_sum, mul_smul_comm, map_sum, map_smul, smul_eq_mul, hc]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [mul_comm y]; ring`. Simplify using `only [map_sub, map_sum, map_smul, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, Algebra.traceForm_apply, smul_eq_mul, h1]`.
-
-Rewrite using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_integral_traceDual_expansion (K L : Type) [Field K] [NumberField K] [Field L]
     [NumberField L] [Algebra K L] :
@@ -165,15 +159,13 @@ private theorem exists_integral_traceDual_expansion (K L : Type) [Field K] [Numb
 open NumberField in
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ n M hM d hd x hx`. Take `⟨N, e, c, hcD, hswap⟩` from `exists_integral_traceDual_expansion K L`. Establish `hdL : algebraMap (𝓞 L) L d ∈ (1 : Submodule (𝓞 L) L) / Submodule.traceDual (𝓞 K) K 1`. Rewrite using `[← coeSubmodule_differentIdeal (𝓞 K) K (𝓞 L)]`. Conclude with `(IsLocalization.mem_coeSubmodule _ _).mpr ⟨d, hd, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdc : ∀ k, ∃ r : 𝓞 L, algebraMap (𝓞 L) L r = algebraMap (𝓞 L) L d * c k` using `fun k => Submodule.mem_one.mp (Submodule.mem_div_iff_forall_mul_mem.mp hdL _ (hcD k))`. Use `choose r hr using hdc`. Use `set t : Fin N → Fin n → L := fun k i => algebraMap K L (Algebra.trace K L (algebraMap (𝓞 L) L (e k) * x i)) with ht`. Establish `htM : ∀ k, t k ∈ M`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: t k = ∑ σ : L ≃ₐ[K] L, fun i => σ ((e k • x) i)`. Use function extensionality and compare the values at `i`. Simplify using `only [ht, Finset.sum_apply, Pi.smul_apply, trace_eq_sum_automorphisms, Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun σ _ => hM σ _ (M.smul_mem _ hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hdx : d • x = ∑ k, r k • t k`. Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, ht, Algebra.smul_def, hr]`. Use `conv_lhs => rw [hswap (x i)]`. Simplify using `only [Finset.mul_sum, Algebra.smul_def]`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[hdx]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨htM k, fun i => Algebra.trace K L (algebraMap (𝓞 L) L (e k) * x i), rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.differentIdeal_smul_mem_span_rational :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L] (n : ℕ) (M : Submodule (𝓞 L) (Fin n → L)), (∀ (σ : L ≃ₐ[K] L), ∀ x ∈ M, (fun i => σ (x i)) ∈ M) → ∀ d ∈ differentIdeal (𝓞 K) (𝓞 L), ∀ x ∈ M, d • x ∈ Submodule.span (𝓞 L) {y : Fin n → L | y ∈ M ∧ ∃ y0 : Fin n → K, y = fun i => algebraMap K L (y0 i)} := by

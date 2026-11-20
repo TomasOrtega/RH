@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormMapIntegral
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.IntegralUnitBaseChange.Development
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UnitNorm.exists_integral_norm_of_unit_norm_surjective | exact GlobalTheory.CompanionTheory.UnitNorm.exists_integral_norm_of_unit_norm_surjective | (intros; apply GlobalTheory.CompanionTheory.UnitNorm.exists_integral_norm_of_unit_norm_su …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.norm_map_integral_property : PositivityTheory.Rg.Tf.Loc.D0a → PositivityTheory.Rg.Tf.Loc.IntegralBasisUnramified → PositivityTheory.Rg.Tf.Loc.TraceOneIntegralElement → PositivityTheory.Rg.Tf.Loc.N3 → PositivityTheory.Rg.Tf.Loc.N4 := by
   first | exact @GlobalTheory.CompanionTheory.UnitNorm.exists_integral_norm_of_unit_norm_surjective | exact GlobalTheory.CompanionTheory.UnitNorm.exists_integral_norm_of_unit_norm_surjective | (intros; apply GlobalTheory.CompanionTheory.UnitNorm.exists_integral_norm_of_unit_norm_surjective <;> assumption)

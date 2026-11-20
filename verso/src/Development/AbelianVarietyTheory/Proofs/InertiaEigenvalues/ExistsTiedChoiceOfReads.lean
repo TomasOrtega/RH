@@ -18,9 +18,9 @@ def FullRank (D : D7) (E : IntegralHeckeForms.XD D) : Prop :=
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : ∀ i j b, ∃ S : Finset (D.nexp.Dat i j b), D.ntw.NonzeroIndexPlace i → j ∈ Finset.Icc 1 D.R.m → IntegralHeckeForms.BasisOf D.nexp i j b (IntegralHeckeForms.SgJ D.nexp E i j b) S` using `fun i j b => by`. Distinguish the cases in `h : D.ntw.NonzeroIndexPlace i ∧ j ∈ Finset.Icc 1 D.R.m`. Take `⟨S, hS⟩` from `exists_basisOf D.nexp i j b _ (th_fg D.nexp E hT i h.1 j h.2 b)`. Conclude with `⟨S, fun _ _ => hS⟩`. Conclude with `⟨∅, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose S hS using h`. Conclude with `⟨S, fun i hi => ⟨hR i hi, fun j hj b => hS i j b hi hj⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_inputs (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ) (hR : FullRank D E) (hT : IntegralHeckeForms.adm7 D E) :
     ∃ S, ∀ i, D.ntw.NonzeroIndexPlace i → TwIn.Ok ⟨E, N0, S⟩ i := by
@@ -54,19 +54,17 @@ def ExistsData (D : D7) (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ) : 
     ({w | TwistedAt D w}.Finite → ∀ w w' : TwPl D, ¬ OverOnePair D w.1 w'.1 → Apart (t w).2.1 (t w').2.1)
 
 /- English proof (translation)
-Introduce `P hP P' hP' p hp hh` and use `h P' hP' P hP p hp hh.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Apart.symm {Q Q' : Finset (PlE D.host)} (h : Apart Q Q') : Apart Q' Q :=
   fun P hP P' hP' p hp hh => h P' hP' P hP p hp hh.symm
 
 /- English proof (translation)
-Establish `h : (⋃ P' ∈ (B : Set (PlE D.host)), placesOver D.host.E (Ideal.absNorm P'.asIdeal)).Finite` using `B.finite_toSet.biUnion fun P' _ => placesOver_finite_av _ _ (by`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P'.ne_bot)`. Use `⟨h.toFinset, fun Q hQ P hP P' hP' p hp hh => Finset.disjoint_left.1 hQ hP ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_biUnion hP' ?_` and prove the remaining obligations. Establish `h1 : Ideal.absNorm P'.asIdeal ∣ p ^ Module.finrank ℤ (𝓞 D.host.E)`. Establish `h2` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hh.2)`. Rewrite `h2` using `[Ideal.absNorm_span_natCast]`. Then use the resulting hypothesis. Take `⟨n, -, hn⟩` from `(Nat.dvd_prime_pow hp).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `P'.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 hn)`. Use `show ((Ideal.absNorm P'.asIdeal : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[hn, Nat.cast_pow]`.
-
-Conclude with `Ideal.pow_mem_of_mem _ hh.1 _ (Nat.pos_of_ne_zero hn0)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_apart (B : Finset (PlE D.host)) :
     ∃ B' : Finset (PlE D.host), ∀ Q, Disjoint Q B' → Apart Q B := by
@@ -88,15 +86,13 @@ theorem exists_finset_apart (B : Finset (PlE D.host)) :
   exact Ideal.pow_mem_of_mem _ hh.1 _ (Nat.pos_of_ne_zero hn0)
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => choose f hf using fun i => h i ∅`. Conclude with `⟨f, fun i => (hf i).1, by simp⟩`. Consider the case `insert a T ha ih`. Take `⟨f, hf, hf'⟩` from `ih`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hz'⟩` from `h a (T.biUnion fun i => c i (f i))`. Establish `key : ∀ i ∈ T, Apart (c a (Function.update f a z a)) (c i (Function.update f a z i))` using `fun i hi => by`. Rewrite using `[Function.update_self, Function.update_of_ne (by rintro rfl; exact ha hi)]`. Conclude with `fun P hP P' hP' => hz' P hP P' (Finset.mem_biUnion.2 ⟨i, hi, hP'⟩)`. Use `⟨Function.update f a z, fun i => ?_, fun i hi i' hi' hne => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hi]`. Conclude with `hf i`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Finset.mem_insert.1 hi with h1 | h1 <;> rcases Finset.mem_insert.1 hi' with h2 | h2`. Conclude with `absurd (h1.trans h2.symm) hne`. Substitute `h1` using the available equality. Conclude with `key i' h2`. Substitute `h2` using the available equality.
-
-Conclude with `(key i h1).symm`. Rewrite using `[Function.update_of_ne (by rintro rfl; exact ha h1), Function.update_of_ne (by rintro rfl; exact ha h2)]`. Conclude with `hf' i h1 i' h2 hne`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_apart_choice {ι : Type} {Z : ι → Type} (c : ∀ i, Z i → Finset (PlE D.host)) (P : ∀ i, Z i → Prop)
     (h : ∀ i (B : Finset (PlE D.host)), ∃ z, P i z ∧ Apart (c i z) B) (T : Finset ι) :
@@ -125,7 +121,7 @@ theorem exists_apart_choice {ι : Type} {Z : ι → Type} (c : ∀ i, Z i → Fi
 
 open Classical in
 /- English proof (translation)
-Take `⟨⟨h1, h2, h3⟩, h4⟩` from `h`. Simplify using `only [Finset.disjoint_union_right] at h2`. Conclude with `⟨⟨⟨h1, by simp only [Finset.disjoint_union_right]; exact ⟨h2.1, h2.2.1, h2.2.2.1⟩, h3⟩, h4⟩, h2.2.2.2⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem goodTw_union {E : IntegralHeckeForms.XD D} {N0 : D.ntw.Tw → ℕ} {i : D.ntw.Tw} {e : ℝ} {S} {A B Q : Finset (PlE D.host)} {k : ℕ}
     {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ} (h : IntegralHeckeForms.GoodTw D.nexp (BlochKatoReduction.bk0 D) E N0 i e S (A ∪ B) Q k ψ) :
@@ -135,15 +131,15 @@ theorem goodTw_union {E : IntegralHeckeForms.XD D} {N0 : D.ntw.Tw → ℕ} {i : 
   exact ⟨⟨⟨h1, by simp only [Finset.disjoint_union_right]; exact ⟨h2.1, h2.2.1, h2.2.2.1⟩, h3⟩, h4⟩, h2.2.2.2⟩
 
 /- English proof (translation)
-Take `⟨S, hI⟩` from `exists_inputs E N0 hR hT`. Use `⟨S, fun A => ?_⟩` and prove the remaining obligations. Break down `isEmpty_or_nonempty (TwPl D) with he | ⟨⟨w₀⟩⟩` into its components or cases. Conclude with `⟨he.elim, fun _ => true, he.elim, he.elim, he.elim, fun _ => he.elim⟩`. Take `⟨i₀, -⟩` from `exists_readsAt_of_pair hc w₀.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨twI, sd, h1, h2⟩` from `exists_settings hG hc i₀`. Set `T : Finset D.ntw.Tw` to `if h : {w | TwistedAt D w}.Finite then h.toFinset.image twI else ∅`. Take `⟨f, hf, hf'⟩` from `exists_apart_choice (D := D) (Z := fun i => Σ (Q : Finset (PlE D.host)) (k : ℕ), D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ) (fun _ z => z.1) (fun i z => D.ntw.NonzeroIndexPlace i → GoodPack ⟨E, N0, S⟩ ⟨i, z⟩ ∧ Disjoint z.1 (A i)) (fun i B => by`. Distinguish the cases in `hi : D.ntw.NonzeroIndexPlace i`. Take `⟨B', hB'⟩` from `exists_finset_apart B`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, k, ψ, h⟩` from `hconds i hi (hS i hi) _ (twEps_pos D i) (hI i hi).1 _ (hI i hi).2 (AvRec D ∪ (A i ∪ B'))`. Take `⟨h3, h4⟩` from `goodTw_union h`. Rewrite `h4` using `[Finset.disjoint_union_right]`. Conclude with `⟨⟨Q, k, ψ⟩, fun _ => ⟨⟨hI i hi, h3⟩, h4.1⟩, hB' Q h4.2⟩`. Conclude with `⟨⟨∅, 0, 1⟩, fun h => absurd h hi, fun P hP => by simp at hP⟩) T`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `h3 : ∀ w w' : TwPl D, OverOnePair D w.1 w'.1 → (⟨twI w'.1, f (twI w'.1)⟩ : TwPack D) = ⟨twI w.1, f (twI w.1)⟩` using `fun w w' h => congrArg (fun i => (⟨i, f i⟩ : TwPack D)) (h2 _ _ h)`. Establish `h4` using `fun w : TwPl D => hf _ ((h1 w.1 w.2).1.inW1 hG w.2)`. Use `⟨fun w => ⟨twI w.1, f (twI w.1)⟩, sd, fun w => ⟨(h1 w.1 w.2).1, h3 w w.conj (overOnePair_conj w.1), (h1 w.1 w.2).2, (h4 w).1⟩, fun w => (h4 w).2, h3, fun hfin w w' hne => ?_⟩` and prove the remaining obligations. Establish `hT' : ∀ v : TwPl D, twI v.1 ∈ T` using `fun v => by`. Simplify using `only [T, dif_pos hfin]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 v.2)`. Use `hf' _ (hT' w) _ (hT' w') fun heq => hne ?_` and prove the remaining obligations. Conclude with `(h1 w.1 w.2).1.overOnePair hG (heq ▸ (h1 w'.1 w'.2).1)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsData (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ) (hconds : IntegralHeckeForms.aux₃ D (BlochKatoReduction.bk0 D) E N0) (hS : TwistedPairSettingHyps D)
     (hR : FullRank D E) (hT : IntegralHeckeForms.adm7 D E) (hc : TwCoverPair D) (hG : IsGalois ℚ ↥D.LL0) : ExistsData D E N0 := by
@@ -195,23 +191,23 @@ def IsCharOf (t : TwPl D → TwPack D) (sd : D.what₂.places.Pl → Bool)
     ∀ w : TwPl D, HasReading (t w) (sd w.1) w.1 (ψ₀ w.1)
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [BlochKatoReduction.Gen.psiAt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psiAt_not {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ →* A) (x : Γ) :
     BlochKatoReduction.Gen.psiAt (!b) ψ x = (BlochKatoReduction.Gen.psiAt b ψ x)⁻¹ := by
   cases b <;> simp [BlochKatoReduction.Gen.psiAt]
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [BlochKatoReduction.Gen.psiAt, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psiAt_pow {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ →* A) {n : ℕ} (h : ∀ x, ψ x ^ n = 1) (x : Γ) :
     BlochKatoReduction.Gen.psiAt b ψ x ^ n = 1 := by
   cases b <;> simp [BlochKatoReduction.Gen.psiAt, h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply `Units.ext` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, map_pow e, h, ← map_pow m', ← map_pow m, ← Units.val_pow_eq_pow_val, ← map_pow χ, pow_card_eq_one]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, h]`. Use `(eq_inv_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_inv {L K A B Δ : Type} [Field L] [Field K] [CommRing A] [CommRing B] [Group Δ] [Fintype Δ] (e : L →+* K)
     (m : A →+* B) (m' : B →+* K) (χ : Δ →* Aˣ) (x : Lˣ) (δ : Δ) (h : e (x : L) = m' (m (χ δ : A))) :
@@ -227,7 +223,7 @@ theorem pull_inv {L K A B Δ : Type} [Field L] [Field K] [CommRing A] [CommRing 
     rw [← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]
 
 /- English proof (translation)
-The claim follows from `exists_char_descent e hn hz ((Units.map (m'.comp m).toMonoidHom).comp (χ.comp a)) fun g => by rw [MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_pow, h, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pull {L K A B Γ Δ : Type} [Field L] [Field K] [CommRing A] [CommRing B] [Group Γ] [Group Δ] (e : L →+* K)
     (m : A →+* B) (m' : B →+* K) (χ : Δ →* Aˣ) (a : Γ →* Δ) {n : ℕ} (hn : 0 < n) {z : L} (hz : IsPrimitiveRoot z n)
@@ -236,7 +232,7 @@ theorem exists_pull {L K A B Γ Δ : Type} [Field L] [Field K] [CommRing A] [Com
     rw [MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_pow, h, map_one]
 
 /- English proof (translation)
-Introduce `g`. Establish `h0` using `pull_inv ρ.emb (algebraMap (D.ntw.Ok i k) ρ.Oe) (algebraMap ρ.Oe (FractionRing ρ.Oe)) ψ (ψ₀ g) (D.ntw.art i Q g) (hρ g)`. Establish `h2` using `h0.2`. Rewrite `h2` using `[← star_root Fintype.card_pos h0.1, ← h]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Reading.Pulls.conj (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {k : ℕ} {b : Bool} {w : D.what₂.places.Pl} {ρ : Reading i k b w}
     {Q : Finset (PlE D.host)} {ψ ψ' : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ} {ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ}
@@ -248,7 +244,7 @@ theorem Reading.Pulls.conj (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {k : ℕ}
   exact h2
 
 /- English proof (translation)
-The claim follows from `let ⟨ρ, hρ⟩ := h ⟨ρ.conj hG, hρ.conj hG (psiAt_not b _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem HasReading.conj (hG : IsGalois ℚ ↥D.LL0) {p : TwPack D} {b : Bool} {w : D.what₂.places.Pl}
     {ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ} (h : HasReading p b w ψ₀) :
@@ -257,13 +253,13 @@ theorem HasReading.conj (hG : IsGalois ℚ ↥D.LL0) {p : TwPack D} {b : Bool} {
   ⟨ρ.conj hG, hρ.conj hG (psiAt_not b _)⟩
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [BlochKatoReduction.Gen.psiAt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psiAt_one {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (x : Γ) : BlochKatoReduction.Gen.psiAt b (1 : Γ →* A) x = 1 := by
   cases b <;> simp [BlochKatoReduction.Gen.psiAt]
 
 /- English proof (translation)
-Introduce `g` and use `by rw [h, MonoidHom.one_apply, Units.val_one, Units.val_one, map_one ρ.emb, map_one (algebraMap _ ρ.Oe), map_one (algebraMap ρ.Oe _)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Reading.pulls_one {i : D.ntw.Tw} {k : ℕ} {b : Bool} {w : D.what₂.places.Pl} (ρ : Reading i k b w)
     {Q : Finset (PlE D.host)} {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ} (h : ∀ x, ψ x = 1) : ρ.Pulls ψ 1 := fun g => by
@@ -271,7 +267,7 @@ theorem Reading.pulls_one {i : D.ntw.Tw} {k : ℕ} {b : Bool} {w : D.what₂.pla
     map_one (algebraMap ρ.Oe _)]
 
 /- English proof (translation)
-Take `⟨ρ⟩` from `h.nonempty_reading p.2.2.1`. Take `⟨n, hn, ⟨z, hz⟩, hψ⟩` from `hv`. Take `⟨ψ₀, h₀⟩` from `exists_pull ρ.emb (algebraMap (D.ntw.Ok p.1 p.2.2.1) ρ.Oe) (algebraMap ρ.Oe (FractionRing ρ.Oe)) (BlochKatoReduction.Gen.psiAt b p.2.2.2) (D.ntw.art p.1 p.2.1) hn hz (psiAt_pow b _ hψ)`. Conclude with `⟨ψ₀, ρ, h₀⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasReading {p : TwPack D} {b : Bool} {w : D.what₂.places.Pl} (h : ReadsAt p.1 b w) (hv : ValuesIn p) :
     ∃ ψ₀, HasReading p b w ψ₀ := by
@@ -282,13 +278,13 @@ theorem exists_hasReading {p : TwPack D} {b : Bool} {w : D.what₂.places.Pl} (h
   exact ⟨ψ₀, ρ, h₀⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ w, ∃ ψ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ, (∀ hw : TwistedAt D w, HasReading (t ⟨w, hw⟩) (sd w) w ψ) ∧ (¬ TwistedAt D w → ψ = 1)` using `fun w => by`. Distinguish the cases in `hw : TwistedAt D w`. Take `⟨ψ, hψ⟩` from `exists_hasReading (h ⟨w, hw⟩).1 (hv _)`. Conclude with `⟨ψ, fun _ => hψ, fun h => absurd hw h⟩`. Conclude with `⟨1, fun h => absurd h hw, fun _ => rfl⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose ψ hψ hψ' using h1`. Take `⟨o, ho⟩` from `exists_orbitRep (D := D)`. Use `⟨fun w => ψ (o w), fun w => by simp only [(ho w).2], fun w hw => hψ' _ ?_, fun w => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases (ho w).1 with h2 | h2 <;> rw [h2]`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[twistedAt_conj]` and apply the resulting hypothesis. Use `show HasReading (t w) (sd w.1) w.1 (ψ (o w.1))`. Distinguish the cases in `h2 : o w.1 = w.1`. Rewrite using `[h2]`. Conclude with `hψ w.1 w.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `(ho w.1).1.resolve_left h2`. Establish `h4 : HasReading (t w.conj) (!sd (D.what₂.places.conj w.1)) (D.what₂.places.conj (D.what₂.places.conj w.1)) (ψ (D.what₂.places.conj w.1))` using `(hψ _ w.conj.2).conj hG`. Rewrite `h4` using `[(h w).2.1, (h w).2.2.1 (h3 ▸ h2), Bool.not_not, D.what₂.places.conj_conj]`. Rewrite using `[h3]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_isCharOf (hG : IsGalois ℚ ↥D.LL0) {I : TwIn D} {t : TwPl D → TwPack D} {sd : D.what₂.places.Pl → Bool}
     (h : GoodData I t sd) (hv : ∀ w, ValuesIn (t w)) : ∃ ψ₀, IsCharOf t sd ψ₀ := by
@@ -322,9 +318,9 @@ def RankTie (p : TwPack D) (b : Bool) (w : D.what₂.places.Pl) : Prop :=
   RankEq p.1 b p.2.1 p.2.2.1 (BlochKatoReduction.Gen.psiAt b p.2.2.2) w
 
 /- English proof (translation)
-Distinguish the cases in `hj : c`. Take `⟨h1, h2, h3⟩` from `form_gen (D.what₂.jMt μ j) (Module.Free.chooseBasis _ _) (D.what₂.jMt_basis _ j _) _ (D.what₂.MtLat μ j).span_top (D.what₂.MtLat_sub _ j)`. Take `⟨h4, h5⟩` from `baseChange_lattice hinj Λ hfg hspan`. Take `⟨f, hf⟩` from `exists_semilinear e _ h2 h3 (Submodule.span Oe ((TensorProduct.mk A (FractionRing Oe) V 1) '' (Λ : Set V))) ((h hj).trans h4.symm)`. Conclude with `⟨f, fun _ => ⟨fun b => hf.1 _ b, hf.2⟩⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h1 => absurd h1 hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_formsIso {Oe : Type} [CommRing Oe] [IsDomain Oe] [IsDiscreteValuationRing Oe] {A : Type} [CommRing A] [IsDomain A] [Algebra A Oe]
     (hinj : Function.Injective (algebraMap A Oe)) {V : Type} [AddCommGroup V] [Module (FractionRing A) V] [Module A V]
@@ -387,7 +383,7 @@ def choiceOfPack (p : D.what₂.places.Pl → TwPack D) (b : D.what₂.places.Pl
   choiceOf (fun w => (p w).1) b (fun w => (p w).2.1) (fun w => (p w).2.2.1) (fun w => BlochKatoReduction.Gen.psiAt (b w) (p w).2.2.2) hr ρ h
 
 /- English proof (translation)
-The claim follows from `congrArg (fun ψ => (⟨(p w).1, (p w).2.1, (p w).2.2.1, ψ⟩ : TwPack D)) (psiAt_psiAt (b w) (p w).2.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem pack_choiceOf (p : D.what₂.places.Pl → TwPack D) (b : D.what₂.places.Pl → Bool) (hr : ∀ w, ReadsAt (p w).1 (b w) w)
     (ρ : ∀ w, Reading (p w).1 (p w).2.2.1 (b w) w) (h : ∀ w, TwistedAt D w → RankTie (p w) (b w) w)
@@ -398,9 +394,7 @@ def Records (C : NChoice D) (t : TwPl D → TwPack D) (sd : D.what₂.places.Pl 
   ∀ w : TwPl D, NChoicePack C w.1 = t w ∧ C.sd w.1 = sd w.1
 
 /- English proof (translation)
-Use `⟨fun w hw => ⟨?_, fun hne => ?_⟩, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `(hC (TwPl.conj ⟨w, hw⟩)).1.trans ((h ⟨w, hw⟩).2.1.trans (hC ⟨w, hw⟩).1.symm)`. Conclude with `(hC (TwPl.conj ⟨w, hw⟩)).2.trans (((h ⟨w, hw⟩).2.2.1 hne).trans (congrArg _ (hC ⟨w, hw⟩).2.symm))`. Establish `h1` using `(h ⟨w, hw⟩).2.2.2`. Rewrite `h1` using `[← (hC ⟨w, hw⟩).1]`.
-
-Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Records.good {C : NChoice D} {I : TwIn D} {t : TwPl D → TwPack D} {sd : D.what₂.places.Pl → Bool}
     (hC : Records C t sd) (h : GoodData I t sd) : TwConjAt D C ∧ TwGoodAt D C I := by
@@ -421,14 +415,14 @@ def LocsCarry (t : TwPl D → TwPack D) (sd : D.what₂.places.Pl → Bool)
 def ReadElsewhere (D : D7) : Prop := ∀ w, ¬ TwistedAt D w → ∃ i b, ReadsAt (D := D) i b w
 
 /- English proof (translation)
-Introduce `w _` and use `exists_readsAt_of_cover h w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem readElsewhere_of_cover (h : D.ntw.TwCover) : ReadElsewhere D := fun w _ => exists_readsAt_of_cover h w
 
 /- English proof (translation)
-Establish `h1 : ∀ w, ∃ (p : TwPack D) (b : Bool), ReadsAt p.1 b w ∧ ∀ hw : TwistedAt D w, p = t ⟨w, hw⟩ ∧ b = sd w` using `fun w => by`. Distinguish the cases in `hw : TwistedAt D w`. Conclude with `⟨t ⟨w, hw⟩, sd w, (h ⟨w, hw⟩).1, fun _ => ⟨rfl, rfl⟩⟩`. Take `⟨i, b, hi⟩` from `hc w hw`. Conclude with `⟨⟨i, ∅, 0, 1⟩, b, hi, fun h => absurd h hw⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose p b hp hp' using h1`. Use `⟨choiceOfPack p b hp (fun w => ((hp w).nonempty_reading _).some) fun w hw => ?_, fun w => ⟨(pack_choiceOf _ _ _ _ _ _).trans (hp' w.1 w.2).1, (hp' w.1 w.2).2⟩⟩` and prove the remaining obligations. Rewrite using `[(hp' w hw).1, (hp' w hw).2]`. Conclude with `hr ⟨w, hw⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_choice (hc : ReadElsewhere D) {I : TwIn D} {t : TwPl D → TwPack D} {sd : D.what₂.places.Pl → Bool}
     (h : GoodData I t sd) (hr : ∀ w, RankTie (t w) (sd w.1) w.1) : ∃ C : NChoice D, Records C t sd := by
@@ -444,11 +438,11 @@ theorem exists_choice (hc : ReadElsewhere D) {I : TwIn D} {t : TwPl D → TwPack
   exact hr ⟨w, hw⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ w, ∃ (p : TwPack D) (b : Bool), (ReadsAt p.1 b w ∧ ∀ hw : TwistedAt D w, p = t ⟨w, hw⟩ ∧ b = sd w) ∧ HasReading p b w (ψ₀ w)` using `fun w => by`. Distinguish the cases in `hw : TwistedAt D w`. Conclude with `⟨t ⟨w, hw⟩, sd w, ⟨h ⟨w, hw⟩, fun _ => ⟨rfl, rfl⟩⟩, hψ.2.2 ⟨w, hw⟩⟩`. Take `⟨i, b, hi⟩` from `hc w hw`. Take `⟨ρ⟩` from `hi.nonempty_reading 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hψ.2.1 w hw]`. Conclude with `⟨⟨i, ∅, 0, 1⟩, b, ⟨hi, fun h => absurd h hw⟩, ρ, ρ.pulls_one (psiAt_one b)⟩`. Use `choose p b hp ρ hρ using h1`. Establish `h2 : ∀ w, TwistedAt D w → RankTie (p w) (b w) w` using `fun w hw => by`. Rewrite using `[((hp w).2 hw).1, ((hp w).2 hw).2]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hr ⟨w, hw⟩`. Use `⟨choiceOfPack p b (fun w => (hp w).1) ρ h2, ⟨fun a => ?_, fun a => ?_, fun a => ?_, ⟨ψ₀, hψ.1, hρ, fun a => (hl a).2.2.2⟩, fun w x y z _ hx => (ρ w).emb_side x y z hx⟩, fun w => ⟨(pack_choiceOf _ _ _ _ _ _).trans ((hp w.1).2 w.2).1, ((hp w.1).2 w.2).2⟩⟩` and prove the remaining obligations. Conclude with `(hl a).1.trans (congrArg Sigma.fst ((hp _).2 (D.nd.w_tw a)).1.symm)`. Conclude with `(hl a).2.1.trans ((hp _).2 (D.nd.w_tw a)).2.symm`. Conclude with `(hl a).2.2.1.trans (congrArg (fun q : TwPack D => q.2.1) ((hp _).2 (D.nd.w_tw a)).1.symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_tied_choice_of_reads (hc : ReadElsewhere D) {t : TwPl D → TwPack D} {sd : D.what₂.places.Pl → Bool}
     (h : ∀ w : TwPl D, ReadsAt (t w).1 (sd w.1) w.1) (hr : ∀ w, RankTie (t w) (sd w.1) w.1)
@@ -474,7 +468,7 @@ theorem exists_tied_choice_of_reads (hc : ReadElsewhere D) {t : TwPl D → TwPac
   · exact (hl a).2.2.1.trans (congrArg (fun q : TwPack D => q.2.1) ((hp _).2 (D.nd.w_tw a)).1.symm)
 
 /- English proof (translation)
-The claim follows from `exists_tied_choice_of_reads hc (fun w => (h w).1) hr hψ hl`.
+A detailed English derivation is pending.
 -/
 theorem exists_tied_choice (hc : ReadElsewhere D) {I : TwIn D} {t : TwPl D → TwPack D} {sd : D.what₂.places.Pl → Bool}
     (h : GoodData I t sd) (hr : ∀ w, RankTie (t w) (sd w.1) w.1)
@@ -491,7 +485,7 @@ def BuildsChoice (D : D7) : Prop :=
         ∃ C : NChoice D, NChTie D C ∧ Records C t sd ∧ TwConjAt D C ∧ TwGoodAt D C I)
 
 /- English proof (translation)
-Introduce `_ _ _ h` and use `⟨exists_isCharOf hG h, fun hc hr => ⟨let ⟨C, hC⟩ := exists_choice hc h hr; ⟨C, hC, hC.good h⟩, fun _ hψ hl => let ⟨C, h1, hC⟩ := exists_tied_choice hc h hr hψ hl; ⟨C, h1, hC, hC.good h⟩⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem buildsChoice (hG : IsGalois ℚ ↥D.LL0) : BuildsChoice D := fun _ _ _ h =>
   ⟨exists_isCharOf hG h, fun hc hr =>
@@ -499,17 +493,15 @@ theorem buildsChoice (hG : IsGalois ℚ ↥D.LL0) : BuildsChoice D := fun _ _ _ 
       let ⟨C, h1, hC⟩ := exists_tied_choice hc h hr hψ hl; ⟨C, h1, hC, hC.good h⟩⟩⟩
 
 /- English proof (translation)
-Introduce `x`. Take `⟨φ, hφ⟩` from `exists_intMap (sideEmb (C.twI w) (C.sd w))`. Use `haveI := isLocalHom_phiK (C.twI w) (C.k' w)`. Use `haveI := C.Oe_loc w`. Establish `h1 : C.embW w ((x : ↥D.LL0) : D.what₂.LL) = algebraMap (C.Oe w) (FractionRing (C.Oe w)) (algebraMap _ (C.Oe w) (BlochKatoReduction.Gen.phiK D.ntw (C.twI w) (C.k' w) (φ x)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `h.embedding_baseField_condition w x (φ x) 1 one_ne_zero (by rw [map_one, mul_one, hφ]; rfl)`. Simplify using `only [map_one, mul_one] at h2`. Conclude with `h2`. Establish `h2 : (∃ y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 (C.twI w)), algebraMap _ (FractionRing (D.ntw.O0 (C.twI w))) y = sideEmb (C.twI w) (C.sd w) (x : ↥D.LL0)) ↔ ¬ IsUnit (algebraMap _ (C.Oe w) (BlochKatoReduction.Gen.phiK D.ntw (C.twI w) (C.k' w) (φ x)))`. Rewrite using `[isUnit_map_iff, isUnit_map_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `⟨fun ⟨y, hy, hy'⟩ => IsFractionRing.injective _ (FractionRing _) (hy'.trans (hφ x).symm) ▸ hy, fun hu => ⟨_, hu, hφ x⟩⟩`. Rewrite using `[h2]`. Generalize the expression as in `algebraMap _ (C.Oe w) (BlochKatoReduction.Gen.phiK D.ntw (C.twI w) (C.k' w) (φ x)) = u at h1`. Generalize the expression as in `((x : ↥D.LL0) : D.what₂.LL) = x' at h1`. Distinguish the cases in `hx : x' = 0`.
+Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hx` using the available equality. Rewrite `h1` using `[map_zero, eq_comm, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Simplify using `[h1]`. Establish `h3 : 0 < D.what₂.places.val w x' ↔ ¬ 0 ≤ D.what₂.places.val w x'⁻¹`. Rewrite using `[val_pos_iff, val_nonneg_iff, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 (by simpa using hx))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hu : algebraMap (C.Oe w) (FractionRing (C.Oe w)) u ≠ 0` using `h1 ▸ (map_ne_zero _).2 hx`. Rewrite using `[h3, C.embW_w, map_inv₀, h1, not_iff_not]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨(v⁻¹ : (C.Oe w)ˣ), eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])⟩`.
-
-Introduce and unpack `⟨v, hv⟩`. Conclude with `IsUnit.of_mul_eq_one v (IsFractionRing.injective _ (FractionRing (C.Oe w)) (by rw [map_mul, hv, mul_inv_cancel₀ hu, map_one]))`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem readsAt_of_tie {C : NChoice D} (h : NChTie D C) (w : D.what₂.places.Pl) : ReadsAt (C.twI w) (C.sd w) w := by
   intro x
@@ -546,12 +538,12 @@ theorem readsAt_of_tie {C : NChoice D} (h : NChTie D C) (w : D.what₂.places.Pl
       (by rw [map_mul, hv, mul_inv_cancel₀ hu, map_one]))
 
 /- English proof (translation)
-Introduce `w _` and use `⟨_, _, readsAt_of_tie h w⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem readElsewhere_of_tie {C : NChoice D} (h : NChTie D C) : ReadElsewhere D := fun w _ => ⟨_, _, readsAt_of_tie h w⟩
 
 /- English proof (translation)
-Introduce `j h1 h2`. Use `show _ = Module.finrank (FractionRing (D.ntw.Ok (C.twI w.1) (C.k' w.1))) (D.nexp.MtV (C.twI w.1) j (C.sd w.1) (C.k' w.1) (C.Q w.1) ((BlochKatoReduction.Gen.psiAt (C.sd w.1) (BlochKatoReduction.Gen.psiAt (C.sd w.1) (C.psi' w.1))).comp (D.ntw.art (C.twI w.1) (C.Q w.1))))`. Rewrite using `[psiAt_psiAt, ← (baseChange_lattice (C.Oe_inj w.1) _ (D.nexp.MtLat_fg _ _ _ _ _ _) (D.nexp.MtLat_span _ _ _ _ _ _)).1]`. Take `⟨h3, h4⟩` from `C.eMt_basis w.1 j w.2 h1 h2 (Module.Free.chooseBasis _ _)`. Rewrite using `[Module.finrank_eq_nat_card_basis (Module.Free.chooseBasis _ _), Module.finrank_eq_nat_card_basis (Module.Basis.mk h3 h4.ge)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankTie_of_choice (C : NChoice D) (w : TwPl D) : RankTie (NChoicePack C w.1) (C.sd w.1) w.1 := by
   intro j h1 h2
@@ -563,7 +555,7 @@ theorem rankTie_of_choice (C : NChoice D) (w : TwPl D) : RankTie (NChoicePack C 
     Module.finrank_eq_nat_card_basis (Module.Basis.mk h3 h4.ge)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(h.twOf_eq a).symm.trans (h'.twOf_eq a), (h.twSide_eq a).symm.trans (h'.twSide_eq a), (h.Q_eq a).symm.trans (h'.Q_eq a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tied_unique {C C' : NChoice D} (h : NChTie D C) (h' : NChTie D C') (a : D.nd.Loc) :
     C.twI (D.nd.w a) = C'.twI (D.nd.w a) ∧ C.sd (D.nd.w a) = C'.sd (D.nd.w a) ∧ C.Q (D.nd.w a) = C'.Q (D.nd.w a) :=
@@ -578,7 +570,7 @@ def MadeByExport (C : NChoice D) (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw �
       TwGoodOne D ⟨E, N0, S⟩ (C.twI w) (C.sd w) (C.Q w) (C.k' w) (C.psi' w)
 
 /- English proof (translation)
-Take `⟨h1, S, h2, h3⟩` from `h`. Establish `hW` using `fun w hw => (readsAt_of_tie ht w).inW1 hG hw`. Establish `hI : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → TwIn.Ok ⟨E, N0, S⟩ (C.twI w)` using `fun w hw => ⟨hR _ (hW w hw), fun j hj b => h2 w hw j hj b (exists_basisOf D.nexp _ j b _ (th_fg D.nexp E hT _ (hW w hw) j hj b))⟩`. Take `⟨Q, k, ψ, h4, -⟩` from `exists_good_of_conditions D ⟨E, N0, S⟩ C.twI C.sd hconds (fun w hw => hS _ (hW w hw)) hI hW`. Conclude with `⟨h1, S, fun w hw => ⟨hI w hw, h3 w hw ⟨_, _, _, h4 w hw⟩⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_of_madeByExport {C : NChoice D} {E : IntegralHeckeForms.XD D} {N0 : D.ntw.Tw → ℕ} (hconds : IntegralHeckeForms.aux₃ D (BlochKatoReduction.bk0 D) E N0)
     (hS : TwistedPairSettingHyps D) (hR : FullRank D E) (hT : IntegralHeckeForms.adm7 D E) (hG : IsGalois ℚ ↥D.LL0) (ht : NChTie D C)
@@ -591,14 +583,14 @@ theorem good_of_madeByExport {C : NChoice D} {E : IntegralHeckeForms.XD D} {N0 :
   exact ⟨h1, S, fun w hw => ⟨hI w hw, h3 w hw ⟨_, _, _, h4 w hw⟩⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, S, fun w hw j hj b _ => (h' w hw).1.2 j hj b, fun w hw _ => (h' w hw).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem madeByExport_of_good {C : NChoice D} {E : IntegralHeckeForms.XD D} {N0 : D.ntw.Tw → ℕ} {S} (h : TwConjAt D C)
     (h' : TwGoodAt D C ⟨E, N0, S⟩) : MadeByExport C E N0 :=
   ⟨h, S, fun w hw j hj b _ => (h' w hw).1.2 j hj b, fun w hw _ => (h' w hw).2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => ⟨readsAt_of_tie ht w.1, (h w.1 w.2).1, (h w.1 w.2).2, h' w.1 w.2⟩, fun _ => ⟨rfl, rfl⟩, readElsewhere_of_tie ht, rankTie_of_choice C⟩`.
+Supply the required witnesses or components.
 -/
 theorem goodData_of_tied {C : NChoice D} {I : TwIn D} (ht : NChTie D C) (h : TwConjAt D C) (h' : TwGoodAt D C I) :
     GoodData I (fun w => NChoicePack C w.1) C.sd ∧ Records C (fun w => NChoicePack C w.1) C.sd ∧ ReadElsewhere D ∧
@@ -621,7 +613,7 @@ def FamMade {eps : ℝ} (Fm : FamP eps) : Prop :=
     ∃ N0, IntegralHeckeForms.adm8 (Fm.D x i) N0 ∧ MadeByExport (Fm.ex x hx i).nch (twE Fm x hx i) N0
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Use `⟨x0, fun x hx0 hx i => ⟨fun N0 hN => ?_, buildsChoice (Fm.ties x i).baseField_isGalois⟩⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `h x hx0 hx i`. Conclude with `existsData _ N0 (h1 N0 hN) h2 h3 h4 (Fm.ties x i).tw_cover (Fm.ties x i).baseField_isGalois`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem famExists {eps : ℝ} {Fm : FamP eps} (h : FamInputs Fm) : FamExists Fm := by
   obtain ⟨x0, h⟩ := h
@@ -630,9 +622,9 @@ theorem famExists {eps : ℝ} {Fm : FamP eps} (h : FamInputs Fm) : FamExists Fm 
   exact existsData _ N0 (h1 N0 hN) h2 h3 h4 (Fm.ties x i).tw_cover (Fm.ties x i).baseField_isGalois
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Take `⟨x1, hm⟩` from `hm`. Use `⟨max x0 x1, fun x hx0 hx i => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `h x (le_of_max_le_left hx0) hx i`. Take `⟨N0, hN, h5⟩` from `hm x (le_of_max_le_right hx0) hx i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h6, S, h7⟩` from `good_of_madeByExport (h1 N0 hN) h2 h3 h4 (Fm.ties x i).baseField_isGalois (Fm.ex x hx i).nch_tie h5`. Conclude with `⟨h6, N0, S, h7⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twGood_of_made {eps : ℝ} {Fm : FamP eps} (h : FamInputs Fm) (hm : FamMade Fm) : TwGood Fm := by
   obtain ⟨x0, h⟩ := h
@@ -652,19 +644,19 @@ def SamePlace (i : D.ntw.Tw) (b : Bool) (i' : D.ntw.Tw) (b' : Bool) : Prop :=
       algebraMap (D.ntw.O0 i') (FractionRing (D.ntw.O0 i')) y = sideEmb i' b' (x : ↥D.LL0)
 
 /- English proof (translation)
-Introduce `x` and use `(h x).trans (h' x).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ReadsAt.samePlace {i i' : D.ntw.Tw} {b b' : Bool} {w : D.what₂.places.Pl} (h : ReadsAt i b w) (h' : ReadsAt i' b' w) :
     SamePlace i b i' b' := fun x => (h x).trans (h' x).symm
 
 /- English proof (translation)
-Introduce `x` and use `(h x).symm.trans (h' x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SamePlace.readsAt {i i' : D.ntw.Tw} {b b' : Bool} {w : D.what₂.places.Pl} (h : SamePlace i b i' b') (h' : ReadsAt i b w) :
     ReadsAt i' b' w := fun x => (h x).symm.trans (h' x)
 
 /- English proof (translation)
-Distinguish the cases in `hb : b' = b`. Conclude with `⟨w, overOnePair_refl w, hb ▸ h⟩`. Apply the tactic sequence `obtain rfl : b' = !b := by revert hb; cases b <;> cases b' <;> simp`. Conclude with `⟨_, overOnePair_conj w, h.conj hG⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem ReadsAt.side (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl} (h : ReadsAt i b w) (b' : Bool) :
     ∃ v, OverOnePair D w v ∧ ReadsAt i b' v := by
@@ -674,7 +666,7 @@ theorem ReadsAt.side (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {w :
     exact ⟨_, overOnePair_conj w, h.conj hG⟩
 
 /- English proof (translation)
-Break down `h' with h' | h'` into its components or cases. Conclude with `⟨b, h.of_overOne h'⟩`. Conclude with `⟨!b, (h.conj hG).of_overOne h'⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem ReadsAt.of_pair (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {v w : D.what₂.places.Pl} (h : ReadsAt i b v)
     (h' : OverOnePair D v w) : ∃ b', ReadsAt i b' w := by
@@ -701,7 +693,7 @@ def FirstInputs (D : D7) (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ) :
     {w | TwistedAt D w}.Finite
 
 /- English proof (translation)
-Take `⟨-, ⟨h1, h2, h3⟩, -⟩` from `h`. Simplify using `only [Finset.disjoint_union_right] at h2`. Conclude with `⟨h1, by simp only [Finset.disjoint_union_right]; exact ⟨h2.1, h2.2.2⟩, h3⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem GoodPack.psiOk {I : TwIn D} {p : TwPack D} (h : GoodPack I p) :
     BlochKatoReduction.Gen.PsiOk p.1 (AvRec D) p.2.1 p.2.2.1 p.2.2.2 := by
@@ -711,15 +703,13 @@ theorem GoodPack.psiOk {I : TwIn D} {p : TwPack D} (h : GoodPack I p) :
   exact ⟨h1, by simp only [Finset.disjoint_union_right]; exact ⟨h2.1, h2.2.2⟩, h3⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, hG, hfin⟩` from `h`. Use `Classical.epsilon_spec (p := FirstPass D E N0 A) ?_` and prove the remaining obligations. Take `⟨S, hS⟩` from `existsData E N0 h1 h2 h3 h4 h5 hG`. Establish `hA : (⋃ p ∈ A.filter Nat.Prime, placesOver D.host.E p).Finite` using `Set.Finite.biUnion (Finset.finite_toSet _) fun p hp => placesOver_finite_av _ p (Finset.mem_filter.1 hp).2.ne_zero`. Take `⟨t, sd, hg, hd, hp, ha⟩` from `hS fun _ => hA.toFinset`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Fintype (TwPl D) := hfin.fintype`. Establish `hm : ∀ p, p ∈ Finset.univ.image t → ∃ w, t w = p` using `fun p hp => by simpa using hp`. Use `⟨(S, Finset.univ.image t), ⟨fun p hp => ?_, fun w hw => ?_, fun p hp' p' hp'' b b' hs => ?_, fun p hp' p' hp'' hne => ?_⟩, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `hm p hp`. Use `⟨(hg w).1.inW1 hG w.2, (hg w).2.2.2.psiOk, fun P hP q hq hq' hPq => Finset.disjoint_left.1 (hd w) hP ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Set.mem_biUnion (Finset.mem_filter.2 ⟨hq, hq'⟩) hPq`. Conclude with `⟨t ⟨w, hw⟩, Finset.mem_image_of_mem _ (Finset.mem_univ _), _, (hg ⟨w, hw⟩).1⟩`. Take `⟨w, rfl⟩` from `hm p hp'`. Take `⟨w', rfl⟩` from `hm p' hp''`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hv'⟩` from `(hg w).1.side hG b`. Conclude with `(hp w w' (hv.trans hG ((hs.readsAt hv').overOnePair hG (hg w').1))).symm`. Take `⟨w, rfl⟩` from `hm p hp'`. Take `⟨w', rfl⟩` from `hm p' hp''`. Conclude with `ha hfin w w' fun h => hne (hp w w' h).symm`.
-
-Take `⟨w, rfl⟩` from `hm p hp`. Conclude with `(hg w).2.2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem firstPass_spec {E : IntegralHeckeForms.XD D} {N0 : D.ntw.Tw → ℕ} (h : FirstInputs D E N0) (A : Finset ℕ) :
     FirstPass D E N0 A (firstPass D E N0 A) := by
@@ -755,27 +745,27 @@ def Follows (D₀ : D7) (E₀ : IntegralHeckeForms.XD D₀) (D : D7) (E : Integr
   ∀ (i₀ : D₀.ntw.Tw) (i : D.ntw.Tw), HEq i₀ i → (D₀.ntw.NonzeroIndexPlace i₀ ↔ D.ntw.NonzeroIndexPlace i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cast h a, (cast_heq h a).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_heq {α β : Type} (h : α = β) (a : α) : ∃ b : β, HEq a b := ⟨cast h a, (cast_heq h a).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cast h.symm b, cast_heq _ b⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_heq' {α β : Type} (h : α = β) (b : β) : ∃ a : α, HEq a b := ⟨cast h.symm b, cast_heq _ b⟩
 
 variable {D₀ D₁ : D7} {E₀ : IntegralHeckeForms.XD D₀} {E₁ : IntegralHeckeForms.XD D₁} {E : IntegralHeckeForms.XD D}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.refl D, HEq.rfl, ⟨RingEquiv.refl _, fun _ _ h _ _ => by rw [eq_of_heq h]; rfl⟩, fun _ _ h => by rw [eq_of_heq h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Follows.refl (D : D7) (E : IntegralHeckeForms.XD D) : Follows D E D E :=
   ⟨.refl D, HEq.rfl, ⟨RingEquiv.refl _, fun _ _ h _ _ => by rw [eq_of_heq h]; rfl⟩, fun _ _ h => by rw [eq_of_heq h]⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, ⟨φ, h3⟩, h4⟩` from `h`. Take `⟨h1', h2', ⟨φ', h3'⟩, h4'⟩` from `h'`. Establish `ht` using `(same_basic h1.gal h1.set h1.frm).1`. Apply the tactic sequence `refine ⟨h1.trans h1', h2.trans h2', ⟨φ.trans φ', fun i₀ i hi b x => ?_⟩, fun i₀ i hi => ?_⟩ <;>`. Take `⟨i₁, h₁⟩` from `exists_heq ht i₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Conclude with `(h3 i₀ i₁ h₁ b x).trans (h3' i₁ i (h₁.symm.trans hi) b (φ x))`. Conclude with `(h4 i₀ i₁ h₁).trans (h4' i₁ i (h₁.symm.trans hi))`.
+A detailed English derivation is pending.
 -/
 theorem Follows.trans (h : Follows D₀ E₀ D₁ E₁) (h' : Follows D₁ E₁ D E) : Follows D₀ E₀ D E := by
   obtain ⟨h1, h2, ⟨φ, h3⟩, h4⟩ := h
@@ -787,9 +777,9 @@ theorem Follows.trans (h : Follows D₀ E₀ D₁ E₁) (h' : Follows D₁ E₁ 
   · exact (h4 i₀ i₁ h₁).trans (h4' i₁ i (h₁.symm.trans hi))
 
 /- English proof (translation)
-Take `⟨h1, -, h2, -, h3⟩` from `h'.basic h.gal h.set`. Use `⟨h, hE, h2, fun i₁ i hi => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨w₁, h4, h5⟩`. Take `⟨w, hw⟩` from `exists_heq h1 w₁`. Conclude with `⟨w, (h'.tw _ _ hw).1 h4, ((h3 _ _ hw).2.1 _ _ hi true).1 h5⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, h4, h5⟩`. Take `⟨w₁, hw⟩` from `exists_heq' h1 w`. Conclude with `⟨w₁, (h'.tw _ _ hw).2 h4, ((h3 _ _ hw).2.1 _ _ hi true).2 h5⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem follows_of_sameField (h : SameExport D₁ D) (h' : SameField D₁ D) (hE : HEq E₁.Dat0 E.Dat0) : Follows D₁ E₁ D E := by
   obtain ⟨h1, -, h2, -, h3⟩ := h'.basic h.gal h.set
@@ -802,9 +792,9 @@ theorem follows_of_sameField (h : SameExport D₁ D) (h' : SameField D₁ D) (hE
     exact ⟨w₁, (h'.tw _ _ hw).2 h4, ((h3 _ _ hw).2.1 _ _ hi true).2 h5⟩
 
 /- English proof (translation)
-Take `⟨h1, -, ⟨φ, h3⟩, -⟩` from `h`. Establish `h2` using `(same_basic h1.gal h1.set h1.frm).2.2.2.2`. Establish `h4` using `fun x : 𝓞 ↥D₀.LL0 => (h2 _ _ hi).2.2 _ _ (h3 _ _ hi b (x : ↥D₀.LL0))`. Establish `h5` using `fun x : 𝓞 ↥D₀.LL0 => (h2 _ _ hj).2.2 _ _ (h3 _ _ hj b' (x : ↥D₀.LL0))`. Use `⟨fun h x => ?_, fun h x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x₀, rfl⟩` from `(RingOfIntegers.mapRingEquiv φ).surjective x`. Conclude with `(h4 x₀).symm.trans ((h x₀).trans (h5 x₀))`. Conclude with `(h4 x).trans ((h (RingOfIntegers.mapRingEquiv φ x)).trans (h5 x).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Follows.samePlace (h : Follows D₀ E₀ D E) {i₀ j₀ : D₀.ntw.Tw} {i j : D.ntw.Tw} (hi : HEq i₀ i) (hj : HEq j₀ j)
     (b b' : Bool) : SamePlace i₀ b j₀ b' ↔ SamePlace i b j b' := by
@@ -818,13 +808,13 @@ theorem Follows.samePlace (h : Follows D₀ E₀ D E) {i₀ j₀ : D₀.ntw.Tw} 
   · exact (h4 x).trans ((h (RingOfIntegers.mapRingEquiv φ x)).trans (h5 x).symm)
 
 /- English proof (translation)
-The claim follows from `((same_basic h.1.gal h.1.set h.1.frm).2.2.2.1 p₀ p hp).1`.
+A detailed English derivation is pending.
 -/
 theorem Follows.fst_heq (h : Follows D₀ E₀ D E) {p₀ : TwPack D₀} {p : TwPack D} (hp : HEq p₀ p) : HEq p₀.1 p.1 :=
   ((same_basic h.1.gal h.1.set h.1.frm).2.2.2.1 p₀ p hp).1
 
 /- English proof (translation)
-Take `⟨h1, -, h2, -⟩` from `same_basic h.1.gal h.1.set h.1.frm`. Take `⟨N, hN⟩` from `exists_heq (congrArg (· → ℕ) h1) N₀`. Take `⟨S, hS⟩` from `exists_heq h2 S₀`. Conclude with `⟨N, S, fun p₀ p hp hg => h.1.good (I := ⟨E₀, N₀, S₀⟩) (I' := ⟨E, N, S⟩) h.2.1 hN hS hp hg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Follows.exists_good (h : Follows D₀ E₀ D E) (N₀ : D₀.ntw.Tw → ℕ) (S₀) :
     ∃ N S, ∀ (p₀ : TwPack D₀) (p : TwPack D), HEq p₀ p → GoodPack ⟨E₀, N₀, S₀⟩ p₀ → GoodPack ⟨E, N, S⟩ p := by
@@ -838,9 +828,9 @@ def MadeFrom (D₀ : D7) (E₀ : IntegralHeckeForms.XD D₀) (N₀ : D₀.ntw.Tw
     (D.what₂.places.conj w ≠ w → C.sd (D.what₂.places.conj w) = !C.sd w)
 
 /- English proof (translation)
-Take `⟨hs, hg⟩` from `firstPass_spec hI A`. Take `⟨N, S, hN⟩` from `h.1.exists_good N₀ (firstPass D₀ E₀ N₀ A).1`. Use `⟨fun w hw => ⟨?_, (h.2 w hw).2⟩, N, S, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, h1⟩` from `(h.2 w hw).1`. Take `⟨p', hp', h2⟩` from `(h.2 _ ((twistedAt_conj D w).2 hw)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `hs.2.2.1 p hp p' hp' _ _ ((h.1.samePlace (h.1.fst_heq h1) (h.1.fst_heq h2) _ _).2 (((readsAt_of_tie ht w).conj hG).samePlace (readsAt_of_tie ht _)))`. Conclude with `eq_of_heq (h2.symm.trans (h3 ▸ h1))`. Take `⟨p, hp, h1⟩` from `(h.2 w hw).1`. Conclude with `hN p _ h1 (hg p hp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_of_madeFrom {N₀ : D₀.ntw.Tw → ℕ} {A : Finset ℕ} {C : NChoice D} (hI : FirstInputs D₀ E₀ N₀)
     (h : MadeFrom D₀ E₀ N₀ A D C E) (ht : NChTie D C) (hG : IsGalois ℚ ↥D.LL0) :
@@ -874,15 +864,13 @@ def RebuildTied (𝒬 : ∀ D : D7, NChoice D → IntegralHeckeForms.XD D → Pr
       ∀ (w₁ : TwPl D₁) (w : D.what₂.places.Pl), HEq w₁.1 w → HEq (t₁ w₁) (NChoicePack C w) ∧ sd₁ w₁.1 = C.sd w
 
 /- English proof (translation)
-Introduce `t₁ sd₁ ψ₁ hV hs hψ`. Take `⟨D, E, t, sd, ψ, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h t₁ sd₁ ψ₁ hV hs hψ`. Take `⟨e1, -, -, e2, e3⟩` from `h3.basic h2.gal h2.set`. Take `⟨f1, -, -, f2, -⟩` from `same_basic h2.gal h2.set h2.frm`. Establish `key : ∀ w : TwPl D, ∃ w₁ : TwPl D₁, HEq w₁.1 w.1` using `fun w =>`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `⟨w₁, hw⟩` to `exists_heq' e1 w.1`. Use the proof step `⟨⟨w₁, (h3.tw _ _ hw).2 w.2⟩, hw⟩`. Take `⟨C, hC, hC'⟩` from `exists_tied_choice_of_reads (t := t) (sd := sd) (ψ₀ := ψ) (fun w hw => by`. Take `⟨w₁, h₁⟩` from `exists_heq' e1 w`. Take `⟨i₁, b, hi⟩` from `hc w₁ fun h => hw ((h3.tw _ _ h₁).1 h)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi'⟩` from `exists_heq f1 i₁`. Conclude with `⟨i, b, ((e3 _ _ h₁).2.1 _ _ hi' b).1 hi⟩)`. Use the proof step `(fun w => by`. Take `⟨w₁, h₁⟩` from `key w`. Rewrite using `[← (h5 w₁ w h₁).2]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `((e3 _ _ h₁).2.1 _ _ (f2 _ _ (h5 w₁ w h₁).1).1 _).1 (hs w₁).1)`. Use `h7 ⟨(e2 _ _ h6).1 hψ.1, fun w hw => by`. Take `⟨w₁, h₁⟩` from `exists_heq' e1 w`. Conclude with `((e2 _ _ h6).2 _ _ h₁).2 (hψ.2.1 w₁ fun h => hw ((h3.tw _ _ h₁).1 h)), fun w => by`. Take `⟨w₁, h₁⟩` from `key w`.
-
-Rewrite using `[← (h5 w₁ w h₁).2]`. Conclude with `(e3 _ _ h₁).2.2 _ _ (h5 w₁ w h₁).1 _ _ _ ((e2 _ _ h6).2 _ _ h₁).1 (hψ.2.2 w₁)⟩ h8`. Use `⟨D, C, E, h1, h2, h3, h4, hC, fun w₁ w hw => ?_⟩` and prove the remaining obligations. Establish `hw' : TwistedAt D w` using `(h3.tw _ _ hw).1 w₁.2`. Conclude with `⟨(h5 w₁ ⟨w, hw'⟩ hw).1.trans (heq_of_eq (hC' ⟨w, hw'⟩).1.symm), (h5 w₁ ⟨w, hw'⟩ hw).2.trans (hC' ⟨w, hw'⟩).2.symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Rebuild.tied {𝒬 : ∀ D : D7, IntegralHeckeForms.XD D → Prop} {V : Set (TwPack D₁)} (h : Rebuild 𝒬 D₁ E₁ V) (hc : ReadElsewhere D₁) :
     RebuildTied (fun D _ E => 𝒬 D E) D₁ E₁ V := by
@@ -919,7 +907,7 @@ def TwoSteps (𝓡 : ∀ D₁ : D7, IntegralHeckeForms.XD D₁ → Set (TwPack D
     𝓡 D₁ E₁ {p₁ | ∃ p ∈ U, HEq p p₁}
 
 /- English proof (translation)
-Introduce `U hU` and use `let ⟨D₁, E₁, h1, h2, h3, h4, h5⟩ := h U hU ⟨D₁, E₁, h1, h2, h3, h4, h' _ _ _ h5⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TwoSteps.mono {𝓡 𝓡' : ∀ D₁ : D7, IntegralHeckeForms.XD D₁ → Set (TwPack D₁) → Prop} {A : Finset ℕ} (h : TwoSteps 𝓡 A D₀ E₀)
     (h' : ∀ D₁ E₁ V, 𝓡 D₁ E₁ V → 𝓡' D₁ E₁ V) : TwoSteps 𝓡' A D₀ E₀ := fun U hU =>
@@ -927,7 +915,7 @@ theorem TwoSteps.mono {𝓡 𝓡' : ∀ D₁ : D7, IntegralHeckeForms.XD D₁ �
   ⟨D₁, E₁, h1, h2, h3, h4, h' _ _ _ h5⟩
 
 /- English proof (translation)
-Introduce `U hU` and use `⟨D, E, .refl D E, hG, fun _ _ _ _ ⟨w, hw, _⟩ => absurd hw (h w), fun p hp => let ⟨w, hw, _⟩ := (hU.1 p hp).1; absurd hw (h w), hc, fun t sd ψ _ _ _ => ⟨D, E, t, sd, ψ, rfl, .refl D, .refl D, HEq.rfl, fun w => absurd w.2 (h _), HEq.rfl, fun w => absurd w.2 (h _), fun a => absurd ( …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem twoSteps_of_untwisted (A : Finset ℕ) (E : IntegralHeckeForms.XD D) (h : ∀ w, ¬ TwistedAt D w) (hG : IsGalois ℚ ↥D.LL0)
     (hc : ReadElsewhere D) : TwoSteps (fun D₁ E₁ V => ReadElsewhere D₁ ∧ Rebuild (fun D' _ => D' = D) D₁ E₁ V) A D E := fun U hU =>
@@ -936,7 +924,7 @@ theorem twoSteps_of_untwisted (A : Finset ℕ) (E : IntegralHeckeForms.XD D) (h 
       fun w => absurd w.2 (h _), fun a => absurd (D.nd.w_tw a) (h _)⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.refl D, .refl D, HEq.rfl, ht, fun w₁ _ hw => eq_of_heq hw ▸ ⟨heq_of_eq (h w₁).1.symm, (h w₁).2.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem rebuilt_self {C : NChoice D} (E : IntegralHeckeForms.XD D) (ht : NChTie D C) {t : TwPl D → TwPack D} {sd : D.what₂.places.Pl → Bool}
     (h : Records C t sd) : SameExport D D ∧ SameField D D ∧ HEq E.Dat0 E.Dat0 ∧ NChTie D C ∧
@@ -944,13 +932,13 @@ theorem rebuilt_self {C : NChoice D} (E : IntegralHeckeForms.XD D) (ht : NChTie 
   ⟨.refl D, .refl D, HEq.rfl, ht, fun w₁ _ hw => eq_of_heq hw ▸ ⟨heq_of_eq (h w₁).1.symm, (h w₁).2.symm⟩⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ w, ∃ b, ∀ hw : TwistedAt D w, ReadsAt (t ⟨w, hw⟩).1 b w` using `fun w => by`. Distinguish the cases in `hw : TwistedAt D w`. Take `⟨b, hb⟩` from `h ⟨w, hw⟩`. Conclude with `⟨b, fun _ => hb⟩`. Conclude with `⟨true, fun h => absurd h hw⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose s hs using h1`. Take `⟨o, ho⟩` from `exists_orbitRep (D := D)`. Use `⟨fun w => if o w = w then s w else !s (D.what₂.places.conj w), fun w => ⟨?_, hc w, fun hne => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `h2 : o w.1 = w.1`. Simplify `hs w.1 w.2` using `only [h2, if_true]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3 : ReadsAt (t w.conj).1 (!s (D.what₂.places.conj w.1)) (D.what₂.places.conj (D.what₂.places.conj w.1))` using `(hs _ w.conj.2).conj hG`. Rewrite `h3` using `[D.what₂.places.conj_conj, hc w]`. Simplify `h3` using `only [h2, if_false]`. Simplify using `only [(ho w.1).2, D.what₂.places.conj_conj]`. Break down `(ho w.1).1 with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by rw [h]; exact hne.symm), if_pos h]`. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hne), Bool.not_not]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sides (hG : IsGalois ℚ ↥D.LL0) (t : TwPl D → TwPack D) (h : ∀ w, ∃ b, ReadsAt (t w).1 b w.1)
     (hc : ∀ w : TwPl D, t w.conj = t w) : ∃ sd, SidesOk t sd := by
@@ -975,13 +963,13 @@ theorem exists_sides (hG : IsGalois ℚ ↥D.LL0) (t : TwPl D → TwPack D) (h :
     · rw [if_pos h, if_neg (by rw [h]; exact hne), Bool.not_not]
 
 /- English proof (translation)
-Take `⟨f1, f2, -⟩` from `same_basic h.1.gal h.1.set h.1.frm`. Establish `h1 : ∀ w : TwPl D, ∃ q : TwPack D, (∃ p ∈ U, HEq p q) ∧ ∃ b, ReadsAt q.1 b w.1` using `fun w => by`. Take `⟨i, b, hi⟩` from `exists_readsAt_of_pair hc w.2`. Take `⟨i₀, h₀⟩` from `exists_heq' f1 i`. Take `⟨w₀, hw₀, h2⟩` from `(h.2.2.2 _ _ h₀).2 (hi.inW1 hG w.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, b₀, h3⟩` from `hU.2.1 w₀ hw₀`. Take `⟨q, hq⟩` from `exists_heq (α := TwPack D₀) (β := TwPack D) f2 p`. Take `⟨v, hv, h4⟩` from `hi.side hG true`. Establish `h5 : SamePlace i true q.1 b₀` using `(h.samePlace h₀ (h.fst_heq hq) _ _).1 (ReadsAt.samePlace (b := true) h2 h3)`. Conclude with `⟨q, ⟨p, hp, hq⟩, (h5.readsAt h4).of_pair hG (hv.symm hG)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `choose t ht ht' using h1`. Use `(exists_sides hG t ht' fun w => ?_).elim fun sd hs => ⟨t, sd, ht, hs⟩` and prove the remaining obligations. Take `⟨p, hp, h1⟩` from `ht w`. Take `⟨p', hp', h2⟩` from `ht w.conj`. Take `⟨b, hb⟩` from `ht' w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb'⟩` from `ht' w.conj`. Establish `h3` using `hU.2.2.1 p hp p' hp' _ _ ((h.samePlace (h.fst_heq h1) (h.fst_heq h2) _ _).2 ((hb.conj hG).samePlace hb'))`. Conclude with `eq_of_heq (h2.symm.trans (h3 ▸ h1))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Follows.exists_spread (h : Follows D₀ E₀ D E) (hG : IsGalois ℚ ↥D.LL0) (hc : TwCoverPair D) {A : Finset ℕ}
     {U : Finset (TwPack D₀)} (hU : Shaped A U) :
@@ -1006,7 +994,7 @@ theorem Follows.exists_spread (h : Follows D₀ E₀ D E) (hG : IsGalois ℚ ↥
   exact eq_of_heq (h2.symm.trans (h3 ▸ h1))
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hx`. Establish `h1 : z ^ n = 1` using `Units.ext (by rw [Units.val_pow_eq_pow_val, hz.pow_eq_one, Units.val_one])`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, h1, one_zpow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_of_mem_zpowers {R : Type} [CommRing R] {z x : Rˣ} {n : ℕ} (hz : IsPrimitiveRoot (z : R) n)
     (hx : x ∈ Subgroup.zpowers z) : x ^ n = 1 := by
@@ -1015,9 +1003,9 @@ theorem pow_eq_one_of_mem_zpowers {R : Type} [CommRing R] {z x : Rˣ} {n : ℕ} 
   rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, h1, one_zpow]
 
 /- English proof (translation)
-Take `⟨i, Q, k, ψ⟩` from `p`. Take `⟨-, -, -, -, -, h1, -⟩` from `h`. Use `⟨D.ntw.l i ^ k, pow_pos (D.ntw.lPrime i).out.pos _, hz, fun δ => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `D.ntw.art_surj i Q δ`. Establish `h2 : ψ δ ∈ Subgroup.zpowers (D.ntw.zk i k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hg]`. Conclude with `h1 g`. Conclude with `pow_eq_one_of_mem_zpowers (D.ntw.zk_prim i k) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuesIn_of_psiOk {p : TwPack D} {B : Finset (PlE D.host)} (h : BlochKatoReduction.Gen.PsiOk p.1 B p.2.1 p.2.2.1 p.2.2.2)
     (hz : ∃ z : D.what₂.LL, IsPrimitiveRoot z (D.ntw.l p.1 ^ p.2.2.1)) : ValuesIn p := by
@@ -1031,15 +1019,13 @@ theorem valuesIn_of_psiOk {p : TwPack D} {B : Finset (PlE D.host)} (h : BlochKat
   exact pow_eq_one_of_mem_zpowers (D.ntw.zk_prim i k) h2
 
 /- English proof (translation)
-Take `⟨hs, hg⟩` from `firstPass_spec hI A`. Take `⟨D₁, E₁, h1, hG, hc, hz, hR⟩` from `h _ hs`. Take `⟨t, sd, ht, hsd⟩` from `h1.exists_spread hG hc hs`. Take `⟨N, S, hN⟩` from `h1.exists_good N₀ (firstPass D₀ E₀ N₀ A).1`. Establish `hgood : GoodData ⟨E₁, N, S⟩ t sd` using `fun w =>`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `⟨p, hp, h2⟩` to `ht w`. Use the proof step `⟨(hsd w).1, (hsd w).2.1, (hsd w).2.2, hN p _ h2 (hg p hp)⟩`. Take `⟨ψ, hψ⟩` from `exists_isCharOf hG hgood fun w => by`. Take `⟨p, hp, h2⟩` from `ht w`. Take `⟨-, -, -, f1, f2⟩` from `same_basic h1.1.gal h1.1.set h1.1.frm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `valuesIn_of_psiOk (hgood w).2.2.2.psiOk ?_` and prove the remaining obligations. Rewrite using `[← (f1 _ _ h2).2.2.1, ← (f2 _ _ (f1 _ _ h2).1).1]`. Conclude with `hz p hp`. Take `⟨D, C, E, h2, h3, h4, h5, h6, h7⟩` from `hR t sd ψ ht hsd hψ`. Take `⟨e1, e2, -, -, e3⟩` from `h4.basic h3.gal h3.set`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨D, C, E, h2, h6, e2 hG, h1.trans (follows_of_sameField h3 h4 h5), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨w₁, h₁⟩` from `exists_heq' e1 w`. Establish `hw₁` using `(h4.tw _ _ h₁).2 hw`. Take `⟨p, hp, h8⟩` from `ht ⟨w₁, hw₁⟩`. Use `⟨⟨p, hp, h8.trans (h7 ⟨w₁, hw₁⟩ w h₁).1⟩, fun hne => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← (h7 ⟨w₁, hw₁⟩ w h₁).2, ← (h7 (TwPl.conj ⟨w₁, hw₁⟩) _ (e3 _ _ h₁).1).2]`. Conclude with `(hsd ⟨w₁, hw₁⟩).2.2 fun h => hne (eq_of_heq ((e3 _ _ h₁).1.symm.trans ((heq_of_eq h).trans h₁)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_madeFrom {𝒬 : ∀ D : D7, NChoice D → IntegralHeckeForms.XD D → Prop} {N₀ : D₀.ntw.Tw → ℕ} {A : Finset ℕ}
     (hI : FirstInputs D₀ E₀ N₀) (h : TwoSteps (RebuildTied 𝒬) A D₀ E₀) :
@@ -1072,7 +1058,7 @@ def FamBuilt {eps : ℝ} (Fm : FamP eps) : Prop :=
     FirstInputs D₀ E₀ N₀ ∧ MadeFrom D₀ E₀ N₀ A (Fm.D x i) (Fm.ex x hx i).nch (twE Fm x hx i)
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Use `⟨x0, fun x hx0 hx i => ?_⟩` and prove the remaining obligations. Take `⟨D₀, E₀, N₀, A, h1, h2⟩` from `h x hx0 hx i`. Conclude with `good_of_madeFrom h1 h2 (Fm.ex x hx i).nch_tie (Fm.ties x i).baseField_isGalois`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem FamBuilt.twGood {eps : ℝ} {Fm : FamP eps} (h : FamBuilt Fm) : TwGood Fm := by
   obtain ⟨x0, h⟩ := h
@@ -1087,11 +1073,9 @@ def Assembles (𝒞 : FamClass) (eps x0 : ℝ) (J : ℝ → Type) (𝒬 : ∀ x,
       s x h j = ⟨Fm.D x i, (Fm.ex x hx i).nch, twE Fm x hx i⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ x, x0 ≤ x → ∀ j, ∃ s : Σ D : D7, NChoice D × IntegralHeckeForms.XD D, (𝒬 x j s.1 s.2.1 s.2.2 ∧ NChTie s.1 s.2.1) ∧ ∃ (D₀ : D7) (E₀ : IntegralHeckeForms.XD D₀) (N₀ : D₀.ntw.Tw → ℕ) (A : Finset ℕ), FirstInputs D₀ E₀ N₀ ∧ MadeFrom D₀ E₀ N₀ A s.1 s.2.1 s.2.2` using `fun x hx j => by`. Take `⟨D₀, E₀, N₀, A, h2, h3⟩` from `h x hx j`. Take `⟨D, C, E, h4, h5, -, h6⟩` from `exists_madeFrom h2 h3`. Conclude with `⟨⟨D, C, E⟩, ⟨h4, h5⟩, D₀, E₀, N₀, A, h2, h6⟩`. Use `choose s hs hs' using h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Fm, h2, x1, h3⟩` from `h' s hs`. Use `⟨Fm, h2, x1, fun x hx1 hx i => ?_⟩` and prove the remaining obligations. Take `⟨h4, j, h5⟩` from `h3 x hx1 hx i`. Establish `h6` using `hs' x h4 j`. Rewrite `h6` using `[h5]`.
-
-Conclude with `h6`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_famBuilt {𝒞 : FamClass} {eps x0 : ℝ} {J : ℝ → Type} {𝒬 : ∀ x, J x → ∀ D : D7, NChoice D → IntegralHeckeForms.XD D → Prop}
     (h : ∀ x, x0 ≤ x → ∀ j, ∃ (D₀ : D7) (E₀ : IntegralHeckeForms.XD D₀) (N₀ : D₀.ntw.Tw → ℕ) (A : Finset ℕ),
@@ -1112,9 +1096,9 @@ theorem exists_famBuilt {𝒞 : FamClass} {eps x0 : ℝ} {J : ℝ → Type} {�
   exact h6
 
 /- English proof (translation)
-Use `⟨fun D₀ E₀ N₀ A 𝒬 h1 h2 => ?_, fun D₀ E₀ N₀ A 𝒬 h1 h2 => ?_, fun _ _ _ _ _ _ _ => good_of_madeFrom, fun _ _ => FamBuilt.twGood, fun _ h => h.imp fun _ _ _ => FamBuilt.twGood, fun _ _ _ _ _ h h' => ?_⟩` and prove the remaining obligations. Take `⟨D, C, E, h3, h4, h5, h6⟩` from `exists_madeFrom h1 (h2.mono fun _ _ _ h => h.2.tied h.1)`. Conclude with `⟨D, C, E, h3, h4, h6, good_of_madeFrom h1 h6 h4 h5⟩`. Take `⟨D, C, E, h3, h4, h5, h6⟩` from `exists_madeFrom h1 h2`. Conclude with `⟨D, C, E, h3, h4, h6, good_of_madeFrom h1 h6 h4 h5⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Fm, h1, h2⟩` from `exists_famBuilt h h'`. Conclude with `⟨Fm, h1, h2, h2.twGood⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twists_good :
     (∀ (D₀ : D7) (E₀ : IntegralHeckeForms.XD D₀) (N₀ : D₀.ntw.Tw → ℕ) (A : Finset ℕ) (𝒬 : ∀ D : D7, IntegralHeckeForms.XD D → Prop),

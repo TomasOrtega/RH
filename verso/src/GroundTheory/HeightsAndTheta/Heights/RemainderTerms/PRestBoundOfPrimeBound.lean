@@ -13,29 +13,25 @@ open Finset Elem
 noncomputable section
 
 /- English proof (translation)
-Introduce `f r a c B₀ hf hr ha hB Q s e hp P`. Use `set R : ℕ → ℝ := fun p => restPrimeModel f r a c Q s e p with hR`. Use `set C : ℝ := ((f * (r * a) + 1 : ℕ) : ℝ) * |(fibreDegree f r a c : ℝ)| with hC`. Use `set X : ℝ := (restX r a : ℝ) with hXdef`. Establish `hN2 : 2 ≤ r + a` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNR : (2 : ℝ) ≤ ((r + a : ℕ) : ℝ)` using `by exact_mod_cast hN2`. Establish `hfR : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hB0 : 0 < B₀` using `by nlinarith`. Establish `hC0 : 0 ≤ C` using `by positivity`. Establish `hX0 : 0 ≤ X`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Check the signs of the components of the expression.
 
-Simplify using `only [hXdef, restX]`. Use `push_cast`. Check the signs of the components of the expression. Use `set K : ℝ := 1.5 * f * X * C with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `set S : Set ℕ := {p | p ∈ P ∧ p.Prime ∧ B₀ < p} with hS`. Use `set g : ℕ → ℝ := fun i => if i ∈ P ∧ i.Prime ∧ B₀ < i then |R i| else 0 with hg`. Establish `hind : S.indicator (fun p => |R p|) = g`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i ∈ P ∧ i.Prime ∧ B₀ < i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `[hS, hg, Set.indicator_of_mem, h]`. Rewrite using `[Set.indicator_of_notMem (show i ∉ S from h)]`. Simplify using `[hg, h]`. Establish `hg0 : ∀ i, 0 ≤ g i` using `fun i => by`. Apply the tactic sequence `simp only [hg]; split_ifs <;> positivity`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hgle : ∀ i, g i ≤ K * (primeWeight B₀ i / (i : ℝ) ^ 2)` using `fun i => by`. Simplify using `only [hg]`. Use `split_ifs with h`. Establish `hw : primeWeight B₀ i = Real.log i` using `by simp [primeWeight, h.2.1, h.2.2]`. Rewrite using `[hw]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_nonneg hK0 (div_nonneg (primeWeight_nonneg B₀ i) (by positivity))`. Establish `hpart : ∀ n, ∑ i ∈ range n, g i ≤ K * (2 * Real.log 4 / B₀)` using `fun n => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hgs : Summable g` using `summable_of_sum_range_le hg0 hpart`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsub : Summable (fun p : S => |R p|)` using `(summable_subtype_iff_indicator (f := fun p : ℕ => |R p|) (s := S)).mpr (by rw [hind]; exact hgs)`. Use `⟨hsub, ?_⟩` and prove the remaining obligations. Establish `htsum : ∑' p : S, |R p| ≤ K * (2 * Real.log 4 / B₀)`. Rewrite using `[tsum_subtype S (fun p : ℕ => |R p|), hind]`. Conclude with `Real.tsum_le_of_sum_range_le hg0 hpart`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `habs : |∑' p : S, R p| ≤ ∑' p : S, |R p|`. Use `norm_tsum_le_tsum_norm (f := fun p : S => R p) (by simpa [Real.norm_eq_abs] using hsub)` as an intermediate fact. Simplify `this` using `[Real.norm_eq_abs]`. Establish `hXle : X ≤ 3 / 2 * ((r + a : ℕ) : ℝ) ^ 2`. Establish `h` using `XBound.intersectionNumber_baseChange r a hN2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hXdef] at h ⊢`. Combine the linear relations using `[h.1, h.2]`. Establish `hNpos : (0 : ℝ) < ((r + a : ℕ) : ℝ)` using `by linarith`. Establish `hD : (0 : ℝ) < 4 * f * ((r + a : ℕ) : ℝ) ^ 2` using `by positivity`. Establish `hlog : 2 * Real.log 4 / B₀ ≤ 2.78 / (4 * f * ((r + a : ℕ) : ℝ) ^ 2)`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hconst` using `RestConstants.intersectionNumber_baseChange.2 f (r + a) hf hN2`. Establish `hfin : K * (2 * Real.log 4 / B₀) ≤ 1.6 * C`. Establish `hl0 : 0 ≤ 2 * Real.log 4 / B₀` using `div_nonneg (mul_nonneg (by norm_num) (Real.log_nonneg (by norm_num))) hB0.le`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `mul_le_mul_of_nonneg_right _ hC0` to reduce the goal to its premises. Apply `mul_le_mul _ hlog hl0 (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hXle (by positivity)`. Use `_ ≤ 1.6 * C := mul_le_mul_of_nonneg_right hconst hC0`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem RestBoundOfPrimeBound.proof : RestBoundOfPrimeBound.Statement := by
   classical

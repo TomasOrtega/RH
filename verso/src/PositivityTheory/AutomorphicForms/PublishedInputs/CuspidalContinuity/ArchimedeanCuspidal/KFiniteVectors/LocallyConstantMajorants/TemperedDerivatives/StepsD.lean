@@ -12,7 +12,7 @@ def crq (a : Fin 2) (p : M23 × (Fin 2 → ℂ)) : ℂ := p.2 a
 def crqc (a : Fin 2) (p : M23 × (Fin 2 → ℂ)) : ℂ := (starRingEnd ℂ) (p.2 a)
 
 /- English proof (translation)
-Establish `: crqc a = fun p => (Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin 2 => ℂ) a).comp (ContinuousLinearMap.snd ℝ M23 (Fin 2 → ℂ)))) p := by`. Use extensionality with `p`. Simplify using `[crqc]`. Rewrite using `[this]`. Conclude with `ContinuousLinearMap.hasTemperateGrowth _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crqc_temperate (a : Fin 2) : (crqc a).HasTemperateGrowth := by
   have : crqc a = fun p => (Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 2 => ℂ) a).comp

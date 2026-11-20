@@ -10,29 +10,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `E _ _ _ H D X t k k' _ _ _ _ _ i x hprop I`. Use `haveI : Smooth t.G.hom := t.semi.smooth`. Take `⟨_, _, -⟩` from `PositivityTheory.HtPt.Mg.finrank_La D`. Set `e` to `PositivityTheory.HtPt.Mg.extPt i x`. Establish `hprop' : IsProper (pullback.snd t.G.hom (spMap i ≫ x))` using `PositivityTheory.HtPt.Mg.proper_of_hom (A := t.G) e hprop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : ∀ g : Over.mk x ⟶ t.G, e ≫ g = 1 ↔ g = 1`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `PositivityTheory.HtPt.Mg.extPt_inj i x (h.trans (MonObj.comp_one e).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[h, MonObj.comp_one]`. Establish `hfinT : ∀ n, 0 < n → Finite {y : Over.mk x ⟶ t.G // y ^ n = 1}`. Introduce `n hn`. Set `N : Submodule ℤ D.La` to `LinearMap.range ((n : ℤ) • (LinearMap.id : D.La →ₗ[ℤ] D.La))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Finite (D.La ⧸ N) := Module.finite_of_fg_torsion _ (by`. Introduce `q`. Use `⟨⟨(n : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hn.ne')⟩, ?_⟩` and prove the remaining obligations. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H a => show (n : ℤ) • (Submodule.Quotient.mk a : D.La ⧸ N) = 0`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨a, rfl⟩)`. Establish `hex : ∀ y : {y : Over.mk x ⟶ t.G // y ^ n = 1}, ∃ a, I.ev n a = y.1` using `fun y => (I.onto n hn y.1).1 y.2`. Use `Finite.of_injective (fun y => (Submodule.Quotient.mk (hex y).choose : D.La ⧸ N)) ?_` and prove the remaining obligations. Introduce `y y' hyy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hex y).choose_spec`. Establish `h2` using `(hex y').choose_spec`. Rewrite `hyy` using `[Submodule.Quotient.eq]`. Take `⟨c, hc⟩` from `hyy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2]`. Establish `hsm : ((n : ℤ) • LinearMap.id : D.La →ₗ[ℤ] D.La) c = n • c`. Simplify using `[natCast_zsmul]`. Establish `hdec : (hex y).choose = (hex y').choose + n • c`. Rewrite using `[← hsm, hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hdec, I.add, (I.ker n hn (n • c)).2 ⟨c, rfl⟩, _root_.mul_one]`. Use `⟨{ ζ := fun n => Units.map (i : k →* k') (I.ζ n) ζ_prim := fun n hn => (I.ζ_prim n hn).map_of_injective (Units.map_injective i.injective) ζ_pow := fun n m hn hm => by rw [← map_pow, I.ζ_pow n m hn hm] ev := fun n a => e ≫ I.ev n a add := fun n a b => by simp only [I.add, MonObj.c …` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy, rfl⟩` from `PositivityTheory.HtPt.Mg.torsion_desc t.G i x n (hfinT n hn) g hg`. Take `⟨a, rfl⟩` from `(I.onto n hn y).1 hy`. Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← MonObj.comp_pow, (I.onto n hn _).2 ⟨a, rfl⟩, MonObj.comp_one]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `tower := fun n m hn hm a => by rw [← MonObj.comp_pow, I.tower n m hn hm]`. Use `isom := fun n hn a b => by`. Establish `h` using `PositivityTheory.HtPt.Mg.weilIs_pull_of_proper t.semi t.PP.isLB hprop' e (I.isom n hn a b)`. Use `show Out.WeilIs t.G t.PP.L (n : ℤ) (e ≫ I.ev n a) (e ≫ I.ev n b) (unitOn ((Units.map (i : k →* k') (I.ζ n)) ^ D.EF a b))`. Establish `hm : (Units.map (i : k →* k') (I.ζ n)) ^ D.EF a b = Units.map (i : k →* k') (I.ζ n ^ D.EF a b)`.
-
-Simplify using `[map_zpow, map_pow]`. Rewrite using `[hm]`. Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `(PositivityTheory.HtPt.Mg.unitOn_map i _).symm }, ?_⟩`. Introduce `n hn`.
-
-Conclude with `⟨rfl, fun a => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.tate_iso_base_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), ∀ (X : Scheme.{0}) (t : SAB H X) (k k' : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field k'] [IsAlgClosed k'] (i : k →+* k') (x : Sp k ⟶ X), IsProper (pullback.snd t.G.hom x) → ∀ I : TateIsoAt D t x, ∃ I' : TateIsoAt D t (spMap i ≫ x), ∀ n, 0 < n → (I'.ζ n : k') = i (I.ζ n) ∧ ∀ a, (I'.ev n a).left = spMap i ≫ (I.ev n a).left := by
   intro E _ _ _ H D X t k k' _ _ _ _ _ i x hprop I

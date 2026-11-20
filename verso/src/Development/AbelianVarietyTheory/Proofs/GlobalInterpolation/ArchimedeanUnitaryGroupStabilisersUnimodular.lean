@@ -25,7 +25,7 @@ def OrthSplit (σ : A →+* A) (J : Matrix n n A) (B : Matrix n m A) (C : Matrix
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' (P Q : Matrix n n A) : cT σ (P + Q) = cT σ P + cT σ Q := by
   unfold Formalism.UG.cT
@@ -33,9 +33,9 @@ theorem cT_add' (P Q : Matrix n n A) : cT σ (P + Q) = cT σ P + cT σ Q := by
   simp
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cT_one_global_interpolation {p : Type} [Fintype p] [DecidableEq p] : cT σ (1 : Matrix p p A) = 1 := by
   unfold Formalism.UG.cT
@@ -46,7 +46,7 @@ private theorem cT_one_global_interpolation {p : Type} [Fintype p] [DecidableEq 
   · simp [Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_UJ_iff' {p : Type} [Fintype p] [DecidableEq p] {K : Matrix p p A} {g : GL p A} :
     g ∈ UJ σ K ↔ cT σ (g : Matrix p p A) * K * g = K := Iff.rfl
@@ -64,9 +64,9 @@ def OrthSplit.ext (h : OrthSplit σ J B C X Y) : Matrix m m A →* Matrix n n A 
       zero_add]
 
 /- English proof (translation)
-Use `show cT σ (B * g * C + X * Y) * J * (B * g * C + X * Y) = _`. Take `⟨-, -, -, -, -, h6, h7, -⟩` from `id h`. Establish `e6 : ∀ Z : Matrix k n A, cT σ B * (J * (X * Z)) = 0` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h6, Matrix.zero_mul]`. Establish `e7 : ∀ Z : Matrix m n A, cT σ X * (J * (B * Z)) = 0` using `fun Z => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h7, Matrix.zero_mul]`. Simplify using `only [cT_add', cT_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, e6, e7, Matrix.mul_zero, add_zero, zero_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem OrthSplit.form_ext (h : OrthSplit σ J B C X Y) (g : Matrix m m A) :
     cT σ (h.ext g) * J * h.ext g =
@@ -81,13 +81,13 @@ theorem OrthSplit.form_ext (h : OrthSplit σ J B C X Y) (g : Matrix m m A) :
     add_zero, zero_add]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, hJ⟩` from `h`. Establish `hJJ : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J ((Matrix.isUnit_iff_isUnit_det J).mp hJ)`. Establish `hc : cT σ C * cT σ B + cT σ Y * cT σ X = 1`. Rewrite using `[← cT_mul, ← cT_mul, ← cT_add', h2, cT_one_global_interpolation]`. Establish `key : (Y * J⁻¹ * cT σ Y) * (cT σ X * J * X) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : cT σ Y * cT σ X = 1 - cT σ C * cT σ B` using `eq_sub_of_add_eq' hc`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Y * (J⁻¹ * J) * X - Y * J⁻¹ * cT σ C * (cT σ B * J * X) := by`. Rewrite using `[e1]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hJJ, h6, Matrix.mul_one, h5, Matrix.mul_zero, sub_zero]`. Establish `hW : cT σ X * J * (g * B) = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `hYW : Y * (g * B) = 0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : cT σ X * J * (X * Y * (g * B)) = cT σ X * J * (g * B)`. Rewrite using `[show X * Y = 1 - B * C from eq_sub_of_add_eq' h2, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_assoc B C, ← Matrix.mul_assoc (cT σ X * J) B, h7, Matrix.zero_mul, sub_zero]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem OrthSplit.preserves (h : OrthSplit σ J B C X Y) {g : Matrix n n A} (hg : cT σ g * J * g = J)
     (hX : g * X = X) : B * (C * g * B) = g * B := by
@@ -119,31 +119,27 @@ theorem OrthSplit.preserves (h : OrthSplit σ J B C X Y) {g : Matrix n n A} (hg 
     _ = g * B := by rw [h2, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, hJ⟩` from `id h`. Establish `e1 : ∀ {p : Type} (Z : Matrix m p A), C * (B * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `e3 : ∀ {p : Type} (Z : Matrix k p A), C * (X * Z) = 0` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, h3, Matrix.zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hext : ∀ g : Matrix m m A, h.ext g = B * g * C + X * Y` using `fun _ => rfl`. Establish `memU : ∀ g : Matrix m m A, cT σ g * (cT σ B * J * B) * g = cT σ B * J * B → cT σ (h.ext g) * J * h.ext g = J`. Introduce `g hg`. Establish `e0` using `h.form_ext 1`. Rewrite `e0` using `[map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [cT_one_global_interpolation, Matrix.one_mul, Matrix.mul_one] at e0`. Rewrite using `[h.form_ext g, hg, ← e0]`. Establish `fixX : ∀ g : Matrix m m A, h.ext g * X = X`. Introduce `g`. Rewrite using `[hext, Matrix.add_mul, Matrix.mul_assoc (B * g) C X, h3, Matrix.mul_zero, zero_add, Matrix.mul_assoc, h5, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `memU' : ∀ g : Matrix n n A, cT σ g * J * g = J → g * X = X → cT σ (C * g * B) * (cT σ B * J * B) * (C * g * B) = cT σ B * J * B`. Introduce `g hg hgX`. Establish `e` using `h.preserves hg hgX`. Combine the equalities or inequalities in the displayed calculation. Establish `presU : ∀ s : S, B * (C * mat (s : UJ σ J) * B) = mat (s : UJ σ J) * B` using `fun s => h.preserves (mem_UJ_iff'.1 (s : UJ σ J).2) ((hS _).1 s.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hsi : ∀ s : S, mat (s : UJ σ J) * mat ((s⁻¹ : S) : UJ σ J) = 1` using `fun s => ((s : UJ σ J) : GL n A).mul_inv`. Establish `his : ∀ s : S, mat ((s⁻¹ : S) : UJ σ J) * mat (s : UJ σ J) = 1` using `fun s => ((s : UJ σ J) : GL n A).inv_mul`. Set `gm : S → GL m A` to `fun s => ⟨C * mat (s : UJ σ J) * B, C * mat ((s⁻¹ : S) : UJ σ J) * B, by`. Rewrite using `[Matrix.mul_assoc (C * mat (s : UJ σ J)) B, presU s⁻¹, ← Matrix.mul_assoc, Matrix.mul_assoc C, hsi, Matrix.mul_one, h1], by`. Rewrite using `[Matrix.mul_assoc (C * mat ((s⁻¹ : S) : UJ σ J)) B, presU s, ← Matrix.mul_assoc, Matrix.mul_assoc C, his, Matrix.mul_one, h1]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨{ toFun := fun u => ⟨⟨Units.map h.ext (u : GL m A), mem_UJ_iff'.2 (by` and prove the remaining obligations. Rewrite using `[Units.coe_map]; exact memU _ (mem_UJ_iff'.1 u.2))⟩, (hS _).2 (by`. Use `show (Units.map h.ext (u : GL m A) : Matrix n n A) * X = X`. Rewrite using `[Units.coe_map]`. Conclude with `fixX _)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `invFun := fun s => ⟨gm s, mem_UJ_iff'.2 (memU' _ (mem_UJ_iff'.1 (s : UJ σ J).2) ((hS _).1 s.2))⟩`. Use `left_inv := ?_, right_inv := ?_, map_mul' := ?_, continuous_toFun := ?_, continuous_invFun := ?_ }⟩`. Introduce `u`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show C * (B * ((u : GL m A) : Matrix m m A) * C + X * Y) * B = ((u : GL m A) : Matrix m m A)`. Simplify using `only [Matrix.mul_add, Matrix.mul_assoc, e1, e3, h1, Matrix.mul_one, add_zero]`. Introduce `s`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show B * (C * mat (s : UJ σ J) * B) * C + X * Y = mat (s : UJ σ J)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[presU s, (hS _).1 s.2]`. Use `_ = mat (s : UJ σ J) * (B * C + X * Y) := by simp only [Matrix.mul_add, Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = mat (s : UJ σ J) := by rw [h2, Matrix.mul_one]`. Introduce `u v`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `map_mul h.ext ((u : GL m A) : Matrix m m A) ((v : GL m A) : Matrix m m A)`. Use `Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Establish `hu : Continuous fun u : UJ σ (cT σ B * J * B) => ((u : GL m A) : Matrix m m A)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hui : Continuous fun u : UJ σ (cT σ B * J * B) => (((u : GL m A)⁻¹ : GL m A) : Matrix m m A)` using `Units.continuous_coe_inv.comp continuous_subtype_val`.
-
-Conclude with `⟨((continuous_const.matrix_mul hu).matrix_mul continuous_const).add continuous_const, ((continuous_const.matrix_mul hui).matrix_mul continuous_const).add continuous_const⟩`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Establish `hs : Continuous fun s : S => (((s : UJ σ J) : GL n A) : Matrix n n A)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hsi' : Continuous fun s : S => ((((s : UJ σ J) : GL n A)⁻¹ : GL n A) : Matrix n n A)` using `Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_subtype_val)`.
-
-Conclude with `⟨(continuous_const.matrix_mul hs).matrix_mul continuous_const, (continuous_const.matrix_mul hsi').matrix_mul continuous_const⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem OrthSplit.exists_equiv [TopologicalSpace A] [IsTopologicalRing A] (h : OrthSplit σ J B C X Y)
     (S : Subgroup (UJ σ J)) (hS : ∀ g, g ∈ S ↔ mat g * X = X) :
@@ -229,15 +225,15 @@ theorem OrthSplit.exists_equiv [TopologicalSpace A] [IsTopologicalRing A] (h : O
 end Blocks
 
 /- English proof (translation)
-Take `⟨hTG, hT2, hLC, hSC, hB, ⟨μ, hμ⟩, hR⟩` from `hG`. Use `hμ` as an intermediate fact. Establish `hT2H : T2Space H` using `e.symm.toHomeomorph.isEmbedding.t2Space`. Establish `hLCH : LocallyCompactSpace H` using `e.symm.toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Establish `hSCH : SecondCountableTopology H` using `e.symm.toHomeomorph.isEmbedding.secondCountableTopology`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨inferInstance, hT2H, hLCH, hSCH, inferInstance, ⟨μ.map e, ContinuousMulEquiv.isHaarMeasure_map μ e⟩, ?_⟩` and prove the remaining obligations. Introduce `ν hν`. Use `hν` as an intermediate fact. Establish `hν' : (ν.map e.symm).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map ν e.symm`. Use `hR _ hν'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hme : Measurable e` using `e.continuous.measurable`. Establish `hmes : Measurable e.symm` using `e.symm.continuous.measurable`. Establish `hid : (e ∘ e.symm : H → H) = id` using `funext fun x => e.apply_symm_apply x`. Establish `hνeq : ν = (ν.map e.symm).map e`. Rewrite using `[Measure.map_map hme hmes, hid, Measure.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hνeq, Measure.map_map (measurable_mul_const h) hme]`. Establish `hc : (fun x => x * h) ∘ e = e ∘ (fun x => x * e.symm h)`. Use function extensionality and compare the values at `x`. Simplify using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, ← Measure.map_map hme (measurable_mul_const _), Measure.IsMulRightInvariant.map_mul_right_eq_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnimodularLC_of_equiv {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H] [BorelSpace H]
@@ -265,7 +261,7 @@ theorem isUnimodularLC_of_equiv {G H : Type} [Group G] [TopologicalSpace G] [Mea
   rw [hc, ← Measure.map_map hme (measurable_mul_const _), Measure.IsMulRightInvariant.map_mul_right_eq_self]
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Conclude with `IsModuleTopology.isTopologicalRing R (R ⊗[F] E)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isTopologicalRing_tensorProduct {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] :
@@ -275,23 +271,21 @@ private theorem isTopologicalRing_tensorProduct {F E : Type} [Field F] [NumberFi
   exact IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
 
 /- English proof (translation)
-Establish `hPQ : P * Q = 1`. Rewrite using `[← Matrix.inv_eq_left_inv hQ]`. Conclude with `Matrix.mul_nonsing_inv P (Matrix.isUnit_det_of_left_inverse hQ)`. Establish `hs : ∀ {s t : Type} (U V : Matrix (Fin (M + 1)) (Fin (M + 1)) A) (e : s → Fin (M + 1)) (f : t → Fin (M + 1)), U.submatrix e id * V.submatrix id f = (U * V).submatrix e f` using `fun U V e f => by`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply]`. Establish `hs1 : ∀ {s : Type} (U V : Matrix (Fin (M + 1)) (Fin (M + 1)) A) (e : s → Fin (M + 1)), U.submatrix e id * V = (U * V).submatrix e id` using `fun U V e => by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `hcT : ∀ {s t : Type} (e : s → Fin (M + 1)) (f : t → Fin (M + 1)), cT σ (P.submatrix e f) = (cT σ P).submatrix f e` using `fun e f => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Unfold `OrthSplit`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, hJ⟩` and prove the remaining obligations. Rewrite using `[hs, hQ]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.submatrix_apply, Matrix.one_apply_ne (fun h => hij (Fin.succ_injective _ h)), Matrix.one_apply_ne hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hPQ i) j`. Rewrite `e` using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Rewrite using `[← e, Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_one, add_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hQ]`. Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, Matrix.one_apply_ne (Fin.succ_ne_zero i), Matrix.zero_apply]`. Rewrite using `[hs, hQ]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.submatrix_apply, Matrix.one_apply_ne (Fin.succ_ne_zero j).symm, Matrix.zero_apply]`. Rewrite using `[hs, hQ]`. Use extensionality with `i j`. Rewrite using `[Fin.fin_one_eq_zero i, Fin.fin_one_eq_zero j]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcT, hs1, hs]`. Use extensionality with `i j`. Conclude with `h10 i`. Rewrite using `[hcT, hs1, hs]`. Use extensionality with `i j`.
-
-Conclude with `h01 j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem orthSplit_submatrix_succ_of_zero_entries {A : Type} [CommRing A] {σ : A →+* A} {M : ℕ}
     {J P Q : Matrix (Fin (M + 1)) (Fin (M + 1)) A} (hQ : Q * P = 1)
@@ -344,11 +338,11 @@ private theorem orthSplit_submatrix_succ_of_zero_entries {A : Type} [CommRing A]
     exact h01 j
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, hJ⟩` from `h`. Establish `m0 : ∀ {p q : Type}, (0 : Matrix p q A).map π = 0` using `Matrix.map_zero _ (map_zero π)`. Establish `m1 : ∀ {p : Type} [DecidableEq p], (1 : Matrix p p A).map π = 1` using `Matrix.map_one _ (map_zero π) (map_one π)`. Establish `hc : ∀ {p q : Type} (Z : Matrix p q A), (cT σ Z).map π = cT σ' (Z.map π)` using `fun Z => by`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hπ (Z j i)`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, hJ.map π.mapMatrix⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, h1, m1]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ (map_add π), h2, m1]`. Rewrite using `[← Matrix.map_mul, h3, m0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, h4, m0]`. Rewrite using `[← Matrix.map_mul, h5, m1]`. Rewrite using `[← hc, ← Matrix.map_mul, ← Matrix.map_mul, h6, m0]`. Rewrite using `[← hc, ← Matrix.map_mul, ← Matrix.map_mul, h7, m0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orthSplit_map {A A' : Type} [CommRing A] [CommRing A'] {n m k : Type} [Fintype n] [DecidableEq n]
     [Fintype m] [DecidableEq m] [Fintype k] [DecidableEq k] {σ : A →+* A} {σ' : A' →+* A'} {π : A →+* A'}
@@ -371,7 +365,7 @@ private theorem orthSplit_map {A A' : Type} [CommRing A] [CommRing A'] {n m k : 
   · rw [← hc, ← Matrix.map_mul, ← Matrix.map_mul, h7, m0]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Formalism.UG.hform, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cT_mul_mul_apply_eq_hform {A : Type} [CommRing A] {n : Type} [Fintype n] (s : A →+* A) (J P : Matrix n n A)
     (a c : n) : (cT s P * J * P) a c = Formalism.UG.hform s J (fun i => P i a) (fun j => P j c) := by
@@ -384,43 +378,41 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Use `isTopologicalRing_tensorProduct (F := F) (E := E) R` as an intermediate fact. Establish `hss' : ∀ e, (σ : E →+* E) ((σ : E →+* E) e) = e` using `hss`. Establish `hJJ : cT (σ : E →+* E) J = J`. Use extensionality with `i j`. Conclude with `hJ.1 i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨M', rfl⟩ : ∃ M', M = M' + 1 := by`. Break down `M with _ | M'` into its components or cases. It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises. Simplify using `[hE, Formalism.UG.hform]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨M', rfl⟩`. Set `φ : (Fin (M' + 1) → E) →ₗ[E] E` to `{ toFun := fun v => hE σ J (x 0) v map_add' := fun v w => by simp only [hE, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib] map_smul' := fun c v => by`. Simplify using `only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `ring }`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hφ : ∀ v, φ v = hE σ J (x 0) v` using `fun v => rfl`. Establish `hsurj : LinearMap.range φ = ⊤`. Use `LinearMap.range_eq_top.mpr fun c => ⟨(c / hE σ J (x 0) (x 0)) • x 0, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, hφ, smul_eq_mul, div_mul_cancel₀ _ hx]`. Establish `hK : Module.finrank E (LinearMap.ker φ) = M'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker φ`. Rewrite `h1` using `[hsurj, finrank_top, Module.finrank_self, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Set `b` to `Module.finBasisOfFinrankEq E (LinearMap.ker φ) hK`. Set `v : Fin (M' + 1) → (Fin (M' + 1) → E)` to `Fin.cons (x 0) fun j => (b j : Fin (M' + 1) → E)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent E v`. Use `linearIndependent_finCons.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `b.linearIndependent.map' (LinearMap.ker φ).subtype (Submodule.ker_subtype _)`. Introduce `hmem`. Establish `hle : Submodule.span E (Set.range fun j => (b j : Fin (M' + 1) → E)) ≤ LinearMap.ker φ` using `Submodule.span_le.mpr (by rintro _ ⟨j, rfl⟩; exact (b j).2)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hx (LinearMap.mem_ker.mp (hle hmem))`. Set `P : Matrix (Fin (M' + 1)) (Fin (M' + 1)) E` to `(Matrix.of v)ᵀ`. Establish `hPu : IsUnit P` using `Matrix.linearIndependent_cols_iff_isUnit.mp (by simpa [P] using hli)`. Establish `hQ : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P ((Matrix.isUnit_iff_isUnit_det P).mp hPu)`. Establish `hP0 : (fun i => P i 0) = x 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[P, v]`. Establish `hPs : ∀ j : Fin M', (fun i => P i j.succ) = (b j : Fin (M' + 1) → E)` using `fun j => by`. Use function extensionality and compare the values at `i`. Simplify using `[P, v]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h01 : ∀ j : Fin M', (cT (σ : E →+* E) P * J * P) 0 j.succ = 0` using `fun j => by`. Rewrite using `[cT_mul_mul_apply_eq_hform, hP0, hPs]`. Conclude with `LinearMap.mem_ker.mp (b j).2`. Establish `h10 : ∀ j : Fin M', (cT (σ : E →+* E) P * J * P) j.succ 0 = 0` using `fun j => by`. Rewrite using `[cT_mul_mul_apply_eq_hform, ← GlobalTheory.AdelicUnimod.hform_symm (σ := (σ : E →+* E)) hss' hJJ, ← cT_mul_mul_apply_eq_hform, h01, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hJu : IsUnit J` using `(Matrix.isUnit_iff_isUnit_det J).mpr (isUnit_iff_ne_zero.mpr hJ.2)`. Establish `hπ : ∀ e : E, inclR (F` using `F) R ((σ : E →+* E) e) = sigR R σ (inclR (F := F) R e) := fun e => by`. Simplify using `[inclR, sigR]`. Establish `hOSR` using `orthSplit_map hπ (orthSplit_submatrix_succ_of_zero_entries hQ h01 h10 hJu)`. Establish `hP0' : ∀ k, P k 0 = x 0 k` using `fun k => congrFun hP0 k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ g : ↥(Formalism.UG.UJ (sigR R σ) (JR (F` using `F) R J)), (show HA R σ J from g) ∈ Hstab R σ J x ↔ mat g * (P.submatrix id fun _ : Fin 1 => 0).map (inclR (F := F) R) = (P.submatrix id fun _ : Fin 1 => 0).map (inclR (F := F) R) := by`. Introduce `g`. Establish `e1 : ∀ a i, ((show HA R σ J from g) • ratTup (F` using `F) R x) a i = (mat g * (P.submatrix id fun _ : Fin 1 => 0).map (inclR (F := F) R)) i a := by`. Introduce `a i`. Rewrite using `[Fin.fin_one_eq_zero a]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ k, (mat g) i k * inclR (F := F) R (x 0 k) = ∑ k, (mat g) i k * inclR (F := F) R (P k 0)`. Simplify using `only [hP0']`. Establish `e2 : ∀ a i, ratTup (F` using `F) R x a i = (P.submatrix id fun _ : Fin 1 => 0).map (inclR (F := F) R) i a := by`. Introduce `a i`. Rewrite using `[Fin.fin_one_eq_zero a]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `show inclR (F := F) R (x 0 i) = inclR (F := F) R (P i 0)`. Rewrite using `[hP0']`. Rewrite using `[Hstab, MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i a`. Rewrite using `[← e1, ← e2, hg]`. Introduce `hg`. Use function extensionality and compare the values at `a i`. Rewrite using `[e1, e2, hg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φe⟩` from `hOSR.exists_equiv (Hstab R σ J x) hS`. Establish `hsub : cT (σ : E →+* E) (P.submatrix id Fin.succ) * J * P.submatrix id Fin.succ = (cT (σ : E →+* E) P * J * P).submatrix Fin.succ Fin.succ`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, id]`. Establish `hdetN : (cT (σ : E →+* E) P * J * P).det = (cT (σ : E →+* E) P * J * P) 0 0 * (cT (σ : E →+* E) (P.submatrix id Fin.succ) * J * P.submatrix id Fin.succ).det`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ, hsub]`. Simplify using `only [Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero, h01, mul_zero, zero_mul, Finset.sum_const_zero, add_zero]`. Establish `hdetP : P.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det P).mp hPu).ne_zero`. Establish `hmd : (P.map (σ : E →+* E)).det = (σ : E →+* E) P.det` using `((σ : E →+* E).map_det P).symm`. Establish `hdetNne : (cT (σ : E →+* E) P * J * P).det ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul, Matrix.det_mul, Formalism.UG.cT, Matrix.det_transpose, hmd]`. Conclude with `mul_ne_zero (mul_ne_zero ((map_ne_zero _).mpr hdetP) hJ.2) hdetP`. Establish `hherm : ∀ i j, σ ((cT (σ : E →+* E) (P.submatrix id Fin.succ) * J * P.submatrix id Fin.succ) j i) = (cT (σ : E →+* E) (P.submatrix id Fin.succ) * J * P.submatrix id Fin.succ) i j`. Introduce `i j`. Use `show (σ : E →+* E) _ = _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsub, Matrix.submatrix_apply, Matrix.submatrix_apply, cT_mul_mul_apply_eq_hform, cT_mul_mul_apply_eq_hform, GlobalTheory.AdelicUnimod.hform_symm (σ := (σ : E →+* E)) hss' hJJ]`. Use `⟨M', cT (σ : E →+* E) (P.submatrix id Fin.succ) * J * P.submatrix id Fin.succ, ⟨hherm, fun h0 => hdetNne (by rw [hdetN, h0, mul_zero])⟩, ?_⟩` and prove the remaining obligations. Establish `hcm : ∀ {p q : Type} (Z : Matrix p q E), (cT (σ : E →+* E) Z).map (inclR (F` using `F) R) = cT (sigR R σ) (Z.map (inclR (F := F) R)) := fun Z => by`. Use extensionality with `i j`. Conclude with `hπ (Z j i)`.
-
-Establish `hJ'R : JR R (cT (σ : E →+* E) (P.submatrix id Fin.succ) * J * P.submatrix id Fin.succ) = cT (sigR R σ) ((P.submatrix id Fin.succ).map (inclR (F` using `F) R)) * J.map (inclR (F := F) R) * (P.submatrix id Fin.succ).map (inclR (F := F) R) := by`. Rewrite using `[JR, Matrix.map_mul, Matrix.map_mul, hcm]`. Express the relevant statement in the definitionally equal form `Nonempty (↥(Formalism.UG.UJ (sigR R σ) (JR R _)) ≃ₜ* _)`. Rewrite using `[hJ'R]`. Conclude with `⟨φe⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_stab_equiv (hss : ∀ x, σ (σ x) = x) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J)
     (x : Fin 1 → Fin M → E) (hx : hE σ J (x 0) (x 0) ≠ 0) :
@@ -539,9 +531,9 @@ theorem exists_stab_equiv (hss : ∀ x, σ (σ x) = x) {M : ℕ} {J : Matrix (Fi
   exact ⟨φe⟩
 
 /- English proof (translation)
-Use `⟨h M J hJ, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨M', J', hJ', ⟨e⟩⟩` from `exists_stab_equiv R hss hJ x hx`. Use `isTopologicalRing_tensorProduct (F := F) (E := E) R` as an intermediate fact. Establish `: IsTopologicalGroup (HA R σ J)` using `inferInstanceAs (IsTopologicalGroup ↥(Formalism.UG.UJ (sigR R σ) (JR R J)))`. Establish `: BorelSpace (HA R σ J)` using `⟨rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isUnimodularLC_of_equiv (h M' J' hJ') e`.
+A detailed English derivation is pending.
 -/
 theorem unimodularOver_of_forall (hss : ∀ x, σ (σ x) = x)
     (h : ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → IsUnimodularLC (HA R σ J))
@@ -555,27 +547,27 @@ theorem unimodularOver_of_forall (hss : ∀ x, σ (σ x) = x)
   exact isUnimodularLC_of_equiv (h M' J' hJ') e
 
 /- English proof (translation)
-Use `isTopologicalRing_tensorProduct (F := F) (E := E) R` as an intermediate fact. Establish `hFD : FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Set `eL` to `(Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun`. Establish `hc1 : Continuous eL` using `IsModuleTopology.continuous_of_linearMap eL.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc2 : Continuous eL.symm` using `IsModuleTopology.continuous_of_linearMap eL.symm.toLinearMap`. Set `eH : (R ⊗[F] E) ≃ₜ (Fin (Module.finrank F E) → R)` to `{ toEquiv := eL.toEquiv, continuous_toFun := hc1, continuous_invFun := hc2 }`. Establish `: T2Space (R ⊗[F] E)` using `eH.isEmbedding.t2Space`. Establish `: LocallyCompactSpace (R ⊗[F] E)` using `eH.isClosedEmbedding.locallyCompactSpace`. Establish `: SecondCountableTopology (R ⊗[F] E)` using `eH.isEmbedding.secondCountableTopology`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace (Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `inferInstanceAs (LocallyCompactSpace (Fin M → Fin M → R ⊗[F] E))`. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin M → Fin M → R ⊗[F] E))`. Establish `: T2Space (Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `inferInstanceAs (T2Space (Fin M → Fin M → R ⊗[F] E))`. Establish `: LocallyCompactSpace (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: T2Space (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.t2Space`. Establish `hemb` using `Units.isClosedEmbedding_embedProduct (α := Matrix (Fin M) (Fin M) (R ⊗[F] E))`. Establish `: LocallyCompactSpace (GL (Fin M) (R ⊗[F] E))` using `hemb.locallyCompactSpace`. Establish `: SecondCountableTopology (GL (Fin M) (R ⊗[F] E))` using `hemb.isEmbedding.secondCountableTopology`. Establish `: T2Space (GL (Fin M) (R ⊗[F] E))` using `hemb.isEmbedding.t2Space`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsig : ⇑(sigR R σ) = ⇑((σ.toLinearMap : E →ₗ[F] E).baseChange R)`. Use function extensionality and compare the values at `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hs'c : Continuous (sigR R σ)`. Rewrite using `[hsig]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`. Establish `hv : Continuous fun g : GL (Fin M) (R ⊗[F] E) => (g : Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `Units.continuous_val`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclosed : IsClosed (Formalism.UG.UJ (sigR R σ) (JR R J) : Set (GL (Fin M) (R ⊗[F] E)))` using `isClosed_eq (((hv.matrix_map hs'c).matrix_transpose.matrix_mul continuous_const).matrix_mul hv) continuous_const`. Establish `: LocallyCompactSpace (HA R σ J)` using `hclosed.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology (HA R σ J)` using `hclosed.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Establish `: T2Space (HA R σ J)` using `inferInstanceAs (T2Space ↥(Formalism.UG.UJ (sigR R σ) (JR R J)))`. Establish `: IsTopologicalGroup (HA R σ J)` using `inferInstanceAs (IsTopologicalGroup ↥(Formalism.UG.UJ (sigR R σ) (JR R J)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace (HA R σ J)` using `⟨rfl⟩`. Use `⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ⟨Measure.haar, inferInstance⟩, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `hμ` as an intermediate fact. Establish `hJJ : cT (σ : E →+* E) J = J`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hJ.1 i j`. Establish `hπ : ∀ e : E, inclR (F` using `F) R ((σ : E →+* E) e) = sigR R σ (inclR (F := F) R e) := fun e => by`. Simplify using `[inclR, sigR]`. Take `⟨Mm, hFr⟩` from `GlobalTheory.AdelicUnimod.exists_framed (σ := (σ : E →+* E)) hss hJJ hJ.2`. Establish `hFrR` using `hFr.map hπ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨T, hTc, hTT, hT⟩` from `GlobalTheory.AdelicUnimod.exists_involution hs'c (GlobalTheory.AdelicPointsUnimod.sigR_sigR hss) hFrR`. Set `T' : HA R σ J →* HA R σ J` to `T`. Establish `hmod : ∀ g : HA R σ J, Measure.modularCharacter (T' g) = Measure.modularCharacter g` using `GlobalTheory.AdelicUnimod.modular_involution (G := HA R σ J) T' hTc hTT`. Establish `hArt : IsArtinianRing (R ⊗[F] E)` using `IsArtinianRing.of_finite R (R ⊗[F] E)`. Set `_ : Algebra ℚ (R ⊗[F] E)` to `((algebraMap F (R ⊗[F] E)).comp (algebraMap ℚ F)).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : GlobalTheory.AdelicUnimod.Generic (sigR R σ)` using `GlobalTheory.AdelicUnimod.generic_of_semilocal ((isUnit_iff_ne_zero.mpr hδ).map (inclR (F := F) R)) (by rw [← hπ]; simp [hσδ])`. Establish `hχ : ∀ g : HA R σ J, Measure.modularCharacter g = 1` using `fun g => GlobalTheory.AdelicUnimod.char_eq_one (GlobalTheory.AdelicPointsUnimod.sigR_sigR hss) hFrR hgen (Measure.modularCharacter : HA R σ J →* NNReal) (fun g g' hg => by`. Rewrite using `[hT g g' hg]`. Conclude with `hmod g) g`. Conclude with `⟨fun g => by rw [GlobalTheory.AdelicUnimod.map_mul_right_eq μ g, hχ g, one_smul]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isUnimodularLC_of_artinian [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R]
     [IsArtinianRing R] (hss : ∀ x, σ (σ x) = x) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ)
@@ -653,7 +645,7 @@ theorem isUnimodularLC_of_artinian [LocallyCompactSpace R] [SecondCountableTopol
   exact ⟨fun g => by rw [GlobalTheory.AdelicUnimod.map_mul_right_eq μ g, hχ g, one_smul]⟩
 
 /- English proof (translation)
-Establish `hss : ∀ e, σ (σ e) = e` using `GlobalTheory.HermLineZeros.conj_invol hσ`. Take `⟨d, hd⟩` from `GlobalTheory.HermLineZeros.exists_conj_ne hσ`. Conclude with `unimodularOver_of_forall R hss (fun M' J' hJ' => isUnimodularLC_of_artinian R hss (δ := d - σ d) (sub_ne_zero.mpr (Ne.symm hd)) (by rw [map_sub, hss]; ring) hJ') hJ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unimodularOver_of_artinian [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R]
     [IsArtinianRing R] (hσ : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) :
@@ -666,9 +658,9 @@ theorem unimodularOver_of_artinian [LocallyCompactSpace R] [SecondCountableTopol
 end Points
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ`. Establish `: T2Space (Ainf F)` using `inferInstanceAs (T2Space ((v : NumberField.InfinitePlace F) → v.Completion))`. Establish `hsc : ∀ v : NumberField.InfinitePlace F, SecondCountableTopology v.Completion` using `fun v => (NumberField.InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.secondCountableTopology`. Establish `: SecondCountableTopology (Ainf F)` using `inferInstanceAs (SecondCountableTopology ((v : NumberField.InfinitePlace F) → v.Completion))`. Establish `: IsArtinianRing (Ainf F)` using `inferInstanceAs (IsArtinianRing ((v : NumberField.InfinitePlace F) → v.Completion))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `unimodularOver_of_artinian (Ainf F) hσ hJ`.
+A detailed English derivation is pending.
 -/
 theorem unimodularOver_infinite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → UnimodularOver (Ainf F) σ J := by
   intro F E _ _ _ _ _ σ hσ M J hJ

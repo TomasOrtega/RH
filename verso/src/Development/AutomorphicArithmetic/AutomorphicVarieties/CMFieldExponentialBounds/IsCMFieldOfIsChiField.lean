@@ -5,25 +5,21 @@ import Development.AutomorphicArithmetic.QuadraticCharacters.GaussRoot
 open NumberField Formalism.HC UpperTheory.Top UpperTheory.V
 
 /- English proof (translation)
-Introduce `ψ e q d hq hq4 E _ _ hE`. Take `⟨N, hN, j, ζ, -, -, hqN, -, hζ, hτ⟩` from `hE`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Use `haveI : NeZero (N : ℚ) := ⟨by exact_mod_cast hN.out⟩`. Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsAbelianGalois ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.isAbelianGalois {N} ℚ (CyclotomicField N ℚ)`. Use `haveI : IsAbelianGalois ℚ E := IsAbelianGalois.of_algHom j`. Establish `hζq : IsPrimitiveRoot (ζ ^ (N / q)) q` using `hζ.pow (NeZero.pos N) (Nat.div_mul_cancel hqN).symm`. Take `⟨G, hG2, hGσ⟩` from `HostParam.SlopeTestRemainingChoices.GaussRoot.exists_gauss hq4 hζq`. Establish `hGL : G ∈ j.fieldRange`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← IsGalois.fixedField_fixingSubgroup j.fieldRange, IntermediateField.mem_fixedField_iff]`. Introduce `τ hτL`. Rewrite `hτL` using `[IntermediateField.mem_fixingSubgroup_iff]`. Establish `hfix : ∀ x : E, τ (j x) = j x` using `fun x => hτL _ (AlgHom.mem_fieldRange.2 ⟨x, rfl⟩)`. Take `⟨a, -, ha⟩` from `hζ.eq_pow_of_pow_eq_one (ξ := τ ζ) (by rw [← map_pow, hζ.pow_eq_one, map_one])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hjq, -⟩` from `(hτ τ a ha.symm).1 hfix`. Establish `hprim : IsPrimitiveRoot (ζ ^ a) N`. Rewrite using `[ha]`. Conclude with `hζ.map_of_injective τ.injective`. Establish `hcop : a.Coprime q` using `Nat.Coprime.coprime_dvd_right hqN ((hζ.pow_iff_coprime (NeZero.pos N) a).1 hprim)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hquad : quadraticChar (ZMod q) (a : ZMod q) = 1`. Establish `h` using `jacobiSym.legendreSym.to_jacobiSym q (a : ℤ)`. Rewrite `h` using `[hjq]`. Unfold `legendreSym at h`. Rewrite `h` using `[Int.cast_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h` using `hGσ (τ : CyclotomicField N ℚ →+* CyclotomicField N ℚ) a hcop (by`. Rewrite using `[RingHom.coe_coe, map_pow, ← ha, ← pow_mul, ← pow_mul, mul_comm])`. Rewrite `h` using `[hquad]`. Simplify using `using h`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `AlgHom.mem_fieldRange.1 hGL`. Establish `hx2 : x ^ 2 = -(q : E)`. Apply `j.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `j (x ^ 2) = j (-(q : E))`. Rewrite using `[map_pow, hx, hG2, map_neg, map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsTotallyComplex E := ⟨fun w => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Introduce `hr`. Establish `hc` using `RingHom.congr_fun hr x`. Rewrite `hc` using `[ComplexEmbedding.conjugate_coe_eq]`.
-
-Establish `him : (w.embedding x).im = 0` using `Complex.conj_eq_iff_im.1 hc`. Establish `hz2 : (w.embedding x) ^ 2 = -(q : ℂ)`. Rewrite using `[← map_pow, hx2, map_neg, map_natCast]`. Establish `hre` using `congrArg Complex.re hz2`. Simplify using `[sq, him] at hre`.
-
-Establish `hqpos : (0:ℝ) < q` using `by exact_mod_cast hq.pos`. Use polynomial arithmetic with `[mul_self_nonneg (w.embedding x).re]⟩`. Conclude with `NumberField.IsCMField.of_isAbelianGalois E`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.isCMField_of_isChiField :
     ∀ (ψ : PChar) (e q d : ℕ), q.Prime → q % 4 = 3 → ∀ (E : Type) [Field E] [NumberField E], IsChiField ψ e q d E → IsCMField E := by

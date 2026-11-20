@@ -11,9 +11,9 @@ namespace GlobalTheory.PolFan.CarDim
 namespace Tw
 
 /- English proof (translation)
-Set `τ : E ≃+* E` to `IsFractionRing.ringEquivOfRingEquiv σ`. Establish `hτ : ∀ x : 𝓞 E, τ (x : E) = ((σ x : 𝓞 E) : E)` using `fun x => IsFractionRing.ringEquivOfRingEquiv_algebraMap σ x`. Set `φ : E →+* ℂ` to `Classical.choice inferInstance`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, ← hτ, H.bar_eq, ← hτ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `φ.injective` to reduce the goal to its premises. Establish `h1` using `IsCMField.complexEmbedding_complexConj E (φ.comp τ.toRingHom) (a : E)`. Establish `h2` using `IsCMField.complexEmbedding_complexConj E φ (τ (a : E))`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe] at h1`. Rewrite using `[h1, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bar_comm {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (σ : 𝓞 E ≃+* 𝓞 E) (a : 𝓞 E) :
     σ (H.bar a) = H.bar (σ a) := by
@@ -49,25 +49,25 @@ Both sides reduce to the same expression.
 @[simp] theorem pullA_apply (τ : Y' ≃+ Y) (β : LinearMap.BilinForm ℤ Y) (a b : Y') : pullA τ β a b = β (τ a) (τ b) := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext₂ fun a b => by simp`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem pullA_symm_pullA (τ : Y' ≃+ Y) (β : LinearMap.BilinForm ℤ Y) : pullA τ.symm (pullA τ β) = β :=
   LinearMap.ext₂ fun a b => by simp
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext₂ fun a b => by simp`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem pullA_pullA_symm (τ : Y' ≃+ Y) (β : LinearMap.BilinForm ℤ Y') : pullA τ (pullA τ.symm β) = β :=
   LinearMap.ext₂ fun a b => by simp
 
 /- English proof (translation)
-Introduce `β β' h` and use `by rw [← pullA_symm_pullA τ β, h, pullA_symm_pullA]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullA_injective (τ : Y' ≃+ Y) : Function.Injective (pullA τ) := fun β β' h => by
   rw [← pullA_symm_pullA τ β, h, pullA_symm_pullA]
 
 /- English proof (translation)
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_smul {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ a • τ y) (a : O) (y : Y) :
     τ.symm (a • y) = σ.symm a • τ.symm y := by
@@ -75,14 +75,14 @@ theorem symm_smul {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y) = �
   rw [hτ, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, hc, RingEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_comm (hc : ∀ a, σ (bar a) = bar (σ a)) (a : O) : σ.symm (bar a) = bar (σ.symm a) := by
   apply σ.injective
   rw [RingEquiv.apply_symm_apply, hc, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y z => h.1 _ _, fun a y z => by simp only [pullA_apply, hτ, h.2, hc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem pullA_mem (hc : ∀ a, σ (bar a) = bar (σ a)) {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ a • τ y)
     {β : LinearMap.BilinForm ℤ Y} (h : β ∈ balForms bar Y) : pullA τ β ∈ balForms bar Y' :=
@@ -96,9 +96,9 @@ def TwEval : Prop :=
       ψ.eval Y' (fun a b => B (τ a) (τ b)) = ψ.eval Y B
 
 /- English proof (translation)
-Introduce `Y Y' _ _ _ _ _ _ τ hτ B`. Establish `hs : ∀ (a : O) (y : Y), τ.symm (a • y) = σ a • τ.symm y` using `fun a y => by`. Simplify using `using symm_smul hτ a y`. Use `h Y' Y τ.symm hs fun a b => B (τ a) (τ b)` as an intermediate fact. Simplify using `only [AddEquiv.apply_symm_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem TwEval.symm (h : TwEval σ ψ) : TwEval σ.symm ψ := by
   intro Y Y' _ _ _ _ _ _ τ hτ B
@@ -109,7 +109,7 @@ theorem TwEval.symm (h : TwEval σ ψ) : TwEval σ.symm ψ := by
   exact this.symm
 
 /- English proof (translation)
-The claim follows from `h Y Y' τ hτ fun a b => (β a b : ℝ)`.
+A detailed English derivation is pending.
 -/
 theorem TwEval.evalZ (h : TwEval σ ψ) [Module.Finite O Y] [Module.Finite O Y'] {τ : Y' ≃+ Y}
     (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ a • τ y) (β : LinearMap.BilinForm ℤ Y) :
@@ -129,15 +129,15 @@ variable {O : Type} [CommRing O] {bar : O → O} {σ : O ≃+* O} {ψ : InvFun O
   {m : ℕ}
 
 /- English proof (translation)
-Establish `hs : ∀ (a : O) (y : Y), τ.symm (a • y) = σ.symm a • τ.symm y` using `symm_smul hτ`. Establish `hcs` using `symm_comm hc`. Use `⟨fun i => pullA_mem hc hτ (h.mem i), fun i y => h.nonneg i _, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hcn`. Simplify using `only [hev.evalZ hτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h.linear c hcn]`. Conclude with `hev Y Y' τ hτ fun a b => ∑ i, c i * (δ i a b : ℝ)`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `h.strict`. Use `⟨N, ℓ ∘ₗ pullA τ.symm, hN, fun i => ?_, fun β hβ hp => ?_, fun β hβ hp he => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, pullA_symm_pullA, hev.evalZ hτ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h1 i`. Establish `hβ0` using `pullA_mem hcs hs hβ`. Establish `e : β = pullA τ (pullA τ.symm β)` using `(pullA_pullA_symm τ β).symm`. Rewrite using `[e, hev.evalZ hτ, LinearMap.comp_apply, pullA_symm_pullA]`. Conclude with `h2 _ hβ0 fun y => hp _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hβ0` using `pullA_mem hcs hs hβ`. Establish `e : β = pullA τ (pullA τ.symm β)` using `(pullA_pullA_symm τ β).symm`. Rewrite `he` using `[e, hev.evalZ hτ, LinearMap.comp_apply, pullA_symm_pullA]`. Take `⟨k, c, hk, hkc⟩` from `h3 _ hβ0 (fun y => hp _) he`. Use `⟨k, c, hk, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (pullA τ) hkc` as an intermediate fact. Rewrite `this` using `[map_nsmul, pullA_pullA_symm, map_sum]`. Simplify `this` using `only [map_nsmul]`.
+A detailed English derivation is pending.
 -/
 theorem isCell_pullA (hc : ∀ a, σ (bar a) = bar (σ a)) (hev : TwEval σ ψ) {τ : Y' ≃+ Y}
     (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ a • τ y) {δ : Fin m → LinearMap.BilinForm ℤ Y} (h : IsCell bar ψ δ) :
@@ -178,9 +178,9 @@ variable {O : Type} [CommRing O] {bar : O → O} {σ : O ≃+* O} {ψ : InvFun O
   {Y Y' : Type} [AddCommGroup Y] [Module O Y] [AddCommGroup Y'] [Module O Y'] {m : ℕ}
 
 /- English proof (translation)
-Simplify using `only [mem_orad, pullA_apply, hτ]`. Prove the components needed by the constructor for the conclusion. Introduce `h a y`. Use `h (σ.symm a) (τ.symm y)` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h a y`. Conclude with `h _ _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_orad_pullA {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ a • τ y) (β : LinearMap.BilinForm ℤ Y)
     (x : Y') : x ∈ orad (O := O) (pullA τ β) ↔ τ x ∈ orad (O := O) β := by
@@ -193,9 +193,9 @@ theorem mem_orad_pullA {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y
     exact h _ _
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, AddMonoidHom.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mem_orad_pullA hτ β x).1 hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Conclude with `⟨τ.symm y, (mem_orad_pullA hτ β _).2 (by simpa using hy), by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_orad_pullA {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ a • τ y) (β : LinearMap.BilinForm ℤ Y) :
     (orad (O := O) (pullA τ β)).toAddSubgroup.map (τ : Y' →+ Y) = (orad (O := O) β).toAddSubgroup := by
@@ -218,7 +218,7 @@ theorem qMap_mk {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ 
     qMap hτ β (Submodule.Quotient.mk x) = Submodule.Quotient.mk (τ x) := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H x => rw [← Submodule.Quotient.mk_smul, qMap_mk, qMap_mk, hτ, Submodule.Quotient.mk_smul]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem qMap_smul {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ a • τ y) (β : LinearMap.BilinForm ℤ Y) (a : O)
     (z : Y' ⧸ orad (O := O) (pullA τ β)) : qMap hτ β (a • z) = σ a • qMap hτ β z := by
@@ -226,9 +226,9 @@ theorem qMap_smul {τ : Y' ≃+ Y} (hτ : ∀ (a : O) (y : Y'), τ (a • y) = �
   | H x => rw [← Submodule.Quotient.mk_smul, qMap_mk, qMap_mk, hτ, Submodule.Quotient.mk_smul]
 
 /- English proof (translation)
-Unfold `genRank`. Establish `e : Submodule.span ℤ (Set.range fun i => pullA τ (γ i)) = (Submodule.span ℤ (Set.range γ)).map (pullA τ)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.equivMapOfInjective _ (pullA_injective τ) _).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem genRank_pullA (τ : Y' ≃+ Y) (γ : Fin m → LinearMap.BilinForm ℤ Y) :
     genRank (fun i => pullA τ (γ i)) = genRank γ := by
@@ -247,7 +247,7 @@ variable {O : Type} [CommRing O] {bar : O → O} {σ : O ≃+* O} {ψ : InvFun O
   {Y Y' : Type} [AddCommGroup Y] [Module O Y] [Module.Finite O Y] [AddCommGroup Y'] [Module O Y'] [Module.Finite O Y']
 
 /- English proof (translation)
-Introduce and unpack `k ⟨m, δ, h1, ⟨c, hc0, hcs⟩, rfl⟩`. Use `⟨m, fun i => pullA (qMap hτ β) (δ i), isCell_pullA hc hev (qMap_smul hτ β) h1, ⟨c, hc0, ?_⟩, genRank_pullA _ δ⟩` and prove the remaining obligations. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun₂ hcs (τ a) (τ b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply, qMap_mk]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cdimSet_subset (hc : ∀ a, σ (bar a) = bar (σ a)) (hev : TwEval σ ψ) {τ : Y' ≃+ Y}
     (hτ : ∀ (a : O) (y : Y'), τ (a • y) = σ a • τ y) (β : LinearMap.BilinForm ℤ Y) :
@@ -266,15 +266,13 @@ end Tw
 namespace Tw
 
 /- English proof (translation)
-Introduce `Y Y' _ _ _ _ _ _ τ hτ B`. Take `⟨n, s, hs⟩` from `Module.Finite.exists_fin' (𝓞 E) Y`. Establish `hsy : ∀ (a : 𝓞 E) (y : Y), τ.symm (σ a • y) = a • τ.symm y` using `fun a y => by`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `s' : (Fin n → 𝓞 E) →ₗ[𝓞 E] Y'` to `{ toFun := fun x => τ.symm (s fun i => σ (x i)) map_add' := fun x x' => by`. Establish `: (fun i => σ ((x + x') i)) = (fun i => σ (x i)) + fun i => σ (x' i)` using `by ext i; simp`. Rewrite using `[this, map_add, map_add]`. Use the proof step `map_smul' := fun c x => by`. Establish `: (fun i => σ ((c • x) i)) = σ c • fun i => σ (x i)` using `by ext i; simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_smul, hsy]`. Use `rfl }`. Establish `hs' : Function.Surjective s'` using `fun y => by`. Take `⟨x, hx⟩` from `hs (τ y)`. Use `⟨fun i => σ.symm (x i), ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show τ.symm (s fun i => σ (σ.symm (x i))) = y`. Simplify using `only [RingEquiv.apply_symm_apply]`. Rewrite using `[hx, AddEquiv.symm_apply_apply]`. Rewrite using `[ψ.eval_eq hs', ψ.eval_eq hs]`. Use `htw σ hσ n fun a b => B (s a) (s b)` as an intermediate fact.
-
-Simplify `this` using `[s']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem twEval_of_isTwInv {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {ψ : InvFun (𝓞 E)}
     (htw : IsTwInv H ψ) {σ : 𝓞 E ≃+* 𝓞 E} (hσ : σ H.w0 = H.w0) : TwEval σ ψ := by
@@ -305,17 +303,17 @@ theorem twEval_of_isTwInv {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
 end Tw
 
 /- English proof (translation)
-Introduce `E _ _ _ H ψ htw σ hσ n B`. Establish `hc : ∀ a, σ (H.bar a) = H.bar (σ a)` using `Tw.bar_comm H σ`. Establish `hev : Tw.TwEval σ ψ` using `Tw.twEval_of_isTwInv htw hσ`. Set `τ : (Fin n → 𝓞 E) ≃+ (Fin n → 𝓞 E)` to `AddEquiv.piCongrRight fun _ => σ.toAddEquiv`. Establish `hτ : ∀ (a : 𝓞 E) (y : Fin n → 𝓞 E), τ (a • y) = σ a • τ y` using `fun a y => by ext i; simp [τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτs` using `Tw.symm_smul hτ`. Establish `hcs` using `Tw.symm_comm hc`. Use `show (carFun (⇑H.bar) ψ).toFun n (fun a b => B (τ a) (τ b)) = (carFun (⇑H.bar) ψ).toFun n B`. Simplify using `only [carFun]`. Distinguish the cases in `h : ∃ β : LinearMap.BilinForm ℤ (Fin n → 𝓞 E), β ∈ balForms (⇑H.bar) (Fin n → 𝓞 E) ∧ (∀ y, 0 ≤ β y y) ∧ ∀ a b, B a b = β a b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h' : ∃ β : LinearMap.BilinForm ℤ (Fin n → 𝓞 E), β ∈ balForms (⇑H.bar) (Fin n → 𝓞 E) ∧ (∀ y, 0 ≤ β y y) ∧ ∀ a b, B (τ a) (τ b) = β a b` using `⟨Tw.pullA τ h.choose, Tw.pullA_mem hc hτ h.choose_spec.1, fun y => h.choose_spec.2.1 _, fun a b => h.choose_spec.2.2 _ _⟩`. Rewrite using `[dif_pos h, dif_pos h']`. Establish `e : h'.choose = Tw.pullA τ h.choose` using `LinearMap.ext₂ fun a b => by`. Establish `h1` using `h'.choose_spec.2.2 a b`. Establish `h2` using `h.choose_spec.2.2 (τ a) (τ b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Tw.pullA_apply]`. Conclude with `h1.symm.trans h2` after adjusting the coercions. Rewrite using `[e]`. Unfold `cdimQ`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Set.Subset.antisymm ?_ (Tw.cdimSet_subset hc hev hτ _))` and prove the remaining obligations. Use `Tw.cdimSet_subset (bar := ⇑H.bar) (ψ := ψ) hcs hev.symm hτs (Tw.pullA τ h.choose)` as an intermediate fact. Rewrite `this` using `[Tw.pullA_symm_pullA]`. Then use the resulting hypothesis. Establish `h' : ¬ ∃ β : LinearMap.BilinForm ℤ (Fin n → 𝓞 E), β ∈ balForms (⇑H.bar) (Fin n → 𝓞 E) ∧ (∀ y, 0 ≤ β y y) ∧ ∀ a b, B (τ a) (τ b) = β a b`. Introduce and unpack `⟨β, h1, h2, h3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h ⟨Tw.pullA τ.symm β, Tw.pullA_mem hcs hτs h1, fun y => h2 _, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Tw.pullA_apply, ← h3, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[dif_neg h, dif_neg h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTwInv_carFun : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ψ : InvFun (𝓞 E)),
     IsTwInv H ψ → IsTwInv H (carFun H.bar ψ) := by

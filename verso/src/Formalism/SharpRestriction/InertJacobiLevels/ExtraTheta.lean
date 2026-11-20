@@ -23,9 +23,9 @@ def extZ (n n' : ℕ) : (Fin n → E) →ₗ[E] (Fin n' → E) where
     by_cases h : i.1 < n <;> simp [h]
 
 /- English proof (translation)
-Establish `h1` using `Fin.sum_univ_eq_sum_range (fun i : ℕ => if h : i < n then g ⟨i, h⟩ else 0) n'`. Establish `h2` using `Fin.sum_univ_eq_sum_range (fun i : ℕ => if h : i < n then g ⟨i, h⟩ else 0) n`. Rewrite using `[h1, ← Finset.sum_subset (Finset.range_subset_range.2 hn), ← h2]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [dif_pos i.2]`. Introduce `i _ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (by simpa using hi)]`.
+A detailed English derivation is pending.
 -/
 theorem sum_extZ (n n' : ℕ) (hn : n ≤ n') (g : Fin n → E) :
     ∑ i : Fin n', (if h : i.1 < n then g ⟨i.1, h⟩ else 0) = ∑ i, g i := by
@@ -37,7 +37,7 @@ theorem sum_extZ (n n' : ℕ) (hn : n ≤ n') (g : Fin n → E) :
     rw [dif_neg (by simpa using hi)]
 
 /- English proof (translation)
-Rewrite using `[diagForm_apply, diagForm_apply, ← sum_extZ n n' hn]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show star (if h : i.1 < n then x ⟨i.1, h⟩ else 0) * _ * (if h : i.1 < n then y ⟨i.1, h⟩ else 0) = _`. Apply the tactic sequence `by_cases h : i.1 < n <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem extZ_form (n n' : ℕ) (hn : n ≤ n') (x y : Fin n → E) :
     diagForm n' (fun _ => false) (extZ n n' x) (extZ n n' y) = diagForm n (fun _ => false) x y := by
@@ -47,7 +47,7 @@ theorem extZ_form (n n' : ℕ) (hn : n ≤ n') (x y : Fin n → E) :
   by_cases h : i.1 < n <;> simp [h]
 
 /- English proof (translation)
-Introduce `x y` and use `extZ_form n n' hn x y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extZ_isom (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (n n' : ℕ) (hn : n ≤ n') :
     HSpace.IsIsomEmb (posSpace hstar n) (posSpace hstar n') (extZ n n') :=
@@ -108,7 +108,7 @@ open Classical in
 def tow (D : D7) (t : ℕ) : Tow D t := if h : t = D.R.t then h ▸ recTow D else stdTow D t
 
 /- English proof (translation)
-Unfold `tow`. Rewrite using `[dif_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tow_rec (D : D7) : tow D D.R.t = recTow D := by
   unfold tow
@@ -195,7 +195,7 @@ def thetaZero (D : D7) : ThetaX D where
   mY_zero := fun _ => rfl
 
 /- English proof (translation)
-Introduce `μ j _ x y` and use `by rw [Subsingleton.elim x 0, inner_zero_left] exact mul_zero _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaZero_row (D : D7) [∀ μ j, Subsingleton (D.what₂.Mult μ j)] : (thetaZero D).TieRowIsom :=
   fun μ j _ x y => by
@@ -203,7 +203,7 @@ theorem thetaZero_row (D : D7) [∀ μ j, Subsingleton (D.what₂.Mult μ j)] : 
     exact mul_zero _
 
 /- English proof (translation)
-Introduce `μ j _ y x` and use `by rw [Subsingleton.elim x 0, inner_zero_right] exact mul_zero _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaZero_io (D : D7) [∀ μ j, Subsingleton (D.what₂.Mult μ j)] : (thetaZero D).TieIo :=
   fun μ j _ y x => by
@@ -211,7 +211,7 @@ theorem thetaZero_io (D : D7) [∀ μ j, Subsingleton (D.what₂.Mult μ j)] : (
     exact mul_zero _
 
 /- English proof (translation)
-Introduce `u μ φ F` and use `(h u μ φ F).trans (mul_zero _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaZero_bm (D : D7) (h : ∀ u μ φ F, D.what₂.perCol u μ φ F = 0) : (thetaZero D).TieBm :=
   fun u μ φ F => (h u μ φ F).trans (mul_zero _).symm

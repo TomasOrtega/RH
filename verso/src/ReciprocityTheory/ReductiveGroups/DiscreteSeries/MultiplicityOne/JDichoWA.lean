@@ -18,7 +18,7 @@ def SG (_hU : IsClosedSubgroup U) : Type := {x : Mt k r // (Matrix.of x : Mat k 
 def mat {hU : IsClosedSubgroup U} (g : SG hU) : Mat k r := Matrix.of g.1
 
 /- English proof (translation)
-Conclude with `g.2`.
+A detailed English derivation is pending.
 -/
 theorem mat_mem {hU : IsClosedSubgroup U} (g : SG hU) : mat g ∈ U := by
   exact g.2
@@ -50,7 +50,7 @@ Both sides reduce to the same expression.
 theorem mat_inv (a : SG hU) : mat a⁻¹ = (mat a)⁻¹ := rfl
 
 /- English proof (translation)
-Conclude with `Subtype.ext (Matrix.of.injective h)`.
+A detailed English derivation is pending.
 -/
 theorem ext' {a b : SG hU} (h : mat a = mat b) : a = b := by
   exact Subtype.ext (Matrix.of.injective h)
@@ -66,19 +66,19 @@ instance : BorelSpace (SG hU) :=
   inferInstanceAs (BorelSpace ({x : Mt k r | (Matrix.of x : Mat k r) ∈ U} : Set (Mt k r)))
 
 /- English proof (translation)
-The claim follows from `continuous_matrix (fun i j => (continuous_apply j).comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_matrix_of_Mt : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) :=
   continuous_matrix (fun i j => (continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-Conclude with `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_val : Continuous (fun g : SG hU => g.1) := by
   exact continuous_subtype_val
 
 /- English proof (translation)
-Conclude with `continuous_matrix_of_Mt.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat : Continuous (fun g : SG hU => mat g) := by
   exact continuous_matrix_of_Mt.comp continuous_subtype_val
@@ -98,13 +98,13 @@ instance : ContinuousInv (SG hU) := by
 instance : IsTopologicalGroup (SG hU) := {}
 
 /- English proof (translation)
-Conclude with `(hU.closed.preimage continuous_matrix_of_Mt).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_U (hU : IsClosedSubgroup U) : MeasurableSet {x : Mt k r | (Matrix.of x : Mat k r) ∈ U} := by
   exact (hU.closed.preimage continuous_matrix_of_Mt).measurableSet
 
 /- English proof (translation)
-Conclude with `MeasurableEmbedding.subtype_coe (measurableSet_U hU)`.
+A detailed English derivation is pending.
 -/
 theorem me_val (hU : IsClosedSubgroup U) : MeasurableEmbedding (fun g : SG hU => g.1) := by
   exact MeasurableEmbedding.subtype_coe (measurableSet_U hU)
@@ -112,7 +112,7 @@ theorem me_val (hU : IsClosedSubgroup U) : MeasurableEmbedding (fun g : SG hU =>
 def nu (hU : IsClosedSubgroup U) (μ : Measure (Mt k r)) : Measure (SG hU) := μ.comap (fun g : SG hU => g.1)
 
 /- English proof (translation)
-Unfold `nu`. Rewrite using `[(me_val hU).map_comap]`. Apply the tactic sequence `first | rw [Subtype.range_coe_subtype] | rw [Subtype.range_val_subtype] | skip`. Establish `hae : ∀ᵐ x ∂μ, (Matrix.of x : Mat k r) ∈ U` using `ae_iff.mpr hμ.conc`. Conclude with `Measure.restrict_eq_self_of_ae_mem (hae.mono fun x hx => ⟨⟨x, hx⟩, rfl⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_nu {μ : Measure (Mt k r)} (hμ : IsHaarOn U μ) : (nu hU μ).map (fun g : SG hU => g.1) = μ := by
   unfold nu
@@ -122,11 +122,11 @@ theorem map_nu {μ : Measure (Mt k r)} (hμ : IsHaarOn U μ) : (nu hU μ).map (f
   exact Measure.restrict_eq_self_of_ae_mem (hae.mono fun x hx => ⟨⟨x, hx⟩, rfl⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g`. Establish `hc : Continuous (lmulM (k` using `k) (r := r) (mat g)) := (continuous_const.mul continuous_matrix_of_Mt : Continuous fun x : Mt k r => (mat g * Matrix.of x : Mat k r))`. Establish `hm : Measurable (fun x : SG hU => g * x)`. Use `Measurable.subtype_mk ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc.measurable.comp measurable_subtype_coe`. Establish `hval : (fun g : SG hU => g.1) ∘ (fun x : SG hU => g * x) = lmulM (mat g) ∘ (fun g : SG hU => g.1)` using `rfl`. Establish `hmap : ((nu hU μ).map (fun x : SG hU => g * x)).map (fun g : SG hU => g.1) = (nu hU μ).map (fun g : SG hU => g.1)`. Rewrite using `[Measure.map_map (me_val hU).measurable hm, hval, ← Measure.map_map hc.measurable (me_val hU).measurable, map_nu hμ, hμ.left _ (mat_mem g)]`. Use extensionality with `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun m : Measure (Mt k r) => m ((fun g : SG hU => g.1) '' s)) hmap`. Rewrite `h1` using `[(me_val hU).map_apply, (me_val hU).map_apply, Set.preimage_image_eq s (me_val hU).injective]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nu_left {μ : Measure (Mt k r)} (hμ : IsHaarOn U μ) : (nu hU μ).IsMulLeftInvariant := by
   constructor
@@ -147,15 +147,13 @@ theorem nu_left {μ : Measure (Mt k r)} (hμ : IsHaarOn U μ) : (nu hU μ).IsMul
     Set.preimage_image_eq s (me_val hU).injective] at h1
 
 /- English proof (translation)
-Establish `hae : AEMeasurable invM μ`. Assume the negation of the conclusion as `h`. Conclude with `hμ.ne_zero (by rw [← HI k r U μ hU hμ, Measure.map_of_not_aemeasurable h])`. Prove the components needed by the constructor for the conclusion. Use extensionality with `s hs`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hset : (fun g : SG hU => g.1) '' s⁻¹ = invM ⁻¹' ((fun g : SG hU => g.1) '' s) ∩ {x : Mt k r | (Matrix.of x : Mat k r) ∈ U}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨(@id (SG hU) x)⁻¹, hx, rfl⟩, x.2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨x, hx, hxy⟩, hy⟩`. Use `⟨⟨y, hy⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `e : (@id (SG hU) ⟨y, hy⟩)⁻¹ = x`. Apply `ext'` to reduce the goal to its premises. Rewrite using `[mat_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (Matrix.of y : Mat k r)⁻¹ = Matrix.of x.1`. Rewrite using `[show x.1 = invM y from hxy]`. Apply the tactic sequence `all_goals rfl`. Use `show (@id (SG hU) ⟨y, hy⟩)⁻¹ ∈ s`. Rewrite using `[e]`.
-
-Conclude with `hx`. Rewrite using `[Measure.inv_apply]`. Simplify using `only [nu]`. Rewrite using `[(me_val hU).comap_apply, (me_val hU).comap_apply, hset, measure_inter_conull (t := {x : Mt k r | (Matrix.of x : Mat k r) ∈ U}) hμ.conc, ← Measure.map_apply_of_aemeasurable hae ((me_val hU).measurableSet_image.mpr hs), HI k r U μ hU hμ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_inv (HI : HaarInv) {μ : Measure (Mt k r)} (hμ : IsHaarOn U μ) : (nu hU μ).IsInvInvariant := by
   have hae : AEMeasurable invM μ := by

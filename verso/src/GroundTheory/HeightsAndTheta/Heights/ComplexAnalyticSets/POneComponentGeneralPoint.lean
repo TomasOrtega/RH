@@ -8,25 +8,21 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Introduce `n I W hW`. Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hfin : I.minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ I`. Establish `hsep : ∀ W' ∈ I.minimalPrimes, W' ≠ W → ∃ g ∈ W', g ∉ W`. Introduce `W' hW' hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (le_antisymm h (hW.2 hW'.1 h))`. Use `choose! g hgW' hgW using hsep`. Use `set S := hfin.toFinset.erase W with hS`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set f : MvPolynomial (Fin n) ℂ := ∏ W' ∈ S, g W' with hfdef`. Establish `hf : f ∉ W`. Introduce `hmem`. Take `⟨W', hW'S, hgm⟩` from `(Ideal.IsPrime.prod_mem_iff (p := W)).1 hmem`. Rewrite `hW'S` using `[Finset.mem_erase, Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hgW W' hW'S.2 hW'S.1 hgm`. Establish `hUo : IsOpen {x : Fin n → ℂ | eval x f ≠ 0}` using `isOpen_ne_fun (MvPolynomial.continuous_eval (p := f)) continuous_const`. Use `⟨{x | eval x f ≠ 0}, hUo, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[mem_closure_iff_nhds]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `t ht`. Assume the negation of the conclusion as `hempty`. Rewrite `hempty` using `[Set.not_nonempty_iff_eq_empty]`. Apply `hf` to reduce the goal to its premises. Use `hV n W f x hWp hx ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `filter_upwards [ht] with y hyt hyW`. Assume the negation of the conclusion as `hne`. Establish `hy : y ∈ t ∩ (GroundTheory.Heights₂.Heights.ComplexSets.zeroSet W ∩ {x | eval x f ≠ 0})` using `⟨hyt, hyW, hne⟩`. Rewrite `hy` using `[hempty]`. Conclude with `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `x ⟨-, hxf⟩`. Use `⟨{x | eval x f ≠ 0}, hUo.mem_nhds hxf, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hyI, hyf⟩`. Establish `: (RingHom.ker (eval y : MvPolynomial (Fin n) ℂ →+* ℂ)).IsPrime` using `RingHom.ker_isPrime _`. Establish `hker : I ≤ RingHom.ker (eval y : MvPolynomial (Fin n) ℂ →+* ℂ)` using `fun q hq => RingHom.mem_ker.2 (hyI q hq)`.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W', hW', hle⟩` from `Ideal.exists_minimalPrimes_le hker`. Distinguish the cases in `hne : W' = W`. Rewrite `hle` using `[hne]`. Introduce `q hq`. Conclude with `RingHom.mem_ker.1 (hle hq)`.
-
-It suffices to derive a contradiction. Apply `hyf` to reduce the goal to its premises. Establish `hmem : W' ∈ S`. Rewrite using `[hS, Finset.mem_erase, Set.Finite.mem_toFinset]`. Conclude with `⟨hne, hW'⟩`.
-
-Use `show eval y (∏ W' ∈ S, g W') = 0`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_zero hmem (RingHom.mem_ker.1 (hle (hgW' W' hW' hne)))`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OneComponentGeneralPoint.proof (hV : VanishNearPoint.Statement) :
     OneComponentGeneralPoint.Statement := by

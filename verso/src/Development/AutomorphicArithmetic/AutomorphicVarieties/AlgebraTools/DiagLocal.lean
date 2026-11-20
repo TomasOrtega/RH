@@ -8,7 +8,7 @@ private def DGood {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq 
   ∃ P : Matrix ι ι R, IsUnit P.det ∧ (Pᵀ * H * P).IsDiag
 
 /- English proof (translation)
-Take `⟨P, hP, hD⟩` from `h`. Use `⟨Q * P, by rw [det_mul]; exact hQ.mul hP, ?_⟩` and prove the remaining obligations. Rewrite using `[transpose_mul]`. Simplify `hD` using `only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dgood_congr {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (H Q : Matrix ι ι R) (hQ : IsUnit Q.det) (h : DGood (Qᵀ * H * Q)) : DGood H := by
@@ -18,9 +18,9 @@ private theorem dgood_congr {R : Type} [CommRing R] {ι : Type} [Fintype ι] [De
   simpa only [Matrix.mul_assoc] using hD
 
 /- English proof (translation)
-Take `⟨P, hP, hD⟩` from `h`. Use `⟨P.submatrix e.symm e.symm, by rw [det_submatrix_equiv_self]; exact hP, ?_⟩` and prove the remaining obligations. Establish `key : (P.submatrix e.symm e.symm)ᵀ * H * P.submatrix e.symm e.symm = (Pᵀ * H.submatrix e e * P).submatrix e.symm e.symm`. Rewrite using `[← submatrix_mul_equiv _ _ _ e.symm _, ← submatrix_mul_equiv _ _ _ e.symm _, transpose_submatrix, submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`. Conclude with `hD.submatrix e.symm.injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dgood_reindex {R : Type} [CommRing R] {ι κ : Type} [Fintype ι] [DecidableEq ι]
     [Fintype κ] [DecidableEq κ] (e : κ ≃ ι)
@@ -36,17 +36,17 @@ private theorem dgood_reindex {R : Type} [CommRing R] {ι κ : Type} [Fintype ι
   exact hD.submatrix e.symm.injective
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, IsUnit (H i j) := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `key : ∑ j, H i j * adjugate H j i = H.det`. Use `congrFun (congrFun (mul_adjugate H) i) i` as an intermediate fact.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.mul_apply]`. Establish `hm : ∑ j, H i j * adjugate H j i ∈ maximalIdeal R` using `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (by rw [mem_maximalIdeal, mem_nonunits_iff]; exact hne j)`. Rewrite `hm` using `[key, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hm hd`. Distinguish the cases in `hij : j = i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hij` using the available equality. Conclude with `⟨1, by simp, by simpa using hj⟩`. Establish `hji : H j i = H i j`. Use `congrFun (congrFun hs i) j` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hent : ∀ c : R, ((transvection j i c)ᵀ * H * transvection j i c) i i = H i i + 2 * c * H i j + c * c * H j j`. Introduce `c`. Simplify using `[transvection, Matrix.mul_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, add_mul, mul_add, Finset.sum_add_distrib, ite_mul, mul_ite, Ne.symm hij, hij, hji]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hp : IsUnit (H i i + 2 * 1 * H i j + 1 * 1 * H j j)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨transvection j i 1, by rw [det_transvection_of_ne j i hij]; exact isUnit_one, by rw [hent]; exact hp⟩`. Use `⟨transvection j i (-1), by rw [det_transvection_of_ne j i hij]; exact isUnit_one, ?_⟩` and prove the remaining obligations. Rewrite using `[hent]`. Assume the negation of the conclusion as `hm`. Establish `hx : (H i i + 2 * 1 * H i j + 1 * 1 * H j j) - (H i i + 2 * (-1) * H i j + (-1) * (-1) * H j j) ∈ maximalIdeal R` using `Ideal.sub_mem _ ((mem_maximalIdeal _).2 hp) ((mem_maximalIdeal _).2 hm)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4 : (H i i + 2 * 1 * H i j + 1 * 1 * H j j) - (H i i + 2 * (-1) * H i j + (-1) * (-1) * H j j) = 2 * 2 * H i j` using `by ring`. Rewrite `hx` using `[e4, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hx ((h2.mul h2).mul hj)`.
+A detailed English derivation is pending.
 -/
 private theorem pivot {R : Type} [CommRing R] [IsLocalRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (H : Matrix ι ι R) (h2 : IsUnit (2 : R)) (hs : Hᵀ = H) (hd : IsUnit H.det) (i : ι) :
@@ -90,23 +90,21 @@ private theorem pivot {R : Type} [CommRing R] [IsLocalRing R] {ι : Type} [Finty
       exact hx ((h2.mul h2).mul hj)
 
 /- English proof (translation)
-Establish `hH : H = fromBlocks (H (Sum.inl ()) (Sum.inl ()) • (1 : Matrix Unit Unit R)) H.toBlocks₁₂ H.toBlocks₁₂ᵀ H.toBlocks₂₂`. Use extensionality with `(⟨⟩ | k) (⟨⟩ | l)`. Simplify using the standard rewrite rules. Simplify using `[toBlocks₁₂]`. Use `congrFun (congrFun hs (Sum.inl ())) (Sum.inr k)` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [transpose_apply] at this`. Simplify using `[toBlocks₁₂, this]`. Simplify using `[toBlocks₂₂]`. Generalize the expression as in `H (Sum.inl ()) (Sum.inl ()) = a at hH h0`. Generalize the expression as in `H.toBlocks₁₂ = B at hH`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `H.toBlocks₂₂ = D at hH`. Substitute `hH` using the available equality. Establish `hDs : Dᵀ = D`. Use `hs` as an intermediate fact. Rewrite `this` using `[fromBlocks_transpose]`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(fromBlocks_inj.1 this).2.2.2`. Take `⟨b, hab⟩` from `h0.exists_right_inv`. Establish `hba : b * a = 1` using `by rw [mul_comm]; exact hab`. Establish `hE : (fromBlocks 1 (-(b • B)) 0 1 : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R)ᵀ * fromBlocks (a • 1) B Bᵀ D * fromBlocks 1 (-(b • B)) 0 1 = fromBlocks (a • 1) 0 0 (D - b • (Bᵀ * B))`. Simplify using `[fromBlocks_transpose, fromBlocks_multiply, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hba, hab, sub_eq_neg_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : IsUnit (fromBlocks 1 (-(b • B)) 0 1 : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R).det`. Rewrite using `[det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules. Apply `dgood_congr _ _ hQ` to reduce the goal to its premises. Rewrite using `[hE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSs : (D - b • (Bᵀ * B))ᵀ = D - b • (Bᵀ * B)`. Rewrite using `[transpose_sub, transpose_smul, transpose_mul, transpose_transpose, hDs]`. Establish `hSd : IsUnit (D - b • (Bᵀ * B)).det`. Establish `h1 : IsUnit (fromBlocks (a • 1) 0 0 (D - b • (Bᵀ * B)) : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R).det`. Rewrite using `[← hE, det_mul, det_mul, det_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hQ.mul hd).mul hQ`. Rewrite `h1` using `[det_fromBlocks_zero₂₁]`. Conclude with `isUnit_of_mul_isUnit_right h1`. Take `⟨P₀, hP₀, hP₀d⟩` from `ih _ hSs hSd`. Use `⟨fromBlocks 1 0 0 P₀, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[det_fromBlocks_zero₂₁, det_one, one_mul]`. Conclude with `hP₀`. Establish `hF : (fromBlocks 1 0 0 P₀ : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R)ᵀ * fromBlocks (a • 1) 0 0 (D - b • (Bᵀ * B)) * fromBlocks 1 0 0 P₀ = fromBlocks (a • 1) 0 0 (P₀ᵀ * (D - b • (Bᵀ * B)) * P₀)`. Simplify using `[fromBlocks_transpose, fromBlocks_multiply]`. Rewrite using `[hF]`.
-
-Conclude with `IsDiag.fromBlocks (fun i j h => absurd (Subsingleton.elim i j) h) hP₀d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step {R : Type} [CommRing R] {κ : Type} [Fintype κ] [DecidableEq κ]
     (ih : ∀ H : Matrix κ κ R, Hᵀ = H → IsUnit H.det → DGood H)
@@ -161,11 +159,11 @@ private theorem step {R : Type} [CommRing R] {κ : Type} [Fintype κ] [Decidable
     exact IsDiag.fromBlocks (fun i j h => absurd (Subsingleton.elim i j) h) hP₀d
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `H _ _`. Conclude with `⟨1, by simp, fun i => Fin.elim0 i⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `H hs hd`. Establish `e : Unit ⊕ Fin n ≃ Fin (n + 1)` using `Fintype.equivFinOfCardEq (by simp [add_comm])`. Take `⟨Q, hQ, hQi⟩` from `pivot H h2 hs hd (e (Sum.inl ()))`. Apply `dgood_congr H Q hQ` to reduce the goal to its premises. Apply `dgood_reindex e` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `step ih` to reduce the goal to its premises. Simplify using `[transpose_submatrix, transpose_mul, hs, Matrix.mul_assoc]`. Rewrite using `[det_submatrix_equiv_self, det_mul, det_mul, det_transpose]`. Conclude with `(hQ.mul hd).mul hQ`. Conclude with `hQi`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dgood_fin {R : Type} [CommRing R] [IsLocalRing R] (h2 : IsUnit (2 : R)) (n : ℕ) :
     ∀ H : Matrix (Fin n) (Fin n) R, Hᵀ = H → IsUnit H.det → DGood H := by
@@ -188,11 +186,9 @@ private theorem dgood_fin {R : Type} [CommRing R] [IsLocalRing R] (h2 : IsUnit (
 end UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `R _ _ n H h2 hs hd`. Take `⟨P, hP, hD⟩` from `UpperTheory.V.AlgebraTools.dgood_fin h2 n H hs hd`. Establish `hDu : IsUnit (Pᵀ * H * P).det`. Rewrite using `[det_mul, det_mul, det_transpose]`. Conclude with `(hP.mul hd).mul hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiag : ∀ i, IsUnit ((Pᵀ * H * P) i i)`. Introduce `i`. Rewrite `hDu` using `[← hD.diagonal_diag, det_diagonal]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (Pᵀ * H * P).diag (Finset.mem_univ i)) hDu`. Use `⟨((isUnit_iff_isUnit_det P).2 hP).unit, fun i => (hdiag i).unit, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [IsUnit.unit_spec]`. Conclude with `hD.diagonal_diag.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.diag_local :
     ∀ {R : Type} [CommRing R] [IsLocalRing R] {n : ℕ} (H : Matrix (Fin n) (Fin n) R), IsUnit (2 : R) → Hᵀ = H → IsUnit H.det → ∃ (P : GL (Fin n) R) (c : Fin n → Rˣ), (P : Matrix (Fin n) (Fin n) R)ᵀ * H * P = diagonal fun i => (c i : R) := by

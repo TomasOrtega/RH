@@ -6,17 +6,17 @@ open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProd
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `F L B _ _ _ _ _ a`. Use `⟨fun x y => ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[co, map_add]`. Introduce `c x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Use `show AlgebraTensorModule.map (LinearMap.proj i) LinearMap.id (c • x) = (c ⊗ₜ[F] (1 : B)) * AlgebraTensorModule.map (LinearMap.proj i) LinearMap.id x`. Rewrite using `[map_smul, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Introduce `b x`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [co]`. Consider the case `tmul m n => simp [co, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => simp_all [co, mul_add]`. Introduce `T A hT s x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [co, Matrix.mulVec, dotProduct]`. Consider the case `tmul m n`. Simplify using `[co, onR, hT, Matrix.mulVec, dotProduct, TensorProduct.sum_tmul, Algebra.TensorProduct.tmul_mul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y hx hy`. Simplify using `only [map_add, Pi.add_apply] at hx hy ⊢`. Simplify using `[co, Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib]`. Use `(AlgebraTensorModule.congr (LinearEquiv.funUnique (Fin 1) L L) (LinearEquiv.refl F B)).bijective using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Simplify the hypotheses and the goal together. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [co]`. Consider the case `tmul m n => simp [co]`. Consider the case `add x y hx hy => simp_all [co]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.detCo_of :
     CoFacts := by

@@ -14,14 +14,14 @@ def gbPsi (e : Fin (D + 1) → Ix κ) : (((k : Unit) → GlobalTheory κ k) → 
   LinearMap.pi fun k => LinearMap.proj (fun _ => (e k).2)
 
 /- English proof (translation)
-Simplify using `only [segre, Fintype.prod_unique]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gb_segre_apply (z : Ix κ → ℂ) (i : (k : Unit) → GlobalTheory κ k) :
     segre (ι := GlobalTheory κ) z i = z ⟨(), i ()⟩ := by
   simp only [segre, Fintype.prod_unique]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [gbPsi, LinearMap.pi_apply, LinearMap.proj_apply]`. Rewrite using `[gb_segre_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gbPsi_segre (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) :
     gbPsi e (segre (ι := GlobalTheory κ) z) = fun k => z (e k) := by
@@ -30,7 +30,7 @@ theorem gbPsi_segre (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) :
   rw [gb_segre_apply]
 
 /- English proof (translation)
-Introduce `z z' h`. Use function extensionality and compare the values at `p`. Use `congrFun h (fun _ => p.2)` as an intermediate fact. Rewrite `this` using `[gb_segre_apply, gb_segre_apply]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gb_segre_injective : Function.Injective (segre (ι := GlobalTheory κ)) := by
   intro z z' h
@@ -40,9 +40,9 @@ theorem gb_segre_injective : Function.Injective (segre (ι := GlobalTheory κ)) 
   exact this
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mcPts, pts, conePts, Set.mem_setOf_eq]`. Use `and_congr_left' ⟨fun h h0 => ?_, fun h k => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h ()`. Conclude with `hi (congrFun h0 _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne push_neg at hne`. Conclude with `h (funext fun p => hne p.2)`.
+A detailed English derivation is pending.
 -/
 theorem gb_mcPts_eq (P : Ideal (MRing (GlobalTheory κ))) : mcPts P = pts P := by
   ext z
@@ -55,11 +55,11 @@ theorem gb_mcPts_eq (P : Ideal (MRing (GlobalTheory κ))) : mcPts P = pts P := b
     exact h (funext fun p => hne p.2)
 
 /- English proof (translation)
-Use extensionality with `w`. Simplify using `only [fibre, Set.mem_setOf_eq, Set.mem_image, prFib, gb_mcPts_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl, hΨ⟩`. Rewrite `hΨ` using `[gbPsi_segre]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨z, ⟨hz, fun k => congrFun hΨ k⟩, rfl⟩`. Introduce and unpack `⟨z, ⟨hz, hk⟩, rfl⟩`. Use `⟨z, hz, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[gbPsi_segre]`. Use function extensionality and compare the values at `k`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hk k`.
+A detailed English derivation is pending.
 -/
 theorem gb_fibre_eq (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (y : Fin D → ℂ) :
     fibre (coordIdeal ℤ x) (gbPsi e) y = segre (ι := GlobalTheory κ) '' prFib x e (Fin.cons 1 y) := by
@@ -76,9 +76,9 @@ theorem gb_fibre_eq (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (y : Fin D �
     exact hk k
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hk⟩`. Use `⟨c⁻¹ • z, ⟨smul_mem_pts_coord x hz (inv_ne_zero hc), fun k => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[hk k, hc]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[smul_smul, hc]`. Introduce and unpack `⟨z', ⟨hz', hk⟩, rfl⟩`. Conclude with `⟨smul_mem_pts_coord x hz' hc, fun k => by simp [hk k]⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem gb_prFib_smul (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (w : Fin (D + 1) → ℂ) {c : ℂ}
     (hc : c ≠ 0) : prFib x e (c • w) = (fun z => c • z) '' prFib x e w := by
@@ -92,7 +92,7 @@ theorem gb_prFib_smul (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (w : Fin (D
     exact ⟨smul_mem_pts_coord x hz' hc, fun k => by simp [hk k]⟩
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gb_sum_cons (y : Fin D → ℂ) :
     ∑ k, ‖(Fin.cons 1 y : Fin (D + 1) → ℂ) k‖ ^ 2 = 1 + ∑ i, ‖y i‖ ^ 2 := by
@@ -100,11 +100,11 @@ theorem gb_sum_cons (y : Fin D → ℂ) :
   simp
 
 /- English proof (translation)
-Establish `hs` using `h.choose_spec`. Unfold `sheetDensity`. Rewrite using `[dif_pos h]`. Simplify using `only [one_mul]`. Apply `maDensity_congr_of_eventuallyEq` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Use `filter_upwards [hs.2] with y' hy'`. Take `⟨-, hmem, hΨ⟩` from `hy'`. Rewrite `hmem` using `[gb_mcPts_eq]`. Rewrite `hΨ` using `[gbPsi_segre]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [purePot, gbPot]`. Rewrite using `[hFS _ hmem, ← gb_sum_cons y']`. Use `congr 2`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← congrFun hΨ k]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gb_sheetDensity {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetric ℂ (Ix κ)}
     (hFS : IsPullFS x e m) {y : Fin D → ℂ} {w : ((k : Unit) → GlobalTheory κ k) → ℂ}
@@ -134,7 +134,7 @@ def gbConsL (D : ℕ) : (Fin D → ℂ) →L[ℂ] (Fin (D + 1) → ℂ) :=
       map_smul' := fun c a => by ext k; refine Fin.cases ?_ (fun i => ?_) k <;> simp }
 
 /- English proof (translation)
-Use extensionality with `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) k <;> simp [gbConsL]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gb_scaledCons_eq (c : ℂ) (y : Fin D → ℂ) :
     c • (Fin.cons 1 y : Fin (D + 1) → ℂ) = c • (Fin.cons 1 0 : Fin (D + 1) → ℂ) + (c • gbConsL D) y := by
@@ -142,7 +142,7 @@ theorem gb_scaledCons_eq (c : ℂ) (y : Fin D → ℂ) :
   refine Fin.cases ?_ (fun i => ?_) k <;> simp [gbConsL]
 
 /- English proof (translation)
-Establish `h : (fun y : Fin D → ℂ => c • (Fin.cons 1 y : Fin (D + 1) → ℂ)) = fun y => c • (Fin.cons 1 0 : Fin (D + 1) → ℂ) + (c • gbConsL D) y` using `funext (gb_scaledCons_eq c)`. Rewrite using `[h]`. Conclude with `analyticOnNhd_const.add ((c • gbConsL D).analyticOnNhd _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gb_analytic_scaledCons (c : ℂ) :
     AnalyticOnNhd ℂ (fun y : Fin D → ℂ => c • (Fin.cons 1 y : Fin (D + 1) → ℂ)) Set.univ := by
@@ -152,13 +152,11 @@ theorem gb_analytic_scaledCons (c : ℂ) :
   exact analyticOnNhd_const.add ((c • gbConsL D).analyticOnNhd _)
 
 /- English proof (translation)
-Establish `h1 : Δ * X 0 ≠ 0` using `mul_ne_zero hΔ (X_ne_zero _)`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, eval w (Δ * X 0) ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `h1 (MvPolynomial.funext (fun w => by simpa using hne w))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw` using `[eval_mul, eval_X]`. Establish `hw0 : w 0 ≠ 0` using `right_ne_zero_of_mul hw`. Use `⟨w 0, hw0, fun i => w i.succ / w 0, ?_⟩` and prove the remaining obligations. Establish `hw' : w 0 • (Fin.cons 1 (fun i => w i.succ / w 0) : Fin (D + 1) → ℂ) = w`. Use extensionality with `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `first`. Consider the case `(simp [hw0]; done)`. Consider the case `(simp; field_simp)`.
-
-Rewrite using `[hw']`. Conclude with `left_ne_zero_of_mul hw`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gb_exists_scale {Δ : MvPolynomial (Fin (D + 1)) ℂ} (hΔ : Δ ≠ 0) :
     ∃ c : ℂ, c ≠ 0 ∧ ∃ y₀ : Fin D → ℂ, eval (c • (Fin.cons 1 y₀ : Fin (D + 1) → ℂ)) Δ ≠ 0 := by
@@ -181,13 +179,11 @@ theorem gb_exists_scale {Δ : MvPolynomial (Fin (D + 1)) ℂ} (hΔ : Δ ≠ 0) :
   exact left_ne_zero_of_mul hw
 
 /- English proof (translation)
-Establish `hpoly : ∀ p : MvPolynomial (Fin (D + 1)) ℂ, AnalyticOnNhd ℂ (fun w => eval w p) Set.univ`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `only [eval_C]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `analyticOnNhd_const`. Use `next p q hp hq =>`. Simplify using `only [map_add]`. Conclude with `hp.add hq`. Use `next p i hp =>`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [map_mul, eval_X]`. Conclude with `hp.mul ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (D + 1) => ℂ) i).analyticOnNhd _)`. Establish `hf : AnalyticOnNhd ℂ ((fun w => eval w Δ) ∘ fun y : Fin D → ℂ => c • (Fin.cons 1 y : Fin (D + 1) → ℂ)) Set.univ` using `(hpoly Δ).comp (gb_analytic_scaledCons c) (Set.mapsTo_univ _ _)`. Establish `h` using `ReciprocityTheory.AnForm.volume_zero_set_of_analyticOnNhd isOpen_univ isPreconnected_univ hf ⟨y₀, Set.mem_univ _, h₀⟩`. Rewrite using `[ae_iff]`.
-
-Simplify using `using h`.
+A detailed English derivation is pending.
 -/
 theorem gb_ae_good {c : ℂ} {Δ : MvPolynomial (Fin (D + 1)) ℂ} {y₀ : Fin D → ℂ}
     (h₀ : eval (c • (Fin.cons 1 y₀ : Fin (D + 1) → ℂ)) Δ ≠ 0) :
@@ -212,15 +208,15 @@ theorem gb_ae_good {c : ℂ} {Δ : MvPolynomial (Fin (D + 1)) ℂ} {y₀ : Fin D
   simpa using h
 
 /- English proof (translation)
-Take `⟨hfin, hcard, hsec, -⟩` from `hΔ.2 _ hy`. Establish `hS : prFib x e (Fin.cons 1 y) = (fun z => c⁻¹ • z) '' prFib x e (c • (Fin.cons 1 y : Fin (D + 1) → ℂ))`. Rewrite using `[← gb_prFib_smul x e (c • (Fin.cons 1 y : Fin (D + 1) → ℂ)) (inv_ne_zero hc), smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `hinj : Function.Injective (fun z : Ix κ → ℂ => segre (ι` using `GlobalTheory κ) (c⁻¹ • z)) := fun a b hab => smul_right_injective _ (inv_ne_zero hc) (gb_segre_injective hab)`. Establish `hF : fibre (coordIdeal ℤ x) (gbPsi e) y = (fun z => segre (ι` using `GlobalTheory κ) (c⁻¹ • z)) '' prFib x e (c • (Fin.cons 1 y : Fin (D + 1) → ℂ)) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gb_fibre_eq, hS, Set.image_image]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`. Conclude with `hfin.image _`. Rewrite using `[hF, Set.ncard_image_of_injective _ hinj, hcard]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Rewrite `hw` using `[hF]`. Take `⟨z, hz, rfl⟩` from `hw`. Take `⟨U, Γ, hU, hWU, hΓ, hΓW, hΓU⟩` from `hsec z hz`. Use `⟨fun y' => c⁻¹ • Γ (c • (Fin.cons 1 y' : Fin (D + 1) → ℂ)), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hΓW]`. Establish `hcont : Continuous (fun y' : Fin D → ℂ => c • (Fin.cons 1 y' : Fin (D + 1) → ℂ))` using `continuousOn_univ.1 (gb_analytic_scaledCons c).continuousOn filter_upwards [hcont.continuousAt.preimage_mem_nhds (hU.mem_nhds hWU)] with y' hy'`. Establish `hmem` using `hΓU _ hy'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((hΓ.differentiableAt (hU.mem_nhds hy')).comp y' ((gb_analytic_scaledCons c) y' (Set.mem_univ _)).differentiableAt).const_smul c⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gb_mcPts_eq]`. Conclude with `smul_mem_pts_coord x hmem.1 (inv_ne_zero hc)`. Rewrite using `[gbPsi_segre]`. Use function extensionality and compare the values at `k`. Simplify using `[hmem.2 k, hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gb_fibre_good {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {Δ : MvPolynomial (Fin (D + 1)) ℂ}
     (hΔ : IsDiscr x e Δ) {c : ℂ} (hc : c ≠ 0) {y : Fin D → ℂ}
@@ -262,7 +258,7 @@ theorem gb_fibre_good {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {Δ : MvPol
         simp [hmem.2 k, hc]
 
 /- English proof (translation)
-Take `⟨Δ, hΔ⟩` from `exists_isDiscr hfr`. Take `⟨c, hc, y₀, h₀⟩` from `gb_exists_scale hΔ.1`. Use `filter_upwards [gb_ae_good h₀] with y hy`. Take `⟨hfin, hcard, hsh⟩` from `gb_fibre_good hΔ hc hy`. Rewrite using `[finsum_mem_congr rfl (fun w hw => gb_sheetDensity hFS (hsh w hw)), finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_const, nsmul_eq_mul, ← Set.ncard_eq_toFinset_card _ hfin, hcard]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gb_integrand_ae {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetric ℂ (Ix κ)}
     (hfr : IsProjFrame x e) (hFS : IsPullFS x e m) :
@@ -278,7 +274,7 @@ theorem gb_integrand_ae {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : Cone
     ← Set.ncard_eq_toFinset_card _ hfin, hcard]
 
 /- English proof (translation)
-Unfold `ptsIntegralAt`. Rewrite using `[integral_congr_ae (gb_integrand_ae hfr hFS)]`. Use `first`. Consider the case `rw [integral_const_mul, integral_maDensity_gbPot, mul_one]`. Consider the case `rw [integral_mul_left, integral_maDensity_gbPot, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gb_ptsIntegralAt {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetric ℂ (Ix κ)}
     (hfr : IsProjFrame x e) (hFS : IsPullFS x e m) :
@@ -290,9 +286,9 @@ theorem gb_ptsIntegralAt {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : Con
   | rw [integral_mul_left, integral_maDensity_gbPot, mul_one]
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite using `[gbPsi_segre]`. Rewrite `hz` using `[gb_mcPts_eq]`. Take `⟨k, hk⟩` from `exists_proj_ne_zero hfr hz`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hk (congrFun h0 k)`.
+A detailed English derivation is pending.
 -/
 theorem gb_isGoodProj {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) :
     IsGoodProj (coordIdeal ℤ x) (gbPsi e) := by
@@ -306,20 +302,18 @@ theorem gb_isGoodProj {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsPr
 def gbOne : HermLine (GlobalTheory κ) := HermLine.ofWeight (fun _ => (1 : ℝ)) (fun _ _ _ => rfl)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[logNorm, gbOne, HermLine.ofWeight]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem gb_logNorm_one : logNorm (gbOne (κ := κ)) 1 = fun _ => (1 : ℝ) := by
   funext z
   simp [logNorm, gbOne, HermLine.ofWeight]
 
 /- English proof (translation)
-Establish `hg : IsGoodProj (coordIdeal ℤ x) (gbPsi e)` using `gb_isGoodProj hfr`. Establish `hex : ∃ Ψ : (((k : Unit) → GlobalTheory κ k) → ℂ) →ₗ[ℂ] (Fin (D + 1) → ℂ), IsGoodProj (coordIdeal ℤ x) Ψ` using `⟨gbPsi e, hg⟩`. Establish `hSm : IsSmoothHerm (gbOne (κ` using `κ)) := contDiffOn_const`. Establish `hSec : IsSectionOn (coordIdeal ℤ x) (gbOne (κ` using `κ)) 1 := by`. Use `⟨fun _ => 0, fun _ => rfl, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `mm hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `RingHom.ker_ne_top _ ((Ideal.eq_top_iff_one _).2 h)`. Establish `key` using `hInd Unit (GlobalTheory κ) (coordIdeal ℤ x) D hex.choose (gbPsi e) (fun _ => HermLine.ofCone m) (gbOne (κ := κ)) 1 harith hex.choose_spec hg (fun _ => hL) hSm hSec`. Rewrite `key` using `[gb_logNorm_one]`. Unfold `ptsIntegral`. Rewrite using `[dif_pos hex]`.
-
-Conclude with `key.trans (gb_ptsIntegralAt hfr hFS)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gb_ptsIntegral (hInd : PtsIndepStatement) {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)}
     (hL : IsSmoothHerm (HermLine.ofCone m))

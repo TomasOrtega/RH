@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Take `⟨hWf, hWp, hWr⟩` from `hW`. Take `⟨hHf, hHp, hHr⟩` from `hH`. Use `⟨inferInstance, inferInstance, fun p => ?_⟩` and prove the remaining obligations. Use `Module.rankAtStalk_prod (R := R) W H` as an intermediate fact. Rewrite using `[congrFun this p, Pi.add_apply, hWr p, hHr p]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fp_prod (R : Type) [CommRing R] (W H : Type) [AddCommGroup W] [Module R W]
     [AddCommGroup H] [Module R H] (a b : ℕ) (hW : FP R W a) (hH : FP R H b) :
@@ -21,9 +21,9 @@ theorem fp_prod (R : Type) [CommRing R] (W H : Type) [AddCommGroup W] [Module R 
   rw [congrFun this p, Pi.add_apply, hWr p, hHr p]
 
 /- English proof (translation)
-Establish `hWH` using `fp_prod R W H a b hW hH`. Take `⟨-, hHp, -⟩` from `hH`. Take `⟨s, hs⟩` from `Module.projective_lifting_property p (LinearMap.id : H →ₗ[R] H) hp`. Take `⟨e, -⟩` from `hex.splitSurjectiveEquiv hi ⟨s, hs⟩`. Take `⟨hf, hpr, hr⟩` from `hWH`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Module.Finite.equiv e.symm, Module.Projective.of_equiv e.symm, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[congrFun (Module.rankAtStalk_eq_of_equiv e) q, hr q]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fp_ext (R : Type) [CommRing R] (W M H : Type) [AddCommGroup W] [Module R W]
     [AddCommGroup M] [Module R M] [AddCommGroup H] [Module R H] (a b : ℕ)
@@ -38,7 +38,7 @@ theorem fp_ext (R : Type) [CommRing R] (W M H : Type) [AddCommGroup W] [Module R
   rw [congrFun (Module.rankAtStalk_eq_of_equiv e) q, hr q]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun R _ W M H _ _ _ _ _ _ a b i p hi hp hex hW hH => fp_ext R W M H a b i p hi hp hex hW hH, fun R _ W H _ _ _ _ a b hW hH => fp_prod R W H a b hW hH⟩`.
+Supply the required witnesses or components.
 -/
 theorem fp_ext_prod : (∀ (R : Type) [CommRing R] (W M H : Type) [AddCommGroup W] [Module R W] [AddCommGroup M] [Module R M] [AddCommGroup H] [Module R H] (a b : ℕ) (i : W →ₗ[R] M) (p : M →ₗ[R] H), Function.Injective i → Function.Surjective p → Function.Exact i p → FP R W a → FP R H b → FP R M (a + b)) ∧ ∀ (R : Type) [CommRing R] (W H : Type) [AddCommGroup W] [Module R W] [AddCommGroup H] [Module R H] (a b : ℕ), FP R W a → FP R H b → FP R (W × H) (a + b) :=
   ⟨fun R _ W M H _ _ _ _ _ _ a b i p hi hp hex hW hH => fp_ext R W M H a b i p hi hp hex hW hH,

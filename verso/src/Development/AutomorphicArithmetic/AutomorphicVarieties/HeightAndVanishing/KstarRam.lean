@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 
 open Polynomial in
 /- English proof (translation)
-Establish `hs` using `h.splits`. Establish `hd : ((X ^ 2 + C (p : ℚ) : ℚ[X]).map (algebraMap ℚ L)).degree ≠ 0`. Rewrite using `[degree_map, degree_X_pow_add_C two_pos]`. Evaluate the numerical expressions. Take `⟨s, hs⟩` from `hs.exists_eval_eq_zero hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Use `⟨s, eq_neg_of_add_eq_zero_left ?_⟩` and prove the remaining obligations. Simplify using `using hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sqrt_div_mul_eq_sqrt_mul (p : ℕ) (L : Type) [Field L] [Algebra ℚ L]
     [h : IsSplittingField ℚ L (X ^ 2 + C (p : ℚ) : ℚ[X])] : ∃ s : L, s ^ 2 = -(p : L) := by
@@ -22,34 +22,30 @@ private theorem sqrt_div_mul_eq_sqrt_mul (p : ℕ) (L : Type) [Field L] [Algebra
 
 open Polynomial in
 /- English proof (translation)
-Conclude with `@sqrt_div_mul_eq_sqrt_mul p (SplittingField (X ^ 2 + C (p : ℚ) : ℚ[X])) _ _ (Polynomial.IsSplittingField.splittingField _)`.
+A detailed English derivation is pending.
 -/
 private theorem sqrt_kstar (p : ℕ) : ∃ s : Kstar p, s ^ 2 = -(p : Kstar p) := by
   exact @sqrt_div_mul_eq_sqrt_mul p (SplittingField (X ^ 2 + C (p : ℚ) : ℚ[X])) _ _
     (Polynomial.IsSplittingField.splittingField _)
 
 /- English proof (translation)
-Introduce `p hp hp4 Ω _ _ _ _ A hA hle`. Use `haveI := Fact.mk hp`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hp2 : p ≠ 2` using `by rintro rfl; norm_num at hp4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : Subsingleton (ZMod (ordCompl[p] p))ˣ`. Establish `hd : ordCompl[p] p = 1`. Rewrite using `[Nat.Prime.factorization_self hp, pow_one, Nat.div_self hp.pos]`. Rewrite using `[hd]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : (-1 : (ZMod p)ˣ) ∈ UpperTheory.V.B3.pPart p p`. Unfold `UpperTheory.V.B3.pPart`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `Subsingleton.elim _ _`. Rewrite `hmem` using `[← UpperTheory.V.B1.cycIne Ω p p A hA]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, hgb⟩` from `hmem`. Use `haveI : NeZero ((p : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr hp.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω p`. Take `⟨s0, hs0⟩` from `sqrt_kstar p`. Use `set s : Ω := algebraMap (Kstar p) Ω s0 with hsdef`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hodd : Odd (p / 2)` using `Nat.odd_iff.mpr (by omega)`. Establish `hs : s ^ 2 = ((UpperTheory.V.CF.pStar p : ℤ) : Ω)`. Unfold `UpperTheory.V.CF.pStar`. Use `push_cast`. Rewrite using `[Odd.neg_one_pow hodd, hsdef, ← map_pow, hs0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hgauss` using `((UpperTheory.V.CF.gauss Ω p ζ hp2 hζ).2 s hs).2`. Establish `hgζ` using `((UpperTheory.V.B1.cycN_eq_iff ℚ Ω p g (-1)).mp hgb) ζ hζ.pow_eq_one`. Establish `h1` using `hgauss (g : Ω →+* Ω) _ hgζ`. Establish `hleg : legendreSym p (((((-1 : (ZMod p)ˣ) : ZMod p).val : ℕ) : ℤ)) = -1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[legendreSym.mod]`. Establish `: ((((-1 : (ZMod p)ˣ) : ZMod p).val : ℕ) : ℤ) % p = (-1 : ℤ) % p`. Rewrite using `[← ZMod.intCast_eq_intCast_iff']`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, ← legendreSym.mod, legendreSym.at_neg_one hp2, ZMod.χ₄_nat_three_mod_four hp4]`. Rewrite `h1` using `[hleg]`. Establish `hfix : g s = s` using `hle hg s0`. Establish `h2 : (g : Ω →+* Ω) s = g s` using `rfl`. Rewrite `h1` using `[h2, hfix]`.
+Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Establish `hs_zero : s = 0`. Establish `: (2 : Ω) * s = 0` using `by push_cast at h1; linear_combination h1`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Evaluate the numerical expressions using `at h`. Conclude with `h`.
-
-Establish `: ((UpperTheory.V.CF.pStar p : ℤ) : Ω) = 0` using `by rw [← hs, hs_zero]; ring`. Unfold `UpperTheory.V.CF.pStar at this`. Move the coercions through the operations in `at this`. Rewrite `this` using `[Odd.neg_one_pow hodd]`. Establish `: (p : Ω) = 0` using `by linear_combination -this`.
-
-Conclude with `hp.ne_zero (by exact_mod_cast this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.kstarRam :
     ∀ p : ℕ, p.Prime → p % 4 = 3 → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra (Kstar p) Ω] (A : ValuationSubring Ω), A.valuation (p : Ω) < 1 →

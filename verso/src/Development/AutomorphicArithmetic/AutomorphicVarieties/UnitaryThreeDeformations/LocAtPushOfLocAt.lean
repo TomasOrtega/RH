@@ -7,14 +7,14 @@ section SlopeTestRemainingChoices
 variable {O R R' D : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R'] [Group D]
 
 /- English proof (translation)
-Simplify using `only [GG.map, GG.ofGL, SemidirectProduct.map_inl]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem map_ofGL (f : R →+* R') (h : GL (Fin 3) R) :
     GG.map f (GG.ofGL h) = GG.ofGL (GeneralLinearGroup.map f h) := by
   simp only [GG.map, GG.ofGL, SemidirectProduct.map_inl]
 
 /- English proof (translation)
-Simplify using `only [conjBy, push, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, MulAut.conj_inv_apply, map_mul, map_inv, map_ofGL]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_push (φ : R →ₐ[O] R') (h : GL (Fin 3) R) (r : D →* GG 3 R) (g : D) :
     conjBy (GeneralLinearGroup.map (φ : R →+* R') h)⁻¹ (push φ r) g =
@@ -23,7 +23,7 @@ private theorem conj_push (φ : R →ₐ[O] R') (h : GL (Fin 3) R) (r : D →* G
     MulAut.conj_inv_apply, map_mul, map_inv, map_ofGL]
 
 /- English proof (translation)
-Rewrite using `[conj_push]`. Simplify using `[GG.mat, GG.map, SemidirectProduct.map_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem conj_push_mat (φ : R →ₐ[O] R') (h : GL (Fin 3) R) (r : D →* GG 3 R) (g : D) (a b : Fin 3) :
     (conjBy (GeneralLinearGroup.map (φ : R →+* R') h)⁻¹ (push φ r) g).mat a b =
@@ -32,7 +32,7 @@ private theorem conj_push_mat (φ : R →ₐ[O] R') (h : GL (Fin 3) R) (r : D �
   simp [GG.mat, GG.map, SemidirectProduct.map_left]
 
 /- English proof (translation)
-Rewrite using `[conj_push_mat, H.tri g hg a b hab, map_zero] ine s hs hη a := by rw [conj_push_mat, H.ine s hs hη a, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem triIn_push (φ : R →ₐ[O] R') {η : D →* ℤˣ} {Ψ : D →* Oˣ} {I : Subgroup D}
     {r : D →* GG 3 R} {h : GL (Fin 3) R} (H : TriIn η Ψ I r h) :
@@ -41,7 +41,7 @@ private theorem triIn_push (φ : R →ₐ[O] R') {η : D →* ℤˣ} {Ψ : D →
   ine s hs hη a := by rw [conj_push_mat, H.ine s hs hη a, AlgHom.commutes]
 
 /- English proof (translation)
-The claim follows from `triIn_push φ H.toTriIn low g hg a b hab := by rw [conj_push_mat, H.low g hg a b hab, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem diagIn_push (φ : R →ₐ[O] R') {η : D →* ℤˣ} {Ψ : D →* Oˣ} {I : Subgroup D}
     {r : D →* GG 3 R} {h : GL (Fin 3) R} (H : DiagIn η Ψ I r h) :
@@ -52,9 +52,9 @@ private theorem diagIn_push (φ : R →ₐ[O] R') {η : D →* ℤˣ} {Ψ : D �
 variable [IsLocalRing O] [IsCO O R] [IsCO O R']
 
 /- English proof (translation)
-Establish `hm : ∀ x ∈ maximalIdeal R, φ x ∈ maximalIdeal R'`. Introduce `x hx`. Rewrite using `[← res_eq_zero_iff O R', res_map, res_eq_zero_iff O R]`. Conclude with `hx`. Unfold `InHat CongOne EntIn at H ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `e : ((GeneralLinearGroup.map (φ : R →+* R') h : Matrix (Fin 3) (Fin 3) R') - 1) a b = φ (((h : Matrix (Fin 3) (Fin 3) R) - 1) a b)`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.sub_apply, Matrix.one_apply, hab]`. Rewrite using `[e]`. Conclude with `hm _ (H a b)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inHat_push (φ : R →ₐ[O] R') {h : GL (Fin 3) R} (H : InHat h) :
     InHat (GeneralLinearGroup.map (φ : R →+* R') h) := by
@@ -73,11 +73,11 @@ private theorem inHat_push (φ : R →ₐ[O] R') {h : GL (Fin 3) R} (H : InHat h
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O _ _ G Γ ι _ _ F R R' _ _ _ _ _ _ φ v r hr`. Unfold `Frame.LocAt at hr ⊢`. Take `⟨hT, hD, hU⟩` from `hr`. Use `⟨fun hv => ?_, fun hv => ?_, fun hv => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, ht⟩` from `hT hv`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, inHat_push φ hh, triIn_push φ ht⟩`. Take `⟨h, hh, ht⟩` from `hD hv`. Conclude with `⟨_, inHat_push φ hh, diagIn_push φ ht⟩`. Introduce `s hs`. Establish `h1` using `hU hv s hs`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [push, MonoidHom.comp_apply, h1, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.locAt_push_of_locAt :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [Group Γ] (F : Frame O G Γ ι) {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R'] (φ : R →ₐ[O] R') (v : ι) (r : F.D v →* GG 3 R), F.LocAt v r → F.LocAt v (push φ r) := by

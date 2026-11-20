@@ -9,25 +9,23 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Take `⟨x, hfx⟩` from `hx`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨x, hx⟩⟩`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (hU.fromSpec ≫ p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ q : PrimeSpectrum Γ(X, U), f ∈ (p (hU.fromSpec q)).asIdeal ↔ φ.hom f ∈ q.asIdeal`. Introduce `q`. Establish `h : p (hU.fromSpec q) = (Spec.map φ) q`. Rewrite using `[hφ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Establish `key' : ∀ y : U, f ∈ (p y.1).asIdeal ↔ φ.hom f ∈ (hU.primeIdealOf y).asIdeal`. Introduce `y`. Rewrite using `[← key, hU.fromSpec_primeIdealOf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : φ.hom f ≠ 0`. Introduce `h0`. Establish `hO : IsOpen ((PrimeSpectrum.basicOpen f : TopologicalSpace.Opens (PrimeSpectrum S)) : Set (PrimeSpectrum S))` using `(PrimeSpectrum.basicOpen f).isOpen`. Establish `hne : ((PrimeSpectrum.basicOpen f : TopologicalSpace.Opens (PrimeSpectrum S)) : Set (PrimeSpectrum S)).Nonempty` using `⟨⟨⊥, Ideal.isPrime_bot⟩, by simpa using hf⟩`. Take `⟨y, hy⟩` from `p.denseRange.exists_mem_open hO hne`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hwU, hw⟩` from `nonempty_preirreducible_inter U.isOpen (hO.preimage p.continuous) ⟨x, hx⟩ ⟨y, hy⟩`. Establish `: f ∈ (p w).asIdeal` using `(key' ⟨w, hwU⟩).2 (h0 ▸ Ideal.zero_mem _)`. Conclude with `hw this`. Establish `hle : Ideal.span {φ.hom f} ≤ (hU.primeIdealOf ⟨x, hx⟩).asIdeal` using `(Ideal.span_singleton_le_iff_mem _).2 ((key' ⟨x, hx⟩).1 hfx)`. Take `⟨Q, hQ, -⟩` from `Ideal.exists_minimalPrimes_le hle`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hQp : Q.IsPrime := hQ.1.1`. Establish `haQ : φ.hom f ∈ Q` using `hQ.1.2 (Ideal.mem_span_singleton_self _)`. Establish `h1 : Q.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ Q hQ`. Establish `h0 : Q.height ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h` using `[Ideal.height_eq_zero_iff_eq_bot]`. Conclude with `ha (by simpa [h] using haQ)`. Establish `hQ1 : Q.height = 1` using `le_antisymm h1 (Order.one_le_iff_ne_zero.2 h0)`. Set `P : PrimeSpectrum Γ(X, U)` to `⟨Q, hQp⟩`. Establish `hz : hU.fromSpec P ∈ U`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `z : U` to `⟨hU.fromSpec P, hz⟩`. Establish `hP : hU.primeIdealOf z = P` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf z)`. Use `clear_value z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `letI := X.presheaf.algebra_section_stalk z`. Use `haveI := hU.isLocalization_stalk z`. Use `⟨z.1, ?_, (key' z).2 (by rw [hP]; exact haQ)⟩` and prove the remaining obligations. Use `IsLocalization.AtPrime.ringKrullDim_eq_height (hU.primeIdealOf z).asIdeal (X.presheaf.stalk (z : X))` as an intermediate fact. Rewrite using `[this, hP]`.
-
-Express the relevant statement in the definitionally equal form `((Q.height : ℕ∞) : WithBot ℕ∞) = 1`. Rewrite using `[hQ1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_vert_of_mem (S : Type) [CommRing S] [IsDomain S] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     (p : X ⟶ Sp S) [IsDominant p] (f : S) (hf : f ≠ 0) (hx : ∃ x : X, f ∈ (p x).asIdeal) : ∃ z : X, Vert p f z := by

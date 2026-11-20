@@ -6,7 +6,7 @@ open scoped BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ r t R hR`. Use `AdaptedLocalData.card_sup_eq_top r t R hR` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem card_subspaces_sup_eq_top :
     ∀ (k : Type) [Field k] [Finite k] (r t : ℕ) (R : Submodule k (Fin (r + t) → k)),

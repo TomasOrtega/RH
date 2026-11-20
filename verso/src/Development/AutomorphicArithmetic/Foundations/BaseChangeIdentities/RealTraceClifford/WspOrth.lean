@@ -10,9 +10,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Function.ne_iff.1 h`. Establish `h1` using `hF.unit a a x y`. Establish `hx' : F a a x = (μ a : ℂ) • x` using `hx a`. Establish `hy' : F a a y = (ν a : ℂ) • y` using `hy a`. Rewrite `h1` using `[hx', hy', inner_smul_left, inner_smul_right, Complex.conj_ofReal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ((μ a : ℂ) - (ν a : ℂ)) * ⟪x, y⟫_ℂ = 0` using `by rw [sub_mul, h1, sub_self]`. Establish `h3 : (μ a : ℂ) - (ν a : ℂ) ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `fun e => ha (Complex.ofReal_injective e)`. Conclude with `(mul_eq_zero.1 h2).resolve_left h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem wsp_orth {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {F : Fin n → Fin n → Module.End ℂ V} (hF : UF F) {μ ν : Wt n} (h : μ ≠ ν) {x y : V}
@@ -29,35 +29,29 @@ private theorem wsp_orth {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProdu
   exact (mul_eq_zero.1 h2).resolve_left h3
 
 /- English proof (translation)
-Introduce `n V _ _ F hF S hSfin hS`. Establish `hind : iSupIndep fun μ => wsp F μ ⊓ S`. Use `OrthogonalFamily.independent (OrthogonalFamily.of_pairwise fun μ ν hne => ?_)` and prove the remaining obligations. Use `show (wsp F μ ⊓ S) ⟂ (wsp F ν ⊓ S)`. Rewrite using `[Submodule.isOrtho_iff_inner_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy`. Conclude with `wsp_orth hF hne hx.1 hy.1`. Set `T : Fin n → Module.End ℂ S` to `fun a => (F a a).restrict (fun x hx => hS a a x hx)`. Establish `hT : ∀ a, (T a).IsSymmetric`. Introduce `a x y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.coe_inner, Submodule.coe_inner]`. Conclude with `hF.unit a a x y`. Establish `hcomm : Pairwise fun a b => Commute (T a) (T b)`. Introduce `a b hab`. Establish `h0 : F a a * F b b = F b b * F a a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hF.gl a a b b` as an intermediate fact. Rewrite `this` using `[if_neg hab, if_neg (Ne.symm hab), sub_zero, sub_eq_zero]`. Conclude with `this`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show F a a (F b b (x : V)) = F b b (F a a (x : V))`. Conclude with `LinearMap.congr_fun h0 (x : V)`. Establish `htop` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hT hcomm`. Establish `hkey : ∀ χ : Fin n → ℂ, ∀ v : S, v ∈ (⨅ i, Module.End.eigenspace (T i) (χ i)) → (v : V) ∈ wsp F (fun i => (χ i).re) ⊓ S`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `χ v hv`. Use `⟨?_, v.2⟩` and prove the remaining obligations. Use `show ∀ i, F i i (v : V) = (((χ i).re : ℝ) : ℂ) • (v : V)`. Introduce `i`. Establish `hvi : T i v = χ i • v` using `Module.End.mem_eigenspace_iff.mp ((Submodule.mem_iInf _).mp hv i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : v = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `hre : (((χ i).re : ℝ) : ℂ) = χ i`. Establish `hs` using `hT i v v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hs` using `[hvi, inner_smul_left, inner_smul_right]`. Establish `hvv : ⟪v, v⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr h0`. Conclude with `Complex.conj_eq_iff_re.mp (mul_right_cancel₀ hvv hs)`. Rewrite using `[hre]`. Conclude with `congrArg Subtype.val hvi`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hspan : S ≤ ⨆ μ : Wt n, wsp F μ ⊓ S`. Establish `hle : Submodule.map S.subtype (⨆ χ : Fin n → ℂ, ⨅ i, Module.End.eigenspace (T i) (χ i)) ≤ ⨆ μ : Wt n, wsp F μ ⊓ S`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun χ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_iSup (fun μ : Wt n => wsp F μ ⊓ S) (fun i => (χ i).re) (hkey χ v hv)`. Rewrite `hle` using `[htop, Submodule.map_top, Submodule.range_subtype]`. Conclude with `hle`. Establish `hfin : Set.Finite {μ : Wt n | wsp F μ ⊓ S ≠ ⊥}`. Set `W' : Wt n → Submodule ℂ S` to `fun μ => (wsp F μ).comap S.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hind' : iSupIndep W'`. Use `OrthogonalFamily.independent (OrthogonalFamily.of_pairwise fun μ ν hne => ?_)` and prove the remaining obligations. Use `show W' μ ⟂ W' ν`. Rewrite using `[Submodule.isOrtho_iff_inner_eq]`. Introduce `x hx y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_inner]`. Conclude with `wsp_orth hF hne hx hy`. Use `haveI := hind'.fintypeNeBotOfFiniteDimensional`. Use `(Set.finite_range (fun i : {μ // W' μ ≠ ⊥} => (i : Wt n))).subset ?_` and prove the remaining obligations. Introduce `μ hμ`.
-
-Use `⟨⟨μ, fun h => hμ ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[inf_comm, ← Submodule.map_comap_subtype]`. Express the relevant statement in the definitionally equal form `Submodule.map S.subtype (W' μ) = ⊥`. Rewrite using `[h, Submodule.map_bot]`. Use `⟨hfin.toFinset, ?_, ?_, hind⟩` and prove the remaining obligations.
-
-Introduce `μ hμ`. Assume the negation of the conclusion as `h`. Conclude with `hμ (hfin.mem_toFinset.mpr h)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup₂_le fun μ _ => inf_le_right`.
-
-Use `hspan.trans (iSup_le fun μ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : wsp F μ ⊓ S = ⊥`. Rewrite using `[h]`. Conclude with `bot_le`. Conclude with `le_iSup₂_of_le μ (hfin.mem_toFinset.mpr h) le_rfl`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.wtDec :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → ∃ s : Finset (Wt n), (∀ μ ∉ s, wsp F μ ⊓ S = ⊥) ∧ (⨆ μ ∈ s, wsp F μ ⊓ S) = S ∧ iSupIndep fun μ => wsp F μ ⊓ S := by

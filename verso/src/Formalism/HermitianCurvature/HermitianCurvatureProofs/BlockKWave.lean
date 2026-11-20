@@ -10,7 +10,7 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_ofFn_map {K : ℕ} (f : Fin K → ℝ) (g : ℝ → ℝ) : ((List.ofFn f).map g).prod = ∏ b, g (f b) := by
   rw [List.map_ofFn, List.prod_ofFn]; rfl
@@ -30,45 +30,37 @@ theorem sW_eq (S : C.HidaSetting E Wp Wq) (j : ℕ) (l : ℂ) :
     sW S j l = Complex.I * (((2 * Real.pi / ((S.g : ℝ) * lamS S j)) : ℝ) : ℂ) * l := rfl
 
 /- English proof (translation)
-Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, hGo, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, -, -, -, -⟩` from `hv v`. Establish `hgpos` using `g_pos_of_built hB`. Establish `hlam` using `lamS_pos S hgpos j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΓ` using `gam_pos hB j`. Establish `hsa` using `sizeAt_pos S hGo v a ha`. Use `set T : ℝ := ((S.g : ℝ) * lamS S j) / (2 * Real.pi) with hT`. Establish `hT0 : 0 < T` using `by positivity`. Use `set t : ℝ := 2 * Real.pi / ((S.g : ℝ) * lamS S j) with ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htT : t * T = 1` using `by rw [ht, hT]; field_simp`. Use `set s := sW S j l with hs`. Use `set c0 : ℝ := 1 / (ΓS S j * S.sizeAt v a) with hc0`. Use `set ys : (Fin K → Fin (2 * j + 1)) → List ℝ := fun n => List.ofFn fun b => grid b (n b) with hys`. Use `set Λ : ℝ := ∏ b, ∑ i, |F7.lagCo (grid b) i| with hΛ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set θ : (Fin K → Fin (2 * j + 1)) → ℝ := fun n => F7.thGrid grid n with hθ`. Use `set lag : (Fin K → Fin (2 * j + 1)) → ℝ := fun n => ∏ b, F7.lagCo (grid b) (n b) with hlag`. Use `set S' := setC S p F with hS'`. Use `set Pn : (Fin K → Fin (2 * j + 1)) → C.LPt → C.LPt → ℂ := fun n p' q' => (((lag n / θ n) * T ^ K * c0 : ℝ) : ℂ) * KB.pairJ ((p v).form j hj a) (ys n) (KB.waveG ((p v).T.bs j) s _ (uY S p F v ε j hj (KB.plusW (ys n) a) Y p')) (uY S p F v ε j hj (KB.minusW (ys n) a) Y q') with hPn`. Establish `hCS : ∀ n (c d : C.LPt → ℂ), ‖∑ p' ∈ Y, ∑ q' ∈ Y, c p' * conj (d q') * Pn n p' q'‖ ^ 2 ≤ (Xc ^ K) ^ 2 * ((∑ p' ∈ Y, ∑ p'' ∈ Y, c p' * conj (c p'') * KB.gN S' v ε j (KB.plusW (ys n) a) p' p'').re * (∑ q' ∈ Y, ∑ q'' ∈ Y, d q' * conj (d q'') * KB.gN S' v ε j (KB.minusW (ys n) a) q' …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `n c d`. Take `⟨hAp, hAm, hCp, hCm, hpw, hnd⟩` from `hnodes n`. Establish `hCp' : KB.CutWord (D.parOf S v) (p v).l0 (KB.plusW (ys n) a)` using `by rw [hl0]; exact hCp`. Establish `hCm' : KB.CutWord (D.parOf S v) (p v).l0 (KB.minusW (ys n) a)` using `by rw [hl0]; exact hCm`. Take `⟨hqpos, hcs⟩` from `hSS hA (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) j hj a (ys n) hCp' hCm' hpw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨εp, hεp, hup⟩` from `uY_nv hB F hF v ε hε j hj (KB.plusW (ys n) a) Y`. Take `⟨εm, hεm, hum⟩` from `uY_nv hB F hF v ε hε j hj (KB.minusW (ys n) a) Y`. Use `set ε1 := min εp εm with hε1d`. Establish `hε1 : 0 < ε1` using `lt_min hεp hεm`. Use `set qv : ℝ → ℝ := fun y => (Wd.qw (M.qC (D.parOf S v)) (D.positionted a) (y : ℂ)).re with hqv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Q : ℝ := ((ys n).map qv).prod with hQd`. Establish `hQ : 0 < Q` using `List.prod_pos fun x hx => by`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hqpos y hy`. Establish `hsp` using `sizeAt_pos S hGo v _ hAp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hsm` using `sizeAt_pos S hGo v _ hAm`. Use `set cp : ℝ := 1 / (ΓS S j * S.sizeAt v (KB.plusW (ys n) a)) with hcp`. Use `set cm : ℝ := 1 / (ΓS S j * S.sizeAt v (KB.minusW (ys n) a)) with hcm`. Establish `hcp0 : 0 < cp` using `by positivity`. Establish `hcm0 : 0 < cm` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set κ : ℂ := (((lag n / θ n) * T ^ K * c0 : ℝ) : ℂ) with hκ`. Establish `hc` using `cs_choice (NV ((p v).T.bs j) ε1 (S := Fin (KB.plusW (ys n) a).length)) (NV ((p v).T.bs j) ε1 (S := Fin (KB.minusW (ys n) a).length)) ((p v).form j hj (KB.plusW (ys n) a)) ((p v).form j hj (KB.minusW (ys n) a)) (KB.pairJ ((p v).form j hj a) (ys n)) nv_zero (fun x y hx hy => nv_add …`. Establish `eA : ∑ p' ∈ Y, ∑ p'' ∈ Y, c p' * conj (c p'') * KB.gN S' v ε j (KB.plusW (ys n) a) p' p'' = ∑ p' ∈ Y, ∑ p'' ∈ Y, c p' * conj (c p'') * ((cp : ℂ) * (p v).form j hj (KB.plusW (ys n) a) (uY S p F v ε j hj (KB.plusW (ys n) a) Y p') (uY S p F v ε j hj (KB.plusW (ys n) a) Y p''))`. Use `Finset.sum_congr rfl fun p' hp' => Finset.sum_congr rfl fun p'' hp'' => ?_` and prove the remaining obligations. Rewrite using `[uY_mem S p F v ε j hj _ Y p' hp', uY_mem S p F v ε j hj _ Y p'' hp'', gN_uB hB F hF v ε hε j hj _ p' p'']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `eB : ∑ q' ∈ Y, ∑ q'' ∈ Y, d q' * conj (d q'') * KB.gN S' v ε j (KB.minusW (ys n) a) q' q'' = ∑ q' ∈ Y, ∑ q'' ∈ Y, d q' * conj (d q'') * ((cm : ℂ) * (p v).form j hj (KB.minusW (ys n) a) (uY S p F v ε j hj (KB.minusW (ys n) a) Y q') (uY S p F v ε j hj (KB.minusW (ys n) a) Y q''))`. Use `Finset.sum_congr rfl fun p' hp' => Finset.sum_congr rfl fun p'' hp'' => ?_` and prove the remaining obligations. Rewrite using `[uY_mem S p F v ε j hj _ Y p' hp', uY_mem S p F v ε j hj _ Y p'' hp'', gN_uB hB F hF v ε hε j hj _ p' p'']`. Establish `hnnA` using `quad_nonneg (gN_psd hA hFP hB F hF v ε hε j hj _ hCp Y) c`. Establish `hnnB` using `quad_nonneg (gN_psd hA hFP hB F hF v ε hε j hj _ hCm Y) d`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hnnA`, the goal using `[eA]`. Rewrite `hnnB`, the goal using `[eB]`. Use `hc.trans (mul_le_mul_of_nonneg_right ?_ (mul_nonneg hnnA hnnB))` and prove the remaining obligations. Establish `hg1` using `hB.1`. Establish `hg2` using `hB.2.1`.
+Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hGg : 0 < S.G.g` using `by unfold Sz.Glob.g; exact_mod_cast Nat.mul_pos hg1 hg2`. Establish `hGk : 0 < S.G.ka`. Unfold `Sz.Glob.ka`. Rewrite using `[S.hv]`. Use `PBD.rd_pos' E` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Establish `hsA` using `supA_nonneg S hGg hGk v (decide (j = 0))`. Establish `hmem : ∀ b, grid b (n b) ∈ ys n` using `fun b => List.mem_ofFn.2 ⟨b, rfl⟩`. Establish `hPne : ∀ b, S.P v (grid b (n b)) ≠ 0 ∧ S.P v (grid b (n b) + 1) ≠ 0`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgr : (∃ a', grid b (n b) ∈ S.grid v a') ∨ grid b (n b) ∈ S.grid1 v`. Break down `hnd _ (hmem b) with ⟨-, a', -, -, h⟩ | ⟨-, h, -⟩` into its components or cases. Conclude with `Or.inl ⟨a', h⟩`. Conclude with `Or.inr h`. Take `⟨-, -, h1, h2⟩` from `(hGo v).2.2.2.2.2 _ hgr`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `⟨h1, h2⟩`. Establish `hnorm : ‖κ‖ = Λ * T ^ K * (1 / (ΓS S j * S.sizeAt v a))`. Rewrite using `[hκ, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul, abs_div, abs_of_pos (lam_div_theta grid hinj n).1, (lam_div_theta grid hinj n).2, abs_of_nonneg (pow_nonneg hT0.le K), abs_of_nonneg (by positivity : (0:ℝ) ≤ c0)]`. Rewrite using `[hnorm, hQd, hcp, hcm, sizeAt_plusW, sizeAt_minusW, prod_ofFn_map, prod_ofFn_map, prod_ofFn_map]`. Conclude with `ratio_bound (fun b => grid b (n b)) (S.P v) qv Λ T (ΓS S j) (S.sizeAt v a) (Real.exp 1 * J.supA S.G S.de S.de' S.T S.T' S.l (decide (j = 0)) (S.pl v)) Xc hΓ hsa (fun b => hqpos _ (hmem b)) (fun b => (hPne b).1) (fun b => (hPne b).2) (fun b => (node_bound hB v a ha haN _ _ (hnd _ …`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hblock` using `block_of_choices Y (fun n => KB.gN S' v ε j (KB.plusW (ys n) a)) (fun n => KB.gN S' v ε j (KB.minusW (ys n) a)) Pn θ (Xc ^ K) (Xc ^ K) (fun n => (lam_div_theta grid hinj n).1.le) (fun n => gN_psd hA hFP hB F hF v ε hε j hj _ (hnodes n).2.2.1 Y) (fun n => gN_psd hA hFP hB F hF v ε …`. Use `blockPSD_congr (fun _ _ _ _ => rfl) (fun p' hp' q' hq' => ?_) (fun _ _ _ _ => rfl) hblock` and prove the remaining obligations. Use `show ∑ n, (θ n : ℂ) * Pn n p' q' = Complex.I ^ K * l ^ K * KB.hatB S' v ε (j + 1) 1 a l p' q'`. Rewrite using `[hatB_uB hA hPS hB F hF v ε hε j hj a hwa l p' q' (hY p' hp') (hY q' hq')]`. Establish `hdeg` using `deg_uB hDW hB F hF v ε hε j hj a K grid hinj s p' q'`.
-
-Establish `hIl : Complex.I ^ K * l ^ K = ((T ^ K : ℝ) : ℂ) * s ^ K`. Rewrite using `[hs, sW_eq, mul_pow, mul_pow, ← mul_assoc, ← mul_assoc]`. Establish `: ((T ^ K : ℝ) : ℂ) * (t : ℂ) ^ K = 1`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_mul, ← mul_pow, mul_comm T t, htT, one_pow, Complex.ofReal_one]`. Take the linear combination `(Complex.I ^ K * l ^ K) * this.symm`.
-
-Establish `e1 : Complex.I ^ K * l ^ K * ((c0 : ℂ) * (p v).form j hj a (KB.waveG ((p v).T.bs j) s a (uB S p F v ε j hj a p')) (uB S p F v ε j hj a q')) = ((T ^ K * c0 : ℝ) : ℂ) * (s ^ K * (p v).form j hj a (KB.waveG ((p v).T.bs j) s a (uB S p F v ε j hj a p')) (uB S p F v ε j hj a q'))`. Rewrite using `[hIl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (((1 / (ΓS S j * S.sizeAt v a)) : ℝ) : ℂ) = (c0 : ℂ) from rfl, e1, hdeg, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `hth` using `(lam_div_theta grid hinj n).1`. Establish `hθ0 : ((F7.thGrid grid n : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hth.ne'`. Simplify using `only [hPn, uY_mem S p F v ε j hj _ Y p' hp', uY_mem S p F v ε j hj _ Y q' hq', hlag, hθ]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem blockK_wave (hA : P5.ThmPActual) (hPS : KB.PStd) (hDW : KB.DegWave) (hSS : KB.SizeStd) (hVI : KB.VIso)
     (hFP : FormPos) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)

@@ -14,19 +14,19 @@ noncomputable section
 namespace GlobalTheory.RealMultEigen
 
 /- English proof (translation)
-Establish `hr : ∀ k x, b.repr (S x) k = ν k * b.repr x k` using `fun k x => by`. Establish `: (b.coord k) ∘ₗ S = ν k • b.coord k` using `b.ext fun l => by`. Distinguish the cases in `h : l = k`. Substitute `h` using the available equality. Simplify using `[hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hS, Finsupp.single_apply, h]`. Simplify using `using LinearMap.congr_fun this x`. Prove the components needed by the constructor for the conclusion. Set `q` to `(LinearMap.range S).mkQ`. Establish `htop : Submodule.span ℂ (({q (b k₁), q (b k₂)} : Finset _) : Set (V ⧸ LinearMap.range S)) = ⊤`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff, ← (LinearMap.range S).range_mkQ, LinearMap.range_eq_map (Submodule.mkQ _), ← b.span_eq, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Distinguish the cases in `h : ν k = 0`. Apply `Submodule.subset_span` to reduce the goal to its premises. Apply the tactic sequence `rcases hν k h with rfl | rfl <;> simp [q]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: (LinearMap.range S).mkQ (b k) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨(ν k)⁻¹ • b k, by rw [map_smul, hS, smul_smul, inv_mul_cancel₀ h, one_smul]⟩`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rank_top, ← htop]`. Use `(rank_span_finset_le _).trans ?_` and prove the remaining obligations. Conclude with `Finset.card_le_two` after adjusting the coercions. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ hx ⟨y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Establish `h` using `hr k (S y)`. Rewrite `h` using `[hx, hr]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr]`. Simplify using `only [map_zero, Finsupp.zero_apply] at h ⊢`. Break down `mul_eq_zero.1 h.symm with h | h` into its components or cases. Rewrite using `[h, zero_mul]`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonalizable_corank_le_two {V : Type*} {κ : Type} [AddCommGroup V] [Module ℂ V] (b : Module.Basis κ ℂ V) (S : Module.End ℂ V) (ν : κ → ℂ)
     (hS : ∀ k, S (b k) = ν k • b k) (k₁ k₂ : κ) (hν : ∀ k, ν k = 0 → k = k₁ ∨ k = k₂) :
@@ -69,25 +69,23 @@ theorem diagonalizable_corank_le_two {V : Type*} {κ : Type} [AddCommGroup V] [M
     · exact h
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨full⟩`. Use `letI : Module ℝ V := Module.compHom V (algebraMap ℝ ℂ)`. Use `haveI : IsScalarTower ℝ ℂ V := ⟨fun a c v => by`. Express the relevant statement in the definitionally equal form `(a • c) • v = (algebraMap ℝ ℂ a) • c • v`. Rewrite using `[smul_smul, Algebra.smul_def]⟩`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bZ` to `Module.Free.chooseBasis ℤ Λ`. Set `bR` to `bZ.ofZLatticeBasis ℝ Λ`. Set `Q : (Fin g → ℂ) →ₗ[ℝ] V` to `bR.constr ℝ fun k => P (bZ k)`. Establish `hQ : ∀ x : Λ, Q x = P x` using `fun x => by`. Establish `: (Q.toAddMonoidHom.toIntLinearMap ∘ₗ Λ.subtype) = P.toIntLinearMap` using `bZ.ext fun k => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `bR.constr_basis ℝ (fun k => P (bZ k)) k` as an intermediate fact. Simplify `this` using `[bR, Q]`. Conclude with `LinearMap.congr_fun this x`. Set `M : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `{ toFun := fun w j => (r j : ℂ) * w j map_add' := fun w w' => by funext j; simp [mul_add] map_smul' := fun c w => by funext j; simp; ring }`. Establish `hTQ : ∀ w, T (Q w) = Q (M w)` using `fun w => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (T.restrictScalars ℝ) ∘ₗ Q = Q ∘ₗ M` using `bR.ext fun k => by`. Take `⟨x', h1, h2⟩` from `hT (bZ k)`. Establish `e : bR k = bZ k` using `by simp [bR]`. Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, e]`. Rewrite using `[hQ, h2, ← hQ, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun this w`. Set `v : Fin g × Bool → V` to `fun k => Q (Pi.single k.1 (if k.2 then Complex.I else 1))`. Establish `hv : ⊤ ≤ Submodule.span ℂ (Set.range v)`. Rewrite using `[← hspan, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← hQ]`. Generalize the expression as in `(x : Fin g → ℂ) = w`. Establish `hw : w = ∑ j, ((w j).re • (Pi.single j 1 : Fin g → ℂ) + (w j).im • (Pi.single j Complex.I : Fin g → ℂ))`. Use function extensionality and compare the values at `l`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply, Finset.sum_add_distrib]`. Rewrite using `[hw, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨(j, false), rfl⟩)`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨(j, true), rfl⟩)`. Use `⟨basisOfTopLeSpanOfCardEqFinrank v hv (by rw [hdim]; simp [mul_comm]), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_basisOfTopLeSpanOfCardEqFinrank]`. Establish `: M (Pi.single k.1 (if k.2 then Complex.I else 1)) = r k.1 • (Pi.single k.1 (if k.2 then Complex.I else 1) : Fin g → ℂ)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = k.1`. Substitute `h` using the available equality. Simplify using `[M]`. Simplify using `[M, Pi.single_apply, h]`.
-
-Simplify using `only [v]`. Rewrite using `[hTQ, this, map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_eigenbasis {V : Type*} [AddCommGroup V] [Module ℂ V] {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (full : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (P : Λ →+ V) (hspan : Submodule.span ℂ (Set.range P) = ⊤)
@@ -148,17 +146,15 @@ theorem exists_eigenbasis {V : Type*} [AddCommGroup V] [Module ℂ V] {g : ℕ} 
   rfl
 
 /- English proof (translation)
-Introduce `hPC _ E _ _ _ I _ φ L 𝔠 X U _ i b₀ hsep`. Take `⟨ε, hε⟩` from `hPC`. Take `⟨P, hspan, hdim, -, hend, -⟩` from `hε X.A (Module.finrank ℚ (FR E)) X.ab X.dim (X.diag U.c) (LB.isLB_pull (X.isLB _) _) U.u`. Establish `hreal : ∀ j, (((φ j ((b₀ : FR E) : E)).re : ℝ) : ℂ) = φ j ((b₀ : FR E) : E)` using `fun j => Complex.conj_eq_iff_re.1 ((b₀ : FR E).2 (φ j))`. Set `M : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `{ toFun := fun w j => φ (U.e j) ((b₀ : FR E) : E) * w j map_add' := fun w w' => by funext j; simp [mul_add] map_smul' := fun r w => by funext j; simp; ring }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := U.u.discrete`. Take `⟨b, hb⟩` from `exists_eigenbasis U.u.Λ U.u.full P hspan hdim (act (dp0 ℂ) (𝟙 _) X.rm b₀) (fun j => (φ (U.e j) ((b₀ : FR E) : E)).re) (fun x => by`. Establish `hx : M x ∈ U.u.Λ`. Rewrite using `[← U.u.ker]`. Use `(U.act b₀ x).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(U.u.ker x).2 x.2]`. Use `haveI := X.rm.hom b₀`. Conclude with `MonObj.one_comp _`. Use `⟨⟨M x, hx⟩, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hreal]`. Both sides reduce to the same expression. Use `haveI := X.rm.hom b₀`. Conclude with `hend (X.rm.act b₀) M (U.act b₀) x ⟨M x, hx⟩ rfl)`. Use `diagonalizable_corank_le_two b _ (fun k => φ (U.e k.1) ((b₀ : FR E) : E) - φ i ((b₀ : FR E) : E)) (fun k => ?_) (U.e.symm i, false) (U.e.symm i, true) (fun k hk => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[LinearMap.sub_apply, hb, hreal, sub_smul]`. Both sides reduce to the same expression. Take `⟨j, c⟩` from `k`. Establish `: j = U.e.symm i` using `by rw [← hsep _ (sub_eq_zero.1 hk)]; simp`. Substitute `this` using the available equality.
-
-Apply the tactic sequence `cases c <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rank_coker_le_two : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (L : Set E)

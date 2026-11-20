@@ -14,7 +14,7 @@ namespace GlobalTheory.CovTop.GoodWCore
 end GlobalTheory.CovTop.GoodWCore
 namespace GlobalTheory.CovTop
 /- English proof (translation)
-Introduce `p _ _ i` and use `GoodWCore.goodW_core p.T p.fw.laws _ ⟨Nat.le_add_left _ _, i.2⟩ (p.κ i) (GlobalTheory.GoodLat.Obj.latFull p.T p.fw.laws p.fw.kap i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodW_at_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz),

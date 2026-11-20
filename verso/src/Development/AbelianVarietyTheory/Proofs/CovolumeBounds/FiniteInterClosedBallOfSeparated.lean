@@ -7,15 +7,13 @@ namespace GlobalTheory
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Use `borelize E`. Set `μ : Measure E` to `Measure.addHaar`. Establish `hδ : 0 < d / 2` using `by positivity`. Establish `hρ : 0 < R + d / 2` using `by positivity`. Establish `D : Set.Pairwise (s : Set E) (Function.onFun Disjoint fun c => ball (c : E) (d / 2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb hab`. Conclude with `ball_disjoint_ball (by have := hsep ha hb hab; linarith)`. Establish `hsub : (⋃ c ∈ s, ball (c : E) (d / 2)) ⊆ ball x (R + d / 2)`. Use `iUnion₂_subset fun a ha => ball_subset_ball' ?_` and prove the remaining obligations. Use `hs a ha` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `I : (s.card : ENNReal) * ENNReal.ofReal ((d / 2) ^ finrank ℝ E) * μ (ball 0 1) ≤ ENNReal.ofReal ((R + d / 2) ^ finrank ℝ E) * μ (ball 0 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[measure_biUnion_finset D fun c _ => measurableSet_ball]`. Simplify using `only [μ.addHaar_ball_of_pos _ hδ, Finset.sum_const, nsmul_eq_mul, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ μ (ball x (R + d / 2)) := measure_mono hsub`. Use `_ = _ := μ.addHaar_ball_of_pos _ hρ`. Establish `J : (s.card : ENNReal) * ENNReal.ofReal ((d / 2) ^ finrank ℝ E) ≤ ENNReal.ofReal ((R + d / 2) ^ finrank ℝ E)` using `(ENNReal.mul_le_mul_iff_left (measure_ball_pos μ _ zero_lt_one).ne' measure_ball_lt_top.ne).1 I`. Establish `K : (s.card : ℝ) * (d / 2) ^ finrank ℝ E ≤ (R + d / 2) ^ finrank ℝ E`. Use `ENNReal.toReal_mono ENNReal.ofReal_ne_top J` as an intermediate fact.
-
-Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_natCast, ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_ofReal (by positivity)]`. Then use the resulting hypothesis. Establish `e : 1 + 2 * R / d = (R + d / 2) / (d / 2)` using `by field_simp; ring`. Rewrite using `[e, div_pow, le_div_iff₀ (by positivity)]`. Conclude with `K`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finset_card_le_of_separated (s : Finset E) {d R : ℝ} (hd : 0 < d) (hR : 0 ≤ R) (x : E)
     (hs : ∀ a ∈ s, dist a x ≤ R) (hsep : (s : Set E).Pairwise fun a b => d ≤ dist a b) :
@@ -51,7 +49,7 @@ theorem finset_card_le_of_separated (s : Finset E) {d R : ℝ} (hd : 0 < d) (hR 
   exact K
 
 /- English proof (translation)
-Establish `hR0 : 0 ≤ R` using `hd.le.trans hR`. Use `pow_le_pow_left₀ (by positivity) ?_ n` and prove the remaining obligations. Establish `h1 : 1 ≤ R / d` using `(one_le_div hd).2 hR`. Establish `: 3 * R / d = R / d + 2 * R / d` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_add_two_mul_div_pow_le {d R : ℝ} (hd : 0 < d) (hR : d ≤ R) (n : ℕ) :
     (1 + 2 * R / d) ^ n ≤ (3 * R / d) ^ n := by

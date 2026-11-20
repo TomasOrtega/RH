@@ -12,7 +12,7 @@ namespace GlobalTheory.DetSlab
 variable (E : Type) [Field E] [NumberField E] (j : ℕ)
 
 /- English proof (translation)
-Unfold `detNorm`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: Matrix.of ((x * y) w) = Matrix.of (x w) * Matrix.of (y w)` using `rfl`. Rewrite using `[this, Matrix.det_mul, norm_mul, mul_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem detNorm_mul (x y : MatInf E j) : detNorm E j (x * y) = detNorm E j x * detNorm E j y := by
   unfold detNorm
@@ -22,19 +22,19 @@ theorem detNorm_mul (x y : MatInf E j) : detNorm E j (x * y) = detNorm E j x * d
   rw [this, Matrix.det_mul, norm_mul, mul_pow]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem detNorm_nonneg (x : MatInf E j) : 0 ≤ detNorm E j x :=
   Finset.prod_nonneg fun _ _ => sq_nonneg _
 
 /- English proof (translation)
-Take `⟨γ, hγ, hx⟩` from `hx`. Establish `h1 : IsIntegral ℤ (γ : Matrix (Fin j) (Fin j) E).det` using `GlobalTheory.Mem.StabDet.isIntegral_det Λ hΛ.fg hΛ.span_eq_top _ fun v hv => (hγ v).2 hv`. Establish `h2 : IsIntegral ℤ ((γ⁻¹ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E).det` using `GlobalTheory.Mem.StabDet.isIntegral_det Λ hΛ.fg hΛ.span_eq_top _ fun v hv => (hγ _).1 (by`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (γ : Matrix (Fin j) (Fin j) E).det * ((γ⁻¹ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E).det = 1`. Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`. Set `u : (𝓞 E)ˣ` to `Units.mkOfMulEqOne ⟨_, h1⟩ ⟨_, h2⟩ (RingOfIntegers.ext h3)`. Establish `h4` using `InfinitePlace.prod_eq_abs_norm ((u : 𝓞 E) : E)`. Rewrite `h4` using `[NumberField.Units.norm]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ((u : 𝓞 E) : E) = (γ : Matrix (Fin j) (Fin j) E).det` using `rfl`. Rewrite `h4` using `[hu]`. Unfold `detNorm`. Rewrite `h4` using `[Rat.cast_one]`. Rewrite using `[← h4]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h5 : Matrix.of (x w) = w.embedding.mapMatrix (γ : Matrix (Fin j) (Fin j) E)`. Use extensionality with `a b`. Simplify using `using hx w a b`. Rewrite using `[h5, ← RingHom.map_det, InfinitePlace.norm_embedding_eq, (IsTotallyComplex.isComplex w).mult_eq_two]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detNorm_aut (hE : IsTotallyComplex E) (Λ : Submodule (𝓞 E) (Fin j → E)) (hΛ : Submodule.IsLattice E Λ)
     {x : MatInf E j} (hx : x ∈ autGL E j Λ) : detNorm E j x = 1 := by
@@ -61,7 +61,7 @@ theorem detNorm_aut (hE : IsTotallyComplex E) (Λ : Submodule (𝓞 E) (Fin j �
   rw [h5, ← RingHom.map_det, InfinitePlace.norm_embedding_eq, (IsTotallyComplex.isComplex w).mult_eq_two]
 
 /- English proof (translation)
-Unfold `detNorm`. Use `continuous_finset_prod _ fun w _ => ?_` and prove the remaining obligations. Use `(Continuous.norm ?_).pow 2` and prove the remaining obligations. Conclude with `Continuous.matrix_det (continuous_apply w)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_detNorm :
     Continuous (fun x : InfinitePlace E → Fin j → Fin j → ℂ => detNorm E j x) := by
@@ -71,7 +71,7 @@ theorem continuous_detNorm :
   exact Continuous.matrix_det (continuous_apply w)
 
 /- English proof (translation)
-The claim follows from `(continuous_detNorm E j).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_detNorm : Measurable (detNorm E j) := (continuous_detNorm E j).measurable
 
@@ -83,13 +83,13 @@ Both sides reduce to the same expression.
 theorem scal_eq (t : ℝ) (x : InfinitePlace E → Fin j → Fin j → ℂ) : scal E j t x = t • x := rfl
 
 /- English proof (translation)
-The claim follows from `(continuous_const_smul t : Continuous fun x : InfinitePlace E → Fin j → Fin j → ℂ => t • x).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_scal (t : ℝ) : Measurable (scal E j t) :=
   (continuous_const_smul t : Continuous fun x : InfinitePlace E → Fin j → Fin j → ℂ => t • x).measurable
 
 /- English proof (translation)
-Unfold `detNorm`. Establish `: ∀ w, Matrix.of (scal E j t x w) = (t : ℂ) • Matrix.of (x w)` using `fun w => rfl`. Simplify using `only [this, Matrix.det_smul, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, mul_pow, Finset.prod_mul_distrib, Finset.prod_const, Fintype.card_fin, Finset.card_univ, ← pow_mul]`. Rewrite using `[mul_comm j 2]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem detNorm_scal (t : ℝ) (x : MatInf E j) :
     detNorm E j (scal E j t x) = |t| ^ (2 * j * Fintype.card (InfinitePlace E)) * detNorm E j x := by
@@ -100,7 +100,7 @@ theorem detNorm_scal (t : ℝ) (x : MatInf E j) :
   rw [mul_comm j 2]
 
 /- English proof (translation)
-Use `haveI h1 : (volume : Measure (Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI h2 : (volume : Measure (Fin j → Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaar_volume : (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).IsAddHaarMeasure := by
   haveI h1 : (volume : Measure (Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
@@ -108,15 +108,15 @@ theorem isAddHaar_volume : (volume : Measure (InfinitePlace E → Fin j → Fin 
   exact Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-Establish `hd : Measurable fun x : InfinitePlace E → Fin j → Fin j → ℂ => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)` using `(((measurable_detNorm E j).inv).pow_const j).ennreal_ofReal`. Establish `hf' : Measurable (fun x : InfinitePlace E → Fin j → Fin j → ℂ => f x)` using `hf`. Establish `hf'' : Measurable (fun x : InfinitePlace E → Fin j → Fin j → ℂ => f (t • x))` using `hf.comp (measurable_scal E j t)`. Establish `e1` using `lintegral_withDensity_eq_lintegral_mul (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) hd hf'`. Establish `e2` using `lintegral_withDensity_eq_lintegral_mul (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) hd hf''`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e2.trans (Eq.trans ?_ e1.symm)` and prove the remaining obligations. Use `haveI := isAddHaar_volume E j`. Establish `hm` using `Measure.map_addHaar_smul (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) ht`. Establish `hrk : Module.finrank ℝ (InfinitePlace E → Fin j → Fin j → ℂ) = 2 * j * Fintype.card (InfinitePlace E) * j`. Simplify using `only [Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e3` using `lintegral_map (μ := (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ))) (hd.mul hf') (measurable_const_smul t)`. Rewrite `e3` using `[hm, lintegral_smul_measure, hrk, smul_eq_mul]`. Use `set N := 2 * j * Fintype.card (InfinitePlace E) with hN`. Establish `hpos : 0 < |t| ^ (N * j)` using `pow_pos (abs_pos.2 ht) _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e4 : ∀ x : InfinitePlace E → Fin j → Fin j → ℂ, ENNReal.ofReal ((detNorm E j (t • x))⁻¹ ^ j) = ENNReal.ofReal |(t ^ (N * j))⁻¹| * ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)`. Introduce `x`. Establish `h : detNorm E j (t • x) = |t| ^ N * detNorm E j x` using `detNorm_scal E j t x`. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _), h, abs_inv, abs_pow, mul_inv, mul_pow, inv_pow, ← pow_mul]`. Establish `e5` using `lintegral_const_mul (μ := (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ))) (ENNReal.ofReal |(t ^ (N * j))⁻¹|) (hd.mul hf'')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `replace e3 := e3.trans ((lintegral_congr fun x => (congrArg (· * f (scal E j t x)) (e4 x)).trans (mul_assoc _ _ _)).trans e5)`. Establish `hne : ENNReal.ofReal |(t ^ (N * j))⁻¹| ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le, abs_inv, abs_pow]`. Conclude with `inv_pos.2 hpos`. Conclude with `((ENNReal.mul_right_inj hne ENNReal.ofReal_ne_top).1 e3).symm`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_scal (t : ℝ) (ht : t ≠ 0) (f : MatInf E j → ENNReal) (hf : Measurable f) :
     ∫⁻ x, f (scal E j t x) ∂(haarGL E j) = ∫⁻ x, f x ∂(haarGL E j) := by
@@ -155,7 +155,7 @@ theorem lintegral_scal (t : ℝ) (ht : t ≠ 0) (f : MatInf E j → ENNReal) (hf
   exact ((ENNReal.mul_right_inj hne ENNReal.ofReal_ne_top).1 e3).symm
 
 /- English proof (translation)
-Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations. Establish `hd : Measurable fun x : InfinitePlace E → Fin j → Fin j → ℂ => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)` using `(((measurable_detNorm E j).inv).pow_const j).ennreal_ofReal`. Use `(ae_withDensity_iff hd).2 (Filter.Eventually.of_forall fun x hx => ?_)` and prove the remaining obligations. Use `lt_of_le_of_ne (detNorm_nonneg E j x) fun h => hx ?_` and prove the remaining obligations. Rewrite using `[← h, _root_.inv_zero, zero_pow (by omega), ENNReal.ofReal_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrict_pos (hj : 1 ≤ j) : (haarGL E j).restrict {g | 0 < detNorm E j g} = haarGL E j := by
   refine Measure.restrict_eq_self_of_ae_mem ?_
@@ -166,7 +166,7 @@ theorem restrict_pos (hj : 1 ≤ j) : (haarGL E j).restrict {g | 0 < detNorm E j
   rw [← h, _root_.inv_zero, zero_pow (by omega), ENNReal.ofReal_zero]
 
 /- English proof (translation)
-Use `haveI := isAddHaar_volume E j`. Conclude with `(Measure.withDensity.instSFinite : SFinite (Measure.withDensity (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) _))`.
+A detailed English derivation is pending.
 -/
 theorem sFinite_haarGL : SFinite (haarGL E j) := by
   haveI := isAddHaar_volume E j
@@ -174,7 +174,7 @@ theorem sFinite_haarGL : SFinite (haarGL E j) := by
     SFinite (Measure.withDensity (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) _))
 
 /- English proof (translation)
-Establish `h` using `lintegral_image_eq_lintegral_abs_deriv_mul (s := Set.univ) (f := Real.exp) (f' := Real.exp) MeasurableSet.univ (fun x _ => (Real.hasDerivAt_exp x).hasDerivWithinAt) Real.exp_injective.injOn (fun t => F t / ENNReal.ofReal t)`. Rewrite `h` using `[Set.image_univ, Real.range_exp, Measure.restrict_univ]`. Rewrite using `[h]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[abs_of_pos (Real.exp_pos u), ENNReal.mul_div_cancel (by simpa using Real.exp_pos u) ENNReal.ofReal_ne_top]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_exp (F : ℝ → ENNReal) :
     ∫⁻ u, F (Real.exp u) = ∫⁻ t in Set.Ioi (0 : ℝ), F t / ENNReal.ofReal t := by
@@ -188,27 +188,25 @@ theorem lintegral_exp (F : ℝ → ENNReal) :
     (by simpa using Real.exp_pos u) ENNReal.ofReal_ne_top]
 
 /- English proof (translation)
-Use `haveI := sFinite_haarGL E j`. Establish `hl : Measurable fun g => Real.log (detNorm E j g)` using `Real.measurable_log.comp (measurable_detNorm E j)`. Use `set ν : Measure ℝ := ((haarGL E j).restrict D).map fun g => Real.log (detNorm E j g) with hν`. Establish `hνa : ∀ s, MeasurableSet s → ν s = haarGL E j ((fun g => Real.log (detNorm E j g)) ⁻¹' s ∩ D)` using `fun s hs => by rw [hν, Measure.map_apply hl hs, Measure.restrict_apply (hl hs)]`. Use `set N := 2 * j * Fintype.card (InfinitePlace E) with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN0 : (N : ℝ) ≠ 0`. Establish `: 0 < N` using `Nat.mul_pos (by omega) Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions. Use `haveI : ν.IsAddLeftInvariant := by`. Use `⟨fun c => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `s hs`. Establish `hc : Measurable fun u : ℝ => c + u` using `measurable_const_add c`. Rewrite using `[Measure.map_apply hc hs, hνa _ (hc hs), hνa _ hs]`. Establish `hA : MeasurableSet ((fun g => Real.log (detNorm E j g)) ⁻¹' s ∩ D)` using `(hl hs).inter hD`. Establish `hB : MeasurableSet ((fun g => Real.log (detNorm E j g)) ⁻¹' ((fun u => c + u) ⁻¹' s) ∩ D)` using `(hl (hc hs)).inter hD`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `ht : 0 < Real.exp (c / N)` using `Real.exp_pos _`. Rewrite using `[← lintegral_indicator_one hA, ← lintegral_indicator_one hB, ← lintegral_scal E j _ ht.ne' _ (measurable_one.indicator hA)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hback : scal E j (Real.exp (c / N))⁻¹ (scal E j (Real.exp (c / N)) x) = x`. Use function extensionality and compare the values at `w a b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [scal]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ ht.ne', Complex.ofReal_one, one_mul]`. Establish `hlog : x ∈ D → Real.log (detNorm E j (scal E j (Real.exp (c / N)) x)) = c + Real.log (detNorm E j x)` using `fun hx => by`. Establish `h0 : 0 < detNorm E j x` using `hpos hx`. Rewrite using `[detNorm_scal, abs_of_pos ht, Real.log_mul (pow_pos ht _).ne' h0.ne', Real.log_pow, Real.log_exp, ← hN, mul_div_cancel₀ _ hN0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(Set.indicator_const_eq_indicator_const (c := (1 : ENNReal)) ⟨fun h => ⟨?_, hsc _ h.2 _ ht⟩, fun h => ?_⟩)` and prove the remaining obligations. Use `h.1` as an intermediate fact. Simplify using `only [Set.mem_preimage] at this ⊢`. Rewrite using `[hlog h.2]` and apply the resulting hypothesis. Establish `hx : x ∈ D` using `hback ▸ hsc _ h.2 _ (inv_pos.2 ht)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨?_, hx⟩` and prove the remaining obligations. Use `h.1` as an intermediate fact. Simplify using `only [Set.mem_preimage] at this ⊢`. Rewrite `this` using `[hlog hx]`. Then use the resulting hypothesis. Establish `hv : (volume : Measure ℝ) (Set.Ico 0 1) = 1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hFe : Measurable fun u => F (Real.exp u)` using `hF.comp Real.measurable_exp`. Establish `h1` using `measure_add_lintegral_eq volume ν (s := Set.Ico 0 1) measurableSet_Ico _ hFe`. Simplify using `only [measure_preimage_add_right] at h1`. Rewrite `h1` using `[hv, one_mul, lintegral_const_mul _ (f := fun u => F (Real.exp (-u))) (hFe.comp measurable_neg), lintegral_neg_eq_self (fun u => F (Real.exp u)), hνa _ measurableSet_Ico]`. Establish `hset : (fun g => Real.log (detNorm E j g)) ⁻¹' Set.Ico 0 1 ∩ D = {x | 1 ≤ detNorm E j x ∧ detNorm E j x < Real.exp 1} ∩ D`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Use `and_congr_left fun hx => ?_` and prove the remaining obligations. Establish `h0 : 0 < detNorm E j x` using `hpos hx`. Simplify using `only [Set.mem_preimage, Set.mem_Ico, Set.mem_setOf_eq]`. Rewrite using `[Real.log_nonneg_iff h0, Real.log_lt_iff_lt_exp h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hset]`. Establish `h2 : ∫⁻ u, F (Real.exp u) ∂ν = ∫⁻ g in D, F (detNorm E j g) ∂(haarGL E j)`. Rewrite using `[hν, lintegral_map hFe hl]`. Use `setLIntegral_congr_fun hD fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Real.exp_log (hpos hx)]`.
-
-Rewrite using `[← h2, h1, lintegral_exp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_cone (hj : 1 ≤ j) (D : Set (MatInf E j)) (hD : MeasurableSet D)
     (hpos : D ⊆ {g | 0 < detNorm E j g}) (hsc : ∀ g ∈ D, ∀ t : ℝ, 0 < t → scal E j t g ∈ D)
@@ -276,11 +274,11 @@ theorem lintegral_cone (hj : 1 ≤ j) (D : Set (MatInf E j)) (hD : MeasurableSet
   rw [← h2, h1, lintegral_exp]
 
 /- English proof (translation)
-Introduce `E _ _ hE j hj Λ hΛ F hF`. Take `⟨D, hD, hpos, -, hsc, hcov⟩` from `GlobalTheory.T.exists_scalarStable_latticeAutomorphismFundamentalDomain E hE j Λ hΛ`. Establish `hm` using `measurable_detNorm E j`. Establish `hP : MeasurableSet {g : MatInf E j | 0 < detNorm E j g}` using `measurableSet_lt measurable_const hm`. Establish `hS : MeasurableSet {x : MatInf E j | 1 ≤ detNorm E j x ∧ detNorm E j x < Real.exp 1}` using `(measurableSet_le measurable_const hm).inter (measurableSet_lt hm measurable_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ γ ∈ autGL E j Λ, ∀ g, detNorm E j (γ * g) = detNorm E j g` using `fun γ hγ g => by`. Rewrite using `[detNorm_mul, detNorm_aut E j hE Λ hΛ hγ, one_mul]`. Establish `h1` using `hcov (fun x => F (detNorm E j x)) _ ((hF.comp hm).indicator hP) (fun γ hγ g _ => by simp only [hinv γ hγ g]) hP subset_rfl (fun γ hγ g hg => by simpa only [Set.mem_setOf_eq, hinv γ hγ g] using hg)`. Establish `h2` using `hcov (fun _ => 1) _ (measurable_const.indicator hP) (fun _ _ _ _ => rfl) hS (fun g hg => lt_of_lt_of_le one_pos hg.1) (fun γ hγ g hg => by simpa only [Set.mem_setOf_eq, hinv γ hγ g] using hg)`. Rewrite `h1`, `h2` using `[restrict_pos E j hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[withDensity_const, one_smul, setLIntegral_one]`. Rewrite using `[h1, h2, Set.inter_eq_right.2 hpos]`. Conclude with `lintegral_cone E j hj D hD hpos hsc F hF`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_withDensity_detNorm : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ (j : ℕ), 1 ≤ j → ∀ Λ : Submodule (𝓞 E) (Fin j → E), Submodule.IsLattice E Λ → ∀ F : ℝ → ENNReal, Measurable F → covol (autGL E j Λ) ((haarGL E j).withDensity fun x => F (detNorm E j x)) {x | 0 < detNorm E j x} = covol (autGL E j Λ) (haarGL E j) {x | 1 ≤ detNorm E j x ∧ detNorm E j x < Real.exp 1} * ∫⁻ t in Set.Ioi (0 : ℝ), F t / ENNReal.ofReal t := by
   intro E _ _ hE j hj Λ hΛ F hF

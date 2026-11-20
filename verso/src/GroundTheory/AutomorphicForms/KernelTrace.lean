@@ -16,7 +16,7 @@ variable {X : Type*} [TopologicalSpace X] [CompactSpace X] [T2Space X] [Measurab
   [BorelSpace X]
 
 /- English proof (translation)
-Set `: UniformSpace X` to `uniformSpaceOfCompactR1`. Set `: UniformSpace Y` to `uniformSpaceOfCompactR1`. Conclude with `measurable_of_continuous_prod hk`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem measurable_of_continuous_compactProd {Y β : Type*} [TopologicalSpace Y] [CompactSpace Y]
     [T2Space Y] [MeasurableSpace Y] [BorelSpace Y] [PseudoMetricSpace β] [MeasurableSpace β]
@@ -28,7 +28,7 @@ theorem measurable_of_continuous_compactProd {Y β : Type*} [TopologicalSpace Y]
 variable (μ : Measure X) [IsFiniteMeasure μ]
 
 /- English proof (translation)
-The claim follows from `MemLp.of_bound (measurable_of_continuous_compactProd k.continuous).aestronglyMeasurable ‖k‖ (ae_of_all _ fun z => k.norm_coe_le_norm z)`.
+A detailed English derivation is pending.
 -/
 theorem memLp_contKernel (k : C(X × X, ℂ)) : MemLp k 2 (μ.prod μ) :=
   MemLp.of_bound (measurable_of_continuous_compactProd k.continuous).aestronglyMeasurable ‖k‖
@@ -38,7 +38,7 @@ def contKernelOp (k : C(X × X, ℂ)) : Lp ℂ 2 μ →L[ℂ] Lp ℂ 2 μ :=
   L2Kernel.kernelOp ((memLp_contKernel μ k).toLp k)
 
 /- English proof (translation)
-The claim follows from `L2Kernel.kernelOp_toLp_apply_ae (memLp_contKernel μ k) f`.
+A detailed English derivation is pending.
 -/
 theorem contKernelOp_apply_ae (k : C(X × X, ℂ)) (f : Lp ℂ 2 μ) :
     contKernelOp μ k f =ᵐ[μ] fun x => ∫ y, k (x, y) * f y ∂μ :=
@@ -47,9 +47,9 @@ theorem contKernelOp_apply_ae (k : C(X × X, ℂ)) (f : Lp ℂ 2 μ) :
 end Kernel
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => filter_upwards [Lp.coeFn_zero E p μ] with x hx`. Simplify using `only [Finset.sum_empty]`. Conclude with `hx`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_insert ha]`. Use `filter_upwards [Lp.coeFn_add (F a) (∑ i ∈ s, F i), ih] with x h1 h2`. Rewrite using `[h1, Pi.add_apply, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lp.coeFn_finsetSum {α E ι : Type*} [MeasurableSpace α] {μ : Measure α}
     [NormedAddCommGroup E] {p : ℝ≥0∞} (s : Finset ι) (F : ι → Lp E p μ) :
@@ -77,7 +77,7 @@ def nonnull : Finset ℕ := (Finset.range p.n).filter fun i => μ (p.E i) ≠ 0
 
 variable {μ p} in
 /- English proof (translation)
-Establish `h` using `(Finset.mem_filter.1 i.2).2`. Conclude with `ENNReal.toReal_pos h (measure_ne_top μ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measureReal_pos (i : p.nonnull μ) : 0 < μ.real (p.E i) := by
   have h := (Finset.mem_filter.1 i.2).2
@@ -90,18 +90,18 @@ def avgVec (i : p.nonnull μ) : Lp ℂ 2 μ :=
 def avgProj : Lp ℂ 2 μ →L[ℂ] Lp ℂ 2 μ := finProj (p.avgVec μ)
 
 /- English proof (translation)
-Rewrite using `[avgVec, inner_smul_left, L2.inner_indicatorConstLp_one, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_avgVec (i : p.nonnull μ) (f : Lp ℂ 2 μ) :
     ⟪p.avgVec μ i, f⟫_ℂ = (((Real.sqrt (μ.real (p.E i)))⁻¹ : ℝ) : ℂ) * ∫ x in p.E i, f x ∂μ := by
   rw [avgVec, inner_smul_left, L2.inner_indicatorConstLp_one, Complex.conj_ofReal]
 
 /- English proof (translation)
-Rewrite using `[orthonormal_iff_ite]`. Introduce `i j`. Rewrite using `[avgVec, avgVec, inner_smul_left, inner_smul_right, Complex.conj_ofReal, L2.inner_indicatorConstLp_indicatorConstLp]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hm` using `measureReal_pos i`. Rewrite using `[Set.inter_self]`. Simplify using `only [inner_self_eq_norm_sq_to_K, norm_one, one_pow, RCLike.ofReal_one, mul_one, Complex.real_smul]`. Establish `hr : (Real.sqrt (μ.real (p.E i)))⁻¹ * ((Real.sqrt (μ.real (p.E i)))⁻¹ * μ.real (p.E i)) = 1`. Rewrite using `[← mul_assoc, ← mul_inv, Real.mul_self_sqrt hm.le, inv_mul_cancel₀ hm.ne']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hr` after adjusting the coercions. Establish `hij : (i : ℕ) ≠ j` using `fun h' => h (Subtype.ext h')`. Rewrite using `[(p.disjoint hij).inter_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orthonormal_avgVec : Orthonormal ℂ (p.avgVec μ) := by
   classical
@@ -134,7 +134,7 @@ variable {X : Type*} [TopologicalSpace X] [CompactSpace X] [T2Space X] [Measurab
 
 omit [T2Space X] in
 /- English proof (translation)
-Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hf.continuousOn`. Conclude with `Integrable.of_bound hf.aestronglyMeasurable C (ae_of_all _ fun x => hC x (mem_univ x))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous_compact {f : X → ℂ} (hf : Continuous f) (ν : Measure X)
     [IsFiniteMeasure ν] : Integrable f ν := by
@@ -147,7 +147,7 @@ variable (p : MeasurablePartition X)
 
 omit [TopologicalSpace X] [CompactSpace X] [T2Space X] [BorelSpace X] in
 /- English proof (translation)
-Use `filter_upwards [Lp.coeFn_smul (((Real.sqrt (μ.real (p.E i)))⁻¹ : ℝ) : ℂ) (indicatorConstLp 2 (p.measurableSet i) (measure_ne_top μ _) (1 : ℂ)), indicatorConstLp_coeFn (p := 2) (μ := μ) (hs := p.measurableSet i) (hμs := measure_ne_top μ _) (c := (1 : ℂ))] with y h1 h2`. Rewrite using `[avgVec, h1, Pi.smul_apply, h2, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeFn_avgVec (i : p.nonnull μ) :
     p.avgVec μ i =ᵐ[μ] fun y => (((Real.sqrt (μ.real (p.E i)))⁻¹ : ℝ) : ℂ) *
@@ -159,11 +159,11 @@ theorem coeFn_avgVec (i : p.nonnull μ) :
   rw [avgVec, h1, Pi.smul_apply, h2, smul_eq_mul]
 
 /- English proof (translation)
-Use `set r : ℂ := (((Real.sqrt (μ.real (p.E i)))⁻¹ : ℝ) : ℂ) with hr`. Establish `h1 : contKernelOp μ k (p.avgVec μ i) =ᵐ[μ] fun x => r * ∫ y in p.E i, k (x, y) ∂μ` using `by filter_upwards [contKernelOp_apply_ae μ k (p.avgVec μ i)] with x hx`. Rewrite using `[hx, ← integral_indicator (p.measurableSet i), ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [coeFn_avgVec μ p i] with y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hy]`. Distinguish the cases in `hyE : y ∈ p.E i`. Rewrite using `[Set.indicator_of_mem hyE, Set.indicator_of_mem hyE, hr, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Set.indicator_of_notMem hyE]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[inner_avgVec, integral_congr_ae (ae_restrict_of_ae h1), integral_const_mul, ← mul_assoc]`. Use `congr 1`. Rewrite using `[hr, ← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt measureReal_nonneg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_avgVec_contKernelOp (k : C(X × X, ℂ)) (i : p.nonnull μ) :
     ⟪p.avgVec μ i, contKernelOp μ k (p.avgVec μ i)⟫_ℂ =
@@ -184,23 +184,19 @@ theorem inner_avgVec_contKernelOp (k : C(X × X, ℂ)) (i : p.nonnull μ) :
   rw [hr, ← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt measureReal_nonneg]
 
 /- English proof (translation)
-Establish `hkm : StronglyMeasurable (k : X × X → ℂ)` using `(measurable_of_continuous_compactProd k.continuous).stronglyMeasurable`. Establish `hdiag : Continuous fun x => k (x, x)` using `k.continuous.comp (continuous_id.prodMk continuous_id)`. Establish `hrow : ∀ x, Continuous fun y => k (x, y)` using `fun x => k.continuous.comp (continuous_const.prodMk continuous_id)`. Establish `hsplit : ∫ x, k (x, x) ∂μ = ∑ i : p.nonnull μ, ∫ x in p.E i, k (x, x) ∂μ`. Rewrite using `[← setIntegral_univ, ← p.biUnion_eq, integral_biUnion_finset _ (fun i _ => p.measurableSet i) (fun i _ j _ hij => p.disjoint hij) (fun i _ => (integrable_of_continuous_compact hdiag μ).integrableOn), Finset.sum_coe_sort (p.nonnull μ) (fun i => ∫ x in p.E i, k (x, x) ∂μ), nonnull, …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hne hzero`. Conclude with `hne (setIntegral_measure_zero _ hzero)`. Rewrite using `[hsplit, ← Finset.sum_sub_distrib]`. Establish `hpiece : ∀ i : p.nonnull μ, ‖(((μ.real (p.E i))⁻¹ : ℝ) : ℂ) * (∫ x in p.E i, ∫ y in p.E i, k (x, y) ∂μ ∂μ) - ∫ x in p.E i, k (x, x) ∂μ‖ ≤ ε * μ.real (p.E i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set E := p.E i`. Use `set m := μ.real E`. Establish `hm : 0 < m` using `measureReal_pos i`. Establish `hEfin : μ E < ∞` using `measure_lt_top μ E`. Set `F : X → ℂ` to `fun x => ∫ y in E, k (x, y) ∂μ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hFint : Integrable F (μ.restrict E)`. Use `Integrable.of_bound (hkm.integral_prod_right' (ν := μ.restrict E)).aestronglyMeasurable (‖k‖ * m) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Conclude with `norm_setIntegral_le_of_norm_le_const hEfin fun y _ => k.norm_coe_le_norm _`. Establish `hGint : Integrable (fun x => (m : ℂ) * k (x, x)) (μ.restrict E)` using `(integrable_of_continuous_compact hdiag _).const_mul _`. Establish `hdiagE : ∫ x in E, k (x, x) ∂μ = ((m⁻¹ : ℝ) : ℂ) * ∫ x in E, (m : ℂ) * k (x, x) ∂μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_const_mul, ← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ hm.ne', Complex.ofReal_one, one_mul]`. Rewrite using `[hdiagE, ← mul_sub, ← integral_sub hFint hGint, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hm)]`. Establish `hbound : ‖∫ x in E, (F x - (m : ℂ) * k (x, x)) ∂μ‖ ≤ (ε * m) * m`. Use `norm_setIntegral_le_of_norm_le_const hEfin fun x hx => ?_` and prove the remaining obligations. Establish `hrowE : Integrable (fun y => k (x, y)) (μ.restrict E)` using `integrable_of_continuous_compact (hrow x) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hconst : (m : ℂ) * k (x, x) = ∫ _ in E, k (x, x) ∂μ`. Rewrite using `[setIntegral_const, Complex.real_smul]`. Simplify using `only [F]`. Rewrite using `[hconst, ← integral_sub hrowE (integrable_const _)]`. Conclude with `norm_setIntegral_le_of_norm_le_const hEfin fun y hy => hk i x hx y hy`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_avgVec_contKernelOp]`. Conclude with `hpiece i`.
-
-Use `_ = ε * ∑ i ∈ p.nonnull μ, μ.real (p.E i) := by`. Rewrite using `[← Finset.mul_sum, Finset.sum_coe_sort (p.nonnull μ) (fun i => μ.real (p.E i))]`. Use `_ = ε * μ.real univ := by`. Use `congr 1`. Rewrite using `[nonnull, Finset.sum_filter_of_ne, ← measureReal_biUnion_finset (fun i _ j _ hij => p.disjoint hij) (fun i _ => p.measurableSet i), p.biUnion_eq]`.
-
-Introduce `i _ hne hzero`. Conclude with `hne (by simp [Measure.real, hzero])`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_sum_inner_avgVec_sub_le (k : C(X × X, ℂ)) {ε : ℝ}
     (hk : ∀ i, ∀ x ∈ p.E i, ∀ y ∈ p.E i, ‖k (x, y) - k (x, x)‖ ≤ ε) :
@@ -295,21 +291,19 @@ variable (p : MeasurablePartition X)
 omit [T2Space X] in
 
 /- English proof (translation)
-Use `set F := ContinuousMap.toLp (E := ℂ) 2 μ ℂ f`. Establish `hne : ∀ i : p.nonnull μ, (p.E i).Nonempty` using `fun i => nonempty_of_measure_ne_zero (Finset.mem_filter.1 i.2).2`. Set `pt : p.nonnull μ → X` to `fun i => (hne i).some`. Set `c : p.nonnull μ → ℂ` to `fun i => f (pt i) * ((Real.sqrt (μ.real (p.E i)) : ℝ) : ℂ)`. Set `g : Lp ℂ 2 μ` to `∑ i, c i • p.avgVec μ i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : g ∈ Submodule.span ℂ (Set.range (p.avgVec μ))` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `(norm_sub_finProj_le (p.orthonormal_avgVec μ) F hg).trans ?_` and prove the remaining obligations. Use `Lp.norm_le_of_ae_bound hε ?_` and prove the remaining obligations. Establish `hnull : ∀ᵐ x ∂μ, ∀ i, μ (p.E i) = 0 → x ∉ p.E i`. Rewrite using `[ae_all_iff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Distinguish the cases in `h : μ (p.E i) = 0`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h] with x hx _ using hx`. Conclude with `ae_of_all _ fun x h' => absurd h' h`. Establish `hvec : ∀ᵐ x ∂μ, ∀ i : p.nonnull μ, (c i • p.avgVec μ i) x = c i * ((((Real.sqrt (μ.real (p.E i)))⁻¹ : ℝ) : ℂ) * (p.E i).indicator (fun _ => (1 : ℂ)) x)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ae_all_iff]`. Introduce `i`. Use `filter_upwards [Lp.coeFn_smul (c i) (p.avgVec μ i), coeFn_avgVec μ p i] with x h1 h2`. Rewrite using `[h1, Pi.smul_apply, h2, smul_eq_mul]`. Use `filter_upwards [Lp.coeFn_sub F g, ContinuousMap.coeFn_toLp (E := ℂ) (p := 2) (𝕜 := ℂ) μ f, Lp.coeFn_finsetSum Finset.univ (fun i => c i • p.avgVec μ i), hvec, hnull] with x h1 h2 h3 h4 h5`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[h1, Pi.sub_apply, h2, h3]`. Repeatedly rewrite using `[h4]`. Use `set j := p.index x`. Establish `hxj : x ∈ p.E j` using `p.mem_index x`. Establish `hjn : j ∈ p.nonnull μ` using `Finset.mem_filter.2 ⟨Finset.mem_range.2 (p.index_lt x), fun h => h5 j h hxj⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `j' : p.nonnull μ` to `⟨j, hjn⟩`. Rewrite using `[Finset.sum_eq_single j']`. Establish `hm : 0 < μ.real (p.E j)` using `measureReal_pos j'`. Establish `hs : Real.sqrt (μ.real (p.E j)) ≠ 0` using `(Real.sqrt_pos.2 hm).ne'`. Establish `hval : c j' * ((((Real.sqrt (μ.real (p.E j)))⁻¹ : ℝ) : ℂ) * (p.E j).indicator (fun _ => (1 : ℂ)) x) = f (pt j')`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hxj, mul_one]`. Simplify using `only [c, j']`. Rewrite using `[mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hs, Complex.ofReal_one, mul_one]`. Rewrite using `[hval]`. Conclude with `hf x (pt j') (hp j x hxj (pt j') (hne j').some_mem)`.
-
-Introduce `i _ hij`. Establish `hx : x ∉ p.E i` using `fun hx => hij (Subtype.ext ((p.index_eq_iff).2 hx).symm)`. Rewrite using `[Set.indicator_of_notMem hx, mul_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j') h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_toLp_sub_avgProj_le {V : SetRel X X} (hp : p.IsFine V) (f : C(X, ℂ)) {ε : ℝ}
     (hε : 0 ≤ ε) (hf : ∀ x y, (x, y) ∈ V → ‖f x - f y‖ ≤ ε) :
@@ -375,17 +369,13 @@ variable {X : Type*} [UniformSpace X] [CompactSpace X] [T2Space X] [MeasurableSp
 open MeasurablePartition
 
 /- English proof (translation)
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨f, hf⟩` from `(ContinuousMap.toLp_denseRange (E := ℂ) (μ := μ) (𝕜 := ℂ) (p := 2) ENNReal.ofNat_ne_top).exists_dist_lt y (half_pos hε)`. Use `set C : ℝ := (measureUnivNNReal μ : ℝ) ^ (2 : ℝ≥0∞).toReal⁻¹`. Establish `hC : 0 ≤ C` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set δ : ℝ := ε / (2 * (C + 1))`. Establish `hδ : 0 < δ` using `by positivity`. Establish `hW` using `CompactSpace.uniformContinuous_of_continuous f.continuous (Metric.dist_mem_uniformity hδ)`. Use `filter_upwards [eventually_finePart_isFine hW] with V hV`. Use `set F := ContinuousMap.toLp (E := ℂ) 2 μ ℂ f`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set P := (finePart V).avgProj μ`. Establish `h1 : ‖F - P F‖ ≤ C * δ`. Use `norm_toLp_sub_avgProj_le μ _ hV f hδ.le fun x y hxy => ?_` and prove the remaining obligations. Rewrite using `[← dist_eq_norm]`. Conclude with `(show dist (f x) (f y) < δ from hxy).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : ‖y - P y‖ ≤ ‖y - P F‖` using `norm_sub_finProj_le ((finePart V).orthonormal_avgVec μ) y (finProj_mem_span _ F)`. Establish `h3 : C * δ < ε / 2`. Establish `: C * δ = ε / 2 * (C / (C + 1))` using `by simp only [δ]; field_simp`. Rewrite using `[this]`. Establish `: C / (C + 1) < 1` using `(div_lt_one (by positivity)).2 (lt_add_one C)`.
-
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← dist_eq_norm]`. Conclude with `add_lt_add_of_lt_of_le hf (h1.trans h3.le)`.
-
-Use `_ = ε := add_halves ε`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_finePart_avgProj [μ.WeaklyRegular] (y : Lp ℂ 2 μ) :
     Tendsto (fun V => (finePart V).avgProj μ y) (fineFilter X) (𝓝 y) := by
@@ -422,13 +412,13 @@ theorem tendsto_finePart_avgProj [μ.WeaklyRegular] (y : Lp ℂ 2 μ) :
     _ = ε := add_halves ε
 
 /- English proof (translation)
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set δ : ℝ := ε / (μ.real univ + 1)`. Establish `hδ : 0 < δ` using `by positivity`. Establish `hW` using `CompactSpace.uniformContinuous_of_continuous k.continuous (Metric.dist_mem_uniformity hδ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, v, hv, huv⟩` from `entourageProd_subset hW`. Use `filter_upwards [eventually_finePart_isFine (inter_mem hu hv)] with V hV`. Rewrite using `[dist_eq_norm]`. Use `lt_of_le_of_lt (norm_sum_inner_avgVec_sub_le μ _ k (ε := δ) fun i x hx y hy => ?_) ?_` and prove the remaining obligations. Establish `hmem : ((x, y), (x, x)) ∈ entourageProd u v` using `⟨refl_mem_uniformity hu, (hV i y hy x hx).2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `huv hmem` as an intermediate fact. Rewrite using `[← dist_eq_norm]`. Conclude with `(show dist (k (x, y)) (k (x, x)) < δ from this).le`. Establish `h : δ * μ.real univ = ε * (μ.real univ / (μ.real univ + 1))`. Simplify using `only [δ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h]`. Establish `: μ.real univ / (μ.real univ + 1) < 1` using `(div_lt_one (by positivity)).2 (lt_add_one _)`. Use polynomial arithmetic with `[measureReal_nonneg (μ := μ) (s := univ)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem tendsto_sum_inner_avgVec (k : C(X × X, ℂ)) :
     Tendsto (fun V => ∑ i : (finePart V).nonnull μ,
@@ -457,7 +447,7 @@ theorem tendsto_sum_inner_avgVec (k : C(X × X, ℂ)) :
     nlinarith [measureReal_nonneg (μ := μ) (s := univ)]
 
 /- English proof (translation)
-Establish `h1` using `tendsto_trace_comp hT (fun V => (finePart V).avgProj μ) (fun V x => norm_sub_finProj_le_norm ((finePart V).orthonormal_avgVec μ) x) (tendsto_finePart_avgProj μ)`. Establish `h2` using `tendsto_sum_inner_avgVec μ k`. Use `tendsto_nhds_unique h1 (h2.congr fun V => ?_)` and prove the remaining obligations. Conclude with `(trace_comp_finProj _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trace_contKernelOp_of_uniformSpace [μ.WeaklyRegular] (k : C(X × X, ℂ))
     (hT : IsTraceClass (contKernelOp μ k)) : trace (contKernelOp μ k) = ∫ x, k (x, x) ∂μ := by
@@ -476,7 +466,7 @@ variable {X : Type*} [TopologicalSpace X] [CompactSpace X] [T2Space X] [Measurab
   [BorelSpace X] (μ : Measure X) [IsFiniteMeasure μ] [μ.WeaklyRegular]
 
 /- English proof (translation)
-Set `_ : UniformSpace X` to `uniformSpaceOfCompactR1`. Conclude with `trace_contKernelOp_of_uniformSpace μ k hT`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem trace_contKernelOp (k : C(X × X, ℂ)) (hT : IsTraceClass (contKernelOp μ k)) :
     trace (contKernelOp μ k) = ∫ x, k (x, x) ∂μ := by

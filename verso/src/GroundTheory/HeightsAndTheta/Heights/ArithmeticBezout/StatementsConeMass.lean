@@ -18,19 +18,17 @@ def ConeMassOfFibre.Statement : Prop :=
           {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ ∀ j : Fin n, m ≤ (j : ℕ) → y j = 0}
 
 /- English proof (translation)
-Use `⟨isProjPrime_point ℂ, ?_⟩` and prove the remaining obligations. Establish `hnull : ∀ᵐ π : Fin 1 → Fin 1 → ℂ, π 0 0 ≠ 0`. Establish `hp : MeasurePreserving (fun π : Fin 1 → Fin 1 → ℂ => π 0 0)` using `(volume_preserving_funUnique (Fin 1) ℂ).comp (volume_preserving_funUnique (Fin 1) (Fin 1 → ℂ))`. Rewrite using `[ae_iff]`. Establish `hset : {π : Fin 1 → Fin 1 → ℂ | ¬ π 0 0 ≠ 0} = (fun π => π 0 0) ⁻¹' {0}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `π`. Simplify using the standard rewrite rules. Rewrite using `[hset, hp.measure_preimage (measurableSet_singleton 0).nullMeasurableSet]`. Simplify using the standard rewrite rules. Use `filter_upwards [hnull] with π hπ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Establish `hfib : {y | y ∈ coneSet (HermNorm.std 1) ⊥ ∧ linProj π y = w} = {WithLp.toLp 2 fun _ => w 0 / π 0 0}`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_singleton_iff, coneSet, Ideal.mem_bot]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨-, hy⟩`. Establish `h0` using `congrArg (fun v : EuclideanSpace ℂ (Fin 1) => v 0) hy`. Simplify using `only [linProj, Fin.sum_univ_one] at h0`. Use extensionality with `i`. Use `fin_cases i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.zero_eta, Fin.isValue]`. Rewrite using `[← h0]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `rfl`. Use `⟨fun q hq => by simp [hq], ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Use `fin_cases i`. Simplify using `[linProj]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[fibreCount, hfib, Set.encard_singleton]`.
-
-Both sides reduce to the same expression.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ConeMassOfFibre.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧

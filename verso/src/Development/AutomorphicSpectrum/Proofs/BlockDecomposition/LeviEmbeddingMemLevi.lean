@@ -7,9 +7,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.LeviBlockIdx
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h N d hd g`. Rewrite using `[GroundTheory.Automorphic.Parabolic.mem_levi]`. Introduce `i j hij`. Take `⟨⟨a, x⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, y⟩, rfl⟩` from `(stdBlocks d hd).surjective j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hab : a ≠ b`. Simplify `hij` using `[Zl.JC.blockIdx]`. Conclude with `leviEmb_apply_ne k (stdBlocks d hd) g hab x y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem leviEmb_mem_levi_blockIdx : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (g : Levi k (fun a => Fin (d a))), leviEmb k (stdBlocks d hd) g ∈ GroundTheory.Automorphic.Parabolic.levi k N (Zl.JC.blockIdx d hd) := by
   intro k _ _ _ _ h N d hd g

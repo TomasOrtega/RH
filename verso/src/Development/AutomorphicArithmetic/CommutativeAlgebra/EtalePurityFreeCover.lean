@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsS
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(φ.hom.app (op U) ≫ G.obj.map g.op).hom x = (F.obj.map g.op ≫ φ.hom.app (op V)).hom x`. Rewrite using `[φ.hom.naturality]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private lemma sec_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}}
     (g : V ⟶ U) (x : Sec F U) : Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
@@ -26,7 +26,7 @@ private lemma sec_map_zero {R : Type} [CommRing R] {F G : Shv R} {U : Scheme.{0}
     Sec.map (0 : F ⟶ G) x = 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[sec_map_res, CupSpec.freeGen_res]`. Establish `e : (ConcreteCategory.hom ((yoneda.obj W).map i.op)) (𝟙 W) = (ConcreteCategory.hom ((yoneda.map i).app (op A))) (𝟙 A)` using `by simp`. Rewrite using `[e, ← CupSpec.freeGen_map, ← sec_map_comp, h0, sec_map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma res_univ_eq_zero {R : Type} [CommRing R] {A W : Scheme.{0}} (i : A ⟶ W) {Z : Shv R}
     (h : (free R).obj (yoneda.obj W) ⟶ Z) (h0 : (free R).map (yoneda.map i) ≫ h = 0) :
@@ -37,27 +37,27 @@ private lemma res_univ_eq_zero {R : Type} [CommRing R] {A W : Scheme.{0}} (i : A
   rw [e, ← CupSpec.freeGen_map, ← sec_map_comp, h0, sec_map_zero]
 
 /- English proof (translation)
-Introduce `R _ X U V`. Apply `Preadditive.epi_of_cancel_zero` to reduce the goal to its premises. Introduce `Z g hg`. Set `ι` to `{O : X.Opens // O = U ∨ O = V}`. Establish `hle : ∀ i : ι, i.1 ≤ U ⊔ V`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨O, rfl | rfl⟩`. Conclude with `le_sup_left`. Conclude with `le_sup_right`. Establish `gz : ∀ i : ι, (free R).map (yoneda.map (X.homOfLE (hle i))) ≫ g = 0`. Introduce and unpack `⟨O, rfl | rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (biprod.inl ≫ ·) hg` as an intermediate fact. Simplify using `using this`. Use `congrArg (biprod.inr ≫ ·) hg` as an intermediate fact. Simplify using `using this`. Establish `cover : ∀ (O : X.Opens) (hO : O ≤ U ⊔ V) (y : (U ⊔ V : X.Opens).toScheme), (U ⊔ V).ι y ∈ O → ∃ z, X.homOfLE hO z = y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `O hO y hy`. Establish `hy' : (U ⊔ V).ι y ∈ Set.range O.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hy`. Take `⟨z, hz⟩` from `hy'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨z, (U ⊔ V).ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(X.homOfLE hO ≫ (U ⊔ V).ι) z = _`. Rewrite using `[Scheme.homOfLE_ι, hz]`. Use `CupSpec.free_ext g 0 (fun T x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map g (freeGen R _ T x) = 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `xx : T ⟶ (U ⊔ V : X.Opens).toScheme` to `x`. Take `⟨hsep, -⟩` from `sec_sep_glue_of_points R Z T ι (fun i => pullback x (X.homOfLE (hle i))) (fun i => pullback.fst x (X.homOfLE (hle i))) (fun i => inferInstance) (by`. Introduce `t`. Establish `hy : (U ⊔ V).ι (xx t) ∈ ((U ⊔ V : X.Opens) : Set X)`. Rewrite using `[← Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨xx t, rfl⟩`. Rewrite `hy` using `[TopologicalSpace.Opens.coe_sup]`. Break down `hy with hU | hV` into its components or cases. Take `⟨z, hz⟩` from `cover U le_sup_left (xx t) hU`. Establish `ht : t ∈ Set.range (pullback.fst x (X.homOfLE (hle ⟨U, Or.inl rfl⟩)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `⟨z, hz⟩`. Take `⟨v, hv⟩` from `ht`. Conclude with `⟨⟨U, Or.inl rfl⟩, v, hv⟩`. Take `⟨z, hz⟩` from `cover V le_sup_right (xx t) hV`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `ht : t ∈ Set.range (pullback.fst x (X.homOfLE (hle ⟨V, Or.inr rfl⟩)))`. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `⟨z, hz⟩`. Take `⟨v, hv⟩` from `ht`. Conclude with `⟨⟨V, Or.inr rfl⟩, v, hv⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hsep` to reduce the goal to its premises. Introduce `i`. Establish `z : Sec.map g (freeGen R (yoneda.obj (U ⊔ V : X.Opens).toScheme) i.1.toScheme (X.homOfLE (hle i))) = 0`. Use `res_univ_eq_zero (X.homOfLE (hle i)) g (gz i)` as an intermediate fact. Rewrite `this` using `[sec_map_res, CupSpec.freeGen_res, show (ConcreteCategory.hom ((yoneda.obj (U ⊔ V : X.Opens).toScheme).map (X.homOfLE (hle i)).op)) (𝟙 _) = X.homOfLE (hle i) by simp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[sec_map_res, CupSpec.freeGen_res]`. Establish `e : (ConcreteCategory.hom ((yoneda.obj (U ⊔ V : X.Opens).toScheme).map (pullback.fst x (X.homOfLE (hle i))).op)) x = (ConcreteCategory.hom ((yoneda.obj (U ⊔ V : X.Opens).toScheme).map (pullback.snd x (X.homOfLE (hle i))).op)) (X.homOfLE (hle i))`. Simplify using `[pullback.condition]`. Rewrite using `[e, ← CupSpec.freeGen_res, ← sec_map_res, z]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.etale_purity_free_cover :
     LateralTheory.CohomologicalPurity.Thom.LeafFreeCov := by

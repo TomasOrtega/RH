@@ -9,15 +9,15 @@ section
 variable {k σ : Type} [Field k] {r : ℕ} {w e : Fin r → σ}
 
 /- English proof (translation)
-Unfold `BiHom`. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff]`. Establish `hterm : ∀ i : σ, MvPolynomial.coeff m (X i * pderiv i g) = (m i : k) * MvPolynomial.coeff m g`. Introduce `i`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.coeff_X_mul']`. Use `split_ifs with hs`. Establish `hmi : 1 ≤ m i` using `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hs)`. Establish `e1 : m - Finsupp.single i 1 + Finsupp.single i 1 = m` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr hmi)`. Establish `e2 : (((m - Finsupp.single i 1 : σ →₀ ℕ) i : ℕ) : k) + 1 = (m i : k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same, ← Nat.cast_add_one, Nat.sub_add_cancel hmi]`. Rewrite using `[MvPolynomial.coeff_pderiv, e1, e2, mul_comm]`. Simplify using `at hs`. Simplify using `[hs]`. Establish `key : ∀ (v : Fin r → σ) (n : ℕ), ∑ c, X (v c) * pderiv (v c) g = (n : k) • g → ∑ c, m (v c) = n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v n hv`. Establish `hcoef` using `congrArg (MvPolynomial.coeff m) hv`. Rewrite `hcoef` using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul]`. Simplify using `only [hterm] at hcoef`. Rewrite `hcoef` using `[← Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `mul_right_cancel₀ hm hcoef`. Conclude with `hc` after adjusting the coercions. Conclude with `⟨key w a hW, key e b hE⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ld_biHom_of_euler [CharZero k] {a b : ℕ} {g : MvPolynomial σ k}
     (hW : ∑ c, X (w c) * pderiv (w c) g = (a : k) • g)

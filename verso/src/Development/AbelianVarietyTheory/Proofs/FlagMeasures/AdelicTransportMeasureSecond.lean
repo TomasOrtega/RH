@@ -26,21 +26,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   {ρ : G →* (K →L[ℂ] K)}
 
 /- English proof (translation)
-Take `⟨J, _, κ, l, hκ, hT⟩` from `GlobalTheory.T.eq_sum_integral_cube_derivatives_alt G K ρ hiso hρ s hs N (fun i => e (qs i)) fun i => he _ (hq i)`. Use `choose Λ hΛ using fun j => exists_eval hloc hlin hiso hρ htr hU hH hΘ (isCompact_univ_pi fun _ => isCompact_Icc) hΩ hC hM (hκ j)`. Set `d : P → K → K` to `fun p w => deriv (fun r : ℝ => ρ (e p r) w) 0`. Set `S : Set K` to `{v | Sm ρ A e v ∧ ∀ k ∈ H, ρ k v = v}`. Establish `hS : ∀ v ∈ S, ∀ p ∈ A, d p v ∈ S` using `fun v hv p hp => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(GlobalTheory.T.smooth_along_curve_products_stable_alt G K ρ P A e v hv.1).1 p hp, fun k hk => ?_⟩` and prove the remaining obligations. Establish `h1` using `hv.1.hasDerivAt hp`. Establish `h2` using `((ρ k).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h1`. Use `HasDerivAt.unique (f := fun r : ℝ => ρ (e p r) v) (x := 0) ?_ h1` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `r show _ = (ρ k * ρ (e p r)) v`. Rewrite using `[← map_mul, ← hcomm p r k hk, map_mul, mul_apply_eq_comp, hv.2 k hk]`. Both sides reduce to the same expression. Establish `hSl : ∀ v ∈ S, ∀ m : List (Fin N), m.foldr (fun i => d (qs i)) v ∈ S` using `fun v hv m => by`. Proceed by induction on `m with`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `nil => exact hv`. Consider the case `cons i m ih => exact hS _ ih _ (hq i)`. Set `R : K → G → ℂ` to `fun v x => ∑ j, Λ j x ((l j).foldr (fun i => d (qs i)) v)`. Use `⟨R, (Finset.univ : Finset J).toList.map fun j => (l j).map qs, ?_, fun v hv1 hv2 => ?_, fun x => ?_⟩` and prove the remaining obligations. Introduce `m hm p hp`.
+Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, rfl⟩` from `List.mem_map.1 hm`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hp`. Conclude with `hq i`. Establish `hv : v ∈ S` using `⟨hv1, hv2⟩`. Use `⟨continuous_finsetSum _ fun j _ => (hΛ j _ (hSl v hv _).2).1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hT (fun i => d (qs i)) S (fun w hw i => ⟨hS w hw _ (hq i), hw.1.hasDerivAt (hq i)⟩) v hv`. Establish `h2` using `rep_sum hlin Finset.univ fun j => ∫ t in Set.pi Set.univ (fun _ : Fin N => Set.Icc (0 : ℝ) s), κ j t • ρ (List.ofFn fun i => e (qs i) (t i)).prod ((l j).foldr (fun i => d (qs i)) v)`. Rewrite `h2` using `[← h1]`. Use `filter_upwards [h2, ae_all_iff.2 fun j => (hΛ j _ (hSl v hv (l j)).2).2] with x e1 e2`. Rewrite using `[e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun j _ => e2 j`. Use `⟨∑ j, ‖Λ j x‖, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_map, Finset.sum_map_toList, Finset.mul_sum]`. Use `norm_sum_le_of_le _ fun j _ => ((Λ j x).le_opNorm _).trans ?_` and prove the remaining obligations. Simplify using `only [Function.comp, List.foldr_map]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := fun j => ‖Λ j x‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)) (norm_nonneg _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rep_bound [μ.IsMulRightInvariant]
     (hloc : ∀ C, IsCompact C → ∃ M : ℝ, ∀ v, IntegrableOn (ι v) C μ ∧ ∫ x in C, ‖ι v x‖ ∂μ ≤ M * ‖v‖)
@@ -109,29 +107,27 @@ open MeasureTheory Formalism.MainNotions.S GlobalTheory.RightRegFund
 open scoped Pointwise
 
 /- English proof (translation)
-Take `⟨hT2, hL, hS, -, -, -, hK⟩` from `GlobalTheory.T.finiteAdelicUnitary_congruenceTopology I`. Take `⟨Γ, hΓ, hc, hfin, hfd⟩` from `GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain I`. Take `⟨hl, hrt, -⟩` from `GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf`. Take `⟨r1, r2, r3, r4, r5⟩` from `isRightReg_props I μf fund hfund R hR`. Establish `hD` using `hfd μf fund hfund`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: BorelSpace I.GA` using `inferInstance`. Establish `: (I.muA μf).IsMulLeftInvariant` using `⟨hl⟩`. Establish `: (I.muA μf).IsMulRightInvariant` using `⟨hrt⟩`. Establish `: (I.muA μf).IsHaarMeasure`. Unfold `AutInst.muA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `haveI : (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure := Measure.pi.isHaarMeasure _`. Conclude with `Measure.prod.instIsHaarMeasure _ _`. Establish `hr : ∀ y, ∃ γ : Γ, I.rep fund y = (γ : I.GA) * y ∧ I.rep fund y ∈ fund`. Introduce `y`. Establish `h` using `hfund.2.1 y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e : I.rep fund y = h.choose * y`. Unfold `AutInst.rep`. Conclude with `dif_pos h`. Establish `hm : h.choose ∈ (Γ : Set I.GA)`. Establish `k` using `h.choose_spec.1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Generalize the expression as in `h.choose = z at k ⊢`. Rewrite using `[hΓ]`. Conclude with `k`. Conclude with `⟨⟨h.choose, hm⟩, e, e ▸ h.choose_spec.2⟩`. Set `E : I.GA ≃ₜ G` to `⟨T.symm.toEquiv, hT', hT⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `μ : Measure G` to `(I.muA μf).map T.symm`. Establish `hemb : MeasurableEmbedding (T.symm : I.GA → G)` using `E.measurableEmbedding`. Establish `hae : ∀ p : G → Prop, (∀ᵐ x ∂μ, p x) ↔ ∀ᵐ y ∂(I.muA μf), p (T.symm y)` using `fun p => hemb.ae_map_iff`. Establish `hae' : ∀ p : I.GA → Prop, (∀ᵐ y ∂(I.muA μf), p y) → ∀ᵐ x ∂μ, p (T x)` using `fun p hp => (hae _).2 (by simpa using hp)`. Use `⟨μ, ⟨⟨fun g => R (T g), by simp [r1]⟩, fun g h => by simp [r2]⟩, T.symm.isHaarMeasure_map _ hT' hT, ?_, fun _ => rfl, fun p => (hae p).1, fun C hC => ?_, fun a v w => ?_, fun g v => r3 _ _, fun v => (r4 v).comp hT, fun g v => ?_, fun γ hγ v => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map (measurable_mul_const g) hemb.measurable]`. Use `conv_rhs => rw [show μ = ((I.muA μf).map (· * T g)).map T.symm by rw [map_mul_right_eq_self]]`. Rewrite using `[Measure.map_map hemb.measurable (measurable_mul_const _)]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `hC' : IsCompact (T.symm ⁻¹' C)` using `E.isCompact_preimage.2 hC`. Establish `hf : ((fun γ : Γ => (γ : I.GA)) ⁻¹' ((T.symm ⁻¹' C) * (T.symm ⁻¹' C)⁻¹ ∩ I.GFset)).Finite` using `(hfin _ (hC'.mul hC'.inv)).preimage Subtype.val_injective.injOn`. Take `⟨M, hM⟩` from `GlobalTheory.LocalL2Isometry.integrableOn_rep hD hfund.1 hr hC'.measurableSet hC'.measure_lt_top.ne hf.toFinset fun γ hγ => hf.mem_toFinset.2 ⟨hγ, by rw [← hΓ]; exact γ.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨M, fun v => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hemb.integrableOn_map_iff]`. Simplify `(hM v).1` using `[Function.comp_def, AutInst.ext]`. Rewrite using `[hemb.setIntegral_map]`. Simplify `(hM v).2` using `[AutInst.ext]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hae' (fun y => I.ext (a • v + w) y = a * I.ext v y + I.ext w y) ?_ filter_upwards [ae_rep hfund.1 hr (Lp.coeFn_add (a • v) w), ae_rep hfund.1 hr (Lp.coeFn_smul a v)] with y e1 e2` and prove the remaining obligations. Unfold `AutInst.ext`. Rewrite using `[e1, Pi.add_apply, e2, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [_root_.map_mul]`. Use `hae' (fun y => I.ext (R (T g) v) y = I.ext v (y * T g)) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [ae_rep hfund.1 hr (hR (T g) v), ae_good_mul hD (T g)] with y e1 e2`. Take `⟨γ, e3, -⟩` from `hr y`. Unfold `AutInst.ext at e1 ⊢`. Rewrite using `[e1, e3, mul_assoc, rep_mul hr e2]`. Simplify using `only [_root_.map_mul]`.
-
-Conclude with `hae' (fun y => I.ext v (T γ * y) = I.ext v y) ((r5 v).1.mono fun y hy => hy _ hγ)`. Take `⟨h1, ⟨K, h2⟩, -⟩` from `hK g hg`. Use `⟨K.comap ((MonoidHom.snd _ _).comp T.toMonoidHom), ?_, fun k hk => h2 ▸ hk⟩` and prove the remaining obligations. Establish `: IsOpen ((fun k : G => (T k).2) ⁻¹' (K : Set I.Gf))` using `(h2 ▸ h1).preimage (continuous_snd.comp hT)`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_transport (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (fund : Set I.GA)
     (hfund : I.IsFundDom (I.muA μf) fund) (R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund))
@@ -215,7 +211,7 @@ theorem exists_transport (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] 
 open NumberField in
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `x`. Take `rfl : b = 1` from `hx`. Establish `h` using `congrArg (fun B : Hs →L[ℂ] I.L2 μf fund => B (tens y)) (hA a)`. Simplify using `only [ContinuousLinearMap.comp_apply] at h`. Rewrite using `[← h, ht.2.1, funext hz]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_tens (I : AutInst) {μf : Measure I.Gf} [SigmaFinite μf] {fund : Set I.GA}
     {R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund)} {H : InfinitePlace I.F → Type} [∀ v, NormedAddCommGroup (H v)]
@@ -239,11 +235,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨N, τs, Xs, s, S, K, W, hX, hs, hK, hW, h⟩` from `GlobalTheory.SobLoc.exists_adelic_chart hθ V U hU`. Take `⟨-, -, -, -, -, -, -, -, -, hH⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Take `⟨B, hB, hBW, hBc⟩` from `local_compact_nhds hW`. Establish `hc` using `fun i => GlobalTheory.SobLoc.oneP_spec hθ V (hH (τs i)).2 (hX i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΘ` using `GlobalTheory.continuous_prod_ofFn_curves N (fun i => oneP θ V (τs i) (Xs i)) fun i => (hc i).1`. Take `⟨C₁, hC₁, h₁⟩` from `GlobalTheory.T.le_mul_setIntegral_image2_of_forall_le_alt (GA D V) μ N _ (Metric.closedBall 0 S) B (K ^ N) hΘ (isCompact_closedBall _ _) hBc hB (pow_nonneg hK _)`. Establish `hΩ : IsCompact (Set.image2 (fun (t : Fin N → ℝ) b => (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * b) (Metric.closedBall 0 S) B)`. Rewrite using `[← Set.image_prod]`. Conclude with `((isCompact_closedBall _ _).prod hBc).image ((hΘ.comp continuous_fst).mul continuous_snd)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨R, L, hL, hR, hb⟩` from `exists_rep_bound (μ := μ) (ι := ι) (ρ := ρ) (H := U ⊓ GfC V) (U := U) (A := {p : D.what₂.Tau × Mt V.rank | p.2 ∈ lieAt V p.1}) (e := fun p => oneP θ V p.1 p.2) (qs := fun i => (τs i, Xs i)) hloc hlin hiso hρ htr hU (fun y hy k hk => ⟨U.mul_mem (U.mul_mem (U.inv_mem hy) hk.1) hy, …`. Take `⟨φ, a, haU, ha, hφ, hφ'⟩` from `h x (hBW hx)`. Use `GlobalTheory.T.setIntegral_le_pow_mul_setIntegral_of_expanding N _ _ K φ (fun t => f (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod) (fun t => f ((List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * x)) (isCompact_univ_pi fun _ => isCompact_Icc) (isCompact_closedBall …` and prove the remaining obligations. Rewrite using `[(hφ t ht).2, hfk a ⟨haU, ha⟩])`. Conclude with `⟨R, L, hL, fun v h1 h2 => hR v (fun k ps hps => h1 k (fun i => (ps i).1) (fun i => (ps i).2) hps) fun k hk => h2 k hk.1 hk.2, hb⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_adelic_rep {D : D7} {θ : InfFam D} {V : HSp D} (hθ : IsInfFam θ) {μ : Measure (GA D V)}
     (hμ : μ.IsHaarMeasure) (hμ' : μ.IsMulRightInvariant)
@@ -291,19 +287,17 @@ theorem exists_adelic_rep {D : D7} {θ : InfFam D} {V : HSp D} (hθ : IsInfFam �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨R, L, hL, hR, hb⟩` from `exists_adelic_rep hθ hμ hμ' hloc hlin hiso hρ htr hU`. Establish `hsmM` using `GlobalTheory.T.equivariantMultilinear_maps_smoothVectors_intertwines D θ V hθ S M _ ρ Φ he`. Establish `p` using `fun y : M.Vec => hR _ (hsmM y).1 (hfix _)`. Use `haveI : ∀ τ, CompleteSpace (M.H τ) := fun τ => (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : ∀ τ, (gramAt D V τ).IsHermitian` using `GlobalTheory.SmoothAutCheck.gramAt_herm V`. Establish `hdet : ∀ τ, (gramAt D V τ).det ≠ 0` using `fun τ => (GlobalTheory.SmoothAutCheck.gramAt_unit V τ).ne_zero`. Establish `hsv` using `fun τ => GlobalTheory.T.smoothVectors_subspace_stable_sobolevForm_deriv V.rank (gramAt D V τ) (M.H τ) (M.rep τ) (hH τ) (hdet τ) (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.1`. Establish `hsm : ∀ τ, ∀ X ∈ lieAt V τ, ∀ w : M.sm τ, dRep (M.rep τ) X (w : M.H τ) ∈ M.sm τ` using `fun τ X hX w => Submodule.subset_span (((hsv τ).2 w ((hsv τ).1 w w.2)).2.1 X hX).1`. Establish `uniq : ∀ (y : M.Vec) f, Continuous f → ι (Φ fun τ => (y τ : M.H τ)) =ᵐ[μ] f → R (Φ fun τ => (y τ : M.H τ)) = f` using `fun y f hf h => ((p y).1.ae_eq_iff_eq μ hf).1 ((p y).2.symm.trans h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : MMap M` to `MultilinearMap.mk' (fun y => R (Φ fun τ => (y τ : M.H τ))) (fun y τ a b => by`. Use `uniq _ _ ((p _).1.add (p _).1) ?_` and prove the remaining obligations. Establish `h1` using `(p (Function.update y τ a)).2`. Establish `h2` using `(p (Function.update y τ b)).2`. Simplify using `only [GlobalTheory.BackForm.coe_update] at h1 h2 ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_add, Φ.map_update_add]`. Use `filter_upwards [GlobalTheory.LocRep.rep_add hlin _ _, h1, h2] with x e1 e2 e3`. Rewrite using `[e1, e2, e3, Pi.add_apply])`. Use the proof step `(fun y τ c a => by`. Use `uniq _ _ ((p _).1.const_smul c) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(p (Function.update y τ a)).2`. Simplify using `only [GlobalTheory.BackForm.coe_update] at h1 ⊢`. Rewrite using `[Submodule.coe_smul, Φ.map_update_smul]`. Use `filter_upwards [GlobalTheory.LocRep.rep_smul hlin c _, h1] with x e1 e2`. Rewrite using `[e1, e2, Pi.smul_apply, smul_eq_mul])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨T, fun u => (p u).2, fun u => ⟨fun γ hγ g => ?_, ⟨U, hU, fun k hk hk' g => ?_⟩, (p u).1⟩, fun τ u x => ?_⟩` and prove the remaining obligations. Use `(congrFun (uniq u (fun x => R (Φ fun τ => (u τ : M.H τ)) (γ * x)) ((p u).1.comp (continuous_const_mul γ)) ?_) g).symm` and prove the remaining obligations. Conclude with `(hleft γ hγ _).symm.trans ((measurePreserving_mul_left μ γ).quasiMeasurePreserving.ae (p u).2)`. Use `(congrFun (uniq u (fun x => R (Φ fun τ => (u τ : M.H τ)) (x * k)) ((p u).1.comp (continuous_mul_const k)) ?_) g).symm` and prove the remaining obligations. Use `rep_tr htr (p u).2 k` as an intermediate fact.
-
-Rewrite `this` using `[hfix _ k hk hk']`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `hb x`. Conclude with `GlobalTheory.BackForm.cont_value ρ Φ T hsm (fun y => (hsmM y).2) L hL x c (fun y => hc _) τ u`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mmap {D : D7} {θ : InfFam D} {V : HSp D} (hθ : IsInfFam θ) {S : D.what₂.Tau → SPar} (M : DSModel V S)
     {μ : Measure (GA D V)} (hμ : μ.IsHaarMeasure) (hμ' : μ.IsMulRightInvariant)
@@ -361,7 +355,7 @@ theorem exists_mmap {D : D7} {θ : InfFam D} {V : HSp D} (hθ : IsInfFam θ) {S 
     exact GlobalTheory.BackForm.cont_value ρ Φ T hsm (fun y => (hsmM y).2) L hL x c (fun y => hc _) τ u
 
 /- English proof (translation)
-Establish `hk' : infHom V k = 1` using `hk`. Use `show (infHom V k).1.map φ = 1`. Rewrite using `[hk', Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infMat_of_mem_fin {D : D7} (V : HSp D) (φ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) {k : GA D V}
     (hk : k ∈ GfC V) : infMat D.sp.cm.sig V.gram φ k = 1 := by
@@ -370,9 +364,9 @@ theorem infMat_of_mem_fin {D : D7} (V : HSp D) (φ : Ainf D.host.F ⊗[D.host.F]
   rw [hk', Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Take `⟨L, hL1, -, -, -, -, hL3, -⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Establish `hu : (Pi.mulSingle τ a : D.what₂.Tau → Mt V.rank) ∈ UG (gramAt D V)` using `fun τ' => by`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `using ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Pi.mulSingle_eq_of_ne h, Formalism.QuantumDeterminants.UH]`. Conclude with `(hL3 τ a ha).symm ▸ hL1 _ hu`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atTau_spec {D : D7} (V : HSp D) {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {a : Mt V.rank}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : atTau θ V τ a ∈ GinfC V ∧

@@ -21,9 +21,7 @@ theorem wdRes_eq {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {w' 
     PositivityTheory.Pf1.CLGD.DescRes.WD.res h h' = PositivityTheory.Pf1.CLGD.WdRestrict.WD.res h h' := rfl
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Use `haveI : IsAlgClosure ℚ Ω := Formalism.BasicNotions.Examples₂.LB.isAlgClosureQ E' Ω`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Establish `hA : ∀ x, x ∈ A ↔ ‖Bw.j x‖ ≤ 1` using `hj`. Use `haveI := Formalism.BasicNotions.Examples₂.LB.KwF_fin (E := E') Bw.j`.
-
-Use `⟨Formalism.BasicNotions.Examples₂.LB.nclo (Formalism.BasicNotions.Examples₂.LB.KwF (E := E') Bw.j), Formalism.BasicNotions.Examples₂.LB.bridgeOf (E := E') hA _ (Formalism.BasicNotions.Examples₂.LB.mem_nclo _), hA, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg (fun τ => τ) (GlobalTheory.PlaceBridge.algEquiv_ext (GlobalTheory.PlaceBridge.denseRange_embedding Bw.j) fun x => ?_)` and prove the remaining obligations. Conclude with `(Formalism.BasicNotions.Examples₂.LB.eDec_comm hA g x).trans (Bw.e_comm (PositivityTheory.Pf1.CLGD.WdRestrict.resDec E A g) x).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_resBridge {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {O : Type} [CommRing O] [Algebra ℤ_[l] O]
     [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Induces Bw) :
@@ -46,9 +44,9 @@ end PositivityTheory.Pf1.CLGD.K.FontaineRestriction
 namespace PositivityTheory.Pf1.CLGD.K
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ X l a _ ι r _ P AI _ A w h w' h' O _ _ _ Bw hj hp`. Take `⟨LL, Bw', hj', hc⟩` from `FontaineRestriction.exists_resBridge (E' := X.M) Bw hj`. Establish `e1 : (r.comp (Dec (F` using `E) A).subtype).comp (PositivityTheory.Pf1.CLGD.WdRestrict.resDec E A) = (r.comp (PositivityTheory.Pf1.CLGD.DescRes.resG E (E' := X.M))).comp (Dec (F := X.M) A).subtype := MonoidHom.ext fun _ => rfl`. Take `⟨h1, h2⟩` from `PositivityTheory.Pf1.CLGD.WdRestrict.wdAt_res P ι Bw Bw' h h' hj hj' hc _ hp`. Rewrite `h1`, `h2` using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨↥(OL LL), inferInstance, inferInstance, inferInstance, Bw', hj', h1, h2.trans (congrFun (FontaineRestriction.wdRes_eq h h').symm _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem fontaine_weil_deligne_restriction : K6 := by
   intro E Ω _ _ _ _ _ X l a _ ι r _ P AI _ A w h w' h' O _ _ _ Bw hj hp

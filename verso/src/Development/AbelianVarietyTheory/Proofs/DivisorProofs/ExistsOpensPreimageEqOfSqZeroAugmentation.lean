@@ -13,17 +13,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LiftSys
 
 /- English proof (translation)
-Establish `hcomp : (q : R₁ →+* R₀).comp (algebraMap R₀ R₁) = RingHom.id R₀` using `RingHom.ext fun r ↦ q.commutes r`. Establish `hsp : spMap (q : R₁ →+* R₀) ≫ spMap (algebraMap R₀ R₁) = 𝟙 (Sp R₀)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hcomp]`. Conclude with `Spec.map_id _`. Set `i : X₀ ⟶ X₁` to `hp.lift (𝟙 X₀) (s₀ ≫ spMap (q : R₁ →+* R₀)) (by rw [Category.id_comp, Category.assoc, hsp, Category.comp_id])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi1 : i ≫ pr = 𝟙 X₀` using `hp.lift_fst _ _ _`. Establish `hi2 : i ≫ s₁ = s₀ ≫ spMap (q : R₁ →+* R₀)` using `hp.lift_snd _ _ _`. Establish `hout : IsPullback (i ≫ pr) s₀ s₀ (spMap (q : R₁ →+* R₀) ≫ spMap (algebraMap R₀ R₁))`. Rewrite using `[hi1, hsp]`. Conclude with `IsPullback.id_horiz s₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : IsPullback i s₀ s₁ (spMap (q : R₁ →+* R₀))` using `IsPullback.of_right hout hi2 hp`. Establish `hsurj : Function.Surjective (q : R₁ →+* R₀)` using `fun r ↦ ⟨algebraMap R₀ R₁ r, q.commutes r⟩`. Establish `hI : (RingHom.ker (q : R₁ →+* R₀)) ^ 2 = 0`. Rewrite using `[sq, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `y hy y' hy'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Ideal.mem_bot).2 (hq y y' (RingHom.mem_ker.1 hy) (RingHom.mem_ker.1 hy'))`. Establish `hisurj : Surjective i` using `surjective_of_isPullback_sqZero hI hsurj rfl hsq`. Establish `key : ∀ x : X₁, i.base (pr.base x) = x`. Introduce `x`. Take `⟨y, rfl⟩` from `hisurj.surj x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : pr.base (i.base y) = y` using `by rw [← Scheme.Hom.comp_apply, hi1]; rfl`. Rewrite using `[h]`. Use `⟨i ⁻¹ᵁ W, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `i.base (pr.base x) ∈ W ↔ x ∈ W`.
-
-Rewrite using `[key]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_opens_preimage_eq_of_sqZero_aug (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁]
     (q : R₁ →ₐ[R₀] R₀) (hq : ∀ y y', q y = 0 → q y' = 0 → y * y' = 0) (X₀ X₁ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀)

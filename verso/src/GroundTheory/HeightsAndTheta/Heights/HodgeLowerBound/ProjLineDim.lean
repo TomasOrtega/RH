@@ -10,7 +10,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Establish `hZ : ringKrullDim ℤ = 1` using `IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField`. Establish `hc : Nat.card (Σ _ : Unit, PBlk 2 ()) = 2` using `by simp`. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, hZ, hc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ringKrullDim_mRing_line : ringKrullDim (MRing (PBlk 2)) = 3 := by
   have hZ : ringKrullDim ℤ = 1 := IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField
@@ -19,13 +19,13 @@ theorem ringKrullDim_mRing_line : ringKrullDim (MRing (PBlk 2)) = 3 := by
   rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, hdim⟩` from `h`. Simplify using `only [Fintype.card_unit] at hdim`. Distinguish the cases in `hW : W = ⊥`. Use `⟨hW, ?_⟩` and prove the remaining obligations. Substitute `hW` using the available equality.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Rewrite `hdim` using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), ringKrullDim_mRing_line]`. Establish `h3 : ((3 : ℕ) : WithBot ℕ∞) = ((d + 1 + 1 : ℕ) : WithBot ℕ∞)` using `hdim`. Establish `: (3 : ℕ) = d + 1 + 1` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
 
-Take `⟨f, hfW, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Establish `hnzd : f ∈ (MRing (PBlk 2))⁰` using `mem_nonZeroDivisors_of_ne_zero hf0`. Establish `hle` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.mk W) Ideal.Quotient.mk_surjective hnzd (Ideal.Quotient.eq_zero_iff_mem.mpr hfW)`. Rewrite `hle` using `[hdim, ringKrullDim_mRing_line]`. Establish `h4 : ((d + 1 + 1 + 1 : ℕ) : WithBot ℕ∞) ≤ ((3 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: d + 1 + 1 + 1 ≤ 3` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_bot_of_isArithVar_line {W : Ideal (MRing (PBlk 2))} {d : ℕ} (hd : 1 ≤ d)
     (h : IsArithVar W (d + 1)) : W = ⊥ ∧ d = 1 := by

@@ -3,16 +3,16 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial UpperTheory.V.Z.Sym.Wt
 
 /- English proof (translation)
-Simplify using `[MvPolynomial.hsymm, map_multiset_prod, Multiset.map_map]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ev_h {σ : Type} [Fintype σ] [DecidableEq σ] (x : σ → ℂ) (n : ℕ) :
     MvPolynomial.eval x (MvPolynomial.hsymm σ ℂ n) = ∑ s : Sym σ n, ((s : Multiset σ).map x).prod := by
   simp [MvPolynomial.hsymm, map_multiset_prod, Multiset.map_map]
 
 /- English proof (translation)
-Rewrite using `[ev_h, ev_h, ev_h, ← Equiv.sum_comp (symOptionSuccEquiv).symm, Fintype.sum_sum_type, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [symOptionSuccEquiv, Equiv.coe_fn_symm_mk, SymOptionSuccEquiv.decode_inl]`. Rewrite using `[Sym.coe_cons, Multiset.map_cons, Multiset.prod_cons]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[symOptionSuccEquiv, Multiset.map_map, Function.comp_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem h_option {σ : Type} [Fintype σ] [DecidableEq σ] (x : Option σ → ℂ) (n : ℕ) :
     MvPolynomial.eval x (MvPolynomial.hsymm (Option σ) ℂ (n + 1)) =
@@ -27,7 +27,7 @@ private theorem h_option {σ : Type} [Fintype σ] [DecidableEq σ] (x : Option �
     simp [symOptionSuccEquiv, Multiset.map_map, Function.comp_def]
 
 /- English proof (translation)
-Rewrite using `[ev_h, ev_h, ← Equiv.sum_comp (Sym.equivCongr e)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[Sym.equivCongr, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem h_equiv {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ] (e : σ ≃ τ)
     (x : τ → ℂ) (n : ℕ) :
@@ -37,7 +37,7 @@ private theorem h_equiv {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ
   simp [Sym.equivCongr, Multiset.map_map]
 
 /- English proof (translation)
-Rewrite using `[h_equiv (finSuccEquiv d).symm x, h_equiv (finSuccEquiv d).symm x, h_option]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem h_succ (d : ℕ) (x : Fin (d + 1) → ℂ) (n : ℕ) :
     MvPolynomial.eval x (MvPolynomial.hsymm (Fin (d + 1)) ℂ (n + 1)) =
@@ -47,9 +47,9 @@ private theorem h_succ (d : ℕ) (x : Fin (d + 1) → ℂ) (n : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[ev_h]`. Establish `hs : ∀ s : Sym (Fin 1) n, ((s : Multiset (Fin 1)).map x).prod = x 0 ^ n`. Introduce `s`. Establish `hrep : (s : Multiset (Fin 1)).map x = Multiset.replicate n (x 0)`. Rewrite using `[Multiset.eq_replicate]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by simp, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨a, _, rfl⟩` from `Multiset.mem_map.mp hb`. Rewrite using `[Subsingleton.elim a 0]`. Rewrite using `[hrep, Multiset.prod_replicate]`. Rewrite using `[Finset.sum_congr rfl fun s _ => hs s, Finset.sum_const, Finset.card_univ, Sym.card_sym_eq_multichoose]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -68,7 +68,7 @@ private theorem h_one (x : Fin 1 → ℂ) (n : ℕ) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [hq.eq_1, hq.eq_2]`. Consider the case `succ k ih`. Rewrite using `[hq.eq_3, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hq_step (a b : ℂ) (n : ℕ) :
     hq (a + b) (a * b) (n + 1) = a * hq (a + b) (a * b) n + b ^ (n + 1) := by
@@ -79,11 +79,11 @@ private theorem hq_step (a b : ℂ) (n : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `j a b`. Proceed by induction on `j with`. Consider the case `zero`. Establish `h0 : ∀ s : Sym (Fin 2) 0, ((s : Multiset (Fin 2)).map ![a, b]).prod = 1`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subsingleton.elim s Sym.nil]`. Simplify using the standard rewrite rules. Rewrite using `[ev_h, Finset.sum_congr rfl fun s _ => h0 s, Finset.sum_const, Finset.card_univ, Sym.card_sym_eq_multichoose]`. Simplify using `[hq.eq_1]`. Consider the case `succ k ih`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[hq_step, ← ih]`. Use `(h_succ 1 ![a, b] k).trans ?_` and prove the remaining obligations. Rewrite using `[h_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Z.Sym.Wt.hqTwo :
     UpperTheory.V.Z.Sym.Wt.HqTwo := by

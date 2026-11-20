@@ -25,13 +25,13 @@ def om {a N p : ℕ} (α : SimplexCategory.mk a ⟶ SimplexCategory.mk N) (e : a
   fun i => α.toOrderHom (Fin.cast (by subst e; rfl) i)
 
 /- English proof (translation)
-Introduce `i j hij` and use `α.toOrderHom.monotone ((Fin.cast_le_cast _).2 hij)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem om_mono {a N p : ℕ} (α : SimplexCategory.mk a ⟶ SimplexCategory.mk N) (e : a = p) : Monotone (om α e) :=
   fun i j hij => α.toOrderHom.monotone ((Fin.cast_le_cast _).2 hij)
 
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem term_zero (F : C ⥤ ModuleCat.{w} R) {p n : ℕ} (s : ComposableArrows C n) (g : Fin (p + 1) → Fin (n + 1))
     (hg : Monotone g) : CH.term F s (0 : CH.Cn F p) g hg = 0 :=
@@ -48,14 +48,14 @@ def phi {N : ℕ} (s : ComposableArrows C N) : (Pr N →₀ ℤ) →ₗ[ℤ] F�
   Finsupp.linearCombination ℤ (val P f g s)
 
 /- English proof (translation)
-The claim follows from `Finsupp.linearCombination_single _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phi_single {N : ℕ} (s : ComposableArrows C N) (z : Pr N) (t : ℤ) :
     phi P f g s (Finsupp.single z t) = t • val P f g s z :=
   Finsupp.linearCombination_single _ _ _
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem val_pos {N : ℕ} (s : ComposableArrows C N) (z : Pr N) (h : z.1 = p ∧ z.2.1 = q) :
     val P f g s z =
@@ -63,13 +63,13 @@ theorem val_pos {N : ℕ} (s : ComposableArrows C N) (z : Pr N) (h : z.1 = p ∧
   dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem val_neg {N : ℕ} (s : ComposableArrows C N) (z : Pr N) (h : ¬ (z.1 = p ∧ z.2.1 = q)) : val P f g s z = 0 :=
   dif_neg h
 
 /- English proof (translation)
-The claim follows from `val_pos P f g s _ ⟨rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem val_mk {N : ℕ} (s : ComposableArrows C N) (α : SimplexCategory.mk p ⟶ SimplexCategory.mk N)
     (β : SimplexCategory.mk q ⟶ SimplexCategory.mk N) :
@@ -106,13 +106,13 @@ theorem d₂_succ {N a r : ℕ} (α : SimplexCategory.mk a ⟶ SimplexCategory.m
       ∑ j : Fin (r + 2), Finsupp.single (⟨a, r, α, SimplexCategory.δ j ≫ β⟩ : Pr N) ((-1) ^ (j : ℕ)) := rfl
 
 /- English proof (translation)
-Take `⟨a, r, α, β⟩` from `z`. Consider the cases of `a with`. Consider the case `zero => rw [d₁_zero, map_zero]`. Consider the case `succ a`. Rewrite using `[d₁_succ, map_sum]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [phi_single]`. Distinguish the cases in `h : a = p ∧ r = q`. Take `⟨rfl, rfl⟩` from `h`. Establish `e` using `CrystallineSemistableComparison.Auxff.term_d F₁ s f (fun i : Fin (a + 2) => α.toOrderHom i) α.toOrderHom.monotone`. Rewrite `e` using `[hf, term_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg ((P.μ _).flip (CH.term F₂ s g (fun i : Fin (r + 1) => β.toOrderHom i) β.toOrderHom.monotone)) e`. Simplify using `only [map_zero, map_sum, map_zsmul, LinearMap.flip_apply] at e2`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) e2.symm` and prove the remaining obligations. Rewrite using `[val_mk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Finset.sum_eq_zero fun i _ => by rw [val_neg P f g s _ h, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem phi_d₁ (hf : CH.d F₁ p f = 0) {N : ℕ} (s : ComposableArrows C N) (z : Pr N) : phi P f g s z.d₁ = 0 := by
   obtain ⟨a, r, α, β⟩ := z
@@ -133,13 +133,13 @@ theorem phi_d₁ (hf : CH.d F₁ p f = 0) {N : ℕ} (s : ComposableArrows C N) (
     · exact Finset.sum_eq_zero fun i _ => by rw [val_neg P f g s _ h, smul_zero]
 
 /- English proof (translation)
-Take `⟨a, r, α, β⟩` from `z`. Consider the cases of `r with`. Consider the case `zero => rw [d₂_zero, map_zero]`. Consider the case `succ r`. Rewrite using `[d₂_succ, map_sum]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [phi_single]`. Distinguish the cases in `h : a = p ∧ r = q`. Take `⟨rfl, rfl⟩` from `h`. Establish `e` using `CrystallineSemistableComparison.Auxff.term_d F₂ s g (fun i : Fin (r + 2) => β.toOrderHom i) β.toOrderHom.monotone`. Rewrite `e` using `[hg, term_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg (P.μ _ (CH.term F₁ s f (fun i : Fin (a + 1) => α.toOrderHom i) α.toOrderHom.monotone)) e`. Simplify using `only [map_zero, map_sum, map_zsmul] at e2`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) e2.symm` and prove the remaining obligations. Rewrite using `[val_mk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Finset.sum_eq_zero fun i _ => by rw [val_neg P f g s _ h, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem phi_d₂ (hg : CH.d F₂ q g = 0) {N : ℕ} (s : ComposableArrows C N) (z : Pr N) : phi P f g s z.d₂ = 0 := by
   obtain ⟨a, r, α, β⟩ := z
@@ -160,7 +160,7 @@ theorem phi_d₂ (hg : CH.d F₂ q g = 0) {N : ℕ} (s : ComposableArrows C N) (
     · exact Finset.sum_eq_zero fun i _ => by rw [val_neg P f g s _ h, smul_zero]
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add c c' hc hc' => rw [map_add, map_add, hc, hc', add_zero]`. Consider the case `single z t`. Rewrite using `[Pr.d, Finsupp.linearCombination_single, map_smul, map_add, map_smul, phi_d₁ P f g hf, phi_d₂ P f g hg, smul_zero, add_zero, smul_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_d (hf : CH.d F₁ p f = 0) (hg : CH.d F₂ q g = 0) {N : ℕ} (s : ComposableArrows C N) (c : Pr N →₀ ℤ) :
     phi P f g s (Pr.d N c) = 0 := by
@@ -172,11 +172,11 @@ theorem phi_d (hf : CH.d F₁ p f = 0) (hg : CH.d F₂ q g = 0) {N : ℕ} (s : C
       smul_zero, add_zero, smul_zero]
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add c c' hc hc' => simp only [map_add, hc, hc']`. Consider the case `single z t`. Take `⟨a, r, α, β⟩` from `z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[phi_single, Pr.push, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, phi_single, map_zsmul]`. Use `congr 1`. Distinguish the cases in `h : a = p ∧ r = q`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[val_mk, val_mk, ← P.nat, CH.term_face, CH.term_face]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[val_neg P f g _ _ h, val_neg P f g _ _ h, map_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_face {N : ℕ} (s : ComposableArrows C (N + 1)) (i : Fin (N + 2)) (c : Pr N →₀ ℤ) :
     (F₃.map (GlobalTheory.CatH.toLast i s)).hom (phi P f g (GlobalTheory.CatH.face i s) c) = phi P f g s (Pr.push (SimplexCategory.δ i) c) := by
@@ -196,7 +196,7 @@ theorem phi_face {N : ℕ} (s : ComposableArrows C (N + 1)) (i : Fin (N + 2)) (c
 def hc {N : ℕ} (c : Pr N →₀ ℤ) : CH.Cn F₃ N := fun s => phi P f g s c
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin (N + 2), (-1 : ℤ) ^ (i : ℕ) • (F₃.map (GlobalTheory.CatH.toLast i s)).hom (phi P f g (GlobalTheory.CatH.face i s) c) = _`. Rewrite using `[Pr.bd, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← phi_face]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_hc {N : ℕ} (c : Pr N →₀ ℤ) (s : ComposableArrows C (N + 1)) :
     CH.d F₃ N (hc P f g c) s = phi P f g s (Pr.bd c) := by
@@ -206,9 +206,9 @@ theorem d_hc {N : ℕ} (c : Pr N →₀ ℤ) (s : ComposableArrows C (N + 1)) :
   rw [map_smul, ← phi_face]
 
 /- English proof (translation)
-Rewrite using `[Pr.aw, map_sum, Finset.sum_eq_single (⟨p, by omega⟩ : Fin (n + 1))]`. Rewrite using `[phi_single, one_smul, val_pos P f g s _ ⟨rfl, show n - p = q by omega⟩, CrystallineSemistableComparison.Auxff.cupC_apply]`. Conclude with `congrArg₂ (fun x y => P.μ _ x y) (CH.term_congr F₁ s f _ _ (funext fun i => Fin.ext rfl)) (CH.term_congr F₂ s g _ _ (funext fun i => Fin.ext (show (i : ℕ) + p = p + i from Nat.add_comm _ _)))`. Introduce `b _ hb`. Rewrite using `[phi_single, val_neg, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, -⟩`. Conclude with `hb (Fin.ext h1)`. Introduce `hb`. Conclude with `absurd (Finset.mem_univ _) hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem phi_aw {n : ℕ} (h : p + q = n) (s : ComposableArrows C n) : phi P f g s (Pr.aw n) = P.cupC h f g s := by
   rw [Pr.aw, map_sum, Finset.sum_eq_single (⟨p, by omega⟩ : Fin (n + 1))]
@@ -224,11 +224,9 @@ theorem phi_aw {n : ℕ} (h : p + q = n) (s : ComposableArrows C n) : phi P f g 
     exact absurd (Finset.mem_univ _) hb
 
 /- English proof (translation)
-Rewrite using `[Pr.wa, map_sum, Finset.sum_eq_single (⟨q, by omega⟩ : Fin (n + 1))]`. Rewrite using `[phi_single, val_pos P f g s _ ⟨show n - q = p by omega, rfl⟩]`. Establish `e2 : ((-1 : ℤ) ^ (q * (n - q))) = (-1) ^ (p * q)` using `by rw [show n - q = p by omega, mul_comm]`. Use `Eq.trans (congrArg (fun t : ℤ => t • P.μ _ (CH.term F₁ s f _ (om_mono _ _)) (CH.term F₂ s g _ (om_mono _ _))) e2) ?_` and prove the remaining obligations. Conclude with `congrArg _ (congrArg₂ (fun x y => P.μ _ x y) (CH.term_congr F₁ s f _ _ (funext fun i => Fin.ext (show (i : ℕ) + q = q + i from Nat.add_comm _ _))) (CH.term_congr F₂ s g _ _ (funext fun i => Fin.ext rfl)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[phi_single, val_neg, smul_zero]`. Introduce and unpack `⟨-, h2⟩`. Conclude with `hb (Fin.ext h2)`. Introduce `hb`.
-
-Conclude with `absurd (Finset.mem_univ _) hb`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem phi_wa {n : ℕ} (h' : q + p = n) (s : ComposableArrows C n) :
     phi P f g s (Pr.wa n) = (-1 : ℤ) ^ (p * q) •
@@ -248,13 +246,11 @@ theorem phi_wa {n : ℕ} (h' : q + p = n) (s : ComposableArrows C n) :
     exact absurd (Finset.mem_univ _) hb
 
 /- English proof (translation)
-Take `⟨hh, -, hd0, hds⟩` from `GlobalTheory.T.exists_alexanderWhitneyDiagonal_swap_homotopy`. Establish `ev : ∀ s : ComposableArrows C n, (P.cupC h f g - (-1 : ℤ) ^ (p * q) • P'.cupC h' g f) s = phi P f g s (Pr.aw n - Pr.wa n)`. Introduce `s`. Rewrite using `[map_sub, phi_aw P f g h, phi_wa P f g h', ← hP, ← CrystallineSemistableComparison.Auxff.cupC_apply P' h' g f s]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the cases of `n with`. Consider the case `zero`. Establish `e0 : P.cupC h f g - (-1 : ℤ) ^ (p * q) • P'.cupC h' g f = 0` using `funext fun s => by`. Rewrite using `[ev, ← hd0, phi_d P f g hf hg]`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e0]`. Conclude with `zero_mem _`. Consider the case `succ N`. Use `⟨hc P f g (hh N), funext fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[ev, ← hds N, map_add, phi_d P f g hf hg, zero_add]`.
-
-Conclude with `d_hc P f g (hh N) s`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (P' : CH.Pairing F₂ F₁ F₃) (hP : ∀ T x y, P'.μ T y x = P.μ T x y) (hf : CH.d F₁ p f = 0)
     (hg : CH.d F₂ q g = 0) {n : ℕ} (h : p + q = n) (h' : q + p = n) :
@@ -280,7 +276,7 @@ theorem key (P' : CH.Pairing F₂ F₁ F₃) (hP : ∀ T x y, P'.μ T y x = P.μ
 end Gen
 
 /- English proof (translation)
-Establish `e : (⟨k • a, hb⟩ : K.Z n) = k • (⟨a, ha⟩ : K.Z n)` using `Subtype.ext (by simp)`. Use `show Submodule.Quotient.mk _ = _`. Rewrite using `[e]`. Conclude with `map_zsmul (Submodule.mkQ _) k _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_zsmul {R : Type} [CommRing R] {K : Cx.{w} R} {n : ℕ} (k : ℤ) (a : K.X n) (ha : K.d n a = 0)
     (hb : K.d n (k • a) = 0) : K.cls (k • a) hb = k • K.cls a ha := by
@@ -290,9 +286,9 @@ theorem cls_zsmul {R : Type} [CommRing R] {K : Cx.{w} R} {n : ℕ} (k : ℤ) (a 
   exact map_zsmul (Submodule.mkQ _) k _
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx F₁) p).1 x`. Take `⟨g, hg, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx F₂) q).1 y`. Take `⟨c1, e1⟩` from `CrystallineSemistableComparison.P.cup_cls P h f g hf hg`. Take `⟨c2, e2⟩` from `CrystallineSemistableComparison.P.cup_cls P' h' g f hg hf`. Rewrite using `[e1, e2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hc3 : CH.d F₃ n ((-1 : ℤ) ^ (p * q) • P'.cupC h' g f) = 0` using `by rw [map_zsmul, c2, smul_zero]`. Use `Eq.trans ?_ (cls_zsmul (K := CH.cx F₃) _ _ c2 hc3)` and prove the remaining obligations. Conclude with `((CrystallineSemistableComparison.P.cls_surj (CH.cx F₃) n).2.2.1 _ _ c1 hc3).2 (key P f g P' hP hf hg h h')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cup_comm {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ F₂ F₃ : C ⥤ ModuleCat.{w} R}
     (P : CH.Pairing F₁ F₂ F₃) (P' : CH.Pairing F₂ F₁ F₃) (hP : ∀ T x y, P'.μ T y x = P.μ T x y) {p q n : ℕ}
@@ -308,7 +304,7 @@ theorem cup_comm {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ F�
   exact ((CrystallineSemistableComparison.P.cls_surj (CH.cx F₃) n).2.2.1 _ _ c1 hc3).2 (key P f g P' hP hf hg h h')
 
 /- English proof (translation)
-The claim follows from `cup_comm (HT.grOk (CrystallineSemistableComparison.smFun X q) ha).pair (HT.grOk (CrystallineSemistableComparison.smFun X q) ha').pair (fun T x y => by obtain ⟨x, hx, rfl⟩ := HT.sq_surj _ _ x obtain ⟨y, hy, rfl⟩ := HT.sq_surj _ _ y rw [HT.pair_mk, HT.pair_mk] exact HT.mk_congr _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem hdg_comm {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {a a' c i j n : ℕ}
     (ha : a + a' = c) (ha' : a' + a = c) (h : i + j = n) (h' : j + i = n) (x : HT.Hdg q a i) (y : HT.Hdg q a' j) :
@@ -323,7 +319,7 @@ end CrystallineSemistableComparison.Onto.RCupLaws
 
 open CrystallineSemistableComparison.Onto.RCupLaws in
 /- English proof (translation)
-Introduce `K _ X q`. Establish `F` using `CrystallineSemistableComparison.HT.kForm`. Use `⟨fun ha h => F.bilin q ha h, fun h₁ h₂ h₃ h₄ g₁ g₂ g₃ g₄ x y z => F.assoc q h₁ h₂ h₃ h₄ g₁ g₂ g₃ g₄ x y z, fun ha ha' h h' x y => hdg_comm q ha ha' h h' x y, fun x => (F.one_cup q _ _ x).1, fun Y p u hu _ _ _ _ _ _ ha h x y => F.pull_cup u hu ha h x y, fun a n x => F.pull_id q (𝟙 …` and prove the remaining obligations. Substitute `e` using the available equality. Conclude with `(F.pull_comp v hv u hu hw a n x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem CrystallineSemistableComparison.Onto.cupLaws_pf : CrystallineSemistableComparison.Onto.CupLaws := by
   intro K _ X q

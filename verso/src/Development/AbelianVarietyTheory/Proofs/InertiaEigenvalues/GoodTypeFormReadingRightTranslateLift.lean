@@ -13,7 +13,7 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.TypeRead
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun z => MonoidAlgebra.lift (FractionRing (D.ntw.O i)) (Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b)) (G0g D.nd) (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (D.nexp.actG i j b)) z y) (D.nexp.eAlg_central i b (MonoidAlgebra.single u 1))`. Simplify using `only [map_mul, MonoidAlgebra.lift_single, one_smul, Module.End.mul_apply] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actG_eG (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (u : G0g D.nd) (y : D.nexp.Fm i j b) :
     D.nexp.actG i j b u (Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i j b y) = Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i j b (D.nexp.actG i j b u y) := by
@@ -24,9 +24,9 @@ theorem actG_eG (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (u : G0g D.nd) (y :
   exact h.symm
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `hx`. Establish `hf'` using `(Submodule.mem_iInf _).1 hf ⟨u, hu⟩`. Rewrite `hf'` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[actG_eG]`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i j b ((D.nexp.actG i j b (⟨u, hu⟩ : D.nexp.U) : _ ≃ₗ[_] _) f) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [hf']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_group_acts_on_good_type_form_by_character (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (x : D.nexp.Fm i j b) (hx : x ∈ V0 D.nexp i j b)
     (u : G0g D.nd) (hu : u ∈ D.nexp.U) :
@@ -44,7 +44,7 @@ end GlobalTheory.TypeRead
 open GlobalTheory.TypeRead in
 
 /- English proof (translation)
-Introduce `D X E Y i j b x hx u hu κ hκ g`. Establish `hA : ActRead (Y.Z.rd i j b)` using `actRead_realRd D X.Γ X.Pl0 X.I0 X.T X.A3 X.core.Q.c.F X.R X.cG Y.S Y.YS X.geo.v₀ Y.Z.ρ Y.Z.good i j b _ Y.Z.pin X.unif X.char.models.HW`. Rewrite using `[← hA u κ hκ x g, finite_group_acts_on_good_type_form_by_character D i _ b x hx u hu, map_smulₛₗ]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.TypeRead.rd_mul_lift : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool),
     ∀ x ∈ V0 D.nexp i ((j : ℕ) + 1) b, ∀ (u : G0g D.nd) (hu : u ∈ D.nexp.U) (κ : GA D (Wc D j)),

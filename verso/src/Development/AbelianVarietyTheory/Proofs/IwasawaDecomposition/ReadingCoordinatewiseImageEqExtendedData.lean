@@ -26,15 +26,15 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.LiftRead
 
 /- English proof (translation)
-Substitute `hn hH` using the available equality. Consider the cases of `h1`. Consider the cases of `h2`. Establish `e : x' = fun k => φ (x k)` using `funext fun k => hx k k rfl`. Substitute `e` using the available equality.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality.
 
-Use `clear hx`. Use `heq_of_eq ?_` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span L S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y', a, b⟩` from `hj y hy`. Establish `e : (fun k => φ (y k)) = y'` using `funext fun k => σ'.injective ((hφ _).trans (a k k rfl).symm)`. Rewrite using `[e]`. Conclude with `eq_of_heq b`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun k => φ ((0 : Fin n → L) k)) = 0` using `by funext k; simp`. Rewrite using `[e, map_zero, map_zero]`. Consider the case `add y z _ _ hy hz`. Establish `e : (fun k => φ ((y + z) k)) = (fun k => φ (y k)) + fun k => φ (z k)` using `by funext k; simp`. Rewrite using `[e, map_add, map_add, hy, hz]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul a y _ hy`. Establish `e : (fun k => φ ((a • y) k)) = φ a • fun k => φ (y k)` using `by funext k; simp`. Rewrite using `[e, map_smulₛₗ, map_smulₛₗ, hy, hφ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem read_of_span {L L' : Type} [Field L] [Field L'] (φ : L →+* L') (σ : L →+* ℂ) (σ' : L' →+* ℂ) (hφ : ∀ x, σ' (φ x) = σ x)
     {n n' : ℕ} (hn : n = n') {H H' : Type} (nH : NormedAddCommGroup H) (nH' : NormedAddCommGroup H')
@@ -70,13 +70,13 @@ theorem read_of_span {L L' : Type} [Field L] [Field L'] (φ : L →+* L') (σ : 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Consider the cases of `M`. Consider the cases of `M'`. Simplify using `only at a b c d l e g`. Consider the cases of `a`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `b`. Consider the cases of `c`. Consider the cases of `d`. Consider the cases of `l`. Consider the cases of `e`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `g`. Establish `e' : X' = X` using `eq_of_heq hX`. Substitute `e'` using the available equality. Conclude with `⟨rfl, HEq.rfl, HEq.rfl⟩`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem hmod_fields {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'}
     {w : ColW B f T} {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt}
@@ -103,11 +103,11 @@ theorem hmod_fields {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {f' 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hk` using `hE.κ j j' hj`. Establish `hc : ↥(z'.core.cuspA ((j' : ℕ) + 1) (Formalism.L2.Pj.wtA (z'.geo.κ j')) (z'.geo.κ j').n) = ↥(z.core.cuspA ((j : ℕ) + 1) (Formalism.L2.Pj.wtA (z.geo.κ j)) (z.geo.κ j).n)` using `(by with_unfolding_all exact ((cusp_type_congr (P₁ := B.toPre) (P₂ := B'.toPre) q (congrArg (· + 1) hj) hk.2.2 hE.H hE.l hE.c hE.Dw hE.Xo hE.U hk.1 hk.2.1) :))`. Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `congrArg (fun P : Pre => P.R.m) q`. Establish `hn : z.R.nW j = z'.R.nW j'` using `GlobalTheory.Mem.R3.LiftForms.nat_eq_of_heq hm hE.nW j j' hj`. Take `⟨a, b, c, d, l, e, g, -, hW, -, hr⟩` from `hE.MW j j' hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h0, h1, h2⟩` from `hmod_fields q j j' hj _ _ a b c d l e g _ _ hW`. Take `⟨m, bs, hb, -, -, -, hsp⟩` from `z.geo.fw.ks j`. Use `read_of_span φ _ _ hφ hn _ _ _ _ h0 h1 h2 _ _ (Set.range bs) hsp ?_ x x' hx` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨u, hu⟩` from `(z.geo.fw.e j).surjective ⟨bs i, hb i⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hu' : bs i = (z.geo.fw.e j u : (z.R.FW j).WK).1` using `(congrArg Subtype.val hu).symm`. Rewrite using `[hu']`. Conclude with `⟨(z'.geo.fw.e j' (cast hc.symm u) : (z'.R.FW j').WK).1, hE.forms j j' hj u _ (cast_heq _ _), hr u _ (cast_heq _ _)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem read_extN {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'}
     {w : ColW B f T} {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok}
@@ -137,7 +137,7 @@ theorem read_extN {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE _ _ _ Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ hExt j j' hj φ hφ x x' hx => ?_` and prove the remaining obligations. Conclude with `read_extN hE.1 hExt j j' hj φ hφ x x' hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem read_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

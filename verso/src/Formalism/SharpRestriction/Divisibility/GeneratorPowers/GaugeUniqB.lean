@@ -13,9 +13,9 @@ namespace GaugeR
 variable {R ι : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq]`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Unfold `Finsupp.prod`. Establish `hpow : orig R ι ^ e.degree = ∏ i ∈ e.support, orig R ι ^ e i`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hpow]`. Conclude with `Ideal.prod_mem_prod (fun i _ => Ideal.pow_mem_pow (show (X i : MvPolynomial ι R) ∈ orig R ι from Ideal.subset_span (Set.mem_range_self i)) _)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_mem_orig_pow (e : ι →₀ ℕ) (a : R) : monomial e a ∈ orig R ι ^ e.degree := by
   rw [monomial_eq]
@@ -28,9 +28,7 @@ theorem monomial_mem_orig_pow (e : ι →₀ ℕ) (a : R) : monomial e a ∈ ori
   exact Ideal.prod_mem_prod (fun i _ => Ideal.pow_mem_pow (show (X i : MvPolynomial ι R) ∈ orig R ι from Ideal.subset_span (Set.mem_range_self i)) _)
 
 /- English proof (translation)
-Rewrite using `[p.as_sum]`. Use `Ideal.sum_mem _ (fun e he => ?_)` and prove the remaining obligations. Establish `hn : n ≤ e.degree`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
-
-Conclude with `(mem_support_iff.mp he) (h e hlt)`. Conclude with `Ideal.pow_le_pow_right hn (monomial_mem_orig_pow e _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem mem_orig_pow_of_coeff (n : ℕ) (p : MvPolynomial ι R) (h : ∀ e, e.degree < n → coeff e p = 0) :
     p ∈ orig R ι ^ n := by
@@ -45,7 +43,7 @@ theorem mem_orig_pow_of_coeff (n : ℕ) (p : MvPolynomial ι R) (h : ∀ e, e.de
 variable [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Unfold `psJet`. Rewrite using `[Ideal.Quotient.eq]`. Apply `mem_orig_pow_of_coeff` to reduce the goal to its premises. Introduce `e he`. Rewrite using `[coeff_sub, GermFun.coeff_psTrunc m f e (by omega), h e (by omega), sub_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem psJet_eq_mk (m : ℕ) (f : MvPowerSeries ι R) (p : MvPolynomial ι R)
     (h : ∀ e, e.degree ≤ m → coeff e p = MvPowerSeries.coeff e f) :
@@ -57,11 +55,11 @@ theorem psJet_eq_mk (m : ℕ) (f : MvPowerSeries ι R) (p : MvPolynomial ι R)
   rw [coeff_sub, GermFun.coeff_psTrunc m f e (by omega), h e (by omega), sub_self]
 
 /- English proof (translation)
-Establish `key : psJet m (f * g) = Ideal.Quotient.mk _ (psTrunc m f * psTrunc m g)`. Use `psJet_eq_mk m _ _ (fun e he => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl (fun x hx => ?_)` and prove the remaining obligations. Establish `hx'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : x.1.degree + x.2.degree ≤ m`. Rewrite using `[← map_add Finsupp.degree, hx']`. Conclude with `he`. Rewrite using `[GermFun.coeff_psTrunc m f x.1 (by omega), GermFun.coeff_psTrunc m g x.2 (by omega)]`. Rewrite using `[key, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem psJet_mul (m : ℕ) (f g : MvPowerSeries ι R) : psJet m (f * g) = psJet m f * psJet m g := by
   have key : psJet m (f * g) = Ideal.Quotient.mk _ (psTrunc m f * psTrunc m g) := by
@@ -77,13 +75,13 @@ theorem psJet_mul (m : ℕ) (f g : MvPowerSeries ι R) : psJet m (f * g) = psJet
   rfl
 
 /- English proof (translation)
-Rewrite using `[psJet_eq_mk m 1 1 (fun e _ => by rw [MvPolynomial.coeff_one, MvPowerSeries.coeff_one]; exact if_congr eq_comm rfl rfl), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psJet_one (m : ℕ) : psJet m (1 : MvPowerSeries ι R) = 1 := by
   rw [psJet_eq_mk m 1 1 (fun e _ => by rw [MvPolynomial.coeff_one, MvPowerSeries.coeff_one]; exact if_congr eq_comm rfl rfl), map_one]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, psJet_one]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, psJet_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psJet_pow (m : ℕ) (f : MvPowerSeries ι R) (k : ℕ) : psJet m (f ^ k) = psJet m f ^ k := by
   induction k with
@@ -91,7 +89,7 @@ theorem psJet_pow (m : ℕ) (f : MvPowerSeries ι R) (k : ℕ) : psJet m (f ^ k)
   | succ k ih => rw [pow_succ, pow_succ, psJet_mul, ih]
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, monomial_eq]`. Simplify using `only [mul_pow, Finsupp.prod_mul, ← map_pow]`. Rewrite using `[map_mul, map_finsuppProd, MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_scale_monomial (s : ι → R) (e : ι →₀ ℕ) (a : R) :
     aeval (fun i => C (s i) * X i) (monomial e a : MvPolynomial ι R) =
@@ -102,9 +100,9 @@ theorem aeval_scale_monomial (s : ι → R) (e : ι →₀ ℕ) (a : R) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial e' a`. Rewrite using `[aeval_scale_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_aeval_scale (s : ι → R) (p : MvPolynomial ι R) (e : ι →₀ ℕ) :
     coeff e (aeval (fun i => C (s i) * X i) p) = (e.prod fun i k => s i ^ k) * coeff e p := by
@@ -126,9 +124,9 @@ theorem jetMap_mk {ι' : Type} (m : ℕ) (φ : ι → MvPolynomial ι' R) (hφ :
     jetMap φ hφ (Ideal.Quotient.mk (orig R ι ^ (m + 1)) p) = Ideal.Quotient.mk _ (aeval φ p) := rfl
 
 /- English proof (translation)
-Unfold `jetSubstP psJet`. Rewrite using `[jetMap_mk]`. Simplify using `only [map_mul, constantCoeff_C, constantCoeff_X, mul_zero, map_zero, sub_zero]`. Use `symm`. Use `psJet_eq_mk m _ _ (fun e he => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_aeval_scale, GermFun.coeff_psTrunc m f e he, MvPowerSeries.coeff_rescale]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jetSubstP_scale (m : ℕ) (s : ι → R) (f : MvPowerSeries ι R) :
     jetSubstP m (fun i => C (s i) * X i) (psJet m f) = psJet m (MvPowerSeries.rescale s f) := by
@@ -140,14 +138,14 @@ theorem jetSubstP_scale (m : ℕ) (s : ι → R) (f : MvPowerSeries ι R) :
   rw [coeff_aeval_scale, GermFun.coeff_psTrunc m f e he, MvPowerSeries.coeff_rescale]
 
 /- English proof (translation)
-Use `show Ideal.Quotient.mk _ (psTrunc (m + 1) f) = psJet m f`. Conclude with `(psJet_eq_mk m f _ (fun e he => GermFun.coeff_psTrunc (m + 1) f e (by omega))).symm`.
+A detailed English derivation is pending.
 -/
 theorem jetTrunc_psJet (m : ℕ) (f : MvPowerSeries ι R) : jetTrunc (psJet (m + 1) f) = psJet m f := by
   show Ideal.Quotient.mk _ (psTrunc (m + 1) f) = psJet m f
   exact (psJet_eq_mk m f _ (fun e he => GermFun.coeff_psTrunc (m + 1) f e (by omega))).symm
 
 /- English proof (translation)
-Use `show (MvPolynomial.aeval fun _ => (0 : R)) (psTrunc m f) = _`. Rewrite using `[show (fun _ : ι => (0 : R)) = 0 from rfl, MvPolynomial.aeval_zero, Algebra.algebraMap_self_apply,`. Use the proof step `] show MvPolynomial.coeff 0 (psTrunc m f) = _`. Rewrite using `[GermFun.coeff_psTrunc m f 0 (by simp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jetAug_psJet (m : ℕ) (f : MvPowerSeries ι R) :
     jetAug (psJet m f) = MvPowerSeries.constantCoeff f := by
@@ -159,15 +157,13 @@ theorem jetAug_psJet (m : ℕ) (f : MvPowerSeries ι R) :
   rfl
 
 /- English proof (translation)
-Use `choose P hP using fun m => Ideal.Quotient.mk_surjective (ρ m)`. Establish `hstep : ∀ m, P (m + 1) - P m ∈ orig R ι ^ (m + 1)`. Introduce `m`. Rewrite using `[← Ideal.Quotient.eq]`. Establish `h1` using `h m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hP (m + 1), ← hP m]`. Conclude with `h1`. Establish `hcoef : ∀ n k (e : ι →₀ ℕ), e.degree ≤ n → coeff e (P (n + k)) = coeff e (P n)`. Introduce `n k e he`. Proceed by induction on `k with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[← ih, ← sub_eq_zero, ← coeff_sub]`. Conclude with `GermFun.coeff_eq_zero_of_mem (hstep (n + k)) (by omega)`. Use `⟨fun e => coeff e (P e.degree), fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hP m]`. Use `psJet_eq_mk m _ _ (fun e he => ?_)` and prove the remaining obligations. Establish `h2` using `hcoef e.degree (m - e.degree) e le_rfl`. Rewrite `h2` using `[show e.degree + (m - e.degree) = m by omega]`. Rewrite using `[h2]`.
-
-Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ps_of_compat (ρ : ∀ m, Jet R ι m) (h : ∀ m, jetTrunc (ρ (m + 1)) = ρ m) :
     ∃ r : MvPowerSeries ι R, ∀ m, psJet m r = ρ m := by

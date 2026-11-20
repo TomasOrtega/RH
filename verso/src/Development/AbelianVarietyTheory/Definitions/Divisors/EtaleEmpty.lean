@@ -67,7 +67,7 @@ def IsCut (T : ℝ) (θ : ℝ → ℝ) : Prop :=
     (∀ x, 0 ≤ θ x ∧ θ x ≤ 1) ∧ ∀ x, |deriv θ x| ≤ 3 / 4
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_empty, fun _ => by simp [differentiableOn_empty], fun _ _ h => h.elim⟩`.
+Supply the required witnesses or components.
 -/
 theorem etale_empty (A : WeightedAtlas n Y ι La) (z : Y → V n) : Etale A ∅ z :=
   ⟨isOpen_empty, fun _ => by simp [differentiableOn_empty], fun _ _ h => h.elim⟩

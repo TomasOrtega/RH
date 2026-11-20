@@ -14,7 +14,7 @@ def dStep {κ : Type} [Fintype κ] (P : Submodule ℂ (SInf F κ)) : Submodule �
   Submodule.span ℂ {h | ∃ a b : κ → mixedEmbedding.mixedSpace F, ∃ f ∈ P, h = dOp a b f}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, b, f, hf, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem dOp_mem_dStep {κ : Type} [Fintype κ] (P : Submodule ℂ (SInf F κ)) (a b : κ → mixedEmbedding.mixedSpace F)
     {f : SInf F κ} (hf : f ∈ P) : dOp a b f ∈ dStep P :=
@@ -41,7 +41,7 @@ theorem polLe_succ (M : Model σ X W) (τ : ∀ w : InfinitePlace F, GlobalTheor
     polLe M τ (m + 1) = polLe M τ m ⊔ dStep (polLe M τ m) := rfl
 
 /- English proof (translation)
-The claim follows from `monotone_nat_of_le_succ fun m => by rw [polLe_succ]; exact le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem polLe_mono (M : Model σ X W) (τ : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w) : Monotone (polLe M τ) :=
   monotone_nat_of_le_succ fun m => by rw [polLe_succ]; exact le_sup_left

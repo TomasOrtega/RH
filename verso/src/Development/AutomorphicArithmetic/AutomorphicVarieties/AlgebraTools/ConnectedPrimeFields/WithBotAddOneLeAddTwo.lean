@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient, ringKrullDim_quotient]`. Conclude with `Order.krullDim_le_of_strictMono (Set.inclusion h) (fun _ _ hxy => hxy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hyper_dim_mono {R : Type} [CommRing R] {I J : Ideal R}
     (h : PrimeSpectrum.zeroLocus (J : Set R) ⊆ PrimeSpectrum.zeroLocus (I : Set R)) :
@@ -17,9 +17,9 @@ private theorem hyper_dim_mono {R : Type} [CommRing R] {I J : Ideal R}
   exact Order.krullDim_le_of_strictMono (Set.inclusion h) (fun _ _ hxy => hxy)
 
 /- English proof (translation)
-Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h (by rw [WithBot.bot_add, le_bot_iff]; exact_mod_cast WithBot.coe_ne_bot (a := ((k + 2 : ℕ) : ℕ∞)))`. Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top => exact le_top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe d`. Establish `h' : ((k + 2 : ℕ) : WithBot ℕ∞) ≤ ((d + 2 : ℕ) : WithBot ℕ∞)` using `by push_cast; exact h`. Establish `h'' : k + 2 ≤ d + 2` using `by exact_mod_cast h'`. Establish `h3 : k ≤ d` using `by omega`. Conclude with `h3` after adjusting the coercions.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem withBot_le_of_add_two (k : ℕ) (d : WithBot ℕ∞) (h : (k : WithBot ℕ∞) + 2 ≤ d + 2) :
     (k : WithBot ℕ∞) ≤ d := by
@@ -36,44 +36,38 @@ private theorem withBot_le_of_add_two (k : ℕ) (d : WithBot ℕ∞) (h : (k : W
       exact_mod_cast h3
 
 /- English proof (translation)
-Use `gcongr`. Conclude with `(by norm_num : (1 : ℕ) ≤ 2)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem withBot_add_one_le_add_two (d : WithBot ℕ∞) : d + ((1 : ℕ) : WithBot ℕ∞) ≤ d + 2 := by
   gcongr
   exact_mod_cast (by norm_num : (1 : ℕ) ≤ 2)
 
 /- English proof (translation)
-Introduce `R _ _ _ hC p f k hp hf hk I haI hI`. Use `set a : Ideal R := p ⊔ Ideal.span {f} with ha`. Establish `ham : a ≤ maximalIdeal R` using `sup_le (le_maximalIdeal hp.ne_top) ((Ideal.span_singleton_le_iff_mem _).2 hf)`. Establish `hcomp : ∀ q ∈ a.minimalPrimes, (k : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ q)`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `compDim hC p q {f} hp (by simpa using hq)`. Rewrite `h1` using `[Finset.card_singleton]`. Conclude with `withBot_le_of_add_two k _ (hk.trans (h1.trans (withBot_add_one_le_add_two _)))`. Establish `hle : ∀ {J K : Ideal R}, J ≤ K → ringKrullDim (R ⧸ K) ≤ ringKrullDim (R ⧸ J)` using `fun h => hyper_dim_mono (PrimeSpectrum.zeroLocus_anti_mono_ideal h)`. Establish `hmem : ∀ (q : Ideal R) (hq : q ∈ a.minimalPrimes), (⟨q, hq.1.1⟩ : PrimeSpectrum R) ∈ PrimeSpectrum.zeroLocus (a : Set R) \ PrimeSpectrum.zeroLocus (I : Set R)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Use `⟨hq.1.2, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : I ≤ q` using `h`. Conclude with `absurd ((hcomp q hq).trans (hle h')) (not_le.2 hI)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq, -⟩` from `Ideal.exists_minimalPrimes_le ham`. Conclude with `⟨_, hmem q hq⟩`. Rewrite using `[isPreconnected_closed_iff]`. Introduce `t t' ht ht' hcov hx hy`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b0, rfl⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus_ideal t).1 ht`. Take `⟨c0, rfl⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus_ideal t').1 ht'`. Establish `hdisj : ∀ x : PrimeSpectrum R, a ≤ x.asIdeal → b0 ≤ x.asIdeal → c0 ≤ x.asIdeal → I ≤ x.asIdeal`. Introduce `x h1 h2 h3`. Assume the negation of the conclusion as `h4`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hne ⟨x, ⟨h1, h4⟩, h2, h3⟩`. Establish `hmin : ∀ q ∈ a.minimalPrimes, b0 ≤ q ∨ c0 ≤ q` using `fun q hq => hcov (hmem q hq)`. Establish `hb : ∃ q ∈ a.minimalPrimes, a ⊔ b0 ≤ q`. Take `⟨x, ⟨h1, h2⟩, h3⟩` from `hx`. Take `⟨q, hq, hqx⟩` from `Ideal.exists_minimalPrimes_le (I := a) (J := x.asIdeal) h1`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `hmin q hq with h | h` into its components or cases. Conclude with `⟨q, hq, sup_le hq.1.2 h⟩`. Conclude with `absurd (hdisj x h1 h3 (h.trans hqx)) h2`. Establish `hc : ∃ q ∈ a.minimalPrimes, a ⊔ c0 ≤ q`. Take `⟨x, ⟨h1, h2⟩, h3⟩` from `hy`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq, hqx⟩` from `Ideal.exists_minimalPrimes_le (I := a) (J := x.asIdeal) h1`. Break down `hmin q hq with h | h` into its components or cases. Conclude with `absurd (hdisj x h1 (h.trans hqx) h3) h2`. Conclude with `⟨q, hq, sup_le hq.1.2 h⟩`. Use `set b : Ideal R := a ⊔ b0 with hbdef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set c : Ideal R := a ⊔ c0 with hcdef`. Establish `hpb : p ≤ b` using `le_sup_of_le_left le_sup_left`. Establish `hpc : p ≤ c` using `le_sup_of_le_left le_sup_left`. Establish `hbc : ringKrullDim (R ⧸ (b ⊔ c)) < k`. Use `lt_of_le_of_lt (hyper_dim_mono fun x hx => ?_) hI` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hx' : b ⊔ c ≤ x.asIdeal` using `hx`. Conclude with `hdisj x ((le_sup_of_le_left le_sup_left).trans hx') ((le_sup_of_le_left le_sup_right).trans hx') ((le_sup_of_le_right le_sup_right).trans hx')`. Take `⟨q1, hq1, hbq⟩` from `hb`. Take `⟨q2, hq2, hcq⟩` from `hc`. Establish `hrad : (b ⊓ c).radical = a.radical`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm ?_ (Ideal.radical_mono (le_inf le_sup_left le_sup_left))` and prove the remaining obligations. Rewrite using `[Ideal.radical_le_radical_iff, ← Ideal.sInf_minimalPrimes]`. Use `le_sInf fun q hq => ?_` and prove the remaining obligations. Break down `hmin q hq with h | h` into its components or cases. Conclude with `inf_le_left.trans (sup_le hq.1.2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inf_le_right.trans (sup_le hq.1.2 h)`. Establish `hdq : ∀ J : Ideal R, p ≤ J → ringKrullDim ((R ⧸ p) ⧸ J.map (Ideal.Quotient.mk p)) = ringKrullDim (R ⧸ J)` using `fun J h => ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE h)`. Establish `hcm : ∀ J : Ideal R, p ≤ J → (J.map (Ideal.Quotient.mk p)).comap (Ideal.Quotient.mk p) = J`. Introduce `J h`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hnt : ∀ J : Ideal R, p ≤ J → J ≠ ⊤ → J.map (Ideal.Quotient.mk p) ≠ ⊤`. Introduce `J h hJ h2`. Apply `hJ` to reduce the goal to its premises. Rewrite using `[← hcm J h, h2, Ideal.comap_top]`. Use `haveI : IsLocalRing (R ⧸ p) := IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`.
-
-Establish `hamap : a.map (Ideal.Quotient.mk p) = Ideal.span {Ideal.Quotient.mk p f}`. Rewrite using `[ha, Ideal.map_sup, Ideal.map_quotient_self, bot_sup_eq, Ideal.map_span, Set.image_singleton]`. Establish `key` using `one (hC p hp) (Ideal.Quotient.mk p f) (b.map (Ideal.Quotient.mk p)) (c.map (Ideal.Quotient.mk p)) ?_ ?_ (hnt b hpb fun h => hq1.1.1.ne_top (top_le_iff.1 (h ▸ hbq))) (hnt c hpc fun h => hq2.1.1.ne_top (top_le_iff.1 (h ▸ hcq))) ?_ ?_`. Rewrite `key` using `[← Ideal.map_sup, hdq _ (le_sup_of_le_left hpb)]`. Conclude with `absurd (withBot_le_of_add_two k _ (hk.trans key)) (not_le.2 hbc)`.
-
-Rewrite using `[← Ideal.span_singleton_le_iff_mem, ← hamap]`. Conclude with `le_maximalIdeal (hnt a le_sup_left fun h => (maximalIdeal.isMaximal R).ne_top (top_le_iff.1 (h ▸ ham)))`. Apply `Ideal.comap_injective_of_surjective _ Ideal.Quotient.mk_surjective` to reduce the goal to its premises. Rewrite using `[← hamap, Ideal.comap_radical, Ideal.comap_radical, Ideal.comap_inf, hcm b hpb, hcm c hpc, hcm a le_sup_left, hrad]`. Rewrite using `[← Ideal.map_sup, hdq _ (le_sup_of_le_left hpb), hdq _ hpb]`.
-
-Conclude with `hbc.trans_le ((hcomp q1 hq1).trans (hle hbq))`. Rewrite using `[← Ideal.map_sup, hdq _ (le_sup_of_le_left hpb), hdq _ hpc]`. Conclude with `hbc.trans_le ((hcomp q2 hq2).trans (hle hcq))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.hyper :
     ∀ {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R], CohenType R → ∀ (p : Ideal R) (f : R) (k : ℕ), p.IsPrime →

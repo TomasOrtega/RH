@@ -26,7 +26,7 @@ def IsCyclic (σ : G → (Hs →L[ℂ] Hs)) (w : Hs) : Prop :=
 omit [Group G] in
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.ext_on h (by rintro _ ⟨g, rfl⟩; exact hAB g)`.
+A detailed English derivation is pending.
 -/
 theorem IsCyclic.ext {σ : G → (Hs →L[ℂ] Hs)} {w : Hs} (h : IsCyclic σ w) {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℂ E] {A B : Hs →L[ℂ] E}
@@ -99,7 +99,7 @@ def toGroup (M : UJset ε) : UJ ε :=
   ⟨⟨M.1, Jm ε * M.1ᴴ * Jm ε, mul_eq_one_comm.1 h, h⟩, M.2⟩
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩) _` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul continuous_subtype_val.matrix_conjTranspose).matrix_mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_toGroup : Continuous (toGroup (ε := ε)) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩) _
@@ -107,7 +107,7 @@ theorem continuous_toGroup : Continuous (toGroup (ε := ε)) := by
     continuous_const
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext rfl)`.
+A detailed English derivation is pending.
 -/
 theorem toGroup_umat (g : UJ ε) : toGroup ⟨umat g, g.2⟩ = g := Subtype.ext (Units.ext rfl)
 
@@ -117,16 +117,16 @@ def onMatrices (π : UJ ε → (H →L[ℂ] H)) (M : Matrix (Fin n) (Fin n) ℂ)
   if h : M ∈ UJset ε then π (toGroup ⟨M, h⟩) else 0
 
 /- English proof (translation)
-Establish `h : umat g ∈ UJset ε` using `g.2`. Rewrite using `[onMatrices, dif_pos h, toGroup_umat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem onMatrices_umat (π : UJ ε → (H →L[ℂ] H)) (g : UJ ε) : onMatrices π (umat g) = π g := by
   have h : umat g ∈ UJset ε := g.2
   rw [onMatrices, dif_pos h, toGroup_umat]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hc : Continuous fun g : UJ ε => umat g` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `⟨h.1.1, fun a b => h.1.2 (umat a) a.2 (umat b) b.2, fun g => h.2.1 (umat g) g.2, fun v => (h.2.2 v).comp_continuous hc fun g => g.2⟩`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨h.1, fun a ha b hb => h.2.1 (toGroup ⟨a, ha⟩) (toGroup ⟨b, hb⟩)⟩, fun g hg => h.2.2.1 (toGroup ⟨g, hg⟩), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `(h.2.2.2 v).comp continuous_toGroup`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isURepOn_iff (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     IsURepOn (UJset ε) π ↔ IsUnitaryRep fun g : UJ ε => π (umat g) := by

@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.PowGerm
 
 /- English proof (translation)
-Introduce `K _ _ d O _ _ B h w0 m n ι _ cp u f P hf`. Unfold `nabValN`. Rewrite using `[NabJet.constantCoeff_DpolyN_eq _ cp u P _ _ subset_rfl]`. Use `Finset.sum_eq_zero fun a ha => ?_` and prove the remaining obligations. Establish `hdeg : a.degree ≤ P.totalDegree`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `MvPolynomial.le_totalDegree ha` as an intermediate fact. Rewrite using `[Finsupp.degree_apply]` and apply the resulting hypothesis. Rewrite using `[NabJet.constantCoeff_DmonN_congr _ cp u a _ 0 fun mo hmo => ?_, (NabJet.isLinearMap_DmonN (B.FK K) cp u a).map_zero, map_zero, mul_zero]`. Rewrite using `[NabJet.coeff_mul_congr P.totalDegree f 0 _ (fun b hb => by rw [hf b hb, map_zero]) mo (hmo.trans hdeg), zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabValN_eq_zero_of_coeff_eq_zero :
     ∀ (K : Type) [CommRing K] [Algebra ℚ K] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB K d O) (h : PS K 2 d) (w0 : O) (m n : ℕ) (ι : Type) [Fintype ι] (cp : ι → Fin n) (u : ι → Fin d → K), ∀ (f : PS K n d) (P : MvPolynomial ι K), (∀ μ : Fin n × Fin d →₀ ℕ, μ.degree ≤ P.totalDegree → MvPowerSeries.coeff μ f = 0) → nabValN B K h w0 m f cp u P = 0 := by

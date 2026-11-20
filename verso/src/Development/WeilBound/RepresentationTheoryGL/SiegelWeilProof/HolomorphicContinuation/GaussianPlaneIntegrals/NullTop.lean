@@ -9,7 +9,7 @@ namespace PositivityTheory.Rg.Sw.FFTSteps
 variable {m n : ℕ}
 
 /- English proof (translation)
-Unfold `gs`. Rewrite using `[Complex.ofReal_exp, Complex.ofReal_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_eq (c : ℝ) (x : Fin m → Fin n → ℂ) :
     gs c x = ((Real.exp (-(c * ∑ a, ∑ i, ‖x a i‖ ^ 2)) : ℝ) : ℂ) := by
@@ -17,21 +17,21 @@ theorem gs_eq (c : ℝ) (x : Fin m → Fin n → ℂ) :
   rw [Complex.ofReal_exp, Complex.ofReal_neg]
 
 /- English proof (translation)
-Repeatedly rewrite using `[gs_eq]`. Use `fun_prop`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_gs (c : ℝ) : Continuous fun x : Fin m → Fin n → ℂ => gs c x := by
   simp_rw [gs_eq]
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[gs_eq, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_gs (c : ℝ) (x : Fin m → Fin n → ℂ) :
     ‖gs c x‖ = Real.exp (-(c * ∑ a, ∑ i, ‖x a i‖ ^ 2)) := by
   rw [gs_eq, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]
 
 /- English proof (translation)
-Simplify using `only [gs, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gs_half (c : ℝ) (x : Fin m → Fin n → ℂ) : gs c x = gs (c / 2) x * gs (c / 2) x := by
   simp only [gs, ← Complex.exp_add]
@@ -40,7 +40,7 @@ theorem gs_half (c : ℝ) (x : Fin m → Fin n → ℂ) : gs c x = gs (c / 2) x 
   ring
 
 /- English proof (translation)
-Establish `h` using `GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := (c : ℂ)) (by simpa using hc) 0 0`. Use `h.norm.congr (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using `only [zero_mul, add_zero, Complex.norm_exp]`. Use `norm_cast`. Rewrite using `[neg_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_gauss1 {c : ℝ} (hc : 0 < c) : Integrable (fun z : ℂ => Real.exp (-(c * ‖z‖ ^ 2))) := by
   have h := GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := (c : ℂ)) (by simpa using hc) 0 0
@@ -50,14 +50,14 @@ theorem integrable_gauss1 {c : ℝ} (hc : 0 < c) : Integrable (fun z : ℂ => Re
   rw [neg_mul]
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exp_sum_sum (c : ℝ) (x : Fin m → Fin n → ℂ) :
     Real.exp (-(c * ∑ a, ∑ i, ‖x a i‖ ^ 2)) = ∏ a, ∏ i, Real.exp (-(c * ‖x a i‖ ^ 2)) := by
   simp only [Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]
 
 /- English proof (translation)
-Conclude with `Integrable.fintype_prod (f := fun _ z => Real.exp (-(c * ‖z‖ ^ 2))) (fun _ => integrable_gauss1 hc)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_gs_row {c : ℝ} (hc : 0 < c) :
     Integrable (fun y : Fin n → ℂ => ∏ i, Real.exp (-(c * ‖y i‖ ^ 2))) := by
@@ -65,7 +65,7 @@ theorem integrable_gs_row {c : ℝ} (hc : 0 < c) :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `h` using `Integrable.fintype_prod (ι := Fin m) (E := Fin n → ℂ) (μ := fun _ => (volume : Measure (Fin n → ℂ))) (f := fun _ y => ∏ i, Real.exp (-(c * ‖y i‖ ^ 2))) (fun _ => integrable_gs_row hc)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_gs_prod {c : ℝ} (hc : 0 < c) :
     Integrable (fun x : Fin m → Fin n → ℂ => ∏ a, ∏ i, Real.exp (-(c * ‖x a i‖ ^ 2))) := by
@@ -74,26 +74,26 @@ theorem integrable_gs_prod {c : ℝ} (hc : 0 < c) :
   exact h
 
 /- English proof (translation)
-Conclude with `(integrable_gs_prod hc).congr (ae_of_all _ fun x => (exp_sum_sum c x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_gs_re {c : ℝ} (hc : 0 < c) :
     Integrable (fun x : Fin m → Fin n → ℂ => Real.exp (-(c * ∑ a, ∑ i, ‖x a i‖ ^ 2))) := by
   exact (integrable_gs_prod hc).congr (ae_of_all _ fun x => (exp_sum_sum c x).symm)
 
 /- English proof (translation)
-Conclude with `(integrable_gs_re hc).ofReal.congr (ae_of_all _ fun x => (gs_eq c x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_gs {c : ℝ} (hc : 0 < c) : Integrable (fun x : Fin m → Fin n → ℂ => gs c x) := by
   exact (integrable_gs_re hc).ofReal.congr (ae_of_all _ fun x => (gs_eq c x).symm)
 
 /- English proof (translation)
-Establish `hS0 : 0 ≤ S` using `le_trans (sq_nonneg r) hS`. Establish `h1 : 1 + a * S ≤ Real.exp (a * S)`. Use `Real.add_one_le_exp (a * S)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : 0 ≤ 1 / a` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `haS : 0 ≤ a * S` using `mul_nonneg ha.le hS0`. Establish `hprod : (1 + 1 / a) * (1 + a * S) = 1 + a * S + 1 / a + S`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : r ≤ (1 + 1 / a) * (1 + a * S)`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hprod]`. Use polynomial arithmetic with `[sq_nonneg (r - 1)]`. Establish `h3 : r ≤ (1 + 1 / a) * Real.exp (a * S)`. Establish `: 0 ≤ 1 + 1 / a` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, div_le_iff₀ (Real.exp_pos _)]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_aux {a r S : ℝ} (ha : 0 < a) (hr : 0 ≤ r) (hS : r ^ 2 ≤ S) :
     r * Real.exp (-(a * S)) ≤ 1 + 1 / a := by
@@ -116,7 +116,7 @@ theorem bound_aux {a r S : ℝ} (ha : 0 < a) (hr : 0 ≤ r) (hS : r ^ 2 ≤ S) :
   exact h3
 
 /- English proof (translation)
-Establish `h1 : ‖x a i‖ ^ 2 ≤ ∑ j, ‖x a j‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖x a j‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`. Establish `h2 : ∑ j, ‖x a j‖ ^ 2 ≤ ∑ b, ∑ j, ‖x b j‖ ^ 2` using `Finset.single_le_sum (f := fun b => ∑ j, ‖x b j‖ ^ 2) (fun b _ => Finset.sum_nonneg (fun j _ => sq_nonneg _)) (Finset.mem_univ a)`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sq_le_sum_sum (x : Fin m → Fin n → ℂ) (a : Fin m) (i : Fin n) :
     ‖x a i‖ ^ 2 ≤ ∑ a, ∑ i, ‖x a i‖ ^ 2 := by
@@ -128,19 +128,19 @@ theorem sq_le_sum_sum (x : Fin m → Fin n → ℂ) (a : Fin m) (i : Fin n) :
   exact h1.trans h2
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `c hc`. Establish `e : (fun x => evX (C a : PX m n) x * gs c x) = fun x => a * gs c x`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[evX]`. Rewrite using `[e]`. Conclude with `(integrable_gs hc).const_mul a`. Consider the case `add p q hp hq`. Introduce `c hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (fun x => evX (p + q) x * gs c x) = fun x => evX p x * gs c x + evX q x * gs c x`. Use function extensionality and compare the values at `x`. Simplify using `only [evX, map_add, add_mul]`. Rewrite using `[e]`. Conclude with `(hp hc).add (hq hc)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mul_X p k hp`. Introduce `c hc`. Establish `hc2 : 0 < c / 2` using `by positivity`. Establish `e : (fun x => evX (p * X k) x * gs c x) = fun x => ((if k.2.2 = true then star (x k.1 k.2.1) else x k.1 k.2.1) * gs (c / 2) x) * (evX p x * gs (c / 2) x)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [evX, map_mul, eval_X]`. Rewrite using `[gs_half c x]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(hp hc2).bdd_mul (c := 1 + 1 / (c / 2)) ?_ ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Continuous.aestronglyMeasurable (Continuous.mul ?_ (continuous_gs _))` and prove the remaining obligations. Distinguish the cases in `hk : k.2.2 = true`. Simplify using `only [hk, if_true] fun_prop`. Simplify using `only [hk, Bool.false_eq_true, if_false] fun_prop`. Use `ae_of_all _ fun x => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have hn : ‖(if k.2.2 = true then star (x k.1 k.2.1) else x k.1 k.2.1)‖ = ‖x k.1 k.2.1‖ := by split_ifs <;> simp`. Rewrite using `[norm_mul, norm_gs, hn]`. Conclude with `bound_aux hc2 (norm_nonneg _) (sq_le_sum_sum x k.1 k.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_evX_gs (P : PX m n) : ∀ {c : ℝ}, 0 < c → Integrable (fun x => evX P x * gs c x) := by
   induction P using MvPolynomial.induction_on with
@@ -183,9 +183,9 @@ theorem integrable_evX_gs (P : PX m n) : ∀ {c : ℝ}, 0 < c → Integrable (fu
       exact bound_aux hc2 (norm_nonneg _) (sq_le_sum_sum x k.1 k.2.1)
 
 /- English proof (translation)
-Unfold `mom`. Establish `h : ∀ x, evX ((R1 + R2) * P) x * gs c x = evX (R1 * P) x * gs c x + evX (R2 * P) x * gs c x`. Introduce `x`. Simplify using `only [evX, add_mul, map_add]`. Repeatedly rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `integral_add (integrable_evX_gs _ hc) (integrable_evX_gs _ hc)`.
+A detailed English derivation is pending.
 -/
 theorem mom_add {c : ℝ} (hc : 0 < c) (R1 R2 P : PX m n) :
     mom c ((R1 + R2) * P) = mom c (R1 * P) + mom c (R2 * P) := by
@@ -197,9 +197,9 @@ theorem mom_add {c : ℝ} (hc : 0 < c) (R1 R2 P : PX m n) :
   exact integral_add (integrable_evX_gs _ hc) (integrable_evX_gs _ hc)
 
 /- English proof (translation)
-Unfold `mom`. Establish `h : ∀ x, evX ((a • R) * P) x * gs c x = a * (evX (R * P) x * gs c x)`. Introduce `x`. Simplify using `only [evX, smul_eq_C_mul, map_mul, eval_C]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[h]`. Conclude with `integral_const_mul a _`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mom_smul (c : ℝ) (a : ℂ) (R P : PX m n) : mom c ((a • R) * P) = a * mom c (R * P) := by
   unfold mom
@@ -211,20 +211,20 @@ theorem mom_smul (c : ℝ) (a : ℂ) (R P : PX m n) : mom c ((a • R) * P) = a 
   exact integral_const_mul a _
 
 /- English proof (translation)
-Simplify using `[mom, evX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mom_zero (c : ℝ) (P : PX m n) : mom c (0 * P) = 0 := by
   simp [mom, evX]
 
 /- English proof (translation)
-Simplify using `only [evX, map_sum, map_mul, MvPolynomial.eval_C, Matrix.trace, Matrix.diag, Matrix.mul_apply, gramX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evX_ell (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) (x : Fin m → Fin n → ℂ) :
     evX (∑ i, ∑ j, C (b i j) * (Qp ε j i : PX m n)) x = (b * gramX ε x).trace := by
   simp only [evX, map_sum, map_mul, MvPolynomial.eval_C, Matrix.trace, Matrix.diag, Matrix.mul_apply, gramX]
 
 /- English proof (translation)
-Use `Subalgebra.sum_mem _ fun i _ => Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `Subalgebra.algebraMap_mem _ (b i j)`. Conclude with `Algebra.subset_adjoin ⟨(j, i), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ell_mem (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) :
     (∑ i, ∑ j, C (b i j) * (Qp ε j i : PX m n)) ∈
@@ -234,9 +234,9 @@ theorem ell_mem (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) :
   · exact Algebra.subset_adjoin ⟨(j, i), rfl⟩
 
 /- English proof (translation)
-Unfold `mom`. Use `congr 1`. Use extensionality with `x`. Establish `e : evX ((∑ i, ∑ j, C (b i j) * (Qp ε j i : PX m n)) ^ k * P) x = (evX (∑ i, ∑ j, C (b i j) * (Qp ε j i : PX m n)) x) ^ k * evX P x`. Simplify using `only [evX, map_mul, map_pow]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, evX_ell]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mom_ellpow (ε : Fin m → Bool) (c : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) (P : PX m n) :
     mom c ((∑ i, ∑ j, C (b i j) * (Qp ε j i : PX m n)) ^ k * P) =
@@ -251,13 +251,13 @@ theorem mom_ellpow (ε : Fin m → Bool) (c : ℝ) (b : Matrix (Fin n) (Fin n) �
   ring
 
 /- English proof (translation)
-The claim follows from `isOpen_lt (continuous_abs.comp Complex.continuous_im) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem strip_open (δ : ℝ) : IsOpen {z : ℂ | |z.im| < δ} :=
   isOpen_lt (continuous_abs.comp Complex.continuous_im) continuous_const
 
 /- English proof (translation)
-Establish `e : {z : ℂ | |z.im| < δ} = Complex.imLm ⁻¹' Set.Ioo (-δ) δ`. Use extensionality with `z`. Simplify using `[abs_lt]`. Rewrite using `[e]`. Conclude with `((convex_Ioo (-δ) δ).linear_preimage Complex.imLm).isPreconnected`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strip_conn (δ : ℝ) : IsPreconnected {z : ℂ | |z.im| < δ} := by
   have e : {z : ℂ | |z.im| < δ} = Complex.imLm ⁻¹' Set.Ioo (-δ) δ := by
@@ -266,29 +266,25 @@ theorem strip_conn (δ : ℝ) : IsPreconnected {z : ℂ | |z.im| < δ} := by
   exact ((convex_Ioo (-δ) δ).linear_preimage Complex.imLm).isPreconnected
 
 /- English proof (translation)
-Introduce `m n ε c t hc ht P`. Prove the components needed by the constructor for the conclusion. Introduce `hN b hb`. Take `⟨δ, hδ, hd, hre, hder⟩` from `hS m n ε c t hc P b hb`. Use `set F : ℂ → ℂ := fun z => ∫ x : Fin m → Fin n → ℂ, evX P x * gs c x * Complex.exp (Complex.I * ↑t * z * (b * gramX ε x).trace) with hF`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hball : Metric.ball (0:ℂ) δ ⊆ {z : ℂ | |z.im| < δ}`. Introduce `z hz`. Simplify using `only [Metric.mem_ball, dist_zero_right] at hz`. Conclude with `lt_of_le_of_lt (Complex.abs_im_le_norm z) hz`. Establish `hzero : ∀ k, iteratedDeriv k F 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[hder k, ← mom_ellpow, hN _ (Subalgebra.pow_mem _ (ell_mem ε b) k), mul_zero]`. Establish `hloc : F =ᶠ[𝓝 0] 0` using `by filter_upwards [Metric.ball_mem_nhds (0:ℂ) hδ] with z hz`. Rewrite using `[← Complex.taylorSeries_eq_on_ball' hz (hd.mono hball)]`. Simplify using `[hzero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `han : AnalyticOnNhd ℂ F {z : ℂ | |z.im| < δ}` using `hd.analyticOnNhd (strip_open δ)`. Establish `h0 : (0:ℂ) ∈ {z : ℂ | |z.im| < δ}` using `by simpa using hδ`. Establish `h1 : (1:ℂ) ∈ {z : ℂ | |z.im| < δ}` using `by simpa using hδ`. Establish `hF1` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero (strip_conn δ) h0 hloc h1`. Establish `e1` using `hre 1 (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[one_smul]`. Rewrite using `[← e1]`. Conclude with `hF1`. Introduce `hall R hR`. Establish `hR' : R ∈ Submodule.span ℂ {R : PX m n | ∃ (b : Matrix (Fin n) (Fin n) ℂ) (k : ℕ), b.IsHermitian ∧ R = (∑ i : Fin n, ∑ j : Fin n, C (b i j) * Qp ε j i) ^ k}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[← hP m n ε]`. Conclude with `hR`. Use `clear hR`. Proceed by induction on `hR' using Submodule.span_induction with`. Consider the case `mem R hmem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, k, hb, rfl⟩` from `hmem`. Take `⟨δ, hδ, hd, hre, hder⟩` from `hS m n ε c t hc P b hb`. Use `set F : ℂ → ℂ := fun z => ∫ x : Fin m → Fin n → ℂ, evX P x * gs c x * Complex.exp (Complex.I * ↑t * z * (b * gramX ε x).trace) with hF`. Establish `han : AnalyticOnNhd ℂ F {z : ℂ | |z.im| < δ}` using `hd.analyticOnNhd (strip_open δ)`. Establish `h0 : (0:ℂ) ∈ {z : ℂ | |z.im| < δ}` using `by simpa using hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hreal : ∀ r : ℝ, F r = 0`. Introduce `r`. Rewrite using `[show F r = _ from hre (r:ℂ) (Complex.ofReal_im r)]`. Apply `hall` to reduce the goal to its premises. Unfold `Matrix.IsHermitian`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.conjTranspose_smul, hb.eq, Complex.star_def, Complex.conj_ofReal]`. Establish `hfreq : ∃ᶠ z in 𝓝[≠] (0:ℂ), F z = 0`. Establish `hc0 : Tendsto (fun r : ℝ => (r : ℂ)) (𝓝 0) (𝓝 0)`. Simplify using `using Complex.continuous_ofReal.tendsto (0:ℝ)`. Establish `hT : Tendsto (fun r : ℝ => (r : ℂ)) (𝓝[≠] 0) (𝓝[≠] 0)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ (hc0.mono_left nhdsWithin_le_nhds) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Simplify using `using hr`. Conclude with `hT.frequently (Frequently.of_forall hreal)`. Establish `hloc` using `((han 0 h0).frequently_zero_iff_eventually_zero).mp hfreq`.
-
-Establish `hk` using `hder k`. Rewrite `hk` using `[Filter.EventuallyEq.iteratedDeriv_eq k (hloc : F =ᶠ[𝓝 0] 0)]`. Simplify using `at hk`. Rewrite using `[mom_ellpow]`. Conclude with `hk.resolve_left (fun h => ht h.1)`.
-
-Consider the case `zero => exact mom_zero c P`. Consider the case `add x y _ _ hx hy => rw [mom_add hc, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [mom_smul, hx, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nullIff_of (hS : SecLine) (hP : PowSpan) : NullIff := by
   intro m n ε c t hc ht P

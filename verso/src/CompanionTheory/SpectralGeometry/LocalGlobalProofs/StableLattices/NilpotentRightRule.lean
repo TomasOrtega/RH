@@ -18,9 +18,9 @@ def RightOK (ε : Fin n → Bool) (X : GMod n) (c : X.V →ₗ[ℂ] (Matrix (Fin
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `e1 : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Y) i j) = fun t : ℝ => Matrix.entryLinearMap ℝ ℂ i j (NormedSpace.exp (t • Y))`. Use function extensionality and compare the values at `t`. Establish `: (t : ℂ) • Y = t • Y` using `by ext a b; simp [Complex.real_smul]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : Y i j = Matrix.entryLinearMap ℝ ℂ i j (NormedSpace.exp ((0 : ℝ) • Y) * Y)`. Simplify using `[NormedSpace.exp_zero]`. Rewrite using `[e1, e2]`. Use `open scoped Matrix.Norms.Operator in`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_entry (Y : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Y) i j) (Y i j) 0 := by
@@ -37,7 +37,7 @@ theorem exp_entry (Y : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (0 : ℝ) (hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Apply the tactic sequence `exact HasDerivAt.fun_sum (u := Finset.univ) (A := fun l (t : ℝ) => g j l * NormedSpace.exp ((t : ℂ) • Y) l i) fun l _ => (exp_entry Y l i).const_mul (g j l)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_exp_entry (g Y : Matrix (Fin n) (Fin n) ℂ) (j i : Fin n) :
     HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • Y)) j i) ((g * Y) j i) 0 := by
@@ -46,13 +46,13 @@ theorem mul_exp_entry (g Y : Matrix (Fin n) (Fin n) ℂ) (j i : Fin n) :
     fun l _ => (exp_entry Y l i).const_mul (g j l)
 
 /- English proof (translation)
-Simplify using `[NormedSpace.exp_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_exp_zero (g Y : Matrix (Fin n) (Fin n) ℂ) : g * NormedSpace.exp (((0 : ℝ) : ℂ) • Y) = g := by
   simp [NormedSpace.exp_zero]
 
 /- English proof (translation)
-Use `show (∑ a, ∑ b, (Y a b • tensE X a b u : Fin n → X.V)) i = _`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, tensE_apply, smul_add, sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single i (fun a _ ha => by simp [Ne.symm ha]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tens_action (X : GMod n) (Y : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → X.V) (i : Fin n) :
     (∑ a, ∑ b, Y a b • (tens X).E a b u) i = (∑ a, ∑ b, Y a b • X.E a b (u i)) + ∑ b, Y i b • u b := by
@@ -63,13 +63,13 @@ theorem tens_action (X : GMod n) (Y : Matrix (Fin n) (Fin n) ℂ) (u : Fin n →
   simp
 
 /- English proof (translation)
-Introduce `u Y hY g hg`. Establish `h1 : ∀ i, HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • Y)) j i * c (u i) (g * NormedSpace.exp ((t : ℂ) • Y))) ((g * Y) j i * c (u i) g + g j i * c (∑ a, ∑ b, Y a b • X.E a b (u i)) g) 0`. Introduce `i`. Apply the tactic sequence `refine ((mul_exp_entry g Y j i).fun_mul (h (u i) Y hY g hg)).congr_deriv ?_`. Simplify using `only [mul_exp_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2` using `HasDerivAt.fun_sum (u := Finset.univ) (A := fun i (t : ℝ) => (g * NormedSpace.exp ((t : ℂ) • Y)) j i * c (u i) (g * NormedSpace.exp ((t : ℂ) • Y))) fun i _ => h1 i`. Use `h2.congr_deriv ?_` and prove the remaining obligations. Establish `e : ∀ i, c ((∑ a, ∑ b, Y a b • (tens X).E a b u) i) g = c (∑ a, ∑ b, Y a b • X.E a b (u i)) g + ∑ b, Y i b * c (u b) g`. Introduce `i`. Use `(congrArg (fun v => c v g) (tens_action X Y u i)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, Pi.add_apply, map_sum, Finset.sum_apply, map_smul, Pi.smul_apply, smul_eq_mul]`. Use `show _ = ∑ i, g j i * c ((∑ a, ∑ b, Y a b • (tens X).E a b u) i) g`. Use `Eq.trans ?_ (sum_congr rfl fun i _ => congrArg (g j i * ·) (e i).symm)` and prove the remaining obligations. Simplify using `only [mul_add, sum_add_distrib, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[add_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `sum_congr rfl fun _ _ => sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_ok {ε : Fin n → Bool} {X : GMod n} {c : X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)}
     (h : RightOK ε X c) (j : Fin n) : RightOK ε (tens X) (tensCoef X c j) := by
@@ -98,9 +98,9 @@ theorem tens_ok {ε : Fin n → Bool} {X : GMod n} {c : X.V →ₗ[ℂ] (Matrix 
   exact sum_congr rfl fun _ _ => sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Introduce `u Y hY g hg`. Set `S : (step X z).V →ₗ[ℂ] (tens X).V` to `(stepSub X z).subtype`. Establish `hS : ∀ a b w, S ((step X z).E a b w) = (tens X).E a b (S w)` using `fun _ _ _ => rfl`. Establish `e : S (∑ a, ∑ b, Y a b • (step X z).E a b u) = ∑ a, ∑ b, Y a b • (tens X).E a b (S u)`. Simplify using `only [map_sum, map_smul, hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `tens_ok h j (S u) Y hY g hg`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Use `show tensCoef X c j _ g = tensCoef X c j (S _) g`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_ok {ε : Fin n → Bool} {X : GMod n} {c : X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)}
     (h : RightOK ε X c) (z : ℂ) (j : Fin n) : RightOK ε (step X z) (stepCoef X z c j) := by
@@ -115,7 +115,7 @@ theorem step_ok {ε : Fin n → Bool} {X : GMod n} {c : X.V →ₗ[ℂ] (Matrix 
   rw [e]
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _, _, h => h | s :: ss, X, c, χ, js, h => path_ok ss (step X (χ s)) (stepCoef X (χ s) c (js.headD s)) (χ + Pi.single s 1) js.tail (step_ok h _ _)`.
+A detailed English derivation is pending.
 -/
 theorem path_ok {ε : Fin n → Bool} : ∀ (ss : List (Fin n)) (X : GMod n)
     (c : X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (χ : Fin n → ℂ) (js : List (Fin n)),
@@ -125,11 +125,11 @@ theorem path_ok {ε : Fin n → Bool} : ∀ (ss : List (Fin n)) (X : GMod n)
       (step_ok h _ _)
 
 /- English proof (translation)
-Introduce `u Y hY g hg`. Set `L : H →L[ℝ] ℂ` to `((innerSL ℂ ξ).comp (σ g)).restrictScalars ℝ`. Establish `h1` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hK.real Y hY u)`. Establish `e : (fun t : ℝ => baseCoef σ D ξ u (g * NormedSpace.exp ((t : ℂ) • Y))) = L ∘ fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Y)) (u : H)`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ⟪ξ, σ (g * NormedSpace.exp ((t : ℂ) • Y)) (u : H)⟫_ℂ = ⟪ξ, σ g (σ (NormedSpace.exp ((t : ℂ) • Y)) (u : H))⟫_ℂ`. Rewrite using `[hσ.1.2 g hg _ (Formalism.REAL.exp_indefinite_unitary_holds n ε Y hY t)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `h1.congr_deriv ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show ⟪ξ, σ g (∑ a, ∑ b, Y a b • (E a b u : H))⟫_ℂ = ⟪ξ, σ g ((∑ a, ∑ b, Y a b • E a b u : D) : H)⟫_ℂ`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`.
+A detailed English derivation is pending.
 -/
 theorem base_ok {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -150,7 +150,7 @@ theorem base_ok {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerPr
   simp only [Submodule.coe_sum, Submodule.coe_smul]
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ D E hK χ ss hσ i u X hX g hg`. Conclude with `path_ok ss ⟨D, E, hK.gl⟩ (baseCoef σ D (i.1 : H)) χ i.2 (base_ok hK hσ _) u X hX g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rightRule : CompanionTheory.RgExh.Dec.N.RightRule := by
   intro n ε H _ _ _ σ D E hK χ ss hσ i u X hX g hg

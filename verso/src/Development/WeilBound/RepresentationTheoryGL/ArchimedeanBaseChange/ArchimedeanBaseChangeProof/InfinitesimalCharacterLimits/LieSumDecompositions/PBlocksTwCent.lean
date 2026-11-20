@@ -11,7 +11,7 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.BlockTwistCharacters
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[mulChi_apply, mulChi_apply, map_mul, Units.val_mul, hψ, ExponentTwist.splitCentre_eq, ExponentTwist.chiDet_aT le_rfl, add_mul, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem central_mulChi {a : ℕ} (e w : ℂ) (ψ : Sm E a)
     (hψ : ∀ (t : ℝ) m, ψ.1 (splitCentre E a t * m) = Complex.exp (e * t) * ψ.1 m) (t : ℝ) (m : GA E a) :
@@ -22,7 +22,7 @@ theorem central_mulChi {a : ℕ} (e w : ℂ) (ψ : Sm E a)
   ring
 
 /- English proof (translation)
-Use `⟨_, he, fun φ hφ t g => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, rfl⟩` from `Submodule.mem_map.1 hφ`. Conclude with `central_mulChi e w ψ (hV ψ hψ) t g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem centIm_tw {a : ℕ} (V : Submodule ℂ (Sm E a)) (e w : ℂ) (he : (e + w * a * (Module.finrank ℚ E : ℂ)).re = 0)
     (hV : ∀ φ ∈ V, ∀ (t : ℝ) m, φ.1 (splitCentre E a t * m) = Complex.exp (e * t) * φ.1 m) :
@@ -33,14 +33,14 @@ theorem centIm_tw {a : ℕ} (V : Submodule ℂ (Sm E a)) (e w : ℂ) (he : (e + 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Conclude with `this.ne'` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_ne_zero' : (Module.finrank ℚ E : ℝ) ≠ 0 := by
   have : 0 < Module.finrank ℚ E := Module.finrank_pos
   exact_mod_cast this.ne'
 
 /- English proof (translation)
-Establish `hd` using `finrank_ne_zero' (E := E)`. Unfold `pE at hc`. Move the coercions through the operations in `at hc`. Clear denominators, using `at hc` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem re_of_pE {r s : ℕ} {c : ℂ} (hc : pE E (r + s) r c = 0) :
     c.re = (r : ℝ) * s * (Module.finrank ℚ E : ℝ) / 2 := by
@@ -51,7 +51,7 @@ theorem re_of_pE {r s : ℕ} {c : ℂ} (hc : pE E (r + s) r c = 0) :
   linarith
 
 /- English proof (translation)
-Use `centIm_tw V c _ ?_ hV` and prove the remaining obligations. Establish `h` using `re_of_pE (E := E) hc`. Establish `e1 : (c + -(s : ℂ) / 2 * r * (Module.finrank ℚ E : ℂ)).re = c.re - (s : ℝ) / 2 * r * (Module.finrank ℚ E : ℝ)`. Apply the tactic sequence `simp [Complex.add_re, Complex.mul_re, Complex.neg_re] <;> ring_nf`. Rewrite using `[e1, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -65,7 +65,7 @@ theorem centIm_left {r s : ℕ} (V : Submodule ℂ (Sm E r)) {c : ℂ} (hc : pE 
   rw [e1, h]; ring
 
 /- English proof (translation)
-Use `centIm_tw V (-c) _ ?_ hV` and prove the remaining obligations. Establish `h` using `re_of_pE (E := E) hc`. Establish `e1 : (-c + (r : ℂ) / 2 * s * (Module.finrank ℚ E : ℂ)).re = -c.re + (r : ℝ) / 2 * s * (Module.finrank ℚ E : ℝ)`. Apply the tactic sequence `simp [Complex.add_re, Complex.mul_re, Complex.neg_re] <;> ring_nf`. Rewrite using `[e1, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

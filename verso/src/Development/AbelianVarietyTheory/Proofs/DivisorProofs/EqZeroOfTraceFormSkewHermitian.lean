@@ -11,18 +11,18 @@ noncomputable abbrev ccHom (E : Type) [Field E] [NumberField E] [IsCMField E] : 
   (IsCMField.complexConj E).toAlgHom.toRingHom
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := ccHom E)`.
+A detailed English derivation is pending.
 -/
 lemma map_cc_mul {r : ℕ} (A B : Matrix (Fin r) (Fin r) E) :
     (A * B).map cc = A.map cc * B.map cc :=
   Matrix.map_mul (f := ccHom E)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `IsCMField.complexConj_ne_one E` to reduce the goal to its premises. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations. Establish `h1 : cc (x - cc x) = -(x - cc x)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [cc, map_sub, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `h (x - cc x)`. Establish `h3 : x - cc x = 0`. Assume the negation of the conclusion as `hne`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h2 hne h1`. Establish `: cc x = x` using `by linear_combination -h3`. Simplify `this` using `[cc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma exists_ne_zero_cc_eq_neg : ∃ β : E, β ≠ 0 ∧ cc β = -β := by
   by_contra h
@@ -39,14 +39,14 @@ lemma exists_ne_zero_cc_eq_neg : ∃ β : E, β ≠ 0 ∧ cc β = -β := by
   simpa [cc] using this
 
 /- English proof (translation)
-Simplify using `[herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_eq_dot {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     herm G x y = x ⬝ᵥ (G *ᵥ fun b => cc (y b)) := by
   simp [herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hc : (fun b => cc ((Y *ᵥ w) b)) = Y.map cc *ᵥ (fun b => cc (w b))`. Use function extensionality and compare the values at `b`. Simplify using `[mulVec, dotProduct, cc, map_sum, map_mul]`. Rewrite using `[herm_eq_dot, herm_eq_dot, hc, mulVec_mulVec, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, ← dotProduct_add, ← add_mulVec, h, zero_mulVec, dotProduct_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma form_skew_of_matrix {r : ℕ} (G Y : Matrix (Fin r) (Fin r) E)
     (h : Yᵀ * G + G * Y.map cc = 0) (u w : Fin r → E) :
@@ -62,41 +62,37 @@ end GlobalTheory.TraceSkew
 namespace GlobalTheory.TraceSkew
 
 /- English proof (translation)
-Introduce `E _ _ _ r G X hG hdet htr _hX hY`. Break down `Nat.eq_zero_or_pos r with hr0 | hr0` into its components or cases. Substitute `hr0` using the available equality. Use extensionality with `i`. Conclude with `i.elim0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hr : (r : E) ≠ 0` using `Nat.cast_ne_zero.mpr hr0.ne'`. Establish `hGu : IsUnit G.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `hGTu : IsUnit Gᵀ.det` using `by rw [det_transpose]; exact hGu`. Use `set Q : Matrix (Fin r) (Fin r) E := (Gᵀ)⁻¹ with hQdef`. Establish `hQT : Qᵀ * G = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQdef, transpose_nonsing_inv, transpose_transpose]`. Conclude with `nonsing_inv_mul G hGu`. Establish `hQG : Q * Gᵀ = 1` using `nonsing_inv_mul _ hGTu`. Establish `hGmap : Gᵀ.map cc = G`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_apply, transpose_apply]`. Conclude with `hG b a`. Establish `hQmap : G * Q.map cc = 1`. Establish `h1 : Q.map cc * G = 1`. Rewrite using `[← hGmap, ← map_cc_mul, hQG]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `only [map_apply, one_apply]`. Apply the tactic sequence `split_ifs <;> simp [cc]`. Conclude with `mul_eq_one_comm.mp h1`. Establish `hskew : ∀ K : Matrix (Fin r) (Fin r) E, Kᵀ + K.map cc = 0 → (Q * K)ᵀ * G + G * (Q * K).map cc = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `K hK`. Rewrite using `[transpose_mul, map_cc_mul, Matrix.mul_assoc, hQT, Matrix.mul_one, ← Matrix.mul_assoc, hQmap, Matrix.one_mul]`. Conclude with `hK`. Establish `htrskew : ∀ Y : Matrix (Fin r) (Fin r) E, Yᵀ * G + G * Y.map cc = 0 → cc Y.trace = -Y.trace`. Introduce `Y hY'`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : G * Y.map cc = -(Yᵀ * G)` using `eq_neg_of_add_eq_zero_right hY'`. Establish `h1 : Y.map cc = -(G⁻¹ * (Yᵀ * G))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, nonsing_inv_mul G hGu, Matrix.one_mul]`. Use `_ = -(G⁻¹ * (Yᵀ * G)) := by rw [h0, Matrix.mul_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (Y.map cc).trace = cc Y.trace`. Simplify using `[trace, cc, map_sum]`. Rewrite using `[← h2, h1, trace_neg, trace_mul_comm, Matrix.mul_assoc, mul_nonsing_inv G hGu, Matrix.mul_one, trace_transpose]`. Establish `hXY : ∀ Y : Matrix (Fin r) (Fin r) E, Yᵀ * G + G * Y.map cc = 0 → (X * Y).trace = 0`. Introduce `Y hY'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `set c : E := Y.trace / r with hcdef`. Establish `hc : cc c = -c`. Establish `: cc (r : E) = r` using `map_natCast (ccHom E) r`. Rewrite using `[hcdef, show cc (Y.trace / r) = cc Y.trace / cc (r : E) from map_div₀ (ccHom E) _ _, this, htrskew Y hY', neg_div]`. Establish `hmap1 : (c • (1 : Matrix (Fin r) (Fin r) E)).map cc = -(c • 1)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Simplify using `only [map_apply, Matrix.smul_apply, one_apply, Matrix.neg_apply, smul_eq_mul]`. Distinguish the cases in `hab : a = b`. Simplify using `only [hab, if_true, mul_one]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hab, cc]`. Establish `hmapY : (Y - c • (1 : Matrix (Fin r) (Fin r) E)).map cc = Y.map cc - (c • (1 : Matrix (Fin r) (Fin r) E)).map cc`. Use extensionality with `a b`. Simplify using `[cc]`. Establish `hs : (Y - c • (1 : Matrix (Fin r) (Fin r) E))ᵀ * G + G * (Y - c • (1 : Matrix (Fin r) (Fin r) E)).map cc = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hmapY, hmap1, transpose_sub, transpose_smul, transpose_one, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_neg, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, ← hY']`. Normalize the expressions using the abelian group laws. Establish `ht : (Y - c • (1 : Matrix (Fin r) (Fin r) E)).trace = 0`. Rewrite using `[trace_sub, trace_smul, trace_one, Fintype.card_fin, smul_eq_mul, hcdef, div_mul_cancel₀ _ hr, sub_self]`. Establish `h` using `hY (Y - c • (1 : Matrix (Fin r) (Fin r) E)) ht (form_skew_of_matrix G _ hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `h` using `[Matrix.mul_sub, trace_sub, Matrix.mul_smul, Matrix.mul_one, trace_smul, htr, smul_zero, sub_zero]`. Conclude with `h`. Take `⟨β, hβ0, hβ⟩` from `exists_ne_zero_cc_eq_neg (E := E)`. Establish `hβ' : IsCMField.complexConj E β = -β` using `hβ`. Establish `hall : ∀ K : Matrix (Fin r) (Fin r) E, (X * Q * K).trace = 0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `K`. Set `A : Matrix (Fin r) (Fin r) E` to `of fun i j => (K i j - cc (K j i)) / 2`. Set `B : Matrix (Fin r) (Fin r) E` to `of fun i j => (K i j + cc (K j i)) / (2 * β)`. Establish `hA : Aᵀ + A.map cc = 0`. Use extensionality with `i j`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [A, Matrix.add_apply, transpose_apply, map_apply, of_apply, Matrix.zero_apply, cc, map_sub, map_div₀, map_ofNat, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB : Bᵀ + B.map cc = 0`. Use extensionality with `i j`. Simplify using `only [B, Matrix.add_apply, transpose_apply, map_apply, of_apply, Matrix.zero_apply, cc, map_add, map_div₀, map_mul, map_ofNat, IsCMField.complexConj_apply_apply, hβ']`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hK : K = A + β • B`. Use extensionality with `i j`. Simplify using `only [A, B, Matrix.add_apply, Matrix.smul_apply, of_apply, smul_eq_mul]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.mul_assoc, hK, Matrix.mul_add, Matrix.mul_add, trace_add, Matrix.mul_smul, Matrix.mul_smul, trace_smul, hXY _ (hskew A hA), hXY _ (hskew B hB), smul_zero, add_zero]`. Establish `hXQ : X * Q = 0`. Rewrite using `[ext_iff_trace_mul_right]`.
-
-Introduce `K`. Rewrite using `[hall K, Matrix.zero_mul, trace_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem traceForm_nondegenerate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (X : Matrix (Fin r) (Fin r) E), (∀ a b, cc (G a b) = G b a) → G.det ≠ 0 → X.trace = 0 → (∀ u w, herm G (X *ᵥ u) w + herm G u (X *ᵥ w) = 0) → (∀ Y : Matrix (Fin r) (Fin r) E, Y.trace = 0 → (∀ u w, herm G (Y *ᵥ u) w + herm G u (Y *ᵥ w) = 0) → (X * Y).trace = 0) → X = 0 := by
   intro E _ _ _ r G X hG hdet htr _hX hY

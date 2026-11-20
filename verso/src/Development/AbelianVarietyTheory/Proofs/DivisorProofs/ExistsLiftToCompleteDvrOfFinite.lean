@@ -5,29 +5,23 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A R _ _ _ hinj hfin V _ _ _ _ hC h`. Set `p : Ideal A` to `RingHom.ker h`. Use `haveI : p.IsPrime := RingHom.ker_isPrime h`. Use `haveI : Algebra.IsIntegral A R := Algebra.IsIntegral.of_finite A R`. Take `⟨Q, -, hQ, hQp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral p (⊥ : Ideal R) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Ideal.comap_bot_of_injective _ hinj]`. Conclude with `bot_le)`. Set `K` to `FractionRing V`. Set `Ω` to `AlgebraicClosure K`. Use `letI : Algebra (A ⧸ p) (R ⧸ Q) := Ideal.Quotient.algebraQuotientOfLEComap (le_of_eq hQp.symm)`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : (algebraMap (A ⧸ p) (R ⧸ Q)).comp (Ideal.Quotient.mk p) = (Ideal.Quotient.mk Q).comp (algebraMap A R)` using `rfl`. Use `haveI : Algebra.IsIntegral (A ⧸ p) (R ⧸ Q) := by`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `IsIntegral.map_of_comp_eq (Ideal.Quotient.mk p) (Ideal.Quotient.mk Q) hcomp (Algebra.IsIntegral.isIntegral r)`. Establish `hinj0 : Function.Injective (algebraMap (A ⧸ p) (R ⧸ Q))` using `Ideal.quotientMap_injective' (le_of_eq hQp)`. Set `g0 : (A ⧸ p) →+* Ω` to `(algebraMap K Ω).comp ((algebraMap V K).comp (RingHom.kerLift h))`. Establish `hg0 : Function.Injective g0` using `(algebraMap K Ω).injective.comp ((IsFractionRing.injective V K).comp (RingHom.kerLift_injective h))`. Use `letI : Algebra (A ⧸ p) Ω := g0.toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.IsTorsionFree (A ⧸ p) (R ⧸ Q) := Module.isTorsionFree_iff_algebraMap_injective.2 hinj0`. Use `haveI : Module.IsTorsionFree (A ⧸ p) Ω := Module.isTorsionFree_iff_algebraMap_injective.2 hg0`. Use `haveI : Algebra.IsAlgebraic (A ⧸ p) (R ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Set `σ : (R ⧸ Q) →ₐ[A ⧸ p] Ω` to `IsAlgClosed.lift`. Set `ρ1 : R →+* Ω` to `σ.toRingHom.comp (Ideal.Quotient.mk Q)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρ1 : ∀ a : A, ρ1 (algebraMap A R a) = algebraMap K Ω (algebraMap V K (h a))`. Introduce `a`. Use `show σ (Ideal.Quotient.mk Q (algebraMap A R a)) = _`. Rewrite using `[← RingHom.comp_apply, ← hcomp, RingHom.comp_apply, σ.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨s, hs⟩` from `hfin.fg_top`. Set `M : IntermediateField K Ω` to `IntermediateField.adjoin K (ρ1 '' (s : Set R))`. Use `haveI : FiniteDimensional K M := IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Establish `hmem : ∀ r : R, ρ1 r ∈ M`. Introduce `r`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hr : r ∈ Submodule.span A (s : Set R)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin K _ ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `M.add_mem hx hy`. Consider the case `smul a x _ hx => rw [Algebra.smul_def, map_mul, hρ1]`. Conclude with `M.mul_mem (M.algebraMap_mem _) hx`. Set `ψ : R →+* M` to `ρ1.codRestrict M hmem`. Establish `hψ : (algebraMap V M).comp h = ψ.comp (algebraMap A R)`.
-
-Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Use `show (algebraMap V M (h a) : Ω) = ρ1 (algebraMap A R a)`. Rewrite using `[hρ1]`. Both sides reduce to the same expression.
-
-Establish `hint : ∀ r : R, ψ r ∈ integralClosure V M` using `fun r => IsIntegral.map_of_comp_eq h ψ hψ (Algebra.IsIntegral.isIntegral r)`. Set `ρ : R →+* integralClosure V M` to `ψ.codRestrict (integralClosure V M) hint`. Use `haveI hdvr := Formalism.L2.G.IntCl.isDVR V K M hC`. Establish `hfinj` using `Formalism.L2.G.IntCl.alg_injective V K M`. Use `haveI : FaithfulSMul V (integralClosure V M) := (faithfulSMul_iff_algebraMap_injective _ _).2 hfinj`.
-
-Use `⟨integralClosure V M, inferInstance, inferInstance, hdvr, (RingHom.charZero_iff hfinj).1 inferInstance, algebraMap V (integralClosure V M), ρ, Formalism.L2.G.IntCl.complete V K M hC, hfinj, Algebra.IsIntegral.isLocalHom _ _, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Use `show ρ1 (algebraMap A R a) = (algebraMap V M (h a) : Ω)`. Rewrite using `[hρ1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_lift_to_complete_dvr_of_finite : ∀ (A R : Type) [CommRing A] [CommRing R] [Algebra A R], Function.Injective (algebraMap A R) →
     Module.Finite A R → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V],

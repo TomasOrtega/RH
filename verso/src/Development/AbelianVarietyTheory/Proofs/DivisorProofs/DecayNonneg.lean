@@ -28,12 +28,12 @@ def decay (N m : ℕ) (l : (AE F E)ˣ) : ℝ :=
 variable {F E}
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem size_nonneg (x : AE F E) : 0 ≤ size F E x := Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-Unfold `decay`. Use `split_ifs`. Conclude with `inv_nonneg.mpr (pow_nonneg (add_nonneg zero_le_one (size_nonneg _)) _)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem decay_nonneg (N m : ℕ) (l : (AE F E)ˣ) : 0 ≤ decay F E N m l := by
   unfold decay
@@ -42,11 +42,9 @@ theorem decay_nonneg (N m : ℕ) (l : (AE F E)ˣ) : 0 ≤ decay F E N m l := by
   · exact le_rfl
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Unfold `decay`. Use `split_ifs with h1 h2`. Conclude with `le_rfl`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h2` to reduce the goal to its premises. Introduce `i v`. Use `h1 i v` as an intermediate fact. Rewrite using `[Nat.cast_mul, mul_comm (m : AF F) (c : AF F), mul_assoc, map_mul]`. Use `mul_mem ?_ this` and prove the remaining obligations.
-
-Rewrite using `[map_natCast]`. Conclude with `natCast_mem (v.adicCompletionIntegers F) c`. Conclude with `inv_nonneg.mpr (pow_nonneg (add_nonneg zero_le_one (size_nonneg _)) _)`. Conclude with `le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay_mono {N m m' : ℕ} (h : m ∣ m') (l : (AE F E)ˣ) : decay F E N m l ≤ decay F E N m' l := by
   obtain ⟨c, rfl⟩ := h

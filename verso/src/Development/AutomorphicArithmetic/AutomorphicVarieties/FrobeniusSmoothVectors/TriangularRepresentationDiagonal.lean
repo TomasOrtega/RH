@@ -7,14 +7,14 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Locally
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker φ h`.
+A detailed English derivation is pending.
 -/
 private theorem lc_of_ker {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     (φ : G →* H) (h : IsOpen (φ.ker : Set G)) : IsLocallyConstant φ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker φ h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk64.diag_mul a b ha hb i`.
+A detailed English derivation is pending.
 -/
 private theorem diag_mul {n : ℕ} {Q : Type} [CommRing Q] (a b : Matrix (Fin n) (Fin n) Q)
     (ha : ∀ i j, i < j → a i j = 0) (hb : ∀ i j, i < j → b i j = 0) (i : Fin n) :
@@ -22,17 +22,15 @@ private theorem diag_mul {n : ℕ} {Q : Type} [CommRing Q] (a b : Matrix (Fin n)
   _root_.UpperTheory.Reformulated.B.Qk64.diag_mul a b ha hb i
 
 /- English proof (translation)
-Use `haveI : CharP Q l := charP_of_injective_ringHom f.injective l`. Establish `hz : ∀ g i j, i < j → ρ.r g i j = 0` using `fun g i j hij => by`. Establish `: ρ.r g i j ∈ ρ.triM` using `Ideal.subset_span ⟨g, i, j, hij, rfl⟩`. Rewrite `this` using `[ht, Ideal.mem_bot]`. Then use the resulting hypothesis. Set `χ : F.G0 →* Q` to `{ toFun := fun g => ρ.r g i i * f (((F.Ψ g ^ w n i)⁻¹ : kˣ) : k) map_one' := by simp map_mul' := fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, diag_mul _ _ (hz a) (hz b), Subgroup.coe_mul, map_mul, mul_zpow, mul_inv, Units.val_mul, map_mul]`. Use `ring }`. Establish `hχ : ∀ g, χ g = ρ.r g i i * f (((F.Ψ g ^ w n i)⁻¹ : kˣ) : k)` using `fun _ => rfl`. Establish `hinv : ∀ g : F.G0, f (((F.Ψ g ^ w n i)⁻¹ : kˣ) : k) * f ((F.Ψ g ^ w n i : kˣ) : k) = 1` using `fun g => by`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΨ : IsLocallyConstant fun g : F.G0 => F.Ψ g` using `(lc_of_ker F.Ψ hF.Ψ_open).comp_continuous continuous_subtype_val`. Establish `h1 : χ g = 1`. Use `adic_char_unipotent_pgroup_quotient (l := l) χ h h0 (fun N => ?_) (fun g => ?_) (fun A _ _ hA ψ hψ hh => H A hA ψ hψ ?_) g` and prove the remaining obligations. Use `(hc.1 i i N).mul (hΨ.comp fun u : kˣ => Ideal.Quotient.mk (maximalIdeal Q ^ N) (f (((u ^ w n i)⁻¹ : kˣ) : k)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [hχ, map_mul, Pi.mul_apply, Function.comp]`. Rewrite using `[← residue_eq_zero_iff, map_sub, map_one, sub_eq_zero, hχ, map_mul]`. Establish `h2 : residue Q (ρ.r g i i) = residue Q (f ((F.Ψ g ^ w n i : kˣ) : k))` using `hb.1 g i`. Rewrite using `[h2, ← map_mul, mul_comm, hinv, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g g' e1 e2`. Conclude with `hh g g' (by rw [hχ, hχ, e1, e2])`. Rewrite `h1` using `[hχ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, mul_one]`.
-
-Use `_ = _ := by rw [← mul_assoc, h1, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem key {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}
     (hF : F.Ok C₀) {Q : Type} [CommRing Q] [IsDomain Q] [IsLocalRing Q] [IsNoetherianRing Q]
@@ -75,17 +73,13 @@ private theorem key {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F
     _ = _ := by rw [← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n hF hn Q _ _ _ _ _ f ρ hc hb ht ι ι' s s' h h0 hs H h1 h2`. Take `⟨-, -, sΨ, -, sr⟩` from `UpperTheory.V.Fr.star hF`. Establish `A0 : ∀ (i : Fin n), (i : ℕ) = 0 → ∀ g, ρ.r g i i = f ((F.Ψ g ^ w n i : kˣ) : k)` using `fun i hi => key hF f ρ hc hb ht h h0 i fun A _ _ hA ψ hψ hh => (H A hA ψ hψ).1 fun a => by`. Rewrite using `[← map_one ψ]`. Use `hh _ _ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1 a i hi]`. Simplify using the standard rewrite rules. Rewrite using `[hs a]`. Simplify using the standard rewrite rules. Establish `A1 : ∀ (i : Fin n), w n i = 0 → i.rev = i → ∀ g, ρ.r g i i = f ((F.Ψ g ^ w n i : kˣ) : k)` using `fun i hi hr => key hF f ρ hc hb ht h h0 i fun A _ _ hA ψ hψ hh => (H A hA ψ hψ).2 (fun g => hh _ _ (by rw [sr, hr]) (by simp [hi])) fun a => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_one ψ]`. Use `hh _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[h2 a i hi]`. Simplify using the standard rewrite rules. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `A2 : ∀ (i : Fin n), (i : ℕ) = 0 → w n i.rev = - w n i → ∀ g, ρ.r g i.rev i.rev = f ((F.Ψ g ^ w n i.rev : kˣ) : k)` using `fun i hi hw g => by`. Rewrite using `[← sr, A0 i hi, sΨ, hw, _root_.zpow_neg, _root_.inv_zpow]`. Introduce `g i`. Break down `hn with rfl | rfl` into its components or cases. Use `fin_cases i`.
-
-Conclude with `A0 0 rfl g`. Conclude with `A2 0 rfl (by decide) g`. Use `fin_cases i`. Conclude with `A0 0 rfl g`. Conclude with `A1 1 (by decide) (by decide) g`.
-
-Conclude with `A2 0 rfl (by decide) g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.triangular_representation_diagonal :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ {Q : Type} [CommRing Q] [IsDomain Q] [IsLocalRing Q] [IsNoetherianRing Q] [Finite (ResidueField Q)] (f : k →+* Q) (ρ : NRep F n Q), ρ.Cont (maximalIdeal Q) → (ρ.map (residue Q)).IsBar ((residue Q).comp f) → ρ.triM = ⊥ → ∀ {ι ι' : Type} (s : ι → F.G0) (s' : ι' → F.G0) (h : ℕ), h ≠ 0 → (∀ a, F.Ψ (s a) = 1) → (∀ (A : Type) [CommGroup A] [Finite A], IsPGroup l A → ∀ χ : F.G0 →* A, IsOpen (χ.ker : Set F.G0) → ((∀ a, χ (s a) = 1) → ∀ g, χ g ^ h = 1) ∧ ((∀ g, χ (F.star g) = χ g) → (∀ a, χ (s' a) = 1) → ∀ g, χ g ^ h = 1)) → (∀ a (i : Fin n), (i : ℕ) = 0 → ρ.r (s a) i i = 1) → (∀ a (i : Fin n), w n i = 0 → ρ.r (s' a) i i = 1) → ∀ (g : F.G0) (i : Fin n), ρ.r g i i = f ((F.Ψ g ^ w n i : kˣ) : k) := by

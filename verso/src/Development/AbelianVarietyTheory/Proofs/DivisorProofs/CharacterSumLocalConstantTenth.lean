@@ -13,9 +13,9 @@ open scoped ComplexOrder
 namespace GlobalTheory.ChainClassNumbers
 
 /- English proof (translation)
-Use `Nat.card_le_card_of_injective (fun c : MulAction.orbitRel.Quotient G' D' => (Quotient.mk (MulAction.orbitRel _ _) (p (Quotient.out c)) : MulAction.orbitRel.Quotient ((⊤ : Subgroup (UF E n)).prod (⊥ : Subgroup (GLG E n SG))) (DecoSet E n ST SG))) ?_` and prove the remaining obligations. Introduce `c c' hcc`. Take `⟨⟨⟨g, k⟩, hgk⟩, hg⟩` from `Quotient.exact hcc`. Establish `hk : k = 1` using `(Subgroup.mem_prod.1 hgk).2`. Substitute `hk` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨g', hg'⟩` from `h g (Quotient.out c')`. Establish `he : g' • Quotient.out c' = Quotient.out c` using `hp (hg'.trans hg)`. Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c']`. Conclude with `Quotient.sound ⟨g', he⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_orbits_le_principal {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
     {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {G' D' : Type} [Group G'] [MulAction G' D']
@@ -38,27 +38,25 @@ theorem card_orbits_le_principal {E : Type} [Field E] [NumberField E] [StarRing 
   exact Quotient.sound ⟨g', he⟩
 
 /- English proof (translation)
-Establish `hrdE` using `hH.rd_eq`. Take `⟨hR, hq, hd, -, -, -, hX, -, -, hP, -, -, hg, -⟩` from `hH`. Take `⟨⟨s1, -⟩, s2, -, s4, -⟩` from `hS`. Take `⟨hfin, hcount⟩` from `GlobalTheory.DecoClassCount.card_classes_le X hX.ok n ST SG`. Establish `hle` using `card_orbits_le_principal p hp h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : 5 ≤ N.R.k` using `by have := N.R.m_add_three_le_k; have := N.R.two_le_m; omega`. Establish `hf : X.f = N.R.f`. Establish `h1 : X.f = Nat.card X.Tau` using `Nat.card_eq_fintype_card.symm`. Rewrite using `[h1, ← Nat.card_congr pl, Nat.card_prod, Nat.card_eq_fintype_card (α := N.R.A), N.R.card_A]`. Simplify using `[Ranks.f, Ranks.n]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hE : Module.finrank ℚ X.E = 2 * N.R.f`. Establish `h1` using `Module.finrank_mul_finrank ℚ X.F X.E`. Rewrite `h1` using `[hX.ok.rankE, ← hX.ok.card_Tau]`. Rewrite using `[← hf, mul_comm]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf1 : 1 ≤ N.R.f` using `hf ▸ hX.ok.f_pos`. Establish `hfib` using `GlobalTheory.ColumnClassLog.fibre_bound_le hP u n hn SG hSG`. Rewrite `hfib` using `[hf, hg 0, hg 1]`. Establish `hsub : ∏ P ∈ ST, Ideal.absNorm P.asIdeal ^ n ≤ ∏ P ∈ Pr.vT u, Ideal.absNorm P.asIdeal ^ n`. Use `Finset.prod_le_prod_of_subset_of_one_le' hST fun P hP' _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP.vT_norm u P hP']`. Conclude with `Nat.one_le_pow _ _ (hP.T_prime u).pos`. Establish `hfib'` using `(Nat.mul_le_mul_right _ hsub).trans hfib`. Establish `hrd : |(discr X.E : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ X.E : ℝ)) = N.rd`. Establish `e : X.E ≃ₐ[ℚ] D.host.E` using `s.iE.toRatAlgEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : D.host.rdE = N.rd` using `hrdE.symm`. Rewrite using `[discr_eq_discr_of_algEquiv X.E e, e.toLinearEquiv.finrank_eq]`. Conclude with `h1`. Establish `hrd0 : 0 < N.rd`. Rewrite using `[← hrd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast discr_ne_zero _)) _`. Establish `hL : 1 ≤ N.sc.L` using `Real.one_le_rpow N.sc.one_lt_alt.le N.sc.eps_pos.le`. Establish `hb : 1 ≤ Real.exp N.sc.L` using `Real.one_le_exp (by linarith)`. Establish `hg0 : Real.exp N.sc.L ≤ N.g 0`. Use `le_trans ?_ (s2 0).1` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk' : (1 : ℝ) ≤ N.R.k` using `by exact_mod_cast (by omega : 1 ≤ N.R.k)`. Establish `h1 : Real.exp N.sc.L ≤ (N.R.k : ℝ) * Real.exp N.sc.L` using `by nlinarith`. Conclude with `h1.trans (le_self_pow₀ (hb.trans h1) (by norm_num))`. Establish `hlog` using `GlobalTheory.ColumnClassLog.log_le_of_count (Nat.card (MulAction.orbitRel.Quotient G' D')) N.R.f n N.Nm (N.g 0) (N.g 1) (Pr.T u) N.rd N.sc.L hf1 hn hnN (hP.T_prime u).pos hrd0 hL s1 s4 hg0 (N.g_prime 1).pos (by`. Use `((Nat.cast_le.2 hle).trans hcount).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hrd, hE, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[pow_two n]`. Conclude with `hfib')` after adjusting the coercions. Use `(Real.le_exp_log _).trans (Real.exp_le_exp.2 (hlog.trans ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `hG : 0 ≤ Real.log ((N.g 0 : ℝ) * N.g 1 * Pr.T u)`. Establish `: 1 ≤ N.g 0 * N.g 1 * Pr.T u` using `Nat.mul_pos (Nat.mul_pos (N.g_prime 0).pos (N.g_prime 1).pos) (hP.T_prime u).pos`. Conclude with `Real.log_nonneg (by exact_mod_cast this)`. Establish `hm : (1 : ℝ) ≤ (N.R.m : ℝ) ^ 2`. Establish `: (1 : ℝ) ≤ N.R.m` using `by exact_mod_cast (by have := N.R.two_le_m; omega : 1 ≤ N.R.m)`.
-
-Conclude with `one_le_pow₀ this`. Unfold `errUnit`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem card_orbits_le_exp {D : D7} {N : NumDatum} {X : Fields} {s : Seam D X} {Pr : Primes X} (hH : HostTie N s Pr)
     (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) {δ : Code N} (hS : SizeRows N δ (Pr.T u)) {n : ℕ} (hn : 1 ≤ n) (hnN : n ≤ N.Nm)
@@ -125,15 +123,13 @@ theorem card_orbits_le_exp {D : D7} {N : NumDatum} {X : Fields} {s : Seam D X} {
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Use `⟨55, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ hyp`. Take `⟨hH, -, -, -, hmu, -, -, -, hS⟩` from `hyp`. Establish `hQ : QE sel (mu : Chr X.F X.E X.K) = ∅`. Rewrite using `[hmu]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `twistPrimes_trivialTuple_empty sel Sg`. Establish `hSG : rowSG Pr sel mu = Pr.vGs`. Unfold `rowSG uSG`. Use extensionality with `w`. Rewrite using `[Finset.mem_union, hQ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hk : 5 ≤ N.R.k` using `by have := N.R.m_add_three_le_k; have := N.R.two_le_m; omega`. Establish `hm : 2 ≤ N.R.N N.R.m` using `by unfold Ranks.N; omega`. Use `⟨fun j hj b => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hn : 1 ≤ N.R.N j` using `by unfold Ranks.N; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnN : N.R.N j ≤ N.Nm` using `by unfold NumDatum.Nm Ranks.N; gcongr`. Use `@card_orbits_le_exp D N X s Pr hH pl u δ hS _ hn hnN _ _ subset_rfl rfl (FrmG (I.levG j b) (I.levQ j b)) (ChPt (R := N.R) (Pr := Pr) sel mu u j) _ (frmAct (I.levG j b) (I.levQ j b)) DecoF.deco ?_ fun g x => ⟨(g, 1, 1), rfl⟩` and prove the remaining obligations. Introduce `x y hxy`. Use `Subtype.ext (Prod.ext hxy (funext fun P => ?_))` and prove the remaining obligations. Conclude with `absurd P.2 (Finset.eq_empty_iff_forall_notMem.1 hQ P.1)`.
-
-Conclude with `@card_orbits_le_exp D N X s Pr hH pl u δ hS (N.R.N N.R.m - 1) (by omega) (Nat.sub_le _ _) ∅ _ (Finset.empty_subset _) hSG (FormG (rowTy Ch sel mu (rPsymF Ch)).inv) (RowPt Pr N.R sel mu) _ (formAct (rowTy Ch sel mu (rPsymF Ch)).inv) id Function.injective_id fun g x => ⟨(g, 1), rfl …`. Unfold `topClassNumber`. Conclude with `card_orbits_le_exp (n := N.R.N N.R.m) hH pl u hS (le_trans (by norm_num) hm) le_rfl subset_rfl hSG id Function.injective_id fun g x => ⟨⟨(g, 1), Subgroup.mem_prod.2 ⟨Subgroup.mem_top _, one_mem _⟩⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem classNumbers_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), Hyp N s W Ch G sel mu cst I dl χ cD pl u δ → (∀ j ≤ N.R.m, ∀ b : I.β j, (Nat.card ((chF W sel mu I u j).mem b).Cl : ℝ) ≤ Real.exp (C * errUnit N (Pr.T u))) ∧ (Nat.card (evGSD W Ch sel mu (rPsymF Ch) u).Cl : ℝ) ≤ Real.exp (C * errUnit N (Pr.T u)) ∧ (topClassNumber Ch sel mu u : ℝ) ≤ Real.exp (C * errUnit N (Pr.T u)) := by
   refine ⟨55, by norm_num, ?_⟩

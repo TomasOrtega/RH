@@ -31,13 +31,11 @@ namespace GlobalTheory.RowShape
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `big_mono (fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch h => ?_) ((((((((((((((GlobalTheory.T.gridRow_zero_basePoint_carriesLattice).and GlobalTheory.T.vacuum_base_point_moves_row_lattices).and GlobalTheory.T.posNormLine_selfDual_and_topLattice_splits).and GlobalTheory.T.negLineL …` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨hmv0, hmvS⟩, htop⟩, hcore⟩, hsd⟩, hmB⟩, hmJ⟩, hpB⟩, hpJ⟩, hcBF⟩, hcFB⟩, hlast⟩, hkap⟩, hun⟩` from `h`. Establish `hmv : ∀ (t : T) (b : Pts ch.G), IsBase t ch.S.B b → ∀ j, j ≤ D.R.m → GlobalTheory.FinPl.Moves _ (b j) (ch.G.Λ (.grid D.R.m j)) (GlobalTheory.RowShape.rowN ch.G j) fun _ => True` using `fun t b hb j hj => by`. Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases. Conclude with `hmv0 t b hb`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hmvS t b hb j hj0 hj`. Establish `hX : ∀ k, k ≤ D.R.m → IsSelfDualC (ch.G.V (.top k)) (ch.G.Λ (.top k))` using `fun k hk => (ch.G.isV (X := .top k) (by show k ≤ D.R.m; omega) (fun _ e => Node.noConfusion e)).sd`. Use `⟨GlobalTheory.RowShape.rowN ch.G, GlobalTheory.RowShape.coreL ch.G, GlobalTheory.RowShape.lineL D, GlobalTheory.RowShape.topL D, hmv, htop.1, htop.2, fun t M hM j σ hj vN v => ?_⟩` and prove the remaining obligations. Take `⟨hLL, hN0, hO⟩` from `hcore j σ hj`. Use `⟨hLL, hO v, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `{ tame := GlobalTheory.FinPl.TamePlaces.tame D v sdV := hsd j (by omega) sdV₀ := hN0 sdW := hsd (j + 1) (by omega) sdW₀ := hX (j + 1) (by omega) monoV := hmB j σ hj v monoW := hmJ (j + 1) (by omega) σ (by omega) v prim := hpB j σ hj v cols := hcBF j σ hj v last := fun hσ a ha => …`. Introduce `i hi hi'`. Substitute `hi` using the available equality. Conclude with `{ tame := GlobalTheory.FinPl.TamePlaces.tame D v sdV := hsd i (by omega) sdV₀ := hX i (by omega) sdW := hsd (i + 1) (by omega) sdW₀ := hN0 monoV := hmJ i (by omega) (σ + 1) (by omega) v monoW := hmB (i + 1) σ (by omega) v prim := hpJ i (by omega) (σ + 1) (by omega) v cols := hcFB …`. Introduce `hσ w hw`.
-
-Substitute `hσ` using the available equality. Conclude with `hkap j (by omega) v w hw`. Conclude with `fun hoff i hi => hun t v hoff i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem shapeAt_big : Big fun ch => ShapeAt ch := by
   refine big_mono (fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch h => ?_)

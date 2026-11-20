@@ -10,11 +10,11 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Filter Topology Matrix ComplexSets
 
 /- English proof (translation)
-Take `⟨C₀, hC₀⟩` from `(isCompact_sphere (0 : Fin n → ℂ) 1).exists_bound_of_continuousOn (hac.mono fun x hx => ne_zero_of_mem_unit_sphere ⟨x, hx⟩)`. Use `⟨max C₀ |a 0| + 1, by positivity, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Combine the linear relations using `[le_max_right C₀ |a 0|]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hn : (‖x‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hx`. Establish `hy : (‖x‖ : ℂ)⁻¹ • x ∈ Metric.sphere (0 : Fin n → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hx)]`. Use `hC₀ _ hy` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs, ← ha (‖x‖ : ℂ) _ hn, smul_inv_smul₀ hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear relations using `[le_max_left C₀ |a 0|]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem SliceRegTail.exists_bound {n : ℕ} {a : (Fin n → ℂ) → ℝ}
     (ha : ∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → a (t • x) = a x) (hac : ContinuousOn a {x | x ≠ 0}) :
@@ -33,13 +33,13 @@ theorem SliceRegTail.exists_bound {n : ℕ} {a : (Fin n → ℂ) → ℝ}
     linarith [le_max_left C₀ |a 0|]
 
 /- English proof (translation)
-Introduce `n e h W F u' ℓ a hW hF hu hℓ hℓP ha hac δ hδ`. Take `⟨C, hC0, hC⟩` from `SliceRegTail.exists_bound ha hac`. Establish `hδ' : 0 < δ / (3 * C)` using `by positivity`. Take `⟨K₁, hK₁⟩` from `hT n e h W F u' ℓ hW hF hu hℓ hℓP _ hδ'`. Take `⟨K₂, hK₂⟩` from `eventually_atTop.mp (Filter.Tendsto.eventually_lt_const hδ' (hM n e h W F ℓ hW hF hℓ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max K₁ K₂, fun k hk ε hε => ?_⟩` and prove the remaining obligations. Establish `hma : Measurable a` using `measurable_of_continuousOn_compl_singleton 0 hac`. Establish `hI` using `SliceCut.mem_Icc h k`. Establish `hb` using `hB n e h W F u' ℓ ε C a (fun x => sliceCut h k x * a x) (fun x => 1 - sliceCut h k x) hW hF hℓ hε.1 hma ((SliceCut.measurable h k).mul hma) (measurable_const.sub (SliceCut.measurable h k)) hC (fun x => by`. Rewrite using `[abs_mul, abs_of_nonneg (hI x).1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[hC x, (hI x).1, (hI x).2, abs_nonneg (a x)])`. Use the proof step `(fun x => ⟨by linarith [(hI x).2], by linarith [(hI x).1]⟩)`. Use the proof step `(fun x => by`. Rewrite using `[show a x - sliceCut h k x * a x = (1 - sliceCut h k x) * a x by ring, abs_mul, abs_of_nonneg (by linarith [(hI x).2] : (0 : ℝ) ≤ 1 - sliceCut h k x)]`. Use polynomial arithmetic with `[hC x, (hI x).1, (hI x).2, abs_nonneg (a x)])`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hK₁ k (le_of_max_le_left hk) ε hε`. Establish `h2` using `hK₂ k (le_of_max_le_right hk)`. Use `hb.trans ?_` and prove the remaining obligations. Establish `h3 : C * (δ / (3 * C)) = δ / 3` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem SliceRegTail.proof (hB : SliceRegVarBound.Statement) (hT : SliceRegTailMass.Statement)
     (hM : SliceCutTailMass.Statement) : SliceRegTail.Statement := by

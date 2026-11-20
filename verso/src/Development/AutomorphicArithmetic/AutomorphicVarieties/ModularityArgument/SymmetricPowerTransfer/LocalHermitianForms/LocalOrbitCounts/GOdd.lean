@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ L j χ z _ hj h`. Assume the negation of the conclusion as `h'`. Take `⟨s, u, t, h1, -⟩` from `exists_of_gOrb_ne hj h'`. Conclude with `h ⟨u, s, s.ne_zero, h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.gOdd : UpperTheory.V.Z.Sym.Loc.GOdd := by
   intro O K _ _ _ _ _ Δ τ L j χ z _ hj h

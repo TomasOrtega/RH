@@ -11,7 +11,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentCost.ZDeriv
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentCost.ZCostOf
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.UsCost.unitarySum_cost_of_parts PI.UnitaryGroupMassFormula.UsCost.wordsId PI.UnitaryGroupMassFormula.UsCost.letterSize PI.UnitaryGroupMassFormula.UsCost.starScale PI.UnitaryGroupMassFormula.UsCost.commLR PI.UnitaryGroupMassFormula.UsCost.offK PI.Unitary …`.
+A detailed English derivation is pending.
 -/
 theorem operator_word_cost : Formalism.FourierDecayAlt.U.DerivativeCostFromComponents :=
   PI.UnitaryGroupMassFormula.UsCost.unitarySum_cost_of_parts PI.UnitaryGroupMassFormula.UsCost.wordsId PI.UnitaryGroupMassFormula.UsCost.letterSize PI.UnitaryGroupMassFormula.UsCost.starScale

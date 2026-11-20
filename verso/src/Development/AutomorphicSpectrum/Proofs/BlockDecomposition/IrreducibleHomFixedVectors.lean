@@ -12,7 +12,7 @@ section Generic
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Use `hv ⟨c, hc⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fix_of_mem {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} {K : Subgroup G}
     {v : V} (hv : v ∈ fixed ρ K) {c : G} (hc : c ∈ K) : ρ c v = v := by
@@ -20,9 +20,9 @@ theorem fix_of_mem {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representati
   simpa using this
 
 /- English proof (translation)
-Set `S : Subrepresentation ρ` to `{ toSubmodule := N, apply_mem_toSubmodule := fun g v hv => hN g v hv }`. Break down `hρ.eq_bot_or_eq_top S with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : w ∈ S.toSubmodule` using `hw`. Rewrite `h1` using `[h]`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0 h1`. Conclude with `congrArg Subrepresentation.toSubmodule h`.
+A detailed English derivation is pending.
 -/
 theorem eq_top_of_inv {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     (hρ : ρ.IsIrreducible) (N : Submodule ℂ V) (hN : ∀ g, ∀ v ∈ N, ρ g v ∈ N) {w : V} (hw : w ∈ N)
@@ -40,7 +40,7 @@ def act {V M : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup M] [Module �
   Finsupp.lsum ℂ fun g => ρ g ∘ₗ A
 
 /- English proof (translation)
-Simplify using `[act]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_single {V M : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup M] [Module ℂ M]
     (ρ : Representation ℂ G V) (A : M →ₗ[ℂ] V) (g : G) (m : M) :
@@ -48,7 +48,7 @@ theorem act_single {V M : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup M]
   simp [act]
 
 /- English proof (translation)
-Establish `: act ρ A ∘ₗ Finsupp.lmapDomain M ℂ (fun g => h * g) = ρ h ∘ₗ act ρ A`. Use `Finsupp.lhom_ext fun a b => ?_` and prove the remaining obligations. Simplify using `[act_single, Finsupp.mapDomain_single]`. Conclude with `LinearMap.congr_fun this x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_translate {V M : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup M] [Module ℂ M]
     (ρ : Representation ℂ G V) (A : M →ₗ[ℂ] V) (h : G) (x : G →₀ M) :
@@ -63,7 +63,7 @@ def avg {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
   ∑ q : K ⧸ L.subgroupOf K, ρ ((q.out : K) : G)
 
 /- English proof (translation)
-Simplify using `only [avg, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_congr rfl fun q _ => fix_of_mem hv (q.out : K).2]`. Simplify using `[Nat.cast_smul_eq_nsmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem avg_of_fixed {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K L : Subgroup G)
     [Fintype (K ⧸ L.subgroupOf K)] {v : V} (hv : v ∈ fixed ρ K) :
@@ -78,7 +78,7 @@ def cosetFn (K L : Subgroup G) [Fintype (K ⧸ L.subgroupOf K)] (g x : G) : ℂ 
     if (QuotientGroup.mk x : G ⧸ K) = QuotientGroup.mk (((q.out : K) : G) * g) then 1 else 0
 
 /- English proof (translation)
-Unfold `cosetFn`. Rewrite using `[QuotientGroup.mk_mul_of_mem x hk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetFn_right (K L : Subgroup G) [Fintype (K ⧸ L.subgroupOf K)] (g x : G) {k : G} (hk : k ∈ K) :
     cosetFn K L g (x * k) = cosetFn K L g x := by
@@ -86,13 +86,13 @@ theorem cosetFn_right (K L : Subgroup G) [Fintype (K ⧸ L.subgroupOf K)] (g x :
   rw [QuotientGroup.mk_mul_of_mem x hk]
 
 /- English proof (translation)
-Unfold `cosetFn`. Set `kk : K` to `⟨k, hk⟩`. Use `Fintype.sum_equiv (MulAction.toPerm kk⁻¹ : Equiv.Perm (K ⧸ L.subgroupOf K)) _ _ fun q => ?_` and prove the remaining obligations. Establish `hq : (MulAction.toPerm kk⁻¹ : Equiv.Perm (K ⧸ L.subgroupOf K)) q = (QuotientGroup.mk (kk⁻¹ * q.out) : K ⧸ L.subgroupOf K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul (L.subgroupOf K) (kk⁻¹ * q.out)`. Establish `hcL : ((c : K) : G) ∈ L` using `Subgroup.mem_subgroupOf.1 c.2`. Establish `hmk : (QuotientGroup.mk (((((MulAction.toPerm kk⁻¹ : Equiv.Perm (K ⧸ L.subgroupOf K)) q).out : K) : G) * g) : G ⧸ K) = QuotientGroup.mk (k⁻¹ * (((q.out : K) : G) * g))`. Rewrite using `[hq, hc, QuotientGroup.eq]`. Use `hL _ (L.inv_mem hcL)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[kk, mul_assoc]`. Establish `hiff : ((QuotientGroup.mk (k * x) : G ⧸ K) = QuotientGroup.mk (((q.out : K) : G) * g)) ↔ ((QuotientGroup.mk x : G ⧸ K) = QuotientGroup.mk (k⁻¹ * (((q.out : K) : G) * g)))`. Rewrite using `[QuotientGroup.eq, QuotientGroup.eq]`. Simplify using `[mul_assoc]`. Rewrite using `[hmk]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hiff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cosetFn_left (K L : Subgroup G) [Fintype (K ⧸ L.subgroupOf K)] (g : G)
     (hL : ∀ l ∈ L, g⁻¹ * l * g ∈ K) (x : G) {k : G} (hk : k ∈ K) :
@@ -127,11 +127,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use `⟨hKo, hKc, ?_, fun k₁ h₁ k₂ h₂ x => ?_⟩` and prove the remaining obligations. Set `C : Set (GL ι F)` to `⋃ q : K ⧸ L.subgroupOf K, (fun y => (((q.out : K) : GL ι F) * g) * y) '' (K : Set (GL ι F))`. Establish `hC : IsCompact C` using `isCompact_iUnion fun q => hKc.image (continuous_const.mul continuous_id)`. Use `HasCompactSupport.of_support_subset_isCompact hC fun x hx => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : K ⧸ L.subgroupOf K, (QuotientGroup.mk x : GL ι F ⧸ K) = QuotientGroup.mk (((q.out : K) : GL ι F) * g) := by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `(Function.mem_support.1 hx) ?_` and prove the remaining obligations. Unfold `cosetFn`. Conclude with `Finset.sum_eq_zero fun q _ => if_neg (h q)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Set.mem_iUnion.2 ⟨q, _, QuotientGroup.eq.1 hq.symm, ?_⟩` and prove the remaining obligations. Use `group`. Rewrite using `[cosetFn_right K L g _ h₂, cosetFn_left K L g hL _ h₁]`.
+A detailed English derivation is pending.
 -/
 theorem isHk_cosetFn {K L : Subgroup (GL ι F)} [Fintype (K ⧸ L.subgroupOf K)]
     (hKo : IsOpen (K : Set (GL ι F))) (hKc : IsCompact (K : Set (GL ι F))) (g : GL ι F)
@@ -153,15 +153,15 @@ theorem isHk_cosetFn {K L : Subgroup (GL ι F)} [Fintype (K ⧸ L.subgroupOf K)]
   · rw [cosetFn_right K L g _ h₂, cosetFn_left K L g hL _ h₁]
 
 /- English proof (translation)
-Establish `step : ∀ p : GL ι F ⧸ K, cosetFn K L g p.out • ρ p.out v = ∑ q : K ⧸ L.subgroupOf K, if p = QuotientGroup.mk (((q.out : K) : GL ι F) * g) then ρ (((q.out : K) : GL ι F) * g) v else 0`. Introduce `p`. Unfold `cosetFn`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[QuotientGroup.out_eq']`. Use `split_ifs with h`. Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul K (((q.out : K) : GL ι F) * g)`. Rewrite using `[one_smul, h, hc, map_mul, Module.End.mul_apply, fix_of_mem hv c.2]`. Rewrite using `[zero_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `hk`. Rewrite using `[finsum_congr step, finsum_sum_comm]`. Simplify using `only [avg, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk (((q.out : K) : GL ι F) * g))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_mul, Module.End.mul_apply]`. Introduce `p hp`. Conclude with `if_neg hp`. Introduce `q _`. Use `(Set.finite_singleton (QuotientGroup.mk (((q.out : K) : GL ι F) * g) : GL ι F ⧸ K)).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `p hp`. Assume the negation of the conclusion as `h`. Conclude with `(Function.mem_support.1 hp) (if_neg h)`.
+A detailed English derivation is pending.
 -/
 theorem hk_cosetFn {K L : Subgroup (GL ι F)} [Fintype (K ⧸ L.subgroupOf K)] (g : GL ι F)
     {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL ι F) V) {v : V} (hv : v ∈ fixed ρ K) :
@@ -194,11 +194,11 @@ theorem hk_cosetFn {K L : Subgroup (GL ι F)} [Fintype (K ⧸ L.subgroupOf K)] (
     exact (Function.mem_support.1 hp) (if_neg h)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨K, hKo, le_rfl, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨L, hLo, hLK, hL⟩` from `ih`. Set `C : Subgroup (GL ι F)` to `K.comap (MulAut.conj a⁻¹).toMonoidHom`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hC : IsOpen (C : Set (GL ι F))`. Establish `hcont : Continuous fun l : GL ι F => a⁻¹ * l * a⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `hKo.preimage hcont`. Use `⟨L ⊓ C, hLo.inter hC, inf_le_left.trans hLK, fun g hg l hl => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hg with rfl | hg` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `hl.2` as an intermediate fact. Simplify `this` using `[C, Subgroup.mem_comap]`. Conclude with `hL g hg l hl.1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_open_sub {K : Subgroup (GL ι F)} (hKo : IsOpen (K : Set (GL ι F))) (s : Finset (GL ι F)) :
     ∃ L : Subgroup (GL ι F), IsOpen (L : Set (GL ι F)) ∧ L ≤ K ∧ ∀ g ∈ s, ∀ l ∈ L, g⁻¹ * l * g ∈ K := by
@@ -219,7 +219,7 @@ theorem exists_open_sub {K : Subgroup (GL ι F)} (hKo : IsOpen (K : Set (GL ι F
     · exact hL g hg l hl.1
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc`. Conclude with `Subgroup.quotient_finite_of_isOpen _ (hLo.preimage continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot {K L : Subgroup (GL ι F)} (hKc : IsCompact (K : Set (GL ι F)))
     (hLo : IsOpen (L : Set (GL ι F))) : Finite (K ⧸ L.subgroupOf K) := by
@@ -227,11 +227,11 @@ theorem finite_quot {K L : Subgroup (GL ι F)} (hKc : IsCompact (K : Set (GL ι 
   exact Subgroup.quotient_finite_of_isOpen _ (hLo.preimage continuous_subtype_val)
 
 /- English proof (translation)
-Take `⟨L, hLo, -, hL⟩` from `exists_open_sub hKo x.support`. Use `haveI := finite_quot hKc hLo`. Use `letI : Fintype (K ⧸ L.subgroupOf K) := Fintype.ofFinite _`. Establish `hcard : (Fintype.card (K ⧸ L.subgroupOf K) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `key : avg τ K L (act τ (T ∘ₗ (fixed π K).subtype) x) = T (avg π K L (act π (fixed π K).subtype x))`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [act, Finsupp.coe_lsum, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `hT _ (isHk_cosetFn hKo hKc g (hL g hg)) _ (x g).2`. Rewrite `h1` using `[hk_cosetFn g π (x g).2, hk_cosetFn g τ (hfix _ (x g).2)]`. Simplify using `using h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[ha, map_zero, map_zero, avg_of_fixed τ K L hb]`. Conclude with `(smul_eq_zero.1 key).resolve_left hcard`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_rel {K : Subgroup (GL ι F)} (hKo : IsOpen (K : Set (GL ι F))) (hKc : IsCompact (K : Set (GL ι F)))
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -257,27 +257,23 @@ theorem eq_zero_of_rel {K : Subgroup (GL ι F)} (hKo : IsOpen (K : Set (GL ι F)
   exact (smul_eq_zero.1 key).resolve_left hcard
 
 /- English proof (translation)
-Introduce `F _ _ _ _ ι _ _ K hKo hKc V W _ _ _ _ π τ _ hπ _ hτ ⟨v₀, hv₀, hv₀0⟩ T hfix _ hinj hT`. Use `set a := act π (fixed π K).subtype with ha_def`. Use `set b := act τ (T ∘ₗ (fixed π K).subtype) with hb_def`. Set `tr : GL ι F → (GL ι F →₀ fixed π K) →ₗ[ℂ] (GL ι F →₀ fixed π K)` to `fun h => Finsupp.lmapDomain (fixed π K) ℂ (fun g => h * g)`. Establish `hatr : ∀ h x, a (tr h x) = π h (a x)` using `fun h x => act_translate π _ h x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbtr : ∀ h x, b (tr h x) = τ h (b x)` using `fun h x => act_translate τ _ h x`. Set `x₀ : GL ι F →₀ fixed π K` to `Finsupp.single 1 ⟨v₀, hv₀⟩`. Establish `hax₀ : a x₀ = v₀` using `by simp [a, x₀, act_single]`. Establish `hbx₀ : b x₀ = T v₀` using `by simp [b, x₀, act_single]`. Establish `hw₀ : T v₀ ≠ 0` using `fun h => hv₀0 (hinj v₀ hv₀ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective a`. Use `LinearMap.range_eq_top.1 (eq_top_of_inv hπ (LinearMap.range a) ?_ ⟨x₀, hax₀⟩ hv₀0)` and prove the remaining obligations. Introduce and unpack `g _ ⟨x, rfl⟩`. Conclude with `⟨tr g x, hatr g x⟩`. Establish `hker : ∀ x, a x = 0 → b x = 0`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `y hy`. Assume the negation of the conclusion as `hne`. Establish `htop : (LinearMap.ker a).map b = ⊤`. Use `eq_top_of_inv hτ _ ?_ (Submodule.mem_map_of_mem (LinearMap.mem_ker.2 hy)) hne` and prove the remaining obligations. Introduce and unpack `g _ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨tr g x, ?_, hbtr g x⟩` and prove the remaining obligations. Establish `hx' : a x = 0` using `hx`. Use `show a (tr g x) = 0`. Rewrite using `[hatr, hx', map_zero]`. Establish `hmem : T v₀ ∈ (LinearMap.ker a).map b` using `htop ▸ Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx, hxe⟩` from `hmem`. Establish `hxe' : b x = T v₀` using `hxe`. Use `eq_zero_of_rel hKo hKc π τ T hfix hT x hx (by show b x ∈ fixed τ K` as an intermediate fact. Rewrite using `[hxe']`. Conclude with `hfix v₀ hv₀)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hw₀ (hxe'.symm.trans this)`. Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective a (LinearMap.range_eq_top.2 hsurj)`. Establish `has : ∀ u, a (s u) = u` using `fun u => LinearMap.congr_fun hs u`. Set `S : V →ₗ[ℂ] W` to `b ∘ₗ s`. Establish `hS : ∀ x, S (a x) = b x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h0 : b (s (a x) - x) = 0` using `hker _ (by rw [map_sub, has, sub_self])`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `h0`. Establish `hint : ∀ g u, S (π g u) = τ g (S u)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g u`. Take `⟨x, rfl⟩` from `hsurj u`. Rewrite using `[← hatr, hS, hS, hbtr]`. Set `Φ : Representation.IntertwiningMap π τ` to `{ S with isIntertwining' := fun g => by ext u; exact hint g u }`. Use `haveI := hπ`.
-
-Use `haveI := hτ`. Establish `hΦ : Φ ≠ 0`. Introduce `h0`. Establish `h1 : Φ v₀ = 0` using `by rw [h0]; rfl`. Establish `h2 : Φ v₀ = T v₀` using `by show S v₀ = T v₀`.
-
-Rewrite using `[← hax₀, hS, hbx₀, hax₀]`. Conclude with `hw₀ (h2.symm.trans h1)`. Conclude with `⟨Φ.ofBijective ((Representation.IsIrreducible.bijective_or_eq_zero Φ).resolve_right hΦ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hecke_determines : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ι : Type) [Fintype ι] [DecidableEq ι] (K : Subgroup (GL ι F)), IsOpen (K : Set (GL ι F)) → IsCompact (K : Set (GL ι F)) → ∀ (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL ι F) V) (τ : Representation ℂ (GL ι F) W), GlobalTheory.PRep.IsSmooth π → π.IsIrreducible → GlobalTheory.PRep.IsSmooth τ → τ.IsIrreducible → (∃ v ∈ fixed π K, v ≠ 0) → ∀ T : V →ₗ[ℂ] W, (∀ v ∈ fixed π K, T v ∈ fixed τ K) → (∀ w ∈ fixed τ K, ∃ v ∈ fixed π K, T v = w) → (∀ v ∈ fixed π K, T v = 0 → v = 0) → (∀ e, IsHk K e → ∀ v ∈ fixed π K, T (hk π K e v) = hk τ K e (T v)) → Nonempty (π.Equiv τ) := by
   intro F _ _ _ _ ι _ _ K hKo hKc V W _ _ _ _ π τ _ hπ _ hτ ⟨v₀, hv₀, hv₀0⟩ T hfix _ hinj hT

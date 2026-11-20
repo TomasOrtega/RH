@@ -14,7 +14,7 @@ namespace GlobalTheory.MetaplecticScalarDeriv
 open MeasureTheory Filter Topology GlobalTheory.RealWeil
 
 /- English proof (translation)
-Set `b : ContDiffBump (0 : EuclideanSpace ℝ l)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `⟨h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 1`. Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -28,7 +28,7 @@ theorem exists_schwartz_one (l : Type) [Fintype l] : ∃ f : Sch l, f 0 = 1 := b
   simp
 
 /- English proof (translation)
-Rewrite using `[eLpNorm_congr_ae (f.coeFn_toLp 2 volume), eLpNorm_eq_eLpNorm' two_ne_zero ENNReal.ofNat_ne_top]`. Use `lintegral_rpow_enorm_eq_rpow_eLpNorm' (f := ⇑f) (μ := volume) (q := 2) two_pos` as an intermediate fact. Simplify `this` using `[ENNReal.toReal_ofNat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lintegral_sq_eq (l : Type) [Fintype l] (f : Sch l) :
     ∫⁻ x, ‖f x‖ₑ ^ 2 = eLpNorm (⇑(f.toLp 2 : L2 l)) 2 volume ^ 2 := by
@@ -37,24 +37,22 @@ theorem lintegral_sq_eq (l : Type) [Fintype l] (f : Sch l) :
   simpa [ENNReal.toReal_ofNat] using this
 
 /- English proof (translation)
-The claim follows from `((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eval (l : Type) [Fintype l] (x : EuclideanSpace ℝ l) : Continuous fun f : Sch l => f x :=
   ((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)).continuous
 
 /- English proof (translation)
-The claim follows from `(continuous_phase w).mul (hf.comp (continuous_add_right _))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rhoFun (l : Type) [Fintype l] (w : l ⊕ l → ℝ) {f : EuclideanSpace ℝ l → ℂ} (hf : Continuous f) :
     Continuous (rhoFun w f) :=
   (continuous_phase w).mul (hf.comp (continuous_add_right _))
 
 /- English proof (translation)
-Establish `e1 : (h₁.toLp 2 : L2 l) = rho w (h.toLp 2)`. Use `Lp.ext ((h₁.coeFn_toLp 2 volume).trans ?_)` and prove the remaining obligations. Rewrite using `[hh]`. Conclude with `(rhoFun_congr w (h.coeFn_toLp 2 volume).symm).trans (coeFn_rho w _).symm`. Establish `e2 : ((S h₁).toLp 2 : L2 l) = rho (M *ᵥ w) ((S h).toLp 2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h4, e1, h3, h4]`. Establish `e3 : ⇑(S h₁) =ᵐ[volume] rhoFun (M *ᵥ w) ⇑(S h)`. Use `((S h₁).coeFn_toLp 2 volume).symm.trans ?_` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `(coeFn_rho _ _).trans (rhoFun_congr _ ((S h).coeFn_toLp 2 volume))`.
-
-Conclude with `(Continuous.ae_eq_iff_eq volume (S h₁).continuous (continuous_rhoFun l _ (S h).continuous)).1 e3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intertwine_fun (l : Type) [Fintype l] (M : Matrix (l ⊕ l) (l ⊕ l) ℝ) (U : L2 l ≃ₗᵢ[ℂ] L2 l)
     (S : Sch l →L[ℂ] Sch l) (h3 : ∀ (w : l ⊕ l → ℝ) (f : L2 l), U (rho w f) = rho (M *ᵥ w) (U f))
@@ -73,7 +71,7 @@ theorem intertwine_fun (l : Type) [Fintype l] (M : Matrix (l ⊕ l) (l ⊕ l) �
   exact (Continuous.ae_eq_iff_eq volume (S h₁).continuous (continuous_rhoFun l _ (S h).continuous)).1 e3
 
 /- English proof (translation)
-Rewrite using `[lintegral_sq_eq, lintegral_sq_eq]`. Use `congr 1`. Establish `hn : ‖((S h).toLp 2 : L2 l)‖ = ‖(h.toLp 2 : L2 l)‖` using `by rw [← h4, U.norm_map]`. Rewrite `hn` using `[Lp.norm_def, Lp.norm_def]`. Conclude with `(ENNReal.toReal_eq_toReal_iff' (Lp.eLpNorm_ne_top _) (Lp.eLpNorm_ne_top _)).1 hn`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_iso (l : Type) [Fintype l] (U : L2 l ≃ₗᵢ[ℂ] L2 l) (S : Sch l →L[ℂ] Sch l)
     (h4 : ∀ f : Sch l, U (f.toLp 2) = (S f).toLp 2) (h : Sch l) :
@@ -85,39 +83,35 @@ theorem lintegral_iso (l : Type) [Fintype l] (U : L2 l ≃ₗᵢ[ℂ] L2 l) (S :
   exact (ENNReal.toReal_eq_toReal_iff' (Lp.eLpNorm_ne_top _) (Lp.eLpNorm_ne_top _)).1 hn
 
 /- English proof (translation)
-Take `⟨G, _, _, _, pr, om, omS, -, -, h3, h4, -, h6⟩` from `hP.realMetaplecticRepresentation l`. Take `⟨γ, -, hγ0, hγadd, hγpr, hγd⟩` from `h6 Z hZ`. Establish `hmul : ∀ s t (f : Sch l), omS (γ s) (omS (γ t) f) = omS (γ (s + t)) f`. Introduce `s t f`. Rewrite using `[hγadd, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hS1 : ∀ t (f : Sch l), omS (γ (-t)) (omS (γ t) f) = f`. Introduce `t f`. Rewrite using `[hmul, neg_add_cancel, hγ0, map_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hS2 : ∀ t (f : Sch l), omS (γ t) (omS (γ (-t)) f) = f`. Introduce `t f`. Rewrite using `[hmul, add_neg_cancel, hγ0, map_one]`. Both sides reduce to the same expression. Establish `hmat : ∀ t (w : l ⊕ l → ℝ), NormedSpace.exp (t • Z) *ᵥ ((pr (γ (-t)) : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) = w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `t w`. Establish `e : pr (γ t) * pr (γ (-t)) = 1` using `by rw [← map_mul, ← hγadd, add_neg_cancel, hγ0, map_one]`. Establish `e' : (pr (γ t) : Matrix (l ⊕ l) (l ⊕ l) ℝ) * (pr (γ (-t)) : Matrix (l ⊕ l) (l ⊕ l) ℝ) = 1` using `congrArg (fun g : Matrix.symplecticGroup l ℝ => (g : Matrix (l ⊕ l) (l ⊕ l) ℝ)) e`. Rewrite using `[← hγpr t, Matrix.mulVec_mulVec, e', Matrix.one_mulVec]`. Establish `hU : ∀ t, ∃ a : ℂ, ‖a‖ = 1 ∧ ∀ h, (T t ∘ₗ (omS (γ (-t)) : Sch l →ₗ[ℂ] Sch l)) h = a • h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t`. Use `GlobalTheory.T.schwartz_unitary_intertwiner_scalar hP l _ (fun w h h₁ hh => ?_) (fun h => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[hTrho t _ _ _ (intertwine_fun l _ (om (γ (-t))) (omS (γ (-t))) (h3 _) (h4 _) w h h₁ hh), hmat]`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hTiso, lintegral_iso l (om (γ (-t))) (omS (γ (-t))) (h4 _)]`. Use `choose ν _hνn hν using hU`. Establish `hTν : ∀ t (f : Sch l), T t f = ν t • omS (γ t) f`. Introduce `t f`. Use `hν t (omS (γ t) f)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe, hS1]`. Take `⟨f0, hf0⟩` from `exists_schwartz_one l`. Establish `hν0 : ν 0 = 1`. Establish `e` using `congrArg (fun g : Sch l => g 0) (hTν 0 f0)`. Simplify using `only [hT0, LinearMap.id_apply, hγ0, map_one, SchwartzMap.smul_apply, smul_eq_mul, hf0] at e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `1 = ν 0 * (1 : Sch l →L[ℂ] Sch l) f0 0 at e`. Rewrite `e` using `[ContinuousLinearMap.one_apply, hf0, mul_one]`. Conclude with `e.symm`. Establish `hνmul : ∀ s t, ν (s + t) = ν s * ν t`. Introduce `s t`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f := omS (γ (-(s + t))) f0`. Establish `e1 : T (s + t) f = ν (s + t) • f0` using `by rw [hTν, hS2]`. Establish `e2 : T (s + t) f = (ν s * ν t) • f0`. Rewrite using `[hTadd, LinearMap.comp_apply, hTν t, map_smul, hTν s, hmul, hS2, smul_smul, mul_comm]`. Establish `e` using `congrArg (fun g : Sch l => g 0) (e1.symm.trans e2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `e` using `[hf0]`. Establish `hcontS : ContinuousAt (fun t => omS (γ t) f0) 0`. Establish `hd` using `GlobalTheory.T.tendsto_slope_metaplecticLift_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f0`. Establish `h1 : Tendsto (fun t : ℝ => t • (t⁻¹ • (omS (γ t) f0 - f0))) (𝓝[≠] 0) (𝓝 ((0 : ℝ) • quad Z f0))` using `(tendsto_nhdsWithin_of_tendsto_nhds tendsto_id).smul hd`. Rewrite `h1` using `[zero_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Tendsto (fun t : ℝ => omS (γ t) f0) (𝓝[≠] 0) (𝓝 f0)`. Establish `h1'` using `h1.add_const f0`. Rewrite `h1'` using `[zero_add]`. Use `h1'.congr' (eventually_nhdsWithin_of_forall fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel₀ ht, one_smul, sub_add_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← continuousWithinAt_compl_self, ContinuousWithinAt, hγ0, map_one]`. Conclude with `h2`. Establish `hcontS0 : ContinuousAt (fun t => omS (γ t) f0 0) 0` using `(continuous_eval l 0).continuousAt.comp hcontS`. Establish `hS00 : omS (γ 0) f0 0 ≠ 0`. Rewrite using `[hγ0, map_one, ContinuousLinearMap.one_apply, hf0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Establish `hνc : ContinuousAt ν 0`. Establish `hq : ContinuousAt (fun t => T t f0 0 / omS (γ t) f0 0) 0` using `(hTcont f0 0).continuousAt.div hcontS0 hS00`. Use `hq.congr ?_` and prove the remaining obligations. Use `filter_upwards [hcontS0.eventually_ne hS00] with t ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hTν, SchwartzMap.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ ht]`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_hasDerivAt_zero_of_map_add_mul' ν hν0 hνmul hνc`. Use `⟨a, fun f => ?_⟩` and prove the remaining obligations. Establish `hslope` using `hasDerivAt_iff_tendsto_slope_zero.1 ha`. Simplify using `only [zero_add, hν0] at hslope`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd` using `GlobalTheory.T.tendsto_slope_metaplecticLift_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f`. Establish `hν1 : Tendsto ν (𝓝[≠] 0) (𝓝 1)`. Rewrite using `[← hν0]`. Conclude with `hνc.tendsto.mono_left nhdsWithin_le_nhds`. Establish `hlim` using `(hν1.smul hd).add (hslope.smul_const f)`.
-
-Rewrite `hlim` using `[one_smul, add_comm]`. Use `hlim.congr fun t => ?_` and prove the remaining obligations. Rewrite using `[hTν]`. Use extensionality with `x`. Simplify using `only [SchwartzMap.add_apply, SchwartzMap.smul_apply, SchwartzMap.sub_apply, smul_eq_mul, Complex.real_smul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main_nonempty (hP : GlobalTheory.FunPr.Hypotheses₂) (l : Type) [Fintype l] [DecidableEq l] [Nonempty l]
     (Z : Matrix (l ⊕ l) (l ⊕ l) ℝ) (hZ : Z ∈ LieAlgebra.Symplectic.sp l ℝ)
@@ -214,21 +208,19 @@ theorem main_nonempty (hP : GlobalTheory.FunPr.Hypotheses₂) (l : Type) [Fintyp
   ring
 
 /- English proof (translation)
-Take `⟨f0, hf0⟩` from `exists_schwartz_one l`. Establish `hsub : ∀ x : EuclideanSpace ℝ l, x = 0` using `fun x => by`. Use extensionality with `i`. Conclude with `isEmptyElim i`. Establish `hdec : ∀ f : Sch l, f = f 0 • f0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Use extensionality with `x`. Rewrite using `[hsub x, SchwartzMap.smul_apply, hf0, smul_eq_mul, mul_one]`. Use `set ν : ℝ → ℂ := fun t => T t f0 0 with hνdef`. Establish `hTν : ∀ t (f : Sch l), T t f = ν t • f`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t f`. Establish `e : T t f = f 0 • T t f0` using `by conv_lhs => rw [hdec f]`. Conclude with `map_smul _ _ _`. Rewrite using `[e]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsub x]`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, hνdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hν0 : ν 0 = 1`. Simplify using `only [hνdef, hT0, LinearMap.id_apply, hf0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hνmul : ∀ s t, ν (s + t) = ν s * ν t`. Introduce `s t`. Establish `e : T (s + t) f0 = (ν s * ν t) • f0`. Rewrite using `[hTadd, LinearMap.comp_apply, hTν t, map_smul, hTν s, smul_smul, mul_comm]`. Establish `e'` using `congrArg (fun g : Sch l => g 0) e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `e'` using `[hf0, hνdef]`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_hasDerivAt_zero_of_map_add_mul' ν hν0 hνmul (hTcont f0 0).continuousAt`. Use `⟨a, fun f => ?_⟩` and prove the remaining obligations. Establish `hslope` using `hasDerivAt_iff_tendsto_slope_zero.1 ha`. Simplify using `only [zero_add, hν0] at hslope`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : quad Z f = 0` using `by simp [quad]`. Rewrite using `[hq, add_zero]`. Use `(hslope.smul_const f).congr fun t => ?_` and prove the remaining obligations. Rewrite using `[hTν]`. Use extensionality with `x`.
-
-Simplify using `only [SchwartzMap.smul_apply, SchwartzMap.sub_apply, smul_eq_mul, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main_empty (l : Type) [Fintype l] [DecidableEq l] [IsEmpty l]
     (Z : Matrix (l ⊕ l) (l ⊕ l) ℝ)
@@ -276,7 +268,7 @@ theorem main_empty (l : Type) [Fintype l] [DecidableEq l] [IsEmpty l]
   ring
 
 /- English proof (translation)
-Introduce `hP l _ _ Z hZ T hT0 hTadd hTrho hTiso hTcont`. Break down `isEmpty_or_nonempty l with hl | hl` into its components or cases. Conclude with `main_empty l Z T hT0 hTadd hTcont`. Conclude with `main_nonempty hP l Z hZ T hT0 hTadd hTrho hTiso hTcont`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (l : Type) [Fintype l] [DecidableEq l]
     (Z : Matrix (l ⊕ l) (l ⊕ l) ℝ), Z ∈ LieAlgebra.Symplectic.sp l ℝ →

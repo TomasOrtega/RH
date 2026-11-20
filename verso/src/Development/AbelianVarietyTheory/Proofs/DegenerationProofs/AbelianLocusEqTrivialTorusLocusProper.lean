@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ZH.AbelianPart
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `P : IsPullback (pullback.fst g t ≫ e.inv) (pullback.snd g t) (e.hom ≫ g) t` using `IsPullback.of_iso (IsPullback.of_hasPullback g t) (Iso.refl _) e.symm (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← P.isoPullback_hom_snd]`.
+Substitute using the available equality. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Introduce `h`. Rewrite using `[← P.isoPullback_inv_snd]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_snd_iff {Z A B T : Scheme.{0}} (e : A ≅ B) (f : A ⟶ Z) (g : B ⟶ Z) (h : e.hom ≫ g = f)
     (t : T ⟶ Z) : IsProper (pullback.snd f t) ↔ IsProper (pullback.snd g t) := by
@@ -36,7 +36,7 @@ theorem isProper_snd_iff {Z A B T : Scheme.{0}} (e : A ≅ B) (f : A ⟶ Z) (g :
     infer_instance
 
 /- English proof (translation)
-Use extensionality with `z`. Conclude with `⟨fun H K _ _ t ht => (isProper_snd_iff e _ _ h t).1 (H K t ht), fun H K _ _ t ht => (isProper_snd_iff e _ _ h t).2 (H K t ht)⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem abLocus_congr {Z : Scheme.{0}} (A B : Over Z) (e : A.left ≅ B.left) (h : e.hom ≫ B.hom = A.hom) :
     abLocus A = abLocus B := by
@@ -45,7 +45,7 @@ theorem abLocus_congr {Z : Scheme.{0}} (A B : Over Z) (e : A.left ≅ B.left) (h
     fun H K _ _ t ht => (isProper_snd_iff e _ _ h t).2 (H K t ht)⟩
 
 /- English proof (translation)
-Establish `P` using `(IsPullback.of_hasPullback (pullback.snd f V.ι) (Z.homOfLE h)).paste_horiz (IsPullback.of_hasPullback f V.ι)`. Rewrite `P` using `[Scheme.homOfLE_ι]`. Rewrite using `[← P.isoPullback_inv_snd]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_snd_of_le {Z A : Scheme.{0}} (f : A ⟶ Z) {U V : Z.Opens} (h : U ≤ V)
     [IsProper (pullback.snd f V.ι)] : IsProper (pullback.snd f U.ι) := by
@@ -56,9 +56,9 @@ theorem isProper_snd_of_le {Z A : Scheme.{0}} (f : A ⟶ Z) {U V : Z.Opens} (h :
   infer_instance
 
 /- English proof (translation)
-Introduce `hm`. Take `⟨hsep, hlft, -⟩` from `GlobalTheory.ZJ.core_basic C`. Establish `hc : IsPullback τ.f τ.H.hom C.GG.hom τ.y₀` using `(L.test p y τ).1`. Establish `P` using `(IsPullback.of_hasPullback τ.H.hom (GlobalTheory.ZJ.rPt p ≫ spMap τ.j)).paste_horiz hc`. Rewrite `P` using `[Category.assoc, τ.fac]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h ((GlobalTheory.ZJ.AbelianLocus.mem_abLocus_iff C.GG P (IsLocalRing.closedPoint (GlobalTheory.ZJ.kb p))).1 ?_)` and prove the remaining obligations. Establish `e : GlobalTheory.ZJ.rPt p (IsLocalRing.closedPoint (GlobalTheory.ZJ.kb p)) = GlobalTheory.ZJ.cPt p` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue (GlobalTheory.ZJ.OO p))`. Rewrite `hm` using `[← e]`. Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_abLocus (C : GlobalTheory.ZJ.Core) (L : C.Law) {p : ℕ} [Fact p.Prime] (y : Sp (GlobalTheory.ZJ.OO p) ⟶ C.Z)
     (τ : C.Test y) (h : ¬ IsProper (pullback.snd τ.H.hom (GlobalTheory.ZJ.rPt p ≫ spMap τ.j))) :
@@ -75,9 +75,9 @@ theorem not_mem_abLocus (C : GlobalTheory.ZJ.Core) (L : C.Law) {p : ℕ} [Fact p
   exact hm
 
 /- English proof (translation)
-Introduce and unpack `o Ω _ _ _ _ S ρ M U₀ EE Q ex Z ⟨e, he, -⟩ ⟨L⟩ hT hC hO h₁ h₂`. Take `⟨hab, hpr⟩` from `GlobalTheory.ZJ.AbelianLocus.abLocus_eq ex.core L hT hC ⟨_, hO⟩ h₁ (fun z hz hn => by`. Take `⟨p, _, y, τ, rfl, h⟩` from `h₂ z hz hn`. Conclude with `not_mem_abLocus ex.core L y τ h)`. Establish `hE : abLocus Z.G = {z | S.TT M z = ⊥}` using `(abLocus_congr Z.G ex.core.GG e he).trans hab`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hE, fun W hW => ?_⟩` and prove the remaining obligations. Rewrite `hW` using `[hE]`. Conclude with `(isProper_snd_iff e _ _ he W.ι).2 (@isProper_snd_of_le _ _ ex.core.GG.hom W ⟨_, hO⟩ hW hpr)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ab : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Q : Clos ρ M U₀ EE) (ex : Q.Ext) (Z : ZHPre ρ M U₀), (∃ e : Z.G.left ≅ Q.G.toScheme, e.hom ≫ Q.G.ι ≫ Q.P.hom = Z.G.hom ∧ Z.u₀ = Q.u₀ ∧ HEq (Z.φ ≫ e.hom) ex.a) → Nonempty ex.core.Law → ex.core.HasTests → ex.core.HasCharts → IsOpen {z : M.Z | S.TT M z = ⊥} → (∀ w : Q.P.left, IsClosed ({w} : Set Q.P.left) → S.TT M (Q.P.hom w) = ⊥ → w ∈ Q.G) → (∀ z : M.Z, IsClosed ({z} : Set M.Z) → S.TT M z ≠ ⊥ → ∃ (p : ℕ) (_ : Fact p.Prime) (y : Sp (GlobalTheory.ZJ.OO p) ⟶ ex.core.Z) (τ : ex.core.Test y), y (GlobalTheory.ZJ.cPt p) = z ∧ ¬ IsProper (pullback.snd τ.H.hom (GlobalTheory.ZJ.rPt p ≫ spMap τ.j))) → Z.Ab := by
   rintro o Ω _ _ _ _ S ρ M U₀ EE Q ex Z ⟨e, he, -⟩ ⟨L⟩ hT hC hO h₁ h₂

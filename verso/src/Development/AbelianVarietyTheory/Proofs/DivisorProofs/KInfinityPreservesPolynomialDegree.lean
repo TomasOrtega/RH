@@ -22,43 +22,41 @@ namespace GlobalTheory.KInfPolV
 open GlobalTheory.ThK.EvAt0.PolD
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ B a a' G X om om' hP k hk m`. Establish `hB` using `hP.base`. Establish `hw` using `hP.weil`. Establish `hS` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hw`. Establish `hpres : ∀ x, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), om x Φ ∈ GlobalTheory.WeilM.schA F _` using `fun x Φ hΦ => hS.pres x Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1W : (1 : UA σ G.W.J) ∈ UAt σ G.W (evI F)`. Introduce `u _`. Simplify using `[mat]`. Establish `hk1 : k ∈ UAt σ G.V (evI F)` using `hk.1`. Take `⟨A, hA⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_UAt hB.std hw (k, 1) hk1 h1W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T₂, hT₂⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_UAt hB.std hw (k⁻¹, (1 : UA σ G.W.J)⁻¹) (GlobalTheory.RealConjFac.inv_mem_UAt hk1) (GlobalTheory.RealConjFac.inv_mem_UAt h1W)`. Establish `hid : ∀ f : SInf F (Fin a × Fin (a + a')), Acts (evI F) (1 : Module.End ℂ _) (⇑f) (⇑f)` using `fun f r _ => rfl`. Establish `e21 : ∀ f, T₂ (A f) = f`. Introduce `f`. Establish `hc` using `GlobalTheory.RealConjFac.acts_comp (hpres _) (hA f) (hT₂ (A f))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hc` using `[← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one]`. Conclude with `((GlobalTheory.RealLift.actsLaws F (Fin a × Fin (a + a')) f (T₂ (A f)) f).2.2.2.1 _ hc (hid f))`. Establish `e12 : ∀ f, A (T₂ f) = f`. Introduce `f`. Establish `hc` using `GlobalTheory.RealConjFac.acts_comp (hpres _) (hT₂ f) (hA (T₂ f))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel, Prod.mk_one_one, map_one]`. Conclude with `((GlobalTheory.RealLift.actsLaws F (Fin a × Fin (a + a')) f (A (T₂ f)) f).2.2.2.1 _ hc (hid f))`. Set `T : SInf F (Fin a × Fin (a + a')) ≃ₗ[ℂ] SInf F (Fin a × Fin (a + a'))` to `LinearEquiv.ofLinear A T₂ (LinearMap.ext e12) (LinearMap.ext e21)`. Establish `hloc : ∀ f, locOpInf (om (k, 1)) f = A f` using `fun f => locOpInf_eq (hA f)`. Establish `hatk : ∀ (g : Matrix (Fin a) (Fin a) (AE F E)) (u : Matrix (Fin a) (Fin (a + a')) (AE F E)), At (evI F) u → At (evI F) (g * u)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g u hu c hc`. Rewrite using `[← Matrix.mul_smul, hu c hc, Matrix.mul_zero]`. Establish `htr : ∀ u, At (evI F) u → ∀ f : SInf F (Fin a × Fin (a + a')), A (dOp (arc (G.M.co.e u).1) (arc (G.M.co.e u).2) f) = dOp (arc (G.M.co.e (mat k * u)).1) (arc (G.M.co.e (mat k * u)).2) (A f)`. Introduce `u hu f`. Establish `hf : ActsD (evI F) (G.M.heisLine B.ψ u) f (dOp (arc (G.M.co.e u).1) (arc (G.M.co.e u).2) f)` using `(GlobalTheory.ThK.EvAt0.PolEv.actsD_iff_dOp hB.std G.M u hu _ _).2 rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `GlobalTheory.HeisTransport.actsD_heisLine_transport F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hB hP.geo.hV hP.geo.hW hP.geo.hM hw k hk1 1 h1W T (fun f => hA f) (fun f => hT₂ f) u hu f _ hf`. Establish `e : mat k * u * (mat (1 : UA σ G.W.J)).transpose = mat k * u`. Rewrite using `[show mat (1 : UA σ G.W.J) = 1 from rfl, Matrix.transpose_one, Matrix.mul_one]`. Rewrite `ht` using `[e]`. Conclude with `(GlobalTheory.ThK.EvAt0.PolEv.actsD_iff_dOp hB.std G.M _ (hatk _ u hu) _ _).1 ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdab : ∀ a₁ b₁ : Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F, ∃ a₂ b₂ : Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F, ∀ f : SInf F (Fin a × Fin (a + a')), A (dOp a₁ b₁ f) = dOp a₂ b₂ (A f)`. Introduce `a₁ b₁`. Establish `hu` using `GlobalTheory.ThK.EvAt0.PolEv.at_symm G.M a₁ b₁`. Use `⟨arc (G.M.co.e (mat k * G.M.co.e.symm (fun i => liftA (a₁ i), fun i => liftA (b₁ i)))).1, arc (G.M.co.e (mat k * G.M.co.e.symm (fun i => liftA (a₁ i), fun i => liftA (b₁ i)))).2, fun f => ?_⟩` and prove the remaining obligations. Establish `h` using `htr _ hu f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[LinearEquiv.apply_symm_apply, GlobalTheory.ThK.EvAt0.PolEv.arc_liftA, GlobalTheory.ThK.EvAt0.PolEv.arc_liftA]`. Conclude with `h`. Establish `hkk : ∀ u : Matrix (Fin a) (Fin (a + a')) (AE F E), mat k * (mat k⁻¹ * u) = u`. Introduce `u`. Rewrite using `[← Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `mat (k * k⁻¹) * u = u`. Rewrite using `[mul_inv_cancel]`. Conclude with `Matrix.one_mul u`. Establish `hgauss : ∀ g : SInf F (Fin a × Fin (a + a')), GaussD G.M B.emb g → GaussD G.M B.emb (A g)`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε, hε⟩` from `hg`. Use `⟨ε, fun u u' hu hu' huu => ?_⟩` and prove the remaining obligations. Establish `hv` using `hatk (mat k⁻¹) u hu`. Establish `hv'` using `hatk (mat k⁻¹) u' hu'`. Establish `hrel : ∀ w, (mat k⁻¹ * u').map (piInf (B.emb w)) = (((ε w : ℤ) : ℂ) * Complex.I) • (G.V.θ w * (mat k⁻¹ * u).map (piInf (B.emb w)) * (G.W.θ w)ᵀ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Establish `hm : (mat k⁻¹).map (piInf (B.emb w)) * (mat k).map (piInf (B.emb w)) = 1`. Rewrite using `[← Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `(mat (k⁻¹ * k)).map _ = 1`. Rewrite using `[inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hm' : (mat k).map (piInf (B.emb w)) * (mat k⁻¹).map (piInf (B.emb w)) = 1` using `mul_eq_one_comm.1 hm`. Establish `hc : (mat k⁻¹).map (piInf (B.emb w)) * G.V.θ w = G.V.θ w * (mat k⁻¹).map (piInf (B.emb w))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul, Matrix.map_mul, huu w, Matrix.mul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hc]`. Establish `key` using `hε _ _ hv hv' hrel`. Establish `t1` using `htr _ hv' g`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `t2` using `htr _ hv g`. Rewrite `t1`, `t2` using `[hkk]`. Rewrite using `[← t1, ← t2, key, map_smul]`. Establish `hst : ∀ m, ∀ f ∈ GlobalTheory.FockKFin.polLe G.M B.emb m, A f ∈ GlobalTheory.FockKFin.polLe G.M B.emb m`. Introduce `m`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `f hf`. Rewrite `hf`, the goal using `[GlobalTheory.FockKFin.polLe_zero]`. Use `Submodule.span_induction (fun g hg => Submodule.subset_span (hgauss g hg)) (by rw [map_zero]; exact Submodule.zero_mem _) (fun x y _ _ hx hy => by rw [map_add]; exact Submodule.add_mem _ hx hy) (fun c x _ hx => by rw [map_smul]; exact Submodule.smul_mem _ c hx) hf` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ m ih`. Introduce `f hf`. Rewrite `hf`, the goal using `[GlobalTheory.FockKFin.polLe_succ]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hf`. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.add_mem _ (Submodule.mem_sup_left (ih y hy)) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Use `Submodule.span_induction (fun g hg => ?_) (by rw [map_zero]; exact Submodule.zero_mem _) (fun x y _ _ hx hy => by rw [map_add]; exact Submodule.add_mem _ hx hy) (fun c x _ hx => by rw [map_smul]; exact Submodule.smul_mem _ c hx) hz` and prove the remaining obligations. Take `⟨a₁, b₁, g₀, hg₀, rfl⟩` from `hg`. Take `⟨a₂, b₂, hab⟩` from `hdab a₁ b₁`. Rewrite using `[hab]`.
-
-Conclude with `GlobalTheory.FockKFin.dOp_mem_dStep _ a₂ b₂ (ih g₀ hg₀)`. Introduce `h hh`. Rewrite using `[hloc]`. Conclude with `hst m h hh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polLe_stable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

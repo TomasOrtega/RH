@@ -5,15 +5,15 @@ open scoped BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hH0 : 0 < H` using `by linarith`. Establish `hN0 : 0 < N` using `by linarith`. Establish `hd0 : 0 < d` using `by linarith`. Establish `hGd0 : 0 < G / d` using `div_pos (by linarith) hd0`. Establish `hGdG : G / d ≤ G` using `div_le_self (by linarith) hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (G / d) ^ (l + 3) ≤ G * H ^ (l + 2)`. Rewrite using `[show l + 3 = 1 + (l + 2) by ring, Real.rpow_add hGd0, Real.rpow_one]`. Conclude with `mul_le_mul hGdG (Real.rpow_le_rpow hGd0.le (hGdG.trans hGH) (by linarith)) (Real.rpow_nonneg hGd0.le _) (by linarith)`. Establish `h2 : N ^ (2 * r) * N * (Q * 9 ^ f) ≤ H ^ (2 * r + 2)`. Establish `hN2 : N ^ (2 * r) ≤ H ^ (2 * r)` using `pow_le_pow_left₀ hN0.le hNH _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : G ^ r ≤ H ^ r` using `pow_le_pow_left₀ (by linarith) hGH r`. Establish `hE : H ^ (24 + 4 * l + 12 * (r : ℝ) + 16 * (r : ℝ) ^ 2) = H ^ (l + 2) * H ^ (11 + 3 * l) * H ^ (2 * r + 2) * H ^ r * H ^ (9 + 9 * r + 16 * r ^ 2)`. Rewrite using `[← Real.rpow_natCast H (2 * r + 2), ← Real.rpow_natCast H r, ← Real.rpow_natCast H (9 + 9 * r + 16 * r ^ 2), ← Real.rpow_add hH0, ← Real.rpow_add hH0, ← Real.rpow_add hH0, ← Real.rpow_add hH0]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hN0, hE]`. Establish `hP : 0 ≤ H ^ (11 + 3 * l)` using `Real.rpow_nonneg hH0.le _`. Establish `hM : 0 ≤ N ^ (2 * r) * N * (Q * 9 ^ f)` using `mul_nonneg (mul_nonneg (pow_nonneg hN0.le _) hN0.le) (mul_nonneg hQ (by positivity))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 0 ≤ G * H ^ (l + 2) * H ^ (11 + 3 * l)` using `mul_nonneg (mul_nonneg (by linarith) (Real.rpow_nonneg hH0.le _)) hP`. Establish `hR : 0 ≤ G ^ r` using `pow_nonneg (by linarith) _`. Establish `hS : 0 ≤ H ^ (9 + 9 * r + 16 * r ^ 2)` using `pow_nonneg hH0.le _`. Establish `hAM : 0 ≤ G * H ^ (l + 2) * H ^ (11 + 3 * l) * H ^ (2 * r + 2)` using `mul_nonneg hA (pow_nonneg hH0.le _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma exponent_product_le_G_div_N_mul_rpow (f r : ℕ) (G N H Q l d : ℝ) (hG : 1 ≤ G) (hN : 1 ≤ N)
     (hGH : G ≤ H) (hNH : N ≤ H) (hQ : 0 ≤ Q) (hQH : Q * 9 ^ f ≤ H) (hl : 0 ≤ l) (hd : 1 ≤ d)
@@ -70,11 +70,11 @@ private lemma exponent_product_le_G_div_N_mul_rpow (f r : ℕ) (G N H Q l d : �
             H ^ (9 + 9 * r + 16 * r ^ 2)) := by ring
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Establish `hN0 : 0 < N` using `by linarith`. Establish `hd0 : 0 < d` using `by linarith`. Establish `hGd0 : 0 < G / d` using `div_pos (by linarith) hd0`. Establish `hexp : ((m + 1 : ℕ) : ℝ) + (1 + l) + 1 = (m : ℝ) + (l + 3)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hexp, Real.rpow_add hGd0, Real.rpow_natCast, Nat.add_sub_cancel, pow_succ]`. Establish `hdm : (d / N) ^ m * (G / d) ^ m = (G / N) ^ m`. Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Establish `hB` using `exponent_product_le_G_div_N_mul_rpow f r G N H Q l d hG hN hGH hNH hQ hQH hl hd hdG`. Establish `hX : 0 ≤ a * (G / N) ^ m` using `mul_nonneg ha (pow_nonneg (div_nonneg (by linarith) hN0.le) _)`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exponent_term (k f r : ℕ) (G N H a Q l d : ℝ) (hk : 1 ≤ k)
     (hG : 1 ≤ G) (hN : 1 ≤ N) (hGH : G ≤ H) (hNH : N ≤ H) (ha : 0 ≤ a) (hQ : 0 ≤ Q)
@@ -109,17 +109,17 @@ theorem exponent_term (k f r : ℕ) (G N H a Q l d : ℝ) (hk : 1 ≤ k)
           ring
 
 /- English proof (translation)
-Introduce `k f r G N H a Q C hk hr hf hlog hG hN hGH hNH ha hQ hQH hC`. Establish `hH0 : 0 < H` using `by linarith`. Establish `hN0 : 0 < N` using `by linarith`. Establish `hf1 : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : 0 ≤ Real.logb 2 (f : ℝ)` using `Real.logb_nonneg one_lt_two hf1`. Establish `h2f : Real.logb 2 (2 * (f : ℝ)) = 1 + Real.logb 2 f`. Rewrite using `[Real.logb_mul (by norm_num) (ne_of_gt (by linarith)), Real.logb_self_eq_one one_lt_two]`. Establish `hX : 0 ≤ a * (G / N) ^ k` using `mul_nonneg ha (pow_nonneg (div_nonneg (by linarith) hN0.le) _)`. Use `le_trans (Finset.sum_le_sum (g := fun _ => H ^ (24 + 4 * Real.logb 2 (f : ℝ) + 12 * (r : ℝ) + 16 * (r : ℝ) ^ 2) * (a * (G / N) ^ k)) ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `de hde`. Rewrite `hde` using `[Finset.mem_Icc]`. Establish `hd1 : (1 : ℝ) ≤ de` using `by exact_mod_cast hde.1`. Establish `hdG : (de : ℝ) ≤ G` using `le_trans (Nat.cast_le.mpr hde.2) (Nat.floor_le (by linarith))`. Simplify using `only [h2f]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `exponent_term k f r G N H a Q (Real.logb 2 f) de hk hG hN hGH hNH ha hQ hQH hl0 hd1 hdG`. Rewrite using `[Finset.sum_const, Nat.card_Icc, Nat.add_sub_cancel, nsmul_eq_mul]`. Establish `hfl : (⌊G⌋₊ : ℝ) ≤ H` using `(Nat.floor_le (by linarith)).trans hGH`. Establish `hsq : Real.sqrt r ≤ r`. Establish `h0` using `Real.sqrt_nonneg (r : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Real.sq_sqrt (show (0 : ℝ) ≤ r by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlog2` using `Real.log_two_gt_d9`. Establish `hlb : Real.logb 2 (f : ℝ) ≤ 7 / 4 * r`. Rewrite using `[Real.logb, div_le_iff₀ (Real.log_pos one_lt_two)]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg (show (0 : ℝ) ≤ r by linarith) (show (0 : ℝ) ≤ Real.log 2 - 0.69 by linarith)]`. Establish `hexp : 1 + (24 + 4 * Real.logb 2 (f : ℝ) + 12 * (r : ℝ) + 16 * (r : ℝ) ^ 2) ≤ C * (r : ℝ) ^ 2`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr hC) (sq_nonneg (r : ℝ))]`. Establish `hE0 : 0 ≤ H ^ (24 + 4 * Real.logb 2 (f : ℝ) + 12 * (r : ℝ) + 16 * (r : ℝ) ^ 2)` using `Real.rpow_nonneg hH0.le _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exponent_sum_le :
     ∀ (k f r : ℕ) (G N H a Q C : ℝ), 1 ≤ k → 1 ≤ r → 1 ≤ f → Real.log f ≤ Real.sqrt r → 1 ≤ G → 1 ≤ N → G ≤ H → N ≤ H → 0 ≤ a → 0 ≤ Q → Q * 9 ^ f ≤ H → 60 ≤ C → ∑ de ∈ Finset.Icc 1 ⌊G⌋₊, ((de : ℝ) / N) ^ (k - 1) * a * (Q * H ^ (11 + 3 * Real.logb 2 f)) * ((G / de) ^ ((k : ℝ) + Real.logb 2 (2 * f) + 1) * (N ^ (2 * r) * G ^ r * 9 ^ f * H ^ (9 + 9 * r + 16 * r ^ 2))) ≤ H ^ (C * (r : ℝ) ^ 2) * (a * (G / N) ^ k) := by

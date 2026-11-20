@@ -13,7 +13,7 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `h1` using `exm_log_le (M : ℝ) T |s.im| hM' hT (abs_nonneg _) him`. Apply the tactic sequence `have h2 : (if χ = 1 then 1 / ‖s - 1‖ else 0) ≤ E := by split_ifs <;> assumption`. Use `h.trans (add_le_add ?_ h2)` and prove the remaining obligations. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exm_neg {C₂ : ℝ} (hC₂ : 0 < C₂) {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (T δ E : ℝ) (s : ℂ)
     (hM : 3 ≤ M) (hT : 2 ≤ T) (hδ0 : 0 < δ) (him : |s.im| ≤ T + 1) (hE : 1 / ‖s - 1‖ ≤ E) (hE0 : 0 ≤ E)
@@ -26,7 +26,7 @@ theorem exm_neg {C₂ : ℝ} (hC₂ : 0 < C₂) {M : ℕ} [NeZero M] (χ : Diric
   gcongr
 
 /- English proof (translation)
-Establish `hy0 : 0 < y` using `by linarith`. Establish `hl` using `exm_log_y y hy`. Establish `hl0 : Real.log y ≠ 0` using `by linarith`. Rewrite using `[Real.rpow_add hy0, Real.rpow_one, Real.rpow_def_of_pos hy0, mul_one_div_cancel hl0, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exm_rpow_sigma (y : ℝ) (hy : 2 ≤ y) : y ^ (1 + 1 / Real.log y) = Real.exp 1 * y := by
   have hy0 : 0 < y := by linarith
@@ -35,55 +35,53 @@ theorem exm_rpow_sigma (y : ℝ) (hy : 2 ≤ y) : y ^ (1 + 1 / Real.log y) = Rea
   rw [Real.rpow_add hy0, Real.rpow_one, Real.rpow_def_of_pos hy0, mul_one_div_cancel hl0, mul_comm]
 
 /- English proof (translation)
-Take `⟨C₂, hC₂, hneg⟩` from `ex_negLD_bound`. Take `⟨C₃, hC₃, htail⟩` from `ex_tail_bound`. Use `⟨C₂, C₃, hC₂, hC₃, ?_⟩` and prove the remaining obligations. Introduce `κ hκ hκ' M _ χ T σ₁ T' δ hM hT hσ hσ' hTT' hT'T hδ0 hδ' hgapre hgapim Z hZ y hy`. Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy0 : 0 < y` using `by linarith`. Establish `hyC : (y : ℂ) ≠ 0` using `by exact_mod_cast hy0.ne'`. Establish `hly` using `exm_log_y y hy`. Establish `hl1` using `exm_log_ge_one (M : ℝ) T hM' hT`. Use `set N := C₂ * (2 * Real.log ((M : ℝ) * T)) / δ with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : 0 ≤ N` using `by rw [hN]; positivity`. Use `set σ₀ := 1 + 1 / Real.log y with hσ₀`. Establish `hσ₀1 : 1 < σ₀`. Establish `: 0 < 1 / Real.log y` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ₀3 : σ₀ ≤ 3`. Establish `: 1 / Real.log y ≤ 1 / (1 / 2)` using `one_div_le_one_div_of_le (by norm_num) hly`. Rewrite using `[hσ₀]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyσ₀ : y ^ σ₀ = Real.exp 1 * y` using `exm_rpow_sigma y hy`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ19 : 19 / 20 ≤ σ₁` using `by linarith`. Establish `hσ1 : σ₁ < 1` using `by linarith`. Establish `hT'0 : 0 < T'` using `by linarith`. Establish `hBL : ∀ t : ℝ, |t| ≤ T' → ‖negLD χ ((σ₁ : ℂ) + t * I)‖ ≤ N + 4 / (3 * κ)`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : ((σ₁ : ℂ) + t * I).re = σ₁` using `by simp`. Establish `him : ((σ₁ : ℂ) + t * I).im = t` using `by simp`. Establish `hnorm : 3 * κ / 4 ≤ ‖(σ₁ : ℂ) + t * I - 1‖`. Establish `h1` using `Complex.abs_re_le_norm ((σ₁ : ℂ) + t * I - 1)`. Establish `h2 : ((σ₁ : ℂ) + t * I - 1).re = σ₁ - 1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[h2, abs_of_neg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : (σ₁ : ℂ) + t * I ≠ 1`. Introduce `h`. Rewrite `hnorm` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `at hnorm`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `exm_neg hC₂ χ T δ _ _ hM hT hδ0 (by rw [him]; linarith) _ (by positivity)` to reduce the goal to its premises. Apply `hneg M χ _ δ hM hδ0 hδ' (by rw [hre]; exact hσ19) (by rw [hre]; linarith) hne` to reduce the goal to its premises. Introduce `ρ hρ hρre hρs`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Complex.abs_re_le_norm (ρ - ((σ₁ : ℂ) + t * I))`. Establish `h2` using `Complex.abs_im_le_norm (ρ - ((σ₁ : ℂ) + t * I))`. Rewrite `h1` using `[Complex.sub_re, hre]`. Rewrite `h2` using `[Complex.sub_im, him]`. Establish `h3 : |ρ.im| ≤ T + 3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: |ρ.im| ≤ |ρ.im - t| + |t|`. Use `abs_add_le (ρ.im - t) t` as an intermediate fact. Simplify using `using this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `hgapre ρ hρ hρre h3`.
+Simplify to obtain the desired conclusion from the available facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h4` using `[abs_sub_comm]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `one_div_le_one_div_of_le (by positivity : 0 < 3 * κ / 4) hnorm` as an intermediate fact. Rewrite `this` using `[one_div_div]`. Then use the resulting hypothesis. Establish `hBH : ∀ v : ℝ, |v| = T' → ∀ x : ℝ, σ₁ ≤ x → x ≤ σ₀ → ‖negLD χ ((x : ℂ) + v * I)‖ ≤ N + 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv x hx hx'`. Establish `hre : ((x : ℂ) + v * I).re = x` using `by simp`. Establish `him : ((x : ℂ) + v * I).im = v` using `by simp`. Establish `hnorm : 1 ≤ ‖(x : ℂ) + v * I - 1‖`. Establish `h1` using `Complex.abs_im_le_norm ((x : ℂ) + v * I - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ((x : ℂ) + v * I - 1).im = v` using `by simp`. Rewrite `h1` using `[h2, hv]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : (x : ℂ) + v * I ≠ 1`. Introduce `h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hnorm` using `[h]`. Simplify using `at hnorm`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `exm_neg hC₂ χ T δ _ _ hM hT hδ0 (by rw [him, hv]; linarith) _ (by norm_num)` to reduce the goal to its premises. Apply `hneg M χ _ δ hM hδ0 hδ' (by rw [hre]; linarith) (by rw [hre]; linarith) hne` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ρ hρ hρre _`. Establish `h2` using `Complex.abs_im_le_norm (ρ - ((x : ℂ) + v * I))`. Rewrite `h2` using `[Complex.sub_im, him]`. Establish `h4` using `hgapim ρ hρ hρre`. Rewrite `h4` using `[← hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5` using `abs_abs_sub_abs_le ρ.im v`. Combine the linear equalities and inequalities to obtain the conclusion. Use `one_div_le_one_div_of_le (by norm_num : (0 : ℝ) < 1) hnorm` as an intermediate fact. Simplify using `using this`. Establish `hH : ∀ v : ℝ, |v| = T' → ‖∫ x in σ₁..σ₀, Fchi χ y ((x : ℂ) + v * I)‖ ≤ 3 * (N + 1) * (Real.exp 1 * y) / T' ^ 2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `h` using `ex_horiz_bound χ y σ₁ σ₀ v (N + 1) (by linarith) (by linarith) (by rw [hv]; linarith) (by linarith) (hBH v hv)`. Establish `hv2 : v ^ 2 = T' ^ 2` using `by rw [← hv, sq_abs]`. Rewrite `h` using `[hv2, hyσ₀]`. Use `h.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: σ₀ - σ₁ ≤ 3` using `by linarith`. Use `gcongr`. Establish `hLf` using `ex_left_bound χ y σ₁ T' (N + 4 / (3 * κ)) (by linarith) (by linarith) hσ1 hT'0.le hBL`. Establish `hTl` using `htail M χ y σ₀ T' (by linarith) hσ₀1 (by linarith)`. Establish `hinv : 1 / (σ₀ - 1) = Real.log y` using `by rw [hσ₀]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hTl` using `[hinv, hyσ₀]`. Establish `hedge : ∀ w : ℂ, σ₁ ≤ w.re → w.re ≤ σ₀ → |w.im| ≤ T' → exLF χ w = 0 → σ₁ < w.re ∧ |w.im| < T'`. Introduce `w hw1 _ hw3 hw0`. Establish `h1` using `hgapre w hw0 (by linarith) (by linarith)`. Establish `h2` using `hgapim w hw0 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Break down `hw1.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Rewrite `h1` using `[h]`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Break down `hw3.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Rewrite `h2` using `[h]`. Simplify using `at h2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrect` using `ex_rect_Fchi χ y hy0 σ₁ σ₀ T' (by linarith) hσ1 hσ₀1 hT'0 Z hZ hedge`. Establish `hper` using `(perron_formula_character M χ y (by linarith) σ₀ hσ₀1).2`. Unfold `Formalism.ZF.rectInt at hrect`. Establish `halg` using `exm_alg _ _ _ _ _ _ _ _ _ y hy0 hper hrect`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hD : (if χ = 1 then (y : ℂ) * (Real.log y : ℂ) - y else 0) / (y : ℂ) = (if χ = 1 then ((Real.log y - 1 : ℝ) : ℂ) else 0)` using `by split_ifs`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hS : (∑ ρ ∈ Z, (exOrd χ ρ : ℂ) * exKer y ρ) / (y : ℂ) = ∑ ρ ∈ Z, (exOrd χ ρ : ℂ) * (y : ℂ) ^ (ρ - 1) / (ρ * (ρ - 1))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_div]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `ρ _`. Rewrite using `[exKer, Complex.cpow_sub _ _ hyC, Complex.cpow_one]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `halg` using `[hD, hS]`. Rewrite using `[halg]`. Conclude with `exm_norm _ _ _ _ _ y _ _ _ _ hy0 hTl hLf (hH (-T') (by rw [abs_neg, abs_of_pos hT'0])) (hH T' (abs_of_pos hT'0))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exm_core : ∃ C₂ C₃ : ℝ, 0 < C₂ ∧ 0 ≤ C₃ ∧ ∀ (κ : ℝ), 0 < κ → κ ≤ 1 / 20 →
     ∀ (M : ℕ) [NeZero M] (χ : DirichletCharacter ℂ M) (T σ₁ T' δ : ℝ), 3 ≤ M → 2 ≤ T →

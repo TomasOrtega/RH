@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.GenFiniteFibre
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`. Take `⟨b, hb⟩` from `h.mul_inv_cancel h0`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 (hb ▸ P.mul_mem_right b ha))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_bot_of_isField {R : Type} [CommRing R] (h : IsField R) (P : Ideal R) [hP : P.IsPrime] :
     P = ⊥ := by
@@ -22,9 +22,9 @@ theorem eq_bot_of_isField {R : Type} [CommRing R] (h : IsField R) (P : Ideal R) 
   exact hP.ne_top ((Ideal.eq_top_iff_one _).2 (hb ▸ P.mul_mem_right b ha))
 
 /- English proof (translation)
-Establish `hη : genericPoint X ∈ Set.range (X.fromSpecStalk x)`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `genericPoint_specializes x`. Take `⟨p, hp⟩` from `hη`. Establish `hx : X.fromSpecStalk x (IsLocalRing.closedPoint (X.presheaf.stalk x)) = x` using `Scheme.fromSpecStalk_closedPoint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: p = IsLocalRing.closedPoint (X.presheaf.stalk x)` using `PrimeSpectrum.ext ((@eq_bot_of_isField _ _ h _ p.2).trans (eq_bot_of_isField h _).symm)`. Rewrite using `[← hp, this, hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_genericPoint_of_isField {X : Scheme.{0}} [IsIntegral X] (x : X)
     (h : IsField (X.presheaf.stalk x)) : x = genericPoint X := by
@@ -39,15 +39,13 @@ theorem eq_genericPoint_of_isField {X : Scheme.{0}} [IsIntegral X] (x : X)
   rw [← hp, this, hx]
 
 /- English proof (translation)
-Introduce `T T' _ _ ρ d hρ x hx`. Use `hρ.isDominant` as an intermediate fact. Establish `hη : ρ (genericPoint T') = ρ x` using `(GlobalTheory.GenFiniteComp.apply_genericPoint ρ).trans hx.symm`. Establish `hsp : genericPoint T' ⤳ x` using `genericPoint_specializes x`. Establish `hcomm` using `Scheme.Hom.stalkSpecializes_stalkMap ρ (genericPoint T') x hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin₁ : (ρ.stalkMap (genericPoint T')).hom.Finite`. Establish `h` using `hρ.finrank_eq`. Establish `hA : IsField (T.presheaf.stalk (ρ (genericPoint T')))` using `GlobalTheory.GenFiniteComp.isField_stalk_apply ρ`. Use `letI := hA.toField`. Use `letI := (ρ.stalkMap (genericPoint T')).hom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `Module.finite_of_finrank_pos (h ▸ hρ.pos)`. Establish `hbij : Function.Bijective (T.presheaf.stalkSpecializes (hsp.map ρ.continuous)).hom` using `ConcreteCategory.bijective_of_isIso (T.presheaf.stalkCongr (Inseparable.of_eq hη.symm)).hom`. Establish `hfin₂ : (T.presheaf.stalkSpecializes (hsp.map ρ.continuous) ≫ ρ.stalkMap (genericPoint T')).hom.Finite` using `hfin₁.comp (RingHom.Finite.of_surjective _ hbij.2)`. Rewrite `hfin₂` using `[hcomm]`. Establish `hinj : Function.Injective (T'.presheaf.stalkSpecializes hsp).hom` using `IsFractionRing.injective (T'.presheaf.stalk x) T'.functionField`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : (ρ.stalkMap x).hom.IsIntegral` using `RingHom.IsIntegral.tower_bot _ _ hinj hfin₂.to_isIntegral`. Establish `hA : IsField (T.presheaf.stalk (ρ x))`. Rewrite using `[← hη]`. Conclude with `GlobalTheory.GenFiniteComp.isField_stalk_apply ρ`. Use `letI := (ρ.stalkMap x).hom.toAlgebra`.
-
-Use `haveI : Algebra.IsIntegral (T.presheaf.stalk (ρ x)) (T'.presheaf.stalk x) := ⟨hint⟩`. Conclude with `eq_genericPoint_of_isField x (isField_of_isIntegral_of_isField' hA)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem eq_genericPoint_of_apply_eq : ∀ (T T' : Scheme.{0}) [IsIntegral T] [IsIntegral T'] (ρ : T' ⟶ T) (d : ℕ), IsGenFinite ρ d → ∀ x : T', ρ x = genericPoint T → x = genericPoint T' := by
   intro T T' _ _ ρ d hρ x hx

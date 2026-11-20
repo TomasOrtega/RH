@@ -9,7 +9,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThK.PlaneCo
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ i₀ i₁ j₀ j₁ X W X₁ W₁ H H' hB hH hH'`. Take `⟨_, _, h2, _⟩` from `hB.cm`. Take `rfl` from `hH.rank`. Take `rfl` from `hH'.rank`. Simplify using `only [Fintype.card_prod, Fintype.card_sum, Fintype.card_fin, Kc, Ic, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

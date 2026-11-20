@@ -7,9 +7,9 @@ namespace GlobalTheory
 
 open MvPolynomial in
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [optionEquivLeft_C]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Break down `i with _ | j` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Derivation.leibniz, hp, optionEquivLeft_X_none, mul_comm]`. Simplify using `[Derivation.leibniz, hp, optionEquivLeft_X_some, pderiv_X, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem optionEquivLeft_pderiv_none (A : Type) [CommRing A] (n : ℕ)
     (p : MvPolynomial (Option (Fin n)) A) :
@@ -24,9 +24,9 @@ theorem optionEquivLeft_pderiv_none (A : Type) [CommRing A] (n : ℕ)
 
 open MvPolynomial in
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_map]`. Express the relevant statement in the definitionally equal form `eval₂Hom ψ Q p = (Polynomial.eval₂RingHom (eval₂Hom ψ (Q ∘ some)) (Q none)).comp (optionEquivLeft A (Fin n)).toAlgHom.toRingHom p`. Use `congr 1`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `[optionEquivLeft_C]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases i with _ | j <;> simp [optionEquivLeft_X_none, optionEquivLeft_X_some]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_map_eq_eval₂_optionEquivLeft (A : Type) [CommRing A] (n : ℕ) {k : Type} [Field k]
     (ψ : A →+* k) (Q : Option (Fin n) → k) (p : MvPolynomial (Option (Fin n)) A) :
@@ -41,7 +41,7 @@ theorem eval_map_eq_eval₂_optionEquivLeft (A : Type) [CommRing A] (n : ℕ) {k
 
 open MvPolynomial in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(optionEquivLeft k (Fin n)).toAlgHom.toRingHom.comp (map ψ) p = (Polynomial.mapRingHom (map ψ)).comp (optionEquivLeft A (Fin n)).toAlgHom.toRingHom p`. Use `congr 1`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `[optionEquivLeft_C]`. Apply the tactic sequence `rcases i with _ | j <;> simp [optionEquivLeft_X_none, optionEquivLeft_X_some]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem optionEquivLeft_map (A : Type) [CommRing A] (n : ℕ) {k : Type} [Field k]
     (ψ : A →+* k) (p : MvPolynomial (Option (Fin n)) A) :
@@ -56,17 +56,17 @@ theorem optionEquivLeft_map (A : Type) [CommRing A] (n : ℕ) {k : Type} [Field 
 open MvPolynomial in
 
 /- English proof (translation)
-Introduce `A B _ _ _ n _ _ hB`. Take `⟨P⟩` from `hB.nonempty_standardEtalePresentation`. Use `set e := optionEquivLeft A (Fin n) with he`. Use `⟨e.symm P.f, e.symm P.g, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k _ ψ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `optionEquivLeft_map A n ψ (e.symm P.f)`. Rewrite `h1` using `[h, map_zero, ← he, e.apply_symm_apply]`. Conclude with `(P.monic_f.map (MvPolynomial.map ψ)).ne_zero h1.symm`. Introduce `k _ ψ Q hf hg`. Take `⟨p₁, p₂, m, hc⟩` from `P.cond`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set Φ := Polynomial.eval₂RingHom (eval₂Hom ψ (Q ∘ some)) (Q none)`. Establish `key : ∀ p, eval Q (map ψ p) = Φ (e p)` using `fun p => eval_map_eq_eval₂_optionEquivLeft A n ψ Q p`. Rewrite `hf`, `hg` using `[key, e.apply_symm_apply]`. Rewrite using `[pderiv_map, key, optionEquivLeft_pderiv_none, ← he, e.apply_symm_apply]`. Introduce `hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congrArg Φ hc` as an intermediate fact. Simplify using `only [map_add, map_mul, map_pow] at this`. Express the relevant statement in the definitionally equal form `Φ (Polynomial.derivative P.f) * _ + _ = _ at this`. Rewrite `this` using `[hd, hf]`. Simplify using `only [zero_mul, add_zero] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_ne_zero m hg) this.symm`. Set `qe : (MvPolynomial (Option (Fin n)) A ⧸ Ideal.span {e.symm P.f}) ≃ₐ[A] AdjoinRoot P.f` to `Ideal.quotientEquivAlg _ _ e (by rw [Ideal.map_span, Set.image_singleton]; simp)`. Establish `hM : Submonoid.map qe (Submonoid.powers (Ideal.Quotient.mk (Ideal.span {e.symm P.f}) (e.symm P.g))) = Submonoid.powers (AdjoinRoot.mk P.f P.g)`. Rewrite using `[Submonoid.map_powers]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `(Ideal.quotientEquivAlg_mk (f := e) (x := e.symm P.g) ..).trans ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Set `le` to `IsLocalization.algEquivOfAlgEquiv (Localization.Away (Ideal.Quotient.mk (Ideal.span {e.symm P.f}) (e.symm P.g))) (Localization.Away (AdjoinRoot.mk P.f P.g)) qe hM`. Conclude with `⟨((P.equivRing.trans P.P.equivAwayAdjoinRoot).restrictScalars A).trans le.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem standardEtale_mvPolynomial_hypersurface :
     ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (n : ℕ)

@@ -12,7 +12,7 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FinLatF.latRepF_cont_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FGaloisRepresentations%2FThetaParseval%2FThetaKernels%2FLatRepFContK.lean&line=13#L13)
 -/

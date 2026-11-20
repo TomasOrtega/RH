@@ -25,43 +25,37 @@ def cB {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (D : SD σ v) {n m 
   Matrix.of fun i a => ⟨D.π₂ (Z a i), ((D.hO _).1 (hZ a i)).2⟩
 
 /- English proof (translation)
-Use `set Qm : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := (Q : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) with hQm`. Use `set Qi : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := ((Q⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) with hQi`. Establish `hQQi : Qm * Qi = 1` using `Q.mul_inv`. Establish `hQiQ : Qi * Qm = 1` using `Q.inv_mul`. Establish `memΛ : ∀ y, y ∈ latLoc (E` using `E) v Λ ↔ IntV v (Qi *ᵥ y) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[hQΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[mulVec_mulVec, hQiQ, one_mulVec]` and apply the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hy`. Conclude with `⟨Qi *ᵥ y, hy, by rw [mulVec_mulVec, hQQi, one_mulVec]⟩`. Use `set A0 := cA D Z0 hZ0 with hA0def`. Use `set B0 := cB D Z0 hZ0 with hB0def`. Use `set A1 := cA D Z hZ with hA1def`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set B1 := cB D Z hZ with hB1def`. Establish `hgram : A0ᵀ * B0 = A1ᵀ * B1`. Use `Matrix.ext fun a b => Subtype.ext ?_` and prove the remaining obligations. Use `congrArg D.π₂ (hstd a b)` as an intermediate fact. Rewrite `this` using `[D.snd_proj_standard_hermitian_form, D.snd_proj_standard_hermitian_form]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply]`. Use `push_cast`. Simplify using `only [dotProduct] at this`. Conclude with `this.symm`. Take `⟨k1, hk1u, hk1A, hk1B⟩` from `hC (v.adicCompletionIntegers F) n m A0 A1 B0 B1 hA0 hA1 hB0 hB1 hgram`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : IsUnit k1.det` using `(Matrix.isUnit_iff_isUnit_det k1).1 hk1u`. Establish `hki : k1 * k1⁻¹ = 1` using `Matrix.mul_nonsing_inv k1 hdet`. Establish `hik : k1⁻¹ * k1 = 1` using `Matrix.nonsing_inv_mul k1 hdet`. Use `set f := (v.adicCompletionIntegers F).subtype with hf`. Establish `mo : ∀ {M N : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F)}, M * N = 1 → M.map f * N.map f = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `M N hMN`. Rewrite using `[← Matrix.map_mul, hMN, Matrix.map_one f (map_zero f) (map_one f)]`. Establish `e1 : (k1⁻¹)ᵀᵀ * k1 = 1` using `by rw [transpose_transpose, hik]`. Establish `e2 : k1ᵀ * (k1⁻¹)ᵀ = 1` using `by rw [← transpose_mul, hik, transpose_one]`. Establish `e3 : (k1⁻¹)ᵀ * k1ᵀ = 1` using `by rw [← transpose_mul, hki, transpose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `tm : ∀ M : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F), (M.map f)ᵀ = Mᵀ.map f` using `fun M => (Matrix.transpose_map).symm`. Use `set kstd := D.kS (k1.map f) ((k1⁻¹)ᵀ.map f) with hkstd`. Use `set kstd' := D.kS (k1⁻¹.map f) (k1ᵀ.map f) with hkstd'`. Establish `hkk : kstd * kstd' = 1`. Rewrite using `[hkstd, hkstd', SD.kS_mul, mo hki, mo e3, SD.kS_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk'k : kstd' * kstd = 1` using `mul_eq_one_comm.mp hkk`. Establish `hkU : ∀ x y, stdH σ (kstd *ᵥ x) (kstd *ᵥ y) = stdH σ x y`. Introduce `x y`. Use `D.stdH_kS _ _ ?_ ?_ x y` and prove the remaining obligations. Rewrite using `[tm, mo e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tm, mo e2]`. Establish `hkI : ∀ x, IntV v (kstd *ᵥ x) ↔ IntV v x`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `D.intV_kS (k1⁻¹) k1ᵀ hx` as an intermediate fact. Rewrite `this` using `[← hkstd', mulVec_mulVec, hk'k, one_mulVec]`. Then use the resulting hypothesis. Introduce `hx`. Conclude with `D.intV_kS k1 (k1⁻¹)ᵀ hx`. Establish `hkZ : ∀ a, kstd *ᵥ Z0 a = Z a`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Apply `D.extV` to reduce the goal to its premises. Introduce `i`. Rewrite using `[hkstd, SD.fst_proj_split_matrix_mulVec]`. Use `congrArg (fun M => f (M i a)) hk1A` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, map_sum, map_mul] at this`. Simplify using `only [mulVec, dotProduct, Matrix.map_apply]`. Conclude with `this`. Introduce `i`. Establish `hB : (k1⁻¹)ᵀ * B0 = B1`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hk1B, ← Matrix.mul_assoc, e3, Matrix.one_mul]`. Rewrite using `[hkstd, SD.snd_proj_split_matrix_mulVec]`. Use `congrArg (fun M => f (M i a)) hB` as an intermediate fact. Simplify using `only [Matrix.mul_apply, map_sum, map_mul] at this`. Simplify using `only [mulVec, dotProduct, Matrix.map_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Use `set kM := Qm * kstd * Qi with hkM`. Use `set kMi := Qm * kstd' * Qi with hkMi`. Establish `hkMM : kM * kMi = 1`. Rewrite using `[hkM, hkMi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hQiQ, Matrix.mul_one, hkk, Matrix.mul_one, hQQi]`. Establish `hkMM' : kMi * kM = 1` using `mul_eq_one_comm.mp hkMM`. Set `kG : GL (Fin n) (Fv F v ⊗[F] E)` to `⟨kM, kMi, hkMM, hkMM'⟩`.
-
-Establish `hkx : ∀ x, kM *ᵥ x = Qm *ᵥ (kstd *ᵥ (Qi *ᵥ x))`. Introduce `x`. Rewrite using `[hkM, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Establish `hmem : kG ∈ HR (Fv F v) σ J` using `by show Formalism.UG.cT (sigR (Fv F v) σ) kM * JR (Fv F v) J * kM = JR (Fv F v) J`. Apply `hform_ext (sigR (Fv F v) σ)` to reduce the goal to its premises.
-
-Introduce `x y`. Rewrite using `[← hform_mulVec]`. Use `show hR (Fv F v) σ J (kM *ᵥ x) (kM *ᵥ y) = hR (Fv F v) σ J x y`. Rewrite using `[hkx, hkx, hQh, ← stdH, hkU, stdH, ← hQh, mulVec_mulVec, mulVec_mulVec, hQQi, one_mulVec, one_mulVec]`. Set `kH : HA (Fv F v) σ J` to `(⟨kG, hmem⟩ : HR (Fv F v) σ J)`.
-
-Use `⟨kH, ?_, ?_⟩` and prove the remaining obligations. Introduce `y show y ∈ latLoc (E := E) v Λ ↔ kM *ᵥ y ∈ latLoc (E := E) v Λ`. Rewrite using `[memΛ, memΛ, hkx, mulVec_mulVec, hQiQ, one_mulVec, hkI]`. Introduce `a show kM *ᵥ (Qm *ᵥ Z0 a) = Qm *ᵥ Z a`. Rewrite using `[hkx, show Qi *ᵥ (Qm *ᵥ Z0 a) = Z0 a by rw [mulVec_mulVec, hQiQ, one_mulVec], hkZ a]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem witt_gen {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)}
     {Λ : Set (Fin n → E)} (D : SD σ v) (Q : GL (Fin n) (Fv F v ⊗[F] E))

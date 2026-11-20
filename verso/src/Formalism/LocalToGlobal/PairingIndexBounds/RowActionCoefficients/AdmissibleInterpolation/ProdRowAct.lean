@@ -18,7 +18,7 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Simplify using `only [mF]`. Rewrite using `[Matrix.submatrix_mul_equiv]`. Use `congr 1`. Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mF_mul (j : ℕ) (b : BX X) (A B : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)) :
     mF X j b A * mF X j b B = mF X j b (A * B) := by
@@ -29,21 +29,21 @@ theorem mF_mul (j : ℕ) (b : BX X) (A B : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((
   simp only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Use extensionality with `i k`. Apply the tactic sequence `by_cases h : i = k <;> simp [mF, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mF_one (j : ℕ) (b : BX X) : mF X j b 1 = 1 := by
   ext i k
   by_cases h : i = k <;> simp [mF, Matrix.one_apply, h]
 
 /- English proof (translation)
-Rewrite using `[mF_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, mF_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mF_inv_mul (j : ℕ) (b : BX X) (g : GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)) :
     mF X j b ((g⁻¹ : GL _ _) : Matrix _ _ (X.G.P.Qq b.1)) * mF X j b (g : Matrix _ _ (X.G.P.Qq b.1)) = 1 := by
   rw [mF_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, mF_one]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Matrix.det (mF_inv_mul X j b g)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mF_det_ne (j : ℕ) (b : BX X) (g : GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)) :
     (mF X j b (g : Matrix _ _ (X.G.P.Qq b.1))).det ≠ 0 := by
@@ -70,14 +70,14 @@ def WT (j : ℕ) : Submodule Kc (XspC (X.Pj (j + 1)) Kc) :=
       z = map (algebraMap X.G.Kf Kc) (∏ b, rename (emX X (j + 1) b) (F b))}
 
 /- English proof (translation)
-Simplify using `[rowAct]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem prod_rowAct_lemma {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (d : K) :
     rowAct K M (C d : MvPolynomial (Fin n × Fin n) K) = C d := by
   simp [rowAct]
 
 /- English proof (translation)
-Use extensionality with `a t`. Simplify using `[yV, BidetPairing.rowAct_X', Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem prod_rowAct_lemma_2 {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) :
     (yV K n).map (rowAct K M) = M.map C * yV K n := by
@@ -85,7 +85,7 @@ private theorem prod_rowAct_lemma_2 {K : Type} [Field K] {n : ℕ} (M : Matrix (
   simp [yV, BidetPairing.rowAct_X', Matrix.mul_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `only [mulC, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem prod_rowAct_lemma_3 {K : Type} [Field K] {n : ℕ} (A B : Matrix (Fin n) (Fin n) K)
     (y : Fin n → ℕ → K) : mulC A (mulC B y) = mulC (A * B) y := by
@@ -94,7 +94,7 @@ private theorem prod_rowAct_lemma_3 {K : Type} [Field K] {n : ℕ} (A B : Matrix
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `[mulC, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem prod_rowAct_lemma_4 {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (y : Fin n → ℕ → K) :
@@ -104,9 +104,9 @@ private theorem prod_rowAct_lemma_4 {K : Type} [Field K] {n : ℕ} (M : Matrix (
   simp [mulC, map_sum, map_mul]
 
 /- English proof (translation)
-Use `show (rowAct K M).toRingHom _ = _`. Rewrite using `[map_hvO]`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, prod_rowAct_lemma]`. Rewrite using `[prod_rowAct_lemma_2]`. Establish `hy : (fun a i => (C (y a i) : MvPolynomial (Fin n × Fin n) K)) = mulC (M.map (C : K →+* MvPolynomial (Fin n × Fin n) K)) (fun a i => C (mulC M⁻¹ y a i))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_rowAct_lemma_4, prod_rowAct_lemma_3, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hM), mulC_one']`. Rewrite using `[hy, hvO_mul]`. Use `congr 1`. Rewrite using `[map_pow, RingHom.map_det, RingHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_rowAct_lemma_5 {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (hM : M.det ≠ 0) (y : Fin n → ℕ → K) (c : ℕ) (h : Fin c → ℕ) :
@@ -125,7 +125,7 @@ private theorem prod_rowAct_lemma_5 {K : Type} [Field K] {n : ℕ} (M : Matrix (
   rw [map_pow, RingHom.map_det, RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Use `show (rowAct K M).toRingHom _ = _`. Rewrite using `[map_hvE]`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, prod_rowAct_lemma]`. Rewrite using `[prod_rowAct_lemma_2, hvE_mul, ← Matrix.transpose_map, prod_rowAct_lemma_4]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_rowAct_lemma_6 {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (y : Fin n → ℕ → K) (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k : Fin c, h k ≤ n) :
@@ -137,9 +137,9 @@ private theorem prod_rowAct_lemma_6 {K : Type} [Field K] {n : ℕ} (M : Matrix (
   rw [prod_rowAct_lemma_2, hvE_mul, ← Matrix.transpose_map, prod_rowAct_lemma_4]
 
 /- English proof (translation)
-Unfold `srcN`. Use `split_ifs with hb`. Conclude with `⟨M.det ^ cX X j b, mulC M⁻¹ y, by rw [prod_rowAct_lemma_5 M hM, MvPolynomial.smul_eq_C_mul]⟩`. Use `⟨(M.det ^ eX X j b)⁻¹, mulC M.transpose y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, prod_rowAct_lemma, prod_rowAct_lemma_6, MvPolynomial.smul_eq_C_mul, ← mul_assoc, ← map_mul]`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Establish `hd : (Matrix.of fun (a i : Fin (NJ X j)) => mulC M.transpose y a ↑i) = M.transpose * Matrix.of fun (a i : Fin (NJ X j)) => y a ↑i`. Use extensionality with `a i`. Simplify using `[mulC, Matrix.mul_apply]`. Rewrite using `[hd, Matrix.det_mul, Matrix.det_transpose, mul_pow, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hM), one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_rowAct_lemma_7 (j : ℕ) (b : BX X) (M : Matrix (Fin (NJ X j)) (Fin (NJ X j)) X.G.Kf)
     (hM : M.det ≠ 0) (y : Fin (NJ X j) → ℕ → X.G.Kf) :
@@ -159,9 +159,9 @@ private theorem prod_rowAct_lemma_7 (j : ℕ) (b : BX X) (M : Matrix (Fin (NJ X 
       inv_mul_cancel₀ (pow_ne_zero _ hM), one_mul]
 
 /- English proof (translation)
-Establish `key : ∀ b : BX X, ∃ (c : X.G.Kf) (y'' : Fin (NJ X j) → ℕ → X.G.Kf), rename (emX X j b) (rowAct X.G.Kf (mF X j b ((g b.1)⁻¹ : GL _ _)) (evX (fun s => x (xmX X j b s)) (HgX X X.G.Kf j b))) = c • rename (emX X j b) (srcN X j b y'')`. Introduce `b`. Rewrite using `[evX_HgX]`. Take `⟨c, y'', hc⟩` from `prod_rowAct_lemma_7 X j b _ (mF_det_ne X j b (g b.1)⁻¹) _`. Conclude with `⟨c, y'', by rw [hc, MvPolynomial.smul_eq_C_mul, map_mul, rename_C, MvPolynomial.smul_eq_C_mul]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose c y'' hc using key`. Use `⟨∏ b, c b, y'', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (fun b _ => hc b)]`. Simplify using `only [MvPolynomial.smul_eq_C_mul, Finset.prod_mul_distrib, map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_rowAct (j : ℕ) (g : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) (x : X.FrI j → X.G.Kf) :
     ∃ (a : X.G.Kf) (x'' : ∀ b : BX X, Fin (NJ X j) → ℕ → X.G.Kf),

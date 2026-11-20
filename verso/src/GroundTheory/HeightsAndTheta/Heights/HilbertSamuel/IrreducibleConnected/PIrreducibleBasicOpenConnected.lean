@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `IrreducibleBasicOpenConnected.exists_dim hW`. Take `⟨A, hA⟩` from `ComplexSets.LinearNoetherNormalization.proof n d W hd`. Take `⟨P, hP, hconn⟩` from `hU n d W A hW hd hA`. Take `⟨Q, hQ, hQg⟩` from `IrreducibleBasicOpenConnected.exists_base_vanishing hW hA hg`. Use `(hconn Q hQ).subset_closure ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨hxW, hx⟩`. Use `⟨hxW, fun hgx => hx ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hQg x hxW hgx, mul_zero]`. Conclude with `fun x hx => IrreducibleBasicOpenConnected.zeroSet_subset_closure hW hA (mul_ne_zero hP hQ) hx.1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IrreducibleBasicOpenConnected.fin (hU : UnbranchedPartConnected.Statement) (n : ℕ)
     (W : Ideal (MvPolynomial (Fin n) ℂ)) (g : MvPolynomial (Fin n) ℂ) (hW : W.IsPrime) (hg : g ∉ W) :
@@ -29,19 +29,15 @@ theorem IrreducibleBasicOpenConnected.fin (hU : UnbranchedPartConnected.Statemen
       IrreducibleBasicOpenConnected.zeroSet_subset_closure hW hA (mul_ne_zero hP hQ) hx.1
 
 /- English proof (translation)
-Introduce `σ _ W g hW hg`. Take `⟨e⟩ : Nonempty (σ ≃ Fin (Fintype.card σ))` from `⟨Fintype.equivFin σ⟩`. Use `set φ : MvPolynomial σ ℂ ≃ₐ[ℂ] MvPolynomial (Fin (Fintype.card σ)) ℂ := renameEquiv ℂ e with hφ`. Establish `hev : ∀ (y : Fin (Fintype.card σ) → ℂ) (p : MvPolynomial σ ℂ), eval y (φ p) = eval (y ∘ e) p` using `fun y p => eval_rename (⇑e) y p`. Establish `hcomp : ∀ x : σ → ℂ, (x ∘ e.symm) ∘ e = x` using `fun x => by funext i; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW' : (W.map φ).IsPrime` using `Ideal.map_isPrime_of_equiv φ`. Establish `hg' : φ g ∉ W.map φ`. Rewrite using `[Ideal.mem_map_of_equiv]`. Introduce and unpack `⟨p, hp, hpg⟩`. Conclude with `hg (φ.injective hpg ▸ hp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `heq : zeroLocus ℂ W \ {x : σ → ℂ | eval x g = 0} = (fun y : Fin (Fintype.card σ) → ℂ => y ∘ e) '' (ComplexSets.zeroSet (W.map φ) \ {x | eval x (φ g) = 0})`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxW, hxg⟩`. Use `⟨x ∘ e.symm, ⟨fun q hq => ?_, fun h => hxg ?_⟩, hcomp x⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp, rfl⟩` from `(Ideal.mem_map_of_equiv φ q).mp hq`. Rewrite using `[hev, hcomp]`. Conclude with `mem_zeroLocus_iff.mp hxW p hp`. Use `show eval x g = 0`. Rewrite using `[← hcomp x, ← hev]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Introduce and unpack `⟨y, ⟨hyW, hyg⟩, rfl⟩`. Use `⟨mem_zeroLocus_iff.mpr fun p hp => ?_, fun h => hyg ?_⟩` and prove the remaining obligations. Use `show eval (y ∘ e) p = 0`. Rewrite using `[← hev]`.
-
-Conclude with `hyW _ (Ideal.mem_map_of_mem φ hp)`. Use `show eval y (φ g) = 0`. Rewrite using `[hev]`. Conclude with `h`. Rewrite using `[heq]`.
-
-Conclude with `(IrreducibleBasicOpenConnected.fin hU _ (W.map φ) (φ g) hW' hg').image _ (continuous_pi fun i => continuous_apply (e i)).continuousOn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IrreducibleBasicOpenConnected.proof (hU : UnbranchedPartConnected.Statement) :
     IrreducibleBasicOpenConnected.Statement := by

@@ -12,9 +12,9 @@ namespace Formalism.MainNotions.Ext
 open Formalism.BasicNotions Formalism.MainNotions.GL3Theta Formalism.MainNotions.GL3r7 Formalism.MainNotions.Ext.CutA
 
 /- English proof (translation)
-Establish `ha` using `addInt_holds D`. Establish `hB` using `beBiadd_of_cube D hc`. Establish `hn` using `phNorm_of' phNormOfUnits_holds phNormClosed_holds D hOK he ha hB`. Establish `hb` using `beConj_of' beConjOfNorm_holds D he ha hn hB`. Establish `hG` using `phGram_of phGramG_holds D he ha hn hb hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hB, hn, hb, beDiag_of' beDiagG_holds D he ha hn hb hB, jetsPh_of' jetsHigh_holds jetsOne_holds jetsTwo_holds D hc hn hb, hG, phUnitary_of gramUnitEq_holds D hG, phIsotropic_of gramIsoEq_holds D hG, phDual_of phDualOfGram_holds D hG, sDiff_of sDiffOfGram_holds D hG hb, stmt_endIn …`.
+Supply the required witnesses or components.
 -/
 theorem firstGeometricCondition_of_properties (D : D7) (hc : cube D) (he : endInt D) (hOK : PhNormOK D) :
     beBiadd D ∧ phNorm D ∧ beConj D ∧ beDiag D ∧ jetsPh D ∧ PhGram D ∧ PhUnitary D ∧ PhIsotropic D ∧ PhDual D ∧ SDiff D ∧
@@ -29,9 +29,9 @@ theorem firstGeometricCondition_of_properties (D : D7) (hc : cube D) (he : endIn
     sDiff_of sDiffOfGram_holds D hG hb, stmt_endIntW_holds D he, splitZero_of' splitZeroG_holds D he ha hn hb hB⟩
 
 /- English proof (translation)
-Take `⟨hB, -, hb, -, -, -, -, -, hd, hs, heW, -⟩` from `firstGeometricCondition_of_properties D hc he hOK`. Establish `ha` using `addInt_holds D`. Establish `h1` using `stmt_beW_holds D hW readW_holds ha heW hB hb`. Establish `h2` using `stmt_PhDualW_holds D hW readW_holds ha heW hd`. Establish `h3` using `stmt_SDiffW_holds D hW readW_holds ha heW hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h1, h2, h3, firstKernelRemainder_of_levelRestriction_of_linPtW level_restriction_of_group_law_holds linPtW_holds D hW ha heW h3 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem witt_conditions_of_cube_endInt_phW (D : D7) (hc : cube D) (he : endInt D) (hOK : PhNormOK D) (hW : phW D) :
     beW D ∧ PhDualW D ∧ SDiffW D ∧ FirstKernelRemainder D := by

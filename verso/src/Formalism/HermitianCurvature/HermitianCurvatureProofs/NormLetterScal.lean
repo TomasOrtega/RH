@@ -10,13 +10,13 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_letter_scal (σ : ℂ) (b : Bool) : ‖(if b then σ else conj σ)‖ = ‖σ‖ := by
   cases b <;> simp
 
 /- English proof (translation)
-The claim follows from `| [], x, c, hx, e => by have hc : 0 ≤ c := JCx2.pd_ccle_nonneg (hx e) refine ⟨by simpa [KB.uInv] using hx e, ?_⟩ simp only [KB.uInv, sub_self, List.length_nil, pow_zero, one_mul] exact JCx2.pd_ccle_mono_c BetaSesquilinearity.CCle_zero (by positivity) | l :: w, x, c, hx, e => by h …`.
+A detailed English derivation is pending.
 -/
 theorem uInv_ccle {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (A : ℝ) (m : ℕ) (σ : ℂ)
     (hσ : ‖σ‖ ≤ 2) :

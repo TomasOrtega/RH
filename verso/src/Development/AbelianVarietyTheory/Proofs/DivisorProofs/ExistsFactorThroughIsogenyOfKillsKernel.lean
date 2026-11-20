@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A B C q f hq hker`. Establish `hflat : Flat q.hom.left` using `(GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B q hq).2.1`. Establish `hfin : IsFinite q.hom.left` using `hq.1`. Establish `hsurj : Surjective q.hom.left` using `hq.2`. Establish `hqc : QuasiCompact q.hom.left` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨ψ, hψ, hc⟩, -⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective _ A.X B.X C.X q.hom f.hom inferInstance inferInstance hflat hsurj hqc hker`. Conclude with `⟨Hom.mk ψ, hom_ext (by simpa using hc)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_factor_of_isogeny : ∀ (K : Type) [Field K] (A B C : AbVar K) (q : A ⟶ B) (f : A ⟶ C), IsIsogeny q → (∀ (T : Over (Sp K)) (x : T ⟶ A.X), x ≫ q.hom = 1 → x ≫ f.hom = 1) → ∃ g : B ⟶ C, q ≫ g = f := by
   intro K _ A B C q f hq hker

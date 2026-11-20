@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `C _ _`. Establish `hex : ∀ y : C, ∃ W : C.Opens, IsAffineOpen W ∧ y ∈ W` using `fun y => by`. Take `⟨W, hW, hy, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := y) trivial`. Conclude with `⟨W, hW, hy⟩`. Use `choose W hWa hyW using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y => (W y : Set C)) (fun y => (W y).isOpen) (fun y _ => Set.mem_iUnion.2 ⟨y, hyW y⟩)`. Take `⟨y0⟩` from `(inferInstance : Nonempty C)`. Establish `htne : t.Nonempty`. Take `⟨i, hi, -⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y0))`. Conclude with `⟨i, hi⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t.card, fun i => W (t.equivFin.symm i), fun i => hWa _, fun i => ⟨⟨_, hyW _⟩⟩, Finset.card_pos.2 htne, fun y => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Use `⟨t.equivFin ⟨i, hi⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_finite_nonempty_affine_cover_of_integral :
     ∀ (C : Scheme.{0}) [CompactSpace C] [IsIntegral C], ∃ (n : ℕ) (U : Fin n → C.Opens), (∀ i, IsAffineOpen (U i)) ∧ (∀ i, Nonempty (U i)) ∧ (0 < n) ∧ ∀ y : C, ∃ i, y ∈ U i := by

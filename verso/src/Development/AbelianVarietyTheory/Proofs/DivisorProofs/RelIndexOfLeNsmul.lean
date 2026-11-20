@@ -13,9 +13,9 @@ section Group
 variable {H : Type} [AddCommGroup H] [Module ℚ H] [Module.Finite ℚ H]
 
 /- English proof (translation)
-Establish `: IsAddTorsionFree H` using `IsAddTorsionFree.of_module_rat H`. Establish `: Module.Finite ℤ Λ.toIntSubmodule` using `hΛ`. Establish `: Module.Free ℤ Λ.toIntSubmodule` using `inferInstance`. Rewrite using `[AddSubgroup.relIndex_map_nsmul]`. Use `⟨pow_ne_zero _ hc.ne', Nat.pow_le_pow_right hc ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb` using `(Module.finBasis ℤ Λ.toIntSubmodule).linearIndependent.map' Λ.toIntSubmodule.subtype (Submodule.ker_subtype _)`. Use `((LinearIndependent.iff_fractionRing ℤ ℚ).1 hb).fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_nsmul (Λ : AddSubgroup H) (hΛ : Module.Finite ℤ Λ) {c : ℕ} (hc : 0 < c) :
     (Λ.map (nsmulAddMonoidHom c)).relIndex Λ ≠ 0 ∧
@@ -32,9 +32,9 @@ theorem relIndex_nsmul (Λ : AddSubgroup H) (hΛ : Module.Finite ℤ Λ) {c : �
   exact this
 
 /- English proof (translation)
-Establish `: IsAddTorsionFree H` using `IsAddTorsionFree.of_module_rat H`. Take `⟨h0, h1⟩` from `relIndex_nsmul Λ hΛ hc`. Establish `hle : B.map (nsmulAddMonoidHom c) ≤ Λ`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hB x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective (f := nsmulAddMonoidHom c) Λ B (nsmul_right_injective hc.ne')]`. Conclude with `⟨fun h => h0 (AddSubgroup.relIndex_eq_zero_of_le_right hle h), (AddSubgroup.relIndex_le_of_le_right hle h0).trans h1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relIndex_of_nsmul_le (Λ B : AddSubgroup H) (hΛ : Module.Finite ℤ Λ) {c : ℕ} (hc : 0 < c)
     (hB : ∀ x ∈ B, c • x ∈ Λ) : Λ.relIndex B ≠ 0 ∧ Λ.relIndex B ≤ c ^ Module.finrank ℚ H := by
@@ -48,7 +48,7 @@ theorem relIndex_of_nsmul_le (Λ B : AddSubgroup H) (hΛ : Module.Finite ℤ Λ)
     (AddSubgroup.relIndex_le_of_le_right hle h0).trans h1⟩
 
 /- English proof (translation)
-Take `⟨h0, -⟩` from `relIndex_nsmul Λ hΛ hc`. Establish `hle : Λ.map (nsmulAddMonoidHom c) ≤ B`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hB x hx`. Conclude with `fun h => h0 (AddSubgroup.relIndex_eq_zero_of_le_left hle (AddSubgroup.relIndex_eq_zero_of_le_right inf_le_left h))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem relIndex_of_le_nsmul (Λ A B : AddSubgroup H) (hΛ : Module.Finite ℤ Λ) {c : ℕ} (hc : 0 < c)
     (hB : ∀ x ∈ Λ, c • x ∈ B) : B.relIndex (Λ ⊓ A) ≠ 0 := by
@@ -67,16 +67,16 @@ variable {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Modul
   [IsScalarTower (𝓞 E) E W]
 
 /- English proof (translation)
-Simplify using `[twist₂, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_twO (M : Submodule (𝓞 E) W) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ) (y : W) :
     y ∈ twist₂ M c e ↔ ∀ Q : HeightOneSpectrum (𝓞 E), ((c : E) ^ e Q)⁻¹ • y ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal M := by
   simp [twist₂, Submodule.mem_iInf]
 
 /- English proof (translation)
-Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Use `(mem_twO M c e _).2 fun Q => GlobalTheory.ThetaMove.mem_localization_of_mem Q ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ 1 - e Q by have := he Q; omega)`. Establish `: ((c : E) ^ e Q)⁻¹ • c • x = (c ^ m) • x`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, smul_smul, Nat.cast_pow, ← zpow_natCast, ← hm, zpow_sub₀ hcE, zpow_one, div_eq_inv_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `nsmul_mem hx _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_twO (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) {e : HeightOneSpectrum (𝓞 E) → ℤ}
     (he : ∀ Q, e Q ≤ 1) {x : W} (hx : x ∈ M) : c • x ∈ twist₂ M c e := by
@@ -90,9 +90,9 @@ theorem nsmul_mem_twO (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) {e : Hei
   exact nsmul_mem hx _
 
 /- English proof (translation)
-Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Use `GlobalTheory.ThetaMove.mem_of_locP fun Q => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ 1 + e Q by have := he Q; omega)`. Establish `: c • x = (c ^ m) • ((c : E) ^ e Q)⁻¹ • x`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, smul_smul, Nat.cast_pow, ← zpow_natCast, ← hm, zpow_add₀ hcE, zpow_one, mul_assoc, mul_inv_cancel₀ (zpow_ne_zero _ hcE), mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `nsmul_mem ((mem_twO M c e x).1 hx Q) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_of_twO (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) {e : HeightOneSpectrum (𝓞 E) → ℤ}
     (he : ∀ Q, -1 ≤ e Q) {x : W} (hx : x ∈ twist₂ M c e) : c • x ∈ M := by
@@ -108,13 +108,13 @@ theorem nsmul_mem_of_twO (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) {e : 
 end Twist
 
 /- English proof (translation)
-Introduce `E _ _ _ ι _ _ a b emb dl AA S L L' c hdl hA hL hL' hc`. Establish `hinj` using `GlobalTheory.ThetaMove.embH_injective (a := a) (b := b) emb hdl`. Establish `hfg : (perO AA L L').FG` using `GlobalTheory.ThetaMove.VolumePos.perO_fg hA (GlobalTheory.ThetaMove.VolumePos.homO_fg hL.fg hL'.fg hL.span_eq_top)`. Establish `: Module.Finite (𝓞 E) (perO AA L L')` using `Module.Finite.iff_fg.2 hfg`. Establish `hfin : Module.Finite ℤ (perO AA L L')` using `Module.Finite.trans (𝓞 E) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite ℚ (Formalism.L2.Col.HomE E a b)` using `Module.Finite.trans E _`. Establish `hrk : Module.finrank ℚ (Formalism.L2.Col.HomE E a b) = Module.finrank ℚ E * a * b`. Rewrite using `[← Module.finrank_mul_finrank ℚ E, Module.finrank_linearMap]`. Simplify using `[mul_assoc]`. Establish `h1` using `relIndex_of_le_nsmul (perO AA L L').toAddSubgroup (halfAO S (perO AA L L') c).toAddSubgroup (halfBO S (perO AA L L') c).toAddSubgroup hfin hc (fun x hx => nsmul_mem_twO _ hc (fun Q => (GlobalTheory.ThetaMove.expS_bound S Q).2) hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `relIndex_of_nsmul_le (perO AA L L').toAddSubgroup (halfBO S (perO AA L L') c).toAddSubgroup hfin hc (fun x hx => nsmul_mem_of_twO _ hc (fun Q => (GlobalTheory.ThetaMove.expS_bound S Q).1) hx)`. Rewrite `h1` using `[← AddSubgroup.relIndex_map_map_of_injective _ _ hinj, AddSubgroup.map_inf _ _ _ hinj]`. Rewrite `h2` using `[← AddSubgroup.relIndex_map_map_of_injective _ _ hinj, hrk]`. Establish `r2` using `Classical.epsilon_spec (GlobalTheory.RepsMod.exists_reps _ _ h2.1)`. Use `⟨Classical.epsilon_spec (GlobalTheory.RepsMod.exists_reps _ _ h1), r2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.RepsMod.card_reps _ _ _ r2).le.trans h2.2`.
+A detailed English derivation is pending.
 -/
 theorem half_reps : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (ι : Type) [Fintype ι] [Nonempty ι] (a b : ℕ) (emb : ι → E →+* ℂ) (dl : ℂ) (AA : Submodule (𝓞 E) E) (S : Finset (HeightOneSpectrum (𝓞 E))) (L : Submodule (𝓞 E) (Sp E a)) (L' : Submodule (𝓞 E) (Sp E b)) (c : ℕ), dl ≠ 0 → AA.FG → Submodule.IsLattice E L → Submodule.IsLattice E L' → 0 < c → Formalism.L2.Th1.H.IsReps (BC emb dl AA S L L' c) (LamC emb dl AA L L' ⊓ AC emb dl AA S L L' c) (repsOf (BC emb dl AA S L L' c) (LamC emb dl AA L L' ⊓ AC emb dl AA S L L' c)) ∧ Formalism.L2.Th1.H.IsReps (LamC emb dl AA L L') (BC emb dl AA S L L' c) (repsOf (LamC emb dl AA L L') (BC emb dl AA S L L' c)) ∧ (repsOf (LamC emb dl AA L L') (BC emb dl AA S L L' c)).card ≤ c ^ (Module.finrank ℚ E * a * b) := by
   intro E _ _ _ ι _ _ a b emb dl AA S L L' c hdl hA hL hL' hc

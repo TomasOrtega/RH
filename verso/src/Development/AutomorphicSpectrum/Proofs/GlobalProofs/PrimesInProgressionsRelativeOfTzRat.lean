@@ -15,9 +15,9 @@ def fibre {N M : ℕ} [NeZero M] (h : N ∣ M) (a : (ZMod N)ˣ) : Finset (ZMod M
   Finset.univ.filter (fun u => ZMod.unitsMap h u = a)
 
 /- English proof (translation)
-Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Establish `: ∀ t ∈ Set.uIcc Y X, 2 ≤ t` using `fun t ht => le_trans (le_min hY hX) ht.1`. Use `continuousOn_const.div (Real.continuousOn_log.mono ?_) ?_` and prove the remaining obligations. Introduce `t ht`. Use `this t ht` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff]`. Combine the linear relations using `[this]`. Introduce `t ht`. Conclude with `(Real.log_pos (by linarith [this t ht])).ne'`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intervalIntegrable_inv_log {Y X : ℝ} (hY : 2 ≤ Y) (hX : 2 ≤ X) :
     IntervalIntegrable (fun t => 1 / Real.log t) MeasureTheory.volume Y X := by
@@ -32,9 +32,9 @@ theorem intervalIntegrable_inv_log {Y X : ℝ} (hY : 2 ≤ Y) (hX : 2 ≤ X) :
     exact (Real.log_pos (by linarith [this t ht])).ne'
 
 /- English proof (translation)
-Establish `: (X - Y) / Real.log X = ∫ _ in Y..X, 1 / Real.log X`. Simplify using `[div_eq_mul_inv]`. Rewrite using `[this]`. Apply `intervalIntegral.integral_mono_on hX (by simp) (intervalIntegrable_inv_log hY (hY.trans hX))` to reduce the goal to its premises. Introduce `t ht`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_div_le_one_div_of_le (Real.log_pos (by linarith [ht.1])) (Real.log_le_log (by linarith [ht.1]) ht.2)`.
+A detailed English derivation is pending.
 -/
 theorem le_integral_inv_log {Y X : ℝ} (hY : 2 ≤ Y) (hX : Y ≤ X) :
     (X - Y) / Real.log X ≤ ∫ t in Y..X, 1 / Real.log t := by

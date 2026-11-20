@@ -10,7 +10,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThK.FrameGram
 
 /- English proof (translation)
-Simplify using `only [form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_apply {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n m : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (Q : Matrix (Fin n) (Fin m) E) (a b : Fin m) :
@@ -20,7 +20,7 @@ theorem gram_apply {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hJ l k]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_swap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = -J i j)
@@ -32,7 +32,7 @@ theorem form_swap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   rw [hJ l k]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_eq {E : Type} [Field E] {n m : ℕ} (ι : Matrix (Fin n) (Fin m) E) (a : Fin m) :
     (fun r => ι r a) = ι *ᵥ Pi.single a 1 := by
@@ -40,19 +40,15 @@ theorem col_eq {E : Type} [Field E] {n m : ℕ} (ι : Matrix (Fin n) (Fin m) E) 
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ σ d₁ J J₁ x y ι Q hσ hJ hxx hyy hxy hι hJ₁ hQι hQx hQy`. Establish `cQ : ∀ a, (fun r => Q r (Fin.castAdd 2 a)) = ι *ᵥ Pi.single a 1`. Introduce `a`. Rewrite using `[← col_eq]`. Use function extensionality and compare the values at `r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hQι r a`. Establish `cx : (fun r => Q r (Fin.natAdd d₁ 0)) = x` using `funext hQx`. Establish `cy : (fun r => Q r (Fin.natAdd d₁ 1)) = y` using `funext hQy`. Establish `ht : ∀ t : Fin 2, (fun r => Q r (Fin.natAdd d₁ t)) = x ∨ (fun r => Q r (Fin.natAdd d₁ t)) = y`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `fin_cases t`. Use `left`. Conclude with `cx`. Use `right`. Conclude with `cy`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `orth : ∀ a (t : Fin 2), form σ J (ι *ᵥ Pi.single a 1) (fun r => Q r (Fin.natAdd d₁ t)) = 0`. Introduce `a t`. Apply the tactic sequence `rcases ht t with h | h <;> rw [h]`. Conclude with `(hι _).1`. Conclude with `(hι _).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a a'`. Rewrite using `[gram_apply, cQ, cQ, ← col_eq, ← col_eq, ← hJ₁, gram_apply]`. Introduce `a t`. Rewrite using `[gram_apply, cQ, orth]`.
-
-Introduce `t a`. Rewrite using `[gram_apply, cQ, form_swap σ J hσ hJ, orth, map_zero, neg_zero]`. Rewrite using `[gram_apply, cx, hxx]`. Rewrite using `[gram_apply, cy, hyy]`. Rewrite using `[gram_apply, cx, cy, hxy]`.
-
-Rewrite using `[gram_apply, cx, cy, form_swap σ J hσ hJ, hxy, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_gram : ∀ {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (d₁ : ℕ)
     (J : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E) (J₁ : Matrix (Fin d₁) (Fin d₁) E) (x y : Fin (d₁ + 2) → E)

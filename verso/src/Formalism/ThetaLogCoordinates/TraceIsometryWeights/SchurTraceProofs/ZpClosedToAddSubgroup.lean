@@ -13,14 +13,14 @@ noncomputable def polProj (p : ℕ) [Fact p.Prime] (r : ℕ) (L2 : Letters N) :
   weightedHomogeneousComponent (wL N r) (fun i => (L2.deg i : ℤ))
 
 /- English proof (translation)
-Rewrite using `[pol_iff]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polProj_mem (L2 : Letters N) (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     polProj p r L2 x ∈ Pol p r L2 := by
   rw [pol_iff]; exact weightedHomogeneousComponent_isWeightedHomogeneous _ _
 
 /- English proof (translation)
-Rewrite `hx` using `[pol_iff]`. Rewrite using `[polProj, weightedHomogeneousComponent_of_mem hx, if_pos rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem polProj_id (L2 : Letters N) {x : MvPolynomial (Fin N × Fin r) ℚ_[p]} (hx : x ∈ Pol p r L2) :
     polProj p r L2 x = x := by
@@ -28,18 +28,18 @@ theorem polProj_id (L2 : Letters N) {x : MvPolynomial (Fin N × Fin r) ℚ_[p]} 
   rw [polProj, weightedHomogeneousComponent_of_mem hx, if_pos rfl]
 
 /- English proof (translation)
-The claim follows from `Formalism.CountingSumsFrames.whc_comm _ _ (fun _ _ hx => glAct_wL LL j c d hx) _ x`.
+A detailed English derivation is pending.
 -/
 theorem polProj_glAct (LL L2 : Letters N) (j : ℕ) (c d : Fin r) (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     polProj p r L2 (glAct p LL j c d x) = glAct p LL j c d (polProj p r L2 x) :=
   Formalism.CountingSumsFrames.whc_comm _ _ (fun _ _ hx => glAct_wL LL j c d hx) _ x
 
 /- English proof (translation)
-Establish `hle : IsoC p LL j Cs la ≤ (IsoW (GAe p LL j (enumC Cs)) (Pol p r L2) (la ∘ enumC Cs)).comap (polProj p r L2)`. Rewrite using `[IsoC]`. Use `sInf_le ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Submodule.mem_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(GAe p LL j (enumC Cs)).subset_gS _ ⟨?_, polProj_mem L2 x⟩` and prove the remaining obligations. Conclude with `(hwc_iff LL j Cs la _).mp (hwc_map_of_comm LL j Cs _ (fun c _ d _ y => polProj_glAct LL L2 j c d y) la x hx)`. Rewrite using `[stableC_iff]`. Introduce `a b x hx`. Rewrite `hx`, the goal using `[Submodule.mem_comap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GAe_E, polProj_glAct]`. Conclude with `(GAe p LL j (enumC Cs)).gS_stable _ a b _ hx`. Introduce `x hx`. Establish `h` using `hle hx.1`. Rewrite `h` using `[Submodule.mem_comap, polProj_id L2 hx.2]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isoC_inf_pol_le (LL L2 : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ) :
     IsoC p LL j Cs la ⊓ Pol p r L2 ≤ IsoW (GAe p LL j (enumC Cs)) (Pol p r L2) (la ∘ enumC Cs) := by
@@ -62,7 +62,7 @@ theorem isoC_inf_pol_le (LL L2 : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la 
   rwa [Submodule.mem_comap, polProj_id L2 hx.2] at h
 
 /- English proof (translation)
-Rewrite using `[WeylLat, Submodule.mem_sInf]`. Conclude with `fun L hL => hL.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weylLat_self (LL : Letters N) (j : ℕ) (h : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     h ∈ WeylLat p LL j h := by
@@ -70,7 +70,7 @@ theorem weylLat_self (LL : Letters N) (j : ℕ) (h : MvPolynomial (Fin N × Fin 
   exact fun L hL => hL.1
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[WeylLat, Submodule.mem_sInf]`. Conclude with `fun L hL => hL.2 c d hcd k x (hx L hL)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weylLat_div (LL : Letters N) (j : ℕ) (h : MvPolynomial (Fin N × Fin r) ℚ_[p]) (c d : Fin r) (hcd : c ≠ d)
     (k : ℕ) (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) (hx : x ∈ WeylLat p LL j h) :
@@ -79,9 +79,9 @@ theorem weylLat_div (LL : Letters N) (j : ℕ) (h : MvPolynomial (Fin N × Fin r
   exact fun L hL => hL.2 c d hcd k x (hx L hL)
 
 /- English proof (translation)
-Introduce `c hc x hx`. Rewrite `hx`, the goal using `[Submodule.mem_toAddSubgroup]`. Take `⟨a, ha⟩ : ∃ a : ℤ_[p], (a : ℚ_[p]) = c` from `⟨⟨c, hc⟩, rfl⟩`. Establish `e : c • x = a • x`. Rewrite using `[← ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `algebraMap_smul ℚ_[p] a x`. Rewrite using `[e]`. Conclude with `L.smul_mem _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpClosed_toAddSubgroup {W : Type} [AddCommGroup W] [Module ℚ_[p] W] [Module ℤ_[p] W]
     [IsScalarTower ℤ_[p] ℚ_[p] W] (L : Submodule ℤ_[p] W) : ZpClosed p L.toAddSubgroup := by
@@ -95,9 +95,7 @@ theorem zpClosed_toAddSubgroup {W : Type} [AddCommGroup W] [Module ℚ_[p] W] [M
   exact L.smul_mem _ hx
 
 /- English proof (translation)
-Establish `hle : (⨆ (h : MvPolynomial (Fin N × Fin r) ℚ_[p]) (_ : Q h), WeylLat p LL j h) ≤ (⨆ (h : MvPolynomial (Fin N × Fin r) ℚ_[p]) (_ : Q h), WeylLat p LL j h).comap (((((k.factorial : ℚ_[p]))⁻¹) • ((glAct p LL j c d) ^ k) : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fi …`. Use `iSup_le fun h => iSup_le fun hh => ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[Submodule.mem_comap]`. Conclude with `(le_iSup_of_le h (le_iSup_of_le hh le_rfl) : WeylLat p LL j h ≤ ⨆ (h : MvPolynomial (Fin N × Fin r) ℚ_[p]) (_ : Q h), WeylLat p LL j h) (weylLat_div LL j h c d hcd k y hy)`.
-
-Conclude with `hle hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_weylLat_div (LL : Letters N) (j : ℕ) (Q : MvPolynomial (Fin N × Fin r) ℚ_[p] → Prop)
     (c d : Fin r) (hcd : c ≠ d) (k : ℕ) (x : MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -117,11 +115,9 @@ theorem iSup_weylLat_div (LL : Letters N) (j : ℕ) (Q : MvPolynomial (Fin N × 
   exact hle hx
 
 /- English proof (translation)
-Introduce `p _ N r LL j _ la x hx hxi`. Establish `he : kapC p r LL.total = (univ : Finset (Fin r)).card.choose 2 * Nat.log p (LL.total + (univ : Finset (Fin r)).card - 1)`. Rewrite using `[kapC, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[he]`. Establish `h1` using `hW p _ _ (GAe p LL j (enumC (univ : Finset (Fin r)))) (Pol p r LL) (IntPol p (Fin N × Fin r)).toAddSubgroup LL.total (polLatData_of hB LL LL j _) (la ∘ enumC univ) x (isoC_inf_pol_le LL LL j univ la hx) hxi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : DeltaLat p (GAe p LL j (enumC (univ : Finset (Fin r)))) {h | (GAe p LL j (enumC (univ : Finset (Fin r)))).IsHW (la ∘ enumC univ) h ∧ h ∈ Pol p r LL ∧ h ∈ (IntPol p (Fin N × Fin r)).toAddSubgroup} ≤ (⨆ (h : MvPolynomial (Fin N × Fin r) ℚ_[p]) (_ : h ∈ HWC p LL j univ la ⊓ Po …`. Use `sInf_le ⟨?_, zpClosed_toAddSubgroup _, ?_⟩` and prove the remaining obligations. Introduce and unpack `h ⟨h1, h2, h3⟩`. Conclude with `(le_iSup_of_le h (le_iSup_of_le ⟨⟨(hwc_iff LL j univ la h).mpr h1, h2⟩, h3⟩ le_rfl) : WeylLat p LL j h ≤ ⨆ (h : MvPolynomial (Fin N × Fin r) ℚ_[p]) (_ : h ∈ HWC p LL j univ la ⊓ Pol p r LL ∧ h ∈ IntPol p (Fin N × Fin r)), WeylLat p LL j h) (weylLat_self LL j h)`. Introduce `a b hab k y hy`.
-
-Conclude with `iSup_weylLat_div LL j _ _ _ (fun h => hab ((enumC univ).injective h)) k y hy`. Conclude with `hle h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weylP_of (hW : WeylInt) (hB : LatBasisPol) : WeylP := by
   intro p _ N r LL j _ la x hx hxi

@@ -65,7 +65,7 @@ def trueCG (hL hF) (D : D7) (hE : IsEmpty D.nd.Loc) (T : GlobalTheory.RowTie.WDT
   csd := fun _ _ => Iff.rfl
 
 /- English proof (translation)
-The claim follows from `host_isCMField D.host; D.naut.ralg π ↔ (C.e a π).IsRegAlg := by rw [D.naut.ralg_def]; simp only [C.inf]; exact (GlobalTheory.CuspRep.CG.isRegAlg_iff _).symm`.
+A detailed English derivation is pending.
 -/
 theorem CGTrue.ralg {hL D T} (C : CGTrue hL D T) a (π : D.naut.CG a) : haveI := host_isCMField D.host; D.naut.ralg π ↔ (C.e a π).IsRegAlg := by
   rw [D.naut.ralg_def]; simp only [C.inf]; exact (GlobalTheory.CuspRep.CG.isRegAlg_iff _).symm

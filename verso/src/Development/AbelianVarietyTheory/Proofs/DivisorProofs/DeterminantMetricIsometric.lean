@@ -11,7 +11,7 @@ namespace GlobalTheory
 namespace VMetric
 
 /- English proof (translation)
-Introduce `k _ X p E E' r h h' φ H H' hφ`. Rewrite `hφ` using `[isIsometry_iff]`. Substitute `hφ` using the available equality. Conclude with `isometric_det_map H φ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isometric_det_of_isIsometry : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E E' : X.Modules) (r : ℕ) (h : VMetric p E r) (h' : VMetric p E' r) (φ : E ≅ E') (H : h.IsCInf) (H' : h'.IsCInf), h.IsIsometry h' φ → (VMetric.det H).Isometric (VMetric.det H') := by
   intro k _ X p E E' r h h' φ H H' hφ

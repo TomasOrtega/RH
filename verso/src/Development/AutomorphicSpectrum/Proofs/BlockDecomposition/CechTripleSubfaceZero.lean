@@ -11,7 +11,7 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.KummerPrimitive
 
 /- English proof (translation)
-Establish `: (res R F).IsStrictlyGE 0`. Unfold `res`. Use `infer_instance`. Conclude with `(CochainComplex.isZero_of_isStrictlyGE (res R F) 0 (-1) (by omega)).eq_of_src _ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem res_d_neg {R : Type} [CommRing R] (F : Shv R) : (res R F).d (-1) 0 = 0 := by
   have : (res R F).IsStrictlyGE 0 := by
@@ -20,7 +20,7 @@ theorem res_d_neg {R : Type} [CommRing R] (F : Shv R) : (res R F).d (-1) 0 = 0 :
   exact (CochainComplex.isZero_of_isStrictlyGE (res R F) 0 (-1) (by omega)).eq_of_src _ _
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Take `rfl` from `funext hy`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem cechPt_congr {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) {U : Scheme.{0}} {x x' : U ⟶ X}
     {y y' : Fin (k + 1) → (U ⟶ Y)} (h : ∀ i, y i ≫ f = x) (h' : ∀ i, y' i ≫ f = x') (hx : x = x')
@@ -52,20 +52,20 @@ variable (hC : CechPt) {Y X : Scheme.{0}} (f : Y ⟶ X) {V V' : Scheme.{0}}
 include hC
 
 /- English proof (translation)
-The claim follows from `(((hC Y X f 0 V).2.2 _ _ _).1)`.
+A detailed English derivation is pending.
 -/
 theorem cechPoint_augmentation (b : V ⟶ Y) : Sx.map (cechAug f) (pt0 f b) = b ≫ f :=
   (((hC Y X f 0 V).2.2 _ _ _).1)
 
 /- English proof (translation)
-Use `((hC Y X f 0 V).2.2 _ _ _).2.1 V' g |>.trans (cechPt_congr _ _ _ _ (Category.assoc _ _ _).symm ?_)` and prove the remaining obligations. Introduce `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cechPoint_restrict (g : V' ⟶ V) (b : V ⟶ Y) : Sx.res g (pt0 f b) = pt0 f (g ≫ b) := by
   refine ((hC Y X f 0 V).2.2 _ _ _).2.1 V' g |>.trans (cechPt_congr _ _ _ _ (Category.assoc _ _ _).symm ?_)
   intro i; fin_cases i; rfl
 
 /- English proof (translation)
-Use `((hC Y X f 1 V).2.2 _ _ _).2.1 V' g |>.trans (cechPt_congr _ _ _ _ (Category.assoc _ _ _).symm ?_)` and prove the remaining obligations. Apply the tactic sequence `intro i; fin_cases i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cechPair_restrict (g : V' ⟶ V) (b c : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : (g ≫ b) ≫ f = (g ≫ c) ≫ f) :
     Sx.res g (pt1 f b c h) = pt1 f (g ≫ b) (g ≫ c) h' := by
@@ -73,21 +73,21 @@ theorem cechPair_restrict (g : V' ⟶ V) (b c : V ⟶ Y) (h : b ≫ f = c ≫ f)
   intro i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Use `((hC Y X f 1 V).2.2 _ _ _).2.2 0 (SimplexCategory.δ 0) |>.trans (cechPt_congr _ _ _ _ h ?_)` and prove the remaining obligations. Introduce `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cechPair_face_zero (b c : V ⟶ Y) (h : b ≫ f = c ≫ f) : (pt1 f b c h).face 0 = pt0 f c := by
   refine ((hC Y X f 1 V).2.2 _ _ _).2.2 0 (SimplexCategory.δ 0) |>.trans (cechPt_congr _ _ _ _ h ?_)
   intro i; fin_cases i; rfl
 
 /- English proof (translation)
-Use `((hC Y X f 1 V).2.2 _ _ _).2.2 0 (SimplexCategory.δ 1) |>.trans (cechPt_congr _ _ _ _ rfl ?_)` and prove the remaining obligations. Introduce `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cechPair_face_one (b c : V ⟶ Y) (h : b ≫ f = c ≫ f) : (pt1 f b c h).face 1 = pt0 f b := by
   refine ((hC Y X f 1 V).2.2 _ _ _).2.2 0 (SimplexCategory.δ 1) |>.trans (cechPt_congr _ _ _ _ rfl ?_)
   intro i; fin_cases i; rfl
 
 /- English proof (translation)
-Use `((hC Y X f 2 V).2.2 _ _ _).2.2 1 (SimplexCategory.δ 0) |>.trans (cechPt_congr _ _ _ _ h ?_)` and prove the remaining obligations. Apply the tactic sequence `intro i; fin_cases i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cechTriple_face_zero (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : c ≫ f = e ≫ f) :
     (pt2 f b c e h h').face 0 = pt1 f c e h' := by
@@ -95,7 +95,7 @@ theorem cechTriple_face_zero (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : c �
   intro i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Use `((hC Y X f 2 V).2.2 _ _ _).2.2 1 (SimplexCategory.δ 1) |>.trans (cechPt_congr _ _ _ _ rfl ?_)` and prove the remaining obligations. Apply the tactic sequence `intro i; fin_cases i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cechTriple_face_one (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : c ≫ f = e ≫ f) :
     (pt2 f b c e h h').face 1 = pt1 f b e (h.trans h') := by
@@ -103,7 +103,7 @@ theorem cechTriple_face_one (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : c �
   intro i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Use `((hC Y X f 2 V).2.2 _ _ _).2.2 1 (SimplexCategory.δ 2) |>.trans (cechPt_congr _ _ _ _ rfl ?_)` and prove the remaining obligations. Apply the tactic sequence `intro i; fin_cases i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cechTriple_face_two (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : c ≫ f = e ≫ f) :
     (pt2 f b c e h h').face 2 = pt1 f b c h := by
@@ -111,7 +111,7 @@ theorem cechTriple_face_two (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : c �
   intro i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Use `((hC Y X f 2 V).2.2 _ _ _).2.2 1 (SimplexCategory.subinterval 0 1 hs) |>.trans (cechPt_congr _ _ _ _ rfl ?_)` and prove the remaining obligations. Apply the tactic sequence `intro i; fin_cases i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cechTriple_subface_zero (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : c ≫ f = e ≫ f) (hs : 0 + 1 ≤ 2) :
     (pt2 f b c e h h').sub 0 1 hs = pt1 f b c h := by
@@ -119,7 +119,7 @@ theorem cechTriple_subface_zero (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : 
   intro i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Use `((hC Y X f 2 V).2.2 _ _ _).2.2 1 (SimplexCategory.subinterval 1 1 hs) |>.trans (cechPt_congr _ _ _ _ h ?_)` and prove the remaining obligations. Apply the tactic sequence `intro i; fin_cases i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cechTriple_subface_one (b c e : V ⟶ Y) (h : b ≫ f = c ≫ f) (h' : c ≫ f = e ≫ f) (hs : 1 + 1 ≤ 2) :
     (pt2 f b c e h h').sub 1 1 hs = pt1 f c e h' := by
@@ -135,7 +135,7 @@ variable (hD : EvDel) {R : Type} [CommRing R] {E : Spc} {I : GlobalTheory.EtC.Cx
 include hD
 
 /- English proof (translation)
-Use `((hD R E I 1 2 (by norm_num) β U).2 0 0 1 (by simp) (by simp) z).trans ?_` and prove the remaining obligations. Rewrite using `[Int.negOnePow_even 2 (by decide), one_smul, Fin.sum_univ_two]`. Simplify using `[sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem del_one (z : Sx E 1 U) : ev (δ 1 2 β) 1 1 (by simp) U z =
     Sec.map (I.d 0 1) (ev β 1 0 (by simp) U z) +
@@ -145,7 +145,7 @@ theorem del_one (z : Sx E 1 U) : ev (δ 1 2 β) 1 1 (by simp) U z =
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Use `((hD R E I 1 2 (by norm_num) β U).2 1 (-1) 0 (by simp) (by simp) z).trans ?_` and prove the remaining obligations. Rewrite using `[Int.negOnePow_even 2 (by decide), one_smul, Fin.sum_univ_three]`. Simplify using `[sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem del_two (z : Sx E 2 U) : ev (δ 1 2 β) 2 0 (by simp) U z =
     Sec.map (I.d (-1) 0) (ev β 2 (-1) (by simp) U z) +
@@ -157,27 +157,25 @@ theorem del_two (z : Sx E 2 U) : ev (δ 1 2 β) 2 0 (by simp) U z =
 end Coboundary
 
 /- English proof (translation)
-Introduce `hExt hNat hDel hConc hBasic hCech hC1 q _ X D L hL hInv x hx`. Take `⟨γ, hγ, hγ0, hγ1, hγ2⟩` from `hC1 q (cech D.f) L hInv`. Take `⟨a, ha⟩` from `(hBasic (ZMod q) (res _ (tw q 1)) X 2).1 x`. Take `⟨α, hαc, hαx⟩` from `(hConc (ZMod q) (res _ (tw q 1)) X 2 a).2.1 x ha`. Establish `hmk : CohomologyClass.mk (γ - zcomp (Cocycle.ofHom ((chains (ZMod q)).map (cechAug D.f))) α (zero_add 2)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[CohomologyClass.mk_sub, hγ, ← hx, ← hαx]`. Conclude with `sub_self _`. Rewrite `hmk` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ 1 (by norm_num)]`. Take `⟨β, hβ⟩` from `hmk`. Establish `hv : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + 2 = s) (U : Scheme.{0}) (z : Sx (cech D.f) p U), ev (δ 1 2 β) p s h U z = ev γ.1 p s h U z - ev α.1 p s h U (Sx.map (cechAug D.f) z)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p s h U z`. Establish `e : δ 1 2 β = γ.1 - (Cochain.ofHom ((chains (ZMod q)).map (cechAug D.f))).comp α.1 (zero_add 2)` using `hβ`. Rewrite using `[e, ((hExt _ _ _ _ _ _).2 p s h U z).2.1, ((hNat _ _ _ _ α.1 p s h U).2 _ _ z)]`. Establish `hv1 : ∀ (p : ℕ) (s : ℤ) (h : -((p + 1 : ℕ) : ℤ) + 2 = s) (U : Scheme.{0}) (z : Sx (cech D.f) (p + 1) U), ev (δ 1 2 β) (p + 1) s h U z = ev γ.1 (p + 1) s h U z`. Introduce `p s h U z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, show ev α.1 (p + 1) s h U (Sx.map (cechAug D.f) z) = 0 from hαc.2 p s h U (Sx.map (cechAug D.f) z), sub_zero]`. Use `⟨a, fun V b => - ev β 0 1 (by simp) V (pt0 D.f b), fun V b c h => ev β 1 0 (by simp) V (pt1 D.f b c h), ha, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V V' g b`. Establish `e` using `(hNat _ _ _ _ β 0 1 (by simp) V).1 V' g (pt0 D.f b)`. Rewrite `e` using `[cechPoint_restrict hCech]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_neg]`. Conclude with `congrArg Neg.neg e.symm`. Introduce `V V' g b c h h'`. Rewrite using `[← (hNat _ _ _ _ β 1 0 (by simp) V).1 V' g (pt1 D.f b c h), cechPair_restrict hCech]`. Introduce `V b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `((hDel _ _ _ 1 2 (by norm_num) β V).1 (pt0 D.f b))`. Rewrite `h0` using `[hv, hγ0, cechPoint_augmentation hCech, show ev α.1 0 2 (by simp) V (b ≫ D.f) = Sec.res (b ≫ D.f) a from hαc.1 V _, zero_sub]`. Simplify using `only [map_neg]`. Conclude with `(congrArg Neg.neg h0).symm.trans (neg_neg _)`. Introduce `V b c h v hv'`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : v ^ q = lineUnit L (pt1 D.f b c h)` using `hv'.trans (hL V _ ![b, c] _).symm`. Establish `h1` using `del_one hDel β V (pt1 D.f b c h)`. Rewrite `h1` using `[hv1 0 1 _ V (pt1 D.f b c h), hγ1 V _ v hu, cechPair_face_zero hCech, cechPair_face_one hCech]`. Simplify using `only [map_sub]`. Express the relevant statement in the definitionally equal form `-ev β 0 1 (by simp) V (pt0 D.f c) - -ev β 0 1 (by simp) V (pt0 D.f b) = Sec.map ((res (ZMod q) (tw q 1)).d 0 1) (ev β 1 0 (by simp) V (pt1 D.f b c h)) - Sec.map ((res (ZMod q) (tw q 1)).d 0 1) (kumT q V v)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1]`. Normalize the expressions using the abelian group laws. Introduce `V b c e h h' v w hv' hw'`. Establish `hu : v ^ q = lineUnit L ((pt2 D.f b c e h h').sub 0 1 (by omega))`. Rewrite using `[cechTriple_subface_zero hCech]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hv'.trans (hL V _ ![b, c] _).symm`. Establish `hu' : w ^ q = lineUnit L ((pt2 D.f b c e h h').sub 1 1 (by omega))`. Rewrite using `[cechTriple_subface_one hCech]`. Conclude with `hw'.trans (hL V _ ![c, e] _).symm`. Establish `h2` using `del_two hDel β V (pt2 D.f b c e h h')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : ∀ y : Sec ((res (ZMod q) (tw q 1)).X (-1)) V, Sec.map ((res (ZMod q) (tw q 1)).d (-1) 0) y = 0`. Introduce `y`. Rewrite using `[res_d_neg]`. Both sides reduce to the same expression. Rewrite `h2` using `[hv1 1 0 _ V (pt2 D.f b c e h h'), hγ2 V _ v w hu hu', cechTriple_face_zero hCech, cechTriple_face_one hCech, cechTriple_face_two hCech, hz, zero_add]`.
-
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem main : CrystallineSemistableComparison.E.EvExt → CrystallineSemistableComparison.E.EvNat → CrystallineSemistableComparison.E.EvDel → CrystallineSemistableComparison.E.RepConc → CrystallineSemistableComparison.E.RepBasic → CrystallineSemistableComparison.E.CechPt →
     CrystallineSemistableComparison.E.FirstChernCoboundary := by

@@ -16,9 +16,7 @@ open ReciprocityTheory.ChartRestriction.G.Out
 namespace GlobalTheory.GrpPullbackPol
 
 /- English proof (translation)
-Introduce `S S' f A _ _ A' _ _ φ L h hA hL hr ha`. Establish `hp : IsProper A.hom` using `hA.proper`. Use `⟨⟨inferInstance, ?_, ?_, ?_⟩, pull_isLB hL φ, PolBaseChange.rigidified_pull h hr, ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @Smooth) h.1 hA.smooth`. Conclude with `MorphismProperty.of_isPullback (P := @IsProper) h.1 hA.proper`.
-
-Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyConnected) h.1 hA.geomConnected`. Conclude with `AmpleBaseChange.relAmple_of_isPullback hL ha h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_and_pull_of_isGrpPullback :
     ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (A : Over S) [GrpObj A] [IsCommMonObj A] (A' : Over S')

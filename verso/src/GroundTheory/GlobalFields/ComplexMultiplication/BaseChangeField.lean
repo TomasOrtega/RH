@@ -11,7 +11,7 @@ universe u
 section SlopeTestRemainingChoices
 
 /- English proof (translation)
-Rewrite using `[aeval_def, hom_eval₂, aeval_def, eval₂_map]`. Use `congr 1`. Use extensionality with `a`. Conclude with `h a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_aeval_of_comp {A B K K' : Type*} [CommRing A] [CommRing B] [CommRing K]
     [CommRing K'] [Algebra A K] [Algebra B K'] (f : K →+* K') (τ : A →+* B)
@@ -23,11 +23,11 @@ theorem map_aeval_of_comp {A B K K' : Type*} [CommRing A] [CommRing B] [CommRing
   exact h a
 
 /- English proof (translation)
-Distinguish the cases in `hbb : b = b'`. Substitute `hbb` using the available equality. Conclude with `⟨add_right_cancel h, rfl⟩`. It suffices to derive a contradiction. Apply `genY_not_mem W` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : b - b' ≠ 0` using `sub_ne_zero.mpr hbb`. Establish `e : genY W = (a' - a) / (b - b')`. Rewrite using `[eq_div_iff hne]`. Take the linear combination `h`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_mem (sub_mem ha' ha) (sub_mem hb hb')`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_add_mul_genY_eq {K : Type*} [Field K] {W : WeierstrassCurve K}
     {a b a' b' : W.toAffine.FunctionField} (ha : a ∈ K⟮genX W⟯) (hb : b ∈ K⟮genX W⟯)
@@ -46,7 +46,7 @@ theorem eq_of_add_mul_genY_eq {K : Type*} [Field K] {W : WeierstrassCurve K}
     exact div_mem (sub_mem ha' ha) (sub_mem hb hb')
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ffCongr_aeval {K : Type u} [Field K] {C D : WeierstrassCurve K} (h : C = D) (p : K[X]) :
     ffCongr h (aeval (genX C) p) = aeval (genX D) p := by
@@ -54,7 +54,7 @@ theorem ffCongr_aeval {K : Type u} [Field K] {C D : WeierstrassCurve K} (h : C =
   rfl
 
 /- English proof (translation)
-Substitute `hC hC'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.congr_congr {K : Type u} [Field K]
     {C D C' D' : WeierstrassCurve K} [C.IsElliptic] [D.IsElliptic] [C'.IsElliptic]
@@ -70,7 +70,7 @@ section Galois
 variable {F Ω : Type u} [Field F] [Field Ω] [Algebra F Ω] (E : WeierstrassCurve F)
 
 /- English proof (translation)
-Use `map_aeval_of_comp (galFF E g).toRingHom (g : Ω →+* Ω) (fun c => galFF_algebraMap E g c) p (genX (E.baseChange Ω))` as an intermediate fact. Simplify `this` using `[galFF_genX]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem galFF_aeval (g : Ω ≃ₐ[F] Ω) (p : Polynomial Ω) :
     galFF E g (aeval (genX (E.baseChange Ω)) p) =
@@ -80,7 +80,7 @@ theorem galFF_aeval (g : Ω ≃ₐ[F] Ω) (p : Polynomial Ω) :
   simpa [galFF_genX] using this
 
 /- English proof (translation)
-Use `conv_lhs => rw [← RatFunc.num_div_denom r]`. Rewrite using `[ratEmb_div, ratEmb_div, map_div₀, galFF_aeval, galFF_aeval]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galFF_ratEmb (g : Ω ≃ₐ[F] Ω) (r : RatFunc Ω) :
     galFF E g (ratEmb (E.baseChange Ω) r) = ratEmb (E.baseChange Ω)
@@ -89,9 +89,9 @@ theorem galFF_ratEmb (g : Ω ≃ₐ[F] Ω) (r : RatFunc Ω) :
   rw [ratEmb_div, ratEmb_div, map_div₀, galFF_aeval, galFF_aeval]
 
 /- English proof (translation)
-Rewrite `h` using `[galFF_ratEmb]`. Establish `h2` using `ratEmb_injective (E.baseChange Ω) h`. Establish `hcop : IsCoprime (r.num.map (g : Ω →+* Ω)) (r.denom.map (g : Ω →+* Ω))`. Simplify using `using r.isCoprime_num_denom.map (mapRingHom (g : Ω →+* Ω))`. Take `⟨h1, h1'⟩` from `num_denom_div_of_isCoprime (r.monic_denom.map (g : Ω →+* Ω)) hcop`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `h1`, `h1'` using `[h2]`. Conclude with `⟨h1.symm, h1'.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem map_eq_of_galFF_ratEmb (g : Ω ≃ₐ[F] Ω) {r : RatFunc Ω}
     (h : galFF E g (ratEmb (E.baseChange Ω) r) = ratEmb (E.baseChange Ω) r) :
@@ -105,7 +105,7 @@ theorem map_eq_of_galFF_ratEmb (g : Ω ≃ₐ[F] Ω) {r : RatFunc Ω}
   exact ⟨h1.symm, h1'.symm⟩
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[← fieldRange_ratEmb]`. Take `⟨r, rfl⟩` from `ha`. Conclude with `⟨_, (galFF_ratEmb E g r).symm⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem galFF_mem_adjoin_genX (g : Ω ≃ₐ[F] Ω) {a : (E.baseChange Ω).toAffine.FunctionField}
     (ha : a ∈ Ω⟮genX (E.baseChange Ω)⟯) : galFF E g a ∈ Ω⟮genX (E.baseChange Ω)⟯ := by
@@ -122,14 +122,14 @@ variable {E E' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic]
 
 omit [IsAlgClosed Ω] in
 /- English proof (translation)
-The claim follows from `WeierstrassCurve.map_baseChange (R := F) (S := F) W (IsScalarTower.toAlgHom F F₁ Ω)`.
+A detailed English derivation is pending.
 -/
 theorem map_toAlgHom_baseChange (F₁ : IntermediateField F Ω) (W : WeierstrassCurve F) :
     (W.baseChange F₁).map (algebraMap F₁ Ω) = W.baseChange Ω :=
   WeierstrassCurve.map_baseChange (R := F) (S := F) W (IsScalarTower.toAlgHom F F₁ Ω)
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed (algebraicClosure F Ω) := IsAlgClosure.isAlgClosed F`. Establish `hc` using `(mem_bot_iff_forall_algEquiv_apply_eq (F := algebraicClosure F Ω)).mpr h`. Take `⟨a, rfl⟩` from `IntermediateField.mem_bot.mp hc`. Conclude with `mem_algebraicClosure_iff.mp a.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_forall_algEquiv {c : Ω}
     (h : ∀ g : Ω ≃ₐ[algebraicClosure F Ω] Ω, g c = c) : IsAlgebraic F c := by
@@ -139,11 +139,11 @@ theorem isAlgebraic_of_forall_algEquiv {c : Ω}
   exact mem_algebraicClosure_iff.mp a.2
 
 /- English proof (translation)
-Introduce `c hc`. Apply `isAlgebraic_of_forall_algEquiv` to reduce the goal to its premises. Introduce `g`. Take `⟨h1, h2⟩` from `map_eq_of_galFF_ratEmb E (g.restrictScalars F) (h g)`. Break down `Finset.mem_union.mp hc with hc | hc` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨n, -, rfl⟩` from `Polynomial.mem_coeffs_iff.mp hc`. Use `congrArg (coeff · n) h1` as an intermediate fact. Simplify using `using this`. Take `⟨n, -, rfl⟩` from `Polynomial.mem_coeffs_iff.mp hc`. Use `congrArg (coeff · n) h2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isAlgebraic_coeffs [DecidableEq Ω] {r : RatFunc Ω}
     (h : ∀ g : Ω ≃ₐ[algebraicClosure F Ω] Ω,
@@ -163,7 +163,7 @@ theorem isAlgebraic_coeffs [DecidableEq Ω] {r : RatFunc Ω}
 
 omit [IsAlgClosed Ω] in
 /- English proof (translation)
-Rewrite using `[← Polynomial.mem_lifts, Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Distinguish the cases in `hn : p.coeff n = 0`. Conclude with `⟨0, by rw [hn, map_zero]⟩`. Conclude with `⟨⟨p.coeff n, IntermediateField.subset_adjoin F _ (hp (coeff_mem_coeffs hn))⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_map_eq_of_coeffs {S : Finset Ω} {p : Polynomial Ω} (hp : p.coeffs ⊆ S) :
     ∃ p₁ : Polynomial (IntermediateField.adjoin F (S : Set Ω)),
@@ -175,29 +175,23 @@ theorem exists_map_eq_of_coeffs {S : Finset Ω} {p : Polynomial Ω} (hp : p.coef
   · exact ⟨⟨p.coeff n, IntermediateField.subset_adjoin F _ (hp (coeff_mem_coeffs hn))⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hfix : ∀ g : Ω ≃ₐ[algebraicClosure F Ω] Ω, ψ.conj (g.restrictScalars F) = ψ` using `fun g => ψ.conj_eq_self _ (fun z hz => g.commutes ⟨z, mem_algebraicClosure_iff.mpr hz⟩)`. Establish `hxfix : ∀ g : Ω ≃ₐ[algebraicClosure F Ω] Ω, galFF E (g.restrictScalars F) ψ.x = ψ.x` using `fun g => by rw [← Isogeny.conj_alt_bis, hfix g]`. Establish `hyfix : ∀ g : Ω ≃ₐ[algebraicClosure F Ω] Ω, galFF E (g.restrictScalars F) ψ.y = ψ.y` using `fun g => by rw [← Isogeny.conj_y, hfix g]`. Take `⟨r, hr⟩` from `ψ.exists_ratEmb_eq_x`. Take `⟨a, b, ha, hb, hab⟩` from `exists_eq_add_mul_genY (E.baseChange Ω) ψ.y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha'` using `ha`. Establish `hb'` using `hb`. Rewrite `ha'`, `hb'` using `[← fieldRange_ratEmb]`. Take `⟨r₂, hr₂⟩` from `ha'`. Take `⟨r₃, hr₃⟩` from `hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `ratEmb (E.baseChange Ω) r₂ = a at hr₂`. Express the relevant statement in the definitionally equal form `ratEmb (E.baseChange Ω) r₃ = b at hr₃`. Establish `hab_fix : ∀ g : Ω ≃ₐ[algebraicClosure F Ω] Ω, galFF E (g.restrictScalars F) a = a ∧ galFF E (g.restrictScalars F) b = b`. Introduce `g`. Establish `e` using `hyfix g`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[hab, map_add, map_mul, galFF_genY]`. Conclude with `eq_of_add_mul_genY_eq (galFF_mem_adjoin_genX E _ ha) (galFF_mem_adjoin_genX E _ hb) ha hb e`. Establish `h1` using `isAlgebraic_coeffs (E := E) (r := r) (fun g => by rw [hr]; exact hxfix g)`. Establish `h2` using `isAlgebraic_coeffs (E := E) (r := r₂) (fun g => by rw [hr₂]; exact (hab_fix g).1)`. Establish `h3` using `isAlgebraic_coeffs (E := E) (r := r₃) (fun g => by rw [hr₃]; exact (hab_fix g).2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Finset Ω := (r.num.coeffs ∪ r.denom.coeffs) ∪ (r₂.num.coeffs ∪ r₂.denom.coeffs) ∪ (r₃.num.coeffs ∪ r₃.denom.coeffs) with hS`. Establish `hSalg : ∀ c ∈ (S : Set Ω), _root_.IsIntegral F c`. Introduce `c hc`. Break down `Finset.mem_union.mp hc with hc | hc` into its components or cases. Break down `Finset.mem_union.mp hc with hc | hc` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(h1 c hc).isIntegral`. Conclude with `(h2 c hc).isIntegral`. Conclude with `(h3 c hc).isIntegral`. Use `set F₁ := IntermediateField.adjoin F (S : Set Ω)`. Use `haveI : FiniteDimensional F F₁ := IntermediateField.finiteDimensional_adjoin hSalg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n₁, hn₁⟩` from `exists_map_eq_of_coeffs (F := F) (S := S) (p := r.num) (fun c hc => by simp [hS, hc])`. Take `⟨d₁, hd₁⟩` from `exists_map_eq_of_coeffs (F := F) (S := S) (p := r.denom) (fun c hc => by simp [hS, hc])`. Take `⟨n₂, hn₂⟩` from `exists_map_eq_of_coeffs (F := F) (S := S) (p := r₂.num) (fun c hc => by simp [hS, hc])`. Take `⟨d₂, hd₂⟩` from `exists_map_eq_of_coeffs (F := F) (S := S) (p := r₂.denom) (fun c hc => by simp [hS, hc])`. Take `⟨n₃, hn₃⟩` from `exists_map_eq_of_coeffs (F := F) (S := S) (p := r₃.num) (fun c hc => by simp [hS, hc])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨d₃, hd₃⟩` from `exists_map_eq_of_coeffs (F := F) (S := S) (p := r₃.denom) (fun c hc => by simp [hS, hc])`. Use `set σ₁ := algebraMap F₁ Ω`. Use `set C₁ := E.baseChange F₁`. Establish `h` using `map_toAlgHom_baseChange F₁ E`. Establish `h'` using `map_toAlgHom_baseChange F₁ E'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set ψ₁ := ψ.congr h.symm h'.symm`. Use `set X₁ := genX C₁`. Use `set x₁ : C₁.toAffine.FunctionField := aeval X₁ n₁ / aeval X₁ d₁`. Use `set y₁ : C₁.toAffine.FunctionField := aeval X₁ n₂ / aeval X₁ d₂ + aeval X₁ n₃ / aeval X₁ d₃ * genY C₁`. Establish `hrat : ∀ (s : RatFunc Ω) (p q : Polynomial F₁), p.map σ₁ = s.num → q.map σ₁ = s.denom → ffMap σ₁ C₁ (aeval X₁ p / aeval X₁ q) = ffCongr h.symm (ratEmb (E.baseChange Ω) s)`.
-
-Introduce `s p q hp hq`. Use `conv_rhs => rw [← RatFunc.num_div_denom s]`. Rewrite using `[ratEmb_div, map_div₀, map_div₀, ffCongr_aeval, ffCongr_aeval, ffMap_aeval, ffMap_aeval, ffMap_genX, hp, hq]`. Establish `hx₁ : ffMap σ₁ C₁ x₁ = ψ₁.x`. Rewrite using `[Isogeny.congr_alt, ← hr]`.
-
-Conclude with `hrat r n₁ d₁ hn₁ hd₁`. Establish `hy₁ : ffMap σ₁ C₁ y₁ = ψ₁.y`. Rewrite using `[Isogeny.congr_y, hab, map_add, map_mul, ← hr₂, ← hr₃, map_add, map_mul, hrat r₂ n₂ d₂ hn₂ hd₂, hrat r₃ n₃ d₃ hn₃ hd₃, ffMap_genY, ffCongr_genY]`. Use `⟨F₁, inferInstance, Isogeny.ofMap σ₁ ψ₁ x₁ y₁ hx₁ hy₁, h, h', ?_⟩` and prove the remaining obligations. Rewrite using `[Isogeny.mapOf, Isogeny.map_ofMap]`.
-
-Conclude with `Isogeny.congr_congr h.symm h'.symm ψ`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.exists_finiteDimensional_mapOf_eq
     (ψ : Isogeny (E.baseChange Ω) (E'.baseChange Ω)) :
@@ -281,7 +275,7 @@ theorem _root_.GroundTheory.Arith.Abelian.Isogeny.exists_finiteDimensional_mapOf
   exact Isogeny.congr_congr h.symm h'.symm ψ
 
 /- English proof (translation)
-Take `⟨F₁, hfin, rest⟩` from `ψ.exists_finiteDimensional_mapOf_eq`. Conclude with `⟨F₁, NumberField.of_module_finite F F₁, rest⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.exists_numberField_mapOf_eq [NumberField F]
     (ψ : Isogeny (E.baseChange Ω) (E'.baseChange Ω)) :
@@ -303,9 +297,9 @@ variable {E E' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic]
 omit [DecidableEq Ω] in
 
 /- English proof (translation)
-Establish `e : (galFF E g).toRingHom.comp (bcEmb (F'` using `Ω) E).toRingHom = (bcEmb (F' := Ω) E).toRingHom := by`. Apply `ringHom_ext_functionField` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, AlgHom.commutes]`. Conclude with `galFF_algebraMap_base E g a`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, bcEmb_genX]`. Conclude with `galFF_genX E g`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, bcEmb_genY]`. Conclude with `galFF_genY E g`. Conclude with `DFunLike.congr_fun e f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galFF_bcEmb (g : Ω ≃ₐ[F] Ω) (f : E.toAffine.FunctionField) :
     galFF E g (bcEmb (F' := Ω) E f) = bcEmb (F' := Ω) E f := by
@@ -325,7 +319,7 @@ theorem galFF_bcEmb (g : Ω ≃ₐ[F] Ω) (f : E.toAffine.FunctionField) :
   exact DFunLike.congr_fun e f
 
 /- English proof (translation)
-The claim follows from `Isogeny.ext_xy (by rw [Isogeny.conj_alt_bis, isogBaseChange_alt, galFF_bcEmb]) (by rw [Isogeny.conj_y, isogBaseChange_y, galFF_bcEmb])`.
+A detailed English derivation is pending.
 -/
 theorem conj_isogBaseChange (g : Ω ≃ₐ[F] Ω) (φ : Isogeny E E') :
     (isogBaseChange (F' := Ω) φ).conj g = isogBaseChange (F' := Ω) φ :=
@@ -333,7 +327,7 @@ theorem conj_isogBaseChange (g : Ω ≃ₐ[F] Ω) (φ : Isogeny E E') :
     (by rw [Isogeny.conj_y, isogBaseChange_y, galFF_bcEmb])
 
 /- English proof (translation)
-Use `(isogBaseChange (F' := Ω) φ).pointMap_conj g R` as an intermediate fact. Rewrite `this` using `[conj_isogBaseChange]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pointMap_isogBaseChange_galPointsHom [IsAlgClosed Ω] (g : Ω ≃ₐ[F] Ω) (φ : Isogeny E E')
     (R : (E.baseChange Ω).toAffine.Point) :
@@ -343,15 +337,15 @@ theorem pointMap_isogBaseChange_galPointsHom [IsAlgClosed Ω] (g : Ω ≃ₐ[F] 
   rwa [conj_isogBaseChange] at this
 
 /- English proof (translation)
-Use `set Q := (isogBaseChange (F' := Ω) φ).pointMap (constMap E Ω P)`. Establish `hfix : ∀ g : Ω ≃ₐ[F] Ω, galPointsHom F Ω E' g Q = Q`. Introduce `g`. Rewrite using `[← pointMap_isogBaseChange_galPointsHom]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data.
 
-Conclude with `map_constMap E (g : Ω →ₐ[F] Ω) P`. Consider the cases of `hQ : Q with`. Consider the case `zero => exact ⟨0, (map_zero (constMap E' Ω)).symm⟩`. Consider the case `some u v h`. Rewrite `hfix` using `[hQ]`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ g : Ω ≃ₐ[F] Ω, g u = u ∧ g v = v`. Introduce `g`. Use `hfix g` as an intermediate fact. Take `⟨h', e⟩` from `galPointsHom_some F Ω E' g h`. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨(Point.some.inj this).1, (Point.some.inj this).2⟩`. Establish `hu : u ∈ (⊥ : IntermediateField F Ω)` using `mem_bot_iff_forall_algEquiv_apply_eq.mpr fun g => (key g).1`. Establish `hv : v ∈ (⊥ : IntermediateField F Ω)` using `mem_bot_iff_forall_algEquiv_apply_eq.mpr fun g => (key g).2`. Take `⟨a, rfl⟩` from `IntermediateField.mem_bot.mp hu`. Take `⟨b, rfl⟩` from `IntermediateField.mem_bot.mp hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hab : E'.toAffine.Nonsingular a b` using `(E'.toAffine.baseChange_nonsingular (f := Algebra.ofId F Ω) (algebraMap F Ω).injective a b).mp h`. Conclude with `⟨.some a b hab, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_pointMap_isogBaseChange_eq [PerfectField F] [IsAlgClosed Ω] [DecidableEq F] (φ : Isogeny E E')
     (P : E.toAffine.Point) :
@@ -397,7 +391,7 @@ noncomputable def pointHomOver [PerfectField F] [IsAlgClosed Ω] [DecidableEq F]
         Isogeny.pointMap_add])
 
 /- English proof (translation)
-The claim follows from `(exists_pointMap_isogBaseChange_eq (Ω := Ω) φ P).choose_spec.symm`.
+A detailed English derivation is pending.
 -/
 theorem constMap_pointHomOver [PerfectField F] [IsAlgClosed Ω] [DecidableEq F] (φ : Isogeny E E')
     (P : E.toAffine.Point) :
@@ -408,7 +402,7 @@ theorem constMap_pointHomOver [PerfectField F] [IsAlgClosed Ω] [DecidableEq F] 
 omit [DecidableEq Ω] in
 
 /- English proof (translation)
-The claim follows from `Isogeny.ext_xy ((ffMap σ E).injective (by rw [← Isogeny.map_x, h, Isogeny.map_x])) ((ffMap σ E).injective (by rw [← Isogeny.map_y, h, Isogeny.map_y]))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_injective {F' : Type u} [Field F'] (σ : F →+* F')
     {φ ψ : Isogeny E E'} (h : φ.map σ = ψ.map σ) : φ = ψ :=

@@ -16,7 +16,7 @@ variable {R : Type} [CommRing R] (S : Type) [CommRing S] [Algebra R S]
   {X X' : Type} [AddCommGroup X] [Module R X] [AddCommGroup X'] [Module R X']
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hx (fun r hr n _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul S r]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hr) Submodule.mem_top`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `add_mem hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_tmul_mem (a : Ideal R) {x : X} (hx : x ∈ (a • ⊤ : Submodule R X)) (s : S) :
     s ⊗ₜ[R] x ∈ (a.map (algebraMap R S) • ⊤ : Submodule S (S ⊗[R] X)) := by
@@ -27,7 +27,7 @@ private theorem one_tmul_mem (a : Ideal R) {x : X} (hx : x ∈ (a • ⊤ : Subm
     exact add_mem hx hy
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact smul_zero _`. Consider the case `tmul s x`. Rewrite using `[algebraMap_smul, ← TensorProduct.tmul_smul, h x, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem kill_tensor {r : R} (h : ∀ x : X, r • x = 0) (z : S ⊗[R] X) :
     algebraMap R S r • z = 0 := by
@@ -38,13 +38,13 @@ private theorem kill_tensor {r : R} (h : ∀ x : X, r • x = 0) (z : S ⊗[R] X
   | add x y hx hy => rw [smul_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff, Submodule.smul_le]`. Introduce `s hs z hz`. Use `clear hz`. Rewrite using `[Submodule.mem_bot]`. Establish `key : ∀ t ∈ a, ∀ w : S ⊗[R] X, algebraMap R S t • w = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht w`. Apply `kill_tensor S` to reduce the goal to its premises. Introduce `x`. Establish `hm : t • x ∈ (a • ⊤ : Submodule R X)` using `Submodule.smul_mem_smul ht Submodule.mem_top`. Rewrite `hm` using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Submodule.mem_bot R).mp hm`. Simplify using `only [Ideal.map] at hs`. Proceed by induction on `hs using Submodule.span_induction generalizing z with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `key t ht z`. Consider the case `zero => exact zero_smul _ _`. Consider the case `add x y _ _ hx hy => rw [add_smul, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [smul_eq_mul, mul_smul, hx, smul_zero]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem bot_tensor (a : Ideal R) (h : (a • ⊤ : Submodule R X) = ⊥) :
     (a.map (algebraMap R S) • ⊤ : Submodule S (S ⊗[R] X)) = ⊥ := by
@@ -69,17 +69,15 @@ private theorem bot_tensor (a : Ideal R) (h : (a • ⊤ : Submodule R X) = ⊥)
   | smul c x _ hx => rw [smul_eq_mul, mul_smul, hx, smul_zero]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `LinearMap.lTensor_surjective S ht`. Establish `hex` using `lTensor_exact S (LinearMap.exact_subtype_ker_map t) ht`. Use extensionality with `w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Rewrite `hw` using `[LinearMap.mem_ker, LinearMap.baseChange_eq_ltensor]`. Take `⟨v, rfl⟩` from `(hex w).mp hw`. Use `clear hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `tmul s x`. Rewrite using `[LinearMap.lTensor_tmul, Submodule.coe_subtype]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : (x : X) ∈ (a • ⊤ : Submodule R X)` using `hk ▸ x.2`. Conclude with `one_tmul_mem S a hx s`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Introduce `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (a.map (algebraMap R S) • ⊤ : Submodule S (S ⊗[R] X)) ≤ LinearMap.ker (t.baseChange S)`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr n _`. Rewrite using `[LinearMap.mem_ker, LinearMap.map_smul]`. Establish `hb` using `bot_tensor S a h'`.
-
-Establish `hm : r • (t.baseChange S) n ∈ (a.map (algebraMap R S) • ⊤ : Submodule S (S ⊗[R] X'))` using `Submodule.smul_mem_smul hr Submodule.mem_top`. Rewrite `hm` using `[hb]`. Conclude with `(Submodule.mem_bot S).mp hm`. Conclude with `hle hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_tensor (a : Ideal R) (t : X →ₗ[R] X') (ht : Function.Surjective t)
     (hk : LinearMap.ker t = a • ⊤) (h' : (a • ⊤ : Submodule R X') = ⊥) :
@@ -118,21 +116,21 @@ private theorem ker_tensor (a : Ideal R) (t : X →ₗ[R] X') (ht : Function.Sur
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `R σ _ _ F hF y m f M _ _ S _ _ _ 𝔶 h𝔶 hreg Y _ _ _ _ g _ hfin`. Use `haveI : Module.Flat R S := IsLocalization.flat S (Submonoid.powers f)`. Establish `haFG : (Ideal.span (Set.range y)).FG` using `Submodule.fg_span (Set.finite_range y)`. Establish `hFG : 𝔶.FG` using `h𝔶 ▸ haFG.map _`. Establish `anti : Antitone (fun j : ℕ => m ^ j)` using `fun i j hij => Ideal.pow_le_pow_right hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ∀ k : ℕ, Ideal.span (Set.range y) ^ (k + 1) ≤ Ideal.span (Set.range y) ^ k` using `fun k => Ideal.pow_le_pow_right (Nat.le_succ k)`. Establish `htk` using `fun k : ℕ => ULim.trans_ker R F hF (fun j => m ^ j) M (Ideal.span (Set.range y) ^ k) (Ideal.span (Set.range y) ^ (k + 1)) haFG.pow anti (hle k)`. Establish `hS` using `fun k : ℕ => ker_tensor S (Ideal.span (Set.range y) ^ k) _ (htk k).1 (htk k).2.1 (htk k).2.2`. Establish `hB` using `fun k : ℕ => bot_tensor S (Ideal.span (Set.range y) ^ k) (htk k).2.2`. Establish `hmap : ∀ k : ℕ, (Ideal.span (Set.range y) ^ k).map (algebraMap R S) = 𝔶 ^ k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[Ideal.map_pow, h𝔶]`. Establish `key : ∀ I : ℕ → Ideal R, I = (fun j => Ideal.span (Set.range y) ⊔ m ^ j) → Nonempty (S ⊗[R] ULim F I M ≃ₗ[S] Y)`. Introduce and unpack `I rfl`. Conclude with `⟨(IsLocalizedModule.isBaseChange (Submonoid.powers f) S g).equiv⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨e1⟩` from `key (fun j => Ideal.span (Set.range y) ^ 1 ⊔ m ^ j) (by funext j; rw [pow_one])`. Use `haveI := hfin`. Use `haveI : Module.Finite S (S ⊗[R] ULim F (fun j => Ideal.span (Set.range y) ^ 1 ⊔ m ^ j) M) := Module.Finite.equiv e1.symm`. Take `⟨MM, i1, i2, i3, i4, qq, hfinMM, hsurj, hker, -, hzero⟩` from `exists_tower_limit_completion S 𝔶 hFG (fun k => S ⊗[R] ULim F (fun j => Ideal.span (Set.range y) ^ k ⊔ m ^ j) M) (fun k => LinearMap.baseChange S (ULim.map F (fun x => sup_le_sup_right (hle k) ((fun j => m ^ j) x)) fun _ => LinearMap.id)) (fun k => (hS k).1) (fun k => by rw [(hS …`. Use `⟨MM, i1, i2, i3, i4, e1.toLinearMap ∘ₗ qq 1, hfinMM, e1.surjective.comp (hsurj 1), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.ker_comp, hker 1, pow_one]`. Establish `hspan : Ideal.span (Set.range fun s => algebraMap R S (y s)) = 𝔶`. Rewrite using `[h𝔶, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Use `isQuasiRegularSeq_of_tower S σ (fun s => algebraMap R S (y s)) MM (fun k => S ⊗[R] ULim F (fun j => Ideal.span (Set.range y) ^ k ⊔ m ^ j) M) qq hsurj (fun k => by rw [hker k, hspan]) ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b k hbk`. Establish `h1` using `qRegAt_uLim R σ F hF (fun j => m ^ j) M y b k anti hbk (fun j => hreg b j)`. Use `haveI : IsLocalizedModule (Submonoid.powers f) (TensorProduct.mk R S (ULim F (fun j => Ideal.span (Set.range y) ^ k ⊔ m ^ j) M) 1) := (isLocalizedModule_iff_isBaseChange (Submonoid.powers f) S _).mpr (TensorProduct.isBaseChange R _ S)`. Establish `h2` using `(qRegAt_map R S σ y ⊥ b).2 (Submonoid.powers f) _ _ (TensorProduct.mk R S (ULim F (fun j => Ideal.span (Set.range y) ^ k ⊔ m ^ j) M) 1) h1`. Establish `h3` using `((qRegAt_map R S σ y ⊥ b).1 (S ⊗[R] ULim F (fun j => Ideal.span (Set.range y) ^ k ⊔ m ^ j) M)).mp h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[Ideal.map_bot]`. Then use the resulting hypothesis. Introduce `r hr x`. Apply `hzero (algebraMap R S r • x)` to reduce the goal to its premises. Introduce `k`. Take `⟨e, he⟩` from `hr k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ∀ z : ULim F (fun j => Ideal.span (Set.range y) ^ k ⊔ m ^ j) M, (f ^ e * r) • z = 0` using `(ULim.scal_eq R ℕ F (fun j => Ideal.span (Set.range y) ^ k ⊔ m ^ j) M).2.1 (f ^ e * r) he`. Establish `hQ : ∀ w : S ⊗[R] ULim F (fun j => Ideal.span (Set.range y) ^ k ⊔ m ^ j) M, algebraMap R S (f ^ e * r) • w = 0` using `kill_tensor S hP`. Establish `hu` using `(IsLocalization.Away.algebraMap_isUnit (S := S) f).pow e`. Rewrite using `[LinearMap.map_smul, ← hu.smul_eq_zero, ← mul_smul, ← map_pow, ← map_mul]`. Conclude with `hQ _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.exists_patched_module :
     ∀ (R σ : Type) [CommRing R] [Finite σ] (F : Filter ℕ), F ≤ atTop → ∀ (y : σ → R) (m : Ideal R) (f : R) (M : ℕ → Type) [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]

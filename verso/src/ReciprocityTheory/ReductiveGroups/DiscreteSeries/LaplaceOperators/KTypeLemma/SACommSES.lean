@@ -12,21 +12,21 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M] {MM : Type*} [AddCommGroup MM] [Module ℂ MM]
 
 /- English proof (translation)
-Apply the tactic sequence `intros; apply ReciprocityTheory.ChartRestriction.DS.Lap.LemK.KernelRelationLemmas.sA_isKRel <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sA_isKRel (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (hE : IsGlRep E) : IsKRel ε (sA ε E V hV) := by
   intros; apply ReciprocityTheory.ChartRestriction.DS.Lap.LemK.KernelRelationLemmas.sA_isKRel <;> assumption
 
 /- English proof (translation)
-Apply the tactic sequence `intros; apply ReciprocityTheory.ChartRestriction.DS.Lap.LemK.KernelRelationLemmas.sA_comm_sES <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sA_comm_sES (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (a b : Fin n) (hab : ε a = ε b) : Commute (sA ε E V hV a b) (sES V) := by
   intros; apply ReciprocityTheory.ChartRestriction.DS.Lap.LemK.KernelRelationLemmas.sA_comm_sES <;> assumption
 
 /- English proof (translation)
-Apply the tactic sequence `intros; apply ReciprocityTheory.ChartRestriction.DS.Lap.LemK.KernelRelationLemmas.sθ_sA <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sθ_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (EM : Fin n → Fin n → Module.End ℂ MM) (hEM : IsGlRep EM) (φ : MM)
@@ -38,7 +38,7 @@ theorem sθ_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) 
   intros; apply ReciprocityTheory.ChartRestriction.DS.Lap.LemK.KernelRelationLemmas.sθ_sA <;> assumption
 
 /- English proof (translation)
-Apply the tactic sequence `intros; apply ReciprocityTheory.ChartRestriction.DS.Lap.LemK.KernelRelationLemmas.sT_sA <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sT_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (hE : IsGlRep E) (a b : Fin n) (hab : ε a = ε b) (x : KS (n := n) V) :

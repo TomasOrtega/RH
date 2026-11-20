@@ -18,15 +18,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `hP F _ X _ _ p σ D hproj hdim L M s hs`. Use `haveI : CharZero F := RingHom.charZero σ`. Take `⟨Y, hY, π, hsm, hprojY, hdimY, hgen, hdeg, -⟩` from `GlobalTheory.T.exists_logResolution_projective_of_principalisation hP F X p D hproj hdim ⊥ (fun h => h)`. Use `haveI : Smooth (π ≫ p) := SmoothOfRelativeDimension.smooth D (π ≫ p)`. Use `haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian (π ≫ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s', hz, hn, -⟩` from `GlobalTheory.T.exists_pullback_section_zeros_norm_multiplicities F X Y p (π ≫ p) σ π rfl M s`. Establish `hs' : genericPoint Y ∈ nonzeroLocus s'`. Rewrite using `[hz]`. Use `show π (genericPoint Y) ∈ nonzeroLocus s`. Rewrite using `[hgen]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hs`. Establish `hsmooth` using `GlobalTheory.T.integrable_logNormSection_mixedChernForms F Y (π ≫ p) σ D hprojY hsm (fun i => (L i).pull π rfl) (M.pull π rfl) s' hs'`. Establish `hmeas` using `(GlobalTheory.Mix.SecNorm.logSec_basic F X p σ M s).1`. Establish `hpush` using `(GlobalTheory.T.mixedIntegral_pullback_genericallyFinite F X Y p (π ≫ p) σ D hproj hdim hprojY π rfl hgen (by rw [hdeg]; exact one_ne_zero) L (M.logSec s) hmeas).1`. Use `hpush.1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun y => M.logSec s (ptMap π rfl σ y)) = (M.pull π rfl).logSec s'`. Use function extensionality and compare the values at `y`. Simplify using `only [MLine.logSec]`. Rewrite using `[hn y]`. Rewrite using `[hfun]`.
-
-Conclude with `hsmooth`.
+A detailed English derivation is pending.
 -/
 theorem logSec_intg_proj : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → topologicalKrullDim X = (D : ℕ) → ∀ (L : Fin D → MLine p σ) (M : MLine p σ) (s : M.B.Sec), genericPoint X ∈ nonzeroLocus s → Intg L (M.logSec s) := by
   intro hP F _ X _ _ p σ D hproj hdim L M s hs

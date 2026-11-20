@@ -13,13 +13,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori (IsLi
 namespace GlobalTheory.HeckeEx
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T _ _ x hx q`. Establish `hS` using `GlobalTheory.lawsFieldsSeparately.2.1`. Choose the witnesses or unpack the hypotheses as in `⟨xF, h1, h2⟩ : ∃ xF : Sp T ⟶ Xo.XF c, xF ≫ pullback.fst _ _ = x ∧ xF ≫ pullback.snd _ _ = spMap (algebraMap c.F T) := by`. Use `⟨pullback.lift x (spMap (algebraMap c.F T)) ?_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Rewrite using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sOf, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨p, j, y₀, hj, hp⟩` from `GlobalTheory.Frames.exists_openChart_testRing hS E H Dw l Xo c (xF q)`. Take `⟨g, hg, hT⟩` from `openChart_factor_near_prime E H Dw l Xo c p.R j y₀ hj T xF h2 q hp`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `lam : T →ₐ[c.F] Localization.Away g` to `IsScalarTower.toAlgHom c.F T (Localization.Away g)`. Take `⟨ψ, hψ⟩` from `hT (Localization.Away g) lam (IsLocalization.Away.algebraMap_isUnit g)`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c p.R _ ψ y₀`. Establish `hzx : z.x = spMap (algebraMap T (Localization.Away g)) ≫ x`. Rewrite using `[hz.1, ← hj.2.1, ← Category.assoc, ← hψ, Category.assoc, h1]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key : ∀ x' : Sp (Localization.Away g) ⟶ Xo.X, z.x = x' → ∃ s : LB.Sec (PPx x'), SecGen x' s`. Introduce and unpack `_ rfl`. Conclude with `⟨z.s, z.gen⟩`. Conclude with `key _ hzx`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_secGen_away : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : Type) [CommRing T] [Algebra c.F T] (x : Sp T ⟶ Xo.X), x ≫ Xo.s = sOf c T → ∀ q : PrimeSpectrum T, ∃ g : T, g ∉ q.asIdeal ∧ ∃ s : LB.Sec (PPx (spMap (algebraMap T (Localization.Away g)) ≫ x)), SecGen _ s := by
   intro E _ _ _ H Dw l Xo c T _ _ x hx q

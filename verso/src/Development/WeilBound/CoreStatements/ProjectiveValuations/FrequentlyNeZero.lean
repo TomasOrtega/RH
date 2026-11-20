@@ -17,13 +17,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 open GlobalTheory.CxPts Filter Topology ReciprocityTheory.ChartRestriction.G.DVR.FlatBC
 
 /- English proof (translation)
-Use `letI : Algebra F Γ(Y, W) := (algX p W).toAlgebra`. Establish `hs : (algX p W).Smooth` using `(RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.bijective).comp (HasRingHomProperty.appLE @Smooth p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ le_top)`. Take `⟨ψ, ρ, hψ, h0, hσ, hne⟩` from `GlobalTheory.HolArc.exists_holPts_ne_zero F Γ(Y, W) hs (evHom hy) g hg`. Establish `ha : ∀ u ∈ Metric.ball (0 : ℂ) ρ, ∀ a, ψ u (algX p W a) = σ a` using `fun u hu a => (RingHom.congr_fun (hσ u hu) a).trans ((ev_eq hy _).symm.trans (ev_algX hy a))`. Set `e : ℂ → GlobalTheory.CxPts p σ` to `fun u => if hu : u ∈ Metric.ball (0 : ℂ) ρ then ofHom hW (ψ u) (ha u hu) else y`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hb` using `Metric.ball_mem_nhds (0 : ℂ) hψ.1`. Establish `hev : ∀ u ∈ Metric.ball (0 : ℂ) ρ, e u ∈ ptsIn p σ W ∧ ∀ f, ev p σ W f (e u) = ψ u f` using `fun u hu => by`. Simplify using `only [e, dif_pos hu]`. Conclude with `⟨ofHom_mem _ _ _, ev_ofHom _ _ _⟩`. Establish `ht : Tendsto e (𝓝 0) (𝓝 y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `tendsto_subtype_rng.2 (GlobalTheory.Points.tendsto_of_isAffineOpen hW hy (eventually_of_mem hb fun u hu => (hev u hu).1) fun f => ?_)` and prove the remaining obligations. Establish `h₁` using `((hψ.2 f).differentiableAt hb).continuousAt.tendsto`. Rewrite `h₁` using `[h0, ← ev_eq hy]`. Conclude with `h₁.congr' (eventually_of_mem hb fun u hu => ((hev u hu).2 f).symm)`. Take `⟨u, ⟨h₁, h₂⟩, h₃⟩` from `(((ht.eventually hN).and hb).filter_mono (nhdsWithin_le_nhds (s := {0}ᶜ)) |>.and eventually_mem_nhdsWithin).exists`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨e u, h₁, by rw [(hev u h₂).2]; exact hne u h₂ h₃⟩`.
+A detailed English derivation is pending.
 -/
 theorem frequently_ne_zero {F : Type} [Field F] {Y : Scheme.{0}} (p : Y ⟶ Sp F) [Smooth p] {σ : F →+* ℂ} {W : Y.Opens}
     (hW : IsAffineOpen W) [IsDomain Γ(Y, W)] {g : Γ(Y, W)} (hg : g ≠ 0) {y : GlobalTheory.CxPts p σ} (hy : y ∈ ptsIn p σ W)
@@ -52,7 +52,7 @@ theorem frequently_ne_zero {F : Type} [Field F] {Y : Scheme.{0}} (p : Y ⟶ Sp F
   exact ⟨e u, h₁, by rw [(hev u h₂).2]; exact hne u h₂ h₃⟩
 
 /- English proof (translation)
-Establish `: ⊤ ≤ T.X.ptY x ⁻¹ᵁ flagOpen T.X`. Rewrite using `[← T.X.pt_inc]`. Conclude with `GlobalTheory.FlagMod.le_preimage_map T.X.inc (top_le_inc T.X) le_top`. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_open_of_ptY (T : TorFlag Xo c) (x : FrPt Xo c (CAt σ)) (y : GlobalTheory.CxPts (flagStr T.X) σ)
     (e : T.X.ptY x = zOf y) : y ∈ ptsIn _ σ (flagOpen T.X) := by

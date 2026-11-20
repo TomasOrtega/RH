@@ -29,7 +29,7 @@ def IsSmoothDivisorStableUnderSmoothPullback : Prop :=
     (D : P.IdealSheafData), IsSmoothDivisor p D → IsSmoothDivisor (g ≫ p) (D.comap g)
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem restrictIdeal_comap_eq_comap_restrictIdeal {P Y : Scheme.{u}} (g : Y ⟶ P)
     (I : P.IdealSheafData) {U : P.Opens} {V : Y.Opens} {f : V.toScheme ⟶ U.toScheme}
@@ -39,7 +39,7 @@ private theorem restrictIdeal_comap_eq_comap_restrictIdeal {P Y : Scheme.{u}} (g
     ← Scheme.IdealSheafData.comap_comp, hf]
 
 /- English proof (translation)
-Establish `hf : (Y.homOfLE hV ≫ (g ∣_ U)) ≫ U.ι = V.ι ≫ g`. Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, Scheme.homOfLE_ι]`. Rewrite using `[restrictIdeal_comap_eq_comap_restrictIdeal g I hf, restrictIdeal_comap_eq_comap_restrictIdeal g J hf]`. Conclude with `Scheme.IdealSheafData.comap_mono _ hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem restrictIdeal_comap_le_of_restrictIdeal_le {P Y : Scheme.{u}} (g : Y ⟶ P)
     {I J : P.IdealSheafData} {U : P.Opens}
@@ -52,9 +52,9 @@ private theorem restrictIdeal_comap_le_of_restrictIdeal_le {P Y : Scheme.{u}} (g
   exact Scheme.IdealSheafData.comap_mono _ hle
 
 /- English proof (translation)
-Use `isSmoothDivisor_of_locally_coordIdeal H ?_` and prove the remaining obligations. Introduce `x`. Take `⟨U, hU, hxU, hcase⟩` from `h x`. Break down `hcase with ⟨-, htop⟩ | ⟨n, c, j, hHU, -⟩` into its components or cases. Take `⟨U', m, hxU', hU'U, -, ⟨c'⟩⟩` from `exists_etaleChart_le p x U hxU`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U', hxU', m, c', Or.inl (restrictIdeal_eq_top_of_le H hU'U htop)⟩`. Conclude with `⟨U, hxU, n, c, Or.inr ⟨j, hHU⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem IsMaxContactHypersurface.isSmoothDivisor {k : Type u} [Field k] [CharZero k]
     {P : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth p]
@@ -70,19 +70,17 @@ theorem IsMaxContactHypersurface.isSmoothDivisor {k : Type u} [Field k] [CharZer
   · exact ⟨U, hxU, n, c, Or.inr ⟨j, hHU⟩⟩
 
 /- English proof (translation)
-Introduce `y`. Distinguish the cases in `hy : y ∈ (H.comap g).support`. Take `⟨V, n, c, j, hyV, hHV⟩` from `hcharts y hy`. Establish `hx : g.base y ∈ H.support` using `(Scheme.IdealSheafData.mem_support_comap ..).mp hy`. Take `⟨U, hU, hxU, hcase⟩` from `h (g.base y)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : restrictIdeal H U ≤ restrictIdeal (maxContactIdeal k p A μ) U`. Break down `hcase with ⟨-, htop⟩ | ⟨n₀, c₀, j₀, hHU, hmc⟩` into its components or cases. Conclude with `absurd hx (notMem_support_of_mem_opens_of_restrictIdeal_eq_top H U htop _ hxU)`. Rewrite using `[hHU]`. Conclude with `hmc`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hyVU : y ∈ (V ⊓ g ⁻¹ᵁ U : Y.Opens)` using `⟨hyV, hxU⟩`. Take `⟨V', hV'aff, hyV', hV'le⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens hyVU`. Establish `hV'V : V' ≤ V` using `le_trans hV'le inf_le_left`. Establish `hV'U : V' ≤ g ⁻¹ᵁ U` using `le_trans hV'le inf_le_right`. Establish `heq : restrictIdeal (H.comap g) V' = (c.restrict hV'V).coordIdeal {j}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hV'V c (H.comap g) {j} hHV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨V', hV'aff, hyV', Or.inr ⟨n, c.restrict hV'V, j, heq, ?_⟩⟩` and prove the remaining obligations. Establish `hgoal : (c.restrict hV'V).coordIdeal {j} ≤ restrictIdeal (maxContactIdeal k (g ≫ p) (A.comap g) μ) V'`. Rewrite using `[← heq, maxContactIdeal_comap k p g A μ]`. Conclude with `restrictIdeal_comap_le_of_restrictIdeal_le g hle V' hV'U`. Conclude with `hgoal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hWopen : IsOpen (((H.comap g).support : Set ↥Y)ᶜ)` using `(H.comap g).support.2.isOpen_compl`. Take `⟨V, hVaff, hyV, hVW⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens (show y ∈ (⟨((H.comap g).support : Set ↥Y)ᶜ, hWopen⟩ : Y.Opens) from hy)`. Use `⟨V, hVaff, hyV, Or.inl ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce `z hz hzV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz2` using `hz`. Rewrite `hz2` using `[orderAtLeastLocus_comap k p g A μ]`. Establish `hz3 : g.base z ∈ H.support` using `h.orderAtLeastLocus_subset_support hμ hz2`. Establish `hz4 : z ∈ (H.comap g).support` using `(Scheme.IdealSheafData.mem_support_comap ..).mpr hz3`. Conclude with `(hVW hzV) hz4`.
-
-Use `(FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_top_iff_forall_notMem_support _ _).mpr ?_` and prove the remaining obligations. Introduce `z hzV`. Conclude with `hVW hzV`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsMaxContactHypersurface.comap_of_forall_etaleChart_coordIdeal {k : Type u} [Field k] [CharZero k]
     {P Y : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth p]
@@ -135,7 +133,7 @@ theorem IsMaxContactHypersurface.comap_of_forall_etaleChart_coordIdeal {k : Type
       exact hVW hzV
 
 /- English proof (translation)
-Use `IsMaxContactHypersurface.comap_of_forall_etaleChart_coordIdeal g h hμ ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨V, m, c, j, hyV, heq⟩` from `exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton (g ≫ p) (H.comap g) (hdiv k P Y p g H hH) y hy`. Conclude with `⟨V, m, c, j, hyV, heq⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsMaxContactHypersurface.comap_of_isSmoothDivisorStableUnderSmoothPullback {k : Type u} [Field k]
     [CharZero k] {P Y : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)}
@@ -154,7 +152,7 @@ theorem IsMaxContactHypersurface.comap_of_isSmoothDivisorStableUnderSmoothPullba
   exact ⟨V, m, c, j, hyV, heq⟩
 
 /- English proof (translation)
-Introduce `k hk hk0 P p hsp hfp Y g hsg hfg A μ hμ H hH`. Conclude with `IsMaxContactHypersurface.comap_of_isSmoothDivisorStableUnderSmoothPullback g hdiv (IsMaxContactHypersurface.isSmoothDivisor hH) hH hμ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem maxContactHypersurfaceSmoothPullback_of_isSmoothDivisorStableUnderSmoothPullback
     (hdiv : IsSmoothDivisorStableUnderSmoothPullback.{u}) : BoundarySeparationBaseChange.MaxContactHypersurfaceSmoothPullback.{u} := by

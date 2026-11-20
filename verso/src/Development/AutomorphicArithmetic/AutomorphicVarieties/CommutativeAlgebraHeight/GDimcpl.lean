@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherian
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `R _ _ _`. Use `haveI := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion R (maximalIdeal R)`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map (R := R)`. Use `haveI : (maximalIdeal (AdicCompletion (maximalIdeal R) R)).LiesOver (maximalIdeal R) := ⟨(IsLocalRing.maximalIdeal.isMaximal R).eq_of_le Ideal.IsPrime.ne_top' (Ideal.map_le_iff_le_comap.mp hm.ge)⟩`. Establish `h` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (maximalIdeal R) (maximalIdeal (AdicCompletion (maximalIdeal R) R))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← hm, Ideal.map_quotient_self, Ideal.height_bot, add_zero]`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, ← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, h]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.g_dimcpl :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsLocalRing R],

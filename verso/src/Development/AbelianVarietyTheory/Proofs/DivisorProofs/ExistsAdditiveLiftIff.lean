@@ -27,7 +27,7 @@ variable {S : Scheme.{0}} {A B D : Over S} [GrpObj A] [GrpObj B] [GrpObj D]
 omit [GrpObj A] in
 
 /- English proof (translation)
-Establish `hs : (swap P).IsLB` using `pull_isLB hP _`. Rewrite using `[isAdditive_iff hs]`. Simplify using `only [evc_swap hP hs]`. Conclude with `⟨fun h Y a b b' ↦ h Y b b' a, fun h Y b b' a ↦ h Y a b b'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isAdditive_swap_iff {P : LB (A ⊗ B).left} (hP : P.IsLB) : IsAdditive (swap P) ↔
     ∀ (Y : Over S) (a : Y ⟶ A) (b b' : Y ⟶ B), evc hP a (b * b') = evc hP a b + evc hP a b' := by
@@ -39,7 +39,7 @@ theorem isAdditive_swap_iff {P : LB (A ⊗ B).left} (hP : P.IsLB) : IsAdditive (
 omit [GrpObj B] in
 
 /- English proof (translation)
-The claim follows from `(triv_ev_iff hP _ _).2 (h.evc_one hP _)`.
+A detailed English derivation is pending.
 -/
 theorem triv_left {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : IsAdditive P) : Triv (ev P (1 : B ⟶ A) (𝟙 B)) :=
   (triv_ev_iff hP _ _).2 (h.evc_one hP _)
@@ -47,7 +47,7 @@ theorem triv_left {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : IsAdditive P) : Tri
 omit [GrpObj A] in
 
 /- English proof (translation)
-Establish `hs : (swap P).IsLB` using `pull_isLB hP _`. Rewrite using `[triv_ev_iff hP, ← evc_swap hP hs]`. Conclude with `h.evc_one hs _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_right {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : IsAdditive (swap P)) :
     Triv (ev P (𝟙 A) (1 : A ⟶ B)) := by
@@ -56,7 +56,7 @@ theorem triv_right {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : IsAdditive (swap P
   exact h.evc_one hs _
 
 /- English proof (translation)
-Establish `hM : (ev Q (fst A T) (snd A T ≫ y)).IsLB` using `pull_isLB h.isLB _`. Use `(h.univ T _ hM ((isAdditive_iff hM).2 fun Y a a' t ↦ ?_)).unique ((cls_eq_iff hM hM).1 rfl) ((cls_eq_iff hM (pull_isLB h.isLB _)).1 e)` and prove the remaining obligations. Simplify using `only [evc_ev h.isLB, lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff h.isLB).1 h.additive _ _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_ext {Q : LB (A ⊗ D).left} (h : IsDual A D Q) {T : Over S} {y y' : T ⟶ D}
     (e : evc h.isLB (fst A T) (snd A T ≫ y) = evc h.isLB (fst A T) (snd A T ≫ y')) : y = y' := by
@@ -69,7 +69,7 @@ theorem dual_ext {Q : LB (A ⊗ D).left} (h : IsDual A D Q) {T : Over S} {y y' :
 omit [GrpObj A] [GrpObj B] [GrpObj D] in
 
 /- English proof (translation)
-Rewrite using `[evc, e, pull_evc, lift_fst, lift_snd_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_of_cls {Q : LB (A ⊗ D).left} (hQ : Q.IsLB) {P : LB (A ⊗ B).left} (hP : P.IsLB) {x : B ⟶ D}
     (e : cls P hP = evc hQ (fst A B) (snd A B ≫ x)) {Y : Over S} (a : Y ⟶ A) (b : Y ⟶ B) :
@@ -77,11 +77,11 @@ theorem evc_of_cls {Q : LB (A ⊗ D).left} (hQ : Q.IsLB) {P : LB (A ⊗ B).left}
   rw [evc, e, pull_evc, lift_fst, lift_snd_assoc]
 
 /- English proof (translation)
-Take `⟨x, hx, -⟩` from `h.univ B P hP a₁`. Establish `e : cls P hP = evc h.isLB (fst A B) (snd A B ≫ x)` using `(cls_eq_iff hP (pull_isLB h.isLB _)).2 hx`. Establish `k : ∀ {T : Over S} (u v : T ⟶ B), (u * v) ≫ x = (u ≫ x) * (v ≫ x)` using `fun u v ↦ dual_ext h <| by`. Rewrite using `[MonObj.comp_mul, (isAdditive_swap_iff h.isLB).1 h', ← Category.assoc, ← Category.assoc, ← Category.assoc, ← evc_of_cls h.isLB hP e, ← evc_of_cls h.isLB hP e, ← evc_of_cls h.isLB hP e, MonObj.comp_mul, (isAdditive_swap_iff hP).1 a₂]`. Use `⟨x, ⟨?_, ?_⟩, e⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁` using `k (1 : 𝟙_ (Over S) ⟶ B) 1`. Rewrite `e₁` using `[_root_.mul_one]`. Establish `e₂` using `left_eq_mul.1 e₁`. Simplify `e₂` using `[Hom.one_def]`. Establish `e₁` using `k (fst B B) (snd B B)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `e₁` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[e₁]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem exists_hom {Q : LB (A ⊗ D).left} (h : IsDual A D Q) (h' : IsAdditive (swap Q)) {P : LB (A ⊗ B).left}
     (hP : P.IsLB) (a₁ : IsAdditive P) (a₂ : IsAdditive (swap P)) :
@@ -103,9 +103,7 @@ theorem exists_hom {Q : LB (A ⊗ D).left} (h : IsDual A D Q) (h' : IsAdditive (
     congr 1
 
 /- English proof (translation)
-Establish `hP : (ev Q (fst A B) (snd A B ≫ x)).IsLB` using `pull_isLB hQ _`. Use `⟨(isAdditive_iff hP).2 fun Y a a' t ↦ ?_, (isAdditive_swap_iff hP).2 fun Y a b b' ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [evc_of_cls hQ hP rfl]`. Conclude with `(isAdditive_iff hQ).1 a₁ _ _ _ _`. Simplify using `only [evc_of_cls hQ hP rfl, MonObj.mul_comp]`.
-
-Conclude with `(isAdditive_swap_iff hQ).1 a₂ _ _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem additive_ev {Q : LB (A ⊗ D).left} (hQ : Q.IsLB) (a₁ : IsAdditive Q) (a₂ : IsAdditive (swap Q)) (x : B ⟶ D)
     [IsMonHom x] : IsAdditive (ev Q (fst A B) (snd A B ≫ x)) ∧ IsAdditive (swap (ev Q (fst A B) (snd A B ≫ x))) := by
@@ -117,9 +115,7 @@ theorem additive_ev {Q : LB (A ⊗ D).left} (hQ : Q.IsLB) (a₁ : IsAdditive Q) 
     exact (isAdditive_swap_iff hQ).1 a₂ _ _ _ _
 
 /- English proof (translation)
-Establish `k : ∀ (Y : Over S') (a : Y ⟶ A') (t : Y ⟶ B'), evc hP' a t = evc hP (pushP hf (s` using `Y.hom) rfl a) (pushP hg (s := Y.hom) rfl t) := fun Y a t ↦ evc_eq l₁ l₂ hP hP' e a t _ _ rfl rfl`. Use `⟨(isAdditive_iff hP').2 fun Y a a' t ↦ ?_, (isAdditive_swap_iff hP').2 fun Y a t t' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[evc_eq l₁ l₂ hP hP' e (a * a') t (pushP hf (s := Y.hom) rfl a * pushP hf (s := Y.hom) rfl a') (pushP hg (s := Y.hom) rfl t) (mul_left_comp hf rfl rfl rfl) rfl, k, k]`. Conclude with `(isAdditive_iff hP).1 a₁ _ _ _ _`. Rewrite using `[evc_eq l₁ l₂ hP hP' e a (t * t') (pushP hf (s := Y.hom) rfl a) (pushP hg (s := Y.hom) rfl t * pushP hg (s := Y.hom) rfl t') rfl (mul_left_comp hg rfl rfl rfl), k, k]`.
-
-Conclude with `(isAdditive_swap_iff hP).1 a₂ _ _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem additive_pull {S' : Scheme.{0}} {b : S' ⟶ S} {A' B' : Over S'} [GrpObj A'] [GrpObj B']
     {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left} {l : (A' ⊗ B').left ⟶ (A ⊗ B).left}
@@ -141,7 +137,7 @@ theorem additive_pull {S' : Scheme.{0}} {b : S' ⟶ S} {A' B' : Over S'} [GrpObj
 omit [GrpObj A] [GrpObj B] [GrpObj D] in
 
 /- English proof (translation)
-Rewrite using `[evc, evc, cls_pull hQ, ← pull_comp, ← pull_comp]`. Use `congr 2`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, lift_left_fst, m₁, lift_left_fst_assoc, l₁]`. Rewrite using `[Category.assoc, Category.assoc, lift_left_snd, m₂, lift_left_snd_assoc, Over.comp_left, Over.comp_left, ← Category.assoc, l₂, Category.assoc, Category.assoc, e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_evc_eq {S' : Scheme.{0}} {A' B' D' : Over S'} {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left}
     {d : D'.left ⟶ D.left} {l : (A' ⊗ B').left ⟶ (A ⊗ B).left} {m : (A' ⊗ D').left ⟶ (A ⊗ D).left}
@@ -158,15 +154,13 @@ theorem pull_evc_eq {S' : Scheme.{0}} {A' B' D' : Over S'} {f : A'.left ⟶ A.le
       ← Category.assoc, l₂, Category.assoc, Category.assoc, e]
 
 /- English proof (translation)
-Establish `hG` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Establish `key : ∀ (F : (A ⊗ B) ⊗ (A ⊗ B) ⟶ A ⊗ B), CechPic.pull (lift (1 : A ⊗ B ⟶ A ⊗ B) (𝟙 _) ≫ F).left (cls P hP) = 0 → CechPic.pull (lift (𝟙 _) (1 : A ⊗ B ⟶ A ⊗ B) ≫ F).left (cls P hP) = 0 → ∀ (Y : Over S) (x x' y : Y ⟶ A ⊗ B), CechPic.pull (lift (x * x') y ≫ F).left (cls P hP) = CechP …`. Introduce `F e₁ e₂ Y x x' y`. Establish `t` using `Biadditive.triv_add F GlobalTheory.laws_without_cohomology.1 hG hH hamp hP ((cls_eq_zero_iff (pull_isLB hP _)).1 e₁) ((cls_eq_zero_iff (pull_isLB hP _)).1 e₂) x x' y`. Establish `z` using `(cls_linComb hP _ _ (LB.isLB_linComb hP _ _)).symm.trans ((cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 t)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `z` using `[Fin.sum_univ_three]`. Establish `z' : (1 : ℤ) • CechPic.pull (lift (x * x') y ≫ F).left (cls P hP) + (-1 : ℤ) • CechPic.pull (lift x y ≫ F).left (cls P hP) + (-1 : ℤ) • CechPic.pull (lift x' y ≫ F).left (cls P hP) = 0` using `z`. Rewrite `z'` using `[one_zsmul, neg_one_zsmul, neg_one_zsmul]`. Rewrite using `[← sub_eq_zero, ← z']`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `⟨(isAdditive_iff hP).2 fun Y a a' t ↦ ?_, (isAdditive_swap_iff hP).2 fun Y a t t' ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `key (lift (fst _ _ ≫ fst A B) (snd _ _ ≫ snd A B)) ?_ ?_ Y (lift a 1) (lift a' 1) (lift 1 t)`. Simplify `e` using `only [comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.mul_comp, lift_fst, lift_snd, evc]`. Rewrite using `[comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.one_comp]`. Conclude with `evc_one_left hP h₁ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.one_comp]`. Conclude with `evc_one_right hP h₂ _`. Establish `e` using `key (lift (snd _ _ ≫ fst A B) (fst _ _ ≫ snd A B)) ?_ ?_ Y (lift 1 t) (lift 1 t') (lift a 1)`. Simplify `e` using `only [comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.mul_comp, lift_fst, lift_snd, evc]`. Rewrite using `[comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.one_comp]`.
-
-Conclude with `evc_one_right hP h₂ _`. Rewrite using `[comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.one_comp]`. Conclude with `evc_one_left hP h₁ _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem additive_of_triv (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {H : LB (A ⊗ B).left} (hH : H.IsLB)
     (hamp : Out.RelAmple (A ⊗ B) H) {P : LB (A ⊗ B).left} (hP : P.IsLB) (h₁ : Triv (ev P (1 : B ⟶ A) (𝟙 B)))
@@ -204,9 +198,9 @@ theorem additive_of_triv (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {H : 
       exact evc_one_left hP h₁ _
 
 /- English proof (translation)
-Take `⟨H, hH, eH⟩` from `cls_surj (CechPic.pull (fst A B).left (cls L hL) + CechPic.pull (snd A B).left (cls M hM))`. Establish `hd` using `LB.isLB_div hH (pull_isLB hL (fst A B).left)`. Establish `last : LBIso (M.pull (snd A B).left) (H.div (L.pull (fst A B).left))`. Use `(cls_eq_iff (pull_isLB hM _) hd).1 ?_` and prove the remaining obligations. Rewrite using `[cls_div hH (pull_isLB hL (fst A B).left), eH, cls_pull hL, cls_pull hM, add_sub_cancel_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hA.proper`. Use `haveI := hB.proper`. Use `haveI := (AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB).proper`. Conclude with `⟨H, hH, (relAmple_iff_isAmpleLB_of_isAffine _ hH).2 (IsAmpleLB.box ((relAmple_iff_isAmpleLB_of_isAffine _ hL).1 aL) ((relAmple_iff_isAmpleLB_of_isAffine _ hM).1 aM) hH (p := (fst A B).left) (q := (snd A B).left) (f := A.hom) (g := B.hom) (IsPullback.of_hasPullback _ _) last)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_relAmple_prod [IsAffine S] (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {L : LB A.left}
     (hL : L.IsLB) (aL : Out.RelAmple A L) {M : LB B.left} (hM : M.IsLB) (aM : Out.RelAmple B M) :
@@ -230,9 +224,9 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {κ : Divide
   {i : A₀.left ⟶ A.left} {j : B₀.left ⟶ B.left} {l : (A₀ ⊗ B₀).left ⟶ (A ⊗ B).left} {g g' : ℕ}
 
 /- English proof (translation)
-Take `⟨D, _, Q, hD, hd, q, q'⟩` from `HD _ A hA`. Establish `k` using `isGrpPullback_pullback D (spMap π)`. Take `⟨m, m₁, m₂⟩` from `exists_prod_pullback h k`. Establish `hQ` using `pull_isLB q.isLB m`. Establish `e : LBIso (Q.pull m) (Q.pull m)` using `(cls_eq_iff hQ hQ).1 rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨D, _, Q, _, _, _, m, hD, hd g hg, q, q', k, m₁, m₂, q.baseChange h k m₁ m₂ hQ e, (additive_pull h k m₁ m₂ q.isLB hQ e q.additive q'.additive).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_dual_pair (HD : DualAbelianScheme) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (h : IsGrpPullback A₀ A (spMap π) i) :
@@ -250,13 +244,13 @@ theorem exists_dual_pair (HD : DualAbelianScheme) (hA : IsAbelianScheme A) (hg :
     (additive_pull h k m₁ m₂ q.isLB hQ e q.additive q'.additive).2⟩
 
 /- English proof (translation)
-Take `⟨D, _, Q, D₀, _, d, m, hD, gD, q, q', kd, m₁, m₂, q₀, q₀'⟩` from `exists_dual_pair HD hA hg h`. Take `⟨x₀, _, e₀⟩` from `exists_hom q₀ q₀' hP₀ a₁ a₂`. Take `⟨⟨ψ, hψ, -⟩, perf⟩` from `AbelianDualCrystal.duality HR hA hg hD gD (q.isPerfect q')`. Take `⟨ψ₀, hψ₀, eψ⟩` from `AbelianDualCrystal.exists_crystal_pairing κ h kd m₁ m₂ q.isLB q₀.isLB ((cls_eq_iff q₀.isLB q₀.isLB).1 rfl) hψ`. Establish `adj : ∀ a b, ψ₀ a (push κ (spMap π) x₀ b) = φ₀ a b` using `fun a b ↦ by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hψ₀.adjoint C q₀.isLB hP₀ hφ₀ (𝟙 A₀) x₀ ((cls_eq_iff (pull_isLB q₀.isLB _) (pull_isLB hP₀ _)).1 <| by` as an intermediate fact. Rewrite using `[cls_ev q₀.isLB, cls_ev hP₀, evc_of_cls q₀.isLB hP₀ e₀, Category.comp_id]) a b`. Rewrite `this` using `[push_id]`. Then use the resulting hypothesis. Take `⟨x, ⟨_, ex⟩, -⟩` from `HG.2.2 g' B₀ B j k hB hg' g D₀ D d kd hD gD x₀ fun b hb ↦ by`. Use `((perf ψ hψ).2.2 _).2 fun a ha ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `(HG.1.crysToDR_bijective h hA hg).2 a`. Rewrite using `[← eψ, adj]`. Conclude with `z a ha b hb`. Establish `hP : (ev Q (fst A B) (snd A B ≫ x)).IsLB` using `pull_isLB q.isLB _`. Take `⟨b₁, b₂⟩` from `additive_ev q.isLB q.additive q'.additive x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hP, b₁, b₂, (cls_eq_iff (pull_isLB hP _) hP₀).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_pull hP, cls_ev q.isLB, e₀]`. Conclude with `pull_evc_eq l₁ l₂ m₁ m₂ q.isLB q₀.isLB ex`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_cupSquare (HG : GrothendieckMessing.At κ π) (HR : AbelianDeRham) (HD : DualAbelianScheme)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) (hB : IsAbelianScheme B)
@@ -288,11 +282,11 @@ theorem exists_lift_of_cupSquare (HG : GrothendieckMessing.At κ π) (HR : Abeli
   exact pull_evc_eq l₁ l₂ m₁ m₂ q.isLB q₀.isLB ex
 
 /- English proof (translation)
-Take `⟨D, _, Q, D₀, _, d, m, hD, gD, q, q', kd, m₁, m₂, q₀, q₀'⟩` from `exists_dual_pair HD hA hg h`. Take `⟨x, _, ex⟩` from `exists_hom q q'.additive hP a₁ a₂`. Take `⟨x', _, ex'⟩` from `exists_hom q q'.additive hP' a₁' a₂'`. Establish `hP₀` using `pull_isLB hP' l`. Take `⟨b₁, b₂⟩` from `additive_pull h k l₁ l₂ hP hP₀ e a₁ a₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, _, e₀⟩` from `exists_hom q₀ q₀' hP₀ b₁ b₂`. Establish `red : ∀ y : B ⟶ D, CechPic.pull l (evc q.isLB (fst A B) (snd A B ≫ y)) = cls _ hP₀ → j ≫ y.left = x₀.left ≫ d` using `fun y hy ↦ by`. Establish `w : (j ≫ y.left) ≫ D.hom = B₀.hom ≫ spMap π` using `by rw [Category.assoc, Over.w y, k.1.w]`. Establish `ey : j ≫ y.left = (liftPt kd B₀.hom _ w).left ≫ d` using `(liftPt_left kd _ _ w).symm`. Establish `: (liftPt kd B₀.hom _ w : B₀ ⟶ D₀) = x₀` using `dual_ext q₀ <| (pull_evc_eq l₁ l₂ m₁ m₂ q.isLB q₀.isLB (x' := (liftPt kd B₀.hom _ w : B₀ ⟶ D₀)) ey).symm.trans (hy.trans e₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `ey`. Take `rfl : x = x'` from `HG.unique k hB hg' kd hD gD x₀ (red x (by rw [← ex, ← cls_pull hP l (pull_isLB hP l)]; exact (cls_eq_iff _ _).2 e)) (red x' (by rw [← ex', ← cls_pull hP' l hP₀]))`. Conclude with `(cls_eq_iff hP hP').1 (ex.trans ex'.symm)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lift_unique_of_additive (HG : GrothendieckMessing.LiftHom κ π) (HD : DualAbelianScheme)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) (hB : IsAbelianScheme B)
@@ -322,11 +316,11 @@ theorem lift_unique_of_additive (HG : GrothendieckMessing.LiftHom κ π) (HD : D
   exact (cls_eq_iff hP hP').1 (ex.trans ex'.symm)
 
 /- English proof (translation)
-Introduce `a ha b hb`. Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Establish `gAB` using `smooth_prod hg hg'`. Take `⟨φ, hφ⟩` from `exists_isCorrForm (cupSquare_of_free HR.1 hAB gAB) hP h₁ h₂`. Take `⟨φ₁, h₀, e₀⟩` from `AbelianDualCrystal.exists_crystal_pairing κ h k l₁ l₂ hP hP₀ e hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hφ₀.unique C hP₀ h₀`. Take `⟨ψ, hψ, eψ⟩` from `hφ.isPolForm`. Establish `t` using `(HR.2.2.2.2 R _ _ hAB gAB P hP ψ hψ).1 _ (push_mem_Fil (inl A B) ha) _ (push_mem_Fil (inr A B) hb)`. Rewrite `t` using `[eψ, push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _), push_push _ _ _ (lift_fst _ _), push_id, push_id, push_one]`. Rewrite using `[e₀]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using t`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vanish_of_lift (HR : AbelianDeRham) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (hB : IsAbelianScheme B) (hg' : SmoothOfRelativeDimension g' B.hom) (h : IsGrpPullback A₀ A (spMap π) i)
@@ -350,7 +344,7 @@ theorem vanish_of_lift (HR : AbelianDeRham) (hA : IsAbelianScheme A) (hg : Smoot
   simpa using t
 
 /- English proof (translation)
-The claim follows from `have C := AbelianDualCrystal.cupSquare_crys_prod HR.1 HD.2 hκ hπ hI hA hg hB hg' h k ⟨fun ⟨_, hP, b₁, b₂, e⟩ ↦ vanish_of_lift HR hA hg hB hg' h k l₁ l₂ C hP (triv_left hP b₁) (triv_right hP b₂) hP₀ e hφ₀, exists_lift_of_cupSquare (HG R I κ hκ R₀ π hπ hI) HR HD.1 hA hg hB hg' h k …`.
+A detailed English derivation is pending.
 -/
 theorem exists_additive_lift_iff (HG : GrothendieckDeformation) (HR : AbelianDeRham) (HD : AbelianDualCrystal)
     (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHom.ker π = I)
@@ -368,9 +362,9 @@ theorem exists_additive_lift_iff (HG : GrothendieckDeformation) (HR : AbelianDeR
     exists_lift_of_cupSquare (HG R I κ hκ R₀ π hπ hI) HR HD.1 hA hg hB hg' h k l₁ l₂ C hP₀ a₁ a₂ hφ₀⟩
 
 /- English proof (translation)
-Establish `hA₀` using `PolPull.isAbelianScheme_of_isGrpPullback hA h`. Establish `hB₀` using `PolPull.isAbelianScheme_of_isGrpPullback hB k`. Take `⟨H, hH, aH⟩` from `exists_relAmple_prod hA₀ hB₀ hL aL hM aM`. Take `⟨a₁, a₂⟩` from `additive_of_triv hA₀ hB₀ hH aH hP₀ h₁ h₂`. Take `⟨P, hP, b₁, b₂, e⟩` from `(exists_additive_lift_iff HG HR HD hκ hπ hI hA hg hB hg' h k l₁ l₂ hP₀ a₁ a₂ hφ₀).2 z`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P, hP, triv_left hP b₁, triv_right hP b₂, b₁, b₂, e⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift (HG : GrothendieckDeformation) (HR : AbelianDeRham) (HD : AbelianDualCrystal)
     (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHom.ker π = I)
@@ -394,7 +388,7 @@ theorem exists_lift (HG : GrothendieckDeformation) (HR : AbelianDeRham) (HD : Ab
   exact ⟨P, hP, triv_left hP b₁, triv_right hP b₂, b₁, b₂, e⟩
 
 /- English proof (translation)
-Take `⟨H, hH, aH⟩` from `exists_relAmple_prod hA hB hL aL hM aM`. Take `⟨a₁, a₂⟩` from `additive_of_triv hA hB hH aH hP h₁ h₂`. Take `⟨a₁', a₂'⟩` from `additive_of_triv hA hB hH aH hP' h₁' h₂'`. Conclude with `lift_unique_of_additive (HG R I κ hκ R₀ π hπ hI).2.2 HD hA hg hB hg' h k l₁ l₂ hP a₁ a₂ hP' a₁' a₂' ((cls_eq_iff (pull_isLB hP l) (pull_isLB hP' l)).1 (((cls_eq_iff (pull_isLB hP l) hP₀).2 e).trans ((cls_eq_iff (pull_isLB hP' l) hP₀).2 e').symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lift_unique (HG : GrothendieckDeformation) (HD : DualAbelianScheme)
     (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHom.ker π = I)

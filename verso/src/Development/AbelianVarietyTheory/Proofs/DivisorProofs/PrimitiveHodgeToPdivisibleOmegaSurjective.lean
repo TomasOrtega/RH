@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `hH p _ K _ hp A _ g hA hg G t ψ hψ`. Establish `hL : LieExact A` using `GlobalTheory.LieHodge.lieExact_of_crystallineLift_hodgeDeRham GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations hH K A g hA hg`. Establish `hx` using `GlobalTheory.T.eq_zero_of_forall_apply_hodgePrimitive_eq_zero p K 1 (by rw [pow_one]; exact hp) A hA hL G t ψ hψ`. Rewrite using `[← LinearMap.dualMap_injective_iff, injective_iff_map_eq_zero]`. Introduce `x hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx x fun c ↦ by simpa using LinearMap.congr_fun hx0 c`.
+A detailed English derivation is pending.
 -/
 theorem surjective_of_isCan_field : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K], (p : K) = 0 → ∀ (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (G : PDivGroup p K) (t : G.TorsionTower A) (ψ : PrimitiveSubmodule A →ₗ[K] G.omega), (∀ c : PrimitiveSubmodule A, IsCan t c.1 (G.rigOfOmega (ψ c))) → Function.Surjective ψ := by
   intro hH p _ K _ hp A _ g hA hg G t ψ hψ

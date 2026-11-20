@@ -11,7 +11,7 @@ open scoped TensorProduct
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul r u => rw [Subsingleton.elim u 0, TensorProduct.tmul_zero]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma tensor_punit_eq_zero (x : ℝ ⊗[ℤ] PUnit.{1}) : x = 0 := by
   induction x using TensorProduct.induction_on with
@@ -50,7 +50,7 @@ example (H : Host E) : (zeroDatum H).p * (zeroDatum H).q = 0 := rfl
 def trivLB (X : Scheme.{0}) : LB X := ⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩
 
 /- English proof (translation)
-Simplify using `[trivLB] g_self _ := map_one _ cocycle _ _ _ := by show res _ 1 * res _ 1 = res _ 1`. Rewrite using `[map_one, map_one, map_one, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma trivLB_isLB (X : Scheme.{0}) : (trivLB X).IsLB where
   cover := by simp [trivLB]
@@ -60,7 +60,7 @@ lemma trivLB_isLB (X : Scheme.{0}) : (trivLB X).IsLB where
     rw [map_one, map_one, map_one, _root_.one_mul]
 
 /- English proof (translation)
-Simplify using `[Level.GoodAt, Nat.factorization_eq_zero_of_not_prime _ Nat.not_prime_one]`.
+Simplify using the standard rewrite rules.
 -/
 example (H : Host E) (l : Level H) : l.GoodAt 1 ↔ 3 ≤ l.M := by
   simp [Level.GoodAt, Nat.factorization_eq_zero_of_not_prime _ Nat.not_prime_one]

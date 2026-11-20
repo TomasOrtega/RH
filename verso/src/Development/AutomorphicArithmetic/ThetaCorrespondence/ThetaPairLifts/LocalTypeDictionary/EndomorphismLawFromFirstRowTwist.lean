@@ -32,11 +32,11 @@ end GlobalTheory.FirstRowEndLaw
 namespace GlobalTheory.FirstRowEndLaw
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `hP hS`. Take `⟨CF0, hsc⟩` from `_root_.GlobalTheory.T.twist_firstRow_scalar_multiple hP hS`. Use `⟨CF0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hsc⟩` from `hsc ε CF hC`. Use `⟨x₀, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hat => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `hsc D large₂ he hx Γ Pl0 T A Ks R F s ch hch hat`. Introduce `t a k hk hk' c hc`. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hde` using `pde_ne_q' s`. Establish `hcg : ∀ P ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `hch.guard t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun w => endLam ch.G t w.1 (GlobalTheory.FirstRowTermLaw.kapAt ch.S.toGridChoice t w.1 k), fun w => ?_, hs t k hk hk' c hc⟩` and prove the remaining obligations. Conclude with `Tflip_law hL ch.W ch.S.B t (ch.Phi a) hde hcg w.2 _ (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hk).1 w)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem square_identity_reduction : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) (a : Fin ch.n) (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →
@@ -71,7 +71,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FirstRowEndLaw.square_identity_reduction | exact _root_.GlobalTheory.FirstRowEndLaw.square_identity_reduction | (intros; apply _root_.GlobalTheory.FirstRowEndLaw.square_identity_reduction <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.endomorphism_law_from_first_row_twist : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) (a : Fin ch.n) (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →

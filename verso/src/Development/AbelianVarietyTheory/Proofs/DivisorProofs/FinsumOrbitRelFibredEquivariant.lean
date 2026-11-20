@@ -6,23 +6,21 @@ namespace GlobalTheory
 open MulAction
 
 /- English proof (translation)
-Introduce `H X B E _ _ _ _ π hπ S hS j hinj hjπ hjsurj hjeq s hs g hg`. Set `ρ : orbitRel.Quotient H X → orbitRel.Quotient H B` to `Quotient.map π (fun x y hxy => by`. Take `⟨h, hh⟩` from `mem_orbit_iff.mp (orbitRel_apply.mp hxy)`. Conclude with `orbitRel_apply.mpr (mem_orbit_iff.mpr ⟨h, by rw [← hπ, hh]⟩))`. Establish `hρ : ∀ x, ρ (Quotient.mk _ x) = Quotient.mk _ (π x)` using `fun x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.finsum_fiberwise_of_finite_support ρ g hg]`. Use `finsum_congr (fun q => ?_)` and prove the remaining obligations. Use `set b := s q with hb`. Establish `key : ∀ e e' : E, (orbitRel (S b) E) e e' → Quotient.mk (orbitRel H X) (j b e) = Quotient.mk (orbitRel H X) (j b e')`. Introduce `e e' hee`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨k, hk⟩` from `mem_orbit_iff.mp (orbitRel_apply.mp hee)`. Apply `Quotient.sound` to reduce the goal to its premises. Use `orbitRel_apply.mpr (mem_orbit_iff.mpr ⟨(k : H), ?_⟩)` and prove the remaining obligations. Rewrite using `[← hjeq b k k.2 e', ← hk]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : orbitRel.Quotient (S b) E → {o // ρ o = q}` to `fun o' => ⟨Quotient.mk _ (j b (Quotient.out o')), by rw [hρ, hjπ, hb, hs]⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `o₁ o₂ h12`. Establish `h12' : Quotient.mk (orbitRel H X) (j b (Quotient.out o₁)) = Quotient.mk (orbitRel H X) (j b (Quotient.out o₂))` using `congrArg Subtype.val h12`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `mem_orbit_iff.mp (orbitRel_apply.mp (Quotient.exact h12'))`. Establish `hbh : h • b = b`. Use `congrArg π hh` as an intermediate fact. Rewrite `this` using `[hπ, hjπ, hjπ]`. Then use the resulting hypothesis. Establish `hmem : h ∈ S b` using `hS b (mem_stabilizer_iff.mpr hbh)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `he : h • Quotient.out o₂ = Quotient.out o₁`. Apply `hinj b` to reduce the goal to its premises. Rewrite using `[hjeq b h hmem, hh]`. Rewrite using `[← Quotient.out_eq o₁, ← Quotient.out_eq o₂]`. Apply `Quotient.sound` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `orbitRel_apply.mpr (mem_orbit_iff.mpr ⟨⟨h, hmem⟩, he⟩)`. Introduce and unpack `⟨o, ho⟩`. Establish `hx : Quotient.mk (orbitRel H B) (π (Quotient.out o)) = Quotient.mk (orbitRel H B) b`. Rewrite using `[← hρ, Quotient.out_eq, ho, hb, hs]`. Take `⟨h, hh⟩` from `mem_orbit_iff.mp (orbitRel_apply.mp (Quotient.exact hx))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, he⟩` from `hjsurj b (h⁻¹ • Quotient.out o) (by rw [hπ, ← hh, inv_smul_smul])`. Use `⟨Quotient.mk _ e, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Quotient.mk (orbitRel H X) (j b (Quotient.out (Quotient.mk (orbitRel (S b) E) e))) = o`. Rewrite using `[key _ e (Quotient.exact (Quotient.out_eq _)), he]`. Use `conv_rhs => rw [← Quotient.out_eq o]`.
-
-Apply `Quotient.sound` to reduce the goal to its premises. Conclude with `orbitRel_apply.mpr (mem_orbit_iff.mpr ⟨h⁻¹, rfl⟩)`. Conclude with `(finsum_comp_equiv (Equiv.ofBijective φ hφ) (f := fun o : {o // ρ o = q} => g o.1)).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem finsum_orbitRel_fibred : ∀ {H X B E : Type} [Group H] [MulAction H X] [MulAction H B] [MulAction H E] (π : X → B), (∀ (h : H) (x : X), π (h • x) = h • π x) → ∀ (S : B → Subgroup H), (∀ b : B, MulAction.stabilizer H b ≤ S b) → ∀ (j : B → E → X), (∀ b : B, Function.Injective (j b)) → (∀ (b : B) (e : E), π (j b e) = b) → (∀ (b : B) (x : X), π x = b → ∃ e : E, j b e = x) → (∀ (b : B), ∀ h ∈ S b, ∀ e : E, j b (h • e) = h • j b e) → ∀ (s : MulAction.orbitRel.Quotient H B → B), (∀ q, Quotient.mk (MulAction.orbitRel H B) (s q) = q) → ∀ (g : MulAction.orbitRel.Quotient H X → ℂ), (Function.support g).Finite → ∑ᶠ o, g o = ∑ᶠ q, ∑ᶠ o' : MulAction.orbitRel.Quotient (S (s q)) E, g (Quotient.mk (MulAction.orbitRel H X) (j (s q) (Quotient.out o'))) := by
   intro H X B E _ _ _ _ π hπ S hS j hinj hjπ hjsurj hjeq s hs g hg

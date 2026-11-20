@@ -16,35 +16,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨w, hwg, -⟩` from `m1.lin`. Establish `hw : PGen w` using `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGen_iff w).1 hwg`. Take `⟨su, hsu⟩` from `thf_secUp hw Xo.univ.t.PP.isLB t'.PP.isLB σ'`. Establish `hpb : IsPullback m1.cm.F t'.G.hom Xo.univ.t.G.hom x` using `And.left m1.cart`. Take `⟨h, hF, hπ⟩ : ∃ h : Gx x ⟶ t'.G.left, h ≫ m1.cm.F = (CartesianMonoidalCategory.snd (Over.mk x) Xo.univ.t.G).left ∧ h ≫ t'.G.hom = (CartesianMonoidalCategory.fst (Over.mk x) Xo.univ.t.G).left` from `⟨hpb.lift _ _ ((Over.w (CartesianMonoidalCategory.snd (Over.mk x) Xo.univ.t.G)).trans (Over.w (CartesianMonoidalCategory.fst (Over.mk x) Xo.univ.t.G)).symm), hpb.lift_fst _ _ _, hpb.lift_snd _ _ _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hkφ, hkπ⟩ : ∃ k : t'.G.left ⟶ Gx x, k ≫ (CartesianMonoidalCategory.snd (Over.mk x) Xo.univ.t.G).left = m1.cm.F ∧ k ≫ (CartesianMonoidalCategory.fst (Over.mk x) Xo.univ.t.G).left = t'.G.hom` from `⟨(CartesianMonoidalCategory.lift (Over.homMk t'.G.hom rfl : Over.mk (t'.G.hom ≫ x) ⟶ Over.mk x) (Over.homMk m1.cm.F hpb.w : Over.mk (t'.G.hom ≫ x) ⟶ Xo.univ.t.G)).left, congrArg (fun f => Over.Hom.left f) (CartesianMonoidalCategory.lift_snd (Over.homMk t'.G.hom rfl : Over.mk (t'. …`. Establish `hkh : k ≫ h = 𝟙 _` using `hpb.hom_ext (by rw [Category.assoc, hF, hkφ, Category.id_comp]) (by rw [Category.assoc, hπ, hkπ, Category.id_comp])`. Establish `hhk : h ≫ k = 𝟙 _`. Establish `e1 : (Over.homMk (h ≫ k) (by`. Rewrite using `[← Over.w (CartesianMonoidalCategory.fst (Over.mk x) Xo.univ.t.G)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hkπ, reassoc_of% hπ]) :`. Use the proof step `Over.mk x ⊗ Xo.univ.t.G ⟶ Over.mk x ⊗ Xo.univ.t.G) = 𝟙 _ := by`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Use `ext`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left, Over.homMk_left, Over.id_left, Category.assoc, Category.id_comp]`. Rewrite using `[hkπ, hπ]`. Use `ext`. Simplify using `only [Over.comp_left, Over.homMk_left, Over.id_left, Category.assoc, Category.id_comp]`. Rewrite using `[hkφ, hF]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun f => Over.Hom.left f) e1`. Establish `hscal : ∀ (b : L) (i : (PPx x).ι), scal x b i = constFn (CartesianMonoidalCategory.fst (Over.mk x) Xo.univ.t.G).left ((PPx x).U i) b` using `fun _ _ => rfl`. Establish `hle : ∀ j, m1.cm.F ⁻¹ᵁ Xo.univ.t.PP.L.U j ≤ k ⁻¹ᵁ (PPx x).U (fun _ => j)`. Introduce `j y hy`. Establish `e : (k ≫ (CartesianMonoidalCategory.snd (Over.mk x) Xo.univ.t.G).left) y ∈ Xo.univ.t.PP.L.U j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hkφ]`. Conclude with `hy`. Use `show k y ∈ (PPx x).U (fun _ => j)`. Conclude with `Set.mem_iInter.2 fun _ => e`. Use `⟨thfPull1 Xo.univ.t.PP.L h hF su, fun s'' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hσ : ∀ (y : t'.G.left) (j j' : Xo.univ.t.PP.L.ι), m1.cm.F y ∈ Xo.univ.t.PP.L.U j → m1.cm.F y ∈ Xo.univ.t.PP.L.U j' → gs (𝟙 _) y _ ((k.appLE _ _ (hle j)).hom (s''.f fun _ => j)) = (gm m1.cm.F y (Xo.univ.t.PP.L.U j ⊓ Xo.univ.t.PP.L.U j') (Xo.univ.t.PP.L.g j j')).val * gs (𝟙 _) y _ …` using `fun y j j' h1 h2 => (gs_appLE k _ _ (hle j) (𝟙 _) y h1 _).trans ((gs_compat s'' (𝟙 _ ≫ k) y (hle j h1) (hle j' h2)).trans (congrArg₂ (· * ·) (congrArg Units.val ((gm_linComb Xo.univ.t.PP.L (fun _ : Fin 1 => (CartesianMonoidalCategory.snd (Over.mk x) Xo.univ.t.G).left) (fun _ => ( …`. Take `⟨s', hs'⟩` from `sec_down hw Xo.univ.t.PP.isLB t'.PP.isLB (fun j => (k.appLE _ _ (hle j)).hom (s''.f fun _ => j)) hσ`. Take `⟨a, ha, hau⟩` from `hgen s'`. Use `⟨a, fun i => ?_, fun b hb => hau b fun k' => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩ : ∃ j, i = fun _ => j` from `⟨i 0, funext fun q => by rw [Subsingleton.elim q 0]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Establish `hφy` using `LB.wchart_le Xo.univ.t.PP.L (fun _ : Fin 1 => (CartesianMonoidalCategory.snd (Over.mk x) Xo.univ.t.G).left) (fun _ => j) 0 hy`. Establish `hFy : m1.cm.F (h y) ∈ Xo.univ.t.PP.L.U j`. Establish `e : (h ≫ m1.cm.F) y ∈ Xo.univ.t.PP.L.U j` using `by rw [hF]; exact hφy`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k', hk'⟩ : ∃ k', h y ∈ t'.PP.L.U k' := by`. Establish `: h y ∈ (⨆ k', t'.PP.L.U k')` using `by rw [t'.PP.isLB.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Establish `hL : gs (𝟙 _) y _ (s''.f fun _ => j) = (gw w h y j k').val * (cst (CartesianMonoidalCategory.fst (Over.mk x) Xo.univ.t.G).left y a * gs h y _ (σ'.f k'))`. Establish `e0 : gs (𝟙 (Gx x)) y ((PPx x).U fun _ => j) (s''.f fun _ => j) = gs (h ≫ k) y ((PPx x).U fun _ => j) (s''.f fun _ => j)` using `by rw [hhk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, ← gs_appLE k _ _ (hle j) h y hFy, hs' _ h y j k' hFy hk', ha k', gs_mul h y _ hk', gs_constFn _ _ h y hk' a, hπ]`. Rewrite using `[hL, gs_mul (𝟙 _) y _ hy]`. Use `erw [hscal]`. Rewrite using `[gs_constFn _ _ (𝟙 _) y hy a, Category.id_comp, mul_left_comm]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `symm`. Use `(gs_appLE h _ _ (chart_le_pullback_open Xo.univ.t.PP.L h hF (fun _ => j)) (𝟙 _) y hy (su.f fun _ => j)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `hsu _ h y (fun _ => j) k' (chart_le_pullback_open Xo.univ.t.PP.L h hF (fun _ => j) hy) hk'`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, m1.cm.F y ∈ Xo.univ.t.PP.L.U j := by`. Establish `: m1.cm.F y ∈ (⨆ j, Xo.univ.t.PP.L.U j)` using `by rw [Xo.univ.t.PP.isLB.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Establish `hky : k y ∈ (PPx x).U (fun _ => j)` using `hle j hj`. Establish `hd` using `hs' _ (𝟙 _) y j k' hj hy`.
-
-Establish `hL : gs (𝟙 _) y _ ((k.appLE _ _ (hle j)).hom (s''.f fun _ => j)) = cst t'.G.hom y b * ((gw w (𝟙 _) y j k').val * gs (𝟙 _) y _ (σ'.f k'))`. Rewrite using `[gs_appLE k _ _ (hle j) (𝟙 _) y hj, Category.id_comp, hb (fun _ => j), gs_mul k y _ hky]`. Use `erw [hscal]`. Rewrite using `[gs_constFn _ _ k y hky b, hkπ]`. Use `congr 1`.
-
-Use `(gs_appLE h _ _ (chart_le_pullback_open Xo.univ.t.PP.L h hF (fun _ => j)) k y hky (su.f fun _ => j)).trans ?_` and prove the remaining obligations. Rewrite using `[hkh]`. Conclude with `hsu _ (𝟙 _) y (fun _ => j) k' (Set.mem_iInter.2 fun _ => hj) hy`. Rewrite using `[gs_mul (𝟙 _) y _ hy, gs_constFn _ _ (𝟙 _) y hy b, Category.id_comp]`. Apply `(Units.mul_right_inj (gw w (𝟙 _) y j k')).1` to reduce the goal to its premises.
-
-Conclude with `hd.symm.trans (hL.trans (by ring))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gfp_gen_of {L : Type} [Field L] (x : Sp L ⟶ Xo.X) {t' : SAB H (Sp L)} (m1 : SABMap t' Xo.univ.t x)
     (σ' : LB.Sec t'.PP.L) (hgen : ∀ s' : LB.Sec t'.PP.L, ∃! a : L, ∀ i, s'.f i = constFn t'.G.hom _ a * σ'.f i) :
@@ -155,7 +149,7 @@ theorem gfp_gen_of {L : Type} [Field L] (x : Sp L ⟶ Xo.X) {t' : SAB H (Sp L)} 
     exact hd.symm.trans (hL.trans (by ring))
 
 /- English proof (translation)
-Take `⟨PP', cub, sym, adj, prim, m1, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull x Xo.univ.t`. Take `⟨σ', hgen⟩` from `globalSections_rank_one_fibre hT amplePt Xo.univ m1`. Conclude with `gfp_gen_of x m1 σ' hgen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gfp_gen (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) {L : Type} [Field L] (x : Sp L ⟶ Xo.X) :
     ∃ s : LB.Sec (PPx x), ∀ s'' : LB.Sec (PPx x), ∃! a : L, ∀ i, s''.f i = scal x a i * s.f i := by

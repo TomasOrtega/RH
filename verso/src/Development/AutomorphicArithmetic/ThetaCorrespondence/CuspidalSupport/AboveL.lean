@@ -11,7 +11,7 @@ namespace UpperTheory.Lit.Car
 def DualR : Prop := LG ∧ UpperTheory.V.Lev.CsdSs
 
 /- English proof (translation)
-Introduce `hGK`. Use `⟨And.left, fun hP => ?_⟩` and prove the remaining obligations. Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hpol`. Conclude with `hP E Ω l ι a ha π χ hr ⟨hpol.sign, GlobalTheory.T.cuspContragredientIsCMConjTwist_of_paired_invTranspose E a π (GlobalTheory.GalOfCusp.compNorm E χ) (hGK E a _) hpol.dual⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bridge' : GlobalTheory.Published.GelfandKazhdanDual →
     (DualR → LG) ∧ (GlobalTheory.Published.GaloisRepOfPolarizedPair → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) := by

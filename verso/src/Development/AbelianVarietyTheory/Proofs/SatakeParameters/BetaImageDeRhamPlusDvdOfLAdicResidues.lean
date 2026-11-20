@@ -8,19 +8,17 @@ open scoped Formalism.Per
 namespace GlobalTheory.Pst.StLat
 
 /- English proof (translation)
-Introduce `l _ ϖ hk hF y hy`. Take `⟨-, hker, hA, hD, -⟩` from `GlobalTheory.MemLoc.thetaP_facts l`. Establish `hb0 : Per.θP l (beta ϖ) = 0`. Rewrite using `[← RingHom.mem_ker, hker, hk]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : Per.θD l (betaD ϖ) = 0` using `by rw [betaD, hD, hb0]`. Establish `hS : ∀ a ∈ Sa ϖ, Per.θP l a ∈ 𝓞_ℂ_[l]`. Introduce `a ha`. Express the relevant statement in the definitionally equal form `a ∈ Algebra.adjoin _ _ at ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx, hb0]`. Conclude with `zero_mem _`. Consider the case `algebraMap r => rw [hA]`. Conclude with `(Per.θ l r).2`. Consider the case `add x z _ _ hx hz => rw [map_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem hx hz`. Consider the case `mul x z _ _ hx hz => rw [map_mul]`. Conclude with `mul_mem hx hz`. Establish `hs : ∀ s ∈ Sg ϖ, ‖Per.θD l s‖ ≤ 1`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hD]`. Conclude with `(GlobalTheory.RingBasics.mem_OC _).1 (hS a ha)`. Establish `h0 : Per.θD l y = 0`. Establish `hle : ∀ k : ℕ, ‖Per.θD l y‖ ≤ ‖((l : ℕ) : ℂ_[l])‖ ^ k`. Introduce `k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, hsS, c, hc⟩` from `hy k`. Establish `h1` using `congrArg (Per.θD l) hc`. Rewrite `h1` using `[map_sub, map_mul, map_mul, hb, zero_mul, sub_eq_zero, map_pow, map_natCast]`. Rewrite using `[h1, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) (hs s hsS)`.
-
-Conclude with `norm_le_zero_iff.1 (ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (GlobalTheory.RingBasics.norm_p_lt (p := l))) hle)`. Establish `hmem : y ∈ Per.FilP l 1` using `((GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.1 y).1 h0`. Rewrite `hmem` using `[hF 1, pow_one]`. Conclude with `Ideal.mem_span_singleton.1 hmem`.
+A detailed English derivation is pending.
 -/
 theorem betaD_dvd_of_res : ∀ (l : ℕ) [Fact l.Prime] (ϖ : Per.Fl l), Per.kerP l = Ideal.span {beta ϖ} →
   (∀ n : ℕ, Per.FilP l n = Ideal.span {betaD ϖ ^ n}) →

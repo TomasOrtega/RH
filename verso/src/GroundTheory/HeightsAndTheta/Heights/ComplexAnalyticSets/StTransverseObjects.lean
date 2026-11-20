@@ -13,7 +13,7 @@ class IsCohenMacaulayLocalRing (B : Type*) [CommRing B] : Prop extends IsLocalRi
     RingTheory.Sequence.IsWeaklyRegular B rs ∧ ringKrullDim B = (rs.length : WithBot ℕ∞)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[], by simp, RingTheory.Sequence.IsWeaklyRegular.nil K K, by simp [ringKrullDim_eq_zero_of_field]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCohenMacaulayLocalRing_of_field (K : Type*) [Field K] : IsCohenMacaulayLocalRing K where
   exists_isWeaklyRegular := ⟨[], by simp, RingTheory.Sequence.IsWeaklyRegular.nil K K, by
@@ -33,7 +33,7 @@ def IsCohenMacaulayAt (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ)
   IsCohenMacaulayLocalRing (localRingAt I q)
 
 /- English proof (translation)
-Unfold `IsCohenMacaulayAt localRingAt`. Rewrite using `[Localization.AtPrime.map_eq_maximalIdeal]`. Set `_` to `Ideal.Quotient.field (maximalIdeal (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ))))`. Conclude with `isCohenMacaulayLocalRing_of_field _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isCohenMacaulayAt_point (q : Fin n → ℂ) :
     IsCohenMacaulayAt (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)) q := by
@@ -44,9 +44,9 @@ theorem isCohenMacaulayAt_point (q : Fin n → ℂ) :
   exact isCohenMacaulayLocalRing_of_field _
 
 /- English proof (translation)
-Introduce `h`. Unfold `IsCohenMacaulayAt localRingAt at h`. Rewrite `h` using `[Ideal.map_top]`. Establish `hs : Subsingleton (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)) ⧸ (⊤ : Ideal (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)))))` using `Ideal.Quotient.subsingleton_iff.mpr rfl`. Take `⟨a, b, hab⟩` from `h.toIsLocalRing.toNontrivial.exists_pair_ne`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hab (Subsingleton.elim a b)`.
+A detailed English derivation is pending.
 -/
 theorem not_isCohenMacaulayAt_top (q : Fin n → ℂ) :
     ¬ IsCohenMacaulayAt (⊤ : Ideal (MvPolynomial (Fin n) ℂ)) q := by
@@ -64,13 +64,13 @@ def IsTransverseSliceAt (W : Ideal (MvPolynomial (Fin n) ℂ)) (L : Matrix (Fin 
   ∀ g : MvPolynomial (Fin n) ℂ, eval q g = 0 → ∃ s : MvPolynomial (Fin n) ℂ, eval q s ≠ 0 ∧ s * g ∈ sliceIdeal W L q
 
 /- English proof (translation)
-Introduce `g hg`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `Ideal.mem_sup_right ?_` and prove the remaining obligations. Establish `hX : linPoly (1 : Matrix (Fin 1) (Fin 1) ℂ) 0 - C (((1 : Matrix (Fin 1) (Fin 1) ℂ) *ᵥ 0) 0) = X 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[linPoly]`. Establish `hspan : Ideal.span (X '' (Set.univ : Set (Fin 1))) ≤ Ideal.span (Set.range fun i : Fin 1 => linPoly (1 : Matrix (Fin 1) (Fin 1) ℂ) i - C (((1 : Matrix (Fin 1) (Fin 1) ℂ) *ᵥ 0) i))`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, -, rfl⟩`. Use `Ideal.subset_span ⟨i, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[Subsingleton.elim i 0, hX]`. Use `hspan (MvPolynomial.mem_ideal_span_X_image.mpr fun m hm => ?_)` and prove the remaining obligations. Use `⟨0, Set.mem_univ _, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hm0 : m = 0` using `Finsupp.ext fun i => by rw [Subsingleton.elim i 0, h0]; rfl`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `hm0` using the available equality. Rewrite `hm` using `[MvPolynomial.mem_support_iff, ← MvPolynomial.constantCoeff_eq, ← MvPolynomial.eval_zero]`. Conclude with `hm hg`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTransverseSliceAt_line :
     IsTransverseSliceAt (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (1 : Matrix (Fin 1) (Fin 1) ℂ) 0 := by
@@ -96,11 +96,9 @@ theorem isTransverseSliceAt_line :
   exact hm hg
 
 /- English proof (translation)
-Introduce `h`. Take `⟨s, hs, hsX⟩` from `h (X 0) (by simp)`. Establish `hbot : sliceIdeal (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (0 : Matrix (Fin 1) (Fin 1) ℂ) 0 = ⊥`. Use `le_bot_iff.mp (sup_le le_rfl ?_)` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[linPoly]`. Rewrite `hsX` using `[hbot, Ideal.mem_bot, mul_eq_zero]`. Break down `hsX with h0 | h0` into its components or cases. Conclude with `hs (by rw [h0, map_zero])`.
-
-Conclude with `X_ne_zero 0 h0`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_isTransverseSliceAt_zero :
     ¬ IsTransverseSliceAt (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (0 : Matrix (Fin 1) (Fin 1) ℂ) 0 := by

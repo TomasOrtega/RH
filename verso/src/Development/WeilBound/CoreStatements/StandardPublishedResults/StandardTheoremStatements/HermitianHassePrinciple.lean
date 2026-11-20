@@ -10,19 +10,19 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannZetaN
 namespace PositivityTheory.Stage1.PM
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.hermitianHassePrinciple_holds`.
+A detailed English derivation is pending.
 -/
 theorem hermitianHassePrinciple : GlobalTheory.Published.HermitianHassePrinciple :=
   GlobalTheory.Published.hermitianHassePrinciple_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.thetaRationalInvariance_holds`.
+A detailed English derivation is pending.
 -/
 theorem thetaRationalInvariance : GlobalTheory.Published.ThetaRationalInvariance :=
   GlobalTheory.Published.thetaRationalInvariance_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.StoneVonNeumann_holds`.
+A detailed English derivation is pending.
 -/
 theorem stoneVonNeumann : GlobalTheory.Published.StoneVonNeumann :=
   GlobalTheory.Published.StoneVonNeumann_holds

@@ -13,7 +13,7 @@ section
 variable {k U : Type} [Field k] [AddCommGroup U] [Module k U]
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `Q.mkQ.exists_rightInverse_of_surjective (Submodule.range_mkQ Q)`. Use `⟨(P.map Q.mkQ).map σ, inferInstance, fun p hp => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_sup.2 ⟨σ (Q.mkQ p), ⟨_, ⟨p, hp, rfl⟩, rfl⟩, p - σ (Q.mkQ p), ?_, by abel⟩` and prove the remaining obligations. Establish `h : Q.mkQ (σ (Q.mkQ p)) = Q.mkQ p` using `LinearMap.congr_fun hσ _`. Conclude with `(Submodule.Quotient.eq _).mp h.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_le_sup (P Q : Submodule k U) [FiniteDimensional k (P.map Q.mkQ)] :
     ∃ F : Submodule k U, FiniteDimensional k F ∧ P ≤ F ⊔ Q := by
@@ -24,11 +24,11 @@ theorem exists_le_sup (P Q : Submodule k U) [FiniteDimensional k (P.map Q.mkQ)] 
   exact (Submodule.Quotient.eq _).mp h.symm
 
 /- English proof (translation)
-Establish `hker : LinearMap.ker (Q.mkQ ∘ₗ P.subtype) = Q.submoduleOf P`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ]`. Both sides reduce to the same expression. Establish `hle : LinearMap.range (Q.mkQ ∘ₗ P.subtype) ≤ F.map Q.mkQ`. Introduce and unpack `_ ⟨⟨p, hp⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨f, hf, q, hq, rfl⟩` from `Submodule.mem_sup.1 (h hp)`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Q.mkQ f = Q.mkQ (f + q)`. Rewrite using `[map_add, show Q.mkQ q = 0 from (Submodule.Quotient.mk_eq_zero _).mpr hq, add_zero]`. Use `haveI : FiniteDimensional k (LinearMap.range (Q.mkQ ∘ₗ P.subtype)) := Submodule.finiteDimensional_of_le hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hker]`. Conclude with `LinearEquiv.finiteDimensional (LinearMap.quotKerEquivRange _).symm`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_le_sup {P Q F : Submodule k U} [FiniteDimensional k F] (h : P ≤ F ⊔ Q) :
     FiniteDimensional k (↥P ⧸ Q.submoduleOf P) := by
@@ -46,15 +46,13 @@ theorem finite_of_le_sup {P Q F : Submodule k U} [FiniteDimensional k F] (h : P 
   exact LinearEquiv.finiteDimensional (LinearMap.quotKerEquivRange _).symm
 
 /- English proof (translation)
-Use `set S : Module.End k U := T - algebraMap k (Module.End k U) x with hS`. Establish `hSa : ∀ p, S p = T p - x • p` using `fun p => by simp [hS, Module.algebraMap_end_apply]`. Establish `key : ∀ m : ℕ, ∀ p ∈ M, (S ^ m) p ∈ Q → p ∈ Q`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro p _ hp`. Simplify using `using hp`. Consider the case `succ m ih`. Introduce `p hp hq`. Rewrite `hq` using `[pow_succ, Module.End.mul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : S p ∈ M` using `by rw [hSa]; exact M.sub_mem (hM p hp) (M.smul_mem _ hp)`. Conclude with `h p hp (hSa p ▸ ih _ h1 hq)`. Establish `hmono : Monotone fun m : ℕ => Q.comap (S ^ m)`. Use `monotone_nat_of_le_succ fun m p hp => ?_` and prove the remaining obligations. Rewrite `hp`, the goal using `[Submodule.mem_comap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', Module.End.mul_apply, hSa]`. Conclude with `Q.sub_mem (hQ _ hp) (Q.smul_mem _ hp)`. Establish `hle : P ⊓ ⨆ m : ℕ, Q.comap (S ^ m) ≤ Q`. Introduce and unpack `p ⟨hp, hq⟩`. Take `⟨m, hm⟩` from `(Submodule.mem_iSup_of_directed _ hmono.directed_le).1 hq`.
-
-Conclude with `key m p (hPM hp) hm`. Unfold `gmult`. Rewrite using `[← hS, Submodule.submoduleOf_eq_top.2 hle]`. Conclude with `Module.finrank_zero_of_subsingleton`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmult_eq_zero (T : Module.End k U) {P Q M : Submodule k U} (hPM : P ≤ M) (hM : ∀ p ∈ M, T p ∈ M)
     (x : k) (h : ∀ p ∈ M, T p - x • p ∈ Q → p ∈ Q) (hQ : ∀ p ∈ Q, T p ∈ Q) : gmult T P Q x = 0 := by
@@ -88,9 +86,9 @@ variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [M
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact ⟨⊥, inferInstance, by simp [sh_zero_eq]⟩`. Consider the case `succ m ih`. Take `⟨F, hF, h⟩` from `ih`. Use `haveI := Window.finite_quot (hN.shift m).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F', hF', h'⟩` from `exists_le_sup ((sh m N).restrictScalars k) ((sh 1 (sh m N)).restrictScalars k)`. Rewrite `h'` using `[sh_sh_eq, add_comm]`. Use `⟨F ⊔ F', inferInstance, h.trans ?_⟩` and prove the remaining obligations. Rewrite using `[sup_assoc, Nat.cast_succ]`. Conclude with `sup_le_sup_left h' _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_le_sup_sh {N : Submodule k⟦X⟧ V} (hN : IsLat N) (m : ℕ) :
     ∃ F : Submodule k V, FiniteDimensional k F ∧
@@ -107,13 +105,11 @@ theorem exists_le_sup_sh {N : Submodule k⟦X⟧ V} (hN : IsLat N) (m : ℕ) :
     exact sup_le_sup_left h' _
 
 /- English proof (translation)
-Use `haveI := Window.finite_quot hN`. Take `⟨h1, -⟩` from `Window.bij_of_gmult_zero (nab g) (N.restrictScalars k) ((sh 1 N).restrictScalars k) (fun p hp => Window.nab_mem hC hp) (fun p hp => Window.nab_mem_sh R hg hC 1 hp) (x + b) h`. Establish `hv : vv k ≠ 0` using `vv_ne_zero k`. Introduce `y hx hx'`. Take `⟨n, hn, rfl⟩` from `mem_sh_iff_exists.mp hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n', hn', e⟩` from `Window.nab_shift R hg hC b hn`. Take `⟨t, ht, e'⟩` from `mem_sh_iff_exists.mp hx'`. Establish `hc : x • vv k ^ b • n = vv k ^ b • x • n`. Rewrite using `[← smul_assoc, const_smul_eq, mul_comm, mul_smul, ← mul_one (algebraMap k k⸨X⸩ x), ← const_smul_eq, smul_assoc, one_smul]`. Rewrite `e'` using `[e, hc, zpow_add_one₀ hv, mul_smul, ← smul_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `smul_right_injective V (zpow_ne_zero b hv) e'`. Establish `: n ∈ sh 1 N` using `h1 n hn (mem_sh_iff_exists.mpr ⟨t - n', N.sub_mem ht hn', by`. Rewrite using `[zpow_one, smul_sub, e2, add_smul]`. Use the proof step `abel⟩)`. Take `⟨r, hr, rfl⟩` from `mem_sh_iff_exists.mp this`.
-
-Conclude with `mem_sh_iff_exists.mpr ⟨r, hr, by rw [zpow_add₀ hv, mul_smul]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem graded_inj {l : ℕ} (R : RingPG k l) {g : V →ₗ[k] V} (hg : Semi R.γ g) {N : Submodule k⟦X⟧ V}
     (hN : N.FG) (hC : CondC g N) (b : ℤ) (x : k) (h : sen g N (x + b) = 0) :
@@ -137,11 +133,11 @@ theorem graded_inj {l : ℕ} (R : RingPG k l) {g : V →ₗ[k] V} (hg : Semi R.�
   exact mem_sh_iff_exists.mpr ⟨r, hr, by rw [zpow_add₀ hv, mul_smul]⟩
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => intro y hy _`. Simplify `hy` using `[sh_zero_eq]`. Consider the case `succ s ih`. Introduce `y hy hy'`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ih (fun j h1 h2 => h j h1 (Nat.le_succ_of_le h2)) y ?_ hy'` and prove the remaining obligations. Establish `e : (-((s + 1 : ℕ) : ℤ)) + 1 = -(s : ℤ)` using `by push_cast; ring`. Use `graded_inj R hg hN hC (-((s + 1 : ℕ) : ℤ)) x (by` as an intermediate fact. Rewrite using `[Int.cast_neg, Int.cast_natCast, ← sub_eq_add_neg]`. Conclude with `h _ (Nat.succ_pos s) le_rfl) y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e]`. Use `this (sh_le_sh_of_le (a := 0) (by omega) N ?_)` and prove the remaining obligations. Rewrite using `[sh_zero_eq]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem window_inj {l : ℕ} (R : RingPG k l) {g : V →ₗ[k] V} (hg : Semi R.γ g) {N : Submodule k⟦X⟧ V}
     (hN : N.FG) (hC : CondC g N) (x : k) (s : ℕ) (h : ∀ j : ℕ, 1 ≤ j → j ≤ s → sen g N (x - j) = 0) :
@@ -159,13 +155,13 @@ theorem window_inj {l : ℕ} (R : RingPG k l) {g : V →ₗ[k] V} (hg : Semi R.�
     rwa [sh_zero_eq]
 
 /- English proof (translation)
-Introduce `k _ l _ _ R V _ _ _ _ _ _ _ _ g hg P Q hP hQ hQP cP cQ s hs x`. Prove the components needed by the constructor for the conclusion. Establish `h1 : ∀ N : Submodule k⟦X⟧ V, sh 1 N ≤ N` using `fun N => by`. Use `sh_le_sh_of_le (a := 1) (b := 0) (by norm_num) N` as an intermediate fact. Rewrite `this` using `[sh_zero_eq]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨F, hF, hle⟩` from `exists_le_sup_sh hP (s + 1)`. Establish `h2 : sh ((s + 1 : ℕ) : ℤ) P ≤ sh 1 Q`. Use `sh_le_sh ((s + 1 : ℕ) : ℤ) hs` as an intermediate fact. Rewrite `this` using `[sh_sh_eq, show ((s + 1 : ℕ) : ℤ) + -(s : ℤ) = 1 by push_cast; ring]`. Then use the resulting hypothesis. Establish `hfin : FiniteDimensional k (↥(P.restrictScalars k) ⧸ ((sh 1 Q).restrictScalars k).submoduleOf (P.restrictScalars k))` using `finite_of_le_sup (F := F) (hle.trans (sup_le_sup_left (fun _ hy => h2 hy) _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `a1` using `GlobalTheory.PhiGam.GmultAdd.main (nab g) (P.restrictScalars k) ((sh 1 P).restrictScalars k) ((sh 1 Q).restrictScalars k) (fun _ hy => sh_le_sh 1 hQP hy) (fun _ hy => h1 P hy) (fun _ hy => Window.nab_mem cP hy) (fun _ hy => Window.nab_mem_sh R hg cP 1 hy) (fun _ hy => Window.nab_ …`. Establish `a2` using `GlobalTheory.PhiGam.GmultAdd.main (nab g) (P.restrictScalars k) (Q.restrictScalars k) ((sh 1 Q).restrictScalars k) (fun _ hy => h1 Q hy) (fun _ hy => hQP hy) (fun _ hy => Window.nab_mem cP hy) (fun _ hy => Window.nab_mem cQ hy) (fun _ hy => Window.nab_mem_sh R hg cQ 1 hy) hfin x`. Rewrite using `[← GlobalTheory.T.quotientMultiplicity_shift_lattice_quotient R g hg P Q hP hQ hQP cP cQ x]`. Unfold `sen qmult`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Introduce `hne`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Conclude with `hne (gmult_eq_zero (nab g) (M := (sh (-s) Q).restrictScalars k) (fun _ hy => hs hy) (fun _ hy => Window.nab_mem_sh R hg cQ _ hy) x (window_inj R hg hQ.1 cQ x s hno) (fun _ hy => Window.nab_mem cQ hy))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sen_count : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] [FiniteDimensional k⸨X⸩ V] (g : V →ₗ[k] V), Semi R.γ g → ∀ P Q : Submodule k⟦X⟧ V, IsLat P → IsLat Q → Q ≤ P → CondC g P → CondC g Q → ∀ s : ℕ, P ≤ sh (-s) Q → ∀ x : k, sen g P x + qmult g P Q (x + 1) = sen g Q x + qmult g P Q x ∧ (qmult g P Q x ≠ 0 → ∃ j : ℕ, 1 ≤ j ∧ j ≤ s ∧ sen g Q (x - j) ≠ 0) := by
   intro k _ l _ _ R V _ _ _ _ _ _ _ _ g hg P Q hP hQ hQP cP cQ s hs x

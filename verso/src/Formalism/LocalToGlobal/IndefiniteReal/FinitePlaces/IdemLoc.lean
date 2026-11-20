@@ -17,7 +17,7 @@ section Loc
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact RestrictedProduct.ext h`. Consider the case `exact Subtype.ext (funext h)`. Consider the case `(ext w`. Conclude with `h w)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem af_ext {x y : Af F} (h : ∀ w, evalV F w x = evalV F w y) : x = y := by
   first
@@ -39,7 +39,7 @@ def sglV (a : v.adicCompletion F) : Af F :=
     exact zero_mem _⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Pi.single_eq_same (i := v) (x := a)`. Consider the case `exact Pi.single_eq_same v a`. Consider the case `simp [sglV, evalV]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sglV_same (a : v.adicCompletion F) : evalV F v (sglV v a) = a := by
   classical
@@ -49,7 +49,7 @@ theorem sglV_same (a : v.adicCompletion F) : evalV F v (sglV v a) = a := by
     | simp [sglV, evalV]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Pi.single_eq_of_ne h a`. Consider the case `exact Pi.single_eq_of_ne (i := v) h a`. Consider the case `simp [sglV, evalV, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sglV_ne (a : v.adicCompletion F) {w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) : evalV F w (sglV v a) = 0 := by
   classical
@@ -59,9 +59,9 @@ theorem sglV_ne (a : v.adicCompletion F) {w : HeightOneSpectrum (𝓞 F)} (h : w
     | simp [sglV, evalV, h]
 
 /- English proof (translation)
-Use `af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_add]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[sglV_same, sglV_same, sglV_same]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sglV_ne _ _ h, sglV_ne _ _ h, sglV_ne _ _ h, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sglV_add (a b : v.adicCompletion F) : sglV v (a + b) = sglV v a + sglV v b := by
   refine af_ext fun w => ?_
@@ -72,9 +72,9 @@ theorem sglV_add (a b : v.adicCompletion F) : sglV v (a + b) = sglV v a + sglV v
   · rw [sglV_ne _ _ h, sglV_ne _ _ h, sglV_ne _ _ h, add_zero]
 
 /- English proof (translation)
-Use `af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[sglV_same, sglV_same, sglV_same]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sglV_ne _ _ h, sglV_ne _ _ h, sglV_ne _ _ h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sglV_mul (a b : v.adicCompletion F) : sglV v (a * b) = sglV v a * sglV v b := by
   refine af_ext fun w => ?_
@@ -85,9 +85,9 @@ theorem sglV_mul (a b : v.adicCompletion F) : sglV v (a * b) = sglV v a * sglV v
   · rw [sglV_ne _ _ h, sglV_ne _ _ h, sglV_ne _ _ h, mul_zero]
 
 /- English proof (translation)
-Use `af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[sglV_same]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sglV_ne _ _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sglV_zero : sglV v (0 : v.adicCompletion F) = 0 := by
   refine af_ext fun w => ?_
@@ -98,9 +98,9 @@ theorem sglV_zero : sglV v (0 : v.adicCompletion F) = 0 := by
   · rw [sglV_ne _ _ h]
 
 /- English proof (translation)
-Use `af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Apply the tactic sequence `rw [sglV_same, sglV_same] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[sglV_ne _ _ h, sglV_ne _ _ h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sglV_smul (f : F) (a : v.adicCompletion F) :
     algebraMap F (Af F) f * sglV v a = sglV v (algebraMap F (v.adicCompletion F) f * a) := by
@@ -112,13 +112,11 @@ theorem sglV_smul (f : F) (a : v.adicCompletion F) :
   · rw [sglV_ne _ _ h, sglV_ne _ _ h, mul_zero]
 
 /- English proof (translation)
-Use `first`. Consider the case `(intro w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[sglV_same]`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Rewrite using `[sglV_ne _ _ h]`. Conclude with `zero_mem _)`. Consider the case `(intro w`. Distinguish the cases in `h : w = v`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `h show evalV F w (sglV w a) ∈ _` using the available equality. Rewrite using `[sglV_same]`. Conclude with `ha`. Use `show evalV F w (sglV v a) ∈ _`. Rewrite using `[sglV_ne _ _ h]`.
-
-Conclude with `zero_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem sglV_int {a : v.adicCompletion F} (ha : a ∈ v.adicCompletionIntegers F) : sglV v a ∈ intAf F := by
   first
@@ -146,9 +144,7 @@ def sA : v.adicCompletion F →ₙ+* AF F where
   map_add' a b := Prod.ext (by show (0 : Ainf F) = 0 + 0; rw [add_zero]) (sglV_add v a b)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Prod.ext (mul_zero _) (sglV_smul v f a)`. Consider the case `(refine Prod.ext ?_ ?_`. Use `show _ * (0 : Ainf F) = 0`. Conclude with `mul_zero _`.
-
-Conclude with `sglV_smul v f a)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sA_smul (f : F) (a : v.adicCompletion F) :
     algebraMap F (AF F) f * sA v a = sA v (algebraMap F (v.adicCompletion F) f * a) := by
@@ -160,9 +156,9 @@ theorem sA_smul (f : F) (a : v.adicCompletion F) :
        · exact sglV_smul v f a)
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (0 : Ainf F) * _ = 0`. Conclude with `zero_mul _`. Use `show sglV v 1 * _ = sglV v _`. Use `af_ext fun w => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[map_mul]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Apply the tactic sequence `rw [sglV_same, sglV_same, one_mul] <;> rfl`. Rewrite using `[sglV_ne _ _ h, sglV_ne _ _ h, zero_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sA_one_mul (a : AF F) : sA v 1 * a = sA v (evalV F v (sndA F a)) := by
   refine Prod.ext ?_ ?_
@@ -177,11 +173,9 @@ theorem sA_one_mul (a : AF F) : sA v 1 * a = sA v (evalV F v (sndA F a)) := by
     · rw [sglV_ne _ _ h, sglV_ne _ _ h, zero_mul]
 
 /- English proof (translation)
-Use `first`. Consider the case `(have hm := (Valuation.integer.integers (Valued.v : Valuation (v.adicCompletion F) _)).mem_of_integral (IsIntegral.tower_top hy) first`. Consider the case `exact hm`. Consider the case `(obtain ⟨o, rfl⟩ := hm`. Conclude with `o.2)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(rcases hm with ⟨o, ho⟩`. Rewrite using `[← ho]`. Conclude with `o.2))`. Consider the case `(have hm := Valuation.Integers.mem_of_integral (Valuation.integer.integers (Valued.v : Valuation (v.adicCompletion F) _)) (IsIntegral.tower_top (A := (Valued.v : Valuation (v.adicCompletion F) _).integer) hy) first`. Consider the case `exact hm`.
-
-Consider the case `(obtain ⟨o, rfl⟩ := hm`. Conclude with `o.2))`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_O_of_integral {y : v.adicCompletion F} (hy : IsIntegral ℤ y) : Valued.v y ≤ 1 := by
   first
@@ -202,9 +196,9 @@ theorem mem_O_of_integral {y : v.adicCompletion F} (hy : IsIntegral ℤ y) : Val
             exact o.2))
 
 /- English proof (translation)
-Establish `e : Valued.v (((f : F) : v.adicCompletion F)) = v.intValuation f` using `by first`. Consider the case `(rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (v := v) (r := f))`. Consider the case `simp [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Rewrite using `[e]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_mem v f`. Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_dvd v f).trans Ideal.dvd_span_singleton`. Consider the case `(rw [IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_dvd, Ideal.dvd_span_singleton])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem val_coe_lt_one_iff (f : 𝓞 F) :
     Valued.v (((f : F) : v.adicCompletion F)) < 1 ↔ f ∈ v.asIdeal := by
@@ -220,9 +214,9 @@ theorem val_coe_lt_one_iff (f : 𝓞 F) :
     | (rw [IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_dvd, Ideal.dvd_span_singleton])
 
 /- English proof (translation)
-Use `first`. Consider the case `exact mem_O_of_integral v ((NumberField.RingOfIntegers.isIntegral_coe f).map (algebraMap F (v.adicCompletion F)).toIntAlgHom)`. Consider the case `(rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (v := v) (r := f) ▸ rfl]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.intValuation_le_one v f)`. Consider the case `(have e : Valued.v (((f : F) : v.adicCompletion F)) = v.intValuation f := by`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (v := v) (r := f)`. Rewrite using `[e]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.intValuation_le_one v f)`.
+A detailed English derivation is pending.
 -/
 theorem val_coe_le_one (f : 𝓞 F) : Valued.v (((f : F) : v.adicCompletion F)) ≤ 1 := by
   first
@@ -239,23 +233,21 @@ theorem val_coe_le_one (f : 𝓞 F) : Valued.v (((f : F) : v.adicCompletion F)) 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `haveI : HenselianLocalRing (v.adicCompletionIntegers F) := inferInstance`. Establish `hI : (Valued.v : Valuation (v.adicCompletion F) _).Integers (v.adicCompletionIntegers F)` using `⟨Subtype.val_injective, fun x => x.2, fun r hr => ⟨⟨r, hr⟩, rfl⟩⟩`. Establish `ea : ∀ x : v.adicCompletionIntegers F, algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F) x = (x : v.adicCompletion F)` using `fun x => rfl`. Establish `hnu : ∀ x : v.adicCompletionIntegers F, ¬ IsUnit x ↔ Valued.v (x : v.adicCompletion F) < 1`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle` using `hI.map_le_one x`. Rewrite `hle` using `[ea]`. Rewrite using `[hI.isUnit_iff_valuation_eq_one, ea]`. Conclude with `⟨fun h => lt_of_le_of_ne hle h, fun h => ne_of_lt h⟩`. Establish `ht1 : Valued.v (((t : F) : v.adicCompletion F)) = 1` using `le_antisymm (val_coe_le_one v t) (not_lt.1 fun h => ht ((val_coe_lt_one_iff v t).1 h))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1 : Valued.v (((N : F) : v.adicCompletion F)) < 1` using `(val_coe_lt_one_iff v N).2 hN`. Take `⟨t', ht'⟩ : ∃ t' : v.adicCompletionIntegers F, (t' : v.adicCompletion F) = ((t : F) : v.adicCompletion F)` from `⟨⟨_, val_coe_le_one v t⟩, rfl⟩`. Take `⟨N', hN'⟩ : ∃ N' : v.adicCompletionIntegers F, (N' : v.adicCompletion F) = ((N : F) : v.adicCompletion F)` from `⟨⟨_, val_coe_le_one v N⟩, rfl⟩`. Establish `hmon : (Polynomial.X ^ 2 - Polynomial.C t' * Polynomial.X + Polynomial.C N').Monic` using `by first`. Consider the case `monicity!`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Polynomial.monic_of_natDegree_le_of_coeff_eq_one 2 (by compute_degree!) (by simp)`. Establish `he0 : Polynomial.eval (0 : v.adicCompletionIntegers F) (Polynomial.X ^ 2 - Polynomial.C t' * Polynomial.X + Polynomial.C N') = N'` using `by simp`. Establish `h0 : Polynomial.eval (0 : v.adicCompletionIntegers F) (Polynomial.X ^ 2 - Polynomial.C t' * Polynomial.X + Polynomial.C N') ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[he0, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hnu, hN']`. Conclude with `hN1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : Polynomial.eval (0 : v.adicCompletionIntegers F) (Polynomial.derivative (Polynomial.X ^ 2 - Polynomial.C t' * Polynomial.X + Polynomial.C N')) = -t'` using `by simp`. Establish `hu : IsUnit (Polynomial.eval (0 : v.adicCompletionIntegers F) (Polynomial.derivative (Polynomial.X ^ 2 - Polynomial.C t' * Polynomial.X + Polynomial.C N')))`. Rewrite using `[hd0]`. Use `IsUnit.neg ?_` and prove the remaining obligations. Rewrite using `[hI.isUnit_iff_valuation_eq_one, ea, ht']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ht1`. Take `⟨a, ha, ha0⟩` from `HenselianLocalRing.is_henselian _ hmon 0 h0 hu`. Establish `ha1 : Valued.v (a : v.adicCompletion F) < 1`. Establish `h4` using `ha0`. Rewrite `h4` using `[sub_zero, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hnu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h4`. Establish `h2 : (a : v.adicCompletion F) ^ 2 - ((t : F) : v.adicCompletion F) * a + ((N : F) : v.adicCompletion F) = 0`. Establish `ha' : Polynomial.eval a (Polynomial.X ^ 2 - Polynomial.C t' * Polynomial.X + Polynomial.C N') = 0` using `ha`. Simplify using `only [Polynomial.eval_add, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C] at ha'`. Establish `h3` using `congrArg (fun x : v.adicCompletionIntegers F => (x : v.adicCompletion F)) ha'`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Move the coercions through the operations in `at h3`. Rewrite `h3` using `[ht', hN']`. Conclude with `h3`. Use `⟨(a : v.adicCompletion F), ((t : F) : v.adicCompletion F) - a, by ring, by linear_combination -h2, ha1, ?_⟩` and prove the remaining obligations. Use `first`.
-
-Consider the case `rw [Valuation.map_sub_eq_of_lt_left _ (by rw [ht1]; exact ha1), ht1]`. Consider the case `rw [Valuation.map_sub_eq_of_lt_right _ (by rw [ht1]; exact ha1), ht1]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem roots_exist (t N : 𝓞 F) (hN : N ∈ v.asIdeal) (ht : t ∉ v.asIdeal) :
     ∃ r₁ r₂ : v.adicCompletion F, r₁ + r₂ = ((t : F) : v.adicCompletion F) ∧ r₁ * r₂ = ((N : F) : v.adicCompletion F) ∧

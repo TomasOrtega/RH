@@ -32,14 +32,14 @@ Both sides reduce to the same expression.
 @[simp] theorem flatCone_unflatCone {F : Type*} (w : Coord n → F) : flatCone (unflatCone w) = w := rfl
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ ↦ Function.ne_iff`.
+A detailed English derivation is pending.
 -/
 theorem blockNonzero_unflatCone_iff {F : Type*} [Zero F] (w : Coord n → F) :
     BlockNonzero (unflatCone w) ↔ ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0 :=
   forall_congr' fun _ ↦ Function.ne_iff
 
 /- English proof (translation)
-Rewrite using `[eval_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_map_flatCone {F : Type*} [CommRing F] (z : Cone n F) (f : MvPolynomial (Coord n) ℤ) :
     eval (flatCone z) (map (Int.castRingHom F) f) = evalCone z f := by
@@ -49,7 +49,7 @@ theorem eval_map_flatCone {F : Type*} [CommRing F] (z : Cone n F) (f : MvPolynom
 variable [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[ArithVariety.points, Set.mem_setOf_eq, blockNonzero_unflatCone_iff, Geo.mcPts, Set.mem_setOf_eq]`. Use `and_congr Iff.rfl (forall₂_congr fun f _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[← eval_map_flatCone, flatCone_unflatCone]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ArithVariety.mem_mcPts_iff (P : ArithVariety n) (w : Coord n → ℂ) :
     w ∈ Geo.mcPts P.ideal ↔ unflatCone w ∈ P.points ℂ := by
@@ -59,7 +59,7 @@ theorem ArithVariety.mem_mcPts_iff (P : ArithVariety n) (w : Coord n → ℂ) :
   rw [← eval_map_flatCone, flatCone_unflatCone]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intros; exact zero_smul _ _), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `[coordDeg]`. Introduce `j _ hj`. Use `Finset.sum_eq_zero fun i _ ↦ ?_` and prove the remaining obligations. Simplify using `[coordDeg, Pi.single_apply, Ne.symm hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -75,9 +75,9 @@ theorem weight_coordDeg_apply (d : Coord n →₀ ℕ) (k : ι) :
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h d hd`. Use function extensionality and compare the values at `k`. Rewrite using `[weight_coordDeg_apply]`. Conclude with `h d (mem_support_iff.mpr hd) k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h m hm k`. Rewrite using `[← weight_coordDeg_apply, h (mem_support_iff.mp hm)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoMultiHomog_iff (f : MvPolynomial (Coord n) ℤ) (a : ι → ℕ) :
     Geo.IsMultiHomog (ι := blockIdx n) f a ↔ IsWeightedHomogeneous (coordDeg n) f a := by
@@ -90,7 +90,7 @@ theorem geoMultiHomog_iff (f : MvPolynomial (Coord n) ℤ) (a : ι → ℕ) :
     rw [← weight_coordDeg_apply, h (mem_support_iff.mp hm)]
 
 /- English proof (translation)
-Use `⟨P.isPrime, ⟨{f | f ∈ P.ideal ∧ ∃ a, Geo.IsMultiHomog (ι := blockIdx n) f a}, fun f hf ↦ hf.2, le_antisymm (fun f hf ↦ ?_) (Ideal.span_le.mpr fun f hf ↦ hf.1)⟩, P.relevant⟩` and prove the remaining obligations. Rewrite using `[← sum_weightedHomogeneousComponent (w := coordDeg n) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Use `Ideal.sum_mem _ fun m _ ↦ Ideal.subset_span ⟨P.homogeneous f hf m, m, ?_⟩` and prove the remaining obligations. Conclude with `(geoMultiHomog_iff _ m).mpr (weightedHomogeneousComponent_isWeightedHomogeneous m f)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ArithVariety.isMultiProjPrime (P : ArithVariety n) :
     Geo.IsMultiProjPrime (ι := blockIdx n) P.ideal := by
@@ -103,7 +103,7 @@ theorem ArithVariety.isMultiProjPrime (P : ArithVariety n) :
   exact (geoMultiHomog_iff _ m).mpr (weightedHomogeneousComponent_isWeightedHomogeneous m f)
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, Ideal.mem_bot]`. Conclude with `⟨P.horizontal a, fun h ↦ by rw [h, map_zero]; exact P.ideal.zero_mem⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ArithVariety.isHorizontal (P : ArithVariety n) :
     Geo.IsHorizontal (ι := blockIdx n) P.ideal := by
@@ -149,14 +149,14 @@ Both sides reduce to the same expression.
 theorem toGeo_a (A : HermLine n) : A.toGeo.a = A.deg := rfl
 
 /- English proof (translation)
-Simplify using `only [toGeo, if_pos hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toGeo_h_of_blockNonzero (A : HermLine n) {w : Coord n → ℂ}
     (hw : BlockNonzero (unflatCone w)) : A.toGeo.h w = A.metric (unflatCone w) := by
   simp only [toGeo, if_pos hw]
 
 /- English proof (translation)
-Establish `hu : ContDiff ℝ ∞ (fun w : Coord n → ℂ ↦ unflatCone w)` using `contDiff_pi.2 fun k ↦ contDiff_pi.2 fun i ↦ contDiff_apply ℝ ℂ (⟨k, i⟩ : Coord n)`. Establish `hm : ContDiffOn ℝ ∞ (fun w : Coord n → ℂ ↦ A.metric (unflatCone w)) {w | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0}` using `A.metric_smooth.comp hu.contDiffOn fun w hw ↦ (blockNonzero_unflatCone_iff w).mpr hw`. Use `hm.congr fun w hw ↦ ?_` and prove the remaining obligations. Conclude with `A.toGeo_h_of_blockNonzero ((blockNonzero_unflatCone_iff w).mpr hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_toGeo (A : HermLine n) : Geo.IsSmoothHerm A.toGeo := by
   have hu : ContDiff ℝ ∞ (fun w : Coord n → ℂ ↦ unflatCone w) :=
@@ -168,7 +168,7 @@ theorem isSmoothHerm_toGeo (A : HermLine n) : Geo.IsSmoothHerm A.toGeo := by
   exact A.toGeo_h_of_blockNonzero ((blockNonzero_unflatCone_iff w).mpr hw)
 
 /- English proof (translation)
-Take `⟨a, h, _, _⟩` from `A`. Take `⟨b, h', _, _⟩` from `B`. Simplify using `only at ha hh`. Substitute `ha hh` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem geo_ext {K : Type*} [Fintype K] {κ : K → Type*} [∀ k, Fintype (κ k)]
     {A B : Geo.HermLine κ} (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
@@ -179,7 +179,7 @@ theorem geo_ext {K : Type*} [Fintype K] {κ : K → Type*} [∀ k, Fintype (κ k
   rfl
 
 /- English proof (translation)
-Use `geo_ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Simplify using `only [toGeo, mul, Geo.HermLine.tensor]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toGeo_mul (A B : HermLine n) : (A.mul B).toGeo = A.toGeo.tensor B.toGeo := by
   refine geo_ext rfl ?_
@@ -196,13 +196,13 @@ variable {P : ArithVariety n} {a : ι → ℤ}
 end IntegralSection
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval₂_eq, Finset.sum_mul]`. Use `Subalgebra.sum_mem _ fun m hm ↦ ?_` and prove the remaining obligations. Establish `hmδ : ∀ k, ∑ i, m ⟨k, i⟩ = δ k` using `(geoMultiHomog_iff e δ).mpr he m hm`. Establish `key : (algebraMap ℤ Ω (coeff m e) * ∏ p ∈ m.support, y p ^ m p) * ∏ k, (y ⟨k, c k⟩ ^ δ k)⁻¹ = algebraMap ℤ Ω (coeff m e) * ∏ p, (y p / y ⟨p.1, c p.1⟩) ^ m p`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.prod_subset (Finset.subset_univ m.support) (fun p _ hp ↦ by`. Rewrite using `[Finsupp.notMem_support_iff.mp hp, pow_zero])]`. Establish `hden : ∏ p : Coord n, y ⟨p.1, c p.1⟩ ^ m p = ∏ k, y ⟨k, c k⟩ ^ δ k`. Rewrite using `[Fintype.prod_sigma]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← hmδ k, ← Finset.prod_pow_eq_pow_sum]`. Repeatedly rewrite using `[div_pow]`. Rewrite using `[Finset.prod_div_distrib, hden, div_eq_mul_inv, Finset.prod_inv_distrib]`. Rewrite using `[key]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (Subalgebra.prod_mem _ fun p _ ↦ ?_)` and prove the remaining obligations. Conclude with `Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_range_self p)) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem aeval_div_chart_mem {Ω : Type*} [Field Ω] (y : Coord n → Ω) (c : (k : ι) → Fin (n k + 1))
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (e : MvPolynomial (Coord n) ℤ) (δ : ι → ℕ)
@@ -229,13 +229,13 @@ theorem aeval_div_chart_mem {Ω : Type*} [Field Ω] (y : Coord n → Ω) (c : (k
   exact Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_range_self p)) _
 
 /- English proof (translation)
-Introduce `c hc`. Establish `hX : ∀ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ∉ P.ideal` using `fun k hk ↦ hc k (by simpa using hy _ hk)`. Take `⟨d, e, ⟨δ, he, hδ⟩, hmem⟩` from `s.regular c hX`. Establish `hrel` using `hy _ hmem`. Rewrite `hrel` using `[map_sub, map_mul, map_mul, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmon : aeval y (chartMonomial c d) = ∏ k, y ⟨k, c k⟩ ^ d k`. Simplify using `[chartMonomial, map_prod]`. Rewrite `hrel` using `[hmon]`. Establish `hpow : ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a k)) = (∏ k, y ⟨k, c k⟩ ^ d k) * ∏ k, (y ⟨k, c k⟩ ^ δ k)⁻¹`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Establish `h0` using `hc k`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ h0, hδ k]`. Use `congr 1`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hval : aeval y s.num / aeval y s.den * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a k)) = aeval y e * ∏ k, (y ⟨k, c k⟩ ^ δ k)⁻¹`. Rewrite using `[hpow, ← mul_assoc, div_mul_eq_mul_div, ← hrel, mul_comm (aeval y s.den), mul_div_assoc, div_self hG, mul_one]`. Rewrite using `[hval]`. Conclude with `aeval_div_chart_mem y c hc e δ he`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntegralSection.value_mem_chartLat {P : ArithVariety n} {a : ι → ℤ}
     (s : IntegralSection P a) {Ω : Type*} [Field Ω] (y : Coord n → Ω)
@@ -270,9 +270,9 @@ def orbitIdeal (x : Cone n (AlgebraicClosure ℚ)) : Ideal (MvPolynomial (Coord 
   Geo.mCoordIdeal (ι := blockIdx n) (flatCone x)
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker]`. Rewrite `h` using `[chartMonomial, map_prod]`. Use `(Finset.prod_ne_zero_iff.mpr fun k _ ↦ ?_) h` and prove the remaining obligations. Rewrite using `[map_pow, Geo.mConeMap, aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ (mul_ne_zero (C_ne_zero.mpr (hc k)) (X_ne_zero _))`.
+A detailed English derivation is pending.
 -/
 theorem chartMonomial_notMem_orbitIdeal (x : Cone n (AlgebraicClosure ℚ))
     (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, x k (c k) ≠ 0) (d : ι → ℕ) :
@@ -285,7 +285,7 @@ theorem chartMonomial_notMem_orbitIdeal (x : Cone n (AlgebraicClosure ℚ))
   exact pow_ne_zero _ (mul_ne_zero (C_ne_zero.mpr (hc k)) (X_ne_zero _))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨d, hd, (geoMultiHomog_iff _ d).mpr (isWeightedHomogeneous_chartMonomial c d), chartMonomial_notMem_orbitIdeal x c hc d⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSectionOn_chartMonomial (A : HermLine n) (x : Cone n (AlgebraicClosure ℚ))
     (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, x k (c k) ≠ 0) (d : ι → ℕ)
@@ -295,7 +295,7 @@ theorem isSectionOn_chartMonomial (A : HermLine n) (x : Cone n (AlgebraicClosure
     chartMonomial_notMem_orbitIdeal x c hc d⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k ↦ (Function.ne_iff.mp (hx k)).choose, fun k ↦ (Function.ne_iff.mp (hx k)).choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_chart {F : Type*} [Zero F] {x : Cone n F} (hx : BlockNonzero x) :
     ∃ c : (k : ι) → Fin (n k + 1), ∀ k, x k (c k) ≠ 0 :=
@@ -304,7 +304,7 @@ theorem exists_chart {F : Type*} [Zero F] {x : Cone n F} (hx : BlockNonzero x) :
 def samplePoint : Cone (fun _ : Unit ↦ 1) (AlgebraicClosure ℚ) := fun _ ↦ ![1, 2]
 
 /- English proof (translation)
-Introduce `_ h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[samplePoint] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem samplePoint_blockNonzero : BlockNonzero samplePoint := by
   intro _ h
@@ -312,14 +312,14 @@ theorem samplePoint_blockNonzero : BlockNonzero samplePoint := by
   simp [samplePoint] at this
 
 /- English proof (translation)
-The claim follows from `isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl)`.
+A detailed English derivation is pending.
 -/
 example : Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo
     (chartMonomial (fun _ ↦ 0) 1) :=
   isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ArithVariety.isMultiProjPrime _, HermLine.isSmoothHerm_toGeo _⟩`.
+Supply the required witnesses or components.
 -/
 example : Geo.IsMultiProjPrime (ι := blockIdx (fun _ : Unit ↦ 1)) (ArithVariety.whole _).ideal ∧
     Geo.IsSmoothHerm (HermLine.standard (fun _ : Unit ↦ 1)).toGeo :=

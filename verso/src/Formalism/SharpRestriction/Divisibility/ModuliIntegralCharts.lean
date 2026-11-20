@@ -278,7 +278,7 @@ namespace Loc
 variable {r j p : ℕ} (L : Loc D r j p)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr u, ← b.sum_repr v]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply, zsmul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_expand {Z : L.Mdl} (y : L.Pt Z) {ι : Type} [Fintype ι] (b : Module.Basis ι ℤ (L.Ylat y))
     (u v : L.Ylat y) : L.be y u v =
@@ -289,7 +289,7 @@ theorem be_expand {Z : L.Mdl} (y : L.Pt Z) {ι : Type} [Fintype ι] (b : Module.
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Take `⟨ι, _, b, h⟩` from `L.be_posDef y`. Rewrite using `[L.be_expand y b a a]`. Use `h (fun i => ((b.repr a i : ℤ) : ℝ)) fun h0 => ha (b.repr.injective (Finsupp.ext fun i => ?_))` and prove the remaining obligations. Simplify using `using congrFun h0 i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem be_pos {Z : L.Mdl} (y : L.Pt Z) (a : L.Ylat y) (ha : a ≠ 0) : 0 < L.be y a a := by
   obtain ⟨ι, _, b, h⟩ := L.be_posDef y
@@ -298,7 +298,7 @@ theorem be_pos {Z : L.Mdl} (y : L.Pt Z) (a : L.Ylat y) (ha : a ≠ 0) : 0 < L.be
   simpa using congrFun h0 i
 
 /- English proof (translation)
-Combine the equalities or inequalities in the calculation `calc _ = ∑ a, ∑ c, ∑ b, ∑ e, F a b c e := Finset.sum_congr rfl fun _ _ => Finset.sum_comm _ = ∑ c, ∑ a, ∑ b, ∑ e, F a b c e := Finset.sum_comm _ = ∑ c, ∑ a, ∑ e, ∑ b, F a b c e := Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_comm _ = _ := Finset.sum_ …`.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem sum4 {A B C E : Type} [Fintype A] [Fintype B] [Fintype C] [Fintype E] (F : A → B → C → E → ℝ) :
     ∑ a, ∑ b, ∑ c, ∑ e, F a b c e = ∑ c, ∑ e, ∑ a, ∑ b, F a b c e :=
@@ -309,17 +309,17 @@ private theorem sum4 {A B C E : Type} [Fintype A] [Fintype B] [Fintype C] [Finty
     _ = _ := Finset.sum_congr rfl fun _ _ => Finset.sum_comm
 
 /- English proof (translation)
-Take `⟨ι, _, b, h⟩` from `L.be_posDef y`. Establish `hne : (fun i => ∑ m, c' m * ((b.repr (b' m) i : ℤ) : ℝ)) ≠ 0`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Use function extensionality and compare the values at `m0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hd : ∀ m, ∑ i, ((b.repr (b' m) i : ℤ) : ℝ) * ((b'.repr (b i) m0 : ℤ) : ℝ) = if m = m0 then 1 else 0`. Introduce `m`. Establish `h1` using `congrArg (fun v => b'.repr v m0) (b.sum_repr (b' m))`. Simplify using `only [map_sum, map_zsmul, Finsupp.finsetSum_apply, Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul] at h1`. Establish `h2` using `congrArg (fun z : ℤ => (z : ℝ)) h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h2`. Simplify using `using h2`. Establish `key : ∑ i, (∑ m, c' m * ((b.repr (b' m) i : ℤ) : ℝ)) * ((b'.repr (b i) m0 : ℤ) : ℝ) = c' m0`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc, ← Finset.mul_sum, hd]`. Simplify using the standard rewrite rules. Rewrite using `[← key]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [congrFun h0 i]; simp`. Use `lt_of_lt_of_eq (h _ hne) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_mul_sum]`. Simplify using `only [Finset.sum_mul]`. Use `(sum4 _).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[L.be_expand y b (b' m) (b' n), Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_posDef_basis {Z : L.Mdl} (y : L.Pt Z) {κ : Type} [Fintype κ]
     (b' : Module.Basis κ ℤ (L.Ylat y)) (c' : κ → ℝ) (hc : c' ≠ 0) :
@@ -356,7 +356,7 @@ theorem be_posDef_basis {Z : L.Mdl} (y : L.Pt Z) {κ : Type} [Fintype κ]
   exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Use `Matrix.PosDef.of_dotProduct_mulVec_pos (Matrix.IsHermitian.ext fun m n => by simp [L.be_symm y]) fun c hc => lt_of_lt_of_eq (L.be_posDef_basis y b' c hc) ?_` and prove the remaining obligations. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, Finset.mul_sum, Pi.star_apply, star_trivial]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun n _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_posDef {Z : L.Mdl} (y : L.Pt Z) {κ : Type} [Fintype κ] (b' : Module.Basis κ ℤ (L.Ylat y)) :
     (Matrix.of fun m n => L.be y (b' m) (b' n)).PosDef := by
@@ -375,7 +375,7 @@ def phiCy {Z : L.Mdl} (y : L.Pt Z) : ℝ := phiC (fun x : D.host.E => D.host.con
 def dP {Z : L.Mdl} (y : L.Pt Z) : ℕ := Module.finrank ℤ (L.Ylat y)
 
 /- English proof (translation)
-Take `⟨ρ, h, hb⟩` from `L.yl_rank y`. Take `⟨h3, h4⟩` from `hb h1 h2`. Rewrite using `[dP, h]`. Conclude with `Nat.mul_le_mul_left _ (le_min h3 (by omega))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dP_le (h1 : 1 ≤ j) (h2 : j + 1 ≤ r) {Z : L.Mdl} (y : L.Pt Z) : L.dP y ≤ 2 * D.R.f * min j (r - j) := by
   obtain ⟨ρ, h, hb⟩ := L.yl_rank y
@@ -819,14 +819,14 @@ structure Prov (D : Formalism.BasicNotions.D7) where
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-The claim follows from `(X.loc w p).dP_le (X.jj_range w).1 (X.jj_range w).2 y`.
+A detailed English derivation is pending.
 -/
 theorem Prov.dP_le (X : Prov D) (w : X.Dat) (p : ℕ) {Z : (X.loc w p).Mdl} (y : (X.loc w p).Pt Z) :
     (X.loc w p).dP y ≤ 2 * D.R.f * min (X.jj w) (X.rk w - X.jj w) :=
   (X.loc w p).dP_le (X.jj_range w).1 (X.jj_range w).2 y
 
 /- English proof (translation)
-The claim follows from `(X.dP_le w p y).trans (Nat.mul_le_mul_left _ hm)`.
+A detailed English derivation is pending.
 -/
 theorem Prov.dP_le_of (X : Prov D) {w : X.Dat} {m : ℕ} (hm : min (X.jj w) (X.rk w - X.jj w) ≤ m) (p : ℕ)
     {Z : (X.loc w p).Mdl} (y : (X.loc w p).Pt Z) : (X.loc w p).dP y ≤ 2 * D.R.f * m :=
@@ -967,7 +967,7 @@ def KudlaFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF :
   AdmF Fm XF → ChernFormFamily Fm XF ∧ KeyFormulaFamily Fm XF ka
 
 /- English proof (translation)
-Introduce `a` and use `⟨fun x i => (h _ _ (hO x i) (a x i)).1, fun x i => (h _ _ (hO x i) (a x i)).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rules_family_of_uniform {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (XF : ∀ x (i : Fm.Ix x), Prov (Fm.D x i)) (hO : ∀ x i, 𝒪 (XF x i)) : KudlaFamilyStatement Fm XF ka :=
@@ -978,7 +978,7 @@ def FamilyPacketImplication {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (X
     ∀ x hx i, familyJetConsequence (Fm.D x i) (XF x hx i) ∧ Conclusion8 (Fm.D x i) (XF x hx i) ka ∧ KeyFormulaLineBundle (Fm.D x i) (XF x hx i) ka
 
 /- English proof (translation)
-Introduce `a x hx i` and use `h _ _ (hO x hx i) (a x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem familyPacket_of_uniformPacket {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (XF : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, Prov (Fm.D x i)) (hO : ∀ x hx i, 𝒪 (XF x hx i)) : FamilyPacketImplication Fm XF ka :=

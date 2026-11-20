@@ -18,7 +18,7 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
 /- English proof (translation)
-Establish `h1 : IsPar (1 : G2 σ Y) 1` using `isPar_iff.2 ((Matrix.one_mul _).trans (Matrix.mul_one _).symm)`. Use `ha.val 1 1 h1 k hk` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hgt_of_mem {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (ha : IsHgt K a) {k : G2 σ Y} (hk : k ∈ K) : a k = 1 := by
   have h1 : IsPar (1 : G2 σ Y) 1 := isPar_iff.2 ((Matrix.one_mul _).trans (Matrix.mul_one _).symm)
@@ -26,7 +26,7 @@ theorem hgt_of_mem {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (ha : IsHgt K 
   simpa using this
 
 /- English proof (translation)
-Take `⟨q, v, hq, k', hk', e⟩` from `ha.iwa (k * u)`. Rewrite using `[mul_assoc, e, ← mul_assoc, ha.val _ _ (hp.mul hq) k' hk', ha.val p t hp k hk, ha.val q v hq k' hk', map_mul, map_mul, NNReal.coe_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hgt_mul {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (ha : IsHgt K a) {p : G2 σ Y} {t} (hp : IsPar p t) {k : G2 σ Y}
     (hk : k ∈ K) (u : G2 σ Y) : a (p * k * u) = a (p * k) * a (k * u) := by
@@ -35,13 +35,13 @@ theorem hgt_mul {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (ha : IsHgt K a) 
     NNReal.coe_mul]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Establish `hn : IsOpen ((fun y : G2 σ Y × G2 σ Y => a (y.1 * y.2)) ⁻¹' Set.Ioo (1 / 2) 2)` using `isOpen_Ioo.preimage (ac.comp continuous_mul)`. Establish `hs : (K : Set (G2 σ Y)) ×ˢ ({1} : Set (G2 σ Y)) ⊆ (fun y : G2 σ Y × G2 σ Y => a (y.1 * y.2)) ⁻¹' Set.Ioo (1 / 2) 2`. Introduce and unpack `⟨k, u⟩ ⟨hk, hu⟩`. Establish `hu' : u = 1` using `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hu'` using the available equality. Simplify using `only [Set.mem_preimage, mul_one]`. Rewrite using `[hgt_of_mem ha hk]`. Evaluate the numerical expressions. Take `⟨U, V, -, hV, hKU, h1V, hUV⟩` from `generalized_tube_lemma hK isCompact_singleton hn hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, hV, h1V rfl, fun g u hu => ?_⟩` and prove the remaining obligations. Take `⟨p, t, hp, k, hk, rfl⟩` from `ha.iwa g`. Establish `h` using `hUV (show (k, u) ∈ U ×ˢ V from ⟨hKU hk, hu⟩)`. Take `⟨h1, h2⟩ : 1 / 2 < a (k * u) ∧ a (k * u) < 2` from `h`. Rewrite using `[hgt_mul ha hp hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `a0 (p * k)` as an intermediate fact. Apply the tactic sequence `constructor <;> nlinarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_nhd_one {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (hK : IsCompact (K : Set (G2 σ Y))) (ac : Continuous a)
     (ha : IsHgt K a) (a0 : ∀ x, 0 < a x) :
@@ -66,7 +66,7 @@ theorem exists_nhd_one {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (hK : IsCo
   constructor <;> nlinarith
 
 /- English proof (translation)
-Establish `p` using `Real.rpow_pos_of_pos hA c`. Establish `p'` using `Real.rpow_pos_of_pos hA c'`. Break down `le_total A 1 with h | h` into its components or cases. Combine the linear relations using `[Real.rpow_le_rpow_of_exponent_ge hA h h1]`. Combine the linear relations using `[Real.rpow_le_rpow_of_exponent_le h h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rpow_le_add {A r c c' : ℝ} (hA : 0 < A) (h1 : c ≤ r) (h2 : r ≤ c') : A ^ r ≤ A ^ c + A ^ c' := by
   have p := Real.rpow_pos_of_pos hA c
@@ -76,9 +76,9 @@ theorem rpow_le_add {A r c c' : ℝ} (hA : 0 < A) (h1 : c ≤ r) (h2 : r ≤ c')
   · linarith [Real.rpow_le_rpow_of_exponent_le h h2]
 
 /- English proof (translation)
-Establish `hB : 0 < B` using `by linarith`. Break down `le_total 0 e with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h, ← Real.mul_rpow (by norm_num) hA.le]`. Conclude with `Real.rpow_le_rpow hB.le h2 h`. Establish `k` using `Real.rpow_le_rpow_of_nonpos (half_pos hA) h1 h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `k.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[abs_of_nonpos h, div_eq_mul_inv, Real.mul_rpow hA.le (by norm_num), Real.inv_rpow (by norm_num), Real.rpow_neg (by norm_num), mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rpow_le_of_near {A B : ℝ} (hA : 0 < A) (h1 : A / 2 ≤ B) (h2 : B ≤ 2 * A) (e : ℝ) : B ^ e ≤ 2 ^ |e| * A ^ e := by
   have hB : 0 < B := by linarith
@@ -91,33 +91,31 @@ theorem rpow_le_of_near {A B : ℝ} (hA : 0 < A) (h1 : A / 2 ≤ B) (h2 : B ≤ 
       mul_comm]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY b K a hb hK ha χ s₁ f hf`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Take `⟨ac, a0⟩` from `GlobalTheory.T.height_function_continuous_pos' F E σ B n Y r s hB hn hY b K a hb hK ha`. Establish `kc` using `GlobalTheory.T.isCompact_standard_maximal F E σ B n Y r s hB hn hY b K a hb hK ha`. Take `⟨C, hC⟩` from `GlobalTheory.T.flat_section_growth_bound K a kc ha a0 χ s₁ f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ₀, hG⟩` from `GlobalTheory.T.eisenstein_series_convergent F E σ B n Y r s hB hn hY b K a hb hK ha`. Take `⟨W, hW, h1W, hWa⟩` from `exists_nhd_one kc ac ha a0`. Use `⟨σ₀ - n / 2, fun t Ê ht hE => ?_⟩` and prove the remaining obligations. Establish `tb : ∀ (z : ℂ) (c c' : ℝ), c ≤ z.re → z.re ≤ c' → ∀ g, ‖flat a f s₁ z g‖ ≤ |C| * (a g ^ (c + (n : ℝ) / 2) + a g ^ (c' + (n : ℝ) / 2))` using `fun z c c' h1 h2 g => (hC z g).trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (Real.rpow_pos_of_pos (a0 g) _).le).trans (mul_le_mul_of_nonneg_left (rpow_le_add (a0 g) (by linarith) (by linarith)) (abs_nonneg C)))`. Establish `gr : ∀ c c' : ℝ, t < c → ∃ (D : ℝ) (N : ℕ), ∀ s : ℂ, c ≤ s.re → s.re ≤ c' → ∀ x, ‖Ê s x‖ ≤ D * (ht2 x : ℝ) ^ N`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c c' hc`. Establish `h1 : σ₀ < c + (n : ℝ) / 2` using `by linarith`. Establish `h2 : σ₀ < max c c' + (n : ℝ) / 2` using `by linarith [le_max_left c c']`. Take `⟨C₁, N₁, H₁⟩` from `hG _ h1`. Take `⟨C₂, N₂, H₂⟩` from `hG _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨|C| * (|C₁| + |C₂|), max N₁ N₂, fun z h1z h2z x => ?_⟩` and prove the remaining obligations. Establish `hx : (1 : ℝ) ≤ ht2 x` using `one_le_heightGL F x.1`. Establish `S` using `(H₁ x).1.add (H₂ x).1`. Establish `hs` using `(hE z (by linarith) x).norm_le_of_bounded (S.mul_left |C|).hasSum (fun q => tb z c (max c c') h1z (h2z.trans (le_max_right c c')) _)`. Use `hs.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_mul_left, (H₁ x).1.tsum_add (H₂ x).1, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (abs_nonneg C)` and prove the remaining obligations. Establish `p1 : (ht2 x : ℝ) ^ N₁ ≤ (ht2 x : ℝ) ^ max N₁ N₂` using `pow_le_pow_right₀ hx (le_max_left _ _)`. Establish `p2 : (ht2 x : ℝ) ^ N₂ ≤ (ht2 x : ℝ) ^ max N₁ N₂` using `pow_le_pow_right₀ hx (le_max_right _ _)`. Establish `q0 : (0 : ℝ) ≤ (ht2 x : ℝ) ^ N₁` using `pow_nonneg (by linarith) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q1 : (0 : ℝ) ≤ (ht2 x : ℝ) ^ N₂` using `pow_nonneg (by linarith) _`. Rewrite using `[add_mul]`. Conclude with `add_le_add ((H₁ x).2.trans ((mul_le_mul_of_nonneg_right (le_abs_self _) q0).trans (mul_le_mul_of_nonneg_left p1 (abs_nonneg _)))) ((H₂ x).2.trans ((mul_le_mul_of_nonneg_right (le_abs_self _) q1).trans (mul_le_mul_of_nonneg_left p2 (abs_nonneg _))))`. Establish `ct : ContinuousOn (fun y : ℂ × G2 σ Y => Ê y.1 y.2) ({s : ℂ | t < s.re} ×ˢ Set.univ)`. Introduce and unpack `⟨z₀, x₀⟩ ⟨hz₀, -⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz₁ : t < z₀.re` using `hz₀`. Take `⟨c, hc1, hc2⟩` from `exists_between hz₁`. Take `⟨c', hc'⟩` from `exists_gt z₀.re`. Establish `h1 : σ₀ < c + (n : ℝ) / 2` using `by linarith`. Establish `h2 : σ₀ < c' + (n : ℝ) / 2` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, H₁⟩` from `hG _ h1`. Take `⟨_, _, H₂⟩` from `hG _ h2`. Set `V : Set (G2 σ Y)` to `(fun x => x₀⁻¹ * x) ⁻¹' W`. Establish `hV : IsOpen V` using `hW.preimage (continuous_const.mul continuous_id)`. Set `S : Set (ℂ × G2 σ Y)` to `{z : ℂ | c < z.re ∧ z.re < c'} ×ˢ V`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsOpen S` using `((isOpen_lt continuous_const Complex.continuous_re).inter (isOpen_lt Complex.continuous_re continuous_const)).prod hV`. Establish `mS : (z₀, x₀) ∈ S` using `⟨⟨hc2, hc'⟩, by simpa [V] using h1W⟩`. Establish `sumU : Summable fun q : Cos σ Y => |C| * (2 ^ |c + (n : ℝ) / 2| * a ((Quotient.out q).1 * x₀) ^ (c + (n : ℝ) / 2) + 2 ^ |c' + (n : ℝ) / 2| * a ((Quotient.out q).1 * x₀) ^ (c' + (n : ℝ) / 2))` using `(((H₁ x₀).1.mul_left _).add ((H₂ x₀).1.mul_left _)).mul_left _`. Establish `cts : ContinuousOn (fun y : ℂ × G2 σ Y => ∑' q : Cos σ Y, eisTerm (flat a f s₁ y.1) y.2 q) S`. Use `continuousOn_tsum (fun q => Continuous.continuousOn ?_) sumU ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `cg : Continuous fun y : ℂ × G2 σ Y => (Quotient.out q).1 * y.2` using `continuous_const.mul continuous_snd`. Conclude with `((Complex.continuous_ofReal.comp (ac.comp cg)).cpow (continuous_fst.sub continuous_const) fun y => Complex.ofReal_mem_slitPlane.2 (a0 _)).mul (hf.cont.comp cg)`. Introduce and unpack `q ⟨z, x⟩ ⟨⟨hz1, hz2⟩, hx⟩`. Establish `hu` using `hWa ((Quotient.out q).1 * x₀) (x₀⁻¹ * x) hx`. Rewrite `hu` using `[show (Quotient.out q).1 * x₀ * (x₀⁻¹ * x) = (Quotient.out q).1 * x by group]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(tb z c c' hz1.le hz2.le _).trans (mul_le_mul_of_nonneg_left (add_le_add (rpow_le_of_near (a0 _) hu.1 hu.2 _) (rpow_le_of_near (a0 _) hu.1 hu.2 _)) (abs_nonneg C))`. Establish `ctE : ContinuousOn (fun y : ℂ × G2 σ Y => Ê y.1 y.2) S` using `cts.congr fun y hy => (hE y.1 (hc1.trans hy.1.1) y.2).tsum_eq.symm`. Conclude with `(ctE.continuousAt (hS.mem_nhds mS)).continuousWithinAt`. Use `⟨fun z hz => ?_, ct, gr⟩` and prove the remaining obligations. Take `⟨D, N, hD⟩` from `gr z.re z.re hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cz : Continuous fun x => Ê z x` using `ct.comp_continuous (Continuous.prodMk_right z) fun x => ⟨hz, trivial⟩`. Establish `M1 : (1 : ℝ) ≤ max D 1` using `le_max_right _ _`. Establish `M0 : (0 : ℝ) < max D 1` using `by linarith`. Establish `Mc : ((max D 1 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 M0.ne'`. Establish `e : (fun x => Ê z x) = ((max D 1 : ℝ) : ℂ) • ((((max D 1 : ℝ) : ℂ))⁻¹ • fun x => Ê z x)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ Mc, one_smul]`. Rewrite using `[e]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨cz.const_smul _, N, fun x => ?_⟩)` and prove the remaining obligations. Establish `hx : (1 : ℝ) ≤ ht2 x` using `one_le_heightGL F x.1`. Establish `q0 : (0 : ℝ) ≤ (ht2 x : ℝ) ^ N` using `pow_nonneg (by linarith) _`.
-
-Rewrite using `[Pi.smul_apply, norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg M0.le, inv_mul_le_iff₀ M0]`. Conclude with `(hD z le_rfl le_rfl x).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) q0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eis_half_plane : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (Y : Spc F E n) (r s : ℕ), B.IsGood σ → 1 ≤ n → (Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) → ∀ (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y)) (a : G2 σ Y → ℝ), IsFrame2 σ Y b → IsStdK (σ := σ) (Y := Y) B b K → IsHgt K a → ∀ (χ : Chr F E) (s₁ : ℂ) (f : G2 σ Y → ℂ), IsSec K χ s₁ f → ∃ t₀ : ℝ, ∀ (t : ℝ) (Ê : ℂ → G2 σ Y → ℂ), t₀ ≤ t → (∀ s : ℂ, t < s.re → ∀ x, HasSum (eisTerm (flat a f s₁ s) x) (Ê s x)) → (∀ s : ℂ, t < s.re → (fun x => Ê s x) ∈ modFun σ Y) ∧ ContinuousOn (fun y : ℂ × G2 σ Y => Ê y.1 y.2) ({s : ℂ | t < s.re} ×ˢ Set.univ) ∧ ∀ c c' : ℝ, t < c → ∃ (C : ℝ) (N : ℕ), ∀ s : ℂ, c ≤ s.re → s.re ≤ c' → ∀ x, ‖Ê s x‖ ≤ C * (ht2 x : ℝ) ^ N := by
   intro F E _ _ _ _ _ σ B n Y r s hB hn hY b K a hb hK ha χ s₁ f hf

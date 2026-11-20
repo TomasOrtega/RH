@@ -14,9 +14,9 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [Fini
 variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K}
 
 /- English proof (translation)
-Use `⟨0, Fin.elim0, fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun v => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[spanS_empty]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `M.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv`. Use `hM.le v hv` as an intermediate fact. Rewrite `this` using `[hW, Submodule.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[hW, Set.range_eq_empty, Submodule.span_empty]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sd_basis_bot {W : Submodule K V} {M : AddSubgroup V} (hM : IsSD S h W M) (hW : W = ⊥) :
     ∃ (k : ℕ) (f : Fin k → V), (∀ i j, i ≠ j → h (f i) (f j) = 0) ∧
@@ -33,9 +33,9 @@ theorem sd_basis_bot {W : Submodule K V} {M : AddSubgroup V} (hM : IsSD S h W M)
   · rw [hW, Set.range_eq_empty, Submodule.span_empty]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le ((Submodule.span_singleton_le_iff_mem _ _).mpr hx) inf_le_left`. Introduce `w hw`. Establish `e : w = (h x w * (h x x)⁻¹) • x + (w - (h x w * (h x x)⁻¹) • x)` using `by abel`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem_sup (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)) ?_` and prove the remaining obligations. Use `mem_cutW.mpr ⟨W.sub_mem hw (W.smul_mem _ hx), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hxx, mul_one, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_cutW {W : Submodule K V} {x : V} (hx : x ∈ W) (hxx : h x x ≠ 0) :
     K ∙ x ⊔ cutW h W x = W := by
@@ -49,27 +49,25 @@ theorem sup_cutW {W : Submodule K V} {x : V} (hx : x ∈ W) (hxx : h x x ≠ 0) 
     rw [map_sub, map_smul, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hxx, mul_one, sub_self]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `W M hn hM`. Conclude with `sd_basis_bot hM (Submodule.finrank_eq_zero.mp (Nat.le_zero.mp hn))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `W M hn hM`. Distinguish the cases in `hbot : W = ⊥`. Conclude with `sd_basis_bot hM hbot`. Take `⟨ξ, hξ, hξ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hu⟩` from `hM.exists_unit_norm hS hπ hs hd hξ hξ0`. Establish `hxW` using `hM.le x hx`. Take `⟨k, f, hfo, hfu, hfM, hfW⟩` from `ih _ _ (by have := finrank_cutW_lt (h := h) hxW hu.1; omega) (hM.cut hx hu)`. Establish `hfc : ∀ i, f i ∈ cutW h W x` using `fun i => by`. Rewrite using `[← hfW]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `hfm : ∀ i, f i ∈ M` using `fun i => (mem_cutM.mp ((hfM (f i)).mp (mem_spanS_self f i))).1`. Use `⟨k + 1, Fin.cons x f, ?_, ?_, fun v => ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Consider the cases of `i using Fin.cases with`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => exact absurd rfl hij`. Consider the case `succ j => simpa using (mem_cutW.mp (hfc j)).2`. Consider the case `succ i`.
+Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa using symm_zero hs (mem_cutW.mp (hfc i)).2`. Consider the case `succ j`. Simplify using `using hfo i j (fun h' => hij (by rw [h']))`. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa using hu`. Consider the case `succ i => simpa using hfu i`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `M.sum_mem fun i _ => hM.smul_mem _ (hc i) _ ?_` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa using hx`. Consider the case `succ i => simpa using hfm i`. Introduce `hv`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Take `⟨d, hd', hdv⟩` from `(hfM _).mpr (proj_mem hM.toIsLatIn hx hu hv)`. Use `⟨Fin.cons (h x v * (h x x)⁻¹) d, fun i => ?_, ?_⟩` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa using S.mul_mem (hM.int _ hx _ hv) hu.2.2`. Consider the case `succ i => simpa using hd' i`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← hdv]`. Normalize the expressions using the abelian group laws. Rewrite using `[Fin.range_cons, Submodule.span_insert, hfW]`.
-
-Conclude with `sup_cutW hxW hu.1`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sd_basis (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm)
     (hd : ∀ x, h x x = 0 → x = 0) : ∀ (n : ℕ) (W : Submodule K V) (M : AddSubgroup V),

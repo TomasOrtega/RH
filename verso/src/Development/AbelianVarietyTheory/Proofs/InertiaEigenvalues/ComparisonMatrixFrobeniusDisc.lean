@@ -14,14 +14,14 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.Height
 
 /- English proof (translation)
-The claim follows from `Matrix.map_smul' F c M (map_mul F)`.
+A detailed English derivation is pending.
 -/
 private theorem map_smul_ringHom' {n : Type} {α β : Type} [CommRing α] [CommRing β] (F : α →+* β) (c : α)
     (M : Matrix n n α) : (c • M).map F = F c • M.map F :=
   Matrix.map_smul' F c M (map_mul F)
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `(mul_cancel_left_mem_nonZeroDivisors hc).1 this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem smul_cancel' {n : Type} {D : Type} [CommRing D] {c : D} (hc : c ∈ nonZeroDivisors D)
     {M M' : Matrix n n D} (h : c • M = c • M') : M = M' := by
@@ -31,17 +31,13 @@ private theorem smul_cancel' {n : Type} {D : Type} [CommRing D] {c : D} (hc : c 
   exact (mul_cancel_left_mem_nonZeroDivisors hc).1 this
 
 /- English proof (translation)
-Establish `hΦR : pg ^ N • (xf.map Φ * ε.map Φ) = pf ^ N • xg.map Φ`. Use `congrArg (fun M => M.map Φ) hR` as an intermediate fact. Simplify `this` using `only [map_smul_ringHom', Matrix.map_mul, map_pow, hpf, hpg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (pg ^ N * gE ^ (a + 2 * N)) • ((fE ^ (a + 2 * N) • (Fm * xf.map Φ)) * ε.map Φ) := by rw [h1f]`. Use `_ = (gE ^ (a + 2 * N) * fE ^ (a + 2 * N)) • (Fm * (pg ^ N • (xf.map Φ * ε.map Φ))) := by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (gE ^ (a + 2 * N) * fE ^ (a + 2 * N)) • (Fm * (pf ^ N • xg.map Φ)) := by rw [hΦR]`. Use `_ = (fE ^ (a + 2 * N) * pf ^ N) • (gE ^ (a + 2 * N) • (Fm * xg.map Φ)) := by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (fE ^ (a + 2 * N) * pf ^ N) • ((L * pg ^ N) • (xg * Ag)) := by rw [h1g]`. Use `_ = (fE ^ (a + N) * L * pf ^ N * pg ^ N) • ((fE ^ N • xg) * Ag) := by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (fE ^ (a + N) * L * pf ^ N * pg ^ N) • ((gE ^ N • (xf * ε)) * Ag) := by rw [hR]`. Use `_ = (L * pf ^ N * pg ^ N * gE ^ N) • (xf * (fE ^ (a + N) • (ε * Ag))) := by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem alg' {n : Type} [Fintype n] [DecidableEq n] {D : Type} [CommRing D] (Φ : D →+* D)
     (L pf pg fE gE : D) (a N : ℕ) (xf xg Af Ag ε Fm : Matrix n n D)
@@ -70,31 +66,27 @@ private theorem alg' {n : Type} [Fintype n] [DecidableEq n] {D : Type} [CommRing
         simp only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc]; congr 1; ring
 
 /- English proof (translation)
-Introduce `l _ K bk d ρ τ s ht hτ B f₀ hE f g ε hR Φ hΦ`. Establish `hρpos : 0 < bk.ρ₀`. Unfold `BK.ρ₀; exact NNReal.rpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos)`. Establish `hρle : bk.ρ₀ ≤ 1`. Unfold `BK.ρ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `NNReal.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast (Fact.out : l.Prime).one_lt.le) (by have : (0 : ℝ) ≤ 1 / (bk.Ep.natDegree : ℝ) := by positivity linarith)`. Establish `hnS : ‖toDisc l (X : bk.S) bk.ρ₀ (frobS l bk.a X)‖ ≤ bk.ρ₀`. Rewrite using `[frobS_X]`. Use `(norm_toDisc_pow_le (l := l) (u := (X : bk.S)) l hρpos).trans ?_` and prove the remaining obligations. Conclude with `pow_le_of_le_one (by positivity) (by exact_mod_cast hρle) (Fact.out : l.Prime).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦS` using `isDiscMap_map (frobS l bk.a) hnS`. Establish `key : ∀ (h : Hom bk.prism B) (Fh : Disc l (X : bk.S) bk.ρ₀ →+* Disc l (BK.hf f₀ X) bk.ρ₀), IsDiscMap (BK.hf h) Fh → (((l : Disc l (BK.hf f₀ X) bk.ρ₀) ^ s.c₁ * toDisc l (BK.hf f₀ X) bk.ρ₀ (B.D.φ (BK.hf h bk.E)) ^ s.N) • (ht.bas.map Fh * (ht.A.map (BK.hf h)).map (toDisc l (BK.hf f₀ …`. Introduce `h Fh hFh`. Establish `hφ : ∀ x, BK.hf h (frobS l bk.a x) = B.D.φ (BK.hf h x)` using `fun x => h.f_φ x`. Establish `c1 : IsDiscMap (B.D.φ.comp (BK.hf h)) (Φ.comp Fh)` using `⟨fun x => by simp [hFh.ext, hΦ.ext], fun x => (hΦ.norm_le _).trans (hFh.norm_le _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : IsDiscMap (B.D.φ.comp (BK.hf h)) (Fh.comp (Disc.map (frobS l bk.a) hnS))` using `⟨fun x => by simp [hFh.ext, hΦS.ext, hφ], fun x => (hFh.norm_le _).trans (hΦS.norm_le _)⟩`. Establish `hc : Φ.comp Fh = Fh.comp (Disc.map (frobS l bk.a) hnS)` using `c1.unique c2`. Establish `hP` using `congrArg (fun M => M.map Fh) (GlobalTheory.T.latticeBasis_frobenius_equation_disc l K bk d ρ τ s ht hτ _ hΦS)`. Simplify using `only [map_smul_ringHom', Matrix.map_mul, Matrix.map_map, map_mul, map_pow, map_natCast] at hP`. Establish `eA : (ht.A.map (BK.hf h)).map (toDisc l (BK.hf f₀ X) bk.ρ₀) = ht.A.map (Fh ∘ toDisc l (X : bk.S) bk.ρ₀)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `(hFh.ext _).symm`. Establish `eF : s.F.map ((toDisc l (BK.hf f₀ X) bk.ρ₀).comp ((BK.hf h).comp C)) = s.F.map (Fh ∘ (toDisc l (X : bk.S) bk.ρ₀).comp C)`. Use extensionality with `i j`. Conclude with `(hFh.ext _).symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eB : (ht.bas.map Fh).map Φ = ht.bas.map (Fh ∘ Disc.map (frobS l bk.a) hnS)`. Use extensionality with `i j`. Conclude with `RingHom.congr_fun hc _`. Establish `e1 : toDisc l (BK.hf f₀ X) bk.ρ₀ (B.D.φ (BK.hf h bk.E)) = Fh (toDisc l (X : bk.S) bk.ρ₀ (frobS l bk.a bk.E))` using `((hFh.ext _).trans (congrArg _ (hφ _))).symm`. Establish `e2 : toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf h bk.E) = Fh (toDisc l (X : bk.S) bk.ρ₀ bk.E)` using `(hFh.ext _).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [eA, eF, eB, e1, e2]`. Conclude with `hP`. Establish `hn` using `GlobalTheory.T.norm_breuilKisinHom_uniformizer_frobenius_le l K bk B f₀`. Establish `hFf` using `isDiscMap_map (BK.hf f) (hn f).1`. Establish `hFg` using `isDiscMap_map (BK.hf g) (hn g).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1f` using `key f _ hFf`. Establish `h1g` using `key g _ hFg`. Establish `hFm : s.F.map ((toDisc l (BK.hf f₀ X) bk.ρ₀).comp ((BK.hf g).comp C)) = s.F.map ((toDisc l (BK.hf f₀ X) bk.ρ₀).comp ((BK.hf f).comp C))`. Use `congr 1`. Use function extensionality and compare the values at `w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[GlobalTheory.T.breuilKisin_prism_homs_agree_on_witt l K bk B f g w]`. Simplify using `only [hFm] at h1g`. Establish `hreg : ∀ h : Hom bk.prism B, toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf h bk.E) ∈ nonZeroDivisors (Disc l (BK.hf f₀ X) bk.ρ₀)`. Introduce `h`. Take `⟨v, hv⟩` from `(GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk B f₀ h).2.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf h bk.E) = toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf f₀ bk.E) * toDisc l (BK.hf f₀ X) bk.ρ₀ (v : B.A)` using `(congrArg _ hv).symm.trans (map_mul _ _ _)`. Conclude with `(congrArg (· ∈ nonZeroDivisors (Disc l (BK.hf f₀ X) bk.ρ₀)) e).mpr (Submonoid.mul_mem _ hE ((v.isUnit.map (toDisc l (BK.hf f₀ X) bk.ρ₀)).mem_nonZeroDivisors))`. Establish `hunit : ∀ (h : Hom bk.prism B) (Fh : Disc l (X : bk.S) bk.ρ₀ →+* Disc l (BK.hf f₀ X) bk.ρ₀), IsDiscMap (BK.hf h) Fh → IsUnit (toDisc l (BK.hf f₀ X) bk.ρ₀ (B.D.φ (BK.hf h bk.E)))`. Introduce `h Fh hFh`. Use `(GlobalTheory.T.isUnit_closedDisc_frobenius_eisenstein l K bk).map Fh` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : Fh (toDisc l (X : bk.S) bk.ρ₀ (frobS l bk.a bk.E)) = toDisc l (BK.hf f₀ X) bk.ρ₀ (B.D.φ (BK.hf h bk.E))` using `(hFh.ext _).trans (congrArg _ (h.f_φ _))`. Conclude with `(congrArg IsUnit e).mp this`. Establish `hpf : Φ (toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf f bk.E)) = toDisc l (BK.hf f₀ X) bk.ρ₀ (B.D.φ (BK.hf f bk.E))` using `hΦ.ext _`. Establish `hpg : Φ (toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf g bk.E)) = toDisc l (BK.hf f₀ X) bk.ρ₀ (B.D.φ (BK.hf g bk.E))` using `hΦ.ext _`. Establish `hAlg` using `alg' Φ _ _ _ _ _ _ _ _ _ _ _ _ _ h1f h1g (hR _ _ hFf hFg) hpf hpg`.
-
-Establish `hc : ((l : Disc l (BK.hf f₀ X) bk.ρ₀) ^ s.c₁ * toDisc l (BK.hf f₀ X) bk.ρ₀ (B.D.φ (BK.hf f bk.E)) ^ s.N * toDisc l (BK.hf f₀ X) bk.ρ₀ (B.D.φ (BK.hf g bk.E)) ^ s.N * toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf g bk.E) ^ s.N) ∈ nonZeroDivisors _`. Use `Submonoid.mul_mem _ (Submonoid.mul_mem _ (Submonoid.mul_mem _ ?_ ?_) ?_) (pow_mem (hreg g) _)` and prove the remaining obligations. Conclude with `((isUnit_l_disc l (BK.hf f₀ X) bk.ρ₀).pow _).mem_nonZeroDivisors`. Conclude with `((hunit f _ hFf).pow _).mem_nonZeroDivisors`. Conclude with `((hunit g _ hFg).pow _).mem_nonZeroDivisors`.
-
-Establish `hM` using `smul_cancel' hc hAlg`. Establish `hF0 : Disc.map (BK.hf f) (hn f).1 (toDisc l (X : bk.S) bk.ρ₀ bk.E) ∈ nonZeroDivisors _` using `(congrArg (· ∈ nonZeroDivisors (Disc l (BK.hf f₀ X) bk.ρ₀)) (hFf.ext bk.E)).mpr (hreg f)`. Use `GlobalTheory.T.basis_matrix_map_cancel_left l K bk d ρ τ s ht _ _ hF0 _ _ hM` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rel_frob : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s), bk.IsPer τ → ∀ (B : Obj l ↥(OL K)) (f₀ : Hom bk.prism B), toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf f₀ bk.E) ∈ nonZeroDivisors (Disc l (BK.hf f₀ X) bk.ρ₀) → ∀ (f g : Hom bk.prism B) (ε : Matrix (Fin d) (Fin d) (Disc l (BK.hf f₀ X) bk.ρ₀)), ht.Rel (BK.hf f₀ X) f g ε → ∀ Φ : Disc l (BK.hf f₀ X) bk.ρ₀ →+* Disc l (BK.hf f₀ X) bk.ρ₀, IsDiscMap B.D.φ Φ → toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf g bk.E) ^ (ht.a + s.N) • ((ht.A.map (BK.hf f)).map (toDisc l (BK.hf f₀ X) bk.ρ₀) * ε.map Φ) = toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf f bk.E) ^ (ht.a + s.N) • (ε * (ht.A.map (BK.hf g)).map (toDisc l (BK.hf f₀ X) bk.ρ₀)) := by
   intro l _ K bk d ρ τ s ht hτ B f₀ hE f g ε hR Φ hΦ

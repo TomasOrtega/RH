@@ -14,21 +14,21 @@ open GlobalTheory.CMTorsion
 open GlobalTheory.WeierstrassCurve (scheme toSpec mapHom)
 
 /- English proof (translation)
-Introduce `G G' _ _ _ _ g p h`. Take `⟨hpb, hmul⟩` from `h`. Establish `h1 : ∀ P Q : 𝟙_ (Over (Sp ℂ)) ⟶ G', P.left ≫ p = Q.left ≫ p → P = Q`. Introduce `P Q hPQ`. Establish `hw : P.left ≫ G'.hom = Q.left ≫ G'.hom` using `by rw [Over.w P, Over.w Q]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Over.OverMorphism.ext (hpb.hom_ext hPQ hw)`. Establish `h2 : ∀ (P Q : 𝟙_ (Over (Sp ℂ)) ⟶ G) (P' Q' : 𝟙_ (Over (Sp ℂ)) ⟶ G'), P'.left ≫ p = spMap (g : ℂ →+* ℂ) ≫ P.left → Q'.left ≫ p = spMap (g : ℂ →+* ℂ) ≫ Q.left → (P' * Q').left ≫ p = spMap (g : ℂ →+* ℂ) ≫ (P * Q).left`. Introduce `P Q P' Q' hP hQ`. Set `u : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ spMap (g : ℂ →+* ℂ)) ⟶ 𝟙_ (Over (Sp ℂ))` to `toUnit _`. Establish `hu : u.left = spMap (g : ℂ →+* ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Over.w u` as an intermediate fact. Simplify using `using this`. Establish `key` using `hmul (𝟙_ (Over (Sp ℂ))) P' Q' (u ≫ P) (u ≫ Q) (by simp [hu, hP]) (by simp [hu, hQ])`. Rewrite using `[← key, ← MonObj.comp_mul]`. Simplify using `[hu]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : (1 : 𝟙_ (Over (Sp ℂ)) ⟶ G').left ≫ p = spMap (g : ℂ →+* ℂ) ≫ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ G).left`. Establish `hw : (spMap (g : ℂ →+* ℂ) ≫ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ G).left) ≫ G.hom = 𝟙 _ ≫ spMap (g : ℂ →+* ℂ)`. Rewrite using `[Category.assoc, Over.w]`. Simplify using the standard rewrite rules. Set `e' : Sp ℂ ⟶ G'.left` to `hpb.lift _ _ hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he' : e' ≫ G'.hom = (𝟙_ (Over (Sp ℂ))).hom`. Simplify using `only [e', IsPullback.lift_snd]`. Both sides reduce to the same expression. Set `E' : 𝟙_ (Over (Sp ℂ)) ⟶ G'` to `Over.homMk e' he'`. Establish `hE : E'.left ≫ p = spMap (g : ℂ →+* ℂ) ≫ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ G).left`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[E', e']`. Establish `hEE : E' * E' = E'`. Apply `h1` to reduce the goal to its premises. Rewrite using `[h2 1 1 E' E' hE hE, hE, _root_.mul_one (1 : 𝟙_ (Over (Sp ℂ)) ⟶ G)]`. Establish `: E' = 1` using `mul_eq_left.mp hEE`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, hE]`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Introduce `J s P P' hs`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `h2 _ _ _ _ (hs a (Finset.mem_insert_self a s)) (ih fun i hi => hs i (Finset.mem_insert_of_mem hi))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GrpPullback.points_conj : ∀ (G G' : Over (Sp ℂ)) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (g : ℂ ≃+* ℂ) (p : G'.left ⟶ G.left), IsGrpPullback G' G (spMap (g : ℂ →+* ℂ)) p → (∀ P Q : 𝟙_ (Over (Sp ℂ)) ⟶ G', P.left ≫ p = Q.left ≫ p → P = Q) ∧ (∀ (P Q : 𝟙_ (Over (Sp ℂ)) ⟶ G) (P' Q' : 𝟙_ (Over (Sp ℂ)) ⟶ G'), P'.left ≫ p = spMap (g : ℂ →+* ℂ) ≫ P.left → Q'.left ≫ p = spMap (g : ℂ →+* ℂ) ≫ Q.left → (P' * Q').left ≫ p = spMap (g : ℂ →+* ℂ) ≫ (P * Q).left) ∧ ∀ (J : Type) (s : Finset J) (P : J → (𝟙_ (Over (Sp ℂ)) ⟶ G)) (P' : J → (𝟙_ (Over (Sp ℂ)) ⟶ G')), (∀ i ∈ s, (P' i).left ≫ p = spMap (g : ℂ →+* ℂ) ≫ (P i).left) → (∏ i ∈ s, P' i : 𝟙_ (Over (Sp ℂ)) ⟶ G').left ≫ p = spMap (g : ℂ →+* ℂ) ≫ (∏ i ∈ s, P i : 𝟙_ (Over (Sp ℂ)) ⟶ G).left := by
   intro G G' _ _ _ _ g p h

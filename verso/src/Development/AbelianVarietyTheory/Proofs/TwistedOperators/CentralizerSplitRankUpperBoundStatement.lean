@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NotCompactOfIdem
 open GlobalTheory.RegSS
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegSS.SplitRankBound.splitRankUpper | exact GlobalTheory.RegSS.SplitRankBound.splitRankUpper | (intros; apply GlobalTheory.RegSS.SplitRankBound.splitRankUpper <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.centralizer_splitRank_upper_bound : GlobalTheory.RegSS.SubtorusLaurent → GlobalTheory.RegSS.CharacterMonomial → GlobalTheory.RegSS.SeparatingPoints → GlobalTheory.RegSS.SplitRankUpper := by
   first | exact @GlobalTheory.RegSS.SplitRankBound.splitRankUpper | exact GlobalTheory.RegSS.SplitRankBound.splitRankUpper | (intros; apply GlobalTheory.RegSS.SplitRankBound.splitRankUpper <;> assumption)

@@ -17,7 +17,7 @@ noncomputable def phi (n : ℕ) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Unfold `phi`. Use `erw [WidePullback.lift_π]`. Use the proof step `@[reassoc (attr := simp)]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma phi_π (n : ℕ) (j : Fin (n+1)) :
     phi Ψ g n ≫ WidePullback.π _ j = (Ψ.map (WidePushout.ι _ j)).unop := by
@@ -25,14 +25,14 @@ lemma phi_π (n : ℕ) (j : Fin (n+1)) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Unfold `phi`. Use `erw [WidePullback.lift_base]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma phi_base (n : ℕ) :
     phi Ψ g n ≫ WidePullback.base _ = (Ψ.map (WidePushout.head _)).unop := by
   unfold phi; erw [WidePullback.lift_base]
 
 /- English proof (translation)
-Rewrite using `[← WidePullback.π_arrow (fun _ : Fin (n+1) => (Ψ.map g).unop) j]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma aux (n : ℕ) (j : Fin (n+1)) :
     Ψ.map g ≫ (WidePullback.π (fun _ : Fin (n+1) => (Ψ.map g).unop) j).op =
@@ -53,7 +53,7 @@ noncomputable def cocone (n : ℕ) : Cocone (WidePushoutShape.wideSpan U (fun _ 
         · exact (aux Ψ g n j).trans (Category.comp_id _).symm }
 
 /- English proof (translation)
-Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[Category.assoc, Category.assoc, phi_π, WidePullback.lift_π, phi_π, ← unop_comp, ← Ψ.map_comp, WidePushout.ι_desc]`. Rewrite using `[Category.assoc, Category.assoc, phi_base, WidePullback.lift_base, phi_base, ← unop_comp, ← Ψ.map_comp, WidePushout.head_desc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma natural (a b : ℕ) (σ : Fin (a+1) → Fin (b+1)) :
     (Ψ.map (WidePushout.desc (WidePushout.head (fun _ : Fin (b+1) => g))
@@ -82,9 +82,7 @@ noncomputable def psi (n : ℕ) :
   ((hc Ψ g hΨ n).desc (cocone Ψ g n)).unop
 
 /- English proof (translation)
-Apply `(hc Ψ g hΨ n).hom_ext` to reduce the goal to its premises. Introduce and unpack `(_ | j)`. Rewrite using `[Category.comp_id]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun x => x ≫ (phi Ψ g n).op) ((hc Ψ g hΨ n).fac (cocone Ψ g n) none)).trans (Quiver.Hom.unop_inj (phi_base Ψ g n)))`. Rewrite using `[Category.comp_id]`.
-
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun x => x ≫ (phi Ψ g n).op) ((hc Ψ g hΨ n).fac (cocone Ψ g n) (some j))).trans (Quiver.Hom.unop_inj (phi_π Ψ g n j)))`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma desc_phi (n : ℕ) : (hc Ψ g hΨ n).desc (cocone Ψ g n) ≫ (phi Ψ g n).op = 𝟙 _ := by
   apply (hc Ψ g hΨ n).hom_ext
@@ -114,9 +112,7 @@ end LateralTheory.EtaleFoundations.ConerveIsomorphism
 
 open LateralTheory.EtaleFoundations.ConerveIsomorphism in
 /- English proof (translation)
-Introduce `T _ _ Ψ hΨ U V g`. Use `⟨NatIso.ofComponents (fun n => levelIso Ψ g hΨ n.unop.len) ?_, ?_⟩` and prove the remaining obligations. Introduce `m n h`. Conclude with `natural Ψ g _ _ h.unop.toOrderHom`. Use extensionality with `n : 1`.
-
-Conclude with `(phi_base Ψ g (unop n).len).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_cech_conerve_image_iso_cech_nerve_of_preserves_wide_pushouts : LateralTheory.EtaleFoundations.EtaleCechConerveImageIsoCechNerveOfPreservesWidePushouts := by
   intro T _ _ Ψ hΨ U V g

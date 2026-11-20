@@ -4,35 +4,31 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `R _ F I M M' _ _ _ _ ν φ hI hν`. Establish `hev : ∀ j, ∀ᶠ N in F, I (ν N) ≤ I j` using `fun j => (tendsto_atTop.1 hν j).mono fun N hN => hI hN`. Establish `he : ∀ {X : Type} [AddCommGroup X] [Module R X] (K J : Ideal R), (J • ⊤ : Submodule R (X ⧸ (K • ⊤ : Submodule R X))) = (J • ⊤ : Submodule R X).map (K • ⊤ : Submodule R X).mkQ`. Introduce `X _ _ K J`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hlift : ∀ {X : Type} [AddCommGroup X] [Module R X] (K J : Ideal R), K ≤ J → ∀ x : X, (Submodule.Quotient.mk x : X ⧸ (K • ⊤ : Submodule R X)) ∈ (J • ⊤ : Submodule R (X ⧸ (K • ⊤ : Submodule R X))) → x ∈ (J • ⊤ : Submodule R X)`. Introduce `X _ _ K J hKJ x hx`. Rewrite `hx` using `[he]`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `hd : x - y ∈ (K • ⊤ : Submodule R X)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.Quotient.eq]`. Conclude with `hyx.symm`. Use `Submodule.add_mem _ (Submodule.smul_mono_left hKJ hd) hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hmk : ∀ {X : Type} [AddCommGroup X] [Module R X] (K J : Ideal R) (x : X), x ∈ (J • ⊤ : Submodule R X) → (Submodule.Quotient.mk x : X ⧸ (K • ⊤ : Submodule R X)) ∈ (J • ⊤ : Submodule R (X ⧸ (K • ⊤ : Submodule R X)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X _ _ K J x hx`. Rewrite using `[he]`. Conclude with `⟨x, hx, rfl⟩`. Establish `hφ : ∀ N j (z : M N ⧸ (I (ν N) • ⊤ : Submodule R (M N))), z ∈ (I j • ⊤ : Submodule R _) → φ N z ∈ (I j • ⊤ : Submodule R _)`. Introduce `N j z hz`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : (I j • ⊤ : Submodule R _).map (φ N) ≤ I j • ⊤`. Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Conclude with `hle ⟨z, hz, rfl⟩`. Set `π : (∀ N, M' N) →ₗ[R] ∀ N, (M' N ⧸ (I (ν N) • ⊤ : Submodule R (M' N)))` to `LinearMap.pi fun N => (Submodule.mkQ _).comp (LinearMap.proj N)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hπ : Function.Surjective π` using `fun q => ⟨fun N => (Submodule.mkQ_surjective _ (q N)).choose,`. Use function extensionality and compare the values at `fun N => (Submodule.mkQ_surjective _ (q N)).choose_spec⟩`. Establish `hker : LinearMap.ker π ≤ LinearMap.ker (ULim.mk F I M')`. Introduce `p hp`. Rewrite `hp`, the goal using `[LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ULim.mk_eq_zero]`. Introduce `j`. Use `(hev j).mono fun N hN => ?_` and prove the remaining obligations. Establish `hpN : p N ∈ (I (ν N) • ⊤ : Submodule R (M' N))`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrFun hp N`. Conclude with `Submodule.smul_mono_left hN hpN`. Set `φ' : (∀ N, M N) →ₗ[R] ∀ N, (M' N ⧸ (I (ν N) • ⊤ : Submodule R (M' N)))` to `LinearMap.pi fun N => (φ N).comp ((Submodule.mkQ _).comp (LinearMap.proj N))`. Set `Φ0 : (∀ N, M N) →ₗ[R] ULim F I M'` to `((LinearMap.ker π).liftQ (ULim.mk F I M') hker).comp ((π.quotKerEquivOfSurjective hπ).symm.toLinearMap.comp φ')`. Establish `hΦ0 : ∀ p p', π p' = φ' p → Φ0 p = ULim.mk F I M' p'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `p p' h`. Simplify using `only [Φ0, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← h]`. Establish `hs : (π.quotKerEquivOfSurjective hπ).symm (π p') = Submodule.Quotient.mk p'`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[hs, Submodule.liftQ_apply]`. Establish `hnull : uNull F I M ≤ LinearMap.ker Φ0`. Introduce `p hp`. Establish `hp : ∀ j, ∀ᶠ N in F, p N ∈ (I j • ⊤ : Submodule R (M N))` using `hp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.mem_ker]`. Take `⟨p', hp'⟩` from `hπ (φ' p)`. Rewrite using `[hΦ0 p p' hp', ULim.mk_eq_zero]`. Introduce `j`. Use `((hp j).and (hev j)).mono fun N ⟨h1, h2⟩ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hlift (I (ν N)) (I j) h2` to reduce the goal to its premises. Establish `hN : π p' N = φ N (Submodule.Quotient.mk (p N))` using `congrFun hp' N`. Express the relevant statement in the definitionally equal form `π p' N ∈ _`. Rewrite using `[hN]`. Conclude with `hφ N j _ (hmk _ _ _ h1)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(uNull F I M).liftQ Φ0 hnull, fun p p' h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(uNull F I M).liftQ Φ0 hnull (Submodule.Quotient.mk p) = _`. Rewrite using `[Submodule.liftQ_apply]`. Take `⟨q, hq⟩` from `hπ (φ' p)`. Rewrite using `[hΦ0 p q hq, ← sub_eq_zero, ← map_sub, ULim.mk_eq_zero]`.
-
-Introduce `j`. Use `(h.and (hev j)).mono fun N ⟨h1, h2⟩ => ?_` and prove the remaining obligations. Apply `Submodule.smul_mono_left h2` to reduce the goal to its premises. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Pi.sub_apply, Submodule.Quotient.mk_sub, h1]`. Establish `hN : π q N = φ N (Submodule.Quotient.mk (p N))` using `congrFun hq N`.
-
-Conclude with `sub_eq_zero.2 hN`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.ulimQuot :
     ∀ (R : Type) [CommRing R] (F : Filter ℕ) (I : ℕ → Ideal R) (M M' : ℕ → Type) [∀ N, AddCommGroup (M N)] [∀ N, Module R (M N)] [∀ N, AddCommGroup (M' N)] [∀ N, Module R (M' N)] (ν : ℕ → ℕ) (φ : ∀ N, (M N ⧸ (I (ν N) • ⊤ : Submodule R (M N))) →ₗ[R] (M' N ⧸ (I (ν N) • ⊤ : Submodule R (M' N)))), Antitone I → Tendsto ν F atTop → ∃ Φ : ULim F I M →ₗ[R] ULim F I M', ∀ (p : ∀ N, M N) (p' : ∀ N, M' N), (∀ᶠ N in F, Submodule.Quotient.mk (p' N) = φ N (Submodule.Quotient.mk (p N))) → Φ (ULim.mk F I M p) = ULim.mk F I M' p' := by

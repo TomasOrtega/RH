@@ -10,7 +10,7 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.Invarian
 open Formalism.L2.G.Model (Intl SSZ intl_zero card_SSZ card_ssIdx weylQ)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Fin.sum_univ_succ, Finset.sum_filter]`. Simplify using `[Fin.succ_le_succ_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_le_succ {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b ≤ a.succ, F b) = F 0 + ∑ b : Fin k with b ≤ a, F b.succ := by
@@ -18,7 +18,7 @@ theorem sum_le_succ {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
   simp [Fin.succ_le_succ_iff]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Fin.sum_univ_succ, Finset.sum_filter]`. Simplify using `[Fin.succ_lt_succ_iff, Fin.succ_pos]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_lt_succ {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b < a.succ, F b) = F 0 + ∑ b : Fin k with b < a, F b.succ := by
@@ -26,7 +26,7 @@ theorem sum_lt_succ {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
   simp [Fin.succ_lt_succ_iff, Fin.succ_pos]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Fin.sum_univ_succ]`. Simplify using `[Fin.succ_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_le_zero {k : ℕ} (F : Fin (k + 1) → ℕ) :
     (∑ b : Fin (k + 1) with b ≤ 0, F b) = F 0 := by
@@ -64,7 +64,7 @@ def tnEquiv (m : ℕ) (κ : Fin m → ℕ) : TN m κ ≃ SSZ m (fun t => (κ t :
       exact ⟨h1, fun t => Nat.cast_injective (R := ℤ) (h2 t)⟩)
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (tnEquiv m κ), card_SSZ _ _ (fun t => Nat.cast_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_TN (m : ℕ) (κ : Fin m → ℕ) : Nat.card (TN m κ) = dGT m (fun t => (κ t : ℤ)) := by
   rw [Nat.card_congr (tnEquiv m κ), card_SSZ _ _ (fun t => Nat.cast_nonneg _)]
@@ -75,12 +75,12 @@ def addE {m : ℕ} (n0 : ℕ) (g : Fin m → Fin m → ℕ) : Fin (m + 1) → Fi
   fun a t => Fin.cases (Fin.cases n0 (fun _ => 0) t) (fun a' => Fin.cases 0 (fun t' => g a' t') t) a
 
 /- English proof (translation)
-The claim follows from `intl_zero g hg _ t.succ rfl 0 (by simp [Fin.val_succ])`.
+A detailed English derivation is pending.
 -/
 theorem intertwining_zero_succ {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (hg : Intl g) (t : Fin m) : g 0 t.succ = 0 := intl_zero g hg _ t.succ rfl 0 (by simp [Fin.val_succ])
 
 /- English proof (translation)
-Introduce `l j hlj a`. Establish `h` using `hg l.succ j.succ (by simp [Fin.val_succ, hlj]) a.succ`. Rewrite `h` using `[sum_le_succ (fun b => g b j.succ), sum_lt_succ (fun b => g b l.succ), intertwining_zero_succ hg, intertwining_zero_succ hg]`. Simplify `h` using `[dropE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dropE_intl {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (hg : Intl g) : Intl (dropE g) := by
   intro l j hlj a
@@ -89,7 +89,7 @@ theorem dropE_intl {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (hg : Int
   simpa [dropE] using h
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ (fun a => g a t.succ), intertwining_zero_succ hg, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dropE_sum {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (hg : Intl g) (t : Fin m) :
     ∑ a, dropE g a t = ∑ a, g a t.succ := by
@@ -97,13 +97,13 @@ theorem dropE_sum {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (hg : Intl
   rfl
 
 /- English proof (translation)
-Introduce `l j hlj a`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp at hlj`. Consider the case `succ j'`. Proceed by induction on `a using Fin.cases with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero`. Rewrite using `[sum_le_zero]`. Simplify using `[addE]`. Consider the case `succ a'`. Rewrite using `[sum_le_succ, sum_lt_succ]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `l using Fin.cases with`. Consider the case `zero`. Establish `h1 : ∑ b : Fin m with b ≤ a', g b j' ≤ n0` using `le_trans (Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)) (h0 j')`. Simplify `h1` using `[addE]`. Consider the case `succ l'`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `h1` using `hg l' j' (by simp [Fin.val_succ] at hlj; omega) a'`. Simplify `h1` using `[addE]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem addE_intl {m : ℕ} (n0 : ℕ) {g : Fin m → Fin m → ℕ} (hg : Intl g) (h0 : ∀ t, ∑ a, g a t ≤ n0) :
     Intl (addE n0 g) := by
@@ -127,13 +127,13 @@ theorem addE_intl {m : ℕ} (n0 : ℕ) {g : Fin m → Fin m → ℕ} (hg : Intl 
         simpa [addE] using h1
 
 /- English proof (translation)
-Simplify using `[addE, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem addE_sum_zero {m : ℕ} (n0 : ℕ) (g : Fin m → Fin m → ℕ) : ∑ a, addE n0 g a 0 = n0 := by
   simp [addE, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Simplify using `[addE, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem addE_sum_succ {m : ℕ} (n0 : ℕ) (g : Fin m → Fin m → ℕ) (t : Fin m) :
     ∑ a, addE n0 g a t.succ = ∑ a, g a t := by
@@ -178,19 +178,19 @@ Both sides reduce to the same expression.
 theorem addO_zero {m : ℕ} (g : Fin m → Fin m → ℕ) (t : Fin (m + 1)) : addO g 0 t = 0 := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `induction a using Fin.cases <;> simp [addO]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem addO_last {m : ℕ} (g : Fin m → Fin m → ℕ) (a : Fin (m + 1)) : addO g a (Fin.last m) = 0 := by
   induction a using Fin.cases <;> simp [addO]
 
 /- English proof (translation)
-Simplify using `[addO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem addO_cc {m : ℕ} (g : Fin m → Fin m → ℕ) (a t : Fin m) : addO g a.succ t.castSucc = g a t := by
   simp [addO]
 
 /- English proof (translation)
-Introduce `l j hlj a`. Establish `h` using `hg l.castSucc j.castSucc (by simpa using hlj) a.succ`. Rewrite `h` using `[sum_le_succ (fun b => g b j.castSucc), sum_lt_succ (fun b => g b l.castSucc), h0, h0]`. Simplify `h` using `[dropO]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dropO_intl {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (hg : Intl g) (h0 : ∀ t, g 0 t = 0) :
     Intl (dropO g) := by
@@ -200,7 +200,7 @@ theorem dropO_intl {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (hg : Int
   simpa [dropO] using h
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ (fun a => g a t.castSucc), h0, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dropO_sum {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (h0 : ∀ t, g 0 t = 0) (t : Fin m) :
     ∑ a, dropO g a t = ∑ a, g a t.castSucc := by
@@ -208,13 +208,13 @@ theorem dropO_sum {m : ℕ} {g : Fin (m + 1) → Fin (m + 1) → ℕ} (h0 : ∀ 
   rfl
 
 /- English proof (translation)
-Introduce `l j hlj a`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero`. Rewrite using `[sum_le_zero]`. Simplify using `[addO]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ a'`. Rewrite using `[sum_le_succ, sum_lt_succ]`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [addO]`. Consider the case `cast j'`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hl : l.val < m`. Use `j'.isLt` as an intermediate fact. Simplify using `at hlj`. Use linear arithmetic over natural numbers and integers. Take `⟨l', rfl⟩ : ∃ l' : Fin m, l = l'.castSucc` from `⟨⟨l.val, hl⟩, Fin.ext rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hg l' j' (by simpa using hlj) a'`. Simplify `h1` using `[addO]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem addO_intl {m : ℕ} {g : Fin m → Fin m → ℕ} (hg : Intl g) : Intl (addO g) := by
   intro l j hlj a
@@ -236,7 +236,7 @@ theorem addO_intl {m : ℕ} {g : Fin m → Fin m → ℕ} (hg : Intl g) : Intl (
       simpa [addO] using h1
 
 /- English proof (translation)
-Simplify using `[addO, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem addO_sum {m : ℕ} (g : Fin m → Fin m → ℕ) (t : Fin m) : ∑ a, addO g a t.castSucc = ∑ a, g a t := by
   simp [addO, Fin.sum_univ_succ]
@@ -274,14 +274,14 @@ def equivO (m : ℕ) (ν : Fin (m + 1) → ℕ) (hν : ν (Fin.last m) = 0) :
     rw [addO_cc]
 
 /- English proof (translation)
-Rewrite using `[weylQ n μ hμ]`. Simplify using `only [Formalism.CountingSumsFrames.weylDim, Int.cast_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dGT_weylDim (n : ℕ) (μ : Fin n → ℤ) (hμ : Antitone μ) : ((dGT n μ : ℕ) : ℚ) = weylDim n μ := by
   rw [weylQ n μ hμ]
   simp only [Formalism.CountingSumsFrames.weylDim, Int.cast_sub]
 
 /- English proof (translation)
-Establish `h1 : lam (Fin.last m) ≤ lam t` using `h (Fin.le_last t)`. Simplify using `only [nuOf]`. Rewrite using `[Int.toNat_of_nonneg (by linarith)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nuOf_cast {m : ℕ} (lam : Fin (m + 1) → ℤ) (h : Antitone lam) (t : Fin (m + 1)) :
     ((nuOf lam t : ℕ) : ℤ) = lam t + (-lam (Fin.last m)) := by
@@ -291,9 +291,9 @@ theorem nuOf_cast {m : ℕ} (lam : Fin (m + 1) → ℤ) (h : Antitone lam) (t : 
   ring
 
 /- English proof (translation)
-Establish `hb : ∀ g : TX m top vec ν, ∀ a t, g.1 a t < ν t + 1` using `fun g a t => by`. Establish `h1 : g.1 a t ≤ ∑ b, g.1 b t` using `Finset.single_le_sum (f := fun b => g.1 b t) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)`. Rewrite `h1` using `[g.2.1.2 t]`. Use linear arithmetic over natural numbers and integers. Establish `: Finite (TX m top vec ν)` using `Finite.of_injective (fun g : TX m top vec ν => fun a t => (⟨g.1 a t, hb g a t⟩ : Fin (ν t + 1))) (fun g g' h => Subtype.ext (funext fun a => funext fun t => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (congrFun h a) t`. Simplify using `using h2))`. Conclude with `Set.finite_coe_iff.mp (Finite.of_equiv _ (xsEquiv m top vec ν).symm)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Xs_finite (m : ℕ) (top vec : Bool) (ν : Fin (m + 1) → ℕ) : (Xs m top vec ν).Finite := by
   have hb : ∀ g : TX m top vec ν, ∀ a t, g.1 a t < ν t + 1 := fun g a t => by
@@ -309,7 +309,7 @@ theorem Xs_finite (m : ℕ) (top vec : Bool) (ν : Fin (m + 1) → ℕ) : (Xs m 
   exact Set.finite_coe_iff.mp (Finite.of_equiv _ (xsEquiv m top vec ν).symm)
 
 /- English proof (translation)
-Unfold `Formalism.CountingSumsFrames.weylDim`. Simplify using `only [add_sub_add_right_eq_sub]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma weylDim_add_const' (n : ℕ) (μ : Fin n → ℤ) (c : ℤ) :
     Formalism.CountingSumsFrames.weylDim n (fun t => μ t + c) = Formalism.CountingSumsFrames.weylDim n μ := by
@@ -317,9 +317,9 @@ private lemma weylDim_add_const' (n : ℕ) (μ : Fin n → ℤ) (c : ℤ) :
   simp only [add_sub_add_right_eq_sub]
 
 /- English proof (translation)
-Introduce `m lam hlam vec`. Establish `e1 : TX m false vec (nuOf lam) ≃ TN (m + 1) (nuOf lam)` using `Equiv.subtypeEquivRight (fun g => by simp)`. Rewrite using `[Nat.card_congr ((xsEquiv m false vec (nuOf lam)).trans e1), card_TN]`. Establish `hanti : Antitone (fun t => ((nuOf lam t : ℕ) : ℤ))`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [nuOf_cast lam hlam]`. Combine the linear relations using `[hlam hab]`. Rewrite using `[dGT_weylDim _ _ hanti]`. Simplify using `only [nuOf_cast lam hlam]`. Conclude with `weylDim_add_const' (m + 1) lam _`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cntSpec : CntSpec := by
   intro m lam hlam vec
@@ -335,13 +335,13 @@ theorem cntSpec : CntSpec := by
   exact weylDim_add_const' (m + 1) lam _
 
 /- English proof (translation)
-Unfold `Formalism.CountingSumsFrames.weylDim`. Rewrite using `[Finset.prod_comm]`. Use `Fintype.prod_equiv Fin.revPerm _ _ (fun j => ?_)` and prove the remaining obligations. Use `Fintype.prod_equiv Fin.revPerm _ _ (fun i => ?_)` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hr : ∀ x : Fin m, ((x.rev : ℕ) : ℚ) = (m : ℚ) - 1 - ((x : ℕ) : ℚ)`. Introduce `x`. Use `x.isLt` as an intermediate fact. Rewrite using `[Fin.val_rev, Nat.cast_sub (by omega)]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr i, hr j]`. Distinguish the cases in `h : i < j`. Establish `h' : j.rev < i.rev` using `Fin.rev_lt_rev.mpr h`. Rewrite using `[if_pos h, if_pos h']`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Apply the tactic sequence `congr 1 <;> ring`. Establish `h' : ¬ j.rev < i.rev` using `fun h2 => h (Fin.rev_lt_rev.mp h2)`. Rewrite using `[if_neg h, if_neg h']`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma weylDim_const_sub_rev (m : ℕ) (μ : Fin m → ℤ) (c : ℤ) :
     Formalism.CountingSumsFrames.weylDim m (fun t => c - μ t.rev) = Formalism.CountingSumsFrames.weylDim m μ := by
@@ -366,21 +366,21 @@ private lemma weylDim_const_sub_rev (m : ℕ) (μ : Fin m → ℤ) (c : ℤ) :
     rw [if_neg h, if_neg h']
 
 /- English proof (translation)
-Introduce `m _ lo hlo _ vec`. Consider the cases of `vec with`. Consider the case `true`. Rewrite using `[if_pos rfl]`. Establish `hν : ∀ t : Fin m, nuOf lo t.succ ≤ nuOf lo 0` using `fun t => by`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `nuOf_cast lo hlo t.succ`. Establish `h2` using `nuOf_cast lo hlo 0`. Establish `h3` using `hlo (Fin.zero_le t.succ)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.card_congr ((xsEquiv m true true (nuOf lo)).trans (equivE m (nuOf lo) hν)), card_TN]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hanti : Antitone (fun t : Fin m => ((nuOf lo t.succ : ℕ) : ℤ))`. Introduce `a b hab`. Simplify using `only [nuOf_cast lo hlo]`. Combine the linear relations using `[hlo (Fin.succ_le_succ_iff.mpr hab)]`. Rewrite using `[dGT_weylDim _ _ hanti]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nuOf_cast lo hlo]`. Conclude with `weylDim_add_const' m (fun i => lo i.succ) _`. Consider the case `false`. Rewrite using `[if_neg Bool.false_ne_true]`. Establish `hL : Antitone (fun i : Fin (m + 1) => -lo i.rev)`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Use `hlo (Fin.rev_le_rev.mpr hab)` as an intermediate fact. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hν : nuOf (fun i : Fin (m + 1) => -lo i.rev) (Fin.last m) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[nuOf]`. Rewrite using `[Nat.card_congr ((xsEquiv m true false _).trans (equivO m _ hν)), card_TN]`. Establish `hf : (fun t : Fin m => ((nuOf (fun i : Fin (m + 1) => -lo i.rev) t.castSucc : ℕ) : ℤ)) = fun t => lo 0 - lo t.rev.succ`. Use function extensionality and compare the values at `t`. Rewrite using `[nuOf_cast _ hL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.rev_castSucc, Fin.rev_last]`. Expand and normalize the polynomial expressions, which then agree. Establish `hanti : Antitone (fun t : Fin m => lo 0 - lo t.rev.succ)`. Introduce `a b hab`. Use `hlo (Fin.succ_le_succ_iff.mpr (Fin.rev_le_rev.mpr hab))` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hf, dGT_weylDim _ _ hanti]`. Conclude with `weylDim_const_sub_rev m (fun i => lo i.succ) (lo 0)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cntTop : CntTop := by
   intro m _ lo hlo _ vec
@@ -427,33 +427,31 @@ theorem cntTop : CntTop := by
 open Formalism.MainNotions.Pf14 (restW dT flW flatDeg vecE remainingWeightVectorCount) in
 
 /- English proof (translation)
-Establish `hR0 : ∀ s, s ∉ TT → restW TT lam0 s = lam0 s`. Introduce `s hs`. Use function extensionality and compare the values at `i`. Simplify using `[restW, flW, dT, hs]`. Establish `hR1 : ∀ s, s ∈ TT → ∀ i : Fin (m + 1), i ≠ 0 → restW TT lam0 s i = lam0 s i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s hs i hi`. Simplify using `[restW, flW, Pi.single_apply, hi]`. Establish `hR2 : ∀ s, s ∈ TT → restW TT lam0 s 0 = lam0 s 1`. Introduce `s hs`. Establish `h01 : lam0 s 1 ≤ lam0 s 0` using `hdom s (Fin.zero_le 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[restW, flW, dT, hs, flatDeg, Int.toNat_of_nonneg (sub_nonneg.mpr h01)]`. Establish `h1v : ((1 : Fin (m + 1)) : ℕ) = 1` using `by first`. Consider the case `exact Nat.mod_eq_of_lt (by omega)`. Consider the case `(simp; omega)`. Establish `h10 : (1 : Fin (m + 1)) ≠ 0` using `fun h => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[h1v]`. Simplify using `at this`. Establish `hAnti : ∀ s, s ∈ TT → Antitone (restW TT lam0 s)`. Introduce `s hs a b hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Conclude with `le_rfl`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hb1 : (1 : Fin (m + 1)) ≤ b`. Rewrite using `[Fin.le_iff_val_le_val, h1v]`. Establish `: (b : ℕ) ≠ 0` using `fun h => hb (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hR1 s hs b hb, hR2 s hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hdom s hb1`. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `ha (Fin.le_zero_iff.mp hab)`. Rewrite using `[hR1 s hs a ha, hR1 s hs b hb]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdom s hab`. Establish `hR01 : ∀ s, s ∈ TT → restW TT lam0 s 0 = restW TT lam0 s 1`. Introduce `s hs`. Rewrite using `[hR2 s hs, hR1 s hs 1 h10]`. Rewrite using `[Nat.card_pi]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Rewrite using `[← Finset.prod_mul_prod_compl TT]`. Unfold `remainingWeightVectorCount`. Use `congr 1`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hl : lamAt (restW TT lam0) s = if vecE n' s = true then restW TT lam0 s else fun i => -restW TT lam0 s i.rev`. Simplify using `[lamAt, vecE]`. Rewrite using `[show decide (s ∈ TT) = true from decide_eq_true hs, hl, cntTop m hm _ (hAnti s hs) (hR01 s hs)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hR1 s hs i.succ (Fin.succ_ne_zero i)`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite `hs` using `[Finset.mem_compl]`. Rewrite using `[show decide (s ∈ TT) = false from decide_eq_false hs]`. Establish `hA : Antitone (lamAt (restW TT lam0) s)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `lamAt`. Rewrite using `[hR0 s hs]`. Use `split_ifs`. Conclude with `hdom s`. Introduce `a b hab`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `hdom s (Fin.rev_le_rev.mpr hab)` as an intermediate fact. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[cntSpec m _ hA]`. Unfold `lamAt`.
-
-Rewrite using `[hR0 s hs]`. Use `split_ifs`. Both sides reduce to the same expression. Use `weylDim_const_sub_rev (m + 1) (lam0 s) 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_all {n' m : ℕ} (hm : 2 ≤ m) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ)
     (hdom : IsDominant lam0) :

@@ -3,13 +3,11 @@ import Development.EtaleCohomology.EtaleTrace.FibrePf
 namespace LateralTheory.EtaleTrace.GenEtaleRing
 
 /- English proof (translation)
-Use `haveI : Algebra.FinitePresentation A B := Algebra.FinitePresentation.of_finiteType.1 inferInstance`. Take `⟨f, hf, hEt⟩` from `Algebra.exists_etale_of_isEtaleAt (R := A) (⊥ : Ideal B)`. Establish `hf0 : f ≠ 0` using `by simpa using hf`. Take `⟨a, ha, g, hg⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := A) f).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hf0)`. Use `⟨a, ha, fun A' B' _ _ _ _ _ _ _ _ hA hB => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hloc : Algebra.Etale A (Localization.Away (algebraMap A B a))`. Rewrite `hEt`, the goal using `[← Algebra.basicOpen_subset_etaleLocus_iff_etale]`. Use `subset_trans ?_ hEt` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `PrimeSpectrum.basicOpen_mul_le_left _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `haveI : Algebra.Etale A B' := Algebra.Etale.of_equiv ((IsLocalization.algEquiv (Submonoid.powers (algebraMap A B a)) (Localization.Away (algebraMap A B a)) B').restrictScalars A)`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid B (Submonoid.powers a)) B' := by`. Rewrite using `[Algebra.algebraMapSubmonoid_powers]`. Conclude with `hB`. Use `haveI : Algebra.FormallyEtale A' B' := Algebra.FormallyEtale.localization_base (Submonoid.powers a)`.
-
-Use `haveI : Algebra.FiniteType A A' := IsLocalization.finiteType_of_monoid_fg (Submonoid.powers a) A'`. Use `haveI : Algebra.FinitePresentation A' B' := Algebra.FinitePresentation.of_restrict_scalars_finitePresentation A A' B'`. Conclude with `⟨inferInstance, inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem ring_gen_etale (A B : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [CommRing B] [IsDomain B] [Algebra A B] [FaithfulSMul A B] [Module.Finite A B]
@@ -60,11 +58,11 @@ def EtaleOverBasic : Prop := ∀ {X P : Scheme.{0}} (π : X ⟶ P) (U : P.Opens)
   Etale (π ∣_ P.basicOpen a)
 
 /- English proof (translation)
-Introduce `k _ _ X P _ _ p r π hπ hr hfin hsurj hun`. Take `⟨U, hU, hne, hU', hnoeth, hfinU, hinj, _, het⟩` from `h1 k p r π hπ hr hfin hsurj hun`. Use `haveI : Nonempty U := ⟨⟨hne.some, hne.some_mem⟩⟩`. Use `haveI : Nonempty (π ⁻¹ᵁ U) := by`. Take `⟨x, hx⟩` from `hsurj.surj hne.some`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure.
 
-Conclude with `⟨⟨x, show π x ∈ U by rw [hx]; exact hne.some_mem⟩⟩`. Use `letI := (π.app U).hom.toAlgebra`. Use `haveI : Module.Finite Γ(P, U) Γ(X, π ⁻¹ᵁ U) := hfinU`. Use `haveI : FaithfulSMul Γ(P, U) Γ(X, π ⁻¹ᵁ U) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Take `⟨a, ha, H⟩` from `LateralTheory.EtaleTrace.GenEtaleRing.ring_gen_etale Γ(P, U) Γ(X, π ⁻¹ᵁ U)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨P.basicOpen a, ?_, h2 π U hU hU' a H⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[Set.not_nonempty_iff_eq_empty]`. Establish `: P.basicOpen a = ⊥` using `by ext1; simpa using hc`. Conclude with `ha ((basicOpen_eq_bot_iff a).1 this)`.
+A detailed English derivation is pending.
 -/
 theorem GenEtale_of (h1 : GenAffineSetup) (h2 : EtaleOverBasic) : GenEtale := by
   intro k _ _ X P _ _ p r π hπ hr hfin hsurj hun

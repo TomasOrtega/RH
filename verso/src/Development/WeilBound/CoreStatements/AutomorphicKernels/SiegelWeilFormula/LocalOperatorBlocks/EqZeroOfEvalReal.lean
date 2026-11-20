@@ -11,21 +11,21 @@ namespace PositivityTheory.SiegelWeilFormula.KLI
 variable {m n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `[fP, evX, MvPolynomial.eval_add, MvPolynomial.smul_eval, add_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fP_add_smul (a : ℂ) (P Q : PX m n) : fP (a • P + Q) = a • fP P + fP Q := by
   funext u
   simp [fP, evX, MvPolynomial.eval_add, MvPolynomial.smul_eval, add_mul, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `[fP, evX]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fP_zero : fP (0 : PX m n) = 0 := by
   funext u
   simp [fP, evX]
 
 /- English proof (translation)
-Simplify using `[fP, evX, gs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fP_one_zero : fP (1 : PX m n) 0 = 1 := by
   simp [fP, evX, gs]
@@ -39,9 +39,9 @@ def reP (p : MvPolynomial σ ℂ) : MvPolynomial σ ℝ := ∑ k ∈ p.support, 
 def imaginary (p : MvPolynomial σ ℂ) : MvPolynomial σ ℝ := ∑ k ∈ p.support, MvPolynomial.monomial k (MvPolynomial.coeff k p).im
 
 /- English proof (translation)
-Rewrite using `[reP, MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.notMem_support_iff.1 h, Complex.zero_re]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_reP (p : MvPolynomial σ ℂ) (k : σ →₀ ℕ) : MvPolynomial.coeff k (reP p) = (MvPolynomial.coeff k p).re := by
   classical
@@ -53,9 +53,9 @@ theorem coeff_reP (p : MvPolynomial σ ℂ) (k : σ →₀ ℕ) : MvPolynomial.c
   · rw [MvPolynomial.notMem_support_iff.1 h, Complex.zero_re]
 
 /- English proof (translation)
-Rewrite using `[imaginary, MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.notMem_support_iff.1 h, Complex.zero_im]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_imP (p : MvPolynomial σ ℂ) (k : σ →₀ ℕ) : MvPolynomial.coeff k (imaginary p) = (MvPolynomial.coeff k p).im := by
   classical
@@ -67,7 +67,7 @@ theorem coeff_imP (p : MvPolynomial σ ℂ) (k : σ →₀ ℕ) : MvPolynomial.c
   · rw [MvPolynomial.notMem_support_iff.1 h, Complex.zero_im]
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_map_real (q : MvPolynomial σ ℝ) (y : σ → ℝ) :
     MvPolynomial.eval (fun i => (y i : ℂ)) (MvPolynomial.map (algebraMap ℝ ℂ) q) = ((MvPolynomial.eval y q : ℝ) : ℂ) := by
@@ -77,7 +77,7 @@ theorem eval_map_real (q : MvPolynomial σ ℝ) (y : σ → ℝ) :
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[MvPolynomial.coeff_add, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map, MvPolynomial.coeff_map, coeff_reP, coeff_imP]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_map_re_add_im (p : MvPolynomial σ ℂ) :
     p = MvPolynomial.map (algebraMap ℝ ℂ) (reP p) + MvPolynomial.C Complex.I * MvPolynomial.map (algebraMap ℝ ℂ) (imaginary p) := by
@@ -87,11 +87,11 @@ theorem eq_map_re_add_im (p : MvPolynomial σ ℂ) :
   apply Complex.ext <;> simp
 
 /- English proof (translation)
-Establish `hre : ∀ y : σ → ℝ, MvPolynomial.eval y (reP p) = 0 ∧ MvPolynomial.eval y (imaginary p) = 0`. Introduce `y`. Establish `h1` using `h y`. Rewrite `h1` using `[eq_map_re_add_im p, MvPolynomial.eval_add, MvPolynomial.eval_mul, MvPolynomial.eval_C]`. Rewrite `h1` using `[eval_map_real, eval_map_real]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr` using `congrArg Complex.re h1`. Establish `hi` using `congrArg Complex.im h1`. Simplify using `at hr hi`. Conclude with `⟨hr, hi⟩`. Establish `a1 : reP p = 0` using `MvPolynomial.funext fun y => by simpa using (hre y).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `a2 : imaginary p = 0` using `MvPolynomial.funext fun y => by simpa using (hre y).2`. Rewrite using `[eq_map_re_add_im p, a1, a2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_eval_real (p : MvPolynomial σ ℂ) (h : ∀ y : σ → ℝ, MvPolynomial.eval (fun i => (y i : ℂ)) p = 0) :
     p = 0 := by
@@ -120,9 +120,9 @@ def subG (k : Fin m × Fin n × Bool) : PX m n :=
   else MvPolynomial.C (2 : ℂ)⁻¹ * (MvPolynomial.X (k.1, k.2.1, false) + MvPolynomial.X (k.1, k.2.1, true))
 
 /- English proof (translation)
-Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval x _ = MvPolynomial.aeval x P`. Rewrite using `[MvPolynomial.aeval_bind₁, MvPolynomial.aeval_bind₁]`. Establish `e : (fun i => MvPolynomial.aeval (fun i => MvPolynomial.aeval x (subG (m` using `m) (n := n) i)) (subF i)) = x := by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Take `⟨a, j, b⟩` from `k`. Apply the tactic sequence `cases b <;> simp [subF, subG] <;> field_simp <;> ring_nf <;> simp [Complex.I_sq] <;> ring`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem subG_subF (P : PX m n) : MvPolynomial.bind₁ subG (MvPolynomial.bind₁ subF P) = P := by
   apply MvPolynomial.funext
@@ -136,13 +136,13 @@ theorem subG_subF (P : PX m n) : MvPolynomial.bind₁ subG (MvPolynomial.bind₁
   rw [e]
 
 /- English proof (translation)
-Introduce `P Q h`. Rewrite using `[← sub_eq_zero]`. Use `set R := P - Q`. Establish `hR : ∀ x, evX R x = 0` using `fun x => by`. Simplify using `only [R, evX, map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.2 (congrFun h x)`. Establish `h0 : MvPolynomial.bind₁ subF R = 0`. Apply `eq_zero_of_eval_real` to reduce the goal to its premises. Introduce `y`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval (fun i => (y i : ℂ)) _ = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.aeval_bind₁]`. Use `hR (fun a j => (y (a, j, false) : ℂ) + Complex.I * y (a, j, true))` as an intermediate fact. Rewrite `this` using `[evX]`. Establish `e : (fun i => MvPolynomial.aeval (fun i => (y i : ℂ)) (subF (m` using `m) (n := n) i)) = fun k => if k.2.2 then star ((y (k.1, k.2.1, false) : ℂ) + Complex.I * y (k.1, k.2.1, true)) else (y (k.1, k.2.1, false) : ℂ) + Complex.I * y (k.1, k.2.1, true) := by`. Use function extensionality and compare the values at `k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨a, j, b⟩` from `k`. Apply the tactic sequence `cases b <;> simp [subF, Complex.ext_iff]`. Rewrite using `[e]`. Conclude with `this`. Rewrite using `[← subG_subF R, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evX_injective : Function.Injective (evX (m := m) (n := n)) := by
   intro P Q h
@@ -168,9 +168,9 @@ theorem evX_injective : Function.Injective (evX (m := m) (n := n)) := by
   rw [← subG_subF R, h0, map_zero]
 
 /- English proof (translation)
-Introduce `P Q h`. Apply `evX_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Establish `e` using `congrFun h u`. Simplify using `only [fP] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_right_cancel₀ (Complex.exp_ne_zero _) e`.
+A detailed English derivation is pending.
 -/
 theorem fP_injective : Function.Injective (fP (m := m) (n := n)) := by
   intro P Q h
@@ -181,18 +181,18 @@ theorem fP_injective : Function.Injective (fP (m := m) (n := n)) := by
   exact mul_right_cancel₀ (Complex.exp_ne_zero _) e
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `GlobalTheory.CompanionTheory.PolyGaussSchwartz.exists_schwartz_poly_mul_gauss m n P`. Conclude with `⟨φ, hφ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSw_fP (P : PX m n) : IsSw (fP P) := by
   obtain ⟨φ, hφ⟩ := GlobalTheory.CompanionTheory.PolyGaussSchwartz.exists_schwartz_poly_mul_gauss m n P
   exact ⟨φ, hφ⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [fP, gs, gZ]`. Use `congr 2`. Establish `htr : Matrix.trace ((Matrix.of u)ᴴ * Matrix.of u) = ((∑ a, ∑ i, ‖u a i‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [Matrix.trace, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.diag]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Establish `hI : Complex.I * ((sg : ℤ) : ℂ) * (Complex.I * ((sg : ℤ) : ℂ)) = -1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or sg with rfl | rfl <;> simp`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, Matrix.trace_smul, htr, smul_eq_mul]`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_mul, Complex.ofReal_ofNat]`. Take the linear combination `(-2 * (Real.pi : ℂ) * ((∑ a, ∑ i, ‖u a i‖ ^ 2 : ℝ) : ℂ)) * hI`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fP_eq_gZ (sg : ℤˣ) (P : PX m n) :
     fP P = fun u => evX P u * gZ sg ((Complex.I * ((sg : ℤ) : ℂ)) • (1 : Matrix (Fin n) (Fin n) ℂ)) u := by
@@ -212,7 +212,7 @@ theorem fP_eq_gZ (sg : ℤˣ) (P : PX m n) :
   linear_combination (-2 * (Real.pi : ℂ) * ((∑ a, ∑ i, ‖u a i‖ ^ 2 : ℝ) : ℂ)) * hI
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem fin_deg (d : ℕ) : FiniteDimensional ℂ (MvPolynomial.restrictTotalDegree (Fin m × Fin n × Bool) ℂ d) :=
   inferInstance
@@ -223,17 +223,17 @@ def evW (d : ℕ) : MvPolynomial.restrictTotalDegree (Fin m × Fin n × Bool) �
   map_smul' a Q := by funext u; simp [evX]
 
 /- English proof (translation)
-Introduce `Q Q' h` and use `Subtype.ext (evX_injective (funext fun u => congrFun h u))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem evW_injective (d : ℕ) : Function.Injective (evW (m := m) (n := n) d) := fun Q Q' h =>
   Subtype.ext (evX_injective (funext fun u => congrFun h u))
 
 /- English proof (translation)
-Use `set W := MvPolynomial.restrictTotalDegree (Fin m × Fin n × Bool) ℂ d`. Set `e : W ≃ₗ[ℂ] LinearMap.range (evW (m` to `m) (n := n) d) := LinearEquiv.ofInjective _ (evW_injective d)`. Use `haveI : FiniteDimensional ℂ (LinearMap.range (evW (m := m) (n := n) d)) := e.finiteDimensional`. Set `l' : LinearMap.range (evW (m` to `m) (n := n) d) →ₗ[ℂ] ℂ := l ∘ₗ W.subtype ∘ₗ e.symm.toLinearMap`. Establish `hl' : Continuous l'` using `LinearMap.continuous_of_finiteDimensional l'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW : ∀ x ∈ S, φ x ∈ W` using `fun x hx => (MvPolynomial.mem_restrictTotalDegree _ _ _).2 (hd x hx)`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Set `g : S → LinearMap.range (evW (m` to `m) (n := n) d) := fun x => e ⟨φ x, hW x x.2⟩`. Establish `hg : Continuous g`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun u => ?_` and prove the remaining obligations. Conclude with `(hc u).restrict`. Use `(hl'.comp hg).congr fun x => ?_` and prove the remaining obligations. Simplify using `[l', g]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_of_evX {X : Type} [TopologicalSpace X] {S : Set X} (d : ℕ) (φ : X → PX m n)
     (hd : ∀ x ∈ S, (φ x).totalDegree ≤ d) (hc : ∀ u, ContinuousOn (fun x => evX (φ x) u) S) (l : PX m n →ₗ[ℂ] ℂ) :
@@ -255,7 +255,7 @@ theorem continuousOn_of_evX {X : Type} [TopologicalSpace X] {S : Set X} (d : ℕ
   simp [l', g]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gramX, Qp, Qb, evX, Matrix.mul_apply, Matrix.conjTranspose_apply, MvPolynomial.eval_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramX_true (x : Fin m → Fin n → ℂ) : gramX (fun _ : Fin m => true) x = (Matrix.of x)ᴴ * Matrix.of x := by
   ext i j

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.PinCoord
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `J.mkQ _ = _`. Rewrite using `[map_sum]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mk_sum_smul {O La : Type} [CommRing O] [AddCommGroup La] [Module O La] (J : Submodule O La) {r : ℕ}
     (c : Fin r → O) (x : Fin r → La) : (Submodule.Quotient.mk (∑ b, c b • x b) : La ⧸ J) =
@@ -21,13 +21,13 @@ theorem mk_sum_smul {O La : Type} [CommRing O] [AddCommGroup La] [Module O La] (
   rfl
 
 /- English proof (translation)
-Introduce `O La ι _ _ _ P k _ φ r ρ hs J hJ hon x hx i hi`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.vecMul_surjective_iff_isUnit]`. Introduce `t`. Take `⟨v, hv⟩` from `hon (Pi.single i t)`. Establish `hm : (Submodule.Quotient.mk v : La ⧸ J) ∈ Submodule.span O (Set.range fun b => (Submodule.Quotient.mk (x b) : La ⧸ J))` using `hx ▸ Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hm`. Establish `hw : v - ∑ b, c b • x b ∈ J`. Rewrite using `[← Submodule.Quotient.eq]`. Rewrite using `[← hc]`. Conclude with `(mk_sum_smul J c x).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun b => φ i (c b), funext fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hJ _ hw i hi a`. Rewrite `h1` using `[map_sub, map_sum, sub_eq_zero]`. Simplify using `only [hs] at h1`. Establish `h2` using `hv i hi a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Pi.single_eq_same]`. Rewrite using `[← h2, h1]`. Simplify using `[Matrix.vecMul, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_span : ∀ {O La ι : Type} [CommRing O] [AddCommGroup La] [Module O La] (P : Finset ι) (k : ι → Type) [∀ i, CommRing (k i)] (φ : ∀ i, O → k i) {r : ℕ} (ρ : ∀ i, Fin r → La →+ k i), (∀ i a c x, ρ i a (c • x) = φ i c * ρ i a x) → ∀ (J : Submodule O La), (∀ x, x ∈ J → ∀ i ∈ P, ∀ a, ρ i a x = 0) → (∀ t : ∀ i, Fin r → k i, ∃ x, ∀ i ∈ P, ∀ a, ρ i a x = t i a) → ∀ x : Fin r → La, Submodule.span O (Set.range fun b => (Submodule.Quotient.mk (x b) : La ⧸ J)) = ⊤ → ∀ i ∈ P, IsUnit (Matrix.of fun b a => ρ i a (x b)).det := by
   intro O La ι _ _ _ P k _ φ r ρ hs J hJ hon x hx i hi
@@ -52,15 +52,13 @@ theorem isUnit_det_of_span : ∀ {O La ι : Type} [CommRing O] [AddCommGroup La]
   simp [Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Introduce `O La ι _ _ _ P k _ φ hcrt r ρ hs J hJ x hu`. Use `eq_top_iff.2 fun q _ => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective J q`. Establish `he : ∀ i, ∃ e : Fin r → k i, i ∈ P → Matrix.vecMul e (Matrix.of fun b a => ρ i a (x b)) = fun a => ρ i a v`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hi : i ∈ P`. Establish `hs'` using `Matrix.vecMul_surjective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (hu i hi))`. Take `⟨e, he⟩` from `hs' (fun a => ρ i a v)`. Conclude with `⟨e, fun _ => he⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose e he using he`. Use `choose c hc using fun b : Fin r => hcrt fun i => e i b`. Establish `hmem : v - ∑ b, c b • x b ∈ J` using `hJ _ fun i hi a => by`. Rewrite using `[map_sub, map_sum, sub_eq_zero]`. Simplify using `only [hs, hc _ i hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (he i hi) a` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[Matrix.vecMul, dotProduct]`. Establish `e1 : (Submodule.Quotient.mk v : La ⧸ J) = ∑ b, c b • (Submodule.Quotient.mk (x b) : La ⧸ J)`. Rewrite using `[(Submodule.Quotient.eq J).2 hmem]`.
-
-Conclude with `mk_sum_smul J c x`. Rewrite using `[e1]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_of_isUnit_det : ∀ {O La ι : Type} [CommRing O] [AddCommGroup La] [Module O La] (P : Finset ι) (k : ι → Type) [∀ i, CommRing (k i)] (φ : ∀ i, O → k i), (∀ t : ∀ i, k i, ∃ c, ∀ i ∈ P, φ i c = t i) → ∀ {r : ℕ} (ρ : ∀ i, Fin r → La →+ k i), (∀ i a c x, ρ i a (c • x) = φ i c * ρ i a x) → ∀ (J : Submodule O La), (∀ x, (∀ i ∈ P, ∀ a, ρ i a x = 0) → x ∈ J) → ∀ x : Fin r → La, (∀ i ∈ P, IsUnit (Matrix.of fun b a => ρ i a (x b)).det) → Submodule.span O (Set.range fun b => (Submodule.Quotient.mk (x b) : La ⧸ J)) = ⊤ := by
   intro O La ι _ _ _ P k _ φ hcrt r ρ hs J hJ x hu
@@ -88,19 +86,19 @@ theorem span_of_isUnit_det : ∀ {O La ι : Type} [CommRing O] [AddCommGroup La]
   exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d hd k kst hk f hf1 hf2 a`. Take `⟨-, hM, -, hMb, hI, -⟩` from `hd`. Establish `hp` using `GlobalTheory.DatumInverseCharacter.half_prod hM hMb`. Establish `hc` using `GlobalTheory.DatumInverseCharacter.cHalf_mem (H := H) d.I`. Establish `hc1` using `(GlobalTheory.HalfPairing.cHalf_spec (H := H) d.I hI).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : d.pd ≠ 0`. Introduce `h`. Use `d.l₂.three_le` as an intermediate fact. Rewrite `this` using `[hM, h]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hpd : (d.pd : 𝓞 E) ∈ d.I.map (H.bar : 𝓞 E →+* 𝓞 E)`. Establish `: Ideal.span {(d.pd : 𝓞 E)} ≤ d.I.map (H.bar : 𝓞 E →+* 𝓞 E)` using `hp ▸ Ideal.mul_le_right`. Conclude with `this (Ideal.subset_span rfl)`. Rewrite using `[← GlobalTheory.HalfPairing.qRep_mk (kst (Submodule.Quotient.mk (f a))), Submodule.Quotient.eq]`. Use `set z := qRep (kst (Submodule.Quotient.mk (f a) : LaJ Xo c d)) with hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set t := cHalf H d.I with ht`. Establish `hdiv : ∀ v, (d.pd : ℤ) ∣ Dw.EF (z - a) (t • v)`. Introduce `v`. Establish `h1` using `hk (f a) v`. Establish `h2` using `GlobalTheory.DatumInverseCharacter.dvd_right Dw hp hc (f a) (w := qRep (k (Submodule.Quotient.mk v)) - f v) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Submodule.Quotient.eq, GlobalTheory.HalfPairing.qRep_mk, hf1])`. Establish `h3` using `hf2 a (t • v)`. Rewrite `h3` using `[map_smul]`. Rewrite `h2` using `[smul_sub, map_sub]`. Use `dvd_add (dvd_add h1 h2) h3` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[map_sub, LinearMap.sub_apply]`. Rewrite `this` using `[sub_add_sub_cancel, sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `h4 : H.bar t • (z - a) ∈ (d.I.map (H.bar : 𝓞 E →+* 𝓞 E) • ⊤ : Submodule (𝓞 E) Dw.La)` using `GlobalTheory.DatumInverseCharacter.mem_of_modN Dw hpd (GlobalTheory.DatumInverseCharacter.modN_of_dvd Dw (Nat.pos_of_ne_zero hN) fun q => by rw [Dw.adj, GlobalTheory.DatumInverseCharacter.bar_bar]; exact hdiv q)`. Establish `h5 : (H.bar t - 1) • (z - a) ∈ (d.I.map (H.bar : 𝓞 E →+* 𝓞 E) • ⊤ : Submodule (𝓞 E) Dw.La)`. Use `Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hc1` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Use `sub_mem h4 h5` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem adjoint_comp_isometry : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), d.IsLev → ∀ (k : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) (kst : LaJ Xo c d ≃ₗ[𝓞 E] LaJ Xo c d), (∀ u v : Dw.La, (d.pd : ℤ) ∣ Dw.EF (qRep (kst (Submodule.Quotient.mk u))) (cHalf H d.I • v) - Dw.EF u (cHalf H d.I • qRep (k (Submodule.Quotient.mk v)))) → ∀ f : Dw.La →ₗ[𝓞 E] Dw.La, (∀ x, (Submodule.Quotient.mk (f x) : LaI Xo c d) = k (Submodule.Quotient.mk x)) → (∀ x x', (d.pd : ℤ) ∣ Dw.EF (f x) (f x') - Dw.EF x x') → ∀ a : Dw.La, kst (Submodule.Quotient.mk (f a)) = (Submodule.Quotient.mk a : LaJ Xo c d) := by
   intro E _ _ _ H Dw l Xo c n d hd k kst hk f hf1 hf2 a
@@ -142,7 +140,7 @@ theorem adjoint_comp_isometry : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   rwa [sub_smul, one_smul, sub_sub_cancel] at this
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [topL, Matrix.mul_apply, dif_pos (And.intro (lt_of_lt_of_le i.2 hrn) j.2), i.2, j.2, true_and, lt_of_lt_of_le i.2 hrn, Fin.is_lt, dite_true]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem topL_mul {κ : Type} [CommRing κ] {n r : ℕ} (hrn : r ≤ n) (A : Matrix (Fin n) (Fin r) κ) (B : Matrix (Fin r) (Fin r) κ) :
     topL r (A * B) = topL r A * B := by
@@ -151,7 +149,7 @@ theorem topL_mul {κ : Type} [CommRing κ] {n r : ℕ} (hrn : r ≤ n) (A : Matr
     lt_of_lt_of_le i.2 hrn, Fin.is_lt, dite_true]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [topL, dif_pos (And.intro (lt_of_lt_of_le i.2 hrn) j.2), Matrix.of_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem topL_of {κ : Type} [Zero κ] {n r : ℕ} (hrn : r ≤ n) (A : Matrix (Fin n) (Fin r) κ) :
     topL r A = Matrix.of fun b a => A (Fin.castLE hrn b) a := by
@@ -160,9 +158,9 @@ theorem topL_of {κ : Type} [Zero κ] {n r : ℕ} (hrn : r ≤ n) (A : Matrix (F
   rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b.val, hb⟩, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, a.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem image_eq_range {α : Type} {n r : ℕ} (hrn : r ≤ n) (x : Fin n → α) :
     x '' {b | b.val < r} = Set.range fun a : Fin r => x (Fin.castLE hrn a) := by
@@ -174,29 +172,27 @@ theorem image_eq_range {α : Type} {n r : ℕ} (hrn : r ≤ n) (x : Fin n → α
     exact ⟨_, a.2, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d hd ph ψ xJ hpin r hr hrn Q ξ ρ hs hker hon hfy`. Substitute `hr` using the available equality. Take `⟨hc1, hc2, hc3, hc4, hc5, -⟩` from `hpin`. Take `⟨-, huniq, adj, -, hadj⟩` from `GlobalTheory.HalfPairing.halves_free_and_adjoint E H Dw l Xo c n d hd`. Establish `hcrt : ∀ t : ∀ P : Pl E, kP P, ∃ c, ∀ P ∈ Q, Ideal.Quotient.mk P.asIdeal (H.bar c) = t P` using `fun t => by`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `GlobalTheory.BasePoint.crt_places Q t`. Conclude with `⟨H.bar.symm c, fun P hP => by rw [RingEquiv.apply_symm_apply]; exact hc P hP⟩`. Establish `hspan : ∀ x : Fin n → Dw.La, Submodule.span (𝓞 E) ((fun b => (Submodule.Quotient.mk (x b) : LaJ Xo c d)) '' {b | b.val < Dw.p + Dw.q}) = ⊤ ↔ ∀ P ∈ Q, IsUnit (topL (Dw.p + Dw.q) (Matrix.of fun b a => ρ P a (x b))).det`. Introduce `x`. Rewrite using `[image_eq_range hrn]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [topL_of hrn, Matrix.of_apply]`. Conclude with `⟨isUnit_det_of_span Q (fun P => kP P) (fun P c => Ideal.Quotient.mk P.asIdeal (H.bar c)) ρ hs _ (fun y hy => (hker y).1 hy) hon (fun a => x (Fin.castLE hrn a)), span_of_isUnit_det Q (fun P => kP P) (fun P c => Ideal.Quotient.mk P.asIdeal (H.bar c)) hcrt ρ hs _ (fun y hy => (hker …`. Use `set X₀ : Fin n → Dw.La := fun b => qRep (xJ b) with hX₀`. Establish `hX₀mk : (fun b => (Submodule.Quotient.mk (X₀ b) : LaJ Xo c d)) = xJ`. Use function extensionality and compare the values at `fun b => GlobalTheory.HalfPairing.qRep_mk (xJ b)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hX₀u` using `(hspan X₀).1 (by rw [hX₀mk]; exact hc5)`. Set `u : ∀ P : Pl E, (kP P)ˣ` to `fun P => if h : IsUnit (topL (Dw.p + Dw.q) (Matrix.of fun b a => ρ P a (X₀ b))).det then h.unit else 1`. Establish `hu : ∀ P ∈ Q, ((u P : (kP P)ˣ) : kP P) = (topL (Dw.p + Dw.q) (Matrix.of fun b a => ρ P a (X₀ b))).det` using `fun P hP => by simp only [u, dif_pos (hX₀u P hP), IsUnit.unit_spec]`. Use `⟨u, fun x => ?_⟩` and prove the remaining obligations. Use `split_ifs with h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxs` using `(hspan x).2 h`. Rewrite `hxs` using `[image_eq_range hrn]`. Establish `hJs : Submodule.span (𝓞 E) (Set.range fun a : Fin (Dw.p + Dw.q) => xJ (Fin.castLE hrn a)) = ⊤`. Rewrite using `[← image_eq_range hrn]`. Conclude with `hc5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨kst, hkst, -⟩` from `huniq _ _ hJs hxs`. Establish `hk` using `(hadj (adj kst) kst).2 rfl`. Establish `hph : ph (fun b => Submodule.Quotient.mk (x b)) = (((ψ (adj kst))⁻¹ : c.Fˣ) : c.F)`. Establish `e1 : ph (fun b => Submodule.Quotient.mk (x b)) = ph (fun b => kst (xJ b))` using `hc1 _ _ fun b hb => (hkst ⟨b.val, hb⟩).symm`. Rewrite using `[e1, hc3 (adj kst) kst hk xJ, hc4, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, y, hf1, hf2, hf3, hf4⟩` from `hfy (adj kst)`. Apply the tactic sequence `have hC := adjoint_comp_isometry E H Dw l Xo c n d hd (adj kst) kst hk f hf1 hf2`. Establish `hfx : ∀ b : Fin n, b.val < Dw.p + Dw.q → ∀ P ∈ Q, ∀ a, ρ P a (f (x b)) = ρ P a (X₀ b)`. Introduce `b hb P hP a`. Establish `e2 : (Submodule.Quotient.mk (f (x b)) : LaJ Xo c d) = Submodule.Quotient.mk (X₀ b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `kst.injective` to reduce the goal to its premises. Rewrite using `[hC, congrFun hX₀mk b]`. Conclude with `(hkst ⟨b.val, hb⟩).symm`. Use `(hker (f (x b) - X₀ b)).1 ((Submodule.Quotient.eq _).1 e2) P hP a` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : ∀ (P : Pl E) (hP : P ∈ Q), (h P hP).unit = u P * Matrix.GeneralLinearGroup.det (y P)`. Introduce `P hP`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[IsUnit.unit_spec, Units.val_mul, hu P hP, Matrix.GeneralLinearGroup.val_det_apply, hf3 P hP x, topL_mul hrn, Matrix.det_mul]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[topL_of hrn, topL_of hrn]`. Use extensionality with `b a`. Conclude with `hfx _ (by simp) P hP a`. Establish `hL : ∏ P ∈ Q.attach, (((ξ P.1 (h P.1 P.2).unit)⁻¹ : ℂˣ) : ℂ) = (∏ P ∈ Q, (((ξ P (u P))⁻¹ : ℂˣ) : ℂ)) * (∏ P ∈ Q, ((ξ P (Matrix.GeneralLinearGroup.det (y P)) : ℂˣ) : ℂ))⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hunit P.1 P.2, map_mul, mul_inv, Units.val_mul, Units.val_inv_eq_inv_val (ξ P.1 (Matrix.GeneralLinearGroup.det (y P.1)))]`. Use `_ = _ := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_inv_distrib, Finset.prod_attach Q (fun P => (((ξ P (u P))⁻¹ : ℂˣ) : ℂ)), Finset.prod_attach Q (fun P => ((ξ P (Matrix.GeneralLinearGroup.det (y P)) : ℂˣ) : ℂ))]`. Rewrite using `[hL, ← hf4, hph, Units.val_inv_eq_inv_val, IntermediateField.coe_inv]`. Establish `h0 : ph (fun b => Submodule.Quotient.mk (x b)) = 0`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `h ((hspan x).1 (hc2 _ hne))`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_const_eq_inv_char : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), d.IsLev → ∀ (ph : (Fin n → LaJ Xo c d) → c.F) (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ) (xJ : Fin n → LaJ Xo c d), d.PhiPin ph ψ xJ → ∀ (r : ℕ), Dw.p + Dw.q = r → r ≤ n → ∀ (Q : Finset (Pl E)) (ξ : ∀ P : Pl E, (kP P)ˣ →* ℂˣ) (ρ : ∀ P : Pl E, Fin r → Dw.La →+ kP P), (∀ (P : Pl E) (a : Fin r) (t : 𝓞 E) (x : Dw.La), ρ P a (t • x) = Ideal.Quotient.mk P.asIdeal (H.bar t) * ρ P a x) → (∀ x : Dw.La, x ∈ (d.I.map (H.bar : 𝓞 E →+* 𝓞 E) • ⊤ : Submodule (𝓞 E) Dw.La) ↔ ∀ P ∈ Q, ∀ a, ρ P a x = 0) → (∀ t : ∀ P : Pl E, Fin r → kP P, ∃ x, ∀ P ∈ Q, ∀ a, ρ P a x = t P a) → (∀ k : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d, ∃ (f : Dw.La →ₗ[𝓞 E] Dw.La) (y : ∀ P : Pl E, GL (Fin r) (kP P)), (∀ x, (Submodule.Quotient.mk (f x) : LaI Xo c d) = k (Submodule.Quotient.mk x)) ∧ (∀ x x', (d.pd : ℤ) ∣ Dw.EF (f x) (f x') - Dw.EF x x') ∧ (∀ P ∈ Q, ∀ x : Fin n → Dw.La, (Matrix.of fun b a => ρ P a (x b)) = (Matrix.of fun b a => ρ P a (f (x b))) * (y P).val) ∧ (((ψ k : c.Fˣ) : c.F) : ℂ) = ∏ P ∈ Q, ((ξ P (Matrix.GeneralLinearGroup.det (y P)) : ℂˣ) : ℂ)) → ∃ u : ∀ P : Pl E, (kP P)ˣ, ∀ x : Fin n → Dw.La, (if h : ∀ P ∈ Q, IsUnit (topL r (Matrix.of fun b a => ρ P a (x b))).det then ∏ P ∈ Q.attach, (((ξ P.1 (h P.1 P.2).unit)⁻¹ : ℂˣ) : ℂ) else 0) = (∏ P ∈ Q, (((ξ P (u P))⁻¹ : ℂˣ) : ℂ)) * ((ph (fun b => Submodule.Quotient.mk (x b)) : c.F) : ℂ) := by
   intro E _ _ _ H Dw l Xo c n d hd ph ψ xJ hpin r hr hrn Q ξ ρ hs hker hon hfy

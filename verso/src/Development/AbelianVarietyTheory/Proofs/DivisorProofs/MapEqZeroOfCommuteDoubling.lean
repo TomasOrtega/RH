@@ -9,17 +9,17 @@ namespace GlobalTheory.LieFaithful
 open IsLocalRing
 
 /- English proof (translation)
-Establish `hφ : ∀ x ∈ m, φ x ∈ m` using `fun x hx => by`. Establish `h1` using `Ideal.pow_le_self (two_ne_zero) (h x hx)`. Establish `h2` using `m.add_mem h1 (m.mul_mem_left 2 hx)`. Simplify using `using h2`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction.
 
-Consider the case `zero`. Introduce `y hy`. Simplify `hy)` using `using h y (by simpa`. Consider the case `succ n ih`. Introduce `y hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[pow_succ]`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Establish `e : φ (a * b) - 2 ^ (n + 1 + 1) * (a * b) = (φ a - 2 ^ (n + 1) * a) * φ b + (2 ^ (n + 1) * a) * (φ b - 2 * b)`. Rewrite using `[map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Use `Ideal.mul_mem_mul (ih a ha) (hφ b hb)` as an intermediate fact. Rewrite `this` using `[← pow_succ]`. Then use the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Ideal.mul_mem_mul (Ideal.mul_mem_left _ (2 ^ (n + 1)) ha) (h b hb)` as an intermediate fact. Rewrite `this` using `[← pow_add]`. Conclude with `this`. Introduce `a b ha hb`. Establish `e : φ (a + b) - 2 ^ (n + 1 + 1) * (a + b) = (φ a - 2 ^ (n + 1 + 1) * a) + (φ b - 2 ^ (n + 1 + 1) * b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ ha hb`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_sub_two_pow_mul_mem {R : Type} [CommRing R] (m : Ideal R) (φ : R →+* R)
     (h : ∀ x ∈ m, φ x - 2 * x ∈ m ^ 2) (n : ℕ) :
@@ -55,23 +55,21 @@ theorem map_sub_two_pow_mul_mem {R : Type} [CommRing R] (m : Ideal R) (φ : R �
       exact Ideal.add_mem _ ha hb
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ x ∈ mB, ψ x ∈ maximalIdeal RA ^ (n + 2)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x hx`. Use `set m := maximalIdeal RA with hm`. Establish `hy` using `ih x hx`. Establish `hle : Ideal.map ψ mB ≤ m ^ (n + 2)` using `Ideal.map_le_iff_le_comap.2 ih`. Establish `hz : ψ (φB x - 2 * x) ∈ m ^ (n + 3)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ψ (φB x - 2 * x) ∈ Ideal.map ψ (mB ^ 2)` using `Ideal.mem_map_of_mem _ (hB x hx)`. Rewrite `h2` using `[Ideal.map_pow]`. Establish `h3 : (Ideal.map ψ mB) ^ 2 ≤ (m ^ (n + 2)) ^ 2` using `Ideal.pow_right_mono hle 2`. Establish `h4` using `h3 h2`. Rewrite `h4` using `[← pow_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_le_pow_right (by omega) h4`. Establish `hd` using `map_sub_two_pow_mul_mem m φA hA (n + 1) _ hy`. Establish `e : (2 ^ (n + 2) - 2 : RA) * ψ x = ψ (φB x - 2 * x) - (φA (ψ x) - 2 ^ (n + 2) * ψ x)`. Rewrite using `[map_sub, map_mul, hc, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : (2 ^ (n + 2) - 2 : RA) * ψ x ∈ m ^ (n + 3)`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ hz hd`. Establish `hne : (2 ^ (n + 2) - 2 : k) ≠ 0`. Establish `: ((2 ^ (n + 2) - 2 : ℤ) : k) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Int.cast_ne_zero]`. Establish `: (2 : ℤ) ^ (n + 2) = 4 * 2 ^ n` using `by ring`. Establish `h6 : (0 : ℤ) < 2 ^ n` using `by positivity`. Use linear arithmetic over natural numbers and integers. Simplify using `using this`.
+Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `Ideal.mul_mem_left _ (algebraMap k RA (2 ^ (n + 2) - 2 : k)⁻¹) h5`. Establish `e2 : algebraMap k RA (2 ^ (n + 2) - 2 : k)⁻¹ * ((2 ^ (n + 2) - 2 : RA) * ψ x) = ψ x`. Establish `: (2 ^ (n + 2) - 2 : RA) = algebraMap k RA (2 ^ (n + 2) - 2 : k)`. Rewrite using `[map_sub, map_pow, map_ofNat]`. Rewrite using `[this, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hne, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h7` using `[e2]`. Then use the resulting hypothesis. Establish `hinf` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal RA) (Ideal.IsPrime.ne_top inferInstance)`. Establish `: ψ x ∈ (⨅ i : ℕ, maximalIdeal RA ^ i)`. Use `(Submodule.mem_iInf _).2 fun i => ?_` and prove the remaining obligations. Conclude with `Ideal.pow_le_pow_right (by omega) (key i x hx)`.
-
-Rewrite `this` using `[hinf]`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_eq_zero_of_commute_doubling {k RA RB : Type} [Field k] [CharZero k] [CommRing RA]
     [IsLocalRing RA] [IsNoetherianRing RA] [Algebra k RA] [CommRing RB] (mB : Ideal RB)
@@ -130,7 +128,7 @@ def kerPart (x : R) : RingHom.ker ev :=
 def cotPart (x : R) : (RingHom.ker ev).Cotangent := (RingHom.ker ev).toCotangent (kerPart ev x)
 
 /- English proof (translation)
-Rewrite using `[cotPart, cotPart, cotPart, ← map_add]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [kerPart, map_add, Submodule.coe_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cotPart_add (x y : R) : cotPart ev (x + y) = cotPart ev x + cotPart ev y := by
   rw [cotPart, cotPart, cotPart, ← map_add]
@@ -140,16 +138,16 @@ theorem cotPart_add (x y : R) : cotPart ev (x + y) = cotPart ev x + cotPart ev y
   ring
 
 /- English proof (translation)
-Establish `: kerPart ev (algebraMap k R a) = 0` using `Subtype.ext (by simp [kerPart])`. Rewrite using `[cotPart, this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cotPart_algebraMap (a : k) : cotPart ev (algebraMap k R a) = 0 := by
   have : kerPart ev (algebraMap k R a) = 0 := Subtype.ext (by simp [kerPart])
   rw [cotPart, this, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul R (ev x), ← algebraMap_smul R (ev y), cotPart, cotPart, cotPart, ← map_smul, ← map_smul, ← map_add, Ideal.toCotangent_eq]`. Establish `e : ((kerPart ev (x * y) : R) - (algebraMap k R (ev x) • kerPart ev y + algebraMap k R (ev y) • kerPart ev x : RingHom.ker ev)) = (kerPart ev x : R) * (kerPart ev y : R)`. Simplify using `only [kerPart, Submodule.coe_add, Submodule.coe_smul, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pow_two]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul (kerPart ev x).2 (kerPart ev y).2`.
+A detailed English derivation is pending.
 -/
 theorem cotPart_mul (x y : R) : cotPart ev (x * y) = ev x • cotPart ev y + ev y • cotPart ev x := by
   rw [← algebraMap_smul R (ev x), ← algebraMap_smul R (ev y), cotPart, cotPart, cotPart, ← map_smul,
@@ -185,22 +183,22 @@ def tanHom (lam : (RingHom.ker ev).Cotangent →ₗ[k] k) : R →ₐ[k] DualNumb
     · simp [cotPart_algebraMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Simplify using `[tanHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tanHom_fst (lam : (RingHom.ker ev).Cotangent →ₗ[k] k) (x : R) : (tanHom ev lam x).fst = ev x := by
   simp [tanHom]
 
 /- English proof (translation)
-Simplify using `[tanHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tanHom_snd (lam : (RingHom.ker ev).Cotangent →ₗ[k] k) (x : R) :
     (tanHom ev lam x).snd = lam (cotPart ev x) := by
   simp [tanHom]
 
 /- English proof (translation)
-Establish `h0 : ev x = 0` using `by rw [← tanHom_fst ev 0, h]; rfl`. Establish `h1 : cotPart ev x = 0`. Use `(Module.forall_dual_apply_eq_zero_iff k _).1 fun lam => ?_` and prove the remaining obligations. Rewrite using `[← tanHom_snd ev lam, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[cotPart, Ideal.toCotangent_eq_zero]`. Simplify `h1` using `[kerPart, h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_sq_of_tanHom_eq_zero (x : R) (h : ∀ lam, tanHom ev lam x = 0) : x ∈ RingHom.ker ev ^ 2 := by
   have h0 : ev x = 0 := by rw [← tanHom_fst ev 0, h]; rfl
@@ -211,7 +209,7 @@ theorem mem_sq_of_tanHom_eq_zero (x : R) (h : ∀ lam, tanHom ev lam x = 0) : x 
   simpa [kerPart, h0] using h1
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective (ev : R →+* k) (fun a => ⟨algebraMap k R a, by simp⟩))`.
+A detailed English derivation is pending.
 -/
 theorem ker_eq_maximalIdeal_of_algHom [IsLocalRing R] : RingHom.ker ev = maximalIdeal R :=
   IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective (ev : R →+* k)

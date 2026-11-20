@@ -18,15 +18,13 @@ open NumberField IsDedekindDomain GlobalTheory.FieldSize GlobalTheory.FieldSize.
 open scoped IntermediateField
 
 /- English proof (translation)
-Establish `hqz : Prime (q : ℤ)` using `Nat.prime_iff_prime_int.1 hq`. Use `(not_dvd_discr_iff_forall_mem L (𝓞 L) hqz).2 fun P hP hqP => ?_` and prove the remaining obligations. Establish `hqp : ((q : ℤ) : 𝓞 K) ∈ P.under (𝓞 K)`. Rewrite using `[Ideal.mem_under, map_intCast]`. Conclude with `hqP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp0 : P.under (𝓞 K) ≠ ⊥` using `fun e => by`. Rewrite `hqp` using `[e, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hqp)`. Establish `h1 : Algebra.IsUnramifiedAt ℤ (P.under (𝓞 K))` using `(not_dvd_discr_iff_forall_mem K (𝓞 K) hqz).1 hK _ inferInstance hqp`. Set `𝔭 : HeightOneSpectrum (𝓞 K)` to `⟨P.under (𝓞 K), inferInstance, hp0⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnd : ¬ 𝔭.asIdeal ∣ Ideal.span {(n : 𝓞 K)}`. Rewrite using `[Ideal.dvd_span_singleton]`. Introduce `hnp`. Take `⟨a, b, hab⟩ : IsCoprime (q : ℤ) (n : ℤ)` from `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hq).2 hn)`. Establish `h2 : ((a * q + b * n : ℤ) : 𝓞 K) ∈ 𝔭.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Int.cast_add, Int.cast_mul, Int.cast_mul]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hqp) (Ideal.mul_mem_left _ _ (by rwa [Int.cast_natCast]))`. Rewrite `h2` using `[hab, Int.cast_one]`. Conclude with `𝔭.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)`. Establish `: P.LiesOver 𝔭.asIdeal` using `⟨rfl⟩`.
-
-Establish `h3 : Algebra.IsUnramifiedAt (𝓞 K) P` using `GlobalTheory.NT.isUnramifiedAt_of_unramIn (hL 𝔭 hnd) P`. Conclude with `Algebra.IsUnramifiedAt.comp (P.under (𝓞 K)) P`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_dvd_discr_of_unramIn (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [IsGalois K L] {n q : ℕ} (hq : q.Prime) (hn : ¬ q ∣ n) (hK : ¬ (q : ℤ) ∣ discr K)
@@ -56,25 +54,25 @@ theorem not_dvd_discr_of_unramIn (K L : Type) [Field K] [NumberField K] [Field L
   exact Algebra.IsUnramifiedAt.comp (P.under (𝓞 K)) P
 
 /- English proof (translation)
-Establish `hdm` using `H.d_mod`. Establish `hd0 : 0 < H.d` using `H.d_prime.pos`. Take `⟨hfin, h2⟩` from `finrank_adjoin hd0 H.sqrt_neg_disc_sq`. Establish `hr0 : H.rt0 ∈ ℚ⟮H.rt0⟯` using `IntermediateField.mem_adjoin_simple_self ℚ H.rt0`. Generalize the expression as in `ℚ⟮H.rt0⟯ = K₀ at hfin h2 hr0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hNF : NumberField K₀` using `NumberField.mk`. Establish `hr : (⟨H.rt0, hr0⟩ : K₀) ^ 2 = -(H.d : K₀)` using `Subtype.ext (by simpa using H.sqrt_neg_disc_sq)`. Establish `hD : discr K₀ = -(H.d : ℤ)` using `discr_eq_neg_of_sq_eq h2 H.d_prime.squarefree (by omega) hr`. Establish `hTC : IsTotallyComplex K₀`. Use `⟨fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hv`. Establish `h1 : InfinitePlace.embedding_of_isReal hv ⟨H.rt0, hr0⟩ ^ 2 = -(H.d : ℝ)`. Rewrite using `[← map_pow, hr, map_neg, map_natCast]`. Establish `h3 : (0 : ℝ) < H.d` using `by exact_mod_cast hd0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (InfinitePlace.embedding_of_isReal hv ⟨H.rt0, hr0⟩)]`. Take `⟨w, hw, hgen⟩` from `exists_integer_generator_of_sq_eq_neg h2 H.d_prime.squarefree (by omega) hr`. Set `φ : K₀ →+* ℂ` to `algebraMap K₀ ℂ`. Establish `hw' : φ w = (1 + H.rt0) / 2`. Use `congrArg φ hw` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Express the relevant statement in the definitionally equal form `_ = 1 + H.rt0 at this`. Take the linear combination `this / 2`. Establish `hc : ∀ a b : ℤ, φ ((a : 𝓞 K₀) + b * w : 𝓞 K₀) = a + b * ((1 + H.rt0) / 2)` using `fun a b => by`. Rewrite using `[← hw']`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hn0 : (n : 𝓞 K₀) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`. Take `⟨L, _, _, _, hL⟩` from `GlobalTheory.Mem.Fld.rayField_iff.1 hRF K₀ (Ideal.span {(n : 𝓞 K₀)}) (by rwa [Ne, Ideal.span_singleton_eq_bot])`. Set `ψ : L →ₐ[K₀] ℂ` to `IsAlgClosed.lift`. Set `e₀ : L ≃ₐ[K₀] ψ.fieldRange` to `AlgEquiv.ofInjectiveField ψ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hfR : FiniteDimensional K₀ ψ.fieldRange` using `e₀.toLinearEquiv.finiteDimensional`. Establish `hLR` using `fun (_ : NumberField ψ.fieldRange) => hL.of_algEquiv e₀`. Generalize the expression as in `ψ.fieldRange = R at hfR hLR`. Establish `hNR : NumberField R` using `NumberField.of_module_finite K₀ R`. Take `⟨hab, hR⟩` from `hLR hNR`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `IsRay R (Ideal.span {(n : 𝓞 K₀)}) at hR`. Establish `hdR : ¬ (q : ℤ) ∣ discr R` using `not_dvd_discr_of_unramIn K₀ R hq hqn (by rwa [hD, dvd_neg, Int.natCast_dvd_natCast]) hR.1`. Use `⟨R.restrictScalars ℚ, hNR, hdR, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.FinalJoin.CurveField.curveOver_of_weberIn E H _ n (by omega)).1 (R.algebraMap_mem (⟨H.rt0, hr0⟩ : K₀)) fun P hP => ?_` and prove the remaining obligations. Establish `hW` using `GlobalTheory.FieldSize.InRayAny.weberSet_subset K₀ h2 (by omega) P (fun z => ?_) n hn R hR`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨hW (Set.mem_insert _ _), fun s hs => hW (Set.mem_insert_of_mem _ ⟨_, (hP _).2 ⟨s, rfl⟩, hs, rfl⟩)⟩`. Rewrite using `[hP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨_, hc s.1 s.2⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Take `⟨a, b, rfl⟩` from `hgen a`. Conclude with `⟨(a, b), hc a b⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_field_of_rayField (hRF : GlobalTheory.NT.RayField) (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (n q : ℕ) (hn : 3 ≤ n) (hq : q.Prime) (hqn : ¬ q ∣ n) (hqd : ¬ q ∣ H.d) :
@@ -137,7 +135,7 @@ end
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 
 /- English proof (translation)
-Introduce `h E _ _ _ H n q hn hq hnd` and use `exists_field_of_rayField h.p8 E H n q hn hq (fun e => hnd ((e.mul_left 2).mul_right _)) (fun e => hnd (e.mul_left _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_unram_curveOver : Hypotheses2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (n q : ℕ), 3 ≤ n → q.Prime → ¬ q ∣ 2 * n * H.d → ∃ (F' : IntermediateField ℚ ℂ) (_ : NumberField F'), ¬ (q : ℤ) ∣ discr F' ∧ GlobalTheory.CompRat.CurveOver H F' n :=
   fun h E _ _ _ H n q hn hq hnd => exists_field_of_rayField h.p8 E H n q hn hq

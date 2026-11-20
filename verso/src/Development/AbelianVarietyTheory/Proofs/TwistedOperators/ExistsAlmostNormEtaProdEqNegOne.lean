@@ -10,11 +10,11 @@ namespace GlobalTheory.QuadSymbol
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [map_zero, zero_mul, add_zero, map_eq_zero] at hst`. Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction. Apply `hθ` to reduce the goal to its premises. Use `⟨-s / t, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht' : algebraMap K L t ≠ 0` using `(map_ne_zero _).mpr ht`. Rewrite using `[map_div₀, map_neg, div_eq_iff ht']`. Take the linear combination `-hst`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem linearIndependent_one_of_notMem_range {K L : Type} [Field K] [Field L] [Algebra K L]
     {θ : L} (hθ : θ ∉ Set.range (algebraMap K L)) : LinearIndependent K ![(1 : L), θ] := by
@@ -34,19 +34,17 @@ private theorem linearIndependent_one_of_notMem_range {K L : Type} [Field K] [Fi
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ⟩ : ∃ θ : L, θ ∉ Set.range (algebraMap K L) := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hbot : (⊥ : Subalgebra K L) = ⊤` using `eq_top_iff.mpr fun x _ => Algebra.mem_bot.mpr (hcon x)`. Use `Subalgebra.bot_eq_top_iff_finrank_eq_one.mp hbot` as an intermediate fact.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Set `B` to `basisOfLinearIndependentOfCardEqFinrank (linearIndependent_one_of_notMem_range hθ) (by simp [h2])`. Establish `hB : ∀ i, B i = ![(1 : L), θ] i` using `fun i => by`. Simplify using `[B, coe_basisOfLinearIndependentOfCardEqFinrank]`. Establish `hθθ : θ * θ = algebraMap K L (B.repr (θ * θ) 0) + algebraMap K L (B.repr (θ * θ) 1) * θ` using `by conv_lhs => rw [← B.sum_repr (θ * θ)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_two, hB, hB, Algebra.smul_def, Algebra.smul_def]`. Simplify using the standard rewrite rules. Use `set q := B.repr (θ * θ) 0`. Use `set p := B.repr (θ * θ) 1`. Use `clear_value p q`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hθ' : θ - algebraMap K L (p / 2) ∉ Set.range (algebraMap K L)`. Introduce and unpack `⟨c, hc⟩`. Conclude with `hθ ⟨c + p / 2, by rw [map_add, hc]; ring⟩`. Establish `hp2 : algebraMap K L (p / 2) * 2 = algebraMap K L p`. Rewrite using `[← map_ofNat (algebraMap K L) 2, ← map_mul, div_mul_cancel₀ p two_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hδeq : algebraMap K L (q + p ^ 2 / 4) = algebraMap K L q + algebraMap K L (p / 2) ^ 2`. Rewrite using `[show q + p ^ 2 / 4 = q + (p / 2) ^ 2 by ring, map_add, map_pow]`. Use `⟨basisOfLinearIndependentOfCardEqFinrank (linearIndependent_one_of_notMem_range hθ') (by simp [h2]), q + p ^ 2 / 4, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[coe_basisOfLinearIndependentOfCardEqFinrank]`. Simplify using `only [coe_basisOfLinearIndependentOfCardEqFinrank, Matrix.cons_val_one, Matrix.cons_val_zero]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hδeq]`. Take the linear combination `hθθ - θ * hp2`. Introduce and unpack `⟨c, hc⟩`. Establish `hsq : (θ - algebraMap K L (p / 2) - algebraMap K L c) * (θ - algebraMap K L (p / 2) + algebraMap K L c) = 0`. Establish `hc'` using `congrArg (algebraMap K L) hc`.
-
-Rewrite `hc'` using `[hδeq, map_mul]`. Take the linear combination `hθθ - θ * hp2 + hc'`. Break down `mul_eq_zero.mp hsq with h | h` into its components or cases. Conclude with `hθ' ⟨c, by linear_combination -h⟩`. Conclude with `hθ' ⟨-c, by rw [map_neg]; linear_combination -h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem exists_basis_one_sqrt_nonsquare_of_finrank_two (K L : Type) [Field K] [CharZero K] [Field L]
     [Algebra K L] (h2 : Module.finrank K L = 2) :
@@ -97,7 +95,7 @@ private theorem exists_basis_one_sqrt_nonsquare_of_finrank_two (K L : Type) [Fie
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hsq`. Establish `hc : c ≠ 0` using `by rintro rfl; simp at hd`. Use `⟨(x + 1) / 2, (x - 1) / (2 * c), ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_sq_sub_mul_sq_of_isSquare {K : Type} [Field K] [CharZero K] {d : K}
     (hd : d ≠ 0) (hsq : IsSquare d) (x : K) : ∃ a b : K, x = a ^ 2 - d * b ^ 2 := by
@@ -109,17 +107,15 @@ private theorem exists_sq_sub_mul_sq_of_isSquare {K : Type} [Field K] [CharZero 
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `set d : Fˣ := Units.mk0 δ hδ0 with hd`. Establish `hidx` using `(_root_.GlobalTheory.QNorm.two_pow_le_index_locNorm F δ S₀ hδ0).1`. Use `haveI : (_root_.GlobalTheory.QNorm.locNorm F δ S₀).FiniteIndex := ⟨hidx⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := Fintype.ofFinite (Fˣ ⧸ _root_.GlobalTheory.QNorm.locNorm F δ S₀)`. Set `X : Finset Fˣ` to `insert d (Finset.univ.image fun q : Fˣ ⧸ _root_.GlobalTheory.QNorm.locNorm F δ S₀ => q.out)`. Take `⟨S₁, -, hS₁⟩` from `_root_.GlobalTheory.QNorm.exists_superset_mem_sUnits F X S₀`. Take `⟨S, hS₁S, hadm⟩` from `_root_.GlobalTheory.QNorm.exists_admissible_superset_finite_places F (S₁ ∪ S₀)`. Establish `hmem : ∀ x ∈ X, x ∈ _root_.GlobalTheory.QNorm.sUnits F S` using `hS₁ S (Finset.union_subset_left hS₁S)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdδ : (d : F) = δ` using `rfl`. Use `_root_.GlobalTheory.QNorm.sUnits_sup_locNorm_ne_top F d S hadm (hmem d (Finset.mem_insert_self _ _)) (by rwa [hdδ]) ?_` and prove the remaining obligations. Establish `hle : _root_.GlobalTheory.QNorm.locNorm F δ S₀ ≤ _root_.GlobalTheory.QNorm.locNorm F (d : F) S`. Introduce `x hx`. Rewrite using `[hdδ]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Unfold `_root_.GlobalTheory.QNorm.locNorm at hx ⊢`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_iInf] at hx ⊢`. Use `⟨fun v hv => ?_, hx.2⟩` and prove the remaining obligations. Distinguish the cases in `hv0 : v ∈ S₀`. Conclude with `hx.1 v hv0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[_root_.GlobalTheory.QNorm.mem_normSub] haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Conclude with `exists_sq_sub_mul_sq_of_isSquare ((map_ne_zero _).mpr hδ0) (hcon v hv0) _`. Rewrite using `[eq_top_iff]`. Introduce `t _`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (_root_.GlobalTheory.QNorm.locNorm F δ S₀) t`.
-
-Establish `ht : t = (QuotientGroup.mk t : Fˣ ⧸ _root_.GlobalTheory.QNorm.locNorm F δ S₀).out * (h : Fˣ)⁻¹`. Rewrite using `[hh]`. Use `group`. Rewrite using `[ht]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_left (hmem _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (Finset.mem_univ _))))) (Subgroup.mem_sup_right (hle (Subgroup.inv_mem _ h.2)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_place_notMem_not_isSquare (F : Type) [Field F] [NumberField F] (δ : F)
     (hδ0 : δ ≠ 0) (hδ : ¬ IsSquare δ) (S₀ : Finset (HeightOneSpectrum (𝓞 F))) :
@@ -165,15 +161,15 @@ private theorem exists_place_notMem_not_isSquare (F : Type) [Field F] [NumberFie
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _`. Take `⟨e, δ, he0, he1, hδ⟩` from `exists_basis_one_sqrt_nonsquare_of_finrank_two K L (Algebra.IsQuadraticExtension.finrank_eq_two K L)`. Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hδ ⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨v, -, hv⟩` from `exists_place_notMem_not_isSquare K δ hδ0 hδ ∅`. Take `⟨x, hx0, hx⟩` from `_root_.GlobalTheory.QNorm.exists_local_nonnorm K v _ ((map_ne_zero _).mpr hδ0) hv`. Establish `hnot : Units.mk0 x hx0 ∉ _root_.GlobalTheory.QuadSymbol.normGroup K L (v.adicCompletion K)`. Rewrite using `[_root_.GlobalTheory.QuadSymbol.mem_normGroup_iff_form e he0 he1]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨Pi.mulSingle v (Units.mk0 x hx0), 1, ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.QuadSymbol.AlmostNorm`. Use `(Set.finite_singleton v).subset fun v' hv' => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hv'` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne (Set.mem_singleton_iff.not.mp hne)]`. Conclude with `Subgroup.one_mem _`. Unfold `_root_.GlobalTheory.QuadSymbol.etaProd`. Rewrite using `[finprod_eq_single _ v]`. Rewrite using `[Pi.mulSingle_eq_same, _root_.GlobalTheory.QuadSymbol.eta_eq_neg_one_iff.mpr hnot, Finset.prod_eq_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w _`. Conclude with `_root_.GlobalTheory.QuadSymbol.eta_eq_one_iff.mpr (Subgroup.one_mem _)`. Introduce `v' hv'`. Rewrite using `[Pi.mulSingle_eq_of_ne hv']`. Conclude with `_root_.GlobalTheory.QuadSymbol.eta_eq_one_iff.mpr (Subgroup.one_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QuadSymbol.exists_almostNorm_etaProd_eq_neg_one :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]

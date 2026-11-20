@@ -8,13 +8,13 @@ namespace GlobalTheory.BK
 open PowerSeries
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `of_subsingleton => exact ⟨0, fun m => Subsingleton.elim _ _⟩`. Consider the case `@of_simple_quotient M _ _ N hs _ ih`. Take `⟨n, hn⟩` from `ih`. Establish `hS : ∀ q : M ⧸ N, r • q = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `q`. Assume the negation of the conclusion as `hq`. Establish `htop : (R ∙ (r • q)) = ⊤` using `(IsSimpleOrder.eq_bot_or_eq_top _).resolve_left (by rwa [Submodule.span_singleton_eq_bot])`. Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.1 (htop ▸ Submodule.mem_top : q ∈ R ∙ (r • q))`. Establish `h1 : (1 - b * r) • q = 0` using `by rw [sub_smul, one_smul, mul_smul, hb, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : q = 0` using `(hr b).smul_eq_zero.1 h1`. Conclude with `hq (by rw [h2, smul_zero])`. Use `⟨n + 1, fun m => ?_⟩` and prove the remaining obligations. Establish `hm : r • m ∈ N`. Use `hS (N.mkQ m)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Use `hn ⟨_, hm⟩` as an intermediate fact. Rewrite using `[pow_succ, mul_smul]`. Simplify using `using congrArg Subtype.val this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_eq_zero_of_isFiniteLength {R : Type} [CommRing R] (r : R)
     (hr : ∀ b : R, IsUnit (1 - b * r)) (M : Type) [AddCommGroup M] [Module R M]
@@ -44,17 +44,15 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [IsUnitBall O K] (l : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K]
 
 /- English proof (translation)
-Use `set f : A O K := 1 - b * (l : A O K)`. Use `set g := (equivA O K).symm f`. Establish `hg : equivA O K g = f` using `AlgEquiv.apply_symm_apply _ _`. It suffices to establish `IsUnit g by simpa [hg] using this.map (equivA O K)`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h0 : algebraMap O K (constantCoeff g) = 1 - constantCoeff (b : K⟦X⟧) * l`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[coe_equivA, ← coeff_zero_eq_constantCoeff_apply (map _ g), coeff_map, coeff_zero_eq_constantCoeff_apply]`. Use `_ = 1 - constantCoeff (b : K⟦X⟧) * l := by`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [f, Subalgebra.coe_sub, Subalgebra.coe_one, Subalgebra.coe_mul, map_sub, map_one, map_mul]`. Use `congr 2`. Establish `hlt : ‖constantCoeff (b : K⟦X⟧) * (l : K)‖ < 1`. Rewrite using `[norm_mul]`. Establish `hb : ‖constantCoeff (b : K⟦X⟧)‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `using (mem_A.1 b.2) 0`. Combine the equalities or inequalities in the displayed calculation. Establish `hn : ‖algebraMap O K (constantCoeff g)‖ = 1`. Rewrite using `[h0, sub_eq_add_neg, add_comm, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg, norm_one]; exact hlt.ne), norm_neg, norm_one, max_eq_right hlt.le]`. Establish `hne : algebraMap O K (constantCoeff g) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Rewrite `hn` using `[h, norm_zero]`. Conclude with `zero_ne_one hn`. Take `⟨c, hc⟩` from `(IsUnitBall.mem_range_iff (O := O) (algebraMap O K (constantCoeff g))⁻¹).2 (by rw [norm_inv, hn, inv_one])`. Use `IsUnit.of_mul_eq_one c (IsUnitBall.inj (K := K) ?_)` and prove the remaining obligations.
-
-Rewrite using `[map_mul, hc, mul_inv_cancel₀ hne, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_one_sub_mul_l (b : A O K) : IsUnit (1 - b * (l : A O K)) := by
   set f : A O K := 1 - b * (l : A O K)
@@ -88,11 +86,11 @@ theorem isUnit_one_sub_mul_l (b : A O K) : IsUnit (1 - b * (l : A O K)) := by
   rw [map_mul, hc, mul_inv_cancel₀ hne, map_one]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero_of_isFiniteLength (l : A O K) (isUnit_one_sub_mul_l l) _ h`. Use `⟨n, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `hn (Submodule.Quotient.mk ⟨y, hy⟩)`. Rewrite `h1` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ∈ (G.imM).comap T.M.subtype at h1`. Rewrite `h1` using `[Submodule.mem_comap, Hom.imM, Submodule.mem_map]`. Take `⟨x, hx, hxy⟩` from `h1`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite `hxy` using `[LinearMap.restrictScalars_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hxy]`. Use extensionality with `τ i`. Simplify using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_l_pow_smul_eq_app_of_isFiniteLength_coker (O K : Type) [CommRing O] [NormedField K]
     [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) [Fact l.Prime]

@@ -34,11 +34,9 @@ open ReciprocityTheory.AnForm (levi)
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `hG hPts hAv hW hFam hPair`. Establish `hR : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement` using `hG.2.2.2.2.1`. Establish `hFHT : HT.FarguesHodgeTate` using `hG.2.2.2.2.2.2.1`. Establish `hGaga : Flat.GagaSections` using `hG.2.2.2.2.2.2.2.1`. Establish `hPB : PB.Inputs` using `hG.2.2.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0` using `GlobalTheory.T.flat_zero_from_resolution_and_gaga hR hGaga`. Establish `hA1` using `GlobalTheory.T.flat_first_from_resolution_and_gaga hR hGaga`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ H D Xo l c Y _ hgl hs hp hq`. Conclude with `GlobalTheory.T.exists_good_root_tower hG hW hA0 hA1 E H D Xo l c Y hgl hs hp hq`.
-
-Conclude with `GlobalTheory.T.volume_theorem_of_inputs hG hPts hW (GlobalTheory.T.exists_geometric_height_constants hG hW GlobalTheory.T.FlatDegree_holds) (GlobalTheory.T.model_on_hodge_from_family hFam) (GlobalTheory.T.triv_flag_on_hodge_of_fargues hFHT) GlobalTheory.T.FlatDegree_holds GlobalT …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goodTower_and_volume :
     Top.Given → PtsIntegrableStatement → ReciprocityTheory.ChartRestriction.G.AI.I2.AvoidStatement → Out.WeilSt → GlobalTheory.CompanionTheory.Ar.Num.FamilyExistsPos →

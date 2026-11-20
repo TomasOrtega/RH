@@ -9,11 +9,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical Pointwise
 
 /- English proof (translation)
-Introduce `E _ _ _ P φ hφ C hC`. Take `⟨c, C₀, hc, hC₀, hred⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.redE E`. Establish `hC' : IsCompact ((gl (F` using `E) '' C₀) * C) := (hC₀.image continuous_gl).mul hC`. Take `⟨hL, -, hd⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.decE E P φ hφ`. Take `⟨B, hB⟩` from `hd _ hC' c hc 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨B, fun h k hk => ?_⟩` and prove the remaining obligations. Take `⟨γ, u, b, k₀, hk₀, hg, hb⟩` from `hred h`. Establish `e1 : φ.1 (gl h * k) = φ.1 (gl (nU u * mD b) * (gl k₀ * k))`. Rewrite using `[← mul_assoc, ← gl_mul, ← hg, gl_mul, gl_ratS, mul_assoc, hL.2]`. Establish `h1` using `hB u b (gl k₀ * k) (Set.mul_mem_mul ⟨k₀, hk₀, rfl⟩ hk) hb`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.bddE :
     UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.BddE := by

@@ -16,25 +16,21 @@ open GlobalTheory.UU
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X U V j v hj hv ζ N hζ k _ y hN hy`. Use `set s : Γ(V, ⊤) := ∑ i ∈ Finset.range N, ζ ^ i with hs`. Establish `hmul : s * (ζ - 1) = 0` using `by rw [hs, geom_sum_mul, hζ, sub_self]`. Establish `hys : y.appTop.hom s = (N : Γ(Sp k, ⊤))`. Simplify using `[hs, map_sum, map_pow, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (y.appTop.hom s)`. Rewrite using `[hys]`. Establish `h1 : IsUnit (N : k)` using `isUnit_iff_ne_zero.mpr hN`. Establish `h2` using `h1.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hpre : y ⁻¹ᵁ V.basicOpen s = ⊤`. Rewrite using `[Scheme.preimage_basicOpen_top]`. Conclude with `(Sp k).basicOpen_of_isUnit hunit`. Establish `hne : ((V.basicOpen s : V.Opens) : Set V).Nonempty`. Take `⟨p⟩ : Nonempty (Sp k)` from `inferInstanceAs (Nonempty (PrimeSpectrum k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨y p, ?_⟩` and prove the remaining obligations. Establish `: p ∈ y ⁻¹ᵁ V.basicOpen s` using `by rw [hpre]; trivial`. Conclude with `this`. Establish `hopen : IsOpen (v '' ((V.basicOpen s : V.Opens) : Set V))` using `v.isOpenEmbedding.isOpenMap _ (V.basicOpen s).isOpen`. Take `⟨u₀, z₀, hz₀, hzu⟩` from `j.denseRange.exists_mem_open hopen (hne.image _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨w, hw1, hw2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := v) (g := j) z₀ u₀ hzu`. Set `P` to `pullback v j`. Set `K : Type` to `AlgebraicClosure (P.residueField w)`. Set `q : Sp K ⟶ P` to `spMap (algebraMap (P.residueField w) K) ≫ P.fromSpecResidueField w`. Establish `hq : ∀ p, q p = w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p`. Simplify using `only [q, Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Use `⟨K, inferInstance, inferInstance, q ≫ pullback.snd v j, q ≫ pullback.fst v j, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, pullback.condition]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set z := q ≫ pullback.fst v j with hz`. Establish `hzs : z.appTop.hom s ≠ 0`. Introduce `h0`. Take `⟨p⟩ : Nonempty (Sp K)` from `inferInstanceAs (Nonempty (PrimeSpectrum K))`. Establish `hp : p ∈ z ⁻¹ᵁ V.basicOpen s`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `z p ∈ V.basicOpen s`. Rewrite using `[hz, Scheme.Hom.comp_apply, hq, hw1]`. Conclude with `hz₀`. Rewrite `hp` using `[Scheme.preimage_basicOpen_top]`. Establish `: (Sp K).basicOpen (z.appTop.hom s) = ⊥`.
-
-Rewrite using `[h0]`. Conclude with `(Sp K).basicOpen_zero _`. Establish `hp' : p ∈ (Sp K).basicOpen (z.appTop.hom s)` using `hp`. Rewrite `hp'` using `[this]`. Conclude with `hp'`.
-
-Use `haveI : IsDomain Γ(Sp K, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isDomain`. Establish `h` using `congrArg z.appTop.hom hmul`. Rewrite `h` using `[map_mul, map_zero, map_sub, map_one]`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp h).resolve_left hzs)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_geometricPoint_rootOfUnity_eq_one_of_isDominant :
     ∀ (X U V : Scheme.{0}) (j : U ⟶ X) (v : V ⟶ X), IsDominant j → IsOpenImmersion v → ∀ (ζ : Γ(V, ⊤)) (N : ℕ), ζ ^ N = 1 → ∀ (k : Type) [Field k] (y : Sp k ⟶ V), (N : k) ≠ 0 → y.appTop.hom ζ = 1 → ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (u : Sp K ⟶ U) (z : Sp K ⟶ V), z ≫ v = u ≫ j ∧ z.appTop.hom ζ = 1 := by

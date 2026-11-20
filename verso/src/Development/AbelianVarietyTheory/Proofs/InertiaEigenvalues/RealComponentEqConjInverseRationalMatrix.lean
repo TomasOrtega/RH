@@ -18,11 +18,11 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.ArchRatComp
 
 /- English proof (translation)
-Introduce `D θ _ V γ a γ' _ hrat _ hfc τ`. Use `⟨(θ τ).comp ((infPart D).comp (incA D)), ?_⟩` and prove the remaining obligations. Establish `h1 : infHom V (γ * a) = 1` using `hfc`. Establish `h2 : infHom V a = (infHom V γ)⁻¹`. Rewrite `h1` using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_inv_of_mul_eq_one_right h1`. Establish `h3 : infHom V γ = Formalism.UG.bc ((infPart D).comp (incA D)) γ'` using `by show (Formalism.UG.bc _) (matHom V γ) = _`. Rewrite using `[hrat]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h4 : Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a) = ((infHom V a).val).map (θ τ)` using `rfl`. Rewrite using `[h4, h2, h3, ← map_inv]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compAt_mt_eq_map_inv : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (γ a : GA D V) (γ' : GL (Fin V.rank) D.host.E),
     γ ∈ GQ V → GlobalTheory.Member.IsRat V γ γ' → a ∈ GinfC V → γ * a ∈ GfC V → ∀ τ : D.what₂.Tau, ∃ σ : D.host.E →+* ℂ,

@@ -48,7 +48,7 @@ def OrderAtEqOfAgreeNear : Prop :=
     AgreeNear I J x → orderAt I x = orderAt J x
 
 /- English proof (translation)
-Establish `hι : W.homOfLE h ≫ U.ι = U'.ι` using `by simp`. Rewrite using `[← hι, Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp, hEq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_opens_eq_of_le {W : Scheme.{u}} {I J : W.IdealSheafData} {U U' : W.Opens}
     (h : U' ≤ U) (hEq : I.comap U.ι = J.comap U.ι) :
@@ -57,7 +57,7 @@ private theorem comap_opens_eq_of_le {W : Scheme.{u}} {I J : W.IdealSheafData} {
   rw [← hι, Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp, hEq]
 
 /- English proof (translation)
-Take `⟨U, hU, hEq⟩` from `(agreeNear_iff I J (V.ι.base y)).mp h`. Use `(agreeNear_iff _ _ _).mpr ⟨V.ι ⁻¹ᵁ U, hU, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, ← morphismRestrict_ι V.ι U, Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp, hEq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem agreeNear_comap_ι (W : Scheme.{u}) (V : W.Opens) (I J : W.IdealSheafData)
     (y : ↥(V.toScheme)) (h : AgreeNear I J (V.ι.base y)) :
@@ -69,7 +69,7 @@ theorem agreeNear_comap_ι (W : Scheme.{u}) (V : W.Opens) (I J : W.IdealSheafDat
     Scheme.IdealSheafData.comap_comp, hEq]
 
 /- English proof (translation)
-The claim follows from `FunctorialResolution.EmbeddedResolution.orderAt_comap_of_isOpenImmersion V.ι I y`.
+A detailed English derivation is pending.
 -/
 theorem orderAt_comap_ι (W : Scheme.{u}) (V : W.Opens) (I : W.IdealSheafData)
     (y : ↥(V.toScheme)) :
@@ -77,9 +77,9 @@ theorem orderAt_comap_ι (W : Scheme.{u}) (V : W.Opens) (I : W.IdealSheafData)
   FunctorialResolution.EmbeddedResolution.orderAt_comap_of_isOpenImmersion V.ι I y
 
 /- English proof (translation)
-Introduce `W I J x h`. Take `⟨U, hxU, hEq⟩` from `(agreeNear_iff I J x).mp h`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : ↥(U.toScheme), U.ι.base y = x := by`. Establish `hx : x ∈ Set.range ⇑U.ι.base` using `by simpa using hxU`. Take `⟨y, hy⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy⟩`. Rewrite using `[← hy, ← orderAt_comap_ι W U I y, ← orderAt_comap_ι W U J y, hEq]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem orderAtEqOfAgreeNear : OrderAtEqOfAgreeNear.{u} := by
   intro W I J x h
@@ -91,7 +91,7 @@ theorem orderAtEqOfAgreeNear : OrderAtEqOfAgreeNear.{u} := by
   rw [← hy, ← orderAt_comap_ι W U I y, ← orderAt_comap_ι W U J y, hEq]
 
 /- English proof (translation)
-The claim follows from `{ agreeNear_comap := agreeNear_comap_ι agreeNear_trans := by intro W I J K x hIJ hJK obtain ⟨U1, hx1, e1⟩ := (agreeNear_iff I J x).mp hIJ obtain ⟨U2, hx2, e2⟩ := (agreeNear_iff J K x).mp hJK exact (agreeNear_iff I K x).mpr ⟨U1 ⊓ U2, ⟨hx1, hx2⟩, (comap_opens_eq_of_le inf_le_left e …`.
+A detailed English derivation is pending.
 -/
 theorem idealSheafGeometryHypotheses_of_orderAtEqOfAgreeNear
     (h1 : VanishingOrderOneOnSmoothDivisor.{u}) (h2 : AgreeNearVanishingComapSubscheme.{u})
@@ -126,7 +126,7 @@ theorem idealSheafGeometryHypotheses_of_orderAtEqOfAgreeNear
     comap_vanishing := h3 }
 
 /- English proof (translation)
-The claim follows from `idealSheafGeometryHypotheses_of_orderAtEqOfAgreeNear h1 h2 h3 orderAtEqOfAgreeNear`.
+A detailed English derivation is pending.
 -/
 theorem idealSheafGeometryHypotheses_of_vanishingOrderOneOnSmoothDivisor
     (h1 : VanishingOrderOneOnSmoothDivisor.{u}) (h2 : AgreeNearVanishingComapSubscheme.{u})

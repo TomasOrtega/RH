@@ -5,7 +5,7 @@ open scoped CategoryTheory.MonObj
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp epsR IsTangent IsLieComb IsLieBasis)
 attribute [local instance] Over.cartesianMonoidalCategory
 /- English proof (citation)
-Apply `GlobalTheory.jet_add_sqZero_eq_prod_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFormalGroupCharts%2FJetPointAddSqZeroEqProdMulTangent.lean&line=84#L84)
 -/

@@ -18,9 +18,9 @@ open GlobalTheory.SeeConjRead
 namespace GlobalTheory.SeeConjChar
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hL hG`. Take `⟨hg, hcov⟩` from `GlobalTheory.T.typePlaces_over_norm_and_cover_with_conjugates R hL`. Take `⟨ψ, hψ, hprod⟩` from `GlobalTheory.T.conjInstanceCharacter_eq_prod_residueField_addChars X h R.Pg hg hcov (GlobalTheory.T.levelPlaces_not_isConjPlace_realDat R F hL hG)`. Use `⟨ψ, hψ, fun κ hκ => ?_⟩` and prove the remaining obligations. Take `⟨hi, he⟩` from `GlobalTheory.T.otherInstanceCharacter_eq_conjInstancePsiValue_integral X h κ hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he, hprod _ hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levelCharacter_on_stabilizer_eq_prod_residue_characters : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → ∃ ψ : ∀ P : Pl D.host.E, AddChar (kP P) ℂ, (∀ PP ∈ R.Pg, ψ PP ≠ 1 ∧ ψ (GlobalTheory.IdemSupport.cP PP) ≠ 1) ∧ ∀ κ : GA D (Yc D 0), ((iotaX X h).toMulEquiv κ).2 ∈ X.B.I.Kset → X.chi2 ((iotaX X h).toMulEquiv κ).2 = ∏ PP ∈ R.Pg, ψ PP (GlobalTheory.SeeConjChar.resT PP (GlobalTheory.SeeConjChar.argT X h (finE (Yc D 0) κ))) * ψ (GlobalTheory.IdemSupport.cP PP) (GlobalTheory.SeeConjChar.resT (GlobalTheory.IdemSupport.cP PP) (GlobalTheory.SeeConjChar.argT X h (finE (Yc D 0) κ))) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hL hG

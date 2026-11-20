@@ -10,19 +10,19 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
   {Orb : Type} [Fintype Orb] {I0 : Orb → Type} [∀ o, Fintype (I0 o)]
 
 /- English proof (translation)
-The claim follows from `unitSelf_of Y p fun o => gmPack_holds Y (p o)`.
+A detailed English derivation is pending.
 -/
 theorem unitSelf_holds (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o)) : UnitSelfSt Y p :=
   unitSelf_of Y p fun o => gmPack_holds Y (p o)
 
 /- English proof (translation)
-The claim follows from `projSelf_of Y p fun o => gmPack_holds Y (p o)`.
+A detailed English derivation is pending.
 -/
 theorem projSelf_holds (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o)) : ProjSelfSt Y p :=
   projSelf_of Y p fun o => gmPack_holds Y (p o)
 
 /- English proof (translation)
-The claim follows from `germLiftSelf_of Y p H (projSelf_holds Y p) fun o => tcoordSelf_holds C V O dd Y d (I0 o) (p o) (H o).cartH`.
+A detailed English derivation is pending.
 -/
 theorem germLiftSelf_holds (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o))
     (H : ∀ o, (Y.rawSelf (p o)).Hyps V) : GermLiftSelfSt Y p H :=

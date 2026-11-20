@@ -5,9 +5,9 @@ namespace GlobalTheory.NormSumLt
 universe u_1
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hr`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Establish `h1 : ‖f a‖ < r` using `h a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ‖∑ i ∈ s, f i‖ < r` using `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h1 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_sum_lt {K : Type u_1} [NormedField K] [IsUltrametricDist K] (s : Finset ℕ) (f : ℕ → K)
     {r : ℝ} (hr : (0 : ℝ) < r) (h : ∀ i ∈ s, ‖f i‖ < r) : ‖∑ i ∈ s, f i‖ < r := by
@@ -20,7 +20,7 @@ theorem norm_sum_lt {K : Type u_1} [NormedField K] [IsUltrametricDist K] (s : Fi
     exact lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h1 h2)
 
 /- English proof (translation)
-Introduce `K _ _ s f r hr h`. Conclude with `norm_sum_lt s f hr h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type u_1} [inst : NormedField K] [IsUltrametricDist K] (s : Finset ℕ) (f : ℕ → K) {r : ℝ}, (0 : ℝ) < r → (∀ i ∈ s, ‖f i‖ < r) → ‖∑ i ∈ s, f i‖ < r :=
   by

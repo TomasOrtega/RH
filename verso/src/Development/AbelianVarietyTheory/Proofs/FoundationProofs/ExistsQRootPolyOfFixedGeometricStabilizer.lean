@@ -13,15 +13,13 @@ def baseField : Subfield Ω :=
   Subfield.closure (Set.range (algebraMap (O0 p) Ω) ∪ {x | IsAlgZp p x})
 
 /- English proof (translation)
-The claim follows from `Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_baseField (a : O0 p) : algebraMap (O0 p) Ω a ∈ baseField p Ω :=
   Subfield.subset_closure (Or.inl ⟨a, rfl⟩)
 
 /- English proof (translation)
-Establish `hle : baseField p Ω ≤ RingHom.eqLocusField (g : Ω →+* Ω) (RingHom.id Ω)`. Use `Subfield.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z (⟨a, rfl⟩ | hz)`. Use `show g (algebraMap (O0 p) Ω a) = algebraMap (O0 p) Ω a`. Conclude with `g.commutes a`.
-
-Use `show g z = z`. Conclude with `hg z hz`. Conclude with `hle hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ggeo_fix_baseField {g : Gal p Ω} (hg : g ∈ Ggeo p Ω) {x : Ω} (hx : x ∈ baseField p Ω) :
     g x = x := by
@@ -44,11 +42,11 @@ Both sides reduce to the same expression.
 theorem toGal_apply (σ : Ω ≃ₐ[baseField p Ω] Ω) (x : Ω) : toGal σ x = σ x := rfl
 
 /- English proof (translation)
-Use `haveI := h.alg`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨P, hP0, hPx⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := O0 p) x`. Set `φ : O0 p →+* baseField p Ω` to `(algebraMap (O0 p) Ω).codRestrict (baseField p Ω) algebraMap_mem_baseField`. Establish `hφ : Function.Injective φ` using `fun a b hab => h.inj (congrArg Subtype.val hab)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P.map φ, (Polynomial.map_ne_zero_iff hφ).2 hP0, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_map]`. Establish `: (algebraMap (baseField p Ω) Ω).comp φ = algebraMap (O0 p) Ω`. Use extensionality with `a`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← aeval_def, hPx]`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_baseField (h : IsClo p Ω) : Algebra.IsAlgebraic (baseField p Ω) Ω := by
   haveI := h.alg
@@ -68,23 +66,17 @@ end GlobalTheory.K5.Span
 open GlobalTheory.K5 GlobalTheory.K5.Span in
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ h T N y hy`. Use `haveI : CharZero Ω := Basic.charZero_of_isClo h`. Use `haveI := h.clo`. Use `set L := baseField p Ω`. Use `haveI : CharZero L := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic L Ω := isAlgebraic_baseField h`. Use `haveI : IsAlgClosure L Ω := ⟨h.clo, inferInstance⟩`. Use `haveI : IsGalois L Ω := IsAlgClosure.isGalois L Ω`. Use `set M : IntermediateField L Ω := IntermediateField.adjoin L {T.qq N}`. Establish `hyM : y ∈ M`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup M, mem_fixedField_iff]`. Introduce `σ hσ`. Establish `hq : σ (T.qq N) = T.qq N` using `(mem_fixingSubgroup_iff M σ).1 hσ _ (mem_adjoin_simple_self L _)`. Use `hy (toGal σ) (Subgroup.mem_inf.2 ⟨fun x hx => ?_, ?_⟩)` and prove the remaining obligations. Conclude with `σ.commutes (⟨x, Subfield.subset_closure (Or.inr hx)⟩ : L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def, toGal_apply, hq]`. Establish `hyA : y ∈ (aeval (T.qq N) : L[X] →ₐ[L] Ω).range`. Rewrite using `[← Algebra.adjoin_singleton_eq_range_aeval, ← adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic _)]`. Conclude with `hyM`. Take `⟨P, hP⟩` from `hyA`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q0 : L := ⟨algebraMap (O0 p) Ω (qO p), algebraMap_mem_baseField _⟩`. Use `set Q : L[X] := X ^ (p ^ N) - C q0`. Establish `hpN : p ^ N ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Establish `hQm : Q.Monic` using `monic_X_pow_sub_C _ hpN`. Establish `hQd : Q.natDegree = p ^ N` using `natDegree_X_pow_sub_C`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ1 : Q ≠ 1`. Introduce `e`. Rewrite `hQd` using `[e, natDegree_one]`. Conclude with `hpN hQd.symm`. Establish `hQq : aeval (T.qq N) Q = 0`.
-
-Simplify using `only [Q, map_sub, map_pow, aeval_X, aeval_C, Basic.qq_pow]`. Conclude with `sub_self _`. Use `set R := P %ₘ Q`. Establish `hRd : R.natDegree < p ^ N` using `hQd ▸ natDegree_modByMonic_lt P hQm hQ1`. Establish `hR : aeval (T.qq N) R = y`.
-
-Establish `e` using `congrArg (aeval (T.qq N)) (modByMonic_add_div P Q)`. Rewrite `e` using `[map_add, map_mul, hQq, zero_mul, add_zero]`. Rewrite using `[e]`. Conclude with `hP`. Use `⟨fun j => ((R.coeff j : L) : Ω), fun j g hg => ggeo_fix_baseField hg (R.coeff j).2, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hR, aeval_eq_sum_range' hRd]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.K5.span_fixed_ggeo_stab : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (N : ℕ) (y : Ω), (∀ g ∈ Ggeo p Ω ⊓ MulAction.stabilizer (Gal p Ω) (T.qq N), g y = y) →

@@ -18,23 +18,23 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.MPSmooth
 
 /- English proof (translation)
-The claim follows from `CxPts.ofHom_mem _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptP_mem_chart (N : ℕ) (c : Fin (N + 1)) (w : Fin (N + 1) → ℂ) :
     ptP N c w ∈ ptsIn (PSpace.str ℤ N) σ₀ (chart ℤ N c) :=
   CxPts.ofHom_mem _ _ _
 
 /- English proof (translation)
-The claim follows from `CxPts.ev_ofHom _ _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem ev_ptP (N : ℕ) (c : Fin (N + 1)) (w : Fin (N + 1) → ℂ) (a : Γ(PSpace ℤ N, chart ℤ N c)) :
     CxPts.ev (PSpace.str ℤ N) σ₀ (chart ℤ N c) a (ptP N c w) = chartHom N c w a :=
   CxPts.ev_ofHom _ _ _ a
 
 /- English proof (translation)
-Rewrite using `[ev_ptP]`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Rewrite using `[ratio, ratioOn_self, map_one, div_self hc]`. Establish `e : (chartAlgEquiv ℤ N c).symm (ratio ℤ N c i) = X ⟨i, h⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← chartAlgEquiv_X ℤ N c ⟨i, h⟩]`. Conclude with `AlgEquiv.symm_apply_apply _ _`. Simplify using `[chartHom, e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_ptP_ratio (N : ℕ) (c : Fin (N + 1)) (w : Fin (N + 1) → ℂ) (hc : w c ≠ 0)
     (i : Fin (N + 1)) :
@@ -49,9 +49,9 @@ theorem ev_ptP_ratio (N : ℕ) (c : Fin (N + 1)) (w : Fin (N + 1) → ℂ) (hc :
     simp [chartHom, e]
 
 /- English proof (translation)
-Establish `e` using `CxPts.mem_ptsIn_basicOpen (ptP_mem_chart N c w) (ratio ℤ N c i)`. Rewrite `e` using `[ratio, basicOpen_ratioOn, CxPts.mem_ptsIn_inf]`. Rewrite `e` using `[← ratio, ev_ptP_ratio N c w hc i]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `e.1 ⟨ptP_mem_chart N c w, h⟩` as an intermediate fact. Conclude with `fun h0 => this (by rw [h0, zero_div])`. Introduce `h`. Conclude with `(e.2 (div_ne_zero h hc)).2`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ptP_mem_chart_iff (N : ℕ) (c : Fin (N + 1)) (w : Fin (N + 1) → ℂ) (hc : w c ≠ 0)
     (i : Fin (N + 1)) :
@@ -67,11 +67,11 @@ theorem ptP_mem_chart_iff (N : ℕ) (c : Fin (N + 1)) (w : Fin (N + 1) → ℂ) 
     exact (e.2 (div_ne_zero h hc)).2
 
 /- English proof (translation)
-Use `⟨ptP_mem_chart_iff N c w hc, fun i j hi => ?_⟩` and prove the remaining obligations. Establish `hwi : w i ≠ 0` using `(ptP_mem_chart_iff N c w hc i).1 hi`. Establish `hW : ptP N c w ∈ ptsIn (PSpace.str ℤ N) σ₀ (chart ℤ N c ⊓ chart ℤ N i)` using `CxPts.mem_ptsIn_inf.2 ⟨ptP_mem_chart N c w, hi⟩`. Establish `h₁ : ratioOn (chart ℤ N c ⊓ chart ℤ N i) c inf_le_left i * ratioOn (chart ℤ N c ⊓ chart ℤ N i) i inf_le_right j = ratioOn (chart ℤ N c ⊓ chart ℤ N i) c inf_le_left j` using `ratioOn_mul_ratioOn`. Establish `h₂` using `congrArg (fun f => CxPts.ev (PSpace.str ℤ N) σ₀ _ f (ptP N c w)) h₁`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [CxPts.ev_mul] at h₂`. Establish `ea : ∀ k, CxPts.ev (PSpace.str ℤ N) σ₀ (chart ℤ N c ⊓ chart ℤ N i) (ratioOn (chart ℤ N c ⊓ chart ℤ N i) c inf_le_left k) (ptP N c w) = w k / w c` using `fun k => (CxPts.ev_res inf_le_left hW (ratio ℤ N c k)).trans (ev_ptP_ratio N c w hc k)`. Establish `eb : CxPts.ev (PSpace.str ℤ N) σ₀ (chart ℤ N c ⊓ chart ℤ N i) (ratioOn (chart ℤ N c ⊓ chart ℤ N i) i inf_le_right j) (ptP N c w) = CxPts.ev (PSpace.str ℤ N) σ₀ (chart ℤ N i) (ratio ℤ N i j) (ptP N c w)` using `CxPts.ev_res inf_le_right hW (ratio ℤ N i j)`. Rewrite `h₂` using `[ea, ea, eb]`. Clear denominators, using `at h₂ ⊢` for the nonvanishing conditions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `h₂`.
+A detailed English derivation is pending.
 -/
 theorem ptP_chart (N : ℕ) (c : Fin (N + 1)) (w : Fin (N + 1) → ℂ) (hc : w c ≠ 0) :
     (∀ i, GlobalTheory.CompanionTheory.MPSmooth.ptP N c w ∈ ptsIn (PSpace.str ℤ N) σ₀ (chart ℤ N i) ↔ w i ≠ 0) ∧

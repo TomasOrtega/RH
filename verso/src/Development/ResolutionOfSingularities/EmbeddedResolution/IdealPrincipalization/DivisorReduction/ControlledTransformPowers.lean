@@ -30,11 +30,9 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace BlowupSequenceData
 
 /- English proof (translation)
-Use `revert ht hdivA hdivK`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_ _ _`. Rewrite using `[BlowupSequenceData.controlledTransform_zero, BlowupSequenceData.controlledTransform_zero, ← Scheme.IdealSheafData.comap_pow, ← Scheme.IdealSheafData.comap_pow]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Scheme.IdealSheafData.comap_mono (f := d.isoZero.hom) hbase`. Consider the case `succ n ih`. Introduce `ht hdivA hdivK`. Establish `hn : n < d.length` using `lt_of_lt_of_le (Nat.lt_succ_self n) ht`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (Blowup.exceptionalIdeal (d.map n) (d.center n))` using `isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal (d.isBlowup n hn)`.
-
-Conclude with `pow_controlledTransform_le_pow_controlledTransform_succ d K A m l n hcart (hdivK n (Nat.lt_succ_self n)) (hdivA n (Nat.lt_succ_self n)) (ih (le_of_lt hn) (fun i hi => hdivA i (Nat.lt_succ_of_lt hi)) (fun i hi => hdivK i (Nat.lt_succ_of_lt hi)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pow_controlledTransform_le_pow_controlledTransform_of_dvd {X : Scheme.{u}} (d : BlowupSequenceData X)
     (K A : X.IdealSheafData) (m l : ℕ) (hbase : K ^ m ≤ A ^ (m - l)) (t : ℕ)
@@ -63,7 +61,7 @@ private theorem pow_controlledTransform_le_pow_controlledTransform_of_dvd {X : S
           (fun i hi => hdivK i (Nat.lt_succ_of_lt hi)))
 
 /- English proof (translation)
-Establish `hle : d.controlledTransform A n t ≤ d.center t ^ n` using `le_pow_of_hasStrictNormalCrossingsWith (d.projectionToBase t ≫ p) (d.center t) (d.controlledTransform A n t) E hE n hord`. Take `⟨B, hB, -⟩` from `existsUnique_pow_mul_eq_comap_of_isBlowupAlongIdealSheaf (d.map t) (d.center t) (d.controlledTransform A n t) n (d.isBlowup t ht) hle`. Conclude with `⟨B, hB⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_mul_eq_comap_controlledTransform {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
     (d : BlowupSequenceData X) (p : X ⟶ Spec (CommRingCat.of k)) (A : X.IdealSheafData) (n t : ℕ)
@@ -86,7 +84,7 @@ end BlowupSequenceData
 namespace DivisorReduction
 
 /- English proof (translation)
-Establish `ht' : t ≤ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).length`. Rewrite using `[ambientBlowupSeq_length hres hno T j hj I₀ E₀ s hpr]`. Conclude with `ht`. Conclude with `BlowupSequenceData.pow_controlledTransform_le_pow_controlledTransform_of_dvd (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr) (derivIdealSheafIterate T.base T.structMap l I₀) I₀ T.mult l (IsDerivBalanced.derivIdealSheafIterate_pow_le T.base T.structMap hbal hl) t ht' hdivA hdivD`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_ambientDerivIdeal_le_pow_controlledTransform
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})

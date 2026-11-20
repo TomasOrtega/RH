@@ -11,24 +11,24 @@ namespace GlobalTheory.BSP.AinfDiv
 variable {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K)
 
 /- English proof (translation)
-Rewrite using `[map_natCast, CharP.cast_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_l : WittVector.constantCoeff (p := l) (R := OCb l) ((l : ℕ) : Ainf l) = 0 := by
   rw [map_natCast, CharP.cast_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, WittVector.ker_constantCoeff, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_iff (y : Ainf l) :
     ((l : ℕ) : Ainf l) ∣ y ↔ WittVector.constantCoeff (p := l) (R := OCb l) y = 0 := by
   rw [← RingHom.mem_ker, WittVector.ker_constantCoeff, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Establish `h` using `bk.monic.as_sum`. Establish `: bk.E = X ^ bk.Ep.natDegree + ∑ i ∈ Finset.range bk.Ep.natDegree, C (bk.Ep.coeff i) * X ^ i`. Express the relevant statement in the definitionally equal form `((bk.Ep : Polynomial (Wq l bk.a)) : (Wq l bk.a)⟦X⟧) = _`. Use `conv_lhs => rw [h]`. Rewrite using `[Polynomial.coe_add, Polynomial.coe_pow, Polynomial.coe_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← Polynomial.coeToPowerSeries.ringHom_apply, map_sum]`. Simplify using the standard rewrite rules. Rewrite using `[this, map_add, map_pow, add_sub_cancel_left, map_sum]`. Use `Finset.dvd_sum fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `bk.dvd_coeff i (Finset.mem_range.1 hi)`. Rewrite using `[hd, map_mul, map_mul, map_mul, map_natCast, map_natCast, mul_assoc]`. Conclude with `dvd_mul_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_E : ((l : ℕ) : Ainf l) ∣ bk.ev bk.E - bk.ev X ^ bk.Ep.natDegree := by
   have h := bk.monic.as_sum
@@ -46,7 +46,7 @@ theorem dvd_E : ((l : ℕ) : Ainf l) ∣ bk.ev bk.E - bk.ev X ^ bk.Ep.natDegree 
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Establish `h` using `(dvd_iff _).1 (dvd_E bk)`. Rewrite `h` using `[map_sub, sub_eq_zero, map_pow, bk.ev_X]`. Simplify using `only [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero] at h ⊢`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cc_E : WittVector.constantCoeff (p := l) (R := OCb l) (bk.ev bk.E) = bk.flat ^ bk.Ep.natDegree := by
   have h := (dvd_iff _).1 (dvd_E bk)
@@ -55,7 +55,7 @@ theorem cc_E : WittVector.constantCoeff (p := l) (R := OCb l) (bk.ev bk.E) = bk.
   exact h
 
 /- English proof (translation)
-Introduce `h`. Establish `hu` using `(isUnit_inclW_of_span bk.span_ev).map (WittVector.constantCoeff (p := l) (R := Cb l))`. Rewrite `hu` using `[WittVector.constantCoeff_apply, inclW, WittVector.map_coeff, ← WittVector.constantCoeff_apply, h, map_zero]`. Conclude with `not_isUnit_zero hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_E_ne : WittVector.constantCoeff (p := l) (R := OCb l) (bk.ev bk.E) ≠ 0 := by
   intro h
@@ -65,7 +65,7 @@ theorem cc_E_ne : WittVector.constantCoeff (p := l) (R := OCb l) (bk.ev bk.E) �
   exact not_isUnit_zero hu
 
 /- English proof (translation)
-Introduce `h`. Apply `cc_E_ne bk` to reduce the goal to its premises. Rewrite using `[cc_E, h, zero_pow bk.deg_pos.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_ne : bk.flat ≠ 0 := by
   intro h
@@ -73,11 +73,9 @@ theorem flat_ne : bk.flat ≠ 0 := by
   rw [cc_E, h, zero_pow bk.deg_pos.ne']
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : IsUnit (bk.ev bk.E)`. Use `GlobalTheory.Per.AinfComplete.witt_isUnit _ ?_` and prove the remaining obligations. Rewrite using `[cc_E]`. Conclude with `h.pow _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Per.θ l (bk.ev bk.E) = 0`. Rewrite using `[← RingHom.mem_ker, ← bk.span_ev]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `h1.map (Per.θ l)` as an intermediate fact. Rewrite `this` using `[h2]`.
-
-Conclude with `not_isUnit_zero this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_not_unit : ¬ IsUnit bk.flat := by
   intro h
@@ -91,20 +89,20 @@ theorem flat_not_unit : ¬ IsUnit bk.flat := by
   exact not_isUnit_zero this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Per.AinfComplete.nilpotent_of_not_isUnit l _ fun h => flat_not_unit bk (GlobalTheory.Per.AinfComplete.perfection_isUnit _ h)`.
+A detailed English derivation is pending.
 -/
 theorem flat_nil : IsNilpotent (Perfection.coeff (ModP (OC l) l) l 0 bk.flat) :=
   GlobalTheory.Per.AinfComplete.nilpotent_of_not_isUnit l _ fun h =>
     flat_not_unit bk (GlobalTheory.Per.AinfComplete.perfection_isUnit _ h)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Per.AinfComplete.perfection_haus (flat_nil bk) x hx`.
+A detailed English derivation is pending.
 -/
 theorem flat_haus (x : OCb l) (hx : ∀ n, bk.flat ^ n ∣ x) : x = 0 :=
   GlobalTheory.Per.AinfComplete.perfection_haus (flat_nil bk) x hx
 
 /- English proof (translation)
-Use `flat_haus bk x fun n => ?_` and prove the remaining obligations. Use `hx n` as an intermediate fact. Simplify using `only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.zero] at this`. Conclude with `Ideal.mem_span_singleton.1 this`. Use the proof step `prec' := (GlobalTheory.Per.AinfComplete.precomplete_of_summ (GlobalTheory.Per.AinfComplete.summ_of_tails (GlobalTheory.Per.AinfComplete.perfection_tails (flat_nil bk)))).prec'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem complete : IsAdicComplete (Ideal.span {bk.flat}) (OCb l) where
   haus' x hx := by
@@ -116,7 +114,7 @@ theorem complete : IsAdicComplete (Ideal.span {bk.flat}) (OCb l) where
     (GlobalTheory.Per.AinfComplete.summ_of_tails (GlobalTheory.Per.AinfComplete.perfection_tails (flat_nil bk)))).prec'
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[dvd_iff]`. Rewrite `h` using `[map_mul, bk.ev_X, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Conclude with `(mul_eq_zero.1 h).resolve_left (flat_ne bk)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_dvd_X_mul (y : Ainf l) (h : ((l : ℕ) : Ainf l) ∣ bk.ev X * y) : ((l : ℕ) : Ainf l) ∣ y := by
   rw [dvd_iff] at h ⊢
@@ -124,9 +122,9 @@ theorem dvd_of_dvd_X_mul (y : Ainf l) (h : ((l : ℕ) : Ainf l) ∣ bk.ev X * y)
   exact (mul_eq_zero.1 h).resolve_left (flat_ne bk)
 
 /- English proof (translation)
-Rewrite using `[dvd_iff]`. Use `flat_haus bk _ fun m => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `h m`. Rewrite `hz` using `[dvd_iff, map_sub, sub_eq_zero, map_mul, map_pow, bk.ev_X]`. Simplify using `only [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero] at hz ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz]`. Conclude with `dvd_mul_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_forall (y : Ainf l) (h : ∀ m : ℕ, ∃ z, ((l : ℕ) : Ainf l) ∣ y - bk.ev X ^ m * z) :
     ((l : ℕ) : Ainf l) ∣ y := by
@@ -141,17 +139,15 @@ theorem dvd_of_forall (y : Ainf l) (h : ∀ m : ℕ, ∃ z, ((l : ℕ) : Ainf l)
 include bk in
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← bk.span_ev]`. Establish `h1 : (Ideal.span {((l : ℕ) : Ainf l)} ⊔ Ideal.span {bk.ev bk.E}) ^ (2 * n + 2) ≤ Ideal.span {((l : ℕ) : Ainf l)} ^ (n + 1) ⊔ Ideal.span {bk.ev bk.E} ^ (n + 1)`. Rewrite using `[show 2 * n + 2 = (n + 1) + (n + 1) by ring]`. Conclude with `Ideal.sup_pow_add_le_pow_sup_pow`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (h1 h)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu`, `hv` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨a, rfl⟩` from `hu`. Take `⟨b, rfl⟩` from `hv`. Establish `hb : ((l : ℕ) : Ainf l) ∣ b`. Rewrite using `[dvd_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (WittVector.constantCoeff (p := l) (R := OCb l)) huv` as an intermediate fact. Simplify using `only [map_add, map_mul, map_pow, cc_l, zero_pow (Nat.succ_ne_zero n), mul_zero, zero_mul, zero_add] at this`. Conclude with `(mul_eq_zero.1 this).resolve_right (pow_ne_zero _ (cc_E_ne bk))`. Take `⟨b', rfl⟩` from `hb`. Establish `hy : y = a * ((l : ℕ) : Ainf l) ^ n + b' * bk.ev bk.E ^ (n + 1)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← sub_eq_zero]`. Apply `ainf_torsionFree` to reduce the goal to its premises. Take the linear combination `-huv`. Rewrite using `[hy]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.pow_right_mono le_sup_left n ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Use `Ideal.pow_right_mono le_sup_right n ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow]`.
-
-Conclude with `Ideal.mem_span_singleton.2 ⟨b' * bk.ev bk.E, by ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pow (n : ℕ) (y : Ainf l)
     (h : ((l : ℕ) : Ainf l) * y ∈ (Ideal.span {((l : ℕ) : Ainf l)} ⊔ RingHom.ker (Per.θ l)) ^ (2 * n + 2)) :
@@ -186,7 +182,7 @@ theorem mem_pow (n : ℕ) (y : Ainf l)
     exact Ideal.mem_span_singleton.2 ⟨b' * bk.ev bk.E, by ring⟩
 
 /- English proof (translation)
-Introduce `_ _ _ bk` and use `⟨mem_pow bk, dvd_of_dvd_X_mul bk, dvd_of_forall bk, flat_ne bk, flat_not_unit bk, complete bk, dvd_E bk⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K),
     (∀ (n : ℕ) (y : Ainf l), ((l : ℕ) : Ainf l) * y ∈

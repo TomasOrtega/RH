@@ -11,7 +11,7 @@ section Graded
 variable {LL Ks : Type} [Field LL] [CommRing Ks] [Algebra LL Ks]
 
 /- English proof (translation)
-Use extensionality with `n`. Use `show algebraMap LL Ks ((a ^ n : LLˣ) : LL) * τ ((0 : HahnSeries ℤ Ks).coeff n) = (0 : HahnSeries ℤ Ks).coeff n`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem grdB_zero' (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) : grdB τ a 0 = 0 := by
   ext n
@@ -19,9 +19,9 @@ theorem grdB_zero' (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) : grdB τ a 0 = 0 := by
   simp
 
 /- English proof (translation)
-Use extensionality with `n`. Use `show algebraMap LL Ks ((a ^ n : LLˣ) : LL) * τ ((1 : HahnSeries ℤ Ks).coeff n) = (1 : HahnSeries ℤ Ks).coeff n`. Distinguish the cases in `h : n = 0`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[HahnSeries.coeff_one, h]`.
+A detailed English derivation is pending.
 -/
 theorem grdB_one' (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) : grdB τ a 1 = 1 := by
   ext n
@@ -32,17 +32,15 @@ theorem grdB_one' (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) : grdB τ a 1 = 1 := by
   · simp [HahnSeries.coeff_one, h]
 
 /- English proof (translation)
-Use extensionality with `n`. Use `show algebraMap LL Ks ((a ^ n : LLˣ) : LL) * τ ((x * y).coeff n) = (grdB τ a x * grdB τ a y).coeff n`. Rewrite using `[HahnSeries.coeff_mul, HahnSeries.coeff_mul, map_sum, Finset.mul_sum]`. Use `symm`. Establish `hsub : ∀ ij : ℤ × ℤ, ij ∈ Finset.antidiagonal (grdB τ a x).isPWO_support (grdB τ a y).isPWO_support n → ij ∈ Finset.antidiagonal x.isPWO_support y.isPWO_support n`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ij hij`. Rewrite `hij`, the goal using `[Finset.mem_antidiagonal]`. Use `⟨fun h0 => hij.1 ?_, fun h0 => hij.2.1 ?_, hij.2.2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap LL Ks ((a ^ ij.1 : LLˣ) : LL) * τ (x.coeff ij.1) = 0`. Rewrite using `[h0, map_zero, mul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap LL Ks ((a ^ ij.2 : LLˣ) : LL) * τ (y.coeff ij.2) = 0`. Rewrite using `[h0, map_zero, mul_zero]`. Rewrite using `[Finset.sum_subset hsub]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations. Rewrite `hij` using `[Finset.mem_antidiagonal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ij.1 + ij.2 = n` using `hij.2.2`. Express the relevant statement in the definitionally equal form `(algebraMap LL Ks ((a ^ ij.1 : LLˣ) : LL) * τ (x.coeff ij.1)) * (algebraMap LL Ks ((a ^ ij.2 : LLˣ) : LL) * τ (y.coeff ij.2)) = _`. Rewrite using `[← hn, zpow_add, Units.val_mul, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `ij hmem hnot`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem`, `hnot` using `[Finset.mem_antidiagonal]`. Distinguish the cases in `h1 : (grdB τ a x).coeff ij.1 = 0`. Rewrite using `[h1, zero_mul]`. Distinguish the cases in `h2 : (grdB τ a y).coeff ij.2 = 0`. Rewrite using `[h2, mul_zero]`.
-
-Conclude with `absurd ⟨h1, h2, hmem.2.2⟩ hnot`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grdB_mul' (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) (x y : HahnSeries ℤ Ks) :
     grdB τ a (x * y) = grdB τ a x * grdB τ a y := by
@@ -76,9 +74,9 @@ theorem grdB_mul' (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) (x y : HahnSeries ℤ Ks) :
       · exact absurd ⟨h1, h2, hmem.2.2⟩ hnot
 
 /- English proof (translation)
-Distinguish the cases in `hu : IsUnit X`. Take `⟨u, rfl⟩` from `hu`. Rewrite using `[Ring.inverse_unit]`. Establish `h1 : grdB τ a (↑u⁻¹ : HahnSeries ℤ Ks) * ↑u = 1` using `by conv_lhs => rw [← hX]`. Rewrite using `[← grdB_mul', Units.inv_mul, grdB_one']`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ring.inverse_non_unit _ hu, grdB_zero']`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem grdB_ringInverse (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) {X : HahnSeries ℤ Ks} (hX : grdB τ a X = X) :
     grdB τ a (Ring.inverse X) = Ring.inverse X := by
@@ -95,7 +93,7 @@ theorem grdB_ringInverse (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) {X : HahnSeries ℤ 
   · rw [Ring.inverse_non_unit _ hu, grdB_zero']
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.ofPowerSeries_apply]`. Conclude with `HahnSeries.embDomain_of_notMem_range (by`. Introduce and unpack `⟨m, hm⟩`. Simplify using `at hm`. Use the proof step `omega)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofPS_coeff_neg {R : Type} [CommRing R] (x : PowerSeries R) {i : ℤ} (hi : i < 0) :
     (HahnSeries.ofPowerSeries ℤ R x).coeff i = 0 := by
@@ -118,9 +116,9 @@ variable {PD : PeriodData G Qp K₀ K B BdR} {LL : Type} [Field LL] [Algebra Qp 
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Establish `: NeZero (PD.p ^ N)` using `⟨pow_ne_zero _ PD.hp.ne_zero⟩`. Establish `hk : ω - (((PadicInt.toZModPow N ω : ZMod (PD.p ^ N)).val : ℕ) : ℤ_[PD.p]) ∈ RingHom.ker (PadicInt.toZModPow (p` using `PD.p) N) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `hk` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Take `⟨y, hy⟩` from `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : algebraMap O LL (ιZ ω) - (((PadicInt.toZModPow N ω : ZMod (PD.p ^ N)).val : ℕ) : LL) = ((PD.p : ℕ) : LL) ^ N * algebraMap O LL (ιZ y)`. Rewrite using `[← map_natCast (algebraMap O LL), ← map_natCast ιZ, ← map_sub, ← map_sub, hy, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast]`. Rewrite using `[e, AddValuation.map_mul, AddValuation.map_pow, W.v_l, nsmul_one]`. Conclude with `le_add_of_nonneg_right (valRing.2.2 _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sub_toZModPow (W : LocWach PD LL O v n) (valRing : ValRing O v) (ιZ : ℤ_[PD.p] →+* O)
     (ω : ℤ_[PD.p]) (N : ℕ) :
@@ -142,15 +140,15 @@ theorem val_sub_toZModPow (W : LocWach PD LL O v n) (valRing : ValRing O v) (ιZ
 variable {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Introduce `s j a`. Take `⟨g, hg, hχ⟩` from `hω j`. Apply `HahnSeries.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i < 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `show algebraMap LL (KsW W s) ((((levW W uZ ιZ s).a j) ^ i : LLˣ) : LL) * ((levW W uZ ιZ s).τ j) ((HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s a)).coeff i) = (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s a)).coeff i`. Rewrite using `[ofPS_coeff_neg _ hi, map_zero, mul_zero]`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le (not_lt.mp hi) show algebraMap LL (KsW W s) ((((levW W uZ ιZ s).a j) ^ (k : ℤ) : LLˣ) : LL) * ((levW W uZ ιZ s).τ j) ((HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s a)).coeff (k : ℤ)) = (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s a)).coeff (k : …`. Rewrite using `[HahnSeries.ofPowerSeries_apply_coeff]`. Establish `hc : ∀ ζ' : Rs LL PD.p s, (PowerSeries.coeff k (rhoL hR c s a)) ζ' = PowerSeries.coeff k (W.lev c (ζ' : LL) ((baseIdOf hR).d a))` using `fun ζ' => by show Pi.evalRingHom (fun _ => LL) ζ' (PowerSeries.coeff k (rhoL hR c s a)) = _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PowerSeries.coeff_map, map_eval_rhoL]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `ζ`. Express the relevant statement in the definitionally equal form `((((levW W uZ ιZ s).a j) ^ (k : ℤ) : LLˣ) : LL) * (PowerSeries.coeff k (rhoL hR c s a)) (powR LL PD.p s (redU PD.p s j.1) ζ) = (PowerSeries.coeff k (rhoL hR c s a)) ζ`. Rewrite using `[hc, hc]`.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprim : IsPrimitiveRoot (ζ : LL) (PD.p ^ (s + 1))` using `(mem_primitiveRoots (pos_pow PD.p s)).1 ζ.2`. Establish `hv` using `val_sub_toZModPow W valRing ιZ (j.1 : ℤ_[PD.p]) (s + 1)`. Rewrite `hv` using `[← hχ]`. Establish `hL` using `lev_Γ g c ζ _ (s + 1) _ hprim hv rfl ((baseIdOf hR).d a)`. Rewrite `hL` using `[BaseId.γA_Δ _ g hg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, PowerSeries.coeff_rescale, hχ]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem delta_holds (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (c : ZMod n)
     (lev_Γ : ∀ (g : W.Gam) (i : ZMod n) (ζ ζ' : LL) (j a : ℕ),
@@ -193,9 +191,9 @@ theorem delta_holds (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O
     congr 1
 
 /- English proof (translation)
-Introduce `s y j`. Rewrite using `[Level.δ]`. Unfold `locLF`. Rewrite using `[graded_semilinear_holds, grdB_ringInverse _ _ (hΔ s j Λ), map_sum]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[graded_semilinear_holds, hΔ s j (y k), SlopeTestRemainingChoices.grd_cst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem loclInv_holds (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (T : LocLat G Qp LL O)
     (c : ZMod n) {r : ℕ} (Λ : PowerSeries O) (lam : Fin r → Dc W T c) (hΔ : DeltaRho hR uZ ιZ c) :

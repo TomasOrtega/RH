@@ -8,23 +8,21 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.EtLev
 
 /- English proof (translation)
-Establish `key : ∀ {L : M → G}, (∀ a b, L (a + b) = L a * L b) → (∀ a, L a = 1 ↔ a ∈ W) → ∀ a b, L a = L b ↔ W.mkQ a = W.mkQ b`. Introduce `L hadd hker a b`. Establish `h : L a = L (a - b) * L b` using `by rw [← hadd, sub_add_cancel]`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, ← hker, h]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `e`. Conclude with `mul_right_cancel (e.trans (_root_.one_mul _).symm)`. Introduce `e`. Rewrite using `[e, _root_.one_mul]`. Establish `eq` using `key hadd hker`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose z hz using hsurj`. Set `f₀ : M →ₗ[O] M ⧸ W` to `{ toFun := fun y => W.mkQ (z y) map_add' := fun a b => by`. Rewrite using `[← map_add, ← eq, hadd, hz, hz, hz, hadd']`. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, ← LinearMap.map_smul, ← eq, hsm, hz, hz, hsm'] }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hf₀ : W ≤ LinearMap.ker f₀`. Introduce `y hy`. Rewrite using `[LinearMap.mem_ker]`. Use `show W.mkQ (z y) = 0`. Rewrite using `[← map_zero W.mkQ, ← eq, hz, (hker' y).2 hy, (hker 0).2 W.zero_mem]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Set `f` to `W.liftQ f₀ hf₀`. Establish `hf : ∀ y, f (W.mkQ y) = W.mkQ (z y)` using `fun y => rfl`. Establish `bij : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Take `⟨y, rfl⟩` from `W.mkQ_surjective q`. Rewrite `hq` using `[hf, ← map_zero W.mkQ, ← eq, hz, (hker 0).2 W.zero_mem, hker']`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q`. Take `⟨a, rfl⟩` from `W.mkQ_surjective q`. Take `⟨y, hy⟩` from `hsurj' a`. Conclude with `⟨W.mkQ y, by rw [hf, ← eq, hz, hy]⟩`. Use `⟨LinearEquiv.ofBijective f bij, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Rewrite using `[← hz y, eq, Function.surjInv_eq (Submodule.mkQ_surjective W)]`. Both sides reduce to the same expression. Introduce `g hg`. Use `LinearEquiv.ext fun q => ?_` and prove the remaining obligations.
-
-Take `⟨y, rfl⟩` from `W.mkQ_surjective q`. Rewrite using `[LinearEquiv.ofBijective_apply, hf, ← Function.surjInv_eq (Submodule.mkQ_surjective W) (g (W.mkQ y)), ← eq, hg y, hz]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_quotAut {O M G : Type*} [Ring O] [AddCommGroup M] [Module O M] [Group G]
     (W : Submodule O M) (act : O → G → G) (L L' : M → G)
@@ -82,13 +80,13 @@ theorem exists_unique_quotAut {O M G : Type*} [Ring O] [AddCommGroup M] [Module 
       ← eq, hg y, hz]
 
 /- English proof (translation)
-Introduce `hl hl'`. Take `⟨hinj, hsur⟩` from `hl.2.2.2 k (𝟙 _)`. Take `⟨hinj', hsur'⟩` from `hl'.2.2.2 k (𝟙 _)`. Establish `canc : ∀ u v : Over.mk x ⟶ o.A, (Over.homMk (𝟙 _) rfl : Over.mk (𝟙 (Sp k) ≫ (Over.mk x).hom) ⟶ Over.mk x) ≫ u = (Over.homMk (𝟙 _) rfl : Over.mk (𝟙 (Sp k) ≫ (Over.mk x).hom) ⟶ Over.mk x) ≫ v → u = v`. Introduce `u v h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext`. Use `congrArg CommaMorphism.left h` as an intermediate fact. Simplify using `using this`. Establish `killed : ∀ (l₁ : D.La → (Over.mk x ⟶ o.A)), IsEtLevOver o w0 r l₁ → ∀ a, ∀ c ∈ w0 ^ r, ((Over.homMk (𝟙 _) rfl : Over.mk (𝟙 (Sp k) ≫ (Over.mk x).hom) ⟶ Over.mk x) ≫ l₁ a) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1`. Introduce `l₁ h₁ a c hc`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, ← h₁.2.1, h₁.2.2.1 _ (Submodule.subset_span ⟨c, hc, a, rfl⟩), comp_one]`. Conclude with `exists_unique_quotAut (wSub D w0 r) (fun c g => g ≫ o.act.act c) l l' hl.1 hl'.1 hl.2.1 hl'.2.1 (fun a => ⟨fun h => hinj a (by rw [h, comp_one]), fun h => hl.2.2.1 a h⟩) (fun a => ⟨fun h => hinj' a (by rw [h, comp_one]), fun h => hl'.2.2.1 a h⟩) (fun a => by`. Take `⟨y, hy⟩` from `hsur _ (killed l' hl' a)`. Conclude with `⟨y, canc _ _ hy⟩)`. Use the proof step `(fun a => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `hsur' _ (killed l hl a)`. Conclude with `⟨y, canc _ _ hy⟩)`.
+A detailed English derivation is pending.
 -/
 theorem etLev_rel_existsUnique (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R)
     (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (w0 : Ideal (𝓞 D.F)) (r : ℕ) (k : Type) [Field k]

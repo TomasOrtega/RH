@@ -16,7 +16,7 @@ variable {k ρ : ℕ}
 def projM (y : Mt k (1 + ρ)) : Mt k ρ := fun a b => y ⟨a.val + 1, by omega⟩ ⟨b.val + 1, by omega⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `only [projM, B2.levM, ιLev, Matrix.of_apply]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩, dif_pos ⟨by omega, by omega⟩]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem projM_levM (x : Mt k ρ) : projM (B2.levM k ρ x) = x := by
   funext a b
@@ -25,22 +25,22 @@ theorem projM_levM (x : Mt k ρ) : projM (B2.levM k ρ x) = x := by
   rfl
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.LongWeylElement.levM_cont k ρ`.
+A detailed English derivation is pending.
 -/
 theorem continuous_levM : Continuous (B2.levM k ρ) := by
   exact Formalism.FourierDecayAlt.P.LongWeylElement.levM_cont k ρ
 
 /- English proof (translation)
-Unfold `projM`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_projM : Continuous (projM (k := k) (ρ := ρ)) := by
   unfold projM
   fun_prop
 
 /- English proof (translation)
-Use `MeasurableEmbedding.of_measurable_inverse continuous_levM.measurable ?_ continuous_projM.measurable (fun x => projM_levM x)` and prove the remaining obligations. Establish `hr : Set.range (B2.levM k ρ) = {y | B2.levM k ρ (projM y) = y}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq, projM_levM]`. Introduce `hy`. Conclude with `⟨projM y, hy⟩`. Rewrite using `[hr]`. Conclude with `(isClosed_eq (continuous_levM.comp continuous_projM) continuous_id).measurableSet`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_levM : MeasurableEmbedding (B2.levM k ρ) := by
   refine MeasurableEmbedding.of_measurable_inverse continuous_levM.measurable ?_
@@ -56,11 +56,11 @@ theorem measurableEmbedding_levM : MeasurableEmbedding (B2.levM k ρ) := by
   exact (isClosed_eq (continuous_levM.comp continuous_projM) continuous_id).measurableSet
 
 /- English proof (translation)
-Establish `hC : ∀ ζ ∈ Metric.closedBall (0 : ℂ) R, ENNReal.ofReal (B2.zWeight k T T' ζ) ≤ ENNReal.ofReal ((R ^ 2 + |T * T'|) ^ (k - 1))`. Introduce `ζ hζ`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hn : ‖ζ‖ ≤ R` using `by simpa using hζ`. Establish `hns : Complex.normSq ζ ≤ R ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hn 2`. Simplify using `only [B2.zWeight]`. Use `split_ifs with h`. Apply `pow_le_pow_left₀ (by linarith)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression.
 
-Combine the linear relations using `[neg_abs_le (T * T')]`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem zWeight_fin (T T' R : ℝ) :
     ∫⁻ ζ in Metric.closedBall (0 : ℂ) R, ENNReal.ofReal (B2.zWeight k T T' ζ) < ⊤ := by
@@ -91,7 +91,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {z z' : Fin (2 * ρ + k + 1) → ℂ} {π : Mx k (1 + ρ) → (Wp →L[ℂ] Wp)} {π' : Mx k (1 + ρ) → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Substitute `hmap` using the available equality. Simplify using `only [P5.pairAt]`. Rewrite using `[measurableEmbedding_levM.integral_map]`. Both sides reduce to the same expression.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairAt_tr {t : ℂ} (ht : t ≠ 0) {μ : Measure (Mt k (1 + ρ))} {μs : Measure (Mt k ρ)}
     (hmap : μs.map (B2.levM k ρ) = μ) (Φ Ψ : RadSp k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π')

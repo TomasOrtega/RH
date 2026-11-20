@@ -5,89 +5,75 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Cl
 
 /- English proof (translation)
-Introduce `L F _ _ _ _ _ J _ k _ r b hb hsurj hsplit`. Take `⟨cU, cAM, cA, cLoc⟩` from `cRes L F k r`. Take `⟨aV, aMul, aOne, aMem, -, -, -⟩` from `cAct L F`. Take `⟨hs1, hs2⟩` from `hsplit`. Establish `cL` using `(cLoc b hb).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `vInt : ∀ (P : HeightOneSpectrum (𝓞 F)) (a : 𝓞 F), HeightOneSpectrum.valuation F P (a : F) ≤ 1` using `fun P a => P.valuation_le_one a`. Establish `R0 : ResF r (0 : F) 0` using `by simpa using cAM 0`. Establish `Rsub : ∀ (x y : F) (u w : k), ResF r x u → ResF r y w → ResF r (x - y) (u - w)`. Introduce `x y u w hx hy`. Establish `h2` using `(cA _ _ _ _ hx (cA _ _ _ _ (cAM (-1)) hy).2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : ((-1 : 𝓞 F) : F) = -1` using `by simp`. Rewrite `h2` using `[e1, map_neg, map_one]`. Simplify `h2` using `[sub_eq_add_neg]`. Establish `Runiq : ∀ (x : J → F) (v w : Gal(F/L) × J → k), RedV L r x v → RedV L r x w → v = w`. Introduce `x v w hv hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `p`. Conclude with `cU _ _ _ (hv p.1 p.2) (hw p.1 p.2)`. Establish `L0 : ∀ x : J → F, InLoc b x → ∀ (σ : Gal(F/L)) (j : J), ∃ u, ResF r (σ (x j)) u`. Introduce `x hx σ j`. Use `(cL (σ (x j)) ?_).2` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Establish `e : actP σ (actP σ⁻¹ P) = P` using `by rw [← aMul, mul_inv_cancel, aOne]`. Rewrite using `[← e, aV]`. Conclude with `hx j _ (fun hm => hP ((aMem σ⁻¹ P b).1 hm))`. Establish `Iadd : ∀ x y : J → F, InLoc b x → InLoc b y → InLoc b (x + y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y hx hy j P hP`. Conclude with `le_trans (Valuation.map_add _ _ _) (max_le (hx j P hP) (hy j P hP))`. Establish `Isub : ∀ x y : J → F, InLoc b x → InLoc b y → InLoc b (x - y)`. Introduce `x y hx hy j P hP`. Conclude with `le_trans (Valuation.map_sub _ _ _) (max_le (hx j P hP) (hy j P hP))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `Ismul : ∀ (m : 𝓞 L) (x : J → F), InLoc b x → InLoc b ((m : L) • x)`. Introduce `m x hx j P hP`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul]`. Conclude with `mul_le_one' (vInt P (algebraMap (𝓞 L) (𝓞 F) m)) (hx j P hP)`. Establish `GI : ∀ (g : GLoc F J b) (x : J → F), InLoc b x → InLoc b ((g : GG L F J) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g x hx`. Establish `hg : ∀ z : J → F, InLoc b z ↔ InLoc b ((g : GG L F J) z)` using `g.2`. Conclude with `(hg x).1 hx`. Establish `L1 : ∀ v : Gal(F/L) × J → k, ∃ x : J → F, InLoc b x ∧ RedV L r x v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose a ha using fun j => hs1 (fun σ => v (σ, j))`. Use `⟨fun j => (a j : F), fun j P _ => vInt P (a j), ?_⟩` and prove the remaining obligations. Introduce `σ j`. Establish `h` using `cAM (actO σ (a j))`. Rewrite `h` using `[ha j σ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `Kz : ∀ (g : GLoc F J b) (y : J → F), InLoc b y → RedV L r y 0 → RedV L r ((g : GG L F J) y) 0`. Introduce `g y hy hy0`. Set `W : Set (J → F)` to `{z | RedV L r ((g : GG L F J) z) 0}`. Establish `W0 : (0 : J → F) ∈ W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `σ j`. Use `show ResF r (σ (((g : GG L F J) 0) j)) 0`. Rewrite using `[map_zero, Pi.zero_apply, map_zero]`. Conclude with `R0`. Establish `Wadd : ∀ z1 z2, z1 ∈ W → z2 ∈ W → z1 + z2 ∈ W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `z1 z2 h1 h2 σ j`. Use `(cA _ _ _ _ (h1 σ j) (h2 σ j)).1` as an intermediate fact. Use `show ResF r (σ (((g : GG L F J) (z1 + z2)) j)) 0`. Rewrite using `[map_add, Pi.add_apply, map_add]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Establish `Wgen : ∀ (j : J) (c : F), (∀ P : HeightOneSpectrum (𝓞 F), algebraMap (𝓞 L) (𝓞 F) b ∉ P.asIdeal → HeightOneSpectrum.valuation F P c ≤ 1) → ∀ m : 𝓞 L, r (algebraMap (𝓞 L) (𝓞 F) m) = 0 → Pi.single j (c * algebraMap L F (m : L)) ∈ W`. Introduce `j c hc m hm`. Establish `hs : InLoc b (Pi.single j c : J → F)`. Introduce `i P hP`. Distinguish the cases in `hij : i = j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Substitute `hij` using the available equality. Simplify using `using hc P hP`. Simplify using `[Pi.single_apply, hij]`. Establish `e : (Pi.single j (c * algebraMap L F (m : L)) : J → F) = (m : L) • (Pi.single j c : J → F)`. Use extensionality with `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Algebra.smul_def, mul_comm]`. Simplify using `[Pi.single_apply, hij]`. Introduce `σ j'`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Use `show ResF r (σ (((g : GG L F J) (Pi.single j (c * algebraMap L F (m : L)))) j')) 0`. Rewrite using `[e, map_smul, Pi.smul_apply, Algebra.smul_def, map_mul, AlgEquiv.commutes]`. Take `⟨u, hu⟩` from `L0 _ (GI g _ hs) σ j'`. Use `(cA _ _ _ _ (cAM (algebraMap (𝓞 L) (𝓞 F) m)) hu).2` as an intermediate fact. Rewrite `this` using `[hm, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Establish `Wspan : ∀ a ∈ Ideal.map (algebraMap (𝓞 L) (𝓞 F)) (RingHom.ker (r.comp (algebraMap (𝓞 L) (𝓞 F)))), ∀ (j : J) (c : F), (∀ P : HeightOneSpectrum (𝓞 F), algebraMap (𝓞 L) (𝓞 F) b ∉ P.asIdeal → HeightOneSpectrum.valuation F P c ≤ 1) → Pi.single j (c * (a : F)) ∈ W`. Introduce `a ha`. Use `replace ha : a ∈ Submodule.span (𝓞 F) (⇑(algebraMap (𝓞 L) (𝓞 F)) '' (RingHom.ker (r.comp (algebraMap (𝓞 L) (𝓞 F))))) := ha`. Proceed by induction on `ha using Submodule.span_induction with`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`. Introduce `j c hc`. Conclude with `Wgen j c hc m (RingHom.mem_ker.1 hm)`. Consider the case `zero`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j c hc`. Simplify using `using W0`. Consider the case `add x y _ _ hx hy`. Introduce `j c hc`. Use `Wadd _ _ (hx j c hc) (hy j c hc)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[mul_add, Pi.single_add]`. Consider the case `smul c' x _ hx`. Introduce `j c hc`. Use `hx j (c * (c' : F)) (fun P hP => by` as an intermediate fact. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_one' (hc P hP) (vInt P c'))`. Simplify `this` using `[mul_assoc]`. Establish `hyW : ∀ j, Pi.single j (y j) ∈ W`. Introduce `j`. Take `⟨⟨n, a, hna⟩, -⟩` from `cL (y j) (fun P hP => hy j P hP)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `eβ : algebraMap (𝓞 L) F b = algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b)` using `rfl`. Rewrite `hna` using `[eβ]`. Establish `hβ0 : algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b) ≠ 0`. Introduce `h0`. Apply `hb` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsFractionRing.injective (𝓞 F) F (h0.trans (map_zero _).symm), map_zero]`. Establish `hmem : a ∈ Ideal.map (algebraMap (𝓞 L) (𝓞 F)) (RingHom.ker (r.comp (algebraMap (𝓞 L) (𝓞 F))))`. Apply `hs2` to reduce the goal to its premises. Introduce `σ`. Establish `h1` using `cAM (actO σ a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ResF r (σ (a : F)) (r (algebraMap (𝓞 L) (𝓞 F) b) ^ n * 0)`. Rewrite using `[← hna, map_mul, map_pow]`. Establish `hb' : σ (algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b)) = algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b)` using `AlgEquiv.commutes σ (b : L)`. Rewrite using `[hb']`. Establish `hbn` using `cAM (algebraMap (𝓞 L) (𝓞 F) b ^ n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hbn` using `[map_pow]`. Establish `hbn' : ResF r (algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b) ^ n) (r (algebraMap (𝓞 L) (𝓞 F) b) ^ n)`. Simplify using `using hbn`. Conclude with `(cA _ _ _ _ hbn' (hy0 σ j)).2`. Rewrite `h2` using `[mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `cU _ _ _ h1 h2`. Establish `hyj : y j = ((algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b)) ^ n)⁻¹ * (a : F)`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ (pow_ne_zero n hβ0)]`. Conclude with `hna`. Establish `hc : ∀ P : HeightOneSpectrum (𝓞 F), algebraMap (𝓞 L) (𝓞 F) b ∉ P.asIdeal → HeightOneSpectrum.valuation F P (((algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b)) ^ n)⁻¹) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `P hP`. Establish `h1 : HeightOneSpectrum.valuation F P (algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b)) = 1`. Rewrite using `[P.valuation_of_algebraMap]`. Conclude with `le_antisymm (P.intValuation_le_one _) (not_lt.1 (fun h => hP ((P.intValuation_lt_one_iff_mem _).1 h)))`. Rewrite using `[map_inv₀, map_pow, h1, one_pow, inv_one]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hyj]`. Conclude with `Wspan a hmem j _ hc`. Establish `hyW' : y ∈ W`. Rewrite using `[← Finset.univ_sum_single y]`. Conclude with `Finset.sum_induction _ (· ∈ W) (fun a b ha hb => Wadd a b ha hb) W0 (fun j _ => hyW j)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hyW'`. Use `choose lf hlfI hlfR using L1`. Set `rd : (J → F) → (Gal(F/L) × J → k)` to `fun x p => if h : ∃ u, ResF r (p.1 (x p.2)) u then h.choose else 0`. Establish `P1 : ∀ x, InLoc b x → RedV L r x (rd x)`. Introduce `x hx σ j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `L0 x hx σ j`. Use `show ResF r (σ (x j)) (if h : ∃ u, ResF r (σ (x j)) u then h.choose else 0)`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`. Set `T : GLoc F J b → (Gal(F/L) × J → k) → (Gal(F/L) × J → k)` to `fun g v => rd ((g : GG L F J) (lf v))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `P3 : ∀ (g : GLoc F J b) (x : J → F) (v : Gal(F/L) × J → k), InLoc b x → RedV L r x v → RedV L r ((g : GG L F J) x) (T g v)`. Introduce `g x v hx hv`. Establish `hd : RedV L r (x - lf v) 0`. Introduce `σ j`. Use `Rsub _ _ _ _ (hv σ j) (hlfR v σ j)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_self]`. Simplify using `using this`. Establish `hK` using `Kz g _ (Isub _ _ hx (hlfI v)) hd`. Establish `hP1` using `P1 _ (GI g _ (hlfI v))`. Introduce `σ j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(cA _ _ _ _ (hK σ j) (hP1 σ j)).1` as an intermediate fact. Rewrite `this` using `[map_sub, Pi.sub_apply, map_sub, sub_add_cancel]`. Simplify using `using this`. Establish `Tadd : ∀ (g : GLoc F J b) v w, T g (v + w) = T g v + T g w`. Introduce `g v w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `P3 g (lf v + lf w) (v + w) (Iadd _ _ (hlfI v) (hlfI w)) (fun σ j => by`. Use `(cA _ _ _ _ (hlfR v σ j) (hlfR w σ j)).1` as an intermediate fact. Simplify using `using this)`. Establish `h2 : RedV L r ((g : GG L F J) (lf v + lf w)) (T g v + T g w)`. Introduce `σ j`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(cA _ _ _ _ (P1 _ (GI g _ (hlfI v)) σ j) (P1 _ (GI g _ (hlfI w)) σ j)).1` as an intermediate fact. Rewrite using `[map_add, Pi.add_apply, map_add]`. Conclude with `this`. Conclude with `Runiq _ _ _ h1 h2`. Establish `Tsmul : ∀ (g : GLoc F J b) (c : k) v, T g (c • v) = c • T g v`.
-
-Introduce `g c v`. Take `⟨m, hm⟩` from `hsurj c`. Establish `hm' : r (algebraMap (𝓞 L) (𝓞 F) m) = c` using `hm`. Establish `h1` using `P3 g _ (c • v) (Ismul m _ (hlfI v)) (fun σ j => by`. Use `(cA _ _ _ _ (cAM (algebraMap (𝓞 L) (𝓞 F) m)) (hlfR v σ j)).2` as an intermediate fact.
-
-Rewrite `this` using `[hm']`. Use `show ResF r (σ (((m : L) • lf v) j)) (c * v (σ, j))`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul, AlgEquiv.commutes]`. Conclude with `this)`. Establish `h2 : RedV L r ((g : GG L F J) ((m : L) • lf v)) (c • T g v)`.
-
-Introduce `σ j`. Use `(cA _ _ _ _ (cAM (algebraMap (𝓞 L) (𝓞 F) m)) (P1 _ (GI g _ (hlfI v)) σ j)).2` as an intermediate fact. Rewrite `this` using `[hm']`. Use `show ResF r (σ (((g : GG L F J) ((m : L) • lf v)) j)) (c * T g v (σ, j))`. Rewrite using `[map_smul, Pi.smul_apply, Algebra.smul_def, map_mul, AlgEquiv.commutes]`.
-
-Conclude with `this`. Conclude with `Runiq _ _ _ h1 h2`. Establish `Tmul : ∀ (g h : GLoc F J b) v, T (g * h) v = T g (T h v)`. Introduce `g h v`. Establish `h1` using `P1 _ (GI (g * h) _ (hlfI v))`.
-
-Establish `h2` using `P3 g _ (T h v) (GI h _ (hlfI v)) (P1 _ (GI h _ (hlfI v)))`. Conclude with `Runiq _ _ _ h1 h2`. Establish `Tone : ∀ v, T 1 v = v`. Introduce `v`. Conclude with `Runiq _ _ _ (P1 _ (GI 1 _ (hlfI v))) (hlfR v)`.
-
-Set `Tl : GLoc F J b → ((Gal(F/L) × J → k) →ₗ[k] (Gal(F/L) × J → k))` to `fun g => { toFun := T g map_add' := Tadd g map_smul' := fun c v => Tsmul g c v }`. Use `⟨{ toFun := fun g => LinearEquiv.ofLinear (Tl g) (Tl g⁻¹) (LinearMap.ext fun v => by show T g (T g⁻¹ v) = v` and prove the remaining obligations. Rewrite using `[← Tmul, mul_inv_cancel, Tone])`. Use the proof step `(LinearMap.ext fun v => by show T g⁻¹ (T g v) = v`. Rewrite using `[← Tmul, inv_mul_cancel, Tone])`.
-
-Use the proof step `map_one' := LinearEquiv.ext fun v => Tone v`. Use the proof step `map_mul' := fun g h => LinearEquiv.ext fun v => Tmul g h v }, ?_⟩`. Introduce `g x v hx hv`. Conclude with `P3 g x v hx hv`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Cl.cMu :
     UpperTheory.V.ZK.Cl.CMu := by

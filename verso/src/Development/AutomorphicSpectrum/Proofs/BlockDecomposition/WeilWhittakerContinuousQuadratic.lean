@@ -26,11 +26,9 @@ open scoped Topology
 namespace GlobalTheory.CompanionTheory.WcB.ContNe
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.T.isOpen_norm_image_units F E`. Introduce `a ha`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Distinguish the cases in `h : ∃ t : Eˣ, Algebra.norm F (t : E) = a`. Establish `hev : (GL2LocalData.nsg E : F → ℂ) =ᶠ[𝓝 a] fun _ => 1` using `by filter_upwards [h1.mem_nhds h] with b hb`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Unfold `GL2LocalData.nsg`. Conclude with `if_pos hb`. Conclude with `continuousAt_const.congr hev.symm`. Establish `hev : (GL2LocalData.nsg E : F → ℂ) =ᶠ[𝓝 a] fun _ => -1` using `by filter_upwards [h2.mem_nhds ⟨ha, h⟩] with b hb`. Unfold `GL2LocalData.nsg`.
-
-Conclude with `if_neg hb.2`. Conclude with `continuousAt_const.congr hev.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuousOn_nsg (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] :
     ContinuousOn (GL2LocalData.nsg E : F → ℂ) {a | a ≠ 0} := by
@@ -50,7 +48,7 @@ theorem continuousOn_nsg (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace
     exact continuousAt_const.congr hev.symm
 
 /- English proof (translation)
-The claim follows from `h.comp_continuousOn (hk.prodMk hx)`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_pair {A B C X : Type} [TopologicalSpace A] [TopologicalSpace B] [TopologicalSpace C]
     [TopologicalSpace X] {S : Set X} (G : A → B → C) (h : Continuous fun p : A × B => G p.1 p.2)
@@ -59,17 +57,17 @@ theorem continuousOn_pair {A B C X : Type} [TopologicalSpace A] [TopologicalSpac
   h.comp_continuousOn (hk.prodMk hx)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ halg σ hσ μ _ lam c hc Φ hΦ hΦc`. Set `S : Set (GL (Fin 2) F × Eˣ)` to `{p | p.1.val 1 0 ≠ 0}`. Establish `hent : ∀ i j, Continuous fun p : GL (Fin 2) F × Eˣ => p.1.val i j` using `fun i j => (continuous_id.matrix_elem i j).comp (Units.continuous_val.comp continuous_fst)`. Establish `hdet : Continuous fun p : GL (Fin 2) F × Eˣ => (p.1.val).det` using `Continuous.matrix_det (Units.continuous_val.comp continuous_fst)`. Establish `hdet0 : ∀ p : GL (Fin 2) F × Eˣ, (p.1.val).det ≠ 0` using `fun p => ((Matrix.isUnit_iff_isUnit_det _).1 p.1.isUnit).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : ContinuousOn (fun p : GL (Fin 2) F × Eˣ => p.1.val 1 0 / (p.1.val).det) S` using `(hent 1 0).continuousOn.div hdet.continuousOn fun p _ => hdet0 p`. Establish `hcc0 : ∀ p ∈ S, p.1.val 1 0 / (p.1.val).det ≠ 0` using `fun p hp => div_ne_zero hp (hdet0 p)`. Establish `ht : Continuous fun p : GL (Fin 2) F × Eˣ => (p.2 : E)` using `Units.continuous_val.comp continuous_snd`. Establish `hN : Continuous fun p : GL (Fin 2) F × Eˣ => Algebra.norm F (p.2 : E)` using `(GlobalTheory.LBC.Inh.continuous_algNorm halg).comp ht`. Establish `hN0 : ∀ p : GL (Fin 2) F × Eˣ, Algebra.norm F (p.2 : E) ≠ 0` using `fun p => Algebra.norm_ne_zero_iff.2 p.2.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmodF : Continuous fun x : F => (modulus x : ℝ)` using `NNReal.continuous_coe.comp continuous_modulus`. Establish `hmodE : Continuous fun x : E => (modulus x : ℝ)` using `NNReal.continuous_coe.comp continuous_modulus`. Establish `hC : Continuous fun p : GL (Fin 2) F × Eˣ => ((c p.2 : ℂˣ) : ℂ)` using `Units.continuous_val.comp (hc.1.comp continuous_snd)`. Establish `hD : ContinuousOn (fun p : GL (Fin 2) F × Eˣ => (((modulus (p.1.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ))) S` using `((Complex.continuous_ofReal.comp (hmodF.comp hdet)).continuousOn).cpow continuousOn_const fun p _ => Complex.ofReal_mem_slitPlane.2 (NNReal.coe_pos.2 (modulus_pos (hdet0 p)))`. Establish `hnsg : ContinuousOn (fun p : GL (Fin 2) F × Eˣ => GL2LocalData.nsg E (-(p.1.val 1 0 / (p.1.val).det))) S` using `(continuousOn_nsg F E).comp hcc.neg fun p hp => neg_ne_zero.2 (hcc0 p hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmc : ContinuousOn (fun p : GL (Fin 2) F × Eˣ => (((modulus (p.1.val 1 0 / (p.1.val).det) : ℝ)⁻¹ : ℝ) : ℂ)) S` using `Complex.continuous_ofReal.comp_continuousOn ((hmodF.comp_continuousOn hcc).inv₀ fun p hp => NNReal.coe_ne_zero.2 (modulus_ne_zero (hcc0 p hp)))`. Establish `hmt : Continuous fun p : GL (Fin 2) F × Eˣ => (((modulus (p.2 : E) : ℝ)⁻¹ : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp ((hmodE.comp ht).inv₀ fun p => NNReal.coe_ne_zero.2 (modulus_ne_zero p.2.ne_zero))`. Establish `hchi : ContinuousOn (fun p : GL (Fin 2) F × Eˣ => (χ ((p.1.val 0 0 / (p.1.val).det) / (p.1.val 1 0 / (p.1.val).det)) : ℂ)) S` using `((continuous_induced_dom : Continuous ((↑) : Circle → ℂ)).comp hχ).comp_continuousOn (((hent 0 0).continuousOn.div hdet.continuousOn fun p _ => hdet0 p).div hcc hcc0)`. Establish `hkap : ContinuousOn (fun p : GL (Fin 2) F × Eˣ => p.1.val 1 1 / ((p.1.val 1 0 / (p.1.val).det) * Algebra.norm F (p.2 : E))) S` using `(hent 1 1).continuousOn.div (hcc.mul hN.continuousOn) fun p hp => mul_ne_zero (hcc0 p hp) (hN0 p)`. Establish `hxi : ContinuousOn (fun p : GL (Fin 2) F × Eˣ => (algebraMap F E (p.1.val 1 0 / (p.1.val).det))⁻¹ * (p.2 : E)⁻¹) S` using `((halg.comp_continuousOn hcc).inv₀ fun p hp => (map_ne_zero (algebraMap F E)).2 (hcc0 p hp)).mul (ht.continuousOn.inv₀ fun p _ => p.2.ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ContinuousOn (fun p : GL (Fin 2) F × Eˣ => gaussI χ μ Φ (p.1.val 1 1 / ((p.1.val 1 0 / (p.1.val).det) * Algebra.norm F (p.2 : E))) ((algebraMap F E (p.1.val 1 0 / (p.1.val).det))⁻¹ * (p.2 : E)⁻¹)) S` using `continuousOn_pair (gaussI χ μ Φ) (GlobalTheory.T.weil_whittaker_continuity_quadratic_extension F E χ hχ μ Φ hΦ hΦc) hkap hxi`. Establish `key` using `(hC.continuousOn.mul hD).mul (((((continuousOn_const (c := lam)).mul hnsg).mul hmc).mul hmt.continuousOn |>.mul hchi).mul hG)`. Use `show ContinuousOn _ S`. Use `key.congr fun p hp => ?_` and prove the remaining obligations. Simplify using `only [wS, Pi.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.weil_whittaker_nontrivial_galois_integral F E χ σ hσ μ lam Φ _ _ _ _ (hcc0 p hp) p.2]`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_wS : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → Continuous (algebraMap F E) → ∀ σ : E ≃ₐ[F] E, σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (lam : ℂ) (c : Eˣ →* ℂˣ), IsUnit1 c → ∀ Φ : E → ℂ, IsLocallyConstant Φ → HasCompactSupport Φ → ContinuousOn (fun p : GL (Fin 2) F × Eˣ => wS χ σ μ lam c Φ p.1 p.2) {p | p.1.val 1 0 ≠ 0} := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ halg σ hσ μ _ lam c hc Φ hΦ hΦc

@@ -24,7 +24,7 @@ structure Aw (x y : WD h) : Prop where
     ((y.lpSum u).inePol γ).rootMultiplicity (c γ) ≤ t → SplW c t (y.lpSum u) → SplW c t (x.lpSum u)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨fun _ => rfl, fun _ => rfl, fun _ _ _ _ _ _ k => k⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem Aw.of_eq {x y : WD h} (e : x = y) : Aw x y := by
   subst e; exact ⟨fun _ => rfl, fun _ => rfl, fun _ _ _ _ _ _ k => k⟩
@@ -39,7 +39,7 @@ structure Ab (x y : WD h) : Prop where
     ∀ g : ↥(Weil h), deg g = 0 → x.charPol g = y.charPol g
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨rfl, id, fun _ _ _ _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem Ab.of_eq {x y : WD h} (e : x = y) : Ab x y := by
   subst e; exact ⟨rfl, id, fun _ _ _ _ => rfl⟩
@@ -106,7 +106,7 @@ def CarU : Prop :=
         Ab (wdAt P ι Bw h hj (r.comp (Dec (F := E) A).subtype)) (rc (algNorm σ))
 
 /- English proof (translation)
-The claim follows from `H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)`.
+A detailed English derivation is pending.
 -/
 theorem CuspU.of_isCsd (H : CuspU) {E : Type} (Ω : Type) [Field E]
     [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
@@ -116,7 +116,7 @@ theorem CuspU.of_isCsd (H : CuspU) {E : Type} (Ω : Type) [Field E]
   H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)
 
 /- English proof (translation)
-The claim follows from `rec_algNorm hrc σ ▸ H.away w hl A h rc hrc σ hσ`.
+A detailed English derivation is pending.
 -/
 theorem IsGalU.aw {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}

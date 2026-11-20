@@ -11,7 +11,7 @@ namespace GlobalTheory
 open IsLocalRing Polynomial in
 open scoped TensorProduct in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.comap_maximalIdeal_of_localHom_strictHens {A B : Type} [CommRing A] [IsLocalRing A]
     [CommRing B] [IsLocalRing B] (f : A →+* B) [IsLocalHom f] :
@@ -22,7 +22,7 @@ theorem _root_.GlobalTheory.comap_maximalIdeal_of_localHom_strictHens {A B : Typ
 open IsLocalRing Polynomial in
 open scoped TensorProduct in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.LocAcyc.LocPiecesEtale`. Conclude with `⟨Unit, inferInstance, inferInstance, inferInstance, fun _ => ⊤, monotone_const, fun _ => ⟨(), Algebra.mem_top⟩, fun _ => ⟨A, inferInstance, inferInstance, inferInstance, q, inferInstance, ⟨Subalgebra.topEquiv.symm⟩⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private lemma locPiecesEtale_localization_atPrime {R A : Type} [CommRing R] [CommRing A]
     [Algebra R A] [Algebra.Etale R A] (q : Ideal A) [q.IsPrime] :
@@ -36,19 +36,13 @@ open IsLocalRing Polynomial in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `T E _ _ _ _ _ _ _ _ y _`. Take `⟨S, _, _, _, _, hsep, hflat, -, -, hpieces⟩` from `_root_.GlobalTheory.exists_strictHenselisation (Localization.AtPrime y) (SeparableClosure (ResidueField (Localization.AtPrime y)))`. Use `haveI := hsep`. Establish `hP : _root_.GlobalTheory.LocAcyc.LocPiecesEtale (Localization.AtPrime y) S` using `hpieces`. Use `letI : Algebra E S := ((algebraMap (Localization.AtPrime y) S).comp (algebraMap E (Localization.AtPrime y))).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra T S := ((algebraMap E S).comp (algebraMap T E)).toAlgebra`. Use `letI : Algebra (Polynomial T) S := ((algebraMap E S).comp (algebraMap (Polynomial T) E)).toAlgebra`. Use `haveI : IsScalarTower E (Localization.AtPrime y) S := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower T E S := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower (Polynomial T) E S := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower T (Polynomial T) S := IsScalarTower.of_algebraMap_eq fun x => by show algebraMap E S (algebraMap T E x) = algebraMap E S (algebraMap (Polynomial T) E (algebraMap T (Polynomial T) x))`. Conclude with `congrArg _ (IsScalarTower.algebraMap_apply T (Polynomial T) E x)`. Use `haveI : IsScalarTower (Polynomial T) (Localization.AtPrime y) S := IsScalarTower.of_algebraMap_eq fun x => by show algebraMap (Localization.AtPrime y) S (algebraMap E (Localization.AtPrime y) (algebraMap (Polynomial T) E x)) = algebraMap (Localization.AtPrime y) S (algebraMap (Po …`. Conclude with `congrArg _ (IsScalarTower.algebraMap_apply (Polynomial T) E (Localization.AtPrime y) x).symm`. Establish `hcomap : (maximalIdeal S).comap (algebraMap E S) = y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_eq E (Localization.AtPrime y) S, ← Ideal.comap_comap, _root_.GlobalTheory.comap_maximalIdeal_of_localHom_strictHens]`. Conclude with `Localization.AtPrime.comap_maximalIdeal ..`. Use `haveI : Module.Flat E (Localization.AtPrime y) := IsLocalization.flat _ y.primeCompl`. Use `haveI := hflat`. Establish `hflatE : Module.Flat E S` using `Module.Flat.trans E (Localization.AtPrime y) S`.
-
-Establish `hpiecesE : _root_.GlobalTheory.LocAcyc.LocPiecesEtale E S` using `_root_.GlobalTheory.indEtale_localPieces_trans E (Localization.AtPrime y) S (locPiecesEtale_localization_atPrime (R := E) (A := E) y) hP`. Establish `hpiecesT : _root_.GlobalTheory.LocAcyc.LocPiecesEtale (Polynomial T) S` using `_root_.GlobalTheory.indEtale_localPieces_trans (Polynomial T) (Localization.AtPrime y) S (locPiecesEtale_localization_atPrime (R := Polynomial T) (A := E) y) hP`. Take `⟨P, _, φ, hφc, hφs⟩` from `_root_.GlobalTheory.StrictHensUnion.isStrictHenselisation_of_directed_union T S hpiecesT`. Establish `hPy : P = y.comap (algebraMap (Polynomial T) E)` using `by haveI : IsLocalHom φ := hφs.2.2.1`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[_root_.GlobalTheory.comap_maximalIdeal_of_localHom_strictHens]`. Conclude with `(Localization.AtPrime.comap_maximalIdeal ..).symm`. Use `_ = (maximalIdeal S).comap (algebraMap (Polynomial T) S) := by`. Rewrite using `[Ideal.comap_comap, hφc]`. Use `_ = y.comap (algebraMap (Polynomial T) E) := by`.
-
-Rewrite using `[IsScalarTower.algebraMap_eq (Polynomial T) E S, ← Ideal.comap_comap, hcomap]`. Substitute `hPy` using the available equality. Conclude with `⟨S, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hcomap, hflatE, hpiecesE, φ, hφc, hφs⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.strictHenselisation_etale_over_polynomial : ∀ (T E : Type) [CommRing T] [IsDomain T]
     [IsLocalRing T] [CommRing E]

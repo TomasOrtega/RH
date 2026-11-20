@@ -10,19 +10,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Pinch
 
 /- English proof (translation)
-Rewrite `hx` using `[Ideal.map, Ideal.span, Submodule.mem_span_set']`. Take `⟨n, c, g, rfl⟩` from `hx`. Establish `hg : ∀ i, ∃ j ∈ J, algebraMap R' A j = (g i : A)` using `fun i => (g i).2`. Use `choose j hjJ hjg using hg`. Establish `hsum : ∑ i, j i • f (c i) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfx, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← hjg i, map_mul, AlgHom.commutes, Algebra.smul_def, _root_.mul_comm]`. Take `⟨k, a, y, hy, ha⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := R') (M := C') (f := j) (x := fun i => f (c i)) hsum`. Use `choose z hz using fun l => hf (y l)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : ∀ i, c i - ∑ l, a i l • z l ∈ RingHom.ker f`. Introduce `i`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `f (c i - ∑ l, a i l • z l) = 0`. Rewrite using `[map_sub, map_sum]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, hz]`. Rewrite using `[← hy i, sub_self]`. Establish `h0 : ∑ i, algebraMap R' A (j i) * ∑ l, a i l • z l = 0`. Establish `hl : ∀ l, ∑ i, algebraMap R' A (j i) * (a i l • z l) = 0`. Introduce `l`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ i, algebraMap R' A (j i) * (a i l • z l) = (∑ i, j i * a i l) • z l`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, _root_.mul_assoc]`. Rewrite using `[this, ha l, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero fun l _ => hl l`. Establish `key : ∑ i, c i • (g i : A) = ∑ i, algebraMap R' A (j i) * (c i - ∑ l, a i l • z l)`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, h0, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← hjg i, _root_.mul_comm]`. Rewrite using `[key]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ (hjJ i)) (hd i)`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_mul_ker_of_flat {R' A C' : Type} [CommRing R'] [CommRing A] [CommRing C']
     [Algebra R' A] [Algebra R' C'] [Module.Flat R' C'] (f : A →ₐ[R'] C')
@@ -67,11 +67,11 @@ theorem mem_map_mul_ker_of_flat {R' A C' : Type} [CommRing R'] [CommRing A] [Com
   exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ (hjJ i)) (hd i)
 
 /- English proof (translation)
-Introduce `R' A C' _ _ _ _ _ _ _ f hf I J hI hK`. Establish `hle : RingHom.ker f ≤ I ⊔ (J.map (algebraMap R' A)) • RingHom.ker f`. Introduce `G hG`. Take `⟨i, hi, x, hx, rfl⟩` from `Submodule.mem_sup.1 (hK hG)`. Establish `hfx : f x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : f (i + x) = 0` using `hG`. Establish `h2 : f i = 0` using `hI hi`. Rewrite `h1` using `[map_add, h2, zero_add]`. Conclude with `h1`. Conclude with `Submodule.add_mem_sup hi (mem_map_mul_ker_of_flat f hf J hx hfx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (IsNoetherian.noetherian (RingHom.ker f)) le_rfl hle`. Use `⟨r, hr1, fun G hG => ?_⟩` and prove the remaining obligations. Conclude with `hr (Submodule.smul_mem_pointwise_smul G r _ hG)`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_one_mem_mul_ker_le :
     ∀ (R' A C' : Type) [CommRing R'] [CommRing A] [CommRing C'] [Algebra R' A] [Algebra R' C']

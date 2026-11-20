@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LatticeNormTrans
 open NumberField GlobalTheory.CMVal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ConjValChar.exists_conj_valChar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsConjugateCmValueCharacterPermutedWeight.lean&line=366#L366)
 -/

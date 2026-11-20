@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.GlueModel
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, hw⟩`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hw, ← Scheme.Hom.comp_apply, e.inv_hom_id]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem range_comp_iso_hom {W X Y : Scheme.{0}} (f : W ⟶ X) (e : X ≅ Y) :
     Set.range (f ≫ e.hom) = e.inv ⁻¹' Set.range f := by
@@ -34,9 +34,9 @@ theorem range_comp_iso_hom {W X Y : Scheme.{0}} (f : W ⟶ X) (e : X ≅ Y) :
     rfl
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨e.hom x, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Introduce and unpack `⟨y, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨e.inv y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Category.assoc, e.inv_hom_id, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_iso_hom_comp {X Y Z : Scheme.{0}} (e : X ≅ Y) (g : Y ⟶ Z) :
     Set.range (e.hom ≫ g) = Set.range g := by
@@ -49,21 +49,17 @@ theorem range_iso_hom_comp {X Y Z : Scheme.{0}} (e : X ≅ Y) (g : Y ⟶ Z) :
     rw [← Scheme.Hom.comp_apply, ← Category.assoc, e.inv_hom_id, Category.id_comp]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c I _ R _ a b ω C A F ψ t n i₀ hcov hψ hj hN hPr hFl`. Take `⟨-, hω, -⟩` from `hcov`. Establish `e₀ : spMap (algebraMap (𝓞 c.F) c.F) = spMap (ω i₀) ≫ spMap (b i₀)`. Rewrite using `[← spMap_comp, (hω i₀).2.1]`. Establish `hP₀ : IsPullback (pullback.fst (C i₀).s (spMap (ω i₀)) ≫ ψ i₀) (pullback.snd (C i₀).s (spMap (ω i₀))) F (spMap (algebraMap (𝓞 c.F) c.F))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e₀]`. Conclude with `(IsPullback.of_hasPullback _ _).paste_horiz (hψ i₀)`. Use `haveI := (C i₀).jQ_open`. Establish `hfst : ((C i₀).jQ ≫ hP₀.isoPullback.hom) ≫ pullback.fst F (spMap (algebraMap (𝓞 c.F) c.F)) = (C i₀).j ≫ ψ i₀`. Rewrite using `[Category.assoc, hP₀.isoPullback_hom_fst, Model.j, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, -⟩` from `ObjMaps.exists_sab_comp (n i₀) (C i₀).m`. Take `⟨m, -⟩` from `exists_sabMap_of_base_eq m₁ hfst.symm`. Establish `hco : ⇑((C i₀).jQ ≫ hP₀.isoPullback.hom) = ⇑hP₀.isoPullback.hom ∘ ⇑(C i₀).jQ`. Use function extensionality and compare the values at `fun x => Scheme.Hom.comp_apply _ _ x`. Set `Z : GMod Xo c` to `{ X := A, s := F, normal := hN, proj := hPr, flat := hFl jQ := (C i₀).jQ ≫ hP₀.isoPullback.hom jQ_over := by rw [Category.assoc, hP₀.isoPullback_hom_snd, (C i₀).jQ_over] jQ_open := inferInstance jQ_dense := by show DenseRange _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hco]`. Conclude with `DenseRange.comp (Scheme.Hom.surjective _).denseRange (C i₀).jQ_dense hP₀.isoPullback.hom.continuous`. Use `t := t, oF := (C i₀).oF, m0 := (C i₀).m0, m := m`. Use `ab_gen := by`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[range_comp_iso_hom, Set.mem_preimage, Set.mem_preimage, ← (C i₀).ab_gen, Set.mem_preimage, ← abLocus_pullback abLocusOne t.semi (n i₀).cart.1]`. Establish `h` using `congrArg (fun g => g x) hP₀.isoPullback_inv_fst`. Simplify using `only [Scheme.Hom.comp_apply] at h`. Rewrite using `[← h] }`. Use `⟨Z, ψ, fun i => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI := (b i).toAlgebra`. Use `haveI : IsLocalization.Away (a i) (R i) := (hω i).2.2`. Establish `hb : IsOpenImmersion (spMap (b i))` using `IsOpenImmersion.of_isLocalization (a i)`. Use `haveI : IsOpenImmersion (ψ i) := MorphismProperty.of_isPullback (P := @IsOpenImmersion) (hψ i).flip hb`. Use `⟨inferInstance, (hψ i).w, ?_, ?_, ⟨n i⟩⟩` and prove the remaining obligations.
-
-Establish `h1 : Set.range (ψ i) = Set.range (pullback.fst F (spMap (b i)))`. Rewrite using `[← (hψ i).isoPullback_hom_fst, range_iso_hom_comp]`. Use `show Set.range (ψ i) = F ⁻¹' _`. Rewrite using `[h1, Scheme.Pullback.range_fst]`. Use `congr 1`.
-
-Conclude with `PrimeSpectrum.localization_away_comap_range (R i) (a i)`. Use `show (C i).j ≫ ψ i = ((C i₀).jQ ≫ hP₀.isoPullback.hom) ≫ pullback.fst _ _`. Rewrite using `[hfst, hj]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gmod_charts : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}
     {c : Coeff l} {I : Type} [Finite I] {R : I → Type} [∀ i, CommRing (R i)] {a : I → 𝓞 c.F} {b : ∀ i, 𝓞 c.F →+* R i}

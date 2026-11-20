@@ -160,7 +160,7 @@ variable {Xo : Moduli Dw l} {c : Coeff l}
 variable {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (d : ℕ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.zero, h.trunc, h.law, h.act, h.tan, h.basis⟩, fun h => ⟨h.zero, h.trunc, h.law, h.act, h.tan, h.basis⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isChart_iff (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S)
     (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (uvec : Lt1 Dw → Fin d → S)
@@ -172,7 +172,7 @@ theorem isChart_iff (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.gen, h.ph1, h.ph2, h.sy, h.ad⟩, fun h => ⟨h.gen, h.ph1, h.ph2, h.sy, h.ad⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFrame_iff (x : ∀ m, jO y d m 1 ⟶ Xo.univ.t.G) (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S)
     (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S)
@@ -182,14 +182,14 @@ theorem isFrame_iff (x : ∀ m, jO y d m 1 ⟶ Xo.univ.t.G) (F : Fin d → MvPow
   ⟨fun h => ⟨h.gen, h.ph1, h.ph2, h.sy, h.ad⟩, fun h => ⟨h.gen, h.ph1, h.ph2, h.sy, h.ad⟩⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isPrim_iff (wP : PrimTy H Xo) : IsPrim wP ↔ IsPrimG Xo.univ.t wP := Iff.rfl
 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isGerm_iff (x : ∀ m, jO y d m 1 ⟶ Xo.univ.t.G)
     (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (e : ∀ m, FrTy y d x m) (wP : PrimTy H Xo)

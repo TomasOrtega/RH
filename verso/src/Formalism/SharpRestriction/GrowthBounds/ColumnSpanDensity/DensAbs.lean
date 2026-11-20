@@ -10,27 +10,25 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames
 
 /- English proof (translation)
-Use `set u := e / wa with hu`. Use `set v := e / wb with hv`. Establish `hu0 : 0 ≤ u` using `div_nonneg he hwa.le`. Establish `hv0 : 0 ≤ v` using `div_nonneg he hwb.le`. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : (N : ℝ) * x1 + N * x2 + N * u + N * v ≤ 1 / 2` using `by nlinarith`. Establish `hp1 : 0 ≤ (N : ℝ) * u` using `by positivity`. Establish `hp2 : 0 ≤ (N : ℝ) * v` using `by positivity`. Establish `hp3 : 0 ≤ (N : ℝ) * x1` using `by positivity`. Establish `hp4 : 0 ≤ (N : ℝ) * x2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : u ≤ 1` using `by nlinarith`. Establish `hv1 : v ≤ 1` using `by nlinarith`. Establish `hx1 : x1 ≤ 1` using `by nlinarith`. Establish `hx2 : x2 ≤ 1` using `by nlinarith`. Establish `hwa' : wa + e = wa * (1 + u)` using `by rw [hu]; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwb' : wb + e = wb * (1 + v)` using `by rw [hv]; field_simp`. Rewrite using `[hwa', hwb', mul_pow, mul_pow, mul_pow]`. Establish `hB : ∀ z : ℝ, 0 ≤ z → z ≤ 1 → (1 + z) ^ N * (1 - N * z) ≤ 1`. Introduce `z hz0 hz1`. Establish `hb` using `one_add_mul_le_pow (a := -z) (by linarith) N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzz : (1 + -z) ^ N = (1 - z) ^ N` using `by ring`. Establish `h1 : (1 + z) ^ N * (1 - z) ^ N ≤ 1`. Rewrite using `[← mul_pow]; exact pow_le_one₀ (by nlinarith) (by nlinarith)`. Establish `h2 : 0 ≤ (1 + z) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : ∀ x : ℝ, x ≤ 1 → 1 - N * x ≤ (1 - x) ^ N`. Introduce `x hx1`. Establish `hb` using `one_add_mul_le_pow (a := -x) (by linarith) N`. Establish `hxx : (1 + -x) ^ N = (1 - x) ^ N` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `hB u hu0 hu1`. Establish `hb` using `hB v hv0 hv1`. Establish `hc` using `hC x1 hx1`. Establish `hd` using `hC x2 hx2`. Establish `hA0 : 0 ≤ (1 + u) ^ N` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : 0 ≤ (1 + v) ^ N` using `by positivity`. Establish `e1 : 1 - N * u - N * v ≤ (1 - N * u) * (1 - N * v)` using `by nlinarith [mul_nonneg hp1 hp2]`. Establish `e2 : 1 - N * x1 - N * x2 ≤ (1 - N * x1) * (1 - N * x2)` using `by nlinarith [mul_nonneg hp3 hp4]`. Establish `e3 : (1 - N * u - N * v) * (1 - N * x1 - N * x2) ≤ (1 - N * u) * (1 - N * v) * ((1 - N * x1) * (1 - N * x2))` using `mul_le_mul e1 e2 (by linarith) (by nlinarith)`. Establish `e4 : 1 - (N * u + N * v) - (N * x1 + N * x2) ≤ (1 - N * u - N * v) * (1 - N * x1 - N * x2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (add_nonneg hp1 hp2) (add_nonneg hp3 hp4)]`. Establish `hprod : 1 ≤ 2 * ((1 - N * u) * (1 - N * v) * ((1 - N * x1) * (1 - N * x2)))` using `by linarith`. Establish `hAB : (1 + u) ^ N * (1 + v) ^ N * ((1 - N * u) * (1 - N * v)) ≤ 1`. Use `mul_le_one₀ ha (mul_nonneg hB0 (by linarith)) hb` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCD : (1 - N * x1) * (1 - N * x2) ≤ (1 - x1) ^ N * (1 - x2) ^ N` using `mul_le_mul hc hd (by linarith) (le_trans (by linarith) hc)`. Establish `key : (1 + u) ^ N * (1 + v) ^ N ≤ 2 * ((1 - x1) ^ N * (1 - x2) ^ N)`. Establish `hγδ : 0 ≤ (1 - N * x1) * (1 - N * x2)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hw : 0 ≤ wa ^ N * wb ^ N` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dens_abs (N : ℕ) (hN : 1 ≤ N) (x1 x2 wa wb e : ℝ) (h1 : 0 ≤ x1) (h2 : 0 ≤ x2) (hwa : 0 < wa) (hwb : 0 < wb)
     (he : 0 ≤ e) (hs : (N : ℝ) * (x1 + x2 + e / wa + e / wb) ≤ 1 / 2) :
@@ -107,13 +105,13 @@ theorem dens_abs (N : ℕ) (hN : 1 ≤ N) (x1 x2 wa wb e : ℝ) (h1 : 0 ≤ x1) 
     _ ≤ 2 * ((1 - x1) ^ N * (1 - x2) ^ N) * (wa ^ N * wb ^ N) := mul_le_mul_of_nonneg_right key hw
 
 /- English proof (translation)
-Establish `hNY : 2 ≤ N * Y` using `by nlinarith`. Establish `hL2 : Real.log 2 ≤ Real.log (N * Y)` using `Real.log_le_log (by norm_num) hNY`. Establish `hlog2` using `Real.log_two_gt_d9`. Use `set L := Real.log (N * Y) with hL`. Establish `hexpL : Real.exp L = N * Y` using `Real.exp_log (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : N ^ 2 ≤ Real.exp (2 * L)`. Establish `hNY1 : N ≤ N * Y` using `by nlinarith`. Rewrite using `[show 2 * L = L + L by ring, Real.exp_add, hexpL, sq]`. Conclude with `mul_le_mul hNY1 hNY1 (by linarith) (by linarith)`. Establish `h2 : 1 + 2 * L / 3 ≤ Real.exp (2 * L / 3)` using `by linarith [Real.add_one_le_exp (2 * L / 3)]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Real.exp (2 * L) * Real.exp (2 * L / 3) ≤ Real.exp (La / 3)`. Rewrite using `[← Real.exp_add]; exact Real.exp_le_exp.mpr (by linarith)`. Establish `h4 : N ^ 2 * (1 + 2 * L / 3) ≤ Real.exp (La / 3)` using `le_trans (mul_le_mul h1 h2 (by linarith) (Real.exp_pos _).le) h3`. Establish `h5 : N ^ 2 * 1.46 ≤ Real.exp (La / 3)` using `le_trans (mul_le_mul_of_nonneg_left (by linarith) (sq_nonneg N)) h4`. Establish `hpos : 0 < Real.exp (La / 3)` using `Real.exp_pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[show -La / 3 = -(La / 3) by ring, Real.exp_neg, ← div_eq_mul_inv, div_le_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem Nexp_le (N Y La : ℝ) (hN : 2 ≤ N) (hY : 1 ≤ Y) (hLa : 8 * Real.log (N * Y) ≤ La) :
     N * Real.exp (-La / 3) ≤ 0.36 := by

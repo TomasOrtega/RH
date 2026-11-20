@@ -9,9 +9,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.TateDualTied
 
 /- English proof (translation)
-Introduce `l _ P AI T K`. Use `⟨fun LL _ _ _ O _ _ hO A A' m h hm => ?_, fun LL _ _ _ O _ _ hO A A' m h hm => ?_⟩` and prove the remaining obligations. Use `haveI := hO.2.1`. Conclude with `(GlobalTheory.TateDualFil.tateDual l P AI T K LL A.ρ A'.ρ m h hm).1`. Use `haveI := hO.2.1`.
-
-Conclude with `(GlobalTheory.TateDualFil.tateDual l P AI T K LL A.ρ A'.ρ m h hm).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
     ∀ K : FinExt l, drDualCore (P.PD K) ∧ Formalism.MainNotions.LocalSituation.filDualCore (P.PD K) := by

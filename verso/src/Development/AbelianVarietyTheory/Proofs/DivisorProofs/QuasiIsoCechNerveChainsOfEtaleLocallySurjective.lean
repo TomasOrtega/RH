@@ -10,17 +10,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : (Arrow.mapCechNerve (Arrow.homMk (𝟙 A) ι (by simp) : Arrow.mk π ⟶ Arrow.mk (π ≫ ι))).app n = WidePullback.lift (WidePullback.base (fun _ : Fin (n.unop.len + 1) => π) ≫ ι) (fun i => WidePullback.π (fun _ : Fin (n.unop.len + 1) => π) i) (fun j => by show _ ≫ (π ≫ ι) = _`. Rewrite using `[← Category.assoc, WidePullback.π_arrow]) := by`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j erw [WidePullback.lift_π]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `erw [WidePullback.lift_base]`. Rewrite using `[e]`. Use `⟨WidePullback.lift (WidePullback.π _ 0 ≫ π) (fun i => WidePullback.π _ i) ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[← cancel_mono ι]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Conclude with `(WidePullback.π_arrow (fun _ : Fin (n.unop.len + 1) => π ≫ ι) i).trans (WidePullback.π_arrow (fun _ : Fin (n.unop.len + 1) => π ≫ ι) 0).symm`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[Category.assoc, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `erw [WidePullback.lift_π, WidePullback.lift_π]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, Category.id_comp] erw [WidePullback.lift_base]`. Rewrite using `[← Category.assoc]`. Use `erw [WidePullback.lift_π]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `WidePullback.π_arrow (fun _ : Fin (n.unop.len + 1) => π) 0`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[Category.assoc, Category.id_comp]`. Use `erw [WidePullback.lift_π, WidePullback.lift_π]`.
-
-Rewrite using `[Category.assoc, Category.id_comp] erw [WidePullback.lift_base]`. Rewrite using `[← Category.assoc]`. Use `erw [WidePullback.lift_base]`. Rewrite using `[Category.assoc]`. Conclude with `WidePullback.π_arrow (fun _ : Fin (n.unop.len + 1) => π ≫ ι) 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isIso_mapCechNerve_app_of_mono {A B C : PSh} (π : A ⟶ B) (ι : B ⟶ C) [Mono ι] (φ : A ⟶ C)
     (h : π ≫ ι = φ) (n : SimplexCategoryᵒᵖ) :
@@ -71,19 +69,15 @@ end GlobalTheory.EtC
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Set `aφ : (Arrow.mk φ).cechNerve ⟶ disc.obj Q` to `(Arrow.mk φ).augmentedCechNerve.hom`. Express the relevant statement in the definitionally equal form `QuasiIso ((chains R).map aφ)`. Establish `hπι : Subfunctor.toRange φ ≫ (Subfunctor.range φ).ι = φ` using `Subfunctor.toRange_ι φ`. Use `set π := Subfunctor.toRange φ with hπ`. Use `set ι := (Subfunctor.range φ).ι with hι`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F : Arrow.mk π ⟶ Arrow.mk φ` to `Arrow.homMk (𝟙 P) ι (by simp [hπι])`. Set `aπ : (Arrow.mk π).cechNerve ⟶ disc.obj _` to `(Arrow.mk π).augmentedCechNerve.hom`. Establish `sq : Arrow.mapCechNerve F ≫ aφ = aπ ≫ disc.map ι`. Use extensionality with `n : 1`. Use `erw [NatTrans.comp_app, NatTrans.comp_app]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [Arrow.augmentedCechNerve_hom_app, Arrow.augmentedCechNerve_hom_app, WidePullback.lift_base]`. Both sides reduce to the same expression. Establish `hsurj : ∀ U, Function.Surjective (π.app U)` using `fun U => (epi_iff_surjective _).1 ((NatTrans.epi_iff_epi_app _).1 (inferInstance : Epi π) U)`. Establish `h1 : QuasiIso ((chains R).map aπ)` using `GlobalTheory.T.quasiIso_chains_cechNerve_of_surjective R π hsurj`. Establish `hιfree : IsIso ((free R).map ι)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.freeEtaleModuleSheaf_map_mono_epi_iso R ι).2.2 ?_ ?_` and prove the remaining obligations. Introduce `U y`. Conclude with `GlobalTheory.EtC.loc_calculus.2.1 U _ _ (hφ U y) fun V g ⟨x, hx⟩ => ⟨π.app (op V) x, hx⟩`. Introduce `U x x' hxx`. Establish `: x = x'` using `Subtype.ext hxx`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `GlobalTheory.EtC.loc_calculus.1 U _ fun _ _ => rfl`. Establish `h2 : IsIso ((chains R).map (disc.map ι))` using `isIso_chains_map_of_isIso_free R _ fun n => hιfree`. Establish `h3 : IsIso ((chains R).map (Arrow.mapCechNerve F))` using `isIso_chains_map_of_isIso_free R _ fun n => by`. Use `isIso_mapCechNerve_app_of_mono π ι φ hπι n` as an intermediate fact.
-
-Conclude with `Functor.map_isIso _ _`. Establish `key : (chains R).map (Arrow.mapCechNerve F) ≫ (chains R).map aφ = (chains R).map aπ ≫ (chains R).map (disc.map ι)`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, sq]`. Rewrite using `[← quasiIso_iff_comp_left ((chains R).map (Arrow.mapCechNerve F)), key]`. Use `haveI := h1`.
-
-Use `haveI := h2`. Establish `h2' : QuasiIso ((chains R).map (disc.map ι))` using `inferInstance`. Conclude with `quasiIso_comp ((chains R).map aπ) ((chains R).map (disc.map ι)) (hφ := h1) (hφ' := h2')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quasiIso_chains_cech_of_locSurj (R : Type) [CommRing R] {P Q : PSh} (φ : P ⟶ Q)
     (hφ : ∀ U (y : Q.obj (op U)), Loc U fun V g => ∃ x, φ.app (op V) x = Q.map g.op y) :

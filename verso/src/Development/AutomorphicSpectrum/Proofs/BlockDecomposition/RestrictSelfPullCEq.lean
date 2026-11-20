@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct DirectSum GlobalTheory.LogCr
 namespace GlobalTheory.CompanionTheory.KunGlue
 
 /- English proof (translation)
-Introduce `R _ C _ F U k n x`. Use function extensionality and compare the values at `s`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem resU_self_pullC : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) (U : ObjectProperty C) (k : U ≤ U) (n : ℕ) (x : CH.Cn (U.ι ⋙ F) n), (resU F k).pullC n x = x := by
   intro R _ C _ F U k n x

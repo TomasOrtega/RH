@@ -15,11 +15,9 @@ noncomputable section
 namespace GlobalTheory.SchrUnifDen
 
 /- English proof (translation)
-Use `choose c hc hxc using hx`. Set `X : κ → FiniteAdeleRing (𝓞 F) F` to `fun k => RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite (fun v => ⟨c k v, hc k v⟩)`. Establish `hX : ∀ k v, X k v = c k v` using `fun _ _ => rfl`. Use `⟨X, fun k _ v => hc k v, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Use `show x k v = (N • X k) v`. Rewrite using `[hxc k v, nsmul_eq_mul, ← hX k v]`. Use `show _ = evalV F v ((N : FiniteAdeleRing (𝓞 F) F) * X k)`.
-
-Rewrite using `[map_mul, map_natCast]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_nsmul_int {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (N : ℕ)
     (x : κ → FiniteAdeleRing (𝓞 F) F)
@@ -41,31 +39,27 @@ theorem eq_nsmul_int {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ g hg`. Use `haveI := GlobalTheory.HeisSchA.nonarch_finiteAdeleRing (F := F)`. Use `haveI : NonarchimedeanAddGroup (κ → FiniteAdeleRing (𝓞 F) F) := GlobalTheory.HeisSchA.nonarch_pi`. Take `⟨H, hH⟩` from `GlobalTheory.SchrFixNbhd.exists_dot_ker (GlobalTheory.HeisSchA.finChar ψ) (GlobalTheory.HeisSchA.finChar_isLocallyConstant ψ hψ) κ (tsupport g) hg.2.isCompact`. Set `c : FiniteAdeleRing (𝓞 F) F` to `(⅟(2 : AdeleRing (𝓞 F) F)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L₁ : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)` to `GlobalTheory.SchrFixNbhd.fixTrans g ⊓ (H : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)).comap (DistribSMul.toAddMonoidHom (κ → FiniteAdeleRing (𝓞 F) F) c)`. Establish `o₁ : IsOpen (L₁ : Set (κ → FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `(GlobalTheory.SchrFixNbhd.isOpen_fixTrans hg.1 hg.2).inter (H.isOpen.preimage (continuous_const_smul c))`. Take `⟨N₁, hN₁, h₁⟩` from `GlobalTheory.SchADecomp.exists_nsmul_mem κ L₁ o₁`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨N₂, hN₂, h₂⟩` from `GlobalTheory.SchADecomp.exists_nsmul_mem κ (H : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)) H.isOpen`. Use `⟨N₁ * N₂, Nat.one_le_iff_ne_zero.2 (mul_ne_zero hN₁ hN₂), fun f a b hab => ?_⟩` and prove the remaining obligations. Set `x : κ → FiniteAdeleRing (𝓞 F) F` to `fun k => (a k).2`. Set `y : κ → FiniteAdeleRing (𝓞 F) F` to `fun k => (b k).2`. Establish `ha : a = GlobalTheory.WeilCont.adeleJoin F 0 x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[GlobalTheory.SchrFixNbhd.adeleJoin_zero_apply]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact (hab k).1)`. Establish `hb : b = GlobalTheory.WeilCont.adeleJoin F 0 y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[GlobalTheory.SchrFixNbhd.adeleJoin_zero_apply]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact (hab k).2.1)`. Take `⟨x', hx', hxx⟩` from `eq_nsmul_int (N₁ * N₂) x (fun k v => (hab k).2.2.1 v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y', hy', hyy⟩` from `eq_nsmul_int (N₁ * N₂) y (fun k v => (hab k).2.2.2 v)`. Establish `hx : x ∈ L₁`. Rewrite using `[hxx, ← smul_smul]`. Conclude with `h₁ _ (nsmul_mem hx' _)`. Establish `hy : y ∈ (H : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hyy, mul_comm, ← smul_smul]`. Conclude with `h₂ _ (nsmul_mem hy' _)`. Take `⟨hx1, hx2⟩` from `hx`. Rewrite using `[ha, hb]`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hf : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((z + GlobalTheory.WeilCont.adeleJoin F 0 x) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (z i).1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, GlobalTheory.SchrFixNbhd.adeleJoin_zero_apply]`. Conclude with `congrArg _ (add_zero (z i).1)`. Establish `hgz : (fun i => ((z + GlobalTheory.WeilCont.adeleJoin F 0 x) i).2) = (fun i => (z i).2) + x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, GlobalTheory.SchrFixNbhd.adeleJoin_zero_apply]`. Both sides reduce to the same expression. Establish `hz : GlobalTheory.WeilM.pureA F f g (z + GlobalTheory.WeilCont.adeleJoin F 0 x) = GlobalTheory.WeilM.pureA F f g z`. Simplify using `only [GlobalTheory.WeilM.pureA]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, hgz, hx1]`. Simplify using `only [GlobalTheory.WeilM.schr]`. Rewrite using `[hz]`. Distinguish the cases in `hg0 : g (fun i => (z i).2) = 0`. Simplify using `only [GlobalTheory.WeilM.pureA, hg0, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzc : (fun i => (z i).2) ∈ tsupport g` using `subset_tsupport _ hg0`. Establish `harg : z ⬝ᵥ GlobalTheory.WeilCont.adeleJoin F 0 y + ⅟(2 : AdeleRing (𝓞 F) F) * (GlobalTheory.WeilCont.adeleJoin F 0 x ⬝ᵥ GlobalTheory.WeilCont.adeleJoin F 0 y) = ((0 : InfiniteAdeleRing F), (fun i => (z i).2) ⬝ᵥ y + (c • x) ⬝ᵥ y)`. Rewrite using `[GlobalTheory.SchrFixNbhd.dotProduct_adeleJoin_zero, GlobalTheory.SchrFixNbhd.dotProduct_adeleJoin_zero, smul_dotProduct]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (0 : InfiniteAdeleRing F) + (⅟(2 : AdeleRing (𝓞 F) F)).1 * 0 = 0`.
-
-Rewrite using `[mul_zero, add_zero]`. Use `show (fun i => (z i).2) ⬝ᵥ y + c * ((fun i => (GlobalTheory.WeilCont.adeleJoin F 0 x i).2) ⬝ᵥ y) = _`. Both sides reduce to the same expression. Rewrite using `[harg]`. Establish `h1 : ψ ((0 : InfiniteAdeleRing F), (fun i => (z i).2) ⬝ᵥ y + (c • x) ⬝ᵥ y) = 1` using `hH _ hzc (c • x) hx2 y hy`.
-
-Rewrite using `[h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schr_fix_pure_uniform : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {κ : Type} [Fintype κ]
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)),

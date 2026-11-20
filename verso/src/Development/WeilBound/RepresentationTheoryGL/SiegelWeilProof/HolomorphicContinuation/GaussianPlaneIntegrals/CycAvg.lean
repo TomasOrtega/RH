@@ -15,14 +15,14 @@ def D (m n d : ℕ) : Finset ((Fin m × Fin n × Bool) →₀ ℕ) :=
   Finset.univ.image (fun f : Fin m × Fin n × Bool → Fin (d + 1) => Finsupp.equivFunOnFinite.symm (fun v => (f v : ℕ)))
 
 /- English proof (translation)
-Use `Finset.mem_image.2 ⟨fun v => ⟨t v, Nat.lt_succ_of_le (h v)⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mem_D {d : ℕ} {t : (Fin m × Fin n × Bool) →₀ ℕ} (h : ∀ v, t v ≤ d) : t ∈ D m n d := by
   refine Finset.mem_image.2 ⟨fun v => ⟨t v, Nat.lt_succ_of_le (h v)⟩, Finset.mem_univ _, ?_⟩
   ext v; simp
 
 /- English proof (translation)
-Distinguish the cases in `hv : v ∈ t.support`. Conclude with `Finset.single_le_sum (f := fun v => t v) (fun _ _ => Nat.zero_le _) hv`. Rewrite using `[Finsupp.notMem_support_iff.1 hv]`. Conclude with `Nat.zero_le _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_sum_fs (t : (Fin m × Fin n × Bool) →₀ ℕ) (v : Fin m × Fin n × Bool) : t v ≤ t.sum fun _ e => e := by
   by_cases hv : v ∈ t.support
@@ -30,9 +30,9 @@ theorem le_sum_fs (t : (Fin m × Fin n × Bool) →₀ ℕ) (v : Fin m × Fin n 
   · rw [Finsupp.notMem_support_iff.1 hv]; exact Nat.zero_le _
 
 /- English proof (translation)
-Break down `k with ⟨a, i, _ | _⟩` into its components or cases. Rewrite using `[subR_X_false]`. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun b _ => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `[totalDegree_C, totalDegree_X]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[subR_X_true]`. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun b _ => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `[totalDegree_C, totalDegree_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem totalDegree_var (u : Matrix (Fin m) (Fin m) ℂ) (k : Fin m × Fin n × Bool) :
     (subR u (X k : PX m n)).totalDegree ≤ 1 := by
@@ -47,11 +47,11 @@ theorem totalDegree_var (u : Matrix (Fin m) (Fin m) ℂ) (k : Fin m × Fin n × 
     simp [totalDegree_C, totalDegree_X]
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[subR, aeval_monomial, algebraMap_eq]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (le_totalDegree hs)` and prove the remaining obligations. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `totalDegree_var (n := n) u v` as an intermediate fact. Simplify using `only [subR, aeval_X] at this`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem totalDegree_subR (u : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) : (subR u P).totalDegree ≤ P.totalDegree := by
   conv_lhs => rw [P.as_sum]
@@ -69,14 +69,14 @@ theorem totalDegree_subR (u : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) : (subR u
   nlinarith
 
 /- English proof (translation)
-Introduce `t ht`. Use `mem_D fun v => (le_sum_fs t v).trans ((le_totalDegree ht).trans (totalDegree_subR u P))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem support_subR (u : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) : (subR u P).support ⊆ D m n P.totalDegree := by
   intro t ht
   refine mem_D fun v => (le_sum_fs t v).trans ((le_totalDegree ht).trans (totalDegree_subR u P))
 
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum]`. Use `Finset.sum_subset h fun s _ hs => ?_` and prove the remaining obligations. Rewrite using `[notMem_support_iff.1 hs, monomial_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand (Q : PX m n) (d : ℕ) (h : Q.support ⊆ D m n d) : Q = ∑ s ∈ D m n d, monomial s (coeff s Q) := by
   conv_lhs => rw [Q.as_sum]
@@ -86,13 +86,13 @@ theorem expand (Q : PX m n) (d : ℕ) (h : Q.support ⊆ D m n d) : Q = ∑ s �
 def CC {K : Type*} [TopologicalSpace K] (F : K → PX m n) : Prop := ∀ t, Continuous fun k => coeff t (F k)
 
 /- English proof (translation)
-Introduce `t` and use `by simp only [coeff_add]; exact (hF t).add (hG t)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CC.add {K : Type*} [TopologicalSpace K] {F G : K → PX m n} (hF : CC F) (hG : CC G) : CC fun k => F k + G k :=
   fun t => by simp only [coeff_add]; exact (hF t).add (hG t)
 
 /- English proof (translation)
-Introduce `t` and use `by simp only [coeff_mul] exact continuous_finsetSum _ fun x _ => (hF x.1).mul (hG x.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CC.mul {K : Type*} [TopologicalSpace K] {F G : K → PX m n} (hF : CC F) (hG : CC G) : CC fun k => F k * G k :=
   fun t => by
@@ -100,12 +100,12 @@ theorem CC.mul {K : Type*} [TopologicalSpace K] {F G : K → PX m n} (hF : CC F)
     exact continuous_finsetSum _ fun x _ => (hF x.1).mul (hG x.2)
 
 /- English proof (translation)
-Introduce `_` and use `continuous_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CC.const {K : Type*} [TopologicalSpace K] (Q : PX m n) : CC fun _ : K => Q := fun _ => continuous_const
 
 /- English proof (translation)
-Introduce `t` and use `by simp only [coeff_C] by_cases h : (0 : (Fin m × Fin n × Bool) →₀ ℕ) = t · simp only [h, if_true]; exact hf · simp only [h, if_false]; exact continuous_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CC.ofC {K : Type*} [TopologicalSpace K] {f : K → ℂ} (hf : Continuous f) : CC fun k => (C (f k) : PX m n) :=
   fun t => by
@@ -115,7 +115,7 @@ theorem CC.ofC {K : Type*} [TopologicalSpace K] {f : K → ℂ} (hf : Continuous
     · simp only [h, if_false]; exact continuous_const
 
 /- English proof (translation)
-Introduce `t` and use `by simp only [coeff_sum] exact continuous_finsetSum _ fun i _ => hF i t`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CC.sum {K : Type*} [TopologicalSpace K] {ι : Type*} (s : Finset ι) {F : ι → K → PX m n} (hF : ∀ i, CC (F i)) :
     CC fun k => ∑ i ∈ s, F i k := fun t => by
@@ -123,11 +123,9 @@ theorem CC.sum {K : Type*} [TopologicalSpace K] {ι : Type*} (s : Finset ι) {F 
   exact continuous_finsetSum _ fun i _ => hF i t
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Use `next c => simpa [subR_C] using CC.const (K := K) (MvPolynomial.C c : PX m n)`. Use `next p q hp hq => simpa [map_add] using hp.add hq`. Use `next p v hp =>`. Simplify using `only [map_mul]`.
+Proceed by induction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `hp.mul ?_` and prove the remaining obligations. Break down `v with ⟨a, i, _ | _⟩` into its components or cases. Simplify using `only [subR_X_false]`. Conclude with `CC.sum _ fun b => (CC.ofC (((continuous_apply b).comp (continuous_apply a)).comp hg)).mul (CC.const _)`. Simplify using `only [subR_X_true]`.
-
-Conclude with `CC.sum _ fun b => (CC.ofC (continuous_star.comp (((continuous_apply b).comp (continuous_apply a)).comp hg))).mul (CC.const _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CC.subR {K : Type*} [TopologicalSpace K] {g : K → Matrix (Fin m) (Fin m) ℂ} (hg : Continuous g) (P : PX m n) :
     CC fun k => subR (g k) P := by
@@ -149,7 +147,7 @@ variable (ε : Fin m → Bool)
 def gK (k : Formalism.REAL.KG ε) : Matrix (Fin m) (Fin m) ℂ := Formalism.REAL.toMK k⁻¹
 
 /- English proof (translation)
-Establish `h : gK ε = fun k : Formalism.REAL.KG ε => ((((k : Formalism.REAL.UJ ε) : (Matrix (Fin m) (Fin m) ℂ)ˣ))⁻¹ : (Matrix (Fin m) (Fin m) ℂ)ˣ).val`. Use function extensionality and compare the values at `k`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_subtype_val)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_gK : Continuous (gK ε) := by
   have h : gK ε = fun k : Formalism.REAL.KG ε => ((((k : Formalism.REAL.UJ ε) : (Matrix (Fin m) (Fin m) ℂ)ˣ))⁻¹ : (Matrix (Fin m) (Fin m) ℂ)ˣ).val := by
@@ -163,12 +161,12 @@ Both sides reduce to the same expression.
 theorem toMK_mul (a b : Formalism.REAL.KG ε) : Formalism.REAL.toMK (a * b) = Formalism.REAL.toMK a * Formalism.REAL.toMK b := rfl
 
 /- English proof (translation)
-The claim follows from `(k⁻¹).2`.
+A detailed English derivation is pending.
 -/
 theorem gK_mem (k : Formalism.REAL.KG ε) : gK ε k ∈ Formalism.REAL.Kset ε := (k⁻¹).2
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff']`. Simplify `this` using `[Matrix.star_eq_conjTranspose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitary_of_mem {w : Matrix (Fin m) (Fin m) ℂ} (h : w ∈ Formalism.REAL.Kset ε) : wᴴ * w = 1 := by
   have := h.1
@@ -176,7 +174,7 @@ theorem unitary_of_mem {w : Matrix (Fin m) (Fin m) ℂ} (h : w ∈ Formalism.REA
   simpa [Matrix.star_eq_conjTranspose] using this
 
 /- English proof (translation)
-Simplify using `only [Qp, Qb, evX_eq, map_sub, map_sum, map_mul, eval_X, pt, if_true, Bool.false_eq_true, if_false, Finset.sum_filter, dotProduct, Matrix.mulVec_diagonal, Pi.star_apply]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases h : ε a <;> simp [sgn, h, pt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evX_Qp (i j : Fin n) (x : Fin m → Fin n → ℂ) :
     evX (Qp ε i j) x = star (fun b => x b i) ⬝ᵥ (Matrix.diagonal (sgn ε) *ᵥ fun b => x b j) := by
@@ -187,9 +185,9 @@ theorem evX_Qp (i j : Fin n) (x : Fin m → Fin n → ℂ) :
   cases h : ε a <;> simp [sgn, h, pt]
 
 /- English proof (translation)
-Establish `hJ : wᴴ * Matrix.diagonal (sgn ε) * w = Matrix.diagonal (sgn ε)`. Establish `h2 : w * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * w` using `hw.2`. Establish `hd : Formalism.REAL.Jm ε = Matrix.diagonal (sgn ε)` using `rfl`. Rewrite `h2` using `[hd]`. Rewrite using `[Matrix.mul_assoc, ← h2, ← Matrix.mul_assoc, unitary_of_mem ε hw, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : ∀ l, (fun b => act w x b l) = w *ᵥ fun b => x b l` using `fun l => rfl`. Rewrite using `[evX_Qp, evX_Qp, hcol, hcol, Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, ← Matrix.mul_assoc, hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem evX_Qp_act {w : Matrix (Fin m) (Fin m) ℂ} (hw : w ∈ Formalism.REAL.Kset ε) (i j : Fin n) (x : Fin m → Fin n → ℂ) :
     evX (Qp ε i j) (act w x) = evX (Qp ε i j) x := by
@@ -203,9 +201,7 @@ theorem evX_Qp_act {w : Matrix (Fin m) (Fin m) ℂ} (hw : w ∈ Formalism.REAL.K
     Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, ← Matrix.mul_assoc, hJ]
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ (PX m n)` to `{ carrier := {R | ∀ x, evX R (act w x) = evX R x} mul_mem' := fun {a b} ha hb x => by simp only [evX_eq, map_mul] at *; rw [ha, hb] add_mem' := fun {a b} ha hb x => by simp only [evX_eq, map_add] at *; rw [ha, hb] algebraMap_mem' := fun c x => by simp [evX_eq, algebraMap_eq] }`. Establish `hle : Algebra.adjoin ℂ (Set.range fun ij : Fin n × Fin n => (Qp ε ij.1 ij.2 : PX m n)) ≤ S`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨ij, rfl⟩ x`. Conclude with `evX_Qp_act ε hw ij.1 ij.2 x`.
-
-Conclude with `hle hR x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem evX_inv_act {w : Matrix (Fin m) (Fin m) ℂ} (hw : w ∈ Formalism.REAL.Kset ε) {R : PX m n}
     (hR : R ∈ Algebra.adjoin ℂ (Set.range fun ij : Fin n × Fin n => (Qp ε ij.1 ij.2 : PX m n))) (x : Fin m → Fin n → ℂ) :
@@ -225,14 +221,14 @@ def avg (P : PX m n) : PX m n :=
   ∑ t ∈ D m n P.totalDegree, monomial t (∫ k, coeff t (subR (gK ε k) P) ∂(Formalism.REAL.muK ε))
 
 /- English proof (translation)
-The claim follows from `(CC.subR (continuous_gK ε) P t).integrable_of_hasCompactSupport (IsCompact.of_isClosed_subset isCompact_univ (isClosed_tsupport _) (Set.subset_univ _))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_coeff (P : PX m n) (t) : Integrable (fun k => coeff t (subR (gK ε k) P)) (Formalism.REAL.muK ε) :=
   (CC.subR (continuous_gK ε) P t).integrable_of_hasCompactSupport
     (IsCompact.of_isClosed_subset isCompact_univ (isClosed_tsupport _) (Set.subset_univ _))
 
 /- English proof (translation)
-Unfold `Formalism.REAL.muK`. Use `Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (Formalism.REAL.KG ε)))` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem muK_univ : (Formalism.REAL.muK ε) Set.univ = 1 := by
   unfold Formalism.REAL.muK
@@ -240,9 +236,9 @@ theorem muK_univ : (Formalism.REAL.muK ε) Set.univ = 1 := by
   simpa using this
 
 /- English proof (translation)
-Unfold `avg`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Distinguish the cases in `ht : t ∈ D m n P.totalDegree`. Rewrite using `[Finset.sum_eq_single t (fun b _ hb => if_neg hb) (fun h => absurd ht h), if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (fun b hb => if_neg (fun h : b = t => ht (h ▸ hb)))]`. Establish `: ∀ k, coeff t (subR (gK ε k) P) = 0` using `fun k => notMem_support_iff.1 (fun h => ht (support_subR _ P h))`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem coeff_avg (P : PX m n) (t) : coeff t (avg ε P) = ∫ k, coeff t (subR (gK ε k) P) ∂(Formalism.REAL.muK ε) := by
   unfold avg
@@ -256,21 +252,21 @@ theorem coeff_avg (P : PX m n) (t) : coeff t (avg ε P) = ∫ k, coeff t (subR (
     simp [this]
 
 /- English proof (translation)
-Rewrite using `[C_mul_monomial, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_eq (s : (Fin m × Fin n × Bool) →₀ ℕ) (a : ℂ) :
     (monomial s a : PX m n) = MvPolynomial.C a * monomial s 1 := by
   rw [C_mul_monomial, mul_one]
 
 /- English proof (translation)
-Rewrite using `[mono_eq s a, map_mul, subR_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subR_mono (v : Matrix (Fin m) (Fin m) ℂ) (s : (Fin m × Fin n × Bool) →₀ ℕ) (a : ℂ) :
     subR v (monomial s a : PX m n) = MvPolynomial.C a * subR v (monomial s 1) := by
   rw [mono_eq s a, map_mul, subR_C]
 
 /- English proof (translation)
-Rewrite using `[map_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[subR_mono, coeff_C_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_subR_sum (v : Matrix (Fin m) (Fin m) ℂ) (S : Finset ((Fin m × Fin n × Bool) →₀ ℕ))
     (a : ((Fin m × Fin n × Bool) →₀ ℕ) → ℂ) (t : (Fin m × Fin n × Bool) →₀ ℕ) :
@@ -280,13 +276,13 @@ theorem coeff_subR_sum (v : Matrix (Fin m) (Fin m) ℂ) (S : Finset ((Fin m × F
   rw [subR_mono, coeff_C_mul]
 
 /- English proof (translation)
-Use extensionality with `t`. Establish `h1 : coeff t (subR (Formalism.REAL.toMK kv) (avg ε P)) = ∫ k, coeff t (subR (Formalism.REAL.toMK kv) (subR (gK ε k) P)) ∂(Formalism.REAL.muK ε)`. Unfold `avg`. Rewrite using `[coeff_subR_sum]`. Repeatedly rewrite using `[← integral_mul_const]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← integral_finsetSum _ fun s _ => (integrable_coeff ε P s).mul_const _]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Use `conv_rhs => rw [expand (subR (gK ε k) P) P.totalDegree (support_subR _ P)]`. Rewrite using `[coeff_subR_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, coeff_avg]`. Repeatedly rewrite using `[subR_subR]`. Establish `h2 : ∀ k : Formalism.REAL.KG ε, gK ε k * Formalism.REAL.toMK kv = gK ε (kv⁻¹ * k)`. Introduce `k`. Simplify using `only [gK]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_rev, inv_inv, toMK_mul]`. Repeatedly rewrite using `[h2]`. Conclude with `integral_mul_left_eq_self (fun k => coeff t (subR (gK ε k) P)) kv⁻¹`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_inv (P : PX m n) (kv : Formalism.REAL.KG ε) : subR (Formalism.REAL.toMK kv) (avg ε P) = avg ε P := by
   ext t
@@ -310,9 +306,9 @@ theorem avg_inv (P : PX m n) (kv : Formalism.REAL.KG ε) : subR (Formalism.REAL.
   exact integral_mul_left_eq_self (fun k => coeff t (subR (gK ε k) P)) kv⁻¹
 
 /- English proof (translation)
-Unfold `mom`. Establish `e : ∀ x, evX (∑ s ∈ S, a s • M s) x * gs c x = ∑ s ∈ S, a s * (evX (M s) x * gs c x)`. Introduce `x`. Simplify using `only [evX_eq, map_sum, smul_eq_C_mul, map_mul, eval_C, Finset.sum_mul, mul_assoc]`. Repeatedly rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[integral_finsetSum _ fun s _ => (integrable_evX_gs hc (M s)).const_mul (a s)]`. Repeatedly rewrite using `[integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem mom_sum_smul {c : ℝ} (hc : 0 < c) (S : Finset ((Fin m × Fin n × Bool) →₀ ℕ)) (a : _ → ℂ)
     (M : ((Fin m × Fin n × Bool) →₀ ℕ) → PX m n) :
@@ -326,9 +322,9 @@ theorem mom_sum_smul {c : ℝ} (hc : 0 < c) (S : Finset ((Fin m × Fin n × Bool
   simp_rw [integral_const_mul]
 
 /- English proof (translation)
-Unfold `mom`. Establish `e : ∀ x, evX (p - q) x * gs c x = evX p x * gs c x - evX q x * gs c x`. Introduce `x`. Simplify using `only [evX_eq, map_sub, sub_mul]`. Repeatedly rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `integral_sub (integrable_evX_gs hc p) (integrable_evX_gs hc q)`.
+A detailed English derivation is pending.
 -/
 theorem mom_sub {c : ℝ} (hc : 0 < c) (p q : PX m n) : mom c (p - q) = mom c p - mom c q := by
   unfold mom
@@ -338,9 +334,9 @@ theorem mom_sub {c : ℝ} (hc : 0 < c) (p q : PX m n) : mom c (p - q) = mom c p 
   exact integral_sub (integrable_evX_gs hc p) (integrable_evX_gs hc q)
 
 /- English proof (translation)
-Establish `h : mom c (R * subR w P) = mom c (subR w (R * P))`. Unfold `mom`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[evX_subR]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: evX (R * subR w P) x = evX (R * P) (act w x)`. Simplify using `only [evX_eq, map_mul] at *`. Rewrite using `[← evX_eq, ← evX_eq, ← evX_eq, ← evX_eq, evX_subR, evX_inv_act ε hw hR]`. Rewrite using `[this]`. Rewrite using `[h, mom_subR w (unitary_of_mem ε hw)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mom_R_subR {c : ℝ} {w : Matrix (Fin m) (Fin m) ℂ} (hw : w ∈ Formalism.REAL.Kset ε) {R : PX m n}
     (hR : R ∈ Algebra.adjoin ℂ (Set.range fun ij : Fin n × Fin n => (Qp ε ij.1 ij.2 : PX m n))) (P : PX m n) :
@@ -357,15 +353,15 @@ theorem mom_R_subR {c : ℝ} {w : Matrix (Fin m) (Fin m) ℂ} (hw : w ∈ Formal
   rw [h, mom_subR w (unitary_of_mem ε hw)]
 
 /- English proof (translation)
-Establish `e1 : R * avg ε P = ∑ s ∈ D m n P.totalDegree, (∫ k, coeff s (subR (gK ε k) P) ∂(Formalism.REAL.muK ε)) • (R * monomial s 1)`. Unfold `avg`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, mono_eq s]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, mom_sum_smul hc]`. Repeatedly rewrite using `[← integral_mul_const]`. Rewrite using `[← integral_finsetSum _ fun s _ => (integrable_coeff ε P s).mul_const _]`. Establish `e2 : ∀ k : Formalism.REAL.KG ε, ∑ s ∈ D m n P.totalDegree, coeff s (subR (gK ε k) P) * mom c (R * monomial s 1) = mom c (R * P)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[← mom_sum_smul hc, ← mom_R_subR ε (gK_mem ε k) hR P]`. Use `congr 1`. Use `conv_rhs => rw [expand (subR (gK ε k) P) P.totalDegree (support_subR _ P)]`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, mono_eq s (coeff s _)]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2]`. Rewrite using `[integral_const]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Measure.real, muK_univ]`.
+A detailed English derivation is pending.
 -/
 theorem mom_avg {c : ℝ} (hc : 0 < c) {R : PX m n}
     (hR : R ∈ Algebra.adjoin ℂ (Set.range fun ij : Fin n × Fin n => (Qp ε ij.1 ij.2 : PX m n))) (P : PX m n) :
@@ -398,13 +394,13 @@ namespace PositivityTheory.Rg.Sw.FFTSteps
 
 open CA in
 /- English proof (translation)
-Introduce `m n ε c hc P`. Use `⟨avg ε P, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hblock`. Establish `hK : u ∈ Formalism.REAL.Kset ε`. Use `⟨hu, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `h : ε a = ε b`. Rewrite using `[h, mul_comm]`. Rewrite using `[hblock a b h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hr : u ∈ Set.range (fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k)`. Rewrite using `[Formalism.REAL.range_toMK]`. Conclude with `hK`. Take `⟨kv, hkv⟩` from `hr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `subR u (avg ε P) = avg ε P`. Rewrite using `[← hkv]`. Conclude with `avg_inv ε P kv`. Introduce `R hR`. Rewrite using `[mul_sub, mom_sub hc, mom_avg ε hc hR, sub_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycAvg : CycAvg := by
   intro m n ε c hc P

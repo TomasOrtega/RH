@@ -8,11 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StepVec
 
 /- English proof (translation)
-Introduce `D a b r Q ξ y`. Unfold `omegaQ`. Distinguish the cases in `h : ∀ PP ∈ Q, LowZero r (y PP) ∧ IsUnit (topL r (y PP)).det`. Rewrite using `[dif_pos h, ← Finset.prod_attach Q (fun PP => qLoc r PP (ξ PP) (y PP))]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zpow_one, qLoc, dif_pos (h PP.1 PP.2)]`. Rewrite `h` using `[dif_neg h] push_neg`. Take `⟨PP, hPP, hn⟩` from `h`. Use `(Finset.prod_eq_zero hPP ?_).symm` and prove the remaining obligations. Rewrite using `[qLoc, dif_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `hn h1 h2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem omegaQ_one_eq_prod_qLoc : ∀ (D : D7) (a b r : ℕ) (Q : Finset (Formalism.L2.DIV.Pl D.host.E))
     (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ)

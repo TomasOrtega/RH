@@ -19,19 +19,19 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp N₁ _ _ _ N₂ _ _ _ A₁ A₂ _ _ h1 h2`. Unfold `IsTight at h1 h2 ⊢`. Take `⟨a1, c1, o1, hA1, hC1, hO1, e1, f1⟩` from `h1`. Take `⟨a2, c2, o2, hA2, hC2, hO2, e2, f2⟩` from `h2`. Take `⟨AA, hAA, hl, hr, s1, s2, hcol⟩` from `PositivityTheory.HtPt.Re.tens_hopf p C v R hv hp N₁ N₂ A₁ A₂`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hAA]`. Establish `st1 : ∀ g ∈ AA.carrier, (fun x : N₁ × N₂ => g ((AddMonoidHom.inl N₁ N₂) ((AddMonoidHom.fst N₁ N₂) x))) ∈ AA.carrier`. Introduce `g hg`. Simplify using `using s1 g hg`. Establish `st2 : ∀ g ∈ AA.carrier, (fun x : N₁ × N₂ => g ((AddMonoidHom.inr N₁ N₂) ((AddMonoidHom.snd N₁ N₂) x))) ∈ AA.carrier`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `g hg`. Simplify using `using s2 g hg`. Establish `hAF` using `PositivityTheory.HtPt.Re.ret_af p C v R hv hp (N₁ × N₂) AA N₁ N₂ (AddMonoidHom.inl N₁ N₂) (AddMonoidHom.fst N₁ N₂) (AddMonoidHom.inr N₁ N₂) (AddMonoidHom.snd N₁ N₂) (fun y => by simp) (fun y => by simp) (fun x => by simp) (fun y => by simp) (fun y => by simp) st1 st2 a1 a2 (by rw …`. Establish `hOm` using `PositivityTheory.HtPt.Re.ret_om hv AA (AddMonoidHom.inl N₁ N₂) (AddMonoidHom.fst N₁ N₂) (AddMonoidHom.inr N₁ N₂) (AddMonoidHom.snd N₁ N₂) (fun y => by simp) (fun y => by simp) (fun x => by simp) (fun y => by simp) (fun y => by simp) st1 st2 o1 o2 (by rw [hl]; exact hO1) (by rw [h …`. Use `⟨a1 * a2, c1 ^ Fintype.card N₂ * c2 ^ Fintype.card N₁, o1 * o2, hAF, hcol c1 c2 hC1 hC2, hOm, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.card_prod, mul_pow]`. Establish `k1 : a1 ^ (Fintype.card N₁ * Fintype.card N₂ * (p - 1)) = (a1 ^ (Fintype.card N₁ * (p - 1))) ^ Fintype.card N₂`. Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `k2 : a2 ^ (Fintype.card N₁ * Fintype.card N₂ * (p - 1)) = (a2 ^ (Fintype.card N₂ * (p - 1))) ^ Fintype.card N₁`. Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[k1, k2, e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Fintype.card_prod, mul_pow]`. Establish `k1 : o1 ^ (Fintype.card N₁ * Fintype.card N₂) = (o1 ^ Fintype.card N₁) ^ Fintype.card N₂` using `pow_mul _ _ _`. Establish `k2 : o2 ^ (Fintype.card N₁ * Fintype.card N₂) = (o2 ^ Fintype.card N₂) ^ Fintype.card N₁`. Rewrite using `[← pow_mul, _root_.mul_comm (Fintype.card N₂)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k1, k2, f1, f2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.tensor_product_tight_hopf_orders : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N₁ : Type) [AddCommGroup N₁] [Fintype N₁] [DecidableEq N₁], ∀ (N₂ : Type) [AddCommGroup N₂] [Fintype N₂] [DecidableEq N₂], ∀ (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C := C) R N₂), (∀ x : N₁, p • x = 0) → (∀ x : N₂, p • x = 0) → IsTight v p A₁.carrier → IsTight v p A₂.carrier → IsTight v p (tens A₁.carrier A₂.carrier) := by
   intro p _ C _ _ _ v R _ _ hv hp N₁ _ _ _ N₂ _ _ _ A₁ A₂ _ _ h1 h2

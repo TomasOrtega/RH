@@ -22,21 +22,21 @@ theorem specEq_symm_apply (U : Scheme.{0}) (B : Type) [CommRing B] (f : U ⟶ Sp
     (specEq U B).symm f = (Scheme.ΓSpecIso (CommRingCat.of B)).inv ≫ f.appTop := rfl
 
 /- English proof (translation)
-The claim follows from `(specEq U B).left_inv φ`.
+A detailed English derivation is pending.
 -/
 theorem appTop_specEq (U : Scheme.{0}) (B : Type) [CommRing B] (φ : CommRingCat.of B ⟶ Γ(U, ⊤)) :
     (Scheme.ΓSpecIso (CommRingCat.of B)).inv ≫ (specEq U B φ).appTop = φ :=
   (specEq U B).left_inv φ
 
 /- English proof (translation)
-Simplify using `only [specEq_symm_apply, Scheme.Hom.comp_appTop, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symm_comp {V U : Scheme.{0}} (B : Type) [CommRing B] (f : V ⟶ U) (g : U ⟶ Spec (CommRingCat.of B)) :
     (specEq V B).symm (f ≫ g) = (specEq U B).symm g ≫ f.appTop := by
   simp only [specEq_symm_apply, Scheme.Hom.comp_appTop, Category.assoc]
 
 /- English proof (translation)
-Apply `(specEq V B).symm.injective` to reduce the goal to its premises. Rewrite using `[symm_comp, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_specEq {V U : Scheme.{0}} (B : Type) [CommRing B] (f : V ⟶ U) (φ : CommRingCat.of B ⟶ Γ(U, ⊤)) :
     f ≫ specEq U B φ = specEq V B (φ ≫ f.appTop) := by
@@ -44,7 +44,7 @@ theorem comp_specEq {V U : Scheme.{0}} (B : Type) [CommRing B] (f : V ⟶ U) (φ
   rw [symm_comp, Equiv.symm_apply_apply, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Apply `(specEq U B).symm.injective` to reduce the goal to its premises. Rewrite using `[Equiv.symm_apply_apply, specEq_symm_apply, Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality, Category.assoc, appTop_specEq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem specEq_comp_Spec (U : Scheme.{0}) {B C : Type} [CommRing B] [CommRing C]
     (ψ : CommRingCat.of B ⟶ CommRingCat.of C) (φ : CommRingCat.of C ⟶ Γ(U, ⊤)) :
@@ -54,9 +54,9 @@ theorem specEq_comp_Spec (U : Scheme.{0}) {B C : Type} [CommRing B] [CommRing C]
     ← Scheme.ΓSpecIso_inv_naturality, Category.assoc, appTop_specEq]
 
 /- English proof (translation)
-Establish `h` using `Scheme.preimage_basicOpen_top (specEq U B φ) ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b)`. Rewrite `h` using `[basicOpen_eq_of_affine]`. Establish `h2 : (specEq U B φ).appTop ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b) = φ b`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_basicOpen_specEq (U : Scheme.{0}) (B : Type) [CommRing B] (φ : CommRingCat.of B ⟶ Γ(U, ⊤)) (b : B)
     (x : U) : (specEq U B φ x : PrimeSpectrum B) ∈ PrimeSpectrum.basicOpen b ↔ x ∈ U.basicOpen (φ b) := by
@@ -70,7 +70,7 @@ theorem mem_basicOpen_specEq (U : Scheme.{0}) (B : Type) [CommRing B] (φ : Comm
   rfl
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Express the relevant statement in the definitionally equal form `x ∉ PrimeSpectrum.zeroLocus _ ↔ _`. Simplify using `only [PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe, Ideal.span_le, Set.range_subset_iff, PrimeSpectrum.mem_basicOpen, SetLike.mem_coe, not_forall]`.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mem_off_iff {B : Type} [CommRing B] {ι : Type} (S : ι → B) (J : Ideal B) (hJ : J = Ideal.span (Set.range S))
     (x : PrimeSpectrum B) : x ∈ off B J ↔ ∃ i, x ∈ PrimeSpectrum.basicOpen (S i) := by
@@ -80,7 +80,7 @@ theorem mem_off_iff {B : Type} [CommRing B] {ι : Type} (S : ι → B) (J : Idea
     PrimeSpectrum.mem_basicOpen, SetLike.mem_coe, not_forall]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨i, hi⟩` from `φ.2 p`. Conclude with `(mem_off_iff S J hJ _).2 ⟨i, (mem_basicOpen_specEq U B φ.1 _ p).2 hi⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem range_sub (U : Scheme.{0}) (B : Type) [CommRing B] {ι : Type} (S : ι → B) (J : Ideal B)
     (hJ : J = Ideal.span (Set.range S))
@@ -111,14 +111,14 @@ def offEq (U : Scheme.{0}) (B : Type) [CommRing B] {ι : Type} (S : ι → B) (J
     rw [IsOpenImmersion.lift_fac (off B J).ι (specEq U B φ.1) (range_sub U B S J hJ φ), Equiv.symm_apply_apply])
 
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem offEq_symm_ι (U : Scheme.{0}) (B : Type) [CommRing B] {ι : Type} (S : ι → B) (J : Ideal B)
     (hJ : J = Ideal.span (Set.range S)) φ :
     (offEq U B S J hJ).symm φ ≫ (off B J).ι = specEq U B φ.1 := IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (off B J).ι, Category.assoc, offEq_symm_ι, offEq_symm_ι, comp_specEq, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_offEq_symm {V U : Scheme.{0}} (f : V ⟶ U) (B : Type) [CommRing B] {ι : Type} (S : ι → B) (J : Ideal B)
     (hJ : J = Ideal.span (Set.range S)) φ ψ (h : ψ.1 = φ.1 ≫ f.appTop) :
@@ -182,7 +182,7 @@ def e₁ (d : ℕ) (R : Type) [CommRing R] (U : Scheme.{0}) : Vec (d + 1) 1 U ×
     · simp
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hJ (d : ℕ) (R : Type) [CommRing R] :
     (Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) R))).map Polynomial.C =
@@ -195,19 +195,19 @@ end RepPt
 open RepPt in
 
 /- English proof (translation)
-Introduce `d R _`. Use `⟨MvPolynomial (Fin d) R, inferInstance, Ideal.span (Set.range MvPolynomial.X), MvPolynomial.C, Submodule.fg_span (Set.finite_range _), off_le_C _ _, fun U => (e₁ d R U).trans (offEq U _ _ _ (hJ d R)).symm, fun U => (e₂ d R U).trans (offEq U _ _ _ rfl).symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V U f v g`. Use `(comp_offEq_symm f _ _ _ (hJ d R) _ _ ?_).symm` and prove the remaining obligations. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Polynomial.ringHom_ext'` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[e₁, symm_comp]`. Introduce `i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e₁, Vec.map]`. Simplify using `[e₁, Vec.map]`. Introduce `V U f v g`. Use `(comp_offEq_symm f _ _ _ rfl _ _ ?_).symm` and prove the remaining obligations. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[e₂, symm_comp]`. Introduce `i`. Simplify using `[e₂, Vec.map]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `U v g`. Rewrite using `[← cancel_mono (off _ _).ι, Category.assoc, Scheme.Hom.resLE_comp_ι]`. Simplify using `only [Equiv.trans_apply]`. Rewrite using `[offEq_symm_ι, ← Category.assoc, offEq_symm_ι, specEq_comp_Spec]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[e₁, e₂]`. Introduce `i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e₁, e₂, Vec.tail]`.
+Simplify using the standard rewrite rules.
 -/
 theorem LeafRepPt_of : LeafRepPt := by
   intro d R _

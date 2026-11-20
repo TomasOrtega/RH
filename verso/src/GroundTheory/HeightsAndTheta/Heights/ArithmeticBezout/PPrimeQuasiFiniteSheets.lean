@@ -16,9 +16,9 @@ namespace PrimeQuasiFiniteSheets
 variable {n d : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [ComplexSets.pullback]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[ComplexSets.pullback, ComplexSets.linPoly, Matrix.mulVec, dotProduct]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem eval_pullback (A : Matrix (Fin d) (Fin n) ℂ) (x : Fin n → ℂ) (g : MvPolynomial (Fin d) ℂ) :
     eval x (ComplexSets.pullback A g) = eval (A.mulVec x) g := by
@@ -31,11 +31,11 @@ theorem eval_pullback (A : Matrix (Fin d) (Fin n) ℂ) (x : Fin n → ℂ) (g : 
     simp [ComplexSets.pullback, ComplexSets.linPoly, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Rewrite `hinj` using `[injective_iff_map_eq_zero]`. Use `push Not at hinj`. Take `⟨g, hg, hg0⟩` from `hinj`. Establish `hQ : ComplexSets.pullback A g ∈ Q` using `Ideal.Quotient.eq_zero_iff_mem.mp hg`. Establish `hempty : ∀ y' : Fin d → ℂ, eval y' g ≠ 0 → ComplexSets.fibre Q A y' = ∅`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y' hy'`. Use extensionality with `x`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨hx, rfl⟩`. Conclude with `hy' (by rw [← eval_pullback]; exact hx _ hQ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, hg0, fun y hy => ⟨{w | eval w g ≠ 0}, 0, fun j => j.elim0, isOpen_ne_fun (MvPolynomial.continuous_eval g) continuous_const, hy, fun j => j.elim0, fun y' hy' => ⟨fun j => j.elim0, fun i => i.elim0, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[hempty y' hy']`. Conclude with `Set.empty_subset _`.
+A detailed English derivation is pending.
 -/
 theorem sheets_of_not_injective (Q : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (hinj : ¬ Function.Injective (ComplexSets.projHom Q A)) :
@@ -62,7 +62,7 @@ theorem sheets_of_not_injective (Q : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matr
   exact Set.empty_subset _
 
 /- English proof (translation)
-Establish `h : (fun w => (P.map (eval w)).eval (ψ w)) = fun w => ∑ i ∈ Finset.range (P.natDegree + 1), eval w (P.coeff i) * ψ w ^ i`. Use function extensionality and compare the values at `w`. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_eq_sum_range]`. Rewrite using `[h]`. Conclude with `DifferentiableOn.fun_sum fun i _ => ((AnalyticOnNhd.eval_mvPolynomial (P.coeff i)).differentiableOn.mono (Set.subset_univ _)).mul (hψ.pow i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_polyEval (P : Polynomial (MvPolynomial (Fin d) ℂ)) {ψ : (Fin d → ℂ) → ℂ}
     {U : Set (Fin d → ℂ)} (hψ : DifferentiableOn ℂ ψ U) :
@@ -77,47 +77,43 @@ theorem differentiableOn_polyEval (P : Polynomial (MvPolynomial (Fin d) ℂ)) {�
       (hψ.pow i)
 
 /- English proof (translation)
-Rewrite using `[Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots hp), IsAlgClosed.card_roots_eq_natDegree]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_roots_toFinset {p : Polynomial ℂ} (hp : p.Separable) : p.roots.toFinset.card = p.natDegree := by
   rw [Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots hp), IsAlgClosed.card_roots_eq_natDegree]
 
 /- English proof (translation)
-Establish `hcnt : ∀ w : Fin d → ℂ, eval w Δ ≠ 0 → (m.map (eval w)).roots.toFinset.card = m.natDegree`. Introduce `w hw`. Take `⟨hd, hs, -, -⟩` from `hP w hw`. Rewrite using `[card_roots_toFinset hs, hd]`. Take `⟨-, hsep, -, -⟩` from `hP y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩ : ∃ R : Finset ℂ, R = (m.map (eval y)).roots.toFinset` from `⟨_, rfl⟩`. Set `τ : Fin R.card → ℂ` to `fun j => (R.equivFin.symm j : ℂ)`. Establish `hRroot : ∀ z ∈ R, (m.map (eval y)).IsRoot z`. Introduce `z hz`. Rewrite `hz` using `[hR, Multiset.mem_toFinset, Polynomial.mem_roots']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hz.2`. Establish `hτroot : ∀ j, (m.map (eval y)).IsRoot (τ j)` using `fun j => hRroot _ (R.equivFin.symm j).2`. Establish `hτinj : Function.Injective τ` using `fun i j h => R.equivFin.symm.injective (Subtype.ext h)`. Establish `hder : ∀ j, (m.map (eval y)).derivative.eval (τ j) ≠ 0`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hsep.aeval_derivative_ne_zero (x := τ j) (by`. Rewrite using `[Polynomial.aeval_def, Algebra.algebraMap_self, Polynomial.eval₂_id]`. Conclude with `hτroot j)`. Rewrite `h` using `[Polynomial.aeval_def, Algebra.algebraMap_self, Polynomial.eval₂_id]`. Then use the resulting hypothesis. Use `choose U B ψ hU hyU hBo hτB hψd hψy hψ using fun j => hSR d m y (τ j) (hτroot j) (hder j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `W : Fin R.card → Fin R.card → Set (Fin d → ℂ)` to `fun j k => U j ∩ U k ∩ {w | j ≠ k → ψ j w ≠ ψ k w}`. Establish `hWo : ∀ j k, IsOpen (W j k)`. Introduce `j k`. Distinguish the cases in `hjk : j = k`. Establish `: W j k = U j ∩ U k`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `w`. Simplify using `[W, hjk]`. Rewrite using `[this]`. Conclude with `(hU j).inter (hU k)`. Establish `: W j k = (U j ∩ U k) ∩ (fun w => ψ j w - ψ k w) ⁻¹' {0}ᶜ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use extensionality with `w`. Simplify using `[W, hjk, sub_eq_zero]`. Rewrite using `[this]`. Conclude with `ContinuousOn.isOpen_inter_preimage (((hψd j).mono Set.inter_subset_left).sub ((hψd k).mono Set.inter_subset_right)).continuousOn ((hU j).inter (hU k)) isOpen_compl_singleton`. Set `V : Set (Fin d → ℂ)` to `{w | eval w Δ ≠ 0} ∩ ⋂ j, ⋂ k, W j k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hVo : IsOpen V` using `(isOpen_ne_fun (MvPolynomial.continuous_eval Δ) continuous_const).inter (isOpen_iInter_of_finite fun j => isOpen_iInter_of_finite fun k => hWo j k)`. Establish `hyV : y ∈ V`. Use `⟨hy, Set.mem_iInter.2 fun j => Set.mem_iInter.2 fun k => ⟨⟨hyU j, hyU k⟩, fun hjk => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hψy j, hψy k]`. Conclude with `fun h => hjk (hτinj h)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hVU : ∀ w ∈ V, ∀ j, w ∈ U j` using `fun w hw j => (Set.mem_iInter.1 (Set.mem_iInter.1 hw.2 j) j).1.1`. Establish `hVd : ∀ w ∈ V, ∀ j k, j ≠ k → ψ j w ≠ ψ k w` using `fun w hw j k => (Set.mem_iInter.1 (Set.mem_iInter.1 hw.2 j) k).2`. Set `s : Fin R.card → (Fin d → ℂ) → Fin n → ℂ` to `fun j w i => ((S i).map (eval w)).eval (ψ j w) * (eval w Δ)⁻¹`. Use `⟨V, R.card, s, hVo, hyV, fun j => ?_, fun y' hy' => ?_⟩` and prove the remaining obligations. Rewrite using `[differentiableOn_pi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `hΔd : DifferentiableOn ℂ (fun w : Fin d → ℂ => eval w Δ) V` using `(AnalyticOnNhd.eval_mvPolynomial Δ).differentiableOn.mono (Set.subset_univ _)`. Conclude with `(differentiableOn_polyEval (S i) ((hψd j).mono fun w hw => hVU w hw j)).mul (hΔd.inv fun w (hw : w ∈ V) => hw.1)`. Take `⟨-, hsep', hfib', hroot'⟩` from `hP y' hy'.1`. Establish `hψroot : ∀ j, (m.map (eval y')).IsRoot (ψ j y')` using `fun j => ((hψ j y' (hVU y' hy' j)).2 _ (hψ j y' (hVU y' hy' j)).1).2 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrec : ∀ x ∈ ComplexSets.fibre Q A y', ∀ j, ∑ k, c k * x k = ψ j y' → s j y' = x`. Introduce `x hx j hj`. Use function extensionality and compare the values at `i`. Simplify using `only [s]`. Rewrite using `[← hj, ← (hfib' x hx).2 i, mul_comm, inv_mul_cancel_left₀ hy'.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ j, ∃ x ∈ ComplexSets.fibre Q A y', ∑ k, c k * x k = ψ j y' ∧ s j y' = x`. Introduce `j`. Take `⟨x, hx, hxl⟩` from `hroot' _ (hψroot j)`. Conclude with `⟨x, hx, hxl, hrec x hx j hxl⟩`. Use `⟨fun j => ?_, fun j k hjk => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨x, hx, -, hsx⟩` from `hmem j`. Rewrite using `[hsx]`. Conclude with `hx`. Take `⟨x, hx, hxl, hsx⟩` from `hmem j`. Take `⟨x', hx', hxl', hsx'⟩` from `hmem k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Apply `hVd y' hy' j k hne` to reduce the goal to its premises. Establish `hxx : x = x'`. Rewrite using `[← hsx, ← hsx']`. Conclude with `hjk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hxl, ← hxl', hxx]`. Establish `hinjψ : Function.Injective (fun j => ψ j y')` using `fun j k h =>`. Assume the negation of the conclusion as `fun hne => hVd y' hy' j k hne h`. Establish `hsub : Finset.univ.image (fun j => ψ j y') ⊆ (m.map (eval y')).roots.toFinset`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hz`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots']`. Conclude with `⟨hsep'.ne_zero, hψroot j⟩`. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub (by`. Rewrite using `[Finset.card_image_of_injective _ hinjψ, Finset.card_univ, Fintype.card_fin, hcnt y' hy'.1, hR, hcnt y hy])`.
-
-Establish `hl : ∑ k, c k * x k ∈ (m.map (eval y')).roots.toFinset`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots']`. Conclude with `⟨hsep'.ne_zero, (hfib' x hx).1⟩`. Rewrite `hl` using `[← heq]`. Take `⟨j, -, hj⟩` from `Finset.mem_image.1 hl`.
-
-Conclude with `⟨j, hrec x hx j hj.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sheets_of_parametrisation (hSR : ComplexSets.SimpleRootBranch.Statement)
     {Q : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
@@ -233,7 +229,7 @@ theorem sheets_of_parametrisation (hSR : ComplexSets.SimpleRootBranch.Statement)
 end PrimeQuasiFiniteSheets
 
 /- English proof (translation)
-Introduce `n d Q A hQ hfin`. Distinguish the cases in `hinj : Function.Injective (ComplexSets.projHom Q A)`. Take `⟨c, m, Δ, S, hΔ, hP⟩` from `hDP n d Q A hQ (hFF n d Q A hQ hfin) hinj`. Conclude with `⟨Δ, hΔ, PrimeQuasiFiniteSheets.sheets_of_parametrisation hSR c m Δ S hP⟩`. Conclude with `PrimeQuasiFiniteSheets.sheets_of_not_injective Q A hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PrimeQuasiFiniteSheets.proof (hFF : FiniteFibresDimLe.Statement)
     (hDP : DominantPrimitiveFibres.Statement) (hSR : ComplexSets.SimpleRootBranch.Statement) :

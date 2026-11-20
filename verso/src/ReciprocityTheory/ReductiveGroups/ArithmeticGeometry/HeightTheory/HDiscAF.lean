@@ -17,17 +17,15 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Take `⟨he, -, -⟩` from `hd.a4.choose_spec`. Take `⟨heF, he0⟩` from `he c`. Establish `hadm` using `(d.admissible_over_prime hd h la c w hw).1`. Establish `hthpF : d.thp (hd.sel k) c ∈ 𝒜 c d.wF` using `hd.thp_mem _ c`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : Ω c, d.thp (hd.sel k) c = a • hd.a4.choose c := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `he0' : (⟨hd.a4.choose c, heF⟩ : 𝒜 c d.wF) ≠ 0`. Introduce `h0`. Conclude with `he0 (congrArg Subtype.val h0)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ he0').mp (hd.finrank_one c d.wF) ⟨_, hthpF⟩`. Conclude with `⟨a, (congrArg Subtype.val ha).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hb : d.bvecG hd.sel hd.a4.choose k c = algebraMap (Ω c) (OmS (Ω c) d.D d.N) a`. Simplify using `only [bvecG]`. Rewrite using `[ValuationResidueLemmas.ratio_eq he0 ha]`. Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `0 ≤ d.Wres c w a + _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha0 : a = 0`. Rewrite using `[ha0, AddValuation.map_zero, top_add]`. Conclude with `le_top`. Establish `hth0 : d.thp (hd.sel k) c ≠ 0`. Rewrite using `[ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `smul_ne_zero ha0 he0`. Rewrite using `[← hd.ord_smul c _ hadm a heF he0 ha0, ← ha]`. Establish `hmem : d.thp (hd.sel k) ∈ d.Thp`. Rewrite using `[hd.Thp_span]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`.
-
-Conclude with `hd.ord_nonneg_Thp c _ hadm _ hmem hth0` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_mem (hd : d.AxH 𝒜) (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) (k : Fin d.del) (c : ι)
     (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (hw : w ∈ d.PlOver la c) :
@@ -60,15 +58,15 @@ theorem b_mem (hd : d.AxH 𝒜) (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) (k 
   exact_mod_cast hd.ord_nonneg_Thp c _ hadm _ hmem hth0
 
 /- English proof (translation)
-Use `letI : ∀ c, Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (d.KTtoS h c).toAlgebra`. Take `⟨-, hind, -⟩` from `hd.a4.choose_spec`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `q hq`. Take `⟨⟨s, hs⟩, hint⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (KTp K d.D d.N)) Finset.univ q`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `choose p hp using fun k => hint k (Finset.mem_univ k)`. Establish `hsH : ∀ c (x : KTp K d.D d.N), d.sH c x = d.KTtoS h c (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) x)`. Introduce `c x`. Rewrite using `[Data.KTtoS, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hzero : ∀ k, p k = 0` using `hind p (fun c => by`. Establish `hc` using `congrFun hq c`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.zero_apply] at hc`. Simplify using `only [Algebra.smul_def] at hc`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hsH, hp k, Algebra.smul_def, map_mul, mul_assoc]`. Both sides reduce to the same expression. Use `_ = 0 := by rw [hc, mul_zero])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Establish `hk` using `hp k`. Rewrite `hk` using `[hzero k, map_zero, Algebra.smul_def]`. Conclude with `(mul_eq_zero.mp hk.symm).resolve_left (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_linIndep (hd : d.AxH 𝒜) (h : d.S1) :
     letI : ∀ c, Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (d.KTtoS h c).toAlgebra
@@ -107,7 +105,7 @@ theorem b_linIndep (hd : d.AxH 𝒜) (h : d.S1) :
     (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun c _ => (d.omS_finite hd h c).2.symm`.
+A detailed English derivation is pending.
 -/
 theorem del_eq (hd : d.AxH 𝒜) (h : d.S1) :
     letI : ∀ c, Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (d.KTtoS h c).toAlgebra

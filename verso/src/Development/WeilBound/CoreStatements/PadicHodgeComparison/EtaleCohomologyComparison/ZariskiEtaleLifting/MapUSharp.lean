@@ -34,13 +34,13 @@ def qk (k : ℕ) : Acris l := algebraMap (Ainf l) (Acris l) (WittVector.teichmul
 def μ : Acris l := ε.qk 0 - 1
 
 /- English proof (translation)
-Rewrite using `[qk, cris_algebraMap, sW, WittVector.map_teichmuller]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cris_qk (A : PAlg l) (n k : ℕ) : A.cris n (ε.qk k) = A.toAcr n (WittVector.teichmuller l (A.s (ε.e k))) := by
   rw [qk, cris_algebraMap, sW, WittVector.map_teichmuller]
 
 /- English proof (translation)
-Use `A.oC_theta0 (WittVector.teichmuller l (ε.e 0 : Ob l))` as an intermediate fact. Rewrite `this` using `[ε.one, map_one, sW, WittVector.map_teichmuller]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_e (A : PAlg l) : A.sharp (A.s (ε.e 0)) = 1 := by
   have := A.oC_theta0 (WittVector.teichmuller l (ε.e 0 : Ob l))
@@ -48,7 +48,7 @@ theorem sharp_e (A : PAlg l) : A.sharp (A.s (ε.e 0)) = 1 := by
   exact this.symm
 
 /- English proof (translation)
-Establish `h` using `uJ_th k A n (WittVector.teichmuller l (A.s (ε.e 0)))`. Establish `h' : A.th (WittVector.teichmuller l (A.s (ε.e 0))) = 1` using `ε.sharp_e A`. Rewrite `h` using `[h', map_one]`. Rewrite using `[μ, map_sub, map_one, cris_qk]`. Conclude with `Ideal.Quotient.eq.1 h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem μ_mem (k : Bool) (A : PAlg l) (n : ℕ) : A.cris n ε.μ ∈ JJ k A n := by
   have h := uJ_th k A n (WittVector.teichmuller l (A.s (ε.e 0)))
@@ -61,12 +61,12 @@ def qU (n : ℕ) : ((base l).Acr n)ˣ :=
   Units.map (((base l).toAcr n).toMonoidHom.comp (WittVector.teichmuller l)) (ε.e 0)
 
 /- English proof (translation)
-The claim follows from `(ε.cris_qk (base l) n 0).symm`.
+A detailed English derivation is pending.
 -/
 theorem qU_val (n : ℕ) : (ε.qU n : (base l).Acr n) = (base l).cris n (ε.qk 0) := (ε.cris_qk (base l) n 0).symm
 
 /- English proof (translation)
-Use `ε.μ_mem k (base l) n` as an intermediate fact. Rewrite `this` using `[μ, map_sub, map_one, ← qU_val]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem qU_mem (k : Bool) (n : ℕ) : (ε.qU n : (bs l k n).R) - 1 ∈ (bs l k n).I := by
   have := ε.μ_mem k (base l) n
@@ -75,7 +75,7 @@ theorem qU_mem (k : Bool) (n : ℕ) : (ε.qU n : (bs l k n).R) - 1 ∈ (bs l k n
 end Eps
 
 /- English proof (translation)
-The claim follows from `congrArg A'.th (WittVector.map_teichmuller _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem mapU_sharp {A A' : PAlg l} (f : A ⟶ A') (a : A.A) : mapU f (A.sharp a) = A'.sharp (Hom.f f a) :=
   congrArg A'.th (WittVector.map_teichmuller _ _ _)

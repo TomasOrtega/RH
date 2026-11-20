@@ -13,19 +13,19 @@ noncomputable section
 namespace GlobalTheory.UMin
 
 /- English proof (translation)
-Introduce `k Ω o _ _ _ _ M n g e hP z`. Take `⟨τ, -, H⟩` from `hP`. Take `⟨c, hc⟩` from `GlobalTheory.ProjSpace.exists_mem_chart o n (g z)`. Set `W : M.Z.Opens` to `g ⁻¹ᵁ GlobalTheory.ProjSpace.chart o n c`. Establish `hzW : z ∈ W` using `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hW : ⊤ ≤ M.pt ⁻¹ᵁ W` using `M.top_le_preimage_pt ⟨z, hzW⟩`. Set `j : PUnit → (GlobalTheory.ProjSpace.O1 o n).ι` to `fun _ => c`. Set `V` to `((GlobalTheory.ProjSpace.O1 o n).pull (M.pt ≫ g)).U j`. Establish `hV : V ≤ (M.pt ≫ g) ⁻¹ᵁ (GlobalTheory.ProjSpace.O1 o n).U (j PUnit.unit)` using `LB.wchart_le (GlobalTheory.ProjSpace.O1 o n) (fun _ => M.pt ≫ g) j PUnit.unit`. Establish `hV' : ⊤ ≤ V` using `fun y _ => Set.mem_iInter.2 fun _ => hW (Set.mem_univ y)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ev : Γ(Sp Ω, V) →+* Ω` to `(Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom.comp ((Sp Ω).presheaf.map (homOfLE hV').op).hom`. Establish `hconst : ∀ a : Ω, ev (resG (Sp Ω) le_top ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom a)) = a`. Introduce `a`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom (((Sp Ω).presheaf.map (homOfLE (le_top : V ≤ ⊤)).op ≫ (Sp Ω).presheaf.map (homOfLE hV').op).hom ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom a)) = a`. Rewrite using `[← Functor.map_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((homOfLE (le_top : V ≤ ⊤)).op ≫ (homOfLE hV').op : Opposite.op (⊤ : (Sp Ω).Opens) ⟶ _) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, CategoryTheory.Functor.map_id]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of Ω)).inv_hom_id_apply a`. Establish `hval : ∀ i, ev (((M.pt ≫ g).appLE _ _ hV).hom ((GlobalTheory.ProjSpace.coord o n i).f (j PUnit.unit))) = valF M.pt W (GlobalTheory.ProjSpace.pullRatio g W c le_rfl i)`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valF, dif_pos hW]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom (resG (Sp Ω) hV' _) = _`. Rewrite using `[GlobalTheory.ProjSpace.resG_appLE, GlobalTheory.ProjSpace.pullRatio, GlobalTheory.ProjSpace.appLE_appLE]`. Both sides reduce to the same expression. Establish `key : ∀ i, valF M.pt W (GlobalTheory.ProjSpace.pullRatio g W c le_rfl i) = e i * ev (τ.s j).val`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[← hval, H i j hV, map_mul, hconst]`. Establish `h1 : e c * ev (τ.s j).val = 1`. Rewrite using `[← key c, GlobalTheory.ProjSpace.pullRatio_self, ← M.res_apply W ⟨z, hzW⟩, map_one]`. Establish `hc0 : e c ≠ 0` using `left_ne_zero_of_mul_eq_one h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, hc0, fun i => ?_⟩` and prove the remaining obligations. Establish `e1 : e i / e c = valF M.pt W (GlobalTheory.ProjSpace.pullRatio g W c le_rfl i)`. Rewrite using `[key i, eq_inv_of_mul_eq_one_right h1, div_eq_mul_inv]`. Rewrite using `[e1]`. Conclude with `RatModel.valF_mem_O hzW _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDiv_of_pCrd_pt : ∀ (k Ω o : Type) [CommRing k] [Field Ω] [Algebra k Ω] [CommRing o] (M : RatModel k Ω)
     (n : ℕ) (g : M.Z ⟶ PSpace o n) (e : Fin (n + 1) → Ω), PCrd (M.pt ≫ g) e → M.HasDiv e := by

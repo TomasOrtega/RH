@@ -99,7 +99,7 @@ theorem unitsRestrictHom_hom_apply (E : IntermediateField K L) [Normal K E]
   rfl
 
 /- English proof (translation)
-The claim follows from `(IsLocallyConstant.of_discrete fun y => (unitsRestrictHom E).hom (x y)).comp_continuous (continuous_pi fun i => (InfiniteGalois.restrictNormalHom_continuous E).comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_unitsInflation (E : IntermediateField K L) [FiniteDimensional K E]
     [Normal K E] {n : ℕ} (x : (Fin n → Gal(E/K)) → Additive Eˣ) :
@@ -137,7 +137,7 @@ noncomputable def unitsInflationCochains (E : IntermediateField K L) [FiniteDime
       unitsInflationCochainsX_comp_ι, unitsInflationCochainsX_comp_ι, HomologicalComplex.Hom.comm]
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Conclude with `unitsInflationCochainsX_comp_ι E n`. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem unitsInflationCochains_comp_cochainsComplexι (E : IntermediateField K L)
     [FiniteDimensional K E] [Normal K E] :

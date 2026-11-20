@@ -8,27 +8,27 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Introduce `O _ bar X _ _ m p δ β c j e hδ hβ hcj hj`. Rewrite `hδ`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hgB : g 0 • (β : LinearMap.BilinForm ℤ X) + ∑ k, g k.succ • (δ (e k) : LinearMap.BilinForm ℤ X) = 0`. Use `congrArg Subtype.val hg` as an intermediate fact. Simplify `this` using `[Submodule.coe_sum]`. Set `s : Fin m → ℝ` to `fun i => ∑ k, if e k = i then (g k.succ : ℝ) else 0`. Set `r : Fin m → ℝ` to `fun i => (g 0 : ℝ) * c i + s i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hind : ∀ (d : Fin 0 → ℤ) (a : Fin m → ℤ), ∑ i, a i • (δ i : LinearMap.BilinForm ℤ X) = ∑ k, d k • (Fin.elim0 k : LinearMap.BilinForm ℤ X) → a = 0`. Introduce `d a h`. Establish `h' : ∑ i, a i • δ i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `h` using `[Submodule.coe_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `i`. Conclude with `hδ a h' i`. Establish `hrel : ∑ i, r i • toReal (δ i : LinearMap.BilinForm ℤ X) = ∑ k : Fin 0, (0 : Fin 0 → ℝ) k • toReal (Fin.elim0 k : LinearMap.BilinForm ℤ X)`. Apply `LinearMap.ext₂` to reduce the goal to its premises. Introduce `x y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.congr_fun₂ hβ x y`. Establish `h2` using `LinearMap.congr_fun₂ hgB x y`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, LinearMap.add_apply, smul_eq_mul, LinearMap.zero_apply] at h1 h2`. Establish `h2' : (g 0 : ℝ) * (((β : LinearMap.BilinForm ℤ X) x y : ℤ) : ℝ) + ∑ k, (g k.succ : ℝ) * (((δ (e k) : LinearMap.BilinForm ℤ X) x y : ℤ) : ℝ) = 0`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, Finset.univ_eq_empty, Finset.sum_empty, LinearMap.zero_apply]`. Rewrite using `[← h2', h1]`. Simplify using `only [r, s, add_mul, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul, ite_mul, zero_mul, mul_assoc]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Establish `hr : r = 0` using `eq_zero_of_toReal_rel hind hrel`. Establish `hsj : s j = 0` using `Finset.sum_eq_zero fun k _ => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hj ⟨k, h⟩`. Establish `hg0 : g 0 = 0`. Use `congrFun hr j` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [r, hsj, add_zero, Pi.zero_apply] at this`. Conclude with `(mul_eq_zero.1 this).resolve_right hcj` after adjusting the coercions. Introduce `i`. Use `Fin.cases hg0 (fun k => ?_) i` and prove the remaining obligations. Use `congrFun hr (e k)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs : s (e k) = (g k.succ : ℝ)`. Simplify using `only [s]`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `k' _ hk'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg]`. Conclude with `fun h => hk' (e.injective h)`. Simplify using the standard rewrite rules. Simplify using `only [r, hs, hg0, Int.cast_zero, zero_mul, zero_add, Pi.zero_apply] at this`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_cons_of_coord_ne_zero :
     ∀ {O : Type} [CommRing O] (bar : O → O) {X : Type} [AddCommGroup X] [Module O X] {m p : ℕ}

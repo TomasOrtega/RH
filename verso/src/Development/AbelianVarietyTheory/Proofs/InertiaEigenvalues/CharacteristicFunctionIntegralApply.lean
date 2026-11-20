@@ -38,7 +38,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : Forma
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {X0 : BaseLevelRowSide D}
 
 /- English proof (translation)
-The claim follows from `Or.inl rfl`.
+Prove the first alternative.
 -/
 theorem reference_tuple_used (D : D7) : Used0 D D.what₂.mu0 := Or.inl rfl
 

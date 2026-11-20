@@ -6,7 +6,7 @@ open GlobalTheory.Poinc Matrix
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Establish `h : ∑ u, ∑ v, W u v * β (z u) (y v) = ∑ u, ∑ v, W v u * β (y u) (z v)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => by rw [hβ]`. Simplify using `only [qW, Pi.add_apply, map_add, LinearMap.add_apply, mul_add, add_mul, Finset.sum_add_distrib, Matrix.add_apply, Matrix.transpose_apply, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem qW_polar_eq_sum_add_transpose {s : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X]
     (β : LinearMap.BilinForm ℤ X) (hβ : ∀ a b, β a b = β b a) (y z : Fin s → X) :
@@ -19,19 +19,19 @@ theorem qW_polar_eq_sum_add_transpose {s : ℕ} (W : Matrix (Fin s) (Fin s) ℤ)
   ring
 
 /- English proof (translation)
-Simplify using `only [qW_polar_eq_sum_add_transpose W β hβ] at h`. Unfold `PosW at hW`. Use `set M := W + W.transpose with hM`. Establish `hdet : M.det ≠ 0`. Establish `h1` using `hW.det_pos`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (M.map (Int.cast : ℤ → ℝ)).det = (M.det : ℝ)`. Rewrite using `[Int.cast_det]`. Rewrite `h1` using `[h2]`. Introduce `h0`. Simplify using `[h0] at h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ x : X₀, (fun v => β x (z' v)) = E' *ᵥ (fun v => β x (z v))`. Introduce `x`. Rewrite using `[← sub_eq_zero]`. Apply `Matrix.eq_zero_of_mulVec_eq_zero hdet` to reduce the goal to its premises. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, hE, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Establish `h1` using `h (Pi.single w x)`. Establish `h2 : ∀ a, ∑ b, E a b • (Pi.single w x : Fin 8 → X₀) b = E a w • x`. Introduce `a`. Apply the tactic sequence `rw [Finset.sum_eq_single w] <;> simp +contextual [Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h3 : ∑ u, ∑ v, M u v * β ((Pi.single w x : Fin 8 → X₀) u) (z' v) = ∑ v, M w v * β x (z' v)`. Apply the tactic sequence `rw [Finset.sum_eq_single w] <;> simp +contextual [Pi.single_apply]`. Simplify using `only [h2, h3, map_zsmul, LinearMap.smul_apply, smul_eq_mul] at h1`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[← h1, Finset.sum_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => by ring`. Use function extensionality and compare the values at `a`. Rewrite using `[← sub_eq_zero]`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hpos _ hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `hd : z' a - ∑ b, E' a b • z b = d at h1`. Establish `h2` using `congrFun (key d) a`. Establish `h3 : β d d = 0` using `by conv_lhs => rw [show β d d = β d (z' a - ∑ b, E' a b • z b) by rw [hd]]`. Simplify using `only [map_sub, map_sum, map_zsmul, smul_eq_mul, h2, Matrix.mulVec, dotProduct, sub_self]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_adjoint_apply_of_qW_polar (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : PosW W) (X₀ : Type) [AddCommGroup X₀]
     (β : LinearMap.BilinForm ℤ X₀) (hβ : ∀ a b, β a b = β b a) (hpos : ∀ a, a ≠ 0 → 0 < β a a)

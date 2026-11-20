@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTupl
 open NumberField UpperTheory.V UpperTheory.V.K
 
 /- English proof (translation)
-Introduce `l hl L _ _ hL`. Take `⟨ζ, hζ⟩` from `hL`. Establish `hp` using `hl.out`. Distinguish the cases in `h2 : l = 2`. Substitute `h2` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `Module.finrank_pos (R := ℚ) (M := L)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hζ` using `[if_neg h2]`. Establish `hdeg` using `minpoly.natDegree_le (A := ℚ) ζ`. Rewrite `hdeg` using `[← Polynomial.cyclotomic_eq_minpoly_rat hζ hp.pos, Polynomial.natDegree_cyclotomic, Nat.totient_prime hp]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/

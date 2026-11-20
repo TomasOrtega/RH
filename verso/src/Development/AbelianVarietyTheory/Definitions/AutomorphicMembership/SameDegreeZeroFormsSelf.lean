@@ -59,7 +59,7 @@ def SRest.toSTies {D : D7} {F : ∀ u, Forms0 D u} {P : SPack D F} (S : SRest P)
   locCompat := P.locCompat
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S.j, S.rowPin⟩`.
+Supply the required witnesses or components.
 -/
 theorem SRest.rowTie {D : D7} {F : ∀ u, Forms0 D u} {P : SPack D F} (S : SRest P) : RowDictTie P.X P.G S.hI.eHH :=
   ⟨S.j, S.rowPin⟩
@@ -77,11 +77,11 @@ def SameDegreeZeroForms {D : D7} (Z : SNew D) (F : ∀ u, Forms0 D u) (F' : ∀ 
   ∀ u : D.what₂.Word, (F' u).cls0.lev = (F u).cls0.lev ∧ (F' u).cls0.y = (F u).cls0.y ∧ (F' u).val0.eY = (F u).val0.eY
 
 /- English proof (translation)
-Establish `key : ∀ (I : AutInst) (_ : I = Formalism.L2.SG.InstExistsPf.instOf D) (ι : I.E ≃+* D.host.E) (pl : InfinitePlace I.F ≃ D.what₂.Tau), (∀ x : I.E, HEq (ι x) x) → (∀ v (x : I.E), I.φ v x = Formalism.MainNotions.S.embS D (pl v) (ι x)) → HEq pl (Formalism.L2.Host.tauPl D).symm`. Introduce `I e ι pl hι hφ`. Substitute `e` using the available equality. Use `heq_of_eq (Equiv.ext fun v => ?_)` and prove the remaining obligations. Apply `(Formalism.L2.Host.tauPl D).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Eq.trans ?_ ((Formalism.L2.Host.tauPl D).apply_symm_apply v).symm` and prove the remaining obligations. Establish `hv : (Formalism.L2.Host.tauPl D (pl v)).embedding = InfinitePlace.embedding (K` using `D.host.F) v := by`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Establish `h1` using `hφ v (algebraMap D.host.F D.host.E a)`. Establish `h2` using `congrArg (Formalism.MainNotions.S.embS D (pl v)) (eq_of_heq (hι (algebraMap D.host.F D.host.E a)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Formalism.L2.SG.InstExistsPf.embS_over D (pl v) a).symm.trans ((h1.trans h2).symm.trans ((Formalism.L2.SG.InstExistsPf.instOf D).φ_over v a))`. Conclude with `(InfinitePlace.mk_embedding _).symm.trans ((congrArg InfinitePlace.mk hv).trans (InfinitePlace.mk_embedding (K := D.host.F) v))`. Conclude with `key _ h X.ιE X.pl pin X.φ_eq`.
+A detailed English derivation is pending.
 -/
 theorem pl_heq_of_pin {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (pin : ∀ x : X.B.I.E, HEq (X.ιE x) x) :
     HEq X.pl (Formalism.L2.Host.tauPl D).symm := by
@@ -104,7 +104,7 @@ theorem pl_heq_of_pin {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.
   exact key _ h X.ιE X.pl pin X.φ_eq
 
 /- English proof (translation)
-Establish `key : ∀ (I : AutInst) (_ : I = Formalism.L2.SG.InstExistsPf.instOf D) (ι : I.E ≃+* D.host.E), (∀ x : I.E, HEq (ι x) x) → HEq ι (RingEquiv.refl D.host.E)`. Introduce `I e ι hι`. Substitute `e` using the available equality. Conclude with `heq_of_eq (RingEquiv.ext fun x => eq_of_heq (hι x))`. Conclude with `key _ P.inst P.X.ιE P.pin`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem SPack.ιE_heq {D : D7} {F : ∀ u, Forms0 D u} (P : SPack D F) : HEq P.X.ιE (RingEquiv.refl D.host.E) := by
   have key : ∀ (I : AutInst) (_ : I = Formalism.L2.SG.InstExistsPf.instOf D) (ι : I.E ≃+* D.host.E),
@@ -115,48 +115,48 @@ theorem SPack.ιE_heq {D : D7} {F : ∀ u, Forms0 D u} (P : SPack D F) : HEq P.X
   exact key _ P.inst P.X.ιE P.pin
 
 /- English proof (translation)
-The claim follows from `pl_heq_of_pin P.X P.inst P.pin`.
+A detailed English derivation is pending.
 -/
 theorem SPack.pl_heq {D : D7} {F : ∀ u, Forms0 D u} (P : SPack D F) : HEq P.X.pl (Formalism.L2.Host.tauPl D).symm :=
   pl_heq_of_pin P.X P.inst P.pin
 
 /- English proof (translation)
-The claim follows from `HEq.rfl`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (x : (Formalism.L2.SG.InstExistsPf.instanceOfRecord D).I.E) : HEq ((Formalism.L2.SG.InstExistsPf.instanceOfRecord D).ιE x) x := HEq.rfl
 
 /- English proof (translation)
-Introduce `p` and use `⟨h.atP p⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SPack.locTied_of_sIso {D : D7} {F : ∀ u, Forms0 D u} (P : SPack D F) (h : SIso D.s (sOf P.fin)) :
     Formalism.L2.SG.Pf.LocCP.LocTied D :=
   fun p => ⟨h.atP p⟩
 
 /- English proof (translation)
-The claim follows from `(dall_eq P.X S.hI.eHH).symm`.
+A detailed English derivation is pending.
 -/
 theorem SRest.finrank_HHX {D : D7} {F : ∀ u, Forms0 D u} {P : SPack D F} (S : SRest P) :
     Module.finrank ℂ (HHX P.X) = D.what₂.Dall :=
   (dall_eq P.X S.hI.eHH).symm
 
 /- English proof (translation)
-The claim follows from `S.colPin u x`.
+A detailed English derivation is pending.
 -/
 theorem SRest.toNew_s_Cu {D : D7} {F : ∀ u, Forms0 D u} {P : SPack D F} (S : SRest P) (u : D.what₂.Word) (x : D.s.Cu u) :
     (P.toNew S.finrank_HHX S.j).s_Cu u (S.hI.eCu u x) = D.s_Cu u x := S.colPin u x
 
 /- English proof (translation)
-The claim follows from `(S.rowPin x).symm`.
+A detailed English derivation is pending.
 -/
 theorem SRest.toNew_sEE {D : D7} {F : ∀ u, Forms0 D u} {P : SPack D F} (S : SRest P) (x : D.what₂.EE) :
     (P.toNew S.finrank_HHX S.j).sEE x = S.hI.eHH (D.sEE x) := (S.rowPin x).symm
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `rowTie`. Establish `isom : ∀ u, ColDictIsom T.X (tr u) T.Y.hK (T.Y.cs u) (hF.shInj u)`. Introduce `u a b`. Take `⟨x, rfl⟩` from `((T.hI hF).eCu u).surjective a`. Take `⟨y, rfl⟩` from `((T.hI hF).eCu u).surjective b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx` using `congrArg Subtype.val (colPin u x)`. Establish `hy` using `congrArg Subtype.val (colPin u y)`. Establish `h` using `D.s_Cu_isom u x y`. Rewrite `h` using `[← hx, ← hy]`. Conclude with `(((T.hI hF).eCu u).inner_map_map x y).trans h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨T.X, T.hb, T.Y, hF, T.ψ, T.measTie, T.ψ_char, T.ψ_std, T.measCompat, T.locCompat, tr, into, bij, lev, isom, inst, G, pin⟩, ⟨T.hI hF, T.autTie, colPin, j, hj, locTied⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sRest_of_sTies {D : D7} (F : ∀ u, Forms0 D u) (T : Formalism.L2.SG.SpectralTiesReal.STies D) (hF : FinX T.Y)
     (tr : ∀ u, Transport T.X u (F u)) (into : ∀ u, ColDictInto T.X (tr u) T.Y.hK) (bij : ∀ u, ColDictBij T.X (tr u) T.Y.hK)
@@ -180,22 +180,20 @@ theorem exists_sRest_of_sTies {D : D7} (F : ∀ u, Forms0 D u) (T : Formalism.L2
     ⟨T.hI hF, T.autTie, colPin, j, hj, locTied⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `_` and use `⟨rfl, rfl, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sameDegreeZeroForms_self {D : D7} (F : ∀ u, Forms0 D u) : SameDegreeZeroForms (SNew.self D) F F := fun _ => ⟨rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Set `A` to `Formalism.L2.SG.InstExistsPf.instanceOfRecord D`. Take `⟨L⟩` from `s1`. Take `⟨P⟩` from `s2 A`. Take `⟨Rf⟩` from `s3 A L`. Take `⟨Xu⟩` from `s4 A L Rf`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Bu⟩` from `s5 hC hG A L P Rf`. Take `⟨Pi⟩` from `s6 A L`. Take `⟨Mu⟩` from `s7 A L`. Take `⟨Wb⟩` from `s8 hG A L P Rf Bu Pi Mu`. Take `⟨Mb, hb, hM⟩` from `s9 A L P Rf Xu Bu Pi Mu Wb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨mg, hg', mw, hw, hM', ψ, hψ, hstd, hCm, hL⟩` from `s10 (Formalism.L2.SG.SplitPrimeNormLemmas.mk A L P Rf Xu Bu Pi Mu Wb Mb) hb hM`. Set `X : HidaSetting D` to `Formalism.L2.SG.SettingExistsMeasured.withMeas (Formalism.L2.SG.SplitPrimeNormLemmas.mk A L P Rf Xu Bu Pi Mu Wb Mb) mg hg' mw hw`. Take `⟨Y⟩` from `hY X`. Take `⟨G⟩` from `hg X`. Establish `ht : ∀ u, ∃ Tr : Transport X u (F u), LevelMatch X Tr Y.hK`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u`. Take `⟨wt, hw⟩` from `tw X u`. Take `⟨ιA, hι⟩ : ∃ ιA, GlobalTheory.St.IsAdeleIso X ιA` from `⟨RingEquiv.refl _, fun _ => rfl, fun _ => Iff.rfl⟩`. Take `⟨g0, hg0⟩` from `t0 X u wt ιA hw hι`. Take `⟨h0, hL, hKm⟩` from `t3 X Y.hK u wt ιA g0 hw hι hg0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose hcf hcr using t4 X u wt ιA h0 hw hι`. Take `⟨J, hJ1, hJ2, hJ3⟩` from `t5 X u wt hw`. Conclude with `⟨⟨wt, hw.1, hw.2.1, hw.2.2.1, hw.2.2.2, ιA, hι.1, hι.2, h0, hcf, hcr, J, hJ1, hJ2, hJ3⟩, hL, hKm⟩`. Use `choose tr hlev using ht`. Establish `hd` using `fun u => hD X u (F u) (tr u) Y.hK (hlev u) (hN X Y.hK u)`.
-
-Conclude with `⟨⟨X, hb, Y, hF X Y, ψ, hM', hψ, hstd, hCm, hL, tr, fun u => (hd u).2.1, fun u => (hd u).2.2.1, hlev, fun u => (hd u).2.2.2 _ _ _ (Y.colReps u), rfl, G, fun _ => HEq.rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_sPack_of_steps {D : D7} (F : ∀ u, Forms0 D u) (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D)
     (hC : Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc) (s1 : Formalism.L2.SG.SplitPrimeNormLemmas.LatExists D) (s2 : Formalism.L2.SG.SplitPrimeNormLemmas.PsiExists D)

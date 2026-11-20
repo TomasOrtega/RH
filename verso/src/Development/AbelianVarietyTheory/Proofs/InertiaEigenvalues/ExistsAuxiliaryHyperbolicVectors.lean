@@ -14,7 +14,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `mono : ∀ a b : ℕ, a ≤ b → χ.LevelLe v a → χ.LevelLe v b` using `fun a b hab h x hx hx' => h x hx (hx'.trans (WithZero.exp_le_exp.2 (by omega)))`. Introduce `m`. Use `⟨fun h => ?_, fun h => mono _ _ h h1⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hm`. Conclude with `h2 (mono _ _ (by omega) h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem expAt_succ {χ : Formalism.L2.Host.HChar L} {v : HeightOneSpectrum (𝓞 L)} {n : ℕ} (h1 : χ.LevelLe v (n + 1))
     (h2 : ¬ χ.LevelLe v n) : ExpAt χ v (n + 1) := by
@@ -26,7 +26,7 @@ theorem expAt_succ {χ : Formalism.L2.Host.HChar L} {v : HeightOneSpectrum (𝓞
   exact h2 (mono _ _ (by omega) h)
 
 /- English proof (translation)
-Establish `h : Ideal.span {(p : 𝓞 L)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors h).subset fun w hw => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_over {p : ℕ} (hp : p.Prime) : {w : HeightOneSpectrum (𝓞 L) | (p : 𝓞 L) ∈ w.asIdeal}.Finite := by
   have h : Ideal.span {(p : 𝓞 L)} ≠ ⊥ := by
@@ -35,7 +35,7 @@ theorem finite_over {p : ℕ} (hp : p.Prime) : {w : HeightOneSpectrum (𝓞 L) |
   exact Ideal.dvd_span_singleton.2 hw
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime (p : 𝓞 L) (q : 𝓞 L)` using `Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prime_eq {w : HeightOneSpectrum (𝓞 L)} {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (h1 : (p : 𝓞 L) ∈ w.asIdeal)
     (h2 : (q : 𝓞 L) ∈ w.asIdeal) : p = q := by
@@ -45,7 +45,7 @@ theorem prime_eq {w : HeightOneSpectrum (𝓞 L)} {p q : ℕ} (hp : p.Prime) (hq
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
 /- English proof (translation)
-Establish `key : ∀ u : HeightOneSpectrum (𝓞 L), (p : 𝓞 F) ∈ (u.under (𝓞 F)).asIdeal ↔ (p : 𝓞 L) ∈ u.asIdeal` using `fun u => by`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 L) _ ∈ u.asIdeal ↔ _`. Rewrite using `[map_natCast]`. Conclude with `(key w').1 (h ▸ (key w).2 hp)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_under {F : Type} [Field F] [NumberField F] [Algebra F L] {w w' : HeightOneSpectrum (𝓞 L)}
     (h : w.under (𝓞 F) = w'.under (𝓞 F)) {p : ℕ} (hp : (p : 𝓞 L) ∈ w.asIdeal) : (p : 𝓞 L) ∈ w'.asIdeal := by

@@ -8,7 +8,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel
 
 /- English proof (translation)
-Introduce `R _ _ X s hq hp`. Conclude with `GlobalTheory.SchemeWords.isProjOver_iff.mpr ⟨hq, hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isProjOver_of_isQProjOver_of_isProper :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0}) (s : X ⟶ Sp R),

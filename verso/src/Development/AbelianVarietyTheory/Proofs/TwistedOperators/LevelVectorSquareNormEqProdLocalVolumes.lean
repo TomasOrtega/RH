@@ -20,15 +20,15 @@ open Classical
 namespace GlobalTheory.LevelVecNorm
 
 /- English proof (translation)
-Introduce `hLIS D G _ _ Pl0 T A Ks _ _ _ R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL Hl cl hP μ 𝓧 hμ`. Establish `hL'` using `hL`. Take `⟨hcore, -, -, -, -, -, -, hlev, -⟩` from `hL'`. Take `⟨-, e, he, hth⟩` from `hlev`. Substitute `hP` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `h1` using `GlobalTheory.T.normSq_productDatumTheta_conjugateHalf R F hPM i t σ s (LevelP.ofLocal Hl cl) cμ cη m ω BW f₀ f c io hL e he (fun y => omegaG (R.datWp i (LevelP.ofLocal Hl cl)) m y * omegaQ (R.Q t) (Wc D i).rank m (-1) y) (fun PP z => GlobalTheory.LevelVecNorm.suppInd D.R.r (Globa …`. Rewrite using `[h1]`. Establish `hV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hexp : (Vc D i).rank * (Wc D i).rank = D.R.r ^ 2 + D.R.r * D.R.t` using `by rw [hV, hW]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[fun PP => GlobalTheory.T.lowerZeroUpperBlockIndicator_sq_sum_eq_card (k := kP PP) D.R.r D.R.t hV hW (GlobalTheory.LevelVecNorm.locH R.Pg Hl PP), hexp]`. Rewrite using `[Finset.prod_union (GlobalTheory.T.disjoint_Pg_Q_of_core R F hcore t)]`. Use `congr 1`. Rewrite using `[← Finset.prod_attach R.Pg]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_eq_mul_inv]`. Use `congr 3`. Simplify using `[GlobalTheory.LevelVecNorm.locH, PP.2]`. Use `Finset.prod_congr rfl fun PP hPP => ?_` and prove the remaining obligations. Establish `hn : PP ∉ R.Pg` using `fun h => Finset.disjoint_left.1 (GlobalTheory.T.disjoint_Pg_Q_of_core R F hcore t) h hPP`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[div_eq_mul_inv]`. Use `congr 2`. Simplify using `only [GlobalTheory.LevelVecNorm.locH, dif_neg hn]`. Conclude with `Nat.card_congr Subgroup.topEquiv.toEquiv`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levelVector_squareNorm_eq_prod_localVolumes_alt : GlobalTheory.IndefiniteRowSideFullHecke.LocalIntegralGL.LocalIntegralSingleBlock → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.PlaceModels D → ∀ i t σ s P cμ cη m ω BW f₀ f c io, GlobalTheory.LiftRows.IsLiftDataC R F i t σ s P cμ cη m ω BW f₀ f c io → ∀ (Hl : ∀ PP : ↥R.Pg, Subgroup (GL (Fin D.R.r) (kP PP.1))) (cl : ∀ PP : ↥R.Pg, Hl PP →* ℂˣ), P = LevelP.ofLocal Hl cl → ∀ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓧 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓧 → nrm2 μ 𝓧 f = (∏ PP ∈ R.Pg.attach, (Nat.card (Hl PP) : ℝ) * ((Nat.card (kP PP.1) : ℝ) ^ (D.R.r ^ 2 + D.R.r * D.R.t))⁻¹) * ∏ PP ∈ R.Q t, (Nat.card (GL (Fin D.R.r) (kP PP)) : ℝ) * ((Nat.card (kP PP) : ℝ) ^ (D.R.r ^ 2 + D.R.r * D.R.t))⁻¹ := by
   intro hLIS D G _ _ Pl0 T A Ks _ _ _ R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL Hl cl hP μ 𝓧 hμ

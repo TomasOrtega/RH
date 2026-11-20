@@ -14,13 +14,13 @@ abbrev CopVec (L : ℕ) : Type := {x : ℤ × ℤ // IsCoprime x.1 x.2 ∧ (L : 
 def scl (L : ℕ) (p : ℕ+ × CopVec L) : ℤ × ℤ := (((p.1 : ℕ) : ℤ) * p.2.1.1, ((p.1 : ℕ) : ℤ) * p.2.1.2)
 
 /- English proof (translation)
-Introduce and unpack `⟨δ, ⟨⟨a, b⟩, hab, ha⟩⟩ ⟨δ', ⟨⟨a', b'⟩, hab', ha'⟩⟩ h`. Simplify using `only [scl, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Establish `g1 : Int.gcd a b = 1` using `Int.isCoprime_iff_gcd_eq_one.1 hab`. Establish `g2 : Int.gcd a' b' = 1` using `Int.isCoprime_iff_gcd_eq_one.1 hab'`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (δ : ℕ) = (δ' : ℕ)`. Establish `e1` using `Int.gcd_mul_left ((δ : ℕ) : ℤ) a b`. Establish `e2` using `Int.gcd_mul_left ((δ' : ℕ) : ℤ) a' b'`. Rewrite `e1` using `[h1, h2, e2, g1, g2]`. Simplify using `using e1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hδ : δ = δ'` using `PNat.coe_injective hd`. Substitute `hδ` using the available equality. Establish `hne : ((δ : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast δ.ne_zero`. Use `mul_left_cancel₀ hne h1` as an intermediate fact. Use `mul_left_cancel₀ hne h2` as an intermediate fact.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `subst_vars`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma scl_injective (L : ℕ) : Function.Injective (scl L) := by
   rintro ⟨δ, ⟨⟨a, b⟩, hab, ha⟩⟩ ⟨δ', ⟨⟨a', b'⟩, hab', ha'⟩⟩ h
@@ -42,13 +42,13 @@ lemma scl_injective (L : ℕ) : Function.Injective (scl L) := by
   rfl
 
 /- English proof (translation)
-Simplify using `[trm, zero_pow (by omega : j ≠ 0)]`.
+Simplify using the standard rewrite rules.
 -/
 lemma trm_zero (j : ℕ) (s : ℝ) (hj : 2 ≤ j) : trm j s 0 = 0 := by
   simp [trm, zero_pow (by omega : j ≠ 0)]
 
 /- English proof (translation)
-Unfold `trm`. Rewrite using `[norm_mul, Complex.norm_natCast, Real.mul_rpow (Nat.cast_nonneg _) (norm_nonneg _), neg_mul, Real.rpow_neg (Nat.cast_nonneg _), ← neg_mul, mul_pow, mul_inv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma trm_smul (j : ℕ) (s : ℝ) (δ : ℕ) (z : ℂ) :
     trm j s ((δ : ℂ) * z) = (((δ : ℂ) ^ j)⁻¹ * ((((δ : ℝ) ^ (2 * s))⁻¹ : ℝ) : ℂ)) * trm j s z := by
@@ -59,7 +59,7 @@ lemma trm_smul (j : ℕ) (s : ℝ) (δ : ℕ) (z : ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_add _ _ (by exact_mod_cast hδ.ne'), Complex.cpow_natCast, Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 lemma cpow_split (j : ℕ) (s : ℝ) (δ : ℕ) (hδ : 0 < δ) :
     (δ : ℂ) ^ ((j : ℂ) + 2 * (s : ℂ)) = (δ : ℂ) ^ j * ((((δ : ℝ) ^ (2 * s)) : ℝ) : ℂ) := by
@@ -72,33 +72,31 @@ end GlobalTheory.EisM.GcdOut
 
 open GlobalTheory.EisM.GcdOut in
 /- English proof (translation)
-Set `F : ℤ × ℤ → ℂ` to `fun x => latF L (fun _ => 1) φ x * trm j s ((x.1 : ℂ) * τ + x.2)`. Set `f : ℕ+ → ℂ` to `fun δ => LSeries.term (fun n => φ n) ((j : ℂ) + 2 * (s : ℂ)) (δ : ℕ)`. Set `g : CopVec L → ℂ` to `fun x => φ (x.1.2 : ZMod L) * trm j s ((x.1.1 : ℂ) * τ + x.1.2)`. Express the relevant statement in the definitionally equal form `∑' x, F x = LSeries (fun n : ℕ => φ n) ((j : ℂ) + 2 * (s : ℂ)) * ∑' x, g x`. Establish `hsumT` using `(GlobalTheory.T.regularizedEisensteinLatticeSum_eq_tsum_of_kills j L s 0 0 τ hj hs hL ⟨0, by simp⟩ (fun x => by simp [Kills])).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hgs : Summable fun x => ‖g x‖`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun x => ?_) (hsumT.comp_injective Subtype.val_injective)` and prove the remaining obligations. Simplify using `only [g, Function.comp, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (DirichletCharacter.norm_le_one _ _)`. Establish `hLS : LSeriesSummable (fun n : ℕ => φ n) ((j : ℂ) + 2 * (s : ℂ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DirichletCharacter.LSeriesSummable_iff hL.ne']`. Establish `: (2:ℝ) ≤ j` using `by exact_mod_cast hj`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfs : Summable fun δ => ‖f δ‖` using `(summable_norm_iff.2 hLS).comp_injective PNat.coe_injective`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ p : ℕ+ × CopVec L, F (scl L p) = f p.1 * g p.2`. Introduce and unpack `⟨δ, ⟨⟨a, b⟩, hab, ha⟩⟩`. Establish `hδ : 0 < (δ : ℕ)` using `δ.pos`. Simplify using `only [F, f, g, scl, latF]`. Rewrite using `[if_pos (dvd_mul_of_dvd_right ha _), LSeries.term_of_ne_zero hδ.ne', cpow_split j s _ hδ]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((((δ : ℕ) : ℤ) * a : ℤ) : ℂ) * (τ : ℂ) + ((((δ : ℕ) : ℤ) * b : ℤ) : ℂ) = ((δ : ℕ) : ℂ) * ((a : ℂ) * τ + b)` using `by push_cast; ring`. Rewrite using `[e, trm_smul]`. Establish `e2 : (((((δ : ℕ) : ℤ) * b : ℤ)) : ZMod L) = ((δ : ℕ) : ZMod L) * (b : ZMod L)` using `by push_cast; ring`. Rewrite using `[e2, map_mul]`. Establish `h1 : ((δ:ℕ) : ℂ) ^ j ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hδ.ne')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((((δ : ℕ) : ℝ) ^ (2 * s) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.rpow_pos_of_pos (by exact_mod_cast hδ) _).ne'` after adjusting the coercions. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hsupp : Function.support F ⊆ Set.range (scl L)`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨x1, x2⟩ hx`. Simplify using `only [Function.mem_support, F, latF] at hx`. Distinguish the cases in `hL1 : (L : ℤ) ∣ x1`. Use `swap`. Simplify using `[hL1] at hx`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx` using `[if_pos hL1, one_mul]`. Establish `hφ : φ (x2 : ZMod L) ≠ 0` using `left_ne_zero_of_mul hx`. Establish `ht : trm j s ((x1 : ℂ) * τ + x2) ≠ 0` using `right_ne_zero_of_mul hx`. Establish `hgpos : 0 < Int.gcd x1 x2`. Rewrite using `[Nat.pos_iff_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Rewrite `h` using `[Int.gcd_eq_zero_iff]`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[trm_zero j s hj] at ht`. Take `⟨a, b, hab, h1, h2⟩` from `Int.exists_gcd_one hgpos`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Generalize the expression as in `Int.gcd x1 x2 = d at h1 h2 hgpos`. Establish `hunit : IsUnit (x2 : ZMod L)`. Assume the negation of the conclusion as `h`. Conclude with `hφ (MulChar.map_nonunit φ h)`. Establish `hdu : IsUnit ((d : ℕ) : ZMod L)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hunit` using `[h2]`. Move the coercions through the operations in `at hunit`. Conclude with `isUnit_of_mul_isUnit_right hunit`. Establish `hcop : Nat.Coprime d L` using `(ZMod.isUnit_iff_coprime d L).1 hdu`. Establish `hLa : (L : ℤ) ∣ a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : IsCoprime (L : ℤ) (d : ℤ)` using `Nat.isCoprime_iff_coprime.2 hcop.symm`. Rewrite `hL1` using `[h1]`. Conclude with `hc.dvd_of_dvd_mul_right hL1`. Use `⟨(⟨d, hgpos⟩, ⟨(a, b), Int.isCoprime_iff_gcd_eq_one.2 hab, hLa⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [scl, PNat.mk_coe]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, mul_comm a, mul_comm b]`. Establish `hLser : ∑' δ : ℕ+, f δ = LSeries (fun n : ℕ => φ n) ((j : ℂ) + 2 * (s : ℂ))`. Unfold `LSeries`. Use `(PNat.coe_injective.tsum_eq (f := LSeries.term (fun n : ℕ => φ n) ((j : ℂ) + 2 * (s : ℂ))) ?_)` and prove the remaining obligations. Introduce `n hn`.
-
-Establish `: n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn (LSeries.term_zero _ _)`. Conclude with `⟨⟨n, Nat.pos_of_ne_zero this⟩, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EisM.lattice_sum_gcd_out (j L : ℕ) (s : ℝ) (φ : DirichletCharacter ℂ L) (τ : ℍ)
     (hj : 2 ≤ j) (hs : 0 < s) (hL : 0 < L) :

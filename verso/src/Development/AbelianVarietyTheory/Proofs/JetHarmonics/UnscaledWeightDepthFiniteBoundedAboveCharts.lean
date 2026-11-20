@@ -28,7 +28,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 
 /- English proof (translation)
-Use `max_eq_left ?_` and prove the remaining obligations. Use `iSup_le fun T => iSup_le fun io => iSup_le fun e => iSup_le fun ho => iSup_le fun y => iSup_le fun hy => ?_` and prove the remaining obligations. Take `⟨C⟩` from `hE T io y hy`. Use `letI := io.toAlgebra`. Conclude with `(iInf_le _ C).trans ((crude_inf C.ch.B C.ch.h C.ch.gauge H.w0 k C.ch.uvec (satDir_of hS C) a n ha hn ho).2 hl)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem nuW_eq_zero (hE : IntChartEx Xo c) (hS : ChartSaturated Xo c) (la : HeightOneSpectrum (𝓞 c.F)) (k : ℕ)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (ha : DomW Dw a) (hn : Fintype.card (Lt1 Dw) ≤ n)
@@ -40,7 +40,7 @@ theorem nuW_eq_zero (hE : IntChartEx Xo c) (hS : ChartSaturated Xo c) (la : Heig
   exact (iInf_le _ C).trans ((crude_inf C.ch.B C.ch.h C.ch.gauge H.w0 k C.ch.uvec (satDir_of hS C) a n ha hn ho).2 hl)
 
 /- English proof (translation)
-Establish `h1 : nuLocC C e k a n ≤ nuLoc z e k a n` using `le_iInf fun C' => (hI T io z C C' e k a n).le`. Use `h1.trans (le_trans ?_ (le_max_right _ _))` and prove the remaining obligations. Unfold `nuSup`. Conclude with `le_iSup_of_le T (le_iSup_of_le io (le_iSup_of_le e (le_iSup_of_le ho (le_iSup_of_le z (le_iSup_of_le hz le_rfl)))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nuLocC_le_nuW (hI : ChartIndep Xo c) (la : HeightOneSpectrum (𝓞 c.F)) (k : ℕ)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (ho : OverLa la T.V io e)
@@ -54,11 +54,11 @@ theorem nuLocC_le_nuW (hI : ChartIndep Xo c) (la : HeightOneSpectrum (𝓞 c.F))
 end Gen
 
 /- English proof (translation)
-Establish `hb : (0 : ℝ) ≤ r * d / q` using `by positivity`. Rewrite `h1` using `[max_eq_right (by exact_mod_cast hb)]`. Establish `ht : x ≠ ⊤` using `ne_top_of_le_ne_top (EReal.coe_ne_top _) h1`. Establish `hb' : x ≠ ⊥` using `ne_bot_of_le_ne_bot (by simp) h0`. Use `lift x to ℝ using ⟨ht, hb'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : 0 ≤ x` using `by exact_mod_cast h0`. Establish `h1' : x ≤ r * d / q` using `by exact_mod_cast h1`. Rewrite using `[EReal.toReal_coe]`. Use `⟨by rw [mul_div_cancel₀ _ hr.ne'], by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem ereal_unit {x : EReal} {r d q : ℝ} (hr : 0 < r) (hd : 0 ≤ d) (hq : 0 < q) (h0 : 0 ≤ x)
     (h1 : x ≤ max 0 ((r * d / q : ℝ) : EReal)) :
@@ -77,15 +77,13 @@ theorem ereal_unit {x : EReal} {r d q : ℝ} (hr : 0 < r) (hd : 0 ≤ d) (hq : 0
     _ = d / q * r := by ring
 
 /- English proof (translation)
-Introduce `D T h j hj w hn la`. Use `letI := T.Q.H.starRing`. Establish `hst : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a` using `fun _ => rfl`. Take `⟨hDF, hdom, -, -, hcard, -⟩` from `GlobalTheory.WeightOnDatum.weight_on_datum D T.toCore h.pins j hj w`. Establish `hE : IntChartEx (T.Q.Xo j) T.Q.c` using `(GlobalTheory.IntChartExists.intChart_exists _ _ _ _ (T.Q.Xo j) T.Q.c).2.1 hst`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hI : ChartIndep (T.Q.Xo j) T.Q.c` using `GlobalTheory.ChartCmp.chartIndep_holds _ _ _ _ (T.Q.Xo j) T.Q.c hst`. Establish `hS : ChartSaturated (T.Q.Xo j) T.Q.c` using `SaturatedCharts.saturation_charts_holds _ _`. Establish `hn'` using `hcard.trans hn`. Establish `hr : (0 : ℝ) < (ramOverZ la : ℝ)`. Conclude with `Nat.pos_of_ne_zero (GlobalTheory.GoodDepth.ramOverZ_ne_zero' la)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (0 : ℝ) < (resCharOf la : ℝ) - 1`. Establish `: (1 : ℝ) < resCharOf la` using `by exact_mod_cast (Crude.resCharOf_prime la).one_lt`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle` using `nuW_le_crude hE hS la T.Q.l.M (wtA w) w.n hdom hn'`. Rewrite `hle` using `[hDF]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, a3⟩` from `ereal_unit hr (Nat.cast_nonneg (WeightAlgebra.DF w)) hq (le_max_left _ _) hle`. Use `⟨a1, a2, a3, fun hl => ?_, fun T' io e ho z hz C => ?_⟩` and prove the remaining obligations. Unfold `nuWt`. Rewrite using `[nuW_eq_zero hE hS la T.Q.l.M (wtA w) w.n hdom hn' (hDF ▸ hl)]`. Simplify using the standard rewrite rules.
-
-Conclude with `(nuLocC_le_nuW hI la T.Q.l.M (wtA w) w.n T' io e ho z hz C).trans a1.le`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nuWt_bounds : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j), 2 * D.R.f * D.R.r ≤ w.n → ∀ (la : HeightOneSpectrum (𝓞 T.Q.c.F)), letI := T.Q.H.starRing; nuW (T.Q.Xo j) T.Q.c la T.Q.l.M (wtA w) w.n = (((ramOverZ la : ℝ) * nuWt T w la : ℝ) : EReal) ∧ 0 ≤ nuWt T w la ∧ nuWt T w la ≤ (WeightAlgebra.DF w : ℝ) / ((resCharOf la : ℝ) - 1) ∧ (WeightAlgebra.DF w < resCharOf la → nuWt T w la = 0) ∧ ∀ (T' : CDVR) (io : T.Q.c.F →+* T'.Fr) (e : ℕ), OverLa la T'.V io e → ∀ z : IntFr (T.Q.Xo j) T.Q.c T' io, z.IsAlg → ∀ C : IntegralChartA3 (T.Q.Xo j) T.Q.c T' io z, nuLocC C e T.Q.l.M (wtA w) w.n ≤ (((ramOverZ la : ℝ) * nuWt T w la : ℝ) : EReal) := by
   intro D T h j hj w hn la

@@ -6,27 +6,25 @@ open UpperTheory.ConvolutionTheory.R
 
 open PositivityTheory.RgJS PositivityTheory.RgJS.Common0Aux in
 /- English proof (translation)
-Introduce `W q X d A hS ι _ x hw hsm`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨i₁, hi₁⟩` from `hne`. Establish `hq` using `hS.primes.two`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `UpperTheory.ConvolutionTheory.Rs.conv1 W q X d A hS`. Take `⟨i₀, -, hi₀⟩` from `Finset.exists_min_image Finset.univ (fun i => (x i).2) ⟨i₁, Finset.mem_univ _⟩`. Use `set m : ℝ := (x i₀).2 with hm`. Establish `ht : ∀ i, m ≤ (x i).2` using `fun i => hi₀ i (Finset.mem_univ _)`. Establish `hm0 : m < 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => mul_nonneg (Nat.cast_nonneg (d (x i).1)) (h.trans (ht i)))).1 hw i₁ (Finset.mem_univ _)`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Use `hS.pos (x i₁).1` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h3 : d (x i₁).1 = 0` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Conclude with `hi₁ h2`. Use `set α : W → (Σ i, Fin (d (x i).1)) → ℂ := fun w a => A (x a.1).1 w a.2 * (q w : ℂ) ^ (-((x a.1).2 : ℂ)) with hα`. Establish `hxx : ∀ (σ : ℝ) (p : W × ℕ), ∑ i, ∑ j, lterm q (A (x i).1) (A (x j).1) (((σ + (x i).2 + (x j).2 : ℝ)) : ℂ) p = lterm q α α σ p` using `fun σ p => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_lterm q hq A x x σ p]`. Simplify using `only [lterm, Pw, hα, Fintype.sum_sigma]`. Take `⟨τ, hτ, -, hτle⟩` from `exists_pos_le (fun i => (x i).2 - m) (fun i => (x i).2 ≠ m) (fun i hi => sub_pos.2 (lt_of_le_of_ne (ht i) (Ne.symm hi)))`. Use `choose M hM using fun i i' : ι => (hC (x i).1 (x i').1).2 (1 + τ) (by linarith)`. Establish `: Nonempty {i // (x i).2 = m}` using `⟨⟨i₀, rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `UpperTheory.ConvolutionTheory.Rs.unb W q X d A hS {i // (x i).2 = m} (fun i => (x i.1).1) ⟨(∑' p, ‖lterm q α α ((1 - 2 * m : ℝ) : ℂ) p‖) + ∑ i, ∑ i', |M i i'|, fun σ hσ1 hσ2 => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ i j, Summable fun p => lterm q (A (x i).1) (A (x j).1) (((σ - 2 * m + (x i).2 + (x j).2 : ℝ)) : ℂ) p` using `fun i j => ((hC _ _).1 _ (by linarith [ht i, ht j])).of_norm`. Establish `hform : ∑ i : {i // (x i).2 = m}, ∑ j : {i // (x i).2 = m}, ∑' p, lterm q (A (x i.1).1) (A (x j.1).1) (σ : ℂ) p = ∑ i : {i // (x i).2 = m}, ∑ j : {i // (x i).2 = m}, ∑' p, lterm q (A (x i.1).1) (A (x j.1).1) (((σ - 2 * m + (x i.1).2 + (x j.1).2 : ℝ)) : ℂ) p`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[i.2, j.2, show σ - 2 * m + m + m = σ by ring]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htot : ∑ i, ∑ j, ∑' p, lterm q (A (x i).1) (A (x j).1) (((σ - 2 * m + (x i).2 + (x j).2 : ℝ)) : ℂ) p = ∑' p, lterm q α α ((σ - 2 * m : ℝ) : ℂ) p`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hform, dsum_subtype (fun i => (x i).2 = m) (fun i j => ∑' p, lterm q (A (x i).1) (A (x j).1) (((σ - 2 * m + (x i).2 + (x j).2 : ℝ)) : ℂ) p)]`. Use `set f : ι → ι → ℂ := fun i j => ∑' p, lterm q (A (x i).1) (A (x j).1) (((σ - 2 * m + (x i).2 + (x j).2 : ℝ)) : ℂ) p with hf`. Establish `hsplit : ∑ i, ∑ j, f i j = (∑ i, ∑ j, if (x i).2 = m ∧ (x j).2 = m then f i j else 0) + ∑ i, ∑ j, if (x i).2 = m ∧ (x j).2 = m then 0 else f i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hrest : ‖∑ i, ∑ j, if (x i).2 = m ∧ (x j).2 = m then (0 : ℂ) else f i j‖ ≤ ∑ i, ∑ i', |M i i'|`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_))` and prove the remaining obligations. Use `split_ifs with hij`. Simplify using the standard rewrite rules. Establish `hge : 1 + τ ≤ σ - 2 * m + (x i).2 + (x j).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Break down `not_and_or.1 hij with h | h` into its components or cases. Combine the linear relations using `[hτle i h, ht j]`. Combine the linear relations using `[hτle j h, ht i]`. Conclude with `(hM i j _ hge).trans (le_abs_self _)`. Establish `hDle : ‖∑' p, lterm q α α ((σ - 2 * m : ℝ) : ℂ) p‖ ≤ ∑' p, ‖lterm q α α ((1 - 2 * m : ℝ) : ℂ) p‖` using `tsum_of_norm_bounded (hsm (1 - 2 * m) (by linarith)).hasSum fun p => DiagonalEntryNormBounds.norm_lterm_anti q hq α α (by linarith) p`.
-
-Establish `heq : (∑ i, ∑ j, if (x i).2 = m ∧ (x j).2 = m then f i j else 0) = (∑' p, lterm q α α ((σ - 2 * m : ℝ) : ℂ) p) - ∑ i, ∑ j, if (x i).2 = m ∧ (x j).2 = m then 0 else f i j`. Rewrite using `[← htot, hsplit]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `(norm_sub_le _ _).trans (add_le_add hDle hrest)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R.zeroExp :
     ZeroExp := by

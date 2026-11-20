@@ -16,9 +16,9 @@ namespace GlobalTheory.DualLat
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨x, h⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_one_iff (x : K) : x ∈ (1 : Submodule (𝓞 K) K) ↔ IsIntegral ℤ x := by
   rw [Submodule.mem_one]
@@ -29,7 +29,7 @@ theorem mem_one_iff (x : K) : x ∈ (1 : Submodule (𝓞 K) K) ↔ IsIntegral �
     exact ⟨⟨x, h⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_one_iff]`. Conclude with `map_isIntegral_int (starRingEnd K) h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_one [StarRing K] {x : K} (h : x ∈ (1 : Submodule (𝓞 K) K)) :
     star x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -37,14 +37,14 @@ theorem star_mem_one [StarRing K] {x : K} (h : x ∈ (1 : Submodule (𝓞 K) K))
   exact map_isIntegral_int (starRingEnd K) h
 
 /- English proof (translation)
-Take `⟨⟨d, hd⟩, y, hy⟩` from `IsLocalization.exists_integer_multiple (nonZeroDivisors (𝓞 K)) x`. Conclude with `⟨d, nonZeroDivisors.ne_zero hd, Submodule.mem_one.2 ⟨y, hy⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_den (x : K) : ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ (1 : Submodule (𝓞 K) K) := by
   obtain ⟨⟨d, hd⟩, y, hy⟩ := IsLocalization.exists_integer_multiple (nonZeroDivisors (𝓞 K)) x
   exact ⟨d, nonZeroDivisors.ne_zero hd, Submodule.mem_one.2 ⟨y, hy⟩⟩
 
 /- English proof (translation)
-Take `⟨⟨d, hd⟩, hy⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) s`. Conclude with `⟨d, nonZeroDivisors.ne_zero hd, fun x hx => Submodule.mem_one.2 (hy x hx)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_den_finset (s : Finset K) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ x ∈ s, d • x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -52,9 +52,9 @@ theorem exists_den_finset (s : Finset K) :
   exact ⟨d, nonZeroDivisors.ne_zero hd, fun x hx => Submodule.mem_one.2 (hy x hx)⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DeterminantSimpLemma.main`. Consider the case `exact _root_.GlobalTheory.DeterminantSimpLemma.main`. Consider the case `(apply _root_.GlobalTheory.DeterminantSimpLemma.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DeterminantSimpLemma.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DeterminantSimpLemma.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DeterminantSimpLemma.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {M : Submodule (𝓞 K) (Fin n → K)}
     {x : Fin n → K} (hx : x ∈ Submodule.span K (M : Set (Fin n → K))) :
@@ -68,19 +68,17 @@ theorem exists_smul_mem {M : Submodule (𝓞 K) (Fin n → K)}
   | (intros; exact _root_.GlobalTheory.DeterminantSimpLemma.main ..)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h : ∀ i : Fin n, ∃ d : 𝓞 K, d ≠ 0 ∧ d • (Pi.single i (1 : K) : Fin n → K) ∈ M` using `fun i => exists_smul_mem (by rw [hM.span_eq_top]; trivial) choose d hd hdM using h`. Establish `hle : dualFr M ≤ Submodule.span (𝓞 K) (Set.range fun i : Fin n => (Pi.single i (algebraMap (𝓞 K) K (d i))⁻¹ : Fin n → K))`. Introduce `φ hφ`. Rewrite using `[← Finset.univ_sum_single φ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (hφ _ (hdM i))`. Establish `hdi : algebraMap (𝓞 K) K (d i) ≠ 0` using `by simpa using hd i`. Establish `: (Pi.single i (φ i) : Fin n → K) = b • (Pi.single i (algebraMap (𝓞 K) K (d i))⁻¹ : Fin n → K)`. Rewrite using `[← Pi.single_smul, Algebra.smul_def, hb, dotProduct_smul, dotProduct_single, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `Submodule.FG.of_le (Submodule.fg_span (Set.finite_range _)) hle`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨S, hS⟩` from `hM.fg`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨d, hd, h⟩` from `exists_den_finset (S.image fun y => x ⬝ᵥ y)`. Establish `hx : d • x ∈ dualFr M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[← hS]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => rw [smul_dotProduct]`. Conclude with `h _ (Finset.mem_image_of_mem _ hy)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [dotProduct_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [dotProduct_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
-
-Establish `hd' : algebraMap (𝓞 K) K d ≠ 0` using `by simpa using hd`. Establish `: x = (algebraMap (𝓞 K) K d)⁻¹ • (d • x)`. Rewrite using `[← algebraMap_smul K d x, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_dualFr (M : Submodule (𝓞 K) (Fin n → K)) (hM : Submodule.IsLattice K M) :
     Submodule.IsLattice K (dualFr M) := by
@@ -124,29 +122,25 @@ theorem isLattice_dualFr (M : Submodule (𝓞 K) (Fin n → K)) (hM : Submodule.
     exact Submodule.smul_mem _ _ (Submodule.subset_span hx)
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hM.fg`. Use `set f : (Fin n → K) → (Fin n → K) := fun y => star y ᵥ* G with hf`. Establish `hadd : ∀ y z, f (y + z) = f y + f z` using `fun y z => by`. Simplify using `only [hf, star_add, Matrix.add_vecMul]`. Establish `hsm : ∀ (a : K) y, f (a • y) = star a • f y` using `fun a y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf, star_smul, Matrix.smul_vecMul]`. Establish `h0 : f 0 = 0` using `by simp [hf]`. Use `set M' : Submodule (𝓞 K) (Fin n → K) := Submodule.span (𝓞 K) (f '' S) with hM'`. Establish `hfM : ∀ y ∈ M, f y ∈ M'`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Rewrite `hy` using `[← hS]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => rw [h0]`. Conclude with `zero_mem _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add y z _ _ hy hz => rw [hadd]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (star_mem_one (Submodule.mem_one.2 ⟨a, rfl⟩ : algebraMap (𝓞 K) K a ∈ (1 : Submodule (𝓞 K) K)))`. Rewrite using `[← algebraMap_smul K a y, hsm, ← hb, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `M'.smul_mem _ hy`. Establish `hL : Submodule.IsLattice K M'`. Use `⟨Submodule.fg_span ((S.finite_toSet).image _), ?_⟩` and prove the remaining obligations. Establish `key : ∀ y ∈ Submodule.span K (M : Set (Fin n → K)), f y ∈ Submodule.span K (M' : Set (Fin n → K))`. Introduce `y hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (hfM y hy)`. Consider the case `zero => rw [h0]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [hadd]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [hsm]`. Conclude with `Submodule.smul_mem _ _ hy`. Rewrite using `[eq_top_iff]`. Introduce `z _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `: z = f (star (z ᵥ* G⁻¹))`. Simplify using `only [hf, star_star, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul G hG, Matrix.vecMul_one]`. Rewrite using `[this]`. Conclude with `key _ (by rw [hM.span_eq_top]; trivial)`. Establish `heq : hdualFr G M = dualFr M'`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, rfl⟩` from `hz`. Use `hx y (hS ▸ Submodule.subset_span hy)` as an intermediate fact. Rewrite `this` using `[Matrix.dotProduct_mulVec, dotProduct_comm]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [dotProduct_add]`.
-
-Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [dotProduct_smul]`. Conclude with `Submodule.smul_mem _ _ hy`. Introduce `hx y hy`. Rewrite using `[Matrix.dotProduct_mulVec, dotProduct_comm]`.
-
-Conclude with `hx _ (hfM y hy)`. Rewrite using `[heq]`. Conclude with `isLattice_dualFr M' hL`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_hdualFr [StarRing K] (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K))
     (hG : IsUnit G.det) (hM : Submodule.IsLattice K M) : Submodule.IsLattice K (hdualFr G M) := by
@@ -207,19 +201,19 @@ theorem isLattice_hdualFr [StarRing K] (G : Matrix (Fin n) (Fin n) K) (M : Submo
 
 omit [NumberField K] in
 /- English proof (translation)
-Simplify using `[dotProduct, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_dot [StarRing K] (x y : Fin n → K) : star (x ⬝ᵥ y) = star y ⬝ᵥ star x := by
   simp [dotProduct, mul_comm]
 
 /- English proof (translation)
-Establish `key : ∀ φ ψ : Fin n → K, star φ ⬝ᵥ ((G⁻¹)ᵀ *ᵥ ψ) = ψ ⬝ᵥ (G⁻¹ *ᵥ star φ)`. Introduce `φ ψ`. Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, Matrix.dotProduct_mulVec]`. Use extensionality with `ψ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h x hx`. Establish `hφ : star (G *ᵥ x) ∈ dualFr M`. Introduce `y hy`. Use `star_mem_one (hx y hy)` as an intermediate fact. Rewrite `this` using `[star_dot, star_star]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h _ hφ` as an intermediate fact. Rewrite `this` using `[key, star_star, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul G hG, Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `h φ hφ`. Rewrite using `[key]`. Use `h _ fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv G hG, Matrix.one_mulVec, ← star_dot]`. Conclude with `star_mem_one (hφ y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hdualFr_dualFr [StarRing K] (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K))
     (hG : IsUnit G.det) : hdualFr (G⁻¹)ᵀ (dualFr M) = dualFr (hdualFr G M) := by
@@ -242,7 +236,7 @@ theorem hdualFr_dualFr [StarRing K] (G : Matrix (Fin n) (Fin n) K) (M : Submodul
     exact star_mem_one (hφ y hy)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ G M hG hM => ⟨isLattice_dualFr M hM, isLattice_hdualFr G M hG hM⟩, fun _ _ _ _ _ G M _ hG _ => hdualFr_dualFr G M hG⟩`.
+Supply the required witnesses or components.
 -/
 theorem dualFr_lattice_and_hdual : DualFrLattice ∧ DualFrHdual :=
   ⟨fun _ _ _ _ _ G M hG hM => ⟨isLattice_dualFr M hM, isLattice_hdualFr G M hG hM⟩,

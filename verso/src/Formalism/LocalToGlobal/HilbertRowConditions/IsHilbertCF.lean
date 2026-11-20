@@ -84,7 +84,7 @@ structure KsPieces (D : D7) (T : HostTied D) where
   E_le_KPs : T.fr.j.fieldRange ≤ KPs
 
 /- English proof (translation)
-The claim follows from `le_trans (P.HK_hilb.1.1) P.HK_le_M`.
+A detailed English derivation is pending.
 -/
 theorem KsPieces.K_le_M {D : D7} {T : HostTied D} (P : KsPieces D T) : Formalism.L2.Host.KQ D.host.d ≤ P.M :=
   le_trans (P.HK_hilb.1.1) P.HK_le_M

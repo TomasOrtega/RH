@@ -12,7 +12,7 @@ section D
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `h : Continuous fun M : Matrix (Fin 2) (Fin 2) F => A * M * B` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `he : ∀ a b, Continuous fun M : Matrix (Fin 2) (Fin 2) F => (A * M * B) a b` using `fun a b => h.matrix_elem a b`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cat3] <;> first | exact he _ _ | exact continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_block_concatenation (A B : Matrix (Fin 2) (Fin 2) F) (v : Fin 2 → F) :
     Continuous fun M : Matrix (Fin 2) (Fin 2) F => cat3 (A * M * B) v := by
@@ -27,13 +27,13 @@ def firstCols (X : Matrix (Fin 2) (Fin 3) F) : Matrix (Fin 2) (Fin 2) F :=
   Matrix.of fun i j => X i j.castSucc
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun i j => continuous_id.matrix_elem i j.castSucc`.
+A detailed English derivation is pending.
 -/
 theorem continuous_firstCols : Continuous (firstCols (F := F)) :=
   continuous_matrix fun i j => continuous_id.matrix_elem i j.castSucc
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [firstCols, cat3]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem first_columns_concatenation (A : Matrix (Fin 2) (Fin 2) F) (v : Fin 2 → F) :
     firstCols (cat3 A v) = A := by
@@ -45,13 +45,11 @@ end D
 end GlobalTheory.CompanionTheory.GL2DualWhittakerPair
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ Φ hΦ h z`. Take `⟨hl, hc⟩` from `hΦ`. Use `set A : GL (Fin 2) F := z⁻¹ with hA`. Use `set B : GL (Fin 2) F := tinv h with hB`. Use `set v : Fin 2 → F := A.val *ᵥ e1 with hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hι : Continuous fun M : Matrix (Fin 2) (Fin 2) F => cat3 (A.val * M * B.val) v` using `continuous_block_concatenation _ _ _`. Use `⟨hl.comp_continuous hι, ?_⟩` and prove the remaining obligations. Set `q : Matrix (Fin 2) (Fin 3) F → Matrix (Fin 2) (Fin 2) F` to `fun X => (A⁻¹).val * firstCols X * (B⁻¹).val`. Establish `hq : Continuous q` using `(continuous_const.matrix_mul continuous_firstCols).matrix_mul continuous_const`. Use `HasCompactSupport.of_support_subset_isCompact (hc.isCompact.image hq) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `M hM`. Use `⟨cat3 (A.val * M * B.val) v, subset_tsupport _ hM, ?_⟩` and prove the remaining obligations. Establish `h1 : (A⁻¹).val * A.val = 1` using `by rw [← Units.val_mul]; simp`. Establish `h2 : B.val * (B⁻¹).val = 1` using `by rw [← Units.val_mul]; simp`. Simplify using `only [q, first_columns_concatenation]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.GL2DualWhittakerPair.pullback_schwartz_bruhat_M2 : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (Φ : Matrix (Fin 2) (Fin 3) F → ℂ), Φ ∈ LFS.SB F → ∀ h z : GL (Fin 2) F, SB2 (Pf Φ h z) := by
   intro F _ _ _ _ _ _ Φ hΦ h z

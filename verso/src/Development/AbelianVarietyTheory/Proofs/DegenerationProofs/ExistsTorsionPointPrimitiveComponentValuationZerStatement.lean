@@ -8,7 +8,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT GlobalTheory.LN GlobalTheory.Ex GlobalTheory.OneBasis
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OneBasis.UnitTerm.exists_torsion_coef_val_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsTorsionPointPrimitiveComponentValuationZer.lean&line=190#L190)
 -/

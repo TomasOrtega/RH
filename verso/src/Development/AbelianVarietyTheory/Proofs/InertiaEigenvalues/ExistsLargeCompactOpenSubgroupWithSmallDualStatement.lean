@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
 open GlobalTheory.JR GlobalTheory.JR.WeilQuad Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JR.WeilQuad.LargeLattice.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsLargeCompactOpenSubgroupWithSmallDual.lean&line=12#L12)
 -/

@@ -18,7 +18,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Use `h _ fun φ => ?_` and prove the remaining obligations. Use `hf (φ.comp (Ideal.Quotient.mkₐ R _)) fun j => ?_` and prove the remaining obligations. Establish `: Ideal.Quotient.mk (Ideal.span (Set.range (mulF F N))) (mulF F N j) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨j, rfl⟩)`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem mem_span_of_killed {R : Type} [CommRing R] {d : ℕ} (F : Fin d → PS R 2 d) (N : ℕ)
     (h : ∀ q : QF F N, (∀ φ : QF F N →ₐ[R] R, φ q = 0) → q = 0) (f : PS R 1 d)
@@ -31,9 +31,9 @@ private theorem mem_span_of_killed {R : Type} [CommRing R] {d : ℕ} (F : Fin d 
   simp [this]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hc d F hFH`. Establish `h1 : ∀ (k : ℕ) (f : PS O 1 d), (∀ φ, Killed F.F (p ^ k) φ → φ f = 0) → f ∈ Ideal.span (Set.range (mulF F.F (p ^ k)))` using `fun k f hf => mem_span_of_killed F.F (p ^ k) (hFH k).2.2 f hf`. Use `⟨h1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hH` using `((mem_sup_span_X_pow_iff_and_isAdicComplete O (Ideal.span {(p : O)}) (Fin 1 × Fin d)).2 hc).toIsHausdorff`. Use `hH.haus f fun k => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, sub_zero]`. Use `Ideal.pow_le_pow_right (Nat.le_succ k) ?_` and prove the remaining obligations. Use `(Ideal.span_le.2 ?_) (h1 k f fun φ hφ => hf φ ⟨k, hφ⟩)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(GlobalTheory.T.mulF_span_mul_le_and_mulF_pow_mem_ideal_pow O d F).2.2.2 p k j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_span_mulF_of_killed_and_eq_zero_of_tors : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (d : ℕ) (F : FGLaw O d), FH p F.F → (∀ (k : ℕ) (f : PS O 1 d), (∀ φ, Killed F.F (p ^ k) φ → φ f = 0) → f ∈ Ideal.span (Set.range (mulF F.F (p ^ k)))) ∧ ∀ f : PS O 1 d, (∀ φ, Tors p F.F φ → φ f = 0) → f = 0 := by
   intro p _ C _ _ _ v O _ _ _ _ hc d F hFH

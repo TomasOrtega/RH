@@ -21,28 +21,28 @@ section
 variable {q : ℕ} [NeZero q]
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem cast_zero' {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') :
     ((0 : Ht q E n i).cast hn hi : Ht q E n' i') = 0 := by
   subst hn hi; rfl
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem cast_eq_zero' {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E n i)
     (h : (x.cast hn hi : Ht q E n' i') = 0) : x = 0 := by
   subst hn hi; exact h
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem cup_cast' {E : Spc} {a a' b b' n i : ℤ} (ha : a = a') (hb : b = b') (y : Ht q E a b) (x : Ht q E n i) :
     cup q (y.cast ha hb : Ht q E a' b') x = (cup q y x).cast (by rw [ha]) (by rw [hb]) := by
   subst ha hb; rfl
 
 /- English proof (translation)
-Introduce `U hU`. Take `⟨x⟩` from `hU`. Establish `x' : U ⟶ X` using `x`. Simplify using `using ζ.2.1.map x'.appTop.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem inv_sch {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) : Inv q (sch.obj X) := by
   intro U hU
@@ -51,11 +51,9 @@ private theorem inv_sch {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) : Inv q (sch.o
   simpa using ζ.2.1.map x'.appTop.hom
 
 /- English proof (translation)
-Establish `h1 : cup q (cup q (rootClass (-j) ζ) (rootClass j ζ)) x = 0`. Rewrite using `[GlobalTheory.T.tateTwistCupProduct_assoc, h, map_zero, cast_zero']`. Rewrite `h1` using `[((GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).2 X ζ (-j) j).1]`. Rewrite `h1` using `[cup_cast']`. Establish `h2` using `cast_eq_zero' _ _ _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ (k : ℤ), k = 0 → cup q (rootClass k ζ) x = 0 → x = 0`. Introduce `k hk hx`. Substitute `hk` using the available equality. Rewrite `hx` using `[((GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).2 X ζ 0 0).2, (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 _ (inv_sch ζ)]`. Conclude with `cast_eq_zero' _ _ _ hx`.
-
-Conclude with `key _ (by ring) h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cupRootInj {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) (j : ℤ) {n i : ℤ} (x : Ht q (sch.obj X) n i)
     (h : cup q (rootClass j ζ) x = 0) : x = 0 := by
@@ -72,9 +70,9 @@ private theorem cupRootInj {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) (j : ℤ) {
   exact key _ (by ring) h2
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero`. Establish `h` using `((GlobalTheory.T.kummerClassOfUnit_cocycle_natural_additive q).2.2 (1 : (Γ(X, ⊤))ˣ) 1 hq).1`. Rewrite `h` using `[mul_one]`. Establish `h0 : kum q (1 : (Γ(X, ⊤))ˣ) = 0` using `by simpa using h`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[h0]`. Consider the case `succ c ih`. Rewrite using `[succ_nsmul, ih, pow_succ, ((GlobalTheory.T.kummerClassOfUnit_cocycle_natural_additive q).2.2 (w ^ c) w hq).1]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem kum_pow {X : Scheme.{0}} (w : (Γ(X, ⊤))ˣ) (hq : IsUnit (q : Γ(X, ⊤))) (c : ℕ) :
     c • kum q w = kum q (w ^ c) := by
@@ -88,7 +86,7 @@ private theorem kum_pow {X : Scheme.{0}} (w : (Γ(X, ⊤))ˣ) (hq : IsUnit (q : 
     rw [succ_nsmul, ih, pow_succ, ((GlobalTheory.T.kummerClassOfUnit_cocycle_natural_additive q).2.2 (w ^ c) w hq).1]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod q), (ZMod.natCast_eq_zero_iff c q).2 h, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tors {E : Spc} {n i : ℤ} (x : Ht q E n i) {c : ℕ} (h : q ∣ c) : c • x = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ZMod q), (ZMod.natCast_eq_zero_iff c q).2 h, zero_smul]
@@ -97,13 +95,13 @@ private noncomputable def secHom (i : ℤ) (X : Scheme.{0}) : Sec (tw q i) X →
   AddMonoidHom.mk' (secClass (tw q i)) (GlobalTheory.T.degreeZeroSectionClass_properties (ZMod q) (tw q i) X).2.2.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.tateTwistUnitClass_rootClass_spec q).2.2.2 i X ζ`.
+A detailed English derivation is pending.
 -/
 private theorem root_eq (i : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) : rootClass i ζ = secHom i X (twGen i ζ) :=
   (GlobalTheory.T.tateTwistUnitClass_rootClass_spec q).2.2.2 i X ζ
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `(GlobalTheory.T.degreeZeroSectionClass_properties (ZMod q) (tw q i) X).2.1.2 b`. Take `⟨c, rfl⟩` from `UpperTheory.twisted_section_eq_nsmul_generator_of_connected q i X ζ s`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[root_eq, ← map_nsmul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem root_every {X : Scheme.{0}} [ConnectedSpace X] (ζ : Prim q Γ(X, ⊤)) (i : ℤ) (b : Ht q (sch.obj X) 0 i) :
     ∃ c : ℕ, b = c • rootClass i ζ := by
@@ -114,7 +112,7 @@ private theorem root_every {X : Scheme.{0}} [ConnectedSpace X] (ζ : Prim q Γ(X
   rfl
 
 /- English proof (translation)
-Rewrite `h` using `[root_eq, ← map_nsmul]`. Establish `hinj : Function.Injective (secHom (q` using `q) i X) := (GlobalTheory.T.degreeZeroSectionClass_properties (ZMod q) (tw q i) X).2.1.1`. Establish `h0 : c • twGen i ζ = 0` using `hinj (h.trans (map_zero _).symm)`. Conclude with `(GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.1 X ζ c h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem root_tors {X : Scheme.{0}} [Nonempty X] (ζ : Prim q Γ(X, ⊤)) (i : ℤ) (c : ℕ) (h : c • rootClass i ζ = 0) :
     q ∣ c := by
@@ -124,7 +122,7 @@ private theorem root_tors {X : Scheme.{0}} [Nonempty X] (ζ : Prim q Γ(X, ⊤))
   exact (GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.1 X ζ c h0
 
 /- English proof (translation)
-Rewrite using `[root_eq, root_eq]`. Use `((GlobalTheory.T.degreeZeroSectionClass_properties (ZMod q) (tw q i) X).2.2.2.1 f _).trans ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.2.1 Y X f ζ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pull_root {Y X : Scheme.{0}} (f : Y ⟶ X) (ζ : Prim q Γ(X, ⊤)) (i : ℤ) :
     pull _ (sch.map f) _ _ (rootClass i ζ) = rootClass i (ζ.map f.appTop.hom) := by
@@ -134,9 +132,9 @@ private theorem pull_root {Y X : Scheme.{0}} (f : Y ⟶ X) (ζ : Prim q Γ(X, �
   rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Use `⟨(injective_iff_map_eq_zero _).2 fun b hb => ?_, fun b' => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `root_every ζ i b`. Rewrite `hb` using `[map_nsmul, pull_root]`. Conclude with `tors _ (root_tors _ i c hb)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `root_every (ζ.map f.appTop.hom) i b'`. Conclude with `⟨c • rootClass i ζ, by rw [map_nsmul, pull_root]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem deg0 {X Y : Scheme.{0}} [ConnectedSpace X] [ConnectedSpace Y] (f : Y ⟶ X) (ζ : Prim q Γ(X, ⊤)) (i n : ℤ) (hn : n = 0) :
     Function.Bijective (pull _ (sch.map f) (tw q i) n) := by
@@ -151,37 +149,33 @@ private theorem deg0 {X Y : Scheme.{0}} [ConnectedSpace X] [ConnectedSpace Y] (f
 end
 
 /- English proof (translation)
-Introduce `q _ O _ hSH hq u hu m j`. Establish `hSH'` using `hSH`. Take `⟨hh, hsep⟩` from `hSH'`. Use `haveI : HenselianLocalRing O := hh`. Use `haveI : ConnectedSpace (Spec (CommRingCat.of O)) := (UpperTheory.connectedSpace_spec_local_and_laurent O).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : ConnectedSpace (Spec (CommRingCat.of (LaurentPolynomial O))) := (UpperTheory.connectedSpace_spec_local_and_laurent O).2`. Take `⟨ζ₀⟩` from `UpperTheory.nonempty_primitive_root_of_strictly_henselian q O hSH hq`. Set `ζ : Prim q Γ(Spec (CommRingCat.of O), ⊤)` to `ζ₀.map (Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom`. Set `f : Spec (CommRingCat.of (LaurentPolynomial O)) ⟶ Spec (CommRingCat.of O)` to `Spec.map (CommRingCat.ofHom (LaurentPolynomial.C : O →+* LaurentPolynomial O))`. Set `ζ'` to `ζ.map f.appTop.hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqL : IsUnit (q : Γ(Spec (CommRingCat.of (LaurentPolynomial O)), ⊤))` using `ζ'.2.1`. Establish `hC5` using `UpperTheory.Cb.etale_cohomology_locally_acyclic q O hSH hq`. Establish `hneg : ∀ (E : Spc) (n i : ℤ), n < 0 → Subsingleton (Ht q E n i)` using `fun E n i hn => (GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q i)).1 E n hn`. Establish `hpos : ∀ (n i : ℤ), 0 < n → Subsingleton (Ht q (sp O) n i)` using `fun n i hn => UpperTheory.cohomology_subsingleton_pos_of_strictly_henselian (ZMod q) O hSH (tw q i) n hn`. Establish `hinj : Function.Injective fun b : Ht q (sp O) 0 j => cup q (pull _ (sch.map f) _ _ b) (kum q u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hadd : ∀ a b : Ht q (sp O) 0 j, cup q (pull _ (sch.map f) _ _ (a + b)) (kum q u) = cup q (pull _ (sch.map f) _ _ a) (kum q u) + cup q (pull _ (sch.map f) _ _ b) (kum q u)`. Introduce `a b`. Rewrite using `[map_add, map_add, AddMonoidHom.add_apply]`. Use `(injective_iff_map_eq_zero (AddMonoidHom.mk' _ hadd)).2 fun b hb => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cup q (pull _ (sch.map f) _ _ b) (kum q u) = 0 at hb`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `root_every ζ j b`. Rewrite `hb` using `[map_nsmul, pull_root, map_nsmul, AddMonoidHom.nsmul_apply, ← map_nsmul, kum_pow u hqL]`. Take `⟨v, hv⟩` from `UpperTheory.exists_root_of_kummer_class_eq_zero q _ (u ^ c) hqL (cupRootInj ζ' j _ hb)`. Use `tors _ (UpperTheory.dvd_exponent_of_pow_eq_laurent_monomial q O c (Units.map (Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial O))).hom.hom.toMonoidHom v) ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (fun w : (Γ(Spec (CommRingCat.of (LaurentPolynomial O)), ⊤))ˣ => (Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial O))).hom.hom (w : Γ(Spec (CommRingCat.of (LaurentPolynomial O)), ⊤))) hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_pow_eq_pow_val, map_pow, hu] at h1`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial O))).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial O))).inv.hom (LaurentPolynomial.T 1)) = LaurentPolynomial.T 1`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, LaurentPolynomial.T_pow]`. Simplify using `using h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective fun b : Ht q (sp O) 0 j => cup q (pull _ (sch.map f) _ _ b) (kum q u)`. Take `⟨e⟩ : Nonempty (Ht q (sch.obj (Spec (CommRingCat.of (LaurentPolynomial O)))) (0 + 1) (j + 1) ≃+ ZMod q)` from `(hC5 1 (j + 1)).2`. Use `haveI : Finite (Ht q (sch.obj (Spec (CommRingCat.of (LaurentPolynomial O)))) (0 + 1) (j + 1)) := Finite.of_equiv _ e.symm.toEquiv`. Establish `key : ∀ a b : ℕ, b < q → a ≤ b → a • rootClass j ζ = b • rootClass j ζ → a = b`. Introduce `a b hb hle h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite `h` using `[add_nsmul, left_eq_add]`. Use `Nat.eq_zero_of_dvd_of_lt (root_tors ζ j d h) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hfin : Function.Injective fun c : Fin q => (c : ℕ) • rootClass j ζ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab`. Break down `le_total (a : ℕ) (b : ℕ) with h | h` into its components or cases. Conclude with `Fin.ext (key _ _ b.2 h hab)`. Conclude with `Fin.ext (key _ _ a.2 h hab.symm).symm`. Establish `hcomp` using `Function.Injective.bijective_of_nat_card_le (hinj.comp hfin) (by`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin])`. Conclude with `Function.Surjective.of_comp hcomp.2`. Break down `lt_trichotomy m 0 with hm | hm | hm` into its components or cases. Break down `eq_or_lt_of_le (show m + 1 ≤ 0 by omega) with h0 | h0` into its components or cases. Establish `hm' : m = -1` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hm'` using the available equality. Use `haveI := hneg (sp O) (-1) j (by norm_num)`. Establish `hb` using `deg0 f ζ (j + 1) _ h0`. Use `⟨fun p p' h => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h2 : p.2 = p'.2` using `Subsingleton.elim _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Supply the required witnesses or components.
 
-Establish `h3 : pull _ (sch.map f) _ _ p.1 = pull _ (sch.map f) _ _ p'.1`. Establish `h' : pull _ (sch.map f) _ _ p.1 + _ = pull _ (sch.map f) _ _ p'.1 + _` using `h`. Rewrite `h'` using `[h2]`. Conclude with `add_right_cancel h'`. Conclude with `Prod.ext (hb.1 h3) h2`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, rfl⟩` from `hb.2 y`. Use `⟨(b, 0), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Use `haveI := hneg (sp O) _ (j + 1) h0 haveI := hneg (sp O) m j hm haveI := hneg (sp (LaurentPolynomial O)) _ (j + 1) h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Supply the required witnesses or components.
 
-Conclude with `⟨fun a b _ => Subsingleton.elim a b, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`. Substitute `hm haveI := hpos (0 + 1) (j + 1) (by norm_num)` using the available equality. Use `⟨fun p p' h => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : p.1 = p'.1` using `Subsingleton.elim _ _`. Establish `h' : pull _ (sch.map f) _ _ p.1 + _ = pull _ (sch.map f) _ _ p'.1 + _` using `h`.
-
-Rewrite `h'` using `[h1]`. Conclude with `Prod.ext h1 (hinj (add_left_cancel h'))`. Take `⟨b, rfl⟩` from `hsurj y`. Use `⟨(0, b), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
-
-Both sides reduce to the same expression. Use `haveI := hpos (m + 1) (j + 1) (by omega) haveI := hpos m j hm haveI := (hC5 (m + 1) (j + 1)).1 (by omega)`. Conclude with `⟨fun a b _ => Subsingleton.elim a b, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.bijective_etaleCohomology_laurentPolynomial_of_coordinate_unit :
     ∀ (q : ℕ) [NeZero q] (O : Type) [CommRing O], SH O → IsUnit (q : O) →

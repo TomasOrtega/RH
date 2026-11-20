@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 open Finset
 
 /- English proof (translation)
-Take `⟨σ, b⟩` from `e`. Consider the cases of `b with`. Consider the case `false => simpa using hi σ`. Consider the case `true`. Establish `h` using `hφ.1 (σ, false)`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hc : conjEmb d (σ, false) = (σ, true)` using `rfl`. Rewrite `h` using `[hc]`. Rewrite using `[h]`. Simplify using `[conjEmb, hi σ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inertFrob_snd {d : IndexData} {φ : Equiv.Perm (Emb d)} (hφ : IsFrobLike d φ)
     (hi : IsInertFrob d φ) (e : Emb d) : (φ e).2 = !e.2 := by
@@ -26,7 +26,7 @@ theorem inertFrob_snd {d : IndexData} {φ : Equiv.Perm (Emb d)} (hφ : IsFrobLik
     simp [conjEmb, hi σ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Equiv.Perm.mul_apply, inertFrob_snd hφ hi, ih]`. Apply the tactic sequence `cases e.2 <;> by_cases h : Odd n <;> simp [h, Nat.odd_add_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inertFrob_pow_snd {d : IndexData} {φ : Equiv.Perm (Emb d)} (hφ : IsFrobLike d φ)
     (hi : IsInertFrob d φ) (e : Emb d) (n : ℕ) : ((φ ^ n) e).2 = (e.2 ^^ decide (Odd n)) := by
@@ -37,7 +37,7 @@ theorem inertFrob_pow_snd {d : IndexData} {φ : Equiv.Perm (Emb d)} (hφ : IsFro
     cases e.2 <;> by_cases h : Odd n <;> simp [h, Nat.odd_add_one]
 
 /- English proof (translation)
-Unfold `rankLie`. Rewrite using `[inertFrob_pow_snd hφ hi]`. Apply the tactic sequence `by_cases h : Odd n <;> simp [h, Nat.odd_add_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rankLie_inert_pow {d : IndexData} {φ : Equiv.Perm (Emb d)} (hφ : IsFrobLike d φ)
     (hi : IsInertFrob d φ) (τ : Fin d.f) (n : ℕ) :
@@ -47,21 +47,19 @@ theorem rankLie_inert_pow {d : IndexData} {φ : Equiv.Perm (Emb d)} (hφ : IsFro
   by_cases h : Odd n <;> simp [h, Nat.odd_add_one]
 
 /- English proof (translation)
-Introduce `d p φ hp hφ hi τ`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Use `set r : ℝ := ((p : ℝ) ^ 2)⁻¹ with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : r < 1` using `inv_lt_one_of_one_lt₀ (by nlinarith)`. Use `set a : ℝ := ((d.N - d.j : ℕ) : ℝ)`. Use `set t : ℕ → ℝ := fun n => ((p : ℝ) ^ (n + 1))⁻¹ * (rankLie d ((φ ^ (n + 1)) (τ, false)) : ℝ)`. Establish `heven : ∀ k, t (2 * k) = (a / p) * r ^ k`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [t, rankLie_inert_pow hφ hi, hr, a]`. Establish `: ¬ Odd (2 * k)` using `by simp`. Rewrite using `[if_neg this, inv_pow, ← pow_mul, pow_succ]`. Clear the denominators using the available nonvanishing facts. Establish `hodd : ∀ k, t (2 * k + 1) = ((d.j : ℝ) / p ^ 2) * r ^ k`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k`. Simplify using `only [t, rankLie_inert_pow hφ hi, hr]`. Establish `: Odd (2 * k + 1)` using `odd_two_mul_add_one k`. Rewrite using `[if_pos this, inv_pow, ← pow_mul, show 2 * k + 1 + 1 = 2 * k + 2 by ring, pow_add]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hg : Summable (fun k : ℕ => r ^ k)` using `summable_geometric_of_lt_one hr0 hr1`. Establish `hse : Summable (fun k => t (2 * k))`. Repeatedly rewrite using `[heven]`. Conclude with `hg.mul_left _`. Establish `hso : Summable (fun k => t (2 * k + 1))`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hodd]`. Conclude with `hg.mul_left _`. Establish `hsum : kaP d p φ τ = ∑' k, t (2 * k) + ∑' k, t (2 * k + 1)` using `(tsum_even_add_odd hse hso).symm`. Rewrite using `[hsum]`. Repeatedly rewrite using `[heven, hodd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_mul_left, tsum_mul_left, tsum_geometric_of_lt_one hr0 hr1, hr]`. Establish `hp2 : (p : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Establish `hp2' : (1 : ℝ) - ((p : ℝ) ^ 2)⁻¹ = ((p : ℝ) ^ 2 - 1) / (p : ℝ) ^ 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hp2']`.
-
-Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem KaPInert.proof : KaPInert.Statement := by
   intro d p φ hp hφ hi τ

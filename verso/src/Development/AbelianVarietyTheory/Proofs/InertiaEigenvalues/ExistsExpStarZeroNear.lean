@@ -16,11 +16,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨⟨c1, -, m⟩, b, hb, H⟩` from `h`. Take `⟨⟨c', -, m'⟩, b', hb', H'⟩` from `h'`. Establish `hs : ∀ (n : ℤ) (x : (LT l).R.BdR), x ∈ ((LT l).PD (botExt l)).Fil n → algebraMap ℚ_[l] (LT l).R.BdR c * x ∈ ((LT l).PD (botExt l)).Fil n`. Introduce `n x hx`. Use `((LT l).PD (botExt l)).Fil n |>.smul_mem (algebraMap ℚ_[l] ↥(botExt l).1 c) hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[algebraMap_smul, Algebra.smul_def]`. Then use the resulting hypothesis. Use `⟨⟨(continuousOn_const.mul c1).sub c', fun _ _ => trivial, fun g hg h hh => ?_⟩, algebraMap ℚ_[l] (LT l).R.BdR c * b - b', Submodule.sub_mem _ (hs _ _ hb) hb', fun σ hσ => ?_⟩` and prove the remaining obligations. Simplify using `only [m g hg h hh, m' g hg h hh]`. Expand and normalize the polynomial expressions, which then agree. Use `Submodule.sub_mem _ (hs _ _ (H σ hσ)) (H' σ hσ)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, map_mul, ← IsScalarTower.algebraMap_apply, AlgEquiv.commutes]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expStar_mul_sub (LT : LocTheory) (G : Subgroup (GQ l)) (e : ℕ) (c : ℚ_[l])
     {z z' : GQ l → ℚ_[l]} {α α' : Om l} (h : ExpStar LT G e z α) (h' : ExpStar LT G e z' α') :
@@ -41,13 +41,13 @@ theorem expStar_mul_sub (LT : LocTheory) (G : Subgroup (GQ l)) (e : ℕ) (c : �
     simp only [map_sub, map_mul, ← IsScalarTower.algebraMap_apply, AlgEquiv.commutes]; ring
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `h1 : (e : ℝ) / ((l : ℝ) - 1) ≤ ((e / (l - 1) : ℕ) : ℝ) + 1`. Establish `h2` using `Nat.lt_floor_add_one ((e : ℝ) / ((l - 1 : ℕ) : ℝ))`. Rewrite `h2` using `[Nat.floor_div_eq_div, Nat.cast_sub (by omega), Nat.cast_one]`. Conclude with `h2.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `e / (l - 1) = q at h1`. Break down `e with _ | e` into its components or cases. Establish `: (0 : ℝ) ≤ q` using `Nat.cast_nonneg _`. Establish `: (0 : ℝ) ≤ s` using `Nat.cast_nonneg _`. Simplify using `[betaE]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : padicValNat l (e + 1).factorial = padicValNat l (e + 1) + padicValNat l e.factorial`. Rewrite using `[Nat.factorial_succ, padicValNat.mul (by omega) (Nat.factorial_ne_zero _)]`. Rewrite using `[h3]`. Simplify using `only [betaE, Nat.add_sub_cancel, Nat.succ_ne_zero, if_false]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `padicValNat l (e + 1) = u`. Generalize the expression as in `padicValNat l e.factorial = v`. Move the coercions through the operations in `at h1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exponent_le (s e : ℕ) :
     ((e * (s + 1) + padicValNat l e.factorial + 1 + s : ℕ) : ℝ) + (e : ℝ) / ((l : ℝ) - 1) ≤
@@ -73,15 +73,13 @@ theorem exponent_le (s e : ℕ) :
     linarith
 
 /- English proof (translation)
-Introduce `D _ _ l _ K s hs e z hz hb`. Take `⟨α, hα, hE⟩` from `(GlobalTheory.T.dualExponential_existsUnique_cyclotomicLevel D l K s hs e).1 z hz`. Establish `hN` using `GlobalTheory.T.norm_dualExponential_le_of_ainf_valued D l K s hs e z α hα hE hb`. Establish `hx` using `exponent_le (l := l) s e`. Use `set a : ℕ := (e + 2) * s + padicValNat l e + e / (l - 1) + 1 with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl0 : (l : Om l) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hnl : ‖(l : Om l)‖ = (l : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), norm_algebraMap', Padic.norm_p]`. Establish `hmem : (l : Om l) ^ ((a : ℤ) - betaE l s e) * α ∈ Ks K s` using `mul_mem (zpow_mem (natCast_mem _ _) _) hα`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ‖(l : Om l) ^ ((a : ℤ) - betaE l s e) * α‖ ≤ 1`. Establish `h1` using `hN.trans (Real.rpow_le_rpow_of_exponent_le hl.le hx)`. Rewrite `h1` using `[Real.rpow_intCast]`. Rewrite using `[norm_mul, norm_zpow, hnl, inv_zpow, inv_mul_le_iff₀ (zpow_pos (by linarith) _), mul_one]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z1, hz1, hE1⟩` from `GlobalTheory.T.dualExponential_image_contains_lattice D l K s hs e _ hmem hnorm`. Use `⟨fun σ => (l : ℚ_[l]) ^ a * z σ - z1 σ, ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `expStar_mul_sub D.loc (Gj K s) e ((l : ℚ_[l]) ^ a) hE hE1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← mul_assoc, ← zpow_add₀ hl0, add_sub_cancel, zpow_natCast, map_pow, map_natCast, sub_self]`.
-
-Simplify using `using hz1 σ hσ`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_expStar_zero_near : ∀ (D : Formalism.BasicNotions.D7), adm2 D → ArchimedeanSignatureMatching D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ), Lev l s → ∀ (e : ℕ) (z : GQ l → ℚ_[l]), CocOn (Gj K s) (fun σ y => (((D.loc l).χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * y) Set.univ z → (∃ b ∈ ((D.loc l).PD (botExt l)).Fil 0, ∀ σ ∈ Gj K s, ∃ a : Ainf l, algebraMap ℚ_[l] (D.loc l).R.BdR (z σ) - (algebraMap ℚ_[l] (D.loc l).R.BdR (((D.loc l).χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * (D.loc l).actQdR σ b - b) - (D.loc l).ιB ((D.locA l).ιA a) ∈ ((D.loc l).PD (botExt l)).Fil ((e : ℤ) + 1)) → ∃ z' : GQ l → ℚ_[l], ExpStar D.loc (Gj K s) e z' 0 ∧ ∀ σ ∈ Gj K s, ‖z' σ - (l : ℚ_[l]) ^ ((e + 2) * s + padicValNat l e + e / (l - 1) + 1) * z σ‖ ≤ 1 := by
   intro D _ _ l _ K s hs e z hz hb

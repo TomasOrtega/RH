@@ -8,9 +8,9 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix Filter Topology Set
 
 /- English proof (translation)
-Introduce `x hx`. Set `e : ReciprocityTheory.L2DbarEstimates.V n ≃L[ℂ] (Fin n → ℂ)` to `EuclideanSpace.equiv (Fin n) ℂ`. Establish `hU : IsOpen (e.symm ⁻¹' B)` using `hB.preimage e.symm.continuous`. Establish `hg : DifferentiableOn ℂ (f ∘ e.symm) (e.symm ⁻¹' B)` using `hf.comp e.symm.differentiable.differentiableOn (fun y hy => hy)`. Establish `ha` using `ReciprocityTheory.AnForm.Osgood.osgood n _ _ hU hg (e x) (by simpa using hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfe : f = (f ∘ e.symm) ∘ e` using `by ext y; simp`. Rewrite using `[hfe]`. Conclude with `ha.comp ((e : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (Fin n → ℂ)).analyticAt x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_V_of_differentiableOn {n : ℕ} {f : ReciprocityTheory.L2DbarEstimates.V n → ℂ}
     {B : Set (ReciprocityTheory.L2DbarEstimates.V n)} (hB : IsOpen B) (hf : DifferentiableOn ℂ f B) :
@@ -26,7 +26,7 @@ theorem analyticOnNhd_V_of_differentiableOn {n : ℕ} {f : ReciprocityTheory.L2D
   exact ha.comp ((e : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (Fin n → ℂ)).analyticAt x)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (1 : ℂ)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hF a).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_finset_prod' {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {ι : Type*} [DecidableEq ι] {F : ι → E → ℂ} {B : Set E}
@@ -39,7 +39,7 @@ theorem differentiableOn_finset_prod' {E : Type*} [NormedAddCommGroup E] [Normed
     exact (hF a).mul ih
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply', Matrix.of_apply]`. Use `DifferentiableOn.fun_sum fun σ _ => ?_` and prove the remaining obligations. Conclude with `(differentiableOn_const _).mul (differentiableOn_finset_prod' (F := fun i v => F (σ i) i v) (fun i => hF _ _) _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiableOn_det_of {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {U : Type} [Fintype U] [DecidableEq U] {F : U → U → E → ℂ} {B : Set E}

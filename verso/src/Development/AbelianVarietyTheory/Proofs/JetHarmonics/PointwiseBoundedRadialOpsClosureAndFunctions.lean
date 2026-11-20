@@ -12,7 +12,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `nv`. Rewrite using `[h Φ, ← norm_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nv_of_mulAt {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} {x : (Fin P.r → ℂ) × Q.Mx P.k P.r}
     {T : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')} {s : ℂ} (h : MulAt x T s)
@@ -22,13 +22,13 @@ theorem nv_of_mulAt {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} {x : (Fin P
   rfl
 
 /- English proof (translation)
-The claim follows from `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nv_nonneg {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')
     (x : (Fin P.r → ℂ) × Q.Mx P.k P.r) : 0 ≤ nv Φ x := norm_nonneg _
 
 /- English proof (translation)
-Use `⟨C, hC, fun Φ x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hle⟩` from `h x hx`. Rewrite using `[nv_of_mulAt hs]`. Conclude with `mul_le_mul_of_nonneg_right hle (nv_nonneg Φ x)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptB_of_mulAt {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} (b : RA P Bs) (C : ℝ) (hC : 0 ≤ C)
     (h : ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z', ∃ s : ℂ, MulAt x b.1 s ∧ ‖s‖ ≤ C) : PtB P Bs b := by
@@ -38,7 +38,7 @@ theorem ptB_of_mulAt {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} (b : RA P 
   exact mul_le_mul_of_nonneg_right hle (nv_nonneg Φ x)
 
 /- English proof (translation)
-Take `⟨C, hC, ha⟩` from `ha`. Take `⟨C', hC', hb⟩` from `hb`. Use `⟨C * C', mul_nonneg hC hC', fun Φ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pr_mul_fst, Module.End.mul_apply, mul_assoc]`. Conclude with `(ha _ x hx).trans (mul_le_mul_of_nonneg_left (hb Φ x hx) hC)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptB_mul {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} (a b : RA P Bs) (ha : PtB P Bs a) (hb : PtB P Bs b) :
     PtB P Bs (a * b) := by
@@ -49,16 +49,16 @@ theorem ptB_mul {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} (a b : RA P Bs)
   exact (ha _ x hx).trans (mul_le_mul_of_nonneg_left (hb Φ x hx) hC)
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_inv, h]`. Conclude with `mul_inv_le_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ratio_le (a b : ℂ) (h : ‖a‖ = ‖b‖) : ‖a * b⁻¹‖ ≤ 1 := by
   rw [norm_mul, norm_inv, h]
   exact mul_inv_le_one
 
 /- English proof (translation)
-Establish `h` using `hx.2.2`. Unfold `Q.GGl at h`. Rewrite `h` using `[Complex.normSq_eq_norm_sq]`. Establish `hn` using `norm_nonneg (Q.zetaL P.k P.r Bs.z Bs.z' (Fin.last P.r) x.2)`. Rewrite using `[← Real.sqrt_sq hn]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.sqrt_lt_sqrt (mul_pos Bs.T_pos Bs.T'_pos).le (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_lt_zeta {P : M.Par} (Bs : B.RealPlaceData P.k P.r Wp Wq) {x : (Fin P.r → ℂ) × Q.Mx P.k P.r}
     (hx : x ∈ Q.DomR P.k P.r Bs.z Bs.z') :
@@ -77,35 +77,27 @@ namespace GlobalTheory.HatNF
 open Formalism.FourierDecayAlt.P.TLB PtBBasic
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ Pa Bs X μ L0 st l0 d _ hd`. Establish `hL` using `hd.1`. Use `set L := d.L with hLdef`. Establish `hDr : ∀ x, MulAt x L.Dr.1 (∏ a, x.1 a)` using `fun x => mulAt_ofFn L.c _ fun l => act_c X L hL x l`. Establish `hDri : ∀ x, MulAt x L.Dri.1 (∏ a, x.1 a)⁻¹` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `mulAt_ofFn L.ci _ fun l => act_ci X L hL x l`. Establish `hDrb : ∀ x, MulAt x L.Drb.1 (star (∏ a, x.1 a))` using `fun x => by`. Rewrite using `[star_prod]`. Conclude with `mulAt_ofFn L.cb _ fun l => act_cb X L hL x l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDrbi : ∀ x, MulAt x L.Drbi.1 (star (∏ a, x.1 a))⁻¹` using `fun x => by`. Rewrite using `[star_prod, ← Finset.prod_inv_distrib]`. Conclude with `mulAt_ofFn L.cbi _ fun l => act_cbi X L hL x l`. Establish `hz : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.ζ.1 (Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL.2.2.2.2.2.2.1]`. Conclude with `act_fn X x hx 0`. Establish `hzi : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.ζi.1 (Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2)⁻¹`. Introduce `x hx`. Rewrite using `[hL.2.2.2.2.2.2.2.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `act_fn X x hx 1`. Establish `hzb : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.ζb.1 (star (Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2))`. Introduce `x hx`. Rewrite using `[hL.2.2.2.2.2.2.2.2.1]`. Conclude with `act_fn X x hx 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzbi : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.ζbi.1 (star (Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2))⁻¹`. Introduce `x hx`. Rewrite using `[hL.2.2.2.2.2.2.2.2.2.1]`. Conclude with `act_fn X x hx 3`. Establish `hGGi : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.GGi.1 ((Q.GGl Pa.k Pa.r Bs.z Bs.z' x.2 : ℂ))⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[hL.2.2.2.2.2.2.2.2.2.2.2.1]`. Conclude with `act_fn X x hx 5`. Establish `hD : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.D.1 ((∏ a, x.1 a) * Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2)` using `fun x hx => mulAt_mul (hDr x) (hz x hx)`. Establish `hDb : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.Db.1 (star ((∏ a, x.1 a) * Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[star_mul']`. Conclude with `mulAt_mul (hDrb x) (hzb x hx)`. Establish `hDi : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.Di.1 ((∏ a, x.1 a) * Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2)⁻¹`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv, mul_comm]`. Conclude with `mulAt_mul (hzi x hx) (hDri x)`. Establish `hDbi : ∀ x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z', MulAt x L.Dbi.1 (star ((∏ a, x.1 a) * Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2))⁻¹`. Introduce `x hx`. Rewrite using `[star_mul', mul_inv, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mulAt_mul (hzbi x hx) (hDrbi x)`. Establish `hsq : 0 < Real.sqrt (Tz Pa.k Pa.r Bs.z * Tz Pa.k Pa.r Bs.z')` using `Real.sqrt_pos.2 (mul_pos Bs.T_pos Bs.T'_pos)`. Use `⟨⟨?_, ptB_mul⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ptB_of_mulAt _ 1 zero_le_one fun x _ => ⟨1, mulAt_one x, by simp⟩`. Use `ptB_of_mulAt _ _ (inv_pos.2 hsq).le fun x hx => ⟨_, hzi x hx, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[norm_inv]`. Conclude with `inv_anti₀ hsq (sqrt_lt_zeta Bs hx).le`. Use `ptB_of_mulAt _ _ (inv_pos.2 hsq).le fun x hx => ⟨_, hzbi x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_inv, norm_star]`. Conclude with `inv_anti₀ hsq (sqrt_lt_zeta Bs hx).le`.
-
-Conclude with `ptB_of_mulAt _ 1 zero_le_one fun x hx => ⟨_, mulAt_mul (hD x hx) (hDbi x hx), norm_ratio_le _ _ (norm_star _).symm⟩`. Conclude with `ptB_of_mulAt _ 1 zero_le_one fun x hx => ⟨_, mulAt_mul (hDb x hx) (hDi x hx), norm_ratio_le _ _ (norm_star _)⟩`. Conclude with `ptB_of_mulAt _ 1 zero_le_one fun x _ => ⟨_, mulAt_mul (hDrb x) (hDri x), norm_ratio_le _ _ (norm_star _)⟩`. Conclude with `ptB_of_mulAt _ 1 zero_le_one fun x _ => ⟨_, mulAt_mul (hDr x) (hDrbi x), norm_ratio_le _ _ (norm_star _).symm⟩`. Introduce `Φ x hx`.
-
-Establish `hc : (∏ a, x.1 a) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hx.1 a`. Establish `hζ : Q.zetaL Pa.k Pa.r Bs.z Bs.z' (Fin.last Pa.r) x.2 ≠ 0` using `norm_pos_iff.1 (hsq.trans (sqrt_lt_zeta Bs hx))`. Establish `hG` using `hx.2.2`. Use `⟨norm_pos_iff.2 (mul_ne_zero hc hζ), mul_pos (Complex.normSq_pos.2 hc) hG, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nv_of_mulAt (hDi x hx), norm_inv]`.
-
-Both sides reduce to the same expression. Establish `h : MulAt x (TL.gI L).1 _` using `mulAt_mul (mulAt_mul (hDri x) (hDrbi x)) (hGGi x hx)`. Rewrite using `[nv_of_mulAt h]`. Use `congr 1`. Unfold `gR`.
-
-Rewrite using `[norm_mul, norm_mul, norm_inv, norm_inv, norm_inv, norm_star, Complex.norm_real, Real.norm_of_nonneg hG.le, Complex.normSq_eq_norm_sq, sq, mul_inv, mul_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptB_basic : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π') (μ : Measure (Mt P.k P.r)) (L : LevelData (RA P Bs) P.r) (st : Start (RA P Bs)) (l0 : ℕ) (d : Q.NFData P (RA P Bs)), P5.IsData P Bs.z Bs.z' Bs.π Bs.π' X μ L st l0 → IsNF X d → (PtB P Bs 1 ∧ (∀ a b, PtB P Bs a → PtB P Bs b → PtB P Bs (a * b))) ∧ PtB P Bs d.L.ζi ∧ PtB P Bs d.L.ζbi ∧ PtB P Bs (d.L.D * d.L.Dbi) ∧ PtB P Bs (d.L.Db * d.L.Di) ∧ PtB P Bs (d.L.Drb * d.L.Dri) ∧ PtB P Bs (d.L.Dr * d.L.Drbi) ∧ ∀ (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z', 0 < dR P Bs x.1 x.2 ∧ 0 < gR P Bs x.1 x.2 ∧ nv (d.L.Di.1 Φ) x = (dR P Bs x.1 x.2)⁻¹ * nv Φ x ∧ nv ((TL.gI d.L).1 Φ) x = (gR P Bs x.1 x.2)⁻¹ * nv Φ x := by
   intro Wp Wq _ _ _ _ _ _ Pa Bs X μ L0 st l0 d _ hd

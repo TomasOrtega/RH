@@ -19,27 +19,25 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
 
 /- English proof (translation)
-Introduce `τ ζ hpt f hf i hi`. Take `⟨⟨m₀, hf0⟩, m, a, y, hr, hfe⟩` from `hf`. Establish `hfb : MLG.Bdd f m₀` using `hf0`. Establish `hrγ` using `MLH.rep_γ W T π' Eπ h' c hu₀ hΛ hlet hr`. Establish `hrn` using `MLE.rep_smul W T π' Eπ h' c hr (W.AΔ.algebraMap_mem (-1 : O))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hrn` using `[← MLE.smul_eq_smulLA, neg_one_smul]`. Establish `hra` using `MLE.rep_append W T π' Eπ h' c hrγ hrn`. Rewrite `hra` using `[← sub_eq_add_neg]`. Establish `hgood` using `MLF.good_all W T Pt π' Eπ h' c hwd hγ hra τ ζ hpt`. Rewrite `hgood` using `[MLE.expS_append]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set e := expS W T c ζ (fun j => (a j : LetA O n)) y with he`. Establish `heb : MLG.Bdd e 0` using `fun j hj => MLI.expS_neg W T c ζ _ y hj`. Establish `hneg : expS W T c ζ (fun j => ((⟨algebraMap O (LetA O n) (-1) * a j, W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) (a j).2⟩ : ↥W.AΔ) : LetA O n)) y = -e` using `by show expS W T c ζ (fun j => algebraMap O (LetA O n) (-1) * (a j : LetA O n)) y = -e`. Rewrite using `[MLF.expS_alg_mul, map_neg, map_one, neg_one_smul]`. Take `⟨U, hU, hU0⟩` from `hsimp τ ζ hpt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfu : MLG.Bdd (fun s => u ^ s • f s) m₀` using `fun s hs => by simp only [hfb s hs, smul_zero]`. Establish `hγpart : ∀ j, expS W T c ζ (fun k => ((⟨u₀ * W.γA W.gamK (a k), W.AΔ.mul_mem hu₀ (MLH.γA_mem_AΔ W (a k).2)⟩ : ↥W.AΔ) : LetA O n)) y j = serMul (W.lev c ζ (Eπ ^ h')) (fun s => u ^ s • f s) j`. Introduce `j`. Use `show expS W T c ζ (fun k => u₀ * W.γA W.gamK (a k)) y j = _`. Establish `hLdec : W.lev c ζ (Eπ ^ h') = W.lev c ζ u₀ * PowerSeries.rescale u (W.lev c ζ (Eπ ^ h'))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlev τ ζ hpt, ← map_mul, hΛ]`. Rewrite using `[MLB.expS_mul, hLdec, ← MLG.serMul_serMul _ _ hfu]`. Establish `hin : serMul (PowerSeries.rescale u (W.lev c ζ (Eπ ^ h'))) (fun s => u ^ s • f s) = fun s => u ^ s • e s`. Use function extensionality and compare the values at `s`. Rewrite using `[← MLG.serMul_rescale u hu, hfe s]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hin, MLG.serMul_eq_sum (m₀ := 0) _ (fun s hs => by simp only [heb s hs, smul_zero]) j (j.toNat + 1) (by omega)]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[MLH.expS_γ W T c ζ u (hlev τ ζ hpt)]`. Use `congr 1`. Distinguish the cases in `hjk : 0 ≤ j - (k : ℤ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg hjk]`. Rewrite using `[MLI.expS_neg W T c ζ _ y (by omega), heb _ (by omega), smul_zero, smul_zero]`. Use `set g : ℤ → T.V ⊗[Qp] BdR := fun s => u ^ s • f s - f s with hgdef`. Establish `hgb : MLG.Bdd g m₀` using `fun s hs => by simp [hgdef, hfb s hs]`. Establish `hGg : ∀ j, serMul (W.lev c ζ (Eπ ^ h')) g j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (h' - j) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `j`. Establish `h1` using `hgood j`. Rewrite `h1` using `[Pi.add_apply, hγpart j, hneg, Pi.neg_apply, ← hfe j, ← sub_eq_add_neg]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[MLG.serMul_eq_sum _ hgb j _ le_rfl, MLG.serMul_eq_sum _ hfu j _ le_rfl, MLG.serMul_eq_sum _ hfb j _ le_rfl, ← Finset.sum_sub_distrib]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[hgdef, smul_sub]`. Establish `hH : ∀ j, serMul U g j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (-j) := by`. Introduce `j`. Establish `h1` using `hGg (j + h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h1` using `[hU, ← MLG.serMul_serMul _ _ hgb, MLG.serMul_X_pow, add_sub_cancel_right]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hgi` using `MLI.ind_fil T τ U hU0 hgb hH i`. Establish `e1 : g i = (u ^ i - 1) • f i` using `by rw [hgdef, sub_smul, one_smul]`.
-
-Rewrite `hgi` using `[e1]`. Conclude with `(Submodule.smul_mem_iff _ (sub_ne_zero.2 (hu1 i hi))).1 hgi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_form (hwd : MLF.WD W T Pt π' c) {u₀ : LetA O n} (hu₀ : u₀ ∈ W.AΔ)
     (hΛ : u₀ * W.γA W.gamK (Eπ ^ h') = Eπ ^ h') (hlet : W.γA W.gamK (letE c : LetA O n) = letE c)

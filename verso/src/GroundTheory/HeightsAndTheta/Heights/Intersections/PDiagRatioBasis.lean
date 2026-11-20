@@ -15,11 +15,11 @@ def diagChart {ι ν κ : Type} (c : ∀ k, T.yyIdx ι ν κ k) : ∀ k, T.wwIdx
   | .line1 => (c .line : κ)
 
 /- English proof (translation)
-Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨k, i⟩, rfl⟩`. Consider the cases of `k`. Conclude with `⟨⟨.base, (i : ι)⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 
-Conclude with `⟨⟨.det, (i : ν)⟩, rfl⟩`. Conclude with `⟨⟨.line, (i : κ)⟩, rfl⟩`. Conclude with `⟨⟨.line, (i : κ)⟩, rfl⟩`. Introduce and unpack `⟨⟨k, i⟩, rfl⟩`. Consider the cases of `k`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Conclude with `⟨⟨.base, (i : ι)⟩, rfl⟩`. Conclude with `⟨⟨.det, (i : ν)⟩, rfl⟩`. Conclude with `⟨⟨.line0, (i : κ)⟩, rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem coneRatios_wwCoord_diag {Ω : Type} [Field Ω] {ι ν κ : Type} {E : Type} [AddCommGroup E] [Module Ω E]
     {Φ : Type} [Field Φ] [Algebra Ω Φ] (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E)
@@ -40,9 +40,9 @@ theorem coneRatios_wwCoord_diag {Ω : Type} [Field Ω] {ι ν κ : Type} {E : Ty
     · exact ⟨⟨.line0, (i : κ)⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ ι ν κ _ _ _ E _ _ Φ _ _ _ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF htA hδ hδF hφ hgF hg ha`. Take `⟨c, t', hc, hind, hmem, halg⟩` from `hY Ω ι ν κ E Φ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF htA hδ hδF hφ hgF hg ha`. Use `⟨diagChart c, t', fun k => ?_, hind, ?_, ?_⟩` and prove the remaining obligations. Consider the cases of `k exacts [hc .base, hc .det, hc .line, hc .line]`. Rewrite using `[coneRatios_wwCoord_diag]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem`. Rewrite using `[coneRatios_wwCoord_diag]`. Conclude with `halg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiagRatioBasis.proof (hY : YYRatioBasis.Statement) : DiagRatioBasis.Statement := by
   intro Ω _ _ ι ν κ _ _ _ E _ _ Φ _ _ _ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF htA hδ hδF hφ hgF hg ha

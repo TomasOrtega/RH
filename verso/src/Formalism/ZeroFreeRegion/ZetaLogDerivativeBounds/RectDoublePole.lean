@@ -14,7 +14,7 @@ theorem rdp_rectInt_eq_fx (g : ℂ → ℂ) (x0 x1 y0 y1 : ℝ) :
     rectInt g x0 x1 y0 y1 = Formalism.FX.rectInt g x0 x1 y0 y1 := rfl
 
 /- English proof (translation)
-Simplify using `only [rectInt]`. Rewrite using `[intervalIntegral.integral_add hB1 hB2, intervalIntegral.integral_add hT1 hT2, intervalIntegral.integral_add hR1 hR2, intervalIntegral.integral_add hL1 hL2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rdp_rectInt_add (f1 f2 : ℂ → ℂ) (x0 x1 y0 y1 : ℝ)
     (hB1 : IntervalIntegrable (fun x : ℝ => f1 (x + y0 * I)) MeasureTheory.volume x0 x1)
@@ -33,7 +33,7 @@ theorem rdp_rectInt_add (f1 f2 : ℂ → ℂ) (x0 x1 y0 y1 : ℝ)
   ring
 
 /- English proof (translation)
-Establish `hwp : w - p ≠ 0` using `sub_ne_zero.2 hw`. Establish `h` using `(((hasDerivAt_id' w).sub_const p).inv hwp).const_mul (-a)`. Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | ring | (field_simp; ring) | (simp; ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem rdp_hasDerivAt_prim (a p w : ℂ) (hw : w ≠ p) :
     HasDerivAt (fun z => -a * (z - p)⁻¹) (a / (w - p) ^ 2) w := by
@@ -43,11 +43,11 @@ theorem rdp_hasDerivAt_prim (a p w : ℂ) (hw : w ≠ p) :
   all_goals first | rfl | ring | (field_simp; ring) | (simp; ring)
 
 /- English proof (translation)
-Establish `hne : ∀ x : ℝ, (x : ℂ) + y * I ≠ p`. Introduce `x h`. Apply `hy` to reduce the goal to its premises. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hder : ∀ x : ℝ, HasDerivAt (fun t : ℝ => -a * ((t : ℂ) + y * I - p)⁻¹) (a / ((x : ℂ) + y * I - p) ^ 2) x`. Introduce `x`. Establish `hh : HasDerivAt (fun t : ℝ => (t : ℂ) + y * I) 1 x`. Simplify using `using ((hasDerivAt_id x).ofReal_comp).add_const ((y : ℂ) * I)`. Establish `h2` using `(rdp_hasDerivAt_prim a p ((x : ℂ) + y * I) (hne x)).comp x hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h2` using `[Function.comp_def]`. Establish `hcont : Continuous (fun x : ℝ => a / ((x : ℂ) + y * I - p) ^ 2)`. Use `Continuous.div continuous_const (by fun_prop) (fun x => ?_)` and prove the remaining obligations. Conclude with `pow_ne_zero _ (sub_ne_zero.2 (hne x))`. Conclude with `intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hder x) (hcont.intervalIntegrable _ _)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rdp_horiz (a p : ℂ) (y x0 x1 : ℝ) (hy : y ≠ p.im) :
     ∫ x in x0..x1, a / ((x : ℂ) + y * I - p) ^ 2 =
@@ -71,13 +71,11 @@ theorem rdp_horiz (a p : ℂ) (y x0 x1 : ℝ) (hy : y ≠ p.im) :
     (hcont.intervalIntegrable _ _)
 
 /- English proof (translation)
-Establish `hne : ∀ y : ℝ, (x : ℂ) + y * I ≠ p`. Introduce `y h`. Apply `hx` to reduce the goal to its premises. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hder : ∀ y : ℝ, HasDerivAt (fun t : ℝ => -a * ((x : ℂ) + t * I - p)⁻¹) (I * (a / ((x : ℂ) + y * I - p) ^ 2)) y`. Introduce `y`. Establish `hh : HasDerivAt (fun t : ℝ => (x : ℂ) + t * I) I y`. Simplify using `using (((hasDerivAt_id y).ofReal_comp).mul_const I).const_add (x : ℂ)`. Establish `h2` using `(rdp_hasDerivAt_prim a p ((x : ℂ) + y * I) (hne y)).comp y hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_def] at h2`. Conclude with `h2.congr_deriv (mul_comm _ _)`. Establish `hcont : Continuous (fun y : ℝ => I * (a / ((x : ℂ) + y * I - p) ^ 2))`. Use `continuous_const.mul (Continuous.div continuous_const (by fun_prop) (fun y => ?_))` and prove the remaining obligations. Conclude with `pow_ne_zero _ (sub_ne_zero.2 (hne y))`.
-
-Rewrite using `[← intervalIntegral.integral_const_mul]`. Conclude with `intervalIntegral.integral_eq_sub_of_hasDerivAt (fun y _ => hder y) (hcont.intervalIntegrable _ _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdp_vert (a p : ℂ) (x y0 y1 : ℝ) (hx : x ≠ p.re) :
     I * ∫ y in y0..y1, a / ((x : ℂ) + y * I - p) ^ 2 =
@@ -103,7 +101,7 @@ theorem rdp_vert (a p : ℂ) (x y0 y1 : ℝ) (hx : x ≠ p.re) :
     (hcont.intervalIntegrable _ _)
 
 /- English proof (translation)
-Simplify using `only [rectInt]`. Rewrite using `[rdp_horiz a p y0 x0 x1 (ne_of_lt h3), rdp_horiz a p y1 x0 x1 (ne_of_gt h4), rdp_vert a p x1 y0 y1 (ne_of_gt h2), rdp_vert a p x0 y0 y1 (ne_of_lt h1)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rdp_rectInt_double (a p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 : p.re < x1)
     (h3 : y0 < p.im) (h4 : p.im < y1) :
@@ -114,9 +112,9 @@ theorem rdp_rectInt_double (a p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 
   ring
 
 /- English proof (translation)
-Establish `hD : ContinuousOn (fun u => a / (γ u - p) ^ 2) (Set.uIcc s t)`. Use `ContinuousOn.div continuousOn_const (by fun_prop) (fun u hu => ?_)` and prove the remaining obligations. Conclude with `pow_ne_zero _ (sub_ne_zero.2 (hP u hu))`. Establish `hS : ContinuousOn (fun u => G (γ u) + b / (γ u - p)) (Set.uIcc s t)`. Use `hG.add (ContinuousOn.div continuousOn_const (by fun_prop) (fun u hu => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_ne_zero.2 (hP u hu)`. Use `⟨(hS.congr fun u hu => ?_).intervalIntegrable, hD.intervalIntegrable⟩` and prove the remaining obligations. Rewrite using `[hg _ (hP u hu)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rdp_seg (g G : ℂ → ℂ) (a b p : ℂ) (γ : ℝ → ℂ) (s t : ℝ) (hγ : Continuous γ)
     (hG : ContinuousOn (fun u => G (γ u)) (Set.uIcc s t)) (hP : ∀ u ∈ Set.uIcc s t, γ u ≠ p)
@@ -134,19 +132,19 @@ theorem rdp_seg (g G : ℂ → ℂ) (a b p : ℂ) (γ : ℝ → ℂ) (s t : ℝ)
   ring
 
 /- English proof (translation)
-Introduce `g G a b p x0 x1 y0 y1 h1 h2 h3 h4 hU hg`. Take `⟨U, hUo, hRU, hGU⟩` from `hU`. Establish `hGc : ContinuousOn G U` using `hGU.continuousOn`. Establish `hx01 : x0 ≤ x1` using `by linarith`. Establish `hy01 : y0 ≤ y1` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ x y : ℝ, x ∈ Set.uIcc x0 x1 → y ∈ Set.uIcc y0 y1 → (x : ℂ) + y * I ∈ U`. Introduce `x y hx hy`. Apply `hRU` to reduce the goal to its premises. Rewrite using `[Complex.mem_reProdIm]`. Simplify using `[hx, hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hseg : ∀ (γ : ℝ → ℂ) (s t : ℝ), Continuous γ → (∀ u ∈ Set.uIcc s t, γ u ∈ U) → (∀ u ∈ Set.uIcc s t, γ u ≠ p) → IntervalIntegrable (fun u => g (γ u) - a / (γ u - p) ^ 2) MeasureTheory.volume s t ∧ IntervalIntegrable (fun u => a / (γ u - p) ^ 2) MeasureTheory.volume s t`. Introduce `γ s t hγ hγU hγp`. Conclude with `rdp_seg g G a b p γ s t hγ (hGc.comp hγ.continuousOn fun u hu => hγU u hu) hγp hg`. Establish `hxl : x0 ∈ Set.uIcc x0 x1` using `Set.left_mem_uIcc`. Establish `hxr : x1 ∈ Set.uIcc x0 x1` using `Set.right_mem_uIcc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyl : y0 ∈ Set.uIcc y0 y1` using `Set.left_mem_uIcc`. Establish `hyr : y1 ∈ Set.uIcc y0 y1` using `Set.right_mem_uIcc`. Establish `hB` using `hseg (fun x : ℝ => (x : ℂ) + y0 * I) x0 x1 (by fun_prop) (fun u hu => hmem u y0 hu hyl) (fun u _ h => by have := congrArg Complex.im h; simp at this; linarith)`. Establish `hT` using `hseg (fun x : ℝ => (x : ℂ) + y1 * I) x0 x1 (by fun_prop) (fun u hu => hmem u y1 hu hyr) (fun u _ h => by have := congrArg Complex.im h; simp at this; linarith)`. Establish `hR` using `hseg (fun y : ℝ => (x1 : ℂ) + y * I) y0 y1 (by fun_prop) (fun u hu => hmem x1 u hxr hu) (fun u _ h => by have := congrArg Complex.re h; simp at this; linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `hseg (fun y : ℝ => (x0 : ℂ) + y * I) y0 y1 (by fun_prop) (fun u hu => hmem x0 u hxl hu) (fun u _ h => by have := congrArg Complex.re h; simp at this; linarith)`. Establish `hsplit : g = fun w => (g w - a / (w - p) ^ 2) + a / (w - p) ^ 2`. Use function extensionality and compare the values at `w`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, rdp_rectInt_add _ _ x0 x1 y0 y1 hB.1 hB.2 hT.1 hT.2 hR.1 hR.2 hL.1 hL.2, rdp_rectInt_double a p x0 x1 y0 y1 h1 h2 h3 h4, add_zero, rdp_rectInt_eq_fx]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hres` using `Formalism.FX.rectangle_residue (fun w => g w - a / (w - p) ^ 2) G {p} (fun _ => b) x0 x1 y0 y1 (by linarith) (by linarith) (by simp [h1, h2, h3, h4]) ⟨U, hUo, hRU, hGU⟩ (by`. Introduce `w hw`. Establish `hwp : w ≠ p` using `by simpa using hw`. Simplify using `only [Finset.sum_singleton]`. Rewrite using `[hg w hwp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `ring)`. Simplify using `using hres`.
+A detailed English derivation is pending.
 -/
 theorem rectangle_double_pole : RectDoublePole := by
   intro g G a b p x0 x1 y0 y1 h1 h2 h3 h4 hU hg

@@ -5,9 +5,9 @@ namespace ReciprocityTheory.ChartRestriction.G.AI
 open MeasureTheory
 
 /- English proof (translation)
-Establish `hinv` using `sphereInv_thm`. Unfold `SphereInvStatement at hinv`. Establish `hmp` using `hinv.2 L`. Establish `h` using `integral_map (μ := sphereMeasure) hmp.measurable.aemeasurable (f := fun m : S2 => F (m : E3)) (by rw [hmp.map_eq]; exact hF.aestronglyMeasurable)`. Rewrite `h` using `[hmp.map_eq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem integral_sphere_isometry (L : E3 ≃ₗᵢ[ℝ] E3) (F : E3 → ℝ)
     (hF : Integrable (fun n : S2 => F n) sphereMeasure) :
@@ -21,9 +21,9 @@ theorem integral_sphere_isometry (L : E3 ≃ₗᵢ[ℝ] E3) (F : E3 → ℝ)
   exact h.symm
 
 /- English proof (translation)
-Establish `hc : Continuous (fun n : S2 => inner ℝ (n : E3) v)` using `continuous_subtype_val.inner continuous_const`. Use `Integrable.mono' (hF.norm.mul_const ‖v‖) (hF.aestronglyMeasurable.mul hc.aestronglyMeasurable) (ae_of_all _ fun n => ?_)` and prove the remaining obligations. Establish `hn : ‖(n : E3)‖ = 1` using `norm_eq_of_mem_sphere n`. Establish `hb : |inner ℝ (n : E3) v| ≤ ‖v‖`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, Real.norm_eq_abs (inner ℝ (n : E3) v)]`. Conclude with `mul_le_mul_of_nonneg_left hb (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_mul_inner {F : S2 → ℝ} (hF : Integrable F sphereMeasure) (v : E3) :
     Integrable (fun n : S2 => F n * inner ℝ (n : E3) v) sphereMeasure := by
@@ -43,9 +43,9 @@ section moments
 variable {u : E3} {f : ℝ → ℝ}
 
 /- English proof (translation)
-Establish `key : ∀ x y : E3, inner ℝ (L.symm x) y = inner ℝ x (L y)`. Introduce `x y`. Rewrite using `[← L.inner_map_map (L.symm x) y, L.apply_symm_apply]`. Apply the tactic sequence `have h := integral_sphere_isometry L.symm (fun x => f (inner ℝ x u) * inner ℝ x v) (integrable_mul_inner hI v)`. Simplify using `only [key, hL] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem moment1_inv (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) sphereMeasure)
     (L : E3 ≃ₗᵢ[ℝ] E3) (hL : L u = u) (v : E3) :
@@ -60,9 +60,9 @@ theorem moment1_inv (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) sp
   exact h
 
 /- English proof (translation)
-Establish `key : ∀ x y : E3, inner ℝ (L.symm x) y = inner ℝ x (L y)`. Introduce `x y`. Rewrite using `[← L.inner_map_map (L.symm x) y, L.apply_symm_apply]`. Apply the tactic sequence `have h := integral_sphere_isometry L.symm (fun x => f (inner ℝ x u) * inner ℝ x v * inner ℝ x w) (integrable_mul_inner (integrable_mul_inner hI v) w)`. Simplify using `only [key, hL] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem moment2_inv (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) sphereMeasure)
     (L : E3 ≃ₗᵢ[ℝ] E3) (hL : L u = u) (v w : E3) :
@@ -79,14 +79,14 @@ theorem moment2_inv (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) sp
   exact h
 
 /- English proof (translation)
-Establish `hc : c ∈ (ℝ ∙ a)ᗮ` using `Submodule.mem_orthogonal_singleton_iff_inner_right.2 h`. Conclude with `Submodule.reflection_mem_subspace_eq_self hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reflection_fix {a c : E3} (h : inner ℝ a c = 0) : (ℝ ∙ a)ᗮ.reflection c = c := by
   have hc : c ∈ (ℝ ∙ a)ᗮ := Submodule.mem_orthogonal_singleton_iff_inner_right.2 h
   exact Submodule.reflection_mem_subspace_eq_self hc
 
 /- English proof (translation)
-Establish `hRu : (ℝ ∙ a)ᗮ.reflection u = u` using `reflection_fix ha`. Establish `hRa : (ℝ ∙ a)ᗮ.reflection a = -a` using `Submodule.reflection_orthogonalComplement_singleton_eq_neg a`. Establish `h` using `moment1_inv hI ((ℝ ∙ a)ᗮ.reflection) hRu a`. Rewrite `h` using `[hRa]`. Simplify using `only [inner_neg_right, mul_neg, integral_neg] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -102,9 +102,9 @@ theorem moment1_perp (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) s
   linarith
 
 /- English proof (translation)
-Establish `hRu : (ℝ ∙ a)ᗮ.reflection u = u` using `reflection_fix ha`. Establish `hRc : (ℝ ∙ a)ᗮ.reflection c = c` using `reflection_fix hc`. Establish `hRa : (ℝ ∙ a)ᗮ.reflection a = -a` using `Submodule.reflection_orthogonalComplement_singleton_eq_neg a`. Establish `h` using `moment2_inv hI ((ℝ ∙ a)ᗮ.reflection) hRu a c`. Rewrite `h` using `[hRa, hRc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [inner_neg_right, mul_neg, neg_mul, integral_neg] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem moment2_perp (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) sphereMeasure)
     {a c : E3} (ha : inner ℝ a u = 0) (hc : inner ℝ a c = 0) :
@@ -120,9 +120,9 @@ theorem moment2_perp (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) s
   linarith
 
 /- English proof (translation)
-Establish `hdu : inner ℝ (a - c) u = 0` using `by rw [inner_sub_left, ha, hc, sub_zero]`. Establish `hRu : (ℝ ∙ (a - c))ᗮ.reflection u = u` using `reflection_fix hdu`. Establish `hRa : (ℝ ∙ (a - c))ᗮ.reflection a = c` using `Submodule.reflection_sub hac`. Establish `h` using `moment2_inv hI ((ℝ ∙ (a - c))ᗮ.reflection) hRu a a`. Rewrite `h` using `[hRa]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem moment2_swap (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) sphereMeasure)
     {a c : E3} (ha : inner ℝ a u = 0) (hc : inner ℝ c u = 0) (hac : ‖a‖ = ‖c‖) :
@@ -139,7 +139,7 @@ theorem moment2_swap (hI : Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) s
 end moments
 
 /- English proof (translation)
-Establish `hv : Orthonormal ℝ (({0} : Set (Fin 3)).restrict fun _ : Fin 3 => u)`. Use `⟨fun _ => hu, fun i j hij => (hij (Subsingleton.elim i j)).elim⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `Orthonormal.exists_orthonormalBasis_extension_of_card_eq (by simp) hv`. Conclude with `⟨b, hb 0 rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_basis_zero_eq {u : E3} (hu : ‖u‖ = 1) :
     ∃ b : OrthonormalBasis (Fin 3) ℝ E3, b 0 = u := by
@@ -149,50 +149,46 @@ theorem exists_basis_zero_eq {u : E3} (hu : ‖u‖ = 1) :
   exact ⟨b, hb 0 rfl⟩
 
 /- English proof (translation)
-Conclude with `integral_const_mul c g`.
+A detailed English derivation is pending.
 -/
 private theorem integral_const_mul_sphereMeasure (c : ℝ) (g : S2 → ℝ) :
     ∫ n, c * g n ∂sphereMeasure = c * ∫ n, g n ∂sphereMeasure := by
   exact integral_const_mul c g
 
 /- English proof (translation)
-Unfold `ArchimedesStatement`. Introduce `u v w f hu hf`. Take `⟨b, hb⟩` from `exists_basis_zero_eq hu`. Establish `hf1 : IntervalIntegrable (fun t => f t * t) MeasureTheory.volume (-1) 1` using `hf.mul_continuousOn continuousOn_id`. Establish `hf2 : IntervalIntegrable (fun t => f t * t * t) MeasureTheory.volume (-1) 1` using `hf1.mul_continuousOn continuousOn_id`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hI, h0⟩` from `arch0 u f hu hf`. Establish `h1 : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) u ∂sphereMeasure = 1 / 2 * ∫ t in (-1 : ℝ)..1, f t * t` using `(arch0 u (fun t => f t * t) hu hf1).2`. Establish `hI1 : Integrable (fun n : S2 => f (inner ℝ (n : E3) u) * inner ℝ (n : E3) u) sphereMeasure` using `integrable_mul_inner hI u`. Establish `h2 : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) u * inner ℝ (n : E3) u ∂sphereMeasure = 1 / 2 * ∫ t in (-1 : ℝ)..1, f t * t * t` using `(arch0 u (fun t => f t * t * t) hu hf2).2`. Establish `hI2 : Integrable (fun n : S2 => f (inner ℝ (n : E3) u) * inner ℝ (n : E3) u * inner ℝ (n : E3) u) sphereMeasure` using `integrable_mul_inner hI1 u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `horth : ∀ i j : Fin 3, i ≠ j → inner ℝ (b i) (b j) = 0` using `fun i j h => b.orthonormal.2 h`. Establish `hnorm : ∀ i : Fin 3, ‖b i‖ = 1` using `fun i => b.orthonormal.1 i`. Establish `hbu : ∀ i : Fin 3, i ≠ 0 → inner ℝ (b i) u = 0`. Introduce `i hi`. Rewrite using `[← hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `horth i 0 hi`. Establish `hexp : ∀ x y : E3, inner ℝ x y = ∑ i, inner ℝ (b i) y * inner ℝ x (b i)`. Introduce `x y`. Rewrite using `[← b.sum_inner_mul_inner x y]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ i : Fin 3, i ≠ 0 → ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) u * inner ℝ (n : E3) (b i) ∂sphereMeasure = 0` using `fun i hi => moment1_perp (u := u) (f := fun t => f t * t) hI1 (hbu i hi)`. Establish `hG : ∀ i j : Fin 3, Integrable (fun n : S2 => f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b i) * inner ℝ (n : E3) (b j)) sphereMeasure` using `fun i j => integrable_mul_inner (integrable_mul_inner hI (b i)) (b j)`. Establish `hpt1 : ∀ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) v = ∑ i, inner ℝ (b i) v * (f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b i))`. Introduce `n`. Rewrite using `[hexp (n : E3) v, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hkey1 : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) v ∂sphereMeasure = ∑ i, inner ℝ (b i) v * ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b i) ∂sphereMeasure`. Simplify using `only [hpt1]`. Rewrite using `[integral_finsetSum]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul_sphereMeasure _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Conclude with `(integrable_mul_inner hI (b i)).const_mul _`. Establish `hpt : ∀ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) v * inner ℝ (n : E3) w = ∑ i, ∑ j, (inner ℝ (b i) v * inner ℝ (b j) w) * (f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b i) * inner ℝ (n : E3) (b j))`. Introduce `n`. Rewrite using `[hexp (n : E3) v, hexp (n : E3) w]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.sum_univ_three]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkey : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) v * inner ℝ (n : E3) w ∂sphereMeasure = ∑ i, ∑ j, (inner ℝ (b i) v * inner ℝ (b j) w) * ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b i) * inner ℝ (n : E3) (b j) ∂sphereMeasure`. Simplify using `only [hpt]`. Rewrite using `[integral_finsetSum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[integral_finsetSum]`. Conclude with `Finset.sum_congr rfl (fun j _ => integral_const_mul_sphereMeasure _ _)`. Introduce `j _`. Conclude with `(hG i j).const_mul _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i _`. Conclude with `integrable_finsetSum _ (fun j _ => (hG i j).const_mul _)`. Establish `hM00 : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 0) * inner ℝ (n : E3) (b 0) ∂sphereMeasure = 1 / 2 * ∫ t in (-1 : ℝ)..1, f t * t * t`. Rewrite using `[hb]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hM0 : ∀ j : Fin 3, j ≠ 0 → ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 0) * inner ℝ (n : E3) (b j) ∂sphereMeasure = 0`. Introduce `j hj`. Rewrite using `[hb]`. Conclude with `hX j hj`. Establish `hM0' : ∀ j : Fin 3, j ≠ 0 → ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b j) * inner ℝ (n : E3) (b 0) ∂sphereMeasure = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Establish `e : (fun n : S2 => f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b j) * inner ℝ (n : E3) (b 0)) = fun n : S2 => f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 0) * inner ℝ (n : E3) (b j)`. Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `hM0 j hj`. Establish `hM12 : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 1) * inner ℝ (n : E3) (b 2) ∂sphereMeasure = 0` using `moment2_perp hI (hbu 1 (by decide)) (horth 1 2 (by decide))`. Establish `hM21 : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 2) * inner ℝ (n : E3) (b 1) ∂sphereMeasure = 0` using `moment2_perp hI (hbu 2 (by decide)) (horth 2 1 (by decide))`. Establish `hM22 : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 2) * inner ℝ (n : E3) (b 2) ∂sphereMeasure = ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 1) * inner ℝ (n : E3) (b 1) ∂sphereMeasure` using `moment2_swap hI (hbu 1 (by decide)) (hbu 2 (by decide)) (by rw [hnorm, hnorm])`. Establish `hsq : ∀ n : S2, inner ℝ (n : E3) u * inner ℝ (n : E3) u + inner ℝ (n : E3) (b 1) * inner ℝ (n : E3) (b 1) + inner ℝ (n : E3) (b 2) * inner ℝ (n : E3) (b 2) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `n`. Establish `hn : ‖(n : E3)‖ = 1` using `norm_eq_of_mem_sphere n`. Establish `h` using `hexp (n : E3) (n : E3)`. Rewrite `h` using `[Fin.sum_univ_three, hb, real_inner_self_eq_norm_sq, hn, one_pow, real_inner_comm (n : E3) u, real_inner_comm (n : E3) (b 1), real_inner_comm (n : E3) (b 2)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hsum : ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 1) * inner ℝ (n : E3) (b 1) ∂sphereMeasure + ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 2) * inner ℝ (n : E3) (b 2) ∂sphereMeasure = ∫ n : S2, f (inner ℝ (n : E3) u) ∂sphereMeasure - ∫ n : S2, f (inner ℝ (n …`. Rewrite using `[← integral_add (hG 1 1) (hG 2 2), ← integral_sub hI hI2]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Take the linear combination `(f (inner ℝ (n : E3) u)) * hsq n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hQ : 2 * ∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 1) * inner ℝ (n : E3) (b 1) ∂sphereMeasure = 1 / 2 * (∫ t in (-1 : ℝ)..1, f t) - 1 / 2 * ∫ t in (-1 : ℝ)..1, f t * t * t`. Combine the linear relations using `[hsum, hM22, h0, h2]`. Establish `hγ : inner ℝ (b 1) v * inner ℝ (b 1) w + inner ℝ (b 2) v * inner ℝ (b 2) w = inner ℝ v w - inner ℝ u v * inner ℝ u w`. Establish `h` using `hexp v w`. Rewrite `h` using `[Fin.sum_univ_three, hb, real_inner_comm u v, real_inner_comm (b 1) v, real_inner_comm (b 2) v]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJ : ∫ t in (-1 : ℝ)..1, f t * (t ^ 2 * (inner ℝ u v * inner ℝ u w) + (1 - t ^ 2) / 2 * (inner ℝ v w - inner ℝ u v * inner ℝ u w)) = (inner ℝ u v * inner ℝ u w - (inner ℝ v w - inner ℝ u v * inner ℝ u w) / 2) * (∫ t in (-1 : ℝ)..1, f t * t * t) + (inner ℝ v w - inner ℝ u v * inne …`. Rewrite using `[← intervalIntegral.integral_const_mul, ← intervalIntegral.integral_const_mul, ← intervalIntegral.integral_add (hf2.const_mul _) (hf.const_mul _)]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `⟨hI, h0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hkey1, Fin.sum_univ_three, moment1_perp hI (hbu 1 (by decide)), moment1_perp hI (hbu 2 (by decide)), hb, h1, intervalIntegral.integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hkey, hJ]`.
-
-Simplify using `only [Fin.sum_univ_three]`. Rewrite using `[hM00, hM0 1 (by decide), hM0 2 (by decide), hM0' 1 (by decide), hM0' 2 (by decide), hM12, hM21, hM22, hb]`. Take the linear combination `(∫ n : S2, f (inner ℝ (n : E3) u) * inner ℝ (n : E3) (b 1) * inner ℝ (n : E3) (b 1) ∂sphereMeasure) * hγ + ((inner ℝ v w - inner ℝ u v * inner ℝ u w) / 2) * hQ`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem archimedes_thm : ArchimedesStatement := by
   unfold ArchimedesStatement

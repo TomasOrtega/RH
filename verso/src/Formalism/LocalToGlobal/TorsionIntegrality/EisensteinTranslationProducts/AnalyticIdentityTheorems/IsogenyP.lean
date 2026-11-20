@@ -8,7 +8,7 @@ namespace Formalism.L2.Th1.F
 namespace IsogenyPAux
 
 /- English proof (translation)
-Establish `h1` using `L.weierstrassPExcept_add (0 : L.lattice) (w - ω)`. Establish `h2` using `L.weierstrassP_sub_coe w ⟨ω, hω⟩`. Simplify using `only [ZeroMemClass.coe_zero, sub_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, div_zero] at h1 h2`. Rewrite using `[← h2, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma P_local (L : PeriodPair) (ω : ℂ) (hω : ω ∈ L.lattice) (w : ℂ) :
     L.weierstrassP w = L.weierstrassPExcept 0 (w - ω) + 1 / (w - ω) ^ 2 := by
@@ -19,7 +19,7 @@ lemma P_local (L : PeriodPair) (ω : ℂ) (hω : ω ∈ L.lattice) (w : ℂ) :
   rw [← h2, ← h1]
 
 /- English proof (translation)
-The claim follows from `AnalyticAt.fun_comp (f := fun w : ℂ => a * w + b) (g := L.weierstrassP) (L.analyticOnNhd_weierstrassP _ hz) (by fun_prop)`.
+A detailed English derivation is pending.
 -/
 lemma analyticAt_P (L : PeriodPair) (a b z : ℂ) (hz : a * z + b ∉ L.lattice) :
     AnalyticAt ℂ (fun w => L.weierstrassP (a * w + b)) z :=
@@ -27,7 +27,7 @@ lemma analyticAt_P (L : PeriodPair) (a b z : ℂ) (hz : a * z + b ∉ L.lattice)
     (L.analyticOnNhd_weierstrassP _ hz) (by fun_prop)
 
 /- English proof (translation)
-Use `AnalyticAt.fun_comp (f := fun w : ℂ => a * (w - z)) (g := L.weierstrassPExcept 0) ?_ (by fun_prop)` and prove the remaining obligations. Simplify using `using L.analyticAt_weierstrassPExcept 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma analyticAt_PExcept (L : PeriodPair) (a z : ℂ) :
     AnalyticAt ℂ (fun w => L.weierstrassPExcept 0 (a * (w - z))) z := by
@@ -36,7 +36,7 @@ lemma analyticAt_PExcept (L : PeriodPair) (a z : ℂ) :
   simpa using L.analyticAt_weierstrassPExcept 0
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ w in 𝓝 z, α * w ∈ ((L.lattice : Set ℂ) \ {α * z})ᶜ` using `((continuous_const.mul continuous_id).tendsto z).eventually (L.compl_lattice_sdiff_singleton_mem_nhds (α * z))`. Use `filter_upwards [h1.filter_mono nhdsWithin_le_nhds, self_mem_nhdsWithin] with w hw hne hmem`. Use `hw ⟨hmem, ?_⟩` and prove the remaining obligations. Simplify `hne` using `[hα]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma eventually_notMem (L : PeriodPair) (α z : ℂ) (hα : α ≠ 0) :
     ∀ᶠ w in 𝓝[≠] z, α * w ∉ L.lattice := by
@@ -48,15 +48,15 @@ lemma eventually_notMem (L : PeriodPair) (α z : ℂ) (hα : α ≠ 0) :
   simpa [hα] using hne
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `((analyticAt_const.mul (analyticAt_PExcept L α z₀)).sub (analyticAt_PExcept L 1 z₀)).sub ?_` and prove the remaining obligations. Use `Finset.analyticAt_fun_sum _ fun P hP => analyticAt_P L 1 P z₀ ?_` and prove the remaining obligations. Introduce `hmem`. Rewrite `hmem` using `[one_mul]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Finset.mem_erase.1 hP).1 (h2 P (Finset.mem_erase.1 hP).2 P' hP' ?_)` and prove the remaining obligations. Use `L.lattice.sub_mem hmem hz` as an intermediate fact. Simplify using `using this`. Establish `hαz : α * z₀ ∈ L.lattice`. Use `L.lattice.sub_mem (hst _ hz) (h1 P' hP')` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : α * (z₀ + P') - α * P' = α * z₀` using `by ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `filter_upwards [self_mem_nhdsWithin] with w hne`. Establish `hne' : w - z₀ ≠ 0` using `sub_ne_zero.2 hne`. Rewrite using `[← Finset.add_sum_erase T _ hP', P_local L (α * z₀) hαz (α * w), P_local L (z₀ + P') hz (w + P')]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : α * w - α * z₀ = α * (w - z₀)` using `by ring`. Establish `e2 : w + P' - (z₀ + P') = w - z₀` using `by ring`. Rewrite using `[e1, e2]`. Simplify using `only [one_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma ext_at (L : PeriodPair) (α : ℂ) (T : Finset ℂ) (hα : α ≠ 0) (hst : MulStable L α)
     (h1 : ∀ P ∈ T, α * P ∈ L.lattice)
@@ -95,35 +95,31 @@ end IsogenyPAux
 open IsogenyPAux
 
 /- English proof (translation)
-Introduce `L α S hα hst hS z hz`. Take `⟨hS1, hS2, hS3⟩` from `hS`. Establish `h0S : (0 : ℂ) ∉ S` using `fun h => (hS1 0 h).2 L.lattice.zero_mem`. Use `set T : Finset ℂ := insert 0 S with hT`. Establish `h1 : ∀ P ∈ T, α * P ∈ L.lattice`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Break down `Finset.mem_insert.1 hP with rfl | hP` into its components or cases. Simplify using the standard rewrite rules. Conclude with `(hS1 P hP).1`. Establish `h2 : ∀ P ∈ T, ∀ Q ∈ T, P - Q ∈ L.lattice → P = Q`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `P hP Q hQ hPQ`. Apply the tactic sequence `rcases Finset.mem_insert.1 hP with rfl | hP <;> rcases Finset.mem_insert.1 hQ with rfl | hQ`. Both sides reduce to the same expression. Conclude with `absurd (by simpa using hPQ) (hS1 Q hQ).2`. Conclude with `absurd (by simpa using hPQ) (hS1 P hP).2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `hS2 P hP Q hQ hPQ`. Establish `h3 : ∀ z₀, α * z₀ ∈ L.lattice → ∃ P ∈ T, z₀ + P ∈ L.lattice`. Introduce `z₀ hz₀`. Distinguish the cases in `hm : z₀ ∈ L.lattice`. Conclude with `⟨0, Finset.mem_insert_self _ _, by simpa using hm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨P, hP, hPz⟩` from `hS3 (-z₀) (by simpa using L.lattice.neg_mem hz₀) (fun h => hm (by simpa using L.lattice.neg_mem h))`. Use `⟨P, Finset.mem_insert_of_mem hP, ?_⟩` and prove the remaining obligations. Use `L.lattice.neg_mem hPz` as an intermediate fact. Establish `e : -(-z₀ - P) = z₀ + P` using `by ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `set f : ℂ → ℂ := fun w => α ^ 2 * L.weierstrassP (α * w) - ∑ P ∈ T, L.weierstrassP (w + P) with hf`. Establish `han : ∀ z₀, α * z₀ ∉ L.lattice → AnalyticAt ℂ f z₀`. Introduce `z₀ hz₀`. Establish `a1 : AnalyticAt ℂ (fun w => L.weierstrassP (α * w)) z₀`. Simplify `hz₀)` using `using analyticAt_P L α 0 z₀ (by simpa`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `(analyticAt_const.mul a1).sub (Finset.analyticAt_fun_sum _ fun P hP => ?_)` and prove the remaining obligations. Use `analyticAt_P L 1 P z₀ (by` as an intermediate fact. Introduce `hmem`. Rewrite `hmem` using `[one_mul]`. Apply `hz₀` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `L.lattice.sub_mem (hst _ hmem) (h1 P hP)` as an intermediate fact. Establish `e : α * (z₀ + P) - α * P = α * z₀` using `by ring`. Rewrite using `[e] at this)` and apply the resulting hypothesis. Simplify using `using this`. Establish `hext : ∀ z₀, ∃ g : ℂ → ℂ, AnalyticAt ℂ g z₀ ∧ f =ᶠ[𝓝[≠] z₀] g`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `z₀`. Distinguish the cases in `hz₀ : α * z₀ ∈ L.lattice`. Take `⟨P', hP', hzP⟩` from `h3 z₀ hz₀`. Conclude with `⟨_, ext_at L α T hα hst h1 h2 z₀ P' hP' hzP⟩`. Conclude with `⟨f, han z₀ hz₀, EventuallyEq.rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmer : ∀ z, MeromorphicAt f z`. Introduce `z`. Take `⟨g, hg, hfg⟩` from `hext z`. Conclude with `hg.meromorphicAt.congr hfg.symm`. Establish `hord : ∀ z, 0 ≤ meromorphicOrderAt f z` using `fun z => (hmer z).meromorphicOrderAt_nonneg_iff.2 (hext z)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hper : IsPeriodic L f`. Introduce `ω hω w`. Simplify using `only [hf]`. Establish `e1 : α * (w + ω) = α * w + α * ω` using `by ring`. Rewrite using `[e1, L.weierstrassP_add_coe (α * w) ⟨α * ω, hst ω hω⟩]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Establish `e2 : w + ω + P = w + P + ω` using `by ring`. Rewrite using `[e2, L.weierstrassP_add_coe (w + P) ⟨ω, hω⟩]`. Take `⟨c, hc⟩` from `hN L f hmer hper hord`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc0 : c = -∑ P ∈ S, L.weierstrassP P`. Take `⟨ha, he⟩` from `ext_at L α T hα hst h1 h2 0 0 (Finset.mem_insert_self _ _) (by simp)`. Establish `hev : (fun _ : ℂ => c) =ᶠ[𝓝[≠] 0] f` using `by filter_upwards [eventually_notMem L α 0 hα] with w hw`. Conclude with `(hc w (han w hw).continuousAt).symm`. Use `Elliptic.eq_of_eventuallyEq_nhdsNE continuousAt_const ha.continuousAt (hev.trans he)` as an intermediate fact.
-
-Rewrite using `[this, hT, Finset.erase_insert h0S]`. Simplify using the standard rewrite rules. Establish `hfz` using `hc z (han z hz).continuousAt`. Rewrite `hfz` using `[hc0]`. Simplify using `only [hf, hT, Finset.sum_insert h0S, add_zero] at hfz`.
-
-Rewrite using `[Finset.sum_sub_distrib]`. Take the linear combination `hfz`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isogenyWeierstrassP_of_ellipticNoPole (hN : EllipticNoPole) : IsogenyP := by
   intro L α S hα hst hS z hz
@@ -205,7 +201,7 @@ theorem isogenyWeierstrassP_of_ellipticNoPole (hN : EllipticNoPole) : IsogenyP :
   linear_combination hfz
 
 /- English proof (translation)
-The claim follows from `isogenyWeierstrassP_of_ellipticNoPole elliptic_no_pole_const`.
+A detailed English derivation is pending.
 -/
 theorem isogeny_weierstrass_p : IsogenyP := isogenyWeierstrassP_of_ellipticNoPole elliptic_no_pole_const
 

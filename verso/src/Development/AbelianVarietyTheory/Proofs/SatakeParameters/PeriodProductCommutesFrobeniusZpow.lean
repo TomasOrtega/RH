@@ -21,11 +21,11 @@ open GlobalTheory.Pst.TwistLetters
 namespace GlobalTheory.Pst.TwistLetters
 
 /- English proof (translation)
-Establish `hinv : ∀ x y, ((u₃⁻¹ : (Module.End R M₃)ˣ) : Module.End R M₃) (B x y) = B (((u₁⁻¹ : (Module.End R M₁)ˣ) : Module.End R M₁) x) (((u₂⁻¹ : (Module.End R M₂)ˣ) : Module.End R M₂) y)`. Introduce `x y`. Establish `e₁` using `LinearMap.congr_fun (Units.mul_inv u₁) x`. Establish `e₂` using `LinearMap.congr_fun (Units.mul_inv u₂) y`. Rewrite `e₁`, `e₂` using `[Module.End.mul_apply, Module.End.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `conv_lhs => rw [← e₁, ← e₂, ← h]`. Establish `e₃` using `LinearMap.congr_fun (Units.inv_mul u₃) (B (((u₁⁻¹ : (Module.End R M₁)ˣ) : Module.End R M₁) x) (((u₂⁻¹ : (Module.End R M₂)ˣ) : Module.End R M₂) y))`. Rewrite `e₃` using `[Module.End.mul_apply, Module.End.one_apply]`. Conclude with `e₃`. Proceed by induction on `n using Int.induction_on generalizing x y with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[zpow_add_one, zpow_add_one, zpow_add_one, Units.val_mul, Units.val_mul, Units.val_mul, Module.End.mul_apply, Module.End.mul_apply, Module.End.mul_apply, h, ih]`. Consider the case `pred n ih`. Rewrite using `[zpow_sub_one, zpow_sub_one, zpow_sub_one, Units.val_mul, Units.val_mul, Units.val_mul, Module.End.mul_apply, Module.End.mul_apply, Module.End.mul_apply, hinv, ih]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_zpow_bilin_comm {R M₁ M₂ M₃ : Type} [CommRing R] [AddCommGroup M₁] [Module R M₁]
     [AddCommGroup M₂] [Module R M₂] [AddCommGroup M₃] [Module R M₃]
@@ -58,7 +58,7 @@ end GlobalTheory.Pst.TwistLetters
 namespace GlobalTheory.Pst.TwistLetters
 
 /- English proof (translation)
-Introduce `l _ P K L V _ _ _ _ ρs ρt ρm χ hm ht _ _ _ n x y`. Conclude with `units_zpow_bilin_comm (dmul P ρs ρt ρm χ hm ht) (phiU P ρs) (phiU P ρm) (phiU P ρt) (fun x y => phiD_dmul P ρs ρt ρm χ hm ht x y) n x y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem phiU_zpow_dmul : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K L : FinExt l} {V : Type} [AddCommGroup V] [Module ↥L.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥L.1 V] (ρs ρt : Representation ↥L.1 ↥(GK K) V) (ρm : Representation ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) (χ : ↥(GK K) → ↥L.1) (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v) [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρs)] [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρm)] [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρt)] (n : ℤ) (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)), ((phiU P ρt ^ n : (Module.End ↥L.1 ↥(Dpst P ρt))ˣ) : Module.End ↥L.1 ↥(Dpst P ρt)) (GlobalTheory.Pst.TwistLetters.dmul P ρs ρt ρm χ hm ht x y) = GlobalTheory.Pst.TwistLetters.dmul P ρs ρt ρm χ hm ht (((phiU P ρs ^ n : (Module.End ↥L.1 ↥(Dpst P ρs))ˣ) : Module.End ↥L.1 ↥(Dpst P ρs)) x) (((phiU P ρm ^ n : (Module.End ↥L.1 ↥(Dpst P ρm))ˣ) : Module.End ↥L.1 ↥(Dpst P ρm)) y) := by
   intro l _ P K L V _ _ _ _ ρs ρt ρm χ hm ht _ _ _ n x y

@@ -5,19 +5,17 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `E _ _ _ a U Ξ q α w hc`. Establish `two : ∀ (s : GL (Fin a) (Af E) ⧸ U) (p : HV E a) (v : Fin q → HV E a), w s p (fun i => (2 : ℝ) • v i) = (∏ _i : Fin q, (2 : ℝ)) • w s p v` using `fun s p v => (w s p).toContinuousMultilinearMap.map_smul_univ (fun _ => (2 : ℝ)) v`. Establish `hs : ∀ (g : GL (Fin a) (Cinf E)) (p : HV E a), sand g (sand g⁻¹ p) = p` using `fun g p => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hs' : ∀ (g : GL (Fin a) (Cinf E)) (p : HV E a), sand g⁻¹ (sand g p) = p` using `fun g p => by`. Simplify using `using hs g⁻¹ p`. Prove the components needed by the constructor for the conclusion. Introduce `h s p hp v i hi`. Take `⟨g, rfl⟩` from `hp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Establish `h0 : α (fun j => hv.symm (sand g⁻¹ (v j))) = 0`. Use `h _ i ?_` and prove the remaining obligations. Rewrite using `[hi, hs']`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1` using `hc g x (fun j => hv.symm (sand g⁻¹ (v j)))`. Simplify using `only [LinearEquiv.apply_symm_apply, hs] at h1`. Rewrite `h1` using `[h0, map_zero, two, Pi.zero_apply, Matrix.mulVec_zero]`. Conclude with `(smul_eq_zero.1 h1).resolve_left (Finset.prod_ne_zero_iff.2 fun _ _ => two_ne_zero)`. Introduce `h X i hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(evFacts E a Ξ.d).1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `y`. Use `set g := GeneralLinearGroup.map (pInf E) y`. Use `set x := GeneralLinearGroup.map (pFin E) y`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : infGL E a g * finGL E a x = y` using `infGL_mul_finGL y`. Establish `h1` using `hc g x X`. Establish `hX : hv (X i) = hOne E a` using `congrArg hv (Subtype.ext hi)`. Rewrite `h1` using `[two, h _ _ ⟨g, rfl⟩ (fun j => sand g (hv (X j))) i (by rw [hX]), smul_zero, hy]`. Establish `h2` using `congrArg (fun v => Ξ.mat g⁻¹ *ᵥ v) h1`.
-
-Simplify using `only [Matrix.mulVec_zero, Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec] at h2`. Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Dr.corrBasic :
     CorrBasic := by

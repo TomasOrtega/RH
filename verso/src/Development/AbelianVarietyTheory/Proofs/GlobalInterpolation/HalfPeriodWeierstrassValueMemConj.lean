@@ -22,7 +22,7 @@ namespace GlobalTheory.HalfPeriodValue
 open Formalism.MainNotions.StandardLatticesGL3 (wpF cj FixK rhoBar StarPt w0 InRationalLattice)
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `h.exists_periodPair`. Establish `hd` using `GlobalTheory.LatticeInvariants.invariants_dictionary L Λ hL`. Establish `hzω : z + ω ∉ Λ` using `fun hh => hz (by simpa using Λ.sub_mem hh hω)`. Rewrite using `[(hd.2.2.2.2.1 _ hzω).1, (hd.2.2.2.2.1 _ hz).1]`. Conclude with `L.weierstrassP_add_coe z ⟨ω, (hL ω).1 hω⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wpF_add_of_mem {Λ : AddSubgroup ℂ} (h : GlobalTheory.ThetaConj.IsLat Λ) {z ω : ℂ} (hz : z ∉ Λ)
     (hω : ω ∈ Λ) : wpF Λ (z + ω) = wpF Λ z := by
@@ -33,7 +33,7 @@ theorem wpF_add_of_mem {Λ : AddSubgroup ℂ} (h : GlobalTheory.ThetaConj.IsLat 
   exact L.weierstrassP_add_coe z ⟨ω, (hL ω).1 hω⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`. Rewrite using `[← ha]`. Conclude with `(GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ h).2.2.2.2 a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmGenerator_mul_mem_curveLattice {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) :
     ∀ z ∈ lamOf D cc δ, w0 D * z ∈ lamOf D cc δ := by
@@ -42,15 +42,15 @@ theorem cmGenerator_mul_mem_curveLattice {D : D7} {cc : Ideal (𝓞 D.host.K)} {
   exact (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ h).2.2.2.2 a
 
 /- English proof (translation)
-Take `⟨hex, -, -, -, hmul, hord, -⟩` from `GlobalTheory.T.galStar_complexMultiplication_points D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top`. Take `⟨cc', δ', h', -, hL⟩` from `GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top 1 one_pos`. Rewrite `ht`, `ht'` using `[GlobalTheory.ThetaConj.twoTorsionCMPoint_iff]`. Take `⟨a, ha⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`. Establish `ha' : D.host.φ₀ ((((1 - a : 𝓞 D.host.K) : D.host.K) : D.host.E)) = 1 - w0 D`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ha]`. Express the relevant statement in the definitionally equal form `D.host.φ₀ (algebraMap D.host.K D.host.E (algebraMap (𝓞 D.host.K) D.host.K (1 - a))) = _`. Rewrite using `[map_sub, map_sub, map_sub, map_one, map_one, map_one]`. Both sides reduce to the same expression. Establish `htn : t ∉ lamOf D cc δ` using `fun hh => ht.2.1 (cmGenerator_mul_mem_curveLattice h _ hh)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨t'', ht''⟩` from `hex t ⟨2, by norm_num, by exact_mod_cast ht.1⟩ (Or.inr ⟨IntermediateField.mem_top, IntermediateField.mem_top⟩)`. Establish `e2` using `(hord 2 _ _ ht'').1 (by exact_mod_cast ht.1)`. Establish `ea` using `(hord 1 _ _ (hmul a _ _ ht'')).2`. Establish `eb` using `(hord 1 _ _ (hmul (1 - a) _ _ ht'')).2`. Rewrite `ea` using `[ha]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `eb` using `[ha']`. Simplify using `only [Nat.cast_one, one_mul, Nat.cast_ofNat] at e2 ea eb`. Take `⟨k, hk⟩` from `GlobalTheory.ThetaConj.weylMatrix_mul_apply D`. Establish `hlat : GlobalTheory.ThetaConj.IsLat (lamConj ⊤ ρ (lamOf D cc δ))` using `hL ▸ GlobalTheory.ThetaConj.isLat_lamOf h'`. Establish `hdiff : t' - t'' ∈ lamConj ⊤ ρ (lamOf D cc δ)` using `GlobalTheory.ThetaConj.two_torsion_unique hlat (w0 D) k hk ht'.1 ht'.2.1 ht'.2.2 e2 (fun hh => ht.2.1 (ea hh)) (fun hh => ht.2.2 (eb hh)) (by rw [hL]; exact cmGenerator_mul_mem_curveLattice h')`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `ht'' with ⟨hin, -⟩ | ⟨-, hn'', -, -, hwp, -⟩` into its components or cases. Conclude with `absurd hin htn`. Use `⟨fun hh => hn'' (by simpa using (lamConj ⊤ ρ (lamOf D cc δ)).sub_mem hh hdiff), ?_⟩` and prove the remaining obligations. Rewrite using `[← hwp, ← wpF_add_of_mem hlat hn'' hdiff, add_sub_cancel]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_of_fix {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ)
     (ρ : (⊤ : IntermediateField ℚ ℂ) →ₐ[ℚ] ℂ) (hK : FixK D ⊤ ρ) {t t' : ℂ}
@@ -89,7 +89,7 @@ theorem key_of_fix {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Formali
     rw [← hwp, ← wpF_add_of_mem hlat hn'' hdiff, add_sub_cancel]
 
 /- English proof (translation)
-Set `e : {w : ℂ // w ∈ Λ ∧ w ≠ 0} ≃ {w : ℂ // w ∈ Λ.map (starRingEnd ℂ).toAddMonoidHom ∧ w ≠ 0}` to `{ toFun := fun w => ⟨starRingEnd ℂ w, by rw [GlobalTheory.ThetaConj.mem_conj, Complex.conj_conj]; exact w.2.1, by simpa using w.2.2⟩ invFun := fun w => ⟨starRingEnd ℂ w, GlobalTheory.ThetaConj.mem_conj.1 w.2.1, by simpa using w.2.2⟩ left_inv := fun w => by ext; simp right_inv := …`. Unfold `wpF`. Rewrite using `[map_add, Complex.conj_tsum, ← e.tsum_eq]`. Simplify using `[e, map_sub]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem wpF_conj (Λ : AddSubgroup ℂ) (z : ℂ) :
     wpF (Λ.map (starRingEnd ℂ).toAddMonoidHom) (starRingEnd ℂ z) = starRingEnd ℂ (wpF Λ z) := by
@@ -106,9 +106,9 @@ theorem wpF_conj (Λ : AddSubgroup ℂ) (z : ℂ) :
   rfl
 
 /- English proof (translation)
-Take `⟨hK, hT, -⟩` from `GlobalTheory.T.cmTheta_complexConjugation_compatible D cc δ h ⊤ ρ ⟨fun _ _ => IntermediateField.mem_top, IntermediateField.mem_top, IntermediateField.mem_top⟩`. Break down `hK with hK | hK` into its components or cases. Conclude with `key_of_fix h ρ hK ht ht'`. Establish `hL : lamConj ⊤ (rhoBar ⊤ ρ) (lamOf D cc δ) = (lamConj ⊤ ρ (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom` using `congrArg Tor.abelian₂ hT`. Take `⟨hn, hw⟩` from `key_of_fix h _ hK (t' := starRingEnd ℂ t') ht (hL ▸ GlobalTheory.ThetaConj.twoTorsionCMPoint_complexConj ht')`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[hL, wpF_conj, GlobalTheory.ThetaConj.cj_rhoBar]`. Rewrite `hn` using `[hL, GlobalTheory.ThetaConj.mem_conj, Complex.conj_conj]`. Conclude with `⟨hn, (starRingEnd ℂ).injective hw⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem key_top {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ)
     (ρ : (⊤ : IntermediateField ℚ ℂ) →ₐ[ℚ] ℂ) {t t' : ℂ}
@@ -128,29 +128,25 @@ theorem key_top {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Formalism.
     exact ⟨hn, (starRingEnd ℂ).injective hw⟩
 
 /- English proof (translation)
-Introduce `D cc δ M _ t hS`. Take `⟨hcc, hδ, hdata, ht⟩` from `hS`. Establish `h : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ` using `⟨hcc, hδ⟩`. Establish `hg2 : g2 (lamOf D cc δ) ∈ M` using `hdata.2.1`. Establish `hg3 : g3 (lamOf D cc δ) ∈ M` using `hdata.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlat` using `GlobalTheory.ThetaConj.isLat_lamOf h`. Establish `hdisc : Formalism.MainNotions.TaylorLogMetric.discr (lamOf D cc δ) = 1` using `(GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ h).2.2.1`. Establish `hself : lamConj M M.val (lamOf D cc δ) = lamOf D cc δ` using `GlobalTheory.ThetaConj.lamConj_eq_self hlat (by unfold Formalism.MainNotions.StandardLatticesGL3.cj Formalism.MainNotions.TaylorLogMetric.liftM; rw [dif_pos hg2]; rfl) (by unfold Formalism.MainNotions.StandardLatticesGL3.cj Formalism.MainNotions.TaylorLogMetric.liftM; rw [dif_pos …`. Establish `ht0 : Formalism.MainNotions.GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) (t M.val)`. Use `ht M.val` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hself]`. Conclude with `this`. Establish `he : wpF (lamOf D cc δ) (t M.val) ∈ M`. Take `⟨y, hy⟩` from `GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv (K := M) (wpF (lamOf D cc δ) (t M.val)) (fun σ => by`. Establish `hσ : ∀ z ∈ M, cj ⊤ (GlobalTheory.ThetaConj.topHom (σ : ℂ →+* ℂ)) z = z` using `fun z hz => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ThetaConj.cj_top]`. Conclude with `σ.commutes ⟨z, hz⟩`. Establish `hL` using `GlobalTheory.ThetaConj.lamConj_eq_self hlat (hσ _ hg2) (hσ _ hg3)`. Use `(key_top h (GlobalTheory.ThetaConj.topHom (σ : ℂ →+* ℂ)) ht0 (by rw [hL]; exact ht0)).2` as an intermediate fact. Rewrite `this` using `[hL, GlobalTheory.ThetaConj.cj_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm)`. Rewrite using `[← hy]`. Conclude with `y.2`. Establish `hg2M : Formalism.MainNotions.TaylorLogMetric.liftM M (g2 (lamOf D cc δ)) = ⟨_, hg2⟩` using `by simp [Formalism.MainNotions.TaylorLogMetric.liftM, hg2]`. Establish `hg3M : Formalism.MainNotions.TaylorLogMetric.liftM M (g3 (lamOf D cc δ)) = ⟨_, hg3⟩` using `by simp [Formalism.MainNotions.TaylorLogMetric.liftM, hg3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Establish `hone : (⟨_, hg2⟩ : M) ^ 3 - 27 * (⟨_, hg3⟩ : M) ^ 2 = 1`. Use `hdisc` as an intermediate fact. Unfold `Formalism.MainNotions.TaylorLogMetric.discr at this`. Use `ext`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Use `⟨⟨_, he⟩, ⟨_, hg2⟩, rfl, hself, fun ρ => ?_⟩` and prove the remaining obligations. Establish `hρ1 : ρ ⟨_, hg2⟩ ^ 3 - 27 * ρ ⟨_, hg3⟩ ^ 2 = 1`. Rewrite using `[← map_pow, ← map_pow, ← map_ofNat ρ 27, ← map_mul, ← map_sub, hone, map_one]`. Establish `hspec : g2 (lamConj M ρ (lamOf D cc δ)) = ρ ⟨_, hg2⟩ ∧ g3 (lamConj M ρ (lamOf D cc δ)) = ρ ⟨_, hg3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨L0, hL0⟩` from `hlat.exists_periodPair`. Take `⟨L', h2', h3'⟩` from `(GlobalTheory.LatticeInvariants.invariants_dictionary L0 _ hL0).2.2.2.2.2.2 _ _ (by rw [hρ1]; exact one_ne_zero)`. Establish `hw` using `GlobalTheory.LatticeInvariants.invariants_dictionary L' L'.lattice.toAddSubgroup (fun _ => Iff.rfl)`. Establish `hs` using `Classical.epsilon_spec (p := fun Λ' : AddSubgroup ℂ => g2 Λ' = ρ (Formalism.MainNotions.TaylorLogMetric.liftM M (g2 (lamOf D cc δ))) ∧ g3 Λ' = ρ (Formalism.MainNotions.TaylorLogMetric.liftM M (g3 (lamOf D cc δ)))) ⟨L'.lattice.toAddSubgroup, by rw [hw.1, h2', hg2M], by rw [hw.2.1, …`. Conclude with `⟨hs.1.trans (congrArg ρ hg2M), hs.2.trans (congrArg ρ hg3M)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcM : Set.Countable (M : Set ℂ)` using `(Algebraic.countable ℚ ℂ).mono fun x hx => show IsAlgebraic ℚ x from (IntermediateField.isAlgebraic_iff (x := (⟨x, hx⟩ : M))).mp (Algebra.IsAlgebraic.isAlgebraic _)`. Use `haveI : Countable M := hcM.to_subtype`. Take `⟨σ, hσ⟩` from `GlobalTheory.GaloisDescent.exists_complex_ringEquiv_comp_eq (K := M) M.val.toRingHom ρ.toRingHom`. Establish `hcj : ∀ z (hz : z ∈ M), cj M ρ z = cj ⊤ (GlobalTheory.ThetaConj.topHom σ.toRingHom) z` using `fun z hz => by`. Rewrite using `[GlobalTheory.ThetaConj.cj_of_mem _ _ hz, GlobalTheory.ThetaConj.cj_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hσ ⟨z, hz⟩).symm`. Establish `hL : lamConj M ρ (lamOf D cc δ) = lamConj ⊤ (GlobalTheory.ThetaConj.topHom σ.toRingHom) (lamOf D cc δ)` using `GlobalTheory.ThetaConj.lamConj_congr (hcj _ hg2) (hcj _ hg3)`. Establish `ht' : Formalism.MainNotions.GL3Theta.IsTwoTorsionPointUnkilled D (lamConj ⊤ (GlobalTheory.ThetaConj.topHom σ.toRingHom) (lamOf D cc δ)) (t ρ)`. Use `ht ρ` as an intermediate fact. Rewrite `this` using `[hL]`.
-
-Conclude with `this`. Take `⟨hn, hw⟩` from `key_top h (GlobalTheory.ThetaConj.topHom σ.toRingHom) ht0 ht'`. Use `⟨?_, hspec.1, hL ▸ hn, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.TaylorLogMetric.discr`. Rewrite using `[hspec.1, hspec.2, hρ1]`.
-
-Rewrite using `[hL, hw, GlobalTheory.ThetaConj.cj_top]`. Conclude with `hσ ⟨_, he⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfPeriod_value : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (M : IntermediateField ℚ ℂ)
     [FiniteDimensional ℚ M] (t : (M →ₐ[ℚ] ℂ) → ℂ), SignedLogMeans.HidaSetting D cc δ M t →

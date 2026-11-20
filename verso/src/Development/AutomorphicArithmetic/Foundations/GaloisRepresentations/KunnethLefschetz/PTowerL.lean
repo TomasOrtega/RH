@@ -10,33 +10,31 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi50.seq_sec P hf hn t`.
+A detailed English derivation is pending.
 -/
 private theorem seq_sec (P : ℕ → Type 1) (hf : ∀ j, Finite (P j)) (hn : ∀ j, Nonempty (P j))
     (t : ∀ j, P (j + 1) → P j) : ∃ s : ∀ j, P j, ∀ j, t j (s (j + 1)) = s j :=
   _root_.UpperTheory.Reformulated.B.Qi50.seq_sec P hf hn t
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem cast_root {q : ℕ} {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) (a : ℤ) (ha : a = 0) (h0 : (0 : ℤ) = 0) :
     Ht.cast h0 ha (rootClass a ζ) = rootClass 0 ζ := by
   subst ha; rfl
 
 /- English proof (translation)
-Unfold `TowerL Tower`. Introduce `hI l _ k _ _ hl i`. Establish `hp : ∀ j : ℕ, IsUnit (((l ^ j : ℕ)) : k)` using `fun j => by`. Use `push_cast`. Conclude with `(IsUnit.mk0 _ hl).pow j`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hinv : ∀ j : ℕ, Inv (l ^ j) (sch.obj (S k))` using `fun j U hU => by`. Take `⟨x⟩` from `hU`. Conclude with `LPdCut.unit_of x (hp j)`. Set `P : ℕ → Type 1` to `fun j => {w : Ht (l ^ j) (sch.obj (S k)) 0 i × Ht (l ^ j) (sch.obj (S k)) 0 (-i) // (cup (l ^ j) w.1 w.2).cast (add_zero 0) (add_neg_cancel i) = one (l ^ j) (sch.obj (S k))}`. Establish `hf : ∀ j, Finite (P j)` using `fun j => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hI.e4 (l ^ j) k (hp j) (𝟙 (S k)) 0 i` as an intermediate fact. Use `hI.e4 (l ^ j) k (hp j) (𝟙 (S k)) 0 (-i)` as an intermediate fact. Use `infer_instance`. Establish `hn : ∀ j, Nonempty (P j)` using `fun j => by`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic (l ^ j) k) (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.degree_cyclotomic]`. Conclude with `(Nat.totient_pos.2 (NeZero.pos (l ^ j))).ne')` after adjusting the coercions. Set `z0 : Prim (l ^ j) k` to `⟨z, hp j, by`. Rewrite using `[Polynomial.aeval_def, ← Polynomial.eval_map, Polynomial.map_cyclotomic]`. Conclude with `hz⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `ζ : Prim (l ^ j) Γ(S k, ⊤)` to `z0.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Take `⟨h1, h2⟩` from `(GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes (l ^ j)).2 (S k) ζ i (-i)`. Use `⟨⟨(rootClass i ζ, rootClass (-i) ζ), ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ht.cast _ _ (cup (l ^ j) (rootClass i ζ) (rootClass (-i) ζ)) = _`. Rewrite using `[h1, LRingPf.cast_cast]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(cast_root ζ _ _ _).trans h2`. Set `t : ∀ j, P (j + 1) → P j` to `fun j w => ⟨(red (l ^ (j + 1)) (l ^ j) _ 0 i w.1.1, red (l ^ (j + 1)) (l ^ j) _ 0 (-i) w.1.2), by`. Establish `hA` using `hI.a11 (l ^ (j + 1)) (l ^ j) (pow_dvd_pow l (Nat.le_succ j)) (sch.obj (S k))`. Establish `h` using `congrArg (red (l ^ (j + 1)) (l ^ j) (sch.obj (S k)) 0 0) w.2`. Rewrite `h` using `[red_cast, hA.1, (hA.2.1 (hinv (j + 1))).1]`.
-
-Conclude with `h⟩`. Take `⟨s, hs⟩` from `seq_sec P hf hn t`. Conclude with `⟨⟨fun j => (s j).1.1, fun j => congrArg (fun w : P j => w.1.1) (hs j)⟩, ⟨fun j => (s j).1.2, fun j => congrArg (fun w : P j => w.1.2) (hs j)⟩, fun j => (s j).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem towerL_holds : TowerL := by
   unfold TowerL Tower

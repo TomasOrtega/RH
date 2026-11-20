@@ -20,21 +20,21 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSp
 abbrev preOp (k : KG ε) : V →L[ℂ] V := ((τ k : unitary (V →L[ℂ] V)) : V →L[ℂ] V)
 
 /- English proof (translation)
-Use `show ((τ (k * l) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem preOp_mul (k l : KG ε) : preOp τ (k * l) = preOp τ k * preOp τ l := by
   show ((τ (k * l) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) = _
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Use `show ((τ 1 : unitary (V →L[ℂ] V)) : V →L[ℂ] V) = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem preOp_one : preOp τ (1 : KG ε) = 1 := by
   show ((τ 1 : unitary (V →L[ℂ] V)) : V →L[ℂ] V) = _
   rw [map_one]; rfl
 
 /- English proof (translation)
-Use `show ((τ k⁻¹ : unitary (V →L[ℂ] V)) : V →L[ℂ] V) = _`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem preOp_inv (k : KG ε) : preOp τ k⁻¹ = star (preOp τ k) := by
   show ((τ k⁻¹ : unitary (V →L[ℂ] V)) : V →L[ℂ] V) = _
@@ -45,25 +45,21 @@ variable (hder : ∀ X, inK ε X → ∀ γ : ℝ → KG ε, (∀ t : ℝ, toMK 
 
 include hder in
 /- English proof (translation)
-Use `set A := dτ X with hAdef`. Use `set F : ℝ → V →L[ℂ] V := fun s => preOp τ (γ s) with hFdef`. Establish `hmul : ∀ s u : ℝ, γ (s + u) = γ s * γ u`. Introduce `s u`. Apply `onep_KG_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show toMK (γ (s + u)) = toMK (γ s) * toMK (γ u)`. Rewrite using `[hγ, hγ, hγ, show (((s + u : ℝ) : ℂ) • X) = (s : ℂ) • X + (u : ℂ) • X by push_cast; exact add_smul _ _ _]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _)`. Establish `h0 : γ 0 = 1`. Apply `onep_KG_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hγ]`. Use `show NormedSpace.exp (((0 : ℝ) : ℂ) • X) = (1 : Matrix (Fin n) (Fin n) ℂ)`. Simplify using the standard rewrite rules. Establish `hF : ∀ s u : ℝ, F (s + u) = F s * F u`. Introduce `s u`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hFdef, hmul, preOp_mul]`. Establish `hF0 : F 0 = 1`. Simplify using `only [hFdef, h0, preOp_one]`. Establish `hd0 : HasDerivAt F A 0` using `hder X hX γ hγ`. Establish `hd : ∀ s, HasDerivAt F (F s * A) s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce `s`. Establish `h1 : HasDerivAt (fun u => F s * F (u - s)) (F s * A) s`. Establish `h2` using `hd0.const_mul (F s)`. Rewrite `h2` using `[← sub_self s]`. Conclude with `HasDerivAt.comp_sub_const (f := fun y => F s * F y) s s h2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Rewrite using `[← hF, add_sub_cancel]`. Use `set E : ℝ → V →L[ℂ] V := fun u => NormedSpace.exp (u • (-A)) with hEdef`. Establish `hE : ∀ u, HasDerivAt E (E u * (-A)) u` using `fun u => hasDerivAt_exp_smul_const (-A) u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ u, A * E u = E u * A` using `fun u => (((Commute.refl A).neg_right.smul_right u).exp_right).eq`. Establish `hG : ∀ u, HasDerivAt (F * E) 0 u`. Introduce `u`. Use `((hd u).mul (hE u)).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [mul_neg, mul_assoc, hcomm u, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hGc : ∀ u, (F * E) u = (F * E) 0` using `fun u => is_const_of_deriv_eq_zero (fun v => (hG v).differentiableAt) (fun v => (hG v).deriv) u 0`. Establish `hG0 : (F * E) 0 = 1` using `by show F 0 * NormedSpace.exp ((0 : ℝ) • (-A)) = 1`. Rewrite using `[hF0, zero_smul, NormedSpace.exp_zero, one_mul]`. Use `show F t = _`. Establish `hs : ((t : ℂ) • A) = t • A`.
-
-Conclude with `Complex.coe_smul t A`. Rewrite using `[hs]`. Establish `hc : Commute (t • (-A)) (t • A)` using `(((Commute.refl A).neg_left).smul_left t).smul_right t`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, hEdef, ← NormedSpace.exp_add_of_commute_of_mem_ball (𝕂 := ℝ) hc ((NormedSpace.expSeries_radius_eq_top ℝ (V →L[ℂ] V)).symm ▸ edist_lt_top _ _) ((NormedSpace.expSeries_radius_eq_top ℝ (V →L[ℂ] V)).symm ▸ edist_lt_top _ _), smul_neg, neg_add_cancel, NormedSpace.exp_zero, …`.
-
-Use `_ = NormedSpace.exp (t • A) := by`. Rewrite using `[show F t * E t = (F * E) t from rfl, hGc, hG0, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_op_curve {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (γ : ℝ → KG ε)
     (hγ : ∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) (t : ℝ) :
@@ -124,9 +120,9 @@ theorem pre_op_curve {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (γ : ℝ 
 
 include hder in
 /- English proof (translation)
-Take `⟨Y, hY, he⟩` from `exists_log ε k`. Take `⟨γ, hγ⟩` from `exists_curve ε hY`. Establish `h1 : γ 1 = k`. Apply `onep_KG_ext` to reduce the goal to its premises. Use `hγ 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Complex.ofReal_one, one_smul] at this`. Rewrite using `[this, he]`. Use `⟨Y, hY, ?_⟩` and prove the remaining obligations. Use `pre_op_curve τ dτ hder hY γ hγ 1` as an intermediate fact. Simplify `this` using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pre_op_eq_exp' (k : KG ε) :
     ∃ Y : Matrix (Fin n) (Fin n) ℂ, inK ε Y ∧ preOp τ k = NormedSpace.exp (dτ Y) := by
@@ -143,13 +139,11 @@ theorem pre_op_eq_exp' (k : KG ε) :
 
 include hder in
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `exists_curve ε hX`. Use `set A := dτ X`. Establish `key : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • star A) * NormedSpace.exp ((t : ℂ) • A) = 1`. Introduce `t`. Establish `h1` using `pre_op_curve τ dτ hder hX γ hγ t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : star (preOp τ (γ t)) * preOp τ (γ t) = 1` using `Unitary.coe_star_mul_self _`. Rewrite `h2` using `[h1, NormedSpace.star_exp, star_smul, Complex.star_def, Complex.conj_ofReal]`. Conclude with `h2`. Establish `hd0` using `(hasDerivAt_exp_smul_const (star A) ((0 : ℝ) : ℂ)).mul (hasDerivAt_exp_smul_const A ((0 : ℝ) : ℂ))`. Establish `hd2` using `hasDerivAt_real_of_complex' hd0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hf : (fun y : ℝ => ((fun u : ℂ => NormedSpace.exp (u • star A)) * fun u : ℂ => NormedSpace.exp (u • A)) (y : ℂ)) = fun _ => 1` using `funext fun t => by`. Simplify using `using key t`. Rewrite `hd2` using `[hf]`. Use `hd2.unique (hasDerivAt_const _ _)` as an intermediate fact. Simplify using `at this`.
-
-Conclude with `eq_neg_of_add_eq_zero_left this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pre_star_dτ {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) : star (dτ X) = -dτ X := by
   obtain ⟨γ, hγ⟩ := exists_curve ε hX
@@ -173,15 +167,13 @@ theorem pre_star_dτ {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) : star (d�
 
 include hder in
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `exists_curve ε hY`. Establish `hY'` using `inK_conj' k hY`. Use `set U : (Matrix (Fin n) (Fin n) ℂ)ˣ := ((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)`. Establish `hU : ((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = star (toMK k)` using `toMK_inv' k`. Establish `hγ' : ∀ t : ℝ, toMK (k * γ t * k⁻¹) = NormedSpace.exp ((t : ℂ) • (toMK k * Y * star (toMK k)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `e1 : toMK (k * γ t * k⁻¹) = toMK k * toMK (γ t) * toMK k⁻¹` using `rfl`. Rewrite using `[e1, toMK_inv', hγ t, ← hU]`. Establish `e2 : (t : ℂ) • ((U : Matrix (Fin n) (Fin n) ℂ) * Y * ((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = (U : Matrix (Fin n) (Fin n) ℂ) * ((t : ℂ) • Y) * ((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, Matrix.exp_units_conj]`. Use `set B := dτ Y`. Use `set C := dτ (toMK k * Y * star (toMK k))`. Establish `key : ∀ t : ℝ, preOp τ k * NormedSpace.exp ((t : ℂ) • B) * star (preOp τ k) = NormedSpace.exp ((t : ℂ) • C)`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pre_op_curve τ dτ hder hY γ hγ t, ← pre_op_curve τ dτ hder hY' _ hγ' t, ← preOp_inv, preOp_mul, preOp_mul]`. Establish `h1` using `hasDerivAt_real_of_complex' (z := 0) (((hasDerivAt_exp_smul_const B ((0 : ℝ) : ℂ)).const_mul (preOp τ k)).mul_const (star (preOp τ k)))`. Establish `h2` using `hasDerivAt_real_of_complex' (z := 0) (hasDerivAt_exp_smul_const C ((0 : ℝ) : ℂ))`. Establish `hf : (fun y : ℝ => preOp τ k * NormedSpace.exp ((y : ℂ) • B) * star (preOp τ k)) = fun y : ℝ => NormedSpace.exp ((y : ℂ) • C)` using `funext key`. Simplify using `only [hf] at h1`.
-
-Use `h1.unique h2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pre_conj_dτ (k : KG ε) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) :
     preOp τ k * dτ Y * star (preOp τ k) = dτ (toMK k * Y * star (toMK k)) := by
@@ -221,7 +213,7 @@ section MatDerivP
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h` using `((LinearMap.toContinuousLinearMap dτ).hasFDerivAt).comp_hasDerivAt _ (mat_conj_hasDerivAt X Y)`. Conclude with `hasDerivAt_real_of_complex' (z := 0) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pre_dτ_conj_hasDerivAt (X Y : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun y : ℝ => dτ (NormedSpace.exp ((y : ℂ) • X) * Y *
@@ -234,13 +226,13 @@ end MatDerivP
 
 include hder in
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `exists_curve ε hX`. Use `set A := dτ X`. Use `set B := dτ Y`. Establish `hA` using `pre_star_dτ τ dτ hder hX`. Establish `hXs` using `((inK_iff' ε X).1 hX).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ s : ℝ, NormedSpace.exp ((s : ℂ) • A) * B * NormedSpace.exp ((s : ℂ) • (-A)) = dτ (NormedSpace.exp ((s : ℂ) • X) * Y * NormedSpace.exp ((s : ℂ) • (-X)))`. Introduce `s`. Establish `h` using `pre_conj_dτ τ dτ hder (γ s) hY`. Rewrite `h` using `[pre_op_curve τ dτ hder hX γ hγ s, hγ s, NormedSpace.star_exp, star_smul, hA, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hXs, Complex.star_def, Complex.conj_ofReal]`. Establish `h1` using `hasDerivAt_real_of_complex' (z := 0) (((hasDerivAt_exp_smul_const A ((0 : ℝ) : ℂ)).mul_const B).mul (hasDerivAt_exp_smul_const (-A) ((0 : ℝ) : ℂ)))`. Establish `h2` using `pre_dτ_conj_hasDerivAt dτ X Y`. Establish `h1'` using `h1.congr_of_eventuallyEq (f₁ := fun s : ℝ => dτ (NormedSpace.exp ((s : ℂ) • X) * Y * NormedSpace.exp ((s : ℂ) • (-X)))) (Filter.Eventually.of_forall fun s => (key s).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h1'.unique h2` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pre_dτ_bracket {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (hY : inK ε Y) :
     dτ X * dτ Y - dτ Y * dτ X = dτ (X * Y - Y * X) := by
@@ -272,7 +264,7 @@ theorem pre_dτ_bracket {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (hY :
 
 include hder in
 /- English proof (translation)
-Rewrite using `[single_eq_kp a b, single_eq_kp c d, brk_expand, map_add, map_add, map_smul, map_smul, brk_expand, map_add, map_add, map_add, map_smul, map_smul, map_smul, pre_dτ_bracket τ dτ hder (inK_hermitian_unit hab) (inK_hermitian_unit hcd), pre_dτ_bracket τ dτ hder (inK_hermitian_unit hab …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pre_dτ_bracket_single {a b c d : Fin n} (hab : ε a = ε b) (hcd : ε c = ε d) :
     dτ (Matrix.single a b 1) * dτ (Matrix.single c d 1) -
@@ -285,7 +277,7 @@ theorem pre_dτ_bracket_single {a b c d : Fin n} (hab : ε a = ε b) (hcd : ε c
 
 include hder in
 /- English proof (translation)
-Rewrite using `[single_eq_kp a b, single_eq_kp' a b, map_add, map_smul, map_add, map_smul, map_neg, star_add, star_smul, pre_star_dτ τ dτ hder (inK_hermitian_unit hab), pre_star_dτ τ dτ hder (inK_skew_hermitian_unit hab)]`. Simplify using `[Complex.conj_I]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pre_star_dτ_single {a b : Fin n} (hab : ε a = ε b) :
     star (dτ (Matrix.single a b 1)) = dτ (Matrix.single b a 1) := by

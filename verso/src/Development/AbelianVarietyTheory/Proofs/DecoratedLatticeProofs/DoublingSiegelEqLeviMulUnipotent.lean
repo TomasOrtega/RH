@@ -23,7 +23,7 @@ def stkRows {R : Type} {a k : ℕ} (X Y : Matrix (Fin a) (Fin k) R) : Matrix (Fi
   (Matrix.fromRows X Y).submatrix finSumFinEquiv.symm id
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify using `only [stkRows, Matrix.mul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Apply the tactic sequence `rcases s with s | s <;> simp [Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stkRows_mul {R : Type} [CommRing R] {a k l : ℕ} (X Y : Matrix (Fin a) (Fin k) R) (B : Matrix (Fin k) (Fin l) R) :
     stkRows X Y * B = stkRows (X * B) (Y * B) := by
@@ -33,9 +33,9 @@ theorem stkRows_mul {R : Type} [CommRing R] {a k l : ℕ} (X Y : Matrix (Fin a) 
   rcases s with s | s <;> simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `hk` using `(keepsDiag_iff finSumFinEquiv).1 h`. Use extensionality with `i j`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify using `only [Matrix.mul_apply, stkRows, Matrix.submatrix_apply, id]`. Rewrite using `[← finSumFinEquiv.sum_comp]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.sum_sum_type, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr]`. Rewrite using `[← Finset.sum_add_distrib]`. Break down `s with a | a` into its components or cases. Simplify using `only [Matrix.fromRows_apply_inl, Matrix.mul_apply, leviMat, Matrix.add_apply, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.submatrix_apply, add_mul]`. Simplify using `only [Matrix.fromRows_apply_inr, Matrix.mul_apply, leviMat, Matrix.add_apply, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.submatrix_apply, ← add_mul, ← hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem keepsDiag_mul_stkRows {R : Type} [CommRing R] {n k : ℕ} {M : Matrix (Fin (n + n)) (Fin (n + n)) R}
     (h : KeepsDiag finSumFinEquiv M) (X : Matrix (Fin n) (Fin k) R) :
@@ -54,7 +54,7 @@ theorem keepsDiag_mul_stkRows {R : Type} [CommRing R] {n k : ℕ} {M : Matrix (F
       Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.submatrix_apply, ← add_mul, ← hk]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify using `only [rat, stackRows, stkRows, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Apply the tactic sequence `rcases s with s | s <;> simp`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_stackRows {a k : ℕ} (X Y : Matrix (Fin a) (Fin k) D.host.E) :
     rat (stackRows X Y) = stkRows (rat X) (rat Y) := by
@@ -64,12 +64,12 @@ theorem rat_stackRows {a k : ℕ} (X Y : Matrix (Fin a) (Fin k) D.host.E) :
   rcases s with s | s <;> simp
 
 /- English proof (translation)
-The claim follows from `rat_stackRows _ _`.
+A detailed English derivation is pending.
 -/
 theorem dblDec_jX (A : HSp D) : (dblDec A).jX = stkRows (giA A) (giA A) := rat_stackRows _ _
 
 /- English proof (translation)
-Establish `hk : KeepsDiag finSumFinEquiv (mt (dblSp A) g)` using `mem_siegelOf.1 hg`. Rewrite using `[dblDec_jX, keepsDiag_mul_stkRows hk, stkRows_mul]`. Simplify using `only [← Matrix.mul_assoc, giA_mul_gA, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem siegel_mt_jX (A : HSp D) {g : GA D (dblSp A)} (hg : g ∈ siegel A) :
     mt (dblSp A) g ⬝ (dblDec A).jX =
@@ -81,29 +81,25 @@ theorem siegel_mt_jX (A : HSp D) {g : GA D (dblSp A)} (hg : g ∈ siegel A) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D A p`. Take `⟨p, hp⟩` from `p`. Take `⟨α, hα⟩ : ∃ α : Mx D A.rank A.rank, mt (dblSp A) p ⬝ (dblDec A).jX = (dblDec A).jX ⬝ α` from `⟨_, siegel_mt_jX A hp⟩`. Take `⟨α', hα'⟩ : ∃ α' : Mx D A.rank A.rank, mt (dblSp A) p⁻¹ ⬝ (dblDec A).jX = (dblDec A).jX ⬝ α'` from `⟨_, siegel_mt_jX A (inv_mem hp)⟩`. Establish `e1 : α ⬝ α' = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : (dblDec A).jX = (dblDec A).jX ⬝ (α ⬝ α')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel, GlobalTheory.MixModel.mt_one, Matrix.one_mul]`. Use `_ = mt (dblSp A) p ⬝ (mt (dblSp A) p⁻¹ ⬝ (dblDec A).jX) := by`. Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = (dblDec A).jX ⬝ (α ⬝ α') := by rw [hα', ← Matrix.mul_assoc, hα, Matrix.mul_assoc]`. Establish `h2` using `congrArg (HMul.hMul (dblDec A).pX) h`. Rewrite `h2` using `[← Matrix.mul_assoc, (dblDec A).pX_jX, Matrix.one_mul, eq_comm]`. Then use the resulting hypothesis. Establish `e2 : α' ⬝ α = 1`. Establish `h : (dblDec A).jX = (dblDec A).jX ⬝ (α' ⬝ α)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel, GlobalTheory.MixModel.mt_one, Matrix.one_mul]`. Use `_ = mt (dblSp A) p⁻¹ ⬝ (mt (dblSp A) p ⬝ (dblDec A).jX) := by`. Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc]`. Use `_ = (dblDec A).jX ⬝ (α' ⬝ α) := by rw [hα, ← Matrix.mul_assoc, hα', Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (HMul.hMul (dblDec A).pX) h`. Rewrite `h2` using `[← Matrix.mul_assoc, (dblDec A).pX_jX, Matrix.one_mul, eq_comm]`. Then use the resulting hypothesis. Establish `u` using `GlobalTheory.MixModel.mt_unitary (dblSp A) p`. Establish `h1 : adj α ⬝ ((dblDec A).pY ⬝ (mt (dblSp A) p ⬝ (dblDec A).jY)) = 1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hα, (dblDec A).pY_eq, adj_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = adj (dblDec A).jX ⬝ ((adj (mt (dblSp A) p) ⬝ (gA (dblSp A) ⬝ mt (dblSp A) p)) ⬝ (dblDec A).jY) := by`. Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Use `_ = 1 := by rw [u, (dblDec A).gram_XY]`. Establish `hG : adj (mt (dblSp A) p ⬝ (dblDec A).jY) ⬝ (gA (dblSp A) ⬝ (mt (dblSp A) p ⬝ (dblDec A).jY)) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `_ = 0 := by rw [u, (dblDec A).gram_YY]`. Generalize the expression as in `hYdef : mt (dblSp A) p ⬝ (dblDec A).jY = Y at h1 hG`. Establish `hpY : (dblDec A).pY ⬝ Y = adj α'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← adj_mul, e1, adj_one, Matrix.one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = adj α' := by rw [Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `h0 : (dblDec A).j0 ⬝ (dblDec A).p0 = 0` using `Matrix.ext fun i j => by rw [Matrix.mul_apply]; exact Finset.sum_eq_zero fun k _ => Fin.elim0 k`. Generalize the expression as in `hu : (dblDec A).pX ⬝ Y = w`. Establish `hY : Y = (dblDec A).jY ⬝ adj α' + (dblDec A).jX ⬝ w`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(dblDec A).sum_eq_one, Matrix.one_mul]`. Use `_ = (dblDec A).jY ⬝ adj α' + (dblDec A).jX ⬝ w := by`. Rewrite using `[h0, add_zero, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, hpY, hu, add_comm]`. Establish `hskew : adj (α' ⬝ w) = -(α' ⬝ w)`. Rewrite `hG` using `[hY]`.
-
-Simplify using `only [adj_add, adj_mul, adj_adj, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, cancel₃ (dblDec A).gram_YY, cancel₃ (dblDec A).gram_YX, cancel₃ (dblDec A).gram_XY, cancel₃ (dblDec A).gram_XX, Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, zero_add, add_zero] at hG`. Rewrite using `[adj_mul, eq_neg_iff_add_eq_zero]`. Conclude with `hG`. Set `a : GL (Fin A.rank) (AE D)` to `⟨α, α', e1, e2⟩`. Use `⟨a, ⟨α' ⬝ w, mem_skewA.2 hskew⟩, (dblDec A).ga_ext ?_ ?_ ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, (dblDec A).nC_jX, (dblDec A).levi_jX, hα]`. Conclude with `Matrix.ext fun _ j => Fin.elim0 j`. Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, (dblDec A).nC_jY, Matrix.mul_add, (dblDec A).levi_jY, ← Matrix.mul_assoc, (dblDec A).levi_jX, hYdef, hY] show _ = (dblDec A).jY ⬝ adj α' + (dblDec A).jX ⬝ α ⬝ (α' ⬝ w)`. Rewrite using `[Matrix.mul_assoc (dblDec A).jX, ← Matrix.mul_assoc α, e1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegel_eq_levi_nC : ∀ (D : D7) (A : HSp D) (p : siegel A), ∃ (a : GL (Fin A.rank) (AE D)) (c : skewA D A.rank),
     (p : GA D (dblSp A)) = (dblDec A).levi a * (dblDec A).nC c := by

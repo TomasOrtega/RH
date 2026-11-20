@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.ArtSch
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WittCoefficients.CoeffEqOfSubMem
 
 /- English proof (translation)
-The claim follows from `PI.ArtSch.WittLiftWork.wittLift`.
+A detailed English derivation is pending.
 -/
 theorem witt_lift : PI.ArtSch.WittLift := PI.ArtSch.WittLiftWork.wittLift

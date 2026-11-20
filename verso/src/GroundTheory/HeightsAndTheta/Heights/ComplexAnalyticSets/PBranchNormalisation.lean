@@ -14,13 +14,13 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial ComplexSets Filter Topology
 
 /- English proof (translation)
-Introduce `n I q m c hrad hm hcov hdisj`. Establish `hdim` using `h₀ n I q m c hm hcov`. Use `⟨hdim, fun f hf ↦ h₆ n I q f hrad hdim fun P ↦ ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h₃ n I q m c hrad hdim hcov hdisj P`. Rewrite using `[hb f]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf b`. Use `choose P hP using fun b ↦ h₁ n I q (c b) hrad hdim`. Establish `hcongr : ∀ Q Q' : MaximalSpectrum (curveNormalisation I q), Q = Q' → ∀ f : MvPolynomial (Fin n) ℂ, Ring.ord (Localization.AtPrime Q.asIdeal) (algebraMap (curveNormalisation I q) (Localization.AtPrime Q.asIdeal) (algebraMap (curveLocalRing I q) (curveNormalisation I q) (algebraMap …`. Introduce and unpack `Q _ rfl f`. Both sides reduce to the same expression.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective P`. Introduce `b b' hbb`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx, hxq⟩` from `h₂ n I q (c b) (c b') hrad hdim fun f ↦ (hP b f).symm.trans ((hcongr _ _ hbb f).trans (hP b' f))`. Conclude with `hxq (hdisj b b' hne hx)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective P`. Introduce `Q`. Take `⟨b, hb⟩` from `h₃ n I q m c hrad hdim hcov hdisj Q`. Conclude with `⟨b, h₄ n I q hrad hdim (P b) Q fun f ↦ (hP b f).trans (hb f).symm⟩`. Conclude with `⟨Equiv.ofBijective P ⟨hinj, hsurj⟩, fun b ↦ ⟨h₅ n I q hrad hdim (P b), hP b⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BranchNormalisation.proof (h₀ : BranchGermDimOne.Statement) (h₁ : BranchPlace.Statement)
     (h₂ : SameOrderBranchesMeet.Statement) (h₃ : PlaceHasBranch.Statement)

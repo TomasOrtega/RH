@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPow
 open GlobalTheory.K5 GlobalTheory.KumDlog
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KumDlog.kaehler_rel_isInt | exact GlobalTheory.KumDlog.kaehler_rel_isInt | (intros; apply GlobalTheory.KumDlog.kaehler_rel_isInt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.kaehler_relation_derivationModIntegral : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], ∀ (n : ℕ) (ι : On p n →ₐ[O0 p] Ω) (S : Subalgebra (O0 p) Ω), (∀ x ∈ S, IsInt p x) → (∀ x, ι x ∈ S) →
   ∀ D : Ω → Ω, IsDer S D → ∀ a b c x y z : On p n,

@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.ReadModel
 
 /- English proof (translation)
-Introduce `F _ _ Y M M₁`. Take `⟨P, π, h⟩` from `GlobalTheory.Member.DomFin.exists_dominating_fintype F Y M Bool (fun b => bif b then M₁ else M)`. Conclude with `⟨P, π false, π true, (h false).1, (h false).2, (h true).1, (h true).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dominate2 : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M M₁ : TrueGeo.Model Y), ∃ (P : TrueGeo.Model Y) (π : P.X ⟶ M.X) (ρ : P.X ⟶ M₁.X), π ≫ M.p = P.p ∧ P.j ≫ π = M.j ∧ ρ ≫ M₁.p = P.p ∧ P.j ≫ ρ = M₁.j := by
   intro F _ _ Y M M₁
@@ -32,20 +32,20 @@ theorem dominate2 : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M M₁
   exact ⟨P, π false, π true, (h false).1, (h false).2, (h true).1, (h true).2⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem nefFib_shift {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (L : HermLB p) (t : (k →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) : NefFib (L.shift t ht) ↔ NefFib L := Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [gdeg, chInt, HermLB.shift, Weight.chernInt, Weight.chernPart_addFn_const]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gdeg_shift {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (L : HermLB p) (t : (k →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) (D : ℕ) : gdeg (L.shift t ht) D = gdeg L D := by
   simp only [gdeg, chInt, HermLB.shift, Weight.chernInt, Weight.chernPart_addFn_const]
 
 /- English proof (translation)
-Use `⟨fun h σ i c y hy ξ => ?_, fun h => h.shift t ht⟩` and prove the remaining obligations. Use `(h σ).addFn_const (-(2 * t σ)) i c y hy ξ` as an intermediate fact. Simplify `this` using `[HermLB.shift, Weight.addFn]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem semiPos_shift_iff {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (L : HermLB p) (t : (k →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) (D : ℕ) : (L.shift t ht).SemiPos D ↔ L.SemiPos D := by
@@ -54,23 +54,23 @@ theorem semiPos_shift_iff {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp
   simpa [HermLB.shift, Weight.addFn] using this
 
 /- English proof (translation)
-Introduce `hP2 hPH F _ _ Y e he A' M M' L' k cf hI`. Establish `hC : GlobalTheory.Published.ArCalc` using `hP2.p4`. Establish `hD : GlobalTheory.Published.ArDegree` using `hPH.deg`. Substitute `he` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨M₁, L₁, k₁, cf₁, hI₁, hN₁⟩ : ∃ (M₁ : TrueGeo.Model Y) (L₁ : HermLB M₁.p) (k₁ : ℕ+) (cf₁ : HeightOneSpectrum (𝓞 F) → ℝ), A'.Induced M₁ L₁ k₁ cf₁ ∧ (A'.NefFib → NefFib L₁) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : A'.NefFib`. Take `⟨M₁, L₁, k₁, cf₁, h₁, h₂⟩` from `h`. Conclude with `⟨M₁, L₁, k₁, cf₁, h₁, fun _ => h₂⟩`. Conclude with `⟨M', L', k, cf, hI, fun h' => absurd h' h⟩`. Take `⟨P, π, ρ, hπp, hπj, hρp, hρj⟩` from `dominate2 F Y M M₁`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hI₂` using `GlobalTheory.TrueGeo.InducedPull.induced_pull F _ Y A' M₁ P ρ hρp hρj L₁ k₁ cf₁ hI₁`. Use `haveI := P.ar.isIntegral`. Take `⟨hsurj, hdeg⟩` from `GlobalTheory.T.model_map_surjective_birational F Y P M π hπp hπj`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, (L₁.pull ρ hρp).IsSelfInter a := by`. Take `⟨h, hh⟩` from `(hC.arExists _ P.X P.p _ P.ar).1 (L₁.pull ρ hρp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, h, hh, rfl⟩`. Establish `htop` using `(GlobalTheory.TrueGeo.arTop_of_induced hC hD F _ Y A' P (L₁.pull ρ hρp) k₁ cf₁ hI₂).2 a ha`. Establish `hg` using `GlobalTheory.T.geometric_degree_of_induced_bundle hD F _ Y A' P (L₁.pull ρ hρp) k₁ cf₁ hI₂`. Establish `hfr : (Module.finrank ℤ (𝓞 F) : ℝ) = (Module.finrank ℚ F : ℝ)`. Rewrite using `[NumberField.RingOfIntegers.rank]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hN : (((k₁ : ℕ) * (A'.n : ℕ) : ℕ) : ℝ) ≠ 0` using `by positivity`. Use `⟨P.X, P.ar.isIntegral, P.p, π, hπp, (L₁.pull ρ hρp).shift (fun _ => ((k₁ : ℕ) * (A'.n : ℕ) : ℕ) * (∑ᶠ v, cf₁ v) / (Module.finrank ℚ F : ℝ)) (fun _ => rfl), (k₁ : ℕ) * (A'.n : ℕ), 1, P.ar, hsurj, hdeg, one_pos, by positivity, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hC.arShift _ P.X P.p Y.dim P.ar (L₁.pull ρ hρp) a ((((k₁ : ℕ) * (A'.n : ℕ) : ℕ) : ℝ) * (∑ᶠ v, cf₁ v) / (Module.finrank ℚ F : ℝ)) ha` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, htop, hfr]`. Move the coercions through the operations in `at hN ⊢`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[gdeg_shift, hg]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(GlobalTheory.TrueGeo.InducedSemiPos.semiPos_iff_of_induced F _ Y A' P (L₁.pull ρ hρp) k₁ cf₁ hI₂).trans (semiPos_shift_iff _ _ _ _).symm`. Rewrite using `[nefFib_shift]`. Use `⟨fun h => ?_, fun h => ⟨P, L₁.pull ρ hρp, k₁, cf₁, hI₂, h⟩⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `M₁.ar.finite` as an intermediate fact. Conclude with `GlobalTheory.ArInt.nefFib_pull _ M₁.X P.X M₁.p P.p M₁.ar.isProjOver P.ar.isProjOver ρ hρp L₁ (hN₁ h)`. Introduce `y x hx hxy`. Take `⟨rfl, hy⟩` from `GlobalTheory.TrueGeo.ReadPts.eq_j_and_isClosed F Y P M π hπj y x hx hxy`. Establish `h₁` using `GlobalTheory.T.point_height_of_induced_bundle hC.arExists F _ Y A' P (L₁.pull ρ hρp) k₁ cf₁ hI₂ y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Establish `h₂` using `GlobalTheory.ShiftHt.isPtHt_shift hC.arExists _ P.X P.p Y.dim P.ar (L₁.pull ρ hρp) _ _ ((((k₁ : ℕ) * (A'.n : ℕ) : ℕ) : ℝ) * (∑ᶠ v, cf₁ v) / (Module.finrank ℚ F : ℝ)) hx h₁`. Use `h₂ using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem readModel : Hypotheses2 → HypothesesH → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ), Y.dim = e →
     ∀ (A' : Adl (cxSt F) Y) (M M' : TrueGeo.Model Y) (L' : HermLB M'.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ),

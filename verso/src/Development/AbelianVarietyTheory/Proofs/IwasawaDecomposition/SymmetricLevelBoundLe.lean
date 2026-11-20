@@ -18,14 +18,14 @@ namespace GlobalTheory.Mem.LastGrp
 open GlobalTheory.SymLevelInv LocE Loc
 
 /- English proof (translation)
-Unfold `posSym symIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem posSym_eq_symIdx (k rS x : ℕ) : posSym k rS x = symIdx k rS x := by
   unfold posSym symIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `bd5`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symmetric_level_bound_le (k rS s : ℕ) : bd5 k rS s ≤ s := by
   unfold bd5
@@ -34,21 +34,21 @@ theorem symmetric_level_bound_le (k rS s : ℕ) : bd5 k rS s ≤ s := by
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Establish `hr' : k + rS < rSym k rS`. Unfold `rSym`. Use linear arithmetic over natural numbers and integers. Use `⟨fun x y h => ?_, fun x hx => ?_, fun x y hx hy => ?_, fun h => by simp at h⟩` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxy : x.1 ≠ y.1` using `fun h' => by rw [h'] at h; omega`. Distinguish the cases in `hy : y.1 < rSym k rS`. Establish `key : bd5 k rS (symIdx k rS y.1) ≤ symIdx k rS x.1`. Use `(symmetric_level_bound_le _ _ _).trans ?_` and prove the remaining obligations. Rewrite `h` using `[lvSym_of_lt hy, posSym_eq_symIdx]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hx : x.1 < rSym k rS`. Rewrite `h` using `[lvSym_of_lt hx, posSym_eq_symIdx]`. Conclude with `h.le`. Establish `h1` using `symIdx_lt hr'.le hy`. Establish `h2` using `symIdx_cases k rS x.1`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hM, mat_col hq hP hr' hn hg x.1 y.1 x.2 hy key, if_neg hxy, map_zero]`. Establish `hx : ¬ x.1 < rSym k rS`. Introduce `hx`. Establish `h1` using `lvSym_of_ge (t := t) hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[lvSym_of_lt hx]`. Establish `h2` using `posSym_lt hx`. Use linear arithmetic over natural numbers and integers. Unfold `lvSym at h`. Rewrite `h` using `[if_neg hy, if_neg hx]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (y.1 - rSym k rS) / t + 1 ≤ (x.1 - rSym k rS) / t` using `by omega`. Establish `h2` using `Nat.lt_mul_div_succ (y.1 - rSym k rS) ht`. Establish `h3` using `Nat.div_mul_le_self (x.1 - rSym k rS) t`. Establish `h4` using `Nat.mul_le_mul_right t h1`. Rewrite `h2` using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, mat_blk hq hP hr' hg ((y.1 - rSym k rS) / t + 1) x.1 y.1 x.2 (by omega) (by omega), map_zero]`. Rewrite using `[hM, mat_col hq hP hr' hn hg x.1 x.1 x.2 hx (symmetric_level_bound_le _ _ _), if_pos rfl, map_one]`. Establish `hyr : y.1 < rSym k rS` using `by omega`. Establish `key : bd5 k rS (symIdx k rS y.1) ≤ symIdx k rS x.1`. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `bd5 symIdx`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[hM, mat_col hq hP hr' hn hg x.1 y.1 x.2 hyr key, if_neg (by omega), map_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inJSym_of_mat (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k rS r t n : ℕ} (hr : r = rSym k rS) (ht : 0 < t) (hn : r ≤ n)
     {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k rS r t n 0) {κ : Type} [Field κ]
@@ -94,11 +94,11 @@ theorem inJSym_of_mat (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k rS r t
     rw [hM, mat_col hq hP hr' hn hg x.1 y.1 x.2 hyr key, if_neg (by omega), map_zero]
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Use `inJSym_of_mat hq hP hr ht hn hρ e _ fun i j => ?_` and prove the remaining obligations. Establish `h6` using `congrFun (hM _ (TopStep.single_mem_stdAt j)) i`. Rewrite `h6` using `[TopStep.redV_single, Matrix.mulVec_single_one]`. Establish `h7 : mat ρ i.1 j.1 = g (Pi.single j 1) i`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h8 : eN E (n + 0) j.1 = Loc.inX E n 0 (Pi.single j 1)`. Use function extensionality and compare the values at `l`. Rewrite using `[CongLevel.inX_apply, dif_pos (show l.1 < n from l.2)]`. Unfold `Loc.eN`. Simplify using `[Pi.single_apply, Fin.ext_iff]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `mat atN`. Rewrite using `[dif_pos (show i.1 < n + 0 from i.2), h8, hx, CongLevel.inX_apply, dif_pos i.2]`. Rewrite using `[Matrix.map_apply, h7]`. Conclude with `congrArg e h6.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inJSym_of_prX (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k rS r t n c : ℕ} (hc : c = 0) (hr : r = rSym k rS) (ht : 0 < t)
     (hn : r ≤ n) {ρ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hρ : ρ ∈ JGsym P q k rS r t n c) {g : Sp E n ≃ₗ[E] Sp E n}
@@ -123,19 +123,19 @@ theorem inJSym_of_prX (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k rS r t
 end GlobalTheory.Mem.LastGrp
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst L G m2 hX hPr hSel hL hs j hj b w κ _ e M hM`. Use `letI : StarRing X.E := X.starE`. Establish `hm` using `hL.hm`. Take `rfl : j = m2 + 1` from `by omega`. Establish `hc : cOf R (m2 + 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `cOf`. Use linear arithmetic over natural numbers and integers. Establish `hq : qOf w.1 ≠ 0` using `fun h => TopStep.qOf_ne_zero (P := w.1) (by rw [h]; simp)`. Establish `hP : ((qOf w.1 : ℕ) : 𝓞 X.E) ∈ w.1.asIdeal` using `Ideal.absNorm_mem _`. Establish `hr : R.r = rSym R.k (rSD R)`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `R.m_even`. Unfold `Ranks.r rSym rSD`. Use linear arithmetic over natural numbers and integers. Establish `ht : 0 < R.t`. Use `R.three_m_lt_t` as an intermediate fact.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hn : R.r ≤ R.N (m2 + 1)`. Unfold `Ranks.r Ranks.N`. Rewrite using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `key : ∀ A : GL (Fin (R.N (m2 + 1))) (𝓞 X.E ⧸ w.1.asIdeal), A ∈ (L.levG (m2 + 1) b w).H → InJSym R.k (rSD R) R.t false ((A.1).map e.toRingHom)`. Introduce `A hA`. Take `⟨g, hg, hred⟩` from `(hL.grpG _ b w A).1 hA`. Unfold `prCat at hg`. Rewrite `hg` using `[hL.last_h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ρ, hρ, hx⟩` from `hg`. Establish `hJ : ρ ∈ Jat (Pr` using `Pr) cst.sharp (m2 + 1) w.1 := by simpa [Loc.Cbe] using hρ.2`. Unfold `Jat at hJ`. Rewrite `hJ` using `[if_pos w.2, if_pos hs]`. Conclude with `inJSym_of_prX hq hP hc hr ht hn hJ hx e.toRingHom A.1 hred`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨key M hM, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `key _ (inv_mem hM)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.LastGrp.levG_le_JSymG : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ), X.Ok → Pr.Ok → IsSel X sel → L.Ok Ch sel mu cst G m2 → cst.sharp = true → ∀ (j : ℕ), j + 1 = R.m → ∀ (b : L.β j) (w : {w // w ∈ Pr.vGs}) (κ : Type) [Field κ] (e : (𝓞 X.E ⧸ w.1.asIdeal) ≃+* κ) (M : GL (Fin (R.N j)) (𝓞 X.E ⧸ w.1.asIdeal)), M ∈ (L.levG j b w).H → Matrix.GeneralLinearGroup.map e.toRingHom M ∈ JSymG κ (R.N j) R.k (rSD R) R.t false := by
   intro X Pr R Ch sel S mu cst L G m2 hX hPr hSel hL hs j hj b w κ _ e M hM

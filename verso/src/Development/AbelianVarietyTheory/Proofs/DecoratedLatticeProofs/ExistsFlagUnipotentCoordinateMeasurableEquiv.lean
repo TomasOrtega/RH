@@ -34,11 +34,9 @@ end GlobalTheory.Unf
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D V V₀ ρ d`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_homeomorph_wittFlagCoordinates D V V₀ ρ d`. Use `haveI : SecondCountableTopology (Mx D ρ V₀.rank) := (lattice_Mx D ρ V₀.rank).2.2.1`. Use `haveI : SecondCountableTopology (Mx D ρ ρ) := (lattice_Mx D ρ ρ).2.2.1`. Use `haveI : SecondCountableTopology (UX D ρ) := (GlobalTheory.UnitU.topology D ρ).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : BorelSpace (Mx D ρ V₀.rank) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (skewA D ρ) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (skewA D ρ) := Topology.IsEmbedding.subtypeVal.secondCountableTopology`.
-
-Use `⟨((coordFlip D ρ V₀.rank).trans (Φ.trans (Homeomorph.inv (flagN d)))).toMeasurableEquiv, fun p => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((Φ (coordFlip D ρ V₀.rank p))⁻¹ : flagN d) : GA D V) = _`. Rewrite using `[Subgroup.coe_inv, hΦ, coordFlip_apply]`. Express the relevant statement in the definitionally equal form `(d.levi ((p.2.2⁻¹ : UX D ρ) : GL (Fin ρ) (AE D)) * (d.nB (-p.2.1) * d.nC (-p.1)))⁻¹ = _`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, d.nB_inv, d.nC_inv, neg_neg, neg_neg, Subgroup.coe_inv, map_inv, inv_inv, mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagCoord_measEquiv : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ),
     ∃ e : skewA D ρ × (Mx D ρ V₀.rank × UX D ρ) ≃ᵐ flagN d,

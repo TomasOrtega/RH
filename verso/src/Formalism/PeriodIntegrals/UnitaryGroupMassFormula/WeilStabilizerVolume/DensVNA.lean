@@ -11,13 +11,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `N hN`. Establish `hP : ∀ x ∈ (L : Set V), ∀ᶠ p : 𝕜 × V in 𝓝 ((0 : 𝕜), x), p.1 • p.2 ∈ N`. Introduce `x _`. Establish `h : Tendsto (fun p : 𝕜 × V => p.1 • p.2) (𝓝 ((0 : 𝕜), x)) (𝓝 (0 : V))`. Simplify using `using (continuous_smul : Continuous fun p : 𝕜 × V => p.1 • p.2).tendsto ((0 : 𝕜), x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h hN`. Establish `hev` using `hLc.eventually_forall_of_forall_eventually (x₀ := (0 : 𝕜)) (P := fun (c : 𝕜) (y : V) => c • y ∈ N) hP`. Take `⟨k, hk⟩` from `(hπ.eventually hev).exists`. Establish `hk0 : π ^ k ≠ 0` using `pow_ne_zero k h0`. Use `⟨L.map (DistribMulAction.toAddMonoidHom V (π ^ k)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.coe_map]`. Conclude with `(Homeomorph.smulOfNeZero (π ^ k) hk0).isOpenMap _ hLo`. Rewrite using `[AddSubgroup.coe_map]`. Conclude with `hLc.image (continuous_const_smul _)`. Rewrite using `[AddSubgroup.coe_map]`.
-
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hk x hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hasCOSub_of_lat {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [AddCommGroup V]
     [Module 𝕜 V] [TopologicalSpace V] [ContinuousSMul 𝕜 V] (L : AddSubgroup V)
@@ -43,11 +41,9 @@ theorem hasCOSub_of_lat {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [Ad
     exact hk x hx
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hv : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1 : ℤ)`. Rewrite using `[v.valuedAdicCompletion_eq_valuation' π, hπ]`. Use `⟨π, fun h => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[h, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `h1 : Valued.v (π : v.adicCompletion F) < 1`. Rewrite using `[hv]`. Evaluate the decidable proposition. Establish `hlt : ‖(π : v.adicCompletion F)‖ < 1` using `Valued.toNormedField.norm_lt_one_iff.2 h1`.
-
-Conclude with `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pow_tendsto_zero_Fv {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -87,7 +83,7 @@ def latSub {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : �
     exact neg_mem (hx i j k)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet v`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Take `⟨π, h0, hπ⟩` from `exists_pow_tendsto_zero_Fv v`. Conclude with `hasCOSub_of_lat (latSub (Module.finBasis F E) v a M) (PositiveNearLattice.isClopen_latV (Module.finBasis F E) v a M).isOpen (PositiveNearLattice.isCompact_latV (Module.finBasis F E) v a M) π h0 hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tensNA_holds : TensNA := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet v
@@ -102,13 +98,11 @@ def scaledB (𝕜 : Type) {V : Type} [Field 𝕜] [AddCommGroup V] [Module 𝕜 
   ∃ c : 𝕜, c ≠ 0 ∧ Λ = L.map (DistribMulAction.toAddMonoidHom V c)
 
 /- English proof (translation)
-Introduce `N hN`. Establish `hP : ∀ x ∈ (L : Set V), ∀ᶠ p : 𝕜 × V in 𝓝 ((0 : 𝕜), x), p.1 • p.2 ∈ N`. Introduce `x _`. Establish `h : Tendsto (fun p : 𝕜 × V => p.1 • p.2) (𝓝 ((0 : 𝕜), x)) (𝓝 (0 : V))`. Simplify using `using (continuous_smul : Continuous fun p : 𝕜 × V => p.1 • p.2).tendsto ((0 : 𝕜), x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h hN`. Establish `hev` using `hLc.eventually_forall_of_forall_eventually (x₀ := (0 : 𝕜)) (P := fun (c : 𝕜) (y : V) => c • y ∈ N) hP`. Take `⟨k, hk⟩` from `(hπ.eventually hev).exists`. Establish `hk0 : π ^ k ≠ 0` using `pow_ne_zero k h0`. Use `⟨L.map (DistribMulAction.toAddMonoidHom V (π ^ k)), ⟨π ^ k, hk0, rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.coe_map]`. Conclude with `(Homeomorph.smulOfNeZero (π ^ k) hk0).isOpenMap _ hLo`. Rewrite using `[AddSubgroup.coe_map]`. Conclude with `hLc.image (continuous_const_smul _)`. Rewrite using `[AddSubgroup.coe_map]`.
-
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hk x hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isCOBasis_scaled {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [AddCommGroup V]
     [Module 𝕜 V] [TopologicalSpace V] [ContinuousSMul 𝕜 V] (L : AddSubgroup V)
@@ -134,7 +128,7 @@ theorem isCOBasis_scaled {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [A
     exact hk x hx
 
 /- English proof (translation)
-Take `⟨π, h0, hπ⟩` from `exists_pow_tendsto_zero_Fv v`. Conclude with `isCOBasis_scaled (latSub b v a M) (PositiveNearLattice.isClopen_latV b v a M).isOpen (PositiveNearLattice.isCompact_latV b v a M) π h0 hπ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCOBasis_latSub {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     [FiniteDimensional F E] {d : ℕ} (b : Module.Basis (Fin d) F E)
@@ -152,9 +146,9 @@ def DensVLat : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
         {X | LinearIndependent (Fv F v ⊗[F] E) X}
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν`. Take `⟨_t1, t2, _t3, _t4, _t5, _t6, _t7⟩` from `(hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).2 v`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Conclude with `densLC_of_cosB _ _ (isCOBasis_latSub (Module.finBasis F E) v a M) (hC F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν _ (Module.finBasis F E))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem densVLC_of_lat (hT : TensAll) (hC : DensVLat) : DensVLC := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν
@@ -172,7 +166,7 @@ theorem densVLC_of_lat (hT : TensAll) (hC : DensVLat) : DensVLC := by
     (hC F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν _ (Module.finBasis F E))
 
 /- English proof (translation)
-The claim follows from `densV_of hT tensNA_holds (densVLC_of_lat hT hC)`.
+A detailed English derivation is pending.
 -/
 theorem densV_of_lat (hT : TensAll) (hC : DensVLat) : DensV :=
   densV_of hT tensNA_holds (densVLC_of_lat hT hC)

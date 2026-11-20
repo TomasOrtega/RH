@@ -21,7 +21,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
 
 /- English proof (translation)
-Unfold `cc consC`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem opc_cc_zero (j : ℕ) (hj : j + 1 ≤ P.r) (t : ℂ) (c : Fin (P.r - (j + 1)) → ℂ) :
     cc (P := P) j hj t c ⟨0, by omega⟩ = t := by
@@ -29,9 +29,9 @@ theorem opc_cc_zero (j : ℕ) (hj : j + 1 ≤ P.r) (t : ℂ) (c : Fin (P.r - (j 
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Unfold `cc consC`. Distinguish the cases in `hl : (l : ℕ) = 0`. Establish `e : l = ⟨0, by omega⟩` using `Fin.ext hl`. Simplify using `[hl, Pi.single_apply, e, Complex.real_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne : l ≠ ⟨0, by omega⟩` using `fun h => hl (by rw [h])`. Simplify using `[hl, Pi.single_apply, hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem opc_cc_line (j : ℕ) (hj : j + 1 ≤ P.r) (t v : ℂ) (s : ℝ) (c : Fin (P.r - (j + 1)) → ℂ) :
     cc (P := P) j hj (t + (s : ℂ) * v) c =
@@ -45,7 +45,7 @@ theorem opc_cc_line (j : ℕ) (hj : j + 1 ≤ P.r) (t v : ℂ) (s : ℝ) (c : Fi
     simp [hl, Pi.single_apply, hne]
 
 /- English proof (translation)
-Use `⟨fun t γ => m t • G t γ, (h2 Wp Wq P T j G G hG hG m hm).2, fun t ht x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hv t ht x hx, hR t ht x hx]`. Conclude with `(h4 Wp Wq P T hP hT j hj hPs G G hG hG t ht (m t) x hx).2.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opc_mul (h2 : FamAlg) (h4 : RepLin) {T : D.LevTower P.k P.r Wp Wq}
     (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π') (hT : D.TowerNormalised T) {j : ℕ} {hj : j + 1 ≤ P.r}
@@ -62,9 +62,9 @@ theorem opc_mul (h2 : FamAlg) (h4 : RepLin) {T : D.LevTower P.k P.r Wp Wq}
   exact (h4 Wp Wq P T hP hT j hj hPs G G hG hG t ht (m t) x hx).2.symm
 
 /- English proof (translation)
-Establish `hd1` using `h3 Wp Wq P T j G hG v1`. Establish `hd2` using `h3 Wp Wq P T j G hG v2`. Establish `hA : GoodFam T j (fun t γ => m1 t • famP j G v1 t γ)` using `(h2 Wp Wq P T j _ _ hd1 hd1 m1 hm1).2`. Establish `hB : GoodFam T j (fun t γ => m2 t • famP j G v2 t γ)` using `(h2 Wp Wq P T j _ _ hd2 hd2 m2 hm2).2`. Use `⟨fun t γ => m1 t • famP j G v1 t γ + m2 t • famP j G v2 t γ, (h2 Wp Wq P T j _ _ hA hB (fun _ => 1) contDiffOn_const).1, fun t ht x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e0` using `(h4 Wp Wq P T hP hT j hj hPs _ _ hA hB t ht 0 x hx).1`. Establish `e1` using `(h4 Wp Wq P T hP hT j hj hPs _ _ hd1 hd1 t ht (m1 t) x hx).2`. Establish `e2` using `(h4 Wp Wq P T hP hT j hj hPs _ _ hd2 hd2 t ht (m2 t) x hx).2`. Rewrite using `[hv t ht x hx, ← e1, ← e2]`. Conclude with `e0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opc_two (h2 : FamAlg) (h3 : FamDeriv) (h4 : RepLin) {T : D.LevTower P.k P.r Wp Wq}
     (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π') (hT : D.TowerNormalised T) {j : ℕ} {hj : j + 1 ≤ P.r}
@@ -90,15 +90,15 @@ theorem opc_two (h2 : FamAlg) (h3 : FamDeriv) (h4 : RepLin) {T : D.LevTower P.k 
   exact e0.symm
 
 /- English proof (translation)
-Establish `hy` using `(h6 Wp Wq P T hP hT j hj hPj hPs t ht x hx).1`. Take `⟨-, hs, -⟩` from `Ψ.2`. Take `⟨U, F, hU, hyU, hF, hΨF⟩` from `hs _ hy`. Establish `hg : gi j hj x.2 ∈ Glev P.k (P.r - j) (Fin.last _)` using `hy.2.1`. Establish `hemb : Continuous fun c' : Fin (P.r - j) → ℂ => (c', gi j hj x.2)` using `continuous_id.prodMk continuous_const`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) =ᶠ[𝓝 (cc j hj t x.1)] fun c' => F (c', gi j hj x.2)`. Establish `hU' : ∀ᶠ c' in 𝓝 (cc j hj t x.1), (c', gi j hj x.2) ∈ U` using `hemb.continuousAt.preimage_mem_nhds (hU.mem_nhds hyU)`. Use `filter_upwards [hU'] with c' hc'`. Conclude with `hΨF (c', gi j hj x.2) hc' hg`. Establish `hFd : DifferentiableAt ℝ (fun c' => F (c', gi j hj x.2)) (cc j hj t x.1)` using `((hF.contDiffAt (hU.mem_nhds hyU)).differentiableAt (by simp)).comp (cc j hj t x.1) (differentiableAt_id.prodMk (differentiableAt_const _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ` using `(hFd.congr_of_eventuallyEq hev).hasFDerivAt`. Establish `hφ' : HasFDerivAt (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) (fderiv ℝ (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) (cc j hj t x.1)) (cc j hj t x.1 + (0 : ℝ) • (Pi.single (⟨0, by omega⟩ : Fin (P.r - j)) v : Fin (P.r - j) → ℂ))`. Rewrite using `[zero_smul, add_zero]`. Conclude with `hφ`. Establish `hline` using `((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single (⟨0, by omega⟩ : Fin (P.r - j)) v : Fin (P.r - j) → ℂ)).const_add (cc j hj t x.1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hline` using `[one_smul]`. Establish `hcomp` using `hφ'.comp_hasDerivAt (0 : ℝ) hline`. Establish `hJ` using `h5 Wp Wq P T hP hT j hj hPs G hG t ht x hx v`. Establish `hc : Continuous fun s : ℝ => t + (s : ℂ) * v` using `continuous_const.add (Complex.continuous_ofReal.mul continuous_const)`. Establish `hne : ∀ᶠ s : ℝ in 𝓝 0, t + (s : ℂ) * v ≠ 0` using `hc.continuousAt.eventually_ne (by simpa using ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : ((fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) ∘ fun s : ℝ => cc j hj t x.1 + id s • (Pi.single (⟨0, by omega⟩ : Fin (P.r - j)) v : Fin (P.r - j) → ℂ)) =ᶠ[𝓝 0] fun s : ℝ => resG P.k (P.r - (j + 1)) (Fin.last _) (B.JF (T.bs (j + 1)) (G (t + (s : ℂ) * v))) …` using `by filter_upwards [hne] with s hs`. Simplify using `only [Function.comp, id]`. Rewrite using `[← opc_cc_line]`. Conclude with `hR _ hs x hx`. Conclude with `hcomp.unique (hJ.congr_of_eventuallyEq heq)`.
+A detailed English derivation is pending.
 -/
 theorem opc_fderiv (h5 : FamJFDeriv) (h6 : CellTie) (T : D.LevTower P.k P.r Wp Wq)
     (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π') (hT : D.TowerNormalised T) (j : ℕ) (hj : j + 1 ≤ P.r)
@@ -153,23 +153,23 @@ theorem opc_fderiv (h5 : FamJFDeriv) (h6 : CellTie) (T : D.LevTower P.k P.r Wp W
 end opc
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P T hP hT j hj hPj hPs X i Ψ hΨ`. Take `⟨G, hG, hR⟩` from `hΨ`. Establish `hom : ∀ t : ℂ, t ≠ 0 → ∀ x ∈ DomR P.k (P.r - (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z', cc j hj t x.1 ∈ OmX (P.r - j)` using `fun t ht x hx => (h6 Wp Wq P T hP hT j hj hPj hPs t ht x hx).1.1`. Establish `hD` using `fun v t ht x hx => opc_fderiv h5 h6 T hP hT j hj hPj hPs Ψ G hG hR t ht x hx v`. Establish `hid : ContDiff ℝ ∞ (fun t : ℂ => t)` using `contDiff_id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst : ContDiff ℝ ∞ (fun t : ℂ => star t)` using `Complex.conjCLE.contDiff`. Use `fin_cases i`. Use `opc_two h2 h3 h4 hP hT hPs hG (fun t => t / 2) (fun t => -(t * Complex.I / 2)) (hid.div_const 2).contDiffOn ((hid.mul contDiff_const).div_const 2).neg.contDiffOn 1 Complex.I (fun t ht x hx => ?_)` and prove the remaining obligations. Rewrite using `[X.op_apply]`. Express the relevant statement in the definitionally equal form `pOp (⟨0, by omega⟩ : Fin (P.r - j)) (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) (cc j hj t x.1) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Unfold `pOp`. Rewrite using `[if_pos (hom t ht x hx), opc_cc_zero]`. Unfold `wirt`. Rewrite using `[hD 1 t ht x hx, hD Complex.I t ht x hx]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `opc_mul h2 h4 hP hT hPs hG hR (fun t => t) hid.contDiffOn (fun t ht x hx => ?_)` and prove the remaining obligations. Rewrite using `[X.op_apply]`. Express the relevant statement in the definitionally equal form `cOp (⟨0, by omega⟩ : Fin (P.r - j)) (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) (cc j hj t x.1) = _`. Unfold `cOp`. Rewrite using `[opc_cc_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `opc_mul h2 h4 hP hT hPs hG hR (fun t => t⁻¹) (hid.contDiffOn.inv fun t ht => ht) (fun t ht x hx => ?_)` and prove the remaining obligations. Rewrite using `[X.op_apply]`. Express the relevant statement in the definitionally equal form `ciOp (⟨0, by omega⟩ : Fin (P.r - j)) (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) (cc j hj t x.1) = _`. Unfold `ciOp`. Rewrite using `[opc_cc_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `opc_two h2 h3 h4 hP hT hPs hG (fun t => star t / 2) (fun t => star t * Complex.I / 2) (hst.div_const 2).contDiffOn ((hst.mul contDiff_const).div_const 2).contDiffOn 1 Complex.I (fun t ht x hx => ?_)` and prove the remaining obligations. Rewrite using `[X.op_apply]`. Express the relevant statement in the definitionally equal form `pbOp (⟨0, by omega⟩ : Fin (P.r - j)) (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) (cc j hj t x.1) = _`. Unfold `pbOp`. Rewrite using `[if_pos (hom t ht x hx), opc_cc_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `wirtBar`. Rewrite using `[hD 1 t ht x hx, hD Complex.I t ht x hx]`. Use `module`. Use `opc_mul h2 h4 hP hT hPs hG hR (fun t => star t) hst.contDiffOn (fun t ht x hx => ?_)` and prove the remaining obligations. Rewrite using `[X.op_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `cbOp (⟨0, by omega⟩ : Fin (P.r - j)) (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) (cc j hj t x.1) = _`. Unfold `cbOp`. Rewrite using `[opc_cc_zero]`. Use `opc_mul h2 h4 hP hT hPs hG hR (fun t => (star t)⁻¹) (hst.contDiffOn.inv fun t ht => star_ne_zero.mpr ht) (fun t ht x hx => ?_)` and prove the remaining obligations. Rewrite using `[X.op_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `cbiOp (⟨0, by omega⟩ : Fin (P.r - j)) (fun c' => (Ψ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) c' (gi j hj x.2)) (cc j hj t x.1) = _`. Unfold `cbiOp`. Rewrite using `[opc_cc_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cutSH_opClosed_of (h2 : FamAlg) (h3 : FamDeriv) (h4 : RepLin) (h5 : FamJFDeriv) (h6 : CellTie) :
     OpClosed := by
@@ -233,7 +233,7 @@ theorem cutSH_opClosed_of (h2 : FamAlg) (h3 : FamDeriv) (h4 : RepLin) (h5 : FamJ
 end Formalism.FourierDecayAlt.P.CutSH
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.CutSH.cutSH_opClosed_of h2 h3 h4 h5 h6`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.cutSH_opClosed_of (h2 : Formalism.FourierDecayAlt.P.CutSH.FamAlg) (h3 : Formalism.FourierDecayAlt.P.CutSH.FamDeriv)
     (h4 : Formalism.FourierDecayAlt.P.CutSH.RepLin) (h5 : Formalism.FourierDecayAlt.P.CutSH.FamJFDeriv) (h6 : Formalism.FourierDecayAlt.P.CutSH.CellTie) :
@@ -241,14 +241,14 @@ theorem Formalism.FourierDecayAlt.P.cutSH_opClosed_of (h2 : Formalism.FourierDec
   Formalism.FourierDecayAlt.P.CutSH.cutSH_opClosed_of h2 h3 h4 h5 h6
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.CutSH.cutSH_opClosed_of Formalism.FourierDecayAlt.P.CutSH.family_algebraic Formalism.FourierDecayAlt.P.family_derivative Formalism.FourierDecayAlt.P.CutSH.representation_linear h5 Formalism.FourierDecayAlt.P.CutSH.cell_compatibility`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.cutSH_opClosed_of_famJFDeriv (h5 : Formalism.FourierDecayAlt.P.CutSH.FamJFDeriv) : Formalism.FourierDecayAlt.P.CutSH.OpClosed :=
   Formalism.FourierDecayAlt.P.CutSH.cutSH_opClosed_of Formalism.FourierDecayAlt.P.CutSH.family_algebraic Formalism.FourierDecayAlt.P.family_derivative
     Formalism.FourierDecayAlt.P.CutSH.representation_linear h5 Formalism.FourierDecayAlt.P.CutSH.cell_compatibility
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cutSH_opClosed_of_famJFDeriv Formalism.FourierDecayAlt.P.family_orbital_derivative_identity`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.operator_class_closed : Formalism.FourierDecayAlt.P.CutSH.OpClosed :=
   Formalism.FourierDecayAlt.P.cutSH_opClosed_of_famJFDeriv Formalism.FourierDecayAlt.P.family_orbital_derivative_identity

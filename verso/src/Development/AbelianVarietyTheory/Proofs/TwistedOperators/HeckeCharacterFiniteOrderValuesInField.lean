@@ -27,14 +27,14 @@ section General
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exp_lt_one (m : ℕ) : (WithZero.exp (-((m : ℤ) + 1)) : WithZero (Multiplicative ℤ)) < 1 := by
   rw [← WithZero.exp_zero, WithZero.exp_lt_exp]
   omega
 
 /- English proof (translation)
-Use `first`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a`. Consider the case `(rw [HeightOneSpectrum.algebraMap_adicCompletion]; exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem valued_v_algebraMap_adicCompletion' (v : HeightOneSpectrum (𝓞 E)) (a : E) :
     Valued.v (algebraMap E (v.adicCompletion E) a) = v.valuation E a := by
@@ -43,13 +43,13 @@ private theorem valued_v_algebraMap_adicCompletion' (v : HeightOneSpectrum (𝓞
     | (rw [HeightOneSpectrum.algebraMap_adicCompletion]; exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a)
 
 /- English proof (translation)
-Establish `hx0 : (x : E) ≠ 0` using `x.ne_zero`. Establish `hv0 : v.valuation E (x : E) ≠ 0` using `((v.valuation E).ne_zero_iff).mpr hx0`. Establish `hd : ((y * x⁻¹ : Eˣ) : E) - 1 = ((y : E) - x) * (x : E)⁻¹`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, sub_mul, mul_inv_cancel₀ hx0]`. Establish `hle : v.valuation E (((y * x⁻¹ : Eˣ) : E) - 1) ≤ WithZero.exp (-((m : ℤ) + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd, map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlt : v.valuation E (((y * x⁻¹ : Eˣ) : E) - 1) < v.valuation E 1`. Rewrite using `[map_one]`. Conclude with `lt_of_le_of_lt hle (exp_lt_one m)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : v.valuation E ((y * x⁻¹ : Eˣ) : E) = 1` using `((v.valuation E).map_eq_of_sub_lt hlt).trans (map_one _)`. Establish `hA : IsUnitAt v (atFin v (y * x⁻¹))` using `by show Valued.v (algebraMap E (v.adicCompletion E) ((y * x⁻¹ : Eˣ) : E)) = 1`. Rewrite using `[valued_v_algebraMap_adicCompletion']`. Conclude with `hu`. Establish `hB : Valued.v (((atFin v (y * x⁻¹) : (v.adicCompletion E)ˣ) : v.adicCompletion E) - 1) ≤ WithZero.exp (-(m : ℤ))` using `by show Valued.v (algebraMap E (v.adicCompletion E) ((y * x⁻¹ : Eˣ) : E) - 1) ≤ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_one (algebraMap E (v.adicCompletion E)), ← map_sub, valued_v_algebraMap_adicCompletion']`. Conclude with `le_trans hle (WithZero.exp_le_exp.mpr (by omega))`. Establish `h1 : χ.locK v (y * x⁻¹) = 1` using `h _ hA hB`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem locK_eq_of_level (χ : HChar E) {v : HeightOneSpectrum (𝓞 E)} {m : ℕ} (h : χ.LevelLe v m) (x y : Eˣ)
     (hxy : v.valuation E ((y : E) - x) ≤ WithZero.exp (-((m : ℤ) + 1)) * v.valuation E (x : E)) :
@@ -84,11 +84,11 @@ theorem locK_eq_of_level (χ : HChar E) {v : HeightOneSpectrum (𝓞 E)} {m : �
     _ = χ.locK v x := by rw [map_mul, h1, one_mul]
 
 /- English proof (translation)
-Establish `hk : ∀ v : HeightOneSpectrum (𝓞 E), WithZero.exp (WithZero.log (v.intValuation (t v))) = v.intValuation (t v)` using `fun v => WithZero.exp_log (v.intValuation_ne_zero _ (ht v))`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := S) (fun v => v.asIdeal) (fun v => ((m v : ℤ) + 1 - WithZero.log (v.intValuation (t v))).toNat) (fun v _ => Ideal.prime_of_isPrime v.ne_bot v.isPrime) (fun v _ w _ hvw h => hvw (HeightOneSpectrum.ext h)) (fun v => t v.1)`. Use `⟨y, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `(v.intValuation_le_pow_iff_mem (y - t v) _).mpr (hy v hv)`. Establish `h2 : v.valuation E ((y : E) - (t v : E)) = v.intValuation (y - t v)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `v.valuation_of_algebraMap (K := E) (y - t v)`. Use `first`. Consider the case `(push_cast at h; exact h)`. Consider the case `exact h`. Consider the case `simpa using h`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h3 : v.valuation E (t v : E) = v.intValuation (t v)` using `v.valuation_of_algebraMap (K := E) (t v)`. Rewrite using `[h2, h3, ← hk v, ← WithZero.exp_add]`. Use `le_trans h1 (WithZero.exp_le_exp.mpr ?_)` and prove the remaining obligations. Use `Int.self_le_toNat ((m v : ℤ) + 1 - WithZero.log (v.intValuation (t v)))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_approx (S : Finset (HeightOneSpectrum (𝓞 E))) (t : HeightOneSpectrum (𝓞 E) → 𝓞 E) (m : HeightOneSpectrum (𝓞 E) → ℕ)
     (ht : ∀ v, t v ≠ 0) : ∃ y : 𝓞 E, ∀ v ∈ S,
@@ -118,7 +118,7 @@ theorem exists_approx (S : Finset (HeightOneSpectrum (𝓞 E))) (t : HeightOneSp
   omega
 
 /- English proof (translation)
-Rewrite using `[← WithZero.exp_log hb, ← WithZero.exp_add, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem exp_neg_succ_mul_lt_self (m : ℕ) {b : WithZero (Multiplicative ℤ)} (hb : b ≠ 0) :
     WithZero.exp (-((m : ℤ) + 1)) * b < b := by
@@ -126,23 +126,21 @@ private theorem exp_neg_succ_mul_lt_self (m : ℕ) {b : WithZero (Multiplicative
   omega
 
 /- English proof (translation)
-Use `choose m hm using GlobalTheory.Mem.UnrAe.exists_levelLe χ`. Establish `key : ∀ a : 𝓞 E, a ≠ 0 → ∀ k : Eˣ, (k : E) = (a : E) → χ.locK P k ∈ G`. Introduce `a ha k hk`. Apply the tactic sequence `obtain ⟨y, hy⟩ := exists_approx (insert P T) (fun v => if v = P then a else 1) m (fun v => by by_cases h : v = P <;> simp [h, ha])`. Establish `hyP : P.valuation E ((y : E) - (a : E)) ≤ WithZero.exp (-((m P : ℤ) + 1)) * P.valuation E (a : E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy P (Finset.mem_insert_self P T)`. Establish `hva : P.valuation E (a : E) ≠ 0`. Rewrite using `[(P.valuation E).ne_zero_iff]`. Introduce `h0`. Conclude with `ha (RingOfIntegers.ext (by rw [h0]; rfl))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy0 : (y : E) ≠ 0`. Introduce `h0`. Rewrite `hyP` using `[h0, zero_sub, Valuation.map_neg]`. Conclude with `absurd hyP (not_le.mpr (exp_neg_succ_mul_lt_self (m P) hva))`. Use `set ky : Eˣ := Units.mk0 (y : E) hy0 with hky`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hone : ∀ v ∈ insert P T, v ≠ P → χ.locK v ky = 1`. Introduce `v hv hvP`. Establish `h1 : v.valuation E ((ky : E) - ((1 : Eˣ) : E)) ≤ WithZero.exp (-((m v : ℤ) + 1)) * v.valuation E ((1 : Eˣ) : E)`. Simplify `hy v hv` using `[hvP, hky]`. Rewrite using `[locK_eq_of_level χ (hm v) 1 ky h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hPk : χ.locK P ky = χ.locK P k`. Apply `locK_eq_of_level χ (hm P) k ky` to reduce the goal to its premises. Simplify `hyP` using `[hky, hk]`. Establish `hS : ∀ v, v ∉ insert P T → χ.UnrAt v` using `fun v hv => hunr v (fun h => hv (Finset.mem_insert_of_mem h))`. Establish `hPR` using `GlobalTheory.TypeValues.productRule χ (insert P T) hS ky`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hPR` using `[Finset.prod_eq_single_of_mem P (Finset.mem_insert_self P T) hone]`. Establish `hF : (∏ᶠ (v : HeightOneSpectrum (𝓞 E)) (_ : v ∉ insert P T), χ.val v ^ ordF v ky) ∈ G` using `finprod_induction (· ∈ G) G.one_mem (fun _ _ => G.mul_mem) fun v => finprod_induction (· ∈ G) G.one_mem (fun _ _ => G.mul_mem) fun hv => G.zpow_mem (hval v fun h => hv (Finset.mem_insert_of_mem h)) _`. Establish `h1` using `G.one_mem`. Rewrite `h1` using `[← hPR]`. Rewrite using `[← hPk]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(G.mul_mem_cancel_left (hinf ky)).mp ((G.mul_mem_cancel_right hF).mp h1)`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (𝓞 E) (x : E)`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) E)` using `IsFractionRing.injective (𝓞 E) E`. Establish `ha0 : a ≠ 0`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hab` using `[map_zero, zero_div]`. Conclude with `x.ne_zero hab.symm`. Establish `haE : algebraMap (𝓞 E) E a ≠ 0` using `(map_ne_zero_iff _ hinj).mpr ha0`. Establish `hbE : algebraMap (𝓞 E) E b ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hb0`.
-
-Establish `hx : x = Units.mk0 _ haE * (Units.mk0 _ hbE)⁻¹`. Use `ext`. Rewrite using `[← hab, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, Units.val_mk0, div_eq_mul_inv]`. Rewrite using `[hx, map_mul, map_inv]`. Conclude with `G.mul_mem (key a ha0 _ rfl) (G.inv_mem (key b hb0 _ rfl))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_mem (χ : HChar E) (G : Subgroup ℂˣ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (hunr : ∀ v, v ∉ T → χ.UnrAt v) (hval : ∀ v, v ∉ T → χ.val v ∈ G)
@@ -206,13 +204,13 @@ theorem locK_mem (χ : HChar E) (G : Subgroup ℂˣ) (T : Finset (HeightOneSpect
 end General
 
 /- English proof (translation)
-Introduce `D c χ n L _ σ hc hn ho hv x`. Establish `hfin` using `GlobalTheory.Mem.UnrAe.finite_ramified χ`. Establish `hunr : ∀ v, v ∉ hfin.toFinset → χ.UnrAt v` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hfin.mem_toFinset.mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hval : ∀ v, v ∉ hfin.toFinset → χ.val v ∈ GlobalTheory.TameVal.unitsIn σ.fieldRange`. Introduce `v hv'`. Take `⟨y, hy⟩` from `hv v (hunr v hv')`. Establish `hw : χ.valTw 0 v = ((χ.val v : ℂˣ) : ℂ)` using `by simp [HChar.valTw]`. Conclude with `RingHom.mem_fieldRange.mpr ⟨y, hy.trans hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinf : ∀ k, χ.inf k ∈ GlobalTheory.TameVal.unitsIn σ.fieldRange` using `fun k => by`. Rewrite using `[GlobalTheory.TypeValues.inf_eq_one χ hn ho k]`. Conclude with `Subgroup.one_mem _`. Establish `hM : ∀ P k, ((χ.locK P k : ℂˣ) : ℂ) ∈ σ.fieldRange` using `fun P k => locK_mem χ (GlobalTheory.TameVal.unitsIn σ.fieldRange) hfin.toFinset hunr hval hinf P k`. Take `⟨y, hy⟩` from `RingHom.mem_fieldRange.mp (GlobalTheory.TwistValues.char_mem c χ hc hn ho σ.fieldRange hM x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`. Conclude with `Circle.coe_ne_zero _ hy.symm`. Conclude with `⟨Units.mk0 y hy0, hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (n : ℕ) (L : Type) [Field L] (σ : L →+* ℂ), ChrEq c χ → 0 < n → χ.OrderDvd n → χ.ValuesIn 0 σ → ∀ x : (AE D)ˣ, ∃ y : Lˣ, σ y = (c x : ℂ) := by
   intro D c χ n L _ σ hc hn ho hv x
@@ -253,7 +251,7 @@ open scoped Pointwise TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.ConstRatio
 /- English proof (translation)
-Introduce `D c χ n L _ σ h₁ h₂ h₃ h₄ x`. Conclude with `HeckeCharacterValueBounds.GlobalTheory.CompanionTheory.CharValues.main D c χ n L σ h₁ h₂ h₃ h₄ x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Adopt.heckeCharacter_finiteOrder_values_in_field : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (n : ℕ) (L : Type) [Field L] (σ : L →+* ℂ), ChrEq c χ → 0 < n → χ.OrderDvd n → χ.ValuesIn 0 σ → ∀ x : (AE D)ˣ, ∃ y : Lˣ, σ y = (c x : ℂ) := by
   intro D c χ n L _ σ h₁ h₂ h₃ h₄ x

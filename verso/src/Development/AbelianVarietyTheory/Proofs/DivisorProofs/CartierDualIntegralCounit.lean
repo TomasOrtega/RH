@@ -14,33 +14,33 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HopfFourier
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ A _ _ _ _ _ f Λ y hΛ hy hN hf`. Establish `hflat : Module.Flat R K` using `IsLocalization.flat K (nonZeroDivisors R)`. Set `bc` to `CartierDual.baseChange R K A`. Set `F : CartierDual K (K ⊗[R] A) →ₐc[K] K ⊗[R] A` to `(Bialgebra.TensorProduct.map (BialgHom.id K K) f).comp (bc.symm : CartierDual K (K ⊗[R] A) →ₐc[K] K ⊗[R] CartierDual R A)`. Set `ΛK : CartierDual K (K ⊗[R] A)` to `bc (1 ⊗ₜ Λ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hι : Function.Injective (fun a : A => (1 : K) ⊗ₜ[R] a)`. Establish `h1` using `Module.Flat.rTensor_preserves_injective_linearMap (M := A) (Algebra.linearMap R K) (IsFractionRing.injective R K)`. Introduce `a b hab`. Apply `(TensorProduct.lid R A).symm.injective` to reduce the goal to its premises. Apply `h1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hab`. Establish `hF : ∀ d : CartierDual R A, F (bc (1 ⊗ₜ d)) = 1 ⊗ₜ f d`. Introduce `d`. Simplify using `[F]`. Establish `hFinj : Function.Injective F`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `Module.Flat.lTensor_preserves_injective_linearMap (M := K) (f : CartierDual R A →ₗ[R] A) hf`. Introduce `u v huv`. Apply `bc.symm.injective` to reduce the goal to its premises. Apply `h1` to reduce the goal to its premises. Conclude with `huv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hΛK : ∀ d : CartierDual K (K ⊗[R] A), d * ΛK = algebraMap K _ (Coalgebra.counit (R` using `K) d) * ΛK := by`. Introduce `d`. Take `⟨z, rfl⟩ : ∃ z, bc z = d` from `⟨bc.symm d, bc.apply_symm_apply d⟩`. Establish `hc : Coalgebra.counit (R` using `K) (bc z) = Coalgebra.counit (R := K) z := CoalgHomClass.counit_comp_apply bc z`. Rewrite using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `clear hc`. Establish `key : z * (1 ⊗ₜ Λ) = algebraMap K _ (Coalgebra.counit (R` using `K) z) * (1 ⊗ₜ Λ) := by`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => rw [add_mul, hu, hv, map_add, map_add, add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul k d`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hΛ d, _root_.mul_one]`. Simplify using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Simplify using `only [ΛK, ← map_mul, key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, AlgHomClass.commutes]`. Establish `hy' : Coalgebra.counit (R` using `K) ΛK = algebraMap R K y := by`. Establish `hc : Coalgebra.counit (R` using `K) ΛK = Coalgebra.counit (R := K) ((1 : K) ⊗ₜ[R] Λ) := CoalgHomClass.counit_comp_apply bc _`. Rewrite using `[hc, ← hy]`. Simplify using `[Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcard : Nat.card (K ⊗[R] A →ₐ[K] K) = Nat.card (A →ₐ[R] K)`. Use `Nat.card_congr { toFun := fun φ => (φ.restrictScalars R).comp Algebra.TensorProduct.includeRight invFun := fun g => Algebra.TensorProduct.lift (Algebra.ofId K K) g (fun _ _ => Commute.all _ _) left_inv := fun φ => Algebra.TensorProduct.ext' fun k a => by` and prove the remaining obligations. Establish `e : (k ⊗ₜ[R] a : K ⊗[R] A) = k • (1 ⊗ₜ a)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Simplify using `[e]`. Use `right_inv := fun g => AlgHom.ext fun a => by simp }`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN' : (Coalgebra.counit (R` using `K) ΛK) ^ 2 = (Nat.card (K ⊗[R] A →ₐ[K] K) : K) := by`. Rewrite using `[hy', hcard, hN]`. Establish `hψ : ∀ x : A, toConv (ΛK.ofConv ∘ₗ LinearMap.mulLeft K ((1 : K) ⊗ₜ[R] x)) = bc (1 ⊗ₜ toConv (Λ.ofConv ∘ₗ LinearMap.mulLeft R x))`. Introduce `x`. Use `WithConv.ext (TensorProduct.AlgebraTensorModule.ext fun k b => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ΛK, bc]`. Establish `hT : ∀ d : CartierDual R A, (CartierDual.bidual K (K ⊗[R] A)).symm (CartierDual.map F (bc (1 ⊗ₜ d))) = 1 ⊗ₜ (CartierDual.bidual R A).symm (CartierDual.map f d)`. Introduce `d`. Use `CartierDual.eq_of_forall_apply (R := K) fun φ => ?_` and prove the remaining obligations. Rewrite using `[CartierDual.apply_bidual_symm, CartierDual.map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, rfl⟩ : ∃ z, bc z = φ` from `⟨bc.symm φ, bc.apply_symm_apply φ⟩`. Establish `hz : F (bc z) = Bialgebra.TensorProduct.map (BialgHom.id K K) f z` using `by simp [F]`. Rewrite using `[hz]`. Use `clear hz`. Proceed by induction on `z with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, WithConv.ofConv_add, LinearMap.add_apply, hu, hv]`. Consider the case `tmul k d' => simp [bc, CartierDual.apply_bidual_symm]`. Establish `hS : ∀ a : A, HopfAlgebra.antipode K ((1 : K) ⊗ₜ[R] a) = 1 ⊗ₜ HopfAlgebra.antipode R a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a`. Establish `key` using `GlobalTheory.T.integral_element_cartier_dual_trace K (K ⊗[R] A) F ΛK _ hΛK rfl hN' hFinj (1 ⊗ₜ a)`. Rewrite `key` using `[hS, hψ, hT, hψ, hF]`. Conclude with `⟨_, hι key⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surjective_of_integral_sq_card : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (f : CartierDual R A →ₐc[R] A) (Λ : CartierDual R A) (y : R), (∀ d : CartierDual R A, d * Λ = algebraMap R _ (Coalgebra.counit (R := R) d) * Λ) → Coalgebra.counit (R := R) Λ = y → algebraMap R K y ^ 2 = (Nat.card (A →ₐ[R] K) : K) → Function.Injective f → Function.Surjective f := by
   intro R K _ _ _ _ _ _ _ _ A _ _ _ _ _ f Λ y hΛ hy hN hf

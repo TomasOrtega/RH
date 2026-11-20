@@ -25,17 +25,15 @@ open scoped BigOperators
 namespace GlobalTheory.GalTheta
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`. Establish `hlam : ∀ w ∈ lamOf D cc δ, w0 D * w ∈ lamOf D cc δ`. Introduce `w hw`. Unfold `lamOf at hw ⊢`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨c, hc, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a * c, cc.mul_mem_left a hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`. Simplify using `only [map_mul, MulMemClass.coe_mul, RingOfIntegers.coe_eq_algebraMap]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `AddSubgroup.add_mem _ hy hz`. Consider the case `neg y _ hy => rw [mul_neg]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `AddSubgroup.neg_mem _ hy`. Introduce `x hx`. Unfold `La at hx ⊢`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨w, hw, A, hA, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨w0 D * w, hlam w hw, A, hA, by rw [smul_smul]⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `AddSubgroup.add_mem _ hy hz`.
-
-Consider the case `neg y _ hy => rw [smul_neg]`. Conclude with `AddSubgroup.neg_mem _ hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem weilElement_smul_mem_thetaLattice (D : D7) (hG : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ}
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) :
@@ -65,15 +63,15 @@ theorem weilElement_smul_mem_thetaLattice (D : D7) (hG : admG1 D) (cc : Ideal (�
   | neg y _ hy => rw [smul_neg]; exact AddSubgroup.neg_mem _ hy
 
 /- English proof (translation)
-Establish `hG : admG1 D` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Take `⟨hline, -, hint, hdual, hfg, -, hq⟩` from `GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hG cc δ hc N N' (La D (tor0 D cc δ) L L') (Or.inr ⟨L, L', hL, hL', rfl⟩)`. Take `⟨hS, t, ht2, ht0, ht4⟩` from `GlobalTheory.T.U_pullB_ne_zero_and_invariant_four_smul D hG cc δ hc (N + m) N' r b hb`. Take `⟨R, hR, hRA⟩` from `GlobalTheory.T.exists_nsmul_padded_lattice_mem_basis_product D hG cc δ hc N N' m r L L' b hb hfg`. Use `set S := pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ)) with hSdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF0 : (fun z : VC D N N' => U D (tor0 D cc δ) t S (pad D m z)) ≠ 0`. Introduce `h`. Use `congrFun h 0` as an intermediate fact. Rewrite `this` using `[pad_zero]`. Conclude with `ht0 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, hPt, hP, hP0⟩` from `GlobalTheory.T.exists_nonzero_theta_of_finite_level_average D (tor0 D cc δ) N N' _ hfg hint hdual hq (GlobalTheory.T.signedTranslation_add_selfDual_lattice D _ N N' _ hint hq (weilElement_smul_mem_thetaLattice D hG cc δ L L')) (fun z : VC D N N' => U D (tor0 D cc δ) t S (pad D m …`. Introduce `x hx`. Rewrite using `[U_pad, pad_nsmul, mul_smul, ht4 _ (hRA x hx)])`. Take `⟨a, ha⟩` from `hline e₀ he P hP hP0`. Establish `h1 : IsTr D (tor0 D cc δ) (La D (tor0 D cc δ) L L') P e₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `IsTr.single D (tor0 D cc δ) (A := La D (tor0 D cc δ) L L') P a 0 1 one_pos (by simp)` as an intermediate fact. Rewrite `this` using `[U_zero]`. Rewrite using `[ha]`. Conclude with `this`. Take `⟨G₁, hG₁, hGG⟩` from `IsTr.pad D _ hR hRA ((hPt.trans D _ h1).trans D _ hGe)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨G₁, IsTr.trans D _ ?_ hG₁, hGG⟩` and prove the remaining obligations. Use `IsTr.single D (tor0 D cc δ) (A := LaB D (tor0 D cc δ) b) S 1 t 2 two_pos ht2` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_restriction (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) {N N' m r : ℕ}
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -110,29 +108,25 @@ theorem exists_restriction (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc 
   simpa using this
 
 /- English proof (translation)
-Establish `hG : admG1 D` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Establish `hSt : galStar D` using `GlobalTheory.T.galStar_complexMultiplication_points D`. Establish `hD : DataIn D (tor0 D cc δ) ⊤` using `⟨fun _ _ => trivial, trivial, trivial⟩`. Take `⟨-, -, hint, -, hfg, -, hq⟩` from `GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hG cc δ hc N N' (La D (tor0 D cc δ) L L') (Or.inr ⟨L, L', hL, hL', rfl⟩)`. Take `⟨m, r, B, hB⟩` from `GlobalTheory.T.exists_orthonormal_frame_var D N N'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G₁, ⟨k₁, c₁, t₁, m₁, hm₁, ht₁, rfl⟩, hGG⟩` from `exists_restriction D cc δ hc L L' hL hL' B hB e₀ _ he ⟨k, c, t, m₀, hm, ht, rfl⟩`. Take `⟨R, hR, hRA⟩` from `GlobalTheory.T.exists_nsmul_padded_lattice_mem_basis_product D hG cc δ hc N N' m r L L' B hB hfg`. Take `⟨s, b, a, a', hb, ha, hxa, hxa', haa⟩` from `hA`. Take `⟨R', hR', hchg⟩` from `GlobalTheory.T.adapted_point_change_of_rational_basis D hG hSt cc δ hc ⊤ σ hK hD (N + m) N' r s B (fun j => padM D m (b j)) hB`. Establish `hl` using `fun j => GlobalTheory.T.adapted_torsion_lift_deeper_level D hSt cc δ hc σ hK (a j) (a' j) (2 * m₀) (R * m₁ * R') (by omega) (by positivity) (ha j) (haa j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose ω hω hωa using hl`. Use `set l : VC D N N' := ∑ j, ω j • embV D (tor0 D cc δ) (b j) with hldef`. Establish `hlA : l ∈ La D (tor0 D cc δ) L L'` using `AddSubgroup.sum_mem _ fun j _ => AddSubgroup.subset_closure ⟨ω j, hω j, b j, hb j, rfl⟩`. Take `⟨hp1, hp2⟩` from `GlobalTheory.T.thetaTranslation_comb_periodic_twice_level D (tor0 D cc δ) N N' _ hint hq k c t e₀ x m₀ he hx ht l hlA`. Establish `hy : m₀ • (x + (2 * m₀) • l) ∈ La D (tor0 D cc δ) L L'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_add]`. Conclude with `AddSubgroup.add_mem _ hx (AddSubgroup.nsmul_mem _ (AddSubgroup.nsmul_mem _ hlA _) _)`. Establish `e1 : pad D m (x + (2 * m₀) • l) = ∑ j, (a j + ((2 * m₀ : ℕ) : ℂ) * ω j) • embV D (tor0 D cc δ) (padM D m (b j))`. Establish `: x + (2 * m₀) • l = ∑ j, (a j + ((2 * m₀ : ℕ) : ℂ) * ω j) • embV D (tor0 D cc δ) (b j)`. Rewrite using `[hxa, hldef, ← Nat.cast_smul_eq_nsmul ℂ, Finset.smul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [add_smul, smul_smul]`. Rewrite using `[this, pad_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pad_smul, pad_embV D _ (fun τ => map_zero (embT D τ))]`. Establish `e2 : pad D m x' = ∑ j, a' j • embV D (torConj D (tor0 D cc δ) ⊤ σ) (padM D m (b j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxa', pad_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pad_smul, pad_embV]`. Introduce `τ`. Use `show σ (TaylorLogMetric.liftM ⊤ (embT D τ 0)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Establish `: TaylorLogMetric.liftM ⊤ (0 : ℂ) = 0` using `by simp [TaylorLogMetric.liftM]; rfl`. Rewrite using `[this, map_zero]`. Establish `hAd : AdpB D (tor0 D cc δ) ⊤ σ B (2 * (m₀ * R * m₁)) (pad D m (x + (2 * m₀) • l)) (pad D m x')`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `hchg _ _ _ (by positivity) (fun j => ?_) (fun j => ?_)` and prove the remaining obligations. Take `⟨n, hn, hna⟩` from `ha j`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, ← mul_assoc, ← Nat.cast_mul, ← nsmul_eq_mul (n * (2 * m₀))]`. Conclude with `AddSubgroup.add_mem _ hna (AddSubgroup.nsmul_mem _ (hω j) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 2 * (m₀ * R * m₁) * R' = 2 * m₀ * (R * m₁ * R')` using `by ring`. Rewrite using `[this]`. Conclude with `hωa j`. Take `⟨hg1, hg2⟩` from `GlobalTheory.T.galois_conj_torsionTranslates_oddThetaProduct D cc δ hc ⊤ σ hK hD (N + m) N' r B hB k₁ c₁ t₁ (pad D m (x + (2 * m₀) • l)) (pad D m x') (m₀ * R * m₁) (by positivity) (by`. Establish `: (m₀ * R * m₁) • pad D m (x + (2 * m₀) • l) = m₁ • R • pad D m (m₀ • (x + (2 * m₀) • l))`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pad_nsmul, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `AddSubgroup.nsmul_mem _ (hRA _ hy) _)`.
-
-Use the proof step `(fun i => by rw [mul_smul]; exact AddSubgroup.nsmul_mem _ (ht₁ i) _) hAd (fun _ => trivial) (fun _ => trivial)`. Establish `hd` using `differentiable_comb D (tor0 D cc δ) c₁ t₁ (GlobalTheory.T.U_pullB_ne_zero_and_invariant_four_smul D hG cc δ hc (N + m) N' r B hB).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp1, hGG, U_pad, GlobalTheory.T.taylorConjugate_tangentSpacePadZeroColumns D N N' m ⊤ σ _ (differentiable_U D _ _ hd), hg1, GlobalTheory.T.taylorConjugate_tangentSpacePadZeroColumns D N N' m ⊤ σ _ hd, U_pad]`. Use `(hg2 trivial).1` as an intermediate fact.
-
-Rewrite `this` using `[wdPh_pad, wdPh_pad, hp2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gal_top (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ)
     (σ : (⊤ : IntermediateField ℚ ℂ) →ₐ[ℚ] ℂ) (hK : FixK D ⊤ σ) {N N' : ℕ}
@@ -205,7 +199,7 @@ theorem gal_top (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc 
     rwa [wdPh_pad, wdPh_pad, hp2] at this
 
 /- English proof (translation)
-Simplify using `only [cj, TaylorLogMetric.liftM, dif_pos ha, dif_pos hb, dif_pos (M.mul_mem ha hb), ← map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cj_mul (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) {a b : ℂ} (ha : a ∈ M) (hb : b ∈ M) :
     cj M ρ (a * b) = cj M ρ a * cj M ρ b := by
@@ -213,11 +207,11 @@ theorem cj_mul (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) {a b : �
   rfl
 
 /- English proof (translation)
-Establish `h1 : (-1 : ℂ) ∈ M` using `M.neg_mem M.one_mem`. Break down `Int.even_or_odd m with h | h` into its components or cases. Rewrite using `[h.neg_one_zpow]`. Use `⟨M.one_mem, ?_⟩` and prove the remaining obligations. Simplify using `only [cj, TaylorLogMetric.liftM, dif_pos M.one_mem]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `map_one ρ`. Rewrite using `[h.neg_one_zpow]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Simplify using `only [cj, TaylorLogMetric.liftM, dif_pos h1]`. Establish `: (⟨-1, h1⟩ : M) = -1` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_neg, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem cj_neg_one_zpow (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (m : ℤ) :
     (-1 : ℂ) ^ m ∈ M ∧ cj M ρ ((-1 : ℂ) ^ m) = (-1 : ℂ) ^ m := by
@@ -234,11 +228,11 @@ theorem cj_neg_one_zpow (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ)
     rw [this, map_neg, map_one]
 
 /- English proof (translation)
-Establish `ht : ∀ α, TaylorLogMetric.taylor D (fun z => a * F z) α = a * TaylorLogMetric.taylor D F α`. Introduce `α`. Establish `han : AnalyticAt ℂ F 0` using `SCV.analyticAt_iff_eventually_differentiableAt.2 (Filter.Eventually.of_forall hF)`. Establish `: (fun z => a * F z) = a • F` using `rfl`. Unfold `TaylorLogMetric.taylor`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[this, iteratedFDeriv_const_smul_apply han.contDiffAt]`. Simplify using `only [ContinuousMultilinearMap.smul_apply, smul_eq_mul, mul_div_assoc]`. Use function extensionality and compare the values at `z`. Unfold `fnConj`. Rewrite using `[← tsum_mul_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun α => ?_` and prove the remaining obligations. Rewrite using `[ht, ← mul_assoc]`. Conclude with `congrArg (· * mono D α z) (cj_mul M ρ ha (hM α))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnConj_mul (D : D7) {N N' : ℕ} (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (a : ℂ) (ha : a ∈ M)
     (F : VC D N N' → ℂ) (hF : Differentiable ℂ F) (hM : CoefIn D F M) :
@@ -258,27 +252,27 @@ theorem fnConj_mul (D : D7) {N N' : ℕ} (M : IntermediateField ℚ ℂ) (ρ : M
   exact congrArg (· * mono D α z) (cj_mul M ρ ha (hM α))
 
 /- English proof (translation)
-Introduce `D cc δ hc M ρ hK hD N N' L L' hL hL' k c t e₀ x x' m₀ he hm hx ht hA hG hU`. Take `⟨s, b, a, a', hb, ha, hxa, hxa', haa⟩` from `hA`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_complexEndomorphism_eq_on_countable M ρ ((⋃ τ, Set.range (embT D τ)) ∪ Set.range D.host.φ₀ ∪ {g2 (lamOf D cc δ), g3 (lamOf D cc δ), wdPh D (tor0 D cc δ) x} ∪ Set.range (fun j => wpF (lamOf D cc δ) (a j / ((2 * m₀ : ℕ) : ℂ))) ∪ Set.range (fun j => wpD (lamOf …`. Simplify using `only [Set.countable_union]`. Use `⟨⟨⟨⟨⟨⟨Set.countable_iUnion fun _ => Set.countable_range _, Set.countable_range _⟩, ?_⟩, Set.countable_range _⟩, Set.countable_range _⟩, Set.countable_range _⟩, Set.countable_range _⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Set.toFinite _).countable)`. Establish `hlam : lamConj ⊤ σ (lamOf D cc δ) = lamConj M ρ (lamOf D cc δ)`. Establish `h2` using `hσ (g2 (lamOf D cc δ)) (by simp) hD.2.1`. Establish `h3` using `hσ (g3 (lamOf D cc δ)) (by simp) hD.2.2`. Unfold `cj at h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `lamConj`. Rewrite using `[h2, h3]`. Establish `htor : torConj D (tor0 D cc δ) ⊤ σ = torConj D (tor0 D cc δ) M ρ`. Establish `h : (fun τ y => σ (TaylorLogMetric.liftM ⊤ ((tor0 D cc δ).emb τ y))) = fun τ y => ρ (TaylorLogMetric.liftM M ((tor0 D cc δ).emb τ y))`. Use function extensionality and compare the values at `τ y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Conclude with `hσ (embT D τ y) (Or.inl (Or.inl (Or.inl (Or.inl (Or.inl (Or.inl (Set.mem_iUnion.2 ⟨τ, y, rfl⟩))))))) (hD.1 τ y)`. Unfold `torConj`. Rewrite using `[h]`. Conclude with `congrArg _ hlam`. Establish `hK' : FixK D ⊤ σ` using `fun y => ⟨trivial, (hσ _ (by simp) (hK y).1).trans (hK y).2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfn : ∀ F : VC D N N' → ℂ, (∀ α, cj ⊤ σ (TaylorLogMetric.taylor D F α) = cj M ρ (TaylorLogMetric.taylor D F α)) → fnConj D ⊤ σ F = fnConj D M ρ F`. Introduce `F hF`. Use function extensionality and compare the values at `z`. Conclude with `tsum_congr fun α => congrArg (· * mono D α z) (hF α)`. Establish `hA' : AdpV D (tor0 D cc δ) ⊤ σ L L' (2 * m₀) x x'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨s, b, a, a', hb, ha, hxa, by rw [htor]; exact hxa', fun j => ?_⟩` and prove the remaining obligations. Establish `h` using `haa j`. Unfold `Adp1 StarPt at h ⊢`. Express the relevant statement in the definitionally equal form `_ ∧ _ ∈ lamConj ⊤ σ (lamOf D cc δ) ∨ _ ∧ _ ∉ lamConj ⊤ σ (lamOf D cc δ) ∧ _ ∧ _ ∧ wpF (lamConj ⊤ σ (lamOf D cc δ)) _ = _ ∧ wpD (lamConj ⊤ σ (lamOf D cc δ)) _ = _`. Rewrite using `[hlam]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Prove the first alternative.
 
-Break down `h with h | ⟨h1, h2, h3, h4, h5, h6⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨h1, h2, trivial, trivial, h5.trans (hσ _ ?_ h3).symm, h6.trans (hσ _ ?_ h4).symm⟩` and prove the remaining obligations. Conclude with `Or.inl (Or.inl (Or.inl (Or.inr ⟨j, rfl⟩)))`. Conclude with `Or.inl (Or.inl (Or.inr ⟨j, rfl⟩))`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `gal_top D cc δ hc σ hK' L L' hL hL' c t e₀ x x' m₀ he hm hx ht hA'`. Rewrite `h1` using `[hfn _ (fun α => hσ _ (Or.inr ⟨α, rfl⟩) (hU α)), hfn _ (fun α => hσ _ (Or.inl (Or.inr ⟨α, rfl⟩)) (hG α)), htor]`. Rewrite `h2` using `[htor]`. Establish `hd` using `differentiable_U D (tor0 D cc δ) x (differentiable_comb D (tor0 D cc δ) c t he.1)`. Use `⟨h1, fun hw => ?_, fun p hp hp2 ⟨j, hj⟩ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `(hσ _ (by simp) hw).symm.trans h2`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Unfold `Wd`. Rewrite using `[fnConj_mul D M ρ _ hw _ hd hU, h1, h3]`. Take `⟨-, -, -, -, -, -, hq⟩` from `GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc N N' (La D (tor0 D cc δ) L L') (Or.inr ⟨L, L', hL, hL', rfl⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨m, hmq⟩` from `hq _ hj`. Establish `hpq : (p : ℝ) ^ (2 * j) * qH D (tor0 D cc δ) x = (m : ℝ)`. Rewrite using `[← hmq]`. Unfold `qH`. Rewrite using `[Hf_nsmul_left, Hf_nsmul_right, ← Complex.ofReal_natCast, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h4, h5⟩` from `GlobalTheory.T.thetaOddPrimePhase_conj_invariant D _ _ N N' x x' σ p (2 * j) m hp hp2 hpq h2`. Unfold `Wop`. Rewrite using `[h4, h5, fnConj_mul D M ρ _ (cj_neg_one_zpow M ρ m).1 _ hd hU, h1, (cj_neg_one_zpow M ρ m).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gal_all : ∀ D : D7, gal D := by
   intro D cc δ hc M ρ hK hD N N' L L' hL hL' k c t e₀ x x' m₀ he hm hx ht hA hG hU

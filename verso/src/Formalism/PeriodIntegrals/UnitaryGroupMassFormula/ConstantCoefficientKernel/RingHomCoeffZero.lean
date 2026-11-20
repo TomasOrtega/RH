@@ -7,11 +7,11 @@ open scoped BigOperators
 namespace PI.KerExtCWork
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun i => (τ i).toMonoidHom)`. Introduce `i j hij`. Apply `hτ` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `DFunLike.congr_fun hij x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hli` using `(linearIndependent_monoidHom E ℂ).comp _ hinj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `i`. Apply `hli c` to reduce the goal to its premises. Use function extensionality and compare the values at `e`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h e` using `[Finset.sum_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_coeff_zero {E : Type} [Field E] {n : Type} [Fintype n]
     (τ : n → E →+* ℂ) (hτ : Function.Injective τ) (c : n → ℂ)
@@ -29,29 +29,27 @@ theorem ringHom_coeff_zero {E : Type} [Field E] {n : Type} [Fintype n]
   simpa [Finset.sum_apply, smul_eq_mul] using h e
 
 /- English proof (translation)
-Introduce `K E _ _ _ _ n _ φ τ hτ hφ _ g`. Set `ι : (Fin 4 → E) → (Fin 4 × n → ℂ)` to `fun x w => τ w.2 (x w.1)`. Set `b : Fin 4 × n → (Fin 4 → E)` to `fun v => g.symm (Pi.single v 1)`. Set `M : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)` to `{ toFun := fun c => ∑ v, c v • ι (b v) map_add' := by intro c d; simp [add_smul, Finset.sum_add_distrib] map_smul' := by intro r c; simp [Finset.smul_sum, smul_smul] }`. Establish `hx : ∀ x : Fin 4 → E, x = ∑ v, g x v • b v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Establish `hgx : g x = ∑ v, g x v • (Pi.single v (1 : K) : Fin 4 × n → K)`. Use extensionality with `w`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_sum]`. Simplify using `only [LinearEquiv.map_smul, b]`. Establish `hι : ∀ k : Fin 4 × n → K, ι (∑ v, k v • b v) = ∑ v, φ (k v) • ι (b v)`. Establish `hs : ∀ i (k : K) (y : E), τ i (k • y) = φ k * τ i y`. Introduce `i k y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.smul_def, map_mul, hφ]`. Introduce `k`. Use function extensionality and compare the values at `w`. Simplify using `only [ι, Finset.sum_apply, Pi.smul_apply, map_sum, hs, smul_eq_mul]`. Establish `hM : ∀ x : Fin 4 → E, M (fun v => φ (g x v)) = ι x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x`. Conclude with `(hι (g x)).symm.trans (congrArg ι (hx x).symm)`. Establish `hsurj : Function.Surjective M`. Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf0, hf⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hne) inferInstance`. Apply `hf0` to reduce the goal to its premises. Establish `hfι : ∀ x, f (ι x) = 0`. Introduce `x`. Establish `hmem : f (M (fun v => φ (g x v))) ∈ (LinearMap.range M).map f` using `Submodule.mem_map_of_mem (LinearMap.mem_range_self M _)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[hf, Submodule.mem_bot, hM]`. Conclude with `hmem`. Establish `hc : ∀ a i, f (Pi.single (a, i) 1) = 0`. Introduce `a`. Establish `h0` using `ringHom_coeff_zero τ hτ (fun i => f (Pi.single (a, i) 1)) ?_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `congrFun h0 i`. Introduce `e`. Establish `h1 : ι (Pi.single a e) = ∑ i, τ i e • (Pi.single (a, i) 1 : Fin 4 × n → ℂ)`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Break down `w with ⟨a', i'⟩` into its components or cases. Distinguish the cases in `ha : a' = a`. Substitute `ha` using the available equality. Simplify using `[ι, Finset.sum_apply, Pi.single_apply]`. Simplify using `[ι, Finset.sum_apply, ha]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `hfι (Pi.single a e)`. Rewrite `h2` using `[h1, map_sum]`. Simplify `h2` using `[smul_eq_mul, mul_comm]`. Use `(Pi.basisFun ℂ (Fin 4 × n)).ext (fun w => ?_)` and prove the remaining obligations. Break down `w with ⟨a, i⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.basisFun_apply, LinearMap.zero_apply]`. Conclude with `hc a i`. Set `e` to `LinearEquiv.ofBijective M ⟨LinearMap.injective_iff_surjective.2 hsurj, hsurj⟩`. Use `⟨e.symm, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_eq]`.
-
-Conclude with `(hM x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extC : PI.KerIso.ExtC := by
   intro K E _ _ _ _ n _ φ τ hτ hφ _ g

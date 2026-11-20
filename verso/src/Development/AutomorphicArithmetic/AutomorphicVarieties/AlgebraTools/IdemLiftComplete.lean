@@ -12,57 +12,51 @@ end UpperTheory.V.AlgebraTools
 
 open UpperTheory.V.AlgebraTools in
 /- English proof (translation)
-Introduce `B E _ _ _ I _ z M hM`. Use `set S : ℕ → Submodule B E := fun n => I ^ n • (⊤ : Submodule B E) with hS`. Establish `L2r : ∀ n (x y : E), x ∈ I ^ n • (⊤ : Submodule B E) → x * y ∈ I ^ n • (⊤ : Submodule B E)`. Introduce `n x y hx`. Use `Submodule.smul_induction_on (p := fun x => x * y ∈ I ^ n • (⊤ : Submodule B E)) hx (fun a ha m _ => ?_) (fun x1 x2 h1 h2 => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem_smul ha Submodule.mem_top`. Rewrite using `[add_mul]`. Conclude with `add_mem h1 h2`. Establish `L2l : ∀ n (x y : E), x ∈ I ^ n • (⊤ : Submodule B E) → y * x ∈ I ^ n • (⊤ : Submodule B E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n x y hx`. Use `Submodule.smul_induction_on (p := fun x => y * x ∈ I ^ n • (⊤ : Submodule B E)) hx (fun a ha m _ => ?_) (fun x1 x2 h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem_smul ha Submodule.mem_top`. Rewrite using `[mul_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem h1 h2`. Establish `L3 : ∀ n (x w : E), x ∈ I • (⊤ : Submodule B E) → w ∈ I ^ n • (⊤ : Submodule B E) → x * w ∈ I ^ (n + 1) • (⊤ : Submodule B E)`. Introduce `n x w hx hw`. Use `Submodule.smul_induction_on (p := fun x => x * w ∈ I ^ (n + 1) • (⊤ : Submodule B E)) hx (fun a ha m _ => ?_) (fun x1 x2 h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[smul_mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `Submodule.smul_mem_smul ha (L2l n w m hw)`. Rewrite `h` using `[← Submodule.smul_assoc, Ideal.smul_eq_mul, ← pow_succ']`. Then use the resulting hypothesis. Rewrite using `[add_mul]`. Conclude with `add_mem h1 h2`. Establish `Lpow : ∀ n (x : E), x ∈ I • (⊤ : Submodule B E) → x ^ n ∈ I ^ n • (⊤ : Submodule B E)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `n x hx`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Rewrite using `[pow_succ' x n]`. Conclude with `L3 n x _ hx ih`. Establish `Mem : ∀ n k, M * n ≤ 2 ^ k → ∀ y : E, (z * z - z) ^ (2 ^ k) * y ∈ I ^ n • (⊤ : Submodule B E)`. Introduce `n k hk y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h : (z * z - z) ^ (2 ^ k) = ((z * z - z) ^ M) ^ n * (z * z - z) ^ (2 ^ k - M * n)`. Rewrite using `[← pow_mul, ← pow_add, Nat.add_sub_cancel' hk]`. Rewrite using `[h, mul_assoc]`. Conclude with `L2r _ _ _ (Lpow n _ hM)`. Establish `hk2 : ∀ k : ℕ, k ≤ 2 ^ k` using `fun k => (Nat.lt_two_pow_self).le`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `PoincareLelongAlt : ∀ k, ∃ Q : B[X], ilcP B k = X + (X * X - X) * Q`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by rw [ilcP]; ring⟩`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨Q, hQ⟩` from `ih`. Use `⟨Q - (1 + 2 * X * Q + (X * X - X) * Q ^ 2 - Q) * (2 * (X + (X * X - X) * Q) - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[ilcP, hQ]`. Expand and normalize the polynomial expressions, which then agree. Establish `ProjectiveLineTwo : ∀ k, ∃ W : B[X], ilcP B k * ilcP B k - ilcP B k = (X * X - X) ^ (2 ^ k) * W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨1, by rw [ilcP]; ring⟩`. Consider the case `succ k ih`. Take `⟨W, hW⟩` from `ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hid : ∀ P : B[X], (3 * P ^ 2 - 2 * P ^ 3) * (3 * P ^ 2 - 2 * P ^ 3) - (3 * P ^ 2 - 2 * P ^ 3) = (P * P - P) ^ 2 * (4 * (P * P - P) - 3)` using `fun P => by ring`. Use `⟨W ^ 2 * (4 * (X * X - X) ^ (2 ^ k) * W - 3), ?_⟩` and prove the remaining obligations. Rewrite using `[ilcP, hid, hW, pow_succ 2 k, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `PL3 : ∀ k, ∃ V : B[X], ilcP B (k + 1) - ilcP B k = (X * X - X) ^ (2 ^ k) * V`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k`. Take `⟨W, hW⟩` from `ProjectiveLineTwo k`. Use `⟨-(W * (2 * ilcP B k - 1)), ?_⟩` and prove the remaining obligations. Rewrite using `[ilcP]`. Take the linear combination `(-(2 * ilcP B k - 1)) * hW`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `PL4 : ∀ k j, ∃ V : B[X], ilcP B (k + j) - ilcP B k = (X * X - X) ^ (2 ^ k) * V`. Introduce `k j`. Proceed by induction on `j with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ j ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨V0, hV0⟩` from `ih`. Take `⟨V1, hV1⟩` from `PL3 (k + j)`. Establish `hpow : (X * X - X : B[X]) ^ (2 ^ (k + j)) = (X * X - X) ^ (2 ^ k) * (X * X - X) ^ (2 ^ (k + j) - 2 ^ k)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' (Nat.pow_le_pow_right (by norm_num) (by omega))]`. Use `⟨(X * X - X) ^ (2 ^ (k + j) - 2 ^ k) * V1 + V0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show k + (j + 1) = k + j + 1 by omega]`. Take the linear combination `hV1 + hV0 + V1 * hpow`. Establish `hD : aeval z (X * X - X : B[X]) = z * z - z` using `by simp`. Set `f : ℕ → E` to `fun n => aeval z (ilcP B (M * n))`. Establish `hdiff : ∀ k j, ∃ V : B[X], aeval z (ilcP B (k + j)) - aeval z (ilcP B k) = (z * z - z) ^ (2 ^ k) * aeval z V`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `k j`. Take `⟨V, hV⟩` from `PL4 k j`. Use `⟨V, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (aeval z) hV`. Rewrite `h` using `[map_sub, map_mul, map_pow, hD]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → f m ≡ f n [SMOD (I ^ m • (⊤ : Submodule B E))]`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem]`. Take `⟨V, hV⟩` from `hdiff (M * m) (M * n - M * m)`. Rewrite `hV` using `[Nat.add_sub_cancel' (Nat.mul_le_mul_left M hmn)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : f m - f n = -((z * z - z) ^ (2 ^ (M * m)) * aeval z V)`. Rewrite using `[← hV]`. Simplify using `only [f]`. Normalize the expressions using the abelian group laws. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `neg_mem (Mem m (M * m) (hk2 _) _)`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (inferInstance : IsPrecomplete I E) hcauchy`. Establish `hd : ∀ n, L - f n ∈ I ^ n • (⊤ : Submodule B E)`. Introduce `n`. Establish `h` using `(SModEq.sub_mem).mp (hL n)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← neg_sub]`. Conclude with `neg_mem h`. Establish `hsq : ∀ n, f n * f n - f n ∈ I ^ n • (⊤ : Submodule B E)`. Introduce `n`. Take `⟨W, hW⟩` from `ProjectiveLineTwo (M * n)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (aeval z) hW`. Rewrite `h` using `[map_sub, map_mul, map_mul, map_pow, hD]`. Simplify using `only [f]`. Rewrite using `[h]`. Conclude with `Mem n (M * n) (hk2 _) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hidem : IsIdempotentElem L`. Establish `h0 : L * L - L = 0`. Apply `IsHausdorff.haus (inferInstance : IsHausdorff I E)` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.sub_mem, sub_zero]`.
-
-Establish `e1 : L * L - L = (f n * f n - f n) + (f n * (L - f n) + (L - f n) * f n + (L - f n) * (L - f n) - (L - f n))` using `by noncomm_ring`. Rewrite using `[e1]`. Establish `hdn` using `hd n`. Conclude with `add_mem (hsq n) (sub_mem (add_mem (add_mem (L2l _ _ _ hdn) (L2r _ _ _ hdn)) (L2r _ _ _ hdn)) hdn)`. Conclude with `sub_eq_zero.mp h0`.
-
-Use `⟨L, hidem, fun N => ?_⟩` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `PoincareLelongAlt (M * N)`. Use `⟨Q, ?_⟩` and prove the remaining obligations. Establish `h : f N = z + (z * z - z) * aeval z Q`. Simplify using `only [f]`.
-
-Rewrite using `[hQ, map_add, map_mul, hD, aeval_X]`. Rewrite using `[← h]`. Conclude with `hd N`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.idem_lift_complete :
     ∀ {B E : Type} [CommRing B] [Ring E] [Algebra B E] (I : Ideal B) [IsAdicComplete I E] (z : E) (M : ℕ), (z * z - z) ^ M ∈ I • (⊤ : Submodule B E) → ∃ e : E, IsIdempotentElem e ∧ ∀ N : ℕ, ∃ q : B[X], e - (z + (z * z - z) * aeval z q) ∈ I ^ N • (⊤ : Submodule B E) := by

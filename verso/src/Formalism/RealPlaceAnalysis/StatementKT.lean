@@ -43,7 +43,7 @@ def negT {A : Type*} [Ring A] {n : ℕ} (F : Fin n → Fin n → A) : Fin n → 
   fun a b => -F b a
 
 /- English proof (translation)
-Unfold `GlRel at h`. Introduce `a b c d _ _`. Conclude with `h a b c d`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem glRel_kRel {A : Type*} [Ring A] {n : ℕ} (ε : Fin n → Bool) (F : Fin n → Fin n → A)
     (h : GlRel F) : KRel ε F := by
@@ -52,7 +52,7 @@ theorem glRel_kRel {A : Type*} [Ring A] {n : ℕ} (ε : Fin n → Bool) (F : Fin
   exact h a b c d
 
 /- English proof (translation)
-Unfold `IsUnitary at h`. Introduce `a b hab x y`. Simplify `h a b x y` using `[sgn, hab]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnitary_kUnit {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
     (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) (h : IsUnitary ε F) : KUnit ε F := by

@@ -18,7 +18,7 @@ section Concrete3
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 
 /- English proof (translation)
-Establish `h : vw y (GmOf (A3.side3 P0 ψ0 Zs) (S.μ y) y) ≤ (((A3.side3 P0 ψ0 Zs).dQ (S.μ y) : ℕ) : ℤ) * vw y ((Fintype.card G * s : ℕ) : K)` using `A3.A.fam.GmOf_le hOk.ok2 P0 ψ0 (A3.fam3.toSub2 Zs) (S.μ y) y`. Rewrite `h` using `[S.dQ_eq]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_valuation_le_extended [IsTotallyComplex K] (A3 : FamIn3 K G Pl0 I0 Ty T m) {s : ℕ} (hOk : A3.fam3.Ok3 s) (P0 : Subgroup G)
     (ψ0 : P0 →* Kˣ) (Zs : DefSub A3.fam3.amb3) (S : IndefRows (A3.side3 P0 ψ0 Zs)) (y : HeightOneSpectrum (𝓞 K)) :
@@ -31,11 +31,11 @@ theorem gram_valuation_le_extended [IsTotallyComplex K] (A3 : FamIn3 K G Pl0 I0 
   exact_mod_cast h
 
 /- English proof (translation)
-Take `⟨Jn, hJn, hinc⟩` from `h11 y hy j`. Establish `wf` using `A3.side_well_formed hOk P0 ψ0 Zs hst hin hsep`. Establish `hD : (A3.side3 P0 ψ0 Zs).dZ j (S.μ y) = S.D` using `S.rankZ wf j (S.μ y)`. Establish `hlat` using `lift_lattices K G Pl0 (A3.A.fam.L j (S.μ y)) (A3.A.fam.lvlA P0 ψ0) ((A3.fam3.toSub2 Zs).Zl j (S.μ y)) A3.A.fam.v0 s (A3.A.fam.blockHyp_lift hOk.ok2 P0 ψ0 j (S.μ y))`. Establish `hJ : A3.A.fam.JJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y ≤ Jn` using `(exponent_weight_spectral K _ y ((A3.A.fam.L j (S.μ y)).cutZ (A3.A.fam.lvlA P0 ψ0) ((A3.fam3.toSub2 Zs).Zl j (S.μ y))) ((A3.A.fam.L j (S.μ y)).delZ (A3.A.fam.lvlA P0 ψ0) ((A3.fam3.toSub2 Zs).Zl j (S.μ y))) hlat.2.1 hlat.2.2.1).2 Jn hinc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : jw ((A3.side3 P0 ψ0 Zs).HT j (S.μ y)) y ((A3.side3 P0 ψ0 Zs).Tl j (S.μ y)) ≤ (A3.A.fam.etaJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y : ℤ) + ((A3.side3 P0 ψ0 Zs).dZ j (S.μ y) : ℤ) * ((A3.A.fam.JJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y : ℤ) + vw y (((A3.A.fam.L j (S.μ y)).DG (A3 …` using `A3.A.fam.jw_le hOk.ok2 P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y`. Establish `h2 : (jw ((A3.side3 P0 ψ0 Zs).HT j (S.μ y)) y ((A3.side3 P0 ψ0 Zs).Tl j (S.μ y)) : ℝ) ≤ (A3.A.fam.etaJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y : ℝ) + (((A3.side3 P0 ψ0 Zs).dZ j (S.μ y) : ℕ) : ℝ) * ((A3.A.fam.JJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y : ℝ) + (vw y (((A3.A.fam.L j (S …`. Conclude with `h1` after adjusting the coercions. Establish `hDr : (((A3.side3 P0 ψ0 Zs).dZ j (S.μ y) : ℕ) : ℝ) = (S.D : ℝ)` using `by exact_mod_cast hD`. Rewrite `h2` using `[hDr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (A3.A.fam.JJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y : ℝ) ≤ (ramw y : ℝ) * J0 (S.μ y) y j` using `le_trans (by exact_mod_cast hJ) hJn`. Establish `hD0 : (0 : ℝ) ≤ S.D` using `Nat.cast_nonneg _`. Establish `h4` using `mul_le_mul_of_nonneg_left h3 hD0`. Unfold `etaYOf`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem lift_index_bound_extended (A3 : FamIn3 K G Pl0 I0 Ty T m) {s : ℕ} (hOk : A3.fam3.Ok3 s) (hsep : A3.fam3.TypesSep3) (P0 : Subgroup G)
     (ψ0 : P0 →* Kˣ) (Zs : DefSub A3.fam3.amb3) (hst : Zs.Stable) (hin : Zs.InBlock) (S : IndefRows (A3.side3 P0 ψ0 Zs))
@@ -71,15 +71,13 @@ theorem lift_index_bound_extended (A3 : FamIn3 K G Pl0 I0 Ty T m) {s : ℕ} (hOk
   nlinarith
 
 /- English proof (translation)
-Establish `hDpos : (0 : ℝ) < S.D` using `by exact_mod_cast S.D_pos`. Establish `e : (A3.A.fam.R A3.A.fam.μ0).dZ (A3.A.fam.lvl P0 ψ0) (Zs.Z A3.A.fam.μ0) = S.D` using `S.dQ_eq A3.fam3.base3.μ0`. Establish `hN' : ∑ y ∈ S.Tw, Formalism.DivisionValues.lw y * (A3.A.fam.etaJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y : ℝ) ≤ bd j * (S.D : ℝ)`. Establish `h` using `hN j`. Express the relevant statement in the definitionally equal form `_ ≤ bd j * (((A3.A.fam.R A3.A.fam.μ0).dZ (A3.A.fam.lvl P0 ψ0) (Zs.Z A3.A.fam.μ0) : ℕ) : ℝ) at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h` using `[e]`. Conclude with `h`. Establish `hsplit : ∑ y ∈ S.Tw, Formalism.DivisionValues.lw y * etaYOf A3.A P0 ψ0 (A3.fam3.toSub2 Zs) s S.μ S.D y j / (S.D : ℝ) = (∑ y ∈ S.Tw, Formalism.DivisionValues.lw y * (A3.A.fam.etaJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y : ℝ)) / (S.D : ℝ) + ((∑ y ∈ S.Tw, Formalism.DivisionValues.lw …`. Rewrite using `[Finset.sum_div, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `etaYOf`. Clear the denominators using the available nonvanishing facts. Establish `hA : (∑ y ∈ S.Tw, Formalism.DivisionValues.lw y * (A3.A.fam.etaJW P0 ψ0 (A3.fam3.toSub2 Zs) j (S.μ y) y : ℝ)) / (S.D : ℝ) ≤ bd j`. Rewrite using `[div_le_iff₀ hDpos]`. Conclude with `hN'`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB : ∑ y ∈ S.Tw, Formalism.DivisionValues.lw y * (vw y (((A3.A.fam.L j (S.μ y)).DG (A3.A.fam.lvlA P0 ψ0) : ℕ) : K) : ℝ) ≤ Real.log (dg : ℝ)`. Use `le_trans (Finset.sum_le_sum fun y _ => mul_le_mul_of_nonneg_left ?_ (W5.lw_nonneg y)) ((place_sum_natural K dg hdg).2.2 S.Tw)` and prove the remaining obligations. Conclude with `vw_nat_le_of_dvd y hdg (hdvd j (S.μ y))` after adjusting the coercions. Establish `hC` using `(place_sum_natural K s hs).2.2 S.Tw`. Rewrite using `[hsplit]`.
-
-Unfold `etaSumBound`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twisted_place_eta_sum_le_extended (A3 : FamIn3 K G Pl0 I0 Ty T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Zs : DefSub A3.fam3.amb3) {s : ℕ}
     (hs : 0 < s) (S : IndefRows (A3.side3 P0 ψ0 Zs)) (bd : Fin m → ℝ)
@@ -307,7 +305,7 @@ def DivInputsDef3.toDivInputs0R [IsTotallyComplex K] (hOk : A3.fam3.Ok3 s) (hsep
   constant_ge_twenty_eight := I.constant_ge_twenty_eight
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem DivInputsDef3.defs_eq [IsTotallyComplex K] (hOk : A3.fam3.Ok3 s) (hsep : A3.fam3.TypesSep3)
     (I : DivInputsDef3 A3 s P0 ψ0 P1 ψ1 Dc Sp Zsc cf C CH Pk R u Nu sg) :
@@ -354,7 +352,7 @@ variable {X : Fields} {Pr : Primes X} {Rk : Ranks} {W : Wts X Pr.Word Rk} {Ch : 
   {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 
 /- English proof (translation)
-The claim follows from `linkDIV_L2R3_rec A3 hOk hsep P0 ψ0 P1 ψ1 hX Xg mu cst L hL hP Mem wd b hY Am hK hF hE ev Sp Zsc cf C CH Pk R x Nu sg { toDivInputs0R := I.toDivInputs0R hOk hsep, val2 := val2 } hQ h0`.
+A detailed English derivation is pending.
 -/
 theorem linkDIV_L2R3_def [IsTotallyComplex X.K] (A3 : FamIn3 X.K G Pl0 I0 Ty T m) {s : ℕ} (hOk : A3.fam3.Ok3 s)
     (hsep : A3.fam3.TypesSep3) (P0 : Subgroup G) (ψ0 : P0 →* X.Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* X.Kˣ) (hX : X.Ok)

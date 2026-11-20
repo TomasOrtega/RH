@@ -15,11 +15,11 @@ noncomputable section
 namespace ChainSum
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_linearIndependent_fin (K := K) (E := A.carrier)`. Establish `ht : LinearIndependent (𝓞 K) (fun i ↦ φ (s i))` using `hs.map' φ.toLinearMap φ.ker`. Establish `hcard : Fintype.card (Fin (Module.finrank (𝓞 K) A.carrier)) = Module.finrank (𝓞 K) B.carrier`. Rewrite using `[Fintype.card_fin]`. Conclude with `φ.finrank_eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [HermitianBundle.deg, HermitianBundle.arithDegree]`. Rewrite using `[arithDegree_eq A.metric hs (Fintype.card_fin _), arithDegree_eq B.metric ht hcard]`. Simplify using `only [GroundTheory.Heights₂.Heights.degreeWith, hg]`. Establish `hmap : (Submodule.span (𝓞 K) (Set.range s)).map φ.toLinearMap = Submodule.span (𝓞 K) (Set.range fun i ↦ φ (s i))`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Nat.card_congr (Submodule.Quotient.equiv _ _ φ hmap).toEquiv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_eq_of_linearEquiv {K : Type u} [Field K] [NumberField K] (A B : HermitianBundle.{v} K)
     (φ : A.carrier ≃ₗ[𝓞 K] B.carrier)
@@ -43,7 +43,7 @@ theorem deg_eq_of_linearEquiv {K : Type u} [Field K] [NumberField K] (A B : Herm
   rw [Nat.card_congr (Submodule.Quotient.equiv _ _ φ hmap).toEquiv]
 
 /- English proof (translation)
-The claim follows from `deg_eq_of_linearEquiv (M.sub ⊤) M Submodule.topEquiv fun σ _ s ↦ gramDet_comap M.metric (⊤ : Submodule (𝓞 K) M.carrier).subtype (Submodule.injective_subtype _) σ s`.
+A detailed English derivation is pending.
 -/
 theorem deg_sub_top {K : Type u} [Field K] [NumberField K] (M : HermitianBundle.{v} K) :
     (M.sub ⊤).deg = M.deg :=
@@ -51,7 +51,7 @@ theorem deg_sub_top {K : Type u} [Field K] [NumberField K] (M : HermitianBundle.
     gramDet_comap M.metric (⊤ : Submodule (𝓞 K) M.carrier).subtype (Submodule.injective_subtype _) σ s
 
 /- English proof (translation)
-The claim follows from `deg_eq_of_linearEquiv _ _ (Submodule.comapSubtypeEquivOfLe hGF) fun σ _ s ↦ by have e1 := gramDet_comap (M.sub F).metric (G.comap F.subtype).subtype (Submodule.injective_subtype _) σ s have e2 := gramDet_comap M.metric F.subtype (Submodule.injective_subtype _) σ fun i ↦ (G.comap …`.
+A detailed English derivation is pending.
 -/
 theorem deg_sub_comap {K : Type u} [Field K] [NumberField K] (M : HermitianBundle.{v} K)
     {F G : Submodule (𝓞 K) M.carrier} (hGF : G ≤ F) :
@@ -68,13 +68,13 @@ theorem deg_sub_comap {K : Type u} [Field K] [NumberField K] (M : HermitianBundl
 end ChainSum
 
 /- English proof (translation)
-Introduce `K _ _ M k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `c h0 _ _`. Establish `hl : c (Fin.last 0) = ⊤` using `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty, add_zero, hl, ChainSum.deg_sub_top]`. Consider the case `succ k ih`. Introduce `c h0 hmono hc`. Establish `hmono' : Antitone fun a : Fin (k + 1) ↦ c a.castSucc` using `fun a b hab ↦ hmono (Fin.castSucc_le_castSucc_iff.mpr hab)`. Establish `hIH` using `ih (fun a ↦ c a.castSucc) h0 hmono' fun a ↦ hc _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : c (Fin.last (k + 1)) ≤ c (Fin.last k).castSucc` using `hmono (Fin.castSucc_lt_last _).le`. Establish `hE` using `h1 K (M.sub (c (Fin.last k).castSucc)) ((c (Fin.last (k + 1))).comap (c (Fin.last k).castSucc).subtype) ((hc (Fin.last (k + 1))).comap_subtype _)`. Rewrite `hE` using `[ChainSum.deg_sub_comap M hle]`. Rewrite using `[Fin.sum_univ_castSucc, hIH, hE, add_assoc]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[add_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ChainSum.proof (h1 : ExactSequence.Statement.{u, v}) : ChainSum.Statement.{u, v} := by
   intro K _ _ M k

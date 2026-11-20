@@ -10,11 +10,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Use `le_antisymm (fun y hy => ?_) ?_` and prove the remaining obligations. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj ((l : ℕ) : Per.Ainf l) y`. Establish `hy' : Per.θP l y = 0` using `GlobalTheory.RingBasics.fontaineTheta_eq_zero_of_mem_ker l y (by rwa [pow_one])`. Establish `h0 : Per.θ l a = 0`. Establish `h1` using `GlobalTheory.RingIface.fontaineTheta_algebraMap (l := l) a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← ha, map_mul, hy', zero_mul]`. Conclude with `Subtype.ext h1.symm`. Take `⟨c, rfl⟩` from `(hx a).1 h0`. Establish `hu : IsUnit (algebraMap (Per.Ainf l) (Per.AinfP l) ((l : ℕ) : Per.Ainf l) ^ n)` using `(IsLocalization.Away.algebraMap_isUnit (S := Per.AinfP l) ((l : ℕ) : Per.Ainf l)).pow n`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ hu, ha, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `GlobalTheory.RingIface.alg_mem_kerP (l := l) ((hx x).2 dvd_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem ker_localizedTheta_eq_span_of_dvd (l : ℕ) [Fact l.Prime] (x : Per.Ainf l)
     (hx : ∀ a : Per.Ainf l, Per.θ l a = 0 ↔ x ∣ a) :
@@ -35,7 +35,7 @@ theorem ker_localizedTheta_eq_span_of_dvd (l : ℕ) [Fact l.Prime] (x : Per.Ainf
     exact GlobalTheory.RingIface.alg_mem_kerP (l := l) ((hx x).2 dvd_rfl)
 
 /- English proof (translation)
-Introduce `l _ e he` and use `ker_localizedTheta_eq_span_of_dvd l (xi e) (theta_eq_zero_iff_xi_dvd l e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ker_localizedTheta_eq_span_xi : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, IsEps e →
     Per.kerP l = Ideal.span {algebraMap (Per.Ainf l) (Per.AinfP l) (xi e)} :=

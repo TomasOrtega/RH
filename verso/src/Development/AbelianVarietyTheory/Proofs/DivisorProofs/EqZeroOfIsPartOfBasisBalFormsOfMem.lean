@@ -8,15 +8,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) q`. Establish `hb' : ∀ i, ∃ r : ℤ, (r : ℚ) = ((b : ℤ) : ℚ) * q i` using `fun i => by`. Take `⟨r, hr⟩` from `hb i`. Conclude with `⟨r, by simpa [Algebra.smul_def] using hr⟩`. Use `choose n hn using hb'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h0 : n = 0`. Rewrite `hf` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `i`. Use `hf n ?_ i` and prove the remaining obligations. Use function extensionality and compare the values at `y`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Establish `: ((∑ i, n i * f i y : ℤ) : ℚ) = ((b : ℤ) : ℚ) * ∑ i, q i * (f i y : ℚ)`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn i]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[hq y, mul_zero]`. Conclude with `this` after adjusting the coercions. Use function extensionality and compare the values at `i`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbne : ((b : ℤ) : ℚ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero b`. Establish `h` using `hn i`. Rewrite `h` using `[h0]`. Simplify using `only [Pi.zero_apply, Int.cast_zero] at h`. Conclude with `(mul_eq_zero.mp h.symm).resolve_left hbne`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_linearIndependent_int_rat {Y ι : Type} [Fintype ι] {f : ι → Y → ℤ}
     (hf : LinearIndependent ℤ f) (q : ι → ℚ) (hq : ∀ y, ∑ i, q i * (f i y : ℚ) = 0) : q = 0 := by
@@ -47,11 +47,11 @@ theorem eq_zero_of_linearIndependent_int_rat {Y ι : Type} [Fintype ι] {f : ι 
   exact (mul_eq_zero.mp h.symm).resolve_left hbne
 
 /- English proof (translation)
-Set `B` to `Module.Basis.ofVectorSpace ℚ k`. Establish `key : ∀ j, (fun i => B.coord j (a i)) = 0` using `fun j => eq_zero_of_linearIndependent_int_rat hf _ fun y => by`. Establish `h` using `congrArg (B.coord j) (ha y)`. Rewrite `h` using `[map_sum, map_zero]`. Rewrite using `[← h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (a i), ← zsmul_eq_mul, map_zsmul, zsmul_eq_mul, mul_comm]`. Use function extensionality and compare the values at `i`. Apply `B.repr.injective` to reduce the goal to its premises. Use extensionality with `j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `congrFun (key j) i` as an intermediate fact. Simplify `this` using `[Module.Basis.coord_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_linearIndependent_int {Y ι : Type} [Fintype ι] {f : ι → Y → ℤ}
     (hf : LinearIndependent ℤ f) (k : Type) [Field k] [CharZero k] (a : ι → k)

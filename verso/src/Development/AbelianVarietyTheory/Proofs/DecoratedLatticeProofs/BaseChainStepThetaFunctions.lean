@@ -25,18 +25,18 @@ namespace GlobalTheory.BaseChain
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), D.sp.Y_rank _ (min_le_right _ _)]`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (min_le_min_right D.R.m (Nat.le_succ j))) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_Yc_le_succ (j : ℕ) : (Yc D j).rank ≤ (Yc D (j + 1)).rank := by
   rw [D.sp.Y_rank _ (min_le_right _ _), D.sp.Y_rank _ (min_le_right _ _)]
   exact Nat.add_le_add_left (Nat.mul_le_mul_right _ (min_le_min_right D.R.m (Nat.le_succ j))) _
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hP hR j hj`. Take `⟨-, -, -, hC, -⟩` from `hP.bot.hyp`. Establish `hj' : j < D.R.m` using `by omega`. Establish `dS : IsSelfDualC (Yc D j) ((pk W).ΛY j)` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βY j hj')`. Establish `dT : IsSelfDualC (Yc D (j + 1)) ((pk W).ΛY (j + 1))` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βY (j + 1) hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP'` using `(hR.row W.P.A3.A.μ0).vP j hj`. Establish `hY` using `hC.chain.vY W.P.A3.A.μ0 j hj`. Establish `hω` using `hC.chain.ωY W.P.A3.A.μ0 j hj`. Establish `hθ` using `hC.models.inf`. Take `⟨vth, vne, -⟩` from `GlobalTheory.InnerSteps.stepVec_vac dS dT (rank_Yc_le_succ j) hP'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun φ => GlobalTheory.FockTheta.ptStable D _ _ hP'.1.1 hθ _ _ _ _ _ _ _ φ vth, ?_⟩` and prove the remaining obligations. Establish `h0` using `GlobalTheory.Grid.isItW_of_mem_span hω hθ hP'.1.2.theta (GlobalTheory.Grid.stepVec_mem_span dS dT hY) (hC.chain.ItY W.P.A3.A.μ0 j hj)`. Conclude with `GlobalTheory.Grid.isItW_of_mem_span hω hθ vth (GlobalTheory.T.vacuum_mem_span_heisenbergTranslates_of_ne_zero hP'.1 dS dT (GlobalTheory.Grid.stepVec_mem_span dS dT hP') vne) h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepY_thetaFun_isItW : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ j, j + 1 < D.R.m → (∀ φ, IsThetaFunO (GlobalTheory.BaseChain.com W).ψ (GlobalTheory.BaseChain.stageY W j).V (GlobalTheory.BaseChain.stageY W (j + 1)).V ((GlobalTheory.BaseChain.stepY f j).pt φ)) ∧ IsItW (GlobalTheory.BaseChain.com W).θ (GlobalTheory.BaseChain.stageY W j).M (GlobalTheory.BaseChain.stageY W (j + 1)).M (GlobalTheory.BaseChain.stepY f j).ω (GlobalTheory.BaseChain.stepY f j).pt (GlobalTheory.BaseChain.stepY f j).It := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hP hR j hj

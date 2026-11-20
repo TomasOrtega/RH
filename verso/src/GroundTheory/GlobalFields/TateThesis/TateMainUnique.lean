@@ -13,9 +13,9 @@ variable {K : Type*} [Field K] [NumberField K]
 open IdeleGroup
 
 /- English proof (translation)
-Establish `hopen : IsOpen Sᶜ` using `hS.isClosed.isOpen_compl`. Establish `hU : IsPreconnected Sᶜ` using `(hS.countable.isConnected_compl_of_one_lt_rank (by simp)).isPreconnected`. Establish `h2 : (2 : ℂ) ∈ Sᶜ` using `fun h ↦ by`. Use `hSre 2 h` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Establish `heq : G =ᶠ[𝓝 (2 : ℂ)] H` using `Filter.eventuallyEq_of_mem ((isOpen_lt continuous_const continuous_re).mem_nhds (show (1 : ℝ) < (2 : ℂ).re by norm_num)) fun s hs ↦ (hGZ s hs).trans (hHZ s hs).symm`. Conclude with `AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq (hG.analyticOnNhd hopen) (hH.analyticOnNhd hopen) hU h2 heq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eqOn_of_differentiableOn_of_eq_globalZeta {F : 𝔸[K] → ℂ} {χ : HeckeCharacter K}
     {S : Set ℂ} (hS : S.Finite) (hSre : ∀ z ∈ S, z.re ≤ 1) {G H : ℂ → ℂ}
@@ -35,7 +35,7 @@ theorem eqOn_of_differentiableOn_of_eq_globalZeta {F : 𝔸[K] → ℂ} {χ : He
     (hH.analyticOnNhd hopen) hU h2 heq
 
 /- English proof (translation)
-Establish `h` using `eqOn_of_differentiableOn_of_eq_globalZeta (S := ∅) finite_empty (by simp) hG.differentiableOn (differentiable_tateZeta hF hχ).differentiableOn hGZ fun s hs ↦ tateZeta_eq_globalZeta hF χ hs`. Use function extensionality and compare the values at `s`. Conclude with `h (by simp)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eq_tateZeta_of_differentiable {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K)
     {χ : HeckeCharacter K} (hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1)
@@ -48,9 +48,9 @@ theorem eq_tateZeta_of_differentiable {F : 𝔸[K] → ℂ} (hF : F ∈ schwartz
   exact h (by simp)
 
 /- English proof (translation)
-Use `eqOn_of_differentiableOn_of_eq_globalZeta (toFinite _) ?_ hG ?_ hGZ fun s hs ↦ tateZeta_eq_globalZeta hF χ hs` and prove the remaining obligations. Introduce `z hz`. Apply the tactic sequence `rcases hz with rfl | rfl <;> simp`. Introduce `s hs`. Simplify using `only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or] at hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(differentiableAt_tateZeta hτ hF hs.1 hs.2).differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem eqOn_tateZeta_of_differentiableOn {χ : HeckeCharacter K} {τ : ℝ}
     (hτ : ∀ x : IdeleGroup K, (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I))

@@ -7,19 +7,17 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ G _ hs U y hU hy`. Use `set e : G.left := (η[G]).left (IsLocalRing.closedPoint k) with he`. Establish `hirr : IsIrreducible (connectedComponent e)`. Establish `h` using `(GlobalTheory.T.isOpen_isIrreducible_componentOfRationalPoint_smooth k G.left G.hom (η[G]).left hs (Over.w (η[G]))).2`. Establish `hsub : ∀ a : Spec (CommRingCat.of k), a = IsLocalRing.closedPoint k` using `fun a => Subsingleton.elim (α := PrimeSpectrum k) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Establish `h1 : (G.hom ⁻¹' {G.hom x} : Set G.left) = Set.univ`. Use extensionality with `w`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_univ, iff_true]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(hsub _).trans (hsub _).symm`. Simplify using `only [Set.mem_ofPred_eq]`. Rewrite using `[h1, connectedComponentIn_univ, hsub (G.hom x)]`. Set `T : G ⟶ G` to `𝟙 G * (toUnit G ≫ y)`. Establish `hT : (y ≫ ι[G]) ≫ T = η[G]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : (y ≫ ι[G]) ≫ T = (y ≫ ι[G]) * y`. Simplify using `only [T]`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp]`. Rewrite using `[h1]`. Establish `h2 : (y ≫ ι[G]) = y⁻¹` using `rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, inv_mul_cancel, Hom.one_def, toUnit_unit, Category.id_comp]`. Establish `hιe : (ι[G]).left e = e`. Establish `: η[G] ≫ ι[G] = η[G]` using `by simp`. Establish `h2` using `congrArg (fun f => f.left (IsLocalRing.closedPoint k)) this`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyi : (ι[G]).left (y.left (IsLocalRing.closedPoint k)) ∈ connectedComponent e`. Establish `hc` using `(ι[G]).left.continuous.image_connectedComponent_subset e`. Rewrite `hc` using `[hιe]`. Conclude with `hc ⟨_, hy, rfl⟩`. Establish `hTy : T.left ((ι[G]).left (y.left (IsLocalRing.closedPoint k))) = e`.
-
-Establish `h2` using `congrArg (fun f => f.left (IsLocalRing.closedPoint k)) hT`. Conclude with `h2`. Take `⟨z, -, hz1, hz2⟩` from `hirr.isPreirreducible (U : Set G.left) (T.left ⁻¹' (U : Set G.left)) U.isOpen (U.isOpen.preimage T.left.continuous) ⟨e, mem_connectedComponent, hU⟩ ⟨_, hyi, by rw [Set.mem_preimage, hTy]; exact hU⟩`. Conclude with `⟨z, hz1, hz2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_and_rightTranslate_mem_of_mem_identityComponent :
     ∀ (k : Type) [Field k] (G : Over (Spec (CommRingCat.of k))) [GrpObj G], Smooth G.hom → ∀ (U : G.left.Opens) (y : 𝟙_ (Over (Spec (CommRingCat.of k))) ⟶ G), (η[G]).left (IsLocalRing.closedPoint k) ∈ U → y.left (IsLocalRing.closedPoint k) ∈ connectedComponent ((η[G]).left (IsLocalRing.closedPoint k)) → ∃ z : G.left, z ∈ U ∧ (𝟙 G * (toUnit G ≫ y) : G ⟶ G).left z ∈ U := by

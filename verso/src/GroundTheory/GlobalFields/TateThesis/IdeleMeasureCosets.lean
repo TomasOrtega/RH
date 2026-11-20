@@ -11,7 +11,7 @@ noncomputable section
 variable (K : Type*) [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `: DiscreteTopology (G ⧸ W)` using `QuotientGroup.discreteTopology hW`. Establish `h : IsLindelof (Set.univ : Set (G ⧸ W))`. Rewrite using `[← Set.image_univ_of_surjective (QuotientGroup.mk_surjective (s := W))]`. Conclude with `isLindelof_univ.image QuotientGroup.continuous_mk`. Conclude with `Set.countable_univ_iff.1 h.countable_of_discrete`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_quotient_of_isOpen {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [SecondCountableTopology G] {W : Subgroup G}
@@ -25,23 +25,21 @@ theorem countable_quotient_of_isOpen {G : Type*} [Group G] [TopologicalSpace G]
 variable {K}
 
 /- English proof (translation)
-Establish `hc : Countable ((FiniteAdeleRing (𝓞 K) K)ˣ ⧸ W)` using `countable_quotient_of_isOpen hWo`. Use `set μ := (infiniteIdeleMeasure K).prod (finiteIdeleMeasure K)`. Use `set G : (InfiniteAdeleRing K)ˣ × (FiniteAdeleRing (𝓞 K) K)ˣ → E := fun p ↦ F ((IdeleGroup.prodEquiv K).symm p)`. Establish `hG : Integrable G μ` using `(integrable_map_equiv (IdeleGroup.prodEquiv K).symm.toHomeomorph.toMeasurableEquiv F).1 hFi`. Use `set S : (FiniteAdeleRing (𝓞 K) K)ˣ ⧸ W → Set (FiniteAdeleRing (𝓞 K) K)ˣ := fun c ↦ QuotientGroup.mk ⁻¹' {c}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: DiscreteTopology ((FiniteAdeleRing (𝓞 K) K)ˣ ⧸ W)` using `QuotientGroup.discreteTopology hWo`. Establish `hSm : ∀ c, MeasurableSet (S c)` using `fun c ↦ (isOpen_discrete ({c} : Set ((FiniteAdeleRing (𝓞 K) K)ˣ ⧸ W))).preimage QuotientGroup.continuous_mk |>.measurableSet`. Establish `hSW : ∀ c, S c = (fun b ↦ c.out⁻¹ * b) ⁻¹' (W : Set (FiniteAdeleRing (𝓞 K) K)ˣ)`. Introduce `c`. Use extensionality with `b`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [S, Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]`. Use `conv_lhs => rw [← QuotientGroup.out_eq' c]`. Rewrite using `[eq_comm, QuotientGroup.eq]`. Establish `hmeasS : ∀ c, finiteIdeleMeasure K (S c) = finiteIdeleMeasure K W` using `fun c ↦ by`. Rewrite using `[hSW c, measure_preimage_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hGS : ∀ c, ∀ a, ∀ b ∈ S c, G (a, b) = G (a, c.out)`. Introduce `c a b hb`. Rewrite `hb` using `[hSW c]`. Establish `hw : c.out⁻¹ * b ∈ W` using `hb`. Establish `: (a, b) = (a, c.out) * (1, c.out⁻¹ * b)` using `by simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [G]`. Rewrite using `[this, map_mul, hF _ _ hw]`. Establish `hT : ∀ c, MeasurableSet ((Set.univ : Set (InfiniteAdeleRing K)ˣ) ×ˢ S c)` using `fun c ↦ MeasurableSet.univ.prod (hSm c)`. Establish `hTd : Pairwise (Function.onFun Disjoint fun c ↦ (Set.univ : Set (InfiniteAdeleRing K)ˣ) ×ˢ S c)`. Introduce `c d hcd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Set.disjoint_left.2 fun p hp hq ↦ hcd ?_` and prove the remaining obligations. Conclude with `hp.2.symm.trans hq.2`. Establish `hTu : ⋃ c, (Set.univ : Set (InfiniteAdeleRing K)ˣ) ×ˢ S c = Set.univ`. Use `Set.eq_univ_of_forall fun p ↦ Set.mem_iUnion.2 ⟨(p.2 : _ ⧸ W), trivial, rfl⟩` and prove the remaining obligations. Establish `h` using `hasSum_integral_iUnion hT hTd hG.integrableOn`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Use symmetry to reverse the relation.
 
-Rewrite `h` using `[hTu, Measure.restrict_univ]`. Rewrite using `[integral_ideleMeasure]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Use `symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e : μ.restrict (Set.univ ×ˢ S c) = (infiniteIdeleMeasure K).prod ((finiteIdeleMeasure K).restrict (S c))`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Rewrite using `[e, integral_prod _ (by rw [← e]; exact hG.integrableOn), ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a ↦ ?_)` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[setIntegral_congr_fun (hSm c) fun b hb ↦ hGS c a b hb, setIntegral_const, Measure.real, hmeasS c]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_integral_ideleMeasure_of_invariant {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] (W : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ)
@@ -103,7 +101,7 @@ theorem hasSum_integral_ideleMeasure_of_invariant {E : Type*} [NormedAddCommGrou
     hmeasS c]
 
 /- English proof (translation)
-Establish `h` using `hasSum_integral_ideleMeasure_of_invariant (finiteIntegralUnits K) (isOpen_finiteIntegralUnits K) hFi hF`. Simplify `h` using `[finiteIdeleMeasure_finiteIntegralUnits]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasSum_integral_ideleMeasure_of_invariant_finiteIntegralUnits {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] {F : IdeleGroup K → E}

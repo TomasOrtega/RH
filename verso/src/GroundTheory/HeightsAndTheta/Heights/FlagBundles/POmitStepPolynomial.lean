@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.FlagBundles
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `R _ σ _ p`. Use `⟨((renameEquiv R (Equiv.optionSubtypeNe p).symm).trans (optionEquivLeft R {q // q ≠ p})).toRingEquiv, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[optionEquivLeft_X_none]`. Introduce `q`. Simplify using `[Equiv.optionSubtypeNe_symm_of_ne q.property, optionEquivLeft_X_some]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `r`. Simplify using `[optionEquivLeft_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem OmitStepPolynomial.proof : OmitStepPolynomial.Statement := by
   intro R _ σ _ p

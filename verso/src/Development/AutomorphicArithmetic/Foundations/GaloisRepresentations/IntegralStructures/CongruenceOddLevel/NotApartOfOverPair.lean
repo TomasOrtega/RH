@@ -48,7 +48,7 @@ def StepSt : Prop :=
         ϑ = fun j => ι.symm (η U' j)}
 
 /- English proof (translation)
-Take `⟨x, hx, hxu⟩` from `exists_of_overPair ι hu`. Take `⟨y, hy, hyv⟩` from `exists_of_overPair ι hv`. Establish `key : ∀ z : HeightOneSpectrum (𝓞 E), OverPl ι τ z → z.asIdeal = PlaceEmb.smallIdeal (ι.symm.toRingHom.comp τ)` using `fun z hz => z.isMaximal.eq_of_le (PlaceEmb.smallIdeal_isPrime _).ne_top fun b hb => hz b hb`. Take `rfl : x = y` from `HeightOneSpectrum.ext ((key x hx).trans (key y hy).symm)`. Conclude with `GlobalTheory.Cong.AdaptLev.not_apart_trans (GlobalTheory.Cong.AdaptLev.not_apart_symm hxu) hyv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_apart_of_overPair {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
     {u v : HeightOneSpectrum (𝓞 E)} {τ : E →+* ℂ} (hu : OverPair ι u τ) (hv : OverPair ι v τ) : ¬ Apart u v := by
@@ -62,9 +62,9 @@ theorem not_apart_of_overPair {E : Type} [Field E] [NumberField E] [IsCMField E]
 open UpperTheory.Gal.Gen in
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨h1, d, h2, h3⟩` from `hf g hg`. Use `⟨h1, d, h2, h3.trans_eq ?_⟩` and prove the remaining obligations. Use `congr 2`. Use `finsum_congr fun u => finsum_congr fun hu => Finset.sum_congr rfl fun τ hτ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: mu τ = lam τ`. Assume the negation of the conclusion as `hne`. Conclude with `hu.2 (hv g hg u (not_apart_of_overPair ι (Finset.mem_filter.1 hτ).2 (h τ hne)))`. Rewrite using `[this]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intL_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ}
     {v' : HeightOneSpectrum (𝓞 E)} {lam mu : (E →+* ℂ) → DomWeight a} (h : ∀ τ, mu τ ≠ lam τ → OverPair ι v' τ)
@@ -82,17 +82,17 @@ theorem intL_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} 
 
 open UpperTheory.Gal.Gen in
 /- English proof (translation)
-Introduce `E _ _ _ l _ ι a ha w₀ hw₀ hs₀ v' hv' hsv hap K hK hKv Kv hKvo lam Jx t η ht htv hη τ₀ hτ₀ U hU`. Establish `h1` using `H E l ι a ha w₀ hw₀ hs₀ v' hv' hsv hap K hK hKv Kv hKvo lam Jx t η (fun j => (ht j).2) htv hη τ₀ hτ₀ U hU`. Use `(combine_holds (Qbar l) _ _ _ _ 1 h1 ?_).mono fun _ h => h.1` and prove the remaining obligations. Introduce and unpack `_ ⟨U₁, mu, g1, g2, g3, rfl⟩`. Use `⟨by simp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmu : (Wt.ofFam mu).at = mu`. Take `⟨W', -, hW', -⟩` from `GlobalTheory.T.exists_algebraicForm_weight_level_smooth_at_place E a mu K U₁ hK.fin g3 w₀`. Take `rfl : mu = W'.at` from `(funext hW').symm`. Establish `: Wt.ofFam W'.at = W'` using `funext fun v => W'.at_embedding v`. Rewrite using `[this]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl1 : ‖((l : ℕ) : Qbar l)‖ < 1` using `PlaceEmb.norm_p_lt_one`. Establish `hD : Dense ι (Wt.ofFam mu) K fun U' => TyEll E l a w₀ U'`. Introduce `f hf ε hε`. Take `⟨N, hN, hfN⟩` from `smoothAt_holds E a w₀ hs₀ _ f`. Take `⟨m₀, hm₀⟩` from `exists_pow_lt_of_lt_one hε hl1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, J, θ, hm, hJN, hJo, hJc, hJt, hθ, hsc⟩` from `hEll E l a ha w₀ hw₀ N hN m₀`. Establish `hfJ : f ∈ fixedBy (Wt.ofFam mu) (lev K w₀ J)`. Introduce `c hc v g`. Take `⟨k, hk, x, hx, hxJ, rfl⟩` from `((levFacts_holds E a w₀ hs₀ K hK J hJo hJc).2.1 c).1 hc`. Rewrite using `[← mul_assoc, hfN x hx (hJN hxJ), hf k hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨G, hG, e, he, hGe⟩` from `tyStep_holds E l ι a w₀ hs₀ K hK _ J hJo hJc hJt m θ f hfJ`. Use `⟨G, part_mono _ _ ?_ hG, e, fun g => (he g).trans ((pow_le_pow_of_le_one (norm_nonneg _) hl1.le hm).trans hm₀.le), hGe⟩` and prove the remaining obligations. Introduce and unpack `U' ⟨χ, hχ, φ, hφ, hφ0, -, hφJ⟩`. Conclude with `⟨m, J, θ, χ, hJo, hJc, hJt, hθ, hχ, hsc χ hχ, φ, hφ, hφ0, hφJ⟩`. Use `(toPolyX_holds E l ι a w₀ K hK.fin mu _ hD Jx t η (Loc.frame denomBdd_holds rhoBound_holds latFacts_holds levelEx_holds ι _ _ fun j => Or.inr (by` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmu]`. Conclude with `intL_congr ι g1 (fun g hg => (htv j g hg).2) (ht j).2))`. Use the proof step `(fun V hV φ hφ hx j => hη V hV φ hφ (fun x h => hx x h.1) j) U₁ g3).mono ?_`. Introduce and unpack `_ ⟨U', k1, k2, rfl⟩`. Conclude with `⟨U', mu, g1, g2, k1, k2, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepSt_of_ex (hEll : EllSt) (H : WtLacEx) : StepSt := by
   intro E _ _ _ l _ ι a ha w₀ hw₀ hs₀ v' hv' hsv hap K hK hKv Kv hKvo lam Jx t η ht htv hη τ₀ hτ₀ U hU
@@ -130,49 +130,43 @@ theorem stepSt_of_ex (hEll : EllSt) (H : WtLacEx) : StepSt := by
 
 open UpperTheory.Gal.Gen in
 /- English proof (translation)
-Introduce `E _ _ _ l _ ι a ha T _ U hU w₀ v' hw₀ hs₀ hv' hsv hap`. Take `⟨K, Kw, Kv, hK, hKvo, hfix, hKwv, hoc, hsph, hns, hKs⟩` from `exists_level hU hs₀ hsv hap`. Take `⟨lam, hlam⟩` from `GlobalTheory.T.exists_algebraicWeight_definiteUnitaryAutRep E a U hU.1`. Use `set K' := K ⊓ Kv.comap (cLoc v') with hK'def`. Establish `hK' : IsLevelAway w₀ K'` using `isLevelAway_inf hK v' hKvo`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOf : OfType lam K' U` using `⟨hU.1, hlam, hfix⟩`. Establish `hone : ∀ {w u : HeightOneSpectrum (𝓞 E)}, Apart w u → ∀ x ∈ locU a w, ∀ u', ¬ Apart u' u → cLoc u' x = 1` using `fun hwu x hx u' hu' => ((GlobalTheory.Cong.LevelExt.mem_locU_iff x).1 hx).2 u' (GlobalTheory.Cong.AdaptLev.apart_of_apart_not_apart hwu hu')`. Establish `hKs' : ∀ w, IsSplitAt w → Apart w w₀ → Apart w v' → ∀ x ∈ locU a w, x ∈ K' ↔ cLoc w x ∈ Kw w` using `fun w h1 h2 h3 x hx => by`. Rewrite using `[← hKs w h1 h2 x hx]`. Use `⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show cLoc v' x ∈ Kv`. Rewrite using `[hone h3 x hx v' (not_apart_self v')]`. Conclude with `one_mem _`. Establish `hloc : ∀ U' : Submodule ℂ (UA E a → ℂ), (∃ φ ∈ U', φ ≠ 0 ∧ ∀ x ∈ K', RU E a x φ = φ) → ∀ w, IsSplitAt w → Apart w w₀ → Apart w v' → ∃ φ ∈ U', φ ≠ 0 ∧ ∀ x ∈ locU a w, cLoc w x ∈ Kw w → RU E a x φ = φ` using `fun U' ⟨φ, g1, g2, g3⟩ w h1 h2 h3 => ⟨φ, g1, g2, fun x hx h => g3 x ((hKs' w h1 h2 h3 x hx).2 h)⟩`. Establish `hlev : ∀ U', IsAutRepU U' → (∃ φ ∈ U', φ ≠ 0 ∧ ∀ x ∈ K', RU E a x φ = φ) → HasLevelOff w₀ v' Kw U'` using `fun U' h1 h2 w g1 g2 g3 σ hσ => fixed_ne_bot h1 g1 (hloc U' h2 w g1 g2 g3) σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Kw, hlev U hU.1 hfix, hoc, fun w h1 _ h3 h4 => hsph w h1 h3 h4, fun Z W hZ hW => ?_⟩` and prove the remaining obligations. Establish `hfin : ∀ {w} {f : UA E a →₀ ℂ}, (∀ g ∈ f.support, g ∈ locU a w) → ∀ g ∈ f.support, g ∈ finU E a` using `fun h g hg => (Subgroup.mem_inf.1 (h g hg)).1`. Establish `hhyp : ∀ w, IsSplitAt w → Apart w w₀ → Apart w v' → (∃ B, SatU U w B) → HypAt K' w` using `fun w h1 h2 h3 h4 x hx => by`. Rewrite using `[hKs' w h1 h2 h3 x hx, hsph w h1 h3 h4]`. Use `choose tp htp hpact using fun p : W × ℤ => exists_powOp (a := a) (hW p.1.1 p.1.2).1 p.2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Use `choose cp hcp0 hcp using fun p : W × ℤ => exists_scale ι lam (tp p) (hfin (htp p))`. Set `Φ : MvPolynomial (Fin a) ℂ` to `MvPolynomial.map (Int.castRingHom ℂ) (D a)`. Use `choose tz ez htz hzact using fun z : Z => exists_testOp K' (hZ z.1 z.2).1 (hhyp z.1 (hZ z.1 z.2).1 (hZ z.1 z.2).2.1 (hZ z.1 z.2).2.2.1 (hZ z.1 z.2).2.2.2) Φ`. Use `choose cz hcz0 hcz using fun z : Z => exists_scale ι lam (tz z) (hfin (htz z))`. Use `⟨fun w n => if h : w ∈ W then cp (⟨w, h⟩, n) else 1, fun w n => by dsimp only split_ifs exacts [hcp0 _, one_ne_zero], fun J O θ hθ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hO₀ : ∀ j, Apart (O.pl j) w₀` using `fun j => apart_of_not_mem hw₀ (O.away j)`. Establish `hOv : ∀ j, Apart (O.pl j) v'` using `fun j => apart_of_not_mem hv' (O.away j)`. Use `choose tj ej htj hjact hje using fun j => exists_op (O.split j) (Kw (O.pl j)) (hoc _ (O.split j) (hO₀ j)).1 (hoc _ (O.split j) (hO₀ j)).2 (O.f j) (O.z j) (O.act j)`. Establish `hsys : ∀ U', IsAutRepU U' → (∃ φ ∈ U', φ ≠ 0 ∧ ∀ x ∈ K', RU E a x φ = φ) → IsSysU O U' fun j => ι.symm (ej j U')` using `fun U' h1 h2 j σ hσ => congrArg ι.symm (hje j U' h1 (hloc U' h2 _ (O.split j) (hO₀ j) (hOv j)) σ hσ)`. Establish `hθeq : θ = fun j => ι.symm (ej j U)` using `funext fun j => by`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨σ, hσ⟩` from `(GlobalTheory.T.exists_unique_splitPlaceComponent_definiteUnitary E a U hU.1 _ (O.split j)).1`. Rewrite using `[hθ j σ hσ]`. Conclude with `(hsys U hU.1 hfix j σ hσ).symm`. Establish `hactJ : ActsBy K' tj fun U' j => ej j U'` using `fun U' hU' φ hφ hx j => hjact j U' hU' φ hφ fun x h1 h2 => hx x ((hKs' _ (O.split j) (hO₀ j) (hOv j) x h1).2 h2)`. Substitute `hθeq` using the available equality.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun hq => hFin E l ι a ha w₀ K' hK' lam J tj (fun U' j => ej j U') (fun j g hg => ⟨(Subgroup.mem_inf.1 (htj j g hg).1).1, by rw [(htj j g hg).2]; exact hq j _⟩) hactJ U hOf⟩` and prove the remaining obligations. Set `t : (J ⊕ W × ℤ) ⊕ Z → (UA E a →₀ ℂ)` to `Sum.elim (Sum.elim tj fun p => cp p • tp p) fun z => cz z • tz z`. Set `η : Submodule ℂ (UA E a → ℂ) → (J ⊕ W × ℤ) ⊕ Z → ℂ` to `fun U' => Sum.elim (Sum.elim (fun j => ej j U') fun p => cp p * PowSatU U' p.1 p.2) fun z => cz z * ez z U'`. Establish `hact : ActsBy K' t η`. Introduce and unpack `U' hU' φ hφ hx ((j | p) | z)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `hactJ U' hU' φ hφ hx j`. Take `⟨h1, h2, h3, h4⟩` from `hW p.1.1 p.1.2 show opOf (RU E a) (cp p • tp p) φ = (cp p * PowSatU U' p.1 p.2) • φ`. Rewrite using `[opOf_smul', hpact p U' hU' φ hφ fun x g1 g2 => hx x ((hhyp _ h1 h2 h3 h4 x g1).2 g2), smul_smul]`. Use `show opOf (RU E a) (cz z • tz z) φ = (cz z * ez z U') • φ`. Rewrite using `[opOf_smul', (hzact z U' hU').1 φ hφ hx, smul_smul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsupp : ∀ j, ∃ w, Apart w w₀ ∧ Apart w v' ∧ ∀ g ∈ (t j).support, g ∈ locU a w`. Introduce and unpack `((j | p) | z)`. Conclude with `⟨_, hO₀ j, hOv j, fun g hg => (htj j g hg).1⟩`. Conclude with `⟨_, (hW p.1.1 p.1.2).2.1, (hW p.1.1 p.1.2).2.2.1, fun g hg => htp p g (Finsupp.support_smul hg)⟩`. Conclude with `⟨_, (hZ z.1 z.2).2.1, (hZ z.1 z.2).2.2.1, fun g hg => htz z g (Finsupp.support_smul hg)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hint : ∀ j, IntW ι lam (t j) ∧ Loc.IntL ι lam (t j)`. Introduce and unpack `((j | p) | z)`. Establish `key : ∀ g ∈ (tj j).support, g ∈ finU E a ∧ DenomLe l 0 g ∧ ‖ι.symm (tj j g)‖ ≤ 1` using `fun g hg => by`. Take `⟨h1, h2⟩` from `htj j g hg`. Use `⟨(Subgroup.mem_inf.1 h1).1, fun u hu => ?_, by rw [h2]; exact O.int j _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : cLoc u g = 1` using `hone (apart_of_not_mem hu (O.away j)) g h1 u (not_apart_self u)`. Rewrite using `[h3, inv_one, pow_zero, one_smul, Units.val_one]`. Apply the tactic sequence `refine ⟨fun i k => ?_, fun i k => ?_⟩ <;>`. Rewrite using `[Matrix.one_apply] split_ifs exacts [one_mem _, zero_mem _]`. Conclude with `⟨fun g hg => ⟨(key g hg).1, 0, (key g hg).2.1, (key g hg).2.2.trans_eq (by simp)⟩, fun g hg => ⟨(key g hg).1, 0, (key g hg).2.1, (key g hg).2.2.trans_eq (by simp)⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcp p`. Conclude with `hcz z`. Establish `hlam' : (Wt.ofFam lam).at = lam`. Take `⟨W', -, hW', -⟩` from `GlobalTheory.T.exists_algebraicForm_weight_level_smooth_at_place E a lam K' U hK'.fin hOf w₀`. Take `rfl : lam = W'.at` from `(funext hW').symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `: Wt.ofFam W'.at = W'` using `funext fun v => W'.at_embedding v`. Rewrite using `[this]`. Establish `hd : GenData w₀ K' Z fun _ => Φ` using `⟨fun w hw => (hZ w hw).1, fun w hw => (hZ w hw).2.1, fun w hw => hhyp w (hZ w hw).1 (hZ w hw).2.1 (hZ w hw).2.2.1 (hZ w hw).2.2.2, fun _ _ h => hD a (MvPolynomial.map_injective _ Int.cast_injective (h.trans (map_zero _).symm))⟩`. Establish `h1` using `toPolyX_holds E l ι a w₀ K' hK'.fin lam _ (denseGen_holds E l ι a ha w₀ hw₀ hs₀ K' hK' (Wt.ofFam lam) Z _ hd) _ t η (frameW_holds E l ι a _ _ t fun j => by rw [hlam']; exact (hint j).1) hact U hOf`. Set `Q : MvPolynomial ((J ⊕ W × ℤ) ⊕ Z) ℤ` to `∏ z : Z, MvPolynomial.X (Sum.inr z)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hQ : ∀ U', IsAutRepU U' → (∃ φ ∈ U', φ ≠ 0 ∧ ∀ x ∈ K', RU E a x φ = φ) → (MvPolynomial.aeval (fun j => ι.symm (η U' j)) Q ≠ 0 ↔ ∀ z ∈ Z, UpperTheory.Gal.Gen.GenAt z Φ U')`. Introduce `U' g1 g2`. Simplify using `only [Q, map_prod, MvPolynomial.aeval_X, Finset.prod_ne_zero_iff, Finset.mem_univ, true_imp_iff, Subtype.forall]`. Use `forall₂_congr fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← (hzact ⟨z, hz⟩ U' g1).2 g2, map_ne_zero_iff _ ι.symm.injective]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show cz ⟨z, hz⟩ * ez ⟨z, hz⟩ U' ≠ 0 ↔ _`. Simplify using `[hcz0]`. Take `⟨τ₀, hτ₀⟩` from `exists_overPl ι v' hv'`. Establish `hKv : ∀ x ∈ locU a v', cLoc v' x ∈ GlobalTheory.LFun.KGL v' a → x ∈ K` using `fun x hx h => (hKs v' hsv hap x hx).2 (hKwv ▸ h)`. Establish `h2` using `combine_holds (Qbar l) _ _ _ _ Q h1 (by`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨U₁, g1, g2, rfl⟩`. Conclude with `⟨(hQ U₁ g1.aut g1.fix).2 g2, H E l ι a ha w₀ hw₀ hs₀ v' hv' hsv hap K hK hKv Kv hKvo lam _ t η hint (fun j g hg => by`. Take `⟨w, k1, k2, k3⟩` from `hsupp j`. Conclude with `⟨hone k1 g (k3 g hg), hone k2 g (k3 g hg)⟩) hact τ₀ hτ₀ U₁ g1⟩)`. Establish `h3` using `restrict_holds (Qbar l) _ _ Sum.inl _ _ h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ U' : Submodule ℂ (UA E a → ℂ), (fun j => ι.symm (η U' j)) ∘ Sum.inl = Sum.elim (fun j => ι.symm (ej j U')) fun p : W × ℤ => ι.symm ((if h : p.1.1 ∈ W then cp (⟨p.1.1, h⟩, p.2) else 1) * PowSatU U' p.1 p.2)` using `fun U' => by`. Use function extensionality and compare the values at `j`. Break down `j with j | p` into its components or cases. Both sides reduce to the same expression. Simplify using `only [Function.comp, η, Sum.elim_inl, Sum.elim_inr, dif_pos p.1.2]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[hval]`. Use `h3.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨⟨U', mu, g1, g2, g3, g4, rfl⟩, hq⟩, rfl⟩`. Take `⟨φ, hφ, hφ0, hφK⟩` from `g3.fix`. Establish `hfix' : ∃ φ ∈ U', φ ≠ 0 ∧ ∀ x ∈ K', RU E a x φ = φ` using `⟨φ, hφ, hφ0, fun x hx => hφK x hx.1⟩`.
-
-Establish `huniq : ∀ {V : Submodule ℂ (UA E a → ℂ)}, IsAutRepU V → ∀ {τ x y}, HasWeightAt V τ x → HasWeightAt V τ y → x = y` using `fun hV _ _ _ hx hy => hasWeightAt_unique ⟨_, hV⟩ _ hx hy`. Establish `hsame : SameWtOff ι w₀ v' U U'` using `fun τ hτ x => by`. Establish `e : mu τ = lam τ`. Assume the negation of the conclusion as `hne`. Take `⟨u, k1, k2⟩` from `exists_of_overPair ι (g1 τ hne)`.
-
-Conclude with `k2 (hτ u k1).2`. Conclude with `⟨fun h => by rw [huniq hU.1 h (hlam τ), ← e]; exact g3.wt τ, fun h => by rw [huniq g3.aut h (g3.wt τ), e]; exact hlam τ⟩`. Use `⟨U', _, ⟨g3.aut, fun w hw hT => ⟨φ, hφ, hφ0, fun x hx h => hφK x (hns w hw hT x hx h)⟩⟩, hlev U' g3.aut hfix', exists_satU g3.aut hsv ⟨φ, hφ, hφ0, fun x hx h => hφK x (hKv x hx h)⟩, hsame, ⟨hsame, τ₀, hτ₀, fun x hx => by rw [huniq g3.aut hx (g3.wt τ₀)]; exact g2⟩, g4, fun z hz B …` and prove the remaining obligations. Take `⟨σ, hσ, hB⟩` from `hB`. Use `(hQ U' g3.aut hfix').1 hq z hz α ⟨σ, hσ, hα ▸ hB⟩` as an intermediate fact.
-
-Rewrite `this` using `[MvPolynomial.eval_map]`. Rewrite using `[MvPolynomial.aeval_def]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congUWG_of (H : StepSt) (hFin : FinU) (D : ∀ a : ℕ, MvPolynomial (Fin a) ℤ) (hD : ∀ a, D a ≠ 0) :
     CongUWG TyEll (GenOf D) WtLac := by
@@ -316,9 +310,9 @@ theorem congUWG_of (H : StepSt) (hFin : FinU) (D : ∀ a : ℕ, MvPolynomial (Fi
   exact this
 
 /- English proof (translation)
-Introduce `E _ _ _ l _ ι a ha _ T hT U hU w₀ v' h1 h2 h3 h4 h5`. Take `⟨Kw, g1, g2, g3, g4⟩` from `h E l ι a ha T hT U hU w₀ v' h1 h2 h3 h4 h5`. Use `⟨Kw, g1, g2, g3, fun Z W hZ hW => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, g5⟩` from `g4 (Z ∪ W) W (fun z hz => (Finset.mem_union.1 hz).elim (hZ z) fun hw => ⟨(hW z hw).1, (hW z hw).2.2⟩) fun w hw => ⟨(hW w hw).1, (hW w hw).2.2⟩`. Use `⟨c, hc, fun J O θ hθ => ⟨(g5 J O θ hθ).1.mono ?_, (g5 J O θ hθ).2⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨U', θ', k1, k2, k3, k4, k5, k6, k7, k8⟩`. Conclude with `⟨U', θ', k1, k2, k3, k4, k5, k6, fun z hz => k7 z (Finset.mem_union_left _ hz), fun z hz => k7 z (Finset.mem_union_right _ hz), k8⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem CongUWG.congUW4 {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → Multiset ℂˣ → Prop} {Wt : SeedWtU} (h : CongUWG Ty Gen Wt)
     (Rk : ℕ → Prop) : CongUW4 Rk Ty Gen Wt := by

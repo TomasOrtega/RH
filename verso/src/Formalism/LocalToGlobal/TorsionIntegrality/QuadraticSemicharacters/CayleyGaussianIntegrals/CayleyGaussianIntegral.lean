@@ -7,11 +7,11 @@ open MeasureTheory
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-Establish `hl0 : l ≠ 0` using `fun h => by simp [h] at hl`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr Real.pi_ne_zero`. Establish `hb : 0 < ((Real.pi : ℂ) * l).re`. Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Conclude with `mul_pos Real.pi_pos hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) hb 0 (0 : ℂ)` as an intermediate fact. Simplify using `using this`. Rewrite using `[GaussianFourier.integral_cexp_neg_mul_sq_norm (V := ℂ) hb, Complex.finrank_real_complex]`. Rewrite using `[show ((2 : ℕ) : ℂ) / 2 = 1 by norm_num, Complex.cpow_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem gauss_plane (l : ℂ) (hl : 0 < l.re) :
     Integrable (fun z : ℂ => Complex.exp (-((Real.pi : ℂ) * l) * ((‖z‖ : ℝ) : ℂ) ^ 2)) ∧
@@ -29,11 +29,9 @@ theorem gauss_plane (l : ℂ) (hl : 0 < l.re) :
     field_simp
 
 /- English proof (translation)
-Establish `hfun : (fun w : n → ℂ => Complex.exp (-(Real.pi : ℂ) * ∑ i, l i * ((‖w i‖ : ℝ) : ℂ) ^ 2)) = fun w => ∏ i, Complex.exp (-((Real.pi : ℂ) * l i) * ((‖w i‖ : ℝ) : ℂ) ^ 2)`. Use function extensionality and compare the values at `w`. Rewrite using `[← Complex.exp_sum, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Integrable.fintype_prod (f := fun i (z : ℂ) => Complex.exp (-((Real.pi : ℂ) * l i) * ((‖z‖ : ℝ) : ℂ) ^ 2)) (fun i => (gauss_plane (l i) (hl i)).1)`. Rewrite using `[integral_fintype_prod_volume_eq_prod (fun i (z : ℂ) => Complex.exp (-((Real.pi : ℂ) * l i) * ((‖z‖ : ℝ) : ℂ) ^ 2)), ← Finset.prod_inv_distrib]`.
-
-Conclude with `Finset.prod_congr rfl fun i _ => (gauss_plane (l i) (hl i)).2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_pi {n : Type*} [Fintype n] (l : n → ℂ) (hl : ∀ i, 0 < (l i).re) :
     Integrable (fun w : n → ℂ => Complex.exp (-(Real.pi : ℂ) * ∑ i, l i * ((‖w i‖ : ℝ) : ℂ) ^ 2)) ∧
@@ -56,9 +54,9 @@ theorem gauss_pi {n : Type*} [Fintype n] (l : n → ℂ) (hl : ∀ i, 0 < (l i).
     exact Finset.prod_congr rfl fun i _ => (gauss_plane (l i) (hl i)).2
 
 /- English proof (translation)
-Set `Ψ : (n → ℂ) ≃L[ℂ] V` to `Φ.toContinuousLinearEquiv`. Set `ν : Measure V` to `Measure.map Ψ volume`. Establish `hme : MeasurableEmbedding Ψ` using `Ψ.toHomeomorph.measurableEmbedding`. Take `⟨c, hμ⟩ : ∃ c : NNReal, μ = c • ν` from `⟨_, Measure.isAddLeftInvariant_eq_smul μ ν⟩`. Substitute `hμ` using the available equality.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Use `⟨(c : ℝ), fun f => ⟨fun hf => ?_, ?_⟩⟩` and prove the remaining obligations. Apply `Integrable.smul_measure_nnreal` to reduce the goal to its premises. Rewrite using `[hme.integrable_map_iff]`. Conclude with `hf`. Apply the tactic sequence `rw [integral_smul_nnreal_measure, hme.integral_map, NNReal.smul_def, Complex.real_smul] try rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_transfer {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] [MeasurableSpace V]
     [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] {n : Type*} [Fintype n] (Φ : (n → ℂ) ≃ₗ[ℂ] V) :
@@ -78,15 +76,15 @@ theorem haar_transfer {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [Fi
     try rfl
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ H hH hP δ Ae hδ hAe`. Take `⟨b, l, hb, hbl, hl⟩` from `unitary_diag H hH hP δ Ae hδ hAe`. Take `⟨κ, hκ⟩` from `haar_transfer μ b.equivFun.symm`. Establish `hq : (fun w => gq H Ae (b.equivFun.symm w)) = fun w => Complex.exp (-(Real.pi : ℂ) * ∑ i, l i * ((‖w i‖ : ℝ) : ℂ) ^ 2)`. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `form_of_diag H b l (Ae : V →ₗ[ℂ] V) hb hbl w`. Simplify using `only [LinearEquiv.coe_coe] at h1`. Unfold `gq`. Rewrite using `[h1]`. Establish `hw : (fun w => ((wt H (b.equivFun.symm w) : ℝ) : ℂ)) = fun w => Complex.exp (-(Real.pi : ℂ) * ∑ i, (fun _ => (1 : ℂ)) i * ((‖w i‖ : ℝ) : ℂ) ^ 2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Establish `h1` using `form_of_diag H b (fun _ => (1 : ℂ)) LinearMap.id hb (fun i => by simp) w`. Simplify using `only [LinearMap.id_apply] at h1`. Establish `hs : (∑ i, (fun _ => (1 : ℂ)) i * ((‖w i‖ : ℝ) : ℂ) ^ 2) = ((∑ i, ‖w i‖ ^ 2 : ℝ) : ℂ)`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Unfold `wt`. Rewrite using `[h1, hs, Complex.ofReal_re, Complex.ofReal_exp, Complex.ofReal_mul, Complex.ofReal_neg]`. Establish `hgq` using `gauss_pi l hl`. Establish `hgw` using `gauss_pi (n := Fin (Module.finrank ℂ V)) (fun _ => (1 : ℂ)) (fun _ => by simp)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hgq` using `[← hq]`. Rewrite `hgw` using `[← hw]`. Use `⟨(hκ _).1 hgq.1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hκ (gq H Ae)).2, hgq.2, ← integral_complex_ofReal, (hκ (fun z => ((wt H z : ℝ) : ℂ))).2, hgw.2, det_of_diag b l (Ae : V →ₗ[ℂ] V) hbl]`. Simplify using `[div_eq_mul_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cayleyGaussianIntegral : GaussQuad := by
   intro V _ _ _ _ _ μ _ H hH hP δ Ae hδ hAe

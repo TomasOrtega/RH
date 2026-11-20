@@ -18,9 +18,9 @@ variable {π : UnitaryRep G H} {J : Type*} {V : J → Submodule ℂ H} [∀ j, C
   (hinv : ∀ j, π.IsInvariant (V j))
 
 /- English proof (translation)
-Rewrite using `[mem_intertwiners]`. Introduce `g v`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `((isInvariant_iff_commute_starProjection (V j)).1 (hinv j) g).eq`. Establish `h2 : (π g) ((V j).starProjection v) = (V j).starProjection (π g v)` using `congrArg (fun T : H →L[ℂ] H => T v) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[coe_restrict_apply, ← Submodule.starProjection_apply, ← Submodule.starProjection_apply]`. Conclude with `h2.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonalProjection_mem_intertwiners (j : J) :
     ((V j).orthogonalProjectionOnto : H →L[ℂ] V j) ∈ π.intertwiners (π.restrict (V j) (hinv j)) := by
@@ -38,7 +38,7 @@ variable (hsum : IsHilbertSum ℂ (fun j => V j) fun j => (V j).subtypeₗᵢ)
 include hsum in
 
 /- English proof (translation)
-Rewrite using `[Submodule.orthogonalProjectionOnto_eq_zero_iff, Submodule.mem_orthogonal]`. Introduce `u hu`. Conclude with `hsum.OrthogonalFamily hij ⟨u, hu⟩ v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orthogonalProjection_coe_eq_zero {i j : J} (hij : i ≠ j) (v : V j) :
     (V i).orthogonalProjectionOnto (v : H) = 0 := by
@@ -49,9 +49,9 @@ theorem orthogonalProjection_coe_eq_zero {i j : J} (hij : i ≠ j) (v : V j) :
 include hsum in
 
 /- English proof (translation)
-Establish `hle : (⨆ j, V j) ≤ (ℂ ∙ x)ᗮ`. Use `iSup_le fun j u hu => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Use `(Submodule.orthogonalProjectionOnto_eq_zero_iff).1 (hx j)` as an intermediate fact. Rewrite `this` using `[Submodule.mem_orthogonal]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← inner_conj_symm, this u hu, map_zero]`. Establish `hcl : (⨆ j, V j).topologicalClosure ≤ (ℂ ∙ x)ᗮ` using `Submodule.topologicalClosure_minimal _ hle (Submodule.isClosed_orthogonal _)`. Establish `hmem : x ∈ (ℂ ∙ x)ᗮ` using `hcl (top_le_topologicalClosure_iSup hsum Submodule.mem_top)`. Rewrite `hmem` using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Conclude with `inner_self_eq_zero.1 hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_orthogonalProjection {x : H}
     (hx : ∀ j, (V j).orthogonalProjectionOnto x = 0) : x = 0 := by
@@ -80,16 +80,16 @@ def summandEquivL (w : EquivSummands hinv σ) : K →L[ℂ] V w.1 :=
   ((w.2.some.symm.toLinearIsometryEquiv : K ≃ₗᵢ[ℂ] V w.1) : K →L[ℂ] V w.1)
 
 /- English proof (translation)
-The claim follows from `Equiv.mem_intertwiners _`.
+A detailed English derivation is pending.
 -/
 theorem summandEquivL_mem (w : EquivSummands hinv σ) :
     summandEquivL hinv w ∈ σ.intertwiners (π.restrict (V w.1) (hinv w.1)) :=
   Equiv.mem_intertwiners _
 
 /- English proof (translation)
-Use `hσ.1` as an intermediate fact. Take `⟨k, hk⟩` from `exists_ne (0 : K)`. Introduce `h`. Establish `h1` using `congrArg (fun T : K →L[ℂ] V w.1 => T k) h`. Simplify using `only [zero_apply] at h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hk` to reduce the goal to its premises. Establish `h2 : ‖summandEquivL hinv w k‖ = ‖k‖` using `LinearIsometryEquiv.norm_map _ k`. Rewrite `h2` using `[h1, norm_zero]`. Conclude with `norm_eq_zero.1 h2.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summandEquivL_ne_zero (hσ : σ.IsIrreducible) (w : EquivSummands hinv σ) :
     summandEquivL hinv w ≠ 0 := by
@@ -107,7 +107,7 @@ def sumEquivL [Fintype (EquivSummands hinv σ)] (c : EquivSummands hinv σ → �
   ∑ w, c w • ((V w.1).subtypeL ∘L summandEquivL hinv w)
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun w _ => Submodule.smul_mem _ _ (comp_mem_intertwiners (subtypeL_mem_intertwiners π (V w.1) (hinv w.1)) (summandEquivL_mem hinv w))`.
+A detailed English derivation is pending.
 -/
 theorem sumEquivL_mem [Fintype (EquivSummands hinv σ)] (c : EquivSummands hinv σ → ℂ) :
     sumEquivL hinv c ∈ σ.intertwiners π :=
@@ -118,11 +118,11 @@ theorem sumEquivL_mem [Fintype (EquivSummands hinv σ)] (c : EquivSummands hinv 
 open Classical in
 include hsum in
 /- English proof (translation)
-Simplify using `only [sumEquivL, sum_apply, smul_apply, comp_apply, map_sum, map_smul]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨j, h⟩]`. Simplify using `[Submodule.subtypeL_apply, Submodule.orthogonalProjectionOnto_mem_subspace_eq_self]`. Introduce `w _ hw`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwj : j ≠ w.1` using `fun e => hw (Subtype.ext e.symm)`. Rewrite using `[Submodule.subtypeL_apply, orthogonalProjection_coe_eq_zero hsum hwj, smul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwj : j ≠ w.1` using `fun e => h (e ▸ w.2)`. Rewrite using `[Submodule.subtypeL_apply, orthogonalProjection_coe_eq_zero hsum hwj, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem orthogonalProjection_comp_sumEquivL [Fintype (EquivSummands hinv σ)]
     (c : EquivSummands hinv σ → ℂ) (j : J) (k : K) :
@@ -145,27 +145,25 @@ theorem orthogonalProjection_comp_sumEquivL [Fintype (EquivSummands hinv σ)]
 include hsum hirr in
 
 /- English proof (translation)
-Establish `: Finite (EquivSummands hinv σ)` using `hW.to_subtype`. Set `_ : Fintype (EquivSummands hinv σ)` to `Fintype.ofFinite _`. Set `Ψ : (EquivSummands hinv σ → ℂ) →ₗ[ℂ] σ.intertwiners π` to `{ toFun := fun c => ⟨sumEquivL hinv c, sumEquivL_mem hinv c⟩ map_add' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[sumEquivL, add_smul, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[sumEquivL, smul_smul, Finset.smul_sum] }`. Establish `hinj : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Use function extensionality and compare the values at `w`. Establish `h1 : ∀ k, (V w.1).orthogonalProjectionOnto (sumEquivL hinv c k) = 0`. Introduce `k`. Use `congrArg (fun T : σ.intertwiners π => (T : K →L[ℂ] H) k) hc` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `sumEquivL hinv c k = 0 at this`. Rewrite using `[this, map_zero]`. Establish `h2 : c w • summandEquivL hinv w = 0` using `by ext1 k`. Use `h1 k` as an intermediate fact. Rewrite `this` using `[orthogonalProjection_comp_sumEquivL hinv hsum, dif_pos w.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `hσ.1` as an intermediate fact. Take `⟨k, hk⟩` from `exists_ne (0 : K)`. Establish `h3` using `congrArg (fun S : K →L[ℂ] V w.1 => S k) h2`. Simplify using `only [smul_apply, zero_apply] at h3`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `smul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `h4 : ‖summandEquivL hinv w k‖ = ‖k‖` using `LinearIsometryEquiv.norm_map _ k`. Rewrite `h4` using `[h, norm_zero]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hk (norm_eq_zero.1 h4.symm)`. Establish `hsurj : Function.Surjective Ψ`. Introduce and unpack `⟨T, hT⟩`. Establish `hPT : ∀ w : EquivSummands hinv σ, ∃ c : ℂ, (V w.1).orthogonalProjectionOnto ∘L T = c • summandEquivL hinv w` using `fun w => hσ.exists_eq_smul_of_mem_intertwiners (hirr w.1) (summandEquivL_mem hinv w) (comp_mem_intertwiners (orthogonalProjection_mem_intertwiners hinv w.1) hT) (summandEquivL_ne_zero hinv hσ w)`. Use `choose c hc using hPT`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sumEquivL hinv c = T`. Use `ext1 k`. Use `(sub_eq_zero.1 (eq_zero_of_forall_orthogonalProjection hsum fun j => ?_)).symm` and prove the remaining obligations. Rewrite using `[map_sub, orthogonalProjection_comp_sumEquivL hinv hsum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with h`. Use `congrArg (fun S : K →L[ℂ] V j => S k) (hc ⟨j, h⟩)` as an intermediate fact. Simplify using `only [comp_apply, smul_apply] at this`. Rewrite using `[this, sub_self]`. Establish `h0 : (V j).orthogonalProjectionOnto ∘L T = 0` using `hσ.eq_zero_of_not_isEquivalent (hirr j) (fun e => h e.symm) (comp_mem_intertwiners (orthogonalProjection_mem_intertwiners hinv j) hT)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun S : K →L[ℂ] V j => S k) h0` as an intermediate fact. Simplify using `only [comp_apply, zero_apply] at this`. Rewrite using `[this, sub_zero]`. Set `e` to `LinearEquiv.ofBijective Ψ ⟨hinj, hsurj⟩`. Use `⟨LinearEquiv.finiteDimensional e, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← e.finrank_eq, Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_intertwiners_eq_card (hσ : σ.IsIrreducible)
     (hW : {j | (π.restrict (V j) (hinv j)).IsEquivalent σ}.Finite) :
@@ -238,9 +236,9 @@ end Class
 include hsum hirr in
 
 /- English proof (translation)
-Establish `hσirr : σ.IsIrreducible` using `hσ.isIrreducible_iff.1 (hirr c.out)`. Establish `hiff : ∀ j, (π.restrict (V j) (hinv j)).IsEquivalent σ ↔ Quotient.mk (restrictSetoid π hinv) j = c`. Introduce `j`. Rewrite using `[← Quotient.out_eq c, Quotient.eq]`. Conclude with `⟨fun h => h.trans hσ.symm, fun h => h.trans hσ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hW : {j | (π.restrict (V j) (hinv j)).IsEquivalent σ}.Finite` using `(hfin c.out).subset fun j hj => hj.trans hσ.symm`. Take `⟨hfd, hrank⟩` from `finrank_intertwiners_eq_card hinv hsum hirr hσirr hW`. Use `⟨hfd, ?_⟩` and prove the remaining obligations. Rewrite using `[hrank, multiplicity]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun j => (hiff j).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiplicity_eq_finrank
     (hfin : ∀ j, {k : J | (π.restrict (V k) (hinv k)).IsEquivalent

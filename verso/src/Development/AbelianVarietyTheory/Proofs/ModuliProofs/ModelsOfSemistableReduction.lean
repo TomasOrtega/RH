@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S` and use `GlobalTheory.T.exists_localModelSystems_ampleFrames GlobalTheory.homExtension_semiAbelian_dvr GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.2.1 (GlobalTheory.T.exists_fullLev …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem modelsSt_of_semistableReduction : GlobalTheory.Published.SemistableReductionSt → GlobalTheory.LN.ModelsSt :=
   fun S => GlobalTheory.T.exists_localModelSystems_ampleFrames GlobalTheory.homExtension_semiAbelian_dvr GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1

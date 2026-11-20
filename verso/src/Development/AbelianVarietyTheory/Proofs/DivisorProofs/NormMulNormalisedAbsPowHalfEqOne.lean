@@ -26,19 +26,17 @@ theorem normTwist_apply (d : ℕ) (χ : kˣ →* ℂˣ) (x : kˣ) :
     (normTwist d χ x : ℂ) = ((‖(χ x : ℂ)‖ : ℝ) : ℂ) * GlobalTheory.SplitFlip.apow x (-((d : ℂ) / 2)) := rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ d χ hu ϖ hϖ hn x`. Use `set B := normTwist d χ`. Establish `hunr : ∀ y : kˣ, valuation k (y : k) = 1 → B y = 1`. Introduce `y hy`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normTwist_apply, hu y hy, GlobalTheory.SplitFlip.apow_of_valuation_eq_one hy]`. Simplify using the standard rewrite rules. Establish `hq : (1 : ℝ) < (GlobalTheory.SplitWeil.resCard k : ℝ)` using `by exact_mod_cast GlobalTheory.SplitWeil.one_lt_resCard (k := k)`. Use `set q : ℝ := (GlobalTheory.SplitWeil.resCard k : ℝ) with hqdef`. Establish `hq0 : 0 < q` using `by linarith`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnabs : GlobalTheory.SplitWeil.nabs k ϖ = q⁻¹`. Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.SmGL.ord_eq_one hϖ]`. Simplify using `[hqdef]`. Establish `hap : GlobalTheory.SplitFlip.apow ϖ (-((d : ℂ) / 2)) = ((q ^ ((d : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[GlobalTheory.SplitFlip.apow, hnabs, show (-((d : ℂ) / 2)) = ((-((d : ℝ) / 2) : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow (inv_nonneg.2 hq0.le), Real.inv_rpow hq0.le, ← Real.rpow_neg hq0.le, neg_neg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hBϖ : B ϖ = 1`. Use `ext`. Rewrite using `[normTwist_apply, hap, Units.val_one, ← Complex.ofReal_mul]`. Establish `hb0 : 0 ≤ ‖(χ ϖ : ℂ)‖ * q ^ ((d : ℝ) / 2)` using `by positivity`. Establish `hsq : (‖(χ ϖ : ℂ)‖ * q ^ ((d : ℝ) / 2)) ^ 2 = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, ← Real.rpow_natCast (q ^ ((d : ℝ) / 2)) 2, ← Real.rpow_mul hq0.le]`. Rewrite using `[show (d : ℝ) / 2 * ((2 : ℕ) : ℝ) = ((d : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Conclude with `hn`. Use `(pow_eq_one_iff_of_nonneg hb0 two_ne_zero).1 hsq` as an intermediate fact. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hB` using `GlobalTheory.SmGL.eq_unrChar (χ := B) hunr hϖ`. Establish `hx : B x = 1`. Rewrite using `[hB, hBϖ, GlobalTheory.SmGL.unrChar_apply, _root_.one_zpow]`. Establish `hx' : ‖(B x : ℂ)‖ = 1` using `by rw [hx]; simp`.
-
-Rewrite `hx'` using `[normTwist_apply, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_norm]`. Rewrite using `[norm_mul]`. Conclude with `hx'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_apow_eq_one : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ) (χ : kˣ →* ℂˣ), (∀ u : kˣ, valuation k (u : k) = 1 → ‖(χ u : ℂ)‖ = 1) →
     ∀ ϖ : kˣ, GlobalTheory.SplitFlip.IsUnif ϖ → ‖(χ ϖ : ℂ)‖ ^ 2 * (GlobalTheory.SplitWeil.resCard k : ℝ) ^ d = 1 →

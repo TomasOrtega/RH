@@ -10,11 +10,11 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZSeg
 
 /- English proof (translation)
-Use `choose w hw using fun a => rank_le_one_iff.1 (hW a)`. Use `rank_le_one_iff.2 ⟨PiTensorProduct.tprod ℂ w, fun t => ?_⟩` and prove the remaining obligations. Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f => choose c hc using fun a => hw a (f a)`. Use `⟨r * ∏ a, c a, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf : f = fun a => c a • w a` using `funext fun a => (hc a).symm`. Rewrite using `[hf, (PiTensorProduct.tprod ℂ).map_smul_univ, smul_smul]`. Consider the case `add x y hx hy`. Take `⟨r, rfl⟩` from `hx`. Take `⟨s, rfl⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨r + s, add_smul _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem rank_piTensorProduct_le_one {ι : Type} [Fintype ι] (W : ι → Type) [∀ a, AddCommGroup (W a)]
     [∀ a, Module ℂ (W a)] (hW : ∀ a, Module.rank ℂ (W a) ≤ 1) : Module.rank ℂ (⨂[ℂ] a, W a) ≤ 1 := by
@@ -33,7 +33,7 @@ theorem rank_piTensorProduct_le_one {ι : Type} [Fintype ι] (W : ι → Type) [
     exact ⟨r + s, add_smul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨e⟩` from `hH ψ hc h1 h N d hd X π hs`. Conclude with `e.rank_eq.le.trans (rank_piTensorProduct_le_one _ hr)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem whitRank_multiProd_le_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hH : GlobalTheory.BZMir.Leib.WhitHeredity k) (ψ : AddChar k Circle) (hc : Continuous ψ)
@@ -45,7 +45,7 @@ theorem whitRank_multiProd_le_one {k : Type} [Field k] [ValuativeRel k] [Topolog
   exact e.rank_eq.le.trans (rank_piTensorProduct_le_one _ hr)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hH hR ψ hc h1 h N x hd`. Conclude with `whitRank_multiProd_le_one hH ψ hc h1 h N (fun a => (x a).1) hd (fun a => (x a).2.rep.V) (fun a => (x a).rep) (fun a => (x a).2.rep.smooth) (fun a => hR ψ hc h1 (x a).1 (x a).2.rep.V (x a).rep (x a).2.rep.smooth (x a).2.rep.irr)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem whitRankStd_of_heredity : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.BZMir.Leib.WhitHeredity k → GlobalTheory.BZSeg.WhitRankIrr k →

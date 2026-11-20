@@ -10,11 +10,11 @@ open MvPolynomial Formalism.BasicNotions Formalism.MainNotions.product_first_zer
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
 /- English proof (translation)
-Establish `e1 : (fun τ => sqAct ℂ _ (lamTr D u τ) (gFull D u (g τ))) = fun τ => ⇑(Formalism.L2.Ker.ta_sqActL (lamTr D u τ) (gFull D u (g τ)))`. Use function extensionality and compare the values at `fun τ => (Formalism.L2.Ker.ta_sqActL_coe _ _).symm`. Establish `e2 : (fun τ => sqAct ℂ _ (sgTr D u τ) (g τ)) = fun τ => ⇑(Formalism.L2.Ker.ta_sqActL (sgTr D u τ) (g τ))`. Use function extensionality and compare the values at `fun τ => (Formalism.L2.Ker.ta_sqActL_coe _ _).symm`. Unfold `Formalism.L2.Ker.brTen`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1, e2, Formalism.L2.Ker.ta_blk_comp, Formalism.L2.Ker.ta_blk_comp]`. Establish `e3 : (fun τ => ⇑(Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) ∘ₗ Formalism.L2.Ker.ta_sqActL (lamTr D u τ) (gFull D u (g τ)))) = fun τ => ⇑((((sqrtT D u) ^ ((D.fm u).deg τ) : ℂˣ) : ℂ) • (Formalism.L2.Ker.ta_sqActL (sgTr D u τ) (g τ) ∘ₗ Formalism.L2.Ker.br …`. Use function extensionality and compare the values at `τ f`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, Formalism.L2.Ker.ta_sqActL_coe]`. Conclude with `brOne_gFull Tf τ (g τ) f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, Formalism.L2.Ker.blk_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem brTen_blk_gFull (Tf : FormsTiedSym D u Ch chOf) (g : D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ)
     (Q : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) :
@@ -39,9 +39,9 @@ theorem brTen_blk_gFull (Tf : FormsTiedSym D u Ch chOf) (g : D.what₂.Tau → G
   rfl
 
 /- English proof (translation)
-Establish `hT : ∀ τ, IsUnit ((M τ)ᵀ).det` using `fun τ => by rw [Matrix.det_transpose]; exact hM τ`. Set `g : ι → GL (Fin k) ℂ` to `fun τ => ⟨(M τ)ᵀ, ((M τ)ᵀ)⁻¹, Matrix.mul_nonsing_inv _ (hT τ), Matrix.nonsing_inv_mul _ (hT τ)⟩`. Establish `h` using `Formalism.L2.Ker.lc_blk_sqAct_mem m g p hp`. Rewrite `h` using `[blk_sqAct_eq]`. Establish `hgT : (fun τ => ((g τ : GL (Fin k) ℂ) : Matrix (Fin k) (Fin k) ℂ)ᵀ) = M` using `funext fun τ => Matrix.transpose_transpose _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hgT]`. Establish `hc : (∏ τ, detPow ℂ k (g τ) (m τ).detShift) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => Units.ne_zero _`. Establish `h2` using `Submodule.smul_mem _ (∏ τ, detPow ℂ k (g τ) (m τ).detShift)⁻¹ h`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem blkRow_mem_CSpan {ι : Type} [Fintype ι] [DecidableEq ι] {k : ℕ} (m : ι → DomWeight k)
     (M : ι → Matrix (Fin k) (Fin k) ℂ) (hM : ∀ τ, IsUnit (M τ).det) (p : MvPolynomial (ι × Fin k × Fin k) ℂ)
@@ -58,21 +58,19 @@ theorem blkRow_mem_CSpan {ι : Type} [Fintype ι] [DecidableEq ι] {k : ℕ} (m 
   rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at h2
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (map (σ` using `D.what₂.Tau × Fin n × Fin n) D.what₂.embLL) := MvPolynomial.map_injective _ D.what₂.embLL.injective`. Establish `hten : ∀ (j : D.what₂.LL →+* ℂ) (f : D.what₂.Tau → MvPolynomial (Fin n × Fin n) ℤ), map j (Formalism.L2.Forms.ten (fun τ => map (Int.castRingHom D.what₂.LL) (f τ))) = Formalism.L2.Forms.ten (fun τ => map (Int.castRingHom ℂ) (f τ))`. Introduce `j f`. Establish `hi : j.comp (Int.castRingHom D.what₂.LL) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Unfold `Formalism.L2.Forms.ten`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_rename, MvPolynomial.map_map, hi]`. Establish `key : ∀ p ∈ RatSpan D lam, ∀ F : MvPolynomial (D.what₂.Tau × Fin n × Fin n) D.what₂.LL, map D.what₂.embLL F = p → map s F ∈ Formalism.L2.Forms.CSpan lam`. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, f, hf, rfl⟩` from `hx`. Introduce `F hF`. Establish `hFe : F = r • Formalism.L2.Forms.ten (fun τ => map (Int.castRingHom D.what₂.LL) (f τ))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hF, MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, map_C, hten]`. Rewrite using `[hFe, MvPolynomial.smul_eq_C_mul, map_mul, map_C, hten, ← MvPolynomial.smul_eq_C_mul]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ), fun τ => ?_, rfl⟩)` and prove the remaining obligations. Conclude with `Formalism.L2.G.Model.sw_weyl_map (Int.castRingHom ℂ) le_rfl _ (f τ) (hf τ)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `zero`. Introduce `F hF`. Establish `: F = 0` using `hinj (by rw [hF, map_zero])`. Rewrite using `[this, map_zero]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add x y hx' hy' hx hy`. Introduce `F hF`. Take `⟨Fx, hFx⟩` from `exists_map_of_ratSpan D hx'`. Take `⟨Fy, hFy⟩` from `exists_map_of_ratSpan D hy'`. Establish `: F = Fx + Fy` using `hinj (by rw [map_add, hFx, hFy, hF])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this, map_add]`. Conclude with `Submodule.add_mem _ (hx Fx hFx) (hy Fy hFy)`. Consider the case `neg x hx' hx`. Introduce `F hF`. Take `⟨Fx, hFx⟩` from `exists_map_of_ratSpan D hx'`.
-
-Establish `: F = -Fx` using `hinj (by rw [map_neg, hFx, hF])`. Rewrite using `[this, map_neg]`. Conclude with `Submodule.neg_mem _ (hx Fx hFx)`. Conclude with `key _ hF F rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_CSpan_of_rat {n : ℕ} (lam : D.what₂.Tau → DomWeight n)
     (F : MvPolynomial (D.what₂.Tau × Fin n × Fin n) D.what₂.LL) (hF : map D.what₂.embLL F ∈ RatSpan D lam)

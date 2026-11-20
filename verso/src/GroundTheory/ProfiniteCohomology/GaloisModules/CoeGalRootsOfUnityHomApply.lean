@@ -120,28 +120,28 @@ variable {K L}
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem galAdd_ρ_apply (σ : Gal(L/K)) (x : L) : (galAdd K L).ρ σ x = σ x :=
   rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem galAddInt_ρ_apply (σ : Gal(L/K)) (x : L) : (galAddInt.{w} K L).ρ σ x = σ x :=
   rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem galAddZ_ρ_apply (σ : Gal(L/K)) (x : L) : (galAddZ K L).ρ σ x = σ x :=
   rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem galUnits_ρ_apply (σ : Gal(L/K)) (x : Additive Lˣ) :
     (galUnits.{w} K L).ρ σ x = Additive.ofMul (galUnitsHom K L σ x.toMul) :=
@@ -149,7 +149,7 @@ theorem galUnits_ρ_apply (σ : Gal(L/K)) (x : Additive Lˣ) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem galUnitsZ_ρ_apply (σ : Gal(L/K)) (x : Additive Lˣ) :
     (galUnitsZ K L).ρ σ x = Additive.ofMul (galUnitsHom K L σ x.toMul) :=
@@ -157,7 +157,7 @@ theorem galUnitsZ_ρ_apply (σ : Gal(L/K)) (x : Additive Lˣ) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem galRootsOfUnity_ρ_apply (n : ℕ) (σ : Gal(L/K)) (x : Additive (rootsOfUnity n L)) :
     (galRootsOfUnity.{w} K L n).ρ σ x = Additive.ofMul (galRootsOfUnityHom K L n σ x.toMul) :=

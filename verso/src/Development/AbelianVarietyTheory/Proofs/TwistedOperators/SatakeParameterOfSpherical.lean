@@ -9,27 +9,25 @@ namespace GlobalTheory.LFun.ExSatGL
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.PRep GlobalTheory.AdelicU GlobalTheory.LFun Polynomial
 
 /- English proof (translation)
-Use `set c : Fin n → ℂ := fun i => (-1) ^ (n - (i : ℕ)) * a (n - (i : ℕ)) with hc`. Use `set q : Polynomial ℂ := ∑ i : Fin n, Polynomial.C (c i) * Polynomial.X ^ (i : ℕ) with hq`. Use `set p : Polynomial ℂ := Polynomial.X ^ n + q with hp`. Establish `hdeg : q.degree < n` using `Polynomial.degree_sum_fin_lt c`. Establish `hmon : p.Monic` using `Polynomial.monic_X_pow_add hdeg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnat : p.natDegree = n`. Rewrite using `[hp, Polynomial.natDegree_add_eq_left_of_degree_lt (by rwa [Polynomial.degree_X_pow]), Polynomial.natDegree_X_pow]`. Establish `hqc : ∀ k (hk : k < n), q.coeff k = c ⟨k, hk⟩`. Introduce `k hk`. Rewrite using `[hq, Polynomial.finset_sum_coeff, Finset.sum_eq_single (⟨k, hk⟩ : Fin n)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_pos rfl]`. Introduce `i _ hi`. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_neg]`. Introduce `h`. Conclude with `hi (Fin.ext h.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hpc : ∀ k (hk : k < n), p.coeff k = c ⟨k, hk⟩`. Introduce `k hk`. Rewrite using `[hp, Polynomial.coeff_add, Polynomial.coeff_X_pow, if_neg hk.ne, zero_add, hqc k hk]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hroots : Multiset.card p.roots = p.natDegree` using `by first`. Consider the case `exact Polynomial.splits_iff_card_roots.mp (IsAlgClosed.splits p)`. Consider the case `exact (IsAlgClosed.splits p).card_roots`. Consider the case `exact Polynomial.Splits.card_roots (IsAlgClosed.splits p)`. Establish `h0c : p.coeff 0 ≠ 0`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `[hp, hq]`. Rewrite using `[hpc 0 h]`. Simplify using `only [hc, Fin.val_mk, Nat.sub_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) hn`. Establish `hne : ∀ r ∈ p.roots, r ≠ 0`. Introduce `r hr h0`. Substitute `h0` using the available equality. Use `(Polynomial.mem_roots hmon.ne_zero).mp hr` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[Polynomial.IsRoot, ← Polynomial.coeff_zero_eq_eval_zero]`. Conclude with `h0c this`. Use `⟨p.roots.attach.map fun r => Units.mk0 r.1 (hne r.1 r.2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.card_map, Multiset.card_attach, hroots, hnat]`. Establish `hB : ((p.roots.attach.map fun r => Units.mk0 r.1 (hne r.1 r.2)).map fun b : ℂˣ => (b : ℂ)) = p.roots`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Rewrite using `[Multiset.map_map]`. Conclude with `Multiset.attach_map_val' _ _ |>.trans (Multiset.map_id' _)`. Introduce `j hj`. Rewrite using `[hB]`. Establish `hv` using `Polynomial.coeff_eq_esymm_roots_of_card hroots (k := n - j) (by rw [hnat]; exact Nat.sub_le n j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hv` using `[hmon.leadingCoeff, hnat, Nat.sub_sub_self hj, one_mul]`. Break down `Nat.eq_zero_or_pos j with hj0 | hj0` into its components or cases. Substitute `hj0` using the available equality. Rewrite using `[Multiset.esymm, Multiset.powersetCard_zero_left, Multiset.map_singleton, Multiset.sum_singleton, Multiset.prod_zero, h0]`. Establish `hlt : n - j < n` using `Nat.sub_lt (lt_of_lt_of_le hj0 hj) hj0`.
-
-Rewrite `hv` using `[hpc _ hlt]`. Simplify using `only [hc, Fin.val_mk, Nat.sub_sub_self hj] at hv`. Establish `hu : ((-1 : ℂ) ^ j) ≠ 0` using `pow_ne_zero _ (by norm_num)`. Conclude with `(mul_left_cancel₀ hu hv).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_esymm_eq (n : ℕ) (a : ℕ → ℂ) (h0 : a 0 = 1) (hn : a n ≠ 0) :
     ∃ B : Multiset ℂˣ, B.card = n ∧ ∀ j ≤ n, (B.map fun b : ℂˣ => (b : ℂ)).esymm j = a j := by
@@ -94,31 +92,29 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Unfold `IsUnifV at h h'`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set u : w.adicCompletion E := ϖ' * ϖ⁻¹ with hu`. Establish `hvu : Valued.v u = 1`. Rewrite using `[hu, map_mul, map_inv₀, h, h', mul_inv_cancel₀ (by simp)]`. Establish `hvu' : Valued.v u⁻¹ = 1` using `by rw [map_inv₀, hvu, inv_one]`. Establish `huO : u ∈ Ov E w` using `by show u ∈ w.adicCompletionIntegers E`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, hvu]`. Establish `huO' : u⁻¹ ∈ Ov E w` using `by show u⁻¹ ∈ w.adicCompletionIntegers E`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, hvu']`. Establish `hu0 : u ≠ 0` using `by intro h0; rw [h0, map_zero] at hvu; exact zero_ne_one hvu`. Establish `hϖ' : ϖ' = ϖ * u` using `by rw [hu, mul_comm ϖ' _, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `dO : Matrix (Fin n) (Fin n) (Ov E w)` to `Matrix.diagonal fun i => if (i : ℕ) < j then ⟨u, huO⟩ else 1`. Set `dO' : Matrix (Fin n) (Fin n) (Ov E w)` to `Matrix.diagonal fun i => if (i : ℕ) < j then ⟨u⁻¹, huO'⟩ else 1`. Establish `hdd : dO * dO' = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Use `split_ifs`. Conclude with `Subtype.ext (by simp [mul_inv_cancel₀ hu0])`. Simplify using the standard rewrite rules. Establish `hdd' : dO' * dO = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `split_ifs`. Conclude with `Subtype.ext (by simp [inv_mul_cancel₀ hu0])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Set `D : GL (Fin n) (Ov E w)` to `⟨dO, dO', hdd, hdd'⟩`. Use `set Dk : GL (Fin n) (w.adicCompletion E) := bc (Ov E w).subtype D with hDkdef`. Establish `hDk : Dk ∈ GLint (Fin n) (Ov E w)`. Unfold `GLint`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨D, rfl⟩`. Establish `hDval : (Dk : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal fun i : Fin n => if (i : ℕ) < j then u else 1`. Rewrite using `[hDkdef]`. Use extensionality with `a b`. Use `first`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(simp [bc, D, dO, Matrix.diagonal_apply]; done)`. Consider the case `(simp [bc, D, dO, Matrix.diagonal_apply]; split_ifs <;> simp)`. Consider the case `(unfold bc; simp [D, dO, Matrix.diagonal_apply]; split_ifs <;> simp)`. Consider the case `(simp [bc, D, dO, Matrix.diagonal_apply, Matrix.map_apply, RingHom.mapMatrix_apply]; split_ifs <;> simp)`. Establish `hdiag : diagJ n ϖ' j = diagJ n ϖ j * (Dk : Matrix (Fin n) (Fin n) (w.adicCompletion E))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDval]`. Unfold `diagJ`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Apply the tactic sequence `split_ifs <;> simp [hϖ']`. Establish `hdiag' : diagJ n ϖ j = diagJ n ϖ' j * ((Dk⁻¹ : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) _)`. Rewrite using `[hdiag, mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Unfold `Tj`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, hab⟩`. Use `⟨a, ha, Dk * b, mul_mem hDk hb, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hab, hdiag, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`. Introduce and unpack `⟨a, ha, b, hb, hab⟩`. Use `⟨a, ha, Dk⁻¹ * b, mul_mem (inv_mem hDk) hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hab, hdiag', Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tj_indep (j : ℕ) {ϖ ϖ' : w.adicCompletion E} (h : IsUnifV E w ϖ) (h' : IsUnifV E w ϖ') :
     Tj ℂ n (Ov E w) ϖ' j = Tj ℂ n (Ov E w) ϖ j := by
@@ -188,19 +184,19 @@ theorem Tj_indep (j : ℕ) {ϖ ϖ' : w.adicCompletion E} (h : IsUnifV E w ϖ) (h
     rw [hab, hdiag', Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hfix : ∀ k ∈ KGL w n, ρ k x = x`. Introduce `k hk`. Establish `hx'` using `hx`. Unfold `fixed eig at hx'`. Use `hx' ⟨k, hk⟩` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hd : diagJ n ϖ 0 = 1`. Unfold `diagJ`. Simplify using the standard rewrite rules. Establish `hK : ∀ g : GL (Fin n) (w.adicCompletion E), Tj ℂ n (Ov E w) ϖ 0 g = if g ∈ KGL w n then 1 else 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g`. Unfold `Tj`. Rewrite using `[Set.indicator_apply]`. Distinguish the cases in `hg : g ∈ KGL w n`. Rewrite using `[if_pos hg, if_pos]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `⟨g, hg, 1, one_mem _, by simp [hd]⟩`. Rewrite using `[if_neg hg, if_neg]`. Simplify using `only [Set.mem_setOf_eq]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨a, ha, b, hb, hab⟩`. Apply `hg` to reduce the goal to its premises. Establish `hg' : g = a * b` using `Units.ext (by simp [hab, hd])`. Rewrite using `[hg']`. Conclude with `mul_mem ha hb`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `heckeVec`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk 1 : GL (Fin n) (w.adicCompletion E) ⧸ KGL w n)]`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (KGL w n) (1 : GL (Fin n) (w.adicCompletion E))`. Rewrite using `[hk, one_mul, hK, if_pos k.2, one_smul, hfix _ k.2]`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK, if_neg, zero_smul]`. Introduce `hmem`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' c]`. Conclude with `QuotientGroup.eq.mpr (by rw [mul_one]; exact inv_mem hmem)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_Tj_zero (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (ϖ : w.adicCompletion E)
     {x : V} (hx : x ∈ fixed ρ (KGL w n)) : heckeVec ρ (KGL w n) (Tj ℂ n (Ov E w) ϖ 0) x = x := by
@@ -242,43 +238,37 @@ theorem heckeVec_Tj_zero (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion 
     exact QuotientGroup.eq.mpr (by rw [mul_one]; exact inv_mem hmem)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0, hx00⟩ : ∃ x ∈ fixed ρ (KGL w n), x ≠ 0 := by`. Establish `hsp` using `hs`. Unfold `GlobalTheory.LGrp.IsSpherical at hsp`. Conclude with `Submodule.exists_mem_ne_zero_of_ne_bot hsp`. Take `⟨π0, hπ0⟩` from `w.valuation_exists_uniformizer E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set π : w.adicCompletion E := (π0 : w.adicCompletion E) with hπdef`. Establish `hπ : IsUnifV E w π`. Unfold `IsUnifV`. Use `first`. Consider the case `(rw [hπdef, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ0]; rfl)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `(rw [hπdef, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation, hπ0]; rfl)`. Consider the case `simpa [hπdef] using hπ0`. Establish `hπne : π ≠ 0`. Introduce `h0`. Establish `h1` using `hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `IsUnifV at h1`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe h1`. Use `set πu : (w.adicCompletion E)ˣ := Units.mk0 π hπne with hπu`. Establish `hTa : ∀ j g, Tj ℂ n (Ov E w) π j g = if ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w), g = a * GlobalTheory.LFun.ConjPlace.dGL n πu j * b then 1 else 0` using `fun j g => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `GlobalTheory.LFun.ConjPlace.Tj_apply (Ov E w) πu j g` as an intermediate fact. Simplify `this` using `[hπu]`. Establish `hbi : ∀ j, IsBiInv (KGL w n) (Tj ℂ n (Ov E w) π j)`. Introduce `j`. Unfold `IsBiInv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. It suffices to derive a contradiction.
 
-Introduce `a b g`. Rewrite using `[hTa, hTa]`. Establish `hK : ∀ k : KGL w n, (k : GL (Fin n) (w.adicCompletion E)) ∈ GLint (Fin n) (Ov E w)` using `fun k => k.2`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises. Take `⟨a', ha', b', hb', h⟩` from `h1`. Use `⟨(a : GL (Fin n) (w.adicCompletion E))⁻¹ * a', mul_mem (inv_mem (hK a)) ha', b' * (b : GL (Fin n) (w.adicCompletion E))⁻¹, mul_mem hb' (inv_mem (hK b)), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Take `⟨a', ha', b', hb', h⟩` from `h2`. Use `⟨(a : GL (Fin n) (w.adicCompletion E)) * a', mul_mem (hK a) ha', b' * b, mul_mem hb' (hK b), ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `group`. Both sides reduce to the same expression. Establish `hfin : ∀ j, FinDosetSupp (KGL w n) (Tj ℂ n (Ov E w) π j)`. Introduce `j`. Unfold `FinDosetSupp`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `⟨{GlobalTheory.LFun.ConjPlace.dGL n πu j}, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[hTa]`. Use `split_ifs at hg with h1`. Take `⟨a, ha, b, hb, h⟩` from `h1`. Conclude with `⟨_, by simp, ⟨a, ha⟩, ⟨b, hb⟩, h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `absurd rfl hg`. Establish `hmem : ∀ j, Tj ℂ n (Ov E w) π j ∈ Hecke ℂ (KGL w n)`. Introduce `j`. Unfold `Hecke`. Simplify using `only [Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq]`.
+Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hbi j, hfin j⟩`. Use `choose c hc using fun j => hH _ (hmem j)`. Establish `hq : (qV E w : ℂ) ≠ 0`. Unfold `qV`. Conclude with `Nat.cast_ne_zero.mpr fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h0)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hqs : ∀ s : ℂ, (qV E w : ℂ) ^ s ≠ 0` using `fun s => by`. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. The claim follows by propositional logic. Establish `hc0 : c 0 = 1`. Establish `h1` using `hc 0 x0 hx0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[heckeVec_Tj_zero ρ π hx0]`. Establish `h2 : (1 - c 0) • x0 = 0` using `by rw [sub_smul, one_smul, ← h1, sub_self]`. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `(sub_eq_zero.mp h).symm`. Conclude with `absurd h hx00`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hcn : c n ≠ 0`. Introduce `h0`. Use `set z := GlobalTheory.LFun.ConjPlace.dGL n πu n with hz`. Establish `h1` using `GlobalTheory.LFun.ConjPlace.apply_heckeVec_shift (hbi n) hx0 z`. Establish `hsh : (fun g => Tj ℂ n (Ov E w) π n (z * g)) = Tj ℂ n (Ov E w) π 0`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Use `GlobalTheory.LFun.ConjPlace.Tj_shift_self (Ov E w) πu g` as an intermediate fact. Simplify `this` using `[hπu, hz]`. Rewrite `h1` using `[hsh, heckeVec_Tj_zero ρ π hx0, hc n x0 hx0, h0, zero_smul]`. Apply `hx00` to reduce the goal to its premises.
-
-Establish `h2` using `congrArg (ρ z⁻¹) h1`. Establish `h3 : ρ z⁻¹ (ρ z x0) = x0` using `by first`. Consider the case `(rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply])`. Consider the case `(rw [← LinearMap.comp_apply, ← Module.End.mul_eq_comp, ← map_mul, inv_mul_cancel, map_one]; rfl)`. Consider the case `simp [← Module.End.mul_apply, ← map_mul]`.
-
-Rewrite `h2` using `[h3, map_zero]`. Conclude with `h2`. Use `set A : ℕ → ℂ := fun j => c j / (qV E w : ℂ) ^ (((j : ℂ) * ((n : ℂ) - j)) / 2) with hA`. Take `⟨B, hB, hBe⟩` from `exists_esymm_eq n A (by simp [hA, hc0]) (by simp [hA, hcn])`. Use `⟨B, hs, fun x hx hx0' => ⟨hx0', hx, hB, fun ϖ hϖ j hj => ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[Tj_indep j hπ hϖ, hc j x hx]`. Use `congr 1`. Unfold `satEig`. Rewrite using `[hBe j hj, hA]`. Clear denominators, using `[hqs]` for the nonvanishing conditions.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_hasSatGL (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (V : Type)
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V)

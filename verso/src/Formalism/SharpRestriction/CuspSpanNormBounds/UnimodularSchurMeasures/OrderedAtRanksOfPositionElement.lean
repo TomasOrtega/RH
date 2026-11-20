@@ -11,17 +11,17 @@ open Formalism.MainNotions.S Formalism.MainNotions.CayleySignature Formalism.Bas
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Take `⟨P, ⟨⟨hPu, hPJ⟩, -⟩, -, -, ⟨⟨h1, hmul⟩, hiso, -⟩, -⟩` from `hσ`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hPu`. Establish `hPi : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `hPi' : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hback : ∀ x : CayleySignature.Mat k r, P⁻¹ * (P * x * P⁻¹) * P = x` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmem : ∀ x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), P * x * P⁻¹ ∈ UJset ε`. Introduce `x hx`. Establish `hx' : xᴴ * Formalism.QuantumDeterminants.Hpk k r * x = Formalism.QuantumDeterminants.Hpk k r` using `hx`. Use `show (P * x * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * x * P⁻¹) = Formalism.REAL.Jm ε`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (P * x * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * x * P⁻¹) = (P⁻¹)ᴴ * (xᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * x) * P⁻¹`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e1, hPJ, hx', ← hPJ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = Formalism.REAL.Jm ε := by rw [hPi']; simp`. Use `⟨?_, fun x hx y hy => ?_, fun x hx v => ?_⟩` and prove the remaining obligations. Establish `: σ (P⁻¹ * 1 * P) = 1` using `h1`. Rewrite `this` using `[Matrix.mul_one, hPi]`. Then use the resulting hypothesis. Use `hmul _ (hmem x hx) _ (hmem y hy)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hback] at this`. Establish `e : P⁻¹ * (P * x * P⁻¹ * (P * y * P⁻¹)) * P = x * y`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = x * y := by rw [hPi]; simp`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `hiso _ (hmem x hx) v` as an intermediate fact. Simplify using `only [hback] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_unitary_rep {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : CayleySignature.Mat k r → (H →L[ℂ] H)} (hσ : IsDSHpk k r ε lam σ) :
@@ -60,9 +60,9 @@ theorem discrete_series_unitary_rep {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bo
     exact this
 
 /- English proof (translation)
-Distinguish the cases in `hd : DifferentiableAt ℝ f 0`. Conclude with `((L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hd.hasDerivAt).deriv`. Establish `hd' : ¬ DifferentiableAt ℝ (fun t => L (f t)) 0` using `fun h => hd (by`. Establish `h2` using `(L'.restrictScalars ℝ).differentiableAt.comp (0 : ℝ) h`. Establish `e : ((L'.restrictScalars ℝ : H →L[ℝ] H) : H → H) ∘ (fun t => L (f t)) = f`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Conclude with `hL (f t)`. Rewrite using `[e] at h2)` and apply the resulting hypothesis. Rewrite using `[deriv_zero_of_not_differentiableAt hd, deriv_zero_of_not_differentiableAt hd', map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_clm_comp_zero {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (L L' : H →L[ℂ] H)
     (hL : ∀ y, L' (L y) = y) (f : ℝ → H) : deriv (fun t => L (f t)) 0 = L (deriv f 0) := by
@@ -80,11 +80,11 @@ section Pos
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`. Establish `hai' : aiᴴ * Formalism.QuantumDeterminants.Hpk k r * ai = Formalism.QuantumDeterminants.Hpk k r` using `hai`. Establish `hX' : Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X = 0` using `hX`. Establish `e1 : aᴴ * Formalism.QuantumDeterminants.Hpk k r = Formalism.QuantumDeterminants.Hpk k r * ai`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : ai * a = 1` using `mul_eq_one_comm.1 h1`. Establish `e2 : Formalism.QuantumDeterminants.Hpk k r * a = aiᴴ * Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Use `show (a * X * ai)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * (a * X * ai) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = aiᴴ * (Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X) * ai := by`. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX']; simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_algebra_conj_mem {a ai X : CayleySignature.Mat k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
     (hai : ai ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (h1 : a * ai = 1) (hX : InLieHpk k r X) :
@@ -115,9 +115,9 @@ variable (σ : CayleySignature.Mat k r → (H →L[ℂ] H))
 
 include hmul in
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨Uo, F, hO, hmem, hF, hEq⟩` from `hv (g₀ * ai) (mat_mul_mem_UH_Hpk hg₀ hai)`. Set `L : CayleySignature.Mat k r →L[ℝ] CayleySignature.Mat k r` to `LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ ai)`. Establish `hL : ∀ g, L g = g * ai` using `fun g => rfl`. Use `⟨L ⁻¹' Uo, fun g => F (L g), hO.preimage L.continuous, hmem, ?_, fun g hg hin => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hF.comp L.contDiff.contDiffOn (fun g hg => hg)`. Establish `h1 : σ (g * ai) v = F (g * ai)` using `hEq (g * ai) hg (mat_mul_mem_UH_Hpk hin hai) show σ g (σ ai v) = F (L g)`. Rewrite using `[hL, ← h1, hmul g hin ai hai]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem smooth_vectors_translate {ai : CayleySignature.Mat k r} (hai : ai ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) {v : H}
     (hv : v ∈ smoothVecs (k := k) (r := r) σ) : σ ai v ∈ smoothVecs (k := k) (r := r) σ := by
@@ -133,21 +133,19 @@ theorem smooth_vectors_translate {ai : CayleySignature.Mat k r} (hai : ai ∈ Fo
 
 include hmul hone in
 /- English proof (translation)
-Establish `h2 : ai * a = 1` using `mul_eq_one_comm.1 h1`. Establish `hinv : ∀ y, σ a (σ ai y) = y` using `fun y => by`. Use `hmul a ha ai hai` as an intermediate fact. Rewrite `this` using `[h1, hone]`. Establish `e` using `congrArg (fun T : H →L[ℂ] H => T y) this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e.symm`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih`. Establish `ihw` using `ih (fun Y hY => hw Y (List.mem_cons_of_mem _ hY))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX` using `hw X List.mem_cons_self`. Use `show dsig σ X (dsigW σ w (σ ai v)) = σ ai (dsig σ (a * X * ai) (dsigW σ (w.map fun X => a * X * ai) v))`. Rewrite using `[ihw]`. Unfold `dsig`. Rewrite using `[← deriv_clm_comp_zero (σ ai) (σ a) hinv]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `hu : IsUnit a` using `⟨⟨a, ai, h1, h2⟩, rfl⟩`. Establish `hainv : a⁻¹ = ai` using `Matrix.inv_eq_right_inv h1`. Establish `e1 : NormedSpace.exp ((t : ℂ) • (a * X * ai)) = a * NormedSpace.exp ((t : ℂ) • X) * ai`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Matrix.exp_conj a ((t : ℂ) • X) hu` as an intermediate fact. Rewrite `this` using `[hainv]`. Rewrite using `[← this]`. Use `congr 1`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `exp_lie_algebra_mem_unitary k r X hX t`. Establish `e2 : NormedSpace.exp ((t : ℂ) • X) * ai = ai * (a * NormedSpace.exp ((t : ℂ) • X) * ai)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.one_mul]`. Use `_ = ai * (a * NormedSpace.exp ((t : ℂ) • X) * ai) := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set y := dsigW (k := k) (r := r) σ (w.map fun X => a * X * ai) v`. Establish `e3 : σ (NormedSpace.exp ((t : ℂ) • X)) (σ ai y) = σ (NormedSpace.exp ((t : ℂ) • X) * ai) y`. Rewrite using `[hmul _ hE _ hai]`. Both sides reduce to the same expression. Establish `e4 : σ ai (σ (a * NormedSpace.exp ((t : ℂ) • X) * ai) y) = σ (ai * (a * NormedSpace.exp ((t : ℂ) • X) * ai)) y`.
-
-Rewrite using `[hmul _ hai _ (mat_mul_mem_UH_Hpk (mat_mul_mem_UH_Hpk ha hE) hai)]`. Both sides reduce to the same expression. Rewrite using `[e3, e1, e4, ← e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivative_word_translate {a ai : CayleySignature.Mat k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
     (hai : ai ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (h1 : a * ai = 1)

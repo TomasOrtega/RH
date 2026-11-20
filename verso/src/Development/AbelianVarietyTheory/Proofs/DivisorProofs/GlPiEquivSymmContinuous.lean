@@ -14,17 +14,15 @@ def matPiEquiv (S : Type) [CommRing S] (n k : ℕ) :
   map_add' M N := by funext i; exact map_add ((Pi.evalRingHom (fun _ : Fin k => S) i).mapMatrix) M N
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((x : Matrix (Fin n) (Fin n) A) a b : T) ∈ A`. Conclude with `SetLike.coe_mem _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Express the relevant statement in the definitionally equal form `(((x⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) a b : T) ∈ A`. Conclude with `SetLike.coe_mem _`. Introduce and unpack `⟨h1, h2⟩`. Set `P : Matrix (Fin n) (Fin n) A` to `Matrix.of fun a b => ⟨_, h1 a b⟩`.
+Express the relevant assertion in an equivalent form by its definition. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Q : Matrix (Fin n) (Fin n) A` to `Matrix.of fun a b => ⟨_, h2 a b⟩`. Establish `hP : P.map A.subtype = (g : Matrix (Fin n) (Fin n) T)` using `by ext a b; rfl`. Establish `hQ : Q.map A.subtype = ((g⁻¹ : GL (Fin n) T) : Matrix (Fin n) (Fin n) T)` using `by ext a b; rfl`. Establish `inj : Function.Injective (fun M : Matrix (Fin n) (Fin n) A => M.map A.subtype)`. Introduce `M N h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a b`. Conclude with `Subtype.ext (congrFun (congrFun h a) b)`. Establish `hPQ : P * Q = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hP, hQ, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.mul_inv)`. Establish `hQP : Q * P = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hP, hQ, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.inv_mul)`.
-
-Use `⟨⟨P, Q, hPQ, hQP⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_range_map_subtype_iff {T : Type} [CommRing T] (n : ℕ) (A : Subring T) (g : GL (Fin n) T) :
     g ∈ (GeneralLinearGroup.map (n := Fin n) A.subtype).range ↔
@@ -85,9 +83,9 @@ end GlobalTheory.LKRes
 namespace GlobalTheory.LKRes
 
 /- English proof (translation)
-Simplify using `only [mem_range_map_subtype_iff, glPiEquiv_val, glPiEquiv_inv_val, hAB]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i`. Conclude with `⟨fun a b => h1 a b i, fun a b => h2 a b i⟩`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun a b i => (h i).1 a b, fun a b i => (h i).2 a b⟩`.
+Supply the required witnesses or components.
 -/
 theorem glPiEquiv_mem_iff {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
     (A : Subring R) (B : Subring S) (hAB : ∀ x : R, x ∈ A ↔ ∀ i, e x i ∈ B) (g : GL (Fin n) R) :

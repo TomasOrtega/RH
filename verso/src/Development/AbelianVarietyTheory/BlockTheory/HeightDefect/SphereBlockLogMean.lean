@@ -33,15 +33,15 @@ def sphereMap {N : ℕ}
   ⟨e z.1, by simpa using z.2⟩
 
 /- English proof (translation)
-Establish `hc : Continuous (sphereMap e)` using `Continuous.subtype_mk (e.continuous.comp continuous_subtype_val) _`. Set `e' : EuclideanSpace ℂ (Fin (N + 1)) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin (N + 1))` to `{ e.toLinearEquiv.restrictScalars ℝ with norm_map' := e.norm_map }`. Establish `hs : (sphereSurface N).map (sphereMap e) = sphereSurface N`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hc.measurable hs, sphereSurface, Measure.toSphere_apply' _ (hc.measurable hs), Measure.toSphere_apply' _ hs]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← e'.measurePreserving.measure_preimage_emb e'.toHomeomorph.measurableEmbedding (Set.Ioo (0 : ℝ) 1 • ((Subtype.val : UnitSphere N → EuclideanSpace ℂ (Fin (N + 1))) '' s))]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_smul, Set.mem_image]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, y, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨r, hr, _, ⟨_, hz, rfl⟩, (e'.map_smul r z.1).symm⟩`. Introduce and unpack `⟨r, hr, y, ⟨z, hz, rfl⟩, hx⟩`. Use `⟨r, hr, _, ⟨sphereMap e.symm z, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: sphereMap e (sphereMap e.symm z) = z` using `Subtype.ext (e.apply_symm_apply z.1)`. Simplify `hz` using `[this]`. Apply `e'.injective` to reduce the goal to its premises. Rewrite using `[← hx, e'.map_smul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `e.apply_symm_apply z.1`. Rewrite using `[sphereMeasure, Measure.map_smul, hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphereMeasure_map_unitary {N : ℕ}
     (e : EuclideanSpace ℂ (Fin (N + 1)) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin (N + 1))) :
@@ -105,7 +105,7 @@ def gaussAbsValue {ι : Type} (w : FinitePlace K) (ω : MvPolynomial ι K) : ℝ
   ((ω.support.sup fun d => Real.toNNReal (w (coeff d ω)) : ℝ≥0) : ℝ)
 
 /- English proof (translation)
-Establish `h0 : w.maximalIdeal.valuation K c ≠ 0` using `(Valuation.ne_zero_iff _).2 hc`. Rewrite using `[← FinitePlace.norm_embedding_eq, FinitePlace.norm_embedding', WithZeroMulInt.toNNReal_neg_apply _ h0]`. Take `⟨k, hk⟩` from `WithZero.ne_zero_iff_exists.1 h0`. Simplify using `only [← hk, WithZero.unzero_coe]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -121,7 +121,7 @@ theorem finitePlace_eq_absNorm_zpow (w : FinitePlace K) {c : K} (hc : c ≠ 0) :
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : d ∈ ω.support`. Use `Finset.le_sup (f := fun d => Real.toNNReal (w (coeff d ω))) h` as an intermediate fact. Conclude with `Real.toNNReal_le_iff_le_coe.1 this`. Rewrite using `[notMem_support_iff.1 h]`. Simplify using `[gaussAbsValue]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem le_gaussAbsValue {ι : Type} (w : FinitePlace K) (ω : MvPolynomial ι K) (d : ι →₀ ℕ) :
     w (coeff d ω) ≤ gaussAbsValue w ω := by
@@ -132,7 +132,7 @@ theorem le_gaussAbsValue {ι : Type} (w : FinitePlace K) (ω : MvPolynomial ι K
     simp [gaussAbsValue]
 
 /- English proof (translation)
-Take `⟨d, hd, e⟩` from `Finset.exists_mem_eq_sup ω.support (support_nonempty.2 h) fun d => Real.toNNReal (w (coeff d ω))`. Conclude with `⟨d, hd, by rw [gaussAbsValue, e, Real.coe_toNNReal _ (apply_nonneg w _)]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gaussAbsValue_eq {ι : Type} (w : FinitePlace K) {ω : MvPolynomial ι K}
     (h : ω ≠ 0) : ∃ d ∈ ω.support, gaussAbsValue w ω = w (coeff d ω) := by
@@ -141,7 +141,7 @@ theorem exists_gaussAbsValue_eq {ι : Type} (w : FinitePlace K) {ω : MvPolynomi
   exact ⟨d, hd, by rw [gaussAbsValue, e, Real.coe_toNNReal _ (apply_nonneg w _)]⟩
 
 /- English proof (translation)
-Take `⟨d, hd, e⟩` from `exists_gaussAbsValue_eq w h`. Rewrite using `[e]`. Conclude with `FinitePlace.pos_iff.2 (mem_support_iff.1 hd)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussAbsValue_pos {ι : Type} (w : FinitePlace K) {ω : MvPolynomial ι K}
     (h : ω ≠ 0) : 0 < gaussAbsValue w ω := by
@@ -150,9 +150,9 @@ theorem gaussAbsValue_pos {ι : Type} (w : FinitePlace K) {ω : MvPolynomial ι 
   exact FinitePlace.pos_iff.2 (mem_support_iff.1 hd)
 
 /- English proof (translation)
-Establish `hf : (⋃ d ∈ ω.support, Function.mulSupport fun w : FinitePlace K => w (coeff d ω)).Finite` using `ω.support.finite_toSet.biUnion fun d hd => FinitePlace.hasFiniteMulSupport (mem_support_iff.1 hd)`. Use `hf.subset fun w hw => ?_` and prove the remaining obligations. Take `⟨d, hd, e⟩` from `exists_gaussAbsValue_eq w h`. Use `Set.mem_biUnion hd fun h1 => hw ?_` and prove the remaining obligations. Simplify using `only at h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[e, h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finite_support_log_gaussAbsValue {ι : Type} {ω : MvPolynomial ι K} (h : ω ≠ 0) :
     (Function.support fun w : FinitePlace K => Real.log (gaussAbsValue w ω)).Finite := by
@@ -232,7 +232,7 @@ def HeightZeroStatements : Prop :=
     HeightZeroOnFractions ∧ SphericalJensen ∧ HeightZeroLowerBound
 
 /- English proof (translation)
-Introduce `K _ _ B N a b a' b' p q p' q' hp hq hp' hq' ha hb ha' hb' e`. Establish `h1` using `h K B N a b' p q' hp hq' ha hb'`. Establish `h2` using `h K B N a' b p' q hp' hq ha' hb`. Rewrite `h1` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem heightZeroOnFractions_of_additive (h : HeightZeroAdditive) : HeightZeroOnFractions := by
   intro K _ _ B N a b a' b' p q p' q' hp hq hp' hq' ha hb ha' hb' e
@@ -242,16 +242,16 @@ theorem heightZeroOnFractions_of_additive (h : HeightZeroAdditive) : HeightZeroO
   linarith
 
 /- English proof (translation)
-Simplify using `[hermitianLinearForm, PiLp.inner_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_hermitianLinearForm {N : ℕ} (u z : EuclideanSpace ℂ (Fin (N + 1))) :
     eval (fun j => z j) (hermitianLinearForm u) = inner ℂ u z := by
   simp [hermitianLinearForm, PiLp.inner_apply]
 
 /- English proof (translation)
-Introduce `d hd b`. Rewrite `hd` using `[coeff_X']`. Establish `: Finsupp.single (b₀, j₀) 1 = d`. Assume the negation of the conclusion as `h`. Conclude with `hd (if_neg h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Substitute `this` using the available equality. Distinguish the cases in `hb : b = b₀`. Substitute `hb` using the available equality. Simplify using `[Finsupp.single_apply, eq_comm]`. Simplify using `[Finsupp.single_apply, hb, Ne.symm hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (B n : ℕ) (b₀ : Fin B) (j₀ : Fin n) :
     IsBlockHomogeneous (X (b₀, j₀) : MvPolynomial (Fin B × Fin n) ℚ) (Pi.single b₀ 1) := by
@@ -265,9 +265,9 @@ example (B n : ℕ) (b₀ : Fin B) (j₀ : Fin n) :
   · simp [Finsupp.single_apply, hb, Ne.symm hb]
 
 /- English proof (translation)
-Establish `h : ∀ w : FinitePlace K, gaussAbsValue w (1 : MvPolynomial (Fin B × Fin (N + 1)) K) = 1`. Introduce `w`. Take `⟨d, hd, e⟩` from `exists_gaussAbsValue_eq w (one_ne_zero : (1 : MvPolynomial (Fin B × Fin (N + 1)) K) ≠ 0)`. Rewrite `hd` using `[mem_support_iff, coeff_one]`. Rewrite using `[e, coeff_one, if_pos (by by_contra h; exact hd (if_neg h)), map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[heightZero, h, blockLogMean, blockLogAbs]`.
+Simplify using the standard rewrite rules.
 -/
 example (K : Type) [Field K] [NumberField K] (B N : ℕ) :
     heightZero (1 : MvPolynomial (Fin B × Fin (N + 1)) K) = 0 := by

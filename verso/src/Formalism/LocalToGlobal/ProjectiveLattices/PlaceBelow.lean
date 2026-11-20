@@ -150,7 +150,7 @@ def expE (Q : DepPage) (nuStar : HeightOneSpectrum (𝓞 K) → ℝ) (v : Height
 end Places
 
 /- English proof (translation)
-Establish `h1 : a * x ≤ a * (x + b)` using `mul_le_mul_of_nonneg_left (by linarith) ha`. Establish `h2 : a * (x + b) ≤ (⌈a * (x + b)⌉ : ℝ)` using `Int.le_ceil _`. Establish `h3 : ((⌈a * (x + b)⌉ : ℤ) : ℝ) ≤ ((⌈a * (x + b)⌉.toNat : ℕ) : ℝ)`. Conclude with `Int.self_le_toNat _` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma le_ceil_toNat_lemma (a x b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
     a * x ≤ ((⌈a * (x + b)⌉.toNat : ℕ) : ℝ) := by
@@ -161,7 +161,7 @@ private lemma le_ceil_toNat_lemma (a x b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
   linarith
 
 /- English proof (translation)
-Unfold `DepPage.eLam`. Use `le_ceil_toNat_lemma _ _ _ (by positivity) ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem DepPage.le_eLam (Q : DepPage) (eL : ℕ) (nu : ℝ) (p : ℕ) :
     (eL : ℝ) * (Q.T : ℝ) * nu ≤ (Q.eLam eL nu p : ℝ) := by

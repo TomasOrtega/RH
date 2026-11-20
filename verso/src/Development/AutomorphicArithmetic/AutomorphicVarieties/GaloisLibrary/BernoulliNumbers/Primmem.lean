@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Establish `hpos : 0 < orderOf u` using `orderOf_pos u`. Use `IsIntegral.of_pow hpos ?_` and prove the remaining obligations. Establish `h1 : χ (u : ZMod N) ^ orderOf u = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_orderOf_eq_one, Units.val_one, map_one]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_one`.
+A detailed English derivation is pending.
 -/
 private theorem dirichletCharacter_unit_isIntegral {R : Type} [CommRing R] {N : ℕ} [NeZero N]
     (χ : DirichletCharacter R N) (u : (ZMod N)ˣ) : IsIntegral ℤ (χ u) := by
@@ -20,21 +20,19 @@ private theorem dirichletCharacter_unit_isIntegral {R : Type} [CommRing R] {N : 
   exact isIntegral_one
 
 /- English proof (translation)
-Introduce `R _ _ N _ k χ`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `hc : 0 < χ.conductor` using `Nat.pos_of_ne_zero fun h => hN (Nat.eq_zero_of_zero_dvd (h ▸ χ.conductor_dvd_level))`. Establish `hdvd : den χ.conductor k ∣ den N k` using `den_dvd χ.conductor_dvd_level k`. Establish `hB : Bprim k χ = genB k (⇑χ.primitiveCharacter)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ a : ZMod N, IsIntegral ℤ (χ a)`. Introduce `a`. Distinguish the cases in `ha : IsUnit a`. Take `⟨u, rfl⟩` from `ha`. Conclude with `dirichletCharacter_unit_isIntegral χ u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MulChar.map_nonunit χ ha]`. Conclude with `isIntegral_zero`. Establish `part2 : ∀ A : Subring R, (∀ u : (ZMod N)ˣ, χ u ∈ A) → (den N k : R) * Bprim k χ ∈ A`. Introduce `A hA`. Take `⟨m, hm⟩` from `hdvd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (den χ.conductor k : R) * genB k (⇑χ.primitiveCharacter) ∈ A`. Use `b_denchar k _ A hc ?_` and prove the remaining obligations. Introduce `x`. Break down `b_primval χ x with h | ⟨u, h⟩` into its components or cases. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `A.zero_mem`. Rewrite using `[h]`. Conclude with `hA u`. Rewrite using `[hB, hm, Nat.cast_mul, mul_comm ((den χ.conductor k : ℕ) : R) (m : R), mul_assoc]`. Conclude with `A.mul_mem (natCast_mem A m) hmem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, part2, ?_, ?_⟩` and prove the remaining obligations. Introduce `A hA`. Rewrite using `[hB]`. Use `genB_mem k _ A ?_` and prove the remaining obligations. Introduce `x`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `b_primval χ x with h | ⟨u, h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `A.zero_mem`. Rewrite using `[h]`. Conclude with `hA u`.
-
-Use `part2 (integralClosure ℤ R).toSubring (fun u => dirichletCharacter_unit_isIntegral χ u)` as an intermediate fact. Conclude with `this`. Use `b_denchar k (⇑χ) (integralClosure ℤ R).toSubring (Nat.pos_of_ne_zero hN) (fun a => hint a)` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_primmem :
     ∀ {R : Type} [CommRing R] [Algebra ℚ R] {N : ℕ} [NeZero N] (k : ℕ) (χ : DirichletCharacter R N), (∀ A : Subalgebra ℚ R, (∀ u : (ZMod N)ˣ, χ u ∈ A) → Bprim k χ ∈ A) ∧ (∀ A : Subring R, (∀ u : (ZMod N)ˣ, χ u ∈ A) → (den N k : R) * Bprim k χ ∈ A) ∧ IsIntegral ℤ ((den N k : R) * Bprim k χ) ∧ IsIntegral ℤ ((den N k : R) * genB k χ) := by

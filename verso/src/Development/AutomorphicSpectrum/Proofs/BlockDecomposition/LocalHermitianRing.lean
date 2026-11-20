@@ -14,9 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[F] σ (σ e) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cm_conj_conj h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_sigR (h : IsCMExt F E σ) (y : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (sigR (Fv F v) σ y) = y := by
@@ -28,13 +28,13 @@ theorem sigR_sigR (h : IsCMExt F E σ) (y : Fv F v ⊗[F] E) :
     rw [cm_conj_conj h]
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_baseChange, h.2.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_loc (h : IsCMExt F E σ) : Module.finrank (Fv F v) (Fv F v ⊗[F] E) = 2 := by
   rw [Module.finrank_baseChange, h.2.2.1]
 
 /- English proof (translation)
-Set `_` to `(GlobalTheory.Orb.intLocMap E v).toAlgebra`. Establish `: Module.Finite (v.adicCompletionIntegers F) (intLoc F E v)` using `GlobalTheory.Orb.finite_intLocMap v`. Conclude with `IsNoetherianRing.of_finite (v.adicCompletionIntegers F) _`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem noeth_intLoc : IsNoetherianRing (intLoc F E v) := by
   let _ := (GlobalTheory.Orb.intLocMap E v).toAlgebra
@@ -42,18 +42,18 @@ theorem noeth_intLoc : IsNoetherianRing (intLoc F E v) := by
   exact IsNoetherianRing.of_finite (v.adicCompletionIntegers F) _
 
 /- English proof (translation)
-Establish `h1 : IsUnit ((m : ℤ) : E)` using `isUnit_iff_ne_zero.2 (by exact_mod_cast hm)`. Simplify using `using h1.map (inclR (F := F) (Fv F v))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_intCast {m : ℤ} (hm : m ≠ 0) : IsUnit ((m : ℤ) : Fv F v ⊗[F] E) := by
   have h1 : IsUnit ((m : ℤ) : E) := isUnit_iff_ne_zero.2 (by exact_mod_cast hm)
   simpa using h1.map (inclR (F := F) (Fv F v))
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_sub_mem_intLoc v a`. Take `⟨m, hm, he⟩` from `exists_integral_multiples ℤ ℚ ({x} : Finset E)`. Establish `he' : IsIntegral ℤ (m • x)` using `he x (Finset.mem_singleton_self x)`. Establish `hmem : ((m : ℤ) : Fv F v ⊗[F] E) ∈ intLoc F E v` using `intCast_mem _ m`. Use `⟨_, hmem, isUnit_intCast hm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `tmul_mem_intLoc (E := E) (one_mem (v.adicCompletionIntegers F)) ⟨m • x, he'⟩`. Establish `e : ((m : ℤ) : Fv F v ⊗[F] E) * a = ((m : ℤ) : Fv F v ⊗[F] E) * (a - (1 : Fv F v) ⊗ₜ[F] x) + (1 : Fv F v) ⊗ₜ[F] (m • x)`. Establish `e1 : ((m : ℤ) : Fv F v ⊗[F] E) * (1 : Fv F v) ⊗ₜ[F] x = (1 : Fv F v) ⊗ₜ[F] (m • x)`. Rewrite using `[← zsmul_eq_mul, TensorProduct.tmul_smul]`. Rewrite using `[mul_sub, e1, sub_add_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `add_mem (mul_mem hmem hx) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denom_intLoc (a : Fv F v ⊗[F] E) :
     ∃ s ∈ intLoc F E v, IsUnit s ∧ s * a ∈ intLoc F E v := by
@@ -72,7 +72,7 @@ theorem denom_intLoc (a : Fv F v ⊗[F] E) :
   exact add_mem (mul_mem hmem hx) h2
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 fun s hs => ?_) ((Submodule.span_singleton_le_iff_mem _ _).2 hu)` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `h s hs`. Conclude with `Submodule.mem_span_singleton.2 ⟨⟨c, hc⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_eq_of {R : Type} [CommRing R] {𝔬 : Subring R} {S : Set R} {u : R}
     (hu : u ∈ Submodule.span 𝔬 S) (h : ∀ s ∈ S, ∃ c ∈ 𝔬, s = c * u) :
@@ -82,7 +82,7 @@ theorem span_eq_of {R : Type} [CommRing R] {𝔬 : Subring R} {S : Set R} {u : R
   exact Submodule.mem_span_singleton.2 ⟨⟨c, hc⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(injective_iff_map_eq_zero _).2 fun y hy => by by_contra h0 obtain ⟨b, hb⟩ := hf.mul_inv_cancel h0 have := congrArg (finEmb F v τ) hb simp [hy] at this`.
+A detailed English derivation is pending.
 -/
 theorem finEmb_injective (hf : IsField (Fv F v ⊗[F] E)) (τ : E →ₐ[F] FvBar F v) :
     Function.Injective (finEmb F v τ) :=
@@ -93,7 +93,7 @@ theorem finEmb_injective (hf : IsField (Fv F v ⊗[F] E)) (τ : E →ₐ[F] FvBa
     simp [hy] at this
 
 /- English proof (translation)
-Apply `NNReal.eq` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spectralNorm (Fv F v) (FvBar F v) _ = spectralNorm (Fv F v) (FvBar F v) _`. Rewrite using `[spectralNorm, spectralNorm, minpoly.algHom_eq _ (finEmb_injective hf τ), minpoly.algHom_eq _ (finEmb_injective hf τ')]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem absBar_finEmb_eq (hf : IsField (Fv F v ⊗[F] E)) (τ τ' : E →ₐ[F] FvBar F v) (y : Fv F v ⊗[F] E) :
     absBar F v (finEmb F v τ y) = absBar F v (finEmb F v τ' y) := by
@@ -103,17 +103,17 @@ theorem absBar_finEmb_eq (hf : IsField (Fv F v ⊗[F] E)) (τ τ' : E →ₐ[F] 
     minpoly.algHom_eq _ (finEmb_injective hf τ')]
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hI`. Take `⟨w, hw, hwu⟩` from `hu`. Establish `: Nontrivial (Fv F v ⊗[F] E)` using `⟨hf.exists_pair_ne⟩`. Set `τ₀ : E →ₐ[F] FvBar F v` to `IsAlgClosed.lift`. Set `N : Fv F v ⊗[F] E → NNReal` to `fun y => absBar F v (finEmb F v τ₀ y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hN0 : ∀ y, N y = 0 → y = 0` using `fun y hy => finEmb_injective hf τ₀ (by rw [map_zero]; exact (absBar_eq_zero F v).1 hy)`. Establish `hS : S.Nonempty`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[Finset.not_nonempty_iff_eq_empty]`. Substitute `hc` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Simplify using `only [Finset.coe_empty, Submodule.span_empty, Submodule.mem_bot] at hw`. Conclude with `hwu.ne_zero hw`. Take `⟨u, huS, hmax⟩` from `S.exists_max_image N hS`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h0 : (Submodule.span (intLoc F E v) (S : Set (Fv F v ⊗[F] E))) ≤ ⊥` using `Submodule.span_le.2 fun s hs => by`. Use `hN0 s (le_antisymm ?_ zero_le)` and prove the remaining obligations. Use `hmax s hs` as an intermediate fact. Rewrite `this` using `[show N 0 = 0 from by simp [N, (absBar_eq_zero F v).2 rfl]]`. Then use the resulting hypothesis. Conclude with `hwu.ne_zero (by simpa using h0 hw)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `hf.mul_inv_cancel hu0`. Establish `huU : IsUnit u` using `IsUnit.of_mul_eq_one b hb`. Use `⟨u, huU, span_eq_of (Submodule.subset_span huS) fun s hs => ⟨b * s, ?_, ?_⟩⟩` and prove the remaining obligations. Use `mem_intLoc_iff_absFin_le_one.2 ((absFin_le_iff F v).2 fun τ => ?_)` and prove the remaining obligations. Rewrite using `[absBar_finEmb_eq hf τ τ₀, map_mul, absBar_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : absBar F v (finEmb F v τ₀ u) * absBar F v (finEmb F v τ₀ b) = 1`. Rewrite using `[← absBar_mul, ← map_mul, hb, map_one]`. Simplify using `using absBar_algebraMap F v 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_right_comm, mul_comm b, hb, one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem principal_field (hf : IsField (Fv F v ⊗[F] E)) (I : Submodule (intLoc F E v) (Fv F v ⊗[F] E))
     (hI : I.FG) (hu : ∃ u ∈ I, IsUnit u) : ∃ u : Fv F v ⊗[F] E, IsUnit u ∧ I = Submodule.span (intLoc F E v) {u} := by
@@ -153,13 +153,11 @@ theorem principal_field (hf : IsField (Fv F v ⊗[F] E)) (I : Submodule (intLoc 
   · rw [mul_right_comm, mul_comm b, hb, one_mul]
 
 /- English proof (translation)
-Establish `hex : ∃ j ∈ S, ρ j ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h0 : ∀ y ∈ Submodule.span (intLoc F E v) (S : Set (Fv F v ⊗[F] E)), ρ y = 0` using `fun y hy => by`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact hc x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [Subring.smul_def, smul_eq_mul, map_mul, hx, mul_zero]`. Conclude with `(hwu.map ρ).ne_zero (h0 w hw)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j0, hj0, hj0'⟩` from `hex`. Take `⟨j, hj, hmax⟩` from `S.exists_max_image (fun s => ‖ρ s‖₊) ⟨j0, hj0⟩`. Use `⟨j, hj, fun e => hj0' ?_, hmax⟩` and prove the remaining obligations. Use `hmax j0 hj0` as an intermediate fact. Rewrite `this` using `[e, nnnorm_zero]`.
-
-Conclude with `nnnorm_eq_zero.1 (le_antisymm this zero_le)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dom (ρ : Fv F v ⊗[F] E →ₐ[Fv F v] Fv F v) (S : Finset (Fv F v ⊗[F] E)) {w : Fv F v ⊗[F] E}
     (hw : w ∈ Submodule.span (intLoc F E v) (S : Set (Fv F v ⊗[F] E))) (hwu : IsUnit w) :
@@ -182,15 +180,13 @@ theorem exists_dom (ρ : Fv F v ⊗[F] E →ₐ[Fv F v] Fv F v) (S : Finset (Fv 
   exact nnnorm_eq_zero.1 (le_antisymm this zero_le)
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hI`. Take `⟨w, hw, hwu⟩` from `hu`. Take `⟨j1, hj1, h1, hm1⟩` from `exists_dom (splitProj τ) S hw hwu`. Take `⟨j2, hj2, h2, hm2⟩` from `exists_dom (splitProj (τ.comp σ)) S hw hwu`. Use `set e := splitIdem h τ with he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `heI : e ∈ intLoc F E v` using `splitIdem_mem h τ`. Use `set u : Fv F v ⊗[F] E := e * j1 + (1 - e) * j2 with hu`. Establish `hup : splitProj τ u = splitProj τ j1` using `by simp [hu, he]`. Establish `huq : splitProj (τ.comp σ) u = splitProj (τ.comp σ) j2` using `by simp [hu, he]`. Establish `hmem : u ∈ Submodule.span (intLoc F E v) (S : Set (Fv F v ⊗[F] E))` using `add_mem (Submodule.smul_mem _ (⟨e, heI⟩ : intLoc F E v) (Submodule.subset_span hj1)) (Submodule.smul_mem _ (⟨1 - e, sub_mem (one_mem _) heI⟩ : intLoc F E v) (Submodule.subset_span hj2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hunit : IsUnit u`. Use `IsUnit.of_mul_eq_one ((splitAlgEquiv h τ).symm ((splitProj τ j1)⁻¹, (splitProj (τ.comp σ) j2)⁻¹)) ?_` and prove the remaining obligations. Use `split_ext h τ ?_ ?_` and prove the remaining obligations. Simplify using `[hup, h1]`. Simplify using `[huq, h2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, hunit, span_eq_of hmem fun s hs => ?_⟩` and prove the remaining obligations. Use `⟨(splitAlgEquiv h τ).symm (splitProj τ s / splitProj τ j1, splitProj (τ.comp σ) s / splitProj (τ.comp σ) j2), (mem_intLoc_iff_split h τ).2 ⟨?_, ?_⟩, split_ext h τ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[splitProj_symm, ← nnnorm_le_one_iff_mem, nnnorm_div]`. Conclude with `div_le_one_of_le₀ (hm1 s hs) zero_le`. Rewrite using `[splitProj_comp_symm, ← nnnorm_le_one_iff_mem, nnnorm_div]`.
-
-Conclude with `div_le_one_of_le₀ (hm2 s hs) zero_le`. Simplify using `[hup, h1]`. Simplify using `[huq, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem principal_split (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (I : Submodule (intLoc F E v) (Fv F v ⊗[F] E))
     (hI : I.FG) (hu : ∃ u ∈ I, IsUnit u) : ∃ u : Fv F v ⊗[F] E, IsUnit u ∧ I = Submodule.span (intLoc F E v) {u} := by
@@ -223,11 +219,9 @@ theorem principal_split (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (I : Subm
   · simp [huq, h2]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h v`. Establish `h2 : Module.finrank (Fv F v) (Fv F v ⊗[F] E) = 2` using `finrank_loc h`. Establish `hfin : Module.Finite (Fv F v) (Fv F v ⊗[F] E)` using `Module.finite_of_finrank_pos (by omega)`. Use `{ invol := sigR_sigR h conj_mem := fun a ha => sigR_mem_intLoc σ ha nontrivial := Module.nontrivial_of_finrank_pos (R := Fv F v) (by omega) artinian := IsArtinianRing.of_finite (Fv F v) _ noeth := noeth_intLoc two := ?_ denom := denom_intLoc principal := fun I hI hu => ?_ }` and prove the remaining obligations. Establish `h1 : IsUnit (2 : E)` using `isUnit_iff_ne_zero.2 two_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `h1.map (inclR (F := F) (Fv F v))`. Rewrite `h3` using `[map_ofNat]`. Then use the resulting hypothesis. Distinguish the cases in `hf : IsField (Fv F v ⊗[F] E)`. Conclude with `principal_field hf I hI hu`. Take `⟨φ⟩` from `nonempty_algHom_of_not_isField (K := Fv F v) h2 hf`.
-
-Conclude with `principal_split h ((φ.restrictScalars F).comp Algebra.TensorProduct.includeRight) I hI hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isHermRing_intLoc : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E}, IsCMExt F E σ → ∀ (v : HeightOneSpectrum (𝓞 F)),

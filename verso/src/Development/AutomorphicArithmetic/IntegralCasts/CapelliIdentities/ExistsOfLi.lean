@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Q ι _ _ _ f hf v`. Use `Fintype.ofFinite ι` as an intermediate fact. Establish `hs : Function.Surjective (LinearMap.pi f : Q →ₗ[ℂ] (ι → ℂ))`. Rewrite using `[← LinearMap.dualMap_injective_iff, injective_iff_map_eq_zero]`. Introduce `φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∑ i, φ (fun j => if i = j then 1 else 0) • f i = 0`. Use extensionality with `q`. Establish `h1 : φ (LinearMap.pi f q) = 0` using `LinearMap.congr_fun hφ q`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ]`. Simplify `h1` using `[LinearMap.sum_apply, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0` using `Fintype.linearIndependent_iff.1 hf _ hsum`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ]`. Simplify using `[h0]`. Take `⟨q, hq⟩` from `hs v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q, fun i => congrFun hq i⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Qe54.exists_of_li :
     ∀ {Q ι : Type} [inst : AddCommGroup Q]

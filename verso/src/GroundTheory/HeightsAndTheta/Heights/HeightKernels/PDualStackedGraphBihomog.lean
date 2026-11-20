@@ -21,7 +21,7 @@ def bipart (f : MRing (stackedBlocks T)) (p : ℕ × ℕ) : MRing (stackedBlocks
   ∑ m ∈ f.support.filter (fun m => bideg m = p), monomial m (coeff m f)
 
 /- English proof (translation)
-Unfold `bipart`. Rewrite using `[Finset.sum_fiberwise_of_maps_to (fun m hm => Finset.mem_image_of_mem _ hm)]`. Conclude with `(support_sum_monomial_coeff f).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_bipart (f : MRing (stackedBlocks T)) : f = ∑ p ∈ f.support.image bideg, bipart f p := by
   classical
@@ -30,9 +30,9 @@ theorem sum_bipart (f : MRing (stackedBlocks T)) : f = ∑ p ∈ f.support.image
   exact (support_sum_monomial_coeff f).symm
 
 /- English proof (translation)
-Introduce `m hm κ`. Take `⟨m', hm', hmm'⟩` from `Finset.mem_biUnion.mp (support_sum hm)`. Take `rfl : m = m'` from `Finset.mem_singleton.mp (support_monomial_subset hmm')`. Establish `hp : bideg m = p` using `(Finset.mem_filter.mp hm').2`. Break down `κ with ⟨⟨⟩⟩ | ⟨⟨⟩⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `congrArg Prod.fst hp`. Conclude with `congrArg Prod.snd hp`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_bipart (f : MRing (stackedBlocks T)) (p : ℕ × ℕ) :
     IsMultiHomog (bipart f p) (bidegree p.1 p.2) := by
@@ -48,7 +48,7 @@ theorem isMultiHomog_bipart (f : MRing (stackedBlocks T)) (p : ℕ × ℕ) :
 def secW (s : Σ κ, stackedBlocks T κ) : ℕ := Sum.elim (fun _ => 0) (fun _ => 1) s.1
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Fintype.sum_sum_type]`. Simplify using `only [Fintype.sum_unique, bideg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sum_eq_bideg (m : (Σ κ, stackedBlocks T κ) →₀ ℕ) :
     ∑ s, m s = (bideg m).1 + (bideg m).2 := by
@@ -57,7 +57,7 @@ theorem sum_eq_bideg (m : (Σ κ, stackedBlocks T κ) →₀ ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Fintype.sum_sum_type]`. Simplify using `only [Fintype.sum_unique, bideg, secW, Sum.elim_inl, Sum.elim_inr, zero_mul, one_mul, Finset.sum_const_zero, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sum_secW_eq_bideg (m : (Σ κ, stackedBlocks T κ) →₀ ℕ) :
     ∑ s, secW s * m s = (bideg m).2 := by
@@ -82,7 +82,7 @@ def biEval (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (du
     fun s => C (C (formEvalFrac b b' (X s)) * X ()) * X () ^ secW s
 
 /- English proof (translation)
-Establish `hE : formEvalFrac b b' (monomial m c) = (c : ProjField K i) * ∏ s, formEvalFrac b b' (X s) ^ m s`. Rewrite using `[monomial_eq, map_mul, map_finsuppProd, Finsupp.prod_fintype _ _ (fun _ => by simp)]`. Simplify using `[map_pow]`. Rewrite using `[hE, monomial_eq, map_mul, map_finsuppProd, Finsupp.prod_fintype _ _ (fun _ => by simp)]`. Simplify using `only [biEval, coe_eval₂Hom, eval₂_X, map_pow, mul_pow, Finset.prod_mul_distrib, ← pow_mul, Finset.prod_pow_eq_pow_sum, map_mul, map_prod, eq_intCast, map_intCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -99,7 +99,7 @@ theorem biEval_monomial [Fintype T] (b : Module.Basis T ℤ (dualLattice F)) (b'
   ring
 
 /- English proof (translation)
-Establish `h : (X ⟨Sum.inl (), t⟩ : MRing (stackedBlocks T)) = graphFirst t` using `rfl`. Rewrite using `[formEvalFrac, RingHom.comp_apply, h, DualStackedExcLeadExample.stackedFormEval_first, dualLatticeCoord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem formEvalFrac_first (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
     (t : T) : formEvalFrac b b' (X ⟨Sum.inl (), t⟩) = dualLatticeCoord b' ⟨(), t⟩ := by
@@ -107,9 +107,9 @@ theorem formEvalFrac_first (b : Module.Basis T ℤ (dualLattice F)) (b' : Module
   rw [formEvalFrac, RingHom.comp_apply, h, DualStackedExcLeadExample.stackedFormEval_first, dualLatticeCoord]
 
 /- English proof (translation)
-Establish `h : (X ⟨Sum.inr (), t⟩ : MRing (stackedBlocks T)) = graphSecond t` using `rfl`. Rewrite using `[formEvalFrac, RingHom.comp_apply, h, DualStackedExcLeadExample.stackedFormEval_second, hb t, dualLatticeCoord, ← map_intCast (algebraMap (MvPolynomial (Fin i) K) (ProjField K i)), ← map_mul]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, zsmul_eq_mul, map_mul, ← mul_assoc, map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formEvalFrac_second (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
     {a : T → ℤ} (hb : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (t : T) :
@@ -123,13 +123,13 @@ theorem formEvalFrac_second (b : Module.Basis T ℤ (dualLattice F)) (b' : Modul
   rw [Pi.smul_apply, zsmul_eq_mul, map_mul, ← mul_assoc, map_intCast]
 
 /- English proof (translation)
-Set `Q : MRing (dualBlocks T) ⧸ dualIdeal b' →+* MvPolynomial Unit (ProjField K i)` to `Ideal.Quotient.lift (dualIdeal b') (mConeMap (dualLatticeCoord b') : MRing (dualBlocks T) →+* MvPolynomial Unit (ProjField K i)) (fun g hg => RingHom.mem_ker.mp hg)`. Establish `hg : ∀ t : T, linForm (ι` using `dualBlocks T) (ι₂ := dualBlocks T) (stackedDiag a) ⟨(), t⟩ = C (a t) * X ⟨(), t⟩ := fun t => by`. Simplify using `[linForm, stackedDiag, apply_ite C, ite_mul, Finset.sum_ite_eq]`. Establish `hcomp : (map Q).comp (graphMap (dualIdeal b') (linForm (stackedDiag a))) = biEval b b'`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `n`. Simplify using `[biEval]`. Apply the tactic sequence `rintro ⟨(u | u), t⟩ <;> obtain ⟨⟩ := u`. Establish `h1` using `formEvalFrac_first b b' t`. Simplify using `only [RingHom.comp_apply, graphMap, coe_eval₂Hom, eval₂_X, map_C, Q, Ideal.Quotient.lift_mk, biEval, secW, h1] at *`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mConeMap]`. Establish `h2` using `formEvalFrac_second b b' hb t`. Simplify using `only [RingHom.comp_apply, graphMap, coe_eval₂Hom, eval₂_X, map_mul, map_C, Q, hg t, Ideal.Quotient.lift_mk, biEval, secW, h2] at *`. Simplify using `[mConeMap, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hf0 : graphMap (dualIdeal b') (linForm (stackedDiag a)) f = 0` using `RingHom.mem_ker.mp hf`. Rewrite using `[← hcomp, RingHom.comp_apply, hf0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem biEval_eq_zero [Fintype T] [DecidableEq T] (b : Module.Basis T ℤ (dualLattice F))
     (b' : Module.Basis T ℤ (dualLattice F')) {a : T → ℤ}
@@ -167,9 +167,9 @@ variable {K : Type} [Field K] [NumberField K] {i : ℕ} {F F' : HermLattice K i}
   [DecidableEq T]
 
 /- English proof (translation)
-Rewrite using `[C_mul_X_pow_eq_monomial, coeff_monomial]`. Distinguish the cases in `h : n = e`. Simplify using `[h]`. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h (by simpa using congrArg (fun g : Unit →₀ ℕ => g ()) h')`.
+A detailed English derivation is pending.
 -/
 theorem coeff_C_mul_X_pow_unit {R : Type*} [CommSemiring R] (r : R) (n e : ℕ) :
     coeff (Finsupp.single () e) (C r * X () ^ n : MvPolynomial Unit R) = if n = e then r else 0 := by
@@ -181,13 +181,13 @@ theorem coeff_C_mul_X_pow_unit {R : Type*} [CommSemiring R] (r : R) (n e : ℕ) 
     exact h (by simpa using congrArg (fun g : Unit →₀ ℕ => g ()) h')
 
 /- English proof (translation)
-Apply `IsFractionRing.injective (MvPolynomial (Fin i) K) (ProjField K i)` to reduce the goal to its premises. Rewrite using `[map_zero]`. Express the relevant statement in the definitionally equal form `formEvalFrac b b' (bipart f p) = 0`. Establish `h0` using `biEval_eq_zero b b' hb hf`. Rewrite `h0` using `[← support_sum_monomial_coeff f, map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[biEval_monomial]`. Establish `h1` using `congrArg (fun q => coeff (Finsupp.single () (p.1 + p.2)) (coeff (Finsupp.single () p.2) q)) h0`. Simplify using `only [coeff_sum, coeff_C_mul_X_pow_unit, apply_ite (coeff (Finsupp.single () (p.1 + p.2))), coeff_zero] at h1`. Rewrite using `[← h1, bipart, map_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_eq_bideg, sum_secW_eq_bideg]`. Take `⟨d, e⟩` from `p`. Take `⟨d', e'⟩` from `bideg m`. Distinguish the cases in `he : e' = e`. Substitute `he` using the available equality.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[he]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem stackedFormEval_bipart (b : Module.Basis T ℤ (dualLattice F))
     (b' : Module.Basis T ℤ (dualLattice F')) {a : T → ℤ}
@@ -219,7 +219,7 @@ end StackedGraphBihomogeneous
 open StackedGraphBihomogeneous in
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b b' a hb f hf`. Conclude with `⟨f.support.image bideg, bipart f, sum_bipart f, fun p _ => ⟨isMultiHomog_bipart f p, stackedFormEval_bipart b b' hb hf p⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem DualStackedGraphBihomog.proof : DualStackedGraphBihomog.Statement := by
   intro K _ _ i F F' T _ _ b b' a hb f hf

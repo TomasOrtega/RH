@@ -47,33 +47,31 @@ variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
 /- English proof (translation)
-Establish `hw : T.w ≠ 0` using `fun h0 => by`. Establish `h1` using `T.w_norm`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Take `⟨U, hU⟩` from `equiv_sigLam_of_isDS hDS hgap hP hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc0` using `datumEmbedding_highest_ne_zero hgap hP hw`. Use `set c : ℝ := ‖uniformisationL2 ε Ψ T.w T.w‖ with hc`. Establish `hcne : (c : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 hc0)`. Set `jl : T.V →ₗ[ℂ] H` to `((c : ℂ)⁻¹) • (U.toLinearEquiv.toLinearMap ∘ₗ datumEmbedding hP T.w)`. Set `j : T.V →L[ℂ] H` to `LinearMap.toContinuousLinearMap jl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjv : ∀ v, j v = ((c : ℂ)⁻¹) • U (datumEmbedding hP T.w v)` using `fun v => rfl`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by show inUJ ε 1`. Simplify using `[inUJ]`. Establish `hkey : ∀ g ∈ UJset ε, ∀ v v', inner ℂ (j v') (σ g (j v)) = inner ℂ v' (Ψ g v)`. Introduce `g hg v v'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hjv, hjv, map_smul, ← hU g hg, inner_smul_left, inner_smul_right, LinearIsometryEquiv.inner_map_map]`. Establish `e` using `formulaF_sigLam hgap hP hw hg v v'`. Rewrite using `[show datumEmbedding hP T.w v = (⟨uniformisationL2 ε Ψ T.w v, datumEmbedding_mem_Hlam hP v⟩ : Hlam ε Ψ T.w) from rfl, show datumEmbedding hP T.w v' = (⟨uniformisationL2 ε Ψ T.w v', datumEmbedding_mem_Hlam hP v'⟩ : Hlam ε Ψ T.w) from rfl, e]`. Rewrite using `[map_inv₀, Complex.conj_ofReal]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hc]`. Establish `hiso : ∀ v, ‖j v‖ = ‖v‖`. Introduce `v`. Establish `e` using `hkey 1 h1 v v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[hDS.2.2.1.1.1, hP.2.1]`. Simplify using `only [ContinuousLinearMap.one_apply] at e`. Establish `e2 : ‖j v‖ ^ 2 = ‖v‖ ^ 2`. Rewrite using `[← @inner_self_eq_norm_sq ℂ, ← @inner_self_eq_norm_sq ℂ, e]`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : ∀ (k : S7.KG ε) v, σ (S7.toMK k) (j v) = j (T.op k v)`. Introduce `k v`. Rewrite using `[hjv, hjv, map_smul, ← hU _ (ffa_toMK_mem k)]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sigLam_coe hgap hP hw (ffa_toMK_mem k)]`. Conclude with `rightRegular_datumEmbedding hP T.w v k`. Establish `hrange : LinearMap.range (j : T.V →ₗ[ℂ] H) = (lowKSubLam ε Ψ T.w).map U.toLinearEquiv.toLinearMap` using `by show LinearMap.range jl = _`. Rewrite using `[LinearMap.range_smul _ _ (inv_ne_zero hcne), LinearMap.range_comp, range_datumEmbedding]`. Establish `hintU : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, U.toLinearEquiv.toLinearMap (sigLam ε Ψ T.w g x) = σ g (U.toLinearEquiv.toLinearMap x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg x`. Rewrite `hg` using `[mir_Kset_eq]`. Conclude with `hU g (UnitaryGroupOfForm.K_mem_UJ hg) x`. Establish `hintS : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, U.toLinearEquiv.symm.toLinearMap (σ g x) = sigLam ε Ψ T.w g (U.toLinearEquiv.symm.toLinearMap x)`. Introduce `g hg x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `U.injective` to reduce the goal to its premises. Establish `e` using `hintU g hg (U.toLinearEquiv.symm x)`. Simplify using `only [LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv] at e ⊢`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hlow : Formalism.MainNotions.S.lowKSub ε lam σ = (lowKSubLam ε Ψ T.w).map U.toLinearEquiv.toLinearMap`. Establish `hdef : Formalism.MainNotions.S.lowKSub ε lam σ = sSup {S : Submodule ℂ H | Formalism.MainNotions.S.IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S}` using `rfl`. Establish `hset : {S : Submodule ℂ H | Formalism.MainNotions.S.IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S} = {(lowKSubLam ε Ψ T.w).map U.toLinearEquiv.toLinearMap}`. Use extensionality with `S`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_singleton_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hS`. Establish `h2` using `(sigLam_lowK hgap hP hw).2 _ ((isKTypeOf_map_iff _ U.toLinearEquiv.symm.injective hintS _ S).1 hS)`. Rewrite using `[← h2, ← Submodule.map_comp]`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Conclude with `(isKTypeOf_map_iff _ U.toLinearEquiv.injective hintU _ _).1 (sigLam_lowK hgap hP hw).1`. Rewrite using `[hdef, hset, sSup_singleton]`. Use `⟨j, hiso, hK, hrange.trans hlow.symm, fun g hg => ?_⟩` and prove the remaining obligations.
-
-Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun v' => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right, ContinuousLinearMap.comp_apply, hkey g hg v v']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anyF (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) :
     ∃ j : T.V →L[ℂ] H, (∀ v, ‖j v‖ = ‖v‖) ∧
@@ -159,9 +157,9 @@ theorem anyF (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε la
     ContinuousLinearMap.comp_apply, hkey g hg v v']
 
 /- English proof (translation)
-Take `⟨j, hiso, -, hran, hF⟩` from `anyF hDS hgap hP`. Introduce `E hE k X hk hX`. Rewrite `hk` using `[mir_Kset_eq]`. Take `⟨k', rfl⟩` from `ffa_Kset hk`. Establish `hX' : inP ε X` using `(mir_inP_iff ε X).1 hX`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : S7.toMK k' * NormedSpace.exp X ∈ UJset ε` using `rq_UJ_mul (ffa_toMK_mem k') (by simpa using rq_exp_mem ε X hX'.1 1)`. Use `(anyf_comp_norm_le j hiso E _ _ hE hran).trans ?_` and prove the remaining obligations. Rewrite using `[hF _ hg]`. Conclude with `hdec k' X hX'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anyDec (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) {h : ℝ}
     (hdec : ∀ (k : S7.KG ε) (X : Matrix (Fin n) (Fin n) ℂ), inP ε X →

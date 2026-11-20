@@ -20,7 +20,7 @@ def ValPres (A : ValuationSubring Ω) (m r : ℕ) (ζ : Ω) (z : G ℚ Ω → (Z
     Cg m (∑ i, o i * (((n i : ZMod (l ^ m))).val : Qbar l)) 0
 
 /- English proof (translation)
-Unfold `Cg at *`. Establish `hm` using `IsUltrametricDist.norm_add_le_max (x - y) (y - z)`. Rewrite `hm` using `[sub_add_sub_cancel]`. Conclude with `hm.trans (max_le h h')`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_trans {m : ℕ} {x y z : Qbar l} (h : Cg m x y) (h' : Cg m y z) : Cg m x z := by
   unfold Cg at *
@@ -29,14 +29,14 @@ theorem cg_trans {m : ℕ} {x y z : Qbar l} (h : Cg m x y) (h' : Cg m y z) : Cg 
   exact hm.trans (max_le h h')
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem cg_symm {m : ℕ} {x y : Qbar l} (h : Cg m x y) : Cg m y x := by
   unfold Cg at *
   rwa [norm_sub_rev]
 
 /- English proof (translation)
-Unfold `Cg`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_sum {m : ℕ} {ι : Type} (S : Finset ι) {x y : ι → Qbar l} (h : ∀ i ∈ S, Cg m (x i) (y i)) :
     Cg m (∑ i ∈ S, x i) (∑ i ∈ S, y i) := by
@@ -45,7 +45,7 @@ theorem cg_sum {m : ℕ} {ι : Type} (S : Finset ι) {x y : ι → Qbar l} (h : 
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) h
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[← mul_sub, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cg_mul_left {m : ℕ} {o x y : Qbar l} (ho : ‖o‖ ≤ 1) (h : Cg m x y) : Cg m (o * x) (o * y) := by
   unfold Cg at *

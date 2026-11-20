@@ -18,9 +18,9 @@ namespace GlobalTheory.CompanionTheory.PositionTest
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Establish `f₁` using `Filter.eventually_cofinite.1 h₁`. Establish `f₂` using `Filter.eventually_cofinite.1 h₂`. Use `Filter.eventually_cofinite.2 ?_` and prove the remaining obligations. Use `(((f₁.preimage (Subtype.val_injective (p := fun w => w ∈ S)).injOn).image Sum.inl).union ((f₂.preimage (Subtype.val_injective (p := fun w => w ∈ S ∧ IsSplitAt w)).injOn).image Sum.inr)).subset ?_` and prove the remaining obligations. Introduce and unpack `(⟨w, hw⟩ | ⟨w, hw⟩) hi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl ⟨⟨w, hw⟩, fun h => hi (h hw), rfl⟩`. Conclude with `Or.inr ⟨⟨w, hw⟩, fun h => hi (h hw), rfl⟩`.
+Prove the first alternative. Prove the second alternative.
 -/
 theorem eventually_factor {S : Set (Pl E)} {P : Slot S → Prop}
     (h₁ : ∀ᶠ w : Pl E in cofinite, ∀ hw : w ∈ S, P (Sum.inl ⟨w, hw⟩))
@@ -41,13 +41,9 @@ def localLevel {S : Set (Pl E)} (L₁ L₂ : ∀ w : Pl E, Subgroup (GLw a w × 
   | .inr w => L₂ w.1
 
 /- English proof (translation)
-Take `⟨L₁, o₁, e₁, i₁⟩` from `GlobalTheory.CompanionTheory.FinLevelTw.exists_level_of_test h₁`. Take `⟨L₂, o₂, e₂, i₂⟩` from `GlobalTheory.CompanionTheory.FinLevelTw.exists_level_of_test h₂`. Establish `c₁` using `GlobalTheory.CompanionTheory.FinTestTw.eventually_eq_indicator h₁`. Establish `c₂` using `GlobalTheory.CompanionTheory.FinTestTw.eventually_eq_indicator h₂`. Use `⟨localLevel L₁ L₂, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(w | w)`. Conclude with `o₁ w.1`. Conclude with `o₂ w.1`. Conclude with `eventually_factor (e₁.mono fun w h _ => h) (e₂.mono fun w h _ => h)`. Introduce and unpack `(w | w) k hk x`.
-
-Conclude with `(i₁ w.1 k hk x).2`. Conclude with `(i₂ w.1 k hk x).2`. Introduce and unpack `(w | w)`. Conclude with `GlobalTheory.CompanionTheory.FinTestTw.hasCompactSupport_loc h₁ w.1`. Conclude with `GlobalTheory.CompanionTheory.FinTestTw.hasCompactSupport_loc h₂ w.1`.
-
-Conclude with `eventually_factor (c₁.mono fun w h _ => h) (c₂.mono fun w h _ => h)`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_factor_level₂ {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E, LF a b w} (h₁ : IsTestP φ₁) (h₂ : IsTestP φ₂) :
     ∃ L : ∀ i : Slot S, Subgroup (GLw a i.pl × GLw b i.pl),

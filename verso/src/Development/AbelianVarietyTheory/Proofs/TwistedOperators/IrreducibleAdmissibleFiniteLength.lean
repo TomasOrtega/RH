@@ -16,13 +16,11 @@ open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 namespace GlobalTheory.HCChar
 
 /- English proof (translation)
-Introduce `hA n ε H _ _ _ π hπ`. Establish `key : ∀ Y : Submodule ℂ H, IsGKSub ε π Y → Y = ⊥ ∨ Y = kFinVec ε π` using `fun Y hY => by`. Take `⟨h1, h2⟩` from `GlobalTheory.T.closure_gK_submodule hA n ε H π hπ.2.1 Y hY`. Break down `hπ.2.2 Y.topologicalClosure Y.isClosed_topologicalClosure h1 with e | e` into its components or cases. Use `left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, e, bot_inf_eq]`. Use `right`. Rewrite using `[← h2, e, top_inf_eq]`. Use `⟨key, 1, fun r Y hY hm => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 1 < r` using `not_le.1 hr`. Establish `a : Y ⟨0, by omega⟩ < Y ⟨1, by omega⟩` using `hm (Fin.mk_lt_mk.2 (by omega))`. Establish `b : Y ⟨1, by omega⟩ < Y ⟨2, by omega⟩` using `hm (Fin.mk_lt_mk.2 (by omega))`. Break down `key _ (hY ⟨1, by omega⟩) with e | e` into its components or cases. Conclude with `not_lt_bot (e ▸ a)`.
-
-Break down `key _ (hY ⟨2, by omega⟩) with e' | e'` into its components or cases. Conclude with `not_lt_bot (e' ▸ b)`. Conclude with `b.ne (e.trans e'.symm)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem simple_of_isIrrAdm : GlobalTheory.Published.KFiniteCoefficientsAnalytic → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type)
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

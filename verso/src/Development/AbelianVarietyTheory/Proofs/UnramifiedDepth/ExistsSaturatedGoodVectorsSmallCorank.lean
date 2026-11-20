@@ -13,11 +13,11 @@ namespace GlobalTheory.GoodCorank
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using `using VF.Ge.zero (V := V) 0`. Establish `e : V.v x = V.v y + V.v (x / y)`. Rewrite using `[← V.v.map_mul, mul_div_cancel₀ _ hy]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : V.v y ≠ ⊤`. Introduce `h0`. Establish `h1 : V.v (y * y⁻¹) = 0` using `by rw [mul_inv_cancel₀ hy, V.v.map_one]`. Rewrite `h1` using `[V.v.map_mul, h0, top_add]`. Conclude with `WithTop.top_ne_zero h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `VF.Ge`. Rewrite `h` using `[e]`. Establish `h2 : V.v y + 0 ≤ V.v y + V.v (x / y)` using `by simpa using h`. Simplify using `using (WithTop.add_le_add_iff_left hy').mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem div_int {x y : C} (h : V.v y ≤ V.v x) : V.Ge 0 (x / y) := by
   by_cases hy : y = 0
@@ -35,7 +35,7 @@ theorem div_int {x y : C} (h : V.v y ≤ V.v x) : V.Ge 0 (x / y) := by
     simpa using (WithTop.add_le_add_iff_left hy').mp h2
 
 /- English proof (translation)
-Use `split_ifs`. Conclude with `VF.Ge.one`. Conclude with `VF.Ge.zero 0`.
+A detailed English derivation is pending.
 -/
 theorem ge_ite (p : Prop) [Decidable p] : V.Ge 0 (if p then (1 : C) else 0) := by
   split_ifs
@@ -43,13 +43,11 @@ theorem ge_ite (p : Prop) [Decidable p] : V.Ge 0 (if p then (1 : C) else 0) := b
   · exact VF.Ge.zero 0
 
 /- English proof (translation)
-Take `⟨k0, -, hk0⟩` from `Finset.exists_min_image Finset.univ (fun k => V.v (φ k)) Finset.univ_nonempty`. Use `⟨fun ν k => (if k = k0.succAbove ν then 1 else 0) - (φ (k0.succAbove ν) / φ k0) * (if k = k0 then 1 else 0), ⟨fun ν k => ?_, fun k c => if k = k0.succAbove c then 1 else 0, fun k c => ge_ite _, fun c c' => ?_⟩, fun ν => ?_⟩` and prove the remaining obligations. Conclude with `(ge_ite _).sub ((div_int (hk0 _ (Finset.mem_univ _))).mul_int (ge_ite _))`. Simplify using `[Fin.succAbove_ne, eq_comm]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : φ k0 = 0`. Establish `h1` using `hk0 (k0.succAbove ν) (Finset.mem_univ _)`. Rewrite `h1` using `[h0, V.v.map_zero, top_le_iff]`. Establish `h2 : φ (k0.succAbove ν) = 0`. Assume the negation of the conclusion as `hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h3 : V.v (φ (k0.succAbove ν) * (φ (k0.succAbove ν))⁻¹) = 0`. Rewrite using `[mul_inv_cancel₀ hy, V.v.map_one]`. Rewrite `h3` using `[V.v.map_mul, h1, top_add]`. Conclude with `WithTop.top_ne_zero h3`. Simplify using `[h0, h2]`.
-
-Rewrite using `[div_mul_cancel₀ _ h0, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cut {N : ℕ} (φ : Fin (N + 1) → C) :
     ∃ A : Fin N → Fin (N + 1) → C, IsSat V A ∧ ∀ ν, ∑ k, A ν k * φ k = 0 := by
@@ -74,11 +72,11 @@ theorem exists_cut {N : ℕ} (φ : Fin (N + 1) → C) :
     · rw [div_mul_cancel₀ _ h0, sub_self]
 
 /- English proof (translation)
-Take `⟨hA0, A', hA', hAA⟩` from `hA`. Take `⟨hw0, w', hw', hww⟩` from `hw`. Use `⟨fun ν c => VF.Ge.sum fun k _ => (hA0 _ _).mul_int (hw0 _ _), fun x c => ∑ k, w' x k * A' k c, fun x c => VF.Ge.sum fun k _ => (hw' _ _).mul_int (hA' _ _), fun c c' => ?_⟩` and prove the remaining obligations. Establish `e1 : Matrix.of A * Matrix.of A' = 1`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify `hAA i j` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `e2 : Matrix.of w * Matrix.of w' = 1`. Use extensionality with `i j`. Simplify `hww i j` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `e3 : (Matrix.of A * Matrix.of w) * (Matrix.of w' * Matrix.of A') = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.of w), e2, Matrix.one_mul, e1]`. Simplify `congrFun (congrFun e3 c) c'` using `[Matrix.mul_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isSat_comp {M N : ℕ} {σ : Type} [Fintype σ] {A : Fin M → Fin N → C} {w : Fin N → σ → C}
     (hA : IsSat V A) (hw : IsSat V w) : IsSat V (fun ν c => ∑ k, A ν k * w k c) := by
@@ -96,15 +94,15 @@ theorem isSat_comp {M N : ℕ} {σ : Type} [Fintype σ] {A : Fin M → Fin N →
   simpa [Matrix.mul_apply, Matrix.one_apply] using congrFun (congrFun e3 c) c'
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨P.card, fun ν c => if c = (P.equivFin.symm ν : I) then 1 else 0, ⟨fun ν c => ge_ite _, fun c ν => if c = (P.equivFin.symm ν : I) then 1 else 0, fun c ν => ge_ite _, fun ν ν' => ?_⟩, fun ν c hc => ?_, by simp, by simp⟩` and prove the remaining obligations. Simplify using `[Subtype.val_inj, eq_comm]`. Use `if_neg ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Conclude with `hc (P.equivFin.symm ν).2`. Consider the case `insert b S hb ih`. Take `⟨N, w, hs, hP, hφ, hN⟩` from `ih`. Rewrite using `[Finset.card_insert_of_notMem hb]`.
+Assume the hypotheses and unpack their components. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `N with`. Consider the case `zero => exact ⟨0, w, hs, hP, fun ν => ν.elim0, by omega⟩`. Consider the case `succ N`. Take `⟨A, hA, hA0⟩` from `exists_cut (V := V) (fun k => ∑ c, w k c * φ b c)`. Establish `key : ∀ ν b', ∑ c, (∑ k, A ν k * w k c) * φ b' c = ∑ k, A ν k * ∑ c, w k c * φ b' c`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ν b'`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`. Use `⟨N, fun ν c => ∑ k, A ν k * w k c, isSat_comp hA hs, fun ν c hc => ?_, fun ν b' hb' => ?_, by omega⟩` and prove the remaining obligations. Simplify using `[hP _ c hc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[key]`. Break down `Finset.mem_insert.mp hb' with rfl | hb'` into its components or cases. Conclude with `hA0 ν`. Simplify using `[hφ _ b' hb']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sat_ker {I κ : Type} [Fintype I] [DecidableEq I] (P : Finset I) (φ : κ → I → C) (S : Finset κ) :
     ∃ (N : ℕ) (w : Fin N → I → C), IsSat V w ∧ (∀ ν c, c ∉ P → w ν c = 0) ∧
@@ -140,11 +138,11 @@ theorem exists_sat_ker {I κ : Type} [Fintype I] [DecidableEq I] (P : Finset I) 
 variable {d : ℕ} {I J : Type} [Fintype I] [DecidableEq I]
 
 /- English proof (translation)
-Take `⟨z, hz, hz0, hzp⟩` from `G.t4 (a + 1) (fun b => y 1 (Sum.inl b)) h1 (fun b hb => hy.2.2 1 _ (by simpa using hb))`. Use `⟨y - Vpow 1 z, ⟨G.Ty.sub_mem hy.1 (G.V_mem _ hz), ?_, fun i n hn => ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `n`. Simplify using `[Vpow, hy.2.1]`. Consider the cases of `i with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp [Vpow, hy.2.2 0 n hn]`. Consider the case `succ i`. Establish `: z i n = 0` using `hzp i n (by`. Introduce `hc`. Apply `hn` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hc]`. Use `push_cast`. Use the proof step `ring)`. Simplify using `[Vpow, hy.2.2 _ n hn, this]`. Simplify using `[Vpow, hz0]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_of_int (G : Cart V d I J) {a : ZMod d} {u : I → C} {y : ℕ → I ⊕ J → C} (hy : G.IsCurve a u y)
     (h1 : ∀ b, V.Ge 0 (y 1 (Sum.inl b))) : ∃ x, G.Good a u x := by
@@ -162,17 +160,17 @@ theorem good_of_int (G : Cart V d I J) {a : ZMod d} {u : I → C} {y : ℕ → I
   · simp [Vpow, hz0]
 
 /- English proof (translation)
-Establish `lpos : ∀ k : ℕ, V.l ^ k ≠ 0` using `fun k => (pow_pos V.l_prime.pos k).ne'`. Establish `hy : G.IsCurve a u (∑ c, teich V.l (u c) (G.std c))`. Use `⟨G.Ty.sum_mem fun c _ => G.teich_mem _ (hu c) _ (G.std_spec c).1, ?_, fun i n hn => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `n`. Establish `: ∀ b, G.std b 0 n = Sum.elim (Pi.single b 1) 0 n` using `fun b => by rw [(G.std_spec b).2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_apply, teich, this, pow_zero, pow_one]`. Consider the cases of `n with`. Consider the case `inl c => simp [Pi.single_apply]`. Consider the case `inr j => simp`. Simplify using `only [Finset.sum_apply, teich]`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : G.ty (Sum.inl c) = a`. Rewrite using `[(G.std_spec c).2.2 i n (by rwa [hc]), mul_zero]`. Rewrite using `[hp c hc, zero_pow (lpos i), zero_mul]`. Use `good_of_int G hy fun b => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hb : G.ty (Sum.inl b) = a + 1`. Establish `hrint : ∀ c, V.Ge 0 (r b c)` using `fun c => by`. Use `GlobalTheory.AdaptedChain.int_of_pow V.l_prime.ne_zero ?_` and prove the remaining obligations. Rewrite using `[hr]`. Simplify using `using (G.bound0 1 _ (G.std_spec c).1 (Sum.inl b)).l_mul`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hf` using `(GlobalTheory.AdaptedChain.frob_sum Finset.univ (fun c => u c * r b c) (fun c => (hu c).mul_int (hrint c)) 1).neg`. Rewrite `hf` using `[hk b hb, zero_pow (lpos 1), zero_sub, neg_neg]`. Establish `e : ∑ c, (u c * r b c) ^ V.l ^ 1 = (V.l : C) * (∑ c, teich V.l (u c) (G.std c)) 1 (Sum.inl b)`. Simplify using `only [Finset.sum_apply, teich, pow_one, mul_pow, hr, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[e]`. Simplify using `using hf.of_l_mul`. Rewrite using `[hy.2.2 1 _ (by simpa using hb)]`. Conclude with `VF.Ge.zero 0`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_of_ker (G : Cart V d I J) {a : ZMod d} (r : I → I → C)
     (hr : ∀ b c, r b c ^ V.l = (V.l : C) * G.std c 1 (Sum.inl b)) {u : I → C} (hu : ∀ c, V.Ge 0 (u c))
@@ -211,9 +209,9 @@ theorem good_of_ker (G : Cart V d I J) {a : ZMod d} (r : I → I → C)
     exact VF.Ge.zero 0
 
 /- English proof (translation)
-Establish `hex : ∀ b c : I, ∃ r : C, r ^ V.l = (V.l : C) * G.std c 1 (Sum.inl b)` using `fun b c => IsAlgClosed.exists_pow_nat_eq _ V.l_prime.pos`. Use `choose r hr using hex`. Take `⟨N, w, hs, hP, hφ, hN⟩` from `exists_sat_ker (V := V) (Finset.univ.filter fun c : I => G.ty (Sum.inl c) = a) r (Finset.univ.filter fun c : I => G.ty (Sum.inl c) = a + 1)`. Establish `hp : ∀ ν c, G.ty (Sum.inl c) ≠ a → w ν c = 0` using `fun ν c hc => hP ν c (by simpa using hc)`. Establish `hx : ∀ ν, ∃ x, G.Good a (w ν) x` using `fun ν => good_of_ker G r hr (hs.1 ν) (hp ν) fun b hb => hφ ν b (by simpa using hb)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `choose x hx using hx`. Conclude with `⟨N, w, x, hx, hp, hs, hN⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_good_sat (C : Type) [Field C] [IsAlgClosed C] (V : VF C) (d : ℕ) (I J : Type) [Fintype I] [Fintype J]
     [DecidableEq I] (G : Cart V d I J) (a : ZMod d) :

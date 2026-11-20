@@ -14,7 +14,7 @@ noncomputable def homEquivDual (R P : Type) [CommRing R] (f : R) [AddCommGroup P
     right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Introduce `R P _ f _ _ _ _ _ _`. Set `e` to `homEquivDual R P f`. Conclude with `⟨Module.Finite.equiv e.symm, Module.Projective.of_equiv e.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem finite_projective_hom : ∀ (R P : Type) [CommRing R] (f : R) [AddCommGroup P] [Module R P]
     [Module (Localization.Away f) P] [IsScalarTower R (Localization.Away f) P]

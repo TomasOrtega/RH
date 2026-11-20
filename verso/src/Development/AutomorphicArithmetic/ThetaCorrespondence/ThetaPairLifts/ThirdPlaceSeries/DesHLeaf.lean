@@ -11,21 +11,19 @@ noncomputable section
 namespace GlobalTheory.BigTop.Fun.Close
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Use `⟨0, fun CF _ => ⟨1, one_pos, fun eps heps _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `_`. Use `⟨0, fun C _ => ?_⟩` and prove the remaining obligations. Establish `hW : PageWin Fm` using `hF.2.1`. Use `⟨max (Fm.x1 + 1) ((8 : ℝ) ^ (1 / eps)), fun x hx hx0 i p _ d _ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : 1 < x` using `lt_trans Fm.one_lt_family_threshold hx`. Establish `hx0' : (0 : ℝ) < x` using `by linarith`. Establish `h8 : (8 : ℝ) ≤ x ^ (8 * eps)`. Establish `e1 : (8 : ℝ) = ((8 : ℝ) ^ (1 / eps)) ^ eps`. Rewrite using `[← Real.rpow_mul (by norm_num), one_div, inv_mul_cancel₀ heps.ne', Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((8 : ℝ) ^ (1 / eps)) ^ eps ≤ x ^ eps` using `Real.rpow_le_rpow (by positivity) (le_trans (le_max_right _ _) hx0) heps.le`. Establish `e3 : x ^ eps ≤ x ^ (8 * eps)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨⟨hn, -⟩, ⟨-, hm⟩, -⟩` from `hW x hx i`. Establish `hδ : (Fm.L x i).sc.delta1 ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Scale.delta1`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos (Fm.L x i).sc.one_lt_alt.le (by linarith [(Fm.L x i).sc.eps_pos])`. Establish `hδ0 : 0 ≤ (Fm.L x i).sc.delta1`. Unfold `Scale.delta1`. Conclude with `Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm4 : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 4 ≤ (((Fm.D x i).R.f : ℕ) : ℝ)`. Establish `hs` using `Real.sq_sqrt (mul_nonneg hx0'.le hδ0)`. Establish `hs0` using `Real.sqrt_nonneg (x * (Fm.L x i).sc.delta1)`. Establish `hm0 : (0 : ℝ) ≤ ((Fm.D x i).R.m : ℝ)` using `by positivity`. Establish `hm2 : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 2 ≤ 4 * x` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm4' : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 4 ≤ 16 * x ^ 2` using `by nlinarith`. Establish `hpow : x ^ ((2 : ℝ) + 8 * eps) = x ^ 2 * x ^ (8 * eps)`. Rewrite using `[Real.rpow_add hx0', Real.rpow_two]`. Establish `hf : (((Fm.D x i).R.f : ℕ) : ℝ) = 2 * ((Fm.D x i).R.n : ℝ)`. Unfold `Ranks.f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Establish `hx2 : 0 ≤ x ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `⟨⟨(Fm.D x i).R.two_le_m, (Fm.D x i).R.m_add_three_le_k, by exact_mod_cast hm4, (Fm.D x i).R.f_le_k⟩, ?_⟩` and prove the remaining obligations. Use `show (FunData.Lc d.O : ℝ) ≤ (Fm.L x i).sc.b`. Conclude with `(lcLeOfCloud d.O (Fm.L x i).Sc (Fm.L x i).Sc_pos.le (fun τ j => cloudIcc (Fm.L x i) τ j)).trans (scLeB (Fm.params x hx i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem desHLeaf_alt : _root_.GlobalTheory.BigTop.Fun.DescentHeightCondition := by
   refine ⟨0, fun CF _ => ⟨1, one_pos, fun eps heps _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ => ?_⟩⟩⟩

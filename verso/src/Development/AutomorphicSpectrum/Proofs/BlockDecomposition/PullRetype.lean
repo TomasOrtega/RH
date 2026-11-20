@@ -23,7 +23,7 @@ def retype (m : CH.Mor F F' σ) (σ₂ : R →+* R') (h : ∀ T (a : R) (y : F'.
   nat := m.nat
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ n).1 x`. Establish `hb : CH.d F' n (m.pullC n a) = 0` using `by rw [CH.Mor.d_pullC]; exact (congrArg _ ha).trans (map_zero _)`. Conclude with `(CrystallineSemistableComparison.P.mapH_cls (retype m σ₂ h).hom n a ha hb).trans (CrystallineSemistableComparison.P.mapH_cls m.hom n a ha hb).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_retype (m : CH.Mor F F' σ) (h : ∀ T (a : R) (y : F'.obj T), σ a • y = σ₂ a • y) (n : ℕ) (x : CH.H F n) :
     (retype m σ₂ h).pull n x = m.pull n x := by
@@ -42,7 +42,7 @@ variable {O A₁ A₂ R₁ R₂ : Type} [CommRing O] [CommRing A₁] [CommRing A
     (m : Mor (nlFun δ₁ l X₁ q₁ κ₁) (nlFun δ₂ l X₂ q₂ κ₂) σ')
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (d₁.ρ r)`. Rewrite using `[hρ, ← ha]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eta_comm (hρ : ∀ x, d₂.ρ (σ' x) = lnMap σ l le_rfl (d₁.ρ x))
     (T : Thick (nlFun γ₂ 0 X₂ q₂ (κA O I₂))) (r : R₁) :
@@ -89,7 +89,7 @@ variable {O A₁ A₂ R₁ R₂ Λ₁ Λ₂ : Type} [CommRing O] [CommRing A₁]
 include hc₁ hc₂ h₀ in
 
 /- English proof (translation)
-Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Establish `e` using `hρ (c₁ a)`. Rewrite `e` using `[h₀, hc₂, hc₁]`. Conclude with `e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_mem (hρ : ∀ x, d₂.ρ (σ' x) = lnMap σ l le_rfl (d₁.ρ x)) (a : Λ₁) :
     σ (lam₁ a) - lam₂ (σ₀ a) ∈ Ideal.span {(l : A₂) ^ n} := by
@@ -101,9 +101,9 @@ theorem lam_mem (hρ : ∀ x, d₂.ρ (σ' x) = lnMap σ l le_rfl (d₁.ρ x)) (
 include hc₁ hc₂ h₀ in
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `y`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `Subtype.ext (Ideal.Quotient.eq.2 ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 (lam_mem d₁ d₂ c₁ c₂ lam₁ lam₂ hc₁ hc₂ σ₀ h₀ hρ a)`. Use `ln_le q₂ s {⊤} r T ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `T.obj.i (σ (lam₁ a)) * (show T.obj.B from b) - T.obj.i (lam₂ (σ₀ a)) * (show T.obj.B from b) ∈ lnT T.obj l n`. Rewrite using `[← sub_mul, ← map_sub, ← hz, map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_smul (hρ : ∀ x, d₂.ρ (σ' x) = lnMap σ l le_rfl (d₁.ρ x)) (r : Option ℤ)
     (T : (TS γ₂ q₂ l s {⊤}).FullSubcategory) (a : Λ₁)
@@ -121,11 +121,11 @@ theorem lam_smul (hρ : ∀ x, d₂.ρ (σ' x) = lnMap σ l le_rfl (d₁.ρ x)) 
 end Main
 
 /- English proof (translation)
-Introduce `O A₁ A₂ R₁ R₂ Λ₁ Λ₂ _ _ _ _ _ _ _ _ _ I₁ I₂ γ₁ γ₂ J₁ J₂ δ₁ δ₂ κ₁ κ₂ l n d₁ d₂ X₁ X₂ q₁ q₂ s σ nm σ' m c₁ c₂ lam₁ lam₂ hc₁ hc₂ σ₀ h₀ hpt hρ r j x`. Set `S2` to `(nmS nm l s).sq (a := IdF.top _) (a' := IdF.top _) (fun _ _ _ => trivial) (nm_std nm l s r n)`. Use `letI t1 : RingHomCompTriple σ₀ lam₂ (lam₂.comp σ₀) := ⟨rfl⟩`. Use `letI t2 : RingHomCompTriple lam₁ σ (σ.comp lam₁) := ⟨rfl⟩`. Set `M1 : CH.Mor _ _ (lam₂.comp σ₀)` to `(B.omMor m σ₀ h₀).comp (redMor q₂ s d₂ {⊤} c₂ lam₂ hc₂ r)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `M2 : CH.Mor _ _ (σ.comp lam₁)` to `(redMor q₁ s d₁ {⊤} c₁ lam₁ hc₁ r).comp S2`. Establish `hsc` using `lam_smul (q₂ := q₂) d₁ d₂ s c₁ c₂ lam₁ lam₂ hc₁ hc₂ σ₀ h₀ hρ r`. Establish `h1` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := lam₂.comp σ₀) (B.omMor m σ₀ h₀) (redMor q₂ s d₂ {⊤} c₂ lam₂ hc₂ r) j x).1`. Establish `h2` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := σ.comp lam₁) (redMor q₁ s d₁ {⊤} c₁ lam₁ hc₁ r) S2 j x).1`. Establish `h3` using `pull_retype M2 (σ₂ := lam₂.comp σ₀) hsc j x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `η : (retype M2 (lam₂.comp σ₀) hsc).G ⟶ M1.G` to `{ app := fun T => etaR d₁ d₂ nm m hpt hρ T.obj T.property.1 T.property.1 naturality := fun T T' f => hom_ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)) }`. Establish `h4` using `CrystallineSemistableComparison.P.prism (retype M2 (lam₂.comp σ₀) hsc) M1 η (fun T y => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective (I := lnT T.obj l n) y`. Use the proof step `rfl) j x`. Conclude with `h1.symm.trans (h4.symm.trans (h3.trans h2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem red_nm : ∀ {O A₁ A₂ R₁ R₂ Λ₁ Λ₂ : Type} [CommRing O] [CommRing A₁] [CommRing A₂] [Algebra O A₁] [Algebra O A₂] [CommRing R₁]
     [CommRing R₂] [CommRing Λ₁] [CommRing Λ₂] {I₁ : Ideal A₁} {I₂ : Ideal A₂} {γ₁ : DividedPowers I₁} {γ₂ : DividedPowers I₂}

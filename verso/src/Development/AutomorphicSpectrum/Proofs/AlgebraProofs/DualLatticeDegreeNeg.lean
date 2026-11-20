@@ -13,11 +13,11 @@ variable {K : Type} [Field K] (C : ACurve K)
   {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
 
 /- English proof (translation)
-Introduce `y`. Express the relevant statement in the definitionally equal form `(∀ x ∈ L i, C.v i (B x y) ≤ 1) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hy q`. Rewrite using `[hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hy _ ((h _).2 fun p => ?_)` and prove the remaining obligations. Rewrite using `[Basis.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `hy x hx`. Establish `hx'` using `(h x).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← b.sum_repr x, map_sum, LinearMap.sum_apply]`. Use `(C.v i).map_sum_le fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul, map_mul, ← hb]`. Conclude with `mul_le_one' (hx' q) (hy q)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatOf_dual (L : C.I → AddSubgroup V) (B : V →ₗ[K] V' →ₗ[K] K) (i : C.I) {n : ℕ}
     (b : Basis (Fin n) K V) (b' : Basis (Fin n) K V')
@@ -39,7 +39,7 @@ theorem isLatOf_dual (L : C.I → AddSubgroup V) (B : V →ₗ[K] V' →ₗ[K] K
     exact mul_le_one' (hx' q) (hy q)
 
 /- English proof (translation)
-Establish `: b.coord q = B.flip (b' q)`. Use `b.ext fun p => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.flip_apply, ← hb, Basis.coord_apply, Basis.repr_self, Basis.repr_self, Finsupp.single_apply, Finsupp.single_apply]`. Simplify using `[eq_comm]`. Rewrite using `[← this, Basis.coord_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_symm (B : V →ₗ[K] V' →ₗ[K] K) {n : ℕ}
     (b : Basis (Fin n) K V) (b' : Basis (Fin n) K V')
@@ -53,7 +53,7 @@ theorem dual_symm (B : V →ₗ[K] V' →ₗ[K] K) {n : ℕ}
   rw [← this, Basis.coord_apply]
 
 /- English proof (translation)
-Establish `hf : Function.Bijective B.flip` using `(LinearMap.flip_bijective_iff₁).2 hB`. Use `⟨b.dualBasis.map (LinearEquiv.ofBijective B.flip hf).symm, fun y q => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_dual [FiniteDimensional K V] [FiniteDimensional K V'] (B : V →ₗ[K] V' →ₗ[K] K)
     (hB : Function.Bijective B) {n : ℕ} (b : Basis (Fin n) K V) :
@@ -63,9 +63,9 @@ theorem exists_dual [FiniteDimensional K V] [FiniteDimensional K V'] (B : V →�
   simp
 
 /- English proof (translation)
-Establish `h1 : b₀'.toMatrix b' = (b.toMatrix b₀).transpose`. Use extensionality with `p q`. Rewrite using `[Matrix.transpose_apply, Basis.toMatrix_apply, Basis.toMatrix_apply, h₀, dual_symm B b b' hb, LinearMap.flip_apply]`. Establish `h2 : (b.toMatrix b₀).det * (b₀.toMatrix b).det = 1`. Rewrite using `[← Matrix.det_mul, Basis.toMatrix_mul_toMatrix_flip, Matrix.det_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Basis.det_apply, Basis.det_apply, h1, Matrix.det_transpose]`. Conclude with `eq_inv_of_mul_eq_one_left h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_dual (B : V →ₗ[K] V' →ₗ[K] K) {n : ℕ}
     (b₀ b : Basis (Fin n) K V) (b₀' b' : Basis (Fin n) K V')
@@ -81,7 +81,7 @@ theorem det_dual (B : V →ₗ[K] V' →ₗ[K] K) {n : ℕ}
   exact eq_inv_of_mul_eq_one_left h2
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[h x]`. Simplify using `only [Basis.repr_reindex_apply]`. Conclude with `⟨fun H q => H _, fun H q => by simpa using H (e q)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isLatOf_reindex (i : C.I) {n m : ℕ} (b : Basis (Fin n) K V) (e : Fin n ≃ Fin m)
     (L : AddSubgroup V) (h : IsLatOf C i b L) : IsLatOf C i (b.reindex e) L := by
@@ -91,13 +91,11 @@ theorem isLatOf_reindex (i : C.I) {n m : ℕ} (b : Basis (Fin n) K V) (e : Fin n
   exact ⟨fun H q => H _, fun H q => by simpa using H (e q)⟩
 
 /- English proof (translation)
-Introduce `K _ C V _ _ _ V' _ _ _ L B hL hB`. Take `⟨hloc, b₀, hfin⟩` from `id hL`. Use `choose b hb using hloc`. Use `choose d hd using fun c : Basis (Fin (finrank K V)) K V => exists_dual B hB c`. Establish `hrk : finrank K V = finrank K V'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[finrank_eq_card_basis (d b₀), Fintype.card_fin]`. Establish `hd' : ∀ i, IsLatOf C i (d (b i)) (dualLat C L B i)` using `fun i => isLatOf_dual C L B i (b i) _ (hd _) (hb i)`. Establish `hbun : IsBun C (dualLat C L B)`. Use `⟨fun i => ⟨_, isLatOf_reindex C i _ (finCongr hrk) _ (hd' i)⟩, (d b₀).reindex (finCongr hrk), hfin.subset fun i hi h => hi ?_⟩` and prove the remaining obligations. Conclude with `isLatOf_reindex C i _ _ _ (isLatOf_dual C L B i b₀ _ (hd _) h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hbun, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.bundle_degree_eq_sum_valuations K C V' _ _ (d b₀) (fun i => d (b i)) hbun hd').2, (GlobalTheory.T.bundle_degree_eq_sum_valuations K C V _ _ b₀ b hL hb).2, ← finsum_neg_distrib]`. Use `finsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[det_dual B b₀ (b i) _ _ (hd _) (hd _), map_inv₀, WithZero.log_inv, mul_neg]`. Use function extensionality and compare the values at `i`.
-
-Use extensionality with `x`. Rewrite using `[hb i x]`. Conclude with `isLatOf_dual C _ B.flip i (d (b i)) (b i) (dual_symm B _ _ (hd _)) (hd' i) x`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_dual : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V']

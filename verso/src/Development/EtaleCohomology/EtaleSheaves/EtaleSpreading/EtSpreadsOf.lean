@@ -16,9 +16,9 @@ def EtStage : Prop := ∀ {J : Type} [SmallCategory J] [IsFiltered J] {D : J ⥤
     IsPushout (c.ι.app k) f'' f g'' ∧ Et f''
 
 /- English proof (translation)
-Establish `hfp : FP f`. Express the relevant statement in the definitionally equal form `f.hom.FinitePresentation`. Set `` to `f.hom.toAlgebra`. Establish `h : Algebra.Etale c.pt T` using `hf`. Conclude with `h.finitePresentation`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, T', f', g, hP, hf'⟩` from `hF.exists_isPushout hc f hfp`. Conclude with `hS hc j f' f g hf' hP hf`.
+A detailed English derivation is pending.
 -/
 theorem EtSpreads_of (hF : FPSpreads) (hS : EtStage) : LateralTheory.E.SpreadPf.EtSpreads where
   exists_isPushout {J} _ _ {D} {c} hc {T} f hf := by
@@ -31,7 +31,7 @@ theorem EtSpreads_of (hF : FPSpreads) (hS : EtStage) : LateralTheory.E.SpreadPf.
     exact hS hc j f' f g hf' hP hf
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.SpreadPf.Spread_of (EtSpreads_of hF hS)`.
+A detailed English derivation is pending.
 -/
 theorem Spread_of (hF : FPSpreads) (hS : EtStage) : LateralTheory.E.DescendPf.Spread :=
   LateralTheory.E.SpreadPf.Spread_of (EtSpreads_of hF hS)

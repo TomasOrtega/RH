@@ -15,13 +15,13 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 local notation3 "L⁺" => maximalRealSubfield L
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_integer_unit_split_place_conjugate_prime L s`.
+A detailed English derivation is pending.
 -/
 theorem exists_sep (s : SplitPlace L) : ∃ e : 𝓞 L, Valued.v (s.i (e : L)) = 1 ∧
     Valued.v (s.i (IsCMField.complexConj L (e : L))) < 1 := GlobalTheory.T.exists_integer_unit_split_place_conjugate_prime L s
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cmField_adele_split_place_support_integral L s e he he' z hz h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem mem_ALint_of_local (s : SplitPlace L) (e : 𝓞 L) (he : Valued.v (s.i (e : L)) = 1)
     (he' : Valued.v (s.i (IsCMField.complexConj L (e : L))) < 1) (z : AL L)
@@ -29,7 +29,7 @@ theorem mem_ALint_of_local (s : SplitPlace L) (e : 𝓞 L) (he : Valued.v (s.i (
     (h2 : Valued.v (s.proj (conjAL L z)) ≤ 1) : z ∈ ALint L := GlobalTheory.T.cmField_adele_split_place_support_integral L s e he he' z hz h1 h2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.heckeDoubleCoset_adicCompletion_inv_mul_integral F v n ϖ k hϖ a a' b b' g g' ha' hai hbi hb' hc hg hg'`.
+A detailed English derivation is pending.
 -/
 theorem local_int {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {n : ℕ}
     (ϖ : v.adicCompletion F) (k : ℕ) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ))
@@ -48,7 +48,7 @@ theorem local_int {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (�
   GlobalTheory.T.heckeDoubleCoset_adicCompletion_inv_mul_integral F v n ϖ k hϖ a a' b b' g g' ha' hai hbi hb' hc hg hg'
 
 /- English proof (translation)
-Introduce `w hw`. Establish `: ((x * y).1 : Matrix (Fin n) (Fin n) (AL L)) = (x.1 : Matrix (Fin n) (Fin n) (AL L)) * (y.1 : Matrix (Fin n) (Fin n) (AL L))` using `rfl`. Rewrite using `[this, Matrix.map_mul, hx w hw, hy w hw, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_mul {n : ℕ} {T : Set (HeightOneSpectrum (𝓞 L⁺))} {x y : GA L n} (hx : TrivOutside T x)
     (hy : TrivOutside T y) : TrivOutside T (x * y) := by
@@ -57,9 +57,9 @@ theorem triv_mul {n : ℕ} {T : Set (HeightOneSpectrum (𝓞 L⁺))} {x y : GA L
   rw [this, Matrix.map_mul, hx w hw, hy w hw, mul_one]
 
 /- English proof (translation)
-Introduce `w hw`. Establish `h1 : (((x⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * (x.1 : Matrix (Fin n) (Fin n) (AL L)) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun M => M.map (compAt L w)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul, hx w hw, mul_one] at h2`. Rewrite using `[h2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_inv {n : ℕ} {T : Set (HeightOneSpectrum (𝓞 L⁺))} {x : GA L n} (hx : TrivOutside T x) :
     TrivOutside T x⁻¹ := by
@@ -72,15 +72,15 @@ theorem triv_inv {n : ℕ} {T : Set (HeightOneSpectrum (𝓞 L⁺))} {x : GA L n
   rw [h2, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Take `⟨e, he, he'⟩` from `exists_sep s`. Introduce `i j`. Establish `hconj : conjAL L ((x.1 : Matrix (Fin n) (Fin n) (AL L)) i j) = (((x⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i`. Establish `hm` using `x.2`. Simplify using `only [GA, UGroup, Subgroup.mem_mk] at hm`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : ((x.1⁻¹ : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = conjT (conjAL L) x.1` using `Units.inv_eq_of_mul_eq_one_right hm`. Simplify using `only [InvMemClass.coe_inv, h1, conjT, Matrix.transpose_apply, Matrix.map_apply]`. Establish `hz : (x.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L`. Apply `mem_ALint_of_local s e he he'` to reduce the goal to its premises. Introduce `w hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (congrFun (hx w (by simpa using hw)) i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[map_sub, this]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `e1 : s.proj ((x.1 : Matrix (Fin n) (Fin n) (AL L)) i j) = ((s.loc n x : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[map_sub, e1]`. Use `(Valuation.map_sub _ _ _).trans (max_le (h1 i j) ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `e1 : s.proj ((((x⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i) = ((s.loc n x⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) j i` using `rfl`. Rewrite using `[map_sub, map_sub, hconj, e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Valuation.map_sub _ _ _).trans (max_le (h2 j i) ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Use `add_mem hz (show (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L by` as an intermediate fact. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij, Subring.one_mem, Subring.zero_mem])`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_Umax_of_loc {n : ℕ} (s : SplitPlace L) (x : GA L n) (hx : TrivOutside {s.v} x)
     (h1 : ∀ i j, Valued.v (((s.loc n x : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1)
@@ -117,7 +117,7 @@ theorem mem_Umax_of_loc {n : ℕ} (s : SplitPlace L) (x : GA L n) (hx : TrivOuts
   simpa using this
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `ha`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `((g : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F).toSubring) i j).2`. Rewrite using `[← map_inv]`. Conclude with `(((g⁻¹ : GL (Fin n) (v.adicCompletionIntegers F).toSubring) : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F).toSubring) i j).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glint_int {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {n : ℕ}
     {a : GL (Fin n) (v.adicCompletion F)} (ha : a ∈ Formalism.UG.GLint (Fin n) (v.adicCompletionIntegers F).toSubring) :
@@ -130,13 +130,11 @@ theorem glint_int {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (�
     exact (((g⁻¹ : GL (Fin n) (v.adicCompletionIntegers F).toSubring) : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F).toSubring) i j).2
 
 /- English proof (translation)
-Use `⟨fun y => if h : Valued.v y ≤ 1 then Ideal.Quotient.mk _ (adic_exists_approx v y h).choose else 0, ?_⟩` and prove the remaining obligations. Introduce `y y' hy hy' hc`. Simplify using `only [dif_pos hy, dif_pos hy'] at hc`. Establish `ha` using `(adic_exists_approx v y hy).choose_spec`. Establish `ha'` using `(adic_exists_approx v y' hy').choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := (adic_exists_approx v y hy).choose`. Use `set a' := (adic_exists_approx v y' hy').choose`. Rewrite `hc` using `[Ideal.Quotient.eq]`. Establish `h3 : Valued.v (algebraMap (𝓞 L⁺) (v.adicCompletion L⁺) (a - a')) < 1` using `by show Valued.v (algebraMap L⁺ (v.adicCompletion L⁺) (algebraMap (𝓞 L⁺) L⁺ (a - a'))) < 1`. Rewrite using `[adic_valued_algebraMap]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(v.valuation_lt_one_iff_mem (K := L⁺) _).2 hc`. Establish `e : y - y' = (y - algebraMap (𝓞 L⁺) (v.adicCompletion L⁺) a) - (y' - algebraMap (𝓞 L⁺) (v.adicCompletion L⁺) a') + algebraMap (𝓞 L⁺) (v.adicCompletion L⁺) (a - a')`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt (lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt ha ha')) h3)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx_class (v : HeightOneSpectrum (𝓞 L⁺)) :
     ∃ c : v.adicCompletion L⁺ → 𝓞 L⁺ ⧸ v.asIdeal, ∀ y y' : v.adicCompletion L⁺, Valued.v y ≤ 1 → Valued.v y' ≤ 1 →
@@ -161,23 +159,19 @@ theorem approx_class (v : HeightOneSpectrum (𝓞 L⁺)) :
   exact lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt (lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt ha ha')) h3)
 
 /- English proof (translation)
-Introduce `L _ _ _ n J χ B hJ s ϖ k hB hϖ`. Take `⟨c, hc⟩` from `approx_class s.v`. Use `haveI : Finite (𝓞 (maximalRealSubfield L) ⧸ s.v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ s.v.ne_bot`. Set `κ : Formalism.AUTREP.GAf L n → (Fin n → Fin n → 𝓞 (maximalRealSubfield L) ⧸ s.v.asIdeal)` to `fun x => if h : x ∈ Formalism.AUTREP.tSet L n s ϖ k then fun i j => c (((h.2.choose : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j) else 0`. Establish `key : ∀ x ∈ Formalism.AUTREP.tSet L n s ϖ k, ∀ x' ∈ Formalism.AUTREP.tSet L n s ϖ k, κ x = κ x' → (x : Formalism.AUTREP.GAf L n ⧸ J) = x'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx x' hx' hκ`. Simplify using `only [κ, dif_pos hx, dif_pos hx'] at hκ`. Take `⟨ha, b, hb, hg⟩` from `hx.2.choose_spec`. Take `⟨ha', b', hb', hg'⟩` from `hx'.2.choose_spec`. Use `set a := hx.2.choose`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a' := hx'.2.choose`. Establish `ia` using `glint_int ha`. Establish `ia'` using `glint_int ha'`. Establish `ib` using `glint_int hb`. Establish `ib'` using `glint_int hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcl : ∀ i j, Valued.v ((a : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j - (a' : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j) < 1` using `fun i j => hc _ _ (ia.1 i j) (ia'.1 i j) (congrFun (congrFun hκ i) j)`. Establish `hcl' : ∀ i j, Valued.v ((a' : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j - (a : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j) < 1` using `fun i j => by`. Rewrite using `[← Valuation.map_neg, neg_sub]`. Conclude with `hcl i j`. Establish `hunif : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `local_int s.v ϖ k hunif a a' b b' _ _ ia'.1 ia.2 ib.2 ib'.1 hcl hg hg'`. Establish `h2` using `local_int s.v ϖ k hunif a' a b' b _ _ ia.1 ia'.2 ib'.2 ib.1 hcl' hg' hg`. Rewrite using `[QuotientGroup.eq]`. Establish `htriv : TrivOutside {s.v} (x⁻¹ * x')` using `triv_mul (triv_inv hx.1) hx'.1`. Use `((hJ _ ?_).1).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Use `htriv w ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hB (by simpa using hw)`. Use `mem_Umax_of_loc s _ htriv (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul, map_inv]`. Conclude with `h1 i j`. Rewrite using `[mul_inv_rev, inv_inv, map_mul, map_inv]`. Conclude with `h2 i j`. Set `g : Formalism.AUTREP.GAf L n ⧸ J → (Fin n → Fin n → 𝓞 (maximalRealSubfield L) ⧸ s.v.asIdeal)` to `fun q => if h : ∃ x ∈ Formalism.AUTREP.tSet L n s ϖ k, (x : Formalism.AUTREP.GAf L n ⧸ J) = q then κ h.choose else 0`.
-
-Use `Set.Finite.of_finite_image (f := g) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨x', hx', rfl⟩ hgg`. Establish `h : ∃ y ∈ Formalism.AUTREP.tSet L n s ϖ k, (y : Formalism.AUTREP.GAf L n ⧸ J) = x` using `⟨x, hx, rfl⟩`. Establish `h' : ∃ y ∈ Formalism.AUTREP.tSet L n s ϖ k, (y : Formalism.AUTREP.GAf L n ⧸ J) = x'` using `⟨x', hx', rfl⟩`. Simplify using `only [g, dif_pos h, dif_pos h'] at hgg`.
-
-Use `show (x : Formalism.AUTREP.GAf L n ⧸ J) = x'`. Rewrite using `[← h.choose_spec.2, ← h'.choose_spec.2]`. Conclude with `key _ h.choose_spec.1 _ h'.choose_spec.1 hgg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_image_tSet : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (J : Subgroup (Formalism.AUTREP.GAf L n)) (χ : J →* ℂˣ) (B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))),

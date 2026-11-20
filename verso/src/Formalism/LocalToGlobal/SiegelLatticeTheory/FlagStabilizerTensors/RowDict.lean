@@ -107,7 +107,7 @@ def EEC (G : GoodOp X) : Submodule ℂ (L2X X) :=
   (goodSub X G).comap (conjL (muX X)).toLinearEquiv.toLinearMap
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_EEC (G : GoodOp X) (F : L2X X) : F ∈ EEC X G ↔ star F ∈ goodSub X G := Iff.rfl
 
@@ -144,19 +144,19 @@ def RowDictTie (G : GoodOp X) (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : Prop :=
   IsConjOnto (fun F : D.what₂.EE => ι (D.sEE F)) (conjHH X G)
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.finiteDimensional ι.toLinearEquiv`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_HHX (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : FiniteDimensional ℂ (HHX X) := LinearEquiv.finiteDimensional ι.toLinearEquiv
 
 /- English proof (translation)
-Rewrite using `[← D.s_HH]`. Conclude with `ι.toLinearEquiv.finrank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dall_eq (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : D.what₂.Dall = Module.finrank ℂ (HHX X) := by
   rw [← D.s_HH]
   exact ι.toLinearEquiv.finrank_eq
 
 /- English proof (translation)
-Take `⟨j, -⟩` from `h`. Rewrite using `[← j.toLinearEquiv.finrank_eq, Module.finrank_eq_card_basis D.what₂.onb.toBasis, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem drows_eq {G : GoodOp X} {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDictTie X G ι) :
     D.what₂.Drows = Module.finrank ℂ (EEC X G) := by
@@ -164,11 +164,11 @@ theorem drows_eq {G : GoodOp X} {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDictT
   rw [← j.toLinearEquiv.finrank_eq, Module.finrank_eq_card_basis D.what₂.onb.toBasis, Fintype.card_fin]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Establish `hj' : ∀ F, ι (D.sEE F) = conjHH X G (j F)` using `hj`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hmem : star (y : L2X X) ∈ EEC X G`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_EEC, star_star]`. Conclude with `hy`. Use `⟨j.symm ⟨star (y : L2X X), hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hj', LinearIsometryEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjHH_apply]`. Conclude with `star_star _`. Introduce and unpack `⟨F, rfl⟩`. Rewrite using `[hj', conjHH_apply]`. Conclude with `(mem_EEC X G _).1 (j F).2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_sEE {G : GoodOp X} {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDictTie X G ι) (y : HHX X) :
     (y : L2X X) ∈ goodSub X G ↔ ∃ F : D.what₂.EE, ι (D.sEE F) = y := by
@@ -193,9 +193,9 @@ def EEB (G : GoodOp X) : Submodule ℂ (L2X X) :=
 def RgReal (G : GoodOp X) : Prop := ∀ φ : L2X X, star (G.Rg φ) = G.Rg (star φ)
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[mem_EEC]`. Simplify using `only [EEB, goodSub, Submodule.mem_inf, Submodule.mem_comap, LinearMap.mem_ker]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, ContinuousLinearMap.coe_coe, sub_eq_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Conclude with `star_inj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eec_eq_eeb (G : GoodOp X) (h : RgReal X G) : EEC X G = EEB X G := by
   ext F
@@ -207,7 +207,7 @@ theorem eec_eq_eeb (G : GoodOp X) (h : RgReal X G) : EEC X G = EEB X G := by
   exact star_inj
 
 /- English proof (translation)
-Rewrite using `[dall_eq X ι]`. Conclude with `(Formalism.L2.SG.RowsDef.RowsAut.D_eq_finrank_HH hB X.B _ hU hIrr hF hw hint X.Rph X.Rph_spec).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem D_eq_of (hB : Formalism.L2.SG.RowsDef.RowsBij) (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X)
     (hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (X.B.I.ε v)) (X.B.σ v))
@@ -220,7 +220,7 @@ theorem D_eq_of (hB : Formalism.L2.SG.RowsDef.RowsBij) (ι : D.s.HH ≃ₗᵢ[�
   exact (Formalism.L2.SG.RowsDef.RowsAut.D_eq_finrank_HH hB X.B _ hU hIrr hF hw hint X.Rph X.Rph_spec).1
 
 /- English proof (translation)
-The claim follows from `D_eq_of X Formalism.L2.SG.Closed.RowsBij_holds ι hU hIrr hF hw hint`.
+A detailed English derivation is pending.
 -/
 theorem D_eq_holds (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X)
     (hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (X.B.I.ε v)) (X.B.σ v))
@@ -236,7 +236,7 @@ def DstarAgree : Prop :=
     X.B.I.Dstar (∏ v, fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) X.B.μf X.B.fund X.B.e
 
 /- English proof (translation)
-Rewrite using `[hT.Dstar_eq, DstarAgree, eq_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dstar_iff (hT : AutTie D X.B X.pl) : D.what₂.Dstar = Formalism.MainNotions.StandardLattice.DstarD D ↔ DstarAgree X := by
   rw [hT.Dstar_eq, DstarAgree, eq_comm]

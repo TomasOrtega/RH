@@ -22,9 +22,9 @@ open scoped Classical
 namespace GlobalTheory.SwapTrue
 
 /- English proof (translation)
-Introduce `a ha`. Unfold `rootSym at ha`. Apply the tactic sequence `split_ifs at ha <;>`. Rewrite `ha` using `[Finsupp.support_single_ne_zero _ (by norm_num)]`. Rewrite `ha` using `[Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `ha` using the available equality. Conclude with `⟨Pc.finite_toSet.subset fun q hq => by simpa [ArIn.ind] using hq, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem rootSym_support {D : D7} (O : Setup D) (Pc : Finset ℕ) (R : ℝ) (x : DV.Rt D.what₂.Tau O.N) :
     ∀ a ∈ (rootSym O.S.Dw (ArIn.ind Pc) (some R) (DV.tauEmb D x.1) x.2).support, {q | a.1 q = true}.Finite ∧ a.2.1 = some R := by
@@ -37,21 +37,19 @@ theorem rootSym_support {D : D7} (O : Setup D) (Pc : Finset ℕ) (R : ℝ) (x : 
     exact ⟨Pc.finite_toSet.subset fun q hq => by simpa [ArIn.ind] using hq, rfl⟩
 
 /- English proof (translation)
-Introduce `hP hH _ hBS G _ hSF D O hC hf A T H h B hB R hR`. Use `show ∀ (τ : D.what₂.Tau) (a b : Fin O.N), (b : ℕ) = a + 1 → (b : ℕ) ≠ O.j → ∀ n : D.what₂.Tau × Fin O.N → ℤ, (arIn O.s O.Φ O.met.hm).arDeg (GlobalTheory.FlagAr.setB O.Y B) R (lin (fun z => (n z : ℝ)) ^ (dimFl D.what₂.Tau O.N + 1)) + (arIn O.s O.Φ O.met.hm).arDeg (GlobalTheory.Fla …`. Introduce `τ a b hab hbj n`. Take `⟨xa, Pc, hcw⟩` from `id hC`. Establish `hm : O.met.hm = metsOf xa O.Φ` using `hcw.hm_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdim : ∀ c, (O.var c).dim = dimFl D.what₂.Tau O.N` using `O.dim_eq`. Take `⟨A', i, i', hii, hei, hei'⟩` from `exists_adj O.indef.2.le τ a b hab hbj`. Establish `key : ∀ c : O.s.Comp, numL ((arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N + 1) (rename (fun y => (arIn O.s O.Φ O.met.hm).root (ArIn.ind (GlobalTheory.FlagAr.setB O.Y B)) R y c) (lin (fun z => (n z : ℝ)) ^ (dimFl D.what₂.Tau O.N + 1))) + numL ((arIn O.s O.Φ O.met.hm).num c …`. Introduce `c`. Take `⟨W⟩` from `hBS D O hC B hB R hR c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := W.int`. Take `⟨⟨Φc, hΦc⟩, Ψc, hΨc⟩` from `(hP.p4.arExists (𝓞 D.what₂.LL) W.V.X W.V.p (O.var c).dim W.V.ar).2 _ (fun z : Σ a : D.what₂.Tau × Bool, Fin (rkB D.what₂.Tau O.N O.j a) => VMetric.grLB (W.fl z.1) z.2 ((W.H z.1).pull W.π W.w))`. Establish `hS` using `hSF (𝓞 D.what₂.LL) W.B W.V.X W.q W.V.p _ _ W.ar W.V.ar W.π W.w (D.what₂.Tau × Bool) W.E _ W.h W.H W.fl W.univ Φc Ψc hΦc hΨc A' i i' hii (fun z => n ((blockEquiv D.what₂.Tau O.N O.j O.indef.2.le) z))`. Establish `hG` using `GlobalTheory.T.geometric_function_flag_degree hP hH D O hC hf A T H h B hB R hR c W Ψc hΨc`. Take `⟨-, hT⟩` from `GlobalTheory.ArTopTrue.arTop_true hP.p4 hH.deg GlobalTheory.ShFam.Pad.HTBound.htBound D O.A O.N O.j O.S O.κ O.s xa O.Φ c R hR`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, L, m, Ψ, hL, hΨ, hnum⟩` from `hT (DV.Rt D.what₂.Tau O.N) (fun y => rootSym O.S.Dw (ArIn.ind (GlobalTheory.FlagAr.setB O.Y B)) (some R) (DV.tauEmb D y.1) y.2) (fun y => rootSym_support O _ R y)`. Establish `hcmp` using `GlobalTheory.T.adelic_line_bundle_induced_arith hP.p4 hH.deg (O.var c) (blockEquiv D.what₂.Tau O.N O.j O.indef.2.le) (fun y => adlOf (O.Φ.C c) (metsOf xa O.Φ c) (rootSym O.S.Dw (ArIn.ind (GlobalTheory.FlagAr.setB O.Y B)) (some R) (DV.tauEmb D y.1) y.2)) (fun _ => rfl) M L m Ψ hL …`. Establish `hnum' : ∀ n' : DV.Rt D.what₂.Tau O.N → ℤ, numL ((arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N + 1) (rename (fun y => (arIn O.s O.Φ O.met.hm).root (ArIn.ind (GlobalTheory.FlagAr.setB O.Y B)) R y c) (lin (fun z => (n' z : ℝ)) ^ (dimFl D.what₂.Tau O.N + 1))) = Φc (lin (fun z …`. Introduce `n'`. Rewrite using `[hm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.NumLRename.numL_rename_of_agree _ ((O.var c).dim + 1) _ Ψ _ hnum (lin (fun z => (n' z : ℝ)) ^ ((O.var c).dim + 1)) (isHomogeneous_lin_pow _ _)`. Establish `h2` using `hcmp n'`. Rewrite `h1`, `h2` using `[hdim c]`. Conclude with `h1.trans h2`. Rewrite `hS` using `[hG, rename_swapPol, hei, hei']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [hdim c] at hS`. Rewrite using `[hnum' n, hnum' (fun z => n (swapAt τ a b z)), ← add_div, div_eq_iff W.V.ν_pos.ne', mul_comm _ W.V.ν, ← mul_assoc]`. Use `hS using 4` and compare the differences between its conclusion and the goal. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `swapAt_comp_equiv _ _ _ τ a b hei hei' z`. Establish `hvol` using `(GlobalTheory.T.weights_sum_to_volume_proportional hP hH D O hC hf A T H h).2.1`. Rewrite using `[LinearMap.smul_apply, Formalism.L2.Geo.degFlL_apply, smul_eq_mul, hvol, Finset.sum_mul]`. Simplify using `only [ArIn.arDeg, LinearMap.sum_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply]`.
-
-Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun c _ => key c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapEq_true : Hypotheses2 → HypothesesH → RegularAlteration → BunSt → ∀ G, Homog G → SwapFl G →
     OnObj fun _ O _ _ _ _ => ∀ B : ℝ, 2 ≤ B → ∀ R : ℝ, 2 ≤ R →

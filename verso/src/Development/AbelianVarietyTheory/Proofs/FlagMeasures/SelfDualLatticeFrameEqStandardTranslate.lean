@@ -12,13 +12,13 @@ open scoped Classical
 namespace GlobalTheory.StdLat
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r Fr Λ hSD hFr`. Take `⟨y, hyΛ, hyf⟩` from `GlobalTheory.T.exists_dual_family_in_selfDual_lattice M hM H r Fr Λ hSD hFr`. Establish `hy0 : ∀ (a : Fin r) (b : Fin (r + 1)), H.h (y a.castSucc) (Fr.f b) = if b = a.castSucc then 1 else 0` using `fun a b => hyf b a.castSucc`. Take `⟨y', hy'Λ, hy'f, hy'y⟩` from `GlobalTheory.T.exists_totallyIsotropic_dual_family_in_lattice M hM H r Fr Λ hSD hFr (fun a : Fin r => y a.castSucc) (fun a : Fin r => hyΛ _) hy0`. Take `⟨n, hnU, hnf, hnes, hnX⟩` from `GlobalTheory.T.exists_unitary_frame_dual' M H r Fr y' hy'f hy'y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hLset, hLin⟩` from `GlobalTheory.T.exists_innerLattice_image_frame_quotient M hM H r Fr Λ hSD hFr y' hy'Λ hy'f`. Establish `heΛ : ∀ a : Fin r, Fr.f a.castSucc ∈ Λ` using `fun a => hFr.1.1 _`. Use `⟨L, hLin, hLset, n, ?_, hnf, ?_⟩` and prove the remaining obligations. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨hnU, ?_, hnX⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j _ v hv`. Establish `hle : Fr.Fj j ≤ LinearMap.ker ((n : V →ₗ[E] V) - LinearMap.id)`. Rewrite using `[FrameD.Fj, Submodule.span_le]`. Introduce and unpack `_ ⟨a, _, rfl⟩`. Simplify using `[FrameD.e, hnf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hle hv`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[show n v - v = 0 from h1]`. Conclude with `zero_mem _`. Conclude with `GlobalTheory.T.unitary_image_standardLattice_eq_selfDual_lattice M H r Fr Λ hSD heΛ L hLset n hnU (fun a => hnf _) (fun a => by rw [hnes]; exact hy'Λ a) hnX`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_img_lamStd : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r : ℕ), ∀ (Fr : FrameD H r) (Λ : Submodule M.L.O V), H.IsSelfDual Λ → H.IsFrame Λ r Fr.f Fr.T → ∃ L : Submodule M.L.O (H.Wb Fr.f), Fr.IsInner L ∧ (L : Set (H.Wb Fr.f)) = H.Lset Λ Fr.f ∧ ∃ n ∈ Fr.N, (∀ b, n (Fr.f b) = Fr.f b) ∧ Λ = img n (Fr.LamStd L) := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r Fr Λ hSD hFr

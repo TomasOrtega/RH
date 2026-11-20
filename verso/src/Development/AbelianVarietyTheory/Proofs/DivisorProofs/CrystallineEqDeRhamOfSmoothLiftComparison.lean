@@ -24,7 +24,7 @@ def diagCoef (s : X ⟶ Sp R) : CoefMap (RingHom.id R) (OPair (𝟙 X) s) (OAff 
   smul _ _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[← pullHyp1_comp]`. Conclude with `(pullHyp1_eq_of_natTrans _ (CoefMap.id _) { app U := 𝟙 U } (fun U b ↦ mp_id (OAff s) U b) c).trans (pullHyp1_id c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_res_degree_one (s : X ⟶ Sp R) (c : HH1 s) :
     pullHyp1 (diagCoef s) (pullHyp1 (pairRes (𝟙 X) s) c) = c := by
@@ -33,7 +33,7 @@ theorem diag_res_degree_one (s : X ⟶ Sp R) (c : HH1 s) :
     (fun U b ↦ mp_id (OAff s) U b) c).trans (pullHyp1_id c)
 
 /- English proof (translation)
-Rewrite using `[← pullHyp2_comp]`. Conclude with `(pullHyp2_eq_of_natTrans _ (CoefMap.id _) { app U := 𝟙 U } (fun U b ↦ mp_id (OAff s) U b) c).trans (pullHyp2_id c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_res_degree_two (s : X ⟶ Sp R) (c : HH2 s) :
     pullHyp2 (diagCoef s) (pullHyp2 (pairRes (𝟙 X) s) c) = c := by
@@ -42,7 +42,7 @@ theorem diag_res_degree_two (s : X ⟶ Sp R) (c : HH2 s) :
     (fun U b ↦ mp_id (OAff s) U b) c).trans (pullHyp2_id c)
 
 /- English proof (translation)
-Establish `e' : pullHyp1 (pairRes (𝟙 X) s) c = pullHyp1 (pairRes (𝟙 X) s) c'` using `(isPull1_id h c).symm.trans e`. Rewrite using `[← diag_res_degree_one s c, e', diag_res_degree_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_isPull1 {s : X ⟶ Sp R} (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)) {c c' : HH1 s}
     (e : IsPull1 h c c') : c = c' := by
@@ -51,7 +51,7 @@ theorem eq_of_isPull1 {s : X ⟶ Sp R} (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.
   rw [← diag_res_degree_one s c, e', diag_res_degree_one]
 
 /- English proof (translation)
-Establish `e' : pullHyp2 (pairRes (𝟙 X) s) c = pullHyp2 (pairRes (𝟙 X) s) c'` using `(isPull2_id h c).symm.trans e`. Rewrite using `[← diag_res_degree_two s c, e', diag_res_degree_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_isPull2 {s : X ⟶ Sp R} (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)) {c c' : HH2 s}
     (e : IsPull2 h c c') : c = c' := by
@@ -60,9 +60,9 @@ theorem eq_of_isPull2 {s : X ⟶ Sp R} (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.
   rw [← diag_res_degree_two s c, e', diag_res_degree_two]
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Set `e` to `RingHom.quotientKerEquivOfSurjective hπ`. Establish `he : (e : R ⧸ RingHom.ker π →+* R₀).comp (Ideal.Quotient.mk _) = π` using `RingHom.ext fun _ ↦ rfl`. Establish `hs : spMap π = spMap (e : R ⧸ RingHom.ker π →+* R₀) ≫ spMap (Ideal.Quotient.mk _)` using `by conv_lhs => rw [← he] show Spec.map _ = Spec.map _ ≫ Spec.map _; rw [← Spec.map_comp]; rfl`. Establish `: IsIso (CommRingCat.ofHom (e : R ⧸ RingHom.ker π →+* R₀))` using `e.toCommRingCatIso.isIso_hom`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨s₀ ≫ spMap (e : R ⧸ RingHom.ker π →+* R₀), ?_, by rw [hs, Category.assoc]⟩` and prove the remaining obligations. Conclude with `hp.of_iso (Iso.refl _) (Iso.refl _) (asIso (spMap (e : R ⧸ RingHom.ker π →+* R₀))) (Iso.refl _) (by simp) (by simp) (by simp) (by simp [hs])`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem red_of {R₀ : Type} [CommRing R₀] {I : Ideal R} {π : R →+* R₀} (hπ : Function.Surjective π)
     (hI : RingHom.ker π = I) {X₀ : Scheme.{0}} {s : X ⟶ Sp R} {s₀ : X₀ ⟶ Sp R₀} {i : X₀ ⟶ X}
@@ -87,13 +87,13 @@ namespace GlobalTheory.CrysLift
 open GlobalTheory.SmoothLift
 
 /- English proof (translation)
-Introduce and unpack `⟨e₁, e₂, -, -, hnat⟩ R _ I κ hκ R₀ _ π hπ hI X X₀ s s₀ i hs hsep hqc hp m`. Establish `hid : spMap (RingHom.id R) = 𝟙 _` using `Spec.map_id _`. Establish `: IsIso (spMap (RingHom.id R))` using `by rw [hid]; infer_instance`. Set `D : Data` to `{ R := R, I := ⊥, κ := dp0 R, nil := isDPNilpotent_bot R, X := X, X₀ := X, s := s, t := s, i := 𝟙 X, smooth := hs, sep := hsep, qc := hqc, red := by`. Take `⟨s', h1, h2⟩` from `red_of (π := RingHom.id R) Function.surjective_id ((RingHom.injective_iff_ker_eq_bot _).1 Function.injective_id) (IsPullback.of_horiz_isIso (fst := 𝟙 X) (g := spMap (RingHom.id R)) (snd := s) (f := s) ⟨by rw [show spMap (RingHom.id R) = 𝟙 _ from Spec.map_id _, Category.id_comp, C …`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨s', h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, show spMap (RingHom.id R) = 𝟙 _ from Spec.map_id _, Category.comp_id] }`. Set `D' : Data` to `{ R := R, I := I, κ := κ, nil := hκ, X := X, X₀ := X₀, s := s, t := s₀ ≫ spMap π, i := i, smooth := hs, sep := hsep, qc := hqc, red := by`. Take `⟨s', h1, h2⟩` from `red_of hπ hI hp`. Conclude with `⟨s', h1, h2⟩ }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)`. Rewrite using `[show spMap (RingHom.id R) = 𝟙 _ from Spec.map_id _, Category.id_comp, Category.comp_id]`. Take `⟨h1, h2⟩` from `hnat D D' (RingHom.id R) (𝟙 X) i h m (by simp [D, D'])`. Establish `k1 : ∀ c, m.pull1 c = ((e₁ D).trans (e₁ D').symm) c` using `fun c ↦ ((e₁ D').symm_apply_apply _).symm.trans (congrArg (e₁ D').symm (eq_of_isPull1 h (h1 c)).symm)`. Establish `k2 : ∀ c, m.pull2 c = ((e₂ D).trans (e₂ D').symm) c` using `fun c ↦ ((e₂ D').symm_apply_apply _).symm.trans (congrArg (e₂ D').symm (eq_of_isPull2 h (h2 c)).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(funext k1 : (⇑m.pull1 : _ → _) = _) ▸ ((e₁ D).trans (e₁ D').symm).bijective, (funext k2 : (⇑m.pull2 : _ → _) = _) ▸ ((e₂ D).trans (e₂ D').symm).bijective⟩`.
+Supply the required witnesses or components.
 -/
 theorem crystallineDeRham_of_smoothLift : GlobalTheory.Published.CrystallineSmoothLift → GlobalTheory.Published.CrystallineDeRham := by
   rintro ⟨e₁, e₂, -, -, hnat⟩ R _ I κ hκ R₀ _ π hπ hI X X₀ s s₀ i hs hsep hqc hp m

@@ -7,7 +7,7 @@ namespace GlobalTheory.PsType
 open GlobalTheory.DepthZeroJac GlobalTheory.IwahoriInj GlobalTheory.StepData
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_unipB, mem_unipRad, mem_parab]`. Simplify using `only [blk, Equiv.sigmaUnique_symm_apply, Equiv.sigmaUnique_apply]`. Use `and_congr Iff.rfl ⟨fun h i => (h i 0 0).trans (by simp), fun h a i j => ?_⟩` and prove the remaining obligations. Rewrite using `[h a, Subsingleton.elim i j]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -21,9 +21,9 @@ theorem unipRad_points_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   simp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hπ v h1 hfix`. Rewrite `h1` using `[← unipRad_points_eq]`. Take `⟨c, hc0, hc1, hc2⟩` from `exists_deep (k := k) 1`. Take `⟨M, hM⟩` from `(eventually_mem_twKer (hc := hc0) hc1 hc2 h1).exists`. Use `claim_of_antitone hc1 hc2 hπ _ _ rfl (antitone_expo M) v ?_ hM` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_fixed.2 fun g hg => hfix g ((sup_le KOne_le_KO inf_le_right) hg)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fixed_KO_twKer_unipB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), IsSmooth π → ∀ v ∈ twKer π (unipB k (Fin n)) 1, (∀ g ∈ KO k (Fin n), π g v = v) → v = 0 := by
   intro k _ _ _ _ n V _ _ π hπ v h1 hfix

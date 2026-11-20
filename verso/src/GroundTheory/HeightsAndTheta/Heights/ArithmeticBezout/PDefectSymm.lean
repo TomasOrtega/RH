@@ -9,13 +9,13 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `e hIH n δ h Z f u u' hZ hu hu' huu' hu'u`. Establish `A` using `hIH n δ h (cycleSection Z u) (specFirst f u) u' (h1 n e δ Z f u hZ hu) huu'`. Establish `B` using `hIH n δ h (cycleSection Z u') (specFirst f u') u (h1 n e δ Z f u' hZ hu') hu'u`. Establish `S` using `h2 n e h Z f u u' hZ.chow`. Take `⟨c, -, g, hg, -⟩` from `hZ.chow`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `G : ∀ W ∈ Z.support, (Z W : ℝ) * (cycleIntegral h (divCycle W u) e (fsLog h u') + coneIntegral h W (e + 1) (fsLog h u)) = (Z W : ℝ) * (cycleIntegral h (divCycle W u') e (fsLog h u) + coneIntegral h W (e + 1) (fsLog h u'))`. Introduce `W hW`. Use `congr 1`. Use `h4 n e h W u u' (hZ.prime W hW) ⟨g W, hg W hW⟩ (hu W hW) (hu' W hW) ?_` and prove the remaining obligations. Introduce `W' hW'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `huu' W' ((h5 n Z u).1 W hW hW')`. Establish `hsum` using `Finset.sum_congr rfl G`. Simplify using `only [mul_add, Finset.sum_add_distrib] at hsum`. Establish `Cu` using `h3 n h Z u e (fsLog h u')`. Establish `Cu'` using `h3 n h Z u' e (fsLog h u)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Ku : cycleIntegral h Z (e + 1) (fsLog h u) = ∑ W ∈ Z.support, (Z W : ℝ) * coneIntegral h W (e + 1) (fsLog h u)` using `rfl`. Establish `Ku' : cycleIntegral h Z (e + 1) (fsLog h u') = ∑ W ∈ Z.support, (Z W : ℝ) * coneIntegral h W (e + 1) (fsLog h u')` using `rfl`. Unfold `mahlerDefect`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem DefectSymm.proof (h1 : CycleSectionData.Statement) (h2 : SpecFirstSwapMahler.Statement)
     (h3 : CycleIntegralSection.Statement) (h4 : GreenSymmetry.Statement)

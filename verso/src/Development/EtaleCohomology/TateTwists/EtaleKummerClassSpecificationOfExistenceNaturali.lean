@@ -20,7 +20,7 @@ def kum_add : Prop :=
     kum q (u * v) = kum q u + kum q v ∧ kum q (u ^ q) = 0
 
 /- English proof (translation)
-Take `⟨γ, h1, h2⟩` from `he q X u hq`. Unfold `kum`. Conclude with `pick_spec (P := fun c => ∃ γ : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1, CohomologyClass.mk γ = c ∧ (∀ (U : Scheme.{0}) (x : U ⟶ X), ev γ.1 1 0 (by simp) U x = 0) ∧ ∀ (U : Scheme.{0}) (x : U ⟶ X) (v : (Γ(U, ⊤))ˣ), v ^ q = Units.map x.appTop.hom.toMonoidHom u …`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kum_spec_of_exists (he : kum_exists) (q : ℕ) [NeZero q] (X : Scheme.{0}) (u : (Γ(X, ⊤))ˣ)
     (hq : IsUnit (q : Γ(X, ⊤))) :
@@ -37,7 +37,7 @@ theorem kum_spec_of_exists (he : kum_exists) (q : ℕ) [NeZero q] (X : Scheme.{0
     ⟨CohomologyClass.mk γ, γ, rfl, h1, h2⟩
 
 /- English proof (translation)
-Introduce `q _`. Conclude with `⟨fun X u hq => kum_spec_of_exists he q X u hq, fun f u hq => hn q f u hq, fun u v hq => ha q u v hq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem etale_kummer_class_specification_of_existence_naturality_additivity (he : kum_exists) (hn : kum_nat) (ha : kum_add) : EtaleKummerClassExplicitCocycle := by
   intro q _

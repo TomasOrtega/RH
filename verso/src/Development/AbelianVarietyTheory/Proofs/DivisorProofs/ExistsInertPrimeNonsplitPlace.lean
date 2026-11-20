@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.InertOfNoEmb
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc hu v hv`. Establish `hU : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) v := by`. Introduce `P _`. Rewrite using `[Ideal.ramificationIdx_eq_one_iff]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt hU with hs | ⟨w, hw⟩` into its components or cases. Take `⟨P, Q, hne, hP, hQ⟩` from `hs`. Take `⟨τ, _⟩` from `GlobalTheory.LFun.SplitChart.exists_splitPrime_eq hc ⟨P, Q, hne, hP, hQ⟩ (w := P) (HeightOneSpectrum.ext hP)`. Conclude with `hv.elim τ`. Conclude with `⟨w, (GlobalTheory.LFun.InertChart.under_eq_iff hw w).2 rfl, hw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isInertAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ v : Pl F, IsEmpty (E →ₐ[F] Fv F v) →

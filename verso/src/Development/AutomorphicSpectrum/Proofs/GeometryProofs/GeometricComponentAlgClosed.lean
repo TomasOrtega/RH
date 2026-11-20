@@ -13,13 +13,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Br
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Set `g` to `X.descResidueField (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) ξ)`. Establish `hsurj : Function.Surjective g.hom`. Introduce `a`. Take `⟨b, hb⟩` from `h a`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(X.residue _).hom b, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg CommRingCat.Hom.hom (X.residue_descResidueField (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) ξ))`. Conclude with `(congrArg (fun φ => φ b) e).trans hb`. Set `e : X.residueField (ξ (IsLocalRing.closedPoint Ω)) ≃+* Ω` to `RingEquiv.ofBijective g.hom ⟨g.hom.injective, hsurj⟩`. Use `⟨e.symm.toRingHom, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Spec.map g ≫ X.fromSpecResidueField (ξ (IsLocalRing.closedPoint Ω)) = ξ` using `Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField Ω X ξ`. Establish `h2 : spMap e.symm.toRingHom ≫ Spec.map g = 𝟙 _`. Establish `h3 : g ≫ CommRingCat.ofHom e.symm.toRingHom = 𝟙 _`. Use extensionality with `a`. Conclude with `e.symm_apply_apply a`.
-
-Conclude with `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map h3).trans (Spec.map_id _))`. Use `(congrArg (spMap e.symm.toRingHom ≫ ·) h1).symm.trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ X.fromSpecResidueField _) h2).trans (Category.id_comp _))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fieldMap_of_surjective {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ X)
     (h : Function.Surjective (Scheme.stalkClosedPointTo ξ).hom) (z : X) (hz : ξ (IsLocalRing.closedPoint Ω) = z) :
@@ -47,23 +45,21 @@ theorem exists_fieldMap_of_surjective {X : Scheme.{0}} {Ω : Type} [Field Ω] (�
   exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ X.fromSpecResidueField _) h2).trans (Category.id_comp _))
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y Z Z' _ hc x ⟨f, hf0, hf⟩`. Establish `hsurj : Function.Surjective (Scheme.stalkClosedPointTo Z'.ξ₀).hom`. Establish `h` using `Z'.gen.bij.2`. Rewrite `h` using `[Scheme.stalkClosedPointTo_comp]`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩` from `h a`. Conclude with `⟨_, hb⟩`. Establish `hgp : genPt Z'.ξ₀ = Formalism.L2.Pj.genPt Z`. Establish `hg` using `Z.2.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z.2)`. Establish `h2 : Formalism.L2.Pj.genPt Z ⤳ genPt Z'.ξ₀` using `hg.specializes Z'.genPt_mem`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : genPt Z'.ξ₀ ⤳ Formalism.L2.Pj.genPt Z` using `(Z'.closure _).1 hg.mem`. Conclude with `(h3.antisymm h2).eq`. Take `⟨i, hi⟩` from `exists_fieldMap_of_surjective Z'.ξ₀ hsurj _ hgp`. Establish `hcomp : i.comp Z'.inc = algebraMap c.F (Formalism.L2.Pj.kap Z)`. Establish `h1 : Formalism.L2.Pj.genSp Z ≫ Formalism.L2.Pj.strK = spMap (algebraMap c.F (Formalism.L2.Pj.kap Z))` using `(Spec.map_preimage _).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : spMap (i.comp Z'.inc) = spMap (algebraMap c.F (Formalism.L2.Pj.kap Z))`. Rewrite using `[← h1]`. Establish `e : spMap (i.comp Z'.inc) = spMap i ≫ spMap Z'.inc`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← Z'.over_inc, ← Category.assoc, hi]`. Both sides reduce to the same expression. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h2)`. Establish `hb : IsAlgebraic c.F (algebraMap (Formalism.L2.Pj.kap Z) (Formalism.L2.Pj.Om Z) (i x))`. Use `⟨f, hf0, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `Polynomial.hom_eval₂ f Z'.inc ((algebraMap (Formalism.L2.Pj.kap Z) (Formalism.L2.Pj.Om Z)).comp i) x`. Rewrite `h3` using `[hf, map_zero]`. Rewrite using `[Polynomial.aeval_def]`. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations. Establish `e : algebraMap c.F (Formalism.L2.Pj.Om Z) = ((algebraMap (Formalism.L2.Pj.kap Z) (Formalism.L2.Pj.Om Z)).comp i).comp Z'.inc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_assoc, hcomp]`. Conclude with `IsScalarTower.algebraMap_eq _ _ _`. Rewrite using `[e]`. Both sides reduce to the same expression. Take `⟨k, hk⟩` from `hc Z _ hb`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨k, i.injective ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap c.F (Formalism.L2.Pj.kap Z) k = i x`. Apply `(algebraMap (Formalism.L2.Pj.kap Z) (Formalism.L2.Pj.Om Z)).injective` to reduce the goal to its premises. Rewrite using `[← hk, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[← h2, ← hcomp]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isGeom_of_fnAlgClosed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Z : Formalism.L2.Pj.Comp Xo c) (Z' : CptOver Y (Z : Set (Xo.XF c))), FracBase β → Formalism.L2.Pj.FnAlgClosed Xo c → Z'.IsGeom := by
   intro E _ _ _ H D l Xo c O _ β Y Z Z' _ hc x ⟨f, hf0, hf⟩

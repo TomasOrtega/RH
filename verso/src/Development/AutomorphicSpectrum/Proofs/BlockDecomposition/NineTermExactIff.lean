@@ -73,14 +73,14 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   (ρ : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem nineTermExact_iff (hρ : ContAction ρ) :
     NineTermExact S Av μ j ρ hρ ↔
       NineG (locFam S Av) (continuous_locFam S Av) μ j ρ hρ := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem shaDual_iff :
     ShaDual S Av μ ρ ↔ ShaG (locFam S Av) (continuous_locFam S Av) μ ρ := Iff.rfl

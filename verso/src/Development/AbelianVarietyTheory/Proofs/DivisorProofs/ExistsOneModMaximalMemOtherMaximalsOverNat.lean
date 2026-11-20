@@ -6,17 +6,15 @@ noncomputable section
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDat GlobalTheory.LowFilt
 
 /- English proof (translation)
-Introduce `E _ _ n hn 𝔭 h𝔭`. Establish `hn0 : (n : 𝓞 E) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hI0 : Ideal.span {(n : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Use `set S := (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {(n : 𝓞 E)})).toFinset.erase 𝔭 with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `htop : 𝔭 ⊔ ∏ 𝔮 ∈ S, 𝔮 = ⊤`. Use `Ideal.sup_prod_eq_top fun 𝔮 h𝔮 => ?_` and prove the remaining obligations. Rewrite `h𝔮` using `[hS, Finset.mem_erase, Multiset.mem_toFinset, Ideal.mem_normalizedFactors_iff hI0]`. Take `⟨hne, hpr, hle⟩` from `h𝔮`. Establish `hbot : 𝔮 ≠ ⊥`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hle` using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hn0 hle`. Establish `hmax : 𝔮.IsMaximal` using `hpr.isMaximal hbot`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : 𝔭 = 𝔭 ⊔ 𝔮` using `h𝔭.eq_of_le hc le_sup_left`. Establish `h2 : 𝔮 ≤ 𝔭` using `e1 ▸ le_sup_right`. Conclude with `hne (hmax.eq_of_le h𝔭.ne_top h2)`. Establish `h1 : (1 : 𝓞 E) ∈ 𝔭 ⊔ ∏ 𝔮 ∈ S, 𝔮` using `htop ▸ Submodule.mem_top`. Take `⟨p, hp, e, he, hpe⟩` from `Submodule.mem_sup.mp h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e, ?_, fun 𝔮 hmax hn𝔮 hne => ?_⟩` and prove the remaining obligations. Establish `: e - 1 = -p` using `by rw [← hpe]; ring`. Rewrite using `[this]`. Conclude with `𝔭.neg_mem hp`. Establish `hmem : 𝔮 ∈ S`.
-
-Rewrite using `[hS, Finset.mem_erase, Multiset.mem_toFinset, Ideal.mem_normalizedFactors_iff hI0]`. Conclude with `⟨hne, hmax.isPrime, (Ideal.span_singleton_le_iff_mem _).2 hn𝔮⟩`. Conclude with `Ideal.prod_le_inf.trans (Finset.inf_le hmem) he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.sep_one_mod_maximal_mem_others : ∀ {E : Type} [Field E] [NumberField E] (n : ℕ) (hn : 0 < n) (𝔭 : Ideal (𝓞 E)) (h𝔭 : 𝔭.IsMaximal),
     ∃ e : 𝓞 E, e - 1 ∈ 𝔭 ∧ ∀ 𝔮 : Ideal (𝓞 E), 𝔮.IsMaximal → (n : 𝓞 E) ∈ 𝔮 → 𝔮 ≠ 𝔭 → e ∈ 𝔮 := by

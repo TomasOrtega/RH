@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.BKFinLevelKer
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq]`. Establish `ht : (⟨v, hv⟩ : ↥L.T) - ⟨u, hu⟩ = ϖ ^ r • (-(⟨_, hvw⟩ : ↥L.T))`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul, Submodule.coe_neg]`. Rewrite using `[← hpr, smul_neg, smul_sub, smul_smul, ← mul_pow, mul_inv_cancel₀ hπ, one_pow, one_smul, hyw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[ht]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_of_smul {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Algebra O LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
@@ -34,25 +34,21 @@ theorem mk_eq_of_smul {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [Co
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top
 
 /- English proof (translation)
-Introduce `l _ P K LL _ _ _ O _ _ hO A LA ϖ hϖ r hI c hc`. Take `⟨π, hπdef⟩ : ∃ π : LL, π = algebraMap O LL ϖ` from `⟨_, rfl⟩`. Establish `hπ : π ≠ 0`. Take `⟨⟨hDom, hDVR, hFr⟩, -, -, -, -⟩` from `hO`. Use `haveI := hDom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hDVR`. Use `haveI := hFr`. Introduce `h`. Conclude with `hϖ.ne_zero (IsFractionRing.injective O LL (by rw [← hπdef, h, map_zero]))`. Use `clear hO`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨_, ⟨z, hz, rfl⟩, _, ⟨xq, rfl⟩, hsum⟩` from `Submodule.mem_sup.1 hc`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ xq`. Take `⟨w, hwdef⟩ : ∃ w : ↥(GK K) → A.V, w = z + fun g => A.ρ g x - x` from `⟨_, rfl⟩`. Establish `hcob : (fun g => A.ρ g x - x) ∈ finiteCocycles (P.PD K) A.ρ`. Use `⟨⟨?_, fun g h => ?_⟩, x ⊗ₜ[ℚ_[l]] (1 : _), fun g => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Repeatedly rewrite using `[sub_eq_add_neg]`. Conclude with `(A.cont x).add continuous_const`. Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Simplify using `[actVB, sub_tmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw : w ∈ finiteCocycles (P.PD K) A.ρ` using `hwdef ▸ (finiteCocycles (P.PD K) A.ρ).add_mem hz hcob`. Use `choose ch hch using fun g => Submodule.Quotient.mk_surjective _ (c g)`. Establish `hpt : ∀ g, (π⁻¹ ^ r • ((ch g : ↥LA.T) : A.V)) - w g ∈ LA.T`. Introduce `g`. Establish `key : GlobalTheory.BKFinLevel.ioL LA ϖ r (c g) = Submodule.Quotient.mk (p` using `LA.T) (w g) := by rw [← congrFun hsum g, hwdef]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (Submodule.Quotient.mk (π⁻¹ ^ r • ((ch g : ↥LA.T) : A.V)) : A.V ⧸ LA.T) = Submodule.Quotient.mk (w g)` using `hπdef ▸ (GlobalTheory.BKFinLevel.ioL_mk LA ϖ r (ch g)).symm.trans ((congrArg _ (hch g)).trans key)`. Conclude with `(Submodule.Quotient.eq _).1 h2`. Take `⟨y, hydef⟩ : ∃ y : ↥(GK K) → A.V, y = fun g => π ^ r • w g` from `⟨_, rfl⟩`. Establish `hyf : y ∈ finiteCocycles (P.PD K) A.ρ`. Establish `h` using `(finiteCocycles (P.PD K) A.ρ).smul_mem (π ^ r) hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hydef` using the available equality. Conclude with `h`. Establish `hpr : ∀ v : A.V, π ^ r • v = ϖ ^ r • v` using `fun v => by`. Rewrite using `[hπdef, ← map_pow, algebraMap_smul]`. Establish `hyT : ∀ g, y g ∈ LA.T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `g`. Establish `: y g = ((ch g : ↥LA.T) : A.V) - ϖ ^ r • ((π⁻¹ ^ r • ((ch g : ↥LA.T) : A.V)) - w g)`. Rewrite using `[← hpr, smul_sub, smul_smul, ← mul_pow, mul_inv_cancel₀ hπ, one_pow, one_smul]`. Simplify using `[hydef]`. Rewrite using `[this]`.
-
-Conclude with `LA.T.sub_mem (ch g).2 (LA.T.smul_mem _ (hpt g))`. Establish `hyZ : y ∈ latticeCocycles LA` using `⟨hyf.1, fun g _ => hyT g⟩`. Use `Submodule.mem_sup_left ⟨⟨y, hyZ⟩, ⟨hyZ, hyf⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `e : (redT LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) ⟨y, hyZ⟩) g = Submodule.Quotient.mk (⟨y g, hyT g⟩ : ↥LA.T)` using `rfl`.
-
-Rewrite using `[e, ← hch g]`. Conclude with `mk_eq_of_smul LA ϖ r π hπ hpr _ _ (w g) (ch g).2 (hyT g) (hpt g) (by rw [hydef])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hfQ_of_ioL_mem_HfD : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O), Irreducible ϖ → ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) (c : ↥(GK K) → ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)), (fun g => GlobalTheory.BKFinLevel.ioL LA ϖ r (c g)) ∈ HfD (P.PD K) LA → c ∈ HfQ (P.PD K) LA _ hI := by
   intro l _ P K LL _ _ _ O _ _ hO A LA ϖ hϖ r hI c hc

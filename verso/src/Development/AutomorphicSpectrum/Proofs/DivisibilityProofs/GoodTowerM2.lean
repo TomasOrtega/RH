@@ -17,9 +17,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSett
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `_ E _ _ _ _ H D Xo l c Y _ T o II hglob _ hp hq`. Take `⟨Yl, hg, hloc, -, -, hdom⟩` from `hglob`. Introduce `B a p hpr hnS mu hmu hnef`. Establish `hpbad : p ∉ T.bad` using `fun hb => hnS (show Nat.Prime p ∧ (p ≤ B ∨ p ∈ T.bad) from ⟨hpr, Or.inr hb⟩)`. Establish `h2 : 2 < p` using `lt_of_le_of_ne hpr.two_le (fun h => hpbad (by rw [← h]; exact T.two_mem))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisc : ¬ ((p : ℤ) ∣ NumberField.discr E)` using `fun hd => hpbad ((o.toTowerOrigin.bad_iff p).2 ⟨hpr, dvd_mul_of_dvd_left (dvd_mul_of_dvd_right hd 2) _⟩)`. Establish `hpS : p ∉ o.toTowerOrigin.S B` using `fun h => hnS ((o.toTowerOrigin.S_iff B p).1 h)`. Rewrite `hnef` using `[o.toTowerOrigin.j_eq]`. Conclude with `GlobalTheory.T.hodge_cpt_global_nef_bound E H D Xo Yl (fun p W hp hW i => ⟨((hloc p W hp hW).2 i).1, ((hloc p W hp hW).2 i).2.1⟩) l c hg Y hdom hp hq (o.toTowerOrigin.S B) (T.M B a) (o.toTowerOrigin.Or B a).𝔐 (o.toTowerOrigin.Or B a).Fl (o.toTowerOrigin.Or B a).e (o.toTowerOrigin …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem m2_of_good_tower : Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : RootTower (CMType H) (D.p + D.q)) (o : GoodOrigin Y T) (II : IntersectionSystem), IsGlobal Xo l c Y → IsFullIntersectionSystem II → 1 ≤ D.p → 1 ≤ D.q → T.M2 := by
   intro _ E _ _ _ _ H D Xo l c Y _ T o II hglob _ hp hq

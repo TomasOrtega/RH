@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n hF C _ r r' h h' hc h0`. Establish `key : ∀ s, (r s).mat = (r' s).mat → r s = r' s` using `fun s hs => SemidirectProduct.ext (Units.ext hs) ((h s).trans (h' s).symm)`. Use `MonoidHom.ext fun s => ?_` and prove the remaining obligations. Break down `Int.units_eq_one_or (F.del s) with hs | hs` into its components or cases. Conclude with `key s (h0 ⟨s, hs⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hm : s * F.c ∈ F.del.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, hs, hF.del_c]`. Simplify using the standard rewrite rules. Establish `e` using `key _ (h0 ⟨s * F.c, hm⟩)`. Rewrite `e` using `[map_mul, map_mul, key _ hc]`.
-
-Conclude with `mul_right_cancel e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.pr_ext :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (C : Type) [CommRing C] (r r' : F.Γ →* GG n C), (∀ s, (r s).right = F.del s) → (∀ s, (r' s).right = F.del s) → (r F.c).mat = (r' F.c).mat → (∀ s : F.G0, (r s).mat = (r' s).mat) → r = r' := by

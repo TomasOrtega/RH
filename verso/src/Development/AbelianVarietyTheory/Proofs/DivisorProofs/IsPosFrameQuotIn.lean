@@ -51,24 +51,22 @@ def chartSet : Set (V n) := (A.e i).target ∩ (A.e i).symm ⁻¹' T.U a
 def gIn (v : V n) : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ := T.g a b ((A.e i).symm v)
 
 /- English proof (translation)
-The claim follows from `(A.e i).isOpen_inter_preimage_symm (T.isOpen a)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_chartSet : IsOpen (chartSet T a i) := (A.e i).isOpen_inter_preimage_symm (T.isOpen a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_chartSet T a i, fun p q => (T.smooth a).2.1 p q i, fun _ hv => (T.posDef a _ hv.2).2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPosFrame_midIn : IsPosFrame (chartSet T a i) (midIn T a i) :=
   ⟨isOpen_chartSet T a i, fun p q => (T.smooth a).2.1 p q i, fun _ hv => (T.posDef a _ hv.2).2.1⟩
 
 /- English proof (translation)
-Establish `hs : chartSet T a i ∩ chartSet T b i = (A.e i).target ∩ (A.e i).symm ⁻¹' (T.U a ∩ T.U b)`. Use extensionality with `w`. Simplify using `only [chartSet, mem_inter_iff, mem_preimage]`. The claim follows by propositional logic. Establish `ho : IsOpen (chartSet T a i ∩ chartSet T b i)` using `(isOpen_chartSet T a i).inter (isOpen_chartSet T b i)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-Establish `hd : ∀ p q, DifferentiableOn ℂ (fun w => gIn T a b i w p q) (chartSet T a i ∩ chartSet T b i)`. Introduce `p q`. Rewrite using `[hs]`. Conclude with `T.holo a b p q i`. Use `⟨fun p q => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ContDiffOn ℂ ∞ (fun w => gIn T a b i w p q) (chartSet T a i ∩ chartSet T b i)` using `ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ _ ho (hd p q)`. Conclude with `(h1.restrict_scalars ℝ).contDiffAt (ho.mem_nhds hv)`. Use `filter_upwards [ho.mem_nhds hv] with w hw η`. Use extensionality with `p q`. Rewrite using `[mdbar_apply, dbar_eq_zero ((hd p q).differentiableAt (ho.mem_nhds hw))]`.
-
-Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem holo_gIn {v : V n} (hv : v ∈ chartSet T a i ∩ chartSet T b i) :
     MContDiffAt ∞ (gIn T a b i) v ∧ ∀ᶠ w in 𝓝 v, ∀ η, mdbar (gIn T a b i) w η = 0 := by
@@ -87,7 +85,7 @@ theorem holo_gIn {v : V n} (hv : v ∈ chartSet T a i ∩ chartSet T b i) :
   rfl
 
 /- English proof (translation)
-Establish `ho : IsOpen (chartSet T a i ∩ chartSet T b i)` using `(isOpen_chartSet T a i).inter (isOpen_chartSet T b i)`. Use `filter_upwards [ho.mem_nhds hv] with w hw`. Establish `h` using `T.trans a b _ ⟨hw.1.2, hw.2.2⟩`. Conclude with `⟨hw, h.1, h.2.1, h.2.2, T.tri a b _ ⟨hw.1.2, hw.2.2⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem trans_eventually {v : V n} (hv : v ∈ chartSet T a i ∩ chartSet T b i) :
     ∀ᶠ w in 𝓝 v, w ∈ chartSet T a i ∩ chartSet T b i ∧

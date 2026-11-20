@@ -7,67 +7,61 @@ open GlobalTheory.Doubling (absE)
 open PositivityTheory.Mix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hB hH hX hX₁ u hux huι m m' t hmx hmy hmι hm'x hm'y hm'ι`. Take `⟨ε, hP⟩` from `planeOK_herm hB hH hX`. Take `⟨cc, ee, ce, herm, xx, yy, xy, ix, iy, span, nd⟩` from `hP`. Use `set vx := incV F H.x with hvx`. Use `set vy := incV F H.y with hvy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set ιM := incM F H.ι with hιM`. Use `set c := (cA σ).toRingHom with hc`. Use `set J := incM F X.J with hJ`. Establish `hact : ∀ (g h : UA σ X.J) (v : Fin n → AE F E), mat (g * h) *ᵥ v = mat g *ᵥ (mat h *ᵥ v)`. Introduce `g h v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Establish `hinv : ∀ (g : UA σ X.J) (v : Fin n → AE F E), mat g⁻¹ *ᵥ (mat g *ᵥ v) = v`. Introduce `g v`. Rewrite using `[← hact, inv_mul_cancel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Matrix.one_mulVec v`. Establish `hinv' : ∀ (g : UA σ X.J) (v w : Fin n → AE F E), mat g *ᵥ w = v → mat g⁻¹ *ᵥ v = w`. Introduce `g v w h`. Rewrite using `[← h, hinv]`. Establish `h2 : IsUnit (2 : AE F E)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(IsUnit.mk0 (2 : F) two_ne_zero).map (algebraMap F (AE F E))` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Use `choose a ha using huι`. Take `⟨s₀, r₀, z₀, huy⟩` from `span (mat u *ᵥ vy)`. Establish `hpres : ∀ v w, bf c J (mat u *ᵥ v) (mat u *ᵥ w) = bf c J v w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v w`. Establish `hU : (mat u)ᵀ * J * (mat u).map c = J` using `u.2`. Establish `e1 : (fun i => c ((mat u *ᵥ w) i)) = (mat u).map c *ᵥ (fun i => c (w i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec c (mat u) w i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `PositivityTheory.Mix.bf`. Rewrite using `[e1, ← Matrix.vecMul_transpose (mat u) v, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hU]`. Establish `hsym : ∀ v w, c (bf c J v w) = ε * bf c J w v`. Introduce `v w`. Simplify using `only [PositivityTheory.Mix.bf, dotProduct, Matrix.mulVec, map_sum, map_mul, cc, herm, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hyx : bf c J vy vx = ε`. Establish `h` using `hsym vx vy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[xy, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlin : ∀ (p q : AE F E) (v₁ v₂ v₃ w : Fin n → AE F E), bf c J (p • v₁ + v₂ + q • v₃) w = p * bf c J v₁ w + bf c J v₂ w + q * bf c J v₃ w`. Introduce `p q v₁ v₂ v₃ w`. Simplify using `only [PositivityTheory.Mix.bf, add_dotProduct, smul_dotProduct, smul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hr : r₀ = 1`. Establish `h1` using `hpres vy vx`. Rewrite `h1` using `[hux, huy, hlin, xx, ix, hyx]`. Establish `h1' : r₀ * ε = ε` using `by simpa using h1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hUix : mat u⁻¹ *ᵥ vx = vx` using `hinv' u vx vx hux`. Establish `hUiι : ∀ z, mat u⁻¹ *ᵥ (ιM *ᵥ z) = ιM *ᵥ z - a z • vx`. Introduce `z`. Apply `hinv'` to reduce the goal to its premises. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, ha, hux]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `hUiy : mat u⁻¹ *ᵥ vy = vy - s₀ • vx - ιM *ᵥ z₀ + a z₀ • vx`. Apply `hinv'` to reduce the goal to its premises. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sub, Matrix.mulVec_smul, huy, hr, ha, hux, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set Am := mat (u⁻¹ * u⁻¹ * (m * u * m⁻¹)) with hAm`. Establish `hAact : ∀ v, Am *ᵥ v = mat u⁻¹ *ᵥ (mat u⁻¹ *ᵥ (mat m *ᵥ (mat u *ᵥ (mat m⁻¹ *ᵥ v))))`. Introduce `v`. Rewrite using `[hAm]`. Simplify using `only [hact]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hAx : Am *ᵥ vx = vx`. Establish `h : Am *ᵥ (mat m *ᵥ vx) = mat m *ᵥ vx`. Rewrite using `[hAact, hinv m, hux, hmx, Matrix.mulVec_smul, Matrix.mulVec_smul, hUix, hUix]`. Rewrite `h` using `[hmx, Matrix.mulVec_smul]`. Conclude with `h2.smul_left_cancel.1 h`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAι : ∀ z, Am *ᵥ (ιM *ᵥ z) = ιM *ᵥ z`. Introduce `z`. Establish `h : Am *ᵥ (mat m *ᵥ (ιM *ᵥ z)) = ιM *ᵥ z`. Rewrite using `[hAact, hinv m, ha, Matrix.mulVec_add, hmι, Matrix.mulVec_smul, hmx]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sub, Matrix.mulVec_smul, hUiι, hUix]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hmι]`. Then use the resulting hypothesis. Use `set c₀ := 2 * s₀ - a z₀ with hc₀`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hAy : Am *ᵥ vy = vy + c₀ • vx`. Establish `e : Am *ᵥ vy = (2 : AE F E) • (mat u⁻¹ *ᵥ (mat u⁻¹ *ᵥ (mat m *ᵥ (mat u *ᵥ vy))))` using `by conv_lhs => rw [← hmy, Matrix.mulVec_smul, hAact, hinv m]`. Establish `e2 : (2 : AE F E) • (mat m *ᵥ (mat u *ᵥ vy)) = (2 * s₀ * 2) • vx + (2 : AE F E) • (ιM *ᵥ z₀) + vy`. Simplify using `only [huy, hr, Matrix.mulVec_add, Matrix.mulVec_smul, hmx, hmι, one_smul, smul_add, hmy]`. Use function extensionality and compare the values at `i`.
+Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Matrix.mulVec_smul, ← Matrix.mulVec_smul, e2]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sub, Matrix.mulVec_smul, hUiι, hUix, hUiy]`. Rewrite using `[hc₀]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `ht0 : t = 0`. Substitute `ht0` using the available equality.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hy0 : vy = 0` using `by simpa using hm'y.symm`. Establish `h01 : (0 : AE F E) = 1`. Rewrite using `[← xy, hy0]`. Unfold `PositivityTheory.Mix.bf`. Simplify using `only [Pi.zero_apply, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show (fun _ : Fin n => (0 : AE F E)) = 0 from rfl, Matrix.mulVec_zero, dotProduct_zero]`. Use `haveI : Subsingleton (AE F E) := subsingleton_of_zero_eq_one h01`. Apply `matH_inj (σ := σ) X.J` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `Subsingleton.elim _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `ht : IsUnit (t : AE F E)`. Use `(IsUnit.mk0 (t : F) (Nat.cast_ne_zero.2 ht0)).map (algebraMap F (AE F E))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hpow : ∀ k : ℕ, Am ^ k *ᵥ vx = vx ∧ (∀ w, Am ^ k *ᵥ (ιM *ᵥ w) = ιM *ᵥ w) ∧ Am ^ k *ᵥ vy = vy + ((k : AE F E) * c₀) • vx`. Introduce `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Take `⟨h1, h2', h3⟩` from `ih`. Use `⟨?_, fun w => ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, hAx, h1]`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, hAι, h2']`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, hAy, Matrix.mulVec_add, Matrix.mulVec_smul, h3, h1]`. Use `push_cast`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hext : ∀ P Q : Matrix (Fin n) (Fin n) (AE F E), (∀ v, P *ᵥ v = Q *ᵥ v) → P = Q`. Introduce `P Q h`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `using congrFun (h (Pi.single j 1)) i`. Establish `key : mat m' * Am = Am ^ (t ^ 2) * mat m'`. Apply `hext` to reduce the goal to its premises. Introduce `v`. Take `⟨p, q, w, hv⟩` from `span v`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Establish `ex : (mat m' * Am) *ᵥ vx = (Am ^ (t ^ 2) * mat m') *ᵥ vx`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hAx, hm'x, Matrix.mulVec_smul, (hpow _).1]`. Establish `eι : (mat m' * Am) *ᵥ (ιM *ᵥ w) = (Am ^ (t ^ 2) * mat m') *ᵥ (ιM *ᵥ w)`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hAι, hm'ι, (hpow _).2.1]`. Establish `ey : (mat m' * Am) *ᵥ vy = (Am ^ (t ^ 2) * mat m') *ᵥ vy`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hL : (t : AE F E) • ((mat m' * Am) *ᵥ vy) = vy + ((t : AE F E) * t * c₀) • vx`. Rewrite using `[← Matrix.mulVec_mulVec, hAy, Matrix.mulVec_add, Matrix.mulVec_smul, hm'x, smul_add, hm'y]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hR : (t : AE F E) • ((Am ^ (t ^ 2) * mat m') *ᵥ vy) = vy + ((t : AE F E) * t * c₀) • vx`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul, hm'y, (hpow _).2.2]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `ht.smul_left_cancel.1 (hL.trans hR.symm)`. Rewrite using `[hv]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, ex, eι, ey]`. Rewrite using `[mul_inv_eq_iff_eq_mul]`. Apply `matH_inj (σ := σ) X.J` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_pow]`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Mix.unitary_fixing_isotropic_complement : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (X : Spc F E n)
     (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ r s r₁ s₁ : ℕ), B.IsGood σ → H.IsAdapted σ B X X₁ j₀ j₁ → X.IsHerm σ B r s → X₁.IsHerm σ B r₁ s₁ →

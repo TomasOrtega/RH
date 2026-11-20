@@ -23,11 +23,11 @@ namespace GlobalTheory.FockProdCoef
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Use `GlobalTheory.ThetaSchurBdd.thetaFunction_eq_zero_of_meanSquare_zero hψ hc hf ?_` and prove the remaining obligations. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X f f = ((nrm2 m X f : ℝ) : ℂ)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh nrm2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Use `show f w * (starRingEnd ℂ) (f w) = _`. Rewrite using `[Complex.mul_conj']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Conclude with `h` after adjusting the coercions.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipTh_self_ne_zero {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {m : Measure (WO V W)} {X : Set (WO V W)} (hc : IsCovolOne (ratL W V) m X) {f : WO V W → ℂ}
@@ -48,17 +48,15 @@ theorem ipTh_self_ne_zero {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : 
   exact_mod_cast h
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Introduce `g hg h1'`. Establish `: g = 1` using `GlobalTheory.PointAtPlace.eq_one_of_mem V g ((GlobalTheory.SmoothForms.RealPts.glue θ hθ V).1 g fun τ => h1' τ (Finset.notMem_empty τ)) hg`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Consider the case `insert τ A hτ ih`. Introduce `g hg h1'`. Establish `hu` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`. Establish `ha` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hu`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := atTau θ V τ (Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) g) with ha_def`. Establish `hinv : ∀ φ, Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram φ a⁻¹ * Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram φ a = 1` using `fun φ => by rw [← GlobalTheory.PointAtPlaceHom.infMat_mul, inv_mul_cancel, GlobalTheory.PointAtPlaceHom.infMat_one]`. Establish `e1 : Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) (a⁻¹ * g) = 1`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, ← ha.2.1]`. Conclude with `hinv _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : ∀ τ', τ' ≠ τ → Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ') (a⁻¹ * g) = Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ') g` using `fun τ' h => by`. Use `hinv (θ τ')` as an intermediate fact. Rewrite `this` using `[ha.2.2 τ' h, Matrix.mul_one]`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, this, Matrix.one_mul]`. Establish `hg' : p (a⁻¹ * g)` using `ih (fun τ' h k hk => hat τ' (Finset.mem_insert_of_mem h) k hk) _ (mul_mem (inv_mem ha.1) hg) fun τ' h => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : τ' = τ`. Rewrite using `[e, e1]`. Rewrite using `[e2 τ' e]`. Conclude with `h1' τ' fun h' => (Finset.mem_insert.1 h').elim e h`. Use `hmul _ _ (hat τ (Finset.mem_insert_self τ A) _ hu) hg'` as an intermediate fact.
-
-Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ginf_induction {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (p : GA D V → Prop) (h1 : p 1)
     (hmul : ∀ a b, p a → p b → p (a * b)) (A : Finset D.what₂.Tau)
@@ -103,9 +101,9 @@ variable {ι X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {P : (X → ℂ)
 include hadd hsm hA hc Aadd Asm
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial k c`. Rewrite using `[GlobalTheory.FockIndep.pure_monomial, GlobalTheory.FockIndep.pure_monomial, Asm _ _ (opPow A k g) (GlobalTheory.FockIndep.foldr_mem hA hg _)]`. Use `congr 1`. Unfold `opPow`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Establish `e : A v g = [v].foldr (fun i g => A i g) g` using `rfl`. Rewrite using `[e, ← List.foldr_append]`. Conclude with `GlobalTheory.FockIndep.foldr_perm hA hc hg (List.perm_append_singleton _ _)`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, hp, hq, Aadd _ _ _ (GlobalTheory.FockIndep.pure_mem hadd hsm hA hg _) (GlobalTheory.FockIndep.pure_mem hadd hsm hA hg _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_comm {g : X → ℂ} (hg : P g) (v : ι) (Q : MvPolynomial ι ℂ) :
     pureTensorL A (A v g) Q = A v (pureTensorL A g Q) := by
@@ -123,9 +121,9 @@ theorem pure_comm {g : X → ℂ} (hg : P g) (v : ι) (Q : MvPolynomial ι ℂ) 
       (GlobalTheory.FockIndep.pure_mem hadd hsm hA hg _)]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on generalizing R with`. Consider the case `C a`. Rewrite using `[MvPolynomial.C_mul', map_smul, ← MvPolynomial.monomial_zero', GlobalTheory.FockIndep.pure_monomial]`. Simplify using `[opPow]`. Consider the case `add p q hp hq => rw [add_mul, map_add, hp, hq, map_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Establish `hR` using `GlobalTheory.FockIndep.pure_mem hadd hsm hA hf R`. Rewrite using `[mul_assoc, hp, GlobalTheory.FockIndep.pure_X_mul hadd hsm hA hc Aadd Asm hf, pure_comm hadd hsm hA hc Aadd Asm hR, mul_comm p, GlobalTheory.FockIndep.pure_X_mul hadd hsm hA hc Aadd Asm hR]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_mul {f : X → ℂ} (hf : P f) (Q R : MvPolynomial ι ℂ) :
     pureTensorL A f (Q * R) = pureTensorL A (pureTensorL A f R) Q := by
@@ -142,9 +140,9 @@ theorem pure_mul {f : X → ℂ} (hf : P f) (Q R : MvPolynomial ι ℂ) :
 omit hadd hsm Aadd Asm in
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial k c`. Rewrite using `[MvPolynomial.rename_monomial, GlobalTheory.FockIndep.pure_monomial, GlobalTheory.FockIndep.pure_monomial]`. Use `congr 1`. Unfold `opPow`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[← List.foldr_map (f := e) (g := fun i g => A i g)]`. Use `(GlobalTheory.FockIndep.foldr_perm hA hc hf ?_).symm` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.map_coe, Multiset.coe_toList, Multiset.coe_toList, Finsupp.toMultiset_map]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem pure_rename {κ : Type} {f : X → ℂ} (hf : P f) (e : κ → ι) (Q : MvPolynomial κ ℂ) :
     pureTensorL A f (MvPolynomial.rename e Q) = pureTensorL (fun i => A (e i)) f Q := by
@@ -168,9 +166,9 @@ namespace GlobalTheory.FockProdCoef
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`. Establish `ha` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hu`. Use `set a := atTau θ V τ (Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) g)`. Establish `hinv : ∀ φ, Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram φ a⁻¹ * Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram φ a = 1` using `fun φ => by rw [← GlobalTheory.PointAtPlaceHom.infMat_mul, inv_mul_cancel, GlobalTheory.PointAtPlaceHom.infMat_one]`. Use `⟨ha.1, ?_, fun τ' h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, ← ha.2.1]`. Conclude with `hinv _`. Use `hinv (θ τ')` as an intermediate fact. Rewrite `this` using `[ha.2.2 τ' h, Matrix.mul_one]`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, this, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem peel {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (g : GA D V) (τ : D.what₂.Tau) :
     atTau θ V τ (Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) g) ∈ GinfC V ∧
@@ -195,7 +193,7 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D} {S S' : 
   (M : DSModel V S) (M' : DSModel W S')
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ h h' => GlobalTheory.WeilVacMove.isTheta_add h h', fun a _ h => GlobalTheory.WeilVacMove.isTheta_smul a h, fun i _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ i.1 _ _ h, fun i j _ h => GlobalTheory.FockIndep.aPlus_comm' (hψ := hψ) (hθ := hθ) (hS := fun τ => GlobalTheor …`.
+Supply the required witnesses or components.
 -/
 theorem ops_laws (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) :
     let A := aPlusAll (heisO ψ V W) θ (fun τ => cplxO (cart M τ) (cart M' τ)) (onb M) (onb M')
@@ -214,7 +212,7 @@ theorem ops_laws (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) :
     fun i a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ i.1 _ _ a h⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -, -, -⟩` from `ops_laws M M' hψ hθ`. Conclude with `GlobalTheory.FockIndep.pure_mem h1 h2 h3 hf Q`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ptOf_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f)
     (Q : PolF D W.rank V.rank) : IsThetaFunO ψ V W (ptOf ψ θ M M' f Q) := by
@@ -222,7 +220,7 @@ theorem ptOf_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f : WO V W �
   exact GlobalTheory.FockIndep.pure_mem h1 h2 h3 hf Q
 
 /- English proof (translation)
-Establish `: glue P = 1`. Unfold `glue`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [hP τ, map_one]`. Rewrite using `[this]`. Conclude with `GlobalTheory.FockIndep.pure_one f`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptOf_glue_one {f : WO V W → ℂ} (P : D.what₂.Tau → LPol W.rank V.rank) (hP : ∀ τ, P τ = 1) :
     ptOf ψ θ M M' f (glue P) = f := by
@@ -233,9 +231,9 @@ theorem ptOf_glue_one {f : WO V W → ℂ} (P : D.what₂.Tau → LPol W.rank V.
   exact GlobalTheory.FockIndep.pure_one f
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `ops_laws M M' hψ hθ`. Establish `hg1 : glue P = MvPolynomial.rename (fun s => (τ, s)) (P τ) * ∏ τ' ∈ Finset.univ.erase τ, MvPolynomial.rename (fun s => (τ', s)) (P τ')` using `(Finset.mul_prod_erase _ (fun τ' => MvPolynomial.rename (fun s => (τ', s)) (P τ')) (Finset.mem_univ τ)).symm`. Establish `hg2 : glue (Function.update P τ 1) = ∏ τ' ∈ Finset.univ.erase τ, MvPolynomial.rename (fun s => (τ', s)) (P τ')`. Unfold `glue`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), Function.update_self, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun τ' h => by rw [Function.update_of_ne (Finset.ne_of_mem_erase h)]`. Rewrite using `[hg1, hg2]`. Unfold `ptOf pureTensorO`. Rewrite using `[pure_mul h1 h2 h3 h4 h5 h6 hf, pure_rename h3 h4 (GlobalTheory.FockIndep.pure_mem h1 h2 h3 hf _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptOf_glue [DecidableEq D.what₂.Tau] (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f)
     (P : D.what₂.Tau → LPol W.rank V.rank) (τ : D.what₂.Tau) :
@@ -262,37 +260,33 @@ end GlobalTheory.FockProdCoef
 namespace GlobalTheory.FockProdCoef
 
 /- English proof (translation)
-Introduce `D V W S S' M M' θ ψ χS χT ω hθ hω m X hcov f hf`. Establish `hψ` using `hω.std`. Establish `hN` using `ipTh_self_ne_zero hψ hcov hf.theta hf.ne`. Use `⟨hN, ?_⟩` and prove the remaining obligations. Establish `comm` using `GlobalTheory.T.fockOperators_distinct_real_places_commute_theta D V W S S' M M' θ ψ χS χT ω hθ hω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `fac1` using `GlobalTheory.T.fockCoefficient_realPlace_two_vacua D V W S S' M M' θ ψ χS χT ω hθ hω m X hcov`. Simplify using `only at comm fac1`. Establish `key : ∀ A : Finset D.what₂.Tau, ∀ P : D.what₂.Tau → LPol W.rank V.rank, (∀ τ ∉ A, P τ = 1) → (∀ τ ∉ A, IsFockVacAt (heisO ψ V W) θ τ (cplxO (cart M τ) (cart M' τ)) (ptOf ψ θ M M' f (glue P))) ∧ ∀ g ∈ GinfC V, (∀ τ ∉ A, Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gr …`. Introduce `A`. Proceed by induction on `A using Finset.induction_on with`.
+Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty`. Introduce `P hP`. Establish `e : ptOf ψ θ M M' f (glue P) = f` using `ptOf_glue_one M M' P fun τ => hP τ (Finset.notMem_empty τ)`. Use `⟨fun τ _ => by rw [e]; exact hf.vac τ, fun g hg hg1 => ?_⟩` and prove the remaining obligations. Establish `: g = 1` using `ginf_induction hθ V (fun x => x = 1) rfl (fun a b ha hb => by rw [ha, hb, one_mul]) ∅ (fun τ h => (Finset.notMem_empty τ h).elim) g hg hg1`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, this, Finset.prod_empty, mul_one, ← Prod.one_eq_mk, map_one]`. Both sides reduce to the same expression. Consider the case `insert τ A hτ ih`. Introduce `P hP`. Establish `hP' : ∀ τ' ∉ A, Function.update P τ 1 τ' = 1` using `fun τ' h => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Conclude with `Function.update_self _ _ _`. Rewrite using `[Function.update_of_ne e]`. Conclude with `hP τ' fun h' => (Finset.mem_insert.1 h').elim e h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ihv, ihi⟩` from `ih _ hP'`. Establish `hG` using `ptOf_theta M M' hψ hθ hf.theta (glue (Function.update P τ 1))`. Rewrite using `[ptOf_glue M M' hψ hθ hf.theta P τ]`. Generalize the expression as in `ptOf ψ θ M M' f (glue (Function.update P τ 1)) = G at hG ihv ihi`. Use `⟨fun τ'' h'' => ?_, fun g hg hg1 => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : τ'' ≠ τ` using `fun e => h'' (e ▸ Finset.mem_insert_self _ _)`. Conclude with `(comm τ'' τ hne G hG).2.1 (P τ) (ihv τ'' fun h => h'' (Finset.mem_insert_of_mem h))`. Establish `pmov : ∀ h ∈ GinfC V, (∀ τ' ∉ A, Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ') h = 1) → ∀ F, IsThetaFunO ψ V W F → (IsFockVacAt (heisO ψ V W) θ τ (cplxO (cart M τ) (cart M' τ)) F → IsFockVacAt (heisO ψ V W) θ τ (cplxO (cart M τ) (cart M' τ)) (ω (h, 1) F)) …`. Use `ginf_induction hθ V _ ?_ ?_ A ?_` and prove the remaining obligations. Introduce `F _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Prod.one_eq_mk, map_one]`. Conclude with `⟨fun h => h, fun _ => rfl⟩`. Introduce `a b ha hb F hF`. Establish `e : ω (a * b, 1) = ω (a, 1) * ω (b, 1)` using `by rw [← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hbF` using `hω.om_pres (b, 1) F hF`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => ?_, fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[e, Module.End.mul_apply]`. Conclude with `(ha _ hbF).1 ((hb F hF).1 h)`. Rewrite using `[e, Module.End.mul_apply, (hb F hF).2 Q, (ha _ hbF).2 Q, Module.End.mul_apply]`. Introduce `τ' h' k hk F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : τ ≠ τ'` using `fun e => hτ (e ▸ h')`. Conclude with `(comm τ τ' hne F hF).2.2.2 k hk`. Take `⟨pa, pe1, pe2⟩` from `peel hθ V g τ`. Establish `hu` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`. Use `set a := atTau θ V τ (Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) g) with ha_def`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg' : a⁻¹ * g ∈ GinfC V` using `mul_mem (inv_mem pa) hg`. Establish `hg'1 : ∀ τ' ∉ A, Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ') (a⁻¹ * g) = 1` using `fun τ' h => by`. Distinguish the cases in `e : τ' = τ`. Rewrite using `[e, pe1]`. Rewrite using `[pe2 τ' e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg1 τ' fun h' => (Finset.mem_insert.1 h').elim e h`. Establish `eg : ω (g, 1) = ω (a, 1) * ω (a⁻¹ * g, 1)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul, mul_inv_cancel_left]`. Take `⟨mv, mc⟩` from `pmov _ hg' hg'1 G hG`. Establish `hvG` using `ihv τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `hω.om_pres (a⁻¹ * g, 1) G hG`. Establish `k1` using `fac1 τ f (ω (a⁻¹ * g, 1) G) G (by`. Introduce `x hx`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hx`. Break down `hx with rfl | rfl | rfl` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `exacts [⟨hf.theta, hf.vac τ⟩, ⟨hF, mv hvG⟩, ⟨hG, hvG⟩]) _ hu (P τ) (P τ)`. Establish `k2` using `ihi _ hg' hg'1`. Establish `k3 : ∀ τ' ∈ A, GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (atTau θ V τ' (Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ') (a⁻¹ * g)), 1) (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ' (cart M τ') (cart M …` using `fun τ' h => by`. Establish `hne : τ' ≠ τ` using `fun e => hτ (e ▸ h)`. Rewrite using `[pe2 τ' hne, Function.update_of_ne hne]`.
-
-Rewrite `k2` using `[Finset.prod_congr rfl k3]`. Rewrite `k1` using `[k2]`. Rewrite using `[eg, Module.End.mul_apply, mc (P τ), Finset.prod_insert hτ]`. Apply `mul_right_cancel₀ hN` to reduce the goal to its premises. Rewrite using `[k1]`.
-
-Clear the denominators using the available nonvanishing facts. Conclude with `fun P g hg => (key Finset.univ P (fun τ h => (h (Finset.mem_univ τ)).elim)).2 g hg fun τ h => (h (Finset.mem_univ τ)).elim`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem ipTh_ptOf_glue : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : (GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))), IsInfFam θ → IsWeilDatumO ψ V W χS χT ω → ∀ (m : Measure (WO V W)) (X : Set (WO V W)), IsCovolOne (ratL W V) m X → ∀ f, IsVacVec ψ θ M M' f → GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X f f ≠ 0 ∧ ∀ (P : D.what₂.Tau → LPol W.rank V.rank), ∀ g ∈ GinfC V, GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (g, 1) (ptOf ψ θ M M' f (glue P))) (ptOf ψ θ M M' f (glue P)) = GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X f f * ∏ τ, GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (atTau θ V τ (Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) g), 1) (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ (cart M τ) (cart M' τ) (onb M τ) (onb M' τ) f (P τ))) (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ (cart M τ) (cart M' τ) (onb M τ) (onb M' τ) f (P τ)) / GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X f f := by
   intro D V W S S' M M' θ ψ χS χT ω hθ hω m X hcov f hf

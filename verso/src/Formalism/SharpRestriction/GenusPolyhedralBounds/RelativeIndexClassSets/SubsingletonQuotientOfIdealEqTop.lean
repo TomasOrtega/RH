@@ -14,9 +14,9 @@ section Lem
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Take `⟨hpa, hsc, -⟩` from `h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hdom⟩` from `hsc`. Take `⟨h1, h2, -⟩` from `hdom`. Use `⟨hpa.1, ?_⟩` and prove the remaining obligations. Establish `h3 : (1000 : ℝ) ^ 20 ≤ H.C1 ^ 20` using `pow_le_pow_left₀ (by norm_num) h1 20`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : Zb D large₂ = (D.R.f : ℝ) * D.R.r * large₂.sc.x ^ large₂.sc.eps` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hypC_large {large₂ : SizeData₂ D} {X : PJ D B P j} {H : KHyp} {C2 A2 CR CT : ℝ} {S : Scal B}
     {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
@@ -31,9 +31,9 @@ theorem hypC_large {large₂ : SizeData₂ D} {X : PJ D B P j} {H : KHyp} {C2 A2
   linarith
 
 /- English proof (translation)
-Introduce `h`. Take `⟨hx, hZ⟩` from `hypC_large h`. Establish `hx1 : 1 ≤ large₂.sc.x` using `large₂.sc.one_lt_alt.le`. Establish `he : large₂.sc.eps ≤ 1` using `by linarith [large₂.sc.eps_lt]`. Establish `hxe : large₂.sc.x ^ large₂.sc.eps ≤ large₂.sc.x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfr0 : 0 ≤ (D.R.f : ℝ) * D.R.r` using `by positivity`. Establish `: (D.R.f : ℝ) * D.R.r * large₂.sc.x ^ large₂.sc.eps ≤ 72 * 72`. Combine the equalities or inequalities in the displayed calculation. Evaluate the numerical expressions using `at hZ`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Evaluate the numerical expressions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -56,7 +56,7 @@ theorem not_hypC_of_le {large₂ : SizeData₂ D} {X : PJ D B P j} {H : KHyp} {C
   linarith
 
 /- English proof (translation)
-Apply `not_hypC_of_le` to reduce the goal to its premises. Establish `h1 : D.R.f = 8` using `by rw [hR]; rfl`. Establish `h2 : D.R.r = 9` using `by rw [hR]; rfl`. Rewrite using `[h1, h2]`. Evaluate the numerical expressions.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem not_hypC_Rt (s : ℕ) (hR : D.R = Formalism.MainNotions.Inhab.Rt s) {large₂ : SizeData₂ D} {X : PJ D B P j} {H : KHyp}
     {C2 A2 CR CT : ℝ} {S : Scal B} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ}
@@ -67,13 +67,13 @@ theorem not_hypC_Rt (s : ℕ) (hR : D.R = Formalism.MainNotions.Inhab.Rt s) {lar
   rw [h1, h2]; norm_num
 
 /- English proof (translation)
-Establish `hT' : (44 * (Dm : ℝ) ^ 2) < T` using `by exact_mod_cast hT`. Establish `hT0 : (0 : ℝ) < T` using `lt_of_le_of_lt (by positivity) hT'`. Establish `hc : ((rq + R * del + rz : ℕ) : ℝ) = rq + R * del + rz` using `by push_cast; ring`. Establish `hcount' : (d : ℝ) ≤ rq + R * del + rz` using `by rw [← hc]; exact_mod_cast hcount`. Establish `hsum : (rq : ℝ) + rz ≤ 44 * (Dm : ℝ) ^ 2 / T * d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 22 * (Dm : ℝ) ^ 2 * d / T + 22 * (Dm : ℝ) ^ 2 * d / T = 44 * (Dm : ℝ) ^ 2 / T * d` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun hd => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hdel`. Establish `h0 : del = 0` using `by omega`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hd' : (1 : ℝ) ≤ d` using `by exact_mod_cast hd`. Establish `hlt : 44 * (Dm : ℝ) ^ 2 / T < 1` using `by rw [div_lt_one hT0]; exact hT'`. Establish `: 44 * (Dm : ℝ) ^ 2 / T * d < d` using `by nlinarith`. Rewrite `hcount'` using `[h0]`. Simplify using `at hcount'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (1 - 44 * (Dm : ℝ) ^ 2 / T) * d = d - 44 * (Dm : ℝ) ^ 2 / T * d` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem shares_force (d rq rz del R Dm T : ℕ) (hcount : d ≤ rq + R * del + rz)
     (hrz : (rz : ℝ) ≤ 22 * (Dm : ℝ) ^ 2 * d / T) (hrq : (rq : ℝ) ≤ 22 * (Dm : ℝ) ^ 2 * d / T)
@@ -100,11 +100,11 @@ theorem shares_force (d rq rz del R Dm T : ℕ) (hcount : d ≤ rq + R * del + r
     linarith
 
 /- English proof (translation)
-Establish `hsp : Submodule.span B.KO ((B.Mlat j ka : Set (B.Cusp j ka))) = ⊤` using `hLat.span_eq_top`. Establish `hrk : X.rk ka (B.Mlat j ka) = finrank B.KO (B.Cusp j ka)`. Unfold `PJ.rk`. Rewrite using `[hsp, finrank_top]`. Establish `hsup` using `hQ.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq (Submodule.span B.KO (Set.range fun i => ((G.th i : B.Mlat j ka) : B.Cusp j ka))) (WeightFamilies.MggK B CRm T c j ka)`. Rewrite `h1` using `[hsup, finrank_top]`. Establish `h2 : finrank B.KO (Submodule.span B.KO (Set.range fun i => ((G.th i : B.Mlat j ka) : B.Cusp j ka))) ≤ G.rq`. Use `finrank_range_le_card (R := B.KO) (b := fun i => ((G.th i : B.Mlat j ka) : B.Cusp j ka))` as an intermediate fact. Simplify `this` using `[Set.finrank]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hrk]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rk_le_rq_add {large₂ : SizeData₂ D} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData X ka wL wF) {S : Scal B}
     {CRm : ℝ} {T : ℕ} {c Ch Ah : ℝ} (hLat : LatAt B j ka) (hQ : G.TiedQ large₂ S CRm T c Ch Ah) :
@@ -133,9 +133,9 @@ section One
 variable (X) (la : HeightOneSpectrum (𝓞 B.KO))
 
 /- English proof (translation)
-Establish `hinjK : Function.Injective (algebraMap (Op X la N) (Kp X la N))` using `IsFractionRing.injective _ _`. Establish `hinjP : Function.Injective (algebraMap (Pol X la N) (Op X la N))` using `IsLocalization.injective (Op X la N) (Ideal.primeCompl_le_nonZeroDivisors (gI X la N))`. Introduce `h`. Rewrite `h` using `[← map_zero (algebraMap (Op X la N) (Kp X la N))]`. Establish `h1` using `hinjK h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `Tv at h1`. Rewrite `h1` using `[← map_zero (algebraMap (Pol X la N) (Op X la N))]`. Conclude with `MvPolynomial.X_ne_zero p (hinjP h1)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tv_ne_zero {N : ℕ} (p : Idx D j N) : algebraMap (Op X la N) (Kp X la N) (Tv X la N p) ≠ 0 := by
   have hinjK : Function.Injective (algebraMap (Op X la N) (Kp X la N)) := IsFractionRing.injective _ _
@@ -149,11 +149,11 @@ theorem Tv_ne_zero {N : ℕ} (p : Idx D j N) : algebraMap (Op X la N) (Kp X la N
   exact MvPolynomial.X_ne_zero p (hinjP h1)
 
 /- English proof (translation)
-Use `set c : Fin (WeightFamilies.dimY D j + 1) → Kp X la 1 := fun i => algebraMap (Op X la 1) (Kp X la 1) (Tv X la 1 (i, 0)) with hc`. Establish `hsec : ∀ i, sec X la w i = c i • emb X la 1 (X.inc wL (w 0))` using `fun i => by`. Simplify using `only [sec, Fin.sum_univ_one, hc]`. Establish `hc0 : c 0 ≠ 0` using `Tv_ne_zero X la _`. Set `i0 : Fin (WeightFamilies.dimY D j)` to `⟨0, hD⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hci : c i0.succ ≠ 0` using `Tv_ne_zero X la _`. Establish `hs : sec X la w i0.succ = (c i0.succ / c 0) • sec X la w 0`. Rewrite using `[hsec, hsec, smul_smul, div_mul_cancel₀ _ hc0]`. Establish `hfr : (sfr X la w i0.succ : Lw X la w) = algebraMap (Kp X la 1) (Lw X la w) (c i0.succ / c 0)`. Rewrite using `[coe_sfr, hs, map_smul, frac_apply, pow_one, section_mul_inverse_eq_one, Algebra.algebraMap_eq_smul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (sfr X la w i0.succ)`. Establish `: sfr X la w i0.succ = algebraMap (Kp X la 1) ↥(Frac0 X la w) (c i0.succ / c 0)` using `Subtype.ext hfr`. Rewrite using `[this]`. Conclude with `(IsUnit.mk0 _ (div_ne_zero hci hc0)).map _`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (sfr_succ_mem_Jid X la w i0) hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jid_top_one (w : Fin 1 → B.Cusp j wL) (hD : 0 < WeightFamilies.dimY D j) : Jid X la w = ⊤ := by
   set c : Fin (WeightFamilies.dimY D j + 1) → Kp X la 1 := fun i => algebraMap (Op X la 1) (Kp X la 1) (Tv X la 1 (i, 0)) with hc
@@ -179,13 +179,13 @@ section Sub
 variable {la : HeightOneSpectrum (𝓞 B.KO)} {N : ℕ} {w : Fin N → B.Cusp j wL}
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.subsingleton_iff.2 h`.
+A detailed English derivation is pending.
 -/
 theorem osK_sub (h : Jid X la w = ⊤) : Subsingleton (OsK X la w) :=
   Ideal.Quotient.subsingleton_iff.2 h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => by induction a using Submodule.Quotient.induction_on with | H x => induction b using Submodule.Quotient.induction_on with | H y => exact (Submodule.Quotient.eq _).2 Submodule.mem_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem quot_top_sub {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] : Subsingleton (M ⧸ (⊤ : Submodule R M)) :=
   ⟨fun a b => by
@@ -195,7 +195,7 @@ theorem quot_top_sub {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] : Subs
       | H y => exact (Submodule.Quotient.eq _).2 Submodule.mem_top⟩
 
 /- English proof (translation)
-Unfold `SectionSheafQuotient`. Rewrite using `[h, Submodule.top_smul]`. Conclude with `quot_top_sub`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_quotient_of_ideal_eq_top (h : Jid X la w = ⊤) (u : WeightFamilies.Wt D j) : Subsingleton (SectionSheafQuotient X la w u) := by
   unfold SectionSheafQuotient
@@ -203,7 +203,7 @@ theorem subsingleton_quotient_of_ideal_eq_top (h : Jid X la w = ⊤) (u : Weight
   exact quot_top_sub
 
 /- English proof (translation)
-Unfold `WK`. Rewrite using `[h, Ideal.top_pow, Submodule.top_smul]`. Conclude with `quot_top_sub`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wK_sub (h : Jid X la w = ⊤) (u : WeightFamilies.Wt D j) (a : ℕ) : Subsingleton (WK X la w u a) := by
   unfold WK
@@ -211,9 +211,7 @@ theorem wK_sub (h : Jid X la w = ⊤) (u : WeightFamilies.Wt D j) (a : ℕ) : Su
   exact quot_top_sub
 
 /- English proof (translation)
-Use `osK_sub h` as an intermediate fact. Use `⟨fun ζ => ?_⟩` and prove the remaining obligations. Establish `h1 : ζ.asIdeal = ⊤` using `(Ideal.eq_top_iff_one _).2 (by`. Rewrite using `[Subsingleton.elim (1 : ↥(As (Op X la G.N) (OsK X la G.w))) 0]`. Conclude with `zero_mem _)`.
-
-Conclude with `ζ.isMaximal.ne_top h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pts_empty (G : GlobalFamilyData X ka wL wF) (h : Jid X la G.w = ⊤) : IsEmpty (PtsG G la) := by
   have := osK_sub h
@@ -229,9 +227,9 @@ section Named
 variable {la : HeightOneSpectrum (𝓞 B.KO)} (G : GlobalFamilyData X ka wL wF)
 
 /- English proof (translation)
-Establish `: IsEmpty (Fin G.del)` using `by rw [hdel]; infer_instance`. Use `subsingleton_quotient_of_ideal_eq_top h wF` as an intermediate fact. Use `⟨linearIndependent_empty_type, ?_⟩` and prove the remaining obligations. Use `Submodule.eq_top_iff'.2 fun x => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim x 0]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem inBasis_of (h : Jid X la G.w = ⊤) (hdel : G.del = 0) : InBasis G la := by
   have : IsEmpty (Fin G.del) := by rw [hdel]; infer_instance
@@ -243,9 +241,9 @@ theorem inBasis_of (h : Jid X la G.w = ⊤) (hdel : G.del = 0) : InBasis G la :=
 variable {G}
 
 /- English proof (translation)
-Use `osK_sub h` as an intermediate fact. Use `subsingleton_quotient_of_ideal_eq_top h wF` as an intermediate fact. Use `⟨?_, ⟨fun x _ => Subsingleton.elim x 0⟩, ?_⟩` and prove the remaining obligations. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[show (⊤ : Submodule (Kp X la G.N) (OsK X la G.w)) = ⊥ from Subsingleton.elim _ _]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.fg_bot`. Conclude with `⟨fun a b _ => Subsingleton.elim a b, fun v => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inCurve_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) : Q.InCurve := by
   have := osK_sub h
@@ -257,14 +255,14 @@ theorem inCurve_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) : Q.InCurv
   · exact ⟨fun a b _ => Subsingleton.elim a b, fun v => ⟨0, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Use `pts_empty G h` as an intermediate fact. Introduce `ζ`. Conclude with `isEmptyElim ζ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inTie_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) (S : Scal B) : Q.InTie S := by
   have := pts_empty G h
   intro ζ; exact isEmptyElim ζ
 
 /- English proof (translation)
-Use `subsingleton_quotient_of_ideal_eq_top h wF` as an intermediate fact. Introduce `a _`. Conclude with `⟨0, Subsingleton.elim _ _, by rw [map_zero]; exact zero_mem _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem inLift_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) (T : ℕ) : Q.InLift T := by
   have := subsingleton_quotient_of_ideal_eq_top h wF
@@ -272,7 +270,7 @@ theorem inLift_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) (T : ℕ) :
   exact ⟨0, Subsingleton.elim _ _, by rw [map_zero]; exact zero_mem _⟩
 
 /- English proof (translation)
-Use `subsingleton_quotient_of_ideal_eq_top h wF` as an intermediate fact. Unfold `LocalPointData.Ila`. Conclude with `Module.length_eq_zero`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ila_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) : Q.Ila = 0 := by
   have := subsingleton_quotient_of_ideal_eq_top h wF
@@ -280,7 +278,7 @@ theorem ila_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) : Q.Ila = 0 :=
   exact Module.length_eq_zero
 
 /- English proof (translation)
-Use `pts_empty G h` as an intermediate fact. Unfold `LocalPointData.Net`. Conclude with `finsum_of_isEmpty _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem net_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) : Q.Net = 0 := by
   have := pts_empty G h
@@ -290,11 +288,9 @@ theorem net_of (Q : LocalPointData G la) (h : Jid X la G.w = ⊤) : Q.Net = 0 :=
 end Named
 
 /- English proof (translation)
-Establish `: IsEmpty (Fin G.del)` using `by rw [hdel]; infer_instance`. Establish `hI : ∀ la, (Qf la).Ila = 0` using `fun la => ila_of (Qf la) (h la)`. Establish `hN : ∀ la, (Qf la).Net = 0` using `fun la => net_of (Qf la) (h la)`. Establish `hd : (G.del : ℝ) = 0` using `by exact_mod_cast hdel`. Use `⟨fun la => by rw [hI la]; exact ENat.zero_ne_top, ?_, ?_, fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hI, ENat.toNat_zero, Nat.cast_zero, zero_mul]`. Conclude with `summable_zero`. Simplify using `only [hI, ENat.toNat_zero, Nat.cast_zero, zero_mul, tsum_zero, mul_zero, hd, Finset.univ_eq_empty, Finset.sum_empty, add_zero, le_refl]`. Simplify using `only [hN, zero_mul]`. Conclude with `summable_zero`.
-
-Simplify using `only [hN, zero_mul, tsum_zero, zero_div, hd, mul_zero, zero_mul, add_zero, le_refl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heights_of (G : GlobalFamilyData X ka wL wF) (Qf : ∀ la, LocalPointData G la) (h : ∀ la, Jid X la G.w = ⊤) (hdel : G.del = 0)
     (Gc PH Prw Pet : ℝ) : Heights Qf Gc PH Prw Pet := by
@@ -310,7 +306,7 @@ theorem heights_of (G : GlobalFamilyData X ka wL wF) (Qf : ∀ la, LocalPointDat
   · simp only [hN, zero_mul, tsum_zero, zero_div, hd, mul_zero, zero_mul, add_zero, le_refl]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨al, θ, -, -, rfl⟩`. Rewrite using `[Subsingleton.elim θ 0, map_zero, map_zero, mul_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inContainZ_of (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B) (T : ℕ)
     (h0 : Subsingleton (B.Cusp j (X.wF0 wL wF))) : InContainZ G la S T := by
@@ -320,7 +316,7 @@ theorem inContainZ_of (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum 
   exact zero_mem _
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨F, -, rfl⟩`. Use `show emb X la G.N (X.inc ka F) ∈ _`. Rewrite using `[Subsingleton.elim F 0, map_zero, map_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inContainM_of (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (CRm : ℝ) (T : ℕ) (c : ℝ)
     (hk : Subsingleton (B.Cusp j ka)) : InContainM G la CRm T c := by
@@ -339,7 +335,7 @@ section Wt
 variable {D : D7} {j : ℕ}
 
 /- English proof (translation)
-Consider the cases of `w`. Consider the cases of `w'`. Simplify using `only at hP hM hn`. Substitute `hP hM hn` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem wt_ext {w w' : WeightFamilies.Wt D j} (hP : w.aP = w'.aP) (hM : w.aM = w'.aM) (hn : w.n = w'.n) : w = w' := by
   cases w; cases w'; simp only at hP hM hn; subst hP hM hn; rfl
@@ -370,7 +366,7 @@ section Val
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Unfold `vAdd`. Rewrite using `[map_mul, WithZero.log_mul ((map_ne_zero _).2 hx) ((map_ne_zero _).2 hy)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vAdd_mulS (la : HeightOneSpectrum (𝓞 K)) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     vAdd la (x * y) = vAdd la x + vAdd la y := by
@@ -379,13 +375,13 @@ theorem vAdd_mulS (la : HeightOneSpectrum (𝓞 K)) {x y : K} (hx : x ≠ 0) (hy
   ring
 
 /- English proof (translation)
-Unfold `vAdd`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem vAdd_oneS (la : HeightOneSpectrum (𝓞 K)) : vAdd la (1 : K) = 0 := by
   unfold vAdd; simp
 
 /- English proof (translation)
-Unfold `vAdd`. Distinguish the cases in `h0 : la.valuation K x = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[neg_nonneg, ← WithZero.log_le_log h0 one_ne_zero]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -397,11 +393,11 @@ theorem vAdd_nonneg_iffS (la : HeightOneSpectrum (𝓞 K)) (x : K) :
   · rw [neg_nonneg, ← WithZero.log_le_log h0 one_ne_zero]; simp
 
 /- English proof (translation)
-Unfold `vAdd`. Establish `h` using `Valuation.map_add (la.valuation K) x y`. Establish `hx' : la.valuation K x ≠ 0` using `(map_ne_zero _).2 hx`. Establish `hy' : la.valuation K y ≠ 0` using `(map_ne_zero _).2 hy`. Establish `hxy' : la.valuation K (x + y) ≠ 0` using `(map_ne_zero _).2 hxy`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `le_total (la.valuation K x) (la.valuation K y) with hle | hle` into its components or cases. Rewrite `h` using `[max_eq_right hle]`. Use `(WithZero.log_le_log hxy' hy').2 h` as an intermediate fact. Conclude with `min_le_of_right_le (by linarith)`. Rewrite `h` using `[max_eq_left hle]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(WithZero.log_le_log hxy' hx').2 h` as an intermediate fact. Conclude with `min_le_of_left_le (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem vAdd_addS (la : HeightOneSpectrum (𝓞 K)) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) (hxy : x + y ≠ 0) :
     min (vAdd la x) (vAdd la y) ≤ vAdd la (x + y) := by
@@ -422,18 +418,18 @@ def vE (la : HeightOneSpectrum (𝓞 K)) (x : K) : EReal :=
   open Classical in if x = 0 then ⊤ else (((vAdd la x : ℤ) : ℝ) : EReal)
 
 /- English proof (translation)
-Simplify using `[vE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vE_zero (la : HeightOneSpectrum (𝓞 K)) : vE la (0 : K) = ⊤ := by simp [vE]
 
 /- English proof (translation)
-Simplify using `[vE, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vE_of_ne (la : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
     vE la x = (((vAdd la x : ℤ) : ℝ) : EReal) := by simp [vE, hx]
 
 /- English proof (translation)
-Unfold `vE`. Use `split_ifs`. Conclude with `top_ne_bot`. Conclude with `EReal.coe_ne_bot _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vE_ne_bot (la : HeightOneSpectrum (𝓞 K)) (x : K) : vE la x ≠ ⊥ := by
   unfold vE; split_ifs
@@ -441,15 +437,15 @@ theorem vE_ne_bot (la : HeightOneSpectrum (𝓞 K)) (x : K) : vE la x ≠ ⊥ :=
   · exact EReal.coe_ne_bot _
 
 /- English proof (translation)
-Rewrite using `[vE_of_ne la one_ne_zero, vAdd_oneS]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vE_one (la : HeightOneSpectrum (𝓞 K)) : vE la (1 : K) = 0 := by
   rw [vE_of_ne la one_ne_zero, vAdd_oneS]; simp
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[zero_mul, vE_zero, EReal.top_add_of_ne_bot (vE_ne_bot la y)]`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[mul_zero, vE_zero, EReal.add_top_of_ne_bot (vE_ne_bot la x)]`. Rewrite using `[vE_of_ne la (mul_ne_zero hx hy), vE_of_ne la hx, vE_of_ne la hy, vAdd_mulS la hx hy]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem vE_mul (la : HeightOneSpectrum (𝓞 K)) (x y : K) : vE la (x * y) = vE la x + vE la y := by
   by_cases hx : x = 0
@@ -460,11 +456,11 @@ theorem vE_mul (la : HeightOneSpectrum (𝓞 K)) (x y : K) : vE la (x * y) = vE 
   push_cast; rfl
 
 /- English proof (translation)
-Distinguish the cases in `hxy : x + y = 0`. Rewrite using `[hxy, vE_zero]`. Conclude with `le_top`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add]`. Conclude with `min_le_right _ _`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Rewrite using `[add_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `min_le_left _ _`. Rewrite using `[vE_of_ne la hx, vE_of_ne la hy, vE_of_ne la hxy]`. Break down `min_le_iff.1 (vAdd_addS la hx hy hxy) with h | h` into its components or cases. Conclude with `min_le_of_left_le (by exact_mod_cast h)`. Conclude with `min_le_of_right_le (by exact_mod_cast h)`.
+A detailed English derivation is pending.
 -/
 theorem vE_add (la : HeightOneSpectrum (𝓞 K)) (x y : K) : min (vE la x) (vE la y) ≤ vE la (x + y) := by
   by_cases hxy : x + y = 0
@@ -479,9 +475,7 @@ theorem vE_add (la : HeightOneSpectrum (𝓞 K)) (x y : K) : min (vE la x) (vE l
   · exact min_le_of_right_le (by exact_mod_cast h)
 
 /- English proof (translation)
-Rewrite using `[vE_of_ne la hx, ← vAdd_nonneg_iffS]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h` after adjusting the coercions. Introduce `h`.
-
-Conclude with `h` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vE_nonneg_iff (la : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
     0 ≤ vE la x ↔ la.valuation K x ≤ 1 := by
@@ -503,7 +497,7 @@ def mlatS (p : Prop) : Submodule (𝓞 K) ↥(cuspS K p) :=
   (LinearMap.range (Algebra.linearMap (𝓞 K) K)).comap ((cuspS K p).subtype.restrictScalars (𝓞 K))
 
 /- English proof (translation)
-Simplify using `[mlatS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_mlatS {p : Prop} (F : ↥(cuspS K p)) : F ∈ mlatS K p ↔ ∃ r : 𝓞 K, algebraMap (𝓞 K) K r = (F : K) := by
   simp [mlatS]
@@ -539,7 +533,7 @@ abbrev provS : WeightFamilies.Prov D where
 variable {D K Sg}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => Subtype.ext (by have ha := a.2; have hb := b.2 simp only [cuspS, h, if_false, Submodule.mem_bot] at ha hb rw [ha, hb])⟩`.
+Supply the required witnesses or components.
 -/
 theorem provS_sub {j : ℕ} {w : WeightFamilies.Wt D j} (h : ¬ Sg j w) : Subsingleton ((provS D K e Sg).Cusp j w) :=
   ⟨fun a b => Subtype.ext (by
@@ -556,13 +550,13 @@ Both sides reduce to the same expression.
 theorem coe_oneS {j : ℕ} {w : WeightFamilies.Wt D j} (h : Sg j w) : ((oneS e h : (provS D K e Sg).Cusp j w) : K) = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `(mem_mlatS K _).2 ⟨1, by rw [map_one]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem oneS_mem {j : ℕ} {w : WeightFamilies.Wt D j} (h : Sg j w) : oneS e h ∈ (provS D K e Sg).Mlat j w :=
   (mem_mlatS K _).2 ⟨1, by rw [map_one]; rfl⟩
 
 /- English proof (translation)
-Use `le_antisymm (fun F hF => ?_) ((Submodule.span_singleton_le_iff_mem _ _).2 (oneS_mem e h))` and prove the remaining obligations. Take `⟨r, hr⟩` from `(mem_mlatS K F).1 hF`. Use `Submodule.mem_span_singleton.2 ⟨r, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(r • (1 : K)) = (F : K)`. Rewrite using `[← hr, Algebra.smul_def, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mlat_eq_span {j : ℕ} {w : WeightFamilies.Wt D j} (h : Sg j w) :
     (provS D K e Sg).Mlat j w = Submodule.span (𝓞 K) {oneS e h} := by
@@ -573,7 +567,7 @@ theorem mlat_eq_span {j : ℕ} {w : WeightFamilies.Wt D j} (h : Sg j w) :
   rw [← hr, Algebra.smul_def, mul_one]
 
 /- English proof (translation)
-Use `show ‖σ (1 : K)‖ = 1`. Rewrite using `[map_one, norm_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supN_oneS {j : ℕ} {w : WeightFamilies.Wt D j} (h : Sg j w) (σ : K →+* ℂ) :
     (provS D K e Sg).supN j w σ (oneS e h) = 1 := by
@@ -585,20 +579,20 @@ variable (K) in
 def sWS {j : ℕ} (w : WeightFamilies.Wt D j) : 𝓞 K := ((qq D ^ DF w : ℕ) : 𝓞 K)
 
 /- English proof (translation)
-The claim follows from `lt_min (D.host.g_prime 0).pos (D.host.g_prime 1).pos`.
+A detailed English derivation is pending.
 -/
 theorem qq_pos' (D : D7) : 0 < qq D :=
   lt_min (D.host.g_prime 0).pos (D.host.g_prime 1).pos
 
 /- English proof (translation)
-Unfold `sWS`. Conclude with `(pow_pos (qq_pos' D) _).ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sWS_ne {j : ℕ} (w : WeightFamilies.Wt D j) : sWS K w ≠ 0 := by
   unfold sWS
   exact_mod_cast (pow_pos (qq_pos' D) _).ne'
 
 /- English proof (translation)
-Establish `h : ((sWS K w : 𝓞 K) : K) = ((qq D ^ DF w : ℕ) : K)` using `map_natCast (algebraMap (𝓞 K) K) _`. Rewrite using `[h, map_natCast, Complex.norm_natCast, Nat.cast_pow, Real.log_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_sWS {j : ℕ} (w : WeightFamilies.Wt D j) (σ : K →+* ℂ) :
     Real.log ‖σ ((sWS K w : 𝓞 K) : K)‖ = (DF w : ℝ) * Real.log (qq D) := by
@@ -606,7 +600,7 @@ theorem log_sWS {j : ℕ} (w : WeightFamilies.Wt D j) (σ : K →+* ℂ) :
   rw [h, map_natCast, Complex.norm_natCast, Nat.cast_pow, Real.log_pow]
 
 /- English proof (translation)
-Introduce `F`. Establish `hs' : algebraMap (𝓞 K) K s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 hs`. Use `⟨(algebraMap (𝓞 K) K s)⁻¹ • F, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s • ((algebraMap (𝓞 K) K s)⁻¹ • (F : K)) = (F : K)`. Rewrite using `[Algebra.smul_def, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hs', one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_surjS {j : ℕ} (w : WeightFamilies.Wt D j) {s : 𝓞 K} (hs : s ≠ 0) :
     Function.Surjective (s • (LinearMap.id : (provS D K e Sg).Cusp j w →ₗ[𝓞 K] (provS D K e Sg).Cusp j w)) := by
@@ -619,7 +613,7 @@ theorem smul_surjS {j : ℕ} (w : WeightFamilies.Wt D j) {s : 𝓞 K} (hs : s �
 def evS (j : ℕ) : AddMonoidAlgebra K (WeightFamilies.Wt D j) →ₐ[K] K := AddMonoidAlgebra.lift K K (WeightFamilies.Wt D j) 1
 
 /- English proof (translation)
-Rewrite using `[evS, AddMonoidAlgebra.lift_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evS_single (j : ℕ) (w : WeightFamilies.Wt D j) (a : K) : evS (D := D) (K := K) j (AddMonoidAlgebra.single w a) = a := by
   rw [evS, AddMonoidAlgebra.lift_single]; simp
@@ -636,7 +630,7 @@ theorem incS_apply (j : ℕ) (w : WeightFamilies.Wt D j) (F : (provS D K e Sg).C
     incS e j w F = AddMonoidAlgebra.single w (F : K) := rfl
 
 /- English proof (translation)
-The claim follows from `evS_single j w _`.
+A detailed English derivation is pending.
 -/
 theorem evS_incS (j : ℕ) (w : WeightFamilies.Wt D j) (F : (provS D K e Sg).Cusp j w) :
     evS (D := D) (K := K) j (incS e j w F) = (F : K) := evS_single j w _
@@ -648,7 +642,7 @@ def coefS (j : ℕ) (w : WeightFamilies.Wt D j) : AddMonoidAlgebra K (WeightFami
 
 open Classical in
 /- English proof (translation)
-Use `show (AddMonoidAlgebra.single w' a).coeff w = _`. Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefS_single (j : ℕ) (w w' : WeightFamilies.Wt D j) (a : K) :
     coefS (D := D) (K := K) j w (AddMonoidAlgebra.single w' a) = if w' = w then a else 0 := by
@@ -754,7 +748,7 @@ theorem pjS_vAt (la : HeightOneSpectrum (𝓞 K)) (y : (pjS e Sg hadd P j dat h1
     (pjS e Sg hadd P j dat h1 h2 hPt).vAt la y F = vE la (evS (D := D) (K := K) j F) := rfl
 
 /- English proof (translation)
-Use `show vE la (evS (D := D) (K := K) j (incS e j w (oneS e h))) = 0`. Rewrite using `[evS_incS, coe_oneS, vE_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vAt_inc_oneS {w : WeightFamilies.Wt D j} (h : Sg j w) (la : HeightOneSpectrum (𝓞 K))
     (y : (pjS e Sg hadd P j dat h1 h2 hPt).Pt la) :
@@ -763,7 +757,7 @@ theorem vAt_inc_oneS {w : WeightFamilies.Wt D j} (h : Sg j w) (la : HeightOneSpe
   rw [evS_incS, coe_oneS, vE_one]
 
 /- English proof (translation)
-Introduce `w' G hG`. Use `congrArg (evS (D := D) (K := K) j) hG` as an intermediate fact. Express the relevant statement in the definitionally equal form `evS (D := D) (K := K) j (incS e j w (oneS e h) * incS e j w' G) = evS (D := D) (K := K) j 0 at this`. Rewrite `this` using `[map_mul, map_zero, evS_incS, evS_incS, coe_oneS, one_mul]`. Conclude with `Subtype.ext this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonZeroComp_oneS {w : WeightFamilies.Wt D j} (h : Sg j w) :
     (pjS e Sg hadd P j dat h1 h2 hPt).NonZeroComp w (oneS e h) := by
@@ -774,9 +768,9 @@ theorem nonZeroComp_oneS {w : WeightFamilies.Wt D j} (h : Sg j w) :
   exact Subtype.ext this
 
 /- English proof (translation)
-Introduce `σ w w' F G H hH`. Use `congrArg (evS (D := D) (K := K) j) hH` as an intermediate fact. Express the relevant statement in the definitionally equal form `evS (D := D) (K := K) j (incS e j _ H) = evS (D := D) (K := K) j (incS e j w F * incS e j w' G) at this`. Rewrite `this` using `[map_mul, evS_incS, evS_incS, evS_incS]`. Use `show ‖σ (H : K)‖ ≤ ‖σ (F : K)‖ * ‖σ (G : K)‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_mul, norm_mul]`.
+A detailed English derivation is pending.
 -/
 theorem subMulS : Formalism.MainNotions.Gaps.SizeBoundsAlt.SubMul (pjS e Sg hadd P j dat h1 h2 hPt) := by
   intro σ w w' F G H hH
@@ -787,7 +781,7 @@ theorem subMulS : Formalism.MainNotions.Gaps.SizeBoundsAlt.SubMul (pjS e Sg hadd
   rw [this, map_mul, norm_mul]
 
 /- English proof (translation)
-Use `show (((provS D K e Sg).Mlat j w).comap (sWS K w • LinearMap.id)).map (sWS K w • LinearMap.id) = _`. Conclude with `Submodule.map_comap_eq_of_surjective (smul_surjS e w (sWS_ne w)) _`.
+A detailed English derivation is pending.
 -/
 theorem wwc_sWS (w : WeightFamilies.Wt D j) :
     (pjS e Sg hadd P j dat h1 h2 hPt).WWc (sWS K w) w = (provS D K e Sg).Mlat j w := by
@@ -795,14 +789,14 @@ theorem wwc_sWS (w : WeightFamilies.Wt D j) :
   exact Submodule.map_comap_eq_of_surjective (smul_surjS e w (sWS_ne w)) _
 
 /- English proof (translation)
-Rewrite using `[Set.range_const, wwc_sWS, mlat_eq_span]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wwc_oneS {w : WeightFamilies.Wt D j} (h : Sg j w) :
     (pjS e Sg hadd P j dat h1 h2 hPt).WWc (sWS K w) w = Submodule.span (𝓞 K) (Set.range fun _ : Fin 1 => oneS e h) := by
   rw [Set.range_const, wwc_sWS, mlat_eq_span]
 
 /- English proof (translation)
-Establish `hm : oneS e h ∈ (pjS e Sg hadd P j dat h1 h2 hPt).WWc (sWS K w) w`. Rewrite using `[wwc_oneS e hadd P dat h1 h2 hPt h]`. Conclude with `Submodule.subset_span ⟨0, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem depth_le_zeroS {w : WeightFamilies.Wt D j} (h : Sg j w) (la : HeightOneSpectrum (𝓞 K))
     (y : (pjS e Sg hadd P j dat h1 h2 hPt).Pt la) :
@@ -843,7 +837,7 @@ def CombHyps (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm) (H : KHyp) (
   Heights Qf Gc PH Prw Pet
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26⟩` from `h`. Conclude with `hP large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus a1 a2 a3 a4 a5 G Gc PH Prw Pet Pd Qf a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19 a20 a21 a22 a23 a24 a25 a26`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem concl_of_combHyps (hP : Conclusion1OfComb (D := D) (B := B) (P := P)) {large₂ : SizeData₂ D} {X : Prov D B P} {K : KAdm}
     {H : KHyp} {Ch Ah Cq Aq C2 A2 CR CT : ℝ} {j : ℕ} {h1 : 1 ≤ j} {h2 : j ≤ D.R.m} {S : Scal B}
@@ -885,28 +879,28 @@ def SetCn (large₂ : SizeData₂ D) (B : WeightFamilies.Prov D) {j : ℕ} (CK C
   DomAt D large₂ j nW C1
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem setC_of_setCn {large₂ : SizeData₂ D} {j : ℕ} {X : PJ D B P j} {CK C1 A1 : ℝ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ}
     {h0 : ℝ} (h : SetCn large₂ B CK C1 ka wL wF T nP nW h0) : SetC large₂ X CK C1 A1 ka wL wF T nP nW h0 := h
 
 /- English proof (translation)
-The claim follows from `Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _`.
+A detailed English derivation is pending.
 -/
 theorem L_nonneg' (large₂ : SizeData₂ D) : 0 ≤ large₂.sc.L := Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _
 
 /- English proof (translation)
-Unfold `Zb`. Use `L_nonneg' large₂` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem Zb_nonneg' (large₂ : SizeData₂ D) : 0 ≤ Zb D large₂ := by
   unfold Zb; have := L_nonneg' large₂; positivity
 
 /- English proof (translation)
-Unfold `lamStar`. Establish `hg : ∀ i, (1 : ℝ) ≤ D.host.g i` using `fun i => by exact_mod_cast (D.host.g_prime i).one_lt.le`. Establish `hq : (1 : ℝ) ≤ D.host.q` using `by exact_mod_cast D.host.hyp.1.one_lt.le`. Establish `hd : (1 : ℝ) ≤ D.host.d` using `by exact_mod_cast D.host.hyp.2.1.one_lt.le`. Establish `hf : (2 : ℝ) ≤ D.R.f`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ D.R.n` using `D.R.toFrame.ord_pos`. Establish `: 2 ≤ D.R.f` using `by unfold Ranks.f; omega`. Conclude with `this` after adjusting the coercions. Establish `h1 : (1 : ℝ) ≤ (D.host.g 0 : ℝ) * D.host.g 1` using `one_le_mul_of_one_le_of_one_le (hg 0) (hg 1)`. Establish `ha : (1 : ℝ) ≤ ((D.R.f : ℝ) / 2) ^ 2` using `one_le_pow₀ (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (1 : ℝ) ≤ 4 * ((D.R.f : ℝ) / 2) ^ 2 * D.host.q * D.host.d` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (by norm_num) ha) hq) hd`. Conclude with `add_nonneg (Real.log_nonneg h1) (Real.log_nonneg h2)`.
+A detailed English derivation is pending.
 -/
 theorem lamStar_nonneg' (D : D7) : 0 ≤ lamStar D := by
   unfold lamStar
@@ -925,7 +919,7 @@ theorem lamStar_nonneg' (D : D7) : 0 ≤ lamStar D := by
   exact add_nonneg (Real.log_nonneg h1) (Real.log_nonneg h2)
 
 /- English proof (translation)
-Establish `: (1 : ℝ) ≤ D.host.pde` using `by exact_mod_cast D.host.pde_prime.one_lt.le`. Use `Real.log_nonneg this` as an intermediate fact. Use `lamStar_nonneg' D` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lam_nonneg' (D : D7) : 0 ≤ lamStar D + 2 * Real.log D.host.pde := by
   have : (1 : ℝ) ≤ D.host.pde := by exact_mod_cast D.host.pde_prime.one_lt.le
@@ -934,13 +928,13 @@ theorem lam_nonneg' (D : D7) : 0 ≤ lamStar D + 2 * Real.log D.host.pde := by
   linarith
 
 /- English proof (translation)
-Establish `hg : ∀ i, (1 : ℝ) ≤ D.host.g i` using `fun i => by exact_mod_cast (D.host.g_prime i).one_lt.le`. Establish `hq1 : (1 : ℝ) ≤ (qq D : ℝ)` using `by exact_mod_cast qq_pos' D`. Establish `hq0 : (qq D : ℝ) ≤ D.host.g 0` using `by exact_mod_cast (min_le_left _ _ : qq D ≤ D.host.g 0)`. Establish `hle : (qq D : ℝ) ≤ (D.host.g 0 : ℝ) * D.host.g 1` using `by nlinarith [hg 0, hg 1]`. Establish `hq : (1 : ℝ) ≤ D.host.q` using `by exact_mod_cast D.host.hyp.1.one_lt.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (1 : ℝ) ≤ D.host.d` using `by exact_mod_cast D.host.hyp.2.1.one_lt.le`. Establish `hf : (2 : ℝ) ≤ D.R.f`. Establish `: 1 ≤ D.R.n` using `D.R.toFrame.ord_pos`. Establish `: 2 ≤ D.R.f` using `by unfold Ranks.f; omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (1 : ℝ) ≤ ((D.R.f : ℝ) / 2) ^ 2` using `one_le_pow₀ (by linarith)`. Establish `h2 : (1 : ℝ) ≤ 4 * ((D.R.f : ℝ) / 2) ^ 2 * D.host.q * D.host.d` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (by norm_num) ha) hq) hd`. Establish `h3` using `Real.log_le_log (by linarith) hle`. Establish `h4` using `Real.log_nonneg h2`. Unfold `lamStar`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Conclude with `⟨Real.log_nonneg hq1, by linarith⟩`.
+A detailed English derivation is pending.
 -/
 theorem log_qq_le' (D : D7) : 0 ≤ Real.log (qq D : ℝ) ∧ Real.log (qq D : ℝ) ≤ lamStar D := by
   have hg : ∀ i, (1 : ℝ) ≤ D.host.g i := fun i => by exact_mod_cast (D.host.g_prime i).one_lt.le
@@ -963,7 +957,7 @@ theorem log_qq_le' (D : D7) : 0 ≤ Real.log (qq D : ℝ) ∧ Real.log (qq D : �
   exact ⟨Real.log_nonneg hq1, by linarith⟩
 
 /- English proof (translation)
-Establish `h2 : 0 ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (w.n : ℝ)` using `by positivity`. Establish `h3 : (DF w : ℝ) = ∑ τ, ((∑ i, (w.aP τ i : ℝ)) + ∑ i, (w.aM τ i : ℝ))`. Simplify using `only [DF, degP, Nat.cast_sum, Nat.cast_add]`. Unfold `WeightFamilies.Wt.size`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -976,9 +970,9 @@ theorem dF_le_size' {j : ℕ} (w : WeightFamilies.Wt D j) : (DF w : ℝ) ≤ w.s
   linarith
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `log_qq_le' D`. Establish `hD : (0 : ℝ) ≤ DF w` using `Nat.cast_nonneg _`. Establish `hp : 0 ≤ Real.log (D.host.pde : ℝ)` using `Real.log_nonneg (by exact_mod_cast D.host.pde_prime.one_lt.le)`. Establish `hm : 0 ≤ (DF w : ℝ) * Real.log (qq D)` using `mul_nonneg hD h0`. Use `⟨hm, by linarith, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sW_sizes' {j : ℕ} (w : WeightFamilies.Wt D j) :
     0 ≤ (DF w : ℝ) * Real.log (qq D) ∧ (DF w : ℝ) / 2 * Real.log (qq D) ≤ (DF w : ℝ) * Real.log (qq D) ∧
@@ -993,7 +987,7 @@ theorem sW_sizes' {j : ℕ} (w : WeightFamilies.Wt D j) :
     _ = _ := mul_comm _ _
 
 /- English proof (translation)
-Unfold `PN`. Use `L_nonneg' large₂` as an intermediate fact. Use `lamStar_nonneg' D` as an intermediate fact. Use `WeightFamilies.Wt.one_le_size wL` as an intermediate fact. Conclude with `mul_nonneg (by linarith) (by linarith)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pN_nonneg' (large₂ : SizeData₂ D) {j : ℕ} (wL : WeightFamilies.Wt D j) : 0 ≤ PN D large₂ * wL.size := by
   unfold PN
@@ -1001,9 +995,9 @@ theorem pN_nonneg' (large₂ : SizeData₂ D) {j : ℕ} (wL : WeightFamilies.Wt 
   exact mul_nonneg (by linarith) (by linarith)
 
 /- English proof (translation)
-Unfold `PI4`. Use `Zb_nonneg' large₂` as an intermediate fact. Use `lamStar_nonneg' D` as an intermediate fact. Use `WeightFamilies.Wt.one_le_size wL` as an intermediate fact. Establish `h : 0 ≤ 5 * (1009 * Zb D large₂ + lamStar D) + 2 * (81 * Zb D large₂ ^ 2) / (WeightFamilies.dimY D j : ℝ)` using `by positivity`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (mul_nonneg h (Nat.cast_nonneg _)) (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem rescaled_dimension_product_nonneg (large₂ : SizeData₂ D) {j : ℕ} (wL : WeightFamilies.Wt D j) :
     0 ≤ PI4 D j (1009 * Zb D large₂) (81 * Zb D large₂ ^ 2) * WeightFamilies.dimY D j * wL.size := by
@@ -1013,11 +1007,11 @@ theorem rescaled_dimension_product_nonneg (large₂ : SizeData₂ D) {j : ℕ} (
   exact mul_nonneg (mul_nonneg h (Nat.cast_nonneg _)) (by linarith)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.WeightAlgebra.Gc`. Establish `hZ` using `Zb_nonneg' large₂`. Establish `hL` using `L_nonneg' large₂`. Establish `hl` using `lam_nonneg' D`. Establish `hn : (1 : ℝ) ≤ (Module.finrank ℚ B.KO : ℝ)` using `by exact_mod_cast Module.finrank_pos`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisc : (1 : ℝ) ≤ |((NumberField.discr B.KO : ℤ) : ℝ)|`. Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs (NumberField.discr_ne_zero B.KO)` after adjusting the coercions. Establish `hA : 0 ≤ Real.log (Module.finrank ℚ B.KO) + Real.log |((NumberField.discr B.KO : ℤ) : ℝ)| / Module.finrank ℚ B.KO` using `add_nonneg (Real.log_nonneg hn) (div_nonneg (Real.log_nonneg hdisc) (by linarith))`. Establish `hM` using `le_max_of_le_left (c := Real.log (Module.finrank ℚ D.host.E) + Real.log |((NumberField.discr D.host.E : ℤ) : ℝ)| / Module.finrank ℚ D.host.E) hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : 0 ≤ 2 * (D.R.f : ℝ) * D.R.r` using `by positivity`. Use `mul_nonneg hfr hl` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem growth_constant_nonneg (large₂ : SizeData₂ D) (B : WeightFamilies.Prov D) : 0 ≤ Formalism.MainNotions.WeightAlgebra.Gc large₂ B (1009 * Zb D large₂) D.host.pde := by
   unfold Formalism.MainNotions.WeightAlgebra.Gc
@@ -1052,7 +1046,7 @@ def SgOf (τ0 : D.what₂.Tau) (c1 c2 : ℕ) : ∀ j, WeightFamilies.Wt D j → 
   fun j w => (c2 : ℤ) * w.aP τ0 (lastP D j) ≤ (c1 : ℤ) * w.n
 
 /- English proof (translation)
-Unfold `SgOf at *`. Simplify using `only [wadd]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sgOf_add (τ0 : D.what₂.Tau) (c1 c2 : ℕ) (j : ℕ) (w w' : WeightFamilies.Wt D j) (h : SgOf τ0 c1 c2 j w)
     (h' : SgOf τ0 c1 c2 j w') : SgOf τ0 c1 c2 j (wadd w w') := by
@@ -1066,20 +1060,20 @@ section Sep
 variable {j : ℕ} (τ0 : D.what₂.Tau) {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ}
 
 /- English proof (translation)
-Unfold `SgOf`. Rewrite using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_wL : SgOf τ0 (wL.aP τ0 (lastP D j)) wL.n j wL := by
   unfold SgOf; rw [mul_comm]
 
 /- English proof (translation)
-Unfold `SgOf`. Use `push_neg`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_sg_wF (hs : (wL.aP τ0 (lastP D j) : ℤ) * wF.n < (wL.n : ℤ) * wF.aP τ0 (lastP D j)) :
     ¬ SgOf τ0 (wL.aP τ0 (lastP D j)) wL.n j wF := by
   unfold SgOf; push_neg; linarith
 
 /- English proof (translation)
-Unfold `SgOf PJ.wF0`. Simplify using `only [wadd, wsmul]`. Use `push_cast`. Use `push_neg`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem not_signCondition_baseFormWeight (X : PJ D B P j)
     (hs : (wL.aP τ0 (lastP D j) : ℤ) * wF.n < (wL.n : ℤ) * wF.aP τ0 (lastP D j)) :
@@ -1088,9 +1082,9 @@ theorem not_signCondition_baseFormWeight (X : PJ D B P j)
   nlinarith
 
 /- English proof (translation)
-Unfold `SgOf`. Use `push_neg`. Rewrite using `[hn]`. Rewrite `hs` using `[hL, hF]`. Rewrite using `[hL]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `: (ka.aP τ0 (lastP D j) : ℤ) = wF.aP τ0 (lastP D j) + T * wL.aP τ0 (lastP D j)` using `by linarith`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem not_sg_ka (hn : ka.n = nP + T * nW) (hL : wL.n = nW) (hF : wF.n = nP)
     (haP : (wF.aP τ0 (lastP D j) : ℤ) = ka.aP τ0 (lastP D j) - T * wL.aP τ0 (lastP D j))
@@ -1102,9 +1096,9 @@ theorem not_sg_ka (hn : ka.n = nP + T * nW) (hL : wL.n = nW) (hF : wF.n = nP)
   rw [this]; nlinarith
 
 /- English proof (translation)
-Unfold `SgOf`. Take `⟨h1, h2, -⟩` from `hg`. Establish `a` using `h2 τ0 (lastP D j)`. Establish `a' : (w2.aP τ0 (lastP D j) : ℤ) + wF.aP τ0 (lastP D j) = (WeightFamilies.dimY D j + 4) * wL.aP τ0 (lastP D j)`. Conclude with `a` after adjusting the coercions.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b' : (w2.n : ℤ) + wF.n = (WeightFamilies.dimY D j + 4) * wL.n` using `by exact_mod_cast h1`. Establish `e1 : (w2.aP τ0 (lastP D j) : ℤ) = (WeightFamilies.dimY D j + 4) * wL.aP τ0 (lastP D j) - wF.aP τ0 (lastP D j)` using `by linarith`. Establish `e2 : (w2.n : ℤ) = (WeightFamilies.dimY D j + 4) * wL.n - wF.n` using `by linarith`. Rewrite using `[e1, e2]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem signCondition_of_secondWeight {w2 : WeightFamilies.Wt D j} (hg : IsG2 wL wF w2)
     (hs : (wL.aP τ0 (lastP D j) : ℤ) * wF.n < (wL.n : ℤ) * wF.aP τ0 (lastP D j)) :
@@ -1122,11 +1116,11 @@ theorem signCondition_of_secondWeight {w2 : WeightFamilies.Wt D j} (hg : IsG2 wL
 end Sep
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hf : 1 ≤ D.R.f`. Establish `: 1 ≤ D.R.n` using `D.R.toFrame.ord_pos`. Unfold `Ranks.f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `hp : 3 ≤ (D.R.sigW j).1` using `by show 3 ≤ D.R.k + j - 1`. Use linear arithmetic over natural numbers and integers. Establish `h2 : 1 ≤ (D.R.sigW j).1 * ((D.R.sigW j).1 - 1) / 2`. Rewrite using `[Nat.le_div_iff_mul_le (by norm_num)]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul (by omega) (by omega)`. Unfold `WeightFamilies.dimY`. Conclude with `Nat.mul_pos hf (by omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dimY_pos' (D : D7) {j : ℕ} (h1 : 1 ≤ j) : 0 < WeightFamilies.dimY D j := by
   have hk := D.R.m_add_three_le_k
@@ -1144,21 +1138,21 @@ theorem dimY_pos' (D : D7) {j : ℕ} (h1 : 1 ≤ j) : 0 < WeightFamilies.dimY D 
   exact Nat.mul_pos hf (by omega)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, hPW, -, -, -, hL, hF, -, -, -, -, -, h40, -⟩` from `h`. Establish `hlast : ¬ ((lastP D j).1 + 1 < (D.R.sigW j).1)`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [lastP, Ranks.sigW]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `g` using `hL.2.1 τ0 (lastP D j)`. Rewrite `g` using `[if_neg hlast]`. Unfold `gapZ at g`. Rewrite `g` using `[dif_neg hlast]`. Establish `f` using `hF.2.1 τ0 (lastP D j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hL.1, hF.1]`. Establish `hT' : (0 : ℤ) < (Tp D j T : ℤ)` using `by unfold Tp; positivity`. Rewrite `g` using `[Int.fdiv_eq_ediv_of_nonneg _ hT'.le]`. Establish `hq` using `Int.ediv_mul_le ((ka.aP τ0 (lastP D j) : ℤ) - ((WeightFamilies.dimY D j : ℤ) + 2) * nW - 2 * D.R.r) hT'.ne'`. Rewrite `hq` using `[← g]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Tp at hq`. Move the coercions through the operations in `at hq`. Establish `hL0 : (0 : ℤ) ≤ (wL.aP τ0 (lastP D j) : ℤ)` using `Int.natCast_nonneg _`. Establish `hPW' : (nP : ℤ) ≤ nW` using `by exact_mod_cast hPW`. Establish `h40' : (40 : ℤ) ≤ nW` using `by exact_mod_cast h40`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : (0 : ℤ) ≤ (WeightFamilies.dimY D j : ℤ)` using `Int.natCast_nonneg _`. Establish `hr0 : (0 : ℤ) ≤ (D.R.r : ℤ)` using `Int.natCast_nonneg _`. Generalize the expression as in `(wL.aP τ0 (lastP D j) : ℤ) = L at hq f hL0 ⊢`. Generalize the expression as in `(wF.aP τ0 (lastP D j) : ℤ) = F at hq f ⊢`. Generalize the expression as in `(ka.aP τ0 (lastP D j) : ℤ) = k at hq f ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(WeightFamilies.dimY D j : ℤ) = Dz at hq hD0`. Generalize the expression as in `(nP : ℤ) = p at hPW' ⊢`. Generalize the expression as in `(nW : ℤ) = w at hPW' h40' hq ⊢`. Establish `hF : L * (Dz + 2) + (Dz + 2) * w + 2 * (D.R.r : ℤ) ≤ F` using `by nlinarith`. Establish `a1 : L * p ≤ L * w` using `mul_le_mul_of_nonneg_left hPW' hL0`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : 0 ≤ w * (F - (L * (Dz + 2) + (Dz + 2) * w + 2 * (D.R.r : ℤ)))` using `mul_nonneg (by linarith) (by linarith)`. Establish `a3 : 0 ≤ w * L * Dz` using `mul_nonneg (mul_nonneg (by linarith) hL0) hD0`. Establish `a4 : 0 ≤ w * w * Dz` using `mul_nonneg (mul_nonneg (by linarith) (by linarith)) hD0`. Establish `a5 : 0 ≤ w * (D.R.r : ℤ)` using `mul_nonneg (by linarith) hr0`. Establish `a6 : 0 < w * w` using `mul_pos (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a7 : 0 ≤ w * L` using `mul_nonneg (by linarith) hL0`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sep_of_setCn {large₂ : SizeData₂ D} {j : ℕ} (τ0 : D.what₂.Tau) {CK C1 : ℝ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ}
     {h0 : ℝ} (h : SetCn large₂ B CK C1 ka wL wF T nP nW h0) :
@@ -1201,64 +1195,56 @@ theorem sep_of_setCn {large₂ : SizeData₂ D} {j : ℕ} (τ0 : D.what₂.Tau) 
   nlinarith
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun x _ => by rw [Subsingleton.elim x 0]; exact N.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem subm_top {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M] [Subsingleton M] (N : Submodule R M) : N = ⊤ :=
   eq_top_iff.2 fun x _ => by rw [Subsingleton.elim x 0]; exact N.zero_mem
 
 /- English proof (translation)
-Introduce `x _` and use `by rw [Subsingleton.elim x 0]; exact N'.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subm_le {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M] [Subsingleton M] (N N' : Submodule R M) : N ≤ N' :=
   fun x _ => by rw [Subsingleton.elim x 0]; exact N'.zero_mem
 
 /- English proof (translation)
-Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem h1m (D : D7) : 1 ≤ D.R.m := by have := D.R.two_le_m; omega
 
 open Formalism.MainNotions.DIV.Inh in
 
 /- English proof (translation)
-Use `set Sg := SgOf τ0 (wL.aP τ0 (lastP D D.R.m)) wL.n with hSg`. Establish `hadd : ∀ j w w', Sg j w → Sg j w' → Sg j (wadd w w')` using `sgOf_add τ0 _ _`. Use `set B := provS D K e Sg with hB`. Set `X : Prov D B P` to `fun j h1 h2 => pjS e Sg hadd P j (hP j h1 h2).choose (hP j h1 h2).choose_spec.1 (hP j h1 h2).choose_spec.2 (hPt (hP j h1 h2).choose)`. Establish `hd1` using `(hP D.R.m (h1m D) le_rfl).choose_spec.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2` using `(hP D.R.m (h1m D) le_rfl).choose_spec.2`. Establish `hpt` using `hPt (hP D.R.m (h1m D) le_rfl).choose`. Use `set Xm := X D.R.m (h1m D) le_rfl with hXm`. Establish `hXd : Xm = pjS e Sg hadd P D.R.m (hP D.R.m (h1m D) le_rfl).choose hd1 hd2 hpt` using `rfl`. Establish `hm : ¬ D.R.m < D.R.m` using `lt_irrefl _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c1, -, -, -, -, -, -, -, -, -, -, -, -, c14, c15, c16, -⟩` from `hN.setC`. Establish `hL : Sg D.R.m wL` using `sg_wL τ0`. Establish `hs` using `sep_of_setCn τ0 hN.setC`. Use `haveI hka : Subsingleton (B.Cusp D.R.m ka) := provS_sub e (not_sg_ka τ0 (c1.trans c14) c15.1 c16.1 (c16.2.1 τ0 (lastP D D.R.m)) hs)`. Use `haveI hwF : Subsingleton (B.Cusp D.R.m wF) := provS_sub e (not_sg_wF τ0 hs)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI hwF0 : Subsingleton (B.Cusp D.R.m (Xm.wF0 wL wF)) := provS_sub e (not_signCondition_baseFormWeight τ0 Xm hs)`. Establish `hww : Xm.WWc (sWS K wL) wL = B.Mlat D.R.m wL` using `wwc_sWS e hadd P _ hd1 hd2 hpt wL`. Set `G : GlobalFamilyData Xm ka wL wF` to `{ N := 1, w := fun _ => oneS e hL, del := 0, th' := Fin.elim0, rz := 0, alz := Fin.elim0, th0 := Fin.elim0, zc := Fin.elim0, rq := 0, th := Fin.elim0, iet := 1, et := 0, mx := fun _ => 0 }`. Establish `hJ : ∀ la, Jid Xm la G.w = ⊤` using `fun la => jid_top_one Xm la G.w (dimY_pos' D (h1m D))`. Set `Qf : ∀ la, LocalPointData G la` to `fun la => { y := fun ζ => ((pts_empty G (hJ la)).false ζ).elim, g0 := 0, c := fun _ => 0 }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsz : ∀ w : WeightFamilies.Wt D D.R.m, 0 ≤ w.size` using `fun w => by linarith [WeightFamilies.Wt.one_le_size w]`. Establish `hPoly` using `hN.poly`. Take `⟨-, -, hG0, hPrw, -⟩` from `hPoly`. Use `⟨X, ⟨sWS K wL, 1, 1, 1⟩, G, Qf, ?_⟩` and prove the remaining obligations. Unfold `CombHyps`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_, ?_, fun h => absurd h hm, ?_, fun i => i.elim0, ?_, ?_, fun h => absurd h hm, ?_, ?_, ?_, hN.page, by simp [ShareRd], ?_, ?_, hN.poly, fun la => inBasis_of G (hJ la) rfl, fun la => inCurve_of _ (hJ la), fun la => inTie_of _ (hJ la) _, fun la _ _ _ => inLift_of _ (hJ …` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hN.h4`. Take `⟨w2, hw2⟩` from `hN.g2`. Establish `hW2 : Sg D.R.m w2` using `signCondition_of_secondWeight τ0 hw2 hs`. Use `⟨hN.parA, hN.setC, ?_, ?_, ?_, hN.h3, ?_, hN.Tx⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s1, s2, s3⟩` from `sW_sizes' wL`. Use `⟨sWS_ne wL, one_ne_zero, one_ne_zero, one_ne_zero, fun σ => ⟨(log_sWS wL σ).symm ▸ s1, (log_sWS wL σ).symm ▸ s2⟩, D.host.pde, Set.mem_insert _ _, fun σ => ?_, 1009 * Zb D large₂, le_rfl, ?_⟩` and prove the remaining obligations. Establish `e1 : Real.log ‖σ (((1 : 𝓞 K) : K))‖ = 0` using `by simp`. Apply the tactic sequence `refine ⟨(log_sWS wL σ).symm ▸ s3, ?_, ?_, ?_⟩ <;> (try rw [e1]) <;> [exact mul_nonneg (lam_nonneg' D) (hsz _);`. Conclude with `mul_nonneg (mul_nonneg zero_le_two (lam_nonneg' D)) (hsz _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_nonneg (mul_nonneg zero_le_two (lam_nonneg' D)) (hsz _)]`. Use `⟨⟨{oneS e hL}, ?_, fun _ => 0, ?_, ?_⟩, ⟨∅, by simp, subm_top _, by simp⟩, ⟨∅, by simp, subm_top _, by simp⟩, ⟨∅, by simp, subm_top _, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_singleton, hww, mlat_eq_span e hL]`. Introduce `σ g hg`. Rewrite `hg` using `[Finset.mem_singleton]`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hg, supN_oneS, Real.log_one]`. Simplify using `only [Finset.sum_const_zero, zero_div]`. Conclude with `mul_nonneg (growth_constant_nonneg large₂ B) (hsz _)`. Use `⟨fun _ => le_rfl, by simp, ?_⟩` and prove the remaining obligations. Simplify using `using (pN_nonneg' large₂ wL)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨le_of_eq hww, subm_le _ _, subm_le _ _, subm_le _ _⟩`. Use `⟨a1, a2, a3, a4, a5, a6, 1009 * Zb D large₂, 81 * Zb D large₂ ^ 2, le_rfl, le_rfl, fun h => absurd h hm, w2, hw2, oneS e hW2, oneS_mem e hW2, nonZeroComp_oneS e hadd P _ hd1 hd2 hpt hW2, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[supN_oneS e _, Real.log_one]`. Conclude with `(rescaled_dimension_product_nonneg large₂ wL)`. Conclude with `⟨by rw [show B.Mlat D.R.m ka = ⊥ from Subsingleton.elim _ _]; exact Submodule.fg_bot, subm_top _⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `F σ`. Rewrite using `[Subsingleton.elim F 0, (B.supN_eq_zero _ _ _ _).2 rfl, (B.l2Norm_eq_zero_iff _ _ _ _).2 rfl]`. Simplify using the standard rewrite rules. Introduce `F _ hF`. Conclude with `absurd (Subsingleton.elim F 0) hF`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, fun _ => oneS_mem e hL, ?_, fun σ k => by rw [supN_oneS e _, Real.log_one], ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_const, hww, mlat_eq_span e hL]`. Use `show Real.log ((1 : ℕ) : ℝ) ≤ _`. Simplify using `only [Nat.cast_one, Real.log_one]`. Conclude with `mul_nonneg hPrw (by linarith [WeightFamilies.Wt.one_le_size wL])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Use `show (∑ _σ : K →+* ℂ, (0 : ℝ)) / _ ≤ _`. Simplify using `only [Finset.sum_const_zero, zero_div]`. Conclude with `mul_nonneg hG0 (hsz _)`. Use `⟨fun k => k.elim0, fun k => k.elim0, Fin.elim0, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.MainNotions.Gaps.SizeBoundsAlt.detPoly]`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Use `⟨?_, fun i => i.elim0, subm_top _, fun i => i.elim0⟩` and prove the remaining obligations. Unfold `WeightFamilies.rhoP`. Use `haveI : Subsingleton (B.Mlat D.R.m ka) := inferInstance`. Conclude with `(Module.finrank_zero_of_subsingleton).symm`. Use `⟨0, ⟨fun _ => 0, fun σ f => ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subsingleton.elim f 0, (B.l2Norm_eq_zero_iff _ _ _ _).2 rfl]`. Simplify using the standard rewrite rules. Introduce `σ f g`. Simplify using the standard rewrite rules. Conclude with `subMulS e hadd P _ hd1 hd2 hpt`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Real.log (finrank B.KO (B.Cusp D.R.m ka) : ℝ) ≤ Pd`. Rewrite using `[Module.finrank_zero_of_subsingleton]`. Simplify using `using hN.pd`. Unfold `ShareRho`. Simplify using `only [CharP.cast_eq_zero]`.
-
-Check the signs of the components of the expression. Unfold `ShareRhoP`. Simplify using `only [CharP.cast_eq_zero]`. Check the signs of the components of the expression. Introduce `la`.
-
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨al, θ, -, -, rfl⟩`. Rewrite using `[Subsingleton.elim θ 0, map_zero, map_zero, mul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `la`.
-
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨F, -, rfl⟩`. Simplify using `only [Subsingleton.elim F 0, map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `la y`.
-
-Use `⟨fun h => absurd h hm, fun _ => ?_⟩` and prove the remaining obligations. Establish `h1 : Xm.depth (sWS K wL) wL la y ≤ 0` using `depth_le_zeroS e hadd P _ hd1 hd2 hpt hL la y`. Use `show Xm.depth (sWS K wL) wL la y ≤ (((0 : HeightOneSpectrum (𝓞 B.KO) → ℝ) la : ℝ) : EReal)`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem combHyps_inhabited (K : Type) [Field K] [NumberField K] (e : 𝓞 K ≃+* D.what₂.O) (P : ModuliIntegralCharts.Prov D)
     (hP : ∀ j, 1 ≤ j → j ≤ D.R.m → HasDat P j)
@@ -1396,7 +1382,7 @@ section P66Model
 open Formalism.MainNotions.DIV.Inh Formalism.MainNotions.DIV.Inh.LocalProvisionModel in
 
 /- English proof (translation)
-Set `P : ModuliIntegralCharts.Prov D` to `provDegenerate D {x : ℕ × ℕ // 1 ≤ x.2 ∧ x.2 + 1 ≤ x.1} (fun x => x.1.1) (fun x => x.1.2) (fun x => x.2) (fun _ p => mpTrivialAb D p (nonempty_coefficient_field p).some)`. Establish `hfull : ∀ r j, 1 ≤ j → j + 1 ≤ r → ∃ w : P.Dat, P.rk w = r ∧ P.jj w = j` using `fun r j h1 h2 => ⟨⟨(r, j), h1, h2⟩, rfl, rfl⟩`. Conclude with `⟨P, fun j h1 _ => HasDat_of_full P hfull j h1, fun _ _ => ⟨()⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_moduli_model_nonempty_points (D : D7) : ∃ P : ModuliIntegralCharts.Prov D, (∀ j, 1 ≤ j → j ≤ D.R.m → HasDat P j) ∧
     ∀ (d : P.Dat) (p : ℕ), Nonempty ((P.loc d p).Pt (P.loc d p).YY) := by
@@ -1407,7 +1393,7 @@ theorem exists_moduli_model_nonempty_points (D : D7) : ∃ P : ModuliIntegralCha
   exact ⟨P, fun j h1 _ => HasDat_of_full P hfull j h1, fun _ _ => ⟨()⟩⟩
 
 /- English proof (translation)
-Take `⟨P, hP, hPt⟩` from `exists_moduli_model_nonempty_points D`. Conclude with `⟨P, combHyps_inhabited K e P hP hPt τ0 large₂ Kc H Ch Ah Cq Aq C2 A2 CR CT G0 PH Prw Pet Pd h0 ka wL wF T nP nW hN⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem combHyps_inhabited_of_num {D : D7} (K : Type) [Field K] [NumberField K] (e : 𝓞 K ≃+* D.what₂.O)
     (τ0 : D.what₂.Tau) (large₂ : SizeData₂ D) (Kc : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR CT G0 PH Prw Pet Pd h0 : ℝ)

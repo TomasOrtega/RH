@@ -24,7 +24,7 @@ def offY (y : Ys X n) : Setoid (PtY ST SG Q y) where
     fun h h' => ⟨fun w hw => (h.1 w hw).trans (h'.1 w hw), h.2.1.trans h'.2.1, h.2.2.1.trans h'.2.2.1, h.2.2.2.trans h'.2.2.2⟩⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : (∀ (P : Q) (x : Sp X.E n), p.1.1.1.2 P x ∈ d.1.at P.1 ↔ x ∈ stdAt X.E n P.1) ∧ p.1.2 ∈ y.ys d.1.N`. Rewrite using `[show p.mv d = ⟨(⟨(d, p.1.1.1.2), h.1⟩, p.1.2), h.2⟩ from dif_pos h]`. Conclude with `⟨h1, h2, rfl, rfl⟩`. Rewrite using `[show p.mv d = p from dif_neg h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem off_mv (y : Ys X n) (p : PtY ST SG Q y) (d : DecoSet X.E n ST SG) (h1 : SameOff ST p.1.1.deco.1.N d.1.N)
     (h2 : p.1.1.deco.1.be = d.1.be) : (offY y).r p (p.mv d) := by
@@ -35,7 +35,7 @@ theorem off_mv (y : Ys X n) (p : PtY ST SG Q y) (d : DecoSet X.E n ST SG) (h1 : 
   · rw [show p.mv d = p from dif_neg h]
 
 /- English proof (translation)
-Set `d0 : Deco X.E n ∅ SG` to `⟨d.N, fun P => absurd P.2 (Finset.notMem_empty _), d.be⟩`. Establish `h0 : d0.Ok` using `⟨hd.lat, hd.uni, fun P => absurd P.2 (Finset.notMem_empty _), fun P => absurd P.2 (Finset.notMem_empty _), fun P => absurd P.2 (Finset.notMem_empty _), fun P => absurd P.2 (Finset.notMem_empty _), hd.be_add, hd.be_smul, hd.be_off, hd.be_surj, hd.be_ker⟩`. Establish `h1` using `GlobalTheory.GO.decoration_admissible_of_localization_eq h0 he.lat he.uni (fun P => absurd P.2 (Finset.notMem_empty _)) hG`. Conclude with `⟨he.lat, he.uni, he.f_add, he.f_smul, he.f_off, he.f_ne, h1.be_add, h1.be_smul, h1.be_off, h1.be_surj, h1.be_ker⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ok_repl {d : Deco X.E n ST SG} (hd : d.Ok) {e : Deco X.E n ST ∅} (he : e.Ok)
     (hG : ∀ w : SG, localization₂ w.1.asIdeal d.N = localization₂ w.1.asIdeal e.N) : Deco.Ok (⟨e.N, e.f, d.be⟩ : Deco X.E n ST SG) := by
@@ -47,9 +47,9 @@ theorem ok_repl {d : Deco X.E n ST SG} (hd : d.Ok) {e : Deco X.E n ST ∅} (he :
   exact ⟨he.lat, he.uni, he.f_add, he.f_smul, he.f_off, he.f_ne, h1.be_add, h1.be_smul, h1.be_off, h1.be_surj, h1.be_ker⟩
 
 /- English proof (translation)
-Use `⟨⟨(Matrix.GeneralLinearGroup.toLin γ).toLinearEquiv, fun x y => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show hStd X.E n (γ.1 *ᵥ x) (γ.1 *ᵥ y) = hStd X.E n x y`. Establish `e : ∀ a b : Fin n → X.E, hStd X.E n a b = star a ⬝ᵥ b` using `fun _ _ => rfl`. Rewrite using `[e, e, star_mulVec, dotProduct_mulVec, vecMul_vecMul, h, vecMul_one]`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, LevLaws.ufGL_mulVec]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_uf (γ : GL (Fin n) X.E) (h : (γ : Matrix (Fin n) (Fin n) X.E)ᴴ * (γ : Matrix (Fin n) (Fin n) X.E) = 1) :
     ∃ g : UF X.E n, ufGL X.E n g = γ := by
@@ -135,7 +135,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks}
   (Tp : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K)))
 
 /- English proof (translation)
-Establish `h2 : (Pr.T u : 𝓞 X.E) ∉ w.1.asIdeal` using `(Finset.mem_union.1 w.2).elim (fun h => T_notMem_vGs hPr u ⟨w.1, h⟩) (hQ w.1)`. Conclude with `h w.1 fun P hP => ne_of_T_notMem hPr u ⟨P, hP⟩ h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem localization_eq_of_sameOff (hPr : Pr.Ok) (u : Pr.Word) (hQ : ∀ w ∈ QE sel (mu : Chr X.F X.E X.K), (Pr.T u : 𝓞 X.E) ∉ w.asIdeal) {n : ℕ}
     {N N' : Submodule (𝓞 X.E) (Sp X.E n)} (h : SameOff (Pr.vT u) N N') (w : rowSG Pr sel mu) :
@@ -158,16 +158,16 @@ def splitAt (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word)
     (fun P hP => (T_unif hX hPr u ⟨P, hP⟩).1) (fun P hP => (T_unif hX hPr u ⟨P, hP⟩).2)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem splitAt_off (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word)
     (hQ : ∀ w ∈ QE sel (mu : Chr X.F X.E X.K), (Pr.T u : 𝓞 X.E) ∉ w.asIdeal) (j : ℕ) (b) (p q : PtAt R sel mu cst u j) :
     ((splitAt sel mu cst L Tp hX hPr u hQ j).off b).r p q ↔ SameOffPt sel mu cst u p q := Iff.rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `P`. Unfold `frsF`. Use `split_ifs with hP`. Unfold `Deco.liftFr Deco.at`. Simplify using `only [localization_eq_of_sameOff sel mu hPr u hQ h.1 P, h.2.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.2.2.1]`.
+A detailed English derivation is pending.
 -/
 theorem frsF_eq (hPr : Pr.Ok) (u : Pr.Word) (hQ : ∀ w ∈ QE sel (mu : Chr X.F X.E X.K), (Pr.T u : 𝓞 X.E) ∉ w.asIdeal) {j : ℕ}
     {p q : PtAt R sel mu cst u j} (h : SameOffPt sel mu cst u p q) : frsF sel mu p.1.1 = frsF sel mu q.1.1 := by
@@ -179,11 +179,9 @@ theorem frsF_eq (hPr : Pr.Ok) (u : Pr.Word) (hQ : ∀ w ∈ QE sel (mu : Chr X.F
   · rw [h.2.2.1]
 
 /- English proof (translation)
-Take `⟨-, x, hx, hf, -⟩` from `p.1.1.deco.upSet_nonempty P (moveHyp_of_ok hPr u P) (T_unif hX hPr u P).1 (T_unif hX hPr u P).2`. Use `⟨_, ⟨x, hx, hf, rfl⟩, (splitAt sel mu cst L Tp hX hPr u hQ j).off_up b p P x hx hf, fun e => ?_⟩` and prove the remaining obligations. Establish `h` using `(tdatAt_tied sel mu cst L Tp hX hPr u hQ j).up_deco b p P x hx hf`. Rewrite `h` using `[e]`. Establish `h3 : p.1.1.deco.1.f P x = if x ∈ localization₂ P.1.asIdeal (upN P.1.asIdeal p.1.1.deco.1.N x) then p.1.1.deco.1.f P ((Pr.T u : 𝓞 X.E) • x) else 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrFun (congrArg Deco.f h) P) x` as an intermediate fact. Simplify using `only [Deco.up, Function.update_self] at this`. Conclude with `this`. Rewrite `h3` using `[p.1.1.deco.2.f_smul P _ x (le_locP _ _ hx), Ideal.Quotient.eq_zero_iff_mem.2 (T_unif hX hPr u P).1, zero_mul, ite_self, hf]`. Use `haveI := P.1.isPrime`.
-
-Conclude with `one_ne_zero h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_above_ne (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word)
     (hQ : ∀ w ∈ QE sel (mu : Chr X.F X.E X.K), (Pr.T u : 𝓞 X.E) ∉ w.asIdeal) (j : ℕ) (b) (P : Pr.vT u) (p : PtAt R sel mu cst u j) :
@@ -209,9 +207,9 @@ section Side
 variable {D : D7} {u : D.what₂.Word} {B : Dat D u} {i : ℕ} {sp : Split (B.J.A i) B.J.T} {M : PtModel B.ch i}
 
 /- English proof (translation)
-Use `⟨by rw [← R.pt_smul]; exact (R.inj ζ b d _).2 ⟨g, h1, h2, rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[R.act_hom, R.act_zeta]`. Use function extensionality and compare the values at `z`. Use `Eq.trans ?_ (trFr_apply B.emb D.what₂.embLL _ _ y.1 z).symm` and prove the remaining obligations. Rewrite using `[h1, h2, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun t => D.what₂.embLL _ * y.1 t) (frMul_one B.emb D.what₂.embLL z).symm`.
+A detailed English derivation is pending.
 -/
 theorem act_of_zeta (R : B.Real i sp M) (ζ : CommGroup.torsion (D.what₂.LL)ˣ) (b) (g : (B.I.S i).G b)
     (h1 : (B.I.S i).gam b g = 1) (h2 : (B.I.S i).chr b g = ζ.1) (d) (y : M.Val) :
@@ -224,7 +222,7 @@ theorem act_of_zeta (R : B.Real i sp M) (ζ : CommGroup.torsion (D.what₂.LL)ˣ
   exact congrArg (fun t => D.what₂.embLL _ * y.1 t) (frMul_one B.emb D.what₂.embLL z).symm
 
 /- English proof (translation)
-Rewrite using `[← h b b' d d' F y hy, ← h b b' (g • d) d' _ (M.act (R.hom b g) y), R.pt_smul, K.src]`. Rewrite using `[R.act_hom, hy]`. Conclude with `(BuiltChain.evV_rho B.emb D.what₂.embLL (B.I.S i) (B.lam i) b g F).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem src_of_kerIs {sp' : Split (B.J.A (i + 1)) B.J.T} {M' : PtModel B.ch (i + 1)} (R : B.Real i sp M)
     (R' : B.Real (i + 1) sp' M') (K : KerPt M M') (k : B.Ker i) (h : Dat.KerIs R R' K k) (b b') (g : (B.I.S i).G b) (d d') (F : B.V i)
@@ -239,7 +237,7 @@ end Side
 namespace KerInh
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b b' d d'`. Establish `e : k b b' ((B.I.S i).rep ((B.I.S i).cl b d)) ((B.I.S (i+1)).rep ((B.I.S (i+1)).cl b' d')) = k' b b' ((B.I.S i).rep ((B.I.S i).cl b d)) ((B.I.S (i+1)).rep ((B.I.S (i+1)).cl b' d'))`. Use `LinearMap.ext fun F => evV_injective B.emb 1 (B.lam (i+1)) D.what₂.embLL (stdFrC _) ?_` and prove the remaining obligations. Conclude with `(h.kmap ((B.I.S i).cl b d) ((B.I.S (i+1)).cl b' d') F).symm.trans (h'.kmap ((B.I.S i).cl b d) ((B.I.S (i+1)).cl b' d') F)`. Rewrite using `[← (B.I.S i).mv_smul b d, ← (B.I.S (i+1)).mv_smul b' d', h.equiv, h'.equiv, e]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerEq_unique {D : D7} {u : D.what₂.Word} {B : Dat D u} {i : ℕ} (k k' : B.Ker i) (h : Dat.KerEq k) (h' : Dat.KerEq k') : k = k' := by
   funext b b' d d'
@@ -283,9 +281,9 @@ def kk (i : ℕ) : B.Ker i := fun b b' d d' =>
   (B.I.S (i+1)).rho B.emb (B.lam (i+1)) b' ((B.I.S (i+1)).mv b' d') ∘ₗ k0 B i ∘ₗ (B.I.S i).rho B.emb (B.lam i) b ((B.I.S i).mv b d)⁻¹
 
 /- English proof (translation)
-Establish `e : S.rep (S.cl b (g • d)) = S.rep (S.cl b d)` using `congrArg (S.rp b) (Quotient.sound (MulAction.mem_orbit d g))`. Establish `h1` using `S.mv_smul b (g • d)`. Establish `h2` using `S.mv_smul b d`. Rewrite `h1` using `[e]`. Use `h b ((g * S.mv b d)⁻¹ * S.mv b (g • d)) (S.rep (S.cl b d)) (by rw [mul_smul, h1, inv_smul_eq_iff, mul_smul, h2])` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(inv_mul_eq_one.1 this).symm`.
+A detailed English derivation is pending.
 -/
 theorem mv_act {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] {n : ℕ} (S : GStep E K n) (h : S.Free) (b) (g : S.G b) (d) :
     S.mv b (g • d) = g * S.mv b d := by
@@ -298,7 +296,7 @@ theorem mv_act {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Nu
   exact (inv_mul_eq_one.1 this).symm
 
 /- English proof (translation)
-Establish `h1` using `S.mv_smul c.1 (S.rep c)`. Establish `e : S.rep (S.cl c.1 (S.rep c)) = S.rep c` using `congrArg (S.rp c.1) (S.rp_spec c.1 c.2)`. Rewrite `h1` using `[e]`. Conclude with `h _ _ _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_rep {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] {n : ℕ} (S : GStep E K n) (h : S.Free) (c : S.Cl) :
     S.mv c.1 (S.rep c) = 1 := by
@@ -308,13 +306,13 @@ theorem mv_rep {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Nu
   exact h _ _ _ h1
 
 /- English proof (translation)
-Set `Q : MvPolynomial (ι × Fin n × Fin n) ℂ` to `(∏ τ, (Matrix.of fun a b => MvPolynomial.X (τ, a, b) : Matrix (Fin n) (Fin n) (MvPolynomial (ι × Fin n × Fin n) ℂ)).det ^ (s τ + e τ).toNat) * P`. Establish `hd : ∀ (y : ι → Matrix (Fin n) (Fin n) ℂ) τ, MvPolynomial.eval (fun x : ι × Fin n × Fin n => y x.1 x.2.1 x.2.2) (Matrix.of fun a b => MvPolynomial.X (τ, a, b) : Matrix (Fin n) (Fin n) (MvPolynomial (ι × Fin n × Fin n) ℂ)).det = (y τ).det`. Introduce `y τ`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `e1 : (fun y : Frames G => (∏ τ, deFr y τ ^ e τ) * fnOf G s 1 P y) = fnOf G 0 (fun τ => (o.1 τ)⁻¹) Q`. Use function extensionality and compare the values at `y`. Simplify using `only [fnOf, ho, inv_one, Pi.one_apply, one_mul, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply, zpow_zero, Finset.prod_const_one, Q, map_mul, map_prod, map_pow, hd y.1, deFr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (y.2 τ).ne_zero, ← zpow_natCast, Int.toNat_of_nonneg (h τ), add_comm]`. Rewrite using `[e1, polOf_fnOf]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hd (fun _ => 1)` as an intermediate fact. Simplify using `only [Q, map_mul, map_prod, map_pow]`. Establish `h2 : ∀ τ, MvPolynomial.aeval (id1 (R` using `ℂ)) (Matrix.of fun a b => MvPolynomial.X (τ, a, b) : Matrix (Fin n) (Fin n) (MvPolynomial (ι × Fin n × Fin n) ℂ)).det = 1 := fun τ => (this τ).trans det_one`. Simplify using `[h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem polOf_one {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fin n) (Fin n) ℂ) (o : Frames G) (ho : ∀ τ, o.1 τ = 1)
     (s e : ι → ℤ) (h : ∀ τ, 0 ≤ s τ + e τ) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) :
@@ -343,7 +341,7 @@ theorem polOf_one {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fin n) 
   simp [h2]
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, map_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gen {G G' K V V' : Type} [Group G] [Group G'] [Field K] [AddCommGroup V] [AddCommGroup V'] [Module K V] [Module K V']
     (ρ : G →* Module.End K V) (ρ' : G' →* Module.End K V') (k : V →ₗ[K] V') (g a : G) (g' a' : G') :
@@ -352,7 +350,7 @@ theorem gen {G G' K V V' : Type} [Group G] [Group G'] [Field K] [AddCommGroup V]
   rfl
 
 /- English proof (translation)
-Unfold `kk`. Rewrite using `[mv_act _ h0, mv_act _ h1]`. Conclude with `gen _ _ _ _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kk_equiv (i : ℕ) (h0 : (B.I.S i).Free) (h1 : (B.I.S (i+1)).Free) (b : (B.I.S i).β) (b' : (B.I.S (i+1)).β) (g : (B.I.S i).G b) (g' : (B.I.S (i+1)).G b') (d : (B.I.S i).D b) (d' : (B.I.S (i+1)).D b') :
     kk B i b b' (g • d) (g' • d') = (B.I.S (i + 1)).rho B.emb (B.lam (i + 1)) b' g' ∘ₗ kk B i b b' d d' ∘ₗ (B.I.S i).rho B.emb (B.lam i) b g⁻¹ := by
@@ -361,7 +359,7 @@ theorem kk_equiv (i : ℕ) (h0 : (B.I.S i).Free) (h1 : (B.I.S (i+1)).Free) (b : 
   exact gen _ _ _ _ _ _ _
 
 /- English proof (translation)
-Unfold `kk`. Rewrite using `[mv_rep _ h0, mv_rep _ h1, inv_one, map_one, map_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kk_rep (i : ℕ) (h0 : (B.I.S i).Free) (h1 : (B.I.S (i+1)).Free) (c : (B.I.S i).Cl) (c' : (B.I.S (i+1)).Cl) (F : B.V i) :
     kk B i c.1 c'.1 ((B.I.S i).rep c) ((B.I.S (i + 1)).rep c') F = MvPolynomial.aeval (id1 (R := D.what₂.LL)) F.1 • extV D.what₂.LL (B.lam (i+1)) := by
@@ -370,11 +368,11 @@ theorem kk_rep (i : ℕ) (h0 : (B.I.S i).Free) (h1 : (B.I.S (i+1)).Free) (c : (B
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `(y : Fr B.emb D.what₂.embLL (D.R.N (i+1)))`. Establish `hp` using `polOf_one (Gr B.emb D.what₂.embLL (D.R.N i)) (fr0 _ _ _) (fun _ => rfl) _ _ hs (MvPolynomial.map D.what₂.embLL F.1)`. Use `show (1 * 1 : ℂ) * ((∏ τ, deFr y τ ^ B.ch.C.sDiv i τ)⁻¹ * fnOf (Gr B.emb D.what₂.embLL (D.R.N (i+1))) 0 1 (MvPolynomial.aeval (id1 (R := ℂ)) (polOf (Gr B.emb D.what₂.embLL (D.R.N i)) 0 (fr0 _ _ _) (fun y => (∏ τ, deFr y τ ^ B.ch.C.sSharp i τ) * fnOf (Gr B.emb D.what₂.embLL (D.R.N …`. Rewrite using `[hp, LinearMap.map_smulₛₗ (evV B.emb 1 (B.lam (i+1)) D.what₂.embLL), map_smul, evV_apply]`. Establish `e : MvPolynomial.aeval (id1 (R` using `ℂ)) (MvPolynomial.map D.what₂.embLL F.1) = D.what₂.embLL (MvPolynomial.aeval (id1 (R := D.what₂.LL)) F.1) := by`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.aeval_eq_eval, MvPolynomial.aeval_eq_eval, MvPolynomial.eval_map, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[id1, Matrix.one_apply]`. Rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [fnOf, ht, Pi.smul_apply, smul_eq_mul, Pi.one_apply, one_mul, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply, zpow_zero, Finset.prod_const_one, deFr, _root_.zpow_neg, Finset.prod_inv_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kk_kmap (i : ℕ)
     (hs : ∀ τ, 0 ≤ shiftOf (B.lam i) τ + B.ch.C.sSharp i τ) (ht : ∀ τ, shiftOf (B.lam (i+1)) τ = - B.ch.C.sDiv i τ)
@@ -396,7 +394,7 @@ theorem kk_kmap (i : ℕ)
     ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨kk_equiv B i h0 h1, fun c c' F => (kk_kmap B i hs ht c c' F).trans (congrArg (B.ev (i+1)) (kk_rep B i h0 h1 c c' F).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem kk_eq (i : ℕ) (h0 : (B.I.S i).Free) (h1 : (B.I.S (i+1)).Free)
     (hs : ∀ τ, 0 ≤ shiftOf (B.lam i) τ + B.ch.C.sSharp i τ) (ht : ∀ τ, shiftOf (B.lam (i+1)) τ = - B.ch.C.sDiv i τ) :
@@ -404,9 +402,9 @@ theorem kk_eq (i : ℕ) (h0 : (B.I.S i).Free) (h1 : (B.I.S (i+1)).Free)
   ⟨kk_equiv B i h0 h1, fun c c' F => (kk_kmap B i hs ht c c' F).trans (congrArg (B.ev (i+1)) (kk_rep B i h0 h1 c c' F).symm)⟩
 
 /- English proof (translation)
-Unfold `extremal Formalism.GradedWeylDivisibility.hw Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, RingHom.map_det]`. Establish `h : ∀ (k : ℕ) (h1 h2 : k ≤ n), (MvPolynomial.eval (fun v : Fin n × Fin n => if v.1 = v.2 then (1 : R) else 0)).mapMatrix (Matrix.of fun p q : Fin k => (MvPolynomial.X (Fin.castLE h1 p, Fin.castLE h2 q) : MvPolynomial (Fin n × Fin n) R)) = 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k h1 h2`. Use extensionality with `p q`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Rewrite using `[h, Matrix.det_one, one_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_extremal {R : Type} [CommRing R] {n : ℕ} (lam : DomWeight n) :
     MvPolynomial.eval (fun v : Fin n × Fin n => if v.1 = v.2 then (1 : R) else 0) (extremal R n lam) = 1 := by
@@ -423,9 +421,9 @@ theorem eval_extremal {R : Type} [CommRing R] {n : ℕ} (lam : DomWeight n) :
   rw [h, Matrix.det_one, one_pow]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.aeval_eq_eval]`. Use `show MvPolynomial.eval _ (∏ τ, _) = 1`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun t _ => ?_` and prove the remaining obligations. Unfold `Formalism.GradedWeylDivisibility.blockEmb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.eval_rename]`. Conclude with `eval_extremal (B.lam i t)`.
+A detailed English derivation is pending.
 -/
 theorem ext_one (i : ℕ) : MvPolynomial.aeval (id1 (R := D.what₂.LL)) (extV D.what₂.LL (B.lam i)).1 = 1 := by
   rw [MvPolynomial.aeval_eq_eval]
@@ -437,7 +435,7 @@ theorem ext_one (i : ℕ) : MvPolynomial.aeval (id1 (R := D.what₂.LL)) (extV D
   exact eval_extremal (B.lam i t)
 
 /- English proof (translation)
-Use `⟨kk B i, kk_eq B i h0 h1 hs ht, fun e => ?_⟩` and prove the remaining obligations. Establish `h` using `kk_rep B i h0 h1 c c' (extV _ _)`. Establish `e' : kk B i = 0` using `e`. Rewrite `h` using `[ext_one, one_smul, e']`. Conclude with `extV_ne_zero _ h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzero (i : ℕ) (h0 : (B.I.S i).Free) (h1 : (B.I.S (i+1)).Free) (c : (B.I.S i).Cl) (c' : (B.I.S (i+1)).Cl)
     (hs : ∀ τ, 0 ≤ shiftOf (B.lam i) τ + B.ch.C.sSharp i τ) (ht : ∀ τ, shiftOf (B.lam (i+1)) τ = - B.ch.C.sDiv i τ) :
@@ -450,11 +448,11 @@ theorem nonzero (i : ℕ) (h0 : (B.I.S i).Free) (h1 : (B.I.S (i+1)).Free) (c : (
 end K
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.GO.ChSrc.trueWt_add_sS_nonneg hc hi τ ⟨R.N i - 1, by have := R.N_pos i; omega⟩`. Establish `h2` using `GlobalTheory.GO.ChSrc.trueWt_detShift_succ hc hi τ`. Establish `a : GlobalTheory.GO.ChSrc.sS hc i τ = ⌊(hc τ).e ⟨i, hi⟩ - (R.N (i + 1) : ℚ) / 2⌋`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[floor_sub_half, GlobalTheory.GO.ChSrc.sS, dif_pos hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.GO.ChSrc.zOf_spec R _ ((hc τ).e_int _) _`. Establish `b : GlobalTheory.GO.ChSrc.sD hc i τ = ⌊(hc τ).e ⟨i, hi⟩ - (R.N i : ℚ) / 2⌋`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[floor_sub_half, GlobalTheory.GO.ChSrc.sD, dif_pos hi]`. Conclude with `GlobalTheory.GO.ChSrc.zOf_spec R _ ((hc τ).e_int _) _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← a, ← b]`. Use `⟨?_, h2⟩` and prove the remaining obligations. Unfold `shiftOf DomWeight.detShift`. Rewrite using `[dif_pos (R.N_pos i)]`. Conclude with `h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shifts {X : Fields} {R : Ranks} (hc : X.Tau → HCParam R) (i : ℕ) (hi : i < R.m) (τ : X.Tau) :
     0 ≤ shiftOf (GlobalTheory.Mem.Col2.lamT hc i) τ + ⌊(hc τ).e ⟨i, hi⟩ - (R.N (i + 1) : ℚ) / 2⌋ ∧

@@ -11,9 +11,9 @@ open GlobalTheory.Cusp GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadical
 namespace GlobalTheory.ConstantTermL2
 
 /- English proof (translation)
-Introduce `D V μ _ _ W hW F`. Establish `hc` using `cocompact_single hW`. Establish `hl` using `leftInv_lift (Γ := GQ V) F`. Establish `hm : StronglyMeasurable (lift (GQ V) F)` using `(Lp.stronglyMeasurable F).comp_measurable measurable_mk`. Establish `hi` using `GlobalTheory.CuspAE.locallyIntegrable_lift (Γ := GQ V) (μ := μ) F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.CuspAE.locallyIntegrable_constTermOn hc hl hm hi, fun u hu => .of_forall fun g => hc.constTermOn_mul_left hl hu g, fun f hf hs x => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun x => ∫ y, f (x⁻¹ * y) * lift (GQ V) F y ∂μ) = convR μ f (lift (GQ V) F)`. Use function extensionality and compare the values at `fun x => (convR_eq (μ := μ) f _ x).symm`. Rewrite using `[e1, ← convR_eq (μ := μ)]`. Conclude with `GlobalTheory.CuspAE.constTermOn_convR hc hl hm hi hf hs x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (W : Submodule D.host.E V.V) (hW : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.IsIsotropic V W) (F : DividedPowerChartLift V μ), LocallyIntegrable (constTerm (.single hW) (lift (GQ V) F)) μ ∧ (∀ u ∈ NA (.single hW), (fun g => constTerm (.single hW) (lift (GQ V) F) (u * g)) =ᵐ[μ] constTerm (.single hW) (lift (GQ V) F)) ∧ ∀ f : GA D V → ℂ, Continuous f → HasCompactSupport f → ∀ x, constTerm (.single hW) (fun x => ∫ y, f (x⁻¹ * y) * lift (GQ V) F y ∂μ) x = ∫ y, f (x⁻¹ * y) * constTerm (.single hW) (lift (GQ V) F) y ∂μ := by
   intro D V μ _ _ W hW F

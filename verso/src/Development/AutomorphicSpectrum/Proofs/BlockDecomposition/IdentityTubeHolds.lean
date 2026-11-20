@@ -6,7 +6,7 @@ open Filter Topology PositivityTheory.RgEis
 namespace GlobalTheory.CompanionTheory.Eis
 
 /- English proof (translation)
-Establish `hc : Continuous fun l : ℂ × ℂ => (l.1.re, l.2.re)` using `(Complex.continuous_re.comp continuous_fst).prodMk (Complex.continuous_re.comp continuous_snd)`. Conclude with `hc.isOpen_preimage Ω hΩ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tube_isOpen {Ω : Set (ℝ × ℝ)} (hΩ : IsOpen Ω) : IsOpen (tube Ω) := by
   have hc : Continuous fun l : ℂ × ℂ => (l.1.re, l.2.re) :=
@@ -14,9 +14,9 @@ theorem tube_isOpen {Ω : Set (ℝ × ℝ)} (hΩ : IsOpen Ω) : IsOpen (tube Ω)
   exact hc.isOpen_preimage Ω hΩ
 
 /- English proof (translation)
-Introduce `x hx y hy a b ha hb hab`. Establish `key` using `hc hx hy ha hb hab`. Simplify using `only [tube, Set.mem_ofPred_eq] at hx hy key ⊢`. Use `key using 1` and compare the differences between its conclusion and the goal. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [Prod.fst_add, Prod.smul_fst, Complex.add_re, smul_eq_mul, Complex.real_smul, Complex.mul_re, Complex.mul_im, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, Prod.fst_add, Prod.smul_mk, Prod.mk_add_mk]`. Take the linear combination `(-p.1.re) * hab`. Simplify using `only [Prod.snd_add, Prod.smul_snd, Complex.add_re, smul_eq_mul, Complex.real_smul, Complex.mul_re, Complex.mul_im, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, Prod.smul_mk, Prod.mk_add_mk]`. Take the linear combination `(-p.2.re) * hab`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem line_tube_convex {Ω : Set (ℝ × ℝ)} (hc : Convex ℝ Ω) (p v : ℂ × ℂ) :
     Convex ℝ {τ : ℂ | p + τ • v ∈ tube Ω} := by
@@ -33,13 +33,13 @@ theorem line_tube_convex {Ω : Set (ℝ × ℝ)} (hc : Convex ℝ Ω) (p v : ℂ
     linear_combination (-p.2.re) * hab
 
 /- English proof (translation)
-Introduce `X _ _ _ Ω Ω' F F' hΩ hc hΩ' hne hsub hF hF' heq z hz`. Take `⟨ω, hω⟩` from `hne`. Use `set z0 : ℂ × ℂ := ((ω.1 : ℂ), (ω.2 : ℂ)) with hz0`. Establish `hz0' : z0 ∈ tube Ω'` using `by simpa [tube, hz0] using hω`. Establish `hline : Continuous fun τ : ℂ => z0 + τ • (z - z0)` using `by fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDo : IsOpen {τ : ℂ | z0 + τ • (z - z0) ∈ tube Ω}` using `(tube_isOpen hΩ).preimage hline`. Establish `hDc : Convex ℝ {τ : ℂ | z0 + τ • (z - z0) ∈ tube Ω}` using `line_tube_convex hc z0 (z - z0)`. Establish `h0 : (0 : ℂ) ∈ {τ : ℂ | z0 + τ • (z - z0) ∈ tube Ω}` using `by show z0 + (0 : ℂ) • (z - z0) ∈ tube Ω`. Rewrite using `[zero_smul, add_zero]`. Conclude with `hsub hz0'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℂ) ∈ {τ : ℂ | z0 + τ • (z - z0) ∈ tube Ω}` using `by simpa using hz`. Establish `hA` using `(hF z0 (z - z0)).analyticOnNhd hDo`. Establish `hA'` using `(hF' z0 (z - z0)).analyticOnNhd hDo`. Establish `hev : (fun τ : ℂ => F (z0 + τ • (z - z0))) =ᶠ[𝓝 0] (fun τ : ℂ => F' (z0 + τ • (z - z0)))`. Establish `hO' : IsOpen {τ : ℂ | z0 + τ • (z - z0) ∈ tube Ω'}` using `(tube_isOpen hΩ').preimage hline`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [hO'.mem_nhds (by simpa using hz0')] with τ hτ`. Conclude with `heq hτ`. Use `hA.eqOn_of_preconnected_of_eventuallyEq hA' hDc.isPreconnected h0 hev h1` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem idTube : IdTube := by
   intro X _ _ _ Ω Ω' F F' hΩ hc hΩ' hne hsub hF hF' heq z hz

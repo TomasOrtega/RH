@@ -20,9 +20,9 @@ def infLift {m n : ℕ} (x : Matrix (Fin m) (Fin n) D.host.E) : Mx D m n :=
   x.map fun e => (pairA D.host.F 1 0 : AF D.host.F) ⊗ₜ[D.host.F] e
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, finLift, infLift]`. Rewrite using `[← TensorProduct.add_tmul]`. Establish `: (pairA D.host.F 0 1 + pairA D.host.F 1 0 : AF D.host.F) = 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_add _`. Conclude with `add_zero _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_incA_eq {m n : ℕ} (x : Matrix (Fin m) (Fin n) D.host.E) :
     x.map (incA D) = finLift x + infLift x := by
@@ -37,7 +37,7 @@ theorem map_incA_eq {m n : ℕ} (x : Matrix (Fin m) (Fin n) D.host.E) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, infLift, Matrix.zero_apply]`. Use `show (sndA D.host.F (pairA D.host.F 1 0)) ⊗ₜ[D.host.F] x a b = 0`. Establish `: sndA D.host.F (pairA D.host.F 1 0) = 0` using `rfl`. Rewrite using `[this, TensorProduct.zero_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infLift_finPart {m n : ℕ} (x : Matrix (Fin m) (Fin n) D.host.E) :
     (infLift x).map (finPart D) = 0 := by
@@ -48,7 +48,7 @@ theorem infLift_finPart {m n : ℕ} (x : Matrix (Fin m) (Fin n) D.host.E) :
   rw [this, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [compAt, Matrix.map_apply, infLift]`. Establish `: infPart D ((pairA D.host.F 1 0 : AF D.host.F) ⊗ₜ[D.host.F] x a b) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] x a b` using `rfl`. Rewrite using `[this]`. Conclude with `(hθ τ).1 _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_infLift {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n : ℕ}
     (x : Matrix (Fin m) (Fin n) D.host.E) : compAt θ τ (infLift x) = x.map (tauE D τ) := by
@@ -60,17 +60,17 @@ theorem compAt_infLift {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) 
   exact (hθ τ).1 _
 
 /- English proof (translation)
-Establish `hc : ∀ σ : D.host.E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => star_star σ`. Establish `hi` using `GlobalTheory.StdRat.tauE_injective D`. Establish `hcm` using `GlobalTheory.StdRat.tauE_cm D`. Establish `hb : Function.Bijective (Sum.elim (tauE D) fun t => ComplexEmbedding.conjugate (tauE D t))`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h`. Rewrite using `[hi h]`. Conclude with `absurd ⟨a, h⟩ ((hcm (tauE D b)).1 ⟨b, rfl⟩)`. Conclude with `absurd ⟨b, h.symm⟩ ((hcm (tauE D a)).1 ⟨a, rfl⟩)`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hc, hc]`. Rewrite using `[hi this]`. Introduce `σ`. Distinguish the cases in `h : ∃ t, tauE D t = ComplexEmbedding.conjugate σ`. Take `⟨t, ht⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Sum.inr t, by simp only [Sum.elim_inr]; rw [ht, hc]⟩`. Take `⟨t, ht⟩` from `(hcm σ).2 h`. Conclude with `⟨Sum.inl t, ht⟩`. Establish `h1 : ((Algebra.trace ℚ D.host.E e : ℚ) : ℂ) = ∑ σ : D.host.E →+* ℂ, σ e`. Use `trace_eq_sum_embeddings (K := ℚ) (L := D.host.E) ℂ (x := e)` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[eq_ratCast]`. Rewrite using `[this]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom D.host.E ℂ) _ _ fun _ => rfl).symm`. Establish `h4` using `hb.sum_comp fun σ : D.host.E →+* ℂ => σ e`. Rewrite `h4` using `[Fintype.sum_sum_type, ← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h4`. Establish `h5` using `congrArg Complex.re h4`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, Complex.add_re, Complex.re_sum, Complex.conj_re, Complex.ratCast_re] at h5`. Rewrite using `[← h5, Finset.sum_congr rfl fun τ _ => two_mul _, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_two_re_tauE (D : D7) (e : D.host.E) :
     ∑ τ, 2 * (tauE D τ e).re = ((Algebra.trace ℚ D.host.E e : ℚ) : ℝ) := by
@@ -108,7 +108,7 @@ theorem sum_two_re_tauE (D : D7) (e : D.host.E) :
   rw [← h5, Finset.sum_congr rfl fun τ _ => two_mul _, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `h : isoPart V W C (κ + κ') = isoPart V W C κ + isoPart V W C κ'` using `Matrix.add_mul _ _ _`. Unfold `phase`. Rewrite using `[h, (GlobalTheory.SymplecticOrthogonalSesquilinear.symplO_alt D V W).2.1, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phase_add (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) {r : ℕ}
     (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (y : Matrix (Fin W.rank) (Fin r) D.host.E)
@@ -119,7 +119,7 @@ theorem phase_add (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) {r : ℕ}
   rw [h, (GlobalTheory.SymplecticOrthogonalSesquilinear.symplO_alt D V W).2.1, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Use `show HMul.hMul (y.map (incA D)) ((adj D C * V.gram).map (incA D)) = (y * (adj D C * V.gram)).map (incA D)`. Simplify using `only [Matrix.map_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isoPart_rat (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (y : Matrix (Fin W.rank) (Fin r) D.host.E) :
@@ -128,7 +128,7 @@ theorem isoPart_rat (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.h
   simp only [Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `phase`. Rewrite using `[isoPart_rat, isoPart_rat]`. Take `⟨a, ha⟩` from `GlobalTheory.SymplecticOrthogonalSesquilinear.symplO_rat D V W (y * (adj D C' * V.gram)) (x * (adj D C * V.gram))`. Rewrite using `[ha]`. Conclude with `hψ.2.2.1 a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phase_rat (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (V W : HSp D) {r : ℕ}
     (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (y x : Matrix (Fin W.rank) (Fin r) D.host.E) :
@@ -140,7 +140,7 @@ theorem phase_rat (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) 
   exact hψ.2.2.1 a
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul (f := tauE D τ)]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_tau (τ : D.what₂.Tau) {m n : ℕ} (q : Matrix (Fin m) (Fin n) D.host.E)
     (x : Matrix (Fin n) (Fin m) D.host.E) :
@@ -149,7 +149,7 @@ theorem trace_tau (τ : D.what₂.Tau) {m n : ℕ} (q : Matrix (Fin m) (Fin n) D
   simp only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]
 
 /- English proof (translation)
-Establish `h : Matrix.trace (pairQ W y * ((N : D.host.E) • x)) = N • Matrix.trace (pairQ W y * x)`. Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[h, map_nsmul, nsmul_eq_mul, ratPair]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem ratPair_nat_smul (W : HSp D) {r : ℕ} (y x : Matrix (Fin W.rank) (Fin r) D.host.E) (N : ℕ) :
     ((Algebra.trace ℚ D.host.E (Matrix.trace (pairQ W y * ((N : D.host.E) • x))) : ℚ) : ℝ) =
@@ -161,19 +161,19 @@ theorem ratPair_nat_smul (W : HSp D) {r : ℕ} (y x : Matrix (Fin W.rank) (Fin r
   rfl
 
 /- English proof (translation)
-Introduce `D V V' W r C C' B hs hCC ψ hψ θ hθ μ 𝓨 hY`. Take `⟨e, he⟩` from `GlobalTheory.T.openSubgroup_translate_height_bound D V W r (adj D C * V.gram)`. Use `⟨e, fun U hU => ?_⟩` and prove the remaining obligations. Take `⟨M, hM, hMN⟩` from `he U hU`. Use `⟨M, hM, fun g h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN, hNle, hx⟩` from `hMN g h`. Use `⟨N, hN, hNle, fun F hF hinv y hy x hxi => ?_⟩` and prove the remaining obligations. Take `⟨u, huU, hufin, hact⟩` from `hx x hxi`. Establish `h1 : heisO ψ V W (isoPart V W C (finLift ((N : D.host.E) • x))) F = F`. Use `hinv u huU hufin` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hact]`. Conclude with `this`. Establish `h2` using `GlobalTheory.T.mixedModelTerm_heisenbergIsotropic_character D V V' W r C C' B hs ψ hψ μ 𝓨 hY F hF y (finLift ((N : D.host.E) • x))`. Rewrite `h2` using `[h1]`. Establish `hph : phase ψ V W C C' y (finLift ((N : D.host.E) • x)) = 1` using `mul_right_cancel₀ hy (by rw [one_mul]; exact h2.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf : phase ψ V W C C' y (infLift ((N : D.host.E) • x)) = 1`. Use `phase_rat ψ hψ.1 V W C C' y ((N : D.host.E) • x)` as an intermediate fact. Rewrite `this` using `[map_incA_eq, phase_add, hph, one_mul]`. Conclude with `this`. Rewrite `hinf` using `[GlobalTheory.T.mixedModelHeisenbergPhase_eq_cexp_realPoints D V W r C C' hCC ψ hψ θ hθ y _ (infLift_finPart _)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 hinf`. Establish `hsum : (∑ τ, 2 * (Matrix.trace ((pairQ W y).map (tauE D τ) * compAt θ τ (infLift ((N : D.host.E) • x)))).re : ℝ) = (N : ℝ) * ratPair W y x`. Rewrite using `[← ratPair_nat_smul, ← sum_two_re_tauE]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[compAt_infLift hθ, trace_tau]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hn` using `[hsum]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `h3 : (((N : ℝ) * ratPair W y x : ℝ) : ℂ) = ((n : ℝ) : ℂ)`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h3` after adjusting the coercions.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → adj D C * V.gram * C' = 1 → ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∃ e : ℕ, ∀ U : AddSubgroup (WO V W), IsOpen (U : Set (WO V W)) → ∃ M : ℕ, 0 < M ∧ ∀ (g : GA D V) (h : GA D W), ∃ N : ℕ, 0 < N ∧ (N : ℝ) ≤ M * (GlobalTheory.Grow.height V g * GlobalTheory.Grow.height W h) ^ e ∧ ∀ F : WO V W → ℂ, IsThetaFunO ψ V W F → (∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ V W (actO V W g h u) F = F) → ∀ y : Matrix (Fin W.rank) (Fin r) D.host.E, term ψ V V' W C C' B μ 𝓨 F y ≠ 0 → ∀ x : Matrix (Fin W.rank) (Fin r) D.host.E, (∀ a b, IsIntegral ℤ (x a b)) → ∃ c : ℤ, (N : ℝ) * ratPair W y x = c := by
   intro D V V' W r C C' B hs hCC ψ hψ θ hθ μ 𝓨 hY

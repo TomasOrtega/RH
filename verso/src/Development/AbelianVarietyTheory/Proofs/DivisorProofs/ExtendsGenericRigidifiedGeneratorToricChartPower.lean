@@ -18,11 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChartCubExt
 
 /- English proof (translation)
-Introduce `k _ m n`. Establish `: IsRegularLocalRing (ChartRing k m n)` using `GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries k (Fin m ⊕ Fin n)`. Use `GlobalTheory.isRegularRing_of_isRegularLocalRing (ChartRing k m n)` as an intermediate fact. Establish `: IsDomain (ChartRing k m n)` using `(GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (ChartRing k m n)).1`. Establish `: UniqueFactorizationMonoid (ChartRing k m n)` using `GlobalTheory.ThetaExtend.ufd_of_regular _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `G _ _ hG eA heA N r hr hc`. Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Take `⟨a, u, hu, hf⟩` from `GlobalTheory.T.exists_const_mul_eq_generator_factorial_base _ _ G _ _ _ N.L r inferInstance inferInstance inferInstance (IsPullback.of_hasPullback _ _) N.isLB hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `GlobalTheory.T.exists_baseUnit_rigidifiedGenericGenerator _ _ G (eSec G) (Over.w η[G]) eA heA N.L N.rig r N.isLB N.rigGen hc a u hu hf`. Conclude with `GlobalTheory.T.exists_globalGenerator_div_baseUnit_eq_generic _ _ G _ _ _ pullback.condition N.L r a b hb u hu hf`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem extendGenAt_chartRing : ∀ (k : Type) [Field k] (m n : ℕ),
     GlobalTheory.ChartCubExt.ExtendGenAt (ChartRing k m n) (FractionRing (ChartRing k m n)) := by

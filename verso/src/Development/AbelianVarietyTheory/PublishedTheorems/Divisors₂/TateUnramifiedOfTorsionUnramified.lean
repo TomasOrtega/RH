@@ -55,13 +55,13 @@ def specAut (σ : Ω ≃ₐ[K] Ω) : ptOver K Ω ⟶ ptOver K Ω :=
     simp)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Spec.map_id (CommRingCat.of Ω))`.
+A detailed English derivation is pending.
 -/
 theorem specAut_one : specAut (1 : Ω ≃ₐ[K] Ω) = 𝟙 _ :=
   Over.OverMorphism.ext (Spec.map_id (CommRingCat.of Ω))
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by change spMap _ = spMap _ ≫ spMap _ rw [← Spec.map_comp] rfl)`.
+A detailed English derivation is pending.
 -/
 theorem specAut_mul (σ τ : Ω ≃ₐ[K] Ω) : specAut (σ * τ) = specAut σ ≫ specAut τ :=
   Over.OverMorphism.ext (by
@@ -146,13 +146,13 @@ def SerreTateGoodReductionSt : Prop :=
 namespace AbVarRed
 
 /- English proof (translation)
-Establish `key : ∀ τ : V.decompositionSubgroup K, τ ∈ V.inertiaSubgroup K ↔ ∀ x ∈ V, V.valuation ((τ : Ω ≃ₐ[K] Ω) x - x) < 1` using `fun τ => by`. Establish `h : ∀ x : V, τ • residue V x = residue V x ↔ V.valuation ((τ : Ω ≃ₐ[K] Ω) x - x) < 1` using `fun x => by`. Rewrite using `[← ResidueField.residue_smul, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Both sides reduce to the same expression. Rewrite using `[ValuationSubring.inertiaSubgroup, MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `e x hx`. Conclude with `(h ⟨x, hx⟩).1 (DFunLike.congr_fun e (residue V ⟨x, hx⟩))`. Introduce `e`. Use `RingEquiv.ext fun y => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `residue_surjective y`. Conclude with `(h x).2 (e x x.2)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ, rfl⟩`. Conclude with `⟨τ.2, (key τ).1 hτ⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨σ, h1⟩, (key _).2 h2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_inertia_iff {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (V : ValuationSubring Ω) (σ : Ω ≃ₐ[K] Ω) :
     σ ∈ inertia K V ↔ σ • V = V ∧ ∀ x ∈ V, V.valuation (σ x - x) < 1 := by
@@ -177,7 +177,7 @@ theorem mem_inertia_iff {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (V : V
     exact ⟨⟨σ, h1⟩, (key _).2 h2, rfl⟩
 
 /- English proof (translation)
-Take `⟨V, -, -, -, h⟩` from `exists_valuationSubring_dominating (V := R) (algebraMap K Ω)`. Conclude with `⟨V, Subring.ext h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isAbove (R K Ω : Type) [CommRing R] [IsDomain R] [ValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] [Field Ω] [Algebra K Ω] : ∃ V : ValuationSubring Ω, IsAbove R K V.toSubring := by
@@ -185,7 +185,7 @@ theorem exists_isAbove (R K Ω : Type) [CommRing R] [IsDomain R] [ValuationRing 
   exact ⟨V, Subring.ext h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨G, inferInstance, hG, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 _))⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasGoodReduction_genericFibre (R K : Type) [CommRing R] [Field K] [Algebra R K] (G : Over (Sp R))
     [GrpObj G] (hG : IsAbelianScheme G) :
@@ -193,7 +193,7 @@ theorem hasGoodReduction_genericFibre (R K : Type) [CommRing R] [Field K] [Algeb
   ⟨G, inferInstance, hG, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 _))⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem hasGoodReduction_baseChange_iff {K W L : Type} [Field K] [CommRing W] [Field L] [Algebra K L] [Algebra W L]
     (A : Over (Sp K)) [GrpObj A] :
@@ -201,9 +201,9 @@ theorem hasGoodReduction_baseChange_iff {K W L : Type} [Field K] [CommRing W] [F
       ∃ (G : Over (Sp W)) (_ : GrpObj G), IsAbelianScheme G ∧ GlobalTheory.SS.IsModel (L := L) A G := Iff.rfl
 
 /- English proof (translation)
-Take `⟨G, _, hG, e, he⟩` from `h`. Use `⟨K, R, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, Subring.ext fun _ => Iff.rfl, G, inferInstance, hG, ?_⟩` and prove the remaining obligations. Establish `hh : spMap (algebraMap K K) = 𝟙 (Sp K)`. Rewrite using `[← Spec.map_id]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨e', he', -⟩` from `grpPullback_iso ((isGrpPullback_of_iso e).congr hh.symm rfl) (isGrpPullback_pullback A (spMap (algebraMap K K)))`. Conclude with `⟨e', he'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasGoodReduction.potential {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K]
     [Algebra R K] [IsFractionRing R K] {A : Over (Sp K)} [GrpObj A] (h : HasGoodReduction R K A) :
@@ -219,7 +219,7 @@ theorem HasGoodReduction.potential {R K : Type} [CommRing R] [IsDomain R] [IsDis
   exact ⟨e', he'⟩
 
 /- English proof (translation)
-Introduce `σ hσ` and use `LinearMap.ext fun t => Tate.ext fun n => h n σ hσ _ (t.lev_pow n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tateUnramified_of_torsionUnramified {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {A : Over (Sp K)}
     [GrpObj A] [IsCommMonObj A] {V : ValuationSubring Ω} {l : ℕ} [Fact l.Prime]
@@ -235,7 +235,7 @@ variable {R K Ω : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [
   {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A]
 
 /- English proof (translation)
-Establish `t` using `h R K Ω V hV A hA`. Establish `t01 : HasGoodReduction R K A ↔ ∀ m : ℕ, (m : ResidueField R) ≠ 0 → TorsionUnramified A V m` using `t.out 0 1`. Establish `t03 : HasGoodReduction R K A ↔ ∃ (l : ℕ) (_ : Fact l.Prime), (l : ResidueField R) ≠ 0 ∧ TateUnramified A V l` using `t.out 0 3`. Conclude with `⟨fun hg => tateUnramified_of_torsionUnramified fun n => t01.1 hg (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl), fun ht => t03.2 ⟨l, _, hl, ht⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem NeronOggShafarevichSt.iff_tateUnramified (h : NeronOggShafarevichSt) [PerfectField (ResidueField R)]
     (hV : IsAbove R K V.toSubring) (hA : IsAbelianScheme A) (l : ℕ) [Fact l.Prime]
@@ -248,7 +248,7 @@ theorem NeronOggShafarevichSt.iff_tateUnramified (h : NeronOggShafarevichSt) [Pe
     t01.1 hg (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl), fun ht => t03.2 ⟨l, _, hl, ht⟩⟩
 
 /- English proof (translation)
-The claim follows from `(h.2.1 R K Ω V hV A hA l hl).1 (h.2.2 R K A hA F hF)`.
+A detailed English derivation is pending.
 -/
 theorem SerreTateGoodReductionSt.finite_image_of_hasCMBy (h : SerreTateGoodReductionSt)
     [Finite (ResidueField R)] (hV : IsAbove R K V.toSubring) (hA : IsAbelianScheme A) {F : Type} [Field F]
@@ -267,38 +267,38 @@ def gaussEquiv : (ℤ × ℤ) ≃ₗ[ℤ] GaussianInt :=
       left_inv := fun _ => rfl, right_inv := fun _ => rfl } : (ℤ × ℤ) ≃+ GaussianInt).toIntLinearEquiv
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.finrank_eq ℤ ℚ O F`.
+A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_isFractionRing (O F : Type) [CommRing O] [Field F] [CharZero F] [Algebra O F]
     [IsFractionRing O F] : Module.finrank ℚ F = Module.finrank ℤ O :=
   IsFractionRing.finrank_eq ℤ ℚ O F
 
 /- English proof (translation)
-Rewrite using `[finrank_eq_of_isFractionRing GaussianInt, ← gaussEquiv.finrank_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_gaussField : Module.finrank ℚ (FractionRing GaussianInt) = 2 := by
   rw [finrank_eq_of_isFractionRing GaussianInt, ← gaussEquiv.finrank_eq]
   simp
 
 /- English proof (translation)
-The claim follows from `Module.finite_of_finrank_pos (by rw [finrank_gaussField]; norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem numberField_gaussField : NumberField (FractionRing GaussianInt) where
   to_finiteDimensional := Module.finite_of_finrank_pos (by rw [finrank_gaussField]; norm_num)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 theorem factPrimeFive : Fact (Nat.Prime 5) := ⟨by norm_num⟩
 
 attribute [local instance] factPrimeFive
 
 /- English proof (translation)
-Establish `h5 : ‖(5 : ℤ_[5])‖ < 1`. Use `PadicInt.norm_p (p := 5)` as an intermediate fact. Rewrite using `[show (5 : ℤ_[5]) = ((5 : ℕ) : ℤ_[5]) by norm_num, this]`. Evaluate the numerical expressions. Establish `h4 : ‖(4 : ℤ_[5])‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `h` using `(PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 4)).2 (by norm_num)`. Conclude with `h` after adjusting the coercions. Take `⟨z, hz, -⟩` from `hensels_lemma (p := 5) (R := ℤ) (F := Polynomial.X ^ 2 + 1) (a := 2) (by`. Establish `e1 : Polynomial.aeval (2 : ℤ_[5]) (Polynomial.X ^ 2 + 1 : Polynomial ℤ) = 5` using `by simp; norm_num`. Establish `e2 : Polynomial.aeval (2 : ℤ_[5]) (Polynomial.derivative (Polynomial.X ^ 2 + 1 : Polynomial ℤ)) = 4`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[map_ofNat]`. Evaluate the numerical expressions. Rewrite using `[e1, e2, h4]`. Simplify using `using h5)`. Conclude with `⟨z, eq_neg_of_add_eq_zero_left (by simpa using hz)⟩`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sq_eq_neg_one : ∃ i : ℤ_[5], i ^ 2 = -1 := by
   have h5 : ‖(5 : ℤ_[5])‖ < 1 := by
@@ -317,11 +317,11 @@ theorem exists_sq_eq_neg_one : ∃ i : ℤ_[5], i ^ 2 = -1 := by
   exact ⟨z, eq_neg_of_add_eq_zero_left (by simpa using hz)⟩
 
 /- English proof (translation)
-Establish `h2 : IsUnit (2 : ℤ_[5])`. Rewrite using `[PadicInt.isUnit_iff]`. Establish `h` using `(PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 2)).2 (by norm_num)`. Conclude with `h` after adjusting the coercions. Use `⟨Finite.of_equiv _ (PadicInt.residueField (p := 5)).symm.toEquiv, ?_, exists_isAbove _ _ _, inferInstance, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(h2.map (residue ℤ_[5])).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Take `⟨i, hi⟩` from `exists_sq_eq_neg_one`. Use `isElliptic_gaussianCurve h2` as an intermediate fact. Establish `hG` using `isAbelianScheme_schemeOver _ (gaussianCurve ℤ_[5]) (gaussianCurve ℤ_[5]).isUnit_Δ inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : SmoothOfRelativeDimension 1 ((Over.pullback (spMap (algebraMap ℤ_[5] ℚ_[5]))).obj (schemeOver (gaussianCurve ℤ_[5]))).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) (smoothOfRelativeDimension_toSpec_of_isUnit _ (gaussianCurve ℤ_[5]).isUnit_Δ)`. Use `numberField_gaussField` as an intermediate fact. Establish `hg` using `hasGoodReduction_genericFibre ℤ_[5] ℚ_[5] _ hG`. Conclude with `⟨_, _, FractionRing GaussianInt, inferInstance, inferInstance, isAbelianScheme_pullback_obj _ _ hG, hd, ⟨⟨1, hd, finrank_gaussField⟩, GaussianInt, inferInstance, inferInstance, inferInstance, ⟨(gaussianAct hi).pullback _⟩⟩, hg, hg.potential⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cm_curve :
     Finite (ResidueField ℤ_[5]) ∧ ((2 : ℕ) : ResidueField ℤ_[5]) ≠ 0 ∧

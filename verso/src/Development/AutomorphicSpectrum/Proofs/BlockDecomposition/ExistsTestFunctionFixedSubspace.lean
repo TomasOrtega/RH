@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.SmoothRep.Inj
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hs : Continuous (sInf E)` using `((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`. Conclude with `Continuous.units_map (corner (matN a (sInf E))) (continuous_const.add (continuous_id.matrix_map hs))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_infGL_alt : Continuous (infGL E a) := by
   have hs : Continuous (sInf E) := ((continuous_infEq E).prodMk continuous_const :
@@ -22,7 +22,7 @@ theorem continuous_infGL_alt : Continuous (infGL E a) := by
   exact Continuous.units_map (corner (matN a (sInf E))) (continuous_const.add (continuous_id.matrix_map hs))
 
 /- English proof (translation)
-Establish `e : g = infGL E a (GeneralLinearGroup.map (pInf E) g⁻¹)⁻¹ * finGL E a (GeneralLinearGroup.map (pFin E) g⁻¹)⁻¹`. Rewrite using `[map_inv (infGL E a), map_inv (finGL E a), ← _root_.mul_inv_rev, ← infGL_comm, infGL_mul_finGL, inv_inv]`. Use `conv_lhs => rw [e]`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply, hv _ (U.inv_mem hu)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem R_apply_eq {μ : Measure (GA E a)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {U : Subgroup (GL (Fin a) (Af E))}
     {v : L2 (latticeGL E a) μ} (hv : ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) v = v) {g : GA E a}
@@ -34,35 +34,31 @@ theorem R_apply_eq {μ : Measure (GA E a)} [μ.IsHaarMeasure] [μ.IsMulRightInva
   rw [map_mul, ContinuousLinearMap.mul_apply, hv _ (U.inv_mem hu)]
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _ U hU hUc X hX hfix`. Set `Φ : GL (Fin a) (Cinf E) → (X →L[ℂ] L2 (latticeGL E a) μ)` to `fun y => (R (latticeGL E a) μ (infGL E a y⁻¹) - ContinuousLinearMap.id ℂ _) ∘L X.subtypeL`. Establish `hΦv : ∀ y (w : X), Φ y w = R (latticeGL E a) μ (infGL E a y⁻¹) w - w` using `fun _ _ => rfl`. Establish `hΦ : Continuous Φ`. Use `continuous_clm_apply.2 fun w => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hΦv]`. Conclude with `((continuous_R (w : L2 (latticeGL E a) μ)).comp (continuous_infGL_alt.comp continuous_inv)).sub continuous_const`. Establish `hΦ1 : Φ 1 = 0`. Use extensionality with `w`. Simplify using `[hΦv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hN : {y | ‖Φ y‖ ≤ 1 / 2} ∈ 𝓝 (1 : GL (Fin a) (Cinf E))`. Establish `h1 : Metric.closedBall (0 : X →L[ℂ] L2 (latticeGL E a) μ) (1 / 2) ∈ 𝓝 (Φ 1)`. Rewrite using `[hΦ1]; exact Metric.closedBall_mem_nhds _ (by norm_num)`. Establish `h2` using `hΦ.continuousAt.preimage_mem_nhds h1`. Simplify `h2` using `[Metric.closedBall, dist_zero_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨β₀, h0, hpos, htest, hconj, hsupp⟩` from `GlobalTheory.T.exists_nonneg_test_function_near_one E a _ hN`. Use `⟨fun x => (β₀ x : ℂ), htest, hconj, fun v hv hRv => ?_⟩` and prove the remaining obligations. Take `⟨hc, hcs⟩` from `GlobalTheory.T.test_function_continuous_compact_support E a U hU hUc _ htest`. Use `set f := tst U (fun x => (β₀ x : ℂ)) with hf`. Use `set fr : GA E a → ℝ := fun g => (f g).re with hfr`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hf_eq : ∀ g, f g = (fr g : ℂ)`. Introduce `g`. Simplify using `only [hfr, hf, tst, ker]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hfr0 : ∀ g, 0 ≤ fr g`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g`. Simplify using `only [hfr, hf, tst, ker]`. Use `split_ifs`. Simplify using `using h0 _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfrc : Continuous fr` using `Complex.continuous_re.comp hc`. Establish `hfrs : HasCompactSupport fr` using `hcs.comp_left Complex.zero_re`. Establish `hfr1 : fr 1 ≠ 0`. Establish `: fr 1 = β₀ (oneL E a)`. Simplify using `[hfr, hf, tst, ker, U.one_mem]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hpos.ne'`. Establish `hIpos : 0 < ∫ g, fr g ∂μ` using `hfrc.integral_pos_of_hasCompactSupport_nonneg_nonzero hfrs hfr0 hfr1`. Establish `hint : Integrable f μ` using `hc.integrable_of_hasCompactSupport hcs`. Establish `hfrint : Integrable fr μ` using `hfrc.integrable_of_hasCompactSupport hfrs`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrep` using `(isRepOp_Rop (Γ := latticeGL E a) (μ := μ) hint) v`. Establish `key : (∫ g, f g ∂μ) • v = ∫ g, f g • (v - R (latticeGL E a) μ g v) ∂μ`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `hrep.2.symm.trans hRv`. Rewrite using `[show (∫ g, f g • R (latticeGL E a) μ g v ∂μ) = 0 from h2, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use `_ = ∫ g, f g • (v - R (latticeGL E a) μ g v) ∂μ := by`. Rewrite using `[← integral_smul_const, ← integral_sub (hint.smul_const v) hrep.1]`. Repeatedly rewrite using `[smul_sub]`. Establish `hI : (∫ g, f g ∂μ) = ((∫ g, fr g ∂μ : ℝ) : ℂ)`. Repeatedly rewrite using `[hf_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `integral_ofReal`. Establish `hpt : ∀ g, fr g ≠ 0 → ‖v - R (latticeGL E a) μ g v‖ ≤ ‖v‖ / 2`. Introduce `g hg`. Establish `hfg : f g ≠ 0` using `fun h => hg (by show (f g).re = 0; rw [h]; simp)`. Simplify using `only [hf, tst, ker] at hfg`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `split_ifs at hfg with hu`. Establish `hb : β₀ (toL (GeneralLinearGroup.map (pInf E) g⁻¹).val) ≠ 0`. Introduce `h`. Apply `hfg` to reduce the goal to its premises. Simplify using `only [Complex.ofReal_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Take `⟨y, hyN, hy⟩` from `hsupp _ hb`. Establish `hy' : y = GeneralLinearGroup.map (pInf E) g⁻¹` using `Units.ext (Matrix.of.symm.injective hy)`. Rewrite using `[R_apply_eq (fun u hu' => hfix u hu' v hv) hu, norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `absurd rfl hfg`. Establish `hbound : ‖∫ g, f g • (v - R (latticeGL E a) μ g v) ∂μ‖ ≤ ∫ g, fr g * (‖v‖ / 2) ∂μ` using `norm_integral_le_of_norm_le (hfrint.mul_const _) (Filter.Eventually.of_forall fun g => by`. Rewrite using `[norm_smul, hf_eq, Complex.norm_real, Real.norm_of_nonneg (hfr0 g)]`. Distinguish the cases in `hg : fr g = 0`. Simplify using `[hg]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (hpt g hg) (hfr0 g))`. Rewrite `hbound` using `[integral_mul_const, ← key, hI, norm_smul, Complex.norm_real, Real.norm_of_nonneg hIpos.le]`. Establish `hle : ‖v‖ ≤ 0` using `by nlinarith [norm_nonneg v]`. Conclude with `norm_le_zero_iff.1 hle`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isTest_Rop_injective : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) → IsCompact (U : Set (GL (Fin a) (Af E))) → ∀ X : Submodule ℂ (L2 (latticeGL E a) μ), FiniteDimensional ℂ X → (∀ u ∈ U, ∀ v ∈ X, R (latticeGL E a) μ (finGL E a u) v = v) → ∃ β : Lie E a → ℂ, IsTest β ∧ ConjInv β ∧ ∀ v ∈ X, Rop (latticeGL E a) μ (tst U β) v = 0 → v = 0 := by
   intro E _ _ _ a μ _ _ U hU hUc X hX hfix

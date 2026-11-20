@@ -18,13 +18,13 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 namespace UpperTheory.LinearSubstitutionRepresentatives
 
 /- English proof (translation)
-Establish `hmul : ∀ z k, pos z (i * k) = z` using `fun z k => by`. Proceed by induction on `k with`. Consider the case `zero => rw [mul_zero, hp.zero]`. Consider the case `succ k ih => rw [mul_add, mul_one, ← hp.add, ih, hp.period]`. Set `S : Setoid Lt` to `{ r := fun a b => ∃ e : ℕ, pos a e = b iseqv := { refl := fun a => ⟨0, hp.zero a⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Use symmetry as in `:= by`. Introduce and unpack `a _ ⟨e, rfl⟩`. Take `⟨j, hj⟩` from `Nat.exists_eq_succ_of_ne_zero (NeZero.ne i)`. Use `⟨j * e, ?_⟩` and prove the remaining obligations. Rewrite using `[hp.add, show e + j * e = i * e by rw [hj, Nat.succ_mul, add_comm], hmul]`.
+Use symmetry to reverse the relation. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `trans := by`. Introduce and unpack `a _ _ ⟨e, rfl⟩ ⟨f, rfl⟩`. Conclude with `⟨e + f, (hp.add a e f).symm⟩ } }`. Use `⟨Finset.univ.image fun z => (Quotient.mk S z).out, fun z => ⟨(Quotient.mk S z).out, ⟨Finset.mem_image.2 ⟨z, Finset.mem_univ _, rfl⟩, Quotient.mk_out (s := S) z⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `r ⟨hr, hz⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hr`. Establish `h : Quotient.mk S (Quotient.mk S w).out = Quotient.mk S z` using `Quotient.sound hz`. Rewrite `h` using `[Quotient.out_eq]`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_reps {Lt : Type} [Fintype Lt] {i : ℕ} [NeZero i] {pos : Lt → ℕ → Lt} (hp : IsPos i pos) :
     ∃ R : Finset Lt, ∀ z, ∃! r, r ∈ R ∧ ∃ e : ℕ, pos r e = z := by
@@ -53,9 +53,9 @@ private lemma exists_reps {Lt : Type} [Fintype Lt] {i : ℕ} [NeZero i] {pos : L
   rw [h]
 
 /- English proof (translation)
-Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp) hs]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hs, MvPowerSeries.subst_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma subst_lin_comp {K n m τ : Type} [Field K] [Fintype n] [Fintype m] (γ : n → m → K)
     (a : m → MvPowerSeries τ K) (ha : ∀ e, MvPowerSeries.constantCoeff (a e) = 0) (Θ : MvPowerSeries n K) :
@@ -71,7 +71,7 @@ private lemma subst_lin_comp {K n m τ : Type} [Field K] [Fintype n] [Fintype m]
   rw [map_mul, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hs, MvPowerSeries.subst_C]
 
 /- English proof (translation)
-Unfold `linS`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma cc_linS {K K0 Lt β : Type} [Field K] [Field K0] (j : K0 →+* K) (σ : K0 →+* K0) (i : ℕ) [NeZero i]
     (pos : Lt → ℕ → Lt) (c : K0) (r : Lt) (b : β) : MvPowerSeries.constantCoeff (linS j σ i pos c r b) = 0 := by
@@ -84,11 +84,11 @@ end UpperTheory.LinearSubstitutionRepresentatives
 
 open UpperTheory.LinearSubstitutionRepresentatives in
 /- English proof (translation)
-Introduce `D cc δ B χ p _ lam hHost h5 hC _ hi N N' L L' P P' hAdm hS hS' G hG`. Take `⟨c, g2, g3, s2, ε, σ, F, hc, hcd, hfam⟩` from `hHost`. Take `⟨r, b, hLB, hON, hInt⟩` from `hfam N N' L L' hAdm`. Establish `hσ : UnrOK (MaximalUnramifiedExtension p) p σ` using `hcd.2.2.2.2.2.1`. Establish `hp : IsPos (nP D p) (posPl D p)` using `⟨posPl_zero D p, posPl_add D p, posPl_period D p⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨om, hOw, hTr⟩` from `UpperTheory.exists_unit_quotient_of_normOne_unramified_ultrametric p h5 σ hσ (nP D p) hi`. Take `⟨R, hR⟩` from `exists_reps hp`. Take `⟨γ, hγ1, hγ2, hγ3⟩` from `UpperTheory.stdSeries_orbit_coordinate_change_of_odd_inert D p lam σ hσ h5 hC hi om hOw hTr R hR N N' L L' P P' hAdm hS hS' r b hLB hON`. Establish `hU` using `GlobalTheory.T.subst_unitary_logarithmic_coordinates p g2 g3 s2 ε σ F hcd (Fin r) (({z // z ∈ R} × Fin (nP D p)) × Fin N × Fin N') γ hγ1 (by convert hγ2) _ (hInt G hG)`. Use `UpperTheory.integral_mvExp_sum_logS_of_odd_period p g2 g3 s2 ε σ F hcd (nP D p) hi om hOw hTr _ _ (posPl D p) hp R _ hU c _ hc ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hγ3 c G).trans (subst_lin_comp (fun k e => (γ k e : ℂ_[p])) _ (fun e => cc_linS _ _ _ _ _ _ _) _)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.lattice_pairs_odd_degree_isometric :
     ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : IdE D → ℂ) (p : ℕ) [Fact p.Prime]

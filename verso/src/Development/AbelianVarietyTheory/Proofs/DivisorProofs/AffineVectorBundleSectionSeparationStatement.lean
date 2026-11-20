@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToBidualNaturalityD
 open CategoryTheory AlgebraicGeometry
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VB.eq_zero_of_forall_hom_app_eq_zero | exact GlobalTheory.VB.eq_zero_of_forall_hom_app_eq_zero | (intros; apply GlobalTheory.VB.eq_zero_of_forall_hom_app_eq_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.affine_vector_bundle_section_separation : ∀ (X : Scheme.{0}) [IsAffine X] (F : X.Modules) (r : ℕ), GlobalTheory.VB.IsVB F r →
     ∀ z : Γ(F, ⊤), (∀ L : F ⟶ GlobalTheory.structureModule X, L.app ⊤ z = 0) → z = 0 := by

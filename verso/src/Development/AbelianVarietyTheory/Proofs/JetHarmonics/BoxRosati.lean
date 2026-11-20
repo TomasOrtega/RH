@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `R _ _ D' D n pD f g f' g' _ _ hf hg h`. Conclude with `GlobalTheory.rosatiAdj_pow _ _ _ n pD.pw D.P.L D'.P.L D.P.isLB D'.P.isLB ⟨pD.w, pD.w_gen⟩ f g f' g' hf hg h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.boxRosati : BoxRosatiSt := by
   intro R _ _ D' D n pD f g f' g' _ _ hf hg h

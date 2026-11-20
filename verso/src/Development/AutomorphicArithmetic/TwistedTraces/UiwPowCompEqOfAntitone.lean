@@ -8,13 +8,13 @@ open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFul
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Establish `hCO : CO (GLnLocal.iwahori (w.adicCompletion K) n)` using `⟨GLnLocal.isCompact_iwahori _ n, GLnLocal.isOpen_iwahori _ n⟩`. Establish `h0 : m (GLnLocal.iwahori (w.adicCompletion K) n : Set (Gw n w)) ≠ 0` using `(hCO.2.measure_pos m ⟨1, Subgroup.one_mem _⟩).ne'`. Establish `ht : m (GLnLocal.iwahori (w.adicCompletion K) n : Set (Gw n w)) ≠ ⊤` using `hCO.1.measure_lt_top.ne`. Take `⟨d, hd⟩ : ∃ d, d = (m (GLnLocal.iwahori (w.adicCompletion K) n : Set (Gw n w)))⁻¹` from `⟨_, rfl⟩`. Establish `hd0 : d ≠ 0` using `hd ▸ ENNReal.inv_ne_zero.2 ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdt : d ≠ ⊤` using `hd ▸ ENNReal.inv_ne_top.2 h0`. Use `haveI : (d • m).IsHaarMeasure := Measure.IsHaarMeasure.smul m hd0 hdt`. Establish `h1 : (d • m) (GLnLocal.iwahori (w.adicCompletion K) n : Set (Gw n w)) = 1`. Rewrite using `[Measure.smul_apply, hd, smul_eq_mul, ENNReal.inv_mul_cancel h0 ht]`. Establish `hop` using `UpperTheory.ConvolutionTheory.C.hopOloc K n μ w (d • m) (GLnLocal.iwahori (w.adicCompletion K) n) (Cartan.diagPow (w.adicCompletion K) n ν) hCO h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (m (GLnLocal.iwahori (w.adicCompletion K) n : Set (Gw n w))).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h0, ht⟩`. Establish `hdc : d.toReal = ((m (GLnLocal.iwahori (w.adicCompletion K) n : Set (Gw n w))).toReal)⁻¹`. Rewrite using `[hd, ENNReal.toReal_inv]`. Use `ext1 v`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ⟪u, Uiw μ w ν v⟫_ℂ = d.toReal • ∫ g, (iwCoset w ν).indicator 1 g * ⟪u, rhoL μ w g v⟫_ℂ ∂m`. Use `hop u v` as an intermediate fact. Rewrite `this` using `[integral_smul_measure]`. Conclude with `this`. Rewrite using `[ContinuousLinearMap.smul_apply, inner_smul_right, e1, hT u v, hdc, Complex.real_smul, ← mul_assoc, Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.2 hc), one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iw_scale {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) [MeasurableSpace (Gw n w)] [BorelSpace (Gw n w)] (m : Measure (Gw n w)) [m.IsHaarMeasure]
@@ -47,9 +47,9 @@ private theorem iw_scale {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Me
     Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.2 hc), one_mul]
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ w _ _ m _ e j T T' he hT hT'`. Establish `h0 : prj (fixL μ w (GLnLocal.iwahori (w.adicCompletion K) n)) = Uiw μ w 0`. Use `UpperTheory.ConvolutionTheory.C.uiwPow K n μ w e he 0` as an intermediate fact. Rewrite `this` using `[pow_zero, zero_smul]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `UpperTheory.ConvolutionTheory.C.uiwPow K n μ w e he j`. Rewrite using `[iw_scale μ w m 0 T hT, iw_scale μ w m _ T' hT', ← h0, ← h1]`. Use `ext1 v`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Uiw_pow_comp_eq_of_antitone :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) [MeasurableSpace (Gw n w)] [BorelSpace (Gw n w)]

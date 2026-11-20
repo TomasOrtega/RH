@@ -16,7 +16,7 @@ def toOpen (f : X ⟶ SpecZ) (R : Type) [CommRing R] (W : X.Opens)
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma toOpen_ι (f : X ⟶ SpecZ) (R : Type) [CommRing R] (W : X.Opens)
     (hW : Set.range (baseChangeMap f R) ⊆ Set.range W.ι) :

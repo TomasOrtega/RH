@@ -13,39 +13,39 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 def H (β : Idx D j N →₀ ℕ) (x : Lw X la w) : Lw X la w := hasse X la w β x
 
 /- English proof (translation)
-The claim follows from `(hasse X la w β).map_add x y`.
+A detailed English derivation is pending.
 -/
 theorem H_add (β : Idx D j N →₀ ℕ) (x y : Lw X la w) : H X la w β (x + y) = H X la w β x + H X la w β y :=
   (hasse X la w β).map_add x y
 
 /- English proof (translation)
-The claim follows from `(hasse X la w β).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem H_zero_right (β : Idx D j N →₀ ℕ) : H X la w β 0 = 0 :=
   (hasse X la w β).map_zero
 
 /- English proof (translation)
-The claim follows from `hasse_zero X la w x`.
+A detailed English derivation is pending.
 -/
 theorem H_zero (x : Lw X la w) : H X la w 0 x = x := hasse_zero X la w x
 
 /- English proof (translation)
-The claim follows from `hasse_mul X la w β x y`.
+A detailed English derivation is pending.
 -/
 theorem H_mul (β : Idx D j N →₀ ℕ) (x y : Lw X la w) :
     H X la w β (x * y) = ∑ q ∈ antidiagonal β, H X la w q.1 x * H X la w q.2 y :=
   hasse_mul X la w β x y
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_eq_degree (β : Idx D j N →₀ ℕ) : (β.sum fun _ n => n) = Finsupp.degree β := by
   rw [Finsupp.degree_apply]; rfl
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : x ∈ JHs X la w u b` using `hx`. Rewrite `hx'` using `[← Jid_pow_smul_HK]`. Establish `: x ∈ JHs X la w u c`. Rewrite using `[← Jid_pow_smul_HK]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mono_left (Ideal.pow_le_pow_right h) hx'`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem JHfr_anti (u : WeightFamilies.Wt D j) {b c : ℕ} (h : c ≤ b) : JHfr X la w u b ≤ JHfr X la w u c := by
   intro x hx
@@ -57,7 +57,7 @@ theorem JHfr_anti (u : WeightFamilies.Wt D j) {b c : ℕ} (h : c ≤ b) : JHfr X
   exact this
 
 /- English proof (translation)
-Establish `e` using `Jid_pow_smul_HK X la w u 0`. Rewrite `e` using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Rewrite using `[← mem_HK X la w]`. Use `show x ∈ JHs X la w u 0 ↔ _`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_JHfr_zero (u : WeightFamilies.Wt D j) {x : Lw X la w} : x ∈ JHfr X la w u 0 ↔ x ∈ Hfr X la w u := by
   have e := Jid_pow_smul_HK X la w u 0
@@ -67,39 +67,37 @@ theorem mem_JHfr_zero (u : WeightFamilies.Wt D j) {x : Lw X la w} : x ∈ JHfr X
   rw [← e]
 
 /- English proof (translation)
-The claim follows from `(JHs X la w u a).smul_mem (⟨c, (mem_Frac0 X la w).2 hc⟩ : ↥(Frac0 X la w)) (show y ∈ JHs X la w u a from hy)`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_JHfr {u : WeightFamilies.Wt D j} {a : ℕ} {c y : Lw X la w} (hc : c ∈ Hfr X la w (wt0 D j))
     (hy : y ∈ JHfr X la w u a) : c * y ∈ JHfr X la w u a :=
   (JHs X la w u a).smul_mem (⟨c, (mem_Frac0 X la w).2 hc⟩ : ↥(Frac0 X la w)) (show y ∈ JHs X la w u a from hy)
 
 /- English proof (translation)
-The claim follows from `Jid_smul_JHs_le X la w u a (Submodule.smul_mem_smul (sfr_succ_mem_Jid X la w i) (show y ∈ JHs X la w u a from hy))`.
+A detailed English derivation is pending.
 -/
 theorem sfr_mul_mem_JHfr {u : WeightFamilies.Wt D j} {a : ℕ} (i : Fin (WeightFamilies.dimY D j)) {y : Lw X la w}
     (hy : y ∈ JHfr X la w u a) : (sfr X la w i.succ : Lw X la w) * y ∈ JHfr X la w u (a + 1) :=
   Jid_smul_JHs_le X la w u a (Submodule.smul_mem_smul (sfr_succ_mem_Jid X la w i) (show y ∈ JHs X la w u a from hy))
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero`. Introduce `β x hx`. Rewrite using `[Nat.zero_sub, mem_JHfr_zero]`. Conclude with `hP X la w u β x ((mem_JHfr_zero X la w u).1 hx)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ a ih`. Introduce `β x hx`. Establish `hx' : x ∈ JHs X la w u (a + 1)` using `hx`. Rewrite `hx'` using `[← Jid_pow_smul_HK, pow_succ', Submodule.mul_smul, Jid_pow_smul_HK]`. Establish `gen : ∀ (i : Fin (WeightFamilies.dimY D j)) (m : Lw X la w), m ∈ JHfr X la w u a → ∀ β : Idx D j N →₀ ℕ, H X la w β ((sfr X la w i.succ : Lw X la w) * m) ∈ JHfr X la w u (a + 1 - Finsupp.degree β)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i m hm β`. Rewrite using `[H_mul]`. Use `Submodule.sum_mem _ fun q hq => ?_` and prove the remaining obligations. Establish `hq' : q.1 + q.2 = β` using `mem_antidiagonal.1 hq`. Establish `hd : Finsupp.degree β = Finsupp.degree q.1 + Finsupp.degree q.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq', map_add]`. Distinguish the cases in `h1 : q.1 = 0`. Establish `h0 : Finsupp.degree q.1 = 0` using `by rw [h1, map_zero]`. Rewrite using `[h1, H_zero]`. Use `JHfr_anti X la w u ?_ (sfr_mul_mem_JHfr X la w i (ih q.2 m hm))` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `h0 : Finsupp.degree q.1 ≠ 0` using `fun h => h1 ((Finsupp.degree_eq_zero_iff _).1 h)`. Establish `hs : (sfr X la w i.succ : Lw X la w) ∈ Hfr X la w (wt0 D j)` using `(mem_Frac0 X la w).1 (sfr X la w i.succ).2`. Use `JHfr_anti X la w u ?_ (mul_mem_JHfr X la w (hP X la w (wt0 D j) q.1 _ hs) (ih q.2 m hm))` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `key : ∀ r ∈ Jid X la w, ∀ m ∈ JHs X la w u a, ∀ β : Idx D j N →₀ ℕ, H X la w β (r • m) ∈ JHfr X la w u (a + 1 - Finsupp.degree β)`. Introduce `r hr`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem r hr`. Take `⟨i, rfl⟩` from `hr`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm β`. Conclude with `gen i m hm β`. Consider the case `zero`. Introduce `m _ β`. Rewrite using `[zero_smul, H_zero_right]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add r r' _ _ h h'`. Introduce `m hm β`. Rewrite using `[add_smul, H_add]`. Conclude with `Submodule.add_mem _ (h m hm β) (h' m hm β)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul c r _ h`. Introduce `m hm β`. Rewrite using `[smul_eq_mul, mul_comm, mul_smul]`. Conclude with `h _ ((JHs X la w u a).smul_mem c hm) β`. Use `revert β`.
-
-Use `Submodule.smul_induction_on (p := fun x => ∀ β : Idx D j N →₀ ℕ, H X la w β x ∈ JHfr X la w u (a + 1 - Finsupp.degree β)) hx' key ?_` and prove the remaining obligations. Introduce `y z hy hz β`. Rewrite using `[H_add]`. Conclude with `Submodule.add_mem _ (hy β) (hz β)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (hP : PI.HassePresH) (u : WeightFamilies.Wt D j) (a : ℕ) :
     ∀ (β : Idx D j N →₀ ℕ) (x : Lw X la w), x ∈ JHfr X la w u a →
@@ -159,7 +157,7 @@ theorem main (hP : PI.HassePresH) (u : WeightFamilies.Wt D j) (a : ℕ) :
     exact Submodule.add_mem _ (hy β) (hz β)
 
 /- English proof (translation)
-Introduce `D B P j X la N wL w u β a x hx`. Establish `h` using `main X la w hP u a β x hx`. Rewrite `h` using `[← sum_eq_degree]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasseJidPow_of (hP : PI.HassePresH) : PI.HasseJidPow := by
   intro D B P j X la N wL w u β a x hx

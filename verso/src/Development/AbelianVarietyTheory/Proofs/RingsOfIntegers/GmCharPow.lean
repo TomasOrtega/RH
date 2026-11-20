@@ -31,7 +31,7 @@ section Char
 variable {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [AddCommGroup X']
 
 /- English proof (translation)
-Use `Eq.trans ?_ ((gm_pull (𝟙 T.left) r.left y ⊤ trivial (charUnit S X χ)).symm.trans (congrArg (gm (𝟙 T.left) y ⊤) (Units.ext (splitTorusPointsEquiv_val S X T r χ).symm)))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_char {T : Over S} (r : T ⟶ splitTorus S X) (y : T.left) (χ : X) :
     gm r.left y ⊤ (charUnit S X χ) =
@@ -41,7 +41,7 @@ theorem gm_char {T : Over S} (r : T ⟶ splitTorus S X) (y : T.left) (χ : X) :
   rw [Category.id_comp]
 
 /- English proof (translation)
-Establish `e : Multiplicative.ofAdd x = ∏ i, Multiplicative.ofAdd (incl xe i (xe x i))`. Rewrite using `[← ofAdd_sum, sum_incl]`. Rewrite using `[gm_char, e, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gm_char, points_comp_torusMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -62,7 +62,7 @@ section Pow
 variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ} {D D' : DegPre R} (pD : IsPowDeg D' D j)
 
 /- English proof (translation)
-Rewrite using `[cP, cP, Category.assoc, pD.c_pr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cPoint_proj (T : Over (Spec (CommRingCat.of R))) (χ : D'.X) (i : Fin j) :
     cP D' T χ ≫ pD.pw.pr i = cP D T (pD.xe χ i) := by
@@ -73,9 +73,9 @@ variable {T T' : Over (Spec (CommRingCat.of R))} (p : T ⟶ D.P.A) (p' : T' ⟶ 
 
 include hp in
 /- English proof (translation)
-Use `haveI := pD.pw.hom i`. Use `Eq.trans ?_ (WeightPf.Oφ_comp (ρ i) p (pD.xe x i) κ).symm` and prove the remaining obligations. Rewrite using `[← hp]`. Use `fin_cases κ`. Use `congrArg (fun q : T' ⟶ D.P.A => q.left) (?_ : (p' * cP D' _ x) ≫ pD.pw.pr i = (p' ≫ pD.pw.pr i) * cP D _ (pD.xe x i))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[MonObj.mul_comp, cPoint_proj]`. Conclude with `congrArg (fun q : T' ⟶ D.P.A => q.left) (cPoint_proj pD _ x i)`. Both sides reduce to the same expression. Conclude with `congrArg (fun q : T' ⟶ D.P.A => q.left) (MonObj.one_comp (pD.pw.pr i))`.
+A detailed English derivation is pending.
 -/
 theorem Oφ_proj (x : D'.X) (i : Fin j) (κ : Fin 4) :
     D'.Oφ p' x κ ≫ (pD.pw.pr i).left = (ρ i).left ≫ D.Oφ p (pD.xe x i) κ := by
@@ -100,7 +100,7 @@ def BoxMaps (x : D'.X) (a : LB.Gen (LB.LinComb D'.P.L (D'.Oφ p' x) Oinvε))
     (fun i => GeneratorPullback.pullAlong D.P.L (pD.pw.pr i).left (ρ i).left _ Oinvε _ (Oφ_proj pD p p' ρ hp x i) (t i)))
 
 /- English proof (translation)
-Use `Eq.trans ?_ (box_gen_val_along pD.w (Oφ_proj pD p p' ρ hp x) a t H r.left y hJ hJ')` and prove the remaining obligations. Rewrite using `[← prod_O D' (r ≫ p') x (omg pD y J J')]`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => ?_) rfl` and prove the remaining obligations. Rewrite using `[← WeightPf.Oφ_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_box {x : D'.X} {a : LB.Gen (LB.LinComb D'.P.L (D'.Oφ p' x) Oinvε)}
     {t : ∀ i, LB.Gen (LB.LinComb D.P.L (D.Oφ p (pD.xe x i)) Oinvε)} (H : BoxMaps pD p p' ρ hp x a t)
@@ -115,15 +115,13 @@ theorem val_box {x : D'.X} {a : LB.Gen (LB.LinComb D'.P.L (D'.Oφ p' x) Oinvε)}
   rfl
 
 /- English proof (translation)
-Use `corr_of_val D'.P.isLB fun y J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB y`. Establish `va : ∀ x, (omg pD y J J' (p' * cP D' T' x).left)⁻¹ * omg pD y J J' (cP D' T' x).left * omg pD y J J' p'.left * (omg pD y J J' (1 : T' ⟶ D'.P.A).left)⁻¹ * val (a x) (𝟙 T'.left) y J' = ∏ i, val (t (pD.xe x i)) (ρ i).left y J` using `fun x => by`. Use `val_box pD p p' ρ hp (H x) (𝟙 T') hJ hJ'` as an intermediate fact. Simplify `this` using `only [Category.id_comp, Over.id_left]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c : cubV D'.cub y J' (cP D' T' χ) (cP D' T' χ') p' * (omg pD y J J' (cP D' T' χ * cP D' T' χ' * p').left * (omg pD y J J' (cP D' T' χ * cP D' T' χ').left)⁻¹ * (omg pD y J J' (cP D' T' χ * p').left)⁻¹ * (omg pD y J J' (cP D' T' χ' * p').left)⁻¹ * omg pD y J J' (cP D' T' χ).left * …` using `GlobalTheory.CubBox.cubV_box hG R j D D' pD T' y J J' hJ hJ' (cP D' T' χ) (cP D' T' χ') p'`. Establish `m : ∀ i, val (t (pD.xe (χ + χ') i)) (ρ i).left y J * cubV D.cub y J (cP D' T' χ ≫ pD.pw.pr i) (cP D' T' χ' ≫ pD.pw.pr i) (p' ≫ pD.pw.pr i) = val (t (pD.xe χ i)) (ρ i).left y J * val (t (pD.xe χ' i)) (ρ i).left y J` using `fun i => by`. Establish `vc` using `val_cub D.cub (ρ i) hJ (cP D T (pD.xe χ i)) (cP D T (pD.xe χ' i)) p`. Rewrite `vc` using `[comp_cP, comp_cP]`. Rewrite using `[cPoint_proj, cPoint_proj, hp, map_add, Pi.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl vc)).symm.trans ((val_corr hJ (hm (pD.xe χ i) (pD.xe χ' i)) (ρ i).left).trans (val_mul hJ _ _ _))`. Establish `m'` using `Finset.prod_congr (s₁ := Finset.univ) rfl fun i _ => m i`. Rewrite `m'` using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← c, ← va, ← va, ← va, cPoint_add, mul_comm p', mul_comm p', mul_comm p']`. Establish `vc` using `val_cub D'.cub (𝟙 T') hJ' (cP D' T' χ) (cP D' T' χ') p'`. Rewrite `vc` using `[Category.id_comp, Category.id_comp, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `((val_mul hJ' _ _ _).trans (congrArg₂ (· * ·) rfl vc)).trans (Eq.trans ?_ (val_mul hJ' _ _ _).symm)` and prove the remaining obligations. Use `show val (a (χ + χ')) (𝟙 T'.left) y J' * cubV D'.cub y J' (cP D' T' χ) (cP D' T' χ') p' = val (a χ) (𝟙 T'.left) y J' * val (a χ') (𝟙 T'.left) y J'`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `m''` using `congrArg Additive.ofMul m'`. Simplify using `only [ofMul_mul, ofMul_inv] at m'' ⊢`.
-
-Take the linear combination `(norm := abel) m''`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mul_box (hG : GlobalFnsSt) (t : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (D.Oφ p χ) Oinvε))
     (a : ∀ χ : D'.X, LB.Gen (LB.LinComb D'.P.L (D'.Oφ p' χ) Oinvε))
@@ -186,9 +184,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ} {D D' : DegPre R} (pD : 
 
 include hσ H in
 /- English proof (translation)
-Use `corr_of_val D'.P.isLB fun y J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB y`. Establish `e₃` using `val_box pD p p' _ hp H ((Over.map s).map η[G']) (y := y) hJ hJ'`. Rewrite `e₃` using `[e₂, _root_.one_mul, inv_mul_cancel, _root_.one_mul, mul_inv_cancel, _root_.one_mul]`. Establish `e₅ : val a (eSec G') y J' = 1` using `e₃.trans (Finset.prod_eq_one fun i _ => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hσ i` as an intermediate fact. Establish `e₁ : eSec G' ≫ (σ i).left = 𝟙 S ≫ eSec G` using `(congrArg (fun q => q.left) (IsMonHom.one_hom (σ i))).trans (Category.id_comp _).symm`. Conclude with `(congrArg (fun r => val (t i) r y J) e₁).trans ((val_pull hJ _ _ _).symm.trans ((val_corr hJ (hu i) (𝟙 S)).trans (val_one _))))`. Conclude with `(val_pull hJ' _ _ _).trans ((congrArg (fun r => val a r y J') (Category.id_comp _)).trans (e₅.trans (val_one _).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unit_box (e₂ : (Over.map s).map η[G'] ≫ p' = 1)
     (hu : ∀ i, LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ (t i) (eSec G)) (LB.oneGen D.P.L)) :
@@ -208,13 +206,13 @@ theorem unit_box (e₂ : (Over.map s).map η[G'] ≫ p' = 1)
 
 include hσ H in
 /- English proof (translation)
-Use `corr_of_val D'.P.isLB fun y J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB y`. Establish `v₃ : ∀ i, val (t i) ((lift (fst (splitTorus S D'.X) G' ≫ κ') (snd _ _) ≫ μ[G']) ≫ σ i).left y J = gm (fst (splitTorus S D'.X) G' ≫ torusMap S (incl pD.xe i)).left y ⊤ (charUnit _ D.X (pD.xe χ i)) * val (t i) (snd (splitTorus S D'.X) G' ≫ σ i).left y J` using `fun i => by`. Use `hσ i` as an intermediate fact. Set `N : splitTorus S D'.X ⊗ G' ⟶ splitTorus S D.X ⊗ G` to `torusMap S (incl pD.xe i) ⊗ₘ σ i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `n₁ : N ≫ fst _ _ = fst _ _ ≫ torusMap S (incl pD.xe i)` using `tensorHom_fst _ _`. Establish `n₂ : N ≫ snd _ _ = snd _ _ ≫ σ i` using `tensorHom_snd _ _`. Establish `n₃ : N ≫ (lift (fst (splitTorus S D.X) G ≫ κ) (snd _ _) ≫ μ[G]) = (lift (fst (splitTorus S D'.X) G' ≫ κ') (snd _ _) ≫ μ[G']) ≫ σ i`. Rewrite using `[← Hom.mul_def, ← Hom.mul_def, MonObj.comp_mul, MonObj.mul_comp, ← Category.assoc, n₁, n₂, Category.assoc, Category.assoc, hκ]`. Rewrite using `[← n₁, ← n₂, ← n₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (hw i) N.left).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_charGen _ _ _ _ _ _ _) (val_pull hJ _ _ _))))`. Establish `b₁` using `val_box pD p p' _ hp H ((Over.map s).map (lift (fst (splitTorus S D'.X) G' ≫ κ') (snd _ _) ≫ μ[G'])) (y := y) hJ hJ'`. Establish `b₂` using `val_box pD p p' _ hp H ((Over.map s).map (snd (splitTorus S D'.X) G')) (y := y) hJ hJ'`. Rewrite `b₁` using `[aO]`. Establish `v₄` using `b₁.trans ((Finset.prod_congr rfl fun i _ => v₃ i).trans (Finset.prod_mul_distrib.trans ((congrArg₂ (fun u v : (((Over.map s).obj (splitTorus S D'.X ⊗ G')).left.presheaf.stalk y)ˣ => u * v) (gm_char_pow pD.xe _ y χ).symm b₂.symm).trans (mul_left_comm _ _ _))))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v₅` using `mul_left_cancel v₄`. Use `(val_pull hJ' _ _ _).trans (Eq.trans ?_ ((val_mul hJ' _ _ _).trans (congrArg₂ (· * ·) (val_charGen _ _ _ _ _ _ _) (val_pull hJ' _ _ _))).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Conclude with `v₅`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_box (κ : splitTorus S D.X ⟶ G) (κ' : splitTorus S D'.X ⟶ G')
     (hκ : ∀ i, κ' ≫ σ i = torusMap S (incl pD.xe i) ≫ κ)
@@ -260,15 +258,15 @@ theorem weight_box (κ : splitTorus S D.X ⟶ G) (κ' : splitTorus S D'.X ⟶ G'
 end Clauses
 
 /- English proof (translation)
-Introduce `hG R _ _ I j D D' A A' G G' _ _ _ _ pD _ pG e g`. Take `⟨pGe, hGe⟩` from `isPowGrp_baseChange _ _ (thick R I e) G' G j pG`. Take `⟨pBe, hBe⟩` from `isPowGrp_baseChange _ _ (thick R I e) D'.toPre.P.A D.toPre.P.A j pD.pw`. Take `⟨q', hq, q_hom, q_flat, q_surj, -, q_aff⟩` from `PowMap.main _ _ _ _ _ j pGe pBe g.q`. Take `⟨i', hi, i_hom, -⟩` from `PowMap.main _ _ _ _ _ j (isPowGrp _ pD.xe) pGe g.i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hker` using `PowKernel.main _ _ _ _ _ _ _ j (isPowGrp _ pD.xe) pGe pBe g.i g.q i' q' hi hq g.isKernel`. Use `replace q_hom := q_hom g.q_hom`. Simplify using `only [hGe, hBe] at hq hi`. Establish `hσ : ∀ i, IsMonHom ((Over.pullback (thick R I e)).map (pG.pr i))` using `fun i => hGe i ▸ pGe.hom i`. Establish `hp : ∀ i, ((Over.map (thick R I e)).map q' ≫ D'.toPre.prBe I e) ≫ pD.pw.pr i = (Over.map (thick R I e)).map ((Over.pullback (thick R I e)).map (pG.pr i)) ≫ g.pG` using `fun i => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b : D'.toPre.prBe I e ≫ pD.pw.pr i = (Over.map (thick R I e)).map ((Over.pullback (thick R I e)).map (pD.pw.pr i)) ≫ D.toPre.prBe I e` using `Over.OverMorphism.ext (pullback.lift_fst _ _ _).symm`. Rewrite using `[Category.assoc, b, ← Category.assoc, ← Functor.map_comp, hq, Functor.map_comp, Category.assoc]`. Establish `hO` using `Oφ_proj pD g.pG ((Over.map (thick R I e)).map q' ≫ D'.toPre.prBe I e) _ hp`. Use `choose a ha H using fun x : D'.toPre.X => BoxQk.exists_box_maps pD.w pD.w_gen D.toPre.P.isLB D'.toPre.P.isLB _ (hO x) (fun i => g.t (pD.xe x i)) (fun i => g.t_gen _)`. Establish `e₂ : (Over.map (thick R I e)).map η[thickObj R I e G'] ≫ ((Over.map (thick R I e)).map q' ≫ D'.toPre.prBe I e) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, ← Functor.map_comp, IsMonHom.one_hom]`. Use `Over.OverMorphism.ext ((cubeMapOf (isGrpPullback_pullback D'.toPre.P.A (thick R I e))).e_comm.trans ?_)` and prove the remaining obligations. Use `show thick R I e ≫ η[D'.toPre.P.A].left = (𝟙 _ ≫ thick R I e) ≫ η[D'.toPre.P.A].left`. Rewrite using `[Category.id_comp]`. Establish `aq : ((fst (splitTorus _ D'.toPre.X) (thickObj R I e G') ≫ i') * snd _ _) ≫ q' = snd _ _ ≫ q'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.mul_comp, Category.assoc, hker.w, ← Category.assoc, comp_toUnit, ← Hom.one_def, _root_.one_mul]`. Establish `aO : (Over.map (thick R I e)).map (lift (fst (splitTorus _ D'.toPre.X) (thickObj R I e G') ≫ i') (snd _ _) ≫ μ[thickObj R I e G']) ≫ ((Over.map (thick R I e)).map q' ≫ D'.toPre.prBe I e) = (Over.map (thick R I e)).map (snd (splitTorus _ D'.toPre.X) (thickObj R I e G')) ≫ ((Over.m …`. Rewrite using `[← Category.assoc, ← Functor.map_comp, ← Hom.mul_def, aq, Functor.map_comp, Category.assoc]`. Conclude with `⟨⟨q', q_hom, q_flat g.q_flat, q_surj g.q_surj, q_aff g.q_affine, i', i_hom g.i_hom, hker, a, ha, mul_box pD g.pG _ _ hp hG g.t a H g.t_mul, fun χ => unit_box pD g.pG _ _ hσ hp (H χ) e₂ (fun i => g.t_unit _), fun χ => weight_box pD g.pG _ _ hσ hp (H χ) g.i i' hi aO (fun i => g.t_w …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (j : ℕ) (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G G' : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre D.toPre j) (pA : IsPowPolAV A' A j) (pG : IsPowGrp G' G j) (e : ℕ) (g : GtCoord I D.toPre e G), ∃ g' : GtCoord I D'.toPre e G', (∀ (i : Fin j), g'.q ≫ (Over.pullback (thick R I e)).map (pD.pw.pr i) = (Over.pullback (thick R I e)).map (pG.pr i) ≫ g.q) ∧ (∀ (x : D'.toPre.X), ∃ hψ : ∀ (i : Fin j) (k : Fin 4), D'.toPre.Oφ ((Over.map (thick R I e)).map g'.q ≫ D'.toPre.prBe I e) x k ≫ (pD.pw.pr i).left = ((Over.pullback (thick R I e)).map (pG.pr i)).left ≫ D.toPre.Oφ ((Over.map (thick R I e)).map g.q ≫ D.toPre.prBe I e) (pD.xe x i) k, LB.Gen.Maps (LB.linCombIso pD.w _ Oinvε) (g'.t x) (GeneratorPullback.boxGen D.toPre.P.L (fun i => (pD.pw.pr i).left) _ Oinvε (fun i => GeneratorPullback.pullAlong D.toPre.P.L (pD.pw.pr i).left ((Over.pullback (thick R I e)).map (pG.pr i)).left _ Oinvε _ (hψ i) (g.t (pD.xe x i))))) := by
   intro hG R _ _ I j D D' A A' G G' _ _ _ _ pD _ pG e g

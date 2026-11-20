@@ -39,9 +39,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : �
 omit [CharP (ResidueField O) p] in
 
 /- English proof (translation)
-Rewrite using `[VB.pullback_map_smulHom]`. Establish `hp : IsUnit ((Scheme.Hom.appTop B.gen.ι).hom (B.const (p : O)))` using `RingedSpace.isUnit_of_isUnit_germ _ _ _ fun x _ => (Scheme.mem_basicOpen_top _ _ x).1 ((Scheme.preimage_basicOpen_top B.gen.ι _).le (B.gen_le_basicOpen (natCast_ne_zero O p) x.2))`. Take `⟨u, hu⟩` from `h`. Establish `hc : B.const (p : O) = (p : Γ(B.X, ⊤))` using `map_natCast _ p`. Rewrite `hp` using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpow : IsUnit (((Scheme.Hom.appTop B.gen.ι).hom π) ^ (p - 1))`. Rewrite using `[← map_pow, hu, map_mul]`. Conclude with `(u.isUnit.map _).mul hp`. Establish `hπ` using `(isUnit_pow_iff (Nat.sub_ne_zero_of_lt (Fact.out : p.Prime).one_lt)).1 hpow`. Conclude with `(isUnit_iff_isIso _).1 (hπ.map (smulEnd _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_genRes_smulHom (E : B.X.Modules) {π : Γ(B.X, ⊤)} (h : IsRootOfP p π (p - 1)) :
     IsIso (B.genRes.map (smulHom E π)) := by
@@ -62,26 +62,26 @@ def kerV {M N : AM B Λ} (f : M ⟶ N) : (kernel f).V ≅ kernel f.hom :=
   PreservesKernel.iso (Action.forget B.X.Modules Λ) f
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Mono ((Action.forget B.X.Modules Λ).map (kernel.ι f)))`.
+A detailed English derivation is pending.
 -/
 theorem mono_ι {M N : AM B Λ} (f : M ⟶ N) : Mono (kernel.ι f).hom :=
   inferInstanceAs (Mono ((Action.forget B.X.Modules Λ).map (kernel.ι f)))
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.exact_kernel f).map (Action.forget B.X.Modules Λ)`.
+A detailed English derivation is pending.
 -/
 theorem exact_ι {M N : AM B Λ} (f : M ⟶ N) (h : (kernel.ι f).hom ≫ f.hom = 0) :
     (ShortComplex.mk (kernel.ι f).hom f.hom h).Exact :=
   (ShortComplex.exact_kernel f).map (Action.forget B.X.Modules Λ)
 
 /- English proof (translation)
-The claim follows from `congrArg Action.Hom.hom (kernel.condition f)`.
+A detailed English derivation is pending.
 -/
 theorem ι_comp {M N : AM B Λ} (f : M ⟶ N) : (kernel.ι f).hom ≫ f.hom = 0 :=
   congrArg Action.Hom.hom (kernel.condition f)
 
 /- English proof (translation)
-Introduce `a b` and use `by haveI := mono_ι f have k : ∀ c, ((kernel f).ρ c : (kernel f).V ⟶ (kernel f).V) ≫ (kernel.ι f).hom = (kernel.ι f).hom ≫ (M.ρ c : M.V ⟶ M.V) := fun c => (kernel.ι f).comm c rw [← cancel_mono (kernel.ι f).hom, Preadditive.add_comp, k, k, k, h, Preadditive.comp_add]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdd_kernel {M N : AM B Λ} (f : M ⟶ N) (h : IsAdd M) : IsAdd (kernel f) := fun a b => by
   haveI := mono_ι f
@@ -92,14 +92,14 @@ theorem isAdd_kernel {M N : AM B Λ} (f : M ⟶ N) (h : IsAdd M) : IsAdd (kernel
 variable {o : ℕ} {Lie Om : AM B Λ} {π : Γ(B.X, ⊤)} (P : PreChain p o Lie Om π)
 
 /- English proof (translation)
-The claim follows from `haveI := P.ρ_epi inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map P.ρ))`.
+A detailed English derivation is pending.
 -/
 theorem epi_ρ : Epi P.ρ.hom :=
   haveI := P.ρ_epi
   inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map P.ρ))
 
 /- English proof (translation)
-Use `haveI := vb.isQuasicoherent`. Use `haveI := (P.q 0).vb.isQuasicoherent`. Use `haveI := (P.q 0).vb'.isQuasicoherent`. Use `haveI : (P.q 0).mod.V.IsQuasicoherent := isQuasicoherent_of_iso (Examples₂.cokV (P.q 0).ψ).symm`. Conclude with `isQuasicoherent_of_iso (Examples₂.cokV P.j).symm`.
+A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_coker {r : ℕ} (vb : GlobalTheory.VB.IsVB Lie.V r) : (cokernel P.j).V.IsQuasicoherent := by
   haveI := vb.isQuasicoherent
@@ -109,7 +109,7 @@ theorem isQuasicoherent_coker {r : ℕ} (vb : GlobalTheory.VB.IsVB Lie.V r) : (c
   exact isQuasicoherent_of_iso (Examples₂.cokV P.j).symm
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.FrobFilt.ExtPres.isZero_genRes (P.q 0).toPres (M := (P.q 0).mod.V) (Examples₂.cokV (P.q 0).ψ)`. Use `haveI : Epi (cokernel.π P.j).hom := inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map (cokernel.π P.j)))`. Conclude with `IsZero.of_epi (B.genRes.map (cokernel.π P.j).hom) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_coker : IsZero (B.genRes.obj (cokernel P.j).V) := by
   have h := GlobalTheory.FrobFilt.ExtPres.isZero_genRes (P.q 0).toPres (M := (P.q 0).mod.V) (Examples₂.cokV (P.q 0).ψ)
@@ -187,7 +187,7 @@ def chainOf {r : ℕ} (addL : IsAdd Lie) (vbL : GlobalTheory.VB.IsVB Lie.V r) (v
 end Build
 
 /- English proof (translation)
-Use extensionality with `c`. Use `haveI : Mono ((Scheme.Modules.pullback w).map e.hom) := inferInstance`. Simplify using `only [kerAt, Set.mem_setOf_eq, Functor.map_comp]`. Conclude with `map_eq_zero_iff (((Scheme.Modules.pullback w).map e.hom).app ⊤).hom (app_injective_of_mono ((Scheme.Modules.pullback w).map e.hom) ⊤)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerAt_comp {X : Scheme.{0}} {R : Type} [CommRing R] (w : Sp R ⟶ X) {F Q Q' : X.Modules} (u : F ⟶ Q) (e : Q ≅ Q')
     {V : X.Opens} (hV : ⊤ ≤ w ⁻¹ᵁ V) {r : ℕ} (s : Fin r → Γ(F, V)) : kerAt w (u ≫ e.hom) hV s = kerAt w u hV s := by
@@ -209,7 +209,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 omit [Fact p.Prime] in
 
 /- English proof (translation)
-Introduce `y w hw a φ hφ`. Take `⟨V, s, hs, hV, k⟩` from `hJ y w hw a φ hφ`. Conclude with `⟨V, s, hs, hV, by rw [kerAt_comp]; exact k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ptJ_comp {X : Scheme.{0}} {k : X ⟶ Z.X} {F Q Q' : X.Modules} {s : ∀ a : Fin Z.m, Fin r → Γ(F, k ⁻¹ᵁ (Z.U a).1)}
     (hs : ∀ a, GlobalTheory.VB.IsFrame (s a)) {t : Γ(X, ⊤)} (u : F ⟶ Q) (e : Q ≅ Q') (hJ : PtJ Z k x hs t u) :
@@ -219,9 +219,7 @@ theorem ptJ_comp {X : Scheme.{0}} {k : X ⟶ Z.X} {F Q Q' : X.Modules} {s : ∀ 
   exact ⟨V, s, hs, hV, by rw [kerAt_comp]; exact k⟩
 
 /- English proof (translation)
-Establish `eC` using `cokJP P hO.1 hO.2.1 vbK`. Establish `vbN : GlobalTheory.VB.IsVB (kernel P.j.hom) r` using `(GlobalTheory.T.kernel_vector_bundle_of_presentation _ B _ _ _ _ (jP P) hL.2.1 ⟨eC⟩).of_iso (kernelCompMono P.j.hom (qIso P).hom)`. Establish `h0 : (kernel.ι P.j).hom ≫ jP P = 0` using `by rw [jP, ← Category.assoc, ι_comp, zero_comp]`. Use `⟨chainOf P hL.1 hL.2.1 vbN hO.1 hO.2.1 vbK, GlobalTheory.T.local_model_chain_char_p Z _ _ (lwOf P hL.1 hL.2.1 vbN) (kernel.ι P.j) _ _ _ (jP P) h0 _ hL rfl P.π_root (kernel.lift_ι P.j _ P.j_kill) (mono_ι _) ?_ ⟨eC⟩ ?_, GlobalTheory.T.local_model_chain_char_p_dual Z _ _ (ooOf P hO. …` and prove the remaining obligations. Conclude with `ShortComplex.exact_of_iso (S₁ := ShortComplex.mk _ _ (ι_comp P.j)) (ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (qIso P) (by simp [lwOf]) (by simp [jP, lwOf])) (exact_ι _ _)`.
-
-Conclude with `ptJ_comp _ _ (qIso P) hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_chain (hL : IsEqLat Z h x false Lie sL) (hO : IsEqLat Z h x' true Om sO) (P : PreChain p o Lie Om π)
     (hJ : PtJ Z h x hL.2.2.1.frame π P.j.hom) (hR : PtR Z h x' hO.2.2.1.frame P.ρ.hom)
@@ -240,9 +238,9 @@ theorem exists_chain (hL : IsEqLat Z h x false Lie sL) (hO : IsEqLat Z h x' true
   · exact ptJ_comp _ _ (qIso P) hJ
 
 /- English proof (translation)
-Take `⟨B', g, hB', hg, hK⟩` from `GlobalTheory.T.exists_model_kernel_vector_bundle _ p B _ _ _ P.ρ.hom hB hO.2.1 (isQuasicoherent_coker P hL.2.1) (epi_ρ P) (isZero_coker P)`. Take `⟨P', e, e', he, he'⟩` from `GlobalTheory.T.prechain_pullback _ p B B' g _ o _ _ _ P`. Establish `hL'` using `hL.pull g.f`. Establish `hO'` using `hO.pull g.f`. Establish `hJ'` using `(GlobalTheory.T.local_model_frames_base_change Z g.f h x Lie.V _ sL hL.2.2.1.frame hL'.2.2.1.frame P.j.hom _ P'.j.hom e hL.2.1 he).1 _ hJ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR'` using `(GlobalTheory.T.local_model_frames_base_change Z g.f h x' Om.V _ sO hO.2.2.1.frame hO'.2.2.1.frame P.ρ.hom _ P'.ρ.hom e' hO.2.1 he').2 hR`. Establish `vbK : GlobalTheory.VB.IsVB (kernel P'.ρ.hom) r` using `(hK.of_iso (kernelIsoOfEq he'.symm)).of_iso (kernelCompMono P'.ρ.hom e'.hom)`. Take `⟨Q, hQ⟩` from `exists_chain hL' hO' P' hJ' hR' vbK`. Conclude with `⟨B', g, Q, hB', hg, hQ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cover_chain (hB : GlobalTheory.IsNormalScheme B.X) (hL : IsEqLat Z h x false Lie sL) (hO : IsEqLat Z h x' true Om sO)
     (P : PreChain p o Lie Om π) (hJ : PtJ Z h x hL.2.2.1.frame π P.j.hom) (hR : PtR Z h x' hO.2.2.1.frame P.ρ.hom) :
@@ -261,9 +259,9 @@ theorem exists_cover_chain (hB : GlobalTheory.IsNormalScheme B.X) (hL : IsEqLat 
   exact ⟨B', g, Q, hB', hg, hQ⟩
 
 /- English proof (translation)
-Take `⟨B₃, g₃, P, hB₃, hg₃, hker⟩` from `GlobalTheory.T.chains_normal_model_vector_bundle _ p B _ n o _ _ Lie Om π γ M C hB hL.1 hO.1 hL.2.1 hO.2.1 hπ hγ hsys`. Establish `hL₃` using `hL.pull g₃.f`. Establish `hO₃` using `hO.pull g₃.f`. Take `⟨hJ₃, hR₃⟩` from `GlobalTheory.T.local_model_letters_pullback Z h x x' Lie Om sL _ sO _ n o π γ C _ g₃.f _ _ P.j.hom P.ρ.hom hL₃.2.2.1.frame hO₃.2.2.1.frame hL.2.1 hO.2.1 hpt hker`. Take `⟨B₄, g₄, Q, hB₄, hg₄, hQ⟩` from `exists_cover_chain hB₃ hL₃ hO₃ P hJ₃ hR₃`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨B₄, g₄.comp g₃, Q, hB₄, ?_, ?_⟩` and prove the remaining obligations. Unfold `Vert.Model.Hom.relDim at *`. Use linear arithmetic over natural numbers and integers. Rewrite `hQ` using `[← Category.assoc]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_cover_of_sys (hB : GlobalTheory.IsNormalScheme B.X) (hL : IsEqLat Z h x false Lie sL) (hO : IsEqLat Z h x' true Om sO)
     {γ : ℕ → Γ(B.X, ⊤)} {n : ℕ} {M : 𝓞 E →+* Matrix (Fin n) (Fin n) ℤ} (C : ChainsBp p n o Lie Om π γ)
@@ -285,13 +283,11 @@ theorem exists_cover_of_sys (hB : GlobalTheory.IsNormalScheme B.X) (hL : IsEqLat
 end Lat
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 D O hO p _ W hW jc hj z`. Use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW`. Use `haveI := charP_residueField_of_mem_nonunits z.Z.i.c (Fact.out : p.Prime) hW`. Introduce `c o B₁ f₁ hB₁ hf₁`. Take `⟨B₂, g₂, hB₂, hg₂, hζ⟩` from `GlobalTheory.T.exists_normal_model_roots_of_unity _ p B₁ hB₁ (o + 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hf₂ : (g₂.comp f₁).relDim = 0`. Unfold `Vert.Model.Hom.relDim at *`. Use linear arithmetic over natural numbers and integers. Take `⟨Lie, Om, sL, sO, hL, hOm, π, γ, n, M, C, hπ, hγ, hsys, hpt⟩` from `GlobalTheory.T.system_cover_of_chains h1 h2 h3 h4 GlobalTheory.T.RingChainExists GlobalTheory.T.RingChainMap D O hO p W hW jc hj z c o B₂ (g₂.comp f₁) hB₂ hf₂ hζ`. Take `⟨B₃, g₃, Q, hB₃, hg₃, hQ⟩` from `exists_cover_of_sys hB₂ hL hOm C hπ hγ hsys hpt`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨B₃, g₃.comp g₂, Q, hB₃, ?_, ?_⟩` and prove the remaining obligations. Unfold `Vert.Model.Hom.relDim at *`. Use linear arithmetic over natural numbers and integers. Establish `hh : ((g₃.comp g₂).comp f₁).f ≫ (nmodel z.Z).compι c = g₃.f ≫ (g₂.comp f₁).f ≫ (nmodel z.Z).compι c`. Simplify using `only [Vert.Model.Hom.comp, Category.assoc]`.
-
-Rewrite using `[hh]`. Conclude with `hQ`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainCoverSt : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd →
     GlobalTheory.GroupBplus.GroupAllSt → GlobalTheory.ChainPts.ChainCoverSt := by

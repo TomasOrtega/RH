@@ -16,11 +16,9 @@ open scoped Matrix
 namespace PositivityTheory.HtPt.Re
 
 /- English proof (translation)
-Introduce `C _ R _ _ N _ _ _ N' _ _ _ AA AA' e e' he he'`. Establish `key : ∀ a b : N → N', (∀ g ∈ AA'.carrier, (fun x => g (a x)) ∈ AA.carrier) → (∀ g ∈ AA'.carrier, (fun x => g (b x)) ∈ AA.carrier) → ∀ g ∈ AA'.carrier, (fun x => g (a x + b x)) ∈ AA.carrier`. Introduce `a b ha hb g hg`. Establish `h : (tensorSpan R AA'.carrier).map (LinearMap.funLeft R C (fun x : N => (a x, b x))) ≤ AA.carrier`. Rewrite using `[tensorSpan, Submodule.map_span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `F ⟨u, hu, w, hw, rfl⟩`. Conclude with `AA.mul_mem _ _ (ha u hu) (hb w hw)`. Conclude with `h (Submodule.mem_map_of_mem (AA'.comul g hg))`. Use `⟨key e e' he he', fun g hg => ?_⟩` and prove the remaining obligations. Use `key e (fun x => - e' x) he (fun g hg => he' _ (AA'.antipode g hg)) g hg` as an intermediate fact.
-
-Simplify `this` using `only [sub_eq_add_neg]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stabadd : ∀ (C : Type) [Field C] (R : Type) [CommRing R] [Algebra R C], ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], ∀ (N' : Type) [AddCommGroup N'] [Fintype N'] [DecidableEq N'], ∀ (AA : HopfOrder (C := C) R N) (AA' : HopfOrder (C := C) R N') (e e' : N →+ N'), (∀ g ∈ AA'.carrier, (fun x => g (e x)) ∈ AA.carrier) → (∀ g ∈ AA'.carrier, (fun x => g (e' x)) ∈ AA.carrier) → (∀ g ∈ AA'.carrier, (fun x => g (e x + e' x)) ∈ AA.carrier) ∧ (∀ g ∈ AA'.carrier, (fun x => g (e x - e' x)) ∈ AA.carrier) := by
   intro C _ R _ _ N _ _ _ N' _ _ _ AA AA' e e' he he'
@@ -39,21 +37,19 @@ theorem stabadd : ∀ (C : Type) [Field C] (R : Type) [CommRing R] [Algebra R C]
   simpa only [sub_eq_add_neg] using this
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp N _ _ _ AA N' _ _ _ ι π hπ hst`. Establish `hinj : Function.Injective ι` using `fun a b h => by rw [← hπ a, h, hπ b]`. Establish `hpull : ∀ h ∈ AA.carrier.map (LinearMap.funLeft R C (ι : N' → N)), (fun x => h (π x)) ∈ AA.carrier`. Introduce and unpack `h ⟨g, hg, rfl⟩`. Conclude with `hst g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hpull, ?_⟩` and prove the remaining obligations. Use `letI : Fintype ι.range := AddSubgroup.instFintypeSubtypeMemOfDecidablePred ι.range`. Take `⟨⟨AK, hAK⟩, -⟩` from `h2 C R v hv N ι.range AA`. Use `⟨hopfPull (AddMonoidHom.ofInjective hinj) AK, ?_⟩` and prove the remaining obligations. Use `show AK.carrier.map _ = _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hAK, ← Submodule.map_comp]`. Both sides reduce to the same expression. Introduce `K' hG h hh`. Establish `h1 : (fun x => h (π x)) ∈ invFun AA.carrier (K'.map ι)`. Use `⟨hpull h hh.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x k ⟨k', hk', rfl⟩`. Use `show h (π (x + ι k')) = h (π x)`. Rewrite using `[map_add, hπ]`. Conclude with `hh.2 _ _ hk'`. Establish `h2` using `hG h1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `φ : (N → C) →ₐ[R] (N' → C)` to `AlgHom.pi (fun y => Pi.evalAlgHom R (fun _ : N => C) (ι y))`. Establish `hφ : ∀ g y, φ g y = g (ι y)` using `fun _ _ => rfl`. Establish `h3 : φ (fun x => h (π x)) = h`. Use function extensionality and compare the values at `y`. Rewrite using `[hφ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hπ]`. Establish `h4 : (Algebra.adjoin R ((afFun p (invFun AA.carrier (K'.map ι)) : Submodule R (N → C)) : Set (N → C))).map φ ≤ Algebra.adjoin R ((afFun p (invFun (AA.carrier.map (LinearMap.funLeft R C (ι : N' → N))) K') : Submodule R (N' → C)) : Set (N' → C))`. Rewrite using `[AlgHom.map_adjoin]`. Use `Algebra.adjoin_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, ⟨⟨hg1, hg2⟩, hg3⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨⟨g, hg1, rfl⟩, fun y k hk => ?_⟩, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hφ, map_add]`. Conclude with `hg2 _ _ ⟨k, hk, rfl⟩`. Rewrite using `[hφ, hφ, hφ, map_add]`. Conclude with `hg3 _ _`.
-
-Rewrite using `[← h3]`. Conclude with `h4 ⟨_, h2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ret_hopf : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], ∀ AA : HopfOrder (C := C) R N, ∀ (N' : Type) [AddCommGroup N'] [Fintype N'] [DecidableEq N'], ∀ (ι : N' →+ N) (π : N →+ N'), (∀ y, π (ι y) = y) → (∀ g ∈ AA.carrier, (fun x => g (ι (π x))) ∈ AA.carrier) → (∃ A' : HopfOrder (C := C) R N', A'.carrier = AA.carrier.map (LinearMap.funLeft R C (ι : N' → N))) ∧ (∀ h ∈ AA.carrier.map (LinearMap.funLeft R C (ι : N' → N)), (fun x => h (π x)) ∈ AA.carrier) ∧ ∀ K' : AddSubgroup N', GenAF p AA.carrier (K'.map ι) → GenAF p (AA.carrier.map (LinearMap.funLeft R C (ι : N' → N))) K' := by
   intro p _ C _ _ _ v R _ _ hv hp N _ _ _ AA N' _ _ _ ι π hπ hst
@@ -99,7 +95,7 @@ section Gen
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ h => h.imp fun _ h => ⟨h.1.map e.trans, h.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasLen_equiv {v : Valuation C NNReal} {A B : Type} [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] (e : A ≃ₗ[R] B) {x : NNReal} (h : HasLen v R B x) :
@@ -107,7 +103,7 @@ theorem hasLen_equiv {v : Valuation C NNReal} {A B : Type} [AddCommGroup A] [Mod
   h.imp fun _ h => h.imp fun _ h => ⟨h.1.map e.trans, h.2⟩
 
 /- English proof (translation)
-The claim follows from `hasLen_ext (fun κ _ _ X => hasLen_coker_det' v R hv κ X) (LinearMap.inl R A B) (LinearMap.snd R A B) LinearMap.inl_injective LinearMap.snd_surjective (LinearMap.range_inl R A B) ha hb`.
+A detailed English derivation is pending.
 -/
 theorem hasLen_prod {v : Valuation C NNReal} (hv : v.Integers R) {A B : Type} [AddCommGroup A]
     [Module R A] [AddCommGroup B] [Module R B] {a b : NNReal} (ha : HasLen v R A a)
@@ -117,7 +113,7 @@ theorem hasLen_prod {v : Valuation C NNReal} (hv : v.Integers R) {A B : Type} [A
     (LinearMap.range_inl R A B) ha hb
 
 /- English proof (translation)
-Take `⟨P, hP, hM⟩` from `hM`. Take `⟨B, hB, rfl⟩` from `h`. Take `⟨B', hB', rfl⟩` from `h'`. Rewrite using `[valuation_det_eq_of_span_eq_alt hv hP (hM.symm.trans hB), valuation_det_eq_of_span_eq_alt hv hP (hM.symm.trans hB')]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasColen_unique {v : Valuation C NNReal} (hv : v.Integers R) {X : Type} [Fintype X]
     [DecidableEq X] {M : Submodule R (X → C)} (hM : IsLat R M) {c c' : NNReal}
@@ -128,21 +124,21 @@ theorem hasColen_unique {v : Valuation C NNReal} (hv : v.Integers R) {X : Type} 
   rw [valuation_det_eq_of_span_eq_alt hv hP (hM.symm.trans hB), valuation_det_eq_of_span_eq_alt hv hP (hM.symm.trans hB')]
 
 /- English proof (translation)
-Set `r₁ : L →ₗ[R] L₁` to `(LinearMap.funLeft R C i₁).restrict rL₁`. Set `r₂ : L →ₗ[R] L₂` to `(LinearMap.funLeft R C i₂).restrict rL₂`. Set `φ` to `LinearMap.prod ((S₁.comap L₁.subtype).mkQ ∘ₗ r₁) ((S₂.comap L₂.subtype).mkQ ∘ₗ r₂)`. Establish `hφ : ∀ g, φ g = (Submodule.Quotient.mk (r₁ g), Submodule.Quotient.mk (r₂ g))` using `fun _ => rfl`. Establish `hsurj : Function.Surjective φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, b⟩`. Take `⟨⟨h₁, hh₁⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨⟨h₂, hh₂⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Use `⟨⟨_, L.add_mem (sL₁ h₁ hh₁) (sL₂ h₂ hh₂)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`. Use `c₁ h₂ hh₂ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show h₁ (q₁ (i₁ y)) + h₂ (q₂ (i₁ y)) - h₁ y = _`. Rewrite using `[hq₁]`. Expand and normalize the polynomial expressions, which then agree. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `c₂ h₁ hh₁ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Use `show h₁ (q₁ (i₂ y)) + h₂ (q₂ (i₂ y)) - h₂ y = _`. Rewrite using `[hq₂]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hker : S.comap L.subtype = LinearMap.ker φ`. Use extensionality with `⟨g, hg⟩`. Rewrite using `[LinearMap.mem_ker, hφ, Prod.mk_eq_zero, Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.mem_comap, Submodule.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨rS₁ g h, rS₂ g h⟩`. Introduce and unpack `⟨h₁, h₂⟩`. Use `S.add_mem (S.add_mem (dec g hg) (sS₁ _ h₁)) (sS₂ _ h₂)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Use `show g x = g x - g (i₁ (q₁ x)) - g (i₂ (q₂ x)) + g (i₁ (q₁ x)) + g (i₂ (q₂ x))`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hker).trans (φ.quotKerEquivOfSurjective hsurj)⟩`.
+A detailed English derivation is pending.
 -/
 theorem split_equiv {N N₁ N₂ : Type} (i₁ : N₁ → N) (q₁ : N → N₁) (i₂ : N₂ → N) (q₂ : N → N₂)
     (L S : Submodule R (N → C)) (L₁ S₁ : Submodule R (N₁ → C)) (L₂ S₂ : Submodule R (N₂ → C))
@@ -196,14 +192,14 @@ theorem split_equiv {N N₁ N₂ : Type} (i₁ : N₁ → N) (q₁ : N → N₁)
   exact ⟨(Submodule.quotEquivOfEq _ _ hker).trans (φ.quotKerEquivOfSurjective hsurj)⟩
 
 /- English proof (translation)
-Simplify using `[pFun, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_pFun {p : ℕ} {X : Type} {f : X → C} :
     f ∈ pFun (C := C) R p X ↔ ∀ x, f x ∈ pInt (C := C) R p := by
   simp [pFun, Submodule.mem_pi]
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `only [map_add]`. Conclude with `hf _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem addFun_comp {p : ℕ} {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e : X →+ Y)
     {f : Y → C} (hf : f ∈ addFun (C := C) R p Y) : (fun x => f (e x)) ∈ addFun (C := C) R p X := by
@@ -212,14 +208,14 @@ theorem addFun_comp {p : ℕ} {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e 
   exact hf _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => hf.1 (e x), addFun_comp e hf.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem linFun_comp {p : ℕ} {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e : X →+ Y)
     {f : Y → C} (hf : f ∈ linFun (C := C) R p Y) : (fun x => f (e x)) ∈ linFun (C := C) R p X :=
   ⟨fun x => hf.1 (e x), addFun_comp e hf.2⟩
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hf`. Conclude with `Submodule.add_mem_sup (show (fun x => a (e x)) ∈ afFun p M from ⟨h a ha.1, addFun_comp e ha.2⟩) (mem_pFun.2 fun x => mem_pFun.1 hb (e x))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem afp_comp {p : ℕ} {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e : X →+ Y)
     {M : Submodule R (X → C)} {M' : Submodule R (Y → C)} (h : ∀ g ∈ M', (fun x => g (e x)) ∈ M) :
@@ -230,7 +226,7 @@ theorem afp_comp {p : ℕ} {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e : X
     ⟨h a ha.1, addFun_comp e ha.2⟩) (mem_pFun.2 fun x => mem_pFun.1 hb (e x))
 
 /- English proof (translation)
-Use `Submodule.neg_mem _ (hf 0 0)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem addFun_zero {p : ℕ} {X : Type} [AddCommGroup X] {f : X → C}
     (hf : f ∈ addFun (C := C) R p X) : f 0 ∈ pInt (C := C) R p := by
@@ -238,7 +234,7 @@ theorem addFun_zero {p : ℕ} {X : Type} [AddCommGroup X] {f : X → C}
   simpa using this
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite `hf`, the goal using `[mem_aug]`. Conclude with `⟨h f hf.1, by simp only [map_zero]; exact hf.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem aug_comp {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e : X →+ Y)
     {M : Submodule R (X → C)} {M' : Submodule R (Y → C)} (h : ∀ g ∈ M', (fun x => g (e x)) ∈ M) :
@@ -248,9 +244,7 @@ theorem aug_comp {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e : X →+ Y)
   exact ⟨h f hf.1, by simp only [map_zero]; exact hf.2⟩
 
 /- English proof (translation)
-Introduce `f hf`. Establish `h1 : (sqIdeal (augIdeal M')).map (LinearMap.funLeft R C (e : X → Y)) ≤ sqIdeal (augIdeal M)`. Rewrite using `[sqIdeal, Submodule.map_span_le]`. Introduce and unpack `s ⟨a, ha, b, hb, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, aug_comp e h a ha, _, aug_comp e h b hb, rfl⟩`.
-
-Conclude with `h1 (Submodule.mem_map_of_mem hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sq_comp {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e : X →+ Y)
     {M : Submodule R (X → C)} {M' : Submodule R (Y → C)} (h : ∀ g ∈ M', (fun x => g (e x)) ∈ M) :
@@ -264,9 +258,9 @@ theorem sq_comp {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (e : X →+ Y)
   exact h1 (Submodule.mem_map_of_mem hf)
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `AA.le_int hu 0`. Rewrite using `[mem_aug]`. Use `⟨?_, sub_self _⟩` and prove the remaining obligations. Use `AA.carrier.sub_mem hu (AA.carrier.smul_mem r AA.one_mem) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Algebra.smul_def, hr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sub_const_aug {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     (AA : HopfOrder (C := C) R N) {u : N → C} (hu : u ∈ AA.carrier) :
@@ -279,11 +273,11 @@ theorem sub_const_aug {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
   simp [Algebra.smul_def, hr]
 
 /- English proof (translation)
-Set `T : (N × N → C) →ₗ[R] (N → C)` to `LinearMap.funLeft R C (fun x : N => (a x, b x)) - LinearMap.funLeft R C (fun x : N => (a x, 0)) - LinearMap.funLeft R C (fun x : N => (0, b x)) + LinearMap.funLeft R C (fun _ : N => (0, 0))`. Establish `hT : ∀ F x, T F x = F (a x, b x) - F (a x, 0) - F (0, b x) + F (0, 0)` using `fun _ _ => rfl`. Establish `h : (tensorSpan R AA.carrier).map T ≤ sqIdeal (augIdeal AA.carrier)`. Rewrite using `[tensorSpan, Submodule.map_span_le]`. Introduce and unpack `F ⟨u, hu, w, hw, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `Submodule.subset_span ⟨_, sub_const_aug AA (ha u hu), _, sub_const_aug AA (hb w hw), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[hT]`. Simplify using `only [Pi.mul_apply, map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hg` using `[mem_aug]`. Use `h (Submodule.mem_map_of_mem (AA.comul g hg.1)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[hT]`. Simplify using `[addPull, hg.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aug_dec {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     (AA : HopfOrder (C := C) R N) (a b : N →+ N)
@@ -312,11 +306,9 @@ theorem aug_dec {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
 end Gen
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp N _ _ _ AA N₁ _ _ _ N₂ _ _ _ ι₁ π₁ ι₂ π₂ h11 h22 hsum h12 h21 hs₁ hs₂ a b ha hb`. Take `⟨e⟩` from `split_equiv ι₁ π₁ ι₂ π₂ (linFun (C := C) R p N) (afFun p AA.carrier ⊔ pFun R p N) (linFun (C := C) R p N₁) (afFun p (AA.carrier.map (LinearMap.funLeft R C (ι₁ : N₁ → N))) ⊔ pFun R p N₁) (linFun (C := C) R p N₂) (afFun p (AA.carrier.map (LinearMap.funLeft R C (ι₂ : N₂ → N))) ⊔ pFu …`. Simplify using `only [h21]`. Conclude with `addFun_zero hh.2))`. Use the proof step `(fun h hh => Submodule.mem_sup_right (mem_pFun.2 fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h12]`. Conclude with `addFun_zero hh.2))`. Use the proof step `(fun g hg => Submodule.mem_sup_right (mem_pFun.2 fun x => by`. Use `hg.2 (ι₁ (π₁ x)) (ι₂ (π₂ x))` as an intermediate fact. Rewrite using `[hsum] at this))` and apply the resulting hypothesis.
-
-Conclude with `hasLen_equiv e (hasLen_prod hv ha hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ret_af : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], ∀ AA : HopfOrder (C := C) R N, ∀ (N₁ : Type) [AddCommGroup N₁] [Fintype N₁] [DecidableEq N₁], ∀ (N₂ : Type) [AddCommGroup N₂] [Fintype N₂] [DecidableEq N₂], ∀ (ι₁ : N₁ →+ N) (π₁ : N →+ N₁) (ι₂ : N₂ →+ N) (π₂ : N →+ N₂), (∀ y, π₁ (ι₁ y) = y) → (∀ y, π₂ (ι₂ y) = y) → (∀ x, ι₁ (π₁ x) + ι₂ (π₂ x) = x) → (∀ y, π₁ (ι₂ y) = 0) → (∀ y, π₂ (ι₁ y) = 0) → (∀ g ∈ AA.carrier, (fun x => g (ι₁ (π₁ x))) ∈ AA.carrier) → (∀ g ∈ AA.carrier, (fun x => g (ι₂ (π₂ x))) ∈ AA.carrier) → ∀ a b, HasLen v R (AFQuot p (AA.carrier.map (LinearMap.funLeft R C (ι₁ : N₁ → N)))) a → HasLen v R (AFQuot p (AA.carrier.map (LinearMap.funLeft R C (ι₂ : N₂ → N)))) b → HasLen v R (AFQuot p AA.carrier) (a * b) := by
   intro p _ C _ _ _ v R _ _ hv hp N _ _ _ AA N₁ _ _ _ N₂ _ _ _ ι₁ π₁ ι₂ π₂ h11 h22 hsum h12 h21
@@ -341,11 +333,9 @@ theorem ret_af : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed 
   exact hasLen_equiv e (hasLen_prod hv ha hb)
 
 /- English proof (translation)
-Establish `k₁ : ∀ h ∈ AA.carrier.map (LinearMap.funLeft R C (ι₁ : N₁ → N)), (fun x => h (π₁ x)) ∈ AA.carrier` using `by rintro _ ⟨g, hg, rfl⟩; exact hs₁ g hg`. Establish `k₂ : ∀ h ∈ AA.carrier.map (LinearMap.funLeft R C (ι₂ : N₂ → N)), (fun x => h (π₂ x)) ∈ AA.carrier` using `by rintro _ ⟨g, hg, rfl⟩; exact hs₂ g hg`. Take `⟨e⟩` from `split_equiv ι₁ π₁ ι₂ π₂ (augIdeal AA.carrier) (sqIdeal (augIdeal AA.carrier)) (augIdeal (AA.carrier.map (LinearMap.funLeft R C (ι₁ : N₁ → N)))) (sqIdeal (augIdeal (AA.carrier.map (LinearMap.funLeft R C (ι₁ : N₁ → N))))) (augIdeal (AA.carrier.map (LinearMap.funLeft R C (ι₂ : N₂ → …`. Simplify using `only [h21, ((mem_aug _ _).1 hh).2]`. Conclude with `Submodule.zero_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun h hh => by`. Simplify using `only [h12, ((mem_aug _ _).1 hh).2]`. Conclude with `Submodule.zero_mem _)`. Use the proof step `(fun g hg => by`. Use `aug_dec AA (ι₁.comp π₁) (ι₂.comp π₂) hs₁ hs₂ hg` as an intermediate fact.
-
-Simplify `this)` using `only [AddMonoidHom.comp_apply, hsum]`. Conclude with `hasLen_equiv e (hasLen_prod hv ha hb)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ret_om {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
     (hv : v.Integers R) {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]

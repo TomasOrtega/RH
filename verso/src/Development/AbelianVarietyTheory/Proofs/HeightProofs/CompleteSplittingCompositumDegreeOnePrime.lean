@@ -12,19 +12,19 @@ open scoped IntermediateField
 namespace GlobalTheory.SplitCompositum
 
 /- English proof (translation)
-Set `φ : 𝓞 M ≃+* 𝓞 M'` to `NumberField.RingOfIntegers.mapRingEquiv e.toRingEquiv`. Establish `hφ : ∀ x : 𝓞 K, φ (algebraMap (𝓞 K) (𝓞 M) x) = algebraMap (𝓞 K) (𝓞 M') x`. Introduce `x`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Use `show e (algebraMap (𝓞 M) M (algebraMap (𝓞 K) (𝓞 M) x)) = algebraMap (𝓞 M') M' (algebraMap (𝓞 K) (𝓞 M') x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 K) K M, IsScalarTower.algebraMap_apply (𝓞 K) K M']`. Conclude with `e.commutes _`. Establish `hcomp : ∀ I : Ideal (𝓞 M'), (I.comap φ).comap (algebraMap (𝓞 K) (𝓞 M)) = I.comap (algebraMap (𝓞 K) (𝓞 M'))`. Introduce `I`. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ideal.mem_comap]`. Rewrite using `[hφ]`. Use `Set.ncard_congr (fun Q _ => (⟨Q.asIdeal.comap φ, Ideal.comap_isPrime φ Q.asIdeal, fun h => Q.ne_bot (by` and prove the remaining obligations. Establish `h'` using `congrArg (Ideal.map φ) h`. Rewrite using `[Ideal.map_comap_of_surjective φ φ.surjective, Ideal.map_bot] at h')⟩ : HeightOneSpectrum (𝓞 M)))` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `?_ ?_ ?_`. Introduce `Q hQ`. Simplify using `only [Set.mem_setOf_eq] at hQ ⊢`. Rewrite using `[hcomp, hQ]`. Introduce `Q₁ Q₂ _ _ h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Establish `h'` using `congrArg HeightOneSpectrum.asIdeal h`. Conclude with `Ideal.comap_injective_of_surjective φ φ.surjective h'`. Introduce `Q hQ`. Use `⟨⟨Q.asIdeal.comap φ.symm, Ideal.comap_isPrime φ.symm Q.asIdeal, fun h => Q.ne_bot (by` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h'` using `congrArg (Ideal.map φ.symm) h`. Rewrite using `[Ideal.map_comap_of_surjective φ.symm φ.symm.surjective, Ideal.map_bot] at h')⟩, ?_, ?_⟩` and apply the resulting hypothesis. Simplify using `only [Set.mem_setOf_eq] at hQ ⊢`. Rewrite using `[← hQ, ← hcomp]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[Ideal.mem_comap]`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `[Ideal.mem_comap]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ncard_over_congr {K M M' : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Field M']
     [NumberField M'] [Algebra K M] [Algebra K M'] (e : M ≃ₐ[K] M') (𝔭 : HeightOneSpectrum (𝓞 K)) :
@@ -70,21 +70,15 @@ theorem ncard_over_congr {K M M' : Type} [Field K] [NumberField K] [Field M] [Nu
       simp [Ideal.mem_comap]
 
 /- English proof (translation)
-Use `haveI : IsGalois K (AlgebraicClosure M') := IsAlgClosure.isGalois K _`. Use `set N : IntermediateField K (AlgebraicClosure M') := IntermediateField.normalClosure K M' (AlgebraicClosure M') with hN`. Use `haveI : FiniteDimensional K N := normalClosure.is_finiteDimensional K M' (AlgebraicClosure M')`. Use `haveI : IsGalois K N := IsGalois.normalClosure K M' (AlgebraicClosure M')`. Use `haveI : IsScalarTower ℚ K N := IsScalarTower.of_algebraMap_eq (fun x => by`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[eq_ratCast (algebraMap ℚ N), eq_ratCast (algebraMap ℚ K), map_ratCast])`. Use `haveI : FiniteDimensional ℚ N := Module.Finite.trans K N`. Use `haveI : NumberField N := NumberField.mk`. Use `letI : Algebra L N := ((algebraMap M' N).comp (algebraMap L M')).toAlgebra`. Use `haveI : IsScalarTower L M' N := IsScalarTower.of_algebraMap_eq' rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsScalarTower K L N := IsScalarTower.of_algebraMap_eq (fun x => by show algebraMap K N x = algebraMap M' N (algebraMap L M' (algebraMap K L x))`. Rewrite using `[← IsScalarTower.algebraMap_apply K L M', ← IsScalarTower.algebraMap_apply K M' N])`. Use `haveI : IsGalois L N := IsGalois.tower_top_of_isGalois K L N`. Set `ι : M' →ₐ[L] N` to `IsScalarTower.toAlgHom L M' N`. Set `g : M →ₐ[K] N` to `(IsScalarTower.toAlgHom K M' N).comp f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : {Q : HeightOneSpectrum (𝓞 g.fieldRange) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 g.fieldRange)) = 𝔭.asIdeal}.ncard = Module.finrank K g.fieldRange`. Rewrite using `[ncard_over_congr g.equivFieldRange 𝔭, hsplit]`. Conclude with `g.equivFieldRange.toLinearEquiv.finrank_eq`. Establish `hfix1` using `GlobalTheory.T.frobenius_fixes_of_splitsCompletely_intermediate K N g.fieldRange 𝔭 h1`. Establish `hfix2 : ∀ σ : N ≃ₐ[L] N, GlobalTheory.NT.IsFrob N 𝔓 σ → ∀ x ∈ ι.fieldRange, σ x = x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce `σ hσ`. Establish `hK : GlobalTheory.NT.IsFrob N 𝔭 (σ.restrictScalars K)`. Take `⟨P, hP, hPo, hx⟩` from `hσ`. Use `⟨P, hP, ⟨?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hover, hPo.over, Ideal.under, Ideal.under, Ideal.comap_comap, ← IsScalarTower.algebraMap_eq]`.
-
-Introduce `x`. Rewrite using `[← hnorm]`. Conclude with `hx x`. Establish `hM1` using `hfix1 (σ.restrictScalars K) hK`. Establish `hg : (σ.toAlgHom.comp ι) = ι` using `hgen N _ _ (fun x => by`.
-
-Use `hM1 (g x) ⟨x, rfl⟩` as an intermediate fact. Conclude with `this)`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `congrArg (fun h : M' →ₐ[L] N => h y) hg`. Establish `h2` using `GlobalTheory.SplitCriterion.ncard_primes_eq_finrank_of_frob_fix L N ι.fieldRange 𝔓 hfix2`.
-
-Rewrite using `[← ncard_over_congr ι.equivFieldRange 𝔓, h2]`. Conclude with `ι.equivFieldRange.toLinearEquiv.finrank_eq.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_eq_finrank_of_generated (K L M M' : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Field M] [NumberField M] [Field M'] [NumberField M'] [Algebra K L] [Algebra K M] [Algebra L M'] [Algebra K M']
@@ -142,13 +136,11 @@ theorem ncard_eq_finrank_of_generated (K L M M' : Type) [Field K] [NumberField K
   exact ι.equivFieldRange.toLinearEquiv.finrank_eq.symm
 
 /- English proof (translation)
-Introduce `K L _ _ h S _ _ 𝔭 𝔓 hover hnorm hsplit`. Use `letI : Algebra K L := (IntermediateField.inclusion h).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K L ℂ := IsScalarTower.of_algebraMap_eq (fun x => rfl)`. Use `letI : Algebra K (IntermediateField.adjoin L S) := ((algebraMap L (IntermediateField.adjoin L S)).comp (algebraMap K L)).toAlgebra`. Use `haveI : IsScalarTower K L (IntermediateField.adjoin L S) := IsScalarTower.of_algebraMap_eq' rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hle : IntermediateField.adjoin K S ≤ (IntermediateField.adjoin L S).restrictScalars K` using `IntermediateField.adjoin_le_iff.mpr (fun z hz => IntermediateField.subset_adjoin L S hz)`. Set `f : IntermediateField.adjoin K S →ₐ[K] IntermediateField.adjoin L S` to `{ toFun := fun x => ⟨x.1, hle x.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl commutes' := fun _ => rfl }`. Establish `hgen : ∀ (N : Type) [Field N] [Algebra L N] (g g' : IntermediateField.adjoin L S →ₐ[L] N), (∀ x, g (f x) = g' (f x)) → g = g'`. Introduce `N _ _ g g' hgg`. Apply `IntermediateField.adjoin_algHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Conclude with `hgg ⟨x, IntermediateField.subset_adjoin K S hx⟩`. Establish `hover' : 𝔓.asIdeal.comap (algebraMap (𝓞 K) (𝓞 L)) = 𝔭.asIdeal`. Rewrite using `[← hover]`. Both sides reduce to the same expression.
-
-Conclude with `ncard_eq_finrank_of_generated K L (IntermediateField.adjoin K S) (IntermediateField.adjoin L S) f hgen 𝔭 𝔓 hover' hnorm hsplit`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ncard_eq_finrank_adjoin : ∀ (K L : IntermediateField ℚ ℂ) [NumberField K] [NumberField L] (h : K ≤ L) (S : Set ℂ) [NumberField (IntermediateField.adjoin K S)] [NumberField (IntermediateField.adjoin L S)] (𝔭 : HeightOneSpectrum (𝓞 K)) (𝔓 : HeightOneSpectrum (𝓞 L)), 𝔓.asIdeal.comap (RingOfIntegers.mapRingHom (IntermediateField.inclusion h).toRingHom) = 𝔭.asIdeal → Ideal.absNorm 𝔓.asIdeal = Ideal.absNorm 𝔭.asIdeal → {Q : HeightOneSpectrum (𝓞 (IntermediateField.adjoin K S)) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 (IntermediateField.adjoin K S))) = 𝔭.asIdeal}.ncard = Module.finrank K (IntermediateField.adjoin K S) → {Q : HeightOneSpectrum (𝓞 (IntermediateField.adjoin L S)) | Q.asIdeal.comap (algebraMap (𝓞 L) (𝓞 (IntermediateField.adjoin L S))) = 𝔓.asIdeal}.ncard = Module.finrank L (IntermediateField.adjoin L S) := by
   intro K L _ _ h S _ _ 𝔭 𝔓 hover hnorm hsplit

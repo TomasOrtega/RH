@@ -24,7 +24,7 @@ noncomputable def coordDual {n : ℕ} (M : Submodule (𝓞 K) (Fin n → K)) : S
 omit [NumberField K] in
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (Pi.basisFun K (Fin n)).sum_repr x, map_sum]`. Simplify using `[dotProduct, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords_dotProduct {n : ℕ} (f : Module.Dual K (Fin n → K)) (x : Fin n → K) :
     (Pi.basisFun K (Fin n)).dualBasis.equivFun f ⬝ᵥ x = f x := by
@@ -32,9 +32,9 @@ theorem coords_dotProduct {n : ℕ} (f : Module.Dual K (Fin n → K)) (x : Fin n
   simp [dotProduct, mul_comm]
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `hy`. Introduce `x hx`. Take `⟨a, ha⟩` from `hf x hx`. Use `Submodule.mem_one.2 ⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(coords_dotProduct f x).symm`.
+A detailed English derivation is pending.
 -/
 theorem dotProduct_mem_one {n : ℕ} {M : Submodule (𝓞 K) (Fin n → K)} {y : Fin n → K}
     (hy : y ∈ coordDual M) : ∀ x ∈ M, y ⬝ᵥ x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -46,13 +46,13 @@ theorem dotProduct_mem_one {n : ℕ} {M : Submodule (𝓞 K) (Fin n → K)} {y :
   exact (coords_dotProduct f x).symm
 
 /- English proof (translation)
-Establish `hfg` using `Formalism.HN.DualPolygon.dualLat_fg M hM.span_eq_top`. Establish `hinj : Function.Injective (Pi.basisFun K (Fin n)).dualBasis.equivFun.toLinearMap` using `(Pi.basisFun K (Fin n)).dualBasis.equivFun.injective`. Establish `hM0 : M ≠ ⊥`. Introduce and unpack `rfl`. Establish `h` using `hM.span_eq_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: Nonempty (Fin n)` using `⟨⟨0, hn⟩⟩`. Rewrite `h` using `[Submodule.bot_coe, Submodule.span_zero_singleton]`. Conclude with `bot_ne_top h`. Use `⟨hfg.map _, fun h => ?_, ?_⟩` and prove the remaining obligations. Use `Formalism.HN.DualPolygon.dual_ne_bot (Pi.basisFun K (Fin n)) M hM.fg hM.span_eq_top hM0 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.eq_bot_iff _).2 fun f hf => hinj ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(Submodule.eq_bot_iff _).1 h _ (Submodule.mem_map_of_mem hf)`. Establish `hu` using `Formalism.HN.DualPolygon.dualFrame_unit X hX`. Use `(Formalism.HN.rerealize K _ _ _ _ (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame X) (Pi.basisFun K (Fin n)) (Formalism.HN.dualFrame X) _ hu hu hinj (fun v x => by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`. Use the proof step `simp) _ hfg).2.2.2.1`. Unfold `Formalism.HN.muMaxDef coordDual`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordDual_spec [StarRing K] [IsTotallyComplex K] {n : ℕ} (hn : 0 < n)
     (M : Submodule (𝓞 K) (Fin n → K)) (hM : Submodule.IsLattice K M)
@@ -84,9 +84,9 @@ theorem coordDual_spec [StarRing K] [IsTotallyComplex K] {n : ℕ} (hn : 0 < n)
     rw [this]
 
 /- English proof (translation)
-Introduce `K _ _ _ _ K0 hK0 v0 hv0 n H X hH M hM hle hn`. Establish `hX : ∀ v, IsUnit (X v).det` using `fun v => (hH.2 v).1`. Take `⟨hfg, hne, heq⟩` from `coordDual_spec hn M hM X hX`. Take `⟨hherm, hdet, -⟩` from `GlobalTheory.ratHerm_herm_unit_aniso K K0 v0 hv0 n 0 H X hH`. Establish `hG` using `GlobalTheory.isRatHerm_dualFrame K K0 n H X hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint` using `GlobalTheory.DualInt.dual_form_integral K n H hherm hdet M hle`. Establish `key` using `GlobalTheory.muMax_nonpos_of_lcv_nonneg K (Formalism.L2.DIV.toHLat (Formalism.HN.dualFrame X) (coordDual M)) (Formalism.HN.DualPolygon.dualFrame_unit X hX) hfg hne (fun N hN _ => by`. Establish `hNfg : Submodule.FG (N : Submodule (𝓞 K) (Fin n → K))` using `(hfg.of_le hN)`. Conclude with `GlobalTheory.T.hermitian_lattice_covolume_nonneg K K0 hK0 v0 hv0 n _ _ hG N hNfg (fun y hy y' hy' => hint y y' (dotProduct_mem_one (hN hy)) (dotProduct_mem_one (hN hy'))))`. Conclude with `heq.symm.trans_le key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem muMaxDual_nonpos :
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (K0 : Subfield K),

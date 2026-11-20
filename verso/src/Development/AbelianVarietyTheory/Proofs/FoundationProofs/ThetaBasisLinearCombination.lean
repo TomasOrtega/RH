@@ -10,11 +10,11 @@ open GlobalTheory.KZ GlobalTheory.Glue
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
 /- English proof (translation)
-Use extensionality with `a`. Establish `hx : (theta s x).support ⊆ x.support` using `fun r hr h => hr (by simp [theta, h])`. Establish `hy : (theta s y).support ⊆ y.support` using `fun r hr h => hr (by simp [theta, h])`. Rewrite using `[HahnSeries.coeff_add, HahnSeries.coeff_mul_left' x.isPWO_support hx, HahnSeries.coeff_mul_right' y.isPWO_support hy]`. Use `show algebraMap ℚ Ω (s * a) * (x * y).coeff a = _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.coeff_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun ij hij => ?_)` and prove the remaining obligations. Rewrite `hij` using `[Finset.mem_addAntidiagonal]`. Take `⟨-, -, h⟩` from `hij`. Use `show algebraMap ℚ Ω (s * a) * (x.coeff ij.1 * y.coeff ij.2) = algebraMap ℚ Ω (s * ij.1) * x.coeff ij.1 * y.coeff ij.2 + x.coeff ij.1 * (algebraMap ℚ Ω (s * ij.2) * y.coeff ij.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h, mul_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem theta_mul (s : ℚ) (x y : HahnSeries ℚ Ω) :
     theta s (x * y) = theta s x * y + x * theta s y := by
@@ -37,14 +37,14 @@ def Ig (A : ValuationSubring Ω) (φ : HahnSeries ℚ Ω) : Prop := ∀ r, φ.co
 def Dv (A : ValuationSubring Ω) (l n : ℕ) (φ : HahnSeries ℚ Ω) : Prop := ∀ r, ∃ z ∈ A, φ.coeff r = (l : Ω) ^ n * z
 
 /- English proof (translation)
-Introduce `r`. Rewrite using `[HahnSeries.coeff_mul]`. Conclude with `sum_mem (fun ij _ => mul_mem (hx _) (hy _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ig.mul {A : ValuationSubring Ω} {x y : HahnSeries ℚ Ω} (hx : Ig A x) (hy : Ig A y) : Ig A (x * y) := by
   intro r; rw [HahnSeries.coeff_mul]
   exact sum_mem (fun ij _ => mul_mem (hx _) (hy _))
 
 /- English proof (translation)
-Introduce `r`. Take `⟨z, hz, e⟩` from `hx r`. Take `⟨z', hz', e'⟩` from `hy r`. Conclude with `⟨z + z', add_mem hz hz', by rw [HahnSeries.coeff_add, e, e', mul_add]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Dv.add {A : ValuationSubring Ω} {l n : ℕ} {x y : HahnSeries ℚ Ω} (hx : Dv A l n x) (hy : Dv A l n y) :
     Dv A l n (x + y) := by
@@ -52,9 +52,9 @@ theorem Dv.add {A : ValuationSubring Ω} {l n : ℕ} {x y : HahnSeries ℚ Ω} (
   exact ⟨z + z', add_mem hz hz', by rw [HahnSeries.coeff_add, e, e', mul_add]⟩
 
 /- English proof (translation)
-Introduce `r`. Rewrite using `[HahnSeries.coeff_mul]`. Use `choose z hz e using hx`. Use `⟨∑ ij ∈ Finset.addAntidiagonal x.isPWO_support y.isPWO_support r, z ij.1 * y.coeff ij.2, sum_mem (fun ij _ => mul_mem (hz _) (hy _)), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun ij _ => ?_)` and prove the remaining obligations. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Dv.mul {A : ValuationSubring Ω} {l n : ℕ} {x y : HahnSeries ℚ Ω} (hx : Dv A l n x) (hy : Ig A y) :
     Dv A l n (x * y) := by
@@ -65,7 +65,7 @@ theorem Dv.mul {A : ValuationSubring Ω} {l n : ℕ} {x y : HahnSeries ℚ Ω} (
   rw [Finset.mul_sum]; refine Finset.sum_congr rfl (fun ij _ => ?_); rw [e]; ring
 
 /- English proof (translation)
-Simplify using `[CgA, Dv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dv_iff {A : ValuationSubring Ω} {l n : ℕ} {x y : HahnSeries ℚ Ω} :
     (∀ r, CgA A l n (x.coeff r) (y.coeff r)) ↔ Dv A l n (x - y) := by
@@ -78,13 +78,11 @@ open GlobalTheory.KZ GlobalTheory.Glue
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, hi⟩`. Establish `h1` using `(A.valuation_le_one_iff x).2 hx`. Establish `h2` using `(A.valuation_le_one_iff _).2 hi`. Rewrite `h2` using `[map_inv₀]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : A.valuation x ≠ 0` using `by simpa using h0`. Establish `: 1 ≤ A.valuation x`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `one_lt_inv₀ (zero_lt_iff.2 hv) |>.2 hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h2 (not_le.2 this)`. Conclude with `le_antisymm h1 this`. Introduce `h`. Establish `h0 : x ≠ 0` using `by rintro rfl; simp at h`. Use `⟨h0, (A.valuation_le_one_iff _).1 ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_inv₀, h, inv_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_iff (A : ValuationSubring Ω) (x : Ω) (hx : x ∈ A) : (x ≠ 0 ∧ x⁻¹ ∈ A) ↔ A.valuation x = 1 := by
   constructor
@@ -104,9 +102,9 @@ theorem unit_iff (A : ValuationSubring Ω) (x : Ω) (hx : x ∈ A) : (x ≠ 0 �
     rw [map_inv₀, h, inv_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, r, h2⟩`. Conclude with `⟨fun r => (A.valuation_le_one_iff _).2 (h1 r), r, (unit_iff A _ (h1 r)).1 h2⟩`. Introduce and unpack `⟨h1, r, h2⟩`. Establish `h1' : ∀ r, φ.coeff r ∈ A` using `fun r => (A.valuation_le_one_iff _).1 (h1 r)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨h1', r, (unit_iff A _ (h1' r)).2 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem prim_iff (A : ValuationSubring Ω) (φ : HahnSeries ℚ Ω) :
     Prim A φ ↔ (∀ r, A.valuation (φ.coeff r) ≤ 1) ∧ ∃ r, A.valuation (φ.coeff r) = 1 := by
@@ -118,25 +116,21 @@ theorem prim_iff (A : ValuationSubring Ω) (φ : HahnSeries ℚ Ω) :
     exact ⟨h1', r, (unit_iff A _ (h1' r)).2 h2⟩
 
 /- English proof (translation)
-Rewrite `hx`, `hy`, the goal using `[prim_iff]`. Take `⟨hx1, hx2⟩` from `hx`. Take `⟨hy1, hy2⟩` from `hy`. Use `set v := A.valuation`. Establish `sx : {r | v (x.coeff r) = 1} ⊆ x.support` using `fun r hr h => by simp [Set.mem_setOf_eq, h] at hr`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sy : {r | v (y.coeff r) = 1} ⊆ y.support` using `fun r hr h => by simp [Set.mem_setOf_eq, h] at hr`. Establish `wx` using `x.isPWO_support.isWF.mono sx`. Establish `wy` using `y.isPWO_support.isWF.mono sy`. Establish `nx : {r | v (x.coeff r) = 1}.Nonempty` using `hx2`. Establish `ny : {r | v (y.coeff r) = 1}.Nonempty` using `hy2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r0 := wx.min nx`. Use `set s0 := wy.min ny`. Establish `hr0 : v (x.coeff r0) = 1` using `wx.min_mem nx`. Establish `hs0 : v (y.coeff s0) = 1` using `wy.min_mem ny`. Establish `ltx : ∀ r, r < r0 → v (x.coeff r) < 1` using `fun r hr => lt_of_le_of_ne (hx1 r) (fun h => wx.not_lt_min nx h hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `lty : ∀ r, r < s0 → v (y.coeff r) < 1` using `fun r hr => lt_of_le_of_ne (hy1 r) (fun h => wy.not_lt_min ny h hr)`. Establish `int : ∀ r, v ((x * y).coeff r) ≤ 1`. Introduce `r`. Rewrite using `[HahnSeries.coeff_mul]`. Conclude with `v.map_sum_le (fun ij _ => by rw [map_mul]; exact mul_le_one' (hx1 _) (hy1 _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨int, r0 + s0, ?_⟩` and prove the remaining obligations. Rewrite using `[HahnSeries.coeff_mul, ← Finset.add_sum_erase _ _ ((Finset.mem_addAntidiagonal (x := (r0, s0))).2 ⟨sx (show r0 ∈ {r | v (x.coeff r) = 1} from hr0), sy (show s0 ∈ {r | v (y.coeff r) = 1} from hs0), rfl⟩)]`. Establish `hmain : v (x.coeff r0 * y.coeff s0) = 1` using `by rw [map_mul, hr0, hs0, one_mul]`. Rewrite using `[Valuation.map_add_eq_of_lt_left, hmain]`. Rewrite using `[hmain]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `v.map_sum_lt one_ne_zero (fun ij hij => ?_)` and prove the remaining obligations. Rewrite `hij` using `[Finset.mem_erase]`. Take `⟨hne, hij⟩` from `hij`. Take `⟨-, -, hsum⟩` from `Finset.mem_addAntidiagonal.1 hij`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Break down `lt_trichotomy ij.1 r0 with h | h | h` into its components or cases. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hy1 _)) (ltx _ h)`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Use `ext`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h`. Simplify using `only`. Rewrite `hsum` using `[h]`. Conclude with `add_left_cancel hsum`. Establish `: ij.2 < s0`.
-
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `add_lt_add_of_lt_of_le h hc` as an intermediate fact. Rewrite `this` using `[hsum]`. Conclude with `lt_irrefl _ this`.
-
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hx1 _)) (lty _ this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_mul {A : ValuationSubring Ω} {x y : HahnSeries ℚ Ω} (hx : Prim A x) (hy : Prim A y) : Prim A (x * y) := by
   rw [prim_iff] at hx hy ⊢
@@ -188,11 +182,11 @@ open GlobalTheory.KZ GlobalTheory.Glue
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Take `⟨hφ, a, b, κ, hκ, e, pa, pb, c⟩` from `h`. Take `⟨hφ', a', b', κ', hκ', e', pa', pb', c'⟩` from `h'`. Use `⟨fun r => by rw [HahnSeries.coeff_add]; exact add_mem (hφ r) (hφ' r), a * a', b * b', κ * κ', mul_ne_zero hκ hκ', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `prim_mul pa pa'`. Rewrite using `[map_mul]`. Conclude with `prim_mul pb pb'`. Rewrite `c`, `c'`, the goal using `[dv_iff]`. Rewrite using `[map_mul, map_mul, theta_mul, theta_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : (φ + φ') * (X.exp a * X.exp a') * (X.exp b * X.exp b') - ((theta s (X.exp a) * X.exp a' + X.exp a * theta s (X.exp a')) * (X.exp b * X.exp b') - X.exp a * X.exp a' * (theta s (X.exp b) * X.exp b' + X.exp b * theta s (X.exp b'))) = (φ * X.exp a * X.exp b - (theta s (X.exp a) …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `(c.mul (Ig.mul pa'.1 pb'.1)).add (c'.mul (Ig.mul pa.1 pb.1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDl_mul {X : Tower Ω ε} {A : ValuationSubring Ω} {l n : ℕ} {s : ℚ} {f f' : X.K} {φ φ' : HahnSeries ℚ Ω}
     (h : IsDl X A l n s f φ) (h' : IsDl X A l n s f' φ') : IsDl X A l n s (f * f') (φ + φ') := by
@@ -216,11 +210,11 @@ theorem isDl_mul {X : Tower Ω ε} {A : ValuationSubring Ω} {l n : ℕ} {s : �
     exact (c.mul (Ig.mul pa'.1 pb'.1)).add (c'.mul (Ig.mul pa.1 pb.1))
 
 /- English proof (translation)
-Use `⟨fun r => by simp, 1, 1, 1, one_ne_zero, by simp, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [map_one]; exact ⟨fun r => by rw [HahnSeries.coeff_one]; split_ifs <;> simp, 0, by simp⟩`. Apply the tactic sequence `rw [map_one]; exact ⟨fun r => by rw [HahnSeries.coeff_one]; split_ifs <;> simp, 0, by simp⟩`. Introduce `r`. Use `⟨0, zero_mem A, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: theta s (1 : HahnSeries ℚ Ω) = theta s 1 * 1 + 1 * theta s 1`. Rewrite using `[← theta_mul, mul_one]`. Establish `h0 : theta s (1 : HahnSeries ℚ Ω) = 0`. Establish `: theta s (1 : HahnSeries ℚ Ω) + theta s 1 = theta s 1 + 0`. Rewrite using `[add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `nth_rewrite 3 [this]`. Simplify using the standard rewrite rules. Conclude with `add_left_cancel this`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDl_one (X : Tower Ω ε) (A : ValuationSubring Ω) (l n : ℕ) (s : ℚ) : IsDl X A l n s 1 0 := by
   refine ⟨fun r => by simp, 1, 1, 1, one_ne_zero, by simp, ?_, ?_, ?_⟩
@@ -237,7 +231,7 @@ theorem isDl_one (X : Tower Ω ε) (A : ValuationSubring Ω) (l n : ℕ) (s : �
     simp [h0]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using isDl_one X A l n s`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Nat.cast_succ, add_smul, one_smul]`. Conclude with `isDl_mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDl_pow {X : Tower Ω ε} {A : ValuationSubring Ω} {l n : ℕ} {s : ℚ} {f : X.K} {φ : HahnSeries ℚ Ω}
     (h : IsDl X A l n s f φ) (k : ℕ) : IsDl X A l n s (f ^ k) ((k : Ω) • φ) := by
@@ -254,23 +248,23 @@ open GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion GlobalTheory.Glue
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Introduce `γ hγ` and use `by rw [map_mul, hf γ hγ, hg γ hγ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_mul {X : Tower Ω ε} {H : Subgroup SL(2, ℤ)} {f g : X.K} (hf : Inv X H f) (hg : Inv X H g) :
     Inv X H (f * g) := fun γ hγ => by rw [map_mul, hf γ hγ, hg γ hγ]
 
 /- English proof (translation)
-Introduce `γ hγ` and use `by rw [map_pow, hf γ hγ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_pow {X : Tower Ω ε} {H : Subgroup SL(2, ℤ)} {f : X.K} (hf : Inv X H f) (k : ℕ) :
     Inv X H (f ^ k) := fun γ hγ => by rw [map_pow, hf γ hγ]
 
 /- English proof (translation)
-Establish `red : ∀ (d : ℤ_[l]) (q : X.Kl l ⧸ ((idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Kl l)))), d • q = ((d.appr n : ℕ) : ℤ_[l]) • q`. Introduce `d q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, ← sub_smul]`. Apply `Submodule.smul_mem_smul _ Submodule.mem_top` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.span_singleton_pow]`. Conclude with `PadicInt.appr_spec n d`. Rewrite using `[red c, red c']`. Simplify using `only [Tower.cls, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofMul_mul, ofMul_pow, ofMul_pow, TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+A detailed English derivation is pending.
 -/
 theorem cls_comb (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (c c' : ℤ_[l]) (f f' : X.Kˣ) :
     c • X.cls l n f + c' • X.cls l n f' = X.cls l n (f ^ (c.appr n) * f' ^ (c'.appr n)) := by
@@ -289,13 +283,11 @@ theorem cls_comb (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (c c' : �
     Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X A N l _ n w b b' _ _ _ c c' φ φ' h h'`. Take `⟨f, hfi, hfc, hfd, hfl⟩` from `h`. Take `⟨f', hfi', hfc', hfd', hfl'⟩` from `h'`. Use `⟨f ^ (c.appr n) * f' ^ (c'.appr n), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `inv_mul (inv_pow hfi _) (inv_pow hfi' _)`. Rewrite using `[← cls_comb, ← hfc, ← hfc', ← map_smul, ← map_smul, ← map_add]`. Both sides reduce to the same expression. Introduce `δ hδ hδ'`. Take `⟨g, hgi, hg⟩` from `hfd δ hδ hδ'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hgi', hg'⟩` from `hfd' δ hδ hδ'`. Use `⟨g ^ (c.appr n) * g' ^ (c'.appr n), inv_mul (inv_pow hgi _) (inv_pow hgi' _), ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`.
-
-Conclude with `isDl_mul (isDl_pow hfl _) (isDl_pow hfl' _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isThB_add : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n w : ℕ) (b b' : X.Fn l), (l : Ω) ∈ A.nonunits → b ∈ X.B N l w → b' ∈ X.B N l w →

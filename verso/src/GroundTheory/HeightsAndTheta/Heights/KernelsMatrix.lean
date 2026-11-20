@@ -102,14 +102,14 @@ def ShortVectors.Statement : Prop :=
           (3 * r / lam) ^ Module.finrank ℝ U - 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submonoid.one_mem _, Matrix.PosDef.one⟩`.
+Supply the required witnesses or components.
 -/
 example : (1 : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℝ) ∈ symplecticGroup (Fin 1) ℝ ∧
     (1 : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℝ).PosDef :=
   ⟨Submonoid.one_mem _, Matrix.PosDef.one⟩
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun (congrFun h (Sum.inr 0)) (Sum.inr 0)` as an intermediate fact. Simplify using `[siegelGram] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 ≠ 1 := by
   intro h
@@ -117,7 +117,7 @@ example : siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 ≠ 1 := by
   simp [siegelGram] at this
 
 /- English proof (translation)
-The claim follows from `one_pos sq_le := by norm_num first := by simp min := by intro l hl have h0 : l 0 ≠ 0 := by intro h; apply hl; funext i; fin_cases i; exact h have h : (1 : ℝ) ≤ |(l 0 : ℝ)| := by exact_mod_cast Int.one_le_abs h0 have h2 : (1 : ℝ) ≤ (l 0 : ℝ) * (l 0 : ℝ) := by nlinarith [abs_mul_ab …`.
+A detailed English derivation is pending.
 -/
 theorem isReducedImaginaryPart_one : IsReducedImaginaryPart (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 where
   pos := one_pos
@@ -134,14 +134,14 @@ theorem isReducedImaginaryPart_one : IsReducedImaginaryPart (1 : Matrix (Fin 1) 
   det_le := by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.PosDef.one, Matrix.isSymm_zero, isReducedImaginaryPart_one.min⟩`.
+Supply the required witnesses or components.
 -/
 example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧ (0 : Matrix (Fin 1) (Fin 1) ℝ).IsSymm ∧
     ∀ l : Fin 1 → ℤ, l ≠ 0 → (1 : ℝ) ^ 2 ≤ qf (1 : Matrix (Fin 1) (Fin 1) ℝ)⁻¹ (intVec l) :=
   ⟨Matrix.PosDef.one, Matrix.isSymm_zero, isReducedImaginaryPart_one.min⟩
 
 /- English proof (translation)
-Use `⟨fun _ => ⟨one_pos, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.le_sqrt (by norm_num) (by norm_num)]; norm_num`. Simplify using `only [finMean, Finset.univ_unique, Finset.sum_singleton, Fintype.card_unit]`. Establish `h2 : (0 : ℝ) ≤ log 2` using `log_nonneg (by norm_num)`. Establish `hp : π / 96 ≤ 1` using `by linarith [pi_lt_four]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
 Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -157,13 +157,13 @@ example : (∀ s : Unit, 0 < (fun _ => (1 : ℝ)) s ∧ (fun _ => (1 : ℝ)) s �
     linarith
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (n : ℕ) : IsZLattice ℝ
     (Submodule.span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)) := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (n : ℕ) : DiscreteTopology
     (Submodule.span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)) := inferInstance

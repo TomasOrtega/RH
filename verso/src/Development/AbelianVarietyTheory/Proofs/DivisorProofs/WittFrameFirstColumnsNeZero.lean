@@ -18,13 +18,11 @@ open GlobalTheory.SiegelSet
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨τ⟩` from `nonempty_embOver F (E := E) w`. Set `ι` to `RingEquiv.ofBijective (infEmb τ) (infEmb_bijective hcm τ)`. Use `set φ := InfinitePlace.Completion.ringEquivRealOfIsReal hr`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (ι y) two_pos`. Establish `hy : y = (ι.symm z) ^ 2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[map_pow, RingEquiv.apply_symm_apply, hz]`. Establish `hnn : 0 ≤ φ (Algebra.norm w.Completion y)`. Rewrite using `[hy, map_pow, map_pow]`. Conclude with `sq_nonneg _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hnn, fun hy0 => lt_of_le_of_ne hnn (Ne.symm ?_)⟩` and prove the remaining obligations. Establish `hu : IsUnit y`. Establish `hne : ι y ≠ 0` using `fun h => hy0 (ι.injective (by rw [h, map_zero]))`. Establish `h1 : IsUnit (ι y)` using `Ne.isUnit hne`. Simplify using `using h1.map ι.symm`.
-
-Establish `h2 : Algebra.norm w.Completion y ≠ 0` using `(hu.map (Algebra.norm w.Completion)).ne_zero`. Conclude with `(map_ne_zero φ).2 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_completion_tensor_pos {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (w : InfinitePlace F)
     (hr : w.IsReal) (y : w.Completion ⊗[F] E) :

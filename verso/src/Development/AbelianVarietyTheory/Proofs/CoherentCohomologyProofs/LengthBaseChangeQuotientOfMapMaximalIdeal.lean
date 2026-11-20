@@ -9,13 +9,13 @@ section Local
 variable (R S : Type*) [CommRing R] [CommRing S] [Algebra R S]
 
 /- English proof (translation)
-Set `h : S ⊗[R] A →ₗ[S] S ⊗[R] (A ⧸ B.submoduleOf A)` to `(B.submoduleOf A).mkQ.baseChange S`. Set `g : S ⊗[R] A →ₗ[S] (A.baseChange S ⧸ (B.baseChange S).submoduleOf (A.baseChange S))` to `((B.baseChange S).submoduleOf (A.baseChange S)).mkQ ∘ₗ A.toBaseChange S`. Establish `hh : Function.Surjective h` using `LinearMap.lTensor_surjective S (B.submoduleOf A).mkQ_surjective`. Establish `hg : Function.Surjective g` using `(Submodule.mkQ_surjective _).comp (A.toBaseChange_surjective S)`. Establish `e₁ : Function.Exact ((B.submoduleOf A).subtype.lTensor S) ((B.submoduleOf A).mkQ.lTensor S)` using `Module.Flat.lTensor_exact S (LinearMap.exact_subtype_mkQ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : Function.Exact ((B.submoduleOf A).subtype.lTensor S) ((B.mkQ ∘ₗ A.subtype).lTensor S)`. Apply `Module.Flat.lTensor_exact S` to reduce the goal to its premises. Rewrite using `[LinearMap.exact_iff, LinearMap.ker_comp, Submodule.ker_mkQ, Submodule.range_subtype]`. Both sides reduce to the same expression. Establish `e₃ : Function.Exact (B.subtype.lTensor S) (B.mkQ.lTensor S)` using `Module.Flat.lTensor_exact S (LinearMap.exact_subtype_mkQ _)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker h = LinearMap.ker g`. Use extensionality with `x`. Establish `h1 : x ∈ LinearMap.ker h ↔ (B.submoduleOf A).mkQ.lTensor S x = 0` using `Iff.rfl`. Establish `h2 : x ∈ LinearMap.ker g ↔ A.subtype.lTensor S x ∈ B.baseChange S`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, h2, e₁ x, ← e₂ x, LinearMap.lTensor_comp, LinearMap.comp_apply, e₃]`. Both sides reduce to the same expression. Conclude with `⟨(h.quotKerEquivOfSurjective hh).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker ≪≫ₗ g.quotKerEquivOfSurjective hg⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem nonempty_baseChange_subquotient_equiv [Module.Flat R S] {X : Type*} [AddCommGroup X]
     [Module R X] (A B : Submodule R X) :
@@ -54,7 +54,7 @@ variable [IsLocalRing R] [IsLocalRing S] [IsLocalHom (algebraMap R S)] [Module.F
   (X : Type*) [AddCommGroup X] [Module R X]
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.length_baseChange R S X`.
+A detailed English derivation is pending.
 -/
 theorem length_baseChange_flat :
     Module.length S (S ⊗[R] X) =
@@ -64,7 +64,7 @@ theorem length_baseChange_flat :
 variable {X} in
 
 /- English proof (translation)
-Rewrite using `[← length_baseChange_flat]`. Conclude with `(nonempty_baseChange_subquotient_equiv R S A B).some.length_eq.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_baseChange_subquotient_flat (A B : Submodule R X) :
     Module.length S (A.baseChange S ⧸ (B.baseChange S).submoduleOf (A.baseChange S)) =
@@ -85,9 +85,9 @@ variable (R S : Type*) [CommRing R] [CommRing S] [IsDomain R] [IsDomain S]
   [IsDiscreteValuationRing R] [IsDiscreteValuationRing S] [Algebra R S] [FaithfulSMul R S]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `exists_irreducible S`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Rewrite using `[addVal_zero, Ideal.span_singleton_zero, (Submodule.quotEquivOfEqBot (⊥ : Ideal S) rfl).length_eq]`. Assume the negation of the conclusion as `h`. Establish `h'` using `Module.length_ne_top_iff.mp h`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h'` using `[← isArtinianRing_iff_isFiniteLength]`. Conclude with `not_isField S (IsArtinianRing.isField_of_isDomain S)`. Take `⟨n, u, rfl⟩` from `eq_unit_mul_pow_irreducible hx hπ`. Rewrite using `[addVal_def' u hπ, Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hπ.maximalIdeal_eq, length_quotient_pow_maximalIdeal]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quotient_span_singleton_eq_addVal {S : Type*} [CommRing S] [IsDomain S]
     [IsDiscreteValuationRing S] (x : S) :
@@ -107,9 +107,9 @@ theorem length_quotient_span_singleton_eq_addVal {S : Type*} [CommRing S] [IsDom
 variable [IsLocalHom (algebraMap R S)]
 
 /- English proof (translation)
-Establish `hp : maximalIdeal R ≠ ⊥` using `IsDiscreteValuationRing.not_a_field R`. Establish `hpS : (maximalIdeal R).map (algebraMap R S) ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot hp`. Take `⟨π, hπ⟩` from `exists_irreducible S`. Take `⟨n, hn⟩` from `ideal_eq_span_pow_irreducible hpS hπ`. Rewrite `hn` using `[← Ideal.span_singleton_pow, ← hπ.maximalIdeal_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx (maximalIdeal R) (maximalIdeal S) hp, Ideal.ramificationIdx'_spec (n := n) hn.le, hn]`. Rewrite using `[hn]`. Conclude with `(Ideal.pow_succ_lt_pow (IsDiscreteValuationRing.not_a_field S) n).not_ge`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_maximalIdeal_eq_pow_ramificationIdx :
     (maximalIdeal R).map (algebraMap R S) =
@@ -125,7 +125,7 @@ theorem map_maximalIdeal_eq_pow_ramificationIdx :
   exact (Ideal.pow_succ_lt_pow (IsDiscreteValuationRing.not_a_field S) n).not_ge
 
 /- English proof (translation)
-Use `conv_lhs => rw [map_maximalIdeal_eq_pow_ramificationIdx]`. Conclude with `length_quotient_pow_maximalIdeal S _`.
+A detailed English derivation is pending.
 -/
 theorem length_fibre_eq_ramificationIdx :
     Module.length S (S ⧸ (maximalIdeal R).map (algebraMap R S)) =
@@ -134,7 +134,7 @@ theorem length_fibre_eq_ramificationIdx :
   exact length_quotient_pow_maximalIdeal S _
 
 /- English proof (translation)
-Use `Nat.pos_of_ne_zero fun h => ?_` and prove the remaining obligations. Use `map_maximalIdeal_eq_pow_ramificationIdx R S` as an intermediate fact. Rewrite `this` using `[h, pow_zero, Ideal.one_eq_top]`. Conclude with `(map_maximalIdeal_lt_top (algebraMap R S)).ne this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramificationIdx_maximalIdeal_pos : 0 < (maximalIdeal S).ramificationIdx R := by
   refine Nat.pos_of_ne_zero fun h => ?_
@@ -145,7 +145,7 @@ theorem ramificationIdx_maximalIdeal_pos : 0 < (maximalIdeal S).ramificationIdx 
 variable {R} in
 
 /- English proof (translation)
-Rewrite using `[← length_fibre_eq_ramificationIdx, ← length_quotient_span_singleton_eq_addVal, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_algebraMap_uniformizer {ϖ : R} (hϖ : Irreducible ϖ) :
     addVal S (algebraMap R S ϖ) = ((maximalIdeal S).ramificationIdx R : ℕ) := by
@@ -155,9 +155,7 @@ theorem addVal_algebraMap_uniformizer {ϖ : R} (hϖ : Irreducible ϖ) :
 variable {R} in
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Rewrite using `[map_zero, addVal_zero, addVal_zero, ENat.top_mul]`. Conclude with `(ramificationIdx_maximalIdeal_pos R S).ne'` after adjusting the coercions. Take `⟨ϖ, hϖ⟩` from `exists_irreducible R`. Take `⟨n, u, rfl⟩` from `eq_unit_mul_pow_irreducible hx hϖ`.
-
-Rewrite using `[addVal_def' u hϖ, map_mul, map_pow, addVal_mul, addVal_pow, addVal_algebraMap_uniformizer S hϖ, addVal_eq_zero_iff.mpr (u.isUnit.map (algebraMap R S)), zero_add, nsmul_eq_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_algebraMap (x : R) :
     addVal S (algebraMap R S x) = addVal R x * ((maximalIdeal S).ramificationIdx R : ℕ) := by
@@ -173,7 +171,7 @@ theorem addVal_algebraMap (x : R) :
 variable (X : Type*) [AddCommGroup X] [Module R X]
 
 /- English proof (translation)
-Rewrite using `[length_baseChange_flat, length_fibre_eq_ramificationIdx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_baseChange_dvr :
     Module.length S (S ⊗[R] X) =
@@ -183,7 +181,7 @@ theorem length_baseChange_dvr :
 variable {X} in
 
 /- English proof (translation)
-Rewrite using `[length_baseChange_subquotient_flat, length_fibre_eq_ramificationIdx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_baseChange_subquotient_dvr (A B : Submodule R X) :
     Module.length S (A.baseChange S ⧸ (B.baseChange S).submoduleOf (A.baseChange S)) =

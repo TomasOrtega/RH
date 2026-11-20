@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Establish `hne` using `(Formalism.L2.SG.Pf.StabIntSh.shapeNZ (D := D)).1 k`. Conclude with `(Formalism.L2.SG.Pf.StabIntSh.locGlob _ hne _).1 fun p => Formalism.L2.SG.Pf.StabIntSh.locMem_conj Zd.δ Zd.M Zd.agree p hk ((Formalism.L2.SG.Pf.StabIntSh.locGlob _ hne _).2 h p)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ddPow_conj (Zd : LocDat D) {k : ℕ} (hk : k ≤ D.R.rS) {y : D.host.E} (h : y ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D k) :
     D.conjF y ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D k := by
@@ -25,9 +25,9 @@ theorem ddPow_conj (Zd : LocDat D) {k : ℕ} (hk : k ≤ D.R.rS) {y : D.host.E} 
       ((Formalism.L2.SG.Pf.StabIntSh.locGlob _ hne _).2 h p)
 
 /- English proof (translation)
-Establish `h` using `FractionalIdeal.mul_mem_mul hx hy`. Unfold `FibQ.aaF Formalism.L2.SG.Pf.StabIntSh.ddPow at *`. Rewrite `h` using `[← zpow_add₀ (PI.NRCW.ddS_ne_zero D)]`. Establish `e : -((D.R.rS : ℤ) - ((b : ℕ) : ℤ)) + -(((b.val - c.val : ℕ)) : ℤ) = -((D.R.rS : ℤ) - ((c : ℕ) : ℤ))`. Establish `: c.val ≤ b.val` using `le_of_lt hcb`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_aaF {c b : Fin (D.R.rS + 1)} (hcb : c < b) {x y : D.host.E} (hx : x ∈ FibQ.aaF D b)
     (hy : y ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D (b.val - c.val)) : x * y ∈ FibQ.aaF D c := by
@@ -41,7 +41,7 @@ theorem mem_aaF {c b : Fin (D.R.rS + 1)} (hcb : c < b) {x y : D.host.E} (hx : x 
   rwa [e] at h
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.SG.Pf.AtPt.Sg, Formalism.L2.SG.Pf.StabIntSh.bt, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sg_entry (B : Formalism.L2.SG.PairVal.MatR D) (c b : Fin (D.R.rS + 1)) :
     (Formalism.L2.SG.Pf.AtPt.Sg D.host.E D.R.rS * B * Formalism.L2.SG.Pf.AtPt.Sg D.host.E D.R.rS) c b =

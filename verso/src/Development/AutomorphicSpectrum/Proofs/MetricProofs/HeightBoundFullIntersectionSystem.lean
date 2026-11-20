@@ -24,7 +24,7 @@ namespace MuPos
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Establish `: {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z : (Σ k, J k) → ℂ | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_blockNonzero : IsOpen {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have : {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} =
@@ -35,7 +35,7 @@ theorem isOpen_blockNonzero : IsOpen {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z 
     isOpen_ne_fun (continuous_apply _) continuous_const
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ 2 A.h (g t)` using `((hA.contDiffAt (isOpen_blockNonzero.mem_nhds hz)).of_le (by norm_cast))`. Establish `h2 : ContDiffAt ℝ 2 g t` using `hg.restrictScalars.contDiffAt`. Conclude with `(h1.comp t h2).log (A.pos _ hz).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_logH {A : HermLine J} (hA : IsSmoothHerm A) {n : ℕ}
     {g : (Fin n → ℂ) → (Σ k, J k) → ℂ} {t : Fin n → ℂ} (hg : AnalyticAt ℂ g t)
@@ -46,7 +46,7 @@ theorem contDiffAt_logH {A : HermLine J} (hA : IsSmoothHerm A) {n : ℕ}
   exact (h1.comp t h2).log (A.pos _ hz).ne'
 
 /- English proof (translation)
-Establish `h` using `ReciprocityTheory.AnForm.levi_add_smul c (contDiffAt_const (c := (0 : ℝ))) hf v`. Simplify using `only [zero_add] at h`. Rewrite using `[h]`. Simplify using `[levi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levi_const_mul {n : ℕ} {f : (Fin n → ℂ) → ℝ} {t : Fin n → ℂ} (c : ℝ) (hf : ContDiffAt ℝ 2 f t)
     (v : Fin n → ℂ) : levi (fun y => c * f y) t v = c * levi f t v := by
@@ -56,9 +56,9 @@ theorem levi_const_mul {n : ℕ} {f : (Fin n → ℂ) → ℝ} {t : Fin n → �
   simp [levi]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨fun _ => 0, analyticAt_const, by simp⟩`. Consider the case `insert r s hr ih`. Take `⟨G₁, hG₁, e₁⟩` from `h r (Finset.mem_insert_self r s)`. Take `⟨G₂, hG₂, e₂⟩` from `ih fun r' hr' => h r' (Finset.mem_insert_of_mem hr')`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun u => G₁ u + G₂ u, hG₁.add hG₂, ?_⟩` and prove the remaining obligations. Use `filter_upwards [e₁, e₂] with u h₁ h₂`. Rewrite using `[Finset.sum_insert hr, h₁, h₂, Complex.add_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_analytic_sum {n : ℕ} (s : Finset ℕ) (f : ℕ → (Fin n → ℂ) → ℝ) (t : Fin n → ℂ)
     (h : ∀ r ∈ s, ∃ G : (Fin n → ℂ) → ℂ, AnalyticAt ℂ G t ∧ ∀ᶠ u in 𝓝 t, f r u = (G u).re) :
@@ -74,9 +74,9 @@ theorem exists_analytic_sum {n : ℕ} (s : Finset ℕ) (f : ℕ → (Fin n → �
     rw [Finset.sum_insert hr, h₁, h₂, Complex.add_re]
 
 /- English proof (translation)
-Establish `hRe : ContDiffAt ℝ 2 (fun y => (G y).re) t` using `Complex.reCLM.contDiff.contDiffAt.comp t (hG.restrictScalars.contDiffAt)`. Establish `hMA : ContDiffAt ℝ 2 (fun y => fM y + (-p) * fA y) t` using `hM.add (contDiffAt_const.mul hA)`. Establish `hR : ContDiffAt ℝ 2 (fun y => (fM y + (-p) * fA y) + (-q) * (G y).re) t` using `hMA.add (contDiffAt_const.mul hRe)`. Establish `hF : F =ᶠ[𝓝 t] fun y => q⁻¹ * ((fM y + (-p) * fA y) + (-q) * (G y).re)` using `by filter_upwards [hE] with y hy`. Rewrite using `[hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ReciprocityTheory.AnForm.levi_congr hF v, levi_const_mul _ hR, ReciprocityTheory.AnForm.levi_add_smul (-q) hMA hRe, ReciprocityTheory.AnForm.levi_add_smul (-p) hM hA, ReciprocityTheory.AnForm.levi_re_analytic hG]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_split {n : ℕ} {fM fA F : (Fin n → ℂ) → ℝ} {G : (Fin n → ℂ) → ℂ} {t : Fin n → ℂ} {p q : ℝ}
     (hq : q ≠ 0) (hM : ContDiffAt ℝ 2 fM t) (hA : ContDiffAt ℝ 2 fA t) (hG : AnalyticAt ℂ G t)
@@ -116,7 +116,7 @@ def sqDiv (A B : HermLine J) (p : ℕ) : HermLine J where
     ring
 
 /- English proof (translation)
-The claim follows from `(hA.pow 2).mul ((hB.pow p).inv fun z hz => (pow_pos (B.pos z hz) p).ne')`.
+A detailed English derivation is pending.
 -/
 theorem sqDiv_smooth {A B : HermLine J} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) (p : ℕ) :
     IsSmoothHerm (sqDiv A B p) :=
@@ -130,9 +130,9 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W : Ψ → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
 
 /- English proof (translation)
-Establish `hb : t ∈ Metric.ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1`. Rewrite using `[mem_ball_zero_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hγ : AnalyticAt ℂ (D.chart a).γ t` using `(D.chart a).analytic t hb`. Establish `hz : ∀ k, ∃ i, (D.chart a).γ t ⟨k, i⟩ ≠ 0` using `((D.chart a).mem t hb).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G, hG, hGe⟩` from `exists_analytic_sum S (fun r s => Real.log (D.vertFactor r ((D.chart a).γ s))) t fun r hr => (GlobalTheory.T.vertical_factor_smooth_hermitian_metric K J II Ψ Ω W D r (hS hr)).2 a t hb`. Use `levi_split (G := G) (by exact_mod_cast hq) (contDiffAt_logH hA hγ hz) (contDiffAt_logH D.A'_pos.1 hγ hz) hG ?_ v` and prove the remaining obligations. Use `filter_upwards [hGe, Metric.isOpen_ball.mem_nhds hb] with s h₁ h₂`. Rewrite using `[hform s h₂, h₁]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_levi_split (D : ComponentData II Ψ K J Ω W) (S : Finset ℕ) (hS : S ⊆ D.S)
     (A : HermLine J) (hA : IsSmoothHerm A) (F : (Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) → ℝ) (a : Fin D.nCharts) (p q : ℕ) (hq : q ≠ 0)
@@ -154,13 +154,13 @@ theorem chart_levi_split (D : ComponentData II Ψ K J Ω W) (S : Finset ℕ) (hS
   rw [hform s h₂, h₁]
 
 /- English proof (translation)
-Establish `hb : t ∈ Metric.ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1`. Rewrite using `[mem_ball_zero_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hγ : AnalyticAt ℂ (D.chart a).γ t` using `(D.chart a).analytic t hb`. Establish `hz : ∀ k, ∃ i, (D.chart a).γ t ⟨k, i⟩ ≠ 0` using `((D.chart a).mem t hb).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `contDiffAt_logH hA hγ hz`. Establish `h2` using `contDiffAt_logH D.A'_pos.1 hγ hz`. Establish `hE : (fun s => Real.log ((sqDiv A D.A' p).h ((D.chart a).γ s))) =ᶠ[𝓝 t] fun s => 2 * Real.log (A.h ((D.chart a).γ s)) + (-(p : ℝ)) * Real.log (D.A'.h ((D.chart a).γ s))` using `by filter_upwards [Metric.isOpen_ball.mem_nhds hb] with s hs`. Establish `hzs : ∀ k, ∃ i, (D.chart a).γ s ⟨k, i⟩ ≠ 0` using `((D.chart a).mem s hs).1`. Establish `p1` using `A.pos _ hzs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2` using `D.A'.pos _ hzs`. Use `show Real.log (A.h _ ^ 2 * (D.A'.h _ ^ p)⁻¹) = _`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_inv, Real.log_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.AnForm.levi_congr hE v, ReciprocityTheory.AnForm.levi_add_smul _ (contDiffAt_const.mul h1) h2, levi_const_mul _ h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chart_levi_sqDiv (D : ComponentData II Ψ K J Ω W) (A : HermLine J) (hA : IsSmoothHerm A)
     (a : Fin D.nCharts) (p : ℕ) (t : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) (ht : ‖t‖ ≤ 1 / 2) (v : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) :
@@ -188,25 +188,23 @@ theorem chart_levi_sqDiv (D : ComponentData II Ψ K J Ω W) (A : HermLine J) (hA
   ring
 
 /- English proof (translation)
-Introduce `hPB K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M w S' hII hT hNef B p q hB hp hpq`. Take `⟨δ₀, hδ₀, hApos⟩` from `GlobalTheory.T.uniform_levi_positivity_on_charts K J II Ψ Ω W D`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp`. Establish `hq1 : 1 ≤ q` using `hp.trans hpq`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hq1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : 0 < p * δ₀ / (2 * q)` using `by positivity`. Establish `hev` using `(GlobalTheory.T.regularized_weight_dominates_eventually K J II Ψ Ω W D Hd M w S' hT).and (GlobalTheory.T.regularized_levi_lower_bound_eventually K J II Ψ Ω W D Hd M w S' hT _ hδ)`. Establish `key : ∀ LF LA V : ℝ, 0 ≤ V → -(p * δ₀ / (2 * q) * V) ≤ LF → δ₀ * V ≤ LA → 0 ≤ q * LF + p * LA ∧ 0 ≤ 2 * (q * LF + p * LA) - p * LA`. Introduce `LF LA V hV h1 h2`. Establish `e1 : -(p * δ₀ / 2 * V) ≤ q * LF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left h1 hq0.le` as an intermediate fact. Establish `e : (q : ℝ) * -(p * δ₀ / (2 * q) * V) = -(p * δ₀ / 2 * V)`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : p * (δ₀ * V) ≤ p * LA` using `mul_le_mul_of_nonneg_left h2 hp0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e3 : 0 ≤ p * δ₀ * V` using `by positivity`. Apply the tactic sequence `constructor <;> nlinarith`. Take `⟨t₀, ht₀, hsub⟩` from `(mem_nhdsGT_iff_exists_Ioc_subset).1 hev`. Use `⟨t₀, ht₀, fun t' ht' ht'₀ => ?_⟩` and prove the remaining obligations. Take `⟨⟨-, -, hMU⟩, hreg⟩` from `hsub ⟨ht', ht'₀⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hsm, hdeg, hform⟩` from `hMU B p q`. Use `set A := MUc Hd S' B p q t' with hAdef`. Establish `hsplit : ∀ (a : Fin D.nCharts) (t : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ), ‖t‖ ≤ 1 / 2 → ∀ v : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ, levi (fun s => Real.log (A.h ((D.chart a).γ s))) t v = q * levi (fun s => Real.log (S'.ref.h ((D.chart a).γ s)) + S'.bregWeight t' …`. Introduce `a t ht v`. Use `chart_levi_split D (D.SB B) (Finset.filter_subset _ _) A hsm _ a p q (by omega) t ht (fun s hs => ?_) v` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hform _ ((D.chart a).mem s hs)`. Establish `hsemi : IsSemipositiveH (mCoordIdeal D.y) A`. Use `GlobalTheory.T.semipositive_levi_of_log_metric K J II Ψ Ω W D A hsm fun a t ht v => ?_` and prove the remaining obligations. Establish `e` using `hsplit a t ht v`. Establish `b1` using `hreg a t ht v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b2` using `hApos a t ht v`. Rewrite using `[e]`. Conclude with `(key _ _ _ (by positivity) b1 b2).1`. Establish `hN : IsSemipositiveH (mCoordIdeal D.y) (sqDiv A D.A' p)`. Use `GlobalTheory.T.semipositive_levi_of_log_metric K J II Ψ Ω W D _ (sqDiv_smooth hsm D.A'_pos.1 p) fun a t ht v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0` using `chart_levi_sqDiv D A hsm a p t ht v`. Establish `e` using `hsplit a t ht v`. Establish `b1` using `hreg a t ht v`. Establish `b2` using `hApos a t ht v`. Rewrite using `[e0, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(key _ _ _ (by positivity) b1 b2).2`. Use `⟨hsemi, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdeg]`. Conclude with `GlobalTheory.T.nef_on_fibres_add_nonneg hPB K J _ _ _ p q (hNef B hB) fun k => (D.a'_pos k).le`. Use `GlobalTheory.T.ample_on_generic_fibre_of_semipositive hPB II hII K J _ (sqDiv A D.A' p) A D.a' 2 p hN hsm D.a'_pos (by norm_num) hp ?_` and prove the remaining obligations.
-
-Use extensionality with `k`. Simplify using `[sqDiv, D.A'_deg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posU_of_nefOnFibres : PB.Inputs → ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (M : XModel D) (w : ((Σ k, J k) → ℂ) → ℝ) (S' : BoundedRegularisationSetting M D.Xo Hd.aMu w), IsFullIntersectionSystem II → S'.IsTied → (∀ B : ℕ, 4 * D.f + 2 ≤ B → NefOnFibres (mCoordIdeal D.y) (muTwDeg Hd B)) → PosU S' := by
   intro hPB K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M w S' hII hT hNef B p q hB hp hpq

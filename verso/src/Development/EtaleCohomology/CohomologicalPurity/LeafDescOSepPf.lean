@@ -6,26 +6,26 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 namespace LateralTheory.CohomologicalPurity.Cl
 
 /- English proof (translation)
-Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sres_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res f (Sec.res g x) = Sec.res (f ≫ g) x := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-The claim follows from `map_zero ((F.obj.map f.op).hom)`.
+A detailed English derivation is pending.
 -/
 theorem sres_zero {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (f : V ⟶ U) :
     Sec.res (F := F) f 0 = 0 := map_zero ((F.obj.map f.op).hom)
 
 /- English proof (translation)
-The claim follows from `map_zero ((φ.hom.app (op U)).hom)`.
+A detailed English derivation is pending.
 -/
 theorem smap_zero {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :
     Sec.map φ (0 : Sec F U) = 0 := map_zero ((φ.hom.app (op U)).hom)
 
 /- English proof (translation)
-Use `congrArg (fun h => h.hom x) (φ.hom.naturality f.op)` as an intermediate fact. Simplify `this` using `only [ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smap_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (f : V ⟶ U) (x : Sec F U) :
     Sec.map φ (Sec.res f x) = Sec.res f (Sec.map φ x) := by
@@ -33,14 +33,14 @@ theorem smap_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Sch
   simpa only [ModuleCat.hom_comp, LinearMap.comp_apply] using this
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Introduce `w hw`. Conclude with `hW hw`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem le_comp' {Y Z X : Scheme.{0}} {W : Y.Opens} (f : Y ⟶ Z) (g : Z ⟶ X) (U : X.Opens) (k : Y ⟶ X)
     (hk : f ≫ g = k) (hW : W ≤ k ⁻¹ᵁ U) : W ≤ f ⁻¹ᵁ (g ⁻¹ᵁ U) := by
   subst hk; intro w hw; exact hW hw
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[mem_Zc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sres_comp, ← Scheme.Hom.resLE_comp_ι f h, ← sres_comp, ha.1, sres_zero]`. Rewrite using `[smap_res, ha.2, sres_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem zc_res {R : Type} [CommRing R] {K : Cx R} {n : ℤ} {X' X : Scheme.{0}} (f : X' ⟶ X) (U' : X'.Opens)
     (U : X.Opens) (h : U' ≤ f ⁻¹ᵁ U) (a : Sec (K.X n) X) (ha : a ∈ Zc K U n) : Sec.res f a ∈ Zc K U' n := by
@@ -50,35 +50,33 @@ theorem zc_res {R : Type} [CommRing R] {K : Cx R} {n : ℤ} {X' X : Scheme.{0}} 
   · rw [smap_res, ha.2, sres_zero]
 
 /- English proof (translation)
-Introduce `s` and use `by unfold res; infer_instance`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem res_inj (q : ℕ) (i : ℤ) : ∀ s, Injective ((res _ (tw q i)).X s) := fun s => by
   unfold res; infer_instance
 
 /- English proof (translation)
-Introduce `s hs` and use `by unfold res; exact CochainComplex.isZero_of_isStrictlyGE _ 0 s hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem res_neg (q : ℕ) (i : ℤ) : ∀ s < 0, IsZero ((res _ (tw q i)).X s) := fun s hs => by
   unfold res; exact CochainComplex.isZero_of_isStrictlyGE _ 0 s hs
 
 /- English proof (translation)
-Introduce `hD hF q X U m i hL s hs`. Establish `h1 : ∀ n < m, ∀ (W : X.Opens), ∀ a ∈ Zc (res _ (tw q i)) (W.ι ⁻¹ᵁ U) n, ∀ x ∈ W, ∃ (V : X.Opens) (h : V ≤ W), x ∈ V ∧ Bd (res _ (tw q i)) (V.ι ⁻¹ᵁ U) n (rs h a)`. Introduce `n hn W a ha x hx`. Take `⟨V, hVW, hxV, hV⟩` from `hL x W hx`. Take `⟨cls, -, hker, -⟩` from `hD q n i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : rs hVW a ∈ Zc (res _ (tw q i)) (V.ι ⁻¹ᵁ U) n` using `zc_res _ _ _ (le_comp' _ _ U _ (Scheme.homOfLE_ι _ _) le_rfl) a ha`. Use `⟨V, hVW, hxV, (hker _ ⟨_, hz⟩).1 ?_⟩` and prove the remaining obligations. Use `hV n hn` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Take `⟨cls, hsurj, hker, hnat⟩` from `hD q m i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hsurj U s`. Establish `hFl` using `(hF _ (res _ (tw q i)) (res_inj q i) (res_neg q i) X U m h1).1`. Establish `hza' : Sec.res (⊤ : X.Opens).ι a.1 ∈ Zc (res _ (tw q i)) ((⊤ : X.Opens).ι ⁻¹ᵁ U) m` using `zc_res _ _ _ le_rfl a.1 a.2`. Establish `hB : Bd (res _ (tw q i)) ((⊤ : X.Opens).ι ⁻¹ᵁ U) m (Sec.res (⊤ : X.Opens).ι a.1)`. Apply `hFl ⊤` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Distinguish the cases in `hxU : x ∈ U`. Use `⟨U, le_top, hxU, ⟨0, sres_zero _, ?_⟩⟩` and prove the remaining obligations. Establish `e : rs (le_top : U ≤ ⊤) (Sec.res (⊤ : X.Opens).ι a.1) = 0`. Unfold `rs`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sres_comp, Scheme.homOfLE_ι]`. Conclude with `a.2.1`. Rewrite using `[e]`. Conclude with `smap_zero _`. Take `⟨V, hxV, hV0⟩` from `hs x hxU`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨V, le_top, hxV, ?_⟩` and prove the remaining obligations. Establish `e : rs (le_top : V ≤ ⊤) (Sec.res (⊤ : X.Opens).ι a.1) = Sec.res V.ι a.1`. Unfold `rs`. Rewrite using `[sres_comp, Scheme.homOfLE_ι]`. Establish `hz : Sec.res V.ι a.1 ∈ Zc (res _ (tw q i)) (V.ι ⁻¹ᵁ U) m` using `zc_res _ _ _ le_rfl a.1 a.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(hker _ (⟨_, hz⟩ : Zc _ _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[← hnat V.ι (V.ι ⁻¹ᵁ U) U le_rfl a ⟨_, hz⟩ rfl]`. Conclude with `hV0`. Establish `h0` using `(hker _ (⟨_, hza'⟩ : Zc _ _ _)).2 hB`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[← hnat (⊤ : X.Opens).ι _ U le_rfl a ⟨_, hza'⟩ rfl]`. Establish `hle : U ≤ X.topIso.inv ⁻¹ᵁ ((⊤ : X.Opens).ι ⁻¹ᵁ U)` using `le_comp' _ _ U (𝟙 X) (Scheme.toIso_inv_ι X) (fun x hx => hx)`. Establish `hid : U ≤ (𝟙 X) ⁻¹ᵁ U` using `fun x hx => hx`. Establish `key` using `pull_pull X.topIso.inv (⊤ : X.Opens).ι (Scheme.toIso_inv_ι X) U _ U hle le_rfl hid m i (cls U a)`. Rewrite `key` using `[h0, map_zero, Hs_pull_id]`.
-
-Conclude with `key.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafDescOSep_of : LeafDescOSep := by
   intro hD hF q X U m i hL s hs

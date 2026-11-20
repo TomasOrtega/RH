@@ -5,13 +5,11 @@ namespace PositivityTheory.KB.SpectralGap.WordTransvectionCongruences
 open NumberField NumberField.mixedEmbedding NumberField.InfinitePlace
 
 /- English proof (translation)
-Establish `h2 : |(Algebra.norm ℚ (π : L))| ≠ 1`. Introduce `h`. Apply `hπ` to reduce the goal to its premises. Rewrite using `[NumberField.isUnit_iff_norm]`. Simplify `h` using `[RingOfIntegers.coe_norm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `*` using `[NumberField.InfinitePlace.prod_eq_abs_norm, ← Algebra.coe_norm_int]`. Establish `h1 : Algebra.norm ℤ π ≠ 0` using `Algebra.norm_ne_zero_iff.mpr h0`. Use `set n := Algebra.norm ℤ π`. Establish `h3 : |n| ≠ 1`. Introduce `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2` to reduce the goal to its premises. Conclude with `h` after adjusting the coercions. Establish `h4 : 2 ≤ |n|`. Use `abs_pos.mpr h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem two_le_prod {L : Type*} [Field L] [NumberField L] (π : 𝓞 L) (hπ : ¬ IsUnit π) (h0 : π ≠ 0) :
     (2 : ℝ) ≤ ∏ w : InfinitePlace L, w (π : L) ^ w.mult := by
@@ -33,17 +31,15 @@ theorem two_le_prod {L : Type*} [Field L] [NumberField L] (π : 𝓞 L) (hπ : �
   exact_mod_cast h4
 
 /- English proof (translation)
-Establish `hP` using `two_le_prod π hπ h0`. Use `set P := ∏ w : InfinitePlace L, w (π : L) ^ w.mult with hPdef`. Use `set E : ℝ := ∏ w : InfinitePlace L, ε ^ w.mult with hEdef`. Establish `hE : 0 < E` using `Finset.prod_pos fun w _ => pow_pos hε _`. Establish `hc : (0 : ℝ) < mixedEmbedding.convexBodyLTFactor L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `mixedEmbedding.convexBodyLTFactor_ne_zero L` as an intermediate fact. Check the signs of the components of the expression. Establish `hB` using `mixedEmbedding.minkowskiBound_lt_top L 1`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt ((mixedEmbedding.minkowskiBound L 1).toReal / (mixedEmbedding.convexBodyLTFactor L * E)) (by linarith : (1 : ℝ) < P)`. Establish `hπw : ∀ w : InfinitePlace L, 0 < w (π : L)` using `fun w => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[InfinitePlace.pos_iff]`. Conclude with `h0` after adjusting the coercions. Set `f : InfinitePlace L → NNReal` to `fun w => ⟨ε * w (π : L) ^ k, by have := hπw w; positivity⟩`. Establish `hf : ((∏ w, f w ^ w.mult : NNReal) : ℝ) = E * P ^ k`. Rewrite using `[NNReal.coe_prod, hEdef, hPdef, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ε * w (π : L) ^ k) ^ w.mult = _`. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, mul_comm k]`. Take `⟨a, ha0, ha⟩` from `mixedEmbedding.exists_ne_zero_mem_ringOfIntegers_lt L (f := f) (by`. Rewrite using `[mixedEmbedding.convexBodyLT_volume, ← ENNReal.coe_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← ENNReal.toReal_lt_toReal hB.ne ENNReal.coe_ne_top]`. Rewrite using `[ENNReal.coe_toReal, NNReal.coe_mul, hf]`. Rewrite `hk` using `[div_lt_iff₀ (by positivity)]`. Use the proof step `linarith)`. Use `⟨a, ha0, k, fun w => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_div₀, map_pow, div_lt_iff₀ (pow_pos (hπw w) _)]`. Conclude with `ha w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_small {L : Type*} [Field L] [NumberField L] (π : 𝓞 L) (hπ : ¬ IsUnit π) (h0 : π ≠ 0)
     {ε : ℝ} (hε : 0 < ε) :
@@ -79,11 +75,11 @@ theorem exists_small {L : Type*} [Field L] [NumberField L] (π : 𝓞 L) (hπ : 
   exact ha w
 
 /- English proof (translation)
-Use `set b := mixedEmbedding.latticeBasis L`. Use `⟨∑ i, ‖b i‖, fun v => ?_⟩` and prove the remaining obligations. Set `x : mixedEmbedding.mixedSpace L` to `(0, fun w => v w.1)`. Establish `hm` using `(ZSpan.floor b x).2`. Rewrite `hm` using `[mixedEmbedding.mem_span_latticeBasis]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hm`. Use `⟨a, fun w => ?_⟩` and prove the remaining obligations. Establish `hw : w.IsComplex` using `IsTotallyComplex.isComplex w`. Establish `hfr` using `ZSpan.norm_fract_le b x`. Rewrite `hfr` using `[ZSpan.fract_apply, ← ha]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ hfr` and prove the remaining obligations. Use `le_trans ?_ (norm_snd_le _)` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (norm_le_pi_norm _ ⟨w, hw⟩)` and prove the remaining obligations. Simplify using `[x, mixedEmbedding.mixedEmbedding_apply_isComplex]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_near {L : Type*} [Field L] [NumberField L] [IsTotallyComplex L] :
     ∃ R : ℝ, ∀ v : InfinitePlace L → ℂ, ∃ a : 𝓞 L, ∀ w, ‖v w - w.embedding (a : L)‖ ≤ R := by
@@ -104,19 +100,17 @@ theorem exists_near {L : Type*} [Field L] [NumberField L] [IsTotallyComplex L] :
   simp [x, mixedEmbedding.mixedEmbedding_apply_isComplex]
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_near (L := L)`. Rewrite using `[Metric.dense_iff]`. Introduce `z δ hδ`. Establish `hε : 0 < δ / (|R| + 1)` using `by positivity`. Take `⟨y, hy0, k, hyk⟩` from `exists_small π hπ h0 hε`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set q : L := (y : L) / (π : L) ^ k with hqdef`. Establish `hq : q ≠ 0` using `div_ne_zero (by exact_mod_cast hy0) (pow_ne_zero _ (by exact_mod_cast h0))`. Take `⟨a, ha⟩` from `hR (fun w => z w / w.embedding q)`. Use `⟨fun w => w.embedding (((a * y : 𝓞 L) : L) / (π : L) ^ k), ?_, a * y, k, rfl⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_pi_lt_iff hδ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `heq : w.embedding q ≠ 0`. Rewrite using `[ne_eq, map_eq_zero]`. Conclude with `hq`. Establish `hsplit : z w - w.embedding (((a * y : 𝓞 L) : L) / (π : L) ^ k) = (z w / w.embedding q - w.embedding (a : L)) * w.embedding q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (((a * y : 𝓞 L) : L) / (π : L) ^ k) = (a : L) * q by`. Rewrite using `[hqdef]`. Use `push_cast`. Use the proof step `ring]`. Rewrite using `[map_mul, sub_mul, div_mul_cancel₀ _ heq]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dist_comm, dist_eq_norm, hsplit, norm_mul, InfinitePlace.norm_embedding_eq]`. Establish `h1` using `ha w`. Establish `h2` using `hyk w`. Establish `hR0 : 0 ≤ R` using `le_trans (norm_nonneg _) h1`. Establish `hwq : 0 ≤ w q` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : ‖z w / w.embedding q - w.embedding (a : L)‖ * w q ≤ |R| * (δ / (|R| + 1))`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : |R| * (δ / (|R| + 1)) < δ`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use polynomial arithmetic with `[abs_nonneg R]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dense_pow {L : Type*} [Field L] [NumberField L] [IsTotallyComplex L] (π : 𝓞 L)
     (hπ : ¬ IsUnit π) (h0 : π ≠ 0) :

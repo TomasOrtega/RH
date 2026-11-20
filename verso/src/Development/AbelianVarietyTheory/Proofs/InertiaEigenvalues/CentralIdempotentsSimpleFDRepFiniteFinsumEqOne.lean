@@ -15,7 +15,7 @@ namespace GlobalTheory.SerOSys.ZSum
 variable {Γ : Type} [Group Γ] [Fintype Γ]
 
 /- English proof (translation)
-Unfold `zIdem Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.centralIdem`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.of_apply, MonoidAlgebra.smul_single', mul_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zIdem_eq_centralIdem (τ : FDRep ℂ Γ) : zIdem τ = Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.centralIdem τ.ρ := by
   unfold zIdem Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.centralIdem
@@ -24,16 +24,16 @@ theorem zIdem_eq_centralIdem (τ : FDRep ℂ Γ) : zIdem τ = Formalism.Irreduci
   rfl
 
 /- English proof (translation)
-Unfold `zIdem PI.CharIdem.charIdem`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem zIdem_eq_charIdem' (τ : FDRep ℂ Γ) : zIdem τ = PI.CharIdem.charIdem τ := by
   unfold zIdem PI.CharIdem.charIdem
   rfl
 
 /- English proof (translation)
-Use `haveI := h`. Establish `hc : (Nat.card Γ : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `: Invertible (Nat.card Γ : ℂ)` using `invertibleOfNonzero hc`. Apply `GlobalTheory.AbsIrrDescent.isIrreducible_of_norm_one` to reduce the goal to its premises. Establish `hs` using `FDRep.char_orthonormal τ τ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[if_pos ⟨Iso.refl _⟩, inv_mul_eq_one₀ hc]`. Conclude with `hs.symm`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_simple (τ : FDRep ℂ Γ) (h : Simple τ) : Representation.IsIrreducible τ.ρ := by
   haveI := h
@@ -45,15 +45,13 @@ theorem isIrreducible_of_simple (τ : FDRep ℂ Γ) (h : Simple τ) : Representa
   exact hs.symm
 
 /- English proof (translation)
-The claim follows from `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.CISum.isIrr_of_isIrreducible _ (isIrreducible_of_simple τ h)`.
+A detailed English derivation is pending.
 -/
 theorem isIrr_of_simple (τ : FDRep ℂ Γ) (h : Simple τ) : Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.IsIrr τ.ρ :=
   Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.CISum.isIrr_of_isIrreducible _ (isIrreducible_of_simple τ h)
 
 /- English proof (translation)
-Take `⟨hnt, hW⟩` from `h`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun e => ?_⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Establish `h1` using `congrArg Subrepresentation.toSubmodule e`. Conclude with `(bot_ne_top : (⊥ : Submodule ℂ W) ≠ ⊤) h1`. Break down `hW U.toSubmodule (fun g x hx => U.apply_mem_toSubmodule g hx) with h1 | h1` into its components or cases.
-
-Use `left`. Conclude with `Subrepresentation.toSubmodule_injective h1`. Use `right`. Conclude with `Subrepresentation.toSubmodule_injective h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_isIrr {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ Γ W)
     (h : Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.IsIrr σ) : σ.IsIrreducible := by
@@ -66,7 +64,7 @@ theorem isIrreducible_of_isIrr {W : Type} [AddCommGroup W] [Module ℂ W] (σ : 
     · right; exact Subrepresentation.toSubmodule_injective h1
 
 /- English proof (translation)
-Establish `h1 : τ.character = τ'.character` using `FDRep.char_iso i`. Establish `h2 : Module.finrank ℂ τ = Module.finrank ℂ τ'` using `(FDRep.isoToLinearEquiv i).finrank_eq`. Express the relevant statement in the definitionally equal form `∑ γ : Γ, MonoidAlgebra.single γ ((Module.finrank ℂ τ : ℂ) / Fintype.card Γ * τ.character γ⁻¹) = ∑ γ : Γ, MonoidAlgebra.single γ ((Module.finrank ℂ τ' : ℂ) / Fintype.card Γ * τ'.character γ⁻¹)`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zIdem_eq_of_iso {τ τ' : FDRep ℂ Γ} (i : τ ≅ τ') : zIdem τ = zIdem τ' := by
   have h1 : τ.character = τ'.character := FDRep.char_iso i
@@ -76,9 +74,9 @@ theorem zIdem_eq_of_iso {τ τ' : FDRep ℂ Γ} (i : τ ≅ τ') : zIdem τ = zI
   rw [h1, h2]
 
 /- English proof (translation)
-Establish `h2 : Module.finrank ℂ τ = Module.finrank ℂ τ'` using `φ.finrank_eq`. Establish `h1 : ∀ g, LinearMap.trace ℂ τ' (τ'.ρ g) = LinearMap.trace ℂ τ (τ.ρ g)`. Introduce `g`. Establish `: τ'.ρ g = φ.conj (τ.ρ g)`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[LinearEquiv.conj_apply, hφ]`. Rewrite using `[this, LinearMap.trace_conj']`. Unfold `zIdem`. Simplify using `only [h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem zIdem_eq_of_equiv (τ τ' : FDRep ℂ Γ) (φ : τ ≃ₗ[ℂ] τ') (hφ : ∀ g x, φ (τ.ρ g x) = τ'.ρ g (φ x)) :
     zIdem τ = zIdem τ' := by
@@ -92,9 +90,9 @@ theorem zIdem_eq_of_equiv (τ τ' : FDRep ℂ Γ) (φ : τ ≃ₗ[ℂ] τ') (hφ
   simp only [h1, h2]
 
 /- English proof (translation)
-Introduce `h0`. Establish `ha` using `(orthogonalCentral Γ τ τ h h).1`. Rewrite `ha` using `[← zIdem_eq_charIdem', h0, map_zero]`. Take `⟨hnt, -⟩` from `isIrr_of_simple τ h`. Take `⟨v, hv⟩` from `exists_ne (0 : τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hv (by simpa using (LinearMap.congr_fun ha v).symm)`.
+A detailed English derivation is pending.
 -/
 theorem zIdem_ne_zero (τ : FDRep ℂ Γ) (h : Simple τ) : zIdem τ ≠ 0 := by
   intro h0
@@ -105,14 +103,14 @@ theorem zIdem_ne_zero (τ : FDRep ℂ Γ) (h : Simple τ) : zIdem τ ≠ 0 := by
   exact hv (by simpa using (LinearMap.congr_fun ha v).symm)
 
 /- English proof (translation)
-Use `(orthogonalCentral Γ τ τ h h).2.2.1` as an intermediate fact. Rewrite using `[zIdem_eq_charIdem']`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zIdem_mul_self (τ : FDRep ℂ Γ) (h : Simple τ) : zIdem τ * zIdem τ = zIdem τ := by
   have := (orthogonalCentral Γ τ τ h h).2.2.1
   rw [zIdem_eq_charIdem']; exact this
 
 /- English proof (translation)
-Use `(orthogonalCentral Γ τ τ' h h').2.2.2.2 ⟨fun i => hne (zIdem_eq_of_iso i)⟩` as an intermediate fact. Rewrite using `[zIdem_eq_charIdem', zIdem_eq_charIdem']`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zIdem_mul_of_ne (τ τ' : FDRep ℂ Γ) (h : Simple τ) (h' : Simple τ') (hne : zIdem τ ≠ zIdem τ') :
     zIdem τ * zIdem τ' = 0 := by
@@ -126,13 +124,13 @@ namespace GlobalTheory.SerOSys.ZSum
 variable {Γ : Type} [Group Γ] [Fintype Γ]
 
 /- English proof (translation)
-Use `set S := {z : MonoidAlgebra ℂ Γ | ∃ τ : FDRep ℂ Γ, Simple τ ∧ zIdem τ = z}`. Establish `hli : LinearIndependent ℂ (fun z : S => (z : MonoidAlgebra ℂ Γ))`. Rewrite using `[linearIndependent_iff']`. Introduce `s c hs j hj`. Take `⟨τ, hτ, hτz⟩` from `j.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmul` using `congrArg (· * (j : MonoidAlgebra ℂ Γ)) hs`. Simplify using `only [Finset.sum_mul, zero_mul, smul_mul_assoc] at hmul`. Rewrite `hmul` using `[Finset.sum_eq_single j]`. Rewrite `hmul` using `[← hτz, zIdem_mul_self τ hτ]`. Conclude with `(smul_eq_zero.1 hmul).resolve_right (zIdem_ne_zero τ hτ)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i _ hij`. Take `⟨σ, hσ, hσz⟩` from `i.2`. Establish `hne : zIdem σ ≠ zIdem τ`. Rewrite using `[hσz, hτz]`. Conclude with `fun e => hij (Subtype.ext e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hσz, ← hτz, zIdem_mul_of_ne σ τ hσ hτ hne, smul_zero]`. Introduce `hn`. Conclude with `absurd hj hn`. Conclude with `Set.finite_coe_iff.1 hli.finite`.
+A detailed English derivation is pending.
 -/
 theorem zIdem_set_finite :
     {z : MonoidAlgebra ℂ Γ | ∃ τ : FDRep ℂ Γ, Simple τ ∧ zIdem τ = z}.Finite := by
@@ -155,11 +153,11 @@ theorem zIdem_set_finite :
   exact Set.finite_coe_iff.1 hli.finite
 
 /- English proof (translation)
-Use `set S := {z : MonoidAlgebra ℂ Γ | ∃ τ : FDRep ℂ Γ, Simple τ ∧ zIdem τ = z} with hS`. Establish `hfin : S.Finite` using `zIdem_set_finite`. Use `letI : Fintype S := hfin.fintype`. Use `choose τ hτ hτz using fun z : S => z.2`. Establish `key` using `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.central_idempotents_sum_one Γ S (fun z => (τ z : Type)) (fun z => (τ z).ρ) (fun z => isIrr_of_simple (τ z) (hτ z)) (fun i j ⟨φ, hφ⟩ => Subtype.ext ((hτz i).symm.trans ((zIdem_eq_of_equiv (τ i) (τ j) φ hφ).trans (hτz j)))) ( …`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs : Simple (FDRep.of σ)` using `PI.GreenLabelSurjWork.simple_of_irr σ`. Set `i : S` to `⟨zIdem (FDRep.of σ), FDRep.of σ, hs, rfl⟩`. Take `⟨e, he⟩` from `repIso_of_zIdem_eq_of_simple (FDRep.of σ) (τ i) hs (hτ i) (hτz i).symm`. Conclude with `⟨i, e, fun g x => he g x⟩)`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_subtype hfin.toFinset (fun x => Set.Finite.mem_toFinset hfin) (fun z => z), ← key]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← zIdem_eq_centralIdem, hτz z]`.
+A detailed English derivation is pending.
 -/
 theorem zIdem_set_finsum :
     ∑ᶠ z ∈ {z : MonoidAlgebra ℂ Γ | ∃ τ : FDRep ℂ Γ, Simple τ ∧ zIdem τ = z}, z = 1 := by
@@ -187,7 +185,7 @@ end GlobalTheory.SerOSys.ZSum
 namespace GlobalTheory.SerOSys
 
 /- English proof (translation)
-Introduce `_ _ _` and use `⟨ZSum.zIdem_set_finite, ZSum.zIdem_set_finsum⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem zIdem_finite_and_finsum_eq_one : ∀ (Γ : Type) [Group Γ] [Fintype Γ],
     {z : MonoidAlgebra ℂ Γ | ∃ τ : FDRep ℂ Γ, Simple τ ∧ zIdem τ = z}.Finite ∧

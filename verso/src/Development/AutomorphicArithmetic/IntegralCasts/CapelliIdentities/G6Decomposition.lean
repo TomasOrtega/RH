@@ -17,13 +17,13 @@ private def Smith {a : Type*} [Fintype a] [DecidableEq a] (M : Matrix a a K) : P
   ∃ (U V : Matrix a a K) (d : a → K), Good U ∧ Good V ∧ M = U * diagonal d * V
 
 /- English proof (translation)
-Introduce `i j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private lemma small_zero {a b : Type*} : Small (0 : Matrix a b K) := by
   intro i j; simp
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma small_one {a : Type*} [DecidableEq a] : Small (1 : Matrix a a K) := by
   intro i j
@@ -31,13 +31,13 @@ private lemma small_one {a : Type*} [DecidableEq a] : Small (1 : Matrix a a K) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `using h i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma small_neg {a b : Type*} {A : Matrix a b K} (h : Small A) : Small (-A) := by
   intro i j; simpa using h i j
 
 /- English proof (translation)
-Introduce and unpack `(i | i) (j | j)`. Use `exacts [hA i j, hB i j, hC i j, hD i j]`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma small_blocks {a b : Type*} {A : Matrix a a K} {B : Matrix a b K}
     {C : Matrix b a K} {D : Matrix b b K} (hA : Small A) (hB : Small B) (hC : Small C)
@@ -46,9 +46,9 @@ private lemma small_blocks {a b : Type*} {A : Matrix a a K} {B : Matrix a b K}
   exacts [hA i j, hB i j, hC i j, hD i j]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one ?_` and prove the remaining obligations. Introduce `k _`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)`.
+A detailed English derivation is pending.
 -/
 private lemma small_mul [IsUltrametricDist K] {a : Type*} [Fintype a] {A B : Matrix a a K}
     (hA : Small A) (hB : Small B) : Small (A * B) := by
@@ -60,13 +60,13 @@ private lemma small_mul [IsUltrametricDist K] {a : Type*} [Fintype a] {A B : Mat
   exact mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨small_one, 1, small_one, Matrix.mul_one _⟩`.
+Supply the required witnesses or components.
 -/
 private lemma good_one {a : Type*} [Fintype a] [DecidableEq a] : Good (1 : Matrix a a K) :=
   ⟨small_one, 1, small_one, Matrix.mul_one _⟩
 
 /- English proof (translation)
-Take `⟨h1, A', h2, h3⟩` from `hA`. Take `⟨h4, B', h5, h6⟩` from `hB`. Use `⟨small_mul h1 h4, B' * A', small_mul h5 h2, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc B, h6, Matrix.one_mul, h3]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma good_mul [IsUltrametricDist K] {a : Type*} [Fintype a] [DecidableEq a]
     {A B : Matrix a a K} (hA : Good A) (hB : Good B) : Good (A * B) := by
@@ -76,7 +76,7 @@ private lemma good_mul [IsUltrametricDist K] {a : Type*} [Fintype a] [DecidableE
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc B, h6, Matrix.one_mul, h3]
 
 /- English proof (translation)
-Take `⟨h1, A', h2, h3⟩` from `hA`. Use `⟨fun i j => h1 _ _, A'.submatrix g f, fun i j => h2 _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_mul_equiv, h3, Matrix.submatrix_one_equiv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma good_submatrix {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] {A : Matrix a a K} (hA : Good A) (f g : b ≃ a) :
@@ -86,7 +86,7 @@ private lemma good_submatrix {a b : Type*} [Fintype a] [DecidableEq a] [Fintype 
   rw [Matrix.submatrix_mul_equiv, h3, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Take `⟨U, V, d, hU, hV, rfl⟩` from `hM`. Use `⟨U.submatrix f f, V.submatrix f g, d ∘ f, good_submatrix hU f f, good_submatrix hV f g, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.submatrix_diagonal_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma smith_submatrix {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] {M : Matrix a a K} (hM : Smith M) (f g : b ≃ a) :
@@ -97,7 +97,7 @@ private lemma smith_submatrix {a b : Type*} [Fintype a] [DecidableEq a] [Fintype
   rw [← Matrix.submatrix_diagonal_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Take `⟨U, V, d, hU, hV, rfl⟩` from `hM`. Conclude with `⟨L * U, V * R, d, good_mul hL hU, good_mul hV hR, by simp only [Matrix.mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma smith_mul [IsUltrametricDist K] {a : Type*} [Fintype a] [DecidableEq a]
     {L M R : Matrix a a K} (hL : Good L) (hM : Smith M) (hR : Good R) :
@@ -106,7 +106,7 @@ private lemma smith_mul [IsUltrametricDist K] {a : Type*} [Fintype a] [Decidable
   exact ⟨L * U, V * R, d, good_mul hL hU, good_mul hV hR, by simp only [Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Use `⟨small_blocks small_one small_zero hC small_one, fromBlocks 1 0 (-C) 1, small_blocks small_one small_zero (small_neg hC) small_one, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.fromBlocks_multiply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma good_lower {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] {C : Matrix b a K} (hC : Small C) :
@@ -116,7 +116,7 @@ private lemma good_lower {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
   simp [Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Use `⟨small_blocks small_one hC small_zero small_one, fromBlocks 1 (-C) 0 1, small_blocks small_one (small_neg hC) small_zero small_one, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.fromBlocks_multiply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma good_upper {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] {C : Matrix a b K} (hC : Small C) :
@@ -126,7 +126,7 @@ private lemma good_upper {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
   simp [Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Take `⟨h1, U', h2, h3⟩` from `hU`. Use `⟨small_blocks small_one small_zero small_zero h1, fromBlocks 1 0 0 U', small_blocks small_one small_zero small_zero h2, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.fromBlocks_multiply, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma good_diag {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] {U : Matrix b b K} (hU : Good U) :
@@ -137,7 +137,7 @@ private lemma good_diag {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
   simp [Matrix.fromBlocks_multiply, h3]
 
 /- English proof (translation)
-Take `⟨U, V, d, hU, hV, rfl⟩` from `hD`. Use `⟨fromBlocks 1 0 0 U, fromBlocks 1 0 0 V, Sum.elim c d, good_diag hU, good_diag hV, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.fromBlocks_diagonal]`. Simplify using `only [Matrix.fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma smith_diag {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] (c : a → K) {D : Matrix b b K} (hD : Smith D) :
@@ -149,17 +149,17 @@ private lemma smith_diag {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b]
     Matrix.mul_zero, add_zero, zero_add]
 
 /- English proof (translation)
-Use `set x := N (Sum.inl ()) (Sum.inl ()) with hx`. Distinguish the cases in `h0 : x = 0`. Use `⟨1, 1, 0, good_one, good_one, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `hN i j` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, norm_zero]`. Simplify using `[norm_le_zero_iff.mp this, Matrix.diagonal_apply]`. Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.mpr h0`. Set `C : Matrix b Unit K` to `Matrix.of fun i _ => N (Sum.inr i) (Sum.inl ()) / x`. Set `B : Matrix Unit b K` to `Matrix.of fun _ j => N (Sum.inl ()) (Sum.inr j) / x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D : Matrix b b K` to `Matrix.of fun i j => N (Sum.inr i) (Sum.inr j) - N (Sum.inr i) (Sum.inl ()) * N (Sum.inl ()) (Sum.inr j) / x`. Establish `hC : Small C` using `fun i j => by`. Simplify using `only [C, Matrix.of_apply, norm_div]`. Conclude with `(div_le_one hpos).mpr (hN _ _)`. Establish `hB : Small B` using `fun i j => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [B, Matrix.of_apply, norm_div]`. Conclude with `(div_le_one hpos).mpr (hN _ _)`. Establish `key : N = fromBlocks 1 0 C 1 * fromBlocks (diagonal fun _ => x) 0 0 D * fromBlocks 1 B 0 1`. Simplify using `only [Matrix.fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`. Use extensionality with `(i | i) (j | j)`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `[hx]`. Simplify using `[B, Matrix.mul_apply]`. Clear the denominators using the available nonvanishing facts. Simplify using `[C, Matrix.mul_apply, h0]`. Simplify using `[B, C, D, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `smith_mul (good_lower hC) (smith_diag _ (ih D)) (good_upper hB)`.
+A detailed English derivation is pending.
 -/
 private lemma smith_step [IsUltrametricDist K] {b : Type*} [Fintype b] [DecidableEq b]
     (ih : ∀ D : Matrix b b K, Smith D) (N : Matrix (Unit ⊕ b) (Unit ⊕ b) K)
@@ -198,11 +198,11 @@ private lemma smith_step [IsUltrametricDist K] {b : Type*} [Fintype b] [Decidabl
   exact smith_mul (good_lower hC) (smith_diag _ (ih D)) (good_upper hB)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact fun M => ⟨1, 1, 0, good_one, good_one, Subsingleton.elim _ _⟩`. Consider the case `succ n ih`. Introduce `M`. Take `⟨⟨p, q⟩, hpq⟩` from `Finite.exists_max (fun x : Fin (n + 1) × Fin (n + 1) => ‖M x.1 x.2‖)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `e : Fin (n + 1) ≃ Unit ⊕ Fin n` to `Fintype.equivOfCardEq (by simp [add_comm])`. Set `f : Fin (n + 1) ≃ Unit ⊕ Fin n` to `e.trans (Equiv.swap (e p) (Sum.inl ()))`. Set `g : Fin (n + 1) ≃ Unit ⊕ Fin n` to `e.trans (Equiv.swap (e q) (Sum.inl ()))`. Establish `hf : f.symm (Sum.inl ()) = p` using `by simp [f]`. Establish `hg : g.symm (Sum.inl ()) = q` using `by simp [g]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `smith_step ih (M.submatrix f.symm g.symm) (fun i j => by`. Simplify using `only [Matrix.submatrix_apply, hf, hg]`. Conclude with `hpq (_, _))`. Establish `h2` using `smith_submatrix h f g`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma smith_fin [IsUltrametricDist K] (n : ℕ) :
     ∀ M : Matrix (Fin n) (Fin n) K, Smith M := by
@@ -223,7 +223,7 @@ private lemma smith_fin [IsUltrametricDist K] (n : ℕ) :
     simpa using h2
 
 /- English proof (translation)
-Take `⟨_, B, h2, h3⟩` from `hA`. Conclude with `⟨⟨A, B, h3, mul_eq_one_comm.mp h3⟩, rfl, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma good_gl {n : ℕ} {A : Matrix (Fin n) (Fin n) K} (hA : Good A) :
     ∃ U : GL (Fin n) K, (↑U : Matrix (Fin n) (Fin n) K) = A ∧
@@ -236,9 +236,9 @@ end
 end UpperTheory.Reformulated.B.StringRepresentationDecomposition
 
 /- English proof (translation)
-Introduce `K _ _ n P`. Take `⟨A, B, d, hA, hB, h⟩` from `smith_fin n (↑P : Matrix (Fin n) (Fin n) K)`. Take `⟨U, rfl, hU⟩` from `good_gl hA`. Take `⟨V, rfl, hV⟩` from `good_gl hB`. Use `⟨U, V, d, hA.1, hU, hB.1, hV, ?_, h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : (↑P : Matrix (Fin n) (Fin n) K).det ≠ 0` using `P.det_ne_zero`. Rewrite `hdet` using `[h, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal]`. Introduce `i`. Conclude with `Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul (left_ne_zero_of_mul hdet)) i (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.StringRepresentationDecomposition.smith_gen.{u_1} :
     ∀ {K : Type u_1} [inst : NormedField K] [IsUltrametricDist K] {n : ℕ} (P : GL (Fin n) K),

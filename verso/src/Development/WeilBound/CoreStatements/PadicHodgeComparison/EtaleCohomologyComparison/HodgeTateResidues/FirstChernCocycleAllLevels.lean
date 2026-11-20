@@ -17,7 +17,7 @@ open CH GlobalTheory.EtC E E.Main
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Take `⟨ρ, h⟩` from `r`. Take `⟨ρ', h'⟩` from `r'`. Establish `: ρ = ρ'` using `funext fun n => Subtype.ext ((clToC l).injective ((h n).trans (h' n).symm))`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem roots_eq (r r' : Roots l) : r = r' := by
   obtain ⟨ρ, h⟩ := r
@@ -27,18 +27,18 @@ theorem roots_eq (r r' : Roots l) : r = r' := by
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem nz (n : ℕ) : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
 
 /- English proof (translation)
-Introduce `U ⟨x⟩` and use `(Prim.map (show U ⟶ gb M from x).appTop.hom (r.zetaX M n)).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_gb (r : Roots l) (M : Model l K) (n : ℕ) : GlobalTheory.EtC.Inv (l ^ n) (sch.obj (gb M)) :=
   fun U ⟨x⟩ => (Prim.map (show U ⟶ gb M from x).appTop.hom (r.zetaX M n)).2.1
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_cast {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (hn' : n' = n) (hi' : i' = i) (x : Ht q E n i) :
     (x.cast hn hi).cast hn' hi' = x := by
@@ -46,7 +46,7 @@ theorem cast_cast {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = 
   rfl
 
 /- English proof (translation)
-The claim follows from `haveI := nz (l := l) n GlobalTheory.CompanionTheory.FRootCls.eM_root lcSpec morCup etRoot etIn.gen lcNat H r M n i`.
+A detailed English derivation is pending.
 -/
 theorem eM_rt (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) (i : ℤ) :
     eM lcNat H r M n i 0 (rootClass i (r.zetaX M n)) = CH.oneH (AcrEl M.P n) :=
@@ -54,7 +54,7 @@ theorem eM_rt (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) (i : ℤ) :
   GlobalTheory.CompanionTheory.FRootCls.eM_root lcSpec morCup etRoot etIn.gen lcNat H r M n i
 
 /- English proof (translation)
-The claim follows from `haveI := nz (l := l) n (congrArg (Ht.cast _ _) ((formalIn.a6ring (l ^ n) (sch.obj (gb M))).1 (inv_gb r M n) a)).trans (cast_cast _ _ _ _ a)`.
+A detailed English derivation is pending.
 -/
 theorem one_cup (r : Roots l) (M : Model l K) (n : ℕ) (a : Ht (l ^ n) (sch.obj (gb M)) ((0 : ℕ) : ℤ) 0) :
     (cup (l ^ n) (show Ht (l ^ n) (sch.obj (gb M)) ((0 : ℕ) : ℤ) 0 from one (l ^ n) (sch.obj (gb M))) a).cast
@@ -63,7 +63,7 @@ theorem one_cup (r : Roots l) (M : Model l K) (n : ℕ) (a : Ht (l ^ n) (sch.obj
   (congrArg (Ht.cast _ _) ((formalIn.a6ring (l ^ n) (sch.obj (gb M))).1 (inv_gb r M n) a)).trans (cast_cast _ _ _ _ a)
 
 /- English proof (translation)
-Establish `h` using `fCup etIn lcNat l H r K M n 0 0 0 (add_zero 0) 0 0 0 rfl (one (l ^ n) (sch.obj (gb M))) (rootClass 0 (r.zetaX M n))`. Establish `h1` using `congrArg (eM lcNat H r M n 0 0) (one_cup r M n (rootClass 0 (r.zetaX M n)))`. Establish `h2` using `congrArg ((mulP (AcrEl M.P n)).cup (add_zero 0) (eM lcNat H r M n 0 0 (one (l ^ n) (sch.obj (gb M))))) (eM_rt H r M n 0)`. Establish `h3 : (mulP (AcrEl M.P n)).cup (add_zero 0) (eM lcNat H r M n 0 0 (one (l ^ n) (sch.obj (gb M)))) (CH.oneH (AcrEl M.P n)) = eM lcNat H r M n 0 0 (one (l ^ n) (sch.obj (gb M)))` using `cupOne _ _ _ _ _`. Conclude with `h3.symm.trans (h2.symm.trans (h.symm.trans (h1.trans (eM_rt H r M n 0))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eM_one (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) :
     eM lcNat H r M n 0 0 (one (l ^ n) (sch.obj (gb M))) = CH.oneH (AcrEl M.P n) := by
@@ -75,7 +75,7 @@ theorem eM_one (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) :
   exact h3.symm.trans (h2.symm.trans (h.symm.trans (h1.trans (eM_rt H r M n 0))))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(⟨fun k => one (l ^ k) (sch.obj (gb M)), fun k => haveI := nz (l := l) (k + 1) ((etIn.a11 (l ^ (k + 1)) (l ^ k) (pow_dvd_pow l k.le_succ) _).2.1 (inv_gb r M (k + 1))).1⟩ : Hl l (sch.obj (gb M)) ((0 : ℕ) : ℤ) 0), fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_ex (r : Roots l) (M : Model l K) : ∃ v : M.T 0, ∀ k, v.lev k = one (l ^ k) M.spc :=
   ⟨(⟨fun k => one (l ^ k) (sch.obj (gb M)), fun k =>
@@ -84,9 +84,9 @@ theorem one_ex (r : Roots l) (M : Model l K) : ∃ v : M.T 0, ∀ k, v.lev k = o
     Hl l (sch.obj (gb M)) ((0 : ℕ) : ℤ) 0), fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `hv : ∀ k, red (l ^ (k + 1)) (l ^ k) (sch.obj (gb M)) ((2 : ℕ) : ℤ) 0 (GlobalTheory.CompanionTheory.FUntwPf.vn (sch.obj (gb M)) (k + 1) (x.1 (k + 1)) (rootClass (-1) (r.zetaX M (k + 1)))) = GlobalTheory.CompanionTheory.FUntwPf.vn (sch.obj (gb M)) k (x.1 k) (rootClass (-1) (r.zetaX …`. Introduce `k`. Establish `h1 : red (l ^ (k + 1)) (l ^ k) (sch.obj (gb M)) ((2 : ℕ) : ℤ) 1 (x.1 (k + 1)) = x.1 k` using `x.2 k`. Establish `h2 : red (l ^ (k + 1)) (l ^ k) (sch.obj (gb M)) ((0 : ℕ) : ℤ) (-1) (rootClass (-1) (r.zetaX M (k + 1))) = rootClass (-1) (r.zetaX M k)` using `(GlobalTheory.CompanionTheory.FRootCls.rootSys etIn.op etIn.red redRoot r M (-1)).2 k`. Conclude with `(GlobalTheory.CompanionTheory.FUntwPf.vn_red etIn.a11 _ k _ _).trans (congrArg₂ (GlobalTheory.CompanionTheory.FUntwPf.vn (sch.obj (gb M)) k) h1 h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨fun k => GlobalTheory.CompanionTheory.FUntwPf.vn (sch.obj (gb M)) k (x.1 k) (rootClass (-1) (r.zetaX M k)), hv⟩, fun _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem untw_ex (r : Roots l) (M : Model l K) (x : Hl l (sch.obj (gb M)) ((2 : ℕ) : ℤ) 1) :
     ∃ v : Hl l (sch.obj (gb M)) ((2 : ℕ) : ℤ) 0,
@@ -102,7 +102,7 @@ theorem untw_ex (r : Roots l) (M : Model l K) (x : Hl l (sch.obj (gb M)) ((2 : �
   exact ⟨⟨fun k => GlobalTheory.CompanionTheory.FUntwPf.vn (sch.obj (gb M)) k (x.1 k) (rootClass (-1) (r.zetaX M k)), hv⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `(lineBC (gb M) M.X (pullback.fst _ _ ≫ pullback.fst _ _) D).elim fun D' a => a.elim fun π hD => (lineMap _ D').elim fun L hL => (@chern_class_compatible_system etIn.a2 etIn.a11 l _ D'.Y (gb M) D'.f D'.sm D'.surj (isUnit_gb M) L).2.elim fun x hx => (untw_ex r M x).elim fun v hv => …`.
+A detailed English derivation is pending.
 -/
 theorem etale_firstChern_exists (M : Model l K) (D : LineData M.X) (r : Roots l) : ∃ v, IsEtaleFirstChernUntwisted r D v :=
   (lineBC (gb M) M.X (pullback.fst _ _ ≫ pullback.fst _ _) D).elim fun D' a => a.elim fun π hD =>
@@ -113,7 +113,7 @@ theorem etale_firstChern_exists (M : Model l K) (D : LineData M.X) (r : Roots l)
             (And.intro hD (And.intro hL (And.intro hx hv)))))))
 
 /- English proof (translation)
-The claim follows from `have hI := (@chern_class_compatible_system etIn.a2 etIn.a11 l _ D'.Y (gb M) D'.f D'.sm D'.surj (isUnit_gb M) L).1 n have he : eM lcNat H r M n 0 2 v = eM lcNat H r M n 1 2 x := (congrArg (eM lcNat H r M n 0 2) hv).trans (GlobalTheory.CompanionTheory.FUntwPf.step fCup cupOne etIn …`.
+A detailed English derivation is pending.
 -/
 theorem firstChern_cocycle_untwisted (H : RIn l) (r : Roots l) (M : Model l K) (D : LineData M.X) (D' : LineData (gb M)) (π : D'.Y ⟶ D.Y)
     (hD : D.IsBC (pullback.fst _ _ ≫ pullback.fst _ _ : gb M ⟶ M.X) D' π) (L : cech D'.f ⟶ ofCat (glCat 1)) (hL : D'.IsMap L)
@@ -131,7 +131,7 @@ theorem firstChern_cocycle_untwisted (H : RIn l) (r : Roots l) (M : Model l K) (
     Exists.intro z (Exists.intro hz (And.intro c.1 (res_cls fRes etIn lcNat H r M G n x v he _ e2).symm))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fRed etIn lcNat l H r K, fEqui etIn lcNat l H r K, fPhi lcNat l H r K, fNat etIn lcNat l H r K, fun M n i j x y => fCup etIn lcNat l H r K M n 0 0 0 (add_zero 0) i j (i + j) rfl x y, fun M => fRoot etIn lcNat l H r K M 0, firstChern_family etIn lcNat l H r K⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_eFam (H : RIn l) (r : Roots l) (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : (eFam lcNat H r K).Good :=
   ⟨fRed etIn lcNat l H r K, fEqui etIn lcNat l H r K, fPhi lcNat l H r K, fNat etIn lcNat l H r K,
@@ -139,7 +139,7 @@ theorem good_eFam (H : RIn l) (r : Roots l) (K : IntermediateField ℚ_[l] (Padi
     fun M => fRoot etIn lcNat l H r K M 0, firstChern_family etIn lcNat l H r K⟩
 
 /- English proof (translation)
-The claim follows from `h.elim fun D' h => h.elim fun π h => h.elim fun L h => h.elim fun x h => firstChern_cocycle_untwisted H r M D D' π h.1 L h.2.1 n (x n) (h.2.2.1 n) (v.lev n) (h.2.2.2 n) C G Λ`.
+A detailed English derivation is pending.
 -/
 theorem firstChern_cocycle_all_levels (H : RIn l) (r : Roots l) (M : Model l K) (D : LineData M.X) (v : M.T 2) (h : IsEtaleFirstChernUntwisted r D v)
     (C : Type 1) [Category.{0} C] (G : C ⥤ El M.P) (Λ : Lift G D) (n : ℕ) :
@@ -149,7 +149,7 @@ theorem firstChern_cocycle_all_levels (H : RIn l) (r : Roots l) (M : Model l K) 
     firstChern_cocycle_untwisted H r M D D' π h.1 L h.2.1 n (x n) (h.2.2.1 n) (v.lev n) (h.2.2.2 n) C G Λ
 
 /- English proof (translation)
-The claim follows from `good_eFam H r K one M n := eM_one H r M n one_ex M := one_ex r M first_chern_class_exists M D r' := etale_firstChern_exists M D r' c1 M D r' v h C _ G Λ n := firstChern_cocycle_all_levels H r M D v (roots_eq r' r ▸ h) C G Λ n`.
+A detailed English derivation is pending.
 -/
 theorem etP_eFam (H : RIn l) (r : Roots l) (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : EtP (eFam lcNat H r K) where
   good := good_eFam H r K
@@ -159,13 +159,13 @@ theorem etP_eFam (H : RIn l) (r : Roots l) (K : IntermediateField ℚ_[l] (Padic
   c1 M D r' v h C _ G Λ n := firstChern_cocycle_all_levels H r M D v (roots_eq r' r ▸ h) C G Λ n
 
 /- English proof (translation)
-The claim follows from `(rootsEx l).elim fun r => ⟨_, etP_eFam (CrystallineSemistableComparison.R.forE l) r K⟩`.
+A detailed English derivation is pending.
 -/
 theorem etP (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : ∃ e : E.EtFam l K, EtP e :=
   (rootsEx l).elim fun r => ⟨_, etP_eFam (CrystallineSemistableComparison.R.forE l) r K⟩
 
 /- English proof (translation)
-The claim follows from `isFirstChern_of_cocycle fun C _ G Λ n => (h.c1 M D r v hv C G Λ n).elim fun z a => a.elim fun hz b => Exists.intro (tCo G n 2 z) (And.intro b.1 (tCo_cls M G n e v z hz b.2.symm))`.
+A detailed English derivation is pending.
 -/
 theorem EtP.isFirstChern_of_etale_class {e : E.EtFam l K} (h : EtP e) (M : Model l K) (D : LineData M.X) (r : Roots l) (v : M.T 2) (hv : IsEtaleFirstChernUntwisted r D v) :
     E.IsFirstChernClassOfLineBundle M.p (okToOC l K) D (e.tMul M v) :=
@@ -173,7 +173,7 @@ theorem EtP.isFirstChern_of_etale_class {e : E.EtFam l K} (h : EtP e) (M : Model
     Exists.intro (tCo G n 2 z) (And.intro b.1 (tCo_cls M G n e v z hz b.2.symm))
 
 /- English proof (translation)
-The claim follows from `(etP l K).elim fun e h => ⟨e, h.good, h.one, fun M D v hv => h.isFirstChern_of_etale_class M D ζ v hv, fun M D => h.first_chern_class_exists M D ζ, h.one_ex⟩`.
+A detailed English derivation is pending.
 -/
 theorem etMapP (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (ζ : E.Roots l) : ∃ e : E.EtFam l K, e.Good ∧
     (∀ (M : Model l K) n, e M n 0 (GlobalTheory.EtC.one (l ^ n) _) = CH.oneH _) ∧

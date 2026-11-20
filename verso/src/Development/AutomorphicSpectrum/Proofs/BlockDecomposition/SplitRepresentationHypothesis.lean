@@ -16,14 +16,14 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_add (χ : AddChar F Circle) (x y : F) : (χ (x + y) : ℂ) = (χ x : ℂ) * (χ y : ℂ) := by
   rw [AddChar.map_add_eq_mul, Circle.coe_mul]
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Establish `h : modulus (-1 : F) * modulus (-1 : F) = 1`. Rewrite using `[← modulus_mul]`. Simplify using `[modulus_one]`. Establish `h2 : modulus (-1 : F) ^ 2 = 1` using `by rw [sq]; exact h`. Conclude with `(pow_eq_one_iff.1 h2).resolve_right (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modulus_neg_one : modulus (-1 : F) = 1 := by
   have h : modulus (-1 : F) * modulus (-1 : F) = 1 := by
@@ -33,15 +33,15 @@ theorem modulus_neg_one : modulus (-1 : F) = 1 := by
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Rewrite using `[show -x = -1 * x by ring, modulus_mul, modulus_neg_one, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem modulus_neg' (x : F) : modulus (-x) = modulus x := by
   rw [show -x = -1 * x by ring, modulus_mul, modulus_neg_one, one_mul]
 
 /- English proof (translation)
-Establish `ha : g 0 0 ≠ 0`. Introduce `h0`. Rewrite `hg` using `[Matrix.det_fin_two, h, h0]`. Simplify using `at hg`. Apply the tactic sequence `have e : algebraMap F (F × F) (g 0 0) * z = (g 0 0 * z.1, g 0 0 * z.2) := by ext <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [rWm, rW, if_pos h, norm_pair, nsg_pair ha, e]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rWS_zero (χ : AddChar F Circle) {g : Matrix (Fin 2) (Fin 2) F} (hg : g.det = 1) (h : g 1 0 = 0)
     (Φ : F × F → ℂ) (z : F × F) :
@@ -56,7 +56,7 @@ theorem rWS_zero (χ : AddChar F Circle) {g : Matrix (Fin 2) (Fin 2) F} (hg : g.
   ring
 
 /- English proof (translation)
-Simplify using `only [rWm, rW, if_neg h, norm_pair, trace_swap, nsg_pair (neg_ne_zero.mpr h), one_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rWS_ne (χ : AddChar F Circle) {g : Matrix (Fin 2) (Fin 2) F} (h : g 1 0 ≠ 0)
     (Φ : F × F → ℂ) (z : F × F) :
@@ -66,7 +66,7 @@ theorem rWS_ne (χ : AddChar F Circle) {g : Matrix (Fin 2) (Fin 2) F} (h : g 1 0
   simp only [rWm, rW, if_neg h, norm_pair, trace_swap, nsg_pair (neg_ne_zero.mpr h), one_mul, mul_one]
 
 /- English proof (translation)
-Simplify using `only [FTs, trace_swap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fts_apply (χ : AddChar F Circle) (Φ : F × F → ℂ) (y : F × F) :
     FTs χ swapE (muS χ) Φ y = ∫ u, Φ u * (χ (u.1 * y.2 + u.2 * y.1) : ℂ) ∂muS χ := by
@@ -74,7 +74,7 @@ theorem fts_apply (χ : AddChar F Circle) (Φ : F × F → ℂ) (y : F × F) :
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-The claim follows from `isLocallyConstant_of_add_valBall (N := addCharConductor χ) fun x h hh => by rw [AddChar.map_add_eq_mul, isTrivialOn_addCharConductor hχ hχ1 h hh] simp`.
+A detailed English derivation is pending.
 -/
 theorem isLC_char {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) :
     IsLocallyConstant fun x : F => (χ x : ℂ) :=
@@ -84,7 +84,7 @@ theorem isLC_char {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((isLC_char hχ hχ1).comp_continuous hk).mul hΦ.1, hΦ.2.mul_left⟩`.
+Supply the required witnesses or components.
 -/
 theorem sbe_char_mul {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) {k : F × F → F}
     (hk : Continuous k) {Φ : F × F → ℂ} (hΦ : Φ ∈ SBE (F × F)) :
@@ -93,7 +93,7 @@ theorem sbe_char_mul {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ �
 
 omit [ValuativeRel F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(IsLocallyConstant.const C).mul hΦ.1, hΦ.2.mul_left⟩`.
+Supply the required witnesses or components.
 -/
 theorem sbe_const_mul (C : ℂ) {Φ : F × F → ℂ} (hΦ : Φ ∈ SBE (F × F)) :
     (fun z => C * Φ z) ∈ SBE (F × F) :=
@@ -104,7 +104,7 @@ def scaleH [IsTopologicalRing F] {s : F} (hs : s ≠ 0) : (F × F) ≃ₜ (F × 
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hΦ.1.comp_continuous (scaleH hs).continuous, hΦ.2.comp_homeomorph (scaleH hs)⟩`.
+Supply the required witnesses or components.
 -/
 theorem sbe_scale {s : F} (hs : s ≠ 0) {Φ : F × F → ℂ} (hΦ : Φ ∈ SBE (F × F)) :
     (fun z : F × F => Φ (s * z.1, s * z.2)) ∈ SBE (F × F) :=
@@ -112,9 +112,9 @@ theorem sbe_scale {s : F} (hs : s ≠ 0) {Φ : F × F → ℂ} (hΦ : Φ ∈ SBE
 
 omit [ValuativeRel F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨IsLocallyConstant.const 0, HasCompactSupport.zero⟩`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Establish `h1` using `h a (Finset.mem_insert_self a s)`. Establish `h2` using `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `⟨h1.1.add h2.1, h1.2.add h2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem sbe_sum {ι : Type*} (s : Finset ι) (f : ι → F × F → ℂ) (h : ∀ i ∈ s, f i ∈ SBE (F × F)) :
     (fun z => ∑ i ∈ s, f i z) ∈ SBE (F × F) := by
@@ -132,9 +132,9 @@ theorem sbe_sum {ι : Type*} (s : Finset ι) (f : ι → F × F → ℂ) (h : �
 omit [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Use `⟨(hf.1.comp_continuous continuous_snd).mul (hg.1.comp_continuous continuous_fst), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (hg.2.isCompact.prod hf.2.isCompact) fun u hu => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : u.1 ∈ tsupport g`. Establish `h2 : u.2 ∉ tsupport f` using `fun h2 => hu ⟨h1, h2⟩`. Simplify using `[image_eq_zero_of_notMem_tsupport h2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[image_eq_zero_of_notMem_tsupport h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sbe_tensor {f g : F → ℂ} (hf : f ∈ schwartzBruhat F) (hg : g ∈ schwartzBruhat F) :
     (fun u : F × F => f u.2 * g u.1) ∈ SBE (F × F) := by
@@ -146,9 +146,9 @@ theorem sbe_tensor {f g : F → ℂ} (hf : f ∈ schwartzBruhat F) (hg : g ∈ s
   · simp [image_eq_zero_of_notMem_tsupport h1]
 
 /- English proof (translation)
-Take `⟨n, f, g, hf, hg, hfg⟩` from `GlobalTheory.CompanionTheory.PureTensor.exists_pure_sum hΦ.1 hΦ.2`. Establish `hf' : ∀ i, f i ∈ schwartzBruhat F` using `hf`. Establish `hg' : ∀ i, g i ∈ schwartzBruhat F` using `hg`. Take `rfl : Φ = fun z => ∑ i, f i z.1 * g i z.2` from `funext fun z => hfg z.1 z.2`. Establish `e : FTs χ swapE (muS χ) (fun z => ∑ i, f i z.1 * g i z.2) = fun u => ∑ i, localFourier (selfDualMeasure χ) χ (f i) u.2 * localFourier (selfDualMeasure χ) χ (g i) u.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun u => GlobalTheory.CompanionTheory.SplitGauss.fts_sum hχ hf' hg' u`. Rewrite using `[e]`. Conclude with `sbe_sum _ _ fun i _ => sbe_tensor (localFourier_mem_schwartzBruhat _ hχ hχ1 (hf' i)) (localFourier_mem_schwartzBruhat _ hχ hχ1 (hg' i))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fts_sbe {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) {Φ : F × F → ℂ}
     (hΦ : Φ ∈ SBE (F × F)) : FTs χ swapE (muS χ) Φ ∈ SBE (F × F) := by
@@ -164,11 +164,11 @@ theorem fts_sbe {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) 
     (localFourier_mem_schwartzBruhat _ hχ hχ1 (hf' i)) (localFourier_mem_schwartzBruhat _ hχ hχ1 (hg' i))
 
 /- English proof (translation)
-Take `⟨n, f, g, hf, hg, hfg⟩` from `GlobalTheory.CompanionTheory.PureTensor.exists_pure_sum hΦ.1 hΦ.2`. Establish `hf' : ∀ i, f i ∈ schwartzBruhat F` using `hf`. Establish `hg' : ∀ i, g i ∈ schwartzBruhat F` using `hg`. Take `rfl : Φ = fun z => ∑ i, f i z.1 * g i z.2` from `funext fun z => hfg z.1 z.2`. Establish `hT` using `fun {h : F → ℂ} (hh : h ∈ schwartzBruhat F) => localFourier_mem_schwartzBruhat (selfDualMeasure χ) hχ hχ1 hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : FTs χ swapE (muS χ) (fun z => ∑ i, f i z.1 * g i z.2) = fun u => ∑ i, localFourier (selfDualMeasure χ) χ (g i) u.1 * localFourier (selfDualMeasure χ) χ (f i) u.2`. Use function extensionality and compare the values at `fun u => by`. Rewrite using `[GlobalTheory.CompanionTheory.SplitGauss.fts_sum hχ hf' hg' u]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e, GlobalTheory.CompanionTheory.SplitGauss.fts_sum hχ (fun i => hT (hg' i)) (fun i => hT (hf' i)) z]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[localFourier_localFourier_selfDual hχ hχ1 (hg' i), localFourier_localFourier_selfDual hχ hχ1 (hf' i)]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fts_fts {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) {Φ : F × F → ℂ}
     (hΦ : Φ ∈ SBE (F × F)) (z : F × F) :
@@ -190,9 +190,9 @@ theorem fts_fts {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) 
   simp [mul_comm]
 
 /- English proof (translation)
-Establish `he1 : MeasurableEmbedding (fun x : F => s * x)` using `(Homeomorph.mulLeft₀ s hs).measurableEmbedding`. Establish `he` using `he1.prodMap he1`. Establish `hmap : Measure.map (Prod.map (fun x : F => s * x) (fun x : F => s * x)) (muS χ) = ((modulus s)⁻¹ * (modulus s)⁻¹) • muS χ`. Rewrite using `[← Measure.map_prod_map _ _ he1.measurable he1.measurable, map_mul_left_eq_smul _ hs, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`. Establish `h` using `he.integral_map (μ := muS χ) G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hmap, integral_smul_nnreal_measure]`. Simplify using `only [Prod.map] at h`. Rewrite using `[← h, NNReal.smul_def, Complex.real_smul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem integral_scale (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (G : F × F → ℂ) :
     ∫ u, G (s * u.1, s * u.2) ∂muS χ =
@@ -211,7 +211,7 @@ theorem integral_scale (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (G : F × 
   ring_nf
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[rWS_zero χ (by simp [Matrix.det_fin_two]) (by simp)]`. Simplify using `[modulus_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rWS_n (χ : AddChar F Circle) (b : F) (Φ : F × F → ℂ) :
     rWS χ !![1, b; 0, 1] Φ = fun z => (χ (b * (z.1 * z.2)) : ℂ) * Φ z := by
@@ -220,7 +220,7 @@ theorem rWS_n (χ : AddChar F Circle) (b : F) (Φ : F × F → ℂ) :
   simp [modulus_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[rWS_zero χ (by simp [Matrix.det_fin_two, hs]) (by simp)]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rWS_m (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (Φ : F × F → ℂ) :
     rWS χ !![s, 0; 0, s⁻¹] Φ = fun z => ((modulus s : ℝ) : ℂ) * Φ (s * z.1, s * z.2) := by
@@ -229,9 +229,9 @@ theorem rWS_m (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (Φ : F × F → �
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[rWS_ne χ (by simp), fts_apply]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, modulus_neg_one]`. Simplify using `only [NNReal.coe_one, inv_one, Complex.ofReal_one, one_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (0 * (z.1 * z.2) + 0 * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / (-1 : F) = u.1 * z.2 + u.2 * z.1` using `by ring`. Simplify using `only [e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rWS_w (χ : AddChar F Circle) (Φ : F × F → ℂ) :
     rWS χ !![0, 1; -1, 0] Φ = FTs χ swapE (muS χ) Φ := by
@@ -247,15 +247,15 @@ theorem rWS_w (χ : AddChar F Circle) (Φ : F × F → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `e00 : (g * !![1, b; 0, 1]) 0 0 = g 0 0` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e01 : (g * !![1, b; 0, 1]) 0 1 = g 0 0 * b + g 0 1` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e10 : (g * !![1, b; 0, 1]) 1 0 = g 1 0` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e11 : (g * !![1, b; 0, 1]) 1 1 = g 1 0 * b + g 1 1` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hdet : (g * !![1, b; 0, 1]).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul, hg]`. Simplify using `[Matrix.det_fin_two]`. Rewrite using `[rWS_n]`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hc : g 1 0 = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[rWS_zero χ hdet (e10.trans hc), rWS_zero χ hg hc, e00, e01]`. Establish `e : g 0 0 * (g 0 0 * b + g 0 1) * (z.1 * z.2) = g 0 0 * g 0 1 * (z.1 * z.2) + b * (g 0 0 * z.1 * (g 0 0 * z.2))` using `by ring`. Simplify using `only [e, chi_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rWS_ne χ (by rwa [e10]), rWS_ne χ hc, e00, e10, e11]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : (g 0 0 * (z.1 * z.2) + (g 1 0 * b + g 1 1) * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / g 1 0 = (g 0 0 * (z.1 * z.2) + g 1 1 * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / g 1 0 + b * (u.1 * u.2)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e, chi_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rep_n (χ : AddChar F Circle) {g : Matrix (Fin 2) (Fin 2) F} (hg : g.det = 1) (b : F)
     (Φ : F × F → ℂ) :
@@ -285,19 +285,19 @@ theorem rep_n (χ : AddChar F Circle) {g : Matrix (Fin 2) (Fin 2) F} (hg : g.det
     ring
 
 /- English proof (translation)
-Establish `e00 : (g * !![s, 0; 0, s⁻¹]) 0 0 = g 0 0 * s` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e01 : (g * !![s, 0; 0, s⁻¹]) 0 1 = g 0 1 * s⁻¹` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e10 : (g * !![s, 0; 0, s⁻¹]) 1 0 = g 1 0 * s` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e11 : (g * !![s, 0; 0, s⁻¹]) 1 1 = g 1 1 * s⁻¹` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hdet : (g * !![s, 0; 0, s⁻¹]).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul, hg]`. Simplify using `[Matrix.det_fin_two, hs]`. Establish `hM : ((modulus s : ℝ) : ℂ) ≠ 0`. Conclude with `modulus_ne_zero hs` after adjusting the coercions. Rewrite using `[rWS_m χ hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hc : g 1 0 = 0`. Rewrite using `[rWS_zero χ hdet (by rw [e10, hc, zero_mul]), rWS_zero χ hg hc, e00, e01, modulus_mul]`. Establish `e : g 0 0 * s * (g 0 1 * s⁻¹) * (z.1 * z.2) = g 0 0 * g 0 1 * (z.1 * z.2)`. Clear the denominators using the available nonvanishing facts.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `e2 : ∀ x : F, g 0 0 * s * x = s * (g 0 0 * x)` using `fun x => by ring`. Rewrite using `[e, e2 z.1, e2 z.2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rWS_ne χ (by rw [e10]; exact mul_ne_zero hc hs), rWS_ne χ hc, e00, e10, e11, modulus_mul] set G : F × F → ℂ := fun u => (χ ((g 0 0 * (z.1 * z.2) + g 1 1 * (s⁻¹ * s⁻¹) * (u.1 * u.2) - s⁻¹ * (u.1 * z.2 + u.2 * z.1)) / g 1 0) : ℂ) * Φ u with hG`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∫ u, (χ ((g 0 0 * s * (z.1 * z.2) + g 1 1 * s⁻¹ * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / (g 1 0 * s)) : ℂ) * Φ u ∂muS χ = ∫ u, G u ∂muS χ`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : (g 0 0 * s * (z.1 * z.2) + g 1 1 * s⁻¹ * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / (g 1 0 * s) = (g 0 0 * (z.1 * z.2) + g 1 1 * (s⁻¹ * s⁻¹) * (u.1 * u.2) - s⁻¹ * (u.1 * z.2 + u.2 * z.1)) / g 1 0`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hG, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∫ u, (χ ((g 0 0 * (z.1 * z.2) + g 1 1 * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / g 1 0) : ℂ) * (((modulus s : ℝ) : ℂ) * Φ (s * u.1, s * u.2)) ∂muS χ = ((modulus s : ℝ) : ℂ) * ∫ u, G (s * u.1, s * u.2) ∂muS χ`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : (g 0 0 * (z.1 * z.2) + g 1 1 * (s⁻¹ * s⁻¹) * (s * u.1 * (s * u.2)) - s⁻¹ * (s * u.1 * z.2 + s * u.2 * z.1)) / g 1 0 = (g 0 0 * (z.1 * z.2) + g 1 1 * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / g 1 0`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [hG, e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, integral_scale χ hs]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rep_m (χ : AddChar F Circle) {g : Matrix (Fin 2) (Fin 2) F} (hg : g.det = 1) {s : F} (hs : s ≠ 0)
     (Φ : F × F → ℂ) :
@@ -347,23 +347,23 @@ theorem rep_m (χ : AddChar F Circle) {g : Matrix (Fin 2) (Fin 2) F} (hg : g.det
     field_simp
 
 /- English proof (translation)
-Establish `ha : a = (1 + b * c) / d`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hdet`. Use `set t : F × F := (z.1 / d, z.2 / d) with ht`. Use `set Ψ : F × F → ℂ := fun u => (χ (u.1 * t.2 + u.2 * t.1) : ℂ) * Φ u with hΨd`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΨ : Ψ ∈ SBE (F × F)` using `sbe_char_mul hχ hχ1 (by fun_prop) hΦ`. Establish `hA : d / c ≠ 0` using `div_ne_zero hd hc`. Establish `hG` using `GlobalTheory.CompanionTheory.SplitGauss.sGauss F χ hχ hχ1 (Units.mk0 (d / c) hA) Ψ hΨ`. Simplify using `only [Units.val_mk0] at hG`. Establish `hFT : ∀ v, FTs χ swapE (muS χ) Ψ v = FTs χ swapE (muS χ) Φ (v + t)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[fts_apply, fts_apply]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : u.1 * (v + t).2 + u.2 * (v + t).1 = (u.1 * t.2 + u.2 * t.1) + (u.1 * v.2 + u.2 * v.1)`. Simplify using `only [Prod.snd_add, Prod.fst_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hΨd, e, chi_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∫ v, (χ ((a * (z.1 * z.2) + d * (v.1 * v.2) - (v.1 * z.2 + v.2 * z.1)) / c) : ℂ) * FTs χ swapE (muS χ) Φ v ∂muS χ = (χ (b * (z.1 * z.2) / d) : ℂ) * ∫ v, (χ (d / c * (v.1 * v.2)) : ℂ) * FTs χ swapE (muS χ) Ψ v ∂muS χ`. Rewrite using `[← integral_add_right_eq_self (fun v => (χ ((a * (z.1 * z.2) + d * (v.1 * v.2) - (v.1 * z.2 + v.2 * z.1)) / c) : ℂ) * FTs χ swapE (muS χ) Φ v) t, ← integral_const_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Establish `e : (a * (z.1 * z.2) + d * ((v + t).1 * (v + t).2) - ((v + t).1 * z.2 + (v + t).2 * z.1)) / c = b * (z.1 * z.2) / d + d / c * (v.1 * v.2)`. Simplify using `only [Prod.fst_add, Prod.snd_add, ht]`. Rewrite using `[ha]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, chi_add, hFT]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∫ u, (χ ((-b * (z.1 * z.2) + c * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / (-d)) : ℂ) * Φ u ∂muS χ = (χ (b * (z.1 * z.2) / d) : ℂ) * ∫ u, (χ (-(u.1 * u.2) / (d / c)) : ℂ) * Ψ u ∂muS χ`. Rewrite using `[← integral_const_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : (-b * (z.1 * z.2) + c * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / (-d) = b * (z.1 * z.2) / d + (-(u.1 * u.2) / (d / c) + (u.1 * t.2 + u.2 * t.1))`. Simplify using `only [ht]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e, chi_add, hΨd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hMc : ((modulus c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hc`. Establish `hMd : ((modulus d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hd`. Establish `hmod : modulus (d / c) = modulus d * (modulus c)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv, modulus_mul, modulus_inv]`. Rewrite using `[h1, hG, h2, hmod]`. Generalize the expression as in `(∫ u, (χ (-(u.1 * u.2) / (d / c)) : ℂ) * Ψ u ∂muS χ) = I`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem gauss_step [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) {Φ : F × F → ℂ}
     (hΦ : Φ ∈ SBE (F × F)) {a b c d : F} (hc : c ≠ 0) (hd : d ≠ 0) (hdet : a * d - b * c = 1) (z : F × F) :
@@ -425,27 +425,27 @@ theorem gauss_step [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (h
   field_simp
 
 /- English proof (translation)
-Establish `e00 : (g * (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) F)) 0 0 = -g 0 1` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e01 : (g * (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) F)) 0 1 = g 0 0` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e10 : (g * (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) F)) 1 0 = -g 1 1` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e11 : (g * (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) F)) 1 1 = g 1 0` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hdet : (g * !![0, 1; -1, 0]).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul, hg]`. Simplify using `[Matrix.det_fin_two]`. Establish `hd2 : g 0 0 * g 1 1 - g 0 1 * g 1 0 = 1` using `by rw [← Matrix.det_fin_two]; exact hg`. Rewrite using `[rWS_w]`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hd : g 1 1 = 0`. Establish `hbc : g 0 1 * g 1 0 = -1` using `by rw [hd] at hd2; linear_combination -hd2`. Establish `hb : g 0 1 ≠ 0` using `fun h => by rw [h] at hbc; simp at hbc`. Establish `hc : g 1 0 ≠ 0` using `fun h => by rw [h] at hbc; simp at hbc`. Establish `hcb : g 1 0 = -(g 0 1)⁻¹` using `by field_simp; linear_combination hbc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv` using `fts_fts hχ hχ1 hΦ (g 0 1 * z.1, g 0 1 * z.2)`. Rewrite `hinv` using `[fts_apply]`. Rewrite using `[rWS_zero χ hdet (by rw [e10, hd, neg_zero]), rWS_ne χ hc, e00, e01, hd, modulus_neg']`. Establish `e1 : ∫ u, (χ ((g 0 0 * (z.1 * z.2) + 0 * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / g 1 0) : ℂ) * FTs χ swapE (muS χ) Φ u ∂muS χ = (χ (-g 0 1 * g 0 0 * (z.1 * z.2)) : ℂ) * ∫ u, FTs χ swapE (muS χ) Φ u * (χ (u.1 * (g 0 1 * z.2) + u.2 * (g 0 1 * z.1)) : ℂ) ∂muS χ`. Rewrite using `[← integral_const_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : (g 0 0 * (z.1 * z.2) + 0 * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / g 1 0 = -g 0 1 * g 0 0 * (z.1 * z.2) + (u.1 * (g 0 1 * z.2) + u.2 * (g 0 1 * z.1))`. Rewrite using `[hcb]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e, chi_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : modulus (g 1 0) = (modulus (g 0 1))⁻¹`. Rewrite using `[hcb, modulus_neg', modulus_inv]`. Establish `hneg : (-(g 0 1 * z.1, g 0 1 * z.2) : F × F) = (-g 0 1 * z.1, -g 0 1 * z.2)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp`. Rewrite using `[e1, hinv, hm, hneg]`. Use `push_cast`. Simplify using `only [inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hc : g 1 0 = 0`. Establish `had : g 0 0 * g 1 1 = 1` using `by rw [hc] at hd2; linear_combination hd2`. Establish `ha : g 0 0 ≠ 0` using `fun h => by rw [h] at had; simp at had`. Establish `hda : g 1 1 = (g 0 0)⁻¹` using `by field_simp; linear_combination had`. Rewrite using `[rWS_ne χ (by rw [e10]; exact neg_ne_zero.mpr hd), rWS_zero χ hg hc, e00, e10, e11, fts_apply, modulus_neg', hda, modulus_inv, hc]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [NNReal.coe_inv, inv_inv]`. Establish `e1 : ∫ u, (χ ((-g 0 1 * (z.1 * z.2) + 0 * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / -(g 0 0)⁻¹) : ℂ) * Φ u ∂muS χ = (χ (g 0 0 * g 0 1 * (z.1 * z.2)) : ℂ) * ∫ u, Φ u * (χ (u.1 * (g 0 0 * z.2) + u.2 * (g 0 0 * z.1)) : ℂ) ∂muS χ`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : (-g 0 1 * (z.1 * z.2) + 0 * (u.1 * u.2) - (u.1 * z.2 + u.2 * z.1)) / -(g 0 0)⁻¹ = g 0 0 * g 0 1 * (z.1 * z.2) + (u.1 * (g 0 0 * z.2) + u.2 * (g 0 0 * z.1))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, chi_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rWS_ne χ (by rw [e10]; exact neg_ne_zero.mpr hd), rWS_ne χ hc, e00, e10, e11, modulus_neg']`. Conclude with `(gauss_step hχ hχ1 hΦ hc hd hd2 z).symm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_w [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1)
     {g : Matrix (Fin 2) (Fin 2) F} (hg : g.det = 1) {Φ : F × F → ℂ} (hΦ : Φ ∈ SBE (F × F)) :
@@ -515,7 +515,7 @@ def Good (χ : AddChar F Circle) (h : Matrix (Fin 2) (Fin 2) F) : Prop :=
     rWS χ h Φ ∈ SBE (F × F) ∧ rWS χ (g * h) Φ = rWS χ g (rWS χ h Φ)
 
 /- English proof (translation)
-Use `⟨by rw [Matrix.det_mul, hx.1, hy.1, one_mul], fun g hg Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `a` using `hy.2 x hx.1 Φ hΦ`. Establish `b` using `hx.2 g hg _ a.1`. Establish `c` using `hy.2 (g * x) (by rw [Matrix.det_mul, hg, hx.1, one_mul]) Φ hΦ`. Conclude with `⟨by rw [a.2]; exact b.1, by rw [← mul_assoc, c.2, b.2, a.2]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Good.mul {χ : AddChar F Circle} {x y : Matrix (Fin 2) (Fin 2) F} (hx : Good χ x) (hy : Good χ y) :
     Good χ (x * y) := by
@@ -526,7 +526,7 @@ theorem Good.mul {χ : AddChar F Circle} {x y : Matrix (Fin 2) (Fin 2) F} (hx : 
   exact ⟨by rw [a.2]; exact b.1, by rw [← mul_assoc, c.2, b.2, a.2]⟩
 
 /- English proof (translation)
-Use `⟨by simp [Matrix.det_fin_two], fun g hg Φ hΦ => ⟨?_, rep_n χ hg b Φ⟩⟩` and prove the remaining obligations. Rewrite using `[rWS_n]`. Conclude with `sbe_char_mul hχ hχ1 (k := fun z => b * (z.1 * z.2)) (by fun_prop) hΦ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_n {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) (b : F) : Good χ !![1, b; 0, 1] := by
   refine ⟨by simp [Matrix.det_fin_two], fun g hg Φ hΦ => ⟨?_, rep_n χ hg b Φ⟩⟩
@@ -534,7 +534,7 @@ theorem good_n {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) (
   exact sbe_char_mul hχ hχ1 (k := fun z => b * (z.1 * z.2)) (by fun_prop) hΦ
 
 /- English proof (translation)
-Use `⟨by simp [Matrix.det_fin_two, hs], fun g hg Φ hΦ => ⟨?_, rep_m χ hg hs Φ⟩⟩` and prove the remaining obligations. Rewrite using `[rWS_m χ hs]`. Conclude with `sbe_const_mul _ (sbe_scale hs hΦ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_m (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) : Good χ !![s, 0; 0, s⁻¹] := by
   refine ⟨by simp [Matrix.det_fin_two, hs], fun g hg Φ hΦ => ⟨?_, rep_m χ hg hs Φ⟩⟩
@@ -542,7 +542,7 @@ theorem good_m (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) : Good χ !![s, 0;
   exact sbe_const_mul _ (sbe_scale hs hΦ)
 
 /- English proof (translation)
-Use `⟨by simp [Matrix.det_fin_two], fun g hg Φ hΦ => ⟨?_, rep_w hχ hχ1 hg hΦ⟩⟩` and prove the remaining obligations. Rewrite using `[rWS_w]`. Conclude with `fts_sbe hχ hχ1 hΦ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_w [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) : Good χ !![0, 1; -1, 0] := by
   refine ⟨by simp [Matrix.det_fin_two], fun g hg Φ hΦ => ⟨?_, rep_w hχ hχ1 hg hΦ⟩⟩
@@ -550,13 +550,13 @@ theorem good_w [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 
   exact fts_sbe hχ hχ1 hΦ
 
 /- English proof (translation)
-Establish `hd2 : h 0 0 * h 1 1 - h 0 1 * h 1 0 = 1` using `by rw [← Matrix.det_fin_two]; exact hh`. Distinguish the cases in `hc : h 1 0 = 0`. Establish `had : h 0 0 * h 1 1 = 1` using `by rw [hc] at hd2; linear_combination hd2`. Establish `ha : h 0 0 ≠ 0` using `fun e => by rw [e] at had; simp at had`. Establish `e : h = !![h 0 0, 0; 0, (h 0 0)⁻¹] * !![1, h 0 1 / h 0 0; 0, 1]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hda : h 1 1 = (h 0 0)⁻¹` using `by field_simp; linear_combination had`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hc, hda] <;> field_simp`. Rewrite using `[e]`. Conclude with `(good_m χ ha).mul (good_n hχ hχ1 _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : -(h 1 0)⁻¹ ≠ 0` using `neg_ne_zero.mpr (inv_ne_zero hc)`. Establish `e : h = !![1, h 0 0 / h 1 0; 0, 1] * !![-(h 1 0)⁻¹, 0; 0, (-(h 1 0)⁻¹)⁻¹] * !![0, 1; -1, 0] * !![1, h 1 1 / h 1 0; 0, 1]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp`. Take the linear combination `-hd2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(((good_n hχ hχ1 _).mul (good_m χ hs)).mul (good_w hχ hχ1)).mul (good_n hχ hχ1 _)`.
+A detailed English derivation is pending.
 -/
 theorem good_all [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1)
     {h : Matrix (Fin 2) (Fin 2) F} (hh : h.det = 1) : Good χ h := by
@@ -580,7 +580,7 @@ theorem good_all [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ
     exact (((good_n hχ hχ1 _).mul (good_m χ hs)).mul (good_w hχ hχ1)).mul (good_n hχ hχ1 _)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 g h hg hh Φ hΦ`. Conclude with `(good_all hχ hχ1 hh).2 g hg Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sRep : SRep := by
   intro F _ _ _ _ _ _ _ χ hχ hχ1 g h hg hh Φ hΦ

@@ -8,7 +8,7 @@ namespace Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `_ _ h _ _` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem siegel_weil_part_one_of_weil_theorem : SiegelWeilPartOneFromWeil := fun _ _ h _ _ => h
 

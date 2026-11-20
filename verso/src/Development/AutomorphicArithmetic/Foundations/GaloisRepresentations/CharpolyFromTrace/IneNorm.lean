@@ -11,7 +11,7 @@ section
 variable {E M Ω : Type} [Field E] [NumberField E] [Field M] [NumberField M] [Field Ω] [Algebra E M] [Algebra E Ω] [Algebra M Ω] [IsScalarTower E M Ω]
 
 /- English proof (translation)
-The claim follows from `(Iff.rfl)`.
+A detailed English derivation is pending.
 -/
 private theorem res_mem_Ine_iff (A : ValuationSubring Ω) (σ : G M Ω) :
     (AlgEquiv.restrictScalarsHom E σ : G E Ω) ∈ Ine (F := E) A ↔ σ ∈ Ine (F := M) A := (Iff.rfl)
@@ -19,15 +19,15 @@ private theorem res_mem_Ine_iff (A : ValuationSubring Ω) (σ : G M Ω) :
 end
 
 /- English proof (translation)
-Introduce `E M Ω _ _ _ _ _ _ _ _ _ _ _ A v w _ h h' hfix art art' ha ha'`. Establish `hl : ∀ s : Ine (F` using `E) A, ∃ t : G M Ω, AlgEquiv.restrictScalarsHom E t = (s : G E Ω) := by`. Introduce `s`. Conclude with `⟨{ (s : G E Ω) with commutes' := fun x => hfix s s.2 x }, by ext x; rfl⟩`. Establish `hr : ∀ t : Ine (F` using `M) A, (AlgEquiv.restrictScalarsHom E (t : G M Ω) : G E Ω) ∈ Ine (F := E) A := fun t => (res_mem_Ine_iff (E := E) (M := M) A (t : G M Ω)).2 t.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨r, hrv⟩ : ∃ r : Ine (F` from `M) A →* Ine (F := E) A, ∀ t, (r t : G E Ω) = AlgEquiv.restrictScalarsHom E (t : G M Ω) := ⟨MonoidHom.codRestrict ((AlgEquiv.restrictScalarsHom E).comp (Ine (F := M) A).subtype) (Ine (F := E) A) hr, fun t => rfl⟩`. Establish `hbij : Function.Bijective r`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Establish `hab'` using `congrArg Subtype.val hab`. Rewrite `hab'` using `[hrv, hrv]`. Conclude with `DFunLike.congr_fun hab' x`. Introduce `s`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hl s`. Establish `htm : t ∈ Ine (F` using `M) A := (res_mem_Ine_iff (E := E) (M := M) A t).1 (ht ▸ s.2)`. Conclude with `⟨⟨t, htm⟩, Subtype.ext ((hrv _).trans ht)⟩`. Take `⟨e, he⟩ : ∃ e : Ine (F` from `E) A ≃* Ine (F := M) A, ∀ s, r (e s) = s := ⟨(MulEquiv.ofBijective r hbij).symm, fun s => (MulEquiv.ofBijective r hbij).apply_symm_apply s⟩`. Establish `key : ∀ s, (AlgEquiv.restrictScalarsHom E ((e s : Ine (F` using `M) A) : G M Ω) : G E Ω) = s := by`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[← hrv, he]`. Use `⟨e, key, fun s => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ArtinNormU.localArtin_normU E M Ω A v w h h' art art' ha ha' _ _ (fun z => (DFunLike.congr_fun (key s) z).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.NearKilling.ineNorm :
     IneNorm := by

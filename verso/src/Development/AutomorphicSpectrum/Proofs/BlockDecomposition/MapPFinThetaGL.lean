@@ -13,7 +13,7 @@ open PositivityTheory.Rg.Tf.Loc (twConj)
 namespace GlobalTheory.CompanionTheory.AdelEqProof
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `f (σ ((g⁻¹ : GL (Fin n) A).val j i)) = τ (((GeneralLinearGroup.map f g)⁻¹ : GL (Fin n) B).val j i)`. Rewrite using `[← map_inv]`. Conclude with `h _`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_thetaR {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (σ : A →+* A) (τ : B →+* B)
     (h : ∀ x, f (σ x) = τ (f x)) (n : ℕ) (g : GL (Fin n) A) :
@@ -25,7 +25,7 @@ theorem map_thetaR {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (σ : 
   exact h _
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `f ((PhiU n A).val i j) = (PhiU n B).val i j`. Rewrite using `[phiU_val, phiU_val]`. Simplify using `[GlobalTheory.Tw.Phi, apply_ite f]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_PhiU {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (n : ℕ) :
     GeneralLinearGroup.map f (PhiU n A) = PhiU n B := by
@@ -36,7 +36,7 @@ theorem map_PhiU {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (n : ℕ
   simp [GlobalTheory.Tw.Phi, apply_ite f]
 
 /- English proof (translation)
-Rewrite using `[thetaGL_eq, thetaGL_eq, map_mul, map_mul, map_inv, map_PhiU, map_thetaR f σ τ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_thetaGL {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (σ : A →+* A) (τ : B →+* B)
     (h : ∀ x, f (σ x) = τ (f x)) (n : ℕ) (g : GL (Fin n) A) :
@@ -52,9 +52,9 @@ theorem pFin_conjAd (x : Ad E) :
     pFin E (conjAd E x) = conjFin (IsCMField.complexConj E).toRingEquiv (pFin E x) := rfl
 
 /- English proof (translation)
-Establish `h : pInf E (conjAd E x) = starRingEnd (Cinf E) (pInf E x)`. Express the relevant statement in the definitionally equal form `(infEq E).symm ((infEq E) (starRingEnd (Cinf E) ((infEq E).symm x.1))) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `pInf E (conjAd E x) v = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cV_conjAd (v : InfinitePlace E) (x : Ad E) :
     cV v (conjAd E x) = starRingEnd ℂ (cV v x) := by
@@ -67,13 +67,13 @@ theorem cV_conjAd (v : InfinitePlace E) (x : Ad E) :
   rfl
 
 /- English proof (translation)
-The claim follows from `pInf_algebraMap y v`.
+A detailed English derivation is pending.
 -/
 theorem cV_algebraMap (v : InfinitePlace E) (y : E) : cV v (algebraMap E (Ad E) y) = v.embedding y :=
   pInf_algebraMap y v
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `cV_algebraMap v _`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_cV_ratGL (v : InfinitePlace E) (d : GL (Fin n) E) :
     GeneralLinearGroup.map (cV v) (ratGL E n d) = GeneralLinearGroup.map v.embedding d := by
@@ -82,7 +82,7 @@ theorem map_cV_ratGL (v : InfinitePlace E) (d : GL (Fin n) E) :
   exact cV_algebraMap v _
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_pFin_ratGL (d : GL (Fin n) E) :
     GeneralLinearGroup.map (pFin E) (ratGL E n d) = ratF E n d := by
@@ -91,7 +91,7 @@ theorem map_pFin_ratGL (d : GL (Fin n) E) :
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_cW (w : Pl E) (g : GA E n) :
     GeneralLinearGroup.map (cW w) g = GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) g) := by
@@ -100,14 +100,14 @@ theorem map_cW (w : Pl E) (g : GA E n) :
   rfl
 
 /- English proof (translation)
-The claim follows from `map_thetaGL _ _ _ pFin_conjAd n g`.
+A detailed English derivation is pending.
 -/
 theorem map_pFin_thetaGL (g : GA E n) :
     GeneralLinearGroup.map (pFin E) (thetaGL n (conjAd E) g) = thF E n (GeneralLinearGroup.map (pFin E) g) :=
   map_thetaGL _ _ _ pFin_conjAd n g
 
 /- English proof (translation)
-Simplify using `only [twConj, map_mul, map_inv, map_cV_ratGL]`. Rewrite using `[map_thetaR (cV v) (conjAd E) (starRingEnd ℂ) (cV_conjAd v) n x]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cV_twConj (v : InfinitePlace E) (x : GA E n) (d : GL (Fin n) E) :
     GeneralLinearGroup.map (cV v) (twConj (thetaA E n) x (ratGL E n d)) =
@@ -116,9 +116,9 @@ theorem map_cV_twConj (v : InfinitePlace E) (x : GA E n) (d : GL (Fin n) E) :
   rw [map_thetaR (cV v) (conjAd E) (starRingEnd ℂ) (cV_conjAd v) n x]
 
 /- English proof (translation)
-Establish `h` using `hT E n u hu x`. Establish `h2 : twConj (thetaA E n) x (ratGL E n d) * (ratGL E n u)⁻¹ = x⁻¹ * ratGL E n (d * u⁻¹) * thetaGL n (conjAd E) x`. Rewrite using `[h, map_mul, map_inv]`. Simplify using `only [twConj]`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, map_mul, map_mul, map_inv, map_pFin_ratGL, map_pFin_thetaGL]`.
+A detailed English derivation is pending.
 -/
 theorem map_pFin_twConj (hT : TranslAd) (u : GL (Fin n) E) (hu : IsTransl u) (x : GA E n) (d : GL (Fin n) E) :
     GeneralLinearGroup.map (pFin E) (twConj (thetaA E n) x (ratGL E n d) * (ratGL E n u)⁻¹) =
@@ -132,7 +132,7 @@ theorem map_pFin_twConj (hT : TranslAd) (u : GL (Fin n) E) (hu : IsTransl u) (x 
   rw [h2, map_mul, map_mul, map_inv, map_pFin_ratGL, map_pFin_thetaGL]
 
 /- English proof (translation)
-Rewrite using `[cpt, map_cW, map_pFin_twConj hT u hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpt_twConj (hT : TranslAd) (w : Pl E) (u : GL (Fin n) E) (hu : IsTransl u) (x : GA E n) (d : GL (Fin n) E) :
     cpt w u (twConj (thetaA E n) x (ratGL E n d)) = GeneralLinearGroup.map (pLoc E w)
@@ -140,7 +140,7 @@ theorem cpt_twConj (hT : TranslAd) (w : Pl E) (u : GL (Fin n) E) (hu : IsTransl 
   rw [cpt, map_cW, map_pFin_twConj hT u hu]
 
 /- English proof (translation)
-Rewrite using `[cpt', map_cW, map_pFin_thetaGL, map_pFin_twConj hT u hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpt'_twConj (hT : TranslAd) (w : Pl E) (u : GL (Fin n) E) (hu : IsTransl u) (x : GA E n) (d : GL (Fin n) E) :
     cpt' w u (twConj (thetaA E n) x (ratGL E n d)) = GeneralLinearGroup.map (pLoc E w) (thF E n
@@ -148,9 +148,9 @@ theorem cpt'_twConj (hT : TranslAd) (w : Pl E) (u : GL (Fin n) E) (hu : IsTransl
   rw [cpt', map_cW, map_pFin_thetaGL, map_pFin_twConj hT u hu]
 
 /- English proof (translation)
-Introduce `hT E _ _ _ a b S u₁ u₂ h₁ h₂ ψ φ₁ φ₂ d₁ d₂ x`. Rewrite using `[adel, orbFn, finFn]`. Use `congr_arg₂ (· * ·) (Finset.prod_congr rfl fun v _ => ?_) (finprod_congr fun w => finprod_congr fun _ => ?_)` and prove the remaining obligations. Rewrite using `[map_cV_twConj, map_cV_twConj]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[cpt_twConj hT w u₁ h₁, cpt_twConj hT w u₂ h₂, cpt'_twConj hT w u₁ h₁, cpt'_twConj hT w u₂ h₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adelEqOf : AdelEqOf := by
   intro hT E _ _ _ a b S u₁ u₂ h₁ h₂ ψ φ₁ φ₂ d₁ d₂ x

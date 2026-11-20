@@ -10,22 +10,22 @@ def gs {S : Type*} [CommRing S] (k : ℕ) (x y : S) : S :=
   ∑ i ∈ Finset.range k, x ^ i * y ^ (k - 1 - i)
 
 /- English proof (translation)
-The claim follows from `geom_sum₂_mul x y k`.
+A detailed English derivation is pending.
 -/
 theorem gs_mul {S : Type*} [CommRing S] (k : ℕ) (x y : S) : gs k x y * (x - y) = x ^ k - y ^ k :=
   geom_sum₂_mul x y k
 
 /- English proof (translation)
-Unfold `gs`. Simplify using `using geom_sum₂_succ_eq a b (n := k)`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gs_succ {S : Type*} [CommRing S] (k : ℕ) (a b : S) : gs (k+1) a b = a ^ k + b * gs k a b := by
   unfold gs
   simpa using geom_sum₂_succ_eq a b (n := k)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by simp [gs], by simp [gs]⟩`. Consider the case `succ k ih`. Take `⟨H, h1, h2⟩` from `ih`. Use `⟨c * H + gs k a b, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gs_succ, gs_succ]`. Take the linear combination `c * h1`. Rewrite using `[gs_succ, gs_succ]`. Take the linear combination `c * h2 - gs_mul k a b`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem key {S : Type*} [CommRing S] (k : ℕ) (a b c : S) : ∃ H : S,
     gs k a c - gs k a b = (c - b) * H ∧ gs k a c - gs k b c = (a - b) * H := by
@@ -38,9 +38,9 @@ theorem key {S : Type*} [CommRing S] (k : ℕ) (a b c : S) : ∃ H : S,
     · rw [gs_succ, gs_succ]; linear_combination c * h2 - gs_mul k a b
 
 /- English proof (translation)
-Take `⟨H1, -, e1⟩` from `key k (y1 + y2) (y0 + y2) y1`. Take `⟨H2, e2, -⟩` from `key k (y0 + y2) y0 y1`. Use `⟨-(H1 + H2), ?_⟩` and prove the remaining obligations. Establish `f1` using `gs_mul k (y1 + y2) y1`. Establish `f0` using `gs_mul k (y0 + y2) y0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `-f1 + f0 + y2 * e1 + y2 * e2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem F_fac {S : Type*} [CommRing S] (k : ℕ) (y0 y1 y2 : S) : ∃ H : S,
     y0 ^ k + (y1 + y2) ^ k - y1 ^ k - (y0 + y2) ^ k = y2 * (y0 - y1) * H := by
@@ -52,11 +52,9 @@ theorem F_fac {S : Type*} [CommRing S] (k : ℕ) (y0 y1 y2 : S) : ∃ H : S,
   linear_combination -f1 + f0 + y2 * e1 + y2 * e2
 
 /- English proof (translation)
-Establish `hmem : p ∈ Ideal.span (Set.range (X : Fin n → MvPolynomial (Fin n) S))`. Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `mo hmo`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : mo = 0` using `by ext i; simpa using hcon i (Set.mem_univ i)`. Substitute `h0` using the available equality. Rewrite `hmo` using `[MvPolynomial.mem_support_iff]`. Conclude with `hmo (by rw [← hp]; rfl)`. Take `⟨c, hc⟩` from `(Ideal.mem_span_range_iff_exists_fun).1 hmem`.
-
-Conclude with `⟨c, by rw [← hc]; simp [mul_comm]⟩`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sum_X_mul {S : Type*} [CommRing S] {n : ℕ} (p : MvPolynomial (Fin n) S)
     (hp : constantCoeff p = 0) : ∃ K : Fin n → MvPolynomial (Fin n) S, p = ∑ i, X i * K i := by
@@ -77,15 +75,13 @@ end GlobalTheory.FlagRankTwo
 namespace GlobalTheory.FlagRankTwo
 
 /- English proof (translation)
-Establish `h0 : ∑ i, X i * (fun i => G i - G' i) i = 0`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, h, sub_self]`. Take `⟨H, hanti, -, hG⟩` from `GlobalTheory.koszul_relations_among_variables Z.Ch r (fun i => G i - G' i) h0`. Use `set t : Fin r → Fin r → ℚ := fun i j => Z.capDeg (Dd i) (Z.cD (Dd j) * (aeval (fun j => Z.cD (Dd j)) (H i j) * Q)) with ht`. Establish `hterm : ∀ i, Z.capDeg (Dd i) (aeval (fun j => Z.cD (Dd j)) (G i) * Q) - Z.capDeg (Dd i) (aeval (fun j => Z.cD (Dd j)) (G' i) * Q) = ∑ j, t i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[← map_sub, ← sub_mul, ← map_sub, hG i, map_sum, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.map_mul (aeval (fun j => Z.cD (Dd j))) (X j) (H i j), aeval_X, mul_assoc]`. Establish `hsw : ∀ i j, t i j = - t j i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Simplify using `only [ht]`. Rewrite using `[hc, hanti i j, map_neg, neg_mul, mul_neg, map_neg]`. Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Repeatedly rewrite using `[hterm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : ∑ i, ∑ j, t i j = - ∑ i, ∑ j, t i j` using `by conv_lhs => rw [Finset.sum_comm]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => hsw i j`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bracket_eq (Z : ITh)
     (hc : ∀ (E E' : Z.VDiv) (a : Z.Ch), Z.capDeg E (Z.cD E' * a) = Z.capDeg E' (Z.cD E * a))
@@ -123,24 +119,24 @@ end GlobalTheory.FlagRankTwo
 namespace GlobalTheory.FlagRankTwo
 
 /- English proof (translation)
-Simplify using `[gs, map_sum, map_mul, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_gs {n : ℕ} {S : Type*} [CommRing S] (f : Fin n → S) (k : ℕ) (x y : MvPolynomial (Fin n) S) :
     aeval f (gs k x y) = gs k (aeval f x) (aeval f y) := by
   simp [gs, map_sum, map_mul, map_pow]
 
 /- English proof (translation)
-Take `⟨Hp, hHp⟩` from `F_fac k (C l - X 0 : (MvPolynomial (Fin 3) Z.Ch)) (C m - X 1 : (MvPolynomial (Fin 3) Z.Ch)) (C z - X 2 : (MvPolynomial (Fin 3) Z.Ch))`. Take `⟨K, hK⟩` from `exists_sum_X_mul ((C (constantCoeff Hp) : (MvPolynomial (Fin 3) Z.Ch)) - Hp) (by simp)`. Establish `hFu : (C l : (MvPolynomial (Fin 3) Z.Ch)) ^ k + ((C m : (MvPolynomial (Fin 3) Z.Ch)) + (C z : (MvPolynomial (Fin 3) Z.Ch))) ^ k - (C m : (MvPolynomial (Fin 3) Z.Ch)) ^ k - ((C l : (MvPolynomial (Fin 3) Z.Ch)) + (C z : (MvPolynomial (Fin 3) Z.Ch))) ^ k = (C z : (MvPolynomial (Fin …`. Simplify using `using congrArg (fun p => (C (constantCoeff p) : (MvPolynomial (Fin 3) Z.Ch))) hHp`. Establish `I0` using `gs_mul k (C l : (MvPolynomial (Fin 3) Z.Ch)) (C l - X 0 : (MvPolynomial (Fin 3) Z.Ch))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `I1` using `gs_mul k (C m : (MvPolynomial (Fin 3) Z.Ch)) (C m - X 1 : (MvPolynomial (Fin 3) Z.Ch))`. Establish `IA` using `gs_mul k ((C l : (MvPolynomial (Fin 3) Z.Ch)) + (C z : (MvPolynomial (Fin 3) Z.Ch))) ((C l - X 0 : (MvPolynomial (Fin 3) Z.Ch)) + (C z - X 2 : (MvPolynomial (Fin 3) Z.Ch)))`. Establish `IB` using `gs_mul k ((C m : (MvPolynomial (Fin 3) Z.Ch)) + (C z : (MvPolynomial (Fin 3) Z.Ch))) ((C m - X 1 : (MvPolynomial (Fin 3) Z.Ch)) + (C z - X 2 : (MvPolynomial (Fin 3) Z.Ch)))`. Establish `heq : ∑ i, X i * (![gs k (C l : (MvPolynomial (Fin 3) Z.Ch)) (C l - X 0 : (MvPolynomial (Fin 3) Z.Ch)) - gs k ((C l : (MvPolynomial (Fin 3) Z.Ch)) + (C z : (MvPolynomial (Fin 3) Z.Ch))) ((C l - X 0 : (MvPolynomial (Fin 3) Z.Ch)) + (C z - X 2 : (MvPolynomial (Fin 3) Z.Ch))), gs k …`. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hK` using `[Fin.sum_univ_three]`. Take the linear combination `I0 + IB - I1 - IA + hFu - hHp + (C z - X 2 : (MvPolynomial (Fin 3) Z.Ch)) * ((C l - X 0 : (MvPolynomial (Fin 3) Z.Ch)) - (C m - X 1 : (MvPolynomial (Fin 3) Z.Ch))) * hK`. Establish `hbr` using `bracket_eq Z hc ![a, b, V] Q _ _ heq`. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, aeval_gs, map_add, map_sub, map_mul, map_neg, aeval_C, aeval_X, Algebra.algebraMap_self, RingHom.id_apply] at hbr`. Establish `e5` using `h5 (constantCoeff Hp * Q)`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e0` using `h4 a (aeval (fun j => Z.cD (![a, b, V] j)) (K 0) * Q)`. Establish `e1` using `h4 b (aeval (fun j => Z.cD (![a, b, V] j)) (K 1) * Q)`. Establish `e2` using `h4 V (aeval (fun j => Z.cD (![a, b, V] j)) (K 2) * Q)`. Generalize the expression as in `aeval (fun j => Z.cD (![a, b, V] j)) (K 0) = k0 at *`. Generalize the expression as in `aeval (fun j => Z.cD (![a, b, V] j)) (K 1) = k1 at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `aeval (fun j => Z.cD (![a, b, V] j)) (K 2) = k2 at *`. Use `clear h4 h5 heq hK hFu hHp I0 I1 IA IB`. Generalize the expression as in `z - Z.cD V = z' at *`. Generalize the expression as in `l - Z.cD a = l' at *`. Generalize the expression as in `m - Z.cD b = m' at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `l' - m' = L' at *`. Generalize the expression as in `l - m = L at *`. Simplify using `only [sub_mul, add_mul, neg_mul, map_add, map_sub, map_neg, LinearMap.add_apply, LinearMap.sub_apply, mul_assoc] at hbr e5 e0 e1 e2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core (Z : ITh)
     (hc : ∀ (E E' : Z.VDiv) (a : Z.Ch), Z.capDeg E (Z.cD E' * a) = Z.capDeg E' (Z.cD E * a))
@@ -188,15 +184,15 @@ theorem core (Z : ITh)
   linarith
 
 /- English proof (translation)
-Introduce `Z P P' k Q hc h2 h3 h4 h5`. Take `⟨z, hz⟩ : ∃ z, Z.c1 (P'.x 1) = Z.c1 (P.x 0) + z` from `⟨Z.c1 (P'.x 1) - Z.c1 (P.x 0), by ring⟩`. Take `⟨V, hV⟩ : ∃ V, P.Dv 1 = P'.Dv 0 + V` from `⟨P.Dv 1 - P'.Dv 0, by abel⟩`. Establish `hz' : Z.c1 (P.x 1) = Z.c1 (P'.x 0) + z` using `by linear_combination h2 + hz`. Establish `hV' : P'.Dv 1 = P.Dv 0 + V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: P'.Dv 1 = P.Dv 0 + P.Dv 1 - P'.Dv 0` using `by rw [h3]; abel`. Rewrite using `[this, hV]`. Normalize the expressions using the abelian group laws. Establish `a0` using `P.hx 0`. Establish `b0` using `P'.hx 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : Z.c1 (P.x' 1) = (Z.c1 (P'.x 0) - Z.cD (P'.Dv 0)) + (z - Z.cD V)`. Rewrite using `[P.hx 1, hz', hV, map_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `b1 : Z.c1 (P'.x' 1) = (Z.c1 (P.x 0) - Z.cD (P.Dv 0)) + (z - Z.cD V)`. Rewrite using `[P'.hx 1, hz, hV', map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hzz : Z.c1 (P'.x' 1) - Z.c1 (P.x' 0) = z - Z.cD V` using `by rw [b1, a0]; ring`. Establish `hVV : P.Dv 1 - P'.Dv 0 = V` using `by rw [hV]; abel`. Rewrite `h4` using `[hzz, a0, b0]`. Rewrite `h5` using `[hzz, hVV]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `core Z hc k Q _ _ z _ _ V h4 h5` as an intermediate fact. Simplify using `only [ck, Fin.sum_univ_two]`. Rewrite using `[a0, b0, a1, b1, hz, hz', hV, hV']`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ck_eq_of_rank_two : ∀ (Z : ITh) (P P' : FPair Z 2) (k : ℕ) (Q : Z.Ch), (∀ (E E' : Z.VDiv) (a : Z.Ch), Z.capDeg E (Z.cD E' * a) = Z.capDeg E' (Z.cD E * a)) → Z.c1 (P.x 0) + Z.c1 (P.x 1) = Z.c1 (P'.x 0) + Z.c1 (P'.x 1) → P.Dv 0 + P.Dv 1 = P'.Dv 0 + P'.Dv 1 → (∀ (D : Z.VDiv) (y : Z.Ch), Z.capDeg D ((Z.c1 (P'.x' 1) - Z.c1 (P.x' 0)) * (Z.c1 (P.x' 0) - Z.c1 (P'.x' 0)) * y) = 0) → (∀ y : Z.Ch, Z.capDeg (P.Dv 1 - P'.Dv 0) ((Z.c1 (P.x 0) - Z.c1 (P'.x 0)) * y) + Z.capDeg (P.Dv 0 - P'.Dv 0) ((Z.c1 (P'.x' 1) - Z.c1 (P.x' 0)) * y) = 0) → ck P k Q = ck P' k Q := by
   intro Z P P' k Q hc h2 h3 h4 h5

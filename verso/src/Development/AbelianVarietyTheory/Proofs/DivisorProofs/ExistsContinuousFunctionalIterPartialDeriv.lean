@@ -9,13 +9,13 @@ open scoped ContDiff BoundedContinuousFunction
 namespace GlobalTheory.HCA
 
 /- English proof (translation)
-Establish `hn` using `hU.mem_nhds hx`. Establish `hd : DifferentiableAt ℝ (dw w f) x` using `((contDiffOn_dw_of_isOpen hU w f hf).contDiffAt hn).differentiableAt (by simp)`. Establish `hline : HasDerivAt (fun t : ℝ => dw w f (x + t • ev j)) (fderiv ℝ (dw w f) x (ev j)) 0`. Establish `h1 : HasDerivAt (fun t : ℝ => x + t • ev j) (ev j) 0`. Simplify using `using ((hasDerivAt_id (0:ℝ)).smul_const (ev j)).const_add x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : HasFDerivAt (dw w f) (fderiv ℝ (dw w f) x) (x + (0:ℝ) • ev j)`. Simplify using `using hd.hasFDerivAt`. Conclude with `h2.comp_hasDerivAt (0:ℝ) h1`. Establish `hs` using `hasDerivAt_iff_tendsto_slope.1 hline`. Establish `ht : Tendsto (fun n : ℕ => 1 / ((n : ℝ) + 1)) atTop (𝓝[≠] 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `tendsto_nhdsWithin_iff.2` to reduce the goal to its premises. Use `⟨tendsto_one_div_add_atTop_nhds_zero_nat, Eventually.of_forall fun n => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff]`. Check the signs of the components of the expression. Establish `h3` using `hs.comp ht`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Tendsto _ atTop (𝓝 (fderiv ℝ (dw w f) x (ev j)))`. Use `h3.congr (fun n => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, slope_def_module, zero_smul, add_zero, sub_zero, Complex.real_smul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem tendsto_diffQuot_dw {d : ℕ} {U : Set (E d)} (hU : IsOpen U) (f : E d → ℂ)
     (hf : ContDiffOn ℝ ∞ f U) (w : List (Fin d)) (j : Fin d) {x : E d} (hx : x ∈ U) :
@@ -44,15 +44,13 @@ theorem tendsto_diffQuot_dw {d : ℕ} {U : Set (E d)} (hU : IsOpen U) (f : E d �
   field_simp
 
 /- English proof (translation)
-Introduce `d U hU B _ _ _ R hR hsm w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `x hx`. Conclude with `⟨⟨(LinearMap.proj x : (E d → ℂ) →ₗ[ℂ] ℂ).comp R, hR x hx⟩, fun u => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `cons j w ih`. Introduce `x hx`. Use `choose! L hL using ih`. Set `y : ℕ → E d` to `fun n => x + (1 / ((n : ℝ) + 1)) • ev j`. Set `g : ℕ → B →L[ℂ] ℂ` to `fun n => ((n : ℂ) + 1) • (L (y n) - L x)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ n in atTop, y n ∈ U`. Establish `hy : Tendsto y atTop (𝓝 x)`. Establish `h0` using `(tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).smul_const (ev j)`. Simplify `h0.const_add x` using `[y]`. Conclude with `hy (hU.mem_nhds hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlim : Tendsto (fun n u => g n u) atTop (𝓝 (fun u => dw (j :: w) (R u) x))`. Rewrite using `[tendsto_pi_nhds]`. Introduce `u`. Use `(tendsto_diffQuot_dw hU (R u) (hsm u) w j hx).congr' ?_` and prove the remaining obligations. Use `filter_upwards [hev] with n hn`.
-
-Simplify using `only [g, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, smul_eq_mul, hL _ hn, hL _ hx, y]`. Conclude with `⟨continuousLinearMapOfTendsto g hlim, fun u => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dw_continuousFunctional : ∀ (d : ℕ) (U : Set (E d)), IsOpen U → ∀ (B : Type)
     [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (R : B →ₗ[ℂ] (E d → ℂ)),

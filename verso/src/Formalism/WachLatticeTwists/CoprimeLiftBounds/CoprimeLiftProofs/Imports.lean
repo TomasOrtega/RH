@@ -9,37 +9,33 @@ namespace Formalism.RepresentationBoundsCohomology.BR
 open Formalism.NG
 
 /- English proof (translation)
-Introduce `O _ _ _ D _ L V M _ _ _ _ _ _ _ _ ρL ρV ρM i q hi hq hker hsat hiρ hqρ Ff j κ hF1 hF2 hF3 hF4 x m hx`. Take `⟨⟨c, hc⟩, hcx⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) (Finset.univ : Finset (Fin j)) x`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`. Establish `hcx' : ∀ a, ∃ t : O, algebraMap O (FractionRing O) t = c • x a` using `fun a => RingHom.mem_rangeS.mp (hcx a (Finset.mem_univ a))`. Use `choose y hy using hcx'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `hq m`. Take `⟨d, hd0, hw'⟩` from `hsat (c • v)`. Take `⟨w, hw⟩` from `LinearMap.mem_range.mp hw'`. Establish `he0 : d * c ≠ 0` using `mul_ne_zero hd0 hc0`. Establish `hK0 : algebraMap O (FractionRing O) (d * c) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr he0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cancelV : ∀ u u' : V, (d * c) • u = (d * c) • u' → u = u'`. Introduce `u u' h`. Rewrite `h` using `[← algebraMap_smul (FractionRing O) (d * c) u, ← algebraMap_smul (FractionRing O) (d * c) u']`. Conclude with `smul_right_injective V hK0 h`. Establish `cancelL : ∀ a b : L, (d * c) • a = (d * c) • b → a = b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b h`. Apply `hi` to reduce the goal to its premises. Apply `cancelV` to reduce the goal to its premises. Establish `h'` using `congrArg i h`. Rewrite `h'` using `[map_smul, map_smul]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : ∀ g : D, ∃ zg : L, i zg = ∑ a, x a • i ((κ a : D → L) g) - (ρV g v - v)`. Introduce `g`. Establish `hmem : ∑ a, x a • i ((κ a : D → L) g) - (ρV g v - v) ∈ LinearMap.ker q`. Rewrite using `[LinearMap.mem_ker, map_sub, map_sub, hx g, hqρ]`. Conclude with `sub_self _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hker]`. Conclude with `LinearMap.mem_range.mp hmem`. Use `choose z hz using hf`. Take `⟨Y, hYdef⟩ : ∃ Y : coZ1s ρL, Y = ∑ a, (d * y a) • κ a - cobZ ρL w` from `⟨_, rfl⟩`. Establish `hYg : ∀ g, (Y : D → L) g = ∑ a, (d * y a) • (κ a : D → L) g - (ρL g w - w)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[hYdef, Submodule.coe_sub, Submodule.coe_sum, Pi.sub_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `hY : ∀ g, (d * c) • z g = (Y : D → L) g`. Introduce `g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hi` to reduce the goal to its premises. Rewrite using `[hYg g, map_smul, hz g, map_sub, map_sub, map_sum, hiρ, hw, smul_sub, smul_sub, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mul_smul, mul_smul, ← smul_assoc c (x a), ← hy a, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, mul_smul, mul_smul]`. Establish `hzc : z ∈ coZ1s ρL` using `by show ∀ g h, z (g * h) = z g + ρL g (z h)`. Introduce `g h`. Apply `cancelL` to reduce the goal to its premises. Rewrite using `[smul_add, ← map_smul, hY, hY, hY]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Y.2 g h`. Establish `hZY : (d * c) • (⟨z, hzc⟩ : coZ1s ρL) = Y` using `Subtype.ext (funext hY)`. Establish `hYcl : (Submodule.mkQ _ Y : H1z ρL) = ∑ a, (d * y a) • (Submodule.mkQ _ (κ a) : H1z ρL)`. Rewrite using `[hYdef, map_sub, mkQ_cobZ, sub_zero, map_sum]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (d * c) • (Submodule.mkQ _ ⟨z, hzc⟩ : H1z ρL) = ∑ a, (d * y a) • (Submodule.mkQ _ (κ a) : H1z ρL)`. Rewrite using `[← map_smul, hZY, hYcl]`. Establish `hZF : (Submodule.mkQ _ ⟨z, hzc⟩ : H1z ρL) ∈ Ff`. Apply `hF1 (d * c) _ he0` to reduce the goal to its premises. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (hF2 a)`. Take `⟨b, c', hc'0, hc'⟩` from `hF3 _ hZF`. Establish `h1 : c' • (Submodule.mkQ _ ⟨z, hzc⟩ : H1z ρL) = c' • ∑ a, b a • (Submodule.mkQ _ (κ a) : H1z ρL)`. Rewrite `hc'` using `[smul_sub, sub_eq_zero]`. Conclude with `hc'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : ∑ a, (d * y a - d * c * b a) • (Submodule.mkQ _ (κ a) : H1z ρL) = ∑ a, (d * y a) • (Submodule.mkQ _ (κ a) : H1z ρL) - (d * c) • ∑ a, b a • (Submodule.mkQ _ (κ a) : H1z ρL)`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul, Finset.smul_sum]`. Establish `h3 : c' • ∑ a, (d * y a - d * c * b a) • (Submodule.mkQ _ (κ a) : H1z ρL) = 0`. Rewrite using `[hsplit, ← h2, smul_sub, smul_comm c' (d * c), h1, smul_comm c' (d * c), sub_self]`. Establish `hb` using `hF4 (fun a => d * y a - d * c * b a) c' hc'0 h3`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Establish `h4 : d * y a - d * c * b a = 0` using `congrFun hb a`. Establish `h5 : y a = c * b a`. Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Rewrite using `[← mul_assoc]`.
-
-Conclude with `sub_eq_zero.mp h4`. Establish `hc'' : algebraMap O (FractionRing O) c ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr hc0`. Rewrite using `[Submodule.mem_one]`. Use `⟨b a, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hc''` to reduce the goal to its premises.
-
-Rewrite using `[← map_mul, ← h5, hy a, Algebra.smul_def]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c3 : SelmerFInjective := by
   intro O _ _ _ D _ L V M _ _ _ _ _ _ _ _ ρL ρV ρM i q hi hq hker hsat hiρ hqρ Ff j κ hF1 hF2 hF3 hF4

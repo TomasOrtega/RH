@@ -10,9 +10,9 @@ section FIwasawaFinal
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `hx' : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Establish `hy' : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).mpr hy`. Establish `hxy' : Valued.v (x * y) ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hx' hy'`. Unfold `Formalism.UG.ordL`. Rewrite using `[dif_neg hxy', dif_neg hx', dif_neg hy']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `key : WithZero.unzero hxy' = WithZero.unzero hx' * WithZero.unzero hy'`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Simplify using `only [WithZero.coe_mul, WithZero.coe_unzero, map_mul]`. Rewrite using `[key, toAdd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fIwasawa_ordL_mul (x y : L) (hx : x ≠ 0) (hy : y ≠ 0) :
     ordL (x * y) = ordL x + ordL y := by
@@ -28,11 +28,11 @@ theorem fIwasawa_ordL_mul (x y : L) (hx : x ≠ 0) (hy : y ≠ 0) :
   ring
 
 /- English proof (translation)
-Establish `h1 : Valued.v y * Valued.v x = 1`. Use `congrArg Valued.v hxy` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`. Then use the resulting hypothesis. Establish `hge : 1 ≤ Valued.v x`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hv : Valued.v x = 1` using `le_antisymm hx hge`. Establish `hne : Valued.v x ≠ 0` using `by rw [hv]; exact one_ne_zero`. Unfold `Formalism.UG.ordL`. Rewrite using `[dif_neg hne]`. Establish `key : WithZero.unzero hne = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, hv, WithZero.coe_one]`. Rewrite using `[key, toAdd_one, neg_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fIwasawa_ordL_unit (x y : L) (hx : Valued.v x ≤ 1) (hy : Valued.v y ≤ 1)
     (hxy : y * x = 1) : ordL x = 0 := by
@@ -55,9 +55,9 @@ theorem fIwasawa_ordL_unit (x y : L) (hx : Valued.v x ≤ 1) (hy : Valued.v y �
 variable (σ : L →+* L) {n m : ℕ} (q : ℕ) (α : Fin m → ℂ)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_single i` to reduce the goal to its premises. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with h | h` into its components or cases. Rewrite using `[hB (show id k < id i from h), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC (show id i < id k from h), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma blockTriangular_mul_diag (B C : Matrix (Fin n) (Fin n) L)
     (hB : B.BlockTriangular id) (hC : C.BlockTriangular id) (i : Fin n) :
@@ -72,9 +72,9 @@ private lemma blockTriangular_mul_diag (B C : Matrix (Fin n) (Fin n) L)
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `hdet : (g : Matrix (Fin n) (Fin n) L).det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det (Units.mul_inv g)`. Rewrite `h1` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdet` using `[Matrix.det_of_upperTriangular hg]`. Conclude with `Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ _)`.
+A detailed English derivation is pending.
 -/
 private lemma GL_blockTriangular_diag_ne_zero (g : GL (Fin n) L)
     (hg : (g : Matrix (Fin n) (Fin n) L).BlockTriangular id) (i : Fin n) :
@@ -88,11 +88,11 @@ private lemma GL_blockTriangular_diag_ne_zero (g : GL (Fin n) L)
   exact Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ _)
 
 /- English proof (translation)
-Establish `hdb` using `GL_blockTriangular_diag_ne_zero (b : GL (Fin n) L) hb`. Establish `hdc` using `GL_blockTriangular_diag_ne_zero (c : GL (Fin n) L) hc`. Establish `hbc : ∀ i : Fin n, (((b * c : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i * ((c : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i` using `fun i => blockTriangular_mul_diag _ _ hb hc i`. Unfold `Formalism.UG.chiDeltaU`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[hbc ⟨i.val, h⟩, fIwasawa_ordL_mul _ _ (hdb ⟨i.val, h⟩) (hdc ⟨i.val, h⟩)]`. Rewrite using `[zpow_add₀ (hα i), neg_add, add_mul, zpow_add₀ hq]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem fIwasawa_chi_mul (hα : ∀ i, α i ≠ 0) (hq : (q : ℂ) ≠ 0) (b c : GU σ n)
     (hb : ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id)
@@ -113,7 +113,7 @@ theorem fIwasawa_chi_mul (hα : ∀ i, α i ≠ 0) (hq : (q : ℂ) ≠ 0) (b c :
   · rw [mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma GL_inv_blockTriangular (g : GL (Fin n) L)
     (hg : (g : Matrix (Fin n) (Fin n) L).BlockTriangular id) :
@@ -122,9 +122,7 @@ private lemma GL_inv_blockTriangular (g : GL (Fin n) L)
   exact Matrix.blockTriangular_inv_of_blockTriangular hg
 
 /- English proof (translation)
-Rewrite `hg` using `[Formalism.UG.KU, Subgroup.mem_subgroupOf, Formalism.UG.intPts, Subgroup.mem_inf]`. Take `⟨g', hg'⟩` from `MonoidHom.mem_range.mp hg.2`. Rewrite using `[← hg', ← map_inv]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Valuation.mem_integer_iff _ _).mp ((g' : Matrix (Fin n) (Fin n) (intL L)) i j).2`.
-
-Conclude with `(Valuation.mem_integer_iff _ _).mp (((g'⁻¹ : GL (Fin n) (intL L)) : Matrix (Fin n) (Fin n) (intL L)) i j).2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma KU_entries_valuation_le_one (g : GU σ n) (hg : g ∈ KU σ n) (i j : Fin n) :
     Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) ≤ 1 ∧
@@ -138,11 +136,11 @@ private lemma KU_entries_valuation_le_one (g : GU σ n) (hg : g ∈ KU σ n) (i 
       (((g'⁻¹ : GL (Fin n) (intL L)) : Matrix (Fin n) (Fin n) (intL L)) i j).2
 
 /- English proof (translation)
-Establish `hbinv` using `GL_inv_blockTriangular (b : GL (Fin n) L) hb`. Unfold `Formalism.UG.chiDeltaU`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Use `split_ifs with h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : ordL (((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) ⟨i.val, h⟩ ⟨i.val, h⟩) = 0`. Apply `fIwasawa_ordL_unit _ ((((b : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) ⟨i.val, h⟩ ⟨i.val, h⟩) (KU_entries_valuation_le_one σ b hk _ _).1 (KU_entries_valuation_le_one σ b hk _ _).2` to reduce the goal to its premises. Rewrite using `[← blockTriangular_mul_diag _ _ hbinv hb, Units.inv_mul]`. Conclude with `Matrix.one_apply_eq _`. Rewrite using `[h0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem fIwasawa_chi_int (b : GU σ n)
     (hb : ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id) (hk : b ∈ KU σ n) :
@@ -162,9 +160,9 @@ theorem fIwasawa_chi_int (b : GU σ n)
   · rfl
 
 /- English proof (translation)
-Take `⟨k, hk, hup⟩` from `fIwasawa_upper σ hσ hσv _ (fIwasawa_mem_un σ g⁻¹)`. Establish `hkG : fIwasawaMk σ k hk.1 ∈ KU σ n` using `fIwasawa_mk_mem_K σ hσv k hk.1 hk.2`. Use `⟨(fIwasawaMk σ k hk.1 * g⁻¹)⁻¹, fIwasawaMk σ k hk.1, ?_, hkG, by group⟩` and prove the remaining obligations. Establish `h1 : (((fIwasawaMk σ k hk.1 * g⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, fIwasawa_mk_val]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hup`. Establish `h2` using `spherical_upper_inv _ h1`. Rewrite `h2` using `[← Subgroup.coe_inv]`. Conclude with `(spherical_upper_iff _).2 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_iwasawa (hσ : ∀ x, σ (σ x) = x) (hσv : ∀ x, Valued.v (σ x) = Valued.v x)
     (g : GU σ n) : ∃ b k : GU σ n, IsBorelU b ∧ k ∈ KU σ n ∧ g = b * k := by
@@ -179,9 +177,9 @@ theorem fIwasawa_iwasawa (hσ : ∀ x, σ (σ x) = x) (hσv : ∀ x, Valued.v (�
   exact (spherical_upper_iff _).2 h2
 
 /- English proof (translation)
-Establish `hc_eq : b = b' * (k' * k⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Establish `hkk : k' * k⁻¹ ∈ KU σ n` using `(KU σ n).mul_mem hk' ((KU σ n).inv_mem hk)`. Establish `hc_eq2 : k' * k⁻¹ = b'⁻¹ * b` using `by rw [hc_eq]; group`. Establish `htri : (((k' * k⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc_eq2]`. Conclude with `Matrix.BlockTriangular.mul (GL_inv_blockTriangular (b' : GL (Fin n) L) hb') hb`. Rewrite using `[hc_eq, fIwasawa_chi_mul σ q α hα hq b' (k' * k⁻¹) hb' htri, fIwasawa_chi_int σ q α (k' * k⁻¹) htri hkk, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_wd (hα : ∀ i, α i ≠ 0) (hq : (q : ℂ) ≠ 0) (b b' k k' : GU σ n)
     (hb : ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id)
@@ -203,17 +201,13 @@ theorem fIwasawa_wd (hα : ∀ i, α i ≠ 0) (hq : (q : ℂ) ≠ 0) (b b' k k' 
 end FIwasawaFinal
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n m hU hmn hnm α hα`. Take `⟨hσ, hσv, -, -, -, hq2, -⟩` from `hU`. Establish `hq : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Use `choose B K hB hK hBK using fIwasawa_iwasawa (n := n) σ hσ hσv`. Establish `htri : ∀ g : GU σ n, IsBorelU g → (((g : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L).BlockTriangular id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg i j hij`. Conclude with `hg i j hij`. Establish `h1tri : (((1 : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id` using `Matrix.blockTriangular_one`. Use `⟨fun g => chiDeltaU q α (B g), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b g k hb hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : b * g * k = (b * B g) * (K g * k)` using `by conv_lhs => rw [hBK g]`. Simplify using `only [mul_assoc]`. Establish `hbB : (((b * B g : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id` using `Matrix.BlockTriangular.mul (htri b hb) (htri _ (hB g))`. Establish `hKk : K g * k ∈ KU σ n` using `(KU σ n).mul_mem (hK g) hk`. Use `show chiDeltaU q α (B (b * g * k)) = chiDeltaU q α b * chiDeltaU q α (B g)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[fIwasawa_wd σ q α hα hq (B (b * g * k)) (b * B g) (K (b * g * k)) (K g * k) (htri _ (hB _)) hbB (hK _) hKk (by rw [← hBK, e])]`. Conclude with `fIwasawa_chi_mul σ q α hα hq b (B g) (htri b hb) (htri _ (hB g))`. Use `show chiDeltaU q α (B 1) = 1`. Rewrite using `[fIwasawa_wd σ q α hα hq (B 1) 1 (K 1) 1 (htri _ (hB 1)) h1tri (hK 1) (KU σ n).one_mem (by rw [← hBK, mul_one])]`. Conclude with `fIwasawa_chi_int σ q α 1 h1tri (KU σ n).one_mem`.
-
-Introduce `ψ hψ`. Use function extensionality and compare the values at `g`. Establish `hg` using `hψ (B g) 1 (K g) (hB g) (hK g)`. Rewrite `hg` using `[mul_one, ← hBK]`. Rewrite using `[hg]`.
-
-Conclude with `mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_spherical_function_unitary : Formalism.UG.SphericalExistsU := by
   intro L _ _ _ ϖ σ q n m hU hmn hnm α hα

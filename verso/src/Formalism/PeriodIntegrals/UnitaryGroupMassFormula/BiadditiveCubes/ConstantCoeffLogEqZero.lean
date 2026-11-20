@@ -12,9 +12,9 @@ open PI.BiaddOfCube
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `hex' : MvPowerSeries.constantCoeff ex = 0` using `hex`. Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero hex'`. Establish `h1` using `PowerSeries.constantCoeff_subst (R := ℂ_[p]) hs l`. Rewrite `h1` using `[h, finsum_eq_single _ 0 (fun d hd => by rw [map_pow, hex', zero_pow hd, smul_zero]), pow_zero, map_one, smul_eq_mul, mul_one]`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PowerSeries.constantCoeff_X`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_log_eq_zero {l ex : PowerSeries ℂ_[p]}
     (hex : PowerSeries.constantCoeff ex = 0) (h : PowerSeries.subst ex l = PowerSeries.X) :
@@ -30,7 +30,7 @@ theorem constantCoeff_log_eq_zero {l ex : PowerSeries ℂ_[p]}
 variable {σ : Type*}
 
 /- English proof (translation)
-Establish `hex' : MvPowerSeries.constantCoeff ex = 0` using `hex`. Rewrite using `[← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hex') (PowerSeries.HasSubst.of_constantCoeff_zero hy), h, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero hy)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_subst_log {l ex : PowerSeries ℂ_[p]}
     (hex : PowerSeries.constantCoeff ex = 0) (h : PowerSeries.subst ex l = PowerSeries.X)
@@ -42,7 +42,7 @@ theorem subst_subst_log {l ex : PowerSeries ℂ_[p]}
     PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero hy)]
 
 /- English proof (translation)
-Conclude with `PowerSeries.constantCoeff_subst_eq_zero ha f hf`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_subst_zero {f : PowerSeries ℂ_[p]} (hf : PowerSeries.constantCoeff f = 0)
     (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0) :
@@ -50,7 +50,7 @@ theorem constantCoeff_subst_zero {f : PowerSeries ℂ_[p]} (hf : PowerSeries.con
   exact PowerSeries.constantCoeff_subst_eq_zero ha f hf
 
 /- English proof (translation)
-Use `show PowerSeries.subst (PowerSeries.subst a l + PowerSeries.subst b l) ex = PowerSeries.subst (PowerSeries.subst b l + PowerSeries.subst a l) ex`. Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_comm' (l ex : PowerSeries ℂ_[p]) (a b : MvPowerSeries σ ℂ_[p]) :
     add l ex a b = add l ex b a := by
@@ -59,9 +59,9 @@ theorem add_comm' (l ex : PowerSeries ℂ_[p]) (a b : MvPowerSeries σ ℂ_[p]) 
   rw [add_comm]
 
 /- English proof (translation)
-Establish `hl` using `constantCoeff_log_eq_zero hex h`. Establish `hla` using `constantCoeff_subst_zero hl a ha`. Establish `hlb` using `constantCoeff_subst_zero hl b hb`. Establish `hlc` using `constantCoeff_subst_zero hl c hc`. Use `show PowerSeries.subst (PowerSeries.subst (add l ex a b) l + PowerSeries.subst c l) ex = PowerSeries.subst (PowerSeries.subst a l + PowerSeries.subst (add l ex b c) l) ex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show add l ex a b = PowerSeries.subst (PowerSeries.subst a l + PowerSeries.subst b l) ex from rfl, subst_subst_log hex h _ (by rw [map_add, hla, hlb, add_zero]), show add l ex b c = PowerSeries.subst (PowerSeries.subst b l + PowerSeries.subst c l) ex from rfl, subst_subst_log he …`.
+A detailed English derivation is pending.
 -/
 theorem add_assoc' {l ex : PowerSeries ℂ_[p]}
     (hex : PowerSeries.constantCoeff ex = 0) (h : PowerSeries.subst ex l = PowerSeries.X)
@@ -80,7 +80,7 @@ theorem add_assoc' {l ex : PowerSeries ℂ_[p]}
     subst_subst_log hex h _ (by rw [map_add, hlb, hlc, add_zero]), add_assoc]
 
 /- English proof (translation)
-Use `show MvPowerSeries.constantCoeff (f - g) = 0 ∧ IntegralMv (expMv (f - g))`. Rewrite using `[e]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeq_of_sub_eq {f g f' g' : MvPowerSeries σ ℂ_[p]} (e : f - g = f' - g')
     (hs : Simeq f' g') : Simeq f g := by
@@ -89,15 +89,15 @@ theorem simeq_of_sub_eq {f g f' g' : MvPowerSeries σ ℂ_[p]} (e : f - g = f' -
   exact hs
 
 /- English proof (translation)
-Conclude with `MvPowerSeries.constantCoeff_X i`.
+A detailed English derivation is pending.
 -/
 theorem cc_Xv (i : Fin 3) : MvPowerSeries.constantCoeff (Xv (p := p) i) = 0 := by
   exact MvPowerSeries.constantCoeff_X i
 
 /- English proof (translation)
-Introduce `p _ l ex ph hex h hC`. Prove the components needed by the constructor for the conclusion. Use `simeq_of_sub_eq ?_ hC` and prove the remaining obligations. Simplify using `only [be]`. Rewrite using `[add_comm' l ex (Xv 2) (Xv 0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `simeq_of_sub_eq ?_ hC` and prove the remaining obligations. Simplify using `only [be]`. Rewrite using `[add_comm' l ex (Xv 2) (Xv 0), add_assoc' hex h (Xv 0) (Xv 1) (Xv 2) (cc_Xv 0) (cc_Xv 1) (cc_Xv 2)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem target : Target := by
   intro p _ l ex ph hex h hC

@@ -21,11 +21,11 @@ variable {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A :
   (K : ClassesAtPrimes M bad)
 
 /- English proof (translation)
-Set `χ : GA D D.sp.X' → ℂ` to `fun h => if hh : ∃ κ : K.lev.U, HasMat h κ.1 then star ((K.lev.chi hh.choose : ℂˣ) : ℂ) else 0`. Establish `hχ : ∀ h (κ : K.lev.U), HasMat h κ.1 → χ h = star ((K.lev.chi κ : ℂˣ) : ℂ)`. Introduce `h κ hk`. Establish `hh : ∃ κ : K.lev.U, HasMat h κ.1` using `⟨κ, hk⟩`. Simplify using `only [χ, dif_pos hh]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show hh.choose = κ from Subtype.ext (hasMat_mat hh.choose_spec hk)]`. Establish `e : ∀ h : GA D D.sp.X', x * (x⁻¹ * h * x) * x⁻¹ = h` using `fun h => by group`. Use `⟨{k | ∃ κ : K.lev.U, HasMat (x * k * x⁻¹) κ.1}, fun k => χ (x * k * x⁻¹), ⟨fun h => ?_, fun h κ hk => ?_⟩, fun κ => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, e]`. Simplify using `only [e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hχ h κ hk`. Take `⟨h, hh⟩` from `hasMat_exists ⟨κ.1, ((K.lev.U_eq _).1 κ.2).1⟩`. Conclude with `⟨h, hh, κ, by rw [e]; exact hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levG_exists (x : GA D D.sp.X') : ∃ J χ, LevG K x J χ ∧ ∀ κ : K.lev.U, ∃ h, HasMat h κ.1 ∧ x⁻¹ * h * x ∈ J := by
   let χ : GA D D.sp.X' → ℂ := fun h => if hh : ∃ κ : K.lev.U, HasMat h κ.1 then star ((K.lev.chi hh.choose : ℂˣ) : ℂ) else 0
@@ -42,7 +42,7 @@ theorem levG_exists (x : GA D D.sp.X') : ∃ J χ, LevG K x J χ ∧ ∀ κ : K.
     exact ⟨h, hh, κ, by rw [e]; exact hh⟩
 
 /- English proof (translation)
-Rewrite using `[← hL.2 h κ hk, ← hf _ ((hL.1 h).2 ⟨κ, hk⟩)]`. Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem levG_type {x : GA D D.sp.X'} {J : Set (GA D D.sp.X')} {χ : GA D D.sp.X' → ℂ} (hL : LevG K x J χ) (f : GA D D.sp.X' → ℂ)
     (hf : ∀ k ∈ J, ∀ g, f (g * k) = χ k * f g) (g h : GA D D.sp.X') (κ : K.lev.U) (hk : HasMat h κ.1) :
@@ -54,14 +54,14 @@ variable {S : D.what₂.Tau → SPar} {MX : DSModel D.sp.X' S} (eW : Pm.Wrow ≃
   (j : SmT MX →ₗ[ℂ] (FrP D → ℂ)) (x : GA D D.sp.X')
 
 /- English proof (translation)
-Introduce `a b h` and use `K.y_bij.1 (by have : K.y a = K.y b := Subtype.ext h simp only [this])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem y_inj : Function.Injective fun c => (K.y c).1 := fun a b h =>
   K.y_bij.1 (by have : K.y a = K.y b := Subtype.ext h
                 simp only [this])
 
 /- English proof (translation)
-Set `φ : M.clsP → SmT MX →ₗ[ℂ] ℂ` to `fun c => (Nat.card (M.stabilizer₂ c) : ℂ) • ((Pm.period.flip G) ∘ₗ (eW.symm : _ →ₗ[ℂ] Pm.Wrow) ∘ₗ (LinearMap.single ℂ (fun _ => FrP D → ℂ) c) ∘ₗ j)`. Use `⟨LinearMap.pi fun g => if hh : ∃ c, HasMat (g * x⁻¹) (K.y c).1 then φ hh.choose else 0, fun c v h hc => ?_⟩` and prove the remaining obligations. Establish `hh : ∃ c, HasMat (h * x * x⁻¹) (K.y c).1` using `⟨c, by rwa [mul_inv_cancel_right]⟩`. Establish `e : hh.choose = c` using `y_inj K (hasMat_mat hh.choose_spec (by rwa [mul_inv_cancel_right]))`. Simplify using `only [LinearMap.pi_apply, dif_pos hh, e, φ]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -75,11 +75,9 @@ theorem readsG_exists (G : Pm.Mt) : ∃ f, ReadsG K eW j x G f := by
   simp
 
 /- English proof (translation)
-Use `choose v hv using hw`. Establish `e : w = ∑ c, eW.symm (Pi.single c (j (v c)))`. Rewrite using `[← map_sum, LinearEquiv.eq_symm_apply]`. Simplify using `only [hv]`. Conclude with `(Finset.univ_sum_single _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, map_sum, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `hasMat_exists (K.y c)`. Establish `hc : (Nat.card (M.stabilizer₂ c) : ℂ) ≠ 0`. Conclude with `(Nat.card_pos (α := M.stabilizer₂ c)).ne'` after adjusting the coercions.
-
-Conclude with `mul_left_cancel₀ hc ((h c _ g hg).symm.trans (h' c _ g hg))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ReadsG.period_eq {G G' : Pm.Mt} {f : SmT MX →ₗ[ℂ] (GA D D.sp.X' → ℂ)} (h : ReadsG K eW j x G f) (h' : ReadsG K eW j x G' f)
     (w : Pm.Wrow) (hw : ∀ c, eW w c ∈ LinearMap.range j) : Pm.period w G = Pm.period w G' := by
@@ -96,16 +94,16 @@ theorem ReadsG.period_eq {G G' : Pm.Mt} {f : SmT MX →ₗ[ℂ] (GA D D.sp.X' �
   exact mul_left_cancel₀ hc ((h c _ g hg).symm.trans (h' c _ g hg))
 
 /- English proof (translation)
-Introduce `h` and use `hG (by simpa using ReadsG.period_eq K eW j x h (readsG_zero K eW j x) w hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_readsG_zero {G : Pm.Mt} (w : Pm.Wrow) (hw : ∀ c, eW w c ∈ LinearMap.range j) (hG : Pm.period w G ≠ 0) :
     ¬ ReadsG K eW j x G 0 := fun h =>
   hG (by simpa using ReadsG.period_eq K eW j x h (readsG_zero K eW j x) w hw)
 
 /- English proof (translation)
-Establish `h2 : ReadsG K eW j x (a • G) f` using `fun c v g hg => by`. Rewrite using `[h' c v g hg]`. Simplify using `[Pi.single_smul']`. Use `ReadsG.period_eq K eW j x h h2 w hw` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_right_cancel₀ hG (this.symm.trans (one_mul _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem ReadsG.scalar {G : Pm.Mt} {f : SmT MX →ₗ[ℂ] (GA D D.sp.X' → ℂ)} {a : ℂ} (h : ReadsG K eW j x G f)
     (h' : ReadsG K eW (a • j) x G f) (w : Pm.Wrow) (hw : ∀ c, eW w c ∈ LinearMap.range j) (hG : Pm.period w G ≠ 0) : a = 1 := by
@@ -124,9 +122,9 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {P : LevelP R.Pg D.R.r ℂ} {u : D.what₂.Word} {g : Geo D}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.m_even`. Use `⟨fun j ρ hj => ?_, fun j σ hj => ?_⟩` and prove the remaining obligations. Establish `: Odd (j + 1)` using `⟨a - ρ - 1, by omega⟩`. Rewrite using `[(h.sBF j ρ hj).2.2.1, (h.sBF j ρ hj).2.2.2, Lift.chrStep, if_pos this]`. Establish `: ¬ Odd (j + 1 + 1)` using `Nat.not_odd_iff_even.2 ⟨a - σ - 1, by omega⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(h.sFB j σ hj).2.2.1, (h.sFB j σ hj).2.2.2, Lift.chrStep, if_neg this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chars_agree {t : T} {r : RowCh R P u g t} (h : r.Is) :
     (∀ j ρ hj, ((r.sBF j ρ hj).χV, (r.sBF j ρ hj).χW) = Lift.chrStep (R.toLevCh.mu t) R.eta (j + 1)) ∧
@@ -139,7 +137,7 @@ theorem chars_agree {t : T} {r : RowCh R P u g t} (h : r.Is) :
     rw [(h.sFB j σ hj).2.2.1, (h.sFB j σ hj).2.2.2, Lift.chrStep, if_neg this]
 
 /- English proof (translation)
-The claim follows from `hv t j hj`.
+A detailed English derivation is pending.
 -/
 theorem isStepVector_trivial_of_chain (hv : R.chain_vY) (t : T) (j : ℕ) (hj : j + 1 < D.R.m) :
     IsStepVecOf R.ψ R.θ (Yc D j) (Yc D (j + 1)) (cart (R.MY j)) (cart (R.MY (j + 1))) (R.ΛY j)
@@ -156,21 +154,21 @@ Both sides reduce to the same expression.
 example (t : T) : datXP R R.triv t = R.datXt t := rfl
 
 /- English proof (translation)
-The claim follows from `(h.volT t).symm.trans (h.volT t')`.
+A detailed English derivation is pending.
 -/
 theorem GeoMeas.common (h : GeoMeas R g) (t t' : T) :
     ENNReal.ofReal (g.κ D.R.m * volLev R g t (D.R.m - 1)) • R.νX t = ENNReal.ofReal (g.κ D.R.m * volLev R g t' (D.R.m - 1)) • R.νX t' :=
   (h.volT t).symm.trans (h.volT t')
 
 /- English proof (translation)
-Introduce `h` and use `by have := g.volT.haar exact NeZero.ne g.volT.μ (by rw [h.volT t, h0, smul_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_geoMeas (t : T) (h0 : R.νX t = 0) : ¬ GeoMeas R g := fun h => by
   have := g.volT.haar
   exact NeZero.ne g.volT.μ (by rw [h.volT t, h0, smul_zero])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ kom := fun _ => 1, Ch := fun _ => Unit, dd := fun _ _ _ => 0, e := fun _ _ => Finsupp.single 1 1, eT := fun _ _ _ => Finsupp.single 1 1, Ram := fun _ => Set.univ, S := fun _ => id, rd := fun _ _ _ _ _ => 0, cV := fun _ => 1, cK := fun _ => 1, cP := 1 }, fun _ => ⟨()⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem colCh_nonempty (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) : ∃ k : ColCh u C, ∀ j, Nonempty (k.Ch j) :=
   ⟨{ kom := fun _ => 1, Ch := fun _ => Unit, dd := fun _ _ _ => 0, e := fun _ _ => Finsupp.single 1 1, eT := fun _ _ _ => Finsupp.single 1 1,
@@ -178,7 +176,7 @@ theorem colCh_nonempty (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) : ∃ k : C
     fun _ => ⟨()⟩⟩
 
 /- English proof (translation)
-Take `⟨h1, -, h3, -⟩` from `VolExist.measures_exist D`. Conclude with `⟨{ vol := fun _ => (h1 _).some, volT := (h1 _).some, x := fun j => ⟨fun _ => 1, fun _ => 1, ⊥, (h1 _).some⟩, vac := fun _ _ => 0, bes := bes, jac := jac, lnk := fun j σ h => lnk j σ h _, vL := fun _ _ _ => (h3 _ _).some, Lz := Lz, oT := fun n h => h ▸ o, μf := fun _ => 0, μT := 0 …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem geo_nonempty (bes : ∀ j ρ, j + 2 * ρ + 2 = D.R.m → BesAt (Yc D j) (D.sp.X j) ρ)
     (jac : ∀ j ρ, j + 2 * ρ + 2 = D.R.m → JacAt (Yc D (j + 1)) (D.sp.X (j + 1)) ρ)
@@ -200,9 +198,9 @@ variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex)
 
 /- English proof (translation)
-Distinguish the cases in `h : μ = D.what₂.mu0`. Substitute `h` using the available equality. Take `⟨f, hf⟩` from `readsG_exists (W.R.T.cols.forms u).clsP.toG (W.R.T.cols.forms u).valP.eW j x ((D.eMt u).symm G)`. Conclude with `⟨f, fun _ => hf, fun h => absurd rfl h⟩`. Take `⟨f, hf⟩` from `readsG_exists (W.R.T.tw.pt.cls u μ h) (W.R.T.tw.pt.val u μ h).eW j x ((D.eMtTw u μ).symm G)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, fun h' => absurd h' h, fun _ => hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem reads_exists (u : D.what₂.Word) (j : SmT (pk W).MX →ₗ[ℂ] (FrP D → ℂ)) (x : GA D D.sp.X') (μ : D.what₂.Tup) (G : D.what₂.Amb μ) :
     ∃ f, Reads W u j x μ G f := by
@@ -214,7 +212,7 @@ theorem reads_exists (u : D.what₂.Word) (j : SmT (pk W).MX →ₗ[ℂ] (FrP D 
     exact ⟨f, fun h' => absurd h' h, fun _ => hf⟩
 
 /- English proof (translation)
-Establish `hx : ∃ G, Reads W u j x μ G f` using `⟨G, hG⟩`. Rewrite using `[tailOf, dif_pos hx, dif_neg h]`. Conclude with `ReadsG.period_eq _ _ j x (hx.choose_spec.2 h) (hG.2 h) _ hψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tailOf_eq (u : D.what₂.Word) (j : SmT (pk W).MX →ₗ[ℂ] (FrP D → ℂ)) (x : GA D D.sp.X') (μ : D.what₂.Tup) (h : μ ≠ D.what₂.mu0)
     (ψ : (D.chTw u μ).cls D.R.m → (D.chTw u μ).Y D.R.m → ℂ) (G : D.what₂.Amb μ) (f : SmT (pk W).MX →ₗ[ℂ] (GA D D.sp.X' → ℂ))
@@ -226,14 +224,14 @@ theorem tailOf_eq (u : D.what₂.Word) (j : SmT (pk W).MX →ₗ[ℂ] (FrP D →
   exact ReadsG.period_eq _ _ j x (hx.choose_spec.2 h) (hG.2 h) _ hψ
 
 /- English proof (translation)
-Introduce `h` and use `not_isJ_zero _ h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_topReadAt_zero (u : D.what₂.Word) (x : GA D D.sp.X') : ¬ TopReadAt W u 0 x := fun h => not_isJ_zero _ h.1
 
 /- English proof (translation)
-Introduce and unpack `⟨-, k, hk, r, -, e, hS⟩`. Establish `hr : r = ((p ^ k : ℕ) : ℚ)`. Establish `: (r : ℂ) = (((p ^ k : ℕ) : ℚ) : ℂ)` using `by rw [← e]; simp`. Conclude with `this` after adjusting the coercions. Use `not_badPrime_base W u p (hS p hp ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Fact.mk hp` as an intermediate fact. Rewrite using `[hr, padicValRat.of_nat, padicValNat.prime_pow]`. Conclude with `hk.ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_unitRatio_base (u : D.what₂.Word) (p : ℕ) (hp : p.Prime) : ¬ UnitRatio (badPrime W u W.P.A3.A.μ0) (p : ℂ) 1 := by
   rintro ⟨-, k, hk, r, -, e, hS⟩

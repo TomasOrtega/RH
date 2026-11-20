@@ -7,15 +7,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hk : 1 ≤ R.k` using `by have := R.m_add_three_le_k; omega`. Establish `hm : (0 : ℝ) < R.m`. Use `R.two_le_m` as an intermediate fact. Conclude with `(by omega : 0 < R.m)` after adjusting the coercions. Establish `hmf : (R.m : ℝ) ≤ R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: R.m ≤ R.f` using `R.m_le_f`. Conclude with `this` after adjusting the coercions. Establish `hL : 1 ≤ s.L` using `Real.one_le_rpow s.one_lt_alt.le s.eps_pos.le`. Establish `hk' : (0 : ℝ) ≤ (R.k : ℝ) - 1`. Establish `: (1 : ℝ) ≤ R.k` using `by exact_mod_cast hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL2 : 1 ≤ s.L ^ 2` using `one_le_pow₀ hL`. Establish `h1 : (R.f : ℝ) * ((R.k : ℝ) - 1) ^ 3 ≤ (R.f : ℝ) ^ 2 * ((R.k : ℝ) - 1) ^ 3 * s.L ^ 2 / R.m`. Rewrite using `[le_div_iff₀ hm]`. Establish `hA : (0 : ℝ) ≤ (R.f : ℝ) * ((R.k : ℝ) - 1) ^ 3` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hf : (0 : ℝ) ≤ R.f` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Nat.le_ceil (10 * (R.r : ℝ) * ((R.f : ℝ) + (R.f : ℝ) ^ 2 * ((R.k : ℝ) - 1) ^ 3 * s.L ^ 2 / R.m) / 8)`. Establish `h3 : 10 * (R.r : ℝ) * ((R.f : ℝ) + (R.f : ℝ) * ((R.k : ℝ) - 1) ^ 3) ≤ 10 * (R.r : ℝ) * ((R.f : ℝ) + (R.f : ℝ) ^ 2 * ((R.k : ℝ) - 1) ^ 3 * s.L ^ 2 / R.m)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `h4 : ((10 * R.r * (R.f + R.f * (R.k - 1) ^ 3) : ℕ) : ℝ) ≤ (nWv R s : ℕ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Unfold `nWv`. Move the coercions through the operations in `[Nat.cast_sub hk]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h4` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nWv_lower (R : Ranks) (s : Scale) :
     10 * R.r * (R.f + R.f * (R.k - 1) ^ 3) ≤ nWv R s := by
@@ -51,15 +51,15 @@ theorem nWv_lower (R : Ranks) (s : Scale) :
   exact_mod_cast h4
 
 /- English proof (translation)
-Establish `h` using `nWv_lower R s`. Establish `h2` using `R.two_le_m`. Establish `h3` using `R.m_add_three_le_k`. Establish `hf : 2 ≤ R.f` using `le_trans h2 R.m_le_f`. Establish `hr : R.r = R.k + R.m - 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `nWv R s = W at h`. Generalize the expression as in `R.f = f at *`. Generalize the expression as in `R.r = r at *`. Take `⟨j, hj⟩ : ∃ j, R.k - 1 = j` from `⟨_, rfl⟩`. Rewrite `h`, the goal using `[hj]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hj1 : 1 ≤ j` using `by omega`. Establish `hjr : j ≤ r` using `by omega`. Establish `hrj : r + 1 ≤ 2 * j` using `by omega`. Establish `hj3 : j ≤ j ^ 3` using `Nat.le_self_pow (by norm_num) j`. Establish `hfr : 2 * 2 ≤ f * r` using `Nat.mul_le_mul hf (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 10 * r * (f + f * j ^ 3) = 10 * (f * r) + f * r * (10 * j ^ 3)` using `by ring`. Rewrite `h` using `[e]`. Establish `a1 : f * r * (r + 1) ≤ f * r * (10 * j ^ 3)` using `Nat.mul_le_mul_left _ (by omega)`. Establish `a2 : j * f ≤ f * r` using `by rw [mul_comm]; exact Nat.mul_le_mul_left _ hjr`. Establish `a3 : 2 * r ≤ f * r` using `Nat.mul_le_mul_right _ hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4 : 8 * f * r = 8 * (f * r)` using `by ring`. Use `⟨by omega, by omega, by omega⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem nWv_three_lower (R : Ranks) (s : Scale) :
     R.f * R.r * (R.r + 1) ≤ nWv R s ∧ (R.k - 1) * R.f + 2 * R.r ≤ nWv R s ∧
@@ -88,17 +88,17 @@ theorem nWv_three_lower (R : Ranks) (s : Scale) :
   refine ⟨by omega, by omega, by omega⟩
 
 /- English proof (translation)
-Introduce `eps _ _ C hC`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun D L _ _ hV => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hW : C.P.CnW = 10`. Establish `hF` using `hC.1`. Unfold `FC.Fixed at hF`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-The claim follows by propositional logic. Establish `hT : C.T.cTO = 377` using `hC.2.2.2.2.2.2.2.2.2.1`. Establish `hk : (0 : ℝ) ≤ (D.R.k : ℝ) - 1`. Establish `: 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `: (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast this`.
+The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨⟨?_, ?_⟩, Dvd.intro _ rfl, hV.ranks.2.2.2, ?_, ?_, by omega, by omega, nWv_three_lower _ _⟩` and prove the remaining obligations. Rewrite using `[hW]`. Unfold `nW nWv`. Use `Nat.le_ceil (10 * (D.R.r : ℝ) * ((D.R.f : ℝ) + (D.R.f : ℝ) ^ 2 * ((D.R.k : ℝ) - 1) ^ 3 * L.sc.L ^ 2 / D.R.m) / 8)` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hW]`. Unfold `nW nWv`. Use `Nat.ceil_lt_add_one (a := 10 * (D.R.r : ℝ) * ((D.R.f : ℝ) + (D.R.f : ℝ) ^ 2 * ((D.R.k : ℝ) - 1) ^ 3 * L.sc.L ^ 2 / D.R.m) / 8) (by positivity)` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hT]`. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `D.R.k_even`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Conclude with `⟨a + b + 2, by omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem szRow_nW : SzRow (fun C D L => (nW L C.P.CnW ≤ ((nWv D.R L.sc : ℕ) : ℝ) ∧ ((nWv D.R L.sc : ℕ) : ℝ) < nW L C.P.CnW + 8) ∧ (8 ∣ (nWv D.R L.sc : ℕ)) ∧ (D.R.r + D.R.t = (8 * D.R.f * D.R.r + 4 : ℕ) + (TOv L.sc : ℕ) * (nWv D.R L.sc : ℕ)) ∧ ((TOv L.sc : ℕ) = ⌈L.sc.x ^ C.T.cTO⌉₊) ∧ (Odd (D.R.r + 6 : ℕ)) ∧ (D.R.r + 5 < (D.R.r + 6 : ℕ)) ∧ ((D.R.r + 6 : ℕ) ≤ D.R.r + 7) ∧ (D.R.f * D.R.r * (D.R.r + 1) ≤ (nWv D.R L.sc : ℕ) ∧ (D.R.k - 1) * D.R.f + 2 * D.R.r ≤ (nWv D.R L.sc : ℕ) ∧ (8 * D.R.f * D.R.r + 4 : ℕ) ≤ (nWv D.R L.sc : ℕ))) := by
   intro eps _ _ C hC

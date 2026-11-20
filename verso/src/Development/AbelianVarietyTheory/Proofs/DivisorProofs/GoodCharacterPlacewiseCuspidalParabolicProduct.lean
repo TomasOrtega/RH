@@ -20,17 +20,17 @@ namespace GlobalTheory.GoodCharProd
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨n, ρ, hρ, hχ⟩` from `h`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Set `ι : AlgebraicClosure K →ₐ[K] ℂ` to `IsAlgClosed.lift`. Establish `hι : ∀ x : K, ι (algebraMap K (AlgebraicClosure K) x) = σ x` using `fun x => ι.commutes x`. Establish `hch : ∀ g, ρ.character g = Matrix.trace (LinearMap.toMatrix' (ρ g))` using `fun g => by`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Representation.character, LinearMap.trace_eq_matrix_trace _ (Pi.basisFun _ (Fin n)), LinearMap.toMatrix_eq_toMatrix']`. Set `ρm : G →* GL (Fin n) (AlgebraicClosure K)` to `MonoidHom.toHomUnits ((LinearMap.toMatrixAlgEquiv' : Module.End (AlgebraicClosure K) (Fin n → AlgebraicClosure K) ≃ₐ[AlgebraicClosure K] Matrix (Fin n) (Fin n) (AlgebraicClosure K)).toRingEquiv.toMonoidHom.comp ρ)`. Set `ρc : G →* GL (Fin n) ℂ` to `(Matrix.GeneralLinearGroup.map (ι : AlgebraicClosure K →+* ℂ)).comp ρm`. Establish `htr : ∀ g, Matrix.trace (ρc g : Matrix (Fin n) (Fin n) ℂ) = σ (χ g)` using `fun g => by`. Rewrite using `[← hι, ← hχ g, hch g]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ρc, ρm, Matrix.trace, Matrix.diag, map_sum]`. Establish `hC : ∀ g, star (σ (χ g)) = σ (χ g⁻¹)` using `fun g => by`. Use `PI.SerBridgeGLW.conjugate_character_formula G (PI.SerBridgeGLW.repOfGL ρc) g` as an intermediate fact. Rewrite `this` using `[PI.SerBridgeGLW.repOfGL_character, PI.SerBridgeGLW.repOfGL_character, htr, htr]`. Then use the resulting hypothesis. Use `⟨⟨n, ρc, fun g => (htr g).symm⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `horth` using `Formalism.L2.Col.gx_orth (G := G) (k := AlgebraicClosure K) (ψ := ρ.character) (ψ' := ρ.character) ⟨n, ρ, hρ, rfl⟩ ⟨n, ρ, hρ, rfl⟩`. Rewrite `horth` using `[if_pos rfl]`. Establish `hcard : (Nat.card G : AlgebraicClosure K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hsum : ∑ g, ρ.character g * ρ.character g⁻¹ = (Nat.card G : AlgebraicClosure K)`. Rewrite using `[← mul_one (Nat.card G : AlgebraicClosure K), ← horth, ← mul_assoc, mul_inv_cancel₀ hcard, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.L2.NT.ipG`. Simplify using `only [hC]`. Use `congrArg ι hsum` as an intermediate fact. Rewrite `this` using `[map_sum, map_natCast, Nat.card_eq_fintype_card]`. Rewrite using `[← this]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hχ, hχ, hι, hι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIrrChar_of_abs {G K : Type} [Group G] [Fintype G] [Field K] [CharZero K] (σ : K →+* ℂ) {χ : G → K}
     (h : IsAbsIrrChar χ) : Formalism.L2.NT.IsIrrChar (fun g => σ (χ g)) := by
@@ -68,7 +68,7 @@ theorem isIrrChar_of_abs {G K : Type} [Group G] [Fintype G] [Field K] [CharZero 
   rw [map_mul, hχ, hχ, hι, hι]
 
 /- English proof (translation)
-Take `⟨⟨n, ρ, hρ⟩, hip⟩` from `h`. Use `⟨⟨n, ρ.comp e.toMonoidHom, fun x => hρ _⟩, ?_⟩` and prove the remaining obligations. Unfold `Formalism.L2.NT.ipG at hip ⊢`. Rewrite using `[Fintype.card_congr e.toEquiv, ← hip]`. Conclude with `Fintype.sum_equiv e.toEquiv _ _ fun _ => rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrrChar_comp {G G' : Type} [Group G] [Fintype G] [Group G'] [Fintype G'] (e : G' ≃* G) {χ : G → ℂ}
     (h : Formalism.L2.NT.IsIrrChar χ) : Formalism.L2.NT.IsIrrChar fun x => χ (e x) := by
@@ -79,17 +79,15 @@ theorem isIrrChar_comp {G G' : Type} [Group G] [Fintype G] [Group G'] [Fintype G
   exact Fintype.sum_equiv e.toEquiv _ _ fun _ => rfl
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R hrec hE hX χ hχ`. Take `⟨eR, plg, iso, h1, -, h2⟩` from `hrec`. Use `letI : Fintype (G0g D.nd) := Fintype.ofEquiv G eR.toEquiv`. Establish `hirr : Formalism.L2.NT.IsIrrChar fun x : G0g D.nd => D.what₂.embLL (χ (eR.symm x))` using `isIrrChar_comp eR.symm (isIrrChar_of_abs D.what₂.embLL (hX χ hχ))`. Establish `he0 : ∑ x : G0g D.nd, D.ntypes.e0.coeff x * D.what₂.embLL (χ (eR.symm x)) = D.what₂.embLL (χ (eR.symm 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `congrArg D.what₂.embLL (GlobalTheory.IdemChar.sum_coeff_idemOf_mul D.what₂.LL G A.X hX χ hχ)`. Rewrite `h0` using `[map_sum]`. Rewrite using `[map_one, ← h0]`. Use `symm`. Use `Fintype.sum_equiv eR.toEquiv _ _ fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h1]`. Take `⟨θ, hθ, hχθ⟩` from `GlobalTheory.T.irreducible_character_good_idempotent_cuspidal_product' D hE _ hirr he0`. Establish `key : ∀ PP : R.Pg, ∃ θ' : GL (Fin D.R.r) (kP PP.1) → ℂ, @GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.IsCuspProdChar (kP PP.1) (Ideal.Quotient.field PP.1.asIdeal) D.R.r θ' ∧ ∀ g, θ' (R.eG g PP) = θ (plg.symm PP) (eR g (plg.symm PP))`. Introduce `PP`. Take `⟨kv, rfl⟩` from `plg.surjective PP`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : Fact (D.host.g kv.1).Prime := ⟨D.host.g_prime kv.1⟩`. Use `letI := Ideal.Quotient.field (plg kv).1.asIdeal`. Use `⟨_, GlobalTheory.FinGL.Transport.isCuspProdChar_transport _ _ (iso kv) _ _ (hθ kv), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, h2]`. Conclude with `congrArg _ ((GlobalTheory.FinGL.Transport.glEquiv (iso kv) D.R.r).symm_apply_apply _)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose θ' hθ' hθ'' using key`. Use `⟨θ', hθ', fun x => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `R.eG.surjective x`. Simplify using `only [hθ'', MulEquiv.symm_apply_apply]`. Establish `h3` using `hχθ (eR g)`.
-
-Rewrite `h3` using `[MulEquiv.symm_apply_apply]`. Rewrite using `[h3]`. Conclude with `(Fintype.prod_equiv plg.symm _ _ fun _ => rfl).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProdCuspChar_good : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.grp_record → (∀ k : Fin 2, haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; ∃ (C : Formalism.IrreducibleCountingLemmas.TYPES.LabelConv (ZMod (D.host.g k))) (O : Formalism.IrreducibleCountingLemmas.TYPES.LabelMap (ZMod (D.host.g k)) C), ∀ f, D.ntypes.eSer k f = Formalism.L2.NT.eSerO O D.R.r f) → (∀ χ ∈ A.X, IsAbsIrrChar χ) → ∀ χ ∈ A.X, GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.IsProdCuspChar D.what₂.embLL R.Pg D.R.r fun g => χ (R.eG.symm g) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hrec hE hX χ hχ

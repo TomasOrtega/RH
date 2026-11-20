@@ -16,9 +16,9 @@ namespace GlobalTheory.ChernCalc.DensTop
 variable {n : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `h : Disjoint S T`. Take `⟨ε, e⟩` from `bas_mul h`. Conclude with `⟨_, by rw [e, Units.smul_def, ← Int.cast_smul_eq_zsmul ℂ]⟩`. Use `ExteriorAlgebra.basis_mul_of_not_disjoint ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv) (Set.powersetCard.ofCard (s := S) rfl) (Set.powersetCard.ofCard (s := T) rfl) h` as an intermediate fact. Establish `e : bas n S * bas n T = 0` using `this`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨0, by rw [e, zero_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem bas_mul_smul (S T : Finset (Fin (n + n))) : ∃ c : ℂ, bas n S * bas n T = c • bas n (S ∪ T) := by
   by_cases h : Disjoint S T
@@ -30,11 +30,11 @@ theorem bas_mul_smul (S T : Finset (Fin (n + n))) : ∃ c : ℂ, bas n S * bas n
     exact ⟨0, by rw [e, zero_smul]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, ∅, by simp, by simp [bas_empty]⟩`. Consider the case `insert a s ha ih`. Take `⟨c, S, hS, e⟩` from `ih`. Take `⟨c₁, h₁⟩` from `bas_mul_smul {finSumFinEquiv (.inl (x a).1)} {finSumFinEquiv (.inr (x a).2)}`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₂, h₂⟩` from `bas_mul_smul ({finSumFinEquiv (.inl (x a).1)} ∪ {finSumFinEquiv (.inr (x a).2)}) S`. Use `⟨c₁ * c * c₂, ({finSumFinEquiv (.inl (x a).1)} ∪ {finSumFinEquiv (.inr (x a).2)}) ∪ S, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_insert_of_notMem ha]`. Use `(Finset.card_union_le _ _).trans ?_` and prove the remaining obligations. Use `Finset.card_union_le ({finSumFinEquiv (.inl (x a).1)} : Finset (Fin (n + n))) {finSumFinEquiv (.inr (x a).2)}` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Finset.card_singleton, Finset.card_singleton]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_insert ha, Subalgebra.coe_mul, e, show (sym (x a) : Alt n) = dz (x a).1 * dzb (x a).2 from rfl, dz, dzb, ← bas_singleton, ← bas_singleton, h₁, smul_mul_smul_comm, h₂, smul_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem prod_sym_eq {ι : Type} [DecidableEq ι] (x : ι → Fin n × Fin n) (s : Finset ι) :
     ∃ (c : ℂ) (S : Finset (Fin (n + n))), S.card ≤ 2 * s.card ∧ ((∏ j ∈ s, sym (x j) : Ev n) : Alt n) = c • bas n S := by
@@ -56,9 +56,9 @@ theorem prod_sym_eq {ι : Type} [DecidableEq ι] (x : ι → Fin n × Fin n) (s 
         ← bas_singleton, h₁, smul_mul_smul_comm, h₂, smul_smul]
 
 /- English proof (translation)
-Simplify using `only [Function.Injective, not_forall] at h`. Take `⟨i, j, hij, hne⟩` from `h`. Establish `h0 : sym (x i) * sym (x j) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `dz (x i).1 * dzb (x i).2 * (dz (x j).1 * dzb (x j).2) = 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hij]`. Conclude with `ι_mul_ι_mul_ι_mul_ι_left _ _ _`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun a => sym (x a)) (Finset.mem_univ i), ← Finset.mul_prod_erase (Finset.univ.erase i) (fun a => sym (x a)) (Finset.mem_erase.2 ⟨fun e => hne e.symm, Finset.mem_univ j⟩), ← mul_assoc, h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_sym_not_inj {m : ℕ} (x : Fin m → Fin n × Fin n) (h : ¬ Function.Injective fun j => (x j).1) :
     (∏ j, sym (x j) : Ev n) = 0 := by
@@ -74,17 +74,17 @@ theorem prod_sym_not_inj {m : ℕ} (x : Fin m → Fin n × Fin n) (h : ¬ Functi
       (Finset.mem_erase.2 ⟨fun e => hne e.symm, Finset.mem_univ j⟩), ← mul_assoc, h0, zero_mul]
 
 /- English proof (translation)
-Simplify using `[dens]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dens_zero' : dens (0 : Alt n) = 0 := by simp [dens]
 
 /- English proof (translation)
-Simplify using `[dens, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dens_add' (x y : Alt n) : dens (x + y) = dens x + dens y := by simp [dens, add_div]
 
 /- English proof (translation)
-Establish `h1` using `dens_vol n`. Rewrite `h1` using `[vol_eq_smul_prod, Subalgebra.coe_smul, dens_smul]`. Conclude with `eq_inv_of_mul_eq_one_right h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dens_prod_diag : dens ((∏ a, sym (a, a) : Ev n) : Alt n) = ((Complex.I / 2) ^ n)⁻¹ := by
   have h1 := dens_vol n
@@ -92,21 +92,21 @@ theorem dens_prod_diag : dens ((∏ a, sym (a, a) : Ev n) : Alt n) = ((Complex.I
   exact eq_inv_of_mul_eq_one_right h1
 
 /- English proof (translation)
-Distinguish the cases in `hm : m = n`. Use `swap`. Establish `h0 : topForm n m = 0` using `by simp [topForm, hm]`. Rewrite using `[h0]`. Simplify using `only [AlternatingMap.zero_apply, mul_zero, zero_div]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne hm with h | h` into its components or cases. Take `⟨c, S, hS, e⟩` from `prod_sym_eq x Finset.univ`. Establish `hne : S ≠ Finset.univ`. Introduce and unpack `rfl`. Simplify using `at hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Simplify using `[dens, Finsupp.single_apply, hne]`. Rewrite using `[prod_sym_not_inj x, Subalgebra.coe_zero, dens_zero']`. Introduce `hi`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Fintype.card_le_of_injective _ hi` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Substitute `hm` using the available equality. Rewrite using `[topForm_self, topForm_self]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : Function.Injective fun j => (x j).1`. Use `swap`. Rewrite using `[prod_sym_not_inj x ha, Subalgebra.coe_zero, dens_zero', det_single_not_inj _ ha, zero_mul, zero_div]`. Set `π : Equiv.Perm (Fin m)` to `Equiv.ofBijective _ (Finite.injective_iff_bijective.mp ha)`. Establish `hπ : ∀ j, (x j).1 = π j` using `fun j => rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (∏ j, sym (x j) : Ev m) = ∏ c, row c (Pi.single (x (π.symm c)).2 1)`. Rewrite using `[← Equiv.prod_comp π fun c => row c (Pi.single (x (π.symm c)).2 1)]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, ← hπ]`. Simplify using `[row, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `prod_row (n := m) (Matrix.of fun c => Pi.single (x (π.symm c)).2 1)`. Establish `e3 : (Matrix.of fun c => (Pi.single (x (π.symm c)).2 1 : Fin m → ℂ)).det = (Pi.basisFun ℂ (Fin m)).det ((fun j => Pi.single (x j).2 1) ∘ π.symm)`. Rewrite using `[Pi.basisFun_det]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(congrArg (fun z : Ev m => dens (z : Alt m)) e2).trans ?_` and prove the remaining obligations. Simplify using `only [hπ, det_single_perm]`. Rewrite using `[Subalgebra.coe_smul, dens_smul, dens_prod_diag, e3, AlternatingMap.map_perm, Equiv.Perm.sign_symm, Units.smul_def, zsmul_eq_mul, ← div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dens_prod {m : ℕ} (x : Fin m → Fin n × Fin n) :
     dens ((∏ j, sym (x j) : Ev n) : Alt n) =
@@ -153,13 +153,13 @@ theorem dens_prod {m : ℕ} (x : Fin m → Fin n × Fin n) :
     Units.smul_def, zsmul_eq_mul, ← div_eq_mul_inv]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Take `⟨l, hl⟩ : ∃ l : List (Fin n × Fin n), (l : Multiset _) = Finsupp.toMultiset u` from `⟨_, Multiset.coe_toList _⟩`. Establish `hu : u = ∑ j, Finsupp.single (l.get j) 1`. Apply `toMultiset_injective'` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[toMultiset_sum_single, Fin.univ_val_map, List.ofFn_get, hl]`. Establish `hmon : (monomial u c : MvPolynomial (Fin n × Fin n) ℂ) = c • ∏ j, X (l.get j)`. Rewrite using `[hu, show (∏ j, X (l.get j) : MvPolynomial (Fin n × Fin n) ℂ) = monomial (∑ j, Finsupp.single (l.get j) 1) 1 from (monomial_sum_one _ _).symm, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hmon, map_smul, Subalgebra.coe_smul, dens_smul, map_prod]`. Simplify using `only [aeval_X]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dens_prod, ← topCoeff_prod, ← mul_div_assoc]`. Use `congr 1`. Unfold `topCoeff`. Simplify using `only [coeff_smul, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => by ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, Subalgebra.coe_add, dens_add', hp, hq, ← add_div]`. Use `congr 1`. Unfold `topCoeff`. Simplify using `only [coeff_add, mul_add, Finset.sum_add_distrib]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dens_aeval_sym (n : ℕ) (P : MvPolynomial (Fin n × Fin n) ℂ) :
     dens ((aeval sym P : Ev n) : Alt n) = topCoeff P / (Complex.I / 2) ^ n := by

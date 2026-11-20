@@ -17,7 +17,7 @@ namespace CrystallineSemistableComparison.Pb.Kap
 namespace LevelPullbackIdentities
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem qid {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingHom.id B)) (w : B ⧸ J) :
     Ideal.quotientMap J (RingHom.id B) h w = w := by
@@ -25,7 +25,7 @@ theorem qid {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingHom.id
   rfl
 
 /- English proof (translation)
-Establish `e : Ideal.quotientMap J (RingHom.id B) h = RingHom.id _` using `RingHom.ext (qid J h)`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spec_qid {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingHom.id B)) {Y : Scheme.{0}}
     (y : Spec (CommRingCat.of (B ⧸ J)) ⟶ Y) :
@@ -35,7 +35,7 @@ theorem spec_qid {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingH
   simp
 
 /- English proof (translation)
-Establish `h` using `T.hs`. Rewrite `h` using `[Finset.prod_of_isEmpty, ht, map_one, mul_one]`. Conclude with `Units.ext h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem s_one {b : Base} {L : b.Fun} (hι : IsEmpty L.ι) (ht : b.t = 1) (T : Thick L) : T.s = 1 := by
   have h := T.hs
@@ -58,9 +58,9 @@ def thHom {b : Base} {L : b.Fun} (hι : IsEmpty L.ι) (ht : b.t = 1) {T T' : Thi
 end LevelPullbackIdentities
 
 /- English proof (translation)
-Introduce `K _ X p n x`. Set `m' : CH.Mor (O (smFun X p)) (O (smFun X p)) (RingHom.id K)` to `⟨(smMor (𝟙 X) (Category.id_comp p)).functor, fun _ => { toFun := fun z => z, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }, fun _ _ => rfl⟩`. Set `η : (CH.Mor.id (O (smFun X p))).G ⟶ m'.G` to `{ app := fun T => LevelPullbackIdentities.thHom (L := smFun X p) ⟨fun j => Empty.elim j⟩ rfl (RingHom.id T.B) (fun r => rfl) (DPMorphism.id T.δ).isDPMorphism (fun _ h => h) (Subtype.ext (Prod.ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun a => LevelPullbackIdentities.qid _ (fun …`. Establish `h1 : (CH.Mor.id (O (smFun X p))).pull n x = x` using `(CrystallineSemistableComparison.P.pull_comp (CH.Mor.id _) (CH.Mor.id _) n x).2`. Establish `h2` using `CrystallineSemistableComparison.P.prism (CH.Mor.id (O (smFun X p))) m' η (fun T x => rfl) n x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2.symm.trans h1`.
+A detailed English derivation is pending.
 -/
 theorem pullR_id' : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of K)) (n : ℕ) (x : HdR p n),
     pullR n (𝟙 X) (Category.id_comp p) x = x := by
@@ -102,7 +102,7 @@ def etaLev (s : ℕ)
 end LevelPullbackIdentities
 
 /- English proof (translation)
-Establish `i1 : RingHomCompTriple (S.L (m + 1)).ι (S.dB m) ((S.dB m).comp (S.L (m + 1)).ι)` using `⟨rfl⟩`. Establish `i2 : RingHomCompTriple (S.dA m) (S.L m).ι ((S.dB m).comp (S.L (m + 1)).ι)` using `⟨RingHom.ext fun a => (hS.dι m a).symm⟩`. Establish `e₁` using `CrystallineSemistableComparison.pull_pull ((S.dB m).comp (S.L (m + 1)).ι) (smB M s (hS.lev (m + 1)) hQ₁).o (nmS (nmLevB S hS m M) 1 s).o j z`. Establish `e₂` using `CrystallineSemistableComparison.pull_pull ((S.dB m).comp (S.L (m + 1)).ι) (nmS (nmLevA S hS m M) l s).o (smB M s (hS.lev m) hQ₀).o j z`. Conclude with `e₁.trans ((CrystallineSemistableComparison.P.prism ((smB M s (hS.lev (m + 1)) hQ₁).o.comp (σ'' := (S.dB m).comp (S.L (m + 1)).ι) (nmS (nmLevB S hS m M) 1 s).o) ((nmS (nmLevA S hS m M) l s).o.comp (σ'' := (S.dB m).comp (S.L (m + 1)).ι) (smB M s (hS.lev m) hQ₀).o) (LevelPullbackIde …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nmHO_nmLevB_bMap (s : ℕ)
     (hQ₁ : ∀ T, QB (S.L (m + 1)) M s T → QA (S.L (m + 1)) M s (((nmB M (hS.lev (m + 1))).mor 0).obj T))
@@ -142,7 +142,7 @@ def etaPull : (nmS (nmPullB L u hu) 1 s).o.G ⋙ (smB N s hL hQN).o.G ⟶
 end LevelPullbackIdentities
 
 /- English proof (translation)
-Establish `i1 : RingHomCompTriple L.ι (RingHom.id L.B) L.ι` using `⟨RingHom.ext fun _ => rfl⟩`. Establish `i2 : RingHomCompTriple (RingHom.id L.A) L.ι L.ι` using `⟨RingHom.ext fun _ => rfl⟩`. Establish `e₁` using `CrystallineSemistableComparison.pull_pull L.ι (smB N s hL hQN).o (nmS (nmPullB L u hu) 1 s).o j z`. Establish `e₂` using `CrystallineSemistableComparison.pull_pull L.ι (nmS (nmPullA L u hu) l s).o (smB M s hL hQM).o j z`. Conclude with `e₁.trans ((CrystallineSemistableComparison.P.prism ((smB N s hL hQN).o.comp (σ'' := L.ι) (nmS (nmPullB L u hu) 1 s).o) ((nmS (nmPullA L u hu) l s).o.comp (σ'' := L.ι) (smB M s hL hQM).o) (LevelPullbackIdentities.etaPull hL u hu s hQN hQM) (fun T x => rfl) j z).trans e₂.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nmHO_nmPullB_bMap (j : ℕ) (z : HO (QA L N s) j) :
     nmHO (nmPullB L u hu) 1 s j (bMap N s hL hQN j z) = bMap M s hL hQM j (nmHO (nmPullA L u hu) l s j z) := by

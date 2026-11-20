@@ -33,7 +33,7 @@ def stdMat (z : Pt Tau j (r - j)) : Frame X.Ψ r := fun τ =>
   (mat (x0F X) τ * reindex (idx hj).symm (idx hj).symm (fromBlocks 1 (z (κ.symm τ)) 0 1) : Matrix (Fin r) (Fin r) ℂ)
 
 /- English proof (translation)
-Use `show reindex _ _ (_ * (mat (x0F X) τ * _)) = _`. Rewrite using `[nonsing_inv_mul_cancel_left _ _ (det_x0F X τ).isUnit]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frameCo_stdMat (z : Pt Tau j (r - j)) (τ : X.Ψ) :
     frameCo X hj (stdMat X hj κ z) τ = fromBlocks 1 (z (κ.symm τ)) 0 1 := by
@@ -42,20 +42,20 @@ theorem frameCo_stdMat (z : Pt Tau j (r - j)) (τ : X.Ψ) :
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `[domPt, frameCo_stdMat, moeb_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem domPt_stdMat (z : Pt Tau j (r - j)) : domPt X hj κ (stdMat X hj κ z) = z := by
   funext t
   simp [domPt, frameCo_stdMat, moeb_zero]
 
 /- English proof (translation)
-Use `ExF.mem_dom_of_gramPos X fun τ => ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (mat (x0F X) τ * _).det ≠ 0`. Rewrite using `[det_mul, det_reindex_self, det_fromBlocks_zero₂₁]`. Simplify using `using det_x0F X τ`. Establish `h0` using `congrArg transpose (isOrth_x0F X τ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[gram_eq_mul, diagonal_transpose, hp]`. Use `set N : Matrix (Fin j ⊕ Fin (r - j)) (Fin j ⊕ Fin (r - j)) ℂ := fromBlocks 1 (z (κ.symm τ)) 0 1 with hN`. Establish `h1 : reindex (idx hj) (idx hj) (gram τ.1 X.Gm (mat (stdMat X hj κ z) τ))ᵀ = Nᴴ * -Jpq j (r - j) * N`. Rewrite using `[gram_eq_mul, ← reindex_sgn hj, ← h0]`. Use `show reindex _ _ ((mat (x0F X) τ * reindex _ _ N)ᴴ * _ * (mat (x0F X) τ * reindex _ _ N)) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, reindex_apply, conjTranspose_submatrix, ← submatrix_mul_equiv _ _ _ (idx hj).symm, submatrix_submatrix, Equiv.symm_symm, Equiv.self_comp_symm, submatrix_id_id, Matrix.mul_assoc]`. Establish `h2 : (Nᴴ * -Jpq j (r - j) * N).toBlocks₂₂ = hQ (z (κ.symm τ))`. Simplify using `[hN, Jpq, fromBlocks_conjTranspose, fromBlocks_neg, fromBlocks_multiply, hQ, sub_eq_neg_add]`. Establish `h3 : X.gramPos (stdMat X hj κ z) τ = ((hQ (z (κ.symm τ))).submatrix (finCongr hp) (finCongr hp))ᵀ`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ a : Fin X.p0, (idx hj).symm (Sum.inr (finCongr hp a)) = Fin.castLE X.p0_le a` using `fun a => Fin.ext (idx_symm_inr hj _)`. Rewrite using `[← h2, ← h1]`. Simplify using `only [transpose_apply, submatrix_apply, toBlocks₂₂, of_apply, reindex_apply, e, Data.gramPos]`. Rewrite using `[h3]`. Conclude with `(PosDef.submatrix (hz (κ.symm τ)) (finCongr hp).injective).transpose`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdMat_mem (hp : X.p0 = r - j) {z : Pt Tau j (r - j)} (hz : z ∈ DomI Tau j (r - j)) :
     stdMat X hj κ z ∈ X.dom := by
@@ -83,7 +83,7 @@ theorem stdMat_mem (hp : X.p0 = r - j) {z : Pt Tau j (r - j)} (hz : z ∈ DomI T
   exact (PosDef.submatrix (hz (κ.symm τ)) (finCongr hp).injective).transpose
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[stdMat, mat]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 example : stdMat X hj κ 0 = x0F X := by
   funext τ
@@ -97,13 +97,13 @@ def stdFrame (hp : X.p0 = r - j) (z : Pt Tau j (r - j)) : X.dom :=
   else ⟨stdMat X hj κ 0, stdMat_mem X hj κ hp fun _ => zero_mem_hcDom _ _⟩
 
 /- English proof (translation)
-Rewrite using `[stdFrame, dif_pos hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stdFrame_val (hp : X.p0 = r - j) {z : Pt Tau j (r - j)} (hz : z ∈ DomI Tau j (r - j)) :
     (stdFrame X hj κ hp z).1 = stdMat X hj κ z := by rw [stdFrame, dif_pos hz]
 
 /- English proof (translation)
-Rewrite using `[stdFrame_val X hj κ hp hz, domPt_stdMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem domPt_stdFrame (hp : X.p0 = r - j) {z : Pt Tau j (r - j)} (hz : z ∈ DomI Tau j (r - j)) :
     domPt X hj κ (stdFrame X hj κ hp z).1 = z := by rw [stdFrame_val X hj κ hp hz, domPt_stdMat]
@@ -129,7 +129,7 @@ abbrev TorPts : Type := CxPts (torStr Y σ) (RingHom.id ℂ)
 def bdSet : Set (torC Y σ) := torPr Y σ ⁻¹' (LogKS.interior Y : Set Y.X)ᶜ
 
 /- English proof (translation)
-The claim follows from `(LogKS.interior Y).isOpen.isClosed_compl.preimage (torPr Y σ).continuous`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_bdSet : IsClosed (bdSet Y σ) :=
   (LogKS.interior Y).isOpen.isClosed_compl.preimage (torPr Y σ).continuous
@@ -148,12 +148,12 @@ def ptC (y : FrPt Xo c (CAt σ)) : Sp ℂ ⟶ Xo.XF c := ptF (S := CAt σ) y
 def xC (y : FrPt Xo c (CAt σ)) : Sp ℂ ⟶ Xo.X := y.x
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptC_fst (y : FrPt Xo c (CAt σ)) : ptC y ≫ pullback.fst _ _ = xC y := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptC_snd (y : FrPt Xo c (CAt σ)) : ptC y ≫ pullback.snd _ _ = spMap σ := pullback.lift_snd _ _ _
 
@@ -164,14 +164,14 @@ def torPt (y : FrPt Xo c (CAt σ)) : TorPts Y σ :=
       rfl), pullback.lift_snd _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem torPt_pr (y : FrPt Xo c (CAt σ)) : (torPt Y y).1 ≫ torPr Y σ = ptC y ≫ Y.j := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ptC y = ptC y'` using `(cancel_mono Y.j).1 ((torPt_pr Y y).symm.trans (h ▸ torPt_pr Y y'))`. Conclude with `(ptC_fst y).symm.trans (h1 ▸ ptC_fst y')`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ptC y = ptC y'` using `pullback.hom_ext ((ptC_fst y).trans (h.trans (ptC_fst y').symm)) ((ptC_snd y).trans (ptC_snd y').symm)`. Conclude with `Subtype.ext (pullback.hom_ext ((torPt_pr Y y).trans (h1 ▸ (torPt_pr Y y').symm)) ((torPt Y y).2.trans (torPt Y y').2.symm))`.
+A detailed English derivation is pending.
 -/
 theorem torPt_eq_iff {y y' : FrPt Xo c (CAt σ)} : torPt Y y = torPt Y y' ↔ y.x = y'.x := by
   constructor
@@ -229,7 +229,7 @@ variable (U : Unf Xo c σ r) (hU : IsUnf U) (e : Dw.p = j) (hσ : GoodEmb c σ) 
 include hU e in
 
 /- English proof (translation)
-Use `hU.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem q_of_isUnf : Dw.q = r - j := by have := hU.1; omega
 
@@ -243,7 +243,7 @@ def domTor (k : U.Comp) (z : Pt Tau j (r - j)) : TorPts Y σ := torPt Y (domFr U
 include hσ in
 
 /- English proof (translation)
-Establish `hp` using `first_index_eq_of_unfolded U hU e k`. Establish `h0` using `domPt_stdFrame (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k) hp (domPt_mem _ (le_of_isUnf U hU e) (cmEquiv U hU T k) hp x.2)`. Establish `h1` using `fun τ => congrFun h0 ((cmEquiv U hU T k).symm τ)`. Simplify using `only [domPt, Equiv.apply_symm_apply] at h1`. Conclude with `(torPt_eq_iff Y).2 (PointWell.pt_eq_of_block hU hσ k _ x (fun τ => PointWell.block_of_moeb_eq _ _ hp (Subtype.prop _) x.2 τ (h1 τ)) fun τ => PointWell.block_of_moeb_eq _ _ hp x.2 (Subtype.prop _) τ (h1 τ).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem domTor_domPt (k : U.Comp) (x : (U.X k).dom) :
     domTor Y U hU e T k (domPt (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k) x.1) = torPt Y (U.un k x) := by
@@ -261,9 +261,7 @@ variable [Fintype Tau]
 include hσ in
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hg`. Establish `hp` using `first_index_eq_of_unfolded U hU e k`. Use `set x := stdFrame (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k) hp z`. Establish `h0 : domPt _ _ _ x.1 = z` using `domPt_stdFrame (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k) hp hz`. Use `conv_lhs => rw [← h0, ← domPt_lact _ _ _ hp g x.2]`.
-
-Conclude with `(domTor_domPt Y U hU e hσ T k ⟨_, KU.lact_dom _ hg x.2⟩).trans ((torPt_eq_iff Y).2 (PointWell.pt_lact hU k x hg))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem domTor_moeb (k : U.Comp) {g : Tau → GL (Fin j ⊕ Fin (r - j)) ℂ}
     (hg : g ∈ gammaU (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k)) {z : Pt Tau j (r - j)}
@@ -317,7 +315,7 @@ def IsFlatSec (s : (U σ).Comp → Tau → ℂˣ) : Prop :=
         (hodgeC ((U σ).X k) (cmEquiv (U σ) hU T k) t : ℂ) ^ Dw.q * s k t * horizGen (cmEquiv (U σ) hU T k t) y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, irreducibleComponent_mem_irreducibleComponents (ptC (V.un k y) default)⟩, y.2, fun s => by obtain rfl : s = (default : Sp ℂ) := Subsingleton.elim (α := Sp ℂ) _ _ exact mem_irreducibleComponent (x := ptC (V.un k y) default)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mem_framesOn (V : Unf Xo c σ r) (k : V.Comp) (y : (V.X k).dom) :
     ∃ Z, (⟨k, y.1⟩ : Σ k, Frame (V.toPj.X k).Ψ r) ∈ framesOn V.toPj Z :=
@@ -328,7 +326,7 @@ theorem exists_mem_framesOn (V : Unf Xo c σ r) (k : V.Comp) (y : (V.X k).dom) :
 variable {U sig hU hσ T}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k t`. Take `⟨Z, hZ⟩` from `exists_mem_framesOn (U σ) k ⟨x0F _, KU.orth_dom _ (isOrth_x0F _)⟩`. Conclude with `Units.ext (mul_left_cancel₀ (pow_ne_zero _ (Complex.ofReal_ne_zero.2 (hodgeC_pos _ _ t).ne')) (mul_right_cancel₀ (inv_ne_zero (det_x0F _ _)) ((h Z k t _ hZ).symm.trans (h' Z k t _ hZ))))`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsFlatSec.unique {s s' : (U σ).Comp → Tau → ℂˣ} (h : IsFlatSec U sig hU hσ T s)
     (h' : IsFlatSec U sig hU hσ T s') : s = s' := by

@@ -15,13 +15,11 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => star_star τ`. Rewrite using `[← NumberField.Embeddings.card E ℂ]`. Establish `h1 : (Ψᶜ).card = Ψ.card`. Use `Finset.card_bij (fun τ _ => ComplexEmbedding.conjugate τ) ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hτ` using `[Finset.mem_compl]`. Conclude with `(hΨ _).mpr (by rw [hcc]; exact hτ)`. Introduce `a _ b _ h`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact. Rewrite `this` using `[hcc, hcc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ hτ`. Use `⟨ComplexEmbedding.conjugate τ, ?_, hcc τ⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_compl]`. Conclude with `(hΨ τ).mp hτ`. Establish `h2` using `Finset.card_add_card_compl Ψ`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem two_mul_card_of_cmType_finset (E : Type) [Field E] [NumberField E]
     (Ψ : Finset (E →+* ℂ)) (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) :
@@ -46,31 +44,29 @@ theorem two_mul_card_of_cmType_finset (E : Type) [Field E] [NumberField E]
   omega
 
 /- English proof (translation)
-Introduce `E _ _ _ ρ Ψ hΨ W hW`. Establish `hcard` using `two_mul_card_of_cmType_finset E Ψ hΨ`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ0, hδ⟩ : ∃ δ : E, δ ≠ 0 ∧ IsCMField.complexConj E δ = -δ := by`. Establish `hne : IsCMField.complexConj E ≠ 1` using `IsCMField.complexConj_ne_one E`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, IsCMField.complexConj E x ≠ x := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (AlgEquiv.ext h)`. Use `⟨x - IsCMField.complexConj E x, sub_ne_zero.mpr hx.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, IsCMField.complexConj_apply_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hW' : ∀ β, β ∈ W ↔ ∀ a b, IsCMField.complexConj E (β a b) = -β b a` using `hW`. Set `f : (W × W) →ₗ[ℚ] Matrix (Fin ρ) (Fin ρ) E` to `{ toFun := fun p => (p.1 : Matrix (Fin ρ) (Fin ρ) E) + δ • (p.2 : Matrix (Fin ρ) (Fin ρ) E) map_add' := by`. Introduce `p q`. Simplify using `only [Prod.fst_add, Prod.snd_add, Submodule.coe_add, smul_add]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := by`. Introduce `c p`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul, smul_add, RingHom.id_apply, smul_comm δ c] }`. Establish `hinj : Function.Injective f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨A, B⟩ h`. Establish `hA` using `(hW' _).mp A.2`. Establish `hB` using `(hW' _).mp B.2`. Establish `h0 : ∀ a b, (A : Matrix (Fin ρ) (Fin ρ) E) a b + δ * (B : Matrix (Fin ρ) (Fin ρ) E) a b = 0` using `fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrFun (congrFun h a) b` as an intermediate fact. Simplify `this` using `[f]`. Establish `h1 : ∀ a b, (A : Matrix (Fin ρ) (Fin ρ) E) a b = 0 ∧ (B : Matrix (Fin ρ) (Fin ρ) E) a b = 0`. Introduce `a b`. Establish `e1` using `h0 a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (IsCMField.complexConj E) (h0 b a)`. Rewrite `e2` using `[map_add, map_mul, hδ, hA, hB, map_zero]`. Establish `e3 : (A : Matrix (Fin ρ) (Fin ρ) E) a b = 0` using `by linear_combination (e1 - e2) / 2`. Use `⟨e3, ?_⟩` and prove the remaining obligations. Rewrite `e1` using `[e3, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components.
 
-Conclude with `(mul_eq_zero.mp e1).resolve_left hδ0`. Use `Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `(h1 a b).1`. Use extensionality with `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(h1 a b).2`. Establish `hsurj : Function.Surjective f`. Introduce `M`. Use `⟨(⟨Matrix.of fun a b => (M a b - IsCMField.complexConj E (M b a)) / 2, (hW' _).mpr ?_⟩, ⟨Matrix.of fun a b => (M a b + IsCMField.complexConj E (M b a)) / (2 * δ), (hW' _).mpr ?_⟩), ?_⟩` and prove the remaining obligations. Introduce `a b`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Matrix.of_apply, map_div₀, map_sub, IsCMField.complexConj_apply_apply, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b`. Simplify using `only [Matrix.of_apply, map_div₀, map_add, map_mul, hδ, IsCMField.complexConj_apply_apply, map_ofNat]`. Clear the denominators using the available nonvanishing facts.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `a b`. Simplify using `only [f, LinearMap.coe_mk, AddHom.coe_mk, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
 
-Establish `hfin` using `(LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).finrank_eq`. Rewrite `hfin` using `[Module.finrank_prod, Module.finrank_matrix, ← hcard, Fintype.card_fin]`. Establish `: 2 * Module.finrank ℚ W = 2 * (Ψ.card * ρ ^ 2)`. Rewrite using `[two_mul, hfin]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finrank_skewHermitian_eq :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (ρ : ℕ) (Ψ : Finset (E →+* ℂ)),

@@ -28,13 +28,13 @@ def Tsp {O : Type} [Ring O] (bar : O → O) (ρ : O →+* Matrix (Fin g) (Fin g)
     exact ⟨by rw [transpose_smul, h1], fun a => by rw [Matrix.smul_mul, Matrix.mul_smul, h2]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem star_mulVec_map (M : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) : star (M *ᵥ z) = M.map star *ᵥ star z := by
   funext i; simp [mulVec, dotProduct]
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[← mulVec_mulVec, dotProduct_comm, dotProduct_mulVec, dotProduct_comm, ← mulVec_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_mulVec_left (M A : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm M (A *ᵥ z) w = hermForm (Aᵀ * M) z w := by
@@ -42,7 +42,7 @@ theorem herm_mulVec_left (M A : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ
   rw [← mulVec_mulVec, dotProduct_comm, dotProduct_mulVec, dotProduct_comm, ← mulVec_transpose]
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[star_mulVec_map, mulVec_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_mulVec_right (M A : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm M z (A *ᵥ w) = hermForm (M * A.map star) z w := by
@@ -50,16 +50,16 @@ theorem herm_mulVec_right (M A : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → �
   rw [star_mulVec_map, mulVec_mulVec]
 
 /- English proof (translation)
-Simplify using `[hermForm, ← Pi.single_star, mulVec_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_single (M : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (i j : Fin g) :
     hermForm M (Pi.single i c) (Pi.single j 1) = c * M i j := by
   simp [hermForm, ← Pi.single_star, mulVec_single]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1` using `h (Pi.single i 1) (Pi.single j 1)`. Establish `h2` using `h (Pi.single i Complex.I) (Pi.single j 1)`. Simplify using `only [herm_single] at h1 h2`. Simplify using `at h1 h2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `apply Complex.ext <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sesq_ext {N N' : Matrix (Fin g) (Fin g) ℂ} (h : ∀ z w, (hermForm N z w).im = (hermForm N' z w).im) : N = N' := by
   ext i j
@@ -72,16 +72,16 @@ theorem sesq_ext {N N' : Matrix (Fin g) (Fin g) ℂ} (h : ∀ z w, (hermForm N z
 variable {O : Type} [Ring O] {bar : O → O} {D : PLat O bar} {ρ : O →+* Matrix (Fin g) (Fin g) ℂ}
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on_range hP.2.2.2.1 h`.
+A detailed English derivation is pending.
 -/
 theorem ext_per {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ρ P) {W : Type} [AddCommGroup W] [Module ℝ W]
     {f f' : (Fin g → ℂ) →ₗ[ℝ] W} (h : ∀ x, f (P x) = f' (P x)) : f = f' :=
   LinearMap.ext_on_range hP.2.2.2.1 h
 
 /- English proof (translation)
-Take `⟨M₀, -, -, h₀⟩` from `hP₀.2.2.2.2`. Take `⟨M, -, hpos, h⟩` from `hP.2.2.2.2`. Use `eq_zero_of_imForm hpos (ext_per hP fun y => ?_)` and prove the remaining obligations. Use `congrArg (fun u => imForm M₀ u (P₀ y)) hc` as an intermediate fact. Simplify using `only [Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, imForm_apply, h, h₀, map_zero, LinearMap.zero_apply] at this ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem relation_per {P₀ P : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D ρ P₀) (hP : IsPeriod D ρ P) (c : D.La →₀ ℝ)
     (hc : Finsupp.linearCombination ℝ P₀ c = 0) : Finsupp.linearCombination ℝ P c = 0 := by
@@ -94,15 +94,13 @@ theorem relation_per {P₀ P : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D ρ
   exact this
 
 /- English proof (translation)
-Establish `hs : ∀ z : Fin g → ℂ, ∃ c : D.La →₀ ℝ, Finsupp.linearCombination ℝ P₀ c = z` using `fun z => by`. Establish `: z ∈ Submodule.span ℝ (Set.range P₀)` using `by rw [hP₀.2.2.2.1]; trivial`. Rewrite `this` using `[← Finsupp.range_linearCombination]`. Then use the resulting hypothesis. Use `choose r hr using fun j => hs (Pi.single j 1)`. Use `choose r' hr' using fun j => hs (Pi.single j Complex.I)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `k : (D.La →₀ ℝ) → (D.La →₀ ℂ)` to `Finsupp.mapRange (fun t => (t : ℂ)) (by simp)`. Establish `hk : ∀ (f : D.La → Fin g → ℂ) c, Finsupp.linearCombination ℂ f (k c) = Finsupp.linearCombination ℝ f c` using `fun f c => by`. Simplify using `only [Finsupp.linearCombination_apply, k]`. Rewrite using `[Finsupp.sum_mapRange_index (by simp)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun j => (1 / 2 : ℂ) • k (r j) - (Complex.I / 2) • k (r' j), fun j => (1 / 2 : ℂ) • k (r j) + (Complex.I / 2) • k (r' j), fun P hP x => ?_⟩` and prove the remaining obligations. Use `relation_per hP₀ hP (Finsupp.single x 1 - ∑ j, ((P₀ x j).re • r j + (P₀ x j).im • r' j)) (by` as an intermediate fact. Simplify using `only [map_sub, map_sum, map_add, map_smul, hr, hr', Finsupp.linearCombination_single, one_smul]`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply, Finset.sum_add_distrib])`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_sum, map_add, map_smul, Finsupp.linearCombination_single, one_smul, sub_eq_zero] at this`. Rewrite using `[this]`. Use function extensionality and compare the values at `i`. Simplify using `only [realMap_apply, Pi.add_apply, mulVec, dotProduct, colMat_apply, map_sub, map_add, map_smul, hk, Finset.sum_apply, ← Finset.sum_add_distrib, Pi.smul_apply, Pi.sub_apply, Pi.star_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_colMat_per {P₀ : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D ρ P₀) :
     ∃ α β : Fin g → (D.La →₀ ℂ), ∀ P : D.La →+ (Fin g → ℂ), IsPeriod D ρ P →
@@ -133,7 +131,7 @@ theorem exists_colMat_per {P₀ : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D
   apply Complex.ext <;> simp <;> ring
 
 /- English proof (translation)
-Use `realMap_inj (ext_per hP₀ fun x => ?_)` and prove the remaining obligations. Use `h (a • x)` as an intermediate fact. Rewrite `this` using `[hP.1, hP₀.1, h]`. Simplify using `only [realMap_apply, mulVec_add, mulVec_mulVec, star_mulVec_map] at this ⊢`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_realMap_per {P₀ P : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D ρ P₀) (hP : IsPeriod D ρ P)
     {A B : Matrix (Fin g) (Fin g) ℂ} (h : ∀ x, P x = realMap A B (P₀ x)) (a : O) :
@@ -145,9 +143,9 @@ theorem comm_realMap_per {P₀ P : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod 
   exact this
 
 /- English proof (translation)
-Establish `key : (imForm M).compl₁₂ (realMap (ρ a) 0) LinearMap.id = (imForm M).compl₁₂ LinearMap.id (realMap (ρ (bar a)) 0)`. Use `ext_per hP₀ fun x => ext_per hP₀ fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compl₁₂_apply, realMap_apply, zero_mulVec, add_zero, LinearMap.id_apply, ← hP₀.1, imForm_apply, hM, D.adj]`. Use `sesq_ext fun z w => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun₂ key z w` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.compl₁₂_apply, realMap_apply, zero_mulVec, add_zero, LinearMap.id_apply, imForm_apply] at this`. Rewrite using `[← herm_mulVec_left, ← herm_mulVec_right]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_herm_per {P₀ : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D ρ P₀) {M : Matrix (Fin g) (Fin g) ℂ}
     (hM : ∀ x y, (hermForm M (P₀ x) (P₀ y)).im = D.EF x y) (a : O) :
@@ -170,15 +168,15 @@ Both sides reduce to the same expression.
 theorem map_star_transpose (M : Matrix (Fin g) (Fin g) ℂ) : (M.map star)ᵀ = Mᴴ := rfl
 
 /- English proof (translation)
-Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨M, hM, -, hE⟩` from `hP.2.2.2.2`. Establish `key : (imForm M).compl₁₂ (realMap A B) (realMap A B) = imForm M₀`. Use `ext_per hP₀ fun x => ext_per hP₀ fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.compl₁₂_apply, ← h, imForm_apply, hE, hM₀]`. Use extensionality with `i j`. Rewrite using `[transpose_apply]`. Use `riemann_symm (M := Aᵀ * M * A.map star) ?_ (fun z w => ?_) j i` and prove the remaining obligations. Use `isHermitian_conjTranspose_mul_mul (A.map star) hM` as an intermediate fact.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 3` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.PeriodConn.hermForm_conj_mul]`. Simplify using `only [mulVec_add, mulVec_mulVec, mul_nonsing_inv_cancel_left _ _ hu]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.congr_fun₂ key z w`. Take `⟨h1, h2⟩` from `comm_realMap_per hP₀ hP h a`. Establish `h3 : ρ a * (A⁻¹ * B) = A⁻¹ * B * (ρ a).map star`. Rewrite using `[Matrix.mul_assoc, ← h2]`. Establish `: A⁻¹ * (ρ a * A) * A⁻¹ = A⁻¹ * (A * ρ a) * A⁻¹` using `by rw [h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[nonsing_inv_mul_cancel_left _ _ hu, Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hu]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, this]`. Rewrite using `[Matrix.mul_assoc, ← comm_herm_per hP₀ hM₀ a, ← Matrix.mul_assoc, ← transpose_mul, h3, transpose_mul, map_star_transpose, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Tsp_of_period {P₀ P : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D ρ P₀) (hP : IsPeriod D ρ P)
     {M₀ : Matrix (Fin g) (Fin g) ℂ} (hM₀ : ∀ x y, (hermForm M₀ (P₀ x) (P₀ y)).im = D.EF x y)
@@ -209,9 +207,9 @@ theorem mem_Tsp_of_period {P₀ P : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod
       map_star_transpose, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hu : IsUnit M₀.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `h` using `hC.2 a`. Rewrite `h` using `[Matrix.mul_assoc, ← comm_herm_per hP₀ hM₀ a, ← Matrix.mul_assoc, ← transpose_mul, ← map_star_transpose, ← Matrix.mul_assoc, ← transpose_mul]`. Use `congrArg (· * M₀⁻¹) h` as an intermediate fact. Simplify using `only [mul_nonsing_inv_cancel_right _ _ hu] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `transpose_injective this`.
+A detailed English derivation is pending.
 -/
 theorem comm_of_mem_Tsp {P₀ : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D ρ P₀) {M₀ : Matrix (Fin g) (Fin g) ℂ}
     (hM₀ : ∀ x y, (hermForm M₀ (P₀ x) (P₀ y)).im = D.EF x y) (hdet : M₀.det ≠ 0) {C : Matrix (Fin g) (Fin g) ℂ}
@@ -225,9 +223,9 @@ theorem comm_of_mem_Tsp {P₀ : D.La →+ (Fin g → ℂ)} (hP₀ : IsPeriod D �
   exact transpose_injective this
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun z hz => ?_` and prove the remaining obligations. Rewrite `hz` using `[realMap_apply, one_mulVec]`. Establish `h1 : z = -(C *ᵥ star z)` using `eq_neg_of_add_eq_zero_left hz`. Establish `h2 : star z = -(C.map star *ᵥ z)`. Use `congrArg star hz` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[star_add, star_mulVec_map, star_star, star_zero]`. Conclude with `eq_neg_of_add_eq_zero_left this`. Use `eq_zero_of_mulVec_eq_zero h ?_` and prove the remaining obligations. Rewrite using `[sub_mulVec, one_mulVec, ← mulVec_mulVec, ← neg_neg (C.map star *ᵥ z), ← h2, mulVec_neg, ← h1, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realMap_one_injective {C : Matrix (Fin g) (Fin g) ℂ} (h : (1 - C * C.map star).det ≠ 0) :
     Function.Injective (realMap 1 C) := by

@@ -15,17 +15,17 @@ namespace GlobalTheory.CompanionTheory.EisCovar.Unip
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfTr_add' (a c : AE D) : halfTr (a + c) = halfTr a + halfTr c := by
   simp only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_add, mul_add]
 
 /- English proof (translation)
-Establish `hinv : Function.Involutive (cA D)`. Introduce `a`. Establish `h` using `congrArg (fun N => N 0 0) (GlobalTheory.MixModel.adj_adj (D := D) (Matrix.of fun (_ : Fin 1) (_ : Fin 1) => a))`. Simplify `h` using `[GlobalTheory.MixModel.adj]`. Establish `hcomm : ∀ r : AF D.host.F, cA D (algebraMap (AF D.host.F) (AE D) r) = algebraMap (AF D.host.F) (AE D) r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `r`. Simplify using `[Formalism.L2.Theta.cA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Algebra.TensorProduct.algebraMap_apply]`. Set `e : AE D ≃ₐ[AF D.host.F] AE D` to `AlgEquiv.ofBijective { cA D with commutes' := hcomm } hinv.bijective`. Establish `htr : trA (cA D s) = trA s` using `Algebra.trace_eq_of_algEquiv e s`. Simplify using `only [GlobalTheory.StdUnn.halfTr]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[htr, ← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem halfTr_add_cA (s : AE D) : halfTr s + halfTr (cA D s) = trA s := by
   have hinv : Function.Involutive (cA D) := by
@@ -44,7 +44,7 @@ theorem halfTr_add_cA (s : AE D) : halfTr s + halfTr (cA D s) = trA s := by
   rw [htr, ← add_mul, ← map_add, add_halves, map_one, one_mul]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.StdUnn.inner, GlobalTheory.MixModel.adj_add, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem inner_add_add (V : HSp D) (z x : Mx D V.rank n) :
     GlobalTheory.StdUnn.inner V (z + x) (z + x) = GlobalTheory.StdUnn.inner V z z + GlobalTheory.StdUnn.inner V z x + GlobalTheory.StdUnn.inner V x z +
@@ -53,7 +53,7 @@ theorem inner_add_add (V : HSp D) (z x : Mx D V.rank n) :
   abel
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.StdUnn.inner, GlobalTheory.MixModel.adj_mul, GlobalTheory.MixModel.adj_adj, GlobalTheory.MixModel.adj_gA, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adj_inner (V : HSp D) (z x : Mx D V.rank n) :
     adj (GlobalTheory.StdUnn.inner V z x) = GlobalTheory.StdUnn.inner V x z := by
@@ -61,7 +61,7 @@ theorem adj_inner (V : HSp D) (z x : Mx D V.rank n) :
     Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_mul_comm b]`. Simplify using `only [GlobalTheory.StdUnn.inner, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_inner_mul (V : HSp D) (b : Mx D n n) (z x : Mx D V.rank n) :
     Matrix.trace (GlobalTheory.StdUnn.inner V z (x ⬝ b)) = Matrix.trace (b * GlobalTheory.StdUnn.inner V z x) := by
@@ -69,7 +69,7 @@ theorem trace_inner_mul (V : HSp D) (b : Mx D n n) (z x : Mx D V.rank n) :
   simp only [GlobalTheory.StdUnn.inner, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.MixModel.trace_adj, GlobalTheory.MixModel.adj_mul, GlobalTheory.CompanionTheory.EisCovar.Unip.adj_inner, hb, Matrix.trace_mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_swap (V : HSp D) {b : Mx D n n} (hb : adj b = b) (z x : Mx D V.rank n) :
     Matrix.trace (b * GlobalTheory.StdUnn.inner V x z) = cA D (Matrix.trace (b * GlobalTheory.StdUnn.inner V z x)) := by
@@ -77,7 +77,7 @@ theorem trace_swap (V : HSp D) {b : Mx D n n} (hb : adj b = b) (z x : Mx D V.ran
     Matrix.trace_mul_comm]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.EisCovar.Unip.inner_add_add, GlobalTheory.CompanionTheory.EisCovar.Unip.trace_inner_mul, GlobalTheory.CompanionTheory.EisCovar.Unip.trace_inner_mul]`. Simplify using `only [Matrix.mul_add, Matrix.trace_add, GlobalTheory.CompanionTheory.EisCovar.Unip.halfTr_add']`. Rewrite using `[GlobalTheory.CompanionTheory.EisCovar.Unip.trace_swap V hb z x, ← GlobalTheory.CompanionTheory.EisCovar.Unip.halfTr_add_cA (Matrix.trace (b * GlobalTheory.StdUnn.inner V z x))]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem quad_shift (V : HSp D) {b : Mx D n n} (hb : adj b = b) (z x : Mx D V.rank n) :
     halfTr (Matrix.trace (b * GlobalTheory.StdUnn.inner V (z + x) (z + x))) =
@@ -91,9 +91,9 @@ theorem quad_shift (V : HSp D) {b : Mx D n n} (hb : adj b = b) (z x : Mx D V.ran
   abel
 
 /- English proof (translation)
-Establish `h1 : GlobalTheory.StdUnn.mat g * GlobalTheory.StdUnn.blk4 1 (-b) 0 1 = 1`. Rewrite using `[hg, GlobalTheory.CompanionTheory.EisCovar.submatrix_fromBlocks_mul]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, neg_add_cancel, GlobalTheory.CompanionTheory.EisCovar.block_matrix_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = GlobalTheory.StdUnn.blk4 1 (-b) 0 1 := by`. Rewrite using `[← Matrix.mul_assoc, GlobalTheory.CompanionTheory.EisCovar.mat_inv_mul', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_inv_unip {g : G D n} {b : Mx D n n} (hg : mat g = blk4 1 b 0 1) : mat g⁻¹ = blk4 1 (-b) 0 1 := by
   have h1 : GlobalTheory.StdUnn.mat g * GlobalTheory.StdUnn.blk4 1 (-b) 0 1 = 1 := by
@@ -110,11 +110,11 @@ end GlobalTheory.CompanionTheory.EisCovar.Unip
 namespace GlobalTheory.CompanionTheory.EisCovar
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω hW g b hb hg`. Unfold `GlobalTheory.CompanionTheory.EisCovar.CovAt`. Introduce `v Φ Ψ hΨ`. Establish `hinv` using `GlobalTheory.CompanionTheory.EisCovar.Unip.mat_inv_unip hg`. Use function extensionality and compare the values at `z`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hinv, hW.unip g b hg Ψ z, hΨ]`. Simplify using `only [PositivityTheory.GramSchwartzFunctions.EC.Heisenberg₂]`. Rewrite using `[GlobalTheory.CompanionTheory.EisCovar.x_part_mul_block, GlobalTheory.CompanionTheory.EisCovar.y_part_mul_block]`. Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero, Matrix.mul_neg]`. Rewrite using `[hW.unip g b hg Φ, GlobalTheory.CompanionTheory.EisCovar.Unip.quad_shift V hb z (xPart v)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, GlobalTheory.StdUnn.inner, Matrix.mul_add, Matrix.mul_neg, Matrix.trace_add, Matrix.trace_neg, map_add, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem covAt_unip : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D) (μ : Measure (Mx D V.rank n)) (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)), IsWeilSch ψ χ θ V μ ω → ∀ (g : G D n) (b : Mx D n n), adj b = b → mat g = blk4 1 b 0 1 → CovAt ψ V ω g := by
   intro D n V ψ χ θ μ ω hW g b hb hg

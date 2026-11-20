@@ -43,7 +43,7 @@ structure LawsM (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a)
   type : TypeLaw h rc
 
 /- English proof (translation)
-Take `⟨a, ha, ε, k⟩` from `toV' H`. Take `⟨_, _, k'⟩` from `H`. Conclude with `⟨a, ha, ε, k.dim, k.one, k.langlands, k.det, k.prod, k.supp, k.sph, k.sat, k.cusp, k.nu_eq, k.absCentral, k.twist, k.central, k.dual, k.inj, k'.depth, k'.type⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem opn (rc : IrrGL (w.adicCompletion E) → WD h) (H : IsRecT h rc) :
     ∃ (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (ε : EpsFamily A), LawsM a ha ε rc := by
@@ -53,7 +53,7 @@ theorem opn (rc : IrrGL (w.adicCompletion E) → WD h) (H : IsRecT h rc) :
     k.twist, k.central, k.dual, k.inj, k'.depth, k'.type⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, ha, k.dim, k.one, k.langlands, fun x => (k.cusp x).1, k.nu_eq, k.absCentral, k.twist, k.central, k.dual, k.inj, k.depth, k.type⟩`.
+Supply the required witnesses or components.
 -/
 theorem cls_of {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}
     {rc : IrrGL (w.adicCompletion E) → WD h} (k : LawsM a ha ε rc) : IsRecT h rc :=

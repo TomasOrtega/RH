@@ -18,7 +18,7 @@ section Pairings
 variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `nsmul_eq_zero_of_nonempty_addEquiv (nonempty_addEquiv_galRootsOfUnity (Ksep := Ksep) hn) d`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_res_galRootsOfUnity_eq_zero (hn : (n : K) ≠ 0) (W : Subgroup Gal(Ksep/K))
     (d : Rep.res W.subtype (galRootsOfUnity.{0} K Ksep n)) : n • d = 0 :=
@@ -27,11 +27,11 @@ theorem nsmul_res_galRootsOfUnity_eq_zero (hn : (n : K) ≠ 0) (W : Subgroup Gal
 omit [IsSepClosure K Ksep] in
 
 /- English proof (translation)
-Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul m a`. Take `⟨m⟩` from `m`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `show (intMulPairing W (Rep.res W.subtype (galUnits.{0} K Ksep))).hom ((n • 𝟙 (intRepTriv W)).hom (ULift.up m) ⊗ₜ[ULift.{0} ℤ] a) = (intMulPairing W (Rep.res W.subtype (galUnits.{0} K Ksep))).hom (ULift.up m ⊗ₜ[ULift.{0} ℤ] (kummerSeqOpen (K := K) (Ksep := Ksep) n W).g.hom a)`. Establish `hnm : (n • 𝟙 (intRepTriv W)).hom (ULift.up m) = (ULift.up ((n : ℤ) * m) : intRepTriv W)`. Rewrite using `[nsmul_id_hom_apply]`. Use `ext`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnm, kummerSeqOpen_g_hom_apply, intMulPairing_tmul, intMulPairing_tmul, mul_zsmul', natCast_zsmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bockSeq_kummerSeqOpen_compat₁₂ (W : Subgroup Gal(Ksep/K)) :
     ((bockSeq W n).f ⊗ₘ 𝟙 (kummerSeqOpen (K := K) (Ksep := Ksep) n W).X₂) ≫
@@ -56,9 +56,9 @@ theorem bockSeq_kummerSeqOpen_compat₁₂ (W : Subgroup Gal(Ksep/K)) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul m d`. Take `⟨m⟩` from `m`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `show (intMulPairing W (Rep.res W.subtype (galUnits.{0} K Ksep))).hom (ULift.up m ⊗ₜ[ULift.{0} ℤ] (kummerSeqOpen (K := K) (Ksep := Ksep) n W).f.hom d) = (kummerSeqOpen (K := K) (Ksep := Ksep) n W).f.hom ((zmodMulPairing n (Rep.res W.subtype (galRootsOfUnity.{0} K Ksep n)) (nsmul_r …`. Rewrite using `[zmodReduction_hom_apply, zmodMulPairing_tmul, intMulPairing_tmul, zsmul_eq_zsmul_of_intCast_eq (nsmul_res_galRootsOfUnity_eq_zero hn W) (ZMod.intCast_zmod_cast (m : ZMod n)) d, map_zsmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bockSeq_kummerSeqOpen_compat₂₃ (hn : (n : K) ≠ 0) (W : Subgroup Gal(Ksep/K)) :
     (𝟙 (bockSeq W n).X₂ ⊗ₘ (kummerSeqOpen (K := K) (Ksep := Ksep) n W).f) ≫
@@ -89,14 +89,14 @@ section Key
 variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep] {n : ℕ}
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hn Nat.cast_zero`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_natCast_ne_zero' (hn : (n : K) ≠ 0) : n ≠ 0 := by
   rintro rfl
   exact hn Nat.cast_zero
 
 /- English proof (translation)
-Establish `h` using `cupPairing_δ_eq (S := bockSeq W n) (T := kummerSeqOpen (K := K) (Ksep := Ksep) n W) (p := 1) (p' := 2) (q := 0) (q' := 1) (n := 2) (intMulPairing W (Rep.res W.subtype (galUnits.{0} K Ksep))) (intMulPairing W (Rep.res W.subtype (galUnits.{0} K Ksep))) (zmodMulPairing n (Rep.res W. …`. Use `rfl rfl rfl rfl x y`. Establish `h1 : ((-1 : ULift.{0} ℤ) ^ (1 + 1)) = 1` using `by norm_num`. Rewrite `h` using `[h1]`. Conclude with `(cohomologyMap_cupPairing _ _ _ _ _).trans (h.trans (@one_smul _ _ _ (cohomology (Rep.res W.subtype (galUnits.{0} K Ksep)) 2).isModule.toMulAction _)).symm`.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_cupPairing_zmodMul_δ (hn : (n : K) ≠ 0) (W : Subgroup Gal(Ksep/K))
     (x : cohomology (zmodRep.{0} W n) 1)
@@ -145,7 +145,7 @@ theorem coe_unitsInvariantOpen (W : Subgroup Gal(Ksep/K)) (a : (fixedField W)ˣ)
 omit [IsSepClosure K Ksep] in
 
 /- English proof (translation)
-Establish `ha : ((Additive.toMul (v : Rep.res W.subtype (galUnits.{0} K Ksep)) : Ksepˣ) : Ksep) ∈ fixedField W` using `(mem_fixedField_iff _ _).2 fun σ hσ => congrArg (fun y : Additive Ksepˣ => ((Additive.toMul y : Ksepˣ) : Ksep)) ((Representation.mem_invariants _ _).1 v.2 ⟨σ, hσ⟩)`. Use `⟨Units.mk0 ⟨_, ha⟩ fun h => (Additive.toMul (v : Rep.res W.subtype (galUnits.{0} K Ksep)) : Ksepˣ).ne_zero (congrArg Subtype.val h), Subtype.ext (congrArg Additive.ofMul (Units.ext rfl))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_unitsInvariantOpen_eq (W : Subgroup Gal(Ksep/K))
     (v : (Rep.res W.subtype (galUnits.{0} K Ksep)).ρ.invariants) :
@@ -161,7 +161,7 @@ theorem exists_unitsInvariantOpen_eq (W : Subgroup Gal(Ksep/K))
 
 omit [IsSepClosure K Ksep] in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Additive.ofMul (Units.map (algebraMap (fixedField W) Ksep : fixedField W →* Ksep) (a ^ m)) = m • Additive.ofMul (Units.map (algebraMap (fixedField W) Ksep : fixedField W →* Ksep) a)`. Rewrite using `[map_pow, ofMul_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsInvariantOpen_pow (W : Subgroup Gal(Ksep/K)) (a : (fixedField W)ˣ) (m : ℕ) :
     unitsInvariantOpen W (a ^ m) = m • unitsInvariantOpen W a := by
@@ -171,7 +171,7 @@ theorem unitsInvariantOpen_pow (W : Subgroup Gal(Ksep/K)) (a : (fixedField W)ˣ)
   rw [map_pow, ofMul_pow]
 
 /- English proof (translation)
-Use `(δ_H0Iso_inv_eq_zero_iff (kummerSeqOpen_shortExact (Ksep := Ksep) hn W) _).2 ⟨unitsInvariantOpen W b, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[unitsInvariantOpen_pow]`. Conclude with `kummerSeqOpen_g_hom_apply n W _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem δ_unitsInvariantOpen_pow_eq_zero {n : ℕ} (hn : (n : K) ≠ 0) (W : Subgroup Gal(Ksep/K))
     (b : (fixedField W)ˣ) :
@@ -187,11 +187,9 @@ end Units
 section Transport
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, hfc⟩`. Use `⟨fun g => f (e g), hf.comp_continuous he, fun g h => ?_⟩` and prove the remaining obligations. Use `show c' g h = ρ' g (f (e h)) - f (e (g * h)) + f (e g)`. Rewrite using `[← hc, hfc, map_mul, hρ]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨f, hf, hfc⟩`. Use `⟨fun g => f (e.symm g), hf.comp_continuous he', fun g h => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `e.surjective g`. Take `⟨h, rfl⟩` from `e.surjective h`. Use `show c (e g) (e h) = ρ (e g) (f (e.symm (e h))) - f (e.symm (e g * e h)) + f (e.symm (e g))`.
-
-Rewrite using `[hc, hfc, ← map_mul, e.symm_apply_apply, e.symm_apply_apply, e.symm_apply_apply, hρ]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coboundary_iff_of_mulEquiv {Γ Γ' X : Type*} [Group Γ] [TopologicalSpace Γ] [Group Γ']
     [TopologicalSpace Γ'] [AddCommGroup X] (e : Γ' ≃* Γ) (he : Continuous e) (he' : Continuous e.symm)
@@ -219,7 +217,7 @@ variable {K Ksep : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
   [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_δ_H0Iso_inv_eq (kummerSeqOpen_shortExact hn (U : Subgroup Gal(Ksep/K))) (subsingleton_cohomology_one_kummerSeqOpen_X₂ K Ksep (n := n) U) y`. Take `⟨a, rfl⟩` from `exists_unitsInvariantOpen_eq (U : Subgroup Gal(Ksep/K)) v`. Conclude with `⟨a, hv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_δ_unitsInvariantOpen_eq (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal(Ksep/K))
     (y : cohomology (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep n)) 1) :
@@ -261,7 +259,7 @@ theorem openChar_apply (U : OpenSubgroup Gal(Ksep/K))
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem res_galUnits_ρ_galFixedFieldEquivOpen (U : OpenSubgroup Gal(Ksep/K))
     (σ : Gal(Ksep/fixedField (U : Subgroup Gal(Ksep/K)))) (x : Additive Ksepˣ) :
@@ -272,9 +270,9 @@ theorem res_galUnits_ρ_galFixedFieldEquivOpen (U : OpenSubgroup Gal(Ksep/K))
   rfl
 
 /- English proof (translation)
-Establish `hn0` using `ne_zero_of_natCast_ne_zero' hn`. Establish `: NeZero n` using `⟨hn0⟩`. Rewrite using `[← galCupClass_eq_zero_iff_of_isSepClosure (openChar n U z) a, ← (injective_cohomologyMap_kummerSeqOpen_f_two hn U).eq_iff, map_zero, cohomologyMap_cupPairing_zmodMul_δ hn]`. Take `⟨w, hw, hwc⟩` from `exists_cocycle_cupPairing_δ_bockSeq hn0 (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galUnits.{0} K Ksep)) z (unitsInvariantOpen (U : Subgroup Gal(Ksep/K)) a)`. Take `⟨w', hw', hwc'⟩` from `exists_cocycle_cupCharClassProf (galUnitsZ (fixedField (U : Subgroup Gal(Ksep/K))) Ksep) (openChar n U z) (unitsInvariant (fixedField (U : Subgroup Gal(Ksep/K))) Ksep a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hw, galCupClass, ← hw', cohomologyπ_two_eq_zero_iff, cohomologyπ_two_eq_zero_iff]`. Use `exists_coboundary_iff_of_mulEquiv (galFixedFieldEquivOpen U) (continuous_galFixedFieldEquivOpen U) (continuous_galFixedFieldEquivOpen_symm U) _ _ (res_galUnits_ρ_galFixedFieldEquivOpen U) _ _ fun g h => ?_` and prove the remaining obligations. Rewrite using `[hwc, hwc', charCocycle_eq_bockInt (fun σ => zmodCocycleHom z (galFixedFieldEquivOpen U σ)) (charAdd (openChar n U z)) (fun σ => rfl)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cupPairing_δ_unitsInvariantOpen_eq_zero_iff (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal(Ksep/K))
     (z : cocycles (zmodRep.{0} (U : Subgroup Gal(Ksep/K)) n) 1)
@@ -308,7 +306,7 @@ theorem cupPairing_δ_unitsInvariantOpen_eq_zero_iff (hn : (n : K) ≠ 0) (U : O
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨ne_zero_of_natCast_ne_zero' hn⟩`. Take `⟨σ, rfl⟩` from `(galFixedFieldEquivOpen U).surjective g`. Establish `hσ : σ ∈ charKer (charAdd (openChar n U z))` using `h ▸ Subgroup.mem_top σ`. Rewrite `hσ` using `[mem_charKer, charAdd_apply, openChar_apply, AddEquiv.map_eq_zero_iff]`. Conclude with `zmodToQZ_injective (hσ.trans (map_zero _).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zmodCocycleHom_eq_zero_of_charKer_eq_top (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal(Ksep/K))
     (z : cocycles (zmodRep.{0} (U : Subgroup Gal(Ksep/K)) n) 1)
@@ -323,13 +321,13 @@ theorem zmodCocycleHom_eq_zero_of_charKer_eq_top (hn : (n : K) ≠ 0) (U : OpenS
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨ne_zero_of_natCast_ne_zero' hn⟩`. Establish `hlc : IsLocallyConstant fun σ : Gal(Ksep/fixedField (U : Subgroup Gal(Ksep/K))) => ψ σ`. Introduce `s`. Use `isOpen_iff_forall_mem_open.2 fun x hx => ⟨(fun y => x⁻¹ * y) ⁻¹' (ψ.ker : Set _), ?_, hψ.preimage (continuous_const_mul x⁻¹), by simp⟩` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_preimage, SetLike.mem_coe, MonoidHom.mem_ker, map_mul, map_inv] at hy`. Establish `hxy : ψ y = ψ x` using `(inv_mul_eq_one.1 hy).symm`. Simplify `hx` using `[Set.mem_preimage, hxy]`. Set `f : ↥(U : Subgroup Gal(Ksep/K)) → zmodRep.{0} (U : Subgroup Gal(Ksep/K)) n` to `fun g => ULift.up (Multiplicative.toAdd (ψ ((galFixedFieldEquivOpen U).symm g)))`. Establish `hf : IsLocallyConstant f` using `((hlc.comp_continuous (continuous_galFixedFieldEquivOpen_symm U)).comp (fun m => (ULift.up (Multiplicative.toAdd m) : zmodRep.{0} (U : Subgroup Gal(Ksep/K)) n)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmul : ∀ g h, f (g * h) = f g + f h` using `fun g h => by`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using `[f, toAdd_mul]`. Use `⟨cocyclesOneOfHom _ (fun _ _ => rfl) f hf hmul, ?_⟩` and prove the remaining obligations. Establish `hz : ∀ g, zmodCocycleHom (cocyclesOneOfHom _ (fun _ _ => rfl) f hf hmul) g = Multiplicative.toAdd (ψ ((galFixedFieldEquivOpen U).symm g))` using `fun g => congrArg ULift.down (cochainOf_cocyclesOneOfHom _ (fun _ _ => rfl) f hf hmul ![g])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `σ`. Rewrite using `[mem_charKer, charAdd_apply, openChar_apply, AddEquiv.map_eq_zero_iff, toMul_ofMul, hz, MulEquiv.symm_apply_apply, MonoidHom.mem_ker, ← toAdd_eq_zero]`. Conclude with `⟨fun h => zmodToQZ_injective (h.trans (map_zero _).symm), fun h => by rw [h, map_zero]⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_cocycle_charKer_eq (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal(Ksep/K))
     (ψ : Gal(Ksep/fixedField (U : Subgroup Gal(Ksep/K))) →* Multiplicative (ZMod n))

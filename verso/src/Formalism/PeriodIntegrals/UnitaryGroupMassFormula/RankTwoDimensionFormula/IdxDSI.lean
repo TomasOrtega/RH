@@ -10,9 +10,9 @@ open Matrix NumberField Formalism.MainNotions.S Formalism.L2.SG.HidaSetting
 namespace PI.UnitaryDimensionFormula
 
 /- English proof (translation)
-Introduce `I`. Use `⟨unitaryCongruence.sigA_sigA (I := I), ?_⟩` and prove the remaining obligations. Unfold `Formalism.UG.IsHerm Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `[JA, sigA, Formalism.UG.inclE, Formalism.UG.sigR]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← unitaryCongruence.J_conj (I := I) j i]`. Use `first`. Consider the case `rfl`. Consider the case `simp`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idxDSig : IdxDSig := by
   intro I
@@ -27,7 +27,7 @@ theorem idxDSig : IdxDSig := by
   | simp
 
 /- English proof (translation)
-Introduce `I` and use `⟨fun _ hx _ hy => unitaryCongruence.hA_int I hx hy, fun _ hc => unitaryCongruence.sigA_mem I hc⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem idxDInt : IdxDInt := fun I =>
   ⟨fun _ hx _ hy => unitaryCongruence.hA_int I hx hy, fun _ hc => unitaryCongruence.sigA_mem I hc⟩

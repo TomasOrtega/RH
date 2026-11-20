@@ -15,9 +15,9 @@ namespace GlobalTheory.Mum.UnitValuedLeadingSection
 open Formalism.L2.Pj GlobalTheory.PsiCoordLocal
 
 /- English proof (translation)
-Establish `hz : jK R z ∈ (⊤ : (Spec (CommRingCat.of R)).Opens)` using `trivial`. Rewrite using `[gs_eq _ z ⊤ hz]`. Establish `e` using `congrArg (fun f => f.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Establish `t : DegPre.toOpen (R` using `R) ⊤ r = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[DegPre.toOpen]`. Rewrite using `[t]`. Simplify using `only [thK, RingHom.comp_apply]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_jK_toOpen_top {R : Type} [CommRing R] [IsDomain R] (z : (TK R).left) (r : R) :
     gs (jK R) z ⊤ (DegPre.toOpen (R := R) ⊤ r) = thK R z (algebraMap R (FractionRing R) r) := by
@@ -34,19 +34,19 @@ theorem gs_jK_toOpen_top {R : Type} [CommRing R] [IsDomain R] (z : (TK R).left) 
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ _ D z J hJ χ I`. Set `j : PUnit → D.P.L.ι` to `fun _ => J (𝟙 _ ≫ D.xK χ)`. Establish `hxK : 𝟙 _ ≫ D.xK χ = jK R ≫ (D.c χ).left`. Rewrite using `[Category.id_comp]`. Use `show (toUnit (TK R) ≫ D.c χ).left = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left]`. Apply the tactic sequence `congr 1 <;> simp`. Establish `hj : (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (j PUnit.unit)`. Use `hJ.2 (D.c χ).left (Over.w (D.c χ))` as an intermediate fact. Use `show ⊤ ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (J (𝟙 _ ≫ D.xK χ))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hxK, this]`. Establish `h` using `generic_le D χ j hj`. Establish `key : ∀ r : R, ((jK R).app ⊤).hom (DegPre.toOpen (R` using `R) ⊤ r) = ((TK R).left.presheaf.map (homOfLE h).op).hom ((D.psi χ).s j).val ↔ ((val (D.psi χ) (𝟙 _) z J : ((TK R).left.presheaf.stalk z)ˣ) : (TK R).left.presheaf.stalk z) = thK R z (algebraMap R (FractionRing R) r) := by`. Introduce `r`. Establish `hz : z ∈ jK R ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of R)).Opens)` using `trivial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `g1 : gs (𝟙 (Spec (CommRingCat.of (FractionRing R)))) z _ (((jK R).app ⊤).hom (DegPre.toOpen (R` using `R) ⊤ r)) = thK R z (algebraMap R (FractionRing R) r) := by`. Rewrite using `[gs_pull (𝟙 _) (jK R) z ⊤ trivial, Category.id_comp]`. Conclude with `gs_jK_toOpen_top z r`. Establish `g2 : gs (𝟙 (Spec (CommRingCat.of (FractionRing R)))) z _ (((TK R).left.presheaf.map (homOfLE h).op).hom ((D.psi χ).s j).val) = ((val (D.psi χ) (𝟙 _) z J : ((TK R).left.presheaf.stalk z)ˣ) : (TK R).left.presheaf.stalk z)`. Use `(gs_res _ z h hz _).trans ((gs_unit _ _ _ (h hz) _).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[← g1, ← g2, e]`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `fn_ext fun y _ => ?_` and prove the remaining obligations. Take `rfl : y = z` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) y z`. Rewrite using `[g1, g2, e]`. Prove the components needed by the constructor for the conclusion. Introduce `hI`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs, es⟩` from `hI j ⊤ (isAffineOpen_top _) hj h`. Take `⟨r, hr, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ toOpen_top_bijective.2).1 hs`. Conclude with `⟨r, hr, (key r).1 es⟩`. Introduce and unpack `⟨r, hr, e⟩`. Conclude with `(GlobalTheory.PeriodFormEdge.psiIn_iff ⟨j, hj, h, (key r).2 e⟩ I).2 hr`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem psiIn_iff_val : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (z : (TK R).left) (J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι), TopGood D.P z J → ∀ (χ : D.X) (I : Ideal R), D.PsiIn χ I ↔ ∃ r ∈ I, ((val (D.psi χ) (𝟙 _) z J : ((TK R).left.presheaf.stalk z)ˣ) : (TK R).left.presheaf.stalk z) = thK R z (algebraMap R (FractionRing R) r) := by
   intro R _ _ _ D z J hJ χ I

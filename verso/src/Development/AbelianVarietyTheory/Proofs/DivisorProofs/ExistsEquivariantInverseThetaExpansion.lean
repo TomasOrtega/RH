@@ -22,29 +22,25 @@ namespace GlobalTheory.Mum
 open ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Introduce `R _ _ I hI hC D A G _ _ U hG F _ _ _ N hN w₀ hw₀ lab hlab`. Use `haveI := hC`. Establish `hL : GlobalTheory.UT.LL` using `⟨GlobalTheory.allSixLaws.1, GlobalTheory.allSixLaws.2.1, GlobalTheory.allSixLaws.2.2.1, GlobalTheory.allSixLaws.2.2.2.1, GlobalTheory.allSixLaws.2.2.2.2.1⟩`. Establish `gf : GlobalFnsSt` using `hL.1.globalFns`. Establish `hN1 : 1 ≤ N` using `hN.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hbij, hlin⟩` from `GlobalTheory.UT.expBijF_and_expandsF_lin hL R I hI D A G hG U`. Take `⟨b₁, b₂⟩` from `hbij F N hN1 w₀ hw₀`. Use `choose E hE using fun s => (b₂ s).exists`. Take `⟨f, hf, hfN⟩` from `GlobalTheory.TorsionIso.torsion_clause R I hI D A G hG U F N hN1`. Establish `hlabf : ∀ p, lab p = f p` using `fun p => (hf.1 p (lab p)).1 (hlab p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSF` using `GlobalTheory.SymFrameClause.symFrame_clause R I hI D A G hG U F N hN`. Use `⟨E, ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, hE⟩` and prove the remaining obligations. Use `⟨fun s s' h => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `h1` using `hE s`. Rewrite `h1` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(b₁ (E s')).unique h1 (hE s')`. Take `⟨s, hs, -⟩` from `b₁ t`. Conclude with `⟨s, (b₂ s).unique (hE s) hs⟩`. Introduce `s s' s'' h j`. Establish `hT` using `hlin F N w₀ (E s) (E s') (SecOps.secAdd (E s) (E s')) s s' 1 (hE s) (hE s') (fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[SecOps.secAdd, liftFun])`. Establish `e : (1 : F) • s + s' = s''` using `fam_ext fun α j => by rw [h]; simp`. Rewrite `hT` using `[e]`. Conclude with `congrArg (fun t : GlobalTheory.UT.SecA A F N => t.f j) ((b₂ s'').unique (hE s'') hT)`. Introduce `c s s' hs j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl` from `(isSmul_iff c s s').1 hs`. Take `⟨z, hz, -⟩` from `b₁ SecOps.secZero`. Establish `hz0 : z = 0`. Establish `h2` using `hlin F N w₀ _ _ SecOps.secZero z z 1 hz hz (fun j => by simp [SecOps.secZero])`. Establish `h3` using `(b₁ _).unique hz h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[one_smul]`. Conclude with `left_eq_add.1 h3`. Establish `hT` using `hlin F N w₀ (E s) SecOps.secZero (SecOps.secScale ((fst (TFK (R := R) F) A.A).left.appTop.hom (fnF F c)) (E s)) s z c (hE s) hz (fun j => by show _ = _ + 0`. Rewrite using `[add_zero]`. Use the proof step `rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hT` using `[hz0, add_zero]`. Conclude with `congrArg (fun t : GlobalTheory.UT.SecA A F N => t.f j) ((b₂ _).unique (hE _) hT)`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hp⟩` from `hf.2.1 x hx`. Conclude with `⟨p, (hlabf p).trans hp⟩`. Introduce and unpack `⟨p, rfl⟩`. Rewrite using `[hlabf]`. Conclude with `hfN p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p`. Conclude with `(hSF p).1.1`. Introduce `p`. Conclude with `((hSF p).2 (lab p) (hlab p)).1`. Introduce `p w θ s s' hw hθ hrel`.
-
-Take `⟨t', ht'⟩` from `GlobalTheory.RootShift.exists_isActOf A.isLB θ (E s)`. Take `⟨s'', hs'', -⟩` from `b₁ t'`. Establish `h1` using `((hSF p).2 (lab p) (hlab p)).2 θ hθ w₀ hw₀ w hw (E s) t' s s'' (hE s) hs'' ht'`. Take `rfl` from `GlobalTheory.ThetaTranslate.phiRel_unique gf p hw.1 hrel h1`. Establish `e` using `(b₂ s').unique (hE s') hs''`.
-
-Rewrite `ht'` using `[← e]`. Conclude with `ht'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eqv_expandsF : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → CharZero R → ∀ (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : Unif I D A G), IsSemiAbelian G → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N : ℕ), Odd N → ∀ (w₀ : LB.Iso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pullback.fst G.hom (jK R)))), w₀.IsGen → ∀ lab : QkPt D.toPre F N → (TFK (R := R) F ⟶ A.A), (∀ p, QkToAkU U.toUnifPre F N p (lab p)) → ∃ E, Eqv D.toPre A F N lab E ∧ ∀ s, U.ExpandsF F N w₀ (E s) s := by
   intro R _ _ I hI hC D A G _ _ U hG F _ _ _ N hN w₀ hw₀ lab hlab

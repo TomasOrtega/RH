@@ -10,7 +10,7 @@ open scoped Matrix
 namespace GlobalTheory.TraceSimilitude
 
 /- English proof (translation)
-Establish `h : ((N : E) ^ 2) = algebraMap ℚ E ((N : ℚ) ^ 2)` using `by simp`. Rewrite using `[h, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_natSq_mul {E : Type} [Field E] [NumberField E] (N : ℕ) (x : E) :
     Algebra.trace ℚ E ((N : E) ^ 2 * x) = (N : ℚ) ^ 2 * Algebra.trace ℚ E x := by
@@ -18,35 +18,35 @@ theorem trace_natSq_mul {E : Type} [Field E] [NumberField E] (N : ℕ) (x : E) :
   rw [h, ← Algebra.smul_def, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X X' N hN hn gam htr hsurj`. Establish `hs : Submodule.span E (Set.range X.Λ.subtype) = ⊤`. Rewrite using `[← X.Λ_span]`. Use `congr 1`. Conclude with `Subtype.range_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hs' : Submodule.span E (Set.range X'.Λ.subtype) = ⊤`. Rewrite using `[← X'.Λ_span]`. Use `congr 1`. Conclude with `Subtype.range_coe`. Take `⟨A, hA⟩` from `FrameFibre.exists_matrix X.Λ.subtype X.Λ.injective_subtype hs (X'.Λ.subtype ∘ₗ gam)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : ∀ v : X.Λ, A *ᵥ (v : Fin r → E) = (gam v : Fin r → E)` using `hA`. Establish `hN0 : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hcoe : ∀ w : X'.Λ, (((N ^ 2) • w : X'.Λ) : Fin r → E) = ((N : E) ^ 2) • (w : Fin r → E)`. Introduce `w`. Rewrite using `[Submodule.coe_smul_of_tower, ← Nat.cast_smul_eq_nsmul E]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hsurjA : Function.Surjective (Matrix.toLin' A)`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hs', Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `hsurj w`. Use `⟨((N : E) ^ 2)⁻¹ • (v : Fin r → E), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Matrix.toLin'_apply, hA', hv, hcoe, smul_smul, inv_mul_cancel₀ (pow_ne_zero 2 hN0), one_smul]`. Both sides reduce to the same expression. Establish `hU : IsUnit A` using `Matrix.mulVec_surjective_iff_isUnit.1 hsurjA`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set U := hU.unit with hUdef`. Establish `hUA : (U : Matrix (Fin r) (Fin r) E) = A` using `hU.unit_spec`. Set `a : GL (Fin r) E` to `⟨(N : E)⁻¹ • A, (N : E) • ((U⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E), by rw [smul_mul_smul_comm, inv_mul_cancel₀ hN0, one_smul, ← hUA, U.mul_inv], by rw [smul_mul_smul_comm, mul_inv_cancel₀ hN0, one_smul, ← hUA, U.inv_mul]⟩`. Establish `ha : (a : Matrix (Fin r) (Fin r) E) = (N : E)⁻¹ • A` using `rfl`. Establish `hai : ((a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) = (N : E) • ((U⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hξ⟩ : ∃ ε : E, (ε = 1 ∨ ε = -1) ∧ X'.ξ0 = ε * X.ξ0 := by`. Break down `TraceIsometry.eq_or_eq_neg_of_norm_eq X.ξ0_im X'.ξ0_im hn with h | h` into its components or cases. Conclude with `⟨1, Or.inl rfl, by rw [h, _root_.one_mul]⟩`. Conclude with `⟨-1, Or.inr rfl, by rw [h, neg_one_mul]⟩`. Apply the tactic sequence `have hε2 : ε * ε = 1 := by rcases hε with rfl | rfl <;> ring`.
+Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : cc (1 : E) = 1` using `map_one (IsCMField.complexConj E)`. Establish `key : ∀ u v : X.Λ, herm X'.Gm (A *ᵥ (u : Fin r → E)) (A *ᵥ (v : Fin r → E)) = (N : E) ^ 2 * ε * herm X.Gm u v`. Introduce `u v`. Establish `h0 : -X'.ξ0 * herm X'.Gm (A *ᵥ (u : Fin r → E)) (A *ᵥ (v : Fin r → E)) - (N : E) ^ 2 * (-X.ξ0 * herm X.Gm u v) = 0`. Use `FrameFibre.eq_zero_of_trace _ fun b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `htr (b • u) v`. Establish `h3 : ((b • u : X.Λ) : Fin r → E) = (b : E) • (u : Fin r → E)` using `rfl`. Establish `h4` using `FrameFibre.herm_smul_smul X'.Gm (b : E) 1 (A *ᵥ (u : Fin r → E)) (A *ᵥ (v : Fin r → E))`. Establish `h5` using `FrameFibre.herm_smul_smul X.Gm (b : E) 1 (u : Fin r → E) (v : Fin r → E)`. Rewrite `h4`, `h5` using `[one_smul, h1, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← hA', ← hA', h3, Matrix.mulVec_smul, h4, h5]`. Establish `e1 : (b : E) * (-X'.ξ0 * herm X'.Gm (A *ᵥ (u : Fin r → E)) (A *ᵥ (v : Fin r → E))) = -X'.ξ0 * ((b : E) * herm X'.Gm (A *ᵥ (u : Fin r → E)) (A *ᵥ (v : Fin r → E)))` using `by ring`. Establish `e2 : (b : E) * ((N : E) ^ 2 * (-X.ξ0 * herm X.Gm u v)) = (N : E) ^ 2 * (-X.ξ0 * ((b : E) * herm X.Gm u v))` using `by ring`. Rewrite using `[mul_sub, map_sub, e1, e2, trace_natSq_mul, h2, sub_self]`. Rewrite `h0` using `[hξ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ X.ξ0_ne` to reduce the goal to its premises. Take the linear combination `(-ε) * h0 - (X.ξ0 * herm X'.Gm (A *ᵥ (u : Fin r → E)) (A *ᵥ (v : Fin r → E))) * hε2`. Establish `keyA : ∀ x y : Fin r → E, herm X'.Gm (A *ᵥ x) (A *ᵥ y) = (N : E) ^ 2 * ε * herm X.Gm x y`. Introduce `x y`. Take `⟨c, v, hc, hv⟩` from `FrameFibre.exists_smul_eq X.Λ.subtype hs x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d, w, hd, hw⟩` from `FrameFibre.exists_smul_eq X.Λ.subtype hs y`. Establish `h2` using `key v w`. Rewrite `hv`, `hw` using `[Submodule.subtype_apply]`. Rewrite `h2` using `[← hv, ← hw, Matrix.mulVec_smul, Matrix.mulVec_smul, FrameFibre.herm_smul_smul, FrameFibre.herm_smul_smul]`. Establish `hc' : (c : E) ≠ 0` using `by simpa using hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hd' : cc (d : E) ≠ 0` using `(map_ne_zero (IsCMField.complexConj E)).2 (by simpa using hd)`. Apply `mul_left_cancel₀ (mul_ne_zero hc' hd')` to reduce the goal to its premises. Take the linear combination `h2`. Use `⟨a, ε, hε, hξ, fun v => ?_, fun w hw => ?_, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[ha, Matrix.smul_mulVec, smul_smul, mul_inv_cancel₀ hN0, one_smul, hA']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `hsurj ⟨w, hw⟩`. Establish `h3 : (U : Matrix (Fin r) (Fin r) E) *ᵥ (v : Fin r → E) = (N : E) ^ 2 • w`. Rewrite using `[hUA, hA', hv, hcoe]`. Establish `h2 : ((U⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((N : E) ^ 2 • w) = v`. Rewrite using `[← h3, Matrix.mulVec_mulVec, U.inv_mul, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hai, Matrix.smul_mulVec, smul_smul, ← pow_two, ← Matrix.mulVec_smul, h2]`. Conclude with `v.2`. Establish `hcc : cc ((N : E)⁻¹) = (N : E)⁻¹` using `(map_inv₀ (IsCMField.complexConj E) _).trans (by rw [map_natCast])`. Rewrite using `[ha, Matrix.smul_mulVec, Matrix.smul_mulVec, FrameFibre.herm_smul_smul, hcc, keyA]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_gl_of_trace_similitude : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X X' : Data E r) (N : ℕ), 0 < N → (∀ τ : E →+* ℂ, ‖τ X.ξ0‖ = ‖τ X'.ξ0‖) → ∀ (gam : X.Λ →ₗ[𝓞 E] X'.Λ), (∀ u v : X.Λ, Algebra.trace ℚ E (-X'.ξ0 * herm X'.Gm (gam u : Fin r → E) (gam v : Fin r → E)) = (N : ℚ) ^ 2 * Algebra.trace ℚ E (-X.ξ0 * herm X.Gm (u : Fin r → E) (v : Fin r → E))) → (∀ w : X'.Λ, ∃ v, gam v = (N ^ 2) • w) → ∃ (a : GL (Fin r) E) (ε : E), (ε = 1 ∨ ε = -1) ∧ X'.ξ0 = ε * X.ξ0 ∧ (∀ v : X.Λ, (N : E) • ((a : Matrix (Fin r) (Fin r) E) *ᵥ (v : Fin r → E)) = (gam v : Fin r → E)) ∧ (∀ w ∈ X'.Λ, (N : E) • (((a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ w) ∈ X.Λ) ∧ ∀ u v, herm X'.Gm ((a : Matrix (Fin r) (Fin r) E) *ᵥ u) ((a : Matrix (Fin r) (Fin r) E) *ᵥ v) = ε * herm X.Gm u v := by
   classical

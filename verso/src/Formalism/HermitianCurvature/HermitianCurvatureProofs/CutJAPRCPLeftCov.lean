@@ -9,13 +9,11 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.CP
 noncomputable section
 
 /- English proof (translation)
-Establish `hU : μᴴ * Hpk k r * μ = Hpk k r` using `hμ.1.1`. Establish `hdet : IsUnit μ.det`. Apply `Matrix.isUnit_det_of_left_inverse (B := Hpk k r * μᴴ * Hpk k r)` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc μᴴ, hU, Formalism.QuantumDeterminants.GBasic.Hpk_sq]`. Establish `hμu : IsUnit μ` using `(Matrix.isUnit_iff_isUnit_det μ).mpr hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ t : ℝ, F (μ * NormedSpace.exp ((t : ℂ) • (μ⁻¹ * X * μ))) = (π (NormedSpace.exp ((t : ℂ) • X))).comp (F μ)`. Introduce `t`. Rewrite using `[show (t : ℂ) • (μ⁻¹ * X * μ) = μ⁻¹ * ((t : ℂ) • X) * μ by rw [Matrix.mul_smul, Matrix.smul_mul], Matrix.exp_conj' μ _ hμu, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mul]`. Conclude with `hF _ (Formalism.FourierDecayAlt.P.QrD.exp_uw hX t) μ hμ`. Unfold `Formalism.REAL.RdV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Set `L : (Wp →L[ℂ] Wp) →L[ℝ] (Wq →L[ℂ] Wp)` to `((ContinuousLinearMap.compL ℂ Wq Wp Wp).flip (F μ)).restrictScalars ℝ`. Establish `hL : ∀ A, L A = A.comp (F μ)` using `fun A => rfl`. Establish `hd : HasDerivAt (fun t : ℝ => L (π (NormedSpace.exp ((t : ℂ) • X)))) (L (P.QrD.dOp π X)) 0` using `L.hasFDerivAt.comp_hasDerivAt 0 (Formalism.FourierDecayAlt.P.QrD.dOp_hasDeriv hπ hc hX)`. Simplify using `only [hL] at hd`.
-
-Conclude with `hd.deriv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdV_leftCov {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
     [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -46,9 +44,9 @@ theorem rdV_leftCov {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type}
   exact hd.deriv
 
 /- English proof (translation)
-Introduce `k r z Wp Wq _ _ _ _ _ _ π hπ hc _ D F _ _ _ hF μ hμ B hB`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[P.LeftDerivativeCurves.hpart1_conj hμ.1.1]`. Conclude with `P.LeftDerivativeCurves.lie_conj hμ.1 hB.1.1`. Rewrite using `[P.LeftDerivativeCurves.hpart2_conj hμ.1.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `P.LeftDerivativeCurves.lie_conj hμ.1 hB.2.1`. Unfold `Rc P.QrD.ecOp`. Rewrite using `[P.LeftDerivativeCurves.hpart1_conj hμ.1.1, P.LeftDerivativeCurves.hpart2_conj hμ.1.1, rdV_leftCov hπ hc hF hμ hB.1, rdV_leftCov hπ hc hF hμ hB.2]`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem left_covariance_holds : LeftCov := by
   intro k r z Wp Wq _ _ _ _ _ _ π hπ hc _ D F _ _ _ hF μ hμ B hB

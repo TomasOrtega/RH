@@ -14,20 +14,20 @@ open GlobalTheory.CompanionTheory.SobGL.HaarDom
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `hφ.comp (continuous_const.matrix_mul (Units.continuous_val.comp continuous_inv))`.
+A detailed English derivation is pending.
 -/
 theorem kernel_continuous {φ : Mat n → ℝ} (hφ : Continuous φ) (z : Mat n) :
     Continuous fun u : G n => φ (z * (u⁻¹ : G n).val) :=
   hφ.comp (continuous_const.matrix_mul (Units.continuous_val.comp continuous_inv))
 
 /- English proof (translation)
-Take `⟨-, hK, hKs⟩` from `hφ`. Establish `unit_of : ∀ w ∈ GLs n, ∃ y : G n, y.val = w`. Introduce `w hw`. Establish `hd : IsUnit w` using `(Matrix.isUnit_iff_isUnit_det w).2 (isUnit_iff_ne_zero.2 hw)`. Take `⟨y, hy⟩` from `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy⟩`. Take `⟨zG, rfl⟩` from `unit_of z hz`. Establish `hS : IsCompact ((Units.val : G n → Mat n) ⁻¹' tsupport φ)`. Use `(isOpenEmbedding_valG n).isInducing.isCompact_preimage_iff ?_ |>.2 hK` and prove the remaining obligations. Introduce `w hw`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `unit_of w (hKs hw)`. Conclude with `⟨y, hy⟩`. Establish `hI : IsCompact ((fun w : G n => w⁻¹ * zG) '' ((Units.val : G n → Mat n) ⁻¹' tsupport φ))` using `hS.image (continuous_inv.mul continuous_const)`. Use `HasCompactSupport.intro hI fun u hu => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hu ⟨zG * u⁻¹, ?_, by group⟩` and prove the remaining obligations. Establish `: (zG * u⁻¹).val ∈ Function.support φ`. Simplify `hne` using `[Function.mem_support]`. Conclude with `subset_tsupport φ this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem kernel_hasCompactSupport {φ : Mat n → ℝ} (hφ : IsTest φ) {z : Mat n} (hz : z ∈ GLs n) :
     HasCompactSupport fun u : G n => φ (z * (u⁻¹ : G n).val) := by
@@ -53,15 +53,15 @@ theorem kernel_hasCompactSupport {φ : Mat n → ℝ} (hφ : IsTest φ) {z : Mat
   exact subset_tsupport φ this
 
 /- English proof (translation)
-Introduce `n _ _ μ _ V _ _ _ _ φ hφ z hz`. Use `set g : G n → ℝ := fun u => φ (z * (u⁻¹ : G n).val) with hgdef`. Establish `hgc : Continuous g` using `kernel_continuous hφ.1.continuous z`. Establish `hg2 : MemLp g 2 μ` using `hgc.memLp_of_hasCompactSupport (kernel_hasCompactSupport hφ hz)`. Establish `hmem : ∀ x : Lp V 2 μ, MemLp (g • (x : G n → V)) 1 μ` using `fun x => (Lp.memLp x).smul hg2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ x : Lp V 2 μ, Integrable (fun u => g u • (x : G n → V) u) μ` using `fun x => memLp_one_iff_integrable.1 (hmem x)`. Establish `hb : ∀ x : Lp V 2 μ, ‖∫ u, g u • (x : G n → V) u ∂μ‖ ≤ (eLpNorm g 2 μ).toReal * ‖x‖`. Introduce `x`. Establish `h1 : eLpNorm (g • (x : G n → V)) 1 μ ≤ eLpNorm g 2 μ * eLpNorm x 2 μ` using `eLpNorm_smul_le_mul_eLpNorm (Lp.aestronglyMeasurable x) hg2.1`. Establish `h2 : ∫ u, ‖g u • (x : G n → V) u‖ ∂μ = (eLpNorm (g • (x : G n → V)) 1 μ).toReal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eLpNorm_one_eq_lintegral_enorm, integral_norm_eq_lintegral_enorm (hint x).1]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.toReal_mul, Lp.norm_def]`. Set `Lin : Lp V 2 μ →ₗ[ℝ] V` to `{ toFun := fun x => ∫ u, g u • (x : G n → V) u ∂μ map_add' := fun x y => by`.
+Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_add (hint x) (hint y)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_add x y] with u hu`. Rewrite using `[hu, Pi.add_apply, smul_add]`. Use the proof step `map_smul' := fun c x => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.id_apply, ← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_smul c x] with u hu`. Rewrite using `[hu, Pi.smul_apply, smul_comm] }`. Conclude with `⟨Lin.mkContinuous _ hb, fun x => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mol_bounded : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
     [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V],

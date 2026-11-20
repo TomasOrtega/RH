@@ -9,9 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.CuspRep GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Take `rfl : e = a + m + m` from `by omega`. Establish `hsq : (x * y⁻¹ * u ^ (-m)) ^ 2 = (x ^ 2 * u ^ (-(a + m + m))) * (y ^ 2 * u ^ (-a))⁻¹`. Rewrite using `[mul_inv, mul_mul_mul_comm, mul_pow, mul_pow, inv_pow]`. Use `congr 1`. Use `group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h1 : (x ^ 2 * u ^ (-(a + m + m))) ^ (k * k') = 1`. Rewrite using `[mul_comm k k', pow_mul, hx, one_pow]`. Establish `h2 : (y ^ 2 * u ^ (-a)) ^ (k * k') = 1`. Rewrite using `[pow_mul, hy, one_pow]`. Rewrite using `[pow_mul, hsq, mul_pow, inv_pow, h1, h2, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem half_pow {M : Type} [CommGroup M] {x y u : M} {a e m : ℤ} {k k' : ℕ} (hm : e - a = m + m)
     (hx : (x ^ 2 * u ^ (-e)) ^ k' = 1) (hy : (y ^ 2 * u ^ (-a)) ^ k = 1) :

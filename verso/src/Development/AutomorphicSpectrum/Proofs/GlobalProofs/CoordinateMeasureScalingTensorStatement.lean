@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open scoped TensorProduct ENNReal NNReal Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FCoordinateMeasureScalingTensor.lean&line=9#L9)
 -/

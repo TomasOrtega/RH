@@ -23,7 +23,7 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
   [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-The claim follows from `h.nullMeasurableSet.prod h.nullMeasurableSet ae_covers := by have h1 := (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := μ)).ae h.ae_covers have h2 := (Measure.quasiMeasurePreserving_snd (μ := μ) (ν := μ)).ae h.ae_covers filter_upwards [h1, h2] with p ha hb obtain ⟨a, ha⟩ := ha …`.
+A detailed English derivation is pending.
 -/
 theorem prod_isAddFundamentalDomain (Γ₁ : AddSubgroup V) (Γ : AddSubgroup (V × V))
     (hΓ : ∀ w : V × V, w ∈ Γ ↔ w.1 ∈ Γ₁ ∧ w.2 ∈ Γ₁) (μ : Measure V) [SFinite μ]
@@ -60,13 +60,11 @@ theorem prod_isAddFundamentalDomain (Γ₁ : AddSubgroup V) (Γ : AddSubgroup (V
       rw [show μ _ = 0 from this, zero_mul]
 
 /- English proof (translation)
-Substitute `hmW` using the available equality. Use `haveI := hν`. Use `haveI : Countable Γ := by`. Establish `hinj : Function.Injective (fun k : Γ => ((⟨(k : V × V).1, ((hΓ _).1 k.2).1⟩ : Γ₁), (⟨(k : V × V).2, ((hΓ _).1 k.2).2⟩ : Γ₁)))`. Introduce `k k' hk`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at hk`. Conclude with `Subtype.ext (Prod.ext hk.1 hk.2)`. Conclude with `hinj.countable`. Establish `hmeq` using `Measure.isAddLeftInvariant_eq_smul ν (μ.prod μ)`. Use `set c : NNReal := Measure.addHaarScalarFactor ν (μ.prod μ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcpos : 0 < c` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure ν (μ.prod μ)`. Establish `hν' : ν = (c : ENNReal) • μ.prod μ`. Rewrite using `[← ENNReal.smul_def]`. Conclude with `hmeq`. Use `⟨(c : ENNReal), by exact_mod_cast hcpos.ne', ENNReal.coe_ne_top, fun G hG hper => ?_⟩` and prove the remaining obligations.
-
-Establish `hD : IsAddFundamentalDomain Γ (𝓕₁ ×ˢ 𝓕₁) ν` using `(prod_isAddFundamentalDomain Γ₁ Γ hΓ μ 𝓕₁ h𝓕₁).mono (by rw [hν']; exact Measure.smul_absolutelyContinuous)`. Rewrite using `[h𝓕.setLIntegral_eq hD G (fun g x => hper g g.2 x), hν', Measure.restrict_smul, lintegral_smul_measure, ← Measure.prod_restrict, lintegral_prod _ hG.aemeasurable, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_fundamentalDomain_eq_iterated (Γ₁ : AddSubgroup V) [Countable Γ₁]
     (Γ : AddSubgroup (V × V)) (hΓ : ∀ w : V × V, w ∈ Γ ↔ w.1 ∈ Γ₁ ∧ w.2 ∈ Γ₁)
@@ -105,7 +103,7 @@ end GlobalTheory.PeriodicIterated
 namespace GlobalTheory.PeriodicIterated
 
 /- English proof (translation)
-Use `haveI : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable`. Conclude with `(AddMonoidHom.rangeRestrict_surjective _).countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_ratVec (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     Countable (GlobalTheory.ThetaParseval.ratVec F κ) := by
@@ -113,9 +111,9 @@ theorem countable_ratVec (F : Type) [Field F] [NumberField F] (κ : Type) [Finty
   exact (AddMonoidHom.rangeRestrict_surjective _).countable
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.WeilUnitaryTransport.mem_ratPair_iff, GlobalTheory.ThetaParseval.mem_ratVec_iff, GlobalTheory.ThetaParseval.mem_ratVec_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, z, rfl⟩`. Conclude with `⟨⟨y, rfl⟩, ⟨z, rfl⟩⟩`. Introduce and unpack `⟨⟨y, hy⟩, ⟨z, hz⟩⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, z, Prod.ext hy hz⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ratPair_iff_ratVec (F : Type) [Field F] [NumberField F] (κ : Type)
     (w : (κ → AF F) × (κ → AF F)) :
@@ -130,9 +128,7 @@ theorem mem_ratPair_iff_ratVec (F : Type) [Field F] [NumberField F] (κ : Type)
     exact ⟨y, z, Prod.ext hy hz⟩
 
 /- English proof (translation)
-Introduce `F _ _ κ _ μ hμ ν hν 𝓕 h𝓕 𝓕₁ h𝓕₁`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
-
-Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := countable_ratVec F κ`. Use `haveI := hμ`. Conclude with `lintegral_fundamentalDomain_eq_iterated (GlobalTheory.ThetaParseval.ratVec F κ) (GlobalTheory.WeilUnitaryTransport.ratPair F κ) (mem_ratPair_iff_ratVec F κ) μ (borel _) (Prod.borelSpace (α := κ → AF F) (β := κ → AF F)).measurable_eq.symm ν hν 𝓕 h𝓕 𝓕₁ h𝓕₁`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem lintegral_ratPair_fundamentalDomain_eq_iterated : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∀ (ν : @Measure ((κ → AF F) × (κ → AF F)) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) ν →

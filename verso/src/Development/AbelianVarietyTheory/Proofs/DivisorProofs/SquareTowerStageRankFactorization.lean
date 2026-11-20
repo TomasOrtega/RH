@@ -35,7 +35,7 @@ open GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `idealVal`. Repeatedly rewrite using `[val_mul, mul_zpow]`. Conclude with `finprod_mul_distrib (GlobalTheory.SqStepIdeal.mulSupport_finite _ 𝔞) (GlobalTheory.SqStepIdeal.mulSupport_finite _ 𝔞)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealVal_mul_chr (χ ψ : Chr F E) (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
     idealVal (χ * ψ) 𝔞 = idealVal χ 𝔞 * idealVal ψ 𝔞 := by
@@ -44,7 +44,7 @@ theorem idealVal_mul_chr (χ ψ : Chr F E) (𝔞 : FractionalIdeal (nonZeroDivis
   exact finprod_mul_distrib (GlobalTheory.SqStepIdeal.mulSupport_finite _ 𝔞) (GlobalTheory.SqStepIdeal.mulSupport_finite _ 𝔞)
 
 /- English proof (translation)
-Unfold `idealVal`. Rewrite using `[finprod_eq_single _ w, FractionalIdeal.count_self, zpow_one]`. Introduce `v hv`. Rewrite using `[FractionalIdeal.count_maximal_coprime E v hv.symm, zpow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem idealVal_prime (χ : Chr F E) (w : HeightOneSpectrum (𝓞 E)) :
     idealVal χ (w.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = val χ w := by
@@ -54,28 +54,24 @@ theorem idealVal_prime (χ : Chr F E) (w : HeightOneSpectrum (𝓞 E)) :
   rw [FractionalIdeal.count_maximal_coprime E v hv.symm, zpow_zero]
 
 /- English proof (translation)
-Unfold `idealVal`. Simplify using `[FractionalIdeal.count_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem idealVal_one (χ : Chr F E) : idealVal χ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = 1 := by
   unfold idealVal
   simp [FractionalIdeal.count_one]
 
 /- English proof (translation)
-Set `H : Subgroup ℂˣ` to `{ carrier := {z | ∃ 𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, 𝔞 ≠ 0 ∧ idealVal ξ 𝔞 = z} mul_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a * b, mul_ne_zero ha hb, GlobalTheory.EulerIdeal.idealVal_mul ξ ha hb⟩`. Use the proof step `one_mem' := ⟨1, one_ne_zero, idealVal_one ξ⟩`. Use the proof step `inv_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨a⁻¹, inv_ne_zero ha, GlobalTheory.EulerIdeal.idealVal_inv ξ a⟩ }`. Use `haveI : NeZero n := ⟨hn.ne'⟩`. Establish `h1 : H ≤ rootsOfUnity n ℂ`. Introduce and unpack `_ ⟨a, -, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `idealVal`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := (GlobalTheory.SqStepIdeal.mulSupport_finite (val ξ) a).toFinset) (by simp)]`. Conclude with `Subgroup.prod_mem _ fun w _ => Subgroup.zpow_mem _ ((mem_rootsOfUnity _ _).2 (hv w)) _`. Use `haveI : Finite H := Finite.of_injective _ (Subgroup.inclusion_injective h1)`. Establish `hc : 0 < Nat.card H` using `Nat.card_pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `haveI : NeZero (Nat.card H) := ⟨hc.ne'⟩`. Establish `h2 : H ≤ rootsOfUnity (Nat.card H) ℂ` using `fun z hz => by`. Rewrite using `[mem_rootsOfUnity]`. Use `congrArg Subtype.val (pow_card_eq_one' (x := (⟨z, hz⟩ : H)))` as an intermediate fact. Rewrite `this` using `[SubmonoidClass.coe_pow]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : H = rootsOfUnity (Nat.card H) ℂ`. Use `Subgroup.eq_of_le_of_card_ge h2 ?_` and prove the remaining obligations. Conclude with `card_rootsOfUnity ℂ (Nat.card H)`. Establish `h4 : ξ ^ Nat.card H = 1`. Use `GlobalTheory.HeckeUnifApprox.eq_one_of_unif_cofinite _ ⟨?_, fun x => ?_⟩ (hu.mono fun w hw ϖ hϖ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hξ.1.pow _`. Rewrite using `[MonoidHom.pow_apply, hξ.2 x, one_pow]`. Establish `e1 : val ξ w ∈ H` using `⟨w.asIdeal, FractionalIdeal.coeIdeal_ne_zero.2 w.ne_bot, idealVal_prime ξ w⟩`. Establish `e2` using `(mem_rootsOfUnity _ _).1 (h2 e1)`. Rewrite `e2` using `[← hw.locChar_eq_val hϖ]`.
-
-Establish `e3 : Circle.toUnits (ξ (locIdele F w ϖ) ^ Nat.card H) = Circle.toUnits 1`. Rewrite using `[map_pow, map_one]`. Conclude with `e2`. Rewrite using `[MonoidHom.pow_apply]`. Conclude with `Circle.ext (congrArg Units.val e3)`.
-
-Establish `h5 : Circle.toUnits (ξ k) ∈ H`. Rewrite using `[h3, mem_rootsOfUnity, ← map_pow, ← MonoidHom.pow_apply, h4, MonoidHom.one_apply, map_one]`. Conclude with `h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idealVal_eq {ξ : Chr F E} (hξ : IsHecke F E ξ) (hu : ∀ᶠ w in Filter.cofinite, UnrAt ξ w) {n : ℕ} (hn : 0 < n)
     (hv : ∀ w, val ξ w ^ n = 1) (k : (AE F E)ˣ) :
@@ -121,9 +117,9 @@ theorem exists_idealVal_eq {ξ : Chr F E} (hξ : IsHecke F E ξ) (hu : ∀ᶠ w 
   exact h5
 
 /- English proof (translation)
-Use `⟨⟨h.heckeα.1.div' h.heckeβ.1, fun x => by` and prove the remaining obligations. Simplify using `only [Chars.ν, MonoidHom.div_apply, h.heckeα.2 x, h.heckeβ.2 x, div_one]⟩, ?_⟩`. Establish `hf : (above E (X.T : Set (Pl F))).Finite` using `(Set.Finite.biUnion X.T.finite_toSet fun v _ => Formalism.L2.Host.finite_aboveF (L := E) F v).subset fun w hw => Set.mem_biUnion hw rfl`. Use `Filter.eventually_cofinite.2 (hf.subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hw ?_` and prove the remaining obligations. Rewrite using `[Chars.ν, div_eq_mul_inv]`. Conclude with `(h.unrα w hn).mul (h.unrβ w hn).inv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_good {B : Base F E} {X : Chars F E} {a a' : ℕ} (h : X.IsGood B a a') :
     IsHecke F E X.ν ∧ ∀ᶠ w in Filter.cofinite, UnrAt X.ν w := by
@@ -139,13 +135,13 @@ theorem nu_good {B : Base F E} {X : Chars F E} {a a' : ℕ} (h : X.IsGood B a a'
   exact (h.unrα w hn).mul (h.unrβ w hn).inv
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨𝔟₀, h0, e0⟩ : ∃ 𝔟₀ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, 𝔟₀ ≠ 0 ∧ ∀ χ : Chr F E, idealVal χ 𝔟₀ = idealVal χ 𝔟 := by`. Distinguish the cases in `h : 𝔟 = 0`. Use `⟨1, one_ne_zero, fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[idealVal_one, h]`. Unfold `idealVal`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `[FractionalIdeal.count_zero]`. Conclude with `⟨𝔟, h, fun _ => rfl⟩`. Take `⟨𝔞, ha, e⟩` from `exists_idealVal_eq hξ hu hn hv (k ^ (e₁ : ℤ))`. Establish `e1 : idealVal X.ν 𝔞 ^ (e₁ : ℤ) = Circle.toUnits (X.ν k / Y.ν k) * idealVal Y.ν 𝔞 ^ (e₁ : ℤ)`. Establish `: idealVal X.ν 𝔞 = idealVal (X.ν / Y.ν) 𝔞 * idealVal Y.ν 𝔞`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← idealVal_mul_chr, div_mul_cancel]`. Rewrite using `[this, e, mul_zpow, map_zpow, map_zpow, ← zpow_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, zpow_one, MonoidHom.div_apply]`. Use `⟨𝔞 * 𝔟₀, (idealVal Y.ν 𝔞 ^ (e₁ : ℤ) : ℂˣ), Units.ne_zero _, ?_, ?_⟩` and prove the remaining obligations. Unfold `stepFac`. Rewrite using `[GlobalTheory.EulerIdeal.idealVal_mul _ ha h0, e0, mul_zpow, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, mul_assoc]`. Both sides reduce to the same expression. Unfold `stepFac`. Rewrite using `[GlobalTheory.EulerIdeal.idealVal_mul _ ha h0, e0, mul_zpow]`. Simplify using `only [Units.val_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_stepFac_twist (B : Base F E) {X Y : Chars F E} (hξ : IsHecke F E (X.ν / Y.ν))
     (hu : ∀ᶠ w in Filter.cofinite, UnrAt (X.ν / Y.ν) w) {n : ℕ} (hn : 0 < n) (hv : ∀ w, val (X.ν / Y.ν) w ^ n = 1)
@@ -179,11 +175,11 @@ theorem exists_stepFac_twist (B : Base F E) {X Y : Chars F E} (hξ : IsHecke F E
 end Values
 
 /- English proof (translation)
-Establish `e : ∀ s, (GlobalTheory.SqStep.chs G i j s).ν = G.nu s i (j + 1)` using `fun s => by show (Lc.mu s (j + 1) * Lc.eta ^ _) / (G.ch.chi _ * Lc.eta ^ _) = _`. Rewrite using `[mul_div_mul_right_eq_div]`. Both sides reduce to the same expression. Establish `hν : (GlobalTheory.SqStep.chs G i j t).ν / (GlobalTheory.SqStep.chs G i j μ₀).ν = Lc.xi t * (Lc.xi μ₀)⁻¹`. Rewrite using `[e, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Use `show Lc.mu0 (j + 1) x * Lc.xi t x / G.ch.chi (D.R.m - i) x / (Lc.mu0 (j + 1) x * Lc.xi μ₀ x / G.ch.chi (D.R.m - i) x) = Lc.xi t x * (Lc.xi μ₀ x)⁻¹`. Rewrite using `[div_div_div_cancel_right, mul_div_mul_left_eq_div, div_eq_mul_inv]`. Take `⟨n, hn, hfin⟩` from `hL.xi_fin t`. Use `⟨n, hn, fun w => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hν, GlobalTheory.LFun.val_mul, GlobalTheory.LFun.val_inv, GlobalTheory.LFun.val_eq_of_chrEq (hL.xi t) w, GlobalTheory.LFun.val_eq_of_chrEq (hL.xi μ₀) w, hL.xi_base, show (1 : HChar D.host.E).val w = 1 from rfl, inv_one, mul_one]`. Conclude with `(GlobalTheory.SqStepIdeal.val_mem hfin (hN.chars.xi t) w).1`.
+A detailed English derivation is pending.
 -/
 theorem val_quot_pow {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T} (hL : Lc.Is μ₀)
     (W : G.Weil) (S : GridChoice W Set.univ) (hN : NumbersIn D.what₂.embLL S μ₀) (i j : Fin D.R.m) (t : T) :
@@ -205,11 +201,9 @@ theorem val_quot_pow {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : Gri
   exact (GlobalTheory.SqStepIdeal.val_mem hfin (hN.chars.xi t) w).1
 
 /- English proof (translation)
-Take `⟨F₁, h₁⟩` from `h₁`. Take `⟨F₂, h₂⟩` from `h₂`. Take `⟨F₃, h₃⟩` from `h₃`. Use `⟨max F₁ (max F₂ F₃), fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C₁, x₁, k₁⟩` from `h₁ ε CF (le_trans (le_max_left _ _) hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, x₂, k₂⟩` from `h₂ ε CF (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCF)`. Take `⟨C₃, x₃, k₃⟩` from `h₃ ε CF (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCF)`. Use `⟨max C₁ (max C₂ C₃), max x₁ (max x₂ x₃), fun C hC D large₂ he hx hR T Lc μ₀ hL G => H G μ₀ C _ _ ?_ ?_ ?_⟩` and prove the remaining obligations. Conclude with `k₁ C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Conclude with `k₂ C (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
-
-Conclude with `k₃ C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gbig_three {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂) (h₃ : GBig Q₃)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -229,11 +223,9 @@ theorem gbig_three {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂)
       (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G
 
 /- English proof (translation)
-Take `⟨F₁, h₁⟩` from `h₁`. Take `⟨F₂, h₂⟩` from `h₂`. Take `⟨F₃, h₃⟩` from `h₃`. Use `⟨max F₁ (max F₂ F₃), fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C₁, x₁, k₁⟩` from `h₁ ε CF (le_trans (le_max_left _ _) hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, x₂, k₂⟩` from `h₂ ε CF (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCF)`. Take `⟨C₃, x₃, k₃⟩` from `h₃ ε CF (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCF)`. Use `⟨max C₁ (max C₂ C₃), max x₁ (max x₂ x₃), fun C hC D large₂ he hx hR T Lc μ₀ hL G => H G μ₀ C _ _ hL ?_ ?_ ?_⟩` and prove the remaining obligations. Conclude with `k₁ C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Conclude with `k₂ C (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
-
-Conclude with `k₃ C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gbig_three_is {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂) (h₃ : GBig Q₃)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -253,25 +245,23 @@ theorem gbig_three_is {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q�
       (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G
 
 /- English proof (translation)
-Introduce `hP hK hM`. Take `⟨e₁, e₂, s, hSB⟩` from `hK.2.1`. Use `gbig_three_is (GlobalTheory.T.tower_stage_extension_exists hP hK hM) (GlobalTheory.T.tower_stage_successor_coefficients hP hK hM) (GlobalTheory.T.exists_factor_of_stage_triangle hP hK hM) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hL hy hd hf W S hψ hN i j p q A A' WW X lam e hX hF he`. Take `⟨B', WW₁, Y, hY, hst⟩` from `hy W S hψ hN i j p q A A' WW X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hf W S hψ hN i j p q A B' WW₁ Y hY`. Use `haveI : Nonempty T := ⟨μ₀⟩`. Use `⟨A, B', WW₁, Y, c, hY, hc.isConst, hc.1, fun t => ?_⟩` and prove the remaining obligations. Take `⟨Bs, bb, Γ, Γ₁, H, H', R, R₁, d, d₁, k, k₁, hfit, hb, hV, hp, hq, hH, hH', hd0, hd10, hk⟩` from `hd W S hψ hN i j p q A A' WW B' WW₁ X Y lam c e hX hY hst hF hc he t`. Take `⟨C₀, hC₀, hstep⟩` from `hSB D.host.F D.host.E D.sp.cm.sig Bs A.rank bb Γ Γ₁ H H' R R₁ hV hp hq hH hH'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : (A.rank - (bb + 2)) / 2 = e` using `by omega`. Establish `key : ∀ t' ∈ ({t, μ₀} : Set T), d * (((GlobalTheory.SqStep.chs G i j t').ν k / (GlobalTheory.SqStep.chs G i j μ₀).ν k : Circle) : ℂ) * lam t' * GlobalTheory.LFun.charL (GlobalTheory.SqStep.chs G i j t').ν (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) ((e + 1 : ℕ) : ℂ) * (C₀ * …`. Introduce `t' ht'`. Take `⟨⟨om, om', Rf, hm, hκ⟩, ⟨om₁, om₁', Rf₁, hm₁, hκ₁⟩⟩` from `hk t' ht'`. Take `⟨u, hu1, hu2⟩` from `hstep _ om om' Rf om₁ om₁' Rf₁ hm hm₁ _ _ hκ hκ₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu1`, `hu2` using `[hE]`. Establish `e1 : (((e : ℕ) : ℂ) + 1) = ((e + 1 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite `hu2` using `[e1]`. Express the relevant statement in the definitionally equal form `_ * GlobalTheory.LFun.charL _ (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) _ = _ at hu2`. Rewrite using `[hu2, mul_right_comm, hu1, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `good : ∀ t' ∈ ({t, μ₀} : Set T), GlobalTheory.LFun.IsHecke D.host.F D.host.E (GlobalTheory.SqStep.chs G i j t').ν ∧ ∀ᶠ w in Filter.cofinite, GlobalTheory.LFun.UnrAt (GlobalTheory.SqStep.chs G i j t').ν w`. Introduce `t' ht'`. Take `⟨⟨om, om', Rf, hm, -⟩, -⟩` from `hk t' ht'`. Conclude with `nu_good hm.triple.chars`. Take `⟨gt, ut⟩` from `good t (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨gμ, uμ⟩` from `good μ₀ (by simp)`. Take `⟨n, hn, hv⟩` from `val_quot_pow G hL W S hN i j t`. Take `⟨𝔟, r, hr, st, sμ⟩` from `exists_stepFac_twist Bs (X := GlobalTheory.SqStep.chs G i j t) (Y := GlobalTheory.SqStep.chs G i j μ₀) ⟨gt.1.div' gμ.1, fun y => by simp only [MonoidHom.div_apply, gt.2 y, gμ.2 y, div_one]⟩ ((ut.and uμ).mono fun w hw => by rw [div_eq_mul_inv]; exact hw.1.mul hw.2.inv) hn hv e₁ e₂ …`. Establish `kt` using `key t (by simp)`. Establish `kμ` using `key μ₀ (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `kμ` using `[div_self', div_self', Circle.coe_one, mul_one, mul_one]`. Establish `ek : (((GlobalTheory.SqStep.chs G i j t).ν k / (GlobalTheory.SqStep.chs G i j μ₀).ν k : Circle) : ℂ) = (((GlobalTheory.SqStep.chs G i j t).ν (k / k₁) / (GlobalTheory.SqStep.chs G i j μ₀).ν (k / k₁) : Circle) : ℂ) * (((GlobalTheory.SqStep.chs G i j t).ν k₁ / (GlobalTheory.SqStep.c …`. Rewrite using `[← Circle.coe_mul, div_mul_div_comm, ← map_mul, ← map_mul, div_mul_cancel]`. Rewrite `kt` using `[ek]`. Establish `z₀` using `Circle.coe_ne_zero ((GlobalTheory.SqStep.chs G i j t).ν (k / k₁) / (GlobalTheory.SqStep.chs G i j μ₀).ν (k / k₁))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z₁` using `Circle.coe_ne_zero ((GlobalTheory.SqStep.chs G i j t).ν k₁ / (GlobalTheory.SqStep.chs G i j μ₀).ν k₁)`. Establish `nt` using `mul_ne_zero (mul_ne_zero hd10 z₁) (hc.1 t)`. Establish `nμ : d₁ * c μ₀ ≠ 0` using `mul_ne_zero hd10 (hc.1 μ₀)`. Rewrite `nt` using `[← kt]`. Rewrite `nμ` using `[← kμ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Bs, e₁, e₂, s, 𝔟, H'.𝔟, hfit, ?_, ?_, right_ne_zero_of_mul (left_ne_zero_of_mul nt), right_ne_zero_of_mul (left_ne_zero_of_mul nμ), ?_⟩` and prove the remaining obligations. Rewrite using `[st]`. Conclude with `mul_ne_zero (mul_ne_zero z₀ hr) (right_ne_zero_of_mul (right_ne_zero_of_mul nt))`. Rewrite using `[sμ]`. Conclude with `mul_ne_zero hr (right_ne_zero_of_mul (right_ne_zero_of_mul nμ))`.
-
-Rewrite using `[st, sμ]`. Use `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero hd0 hC₀) z₁) ?_` and prove the remaining obligations. Take the linear combination `(r * c μ₀) * kt - (r * c t * (((GlobalTheory.SqStep.chs G i j t).ν k₁ / (GlobalTheory.SqStep.chs G i j μ₀).ν k₁ : Circle) : ℂ)) * kμ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem step_first : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

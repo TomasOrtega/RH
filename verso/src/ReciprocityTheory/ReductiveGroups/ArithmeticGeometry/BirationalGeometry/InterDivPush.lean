@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.I
 namespace ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-The claim follows from `resDivPush_of_fibre hE hB hI divPushCommonProj (divPushFibre_of h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem resDivPush_of (hE : ResExistsStatement) (hB : ResBridgeStatement)
     (hI : PtsIntegrableStatement) (h1 : DivPushResSideStatement)

@@ -7,7 +7,7 @@ namespace LateralTheory.E.H0Kernel
 open LateralTheory.E.LeafDegCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafShIsoPf
 
 /- English proof (translation)
-Establish `: EssentiallySmall.{1} B.Etale` using `inferInstance`. Establish `hSC : (EtTop B).HasSheafCompose (forget (ModuleCat.{1} (ULift.{1} (ZMod q))))` using `hasSheafComposeEssentiallySmallSite (J := EtTop B) (A := ModuleCat.{1} (ULift.{1} (ZMod q))) (F := forget _)`. Conclude with `(Sheaf.isLocallySurjective_iff_epi' _ e).2 inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locSurj (B : Scheme.{0}) (q : ℕ) {F G : SShv B q} (e : F ⟶ G) [Epi e] : Sheaf.IsLocallySurjective e := by
   have : EssentiallySmall.{1} B.Etale := inferInstance
@@ -16,9 +16,9 @@ theorem locSurj (B : Scheme.{0}) (q : ℕ) {F G : SShv B q} (e : F ⟶ G) [Epi e
   exact (Sheaf.isLocallySurjective_iff_epi' _ e).2 inferInstance
 
 /- English proof (translation)
-Introduce `B q M U x hx`. Take `⟨T, e, he, H⟩` from `exists_epi (C := SShv B q) (P := (presheafToSheaf (EtTop B) _).obj ((FP (ULift.{1} (ZMod q))).obj U)) x hx`. Use `locSurj B q e` as an intermediate fact. Take `⟨Z, hZ, hc⟩` from `locally_factors (EtTop B) (ULift.{1} (ZMod q)) e`. Use `⟨Z, hZ, fun U' a ha => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `hc U' a ha`. Establish `h` using `H _ c`. Rewrite `h` using `[← hc]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_sheaf_zeroth_cohomology_kernel_exact : EtaleDerivedDegreeZeroHomologyKernelLocallyVanishes := by
   intro B q M U x hx

@@ -6,13 +6,13 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Use `haveI : Finite F := Finite.of_injective (algebraMap F F') (algebraMap F F').injective`. Use `haveI : Fintype F' := Fintype.ofFinite F'`. Establish `hcard : Nat.card F' = Nat.card F ^ Module.finrank F F'` using `Module.natCard_eq_pow_finrank`. Establish `hq : 1 < Nat.card F` using `Finite.one_lt_card`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `Nat.card F = q at hs hq hcard`. Establish `hne : (X ^ q - X : F'[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero F' hq`. Establish `hdeg : (X ^ q - X : F'[X]).natDegree = q` using `FiniteField.X_pow_card_sub_X_natDegree_eq F' hq`. Establish `hsub : (Finset.univ : Finset F') ⊆ (X ^ q - X : F'[X]).roots.toFinset`. Introduce `z _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Multiset.mem_toFinset, mem_roots hne]`. Use `hs z` as an intermediate fact. Simplify using `only [AlgEquiv.one_apply] at this`. Simplify using `[IsRoot, ← this]`. Establish `h1 : Nat.card F' ≤ q`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Nat.card_eq_fintype_card, ← Finset.card_univ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[hcard]`. Establish `h2 : q ^ 2 ≤ q ^ Module.finrank F F'` using `Nat.pow_le_pow_right (by omega) hp.two_le`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem frob_ne_one {F F' : Type} [Field F] [Field F'] [Algebra F F'] [Finite F']
     (s : F' ≃ₐ[F] F') (hp : (Module.finrank F F').Prime) (hs : ∀ z, s z = z ^ Nat.card F) :
@@ -42,11 +42,11 @@ private theorem frob_ne_one {F F' : Type} [Field F] [Field F'] [Algebra F F'] [F
   nlinarith
 
 /- English proof (translation)
-Introduce `h F F' _ _ _ _ s hp hs ι θ hθ a hD hok hq`. Take `⟨q, D, L⟩` from `a`. Simplify using `only at hD hq`. Substitute `hD` using the available equality. Substitute `hq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality.
 
-Establish `key` using `h F F' s hp (frob_ne_one s hp hs) ι θ hθ L (fun p hp' => hok.2.2 p hp') (deg L) rfl`. Establish `hrk : (⟨Nat.card F, [], L⟩ : Lbl).rk = deg L`. Establish `h0 : GlobalTheory.Shin.deg ([] : List (ℕ × ℕ)) = 0` using `rfl`. Simplify using `[Lbl.rk, h0]`. Rewrite using `[hrk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `key` using `[Lbl.lift, JD_nil]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.killsNil :
     KillsAll → KillsOn fun a => a.D = [] := by

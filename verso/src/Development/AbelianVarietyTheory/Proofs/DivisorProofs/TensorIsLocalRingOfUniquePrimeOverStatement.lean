@@ -6,7 +6,7 @@ open IsLocalRing Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.tensor_isLocalRing_of_unique_prime_over) | (exact GlobalTheory.tensor_isLocalRing_of_unique_prime_over) | (intros; apply GlobalTheory.tensor_isLocalRing_of_unique_prime_over <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.isLocalRing_tensor_of_unique_prime_over : ∀ (P T L : Type) [CommRing P] [CommRing T] [CommRing L] [Algebra P T] [Algebra P L] [IsLocalRing L] [Algebra.IsIntegral P T] (𝔐 : Ideal T) [𝔐.IsPrime],
     𝔐.comap (algebraMap P T) = (maximalIdeal L).comap (algebraMap P L) →

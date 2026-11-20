@@ -14,15 +14,15 @@ open scoped Matrix in
 variable {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] in
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix m m ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix m m ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedRing (Matrix n n ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix n n ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hk : ∀ k : ℕ, A ^ k * B = B * D ^ k`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, ← pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hA` using `NormedSpace.expSeries_summable' (𝕂 := ℂ) A`. Establish `hD` using `NormedSpace.expSeries_summable' (𝕂 := ℂ) D`. Set `L : Matrix m m ℂ →L[ℂ] Matrix m n ℂ` to `LinearMap.toContinuousLinearMap { toFun := fun X => X * B, map_add' := fun X Y => Matrix.add_mul X Y B, map_smul' := fun c X => Matrix.smul_mul c X B }`. Set `L' : Matrix n n ℂ →L[ℂ] Matrix m n ℂ` to `LinearMap.toContinuousLinearMap { toFun := fun X => B * X, map_add' := fun X Y => Matrix.mul_add B X Y, map_smul' := fun c X => Matrix.mul_smul B c X }`. Establish `e1` using `L.map_tsum hA`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2` using `L'.map_tsum hD`. Simplify using `only [L, L', LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk] at e1 e2`. Rewrite using `[NormedSpace.exp_eq_tsum ℂ, NormedSpace.exp_eq_tsum ℂ]`. Use `show (∑' k : ℕ, ((k.factorial : ℂ)⁻¹ • A ^ k)) * B = B * ∑' k : ℕ, ((k.factorial : ℂ)⁻¹ • D ^ k)`. Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndLine.Iwasawa.exp_mul_eq {A : Matrix m m ℂ} {D : Matrix n n ℂ}
     {B : Matrix m n ℂ} (h : A * B = B * D) :
@@ -78,7 +78,7 @@ structure Grading (p r q θ : R) : Prop where
   θp : θ * p = q * θ
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : Grading (R := Matrix (Fin 3) (Fin 3) ℤ) !![1, 0, 0; 0, 0, 0; 0, 0, 0] !![0, 0, 0; 0, 1, 0; 0, 0, 0]
     !![0, 0, 0; 0, 0, 0; 0, 0, 1] !![0, 0, 1; 0, 1, 0; 1, 0, 0] := by
@@ -90,41 +90,41 @@ variable {p r q θ : R} (h : Grading p r q θ)
 include h
 
 /- English proof (translation)
-Rewrite using `[h.sum, mul_sub, mul_sub, mul_one, h.pp, h.pq, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pr : p * r = 0 := by rw [h.sum, mul_sub, mul_sub, mul_one, h.pp, h.pq, sub_self, sub_zero]
 /- English proof (translation)
-Rewrite using `[h.sum, sub_mul, sub_mul, one_mul, h.pp, h.qp, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rp : r * p = 0 := by rw [h.sum, sub_mul, sub_mul, one_mul, h.pp, h.qp, sub_self, sub_zero]
 /- English proof (translation)
-Rewrite using `[h.sum, mul_sub, mul_sub, mul_one, h.qq, h.qp, sub_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qr : q * r = 0 := by rw [h.sum, mul_sub, mul_sub, mul_one, h.qq, h.qp, sub_zero, sub_self]
 /- English proof (translation)
-Rewrite using `[h.sum, sub_mul, sub_mul, one_mul, h.qq, h.pq, sub_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rq : r * q = 0 := by rw [h.sum, sub_mul, sub_mul, one_mul, h.qq, h.pq, sub_zero, sub_self]
 /- English proof (translation)
-Use `conv_lhs => enter [1]`. Rewrite using `[h.sum]`. Rewrite using `[sub_mul, sub_mul, one_mul, h.pr, h.qr, sub_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rr : r * r = r := by
   conv_lhs => enter [1]; rw [h.sum]
   rw [sub_mul, sub_mul, one_mul, h.pr, h.qr, sub_zero, sub_zero]
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem θq : θ * q = p * θ := by
   calc θ * q = θ * (q * θ) * θ := by rw [mul_assoc, mul_assoc, h.θθ, mul_one]
     _ = p * θ := by rw [← h.θp, ← mul_assoc, h.θθ, one_mul]
 /- English proof (translation)
-Rewrite using `[h.sum, mul_sub, mul_sub, sub_mul, sub_mul, h.θp, h.θq, mul_one, one_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem θr : θ * r = r * θ := by
   rw [h.sum, mul_sub, mul_sub, sub_mul, sub_mul, h.θp, h.θq, mul_one, one_mul]; abel
 
 /- English proof (translation)
-Establish `a : ∀ u v u' v' : R, θ * u = u' * θ → θ * v' = v * θ → θ * (u * Z * v) * θ = u' * (θ * Z * θ) * v'`. Introduce `u v u' v' h1 h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[low, up, mul_add, mul_add, add_mul, add_mul, a r p r q h.θr h.θq, a q p p q h.θq h.θq, a q r p r h.θq h.θr]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem conj_low (Z : R) : θ * low p r q Z * θ = up p r q (θ * Z * θ) := by
   have a : ∀ u v u' v' : R, θ * u = u' * θ → θ * v' = v * θ → θ * (u * Z * v) * θ = u' * (θ * Z * θ) * v' := by
@@ -135,7 +135,7 @@ theorem conj_low (Z : R) : θ * low p r q Z * θ = up p r q (θ * Z * θ) := by
   abel
 
 /- English proof (translation)
-Rewrite using `[h.conj_low]`. Establish `e : p + r + q = 1` using `by rw [h.sum]; abel`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem dec (Z : R) : Z = up p r q (Z - θ * Z * θ) + mid p r q Z + (low p r q Z + θ * low p r q Z * θ) := by
   rw [h.conj_low]
@@ -144,33 +144,33 @@ theorem dec (Z : R) : Z = up p r q (Z - θ * Z * θ) + mid p r q Z + (low p r q 
     _ = _ := by simp only [up, mid, low]; noncomm_ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ * _ = _ * _`. Rewrite using `[add_mul, mul_add, mul_assoc _ θ θ, h.θθ, mul_one, ← mul_assoc θ, ← mul_assoc θ, h.θθ, one_mul, add_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_cpt (Z : R) : Commute (low p r q Z + θ * low p r q Z * θ) θ := by
   change _ * _ = _ * _
   rw [add_mul, mul_add, mul_assoc _ θ θ, h.θθ, mul_one, ← mul_assoc θ, ← mul_assoc θ, h.θθ, one_mul, add_comm]
 
 /- English proof (translation)
-Simplify using `only [up, add_mul, mul_assoc, h.rp, h.qp, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem up_p (Z : R) : up p r q Z * p = 0 := by
   simp only [up, add_mul, mul_assoc, h.rp, h.qp, mul_zero, add_zero]
 
 /- English proof (translation)
-Simplify using `only [up, add_mul, mul_assoc, h.rr, h.qr, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem up_r (Z : R) : up p r q Z * r = p * Z * r := by
   simp only [up, add_mul, mul_assoc, h.rr, h.qr, mul_zero, add_zero]
 
 /- English proof (translation)
-Simplify using `only [mid, add_mul, mul_add, mul_assoc, h.pp, h.rp, h.qp, mul_zero, add_zero]`. Simplify using `only [← mul_assoc, h.pp, h.pr, h.pq, zero_mul, add_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mid_p (Z : R) : mid p r q Z * p = p * mid p r q Z := by
   simp only [mid, add_mul, mul_add, mul_assoc, h.pp, h.rp, h.qp, mul_zero, add_zero]
   simp only [← mul_assoc, h.pp, h.pr, h.pq, zero_mul, add_zero]
 
 /- English proof (translation)
-Simplify using `only [mid, add_mul, mul_add, mul_assoc, h.qq, h.rq, h.pq, mul_zero, zero_add]`. Simplify using `only [← mul_assoc, h.qq, h.qr, h.qp, zero_mul, zero_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mid_q (Z : R) : mid p r q Z * q = q * mid p r q Z := by
   simp only [mid, add_mul, mul_add, mul_assoc, h.qq, h.rq, h.pq, mul_zero, zero_add]
@@ -187,7 +187,7 @@ variable {m : Type} [Fintype m] [DecidableEq m]
 def Adj (N A B : Matrix m m ℂ) : Prop := Aᵀ * N = N * B.map star
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem map_star_mul' {m n p : Type} [Fintype n] (A : Matrix m n ℂ) (B : Matrix n p ℂ) :
     (A * B).map star = A.map star * B.map star :=
@@ -196,26 +196,26 @@ theorem map_star_mul' {m n p : Type} [Fintype n] (A : Matrix m n ℂ) (B : Matri
 variable {N A B A' B' : Matrix m m ℂ}
 
 /- English proof (translation)
-Rewrite using `[Adj, Matrix.transpose_mul, Matrix.mul_assoc, h, ← Matrix.mul_assoc, h', map_star_mul', Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.mul (h : Adj N A B) (h' : Adj N A' B') : Adj N (A * A') (B' * B) := by
   rw [Adj, Matrix.transpose_mul, Matrix.mul_assoc, h, ← Matrix.mul_assoc, h', map_star_mul',
     Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Adj, Matrix.transpose_add, Matrix.add_mul, h, h', Matrix.map_add _ star_add, Matrix.mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.add (h : Adj N A B) (h' : Adj N A' B') : Adj N (A + A') (B + B') := by
   rw [Adj, Matrix.transpose_add, Matrix.add_mul, h, h', Matrix.map_add _ star_add, Matrix.mul_add]
 
 /- English proof (translation)
-Rewrite using `[Adj, Matrix.transpose_sub, Matrix.sub_mul, h, h', Matrix.map_sub _ star_sub, Matrix.mul_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.sub (h : Adj N A B) (h' : Adj N A' B') : Adj N (A - A') (B - B') := by
   rw [Adj, Matrix.transpose_sub, Matrix.sub_mul, h, h', Matrix.map_sub _ star_sub, Matrix.mul_sub]
 
 /- English proof (translation)
-Rewrite using `[Adj, Matrix.transpose_one, Matrix.map_one _ (star_zero _) (star_one _), Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.one : Adj N 1 1 := by
   rw [Adj, Matrix.transpose_one, Matrix.map_one _ (star_zero _) (star_one _), Matrix.one_mul, Matrix.mul_one]
@@ -223,11 +223,11 @@ theorem Adj.one : Adj N 1 1 := by
 variable {p r q θ Z : Matrix m m ℂ}
 
 /- English proof (translation)
-Establish `hr : Adj N r r`. Use `(Adj.one.sub hp).sub hq` as an intermediate fact. Rewrite `this` using `[sub_sub 1 q p, add_comm q p, ← sub_sub, ← h.sum]`. Then use the resulting hypothesis. Establish `hl : Adj N (low p r q Z) (-low p r q Z)`. Use `(((hr.mul hZ).mul hp).add ((hq.mul hZ).mul hp)).add ((hq.mul hZ).mul hr)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `convert this using 1 <;> (simp only [low]; try noncomm_ring)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hZ'` using `hZ.sub ((hθ.mul hZ).mul hθ)`. Use `(((hp.mul hZ').mul hr).add ((hp.mul hZ').mul hq)).add ((hr.mul hZ').mul hq)` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> (simp only [up]; try noncomm_ring)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(((hp.mul hZ).mul hp).add ((hr.mul hZ).mul hr)).add ((hq.mul hZ).mul hq)` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> (simp only [mid]; try noncomm_ring)`. Use `hl.add ((hθ.mul hl).mul hθ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem adj_parts (h : Grading p r q θ) (hp : Adj N p q) (hq : Adj N q p) (hθ : Adj N θ θ) (hZ : Adj N Z (-Z)) :
     Adj N (up p r q (Z - θ * Z * θ)) (-up p r q (Z - θ * Z * θ)) ∧ Adj N (mid p r q Z) (-mid p r q Z) ∧
@@ -249,13 +249,13 @@ theorem adj_parts (h : Grading p r q θ) (hp : Adj N p q) (hq : Adj N q p) (hθ 
     noncomm_ring
 
 /- English proof (translation)
-Use `set A := t • up p r q Z with hA`. Establish `a1 : A * p = 0` using `by rw [hA, Matrix.smul_mul, h.up_p, smul_zero]`. Establish `a2 : A * r = p * (t • Z) * r` using `by rw [hA, Matrix.smul_mul, h.up_r, Matrix.mul_smul, Matrix.smul_mul]`. Establish `e1 : NormedSpace.exp A * p = p`. Rewrite using `[exp_mul_eq (D := 0) (by rw [a1, Matrix.mul_zero]), NormedSpace.exp_zero, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e1, ?_⟩` and prove the remaining obligations. Establish `e2 : NormedSpace.exp A * (p + r) = (p + r) * NormedSpace.exp (A * r)`. Use `exp_mul_eq ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_add, a1, zero_add, a2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.add_mul, h.pp, h.rp, add_zero]`. Establish `e3 : r * NormedSpace.exp (A * r) = r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← exp_mul_eq (A := 0) (by rw [a2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h.rp]; simp), NormedSpace.exp_zero, Matrix.one_mul]`. Establish `e4 : (1 - p) * (p + r) = r`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_add, h.pp, h.pr]`. Normalize the expressions using the abelian group laws. Establish `e5 : (1 - p) * p = 0` using `by rw [Matrix.sub_mul, Matrix.one_mul, h.pp, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exp_up (h : Grading p r q θ) (Z : Matrix m m ℂ) (t : ℝ) :
     NormedSpace.exp (t • up p r q Z) * p = p ∧ (1 - p) * NormedSpace.exp (t • up p r q Z) * r = r := by
@@ -303,13 +303,13 @@ structure Hyp (c : A →+* A) (J : Matrix m m A) (x y : m → A) (ι : Matrix m 
 variable {c : A →+* A} {c' : A' →+* A'} {J : Matrix m m A} {x y : m → A} {ι : Matrix m n A} {ι' : Matrix n m A}
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> first | decide | (intro a; rfl)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : Hyp (RingHom.id ℤ) !![0, 1; -1, 0] ![1, 0] ![0, 1] (0 : Matrix (Fin 2) (Fin 0) ℤ) 0 := by
   constructor <;> first | decide | (intro a; rfl)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, hf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_mulVec' (f : A →+* A') (hf : ∀ a, f (c a) = c' (f a)) (J : Matrix m m A) (x : m → A) :
     f ∘ (J *ᵥ (c ∘ x)) = J.map f *ᵥ (c' ∘ (f ∘ x)) := by
@@ -317,7 +317,7 @@ theorem map_mulVec' (f : A →+* A') (hf : ∀ a, f (c a) = c' (f a)) (J : Matri
   simp [Matrix.mulVec, dotProduct, hf]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[prX, Matrix.vecMulVec_apply, ← map_mulVec' f hf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prX_map (f : A →+* A') (hf : ∀ a, f (c a) = c' (f a)) :
     (prX c J x y).map f = prX c' (J.map f) (f ∘ x) (f ∘ y) := by
@@ -325,7 +325,7 @@ theorem prX_map (f : A →+* A') (hf : ∀ a, f (c a) = c' (f a)) :
   simp [prX, Matrix.vecMulVec_apply, ← map_mulVec' f hf]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[prY, Matrix.vecMulVec_apply, ← map_mulVec' f hf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prY_map (f : A →+* A') (hf : ∀ a, f (c a) = c' (f a)) :
     (prY c J x y).map f = prY c' (J.map f) (f ∘ x) (f ∘ y) := by
@@ -333,11 +333,11 @@ theorem prY_map (f : A →+* A') (hf : ∀ a, f (c a) = c' (f a)) :
   simp [prY, Matrix.vecMulVec_apply, ← map_mulVec' f hf]
 
 /- English proof (translation)
-Establish `d : ∀ u v : m → A, (f ∘ u) ⬝ᵥ J.map f *ᵥ (c' ∘ (f ∘ v)) = f (u ⬝ᵥ J *ᵥ (c ∘ v))` using `fun u v => by`. Rewrite using `[← map_mulVec' f hf, RingHom.map_dotProduct]`. Establish `e : ∀ v : m → A, (J *ᵥ (c ∘ v)) ᵥ* ι = 0 → (J.map f *ᵥ (c' ∘ (f ∘ v))) ᵥ* ι.map f = 0` using `fun v hv => by`. Use function extensionality and compare the values at `j`. Rewrite using `[← map_mulVec' f hf, ← RingHom.map_vecMul, hv, Pi.zero_apply, map_zero, Pi.zero_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hc, ?_, by rw [d, h.xx, map_zero], by rw [d, h.yy, map_zero], by rw [d, h.xy, map_one], by rw [d, h.yx, map_neg, map_one], e x h.ιx, e y h.ιy, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrArg f (congrFun (congrFun h.skew i) j)` as an intermediate fact. Simplify `this` using `[hf]`. Rewrite using `[← Matrix.map_mul, h.left, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, h.right, Matrix.map_sub _ (map_sub _), Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), prX_map f hf, prY_map f hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hyp.map (h : Hyp c J x y ι ι') (f : A →+* A') (hf : ∀ a, f (c a) = c' (f a)) (hc : ∀ a, c' (c' a) = a) :
     Hyp c' (J.map f) (f ∘ x) (f ∘ y) (ι.map f) (ι'.map f) := by
@@ -356,19 +356,19 @@ theorem Hyp.map (h : Hyp c J x y ι ι') (f : A →+* A') (hf : ∀ a, f (c a) =
       Matrix.map_one _ (map_zero _) (map_one _), prX_map f hf, prY_map f hf]
 
 /- English proof (translation)
-Rewrite using `[prX, Matrix.vecMulVec_mulVec, dotProduct_comm, op_smul_eq_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prX_mulVec (v : m → A) : prX c J x y *ᵥ v = (v ⬝ᵥ J *ᵥ (c ∘ y)) • x := by
   rw [prX, Matrix.vecMulVec_mulVec, dotProduct_comm, op_smul_eq_smul]
 
 /- English proof (translation)
-Rewrite using `[prY, Matrix.neg_mulVec, Matrix.vecMulVec_mulVec, dotProduct_comm, neg_smul, op_smul_eq_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prY_mulVec (v : m → A) : prY c J x y *ᵥ v = -(v ⬝ᵥ J *ᵥ (c ∘ x)) • y := by
   rw [prY, Matrix.neg_mulVec, Matrix.vecMulVec_mulVec, dotProduct_comm, neg_smul, op_smul_eq_smul]
 
 /- English proof (translation)
-Rewrite using `[map_mulVec' (c' := c) c (fun _ => rfl), skew, Matrix.neg_mulVec, Matrix.mulVec_transpose]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `cc _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem c_mulVec (cc : ∀ a, c (c a) = a) (skew : J.map c = -Jᵀ) (v : m → A) : c ∘ (J *ᵥ (c ∘ v)) = -(v ᵥ* J) := by
   rw [map_mulVec' (c' := c) c (fun _ => rfl), skew, Matrix.neg_mulVec, Matrix.mulVec_transpose]
@@ -382,63 +382,63 @@ variable (h : Hyp c J x y ι ι')
 include h
 
 /- English proof (translation)
-Rewrite using `[prX_mulVec, h.xy, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem px : prX c J x y *ᵥ x = x := by rw [prX_mulVec, h.xy, one_smul]
 /- English proof (translation)
-Rewrite using `[prX_mulVec, h.yy, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem py : prX c J x y *ᵥ y = 0 := by rw [prX_mulVec, h.yy, zero_smul]
 /- English proof (translation)
-Rewrite using `[prY_mulVec, h.xx, neg_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qx : prY c J x y *ᵥ x = 0 := by rw [prY_mulVec, h.xx, neg_zero, zero_smul]
 /- English proof (translation)
-Rewrite using `[prY_mulVec, h.yx, neg_neg, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qy : prY c J x y *ᵥ y = y := by rw [prY_mulVec, h.yx, neg_neg, one_smul]
 /- English proof (translation)
-Rewrite using `[prX, Matrix.vecMulVec_mul, h.ιy]`. Use `ext`. Simplify using `[Matrix.vecMulVec_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pι : prX c J x y * ι = 0 := by rw [prX, Matrix.vecMulVec_mul, h.ιy]; ext; simp [Matrix.vecMulVec_apply]
 /- English proof (translation)
-Rewrite using `[prY, Matrix.neg_mul, Matrix.vecMulVec_mul, h.ιx, neg_eq_zero]`. Use `ext`. Simplify using `[Matrix.vecMulVec_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qι : prY c J x y * ι = 0 := by rw [prY, Matrix.neg_mul, Matrix.vecMulVec_mul, h.ιx, neg_eq_zero]; ext; simp [Matrix.vecMulVec_apply]
 
 omit h in
 /- English proof (translation)
-Rewrite using `[prX, Matrix.mul_vecMulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_p (g : Matrix m m A) : g * prX c J x y = Matrix.vecMulVec (g *ᵥ x) (J *ᵥ (c ∘ y)) := by
   rw [prX, Matrix.mul_vecMulVec]
 
 omit h in
 /- English proof (translation)
-Rewrite using `[prY, Matrix.mul_neg, Matrix.mul_vecMulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_q (g : Matrix m m A) : g * prY c J x y = -Matrix.vecMulVec (g *ᵥ y) (J *ᵥ (c ∘ x)) := by
   rw [prY, Matrix.mul_neg, Matrix.mul_vecMulVec]
 
 /- English proof (translation)
-Rewrite using `[mul_p, h.px]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pp : prX c J x y * prX c J x y = prX c J x y := by rw [mul_p, h.px]; rfl
 /- English proof (translation)
-Rewrite using `[mul_q, h.qy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qq : prY c J x y * prY c J x y = prY c J x y := by rw [mul_q, h.qy]; rfl
 /- English proof (translation)
-Rewrite using `[mul_q, h.py, Matrix.zero_vecMulVec, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pq : prX c J x y * prY c J x y = 0 := by rw [mul_q, h.py, Matrix.zero_vecMulVec, neg_zero]
 /- English proof (translation)
-Rewrite using `[mul_p, h.qx, Matrix.zero_vecMulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qp : prY c J x y * prX c J x y = 0 := by rw [mul_p, h.qx, Matrix.zero_vecMulVec]
 
 /- English proof (translation)
-Establish `e : (1 : Matrix m m A) = ι * ι' + prX c J x y + prY c J x y` using `by rw [h.right]; abel`. Rewrite using `[← Matrix.mul_one g, ← Matrix.mul_one g', e]`. Simplify using `only [Matrix.mul_add, mul_p, mul_q, ← Matrix.mul_assoc, hx, hy, hι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ext' {g g' : Matrix m m A} (hx : g *ᵥ x = g' *ᵥ x) (hy : g *ᵥ y = g' *ᵥ y) (hι : g * ι = g' * ι) : g = g' := by
   have e : (1 : Matrix m m A) = ι * ι' + prX c J x y + prY c J x y := by rw [h.right]; abel
@@ -446,9 +446,9 @@ theorem ext' {g g' : Matrix m m A} (hx : g *ᵥ x = g' *ᵥ x) (hy : g *ᵥ y = 
   simp only [Matrix.mul_add, mul_p, mul_q, ← Matrix.mul_assoc, hx, hy, hι]
 
 /- English proof (translation)
-Establish `e : (prY c J x y).map c = Matrix.vecMulVec (c ∘ y) (x ᵥ* J)`. Use extensionality with `i j`. Use `congrFun (c_mulVec h.cc h.skew x) j` as an intermediate fact. Simplify using `only [Function.comp_apply, Pi.neg_apply] at this`. Simplify using `[prY, Matrix.vecMulVec_apply, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, prX, Matrix.transpose_vecMulVec, Matrix.vecMulVec_mul, Matrix.mul_vecMulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_pq : (prX c J x y)ᵀ * J = J * (prY c J x y).map c := by
   have e : (prY c J x y).map c = Matrix.vecMulVec (c ∘ y) (x ᵥ* J) := by
@@ -459,9 +459,9 @@ theorem adj_pq : (prX c J x y)ᵀ * J = J * (prY c J x y).map c := by
   rw [e, prX, Matrix.transpose_vecMulVec, Matrix.vecMulVec_mul, Matrix.mul_vecMulVec]
 
 /- English proof (translation)
-Establish `e : (prX c J x y).map c = -Matrix.vecMulVec (c ∘ x) (y ᵥ* J)`. Use extensionality with `i j`. Use `congrFun (c_mulVec h.cc h.skew y) j` as an intermediate fact. Simplify using `only [Function.comp_apply, Pi.neg_apply] at this`. Simplify using `[prX, Matrix.vecMulVec_apply, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, prY, Matrix.transpose_neg, Matrix.transpose_vecMulVec, Matrix.neg_mul, Matrix.vecMulVec_mul, Matrix.mul_neg, Matrix.mul_vecMulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_qp : (prY c J x y)ᵀ * J = J * (prX c J x y).map c := by
   have e : (prX c J x y).map c = -Matrix.vecMulVec (c ∘ x) (y ᵥ* J) := by
@@ -473,21 +473,21 @@ theorem adj_qp : (prY c J x y)ᵀ * J = J * (prX c J x y).map c := by
     Matrix.mul_vecMulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, h.pι, h.qι, sub_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rι : (1 - prX c J x y - prY c J x y) * ι = ι := by
   rw [Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, h.pι, h.qι, sub_zero, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[← h.px, Matrix.mulVec_mulVec, hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_eq_self_of_mul_prX_eq_prX {g : Matrix m m A} (hg : g * prX c J x y = prX c J x y) : g *ᵥ x = x := by
   rw [← h.px, Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Establish `e : g * ι = ι + prX c J x y * (g * ι)`. Use `congrArg (· * ι) hg` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, h.rι] at this`. Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul]`. Conclude with `sub_eq_iff_eq_add.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((g * ι) *ᵥ z) ⬝ᵥ J *ᵥ (c ∘ y), ?_⟩` and prove the remaining obligations. Rewrite using `[← prX_mulVec (x := x), Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, ← e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_ι {g : Matrix m m A}
     (hg : (1 - prX c J x y) * g * (1 - prX c J x y - prY c J x y) = 1 - prX c J x y - prY c J x y) (z : n → A) :
@@ -501,18 +501,18 @@ theorem unip_ι {g : Matrix m m A}
   rw [← prX_mulVec (x := x), Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, ← e]
 
 /- English proof (translation)
-Rewrite using `[← prX_mulVec (x := x), Matrix.mulVec_mulVec, ← hg, ← Matrix.mulVec_mulVec, h.px]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_eq_smul_of_commute_prX {g : Matrix m m A} (hg : g * prX c J x y = prX c J x y * g) :
     g *ᵥ x = ((g *ᵥ x) ⬝ᵥ J *ᵥ (c ∘ y)) • x := by
   rw [← prX_mulVec (x := x), Matrix.mulVec_mulVec, ← hg, ← Matrix.mulVec_mulVec, h.px]
 
 /- English proof (translation)
-Establish `e : g *ᵥ y = -((g *ᵥ y) ⬝ᵥ J *ᵥ (c ∘ x)) • y`. Rewrite using `[← prY_mulVec (y := y), Matrix.mulVec_mulVec, ← hq, ← Matrix.mulVec_mulVec, h.qy]`. Use `set μ := -((g *ᵥ y) ⬝ᵥ J *ᵥ (c ∘ x))`. Establish `e1 : (g *ᵥ x) ⬝ᵥ J *ᵥ (c ∘ (g *ᵥ y)) = 1`. Establish `: c ∘ (g *ᵥ y) = g.map c *ᵥ (c ∘ y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec c g y i`. Rewrite using `[this, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hu, h.xy]`. Establish `e2 : c ∘ (μ • y) = c μ • (c ∘ y)`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `e1` using `[e, e2, Matrix.mulVec_smul, dotProduct_smul, ← ht, smul_eq_mul, mul_comm]`. Rewrite using `[Units.inv_eq_of_mul_eq_one_right e1, h.cc]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_y {g : Matrix m m A} (hq : g * prY c J x y = prY c J x y * g)
     (hu : gᵀ * J * g.map c = J) {t : Aˣ} (ht : (t : A) = (g *ᵥ x) ⬝ᵥ J *ᵥ (c ∘ y)) : g *ᵥ y = c (t⁻¹).1 • y := by
@@ -531,7 +531,7 @@ theorem levi_y {g : Matrix m m A} (hq : g * prY c J x y = prY c J x y * g)
   exact e
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h.right, Matrix.sub_mul _ _ g, Matrix.sub_mul _ _ g, ← hp, ← hq, Matrix.one_mul, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_assoc g, Matrix.mul_assoc g, h.pι, h.qι]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levi_ι {g : Matrix m m A} (hp : g * prX c J x y = prX c J x y * g) (hq : g * prY c J x y = prY c J x y * g) :
     g * ι = ι * (ι' * g * ι) := by

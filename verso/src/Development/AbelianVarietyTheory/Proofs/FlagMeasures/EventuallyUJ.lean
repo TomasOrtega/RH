@@ -36,9 +36,9 @@ section Local
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨F, hF, he⟩` from `h _ (UJ_star hg)`. Set `c : Mt →ₗ[ℝ] Mt` to `{ toFun := fun x => x.map star map_add' := fun x y => by ext i j; simp map_smul' := fun r x => by ext i j; simp }`. Establish `hc : AnalyticAt ℝ (fun x : Mt => x.map star) g` using `(LinearMap.toContinuousLinearMap c).analyticAt g`. Use `⟨fun x => F (x.map star), hF.comp_of_eq hc rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hc.continuousAt.eventually he] with z hz hzJ`. Conclude with `hz (UJ_star hzJ)`.
+A detailed English derivation is pending.
 -/
 theorem locAn_conj {f : Mt → ℂ} (h : LocAn ε f) : LocAn ε (fun g => f (g.map star)) := by
   intro g hg
@@ -53,9 +53,9 @@ theorem locAn_conj {f : Mt → ℂ} (h : LocAn ε f) : LocAn ε (fun g => f (g.m
   exact hz (UJ_star hzJ)
 
 /- English proof (translation)
-Introduce `t _`. Take `⟨F, hF, he⟩` from `h _ (exp_indefinite_unitary_holds n ε X hX t)`. Establish `h1` using `analyticAt_curveR 1 X t`. Simplify using `only [Matrix.one_mul] at h1`. Use `(hF.comp_of_eq h1 rfl).congr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [h1.continuousAt.eventually he] with s hs`. Conclude with `(hs (exp_indefinite_unitary_holds n ε X hX s)).symm`.
+A detailed English derivation is pending.
 -/
 theorem locAn_line {f : Mt → ℂ} (h : LocAn ε f) {X : Mt} (hX : inG ε X) :
     AnalyticOnNhd ℝ (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) Set.univ := by
@@ -68,9 +68,9 @@ theorem locAn_line {f : Mt → ℂ} (h : LocAn ε f) {X : Mt} (hX : inG ε X) :
   exact (hs (exp_indefinite_unitary_holds n ε X hX s)).symm
 
 /- English proof (translation)
-Establish `hR : ∀ X, inG ε X → Rd X f g = Rd X f' g` using `fun X hX => by`. Establish `h1` using `(analyticAt_curveR g X 0).continuousAt.tendsto`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.mul_one] at h1`. Use `Filter.EventuallyEq.deriv_eq ?_` and prove the remaining obligations. Use `filter_upwards [h1.eventually h] with t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `ht (indefinite_unitary_mul_mem ε hg (exp_indefinite_unitary_holds n ε X hX t))`. Establish `hc` using `complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Simplify using `only [Eab, Ec, hR _ hc.1, hR _ hc.2.1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eab_local {f f' : Mt → ℂ} {g : Mt} (hg : inUJ ε g) (h : ∀ᶠ z in 𝓝 g, inUJ ε z → f z = f' z) (a b : Fin n) :
     Eab ε a b f g = Eab ε a b f' g := by
@@ -86,7 +86,7 @@ theorem eab_local {f f' : Mt → ℂ} {g : Mt} (hg : inUJ ε g) (h : ∀ᶠ z in
 end Local
 
 /- English proof (translation)
-Simplify using `only [Eab, Ec, Rd, deriv_const_mul_field']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eab_const_mul (c : ℂ) (f : Mt → ℂ) (a b : Fin n) (g : Mt) :
     Eab ε a b (fun z => c * f z) g = c * Eab ε a b f g := by
@@ -94,9 +94,7 @@ theorem eab_const_mul (c : ℂ) (f : Mt → ℂ) (a b : Fin n) (g : Mt) :
   ring
 
 /- English proof (translation)
-Rewrite `h` using `[(isClosedEmbeddingMatrix n ε).1.isEmbedding.isInducing.nhds_eq_comap, eventually_comap]`. Use `filter_upwards [h] with y hy hyJ`. Choose the witnesses or unpack the hypotheses as in `⟨a, rfl⟩ : y ∈ Set.range (fun g : UJ ε => toM g) := by`. Rewrite using `[(isClosedEmbeddingMatrix n ε).2]`. Conclude with `hyJ`.
-
-Conclude with `hy a rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_UJ {p : Mt → Prop} (h : ∀ᶠ g : UJ ε in 𝓝 1, p (umat g)) :
     ∀ᶠ y in 𝓝 (1 : Mt), inUJ ε y → p y := by
@@ -107,13 +105,13 @@ theorem eventually_UJ {p : Mt → Prop} (h : ∀ᶠ g : UJ ε in 𝓝 1, p (umat
   exact hy a rfl
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ a b, ε a ≠ ε b`. Use `⟨h, fun a b hab hne => ?_, ?_⟩` and prove the remaining obligations. Use `hgap a b hne` as an intermediate fact. Rewrite `this` using `[abs_of_pos (sub_pos.2 (hlam.1 hab))]`. Then use the resulting hypothesis. Take `⟨a, b, hab⟩` from `hex`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hn : (0 : ℝ) < n` using `by exact_mod_cast a.pos`. Establish `hq : 1 ≤ rkR ε`. Unfold `rkR`. Simplify using `only [le_min_iff, Finset.one_le_card]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[ha, hb] at hab`. Conclude with `⟨⟨b, by simp [hb]⟩, ⟨a, by simp [ha]⟩⟩`. Conclude with `⟨⟨a, by simp [ha]⟩, ⟨b, by simp [hb]⟩⟩`. Simplify using `[ha, hb] at hab`. Establish `: (1 : ℝ) ≤ ((rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2)` using `Real.one_le_rpow (by exact_mod_cast hq) (by norm_num)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `⟨2 * n + 1, fun a b _ hne => absurd ⟨a, b, hne⟩ hex, by linarith⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components.
 -/
 theorem exists_gap {lam : Fin n → ℝ} (hlam : IsHCParam lam) {h : ℝ} (hgap : GapAtLeast ε lam h)
     (hh : 120 * (n : ℝ) * ((rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) :
@@ -141,7 +139,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Matri
   {S : Submodule ℂ H} [S.HasOrthogonalProjection]
 
 /- English proof (translation)
-Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hS k hk _ (S.starProjection_apply_mem x)) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, inner_rep_K hσ hk]`. Conclude with `Submodule.starProjection_inner_eq_zero x _ (hS _ (Kset_star ε hk) s hs)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_comm (hσ : IsURepOn (Kset ε) σ) (hS : IsKStableOn ε σ S) {k : Mt} (hk : k ∈ Kset ε) (x : H) :
     S.starProjection (σ k x) = σ k (S.starProjection x) := by
@@ -150,9 +148,9 @@ theorem proj_comm (hσ : IsURepOn (Kset ε) σ) (hS : IsKStableOn ε σ S) {k : 
   exact Submodule.starProjection_inner_eq_zero x _ (hS _ (Kset_star ε hk) s hs)
 
 /- English proof (translation)
-Rewrite using `[inner_ps lam hτ _ _ hz, intK, ← integral_const_mul]`. Simplify using `only [pk]`. Rewrite using `[← muConj n ε (fun k => Phi lam (k⁻¹ * z.map star * k) * ((Module.finrank ℂ S : ℂ) * (⟪τ k w, S.orthogonalProjectionOnto x⟫_ℂ * ⟪S.orthogonalProjectionOnto y, τ k w⟫_ℂ)))]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hk : toMK k ∈ Kset ε` using `k.2`. Rewrite using `[Submodule.inner_orthogonalProjectionOnto_eq_of_mem_left, Submodule.inner_orthogonalProjectionOnto_eq_of_mem_right, hτσ _ (K_star hk), map_star_star, K_inv (K_star hk), map_star_ct, ← map_star_mul, ← map_star_mul, ← K_inv hk]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ps_entry {lam abelian₂ : Fin n → ℝ} {w : S} {τ : Mt → (S →L[ℂ] S)} (hτ : IsTau ε abelian₂ τ w)
     (hτσ : ∀ k ∈ Kset ε, ∀ v : S, (τ k v : H) = σ (k.map star) v) {z : Mt} (hz : z.map star ∈ U1 ε) (x y : H) :
@@ -182,7 +180,7 @@ theorem diffOp_apply (lam : Fin n → ℝ) (τ : Mt → (S →L[ℂ] S)) (w : S)
       S.starProjection (σ z x) - (Psi ε lam τ w (z.map star) (S.orthogonalProjectionOnto x) : S) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[diffOp_apply, inner_sub_right, Submodule.inner_orthogonalProjectionOnto_eq_of_mem_right, Submodule.inner_starProjection_left_eq_right]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_diffOp (lam : Fin n → ℝ) (τ : Mt → (S →L[ℂ] S)) (w : S) (x y : H) :
     (fun z => ⟪y, diffOp ε lam σ τ w z x⟫_ℂ) = fun z => ⟪S.starProjection y, σ z x⟫_ℂ +
@@ -193,9 +191,9 @@ theorem inner_diffOp (lam : Fin n → ℝ) (τ : Mt → (S →L[ℂ] S)) (w : S)
   ring
 
 /- English proof (translation)
-Establish `e : τ (k₂.map star) (S.orthogonalProjectionOnto x) = S.orthogonalProjectionOnto (σ k₂ x)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hτσ _ (K_star h₂), map_star_star]`. Conclude with `(proj_comm (URep_K hσ) hS h₂ x).symm`. Rewrite using `[diffOp_apply, diffOp_apply, map_sub, ← proj_comm (URep_K hσ) hS h₁, map_star_mul, map_star_mul, (psiPolar n ε lam S τ w hlam hτ).2.2 _ (K_star h₁) _ (K_star h₂) _ (UJ_star hg), hσ.1.2 _ (indefinite_unitary_mul_mem ε (K_UJ h₁) hg) _ (K_UJ h₂), hσ.1.2 _ (K_UJ h₁) _ hg]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hτσ _ (K_star h₁), map_star_star, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffOp_equiv {lam : Fin n → ℝ} (hlam : IsHCParam lam) (hσ : IsURepOn (UJset ε) σ) (hS : IsKStableOn ε σ S)
     {w : S} {τ : Mt → (S →L[ℂ] S)} (hτ : IsTau ε (lowK ε lam) τ w)
@@ -213,9 +211,9 @@ theorem diffOp_equiv {lam : Fin n → ℝ} (hlam : IsHCParam lam) (hσ : IsURepO
   rw [hτσ _ (K_star h₁), map_star_star, e]
 
 /- English proof (translation)
-Establish `h1` using `eventually_UJ (p := fun z => z ∈ U1 ε ∧ Psi ε lam τ w z = ps ε lam τ w z) (psLocal n ε lam S τ w hlam hτ)`. Establish `h2 : Tendsto (fun g : Mt => g.map star) (𝓝 1) (𝓝 1)`. Use `(Continuous.matrix_map (continuous_id (X := Mt)) (continuous_star (R := ℂ))).tendsto 1` as an intermediate fact. Simplify `this` using `only [id, map_star_one]`. Establish `h3 : Tendsto (fun g : UJ ε => umat g) (𝓝 1) (𝓝 1)` using `(isClosedEmbeddingMatrix n ε).1.continuous.tendsto 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `filter_upwards [h3.eventually (h2.eventually h1).eventually_nhds] with g hg a b x y`. Rewrite using `[← eab_const_mul]`. Use `eab_local g.2 (hg.mono fun z hz hzJ => ?_) a b` and prove the remaining obligations. Take `⟨hU, he⟩` from `hz (UJ_star hzJ)`. Apply the tactic sequence `rw [he, ps_entry hτ hτσ hU]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_near_one {lam : Fin n → ℝ} (hlam : IsHCParam lam) {w : S} {τ : Mt → (S →L[ℂ] S)}
     (hτ : IsTau ε (lowK ε lam) τ w) (hτσ : ∀ k ∈ Kset ε, ∀ v : S, (τ k v : H) = σ (k.map star) v) :
@@ -236,31 +234,27 @@ theorem psi_near_one {lam : Fin n → ℝ} (hlam : IsHCParam lam) {w : S} {τ : 
   rw [he, ps_entry hτ hτσ hU]
 
 /- English proof (translation)
-Introduce `hSL n ε lam H _ _ σ hlam hσ h hgap hh w hw X hX u hu v hv`. Use `haveI := hσ.1`. Establish `hU` using `hσ.2.2.1`. Establish `hS` using `(hSL n ε lam hlam H σ hσ).1`. Take `⟨V, E, hD, hSV⟩` from `GlobalTheory.DerEx.exists_isDer_lowKSub n ε lam H σ hU hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `han` using `GlobalTheory.T.lowest_K_type_analytic n ε H σ V E lam hU hD hS hSV u hu X hX.1`. Take `⟨hw1, hwS, hwt⟩` from `hw`. Generalize the expression as in `lowKSub ε lam σ = S at *`. Use `haveI := hS.1`. Use `haveI := FiniteDimensional.complete ℂ S`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ, hτ, hτσ⟩` from `TauExt.tauExists n ε _ H σ S ⟨w, hwS⟩ (URep_K hU) hS hw1 hwt`. Establish `hw0 : (⟨w, hSV hwS⟩ : V) ≠ 0` using `fun h0 => by`. Establish `: w = 0` using `congrArg Subtype.val h0`. Simplify using `[this] at hw1`. Take `⟨hK, hsp, hfd⟩` from `(KType.kType_iff n ε H σ V E hU hD).2 _ S ⟨w, hSV hwS⟩ hS hSV hwS hw0 hwt`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g₀, hg1, hg2⟩` from `exists_gap hlam hgap hh`. Establish `hA : ∀ x y : S, LocAn ε (fun z => ⟪y, Psi ε lam τ ⟨w, hwS⟩ (z.map star) x⟫_ℂ)` using `fun x y => locAn_conj (f := fun z => ⟪y, Psi ε lam τ ⟨w, hwS⟩ z x⟫_ℂ) fun g hg => psiAnalytic n ε lam S τ _ hlam hτ y x g hg`. Establish `hsm : ∀ (x : V) (y : H), SmoothOnG ε (fun z => ⟪y, diffOp ε lam σ τ ⟨w, hwS⟩ z x⟫_ℂ)` using `fun x y => by`. Rewrite using `[inner_diffOp]`. Conclude with `Line.smooth_comb _ (hD.2.2.2 x _) (hA _ _).smooth`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjet` using `GlobalTheory.T.highest_weight_gap_bound n ε H σ V E lam g₀ ⟨w, hSV hwS⟩ hU hD hK hfd hg1 hg2 (fun z => (diffOp ε lam σ τ ⟨w, hwS⟩ z : H →ₗ[ℂ] H)) ?_ ?_ ?_ ?_`. Rewrite `hjet` using `[hsp]`. Establish `h0` using `Line.vanish_of_zero_jet n ε _ X (hsm ⟨u, hSV hu⟩ v) hX.1 (fun l => hjet l u hu v) (by`. Introduce `t ht`. Establish `e` using `inner_diffOp (ε := ε) (σ := σ) lam τ ⟨w, hwS⟩ u v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [congrFun e]`. Conclude with `(((innerSL ℂ (S.starProjection v)).restrictScalars ℝ).analyticAt _ |>.comp (han t ht)).add (analyticAt_const.mul (locAn_line (hA _ _) hX.1 t ht)))`. Establish `hp` using `exp_posDef (P_star hX)`. Establish `h1` using `(psiPolar n ε lam S τ _ hlam hτ).1 1 (one_K ε) _ (P_star hX)`. Rewrite `h1` using `[one_mul, hτ.2.1.1, ← exp_star]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hp` using `[← exp_star]`. Apply the tactic sequence `have h2 := ps_entry (lam := lam) hτ hτσ (z := NormedSpace.exp X) (fun k hk => (phiPos n lam _ (by`. Rewrite using `[K_inv hk]`. Conclude with `hp.conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit (K_KC hk).1))).1) u v`. Rewrite `h0` using `[congrFun (inner_diffOp lam τ ⟨w, hwS⟩ u v), h1, Submodule.starProjection_eq_self_iff.2 hv, neg_one_mul, add_neg_eq_zero]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h0.trans (h2.trans ?_)` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `k`. Establish `hk : toMK k ∈ Kset ε` using `k.2`. Establish `hpos : ((toMK k)⁻¹ * NormedSpace.exp X * toMK k).PosDef`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[K_inv hk]`. Conclude with `(exp_posDef hX).conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit (K_KC hk).1)`. Rewrite using `[Phi_star, (phiPos n lam _ hpos).2.1.le.isSelfAdjoint.star_eq]`. Rewrite using `[hsp]`. Conclude with `fun g hg x _ => ⟨S.sub_mem (S.starProjection_apply_mem _) (Subtype.prop _), fun k₁ h₁ k₂ h₂ => diffOp_equiv hlam hU hS.2.1 hτ hτσ hg h₁ h₂ x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsp]`. Conclude with `fun x hx y => hsm ⟨x, hSV hx⟩ y`. Introduce `G hG y filter_upwards [psi_near_one hlam hτ hτσ, GlobalTheory.T.highest_weight_eventually_zero n ε H σ V E lam _ hU hD hK hfd G hG y] with g h1 h2`. Establish `h3 : ∀ a b, Eab ε a b (fun z => ⟪y, diffOp ε lam σ τ ⟨w, hwS⟩ z (at1 G a b : V)⟫_ℂ) (umat g) = ⟪S.starProjection y, σ (umat g) (E a b (at1 G a b) : V)⟫_ℂ + (-1) * ((Module.finrank ℂ S : ℂ) * Eab ε a b (fun z => ∫ k : KG ε, Phi lam (((toMK k)⁻¹ * z * toMK k).map star) * (⟪y, σ (to …` using `fun a b => by`. Rewrite using `[inner_diffOp, ← h1 a b (at1 G a b : V) y]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `(Line.word_comb (-1) (hD.2.2.2 _ _) (hA _ _).smooth [(a, b)] _ g.2).trans ?_` and prove the remaining obligations. Rewrite using `[(Coef.coef_flow n ε H σ V E hU hD).1 _ _ _ _ g.2]`. Both sides reduce to the same expression. Establish `h4` using `congrArg (fun x : V => ⟪S.starProjection y, σ (umat g) x⟫_ℂ) (GlobalTheory.T.highest_weight_derivative_sum_zero n ε H σ V E lam _ hlam hσ hD hK hfd G hG)`. Simplify using `only [Submodule.coe_sum, map_sum, inner_sum, Submodule.coe_zero, map_zero, inner_zero_right] at h4`.
-
-Simplify using `only [ContinuousLinearMap.coe_coe, h3, Finset.sum_add_distrib, ← Finset.mul_sum, h2, h4]`. Simplify using the standard rewrite rules. Rewrite using `[hsp]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `diffOp ε lam σ τ ⟨w, hwS⟩ 1 x = 0`.
-
-Rewrite using `[diffOp_apply, map_star_one, (psiPolar n ε lam S τ _ hlam hτ).2.1, hU.1.1]`. Conclude with `sub_self _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formulaGap : StrictLow → FormulaGap := by
   intro hSL n ε lam H _ _ σ hlam hσ h hgap hh w hw X hX u hu v hv

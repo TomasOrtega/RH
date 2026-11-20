@@ -9,13 +9,13 @@ namespace GlobalTheory.CompanionTheory.MirPair.ShearLat
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `[eLast, dotProduct_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dotProduct_eLast {n : ℕ} (b : Fin (n + 1) → k) : b ⬝ᵥ eLast k n = b (Fin.last n) := by
   simp [eLast, dotProduct_single]
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, vecMulVec_eq (ι := Unit), det_one_add_replicateCol_mul_replicateRow, dotProduct_eLast]`. Conclude with `h.isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_one_add {n : ℕ} (b : Fin (n + 1) → k) (h : 1 + b (Fin.last n) ≠ 0) :
     IsUnit (1 + vecMulVec (eLast k n) b) := by
@@ -24,7 +24,7 @@ theorem isUnit_one_add {n : ℕ} (b : Fin (n + 1) → k) (h : 1 + b (Fin.last n)
   exact h.isUnit
 
 /- English proof (translation)
-Establish `e : ((shearGL n b : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = 1 + vecMulVec (eLast k n) b`. Unfold `shearGL`. Rewrite using `[dif_pos (isUnit_one_add b h)]`. Both sides reduce to the same expression. Rewrite using `[e, add_mulVec, one_mulVec, vecMulVec_mulVec, op_smul_eq_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem shearGL_mulVec {n : ℕ} (b : Fin (n + 1) → k) (h : 1 + b (Fin.last n) ≠ 0)
     (x : Fin (n + 1) → k) :
@@ -38,7 +38,7 @@ theorem shearGL_mulVec {n : ℕ} (b : Fin (n + 1) → k) (h : 1 + b (Fin.last n)
   rw [e, add_mulVec, one_mulVec, vecMulVec_mulVec, op_smul_eq_smul]
 
 /- English proof (translation)
-Rewrite using `[dotProduct_add, dotProduct_smul, dotProduct_eLast, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dotProduct_shear {n : ℕ} (b x : Fin (n + 1) → k) :
     b ⬝ᵥ (x + (b ⬝ᵥ x) • eLast k n) = (1 + b (Fin.last n)) * (b ⬝ᵥ x) := by
@@ -46,11 +46,11 @@ theorem dotProduct_shear {n : ℕ} (b x : Fin (n + 1) → k) :
   ring
 
 /- English proof (translation)
-Set `f : Option (Fin (n + 1) ⊕ Fin (n + 1) × Fin (n + 1)) → k` to `fun o => match o with`. Consider the case `none => 1`. Consider the case `some (.inl i) => ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ eLast k n) i`. Consider the case `some (.inr p) => ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) p.1 p.2`. Take `⟨i₀, hi₀⟩` from `Finite.exists_max fun o => valuation k (f o)`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h1 : 1 ≤ valuation k (f i₀)` using `by simpa [f] using hi₀ none`. Establish `hne : f i₀ ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, map_zero]`. Conclude with `absurd h1 (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 _ hne, h1, fun i => hi₀ (some (.inl i)), fun i j => hi₀ (some (.inr (i, j)))⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound {n : ℕ} (g : GL (Fin (n + 1)) k) :
     ∃ C : kˣ, 1 ≤ valuation k (C : k) ∧
@@ -71,9 +71,9 @@ theorem exists_bound {n : ℕ} (g : GL (Fin (n + 1)) k) :
   exact ⟨Units.mk0 _ hne, h1, fun i => hi₀ (some (.inl i)), fun i j => hi₀ (some (.inr (i, j)))⟩
 
 /- English proof (translation)
-Establish `ha' : valuation k a ≤ valuation k ((p * C⁻¹ * t : kˣ) : k)` using `ha`. Use `show valuation k (a * u) ≤ valuation k (t : k)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ valuation k (t : k) := mul_le_of_le_one_left' hp`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mul_mem_cball {a u : k} {p C t : kˣ} (hp : valuation k (p : k) ≤ 1)
     (ha : a ∈ cball (p * C⁻¹ * t)) (hu : valuation k u ≤ valuation k (C : k)) : a * u ∈ cball t := by
@@ -89,29 +89,27 @@ theorem mul_mem_cball {a u : k} {p C t : kˣ} (hp : valuation k (p : k) ≤ 1)
     _ ≤ valuation k (t : k) := mul_le_of_le_one_left' hp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n g`. Take `⟨C, hC1, hu, hH⟩` from `exists_bound g`. Take `⟨p₀, hp0, hp1⟩ : ∃ p : k, p ≠ 0 ∧ valuation k p < 1` from `Valuation.IsNontrivial.exists_lt_one`. Take `⟨p, rfl⟩ : ∃ p : kˣ, (p : k) = p₀` from `⟨Units.mk0 _ hp0, rfl⟩`. Establish `hCi : valuation k ((C⁻¹ : kˣ) : k) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hC1`. Establish `hr1 : valuation k ((p * C⁻¹ * C⁻¹ : kˣ) : k) < 1`. Simplify using `only [Units.val_mul, map_mul]`. Conclude with `lt_of_le_of_lt ((mul_le_of_le_one_right' hCi).trans (mul_le_of_le_one_right' hCi)) hp1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨p * C⁻¹ * C⁻¹, hr1, fun b hb t x => ?_⟩` and prove the remaining obligations. Establish `hlast : valuation k (b (Fin.last n)) < 1` using `lt_of_le_of_lt (hb (Fin.last n)) hr1`. Establish `hone : valuation k (1 + b (Fin.last n)) = 1` using `Valuation.map_one_add_of_lt _ hlast`. Establish `hne : 1 + b (Fin.last n) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hone` using `[h, map_zero]`. Conclude with `zero_ne_one hone`. Rewrite using `[shearGL_mulVec b hne x]`. Establish `hGS : (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ (x + (b ⬝ᵥ x) • eLast k n) = (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x + (b ⬝ᵥ x) • ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ eLast k n)`. Rewrite using `[mulVec_add, mulVec_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ z : Fin (n + 1) → k, b ⬝ᵥ z = (b ᵥ* ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) ⬝ᵥ ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ z)`. Introduce `z`. Rewrite using `[dotProduct_mulVec, vecMul_vecMul, Units.inv_mul, vecMul_one]`. Establish `hw : b ᵥ* ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) ∈ box (n + 1) (p * C⁻¹)`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∑ i, b i * ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i j ∈ cball (p * C⁻¹)`. Use `Finset.sum_induction _ (· ∈ cball (p * C⁻¹)) (fun _ _ => add_mem_cball) (by simp [cball]) fun i _ => ?_` and prove the remaining obligations. Establish `h1 : valuation k (b i) ≤ valuation k ((p * C⁻¹ * C⁻¹ : kˣ) : k)` using `hb i`. Use `show valuation k (b i * _) ≤ valuation k ((p * C⁻¹ : kˣ) : k)`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `(mul_le_mul' h1 (hH i j)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hdot : ∀ y ∈ box (n + 1) t, (b ᵥ* ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) ⬝ᵥ y ∈ cball (p * C⁻¹ * t)`. Introduce `y hy`. Use `dotProduct_mem_cball (s := t) ?_ hy` and prove the remaining obligations. Rewrite using `[mul_inv_cancel_right]` and apply the resulting hypothesis. Establish `hp : valuation k (p : k) ≤ 1` using `hp1.le`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `h2 : (1 + b (Fin.last n)) * (b ⬝ᵥ x) ∈ cball (p * C⁻¹ * t)`. Rewrite using `[← dotProduct_shear, hd (x + (b ⬝ᵥ x) • eLast k n)]`. Conclude with `hdot _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : b ⬝ᵥ x ∈ cball (p * C⁻¹ * t)`. Establish `h2' : valuation k ((1 + b (Fin.last n)) * (b ⬝ᵥ x)) ≤ valuation k ((p * C⁻¹ * t : kˣ) : k)` using `h2`. Rewrite `h2'` using `[map_mul, hone, one_mul]`. Conclude with `h2'`. Rewrite `h` using `[hGS]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x) i = ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x + (b ⬝ᵥ x) • ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ eLast k n)) i + -((b ⬝ᵥ x) * ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ eLast k n) i)`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `add_mem_cball (h i) (neg_mem_cball (mul_mem_cball hp h3 (hu i)))`. Introduce `h i`.
-
-Establish `h3 : b ⬝ᵥ x ∈ cball (p * C⁻¹ * t)`. Rewrite using `[hd x]`. Conclude with `hdot _ h`. Rewrite using `[hGS]`. Conclude with `add_mem_cball (h i) (mul_mem_cball hp h3 (hu i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} (g : GL (Fin (n + 1)) k), ∃ r : kˣ, valuation k (r : k) < 1 ∧ ∀ b ∈ box (n + 1) r, ∀ (t : kˣ) (x : Fin (n + 1) → k), ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ (((shearGL n b : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x) ∈ box (n + 1) t ↔ (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x ∈ box (n + 1) t) := by
   intro k _ _ _ _ n g

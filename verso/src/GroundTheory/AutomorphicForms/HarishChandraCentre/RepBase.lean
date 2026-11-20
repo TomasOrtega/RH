@@ -11,7 +11,7 @@ noncomputable def rowOp (i j : Fin n) : Module.End ℂ (Poly n) :=
     (MvPolynomial.pderiv (j, k) : Derivation ℂ (Poly n) (Poly n)).toLinearMap
 
 /- English proof (translation)
-Simplify using `[rowOp, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowOp_apply (i j : Fin n) (f : Poly n) :
     rowOp i j f = ∑ k : Fin n, MvPolynomial.X (i, k) * MvPolynomial.pderiv (j, k) f := by

@@ -13,23 +13,23 @@ noncomputable section
 namespace MetricTransportSmooth
 
 /- English proof (translation)
-Establish `h` using `matActC_smul_one (J := J) (1 : ℚ) z`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem matActC_one {J : Type} [Fintype J] [DecidableEq J] (z : J → ℂ) : matActC (1 : Matrix J J ℚ) z = z := by
   have h := matActC_smul_one (J := J) (1 : ℚ) z
   simpa using h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[matActC]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matActC_zero {J : Type} [Fintype J] (A : Matrix J J ℚ) : matActC A 0 = 0 := by
   funext i
   simp [matActC]
 
 /- English proof (translation)
-Introduce `κ _ B m m' hB hm hm'`. Take `⟨B', hBB', hB'B⟩` from `isInvMat_mul hB`. Establish `hinv : ∀ w, matActC B (matActC B' w) = w` using `fun w => by`. Rewrite using `[matActC_mul, hBB', matActC_one]`. Establish `heq : ∀ w, m'.ρ w = m.ρ (matActC B' w)` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hm' (matActC B' w), hinv]`. Establish `hmaps : Set.MapsTo (matActC B') {z : Ix κ → ℂ | z ≠ 0} {z | z ≠ 0}` using `fun w hw h0 => by`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← hinv w, h0, matActC_zero]`. Conclude with `(hm.comp (contDiff_matActC B').contDiffOn hmaps).congr fun w _ => heq w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : MetricTransportSmooth.Statement := by
   intro κ _ B m m' hB hm hm'

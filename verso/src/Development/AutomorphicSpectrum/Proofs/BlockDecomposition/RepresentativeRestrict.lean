@@ -7,9 +7,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistable
 namespace GlobalTheory.CompanionTheory.ConeRep
 
 /- English proof (translation)
-Introduce and unpack `⟨f, hf, hc, hz⟩`. Establish `hf' : CH.d (U.ι ⋙ sq a b) j f = 0` using `hf`. Establish `hb : CH.d (V.ι ⋙ sq a b) j ((resU (sq a b) h).pullC j f) = 0`. Rewrite using `[(resU (sq a b) h).d_pullC, hf', map_zero]`. Establish `hcl : (resU (sq a b) h).pull j c = (CH.cx (V.ι ⋙ sq a b)).cls ((resU (sq a b) h).pullC j f) hb`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : c = (CH.cx (U.ι ⋙ sq a b)).cls f hf'` using `hc`. Rewrite using `[hc']`. Both sides reduce to the same expression. Conclude with `⟨(resU (sq a b) h).pullC j f, hb, hcl, fun s => hz (s ⋙ ObjectProperty.ιOfLE h)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem rep_resB {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (A : C ⥤ CommAlgCat.{0} R) (a b : IdF A)
     {U V : ObjectProperty C} (h : V ≤ U) {j : ℕ} (z : CH.Cn (CH.modF (U.ι ⋙ A)) j) (c : HU (sq a b) U j) :

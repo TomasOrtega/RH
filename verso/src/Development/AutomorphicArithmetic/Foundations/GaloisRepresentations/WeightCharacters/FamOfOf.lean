@@ -7,27 +7,25 @@ open UpperTheory.Gal.Wt
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `hB hP hS hT hW hA E _ _ _ a τ C hC n hn W Q _ f hf P`. Take `⟨hLe, hGe, hmono, -, hconst, -⟩` from `hB`. Take `⟨d₀, hd₀⟩` from `hW E a τ W`. Use `⟨Finset.univ.sup (fun q => (P q).totalDegree) + d₀, fun ν X => ?_⟩` and prove the remaining obligations. Establish `hsum : ∀ (T : Submodule ℂ (Circle → ℂ)) (F : Q → Circle → ℂ), (∀ q, F q ∈ T) → (fun z => ∑ q, F q z) ∈ T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `T F h`. Establish `: (fun z => ∑ q, F q z) = ∑ q, F q` using `by funext z; simp [Finset.sum_apply]`. Rewrite using `[this]`. Conclude with `T.sum_mem fun q _ => h q`. Use `⟨(hA E a τ C hC n hn W ν Q f P X).1, ?_, ?_, ?_, ?_, ?_, (hA E a τ C hC n hn W ν Q f P X).2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk y₁ y₂ v`. Use function extensionality and compare the values at `g`. Rewrite using `[RU_apply, famOf_apply, famOf_apply, hn.lev k hk]`. Conclude with `Finset.sum_congr rfl fun q _ => by rw [hf q k hk]`. Introduce `x y₁ y₂ v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[RU_apply, famOf_apply, famOf_apply, hn.inf x x.2]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[(f q).2.2 x v, RU_apply, mul_assoc (n g), mul_assoc (n g)]`. Introduce `b hb y₁ y₂ v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, famOf_apply, famOf_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `: delta ν (X q * (n g * (y₁ * b))) = chi ν b * delta ν (X q * (n g * y₁))`. Establish `e : X q * (n g * (y₁ * b)) = X q * (n g * y₁) * b` using `by simp only [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `delta`. Rewrite using `[e, map_mul, Module.End.mul_apply, hT a ν b hb, map_smul, map_smul, smul_eq_mul]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Introduce `k x hx y₁ y₂ v g`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [famOf_apply]`. Use `hsum _ _ fun q => ?_` and prove the remaining obligations. Establish `h1` using `(hP a k (P q) (n g) y₂).1`. Establish `h2 : (fun z => delta ν (X q * (n g * (tor a k z * y₁)))) ∈ ExpLe (psum ν k)`. Use `(hS a k ν (sqRep ℂ a ν y₁ (top ν)) ((ev1 ν) ∘ₗ (sqRep ℂ a ν (X q * n g)))).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `(congrArg (· ∈ ExpLe (psum ν k)) (funext fun z => ?_)).mpr this` and prove the remaining obligations. Rewrite using `[delta, LinearMap.comp_apply, ← mul_assoc (X q), map_mul (sqRep ℂ a ν) (X q * n g), map_mul (sqRep ℂ a ν) (tor a k z), Module.End.mul_apply, Module.End.mul_apply]`. Establish `h3` using `(hd₀ k x hx v ((LinearMap.proj g) ∘ₗ (f q).1)).1`. Use `(hmono _ _ ?_).1 (hLe _ _ _ _ (hLe _ _ _ _ h1 h2) h3)` and prove the remaining obligations. Establish `: (P q).totalDegree ≤ Finset.univ.sup (fun q => (P q).totalDegree)` using `Finset.le_sup (f := fun q => (P q).totalDegree) (Finset.mem_univ q)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Introduce `k x hx y₂ v g`. Simplify using `only [famOf_apply]`. Use `hsum _ _ fun q => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hP a k (P q) (n g) y₂).2`. Establish `h2` using `(hconst (delta ν (X q * (n g * 1)))).2`. Establish `h3` using `(hd₀ k x hx v ((LinearMap.proj g) ∘ₗ (f q).1)).2`. Use `(hmono _ _ ?_).2 (hGe _ _ _ _ (hGe _ _ _ _ h1 h2) h3)` and prove the remaining obligations. Use `push_cast`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.famOf_of : ExpBasic → PevExp → SqExp → TopUp → WExp → FamOfA → FamOf := by
   intro hB hP hS hT hW hA E _ _ _ a τ C hC n hn W Q _ f hf P

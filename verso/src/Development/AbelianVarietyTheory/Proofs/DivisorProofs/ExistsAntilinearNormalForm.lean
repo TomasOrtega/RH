@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1 : ‖a * y‖ = ‖b * starRingEnd ℂ y‖`. Rewrite using `[eq_neg_of_add_eq_zero_left hy, norm_neg]`. Rewrite `h1` using `[norm_mul, norm_mul, Complex.norm_conj]`. Establish `hy' : 0 < ‖y‖` using `norm_pos_iff.mpr hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `mul_right_cancel₀ hy'.ne' h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem coordsDiag_key (a b y : ℂ) (h : ‖b‖ < ‖a‖) (hy : a * y + b * starRingEnd ℂ y = 0) : y = 0 := by
   by_contra hne
@@ -17,23 +17,23 @@ theorem coordsDiag_key (a b y : ℂ) (h : ‖b‖ < ‖a‖) (hy : a * y + b * s
   linarith
 
 /- English proof (translation)
-Introduce `g T hq α β hαβ hT`. Use `choose q hq using hq`. Establish `hα : ∀ j, α j ≠ 0` using `fun j h => by`. Use `hαβ j` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(norm_nonneg _).not_gt this`. Establish `hTinj : Function.Injective T`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hq j v`. Rewrite `h1` using `[hv, map_zero]`. Establish `h2` using `congrFun h1.symm j`. Rewrite `h2` using `[hT]`. Conclude with `coordsDiag_key _ _ _ (hαβ j) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTsurj : Function.Surjective T` using `LinearMap.injective_iff_surjective.mp hTinj`. Set `L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `LinearMap.pi (fun j => (α j)⁻¹ • (LinearMap.proj j ∘ₗ q j))`. Establish `hL : ∀ v, L (T v) = fun j ↦ v j + β j / α j * starRingEnd ℂ (v j)`. Introduce `v`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [L, LinearMap.pi_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, smul_eq_mul]`. Rewrite using `[hq j v, hT]`. Clear denominators, using `[hα j]` for the nonvanishing conditions. Establish `hLinj : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Take `⟨v, rfl⟩` from `hTsurj w`. Establish `hv : v = 0`. Use function extensionality and compare the values at `j`. Establish `h3` using `congrFun ((hL v).symm.trans hw) j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : ‖β j / α j‖ < ‖(1 : ℂ)‖`. Rewrite using `[norm_div, norm_one, div_lt_one (norm_pos_iff.mpr (hα j))]`. Conclude with `hαβ j`. Apply `coordsDiag_key 1 (β j / α j) (v j) hz` to reduce the goal to its premises. Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hv, map_zero]`. Establish `hLsurj` using `LinearMap.injective_iff_surjective.mp hLinj`. Use `⟨LinearEquiv.ofBijective L ⟨hLinj, hLsurj⟩, hL, ?_⟩` and prove the remaining obligations. Introduce `c M hM w`. Take `⟨v, rfl⟩` from `hTsurj w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show L (M (T v)) = fun j => (c j : ℂ) * L (T v) j`. Rewrite using `[← hM, hL, hL]`. Use function extensionality and compare the values at `j`. Simplify using `only [map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem coordsDiag : ∀ (g : ℕ) (T : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)),
     (∀ j : Fin g, ∃ q : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ v, q (T v) = T (Pi.single j (v j))) →

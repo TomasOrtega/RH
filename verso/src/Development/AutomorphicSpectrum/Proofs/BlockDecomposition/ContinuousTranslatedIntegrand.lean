@@ -11,11 +11,11 @@ namespace GlobalTheory.CompanionTheory.EpsteinThetaC
 variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hinv : Continuous fun a : IdeleGroup k ↦ ((a⁻¹ : IdeleGroup k) : 𝔸[k])` using `Units.continuous_val.comp continuous_inv`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_matrix fun i j ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify `(Units.continuous_val : Continuous fun a : IdeleGroup k ↦ (a : 𝔸[k]))` using `[Function.comp_def, scalC, Matrix.scalar_apply]`. Simplify `continuous_const` using `[Function.comp_def, scalC, Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hij]`. Use `continuous_matrix fun i j ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify `hinv` using `[Function.comp_def, scalC, Matrix.scalar_apply]`. Simplify `continuous_const` using `[Function.comp_def, scalC, Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hij]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_scalC : Continuous (scalC : IdeleGroup k → GL ι 𝔸[k]) := by
   have hinv : Continuous fun a : IdeleGroup k ↦ ((a⁻¹ : IdeleGroup k) : 𝔸[k]) :=
@@ -36,16 +36,16 @@ theorem continuous_scalC : Continuous (scalC : IdeleGroup k → GL ι 𝔸[k]) :
         using continuous_const
 
 /- English proof (translation)
-Simplify using `only [thetaC, ltr, Units.val_mul, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaC_ltr (A h : GL ι 𝔸[k]) (F : (ι → 𝔸[k]) → ℂ) :
     thetaC (ltr A F) h = thetaC F (A * h) := by
   simp only [thetaC, ltr, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun h₀ ↦ ?_` and prove the remaining obligations. Take `⟨C, hC, hh₀⟩` from `exists_compact_mem_nhds h₀`. Take `⟨u, hu, hFu⟩` from `GlobalTheory.T.exists_summable_majorant_lattice_sum hF hC`. Establish `hcont : ContinuousOn (thetaC F : GL ι 𝔸[k] → ℂ) C`. Use `continuousOn_tsum (fun ξ ↦ Continuous.continuousOn ?_) hu fun ξ h hh ↦ hFu h hh ξ` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuous_of_mem_schwartzBruhatPi hF).comp ?_` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_mulVec continuous_const`. Conclude with `hcont.continuousAt hh₀`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_thetaC {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι) :
     Continuous (thetaC F : GL ι 𝔸[k] → ℂ) := by
@@ -64,7 +64,7 @@ noncomputable def translatedIntegrand (w : InfinitePlace k) (Ψ : (ι → 𝔸[k
     (ω.toIdele (u : IdeleGroup k) : ℂ)
 
 /- English proof (translation)
-Establish `hu : Continuous fun x : ({r : ℝ // 0 < r} × GL ι 𝔸[k]) × normOneSubgroup k ↦ (x.2 : IdeleGroup k)` using `continuous_subtype_val.comp continuous_snd`. Establish `hs : Continuous fun x : ({r : ℝ // 0 < r} × GL ι 𝔸[k]) × normOneSubgroup k ↦ moduleSection w x.1.1` using `(continuous_moduleSection w).comp (continuous_fst.comp continuous_fst)`. Establish `hg : Continuous fun x : ({r : ℝ // 0 < r} × GL ι 𝔸[k]) × normOneSubgroup k ↦ x.1.2` using `continuous_snd.comp continuous_fst`. Conclude with `((continuous_thetaC hΨ).comp (hg.mul (continuous_scalC.comp (hs.mul hu)))).mul (continuous_subtype_val.comp (ω.continuous_toIdele.comp hu))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_translatedIntegrand (w : InfinitePlace k) {Ψ : (ι → 𝔸[k]) → ℂ}
     (hΨ : Ψ ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) :
@@ -80,7 +80,7 @@ theorem continuous_translatedIntegrand (w : InfinitePlace k) {Ψ : (ι → 𝔸[
     (continuous_subtype_val.comp (ω.continuous_toIdele.comp hu))
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.EisRk1Theta.continuous_setIntegral_of_continuous_uncurry (normOneMeasure k) (isCompact_closure_normOneFundamentalDomain k) (normOneMeasure_normOneFundamentalDomain_lt_top k) (continuous_translatedIntegrand w hΨ ω)`. Use `h.congr fun p ↦ ?_` and prove the remaining obligations. Simplify using `only [thetaCInt, thetaC_ltr, translatedIntegrand]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuous_thetaCInt_ltr {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι]
     [DecidableEq ι] (w : InfinitePlace k) {Ψ : (ι → 𝔸[k]) → ℂ}

@@ -15,7 +15,7 @@ section Index
 variable {k G : Type u} [CommRing k] [Group G] [Fintype G]
 
 /- English proof (translation)
-Establish `hm : P.index • 𝟙 (tateCohomology A n) = 0`. Rewrite using `[← tateRes_app_comp_tateCores_app P A n, hP.eq_of_tgt ((tateRes P n).app A) 0, zero_comp]`. Establish `h` using `congrArg (fun φ : tateCohomology A n ⟶ tateCohomology A n => φ.hom x) hm`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem index_smul_tateCohomology_eq_zero (A : Rep.{u} k G) (n : ℤ) (P : Subgroup G) [Fintype P]
     (hP : IsZero (tateCohomology (res P.subtype A) n)) (x : tateCohomology A n) :
@@ -26,9 +26,9 @@ theorem index_smul_tateCohomology_eq_zero (A : Rep.{u} k G) (n : ℤ) (P : Subgr
   simpa using h
 
 /- English proof (translation)
-Establish `hx : ∀ x : tateCohomology A n, x = 0`. Introduce `x`. Assume the negation of the conclusion as `hne`. Establish `ho : addOrderOf x ∣ Fintype.card G` using `addOrderOf_dvd_of_nsmul_eq_zero (card_smul_tateCohomology A n x)`. Establish `ho1 : addOrderOf x ≠ 1` using `fun h1 => hne (AddMonoid.addOrderOf_eq_one_iff.1 h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, hidx, hP⟩` from `h _ (Nat.minFac_prime ho1) ((Nat.minFac_dvd _).trans ho)`. Set `_ : Fintype P` to `Fintype.ofFinite P`. Conclude with `hidx ((Nat.minFac_dvd _).trans (addOrderOf_dvd_of_nsmul_eq_zero (index_smul_tateCohomology_eq_zero A n P hP x)))`. Establish `: Subsingleton (tateCohomology A n)` using `⟨fun a b => by rw [hx a, hx b]⟩`. Conclude with `ModuleCat.isZero_of_subsingleton _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_tateCohomology_of_index (A : Rep.{u} k G) (n : ℤ)
     (h : ∀ p : ℕ, p.Prime → p ∣ Fintype.card G → ∃ P : Subgroup G, ¬ p ∣ P.index ∧
@@ -54,11 +54,11 @@ section Subgroups
 variable {k G : Type u} [CommRing k] [Group G]
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Set `U` to `T.map S.subtype`. Set `φ : T →* U` to `(S.subtype.comp T.subtype).codRestrict U fun t => Subgroup.mem_map.2 ⟨t, t.2, rfl⟩`. Establish `hinj : Function.Injective φ` using `fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun x : U => (x : G)) hab))`. Establish `hsurj : Function.Surjective φ`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨u, hu⟩`. Take `⟨x, hx, rfl⟩` from `Subgroup.mem_map.1 hu`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Rewrite using `[← tateAcyclic_res_iff φ ⟨hinj, hsurj⟩ (res U.subtype A)]`. Establish `e : U.subtype.comp φ = S.subtype.comp T.subtype` using `rfl`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[res_res φ U.subtype A, e, res_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tateAcyclic_res_res_iff (A : Rep.{u} k G) (S : Subgroup G) (T : Subgroup S) [Fintype T]
     (U : Subgroup G) [Fintype U] (hU : T.map S.subtype = U) :
@@ -78,7 +78,7 @@ theorem tateAcyclic_res_res_iff (A : Rep.{u} k G) (S : Subgroup G) (T : Subgroup
   rw [res_res φ U.subtype A, e, res_res]
 
 /- English proof (translation)
-Set `_ : Fintype (V.subgroupOf P)` to `Fintype.ofInjective (fun x : V.subgroupOf P => (⟨(x : P), Subgroup.mem_subgroupOf.1 x.2⟩ : V)) fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun y : V => (y : G)) hab))`. Use `(tateAcyclic_res_res_iff A P (V.subgroupOf P) V ?_).1 (hP _)` and prove the remaining obligations. Rewrite using `[Subgroup.subgroupOf_map_subtype, inf_eq_left.2 hV]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tateAcyclic_res_of_le {A : Rep.{u} k G} {P : Subgroup G} (hP : CohTrivial (res P.subtype A))
     {V : Subgroup G} [Fintype V] (hV : V ≤ P) : TateAcyclic (res V.subtype A) := by
@@ -96,17 +96,17 @@ section Sylow
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Establish `hSyl : ∀ p : ℕ, p.Prime → ∃ P : Sylow p G, CohTrivial (res (P : Subgroup G).subtype A)`. Introduce `p hp`. Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨P, q, hPq⟩` from `h p hp`. Set `_ : Fintype (P : Subgroup G)` to `Fintype.ofFinite _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `⟨P, cohTrivial_of_isZero_of_isZero P.isPGroup' _ q (hPq).1 (hPq).2⟩`. Establish `hp_sub : ∀ (p : ℕ), p.Prime → ∀ (U : Subgroup G) [Fintype U], IsPGroup p U → TateAcyclic (res U.subtype A)`. Introduce `p hp U _ hU`. Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨P, hP⟩` from `hSyl p hp`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hUQ⟩` from `hU.exists_le_sylow`. Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq G P Q`. Set `V : Subgroup G` to `U.comap (MulAut.conj g).toMonoidHom`. Set `_ : Fintype V` to `Fintype.ofFinite _`. Establish `hVP : V ≤ P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `h1 : g * y * g⁻¹ ∈ ((g • P : Sylow p G) : Subgroup G)` using `hUQ hy`. Rewrite `h1` using `[Sylow.coe_subgroup_smul, Subgroup.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify `h1` using `[mul_assoc]`. Use `tateAcyclic_res_conj U V g (fun x => ?_) (tateAcyclic_res_of_le hP hVP)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[V, mul_assoc]`. Introduce `S _ n`. Use `isZero_tateCohomology_of_index (res S.subtype A) n fun p hp _ => ?_` and prove the remaining obligations. Establish `: Fact p.Prime` using `⟨hp⟩`. Set `T : Sylow p S` to `default`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨T, T.not_dvd_index, fun {_} => ?_⟩` and prove the remaining obligations. Set `_ : Fintype ((T : Subgroup S).map S.subtype)` to `Fintype.ofFinite _`. Use `((tateAcyclic_res_res_iff A S T _ rfl).2 ?_) n` and prove the remaining obligations. Conclude with `hp_sub p hp _ (T.isPGroup'.map S.subtype)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cohTrivial_of_sylow (A : Rep ℤ G)
     (h : ∀ p : ℕ, p.Prime → ∃ (P : Sylow p G) (q : ℤ), ∀ [Fintype (P : Subgroup G)],
@@ -148,7 +148,7 @@ theorem cohTrivial_of_sylow (A : Rep ℤ G)
   exact hp_sub p hp _ (T.isPGroup'.map S.subtype)
 
 /- English proof (translation)
-Use `cohTrivial_of_sylow A fun p hp => ?_` and prove the remaining obligations. Establish `: Fact p.Prime` using `⟨hp⟩`. Conclude with `⟨default, q, fun {_} => h _⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cohTrivial_of_forall_subgroup (A : Rep ℤ G) (q : ℤ)
     (h : ∀ (S : Subgroup G) [Fintype S], IsZero (tateCohomology (res S.subtype A) q) ∧

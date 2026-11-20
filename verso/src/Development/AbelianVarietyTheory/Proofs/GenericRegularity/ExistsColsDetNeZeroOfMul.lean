@@ -5,21 +5,19 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Establish `hu : IsUnit (π.submatrix ι κ).det` using `isUnit_iff_ne_zero.mpr hd`. Establish `hC : π.submatrix id κ = π * (1 : Matrix (Fin n) (Fin n) Ω).submatrix id κ`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `hA : π.submatrix ι κ = (1 : Matrix (Fin n) (Fin n) Ω).submatrix ι id * π.submatrix id κ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `hrA : (π.submatrix ι κ).rank = r`. Use `Matrix.rank_of_isUnit _ ((Matrix.isUnit_iff_isUnit_det _).mpr hu)` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hle : LinearMap.range (π.submatrix id κ).mulVecLin ≤ LinearMap.range π.mulVecLin`. Rewrite using `[hC, Matrix.mulVecLin_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`. Establish `hr : π.rank ≤ (π.submatrix id κ).rank`. Rewrite using `[hπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Matrix.rank_mul_le_right _ _`. Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle hr`. Establish `hcol : ∀ j : Fin n, ∃ c : Fin r → Ω, (π.submatrix id κ) *ᵥ c = fun i => π i j`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (fun i => π i j) ∈ LinearMap.range π.mulVecLin` using `⟨Pi.single j 1, by ext i; simp⟩`. Rewrite `this` using `[← heq]`. Conclude with `this`. Use `choose c hc using hcol`. Use `set X : Matrix (Fin r) (Fin n) Ω := Matrix.of fun a j => c j a with hX`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : π = π.submatrix id κ * X`. Use extensionality with `i j`. Use `congrFun (hc j) i` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, hX]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : π.submatrix ι id = π.submatrix ι κ * X`. Use extensionality with `i j`. Use `congrFun (congrFun h1 (ι i)) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Rewrite using `[h2, Matrix.mul_assoc, ← Matrix.mul_assoc (π.submatrix ι κ)⁻¹, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`.
-
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_cols_mul_inv_minor_mul_rows {Ω : Type} [Field Ω] {n r : ℕ}
     (π : Matrix (Fin n) (Fin n) Ω) (hπ : π.rank = r) (ι κ : Fin r → Fin n)
@@ -66,13 +64,13 @@ theorem eq_cols_mul_inv_minor_mul_rows {Ω : Type} [Field Ω] {n r : ℕ}
   exact h1
 
 /- English proof (translation)
-Establish `hu : IsUnit (R * u).det` using `isUnit_iff_ne_zero.mpr hd`. Establish `hrA : (R * u).rank = r`. Use `Matrix.rank_of_isUnit _ ((Matrix.isUnit_iff_isUnit_det _).mpr hu)` as an intermediate fact. Simplify using `using this`. Establish `hrR : R.rank = r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Simplify using `using Matrix.rank_le_card_height R`. Combine the equalities or inequalities in the displayed calculation. Take `⟨K, a, ha, hspan, hli⟩` from `exists_linearIndependent' Ω R.col`. Use `haveI : Fintype K := Fintype.ofInjective a ha`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card K = r`. Rewrite using `[← finrank_span_eq_card hli, hspan, ← Matrix.rank_eq_finrank_span_cols, hrR]`. Set `e : Fin r ≃ K` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨a ∘ e, ?_⟩` and prove the remaining obligations. Establish `h3 : LinearIndependent Ω (R.submatrix id (a ∘ e)).col` using `hli.comp e e.injective`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `isUnit_iff_ne_zero.mp ((Matrix.isUnit_iff_isUnit_det _).mp h3)`.
+A detailed English derivation is pending.
 -/
 theorem exists_cols_det_ne_zero_of_mul {Ω : Type} [Field Ω] {n r : ℕ}
     (R : Matrix (Fin r) (Fin n) Ω) (u : Matrix (Fin n) (Fin r) Ω) (hd : (R * u).det ≠ 0) :
@@ -97,9 +95,9 @@ theorem exists_cols_det_ne_zero_of_mul {Ω : Type} [Field Ω] {n r : ℕ}
   exact isUnit_iff_ne_zero.mp ((Matrix.isUnit_iff_isUnit_det _).mp h3)
 
 /- English proof (translation)
-Introduce `Ω _ n r π hπ ι`. Use `⟨fun κ hd => eq_cols_mul_inv_minor_mul_rows π hπ ι κ hd, fun u hu hd => ?_⟩` and prove the remaining obligations. Establish `h : π.submatrix ι id * u = u.submatrix ι id`. Use extensionality with `i j`. Use `congrFun (congrFun hu (ι i)) j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_apply]`. Take `⟨κ, hκ⟩` from `exists_cols_det_ne_zero_of_mul (π.submatrix ι id) u (h ▸ hd)`. Conclude with `⟨κ, hκ⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rank_minor_factorisation :
     ∀ (Ω : Type) [Field Ω] (n r : ℕ) (π : Matrix (Fin n) (Fin n) Ω), π.rank = r → ∀ ι : Fin r → Fin n, (∀ κ : Fin r → Fin n, (π.submatrix ι κ).det ≠ 0 → π = π.submatrix id κ * (π.submatrix ι κ)⁻¹ * π.submatrix ι id) ∧ ∀ u : Matrix (Fin n) (Fin r) Ω, π * u = u → (u.submatrix ι id).det ≠ 0 → ∃ κ : Fin r → Fin n, (π.submatrix ι κ).det ≠ 0 := by

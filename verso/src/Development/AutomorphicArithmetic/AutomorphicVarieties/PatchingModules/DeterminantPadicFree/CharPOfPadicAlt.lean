@@ -9,11 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists K`. Establish `hpr : p.Prime` using `CharP.char_is_prime K p`. Distinguish the cases in `h : p = l`. Substitute `h` using the available equality. Conclude with `hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `hu : IsUnit (p : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes Fact.out hpr).2 (Ne.symm h)`. Establish `hu'` using `hu.map f`.
-
-Rewrite `hu'` using `[map_natCast, CharP.cast_eq_zero]`. Conclude with `not_isUnit_zero hu'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charP_of_padic {l : ℕ} [Fact l.Prime] {K : Type} [Field K] [Finite K] (f : ℤ_[l] →+* K) :
     CharP K l := by
@@ -31,17 +29,15 @@ private theorem charP_of_padic {l : ℕ} [Fact l.Prime] {K : Type} [Field K] [Fi
     exact not_isUnit_zero hu'
 
 /- English proof (translation)
-Introduce `l _ F n x k q sg hsep hdet`. Use `haveI : CharP x.K l := charP_of_padic (algebraMap ℤ_[l] x.K)`. Establish `hmat : ∀ (y y' : NP F n) (j : y.A →+* y'.A), y.Ext y' j → ∀ g, mat y'.ρ g = (mat y.ρ g).map j`. Introduce `y y' j h g`. Rewrite using `[h.2.2.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨A1, _, _, _, _, j1, al1, hj1i, hj1l, hj1f, hal1⟩` from `Det.splitEx l (n := n) (fun a => (mat x.ρ (sg a)).charpoly) (fun a => ⟨Matrix.charpoly_monic _, by simp [Matrix.charpoly_natDegree_eq_dim], hsep a⟩)`. Take `⟨x1, J1, e1, hE1, he1, -⟩` from `Det.extEx x A1 j1 hj1i hj1l hj1f`. Use `haveI : CharP x1.K l := charP_of_padic (algebraMap ℤ_[l] x1.K)`. Use `haveI := Fintype.ofFinite x1.K`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d, -, hcard⟩` from `FiniteField.card x1.K l`. Use `⟨(d : ℕ), d.ne_zero, ?_⟩` and prove the remaining obligations. Introduce `D hdD hD0`. Take `⟨A2, _, _, _, _, j2, hj2i, hj2l, hj2f, hres2, -⟩` from `Det.resExt l (K := x1.K) d D (by rw [Nat.card_eq_fintype_card]; exact hcard) hdD hD0`. Take `⟨x2, J2, e2, hE2, -, hc2⟩` from `Det.extEx x1 A2 j2 hj2i hj2l hj2f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hE` using `Det.extTrans x x1 x2 J1 J2 hE1 hE2`. Take `⟨k', e, hk, -⟩` from `Det.kapPush x x2 _ hE k`. Use `⟨x2, J2.comp J1, k', fun a b => J2 (e1.symm (al1 a b)), hE.1, by rw [hc2, hres2], Det.detPush x x2 _ hE k k' e hk _ hdet, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `hE2.1.1.comp (e1.symm.injective.comp (hal1 a).1)`. Establish `h1 : J1 = (e1.symm : A1 →+* x1.A).comp j1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `RingHom.ext fun t => ?_` and prove the remaining obligations. Simplify using `[← he1 t]`. Establish `key : Polynomial.map J1 (mat x.ρ (sg a)).charpoly = ∏ b, (Polynomial.X - Polynomial.C (e1.symm (al1 a b)))`. Rewrite using `[h1, ← Polynomial.map_map, (hal1 a).2, Polynomial.map_prod]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hmat x x2 _ hE.1, Matrix.charpoly_map, ← Polynomial.map_map, key, Polynomial.map_prod]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.onePt :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) {q : ℕ} (sg : Fin q → F.G₀), (∀ a, ((mat x.ρ (sg a)).charpoly.map (algebraMap x.A (FractionRing x.A))).Separable) → Detects k (Set.range sg) → ∃ d : ℕ, d ≠ 0 ∧ ∀ D, d ∣ D → D ≠ 0 → ∃ (x' : NP F n) (j : x.A →+* x'.A) (k' : Kap x') (al : Fin q → Fin n → x'.A), x.Ext x' j ∧ Nat.card x'.K = l ^ D ∧ Detects k' (Set.range sg) ∧ ∀ a, Function.Injective (al a) ∧ (mat x'.ρ (sg a)).charpoly = ∏ b, (Polynomial.X - Polynomial.C (al a b)) := by

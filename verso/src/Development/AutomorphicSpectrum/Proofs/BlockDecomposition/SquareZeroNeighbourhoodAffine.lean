@@ -5,21 +5,19 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.SectionNbhd
 
 /- English proof (translation)
-Introduce `R _ U t e _ het`. Establish `hte : ∀ q : Sp R, t (e q) = q` using `fun q => by`. Use `congr($(het) q)` as an intermediate fact. Simplify using `using this`. Use `set c := (e.ker ^ 2).subschemeι with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hrange : ∀ x, ∃ q : Sp R, c x = e q`. Introduce `x`. Establish `h1 : c x ∈ Set.range c` using `⟨x, rfl⟩`. Rewrite `h1` using `[hc, Scheme.IdealSheafData.range_subschemeι, Scheme.IdealSheafData.support_pow _ _ two_ne_zero, Scheme.Hom.support_ker, e.isClosedEmbedding.isClosed_range.closure_eq]`. Take `⟨q, hq⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hq.symm⟩`. Establish `haff : IsAffineHom (c ≫ t)`. Use `isAffineHom_of_forall_exists_isAffineOpen _ fun y => ?_` and prove the remaining obligations. Take `⟨V₀, hV₀, hyV₀, -⟩` from `exists_isAffineOpen_mem_and_subset (x := e y) (U := ⊤) trivial`. Take `⟨f, hfle, hyf⟩` from `(isAffineOpen_top (Sp R)).exists_basicOpen_le (V := e ⁻¹ᵁ V₀) ⟨y, hyV₀⟩ trivial`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Sp R).basicOpen f, hyf, (isAffineOpen_top (Sp R)).basicOpen f, ?_⟩` and prove the remaining obligations. Establish `hV : IsAffineOpen (V₀ ⊓ t ⁻¹ᵁ (Sp R).basicOpen f)`. Rewrite using `[Scheme.preimage_basicOpen]`. Establish `h` using `Scheme.basicOpen_res U (V := V₀) (t.app ⊤ f) (homOfLE le_top).op`. Rewrite using `[← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hV₀.basicOpen _`. Establish `heq : (c ≫ t) ⁻¹ᵁ (Sp R).basicOpen f = c ⁻¹ᵁ (V₀ ⊓ t ⁻¹ᵁ (Sp R).basicOpen f)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : t (c x) ∈ (Sp R).basicOpen f` using `hx`. Use `⟨?_, hx'⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `hrange x`. Rewrite `hx'` using `[hq, hte]`. Establish `: e q ∈ V₀` using `hfle hx'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[hq]`. Introduce `hx`. Conclude with `hx.2`. Rewrite using `[heq]`. Conclude with `hV.preimage c`.
-
-Conclude with `isAffine_of_isAffineHom (c ≫ t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffine_subscheme_ker_sq :
     ∀ (R : Type) [CommRing R] (U : Scheme.{0}) (t : U ⟶ Sp R) (e : Sp R ⟶ U)

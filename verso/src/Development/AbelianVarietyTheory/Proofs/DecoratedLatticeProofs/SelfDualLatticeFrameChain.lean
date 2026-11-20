@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 
 /- English proof (translation)
-Introduce `h j hj`. Establish `hL` using `h.bot.hyp.2.2.2.1.lev.βY j hj`. Use `⟨GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ hL, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hL`. Conclude with `hc.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sdY_frames {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) :
     PkHyp W → ∀ j, j < D.R.m → IsSelfDualC (Yc D j) ((pk W).ΛY j) ∧ Formalism.L2.DIV.IsFrame ((pk W).βY j) ((pk W).ΛY j) := by

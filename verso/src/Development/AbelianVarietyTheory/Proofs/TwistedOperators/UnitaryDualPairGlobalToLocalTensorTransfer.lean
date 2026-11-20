@@ -33,7 +33,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 include hvac
 
 /- English proof (translation)
-Distinguish the cases in `hv : v ∈ T`. Rewrite using `[ext_of_mem M T φ ⟨v, hv⟩]`. Conclude with `(φ ⟨v, hv⟩).2`. Rewrite using `[ext_of_not_mem M T φ v hv]`. Conclude with `hvac v`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_mem_SB (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) (v : Pl F) : ext M T φ v ∈ SB _ := by
   by_cases hv : v ∈ T
@@ -44,7 +44,7 @@ omit hvac in
 include hstd in
 
 /- English proof (translation)
-Use `filter_upwards [ext_vac M T φ, hstd] with v h1 h2`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_std (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) :
     ∀ᶠ v in Filter.cofinite, ext M T φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 := by
@@ -54,7 +54,7 @@ theorem ext_std (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) :
 include hstd in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThK.EvUniqInf.rest_pure f _ (ext_mem_SB M T hvac φ) (ext_std M T hstd φ)`.
+A detailed English derivation is pending.
 -/
 theorem rest_ext (f : SInf F (Fin n × Fin d)) (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) :
     Rest (evI F) ⇑f (fun x => ∏ᶠ v, ext M T φ v fun i => evFin F v (x i)) :=
@@ -63,7 +63,7 @@ theorem rest_ext (f : SInf F (Fin n × Fin d)) (φ : ∀ v : T, ↥(SB (Fin n ×
 include hstd in
 
 /- English proof (translation)
-Rewrite using `[ext_update]`. Use `GlobalTheory.ThK.LocalOps.acts_pure v.1 Op f (ext M T φ) _ (GlobalTheory.TensUniq.pure_mem_schA f _ (ext_mem_SB M T hvac φ) (ext_std M T hstd φ)) (GlobalTheory.PureFactor.mulSupport_finite _ (ext_std M T hstd φ)) ?_` and prove the remaining obligations. Rewrite using `[ext_of_mem]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_ext [DecidableEq T] (f : SInf F (Fin n × Fin d))
     (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) (v : T) (z : ↥(SB (Fin n × Fin d → Fv F v.1)))
@@ -78,7 +78,7 @@ theorem acts_ext [DecidableEq T] (f : SInf F (Fin n × Fin d))
   exact h
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, ext M T φ, hf, ext_mem_SB M T hvac φ, ext_vac M T φ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pure_mem_algD {ψ : AddChar (AF F) ℂ} (emb : ∀ w : InfinitePlace F, EmbOver E w)
     (f : SInf F (Fin n × Fin d)) (hf : f ∈ M.Pol ψ emb) (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) :
@@ -97,33 +97,27 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Weil
 open GlobalTheory.HoweGlobal.Transfer (ext ext_of_mem ext_of_not_mem ext_update ext_vac mem_of_pure mem_of_tprod) in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ emb om hvac hstd N hN T _ L hL`. Establish `hLe : ∀ (f : ↥(M.Pol ψ emb)) (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))), L (f ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ φ) = pure (f : SInf F (Fin n × Fin d)) (ext M T φ)` using `fun f φ => hL f φ _ (fun v h => ext_of_mem M T φ ⟨v, h⟩) (fun v h => ext_of_not_mem M T φ v h)`. Establish `hpA` using `pure_mem_algD M T hvac (ψ := ψ) emb`. Establish `hR` using `rest_ext M T hvac hstd`. Establish `hSB` using `ext_mem_SB M T hvac`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV` using `ext_vac M T`. Establish `hLA : ∀ t, L t ∈ GlobalTheory.SquareAgree.algD M ψ emb`. Introduce `t`. Use `mem_of_pure ((GlobalTheory.SquareAgree.algD M ψ emb).comap L) (fun x φ => ?_) t` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hLe]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpA _ x.2 φ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1)), GlobalTheory.HoweGlobalPair.relInf M ψ emb om ≤ N.comap (L ∘ₗ (TensorProduct.mk ℂ _ _).flip (PiTensorProduct.tprod ℂ φ))`. Introduce `φ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x (⟨γ, hγ, f, hf, hD⟩ | ⟨k, hk, f, f₁, hA, rfl⟩)`. Use `show L (x ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ φ) ∈ N`. Rewrite using `[hLe]`. Conclude with `hN.lie γ hγ f hf _ x.2 hD _ (hSB φ) (hV φ)`. Use `show L ((f₁ - f) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ φ) ∈ N`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.sub_tmul, map_sub, hLe, hLe]`. Conclude with `hN.cpt k hk _ f.2 _ f₁.2 hA _ (hSB φ) (hV φ)`. Introduce `x hx y`. Conclude with `mem_of_tprod (N.comap (L ∘ₗ TensorProduct.mk ℂ _ _ x)) (fun φ => key φ hx) y`. Introduce `w x hx x₀ y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hLe]`. Use `hN.fin w.1 _ _ x₀.2 (hSB _) (hV _) ?_` and prove the remaining obligations. Rewrite using `[ext_of_mem M T _ w, Function.update_self]`. Conclude with `hx`. Introduce `g hg t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `hg with ⟨k, hk, hkA⟩ | ⟨γ, hγ, hgD⟩` into its components or cases. Establish `e : ∀ t, L (TensorProduct.map g LinearMap.id t) = om (1, k) (L t)`. Introduce `t`. Use `LinearMap.mem_eqLocus.1 (mem_of_pure (LinearMap.eqLocus (L ∘ₗ TensorProduct.map g LinearMap.id) ((om (1, k)) ∘ₗ L)) (fun x φ => ?_) t)` and prove the remaining obligations. Use `LinearMap.mem_eqLocus.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, TensorProduct.map_tmul, LinearMap.id_apply, hLe]`. Conclude with `(hkA x _ (hR _ φ)).symm`. Rewrite using `[e]`. Conclude with `hN.stabCpt k hk _ ht`. Set `S : Submodule ℂ (↥(M.Pol ψ emb) ⊗[ℂ] (⨂[ℂ] v : T, ↥(SB (Fin n × Fin d → Fv F v.1))))` to `{ carrier := {t | ∀ z, HasDerivAt (fun s : ℝ => om (1, γ (Multiplicative.ofAdd s)) (L t) z) (L (TensorProduct.map g LinearMap.id t) z) 0} add_mem' := fun {t₁ t₂} h₁ h₂ z => by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(h₁ z).add (h₂ z)`. Use the proof step `zero_mem' := fun z => by`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `hasDerivAt_const 0 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use the proof step `smul_mem' := fun c t h z => by`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(h z).const_mul c }`. Establish `hS : ∀ t, t ∈ S` using `mem_of_pure S (fun x φ z => by`. Simplify using `only [TensorProduct.map_tmul, LinearMap.id_apply, hLe]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgD x _ (hR _ φ) z)`. Conclude with `hN.stabLie γ hγ _ ht _ (hLA _) (hS t)`. Introduce `w g hg t ht`. Take `⟨h, hh, hA⟩` from `hg`. Establish `e : ∀ t, L (TensorProduct.map LinearMap.id (PiTensorProduct.map (Function.update (fun w' : T => (LinearMap.id : ↥(SB (Fin n × Fin d → Fv F w'.1)) →ₗ[ℂ] _)) w g)) t) = om (1, h) (L t)`.
-
-Introduce `t`. Use `LinearMap.mem_eqLocus.1 (mem_of_pure (LinearMap.eqLocus (L ∘ₗ TensorProduct.map LinearMap.id (PiTensorProduct.map (Function.update (fun w' : T => (LinearMap.id : ↥(SB (Fin n × Fin d → Fv F w'.1)) →ₗ[ℂ] _)) w g))) ((om (1, h)) ∘ₗ L)) (fun x φ => ?_) t)` and prove the remaining obligations. Use `LinearMap.mem_eqLocus.2 ?_` and prove the remaining obligations. Establish `hφ : (fun w' => (Function.update (fun w' : T => (LinearMap.id : ↥(SB (Fin n × Fin d → Fv F w'.1)) →ₗ[ℂ] _)) w g w') (φ w')) = Function.update φ w (g (φ w))`. Use function extensionality and compare the values at `w'`.
-
-Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hw]`. Simplify using `only [LinearMap.comp_apply, TensorProduct.map_tmul, LinearMap.id_apply, PiTensorProduct.map_tprod, hLe]`.
-
-Rewrite using `[hφ, acts_ext M T hvac hstd _ φ w (g (φ w)) _ (hA (φ w))]`. Rewrite using `[e]`. Conclude with `hN.stabFin w.1 h hh _ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HoweGlobalPair.tensor_transfer : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W)

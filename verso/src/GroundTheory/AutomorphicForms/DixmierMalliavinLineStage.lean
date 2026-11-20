@@ -13,14 +13,14 @@ noncomputable section
 namespace LineKernel
 
 /- English proof (translation)
-Rewrite using `[iteratedDeriv_eq_iterate]`. Conclude with `hf.iterate_deriv m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_iteratedDeriv_of_contDiff {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f : ℝ → E} (hf : ContDiff ℝ ∞ f) (m : ℕ) : ContDiff ℝ ∞ (iteratedDeriv m f) := by
   rw [iteratedDeriv_eq_iterate]; exact hf.iterate_deriv m
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using hf`. Consider the case `succ m ih => rw [iteratedDeriv_succ]`. Conclude with `ih.deriv`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_iteratedDeriv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f : ℝ → E} (hf : HasCompactSupport f) (m : ℕ) : HasCompactSupport (iteratedDeriv m f) := by
@@ -29,7 +29,7 @@ theorem hasCompactSupport_iteratedDeriv {E : Type*} [NormedAddCommGroup E] [Norm
   | succ m ih => rw [iteratedDeriv_succ]; exact ih.deriv
 
 /- English proof (translation)
-Rewrite using `[iteratedDeriv_succ]`. Conclude with `((contDiff_iteratedDeriv_of_contDiff hf m).differentiable (by simp) x).hasDerivAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_iteratedDeriv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f : ℝ → E} (hf : ContDiff ℝ ∞ f) (m : ℕ) (x : ℝ) :
@@ -38,9 +38,9 @@ theorem hasDerivAt_iteratedDeriv {E : Type*} [NormedAddCommGroup E] [NormedSpace
   exact ((contDiff_iteratedDeriv_of_contDiff hf m).differentiable (by simp) x).hasDerivAt
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((hasDerivAt_iteratedDeriv hf m t).ofReal_comp).deriv`.
+A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_ofReal {f : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (m : ℕ) :
     iteratedDeriv m (fun t => (f t : ℂ)) = fun t => ((iteratedDeriv m f t : ℝ) : ℂ) := by
@@ -52,7 +52,7 @@ theorem iteratedDeriv_ofReal {f : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (m : �
     exact ((hasDerivAt_iteratedDeriv hf m t).ofReal_comp).deriv
 
 /- English proof (translation)
-Rewrite using `[convolution_mul, convolution_mul, ← integral_complex_ofReal]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem ofReal_convolution (f g : ℝ → ℝ) (x : ℝ) :
     (((f ⋆[mul ℝ ℝ] g) x : ℝ) : ℂ) =
@@ -61,19 +61,17 @@ theorem ofReal_convolution (f g : ℝ → ℝ) (x : ℝ) :
   push_cast; rfl
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `(hKc.isCompact.add hkc.isCompact).exists_bound_of_continuousOn hG.continuousOn`. Use `set Ψ : ℝ × ℝ → ℂ := fun p => G p.1 * (K p.2 * k (p.1 - p.2)) with hΨ`. Establish `hconv : Integrable (fun p : ℝ × ℝ => mul ℂ ℂ (K p.2) (k (p.1 - p.2))) (volume.prod volume)` using `hK.convolution_integrand (mul ℂ ℂ) hk`. Establish `hΨi : Integrable Ψ (volume.prod volume)`. Use `Integrable.mono' (hconv.norm.const_mul M) ?_ (Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(hG.comp continuous_fst).aestronglyMeasurable.mul hconv.aestronglyMeasurable`. Simplify using `only [hΨ, mul_apply', norm_mul]`. Distinguish the cases in `h : K p.2 * k (p.1 - p.2) = 0`. Rewrite `h` using `[mul_eq_zero]`. Apply the tactic sequence `rcases h with h | h <;> simp [h]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_eq_zero, not_or]`. Establish `hp : p.1 ∈ tsupport K + tsupport k` using `⟨p.2, subset_tsupport _ h.1, p.1 - p.2, subset_tsupport _ h.2, by ring⟩`. Use `hM p.1 hp` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hswap` using `integral_integral_swap (f := fun u s => Ψ (u, s)) hΨi`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinner : ∀ s, ∫ u, Ψ (u, s) = K s * ∫ t, G (s + t) * k t`. Introduce `s`. Rewrite using `[← integral_const_mul, ← integral_add_left_eq_self (fun u => Ψ (u, s)) s]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hΨ]`. Rewrite using `[add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hΨi.integral_prod_right` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Simplify `this` using `only [hinner]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[convolution_mul, ← integral_const_mul]`.
-
-Use `_ = ∫ s, ∫ u, Ψ (u, s) := hswap`. Use `_ = ∫ s, K s * ∫ t, G (s + t) * k t := by simp only [hinner]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_convolution {G K k : ℝ → ℂ} (hG : Continuous G) (hK : Integrable K)
     (hk : Integrable k) (hKc : HasCompactSupport K) (hkc : HasCompactSupport k) :
@@ -112,7 +110,7 @@ theorem pairing_convolution {G K k : ℝ → ℂ} (hG : Continuous G) (hK : Inte
       _ = ∫ s, K s * ∫ t, G (s + t) * k t := by simp only [hinner]
 
 /- English proof (translation)
-Establish `hFd : Differentiable ℝ F` using `hF.differentiable one_ne_zero`. Establish `hψd : Differentiable ℝ ψ` using `hψ.differentiable one_ne_zero`. Establish `h` using `integral_mul_deriv_eq_deriv_mul_of_integrable (u := F) (v := ψ) (u' := deriv F) (v' := deriv ψ) (fun x _ => (hFd x).hasDerivAt) (fun x _ => (hψd x).hasDerivAt) ((hF.continuous.mul (hψ.continuous_deriv le_rfl)).integrable_of_hasCompactSupport hψc.deriv.mul_left) (((hF.continuous_d …`. Rewrite using `[h, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_deriv_mul {F ψ : ℝ → ℂ} (hF : ContDiff ℝ 1 F) (hψ : ContDiff ℝ 1 ψ)
     (hψc : HasCompactSupport ψ) : ∫ u, deriv F u * ψ u = -∫ u, F u * deriv ψ u := by
@@ -128,9 +126,9 @@ theorem integral_deriv_mul {F ψ : ℝ → ℂ} (hF : ContDiff ℝ 1 F) (hψ : C
   rw [h, neg_neg]
 
 /- English proof (translation)
-Proceed by induction on `p generalizing F with`. Consider the case `zero => simp`. Consider the case `succ p ih`. Establish `hF' : ContDiff ℝ ∞ (deriv F)` using `(contDiff_infty_iff_deriv.1 hF).2`. Rewrite using `[iteratedDeriv_succ', ih hF', pow_succ, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[integral_deriv_mul (hF.of_le (by simp)) ((contDiff_iteratedDeriv_of_contDiff hψ p).of_le (by simp)) (hasCompactSupport_iteratedDeriv hψc p), ← iteratedDeriv_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_iteratedDeriv_mul {F ψ : ℝ → ℂ} (hF : ContDiff ℝ ∞ F) (hψ : ContDiff ℝ ∞ ψ)
     (hψc : HasCompactSupport ψ) (p : ℕ) :
@@ -152,7 +150,7 @@ def coef (a : ℕ → ℝ) : ℕ → ℕ → ℝ
   | n + 1, p + 1 => coef a n (p + 1) + coef a n p / a n
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [coef]`. Consider the case `succ n ih => simp [coef, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coef_zero_right (a : ℕ → ℝ) (n : ℕ) : coef a n 0 = 1 := by
   induction n with
@@ -160,9 +158,9 @@ theorem coef_zero_right (a : ℕ → ℝ) (n : ℕ) : coef a n 0 = 1 := by
   | succ n ih => simp [coef, ih]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing p with`. Consider the case `zero`. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Simplify using `[coef]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Simplify using `[coef, ih (by omega : n < q + 1), ih (by omega : n < q)]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem coef_eq_zero (a : ℕ → ℝ) {n p : ℕ} (h : n < p) : coef a n p = 0 := by
   induction n generalizing p with
@@ -174,9 +172,9 @@ theorem coef_eq_zero (a : ℕ → ℝ) {n p : ℕ} (h : n < p) : coef a n p = 0 
     simp [coef, ih (by omega : n < q + 1), ih (by omega : n < q)]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing p with`. Consider the case `zero => simp only [coef]; split_ifs <;> norm_num`. Consider the case `succ n ih`. Consider the cases of `p with`. Consider the case `zero => simp only [coef]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `ih 0`. Consider the case `succ p => simp only [coef]`. Conclude with `add_nonneg (ih _) (div_nonneg (ih _) (ha n).le)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coef_nonneg {a : ℕ → ℝ} (ha : ∀ j, 0 < a j) (n p : ℕ) : 0 ≤ coef a n p := by
   induction n generalizing p with
@@ -192,9 +190,9 @@ def opT (a : ℕ → ℝ) (n : ℕ) (F : ℝ → ℂ) (u : ℝ) : ℂ :=
   ∑ p ∈ Finset.range (n + 1), sc a n p * iteratedDeriv p F u
 
 /- English proof (translation)
-Establish `key : ∀ p, sc a (n + 1) (p + 1) * d (p + 1) = sc a n (p + 1) * d (p + 1) - (a n : ℂ)⁻¹ * (sc a n p * d (p + 1))`. Introduce `p`. Simplify using `only [sc, coef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_range_succ' _ (n + 1), Finset.sum_range_succ _ n, Finset.sum_range_succ' (fun p => sc a n p * d p) n, Finset.sum_range_succ (fun p => sc a n p * d (p + 1)) n, Finset.sum_congr rfl (fun p _ => key p), Finset.sum_sub_distrib, ← Finset.mul_sum, key n]`. Establish `h1 : sc a n (n + 1) = 0` using `by simp [sc, coef_eq_zero a (Nat.lt_succ_self n)]`. Establish `h2 : sc a (n + 1) 0 = sc a n 0` using `by simp [sc, coef_zero_right]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_sc_succ (a : ℕ → ℝ) (n : ℕ) (d : ℕ → ℂ) :
     ∑ p ∈ Finset.range (n + 2), sc a (n + 1) p * d p =
@@ -213,7 +211,7 @@ theorem sum_sc_succ (a : ℕ → ℝ) (n : ℕ) (d : ℕ → ℂ) :
   ring
 
 /- English proof (translation)
-The claim follows from `continuous_finsetSum _ fun p _ => continuous_const.mul (hF.continuous_iteratedDeriv p (by exact_mod_cast le_top))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_opT (a : ℕ → ℝ) (n : ℕ) {F : ℝ → ℂ} (hF : ContDiff ℝ ∞ F) :
     Continuous (opT a n F) :=
@@ -221,9 +219,9 @@ theorem continuous_opT (a : ℕ → ℝ) (n : ℕ) {F : ℝ → ℂ} (hF : ContD
     (hF.continuous_iteratedDeriv p (by exact_mod_cast le_top))
 
 /- English proof (translation)
-Use `HasDerivAt.sum (u := Finset.range (n + 1)) (A := fun p y => sc a n p * iteratedDeriv p F y) (fun p _ => (hasDerivAt_iteratedDeriv hF p x).const_mul (sc a n p))` as an intermediate fact. Establish `e : opT a n F = ∑ i ∈ Finset.range (n + 1), fun y => sc a n i * iteratedDeriv i F y`. Use function extensionality and compare the values at `y`. Simplify using `[opT, Finset.sum_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_opT (a : ℕ → ℝ) (n : ℕ) {F : ℝ → ℂ} (hF : ContDiff ℝ ∞ F) (x : ℝ) :
     HasDerivAt (opT a n F)
@@ -235,7 +233,7 @@ theorem hasDerivAt_opT (a : ℕ → ℝ) (n : ℕ) {F : ℝ → ℂ} (hF : ContD
   rw [e]; exact this
 
 /- English proof (translation)
-The claim follows from `sum_sc_succ a n fun p => iteratedDeriv p F u`.
+A detailed English derivation is pending.
 -/
 theorem opT_succ (a : ℕ → ℝ) (n : ℕ) (F : ℝ → ℂ) (u : ℝ) :
     opT a (n + 1) F u = opT a n F u -
@@ -243,11 +241,11 @@ theorem opT_succ (a : ℕ → ℝ) (n : ℕ) (F : ℝ → ℂ) (u : ℝ) :
   sum_sc_succ a n fun p => iteratedDeriv p F u
 
 /- English proof (translation)
-Establish `hint : ∀ p, Integrable fun u => sc a n p * iteratedDeriv p F u * ψ u` using `fun p => ((continuous_const.mul (hF.continuous_iteratedDeriv p (by exact_mod_cast le_top))).mul hψ.continuous).integrable_of_hasCompactSupport hψc.mul_left`. Establish `hint' : ∀ p, Integrable fun u => F u * ((coef a n p : ℂ) * iteratedDeriv p ψ u)` using `fun p => (hF.continuous.mul (continuous_const.mul (hψ.continuous_iteratedDeriv p (by exact_mod_cast le_top)))).integrable_of_hasCompactSupport ((hasCompactSupport_iteratedDeriv hψc p).mul_left.mul_left)`. Simplify using `only [opT, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[integral_finsetSum _ fun p _ => hint p, integral_finsetSum _ fun p _ => hint' p]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul, integral_iteratedDeriv_mul hF hψ hψc p, sc]`. Establish `: ∫ u, F u * ((coef a n p : ℂ) * iteratedDeriv p ψ u) = (coef a n p : ℂ) * ∫ u, F u * iteratedDeriv p ψ u`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Establish `h1 : ((-1 : ℂ) ^ p) * ((-1) ^ p) = 1` using `by rw [← pow_add, ← two_mul, pow_mul]; simp`. Take the linear combination `((coef a n p : ℂ) * ∫ u, F u * iteratedDeriv p ψ u) * h1`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem integral_opT_mul (a : ℕ → ℝ) (n : ℕ) {F ψ : ℝ → ℂ} (hF : ContDiff ℝ ∞ F)
     (hψ : ContDiff ℝ ∞ ψ) (hψc : HasCompactSupport ψ) :
@@ -290,7 +288,7 @@ def ρ (a r : ℕ → ℝ) : ℕ → ℝ → ℂ
       (coef a (n + 1) p : ℂ) * iteratedDeriv p (KC a r n ⋆[mul ℂ ℂ] ηC a r (n + 1)) u
 
 /- English proof (translation)
-The claim follows from `Complex.ofRealCLM.contDiff.comp (contDiff_rem _ _)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_ηC (a r : ℕ → ℝ) (j : ℕ) : ContDiff ℝ ∞ (ηC a r j) :=
   Complex.ofRealCLM.contDiff.comp (contDiff_rem _ _)
@@ -301,15 +299,15 @@ variable {a r : ℕ → ℝ} (ha : ∀ j, 0 < a j) (hr : ∀ j, 0 < r j)
 include ha hr
 
 /- English proof (translation)
-The claim follows from `(hasCompactSupport_rem (hr j)).comp_left Complex.ofReal_zero`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_ηC (j : ℕ) : HasCompactSupport (ηC a r j) :=
   (hasCompactSupport_rem (hr j)).comp_left Complex.ofReal_zero
 
 /- English proof (translation)
-Proceed by induction on `n generalizing t with`. Consider the case `zero => exact kern_nonneg (ha 0).le _ _`. Consider the case `succ n ih`. Simplify using `only [Kc]`. Rewrite using `[convolution_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_nonneg fun s => mul_nonneg (ih s) (kern_nonneg (ha _).le _ _)`.
+A detailed English derivation is pending.
 -/
 theorem Kc_nonneg (n : ℕ) (t : ℝ) : 0 ≤ Kc a r n t := by
   induction n generalizing t with
@@ -319,7 +317,7 @@ theorem Kc_nonneg (n : ℕ) (t : ℝ) : 0 ≤ Kc a r n t := by
     exact integral_nonneg fun s => mul_nonneg (ih s) (kern_nonneg (ha _).le _ _)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact integrable_kern (ha 0).le (hr 0)`. Consider the case `succ n ih => exact ih.integrable_convolution (mul ℝ ℝ) (integrable_kern (ha _).le (hr _))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem integrable_Kc (n : ℕ) : Integrable (Kc a r n) := by
   induction n with
@@ -327,9 +325,9 @@ theorem integrable_Kc (n : ℕ) : Integrable (Kc a r n) := by
   | succ n ih => exact ih.integrable_convolution (mul ℝ ℝ) (integrable_kern (ha _).le (hr _))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => show support (kern (a 0) (r 0)) ⊆ _`. Simplify `support_kern_subset (hr 0)` using `[Rs]`. Consider the case `succ n ih`. Use `(support_convolution_subset (mul ℝ ℝ)).trans ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.add_subset_add ih (support_kern_subset (hr _))).trans ?_` and prove the remaining obligations. Use `(Set.Icc_add_Icc_subset _ _ _ _).trans (Icc_subset_Icc (by simp) (le_of_eq ?_))` and prove the remaining obligations. Simplify using `[Rs, Finset.sum_range_succ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem support_Kc_subset (n : ℕ) : support (Kc a r n) ⊆ Icc 0 (Rs r n) := by
   induction n with
@@ -343,15 +341,15 @@ theorem support_Kc_subset (n : ℕ) : support (Kc a r n) ⊆ Icc 0 (Rs r n) := b
     simp [Rs, Finset.sum_range_succ]
 
 /- English proof (translation)
-The claim follows from `HasCompactSupport.of_support_subset_isCompact isCompact_Icc (support_Kc_subset ha hr n)`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_Kc (n : ℕ) : HasCompactSupport (Kc a r n) :=
   HasCompactSupport.of_support_subset_isCompact isCompact_Icc (support_Kc_subset ha hr n)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact integral_kern_le_one (ha 0) (hr 0)`. Consider the case `succ n ih`. Simplify using `only [Kc]`. Rewrite using `[integral_convolution (mul ℝ ℝ) (integrable_Kc ha hr n) (integrable_kern (ha _).le (hr _)), mul_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 0 ≤ ∫ t, Kc a r n t` using `integral_nonneg (Kc_nonneg ha hr n)`. Establish `h2` using `integral_kern_le_one (ha (n + 1)) (hr (n + 1))`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem integral_Kc_le_one (n : ℕ) : ∫ t, Kc a r n t ≤ 1 := by
   induction n with
@@ -365,24 +363,24 @@ theorem integral_Kc_le_one (n : ℕ) : ∫ t, Kc a r n t ≤ 1 := by
     nlinarith
 
 /- English proof (translation)
-The claim follows from `funext fun x => ofReal_convolution _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem KC_succ (n : ℕ) : KC a r (n + 1) = KC a r n ⋆[mul ℂ ℂ] kC a r (n + 1) :=
   funext fun x => ofReal_convolution _ _ x
 
 /- English proof (translation)
-The claim follows from `(integrable_Kc ha hr n).ofReal`.
+A detailed English derivation is pending.
 -/
 theorem integrable_KC (n : ℕ) : Integrable (KC a r n) := (integrable_Kc ha hr n).ofReal
 
 /- English proof (translation)
-The claim follows from `(hasCompactSupport_Kc ha hr n).comp_left Complex.ofReal_zero`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_KC (n : ℕ) : HasCompactSupport (KC a r n) :=
   (hasCompactSupport_Kc ha hr n).comp_left Complex.ofReal_zero
 
 /- English proof (translation)
-Establish `e : (KC a r n ⋆[mul ℂ ℂ] ηC a r (n + 1)) = (KC a r n ⋆[mul ℝ ℂ] ηC a r (n + 1))`. Use function extensionality and compare the values at `x`. Simplify using `only [convolution_def, mul_apply']`. Rewrite using `[e]`. Conclude with `(hasCompactSupport_ηC ha hr _).contDiff_convolution_right (mul ℝ ℂ) (integrable_KC ha hr n).locallyIntegrable (contDiff_ηC a r _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_conv_ηC (n : ℕ) : ContDiff ℝ ∞ (KC a r n ⋆[mul ℂ ℂ] ηC a r (n + 1)) := by
   have e : (KC a r n ⋆[mul ℂ ℂ] ηC a r (n + 1)) = (KC a r n ⋆[mul ℝ ℂ] ηC a r (n + 1)) := by
@@ -392,32 +390,30 @@ theorem contDiff_conv_ηC (n : ℕ) : ContDiff ℝ ∞ (KC a r n ⋆[mul ℂ ℂ
     (integrable_KC ha hr n).locallyIntegrable (contDiff_ηC a r _)
 
 /- English proof (translation)
-The claim follows from `(hasCompactSupport_KC ha hr n).convolution (mul ℂ ℂ) (hasCompactSupport_ηC ha hr _)`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_conv_ηC (n : ℕ) :
     HasCompactSupport (KC a r n ⋆[mul ℂ ℂ] ηC a r (n + 1)) :=
   (hasCompactSupport_KC ha hr n).convolution (mul ℂ ℂ) (hasCompactSupport_ηC ha hr _)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `hd : ∀ t, HasDerivAt F (deriv F t) t` using `fun t => (hF.differentiable (by simp) t).hasDerivAt`. Establish `h` using `step_identity (ha 0) (hr 0) hd (hF.continuous_deriv (by simp))`. Rewrite using `[h, Finset.sum_range_one]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `u`. Establish `hT : opT a 1 F u = F u - (a 0 : ℂ)⁻¹ * deriv F u`. Simplify using `[opT, sc, coef, Finset.sum_range_succ, iteratedDeriv_one]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT]`. Both sides reduce to the same expression. Consider the case `succ n ih`. Rewrite using `[ih, Finset.sum_range_succ _ (n + 1)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-It suffices to establish `hs : ∫ u, opT a (n + 1) F u * KC a r n u = (∫ u, opT a (n + 1 + 1) F u * KC a r (n + 1) u) + ∫ u, F u * ρ a r (n + 1) u by`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Use `set G := opT a (n + 1) F with hG`. Use `set G2 := opT a (n + 2) F with hG2`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : Continuous G` using `continuous_opT a _ hF`. Establish `hG2c : Continuous G2` using `continuous_opT a _ hF`. Establish `hpt : ∀ s, G s = (∫ t, G2 (s + t) * kC a r (n + 1) t) + ∫ t, G (s + t) * ηC a r (n + 1) t`. Introduce `s`. Establish `hd : ∀ t, HasDerivAt (fun t => G (s + t)) (∑ p ∈ Finset.range (n + 2), sc a (n + 1) p * iteratedDeriv (p + 1) F (s + t)) t` using `fun t => (hasDerivAt_opT a (n + 1) hF (s + t)).comp_const_add s t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdc : Continuous fun t => ∑ p ∈ Finset.range (n + 2), sc a (n + 1) p * iteratedDeriv (p + 1) F (s + t)` using `continuous_finsetSum _ fun p _ => continuous_const.mul ((hF.continuous_iteratedDeriv (p + 1) (by exact_mod_cast le_top)).comp (continuous_const.add continuous_id))`. Establish `h` using `step_identity (ha (n + 1)) (hr (n + 1)) hd hdc`. Simplify using `only [add_zero] at h`. Rewrite using `[h]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Use `congr 1`. Conclude with `(opT_succ a (n + 1) F (s + t)).symm`. Establish `hpk` using `pairing_convolution (k := kC a r (n + 1)) hG2c (integrable_KC ha hr n) (integrable_kern (ha (n + 1)).le (hr (n + 1))).ofReal (hasCompactSupport_KC ha hr n) ((HasCompactSupport.of_support_subset_isCompact isCompact_Icc (support_kern_subset (hr (n + 1)))).comp_left Complex.ofReal_z …`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hpη` using `pairing_convolution (k := ηC a r (n + 1)) hGc (integrable_KC ha hr n) (integrable_rem (hr (n + 1))).ofReal (hasCompactSupport_KC ha hr n) (hasCompactSupport_ηC ha hr (n + 1))`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[hpt s, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = (∫ s, KC a r n s * ∫ t, G2 (s + t) * kC a r (n + 1) t) + ∫ s, KC a r n s * ∫ t, G (s + t) * ηC a r (n + 1) t := by`. Simplify using `only [mul_add]`. Conclude with `integral_add hpk.1 hpη.1`. Use `_ = (∫ u, G2 u * KC a r (n + 1) u) + ∫ u, F u * ρ a r (n + 1) u := by`. Rewrite using `[← hpk.2, ← hpη.2, KC_succ ha hr n]`.
-
-Use `congr 1`. Rewrite using `[integral_opT_mul a (n + 1) hF (contDiff_conv_ηC ha hr n) (hasCompactSupport_conv_ηC ha hr n)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stage_identity {F : ℝ → ℂ} (hF : ContDiff ℝ ∞ F) (n : ℕ) :
     F 0 = (∫ u, opT a (n + 1) F u * KC a r n u) +

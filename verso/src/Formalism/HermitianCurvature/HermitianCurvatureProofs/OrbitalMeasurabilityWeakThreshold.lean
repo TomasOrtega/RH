@@ -71,49 +71,41 @@ open Formalism.FourierDecayAlt.P.WeakDominationMajorants
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D A m hThr K hK hKO`. Take `⟨C3, hC3, horb⟩` from `orbit3 D.z D.z' K hK hKO`. Take `⟨cW, hcW, hW⟩` from `uw_bound D.z D.z_mem D.T_pos`. Take `⟨cW', hcW', hW'⟩` from `uw_bound D.z' D.z'_mem D.T'_pos`. Establish `hc : 1 ≤ max cW cW'` using `le_trans hcW (le_max_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC4 : 1 ≤ max 1 (C3 * max cW cW' ^ (6 * r))` using `le_max_left _ _`. Use `set c := max cW cW' with hc_def`. Use `set C4 := max 1 (C3 * c ^ (6 * r)) with hC4_def`. Use `set NN : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hNN`. Establish `hNN1 : 1 ≤ NN` using `by rw [hNN]; exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Λ1 := max 1 (NN * c ^ 2 * C4 ^ 2) with hΛ1_def`. Establish `hΛ1 : 1 ≤ Λ1` using `le_max_left _ _`. Use `set A1 := A - 6 * (r : ℝ) * (m : ℝ) with hA1_def`. Establish `hA1pos : 0 < A1` using `hThr.1`. Use `set β := A1 / (6 * (r : ℝ) + 1) with hβ_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hβ0 : 0 ≤ β` using `div_nonneg hA1pos.le (by positivity)`. Establish `hβA : 6 * (r : ℝ) * β ≤ A1`. Rewrite using `[hβ_def, mul_div_assoc']`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hthr : r = 0 ∨ (r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ) - 1) < β`. Break down `Nat.eq_zero_or_pos r with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`. Rewrite using `[hβ_def, lt_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hThr.2`. Use `set f : Mt k r → ℝ := fun x => gN (Matrix.of x : Mat k r) ^ (-β) with hf_def`. Use `⟨fun p => Λ1 ^ m * (C4 ^ β) ^ 2 * (f p.1.2 * f p.2.2), ?_, ?_⟩` and prove the remaining obligations. Establish `: SigmaFinite D.μN` using `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarN`. Establish `: IsFiniteMeasure D.μW` using `haar_finite D.haarW (Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r D.z D.z_mem D.T_pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `: IsFiniteMeasure D.μW'` using `haar_finite D.haarW' (Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r D.z' D.z'_mem D.T'_pos)`. Establish `hfi : Integrable f D.μN`. Use `⟨((NInt.gN_cont k r).measurable.pow_const (-β)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun x => Real.rpow_nonneg (Orb.gN_nonneg _) _)]`. Conclude with `NInt.lint_gN_fin k r D.μN D.haarN β hthr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Integrable (fun q : Mt k r × Mt k r => (1 : ℝ) * f q.2) (D.μW.prod D.μN)` using `(integrable_const (1 : ℝ)).mul_prod hfi`. Establish `h2 : Integrable (fun q : Mt k r × Mt k r => (1 : ℝ) * f q.2) (D.μW'.prod D.μN)` using `(integrable_const (1 : ℝ)).mul_prod hfi`. Establish `h3` using `(h1.mul_prod h2).const_mul (Λ1 ^ m * (C4 ^ β) ^ 2)`. Use `h3.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u v hu hv hl g hg filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS D] with p hp`. Establish `hh : Matrix.of p.1.1 ∈ GV k r` using `hp.1.1`. Establish `hn : Matrix.of p.1.2 ∈ Nset k r` using `hp.2.1`. Establish `hh' : Matrix.of p.2.1 ∈ GV k r` using `hp.2.2.1.1`. Establish `hn' : Matrix.of p.2.2 ∈ Nset k r` using `hp.2.2.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgG : g ∈ GV k r` using `(hKO hg).1`. Establish `hx : sgs p g ∈ GV k r`. Simplify using `only [sgs]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv h …`. Use `set X := gN (sgs p g) with hX_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hX1 : 1 ≤ X` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hx`. Establish `hY : (Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2 = Matrix.of p.1.1 * sgs p g * (Matrix.of p.2.1)⁻¹`. Establish `hs : sgs p g = (Matrix.of p.1.1)⁻¹ * ((Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2) * Matrix.of p.2.1`. Simplify using `only [sgs, Matrix.mul_assoc]`. Rewrite using `[hs, Matrix.mul_assoc (Matrix.of p.1.1)⁻¹, Matrix.mul_nonsing_inv_cancel_left _ _ (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_unit hh), Matrix.mul_nonsing_inv_cancel_right _ _ (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_unit hh')]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgh : gN (Matrix.of p.1.1) ≤ c` using `(hW _ hp.1).trans (le_max_left _ _)`. Establish `hgh' : gN (Matrix.of p.2.1) ≤ c` using `(hW' _ hp.2.2.1).trans (le_max_right _ _)`. Establish `hYb : gN ((Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2) ≤ c ^ 2 * X`. Rewrite using `[hY]`. Establish `e1` using `Formalism.FourierDecayAlt.P.B6.gN_mul_le (Matrix.of p.1.1 * sgs p g) (Matrix.of p.2.1)⁻¹`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `Formalism.FourierDecayAlt.P.B6.gN_mul_le (Matrix.of p.1.1) (sgs p g)`. Rewrite `e1` using `[Orb.gN_inv hh']`. Use `Orb.gN_nonneg (sgs p g)` as an intermediate fact. Use `Orb.gN_nonneg (Matrix.of p.1.1)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e3 : gN (Matrix.of p.1.1 * sgs p g) ≤ c * X` using `e2.trans (mul_le_mul_of_nonneg_right hgh (Orb.gN_nonneg _))`. Conclude with `mul_le_mul e3 hgh' (Orb.gN_nonneg _) (by positivity)`. Use `_ = c ^ 2 * X := by ring`. Establish `hYX : gN ((Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2) ^ (3 * r) ≤ c ^ (6 * r) * X ^ (3 * r)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Take `⟨hb1, hb2⟩` from `horb g hg _ hn _ hn'`. Establish `hXr : 0 ≤ X ^ (3 * r)` using `by positivity`. Establish `hG1 : gN (Matrix.of p.1.2) ≤ C4 * X ^ (3 * r)`. Use `hb1.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hG2 : gN (Matrix.of p.2.2) ≤ C4 * X ^ (3 * r)`. Use `hb2.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hlet : ∀ s h : Mat k r, s = Matrix.of p.1.2 * Matrix.of p.1.1 ∨ s = Matrix.of p.2.2 * Matrix.of p.2.1 → s ∈ GV k r → ∀ Y : Mat k r, unitLie k r Y → ‖s⁻¹ * Y * s‖ ≤ Λ1 * X ^ (6 * r)`. Introduce `s _ hs hsG Y hYu`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsb : gN s ≤ C4 * X ^ (3 * r) * c`. Break down `hs with rfl | rfl` into its components or cases. Conclude with `(Formalism.FourierDecayAlt.P.B6.gN_mul_le _ _).trans (mul_le_mul hG1 hgh (Orb.gN_nonneg _) (by positivity))`. Conclude with `(Formalism.FourierDecayAlt.P.B6.gN_mul_le _ _).trans (mul_le_mul hG2 hgh' (Orb.gN_nonneg _) (by positivity))`. Use `(ad_bd hsG hYu).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hΛX : 1 ≤ Λ1 * X ^ (6 * r)` using `one_le_mul_of_one_le_of_one_le hΛ1 (one_le_pow₀ hX1)`. Establish `hPu : (u.map fun Y => ‖AdL p Y‖).prod ≤ (Λ1 * X ^ (6 * r)) ^ u.length`. Use `list_prod_le (u.map fun Y => ‖AdL p Y‖) (Λ1 * X ^ (6 * r)) (by` as an intermediate fact. Introduce `y hy`.
-
-Take `⟨Y, hYu, rfl⟩` from `List.mem_map.1 hy`. Conclude with `⟨norm_nonneg _, hlet _ (Matrix.of p.1.1) (Or.inl rfl) (Formalism.FourierDecayAlt.P.JFxDs2.sL_mem hp) Y (hu Y hYu)⟩)`. Simplify using `using this`. Establish `hPv : (v.map fun Y => ‖AdR p Y‖).prod ≤ (Λ1 * X ^ (6 * r)) ^ v.length`. Use `list_prod_le (v.map fun Y => ‖AdR p Y‖) (Λ1 * X ^ (6 * r)) (by` as an intermediate fact.
-
-Introduce `y hy`. Take `⟨Y, hYv, rfl⟩` from `List.mem_map.1 hy`. Conclude with `⟨norm_nonneg _, hlet _ (Matrix.of p.2.1) (Or.inr rfl) (Formalism.FourierDecayAlt.P.JFxDs2.sR_mem hp) Y (hv Y hYv)⟩)`. Simplify using `using this`. Establish `hP : (u.map fun Y => ‖AdL p Y‖).prod * (v.map fun Y => ‖AdR p Y‖).prod ≤ (Λ1 * X ^ (6 * r)) ^ m`.
-
-Establish `hu0 : 0 ≤ (u.map fun Y => ‖AdL p Y‖).prod` using `List.prod_nonneg fun y hy => by`. Take `⟨Y, _, rfl⟩` from `List.mem_map.1 hy`. Conclude with `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Take `⟨Y, _, rfl⟩` from `List.mem_map.1 hy; exact norm_nonneg _) (by positivity)`.
-
-Use `_ = (Λ1 * X ^ (6 * r)) ^ (u.length + v.length) := by rw [pow_add]`. Use `_ ≤ (Λ1 * X ^ (6 * r)) ^ m := pow_le_pow_right₀ hΛX hl`. Conclude with `real_step X (gN (Matrix.of p.1.2)) (gN (Matrix.of p.2.2)) C4 Λ1 A A1 β _ m r hX1 hC4 (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one (Orb.n_mem_G hn)) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one (Orb.n_mem_G hn')) hG1 hG2 hβ0 hβA hA1_def hΛ1 hP`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem scalar_majorant_weak_threshold : Formalism.FourierDecayAlt.P.WeakThresholdClauses.NNMajW := by
   intro k r Wp Wq _ _ _ _ D A m hThr K hK hKO
@@ -259,13 +251,13 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `hN k r Wp Wq _ _ _ _ _ _ D A m F hThr hF K hK hKO`. Take `⟨c, hc⟩` from `hF`. Establish `hc0 : 0 ≤ c` using `B4.cc_nonneg hc`. Take `⟨b, hb, hbd⟩` from `hN k r Wp Wq D A m hThr K hK hKO`. Use `⟨fun p => c * b p, hb.const_mul c, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hbd u v hu hv hl g hg, B5.ae_inSS D] with p hp hSS`. Establish `hgG : g ∈ GV k r` using `(hKO hg).1`. Establish `hx : sgs p g ∈ GV k r` using `B7.sgs_mem D hSS hgG`. Establish `hpos : 0 < gN (sgs p g)` using `B6.gN_pos hx`. Establish `hw` using `allLie_ad (sL_mem hSS) (sR_mem hSS) hu hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `B4.bound_scaled hc (B4.lr (u.map (AdL p)) (v.map (AdR p))) (B4.lrt_lr _ _) hw (by rw [B4.length_lr]; simpa using hl) _ hx`. Rewrite `hB` using `[← B4.dLR_eq, pn_lr]`. Establish `hApos : 0 < gN (sgs p g) ^ A` using `Real.rpow_pos_of_pos hpos A`. Establish `h1 : ‖dLR (u.map (AdL p)) (v.map (AdR p)) F (sgs p g)‖ ≤ c * ((u.map fun X => ‖AdL p X‖).prod * (v.map fun X => ‖AdR p X‖).prod * gN (sgs p g) ^ (-A))`. Rewrite using `[Real.rpow_neg hpos.le]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hB` using `[mul_comm (gN (sgs p g) ^ A) _, ← le_div_iff₀ hApos]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem domination_of_scalar_majorant : Formalism.FourierDecayAlt.P.WeakThresholdClauses.NNMajW → Formalism.FourierDecayAlt.P.WeakThresholdClauses.JDomBoundW := by
   intro hN k r Wp Wq _ _ _ _ _ _ D A m F hThr hF K hK hKO
@@ -304,35 +296,33 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D A m F hThr hF u v hu hv hl g hg`. Take `⟨c, hc⟩` from `hF`. Establish `hc0 : 0 ≤ c` using `cc_nonneg hc`. Establish `hgG : g ∈ GV k r` using `hg.1`. Establish `hA : 0 ≤ A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hThr.1`. Establish `h2 : (0 : ℝ) ≤ 6 * (r : ℝ) * (m : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwu : ∀ x ∈ lr u v, unitLie k r x.2` using `unit_lr' hu hv`. Establish `hwt : LRt ((lr u v).map Prod.fst)` using `lrt_lr u v`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwl : (lr u v).length ≤ m` using `by rw [length_lr]; exact hl`. Establish `hx : ContinuousOn (fun p => sgs p g) {p : SS k r | D.inSS p}` using `B6.conjugated_pair_continuous_on D g`. Establish `hxG : ∀ p ∈ {p : SS k r | D.inSS p}, sgs p g ∈ GV k r` using `fun p hp => B7.sgs_mem D hp hgG`. Establish `hmain : ContinuousOn (fun p => W ((lr u v).map (adM p)) F (sgs p g)) {p : SS k r | D.inSS p}`. Introduce `p₀ hp₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAL : AllLie ((lr u v).map (adM p₀))`. Introduce `y hy`. Take `⟨y', hy', rfl⟩` from `List.mem_map.mp hy`. Conclude with `adM_lie hp₀ (hwu y' hy').1`. Establish `hck : CkOn ((0 : ℕ) : ℕ∞) (GV k r) (W ((lr u v).map (adM p₀)) F)` using `smooth_on_of_word_derivatives ((lr u v).map (adM p₀)) hAL 0 (ckOn_mono (by simpa using hwl) hc.1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsec : ContinuousWithinAt (fun p => W ((lr u v).map (adM p₀)) F (sgs p g)) {p : SS k r | D.inSS p} p₀` using `((B6.continuousOn_of_contDiffOn_group hck).comp hx hxG) p₀ hp₀`. Set `Kf : SS k r → ℝ` to `fun p => 1 + ((lr u v).map fun x => ‖(adM p x).2‖ + ‖(adM p₀ x).2‖).sum`. Set `εf : SS k r → ℝ` to `fun p => ((lr u v).map fun x => ‖(adM p x).2 - (adM p₀ x).2‖).sum`. Establish `hKc : ContinuousOn Kf {p : SS k r | D.inSS p}` using `continuousOn_const.add (cont_sum _ (fun x p => ‖(adM p x).2‖ + ‖(adM p₀ x).2‖) (lr u v) (fun x _ => (adM_cont D x).norm.add continuousOn_const))`. Establish `hεc : ContinuousOn εf {p : SS k r | D.inSS p}` using `cont_sum _ (fun x p => ‖(adM p x).2 - (adM p₀ x).2‖) (lr u v) (fun x _ => ((adM_cont D x).sub continuousOn_const).norm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε0 : εf p₀ = 0` using `by simp [εf]`. Set `Bf : SS k r → ℝ` to `fun p => ((lr u v).length : ℝ) * (Kf p ^ m * εf p * c)`. Establish `hBc : ContinuousWithinAt Bf {p : SS k r | D.inSS p} p₀` using `continuousWithinAt_const.mul ((((hKc p₀ hp₀).pow m).mul (hεc p₀ hp₀)).mul continuousWithinAt_const)`. Establish `hB0 : Bf p₀ = 0` using `by simp [Bf, hε0]`. Establish `hd : Tendsto (fun p => W ((lr u v).map (adM p)) F (sgs p g) - W ((lr u v).map (adM p₀)) F (sgs p g)) (𝓝[{p : SS k r | D.inSS p}] p₀) (𝓝 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBt : Tendsto Bf (𝓝[{p : SS k r | D.inSS p}] p₀) (𝓝 0)`. Use `hBc.tendsto` as an intermediate fact. Rewrite `this` using `[hB0]`. Then use the resulting hypothesis. Use `squeeze_zero_norm' ?_ hBt` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with p hp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxp` using `hxG p hp`. Establish `hK1 : 1 ≤ Kf p` using `le_add_of_nonneg_right (List.sum_nonneg (by`. Introduce `y hy`. Take `⟨y', _, rfl⟩` from `List.mem_map.mp hy`. Use the proof step `positivity))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT` using `tele hc hc0 hK1 (adM p) (adM p₀) (lr u v) [] (by simp) (by`. Introduce `x hx`. Establish `hmK` using `le_sum_map (fun x => ‖(adM p x).2‖ + ‖(adM p₀ x).2‖) (fun _ => by positivity) (lr u v) hx`. Establish `hmε` using `le_sum_map (fun x => ‖(adM p x).2 - (adM p₀ x).2‖) (fun _ => norm_nonneg _) (lr u v) hx`. Use `⟨rfl, rfl, adM_lie hp (hwu x hx).1, adM_lie hp₀ (hwu x hx).1, ?_, ?_, hmε⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `norm_nonneg (adM p₀ x).2 show ‖(adM p x).2‖ ≤ Kf p` as an intermediate fact. Simplify using `only [Kf]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `norm_nonneg (adM p x).2 show ‖(adM p₀ x).2‖ ≤ Kf p` as an intermediate fact. Simplify using `only [Kf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use the proof step `linarith)`. Use the proof step `(by simpa using hwt) (by simpa using hwl) _ hxp`. Simplify using `only [List.nil_append] at hT`. Establish `h1 : 1 ≤ gN (sgs p g) ^ A` using `Real.one_le_rpow (BetaSesquilinearity.gN_ge_one hxp) hA`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdc : ContinuousWithinAt (fun p => W ((lr u v).map (adM p)) F (sgs p g) - W ((lr u v).map (adM p₀)) F (sgs p g)) {p : SS k r | D.inSS p} p₀`. Establish `e0 : (fun p => W ((lr u v).map (adM p)) F (sgs p g) - W ((lr u v).map (adM p₀)) F (sgs p g)) p₀ = 0` using `sub_self _`. Unfold `ContinuousWithinAt`. Rewrite using `[e0]`. Conclude with `hd`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(hdc.add hsec).congr (fun p _ => ?_) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hΦ : ContinuousOn (fun p => rho D p (dLR (u.map (AdL p)) (v.map (AdR p)) F) g) {p : SS k r | D.inSS p}`. Establish `e : (fun p => rho D p (dLR (u.map (AdL p)) (v.map (AdR p)) F) g) = fun p => B6.Sd D p (W ((lr u v).map (adM p)) F (sgs p g))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[B6.rho_eq, dLR_eq, lr_ad]`. Rewrite using `[e]`. Conclude with `(B6.Sd_continuousOn D).clm_apply hmain`. Use `hΦ.aestronglyMeasurable (μ := D.μSS) (B6.measurableSet_inSS D)` as an intermediate fact.
-
-Establish `hr : D.μSS.restrict {p | D.inSS p} = D.μSS` using `Measure.restrict_eq_self_of_ae_mem (B5.ae_inSS D)`. Rewrite `this` using `[hr]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem orbital_measurability_weak_threshold : Formalism.FourierDecayAlt.P.WeakThresholdClauses.JDomMeasW := by
   intro k r Wp Wq _ _ _ _ _ _ D A m F hThr hF u v hu hv hl g hg
@@ -433,13 +423,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D A m F hThr hCC`. Establish `hDom1` using `Formalism.FourierDecayAlt.P.JFxDs3.orbital_measurability_weak_threshold k r Wp Wq D A m F hThr hCC`. Establish `hDom2` using `Formalism.FourierDecayAlt.P.JFxDs2.domination_of_scalar_majorant Formalism.FourierDecayAlt.P.WeakDominationMajorants.Asm.scalar_majorant_weak_threshold k r Wp Wq D A m F hThr hCC`. Take `⟨c, hc⟩` from `hCC`. Establish `hFm : CkOn (m : ℕ∞) (GV k r) F` using `hc.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW` using `words_all D hFm hDom1 hDom2`. Use `⟨ck_all D hFm hDom1 hDom2, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Take `⟨bd, hbdI, hbd⟩` from `hDom2 {g} isCompact_singleton (Set.singleton_subset_iff.2 hg)`. Establish `hb` using `hbd u v hu hv hl g (Set.mem_singleton g)`. Use `⟨hbdI.norm.mono' ((continuous_xiP D).aestronglyMeasurable.smul (hDom1 u v hu hv hl g hg)) ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hb] with p hp`. Rewrite using `[norm_smul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (norm_xiP D p)).trans (hp.trans (Real.le_norm_self _))`. Rewrite using `[hW u v hu hv hl g hg]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
-
-Use `filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_inSS D] with p hp`. Rewrite using `[dLR_rho D hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbital_derivative_words_weak : Formalism.FourierDecayAlt.P.WeakThresholdClauses.JWordsW := by
   intro k r Wp Wq _ _ _ _ _ _ D A m F hThr hCC
@@ -469,25 +457,23 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D A m F Θ UU hUU ho hT hF hC g hgU`. Establish `hg : g ∈ Om k r D.z D.z'` using `hUU hgU`. Establish `hW` using `Formalism.FourierDecayAlt.P.WeakDominationWordBounds.orbital_derivative_words_weak`. Establish `hR` using `Formalism.FourierDecayAlt.P.rewrite_rho_action`. Establish `hCk : CkOn (m : ℕ∞) (GV k r) F` using `hF.choose_spec.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgG : g ∈ GV k r` using `hg.1`. Establish `key : ∀ T ∈ Θ, Integrable (fun p => xiP D p • Rw T.word (rho D p F) g) D.μSS ∧ Rw T.word (JF D F) g = ∫ p, xiP D p • Rw T.word (rho D p F) g ∂D.μSS`. Introduce `T hT'`. Establish `hvl : T.word.length ≤ m` using `(B5.len_le_order Θ hT').trans ho`. Use `set v' := T.word.map fun X => ((‖X‖⁻¹ : ℝ) : ℂ) • X with hv'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv'u : ∀ X ∈ v', unitLie k r X`. Introduce `X hX`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `B4.nrm_unit (x := (false, Y)) (T.word_lie Y hY)`. Establish `hv'l : v'.length ≤ m` using `by rw [hv', List.length_map]; exact hvl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨hI, hE⟩` from `(hW k r Wp Wq D A m F hT hF).2 [] v' (by simp) hv'u (by simpa using hv'l) g hg`. Simplify using `only [List.map_nil] at hI hE`. Establish `hae : (fun p => xiP D p • rho D p (dLR [] (v'.map (AdR p)) F) g) =ᵐ[D.μSS] fun p => xiP D p • Rw v' (rho D p F) g` using `by filter_upwards [B5.ae_inSS D] with p hp`. Use `hR k r Wp Wq D m F p hp hCk [] v' (by simp) (fun X hX => (hv'u X hX).1) (by simpa using hv'l) g hgG` as an intermediate fact. Simplify using `only [List.map_nil] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hI' : Integrable (fun p => xiP D p • Rw v' (rho D p F) g) D.μSS` using `hI.congr hae`. Establish `hfun : (fun p => xiP D p • Rw T.word (rho D p F) g) = fun p => (B4.pn (B4.lr [] T.word) : ℝ) • (xiP D p • Rw v' (rho D p F) g)`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[WordIntegralScaling.rw_scale T.word (rho D p F), Pi.smul_apply, smul_comm]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `hI'.smul (B4.pn (B4.lr [] T.word))`. Rewrite using `[WordIntegralScaling.rw_scale T.word (JF D F), Pi.smul_apply, hfun, integral_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[← integral_congr_ae hae]`. Conclude with `hE`. Establish `hCo : CkOn (opOrder Θ : ℕ∞) (GV k r) F` using `B5.ckOn_mono (by exact_mod_cast ho) hCk`. Establish `hRHS : JF D (opApply Θ F) g = ∫ p, xiP D p • opApply Θ (rho D p F) g ∂D.μSS` using `by show (∫ p, xiP D p • rho D p (opApply Θ F) g ∂D.μSS) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [B5.ae_inSS D] with p hp`. Rewrite using `[hC p hp F hCo g hgU]`. Rewrite using `[hRHS]`. Unfold `opApply`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [WordIntegralScaling.smul_list]`. Take `⟨_, hsum⟩` from `WordIntegralScaling.int_list D.μSS Θ (fun T => T.coef g) (fun T p => xiP D p • Rw T.word (rho D p F) g) fun T hT' => (key T hT').1`. Rewrite using `[hsum]`. Use `congr 1`. Use `List.map_congr_left fun T hT' => ?_` and prove the remaining obligations.
-
-Rewrite using `[(key T hT').2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbital_commutes_on_open_set : ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

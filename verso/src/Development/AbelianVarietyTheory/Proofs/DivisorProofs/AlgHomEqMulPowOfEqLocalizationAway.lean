@@ -5,13 +5,13 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R' A S _ _ _ _ _ _ χ₁ χ₂ g h`. Establish `key : ∀ x, ∃ n : ℕ, g ^ n * χ₁ x = g ^ n * χ₂ x`. Introduce `x`. Take `⟨⟨c, hc⟩, hcx⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers g) (Localization.Away g)).1 (h x)`. Take `⟨n, rfl⟩` from `Submonoid.mem_powers_iff _ _ |>.1 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, hcx⟩`. Use `choose n hn using key`. Take `⟨s, hs⟩` from `(Algebra.FiniteType.out : (⊤ : Subalgebra R' A).FG)`. Use `⟨∑ x ∈ s, n x, fun x => ?_⟩` and prove the remaining obligations. Use `set N := ∑ x ∈ s, n x`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Establish `hx : x ∈ Algebra.adjoin R' (s : Set A)` using `by rw [hs]; exact Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hxs`. Establish `hle : n x ≤ N` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hxs`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc, mul_assoc, hn x]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap r => rw [AlgHom.commutes, AlgHom.commutes]`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, mul_add, mul_add, hx, hy]`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem algHom_eq_mul_pow_of_eq_localizationAway :
     ∀ (R' A S : Type) [CommRing R'] [CommRing A] [CommRing S] [Algebra R' A] [Algebra R' S]

@@ -64,19 +64,17 @@ def IsLocalModel {K : Type} [Field K] [NumberField K] (x : KeyIn K) (𝔭 : Heig
     KeyPB ⟨x.P, x.g_pos, x.rig, x.rig_gen, th', hth', v', hv'⟩ y (algebraMap R K)
 
 /- English proof (translation)
-Establish `hN : ∀ 𝔭 : HeightOneSpectrum (𝓞 K), (1 : ℝ) < Ideal.absNorm 𝔭.asIdeal` using `fun 𝔭 => by`. Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm 𝔭` after adjusting the coercions. Establish `hv : ∀ 𝔭 : HeightOneSpectrum (𝓞 K), FinitePlace.mk 𝔭 z = (Ideal.absNorm 𝔭.asIdeal : ℝ) ^ (-c 𝔭)` using `fun 𝔭 => by`. Rewrite using `[FinitePlace.mk_apply, FinitePlace.norm_embedding', hc, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hfin : (Function.mulSupport fun 𝔭 : HeightOneSpectrum (𝓞 K) => FinitePlace.mk 𝔭 z).Finite` using `(FinitePlace.hasFiniteMulSupport hz).preimage (f := FinitePlace.mk) fun _ _ _ _ h => FinitePlace.mk_eq_iff.1 h`. Establish `hs : (Function.support c).Finite` using `hfin.subset fun 𝔭 h h1 => h (by`. Use `(zpow_eq_one_iff_right₀ (zero_lt_one.trans (hN 𝔭)).le (hN 𝔭).ne').1 ((hv 𝔭).symm.trans h1)` as an intermediate fact. Use the proof step `omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hs, ?_⟩` and prove the remaining obligations. Establish `h1 : ∏ σ : K →+* ℂ, ‖σ z‖ = (|Algebra.norm ℚ z| : ℚ)`. Use `congrArg (‖·‖) (Algebra.norm_eq_prod_embeddings ℚ ℂ z)` as an intermediate fact. Simplify using `only [norm_prod] at this`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun f => ‖f z‖) (fun φ => ‖φ z‖) fun _ => by simp [RingHom.equivRatAlgHom_apply], ← this, eq_ratCast, Rat.cast_abs, ← Real.norm_eq_abs, ← Complex.norm_real, Complex.ofReal_ratCast]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∏ᶠ 𝔭 : HeightOneSpectrum (𝓞 K), FinitePlace.mk 𝔭 z = ((|Algebra.norm ℚ z| : ℚ) : ℝ)⁻¹`. Use `FinitePlace.prod_eq_inv_abs_norm hz` as an intermediate fact. Rewrite `this` using `[← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Conclude with `this.trans (Rat.cast_inv _)`. Rewrite using `[← Real.log_prod fun σ _ => by simpa using hz, h1, ← inv_inv ((|Algebra.norm ℚ z| : ℚ) : ℝ), ← h2, Real.log_inv, finprod_eq_prod_of_mulSupport_subset _ (s := hs.toFinset) fun 𝔭 h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support]`. Introduce `h0`. Conclude with `h ((hv 𝔭).trans (by rw [h0]; simp)),`. Use `finsum_eq_sum_of_support_subset _ (s := hs.toFinset) fun 𝔭 h => by`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `h0`. Conclude with `h (by simp [h0]),`. Use the proof step `Real.log_prod fun 𝔭 _ => by rw [hv]; exact zpow_ne_zero _ (zero_lt_one.trans (hN 𝔭)).ne', ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun 𝔭 _ => ?_` and prove the remaining obligations. Rewrite using `[hv, Real.log_zpow]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sum_log_norm_eq_finsum {K : Type} [Field K] [NumberField K] {z : K} (hz : z ≠ 0)
     (c : HeightOneSpectrum (𝓞 K) → ℤ) (hc : ∀ 𝔭, 𝔭.valuation K z = WithZero.exp (-c 𝔭)) :
@@ -134,25 +132,25 @@ def KeyDegreeSt : Prop :=
       2 * x.P.g * Module.finrank ℚ K * Real.log (2 * Real.pi)
 
 /- English proof (translation)
-Take `⟨N, hN, κ, hH, hF, hU, -, hA⟩` from `h`. Introduce `K _ _ x oa od nth nη hloc harch`. Establish `hn : 1 ≤ N x.P.g` using `hN _`. Establish `hn' : (N x.P.g : ℝ) ≠ 0` using `by exact_mod_cast (by omega : N x.P.g ≠ 0)`. Establish `hval : ∀ 𝔭 : HeightOneSpectrum (𝓞 K), 𝔭.valuation K (κ K x : K) = WithZero.exp (-(N x.P.g * (8 * oa 𝔭 - 4 * od 𝔭)))` using `fun 𝔭 => by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, M, ⟨R, _, _, _, _, _, y, th', hth', v', hv', hR, ha, hM, hPB⟩, hoa, hod⟩` from `hloc 𝔭`. Take `⟨u, hu, -⟩` from `hU R K y _ hPB`. Establish `e` using `hH K x.P x.g_pos x.rig x.rig_gen x.th x.th_ne x.v x.basis th' hth' v' hv' a M ha hM`. Establish `hu1 : 𝔭.valuation K (algebraMap R K u) = 1`. Use `eq_one_of_one_le_mul_left (hR (u : R)) (hR (u⁻¹ : Rˣ)) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `e'` using `congrArg (𝔭.valuation K) e`. Rewrite `e'` using `[hu, map_mul, map_mul, map_pow, map_pow, hu1, hoa, hod, _root_.mul_one, ← WithZero.exp_nsmul, ← WithZero.exp_nsmul]`. Establish `h0 : 𝔭.valuation K (κ K x : K) ≠ 0` using `by simp`. Express the relevant statement in the definitionally equal form `_ = _ * 𝔭.valuation K (κ K x : K) at e'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `e'` using `[← WithZero.exp_log h0, ← WithZero.exp_add, WithZero.exp_inj]`. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_inj]`. Simplify using `only [nsmul_eq_mul] at e'`. Move the coercions through the operations in `at e'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hσ : ∀ σ : K →+* ℂ, (0 < nth σ ∧ 0 < nη σ) ∧ Real.log ‖σ (κ K x : K)‖ + N x.P.g * (4 * Real.log (nth σ) + 2 * Real.log (nη σ)) = N x.P.g * (2 * x.P.g * Real.log (2 * Real.pi))` using `fun σ => by`. Take `⟨x', hPB, u, Hm, W, χ, θ, Fd, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩` from `harch σ`. Establish `e` using `hA x' u Hm W χ θ Fd _ _ h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Establish `hg : x'.P.g = x.P.g` using `by obtain ⟨-, -, -, hg, -⟩ := hPB; exact hg`. Rewrite `e` using `[hF K ℂ σ x x' hPB, hg]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `p₁ : 0 ≤ nth σ` using `h₆ ▸ div_nonneg (integral_nonneg fun z => by positivity) ENNReal.toReal_nonneg`. Establish `p₂ : 0 ≤ nη σ` using `h₇ ▸ by positivity`. Establish `hne : ‖σ (κ K x : K)‖ * nth σ ^ (4 * N x.P.g) * nη σ ^ (2 * N x.P.g) ≠ 0`. Rewrite using `[e]`. Use `Real.pi_pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `q₀` using `left_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Establish `q₁` using `right_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Establish `q₂` using `right_ne_zero_of_mul hne`. Use `⟨⟨p₁.lt_of_ne' fun h0 => q₁ (by rw [h0]; exact zero_pow (by omega)), p₂.lt_of_ne' fun h0 => q₂ (by rw [h0]; exact zero_pow (by omega))⟩, ?_⟩` and prove the remaining obligations.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e'` using `congrArg Real.log e`. Rewrite `e'` using `[Real.log_mul (mul_ne_zero q₀ q₁) q₂, Real.log_mul q₀ q₁, Real.log_pow, Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at e'`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hs, hp⟩` from `KeyPow.sum_log_norm_eq_finsum (κ K x).ne_zero _ hval`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hs' : (Function.support fun 𝔭 => 8 * oa 𝔭 - 4 * od 𝔭).Finite` using `hs.subset fun 𝔭 h => mul_ne_zero (by omega) h`. Use `⟨fun σ => (hσ σ).1, hs', mul_left_cancel₀ hn' ?_⟩` and prove the remaining obligations. Establish `hsum` using `Finset.sum_congr (s₁ := (Finset.univ : Finset (K →+* ℂ))) rfl fun σ _ => (hσ σ).2`. Rewrite `hsum` using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul, hp]`. Rewrite using `[mul_add, mul_finsum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Int.cast_mul (N x.P.g : ℤ), Int.cast_natCast, _root_.mul_assoc] at hsum ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem keyDegree_of_keyFormulaPow (h : KeyFormulaPow) : KeyDegreeSt := by
   obtain ⟨N, hN, κ, hH, hF, hU, -, hA⟩ := h
@@ -210,11 +208,11 @@ theorem keyDegree_of_keyFormulaPow (h : KeyFormulaPow) : KeyDegreeSt := by
 namespace KeyPow
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `principalPolarisation_exists_unique_section hT P`. Take `⟨a, ha, -⟩` from `hb th`. Take `⟨a', ha', -⟩` from `hb th'`. Use `choose M hM using fun i => (hv.2 _ (hv'.1 i)).exists`. Establish `h0 : a ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Take `⟨z, -, hz⟩` from `hth (default : PrimeSpectrum K)`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Rewrite `hi` using `[ha i, constFn, map_zero, map_zero, zero_mul, Scheme.basicOpen_zero]`. Conclude with `hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a' * a⁻¹, M, fun i => ?_, hM⟩` and prove the remaining obligations. Rewrite using `[ha' i, ha i, ← _root_.mul_assoc, constFn, constFn, constFn, ← map_mul, ← map_mul, inv_mul_cancel_right₀ h0]`.
+A detailed English derivation is pending.
 -/
 theorem exists_scalar_matrix (hT : Out.SecTwistSt) {K : Type} [Field K] (P : Out.PolAV (Sp K)) (th th' : P.L.Sec)
     (hth : ∀ s : Sp K, ∃ z : P.A.left, P.A.hom z = s ∧ z ∈ Out.nonzeroLocus th) {v v' : Fin P.g → (epsR K ⟶ P.A)}
@@ -235,7 +233,7 @@ theorem exists_scalar_matrix (hT : Out.SecTwistSt) {K : Type} [Field K] (P : Out
   rw [ha' i, ha i, ← _root_.mul_assoc, constFn, constFn, constFn, ← map_mul, ← map_mul, inv_mul_cancel_right₀ h0]
 
 /- English proof (translation)
-Take `⟨u, Hm, χ, -, hA, hR, hd, -⟩` from `hU x.P x.rig x.rig_gen`. Use `choose W hW using fun i => (hd _ (x.basis.1 i)).exists`. Take `⟨θ, hθ⟩` from `exists_isFn x.P.isLB u x.th`. Take `⟨Fd, hF⟩` from `exists_isAddFundamentalDomain u`. Conclude with `⟨_, _, u, Hm, W, χ, θ, Fd, hA, hR, hθ, hW, hF, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isArchNorm (hU : ThetaUnifAV) (x : KeyIn ℂ) : ∃ nth nη, IsArchNorm x nth nη := by
   obtain ⟨u, Hm, χ, -, hA, hR, hd, -⟩ := hU x.P x.rig x.rig_gen
@@ -245,7 +243,7 @@ theorem exists_isArchNorm (hU : ThetaUnifAV) (x : KeyIn ℂ) : ∃ nth nη, IsAr
   exact ⟨_, _, u, Hm, W, χ, θ, Fd, hA, hR, hθ, hW, hF, rfl, rfl⟩
 
 /- English proof (translation)
-Use `choose x' hx' using fun σ : K →+* ℂ => exists_keyPB x σ`. Use `choose nth nη h using fun σ => exists_isArchNorm hU (x' σ)`. Conclude with `⟨nth, nη, fun σ => ⟨x' σ, hx' σ, h σ⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_archNorms (hU : ThetaUnifAV) {K : Type} [Field K] (x : KeyIn K) :
     ∃ nth nη : (K →+* ℂ) → ℝ, ∀ σ : K →+* ℂ, ∃ x' : KeyIn ℂ, KeyPB x' x σ ∧ IsArchNorm x' (nth σ) (nη σ) := by

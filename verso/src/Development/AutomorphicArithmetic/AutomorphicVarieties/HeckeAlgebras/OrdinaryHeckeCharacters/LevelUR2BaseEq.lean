@@ -16,9 +16,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `IsHausdorff.eq_iff_smodEq (I := I).2 fun N => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Use `letI : TopologicalSpace (R ⧸ I ^ N) := ⊥`. Use `haveI : DiscreteTopology (R ⧸ I ^ N) := ⟨rfl⟩`.
-
-Conclude with `congrFun (Continuous.ext_on hS (hf N).continuous (hg N).continuous fun y hy => by simp only [h y hy]) x`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem cu_ext {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ideal R) [IsHausdorff I R] {S : Set Γ}
     (hS : Dense S) {f g : Γ → R} (hf : Alg.AdicCont I f) (hg : Alg.AdicCont I g) (h : ∀ x ∈ S, f x = g x) : f = g := by
@@ -30,9 +28,9 @@ private theorem cu_ext {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ide
   exact congrFun (Continuous.ext_on hS (hf N).continuous (hg N).continuous fun y hy => by simp only [h y hy]) x
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j using WellFoundedLT.induction with`. Consider the case `ind j ih`. Establish `hj : j ∈ Finset.univ.filter fun i => i ≤ j` using `by simp`. Establish `e` using `h j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ hj, ← Finset.mul_prod_erase _ g hj, Finset.prod_congr rfl (g := g) fun i hi => ih i (by`. Rewrite `hi` using `[Finset.mem_erase, Finset.mem_filter]`. Conclude with `lt_of_le_of_ne hi.2.2 hi.1)] at e`. Conclude with `mul_right_cancel e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cu_prod {n : ℕ} {M : Type} [CommGroup M] (f g : Fin n → M)
     (h : ∀ j, ∏ i with i ≤ j, f i = ∏ i with i ≤ j, g i) : ∀ j, f j = g j := by
@@ -48,9 +46,7 @@ private theorem cu_prod {n : ℕ} {M : Type} [CommGroup M] (f g : Fin n → M)
     exact mul_right_cancel e
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `ha (Hi.unif k)`. Establish `e` using `h1 (s * (p ^ ord k (a s))⁻¹) ⟨_, GlAx.val_div_ord (a s)⟩ (by`. Rewrite using `[map_mul, map_inv, map_zpow, hp]`. Conclude with `(div_eq_mul_inv _ _).symm)`. Rewrite `e` using `[map_mul, map_mul, map_inv, map_inv, map_zpow, map_zpow, h2 p hp]`.
-
-Conclude with `mul_right_cancel e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cu_gen {W M k : Type} [Group W] [Group M] [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a : W →* kˣ) (ha : Function.Surjective a) (f g : W →* M)
@@ -63,7 +59,7 @@ private theorem cu_gen {W M k : Type} [Group W] [Group M] [Field k] [ValuativeRe
   exact mul_right_cancel e
 
 /- English proof (translation)
-Introduce `N` and use `by have hle : maximalIdeal T ^ N ≤ (maximalIdeal T₀ ^ N).comap (φ : T →+* T₀) := by refine le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N) show φ y ∈ maximalIdeal T₀ rw [← Alg.res_eq_zero_iff O, Alg.res_map, Alg.res_eq_zero_iff] exact hy exact (hf N).c …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem push_cont {Γ O T T₀ : Type} [TopologicalSpace Γ] [CommRing O] [IsLocalRing O] [CommRing T] [Algebra O T]
     [Alg.IsCO O T] [CommRing T₀] [Algebra O T₀] [Alg.IsCO O T₀] (φ : T →ₐ[O] T₀) {f : Γ → T}
@@ -76,9 +72,9 @@ private theorem push_cont {Γ O T T₀ : Type} [TopologicalSpace Γ] [CommRing O
   exact (hf N).comp (Ideal.quotientMap _ (φ : T →+* T₀) hle)
 
 /- English proof (translation)
-Establish `e : ∀ g, (D.map φ.toRingHom).chi (MonoidAlgebra.single g 1) = (D.chi (MonoidAlgebra.single g 1)).map φ.toRingHom` using `fun g => by`. Rewrite using `[← (AlgebraTools.Det.mapApi D _).1]`. Simplify using the standard rewrite rules. Use `UpperTheory.V.CA.d_gext _ _ fun g i _ _ => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (cu_ext _ hS (push_cont φ (hD i)) (fun N => (hD₀ i N).comp_continuous hp) fun g hg => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [W.GDet.lam, ← h g hg, coeff_map, map_mul, map_pow, map_neg, map_one]`. Use the proof step `rfl) g`. Simplify using `only [W.GDet.lam, map_mul, map_pow, map_neg, map_one] at h1`. Simplify using `only [W.GDet.lam, e, LvR.chi_comap, coeff_map]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem abs_det {n : ℕ} {G G₀ O T T₀ : Type} [Group G] [TopologicalSpace G] [Group G₀] [TopologicalSpace G₀]
     [CommRing O] [IsLocalRing O] [CommRing T] [Algebra O T] [Alg.IsCO O T] [CommRing T₀] [Algebra O T₀] [Alg.IsCO O T₀]
@@ -99,11 +95,11 @@ private theorem abs_det {n : ℕ} {G G₀ O T T₀ : Type} [Group G] [Topologica
   exact h1
 
 /- English proof (translation)
-Establish `hm : ∀ i g, φ ((ψ i g * ε g ^ (i : ℕ) : Tˣ) : T) = ((W.pushCh φ.toRingHom (ψ i) g * ε₀ g ^ (i : ℕ) : T₀ˣ) : T₀)` using `fun i g => by`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, hε]`. Both sides reduce to the same expression. Use `MonoidHom.ext fun g => Units.ext (congrFun (cu_ext _ hd (push_cont φ (c1 i)) (c0 i) ?_) g)` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `congrArg Units.val (cu_gen art ha ((W.pushCh φ.toRingHom (ψ i)).comp inc) ((ψ₀ i).comp inc) (fun s y hy => ?_) (fun s hs => ?_) s)` and prove the remaining obligations. Establish `e` using `congrArg φ (a1 i s y hy)`. Rewrite `e` using `[map_mul, hm, hu, map_one]`. Establish `e'` using `a0 i s y hy`. Conclude with `mul_right_cancel (inv_injective (Units.ext ((Units.eq_inv_of_mul_eq_one_left e).symm.trans (Units.eq_inv_of_mul_eq_one_left e'))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_right_cancel (cu_prod (fun i => W.pushCh φ.toRingHom (ψ i) (inc s) * ε₀ (inc s) ^ (i : ℕ)) (fun i => ψ₀ i (inc s) * ε₀ (inc s) ^ (i : ℕ)) (fun j => Units.ext ?_) i)` and prove the remaining obligations. Establish `e` using `congrArg φ (b1 j s hs)`. Rewrite `e` using `[Units.coe_prod, map_prod, hγ]`. Rewrite using `[b0 j s hs, ← e, Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => (hm i _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem abs_chr {n : ℕ} {Wl Dc O T T₀ k : Type} [Group Wl] [Group Dc] [TopologicalSpace Dc] [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k]
@@ -139,18 +135,18 @@ private theorem abs_chr {n : ℕ} {Wl Dc O T T₀ k : Type} [Group Wl] [Group Dc
     exact Finset.prod_congr rfl fun i _ => (hm i _).symm
 
 /- English proof (translation)
-The claim follows from `JEx.heckePol_map _ _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem heckePol_map' {T T₀ : Type} [CommRing T] [CommRing T₀] (f : T →+* T₀) (n q : ℕ) (g : ℕ → T) :
     (heckePol n q g).map f = heckePol n q fun j => f (g j) := JEx.heckePol_map _ _ _ _
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `hN l _ L Ω _ _ _ _ _ _ s n hn V₀ V Q₀ Q c m τ₀ A _ _ _ θ _ a K₀ K p hp _ hpr j hj hjw θ' a' _ hθ _ _ _ _ _ D₀ ψ₀ hU₀ D ψ hU φ hφ`. Establish `hAx` using `axU hN l L Ω s n hn V Q c m τ₀`. Use `⟨abs_det (φ.restrictScalars c.O) p hp D D₀ hU.cont hU₀.cont hAx.dense ?_, fun v i => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, B, σ, hB, hσ, rfl⟩`. Take `⟨hw₀, -⟩` from `hjw ⟨w, hw⟩ ⟨0, hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `hU.frob ⟨w, hw⟩ B σ hB hσ`. Establish `e0` using `hU₀.frob ⟨w, hw₀⟩ B σ hB hσ`. Use `((congrArg (Polynomial.map _) e1).trans ((heckePol_map' _ _ _ _).trans ?_)).trans (e0.symm.trans (congrArg (fun g => D₀.chi (MonoidAlgebra.single g 1)) (hpr σ⁻¹).symm))` and prove the remaining obligations. Use `congrArg (heckePol n (normV w)) (funext fun k => ?_)` and prove the remaining obligations. Unfold `HSet.genW`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Take `⟨_, e⟩` from `hjw ⟨w, hw⟩ ⟨k - 1, h.2⟩`. Conclude with `(hφ _).trans (congrArg ((hset Q₀ τ₀).gen θ a K₀) e)`. Conclude with `map_one _`. Conclude with `abs_chr (k := ((hset Q τ₀).Sl v).adicCompletion L) (φ.restrictScalars c.O) (Subgroup.inclusion (Weil_le_Dec (s.hw v.1))) (UpperTheory.weil_group_dense_in_galois_group L Ω _ _ (s.hw v.1)) ((hset Q τ₀).art v) (hAx.art_spec v).surj (ψ v) (ψ₀ v) (hU.ψ_cont v) (hU₀.ψ_cont v) ((hset Q …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.levelUR2BaseEq :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V₀ V : s.Lev) (Q₀ : QData V₀) (Q : QData V) (c : Coef l) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O) (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : (hset Q₀ τ₀).X.I.T →* Aˣ), (hset Q₀ τ₀).IsWt θ → ∀ (a : (hset Q₀ τ₀).Op → c.O) (K₀ : (hset Q₀ τ₀).Lev) (K : (hset Q τ₀).Lev), ∀ (p : V.frame.G₀ →* V₀.frame.G₀), Continuous p → Function.Surjective p → (∀ g, p (V.pr g) = V₀.pr g) → ∀ j : (hset Q τ₀).Op → (hset Q₀ τ₀).Op, (∀ x : Vl l L × Fin n, j (.inr x) = .inr x) → (∀ (w : (hset Q τ₀).Wp) (k : Fin n), ∃ hw, j (.inl (w, k)) = .inl (⟨w.1, hw⟩, k)) → ∀ (θ' : (hset Q τ₀).X.I.T →* Aˣ) (a' : (hset Q τ₀).Op → c.O), (hset Q τ₀).IsWt θ' → @Eq ((hset Q τ₀).X.I.T →* Aˣ) θ' θ → (∀ i, a' i = a (j i)) → ∀ [Fact (CommOn ((hset Q₀ τ₀).MK θ a K₀) ((hset Q₀ τ₀).op A))] [Alg.IsCO c.O ((hset Q₀ τ₀).TK θ a K₀)] [Fact (CommOn ((hset Q τ₀).MK θ' a' K) ((hset Q τ₀).op A))] [Alg.IsCO c.O ((hset Q τ₀).TK θ' a' K)] (D₀ : W.GDet n ((hset Q₀ τ₀).TK θ a K₀) V₀.frame.G₀) (ψ₀ : ∀ v : Vl l L, Fin n → Dec (F := L) (s.A v.1) →* ((hset Q₀ τ₀).TK θ a K₀)ˣ), (hset Q₀ τ₀).IsUniv θ a K₀ (maximalIdeal _) D₀ ψ₀ → ∀ (D : W.GDet n ((hset Q τ₀).TK θ' a' K) V.frame.G₀) (ψ : ∀ v : Vl l L, Fin n → Dec (F := L) (s.A v.1) →* ((hset Q τ₀).TK θ' a' K)ˣ), (hset Q τ₀).IsUniv θ' a' K (maximalIdeal _) D ψ → ∀ φ : (hset Q τ₀).TK θ' a' K →ₐ[A] (hset Q₀ τ₀).TK θ a K₀, (∀ i, φ ((hset Q τ₀).gen θ' a' K i) = (hset Q₀ τ₀).gen θ a K₀ (j i)) → D.map φ.toRingHom = D₀.comap p ∧ ∀ v i, W.pushCh φ.toRingHom (ψ v i) = ψ₀ v i := by

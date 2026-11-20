@@ -223,7 +223,7 @@ structure PublishedTypesAtPlace : Prop where
   discreteSeriesExists₂ : GlobalTheory.Mem.Vol.DiscreteSeriesExist
   fdeg₂ : GlobalTheory.Mem.Vol.FormalDegreeFormula₂
 /- English proof (translation)
-The claim follows from `GlobalTheory.geometricLemma_of_filtration h.bernsteinZelevinskyFiniteness h.geometricLemmaFiltration`.
+A detailed English derivation is pending.
 -/
 theorem PublishedTypesAtPlace.geometricLemma (h : _root_.GlobalTheory.Fc.S0.PublishedTypesAtPlace) : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration h.bernsteinZelevinskyFiniteness h.geometricLemmaFiltration

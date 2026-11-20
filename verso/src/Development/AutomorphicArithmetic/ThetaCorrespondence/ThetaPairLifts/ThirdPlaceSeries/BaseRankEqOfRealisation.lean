@@ -18,7 +18,7 @@ variable {Rc : _root_.Formalism.L2.RecTAlt ex} {P : RowSideFamily ex} {Dcf : ∀
   {Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)} {Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3}
   {S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 /- English proof (translation)
-Establish `hD` using `D_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0`. Establish `hz : (P.A3.side3 P.P0 P.ψ0 (Q.Rl.toCx3 (faceT P Dcf Spf Zscf)).zs).dQ P.A3.fam3.base3.μ0 = (P.A3.side3 P.P0 P.ψ0 P.Zs).dQ P.A3.fam3.base3.μ0` using `by rw [Q.zs]`. Rewrite using `[base_rank_eq_of_tied_level P, ← hD]`. Conclude with `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indefinite_realisation_base_rank_eq (Q : _root_.Formalism.IndefR.IndefiniteRealisation Rc P Dcf Spf Zscf S Ks) :
     D.what₂.D0 = (P.A3.A.fam.R P.A3.A.fam.μ0).dZ (P.A3.A.fam.lvl P.P0 P.ψ0) (P.Zs.Z P.A3.A.fam.μ0) := by
@@ -28,14 +28,14 @@ theorem indefinite_realisation_base_rank_eq (Q : _root_.Formalism.IndefR.Indefin
   rw [base_rank_eq_of_tied_level P, ← hD]
   exact hz
 /- English proof (translation)
-The claim follows from `mu_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0`.
+A detailed English derivation is pending.
 -/
 theorem indefinite_realisation_mu_eq (Q : _root_.Formalism.IndefR.IndefiniteRealisation Rc P Dcf Spf Zscf S Ks) : Q.Rl.mu = P.S0.μ :=
   mu_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0
 /- English proof (translation)
-Apply `tupAllUsed_of_cover` to reduce the goal to its premises. Introduce `t`. Break down `Q.charW.tup.mu_used t with h | ⟨w, h⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨D.plEq.symm w, ?_⟩ show t = P.S0.μ (D.plEq (D.plEq.symm w))` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← _root_.Formalism.IndefR.LevelRealisationRankEquality.indefinite_realisation_mu_eq Q, Equiv.apply_symm_apply]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tup_all_used_of_realisation (Q : _root_.Formalism.IndefR.IndefiniteRealisation Rc P Dcf Spf Zscf S Ks) : TupAllUsed P := by
   apply tupAllUsed_of_cover

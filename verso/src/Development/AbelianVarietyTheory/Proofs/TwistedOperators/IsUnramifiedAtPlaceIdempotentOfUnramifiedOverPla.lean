@@ -25,11 +25,11 @@ namespace GlobalTheory.UnrOverPlaceConv
 open GlobalTheory.IdemSupport
 
 /- English proof (translation)
-Introduce `D χ v ε hε hu x hx h1 h2`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v := by`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Conclude with `⟨⟨Q, hQ.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hΦ : Comp D (GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E)`. Take `⟨a, b, c, d, e⟩` from `(GlobalTheory.LFun.EulerTie.comp_finComp (F := D.host.F) (E := D.host.E))`. Conclude with `⟨a, b, c, d, e⟩`. Take `⟨e, f, hp⟩` from `exists_isPrimeIdem hΦ w`. Take `⟨-, ε', hε', hf⟩` from `of_isPrimeIdem hΦ hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hε'` using `[hw]`. Establish `hee : ε = ε'` using `placeIdem_unique hε hε'`. Substitute `hee` using the available equality. Substitute `hf` using the available equality. Conclude with `GlobalTheory.UnrPlDict.unrPl_of_unrAt D v w hw χ hu e _ hp x hx h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem unramAt_of_unrAt_all : ∀ {D : D7} {χ : (AE D)ˣ →* Circle} {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F},
     IsPlaceIdem D v ε → (∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → GlobalTheory.LFun.UnrAt χ w) →

@@ -29,7 +29,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 variable {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.abelianSchemeLaws_all.1.globalFns`.
+A detailed English derivation is pending.
 -/
 theorem hG : GlobalFnsSt := GlobalTheory.abelianSchemeLaws_all.1.globalFns
 
@@ -42,7 +42,7 @@ def LineCorr {b : TF (R := R) F ⟶ D.P.A} (t : LineGen D F k b)
   LB.Gen.Corr D.P.L _ _ _ _ w (LB.mulGen D.P.L _ _ _ _ (LB.invGen D.P.L _ _ t.1) (rigPow D F k))
 
 /- English proof (translation)
-The claim follows from `(exists_phi hG q w hw hB s).imp fun _ h => (phiRel_iff hG q w hw _ _).2 h`.
+A detailed English derivation is pending.
 -/
 theorem phiRel_total (hB : D.TauBimult) (q : QkPt D F k)
     {w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F q.g.b) (DegPre.lineε k))} (hw : w.IsGen) (s : Fam D F k) :
@@ -50,7 +50,7 @@ theorem phiRel_total (hB : D.TauBimult) (q : QkPt D F k)
   (exists_phi hG q w hw hB s).imp fun _ h => (phiRel_iff hG q w hw _ _).2 h
 
 /- English proof (translation)
-Take `⟨w', hw', h⟩` from `UT.PhiProj.phiRel_of_equiv hG he hw`. Use `⟨w', hw', fun s s' => ⟨h s s', fun H => ?_⟩⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `phiRel_total hB q hw s`. Conclude with `ThetaTranslate.phiRel_unique hG q' hw' (h s r hr) H ▸ hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem phiRel_transfer (hB : D.TauBimult) {q q' : QkPt D F k} (he : QkPt.Equiv D F q q')
     {w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F q.g.b) (DegPre.lineε k))} (hw : w.IsGen) :
@@ -62,7 +62,7 @@ theorem phiRel_transfer (hB : D.TauBimult) {q q' : QkPt D F k} (he : QkPt.Equiv 
   exact ThetaTranslate.phiRel_unique hG q' hw' (h s r hr) H ▸ hr
 
 /- English proof (translation)
-Introduce `w w' hw hw' s s₁ s₂ s₃ s₄ h₁ h₂ h₃ h₄`. Take `⟨v, hv, e⟩` from `phiRel_transfer hB (TorusExt.equiv_symm hB h) hw`. Take `⟨v', hv', e'⟩` from `phiRel_transfer hB (TorusExt.equiv_symm hB h') hw'`. Conclude with `H v v' hv hv' s s₁ s₂ s₃ s₄ ((e' _ _).1 h₁) ((e _ _).1 h₂) ((e _ _).1 h₃) ((e' _ _).1 h₄)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weilQkIs_of_equiv (hB : D.TauBimult) {p p' q q' : QkPt D F k} (h : QkPt.Equiv D F p q)
     (h' : QkPt.Equiv D F p' q') {ζ : F} (H : WeilQkIs D F k p p' ζ) : WeilQkIs D F k q q' ζ := by

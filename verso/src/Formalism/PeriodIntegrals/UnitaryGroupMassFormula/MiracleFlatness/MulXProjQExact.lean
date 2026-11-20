@@ -13,7 +13,7 @@ noncomputable def mulMap (𝔞 : Ideal A) : B ⊗[A] 𝔞 →ₗ[B] B :=
   (AlgebraTensorModule.rid A B B).toLinearMap ∘ₗ AlgebraTensorModule.lTensor B B 𝔞.subtype
 
 /- English proof (translation)
-Simplify using `[mulMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma mulMap_tmul (𝔞 : Ideal A) (b : B) (a : 𝔞) : mulMap 𝔞 (b ⊗ₜ a) = (a : A) • b := by
   simp [mulMap]

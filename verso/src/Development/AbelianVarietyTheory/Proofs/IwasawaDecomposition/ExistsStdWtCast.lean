@@ -13,7 +13,7 @@ namespace GlobalTheory.Mem.R3.RowStd
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hc hgr hM hin hb`. Take `⟨c, hc0, hInter, hli, hsp, hinn, hT⟩` from `exists_coef X px I hX U Xg tr L hI cX gramR c0R hc hgr hM hin`. Use `⟨c, hc0, hli, hsp, hinn, hInter, fun t => ?_⟩` and prove the remaining obligations. Take `⟨P, hPc, hPy, hPe⟩` from `GlobalTheory.T.rowsClassSet_presentation_coefficientMap X px I hX U Xg tr L eG hI hV hL hG hb cX c hInter hli hsp hinn t`. Conclude with `⟨P, hPe, hT t P hPc hPy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_std_wtCast : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cX : CoefA X.toD7.sp.X') (gramR : Matrix (Fin X.toD7.sp.X'.rank) (Fin X.toD7.sp.X'.rank) X.toD7.host.E)
     (c0R : VV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) →ₛₗ[X.toD7.what₂.embLL] cX.W),
@@ -41,7 +41,7 @@ theorem exists_std_wtCast : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.Col
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hc hgr hM hin hb`. Take `⟨c, -, -, -, -, h⟩` from `exists_std_wtCast X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hc hgr hM hin hb`. Conclude with `⟨c, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_std : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cX : CoefA X.toD7.sp.X') (gramR : Matrix (Fin X.toD7.sp.X'.rank) (Fin X.toD7.sp.X'.rank) X.toD7.host.E)
     (c0R : VV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) →ₛₗ[X.toD7.what₂.embLL] cX.W),

@@ -8,19 +8,19 @@ open NumberField
 variable {R : Ranks}
 
 /- English proof (translation)
-Conclude with `H.sqd_sq`.
+A detailed English derivation is pending.
 -/
 theorem Host.sqrtMinusD_sq (H : Host R) : H.sqrtMinusD ^ 2 = -(H.d : H.E) := by
   exact H.sqd_sq
 
 /- English proof (translation)
-Apply `H.φ₀.injective` to reduce the goal to its premises. Establish `h1 : H.φ₀ (H.conj H.sqrtMinusD) = starRingEnd ℂ (H.φ₀ H.sqrtMinusD)` using `H.conjE_apply H.φ₀ H.sqrtMinusD`. Rewrite using `[h1, map_neg]`. Use `set z := H.φ₀ H.sqrtMinusD`. Establish `hz : z ^ 2 = -(H.d : ℂ)` using `by rw [← map_pow, H.sqrtMinusD_sq]; simp`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : z.re = 0`. Establish `h2` using `congrArg Complex.im hz`. Establish `h3` using `congrArg Complex.re hz`. Simplify using `[pow_two] at h2 h3`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.hyp.2.1.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.mp (show z.re * z.im * 2 = 0 by linarith) with h | h` into its components or cases. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `h`. Rewrite `h3` using `[h]`. Use polynomial arithmetic with `[sq_nonneg z.re]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation.
 
-Evaluate the numerical expressions using `at h`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+A detailed English derivation is pending.
 -/
 theorem Host.conj_sqrtMinusD (H : Host R) : H.conj H.sqrtMinusD = -H.sqrtMinusD := by
   apply H.φ₀.injective
@@ -41,11 +41,11 @@ theorem Host.conj_sqrtMinusD (H : Host R) : H.conj H.sqrtMinusD = -H.sqrtMinusD 
   apply Complex.ext <;> simp [hre]
 
 /- English proof (translation)
-Take `⟨m, hm⟩ : ∃ m : ℕ, H.d + 1 = 4 * m` from `⟨(H.d + 1) / 4, by have := H.hyp.2.2.2.1; omega⟩`. Use `set c : H.E := (1 + H.sqrtMinusD) / 2`. Establish `hc : c ^ 2 - c + (m : H.E) = 0`. Establish `e : ((H.d : ℕ) : H.E) + 1 = 4 * (m : H.E)` using `by exact_mod_cast hm`. Establish `hs` using `H.sqrtMinusD_sq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [c]`. Take the linear combination `(1 / 4 : H.E) * hs - (1 / 4 : H.E) * e`. Establish `hint : IsIntegral ℤ c` using `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (m : ℤ), by monicity!, by`. Simplify using `[Polynomial.eval₂_sub, Polynomial.eval₂_add, hc]⟩`. Use `⟨⟨c, hint⟩, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show c + H.conj c = 1`. Simplify using `only [c, map_div₀, map_add, map_one, H.conj_sqrtMinusD, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Host.exists_trace_one (H : Host R) : ∃ c : 𝓞 H.E, (c : H.E) + H.conj c = 1 := by
   obtain ⟨m, hm⟩ : ∃ m : ℕ, H.d + 1 = 4 * m := ⟨(H.d + 1) / 4, by have := H.hyp.2.2.2.1; omega⟩
@@ -63,7 +63,7 @@ theorem Host.exists_trace_one (H : Host R) : ∃ c : 𝓞 H.E, (c : H.E) + H.con
   ring
 
 /- English proof (translation)
-The claim follows from `D.host.exists_trace_one`.
+A detailed English derivation is pending.
 -/
 theorem factTrOne (D : D7) : ∃ c : 𝓞 D.host.E, (c : D.host.E) + D.host.conj c = 1 :=
   D.host.exists_trace_one

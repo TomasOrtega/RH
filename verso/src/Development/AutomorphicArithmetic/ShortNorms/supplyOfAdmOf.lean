@@ -11,43 +11,41 @@ import Development.AutomorphicArithmetic.MeanSquareBounds.pairEx
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top HostParam.Seam
 
 /- English proof (translation)
-Introduce `hSup ψ hV hAdm eps heps heps'`. Use `haveI := ψ.ne`. Establish `hN0 : 0 < ψ.N` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `heps0 : eps ≠ 0` using `heps.ne'`. Take `⟨c, e0, hc, hF⟩` from `UpperTheory.Top.fieldChi ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, hwin⟩` from `UpperTheory.Top.winPairs ψ eps (c : ℝ) heps heps' (by exact_mod_cast hc) hV QH.pairEx`. Choose the witnesses or unpack the hypotheses as in `⟨C0, hC1, hCJ, hCo, hCN⟩ : ∃ C0 : ℝ, 1 ≤ C0 ∧ J ≤ C0 ∧ ((Level.cyc ψ).o : ℝ) ≤ C0 ∧ 8 * (ψ.N : ℝ) ≤ C0 := by`. Establish `h1 : (0 : ℝ) ≤ ((Level.cyc ψ).o : ℝ)` using `Nat.cast_nonneg _`. Establish `h2 : (0 : ℝ) ≤ (ψ.N : ℝ)` using `Nat.cast_nonneg _`. Conclude with `⟨J + ((Level.cyc ψ).o : ℝ) + 8 * (ψ.N : ℝ), by linarith, by linarith, by linarith, by linarith⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨CT2, C8, c6, Cb, x0A, hC8, hc6, hCb, hA⟩` from `hSup eps C0 heps heps' hC1`. Take `⟨x0B, hB⟩` from `hAdm eps heps heps'`. Take `⟨x0T, hT⟩` from `UpperTheory.Top.eventually_rank_le_rpow_of_lt_one_div_fiftytwo eps heps heps'`. Choose the witnesses or unpack the hypotheses as in `⟨K, hK5, hK4⟩ : ∃ K : ℝ, 5 ≤ K ∧ 4 * (ψ.N : ℝ) ≤ K := by`. Establish `h2 : (0 : ℝ) ≤ (ψ.N : ℝ)` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨5 + 4 * (ψ.N : ℝ), by linarith, by linarith⟩`. Establish `hK0 : 0 ≤ K` using `by linarith`. Choose the witnesses or unpack the hypotheses as in `⟨A, hA0, hAK⟩ : ∃ A : ℝ, 0 ≤ A ∧ A ^ (eps / 5) = K := by`. Use `⟨K ^ (5 / eps), Real.rpow_nonneg hK0 _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.rpow_mul hK0, show 5 / eps * (eps / 5) = (1 : ℝ) by field_simp, Real.rpow_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc0 : (0 : ℝ) ≤ c` using `by positivity`. Establish `hAJ0 : 0 ≤ A ^ J` using `Real.rpow_nonneg hA0 _`. Choose the witnesses or unpack the hypotheses as in `⟨x1, h1A, h1B, h1T, h1J, h1c⟩ : ∃ x1 : ℝ, x0A ≤ x1 ∧ x0B ≤ x1 ∧ x0T ≤ x1 ∧ A ^ J ≤ x1 ∧ (c : ℝ) * 2 ^ e0 < x1 := by`. Establish `h2 : (0 : ℝ) ≤ (c : ℝ) * 2 ^ e0` using `by positivity`. Apply the tactic sequence `refine ⟨|x0A| + |x0B| + |x0T| + A ^ J + (c : ℝ) * 2 ^ e0 + 1, ?_, ?_, ?_, ?_, ?_⟩ <;>`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[le_abs_self x0A, le_abs_self x0B, le_abs_self x0T, abs_nonneg x0A, abs_nonneg x0B, abs_nonneg x0T]`. Use `⟨CT2, C8, 4, c6, Cb, x1, le_trans hC1 hC8, by norm_num, hc6, hCb, ?_⟩` and prove the remaining obligations. Use `⟨⟨J, hJ, {x | ∃ Y q d e, UpperTheory.Top.WinDatum ψ eps J c x Y q d e}, hwin⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `s hs hx ⟨hsJ, Y, q, d, e, hW⟩`. Establish `hx1 : 1 < s.x` using `s.one_lt_alt`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ0 : 0 < J` using `by linarith`. Establish `hYA : A ≤ Y`. Combine the equalities or inequalities in the displayed calculation. Establish `hY0 : 0 ≤ Y` using `hA0.trans hYA`. Establish `hYK : K ≤ Y ^ (eps / 5)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hAK]`. Conclude with `Real.rpow_le_rpow hA0 hYA (by positivity)`. Take `⟨hHyp, hjac, -⟩` from `UpperTheory.Top.pairHyp eps Y q d hW.good.pair`. Establish `hq3 : q ≠ 3`. Introduce `hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hW.good.pair.q_lo`. Rewrite `h1` using `[hq]`. Move the coercions through the operations in `at h1`. Establish `h2 : Real.log 3 ≤ 2`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 3)` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : e ≥ e0`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : (2 : ℝ) ^ e ≤ 2 ^ e0` using `pow_le_pow_right₀ (by norm_num) hlt.le`. Establish `h2 : s.x ≤ s.x ^ (2 + 8 * eps)`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `hW.n_lo`. Combine the linear relations using `[mul_le_mul_of_nonneg_left h1 hc0]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Establish `h4N : 4 * ψ.N ≤ ⌊Y ^ (eps / 5)⌋₊`. Apply `Nat.le_floor` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hjacb : ∀ p : ℕ, Nat.Prime p → p ≠ 2 → p ≤ ⌊Y ^ (eps / 5)⌋₊ → jacobiSym (-(d : ℤ)) p = 1` using `fun p hp hp2 hpb => hjac p hp hp2 ((Nat.cast_le.2 hpb).trans (Nat.floor_le (Real.rpow_nonneg hY0 _)))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `⟨φ, H0, hφe, hφord, hHq, hHd, hφo, hFR, hQSdvd, hQSle, hkept, hps, hker, htw⟩` from `hF e he q d ⌊Y ^ (eps / 5)⌋₊ hHyp hq3 hW.good.coprime h4N hjacb`. Take `⟨R, h, hRV, hAdmR⟩` from `hB s φ H0 hs (h1B.trans hx) (by rw [hφord]; push_cast; exact hW.n_lo) (by rw [hφord]; push_cast; exact hW.n_up) hφo hker`. Substitute `h` using the available equality. Establish `hnlo` using `hRV.n_lo`. Rewrite `hnlo` using `[hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQS : (H0.QS : ℝ) ≤ C0 * R.n`. Establish `hq' : (H0.QS : ℝ) ≤ 4 * ψ.N * R.toFrame.ord` using `by exact_mod_cast hQSle`. Establish `hord : (R.toFrame.ord : ℝ) = c * 2 ^ e` using `by rw [hφord]; push_cast; ring`. Establish `hn : (0 : ℝ) ≤ R.n` using `Nat.cast_nonneg _`. Establish `hN : (0 : ℝ) ≤ ψ.N` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `hq'` using `[hord]`. Establish `h5` using `hW.n_up`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h5 (by positivity : (0 : ℝ) ≤ 4 * ψ.N), mul_le_mul_of_nonneg_left hnlo (by positivity : (0 : ℝ) ≤ 8 * ψ.N), mul_le_mul_of_nonneg_right hCN hn]`. Take `⟨H, q0, hH, hCT, hGood, hSh⟩` from `hA s R H0 ψ.N Y hs (h1A.trans hx) hRV (by rw [hsJ]; exact hCJ) (by rw [hφo]; exact hCo) hQS hN0 (by have : (0 : ℝ) ≤ ψ.N := Nat.cast_nonneg _; linarith) (by rw [hφe]; exact hQSdvd) ⟨by rw [hsJ]; exact hW.lo, hW.up⟩ (by rw [hHq, hHd]; exact hW.good) hFR hAdmR`. Substitute `hH` using the available equality.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨R, H, q0, hRV, hCT, hGood, ?_, ?_⟩` and prove the remaining obligations. Establish `hprime : ∀ l : ℕ, Nat.Prime l → l ∣ H.QS → l ∣ 2 * ψ.N`. Introduce `l hl hlQ`. Establish `h1 : l ∣ 2 ^ (e + 2) * ψ.N` using `hlQ.trans (hQSdvd.trans (Nat.lcm_dvd (dvd_mul_right _ _) (dvd_mul_left _ _)))`. Break down `(Nat.Prime.dvd_mul hl).1 h1 with h2 | h2` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h3` using `(Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 (hl.dvd_of_dvd_pow h2)`. Substitute `h3` using the available equality. Conclude with `dvd_mul_right 2 _`. Conclude with `dvd_mul_of_dvd_right h2 2`. Establish `hbd` using `UpperTheory.Top.boundedTw ψ R.toFrame H.toHostRaw eps Y s.x heps hx1.le hW.up htw hker.1 hprime (by rw [hHq, hHd]; exact hW.good)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hSh`, the goal using `[hs]`. Conclude with `⟨hφo, hkept, hps, hSh, hbd.1, hbd.2⟩`. Establish `hCF` using `UpperTheory.Top.isChiField ψ R.toFrame H.toHostRaw hker`. Rewrite `hCF` using `[hφe, hHq, hHd]`. Establish `hv` using `hW.bound H.E hCF`.
-
-Use `hv.mono ?_ (le_of_eq ?_)` and prove the remaining obligations. Apply `Nat.le_floor` to reduce the goal to its premises. Conclude with `hT s R hs (h1T.trans hx) hRV`. Rewrite using `[Formalism.BasicNotions.Scale.b, Formalism.BasicNotions.Scale.L, hs]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.T3.supplyOfAdmOf :
     (∀ eps C0 : ℝ, 0 < eps → eps < 1 / 52 → 1 ≤ C0 → ∃ CT2 C8 c6 Cb x0 : ℝ, C0 ≤ C8 ∧ 0 < c6 ∧ 0 < Cb ∧

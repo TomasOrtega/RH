@@ -19,7 +19,7 @@ def entriesAt (v : HeightOneSpectrum (𝓞 K)) (y : Fin n × Fin n → FiniteAde
   Matrix.of fun i j ↦ y (i, j) v
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun i j ↦ (RestrictedProduct.continuous_eval v).comp (continuous_apply (i, j))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entriesAt (v : HeightOneSpectrum (𝓞 K)) : Continuous (entriesAt (n := n) v) :=
   continuous_matrix fun i j ↦ (RestrictedProduct.continuous_eval v).comp (continuous_apply (i, j))
@@ -28,9 +28,9 @@ def awayBoxN (S : Finset (HeightOneSpectrum (𝓞 K))) : Set (Fin n × Fin n →
   {y | ∀ ij, ∀ v ∉ S, y ij v ∈ v.adicCompletionIntegers K}
 
 /- English proof (translation)
-Establish `hA : IsClopen (GodementSection.awayIntegral S : Set (FiniteAdeleRing (𝓞 K) K))` using `⟨AddSubgroup.isClosed_of_isOpen _ (GodementSection.isOpen_awayIntegral S), GodementSection.isOpen_awayIntegral S⟩`. Establish `h : awayBoxN (n` using `n) (K := K) S = ⋂ ij : Fin n × Fin n, (fun y : Fin n × Fin n → FiniteAdeleRing (𝓞 K) K ↦ y ij) ⁻¹' (GodementSection.awayIntegral S : Set (FiniteAdeleRing (𝓞 K) K)) := by`. Use extensionality with `y`. Simplify using `only [awayBoxN, mem_iInter, mem_preimage, SetLike.mem_coe, GodementSection.mem_awayIntegral]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[h]`. Conclude with `isClopen_iInter_of_finite fun ij ↦ hA.preimage (continuous_apply ij)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClopen_awayBoxN (S : Finset (HeightOneSpectrum (𝓞 K))) :
     IsClopen (awayBoxN (n := n) (K := K) S) := by
@@ -51,7 +51,7 @@ def tensorFin (Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (
   ∏ᶠ v, Φ v (entriesAt v y)
 
 /- English proof (translation)
-Establish `h : {v : HeightOneSpectrum (𝓞 K) | ∃ ij, y ij v ∉ v.adicCompletionIntegers K} = ⋃ ij, {v | y ij v ∉ v.adicCompletionIntegers K}`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `Set.finite_iUnion fun ij ↦ Filter.eventually_cofinite.1 (y ij).2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_setOf_not_integral (y : Fin n × Fin n → FiniteAdeleRing (𝓞 K) K) :
     {v : HeightOneSpectrum (𝓞 K) | ∃ ij, y ij v ∉ v.adicCompletionIntegers K}.Finite := by
@@ -63,9 +63,9 @@ theorem finite_setOf_not_integral (y : Fin n × Fin n → FiniteAdeleRing (𝓞 
   exact Set.finite_iUnion fun ij ↦ Filter.eventually_cofinite.1 (y ij).2
 
 /- English proof (translation)
-Rewrite using `[integralIndicator, Set.indicator_of_mem, Pi.one_apply]`. Rewrite using `[mem_integralMatrixSet]`. Introduce `i j`. Use `h (i, j)` as an intermediate fact. Simplify using `only [GroundTheory.Global.mem_valuationInteger_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem integralIndicator_entriesAt {v : HeightOneSpectrum (𝓞 K)}
     {y : Fin n × Fin n → FiniteAdeleRing (𝓞 K) K} (h : ∀ ij, y ij v ∈ v.adicCompletionIntegers K) :
@@ -78,9 +78,9 @@ theorem integralIndicator_entriesAt {v : HeightOneSpectrum (𝓞 K)}
   exact this
 
 /- English proof (translation)
-Rewrite using `[integralIndicator, Set.indicator_of_notMem]`. Rewrite using `[mem_integralMatrixSet]`. Introduce `hall`. Use `hall ij.1 ij.2` as an intermediate fact. Simplify using `only [GroundTheory.Global.mem_valuationInteger_iff] at this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h this`.
+A detailed English derivation is pending.
 -/
 theorem integralIndicator_entriesAt_of_not {v : HeightOneSpectrum (𝓞 K)}
     {y : Fin n × Fin n → FiniteAdeleRing (𝓞 K) K} {ij : Fin n × Fin n}
@@ -94,15 +94,13 @@ theorem integralIndicator_entriesAt_of_not {v : HeightOneSpectrum (𝓞 K)}
   exact h this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ awayBoxN S`. Rewrite using `[Set.indicator_of_mem hy, tensorFin]`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvS`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hv` to reduce the goal to its premises. Use `show Φ v (entriesAt v y) = 1`. Rewrite using `[h0 v hvS]`. Conclude with `integralIndicator_entriesAt fun ij ↦ hy ij v hvS`. Rewrite using `[Set.indicator_of_notMem hy, tensorFin]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [awayBoxN, mem_ofPred_eq, not_forall] at hy`. Take `⟨ij, v, hvS, hv⟩` from `hy`. Use `finprod_eq_zero _ v ?_ ?_` and prove the remaining obligations. Rewrite using `[h0 v hvS]`. Conclude with `integralIndicator_entriesAt_of_not hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Use `((finite_setOf_not_integral y).union S.finite_toSet).subset fun w hw ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [mem_union, mem_ofPred_eq, not_or, not_exists, not_not, Finset.mem_coe] at hc`. Apply `hw` to reduce the goal to its premises. Use `show Φ w (entriesAt w y) = 1`.
-
-Rewrite using `[h0 w hc.2]`. Conclude with `integralIndicator_entriesAt fun ij ↦ hc.1 ij`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorFin_eq_indicator (S : Finset (HeightOneSpectrum (𝓞 K)))
     (Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ)
@@ -132,25 +130,21 @@ theorem tensorFin_eq_indicator (S : Finset (HeightOneSpectrum (𝓞 K)))
       exact integralIndicator_entriesAt fun ij ↦ hc.1 ij
 
 /- English proof (translation)
-Rewrite using `[tensorFin_eq_indicator S Φ h0]`. Use `(mem_finiteSchwartzBruhatPi K).2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `GodementSectionLocal.isLocallyConstant_indicator (isClopen_awayBoxN S) ?_` and prove the remaining obligations. Establish `heq : (fun y : Fin n × Fin n → FiniteAdeleRing (𝓞 K) K ↦ ∏ v ∈ S, Φ v (entriesAt v y)) = ∏ v ∈ S, fun y ↦ Φ v (entriesAt v y)`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Finset.prod_apply]`. Rewrite using `[heq]`. Conclude with `Finset.prod_induction _ IsLocallyConstant (fun a b ha hb ↦ ha.mul hb) (IsLocallyConstant.const 1) fun v hv ↦ (hS v hv).1.comp_continuous (continuous_entriesAt v)`. Establish `hb : ∀ v ∈ S, ∃ N : ℕ, ∀ x, Φ v x ≠ 0 → ∀ i j, ‖x i j‖ ≤ (Ideal.absNorm v.asIdeal : ℝ) ^ N`. Introduce `v hv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `(hS v hv).2.isCompact.exists_bound_of_continuousOn (f := fun x : Matrix (Fin n) (Fin n) (v.adicCompletion K) ↦ ∑ i, ∑ j, ‖x i j‖) (Continuous.continuousOn (continuous_finsetSum _ fun i _ ↦ continuous_finsetSum _ fun j _ ↦ (continuous_apply j |>.comp (continuous_apply i)).norm))`. Establish `hN : (1 : ℝ) < Ideal.absNorm v.asIdeal`. Conclude with `HeightOneSpectrum.one_lt_absNorm v` after adjusting the coercions. Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt C hN`. Use `⟨N, fun x hx i j ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxC` using `hC x (subset_tsupport _ hx)`. Rewrite `hxC` using `[Real.norm_eq_abs]`. Establish `h1 : ‖x i j‖ ≤ ∑ j, ‖x i j‖` using `Finset.single_le_sum (f := fun j ↦ ‖x i j‖) (fun _ _ ↦ norm_nonneg _) (Finset.mem_univ j)`. Establish `h2 : ∑ j, ‖x i j‖ ≤ ∑ i, ∑ j, ‖x i j‖` using `Finset.single_le_sum (f := fun i ↦ ∑ j, ‖x i j‖) (fun _ _ ↦ Finset.sum_nonneg fun _ _ ↦ norm_nonneg _) (Finset.mem_univ i)`. Conclude with `(h1.trans h2).trans ((le_abs_self _).trans hxC) |>.trans hN.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! N hN using hb`. Use `set m : HeightOneSpectrum (𝓞 K) → ℤ := fun w ↦ if w ∈ S then -(N w : ℤ) else 0 with hm`. Establish `hmfin : ∀ᶠ w in Filter.cofinite, m w = 0`. Rewrite using `[Filter.eventually_cofinite]`. Use `S.finite_toSet.subset fun w hw ↦ ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hwS`. Conclude with `hw (by simp only [hm, if_neg (fun h ↦ hwS (Finset.mem_coe.2 h))])`. Use `set L : (FractionalIdeal (𝓞 K)⁰ K)ˣ := ∏ᶠ w, primeIdealUnit w ^ m w with hL`. Establish `hcount : ∀ w, FractionalIdeal.count K w (L : FractionalIdeal (𝓞 K)⁰ K) = m w` using `count_finprod_primeIdealUnit_zpow m hmfin`. Use `HasCompactSupport.intro (isCompact_univ_pi fun _ : Fin n × Fin n ↦ isCompact_idealFiniteAdeles L) fun y hy ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Apply `hy` to reduce the goal to its premises. Introduce `ij _`. Rewrite using `[SetLike.mem_coe, mem_idealFiniteAdeles]`. Introduce `w`.
+Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hcount w]`. Establish `hyB : y ∈ awayBoxN S`. Assume the negation of the conclusion as `h`. Conclude with `hne (Set.indicator_of_notMem h _)`. Distinguish the cases in `hw : w ∈ S`.
-
-Establish `hprod : ∏ v ∈ S, Φ v (entriesAt v y) ≠ 0`. Rewrite `hne` using `[Set.indicator_of_mem hyB]`. Then use the resulting hypothesis. Establish `hΦw : Φ w (entriesAt w y) ≠ 0` using `Finset.prod_ne_zero_iff.1 hprod w hw`. Use `GodementSection.valued_le_exp_of_norm_le (hN w hw (entriesAt w y) hΦw ij.1 ij.2)` as an intermediate fact. Simplify using `only [hm, if_pos hw, neg_neg]`.
-
-Conclude with `this`. Establish `hint : y ij w ∈ w.adicCompletionIntegers K` using `hyB ij w hw`. Simplify using `only [hm, if_neg hw, neg_zero, WithZero.exp_zero]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hint`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensorFin_mem (S : Finset (HeightOneSpectrum (𝓞 K)))
     (Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ)
@@ -220,9 +214,9 @@ theorem tensorFin_mem (S : Finset (HeightOneSpectrum (𝓞 K)))
       exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hint
 
 /- English proof (translation)
-Rewrite using `[mem_matrixSchwartzBruhat]`. Establish `h : (fun z : Fin n × Fin n → 𝔸[K] ↦ matrixTensor φ Φ (Matrix.of fun i j ↦ z (i, j))) = schwartzBruhatTensorPi φ (tensorFin Φ)`. Use function extensionality and compare the values at `z`. Both sides reduce to the same expression. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `schwartzBruhatTensorPi_mem φ (tensorFin_mem S Φ hS h0)`.
+A detailed English derivation is pending.
 -/
 theorem matrixTensor_mem (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ)) (S : Finset (HeightOneSpectrum (𝓞 K)))
     (Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ)
@@ -238,7 +232,7 @@ theorem matrixTensor_mem (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ)) (S : 
   exact schwartzBruhatTensorPi_mem φ (tensorFin_mem S Φ hS h0)
 
 /- English proof (translation)
-Rewrite using `[matrixTensor, coe_archComp]`. Simplify using `only [coe_localComp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem matrixTensor_coe (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ))
     (Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ)

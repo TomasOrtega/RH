@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.LbElem.ConjMonomial
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[stdBlocks_val]`. Establish `hi : (i : ℕ) = 0`. Use `i.2` as an intermediate fact. Simplify using `only [ones] at this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[ones, hi]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem stdBlocks_ones (N : ℕ) (a : Fin N) (i : Fin (ones N a)) :
     stdBlocks (ones N) (sum_ones N) ⟨a, i⟩ = a := by
@@ -25,7 +25,7 @@ theorem stdBlocks_ones (N : ℕ) (a : Fin N) (i : Fin (ones N a)) :
   simp [ones, hi]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hx`. Establish `h` using `leviEmb_apply_ne k (stdBlocks (ones N) (sum_ones N)) s hij (⟨0, by simp [ones]⟩ : Fin (ones N i)) (⟨0, by simp [ones]⟩ : Fin (ones N j))`. Rewrite `h` using `[stdBlocks_ones, stdBlocks_ones]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tor_offDiag {N : ℕ} {x : GL (Fin N) k} (hx : x ∈ Tor k N) {i j : Fin N} (hij : i ≠ j) :
     (x : Matrix (Fin N) (Fin N) k) i j = 0 := by
@@ -35,15 +35,15 @@ theorem tor_offDiag {N : ℕ} {x : GL (Fin N) k} (hx : x ∈ Tor k N) {i j : Fin
   rwa [stdBlocks_ones, stdBlocks_ones] at h
 
 /- English proof (translation)
-Establish `hd : ∀ i, (x : Matrix (Fin N) (Fin N) k) i i ≠ 0`. Introduce `i h0`. Establish `h1` using `congrArg (fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) i i) (mul_inv_cancel x)`. Simplify using `only [Units.val_mul, Units.val_one, Matrix.mul_apply, Matrix.one_apply_eq] at h1`. Rewrite `h1` using `[Finset.sum_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`. Introduce `l _`. Distinguish the cases in `hl : i = l`. Substitute `hl` using the available equality. Rewrite using `[h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h i l hl, zero_mul]`. Use `⟨fun a => Units.map (algebraMap k (Matrix (Fin (ones N a)) (Fin (ones N a)) k)).toMonoidHom (Units.mk0 _ (hd a)), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Establish `h1` using `leviEmb_apply_same k (stdBlocks (ones N) (sum_ones N)) (fun a => Units.map (algebraMap k (Matrix (Fin (ones N a)) (Fin (ones N a)) k)).toMonoidHom (Units.mk0 _ (hd a))) i (⟨0, by simp [ones]⟩ : Fin (ones N i)) (⟨0, by simp [ones]⟩ : Fin (ones N i))`. Rewrite `h1` using `[stdBlocks_ones]`. Rewrite using `[h1]`. Simplify using `[Matrix.algebraMap_matrix_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `leviEmb_apply_ne k (stdBlocks (ones N) (sum_ones N)) (fun a => Units.map (algebraMap k (Matrix (Fin (ones N a)) (Fin (ones N a)) k)).toMonoidHom (Units.mk0 _ (hd a))) hij (⟨0, by simp [ones]⟩ : Fin (ones N i)) (⟨0, by simp [ones]⟩ : Fin (ones N j))`. Rewrite `h1` using `[stdBlocks_ones, stdBlocks_ones]`. Rewrite using `[h i j hij]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_tor_of_offDiag {N : ℕ} (x : GL (Fin N) k)
     (h : ∀ i j : Fin N, i ≠ j → (x : Matrix (Fin N) (Fin N) k) i j = 0) : x ∈ Tor k N := by
@@ -78,7 +78,7 @@ theorem mem_tor_of_offDiag {N : ℕ} (x : GL (Fin N) k)
     exact h1
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[h i j hij, Matrix.diagonal_apply_ne _ hij]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_diagonal_of_offDiag {N : ℕ} (M : Matrix (Fin N) (Fin N) k)
     (h : ∀ i j : Fin N, i ≠ j → M i j = 0) : M = Matrix.diagonal fun i => M i i := by
@@ -89,29 +89,27 @@ theorem eq_diagonal_of_offDiag {N : ℕ} (M : Matrix (Fin N) (Fin N) k)
   · rw [h i j hij, Matrix.diagonal_apply_ne _ hij]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N y D D' hD hD' hdist hconj`. Establish `hcomm : D * y = y * D'`. Rewrite using `[← hconj]`. Use `group`. Establish `hmat : (D : Matrix (Fin N) (Fin N) k) * (y : Matrix (Fin N) (Fin N) k) = (y : Matrix (Fin N) (Fin N) k) * (D' : Matrix (Fin N) (Fin N) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg (fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k)) hcomm`. Establish `hent : ∀ i j, (D : Matrix (Fin N) (Fin N) k) i i * (y : Matrix (Fin N) (Fin N) k) i j = (y : Matrix (Fin N) (Fin N) k) i j * (D' : Matrix (Fin N) (Fin N) k) j j`. Introduce `i j`. Establish `h1` using `congrFun (congrFun hmat i) j`. Rewrite `h1` using `[eq_diagonal_of_offDiag (D : Matrix (Fin N) (Fin N) k) (fun a b hab => tor_offDiag hD hab), eq_diagonal_of_offDiag (D' : Matrix (Fin N) (Fin N) k) (fun a b hab => tor_offDiag hD' hab), Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Establish `hsupp : ∀ i j, (y : Matrix (Fin N) (Fin N) k) i j ≠ 0 → (D : Matrix (Fin N) (Fin N) k) i i = (D' : Matrix (Fin N) (Fin N) k) j j`. Introduce `i j hij`. Establish `h1` using `hent i j`. Rewrite `h1` using `[mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hij h1`. Establish `hcol : ∀ j, ∃ i, (y : Matrix (Fin N) (Fin N) k) i j ≠ 0`. Introduce `j`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) j j) (inv_mul_cancel y)`. Simplify using `only [Units.val_mul, Units.val_one, Matrix.mul_apply, Matrix.one_apply_eq] at h1`. Rewrite `h1` using `[Finset.sum_eq_zero (fun l _ => by rw [hc l, mul_zero])]`. Conclude with `zero_ne_one h1`. Use `choose f hf using hcol`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective f`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Apply `hdist a b hne` to reduce the goal to its premises. Rewrite using `[← hsupp _ _ (hf a), ← hsupp _ _ (hf b), hab]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbij : Function.Bijective f` using `Finite.injective_iff_bijective.1 hinj`. Set `τ : Equiv.Perm (Fin N)` to `Equiv.ofBijective f hbij`. Establish `hτ : ∀ j, τ j = f j` using `fun j => rfl`. Establish `hzero : ∀ i j, i ≠ f j → (y : Matrix (Fin N) (Fin N) k) i j = 0`. Introduce `i j hij`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Take `⟨b, rfl⟩` from `hbij.2 i`. Establish `hbj : b ≠ j` using `fun e => hij (by rw [e])`. Apply `hdist b j hbj` to reduce the goal to its premises. Rewrite using `[← hsupp _ _ (hf b), ← hsupp _ _ hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdet : (τ⁻¹.permMatrix k).det ≠ 0`. Rewrite using `[Matrix.det_permutation]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ⁻¹) with h | h <;> simp [h]`. Set `w : GL (Fin N) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (τ⁻¹.permMatrix k) hdet`. Establish `hw : (w : Matrix (Fin N) (Fin N) k) = τ⁻¹.permMatrix k` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨τ⁻¹, w, hw, w⁻¹ * y, ?_, by group⟩` and prove the remaining obligations. Apply `mem_tor_of_offDiag` to reduce the goal to its premises. Introduce `a b hab`. Establish `hprod : (w : Matrix (Fin N) (Fin N) k) * ((w⁻¹ * y : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = (y : Matrix (Fin N) (Fin N) k)`. Rewrite using `[← Units.val_mul, mul_inv_cancel_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hprod` using `[hw, Equiv.Perm.permMatrix, PEquiv.toMatrix_toPEquiv_mul]`. Establish `h1` using `congrFun (congrFun hprod (τ a)) b`. Simplify using `only [Matrix.submatrix_apply, id] at h1`. Establish `h2 : τ⁻¹ (τ a) = a` using `by simp`. Rewrite `h1` using `[h2]`.
-
-Rewrite using `[h1]`. Apply `hzero` to reduce the goal to its premises. Rewrite using `[← hτ]`. Conclude with `fun e => hab (τ.injective e)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem monomial_of_conj_torus : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], ∀ (N : ℕ) (y D D' : GL (Fin N) k), D ∈ PositivityTheory.Lbc.Tor k N →

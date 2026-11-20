@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Pub.CxChart
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Q m σ i hQ`. Conclude with `segChart_zeroSet (isMultiHomogIdeal_toR hQ) σ i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem zeroSet_chartIdeal_conePts : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (m : ℕ) (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k),

@@ -6,13 +6,11 @@ open PositivityTheory.Rg.Tf.Loc
 namespace GlobalTheory.CompanionTheory.Tf.Loc
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Establish `hcp : (γ : Matrix (Fin n) (Fin n) F).charpoly = ((u : Matrix (Fin n) (Fin n) (intO F)).charpoly).map (intO F).subtype`. Establish `h1 : ((g⁻¹ * γ * g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).charpoly = (γ : Matrix (Fin n) (Fin n) F).charpoly`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Rewrite using `[← h1, ← hu, ← Matrix.charpoly_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hint` using `Valuation.integer.integers (ValuativeRel.valuation F)`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcp, Polynomial.coeff_map]`. Conclude with `SetLike.coe_mem _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcp, Polynomial.coeff_map]`. Establish `hdet : IsUnit (u : Matrix (Fin n) (Fin n) (intO F)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 u.isUnit`. Establish `hc : IsUnit ((u : Matrix (Fin n) (Fin n) (intO F)).charpoly.coeff 0)`. Rewrite `hdet` using `[Matrix.det_eq_sign_charpoly_coeff]`. Conclude with `isUnit_of_mul_isUnit_right hdet`.
-
-Conclude with `hint.isUnit_iff_valuation_eq_one.1 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnitIntegral_of_conj_mem_unitGL {F : Type} [Field F] [ValuativeRel F] {n : ℕ}
     (γ g : GL (Fin n) F) (h : g⁻¹ * γ * g ∈ unitGL (n := Fin n) F) : IsUnitIntegral γ := by
@@ -37,7 +35,7 @@ theorem isUnitIntegral_of_conj_mem_unitGL {F : Type} [Field F] [ValuativeRel F] 
     exact hint.isUnit_iff_valuation_eq_one.1 hc
 
 /- English proof (translation)
-Use `Subgroup.list_prod_mem _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Rewrite using `[← sigmaGL_pow]`. Conclude with `(hστ _ _).2 hu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normGL_mem_unitGL {k E : Type} [Field k] [Field E] [ValuativeRel E] [Algebra k E] {n : ℕ}
     (σ : E ≃ₐ[k] E)
@@ -52,11 +50,11 @@ theorem normGL_mem_unitGL {k E : Type} [Field k] [Field E] [ValuativeRel E] [Alg
   exact (hστ _ _).2 hu
 
 /- English proof (translation)
-Introduce `hD`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `F _ _ _ _ n γ ⟨g, hg⟩`. Conclude with `isUnitIntegral_of_conj_mem_unitGL γ g hg`. Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ hgen n δ g hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hστ` using `(hD k E hun σ hgen).2.2.2.1`. Establish `hℓ : σ ^ Module.finrank k E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`. Establish `hθ : (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank k E = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sigmaGL_pow, hℓ, sigmaGL_one]`. Establish `h` using `normGL_mem_unitGL σ (hστ · n ·) hmem`. Rewrite `h` using `[normGL, twNorm_twConj_of_pow_eq_one _ hθ]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stableLattice_unitIntegral : D0a → L2 := by
   intro hD

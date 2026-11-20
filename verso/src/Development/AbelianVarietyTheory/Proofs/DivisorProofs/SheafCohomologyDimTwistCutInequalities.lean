@@ -17,9 +17,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hp'` using `hp`. Unfold `IsProjOver at hp'`. Take `⟨N, i, hi, hcomp⟩` from `hp'`. Establish `hA : IsAmpleLB (ProjSpace.O1 k N)` using `isAmple_projective_O_one k N`. Establish `hA' : IsAmpleLB ((ProjSpace.O1 k N).pull i)` using `IsAmpleLB.pull_of_isClosedImmersion hA i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpr : IsProper (strHom k X)`. Rewrite using `[← hcomp]`. Use `isProper_str k N` as an intermediate fact. Use `infer_instance`. Conclude with `IsAmpleLB.finiteCohTwists (f := strHom k X) (fun r => algebraMap_eq_strHom k X r) F hA'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem finiteCohTwists_of_isProjOver' (k : Type) [Field k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)]
     (hp : IsProjOver (strHom k X)) (F : X.Modules) [IsFiniteQC F] : FiniteCohTwists k F := by
@@ -35,17 +35,15 @@ private theorem finiteCohTwists_of_isProjOver' (k : Type) [Field k] (X : Scheme.
   exact IsAmpleLB.finiteCohTwists (f := strHom k X) (fun r => algebraMap_eq_strHom k X r) F hA'
 
 /- English proof (translation)
-Introduce `k _ _ X _ hp F _ B M M' hB hM hM' s hmono hcls`. Establish `hS : (cutComplex F hB s).ShortExact` using `shortExact_cutComplex F hB s`. Use `Twist.preservesFiniteLimits_twistFunctor hM` as an intermediate fact. Use `Twist.preservesFiniteColimits_twistFunctor hM` as an intermediate fact. Establish `hT` using `hS.map_of_exact (twistFunctor M)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : FiniteCohTwists k F` using `finiteCohTwists_of_isProjOver' k X hp F`. Establish `hC : FiniteCohTwists k (cut F hB s)` using `FiniteCohTwists.cut (hL := hB) (s := s) (h := hF)`. Establish `hBi : (lbZPow B (-1)).IsLB` using `isLB_lbZPow hB (-1)`. Establish `hcls' : cls M' hM' = cls (lbZPow B (-1)) hBi + cls M hM`. Rewrite using `[cls_lbZPow hB (-1) hBi, hcls]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Take `⟨e⟩` from `nonempty_twist_twist_iso_of_cls_eq F hBi hM hM' hcls'`. Establish `f1 : ∀ n, Module.Finite k (coh (twist (twist F (lbZPow B (-1))) M) n)` using `fun n => ((hF.twist hBi) M hM).finite n`. Establish `f2 : ∀ n, Module.Finite k (coh (twist F M) n)` using `fun n => (hF M hM).finite n`. Establish `f3 : ∀ n, Module.Finite k (coh (twist (cut F hB s) M) n)` using `fun n => (hC M hM).finite n`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ n, hdim k (twist (twist F (lbZPow B (-1))) M) n = hdim k (twist F M') n` using `fun n => hdim_congr (k := k) (n := n) e`. Use `⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h : hdim k (twist F M) i ≤ hdim k (twist (twist F (lbZPow B (-1))) M) i + hdim k (twist (cut F hB s) M) i` using `hdim₂_le k hT i (f1 i) (f3 i)`. Rewrite `h` using `[he i]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h : hdim k (twist (twist F (lbZPow B (-1))) M) (i + 1) ≤ hdim k (twist (cut F hB s) M) i + hdim k (twist F M) (i + 1)` using `hdim₁_le k hT i (f3 i) (f2 (i + 1))`. Rewrite `h` using `[he (i + 1)]`. Conclude with `h`. Establish `h0` using `hdim₁_zero_le k hT (f2 0)`. Establish `h : hdim k (twist (twist F (lbZPow B (-1))) M) 0 ≤ hdim k (twist F M) 0` using `h0`.
-
-Rewrite `h` using `[he 0]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hdim_twist_cut_inequalities :
     ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (F : X.Modules) [IsFiniteQC F], ∀ (B M M' : LB X) (hB : B.IsLB) (hM : M.IsLB) (hM' : M'.IsLB) (s : B.Sec), Mono (cutHom F hB s) → cls M hM = cls M' hM' + cls B hB → (∀ i, hdim k (twist F M) i ≤ hdim k (twist F M') i + hdim k (twist (cut F hB s) M) i) ∧ (∀ i, hdim k (twist F M') (i + 1) ≤ hdim k (twist (cut F hB s) M) i + hdim k (twist F M) (i + 1)) ∧ hdim k (twist F M') 0 ≤ hdim k (twist F M) 0 := by

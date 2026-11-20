@@ -15,15 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitPrimeChart
 
 /- English proof (translation)
-Introduce `i j`. Establish `mv : ∀ (M : Matrix (Fin n) (Fin n) R) x, φ ∘ (M *ᵥ x) = M.map φ *ᵥ (φ ∘ x)` using `fun M x =>`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec φ M x i`. Establish `sm : ∀ x : Fin n → R, φ ∘ (ε • x) = φ ∘ x` using `fun x => funext fun i => by simp [hε]`. Set `z : Fin n → R` to `fun k => s ((Pi.single j (1 : K) : Fin n → K) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hz : ∀ k, O (z k)` using `fun k => hO' _ (by`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[one_mem]`. Simplify using `[hk, zero_mem])`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hz' : φ ∘ z = Pi.single j 1` using `funext fun k => hs _`. Take `⟨z', hz1, hz2⟩` from `h2 _ (hA _ (h1 z hz))`. Establish `e1 : A.map φ *ᵥ (B.map φ *ᵥ Pi.single j 1) = B.map φ *ᵥ (φ ∘ z')`. Use `congrArg (φ ∘ ·) hz2` as an intermediate fact. Simplify using `only [sm] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[mv, sm, mv, hz', mv]`. Conclude with `this`. Establish `e2 : (C.map φ * A.map φ * B.map φ) i j = (φ ∘ z') i`. Establish `: (C.map φ * A.map φ * B.map φ) *ᵥ Pi.single j 1 = φ ∘ z'`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e1, Matrix.mulVec_mulVec, hCB, Matrix.one_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun this i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Simplify using `using this`. Rewrite using `[e2]`. Conclude with `hO _ (hz1 i)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_of_stab {R K : Type} [CommRing R] [CommRing K] {n : ℕ} {Λ : (Fin n → R) → Prop} {O : R → Prop}
     {OK : Subring K} {ε : R} (φ : R →+* K) (s : K → R) (hs : ∀ t, φ (s t) = t) (hε : φ ε = 1)
@@ -59,7 +59,7 @@ theorem entries_of_stab {R K : Type} [CommRing R] [CommRing K] {n : ℕ} {Λ : (
   exact hO _ (hz1 i)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_mul_eq_one {K : Type} [CommRing K] {n : ℕ} {X Y Z W : Matrix (Fin n) (Fin n) K} (h1 : Y * X = 1)
     (h2 : X * Y = 1) (h3 : Z * W = 1) : X * Z * Y * (X * W * Y) = 1 := by
@@ -67,7 +67,7 @@ theorem conj_mul_eq_one {K : Type} [CommRing K] {n : ℕ} {X Y Z W : Matrix (Fin
     _ = 1 := by rw [h1, Matrix.one_mul, ← Matrix.mul_assoc Z, h3, Matrix.one_mul, h2]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_conj {K : Type} [CommRing K] {n : ℕ} {X Y Z : Matrix (Fin n) (Fin n) K} (h1 : Y * X = 1) :
     Y * (X * Z * Y) * X = Z := by
@@ -83,27 +83,25 @@ open Formalism.L2.NTheta
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V P e he ϖ h1 h2`. Establish `hee' : e * e = e` using `he.1.1`. Establish `ht` using `GlobalTheory.SphLabelOps.tie_of_isPrimeIdem (P := P) (f := e + cA D e) (Or.inl ⟨he, rfl⟩)`. Take `⟨φ, s, hs, hε, hφ, hO, hO', hinc⟩` from `GlobalTheory.SphLabelOps.exists_component hee' ht`. Take `⟨B, b1, b2⟩` from `GlobalTheory.SphLabelOps.exists_basis V hee' ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, hee']`. Take `⟨C, c1, c2⟩` from `(GlobalTheory.LatIntFacts.int_facts V).2.2 _ B hee fun y hy => (b2 y hy).imp fun _ h => h.2`. Establish `mp : ∀ X Y : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E), finPart D e • (X * Y) = finPart D e • (1 : Matrix (Fin V.rank) (Fin V.rank) _) → X.map φ * Y.map φ = 1`. Introduce `X Y hXY`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_one φ (map_zero φ) (map_one φ)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrArg φ (congrFun (congrFun hXY i) j)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_mul, hε, one_mul, one_mul]`. Then use the resulting hypothesis. Set `b : GL (Fin V.rank) (P.adicCompletion D.host.E)` to `⟨B.map φ, C.map φ, mp _ _ c1, mp _ _ c2⟩`. Set `ρ : GA D V →* GL (Fin V.rank) (P.adicCompletion D.host.E)` to `(MulAut.conj b⁻¹).toMonoidHom.comp ((Formalism.UG.bc φ).comp (finHom V))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hρ : ∀ g, ((ρ g : GL (Fin V.rank) (P.adicCompletion D.host.E)) : Matrix (Fin V.rank) (Fin V.rank) _) = C.map φ * (finMat D.sp.cm.sig V.gram g).map φ * B.map φ` using `fun g => by`. Simplify using `only [ρ, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv, Units.val_mul]`. Both sides reduce to the same expression. Use `⟨ρ, fun M => ?_, fun k hk => ?_, fun g a k₁ hk₁ k₂ hk₂ hg => ?_⟩` and prove the remaining obligations. Establish `hsM : ∀ N : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion D.host.E), (N.map s).map φ = N` using `fun N => Matrix.ext fun i j => hs _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : finPart D e • ((B * (M : Matrix _ _ _).map s * C) * (B * ((M⁻¹ : GL _ _) : Matrix _ _ _).map s * C)) = finPart D e • (1 : Matrix (Fin V.rank) (Fin V.rank) _)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Apply `hφ` to reduce the goal to its premises. Establish `: ((B * (M : Matrix _ _ _).map s * C) * (B * ((M⁻¹ : GL _ _) : Matrix _ _ _).map s * C)).map φ = (1 : Matrix (Fin V.rank) (Fin V.rank) _).map φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul]`. Rewrite using `[Matrix.map_one φ (map_zero φ) (map_one φ), hsM, hsM]`. Conclude with `conj_mul_eq_one (mp _ _ c2) (mp _ _ c1) (Units.mul_inv M)`. Conclude with `congrFun (congrFun this i) j`. Take `⟨g, hgs, hg⟩` from `GlobalTheory.SplitLift.split_lift V e he.1 _ _ hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨g, hgs, Units.ext ?_⟩` and prove the remaining obligations. Establish `hgm : (finMat D.sp.cm.sig V.gram g).map φ = (B * (M : Matrix _ _ _).map s * C).map φ` using `Matrix.ext fun i j => by`. Use `congrArg φ (congrFun (congrFun hg i) j)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_mul, hε, one_mul, one_mul]`. Then use the resulting hypothesis. Rewrite using `[hρ, hgm, Matrix.map_mul, Matrix.map_mul, hsM]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `conj_conj (mp _ _ c2)`. Establish `hint : ∀ g ∈ KsphC V ∅, ∀ i j, ((ρ g : GL (Fin V.rank) (P.adicCompletion D.host.E)) : Matrix (Fin V.rank) (Fin V.rank) _) i j ∈ Formalism.UG.Ov D.host.E P`. Introduce `g hg i j`. Rewrite using `[hρ]`. Conclude with `entries_of_stab (Λ := fun y => y ∈ LamHat V) (O := fun x => x ∈ intAE D) φ s hs hε hO hO' b1 (fun y hy => b2 y hy) (fun y hy => (hg.2.1 y).1 hy) (mp _ _ c2) i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : k⁻¹ ∈ KsphC V ∅` using `(GlobalTheory.SphLabelOps.mem_stabG _).1 (inv_mem ((GlobalTheory.SphLabelOps.mem_stabG k).2 hk))`. Use `Formalism.UG.P.cartan_mem_of_entries _ _ (hint k hk) ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hint _ hk'`. Rewrite using `[GlobalTheory.DivDual.divAt_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨List.length_ofFn, GlobalTheory.SphLabelOps.dv_of_cartan φ s hs hε hφ hO hO' (B := B) b1 b2 (Formalism.UG.P.cartan_entries_of_mem _ _ hk₁) (Formalism.UG.P.cartan_entries_of_mem _ _ (inv_mem hk₁)) (Formalism.UG.P.cartan_entries_of_mem _ _ hk₂) (Formalism.UG.P.cartan_entries_of_mem …` and prove the remaining obligations. Establish `e1 : (Matrix.diagonal fun i : Fin V.rank => φ (finPart D (incA D ((ϖ : D.host.E) ^ ((List.ofFn a).getD i.1 0))))) = Formalism.UG.diagPow D.host.E P (algebraMap D.host.E _ (ϖ : D.host.E)) a`. Unfold `Formalism.UG.diagPow`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Rewrite using `[hinc, map_zpow₀]`. Simplify using the standard rewrite rules. Rewrite using `[e1, ← hg, hρ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mp _ _ c1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E) (e : AE D), Formalism.L2.NTheta.IsIdemAt e P → ∀ ϖ : 𝓞 D.host.E, ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → ∃ ρ : GA D V →* GL (Fin V.rank) (P.adicCompletion D.host.E), (∀ M : GL (Fin V.rank) (P.adicCompletion D.host.E), ∃ g, Formalism.L2.Theta.SuppAt e V g ∧ ρ g = M) ∧ (∀ k ∈ KsphC V ∅, ρ k ∈ Formalism.UG.GLint (Fin V.rank) (Formalism.UG.Ov D.host.E P)) ∧ ∀ (g : GA D V) (a : Fin V.rank → ℤ), ∀ k₁ ∈ Formalism.UG.GLint (Fin V.rank) (Formalism.UG.Ov D.host.E P), ∀ k₂ ∈ Formalism.UG.GLint (Fin V.rank) (Formalism.UG.Ov D.host.E P), ((ρ g : GL (Fin V.rank) (P.adicCompletion D.host.E)) : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion D.host.E)) = (k₁ : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion D.host.E)) * Formalism.UG.diagPow D.host.E P (algebraMap D.host.E (P.adicCompletion D.host.E) (ϖ : D.host.E)) a * (k₂ : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion D.host.E)) → DivAt V e (ϖ : D.host.E) (List.ofFn a) g := by
   intro D V P e he ϖ h1 h2

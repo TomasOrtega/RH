@@ -7,9 +7,9 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.Twist.FullRank
 
 /- English proof (translation)
-Rewrite using `[det_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun σ _ => ?_` and prove the remaining obligations. Establish `h1 : ‖Equiv.Perm.sign σ • ∏ i, P (σ i) i‖ = ∏ i, ‖P (σ i) i‖`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h, norm_prod]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1, ← Equiv.prod_comp σ c]`. Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => hc _ _`. Use `_ = a.factorial * ∏ r, c r := by`. Simplify using `[Finset.card_univ, Fintype.card_perm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_det_le_factorial_mul_prod {a : ℕ} (P : Matrix (Fin a) (Fin a) ℂ) (c : Fin a → ℝ)
     (hc : ∀ r s, ‖P r s‖ ≤ c r) : ‖P.det‖ ≤ a.factorial * ∏ r, c r := by
@@ -26,17 +26,13 @@ theorem norm_det_le_factorial_mul_prod {a : ℕ} (P : Matrix (Fin a) (Fin a) ℂ
         simp [Finset.card_univ, Fintype.card_perm]
 
 /- English proof (translation)
-Establish `hfr : Module.finrank E (Submodule.span E (Set.range γ.row)) = a`. Rewrite using `[← Matrix.rank_eq_finrank_span_row, hγ]`. Take `⟨f, hf, -, hli⟩` from `Submodule.exists_fun_fin_finrank_span_eq E (Set.range γ.row)`. Establish `hs : ∀ i : Fin a, ∃ r, γ.row r = f (Fin.cast hfr.symm i)` using `fun i => hf _`. Use `choose s hs using hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli' : LinearIndependent E (γ.submatrix s id).row`. Establish `h2` using `hli.comp (Fin.cast hfr.symm) (Fin.cast_injective _)`. Establish `h3 : (γ.submatrix s id).row = f ∘ Fin.cast hfr.symm`. Use function extensionality and compare the values at `i`. Conclude with `hs i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `h2`. Establish `hdet : (γ.submatrix s id).det ≠ 0`. Use `Matrix.linearIndependent_rows_iff_isUnit.1 hli'` as an intermediate fact. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hv` to reduce the goal to its premises. Use `set B := γ.submatrix s id with hB`.
-
-Establish `hz : Bᵀ.cramer v = 0`. Use function extensionality and compare the values at `k`. Rewrite using `[cramer_apply, updateCol_transpose, det_transpose]`. Conclude with `hcon k`. Establish `h3` using `mulVec_cramer Bᵀ v`.
-
-Rewrite `h3` using `[hz, mulVec_zero, det_transpose]`. Conclude with `(smul_eq_zero.1 h3.symm).resolve_left hdet`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_exchange {E : Type} [Field E] {a d : ℕ} (γ : Matrix (Fin d) (Fin a) E)
     (hγ : γ.rank = a) (v : Fin a → E) (hv : v ≠ 0) :
@@ -77,9 +73,9 @@ noncomputable def rowMap (ε : ι → E →+* ℂ) (A : ι → Matrix (Fin a) (F
   fun i => (fun j => ε i (v j)) ᵥ* A i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `: (fun j => ε i (v j - w j)) = (fun j => ε i (v j)) - (fun j => ε i (w j))`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Simplify using `only [rowMap, Pi.sub_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, sub_vecMul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowMap_sub (ε : ι → E →+* ℂ) (A : ι → Matrix (Fin a) (Fin a) ℂ) (v w : Fin a → E) :
     rowMap ε A (v - w) = rowMap ε A v - rowMap ε A w := by
@@ -90,7 +86,7 @@ theorem rowMap_sub (ε : ι → E →+* ℂ) (A : ι → Matrix (Fin a) (Fin a) 
   rw [this, sub_vecMul]
 
 /- English proof (translation)
-Rewrite using `[det_apply']`. Use `Subring.sum_mem _ fun σ _ => Subring.mul_mem _ (intCast_mem _ _) ?_` and prove the remaining obligations. Conclude with `Subring.prod_mem _ fun i _ => hB _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem det_mem_of_entries {E : Type} [Field E] (R : Subring E) {a : ℕ}
     (B : Matrix (Fin a) (Fin a) E) (hB : ∀ r s, B r s ∈ R) : B.det ∈ R := by
@@ -99,27 +95,23 @@ theorem det_mem_of_entries {E : Type} [Field E] (R : Subring E) {a : ℕ}
   exact Subring.prod_mem _ fun i _ => hB _ _
 
 /- English proof (translation)
-Take `⟨s, k, hdet⟩` from `exists_exchange γ hγ v hv`. Use `set B := (γ.submatrix s id).updateRow k v with hB`. Establish `hn0E : (n₀ : E) ≠ 0`. Establish `: ((n₀ : ℂ)) ≠ 0` using `by exact_mod_cast hn₀.ne'`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `this` to reduce the goal to its premises. Establish `h2` using `congrArg (ε (Classical.arbitrary ι)) h`. Simplify using `using h2`. Use `set m := ‖rowMap ε A v‖ with hm`. Use `set L : ℝ := (n₀ : ℝ) ^ a * a.factorial * T ^ (a - 1) * m with hL`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL0 : 0 ≤ L` using `by positivity`. Use `set z : E := ((n₀ : E) • B).det with hz`. Establish `hzR : z ∈ R`. Use `det_mem_of_entries R _ fun r c => ?_` and prove the remaining obligations. Distinguish the cases in `h : r = k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify `hvint c` using `[hB, updateRow_self]`. Simplify `hint (s r) c` using `[hB, updateRow_ne h]`. Establish `hz' : z = (n₀ : E) ^ a * B.det`. Simplify using `[hz, det_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz0 : z ≠ 0`. Rewrite using `[hz']`. Conclude with `mul_ne_zero (pow_ne_zero _ hn0E) hdet`. Establish `hbound : ∀ i, ‖ε i z‖ ≤ L`. Introduce `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ε i B.det = (B.map (ε i)).det`. Simplify using `using RingHom.map_det (ε i) B`. Establish `h2 : ‖(B.map (ε i)).det‖ = ‖(B.map (ε i) * A i).det‖`. Rewrite using `[det_mul, norm_mul, hA i, mul_one]`. Establish `h3 : ‖(B.map (ε i) * A i).det‖ ≤ a.factorial * ∏ r, (Function.update (fun _ => T) k m) r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `norm_det_le_factorial_mul_prod _ _ fun r c => ?_` and prove the remaining obligations. Establish `hrow : (B.map (ε i) * A i) r c = rowMap ε A (B r) i c` using `rfl`. Rewrite using `[hrow]`. Distinguish the cases in `h : r = k`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hB, updateRow_self, Function.update_self]`. Conclude with `(norm_le_pi_norm _ c).trans (norm_le_pi_norm (rowMap ε A v) i)`. Simplify using `only [hB, updateRow_ne h, Function.update_of_ne h]`. Conclude with `((norm_le_pi_norm _ c).trans (norm_le_pi_norm (rowMap ε A _) i)).trans (hy (s r))`. Establish `h4 : ∏ r, (Function.update (fun _ => T) k m) r = m * T ^ (a - 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.prod_update_of_mem (Finset.mem_univ k)]`. Simplify using `[Finset.card_sdiff]`. Rewrite `h3` using `[h4]`. Rewrite using `[hz', map_mul, map_pow, norm_mul, norm_pow, h1, h2]`. Establish `h5 : ‖ε i (n₀ : E)‖ = n₀` using `by simp`.
-
-Rewrite using `[h5, hL]`. Combine the equalities or inequalities in the displayed calculation. Establish `h6 : 1 ≤ L ^ Fintype.card ι`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hlt`.
-
-Use `push_neg at hlt`. Conclude with `absurd h6 (not_le.2 (pow_lt_one₀ hL0 hlt Fintype.card_ne_zero))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem one_le_mul_norm_rowMap (R : Subring E) [Nonempty ι] (ε : ι → E →+* ℂ)
     (hprod : ∀ z ∈ R, z ≠ 0 → 1 ≤ ∏ i, ‖ε i z‖) {d n₀ : ℕ}
@@ -186,27 +178,25 @@ theorem one_le_mul_norm_rowMap (R : Subring E) [Nonempty ι] (ε : ι → E →+
   exact absurd h6 (not_le.2 (pow_lt_one₀ hL0 hlt Fintype.card_ne_zero))
 
 /- English proof (translation)
-Establish `hn₀' : (0 : ℝ) < n₀` using `by exact_mod_cast hn₀`. Establish `hT0 : 0 < T` using `by linarith`. Use `set K : ℝ := (n₀ : ℝ) ^ a * a.factorial with hK`. Establish `hK0 : 0 < K` using `by positivity`. Break down `F.eq_empty_or_nonempty with rfl | ⟨γ₀, hγ₀⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.card_empty, Nat.cast_zero]`. Check the signs of the components of the expression. Take `⟨hr₀, hi₀, hy₀⟩` from `hF γ₀ hγ₀`. Use `set S : Finset (Fin a → E) := F.biUnion (fun γ => Finset.univ.image (fun k => γ k)) with hSdef`. Establish `hS : ∀ x ∈ S, ∃ γ ∈ F, ∃ k, γ k = x`.
+Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨γ, hγ, hx⟩` from `Finset.mem_biUnion.1 hx`. Take `⟨k, -, hk⟩` from `Finset.mem_image.1 hx`. Conclude with `⟨γ, hγ, k, hk⟩`. Establish `hSint : ∀ x ∈ S, ∀ j, (n₀ : E) * x j ∈ R`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx j`. Take `⟨γ, hγ, k, rfl⟩` from `hS x hx`. Conclude with `(hF γ hγ).2.1 k j`. Use `set δ : ℝ := (K * T ^ (a - 1))⁻¹ with hδdef`. Establish `hδ : 0 < δ` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → δ ≤ ‖rowMap ε A x - rowMap ε A y‖`. Introduce `x hx y hy hxy`. Establish `h1` using `one_le_mul_norm_rowMap R ε hprod A hA hT0.le γ₀ hr₀ hi₀ hy₀ (x - y) (sub_ne_zero.2 hxy) (fun j => by`. Use `R.sub_mem (hSint x hx j) (hSint y hy j)` as an intermediate fact. Simplify `this) hn₀` using `[mul_sub]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `h1` using `[rowMap_sub]`. Rewrite using `[hδdef, inv_le_iff_one_le_mul₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hbd : ∀ x ∈ S, ‖rowMap ε A x‖ ≤ T`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, hγ, k, rfl⟩` from `hS x hx`. Conclude with `(hF γ hγ).2.2 k`. Establish `hpack` using `Formalism.SA.P.card_le_of_separated S (rowMap ε A) δ T hδ hT0.le hsep hbd`. Establish `h2 : 1 + 2 * T / δ ≤ (1 + 2 * K) * T ^ (a + 1)`. Establish `h3 : T * T ^ (a - 1) ≤ T ^ (a + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[pow_succ']`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hT (Nat.sub_le _ _)) hT0.le`. Establish `h4 : (1 : ℝ) ≤ T ^ (a + 1)` using `one_le_pow₀ hT`. Establish `h5 : 2 * T / δ = 2 * K * (T * T ^ (a - 1))`. Rewrite using `[hδdef, div_inv_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 (by positivity : 0 ≤ 2 * K)]`. Establish `hSc : (S.card : ℝ) ≤ ((1 + 2 * K) * T ^ (a + 1)) ^ Module.finrank ℝ (ι → Fin a → ℂ)` using `hpack.trans (pow_le_pow_left₀ (by positivity) h2 _)`. Establish `hFS : F.card ≤ S.card ^ d`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_le_card_of_injOn (fun γ k => γ k) ?_ ?_` and prove the remaining obligations. Introduce `γ hγ`. Use `Fintype.mem_piFinset.2 fun k => ?_` and prove the remaining obligations. Conclude with `Finset.mem_biUnion.2 ⟨γ, hγ, Finset.mem_image.2 ⟨k, Finset.mem_univ _, rfl⟩⟩`.
-
-Introduce `γ _ γ' _ h`. Use extensionality with `k j`. Conclude with `congrFun (congrFun h k) j`. Use `_ = S.card ^ d := by simp`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_le_of_rows_le (R : Subring E) [Nonempty ι] (ε : ι → E →+* ℂ)
     (hprod : ∀ z ∈ R, z ≠ 0 → 1 ≤ ∏ i, ‖ε i z‖) {d n₀ : ℕ} (hn₀ : 0 < n₀)
@@ -279,31 +269,27 @@ theorem card_le_of_rows_le (R : Subring E) [Nonempty ι] (ε : ι → E →+* �
     _ = _ := by rw [pow_mul]
 
 /- English proof (translation)
-Establish `hn₀' : (0 : ℝ) < n₀` using `by exact_mod_cast hn₀`. Use `set e : ℕ := Module.finrank ℝ (ι → Fin a → ℂ) * d with he`. Use `set b : ℝ := 1 + 2 * ((n₀ : ℝ) ^ a * a.factorial) with hb`. Establish `hb0 : 0 < b` using `by positivity`. Use `set M : ℕ := (a + 1) * e with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set Cφ : ℝ := 2 ^ (M + 1) * ((Finset.Iic ((M + 1, 0) : ℕ × ℕ)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2)) φ with hCφ`. Establish `hdec : ∀ x, (1 + ‖x‖) ^ (M + 1) * ‖φ x‖ ≤ Cφ` using `fun x => by`. Simplify using `using SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (M + 1, 0)) (k := M + 1) (n := 0) le_rfl le_rfl φ x`. Establish `hC0 : 0 ≤ Cφ` using `le_trans (by positivity) (hdec 0)`. Use `set Q : ℝ := Cφ * b ^ e * 2 ^ M with hQ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hQ0 : 0 ≤ Q` using `by positivity`. Use `⟨2 * Q, fun A hA => ?_⟩` and prove the remaining obligations. Set `w : ℕ → ℝ` to `fun j => Cφ / (2 ^ j) ^ (M + 1)`. Set `Γ` to `{γ : Matrix (Fin d) (Fin a) E // γ.rank = a ∧ ∀ i j, (n₀ : E) * γ i j ∈ R}`. Set `p : ℕ → Γ → Prop` to `fun j γ => ∀ k, ‖rowMap ε A (γ.1 k)‖ ≤ 2 ^ (j + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `step1 : ∀ γ : Γ, ‖φ (fun i => (γ.1.map (ε i)) * A i)‖ₑ ≤ ∑' j, if p j γ then ENNReal.ofReal (w j) else 0`. Introduce `γ`. Use `set y : ι → Fin d → Fin a → ℂ := fun i => (γ.1.map (ε i)) * A i with hy`. Take `⟨j, hj1, hj2⟩` from `exists_nat_pow_near (x := 1 + ‖y‖) (y := (2 : ℝ)) (by linarith [norm_nonneg y]) one_lt_two`. Use `le_trans ?_ (ENNReal.le_tsum j)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_pos]`. Rewrite using `[← ofReal_norm]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `show ‖φ y‖ ≤ Cφ / (2 ^ j) ^ (M + 1)`. Rewrite using `[le_div_iff₀ (by positivity), mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `le_trans (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) hj1 _) (norm_nonneg _)) (hdec y)`. Introduce `k`. Establish `h1 : ‖rowMap ε A (γ.1 k)‖ ≤ ‖y‖`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : rowMap ε A (γ.1 k) i c = y i k c` using `rfl`. Rewrite using `[h2]`. Conclude with `(norm_le_pi_norm (y i k) c).trans ((norm_le_pi_norm (y i) k).trans (norm_le_pi_norm y i))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `step2 : ∀ j, ∑' γ : Γ, (if p j γ then ENNReal.ofReal (w j) else 0) ≤ ENNReal.ofReal (Q * (1 / 2) ^ j)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `j`. Establish `hw0 : 0 ≤ w j` using `by positivity`. Establish `hval : w j * (b * (2 ^ (j + 1) : ℝ) ^ (a + 1)) ^ e = Q * (1 / 2) ^ j`. Establish `h1 : (b * (2 ^ (j + 1) : ℝ) ^ (a + 1)) ^ e = b ^ e * 2 ^ M * (2 ^ j) ^ M`. Rewrite using `[mul_pow, mul_assoc, ← pow_mul, ← pow_mul, ← pow_mul, ← pow_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Rewrite using `[hM]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((2 : ℝ) ^ j) ^ (M + 1) = (2 ^ j) ^ M * 2 ^ j` using `pow_succ _ _`. Simplify using `only [w]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, hQ, one_div, inv_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hval, ENNReal.ofReal_mul hw0, ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 
-Use `mul_le_mul_right ?_ _` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_natCast]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← Finset.card_image_of_injective _ Subtype.val_injective]`. Use `card_le_of_rows_le R ε hprod hn₀ A hA (one_le_pow₀ one_le_two) _ ?_` and prove the remaining obligations.
-
-Introduce `γ hγ`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `⟨g.2.1, g.2.2, (Finset.mem_filter.1 hg).2⟩`. Combine the equalities or inequalities in the displayed calculation. Use `(ENNReal.ofReal_tsum_of_nonneg (fun j => by positivity) ?_).symm` and prove the remaining obligations.
-
-Conclude with `summable_geometric_two.mul_left Q`. Use `_ = ENNReal.ofReal (2 * Q) := by`. Rewrite using `[tsum_mul_left, tsum_geometric_two, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_schwartz_fullRank_le (E : Type) [Field E] (R : Subring E) (ι : Type) [Fintype ι]
     [Nonempty ι] (ε : ι → E →+* ℂ) (hprod : ∀ z ∈ R, z ≠ 0 → 1 ≤ ∏ i, ‖ε i z‖)

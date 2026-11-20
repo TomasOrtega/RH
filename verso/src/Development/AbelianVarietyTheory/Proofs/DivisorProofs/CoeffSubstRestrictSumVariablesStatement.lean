@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDv
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.coeff_subst_restrict_sum` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCoeffSubstRestrictSumVariables.lean&line=48#L48)
 -/

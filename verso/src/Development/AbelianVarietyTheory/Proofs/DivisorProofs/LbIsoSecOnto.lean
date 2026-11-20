@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.MBLow
 
 /- English proof (translation)
-Introduce `X A B w hA hB hw b`. Use `⟨ReciprocityTheory.ChartRestriction.G.DVR.secOfIso b hw hA hB, fun p => ?_⟩` and prove the remaining obligations. Take `⟨p, q⟩` from `p`. Establish `hV : B.U p ⊓ A.U q ≤ A.U q ⊓ B.U p` using `fun _ h => ⟨h.2, h.1⟩`. Establish `e` using `congrArg (ReciprocityTheory.ChartRestriction.G.DVR.rs hV) (ReciprocityTheory.ChartRestriction.G.DVR.secOfIso_spec b hw hA hB q p)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[ReciprocityTheory.ChartRestriction.G.DVR.isoCand_rs]`. Establish `hs : res (hV.trans (ReciprocityTheory.ChartRestriction.G.DVR.divLe (A` using `A) (B := B) q p)) (w.s (p, q)) = w.s (p, q) := Units.ext (GlobalTheory.Cartier.resG_self _ _)`. Rewrite `e` using `[hs]`. Establish `e2 : resG X (inf_le_right : B.U p ⊓ A.U q ≤ A.U q) ((ReciprocityTheory.ChartRestriction.G.DVR.secOfIso b hw hA hB).f q) = (((w.s (p, q))⁻¹ : Γ(X, B.U p ⊓ A.U q)ˣ) : Γ(X, B.U p ⊓ A.U q)) * resG X inf_le_left (b.f p)`. Use `Eq.trans ?_ e` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.Cartier.resG_resG _ _ _).symm`. Express the relevant statement in the definitionally equal form `resG X inf_le_left (b.f p) = ((@id (Γ(X, B.U p ⊓ A.U q)ˣ) (w.s (p, q)) : Γ(X, B.U p ⊓ A.U q)ˣ) : Γ(X, B.U p ⊓ A.U q)) * _`. Simplify using `only [id]`. Rewrite using `[e2]`. Conclude with `(Units.mul_inv_cancel_left _ _).symm`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_sec_onto : ∀ (X : Scheme.{0}) (A B : LB X) (w : LB.Iso A B), A.IsLB → B.IsLB → w.IsGen →
     ∀ b : B.Sec, ∃ a : A.Sec, SecMaps w a b := by

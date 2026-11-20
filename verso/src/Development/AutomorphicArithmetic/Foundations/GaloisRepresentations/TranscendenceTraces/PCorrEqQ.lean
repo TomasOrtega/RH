@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => Subtype.ext (funext fun k => ?_)` and prove the remaining obligations. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hq : IsUnit ((l ^ k : ℕ) : Γ(S, ⊤))`. Rewrite using `[Nat.cast_pow]`. Conclude with `hl.pow k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hC (l ^ k) n i bS bY ι c m hb hq D hD hz (x.1 k)`. Establish `e : ∀ a, ((trHl l (c a).p (c a).w n i ∘ₗ pullHl l (sch.map (c a).f) n i) x).1 k = (c a).op (l ^ k) n i (x.1 k)` using `fun a => by haveI := (c a).fin`. Conclude with `hTr l n i (c a).p (c a).w (c a).wt hl _ k`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Use `Eq.trans (Finset.sum_congr rfl fun a _ => ?_) h` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `m a • ((trHl l (c a).p (c a).w n i ∘ₗ pullHl l (sch.map (c a).f) n i) x).1 k = _`. Rewrite using `[e a]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem hl_rel (hTr : TrHl) (hC : CorrEq) (l : ℕ) [Fact l.Prime] (n i : ℤ) {S Y B : Scheme.{0}} (bS : S ⟶ B) (bY : Y ⟶ B)
     [IsSeparated bY] [LocallyOfFiniteType bY] (ι : Type) [Fintype ι] (c : ι → Corr S Y) (m : ι → ℤ)
@@ -33,9 +33,9 @@ private theorem hl_rel (hTr : TrHl) (hC : CorrEq) (l : ℕ) [Fact l.Prime] (n i 
   rfl
 
 /- English proof (translation)
-Introduce `hTr hC l _ n i S Y B bS bY _ _ ι _ c m hb hl D hD hz`. Establish `h` using `hl_rel hTr hC l n i bS bY ι c m hb hl D hD hz`. Establish `e : ∀ a, Corr.opQ l (c a) n i = LinearMap.baseChangeHom ℤ_[l] ℚ_[l] _ _ (trHl l (c a).p (c a).w n i ∘ₗ pullHl l (sch.map (c a).f) n i)`. Introduce `a`. Rewrite using `[LinearMap.baseChangeHom_apply, LinearMap.baseChange_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [e, Int.cast_smul_eq_zsmul]`. Repeatedly rewrite using `[← map_zsmul]`. Rewrite using `[← map_sum, h, map_zero]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.corrEqQ_of :
     TrHl → CorrEq → CorrEqQ := by

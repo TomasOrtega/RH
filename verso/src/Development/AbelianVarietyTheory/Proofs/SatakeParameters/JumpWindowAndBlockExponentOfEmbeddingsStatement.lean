@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinrankMaxU
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.HubLoc Module
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HubLoc.window_and_cTB_of_jumps_at_embeddings` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FJumpWindowAndBlockExponentOfEmbeddings.lean&line=8#L8)
 -/

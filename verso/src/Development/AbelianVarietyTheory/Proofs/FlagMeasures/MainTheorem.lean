@@ -5,15 +5,15 @@ namespace GlobalTheory.DenominatorTheorem
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _ n G hG y`. Establish `hy : y ∈ Submodule.span E (G : Set (Fin n → E))` using `hG ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simpa using G.zero_mem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x z _ _ hx hz`. Take `⟨c, hc, hcx⟩` from `hx`. Take `⟨d, hd, hdz⟩` from `hz`. Use `⟨c * d, mul_ne_zero hc hd, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `G.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `G.smul_mem d hcx`. Rewrite using `[mul_smul]`. Conclude with `G.smul_mem c hdz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul a x _ hx`. Take `⟨c, hc, hcx⟩` from `hx`. Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors (RingOfIntegers E)) a`. Simplify using `only at hpq`. Use `⟨(q : RingOfIntegers E) * c, mul_ne_zero (nonZeroDivisors.ne_zero q.2) hc, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `key : ((q : RingOfIntegers E) * c) • (a • x) = p • (c • x)`. Rewrite using `[← algebraMap_smul E ((q : RingOfIntegers E) * c) (a • x), smul_smul, ← algebraMap_smul E p (c • x), ← algebraMap_smul E c x, smul_smul, map_mul, mul_comm (algebraMap _ E (q : RingOfIntegers E)), mul_assoc, mul_comm _ a, hpq, mul_comm]`. Rewrite using `[key]`. Conclude with `G.smul_mem p hcx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main_theorem : ∀ {E : Type} [inst : Field E] [NumberField E] {n : ℕ}
     (G : Submodule (NumberField.RingOfIntegers E) (Fin n → E)),

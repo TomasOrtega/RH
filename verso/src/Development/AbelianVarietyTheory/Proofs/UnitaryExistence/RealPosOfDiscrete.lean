@@ -13,27 +13,25 @@ namespace GlobalTheory.PeriodFormPos
 open Matrix in
 
 /- English proof (translation)
-Establish `hM0 : ∀ z : ι → ℤ, 0 ≤ ∑ i, ∑ k, z i * z k * M i k`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Simplify using `[hz]`. Conclude with `(hM z hz).le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : ∀ q : ι → ℚ, (0 : ℝ) ≤ ∑ i, ∑ k, (q i : ℝ) * (q k : ℝ) * (M i k : ℝ)`. Introduce `q`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) q`. Use `choose z hz using hd`. Establish `hd0 : ((d : ℤ) : ℝ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.ne_zero d.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz' : ∀ i, (z i : ℝ) = ((d : ℤ) : ℝ) * (q i : ℝ)`. Introduce `i`. Establish `h` using `hz i`. Simplify using `only [algebraMap_int_eq, eq_intCast, zsmul_eq_mul] at h`. Use `congrArg (fun t : ℚ => (t : ℝ)) h` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h1 : (0 : ℝ) ≤ ∑ i, ∑ k, (z i : ℝ) * (z k : ℝ) * (M i k : ℝ)` using `by exact_mod_cast hM0 z`. Establish `h2 : ∑ i, ∑ k, (z i : ℝ) * (z k : ℝ) * (M i k : ℝ) = ((d : ℤ) : ℝ) ^ 2 * ∑ i, ∑ k, (q i : ℝ) * (q k : ℝ) * (M i k : ℝ)`. Simplify using `only [Finset.mul_sum, hz']`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h2]`. Conclude with `(mul_nonneg_iff_of_pos_left (by positivity)).1 h1`. Establish `hR : ∀ y : ι → ℝ, (0 : ℝ) ≤ ∑ i, ∑ k, y i * y k * (M i k : ℝ)`. Introduce `y`. Establish `hdr : DenseRange (Pi.map (fun (_ : ι) (q : ℚ) => (q : ℝ)))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hdr.induction_on y (isClosed_le continuous_const (by fun_prop)) ?_` and prove the remaining obligations. Introduce `q`. Conclude with `hQ q`. Establish `hform : ∀ y : ι → ℝ, star y ⬝ᵥ ((Matrix.of M).map (Int.cast : ℤ → ℝ)) *ᵥ y = ∑ i, ∑ k, y i * y k * (M i k : ℝ)`. Introduce `y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, mulVec, Finset.mul_sum, star_trivial, map_apply, of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`. Establish `hpsd : ((Matrix.of M).map (Int.cast : ℤ → ℝ)).PosSemidef`. Use `Matrix.posSemidef_iff_dotProduct_mulVec.2 ⟨?_, fun y => by rw [hform]; exact hR y⟩` and prove the remaining obligations. Use extensionality with `i k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hs i k]`. Establish `hdet : (Matrix.of M).det ≠ 0`. Introduce `h`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Establish `h1` using `hM v hv`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ∑ i, ∑ k, v i * v k * M i k = v ⬝ᵥ (Matrix.of M) *ᵥ v`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`. Rewrite `h1` using `[h2, hv0]`. Simplify using `at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpd : ((Matrix.of M).map (Int.cast : ℤ → ℝ)).PosDef`. Use `hpsd.posDef_iff_det_ne_zero.2 ?_` and prove the remaining obligations. Use `(Int.castRingHom ℝ).map_det (Matrix.of M)` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Simplify using `only [Int.coe_castRingHom, eq_intCast] at this`.
-
-Rewrite using `[← this]`. Conclude with `hdet` after adjusting the coercions. Rewrite using `[← hform]`. Conclude with `hpd.dotProduct_mulVec_pos hx`.
+A detailed English derivation is pending.
 -/
 theorem real_pos_of_int_pos {ι : Type} [Fintype ι] (M : ι → ι → ℤ) (hs : ∀ i k, M i k = M k i)
     (hM : ∀ z : ι → ℤ, z ≠ 0 → 0 < ∑ i, ∑ k, z i * z k * M i k) (x : ι → ℝ) (hx : x ≠ 0) :
@@ -98,17 +96,15 @@ theorem real_pos_of_int_pos {ι : Type} [Fintype ι] (M : ι → ι → ℤ) (hs
   exact hpd.dotProduct_mulVec_pos hx
 
 /- English proof (translation)
-Use `choose n hn using hint`. Establish `hsum : ∀ (z : ι → ℤ) (y : X), β (∑ i, z i • b i) y = ∑ i, (z i : ℝ) * β (b i) y`. Introduce `z y`. Use `map_sum (AddMonoidHom.mk' (fun a => β a y) (fun a a' => hadd a a' y)) (fun i => z i • b i) Finset.univ` as an intermediate fact. Simplify using `only [map_zsmul, AddMonoidHom.mk'_apply, zsmul_eq_mul] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this`. Establish `key` using `real_pos_of_int_pos (fun i k => n (b i) (b k)) (fun i k => by`. Establish `h` using `hs (b i) (b k)`. Rewrite `h` using `[hn, hn]`. Conclude with `mul_left_cancel₀ hc.ne' h) (fun z hz => by` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : ∑ i, z i • b i ≠ 0` using `fun h => hz (funext (Fintype.linearIndependent_iff.1 b.linearIndependent z h))`. Establish `h` using `hpos _ hne`. Rewrite `h` using `[hsum]`. Establish `h2 : ∑ i, (z i : ℝ) * β (b i) (∑ k, z k • b k) = c * ((∑ i, ∑ k, z i * z k * n (b i) (b k) : ℤ) : ℝ)`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hs, hsum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hs, hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h2]`. Conclude with `(mul_pos_iff_of_pos_left hc).1 h) x hx` after adjusting the coercions. Establish `h3 : ∑ i, ∑ k, x i * x k * β (b i) (b k) = c * ∑ i, ∑ k, x i * x k * (n (b i) (b k) : ℝ)`. Simplify using `only [Finset.mul_sum, hn]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[h3]`. Conclude with `mul_pos hc key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_pos_of_discrete {X ι : Type} [AddCommGroup X] [Fintype ι] (b : Module.Basis ι ℤ X)
     (β : X → X → ℝ) (hs : ∀ a a', β a a' = β a' a)
@@ -149,27 +145,27 @@ theorem real_pos_of_discrete {X ι : Type} [AddCommGroup X] [Fintype ι] (b : Mo
   exact mul_pos hc key
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ Dg C _ _ f p hp hm hle hne`. Establish `hic : IsIntegrallyClosed R` using `inferInstance`. Take `⟨hadd, hsq⟩` from `GlobalTheory.T.betaAt_add_left_and_diag_eq_two_order R Dg C f p hic hle hne`. Establish `hco` using `GlobalTheory.T.psiCoord_exists_unique_up_to_unit_local R Dg hic`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp' : (1 : ℝ) < p` using `by exact_mod_cast hp`. Establish `hunit : ∀ u : Rˣ, ‖f u‖ = 1`. Introduce `u`. Establish `h1 : ‖f u‖ * ‖f (u⁻¹ : Rˣ)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2` using `hle (u⁻¹ : Rˣ)`. Establish `h3` using `hle u`. Use polynomial arithmetic with `[norm_nonneg (f u), norm_nonneg (f (u⁻¹ : Rˣ))]`. Establish `hv : ∀ χ, ∃ r, PsiCoord Dg.toPre χ r ∧ vPsiAt Dg.toPre f p χ = -Real.logb p ‖f r‖`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Introduce `χ`. Take `⟨r, hr, -⟩` from `(hco χ).1`. Establish `h : ∃ r, PsiCoord Dg.toPre χ r` using `⟨r, hr⟩`. Conclude with `⟨h.choose, h.choose_spec, by simp only [vPsiAt, dif_pos h]⟩`. Establish `hvn : ∀ χ, ∃ n : ℕ, vPsiAt Dg.toPre f p χ = (-Real.logb p ‖f ϖ‖) * n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `χ`. Take `⟨r, hr, hvr⟩` from `hv χ`. Establish `hr0 : r ≠ 0` using `fun h => hne χ r hr (by rw [h, map_zero])`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hr0 hϖ`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hvr, hu, map_mul, norm_mul, hunit, one_mul, map_pow, norm_pow, Real.logb_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvpos : ∀ χ, χ ≠ 0 → 0 < vPsiAt Dg.toPre f p χ`. Introduce `χ hχ`. Take `⟨r, hr, hvr⟩` from `hv χ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r₀, hr₀, -, hmem, -⟩` from `(hco χ).1`. Take `⟨u, hu⟩` from `(hco χ).2.1 r₀ r hr₀ hr`. Establish `hrm : r ∈ maximalIdeal R` using `hu ▸ Ideal.mul_mem_left _ _ (hmem hχ)`. Rewrite using `[hvr, neg_pos]`. Conclude with `Real.logb_neg hp' (norm_pos_iff.2 (hne χ r hr)) (hm r hrm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Module.Free.ChooseBasisIndex ℤ Dg.toPre.X, inferInstance, Module.Free.chooseBasis ℤ Dg.toPre.X, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨i, -⟩` from `Function.ne_iff.1 hx`. Establish `hc : 0 < -Real.logb p ‖f ϖ‖`. Take `⟨n, hn⟩` from `hvn (Module.Free.chooseBasis ℤ Dg.toPre.X i)`. Establish `h` using `hvpos _ ((Module.Free.chooseBasis ℤ Dg.toPre.X).ne_zero i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hn]`. Assume the negation of the conclusion as `hneg`. Use `mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hneg) (Nat.cast_nonneg (α := ℝ) n)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `real_pos_of_discrete _ _ (betaAt_symm Dg.toPre f p) hadd _ hc (fun a a' => ?_) (fun a ha => ?_) x hx` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n₁, h₁⟩` from `hvn (a + a')`. Take `⟨n₂, h₂⟩` from `hvn a`. Take `⟨n₃, h₃⟩` from `hvn a'`. Use `⟨(n₁ : ℤ) - n₂ - n₃, ?_⟩` and prove the remaining obligations. Rewrite using `[betaAt, h₁, h₂, h₃]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsq]`. Conclude with `mul_pos two_pos (hvpos a ha)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaAt_pos : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R] [IsDiscreteValuationRing R] (Dg : DegData R (maximalIdeal R)) (C : Type) [NormedField C] [IsUltrametricDist C] (f : R →+* C) (p : ℕ), 1 < p → (∀ a ∈ maximalIdeal R, ‖f a‖ < 1) → (∀ a, ‖f a‖ ≤ 1) → (∀ χ r, PsiCoord Dg.toPre χ r → f r ≠ 0) → ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ Dg.toPre.X), ∀ x : ι → ℝ, x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * betaAt Dg.toPre f p (b i) (b k) := by
   intro R _ _ _ _ _ Dg C _ _ f p hp hm hle hne

@@ -18,9 +18,9 @@ open scoped ComplexConjugate
 namespace GlobalTheory.UpCuspApprox
 
 /- English proof (translation)
-Establish `hT` using `(GlobalTheory.MultMem.mem_mult_iff D θ N.V N.S N.M ∅ 1 _).1 ((Formalism.IndefR.Mult.mem_multT θ N.M ∅ 1 F).1 hF)`. Establish `e : F = PiTensorProduct.lift (PiTensorProduct.lift.symm F)` using `(LinearEquiv.apply_symm_apply _ F).symm`. Rewrite using `[e]`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_smul, PiTensorProduct.lift.tprod]`. Conclude with `⟨GlobalTheory.MultMem.isAutFunSm_smul c (hT.aut x), GlobalTheory.MultMem.isCuspFun_smul c (hT.cusp x)⟩`. Consider the case `add a b ha hb`. Rewrite using `[map_add]`. Conclude with `⟨GlobalTheory.MultMem.isAutFunSm_add ha.1 hb.1, GlobalTheory.MultMem.isCuspFun_add ha.1.toIsAutFun hb.1.toIsAutFun ha.2 hb.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem val_aut_cusp {D : D7} {θ : InfFam D} {N : GlobalTheory.Grid.Node D} {F : N.Maps} (hF : F ∈ N.Cusp θ)
     (v : SmT N.M) : IsAutFunSm θ N.V (F v) ∧ IsCuspFun N.V (F v) := by
@@ -40,25 +40,23 @@ end GlobalTheory.UpCuspApprox
 namespace GlobalTheory.UpCuspApprox
 
 /- English proof (translation)
-Introduce `_ hP D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG i hi Φ hΦ φ hφ hI0 C hC ε hε`. Establish `hω` using `(hG.arrows.dn i hi).weil`. Establish `hm` using `(hG.meas.P i hi.le).2 (by omega)`. Establish `e : ∀ h g, starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) = starRingEnd ℂ (thetaKO ((G.dn i).ω.toSgn true) ((GlobalTheory.Grid.ofSgn true _).symm h) g Φ)` using `fun h g => by rw [GlobalTheory.UpArrowConv.thetaKO_toSgn]`. Take `⟨C0, A0, hC0⟩` from `GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ D R.ψ _ _ _ _ _ hω Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH⟩` from `GlobalTheory.Grow.exists_height_le_of_isCompact _ (hC.image (GlobalTheory.Grid.continuous_ofSgn_symm true _))`. Establish `hK : ∀ h ∈ C, ∀ g, ‖starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ)‖ ≤ C0 * (max H 1) ^ A0 * 2 ^ A0 * GlobalTheory.Grow.quotHeight (G.P i).V g ^ A0`. Introduce `h hh g`. Establish `hb : ∀ g, ‖starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ)‖ ≤ C0 * (max H 1) ^ A0 * GlobalTheory.Grow.height (G.P i).V g ^ A0`. Introduce `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, RCLike.norm_conj]`. Use `(hC0 _ g).trans ?_` and prove the remaining obligations. Establish `h1` using `hH _ ⟨h, hh, rfl⟩`. Establish `h0` using `GlobalTheory.Grow.height_pos (GlobalTheory.Grid.neg (G.P (i + 1)).V) ((GlobalTheory.Grid.ofSgn true _).symm h)`. Establish `hC00 : 0 ≤ C0` using `le_trans (norm_nonneg _) ((hC0 1 1).trans (by simp))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ?_ hC00) (pow_nonneg (GlobalTheory.Grow.height_pos _ _).le _)` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ h0.le (h1.trans (le_max_left _ _)) _`. Conclude with `GlobalTheory.Grow.norm_le_quotHeight_pow (fun γ hγ g => by rw [e, e, GlobalTheory.UpArrowConv.thetaKO_left_snd hω hΦ _ γ hγ g]) hb g`. Use `set B := C0 * (max H 1) ^ A0 * 2 ^ A0 with hBdef`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (G.mP i).ν (G.mP i).fd < ⊤` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol _ _ _ hm.1.1 hm.2`. Use `set Vol := (G.mP i).ν.real (G.mP i).fd with hVol`. Establish `hV0 : 0 ≤ Vol` using `measureReal_nonneg`. Establish `hB1 : 0 < |B| + 1` using `by positivity`. Use `set δ := ε / (2 * ((|B| + 1) * (Vol + 1))) with hδdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hδ : 0 < δ` using `by positivity`. Take `⟨n, F, v, hF, happ⟩` from `GlobalTheory.T.cusp_form_uniform_height_approx D R.θ hR.inf hP (G.P i) φ hφ A0 δ hδ`. Establish `hI : ∀ l h, IntegrableOn (fun g => starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F l (v l) g) (G.mP i).fd (G.mP i).ν`. Introduce `l h`. Establish `hv` using `val_aut_cusp (hF l) (v l)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : (fun g => starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F l (v l) g) = fun g => starRingEnd ℂ (thetaKO ((G.dn i).ω.toSgn true) ((GlobalTheory.Grid.ofSgn true _).symm h) g Φ) * F l (v l) g`. Use function extensionality and compare the values at `fun g => by rw [e]`. Rewrite using `[e']`. Conclude with `GlobalTheory.UpArrowConv.conj_thetaKO_mul_integrableOn hP.cuspRapidDecay hR.inf hω hΦ hm.1.1 hm.2 hv.1 hv.2 _`. Use `⟨n, F, v, hF, hI, fun h hh => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← integral_finset_sum _ (fun l _ => hI l h), ← integral_sub (hI0 h) (integrable_finset_sum _ fun l _ => hI l h)]`. Establish `hpt : ∀ g ∈ (G.mP i).fd, ‖starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * φ g - ∑ l, starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F l (v l) g‖ ≤ |B| * δ`. Introduce `g _`. Rewrite using `[← Finset.mul_sum, ← mul_sub, norm_mul]`. Establish `h1` using `hK h hh g`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `happ g`. Establish `hq` using `pow_nonneg (GlobalTheory.Grow.quotHeight_pos (G.P i).V g).le A0`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_setIntegral_le_of_norm_le_const hfin hpt).trans_lt ?_` and prove the remaining obligations. Establish `hε2 : |B| * δ * Vol ≤ ε / 2`.
-
-Rewrite using `[hδdef]`. Establish `: |B| * Vol ≤ (|B| + 1) * (Vol + 1)` using `by nlinarith [abs_nonneg B]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lift_approx_cusp : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i, i < D.R.m → ∀ Φ, IsThetaFunO R.ψ (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V Φ → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.P i) φ → (∀ h, IntegrableOn (fun g => starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * φ g) (G.mP i).fd (G.mP i).ν) → ∀ C : Set (GA D (G.P (i + 1)).V), IsCompact C → ∀ ε : ℝ, 0 < ε → ∃ (n : ℕ) (F : Fin n → (G.P i).Maps) (v : Fin n → SmT (G.P i).M), (∀ l, F l ∈ (G.P i).Cusp R.θ) ∧ (∀ l h, IntegrableOn (fun g => starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F l (v l) g) (G.mP i).fd (G.mP i).ν) ∧ ∀ h ∈ C, ‖(∫ g in (G.mP i).fd, starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * φ g ∂(G.mP i).ν) - ∑ l, ∫ g in (G.mP i).fd, starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F l (v l) g ∂(G.mP i).ν‖ < ε := by
   intro _ hP D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG i hi Φ hΦ φ hφ hI0 C hC ε hε

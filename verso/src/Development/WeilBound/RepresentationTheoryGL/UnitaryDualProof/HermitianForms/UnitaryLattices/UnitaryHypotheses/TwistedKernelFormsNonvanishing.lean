@@ -18,11 +18,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 section Twist
 
 /- English proof (translation)
-Set `f : Subrepresentation ρ ≃o Subrepresentation (twist ρ χ)` to `{ toFun := fun W => ⟨W.toSubmodule, fun g v hv => by show ((χ g : ℂˣ) : ℂ) • ρ g v ∈ W.toSubmodule`. Conclude with `W.toSubmodule.smul_mem _ (W.apply_mem_toSubmodule g hv)⟩`. Use `invFun := fun W => ⟨W.toSubmodule, fun g v hv => by`. Establish `h1` using `W.apply_mem_toSubmodule g hv`. Establish `h2 : ρ g v = (((χ g)⁻¹ : ℂˣ) : ℂ) • (twist ρ χ g v)` using `by show ρ g v = (((χ g)⁻¹ : ℂˣ) : ℂ) • (((χ g : ℂˣ) : ℂ) • ρ g v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Rewrite using `[h2]`. Conclude with `W.toSubmodule.smul_mem _ h1⟩`. Use `left_inv := fun W => rfl`. Use `right_inv := fun W => rfl`.
-
-Use the proof step `map_rel_iff' := Iff.rfl }`. Conclude with `(OrderIso.isSimpleOrder_iff f).1 h`.
+A detailed English derivation is pending.
 -/
 theorem twist_irr {G D : Type} [Group G] [AddCommGroup D] [Module ℂ D] (ρ : Representation ℂ G D) (χ : G →* ℂˣ)
     (h : ρ.IsIrreducible) : (twist ρ χ).IsIrreducible := by
@@ -47,11 +45,11 @@ end Twist
 section Casts
 
 /- English proof (translation)
-Take `⟨q, hqs, hqk, -⟩` from `derDict ψ n j π.ρ`. Rewrite using `[← hqk]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Use extensionality with `v`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [LinearMap.mem_ker, Submodule.mem_top, iff_true]`. Conclude with `@Subsingleton.elim _ hs _ _`. Introduce `hk`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hqs x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `hqs y`. Establish `ha : a ∈ LinearMap.ker q` using `hk ▸ Submodule.mem_top`. Establish `hb : b ∈ LinearMap.ker q` using `hk ▸ Submodule.mem_top`. Rewrite `ha`, `hb` using `[LinearMap.mem_ker]`. Conclude with `ha.trans hb.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_iff_twKer (ψ : AddChar k Circle) (n j : ℕ) (π : GRep k (n + (j + 1))) :
     Subsingleton (derivB ψ (j + 1) π).V ↔
@@ -73,7 +71,7 @@ theorem sub_iff_twKer (ψ : AddChar k Circle) (n j : ℕ) (π : GRep k (n + (j +
     exact ha.trans hb.symm
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_twKer (ψ : AddChar k Circle) {a b : ℕ} (e : a = b) (π : GRep k a) (m : ℕ) :
     twKer (π.cast e).ρ (derUnip k b m) (derChar k ψ b m) = ⊤ ↔ twKer π.ρ (derUnip k a m) (derChar k ψ a m) = ⊤ := by
@@ -89,14 +87,14 @@ variable (hUD : UDens k) (hUA : UAtom k) {ψ : AddChar k Circle} (hψc : Continu
   (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
 
 /- English proof (translation)
-The claim follows from `| 0, _ => isPsd_of_inv π B hB | d + 1, hd => (chain_succ hUD hψc hψ1 π hs B d (by omega) (chain_lvl hUD hψc hψ1 π hs B hB d (by omega))).2.1`.
+A detailed English derivation is pending.
 -/
 theorem chain_psd (hB : IsInvForm π B) : ∀ d, d + 1 ≤ N → IsPsd (chain hUD hψc hψ1 π hs B d)
   | 0, _ => isPsd_of_inv π B hB
   | d + 1, hd => (chain_succ hUD hψc hψ1 π hs B d (by omega) (chain_lvl hUD hψc hψ1 π hs B hB d (by omega))).2.1
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by intro v hv w have e : N - 0 = N := by omega rw [e, twKer_derUnip_self ψ π] at hv rw [(Submodule.mem_bot ℂ).1 hv] simp | d + 1, hd => kills_congr (by omega) (chain_succ hUD hψc hψ1 π hs B d (by omega) (chain_lvl hUD hψc hψ1 π hs B hB d (by omega))).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem chain_kills (hB : IsInvForm π B) : ∀ d, d + 1 ≤ N → Kills ψ π (N - d) (chain hUD hψc hψ1 π hs B d)
   | 0, _ => by
@@ -111,7 +109,7 @@ theorem chain_kills (hB : IsInvForm π B) : ∀ d, d + 1 ≤ N → Kills ψ π (
 include hUA in
 
 /- English proof (translation)
-The claim follows from `| 0, d, hde, ⟨v, hv⟩ => by refine ⟨0, by omega, fun htop => hv ?_⟩ have hK := chain_kills hUD hψc hψ1 π hs B hB d (by omega) have e1 : N - d = 1 := by omega rw [e1] at hK refine hK v ?_ v have hle : twKer π (derUnip k N 0) (derChar k ψ N 0) ≤ twKer π (derUnip k N 1) (lvlChar k ψ …`.
+A detailed English derivation is pending.
 -/
 theorem twisted_kernel_forms_nonvanishing (hUS : USplit k) (hB : IsInvForm π B) :
     ∀ e d, d + e + 1 = N → (∃ v, chain hUD hψc hψ1 π hs B d v v ≠ 0) →
@@ -142,9 +140,9 @@ theorem twisted_kernel_forms_nonvanishing (hUS : USplit k) (hB : IsInvForm π B)
       exact ⟨n', by omega, hne⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv` using `chain_rad hUD hψc hψ1 π hs B hB d hd v (hall v)`. Rewrite `hv` using `[lvlChar_def]`. Rewrite using `[derChar_def]`. Conclude with `twKer_derUnip_le ψ π (a := N - d) (b := n') (x := N - d - 1) (y := n') (by omega) (by omega) (by omega) hv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_ne_of (hB : IsInvForm π B) (d n' : ℕ) (hd : d + 1 ≤ N) (hn' : n' + d < N)
     (hne : twKer π (derUnip k N n') (derChar k ψ N n') ≠ ⊤) : ∃ v, chain hUD hψc hψ1 π hs B d v v ≠ 0 := by

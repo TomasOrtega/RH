@@ -10,7 +10,7 @@ namespace GlobalTheory.CovDom
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Simplify using `only [vecOf, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, Module.Basis.equivFun_symm_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply]`. Conclude with `Fintype.sum_equiv (ci X).symm _ _ fun j => by simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecOf_apply (x : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) :
     vecOf X x = ∑ i, x i • X.bas (ci X i) := by
@@ -19,7 +19,7 @@ theorem vecOf_apply (x : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) :
   exact Fintype.sum_equiv (ci X).symm _ _ fun j => by simp
 
 /- English proof (translation)
-Unfold `vecOf`. Rewrite using `[LinearMap.coe_comp]`. Conclude with `X.bas.equivFun.symm.bijective.comp (LinearEquiv.funCongrLeft _ _ _).bijective`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecOf_bijective : Function.Bijective (vecOf X) := by
   unfold vecOf
@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
 private theorem sig_eq_star' (a : D.host.E) : D.sp.cm.sig a = star a := by rfl
 
 /- English proof (translation)
-Rewrite using `[vecOf_apply, vecOf_apply]`. Simplify using `only [GlobalTheory.SgAlg.form, dotProduct, Matrix.mulVec, Jc, map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.coe_toRingHom, sig_eq_star', starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -49,21 +49,19 @@ theorem form_Jc (x y : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) :
 end GlobalTheory.CovDom
 
 /- English proof (translation)
-Introduce `D X`. Establish `hform` using `form_Jc X`. Establish `hinj` using `(vecOf_bijective X).1`. Establish `hsurj` using `(vecOf_bijective X).2`. Unfold `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND GlobalTheory.SgGlob.SelfDual`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨⟨fun i j => ?_, ?_⟩, ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [Jc]`. Rewrite using `[sig_eq_star']`. Conclude with `(VS D).herm.eq _ _`. Introduce `hdet`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hv0` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `(VS D).nondeg.2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Take `⟨y, rfl⟩` from `hsurj w`. Rewrite using `[← hform v y]`. Simplify using `[GlobalTheory.SgAlg.form, hv]`. Set `e : (Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) ≃ₗ[𝓞 D.host.E] (VS D).V` to `(LinearEquiv.ofBijective (vecOf X) (vecOf_bijective X)).restrictScalars (𝓞 D.host.E)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : Lc X = (VS D).L0.comap (e : _ →ₗ[𝓞 D.host.E] (VS D).V)` using `rfl`. Rewrite using `[hc, Submodule.comap_equiv_eq_map_symm]`. Conclude with `(VS D).standardTuple_isLattice.fg.map _`. Use `show vecOf X v ∈ (VS D).L0 ↔ _ conv_lhs => rw [← (VS D).baseLattice_isUnimodular]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Rewrite using `[hform v w]`. Take `⟨a, ha⟩` from `Submodule.mem_one.mp (h _ hw)`. Conclude with `⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h y hy`. Take `⟨w, rfl⟩` from `hsurj y`. Establish `hw` using `h w hy`. Rewrite `hw` using `[hform v w]`. Take `⟨a, ha⟩` from `hw`.
-
-Conclude with `Submodule.mem_one.mpr ⟨a, ha⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovDom.herm_selfDual : ∀ (D : D7) (X : HidaSetting D), Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND D.sp.cm.sig (Jc X) ∧ GlobalTheory.SgGlob.SelfDual (D.sp.cm.sig : D.host.E →+* D.host.E) (Jc X) (Lc X) := by
   intro D X

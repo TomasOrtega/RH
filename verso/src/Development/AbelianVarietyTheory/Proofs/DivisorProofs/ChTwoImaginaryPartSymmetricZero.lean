@@ -9,9 +9,9 @@ namespace GlobalTheory.ImSymmChTwo
 open Complex ComplexConjugate
 
 /- English proof (translation)
-Establish `e1 : (P * B₂ * P * A₂ * (P * B₁ * P * A₁)).trace = (P * B₁ * P * A₁ * (P * B₂ * P * A₂)).trace` using `trace_mul_comm _ _`. Establish `e2 : (P * B₁ * P * A₂ * (P * B₂ * P * A₁)).trace = (P * B₂ * P * A₁ * (P * B₁ * P * A₂)).trace` using `trace_mul_comm _ _`. Establish `e3 : (P * B₂ * P * A₁ * (P * B₁ * P * A₂)).trace = (P * B₁ * P * A₁ * (P * B₂ * P * A₂)).trace`. Rewrite using `[← trace_transpose]`. Simplify using `only [transpose_mul, hP, hA₁, hA₂, hB₁, hB₂, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_sym_combo {n : Type} [Fintype n] {P A₁ A₂ B₁ B₂ : Matrix n n ℂ}
     (hP : Pᵀ = P) (hA₁ : A₁ᵀ = A₁) (hA₂ : A₂ᵀ = A₂) (hB₁ : B₁ᵀ = B₁) (hB₂ : B₂ᵀ = B₂) :
@@ -31,15 +31,15 @@ theorem trace_sym_combo {n : Type} [Fintype n] {P A₁ A₂ B₁ B₂ : Matrix n
   rw [e1, e2, e3]; ring
 
 /- English proof (translation)
-Use `set Y : E → Matrix (Fin g) (Fin g) ℂ := fun x => (Z x).map fun c => ((c.im : ℝ) : ℂ) with hYdef`. Establish `hY2 : MContDiffAt 2 Y w` using `fun i k => (ofRealCLM.comp imCLM).contDiff.contDiffAt.comp w ((hC i k).restrict_scalars ℝ)`. Establish `hsym : ∀ᶠ x in 𝓝 w, (Y x).IsSymm` using `hS.mono fun x hx => hx.map _`. Establish `hdd : ∀ ξ η, mddbar Y w ξ η = 0` using `fun ξ η => by`. Use extensionality with `i k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h` using `leviForm_re_eq_zero (f := fun x => -I * Z x i k) (contDiffAt_const.mul (hC i k))`. Establish `e : (fun x => ((Z x i k).im : ℂ)) = fun x => (((-I * Z x i k).re : ℝ) : ℂ)`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `h2 : ddbar (fun x => ((Z x i k).im : ℂ)) w = 0` using `by rw [e]; exact h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mddbar_apply, Matrix.zero_apply, hYdef, Matrix.map_apply, h2, ContinuousLinearMap.zero_apply]`. Establish `hdel : ∀ ξ, (mdel Y w ξ)ᵀ = mdel Y w ξ` using `fun ξ => by`. Rewrite using `[← mdel_transpose]`. Conclude with `mdel_congr (hsym.mono fun x hx => hx.eq) ξ`. Establish `hdbar : ∀ η, (mdbar Y w η)ᵀ = mdbar Y w η` using `fun η => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mdbar_transpose]`. Conclude with `mdbar_congr (hsym.mono fun x hx => hx.eq) η`. Establish `hP : ((Y w)ᵀ⁻¹)ᵀ = (Y w)ᵀ⁻¹`. Rewrite using `[hsym.self_of_nhds.eq, transpose_nonsing_inv, hsym.self_of_nhds.eq]`. Establish `hF : ∀ ξ η, curv Y w ξ η = (Y w)ᵀ⁻¹ * mdbar Y w η * (Y w)ᵀ⁻¹ * mdel Y w ξ` using `fun ξ η => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[curv_eq hY2 hu, hdd, transpose_zero, Matrix.mul_zero, sub_zero, hdel, hdbar]`. Establish `htr : chTwo Y w ξ₁ η₁ ξ₂ η₂ = kappa ^ 2 / 2 * ((curv Y w ξ₁ η₁ * curv Y w ξ₂ η₂).trace + (curv Y w ξ₂ η₂ * curv Y w ξ₁ η₁).trace - (curv Y w ξ₁ η₂ * curv Y w ξ₂ η₁).trace - (curv Y w ξ₂ η₁ * curv Y w ξ₁ η₂).trace)`. Simplify using `only [chTwo, wedge, Matrix.trace, Matrix.diag, Matrix.mul_apply, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[htr, hF, hF, hF, hF, trace_sym_combo hP (hdel ξ₁) (hdel ξ₂) (hdbar η₁) (hdbar η₂), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chTwo_im_eq_zero_of_contDiffAt {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] {g : ℕ} {Z : E → Matrix (Fin g) (Fin g) ℂ} {w : E}
@@ -74,7 +74,7 @@ theorem chTwo_im_eq_zero_of_contDiffAt {E : Type} [NormedAddCommGroup E] [Normed
   rw [htr, hF, hF, hF, hF, trace_sym_combo hP (hdel ξ₁) (hdel ξ₂) (hdbar η₁) (hdbar η₂), mul_zero]
 
 /- English proof (translation)
-The claim follows from `chTwo_im_eq_zero_of_contDiffAt (fun i k => GlobalTheory.T.contDiffAt_two_of_differentiableOn_open hW hw (hZ i k)) (Filter.mem_of_superset (hW.mem_nhds hw) hS) hu ξ₁ η₁ ξ₂ η₂`.
+A detailed English derivation is pending.
 -/
 theorem chTwo_im_eq_zero {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] {g : ℕ} {Z : E → Matrix (Fin g) (Fin g) ℂ} {W : Set E} {w : E}

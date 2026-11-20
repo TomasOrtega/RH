@@ -30,7 +30,7 @@ variable {F : Type} [Field F] {ι : Type} [Fintype ι] {W : ι → Type} {W' : T
   [AddCommGroup W'] [∀ i, Module F (W i)] [Module F W']
 
 /- English proof (translation)
-Set `e : ↥S' ≃ₗ[F] (∀ i, ↥(S i))` to `{ toFun := fun x i => ⟨E x i, (h x).1 x.2 i⟩ invFun := fun y => ⟨E.symm fun i => (y i : W i), (h _).2 fun i => by simp⟩ map_add' := fun x y => by funext i; apply Subtype.ext; simp map_smul' := fun c x => by funext i; apply Subtype.ext; simp left_inv := fun x => by apply Subtype.e …`. Rewrite using `[e.finrank_eq, Module.finrank_pi_fintype]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq_sum (E : W' ≃ₗ[F] (∀ i, W i)) (S' : Submodule F W') (S : ∀ i, Submodule F (W i))
     [∀ i, FiniteDimensional F ↥(S i)] (h : ∀ x, x ∈ S' ↔ ∀ i, E x i ∈ S i) :
@@ -84,7 +84,7 @@ Both sides reduce to the same expression.
     tensComp E C (v ⊗ₜ[Qp] c) i = E v i ⊗ₜ[Qp] c := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp [h]`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensComp_map {C D : Type} [AddCommGroup C] [Module Qp C] [AddCommGroup D] [Module Qp D]
     (φ' : V' →ₗ[LL] V') (φ : ∀ i, V i →ₗ[LL] V i) (h : ∀ x i, E (φ' x) i = φ i (E x i)) (ψ : C →ₗ[Qp] D)
@@ -115,9 +115,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 include hE
 
 /- English proof (translation)
-Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Rewrite using `[forall_comm]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← (tensComp E B).injective.eq_iff, funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[actVB, tensComp_map E _ _ (hE g)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_Dcris_iff (x : V' ⊗[Qp] B) : x ∈ Dcris PD ρ' ↔ ∀ i, tensComp E B x i ∈ Dcris PD (ρ i) := by
   simp only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
@@ -130,9 +130,9 @@ theorem mem_Dcris_iff (x : V' ⊗[Qp] B) : x ∈ Dcris PD ρ' ↔ ∀ i, tensCom
   rfl
 
 /- English proof (translation)
-Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Rewrite using `[forall_comm]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← (tensComp E BdR).injective.eq_iff, funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[actVdR, tensComp_map E _ _ (hE g)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_DdR_iff (x : V' ⊗[Qp] BdR) : x ∈ DdR PD ρ' ↔ ∀ i, tensComp E BdR x i ∈ DdR PD (ρ i) := by
   simp only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
@@ -145,13 +145,13 @@ theorem mem_DdR_iff (x : V' ⊗[Qp] BdR) : x ∈ DdR PD ρ' ↔ ∀ i, tensComp 
   rfl
 
 /- English proof (translation)
-Simplify using `only [FildR, DdRE, Submodule.mem_inf, forall_and]`. Use `and_congr (and_congr (mem_DdR_iff PD hE x) ?_) ?_` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, LinearMap.smul_apply]`. Rewrite using `[forall_comm]`. Use `forall_congr' fun c => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (tensComp E BdR).injective.eq_iff, funext_iff, map_smul]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[mulVdR, tensComp_map E _ (fun _ => LinearMap.id) (fun _ _ => rfl)]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, rfl⟩ i`. Conclude with `⟨_, (tensComp_map E _ (fun _ => LinearMap.id) (fun _ _ => rfl) _ y i).symm⟩`. Introduce `h choose y hy using h`. Use `⟨(tensComp E _).symm y, (tensComp E BdR).injective ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[tensComp_map E _ (fun _ => LinearMap.id) (fun _ _ => rfl), LinearEquiv.apply_symm_apply, hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_FildR_iff (τ : K →ₐ[Qp] LL) (a : ℤ) (x : V' ⊗[Qp] BdR) :
     x ∈ FildR PD ρ' τ a ↔ ∀ i, tensComp E BdR x i ∈ FildR PD (ρ i) τ a := by
@@ -175,9 +175,9 @@ theorem mem_FildR_iff (τ : K →ₐ[Qp] LL) (a : ℤ) (x : V' ⊗[Qp] BdR) :
       rw [tensComp_map E _ (fun _ => LinearMap.id) (fun _ _ => rfl), LinearEquiv.apply_symm_apply, hy]
 
 /- English proof (translation)
-Establish `hK : FiniteDimensional Qp K₀`. Use `PD.finK` as an intermediate fact. Conclude with `Module.Finite.of_injective (IsScalarTower.toAlgHom Qp K₀ K).toLinearMap (algebraMap K₀ K).injective`. Establish `: ∀ i, FiniteDimensional LL ↥(Dcris PD (ρ i))` using `fun i => by`. Break down `subsingleton_or_nontrivial (V i) with hs | hs` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions.
 
-Use `infer_instance`. Conclude with `Module.finite_of_finrank_pos (h i ▸ Nat.mul_pos finrank_pos finrank_pos)`. Unfold `IsCrys at h ⊢`. Rewrite using `[finrank_eq_sum (tensComp E B) _ _ (mem_Dcris_iff PD hE), E.finrank_eq, Module.finrank_pi_fintype, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrys_sum [∀ i, FiniteDimensional LL (V i)] (h : ∀ i, IsCrys PD (ρ i)) : IsCrys PD ρ' := by
   have hK : FiniteDimensional Qp K₀ := by
@@ -193,14 +193,14 @@ theorem isCrys_sum [∀ i, FiniteDimensional LL (V i)] (h : ∀ i, IsCrys PD (ρ
   exact Finset.sum_congr rfl fun i _ => h i
 
 /- English proof (translation)
-The claim follows from `finrank_eq_sum (tensComp E BdR) _ _ (mem_DdR_iff PD hE)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_DdR_sum [∀ i, FiniteDimensional LL ↥(DdR PD (ρ i))] :
     finrank LL ↥(DdR PD ρ') = ∑ i, finrank LL ↥(DdR PD (ρ i)) :=
   finrank_eq_sum (tensComp E BdR) _ _ (mem_DdR_iff PD hE)
 
 /- English proof (translation)
-Establish `h` using `fun b => haveI := fun i => GlobalTheory.Pst.finiteDimensional_filDR PD (ρ i) τ b finrank_eq_sum (tensComp E BdR) _ _ (mem_FildR_iff PD hE τ b)`. Simplify using `only [multV, h, Finset.sum_sub_distrib, Nat.cast_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem multV_sum [∀ i, FiniteDimensional LL ↥(DdR PD (ρ i))] (τ : K →ₐ[Qp] LL) (a : ℤ) :
     multV PD ρ' τ a = ∑ i, multV PD (ρ i) τ a := by
@@ -232,9 +232,9 @@ Both sides reduce to the same expression.
 theorem blockRep_val (g : Γ) : (blockRep e r g).val = reindex e e (blockDiagonal' fun j => (r j g).val) := rfl
 
 /- English proof (translation)
-Rewrite using `[blockRep_val, charpoly_reindex]`. Simplify using `only [charpoly]`. Rewrite using `[← GlobalTheory.Div.BlockChangeDet.det_blockDiagonal'_eq_prod]`. Use `congr 1`. Use extensionality with `⟨i, x⟩ ⟨j, y⟩ : 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[charmatrix_apply, blockDiagonal'_apply_eq, diagonal_apply]`. Rewrite using `[charmatrix_apply_ne _ _ _ (fun h' => h (congrArg Sigma.fst h')), blockDiagonal'_apply_ne _ _ _ h, blockDiagonal'_apply_ne _ _ _ h]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem charpoly_blockRep (g : Γ) : (blockRep e r g).val.charpoly = ∏ j, (r j g).val.charpoly := by
   rw [blockRep_val, charpoly_reindex]
@@ -250,7 +250,7 @@ theorem charpoly_blockRep (g : Γ) : (blockRep e r g).val.charpoly = ∏ j, (r j
     simp
 
 /- English proof (translation)
-Establish `hv : Continuous fun g => (blockRep e r g).val` using `(Continuous.matrix_blockDiagonal' (continuous_pi fun j => Units.continuous_val.comp (h j))).matrix_submatrix _ _`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `hv.comp continuous_inv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_blockRep [TopologicalSpace Γ] [IsTopologicalGroup Γ] [TopologicalSpace k]
     (h : ∀ j, Continuous (r j)) : Continuous (blockRep e r) := by
@@ -261,7 +261,7 @@ theorem continuous_blockRep [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Topol
   exact hv.comp continuous_inv
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(reindex e e (blockDiagonal' fun j => (r j g).val)).map f = reindex e e (blockDiagonal' fun j => (r j g).val.map f)`. Rewrite using `[← blockDiagonal'_map _ _ (map_zero f)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapRep_blockRep {k' : Type} [CommRing k'] (f : k →+* k') :
     Formalism.MainNotions.N.mapRep f (blockRep e r) = blockRep e fun j => Formalism.MainNotions.N.mapRep f (r j) := by
@@ -277,9 +277,9 @@ def vecComp : (Fin n → k) ≃ₗ[k] (∀ j, Fin (a j) → k) :=
   (LinearEquiv.funCongrLeft k k e).trans (LinearEquiv.piCurry k fun _ _ => k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `((blockRep e r g).val *ᵥ x) (e ⟨i, y⟩) = ∑ z, (r i g).val y z * x (e ⟨i, z⟩)`. Rewrite using `[blockRep_val, mulVec, dotProduct, ← e.sum_comp, Fintype.sum_sigma, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations. Simplify using `[blockDiagonal'_apply_ne _ _ _ (Ne.symm hj)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem vecComp_mulVec (g : Γ) (x : Fin n → k) (i : ι) :
     vecComp e k ((blockRep e r g).val *ᵥ x) i = (r i g).val *ᵥ vecComp e k x i := by
@@ -308,7 +308,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Fiel
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use `choose L r' hr using h`. Use `fun j => (L j).2` as an intermediate fact. Set `M : FinExt l` to `supExt (supExt L₀ Bw.LL) ⟨⨆ j, (L j).1, IntermediateField.finiteDimensional_iSup_of_finite⟩`. Establish `hl : ∀ j, (L j).1 ≤ M.1` using `fun j => (le_iSup (fun j => (L j).1) j).trans le_sup_right`. Conclude with `⟨M, le_sup_left.trans le_sup_left, le_sup_right.trans le_sup_left, _, fun j => (hr j).enlarge (hl j)⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common_model (h : ∀ j, ∃ L r', IsModel Bw (r j) L r') (L₀ : FinExt l) :
     ∃ L : FinExt l, L₀.1 ≤ L.1 ∧ Bw.LL.1 ≤ L.1 ∧ ∃ r' : ∀ j, ↥Gw →* GL (Fin (a j)) ↥L.1,
@@ -321,14 +321,14 @@ theorem exists_common_model (h : ∀ j, ∃ L r', IsModel Bw (r j) L r') (L₀ :
   exact ⟨M, le_sup_left.trans le_sup_left, le_sup_right.trans le_sup_left, _, fun j => (hr j).enlarge (hl j)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hL, by rw [mapRep_blockRep]; exact congrArg _ (funext fun j => (h j).2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModel_blockRep {L : FinExt l} (hL : Bw.LL.1 ≤ L.1) {r' : ∀ j, ↥Gw →* GL (Fin (a j)) ↥L.1}
     (h : ∀ j, IsModel Bw (r j) L (r' j)) : IsModel Bw (blockRep e r) L (blockRep e r') :=
   ⟨hL, by rw [mapRep_blockRep]; exact congrArg _ (funext fun j => (h j).2)⟩
 
 /- English proof (translation)
-The claim follows from `vecComp_mulVec e r' (Bw.e.symm g) x i`.
+A detailed English derivation is pending.
 -/
 theorem vecComp_repE {L : FinExt l} (r' : ∀ j, ↥Gw →* GL (Fin (a j)) ↥L.1) (g : ↥(GK Bw.Kw))
     (x : Fin n → ↥L.1) (i : ι) :
@@ -336,7 +336,7 @@ theorem vecComp_repE {L : FinExt l} (r' : ∀ j, ↥Gw →* GL (Fin (a j)) ↥L.
   vecComp_mulVec e r' (Bw.e.symm g) x i
 
 /- English proof (translation)
-Take `⟨L, -, hL, r', hr⟩` from `exists_common_model Bw (fun j => (h j).imp fun _ h => h.imp fun _ h => h.1) Bw.LL`. Conclude with `⟨L, _, isModel_blockRep Bw e hL hr, isCrys_sum _ (vecComp_repE Bw e r') fun j => ((hr j).isCrysAt_iff P).1 (h j)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCrysAt_blockRep (h : ∀ j, IsCrysAt P Bw (r j)) : IsCrysAt P Bw (blockRep e r) := by
   obtain ⟨L, -, hL, r', hr⟩ := exists_common_model Bw (fun j => (h j).imp fun _ h => h.imp fun _ h => h.1) Bw.LL
@@ -344,9 +344,9 @@ theorem isCrysAt_blockRep (h : ∀ j, IsCrysAt P Bw (r j)) : IsCrysAt P Bw (bloc
     isCrys_sum _ (vecComp_repE Bw e r') fun j => ((hr j).isCrysAt_iff P).1 (h j)⟩
 
 /- English proof (translation)
-Take `⟨L, h₀, hL, r', hr⟩` from `exists_common_model Bw (fun j => (h j).imp fun _ h => h.imp fun _ h => h.1) L₀`. Establish `hd : ∀ j, Bw.IsdRE P L (r' j)` using `fun j => ((hr j).isdRAt_iff P).1 ((h j).imp fun _ h => h.imp fun _ h => ⟨h.1, h.2.1⟩)`. Establish `hf` using `fun j => finiteDimensional_DdR _ _ (hd j)`. Establish `hτ' : IsInduced Bw τ ((IntermediateField.inclusion h₀).comp τ₀)` using `hτ`. Establish `hn : n = ∑ j, a j` using `by simpa using (Fintype.card_congr e).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨L, _, isModel_blockRep Bw e hL hr, ?_, _, hτ', fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[LocBridge.IsdRE, finrank_DdR_sum _ (vecComp_repE Bw e r'), hn, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hd j`. Rewrite using `[LocBridge.multE, multV_sum _ (vecComp_repE Bw e r'), Multiset.count_sum', Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (h j).count_eq P (hr j) hτ' m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isJumpsAt_blockRep {τ : E →+* Om l} {L₀ : FinExt l} {τ₀ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L₀.1}
     (hτ : IsInduced Bw τ τ₀) {J : ι → Multiset ℤ} (h : ∀ j, IsJumpsAt P Bw (r j) τ (J j)) :
@@ -368,7 +368,7 @@ end Local
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions
 
 /- English proof (translation)
-Set `e : (Σ j, Fin (a j)) ≃ Fin n` to `Fintype.equivFinOfCardEq (by simpa using hn)`. Use `⟨blockRep e r, continuous_blockRep e r hr, fun J hJ => ⟨continuous_blockRep e r hr, ?_⟩, charpoly_blockRep e r⟩` and prove the remaining obligations. Introduce `P AI hT w A hA O _ _ _ Bw hB`. Establish `h` using `fun j => (hJ j).2 P AI hT w A hA O Bw hB`. Conclude with `⟨isCrysAt_blockRep P Bw e fun j => (h j).1, fun τ LL' τ' hτ => isJumpsAt_blockRep P Bw e hτ fun j => (h j).2 τ LL' τ' hτ⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_sum (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ)
     [Fact l.Prime] (ι' : Type) [Fintype ι'] [DecidableEq ι'] (a : ι' → ℕ) (n : ℕ) (hn : ∑ j, a j = n)
@@ -386,7 +386,7 @@ theorem exists_sum (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E
     fun τ LL' τ' hτ => isJumpsAt_blockRep P Bw e hτ fun j => (h j).2 τ LL' τ' hτ⟩
 
 /- English proof (translation)
-Introduce `_` and use `exists_sum`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices →
   ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]

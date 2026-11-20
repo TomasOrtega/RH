@@ -19,9 +19,9 @@ def evp (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) (w : (Σ 
 
 omit [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Establish `hρ : ∀ c', ContinuousAt (fun v : (Σ k, J k) → ℂ => segreRatio c c' v) w` using `fun c' => tendsto_finset_prod _ fun k _ => ContinuousAt.div (continuous_apply _).continuousAt (continuous_apply _).continuousAt (hc k)`. Establish `e : evp c P = fun v => MvPolynomial.eval (fun c' => segreRatio c c' v) (MvPolynomial.map (algebraMap ℤ ℂ) P)`. Use function extensionality and compare the values at `v`. Rewrite using `[MvPolynomial.eval_map, evp, MvPolynomial.aeval_def]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContinuousAt.comp (f := fun v : (Σ k, J k) → ℂ => fun c' => segreRatio c c' v) (g := fun u => MvPolynomial.eval u (MvPolynomial.map (algebraMap ℤ ℂ) P)) (MvPolynomial.continuous_eval _).continuousAt (continuousAt_pi.2 hρ)`.
+A detailed English derivation is pending.
 -/
 theorem evp_cont (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) {w : (Σ k, J k) → ℂ}
     (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) : ContinuousAt (evp c P) w := by
@@ -39,7 +39,7 @@ theorem evp_cont (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) 
 
 omit [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Unfold `evp segreRatio`. Simplify using `only [mul_div_mul_left _ _ (ha _)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem evp_smul (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) (w : (Σ k, J k) → ℂ) (a : K → ℂ)
     (ha : ∀ k, a k ≠ 0) : evp c P (fun p => a p.1 * w p) = evp c P w := by
@@ -48,9 +48,9 @@ theorem evp_smul (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) 
 
 omit [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Unfold `evp`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C n => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_mul, map_mul, map_mul, hp]`. Simplify using `only [MvPolynomial.aeval_X, segreRatio, map_prod, map_div₀]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evp_conj (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) (w : (Σ k, J k) → ℂ) :
     evp c P (fun p => starRingEnd ℂ (w p)) = starRingEnd ℂ (evp c P w) := by
@@ -65,7 +65,7 @@ theorem evp_conj (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) 
 def chi (c : (k : K) → J k) (w : (Σ k, J k) → ℂ) : ℝ := ∏ k, ‖w ⟨k, c k⟩‖ / ‖fun i : J k => w ⟨k, i⟩‖
 
 /- English proof (translation)
-Use `tendsto_finset_prod _ fun k _ => ContinuousAt.div (continuous_apply _).norm.continuousAt (continuous_pi fun i => continuous_apply _).norm.continuousAt ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hw k`. Conclude with `norm_ne_zero_iff.2 fun h => hi (congrFun h i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chi_cont (c : (k : K) → J k) {w : (Σ k, J k) → ℂ} (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
     ContinuousAt (chi c) w := by
@@ -75,7 +75,7 @@ theorem chi_cont (c : (k : K) → J k) {w : (Σ k, J k) → ℂ} (hw : ∀ k, �
   exact norm_ne_zero_iff.2 fun h => hi (congrFun h i)
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : (fun i : J k => a k * w ⟨k, i⟩) = a k • fun i : J k => w ⟨k, i⟩` using `rfl`. Simplify using `only [e, norm_mul, norm_smul]`. Conclude with `mul_div_mul_left _ _ (norm_ne_zero_iff.2 (ha k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chi_smul (c : (k : K) → J k) (w : (Σ k, J k) → ℂ) (a : K → ℂ) (ha : ∀ k, a k ≠ 0) :
     chi c (fun p => a p.1 * w p) = chi c w := by
@@ -85,7 +85,7 @@ theorem chi_smul (c : (k : K) → J k) (w : (Σ k, J k) → ℂ) (a : K → ℂ)
   exact mul_div_mul_left _ _ (norm_ne_zero_iff.2 (ha k))
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : (fun i : J k => starRingEnd ℂ (w ⟨k, i⟩)) = star fun i : J k => w ⟨k, i⟩` using `rfl`. Simplify using `only [e, norm_star, RCLike.norm_conj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chi_conj (c : (k : K) → J k) (w : (Σ k, J k) → ℂ) :
     chi c (fun p => starRingEnd ℂ (w p)) = chi c w := by
@@ -94,9 +94,9 @@ theorem chi_conj (c : (k : K) → J k) (w : (Σ k, J k) → ℂ) :
   simp only [e, norm_star, RCLike.norm_conj]
 
 /- English proof (translation)
-Establish `h : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0 ∧ ‖fun i : J k => w ⟨k, i⟩‖ = ‖w ⟨k, i⟩‖`. Introduce `k`. Take `⟨i₀, h₀⟩` from `hw k`. Establish `: Nonempty (J k)` using `⟨i₀⟩`. Take `⟨i, hi⟩` from `Finite.exists_max fun i : J k => ‖w ⟨k, i⟩‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨i, norm_pos_iff.1 ((norm_pos_iff.2 h₀).trans_le (hi i₀)), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 hi`. Conclude with `norm_le_pi_norm (fun i : J k => w ⟨k, i⟩) i`. Use `choose c hc hc' using h`. Conclude with `⟨c, hc, Finset.prod_eq_one fun k _ => by rw [hc', div_self (norm_ne_zero_iff.2 (hc k))]⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chi {w : (Σ k, J k) → ℂ} (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
     ∃ c, (∀ k, w ⟨k, c k⟩ ≠ 0) ∧ chi c w = 1 := by
@@ -115,13 +115,13 @@ def wt (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) (w : (Σ k
   max 0 (chi c w - 1 / 2) * ‖evp c P w‖
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (le_max_left _ _) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem wt_nonneg (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) (w : (Σ k, J k) → ℂ) : 0 ≤ wt c P w :=
   mul_nonneg (le_max_left _ _) (norm_nonneg _)
 
 /- English proof (translation)
-Use `push Not at h`. Take `⟨k, hk⟩` from `h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) (by rw [hk, norm_zero, zero_div])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chi_zero {c : (k : K) → J k} {w : (Σ k, J k) → ℂ} (h : ¬ ∀ k, w ⟨k, c k⟩ ≠ 0) : chi c w = 0 := by
   push Not at h
@@ -129,7 +129,7 @@ theorem chi_zero {c : (k : K) → J k} {w : (Σ k, J k) → ℂ} (h : ¬ ∀ k, 
   exact Finset.prod_eq_zero (Finset.mem_univ k) (by rw [hk, norm_zero, zero_div])
 
 /- English proof (translation)
-Use `⟨?_, fun h0 => h (by rw [wt, h0, norm_zero, mul_zero])⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `h (by rw [wt, chi_zero h0, max_eq_left (by norm_num), zero_mul])`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem wt_ne {c : (k : K) → J k} {P : MvPolynomial ((k : K) → J k) ℤ} {w : (Σ k, J k) → ℂ} (h : wt c P w ≠ 0) :
     (∀ k, w ⟨k, c k⟩ ≠ 0) ∧ evp c P w ≠ 0 := by
@@ -138,9 +138,7 @@ theorem wt_ne {c : (k : K) → J k} {P : MvPolynomial ((k : K) → J k) ℤ} {w 
   exact h (by rw [wt, chi_zero h0, max_eq_left (by norm_num), zero_mul])
 
 /- English proof (translation)
-Distinguish the cases in `hc : ∀ k, w ⟨k, c k⟩ ≠ 0`. Conclude with `(continuousAt_const.max ((chi_cont c hw).sub continuousAt_const)).mul (evp_cont c P hc).norm`. Establish `h1 : ∀ᶠ v in 𝓝 w, chi c v < 1 / 2` using `(chi_cont c hw).eventually_lt continuousAt_const (by rw [chi_zero hc]; norm_num)`. Use `(continuousAt_const (y := (0 : ℝ))).congr (h1.mono fun v hv => ?_)` and prove the remaining obligations. Use `show 0 = wt c P v`.
-
-Rewrite using `[wt, max_eq_left (by linarith), zero_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_cont (c : (k : K) → J k) (P : MvPolynomial ((k : K) → J k) ℤ) {w : (Σ k, J k) → ℂ}
     (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) : ContinuousAt (wt c P) w := by
@@ -159,12 +157,12 @@ variable {W Λ : Type} [Fintype Λ] (f : Λ → W → ℝ)
 def rho (l : Λ) (w : W) : ℝ := max 0 (((Fintype.card Λ : ℝ) + 1) * f l w - ∑ m, f m w)
 
 /- English proof (translation)
-The claim follows from `le_max_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem rho_nonneg (l : Λ) (w : W) : 0 ≤ rho f l w := le_max_left _ _
 
 /- English proof (translation)
-Introduce `h0` and use `h (by have := Finset.sum_nonneg (s := Finset.univ) fun m _ => hf m rw [rho, h0, max_eq_left (by linarith)])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rho_ne {l : Λ} {w : W} (hf : ∀ l, 0 ≤ f l w) (h : rho f l w ≠ 0) : f l w ≠ 0 := fun h0 =>
   h (by
@@ -172,9 +170,9 @@ theorem rho_ne {l : Λ} {w : W} (hf : ∀ l, 0 ≤ f l w) (h : rho f l w ≠ 0) 
     rw [rho, h0, max_eq_left (by linarith)])
 
 /- English proof (translation)
-Take `⟨l₀, h₀⟩` from `h`. Establish `: Nonempty Λ` using `⟨l₀⟩`. Take `⟨l, hl⟩` from `Finite.exists_max fun l => f l w`. Use `⟨l, lt_max_of_lt_right ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ m, f m w ≤ (Fintype.card Λ : ℝ) * f l w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_le_card_nsmul Finset.univ (fun m => f m w) (f l w) fun m _ => hl m` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul]`. Then use the resulting hypothesis. Use `hl l₀` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_rho_pos {w : W} (h : ∃ l, 0 < f l w) : ∃ l, 0 < rho f l w := by
   obtain ⟨l₀, h₀⟩ := h
@@ -188,14 +186,14 @@ theorem exists_rho_pos {w : W} (h : ∃ l, 0 < f l w) : ∃ l, 0 < rho f l w := 
   linarith
 
 /- English proof (translation)
-The claim follows from `continuousAt_const.max ((continuousAt_const.mul (hc l)).sub (tendsto_finset_sum _ fun m _ => hc m))`.
+A detailed English derivation is pending.
 -/
 theorem rho_cont [TopologicalSpace W] {w : W} (hc : ∀ l, ContinuousAt (f l) w) (l : Λ) :
     ContinuousAt (rho f l) w :=
   continuousAt_const.max ((continuousAt_const.mul (hc l)).sub (tendsto_finset_sum _ fun m _ => hc m))
 
 /- English proof (translation)
-Take `⟨l₀, h₀⟩` from `h`. Establish `hs : 0 < ∑ m, f m w` using `Finset.sum_pos' (fun m _ => hf m) ⟨l₀, Finset.mem_univ _, h₀⟩`. Establish `h1 : ContinuousAt (fun v => ((Fintype.card Λ : ℝ) + 1) * f l v - ∑ m, f m v) w` using `(continuousAt_const.mul (hc l)).sub (tendsto_finset_sum _ fun m _ => hc m)`. Establish `h2` using `h1.eventually_lt (continuousAt_const (y := (0 : ℝ))) (by simp only [hl]; linarith)`. Conclude with `h2.mono fun v hv => max_eq_left hv.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_eventually [TopologicalSpace W] {w : W} (hc : ∀ l, ContinuousAt (f l) w) (hf : ∀ l, 0 ≤ f l w)
     (h : ∃ l, 0 < f l w) {l : Λ} (hl : f l w = 0) : ∀ᶠ v in 𝓝 w, rho f l v = 0 := by
@@ -212,7 +210,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {y : (Σ k, 
 
 omit [∀ k, Fintype (J k)] in
 /- English proof (translation)
-The claim follows from `val_aeval hz _ _ (val_segre hz hw c hc) P`.
+A detailed English derivation is pending.
 -/
 theorem val_evp {z : Sp ℂ ⟶ X} {w : (Σ k, J k) → ℂ} (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w)
     (c : (k : K) → J k) (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) (P : MvPolynomial ((k : K) → J k) ℤ) :
@@ -221,9 +219,9 @@ theorem val_evp {z : Sp ℂ ⟶ X} {w : (Σ k, J k) → ℂ} (hz : genPt ξ ⤳ 
   val_aeval hz _ _ (val_segre hz hw c hc) P
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, -, h2⟩ hs`. Take `⟨t, ht⟩` from `ArchB.val_exists (R := ℂ) h2`. Establish `h3` using `ArchB.val_mul h ht`. Rewrite `h3` using `[mul_inv_cancel₀ h0, hs, zero_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one (CxVal.unique h3 (CxVal.one hz))`. Introduce `hs`. Conclude with `⟨ArchB.val_ne_zero hξ (r := Units.mk0 s hs) h, (ArchB.val_spec h).2, (ArchB.val_spec (CxVal.inv h hs)).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unitAt_iff (hξ : IsCptGen ξ) {z : Sp ℂ ⟶ X} (hz : genPt ξ ⤳ centre z) {a : Ω} {s : ℂ}
     (h : ValAt ξ z a s) : unitAt ξ ⟨centre z, hz⟩ a ↔ s ≠ 0 := by
@@ -237,7 +235,7 @@ theorem unitAt_iff (hξ : IsCptGen ξ) {z : Sp ℂ ⟶ X} (hz : genPt ξ ⤳ cen
     exact ⟨ArchB.val_ne_zero hξ (r := Units.mk0 s hs) h, (ArchB.val_spec h).2, (ArchB.val_spec (CxVal.inv h hs)).2⟩
 
 /- English proof (translation)
-Establish `h : g ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c)` using `hg`. Rewrite `h` using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poly {κ : Type} {x : κ → Ω} {c : κ} {g : Ω} (hg : g ∈ chartRing ℤ x c) :
     ∃ P : MvPolynomial κ ℤ, MvPolynomial.aeval (fun j => x j / x c) P = g := by
@@ -251,7 +249,7 @@ def vl (ξ : Sp Ω ⟶ X) (y : (Σ k, J k) → Ω) (a : Ω) (w : (Σ k, J k) →
   if h : ∃ s : ℂ, ∃ z : Sp ℂ ⟶ X, CoordsAt ξ y z w ∧ ValAt ξ z a s then h.choose else 0
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.T.local_ring_points_existsUnique X Ω ξ K J y tie ℂ`. Conclude with `(key.1 w h.1 (key.2.2 z w (hall _) h).1).unique ⟨hall _, h⟩ ⟨hall _, h'⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pt_unique (hall : ∀ q : X, genPt ξ ⤳ q)
     (tie : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩)) {z z' : Sp ℂ ⟶ X} {w : (Σ k, J k) → ℂ}
@@ -260,7 +258,7 @@ theorem pt_unique (hall : ∀ q : X, genPt ξ ⤳ q)
   exact (key.1 w h.1 (key.2.2 z w (hall _) h).1).unique ⟨hall _, h⟩ ⟨hall _, h'⟩
 
 /- English proof (translation)
-Establish `he : ∃ s : ℂ, ∃ z : Sp ℂ ⟶ X, CoordsAt ξ y z w ∧ ValAt ξ z a s` using `⟨s, z, h, hs⟩`. Rewrite using `[vl, dif_pos he]`. Take `⟨z', h', hs'⟩` from `he.choose_spec`. Rewrite `hs'` using `[pt_unique hall tie h' h]`. Conclude with `CxVal.unique hs' hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vl_eq (hall : ∀ q : X, genPt ξ ⤳ q)
     (tie : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩)) {z : Sp ℂ ⟶ X} {w : (Σ k, J k) → ℂ}
@@ -272,15 +270,13 @@ theorem vl_eq (hall : ∀ q : X, genPt ξ ⤳ q)
   exact CxVal.unique hs' hs
 
 /- English proof (translation)
-Use `choose c hc using h.1`. Use `replace hc : ∀ k, w₀ ⟨k, c k⟩ ≠ 0 := fun k => (hc k).ne_zero`. Take `⟨s, hs1, hs2, hs3⟩` from `TieFrame.exists_den tie (ArchB.in_chart (hall _) h hc) (ArchB.val_spec hs).2`. Take `⟨P₂, hP₂⟩` from `exists_poly hs1`. Take `⟨P₁, hP₁⟩` from `exists_poly hs3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : evp c P₂ w₀ ≠ 0`. Use `val_evp (hall _) h c hc P₂` as an intermediate fact. Rewrite `this` using `[hP₂]`. Conclude with `(unitAt_iff tie.gen _ this).1 hs2`. Establish `key : ∀ (w : (Σ k, J k) → ℂ), (∀ k, w ⟨k, c k⟩ ≠ 0) → evp c P₂ w ≠ 0 → (∃ z : Sp ℂ ⟶ X, CoordsAt ξ y z w) → vl ξ y a w = evp c P₁ w * (evp c P₂ w)⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `w hw hw2 ⟨z, hz⟩`. Establish `v1` using `val_evp (hall _) hz c hw P₁`. Establish `v2` using `val_evp (hall _) hz c hw P₂`. Rewrite `v1` using `[hP₁]`. Rewrite `v2` using `[hP₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `v3` using `CxVal.mul v1 (CxVal.inv v2 hw2)`. Rewrite `v3` using `[mul_comm s a, mul_inv_cancel_right₀ hs2.1]`. Conclude with `vl_eq hall tie hz v3`. Establish `e1 : ∀ᶠ v : (Σ k, J k) → ℂ in 𝓝 w₀, ∀ k, v ⟨k, c k⟩ ≠ 0` using `eventually_all.2 fun k => (continuous_apply _).continuousAt.eventually_ne (hc k)`. Establish `e2` using `(evp_cont c P₂ hc).eventually_ne h2`.
-
-Use `((evp_cont c P₁ hc).mul ((evp_cont c P₂ hc).inv₀ h2)).continuousWithinAt.congr_of_eventuallyEq ?_ (key w₀ hc h2 ⟨z₀, h⟩)` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds e1, nhdsWithin_le_nhds e2, self_mem_nhdsWithin] with w h1 h2 h3`. Conclude with `key w h1 h2 h3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vl_cont (hall : ∀ q : X, genPt ξ ⤳ q)
     (tie : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩)) {z₀ : Sp ℂ ⟶ X} {w₀ : (Σ k, J k) → ℂ}
@@ -314,13 +310,13 @@ theorem vl_cont (hall : ∀ q : X, genPt ξ ⤳ q)
   exact key w h1 h2 h3
 
 /- English proof (translation)
-Distinguish the cases in `hc : x c = 0`. Conclude with `⟨0, Fin.elim0, Fin.elim0, fun l => l.elim0, fun p hp => (hp.1 hc).elim⟩`. Set `S : Set (chartRing ℤ x c)` to `{g | ∃ b : Fin (Module.finrank Ω E) → E, Submodule.span Ω (Set.range b) = ⊤ ∧ ∀ p : Cpt ξ, InChart ξ x c p → unitAt ξ p g → L.IsFrameAt b p}`. Establish `hS : Ideal.span S = ⊤` using `TieFrame.ideal_eq_top tie hc _ fun p hp => by`. Take `⟨g, hg, b, hu, hb, hb'⟩` from `TieFrame.exists_frame_basic tie hL hp`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨g, hg⟩, Ideal.subset_span ⟨b, hb, hb'⟩, hu⟩`. Establish `h1 : (1 : chartRing ℤ x c) ∈ Submodule.span (chartRing ℤ x c) S` using `(Ideal.eq_top_iff_one _).1 hS`. Take `⟨n, a, g, hag⟩` from `Submodule.mem_span_set'.1 h1`. Use `choose b hb hb' using fun l => (g l).2`. Use `choose P hP using fun l => exists_poly (g l).1.2`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n, P, fun l => basisOfTopLeSpanOfCardEqFinrank (b l) (hb l).ge (Fintype.card_fin _), fun l p hp hu => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_basisOfTopLeSpanOfCardEqFinrank]`. Rewrite `hu` using `[hP]`. Conclude with `hb' l p hp hu`. Simplify using `only [hP]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `TieFrame.exists_unitAt_of_sum tie.gen p _ (fun l => (a l : Ω)) (fun l => TieFrame.chart_le_regAt tie hp (g l).1.2) (fun l => TieFrame.chart_le_regAt tie hp (a l).2) ?_` and prove the remaining obligations. Use `congrArg (chartRing ℤ x c).val hag` as an intermediate fact. Simplify `this` using `[map_sum]`.
+A detailed English derivation is pending.
 -/
 theorem chart_cover {κ : Type} {x : κ → Ω} (tie : CoordTie ℤ ξ x) {E : Type} [AddCommGroup E] [Module Ω E]
     {L : Lat ξ E} (hL : L.IsVB (Module.finrank Ω E) ⊤) (c : κ) :

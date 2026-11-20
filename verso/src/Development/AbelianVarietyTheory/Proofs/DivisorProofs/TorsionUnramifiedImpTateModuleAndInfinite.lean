@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Proof
 
 /- English proof (translation)
-Distinguish the cases in `h2 : ((2 : ℕ) : k) = 0`. Use `⟨3, ⟨Nat.prime_three⟩, fun h3 => one_ne_zero (α := k) ?_⟩` and prove the remaining obligations. Establish `: ((3 : ℕ) : k) - ((2 : ℕ) : k) = 1` using `by push_cast; ring`. Rewrite using `[← this, h2, h3, sub_zero]`. Conclude with `⟨2, ⟨Nat.prime_two⟩, h2⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_prime_natCast_ne_zero (k : Type) [Field k] :
     ∃ (l : ℕ) (_ : Fact l.Prime), (l : k) ≠ 0 := by
@@ -20,9 +20,9 @@ theorem exists_prime_natCast_ne_zero (k : Type) [Field k] :
   · exact ⟨2, ⟨Nat.prime_two⟩, h2⟩
 
 /- English proof (translation)
-Introduce `R K Ω _ _ _ _ _ _ _ V A _ _ hb`. Take `⟨l, hl, hl0⟩` from `exists_prime_natCast_ne_zero (ResidueField R)`. Establish `hpow : ∀ n : ℕ, ((l ^ n : ℕ) : ResidueField R) ≠ 0` using `fun n => by`. Rewrite using `[Nat.cast_pow]`. Conclude with `pow_ne_zero _ hl0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨l, hl, hl0, tateUnramified_of_torsionUnramified fun n => hb _ (hpow n)⟩, ?_⟩` and prove the remaining obligations. Conclude with `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => l ^ n) (Nat.pow_right_injective hl.out.two_le) fun n => ⟨hpow n, hb _ (hpow n)⟩`.
+A detailed English derivation is pending.
 -/
 theorem torsionUnramified_imp_tate_and_infinite :
     ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [Field Ω]

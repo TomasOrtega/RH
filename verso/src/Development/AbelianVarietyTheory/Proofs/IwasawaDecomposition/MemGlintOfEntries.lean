@@ -5,15 +5,15 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceDoub
 namespace GlobalTheory.MemGlintOfEntries
 
 /- English proof (translation)
-Set `A : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨_, h i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨_, h' i j⟩`. Establish `hA : O.subtype.mapMatrix A = (↑g : Matrix (Fin n) (Fin n) K)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hB : O.subtype.mapMatrix B = (↑g⁻¹ : Matrix (Fin n) (Fin n) K)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (O.subtype.mapMatrix : Matrix (Fin n) (Fin n) O → Matrix (Fin n) (Fin n) K)`. Introduce `X Y hXY`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Conclude with `congrFun (congrFun hXY i) j`. Establish `hAB : A * B = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, hA, hB]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.mul_inv g`. Establish `hBA : B * A = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, hA, hB]`. Conclude with `Units.inv_mul g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_glint_of_entries {K : Type} [inst : Field K] {n : ℕ} (O : Subring K)
     (g : GL (Fin n) K)

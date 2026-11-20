@@ -16,7 +16,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [H.h_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem h_sum_left {ι : Type*} (s : Finset ι) (x : ι → V) (y : V) :
     H.h (∑ i ∈ s, x i) y = ∑ i ∈ s, H.h (x i) y := by
@@ -25,7 +25,7 @@ theorem h_sum_left {ι : Type*} (s : Finset ι) (x : ι → V) (y : V) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, ih]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm, h_sum_left, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← H.h_herm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_sum_right {ι : Type*} (s : Finset ι) (x : V) (y : ι → V) :
     H.h x (∑ i ∈ s, y i) = ∑ i ∈ s, H.h x (y i) := by
@@ -34,13 +34,13 @@ theorem h_sum_right {ι : Type*} (s : Finset ι) (x : V) (y : ι → V) :
   rw [← H.h_herm]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_smul_right' (x y : V) (c : E) : H.h x (c • y) = M.L.cj c * H.h x y := by
   rw [H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]
 
 /- English proof (translation)
-Rewrite using `[h_sum_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h_sum_right]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[H.h_smul_left, h_smul_right']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -57,7 +57,7 @@ section Comb
 def comb {ι κ : Type*} [Fintype ι] (A : Matrix ι κ E) (v : ι → V) : κ → V := fun k => ∑ i, A i k • v i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [comb, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_comb {ι κ μ : Type*} [Fintype ι] [Fintype κ] (A : Matrix ι κ E) (B : Matrix κ μ E) (v : ι → V) :
     comb B (comb A v) = comb (A * B) v := by
@@ -68,14 +68,14 @@ theorem comb_comb {ι κ μ : Type*} [Fintype ι] [Fintype κ] (A : Matrix ι κ
   rw [mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [comb, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_one {ι : Type*} [Fintype ι] [DecidableEq ι] (v : ι → V) : comb (1 : Matrix ι ι E) v = v := by
   funext k
   simp only [comb, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun i _ => (Submodule.span M.L.O (Set.range v)).smul_mem ⟨A i k, hA i k⟩ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem comb_mem_spanO {ι κ : Type*} [Fintype ι] (A : Matrix ι κ E) (hA : ∀ i k, A i k ∈ M.L.O) (v : ι → V)
     (k : κ) : comb A v k ∈ Submodule.span M.L.O (Set.range v) :=
@@ -83,32 +83,32 @@ theorem comb_mem_spanO {ι κ : Type*} [Fintype ι] (A : Matrix ι κ E) (hA : �
     (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem comb_mem_spanE {ι κ : Type*} [Fintype ι] (A : Matrix ι κ E) (v : ι → V) (k : κ) :
     comb A v k ∈ Submodule.span E (Set.range v) :=
   Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact comb_mem_spanE A v k)`.
+A detailed English derivation is pending.
 -/
 theorem spanE_comb_le {ι κ : Type*} [Fintype ι] (A : Matrix ι κ E) (v : ι → V) :
     Submodule.span E (Set.range (comb A v)) ≤ Submodule.span E (Set.range v) :=
   Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact comb_mem_spanE A v k)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact comb_mem_spanO A hA v k)`.
+A detailed English derivation is pending.
 -/
 theorem spanO_comb_le {ι κ : Type*} [Fintype ι] (A : Matrix ι κ E) (hA : ∀ i k, A i k ∈ M.L.O) (v : ι → V) :
     Submodule.span M.L.O (Set.range (comb A v)) ≤ Submodule.span M.L.O (Set.range v) :=
   Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact comb_mem_spanO A hA v k)
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1 : ∑ i, (A.mulVec g) i • v i = 0`. Rewrite using `[← hg]`. Simplify using `only [comb, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun x _ => by rw [mul_comm]`. Establish `h2` using `hv _ h1`. Establish `h3 : A.mulVec g = 0` using `funext h2`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: g = B.mulVec (A.mulVec g)` using `by rw [Matrix.mulVec_mulVec, hAB, Matrix.one_mulVec]`. Rewrite using `[this, h3, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linInd_comb {ι : Type*} [Fintype ι] [DecidableEq ι] (A B : Matrix ι ι E) (hAB : B * A = 1) (v : ι → V)
     (hv : LinearIndependent E v) : LinearIndependent E (comb A v) := by
@@ -136,30 +136,30 @@ variable {r : ℕ}
 def chg (t : Term V M r) (f'' : Fin (r + 1) → V) : Term V M r := ⟨t.abelian₂, t.f, f'', t.T, t.T'⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [comb, Pi.add_apply, smul_add, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_add {ι κ : Type*} [Fintype ι] (A : Matrix ι κ E) (v w : ι → V) :
     comb A (v + w) = comb A v + comb A w := by
   funext k; simp only [comb, Pi.add_apply, smul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [comb, Pi.smul_apply, Finset.smul_sum, smul_smul, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_smul {ι κ : Type*} [Fintype ι] (A : Matrix ι κ E) (c : E) (v : ι → V) :
     comb A (c • v) = c • comb A v := by
   funext k; simp only [comb, Pi.smul_apply, Finset.smul_sum, smul_smul, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [comb, Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, Pi.sub_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_sub_mat {ι κ : Type*} [Fintype ι] (A B : Matrix ι κ E) (v : ι → V) :
     comb (A - B) v = comb A v - comb B v := by
   funext k; simp only [comb, Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, Pi.sub_apply]
 
 /- English proof (translation)
-Take `⟨hmem, hli, hpr⟩` from `hv`. Use `⟨fun k => ?_, linInd_comb A B hBA v hli, fun x hx hxE => ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hmem i)) (comb_mem_spanO A hA v k)`. Establish `h1` using `hpr x hx (spanE_comb_le A v hxE)`. Establish `hv' : v = comb B (comb A v)` using `by rw [comb_comb, hAB, comb_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hv']`. Conclude with `spanO_comb_le B hB _ h1`.
+A detailed English derivation is pending.
 -/
 theorem prim_comb {ι : Type} [Fintype ι] [DecidableEq ι] (abelian₂ : Submodule M.L.O V) (v : ι → V) (A B : Matrix ι ι E)
     (hA : ∀ i k, A i k ∈ M.L.O) (hB : ∀ i k, B i k ∈ M.L.O) (hAB : A * B = 1) (hBA : B * A = 1)
@@ -173,13 +173,13 @@ theorem prim_comb {ι : Type} [Fintype ι] [DecidableEq ι] (abelian₂ : Submod
     exact spanO_comb_le B hB _ h1
 
 /- English proof (translation)
-Take `⟨hP, hrel, hzz, hT1, hT2⟩` from `hF`. Use `⟨prim_comb H abelian₂ f' C Ci hCO hCiO hCCi hCiC hP, fun a b hab => ?_, ?_, hT1, hT2⟩` and prove the remaining obligations. Rewrite using `[show comb C f' a = ∑ i, C i a • f' i from rfl, show comb C f' b = ∑ j, C j b • f' j from rfl, h_comb]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = Fin.last r ∧ j = Fin.last r`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `hij`. Break down `hab with ha | hb` into its components or cases. Rewrite using `[hC0 _ _ (lt_of_le_of_ne (Fin.le_last a) ha), zero_mul, zero_mul]`. Rewrite using `[hC0 _ _ (lt_of_le_of_ne (Fin.le_last b) hb), map_zero, mul_zero, zero_mul]`. Rewrite using `[hrel i j (not_and_or.1 hij), mul_zero]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show comb C f' (Fin.last r) = ∑ i, C i (Fin.last r) • f' i from rfl, h_comb, Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[hC1, map_one, one_mul, one_mul, hzz]`. Introduce `j _ hj`. Rewrite using `[hrel _ _ (Or.inr hj), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `i _ hi`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [hrel _ _ (Or.inl hi), mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_comb (abelian₂ : Submodule M.L.O V) (f' : Fin (r + 1) → V) (T : F)
     (C Ci : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (hC0 : ∀ a b, b < a → C a b = 0) (hC1 : ∀ a, C a a = 1)
@@ -206,7 +206,7 @@ theorem frame_comb (abelian₂ : Submodule M.L.O V) (f' : Fin (r + 1) → V) (T 
     · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [HermSp.Zhat, Matrix.of_apply, Matrix.mul_apply, comb]`. Rewrite using `[h_sum_left]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [H.h_smul_left, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zhat_comb (f f' : Fin (r + 1) → V) (C : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     H.Zhat f (comb C f') = H.Zhat f f' * C := by
@@ -216,7 +216,7 @@ theorem zhat_comb (f f' : Fin (r + 1) → V) (C : Matrix (Fin (r + 1)) (Fin (r +
   exact Finset.sum_congr rfl fun c _ => by rw [H.h_smul_left, mul_comm]
 
 /- English proof (translation)
-Unfold `HermSp.Dl`. Use `split_ifs with hl`. Rewrite using `[zhat_comb, bt_lead_tri hl _ _ hC0, Matrix.det_mul, bt_det_unitri_sub hl C hC0 hC1, mul_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dl_comb (f f' : Fin (r + 1) → V) (C : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hC0 : ∀ a b, b < a → C a b = 0) (hC1 : ∀ a, C a a = 1) (l : ℕ) :
@@ -227,11 +227,11 @@ theorem dl_comb (f f' : Fin (r + 1) → V) (C : Matrix (Fin (r + 1)) (Fin (r + 1
   · rfl
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨y, hy, rfl⟩ := hz`. Conclude with `⟨y, hy, rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [smul_zero]⟩`. Consider the case `add a b _ _ ha hb`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨y, hy, rfl⟩` from `ha`. Take `⟨y', hy', rfl⟩` from `hb`. Conclude with `⟨y + y', add_mem hy hy', by rw [smul_add]⟩`. Consider the case `smul o a _ ha`. Take `⟨y, hy, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨o • y, abelian₂.smul_mem o hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, Subring.smul_def, smul_smul, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smulLat_mem {c : E} {abelian₂ : Submodule M.L.O V} {x : V} (hx : x ∈ H.smulLat c abelian₂) :
     ∃ y ∈ abelian₂, x = c • y := by
@@ -257,49 +257,41 @@ variable {r : ℕ}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨⟨hSD, hF, hF', hD1, hG, hmodeG⟩, hMM⟩` from `hgen`. Establish `hDl : ∀ l, H.Dl t.f (comb C t.f') l = H.Dl t.f t.f' l` using `dl_comb H t.f t.f' C hC0 hC1`. Use `⟨⟨hSD, hF, frame_comb H t.abelian₂ t.f' t.T' C Ci hC0 hC1 hCO hCiO hCCi hCiC hF', ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show IsUnit (H.Dl t.f (comb C t.f') (r + 1))`. Rewrite using `[hDl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hD1`. Use `show H.Gdet t.f (comb C t.f') t.T t.T' ≠ 0`. Unfold `HermSp.Gdet`. Rewrite using `[hDl, hDl]`. Conclude with `hG`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `g hg`. Take `⟨h1, h2, -⟩` from `hmodeG g hg`. Conclude with `⟨h1, h2, hAdm g hg⟩`. Break down `hM : M.split with _ | g` into its components or cases. Establish `hMM' : H.Prim t.abelian₂ (Sum.elim t.f t.f')` using `by simpa only [HermSp.MMfam, hM] using hMM`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show H.Prim t.abelian₂ (H.MMfam (chg t (comb C t.f')))`. Simplify using `only [HermSp.MMfam, hM]`. Establish `e : (Sum.elim t.f (comb C t.f') : Fin (r + 1) ⊕ Fin (r + 1) → V) = comb (Matrix.fromBlocks 1 0 0 C) (Sum.elim t.f t.f')`. Use function extensionality and compare the values at `k`. Break down `k with a | b` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[comb, Matrix.fromBlocks, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[comb, Matrix.fromBlocks, Fintype.sum_sum_type]`. Use `show H.Prim t.abelian₂ (Sum.elim t.f (comb C t.f'))`. Rewrite using `[e]`. Use `prim_comb H _ _ _ (Matrix.fromBlocks 1 0 0 Ci) ?_ ?_ ?_ ?_ hMM'` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rintro (i | i) (k | k) <;> simp [Matrix.fromBlocks, Matrix.one_apply] <;> first | (split_ifs <;> simp) | exact hCO _ _`. Apply the tactic sequence `rintro (i | i) (k | k) <;> simp [Matrix.fromBlocks, Matrix.one_apply] <;> first | (split_ifs <;> simp) | exact hCiO _ _`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[hCCi, Matrix.fromBlocks_one]`. Rewrite using `[Matrix.fromBlocks_multiply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[hCiC, Matrix.fromBlocks_one]`. Use `set κ : E := algebraMap F E ((g.q : F)⁻¹) with hκdef`. Use `set κ' : E := algebraMap F E (g.q : F) with hκ'def`. Establish `hq0 : (g.q : F) ≠ 0` using `fun h => g.q_irr.ne_zero (Subtype.ext h)`. Establish `hκκ' : κ * κ' = 1` using `by rw [hκdef, hκ'def, ← map_mul, inv_mul_cancel₀ hq0, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hMM' : H.Prim t.abelian₂ (Sum.elim t.f (fun a => κ • (t.f' a - t.f a)))`. Simplify `hMM` using `only [HermSp.MMfam, hM]`. Simplify using `only [HermSp.MMfam, hM]`. Use `show H.Prim t.abelian₂ (Sum.elim t.f (fun a => κ • (comb C t.f' a - t.f a)))`. Use `set m : Fin (r + 1) → V := fun a => κ • (t.f' a - t.f a) with hmdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `set m'' : Fin (r + 1) → V := fun a => κ • (comb C t.f' a - t.f a) with hm''def`. Establish `hsub : ∀ (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (v w : Fin (r + 1) → V), comb A (v - w) = comb A v - comb A w`. Introduce `A v w`. Use function extensionality and compare the values at `k`. Simplify using `only [comb, Pi.sub_apply, smul_sub, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hrel : m'' = comb C m + κ • comb (C - 1) t.f`. Establish `e1 : m = κ • (t.f' - t.f)` using `rfl`. Establish `e2 : m'' = κ • (comb C t.f' - t.f)` using `rfl`. Rewrite using `[e1, e2, comb_smul, hsub, comb_sub_mat, comb_one, ← smul_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hciM : comb Ci m'' = m + κ • comb (1 - Ci) t.f`. Rewrite using `[hrel, comb_add, comb_comb, hCCi, comb_one, comb_smul, comb_comb, Matrix.sub_mul, hCCi, Matrix.one_mul]`. Establish `hm''L : ∀ b, m'' b ∈ t.abelian₂`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨y, hy, hxy⟩` from `smulLat_mem H (hAdm g hM b)`. Establish `e : m'' b = y` using `by show κ • (comb C t.f' b - t.f b) = y`. Establish `: comb C t.f' b - t.f b = κ' • y` using `hxy`. Rewrite using `[this, smul_smul, hκκ', one_smul]`. Rewrite using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Use `set v : Fin (r + 1) ⊕ Fin (r + 1) → V := Sum.elim t.f m with hvdef`. Use `set w : Fin (r + 1) ⊕ Fin (r + 1) → V := Sum.elim t.f m'' with hwdef`. Use `set A : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E := Matrix.fromBlocks 1 (κ • (C - 1)) 0 C with hAdef`. Use `set B' : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E := Matrix.fromBlocks 1 (-(κ • (C - 1)) * Ci) 0 Ci with hB'def`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hB'A : B' * A = 1`. Rewrite using `[hB'def, hAdef, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, hCiC, Matrix.mul_assoc, Matrix.neg_mul, neg_add_cancel]`. Rewrite using `[add_neg_cancel, Matrix.fromBlocks_one]`. Establish `hwA : w = comb A v`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `k`. Break down `k with a | b` into its components or cases. Simplify using `[hwdef, hvdef, hAdef, comb, Matrix.fromBlocks, Fintype.sum_sum_type, Matrix.one_apply]`. Establish `h1` using `congrFun hrel b`. Simplify using `only [hwdef, hvdef, hAdef, comb, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂] at h1 ⊢`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Simplify using `only [comb, Finset.smul_sum, Matrix.smul_apply, smul_eq_mul, mul_smul, Pi.add_apply, Pi.smul_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[hwA]`. Use `⟨fun k => ?_, linInd_comb A B' hB'A v hMM'.2.1, fun x hx hxE => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← hwA]`. Break down `k with a | b` into its components or cases. Conclude with `hF.1.1 a`. Conclude with `hm''L b`. Establish `hx' : x ∈ Submodule.span E (Set.range v)` using `spanE_comb_le A v hxE`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxO` using `hMM'.2.2 x hx hx'`. Rewrite using `[← hwA]`. Use `(Submodule.span_le.2 ?_) hxO` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Break down `k with i | j` into its components or cases.
-
-Conclude with `Submodule.subset_span ⟨Sum.inl i, rfl⟩`. Establish `hrw : Set.range m'' ⊆ Set.range w` using `by rintro _ ⟨b, rfl⟩; exact ⟨Sum.inr b, rfl⟩`. Establish `hrf : Set.range t.f ⊆ Set.range w` using `by rintro _ ⟨b, rfl⟩; exact ⟨Sum.inl b, rfl⟩`. Establish `hc : comb Ci m'' j ∈ Submodule.span M.L.O (Set.range w)` using `Submodule.span_mono hrw (comb_mem_spanO Ci hCiO m'' j)`. Establish `hcL : comb Ci m'' j ∈ t.abelian₂` using `(Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact hm''L b)) (comb_mem_spanO Ci hCiO m'' j)`.
-
-Establish `hyL : (κ • comb (1 - Ci) t.f) j ∈ t.abelian₂`. Establish `e : (κ • comb (1 - Ci) t.f) j = comb Ci m'' j - m j`. Rewrite using `[hciM, Pi.add_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Conclude with `sub_mem hcL (hMM'.1 (Sum.inr j))`. Establish `hyE : (κ • comb (1 - Ci) t.f) j ∈ Submodule.span E (Set.range t.f)` using `Submodule.smul_mem _ _ (comb_mem_spanE _ t.f j)`. Establish `hyO` using `Submodule.span_mono hrf (hF.1.2.2 _ hyL hyE)`. Establish `e : v (Sum.inr j) = comb Ci m'' j - (κ • comb (1 - Ci) t.f) j` using `by show m j = _`. Rewrite using `[hciM, Pi.add_apply]`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem hc hyO`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_change (t : Term V M r) (C Ci : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (hC0 : ∀ a b, b < a → C a b = 0)
     (hC1 : ∀ a, C a a = 1) (hCO : ∀ a b, C a b ∈ M.L.O) (hCiO : ∀ a b, Ci a b ∈ M.L.O) (hCCi : C * Ci = 1)

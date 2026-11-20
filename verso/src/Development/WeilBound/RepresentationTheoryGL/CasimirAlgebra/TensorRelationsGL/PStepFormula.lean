@@ -11,35 +11,31 @@ namespace PStepFormula
 variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Take `⟨hbij, -, h3, h4, -, -, h7⟩` from `hC n M E 1 n`. Use `set e := LinearEquiv.ofBijective (curF n M 1 n) hbij`. Establish `hG : GlRel (tE (Finset.univ : Finset (Fin 1)) E)` using `(hT n M (Fin 1) E hE Finset.univ).1`. Establish `hE' : GlRel (fun a b => (lift (E a b) : Module.End ℂ (TV n M (Fin 1))))` using `glRel_map (liftA n M (Fin 1)) hE`. Establish `hsw : ∀ a b : Fin n, e.conjAlgEquiv ℂ (pm (Equiv.swap (Fin.natAdd 1 a) (Fin.natAdd 1 b))) = pm (Equiv.swap a b)` using `fun a b => conj_eq e fun x => LinearMap.congr_fun (h7 a b) x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOr : ∀ j : Fin n, e.conjAlgEquiv ℂ (Om E (Fin.natAdd 1 j)) = Om (fun a b => lift (E a b)) j` using `fun j => conj_eq e fun x => curF_Om_r E j x`. Establish `hOl : e.conjAlgEquiv ℂ (Om E (Fin.castAdd n (0 : Fin 1))) = lift (Om E 0)` using `conj_eq e fun x => curF_Om_l E 0 x`. Establish `s1 : e.conjAlgEquiv ℂ (PiJ (1 + n) E u) = lift (PiJ 1 E u) * PiJ n (tE Finset.univ E) u`. Rewrite using `[lift_PiJ]`. Unfold `PiJ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.ofFn_add, List.prod_append, map_mul, map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`. Simplify using `only [Function.comp_def, map_add, AlgEquiv.commutes]`. Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `conj_eq e fun x => LinearMap.congr_fun (h3 i) x`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `conj_eq e fun x => LinearMap.congr_fun (h4 j) x`. Use `set Q : Module.End ℂ (TV n M (Fin (1 + n))) := ∑ j : Fin n, pm (Equiv.swap (Fin.natAdd 1 j) (Fin.castAdd n 0)) with hQdef`. Establish `s2 : e.conjAlgEquiv ℂ (PiJ (1 + n) E u) = PiJ n (fun a b => lift (E a b)) u * (algebraMap ℂ _ u + lift (Om E 0) + e.conjAlgEquiv ℂ Q)`. Establish `hR : pm (rot n) * PiJ (1 + n) E u * pm (rot n)⁻¹ = PiJ (1 + n) E u`. Rewrite using `[← ((hJ n M E hE (1 + n)).2.2 u (rot n)).eq, mul_assoc, ← pm_mul, mul_inv_cancel, pm_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Set `eρ : TV n M (Fin (1 + n)) ≃ₗ[ℂ] TV n M (Fin (1 + n))` to `LinearEquiv.ofLinear (pm (rot n)) (pm (rot n)⁻¹) (by rw [← Module.End.mul_eq_comp, ← pm_mul, mul_inv_cancel, pm_one]; rfl) (by rw [← Module.End.mul_eq_comp, ← pm_mul, inv_mul_cancel, pm_one]; rfl)`. Establish `hΨ : ∀ T, eρ.conjAlgEquiv ℂ T = pm (rot n) * T * pm (rot n)⁻¹` using `fun T => rfl`. Rewrite using `[← hR, ← hΨ]`. Unfold `PiJ`. Rewrite using `[map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn, List.ofFn_congr (Nat.add_comm 1 n), List.ofFn_succ', List.concat_eq_append, List.prod_append, List.prod_singleton]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Function.comp_apply, map_add, AlgEquiv.commutes]`. Use `congr 1`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hk : (Fin.cast (Nat.add_comm 1 n).symm j.castSucc : Fin (1 + n)) = ⟨j, by omega⟩` using `Fin.ext (by simp)`. Rewrite using `[hΨ, conj_xJ hT E hE, hk, rot_nat, map_add, hOr, xJ, sum_lt_cast _ (by simp), map_sum]`. Use `congr 1`. Use `Finset.sum_congr (Finset.filter_congr fun i _ => Iff.rfl) fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[rot_nat, hsw]`. Rewrite using `[hΨ, conj_xJ hT E hE, rot_last _ (by simp), map_add, hOl, sum_lt_cast _ (by simp), hQdef, map_sum, map_sum, add_assoc]`. Use `congr 2`. Use `Finset.sum_congr (Finset.filter_true_of_mem fun i _ => by simp) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[rot_nat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hQalt : e.conjAlgEquiv ℂ Q * alt Finset.univ = alt Finset.univ`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `g`. Rewrite using `[Module.End.mul_apply]`. Use function extensionality and compare the values at `J I`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsymm : ∀ (y : TV n (TV n M (Fin 1)) (Fin n)) (I' : Fin 1 → Fin n) (J' : Fin n → Fin n), e.symm y (Fin.append I' J') = y J' I'` using `fun y I' J' => congrFun (congrFun (e.apply_symm_apply y) J') I'`. Use `show (Q (e.symm (alt Finset.univ g))) (Fin.append I J) = _`. Rewrite using `[hQdef, LinearMap.sum_apply, Finset.sum_apply]`. Simplify using `only [pm_apply, app_swap, hsymm]`. Conclude with `sum_swap (fun J I => alt Finset.univ g J I) (fun J a b hab => alt_swap g J a b hab) J I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hq1` using `hQ n _ _ hG u`. Establish `hq2` using `hQ n _ _ hE' u`. Establish `hqE : qdet (fun a b => (lift (E a b) : Module.End ℂ (TV n M (Fin 1)))) u = lift (qdet E u)` using `(qdet_map (liftA n M (Fin 1)) E u).symm`. Establish `hcomm : ∀ B : Module.End ℂ (TV n M (Fin 1)), (alt Finset.univ : Module.End ℂ (TV n (TV n M (Fin 1)) (Fin n))) * lift B = lift B * alt Finset.univ`. Introduce `B`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [alt, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, (lift_comm_pm B _).eq]`. Establish `hl : (lift (algebraMap ℂ _ (u + 1) + Om E 0) : Module.End ℂ (TV n (TV n M (Fin 1)) (Fin n))) = algebraMap ℂ _ u + lift (Om E 0) + 1`. Rewrite using `[← liftA_apply, map_add, AlgHom.commutes, liftA_apply, map_add, map_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[PiJ_one E (u + 1)]`.
-
-Apply `ext_of_alt (n := n)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[s2, mul_assoc, hl, add_mul, hQalt, add_mul _ 1, one_mul]`. Use `_ = PiJ n (fun a b => lift (E a b)) u * alt Finset.univ * lift (algebraMap ℂ _ (u + 1) + Om E 0) := by`. Rewrite using `[← hcomm, mul_assoc]`.
-
-Use `_ = lift (lift (qdet E u) * (algebraMap ℂ _ (u + 1) + Om E 0)) * alt Finset.univ := by`. Rewrite using `[hq2, hqE, mul_assoc, hcomm, ← mul_assoc, ← lift_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one (hT : TensorGl) (hJ : JMComm) (hQ : PiQdet) (hC : Curry) (E : Fin n → Fin n → Module.End ℂ M)
     (hE : GlRel E) (u : ℂ) :
@@ -130,21 +126,19 @@ end PStepFormula
 
 open PStepFormula in
 /- English proof (translation)
-Introduce `hT hJ hQ hC n M _ _ E hE m`. Proceed by induction on `m generalizing M with`. Consider the case `zero`. Introduce `u`. Establish `h0 : (tE (Finset.univ : Finset (Fin 0)) E : Fin n → Fin n → Module.End ℂ (TV n M (Fin 0))) = fun a b => liftA n M (Fin 0) (E a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a b`. Simplify using `[tE, liftA_apply]`. Rewrite using `[h0, ← qdet_map, liftA_apply]`. Simplify using `[PiJ]`. Consider the case `succ m ih`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `u`. Take `⟨hbij, h2, h3, h4, h5, -, -⟩` from `hC n M E m 1`. Use `set e := LinearEquiv.ofBijective (curF n M m 1) hbij`. Establish `hG : GlRel (tE (Finset.univ : Finset (Fin m)) E)` using `(hT n M (Fin m) E hE Finset.univ).1`. Establish `hsplit : ∀ v : ℂ, e.conjAlgEquiv ℂ (PiJ (m + 1) E v) = lift (PiJ m E v) * PiJ 1 (tE Finset.univ E) v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[lift_PiJ]`. Unfold `PiJ`. Rewrite using `[List.ofFn_add, List.prod_append, map_mul, map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`. Simplify using `only [Function.comp_def, map_add, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `congr 1`. Conclude with `conj_eq e fun x => LinearMap.congr_fun (h3 i) x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Use `congr 1`. Conclude with `conj_eq e fun x => LinearMap.congr_fun (h4 j) x`. Establish `hq : e.conjAlgEquiv ℂ (qdet (tE (Finset.univ : Finset (Fin (m + 1))) E) u) = qdet (tE (Finset.univ : Finset (Fin 1)) (tE (Finset.univ : Finset (Fin m)) E)) u`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← AlgEquiv.coe_toAlgHom, qdet_map]`. Use `congr 1`. Use function extensionality and compare the values at `a b`. Conclude with `conj_eq e fun x => LinearMap.congr_fun (h2 a b) x`. Establish `hl : e.conjAlgEquiv ℂ (lift (qdet E u)) = lift (lift (qdet E u))` using `conj_eq e fun x => LinearMap.congr_fun (h5 _) x`.
-
-Apply `(e.conjAlgEquiv ℂ).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hsplit, hsplit, hq, hl, mul_assoc, one hT hJ hQ hC _ hG, ← mul_assoc, ← lift_mul, ih M E hE, lift_mul, mul_assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepFormula_of : TensorGl → JMComm → PiQdet → Curry → StepFormula := by
   intro hT hJ hQ hC n M _ _ E hE m

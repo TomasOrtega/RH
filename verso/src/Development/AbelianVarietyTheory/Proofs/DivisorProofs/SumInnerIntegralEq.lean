@@ -15,7 +15,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.PsCo.Pc3
 
 /- English proof (translation)
-Establish `h1 : ∀ j, ⟪e j, T (e j)⟫_ℂ = ∫ x, ⟪e j, f x • ρ x (e j)⟫_ℂ ∂ν` using `fun j => by`. Rewrite using `[(h (e j)).2, integral_inner (h (e j)).1]`. Simplify using `only [h1]`. Rewrite using `[← integral_finsetSum _ fun j _ => (h (e j)).1.const_inner (e j)]`. Simplify using `only [inner_smul_right, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_inner_integral_eq {X U ι : Type} [MeasurableSpace X] [NormedAddCommGroup U] [InnerProductSpace ℂ U]
     [CompleteSpace U] [Fintype ι] (ν : Measure X) (f : X → ℂ) (ρ : X → U →L[ℂ] U) (e : ι → U) (T : U →L[ℂ] U)
@@ -28,11 +28,11 @@ theorem sum_inner_integral_eq {X U ι : Type} [MeasurableSpace X] [NormedAddComm
   simp only [inner_smul_right, Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `n ε μ _ U _ _ _ π hπ hirr d`. Take `⟨L, hL, hmem, -⟩` from `hF n ε U π hπ hirr d`. Use `⟨fun g => ∑ j, ⟪(stdOrthonormalBasis ℂ L j : U), π g (stdOrthonormalBasis ℂ L j : U)⟫_ℂ, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_finsetSum _ fun j _ => continuous_const.inner (hπ.continuous_apply _)`. Introduce `φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hop, hr⟩` from `hS n ε μ U π hπ d φ hφ`. Use `hT U L _ fun u => hmem _ (hr u).1` as an intermediate fact. Rewrite `this` using `[sum_inner_integral_eq μ (fun g => φ (toM g)) (fun g => π g) _ _ hop]`. Then use the resulting hypothesis. Introduce `P hP`. Take `⟨B, hB, hr⟩` from `hK n ε U π hπ P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, fun v => (hB v).2, ?_⟩` and prove the remaining obligations. Use `hT U L B fun u => hmem _ fun l => by` as an intermediate fact. Take `⟨Q, hQ, hQ'⟩` from `hr u l`. Conclude with `⟨Q, hQ.trans hP, hQ'⟩`. Rewrite `this` using `[sum_inner_integral_eq (muK ε) (fun k : KG ε => ev (toMK k) P) (fun k : KG ε => π k) _ _ hB]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stTr_of_range_steps (hF : UFin) (hS : RangeShape) (hK : RangeK) (hT : TraceSum) : StTr := by
   intro n ε μ _ U _ _ _ π hπ hirr d
@@ -52,7 +52,7 @@ theorem stTr_of_range_steps (hF : UFin) (hS : RangeShape) (hK : RangeK) (hT : Tr
     rwa [sum_inner_integral_eq (muK ε) (fun k : KG ε => ev (toMK k) P) (fun k : KG ε => π k) _ _ hB] at this
 
 /- English proof (translation)
-The claim follows from `stTr_of_range_steps GlobalTheory.T.polyCoeff_vectors_lie_in_finiteDimensional_smooth GlobalTheory.T.shapeIntegratedOperator_ranges_polynomial rangeK GlobalTheory.OpTrace.hasTrace_sum_inner_of_range_le`.
+A detailed English derivation is pending.
 -/
 theorem stTr : StTr := stTr_of_range_steps GlobalTheory.T.polyCoeff_vectors_lie_in_finiteDimensional_smooth GlobalTheory.T.shapeIntegratedOperator_ranges_polynomial rangeK GlobalTheory.OpTrace.hasTrace_sum_inner_of_range_le
 

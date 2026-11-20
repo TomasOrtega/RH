@@ -10,15 +10,13 @@ namespace Formalism.L2.SG.Pf
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.TypedSets Formalism.L2.SG.LocVol
 
 /- English proof (translation)
-Introduce `hP hT`. Take `⟨-, -, -, hUo, -, hZm, -, hPP, -, -, hjm, -⟩` from `hP`. Establish `hJ' : ∀ v : PlX X, ZZX X u u' ψ v * jacX X v = localVolumeUnit X ψ v * ∏ l : Fin (D.R.rS + 1), PPX X u u' ψ l v` using `fun v => hJ v (fun hv => hT ⟨v, hv⟩)`. Establish `hL : HasProd (fun v : PlX X => ZZX X u u' ψ v * jacX X v) ((∏' v : PlX X, ZZX X u u' ψ v) * ∏' v : PlX X, jacX X v)` using `hZm.hasProd.mul hjm.hasProd`. Use `set S : Set (PlX X) := {v | TypAt X v} with hSdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Finite S`. Establish `: Set.Finite S` using `(typSet X.B.I.F (D.host.g 0) (D.host.g 1)).finite_toSet`. Conclude with `this.to_subtype`. Establish `hUS : HasProd (fun x : S => localVolumeUnit X ψ x.1) (∏' x : S, localVolumeUnit X ψ x.1)` using `Multipliable.of_finite.hasProd`. Establish `hUSc : HasProd (fun x : (Sᶜ : Set (PlX X)) => localVolumeUnit X ψ x.1) (∏' v : OrdX X, localVolumeUnit X ψ v.1)` using `hUo.hasProd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : HasProd (localVolumeUnit X ψ) ((∏' x : S, localVolumeUnit X ψ x.1) * ∏' v : OrdX X, localVolumeUnit X ψ v.1)` using `hUS.mul_isCompl isCompl_compl hUSc`. Establish `hPPh : HasProd (fun v : PlX X => ∏ l : Fin (D.R.rS + 1), PPX X u u' ψ l v) (∏ l : Fin (D.R.rS + 1), ∏' v : PlX X, PPX X u u' ψ l v)` using `hasProd_prod fun l _ => (hPP l).1.hasProd`. Establish `hR` using `hU.mul hPPh`. Establish `hLR : (∏' v : PlX X, ZZX X u u' ψ v) * ∏' v : PlX X, jacX X v = ((∏' x : S, localVolumeUnit X ψ x.1) * ∏' v : OrdX X, localVolumeUnit X ψ v.1) * ∏ l : Fin (D.R.rS + 1), ∏' v : PlX X, PPX X u u' ψ l v`. Use `hL.unique ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hR` using `only [hJ']`. Establish `hTyp : (∏ p : TypX X, localVolumeUnit X ψ p.1) = ∏' x : S, localVolumeUnit X ψ x.1`. Rewrite using `[← tprod_fintype (L := SummationFilter.unconditional (TypX X)) (fun p : TypX X => localVolumeUnit X ψ p.1)]`. Both sides reduce to the same expression. Use `show (∏' v : PlX X, ZZX X u u' ψ v) * ∏' v : PlX X, jacX X v = ((∏' v : OrdX X, localVolumeUnit X ψ v.1) * ∏ p : TypX X, localVolumeUnit X ψ p.1) * ∏ l : Fin (D.R.rS + 1), ∏' v : PlX X, PPX X u u' ψ l v`.
-
-Rewrite using `[hLR, hTyp]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finJac_of {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ)
     (hJ : ∀ v : PlX X, JacLocAt X u u' ψ v) : FinJac X u u' ψ := by

@@ -18,14 +18,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ)).toRingHom`. Conclude with `τ.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem conj_conj_of_cm (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ)).toRingHom
   exact τ.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, hpl, hsum⟩` from `he`. Use `⟨by rw [← map_mul, h1], ?_, v, ε, hpl, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitInvFormF.cAF_cAF ⟨h1, h2, v, ε, hpl, hsum⟩, mul_comm, h2]`. Rewrite using `[GlobalTheory.SplitInvFormF.cAF_cAF ⟨h1, h2, v, ε, hpl, hsum⟩, add_comm, hsum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSplitIdemF_conj {e : AEF F E} (he : IsSplitIdemF σ e) : IsSplitIdemF σ (cAF σ e) := by
   obtain ⟨h1, h2, v, ε, hpl, hsum⟩ := he
@@ -34,7 +34,7 @@ theorem isSplitIdemF_conj {e : AEF F E} (he : IsSplitIdemF σ e) : IsSplitIdemF 
   · rw [GlobalTheory.SplitInvFormF.cAF_cAF ⟨h1, h2, v, ε, hpl, hsum⟩, add_comm, hsum]
 
 /- English proof (translation)
-Establish `h1 : JS⁻¹.map (incAF F E) * JS.map (incAF F E) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit hS.2)]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Conclude with `GlobalTheory.SymplOInv.sum_unitary (cAF σ) (JT.map (incAF F E)) (mtF σ JT h) (JS⁻¹.map (incAF F E)) (JS.map (incAF F E)) (mtF σ JS g⁻¹) h1 h.2 (g⁻¹).2 x y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hOF_actOF (hS : IsHermND σ JS) (g : GAF σ JS) (h : GAF σ JT) (x y : WOF F E nS nT) :
     hOF σ JS JT (actOF σ JS JT g h x) (actOF σ JS JT g h y) = hOF σ JS JT x y := by
@@ -45,7 +45,7 @@ theorem hOF_actOF (hS : IsHermND σ JS) (g : GAF σ JS) (h : GAF σ JT) (x y : W
     (JS.map (incAF F E)) (mtF σ JS g⁻¹) h1 h.2 (g⁻¹).2 x y
 
 /- English proof (translation)
-Unfold `symplOF`. Rewrite using `[hOF_actOF hS]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOF_actOF (hS : IsHermND σ JS) (ξ₀ : E) (g : GAF σ JS) (h : GAF σ JT) (x y : WOF F E nS nT) :
     symplOF σ JS JT ξ₀ (actOF σ JS JT g h x) (actOF σ JS JT g h y) = symplOF σ JS JT ξ₀ x y := by
@@ -53,7 +53,7 @@ theorem symplOF_actOF (hS : IsHermND σ JS) (ξ₀ : E) (g : GAF σ JS) (h : GAF
   rw [hOF_actOF hS]
 
 /- English proof (translation)
-Rewrite using `[gamFF, gamFF, coe_rhoFF, coe_rhoFF, symplOF_actOF hS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gamFF_rhoFF (hS : IsHermND σ JS) (ξ₀ : E) (ψ : AddChar (AF F) ℂ) (p : GAF σ JS × GAF σ JT)
     (x y : XFF F E nS nT) :
@@ -61,7 +61,7 @@ theorem gamFF_rhoFF (hS : IsHermND σ JS) (ξ₀ : E) (ψ : AddChar (AF F) ℂ) 
   rw [gamFF, gamFF, coe_rhoFF, coe_rhoFF, symplOF_actOF hS]
 
 /- English proof (translation)
-Establish `h : (e + cAF σ e) • (mtF σ J g - 1) = mtF σ J g - 1` using `Matrix.ext fun i j => hg i j`. Rewrite using `[← sub_eq_zero, ← smul_sub, sub_smul, one_smul, h, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem off_smul_mtF {e : AEF F E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g : GAF σ J} (hg : SuppAtF σ e J g) :
     (1 - (e + cAF σ e)) • mtF σ J g = (1 - (e + cAF σ e)) • (1 : Matrix (Fin n) (Fin n) (AEF F E)) := by
@@ -69,7 +69,7 @@ theorem off_smul_mtF {e : AEF F E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g :
   rw [← sub_eq_zero, ← smul_sub, sub_smul, one_smul, h, sub_self]
 
 /- English proof (translation)
-Establish `h : mtF σ J g * mtF σ J g⁻¹ = 1`. Unfold `mtF`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Rewrite using `[← h, ← Matrix.smul_mul, off_smul_mtF hg, Matrix.smul_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem off_smul_mtF_inv {e : AEF F E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g : GAF σ J}
     (hg : SuppAtF σ e J g) :
@@ -80,7 +80,7 @@ theorem off_smul_mtF_inv {e : AEF F E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
   rw [← h, ← Matrix.smul_mul, off_smul_mtF hg, Matrix.smul_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `actOF`. Rewrite using `[← Matrix.smul_mul, ← Matrix.smul_mul, off_smul_mtF hh, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, ← Matrix.mul_smul, off_smul_mtF_inv hg, Matrix.mul_smul, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem off_smul_actOF {e : AEF F E} {g : GAF σ JS} {h : GAF σ JT} (hg : SuppAtF σ e JS g) (hh : SuppAtF σ e JT h)
     (u : WOF F E nS nT) : (1 - (e + cAF σ e)) • actOF σ JS JT g h u = (1 - (e + cAF σ e)) • u := by
@@ -93,15 +93,13 @@ end GlobalTheory.FinLatSplitF
 open GlobalTheory.FinLatF GlobalTheory.FinLatSplitF in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ _ hξ hc Λ w lam Om hL e he g k hg hk`. Establish `hσ : ∀ x, σ (σ x) = x` using `conj_conj_of_cm hB.cm`. Establish `he' : IsSplitIdemF σ (cAF σ e)` using `isSplitIdemF_conj he`. Establish `hm : ∀ (a b : AEF F E) (x : XFF F E nS nT), mulFF a (mulFF b x) = (a * b) • x` using `fun a b x => smul_smul a b x`. Establish `hcm : ∀ (a : AEF F E) (x : XFF F E nS nT), rhoFF σ JS JT (g, k) (mulFF a x) = mulFF a (rhoFF σ JS JT (g, k) x)` using `fun a x => XFF.ext (actOF_smul _ _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn, hℓ⟩` from `GlobalTheory.T.invariantForm_normalizedHeisenbergIntertwiner_eq (isHeis_opFF hσ hS hT hξ hc hL.hw) lam _ hL.sd hL.span (rhoFF σ JS JT (g, k)) (gamFF_rhoFF hS ξ₀ B.ψ _) (hL.sd' _) (hL.fin _) (Om (g, k)) (hL.op _) (hL.vac _) (mulFF e) (mulFF (cAF σ e)) (fun x => by rw [hm, he.1]; r …`. Use `off_smul_actOF hg hk (x : WOF F E nS nT)` as an intermediate fact. Rewrite `this` using `[sub_smul, sub_smul, add_smul, add_smul, one_smul, one_smul, ← sub_sub, ← sub_sub]`. Conclude with `this))`. Establish `hi` using `hL.fin (g, k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `hL.sqrt _ hi (fun q hq hin => hL.splitIdx e he g k hg hk q hq hin)`. Use `⟨(Real.sqrt (idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT (g, k))) : ℕ))⁻¹ * n, mul_pos (inv_pos.2 (Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero hi)))) (Nat.cast_pos.2 hn), fun ℓ h1 f => ?_⟩` and prove the remaining obligations. Use `hℓ (ℓ ∘ₗ (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ).subtype) (fun u m => by` as an intermediate fact. Establish `hu : ((mulFF (cAF σ e) u : XFF F E nS nT) : WOF F E nS nT) ∈ GlobalTheory.SplitInvFormF.conjHalf σ e nS nT` using `fun i j => by show cAF σ e * (cAF σ e * (u : WOF F E nS nT) i j) = cAF σ e * (u : WOF F E nS nT) i j`. Rewrite using `[← mul_assoc, he'.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwu : (intAF F w • ((mulFF (cAF σ e) u : XFF F E nS nT) : WOF F E nS nT)) ∈ GlobalTheory.SplitInvFormF.conjHalf σ e nS nT` using `fun i j => by show cAF σ e * (intAF F w * (cAF σ e * (u : WOF F E nS nT) i j)) = intAF F w * (cAF σ e * (u : WOF F E nS nT) i j)`. Rewrite using `[mul_left_comm, ← mul_assoc (cAF σ e), he'.1]`. Use `show ℓ (opFF hc w (mulFF (cAF σ e) u) m : WOF F E nS nT → ℂ) = ℓ m`. Rewrite using `[coe_opFF, phaseF, GlobalTheory.SplitInvFormF.symplOHF_half he hwu hu, neg_zero, AddChar.map_zero_eq_one, one_smul]`. Conclude with `h1 _ hu _ m.2) f`.
-
-Rewrite `this` using `[hl]`. Use `push_cast`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinLatF.isLatRepF_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

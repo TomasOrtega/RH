@@ -9,7 +9,7 @@ universe w
 namespace GlobalTheory.CompanionTheory.RedPull
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_eq_of_eq {R : Type} [CommRing R] {K : Cx.{w} R} {n : ℕ} {a b : K.X n} (e : a = b)
     (ha : K.d n a = 0) (hb : K.d n b = 0) : K.cls a ha = K.cls b hb := by
@@ -17,9 +17,9 @@ theorem cls_eq_of_eq {R : Type} [CommRing R] {K : Cx.{w} R} {n : ℕ} {a b : K.X
   rfl
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx F) j).1 z`. Establish `h1` using `CrystallineSemistableComparison.CechClassBoundaries.cyc a.hom x hx`. Establish `h2` using `CrystallineSemistableComparison.CechClassBoundaries.cyc b.hom _ h1`. Establish `h3` using `CrystallineSemistableComparison.CechClassBoundaries.cyc c.hom x hx`. Establish `h4` using `CrystallineSemistableComparison.CechClassBoundaries.cyc d.hom _ h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `b.hom.mapH j (a.hom.mapH j _) = d.hom.mapH j (c.hom.mapH j _)`. Rewrite using `[CrystallineSemistableComparison.CechClassBoundaries.mapH_cls' a.hom x hx h1, CrystallineSemistableComparison.CechClassBoundaries.mapH_cls' b.hom _ h1 h2, CrystallineSemistableComparison.CechClassBoundaries.mapH_cls' c.hom x hx h3, CrystallineSemistableComparison.CechClassBoundar …`. Conclude with `cls_eq_of_eq (h x) h2 h4`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_square {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C]
     [Category.{0} C'] {F G : C ⥤ ModuleCat.{0} R} {F' G' : C' ⥤ ModuleCat.{0} R'}
@@ -37,7 +37,7 @@ theorem pull_square {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {
   exact cls_eq_of_eq (h x) h2 h4
 
 /- English proof (translation)
-Use `pull_square _ _ _ _ j (fun x => ?_) z` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Conclude with `Subtype.ext Ideal.quotientMap_mk`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sq_toSq {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C]
     [Category.{0} C'] {Φ : PDF R C} {Φ' : PDF R' C'} (mm : SMor Φ Φ' σ) (b : IdF Φ.A) (b' : IdF Φ'.A)
@@ -49,7 +49,7 @@ theorem sq_toSq {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C'
   exact Subtype.ext Ideal.quotientMap_mk
 
 /- English proof (translation)
-Introduce `O A A' _ _ _ _ _ I I' γ γ' X X' q q' σ m l s r n j z`. Conclude with `sq_toSq (nmS m l s) _ _ (fun _ _ _ => trivial) (nm_std m l s r n) j z`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nmHM_redM : ∀ {O A A' : Type} [CommRing O] [CommRing A] [CommRing A'] [Algebra O A] [Algebra O A'] {I : Ideal A} {I' : Ideal A'}
     {γ : DividedPowers I} {γ' : DividedPowers I'} {X X' : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {q' : X' ⟶ Spec (CommRingCat.of O)}

@@ -14,13 +14,13 @@ section Gen
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Express the relevant statement in the definitionally equal form `P.mulVec c = 0 at hc`. Apply `hc0` to reduce the goal to its premises. Establish `hsum : ∑ j, c j • y j = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hxy, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ l, ∑ j, (c j * P l j) • x l = ((P.mulVec c) l) • x l`. Introduce `l`. Rewrite using `[← Finset.sum_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Repeatedly rewrite using `[this, hc]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(Fintype.linearIndependent_iff.1 hy) c hsum i`.
+A detailed English derivation is pending.
 -/
 lemma det_ne_zero_of_comb {V : Type} [AddCommGroup V] [Module K V] {r : ℕ} (x y : Fin r → V)
     (P : Matrix (Fin r) (Fin r) K) (hy : LinearIndependent K y)
@@ -43,16 +43,16 @@ lemma det_ne_zero_of_comb {V : Type} [AddCommGroup V] [Module K V] {r : ℕ} (x 
   exact (Fintype.linearIndependent_iff.1 hy) c hsum i
 
 /- English proof (translation)
-Unfold `vAdd`. Rewrite using `[map_inv₀, WithZero.log_inv, neg_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma vAdd_inv (w : HeightOneSpectrum (𝓞 K)) (x : K) : vAdd w x⁻¹ = -vAdd w x := by
   unfold vAdd
   rw [map_inv₀, WithZero.log_inv, neg_neg]
 
 /- English proof (translation)
-Establish `h1 : w.valuation K (algebraMap (𝓞 K) K T) = 1`. Use `le_antisymm (w.valuation_le_one T) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hT ((w.valuation_lt_one_iff_mem T).1 (not_le.1 hlt))`. Unfold `vAdd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, WithZero.log_one, neg_zero]`.
+A detailed English derivation is pending.
 -/
 lemma vAdd_unit (w : HeightOneSpectrum (𝓞 K)) (T : 𝓞 K) (hT : T ∉ w.asIdeal) :
     vAdd w (algebraMap (𝓞 K) K T) = 0 := by

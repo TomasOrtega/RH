@@ -14,7 +14,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ResW
 
 /- English proof (translation)
-Unfold `zc`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem zc_eq_scL {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) :
     zc E N = lie E N (Central.scL N 1) := by
@@ -22,9 +22,9 @@ theorem zc_eq_scL {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (N :
   congr 1
 
 /- English proof (translation)
-Establish `e : (fun _ : InfinitePlace E => (t : ℂ)) = t • (1 : Cinf E)`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Unfold `splitCentre`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cornerGL_scalar _ _`.
+A detailed English derivation is pending.
 -/
 theorem splitCentre_eq_scalar {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) (t : ℝ) :
     splitCentre E N t = Matrix.GeneralLinearGroup.scalar (Fin N) (infId E (expU (t • (1 : Cinf E)))) := by
@@ -35,15 +35,15 @@ theorem splitCentre_eq_scalar {E : Type} [Field E] [NumberField E] [IsTotallyCom
   exact cornerGL_scalar _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ N`. Rewrite using `[zc_eq_scL]`. Use `⟨fun o => (Central.lie_act 1 o).eq, Central.lie_mem_Zalg 1, fun φ c => ⟨fun h t g => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `e : Central.scL N (t • (1 : Cinf E)) = t • Central.scL N (1 : Cinf E)`. Use function extensionality and compare the values at `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `Matrix.diagonal (fun _ => t • (1 : Cinf E)) i j = t • Matrix.diagonal (fun _ => (1 : Cinf E)) i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hij]`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1 : lie E N (Central.scL N (t • (1 : Cinf E))) φ = (c * t) • φ`. Rewrite using `[e, map_smul, LinearMap.smul_apply, h, mul_comm, mul_smul, Complex.coe_smul]`. Establish `h2` using `congrFun (congrArg Subtype.val (Central.rs_exp _ _ φ h1)) g`. Rewrite using `[splitCentre_eq_scalar, scalar_comm]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Establish `h1` using `Central.hasDerivAt_scalar (1 : Cinf E) φ g`. Establish `e : ∀ t : ℝ, φ.1 (g * Matrix.GeneralLinearGroup.scalar (Fin N) (infId E (expU (t • (1 : Cinf E))))) = Complex.exp (c * t) * φ.1 g` using `fun t => by rw [← scalar_comm, ← splitCentre_eq_scalar, h]`. Simplify using `only [e] at h1`. Establish `h2 : HasDerivAt (fun t : ℝ => Complex.exp (c * t) * φ.1 g) (c * φ.1 g) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (((Complex.ofRealCLM.hasDerivAt (x := 0)).const_mul c).cexp).mul_const (φ.1 g)`. Conclude with `h1.unique h2`.
+A detailed English derivation is pending.
 -/
 theorem zc_comm_mem_eigen : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), (∀ o : Op E N, zc E N * act o = act o * zc E N) ∧ zc E N ∈ Zalg E N ∧ ∀ (φ : Sm E N) (c : ℂ), zc E N φ = c • φ ↔ ∀ (t : ℝ) (g : GA E N), φ.1 (splitCentre E N t * g) = Complex.exp (c * t) * φ.1 g := by
   intro E _ _ _ N

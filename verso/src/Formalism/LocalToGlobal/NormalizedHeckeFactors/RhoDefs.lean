@@ -58,7 +58,7 @@ theorem ofRec_apply (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : Fram
     (g : Ω ≃ₐ[E] Ω) (x : AlgebraicClosure L) : ofRec j k hk g x = k.symm (g (k x)) := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[toRec_apply, ofRec_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toRec_ofRec (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : FrameOver j k) (g : Ω ≃ₐ[E] Ω) :
     toRec j k hk (ofRec j k hk g) = g := by
@@ -66,7 +66,7 @@ theorem toRec_ofRec (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : Fram
   simp [toRec_apply, ofRec_apply]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[toRec_apply, ofRec_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ofRec_toRec (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : FrameOver j k)
     (σ : AlgebraicClosure L ≃ₐ[L] AlgebraicClosure L) : ofRec j k hk (toRec j k hk σ) = σ := by
@@ -131,7 +131,7 @@ def IsConjRep {Γ K : Type} [Group Γ] [CommRing K] {n : ℕ} (ρ₁ ρ₂ : Γ 
   ∃ P : GL (Fin n) K, ∀ g, ρ₁ g = P * ρ₂ g * P⁻¹
 
 /- English proof (translation)
-Use `D.R.two_le_m` as an intermediate fact. Use `show 1 ≤ D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem one_le_r (D : D7) : 1 ≤ D.R.r := by
   have := D.R.two_le_m
@@ -164,21 +164,21 @@ def rowSig (D : D7) (a : D.nd.Loc) (σ : D.what₂.FT) : List (Part D.naut.CG) :
   Classical.epsilon (IsRowPar D a σ)
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (hP a σ hσ)`.
+A detailed English derivation is pending.
 -/
 theorem rowSig_isRowPar (D : D7) (hP : RowPar D) (a : D.nd.Loc) (σ : D.what₂.FT) (hσ : D.what₂.isot (D.nd.j a) σ ≠ ⊥) :
     IsRowPar D a σ (rowSig D a σ) :=
   Classical.epsilon_spec (hP a σ hσ)
 
 /- English proof (translation)
-The claim follows from `(rowSig_isRowPar D hP a σ hσ).1`.
+A detailed English derivation is pending.
 -/
 theorem rowSig_spec (D : D7) (hP : RowPar D) (a : D.nd.Loc) (σ : D.what₂.FT) (hσ : D.what₂.isot (D.nd.j a) σ ≠ ⊥) :
     Formalism.MainNotions.N.HasParamW D.nd D.naut a σ (rowSig D a σ) :=
   (rowSig_isRowPar D hP a σ hσ).1
 
 /- English proof (translation)
-The claim follows from `(rowSig_isRowPar D hP a σ hσ).2 hg ⟨D.R.r, π, 1⟩ (by rw [hS]; exact List.mem_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem rowSig_csd_ralg (D : D7) (hP : RowPar D) (a : D.nd.Loc) (σ : D.what₂.FT) (hσ : D.what₂.isot (D.nd.j a) σ ≠ ⊥)
     (hg : D.nd.goodRow σ) (π : D.naut.CG D.R.r) (hS : rowSig D a σ = [⟨D.R.r, π, 1⟩]) : D.naut.csd π ∧ D.naut.ralg π :=
@@ -189,7 +189,7 @@ def rowRho (D : D7) (hG : GalRepEx D) (a : D.nd.Loc) (π : D.naut.CG D.R.r) (hc 
   Classical.choose (hG a D.R.r (one_le_r D) π hc hr)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hG a D.R.r (one_le_r D) π hc hr)`.
+A detailed English derivation is pending.
 -/
 theorem rowRho_spec (D : D7) (hG : GalRepEx D) (a : D.nd.Loc) (π : D.naut.CG D.R.r) (hc : D.naut.csd π)
     (hr : D.naut.ralg π) : IsRepOfSigQ D a D.R.r [⟨D.R.r, π, 1⟩] (rowRho D hG a π hc hr) :=

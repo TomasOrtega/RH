@@ -12,9 +12,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 namespace GlobalTheory.ShortValueLinear
 
 /- English proof (translation)
-Introduce `m hm`. Establish `hmS : m ∈ P.support` using `MvPolynomial.mem_support_iff.mpr hm`. Establish `key : ∀ (σ : T) (i : Fin (r σ)), a σ (i : ℕ) = ∑ b, m ⟨σ, (i, b)⟩` using `fun σ i => (hP m hmS σ i).symm`. Simplify using `only [key]`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.one_apply, smul_eq_mul, mul_one]`. Rewrite using `[Fintype.sum_sigma]`. Conclude with `Finset.sum_congr rfl fun σ _ => Fintype.sum_prod_type _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_of_rowDeg {T : Type} [Fintype T] {r : T → ℕ} {n : ℕ} {k : Type} [Field k]
     {a : T → ℕ → ℕ} {P : MvPolynomial (Letter T r n) k} (hP : RowDeg r n k a P) :
@@ -31,9 +31,9 @@ theorem isHomogeneous_of_rowDeg {T : Type} [Fintype T] {r : T → ℕ} {n : ℕ}
   exact Finset.sum_congr rfl fun σ _ => Fintype.sum_prod_type _
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.constr_apply, Finsupp.sum]`. Use `Finset.sum_congr ?_ fun μ _ => ?_` and prove the remaining obligations. Use extensionality with `μ`. Simplify using `[MvPolynomial.basisMonomials]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 
-Simplify using `[MvPolynomial.basisMonomials, Algebra.smul_def]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sum_support_eq_constr {ι F S : Type} [Field F] [CommRing S] [Algebra F S]
     (G : (ι →₀ ℕ) → S) (P : MvPolynomial ι F) :
@@ -49,17 +49,17 @@ theorem sum_support_eq_constr {ι F S : Type} [Field F] [CommRing S] [Algebra F 
     rfl
 
 /- English proof (translation)
-Use `Fintype.ofFinite Qt` as an intermediate fact. Use `set B := MvPolynomial.basisMonomials ι F`. Establish `hsum : ∀ (P : MvPolynomial ι F) (q : Qt) (j : J), ∑ μ ∈ P.support, algebraMap F S (P.coeff μ) * G q j μ = B.constr F (G q j) P` using `fun P q j => sum_support_eq_constr (G q j) P`. Simplify using `only [hsum, finsum_eq_sum_of_fintype]`. Establish `hpre : ∀ P : MvPolynomial ι F, P.IsHomogeneous d → algebraMap F S (k * (N ^ P.totalDegree)⁻¹) * ∑ q, algebraMap F S (w q) * ∑ j, B.constr F (G q j) P = algebraMap F S (k * (N ^ d)⁻¹) * ∑ q, algebraMap F S (w q) * ∑ j, B.constr F (G q j) P`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Distinguish the cases in `hP0 : P = 0`. Simplify using `[hP0]`. Rewrite using `[hP.totalDegree hP0]`. Establish `hQs : (∑ i, cf i • Q i).IsHomogeneous d`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MvPolynomial.mem_homogeneousSubmodule]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ((MvPolynomial.mem_homogeneousSubmodule _ _).mpr (hQ i))`. Establish `hR : ∀ i, algebraMap F S (cf i) * (algebraMap F S (k * (N ^ (Q i).totalDegree)⁻¹) * ∑ q, algebraMap F S (w q) * ∑ j, B.constr F (G q j) (Q i)) = algebraMap F S (cf i) * (algebraMap F S (k * (N ^ d)⁻¹) * ∑ q, algebraMap F S (w q) * ∑ j, B.constr F (G q j) (Q i))` using `fun i => by rw [hpre _ (hQ i)]`. Establish `hlin : ∀ (q : Qt) (j : J), B.constr F (G q j) (∑ i, cf i • Q i) = ∑ i, algebraMap F S (cf i) * B.constr F (G q j) (Q i)`. Introduce `q j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`. Rewrite using `[hpre _ hQs]`. Simplify using `only [hR]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Simplify using `only [hlin, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem formula_linear {ι F S Qt J : Type} [Field F] [CommRing S] [Algebra F S] [Finite Qt] [Fintype J]
     (k N : F) (w : Qt → F) (G : Qt → J → (ι →₀ ℕ) → S) (d m : ℕ) (cf : Fin m → F)
@@ -115,15 +115,15 @@ end GlobalTheory.ShortValueLinear
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hC E _ _ _ H Dw l Xo c _ nab hnab n Λ N hU hT hL a w β m cf Q hQ S _ _ y v u hv hu`. Establish `: Finite (LevQ Dw l)` using `GlobalTheory.ShortValue.finite_levelQuotient Dw l`. Establish `hEU` using `fun i => GlobalTheory.shortThetaValue_existsUnique_natural GlobalTheory.abelianSchemeLaws_all.1 hC E H Dw l Xo c nab hnab n Λ N hU hT hL a (Q i) (hQ i) w β`. Establish `hRow : ∀ i, RowDeg Dw.mult n c.F (fun τ j => a (τ, j)) (Q i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hQ i`. Unfold `HHa at h`. Simplify using `only [Set.mem_setOf_eq] at h`. Conclude with `h.2.2`. Establish `hQd` using `fun i => GlobalTheory.ShortValueLinear.isHomogeneous_of_rowDeg (hRow i)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ShortValAt at hv`. Take `⟨S', _i1, _i2, φ, y', z, tp, F, hff, hfr, hz, hgeo, htp, huu, hφv⟩` from `hv`. Establish `hnat : ∀ i, φ (u i) = algebraMap c.F S' (β⁻¹ * ((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw l) : c.F))⁻¹ * ((N : c.F) ^ (Q i).totalDegree)⁻¹) * ∑ᶠ q : Fin n → LevQ Dw l, algebraMap c.F S' (w q) * ∑ j, ∑ μ ∈ (Q i).support, algebraMap c.F S' ((Q i).coeff μ) * ∏ …`. Introduce `i`. Use `(hEU i).2 S S' φ y y' hfr (u i) _ (hu i) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `ShortValAt`. Conclude with `⟨S', _i1, _i2, AlgHom.id c.F S', y', z, tp, F, RingHom.FaithfullyFlat.of_bijective ⟨fun _ _ h => h, fun x => ⟨x, rfl⟩⟩, GlobalTheory.Frames.frMapUniq_refl y', hz, hgeo, htp, huu, rfl⟩`. Establish `hlin` using `GlobalTheory.ShortValueLinear.formula_linear (S := S') (β⁻¹ * ((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw l) : c.F))⁻¹) (N : c.F) w (fun q j μ => ∏ b, nab y' ((N : ℤ) ^ 2) (F q j b) (colOf μ b)) _ m cf Q hQd`. Apply `RingHom.FaithfullyFlat.injective hff` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ v = φ (∑ i, algebraMap c.F S (cf i) * u i)`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφv]`. Use `hlin.trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul φ, AlgHom.commutes, hnat i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortThetaValue_linear : ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.TrivAt l.M → Λ.LevOK N l.M → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (w : (Fin n → LevQ Dw l) → c.F) (β : c.F) (m : ℕ) (cf : Fin m → c.F) (Q : Fin m → MvPolynomial (LtN Dw n) c.F), (∀ i, Q i ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))) → ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (v : S) (u : Fin m → S), ShortValAt Xo c nab w Λ β N (∑ i, cf i • Q i) y v → (∀ i, ShortValAt Xo c nab w Λ β N (Q i) y (u i)) → v = ∑ i, algebraMap c.F S (cf i) * u i := by
   intro hC E _ _ _ H Dw l Xo c _ nab hnab n Λ N hU hT hL a w β m cf Q hQ S _ _ y v u hv hu

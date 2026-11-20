@@ -5,19 +5,19 @@ namespace GlobalTheory
 open Subgroup
 
 /- English proof (translation)
-Establish `a1` using `relIndex_inf_mul_relIndex Y Z X`. Establish `a2` using `relIndex_inf_mul_relIndex Z Y X`. Establish `b1` using `relIndex_inf_mul_relIndex Z X Y`. Establish `b2` using `relIndex_inf_mul_relIndex X Z Y`. Establish `c1` using `relIndex_inf_mul_relIndex X Y Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `relIndex_inf_mul_relIndex Y X Z`. Rewrite `a2` using `[inf_comm Z Y]`. Rewrite `c2` using `[inf_comm Y X]`. Rewrite `b2` using `[inf_comm X Z]`. Rewrite `b2` using `[inf_comm Z Y]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a2` using `[inf_comm Y X]`. Rewrite `c2` using `[inf_comm X Z]`. Establish `ha : (Y ⊓ Z).relIndex X ≠ 0` using `relIndex_inf_ne_zero hYX hZX`. Establish `hb : (Z ⊓ X).relIndex Y ≠ 0` using `relIndex_inf_ne_zero hZY hXY`. Establish `hc : (X ⊓ Y).relIndex Z ≠ 0` using `relIndex_inf_ne_zero hXZ hYZ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpY : Y.relIndex (Z ⊓ X) ≠ 0`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← a1, h, zero_mul]`. Establish `hpZ : Z.relIndex (X ⊓ Y) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← b1, h, zero_mul]`. Establish `hpX : X.relIndex (Y ⊓ Z) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hc` to reduce the goal to its premises. Rewrite using `[← c1, h, zero_mul]`. Establish `hP : 0 < Z.relIndex (X ⊓ Y) * X.relIndex (Y ⊓ Z) * Y.relIndex (Z ⊓ X)`. Check the signs of the components of the expression. Apply `Nat.eq_of_mul_eq_mul_left hP` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem relIndex_cocycle_of_ne_zero {A : Type} [Group A] (X Y Z : Subgroup A)
     (hXY : X.relIndex Y ≠ 0) (hYX : Y.relIndex X ≠ 0) (hYZ : Y.relIndex Z ≠ 0)
@@ -56,7 +56,7 @@ theorem relIndex_cocycle_of_ne_zero {A : Type} [Group A] (X Y Z : Subgroup A)
     _ = _ := by ring
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_map]`. Use `congr 1`. Use extensionality with `z`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_mul {A : Type} [Group A] (K : Subgroup A) (x y : A) :
     K.map (MulAut.conj (x * y)).toMonoidHom =
@@ -67,7 +67,7 @@ theorem map_conj_mul {A : Type} [Group A] (K : Subgroup A) (x y : A) :
   simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj g).injective`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_map_conj {A : Type} [Group A] (H L : Subgroup A) (g : A) :
     (H.map (MulAut.conj g).toMonoidHom).relIndex (L.map (MulAut.conj g).toMonoidHom) =
@@ -75,14 +75,14 @@ theorem relIndex_map_conj {A : Type} [Group A] (H L : Subgroup A) (g : A) :
   Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj g).injective
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_one {A : Type} [Group A] (K : Subgroup A) :
     K.map (MulAut.conj (1 : A)).toMonoidHom = K := by
   ext x; simp
 
 /- English proof (translation)
-Rewrite using `[pow_succ, map_conj_mul, relIndex_map_conj, relIndex_map_conj]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem relIndex_conj_pow_succ {A : Type} [Group A] (K : Subgroup A) (g : A) (i : ℕ) :
     (K.map (MulAut.conj (g ^ (i + 1))).toMonoidHom).relIndex
@@ -95,13 +95,13 @@ theorem relIndex_conj_pow_succ {A : Type} [Group A] (K : Subgroup A) (g : A) (i 
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Rewrite using `[pow_zero, map_conj_one]`. Simplify using the standard rewrite rules. Consider the case `succ i ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨hu, hv, hi⟩` from `ih`. Take `⟨sa, sb⟩` from `relIndex_conj_pow_succ K g i`. Use `set B := K.map (MulAut.conj (g ^ i)).toMonoidHom`. Use `set C := K.map (MulAut.conj (g ^ (i + 1))).toMonoidHom`. Use `set a := (K.map (MulAut.conj g).toMonoidHom).relIndex K`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b := K.relIndex (K.map (MulAut.conj g).toMonoidHom)`. Establish `hCB : C.relIndex B ≠ 0` using `by rw [sa]; exact ha`. Establish `hBC : B.relIndex C ≠ 0` using `by rw [sb]; exact hb`. Establish `hCK : C.relIndex K ≠ 0` using `relIndex_ne_zero_trans hCB hu`. Establish `hKC : K.relIndex C ≠ 0` using `relIndex_ne_zero_trans hv hBC`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `coc` using `relIndex_cocycle_of_ne_zero K B C hv hu hBC hCB hKC hCK`. Rewrite `coc` using `[sa, sb]`. Use `⟨hCK, hKC, ?_⟩` and prove the remaining obligations. Apply `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hv)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem relIndex_conj_pow_induction {A : Type} [Group A] (K : Subgroup A) (g : A)
     (ha : (K.map (MulAut.conj g).toMonoidHom).relIndex K ≠ 0)
@@ -138,7 +138,7 @@ theorem relIndex_conj_pow_induction {A : Type} [Group A] (K : Subgroup A) (g : A
       _ = K.relIndex C * a ^ (i + 1) * K.relIndex B := by rw [hi]; ring
 
 /- English proof (translation)
-Introduce `A _ K g n hn ha hb heq`. Take `⟨hu, _, hi⟩` from `relIndex_conj_pow_induction K g ha hb n`. Rewrite `hi`, `hu` using `[heq]`. Establish `hpow` using `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hu) hi`. Conclude with `(Nat.pow_left_injective (Nat.pos_iff_ne_zero.mp hn) hpow).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_conj_eq_of_pow_eq : ∀ (A : Type) [Group A] (K : Subgroup A) (g : A) (n : ℕ), 0 < n →
     (K.map (MulAut.conj g).toMonoidHom).relIndex K ≠ 0 →

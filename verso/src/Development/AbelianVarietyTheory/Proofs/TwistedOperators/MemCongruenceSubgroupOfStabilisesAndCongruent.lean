@@ -37,9 +37,9 @@ open Matrix
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `i j`. Establish `h1` using `(hfr _).1 (h _ (GlobalTheory.FrameIdeal.col_mem_hatL hfr j)) i`. Establish `e1 : (β⁻¹ : GL (Fin n) (Lev.EAf D)).1 *ᵥ (s • (M *ᵥ (β.1 *ᵥ Pi.single j 1))) = s • (((β⁻¹ : GL (Fin n) (Lev.EAf D)).1 * M * β.1) *ᵥ Pi.single j 1)`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite `h1` using `[e1, Matrix.mulVec_single_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1` using `[Matrix.smul_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isIntM_of_smul_maps {n : ℕ} {β : GL (Fin n) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hfr : Formalism.L2.DIV.IsFrame β Λ) (s : Lev.EAf D) (M : Matrix (Fin n) (Fin n) (Lev.EAf D))
@@ -57,29 +57,25 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D V Λ hsd Z e hZe 𝔪 h𝔪 g hg hx`. Take `⟨β, hfr⟩` from `frame_exists_alt D.host.F D.host.E V.rank Λ hsd.1`. Establish `hUA` using `GlobalTheory.LevSplit.finE_mem_UA V g`. Establish `hγ : (β⁻¹ * Lev.finE V g * β : GL (Fin V.rank) (Lev.EAf D)).1 = (β⁻¹ : GL (Fin V.rank) (Lev.EAf D)).1 * (Lev.finE V g).1 * β.1`. Simplify using `only [Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hγi : ((β⁻¹ * Lev.finE V g * β)⁻¹ : GL (Fin V.rank) (Lev.EAf D)).1 = (β⁻¹ : GL (Fin V.rank) (Lev.EAf D)).1 * ((Lev.finE V g)⁻¹ : GL (Fin V.rank) (Lev.EAf D)).1 * β.1`. Simplify using `only [_root_.mul_inv_rev, inv_inv, Units.val_mul, Matrix.mul_assoc]`. Establish `h1 : IsIntM (toEAf D e • (β⁻¹ * Lev.finE V g * β : GL (Fin V.rank) (Lev.EAf D)).1)`. Rewrite using `[hγ]`. Conclude with `isIntM_of_smul_maps hfr _ _ fun x hx' => (hx x hx').1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : IsIntM (toEAf D e • ((β⁻¹ * Lev.finE V g * β)⁻¹ : GL (Fin V.rank) (Lev.EAf D)).1)`. Rewrite using `[hγi]`. Conclude with `isIntM_of_smul_maps hfr _ _ fun x hx' => (hx x hx').2.1`. Take `⟨h3, h4⟩` from `GlobalTheory.T.selfDualFrame_conj_integral_smul_of_integral V Λ β hsd hfr _ hUA _ rfl e h1 h2`. Take `⟨hεε, hεc⟩` from `GlobalTheory.T.idempotentSum_add_conj_idempotent_conj_fixed Z e hZe`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, -, hmt⟩` from `GlobalTheory.T.exists_idempotent_component_of_group_element V (GlobalTheory.LevelNbhd.finPartG V g) (e + cA D e) (GlobalTheory.LevelNbhd.finPartG_mem_GfC V g) hεε hεc`. Establish `hfk` using `GlobalTheory.T.finiteEmbedding_idempotent_patch_in_frame V β _ k (e + cA D e) hmt`. Rewrite `hfk` using `[GlobalTheory.SuppLevO.finE_finPartG]`. Take `⟨hSt, -⟩` from `GlobalTheory.T.frameIdempotentCutMatrix_mem_stabiliser_reduction V.rank β _ _ Z e hZe h1 h2 h3 h4 hfk`. Establish `hcomp : ∀ PP ∈ Z, GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram (PP.under (𝓞 D.host.F)) k = GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram (PP.under (𝓞 D.host.F)) g` using `fun PP hP => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.SuppLevO.proj_finPartG V g]`. Conclude with `GlobalTheory.T.localProjection_eq_of_idempotent_patch V _ _ k _ (GlobalTheory.T.adeleTensorComponent_idempotentSum_add_conj_eq_one Z e hZe PP hP) hmt`. Establish `hkloc` using `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D V β Λ hfr k).1 hSt`. Establish `hgSt : Lev.finE V g ∈ Formalism.L2.DIV.St β`. Use `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D V β Λ hfr g).2 fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : ∃ PP ∈ Z, PP.under (𝓞 D.host.F) = v`. Take `⟨PP, hP, rfl⟩` from `hv`. Rewrite using `[← hcomp PP hP]`. Conclude with `hkloc _`. Use `push_neg at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hg v hv`. Establish `hfw` using `GlobalTheory.LatStab.mulVec_mem_of_mem_St Λ β _ hfr hgSt`. Establish `hbw` using `GlobalTheory.LatStab.mulVec_mem_of_mem_St Λ β _ hfr (inv_mem hgSt)`. Establish `h𝔪0 : 𝔪 ≠ ⊥`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `haveI := GlobalTheory.LvT.Inh.ResFin.infinite_places D.host.E`. Conclude with `Set.infinite_univ (Z.finite_toSet.subset fun PP _ => h𝔪 PP (by rw [h0]; exact bot_le))`. Establish `hrad : (∏ PP ∈ Z, PP.asIdeal) ≤ 𝔪.radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf fun J ⟨hJ, hJp⟩ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hJ0 : J ≠ ⊥` using `fun h => h𝔪0 (le_bot_iff.1 (h ▸ hJ))`. Establish `hQ` using `h𝔪 ⟨J, hJp, hJ0⟩ hJ`. Combine the equalities or inequalities in the displayed calculation. Take `⟨N, hN⟩` from `Ideal.exists_radical_pow_le_of_fg 𝔪 (IsNoetherian.noetherian _)`. Establish `hle : (∏ PP ∈ Z, PP.asIdeal ^ N) ≤ 𝔪`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_pow]`. Conclude with `(Ideal.pow_right_mono hrad N).trans hN`. Take `⟨t, ht, htv⟩` from `(GlobalTheory.IdemSumIdeal.isIdemSum_props e Z (fun _ => N) hZe).2.2`. Use `GlobalTheory.ChiGrid.mem_congLev.2 ⟨hUA, fun x => ⟨fun hx' => hfw x hx', fun hx' => ?_⟩, fun x hx' => ?_⟩` and prove the remaining obligations. Use `hbw _ hx'` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `hw : (Lev.finE V g).1 *ᵥ x - x ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := Submodule.sub_mem _ (hfw x hx') hx'`. Establish `e1 : (Lev.finE V g).1 *ᵥ x - x = toEAf D e • ((Lev.finE V g).1 *ᵥ x - x) + (1 - toEAf D e) • ((Lev.finE V g).1 *ᵥ x - x)`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Rewrite using `[e1]`.
-
-Use `Submodule.add_mem _ (hx x hx').2.2 ?_` and prove the remaining obligations. Rewrite using `[← htv]`. Conclude with `Submodule.span_mono (Set.image_mono (Submodule.smul_mono_left hle)) (GlobalTheory.FrameIdeal.idS_smul_mem_hatL Λ ht hw)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_assemble : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSelfDualC V Λ →
     ∀ (Z : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Z → ∀ 𝔪 : Ideal (𝓞 D.host.E),

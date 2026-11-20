@@ -14,7 +14,7 @@ section Flag
 variable {D : D7} {T : D.host.E} (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
 
 /- English proof (translation)
-Establish `key : ∀ x, (β⁻¹ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (β x) = x` using `fun x => β.symm_apply_apply x`. Consider the cases of `F0`. Simplify using `only [Formalism.L2.SG.Saturated.mapFlag, key]`. Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapFlag_inv (F0 : FlagG (VS D) D.R.rS T) :
     Formalism.L2.SG.Saturated.mapFlag β⁻¹ (inv_mem hβ) (Formalism.L2.SG.Saturated.mapFlag β hβ F0) = F0 := by
@@ -24,13 +24,11 @@ theorem mapFlag_inv (F0 : FlagG (VS D) D.R.rS T) :
   all_goals rfl
 
 /- English proof (translation)
-Simplify using `only [stabF] at hγ ⊢`. Take `⟨h1, h2, h3⟩` from `hγ`. Establish `hXa : ∀ j, (Formalism.L2.SG.Saturated.mapFlag β hβ F0).Xa j = (F0.Xa j).map (β : (VS D).V →ₗ[D.host.E] (VS D).V)`. Introduce `j`. Use `first`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(simp only [FlagG.Xa, Formalism.L2.SG.Saturated.mapFlag, Submodule.map_span, ← Set.range_comp]; rfl)`. Consider the case `(simp only [FlagG.Xa, Formalism.L2.SG.Saturated.mapFlag, Submodule.map_span, Set.image_image]; rfl)`. Consider the case `simp [FlagG.Xa, Formalism.L2.SG.Saturated.mapFlag, Submodule.map_span, Set.image_image, ← Set.range_comp]`. Establish `hc : ((β * γ * β⁻¹ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V).comp (β : (VS D).V →ₗ[D.host.E] (VS D).V) = (β : (VS D).V →ₗ[D.host.E] (VS D).V).comp (γ : (VS D).V →ₗ[D.host.E] (VS D).V)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `show β (γ (β.symm (β x))) = β (γ x)`. Rewrite using `[β.symm_apply_apply]`. Use `⟨mul_mem (mul_mem hβ h1) (inv_mem hβ), fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hXa j, ← Submodule.map_comp, hc, Submodule.map_comp, h2 j]`.
-
-Use `show β (γ (β.symm (β F0.z))) = β F0.z`. Rewrite using `[β.symm_apply_apply, h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabF_conj (F0 : FlagG (VS D) D.R.rS T) {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     β * γ * β⁻¹ ∈ stabF D (Formalism.L2.SG.Saturated.mapFlag β hβ F0) := by
@@ -56,7 +54,7 @@ theorem stabF_conj (F0 : FlagG (VS D) D.R.rS T) {γ : (VS D).V ≃ₗ[D.host.E] 
     rw [β.symm_apply_apply, h3]
 
 /- English proof (translation)
-Establish `h` using `stabF_conj β⁻¹ (inv_mem hβ) (Formalism.L2.SG.Saturated.mapFlag β hβ F0) hγ`. Rewrite `h` using `[mapFlag_inv, inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stabF_conj_inv (F0 : FlagG (VS D) D.R.rS T) {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hγ : γ ∈ stabF D (Formalism.L2.SG.Saturated.mapFlag β hβ F0)) : β⁻¹ * γ * β ∈ stabF D F0 := by
@@ -66,15 +64,13 @@ theorem stabF_conj_inv (F0 : FlagG (VS D) D.R.rS T) {γ : (VS D).V ≃ₗ[D.host
 end Flag
 
 /- English proof (translation)
-Establish `hL` using `LatIso_holds D`. Introduce `β hβ T F0 what₂ hR`. Take `⟨hrow, huniq⟩` from `hR`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `Λ hΛ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Λ0, h0, rfl⟩` from `Finset.mem_image.1 hΛ`. Conclude with `Formalism.L2.SG.TermTieOf.rowLat_map hL β hβ F0 Λ0 (hrow Λ0 h0)`. Introduce `Λ hΛ`. Establish `h0 : IsRowLat D F0 (Formalism.HermitianLatticesTheory.gmap β⁻¹ Λ)`. Establish `h` using `Formalism.L2.SG.TermTieOf.rowLat_map hL β⁻¹ (inv_mem hβ) (Formalism.L2.SG.Saturated.mapFlag β hβ F0) Λ hΛ`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[mapFlag_inv]`. Conclude with `h`. Take `⟨M, ⟨hM, γ, hγ, hγM⟩, hU⟩` from `huniq _ h0`. Use `⟨Formalism.HermitianLatticesTheory.gmap β M, ⟨Finset.mem_image_of_mem _ hM, β * γ * β⁻¹, stabF_conj β hβ F0 hγ, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul, gmap_mul, gmap_inv_gmap, hγM, gmap_gmap_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `N ⟨hN, γ', hγ', hγN⟩`. Take `⟨M', hM', rfl⟩` from `Finset.mem_image.1 hN`. Establish `hM'M : M' = M`. Use `hU M' ⟨hM', β⁻¹ * γ' * β, stabF_conj_inv β hβ F0 hγ', ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul, gmap_mul, hγN]`.
-
-Rewrite using `[hM'M]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RowRepsIso_holds (D : D7) : Formalism.L2.SG.TermTieOf.RowRepsIso D := by
   have hL := LatIso_holds D
@@ -105,15 +101,15 @@ variable {D : D7} {T : D.host.E} (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hβ 
   (F0 : FlagG (VS D) D.R.rS T)
 
 /- English proof (translation)
-Establish `hb : ∀ x y, (VS D).hT (β x) (β y) = (VS D).hT x y`. Introduce `x y`. Use `first`. Consider the case `exact hβ x y`. Consider the case `exact LinearMap.congr_fun₂ hβ x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Formalism.HermitianLatticesTheory.isom_apply hβ x y`. Consider the case `exact Formalism.L2.SG.Saturated.isom_apply hβ x y`. Consider the case `exact isom_apply hβ x y`. Establish `hX : (Formalism.L2.SG.Saturated.mapFlag β hβ F0).X = F0.X.map (β : (VS D).V →ₗ[D.host.E] (VS D).V)` using `by first`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [FlagG.X, Formalism.L2.SG.Saturated.mapFlag, Submodule.map_span, ← Set.range_comp]; rfl)`. Consider the case `(simp only [FlagG.X, Formalism.L2.SG.Saturated.mapFlag, Submodule.map_span, Set.image_union, Set.image_singleton, ← Set.range_comp]; rfl)`. Consider the case `simp [FlagG.X, Formalism.L2.SG.Saturated.mapFlag, Submodule.map_span, ← Set.range_comp, Set.image_union]`. Use extensionality with `y`. Rewrite using `[hX, Submodule.mem_map_equiv]`.
+Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [perpS, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h1` using `h (β x) (Submodule.mem_map_of_mem hx)`. Rewrite `h1` using `[← β.apply_symm_apply y, hb]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h x hx`. Take `⟨x', hx', rfl⟩` from `Submodule.mem_map.mp hx`. Establish `h2` using `hb x' (β.symm y)`. Rewrite `h2` using `[β.apply_symm_apply]`. Conclude with `h2.trans (h x' hx')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_mapFlag :
     perpS (VS D) (Formalism.L2.SG.Saturated.mapFlag β hβ F0).X =
@@ -147,7 +143,7 @@ theorem perp_mapFlag :
     exact h2.trans (h x' hx')
 
 /- English proof (translation)
-Rewrite using `[perp_mapFlag β hβ F0, Submodule.mem_map_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_perp_mapFlag {y : (VS D).V} :
     y ∈ perpS (VS D) (Formalism.L2.SG.Saturated.mapFlag β hβ F0).X ↔ β.symm y ∈ perpS (VS D) F0.X := by
@@ -157,13 +153,13 @@ def perpEq : ↥(perpS (VS D) F0.X) ≃ₗ[D.host.E] ↥(perpS (VS D) (Formalism
   LinearEquiv.ofSubmodules β _ _ (perp_mapFlag β hβ F0).symm
 
 /- English proof (translation)
-Use extensionality with `⟨y, hy⟩`. Rewrite using `[Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hxX, hfx⟩`. Rewrite `hxX` using `[Submodule.mem_comap, Submodule.subtype_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show y ∈ _`. Rewrite using `[Formalism.L2.SG.Pf.X_mapFlag β hβ F0, Submodule.mem_map]`. Conclude with `⟨x.1, hxX, congrArg Subtype.val hfx⟩`. Introduce `hyX`. Establish `hyX' : y ∈ F0.X.map (β : (VS D).V →ₗ[D.host.E] (VS D).V)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.L2.SG.Pf.X_mapFlag β hβ F0]`. Conclude with `hyX`. Take `⟨x, hxX, rfl⟩` from `(Submodule.mem_map).1 hyX'`. Establish `hx0 : x ∈ perpS (VS D) F0.X`. Establish `h` using `(mem_perp_mapFlag β hβ F0).1 hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : β.symm ((β : (VS D).V →ₗ[D.host.E] (VS D).V) x) = x` using `β.symm_apply_apply x`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Conclude with `⟨⟨x, hx0⟩, hxX, Subtype.ext rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem perpEq_map :
     Submodule.map (perpEq β hβ F0 : ↥(perpS (VS D) F0.X) →ₗ[D.host.E] ↥(perpS (VS D) (Formalism.L2.SG.Saturated.mapFlag β hβ F0).X))
@@ -198,13 +194,13 @@ theorem wbEquiv_mk (x : ↥(perpS (VS D) F0.X)) :
     wbEquiv β hβ F0 (Submodule.Quotient.mk x) = Submodule.Quotient.mk (perpEq β hβ F0 x) := rfl
 
 /- English proof (translation)
-Take `⟨γ, hγ, hΛ, hφ⟩` from `hφ`. Use `⟨β * γ * β⁻¹, stabF_conj β hβ F0 hγ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul, gmap_mul, gmap_inv_gmap, hΛ]`. Introduce `x hx`. Establish `hy0 : β.symm x.1 ∈ perpS (VS D) F0.X` using `(mem_perp_mapFlag β hβ F0).1 x.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy1 : γ (β.symm x.1) ∈ perpS (VS D) F0.X`. Establish `h` using `(mem_perp_mapFlag β hβ F0).1 hx`. Establish `key : β.symm ((β * γ * β⁻¹) x.1) = γ (β.symm x.1)` using `by show β.symm (β (γ (β.symm x.1))) = _`. Conclude with `β.symm_apply_apply _`. Rewrite `h` using `[key]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e1 : (wbEquiv β hβ F0).symm (Submodule.Quotient.mk x) = Submodule.Quotient.mk ⟨β.symm x.1, hy0⟩`. Rewrite using `[Equiv.symm_apply_eq, wbEquiv_mk]`. Use `congr 1`. Conclude with `Subtype.ext (β.apply_symm_apply x.1).symm`. Simplify using `only [Function.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e1, hφ ⟨β.symm x.1, hy0⟩ hy1, wbEquiv_mk]`. Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem autLz_fwd {Λ : Submodule (𝓞 D.host.E) (VS D).V} {φ : WbQ D F0 → WbQ D F0} (hφ : φ ∈ autLz D F0 Λ) :
     (wbEquiv β hβ F0) ∘ φ ∘ (wbEquiv β hβ F0).symm ∈
@@ -229,11 +225,9 @@ theorem autLz_fwd {Λ : Submodule (𝓞 D.host.E) (VS D).V} {φ : WbQ D F0 → W
     congr 1
 
 /- English proof (translation)
-Take `⟨γ, hγ, hΛ, hψ⟩` from `hψ`. Use `⟨β⁻¹ * γ * β, stabF_conj_inv β hβ F0 hγ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul, gmap_mul, hΛ, gmap_inv_gmap]`. Introduce `x hx`. Establish `hx1 : γ (β x.1) ∈ perpS (VS D) (Formalism.L2.SG.Saturated.mapFlag β hβ F0).X`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_perp_mapFlag β hβ F0]`. Conclude with `hx`. Simplify using `only [Function.comp_apply]`. Rewrite using `[wbEquiv_mk, Equiv.symm_apply_eq, hψ (perpEq β hβ F0 x) hx1, wbEquiv_mk]`. Use `congr 1`.
-
-Conclude with `Subtype.ext (show γ (β x.1) = β (β.symm (γ (β x.1))) from (β.apply_symm_apply _).symm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem autLz_bwd {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {ψ : WbQ D (Formalism.L2.SG.Saturated.mapFlag β hβ F0) → WbQ D (Formalism.L2.SG.Saturated.mapFlag β hβ F0)}
@@ -261,7 +255,7 @@ def autEquiv (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
 end Wb
 
 /- English proof (translation)
-Introduce `β hβ T F0 Λ`. Simplify using `only [Formalism.MainNotions.S.wRow]`. Rewrite using `[Nat.card_congr (autEquiv β hβ F0 Λ).symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem WRowIso_holds (D : D7) : Formalism.L2.SG.TermTieOf.WRowIso D := by
   intro β hβ T F0 Λ

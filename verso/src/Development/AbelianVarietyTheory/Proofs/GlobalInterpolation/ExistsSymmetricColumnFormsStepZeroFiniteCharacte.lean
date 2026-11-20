@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TC
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z`. Take `⟨C, -, -⟩` from `GlobalTheory.T.exists_standardColumnComparisons_trueColumns I hI hP l Z`. Use `⟨C, fun u => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.formsTiedSym_chi_zero_finite (I.rec7 l Z) u _ _ (C.forms u) (fun i => GlobalTheory.T.exists_primitiveRoots_coeffField_trueColumns I hI l Z i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem colsTiedSym_chiFin0 : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∃ C : ColsTiedSym (I.rec7 l Z), ∀ u, Formalism.MainNotions.RT.ChiFin0 (C.forms u) := by
   intro B X I hI hP l Z

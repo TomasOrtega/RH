@@ -38,11 +38,11 @@ def zeroEquiv (s : List ℕ) : inType P (0 :: s) ≃ₗ[𝓞 E] inType P s :=
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => exact ⟨LinearEquiv.refl _ _⟩`. Consider the case `cons a _ ih`. Take `⟨e⟩` from `ih`. Conclude with `⟨(consEquiv P a _).trans (((LinearEquiv.refl _ _).prodCongr e).trans (consEquiv P a _).symm)⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `swap a b l`. Conclude with `⟨(consEquiv P b _).trans <| ((LinearEquiv.refl _ _).prodCongr (consEquiv P a l)).trans <| (LinearEquiv.prodAssoc _ _ _ _).symm.trans <| ((LinearEquiv.prodComm _ _ _).prodCongr (LinearEquiv.refl _ _)).trans <| (LinearEquiv.prodAssoc _ _ _ _).trans <| ((LinearEquiv.refl _ _).prodCo …`. Consider the case `trans _ _ ih1 ih2`. Take `⟨e1⟩` from `ih1`. Take `⟨e2⟩` from `ih2`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e1.trans e2⟩`.
+Supply the required witnesses or components.
 -/
 theorem iso_of_perm {s t : List ℕ} (h : s.Perm t) :
     Nonempty (inType P s ≃ₗ[𝓞 E] inType P t) := by
@@ -64,11 +64,11 @@ theorem iso_of_perm {s t : List ℕ} (h : s.Perm t) :
     exact ⟨e1.trans e2⟩
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil => exact ⟨LinearEquiv.refl _ _⟩`. Consider the case `cons a s ih`. Take `⟨e⟩` from `ih`. Consider the cases of `a with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Establish `hf : (0 :: s).filter (fun a => 0 < a) = s.filter (fun a => 0 < a)` using `by simp`. Rewrite using `[hf]`. Conclude with `⟨(zeroEquiv P s).trans e⟩`. Consider the case `succ m`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Establish `hf : ((m + 1) :: s).filter (fun a => 0 < a) = (m + 1) :: s.filter (fun a => 0 < a)`. Simplify using the standard rewrite rules. Rewrite using `[hf]`. Conclude with `⟨(consEquiv P _ s).trans (((LinearEquiv.refl _ _).prodCongr e).trans (consEquiv P _ _).symm)⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem iso_filter_pos (s : List ℕ) :
     Nonempty (inType P s ≃ₗ[𝓞 E] inType P (s.filter (fun a => 0 < a))) := by
@@ -88,9 +88,9 @@ theorem iso_filter_pos (s : List ℕ) :
       exact ⟨(consEquiv P _ s).trans (((LinearEquiv.refl _ _).prodCongr e).trans (consEquiv P _ _).symm)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ P s`. Use `⟨(s.filter (fun a => 0 < a)).insertionSort (· ≥ ·), List.pairwise_insertionSort _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `((List.perm_insertionSort (· ≥ ·) _).mem_iff).mp ha` as an intermediate fact. Simplify using `using (List.mem_filter.mp this).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨e1⟩` from `iso_filter_pos P s`. Take `⟨e2⟩` from `iso_of_perm P (List.perm_insertionSort (· ≥ ·) (s.filter (fun a => 0 < a))).symm`. Conclude with `⟨e1.trans e2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inType_iso_sorted_pos : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (P : Ideal (𝓞 E)) (s : List ℕ),
     ∃ y : List ℕ, y.Pairwise (· ≥ ·) ∧ (∀ a ∈ y, 0 < a) ∧ Nonempty (inType P s ≃ₗ[𝓞 E] inType P y) := by

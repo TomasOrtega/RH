@@ -22,56 +22,56 @@ noncomputable section
 
 namespace GlobalTheory.TransportProof
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.quadraticField_exists_sqrt_neg_discr`.
+A detailed English derivation is pending.
 -/
 theorem exists_sq_eq_neg : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (h2 : Module.finrank ℚ K = 2) (hd : discr K = -(d : ℤ)), ∃ δ : K, δ ^ 2 = -(d : K) := GlobalTheory.T.quadraticField_exists_sqrt_neg_discr
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fractionalIdealNorm_eq_finiteIdeleModule`.
+A detailed English derivation is pending.
 -/
 theorem nrm_eq_modF : ∀ {K : Type} [Field K] [NumberField K] (t : (Af K)ˣ) (𝔞 : FractionalIdeal (𝓞 K)⁰ K) (h : IsInvIdealOf t 𝔞), nrm 𝔞 = modF t := GlobalTheory.T.fractionalIdealNorm_eq_finiteIdeleModule
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finiteIdele_module_exists_rat`.
+A detailed English derivation is pending.
 -/
 theorem modF_rat : ∀ {E : Type} [Field E] [NumberField E] (y : (Af E)ˣ), ∃ q : ℚ, modF y = q := GlobalTheory.T.finiteIdele_module_exists_rat
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.modF_finiteIdeleUpToExtension`.
+A detailed English derivation is pending.
 -/
 theorem modF_upIdele : ∀ {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E] (t : (Af K)ˣ), modF (upIdele K E t) = modF t ^ Module.finrank K E := GlobalTheory.T.modF_finiteIdeleUpToExtension
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isCMTypeOfEmbeddings_card_eq_finrank`.
+A detailed English derivation is pending.
 -/
 theorem card_eq_finrank : ∀ {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [IsCMField E] [Algebra K E] {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ : IsCMType φ) (h2 : Module.finrank ℚ K = 2), Fintype.card I = Module.finrank K E := GlobalTheory.T.isCMTypeOfEmbeddings_card_eq_finrank
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.norm_galois_conj_heckeCharacter_finitePart_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem norm_conj_finPart : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ : IsCMType φ) (s : ℕ) (κ : I → ℕ) (c : Ideal (OF E)) (hc : c ≠ ⊥) (χ : HChar E) (hχ : HasInf χ φ (fun i => (κ i : ℤ) + s)) (hu : ∀ u ∈ hatOUnits c, finPart χ u = 1) (σ : ℂ ≃+* ℂ) (y : (Af E)ˣ), ‖σ (finPart χ y : ℂ)‖ = 1 := GlobalTheory.T.norm_galois_conj_heckeCharacter_finitePart_eq_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.toricSum_coordinate_isAlgebraic`.
+A detailed English derivation is pending.
 -/
 theorem algebraic_coordIn_toric : ∀ (hA : LatAlg) {K : Type} [Field K] [NumberField K] (d : ℕ) (δ : K) (ι : K →+* ℂ) (h2 : Module.finrank ℚ K = 2) (hd : 0 < d) (hδ : δ ^ 2 = -(d : K)) (Λ₀ : PeriodPair) (Ω₀ : ℂ) (hΛ : IsLatOf ι 1 Λ₀) (hΩ : Ω₀ ^ 12 = latDisc Λ₀) {E : Type} [Field E] [NumberField E] [IsCMField E] [Algebra K E] {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hE : UnramFin E) (hφ : IsCMType φ) (hφK : ∀ i, (φ i).comp (algebraMap K E) = ι) (s : ℕ) (hs : 1 ≤ s) (κ : I → ℕ) (𝔣 : Ideal (OF E)) (h𝔣 : IsBaseCond 𝔣) (Q : Finset (HeightOneSpectrum (OF E))) (χ : HChar E) (T : ℂ) (hV : IsValSum φ s κ 𝔣 Q χ T), IsAlgebraic ℚ (coordIn E d s κ Ω₀ T) := GlobalTheory.T.toricSum_coordinate_isAlgebraic
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.conj_toricPeriodCoordinate_sum_over_classes`.
+A detailed English derivation is pending.
 -/
 theorem conj_coordIn_toric : ∀ (hC : LatConj) {K : Type} [Field K] [NumberField K] (d : ℕ) (δ : K) (ι : K →+* ℂ) (h2 : Module.finrank ℚ K = 2) (hd : 0 < d) (hδ : δ ^ 2 = -(d : K)) (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ) (hΩ : Ω₀ ^ 12 = latDisc Λ₀) (hT : TorsTransport ι g t Λ₀ Λ₁ Ω₀ Ω₁) {E : Type} [Field E] [NumberField E] [IsCMField E] [Algebra K E] {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hE : UnramFin E) (hφ : IsCMType φ) (hφK : ∀ i, (φ i).comp (algebraMap K E) = ι) (s : ℕ) (hs : 1 ≤ s) (κ κ' : I → ℕ) (hκ' : IsConjWt φ g κ κ') (𝔣 : Ideal (OF E)) (h𝔣 : IsBaseCond 𝔣) (Q : Finset (HeightOneSpectrum (OF E))) (χ χ' : HChar E) (T T' : ℂ) (hV : IsValSum φ s κ 𝔣 Q χ T) (hV' : IsConjSum φ s κ' 𝔣 Q g χ χ' T'), g (coordIn E d s κ Ω₀ T) = coordIn E d s κ Ω₁ ((((modF t : ℝ) : ℂ) ^ (∑ i, κ i))⁻¹ * (lamF s χ' (upIdele K E t))⁻¹ * T') := GlobalTheory.T.conj_toricPeriodCoordinate_sum_over_classes
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.equidistributed_idealClasses_of_hilbertClassFieldJ`.
+A detailed English derivation is pending.
 -/
 theorem equidistributed_of_j : ∀ (hH : GlobalTheory.Published.HilbertClassFieldJ) {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (h2 : Module.finrank ℚ K = 2) (φK : K →+* ℂ) (ΛK : PeriodPair) (hΛ : IsLatOf φK 1 ΛK) (𝔞 : (ℂ ≃+* ℂ) → (FractionalIdeal (𝓞 K)⁰ K)ˣ) (h𝔞 : ∀ σ : ℂ ≃+* ℂ, Fixes φK σ → ∃ Λ : PeriodPair, IsLatOf φK (𝔞 σ : FractionalIdeal (𝓞 K)⁰ K) Λ ∧ jLat Λ = σ (jLat ΛK)), Equidistributed φK (jLat ΛK) 𝔞 := GlobalTheory.T.equidistributed_idealClasses_of_hilbertClassFieldJ
 
 /- English proof (translation)
-Establish `hs` using `sign_discr K`. Rewrite `hs` using `[Int.sign_eq_neg_one_of_neg h]`. Establish `hr` using `InfinitePlace.card_add_two_mul_card_eq_rank K`. Rewrite `hr` using `[h2]`. Establish `hc : InfinitePlace.nrComplexPlaces K = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `Nat.even_or_odd (InfinitePlace.nrComplexPlaces K) with he | ho` into its components or cases. Rewrite `hs` using `[he.neg_one_pow]`. Evaluate the numerical expressions using `at hs`. Take `⟨k, hk⟩` from `ho`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `nrRealPlaces_eq_zero_iff.1 (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem isTotallyComplex_of_discr_neg {K : Type} [Field K] [NumberField K] (h2 : Module.finrank ℚ K = 2)
     (h : discr K < 0) : IsTotallyComplex K := by
@@ -86,15 +86,15 @@ theorem isTotallyComplex_of_discr_neg {K : Type} [Field K] [NumberField K] (h2 :
   exact nrRealPlaces_eq_zero_iff.1 (by omega)
 
 /- English proof (translation)
-Take `⟨h0, h1, -, -, -, ha, hb, -⟩` from `hT`. Establish `e0 : (Λ₀.g₂ / Ω₀ ^ 4) ^ 3 - 27 * (Λ₀.g₃ / Ω₀ ^ 6) ^ 2 = 1`. Establish `: latDisc Λ₀ / Ω₀ ^ 12 = 1` using `by rw [← hΩ, div_self (pow_ne_zero _ h0)]`. Rewrite using `[← this, latDisc]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e1 : (Λ₁.g₂ / Ω₁ ^ 4) ^ 3 - 27 * (Λ₁.g₃ / Ω₁ ^ 6) ^ 2 = 1`. Rewrite using `[← ha, ← hb]`. Use `congrArg g e0` as an intermediate fact. Simplify `this` using `[map_sub, map_pow, map_mul, map_ofNat]`. Establish `hD : Ω₁ ^ 12 = latDisc Λ₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[latDisc]`. Clear denominators, using `at e1` for the nonvanishing conditions. Take the linear combination `-e1`. Use `⟨hD, ?_⟩` and prove the remaining obligations. Establish `j0 : jLat Λ₀ = 1728 * (Λ₀.g₂ / Ω₀ ^ 4) ^ 3`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[jLat, ← hΩ]`. Clear the denominators using the available nonvanishing facts. Establish `j1 : jLat Λ₁ = 1728 * (Λ₁.g₂ / Ω₁ ^ 4) ^ 3`. Rewrite using `[jLat, ← hD]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[j0, j1, map_mul, map_pow, ha, map_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem disc_j_of_torsTransport {K : Type} [Field K] [NumberField K] {ι : K →+* ℂ} {g : ℂ ≃+* ℂ} {t : (Af K)ˣ}
     {Λ₀ Λ₁ : PeriodPair} {Ω₀ Ω₁ : ℂ} (hT : TorsTransport ι g t Λ₀ Λ₁ Ω₀ Ω₁) (hΩ : Ω₀ ^ 12 = latDisc Λ₀) :
@@ -117,7 +117,7 @@ theorem disc_j_of_torsTransport {K : Type} [Field K] [NumberField K] {ι : K →
   rw [j0, j1, map_mul, map_pow, ha, map_ofNat]
 
 /- English proof (translation)
-Unfold `condQ`. Rewrite using `[← Ideal.zero_eq_bot]`. Use `mul_ne_zero h𝔣.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem condQ_ne_bot {E : Type} [Field E] [NumberField E] {𝔣 : Ideal (OF E)} (h𝔣 : IsBaseCond 𝔣)
     (Q : Finset (HeightOneSpectrum (OF E))) : condQ 𝔣 Q ≠ ⊥ := by
@@ -126,9 +126,9 @@ theorem condQ_ne_bot {E : Type} [Field E] [NumberField E] {𝔣 : Ideal (OF E)} 
   refine mul_ne_zero h𝔣.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.CMVal.OrderUnits.finPart_eq_one E I φ hφ s κ 𝔣 Q χ hE h𝔣 hQ hχ`. Establish `h1` using `norm_conj_finPart φ hφ s κ (condQ 𝔣 Q) (condQ_ne_bot h𝔣 Q) χ hχ.2.2.1 hu σ (upIdele K E t)`. Take `⟨q, hq⟩` from `modF_rat (upIdele K E t)`. Establish `hpos` using `GlobalTheory.CMVal.IdeleModule.modF_pos (upIdele K E t)`. Rewrite using `[hc.1, lamF, map_mul, norm_mul, h1, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((modF (upIdele K E t)) ^ s : ℝ) : ℂ) = ((q ^ s : ℚ) : ℂ)` using `by rw [hq]; push_cast; rfl`. Rewrite using `[e, map_ratCast, ← e]`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (pow_pos hpos _), modF_upIdele, ← card_eq_finrank φ hφ h2, ← pow_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lamF_conj_up {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [IsCMField E]
     [Algebra K E] {I : Type} [Fintype I] (h2 : Module.finrank ℚ K = 2) (φ : I → E →+* ℂ) (hE : UnramFin E)
@@ -147,28 +147,26 @@ theorem norm_lamF_conj_up {K E : Type} [Field K] [NumberField K] [Field E] [Numb
     ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[beta_eq, coordIn, div_pow, ← h, ← pow_mul, ← pow_mul, mul_comm 12]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_eq_coordIn_pow (E : Type) [Field E] [NumberField E] {I : Type} [Fintype I] (d s : ℕ) (κ : I → ℕ)
     (Ω T : ℂ) (Λ : PeriodPair) (h : Ω ^ 12 = latDisc Λ) : beta E d s κ Λ T = coordIn E d s κ Ω T ^ 12 := by
   rw [beta_eq, coordIn, div_pow, ← h, ← pow_mul, ← pow_mul, mul_comm 12]
 
 /- English proof (translation)
-Establish `hC0 : (C0 E d (2 * s) κ : ℂ) ≠ 0` using `by exact_mod_cast (cmValueConst_pos E hd (by omega) κ).ne'`. Establish `conj : ∀ σ, Fixes φK σ → ∀ κ', IsConjWt φ σ κ κ' → ∀ Q χ T χ' T', IsValSum φ s κ 𝔣 Q χ T → IsConjSum φ s κ' 𝔣 Q σ χ χ' T' → σ (coordIn E d s κ Ω₀ T) = coordIn E d s κ (Ω σ) ((((nrm (𝔞 σ : FractionalIdeal (𝓞 K)⁰ K) : ℝ) : ℂ) ^ (∑ i, κ i))⁻¹ * (lamF s χ' (upIdele K E (t σ)))⁻¹ * T' …`. Introduce `σ hσ κ' hκ' Q χ T χ' T' hV hV'`. Rewrite using `[nrm_eq_modF _ _ (hT σ hσ).2]`. Conclude with `conj_coordIn_toric hC d δ φK h2 hd hδ σ (t σ) ΛK (Λ σ) Ω₀ (Ω σ) hΩ₀ (hT σ hσ).1 φ hE hφ hφK s hs κ κ' hκ' 𝔣 h𝔣 Q χ χ' T T' hV hV'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun Q χ T hV => ⟨?_, fun σ hσ κ' hκ' χ' T' hV' => ?_⟩, fun Q₁ Q₂ χ₁ χ₂ T₁ T₂ hV₁ hV₂ hT₂ => ⟨?_, fun σ hσ κ' hκ' χ₁' χ₂' T₁' T₂' hV₁' hV₂' => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[beta_eq_coordIn_pow E d s κ Ω₀ T ΛK hΩ₀]`. Conclude with `(algebraic_coordIn_toric hA d δ φK h2 hd hδ ΛK Ω₀ hΛ hΩ₀ φ hE hφ hφK s hs κ 𝔣 h𝔣 Q χ T hV).pow 12`. Establish `hD` using `(disc_j_of_torsTransport (hT σ hσ).1 hΩ₀).1 set N := nrm (𝔞 σ : FractionalIdeal (𝓞 K)⁰ K) with hN`. Establish `hN0 : N ≠ 0` using `nrm_ne_zero _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNpos : 0 < N` using `lt_of_le_of_ne (by rw [hN, nrm]; exact_mod_cast FractionalIdeal.absNorm_nonneg _) hN0.symm`. Establish `e : σ (beta E d s κ ΛK T) = beta E d s κ (Λ σ) ((((N : ℝ) : ℂ) ^ (∑ i, κ i))⁻¹ * (lamF s χ' (upIdele K E (t σ)))⁻¹ * T')`. Rewrite using `[beta_eq_coordIn_pow E d s κ Ω₀ T ΛK hΩ₀, map_pow, conj σ hσ κ' hκ' Q χ T χ' T' hV hV', beta_eq_coordIn_pow E d s κ (Ω σ) _ (Λ σ) hD]`. Establish `hl` using `norm_lamF_conj_up h2 φ hE hφ s κ κ' 𝔣 h𝔣 Q hV.1 χ χ' hV.2.1 σ hV'.1 (t σ)`. Rewrite `hl` using `[← nrm_eq_modF _ _ (hT σ hσ).2, ← hN]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by rw [e, beta_eq]; ring, ?_⟩` and prove the remaining obligations. Rewrite using `[e, beta_eq, norm_div, norm_pow, norm_mul, norm_mul, norm_mul, norm_inv, norm_inv, hl, norm_pow, norm_pow, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hNpos, abs_of_pos (cmValueConst_pos E hd (by omega) κ)]`. Establish `hDn : ‖latDisc (Λ σ)‖ ≠ 0` using `norm_ne_zero_iff.2 (latDisc_ne_zero _)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← coordIn_div E hd hs κ hΩ₀0 T₁ T₂, div_eq_mul_inv]`. Conclude with `(algebraic_coordIn_toric hA d δ φK h2 hd hδ ΛK Ω₀ hΛ hΩ₀ φ hE hφ hφK s hs κ 𝔣 h𝔣 Q₁ χ₁ T₁ hV₁).mul (algebraic_coordIn_toric hA d δ φK h2 hd hδ ΛK Ω₀ hΛ hΩ₀ φ hE hφ hφK s hs κ 𝔣 h𝔣 Q₂ χ₂ T₂ hV₂).inv`. Establish `hΩσ : Ω σ ≠ 0` using `(hT σ hσ).1.2.1 set m : ℂ := (((nrm (𝔞 σ : FractionalIdeal (𝓞 K)⁰ K) : ℝ) : ℂ) ^ (∑ i, κ i)) with hm`. Establish `hm0 : m ≠ 0` using `pow_ne_zero _ (by exact_mod_cast nrm_ne_zero _)`. Establish `c1` using `conj σ hσ κ' hκ' Q₁ χ₁ T₁ χ₁' T₁' hV₁ hV₁'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c2` using `conj σ hσ κ' hκ' Q₂ χ₂ T₂ χ₂' T₂' hV₂ hV₂'`. Establish `hc2 : coordIn E d s κ Ω₀ T₂ ≠ 0`. Rewrite using `[coordIn]`. Conclude with `div_ne_zero (mul_ne_zero hC0 hT₂) (pow_ne_zero _ hΩ₀0)`. Establish `hT2' : T₂' ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Use `(map_ne_zero σ).2 hc2` as an intermediate fact. Rewrite `this` using `[c2, mul_zero, coordIn, mul_zero, zero_div]`. Conclude with `this rfl`. Use `⟨hT2', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← coordIn_div E hd hs κ hΩ₀0 T₁ T₂, map_div₀, c1, c2, coordIn_div E hd hs κ hΩσ, mul_assoc, mul_assoc, mul_div_mul_left _ _ (inv_ne_zero hm0)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transportFor_of (hA : LatAlg) (hC : LatConj) {K : Type} [Field K] [NumberField K] (d : ℕ) (hd : 0 < d)
     (δ : K) (hδ : δ ^ 2 = -(d : K)) (h2 : Module.finrank ℚ K = 2) (φK : K →+* ℂ) (ΛK : PeriodPair)
@@ -231,17 +229,15 @@ theorem transportFor_of (hA : LatAlg) (hC : LatConj) {K : Type} [Field K] [Numbe
       mul_div_mul_left _ _ (inv_ne_zero hm0)]
 
 /- English proof (translation)
-Introduce `K _ _ d hd h2 hdisc φK ΛK hΛ`. Establish `hTC : IsTotallyComplex K` using `isTotallyComplex_of_discr_neg h2 (by rw [hdisc]; omega)`. Take `⟨δ, hδ⟩` from `exists_sq_eq_neg K d h2 hdisc`. Take `⟨Ω₀, hΩ₀⟩` from `IsAlgClosed.exists_pow_nat_eq (latDisc ΛK) (by norm_num : 0 < 12)`. Establish `hΩ₀0 : Ω₀ ≠ 0` using `by rintro rfl; exact latDisc_ne_zero ΛK (by rw [← hΩ₀]; norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ σ : ℂ ≃+* ℂ, Fixes φK σ → ∃ (t : (Af K)ˣ) (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (Λ : PeriodPair) (Ω : ℂ), TorsTransport φK σ t ΛK Λ Ω₀ Ω ∧ IsInvIdealOf t (𝔞 : FractionalIdeal (𝓞 K)⁰ K) ∧ IsLatOf φK (𝔞 : FractionalIdeal (𝓞 K)⁰ K) Λ`. Introduce `σ hσ`. Use `letI : Algebra K ℂ := φK.toAlgebra`. Take `⟨X, hX, ξ, hξ, hTr⟩` from `GlobalTheory.LatVal.CurveTransport.exists_curve_torsTransport h2 φK ΛK Ω₀ hΛ hΩ₀0`. Use `haveI := hX`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `σK : ℂ ≃ₐ[K] ℂ` to `AlgEquiv.ofRingEquiv (f := σ) hσ`. Take `⟨t, ht⟩` from `GlobalTheory.EllipticCM.exists_transports h2 σK one_ne_zero hξ`. Take `⟨Λ₁, Ω₁, h1⟩` from `hTr σK t ht`. Take `⟨𝔞, h𝔞t, h𝔞Λ⟩` from `h1.2.2.2.2.1`. Establish `h𝔞0 : 𝔞 ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Establish `hm : Λ₁.ω₁ ∈ (Λ₁.lattice : Set ℂ)` using `PeriodPair.ω₁_mem_lattice Λ₁`. Rewrite `hm` using `[h𝔞Λ]`. Take `⟨x, hx, hx'⟩` from `hm`. Establish `hx0 : x = 0` using `by simpa using hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[hx0, map_zero]`. Conclude with `(by simpa using Λ₁.indep.ne_zero 0 : Λ₁.ω₁ ≠ 0) hx'.symm`. Conclude with `⟨t, Units.mk0 𝔞 h𝔞0, Λ₁, Ω₁, h1, h𝔞t, h𝔞Λ⟩`. Use `haveI : Nonempty PeriodPair := ⟨ΛK⟩`. Use `choose! t 𝔞 Λ Ω hT using key`.
-
-Use `⟨t, 𝔞, Λ, fun σ hσ => ⟨(hT σ hσ).2.1, (hT σ hσ).2.2, (disc_j_of_torsTransport (hT σ hσ).1 hΩ₀).2⟩, equidistributed_of_j hH h2 φK ΛK hΛ 𝔞 (fun σ hσ => ⟨Λ σ, (hT σ hσ).2.2, (disc_j_of_torsTransport (hT σ hσ).1 hΩ₀).2⟩), ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ _ hE I _ φ hcard hφ hφK s κ 𝔣 hs hκ h𝔣`. Conclude with `transportFor_of hA hC d (by omega) δ hδ h2 φK ΛK hΛ Ω₀ hΩ₀ hΩ₀0 t 𝔞 Λ Ω (fun σ hσ => ⟨(hT σ hσ).1, (hT σ hσ).2.1⟩) E hE I φ hφ hφK s κ 𝔣 hs h𝔣`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem transport_of (hH : GlobalTheory.Published.HilbertClassFieldJ) (hA : LatAlg) (hC : LatConj) : Transport := by
   intro K _ _ d hd h2 hdisc φK ΛK hΛ

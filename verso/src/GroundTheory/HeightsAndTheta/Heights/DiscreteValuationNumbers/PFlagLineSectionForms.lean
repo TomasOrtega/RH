@@ -22,7 +22,7 @@ abbrev projMap (F : Type*) [Field F] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (w
   eval₂Hom (C.comp ((algebraMap Ω Φ).comp (algebraMap F Ω))) (fun p => C (projCoord y w φ t p) * X p.1)
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 theorem mem_projIdeal_iff {y : (Σ k, ι k) → Ω} {w : Module.Basis (Fin N) Ω E}
     {φ : Fin M → Module.Dual Ω E} {t : Fin N → Φ} {h : MRing (bundleIdx ι M) F} :
@@ -32,7 +32,7 @@ theorem mem_projIdeal_iff {y : (Σ k, ι k) → Ω} {w : Module.Basis (Fin N) Ω
 def tMon (α : K → ℕ) : MvPolynomial (Option K) Φ := ∏ k, X (some k) ^ α k
 
 /- English proof (translation)
-Simplify using `only [tMon, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tMon_add (α β : K → ℕ) : (tMon (α + β) : MvPolynomial (Option K) Φ) = tMon α * tMon β := by
   simp only [tMon, Pi.add_apply, pow_add, Finset.prod_mul_distrib]
@@ -40,7 +40,7 @@ theorem tMon_add (α β : K → ℕ) : (tMon (α + β) : MvPolynomial (Option K)
 def liftN (α : K → ℕ) : Option K → ℕ := fun o => Option.elim o 0 α
 
 /- English proof (translation)
-Apply the tactic sequence `funext o; cases o <;> simp [liftN]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftN_add (α β : K → ℕ) : liftN (α + β) = liftN α + liftN β := by
   funext o; cases o <;> simp [liftN]
@@ -49,7 +49,7 @@ def chartMon (F : Type*) [Field F] (M : ℕ) (c : ∀ k, ι k) (α : K → ℕ) 
   ∏ k, (X ⟨some k, c k⟩ : MRing (bundleIdx ι M) F) ^ α k
 
 /- English proof (translation)
-Simplify using `[projMap, projCoord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projMap_X_some (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) (k : K) (i : ι k) :
@@ -57,7 +57,7 @@ theorem projMap_X_some (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
   simp [projMap, projCoord]
 
 /- English proof (translation)
-Simplify using `[projMap, projCoord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projMap_X_none (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) (l : Fin M) :
@@ -66,9 +66,9 @@ theorem projMap_X_none (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
   simp [projMap, projCoord]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single ⟨0, h0⟩]`. Simplify using `[truncCoord]`. Introduce `j _ hj`. Establish `: ¬ (j : ℕ) < 1`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hj` to reduce the goal to its premises. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[truncCoord, this]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -83,7 +83,7 @@ theorem sum_truncCoord_one (t : Fin N → Φ) (h0 : 0 < N) (z : Fin N → Φ) :
   · simp
 
 /- English proof (translation)
-Simplify using `[projMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projMap_C (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) (r : F) :
@@ -91,7 +91,7 @@ theorem projMap_C (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
   simp [projMap]
 
 /- English proof (translation)
-Simplify using `only [chartMon, map_prod, map_pow, projMap_X_some, mul_pow, Finset.prod_mul_distrib, tMon]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projMap_chartMon (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) (c : ∀ k, ι k) (α : K → ℕ) :
@@ -100,9 +100,9 @@ theorem projMap_chartMon (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω 
   simp only [chartMon, map_prod, map_pow, projMap_X_some, mul_pow, Finset.prod_mul_distrib, tMon]
 
 /- English proof (translation)
-Unfold `IsMultiHomog chartMon`. Establish `h` using `IsWeightedHomogeneous.prod (w := blockWeight (bundleIdx ι M)) Finset.univ (fun k => (X ⟨some k, c k⟩ : MRing (bundleIdx ι M) F) ^ α k) (fun k => α k • blockWeight (bundleIdx ι M) ⟨some k, c k⟩) (fun k _ => (isWeightedHomogeneous_X F _ _).pow (α k))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `o`. Consider the cases of `o with`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => simp [liftN, blockWeight, Finset.sum_apply]`. Consider the case `some k => simp [liftN, blockWeight, Finset.sum_apply, Pi.single_apply]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem isMultiHomog_chartMon (c : ∀ k, ι k) (α : K → ℕ) :
     IsMultiHomog (chartMon F M c α) (liftN α) := by
@@ -118,7 +118,7 @@ theorem isMultiHomog_chartMon (c : ∀ k, ι k) (α : K → ℕ) :
   | some k => simp [liftN, blockWeight, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Unfold `IsMultiHomog`. Conclude with `isWeightedHomogeneous_X F _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_X_none (l : Fin M) :
     IsMultiHomog (X ⟨none, l⟩ : MRing (bundleIdx ι M) F) (Pi.single none 1) := by
@@ -134,9 +134,9 @@ def IsChartForm (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     projMap F y w φ t A = C (algebraMap Ω Φ (a * segreVec y c ^ n)) * tMon (fun _ => n)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h.1.mul (isMultiHomog_chartMon (F := F) (M := M) c (fun _ => m))` as an intermediate fact. Rewrite `this` using `[← liftN_add]`. Then use the resulting hypothesis. Rewrite using `[map_mul, h.2, projMap_chartMon]`. Establish `e : (fun _ : K => n + m) = (fun _ => n) + (fun _ => m)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, tMon_add]`. Simplify using `only [segreVec, pow_add, Finset.prod_pow, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsChartForm.pad {y : (Σ k, ι k) → Ω} {w : Module.Basis (Fin N) Ω E}
     {φ : Fin M → Module.Dual Ω E} {t : Fin N → Φ} {c : ∀ k, ι k} {a : Ω} {n : ℕ}
@@ -152,19 +152,19 @@ theorem IsChartForm.pad {y : (Σ k, ι k) → Ω} {w : Module.Basis (Fin N) Ω E
     ring
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Use `⟨1, chartMon F M j (fun _ => 1), ?_, ?_⟩` and prove the remaining obligations. Conclude with `isMultiHomog_chartMon j _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[projMap_chartMon, div_mul_eq_mul_div, pow_one, mul_div_assoc, div_self hc, mul_one]`. Simplify using `[segreVec]`. Consider the case `algebraMap r`. Use `⟨0, C r, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have e : liftN (fun _ : K => 0) = 0 := by funext o; cases o <;> rfl`.
+Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Unfold `IsMultiHomog`. Rewrite using `[e]`. Conclude with `isWeightedHomogeneous_C _ _`. Rewrite using `[projMap_C]`. Simplify using `[tMon]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x z _ _ hx hz`. Take `⟨n₁, A₁, h₁⟩` from `hx`. Take `⟨n₂, A₂, h₂⟩` from `hz`. Establish `h₁'` using `h₁.pad n₂`. Establish `h₂'` using `h₂.pad n₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h₂'` using `[Nat.add_comm n₂ n₁]`. Use `⟨n₁ + n₂, _, h₁'.1.add h₂'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h₁'.2, h₂'.2, add_mul, map_add, C_add, add_mul]`. Consider the case `mul x z _ _ hx hz`. Take `⟨n₁, A₁, h₁⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n₂, A₂, h₂⟩` from `hz`. Use `⟨n₁ + n₂, A₁ * A₂, ?_, ?_⟩` and prove the remaining obligations. Use `h₁.1.mul h₂.1` as an intermediate fact. Rewrite `this` using `[← liftN_add]`. Then use the resulting hypothesis. Rewrite using `[map_mul, h₁.2, h₂.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun _ : K => n₁ + n₂) = (fun _ => n₁) + (fun _ => n₂)` using `rfl`. Rewrite using `[e, tMon_add, pow_add]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_chartForm (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) (c : ∀ k, ι k) (hc : segreVec y c ≠ 0)
@@ -206,9 +206,9 @@ theorem exists_chartForm (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω 
       ring
 
 /- English proof (translation)
-Use `choose n A hA using fun j => exists_chartForm (M := M) y w φ t c hc (ha j)`. Use `⟨∑ j, n j, fun m hm j => ?_⟩` and prove the remaining obligations. Establish `hle : n j ≤ m` using `(Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)).trans hm`. Use `(hA j).pad (m - n j)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' hle]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, this⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_chartForm_family (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) (c : ∀ k, ι k) (hc : segreVec y c ≠ 0)
@@ -224,49 +224,49 @@ theorem exists_chartForm_family (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin
 def chartZ (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (e : K → ℤ) : Ω := ∏ k, y ⟨k, c k⟩ ^ e k
 
 /- English proof (translation)
-Simplify using `only [chartZ, Pi.add_apply, zpow_add₀ (hc _), Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartZ_add {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (e e' : K → ℤ) :
     chartZ y c (e + e') = chartZ y c e * chartZ y c e' := by
   simp only [chartZ, Pi.add_apply, zpow_add₀ (hc _), Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Simplify using `[chartZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartZ_natCast (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (α : K → ℕ) :
     chartZ y c (fun k => (α k : ℤ)) = ∏ k, y ⟨k, c k⟩ ^ α k := by
   simp [chartZ]
 
 /- English proof (translation)
-Simplify using `[chartZ, segreVec, Finset.prod_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segreVec_pow (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (n : ℕ) :
     segreVec y c ^ n = chartZ y c (fun _ => (n : ℤ)) := by
   simp [chartZ, segreVec, Finset.prod_pow]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`.
+A detailed English derivation is pending.
 -/
 theorem chartZ_ne_zero {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (e : K → ℤ) :
     chartZ y c e ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)
 
 /- English proof (translation)
-Introduce `k` and use `(Finset.prod_ne_zero_iff.mp hc) k (Finset.mem_univ k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem live_of_segreVec_ne_zero {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : segreVec y c ≠ 0) :
     ∀ k, y ⟨k, c k⟩ ≠ 0 :=
   fun k => (Finset.prod_ne_zero_iff.mp hc) k (Finset.mem_univ k)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`.
+A detailed English derivation is pending.
 -/
 theorem segreVec_ne_zero_of_live {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     segreVec y c ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun k _ => hc k
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun _ _ => pow_ne_zero _ (X_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem tMon_ne_zero (α : K → ℕ) : (tMon α : MvPolynomial (Option K) Φ) ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun _ _ => pow_ne_zero _ (X_ne_zero _)

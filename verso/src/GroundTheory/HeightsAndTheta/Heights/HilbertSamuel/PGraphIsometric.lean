@@ -19,9 +19,9 @@ section Divisor
 variable {K : Type*} [Fintype K] {κ : K → Type*} [∀ k, Fintype (κ k)]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨p, hp, r, hr, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Establish `e : u * (p + c * f) = (u * p + c * (u * f - v * g)) + (c * v) * g` using `by ring`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (P.add_mem (P.mul_mem_left _ hp) (P.mul_mem_left _ huv)) (Ideal.mem_span_singleton'.mpr ⟨c * v, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_sup_span {P : Ideal (MRing κ)} {f g u v : MRing κ} (huv : u * f - v * g ∈ P) :
     ∀ x ∈ P ⊔ Ideal.span {f}, u * x ∈ P ⊔ Ideal.span {g} := by
@@ -34,9 +34,9 @@ theorem mul_mem_sup_span {P : Ideal (MRing κ)} {f g u v : MRing κ} (huv : u * 
     (Ideal.mem_span_singleton'.mpr ⟨c * v, rfl⟩)
 
 /- English proof (translation)
-Establish `hvu : v * g - u * f ∈ P`. Rewrite using `[← neg_sub]`. Conclude with `P.neg_mem huv`. Establish `hWp : W.IsPrime` using `hf.1.1.1`. Use `⟨⟨GroundTheory.Heights₂.Heights.NumbersDVR.mem_minimalPrimes_of_mul_mem hu hv (mul_mem_sup_span huv) (mul_mem_sup_span hvu) hf.1, hf.2⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `multAt`. Rewrite using `[dif_pos hWp, dif_pos hWp, GroundTheory.Heights₂.Heights.NumbersDVR.length_localized_eq_of_mul_mem hu hv (mul_mem_sup_span huv) (mul_mem_sup_span hvu)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_divSupp_and_multAt_eq {P W : Ideal (MRing κ)} {f g u v : MRing κ} (hf : W ∈ divSupp P f)
     (hu : u ∉ W) (hv : v ∉ W) (huv : u * f - v * g ∈ P) :
@@ -53,9 +53,9 @@ theorem mem_divSupp_and_multAt_eq {P W : Ideal (MRing κ)} {f g u v : MRing κ} 
       (mul_mem_sup_span hvu)]
 
 /- English proof (translation)
-Use extensionality with `W`. Simplify using `only [divCycle, Finsupp.ofSupportFinite_coe]`. Distinguish the cases in `hf : W ∈ divSupp P f`. Take `⟨u, v, hu, hv, huv⟩` from `h W hf.1.1.1 (le_sup_left.trans hf.1.1.2) hf.2`. Take `⟨hg, e⟩` from `mem_divSupp_and_multAt_eq hf hu hv huv`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos hf, if_pos hg, e]`. Distinguish the cases in `hg : W ∈ divSupp P g`. Take `⟨u, v, hu, hv, huv⟩` from `h W hg.1.1.1 (le_sup_left.trans hg.1.1.2) hg.2`. Conclude with `absurd (mem_divSupp_and_multAt_eq hg hv hu (by rw [← neg_sub]; exact P.neg_mem huv)).1 hf`. Rewrite using `[if_neg hf, if_neg hg]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCycle_eq_of_local {P : Ideal (MRing κ)} {f g : MRing κ}
     (h : ∀ W : Ideal (MRing κ), W.IsPrime → P ≤ W → IsRelevant W →
@@ -79,7 +79,7 @@ section Graph
 variable {K : Type} [Fintype K] {ι ι₂ : K → Type} [∀ k, Fintype (ι k)] [∀ k, Fintype (ι₂ k)]
 
 /- English proof (translation)
-Take `⟨k, i⟩` from `p`. Simplify using `[graphMap, inlV]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem graphMap_X_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (p : Σ k, ι k) :
     graphMap P g (X (inlV p)) = C (Ideal.Quotient.mk P (X p)) := by
@@ -87,7 +87,7 @@ theorem graphMap_X_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι
   simp [graphMap, inlV]
 
 /- English proof (translation)
-Take `⟨k, j⟩` from `q`. Simplify using `[graphMap, inrV]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem graphMap_X_inrV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (q : Σ k, ι₂ k) :
     graphMap P g (X (inrV q)) = C (Ideal.Quotient.mk P (g q)) * X q.1 := by
@@ -95,9 +95,9 @@ theorem graphMap_X_inrV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι
   simp [graphMap, inrV]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e : ((graphMap P g).comp (rename (inlV (ι₂` using `ι₂))).toRingHom).comp C = ((C : (MRing ι ⧸ P) →+* MvPolynomial K (MRing ι ⧸ P)).comp (Ideal.Quotient.mk P)).comp C := RingHom.ext_int _ _`. Conclude with `RingHom.congr_fun e a`. Consider the case `add p q hp hq => simp [hp, hq]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p n hp => simp [hp, graphMap_X_inlV]`.
+A detailed English derivation is pending.
 -/
 theorem graphMap_rename_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (p : MRing ι) :
     graphMap P g (rename inlV p) = C (Ideal.Quotient.mk P p) := by
@@ -111,7 +111,7 @@ theorem graphMap_rename_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRi
   | mul_X p n hp => simp [hp, graphMap_X_inlV]
 
 /- English proof (translation)
-Rewrite using `[graphIdeal, RingHom.mem_ker, map_sub, map_mul, map_mul, graphMap_X_inrV, graphMap_X_inrV, graphMap_rename_inlV, graphMap_rename_inlV]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem minor_mem (P : Ideal (MRing ι)) (A : ∀ k, ι₂ k → ι k → ℤ) (k : K) (j₁ j₂ : ι₂ k) :
     X (inrV ⟨k, j₁⟩) * rename inlV (linForm A ⟨k, j₂⟩) - X (inrV ⟨k, j₂⟩) * rename inlV (linForm A ⟨k, j₁⟩) ∈
@@ -127,7 +127,7 @@ def den (A : ∀ k, ι₂ k → ι k → ℤ) (j : ∀ k, ι₂ k) (a : K → �
   ∏ k, X (inrV ⟨k, j k⟩) ^ (a k).toNat * rename inlV (linForm A ⟨k, j k⟩) ^ (-a k).toNat
 
 /- English proof (translation)
-Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Simplify using `only [linForm, map_sum, map_mul, rename_C, rename_X]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_X ℤ _ _))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wh_lin [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (q : Σ k, ι₂ k) :
     IsWeightedHomogeneous (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight (Sum.elim ι ι₂))
@@ -139,7 +139,7 @@ theorem wh_lin [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (q : Σ k, 
   exact Submodule.smul_mem _ _ ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_X ℤ _ _))
 
 /- English proof (translation)
-Use `(GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).mp ?_` and prove the remaining obligations. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun k _ => ((wh_lin A ⟨k, j k⟩).pow _).mul ((isWeightedHomogeneous_X ℤ _ _).pow _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_num [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (j : ∀ k, ι₂ k) (a : K → ℤ) :
     IsMultiHomog (num A j a)
@@ -149,7 +149,7 @@ theorem isMultiHomog_num [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (
     ((wh_lin A ⟨k, j k⟩).pow _).mul ((isWeightedHomogeneous_X ℤ _ _).pow _)
 
 /- English proof (translation)
-Use `(GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).mp ?_` and prove the remaining obligations. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun k _ => ((isWeightedHomogeneous_X ℤ _ _).pow _).mul ((wh_lin A ⟨k, j k⟩).pow _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_den [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (j : ∀ k, ι₂ k) (a : K → ℤ) :
     IsMultiHomog (den A j a)
@@ -159,11 +159,11 @@ theorem isMultiHomog_den [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (
     ((isWeightedHomogeneous_X ℤ _ _).pow _).mul ((wh_lin A ⟨k, j k⟩).pow _)
 
 /- English proof (translation)
-Use `Ideal.Quotient.isDomain P` as an intermediate fact. Establish `h1 : ∀ k, (C (Ideal.Quotient.mk P (linForm A ⟨k, j k⟩)) : MvPolynomial K (MRing ι ⧸ P)) ≠ 0`. Introduce `k`. Rewrite using `[Ne, MvPolynomial.C_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hj k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ k, (C (Ideal.Quotient.mk P (linForm A ⟨k, j k⟩)) * X k : MvPolynomial K (MRing ι ⧸ P)) ≠ 0` using `fun k => mul_ne_zero (h1 k) (X_ne_zero _)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[num, graphIdeal, RingHom.mem_ker]`. Simplify using `only [map_prod, map_mul, map_pow, graphMap_rename_inlV, graphMap_X_inrV]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => mul_ne_zero (pow_ne_zero _ (h1 k)) (pow_ne_zero _ (h2 k))`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[den, graphIdeal, RingHom.mem_ker]`. Simplify using `only [map_prod, map_mul, map_pow, graphMap_rename_inlV, graphMap_X_inrV]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => mul_ne_zero (pow_ne_zero _ (h2 k)) (pow_ne_zero _ (h1 k))`.
+A detailed English derivation is pending.
 -/
 theorem num_den_not_mem {P : Ideal (MRing ι)} (hP : P.IsPrime) (A : ∀ k, ι₂ k → ι k → ℤ) {j : ∀ k, ι₂ k}
     (hj : ∀ k, linForm A ⟨k, j k⟩ ∉ P) (a : K → ℤ) :
@@ -184,23 +184,19 @@ theorem num_den_not_mem {P : Ideal (MRing ι)} (hP : P.IsPrime) (A : ∀ k, ι�
     exact Finset.prod_ne_zero_iff.mpr fun k _ => mul_ne_zero (pow_ne_zero _ (h2 k)) (pow_ne_zero _ (h1 k))
 
 /- English proof (translation)
-Use `hW` as an intermediate fact. Establish `hlin : ∀ k, ∃ j', rename inlV (linForm A ⟨k, j'⟩) ∉ W`. Introduce `k`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `choose i hi using fun k' => hrel (Sum.inl k')`. Take `⟨N, hN⟩` from `hBP k i`. Establish `hle : P ⊔ Ideal.span (Set.range fun j' : ι₂ k => linForm A ⟨k, j'⟩) ≤ W.comap (rename (inlV (ι₂` using `ι₂)) : MRing ι →ₐ[ℤ] MRing (Sum.elim ι ι₂)) := by`. Use `sup_le (fun p hp => hΓW ?_) (Ideal.span_le.mpr (Set.range_subset_iff.mpr hall))` and prove the remaining obligations. Rewrite using `[graphIdeal, RingHom.mem_ker, graphMap_rename_inlV, Ideal.Quotient.eq_zero_iff_mem.mpr hp, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem` using `hle hN`. Rewrite `hmem` using `[Ideal.mem_comap, map_pow, map_prod]`. Take `⟨k', -, hk'⟩` from `Ideal.IsPrime.prod_mem_iff.mp (hW.mem_of_pow_mem N hmem)`. Rewrite `hk'` using `[rename_X]`. Conclude with `hi k' hk'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `choose j' hj' using hlin`. Establish `hy : ∀ k, X (inrV ⟨k, j' k⟩) ∉ W`. Introduce `k hyk`. Take `⟨j'', hj''⟩` from `hrel (Sum.inr k)`. Establish `hm` using `hΓW (minor_mem P A k j'' (j' k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hprod : X (inrV ⟨k, j''⟩) * rename inlV (linForm A ⟨k, j' k⟩) ∈ W`. Establish `h` using `W.add_mem hm (W.mul_mem_right (rename inlV (linForm A ⟨k, j''⟩)) hyk)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Break down `hW.mem_or_mem hprod with h | h` into its components or cases. Conclude with `hj'' h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hj' k h`. Use `⟨∏ k, X (inrV ⟨k, j' k⟩) ^ (a k).toNat * rename inlV (linForm A ⟨k, j' k⟩) ^ (-a k).toNat, ∏ k, rename inlV (linForm A ⟨k, j' k⟩) ^ (a k).toNat * X (inrV ⟨k, j' k⟩) ^ (-a k).toNat, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Break down `hW.mem_or_mem hk with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy k (hW.mem_of_pow_mem _ h)`. Conclude with `hj' k (hW.mem_of_pow_mem _ h)`. Introduce `h`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Break down `hW.mem_or_mem hk with h | h` into its components or cases.
-
-Conclude with `hj' k (hW.mem_of_pow_mem _ h)`. Conclude with `hy k (hW.mem_of_pow_mem _ h)`. Rewrite using `[graphIdeal, RingHom.mem_ker, map_sub, sub_eq_zero]`. Simplify using `only [num, den, map_prod, map_mul, map_pow, graphMap_rename_inlV, graphMap_X_inrV]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
-
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_unit {P : Ideal (MRing ι)} {A : ∀ k, ι₂ k → ι k → ℤ} (hBP : IsBasePtFree P (linForm A))
     (j : ∀ k, ι₂ k) (a : K → ℤ) {W : Ideal (MRing (Sum.elim ι ι₂))} (hW : W.IsPrime)
@@ -252,7 +248,7 @@ theorem exists_unit {P : Ideal (MRing ι)} {A : ∀ k, ι₂ k → ι k → ℤ}
     ring
 
 /- English proof (translation)
-Establish `he : l ^ e = l ^ ((e.toNat : ℤ) - ((-e).toNat : ℤ))` using `by rw [Int.toNat_sub_toNat_neg]`. Rewrite using `[he, zpow_sub₀ hl, zpow_natCast, zpow_natCast, mul_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem norm_factor {l : ℝ} (hl : l ≠ 0) (t : ℝ) (e : ℤ) :
     t ^ e.toNat * (l * t) ^ (-e).toNat * l ^ e = (l * t) ^ e.toNat * t ^ (-e).toNat := by
@@ -263,41 +259,35 @@ theorem norm_factor {l : ℝ} (hl : l ≠ 0) (t : ℝ) (e : ℤ) :
 end Graph
 
 /- English proof (translation)
-Introduce `K _ ι ι₂ _ _ P d A B₁ B B₁' B' hP hBP ha hh hpl hpr`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Use `choose j hj using ChangeOfModel.exists_linForm_not_mem hP hBP`. Take `⟨hf, hg⟩` from `num_den_not_mem hPp A hj B.a`. Use `⟨num A j B.a, den A j B.a, _, _, isMultiHomog_num A j B.a, isMultiHomog_den A j B.a, hf, hg, ?_, divCycle_eq_of_local fun W hW hΓW hrel => exists_unit hBP j B.a hW hΓW hrel, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hpl.1, hpr.1, ha]`. Break down `x with k | k` into its components or cases. Establish `e1 : pullDeg Sum.inl B.a (Sum.inl k : K ⊕ K) = B.a k` using `Sum.inl_injective.extend_apply _ _ _`. Establish `e2 : pullDeg Sum.inr B.a (Sum.inl k : K ⊕ K) = 0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullDeg, Function.extend_apply' _ _ _ (by rintro ⟨_, h⟩; cases h)]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `e1 : pullDeg Sum.inl B.a (Sum.inr k : K ⊕ K) = 0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullDeg, Function.extend_apply' _ _ _ (by rintro ⟨_, h⟩; cases h)]`. Both sides reduce to the same expression. Establish `e2 : pullDeg Sum.inr B.a (Sum.inr k : K ⊕ K) = B.a k` using `Sum.inr_injective.extend_apply _ _ _`. Rewrite using `[e1, e2]`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `z hz set x : (Σ k, ι k) → ℂ := fun p => z (inlV p) with hxdef set y : (Σ k, ι₂ k) → ℂ := fun q => z (inrV q) with hydef`. Establish `hev : ∀ p : MRing ι, eval z (map (Int.castRingHom ℂ) (rename (inlV (ι₂` using `ι₂)) p)) = eval x (map (Int.castRingHom ℂ) p) := by`. Introduce `p`. Rewrite using `[map_rename, eval_rename]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hx : x ∈ mcPts P`. Use `⟨fun k => hz.1 (Sum.inl k), fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[← hev]`. Use `hz.2 _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[graphIdeal, RingHom.mem_ker, graphMap_rename_inlV, Ideal.Quotient.eq_zero_iff_mem.mpr hp, map_zero]`. Establish `hlin : ∀ q, eval z (map (Int.castRingHom ℂ) (rename inlV (linForm A q))) = linApply A x q`. Introduce `q`. Rewrite using `[hev]`. Simplify using `[linForm, linApply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hyev : ∀ q, eval z (map (Int.castRingHom ℂ) (X (inrV q) : MRing (Sum.elim ι ι₂))) = y q`. Introduce `q`. Simplify using `[hydef]`. Establish `hminor : ∀ k (j₁ j₂ : ι₂ k), y ⟨k, j₁⟩ * linApply A x ⟨k, j₂⟩ = y ⟨k, j₂⟩ * linApply A x ⟨k, j₁⟩`. Introduce `k j₁ j₂`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hz.2 _ (minor_mem P A k j₁ j₂)`. Simplify using `only [map_sub, map_mul, hlin, hyev] at h`. Conclude with `sub_eq_zero.mp h`. Establish `hAx : ∀ k, ∃ j', linApply A x ⟨k, j'⟩ ≠ 0`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Use `choose i hi using hx.1`. Take `⟨N, hN⟩` from `hBP k i`. Set `φ : MRing ι →+* ℂ` to `(eval x).comp (map (Int.castRingHom ℂ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hle : P ⊔ Ideal.span (Set.range fun j' : ι₂ k => linForm A ⟨k, j'⟩) ≤ RingHom.ker φ`. Use `sup_le (fun p hp => RingHom.mem_ker.mpr (hx.2 p hp)) (Ideal.span_le.mpr (Set.range_subset_iff.mpr fun j' => ?_))` and prove the remaining obligations. Use `show φ _ = 0`. Simplify `hall j'` using `[φ, linForm, linApply]`. Establish `h0` using `RingHom.mem_ker.mp (hle hN)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hne : φ ((∏ k', (X ⟨k', i k'⟩ : MRing ι)) ^ N) ≠ 0`. Simplify using `only [φ, map_pow, map_prod, RingHom.comp_apply, map_X, eval_X]`. Conclude with `pow_ne_zero _ (Finset.prod_ne_zero_iff.mpr fun k' _ => hi k')`. Conclude with `hne h0`. Use `choose jx hjx using hAx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c : K → ℂ := fun k => y ⟨k, jx k⟩ / linApply A x ⟨k, jx k⟩ with hcdef`. Establish `hyc : ∀ q : Σ k, ι₂ k, y q = c q.1 * linApply A x q`. Introduce and unpack `⟨k, j₁⟩`. Simplify using `only [hcdef]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hjx k)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hminor k j₁ (jx k)`. Establish `hc : ∀ k, c k ≠ 0`. Introduce `k hck`. Take `⟨j₁, hj₁⟩` from `hz.1 (Sum.inr k)`. Establish `h` using `hyc ⟨k, j₁⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hck, zero_mul]`. Conclude with `hj₁ h`. Establish `hB' : B'.h z = (∏ k, ‖c k‖ ^ B.a k) * B.h (linApply A x)`. Rewrite using `[hpr.2 z, ← B.smul c _ hc]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `q`. Conclude with `hyc q`. Establish `hB₁' : B₁'.h z = B.h (linApply A x)`. Rewrite using `[hpl.2 z]`. Conclude with `hh x hx`.
-
-Rewrite using `[hB', hB₁', num, den]`. Simplify using `only [map_prod, map_mul, map_pow, hlin, hyev, hyc, norm_prod, norm_mul, norm_pow]`. Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Conclude with `norm_factor (norm_ne_zero_iff.mpr (hc k)) _ _`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem proof : GraphIsometric.Statement := by
   intro K _ ι ι₂ _ _ P d A B₁ B B₁' B' hP hBP ha hh hpl hpr

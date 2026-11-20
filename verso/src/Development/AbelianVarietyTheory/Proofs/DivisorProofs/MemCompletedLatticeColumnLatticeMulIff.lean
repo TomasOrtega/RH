@@ -16,13 +16,13 @@ namespace GlobalTheory.LatMulAd
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hy ⊢`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨g *ᵥ x, hg x hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`. Both sides reduce to the same expression. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha`. Establish `: g.map (eToEAf D) *ᵥ (r • a) = r • (g.map (eToEAf D) *ᵥ a)` using `by show _ = (r : EAf D) • (g.map (eToEAf D) *ᵥ a)`. Rewrite using `[← Matrix.mulVec_smul]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ r ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_map_mem_hatL {n : ℕ} (g : Matrix (Fin n) (Fin n) D.host.E)
     (Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
@@ -48,13 +48,13 @@ theorem mulVec_map_mem_hatL {n : ℕ} (g : Matrix (Fin n) (Fin n) D.host.E)
     rw [this]; exact Submodule.smul_mem _ r ha
 
 /- English proof (translation)
-Introduce `v`. Establish `h1 : ∀ x ∈ colLat B, (γ : Matrix (Fin n) (Fin n) D.host.E) *ᵥ x ∈ colLat (γ * B)`. Introduce `x hx`. Rewrite using `[colLat_mul]`. Conclude with `⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h2 : ∀ x ∈ colLat (γ * B), ((γ⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) *ᵥ x ∈ colLat B`. Introduce `x hx`. Rewrite `hx` using `[colLat_mul]`. Take `⟨y, hy, rfl⟩` from `hx`. Use `show ((γ⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) *ᵥ ((γ : Matrix (Fin n) (Fin n) D.host.E) *ᵥ y) ∈ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `hy`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `mulVec_map_mem_hatL _ _ _ h2 v hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hv`. Use `mulVec_map_mem_hatL _ _ _ h1 _ hv` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_hatL_colLat_mul (D : D7) {n : ℕ} (γ B : GL (Fin n) D.host.E) : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (γ * B)) ↔
       (γ⁻¹).1.map (eToEAf D) *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat B) := by

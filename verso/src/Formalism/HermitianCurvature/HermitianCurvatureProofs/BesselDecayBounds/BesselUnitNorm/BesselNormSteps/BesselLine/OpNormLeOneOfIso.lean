@@ -61,14 +61,14 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.opNorm_le_bound A zero_le_one (fun x => by rw [h, one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem opNorm_le_one_of_iso {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (A : E →L[ℂ] E)
     (h : ∀ x, ‖A x‖ = ‖x‖) : ‖A‖ ≤ 1 :=
   ContinuousLinearMap.opNorm_le_bound A zero_le_one (fun x => by rw [h, one_mul])
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mx k r) : ‖psi k r z c g‖ = 1 := by
   unfold psi
@@ -76,9 +76,7 @@ theorem norm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mx k r) : ‖p
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-Unfold `ell`. Use `continuous_finset_sum _ (fun a _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `continuous_id.matrix_elem _ _`. Use `first`.
-
-Consider the case `fun_prop`. Consider the case `(simp only [dotProduct]`. Conclude with `continuous_finset_sum _ (fun j _ => (continuous_id.matrix_elem _ _).mul continuous_const))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ell_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous (ell k r z) := by
   unfold ell
@@ -91,7 +89,7 @@ theorem ell_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous (ell k r z) := b
          exact continuous_finset_sum _ (fun j _ => (continuous_id.matrix_elem _ _).mul continuous_const))
 
 /- English proof (translation)
-Unfold `psi`. Conclude with `(continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul (ell_cont z))))).cexp`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psi_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) : Continuous (psi k r z c) := by
   unfold psi
@@ -99,7 +97,7 @@ theorem psi_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) : Continuous (psi k
     (Complex.continuous_re.comp (continuous_const.mul (ell_cont z))))).cexp
 
 /- English proof (translation)
-Establish `h1 : (ContinuousLinearMap.adjoint A).comp A = 1` using `(ContinuousLinearMap.norm_map_iff_adjoint_comp_self A).1 hA`. Use extensionality with `x`. Establish `e1 : A (B x) = x`. Rewrite using `[← ContinuousLinearMap.comp_apply, hAB, ContinuousLinearMap.one_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem adjoint_eq_of_iso {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
     (A B : E →L[ℂ] E) (hA : ∀ x, ‖A x‖ = ‖x‖) (hAB : A.comp B = 1) : ContinuousLinearMap.adjoint A = B := by
@@ -113,9 +111,9 @@ theorem adjoint_eq_of_iso {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
     _ = B x := by rw [h1, ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-Establish `hps : Continuous fun p : Mt k r × Mt k r => star (psi k r z c (Matrix.of p.2))` using `(continuous_star.comp (psi_cont z c)).comp continuous_snd`. Establish `hπ2 : AEStronglyMeasurable (fun p : Mt k r × Mt k r => π (Matrix.of p.1)⁻¹) (μW.prod μN)` using `by first`. Consider the case `exact hπm.comp_fst`. Consider the case `exact hπm.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_fst`. Consider the case `exact hπm.prod_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(hco.mul hps.aestronglyMeasurable).smul hπ2`.
+A detailed English derivation is pending.
 -/
 theorem beF_aesm (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) (w v : H)
@@ -133,7 +131,7 @@ theorem beF_aesm (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (W
   exact (hco.mul hps.aestronglyMeasurable).smul hπ2
 
 /- English proof (translation)
-Establish `hinv : (Matrix.of p.1)⁻¹ ∈ UWset k r z` using `hG.2.2.1 _ hp`. Establish `hπn : ‖π (Matrix.of p.1)⁻¹‖ ≤ 1` using `opNorm_le_one_of_iso _ (hπ.2.2 _ hinv)`. Unfold `beF`. Rewrite using `[norm_smul, norm_mul, norm_star, norm_psi, mul_one]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) hπn`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_beF_le (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (σ : Mx k r → (H →L[ℂ] H)) (w v : H) (hG : GrpF k r z) (hπ : PiU z π) (p : Mt k r × Mt k r)
@@ -146,7 +144,7 @@ theorem norm_beF_le (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r →
   exact mul_le_of_le_one_right (norm_nonneg _) hπn
 
 /- English proof (translation)
-Introduce `w hw v hv`. Take `⟨C, Ws, -, hb⟩` from `hD v hv`. Establish `hint` using `(hb w hw).1`. Use `Integrable.mono' hint.norm (beF_aesm z c π μW μN σ w v hM.2.2.2 hint.aestronglyMeasurable) ?_` and prove the remaining obligations. Conclude with `hM.1.mono (fun p hp => norm_beF_le z c π σ w v hG hπ p hp.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conv_int (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
@@ -160,9 +158,9 @@ theorem conv_int (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (W
   exact hM.1.mono (fun p hp => norm_beF_le z c π σ w v hG hπ p hp.1)
 
 /- English proof (translation)
-Introduce `v hv x`. Take `⟨C, Ws, hWs, hb⟩` from `hD v hv`. Use `⟨C * ‖x‖, Ws, hWs, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hint` using `(hb w hw).1`. Establish `hF` using `conv_int z c π μW μN σ hG hπ hM hD w hw v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖be z c π μW μN σ w v x‖ ≤ ‖be z c π μW μN σ w v‖ * ‖x‖` using `ContinuousLinearMap.le_opNorm _ _`. Establish `h2 : ‖be z c π μW μN σ w v‖ ≤ ∫ p, ‖beF z c π σ w v p‖ ∂(μW.prod μN)` using `norm_integral_le_integral_norm _`. Establish `h3 : ∫ p, ‖beF z c π σ w v p‖ ∂(μW.prod μN) ≤ ∫ p, ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ‖ ∂(μW.prod μN)` using `integral_mono_ae hF.norm hint.norm (hM.1.mono (fun p hp => norm_beF_le z c π σ w v hG hπ p hp.1))`. Establish `h4` using `(hb w hw).2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem conv_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))

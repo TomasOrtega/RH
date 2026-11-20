@@ -33,7 +33,7 @@ def LeafJacobian : Prop := ∀ (d e : ℕ) (A B : Type) [CommRing A] [CommRing B
     (coordMap (A := A) g y t).Etale
 
 /- English proof (translation)
-Unfold `LateralTheory.E.t_E6Cut.varIdeal coordMap`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem varIdeal_coordMap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {d e : ℕ} (g : B)
     (y : Fin e → B) (t : Fin d → B) :
@@ -43,7 +43,7 @@ theorem varIdeal_coordMap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {
   simp
 
 /- English proof (translation)
-Introduce `d e A B _ _ _ I hB hBI P hP hIP`. Take `⟨g, hg, t, y, hI, hli, hsp⟩` from `hC d e A B I hB hBI P hP hIP`. Use `⟨g, hg, MvPolynomial (Fin e) A, inferInstance, coordMap (A := A) g y t, hJ d e A B (e + d) hB g t y hli hsp, ?_⟩` and prove the remaining obligations. Rewrite using `[varIdeal_coordMap, hI]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafChartRing_of (hC : LeafCoords) (hJ : LeafJacobian) : LateralTheory.E.t_E6Cut.LeafChartRing := by
   intro d e A B _ _ _ I hB hBI P hP hIP

@@ -8,43 +8,35 @@ open IsLocalRing
 namespace GlobalTheory.CurvePoint
 
 /- English proof (translation)
-Introduce `B _ _ _ _ _ hfin h hh`. Use `set p := ringChar (ResidueField B) with hpdef`. Establish `hp0 : p ≠ 0`. Introduce `h0`. Use `haveI : CharP (ResidueField B) 0 := by rw [← h0]; exact ringChar.charP _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CharZero (ResidueField B) := CharP.charP_to_charZero _`. Conclude with `not_finite (ResidueField B)`. Establish `hp : p.Prime` using `(CharP.char_is_prime_or_zero (ResidueField B) p).resolve_right hp0`. Use `haveI hF : Fact p.Prime := ⟨hp⟩`. Establish `hpm : (p : B) ∈ maximalIdeal B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← residue_eq_zero_iff, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`. Establish `hpB : (p : B) ≠ 0` using `Nat.cast_ne_zero.2 hp0`. Take `⟨q, hq, hxq, hmax⟩` from `GlobalTheory.T.exists_prime_not_mem_forall_gt_eq_maximalIdeal' B (h * p) (mul_ne_zero hh hpB) (Ideal.mul_mem_left _ _ hpm)`. Establish `hhq : h ∉ q` using `fun hq' => hxq (Ideal.mul_mem_right _ _ hq')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hpq : (p : B) ∉ q` using `fun hq' => hxq (Ideal.mul_mem_left _ _ hq')`. Establish `hqm : q ≤ maximalIdeal B` using `le_maximalIdeal hq.ne_top`. Use `set C := B ⧸ q`. Use `haveI : Nontrivial C := Ideal.Quotient.nontrivial_iff.2 hq.ne_top`. Use `haveI : IsLocalRing C := IsLocalRing.of_surjective' (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `π : B →+* C` to `Ideal.Quotient.mk q`. Establish `hπm : ∀ b ∈ maximalIdeal B, π b ∈ maximalIdeal C`. Introduce `b hb hu`. Take `⟨c, hc⟩` from `hu.exists_right_inv`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1 : b * c' - 1 ∈ q` using `Ideal.Quotient.eq.1 (by simpa [π] using hc)`. Establish `h2 : b * c' - 1 ∈ maximalIdeal B` using `hqm h1`. Establish `h3 : b * c' ∈ maximalIdeal B` using `Ideal.mul_mem_right _ _ hb`. Conclude with `(maximalIdeal.isMaximal B).ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using Ideal.sub_mem _ h3 h2))`. Establish `hmC : ∀ c ∈ maximalIdeal C, ∃ b ∈ maximalIdeal B, π b = c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `c hc`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `⟨b, fun hb => hc ?_, rfl⟩` and prove the remaining obligations. Conclude with `hb.map π`. Establish `hfinC : Finite (ResidueField C)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : ResidueField B → ResidueField C` to `Ideal.Quotient.lift (maximalIdeal B) ((residue C).comp π) (fun b hb => by`. Rewrite using `[RingHom.comp_apply, residue_eq_zero_iff]`. Conclude with `hπm b hb)`. Use `Finite.of_surjective f ?_` and prove the remaining obligations. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, rfl⟩` from `residue_surjective y`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Conclude with `⟨residue B b, rfl⟩`. Establish `hpC : (p : C) ≠ 0`. Rewrite using `[← map_natCast π, Ne, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hpq`. Establish `hpmC : (p : C) ∈ maximalIdeal C` using `by rw [← map_natCast π]; exact hπm _ hpm`. Establish `hdim : ∀ P : Ideal C, P.IsPrime → P ≠ ⊥ → P = maximalIdeal C`. Introduce `P hP hP0`. Use `le_antisymm (le_maximalIdeal hP.ne_top) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlt : q < P.comap π`. Use `lt_of_le_of_ne (fun b hb => ?_) (fun he => hP0 ?_)` and prove the remaining obligations. Use `show π b ∈ P`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hb]`. Conclude with `P.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eq_bot_iff]`. Introduce `c hc`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `: b ∈ q` using `he ▸ hc`. Conclude with `(Submodule.mem_bot _).2 (Ideal.Quotient.eq_zero_iff_mem.2 this)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hmax _ (Ideal.comap_isPrime π P) hlt`. Introduce `c hc'`. Take `⟨b, hb, rfl⟩` from `hmC c hc'`. Establish `: b ∈ P.comap π` using `hc ▸ hb`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, maximalIdeal C ^ N ≤ Ideal.span {(p : C)} := by`. Use `Ideal.exists_pow_le_of_le_radical_of_fg ?_ (IsNoetherian.noetherian _)` and prove the remaining obligations. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf fun P ⟨hle, hP⟩ => ?_` and prove the remaining obligations. Establish `hP0 : P ≠ ⊥` using `fun h0 => hpC (by rw [h0] at hle; exact (Submodule.mem_bot _).1 (hle (Ideal.mem_span_singleton_self _)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hdim P hP hP0).ge`. Take `⟨D, _, _, _, hDfin, ι, hι⟩` from `GlobalTheory.T.exists_finite_padicInt_domain_embedding p C hfinC hpC hpmC hdim`. Establish `hpD : (p : D) ≠ 0`. Rewrite using `[← map_natCast ι]; exact fun h0 => hpC (hι (by rw [h0, map_zero]))`. Take `⟨φ, hφ, hφ1⟩` from `GlobalTheory.T.exists_injective_norm_le_one_of_finite_padicInt_domain p D hpD`.
-
-Use `⟨p, hF, (φ.comp ι).comp π, fun b => hφ1 _, fun b hb => ?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `hπm b hb`. Establish `hcN : π b ^ N ∈ Ideal.span {(p : C)}` using `hN (Ideal.pow_mem_pow hc N)`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hcN`. Establish `key : ‖(φ.comp ι) (π b)‖ ^ N < 1 ^ N`.
-
-Rewrite using `[← norm_pow, ← map_pow, ← hd, map_mul, norm_mul, one_pow, map_natCast]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Establish `e : ((p : ℚ_[p]) : PadicAlgCl p) = (p : PadicAlgCl p)` using `by simp`. Rewrite using `[← e, norm_algebraMap']`.
-
-Conclude with `Padic.norm_p_lt_one`. Conclude with `lt_of_pow_lt_pow_left₀ N zero_le_one key`. Introduce `h0`. Apply `hhq` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
-
-Conclude with `hι (hφ (by simpa using h0))`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringHom_padicAlgCl_ne_zero : ∀ (B : Type) [CommRing B] [IsDomain B] [IsLocalRing B] [IsNoetherianRing B] [CharZero B], Finite (ResidueField B) → ∀ h : B, h ≠ 0 → ∃ (p : ℕ) (_ : Fact p.Prime) (χ : B →+* PadicAlgCl p), (∀ b, ‖χ b‖ ≤ 1) ∧ (∀ b ∈ maximalIdeal B, ‖χ b‖ < 1) ∧ χ h ≠ 0 := by
   intro B _ _ _ _ _ hfin h hh

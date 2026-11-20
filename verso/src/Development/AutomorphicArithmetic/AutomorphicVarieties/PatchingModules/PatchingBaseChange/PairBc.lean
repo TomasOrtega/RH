@@ -5,9 +5,9 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `GDet.ext fun B _ _ x => ?_` and prove the remaining obligations. Simplify using `only [GDet.map, GDet.ofRep, GDet.repAlg]`. Use `congr 4`. Apply `congrArg` to reduce the goal to its premises. Use `MonoidHom.ext fun s => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Simplify using `[diagRep, pushCh, Matrix.diagonal_apply, RingHom.algebraMap_toAlgebra]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gdet_ofRep_diagRep_map_eq_ofRep_pushCh {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [Group G]
     (χ : Fin n → G →* Aˣ) (f : A →+* A') :
@@ -22,11 +22,11 @@ private theorem gdet_ofRep_diagRep_map_eq_ofRep_pushCh {n : ℕ} {A A' G : Type}
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `letI : Algebra A (Polynomial A') := ((algebraMap A' (Polynomial A')).comp f).toAlgebra`. Set `φ : Polynomial A →ₐ[A] Polynomial A'` to `{ Polynomial.mapRingHom f with commutes' := fun a => by simp [RingHom.algebraMap_toAlgebra] }`. Establish `key` using `D.nat (Polynomial A) (Polynomial A') φ (MonoidAlgebra.single 1 Polynomial.X - (MonoidAlgebra.mapRingHom G Polynomial.C) x)`. Establish `e : (MonoidAlgebra.mapRingHom G (φ : Polynomial A →+* Polynomial A')) (MonoidAlgebra.single 1 Polynomial.X - (MonoidAlgebra.mapRingHom G Polynomial.C) x) = MonoidAlgebra.single 1 Polynomial.X - (MonoidAlgebra.mapRingHom G Polynomial.C) (MonoidAlgebra.mapRingHom G f x)`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[φ]`. Use extensionality with `g`. Simplify using `[φ, MonoidAlgebra.mapRingHom]`. Rewrite `key` using `[e]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 private theorem gdet_map_chi_mapRingHom_eq_map_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
     {A' : Type} [CommRing A'] (f : A →+* A') (x : MonoidAlgebra A G) :
@@ -50,7 +50,7 @@ private theorem gdet_map_chi_mapRingHom_eq_map_chi {n : ℕ} {A G : Type} [CommR
   exact key
 
 /- English proof (translation)
-Simplify using `only [GDet.lam, gdet_map_chi_mapRingHom_eq_map_chi, Polynomial.coeff_map, map_mul, map_pow, map_neg, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gdet_map_lam_mapRingHom_eq_lam {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
     {A' : Type} [CommRing A'] (f : A →+* A') (i : ℕ) (x : MonoidAlgebra A G) :
@@ -58,9 +58,9 @@ private theorem gdet_map_lam_mapRingHom_eq_lam {n : ℕ} {A G : Type} [CommRing 
   simp only [GDet.lam, gdet_map_chi_mapRingHom_eq_map_chi, Polynomial.coeff_map, map_mul, map_pow, map_neg, map_one]
 
 /- English proof (translation)
-Introduce `N`. Establish `hm : (maximalIdeal R).map g ≤ maximalIdeal R'` using `Ideal.map_le_iff_le_comap.mpr fun x hx => map_nonunit g x hx`. Establish `hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap g`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hm N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(h N).comp (Ideal.quotientMap (maximalIdeal R' ^ N) g hle)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[Ideal.quotientMap_mk]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem adicCont_maximalIdeal_comp_of_isLocalHom {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [IsLocalRing R]
     [CommRing R'] [IsLocalRing R'] (g : R →+* R') [IsLocalHom g] {φ : Γ → R}
@@ -77,7 +77,7 @@ private theorem adicCont_maximalIdeal_comp_of_isLocalHom {Γ R R' : Type} [Topol
   simp [Ideal.quotientMap_mk]
 
 /- English proof (translation)
-Use `show ((RingEquiv.ofBijective _ _).symm.toRingHom.comp (residue R)) x = 0`. Simplify using `[(IsLocalRing.residue_eq_zero_iff x).mpr hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem res_eq_zero_of_mem_maximalIdeal {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R]
     [IsCO O R] (x : R) (hx : x ∈ maximalIdeal R) : res O R x = 0 := by
@@ -85,39 +85,37 @@ private theorem res_eq_zero_of_mem_maximalIdeal {O R : Type} [CommRing O] [IsLoc
   simp [(IsLocalRing.residue_eq_zero_iff x).mpr hx]
 
 /- English proof (translation)
-Introduce `l _ F O O' _ _ _ _ _ _ _ _ _ n r r' hr R R' _ _ _ _ _ _ g _ hg p`. Establish `hres : ∀ x, res O' R' (g x) = ResidueField.map (algebraMap O O') (res O R x)`. Introduce `x`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Establish `hx : x = algebraMap O R a + (x - algebraMap O R a)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : g (x - algebraMap O R a) ∈ maximalIdeal R'` using `map_nonunit g _ ha`. Rewrite using `[hx, map_add, map_add, map_add, hg, res_eq_zero_of_mem_maximalIdeal _ h2, res_eq_zero_of_mem_maximalIdeal _ ha, add_zero, add_zero, AlgHom.commutes, AlgHom.commutes, ResidueField.algebraMap_eq, ResidueField.algebraMap_eq, ResidueField.map_residue]`. Establish `hs1 : ∀ h : F.G₀, (MonoidAlgebra.single h (1 : R') : MonoidAlgebra R' F.G₀) = MonoidAlgebra.mapRingHom F.G₀ g (MonoidAlgebra.single h 1)`. Introduce `h`. Simplify using `[MonoidAlgebra.mapRingHom_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨hres, ⟨⟨p.D.map g, fun v i => pushCh g (p.ψ v i), ?_, ?_, ?_, ?_, ?_, ?_⟩, rfl, fun _ _ => rfl⟩⟩` and prove the remaining obligations. Introduce `i`. Establish `key : (fun h : F.G₀ => (p.D.map g).lam i (MonoidAlgebra.single h 1)) = fun h => g (p.D.lam i (MonoidAlgebra.single h 1))`. Use function extensionality and compare the values at `h`. Rewrite using `[hs1, gdet_map_lam_mapRingHom_eq_lam]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show AdicCont _ _`. Rewrite using `[key]`. Conclude with `adicCont_maximalIdeal_comp_of_isLocalHom g (p.cont i)`. Establish `hrg : ((res O' R' : R' →ₐ[O'] ResidueField O') : R' →+* ResidueField O').comp g = (ResidueField.map (algebraMap O O')).comp ((res O R : R →ₐ[O] ResidueField O) : R →+* ResidueField O)` using `RingHom.ext hres`. Establish `e1 : (p.D.map g).map ((res O' R' : R' →ₐ[O'] ResidueField O') : R' →+* ResidueField O') = (p.D.map ((res O R : R →ₐ[O] ResidueField O) : R →+* ResidueField O)).map (ResidueField.map (algebraMap O O'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `GDet.ext fun B _ _ x => ?_` and prove the remaining obligations. Simplify using `only [GDet.map]`. Use `congr 2`. Use `congr 1`. Use `RingHom.ext fun y => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap (ResidueField O') B (res O' R' (g y)) = algebraMap (ResidueField O') B (ResidueField.map (algebraMap O O') (res O R y))`. Rewrite using `[hres]`. Rewrite using `[e1, p.red]`. Use `show (GDet.ofRep (diagRep r.chib)).map _ = GDet.ofRep (diagRep r'.chib)`. Rewrite using `[gdet_ofRep_diagRep_map_eq_ofRep_pushCh]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `(hr.1 i).symm`. Introduce `v i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `adicCont_maximalIdeal_comp_of_isLocalHom g (p.psi v i).cont` as an intermediate fact. Simplify `this` using `[pushCh]`. Introduce `x`. Establish `h1` using `(p.psi v i).red x`. Simplify using `only [pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hres, h1, hr.2.1 v i]`. Simplify using `[pushCh]`. Introduce `x`. Establish `h1` using `(p.psi v i).mu x`. Simplify using `only [pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, hg, hr.2.2 v i]`. Simplify using `[pushCh]`. Introduce `i h`. Establish `he : ∀ y : F.G₀, Units.map (g : R →* R') (F.eps O R y) = F.eps O' R' y`. Introduce `y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[GFrame.eps, pushCh, hg, ← IsScalarTower.algebraMap_apply]`. Establish `hs : F.star O' R' n (MonoidAlgebra.single h 1) = MonoidAlgebra.mapRingHom F.G₀ g (F.star O R n (MonoidAlgebra.single h 1))`. Simplify using `[GFrame.star, GFrame.starOp, MonoidAlgebra.lift_single, MonoidAlgebra.mapRingHom_single, ← he]`. Rewrite using `[← map_zpow]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hs, hs1, gdet_map_lam_mapRingHom_eq_lam, gdet_map_lam_mapRingHom_eq_lam, p.P]`. Introduce `v gg h`. Establish `e : MonoidAlgebra.single h 1 * F.oEl v (fun i => pushCh g (p.ψ v i)) gg = MonoidAlgebra.mapRingHom F.G₀ g (MonoidAlgebra.single h 1 * F.oEl v (p.ψ v) gg)`. Rewrite using `[map_mul, ← hs1]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[GFrame.oEl, map_list_prod, List.map_ofFn, Function.comp_def, pushCh, MonoidAlgebra.mapRingHom_single]`. Establish `h0` using `p.Ord v gg h`. Simplify using `only [GDet.tr] at h0 ⊢`. Rewrite using `[e, gdet_map_lam_mapRingHom_eq_lam, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `u x hx h`. Establish `hx' : x ∈ r.Ip u`. Simplify using `only [Resid.Ip, Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker] at hx ⊢`. Use `⟨hx.1, fun i => ?_⟩` and prove the remaining obligations. Establish `h2` using `hx.2 i`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h2` using `[hr.1 i]`. Use `ext`. Establish `h3` using `congrArg (fun u : (ResidueField O')ˣ => (u : ResidueField O')) h2`. Simplify using `only [pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, Units.val_one] at h3`. Apply `(ResidueField.map (algebraMap O O')).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, Units.val_one, map_one]`. Establish `e : MonoidAlgebra.single h (1 : R') * (MonoidAlgebra.single x 1 - 1) = MonoidAlgebra.mapRingHom F.G₀ g (MonoidAlgebra.single h 1 * (MonoidAlgebra.single x 1 - 1))`. Simplify using `[MonoidAlgebra.mapRingHom_single]`. Establish `h0` using `p.I u x hx' h`. Simplify using `only [GDet.tr] at h0 ⊢`.
-
-Rewrite using `[e, gdet_map_lam_mapRingHom_eq_lam, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.pair_bc :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O O' : Type) [CommRing O] [IsLocalRing O] [CommRing O'] [IsLocalRing O'] [Algebra O O'] [IsLocalHom (algebraMap O O')] [Algebra ℤ_[l] O] [Algebra ℤ_[l] O'] [IsScalarTower ℤ_[l] O O'] (n : ℕ) (r : Resid F O n) (r' : Resid F O' n), RBC r r' → ∀ (R R' : Type) [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O' R'] [IsCO O' R'] (g : R →+* R') [IsLocalHom g], (∀ a, g (algebraMap O R a) = algebraMap O' R' (algebraMap O O' a)) → ∀ p : Pair r R, (∀ x, res O' R' (g x) = ResidueField.map (algebraMap O O') (res O R x)) ∧ ∃ p' : Pair r' R', p.Maps g p'.D p'.ψ := by

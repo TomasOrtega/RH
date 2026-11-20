@@ -20,21 +20,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ModelAlgProof
 
 /- English proof (translation)
-Introduce `hPC hDR hDC K _ _ d δ io hK hd hδ Λ₀ Ω₀ hΛ hΩ E _ _ _ _ I _ φ hφ hio c y hc`. Take `⟨𝔠, X₀, X, p, U, v₀, v, a, hp, hh, hv, hex, hdesc⟩` from `GlobalTheory.T.cm_period_from_elliptic_lattice hPC hDR hDC K d δ io hK hd hδ Λ₀ Ω₀ hΛ hΩ E I φ hφ hio c y hc`. Take `⟨δ₀, δX, C, hDCr, hdet, hCa⟩` from `GlobalTheory.T.lie_correspondence_differentials E I φ _ 𝔠 X₀ X p U v₀ v a hp fun i ↦ ⟨(hv i).1, (hv i).2.1⟩`. Take `⟨N, m, ψ, yv, w, hpol, hAdm, hvec⟩` from `GlobalTheory.T.cm_type_differentials_algebraic hPC hDR hDC E I φ _ 𝔠 X₀ X p U v₀ v a hφ hp (fun i ↦ ⟨(hv i).1, (hv i).2.1, (hv i).2.2.1⟩) hex hdesc`. Establish `hσ : ∀ x : Qb, IsAlgebraic ℚ (algebraMap Qb ℂ x)` using `fun x ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `x.2` as an intermediate fact. Rewrite `this` using `[mem_algebraicClosure_iff]`. Then use the resulting hypothesis. Establish `toQ : ∀ z : ℂ, IsAlgebraic ℚ z → z ∈ (algebraicClosure ℚ ℂ)` using `fun z hz ↦ by`. Rewrite using `[mem_algebraicClosure_iff]` and apply the resulting hypothesis. Establish `ofQ : ∀ z : ℂ, z ∈ (algebraicClosure ℚ ℂ) → IsAlgebraic ℚ z` using `fun z hz ↦ by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hz` using `[mem_algebraicClosure_iff]`. Then use the resulting hypothesis. Set `T : CxPt 𝔠 φ (lattice c y)` to `{ X := X, U := U, δ := δX, C := C, det := hdet, ψ := ψ, pol := hpol, y := yv, w := w, s := fun _ ↦ 1, cm := fun i ↦ (hvec i).1 }`. Establish `ha0 : ∀ i, a i ≠ 0` using `fun i ↦ (hv i).2.2.1`. Use `⟨𝔠, X₀, δ₀, N, T, hAdm, ⟨p, m, hp, hDCr, fun i x₀ x hx ↦ ?_⟩, ?_, fun i ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(hvec i).2.2.2 x₀ x hx` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[T, CxPt.low]`. Establish `hprod : (∏ i, a i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ ↦ ha0 i`. Establish `e : C / Ω₀ ^ Fintype.card I = (C * ∏ i, a i) / ∏ i, (a i * Ω₀)`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, mul_comm (∏ x, a x) _, mul_div_mul_right _ _ hprod]`. Express the relevant statement in the definitionally equal form `IsAlgebraic ℚ (C / Ω₀ ^ Fintype.card I)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Apply `ofQ` to reduce the goal to its premises. Conclude with `div_mem (toQ _ hCa) (prod_mem fun i _ ↦ toQ _ (hv i).2.2.2)`. Establish `hw` using `(hvec i).2.1`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Real.pi : ℂ) * (U.h i : ℂ) * 1 * w i ^ 2 ≠ 0`. Use `(hh i).1` as an intermediate fact. Simplify using `only [_root_.mul_one]`. Conclude with `mul_ne_zero (mul_ne_zero hpi (Complex.ofReal_ne_zero.2 this)) (pow_ne_zero _ hw)`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : T.A i * Ω₀ ^ 2 * ((Real.sqrt d : ℝ) : ℂ) / (2 * Real.pi) = ((U.h i : ℂ) * (Real.sqrt d : ℝ)) * (w i / a i) ^ 2 * (a i * Ω₀) ^ 2 / 2`. Express the relevant statement in the definitionally equal form `(Real.pi : ℂ) * (U.h i : ℂ) * 1 * w i ^ 2 * Ω₀ ^ 2 * ((Real.sqrt d : ℝ) : ℂ) / (2 * Real.pi) = _`. Clear denominators, using `[ha0 i]` for the nonvanishing conditions. Rewrite using `[e]`. Apply `ofQ` to reduce the goal to its premises.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `div_mem (mul_mem (mul_mem (toQ _ (hh i).2) (pow_mem (toQ _ (hvec i).2.2.1) _)) (pow_mem (toQ _ (hv i).2.2.2) _)) ?_` and prove the remaining obligations. Simplify using `using (algebraicClosure ℚ ℂ).algebraMap_mem (2 : ℚ)`.
+A detailed English derivation is pending.
 -/
 theorem modelAlg : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ModelAlg := by
   intro hPC hDR hDC K _ _ d δ io hK hd hδ Λ₀ Ω₀ hΛ hΩ E _ _ _ _ I _ φ hφ hio c y hc

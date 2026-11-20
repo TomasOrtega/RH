@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory.Mem.R3.LiftBrg.FrameEquiv
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[castGL]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_castGL_symm {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (x : GL (Fin n) R) :
     castGL h (castGL h.symm x) = x := by
@@ -25,7 +25,7 @@ theorem castGL_castGL_symm {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (x : 
   simp [castGL]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `hs : Function.Injective (swapAE D)` using `fun x y hxy => (Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective hxy`. Use extensionality with `i j`. Use `congrArg (fun g : GL (Fin m) (Formalism.IndefR.Lev.EAf D) => g.val i j) h` as an intermediate fact. Conclude with `hs this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bc_swapAE_injective (D : D7) (m : ℕ) :
     Function.Injective (Formalism.UG.bc (n := Fin m) (swapAE D)) := by
@@ -37,25 +37,21 @@ theorem bc_swapAE_injective (D : D7) (m : ℕ) :
   exact hs this
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L i t A k hF`. Take `⟨-, -, h3, hk, -, -⟩` from `hF`. Use `set V := Vc X.toD7 i`. Use `set h := rkEq X i`. Use `set G := Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : Bridge.Gf V →* GL (Fin X.B.R.nV) (EA X)` to `(castGL h.symm).toMonoidHom.comp ((Formalism.UG.bc (swapAE X.toD7)).comp (Bridge.Gf V).subtype)`. Establish `hc : ∀ g, c g = castGL h.symm (Formalism.UG.bc (swapAE X.toD7) (g : GL (Fin V.rank) _))` using `fun _ => rfl`. Establish `hmem : ∀ g : Bridge.Gf V, (A * k)⁻¹ * c g * (A * k) ∈ G`. Introduce `g`. Establish `hUA : Formalism.UG.bc (swapAE X.toD7) (g : GL (Fin V.rank) _) ∈ UA X.toD7.sp.cm V.gram`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨κ, hκ⟩` from `g.2`. Rewrite using `[← hκ]`. Conclude with `GlobalTheory.LevFinCong.finE_mem_UA V κ`. Establish `hx : A⁻¹ * c g * A ∈ G`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : A * (A⁻¹ * c g * A) * A⁻¹ = c g` using `by group`. Rewrite using `[e, hc, castGL_castGL_symm]`. Conclude with `hUA`. Establish `e2 : (A * k)⁻¹ * c g * (A * k) = k⁻¹ * (A⁻¹ * c g * A) * k` using `by group`. Rewrite using `[e2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `G.mul_mem (G.mul_mem (G.inv_mem hk) hx) hk`. Set `ψ : Bridge.Gf V →* G` to `{ toFun := fun g => ⟨(A * k)⁻¹ * c g * (A * k), hmem g⟩ map_one' := by ext1; simp map_mul' := fun a b => by ext1; simp only [map_mul, Subgroup.coe_mul]; group }`. Establish `hψ : ∀ g, ((ψ g : G) : GL (Fin X.B.R.nV) (EA X)) = (A * k)⁻¹ * c g * (A * k)` using `fun _ => rfl`. Establish `hinj : Function.Injective ψ`. Introduce `a b hab`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrArg (fun x : G => (x : GL (Fin X.B.R.nV) (EA X))) hab`. Simplify using `only [hψ, mul_left_inj, mul_right_inj] at e`. Rewrite `e` using `[hc, hc]`. Establish `e'` using `(castGL h.symm).injective e`. Conclude with `Subtype.ext (bc_swapAE_injective X.toD7 V.rank e')`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective ψ`. Introduce `u`. Establish `hku : k * (u : GL (Fin X.B.R.nV) (EA X)) * k⁻¹ ∈ G` using `G.mul_mem (G.mul_mem hk u.2) (G.inv_mem hk)`. Establish `hw` using `(h3 _).1 hku`. Take `⟨κ, -, hκ⟩` from `GlobalTheory.AdIsomCorrection.exists_finE V _ hw`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨finHom V κ, κ, rfl⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[hψ, hc]`. Express the relevant statement in the definitionally equal form `(A * k)⁻¹ * castGL h.symm (finE V κ) * (A * k) = _`. Rewrite using `[hκ, castGL_castGL_symm h.symm]`.
-
-Use `group`. Establish `hbij : Function.Bijective ψ` using `⟨hinj, hsurj⟩`. Set `Ψ` to `MulEquiv.ofBijective ψ hbij`. Use `⟨Ψ.symm, fun u => ?_⟩` and prove the remaining obligations. Establish `e0 : ψ (Ψ.symm u) = u` using `Ψ.apply_symm_apply u`.
-
-Establish `e` using `congrArg (fun x : G => (x : GL (Fin X.B.R.nV) (EA X))) e0`. Simplify using `only [hψ] at e`. Rewrite using `[← hc, ← e]`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_equiv : ∀ (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (EA X)) (hF : FrameOK X I U i t A k),
     ∃ Φ : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV ≃* Bridge.Gf (Vc X.toD7 i), ∀ u,

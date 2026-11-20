@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsZModTorsorIff
 open CategoryTheory Limits TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.SplitColim.exists_late_split_of_isColimit) | (exact GlobalTheory.SplitColim.exists_late_split_of_isColimit) | (intros; apply GlobalTheory.SplitColim.exists_late_split_of_isColimit <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_late_split_of_filteredColimit : ∀ (J : Type) [SmallCategory J] [IsFiltered J] (F : J ⥤ CommRingCat.{0}) (c : Cocone F),
     IsColimit c → ∀ (j : J) (A : Type) [CommRing A] [Algebra (F.obj j) A]

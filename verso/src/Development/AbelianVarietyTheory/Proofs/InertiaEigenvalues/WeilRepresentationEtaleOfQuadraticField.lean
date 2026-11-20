@@ -13,11 +13,11 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.WeilEtProof
 
 /- English proof (translation)
-Introduce `hF F E _ _ _ _ _ A hK hL ψ hψ x μ hμ`. Establish `hfacts` using `GlobalTheory.T.etaleHermitianPair_structure_facts F E A`. Use `hF F E A hK hL ψ hψ x μ hμ A.etaK (fun s => ⟨?_, fun h => GlobalTheory.T.etaK_eq_neg_one_of_not_norm F E A hK hL s h⟩)` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : y ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `h1` using `hfacts.1 0`. Rewrite `h1` using `[hy, zero_mul]`. Establish `hu : IsUnit (algebraMap A.K A.L s)` using `s.isUnit.map _`. Rewrite `hu` using `[h1, isUnit_zero_iff]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, b, hab⟩` from `hL.exists_pair_ne`. Conclude with `hab (by rw [← one_mul a, ← one_mul b, ← hu, zero_mul, zero_mul])`. Take `⟨b, hb⟩` from `hL.mul_inv_cancel hy0`. Use `hfacts.2.2.2.1 y (IsUnit.of_mul_eq_one _ hb)` as an intermediate fact. Rewrite `this` using `[hy]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem weilAt_of_isField : WeilField → ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E), IsField A.K → IsField A.L → WeilAt A := by
   intro hF F E _ _ _ _ _ A hK hL ψ hψ x μ hμ
@@ -41,13 +41,11 @@ end GlobalTheory.JR.WeilEtProof
 open GlobalTheory.JR.WeilEtProof in
 
 /- English proof (translation)
-Introduce `hF F E _ _ _ _ _ A ψ hψ x μ hμ`. It suffices to establish `h : ∀ (n : ℕ) (A : Et F E), Module.finrank F A.K = n → WeilAt A from h _ A rfl ψ hψ x μ hμ`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `A hn`. Break down `subsingleton_or_nontrivial A.K with hs | hnt` into its components or cases. Conclude with `GlobalTheory.T.weilRepresentationExistsEtale_of_subsingleton F E A hs`. Distinguish the cases in `hK : IsField A.K`. Distinguish the cases in `hL : IsField A.L`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `weilAt_of_isField hF F E A hK hL`. Introduce `ψ hψ x μ hμ`. Take `⟨W, hW⟩` from `GlobalTheory.T.exists_weilRepresentation_hyperbolic_split F E A ψ hψ hK hL x μ hμ`. Conclude with `⟨1, W, hW⟩`. Take `⟨A₁, A₂, eK, eL, hs, h₁, h₂⟩` from `GlobalTheory.T.exists_etaleInvolutiveAlgebraSplitting_smaller F E A hnt hK`.
-
-Conclude with `GlobalTheory.T.weil_condition_product_splitting F E A A₁ A₂ eK eL hs (ih _ (hn ▸ h₁) A₁ rfl) (ih _ (hn ▸ h₂) A₂ rfl)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.weilEt_of_weilField : WeilField → WeilEt := by
   intro hF F E _ _ _ _ _ A ψ hψ x μ hμ

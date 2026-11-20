@@ -29,7 +29,7 @@ def subIso (e : H ≃* H') (ρ : Representation ℂ H' T) :
   map_rel_iff' := Iff.rfl
 
 /- English proof (translation)
-Use `haveI : IsSimpleOrder (Subrepresentation ρ) := h`. Conclude with `(subIso e ρ).isSimpleOrder`.
+A detailed English derivation is pending.
 -/
 theorem irr_comp (e : H ≃* H') {ρ : Representation ℂ H' T} (h : ρ.IsIrreducible) :
     Representation.IsIrreducible (ρ.comp e.toMonoidHom : Representation ℂ H T) := by
@@ -37,7 +37,7 @@ theorem irr_comp (e : H ≃* H') {ρ : Representation ℂ H' T} (h : ρ.IsIrredu
   exact (subIso e ρ).isSimpleOrder
 
 /- English proof (translation)
-Introduce `N N' hN hN'`. Apply `(subIso e ρ).injective` to reduce the goal to its premises. Conclude with `h _ _ (((subIso e ρ).isCoatom_iff N).2 hN) (((subIso e ρ).isCoatom_iff N').2 hN')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coatom_comp (e : H ≃* H') {ρ : Representation ℂ H' T}
     (h : ∀ N N' : Subrepresentation ρ, IsCoatom N → IsCoatom N' → N = N') :
@@ -53,9 +53,7 @@ def modIso (e : H ≃* H') (ρ : Representation ℂ H' T) :
     Subrepresentation.subrepresentationSubmoduleOrderIso
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Take `⟨h1, h2⟩` from `h`. Rewrite `h1`, the goal using `[isNoetherian_iff']`. Use `⟨(modIso e ρ).strictMono.wellFoundedGT, ?_⟩` and prove the remaining obligations. Use `haveI := h2`.
-
-Conclude with `(modIso e ρ).strictMono.wellFoundedLT`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finLen_comp (e : H ≃* H') {ρ : Representation ℂ H' T}
     (h : IsFiniteLength (MonoidAlgebra ℂ H') ρ.asModule) :
@@ -74,15 +72,15 @@ section Top
 variable {G G' V : Type} [Group G] [Group G'] [TopologicalSpace G] [TopologicalSpace G'] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Introduce `v` and use `(h v).preimage he`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_comp (e : G' →* G) (he : Continuous e) {π : Representation ℂ G V} (h : IsSmooth π) :
     IsSmooth (π.comp e : Representation ℂ G' V) := fun v => (h v).preimage he
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [fixed, eig, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq, MonoidHom.one_apply, Units.val_one, one_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `hv k`. Use `hv ⟨e.symm k, k.2⟩` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `hv k`. Use `hv ⟨e k, by simp [Subgroup.mem_comap]⟩` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fixed_comp (e : G' ≃* G) (π : Representation ℂ G V) (K : Subgroup G') :
     fixed (π.comp e.toMonoidHom : Representation ℂ G' V) K = fixed π (K.comap e.symm.toMonoidHom) := by
@@ -98,11 +96,11 @@ theorem fixed_comp (e : G' ≃* G) (π : Representation ℂ G V) (K : Subgroup G
     simpa using this
 
 /- English proof (translation)
-Use `⟨smooth_comp e.toMonoidHom he h.1, fun K hKo hKc => ?_⟩` and prove the remaining obligations. Rewrite using `[fixed_comp]`. Use `h.2 _ ?_ ?_` and prove the remaining obligations. Establish `: ((K.comap e.symm.toMonoidHom : Subgroup G) : Set G) = e.symm ⁻¹' (K : Set G')` using `rfl`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hKo.preimage he'`. Establish `: ((K.comap e.symm.toMonoidHom : Subgroup G) : Set G) = e '' (K : Set G')`. Use extensionality with `x`. Simplify using `only [Subgroup.coe_comap, Set.mem_preimage, SetLike.mem_coe, Set.mem_image, MulEquiv.coe_toMonoidHom]`. Conclude with `⟨fun hx => ⟨e.symm x, hx, by simp⟩, fun ⟨y, hy, hyx⟩ => by rw [← hyx]; simpa using hy⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hKc.image he`.
+A detailed English derivation is pending.
 -/
 theorem admissible_comp_eval (e : G' ≃* G) (he : Continuous e) (he' : Continuous e.symm) {π : Representation ℂ G V}
     (h : IsAdmissible π) : IsAdmissible (π.comp e.toMonoidHom : Representation ℂ G' V) := by
@@ -133,9 +131,9 @@ variable {G G' H H' Y V T : Type} [Group G] [Group G'] [Group H] [Group H'] [Top
   [AddCommGroup V] [Module ℂ V] [AddCommGroup T] [Module ℂ T]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g φ φ₁ hφ`. Use `h (eG.symm g) φ φ₁ (by simpa using hφ)` as an intermediate fact. Simplify using `using this`. Introduce `h g φ φ₁ hφ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h (eG g) φ φ₁ (by simpa using hφ)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem left_iff (eG : G ≃* G') (eH : H ≃* H') (om : G' × H' →* Module.End ℂ (Y → ℂ))
     (π : Representation ℂ G V) (f : SB Y →ₗ[ℂ] V) :
@@ -150,7 +148,7 @@ theorem left_iff (eG : G ≃* G') (eH : H ≃* H') (om : G' × H' →* Module.En
     simpa using this
 
 /- English proof (translation)
-Introduce `g k φ φ₁ hφ`. Use `h (eG.symm g) (eH.symm k) φ φ₁ (by simpa using hφ)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pair_to (eG : G ≃* G') (eH : H ≃* H') (om : G' × H' →* Module.End ℂ (Y → ℂ))
     (π : Representation ℂ G V) (τ : Representation ℂ H T) (f : SB Y →ₗ[ℂ] V ⊗[ℂ] T)
@@ -161,7 +159,7 @@ theorem pair_to (eG : G ≃* G') (eH : H ≃* H') (om : G' × H' →* Module.End
   simpa using this
 
 /- English proof (translation)
-Introduce `g k φ φ₁ hφ`. Use `h (eG g) (eH k) φ φ₁ (by simpa using hφ)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pair_from (eG : G ≃* G') (eH : H ≃* H') (om : G' × H' →* Module.End ℂ (Y → ℂ))
     (π : Representation ℂ G V) (τ : Representation ℂ H' T) (f : SB Y →ₗ[ℂ] V ⊗[ℂ] T)
@@ -172,7 +170,7 @@ theorem pair_from (eG : G ≃* G') (eH : H ≃* H') (om : G' × H' →* Module.E
   simpa using this
 
 /- English proof (translation)
-Use `⟨Representation.Equiv.mk e.toLinearEquiv fun g => LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ e.toIntertwiningMap (eG g) v`. Simplify using `only [LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `e.toIntertwiningMap (π g v) = π' g (e.toIntertwiningMap v)`. Simplify using `using h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem equiv_back {V' : Type} [AddCommGroup V'] [Module ℂ V'] (eG : G ≃* G') {π : Representation ℂ G V}
     {π' : Representation ℂ G V'}
@@ -194,11 +192,11 @@ namespace GlobalTheory.HoweLocal.HoweTransport
 open GlobalTheory.Published GlobalTheory.PRep
 
 /- English proof (translation)
-Introduce `G G' H H' Y _ _ _ _ _ _ _ _ _ eG eH hG hG' hH hH' om hom`. Establish `hGs : Continuous eG.symm.symm` using `by simpa using hG`. Introduce `V _ _ π hπ hA`. Take `⟨⟨T, iT1, iT2, Θ, p, ⟨hP, hSur, hK⟩, hS, hF, hC⟩, h2⟩` from `hom V (π.comp eG.symm.toMonoidHom) (irr_comp eG.symm hπ) (admissible_comp_eval eG.symm hG' hGs hA)`. Use `⟨⟨T, iT1, iT2, Θ.comp eH.toMonoidHom, p, ⟨pair_from eG eH om π Θ p hP, hSur, fun φ => ?_⟩, smooth_comp eH.toMonoidHom hH hS, finLen_comp eH hF, coatom_comp eH hC⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hK φ]`. Simplify using `only [left_iff]`. Introduce `T _ _ τ hτ hτs f hf hf0`. Take `⟨h2a, h2b⟩` from `h2 T (τ.comp eH.symm.toMonoidHom) (irr_comp eH.symm hτ) (smooth_comp eH.symm.toMonoidHom hH' hτs) f (pair_to eG eH om π τ f hf) hf0`. Use `⟨fun f' hf' => h2a f' (pair_to eG eH om π τ f' hf'), fun V' _ _ π₂ hπ₂ hA₂ f' hf' hf'0 => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e⟩` from `h2b V' (π₂.comp eG.symm.toMonoidHom) (irr_comp eG.symm hπ₂) (admissible_comp_eval eG.symm hG' hGs hA₂) f' (pair_to eG eH om π₂ τ f' hf') hf'0`. Conclude with `equiv_back eG e`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem howeDualityFor_transport : ∀ {G G' H H' Y : Type} [Group G] [Group G'] [Group H] [Group H'] [TopologicalSpace G] [TopologicalSpace G']
     [TopologicalSpace H] [TopologicalSpace H'] [TopologicalSpace Y] (eG : G ≃* G') (eH : H ≃* H'),

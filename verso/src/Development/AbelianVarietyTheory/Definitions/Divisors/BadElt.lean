@@ -18,14 +18,14 @@ def eig {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] (ρ :
   ⨅ h : H, LinearMap.ker (ρ h - ((lam h : Kˣ) : K) • LinearMap.id)
 
 /- English proof (translation)
-Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] (ρ : Representation K Γ V)
     (H : Subgroup Γ) (lam : H →* Kˣ) (v : V) : v ∈ eig ρ H lam ↔ ∀ h : H, ρ h v = ((lam h : Kˣ) : K) • v := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => Subsingleton.elim _ _, fun _ _ i => i.elim0⟩`.
+Supply the required witnesses or components.
 -/
 example {K Γ : Type} [Field K] [Group Γ] (H : Subgroup Γ) : EmbReg (1 : Representation K Γ (Fin 0 → K)) H 0 :=
   ⟨0, fun _ _ _ => Subsingleton.elim _ _, fun _ _ i => i.elim0⟩

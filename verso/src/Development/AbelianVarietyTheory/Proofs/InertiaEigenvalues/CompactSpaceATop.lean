@@ -11,7 +11,7 @@ set_option maxHeartbeats 1600000
 namespace GlobalTheory.WeakClosed
 
 /- English proof (translation)
-Use `letI := oTop bO`. Establish `hi : Topology.IsInducing (bO.equivFun : ↥(OL LL) → (Fin e → ℤ_[l]))` using `⟨rfl⟩`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[hi.isCompact_iff, Set.image_univ_of_surjective bO.equivFun.surjective]`. Conclude with `isCompact_univ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compactSpace_oTop {l : ℕ} [Fact l.Prime] {LL : FinExt l} {e : ℕ}
     (bO : Module.Basis (Fin e) ℤ_[l] ↥(OL LL)) :
@@ -23,9 +23,7 @@ theorem compactSpace_oTop {l : ℕ} [Fact l.Prime] {LL : FinExt l} {e : ℕ}
   exact isCompact_univ
 
 /- English proof (translation)
-Introduce `l _ K LL e bO`. Use `letI := oTop bO`. Use `haveI := compactSpace_oTop bO`. Use `haveI : CompactSpace (PowerSeries ↥(OL LL)) := by`. Unfold `PowerSeries MvPowerSeries`.
-
-Conclude with `Pi.compactSpace`. Conclude with `Pi.compactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem compactSpace_aTop : ∀ {l : ℕ} [Fact l.Prime] {K LL : FinExt l} {e : ℕ} (bO : Module.Basis (Fin e) ℤ_[l] ↥(OL LL)), letI := aTop (K := K) bO; CompactSpace (AA K LL) := by
   intro l _ K LL e bO

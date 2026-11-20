@@ -27,15 +27,15 @@ noncomputable section
 namespace GlobalTheory.PrincSubring
 
 /- English proof (translation)
-Introduce `h R _ R₁ _ A _ P A₁ _ P₁ φ φ₂ hS hamp hpb hsq hiso hpr`. Use `haveI : IsAbelianScheme A₁ := hS.1`. Use `haveI : IsCommMonObj A₁ := IsAbelianScheme.comm`. Take `⟨hG, hL, hLa, hrig, hsym⟩` from `GlobalTheory.T.eighth_power_symmetric_ample h A₁ P₁ hS hamp`. Establish `hf : KerAlong A₁ P₁ (spMap R₁.subtype)` using `GlobalTheory.T.kernel_condition_along_baseChange_of_pullback _ A P A₁ P₁ φ φ₂ hS.2.2.1 hpb hsq hiso hpr.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfT` using `(GlobalTheory.T.kernel_condition_iff_e8Bundle_kGroup_trivial h A₁ P₁ hS hamp _).1 hf`. Establish `hK : Out.KTriv (Out.powObj A₁ 8) (powLB A₁ P₁)`. Use `GlobalTheory.KTrivSpread.kTriv_of_primes GlobalTheory.abelianSchemeLaws_all.1.globalFns R₁ _ hG _ hL hLa fun p => ?_` and prove the remaining obligations. Break down `GlobalTheory.T.noetherian_subring_prime_contraction_or_dvr R R₁ p with hp | ⟨Q, k, _, i, j, V, _, _, _, ρ, e, h1, h2, hp⟩` into its components or cases. Conclude with `⟨R, inferInstance, R₁.subtype, hp, hfT⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, inferInstance, ρ, hp, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.kGroup_trivial_spreads_from_dvr_generic_point _ _ hG hL hLa hrig hsym V (spMap ρ) ?_` and prove the remaining obligations. Establish `t1` using `hfT.comp (spMap (algebraMap R Q.asIdeal.ResidueField))`. Establish `e1 : spMap (algebraMap R Q.asIdeal.ResidueField) ≫ spMap R₁.subtype = spMap j ≫ spMap i`. Rewrite using `[← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `t1` using `[e1]`. Establish `t2` using `(GlobalTheory.T.kGroup_trivial_descends_flat_surjective _ _ (spMap i) (spMap j) hL t1).comp (spMap e)`. Establish `e2 : spMap e ≫ spMap i = spMap (algebraMap V (FractionRing V)) ≫ spMap ρ`. Rewrite using `[← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, h2]`. Rewrite `t2` using `[e2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hT : GlobalTheory.KTrivSpread.TrivAlong (Out.powObj A₁ 8) (powLB A₁ P₁) (𝟙 _)` using `fun T a ha x hx => GlobalTheory.UU.kTriv_iff_forall.1 hK T x hx`. Conclude with `⟨hamp, fun T x hx => (GlobalTheory.T.kernel_condition_iff_e8Bundle_kGroup_trivial h A₁ P₁ hS hamp (𝟙 _)).2 hT T T.hom (Category.comp_id _) x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem isPrincipal_of_subring : ∀ (h : ℕ) (R : Type) [CommRing R] (R₁ : Subring R) [IsNoetherianRing R₁] (A : Over (Sp R)) [GrpObj A] (P : LB (A ⊗ A).left) (A₁ : Over (Sp R₁)) [GrpObj A₁] (P₁ : LB (A₁ ⊗ A₁).left) (φ : A.left ⟶ A₁.left) (φ₂ : (A ⊗ A).left ⟶ (A₁ ⊗ A₁).left), IsSymmetricPair h A₁ P₁ → Out.RelAmple A₁ (diagPull A₁ P₁) → IsGrpPullback A A₁ (spMap R₁.subtype) φ → IsSquare φ φ₂ → LBIso P (P₁.pull φ₂) → IsPrincipal A P → IsPrincipal A₁ P₁ := by
   intro h R _ R₁ _ A _ P A₁ _ P₁ φ φ₂ hS hamp hpb hsq hiso hpr

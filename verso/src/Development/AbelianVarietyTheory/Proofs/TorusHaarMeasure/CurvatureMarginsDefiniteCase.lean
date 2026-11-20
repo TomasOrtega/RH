@@ -11,13 +11,11 @@ open scoped ContDiff ENNReal Matrix
 namespace GlobalTheory.Shares
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa h0 _ hps _ hgap`. Establish `hA : ∀ (m : ℝ) x0, IsOrth X x0 → ∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, m * leviRh X x0 z ξ ≤ leviO X x0 (phla X Xa.Fp) z ξ - leviDens X x0 z ξ - (nd X : ℝ) * leviO X x0 (phla X Xa.L) z ξ` using `fun m x0 ho z hz ξ => by`. Rewrite using `[← IW.leviM_comb X x0 ho hz]`. Conclude with `(GlobalTheory.CurvMarginClosed.curv_and_margin_closed (E := E)).2 r X _ m (fun τ i j a _ => hgap τ i j a) (fun τ i j _ b => hgap τ i j b) (fun τ i j a _ => absurd a (by omega)) x0 ho z hz ξ`. Establish `hB : ∀ x0, IsOrth X x0 → ∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, 0 ≤ leviO X x0 (phla X Xa.L) z ξ` using `fun x0 ho z hz ξ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hξ : ξ = 0`. Substitute `hξ` using the available equality. Simplify using `[leviO, leviM, leviV]`. Conclude with `(Xa.posL x0 (IW.orth_mem_dom X x0 ho) z hz ξ hξ).le`. Establish `hP : ∀ x0 z ξ, leviO X x0 Xa.ps0 z ξ = 0` using `fun x0 z ξ => by`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [leviO, leviM, hps]`. Rewrite using `[RgC.leviV_const, Complex.zero_re]`. Use `⟨⟨_, _, lt_add_one _, lt_add_one _, fun t _ x0 ho z hz ξ => ?_⟩, ⟨_, _, lt_add_one _, lt_add_one _, fun x0 ho z hz ξ => ?_⟩, hB, ⟨0, fun x _ => (hps x).le⟩, fun k P hP => ⟨hP, fun ξ hξ => (GlobalTheory.PoincareSeriesCompare.not_isIso_of_definite X (Or.inl h0) ξ hξ).elim⟩⟩` and prove the remaining obligations. Rewrite using `[hP, mul_zero, add_zero]`. Conclude with `hA _ x0 ho z hz ξ`.
-
-Conclude with `(hA _ x0 ho z hz ξ).trans (sub_le_self _ (mul_nonneg (Nat.cast_nonneg _) (hB x0 ho z hz ξ)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem margins_of_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X), X.p0 = 0 → Nonempty X.Ψ → (∀ x, Xa.ps0 x = 0) → IsStrictDom X Xa.L → (∀ τ (a b : Fin r), a ≤ b → (Xa.Fp - kapW X - nd X • Xa.L) τ b ≤ (Xa.Fp - kapW X - nd X • Xa.L) τ a) → Margins X Xa := by
   intro E _ _ _ r X Xa h0 _ hps _ hgap

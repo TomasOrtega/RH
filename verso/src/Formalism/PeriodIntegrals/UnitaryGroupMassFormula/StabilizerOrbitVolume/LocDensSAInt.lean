@@ -9,7 +9,7 @@ open scoped nonZeroDivisors
 namespace PI.VolStabSW
 
 /- English proof (translation)
-Establish `hw : w = (∑ i, (integralBasis F).repr (w * y⁻¹) i • integralBasis F i) * y`. Rewrite using `[(integralBasis F).sum_repr, mul_assoc, inv_mul_cancel₀ hy, mul_one]`. Rewrite using `[hw, Finset.sum_mul, map_sum]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_rat_smul, h0 i, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem addHom_eq_zero_of_integralBasis_mul {F : Type} [Field F] [NumberField F] (g : F →+ ℂ)
     {y : F} (hy : y ≠ 0) (h0 : ∀ i, g (integralBasis F i * y) = 0) (w : F) : g w = 0 := by
@@ -20,15 +20,15 @@ private theorem addHom_eq_zero_of_integralBasis_mul {F : Type} [Field F] [Number
   rw [smul_mul_assoc, map_rat_smul, h0 i, smul_zero]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hfg`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (M := (𝓞 F)⁰) (S := F) s`. Establish `hB0 : algebraMap (𝓞 F) F b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Set `T : Submodule ℤ F` to `{ carrier := {a | ∃ r : 𝓞 F, algebraMap (𝓞 F) F b * a = algebraMap (𝓞 F) F r} add_mem' := by`. Introduce and unpack `a a' ⟨r, hr⟩ ⟨r', hr'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨r + r', by rw [mul_add, hr, hr', map_add]⟩`. Use the proof step `zero_mem' := ⟨0, by rw [mul_zero, map_zero]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `n a ⟨r, hr⟩`. Conclude with `⟨n • r, by rw [mul_smul_comm, hr, map_zsmul]⟩ }`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsT : Submodule.span ℤ (s : Set F) ≤ T`. Rewrite using `[Submodule.span_le]`. Introduce `a ha`. Take `⟨r, hr⟩` from `hb a ha`. Conclude with `⟨r, by rw [hr, Algebra.smul_def]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(algebraMap (𝓞 F) F b)⁻¹, inv_ne_zero hB0, fun a ha => ?_⟩` and prove the remaining obligations. Establish `has : a ∈ Submodule.span ℤ (s : Set F)` using `by rw [hs]; exact ha`. Take `⟨r, hr⟩` from `hsT has`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `hrr : ((r : 𝓞 F) : F) = algebraMap (𝓞 F) F r`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hrr, ← hr, ← mul_assoc, inv_mul_cancel₀ hB0, one_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_mul_integers_of_fg {F : Type} [Field F] [NumberField F]
     (Λ : Submodule (𝓞 F) F) (hfg : (Λ.restrictScalars ℤ).FG) :
@@ -60,17 +60,17 @@ private theorem exists_mul_integers_of_fg {F : Type} [Field F] [NumberField F]
   rw [hrr, ← hr, ← mul_assoc, inv_mul_cancel₀ hB0, one_mul]
 
 /- English proof (translation)
-Set `φ : F →ₗ[ℤ] (Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℂ)` to `{ toFun := fun y i => g (integralBasis F i * y) map_add' := fun y y' => by funext i; simp only [mul_add, map_add, Pi.add_apply] map_smul' := fun n y => by`. Use function extensionality and compare the values at `i`. Simplify using `only [mul_smul_comm, map_zsmul, RingHom.id_apply, Pi.smul_apply] }`. Set `ψ : (Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℤ) →ₗ[ℤ] (Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℂ)` to `{ toFun := fun z i => (z i : ℂ) map_add' := fun z z' => by funext i; simp only [Pi.add_apply, Int.cast_add] map_smul' := fun n z => by`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Int.cast_mul, RingHom.id_apply, zsmul_eq_mul] }`. Establish `hφ : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Assume the negation of the conclusion as `hy0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨w, hw⟩` from `hne`. Conclude with `hw (addHom_eq_zero_of_integralBasis_mul g hy0 (fun i => congrFun hy i) w)`. Establish `hrange : (Λ.restrictScalars ℤ).map φ ≤ LinearMap.range ψ`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hmem : ∀ i, integralBasis F i * y ∈ Λ` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Λ.smul_mem (RingOfIntegers.basis F i) hy`. Rewrite `h` using `[Algebra.smul_def, ← integralBasis_apply]`. Then use the resulting hypothesis. Use `choose n hn using fun i => hg _ (hmem i)`. Conclude with `⟨n, funext fun i => (hn i).symm⟩`. Establish `hQ : (((Λ.restrictScalars ℤ).map φ).comap ψ).FG` using `IsNoetherian.noetherian _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmap : (((Λ.restrictScalars ℤ).map φ).comap ψ).map ψ = (Λ.restrictScalars ℤ).map φ`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨z, hz, rfl⟩`. Conclude with `hz`. Introduce `x hx`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨z, rfl⟩` from `hrange hx`. Conclude with `⟨z, hx, rfl⟩`. Establish `hfg` using `hQ.map ψ`. Rewrite `hfg` using `[hmap]`. Conclude with `Submodule.fg_of_fg_map_injective φ hφ hfg`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fg_of_addHom_intValued {F : Type} [Field F] [NumberField F] (Λ : Submodule (𝓞 F) F)
     (g : F →+ ℂ) (hg : ∀ a ∈ Λ, ∃ n : ℤ, g a = n) (hne : ∃ w, g w ≠ 0) :
@@ -114,7 +114,7 @@ private theorem fg_of_addHom_intValued {F : Type} [Field F] [NumberField F] (Λ 
   exact Submodule.fg_of_fg_map_injective φ hφ hfg
 
 /- English proof (translation)
-Introduce `F _ _ Λ _ hnp g hg`. Assume the negation of the conclusion as `hall`. Take `⟨c, hc0, hc⟩` from `exists_mul_integers_of_fg Λ (fg_of_addHom_intValued Λ g hg (not_forall.mp hall))`. Conclude with `hnp c hc0 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem addIntF_holds : AddIntF := by
   intro F _ _ Λ _ hnp g hg
@@ -123,7 +123,7 @@ theorem addIntF_holds : AddIntF := by
   exact hnp c hc0 hc
 
 /- English proof (translation)
-The claim follows from `chInf_of hL addIntF_holds`.
+A detailed English derivation is pending.
 -/
 theorem chInf_of_lift (hL : ChLift) : ChInf :=
   chInf_of hL addIntF_holds

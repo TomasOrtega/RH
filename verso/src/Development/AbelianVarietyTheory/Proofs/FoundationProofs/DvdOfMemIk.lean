@@ -14,15 +14,15 @@ variable {l : ℕ} [Fact l.Prime]
 def tau (c : Coef l) : c.O →ₗ[ℤ_[l]] ℤ_[l] := Classical.choose (coef_dual_free_rank_one l c)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (coef_dual_free_rank_one l c)`.
+A detailed English derivation is pending.
 -/
 theorem tau_spec (c : Coef l) : ∀ f : c.O →ₗ[ℤ_[l]] ℤ_[l], ∃! a : c.O, ∀ x, f x = tau c (a * x) :=
   Classical.choose_spec (coef_dual_free_rank_one l c)
 
 /- English proof (translation)
-Establish `h1` using `CupCob.norm_le_one_of_mem c (u : c.O).2`. Establish `h2` using `CupCob.norm_le_one_of_mem c ((u⁻¹ : c.Oˣ) : c.O).2`. Establish `h3 : ((u : c.O) : Qbar l) * (((u⁻¹ : c.Oˣ) : c.O) : Qbar l) = 1`. Rewrite using `[← Subalgebra.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h4` using `congrArg norm h3`. Rewrite `h4` using `[norm_mul, norm_one]`. Use polynomial arithmetic with `[norm_nonneg ((u : c.O) : Qbar l), norm_nonneg (((u⁻¹ : c.Oˣ) : c.O) : Qbar l)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_unit (c : Coef l) (u : c.Oˣ) : ‖((u : c.O) : Qbar l)‖ = 1 := by
   have h1 := CupCob.norm_le_one_of_mem c (u : c.O).2
@@ -34,7 +34,7 @@ theorem norm_unit (c : Coef l) (u : c.Oˣ) : ‖((u : c.O) : Qbar l)‖ = 1 := b
   nlinarith [norm_nonneg ((u : c.O) : Qbar l), norm_nonneg (((u⁻¹ : c.Oˣ) : c.O) : Qbar l)]
 
 /- English proof (translation)
-Establish `e : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((l : ℕ) : ℚ_[l])` using `by simp`. Rewrite using `[e, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_lt_one : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have e : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((l : ℕ) : ℚ_[l]) := by simp
@@ -42,23 +42,21 @@ theorem norm_l_lt_one : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Conclude with `⟨0, by simp⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Establish `hl0 : (l : c.O) ≠ 0`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Establish `: ((l : c.O) : Qbar l) = 0` using `by rw [h]; rfl`. Rewrite `this` using `[SubringClass.coe_natCast]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) this`. Take `⟨e, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `nl : ‖((l : c.O) : Qbar l)‖ = ‖((ϖ : c.O) : Qbar l)‖ ^ e`. Rewrite using `[hw, Subalgebra.coe_mul, Subalgebra.coe_pow, norm_mul, norm_pow, norm_unit, one_mul]`. Establish `nx : ‖((x : c.O) : Qbar l)‖ = ‖((ϖ : c.O) : Qbar l)‖ ^ k`. Rewrite using `[hu, Subalgebra.coe_mul, Subalgebra.coe_pow, norm_mul, norm_pow, norm_unit, one_mul]`. Establish `hlt : ‖((l : c.O) : Qbar l)‖ < 1` using `by rw [SubringClass.coe_natCast]; exact norm_l_lt_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ1 : ‖((ϖ : c.O) : Qbar l)‖ ≤ 1` using `CupCob.norm_le_one_of_mem c ϖ.2`. Establish `he : e ≠ 0`. Introduce and unpack `rfl`. Rewrite `hlt` using `[nl, pow_zero]`. Conclude with `lt_irrefl _ hlt`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hϖlt : ‖((ϖ : c.O) : Qbar l)‖ < 1`. Break down `hϖ1.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Rewrite `hlt` using `[nl, h, one_pow]`. Conclude with `absurd hlt (lt_irrefl _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hϖ0 : 0 < ‖((ϖ : c.O) : Qbar l)‖`. Rewrite using `[norm_pos_iff]`. Introduce `h`. Conclude with `hϖ.ne_zero (Subtype.ext h)`. Establish `hle : e * n ≤ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(mem_Ik.1 hx)`. Establish `e2 : ‖((l : ℕ) : Qbar l) ^ n‖ = ‖((ϖ : c.O) : Qbar l)‖ ^ (e * n)`. Rewrite using `[norm_pow, ← SubringClass.coe_natCast c.O, nl, pow_mul]`. Rewrite `h` using `[nx, e2]`. Conclude with `(pow_le_pow_iff_right_of_lt_one₀ hϖ0 hϖlt).1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨(u : c.O) * ϖ ^ (k - e * n) * ((w⁻¹ : c.Oˣ) : c.O) ^ n, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, hw]`. Establish `hk : k = e * n + (k - e * n)` using `by omega`. Use `conv_lhs => rw [hk]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Units.mul_inv, one_pow, one_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_mem_Ik (c : Coef l) (n : ℕ) {x : c.O} (hx : x ∈ Ik c n) : ∃ y : c.O, x = (l : c.O) ^ n * y := by
   rcases eq_or_ne x 0 with rfl | hx0
@@ -105,7 +103,7 @@ theorem dvd_of_mem_Ik (c : Coef l) (n : ℕ) {x : c.O} (hx : x ∈ Ik c n) : ∃
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `dvd_of_mem_Ik c n hx`. Establish `e : (l : c.O) ^ n * y = ((l : ℤ_[l]) ^ n) • y`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`. Rewrite using `[e, map_smul, smul_eq_mul, map_mul, map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_self, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_red_zero (c : Coef l) (n : ℕ) {x : c.O} (hx : x ∈ Ik c n) :
     PadicInt.toZModPow n (tau c x) = 0 := by
@@ -117,13 +115,13 @@ theorem tau_red_zero (c : Coef l) (n : ℕ) {x : c.O} (hx : x ∈ Ik c n) :
 def lft (c : Coef l) (n : ℕ) : Qn c n → c.O := Function.surjInv (red_surjective c n)
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq (red_surjective c n) b`.
+A detailed English derivation is pending.
 -/
 theorem red_lft (c : Coef l) (n : ℕ) (b : Qn c n) : red c n (lft c n b) = b :=
   Function.surjInv_eq (red_surjective c n) b
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub]`. Use `tau_red_zero c n ?_` and prove the remaining obligations. Rewrite using `[← red_eq_zero_iff_mem, map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_congr (c : Coef l) (n : ℕ) {x y : c.O} (h : red c n x = red c n y) :
     PadicInt.toZModPow n (tau c x) = PadicInt.toZModPow n (tau c y) := by
@@ -142,7 +140,7 @@ def tbA (c : Coef l) (n : ℕ) : Qn c n →+ ZMod (l ^ n) where
       tau_congr c n (red_lft c n _), map_add, map_add]
 
 /- English proof (translation)
-The claim follows from `tau_congr c n (red_lft c n _)`.
+A detailed English derivation is pending.
 -/
 theorem tbA_red (c : Coef l) (n : ℕ) (x : c.O) : tbA c n (red c n x) = PadicInt.toZModPow n (tau c x) :=
   tau_congr c n (red_lft c n _)
@@ -165,7 +163,7 @@ Both sides reduce to the same expression.
 theorem Phi_apply (c : Coef l) (n : ℕ) (y x : Mn c n) : Phi c n y x = tbA c n (x 0 * y 1 - x 1 * y 0) := rfl
 
 /- English proof (translation)
-Establish `e : (⟨(M *ᵥ v) i, CupCob.mulVec_mem c M v hM hv i⟩ : c.O) = (⟨M i 0, hM i 0⟩ : c.O) * ⟨v 0, hv 0⟩ + (⟨M i 1, hM i 1⟩ : c.O) * ⟨v 1, hv 1⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, Subalgebra.coe_add, Subalgebra.coe_mul]`. Rewrite using `[e, map_add, map_mul, map_mul]`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.of_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem red_mulVec (c : Coef l) (n : ℕ) (M : Matrix (Fin 2) (Fin 2) (Qbar l)) (hM : ∀ i j, M i j ∈ c.O)
     (v : Fin 2 → Qbar l) (hv : ∀ i, v i ∈ c.O) (i : Fin 2) :
@@ -181,24 +179,24 @@ theorem red_mulVec (c : Coef l) (n : ℕ) (M : Matrix (Fin 2) (Fin 2) (Qbar l)) 
 def lftV (c : Coef l) (n : ℕ) (y : Mn c n) : Fin 2 → Qbar l := fun i => (lft c n (y i) : Qbar l)
 
 /- English proof (translation)
-The claim follows from `(lft c n (y i)).2`.
+A detailed English derivation is pending.
 -/
 theorem lftV_mem (c : Coef l) (n : ℕ) (y : Mn c n) (i : Fin 2) : lftV c n y i ∈ c.O := (lft c n (y i)).2
 
 /- English proof (translation)
-The claim follows from `red_lft c n (y i)`.
+A detailed English derivation is pending.
 -/
 theorem red_lftV (c : Coef l) (n : ℕ) (y : Mn c n) (i : Fin 2) : red c n ⟨lftV c n y i, lftV_mem c n y i⟩ = y i :=
   red_lft c n (y i)
 
 /- English proof (translation)
-The claim follows from `(red_eq_iff ⟨a, ha⟩ ⟨b, hb⟩).1 h`.
+A detailed English derivation is pending.
 -/
 theorem cg_of_red {c : Coef l} {n : ℕ} {a b : Qbar l} (ha : a ∈ c.O) (hb : b ∈ c.O)
     (h : red c n ⟨a, ha⟩ = red c n ⟨b, hb⟩) : Cg n a b := (red_eq_iff ⟨a, ha⟩ ⟨b, hb⟩).1 h
 
 /- English proof (translation)
-The claim follows from `(red_eq_iff ⟨a, ha⟩ ⟨b, hb⟩).2 h`.
+A detailed English derivation is pending.
 -/
 theorem red_of_cg {c : Coef l} {n : ℕ} {a b : Qbar l} (ha : a ∈ c.O) (hb : b ∈ c.O)
     (h : Cg n a b) : red c n ⟨a, ha⟩ = red c n ⟨b, hb⟩ := (red_eq_iff ⟨a, ha⟩ ⟨b, hb⟩).2 h

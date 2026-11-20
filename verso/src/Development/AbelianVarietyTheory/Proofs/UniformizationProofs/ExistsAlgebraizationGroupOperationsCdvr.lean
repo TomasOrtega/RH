@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GrpAlg
 
 /- English proof (translation)
-Set `F : (T ⟶ G') → (Over.mk (T.hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by`. Express the relevant statement in the definitionally equal form `(x.left ≫ φ) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x])`. Set `Φ : (T ⟶ G') →* (Over.mk (T.hom ≫ f) ⟶ G)` to `MonoidHom.mk' F fun x y => Over.OverMorphism.ext (h.2 T x y (F x) (F y) rfl rfl).symm`. Use `⟨fun x x₀ hx => ?_, congrArg (·.left) (map_one Φ).symm⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : x₀ = Φ x` from `Over.OverMorphism.ext hx`. Conclude with `congrArg (·.left) (map_inv Φ x).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inv_one_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
@@ -37,13 +37,13 @@ theorem inv_one_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] 
   exact congrArg (·.left) (map_inv Φ x).symm
 
 /- English proof (translation)
-Establish `hp : ∀ e i, (w e ≫ (p i).left) ≫ B.hom = (Z e).hom ≫ s e` using `fun e i => by rw [Category.assoc, Over.w (p i), (hw e).w]`. Take `⟨X, hX⟩ : ∃ X : ∀ e, J → (Z e ⟶ Y e), ∀ e i, (X e i).left ≫ b e = w e ≫ (p i).left` from `⟨fun e i => Over.homMk ((hb e).lift _ _ (hp e i)) ((hb e).lift_snd _ _ _), fun e i => (hb e).lift_fst _ _ (hp e i)⟩`. Take `⟨g, hg⟩` from `ext (fun e => (op e _ (X e)).left ≫ b e) (fun e => by rw [Category.assoc, (hb e).w, ← Category.assoc, Over.w (op e _ (X e)), (hw e).w]) (fun e => by`. Take `⟨tr, h₁⟩ : ∃ tr : Over.mk ((Z e).hom ≫ r e) ⟶ Z (e + 1), tr.left = ζ e` from `⟨Over.homMk (ζ e) (hζ e), rfl⟩`. Establish `h₂` using `cmp e _ (X e) (fun i => tr ≫ X (e + 1) i) fun i => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `(hb (e + 1)).hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, Category.assoc, hX, hβb, hX, ← Category.assoc, h₁]`. Conclude with `congrArg (· ≫ (p i).left) (hζw e)`. Rewrite using `[Over.w, Category.assoc, hβ, ← Category.assoc, Over.w (X e i)]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂` using `[← nat, Over.comp_left, h₁]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ b (e + 1)) h₂).trans ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (hβb e)))))`. Use `⟨g, fun e T x t ht => ?_⟩` and prove the remaining obligations. Take `⟨t', h₁⟩ : ∃ t' : T ⟶ Z e, t'.left ≫ w e = t.left` from `⟨Over.homMk ((hw e).lift t.left T.hom (Over.w t)) ((hw e).lift_snd _ _ _), (hw e).lift_fst _ _ (Over.w t)⟩`. Establish `h₂ : x = fun i => t' ≫ X e i` using `funext fun i => Over.OverMorphism.ext <| by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(hb e).hom_ext` to reduce the goal to its premises. Rewrite using `[← ht, Over.comp_left, Over.comp_left, Category.assoc, hX, ← Category.assoc, h₁]`. Rewrite using `[Over.w, Over.w]`. Rewrite using `[h₂, ← nat, Over.comp_left, Over.comp_left, Category.assoc, ← hg e, ← Category.assoc, h₁]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_operation_of_extend {S : Scheme.{0}} {R : ℕ → Scheme.{0}} (s : ∀ e, R e ⟶ S)
     (r : ∀ e, R e ⟶ R (e + 1)) (Y : ∀ e, Over (R e)) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left)
@@ -91,11 +91,9 @@ theorem exists_operation_of_extend {S : Scheme.{0}} {R : ℕ → Scheme.{0}} (s 
   rw [h₂, ← nat, Over.comp_left, Over.comp_left, Category.assoc, ← hg e, ← Category.assoc, h₁]
 
 /- English proof (translation)
-Establish `key` using `fun W hW => exists_operation_of_extend s r Y β (fun e => (hβ e).1.w) B b hb hβb W (Z W) (w W) (hw W) (ζ W) (hζ W) (hζw W) (ext W hW)`. Take `⟨mu, hmu⟩` from `key _ h₂ Bool (fun i => cond i (fst B B) (snd B B)) (fun _ _ x => x true * x false) (fun _ _ _ t x => comp_mul _ _ _) (fun e T x x₀ h => (hβ e).2 T _ _ _ _ (h true) (h false))`. Take `⟨io, hio⟩` from `key _ h₁ Unit (fun _ => 𝟙 B) (fun _ _ x => (x ())⁻¹) (fun _ _ _ t x => GrpObj.comp_inv _ _) (fun e T x x₀ h => (inv_one_of_isGrpPullback (hβ e) T).1 _ _ (h ()))`. Take `⟨un, hun⟩` from `key _ h₀ Empty Empty.elim (fun _ _ _ => 1) (fun _ _ _ t x => comp_one _) (fun e T x x₀ h => (inv_one_of_isGrpPullback (hβ e) T).2)`. Use `⟨mu, io, un, fun e T x y x₀ y₀ hx hy => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hmu e T (fun i => cond i x y) _ fun i => ?_` and prove the remaining obligations. Consider the cases of `i`. Conclude with `(congrArg (·.left) (lift_snd x₀ y₀)).trans hy`. Conclude with `(congrArg (·.left) (lift_fst x₀ y₀)).trans hx`. Conclude with `hio e T (fun _ => x) _ fun _ => (congrArg (·.left) (Category.comp_id x₀)).trans hx`.
-
-Conclude with `hun e T Empty.elim _ fun i => i.elim`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem exists_group_operations_of_extend {S : Scheme.{0}} {R : ℕ → Scheme.{0}} (s : ∀ e, R e ⟶ S)
     (r : ∀ e, R e ⟶ R (e + 1)) (Y : ∀ e, Over (R e)) [∀ e, GrpObj (Y e)]
@@ -130,21 +128,21 @@ theorem exists_group_operations_of_extend {S : Scheme.{0}} {R : ℕ → Scheme.{
   · exact hun e T Empty.elim _ fun i => i.elim
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_hasPullback W.hom (thick R I e)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_fstG {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (W : Over (Spec (CommRingCat.of R))) :
     IsPullback (P := (thickObj R I e W).left) (fstG I e W).left (thickObj R I e W).hom W.hom (thick R I e) :=
   IsPullback.of_hasPullback W.hom (thick R I e)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_hom {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (W : Over (Spec (CommRingCat.of R))) :
     thickMap R I e W ≫ (thickObj R I (e + 1) W).hom = (thickObj R I e W).hom ≫ thickTrans R I e :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_proj {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (W : Over (Spec (CommRingCat.of R))) :
     thickMap R I e W ≫ (fstG I (e + 1) W).left = (fstG I e W).left :=
@@ -153,7 +151,7 @@ theorem thickMap_proj {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (W : Over 
 end GlobalTheory.GrpAlg
 
 /- English proof (translation)
-Introduce `V _ _ _ _ Y _ β hβ B b hB hfl hb hβb`. Establish `hfl₂ : Flat (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `Flat (pullback.fst B.hom B.hom ≫ B.hom)`. Use `infer_instance`. Conclude with `GlobalTheory.GrpAlg.exists_group_operations_of_extend (S := Spec (CommRingCat.of V)) (R := fun e => Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1)))) (thick V (IsLocalRing.maximalIdeal V)) (thickTrans V (IsLocalRing.maximalIdeal V)) Y β hβ B b hb hβb (fun W e => …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GrpAlg.exists_group_operations : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) [∀ e, GrpObj (Y e)] (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsGrpPullback (Y e) (Y (e + 1)) (thickTrans V _ e) (β e)) → ∀ (B : Over (Spec (CommRingCat.of V))) (b : ∀ e, (Y e).left ⟶ B.left), IsProjBy B.hom → Flat B.hom → (∀ e, IsPullback (b e) (Y e).hom B.hom (thick V (IsLocalRing.maximalIdeal V) e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∃ (mu : B ⊗ B ⟶ B) (io : B ⟶ B) (un : 𝟙_ _ ⟶ B), (∀ e (T : Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (x y : T ⟶ Y e) (x₀ y₀ : Over.mk (T.hom ≫ thick V (IsLocalRing.maximalIdeal V) e) ⟶ B), x₀.left = x.left ≫ b e → y₀.left = y.left ≫ b e → (lift x₀ y₀ ≫ mu).left = (x * y).left ≫ b e ∧ (x₀ ≫ io).left = (x⁻¹).left ≫ b e ∧ (toUnit (Over.mk (T.hom ≫ thick V (IsLocalRing.maximalIdeal V) e)) ≫ un).left = (1 : T ⟶ Y e).left ≫ b e) := by
   intro V _ _ _ _ Y _ β hβ B b hB hfl hb hβb

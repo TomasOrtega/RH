@@ -8,7 +8,7 @@ open MeasureTheory Matrix
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Formalism.QuantumDeterminants.lmulM, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finsetSum _ fun l _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply l))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_lmulM' {k r : ℕ} (s : Mat k r) : Continuous (Formalism.QuantumDeterminants.lmulM (k := k) (r := r) s) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_

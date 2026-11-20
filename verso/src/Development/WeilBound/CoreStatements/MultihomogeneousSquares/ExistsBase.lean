@@ -43,23 +43,19 @@ def overCpt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D :
 open Limits GeoModel in
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := {}`. Establish `hgen₀` using `GlobalTheory.T.component_generic_is_generic_point E H D l Xo c Y Ω₀ ξ₀ hg`. Take `⟨w₀, -⟩` from `GlobalTheory.T.generic_point_factors_open E H D l Xo c Y Ω₀ ξ₀ hgen₀`. Take `⟨cst, -⟩` from `exists_cst (Y := Y) w₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero Ω₀ := charZero_of_injective_ringHom cst.injective`. Take `⟨Ω, _, _, i, hfin, htors, hroot⟩` from `ChgField.exists_field E H D l Xo c Y Ω₀ ξ₀ S hgen₀ hS`. Take `⟨K₀, _, J₀, _, yc, X₀, ξ', f₀, bd₀, -, hall₀, htie₀, hf₀, -, -⟩` from `GlobalTheory.T.exists_coords_of_generic_point hRes E H D l Xo c Y Ω₀ ξ₀ hg`. Take `⟨K₁, _, J₁, _, y₁, bk, bx, M, h, -, -, hdom, hnorm, hsm⟩` from `GlobalTheory.T.coords_after_finite_extension hRes K₀ J₀ Ω₀ Ω i yc X₀ ξ' hfin hall₀ htie₀`. Establish `hMξ : M.ξ ≫ h ≫ f₀ = spMap i ≫ ξ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : M.ξ ≫ h = Spec.map (CommRingCat.ofHom i) ≫ ξ'` using `hdom`. Rewrite using `[← Category.assoc, e, Category.assoc, hf₀]`. Establish `hgenM : GlobalTheory.CompanionTheory.Ar.genPt (M.ξ ≫ h ≫ f₀) ∈ genericPoints Y.X`. Rewrite using `[hMξ]`. Use `show GlobalTheory.CompanionTheory.Ar.genPt (Spec.map (CommRingCat.ofHom i) ≫ ξ₀) ∈ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[genPt_comp]`. Conclude with `hgen₀`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.T.generic_point_factors_open E H D l Xo c Y Ω _ hgenM`. Establish `hinj : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `RingOfIntegers.coe_injective`. Establish `hA` using `GlobalTheory.T.generic_trdeg_eq_dimension E H D l Xo c _ _ Y Ω₀ ξ₀ Ω y₀ i hinj hg (hy₀ ▸ hMξ)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `htr : Algebra.trdeg ℤ Ω = ((D.dim : ℕ) : Cardinal)`. Use `letI : Algebra Ω₀ Ω := i.toAlgebra`. Use `haveI : FiniteDimensional Ω₀ Ω := hfin`. Use `haveI : FaithfulSMul ℤ Ω₀ := (faithfulSMul_iff_algebraMap_injective ℤ Ω₀).mpr Int.cast_injective`. Use `haveI : FaithfulSMul Ω₀ Ω := (faithfulSMul_iff_algebraMap_injective Ω₀ Ω).mpr i.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htow` using `trdeg_add_eq ℤ Ω₀ (A := Ω)`. Rewrite `htow` using `[hA, trdeg_eq_zero_iff.2 (Algebra.IsAlgebraic.of_finite Ω₀ Ω), add_zero]`. Conclude with `htow.symm`. Take `⟨U, hd, hAb⟩` from `GlobalTheory.T.dense_open_generic_fibre E H D l Xo c Y Ω _ _ M (h ≫ f₀) y₀ hy₀`. Establish `hU` using `GlobalTheory.T.generic_fibre_open_coords E H D l Xo c Y Ω K₁ J₁ y₁ M (h ≫ f₀) y₀ U hy₀ hsm htr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnm : Tor.IsNormalScheme M.X` using `((GlobalTheory.T.normal_cpt_iff_normal_scheme _ Ω M.ξ M.tie.gen M.all).2).1 hnorm`. Take `⟨N, x, X, ξ, f₂, hall, htie, hf₂, hp⟩` from `exists_patches_of_res hRes c.F M.X ((h ≫ f₀) ≫ Y.s) (GlobalTheory.T.projective_model_over_base E H D l Xo c Y Ω _ _ M (h ≫ f₀)) hnm U hd D.dim hU _ hAb Ω M.ξ M.tie.gen`. Take `⟨K, _, J, _, y, M₁, g, hne, hdom₁, hn₁, hp₁⟩` from `GlobalTheory.T.exists_projective_coord_model Ω X ξ N x D.dim (f₂ ⁻¹' ((h ≫ f₀) ⁻¹' abLocus Y.t.G)) hall htie hp`. Establish `hg₁ : M₁.ξ ≫ g = ξ`. Establish `e : M₁.ξ ≫ g = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ ξ` using `hdom₁`.
-
-Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hξ₁ : M₁.ξ ≫ g ≫ f₂ ≫ h ≫ f₀ = M.ξ ≫ h ≫ f₀`. Rewrite using `[← Category.assoc, hg₁, ← Category.assoc, hf₂]`. Use `⟨Ω, inferInstance, inferInstance, K, inferInstance, J, inferInstance, y, M₁, g ≫ f₂ ≫ h ≫ f₀, y₀, i, hne, hfin, hn₁, hξ₁.trans hy₀, hξ₁.trans hMξ, fun p hp' => ?_, hroot, ?_, htr⟩` and prove the remaining obligations.
-
-Rewrite using `[hξ₁, hMξ]`. Conclude with `htors p hp'`. Use `hp₁ using 4` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_base' (hRes : ResK.ResKStatement) (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω₀ : Type) [Field Ω₀]
@@ -120,19 +116,17 @@ theorem exists_base' (hRes : ResK.ResKStatement) (E : Type) [Field E] [NumberFie
     simp
 
 /- English proof (translation)
-Introduce `hRes hW E _ _ _ H D l Xo c Y S Ω₀ _ ξ₀ hξ₀ hS hSd`. Take `⟨Ω, _, _, K₁, _, J₁, _, y₁, M₁, f₁, z₀, i, ⟨k₁⟩, hfin, hN, hz₀, hdomi, htors, hroot, hsnc₁, htr⟩` from `exists_base' hRes E H D l Xo c Y Ω₀ ξ₀ hξ₀ S hS`. Establish `hgen₁ : f₁ (GlobalTheory.CompanionTheory.Ar.genPt M₁.ξ) ∈ genericPoints Y.X`. Establish `e : GlobalTheory.CompanionTheory.Ar.genPt (M₁.ξ ≫ f₁) = GlobalTheory.CompanionTheory.Ar.genPt ξ₀`. Rewrite using `[hdomi]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GeoModel.genPt_comp i ξ₀`. Establish `h0` using `GlobalTheory.T.component_generic_is_generic_point E H D l Xo c Y Ω₀ ξ₀ hξ₀`. Rewrite `h0` using `[← e]`. Conclude with `h0`. Take `⟨K₂, _, J₂, _, y₂, bk, bx, A, g, -, -, hdom₂, hf₂, hR₂, hfree, hiso⟩` from `GlobalTheory.T.hodge_cpt_projective_model hW E H D l Xo c Y S (fun _ => 4) Ω K₁ J₁ y₁ M₁ f₁ z₀ hN hz₀ hgen₁ hS hSd (fun _ _ => le_rfl) htors hroot`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgA : A.ξ ≫ g = M₁.ξ`. Establish `e : A.ξ ≫ g = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ M₁.ξ` using `hdom₂`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hsncA : GeoModel.SncPts A.ξ D.dim {p | Char0 A.ξ p ∧ g p.1 ∉ f₁ ⁻¹' abLocus Y.t.G}` using `GlobalTheory.T.snc_points_transfer_dominating Ω _ _ _ _ M₁.X A.X M₁.ξ A.ξ g D.dim _ M₁.all A.all M₁.tie A.tie hdom₂ hiso hsnc₁`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : GlobalTheory.CompanionTheory.Ar.Dominates A.ξ ξ₀ A.f i` using `by show A.ξ ≫ A.f = _`. Rewrite using `[hf₂, ← Category.assoc, hgA]`. Conclude with `hdomi`. Take `⟨bd, hbd, hbd'⟩` from `GlobalTheory.T.snc_model_boundary_coords Ω A.X A.ξ K₂ J₂ y₂ D.dim {p | Char0 A.ξ p ∧ g p.1 ∉ f₁ ⁻¹' abLocus Y.t.G} A.tie (fun p hp' => hp'.1) hsncA`. Establish `hab : abLocus A.t.G = A.f ⁻¹' abLocus Y.t.G` using `(Set.ext fun x => abLocus_pullback abLocusOne Y.t.semi A.m.cart.1 x).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `letI algi : Algebra Ω₀ Ω := i.toAlgebra`. Use `haveI : FiniteDimensional Ω₀ Ω := hfin`. Use `haveI : Nonempty K₂ := ⟨bk k₁⟩`. Use `⟨Ω, inferInstance, inferInstance, K₂, inferInstance, J₂, inferInstance, y₂, overCpt A ξ₀ hξ₀ i hi, Module.finrank Ω₀ Ω, inferInstance, rfl, ⟨Module.finrank_pos, rfl⟩, (GlobalTheory.T.birational_of_transcendence_degree A.X Ω A.ξ K₂ J₂ y₂ _ A.tie htr).2, ⟨bd, hbd, fun z w hw => ?_⟩ …` and prove the remaining obligations. Rewrite using `[hbd' z w hw]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, -, h2⟩ hI`. Establish `h3 : centre z ∈ abLocus A.t.G` using `hI`. Rewrite `h3` using `[hab, hf₂]`. Conclude with `h2 h3`.
-
-Introduce `hn`. Use `⟨A.all _, GlobalTheory.T.char_zero_centre_of_complex Ω A.X A.ξ z _ A.tie.gen, fun h => hn ?_⟩` and prove the remaining obligations. Use `show centre z ∈ abLocus A.t.G`. Rewrite using `[hab, hf₂]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stBase : StBase := by
   intro hRes hW E _ _ _ H D l Xo c Y S Ω₀ _ ξ₀ hξ₀ hS hSd

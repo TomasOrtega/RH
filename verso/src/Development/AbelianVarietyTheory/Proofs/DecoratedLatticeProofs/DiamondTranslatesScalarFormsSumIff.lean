@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.AdForm
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hS j hj φ hφ i v hv g hg`. Establish `hfin : ∀ (f : 𝓀[k]ˣ → GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j) → ℂ) x, (∑ᶠ s, f s) x = ∑ᶠ s, f s x` using `fun f x => finsum_apply (Set.toFinite _) x`. Prove the components needed by the constructor for the conclusion. Introduce `H c`. Use function extensionality and compare the values at `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrFun (H (A.chOf j c) y) (A.h j _ ⟨c, rfl⟩)`. Rewrite `h1` using `[hfin]`. Simplify using `only [GlobalTheory.MixPer.rTrans] at h1`. Rewrite `h1` using `[GlobalTheory.T.representative_diamond_translate_sum_scalarForm I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj φ hφ i v hv g hg _ y ⟨c, rfl⟩]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `H b y`. Use function extensionality and compare the values at `x`. Rewrite using `[hfin]`. Simplify using `only [GlobalTheory.MixPer.rTrans, Pi.zero_apply]`. Use `GlobalTheory.T.diamondTranslateSum_eq_zero_of_chartRepresentatives I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj φ hφ i v hv g hg b y (fun c y' => ?_) x` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.T.representative_diamond_translate_sum_scalarForm I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj φ hφ i v hv g hg b y' c, H c.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diaSum_iff : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))

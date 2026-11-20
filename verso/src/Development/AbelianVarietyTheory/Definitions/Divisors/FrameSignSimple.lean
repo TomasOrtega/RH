@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun h 1) 4`. Establish `h2` using `congrFun (congrFun h 2) 3`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_five, antiDiagonalSignGramMatrix, hn, hn'] at h1 h2`. Simplify using `[Fin.sum_univ_four, frameSign]`. Take the linear combination `(-1 : R) * h1 - h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem frameSign_simple {R : Type} [CommRing R] (n n' : Matrix (Fin 5) (Fin 5) R)
     (hn : ∀ i j, j ≤ i → n i j = if i = j then 1 else 0) (hn' : ∀ i j, j ≤ i → n' i j = if i = j then 1 else 0)
@@ -31,14 +31,14 @@ theorem frameSign_simple {R : Type} [CommRing R] (n n' : Matrix (Fin 5) (Fin 5) 
   linear_combination (-1 : R) * h1 - h2
 
 /- English proof (translation)
-Take `⟨Φ, h, -⟩` from `funForm (K := ℂ) σ`. Conclude with `readOK_of_equiv σ Φ fun F => (h F _).2 rfl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem readOK {ι : Type} [Fintype ι] {n : ℕ} (σ : ι → DomWeight n) : ReadOK σ := by
   obtain ⟨Φ, h, -⟩ := funForm (K := ℂ) σ
   exact readOK_of_equiv σ Φ fun F => (h F _).2 rfl
 
 /- English proof (translation)
-Take `⟨Φ, h, -⟩` from `funForm (K := ℂ) σ`. Establish `h1` using `(h _ _).1 ((readOK σ).1 F)`. Establish `h2` using `(h _ _).1 ((readOK σ).2 (funOf σ F))`. Conclude with `Φ.injective (h2.symm.trans h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem covOf_funOf {ι : Type} [Fintype ι] {n : ℕ} (σ : ι → DomWeight n) (F : VV ℂ σ) : covOf σ (funOf σ F) = F := by
   obtain ⟨Φ, h, -⟩ := funForm (K := ℂ) σ
@@ -47,7 +47,7 @@ theorem covOf_funOf {ι : Type} [Fintype ι] {n : ℕ} (σ : ι → DomWeight n)
   exact Φ.injective (h2.symm.trans h1)
 
 /- English proof (translation)
-Take `⟨Φ, h, h', -⟩` from `funForm (K := ℂ) σ`. Rewrite using `[(h _ _).1 ((readOK σ).1 F), (h _ _).1 ((readOK σ).1 _), h']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem funOf_rhoV {E : Type} [Field E] [NumberField E] {ι : Type} [Fintype ι] {n : ℕ} (emb : ι → E →+* ℂ) (σ : ι → DomWeight n)
     (γ : GL (Fin n) E) (F : VV ℂ σ) :
@@ -56,16 +56,16 @@ theorem funOf_rhoV {E : Type} [Field E] [NumberField E] {ι : Type} [Fintype ι]
   rw [(h _ _).1 ((readOK σ).1 F), (h _ _).1 ((readOK σ).1 _), h']
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((GlobalTheory.AutFunCounterexample.embRel_existsUnique B A d.ι d.isom y.1).unique (finEmb_rel d y) h)`.
+A detailed English derivation is pending.
 -/
 theorem finEmb_eq {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (y : GfC A) (x : GfC B)
     (h : EmbRel B A d.ι x.1 y.1) : finEmb d y = x :=
   Subtype.ext ((GlobalTheory.AutFunCounterexample.embRel_existsUnique B A d.ι d.isom y.1).unique (finEmb_rel d y) h)
 
 /- English proof (translation)
-Use `finEmb_eq d _ _ ⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `(finEmb_rel d y).1`. Establish `h2` using `(finEmb_rel d y').1`. Simplify using `only [Subgroup.coe_mul, map_mul, Units.val_mul] at *`. Rewrite using `[Matrix.mul_assoc, h2, ← Matrix.mul_assoc, h1, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(finEmb_rel d y).2 v hv`. Establish `h2` using `(finEmb_rel d y').2 v hv`. Simplify using `only [Subgroup.coe_mul, map_mul, Units.val_mul] at *`. Rewrite using `[← Matrix.mulVec_mulVec, h2, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem finEmb_mul {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (y y' : GfC A) :
     finEmb d (y * y') = finEmb d y * finEmb d y' := by
@@ -80,11 +80,11 @@ theorem finEmb_mul {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogo
     rw [← Matrix.mulVec_mulVec, h2, h1]
 
 /- English proof (translation)
-Establish `hf : {w : Pl D.host.E | FractionalIdeal.count D.host.E w D.host.AA ≠ 0}.Finite` using `Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors D.host.AA)`. Set `p : Pl D.host.F → Pl D.host.E → Prop` to `fun v w => FractionalIdeal.count D.host.E w D.host.AA ≠ 0 ∧ w.under (𝓞 D.host.F) = v`. Set `f : ∀ w : Pl D.host.E, FractionalIdeal.count D.host.E w D.host.AA ≠ 0 → Pl D.host.E` to `fun w h => (⟨w, h, rfl⟩ : ∃ w', p (w.under (𝓞 D.host.F)) w').choose`. Establish `hp : ∀ w h, p (w.under (𝓞 D.host.F)) (f w h)` using `fun w h => Exists.choose_spec _`. Establish `hc : ∀ w h w' h', w.under (𝓞 D.host.F) = w'.under (𝓞 D.host.F) → f w h = f w' h'` using `fun w h w' h' e => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [f, e]`. Use `⟨hf.toFinset.attach.image fun w => f w.1 (hf.mem_toFinset.1 w.2), fun w hw => ?_, fun w h => ⟨f w h, ⟨?_, (hp w h).2⟩, ?_⟩⟩` and prove the remaining obligations. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hw`. Conclude with `Or.inl (hp _ (hf.mem_toFinset.1 a.2)).1`. Conclude with `Finset.mem_image.2 ⟨⟨w, hf.mem_toFinset.2 h⟩, Finset.mem_attach _ _, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the first alternative. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `w' ⟨hw, e⟩`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hw`. Conclude with `hc _ (hf.mem_toFinset.1 a.2) _ h ((hp _ (hf.mem_toFinset.1 a.2)).2.symm.trans e)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_places : ∃ PA : Finset (Pl D.host.E),
     (∀ w ∈ PA, FractionalIdeal.count D.host.E w D.host.AA ≠ 0 ∨ FractionalIdeal.count D.host.E w D.host.AAbar ≠ 0) ∧
@@ -107,9 +107,9 @@ theorem exists_places : ∃ PA : Finset (Pl D.host.E),
     exact hc _ (hf.mem_toFinset.1 a.2) _ h ((hp _ (hf.mem_toFinset.1 a.2)).2.symm.trans e)
 
 /- English proof (translation)
-Take `⟨PA, h1, h2⟩` from `exists_places (D := D)`. Establish `h : ∀ j, ∃ β : GL (Fin (G.V (.top j)).rank) (Lev.EAf D), j ≤ D.R.m → IsFrame β (G.Λ (.top j))` using `fun j => by`. Distinguish the cases in `hj : j ≤ D.R.m`. Establish `hl` using `(G.isV (X := .top j) hj fun _ e => by cases e).sd.1`. Take `⟨β, hβ⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F _ hl.fg hl.span_eq_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨β, fun _ => hβ⟩`. Conclude with `⟨1, fun a => absurd a hj⟩`. Use `choose β hβ using h`. Conclude with `⟨⟨Classical.arbitrary _, β, hβ, fun _ h => h.elim, fun _ h => h.elim, N, Z, PA, h1, h2⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_empty {G : GridData L sc} (W : G.Weil) (N : Std G (∅ : Set T)) (Z : Normal W N) : Nonempty (GridChoice W ∅) := by
   obtain ⟨PA, h1, h2⟩ := exists_places (D := D)

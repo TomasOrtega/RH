@@ -10,15 +10,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ`. Take `⟨⟨hlc, hsc, ht2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := hlc`. Use `haveI := hsc`. Use `haveI := ht2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨htg, hlcH, hscH, ht2H, hbH, -⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (AF F)`. Use `haveI := htg`. Use `haveI := hlcH`. Use `haveI := hscH`. Use `haveI := ht2H`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hbH`. Take `⟨hcount, U, hU, hUd⟩` from `rational_countable_discrete F E σ hσ M J hJ`. Use `haveI := hcount`. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `hmem : ∀ γ : HA (AF F) σ J, γ ∈ Γ → HA.mat (AF F) σ J γ ∈ HFin (AF F) σ J` using `fun γ hγ => Subgroup.mem_subgroupOf.1 hγ`.
-
-Take `⟨-, D, hD, hDs⟩` from `GlobalTheory.exists_strict_measurable_fundamental_set_of_discrete (HA (AF F) σ J) Γ ⟨U, hU, fun γ hγ hγU => hUd γ hγU (hmem γ hγ)⟩`. Establish `hfd : ∀ μ : Measure (HA (AF F) σ J), IsFDH F E σ M J μ D` using `fun μ => IsFundamentalDomain.mk' hD.nullMeasurableSet hDs`. Use `⟨⟨Measure.haar, inferInstanceAs (Measure.IsHaarMeasure _)⟩, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `haveI : μ.IsHaarMeasure := hμ`. Use `⟨⟨D, hfd μ⟩, ⟨D, hD, hfd μ, fun h => ?_⟩, fun 𝓕 h𝓕 => ?_⟩` and prove the remaining obligations.
-
-Take `⟨γ, hγ, -⟩` from `hDs h`. Conclude with `⟨γ, hmem _ γ.2, hγ⟩`. Use `haveI : MeasurableConstSMul (HFinIn (AF F) σ J) (HA (AF F) σ J) := ⟨fun c => (continuous_const.mul continuous_id : Continuous fun x : HA (AF F) σ J => (show HA (AF F) σ J from c.1) * x).measurable⟩ haveI : SMulInvariantMeasure (HFinIn (AF F) σ J) (HA (AF F) σ J) μ := ⟨fun c s hs …`. Establish `h𝓕' : IsFundamentalDomain (HFinIn (AF F) σ J) 𝓕 μ` using `h𝓕`. Conclude with `h𝓕'.measure_ne_zero (NeZero.ne μ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem haar_fundamental_exist : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → (∃ μ, IsHaarH F E σ M J μ) ∧ ∀ μ, IsHaarH F E σ M J μ → (∃ 𝓕, IsFDH F E σ M J μ 𝓕) ∧ (∃ 𝓕, MeasurableSet 𝓕 ∧ IsFDH F E σ M J μ 𝓕 ∧ ∀ h : HA (AF F) σ J, ∃ γ : HA (AF F) σ J, HA.mat (AF F) σ J γ ∈ HFin (AF F) σ J ∧ γ * h ∈ 𝓕) ∧ ∀ 𝓕, IsFDH F E σ M J μ 𝓕 → μ 𝓕 ≠ 0 := by
   intro F E _ _ _ _ _ σ hσ M J hJ

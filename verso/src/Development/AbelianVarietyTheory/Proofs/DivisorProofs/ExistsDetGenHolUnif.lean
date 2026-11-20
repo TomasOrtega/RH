@@ -18,13 +18,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 X L u κ hκ`. Take `⟨h₁, h₂⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u X.dim`. Take `⟨d, hdi, hd⟩` from `GlobalTheory.DiagCoord.exists_diff_linear u X.rm h₁ h₂`. Establish `hds : Function.Surjective d` using `fun w => by`. Take `⟨v, hv, hw⟩` from `(h₂ w).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨GlobalTheory.Serre.Lie.mk X.rm v hv, ?_⟩` and prove the remaining obligations. Conclude with `(h₁ _ hv).unique (hd _) hw`. Set `e : X.Lie ≃ₗ[ℂ] (Fin (Module.finrank ℚ F) → ℂ)` to `LinearEquiv.ofBijective d ⟨hdi, hds⟩`. Set `b : Module.Basis (Fin (Module.finrank ℚ F)) ℂ X.Lie` to `(Pi.basisFun ℂ _).map e.symm`. Use `⟨⟨κ • b.det, ?_⟩, fun v W hW => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show κ • b.det = (Units.mk0 κ hκ : ℂˣ) • b.det from rfl, Submodule.span_singleton_group_smul_eq]`. Conclude with `(Obj.DetGen.ofBasis X b).2`. Establish `hv : ∀ i, d (v i) = W i` using `fun i => (h₁ _ (v i).isTangent).unique (hd _) (hW i)`. Establish `hm : b.toMatrix v = W.transpose`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.toMatrix_apply, Matrix.transpose_apply]`. Rewrite using `[Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_symm, Pi.basisFun_repr]`. Conclude with `congrFun (hv j) i`. Rewrite using `[AlternatingMap.smul_apply, Module.Basis.det_apply, hm, Matrix.det_transpose, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Obj.exists_detGen_holUnif : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (L : LB X.A.left)
     (u : HolUnif X.A L (Module.finrank ℚ F)) (κ : ℂ), κ ≠ 0 →

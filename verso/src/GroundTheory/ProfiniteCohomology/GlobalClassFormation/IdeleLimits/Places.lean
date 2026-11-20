@@ -56,7 +56,7 @@ def transition : ∀ (v : Place K.1) {p q : GLevel K}, p ≤ q → P.localGroup 
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(finiteShapiroIso v (P.fin v p) n).hom.hom ((cohomologyMap (finiteProjAboveRep (K := K.1) (L := p.1.1) v) n).hom y) = _`. Rewrite using `[← placeProj_comp_finiteShapiroIso (P.fin v p) n]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem shapiro_placeProj_inr (v : HeightOneSpectrum (𝓞 K.1)) (p : GLevel K)
     (y : cohomology (ideleRep K.1 p.1.1) n) :
@@ -69,7 +69,7 @@ theorem shapiro_placeProj_inr (v : HeightOneSpectrum (𝓞 K.1)) (p : GLevel K)
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(infiniteShapiroIso v (P.inf v p) n).hom.hom ((cohomologyMap (infiniteProjAboveRep (K := K.1) (L := p.1.1) v) n).hom y) = _`. Rewrite using `[← placeProj_comp_infiniteShapiroIso (P.inf v p) n]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem shapiro_placeProj_inl (v : InfinitePlace K.1) (p : GLevel K)
     (y : cohomology (ideleRep K.1 p.1.1) n) :

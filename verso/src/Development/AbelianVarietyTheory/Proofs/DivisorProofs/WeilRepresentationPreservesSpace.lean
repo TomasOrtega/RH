@@ -11,17 +11,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 namespace GlobalTheory.SoStable
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT γ Φ' hΦ`. Unfold `Model.So at hΦ ⊢`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Consider the case `mem x hx`. Take `⟨f, φ, hSB, hcof, hloc, rfl⟩` from `hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, g₂, hg, hg₁, hg₂⟩` from `GlobalTheory.T.unitary_adelic_place_decomposition F E σ a' G.V'.J B.v₁ γ.1`. Take `⟨h₁, h₂, hh, hh₁, hh₂⟩` from `GlobalTheory.T.unitary_adelic_place_decomposition F E σ (a + a') G.W.J B.v₁ γ.2`. Establish `hγ : γ = (g₁, h₁) * (g₂, h₂)` using `Prod.ext hg hh`. Take `⟨f₂, φ₂, hSB₂, hcof₂, hv₂, he₂⟩` from `GlobalTheory.T.theta_trivial_at_place_product hP F E σ B a a' G X om om' hT B.v₁ g₂ h₂ hg₂ hh₂ f φ hSB hcof`. Take `⟨φ', hSB', hne', hacts, he'⟩` from `GlobalTheory.T.local_unitary_action_schwartz_inf hP F E σ B a a' G X om om' hT B.v₁ g₁ hg₁ h₁ hh₁ f₂ φ₂ hSB₂ hcof₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hγ, map_mul, Module.End.mul_apply, he₂, he']`. Use `Submodule.subset_span ⟨f₂, φ', hSB', ?_, ?_, rfl⟩` and prove the remaining obligations. Use `filter_upwards [hcof₂, (Set.finite_singleton B.v₁).compl_mem_cofinite] with w hw hw'`. Rewrite using `[hne' w hw', hw]`. Take `⟨hφSB, ι, hι, hsupp⟩` from `hloc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hSB' _, ι, hι, fun Y hY => ?_⟩` and prove the remaining obligations. Take `⟨c, P, Q, hPQ⟩` from `GlobalTheory.T.linear_bar_local_theta_factor hP F E σ B a a' G X om om' hT B.v₁ B.τ₁ ι hι g₁ hg₁ h₁ hh₁ (φ₂ B.v₁) (hSB₂ _) (φ' B.v₁) (hSB' _) hacts`. Rewrite using `[hPQ, hv₂, hsupp, mul_zero]`. Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det, Matrix.rank_mul_eq_right_of_isUnit_det]` and apply the resulting hypothesis. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp P.isUnit`.
-
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp Q.isUnit`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem so_stable : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ γ, ∀ Φ' ∈ G.M'.So B.ψ B.τ₁, om' γ Φ' ∈ G.M'.So B.ψ B.τ₁ := by

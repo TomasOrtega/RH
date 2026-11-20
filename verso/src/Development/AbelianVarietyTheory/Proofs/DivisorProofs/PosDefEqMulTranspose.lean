@@ -4,9 +4,9 @@ namespace GlobalTheory
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Introduce `g Y hY`. Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hY.posSemidef.nonneg`. Establish `hB' : Bᵀ * Bᵀᵀ = Y`. Rewrite using `[hB, Matrix.transpose_transpose, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_eq_transpose_of_trivial]`. Use `⟨Bᵀ, ?_, hB'⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : (Bᵀ * Bᵀᵀ).det ≠ 0` using `by rw [hB']; exact hY.det_pos.ne'`. Rewrite `hd` using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr (left_ne_zero_of_mul hd))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_mul_transpose_eq_of_posDef :
     ∀ (g : ℕ) (Y : Matrix (Fin g) (Fin g) ℝ), Y.PosDef →

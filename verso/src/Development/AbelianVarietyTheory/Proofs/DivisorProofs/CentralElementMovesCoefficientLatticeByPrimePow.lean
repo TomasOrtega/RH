@@ -23,11 +23,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Take `⟨m₁, h₁⟩` from `exists_pow_hat hβ.choose_spec.1 hk ha`. Take `⟨m₂, h₂⟩` from `exists_pow_hat hβ.choose_spec.1 (GlobalTheory.SplitLinear.suppAt_inv hk) ha`. Use `⟨(m₁ + m₂) * GlobalTheory.NabScale.scaleExp (lamV D i), fun l hl h w hw => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hl`. Take `⟨gramR, c0R, c0L, hT, P, hP, rfl⟩` from `hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨gramR, c0R, c0L, hT, ?_⟩` and prove the remaining obligations. Establish `e1` using `smul_mem_hLat hβ (h₂ (m₁ + m₂) (Nat.le_add_left _ _)) h`. Establish `e2` using `smul_mem_hLat hβ (k := k⁻¹) (by rw [inv_inv]; exact h₁ (m₁ + m₂) (Nat.le_add_right _ _)) (h * k)`. Rewrite `e2` using `[mul_inv_cancel_right]`. Establish `e3` using `Submodule.smul_mem _ ((p ^ d : ℕ) : 𝓞 D.what₂.LL) (nabAtr_scale (labLL D) (lamV D i) _ (GlobalTheory.RepsCompare.isLattice_hLat _ _) e1 e2 P hP)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨_, e3, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, map_smulₛₗ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Use `congr 1`. Rewrite using `[map_pow, map_natCast]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -56,11 +56,11 @@ theorem inCoefLat_pow' (R : RealDat D A Ks) (i : Fin D.R.m) {β : GL (Fin (Vc D 
   ring
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R i Q z hz N hN hQ`. Take `⟨-, -, e, he, hsupp⟩` from `hz`. Take `⟨β, Λ, hβ⟩` from `GlobalTheory.AdIsomObj.frames_exist D (Vc D i) 1`. Establish `ha : ∀ PP : Pl D.host.E, (N : 𝓞 D.host.E) ∉ PP.asIdeal → GlobalTheory.StdFrames.cpt PP (toEAf D (e + cA D e)) = 0` using `fun PP hPP => by`. Rewrite using `[RingHom.map_add, RingHom.map_add, (cpt_sum he PP).2 fun h => hPP (hQ PP h), zero_add, GlobalTheory.StdFrames.toEAf_cA]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.StdFrames.cpt_sg_eq_zero ((cpt_sum he _).2 fun h => hPP ((GlobalTheory.StdFrames.natCast_mem_cP PP N).1 (hQ _ h)))`. Take `⟨m₁, h₁⟩` from `inCoefLat_pow' R i hβ hsupp ha`. Take `⟨m₂, h₂⟩` from `inCoefLat_pow' R i hβ (GlobalTheory.SplitLinear.suppAt_inv hsupp) ha`. Use `⟨max m₁ m₂, fun h _ y => ⟨fun hy => h₁ (max m₁ m₂) (le_max_left m₁ m₂) h y hy, fun hy => ?_⟩⟩` and prove the remaining obligations. Use `h₂ (max m₁ m₂) (le_max_right m₁ m₂) (h * z) y hy` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem centLat : CentLat := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R i Q z hz N hN hQ

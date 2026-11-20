@@ -19,9 +19,9 @@ def extPt (p : ι → Prop) [DecidablePred p] (h₀ : ∀ i, H i) (g : ∀ j : S
   fun i => if hp : p i then g ⟨i, hp⟩ else h₀ i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j.1`. Substitute `hi` using the available equality. Simplify using `[extPt, j.2]`. Establish `hne : ∀ hp : p i, (⟨i, hp⟩ : Subtype p) ≠ j` using `fun hp h => hi (by rw [← h])`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hi]`. Unfold `extPt`. Use `split_ifs with hp`. Rewrite using `[Function.update_of_ne (hne hp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma extPt_update (p : ι → Prop) [DecidablePred p] (h₀ : ∀ i, H i) (g : ∀ j : Subtype p, H j.1) (j : Subtype p)
     (x : H j.1) : extPt p h₀ (Function.update g j x) = Function.update (extPt p h₀ g) j.1 x := by
@@ -37,14 +37,14 @@ lemma extPt_update (p : ι → Prop) [DecidablePred p] (h₀ : ∀ i, H i) (g : 
     · rfl
 
 /- English proof (translation)
-Simplify using `[extPt, j.2]`.
+Simplify using the standard rewrite rules.
 -/
 lemma extPt_at (p : ι → Prop) [DecidablePred p] (h₀ : ∀ i, H i) (g : ∀ j : Subtype p, H j.1) (j : Subtype p) :
     extPt p h₀ g j.1 = g j := by
   simp [extPt, j.2]
 
 /- English proof (translation)
-The claim follows from `| [], g, z, hz => by simpa [NIter] using hz | j :: l, g, z, hz => by obtain ⟨F, hF, hF'⟩ := hz refine ⟨F, hF, fun x => ?_⟩ rw [← extPt_update] exact niter_sub p ρ μ f h₀ l _ _ (hF' x)`.
+A detailed English derivation is pending.
 -/
 lemma niter_sub (p : ι → Prop) [DecidablePred p] {R : ∀ i, Subgroup (H i)} (ρ : ∀ i, Measure (R i))
     (μ : ∀ i, Measure (H i)) (f : (∀ i, H i) → ℂ) (h₀ : ∀ i, H i) :
@@ -65,55 +65,49 @@ namespace GlobalTheory.RowVal
 open GlobalTheory.CellVanishing in
 
 /- English proof (translation)
-Introduce `ι _ H _ _ _ _ _ _ _ _ A B R K l hl hS ρ μ ρ' μ' hM X S b w q z α hw hdist hinv hsupp hz hrel`. Use `haveI := Classical.decEq (∀ i, H i)`. Establish `hQ` using `(GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι H R ρ μ l 1).1 (Fin 2) Finset.univ α z q (fun n _ => hz n)`. Use `GlobalTheory.T.isIteratedInvariantIntegral_vanish_of_inner_vanish ι H A B R K l hl hS ρ μ ρ' μ' hM ((S 0).image (b 0) ∪ (S 1).image (b 1)) (fun g => ∑ n ∈ Finset.univ, α n * q n g) _ ?_ ?_ ?_ hQ ?_` and prove the remaining obligations. Introduce `c hc i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Finset.mem_union.1 hc with hc | hc <;>`. Take `⟨β, hβ, rfl⟩` from `Finset.mem_image.1 hc`. Take `⟨_, hb, _⟩` from `hw _ β hβ`. Conclude with `hb i`. Introduce `i hi h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `r hr`. Conclude with `Finset.sum_congr rfl fun n _ => by rw [(hinv n i hi h).1 r hr]`. Introduce `k hk`. Conclude with `Finset.sum_congr rfl fun n _ => by rw [(hinv n i hi h).2 k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h h1 hne`. Take `⟨n, -, hn⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Take `⟨β, hβ, hc⟩` from `hsupp n h h1 (right_ne_zero_of_mul hn)`. Use `⟨b n β, ?_, hc⟩` and prove the remaining obligations. Use `fin_cases n`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ hβ)`. Conclude with `Finset.mem_union_right _ (Finset.mem_image_of_mem _ hβ)`. Introduce `a ha ha1`. Set `p : ι → Prop` to `fun i => i ∈ l`. Use `haveI : ∀ j : Subtype p, LocallyCompactSpace (B j.1) := fun j => (hS j.1 j.2).clB.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `haveI : ∀ n (β : X n) i, Decidable (b n β i ∈ B i) := fun _ _ _ => Classical.dec _`. Set `bb : ∀ n, X n → ∀ i, B i` to `fun n β i => if h : b n β i ∈ B i then ⟨b n β i, h⟩ else 1`. Establish `hbb : ∀ n β (hβ : β ∈ S n), bb n β = fun i => ⟨b n β i, (hw n β hβ).2.1 i⟩`. Introduce `n β hβ`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `dif_pos _`. Set `qn : Fin 2 → (∀ j : Subtype p, B j.1) → ℂ` to `fun n g => q n fun i => a i * (extPt (H := fun i => ↥(B i)) p 1 g i).1`. Establish `hg1 : ∀ (g : ∀ j : Subtype p, B j.1) i, i ∉ l → a i * (extPt (H` using `fun i => ↥(B i)) p 1 g i).1 = 1 := by`. Introduce `g i hi`. Simplify using `[extPt, p, hi, ha1 i hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hmeas : ∀ j ∈ l.attach, IsClosed (((R j.1).subgroupOf (B j.1) : Subgroup (B j.1)) : Set (B j.1)) ∧ IsCompact (((K j.1).subgroupOf (B j.1) : Subgroup (B j.1)) : Set (B j.1)) ∧ IsOpen (((K j.1).subgroupOf (B j.1) : Subgroup (B j.1)) : Set (B j.1)) ∧ (ρ' j.1).IsHaarMeasure ∧ (ρ' j.1 …`. Introduce `j _`. Establish `hs` using `hS j.1 j.2`. Take `⟨-, -, h3, h4⟩` from `hM j.1 j.2`. Conclude with `⟨hs.clR.preimage continuous_subtype_val, hs.clB.isClosedEmbedding_subtypeVal.isCompact_preimage hs.cpt, hs.opn, h3, hs.uniRB _ h3, h4, hs.uniB _ h4⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hcell : ∀ n, NIter (R` using `fun j : Subtype p => (R j.1).subgroupOf (B j.1)) (fun j => ρ' j.1) (fun j => μ' j.1) (qn n) l.attach 1 (∑ β ∈ S n, w n β * q n (a * b n β)) := by`. Introduce `n`. Establish `hv : ∀ β (hβ : β ∈ S n) i, ((bb n β i : B i) : H i) = b n β i` using `fun β hβ i => by rw [hbb n β hβ]`. Establish `key` using `GlobalTheory.T.iteratedInvariantIntegral_doubleCoset_cellSum (Subtype p) (fun j => B j.1) (fun j => (R j.1).subgroupOf (B j.1)) (fun j => (K j.1).subgroupOf (B j.1)) l.attach (List.nodup_attach.2 hl) (fun j => ρ' j.1) (fun j => μ' j.1) hmeas (X n) (S n) (fun β j => bb n β j.1) (q …`. Use `key using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations. Take `⟨h1, hb, hwβ⟩` from `hw n β hβ`. Rewrite using `[hwβ, hbb n β hβ]`. Use `congr 1`. Conclude with `congrArg List.prod (List.attach_map_val (f := fun i => cellWt (ρ' i) (μ' i) ((K i).subgroupOf (B i)) ⟨b n β i, hb i⟩)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `show q n (a * b n β) = q n fun i => a i * (extPt (H := fun i => ↥(B i)) p 1 (fun j => (⟨b n β j.1, hb j.1⟩ : B j.1)) i).1`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ l`. Simplify using `[extPt, p, hi]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[extPt, p, hi, ha1 i hi, h1 i hi]`. Introduce `β hβ β' hβ' hc`. Apply `hdist n β hβ β' hβ'` to reduce the goal to its premises. Introduce `i hi`. Take `⟨r, hr, a0, ha0, k, hk, e⟩` from `hc ⟨i, hi⟩ (List.mem_attach _ _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha0` using `[Subgroup.mem_bot]`. Substitute `ha0` using the available equality. Use `⟨r.1, Subgroup.mem_subgroupOf.1 hr, 1, (A i).one_mem, k.1, Subgroup.mem_subgroupOf.1 hk, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg Subtype.val e`. Simplify using `only at e'`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, OneMemClass.coe_one, mul_one] at e'`. Rewrite `e'` using `[hv β' hβ', hv β hβ]`. Rewrite using `[mul_one]`. Conclude with `e'`. Introduce `j _ g`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgj : ∀ x : B j.1, (fun i => a i * (extPt (H` using `fun i => ↥(B i)) p 1 (Function.update g j x) i).1) = Function.update (fun i => a i * (extPt (H := fun i => ↥(B i)) p 1 g i).1) j.1 (a j.1 * x.1) := by`. Introduce `x`. Rewrite using `[extPt_update]`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hi]`. Establish `hj1 : (extPt (H` using `fun i => ↥(B i)) p 1 g j.1) = g j := extPt_at _ _ _ _`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Use `(hinv n j.1 j.2 (fun i => a i * (extPt (H := fun i => ↥(B i)) p 1 g i).1)).1 r.1 (Subgroup.mem_subgroupOf.1 hr)` as an intermediate fact. Use `show q n _ = q n _`. Rewrite using `[hgj]`. Establish `hx : a j.1 * (r * g j).1 = r.1 * (a j.1 * (extPt (H` using `fun i => ↥(B i)) p 1 g j.1).1) := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hj1, Subgroup.coe_mul, ← mul_assoc, ← mul_assoc, (hS j.1 j.2).comm _ (ha j.1) _ r.2]`. Rewrite using `[hx]`. Conclude with `this`. Introduce `k hk`. Use `(hinv n j.1 j.2 (fun i => a i * (extPt (H := fun i => ↥(B i)) p 1 g i).1)).2 k.1 (Subgroup.mem_subgroupOf.1 hk)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show q n _ = q n _`. Rewrite using `[hgj]`. Establish `hx : a j.1 * (g j * k).1 = (a j.1 * (extPt (H` using `fun i => ↥(B i)) p 1 g j.1).1) * k.1 := by`. Rewrite using `[hj1, Subgroup.coe_mul, mul_assoc]`. Rewrite using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `this`. Introduce `g _ hne`. Take `⟨β, hβ, hc⟩` from `hsupp n _ (hg1 g) hne`. Use `⟨β, hβ, fun j _ => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, a', ha', k, hk, e⟩` from `hc j.1 j.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs` using `hS j.1 j.2`. Establish `hbB : b n β j.1 ∈ B j.1` using `(hw n β hβ).2.1 j.1`. Establish `hkB : k ∈ B j.1` using `hs.le hk`. Establish `hgB : (g j).1 ∈ B j.1` using `(g j).2`. Simplify using `only at e`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[extPt_at]`. Take `⟨r₀, hr₀⟩ : ∃ r₀, r₀ = (g j).1 * k⁻¹ * (b n β j.1)⁻¹` from `⟨_, rfl⟩`. Establish `hr₀B : r₀ ∈ B j.1` using `hr₀ ▸ mul_mem (mul_mem hgB (inv_mem hkB)) (inv_mem hbB)`. Establish `hrr : r = (a j.1 * a'⁻¹) * r₀`. Establish `hc' : a'⁻¹ * r₀ = r₀ * a'⁻¹` using `hs.comm _ (inv_mem ha') _ hr₀B`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hr₀R : r₀ ∈ R j.1` using `(hs.split _ (mul_mem (ha j.1) (inv_mem ha')) _ hr₀B (by rw [← hrr]; exact hr)).2`. Use `⟨⟨r₀, hr₀B⟩, Subgroup.mem_subgroupOf.2 hr₀R, 1, Subgroup.one_mem _, ⟨k, hkB⟩, Subgroup.mem_subgroupOf.2 hk, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (g j).1 = r₀ * 1 * (bb n β j.1).1 * k`.
-
-Rewrite using `[hv β hβ, hr₀]`. Use `group`. Establish `hlin` using `(GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr (Subtype p) (fun j => B j.1) (fun j => (R j.1).subgroupOf (B j.1)) (fun j => ρ' j.1) (fun j => μ' j.1) l.attach 1).1 (Fin 2) Finset.univ α (fun n => ∑ β ∈ S n, w n β * q n (a * b n β)) qn (fun n _ => hcell n)`. Rewrite `hlin` using `[hrel a ha ha1]`. Establish `ht` using `niter_sub p ρ' μ' (fun bb : ∀ i, B i => ∑ n ∈ Finset.univ, α n * q n fun i => a i * (bb i).1) 1 l.attach 1 0 hlin`.
-
-Establish `e1 : extPt p (1 : ∀ i, B i) (1 : ∀ j : Subtype p, B j.1) = 1`. Use function extensionality and compare the values at `i`. Simplify using `[extPt]`. Rewrite `ht` using `[e1, List.attach_map_subtype_val]`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem cellVan_holds : CellVan := by
   intro ι _ H _ _ _ _ _ _ _ _ A B R K l hl hS ρ μ ρ' μ' hM X S b w q z α hw hdist hinv hsupp hz hrel

@@ -17,9 +17,9 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Use `⟨⟨fun i => res (a.le i) (pullU h _ (t.s (a.idx i)))⟩, fun i j => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `v : ∀ i, y ∈ A'.U i → gm (𝟙 Y') y _ (res (a.le i) (pullU h _ (t.s (a.idx i)))) = gm h y (A.U (a.idx i)) (t.s (a.idx i))` using `fun i hi => (gm_res (𝟙 Y') y (a.le i) hi _).trans ((gm_pull (𝟙 Y') h y _ (a.le i hi) _).trans (by rw [Category.id_comp]))`. Establish `hm : h y ∈ A.U (a.idx i) ⊓ A.U (a.idx j)` using `⟨a.le i hy.1, a.le j hy.2⟩`. Establish `e` using `congrArg (gm h y (A.U (a.idx i) ⊓ A.U (a.idx j))) (ht (a.idx i) (a.idx j))`. Establish `e'` using `(gm_res h y _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg (_ * ·) (gm_res h y _ hm _))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((gm_res (𝟙 Y') y _ hy _).trans (v i hy.1)).trans (e'.trans (Eq.symm ?_))` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (a.g y i j hy.1 hy.2) ((gm_res (𝟙 Y') y _ hy _).trans (v j hy.2)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_chartPull {Y Y' : Scheme.{0}} {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h)
     (t : LB.Gen A) (ht : t.IsGen) : ∃ t' : LB.Gen A', t'.IsGen := by
@@ -36,13 +36,13 @@ theorem exists_gen_of_chartPull {Y Y' : Scheme.{0}} {A' : LB Y'} {A : LB Y} {h :
     ((gm_res (𝟙 Y') y _ hy _).trans (v j hy.2)))
 
 /- English proof (translation)
-Introduce `hL V _ _ _ A G _ _ hG gen hgen`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `A.rigid`. Establish `e₁ : eSec ((Over.pullback (jK V)).obj G) ≫ gen.hom.left = eSec A.A`. Unfold `eSec`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Establish `e₂ : eSec ((Over.pullback (jK V)).obj G) ≫ jA V (FractionRing V) G = eK V (FractionRing V) G`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `eSec eK eSec`. Simplify using the standard rewrite rules. Rewrite using `[pullback.lift_fst, ← Category.assoc, ← pullback.condition, Category.comp_id]`. Take `⟨ρ, hρ⟩` from `exists_gen_of_chartPull (chartPullLinComb A.L gen.hom.left (K := PUnit) (fun _ => eSec ((Over.pullback (jK V)).obj G)) (fun _ => eSec A.A) (fun _ => 1) (𝟙 _) (fun _ => e₁.trans (Category.id_comp _).symm)) t ht`. Take `⟨L, φ, hφ⟩` from `hL.extend V (FractionRing V) G _ e₂ (A.L.pull gen.hom.left) (pull_isLB A.isLB _) ρ hρ`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨L, LBIso.symm ⟨φ, hφ⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem polarisation_extends : Laws → (∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (gen : (Over.pullback (jK V)).obj G ≅ A.A), IsMonHom gen.hom → ∃ L : RigLB G, LBIso (A.L.pull gen.hom.left) (L.L.pull (pullback.fst G.hom (jK V)))) := by
   intro hL V _ _ _ A G _ _ hG gen hgen

@@ -8,23 +8,19 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ X _ _ hX d hdim L B M hL hB hM hcls hineq`. Establish `hgen : ∀ᶠ n : ℕ in atTop, IsGenerated (lbPow B n)` using `by filter_upwards [hB.eventually_isGloballyGenerated_twist (LB.unitMod X)] with n hn`. Take `⟨ι, hι, φ, hφ⟩` from `hn`. Conclude with `(isGloballyGenerated_toMod_iff (isLB_lbPow hB.isLB n)).1 ⟨ι, hι, φ ≫ (unitTwistIso (X := X) (L := lbPow B n)).hom, epi_comp _ _⟩`. Take `⟨m, hmB, hm1⟩` from `(hgen.and (eventually_ge_atTop 1)).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLm : IsAmpleLB (lbPow L m)` using `(isAmpleLB_basic.2.1 hL.isLB hm1).2 hL`. Establish `hMm : (lbPow M m).IsLB` using `isLB_lbPow hM m`. Establish `hclsm : cls (lbPow L m) hLm.isLB = cls (lbPow M m) hMm + cls (lbPow B m) hmB.isLB`. Rewrite using `[CechPic.cls_lbPow hL.isLB m, CechPic.cls_lbPow hM m, CechPic.cls_lbPow hB.isLB m, hcls, smul_add]`. Establish `hv : DiffVanish (d + 1 + 1) (chiPic k (structureModule X))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `diffVanish_chiPic_of_isProjOver (f := strHom k X) (algebraMap_eq_strHom k X) _ hX` to reduce the goal to its premises. Unfold `QCoh.suppDim`. Conclude with `(topologicalKrullDim_subspace_le _ _).trans hdim`. Establish `hprod : (∏ _i : Fin (d + 1), (m : ℤ)) = (m : ℤ) ^ (d + 1)` using `by simp`. Establish `hP : ∀ i, ((Fin.cons B fun _ : Fin d => L : Fin (d + 1) → LB X) i).IsLB`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `hB.isLB`. Conclude with `hL.isLB`. Establish `hQ : ∀ i, ((Fin.cons (lbPow B m) fun _ : Fin d => lbPow L m : Fin (d + 1) → LB X) i).IsLB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `hmB.isLB`. Conclude with `hLm.isLB`. Establish `hI : interNum k (structureModule X) (Fin.cons (lbPow B m) fun _ : Fin d => lbPow L m : Fin (d + 1) → LB X) = (m : ℤ) ^ (d + 1) * interNum k (structureModule X) (Fin.cons B fun _ : Fin d => L : Fin (d + 1) → LB X)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hprod]`. Use `hv.interNum_of_cls_eq_zsmul hP hQ (fun _ => (m : ℤ)) ?_` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `(CechPic.cls_lbPow hB.isLB m _).trans (natCast_zsmul _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(CechPic.cls_lbPow hL.isLB m _).trans (natCast_zsmul _ _).symm`. Establish `hT : topSelfIntersection k (lbPow L m) (d + 1) = (m : ℤ) ^ (d + 1) * topSelfIntersection k L (d + 1)`. Rewrite using `[topSelf_def, topSelf_def, ← hprod]`. Conclude with `hv.interNum_of_cls_eq_zsmul (fun _ => hL.isLB) (fun _ => hLm.isLB) (fun _ => (m : ℤ)) (fun _ => (CechPic.cls_lbPow hL.isLB m _).trans (natCast_zsmul _ _).symm)`. Establish `hpos : (0 : ℤ) < (m : ℤ) ^ (d + 1)` using `pow_pos (by exact_mod_cast hm1) _`.
-
-Establish `hineqm : ((d : ℤ) + 1) * interNum k (structureModule X) (Fin.cons (lbPow B m) fun _ : Fin d => lbPow L m : Fin (d + 1) → LB X) < topSelfIntersection k (lbPow L m) (d + 1)`. Rewrite using `[hI, hT, mul_left_comm]`. Conclude with `mul_lt_mul_of_pos_left hineq hpos`. Take `⟨r, hr, hs⟩` from `T.algebraic_morse_exists_section_ample_sub_generated k X hX d hdim (lbPow L m) (lbPow B m) (lbPow M m) hLm hmB hMm hclsm hineqm`. Use `⟨m * r, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)), ?_⟩` and prove the remaining obligations.
-
-Use `hs.of_cls_eq (isLB_lbPow hM (m * r)) (isLB_lbPow hMm r) ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_lbPow hM (m * r), CechPic.cls_lbPow hMm r, CechPic.cls_lbPow hM m, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hasNonzeroSec_pow_of_ample_sub_ample : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [IsIntegral X] [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ d : ℕ, topologicalKrullDim X ≤ (d + 1 : ℕ) → ∀ (L B M : LB X) (hL : IsAmpleLB L) (hB : IsAmpleLB B) (hM : M.IsLB), cls L hL.isLB = cls M hM + cls B hB.isLB → ((d : ℤ) + 1) * interNum k (GlobalTheory.structureModule X) (Fin.cons B (fun _ : Fin d => L) : Fin (d + 1) → LB X) < topSelfIntersection k L (d + 1) → ∃ r, 1 ≤ r ∧ HasNonzeroSec (lbPow M r) := by
   intro k _ _ X _ _ hX d hdim L B M hL hB hM hcls hineq

@@ -19,7 +19,7 @@ section Cells
 variable {K : Type} [Fintype K] [LinearOrder K] {ι : K → Type} [∀ k, LinearOrder (ι k)]
 
 /- English proof (translation)
-Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `Finset.erase_subset _ _`. Rewrite using `[Function.update_of_ne hl]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem face_subset (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) (l : K) :
     Function.update I k ((I k).erase i) l ⊆ I l := by
@@ -30,7 +30,7 @@ theorem face_subset (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) (l : K) :
   · rw [Function.update_of_ne hl]
 
 /- English proof (translation)
-Unfold `constD`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [map_zsmul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_constD {V W : Type} [AddCommGroup V] [AddCommGroup W] (g : V →+ W) (n : ℕ)
     (f : Cell K ι n → V) (I : Cell K ι (n + 1)) :
@@ -41,7 +41,7 @@ theorem map_constD {V W : Type} [AddCommGroup V] [AddCommGroup W] (g : V →+ W)
   split_ifs <;> simp [map_zsmul]
 
 /- English proof (translation)
-Unfold `constD`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Conclude with `congrArg _ (h _ fun l => (face_subset I.1 k i l).trans (hI l))`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem constD_congr {V : Type} [AddCommGroup V] (G : ∀ k, Finset (ι k)) (n : ℕ) {f f' : Cell K ι n → V}
     (h : ∀ J : Cell K ι n, (∀ k, J.1 k ⊆ G k) → f J = f' J) (I : Cell K ι (n + 1)) (hI : ∀ k, I.1 k ⊆ G k) :
@@ -55,7 +55,7 @@ theorem constD_congr {V : Type} [AddCommGroup V] (G : ∀ k, Finset (ι k)) (n :
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Apply `Submonoid.closure_mono` to reduce the goal to its premises. Introduce and unpack `f ⟨k, i, hi, rfl⟩`. Conclude with `⟨k, i, h k hi, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cellMon_mono {J I : ∀ k, Finset (ι k)} (h : ∀ k, J k ⊆ I k) : cellMon S J ≤ cellMon S I := by
   apply Submonoid.closure_mono
@@ -63,7 +63,7 @@ theorem cellMon_mono {J I : ∀ k, Finset (ι k)} (h : ∀ k, J k ⊆ I k) : cel
   exact ⟨k, i, h k hi, rfl⟩
 
 /- English proof (translation)
-Unfold `cellRes`. Rewrite using `[dif_pos h, IsLocalizedModule.mk_eq_mk', IsLocalizedModule.liftOfLE_mk', ← IsLocalizedModule.mk_eq_mk']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellRes_mk {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] {J I : ∀ k, Finset (ι k)}
     (h : cellMon S J ≤ cellMon S I) (m : M) (t : cellMon S J) :
@@ -74,7 +74,7 @@ theorem cellRes_mk {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] {J I 
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [cechD, LinearMap.pi_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cechD_apply {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] (n : ℕ) (f : CechC S ι M n)
     (I : Cell K ι (n + 1)) :
@@ -95,13 +95,13 @@ variable {F : Type} [Field F] {K : Type} [Fintype K] [LinearOrder K] {ι : K →
   [∀ k, LinearOrder (ι k)] {Ω : Type} [Field Ω] [Algebra F Ω] {y : (Σ k, ι k) → Ω}
 
 /- English proof (translation)
-Establish `hX : (X ⟨k, i⟩ : MRingOver F ι) ∈ cellMon F I` using `Submonoid.subset_closure ⟨k, i, hi, rfl⟩`. Establish `hmem : (X ⟨k, i⟩ : MRingOver F ι) ∈ mIdealOver F y`. Simplify using `[mIdealOver, mConeMapOver, RingHom.mem_ker, hy]`. Establish `hz : ∀ w : MRingOver F ι ⧸ mIdealOver F y, (X ⟨k, i⟩ : MRingOver F ι) • w = 0`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ hmem`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using LocalizedModule.induction_on with`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `h m t`. Proceed by induction on `b using LocalizedModule.induction_on with`. Consider the case `h m' t'`. Rewrite using `[LocalizedModule.mk_eq]`. Use `⟨⟨_, hX⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submonoid.smul_def]`. Rewrite using `[hz, hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_bad {I : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ I k) (hy : y ⟨k, i⟩ = 0) :
     Subsingleton (LocalizedModule (cellMon F I) (MRingOver F ι ⧸ mIdealOver F y)) := by
@@ -124,7 +124,7 @@ theorem subsingleton_of_bad {I : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : 
       rw [hz, hz]
 
 /- English proof (translation)
-Distinguish the cases in `h : cellMon F J ≤ cellMon F I`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t => rw [LocalizedModule.smul'_mk, cellRes_mk h, cellRes_mk h, LocalizedModule.smul'_mk]`. Unfold `cellRes`. Rewrite using `[dif_neg h]`.
+Consider separately whether the proposition holds or fails. Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -139,11 +139,9 @@ theorem cellRes_smul {J I : ∀ k, Finset (ι k)} (s : F)
     simp
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`. Rewrite using `[cellRes_mk h]`. Conclude with `Submodule.subset_span ⟨m, ⟨t.1, h t.2⟩, a, ht, hm, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x₁ x₂ _ _ h₁ h₂ => rw [map_add]`. Conclude with `add_mem h₁ h₂`. Consider the case `smul s x _ h' => rw [cellRes_smul]`.
-
-Conclude with `Submodule.smul_mem _ s h'`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cellRes_mem_locPart {J I : ∀ k, Finset (ι k)} (h : cellMon F J ≤ cellMon F I) (β : K → ℤ)
     {x : LocalizedModule (cellMon F J) (MRingOver F ι ⧸ mIdealOver F y)}
@@ -159,9 +157,7 @@ theorem cellRes_mem_locPart {J I : ∀ k, Finset (ι k)} (h : cellMon F J ≤ ce
   | smul s x _ h' => rw [cellRes_smul]; exact Submodule.smul_mem _ s h'
 
 /- English proof (translation)
-Rewrite using `[cechD_apply]`. Use `Submodule.sum_mem _ fun k _ => Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Establish `hJ : f ⟨Function.update I.1 k ((I.1 k).erase i), hc⟩ ∈ locPart ι (quotPart F (mIdealOver F y)) (cellMon F (Function.update I.1 k ((I.1 k).erase i))) β` using `Submodule.mem_pi.mp hf ⟨Function.update I.1 k ((I.1 k).erase i), hc⟩ (Set.mem_univ _)`. Establish `hm` using `cellRes_mem_locPart (J := Function.update I.1 k ((I.1 k).erase i)) (I := I.1) (cellMon_mono (face_subset I.1 k i)) β hJ`.
-
-Conclude with `zsmul_mem hm _`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cechD_mem_locPart (β : K → ℤ) (n : ℕ) {f : CechC F ι (MRingOver F ι ⧸ mIdealOver F y) n}
     (hf : f ∈ cechCc ι (quotPart F (mIdealOver F y)) β n) (I : Cell K ι (n + 1)) :
@@ -180,37 +176,33 @@ theorem cechD_mem_locPart (β : K → ℤ) (n : ℕ) {f : CechC F ι (MRingOver 
 end Point
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ _ Ω _ _ y hfield β`. Take `⟨V, φ, hφ⟩` from `h₂ F K ι Ω y hfield β`. Set `G : ∀ k, Finset (ι k)` to `fun k => Finset.univ.filter fun i => y ⟨k, i⟩ ≠ 0`. Establish `hG : ∀ I : ∀ k, Finset (ι k), (∀ k, I k ⊆ G k) ↔ ∀ k, ∀ i ∈ I k, y ⟨k, i⟩ ≠ 0`. Introduce `I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[G, Finset.subset_iff]`. Establish `hbad : ∀ I : ∀ k, Finset (ι k), ¬ (∀ k, I k ⊆ G k) → Subsingleton (LocalizedModule (cellMon F I) (MRingOver F ι ⧸ mIdealOver F y))`. Introduce `I hI`. Rewrite `hI` using `[hG]`. Use `push Not at hI`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, i, hi, hy⟩` from `hI`. Conclude with `subsingleton_of_bad hi hy`. Establish `hres : ∀ J I : ∀ k, Finset (ι k), (∀ k, J k ⊆ I k) → (∀ k, (J k).Nonempty) → (∀ k, I k ⊆ G k) → ∀ x, φ I (cellRes F _ J I x) = φ J x`. Introduce `J I hJI hJ hI x`. Establish `hIg` using `(hG I).mp hI`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJg` using `(hG J).mp fun k => (hJI k).trans (hI k)`. Establish `hIn : ∀ k, (I k).Nonempty` using `fun k => (hJ k).mono (hJI k)`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective m`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cellRes_mk (cellMon_mono hJI), (hφ I hIn hIg).1, (hφ J hJ hJg).1]`. Establish `hdiff : ∀ (n : ℕ) (x : CechC F ι (MRingOver F ι ⧸ mIdealOver F y) n) (I : Cell K ι (n + 1)), (∀ k, I.1 k ⊆ G k) → φ I.1 (cechD F ι _ n x I) = constD K ι Ω n (fun J => φ J.1 (x J)) I`. Introduce `n x I hI`. Rewrite using `[cechD_apply]`. Simplify using `only [constD, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Rewrite using `[map_zsmul, hres _ _ (face_subset I.1 k i) hc.1 hI]`. Simplify using the standard rewrite rules. Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨z, hz⟩ -`. Take `⟨hzC, hzK⟩` from `Submodule.mem_inf.mp hz`. Establish `hzK' : cechD F ι _ 1 z = 0` using `hzK`. Establish `hzC' : ∀ J : Cell K ι 1, z J ∈ locPart ι (quotPart F (mIdealOver F y)) (cellMon F J.1) β` using `fun J => Submodule.mem_pi.mp hzC J (Set.mem_univ _)`. Set `zh : Cell K ι 1 → V` to `fun J => if hJ : ∀ k, J.1 k ⊆ G k then ⟨φ J.1 (z J), by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← (hφ J.1 J.2.1 ((hG _).mp hJ)).2.2]`. Conclude with `Submodule.mem_map_of_mem (hzC' J)⟩ else 0`. Establish `hzh : ∀ J : Cell K ι 1, (∀ k, J.1 k ⊆ G k) → ((zh J : V) : Ω) = φ J.1 (z J)`. Introduce `J hJ`. Simplify using `only [zh, dif_pos hJ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hcoc : ∀ I : Cell K ι 2, (∀ k, I.1 k ⊆ G k) → constD K ι V 1 zh I = 0`. Introduce `I hI`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `map_constD V.subtype.toAddMonoidHom 1 zh I`. Simplify using `only [LinearMap.toAddMonoidHom_coe, Submodule.coe_subtype] at e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e, constD_congr G 1 hzh I hI, ← hdiff 1 z I hI, hzK']`. Simplify using the standard rewrite rules. Take `⟨fh, hfh⟩` from `h₁ K ι V G zh hcoc`. Establish `hlift : ∀ c : Cell K ι 0, (∀ k, c.1 k ⊆ G k) → ∃ w ∈ locPart ι (quotPart F (mIdealOver F y)) (cellMon F c.1) β, φ c.1 w = fh c`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h : ((fh c : V) : Ω) ∈ (locPart ι (quotPart F (mIdealOver F y)) (cellMon F c.1) β).map (φ c.1)`. Rewrite using `[(hφ c.1 c.2.1 ((hG _).mp hc)).2.2]`. Conclude with `(fh c).2`. Conclude with `Submodule.mem_map.mp h`. Set `f : CechC F ι (MRingOver F ι ⧸ mIdealOver F y) 0` to `fun c => if hc : ∀ k, c.1 k ⊆ G k then (hlift c hc).choose else 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfC : f ∈ cechCc ι (quotPart F (mIdealOver F y)) β 0`. Use `Submodule.mem_pi.mpr fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : ∀ k, c.1 k ⊆ G k`. Simplify using `only [f, dif_pos hc]`. Conclude with `(hlift c hc).choose_spec.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [f, dif_neg hc]`. Conclude with `Submodule.zero_mem _`. Establish `hfφ : ∀ c : Cell K ι 0, (∀ k, c.1 k ⊆ G k) → φ c.1 (f c) = ((fh c : V) : Ω)`. Introduce `c hc`. Simplify using `only [f, dif_pos hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hlift c hc).choose_spec.2`. Establish `hfz : cechD F ι _ 0 f = z`. Use function extensionality and compare the values at `J`. Distinguish the cases in `hJ : ∀ k, J.1 k ⊆ G k`. Use `(hφ J.1 J.2.1 ((hG _).mp hJ)).2.1 (cechD_mem_locPart β 0 hfC J) (hzC' J) ?_` and prove the remaining obligations.
-
-Establish `e` using `map_constD V.subtype.toAddMonoidHom 0 fh J`. Simplify using `only [LinearMap.toAddMonoidHom_coe, Submodule.coe_subtype] at e`. Rewrite using `[hdiff 0 f J hJ, constD_congr G 0 hfφ J hJ, ← e, hfh J hJ, hzh J hJ]`. Use `hbad J.1 hJ` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
-
-Use `show z ∈ (cechCc ι (quotPart F (mIdealOver F y)) β 0).map ((cechD F ι _ 0).restrictScalars F)`. Conclude with `⟨f, hfC, hfz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proof (h₁ : CechConstVanish.Statement) (h₂ : CechPointEval.Statement) : CechPointVanish.Statement := by
   intro F _ K _ _ ι _ _ Ω _ _ y hfield β

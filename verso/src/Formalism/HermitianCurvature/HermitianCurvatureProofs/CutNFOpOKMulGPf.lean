@@ -33,9 +33,9 @@ def mulTerm (c : B.Mat k r → ℝ) (T : B.DTerm k r Wp Wq) : B.DTerm k r Wp Wq 
 def mulOpG (c : B.Mat k r → ℝ) (Th : B.DiffOp k r Wp Wq) : B.DiffOp k r Wp Wq := Th.map (mulTerm c)
 
 /- English proof (translation)
-Unfold `mulOpG B.opApply`. Proceed by induction on `Th with`. Consider the case `nil => simp`. Consider the case `cons T Th ih`. Simplify using `only [List.map_cons, List.sum_cons, smul_add]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ih]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem mulOpG_apply (c : B.Mat k r → ℝ) (Th : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp))
     (g : B.Mat k r) : B.opApply (mulOpG c Th) F g = ((c g : ℝ) : ℂ) • B.opApply Th F g := by
@@ -48,7 +48,7 @@ theorem mulOpG_apply (c : B.Mat k r → ℝ) (Th : B.DiffOp k r Wp Wq) (F : B.Ma
     congr 1
 
 /- English proof (translation)
-Unfold `B.opOrder mulOpG`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulOpG_order (c : B.Mat k r → ℝ) (Th : B.DiffOp k r Wp Wq) : B.opOrder (mulOpG c Th) = B.opOrder Th := by
   unfold B.opOrder mulOpG
@@ -60,9 +60,9 @@ def lcomp : ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) →L[ℂ]
   ContinuousLinearMap.compL ℂ (Wq →L[ℂ] Wp) (Wq →L[ℂ] Wp) (Wq →L[ℂ] Wp)
 
 /- English proof (translation)
-Unfold `B.CkOn at hf ⊢`. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hg, hf', ef⟩` from `hf g₀ hg₀`. Use `⟨U, fun g => L (f' g), hU, hg, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((L.restrictScalars ℝ).contDiff.comp_contDiffOn hf').congr (fun g _ => rfl)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hgU hgG show L (f g) = L (f' g)`. Rewrite using `[ef g hgU hgG]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ckOn_clm {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
     {m : ℕ∞} {UU : Set (B.Mat k r)} (L : E →L[ℂ] F) {f : B.Mat k r → E} (hf : B.CkOn m UU f) :
@@ -77,9 +77,9 @@ theorem ckOn_clm {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [Norme
     rw [ef g hgU hgG]
 
 /- English proof (translation)
-Unfold `B.CkOn at ha hf ⊢`. Introduce `g₀ hg₀`. Take `⟨U₁, a', hU₁, hg₁, ha', ea⟩` from `ha g₀ hg₀`. Take `⟨U₂, f', hU₂, hg₂, hf', ef⟩` from `hf g₀ hg₀`. Use `⟨U₁ ∩ U₂, fun g => a' g (f' g), hU₁.inter hU₂, ⟨hg₁, hg₂⟩, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ContDiffOn ℝ m (fun g => (a' g).restrictScalars ℝ) (U₁ ∩ U₂)` using `(ContinuousLinearMap.restrictScalarsL ℂ E F ℝ ℝ).contDiff.comp_contDiffOn (ha'.mono Set.inter_subset_left)`. Conclude with `h1.clm_apply (hf'.mono Set.inter_subset_right)`. Introduce `g hg hgG show a g (f g) = a' g (f' g)`. Rewrite using `[ea g hg.1 hgG, ef g hg.2 hgG]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ckOn_apply {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
     {m : ℕ∞} {UU : Set (B.Mat k r)} {a : B.Mat k r → (E →L[ℂ] F)} {f : B.Mat k r → E} (ha : B.CkOn m UU a)
@@ -98,7 +98,7 @@ theorem ckOn_apply {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [Nor
     rw [ea g hg.1 hgG, ef g hg.2 hgG]
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _, _, _ => rfl | x :: w, hw, f, hf, g, hg => by have hw' : ∀ y ∈ w, B.inLie k r y.2 := fun y hy => hw y (by simp [hy]) have hx : B.inLie k r x.2 := hw x (by simp) show Dx x (Dw w (fun h => L (f h))) g = L (Dx x (Dw w f) g) rw [Dx_congr hx (Dw_clm L w hw' hf) g hg] hav …`.
+A detailed English derivation is pending.
 -/
 theorem Dw_clm {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
     (L : E →L[ℂ] F) : ∀ (w : List (Bool × B.Mat k r)), (∀ x ∈ w, B.inLie k r x.2) →
@@ -119,19 +119,19 @@ theorem Dw_clm {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedA
     exact h2.deriv
 
 /- English proof (translation)
-Establish `hg1 : 1 ≤ B.gN g` using `gN_ge_one hg`. Establish `hg0 : 0 < B.gN g` using `lt_of_lt_of_le one_pos hg1`. Establish `hlie` using `lie_LR (fun X hX => (hu X hX).1) (fun X hX => (hw X hX).1)`. Establish `ha : B.CkOn ⊤ (B.GV k r) (fun x => lcomp (Wp` using `Wp) (Wq := Wq) (A x)) := ckOn_clm lcomp hA`. Establish `hap : (fun x => (A x).comp (Φ x)) = ap (fun x => lcomp (Wp` using `Wp) (Wq := Wq) (A x)) Φ := rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hap, dLR_eq]`. Establish `hPr : Pr ∅ (B.GV k r) ((wL u ++ wR w).length : ℕ∞) (fun x => lcomp (Wp` using `Wp) (Wq := Wq) (A x)) Φ := ⟨sCkOn_mono le_top ha, sCkOn_mono le_top hΦ, fun _ _ h => h.elim⟩`. Establish `hM : ∀ w₁ w₂ : List (Bool × B.Mat k r), w₁.Sublist (wL u ++ wR w) → w₂.Sublist (wL u ++ wR w) → w₁.length + w₂.length = (wL u ++ wR w).length → ‖Dw w₁ (fun x => lcomp (Wp` using `Wp) (Wq := Wq) (A x)) g‖ * ‖Dw w₂ Φ g‖ ≤ (‖lcomp (Wp := Wp) (Wq := Wq)‖ * (max Ca 0 * B.gN g ^ κ)) * (max Cb 0 * B.gN g ^ d) := by`. Introduce `w₁ w₂ h₁ h₂ _`. Take `⟨u₁, v₁, hu₁, hv₁, rfl⟩` from `sub_LR h₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u₂, v₂, hu₂, hv₂, rfl⟩` from `sub_LR h₂`. Establish `hl1 : u₁.length + v₁.length ≤ m`. Use `hu₁.length_le` as an intermediate fact. Use `hv₁.length_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hl2 : u₂.length + v₂.length ≤ m`. Use `hu₂.length_le` as an intermediate fact. Use `hv₂.length_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ea : Dw (wL u₁ ++ wR v₁) (fun x => lcomp (Wp` using `Wp) (Wq := Wq) (A x)) g = lcomp (Dw (wL u₁ ++ wR v₁) A g) := Dw_clm lcomp _ (lie_LR (fun X hX => (hu X (hu₁.subset hX)).1) (fun X hX => (hw X (hv₁.subset hX)).1)) hA g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `b1 : ‖Dw (wL u₁ ++ wR v₁) (fun x => lcomp (Wp` using `Wp) (Wq := Wq) (A x)) g‖ ≤ ‖lcomp (Wp := Wp) (Wq := Wq)‖ * (max Ca 0 * B.gN g ^ κ) := by`. Rewrite using `[ea]`. Use `(ContinuousLinearMap.le_opNorm _ _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Rewrite using `[← dLR_eq]`. Conclude with `(hCa u₁ v₁ (fun X hX => hu X (hu₁.subset hX)) (fun X hX => hw X (hv₁.subset hX)) hl1 g hg).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hg0.le _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b2 : ‖Dw (wL u₂ ++ wR v₂) Φ g‖ ≤ max Cb 0 * B.gN g ^ d`. Rewrite using `[← dLR_eq]`. Conclude with `(hCb u₂ v₂ (fun X hX => hu X (hu₂.subset hX)) (fun X hX => hw X (hv₂.subset hX)) hl2 g hg).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hg0.le _))`. Conclude with `mul_le_mul b1 b2 (norm_nonneg _) (by positivity)`. Establish `hb` using `leib_bound isOpen_empty (fun g hg => Or.inr hg) g hg _ (wL u ++ wR w) _ Φ hlie hPr hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlen : (wL u ++ wR w).length ≤ m` using `by simp [wL, wR]; omega`. Establish `h2 : (2 : ℝ) ^ (wL u ++ wR w).length ≤ 2 ^ m` using `pow_le_pow_right₀ (by norm_num) hlen`. Rewrite using `[Real.rpow_add hg0]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem comp_bound {A Φ : B.Mat k r → ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp))}
     (hA : B.CkOn ⊤ (B.GV k r) A) (hΦ : B.CkOn ⊤ (B.GV k r) Φ) (m : ℕ) (Ca Cb κ d : ℝ)
@@ -189,7 +189,7 @@ theorem comp_bound {A Φ : B.Mat k r → ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[�
     _ = 2 ^ m * ‖lcomp (Wp := Wp) (Wq := Wq)‖ * max Ca 0 * max Cb 0 * (B.gN g ^ κ * B.gN g ^ d) := by ring
 
 /- English proof (translation)
-Use extensionality with `A x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_eq_comp (z : ℂ) (Φ : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) :
     z • Φ = (z • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)).comp Φ := by
@@ -199,13 +199,11 @@ theorem smul_eq_comp (z : ℂ) (Φ : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] W
 end term
 
 /- English proof (translation)
-Unfold `CutMP.nDim`. Establish `e : (((2 * P.r + 2) * N : ℕ) : ℝ) = (2 * (P.r : ℝ) + 2) * N` using `by push_cast; ring`. Rewrite using `[e]`. Use `set n := ((2 * P.r + P.k + 1 : ℕ) : ℝ) with hn_def`. Establish `hn : 1 ≤ n`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn_def]`. Conclude with `(by omega : 1 ≤ 2 * P.r + P.k + 1)` after adjusting the coercions. Establish `hr : (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg _`. Establish `hX : 0 ≤ ((P.r : ℝ) + 1) * n * ((N : ℝ) + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `: 0 ≤ n` using `by linarith`. Check the signs of the components of the expression. Establish `h1 : C * (((P.r : ℝ) + 1) * n * ((N : ℝ) + 1)) ≤ max C 0 * (((P.r : ℝ) + 1) * n * ((N : ℝ) + 1))` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hX`. Establish `h2 : 1 * ((N : ℝ) + 1) ≤ n * ((N : ℝ) + 1)` using `mul_le_mul_of_nonneg_right hn (by positivity)`. Establish `h3 : ((P.r : ℝ) + 1) * N ≤ ((P.r : ℝ) + 1) * (n * ((N : ℝ) + 1))` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`.
-
-Combine the linear relations using `[h1, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem deg_le (C : ℝ) (P : M.Par) (N : ℕ) :
     (((2 * P.r + 2) * N : ℕ) : ℝ) + C * ((P.r : ℝ) + 1) * CutMP.nDim P.k P.r * ((N : ℝ) + 1) ≤
@@ -234,35 +232,29 @@ def gpow {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ)
 
 /- English proof (translation)
-Introduce `C`. Use `⟨max C 0 + 2, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p N Th hTh`. Take `⟨hS, hCm, hG, hO⟩` from `hTh`. Establish `hpoly : U.IsPolyDeg ((2 * P.r + 2) * N) (gpow p N)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `nf_isPolyDeg_pow (Formalism.FourierDecayAlt.P.gram_function_polynomial P.k P.r p.T.base.z p.T.base.z') N`. Use `⟨h.choose, h.choose_spec.1, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← h.choose_spec.2 g]`. Unfold `gpow`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Take `⟨hsA, hgA, -⟩` from `CutMP.polynomial_decay_admissible P.k P.r Wp Wq 0 ((2 * P.r + 2) * N) (nfMulOp (Wp := Wp) (Wq := Wq) (gpow p N)) (nfMulOp_poly hpoly)`. Establish `hlen0 : 0 < (nfMulOp (Wp` using `Wp) (Wq := Wq) (gpow p N)).length := by simp [nfMulOp]`. Establish `hT0` using `List.getElem_mem hlen0`. Establish `hT0c : ((nfMulOp (Wp` using `Wp) (Wq := Wq) (gpow p N))[0]'hlen0).coef = fun g => gpow p N g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp) := rfl`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA_ck : ∀ UU : Set (B.Mat P.k P.r), B.CkOn ⊤ UU (fun g => gpow p N g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp))`. Introduce `UU`. Rewrite using `[← hT0c]`. Conclude with `((hsA UU) _ hT0).1`. Establish `hA_glob` using `((hgA (((2 * P.r + 2) * N : ℕ) : ℝ) le_rfl) _ hT0).2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA_glob` using `[hT0c]`. Establish `hcoef : ∀ (X : B.Mat P.k P.r → ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp))), (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ) • X g) = fun g => (gpow p N g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)).comp (X g)`. Introduce `X`. Use function extensionality and compare the values at `g`. Conclude with `smul_eq_comp _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨mulOpG (fun g => Gf P.k P.r p.T.base.z p.T.base.z' g ^ N) Th, ⟨?_, ?_, ?_, ?_⟩, fun F g => mulOpG_apply _ Th F g⟩` and prove the remaining obligations. Introduce `T' hT'`. Take `⟨T, hT, rfl⟩` from `List.mem_map.1 hT'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show B.CkOn ⊤ _ (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ) • T.coef g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcoef]`. Conclude with `ckOn_apply (ckOn_clm lcomp (hA_ck _)) (hS T hT).1`. Use `show B.CkOn ⊤ _ (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ) • T.coefAdj g)`. Rewrite using `[hcoef]`. Conclude with `ckOn_apply (ckOn_clm lcomp (hA_ck _)) (hS T hT).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce `pp hpp f hf g hg`. Rewrite `hf` using `[mulOpG_order]`. Establish `hfun : B.opApply (mulOpG (fun g => Gf P.k P.r p.T.base.z p.T.base.z' g ^ N) Th) f = fun x => ((Gf P.k P.r p.T.base.z p.T.base.z' x ^ N : ℝ) : ℂ) • B.opApply Th f x`. Use function extensionality and compare the values at `(mulOpG_apply _ Th f)`. Rewrite using `[mulOpG_apply, hCm pp hpp f hf g hg, hfun]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `B.rho`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, TBBx2.Gf_sgs p.T.base pp hpp g]`. Introduce `T' hT'`. Take `⟨T, hT, rfl⟩` from `List.mem_map.1 hT'`. Take `⟨hTc, hTa, hTb⟩` from `hG T hT`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, fun m => ?_⟩` and prove the remaining obligations. Use `show B.CkOn ⊤ _ (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ) • T.coef g)`. Rewrite using `[hcoef]`. Conclude with `ckOn_apply (ckOn_clm lcomp (hA_ck _)) hTc`. Use `show B.CkOn ⊤ _ (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ) • T.coefAdj g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hcoef]`. Conclude with `ckOn_apply (ckOn_clm lcomp (hA_ck _)) hTa`. Take `⟨Ca, hCa⟩` from `hA_glob m`. Take `⟨Cb, hCb⟩` from `hTb m`. Use `⟨2 ^ m * ‖lcomp (Wp := Wp) (Wq := Wq)‖ * max Ca 0 * max Cb 0, fun u w hu hw hl g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1 : 1 ≤ B.gN g` using `gN_ge_one hg`. Establish `hdeg` using `deg_le C P N`. Establish `hpow : B.gN g ^ ((((2 * P.r + 2) * N : ℕ) : ℝ) + C * ((P.r : ℝ) + 1) * CutMP.nDim P.k P.r * ((N : ℝ) + 1)) ≤ B.gN g ^ ((max C 0 + 2) * ((P.r : ℝ) + 1) * CutMP.nDim P.k P.r * ((N : ℝ) + 1))` using `Real.rpow_le_rpow_of_exponent_le hg1 hdeg`. Establish `hK : 0 ≤ 2 ^ m * ‖lcomp (Wp` using `Wp) (Wq := Wq)‖ * max Ca 0 * max Cb 0 := by positivity`. Prove the components needed by the constructor for the conclusion.
-
-Use `show ‖B.dLR u w (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ) • T.coef g) g‖ ≤ _`. Rewrite using `[hcoef]`. Conclude with `(comp_bound (hA_ck _) hTc m Ca Cb _ _ (fun u w hu hw hl g hg => (hCa u w hu hw hl g hg).1) (fun u w hu hw hl g hg => (hCb u w hu hw hl g hg).1) u w hu hw hl g hg).trans (mul_le_mul_of_nonneg_left hpow hK)`. Use `show ‖B.dLR u w (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ) • T.coefAdj g) g‖ ≤ _`. Rewrite using `[hcoef]`.
-
-Conclude with `(comp_bound (hA_ck _) hTa m Ca Cb _ _ (fun u w hu hw hl g hg => (hCa u w hu hw hl g hg).1) (fun u w hu hw hl g hg => (hCb u w hu hw hl g hg).2) u w hu hw hl g hg).trans (mul_le_mul_of_nonneg_left hpow hK)`. Rewrite using `[mulOpG_order]`. Establish `h1 : C * CutMP.nDim P.k P.r * ((N : ℝ) + 1) ≤ (max C 0 + 2) * CutMP.nDim P.k P.r * ((N : ℝ) + 1)`. Establish `hn : (0 : ℝ) ≤ CutMP.nDim P.k P.r` using `by unfold CutMP.nDim; positivity`. Establish `hN : (0 : ℝ) ≤ (N : ℝ) + 1` using `by positivity`.
-
-Establish `: C ≤ max C 0 + 2` using `by have := le_max_left C 0; linarith`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right this hn) hN`. Conclude with `hO.trans h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem operator_multiplication_admissible : NFOpOKMulG := by
   intro C

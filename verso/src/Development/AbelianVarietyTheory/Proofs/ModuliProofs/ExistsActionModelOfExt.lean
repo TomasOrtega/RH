@@ -19,11 +19,11 @@ open GlobalTheory.Models
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hone : r 1 = 𝟙 X`. Use `hj 1 _ _ (hrl 1) h1 ?_` and prove the remaining obligations. Rewrite using `[hr 1, map_one, Category.comp_id]`. Conclude with `Category.id_comp j`. Establish `hmul : ∀ g h, r (g * h) = r h ≫ r g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h`. Use `hj (g * h) _ _ (hrl _) (hml g h) ?_` and prove the remaining obligations. Establish `hm : ∀ a b : Aut U, (a * b).hom = b.hom ≫ a.hom` using `fun _ _ => rfl`. Rewrite using `[hr (g * h), map_mul, hm, Category.assoc, reassoc_of% (hr h), hr g]`. Establish `hinv : ∀ g, r g ≫ r g⁻¹ = 𝟙 X ∧ r g⁻¹ ≫ r g = 𝟙 X` using `fun g => ⟨by rw [← hmul, inv_mul_cancel, hone], by rw [← hmul, mul_inv_cancel, hone]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨{ toFun := fun g => ⟨r g, r g⁻¹, (hinv g).1, (hinv g).2⟩ map_one' := Aut.ext hone map_mul' := fun g h => Aut.ext (hmul g h) }, fun g => rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_monoidHom_aut_of_lies {𝒞 : Type*} [Category 𝒞] {U X : 𝒞} (j : U ⟶ X)
     {Γ : Type} [Group Γ] (ρ₀ : Γ →* Aut U) (r : Γ → (X ⟶ X)) (hr : ∀ g, j ≫ r g = (ρ₀ g).hom ≫ j)
@@ -47,7 +47,7 @@ private theorem exists_monoidHom_aut_of_lies {𝒞 : Type*} [Category 𝒞] {U X
            map_mul' := fun g h => Aut.ext (hmul g h) }, fun g => rfl⟩
 
 /- English proof (translation)
-The claim follows from `exists_monoidHom_aut_of_lies j ρ₀ r hr (fun _ _ => True) trivial (fun _ => trivial) (fun _ _ => trivial) (fun _ a b _ _ h => hj a b h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_action_of_extends {U X : Scheme.{0}} (j : U ⟶ X) (hj : ∀ a b : X ⟶ X, j ≫ a = j ≫ b → a = b)
     {Γ : Type} [Group Γ] (ρ₀ : Γ →* Aut U) (r : Γ → (X ⟶ X)) (hr : ∀ g, j ≫ r g = (ρ₀ g).hom ≫ j) :
@@ -56,23 +56,19 @@ theorem exists_action_of_extends {U X : Scheme.{0}} (j : U ⟶ X) (hj : ∀ a b 
     (fun _ a b _ _ h => hj a b h)
 
 /- English proof (translation)
-Take `⟨⟨_, _⟩, _, hfr⟩` from `hβ`. Set `_ : Algebra O F` to `β.toAlgebra`. Establish `: IsFractionRing O F` using `hfr`. Take `⟨hnoeth, _, hsep, hpre, hflat, hdom, hqc⟩` from `genericPart_dense_proOpen O F C.X U C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense`. Use `hnoeth` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hsep` as an intermediate fact. Establish `: QuasiCompact C.j` using `hqc`. Establish `: IsReduced C.X`. Establish `: ∀ x : C.X, _root_.IsReduced (C.X.presheaf.stalk x)` using `fun x => by`. Use `(C.normal x).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk _`. Take `⟨-, -, hsd, -⟩` from `densePart_basic C.X U C.j hpre hflat hdom hqc`. Establish `: IsSchemeTheoreticallyDominant C.j` using `hsd ‹_›`. Establish `hj1 : ∀ a b : C.X ⟶ C.X, C.j ≫ a = C.j ≫ b → a = b` using `fun a b h => ExtUnique.hom_ext_of_dominant (terminal.from C.X) (terminal.hom_ext _ _) C.j h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlift : ∀ g, ∃ a : C.X ⟶ C.X, C.j ≫ a = (ρ₀ g).hom ≫ C.j`. Introduce `g`. Take `⟨ρZ, hρZ⟩` from `hZ g`. Take `⟨a, ⟨ha, -⟩, -⟩` from `existsUnique_lift_of_densePart C.X U Z C.X C.j C.normal hpre hflat hdom hqc q (q ≫ ρZ) ((ρ₀ g).hom ≫ C.j) hq (by rw [Category.assoc, hρZ])`. Conclude with `⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose r hr using hlift`. Take `⟨ρ, hρ⟩` from `exists_action_of_extends C.j hj1 ρ₀ r hr`. Establish `hjρ : ∀ g, C.j ≫ (ρ g).hom = (ρ₀ g).hom ≫ C.j` using `fun g => by rw [hρ]; exact hr g`. Establish `hmu : ∀ g, ∃ mu : SABMap C.t C.t (ρ g).hom, C.m.φ ≫ mu.φ = (ν g).φ ≫ C.m.φ` using `fun g => hext _ (ν g) _ (hjρ g)`. Use `choose mu hmu using hmu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hGf, hGs⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian C.t.G C.t.semi`. Use `hGf` as an intermediate fact. Use `hGs` as an intermediate fact. Establish `hcan : ∀ (e : C.X ≅ C.X) (a b : C.t.G.left ⟶ C.t.G.left), a ≫ C.t.G.hom = C.t.G.hom ≫ e.hom → b ≫ C.t.G.hom = C.t.G.hom ≫ e.hom → C.m.φ ≫ a = C.m.φ ≫ b → a = b`. Introduce `e a b ha hb hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsSeparated (Over.mk (C.t.G.hom ≫ e.inv)).hom` using `by show IsSeparated (C.t.G.hom ≫ e.inv) infer_instance`. Establish `key` using `ExtUnique.over_hom_ext_of_isPullback (j := C.j) (X := C.t.G) (Y := Over.mk (C.t.G.hom ≫ e.inv)) C.m.cart.1 (f := Over.homMk a (by simp [reassoc_of% ha])) (g := Over.homMk b (by simp [reassoc_of% hb])) hab`. Conclude with `congrArg (fun k => k.left) key`. Establish `hw : ∀ g, (mu g).φ ≫ C.t.G.hom = C.t.G.hom ≫ (ρ g).hom` using `fun g => (mu g).cart.1.w`. Take `⟨τ, hτ⟩` from `exists_monoidHom_aut_of_lies C.m.φ τ₀ (fun g => (mu g).φ) (fun g => by rw [hmu, hν]) (fun g a => a ≫ C.t.G.hom = C.t.G.hom ≫ (ρ g).hom) (by rw [map_one]; exact (Category.id_comp _).trans (Category.comp_id _).symm) hw (fun g h => by show ((mu h).φ ≫ (mu g).φ) ≫ C.t.G.hom = C.t.G.h …`.
-
-Establish `hm : ∀ a b : Aut C.X, (a * b).hom = b.hom ≫ a.hom` using `fun _ _ => rfl`. Rewrite using `[map_mul, hm, Category.assoc, hw g, reassoc_of% (hw h)])`. Use the proof step `(fun g a b ha hb hab => hcan (ρ g) a b ha hb hab)`. Use `⟨ρ, τ, mu, fun g => ⟨(hτ g).symm, hjρ g, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hτ]`.
-
-Conclude with `(hmu g).trans (by rw [hν])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_action_model_of_ext {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {U : Scheme.{0}}
     {F O : Type} [Field F] [CommRing O] {c : U ⟶ Sp F} {t : SAB H U} {β : O →+* F} (C : Cpt c t β) {Z : Scheme.{0}}
@@ -140,7 +136,7 @@ theorem exists_action_model_of_ext {E : Type} [Field E] [NumberField E] [IsCMFie
   exact (hmu g).trans (by rw [hν])
 
 /- English proof (translation)
-Introduce `hN E _ _ _ H U F O _ _ c t β C Z q Γ _ _ ρ₀ τ₀ ν hβ hfin hprop hq hν hZ`. Conclude with `exists_action_model_of_ext C q ρ₀ τ₀ ν hβ hq hν hZ (fun r n f h => Models.exists_sabMap_extending hN E H U F O c t β U F O c t β C C r n f hβ hfin hprop h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_action_model : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (U : Scheme.{0}) (F O : Type) [Field F] [CommRing O] (c : U ⟶ Sp F) (t : SAB H U) (β : O →+* F) (C : Cpt c t β) (Z : Scheme.{0}) (q : C.X ⟶ Z) (Γ : Type) [Group Γ] [Finite Γ] (ρ₀ : Γ →* Aut U) (τ₀ : Γ →* Aut t.G.left) (ν : ∀ g, SABMap t t (ρ₀ g).hom), IsDedFrac β → Algebra.FiniteType ℤ O → IsProper t.G.hom → IsIntegralHom q → (∀ g, (ν g).φ = (τ₀ g).hom) → (∀ g, ∃ ρZ : Z ⟶ Z, C.j ≫ q ≫ ρZ = (ρ₀ g).hom ≫ C.j ≫ q) → ∃ (ρ : Γ →* Aut C.X) (τ : Γ →* Aut C.t.G.left) (mu : ∀ g, SABMap C.t C.t (ρ g).hom), ∀ g, (mu g).φ = (τ g).hom ∧ C.j ≫ (ρ g).hom = (ρ₀ g).hom ≫ C.j ∧ C.m.φ ≫ (τ g).hom = (τ₀ g).hom ≫ C.m.φ := by
   intro hN E _ _ _ H U F O _ _ c t β C Z q Γ _ _ ρ₀ τ₀ ν hβ hfin hprop hq hν hZ

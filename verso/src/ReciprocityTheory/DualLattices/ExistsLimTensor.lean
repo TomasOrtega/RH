@@ -15,7 +15,7 @@ namespace BX
 variable (B : BX R₀) {p : ℕ}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Conclude with `(Tw.r_π n x).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma tw_πr (Tw : ATowerL R₀ p) (n : ℕ) : (Tw.π n).comp (Tw.r' n) = (Tw.r n).comp (Tw.π (n + 1)) := by
   apply Subtype.ext
@@ -24,7 +24,7 @@ lemma tw_πr (Tw : ATowerL R₀ p) (n : ℕ) : (Tw.π n).comp (Tw.r' n) = (Tw.r 
   exact (Tw.r_π n x).symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Conclude with `Tw.r_q n x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma tw_qr (Tw : ATowerL R₀ p) (n : ℕ) : (Tw.r n).comp (Tw.q (n + 1)) = Tw.q n := by
   apply Subtype.ext
@@ -33,13 +33,13 @@ lemma tw_qr (Tw : ATowerL R₀ p) (n : ℕ) : (Tw.r n).comp (Tw.q (n + 1)) = Tw.
   exact Tw.r_q n x
 
 /- English proof (translation)
-Establish `e1 : B.map (Tw.π n) (B.map (Tw.r' n) th1) = B.map (Tw.q n) τ1`. Rewrite using `[← B.map_comp, tw_πr Tw n, B.map_comp, h1, ← B.map_comp, tw_qr Tw n]`. Establish `hf : ∀ a ∈ (Tw.π (n + 1)).ker, (Tw.r' n).1.toLinearMap a ∈ (Tw.π n).ker`. Introduce `a ha`. Simplify using `only [Submodule.restrictScalars_mem, RingHom.mem_ker] at ha ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[AlgHom.toLinearMap_apply, ← Tw.r_π n a, ha, map_zero]`. Establish `hcomm : ((Tw.r' n).1.toLinearMap.restrict hf) ∘ₗ ξmul (Tw.π (n + 1)) (Tw.ξ (n + 1)) (Tw.ξ_mem (n + 1)) = ξmul (Tw.π n) (Tw.ξ n) (Tw.ξ_mem n) ∘ₗ (Tw.r' n).1.toLinearMap`. Use `LinearMap.ext fun a => Subtype.ext ?_` and prove the remaining obligations. Use `show (Tw.r' n).1 (Tw.ξ (n + 1) * a) = Tw.ξ n * (Tw.r' n).1 a`. Rewrite using `[map_mul, Tw.r'_ξ n]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (Tw.π n).1.toLinearMap ∘ₗ (Tw.r' n).1.toLinearMap = (Tw.r n).1.toLinearMap ∘ₗ (Tw.π (n + 1)).1.toLinearMap` using `LinearMap.ext fun a => (Tw.r_π n a).symm`. Use `⟨by rw [map_nsmul, map_nsmul, e1], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← pow_succ, ← map_nsmul, h2, ← B.tg_nat (Tw.π (n + 1)) (Tw.π n) (Tw.sqZero (n + 1)) (Tw.sqZero n) (Tw.r' n) hf]`. Establish `h` using `congrArg (fun f => LinearMap.lTensor B.gg f w1) hcomm`. Simplify using `only [LinearMap.lTensor_comp, LinearMap.comp_apply] at h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg (B.tg (Tw.π n) (Tw.sqZero n)) h`. Establish `h` using `congrArg (fun f => LinearMap.lTensor B.gg f w1) h3`. Simplify `h` using `only [LinearMap.lTensor_comp, LinearMap.comp_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma lift_down (Tw : ATowerL R₀ p) (n : ℕ) (τ1 : B.G Tw.O) (th1 : B.G (Tw.R' (n + 1)))
     (w1 : B.gg ⊗[R₀] (Tw.R' (n + 1) : Type u)) (h1 : B.map (Tw.π (n + 1)) th1 = B.map (Tw.q (n + 1)) τ1)
@@ -81,7 +81,7 @@ def coordK (M : Type u) [AddCommGroup M] [Module R₀ M] (k : Module.Free.Choose
   (TensorProduct.lid R₀ M).toLinearMap ∘ₗ LinearMap.rTensor M ((Module.Free.chooseBasis R₀ B.gg).coord k)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul g m => simp [coordK]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma coordK_lTensor {M M' : Type u} [AddCommGroup M] [Module R₀ M] [AddCommGroup M'] [Module R₀ M']
     (f : M →ₗ[R₀] M') (k : Module.Free.ChooseBasisIndex R₀ B.gg) (x : B.gg ⊗[R₀] M) :
@@ -92,9 +92,9 @@ lemma coordK_lTensor {M M' : Type u} [AddCommGroup M] [Module R₀ M] [AddCommGr
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul g m`. Simplify using `only [coordK, LinearMap.comp_apply, LinearMap.rTensor_tmul, LinearEquiv.coe_coe, TensorProduct.lid_tmul, Module.Basis.coord_apply]`. Repeatedly rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← TensorProduct.sum_tmul, Module.Basis.sum_repr]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 lemma sum_coordK (M : Type u) [AddCommGroup M] [Module R₀ M] (x : B.gg ⊗[R₀] M) :
     ∑ k, (Module.Free.chooseBasis R₀ B.gg k) ⊗ₜ[R₀] B.coordK M k x = x := by
@@ -109,9 +109,9 @@ lemma sum_coordK (M : Type u) [AddCommGroup M] [Module R₀ M] (x : B.gg ⊗[R�
     simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]
 
 /- English proof (translation)
-Use `choose a ha using fun k => Tw.complete (fun n => B.coordK (Tw.R n) k (wb n)) (fun n => by`. Rewrite using `[← hwb n, B.coordK_lTensor]`. Use the proof step `rfl)`. Use `⟨∑ k, (Module.Free.chooseBasis R₀ B.gg k) ⊗ₜ[R₀] a k, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.lTensor_tmul]`. Use `conv_rhs => rw [← B.sum_coordK _ (wb n)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← ha k n]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma exists_lim_tensor (Tw : ATowerL R₀ p) (wb : ∀ n, B.gg ⊗[R₀] (Tw.R n : Type u))
     (hwb : ∀ n, LinearMap.lTensor B.gg (Tw.r n).1.toLinearMap (wb (n + 1)) = wb n) :

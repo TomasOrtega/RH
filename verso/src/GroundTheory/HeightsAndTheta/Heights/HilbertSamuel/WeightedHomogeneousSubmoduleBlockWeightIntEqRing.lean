@@ -15,7 +15,7 @@ variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} {F : Type*} 
   {M : Type*} [AddCommGroup M] [Module (MRing ι F) M] [Module F M]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨by convert h.internal, fun v m x hx => h.var_mul v m x hx⟩, fun h => ⟨by convert h.internal, fun v m x hx => h.smul_mem v m x hx⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMultigraded_iff_isMultigrading (ℳ : (K → ℤ) → Submodule F M) :
     IsMultigraded ι ℳ ↔ GroundTheory.Heights₂.Heights.HilbertSamuel.IsMultigrading ι M ℳ :=

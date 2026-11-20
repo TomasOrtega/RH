@@ -14,11 +14,9 @@ noncomputable section
 namespace GlobalTheory.DualInj
 
 /- English proof (translation)
-Establish `hu : FormallyUnramified f` using `TangentCrit.formallyUnramified_of_tangent f h₂`. Establish `hs : Surjective (pullback.diagonal f)`. Use `((tfae_universallyInjective f).out 1 3).1 fun (k : Type) [Field k] y y' e => ?_` and prove the remaining obligations. Set `x : Sp (AlgebraicClosure k) ⟶ Sp k` to `Spec.map (CommRingCat.ofHom (algebraMap k (AlgebraicClosure k)))`. Establish `: Surjective x` using `⟨fun z => ⟨(default : PrimeSpectrum (AlgebraicClosure k)), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Epi x` using `Flat.epi_of_flat_of_surjective x`. Use `(cancel_epi x).1 (h₁ _ _ _ ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg (x ≫ ·) e`. Establish `: IsIso (pullback.diagonal f)` using `(isIso_iff_isOpenImmersion_and_surjective _).2 ⟨inferInstance, hs⟩`.
-
-Conclude with `(pullback.isIso_diagonal_iff f).1 this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_of_points_tangents {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFiniteType f]
     (h₁ : ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ X), y ≫ f = y' ≫ f → y = y')
@@ -41,7 +39,7 @@ theorem mono_of_points_tangents {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFinit
 variable {S : Scheme.{0}} {A U : Over S} [GrpObj A]
 
 /- English proof (translation)
-The claim follows from `pull_isLB hM.isLB _ add := (isAdditive_iff (pull_isLB hM.isLB _)).2 fun Y a a' y => by rw [evc_ev hM.isLB, evc_ev hM.isLB, evc_ev hM.isLB] simp only [lift_fst, lift_snd_assoc] exact (isAdditive_iff hM.isLB).1 hM.add Y a a' (y ≫ t)`.
+A detailed English derivation is pending.
 -/
 theorem fam_ev {M : LB (A ⊗ U).left} (hM : Fam A M) {T : Over S} (t : T ⟶ U) :
     Fam A (ev M (fst A T) (snd A T ≫ t)) where
@@ -54,7 +52,7 @@ theorem fam_ev {M : LB (A ⊗ U).left} (hM : Fam A M) {T : Over S} (t : T ⟶ U)
 omit [GrpObj A] in
 
 /- English proof (translation)
-Rewrite using `[same_iff (pull_isLB hM _) (pull_isLB hM' _), same_iff hM hM', evc_ev hM, evc_ev hM']`. Simplify using `only [lift_fst, lift_snd_assoc, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem same_ev_iff {M M' : LB (A ⊗ U).left} (hM : M.IsLB) (hM' : M'.IsLB) {T Y : Over S} (t t' : T ⟶ U)
     (y : Y ⟶ T) :
@@ -67,25 +65,23 @@ end GlobalTheory.DualInj
 namespace GlobalTheory.DualInj
 
 /- English proof (translation)
-Introduce `R _ _ A _ hA U M hU hM hF`. Establish `: LocallyOfFiniteType (U ⊗ U).hom` using `by show LocallyOfFiniteType (pullback.fst U.hom U.hom ≫ U.hom) infer_instance`. Establish `: IsLocallyNoetherian (U ⊗ U).left` using `LocallyOfFiniteType.isLocallyNoetherian (U ⊗ U).hom`. Take `⟨G, i, hi, hG⟩` from `GlobalTheory.T.exists_closedSubscheme_additiveFamilies_agree (Sp R) A (U ⊗ U) hA (ev M (fst A (U ⊗ U)) (snd A (U ⊗ U) ≫ fst U U)) (ev M (fst A (U ⊗ U)) (snd A (U ⊗ U) ≫ snd U U)) (fam_ev hM _) (fam_ev hM _)`. Establish `key : ∀ (Y : Over (Sp R)) (y : Y ⟶ U ⊗ U), Same A M M (y ≫ fst U U) (y ≫ snd U U) ↔ ∃ z : Y ⟶ G, z ≫ i = y` using `fun Y y => (same_ev_iff hM.isLB hM.isLB _ _ y).symm.trans (hG Y y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδ⟩` from `(key U (lift (𝟙 U) (𝟙 U))).1 (by`. Rewrite using `[lift_fst, lift_snd]`. Conclude with `(same_iff hM.isLB hM.isLB _ _).2 rfl)`. Set `p : G.left ⟶ U.left` to `(i ≫ fst U U).left`. Establish `hp : p ≫ U.hom = G.hom` using `Over.w (i ≫ fst U U)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Mono i.left` using `inferInstance`. Establish `pt : ∀ (Z : Scheme.{0}) (a b : Z ⟶ G.left) (K : Type) [Field K] [IsAlgClosed K] (t : Z ⟶ Sp K) (s : Sp K ⟶ Sp R), a ≫ p = b ≫ p → a ≫ G.hom = t ≫ s → a = b`. Introduce `Z a b K _ _ t s e es`. Set `Y : Over (Sp R)` to `Over.mk (a ≫ G.hom)`. Set `α : Y ⟶ G` to `Over.homMk a rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `β : Y ⟶ G` to `Over.homMk b (by show b ≫ G.hom = a ≫ G.hom`. Rewrite using `[← hp, ← Category.assoc, ← e, Category.assoc])`. Set `τ : Y ⟶ Over.mk s` to `Over.homMk t es.symm`. Establish `h1 : ∀ c0 : Y ⟶ G, c0 ≫ i ≫ fst U U = c0 ≫ i ≫ snd U U` using `fun c0 => by`. Use `hF K s Y τ _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(key Y (c0 ≫ i)).2 ⟨c0, rfl⟩` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Establish `e1 : α ≫ i ≫ fst U U = β ≫ i ≫ fst U U`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Simplify `e` using `only [Over.comp_left, Over.homMk_left, α, β, p]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2 : α ≫ i = β ≫ i`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Simplify `e1` using `only [Category.assoc]`. Simplify `e1` using `only [Category.assoc, ← h1 α, ← h1 β]`. Establish `e3` using `congrArg CommaMorphism.left e2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left, Over.homMk_left, α, β] at e3`. Conclude with `(cancel_mono i.left).1 e3`. Establish `: LocallyOfFiniteType p` using `by show LocallyOfFiniteType (i.left ≫ pullback.fst U.hom U.hom) infer_instance`. Establish `hmono : Mono p` using `mono_of_points_tangents p (fun k _ _ y y' e => pt _ y y' k (𝟙 _) (y ≫ G.hom) e (Category.id_comp _).symm) (fun k _ _ w hw => pt _ w _ k (TangentCrit.dualBase k) (TangentCrit.dualPt k ≫ w ≫ G.hom) hw (by`. Use `congrArg (· ≫ U.hom) hw` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this))` using `only [Category.assoc, hp]`. Introduce `Y u u' hs`. Take `⟨z, hz⟩` from `(key Y (lift u u')).1 (by rw [lift_fst, lift_snd]; exact hs)`. Establish `hz1 : z ≫ i ≫ fst U U = u` using `by rw [← Category.assoc, hz, lift_fst]`. Establish `hzδ : z = u ≫ δ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Over.OverMorphism.ext ((cancel_mono p).1 ?_)` and prove the remaining obligations. Establish `e1 : (z ≫ i ≫ fst U U).left = (u ≫ δ ≫ i ≫ fst U U).left`. Rewrite using `[hz1, reassoc_of% hδ, lift_fst, Category.comp_id]`. Simplify `e1` using `only [p, Over.comp_left, Category.assoc]`. Use `symm`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inj_of_fibInj : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A],
     IsAbelianScheme A → ∀ (U : Over (Sp R)) (M : LB (A ⊗ U).left), LocallyOfFiniteType U.hom → Fam A M →

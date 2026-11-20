@@ -8,29 +8,27 @@ namespace PI.VolSemiDirect.W
 open MeasureTheory
 
 /- English proof (translation)
-Take `⟨V, hVo, hV⟩` from `isOpen_induced_iff.mp (isOpen_discrete ({1} : Set Λ))`. Establish `hV1 : ∀ γ : Λ, (γ : G) ∈ V ↔ γ = 1` using `fun γ => Set.ext_iff.mp hV γ`. Establish `h1V : (1 : G) ∈ V` using `(hV1 1).mpr rfl`. Take `⟨W, hWo, hW1, hWV⟩` from `exists_open_nhds_one_split (hVo.mem_nhds h1V)`. Take `⟨U, hUo, hU1, hUinv, hUV⟩ : ∃ U : Set G, IsOpen U ∧ (1 : G) ∈ U ∧ (∀ g ∈ U, g⁻¹ ∈ U) ∧ ∀ a ∈ U, ∀ b ∈ U, a * b⁻¹ ∈ V` from `⟨W ∩ (fun g => g⁻¹) ⁻¹' W, hWo.inter (hWo.preimage continuous_inv), ⟨hW1, by simpa using hW1⟩, fun g hg => ⟨hg.2, by simpa using hg.1⟩, fun a ha b hb => hWV a ha.1 _ hb.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `TopologicalSpace.exists_dense_seq G`. Establish `hB : ∀ x : G, ∃ n, x * (d n)⁻¹ ∈ U`. Introduce `x`. Take `⟨n, hn⟩` from `hd.exists_mem_open (hUo.preimage (continuous_id.mul continuous_const) : IsOpen ((fun y => y * x⁻¹) ⁻¹' U)) ⟨x, by simpa using hU1⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hUinv _ hn` as an intermediate fact. Simplify `this` using `[mul_inv_rev]`. Establish `hBu : ∀ (n : ℕ) (γ γ' : Λ) (x : G), (γ : G) * x * (d n)⁻¹ ∈ U → (γ' : G) * x * (d n)⁻¹ ∈ U → γ = γ'`. Introduce `n γ γ' x h h'`. Establish `hm` using `hUV _ h _ h'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((γ * γ'⁻¹ : Λ) : G) ∈ V`. Use `hm using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Use `group`. Rewrite `this` using `[hV1, mul_inv_eq_one]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨S, hS, hSo⟩ : ∃ S : ℕ → Set G, (∀ m x, x ∈ S m ↔ ∃ γ : Λ, (γ : G) * x * (d m)⁻¹ ∈ U) ∧ ∀ m, IsOpen (S m)` from `⟨fun m => ⋃ γ : Λ, (fun x => (γ : G) * x * (d m)⁻¹) ⁻¹' U, fun m x => by simp, fun m => isOpen_iUnion fun γ => hUo.preimage ((continuous_const.mul continuous_id).mul continuous_const)⟩`. Establish `hinv : ∀ (γ : Λ) (y : G) (m : ℕ), (γ : G) * y ∈ S m ↔ y ∈ S m`. Introduce `γ y m`. Rewrite using `[hS, hS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ⟩`. Conclude with `⟨δ * γ, by push_cast; simpa [mul_assoc] using hδ⟩`. Introduce and unpack `⟨δ, hδ⟩`. Conclude with `⟨δ * γ⁻¹, by push_cast; simpa [mul_assoc] using hδ⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨F, hF, hFm⟩ : ∃ F : Set G, (∀ y, y ∈ F ↔ ∃ n, y * (d n)⁻¹ ∈ U ∧ ∀ m < n, y ∉ S m) ∧ MeasurableSet F := by`. Use `⟨⋃ n, ((fun x => x * (d n)⁻¹) ⁻¹' U \ ⋃ m, ⋃ (_ : m < n), S m), fun y => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, Set.mem_diff, Set.mem_preimage, not_exists]`. Conclude with `MeasurableSet.iUnion fun n => (hUo.preimage (continuous_id.mul continuous_const)).measurableSet.diff (isOpen_iUnion fun m => isOpen_iUnion fun _ => hSo m).measurableSet`. Use `⟨F, hFm, fun x => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hex : ∃ n, x ∈ S n`. Take `⟨n, hn⟩` from `hB x`. Conclude with `⟨n, (hS n x).mpr ⟨1, by simpa using hn⟩⟩`. Take `⟨n0, hn0x, hmin⟩ : ∃ n0, x ∈ S n0 ∧ ∀ m < n0, x ∉ S m` from `⟨Nat.find hex, Nat.find_spec hex, fun m hm => Nat.find_min hex hm⟩`. Take `⟨γ, hγ⟩` from `(hS n0 x).mp hn0x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(γ : G) * x ∈ F`. Rewrite using `[hF]`. Conclude with `⟨n0, hγ, fun m hm h => hmin m hm ((hinv γ x m).mp h)⟩`. Introduce `γ' hγ'`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(γ' : G) * x ∈ F at hγ'`. Rewrite `hγ'` using `[hF]`. Take `⟨n, hn, hnmin⟩` from `hγ'`. Establish `hxn : x ∈ S n` using `(hS n x).mpr ⟨γ', hn⟩`. Establish `hn0 : n = n0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt push_neg at hlt`. Conclude with `hnmin n0 hlt ((hinv γ' x n0).mpr hn0x)`. Conclude with `not_lt.mp fun h => hmin n h hxn`. Rewrite `hn` using `[hn0]`.
-
-Conclude with `hBu n0 γ' γ x hn hγ`.
+A detailed English derivation is pending.
 -/
 theorem exists_sfd {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Λ : Subgroup G)
@@ -113,7 +111,7 @@ theorem exists_sfd {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup
     exact hBu n0 γ' γ x hn hγ
 
 /- English proof (translation)
-Take `⟨F, hF, hex⟩` from `exists_sfd Λ`. Conclude with `⟨F, hF, fun μ => IsFundamentalDomain.mk' hF.nullMeasurableSet hex⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fd {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Λ : Subgroup G)
@@ -123,7 +121,7 @@ theorem exists_fd {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup 
   exact ⟨F, hF, fun μ => IsFundamentalDomain.mk' hF.nullMeasurableSet hex⟩
 
 /- English proof (translation)
-Unfold `FDExG`. Introduce `X _ _ _ _ Γ K hK hD`. Take `⟨hlc, hsc, ht2, htg⟩` from `hK`. Take `⟨hcount, hdisc⟩` from `hD`. Conclude with `exists_fd (ratG Γ K)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fundamental_domain_exists : FDExG := by
   unfold FDExG

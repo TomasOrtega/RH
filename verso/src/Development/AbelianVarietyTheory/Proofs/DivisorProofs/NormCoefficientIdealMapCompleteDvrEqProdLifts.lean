@@ -11,31 +11,29 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LocM
 open MvPolynomial in
 
 /- English proof (translation)
-Introduce `A B K L _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ hφ hcomp J V _ _ _ _ hV h`. Take `⟨R, _, _, hinj, hfin, σ, hσ, hP⟩` from `GlobalTheory.T.exists_finite_algebra_splitting_normForm A B K L φ hφ hcomp`. Take `⟨V', _, _, _, _, f, ρ, hV', hf, hloc, hρ⟩` from `GlobalTheory.T.exists_lift_to_complete_dvr_of_finite' A R hinj hfin V hV h`. Set `ψ : Fin (Module.finrank K L) → (B →+* V')` to `fun j => ρ.comp (σ j)`. Use `⟨V', inferInstance, inferInstance, inferInstance, inferInstance, f, ψ, hV', hf, hloc, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j show (ρ.comp (σ j)).comp φ = f.comp h`. Rewrite using `[RingHom.comp_assoc, hσ j, hρ]`. Establish `key : ∀ (m : ℕ) (g : Fin m → B) (P : MvPolynomial (Fin m) A), P.map (algebraMap A R) = ∏ j, ∑ i, C (σ j (g i)) * X i → Ideal.span (Set.range fun s => (f.comp h) (P.coeff s)) = ∏ j, Ideal.span (Set.range fun i => ψ j (g i))`. Introduce `m g P hPR`. Rewrite using `[← GlobalTheory.T.span_coeff_prod_linear_eq_prod_span V' _ m (fun j i => ψ j (g i))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : (∏ j, ∑ i, C (ψ j (g i)) * X i : MvPolynomial (Fin m) V') = (P.map (algebraMap A R)).map ρ`. Rewrite using `[hPR]`. Simplify using `[map_prod, map_sum, ψ]`. Establish `hfun : (fun s => (f.comp h) (P.coeff s)) = fun s => (∏ j, ∑ i, C (ψ j (g i)) * X i : MvPolynomial (Fin m) V').coeff s`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hE, MvPolynomial.map_map, MvPolynomial.coeff_map, hρ]`. Rewrite using `[hfun]`. Unfold `GlobalTheory.NormSheaf.normIdeal`. Rewrite using `[Ideal.map_span]`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨a, ⟨m, g, hgJ, s, hs⟩, rfl⟩`. Take `⟨P, hPK, hPR⟩` from `hP m g`. Establish `ha : a = P.coeff s` using `IsFractionRing.injective A K (by rw [hs, ← hPK, MvPolynomial.coeff_map])`. Establish `hmem : (f.comp h) a ∈ Ideal.span (Set.range fun s => (f.comp h) (P.coeff s))` using `Ideal.subset_span ⟨s, by rw [ha]⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem` using `[key m g P hPR]`. Establish `hle : ∏ j, Ideal.span (Set.range fun i => ψ j (g i)) ≤ ∏ j, J.map (ψ j)` using `Finset.prod_le_prod' (fun j _ => Ideal.span_le.2 (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Ideal.mem_map_of_mem _ (hgJ i)))`. Conclude with `hle hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfg : ∀ j, ∃ t : Finset V', (↑t : Set V') ⊆ ψ j '' (J : Set B) ∧ J.map (ψ j) = Ideal.span (↑t : Set V')`. Introduce `j`. Establish `h1 : (J.map (ψ j)).FG` using `IsNoetherian.noetherian _`. Rewrite `h1`, the goal using `[Ideal.map]`. Conclude with `(Submodule.fg_span_iff_fg_span_finset_subset _).1 h1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `choose t ht hspan using hfg`. Establish `hpre : ∀ (x : Σ j, (t j : Set V')), ∃ b ∈ J, ψ x.1 b = x.2`. Introduce and unpack `⟨j, x, hx⟩`. Take `⟨b, hb, e⟩` from `ht j hx`. Conclude with `⟨b, hb, e⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose pre hpreJ hpreψ using hpre`. Set `e` to `Fintype.equivFin (Σ j, (t j : Set V'))`. Set `g : Fin (Fintype.card (Σ j, (t j : Set V'))) → B` to `fun i => pre (e.symm i)`. Establish `hgJ : ∀ i, g i ∈ J` using `fun i => hpreJ _`. Take `⟨P, hPK, hPR⟩` from `hP _ g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hj : ∀ j, Ideal.span (Set.range fun i => ψ j (g i)) = J.map (ψ j)`. Introduce `j`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.mem_map_of_mem _ (hgJ i)`. Rewrite using `[hspan j, Ideal.span_le]`. Introduce `x hx`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨e ⟨j, x, hx⟩, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Simplify using `only [g, Equiv.symm_apply_apply]`. Conclude with `hpreψ ⟨j, x, hx⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`.
-
-Apply `Ideal.subset_span` to reduce the goal to its premises. Conclude with `⟨P.coeff s, ⟨_, g, hgJ, s, by rw [← hPK, MvPolynomial.coeff_map]⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NormSheaf.normIdeal_map_eq_prod_lifts : ∀ (A B K L : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CommRing B] [IsDomain B]
     [Field K] [Field L] [CharZero K] [Algebra A K] [Algebra B L] [Algebra K L] [FiniteDimensional K L]

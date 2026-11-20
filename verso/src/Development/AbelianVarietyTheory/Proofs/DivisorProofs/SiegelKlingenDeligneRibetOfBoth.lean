@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlin
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `a b` and use `⟨a, b⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem siegelKlingenDeligneRibet_of_both :
     GlobalTheory.Published.SiegelKlingen → GlobalTheory.Published.DeligneRibet → GlobalTheory.Published.SiegelKlingenDeligneRibet :=

@@ -29,11 +29,11 @@ def AtRows (hL : GlobalTheory.Published.LocalLanglandsGL)
     MtAd Y M → MtInput (w.st Z).toD7 M tup Q → q (w.st Z).toD7 (TC.cf w.I w.l Z) (repOf Y) Rw a M
 
 /- English proof (translation)
-Take `⟨a, ha, hp⟩` from `hp`. Take `⟨b, hb, hq⟩` from `hq`. Use `⟨min a b, lt_min ha hb, fun e C8 C5 c6 Cb he hle h52 h8 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hp e C8 C5 c6 Cb he (hle.trans (min_le_left _ _)) h52 h8`. Take `⟨K', hK'⟩` from `hq e C8 C5 c6 Cb he (hle.trans (min_le_right _ _)) h52 h8`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨K.sup K', fun C hC hC8 hL => ?_⟩` and prove the remaining obligations. Take `⟨a1, ha1⟩` from `hK C hC hC8 (fc_large_of_sup hL).1`. Take `⟨b1, hb1⟩` from `hK' C hC hC8 (fc_large_of_sup hL).2`. Use `⟨max a1 b1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨a2, ha2⟩` from `ha1 cD (le_trans (le_max_left _ _) hcD)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b2, hb2⟩` from `hb1 cD (le_trans (le_max_right _ _) hcD)`. Use `⟨max a2 b2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨a3, ha3⟩` from `ha2 ch (le_trans (le_max_left _ _) hch)`. Take `⟨b3, hb3⟩` from `hb2 ch (le_trans (le_max_right _ _) hch)`. Conclude with `⟨max a3 b3, fun X h1 h2 h3 h4 hx hg => ⟨ha3 X h1 h2 h3 h4 (le_trans (le_max_left _ _) hx) hg, hb3 X h1 h2 h3 h4 (le_trans (le_max_right _ _) hx) hg⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem evG_and {p q : Ctx → Prop} (hp : EvG p) (hq : EvG q) : EvG fun K => p K ∧ q K := by
   obtain ⟨a, ha, hp⟩ := hp
@@ -54,9 +54,9 @@ theorem evG_and {p q : Ctx → Prop} (hp : EvG p) (hq : EvG q) : EvG fun K => p 
     ⟨ha3 X h1 h2 h3 h4 (le_trans (le_max_left _ _) hx) hg, hb3 X h1 h2 h3 h4 (le_trans (le_max_right _ _) hx) hg⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha, hp⟩` from `hp`. Use `⟨a, ha, fun e C8 C5 c6 Cb he hle h52 h8 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hp e C8 C5 c6 Cb he hle h52 h8`. Use `⟨K, fun C hC hC8 hL => ?_⟩` and prove the remaining obligations. Take `⟨a1, ha1⟩` from `hK C hC hC8 hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨a1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨a2, ha2⟩` from `ha1 cD hcD`. Use `⟨a2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨a3, ha3⟩` from `ha2 ch hch`. Conclude with `⟨a3, fun X h1 h2 h3 h4 hx hg => h X (ha3 X h1 h2 h3 h4 hx hg)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem evG_mono {p q : Ctx → Prop} (h : ∀ K, p K → q K) (hp : EvG p) : EvG q := by
   obtain ⟨a, ha, hp⟩ := hp
@@ -71,7 +71,7 @@ theorem evG_mono {p q : Ctx → Prop} (h : ∀ K, p K → q K) (hp : EvG p) : Ev
   exact ⟨a3, fun X h1 h2 h3 h4 hx hg => h X (ha3 X h1 h2 h3 h4 hx hg)⟩
 
 /- English proof (translation)
-Unfold `OverRows EvLgG at *`. Use `evG_mono (fun K hK => ?_) (evG_and hp hq)` and prove the remaining obligations. Use `large₂.mono (fun B f T _ hpq hKP w hw Z Wt hX z p0 Y h1 h2 h3 h4 h5 => ?_) (large₂.and hK.1 hK.2)` and prove the remaining obligations. Conclude with `h _ _ _ _ _ _ _ _ _ _ _ (hpq.1 hKP w hw Z Wt hX z p0 Y h1 h2 h3 h4 h5) (hpq.2 hKP w hw Z Wt hX z p0 Y h1 h2 h3 h4 h5)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem overRows_and_mono {p q r : RowP} (hp : OverRows p) (hq : OverRows q)
     (h : ∀ K B f T w Z Wt hX z p0 Y, p K B f T w Z Wt hX z p0 Y → q K B f T w Z Wt hX z p0 Y → r K B f T w Z Wt hX z p0 Y) :

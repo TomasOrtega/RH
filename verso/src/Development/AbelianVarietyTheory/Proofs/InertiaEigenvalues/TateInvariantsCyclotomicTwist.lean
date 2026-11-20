@@ -15,43 +15,43 @@ namespace GlobalTheory.CyclotomicTowerSubgroupInclusions
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem unramified_subfield_le_Ks (K : FinExt l) (j : ℕ) : K0 K ≤ Ks K j := le_sup_left
 
 /- English proof (translation)
-The claim follows from `sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ (fun _ hx => Exists.intro j hx)) _`.
+A detailed English derivation is pending.
 -/
 theorem Ks_le_Kinf (K : FinExt l) (j : ℕ) : Ks K j ≤ Kinf K :=
   sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ (fun _ hx => Exists.intro j hx)) _
 
 /- English proof (translation)
-Introduce `_ hg x` and use `hg ⟨x.1, unramified_subfield_le_Ks K j x.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cyclotomicTowerLevelGaloisSubgroup_le_fixingUnramified (K : FinExt l) (j : ℕ) : Gj K j ≤ (K0 K).fixingSubgroup :=
   fun _ hg x => hg ⟨x.1, unramified_subfield_le_Ks K j x.2⟩
 
 /- English proof (translation)
-Introduce `_ hg x` and use `hg ⟨x.1, Ks_le_Kinf K j x.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Hinf_le_Gj (K : FinExt l) (j : ℕ) : Hinf K ≤ Gj K j :=
   fun _ hg x => hg ⟨x.1, Ks_le_Kinf K j x.2⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_inC_iff (F : IntermediateField ℚ_[l] (Om l)) (y : PadicComplex l) :
     y ∈ inC F ↔ y ∈ F.toSubfield.map (algebraMap (Om l) (PadicComplex l)) := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨algebraMap ℚ_[l] (Om l) u, F.algebraMap_mem u, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem algebraMap_mem_inC (F : IntermediateField ℚ_[l] (Om l)) (u : ℚ_[l]) :
     algebraMap ℚ_[l] (PadicComplex l) u ∈ inC F :=
   ⟨algebraMap ℚ_[l] (Om l) u, F.algebraMap_mem u, rfl⟩
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hy`. Use `hg ⟨x, hx⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `g x = x at this`. Simplify using `only [ha.1, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem act_fix {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : IsActC act)
     {F : IntermediateField ℚ_[l] (Om l)} {g : GQ l} (hg : g ∈ F.fixingSubgroup)
@@ -62,9 +62,9 @@ theorem act_fix {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : Is
   simp only [ha.1, this]
 
 /- English proof (translation)
-Establish `hl : ‖(l : PadicComplex l)‖ < 1`. Establish `h1 : ‖algebraMap ℚ_[l] (PadicComplex l) (l : ℚ_[l])‖ = ‖(l : ℚ_[l])‖` using `norm_algebraMap' _ _`. Rewrite `h1` using `[map_natCast]`. Rewrite using `[h1]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hl).mul_const ‖y‖`. Rewrite `h` using `[zero_mul]`. Take `⟨n, hn⟩` from `(h.eventually (ge_mem_nhds (zero_lt_one' ℝ))).exists`. Conclude with `⟨n, by rwa [norm_mul, norm_pow]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scale (y : PadicComplex l) : ∃ n : ℕ, ‖(l : PadicComplex l) ^ n * y‖ ≤ 1 := by
   have hl : ‖(l : PadicComplex l)‖ < 1 := by
@@ -78,29 +78,27 @@ theorem exists_scale (y : PadicComplex l) : ∃ n : ℕ, ‖(l : PadicComplex l)
   exact ⟨n, by rwa [norm_mul, norm_pow]⟩
 
 /- English proof (translation)
-Introduce `l _ act χ ha hχ K j hj i y hy`. Take `⟨hnorm, -, hker⟩` from `GlobalTheory.T.cyclotomicCharacterPadic_basic_properties l χ hχ`. Take `⟨⟨g, hg⟩, -⟩` from `GlobalTheory.T.exists_cyclotomicTowerLevelGenerator_properties l act χ ha hχ K j hj`. Take `⟨hdec, hdir, -, hmul, hact, -⟩` from `GlobalTheory.T.tate_decomposition_completed_cyclotomic_integers l act χ ha hχ K j hj.1`. Take `⟨n, hn⟩` from `exists_scale y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl0 : (l : PadicComplex l) ^ n ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Use `set z := (l : PadicComplex l) ^ n * y with hz`. Establish `hzinv : ∀ σ ∈ Gj K j, chiC χ i σ * act σ z = z`. Introduce `σ hσ`. Rewrite using `[hz, map_mul, map_pow, map_natCast, mul_left_comm, hy σ hσ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzO : z ∈ Ohat K`. Use `(GlobalTheory.T.cyclotomicTower_fixed_iff_mem_completedIntegers l act ha K z hn).mp fun h hh => ?_` and prove the remaining obligations. Establish `h1 : χ h = 1` using `(hker K h (cyclotomicTowerLevelGaloisSubgroup_le_fixingUnramified K j (Hinf_le_Gj K j hh))).2.mp hh`. Establish `h2` using `hzinv h (Hinf_le_Gj K j hh)`. Simplify `h2` using `[chiC, h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨a, haK, x, hx, hax⟩` from `hdec z hzO`. Use `set c := chiC χ i g with hc`. Establish `hcK : c ∈ inC (Ks K j)` using `algebraMap_mem_inC _ _`. Establish `hc1 : ‖c‖ = 1`. Rewrite using `[hc, chiC, norm_algebraMap', Units.val_zpow_eq_zpow_val, norm_zpow, hnorm, one_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hga : act g a = a` using `act_fix ha hg.1 haK.1`. Establish `heq : c * (a + act g x) = a + x`. Use `hzinv g hg.1` as an intermediate fact. Rewrite `this` using `[hax, map_add, hga]`. Then use the resulting hypothesis. Establish `hX : x - c * act g x ∈ Xj K j` using `(Xj K j).sub_mem hx (hmul c ⟨hcK, hc1.le⟩ _ (hact g (cyclotomicTowerLevelGaloisSubgroup_le_fixingUnramified K j hg.1) x hx))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : (c - 1) * a ∈ inC (Ks K j)`. Rewrite using `[mem_inC_iff]`. Conclude with `Subfield.mul_mem _ (Subfield.sub_mem _ hcK (Subfield.one_mem _)) haK.1`. Establish `h0 : (c - 1) * a = 0` using `hdir _ hK _ hX 0 (by linear_combination heq)`. Establish `hrho : 0 < rho1 l` using `Real.rpow_pos_of_pos (Nat.cast_pos.mpr (Fact.out : l.Prime).pos) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx0 : x = 0`. Establish `h` using `(GlobalTheory.T.cyclotomic_tower_generator_matrix_perturbation l act χ ha hχ K j hj g hg 1 (fun _ => 1) (by`. Introduce `a b`. Rewrite using `[Subsingleton.elim a b, Matrix.one_apply_eq]`. Use `⟨?_, by simp⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_inC_iff]`. Conclude with `Subfield.one_mem _) (by intro a b; simpa using hrho) i).1 (fun _ => x) (fun _ => hx) (by`. Use function extensionality and compare the values at `b`. Simplify using `only [twAct, Matrix.one_mulVec, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `heq - h0)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrFun h 0`. Rewrite `hax` using `[hx0, add_zero]`. Use `⟨fun hi => ?_, fun _ => ?_⟩` and prove the remaining obligations. Establish `hv` using `GlobalTheory.T.padic_norm_zpow_sub_one_padicValInt l j hj (χ g : ℚ_[l]) hg.2 i hi`. Establish `hne : c - 1 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Establish `h2 : c - 1 = algebraMap ℚ_[l] (PadicComplex l) ((χ g : ℚ_[l]) ^ i - 1)`. Rewrite using `[hc, chiC, Units.val_zpow_eq_zpow_val, map_sub, map_one]`. Rewrite `h` using `[h2, map_eq_zero]`. Rewrite `hv` using `[h, norm_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(zpow_pos (Nat.cast_pos.mpr (Fact.out : l.Prime).pos : (0 : ℝ) < l) _).ne hv`. Establish `ha0 : a = 0` using `(mul_eq_zero.mp h0).resolve_left hne`. Rewrite `hax` using `[ha0, hz]`. Conclude with `(mul_eq_zero.mp hax).resolve_left hl0`. Establish `: y = ((l : PadicComplex l) ^ n)⁻¹ * a`.
-
-Rewrite using `[← hax, hz, inv_mul_cancel_left₀ hl0]`. Rewrite using `[this, mem_inC_iff]`. Conclude with `Subfield.mul_mem _ (Subfield.inv_mem _ (Subfield.pow_mem _ (natCast_mem _ l) n)) haK.1`.
+A detailed English derivation is pending.
 -/
 theorem invariants_twist : ∀ (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ), IsActC act → IsCyc χ → ∀ (K : FinExt l), ∀ j : ℕ, Lev l j → ∀ (i : ℤ) (y : PadicComplex l), (∀ g ∈ Gj K j, chiC χ i g * act g y = y) → (i ≠ 0 → y = 0) ∧ (i = 0 → y ∈ inC (Ks K j)) := by
   intro l _ act χ ha hχ K j hj i y hy

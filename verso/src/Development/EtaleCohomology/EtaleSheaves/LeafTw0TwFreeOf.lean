@@ -13,7 +13,7 @@ def aug (q : ℕ) (A : CommRingCat.{0}) : (twF q 0).obj A →ₗ[ULift.{1} (ZMod
     exact sub_self (1 : ULift.{1} (ZMod q)))
 
 /- English proof (translation)
-Use `show Finsupp.linearCombination (ULift.{1} (ZMod q)) (fun _ => (1 : ULift.{1} (ZMod q))) (Finsupp.single ζ 1) = 1`. Rewrite using `[Finsupp.linearCombination_single, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aug_mk (q : ℕ) (A : CommRingCat.{0}) (ζ : Prim q A) :
     aug q A (Submodule.Quotient.mk (Finsupp.single ζ 1)) = 1 := by
@@ -21,7 +21,7 @@ theorem aug_mk (q : ℕ) (A : CommRingCat.{0}) (ζ : Prim q A) :
   rw [Finsupp.linearCombination_single, one_smul]
 
 /- English proof (translation)
-Use `show aug q B (Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map g.hom) (Finsupp.single ζ 1))) = 1`. Rewrite using `[Finsupp.mapDomain_single]`. Conclude with `aug_mk q B _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aug_map (q : ℕ) (A B : CommRingCat.{0}) (g : A ⟶ B) (ζ : Prim q A) :
     aug q B (((twF q 0).map g).hom (Submodule.Quotient.mk (Finsupp.single ζ 1))) = 1 := by
@@ -30,17 +30,15 @@ theorem aug_map (q : ℕ) (A B : CommRingCat.{0}) (g : A ⟶ B) (ζ : Prim q A) 
   exact aug_mk q B _
 
 /- English proof (translation)
-Introduce `q _ V ζ`. Set `P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))` to `Scheme.Γ ⋙ twF q 0`. Set `x : P.obj (op V)` to `(Submodule.Quotient.mk (Finsupp.single ζ 1) : (twF q 0).obj Γ(V, ⊤))`. Set `φ` to `((toSheafify Scheme.etaleTopology P).app (op V)).hom`. Distinguish the cases in `hS : ∃ (c : ULift.{1} (ZMod q)), c • twGen 0 ζ = 0 ∧ c ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails.
 
-Take `⟨c, hc, hc0⟩` from `hS`. Establish `heq : φ (c • x) = φ 0`. Rewrite using `[φ.map_smul, φ.map_zero]`. Conclude with `hc`. Establish `hmem` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology P) (c • x) 0 heq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hne : ∃ (U : Scheme.{0}) (f : U ⟶ V), (Presheaf.equalizerSieve (F := P) (X := op V) (c • x) 0).arrows f`. It suffices to derive a contradiction. Take `⟨U, f, hf⟩` from `hne`. Apply `hc0` to reduce the goal to its premises. Establish `h1 : (P.map f.op).hom (c • x) = (P.map f.op).hom 0` using `hf`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[(P.map f.op).hom.map_smul, (P.map f.op).hom.map_zero]`. Set `y : (twF q 0).obj Γ(U, ⊤)` to `((twF q 0).map (Scheme.Γ.map f.op)).hom (Submodule.Quotient.mk (Finsupp.single ζ 1))`. Establish `h3 : aug q Γ(U, ⊤) y = 1` using `aug_map q _ _ _ ζ`. Establish `h4 : aug q Γ(U, ⊤) (c • y) = c • aug q Γ(U, ⊤) y` using `(aug q _).map_smul c y`. Establish `h5 : c • y = 0` using `h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h5, h3, map_zero, smul_eq_mul, mul_one]`. Conclude with `h4.symm`. Use `left push Not at hne`. Conclude with `(tw q 0).isSeparated V _ hmem _ _ (fun U f hf => absurd hf (hne U f))`. Use `right`.
-
-Introduce `c hc`. Assume the negation of the conclusion as `h0`. Conclude with `hS ⟨c, hc, h0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem LeafTw0TwFree_of : LateralTheory.E.LeafTw0LocSplitPfM.LeafTw0TwFree := by
   intro q _ V ζ

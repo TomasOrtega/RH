@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ep
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c < i`. Rewrite using `[hP i c hc, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ c j (lt_of_lt_of_le h (not_lt.1 hc)), mul_zero]`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun c _ hc => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[hP i c h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ c i h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem up_mul {R : Type} [CommRing R] {n : ℕ} {P Q : Matrix (Fin n) (Fin n) R}
     (hP : ∀ i j, j < i → P i j = 0) (hQ : ∀ i j, j < i → Q i j = 0) :
@@ -26,13 +26,13 @@ private theorem up_mul {R : Type} [CommRing R] {n : ℕ} {P Q : Matrix (Fin n) (
     · rw [hQ c i h, mul_zero]
 
 /- English proof (translation)
-Establish `key : wi * (r * y * s - y) * w = (wi * r * w) * (wi * y * w) * (wi * s * w) - wi * y * w`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc w wi, h2, Matrix.one_mul, ← Matrix.mul_assoc w wi, h2, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hRS : (wi * r * w) * (wi * s * w) = 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc w wi, h2, Matrix.one_mul, ← Matrix.mul_assoc r s, h3, Matrix.one_mul, h1]`. Take `⟨hA, hAd⟩` from `up_mul hr hy`. Take `⟨hB, hBd⟩` from `up_mul hA hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hRSd` using `(up_mul hr hs).2`. Rewrite using `[key]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, hB i j hij, hy i j hij, sub_zero]`. Rewrite using `[Matrix.sub_apply, hBd i, hAd i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hi` using `hRSd i`. Rewrite `hi` using `[hRS, Matrix.one_apply_eq]`. Take the linear combination `(-(wi * y * w) i i) * hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem up_conj {R : Type} [CommRing R] {n : ℕ} {w wi r s y : Matrix (Fin n) (Fin n) R}
     (h1 : wi * w = 1) (h2 : w * wi = 1) (h3 : r * s = 1)
@@ -59,13 +59,13 @@ private theorem up_conj {R : Type} [CommRing R] {n : ℕ} {w wi r s y : Matrix (
     linear_combination (-(wi * y * w) i i) * hi
 
 /- English proof (translation)
-Introduce `l _ F n x k m v y β hy hβc hβ`. Take `⟨hone, hmul, -, hw, -⟩` from `rho1 l F n x k (x.Am m)`. Take `⟨h1, h2⟩` from `hw v`. Establish `hT` using `(tri l F n x k (x.Am m) v).1`. Establish `hinv : ∀ g : F.Gv v, k.ρ1 (x.Am m) (F.φ v g) * k.ρ1 (x.Am m) (F.φ v g)⁻¹ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[← hmul, mul_inv_cancel, hone]`. Establish `hU : ∀ g : F.Gv v, (∀ i j, j < i → (k.wi1 (x.Am m) v * (β g : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) * k.w1 (x.Am m) v) i j = 0) ∧ ∀ i, (k.wi1 (x.Am m) v * (β g : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) * k.w1 (x.Am m) v) i i = 0`. Introduce `g`. Rewrite using `[hβ g]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `up_conj h1 h2 (hinv g) (hT g).1 ?_ (fun i j hij => hy i j hij)` and prove the remaining obligations. Establish `hg` using `(hT g⁻¹).1`. Rewrite `hg` using `[map_inv]`. Then use the resulting hypothesis. Use `⟨hβc, fun g h => ?_, fun g => fun i j hij => (hU g).1 i j hij, fun g _ i => (hU g).2 i⟩` and prove the remaining obligations. Rewrite using `[hβ (g * h), hβ g, hβ h, map_mul, hmul, _root_.mul_inv_rev, hmul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem UpperTheory.V.Pa.bMem :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (k : Kap x) (m : ℕ) (v : F.Vl) (y : k.M1 (x.Am m)) (β : F.Gv v → k.M1 (x.Am m)), y ∈ k.b1 (x.Am m) v → IsLocallyConstant β → (∀ g, (β g : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) = k.ρ1 (x.Am m) (F.φ v g) * y * k.ρ1 (x.Am m) (F.φ v g)⁻¹ - y) → β ∈ k.Zb (x.Am m) v := by

@@ -33,7 +33,7 @@ def Order : Prop :=
     (M : Vol G) (a : Arrow T), a.pair.InRange D.R.m → HaarAt M a.src → OrderAt W M a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (t : T) (m i j : ℕ) : ((Arrow.right i j : Arrow T).pair.InRange m ↔ i + 1 ≤ m ∧ j ≤ m) ∧
     ((Arrow.down t i j).pair.InRange m ↔ i ≤ m ∧ j + 1 ≤ m) ∧ ((Arrow.coreUp i : Arrow T).pair.InRange m ↔ i + 1 ≤ m) ∧
@@ -41,7 +41,7 @@ example (t : T) (m i j : ℕ) : ((Arrow.right i j : Arrow T).pair.InRange m ↔ 
   ⟨Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iff.rfl, Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (θ : InfFam D) (i j : ℕ) (φ : Fn G (.grid i j)) (φ' : Fn G (.core i)) :
     (G.IsListed θ (.grid i j) φ ↔ ∀ τ, IsTypeAt θ _ τ (parV D sc.cGap i j τ) fun g => star (φ g)) ∧

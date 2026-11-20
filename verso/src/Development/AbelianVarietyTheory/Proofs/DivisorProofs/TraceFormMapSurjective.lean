@@ -24,13 +24,11 @@ theorem traceFormMap_apply (F : Type) [Field F] [NumberField F] (κ : Type) [Fin
       ∑ i, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (X i * Y i) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `Y hY`. Establish `h0` using `LinearMap.congr_fun hY (fun i => GlobalTheory.VacLn.TrNondeg.conjM (Y i))`. Rewrite `h0` using `[traceFormMap_apply, LinearMap.zero_apply]`. Establish `hpi : (2 * Real.pi) ≠ 0` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∑ i, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (GlobalTheory.VacLn.TrNondeg.conjM (Y i) * Y i) = 0`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (neg_eq_zero.1 h) hpi`. Conclude with `h`. Establish `hnn : ∀ i, 0 ≤ Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (GlobalTheory.VacLn.TrNondeg.conjM (Y i) * Y i)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[GlobalTheory.VacLn.TrNondeg.trace_conjM_mul]`. Conclude with `add_nonneg (Finset.sum_nonneg fun w _ => sq_nonneg _) (Finset.sum_nonneg fun w _ => mul_nonneg (by norm_num) (Complex.normSq_nonneg _))`. Establish `e` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => hnn i).1 h1`. Use function extensionality and compare the values at `i`.
-
-Conclude with `GlobalTheory.VacLn.TrNondeg.eq_zero_of_trace_conjM_mul _ (e i (Finset.mem_univ _))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem traceFormMap_injective (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     Function.Injective (traceFormMap F κ) := by
@@ -55,7 +53,7 @@ theorem traceFormMap_injective (F : Type) [Field F] [NumberField F] (κ : Type) 
   exact GlobalTheory.VacLn.TrNondeg.eq_zero_of_trace_conjM_mul _ (e i (Finset.mem_univ _))
 
 /- English proof (translation)
-Establish `h` using `Subspace.dual_finrank_eq (K := ℝ) (V := κ → mixedEmbedding.mixedSpace F)`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank h.symm).1 (traceFormMap_injective F κ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem traceFormMap_surjective (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     Function.Surjective (traceFormMap F κ) := by
@@ -64,7 +62,7 @@ theorem traceFormMap_surjective (F : Type) [Field F] [NumberField F] (κ : Type)
     (traceFormMap_injective F κ)
 
 /- English proof (translation)
-Introduce `F _ _ κ _ L`. Take `⟨Y, hY⟩` from `traceFormMap_surjective F κ L.toLinearMap`. Conclude with `⟨Y, fun X => by rw [← traceFormMap_apply, hY]; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_trace_rep : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (L : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ), ∃ Y : κ → mixedEmbedding.mixedSpace F,

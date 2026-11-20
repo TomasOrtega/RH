@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivPro
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.isL_of_irreducible_prod_unitarisable_nu` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIsLanglandsQuotientOfIrreducibleUnitarySegmentPr.lean&line=9#L9)
 -/

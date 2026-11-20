@@ -11,7 +11,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing UpperTheory.V UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `IsLocallyConstant.desc f (Ideal.Quotient.mk ((⊥ : Ideal R) ^ 1)) (h 1) fun x y hxy => ?_` and prove the remaining obligations. Use `Ideal.Quotient.eq.1 hxy` as an intermediate fact. Rewrite `this` using `[pow_one, Ideal.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem ap_lc {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {f : Γ → R}
     (h : AdicCont (⊥ : Ideal R) f) : IsLocallyConstant f := by
@@ -20,7 +20,7 @@ private theorem ap_lc {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {f : Γ �
   rwa [pow_one, Ideal.mem_bot, sub_eq_zero] at this
 
 /- English proof (translation)
-Introduce `N` and use `by simp only [map_mul] exact (hf N).mul (hg N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ap_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R} {f g : Γ → R}
     (hf : AdicCont I f) (hg : AdicCont I g) : AdicCont I fun x => f x * g x := fun N => by
@@ -28,35 +28,29 @@ private theorem ap_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ide
   exact (hf N).mul (hg N)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx => by simpa [SModEq.bot] using hx 1⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ap_haus (R : Type) [CommRing R] : IsHausdorff (⊥ : Ideal R) R :=
   ⟨fun x hx => by simpa [SModEq.bot] using hx 1⟩
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ _ _ _ Φ l _ Λ _ _ _ _ _ a hS hMu hν Γb _ _ _ _ π hQ c hc R _ _ _ P hP rb hb hrb hfin`. Establish `h2k : (2 : ResidueField Λ) ≠ 0` using `hS.ok.two.ne_zero`. Establish `h2 : IsUnit (2 : Λ)`. Assume the negation of the conclusion as `h`. Conclude with `h2k (by rw [← map_ofNat (residue Λ) 2]; exact (residue_eq_zero_iff _).2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hrc⟩` from `(X1.descend Φ π hQ (maximalIdeal R)).1 P.r hP.1.pair.kill hP.1.cont`. Establish `hνc : AdicCont (maximalIdeal Λ) fun g => (((Units.map a.toMonoidHom).comp Φ.ν g : Λˣ) : Λ)`. Use `ap_mul (hS.cont 0) (hS.cont (Fin.rev 0))` as an intermediate fact. Use `(congrArg _ (funext fun g => ?_)).mp this` and prove the remaining obligations. Rewrite using `[← map_mul, ← Units.val_mul, hS.ok.mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨ν, hνe, hνc'⟩` from `(X1.descend Φ π hQ (maximalIdeal Λ)).2 ((Units.map a.toMonoidHom).comp Φ.ν) (fun g hg => Units.ext (hν g hg)) hνc`. Establish `hν' : ∀ g, (ν (π g) : Λ) = a (Φ.ν g)` using `fun g => congrArg Units.val (DFunLike.congr_fun hνe g)`. Establish `hr' : ∀ g, r (π g) = P.r g` using `fun g => DFunLike.congr_fun hr g`. Establish `hrb' : ∀ g, rb (π g) = c.r g` using `fun g => DFunLike.congr_fun hrb g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := ap_haus (ResidueField Λ)`. Take `⟨rb', hrb2, hrbc⟩` from `(X1.descend Φ π hQ (⊥ : Ideal (ResidueField Λ))).1 c.r hc.pair.kill hc.cont`. Establish `hrr : rb' = rb` using `MonoidHom.ext fun g => by`. Take `⟨g, rfl⟩` from `hQ.onto g`. Rewrite using `[hrb']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `DFunLike.congr_fun hrb2 g`. Substitute `hrr` using the available equality. Establish `hWP : WP (Φ.loc π) (fun g => algebraMap Λ R (ν g)) r P.n`. Use `⟨fun g => ?_, fun v => (hP.1.pair.low v).1, fun v s => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hQ.onto g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hν', hr']`. Conclude with `hP.1.pair.mult g`. Use `show IsUp (adj (P.n v) * r (π s) * P.n v)`. Rewrite using `[hr']`. Conclude with `hP.1.pair.flag v s s.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hob` using `X1.obWeak h2 (Φ.loc π) (fun v => hQ.cont.comp continuous_subtype_val) ν r P.n hνc' hWP hrc rb' c.n hb (fun g => by`. Take `⟨g, rfl⟩` from `hQ.onto g`. Rewrite using `[hr', hrb', ← hP.1.red]`. Use the proof step `rfl) (fun v => by rw [← hP.1.red]; rfl)`. Take `⟨m, π₀, f, hπ₀, hker, hcard⟩` from `obs_pres Λ R (Fr.coneH2 (Φ.loc π) (adSp rb' hb) fun v => bor (c.n v)) (fun A _ _ _ p hp hm κ _ ε hε hind => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨o, ho⟩` from `hob A p hp hm κ ε hε hind`. Use `⟨o, fun d hd A' _ _ _ p' p'' η k1 k2 k3 k4 k5 => ?_⟩` and prove the remaining obligations. Take `⟨q1, q2, q3⟩` from `ho d hd A' p' p'' η k1 k2 k3 k4 k5`. Conclude with `X1.sect Φ l a hS hMu π hQ c hc R P hP ν r hν' hr A' p'' q1 q2 q3)`. Use `⟨m, ⟨π₀, f, hπ₀, hker⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `X1.tanInj Φ l a hS hMu π hQ c hc R P hP rb' hb hrb`. Establish `hq : 1 < Nat.card (ResidueField Λ)` using `Finite.one_lt_card`. Use `haveI : Finite (R →ₐ[Λ] DualNumber (ResidueField Λ)) := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Use `haveI hT := Finite.of_injective t ht`. Establish `hle` using `Nat.card_le_card_of_injective t ht`.
-
-Establish `hMF : Module.Finite (ResidueField Λ) (TanC (Φ.loc π) (adSp rb' hb) (fun v => bor (c.n v)) (fun v => nil (c.n v)) (π Φ.g0) (tor (ResidueField Λ)))` using `Module.Finite.of_finite`. Rewrite `hle` using `[hcard, Module.natCard_eq_pow_finrank (K := ResidueField Λ), Nat.pow_le_pow_iff_right hq]`. Take `⟨d1, d2⟩` from `X1.spDims (ResidueField Λ) h2k`. Take `⟨a1, a2⟩` from `X1.adFacts rb' hb`. Establish `hct` using `X1.coneTan (Φ.loc π) (adSp rb' hb) (fun v => bor (c.n v)) (fun v => nil (c.n v)) (π Φ.g0) (tor (ResidueField Λ)) (a1 fun i j => ap_lc (hrbc i j)).2 (fun v s => a2 (c.n v) _ (hc.pair.low v).1 (by show IsUp (adj (c.n v) * rb' (π s) * c.n v)`.
-
-Rewrite using `[hrb']`. Conclude with `hc.pair.flag v s s.2)`. Use the proof step `(by show IsUp (adj (c.n v) * rb' (π s)⁻¹ * c.n v)`. Rewrite using `[← map_inv, hrb']`. Conclude with `hc.pair.flag v _ (inv_mem s.2)))`.
-
-Use the proof step `(fun v => (d2 _ (hc.pair.low v).1).2) hMF`. Rewrite `hct` using `[d1]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.X1.absPres :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (Φ : Fr O Γ) (l : ℕ) [Fact l.Prime] {Λ : Type} [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] [Finite (ResidueField Λ)] (a : O →+* Λ), Φ.Std l a → (∀ v, Φ.Mu v = ∅) → (∀ g ∈ Φ.N, a (Φ.ν g) = 1) → ∀ {Γb : Type} [Group Γb] [TopologicalSpace Γb] [IsTopologicalGroup Γb] [T2Space Γb] (π : Γ →* Γb), Φ.Quo π → ∀ c : PD Φ.ι Γ (ResidueField Λ), Φ.IsRes ((residue Λ).comp a) c → ∀ (R : Type) [CommRing R] [Algebra Λ R] [IsCO Λ R] (P : PD Φ.ι Γ R), Φ.IsDef a c P → ∀ (rb : Γb →* M4 (ResidueField Λ)) (hb : ∀ g, ∃ x, IsGSp x (rb g)), rb.comp π = c.r → Module.Finite (ResidueField Λ) (Fr.coneH2 (Φ.loc π) (adSp rb hb) fun v => bor (c.n v)) → ∃ m : ℕ, HasPres Λ R m (Module.finrank (ResidueField Λ) (Fr.coneH2 (Φ.loc π) (adSp rb hb) fun v => bor (c.n v))) ∧ Module.finrank (ResidueField Λ) (Fr.H1C (Φ.loc π) (adSp rb hb) fun v => bor (c.n v)) + 2 ≤ m + Module.finrank (ResidueField Λ) (Fr.coneH0 (adSp rb hb) fun v => bor (c.n v)) := by

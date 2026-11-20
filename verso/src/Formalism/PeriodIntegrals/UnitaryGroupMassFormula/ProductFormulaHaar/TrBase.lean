@@ -33,7 +33,7 @@ def LocFam.Φ (D : LocFam F ℓ ι) : ℚ_[ℓ] ⊗[ℚ] F →ₐ[ℚ_[ℓ]] (�
     (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[LocFam.Φ, Algebra.ofId_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem LocFam.Φ_tmul (D : LocFam F ℓ ι) (c : ℚ_[ℓ]) (x : F) (i : ι) :
     D.Φ (c ⊗ₜ x) i = algebraMap ℚ_[ℓ] (D.K i) c * D.ιF i x := by

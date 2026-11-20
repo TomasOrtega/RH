@@ -14,21 +14,21 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.EvKer
 
 /- English proof (translation)
-Introduce `F _ _ κ _ e ei ev hSB hstd hpure hinj v ψ hψ hev`. Assume the negation of the conclusion as `hne`. Take `⟨f₀, hf₀⟩` from `GlobalTheory.TensUniq.exists_sInf_ne_zero F κ`. Use `set φ : ∀ w : Pl F, (κ → Fv F w) → ℂ := Function.update (fun w => stdInd F κ w) v ψ with hφdef`. Establish `hφSB : ∀ w, φ w ∈ SB (κ → Fv F w)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify `hψ` using `[φ]`. Simplify `GlobalTheory.StdVacuum.indicator_mem_SB (κ := κ) w` using `[φ, Function.update_of_ne h, stdInd]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hφev : ∀ᶠ w in cofinite, φ w = stdInd F κ w`. Conclude with `(Filter.eventually_cofinite_ne v).mono fun w h => by simp [φ, Function.update_of_ne h]`. Establish `hmem : pure f₀ φ ∈ schA F κ` using `GlobalTheory.TensUniq.pure_mem_schA f₀ φ hφSB (by simpa [stdInd] using hφev)`. Establish `hcomp : (fun w => ev w (φ w)) = Function.update (fun w => ev w (stdInd F κ w)) v 0`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `[φ, hev]`. Simplify using `[φ, Function.update_of_ne h]`. Establish `hevstd : ∀ᶠ w in cofinite, (fun w => ev w (stdInd F κ w)) w = {x : κ → Fv F w | ∀ i, x i ∈ HeightOneSpectrum.adicCompletionIntegers F w}.indicator 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `hstd` using `[stdInd]`. Take `⟨r, -, hr⟩` from `GlobalTheory.PureFactor.exists_rest_factor v (ei f₀) _ hevstd`. Establish `hzero : e (pure f₀ φ) = 0`. Rewrite using `[hpure f₀ φ hφSB hφev, hcomp, ← hr 0]`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[tens]`. Establish `h0 : pure f₀ φ = 0` using `hinj hmem (Submodule.zero_mem _) (by rw [hzero, map_zero])`. Establish `hall : ∀ w, φ w ≠ 0`. Introduce `w`. Distinguish the cases in `h : w = v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `h` using the available equality. Simplify `hne` using `[φ]`. Simplify using `only [φ, Function.update_of_ne h]`. Introduce `h1`. Use `congrFun h1 0` as an intermediate fact.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[stdInd, Set.indicator, zero_mem] at this`. Use `GlobalTheory.EvInj.eq_zero_of_pure_eq_zero f₀ φ hall (by simpa [stdInd] using hφev) h0` as an intermediate fact. Conclude with `hf₀ (by rw [this]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem ker_trivial : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (ei : SInf F κ →L[ℂ] SInf F κ)
     (ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] (κ → Fv F v) → ℂ),

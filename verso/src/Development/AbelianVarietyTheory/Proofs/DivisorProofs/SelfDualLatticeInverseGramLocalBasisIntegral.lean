@@ -6,25 +6,23 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set G := Xᵀ * J * X.map σ with hGdef`. Use `set a : Fin n → E := fun j => e * G⁻¹ i j with ha`. Establish `haG : a ᵥ* G = fun j => if j = i then e else 0`. Establish `h1 : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hG`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrFun (congrFun h1 i) j`. Simplify using `only [Matrix.mul_apply, Matrix.one_apply] at h2`. Simplify using `only [Matrix.vecMul, dotProduct, ha, mul_assoc, ← Finset.mul_sum, h2]`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h, Ne.symm h]`. Establish `key : ∀ c : Fin n → E, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J (X *ᵥ a) (X *ᵥ c) = e * σ (c i)`. Introduce `c`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form`. Establish `h1 : (fun j => σ ((X *ᵥ c) j)) = X.map σ *ᵥ (fun j => σ (c j))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[h1, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.dotProduct_mulVec, haG]`. Simplify using `[dotProduct]`. Establish `hXX : X⁻¹ * X = 1` using `Matrix.nonsing_inv_mul X hX`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXX' : X * X⁻¹ = 1` using `Matrix.mul_nonsing_inv X hX`. Establish `hform_smul : ∀ (t : E) (u v : Fin n → E), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J (t • u) v = t * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J u v`. Introduce `t u v`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form`. Rewrite using `[smul_dotProduct, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set y : Fin n → E := (s : E) • (X *ᵥ a) with hy`. Establish `hyL : y ∈ L`. Use `(hL y).2 fun x hx o => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hsr x hx i`. Establish `hx' : X *ᵥ (X⁻¹ *ᵥ x) = x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, hXX', Matrix.one_mulVec]`. Establish `h3 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J y x = e * (r : E)`. Rewrite using `[hy, hform_smul, ← hx', key, ← hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (o : E) * (e * (r : E)) = ((o * r : 𝓞 E) : E) * e` using `by push_cast; ring`. Rewrite using `[h4]`. Conclude with `he (o * r)`. Establish `h5` using `hval y hyL k`. Establish `h6 : (X⁻¹ *ᵥ y) k = (s : E) * (e * G⁻¹ i k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hXX, Matrix.one_mulVec]`. Both sides reduce to the same expression. Rewrite `h5` using `[h6, map_mul]`. Establish `hsv : w.valuation E (s : E) = 1` using `(w.valuation_eq_one_iff_notMem (K := E)).2 hs`. Rewrite `h5` using `[hsv, one_mul]`.
-
-Conclude with `h5`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_inv_gram_integral (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E))

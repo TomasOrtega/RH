@@ -11,17 +11,15 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.R6
 open Formalism.HermitianLattices.Ext.L3
 
 /- English proof (translation)
-Introduce `K F V ι _ _ _ _ _ _ _ _ _ _ _ _ _ h X x 𝔞 hcm hfix h2 hsymm hstar hne hind hspan hdet hint`. Establish `hJ0 : (∏ i, 𝔞 i ^ 2) * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (gram h x).det ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => pow_ne_zero _ (hne i)) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hdet)`. Establish `key : ∀ (𝔭 : Ideal (𝓞 F)) (P : HeightOneSpectrum (𝓞 K)), 𝔭.IsMaximal → P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 K)) = 𝔭 → FractionalIdeal.count K P ((∏ i, 𝔞 i ^ 2) * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (gram h x).det) = ((P.asIdeal.ramificationIdx (𝓞 F) * vJ h X (pb …`. Introduce `𝔭 P h𝔭 hP`. Take `⟨b, a, hba⟩` from `hE K F V ι h X x 𝔞 hcm hfix h2 hsymm hstar hne hind hspan hdet hint 𝔭 h𝔭`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcount : ∀ b' a', IsJordanIn h X (pbLat x 𝔞) 𝔭 b' a' → FractionalIdeal.count K P ((∏ i, 𝔞 i ^ 2) * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (gram h x).det) = ((P.asIdeal.ramificationIdx (𝓞 F) * vJof 𝔭 a' : ℕ) : ℤ)`. Introduce `b' a' h'`. Rewrite using `[hD K F V ι h X x 𝔞 hfix hstar hne hind hspan hdet 𝔭 b' a' h𝔭 h' P hP, hC K F _ 𝔭 P a' h𝔭 hP h'.2.2.2.2]`. Both sides reduce to the same expression. Establish `he : P.asIdeal.ramificationIdx (𝓞 F) ≠ 0` using `by haveI := P.isPrime`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(Ideal.ramificationIdx_pos P.asIdeal (𝓞 F)).ne'`. Establish `hv : vJ h X (pbLat x 𝔞) 𝔭 = vJof 𝔭 a`. Unfold `vJ`. Establish `hset : {v | ∃ b a, IsJordanIn h X (pbLat x 𝔞) 𝔭 b a ∧ v = vJof 𝔭 a} = {vJof 𝔭 a}`. Use extensionality with `v`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b', a', h', rfl⟩`. Establish `h3` using `(hcount b' a' h').symm.trans (hcount b a hba)`. Establish `h4 : P.asIdeal.ramificationIdx (𝓞 F) * vJof 𝔭 a' = P.asIdeal.ramificationIdx (𝓞 F) * vJof 𝔭 a`. Conclude with `h3` after adjusting the coercions.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero he) h4`. Introduce and unpack `rfl`. Conclude with `⟨b, a, hba, rfl⟩`. Rewrite using `[hset, csInf_singleton]`. Rewrite using `[hv]`.
-
-Conclude with `hcount b a hba`. Conclude with `hA K F h2 _ (vJ h X (pbLat x 𝔞)) hJ0 key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nMPseudo_of (hE : JordanExists) (hD : DetLocal) (hC : CountExt) (hA : NormAssembly) : NMPseudo := by
   intro K F V ι _ _ _ _ _ _ _ _ _ _ _ _ _ h X x 𝔞 hcm hfix h2 hsymm hstar hne hind hspan hdet hint

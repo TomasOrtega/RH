@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `l _ D D' _ _ _ _ α ε ε' d hε H k hk R M M' _ _ _ _ _ _ _ ρ ρ' b hLC hb`. Set `β : D' →* D` to `α.symm.toMulEquiv.toMonoidHom`. Set `σ : Representation R D' M` to `ρ.comp β`. Set `σ' : Representation R D' M'` to `ρ'.comp β`. Establish `hσ : ∀ g, σ g = ρ (α.symm g)` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσ' : ∀ g, σ' g = ρ' (α.symm g)` using `fun _ => rfl`. Establish `h1 : LC σ` using `fun m => (hLC m).comp_continuous α.symm.continuous`. Establish `h2 : DualPair k ε' σ σ' b`. Use `⟨hb.left, hb.right, fun g x y => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ, hσ', hb.equiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hε, ContinuousMulEquiv.apply_symm_apply]`. Take `⟨hf, hc⟩` from `H k hk R M M' σ σ' b h1 h2`. Set `e : Zl ρ ≃ Zl σ` to `{ toFun := fun z => ⟨fun g => z.1 (α.symm g), z.2.1.comp_continuous α.symm.continuous, fun g h => by beta_reduce`. Rewrite using `[map_mul, z.2.2, hσ]⟩`. Use `invFun := fun z => ⟨fun g => z.1 (α g), z.2.1.comp_continuous α.continuous, fun g h => by beta_reduce`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, z.2.2, hσ, ContinuousMulEquiv.symm_apply_apply]⟩`. Use `left_inv := fun z => Subtype.ext (funext fun g => by simp)`. Use `right_inv := fun z => Subtype.ext (funext fun g => by simp) }`. Establish `hi : ρ'.invariants = σ'.invariants`. Use extensionality with `m`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Simplify using `only [Representation.mem_invariants, hσ']`. Conclude with `⟨fun h g => h _, fun h g => by simpa using h (α g)⟩`. Conclude with `⟨Finite.of_equiv _ e.symm, by rw [Nat.card_congr e, hc, hi]⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.locCntCongr :
     ∀ (l : ℕ) [Fact l.Prime] (D D' : Type) [Group D] [TopologicalSpace D] [Group D'] [TopologicalSpace D'] (α : D ≃ₜ* D') (ε : D →* ℤ_[l]ˣ) (ε' : D' →* ℤ_[l]ˣ) (d : ℕ), (∀ g, ε g = ε' (α g)) → LocCnt D' ε' d → LocCnt D ε d := by

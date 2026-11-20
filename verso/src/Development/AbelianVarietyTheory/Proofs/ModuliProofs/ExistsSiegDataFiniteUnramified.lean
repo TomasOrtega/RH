@@ -18,18 +18,16 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM.SiegClause
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull L' ψ ψ rfl) (chartPullSame L _ _ _ ψ fun _ => rfl) h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_pull {X X' X'' : Scheme.{0}} {L : LB X} {L' : LB X'} {φ : X' ⟶ X} (h : LBIso L' (L.pull φ))
     (ψ : X'' ⟶ X') : LBIso (L'.pull ψ) (L.pull (ψ ≫ φ)) :=
   LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull L' ψ ψ rfl) (chartPullSame L _ _ _ ψ fun _ => rfl) h
 
 /- English proof (translation)
-Establish `pa : ∀ I : Finset (Fin 2), psum A (x2 A) I ≫ e = (e ⊗ₘ e) ≫ psum B (x2 B) I`. Introduce `I`. Use `(psum_hom (MonoidHom.mk' (fun z : G2 A ⟶ A => z ≫ e) fun a b => MonObj.mul_comp a b _) _ I).trans (Eq.trans (congrArg (fun z => psum B z I) (funext fun k => ?_)) (psum_hom (preHom (e ⊗ₘ e)) _ I).symm)` and prove the remaining obligations. Use `fin_cases k`. Conclude with `(tensorHom_fst e e).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(tensorHom_snd e e).symm`. Establish `hB : (abelian₂ B M).IsLB` using `DVR.linComb_isLB M hM _ _`. Establish `r : LBIso (abelian₂ B M) (abelian₂ B M)` using `GlobalTheory.PolBaseChange.lbIso_refl hB`. Establish `h₁ : LBIso (abelian₂ A L) (abelian₂ A (M.pull e.left))` using `GlobalTheory.PowPrimitive.lbIso_linComb h _ _`. Establish `h₂ : LBIso (abelian₂ A (M.pull e.left)) ((abelian₂ B M).pull (e ⊗ₘ e).left)` using `LBIso.chartPull (chartPullLinComb M e.left (K := ULift.{0} (Finset (Fin 2))) (fun I => (psum A (x2 A) I.down).left) (fun I => (psum B (x2 B) I.down).left) (fun I => (-1) ^ (2 - I.down.card)) (e ⊗ₘ e).left (fun I => congrArg (fun z => z.left) (pa I.down))) (ReciprocityTheory.Chart …`.
-
-Conclude with `LBIso.trans (DVR.linComb_isLB L hL _ _) (DVR.linComb_isLB _ (pull_isLB hM _) _ _) (pull_isLB hB _) h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_lam_pull {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (e : A ⟶ B) [IsMonHom e] {L : LB A.left} {M : LB B.left} (hL : L.IsLB) (hM : M.IsLB)
@@ -52,9 +50,9 @@ theorem lbIso_lam_pull {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj 
   exact LBIso.trans (DVR.linComb_isLB L hL _ _) (DVR.linComb_isLB _ (pull_isLB hM _) _ _) (pull_isLB hB _) h₁ h₂
 
 /- English proof (translation)
-Set `G : La →+ Additive Γ` to `AddMonoidHom.mk' (fun x => Additive.ofMul (F x)) fun x y => congrArg _ (hF x y)`. Set `G' : La →+ Additive Γ` to `AddMonoidHom.mk' (fun x => Additive.ofMul (F' x)) fun x y => congrArg _ (hF' x y)`. Establish `e : G.toIntLinearMap ∘ₗ bas.toLinearMap = G'.toIntLinearMap ∘ₗ bas.toLinearMap` using `(Pi.basisFun ℤ κ).ext fun i => by`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `congrArg Additive.ofMul (h i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Take `⟨y, rfl⟩` from `bas.surjective x`. Conclude with `Additive.ofMul.injective (LinearMap.congr_fun e y)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_basis {κ La Γ : Type} [Fintype κ] [DecidableEq κ] [AddCommGroup La] [CommGroup Γ]
     (bas : (κ → ℤ) ≃ₗ[ℤ] La) (F F' : La → Γ) (hF : ∀ x y, F (x + y) = F x * F y)
@@ -70,7 +68,7 @@ theorem eq_of_basis {κ La Γ : Type} [Fintype κ] [DecidableEq κ] [AddCommGrou
   exact Additive.ofMul.injective (LinearMap.congr_fun e y)
 
 /- English proof (translation)
-Set `U : Over.mk ((𝟙_ (Over B')).hom ≫ f) ⟶ 𝟙_ (Over B)` to `Over.homMk f (by simp)`. Establish `e` using `H.2 (𝟙_ (Over B')) x y (U ≫ x₀) (U ≫ y₀) hx.symm hy.symm`. Rewrite `e` using `[← MonObj.comp_mul]`. Use `Over.OverMorphism.ext (H.1.hom_ext (hz.trans e) ?_)` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_of_isGrpPullback {B B' : Scheme.{0}} {G : Over B} {G' : Over B'} [GrpObj G] [GrpObj G']
     {f : B' ⟶ B} {φ : G'.left ⟶ G.left} (H : IsGrpPullback G' G f φ) (x y z : 𝟙_ (Over B') ⟶ G')
@@ -83,21 +81,19 @@ theorem mul_of_isGrpPullback {B B' : Scheme.{0}} {G : Over B} {G' : Over B'} [Gr
   rw [Over.w, Over.w]
 
 /- English proof (translation)
-Introduce `hL hL2 hTh E _ _ _ H D g J _ a w w' bas hpq hbas hw hw' hcl k o _ b em ρ hodd h3 hsq hρ hζ hAr X s t τ hrep hpel p Ag hp hkp hS bas' hbas' lev hlev O _ i z bb hi hz hbb T sT f tT ν levT hpb hlevT`. Take `⟨t', ht'⟩` from `GlobalTheory.tObj_pull o g k J b X T s (sT ≫ spMap bb) f t hpb.w`. Take `⟨c, u, hc, hu, hpbS, hfin, hunr⟩` from `GlobalTheory.SiegelClassify.exists_classifying_finite_unramified hL hL2 hTh E H D g J a w w' bas hpq hbas hw hw' hcl k o b em ρ hodd h3 hsq hρ hζ hAr X s t τ hrep hpel p Ag hp hkp hS bas' hbas' O i z bb hi hz hbb T sT f hpb t' ht'`. Use `⟨u, ?_, hfin, hunr⟩` and prove the remaining obligations. Take `⟨ψ, hψ, hψL, hψp, -⟩` from `ht'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₀, hφ₀, hφL, -, hadd, hφp⟩` from `hlev`. Use `letI := t'.ab.comm`. Take `⟨χ, hχ, hχL, hχp⟩` from `hc`. Establish `hcart : IsGrpPullback tT.G t.A f (ν.φ ≫ φ₀.hom.left)` using `(ν.cart.comp (isGrpPullback_of_iso φ₀)).congr (Category.comp_id _) rfl`. Take `⟨e, he, hee⟩` from `grpPullback_iso hψ hcart`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hν : LBIso tT.PP.L (τ.PP.L.pull ν.φ)` using `ν.lin.imp fun _ h => h.1`. Establish `h₁ : LBIso tT.PP.L (t.L.pull (ν.φ ≫ φ₀.hom.left))` using `LBIso.trans tT.PP.isLB (pull_isLB τ.PP.isLB _) (pull_isLB t.isLB _) hν (lbIso_pull_pull hφL _)`. Establish `h₂ : LBIso t'.L (tT.PP.L.pull e.hom.left)`. Use `lbIso_pull_pull h₁ e.hom.left` as an intermediate fact. Rewrite `this` using `[hee]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LBIso.trans t'.isLB (pull_isLB t.isLB _) (pull_isLB tT.PP.isLB _) hψL this.symm`. Establish `h₃` using `lbIso_pull_pull (lbIso_lam_pull e.hom t'.isLB tT.PP.isLB h₂) (χ.hom ⊗ₘ χ.hom).left`. Establish `hm : IsMonHom (χ ≪≫ e).hom` using `inferInstanceAs (IsMonHom (χ.hom ≫ e.hom))`. Establish `haddT : ∀ x y, levT (x + y) = levT x * levT y` using `fun x y => mul_of_isGrpPullback ν.cart _ _ _ (lev x) (lev y) (hlevT x) (hlevT y) (by rw [← hadd]; exact hlevT _)`. Establish `key : (fun x => c.lev (bas'.symm x) ≫ χ.hom ≫ e.hom) = levT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_of_basis bas _ _ (fun x y => ?_) haddT fun j => ?_` and prove the remaining obligations. Rewrite using `[map_add, c.lev_add, MonObj.mul_comp]`. Use `Over.OverMorphism.ext (hcart.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Establish `q₁ : (levT (bas (Pi.single j 1))).left ≫ ν.φ ≫ φ₀.hom.left = f ≫ (t.pt j).left` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ₀.hom.left) (hlevT _)).trans ((Category.assoc _ _ _).trans (congrArg (f ≫ ·) (hφp j))))`. Establish `q₂ : (c.lev (bas'.symm (bas (Pi.single j 1))) ≫ χ.hom).left ≫ e.hom.left ≫ ν.φ ≫ φ₀.hom.left = f ≫ (t.pt j).left`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hee, hχp]`. Conclude with `hψp j`. Use `Eq.trans ?_ (q₂.trans q₁.symm)` and prove the remaining obligations. Simplify using `only [Over.comp_left, Category.assoc]`. Use `⟨c, (χ ≪≫ e).hom.left, (χ.hom ⊗ₘ χ.hom).left ≫ (e.hom ⊗ₘ e.hom).left, isGrpPullback_of_iso _, ⟨?_, ?_⟩, LBIso.trans c.isLB (pull_isLB (DVR.linComb_isLB _ t'.isLB _ _) _) (pull_isLB (DVR.linComb_isLB _ tT.PP.isLB _ _) _) hχL h₃, fun v => ?_, hu, hpbS⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Over.comp_left]`. Simplify using the standard rewrite rules. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Over.comp_left]`. Simplify using the standard rewrite rules. Rewrite using `[← key]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_siegData_finite_unramified : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (J : Type) [Finite J] (a : J → 𝓞 E) (w w' : J) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La), 1 ≤ D.p + D.q → IsSympBasis D bas → a w = H.w0 → a w' = H.bar H.w0 → Subring.closure (Set.range a) = ⊤ → ∀ (k : ℕ) (o : Type) [CommRing o] (b : TBase o k) (em : o →+* ℂ) (ρ : o), Odd k → 3 ≤ k → (∃ N' : ℕ, k = N' ^ 2) → em ρ = H.rt0 → em (b.ζ : o) = zeta k → ArBase em → ∀ (X : Scheme.{0}) (s : X ⟶ Sp o) (t : TObj g k J b s) (τ : SAB H X), PELRep D a bas ρ t → IsPEL D a bas ρ t τ → ∀ (p : ℕ) (Ag : SiegelFamily g p k), p.Prime → k.Coprime p → SRep Ag → ∀ (bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La), (∀ x y, D.EF (bas' x) (bas' y) = omegaStd x y) → ∀ lev : D.La → (𝟙_ (Over X) ⟶ τ.G), LevUnder D a bas t τ lev → ∀ (O : Type) [CommRing O] (i : O →+* ℂ) (z : ZP p k →+* O) (bb : o →+* O), Function.Injective i → GlobalTheory.Models.IsInc (ZP p k).subtype i z → GlobalTheory.Models.IsInc em i bb → ∀ (T : Scheme.{0}) (sT : T ⟶ Sp O) (f : T ⟶ X) (tT : SAB H T) (ν : SABMap tT τ f) (levT : D.La → (𝟙_ (Over T) ⟶ tT.G)), IsPullback f sT s (spMap bb) → (∀ x, (levT x).left ≫ ν.φ = f ≫ (lev x).left) → ∃ u : T ⟶ pullback Ag.s (spMap z), GlobalTheory.Models.SiegData sT tT levT Ag z bas' u ∧ IsFinite u ∧ FormallyUnramified u := by
   intro hL hL2 hTh E _ _ _ H D g J _ a w w' bas hpq hbas hw hw' hcl k o _ b em ρ hodd h3 hsq hρ hζ hAr X s t τ hrep hpel

@@ -23,15 +23,15 @@ noncomputable section
 namespace GlobalTheory.SwapActs
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv t ι hι d' hd' dd hdd omd hspl f hf1 hf2 hf3 hf4 hf5 w hw`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Take `⟨hAt, -⟩` from `GlobalTheory.T.local_idempotent_character_value σ hcm (incM F G.V'.J) (d := a + a') v t f hf1 hf2 hf3 hf4 hf5 w hw`. Establish `atAct : ∀ u : Matrix (Fin (a + a')) (Fin a' ⊕ Fin a') (AE F E), At (evFin F v) u → At (evFin F v) (actB (cA σ) w u)`. Introduce `u hu r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [actB]`. Rewrite using `[← Matrix.smul_mul, hu r hr, Matrix.zero_mul]`. Establish `hex` using `GlobalTheory.T.doubledUnitaryElement_acts_localOperatorAtPlace F E σ B a a' G hT.base dd omd hspl v w hAt`. Take `⟨S, hS, hSh⟩` from `GlobalTheory.T.splitting_preserves_local_schwartz dd B.ψ hT.base.std (actB (cA σ)) omd hspl.toIsSplitting v w atAct hex`. Establish `hSlin` using `GlobalTheory.LocWeilAct.linear_of_acts v (omd w) S hS`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.linear_bar_model_local_triple F E σ B a a' G X om om' hT v t ι hι d' hd' dd hdd f hf1 hf2 hf3 hf4 hf5 w hw S (fun Φ hΦ => (hS Φ hΦ).1) hSlin hSh`. Use `⟨c, fun φ₁ h₁ φ₂ h₂ ψ₁ k₁ ψ₂ k₂ e₁ e₂ => ?_⟩` and prove the remaining obligations. Establish `hbij` using `GlobalTheory.T.slice_transform_schwartz_bijective ι hι.bij`. Establish `hΦ` using `GlobalTheory.BoxSpan.boxFun_mem_SB' h₁ h₂`. Establish `hΨ : c • boxFun ψ₁ ψ₂ ∈ SB ((Fin a' × Fin (a + a')) ⊕ (Fin a' × Fin (a + a')) → Fv F v)` using `(SB _).smul_mem c (GlobalTheory.BoxSpan.boxFun_mem_SB' k₁ k₂)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : S (boxFun φ₁ φ₂) = c • boxFun ψ₁ ψ₂`. Use `hbij.injOn (hS _ hΦ).1 hΨ ?_` and prove the remaining obligations. Rewrite using `[hc _ hΦ, map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `Z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.comp_apply, GlobalTheory.SwapSlice.sliceT_boxFun, GlobalTheory.SwapSlice.sliceT_boxFun, GlobalTheory.SwapSlice.swapNeg_apply, GlobalTheory.SwapSlice.barL_apply, GlobalTheory.SwapSlice.barL_apply, e₁, e₂]`. Simplify using `only [Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(hS _ hΦ).2`. Rewrite `h` using `[key]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem swap_acts_box : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

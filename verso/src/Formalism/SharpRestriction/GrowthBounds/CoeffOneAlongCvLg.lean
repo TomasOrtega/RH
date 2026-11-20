@@ -14,15 +14,15 @@ namespace SelfConjCharts
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Rewrite using `[← tyS_Vpow hl]`. Apply `tyS_eq hl` to reduce the goal to its premises. Introduce `s`. Rewrite using `[map_sum]`. Simplify using `only [PowerSeries.coeff_rescale, coeff_tyS_pow hl]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_mul]`. Consider the cases of `s with`. Consider the case `zero`. Simplify using `only [pow_zero, pow_one]`. Rewrite using `[hζ.geom_sum_eq_zero (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ s`. Establish `h1 : ∀ k, (ζ ^ k) ^ (l ^ (s + 1)) = 1`. Introduce `k`. Rewrite using `[← pow_mul, mul_comm, pow_mul, pow_succ', pow_mul, hζ.pow_eq_one, one_pow, one_pow]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Simplify using the standard rewrite rules. Introduce `m hm`. Rewrite using `[map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k _`. Rewrite using `[PowerSeries.coeff_rescale, coeff_tyS_of_ne _ m hm, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_tyS_Fs {l : ℕ} (hl : 2 ≤ l) {ζ : C} (hζ : IsPrimitiveRoot ζ l) (a : ℕ → C) :
     PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ l) (tyS l fun s => (l : C) * a (s + 1)) =
@@ -51,7 +51,7 @@ theorem subst_tyS_Fs {l : ℕ} (hl : 2 ≤ l) {ζ : C} (hζ : IsPrimitiveRoot ζ
     rw [PowerSeries.coeff_rescale, coeff_tyS_of_ne _ m hm, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use extensionality with `n`. Simplify using `only [PowerSeries.coeff_rescale, PowerSeries.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rescale_sum_smul {ι : Type} [Fintype ι] (a : C) (u : ι → C) (f : ι → PowerSeries C) :
     PowerSeries.rescale a (∑ c, u c • f c) = ∑ c, u c • PowerSeries.rescale a (f c) := by
@@ -62,7 +62,7 @@ theorem rescale_sum_smul {ι : Type} [Fintype ι] (a : C) (u : ι → C) (f : ι
   ring
 
 /- English proof (translation)
-Establish `hS : PowerSeries.HasSubst ((PowerSeries.X : PowerSeries C) ^ n)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hn.ne'])`. Rewrite using `[← PowerSeries.coe_substAlgHom hS, map_sum]`. Simplify using `only [map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_pow_sum_smul {n : ℕ} (hn : 0 < n) {ι : Type} [Fintype ι] (u : ι → C) (f : ι → PowerSeries C) :
     PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ n) (∑ c, u c • f c) =
@@ -75,11 +75,11 @@ theorem subst_pow_sum_smul {n : ℕ} (hn : 0 < n) {ι : Type} [Fintype ι] (u : 
 variable {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Rewrite using `[coeff_alongCv_low le_rfl (fun j m hm => by`. Establish `: m = 0` using `by omega`. Substitute `this` using the available equality. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hγ j]) (hB.lg0 i)]`. Rewrite using `[Finset.sum_eq_single i]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB.lin i _ (by simp), MvPowerSeries.coeff_X, if_pos rfl, one_mul]`. Introduce `j _ hj`. Rewrite using `[hB.lin i _ (by simp), MvPowerSeries.coeff_X, if_neg, zero_mul]`. Introduce `h`. Conclude with `hj (Finsupp.single_left_injective one_ne_zero h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem coeff_one_alongCv_lg (X : RawChart C d I κ) {V : VF C} (hB : Basic X V) {γ : κ → PowerSeries C}
     (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0) (i : κ) :
@@ -98,14 +98,14 @@ theorem coeff_one_alongCv_lg (X : RawChart C d I κ) {V : VF C} (hB : Basic X V)
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `h` using `coeff_tyS_pow hl a 0`. Rewrite `h` using `[pow_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coeff_one_tyS {l : ℕ} (hl : 2 ≤ l) (a : ℕ → C) : PowerSeries.coeff 1 (tyS l a) = a 0 := by
   have h := coeff_tyS_pow hl a 0
   rwa [pow_zero] at h
 
 /- English proof (translation)
-Rewrite using `[← coeff_one_alongCv_lg X hB hγ i, h1 i, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_smul, coeff_one_tyS V.l_prime.two_le, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_one_of_mem (X : RawChart C d I κ) {V : VF C} (hB : Basic X V) {g : Fin 2} {γ : κ → PowerSeries C}
     (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0) {x : ℕ → I g ⊕ JJ I g → C}
@@ -119,17 +119,17 @@ end SelfConjCharts
 
 open SelfConjCharts in
 /- English proof (translation)
-Introduce `C _ _ V d I _ κ _ X hB H ζ hζ g q`. Establish `hl2` using `V.l_prime.two_le`. Use `set g' : Fin 2 := 1 - g with hg'`. Apply the tactic sequence `obtain ⟨x, hx, hx0, -⟩ := (H g').t4 (X.ty g' q) (fun c => if c = q then 1 else 0) (fun c => by split_ifs <;> simp [VF.Ge.zero, VF.Ge.one]) (fun c hc => by`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hc rfl)`. Establish `hF` using `(H g').Fm x hx`. Take `⟨z, -, hz, -, hz1, -⟩` from `id hx`. Take `⟨ε, -, hε, -, hε1, -⟩` from `hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨z, ε, fun q' => Fs V.l x 0 (Sum.inl q'), hz, hε, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[hε1 i, hz1 i, subst_pow_sum_smul (by omega)]`. Simplify using `only [rescale_sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum]`. Use `congr 1`. Conclude with `subst_tyS_Fs hl2 hζ (fun s => x s (Sum.inl c))`. Introduce `i`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[coeff_one_of_mem X hB (fun i => (hz i).1) hz1 i, hx0]`. Simplify using `only [Sum.elim_inl, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Both sides reduce to the same expression. Introduce `i`. Rewrite using `[coeff_one_of_mem X hB (fun i => (hε i).1) hε1 i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `q'`. Conclude with `(H g').t2 _ ((H g').Fm x hx) 0 (fun i hi => absurd hi (Nat.not_lt_zero _)) _`.
+A detailed English derivation is pending.
 -/
 theorem r1sRestB_holds : OtherGroupCurvesClosed := by
   intro C _ _ V d I _ κ _ X hB H ζ hζ g q

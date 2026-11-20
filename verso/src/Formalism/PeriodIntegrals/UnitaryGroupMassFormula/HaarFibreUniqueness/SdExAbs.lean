@@ -19,14 +19,14 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
   [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V] (B : V → V → Fv F v)
 
 /- English proof (translation)
-Use `hBs 0 0 y` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem B_zero_left (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) (y : V) : B 0 y = 0 := by
   have := hBs 0 0 y
   rwa [zero_smul, zero_mul] at this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [B_zero_left v B hBs]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hBa, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem B_sum_left (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) {ι : Type} (s : Finset ι) (f : ι → V)
@@ -37,7 +37,7 @@ theorem B_sum_left (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hBa, ih]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun x' => B x' y) (h1 x)`. Rewrite using `[e, B_sum_left v B hBa hBs]`. Conclude with `Finset.sum_congr rfl fun j _ => hBs _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem B_expand (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) {ι : Type} [Fintype ι] (β β' : ι → V)
@@ -48,9 +48,7 @@ theorem B_expand (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
   exact Finset.sum_congr rfl fun j _ => hBs _ _ _
 
 /- English proof (translation)
-Establish `e : (fun p : V × V => B p.1 p.2) = fun p => ∑ j, B (β' j) p.1 * B (β j) p.2`. Use function extensionality and compare the values at `p`. Rewrite using `[B_expand v B hBa hBs β β' h1]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hBsym p.1 (β' j)]`. Rewrite using `[e]`.
-
-Conclude with `continuous_finset_sum _ fun j _ => ((hBc (β' j)).comp continuous_fst).mul ((hBc (β j)).comp continuous_snd)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem B_cont (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) (hBsym : ∀ x y, B x y = B y x)
@@ -81,14 +79,14 @@ def M0 (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     exact mul_mem (neg_mem (one_mem _)) (ha j)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_dual_integral_module (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) {ι : Type} (β' : ι → V) (x : V) :
     x ∈ M0 v B hBa hBs β' ↔ ∀ j, B x (β' j) ∈ v.adicCompletionIntegers F := Iff.rfl
 
 /- English proof (translation)
-Introduce `j` and use `by rw [hBs] exact mul_mem hc (hx j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_mem_dual_integral_module (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) {ι : Type} (β' : ι → V) {c : Fv F v}
@@ -98,7 +96,7 @@ theorem smul_mem_dual_integral_module (hBa : ∀ x x' y, B (x + x') y = B x y + 
   exact mul_mem hc (hx j)
 
 /- English proof (translation)
-Establish `e : (M0 v B hBa hBs β' : Set V) = ⋂ j, (fun x => B x (β' j)) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `x`. Simplify using `[mem_dual_integral_module]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun j => (Valued.isOpen_valuationSubring _).preimage ((hBc (β' j)).congr fun x => hBsym _ _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_dual_integral_module (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) (hBsym : ∀ x y, B x y = B y x)
@@ -112,7 +110,7 @@ theorem isOpen_dual_integral_module (hBa : ∀ x x' y, B (x + x') y = B x y + B 
     (Valued.isOpen_valuationSubring _).preimage ((hBc (β' j)).congr fun x => hBsym _ _)
 
 /- English proof (translation)
-Establish `hO : IsCompact ((v.adicCompletionIntegers F : Set (Fv F v)))` using `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Establish `hK : IsCompact ((fun c : ι → Fv F v => ∑ j, c j • β j) '' Set.univ.pi fun _ => (v.adicCompletionIntegers F : Set (Fv F v)))` using `(isCompact_univ_pi fun _ => hO).image (continuous_finset_sum _ fun j _ => (continuous_apply j).smul continuous_const)`. Establish `hcl : IsClosed (M0 v B hBa hBs β' : Set V)` using `AddSubgroup.isClosed_of_isOpen _ (isOpen_dual_integral_module v B hBa hBs hBsym hBc β')`. Use `hK.of_isClosed_subset hcl fun x hx => ⟨fun j => B x (β' j), fun j _ => hx j, ?_⟩` and prove the remaining obligations. Conclude with `(h1 x).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompact_dual_integral_module (hBa : ∀ x x' y, B (x + x') y = B x y + B x' y)
     (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) (hBsym : ∀ x y, B x y = B y x)
@@ -131,11 +129,9 @@ theorem isCompact_dual_integral_module (hBa : ∀ x x' y, B (x + x') y = B x y +
   exact (h1 x).symm
 
 /- English proof (translation)
-Set `e : V ≃+ V` to `(LinearEquiv.smulOfNeZero (Fv F v) V a ha).toAddEquiv`. Establish `he : Continuous e` using `by show Continuous fun y : V => a • y`. Conclude with `continuous_const_smul a`. Establish `hes : Continuous e.symm` using `by show Continuous fun y : V => a⁻¹ • y`. Conclude with `continuous_const_smul a⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := AddEquiv.isAddHaarMeasure_map μ0 e he hes`. Use `⟨(Measure.addHaarScalarFactor (μ0.map e) μ0 : ℝ≥0∞), fun S hS => ?_⟩` and prove the remaining obligations. Establish `hmap : μ0.map e = Measure.addHaarScalarFactor (μ0.map e) μ0 • μ0` using `Measure.isAddLeftInvariant_eq_smul _ _`. Establish `h` using `Measure.map_apply (μ := μ0) he.measurable hS`. Rewrite `h` using `[hmap, Measure.smul_apply]`.
-
-Use `show μ0 (e ⁻¹' S) = _`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem haar_smul_preimage (μ0 : Measure V) [μ0.IsAddHaarMeasure] (a : Fv F v) (ha : a ≠ 0) :
     ∃ c : ℝ≥0∞, ∀ S, MeasurableSet S → μ0 ((fun y : V => a • y) ⁻¹' S) = c * μ0 S := by
@@ -157,59 +153,51 @@ theorem haar_smul_preimage (μ0 : Measure V) [μ0.IsAddHaarMeasure] (a : Fv F v)
   rfl
 
 /- English proof (translation)
-Take `⟨π, hπ0, hπt, -⟩` from `PI.VolStabSW.exists_unif_Fv v`. Use `set χ : V → V → ℂ := fun x y => ψ0 (B x y) with hχdef`. Establish `hχc : Continuous (fun p : V × V => χ p.1 p.2)` using `hψc.comp (B_cont v B hBa hBs hBsym hBc β β' h1)`. Establish `hχ : ∀ x t y, χ (t + x) y = χ t y * χ x y` using `fun x t y => by`. Simplify using `only [hχdef]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBa, hψa]`. Establish `hsym : ∀ x y, χ x y = χ y x` using `fun x y => by simp only [hχdef]; rw [hBsym]`. Establish `hn : ∀ x y, ‖χ x y‖ = 1` using `fun x y => hψn _`. Use `set L := M0 v B hBa hBs β' with hLdef`. Establish `hLo : IsOpen (L : Set V)` using `isOpen_dual_integral_module v B hBa hBs hBsym hBc β'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLc : IsCompact (L : Set V)` using `isCompact_dual_integral_module v B hBa hBs hBsym hBc β β' h1`. Establish `hBzr : ∀ x, B x 0 = 0` using `fun x => by rw [hBsym]; exact B_zero_left v B hBs x`. Establish `hQsub : ∀ q : V, (∀ j, B (β j) q ∈ Aset v ψ0) → q ∈ ann χ L`. Introduce `q hq x hx`. Use `show ψ0 (B x q) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[B_expand v B hBa hBs β β' h1, psi_sum v ψ0 hψa hψn]`. Conclude with `Finset.prod_eq_one fun j _ => hq j _ (hx j)`. Establish `hQ : {q : V | ∀ j, B (β j) q ∈ Aset v ψ0} ∈ 𝓝 (0 : V)`. Establish `hj : ∀ j, {q : V | B (β j) q ∈ Aset v ψ0} ∈ 𝓝 (0 : V)` using `fun j => (hBc (β j)).continuousAt.preimage_mem_nhds (by rw [hBzr]; exact Aset_mem_nhds v ψ0 hψc hψa hψn)`. Establish `e : {q : V | ∀ j, B (β j) q ∈ Aset v ψ0} = ⋂ j, {q : V | B (β j) q ∈ Aset v ψ0}` using `by ext; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `Filter.iInter_mem.2 hj`. Establish `hNo0 : IsOpen (ann χ (L : Set V))`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht : Tendsto (fun y' : V => y' - y) (𝓝 y) (𝓝 0)`. Use `(continuous_sub_right y).tendsto y` as an intermediate fact. Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Use `filter_upwards [ht hQ] with y' hy'`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq` using `hQsub _ hy' x hx`. Establish `hyx` using `hy x hx`. Use `show ψ0 (B x y') = 1`. Establish `e1 : y' = y + (y' - y)` using `by abel`. Rewrite using `[e1, hBsym, hBa, hψa, hBsym y, hBsym (y' - y)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show ψ0 (B x y) = 1 from hyx, show ψ0 (B x (y' - y)) = 1 from hq, one_mul]`. Establish `hNcl : IsClosed (ann χ (L : Set V))` using `isClosed_ann χ hχc L`. Establish `hNc0 : IsCompact (ann χ (L : Set V))`. Take `⟨y0, hy0, hA⟩` from `Aset_bdd v ψ0 hψa hψn hnt`. Establish `hev : ∀ᶠ N in atTop, ∀ j l, π ^ N * B (β j) (β' l) ∈ v.adicCompletionIntegers F`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Filter.eventually_all]`. Introduce `j`. Rewrite using `[Filter.eventually_all]`. Introduce `l`. Establish `: Tendsto (fun N => π ^ N * B (β j) (β' l)) atTop (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using hπt.mul_const (B (β j) (β' l))`. Conclude with `this.eventually_mem ((Valued.isOpen_valuationSubring _).mem_nhds (zero_mem _))`. Take `⟨N, hN⟩` from `hev.exists`. Establish `hπN : π ^ N ≠ 0` using `pow_ne_zero _ hπ0`. Establish `hO : IsCompact ((v.adicCompletionIntegers F : Set (Fv F v)))` using `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hK : IsCompact ((fun c : ι → Fv F v => ∑ j, ((π ^ N)⁻¹ * y0 * c j) • β' j) '' Set.univ.pi fun _ => (v.adicCompletionIntegers F : Set (Fv F v)))` using `(isCompact_univ_pi fun _ => hO).image (continuous_finset_sum _ fun j _ => (continuous_const.mul (continuous_apply j)).smul continuous_const)`. Use `hK.of_isClosed_subset hNcl fun y hy => ?_` and prove the remaining obligations. Establish `hin : ∀ j, π ^ N * B (β j) y ∈ Aset v ψ0`. Introduce `j c hc`. Establish `hm : (c * π ^ N) • β j ∈ L` using `fun l => by show B ((c * π ^ N) • β j) (β' l) ∈ _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hBs, mul_assoc]`. Conclude with `mul_mem hc (hN j l)`. Use `hy _ hm` as an intermediate fact. Simplify using `only [hχdef] at this`. Rewrite `this` using `[hBs, mul_assoc]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose s hs hts using fun j => hA _ (hin j)`. Use `⟨s, fun j _ => hs j, ?_⟩` and prove the remaining obligations. Simplify using `only`. Use `conv_rhs => rw [h2 y]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `congr 1`. Rewrite using `[mul_assoc, ← hts j, ← mul_assoc, inv_mul_cancel₀ hπN, one_mul]`. Use `set M : ℕ → AddSubgroup V := fun k => L.comap (DistribMulAction.toAddMonoidHom V (π ^ k)) with hMdef`. Establish `hMset : ∀ k, (M k : Set V) = (fun x => π ^ k • x) ⁻¹' (L : Set V)` using `fun k => rfl`. Establish `hπk : ∀ k, π ^ k ≠ 0` using `fun k => pow_ne_zero k hπ0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hann : ∀ k, ann χ (M k : Set V) = (fun y => (π ^ k)⁻¹ • y) ⁻¹' ann χ (L : Set V)`. Introduce `k`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : (π ^ k)⁻¹ • x ∈ (M k : Set V)` using `by show π ^ k • ((π ^ k)⁻¹ • x) ∈ L`. Rewrite using `[smul_smul, mul_inv_cancel₀ (hπk k), one_smul]` and apply the resulting hypothesis. Use `hy _ hx'` as an intermediate fact. Simplify using `only [hχdef] at this ⊢`. Rewrite `this` using `[hBs, hBsym, ← hBs, hBsym]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hy x hx`. Use `hy _ hx` as an intermediate fact. Express the relevant statement in the definitionally equal form `ψ0 (B (π ^ k • x) ((π ^ k)⁻¹ • y)) = 1 at this`. Simplify using `only [hχdef]`. Rewrite `this` using `[hBs, hBsym, hBs, hBsym, ← mul_assoc, mul_inv_cancel₀ (hπk k), one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMo : ∀ k, IsOpen (M k : Set V)` using `fun k => by`. Rewrite using `[hMset]`. Conclude with `hLo.preimage (continuous_const_smul _)`. Establish `hMc : ∀ k, IsCompact (M k : Set V)` using `fun k => by`. Rewrite using `[hMset]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Homeomorph.smulOfNeZero (π ^ k) (hπk k)).isCompact_preimage.2 hLc`. Establish `hNo : ∀ k, IsOpen (ann χ (M k : Set V))` using `fun k => by`. Rewrite using `[hann]`. Conclude with `hNo0.preimage (continuous_const_smul _)`. Establish `hNc : ∀ k, IsCompact (ann χ (M k : Set V))` using `fun k => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hann]`. Conclude with `(Homeomorph.smulOfNeZero ((π ^ k)⁻¹) (inv_ne_zero (hπk k))).isCompact_preimage.2 hNc0`. Establish `hex : ∀ y, ∀ᶠ k in atTop, y ∈ M k`. Introduce `y`. Establish `ht : Tendsto (fun k => π ^ k • y) atTop (𝓝 0)` using `by simpa using hπt.smul_const y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(ht.eventually_mem (hLo.mem_nhds L.zero_mem)).mono fun k hk => hk`. Establish `hsh : ∀ U ∈ 𝓝 (0 : V), ∀ᶠ k in atTop, ann χ (M k : Set V) ⊆ U`. Introduce `U hU`. Establish `hP : ∀ w ∈ ann χ (L : Set V), ∀ᶠ z : Fv F v × V in 𝓝 ((0 : Fv F v), w), z.1 • z.2 ∈ U` using `fun w _ => (continuous_smul.tendsto ((0 : Fv F v), w)).eventually_mem (by rw [show ((0 : Fv F v), w).1 • ((0 : Fv F v), w).2 = (0 : V) by simp]; exact hU)`. Establish `hev` using `hNc0.eventually_forall_of_forall_eventually (P := fun c w => c • w ∈ U) hP`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hπt.eventually hev] with k hk y hy`. Rewrite `hy` using `[hann]`. Use `hk _ hy` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ (hπk k), one_smul]`. Then use the resulting hypothesis. Set `μ0 : Measure V` to `Measure.addHaar`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hLm : MeasurableSet (L : Set V)` using `hLo.measurableSet`. Establish `hNm : MeasurableSet (ann χ (L : Set V))` using `hNcl.measurableSet`. Establish `hL0 : μ0 (L : Set V) ≠ 0` using `(hLo.measure_pos μ0 ⟨0, L.zero_mem⟩).ne'`. Establish `hLt : μ0 (L : Set V) ≠ ⊤` using `hLc.measure_lt_top.ne`. Establish `hgen : ∀ k, μ0 (M k : Set V) * μ0 (ann χ (M k : Set V)) = μ0 (L : Set V) * μ0 (ann χ (L : Set V))`.
-
-Introduce `k`. Take `⟨c1, hc1⟩` from `haar_smul_preimage v μ0 (π ^ k) (hπk k)`. Take `⟨c2, hc2⟩` from `haar_smul_preimage v μ0 ((π ^ k)⁻¹) (inv_ne_zero (hπk k))`. Establish `hid : (fun y : V => (π ^ k)⁻¹ • y) ⁻¹' ((fun y : V => π ^ k • y) ⁻¹' (L : Set V)) = (L : Set V)`. Use extensionality with `y`.
-
-Simplify using `[smul_smul, mul_inv_cancel₀ (hπk k)]`. Establish `hm1 : MeasurableSet ((fun y : V => π ^ k • y) ⁻¹' (L : Set V))` using `hLm.preimage (continuous_const_smul _).measurable`. Establish `h12 : c2 * c1 = 1`. Use `hc2 _ hm1` as an intermediate fact. Rewrite `this` using `[hid, hc1 _ hLm, ← mul_assoc]`.
-
-Establish `h3 : μ0 (L : Set V) * (μ0 (L : Set V))⁻¹ = 1` using `ENNReal.mul_inv_cancel hL0 hLt`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc (c2 * c1), h3, mul_one]`. Use `_ = 1 := by rw [← this, h3]`. Rewrite using `[hann, hMset, hc1 _ hLm, hc2 _ hNm]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `selfDual_of_pairs χ hχc hχ hsym hn M hMc hMo hNc hNo hex hsh μ0 (fun k => (hgen k).trans (hgen 0).symm)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem absSd_main (ψ0 : Fv F v → ℂ) (hψc : Continuous ψ0) (hψa : ∀ r s, ψ0 (r + s) = ψ0 r * ψ0 s)
     (hψn : ∀ r, ‖ψ0 r‖ = 1) (hnt : ∃ y, ψ0 y ≠ 1)
@@ -372,49 +360,43 @@ theorem absSd_main (ψ0 : Fv F v → ℂ) (hψc : Continuous ψ0) (hψa : ∀ r 
     (fun k => (hgen k).trans (hgen 0).symm)
 
 /- English proof (translation)
-Take `⟨π, hπ0, hπt, -⟩` from `PI.VolStabSW.exists_unif_Fv v`. Use `set χ : V → V → ℂ := fun x y => ψ0 (B x y) with hχdef`. Establish `hχc : Continuous (fun p : V × V => χ p.1 p.2)` using `hψc.comp hBjc`. Establish `hχ : ∀ x t y, χ (t + x) y = χ t y * χ x y` using `fun x t y => by`. Simplify using `only [hχdef]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBa, hψa]`. Establish `hsym : ∀ x y, χ x y = χ y x` using `fun x y => by simp only [hχdef]; rw [hBsym]`. Establish `hn : ∀ x y, ‖χ x y‖ = 1` using `fun x y => hψn _`. Take `⟨L, hLc, hLo, hsL, hK⟩` from `hD`. Establish `hBzr : ∀ x, B x 0 = 0` using `fun x => by rw [hBsym]; exact B_zero_left v B hBs x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : ∀ᶠ q in 𝓝 (0 : V), ∀ x ∈ (L : Set V), B x q ∈ Aset v ψ0`. Establish `hP : ∀ x ∈ (L : Set V), ∀ᶠ z : V × V in 𝓝 ((0 : V), x), B z.2 z.1 ∈ Aset v ψ0` using `fun x _ => by`. Establish `hc : Continuous fun z : V × V => B z.2 z.1` using `hBjc.comp (continuous_snd.prodMk continuous_fst)`. Conclude with `(hc.tendsto ((0 : V), x)).eventually_mem (by rw [show B ((0 : V), x).2 ((0 : V), x).1 = 0 from hBzr x]`. Conclude with `Aset_mem_nhds v ψ0 hψc hψa hψn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hLc.eventually_forall_of_forall_eventually (P := fun q x => B x q ∈ Aset v ψ0) hP`. Establish `hNo0 : IsOpen (ann χ (L : Set V))`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Establish `ht : Tendsto (fun y' : V => y' - y) (𝓝 y) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(continuous_sub_right y).tendsto y` as an intermediate fact. Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Use `filter_upwards [ht hQ] with y' hy'`. Introduce `x hx`. Establish `hq : ψ0 (B x (y' - y)) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hy' x hx 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hyx` using `hy x hx`. Use `show ψ0 (B x y') = 1`. Establish `e1 : y' = y + (y' - y)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1, hBsym, hBa, hψa, hBsym y, hBsym (y' - y)]`. Rewrite using `[show ψ0 (B x y) = 1 from hyx, hq, one_mul]`. Establish `hNcl : IsClosed (ann χ (L : Set V))` using `isClosed_ann χ hχc L`. Establish `hNc0 : IsCompact (ann χ (L : Set V))`. Take `⟨y0, hy0⟩` from `hnt`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨K, hKc, hKs⟩` from `hK y0`. Use `hKc.of_isClosed_subset hNcl fun y hy => hKs fun x hx => ?_` and prove the remaining obligations. Apply `mem_of_psi v ψ0 y0 _ hy0` to reduce the goal to its premises. Introduce `s hs'`. Take `⟨x', hx', hB'⟩` from `hsL s hs' x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[← hB' y]`. Conclude with `hy x' hx'`. Use `set M : ℕ → AddSubgroup V := fun k => L.comap (DistribMulAction.toAddMonoidHom V (π ^ k)) with hMdef`. Establish `hMset : ∀ k, (M k : Set V) = (fun x => π ^ k • x) ⁻¹' (L : Set V)` using `fun k => rfl`. Establish `hπk : ∀ k, π ^ k ≠ 0` using `fun k => pow_ne_zero k hπ0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hann : ∀ k, ann χ (M k : Set V) = (fun y => (π ^ k)⁻¹ • y) ⁻¹' ann χ (L : Set V)`. Introduce `k`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hx' : (π ^ k)⁻¹ • x ∈ (M k : Set V)` using `by show π ^ k • ((π ^ k)⁻¹ • x) ∈ L`. Rewrite using `[smul_smul, mul_inv_cancel₀ (hπk k), one_smul]` and apply the resulting hypothesis. Use `hy _ hx'` as an intermediate fact. Simplify using `only [hχdef] at this ⊢`. Rewrite `this` using `[hBs, hBsym, ← hBs, hBsym]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hy x hx`. Use `hy _ hx` as an intermediate fact. Express the relevant statement in the definitionally equal form `ψ0 (B (π ^ k • x) ((π ^ k)⁻¹ • y)) = 1 at this`. Simplify using `only [hχdef]`. Rewrite `this` using `[hBs, hBsym, hBs, hBsym, ← mul_assoc, mul_inv_cancel₀ (hπk k), one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMo : ∀ k, IsOpen (M k : Set V)` using `fun k => by`. Rewrite using `[hMset]`. Conclude with `hLo.preimage (continuous_const_smul _)`. Establish `hMc : ∀ k, IsCompact (M k : Set V)` using `fun k => by`. Rewrite using `[hMset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Homeomorph.smulOfNeZero (π ^ k) (hπk k)).isCompact_preimage.2 hLc`. Establish `hNo : ∀ k, IsOpen (ann χ (M k : Set V))` using `fun k => by`. Rewrite using `[hann]`. Conclude with `hNo0.preimage (continuous_const_smul _)`. Establish `hNc : ∀ k, IsCompact (ann χ (M k : Set V))` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hann]`. Conclude with `(Homeomorph.smulOfNeZero ((π ^ k)⁻¹) (inv_ne_zero (hπk k))).isCompact_preimage.2 hNc0`. Establish `hex : ∀ y, ∀ᶠ k in atTop, y ∈ M k`. Introduce `y`. Establish `ht : Tendsto (fun k => π ^ k • y) atTop (𝓝 0)` using `by simpa using hπt.smul_const y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ht.eventually_mem (hLo.mem_nhds L.zero_mem)).mono fun k hk => hk`. Establish `hsh : ∀ U ∈ 𝓝 (0 : V), ∀ᶠ k in atTop, ann χ (M k : Set V) ⊆ U`. Introduce `U hU`. Establish `hP : ∀ w ∈ ann χ (L : Set V), ∀ᶠ z : Fv F v × V in 𝓝 ((0 : Fv F v), w), z.1 • z.2 ∈ U` using `fun w _ => (continuous_smul.tendsto ((0 : Fv F v), w)).eventually_mem (by rw [show ((0 : Fv F v), w).1 • ((0 : Fv F v), w).2 = (0 : V) by simp]; exact hU)`. Establish `hev` using `hNc0.eventually_forall_of_forall_eventually (P := fun c w => c • w ∈ U) hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [hπt.eventually hev] with k hk y hy`. Rewrite `hy` using `[hann]`. Use `hk _ hy` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ (hπk k), one_smul]`. Then use the resulting hypothesis. Set `μ0 : Measure V` to `Measure.addHaar`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLm : MeasurableSet (L : Set V)` using `hLo.measurableSet`. Establish `hNm : MeasurableSet (ann χ (L : Set V))` using `hNcl.measurableSet`. Establish `hL0 : μ0 (L : Set V) ≠ 0` using `(hLo.measure_pos μ0 ⟨0, L.zero_mem⟩).ne'`. Establish `hLt : μ0 (L : Set V) ≠ ⊤` using `hLc.measure_lt_top.ne`. Establish `hgen : ∀ k, μ0 (M k : Set V) * μ0 (ann χ (M k : Set V)) = μ0 (L : Set V) * μ0 (ann χ (L : Set V))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Take `⟨c1, hc1⟩` from `haar_smul_preimage v μ0 (π ^ k) (hπk k)`. Take `⟨c2, hc2⟩` from `haar_smul_preimage v μ0 ((π ^ k)⁻¹) (inv_ne_zero (hπk k))`. Establish `hid : (fun y : V => (π ^ k)⁻¹ • y) ⁻¹' ((fun y : V => π ^ k • y) ⁻¹' (L : Set V)) = (L : Set V)`. Use extensionality with `y`.
-
-Simplify using `[smul_smul, mul_inv_cancel₀ (hπk k)]`. Establish `hm1 : MeasurableSet ((fun y : V => π ^ k • y) ⁻¹' (L : Set V))` using `hLm.preimage (continuous_const_smul _).measurable`. Establish `h12 : c2 * c1 = 1`. Use `hc2 _ hm1` as an intermediate fact. Rewrite `this` using `[hid, hc1 _ hLm, ← mul_assoc]`.
-
-Establish `h3 : μ0 (L : Set V) * (μ0 (L : Set V))⁻¹ = 1` using `ENNReal.mul_inv_cancel hL0 hLt`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc (c2 * c1), h3, mul_one]`. Use `_ = 1 := by rw [← this, h3]`. Rewrite using `[hann, hMset, hc1 _ hLm, hc2 _ hNm]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `selfDual_of_pairs χ hχc hχ hsym hn M hMc hMo hNc hNo hex hsh μ0 (fun k => (hgen k).trans (hgen 0).symm)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_selfDual_measure (ψ0 : Fv F v → ℂ) (hψc : Continuous ψ0) (hψa : ∀ r s, ψ0 (r + s) = ψ0 r * ψ0 s)
     (hψn : ∀ r, ‖ψ0 r‖ = 1) (hnt : ∃ y, ψ0 y ≠ 1)
@@ -545,7 +527,7 @@ theorem exists_selfDual_measure (ψ0 : Fv F v → ℂ) (hψc : Continuous ψ0) (
 end Abs
 
 /- English proof (translation)
-Introduce `F _ _ v ψ0 hψc hψa hψn hnt V _ _ _ _ _ _ _ _ _ _ B hBa hBs hBsym hBc ι _ β β' h1 h2`. Conclude with `absSd_main v B ψ0 hψc hψa hψn hnt hBa hBs hBsym hBc β β' h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem absolute_self_dual_measure : PI.OmFibreUniq.W.Sd.AbsSd := by
   intro F _ _ v ψ0 hψc hψa hψn hnt V _ _ _ _ _ _ _ _ _ _ B hBa hBs hBsym hBc ι _ β β' h1 h2

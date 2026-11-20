@@ -10,7 +10,7 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Simplify using `only [Tm, Finset.mem_image, Finset.mem_sigma, Nat.mem_divisors, Finset.mem_range] at ht`. Take `⟨⟨a, b⟩, ⟨⟨hdvd, _⟩, _⟩, rfl⟩` from `ht`. Simplify using `only [Tmat, Matrix.det_fin_two_of, mul_zero, sub_zero]`. Conclude with `Nat.mul_div_cancel' hdvd` after adjusting the coercions.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perm_Tmat_det {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) : (Tmat t).det = m := by
   simp only [Tm, Finset.mem_image, Finset.mem_sigma, Nat.mem_divisors, Finset.mem_range] at ht

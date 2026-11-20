@@ -82,7 +82,7 @@ def PP : LocPrime l := (GlobalTheory.MemLoc.exists_locPrime_tied l).choose
 def AIP : LocAinf l (PP l) := (GlobalTheory.MemLoc.exists_locPrime_tied l).choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.MemLoc.exists_locPrime_tied l).choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem tiedP : Nonempty (LocTied l (PP l) (AIP l)) := (GlobalTheory.MemLoc.exists_locPrime_tied l).choose_spec.choose_spec
 

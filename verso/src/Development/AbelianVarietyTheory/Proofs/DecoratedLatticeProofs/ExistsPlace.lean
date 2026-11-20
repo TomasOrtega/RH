@@ -13,15 +13,13 @@ namespace GlobalTheory.PlaceOfIdem
 open GlobalTheory.IdemModTwo GlobalTheory.SplitChart GlobalTheory.SplitIdem
 
 /- English proof (translation)
-Introduce `D e h`. Take `⟨v, he⟩` from `(isSplitIdem_iff e).1 h`. Set `` to `GlobalTheory.LocalData.complRel v`. Use `GlobalTheory.LocalData.isLocalField v` as an intermediate fact. Establish `: IsModuleTopology (AF D.host.F) (Formalism.L2.Theta.AE D)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalRing (Formalism.L2.Theta.AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `hev : Continuous (evalV D.host.F v)` using `RestrictedProduct.continuous_eval v`. Establish `hal : Continuous (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF D.host.F) (Formalism.L2.Theta.AE D))`. Establish `hp : Continuous fun a : Fv D.host.F v => pairA D.host.F 0 (singleV D.host.F v a)` using `Continuous.prodMk continuous_const (GlobalTheory.LocalComponentChar.continuous_singleV D.host.F v)`. Use `⟨v.adicCompletion D.host.F, inferInstance, inferInstance, inferInstance, inferInstance, { e := e split := h π := comp he ι := AddMonoidHom.ofMapSub (fun a => fj D (singleV D.host.F v a) * e) fun a b => by` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[singleV_sub, map_sub, sub_mul]`. Use `π_ι := fun x => ?_`. Use `ι_π := fun a => (sc_spec he a).symm`. Use `cont_π := ?_`. Use `cont_ι := (hal.comp hp).mul continuous_const }, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show comp he (fj D (singleV D.host.F v x) * e) = x`. Rewrite using `[map_mul, comp_fj, comp_self, evalV_singleV_same, mul_one]`. Use `IsModuleTopology.continuous_of_ringHom (R := AF D.host.F) (comp he) ?_` and prove the remaining obligations. Establish `: ⇑((comp he).comp (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D))) = fun y => evalV D.host.F v y.2`. Use function extensionality and compare the values at `(comp_algebraMap he)`.
-
-Rewrite using `[this]`. Conclude with `hev.comp continuous_snd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place : ∀ (D : D7) (e : Formalism.L2.Theta.AE D), IsSplitIdem D e →
     ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k)

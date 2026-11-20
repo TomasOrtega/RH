@@ -25,13 +25,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_zero : ex Dw (0 : (E →+* ℂ) × ℕ → ℕ) 0 = fun _ => 0 := by
   funext i; cases i <;> rfl
 
 /- English proof (translation)
-Use `⟨fun p q φ y z _ => ?_, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Use `show (1 : q.R) = φ 1`. Rewrite using `[map_one]`. Use `show (1 : p.R) = wchar (ex Dw 0 0) t * 1`. Simplify using `[wchar, ex_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_sec : (1 : Rul Xo c) ∈ sec Xo c 0 0 := by
   refine ⟨fun p q φ y z _ => ?_, fun p t y y' _ => ?_⟩
@@ -41,23 +41,23 @@ theorem one_mem_sec : (1 : Rul Xo c) ∈ sec Xo c 0 0 := by
     simp [wchar, ex_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [wtZ]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtZ_zero : wtZ (E := E) 0 0 = 0 := by
   ext <;> simp [wtZ]
 
 /- English proof (translation)
-The claim follows from `evalAt_one _ _ _ (hgt Z)`.
+A detailed English derivation is pending.
 -/
 theorem evC_one {h : GenFrEx Xo c} (hgt : GenFromTest Xo c h) (Z : Comp Xo c) : evC h Z 1 = 1 :=
   evalAt_one _ _ _ (hgt Z)
 
 /- English proof (translation)
-Set `p : ∀ Z, Polynomial (Ω Z)` to `fun Z => ∑ k : Fin n, Polynomial.monomial (k : ℕ) (a Z k)`. Establish `hp : ∀ Z, p Z ≠ 0`. Introduce `Z h0`. Take `⟨k, hk⟩` from `ha Z`. Establish `h1` using `congrArg (fun q => Polynomial.coeff q (k : ℕ)) h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [p, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Polynomial.coeff_zero] at h1`. Rewrite `h1` using `[Finset.sum_eq_single k (fun b _ hb => if_neg fun e => hb (Fin.ext e)) (by simp), if_pos rfl]`. Conclude with `hk h1`. Establish `hfin : ∀ Z, {t : ℕ | (p Z).IsRoot (t : Ω Z)}.Finite` using `fun Z => Set.Finite.preimage (f := fun t : ℕ => (t : Ω Z)) Nat.cast_injective.injOn (Polynomial.finite_setOf_isRoot (hp Z))`. Take `⟨t, ht⟩` from `(Set.finite_iUnion hfin).exists_notMem`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => t ^ (k : ℕ), fun Z h0 => ht (Set.mem_iUnion.2 ⟨Z, ?_⟩)⟩` and prove the remaining obligations. Use `show (p Z).eval (t : Ω Z) = 0`. Rewrite using `[← h0]`. Simplify using `only [p, Polynomial.eval_finset_sum, Polynomial.eval_monomial, Nat.cast_pow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_nat_comb {ι : Type} [Finite ι] {Ω : ι → Type} [∀ Z, Field (Ω Z)] [∀ Z, CharZero (Ω Z)] {n : ℕ}
     (a : ∀ Z, Fin n → Ω Z) (ha : ∀ Z, ∃ k, a Z k ≠ 0) :
@@ -82,11 +82,9 @@ theorem exists_nat_comb {ι : Type} [Finite ι] {Ω : ι → Type} [∀ Z, Field
 variable [Fintype (Comp Xo c)]
 
 /- English proof (translation)
-Introduce `σ`. Use `⟨1, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Unfold `ptNorm`. Rewrite using `[ex_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pow_zero, Finset.prod_const_one, mul_one]`. Unfold `evalAt`. Use `split_ifs`. Rewrite using `[Pi.one_apply, Pi.one_apply, map_one]`. Conclude with `le_of_eq (norm_one (α := ℂ))`.
-
-Conclude with `le_of_eq_of_le (norm_zero (E := ℂ)) zero_le_one`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supBdd_one (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ) : SupBdd Xo c fn 0 0 1 := by
   intro σ
@@ -102,7 +100,7 @@ theorem supBdd_one (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw �
   · exact le_of_eq_of_le (norm_zero (E := ℂ)) zero_le_one
 
 /- English proof (translation)
-Break down `hN with hN | rfl` into its components or cases. Conclude with `log_supN_le hfn (ptNe_of_fnFG hfg) hcx hS hB hN σ`. Unfold `supR supAt`. Simplify using `only [valC_zero, nrmC_zero, ptNorm_zero, Real.iSup_const_zero, le_refl]`.
+Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem log_sup_le {h : GenFrEx Xo c} {fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ}
     {yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))}
@@ -137,24 +135,22 @@ theorem wt_et : wtZ uL.1 uL.2 = (1 * 1 : ℕ) • wtZ uL.1 uL.2 := by simp
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[sub_self, smul_zero]`. Apply the tactic sequence `ext <;> simp [wtZ]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weightZ_zero_eq_two_smul_sub_self : wtZ ((0, 0) : WtR E).1 ((0, 0) : WtR E).2 = (2 : ℕ) • (wtZ uL.1 uL.2 - wtZ uL.1 uL.2) := by
   rw [sub_self, smul_zero]
   ext <;> simp [wtZ]
 
 /- English proof (translation)
-Establish `cases' : ∀ {Z : Comp Xo c} {v : AddValuation (Om Z) (WithTop ℤ)}, (dat h δ fn yP Dd N uL uF uta2 wR jc np thpR etR ta2R nu wsize DF PN PP0' Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO).admitted Z v → IsNormDiscrete v ∧ ((∃ la, IsOver (K` using `c.F) v la) ∨ IsTrivOn c.F v) := by`. Introduce `Z v hA`. Take `⟨hd, hc⟩` from `hA`. Conclude with `⟨hd, hc.imp (fun h' => let ⟨la, ho, _⟩ := h'; ⟨la, ho⟩) (fun h' => h'.1)⟩`. Use `⟨fun Z v hA x hx hx0 => ?_, fun Z v hA x hx hx0 => ?_, fun Z v hA => ?_, fun Z v hA => ?_, fun Z v hA => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hd, hc⟩` from `cases' hA`. Take `⟨F, hF, rfl⟩` from `exists_of_mem_span_valG h hx`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q (mem_of_mem_span_int _ (Set.range_subset_iff.2 hwS) hF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 hwC) hF) (intAlg_span (Set.forall_mem_range.2 hwI) hF) hd hc (evC_ne_zero_of_valC hx0)`. Conclude with `h0`. Take `⟨hd, hc⟩` from `cases' hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, rfl⟩` from `exists_of_mem_span_valG h hx`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q (mem_of_mem_span_int _ (Set.range_subset_iff.2 hpS) hF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 hpC) hF) (intAlg_span (Set.forall_mem_range.2 hpI) hF) hd hc (evC_ne_zero_of_valC hx0)`. Conclude with `h0`. Take `⟨hd, hc⟩` from `cases' hA`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q heS heC heI hd hc (heN Z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show 0 ≤ ordC (δ Z v) v ((1 * 1 : ℕ) • wtZ uL.1 uL.2) (valC h uL.1 uL.2 etR Z)`. Rewrite using `[← wt_et]`. Conclude with `h0`. Use `show 0 ≤ ordC (δ Z v) v ((2 : ℕ) • (wtZ uL.1 uL.2 - wtZ uL.1 uL.2)) (valC h 0 0 1 Z)`. Establish `hz : frW (δ Z v) (0 : WTZ E) = 0`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [frW]`. Apply the tactic sequence `exact Finset.sum_eq_zero fun i _ => by cases i <;> simp [exZ]`. Rewrite using `[sub_self, smul_zero]`. Simplify using `only [valC, wtZ_zero, evC_one hgt, ordC, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same, hz, AddValuation.map_one, add_zero]`. Conclude with `le_rfl`.
-
-Take `⟨hd, hc⟩` from `cases' hA`. Establish `h0` using `ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q h2S h2C h2I hd hc (h2N Z)`. Rewrite `h0` using `[huta2]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_definite_law_data [Nonempty (HeightOneSpectrum (𝓞 c.F))]
     (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c))
@@ -207,17 +203,15 @@ theorem height_definite_law_data [Nonempty (HeightOneSpectrum (𝓞 c.F))]
     exact h0
 
 /- English proof (translation)
-Establish `hmean : ∀ (F : (c.F →+* ℂ) → ℝ) (b : ℝ), (∀ σ, F σ ≤ b) → meanK F ≤ b`. Introduce `F b hF`. Establish `hn : (0 : ℝ) < Fintype.card (c.F →+* ℂ)`. Rewrite using `[NumberField.Embeddings.card]`. Conclude with `Module.finrank_pos` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `meanK`. Rewrite using `[div_le_iff₀ hn]`. Use `(Finset.sum_le_sum fun σ _ => hF σ).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(meanK_mono' fun σ => ?_).trans hmxm` and prove the remaining obligations. Establish `: Nonempty (Fin (N + 1))` using `⟨0⟩`. Conclude with `ciSup_le fun j => (log_sup_le hfn hfg hcx (hwS j) (hwB j) (hwN j) σ).trans (hmx σ j)`. Introduce `k`. Conclude with `(meanK_mono' fun σ => log_sup_le hfn hfg hcx (hpS k) (hpB k) (hpN k) σ).trans (hth k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hmean _ _ fun σ => le_trans ?_ hta1` and prove the remaining obligations. Use `Real.log_nonpos (supN_dataOf_nonneg ..) (Real.iSup_le (fun p => ?_) zero_le_one)` and prove the remaining obligations. Use `show nrmC fn (yP p.1) ((2 : ℕ) • (wtZ uL.1 uL.2 - wtZ uL.1 uL.2)) (valC h 0 0 1 p.1) p.2 ≤ 1`. Rewrite using `[sub_self, smul_zero]`. Simplify using `only [valC, wtZ_zero, evC_one hgt, nrmC_single, map_one, norm_one, one_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_of_eq (Finset.prod_eq_one fun i _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases i <;> simp [exZ]`. Use `hmean _ _ fun σ => le_trans ?_ (hta2 σ)` and prove the remaining obligations. Establish `h2` using `log_sup_le (h := h) (yP := yP) hfn hfg hcx h2S h2B h2N σ`. Rewrite `h2` using `[huta2]`.
-
-Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htSup_dat (hgt : GenFromTest Xo c h) (hfn : FnNe Xo c fn) (hfg : FnFG Xo c) (hcx : ValAtCx h yP)
     (huta2 : wtZ uta2.1 uta2.2 = (Dd + 4 : ℕ) • wtZ uL.1 uL.2 - wtZ uF.1 uF.2)
@@ -260,9 +254,7 @@ theorem htSup_dat (hgt : GenFromTest Xo c h) (hfn : FnNe Xo c fn) (hfg : FnFG Xo
     exact h2
 
 /- English proof (translation)
-Introduce `Z P`. Take `⟨σ, hσ, k, x, hx, hw, -⟩` from `htie Z P`. Establish `h1` using `hI2 σ hσ k x hx`. Use `show -Real.log (Real.sqrt (∑ j, nrmC fn (yP Z) (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR j) Z) P ^ 2)) ≤ tableLineDegreeFive * DF + (0 : ℝ) / _ * _ + (0 : ℝ) * tableLineDegreeTwo`. Simplify using `only [hw, zero_div, zero_mul, add_zero]`.
-
-Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem htI2be_dat {rU : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ rU) (xR : ℝ)
     (htie : NrmTieU h fn yP U xR wR uL etR uL)
@@ -278,7 +270,7 @@ theorem htI2be_dat {rU : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ rU) (xR :
   exact h1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Reg.LawBddPf.lawBdd_dataOf E H Dw l Xo c h δ fn yP _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hcx (fun k => ⟨hwS k, hwB k⟩) (fun k => ⟨hpS k, hpB k⟩) ⟨heS, heB⟩ ⟨one_mem_sec, supBdd_one fn⟩ ⟨h2S, h2B⟩ (wt_et uL) (weightZ_z …`.
+A detailed English derivation is pending.
 -/
 theorem lawBdd_dat (hcx : ValAtCx h yP)
     (huta2 : wtZ uta2.1 uta2.2 = (Dd + 4 : ℕ) • wtZ uL.1 uL.2 - wtZ uF.1 uF.2)
@@ -292,7 +284,7 @@ theorem lawBdd_dat (hcx : ValAtCx h yP)
     ⟨one_mem_sec, supBdd_one fn⟩ ⟨h2S, h2B⟩ (wt_et uL) (weightZ_zero_eq_two_smul_sub_self uL) huta2
 
 /- English proof (translation)
-Establish `h1 : NZAt h 1` using `fun Z => by rw [evC_one hgt]; exact one_ne_zero`. Use `⟨_, _, ?_, htConcl_dataOf h δ fn yP Dd N 0 1 1 0 uL uF uL uL uL (0, 0) uta2 wR jc np thpR 0 Fin.elim0 uF 0 Fin.elim0 ∅ etR 1 ta2R nu (fun _ _ _ => 0) wsize DF PN 1 1 PP0' 1 Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO 0 0 hne hfg htr hac hwb het h1 hta2 (wt_et uL) (we …` and prove the remaining obligations. Take `⟨hD, hi, hg, hc0, hc1, hcg, hL, hDF, hrw, hnK, hrd, hP⟩` from `hnum`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem exists_htConcl (hgt : GenFromTest Xo c h)
     (hne : CompNe Xo c) (hfg : FnFG Xo c) (htr : FnTrdeg Xo c Dd) (hac : FnAlgClosed Xo c)
@@ -335,13 +327,13 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   [∀ c, Algebra (𝓞 B.KO) (A c)] {𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)}
 
 /- English proof (translation)
-Use `heights_of_htConcl G Qf Gc PH Prw Pet ?_` and prove the remaining obligations. Take `⟨hfin, hsum, hineq, -⟩` from `h`. Establish `hle : ∀ la : HeightOneSpectrum (𝓞 B.KO), (((toHtData G Qf Gc PH Prw Pet).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la ≤ (((d.htOf hd hs).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la` using `fun la => mul_le_mul_of_nonneg_right (by exact_mod_cast ENat.toNat_le_toNat (hI la) (hfin la)) (lN_nonneg' _ la)`. Establish `hsum' : Summable fun la : HeightOneSpectrum (𝓞 B.KO) => (((toHtData G Qf Gc PH Prw Pet).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la` using `Summable.of_nonneg_of_le (fun la => mul_nonneg (Nat.cast_nonneg _) (lN_nonneg' _ la)) hle hsum`. Establish `hDr : ((d.htOf hd hs).D : ℝ) = (WeightFamilies.dimY D j : ℝ)` using `by exact_mod_cast hD`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδr : ((d.htOf hd hs).δ : ℝ) = (G.del : ℝ)` using `by exact_mod_cast hδ`. Establish `hL' : (d.htOf hd hs).L = wL.size` using `hL`. Establish `hG' : (d.htOf hd hs).G = Gc` using `hG`. Establish `hPH' : (d.htOf hd hs).PH = PH` using `hPH`. Establish `hPrw' : (d.htOf hd hs).Prw = Prw` using `hPrw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun la => ne_top_of_le_ne_top (hfin la) (hI la), hsum', ?_, fun he => absurd he hj⟩` and prove the remaining obligations. Establish `ht` using `Summable.tsum_le_tsum hle hsum' hsum`. Establish `hineq' : 2 * ∑' la : HeightOneSpectrum (𝓞 B.KO), (((d.htOf hd hs).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la ≤ (G.del : ℝ) * Real.log G.del + 2 * ∑ k, (d.htOf hd hs).S k + 8 / 3 * (WeightFamilies.dimY D j : ℝ) * ((WeightFamilies.dimY D j : ℝ) + 4) * G.d …`. Rewrite `hineq` using `[hDr, hδr, hL', hG', hPH', hPrw']`. Conclude with `hineq`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `show 2 * ∑' la : HeightOneSpectrum (𝓞 B.KO), (((toHtData G Qf Gc PH Prw Pet).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la ≤ (G.del : ℝ) * Real.log G.del + 2 * ∑ k, WeightFamilies.meanLogSup B (G.th' k) + 8 / 3 * (WeightFamilies.dimY D j : ℝ) * ((WeightFam …`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem heights_of_first (d : Data B.KO ι Ω WT A) (hd : d.AxH 𝒜) (hs : d.S1)
     (G : GlobalFamilyData X ka wL wF) (Qf : ∀ la, LocalPointData G la) (Gc PH Prw Pet : ℝ) (hj : ¬ j < D.R.m)

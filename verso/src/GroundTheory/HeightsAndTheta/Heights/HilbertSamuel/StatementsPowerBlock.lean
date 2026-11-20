@@ -76,7 +76,7 @@ def fsNew : HermLine (addIdx (GlobalTheory (Fin 2)) 2) :=
   HermLine.ofMetrics (fun k => fsMetric (addIdx (GlobalTheory (Fin 2)) 2 k)) (unitDeg (none : Option Unit))
 
 /- English proof (translation)
-Use `show mConeMap (addBlock y projectiveLineCoordinates) _ = 0`. Simplify using `[mConeMap, addBlock, projectiveLineCoordinates, ProjLine.y]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem minor_mem :
     (X ⟨some (), (0 : Fin 2)⟩ * X ⟨none, (1 : Fin 2)⟩ - X ⟨some (), (1 : Fin 2)⟩ * X ⟨none, (0 : Fin 2)⟩ :

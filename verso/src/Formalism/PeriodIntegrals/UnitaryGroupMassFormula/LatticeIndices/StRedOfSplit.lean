@@ -26,25 +26,23 @@ def StLatGL (p : TypX X) : Prop :=
         - 1) i j ∈ Ideal.span {((gOf p : ℕ) : Op X p)}) ↔ (x : HAp X p) ∈ KgX X p
 
 /- English proof (translation)
-Introduce `K hK`. Take `⟨π, hπs, hπk⟩` from `hR`. Take `⟨ψ, hψs, hψ⟩` from `hL K hK`. Use `⟨(Matrix.GeneralLinearGroup.map π).comp ψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsi : ∀ b, π (Function.surjInv hπs b) = b` using `Function.surjInv_eq hπs`. Set `M' : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Op X p)` to `fun i j => Function.surjInv hπs ((N : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p))) i j)`. Establish `hM' : ∀ i j, π (M' i j) = (N : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p))) i j` using `fun i j => hsi _`. Establish `hdet : π M'.det = (N : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p))).det`. Rewrite using `[RingHom.map_det]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i j`. Conclude with `hM' i j`. Take `⟨e, he⟩` from `(Matrix.isUnits_det_units N).exists_right_inv`. Establish `h1 : π (M'.det * Function.surjInv hπs e) = 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hdet, hsi, he]`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (M'.det * Function.surjInv hπs e) with hu | hu` into its components or cases. Establish `hd : IsUnit M'.det` using `isUnit_of_mul_isUnit_left hu`. Establish `hM : IsUnit M'` using `(Matrix.isUnit_iff_isUnit_det M').mpr hd`. Take `⟨k, hk⟩` from `hψs hM.unit`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[MonoidHom.comp_apply, hk, Matrix.GeneralLinearGroup.map_apply, IsUnit.unit_spec]`. Conclude with `hM' i j`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : IsUnit (π (1 - M'.det * Function.surjInv hπs e))` using `hu.map π`. Rewrite `h0` using `[map_sub, map_one, h1, sub_self]`. Use `haveI : Subsingleton (ZMod (gOf p)) := subsingleton_of_zero_eq_one (isUnit_zero_iff.mp h0)`. Use `⟨1, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Conclude with `Subsingleton.elim _ _`. Introduce `x`. Rewrite using `[← hψ x]`. Establish `key : ∀ i j, ((((Matrix.GeneralLinearGroup.map π).comp ψ) x : GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p))) : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p))) i j - (1 : Matrix (Formalism.F …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion.
 
-Introduce `i j`. Rewrite using `[MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map_apply, Matrix.sub_apply, map_sub, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hπk, RingHom.mem_ker, ← key, h]`. Simplify using the standard rewrite rules. Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
-
-Establish `hij` using `h i j`. Rewrite `hij` using `[← hπk, RingHom.mem_ker, ← key, sub_eq_zero]`. Simplify using `using hij`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stRed_of_split (p : TypX X) (hR : StResZ X p) (hL : StLatGL X p) : StRed X p := by
   classical

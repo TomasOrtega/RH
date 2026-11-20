@@ -18,21 +18,17 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E] [Field
   [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) (P : LocPrime l)
 
 /- English proof (translation)
-Use `set x : ℚ_[l] := ((ReciprocityTheory.Gal.cycZ (F := E) (Ω := Ω) l ((Br.ι Bw g : Gw) : Ω ≃ₐ[E] Ω) : ℤ_[l]) : ℚ_[l]) with hx`. Use `set x' : ℚ_[l] := ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) with hx'`. Establish `key : ∀ m : ℕ, ‖x - x'‖ ≤ (l : ℝ) ^ (-(m : ℤ))`. Introduce `m`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Use `haveI : NeZero ((l ^ m : ℕ) : Ω) := ⟨by exact_mod_cast pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨ζ', hζ'⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ m)`. Establish `hζ : IsPrimitiveRoot (Bw.j ζ') (l ^ m)` using `hζ'.map_of_injective Bw.j.injective`. Take `⟨a, ha, hxa⟩` from `Formalism.AdicCompletionExports.isCycG_cycZ l E Ω ℤ_[l] (RingHom.id _) ((Br.ι Bw g : Gw) : Ω ≃ₐ[E] Ω) m ζ' hζ'.pow_eq_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a', hxa', ha'⟩` from `P.χQ_cyc (g : GQ l) m (Bw.j ζ') hζ.pow_eq_one`. Establish `hg : (g : GQ l) (Bw.j ζ') = Bw.j ζ' ^ a`. Establish `h0` using `Bw.e_comm (Br.ι Bw g) ζ'`. Establish `he : Bw.e (Br.ι Bw g) = g` using `Bw.e.apply_symm_apply g`. Rewrite `h0` using `[he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h0, ha, map_pow]`. Establish `h1 : a ≡ a' [MOD l ^ m]`. Establish `h0` using `hg.symm.trans ha'`. Establish `hf : IsOfFinOrder (Bw.j ζ')` using `isOfFinOrder_iff_pow_eq_one.2 ⟨l ^ m, pow_pos (Fact.out : l.Prime).pos m, hζ.pow_eq_one⟩`. Rewrite `h0` using `[hf.pow_eq_pow_iff_modEq, ← hζ.eq_orderOf]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hxa2 : ‖x - (a : ℚ_[l])‖ ≤ (l : ℝ) ^ (-(m : ℤ))`. Express the relevant statement in the definitionally equal form `((ReciprocityTheory.Gal.cycZ (F := E) (Ω := Ω) l ((Br.ι Bw g : Gw) : Ω ≃ₐ[E] Ω) : ℤ_[l]) - (a : ℤ_[l])) ∈ Ideal.span {(l : ℤ_[l]) ^ m} at hxa`. Establish `h0` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ m).2 hxa`. Rewrite `h0` using `[PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖((a : ℚ_[l]) - (a' : ℚ_[l]))‖ ≤ (l : ℝ) ^ (-(m : ℤ))`. Establish `h3 : ((l ^ m : ℕ) : ℤ) ∣ (a : ℤ) - (a' : ℤ)` using `Nat.modEq_iff_dvd.1 h1.symm`. Establish `h4` using `(Padic.norm_int_le_pow_iff_dvd ((a : ℤ) - a') m).2 (by exact_mod_cast h3)`. Simplify using `using h4`. Establish `h4 : x - x' = (x - a) + ((a - a') + -(x' - a'))` using `by ring`.
-
-Rewrite using `[h4]`. Conclude with `(Padic.nonarchimedean _ _).trans (max_le hxa2 ((Padic.nonarchimedean _ _).trans (max_le h2 (by rwa [norm_neg]))))`. Establish `hlim : Filter.Tendsto (fun m : ℕ => (l : ℝ) ^ (-(m : ℤ))) Filter.atTop (nhds 0)`. Establish `h5 : ∀ m : ℕ, (l : ℝ) ^ (-(m : ℤ)) = ((l : ℝ)⁻¹) ^ m` using `fun m => by`. Rewrite using `[zpow_neg, zpow_natCast, inv_pow]`.
-
-Simplify using `only [h5]`. Conclude with `tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt))`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 (ge_of_tendsto' hlim key))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cycZ_eq_χQ (g : ↥(GK Bw.Kw)) :
     ((ReciprocityTheory.Gal.cycZ (F := E) (Ω := Ω) l ((Br.ι Bw g : Gw) : Ω ≃ₐ[E] Ω) : ℤ_[l]) : ℚ_[l]) =
@@ -111,17 +107,13 @@ def fromLL : (n → LL) →ₗ[LL] TrV e (n → FractionRing O) where
     rw [map_mul]
 
 /- English proof (translation)
-Unfold `TopMatch`. Use `haveI : IsModuleTopology LL (TrV e (n → FractionRing O)) := ⟨rfl⟩`. Establish `hcoord : ∀ a : n, Continuous (fun v : TrV e (n → FractionRing O) => (v : n → FractionRing O) a)`. Introduce `a`. Establish `h1 : Continuous (coordLL e n a)` using `IsModuleTopology.continuous_of_linearMap _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hK.2.comp h1`. Establish `h3 : ((e.symm : LL → FractionRing O) ∘ (coordLL e n a)) = (fun v : TrV e (n → FractionRing O) => (v : n → FractionRing O) a)`. Use function extensionality and compare the values at `v`. Use `show e.symm (e ((v : n → FractionRing O) a)) = (v : n → FractionRing O) a`. Conclude with `RingEquiv.symm_apply_apply e _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[h3]`. Conclude with `h2`. Apply `le_antisymm` to reduce the goal to its premises. Use `continuous_id_iff_le.mp ?_` and prove the remaining obligations. Conclude with `continuous_pi hcoord`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `continuous_id_iff_le.mp ?_` and prove the remaining obligations. Establish `hf : Continuous (fromLL e n)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hg : Continuous (fun v : n → FractionRing O => fun a => e (v a))` using `continuous_pi (fun a => hK.1.comp (continuous_apply a))`. Establish `hc` using `hf.comp hg`. Establish `heq : ((fromLL e n : (n → LL) → TrV e (n → FractionRing O)) ∘ fun v : n → FractionRing O => fun a => e (v a)) = fun v => v`.
-
-Use function extensionality and compare the values at `v`. Use `show (fun a => e.symm (e (v a)) : n → FractionRing O) = v`. Use function extensionality and compare the values at `a`. Conclude with `RingEquiv.symm_apply_apply e (v a)`. Rewrite `hc` using `[heq]`.
-
-Conclude with `hc`.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topMatch_pi (hK : HomeoK e) : TopMatch e (n → FractionRing O) := by
   unfold TopMatch
@@ -170,9 +162,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   [IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) VT']
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[hε]`. Establish `hP` using `cycZ_eq_χQ (D.nbr i _ hn) (D.loc (D.nd.l i)) g`. Establish `hχ` using `(D.loc (D.nd.l i)).PD_χ (D.nbr i _ hn).Kw g`. Simplify using `only [eK, RingEquiv.ofBijective_apply, Br.toLLK, IsFractionRing.lift_algebraMap, LocBridge.toLL, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, epsU, Glob.epsO, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, cycLL, Br.PD, RingHom.toMonoidHom_eq_coe, Rin …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply, hχ, ← hP]`. Use `first`. Consider the case `exact IsScalarTower.algebraMap_apply ℤ_[D.nd.l i] ℚ_[D.nd.l i] _ _`. Consider the case `rfl`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cycMatch_rec {w : ℕ} (hn : K.plOf i dc w ∈ placesOver D.host.E (D.nd.l i))
     (Dw : Formalism.RepresentationBoundsCohomology.LOC.LatData (D.nd.O i) ↥(Γn i dc w) VT VT')
@@ -208,7 +200,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (Dat : ∀ w, Formalism.RepresentationBoundsCohomology.LOC.LatData (D.nd.O i) ↥(Γn i dc w) (VT w) (VT' w))
 
 /- English proof (translation)
-Introduce `hn`. Take `⟨h1, h2, h3⟩` from `ht hn`. Conclude with `⟨h1, h2, h3, cycMatch_rec i dc hn (Dat w) hε, hdr hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rowIn_of {w : ℕ} (hε : ∀ g : ↥(Γn i dc w), (Dat w).ε g = epsU D.nd i (g : GE D.nd))
     (ht : ∀ hn : K.plOf i dc w ∈ placesOver D.host.E (D.nd.l i),

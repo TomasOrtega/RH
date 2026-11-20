@@ -24,7 +24,7 @@ def colSum (H : Fin D → Matrix (Fin D) (Fin D) ℂ) : ℂ :=
   ∑ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => H (τ l) j l).det
 
 /- English proof (translation)
-Simplify using `only [colSum, Finset.mul_sum, ← Matrix.det_mul]`. Use `Finset.sum_congr rfl fun τ _ => congrArg _ ?_` and prove the remaining obligations. Use extensionality with `j l`. Simplify using `[Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colSum_mul_left (A : Matrix (Fin D) (Fin D) ℂ) (H : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     colSum (fun a => A * H a) = A.det * colSum H := by
@@ -34,9 +34,9 @@ theorem colSum_mul_left (A : Matrix (Fin D) (Fin D) ℂ) (H : Fin D → Matrix (
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [colSum, Matrix.det_apply', Matrix.of_apply, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (f := fun (τ ρ : Equiv.Perm (Fin D)) => ((Equiv.Perm.sign ρ : ℤ) : ℂ) * ∏ i, H (τ i) (ρ i) i)]`. Use `Fintype.sum_equiv (Equiv.inv _) _ _ fun ρ => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (Equiv.mulRight ρ⁻¹) _ _ fun τ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.inv_apply, Equiv.Perm.sign_inv, Equiv.coe_mulRight]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Fintype.prod_equiv ρ _ _ fun i => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem colSum_transpose (H : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     colSum (fun a => (H a).transpose) = colSum H := by
@@ -50,7 +50,7 @@ theorem colSum_transpose (H : Fin D → Matrix (Fin D) (Fin D) ℂ) :
   simp
 
 /- English proof (translation)
-Establish `e : colSum (fun a => H a * B) = B.det * colSum H`. Rewrite using `[← colSum_transpose, ← colSum_transpose H, ← Matrix.det_transpose B, ← colSum_mul_left]`. Simplify using `only [Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[colSum_mul_left A fun a => H a * B, e, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem colSum_mul (A B : Matrix (Fin D) (Fin D) ℂ) (H : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     colSum (fun a => A * H a * B) = A.det * B.det * colSum H := by
@@ -67,13 +67,13 @@ theorem dens_eq (L : Fin D → MLine p σ) (c : AlgChart p σ D) (y : CxPts p σ
     dens L c y = (Real.pi ^ D)⁻¹ * (colSum fun a => c.hess (L a).φ (pick (L a).φ.isLB y) y).re := rfl
 
 /- English proof (translation)
-Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `hm` using `mem_over c.e hy hy'`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Set `J : Matrix (Fin D) (Fin D) ℂ` to `Matrix.of fun l j => (fderiv ℂ (c'.e ∘ c.e.symm) (c.e y) (ReciprocityTheory.L2DbarEstimates.bas D j)) l`. Establish `h (a) : c.hess (L a).φ (pick (L a).φ.isLB y) y = J.transpose * c'.hess (L a).φ (pick (L a).φ.isLB y) y * J.map (starRingEnd ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : (fun v => ((L a).φ.φ (pick (L a).φ.isLB y) (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e y)] (fun v => ((L a).φ.φ (pick (L a).φ.isLB y) (c'.e.symm v) : ℂ)) ∘ c'.e ∘ c.e.symm` using `eventually_of_mem (ho.mem_nhds hm) fun v hv => by`. Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2]`. Rewrite using `[AlgChart.hess, AlgChart.hess, ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, ReciprocityTheory.L2DbarEstimates.Y.cmpa_cHess_comp ho hm (c.holo_trans c') (e₂ ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ ((L a).cInf.contDiffAt c' hy' (mem_pick _ y))), e₂]`. Establish `hJ : J.det = transDet c.e c'.e y` using `ReciprocityTheory.L2DbarEstimates.Y.cmpa_det_jac _`. Establish `hd : J.transpose.det * (J.map (starRingEnd ℂ)).det = ((‖transDet c.e c'.e y‖ ^ 2 : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : (J.map (starRingEnd ℂ)).det = starRingEnd ℂ J.det` using `(RingHom.map_det (starRingEnd ℂ) J).symm`. Rewrite using `[hm', Matrix.det_transpose, hJ, Complex.mul_conj']`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[dens_eq, dens_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h]`. Rewrite using `[colSum_mul, hd, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dens_trans (L : Fin D → MLine p σ) (c c' : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (hy' : y ∈ c'.e.source) : dens L c y = ‖transDet c.e c'.e y‖ ^ 2 * dens L c' y := by
@@ -105,7 +105,7 @@ theorem dens_trans (L : Fin D → MLine p σ) (c c' : AlgChart p σ D) {y : CxPt
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ L c c' _ hy hy'` and use `dens_trans L c c' hy hy'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dens_change_chart : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (L : Fin D → MLine p σ) (c c' : AlgChart p σ D) (y : CxPts p σ), y ∈ c.e.source → y ∈ c'.e.source → dens L c y = ‖transDet c.e c'.e y‖ ^ 2 * dens L c' y :=
   fun _ _ _ _ _ _ L c c' _ hy hy' => dens_trans L c c' hy hy'

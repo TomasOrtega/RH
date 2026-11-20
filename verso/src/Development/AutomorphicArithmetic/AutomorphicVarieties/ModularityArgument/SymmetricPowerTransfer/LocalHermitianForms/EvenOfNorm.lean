@@ -7,9 +7,9 @@ open IsLocalRing Polynomial QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ : K}
 
 /- English proof (translation)
-Introduce `h`. Establish `hu : IsUnit (2 : ResidueField O)`. Establish `h2` using `L.two.map (residue O)`. Rewrite `h2` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `h2 : ((ringChar (ResidueField O) : ℕ) : ResidueField O) = 0` using `ringChar.Nat.cast_ringChar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[h]`. Conclude with `hu.ne_zero (by exact_mod_cast h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLoc.char_ne (L : IsLoc O Δ) : ringChar (ResidueField O) ≠ 2 := by
   intro h
@@ -21,21 +21,21 @@ theorem IsLoc.char_ne (L : IsLoc O Δ) : ringChar (ResidueField O) ≠ 2 := by
   exact hu.ne_zero (by exact_mod_cast h2)
 
 /- English proof (translation)
-Use `haveI := L.fin`. Use `letI := Fintype.ofFinite (ResidueField O)`. Establish `hodd : Fintype.card (ResidueField O) % 2 = 1`. Establish `h2` using `L.char_ne`. Rewrite `h2` using `[Ne, FiniteField.even_card_iff_char_two]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hε0 : residue O (ε : O) ≠ 0` using `(ε.isUnit.map (residue O)).ne_zero`. Establish `hu0 : residue O (u : O) ≠ 0` using `(u.isUnit.map (residue O)).ne_zero`. Take `⟨a', b', hroot⟩` from `FiniteField.exists_root_sum_quadratic (f := X ^ 2 - C (residue O (u : O))) (g := C (-residue O (ε : O)) * X ^ 2) (degree_X_pow_sub_C (by norm_num) _) (degree_C_mul_X_pow 2 (neg_ne_zero.2 hε0)) hodd`. Take `⟨a0, rfl⟩` from `residue_surjective a'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b0, rfl⟩` from `residue_surjective b'`. Establish `hab : residue O (a0 ^ 2 - u - ε * b0 ^ 2) = 0`. Simplify using `only [eval_sub, eval_add, eval_mul, eval_pow, eval_X, eval_C, map_sub, map_mul, map_pow] at hroot ⊢`. Take the linear combination `hroot`. Distinguish the cases in `ha : residue O a0 = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hb : IsUnit b0`. Rewrite using `[← residue_ne_zero_iff_isUnit]`. Introduce `hb`. Apply `hu0` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul, map_pow, ha, hb] at hab`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hab`. Take `⟨r, hr, -⟩` from `sqrtO O K Δ L ((a0 ^ 2 - u) * ↑ε⁻¹) b0 hb (by`. Rewrite using `[← residue_eq_zero_iff]`. Establish `e1 : (a0 ^ 2 - u) * ↑ε⁻¹ - b0 ^ 2 = (a0 ^ 2 - u - ε * b0 ^ 2) * ↑ε⁻¹`. Use `ε.mul_inv` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `b0 ^ 2 * this`. Rewrite using `[e1, map_mul, hab, zero_mul])`. Use `⟨a0, r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Use `ε.mul_inv` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(a0 ^ 2 - u)) * this`. Establish `ha' : IsUnit a0` using `(residue_ne_zero_iff_isUnit a0).1 ha`. Take `⟨r, hr, -⟩` from `sqrtO O K Δ L (u + ε * b0 ^ 2) a0 ha' (by`. Rewrite using `[← residue_eq_zero_iff]`. Establish `e1 : (u : O) + ε * b0 ^ 2 - a0 ^ 2 = -(a0 ^ 2 - u - ε * b0 ^ 2)` using `by ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, map_neg, hab, neg_zero])`. Conclude with `⟨r, b0, by rw [hr]; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsLoc.nm_unit (L : IsLoc O Δ) (ε u : Oˣ) : ∃ a b : O, a ^ 2 - ε * b ^ 2 = u := by
   haveI := L.fin
@@ -80,11 +80,11 @@ theorem IsLoc.nm_unit (L : IsLoc O Δ) (ε u : Oˣ) : ∃ a b : O, a ^ 2 - ε * 
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [Algebra O K] in
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `h`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[← hab]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(x + 1) / 2, (x - 1) / (2 * a), ?_⟩` and prove the remaining obligations. Rewrite using `[← hab]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨a / b, 1 / b, ?_⟩` and prove the remaining obligations. Rewrite using `[← hab]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -107,11 +107,11 @@ theorem nm_symm {x y : K} (hx : x ≠ 0) (h2 : (2 : K) ≠ 0) (h : ∃ a b : K, 
     ring
 
 /- English proof (translation)
-Rewrite using `[← residue_ne_zero_iff_isUnit]`. Introduce `h0`. Simplify using `only [map_sub, map_mul, map_pow] at h0`. Distinguish the cases in `hy : residue O y = 0`. Establish `hx : residue O x = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `h0` using `[hy]`. Establish `: residue O x ^ 2 = 0` using `by linear_combination h0`. Conclude with `pow_eq_zero_iff (by norm_num) |>.1 this`. Break down `h with h | h` into its components or cases. Conclude with `(residue_ne_zero_iff_isUnit x).2 h hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(residue_ne_zero_iff_isUnit y).2 h hy`. Apply `hε` to reduce the goal to its premises. Use `⟨residue O x / residue O y, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_div_comm, eq_div_iff (mul_ne_zero hy hy)]`. Take the linear combination `-h0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem isUnit_sq_sub_mul_sq_of_not_isSquare_residue (ε : O) (hε : ¬ IsSquare (residue O ε)) (x y : O)
     (h : IsUnit x ∨ IsUnit y) : IsUnit (x ^ 2 - ε * y ^ 2) := by
@@ -132,11 +132,11 @@ private theorem isUnit_sq_sub_mul_sq_of_not_isSquare_residue (ε : O) (hε : ¬ 
     linear_combination -h0
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Establish `hy : y ≠ 0` using `by tauto`. Take `⟨n, v, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hπ`. Conclude with `⟨n, 0, v, by simp [hx], by ring, Or.inr v.isUnit⟩`. Distinguish the cases in `hy : y = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hπ`. Conclude with `⟨m, u, 0, by ring, by simp [hy], Or.inl u.isUnit⟩`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hπ`. Take `⟨n, v, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hπ`. Break down `le_total m n with hmn | hnm` into its components or cases.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Conclude with `⟨m, u, v * π ^ d, by ring, by ring, Or.inl u.isUnit⟩`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hnm`. Conclude with `⟨n, u * π ^ d, v, by ring, by ring, Or.inr v.isUnit⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_common_pow_factor_coprime_units {π : O} (hπ : Irreducible π) (x y : O) (h : x ≠ 0 ∨ y ≠ 0) :
     ∃ (k : ℕ) (x' y' : O), x = π ^ k * x' ∧ y = π ^ k * y' ∧ (IsUnit x' ∨ IsUnit y') := by
@@ -156,11 +156,11 @@ private theorem exists_common_pow_factor_coprime_units {π : O} (hπ : Irreducib
     exact ⟨n, u * π ^ d, v, by ring, by ring, Or.inr v.isUnit⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc⟩`. Take `⟨r₀, rfl⟩` from `residue_surjective c`. Establish `hε0 : residue O (ε : O) ≠ 0` using `(ε.isUnit.map (residue O)).ne_zero`. Establish `hr₀ : IsUnit r₀`. Rewrite using `[← residue_ne_zero_iff_isUnit]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Rewrite `hc` using `[h0, mul_zero]`. Conclude with `hε0 hc`. Take `⟨r, hr, -⟩` from `sqrtO O K Δ L ε r₀ hr₀ (by`. Rewrite using `[← residue_eq_zero_iff, map_sub, map_pow, hc, sq, sub_self])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hε` to reduce the goal to its premises. Conclude with `⟨algebraMap O K r, by rw [← map_mul, ← sq, hr]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem not_isSquare_residue_of_not_isSquare (L : IsLoc O Δ) (ε : Oˣ) (hε : ¬ IsSquare (algebraMap O K ε)) :
     ¬ IsSquare (residue O (ε : O)) := by
@@ -178,17 +178,17 @@ private theorem not_isSquare_residue_of_not_isSquare (L : IsLoc O Δ) (ε : Oˣ)
   exact ⟨algebraMap O K r, by rw [← map_mul, ← sq, hr]⟩
 
 /- English proof (translation)
-Use `haveI := L.frac`. Establish `hres` using `not_isSquare_residue_of_not_isSquare L ε hε`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨x1, z1, hz1, rfl⟩` from `IsFractionRing.div_surjective (A := O) a`. Take `⟨y1, z2, hz2, rfl⟩` from `IsFractionRing.div_surjective (A := O) b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz1' : algebraMap O K z1 ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hz1`. Establish `hz2' : algebraMap O K z2 ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hz2`. Establish `heq : (algebraMap O K x1 / algebraMap O K z1) ^ 2 - algebraMap O K ε * (algebraMap O K y1 / algebraMap O K z2) ^ 2 = algebraMap O K ((x1 * z2) ^ 2 - ε * (y1 * z1) ^ 2) / (algebraMap O K (z1 * z2)) ^ 2`. Simplify using `only [map_sub, map_mul, map_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h`, the goal using `[heq]`. Establish `hnz : x1 * z2 ≠ 0 ∨ y1 * z1 ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc.1, hc.2]`. Simplify using the standard rewrite rules. Take `⟨k, x', y', hx, hy, hu⟩` from `exists_common_pow_factor_coprime_units hπ _ _ hnz`. Establish `hw` using `isUnit_sq_sub_mul_sq_of_not_isSquare_residue (ε : O) hres x' y' hu`. Establish `hπ0 : algebraMap O K π ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective O K)]`. Conclude with `hπ.ne_zero`. Establish `hzz : algebraMap O K (z1 * z2) ≠ 0`. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hz1' hz2'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨hw.unit, algebraMap O K π ^ k / algebraMap O K (z1 * z2), div_ne_zero (pow_ne_zero _ hπ0) hzz, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hy, IsUnit.unit_spec]`. Simplify using `only [map_sub, map_mul, map_pow]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem IsLoc.even_of_norm (L : IsLoc O Δ) (ε : Oˣ) (hε : ¬ IsSquare (algebraMap O K ε)) {a b : K}
     (h : a ^ 2 - algebraMap O K ε * b ^ 2 ≠ 0) : EvenVal O (a ^ 2 - algebraMap O K ε * b ^ 2) := by
@@ -226,13 +226,13 @@ theorem IsLoc.even_of_norm (L : IsLoc O Δ) (ε : Oˣ) (hε : ¬ IsSquare (algeb
   field_simp
 
 /- English proof (translation)
-Use `haveI := L.frac`. Introduce and unpack `⟨u, s, hs, he⟩`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := O) s`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hyK : algebraMap O K y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hs`. Establish `key : p * y ^ 2 = (u : O) * x ^ 2`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow]`. Rewrite using `[he]`. Clear the denominators using the available nonvanishing facts. Take `⟨m, v, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hp`. Take `⟨n, w, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 hp`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : ((w ^ 2 : Oˣ) : O) * p ^ (2 * n + 1) = ((u * v ^ 2 : Oˣ) : O) * p ^ (2 * m)`. Use `push_cast`. Take the linear combination `key`. Use `IsDiscreteValuationRing.unit_mul_pow_congr_pow hp hp _ _ _ _ e2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem IsLoc.not_even (L : IsLoc O Δ) {p : O} (hp : Irreducible p) : ¬ EvenVal O (algebraMap O K p) := by
   haveI := L.frac
@@ -257,19 +257,17 @@ theorem IsLoc.not_even (L : IsLoc O Δ) {p : O} (hp : Irreducible p) : ¬ EvenVa
   omega
 
 /- English proof (translation)
-Use `haveI := L.frac`. Use `haveI := L.fin`. Use `letI := Fintype.ofFinite (ResidueField O)`. Take `⟨c, hc⟩` from `FiniteField.exists_nonsquare L.char_ne`. Take `⟨e, rfl⟩` from `residue_surjective c`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : IsUnit e`. Rewrite using `[← residue_ne_zero_iff_isUnit]`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, by simp⟩`. Use `⟨he.unit, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨x, z, hz, rfl⟩` from `IsFractionRing.div_surjective (A := O) t`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : z ≠ 0` using `nonZeroDivisors.ne_zero hz`. Establish `hz' : algebraMap O K z ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hz`. Rewrite `ht` using `[IsUnit.unit_spec]`. Establish `h0 : x ^ 2 - e * z ^ 2 = 0`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [map_sub, map_mul, map_pow, map_zero, ht]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, x', z', hx, hz2, hu⟩` from `exists_common_pow_factor_coprime_units hπ x z (Or.inr hz0)`. Establish `hw` using `isUnit_sq_sub_mul_sq_of_not_isSquare_residue e hc x' z' hu`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : π ^ (2 * k) * (x' ^ 2 - e * z' ^ 2) = 0`. Rewrite using `[← h0, hx, hz2]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.1 e3 with h | h` into its components or cases. Conclude with `pow_ne_zero _ hπ.ne_zero h`.
-
-Conclude with `hw.ne_zero h`.
+Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem IsLoc.exists_nonsq (L : IsLoc O Δ) : ∃ ε : Oˣ, ¬ IsSquare (algebraMap O K ε) := by
   haveI := L.frac

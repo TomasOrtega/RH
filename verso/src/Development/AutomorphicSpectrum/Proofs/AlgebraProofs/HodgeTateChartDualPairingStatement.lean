@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LeadMinor
 open Module NumberField GlobalTheory.CompanionTheory.Ar.HT TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.HT.chart_comp_zero_mod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FHodgeTateChartDualPairing.lean&line=9#L9)
 -/

@@ -16,7 +16,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {v : HeightOneSpectrum (𝓞 F)} {Pb : Pl E} (U : MhlUnif Pb) (k : ℕ)
 
 /- English proof (translation)
-Establish `hB` using `mhl_split_bij' hc U k ST SG hov hST hSG hsp hk 1`. Use `Set.Finite.of_finite_image ?_ hB.injOn` and prove the remaining obligations. Rewrite using `[hB.image_eq]`. Conclude with `DecoSet.heckeSet_finite (conjPrime₂ Pb).ne_bot (conjIdeal_ne_bot (conjPrime₂ Pb).ne_bot) k _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mhs_cosets_finite (ST SG : Finset (Pl E)) (hov : IsOver v Pb) (hST : ∀ Q ∈ ST, ¬ IsOver v Q)
     (hSG : ∀ Q ∈ SG, ¬ IsOver v Q) (hsp : conjPrime₂ Pb ≠ Pb) (hk : k ≤ n) : (mhlCosets hc (n := n) v U k).Finite := by
@@ -26,13 +26,13 @@ theorem mhs_cosets_finite (ST SG : Finset (Pl E)) (hov : IsOver v Pb) (hST : ∀
   exact DecoSet.heckeSet_finite (conjPrime₂ Pb).ne_bot (conjIdeal_ne_bot (conjPrime₂ Pb).ne_bot) k _
 
 /- English proof (translation)
-Establish `hfin` using `mhs_cosets_finite hc U k ST SG hov hST hSG hsp hk`. Use `⟨hfin.toFinset.image Quotient.out, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `η hη`. Simplify using `only [Finset.coe_image, Set.mem_image, Set.Finite.coe_toFinset] at hη`. Take `⟨c, hc', rfl⟩` from `hη`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `show (QuotientGroup.mk c.out : UAd hc n ⧸ mhlKv hc n v) ∈ mhlCosets hc v U k`. Rewrite using `[QuotientGroup.out_eq']`. Conclude with `hc'`. Introduce `η hη η' hη' h`. Simplify using `only [Finset.coe_image, Set.mem_image, Set.Finite.coe_toFinset] at hη hη'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, rfl⟩` from `hη`. Take `⟨c', -, rfl⟩` from `hη'`. Establish `h' : c = c'` using `(QuotientGroup.out_eq' c).symm.trans (h.trans (QuotientGroup.out_eq' c'))`. Rewrite using `[h']`. Introduce `c hc'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨c.out, ?_, QuotientGroup.out_eq' c⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_image, Set.mem_image, Set.Finite.coe_toFinset]`. Conclude with `⟨c, hc', rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mhs_exists_reps (ST SG : Finset (Pl E)) (hov : IsOver v Pb) (hST : ∀ Q ∈ ST, ¬ IsOver v Q)
     (hSG : ∀ Q ∈ SG, ¬ IsOver v Q) (hsp : conjPrime₂ Pb ≠ Pb) (hk : k ≤ n) :
@@ -59,7 +59,7 @@ theorem mhs_exists_reps (ST SG : Finset (Pl E)) (hov : IsOver v Pb) (hST : ∀ Q
     exact ⟨c, hc', rfl⟩
 
 /- English proof (translation)
-Take `⟨h, e⟩` from `QuotientGroup.mk_out_eq_mul (mhlKv hc n v) η`. Rewrite using `[e, ← mul_assoc, Subgroup.coe_mul]`. Conclude with `decoOf_mul_mhlKv ST SG hST hSG _ h.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mhs_decoOf_out (ST SG : Finset (Pl E)) (hST : ∀ Q ∈ ST, ¬ IsOver v Q) (hSG : ∀ Q ∈ SG, ¬ IsOver v Q)
     (x η : UAd hc n) :

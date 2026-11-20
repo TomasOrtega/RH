@@ -36,9 +36,9 @@ def GTCCurvBlock : Prop :=
 def GTCCurvIdOfCut : Prop := GTCCurvPoly → GTCCurvRTT → GTCCurvBlock → GTCCurvId
 
 /- English proof (translation)
-Introduce `hPo hR hB Wp Wq _ _ _ _ _ _ P Bs X d hyp ρ`. Take `⟨hPl, hk, -, hAL, -, hRel, hQQ⟩` from `hyp`. Establish `hS : Wd.IsStart d.QQ (M.qC P)`. Establish `h0` using `(Formalism.FourierDecayAlt.P.actual_start Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hPl X).1`. Rewrite `h0` using `[show X.QQ = d.QQ from funext hQQ]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hTT : d.L.TT = (P.TT : ℂ)`. Rewrite using `[hAL.2.2.2.2.2.2.2.2.2.2.2.2, Formalism.FourierDecayAlt.P.NFx4.TT_eq hPl]`. Take `⟨h1, h2⟩` from `hPo P _ d hRel hk hTT`. Establish `hc` using `hR _ P.k (fun u => d.QQ u 0 0) (fun u => d.QQ u 1 0) (ThetaC d) (by omega) (fun u v => Formalism.FourierDecayAlt.P.NFx4.SX.rtt_ent d hS u v 0 0 1 0) h1 h2`. Conclude with `hB P _ d hRel hc ρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gTCCurvId_of_cut : GTCCurvIdOfCut := by
   intro hPo hR hB Wp Wq _ _ _ _ _ _ P Bs X d hyp ρ

@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Establish `ha' : counit (R` using `k) a = 0 := ha`. Express the relevant statement in the definitionally equal form `counit (R := k) (f a) = 0`. Rewrite using `[CoalgHomClass.counit_comp_apply, ha']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_augIdeal_map {k A B : Type} [CommRing k] [CommRing A] [CommRing B] [Bialgebra k A]
     [Bialgebra k B] (f : A →ₐc[k] B) {a : A} (ha : a ∈ augIdeal k A) : f a ∈ augIdeal k B := by
@@ -21,7 +21,7 @@ theorem mem_augIdeal_map {k A B : Type} [CommRing k] [CommRing A] [CommRing B] [
   rw [CoalgHomClass.counit_comp_apply, ha']
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Conclude with `⟨N, hf (by rw [map_pow, hN, map_zero])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isNilpotent_of_map_injective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Injective f) {a : A} (h : IsNilpotent (f a)) : IsNilpotent a := by
@@ -29,11 +29,11 @@ theorem isNilpotent_of_map_injective {A B : Type} [CommRing A] [CommRing B] (f :
   exact ⟨N, hf (by rw [map_pow, hN, map_zero])⟩
 
 /- English proof (translation)
-Introduce `n b hb`. Take `⟨c, rfl⟩` from `H.res_surjective n b`. Establish `hc : c ∈ augIdeal k (H.A (n + 1))`. Establish `hb' : counit (R` using `k) (H.res n c) = 0 := hb`. Express the relevant statement in the definitionally equal form `counit (R := k) c = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hb'` using `[CoalgHomClass.counit_comp_apply]`. Then use the resulting hypothesis. Establish `h1` using `h (n + 1) c hc`. Rewrite `h1` using `[pow_succ', ← mulBy_mulBy, ← H.mulP_res, map_mulBy]`. Take `⟨ρ, hρ⟩` from `HTPair.exists_retraction_mulP H n`. Establish `hinj : Function.Injective (H.mulP n : H.A n →ₐ[k] H.A (n + 1))` using `Function.LeftInverse.injective hρ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `isNilpotent_of_map_injective (H.mulP n : H.A n →ₐ[k] H.A (n + 1)).toRingHom hinj h1`.
+A detailed English derivation is pending.
 -/
 theorem nil_mulBy_pow_of_succ {p : ℕ} {k : Type} [Field k] (H : PDivGroup p k) (j : ℕ)
     (h : ∀ n, ∀ b ∈ augIdeal k (H.A n), IsNilpotent (mulBy k (H.A n) (p ^ (j + 1)) b)) :
@@ -52,13 +52,13 @@ theorem nil_mulBy_pow_of_succ {p : ℕ} {k : Type} [Field k] (H : PDivGroup p k)
   exact isNilpotent_of_map_injective (H.mulP n : H.A n →ₐ[k] H.A (n + 1)).toRingHom hinj h1
 
 /- English proof (translation)
-Introduce `p _ k _ _ G H q hq hG`. Take `⟨m, q', -, h2⟩` from `hq`. Establish `hm : ∀ n, ∀ b ∈ augIdeal k (H.A n), IsNilpotent (mulBy k (H.A n) (p ^ m) b)`. Introduce `n b hb`. Establish `e : mulBy k (H.A n) (p ^ m) = (q'.app n).comp (q.app n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← natCast_smul_id_app H (p ^ m) n, Nat.cast_pow, ← h2]`. Both sides reduce to the same expression. Rewrite using `[e, BialgHom.comp_apply]`. Conclude with `(hG n _ (mem_augIdeal_map _ hb)).map (q'.app n : G.A n →ₐ[k] H.A n)`. Establish `key : ∀ j, (∀ n, ∀ b ∈ augIdeal k (H.A n), IsNilpotent (mulBy k (H.A n) (p ^ j) b)) → ∀ n, ∀ b ∈ augIdeal k (H.A n), IsNilpotent (mulBy k (H.A n) (p ^ 0) b)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact id`. Consider the case `succ j ih => exact fun h => ih (nil_mulBy_pow_of_succ H j h)`. Introduce `n b hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `key m hm n b hb`. Establish `e1 : mulBy k (H.A n) (p ^ 0) b = b`. Rewrite using `[pow_zero, mulBy, pow_one]`. Both sides reduce to the same expression. Rewrite `h0` using `[e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isConn_of_isIsog : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     (G H : PDivGroup p k) (q : G ⟶ H), IsIsog q → G.IsConn → H.IsConn := by

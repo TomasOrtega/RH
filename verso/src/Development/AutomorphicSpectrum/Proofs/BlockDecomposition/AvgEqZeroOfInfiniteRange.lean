@@ -15,9 +15,9 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.MatchLinear
 
 /- English proof (translation)
-Establish `hd : IsLocallyConstant fun p : H × H => u (p.1 * p.2) - u p.1` using `(hu.comp_continuous (continuous_fst.mul continuous_snd)).sub (hu.comp_continuous continuous_fst)`. Take `⟨A, B, -, hB, hA, h1, hAB⟩` from `generalized_tube_lemma (isCompact_univ (X := H)) (isCompact_singleton (x := (1 : H))) (hd.isOpen_fiber 0) (fun p hp => by`. Take `⟨-, h⟩` from `hp`. Establish `: p.2 = 1` using `h`. Simplify using `[this])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsub : B ⊆ (rStab u : Set H)` using `fun k hk x => sub_eq_zero.1 (hAB (show (x, k) ∈ A ×ˢ B from ⟨hA (Set.mem_univ x), hk⟩))`. Establish `hopen : IsOpen (rStab u : Set H)` using `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hB.mem_nhds (h1 rfl)) hsub)`. Use `haveI := Subgroup.quotient_finite_of_isOpen (rStab u) hopen`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem index_rStab_ne_zero {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [CompactSpace H]
     (u : H → ℂ) (hu : IsLocallyConstant u) : (rStab u).index ≠ 0 := by
@@ -36,9 +36,9 @@ theorem index_rStab_ne_zero {H : Type} [Group H] [TopologicalSpace H] [IsTopolog
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Establish `hsum : S ≤ rStab (fun h => ∑ j, a j * u j h)` using `fun k hk => show ∀ x, _ from fun x => Finset.sum_congr rfl fun j _ => by rw [(hu j hk : ∀ x, u j (x * k) = u j x) x]`. Use `haveI : S.FiniteIndex := ⟨hS⟩`. Use `haveI : Finite (H ⧸ S) := Subgroup.finite_quotient_of_finiteIndex`. Use `letI : Fintype (H ⧸ S) := Fintype.ofFinite _`. Rewrite using `[avg_eq_of_le_rStab _ _ S hsum hS, finsum_eq_sum_of_fintype, Finset.sum_comm, Finset.mul_sum]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[avg_eq_of_le_rStab _ _ S (hu j) hS, finsum_eq_sum_of_fintype, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem avg_lin {H : Type} [Group H] (S : Subgroup H) (hS : S.index ≠ 0) {J : Type} [Fintype J] (a : J → ℂ)
     (u : J → H → ℂ) (hu : ∀ j, S ≤ rStab (u j)) :
@@ -54,17 +54,15 @@ theorem avg_lin {H : Type} [Group H] (S : Subgroup H) (hS : S.index ≠ 0) {J : 
   ring
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `hsupp : ∀ j, (Function.support fun q : DoubleCoset.Quotient (twCent θ y : Set G) (K : Set G) => (((twCent θ y ⊓ K.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex (cptPart (twCent θ y)) : ℕ) : ℂ) * avg fun k : K => g j ((Quotient.out q * k)⁻¹ * y * θ (Quotient.out q * k)) …`. Introduce `j`. Use `(hfin j).subset fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hno`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, not_exists, not_and, ne_eq, not_not] at hno`. Apply `hq` to reduce the goal to its premises. Establish `h0 : (fun k : K => g j ((Quotient.out q * k)⁻¹ * y * θ (Quotient.out q * k))) = fun _ => 0`. Use function extensionality and compare the values at `fun k => hno k k.2`. Establish `ha : avg (fun k : K => g j ((Quotient.out q * k)⁻¹ * y * θ (Quotient.out q * k))) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Simplify using `[avg]`. Simplify using `only [ha, mul_zero]`. Unfold `twOrb`. Establish `hterm : ∀ q : DoubleCoset.Quotient (twCent θ y : Set G) (K : Set G), (((twCent θ y ⊓ K.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex (cptPart (twCent θ y)) : ℕ) : ℂ) * (avg fun k : K => ∑ j, a j * g j ((Quotient.out q * k)⁻¹ * y * θ (Quotient.out q * k))) = ∑ j, a j * …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Establish `hc : Continuous fun k : K => (Quotient.out q * (k : G))⁻¹ * y * θ (Quotient.out q * (k : G))`. Establish `h1 : Continuous fun k : K => Quotient.out q * (k : G)` using `continuous_const.mul continuous_subtype_val`. Conclude with `(h1.inv.mul continuous_const).mul (hθ.comp h1)`. Establish `hi : ∀ j, (rStab fun k : K => g j ((Quotient.out q * k)⁻¹ * y * θ (Quotient.out q * k))).index ≠ 0` using `fun j => index_rStab_ne_zero _ ((hg j).comp_continuous hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[avg_lin (⨅ j, rStab fun k : K => g j ((Quotient.out q * k)⁻¹ * y * θ (Quotient.out q * k))) (Subgroup.index_iInf_ne_zero hi) a (fun j (k : K) => g j ((Quotient.out q * k)⁻¹ * y * θ (Quotient.out q * k))) (fun j => iInf_le _ j), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finsum_congr hterm, finsum_sum_comm _ _ fun j _ => ?_]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_finsum]`. Conclude with `(hsupp j).subset (Function.support_const_smul_subset (a j) _ |>.trans subset_rfl)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twOrb_lin {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (θ : G →* G) (hθ : Continuous θ)
     (K : Subgroup G) (hK : IsCompact (K : Set G)) (y : G) {J : Type} [Fintype J] (a : J → ℂ) (g : J → G → ℂ)
@@ -111,11 +109,11 @@ theorem twOrb_lin {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup 
   · exact (hsupp j).subset (Function.support_const_smul_subset (a j) _ |>.trans subset_rfl)
 
 /- English proof (translation)
-Establish `hsupp : ∀ j, (Function.support fun c : TwCl θ => if c.rep ∈ S then wt c.rep * twOrb θ K c.rep (g j) else 0).Finite` using `fun j => hS.subset fun c hc => by`. Assume the negation of the conclusion as `hn`. Conclude with `hc (if_neg hn)`. Unfold `clSum`. Establish `hterm : ∀ c : TwCl θ, (if c.rep ∈ S then wt c.rep * twOrb θ K c.rep (fun z => ∑ j, a j * g j z) else 0) = ∑ j, a j * (if c.rep ∈ S then wt c.rep * twOrb θ K c.rep (g j) else 0)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Distinguish the cases in `hc : c.rep ∈ S`. Simplify using `only [if_pos hc, h _ hc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hc, mul_zero, Finset.sum_const_zero]`. Rewrite using `[finsum_congr hterm, finsum_sum_comm _ _ fun j _ => ?_]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_finsum]`. Conclude with `(hsupp j).subset (Function.support_const_smul_subset (a j) _ |>.trans subset_rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clSum_lin {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (S : Set G) (wt : G → ℂ)
     (hS : {c : TwCl θ | c.rep ∈ S}.Finite) {J : Type} [Fintype J] (a : J → ℂ) (g : J → G → ℂ)
@@ -142,7 +140,7 @@ theorem clSum_lin {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.TwistOrbit.nrmL_twConj' hU, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_nrmL_twConj (hU : Unr E) (n : ℕ) (w : Pl E) (x g : GLw n w) :
     (nrmL n w (g⁻¹ * x * thL n w g)).val.charpoly = (nrmL n w x).val.charpoly := by
@@ -150,9 +148,9 @@ theorem charpoly_nrmL_twConj (hU : Unr E) (n : ℕ) (w : Pl E) (x g : GLw n w) :
     Matrix.charpoly_units_conj']
 
 /- English proof (translation)
-Take `⟨hKo, hKc⟩` from `GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w`. Take `⟨D, hD, hP⟩` from `GlobalTheory.OrbitU.orbit_cpt_U E hU n w y hy _ hf.isCompact`. Use `GlobalTheory.CompanionTheory.TwistOrbit.finite_of_subset_mul' _ _ hKo ((fun p : UL n w × UL n w => p.1 * p.2⁻¹) '' (D ×ˢ (KL n w : Set (UL n w)))) ((hD.prod hKc).image (by fun_prop)) (fun x => ∃ k ∈ KL n w, f ((x * k)⁻¹ * y * MonoidHom.id (UL n w) (x * k)) ≠ 0) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk, hne⟩`. Take `⟨t, ht, d, hd, e⟩` from `hP (x * k) (subset_tsupport f hne)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, d * k⁻¹, ⟨(d, k), ⟨hd, hk⟩, rfl⟩, by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_dc_unitary (hU : Unr E) (n : ℕ) (w : Pl E) (y : UL n w) (hy : y.1.val.charpoly.Separable)
     (f : UL n w → ℂ) (hf : HasCompactSupport f) :
@@ -169,9 +167,9 @@ theorem finite_dc_unitary (hU : Unr E) (n : ℕ) (w : Pl E) (y : UL n w) (hy : y
   exact ⟨t, ht, d * k⁻¹, ⟨(d, k), ⟨hd, hk⟩, rfl⟩, by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩
 
 /- English proof (translation)
-Take `⟨D, hD, hP⟩` from `GlobalTheory.CompanionTheory.TwistOrbit.proper_pair hU a b w y h₁ h₂ _ hf.isCompact`. Take `⟨hKo, hKc⟩` from `GlobalTheory.BCT.StTw2Add.isOpen_isCompact_KK (E := E) a b w`. Use `GlobalTheory.CompanionTheory.TwistOrbit.finite_of_subset_mul' _ _ hKo ((fun p : (GLw a w × GLw b w) × (GLw a w × GLw b w) => p.1 * p.2⁻¹) '' (D ×ˢ _)) ((hD.prod hKc).image (by fun_prop)) (fun x => ∃ k ∈ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b), f ((x * k)⁻¹ * …` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk, hne⟩`. Take `⟨t, ht, d, hd, e⟩` from `hP (x * k) (subset_tsupport f hne)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, d * k⁻¹, ⟨(d, k), ⟨hd, hk⟩, rfl⟩, by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_dc_pair (hU : Unr E) (a b : ℕ) (w : Pl E) (y : GLw a w × GLw b w)
     (h₁ : (nrmL a w y.1).val.charpoly.Separable) (h₂ : (nrmL b w y.2).val.charpoly.Separable)
@@ -191,13 +189,13 @@ theorem finite_dc_pair (hU : Unr E) (a b : ℕ) (w : Pl E) (y : GLw a w × GLw b
   exact ⟨t, ht, d * k⁻¹, ⟨(d, k), ⟨hd, hk⟩, rfl⟩, by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n a b w μ J _ c f φ hreg hM Q₁ Q₂ m₁ m₂ d₁ d₂ hsep c₁ c₂`. Establish `hs₁ : Q₁.Separable` using `hsep.of_mul_left`. Establish `hs₂ : Q₂.Separable` using `hsep.of_mul_right`. Establish `e₁ : stTw2 a b w Q₁ Q₂ (fun y => ∑ j, c j * φ j y) = ∑ j, c j * stTw2 a b w Q₁ Q₂ (φ j)`. Unfold `stTw2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `clSum_lin _ _ _ _ ?_ c φ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.BCT.StTw2Add.finite_prod _ _ (fun x => (nrmL a w x).val.charpoly = Q₁) (fun x => (nrmL b w x).val.charpoly = Q₂) (fun x g => by simp only [charpoly_nrmL_twConj hU]) (fun x g => by simp only [charpoly_nrmL_twConj hU]) (GlobalTheory.BCT.ClsFin.classes_finite E hU a w Q …`. Introduce and unpack `y ⟨hy₁, hy₂⟩`. Establish `hθ : Continuous ((thL a w).prodMap (thL b w))` using `((GlobalTheory.BCT.thL_continuous_involutive E hU a w).1.comp continuous_fst).prodMk ((GlobalTheory.BCT.thL_continuous_involutive E hU b w).1.comp continuous_snd)`. Conclude with `twOrb_lin _ hθ _ (GlobalTheory.BCT.StTw2Add.isOpen_isCompact_KK a b w).2 y c φ (fun j => (hreg j).2.2.1) fun j => finite_dc_pair hU a b w y (hy₁ ▸ hs₁) (hy₂ ▸ hs₂) (φ j) (hreg j).2.2.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e₂ : kapOrb n w Q₁ Q₂ (fun γ => ∑ j, c j * f j γ) = ∑ j, c j * kapOrb n w Q₁ Q₂ (f j)`. Unfold `kapOrb`. Use `clSum_lin _ _ _ _ (GlobalTheory.BCT.ClsFin.classes_finite E hU n w (Q₁ * Q₂) hsep).2 c f ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `twOrb_lin _ continuous_id _ (GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w).2 y c f (fun j => (hreg j).1) fun j => finite_dc_unitary hU n w y (by rw [show y.1.val.charpoly = Q₁ * Q₂ from hy]; exact hsep) (f j) (hreg j).2.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hM j Q₁ Q₂ m₁ m₂ d₁ d₂ hsep c₁ c₂]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem matchLin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n a b : ℕ) (w : Pl E)
     (μ : (w.adicCompletion E)ˣ →* ℂˣ) (J : Type) [Fintype J] (c : J → ℂ) (f : J → UL n w → ℂ)

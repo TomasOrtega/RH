@@ -7,13 +7,13 @@ open scoped TensorProduct
 namespace GlobalTheory.ColumnSpanCoefficients
 
 /- English proof (translation)
-Rewrite `hy` using `[colSpan]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Take `⟨j, rfl, hj⟩` from `hI i hi`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single j 1, fun j' hj' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `hj' hj`. Rewrite using `[Matrix.mulVec_single_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, fun _ _ => rfl, Matrix.mulVec_zero _⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨a, ha, rfl⟩` from `hx`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `hz`. Conclude with `⟨a + b, fun j hj => by simp [ha j hj, hb j hj], Matrix.mulVec_add _ _ _⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨c • a, fun j hj => by simp [ha j hj], Matrix.mulVec_smul _ _ _⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coeff_of_mem_colSpan {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n r s : ℕ} (hs : s ≤ r) (X : Matrix (Fin n) (Fin r) E) (I : Set (Fin r)) (P : Fin s → Prop)

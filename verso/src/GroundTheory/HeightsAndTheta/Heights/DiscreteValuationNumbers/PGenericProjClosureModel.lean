@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N hN E _ _ B B' hB Φ _ _ _ _ e t ht`. Take `⟨a₁, ha₁⟩` from `h₁ O Ω K ι y N E B`. Take `⟨M, φ, hφ⟩` from `ha₁ a₁ le_rfl`. Take `⟨a₁', ha₁'⟩` from `h₁ O Ω K ι y N E B'`. Take `⟨M', φ', hφ'⟩` from `ha₁' a₁' le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hZ` using `h₂ O ϖ hϖ Ω K ι y d hV N hN E B B' hB M M' a₁ a₁' φ φ' hφ hφ' Φ e t ht`. Take `⟨f₀, g₀, hD, hfg⟩` from `h₃ O ϖ hϖ Ω K ι y d hV N hN E B B' hB M M' a₁ a₁' φ φ' hφ hφ' Φ e t ht hZ`. Conclude with `⟨M, M', a₁, a₁', φ, φ', hφ, hφ', hZ, f₀, g₀, hD, hfg⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GenericProjClosureModel.proof (h₁ : TwistedDualGensExist.Statement)
     (h₂ : GenericProjClosureDim.Statement) (h₃ : GenericProjClosureDivisor.Statement) :

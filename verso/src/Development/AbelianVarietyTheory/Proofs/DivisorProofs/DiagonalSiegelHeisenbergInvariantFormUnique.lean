@@ -25,7 +25,7 @@ namespace GlobalTheory.DiagSiegelUniq
 open GlobalTheory.WeilM
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases j with j | j <;>`. Apply the tactic sequence `simp only [GlobalTheory.DiagSiegel.diagMat, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id] <;>`. Simplify using `[diagCols, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem diagMat_eq_mul {A : Type} [CommRing A] {m n : ℕ} (w : Matrix (Fin m) (Fin n) A) :
     GlobalTheory.DiagSiegel.diagMat w =
@@ -38,15 +38,13 @@ theorem diagMat_eq_mul {A : Type} [CommRing A] {m n : ℕ} (w : Matrix (Fin m) (
     simp [diagCols, Matrix.one_apply]
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Formalism.IndefR.Datum.WO T S) := ⟨rfl⟩`. Use `haveI : BorelSpace (Formalism.IndefR.DatumF.WOF D.host.F D.host.E S.rank T.rank) := ⟨rfl⟩`. Take `⟨hH, hF, -⟩` from `h`. Set `e : Formalism.IndefR.Datum.WO T S ≃+ Formalism.IndefR.DatumF.WOF D.host.F D.host.E S.rank T.rank` to `Matrix.transposeAddEquiv _ _ _`. Establish `hc : Continuous e` using `Continuous.matrix_transpose continuous_id`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcs : Continuous e.symm` using `Continuous.matrix_transpose continuous_id`. Set `E' : Formalism.IndefR.Datum.WO T S ≃ᵐ Formalism.IndefR.DatumF.WOF D.host.F D.host.E S.rank T.rank` to `(Homeomorph.mk e.toEquiv hc hcs).toMeasurableEquiv`. Establish `hE' : ∀ w, E' w = wᵀ` using `fun _ => rfl`. Set `eG : Formalism.IndefR.DatumF.ratLF D.host.F D.host.E S.rank T.rank ≃ ratL S T` to `{ toFun := fun g => ⟨(g : Matrix (Fin T.rank) (Fin S.rank) _)ᵀ, by`. Take `⟨γ, hγ⟩` from `g.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨γᵀ, by rw [← hγ]; rfl⟩⟩`. Use `invFun := fun g => ⟨(g : Matrix (Fin S.rank) (Fin T.rank) _)ᵀ, by`. Take `⟨γ, hγ⟩` from `g.2`. Conclude with `⟨γᵀ, by rw [← hγ]; rfl⟩⟩`. Use `left_inv := fun g => Subtype.ext (Matrix.transpose_transpose _)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `right_inv := fun g => Subtype.ext (Matrix.transpose_transpose _) }`. Use `⟨ν.map E', E' '' 𝓕, ?_, ?_, fun f => ?_⟩` and prove the remaining obligations. Conclude with `AddEquiv.isAddHaarMeasure_map ν e hc hcs`. Use `hF.image_of_equiv E'.toEquiv (E'.quasiMeasurePreserving_symm ν) eG fun g x => ?_ show (((eG g : ratL S T) : Matrix (Fin S.rank) (Fin T.rank) _) + x)ᵀ = (g : Matrix (Fin T.rank) (Fin S.rank) _) + xᵀ` and prove the remaining obligations. Rewrite using `[Matrix.transpose_add]`.
-
-Conclude with `congrArg (· + xᵀ) (Matrix.transpose_transpose _)`. Rewrite using `[E'.restrict_map, E'.preimage_image, MeasureTheory.integral_map_equiv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transpose_transport (D : D7) (S T : HSp D) (ν : Measure (Formalism.IndefR.Datum.WO T S))
     (𝓕 : Set (Formalism.IndefR.Datum.WO T S)) (h : Formalism.IndefR.Datum.IsCovolOne (ratL S T) ν 𝓕) :
@@ -85,9 +83,9 @@ theorem transpose_transport (D : D7) (S T : HSp D) (ν : Measure (Formalism.Inde
     rfl
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Take `⟨v₁, -, -, ⟨τ₁⟩⟩` from `GlobalTheory.TripleDarboux.exists_good_place D ∅`. Set `B : Base D.host.F D.host.E` to `{ ψ := ψ, emb := fun _ => Classical.arbitrary _, mα := 0, mβ := 0, P := ∅, τ := fun v => absurd v.2 (Finset.notMem_empty _), v₁ := v₁, τ₁ := τ₁ }`. Establish `hB : B.IsGood D.sp.cm.sig` using `GlobalTheory.TripleDarboux.base_isGood B hψ fun v hv => absurd hv (Finset.notMem_empty _)`. Conclude with `GlobalTheory.T.diagonalLagrangian_invariantForm_unique D.host.F D.host.E D.sp.cm.sig B hB S.rank T.rank S.gram T.gram (GlobalTheory.Doubling.isHermND_gram S) (GlobalTheory.Doubling.isHermND_gram T) D.host.xi0 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D) (Formalism.L …`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← diagMat_eq_mul]`. Conclude with `hinv z Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem lubinTateSeries_eq_of_coeff_one_eq (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E)
@@ -125,9 +123,9 @@ theorem lubinTateSeries_eq_of_coeff_one_eq (D : D7) (ψ : AddChar (AF D.host.F) 
       exact hinv z Φ hΦ
 
 /- English proof (translation)
-Introduce `D ψ hψ S T JB ξ hξ κ _ co hrat ν 𝓕 hcov l hl hinv`. Take `⟨ν', 𝓕', hν', h𝓕', hint⟩` from `transpose_transport D S T ν 𝓕 hcov`. Establish `hJ : incM D.host.F (GlobalTheory.WeilSchrodinger.DblTargetF.dblG T.gram)ᵀ = incM D.host.F ((GlobalTheory.Doubling.dblSp T).gramᵀ)`. Rewrite using `[← GlobalTheory.WeilSchrodinger.DblTargetF.reindex_dbl_incM (F := D.host.F) (J := T.gram) rfl, GlobalTheory.WeilSchrodinger.DblTarget.reindex_dbl_incM T rfl]`. Take `⟨c, hc⟩` from `lubinTateSeries_eq_of_coeff_one_eq D ψ hψ S T JB ξ hξ κ _ hJ co hrat ν' 𝓕' hν' h𝓕' l hl hinv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc Φ hΦ, GlobalTheory.LagrTheta.lagrInt, hint, GlobalTheory.DiagSiegel.thetaDiagInt]`. Use `congr 2`. Use function extensionality and compare the values at `w`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilSchrodinger.transD_rho, diagMat_eq_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem uniq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E),

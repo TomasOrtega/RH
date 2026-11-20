@@ -13,11 +13,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n hn S hS lam K' hK f hf`. Rewrite using `[GlobalTheory.T.heckeTrace_forms_weight_eq_finrank_mul E hU n hn S hS lam K' hK f hf, GlobalTheory.T.heckeTrace_vectorValued_eq_finite_kernelSum E hU n hn S hS lam K' hK f hf, TrKer.finrank_wsp]`. Unfold `kernSum`. Use `congr 2`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `finsum_congr fun γ => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `TrKer.wAt chW`. Rewrite using `[TrKer.trace_piMap]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun v _ => GlobalTheory.T.trace_dualWeylModule_inv_rationalPoint_eq_conj_charAt E n (lam v) γ v`.
+A detailed English derivation is pending.
 -/
 theorem trOn_forms_hop_eq_kernSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → trOn (forms S lam K') (hop S K' f) = dimW lam * kernSum S lam K' f := by
   intro E _ _ _ hU n hn S hS lam K' hK f hf

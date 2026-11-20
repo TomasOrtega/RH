@@ -12,7 +12,7 @@ open scoped BigOperators Real in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Rewrite using `[← star_dotProduct_star, Matrix.star_mulVec, star_star, hH.eq, ← Matrix.dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma _root_.GlobalTheory.ThetaPositivity.form_conj {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z w : Fin g → ℂ) :
     w ⬝ᵥ Hm.mulVec (star z) = star (z ⬝ᵥ Hm.mulVec (star w)) := by
@@ -22,7 +22,7 @@ open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 variable {g : ℕ} in
 /- English proof (translation)
-Rewrite using `[star_add, Matrix.mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, _root_.GlobalTheory.ThetaPositivity.form_conj hH z w]`. Simplify using `only [Complex.add_re, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma _root_.GlobalTheory.ThetaPositivity.form_add_self {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z w : Fin g → ℂ) :
     ((z + w) ⬝ᵥ Hm.mulVec (star (z + w))).re =
@@ -37,7 +37,7 @@ open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 variable {g : ℕ} in
 /- English proof (translation)
-The claim follows from `Complex.continuous_re.comp (continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_star))`.
+A detailed English derivation is pending.
 -/
 private lemma continuous_re_dotProduct_mulVec_star (Hm : Matrix (Fin g) (Fin g) ℂ) :
     Continuous (fun z : Fin g → ℂ => (z ⬝ᵥ Hm.mulVec (star z)).re) :=
@@ -48,17 +48,15 @@ open scoped BigOperators Real in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Use `set F : (Fin g → ℂ) → ℝ := fun z => ‖θ z‖ * Real.exp (-(Real.pi / 2 * (z ⬝ᵥ Hm.mulVec (star z)).re)) with hFdef`. Establish `hF : Continuous F` using `hθ.norm.mul (Real.continuous_exp.comp ((continuous_const.mul (continuous_re_dotProduct_mulVec_star Hm)).neg))`. Establish `hper : ∀ (l : Λ) z, F (z + l) = F z`. Introduce `l z`. Establish `hre : ∀ a b : ℂ, ((Real.pi : ℂ) * a + Real.pi / 2 * b).re = Real.pi * a.re + Real.pi / 2 * b.re` using `fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.add_re, Complex.re_ofReal_mul]`. Simplify using `only [hFdef, htr, norm_mul, hχ, one_mul, Complex.norm_exp, hre, _root_.GlobalTheory.ThetaPositivity.form_add_self hH]`. Rewrite using `[mul_comm (Real.exp _) ‖θ z‖, mul_assoc, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `bR` to `Module.Basis.ofZLatticeBasis ℝ Λ b`. Establish `hK : IsCompact (closure (ZSpan.fundamentalDomain bR))` using `(ZSpan.fundamentalDomain_isBounded bR).isCompact_closure`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hF.continuousOn`. Use `⟨C, fun z => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem : ((ZSpan.floor bR z : Submodule.span ℤ (Set.range bR)) : Fin g → ℂ) ∈ Λ`. Conclude with `(Module.Basis.ofZLatticeBasis_span ℝ Λ b).le (ZSpan.floor bR z).2`. Establish `hz : F z = F (ZSpan.fract bR z)`. Use `hper ⟨_, hmem⟩ (ZSpan.fract bR z)` as an intermediate fact. Rewrite using `[← this, ZSpan.fract_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hbd : F z ≤ C`. Rewrite using `[hz]`. Conclude with `(le_abs_self _).trans ((Real.norm_eq_abs _).symm ▸ hC _ (subset_closure (ZSpan.fract_mem_fundamentalDomain bR z)))`. Establish `hexp` using `Real.exp_pos (Real.pi / 2 * (z ⬝ᵥ Hm.mulVec (star z)).re)`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hFdef, mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`. Use `_ ≤ C * Real.exp (Real.pi / 2 * (z ⬝ᵥ Hm.mulVec (star z)).re) := mul_le_mul_of_nonneg_right hbd hexp.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma _root_.GlobalTheory.ThetaPositivity.exists_norm_le (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] [IsZLattice ℝ Λ]
     {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (χ : Λ → ℂ) (hχ : ∀ l, ‖χ l‖ = 1)
@@ -108,9 +106,9 @@ open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 variable {g : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.ThetaPositivity.form_add_self hH]`. Establish `h1 : z ⬝ᵥ Hm.mulVec (star (t • w)) = star t * (z ⬝ᵥ Hm.mulVec (star w))`. Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Establish `h2 : (t • w) ⬝ᵥ Hm.mulVec (star (t • w)) = (Complex.normSq t : ℂ) * (w ⬝ᵥ Hm.mulVec (star w))`. Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, ← mul_assoc, mul_comm (star t), Complex.star_def, Complex.mul_conj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma re_form_add_smul_of_isHermitian {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (z w : Fin g → ℂ) (t : ℂ) :
@@ -131,19 +129,19 @@ open scoped BigOperators Real in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `hC0 : 0 ≤ C`. Establish `h` using `hC 0`. Establish `hp` using `Real.exp_pos (Real.pi / 2 * ((0 : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star 0)).re)`. Use polynomial arithmetic with `[norm_nonneg (θ 0)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `set a := -(w ⬝ᵥ Hm.mulVec (star w)).re with ha`. Establish `ha0 : 0 < a` using `by rw [ha]; linarith`. Use `set A := (z ⬝ᵥ Hm.mulVec (star z)).re with hA`. Use `set B := ‖z ⬝ᵥ Hm.mulVec (star w)‖ with hB`. Use `set f : ℂ → ℂ := fun t => θ (z + t • w) with hfdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : Differentiable ℂ f` using `hθ.comp ((differentiable_const _).add (differentiable_id.smul_const w))`. Establish `hbound : ∀ t, ‖f t‖ ≤ C * Real.exp (Real.pi / 2 * (A + 2 * B * ‖t‖ - a * ‖t‖ ^ 2))`. Introduce `t`. Use `(hC _).trans (mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_) hC0)` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[re_form_add_smul_of_isHermitian hH, Complex.normSq_eq_norm_sq]`. Establish `h : (star t * (z ⬝ᵥ Hm.mulVec (star w))).re ≤ ‖t‖ * B`. Use `(Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlim : Tendsto (fun r : ℝ => C * Real.exp (Real.pi / 2 * (A + 2 * B * r - a * r ^ 2))) atTop (𝓝 0)`. Establish `h2 : Tendsto (fun r : ℝ => (A + 2 * B ^ 2 / a) + (-(a / 2)) * r ^ 2) atTop atBot` using `tendsto_atBot_add_const_left _ _ ((tendsto_pow_atTop two_ne_zero).const_mul_atTop_of_neg (by linarith))`. Establish `h1 : Tendsto (fun r : ℝ => A + 2 * B * r - a * r ^ 2) atTop atBot`. Use `tendsto_atBot_mono (fun r => ?_) h2` and prove the remaining obligations. Establish `key : 2 * B ^ 2 / a + a / 2 * r ^ 2 - 2 * B * r = (a * r - 2 * B) ^ 2 / (2 * a)`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: 0 ≤ (a * r - 2 * B) ^ 2 / (2 * a)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3` using `Real.tendsto_exp_atBot.comp (h1.const_mul_atBot (by positivity : 0 < Real.pi / 2))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3.const_mul C`. Establish `hf0 : Tendsto f (cocompact ℂ) (𝓝 0)` using `squeeze_zero_norm hbound (hlim.comp tendsto_norm_cocompact_atTop)`. Use `hf.apply_eq_of_tendsto_cocompact 0 hf0` as an intermediate fact. Simplify `this` using `[hfdef]`.
+A detailed English derivation is pending.
 -/
 lemma _root_.GlobalTheory.ThetaPositivity.eq_zero_of_neg {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ) {C : ℝ}
@@ -190,17 +188,17 @@ lemma _root_.GlobalTheory.ThetaPositivity.eq_zero_of_neg {Hm : Matrix (Fin g) (F
   simpa [hfdef] using this
 
 /- English proof (translation)
-Use `ZLattice.module_free ℝ Λ` as an intermediate fact. Use `ZLattice.module_finite ℝ Λ` as an intermediate fact. Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `B` to `b.ofZLatticeBasis ℝ Λ`. Establish `hdet : (LinearMap.toMatrix₂ b b Ef).det ≠ 0` using `(LinearMap.separatingLeft_iff_det_ne_zero b).mp (LinearMap.separatingLeft_iff_ker_eq_bot.mpr (LinearMap.ker_eq_bot.mpr hinj))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M` to `(LinearMap.toMatrix₂ b b Ef).map (Int.castRingHom ℝ)`. Establish `hM : M.det ≠ 0`. Establish `h` using `(Int.castRingHom ℝ).map_det (LinearMap.toMatrix₂ b b Ef)`. Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hdet`. Establish `hsum : ∑ j, B.repr w j • (b j : Fin g → ℂ) = w` using `by conv_rhs => rw [← B.sum_repr w]`. Simplify using `[B]`. Establish `hv : M.mulVec (B.repr w) = 0`. Use function extensionality and compare the values at `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h : ((b i : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star w)).im = 0` using `by simp [hw]`. Rewrite `h` using `[← hsum, star_sum, mulVec_sum, dotProduct_sum, im_sum]`. Rewrite using `[Pi.zero_apply, ← h]`. Simplify using `only [mulVec, M]`. Express the relevant statement in the definitionally equal form `∑ j, _ = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_smul, star_trivial]`. Express the relevant statement in the definitionally equal form `_ = ((b i : Fin g → ℂ) ⬝ᵥ Hm.mulVec (B.repr w j • star (b j : Fin g → ℂ))).im`. Rewrite using `[mulVec_smul, dotProduct_smul, smul_im, ← hE]`. Simplify using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0` using `Matrix.eq_zero_of_mulVec_eq_zero hM hv`. Rewrite using `[← hsum, h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma eq_zero_of_mulVec_eq_zero (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     [IsZLattice ℝ Λ] {Hm : Matrix (Fin g) (Fin g) ℂ} (Ef : LinearMap.BilinForm ℤ Λ)
@@ -245,31 +243,27 @@ open scoped BigOperators Real in
 variable {g : ℕ} in
 
 /- English proof (translation)
-Introduce `g Λ hdisc hspan Hm χ Ef θ hH hχ hE hinj hθ hθ0 htr z hz`. Use `haveI : IsZLattice ℝ Λ := ⟨hspan⟩`. Establish `hpsd : ∀ w : Fin g → ℂ, 0 ≤ (w ⬝ᵥ Hm.mulVec (star w)).re`. Introduce `w`. Assume the negation of the conclusion as `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hw`. Take `⟨C, hC⟩` from `_root_.GlobalTheory.ThetaPositivity.exists_norm_le Λ hH χ hχ hθ.continuous htr`. Conclude with `hθ0 (_root_.GlobalTheory.ThetaPositivity.eq_zero_of_neg hH hθ hC hw)`. Use `lt_of_le_of_ne (hpsd z) (fun hz0 => hz ?_)` and prove the remaining obligations. Establish `him : ∀ v : Fin g → ℂ, (z ⬝ᵥ Hm.mulVec (star v)).im = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `key : ∀ s : ℝ, 0 ≤ 2 * s * (z ⬝ᵥ Hm.mulVec (star v)).im + s ^ 2 * (v ⬝ᵥ Hm.mulVec (star v)).re`. Introduce `s`. Establish `h` using `hpsd (z + ((s : ℂ) * Complex.I) • v)`. Rewrite `h` using `[re_form_add_smul_of_isHermitian hH, ← hz0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : (star ((s : ℂ) * Complex.I) * (z ⬝ᵥ Hm.mulVec (star v))).re = s * (z ⬝ᵥ Hm.mulVec (star v)).im`. Simplify using `[Complex.mul_re]`. Establish `e2 : Complex.normSq ((s : ℂ) * Complex.I) = s ^ 2` using `by simp [sq]`. Rewrite `h` using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := (z ⬝ᵥ Hm.mulVec (star v)).im`. Use `set d := (v ⬝ᵥ Hm.mulVec (star v)).re`. Establish `hd1 : 0 < d + 1` using `by linarith [hpsd v]`. Establish `h' : 0 ≤ -(c ^ 2 * (d + 2)) / (d + 1) ^ 2`. Establish `e : 2 * (-c / (d + 1)) * c + (-c / (d + 1)) ^ 2 * d = -(c ^ 2 * (d + 2)) / (d + 1) ^ 2`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear relations using `[key (-c / (d + 1))]`. Rewrite `h'` using `[neg_div, neg_nonneg, div_le_iff₀ (by positivity), zero_mul]`. Establish `hc2 : c ^ 2 = 0` using `by nlinarith [sq_nonneg c, hpsd v]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(pow_eq_zero_iff two_ne_zero).mp hc2`. Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `bR` to `Module.Basis.ofZLatticeBasis ℝ Λ b`. Set `M : Matrix _ _ ℤ` to `Matrix.of fun i j => Ef (b i) (b j)`. Establish `hdet : M.det ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr h0`. Apply `hc0` to reduce the goal to its premises. Establish `hl : Ef (b.equivFun.symm c) = 0`. Use `b.ext fun j => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrFun hc j` as an intermediate fact. Simplify `this` using `[Module.Basis.equivFun_symm_apply, map_sum, Matrix.vecMul, dotProduct, M]`. Use `hinj (hl.trans (map_zero Ef).symm)` as an intermediate fact. Establish `h2` using `congrArg b.equivFun this`. Rewrite `h2` using `[LinearEquiv.apply_symm_apply, map_zero]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hr : (fun i => bR.repr z i) ᵥ* M.map (Int.cast : ℤ → ℝ) = 0`. Use function extensionality and compare the values at `j`. Establish `h` using `him (b j : Fin g → ℂ)`. Rewrite `h` using `[← bR.sum_repr z]`. Simplify using `only [sum_dotProduct, smul_dotProduct, Complex.im_sum, Complex.smul_im, Module.Basis.ofZLatticeBasis_apply, bR, ← hE] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify `h` using `[Matrix.vecMul, dotProduct, M]`. Establish `hdetR : (M.map (Int.cast : ℤ → ℝ)).det ≠ 0`. Establish `e : (M.map (Int.castRingHom ℝ)).det = Int.castRingHom ℝ M.det` using `(RingHom.map_det _ _).symm`. Simplify using `using e ▸ (Int.cast_ne_zero.mpr hdet)`. Establish `hr0 : (fun i => bR.repr z i) = 0`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hdetR (Matrix.exists_vecMul_eq_zero_iff.mp ⟨_, hne, hr⟩)`. Establish `hz' : bR.repr z = 0`. Use extensionality with `i`. Conclude with `congrFun hr0 i`.
-
-Simplify using `using hz'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ThetaPositivity.re_form_pos_of_theta_ne_zero :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ →

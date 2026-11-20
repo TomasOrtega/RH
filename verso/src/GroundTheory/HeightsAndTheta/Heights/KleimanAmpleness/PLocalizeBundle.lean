@@ -17,9 +17,9 @@ variable {S : Type u} [CommRing S] {O : Type u'} [CommRing O] [Algebra S O]
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Rewrite using `[map_X]`. Conclude with `Submonoid.subset_closure ⟨i, hi, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_mem_monos_base {I : Finset (Fin (N + 1))} {s : Poly S N} (hs : s ∈ monos I) :
     map (algebraMap S O) s ∈ monos (S := O) I := by
@@ -32,7 +32,7 @@ theorem map_mem_monos_base {I : Finset (Fin (N + 1))} {s : Poly S N} (hs : s ∈
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_mem ha hb
 
 /- English proof (translation)
-Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `ha`. Conclude with `⟨map (algebraMap S O) f, map (algebraMap S O) s, e, map_mem_monos_base hs, hf.map _, hse.map _, by rw [aeval_map_algebraMap, aeval_map_algebraMap]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_chartRing_base {I : Chart x} {a : Ω} (ha : a ∈ chartRing S x I) :
     a ∈ chartRing O x I := by
@@ -41,7 +41,7 @@ theorem mem_chartRing_base {I : Chart x} {a : Ω} (ha : a ∈ chartRing S x I) :
     hse.map _, by rw [aeval_map_algebraMap, aeval_map_algebraMap]⟩
 
 /- English proof (translation)
-Establish `: a • y = (⟨(a : Ω), mem_chartRing_base a.2⟩ : chartRing O x I) • y`. Rewrite using `[chartRing_smul_def, chartRing_smul_def]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_span_base {I : Chart x} (P : Set Ω) (a : chartRing S x I) {y : Ω}
     (hy : y ∈ Submodule.span (chartRing O x I) P) : a • y ∈ Submodule.span (chartRing O x I) P := by
@@ -51,11 +51,9 @@ theorem smul_mem_span_base {I : Chart x} (P : Set Ω) (a : chartRing S x I) {y :
   exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr fun y hy => ?_` and prove the remaining obligations. Use `Submodule.span_induction (p := fun y _ => y ∈ Submodule.span (chartRing O x I) P) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `z hz`. Conclude with `Submodule.subset_span hz`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a z _ hz`. Conclude with `smul_mem_span_base P a hz`.
-
-Conclude with `Submodule.span_mono Submodule.subset_span`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_base_span (I : Chart x) (P : Set Ω) :
     Submodule.span (chartRing O x I) (Submodule.span (chartRing S x I) P : Set Ω) =
@@ -71,9 +69,9 @@ theorem span_base_span (I : Chart x) (P : Set Ω) :
   · exact Submodule.span_mono Submodule.subset_span
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `isUnit_iff_exists_inv.mp ha`. Use `isUnit_iff_exists_inv.mpr ⟨⟨(v : Ω), mem_chartRing_base v.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hv` as an intermediate fact. Express the relevant statement in the definitionally equal form `(a : Ω) * (v : Ω) = 1 at this`. Express the relevant statement in the definitionally equal form `(a : Ω) * (v : Ω) = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_base {I J : Chart x} (h : I.1 ⊆ J.1) {a : chartRing S x I}
     (ha : IsUnit (chartIncl h a)) :
@@ -86,21 +84,19 @@ theorem isUnit_base {I J : Chart x} (h : I.1 ⊆ J.1) {a : chartRing S x I}
   exact this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Express the relevant statement in the definitionally equal form `y ∈ Submodule.span (chartRing O x J) (M.sub J : Set Ω) at hy`. Set `T : Submodule (chartRing O x J) Ω` to `{ carrier := {y | ∃ a : chartRing O x I, IsUnit (chartIncl h a) ∧ (a : Ω) • y ∈ Submodule.span (chartRing O x I) (M.sub I : Set Ω)} add_mem' := by`. Introduce and unpack `y₁ y₂ ⟨a₁, ha₁, h₁⟩ ⟨a₂, ha₂, h₂⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Use `⟨a₁ * a₂, by rw [map_mul]; exact ha₁.mul ha₂, ?_⟩` and prove the remaining obligations. Establish `: ((a₁ * a₂ : chartRing O x I) : Ω) • (y₁ + y₂) = a₂ • ((a₁ : Ω) • y₁) + a₁ • ((a₂ : Ω) • y₂)`. Express the relevant statement in the definitionally equal form `(a₁ : Ω) * a₂ * (y₁ + y₂) = (a₂ : Ω) * ((a₁ : Ω) * y₁) + (a₁ : Ω) * ((a₂ : Ω) * y₂)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ h₁) (Submodule.smul_mem _ _ h₂)`. Use the proof step `zero_mem' := ⟨1, by rw [map_one]; exact isUnit_one, by`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _⟩`. Use the proof step `smul_mem' := by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `b y ⟨a, ha, hay⟩`. Take `⟨c, hc, hcb⟩` from `exists_isUnit_mul_mem (S := O) h b`. Use `⟨c * a, by rw [map_mul]; exact hc.mul ha, ?_⟩` and prove the remaining obligations. Establish `: ((c * a : chartRing O x I) : Ω) • (b • y) = (⟨(c : Ω) * b, hcb⟩ : chartRing O x I) • ((a : Ω) • y)`. Express the relevant statement in the definitionally equal form `(c : Ω) * a * ((b : Ω) * y) = (c : Ω) * b * ((a : Ω) * y)`.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hay }`. Establish `hle : Submodule.span (chartRing O x J) (M.sub J : Set Ω) ≤ T`. Use `Submodule.span_le.mpr fun m hm => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, ham⟩` from `(M.mem_iff I J h m).mp hm`. Conclude with `⟨⟨(a : Ω), mem_chartRing_base a.2⟩, isUnit_base h ha, Submodule.subset_span ham⟩`. Conclude with `hle hy`. Introduce and unpack `⟨a, ⟨u, hu⟩, hay⟩`. Establish `hJ` using `(M.toSubSystem.baseChange O).mono I J h _ hay`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ((↑u⁻¹ : chartRing O x J) : Ω) * (a : Ω) = 1`. Use `congrArg Subtype.val (Units.inv_mul u)` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`. Establish `hy : y = (↑u⁻¹ : chartRing O x J) • ((a : Ω) • y)`.
-
-Rewrite using `[chartRing_smul_def, smul_eq_mul, ← mul_assoc, hinv, one_mul]`. Rewrite using `[hy]`. Conclude with `Submodule.smul_mem _ _ hJ`.
+A detailed English derivation is pending.
 -/
 theorem LocalizeBundle.mem_iff_baseChange (M : LineBundle S x) (I J : Chart x) (h : I.1 ⊆ J.1)
     (y : Ω) :
@@ -151,7 +147,7 @@ theorem LocalizeBundle.mem_iff_baseChange (M : LineBundle S x) (I J : Chart x) (
     exact Submodule.smul_mem _ _ hJ
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `M.fg I`. Use `⟨s, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.span (chartRing O x I) (s : Set Ω) = Submodule.span (chartRing O x I) (M.sub I : Set Ω)`. Rewrite using `[← hs, span_base_span]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocalizeBundle.fg_baseChange (M : LineBundle S x) (I : Chart x) :
     ((M.toSubSystem.baseChange O).sub I).FG := by
@@ -162,7 +158,7 @@ theorem LocalizeBundle.fg_baseChange (M : LineBundle S x) (I : Chart x) :
   rw [← hs, span_base_span]
 
 /- English proof (translation)
-Take `⟨Q', hQ⟩` from `M.invertible I`. Use `⟨Submodule.span (chartRing O x I) (Q' : Set Ω), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.span (chartRing O x I) (M.sub I : Set Ω) * Submodule.span (chartRing O x I) (Q' : Set Ω) = 1`. Rewrite using `[Submodule.span_mul_span, ← span_base_span (S := S) (O := O) I, ← Submodule.mul_eq_span_mul_set, hQ, Submodule.one_eq_span (R := chartRing S x I), span_base_span]`. Conclude with `(Submodule.one_eq_span).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalizeBundle.invertible_baseChange (M : LineBundle S x) (I : Chart x) :
     ∃ Q' : Submodule (chartRing O x I) Ω, (M.toSubSystem.baseChange O).sub I * Q' = 1 := by
@@ -184,7 +180,7 @@ def LocalizeBundle.lineBundleBaseChange (M : LineBundle S x) : LineBundle O x :=
 end BaseChange
 
 /- English proof (translation)
-Introduce `S _ 𝔪 _ O _ _ _ Ω _ _ _ _ N x M`. Conclude with `⟨LocalizeBundle.lineBundleBaseChange M, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem LocalizeBundle.proof : LocalizeBundle.Statement := by
   intro S _ 𝔪 _ O _ _ _ Ω _ _ _ _ N x M

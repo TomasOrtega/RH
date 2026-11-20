@@ -40,7 +40,7 @@ def cTerm (c : ℂ) (w : List (B.Mat k r)) : B.DTerm k r Wp Wq where
     rw [Formalism.FourierDecayAlt.P5.HerB.hs_smul_left, Formalism.FourierDecayAlt.P5.HerB.hs_smul_right, Complex.conj_conj]
 
 /- English proof (translation)
-Unfold `cTerm`. Simplify using `only`. Rewrite using `[if_pos hw]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cTerm_word {c : ℂ} {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k r X) :
     (cTerm (Wp := Wp) (Wq := Wq) c w).word = w := by
@@ -49,7 +49,7 @@ theorem cTerm_word {c : ℂ} {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k
   rw [if_pos hw]
 
 /- English proof (translation)
-Unfold `cTerm`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cTerm_word_le (c : ℂ) (w : List (B.Mat k r)) :
     (cTerm (Wp := Wp) (Wq := Wq) c w).word.length ≤ w.length := by
@@ -58,7 +58,7 @@ theorem cTerm_word_le (c : ℂ) (w : List (B.Mat k r)) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[cTerm_word hw]`. Simplify using `[cTerm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cTerm_apply (c : ℂ) (w : List (B.Mat k r)) (hw : ∀ X ∈ w, B.inLie k r X)
     (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) :
@@ -67,7 +67,7 @@ theorem cTerm_apply (c : ℂ) (w : List (B.Mat k r)) (hw : ∀ X ∈ w, B.inLie 
   simp [cTerm]
 
 /- English proof (translation)
-Proceed by induction on `Θ with`. Consider the case `nil => simp [B.opOrder]`. Consider the case `cons T Θ ih`. Simplify using `only [B.opOrder, List.map_cons, List.foldr_cons] at ih ⊢`. Conclude with `max_le (h T List.mem_cons_self) (ih fun T' hT' => h T' (List.mem_cons_of_mem _ hT'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem opOrder_le_of (Θ : B.DiffOp k r Wp Wq) (n : ℕ) (h : ∀ T ∈ Θ, T.word.length ≤ n) : B.opOrder Θ ≤ n := by
   induction Θ with
@@ -77,7 +77,7 @@ theorem opOrder_le_of (Θ : B.DiffOp k r Wp Wq) (n : ℕ) (h : ∀ T ∈ Θ, T.w
     exact max_le (h T List.mem_cons_self) (ih fun T' hT' => h T' (List.mem_cons_of_mem _ hT'))
 
 /- English proof (translation)
-Establish `h2` using `opOrder_le_of Θ _ h`. Simplify using `only [B.opOrder, List.map_cons, List.foldr_cons] at h2 ⊢`. Conclude with `max_eq_left h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem opOrder_cons_eq (T : B.DTerm k r Wp Wq) (Θ : B.DiffOp k r Wp Wq)
     (h : ∀ T' ∈ Θ, T'.word.length ≤ T.word.length) : B.opOrder (T :: Θ) = T.word.length := by
@@ -91,15 +91,15 @@ def capOp (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace 
   cTerm 0 (List.replicate (2 * r + k + 1) 0) :: Lw.map fun cw => cTerm (s * cw.1) cw.2
 
 /- English proof (translation)
-Simplify using `[B.inLie]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zero_lie : B.inLie k r (0 : B.Mat k r) := by
   simp [B.inLie]
 
 /- English proof (translation)
-Proceed by induction on `Lw with`. Consider the case `nil => simp [B.opApply]`. Consider the case `cons cw Lw ih`. Establish `ih'` using `ih fun cw' h => hL cw' (List.mem_cons_of_mem _ h)`. Simplify using `only [B.opApply, List.map_cons, List.sum_cons, List.map_map] at ih' ⊢`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_add, ← ih']`. Use `congr 1`. Rewrite using `[cTerm_apply _ _ (hL cw List.mem_cons_self), mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem opApply_capOp_tail (s : ℂ) (Lw : List (ℂ × List (B.Mat k r)))
     (hL : ∀ cw ∈ Lw, ∀ X ∈ cw.2, B.inLie k r X) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) :
@@ -115,7 +115,7 @@ theorem opApply_capOp_tail (s : ℂ) (Lw : List (ℂ × List (B.Mat k r)))
     rw [cTerm_apply _ _ (hL cw List.mem_cons_self), mul_smul]
 
 /- English proof (translation)
-Establish `e : B.opApply (capOp k r Wp Wq s Lw) F g = (cTerm (Wp` using `Wp) (Wq := Wq) 0 (List.replicate (2 * r + k + 1) 0)).coef g (B.Rw (cTerm (Wp := Wp) (Wq := Wq) 0 (List.replicate (2 * r + k + 1) 0)).word F g) + B.opApply (Lw.map fun cw => (cTerm (Wp := Wp) (Wq := Wq) (s * cw.1) cw.2)) F g := by`. Simplify using `[B.opApply, capOp]`. Rewrite using `[e, opApply_capOp_tail s Lw hL F g]`. Simplify using `[cTerm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem opApply_capOp (s : ℂ) (Lw : List (ℂ × List (B.Mat k r)))
     (hL : ∀ cw ∈ Lw, ∀ X ∈ cw.2, B.inLie k r X) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) :
@@ -129,9 +129,9 @@ theorem opApply_capOp (s : ℂ) (Lw : List (ℂ × List (B.Mat k r)))
   simp [cTerm]
 
 /- English proof (translation)
-Establish `hw : (cTerm (Wp` using `Wp) (Wq := Wq) 0 (List.replicate (2 * r + k + 1) (0 : B.Mat k r))).word = List.replicate (2 * r + k + 1) 0 := cTerm_word fun X hX => by rw [List.eq_of_mem_replicate hX]; exact zero_lie`. Unfold `capOp`. Rewrite using `[opOrder_cons_eq, hw, List.length_replicate]`. Introduce `T hT`. Rewrite using `[hw, List.length_replicate]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨cw, hcw, rfl⟩` from `List.mem_map.1 hT`. Conclude with `(cTerm_word_le _ _).trans (hL cw hcw)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem opOrder_capOp (s : ℂ) (Lw : List (ℂ × List (B.Mat k r)))
     (hL : ∀ cw ∈ Lw, cw.2.length ≤ 2 * r + k + 1) :
@@ -147,9 +147,9 @@ theorem opOrder_capOp (s : ℂ) (Lw : List (ℂ × List (B.Mat k r)))
   exact (cTerm_word_le _ _).trans (hL cw hcw)
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Use `⟨⟨fun g₀ _ => ⟨Set.univ, fun _ => c • ContinuousLinearMap.id ℂ _, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, fun g₀ _ => ⟨Set.univ, fun _ => conj c • ContinuousLinearMap.id ℂ _, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩⟩, fun _ => c, fun _ => 0, fu …` and prove the remaining obligations. Conclude with `⟨MvPolynomial.C c, by simp, fun g => by simp⟩`. Introduce `l _ _`. Conclude with `⟨rfl, rfl⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Simplify using `using (cTerm_word_le (Wp := Wp) (Wq := Wq) c w).trans hw`. Introduce `g _`. Simplify using `[C6.monoM, C6.Epart, cTerm]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cTerm_inDDPlus (D : B.RealPlaceData k r Wp Wq) (c : ℂ) (w : List (B.Mat k r)) (o : ℕ) (hw : w.length ≤ o)
     (T : B.DTerm k r Wp Wq) (hT : T = cTerm c w) :
@@ -182,27 +182,23 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 noncomputable section
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 hD Y`. Take `⟨Lw, hLw, hCV⟩` from `Formalism.FourierDecayAlt.P.capelli_word_sum P.k P.r Y`. Use `set s : ℂ := M.sgn P l0 with hs`. Establish `hLie : ∀ cw ∈ Lw, ∀ X ∈ cw.2, B.inLie P.k P.r X` using `fun cw h X hX => ((hLw cw h).1 X hX).1`. Establish `hlen : ∀ cw ∈ Lw, cw.2.length ≤ 2 * P.r + P.k + 1` using `fun cw h => (hLw cw h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Dop := TLB.capOp P.k P.r Wp Wq s Lw with hDop`. Establish `hApp : ∀ f : B.Mat P.k P.r → (Wq →L[ℂ] Wp), B.CkOn ((2 * P.r + P.k + 1 : ℕ) : ℕ∞) (B.GV P.k P.r) f → ∀ g ∈ B.GV P.k P.r, B.opApply Dop f g = s • Q.CV P.k P.r Y f g`. Introduce `f hf g hg`. Rewrite using `[hDop, TLB.opApply_capOp s Lw hLie, hCV _ _ f hf g hg hg]`. Use `⟨0, fun j => j.elim0, Dop, fun j => j.elim0, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `T hT`. Break down `List.mem_cons.1 hT with rfl | hT` into its components or cases. Conclude with `(TLB.cTerm_inDDPlus Bs 0 _ _ (le_of_eq (List.length_replicate ..)) _ rfl).1`. Take `⟨cw, hcw, rfl⟩` from `List.mem_map.1 hT`. Conclude with `(TLB.cTerm_inDDPlus Bs _ _ _ (hlen cw hcw) _ rfl).1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp f hf g hg`. Rewrite `hf` using `[hDop, TLB.opOrder_capOp s Lw hlen]`. Establish `hgG : g ∈ B.GV P.k P.r` using `hg.1`. Establish `hs'` using `Formalism.FourierDecayAlt.P.B7.sgs_mem Bs hp hgG`. Rewrite using `[hApp _ (Formalism.FourierDecayAlt.P.B5.ckOn_rho Bs hp hf) g hgG, Formalism.FourierDecayAlt.P.capelli_rho_commute P.k P.r Wp Wq Bs Y f p hp hf g hgG]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [B.rho]`. Rewrite using `[hApp f hf _ hs', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Introduce `T hT`. Break down `List.mem_cons.1 hT with rfl | hT` into its components or cases. Conclude with `(TLB.cTerm_inDDPlus Bs 0 _ _ (le_of_eq (List.length_replicate ..)) _ rfl).2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨cw, hcw, rfl⟩` from `List.mem_map.1 hT`. Conclude with `(TLB.cTerm_inDDPlus Bs _ _ _ (hlen cw hcw) _ rfl).2`. Introduce `F hF Φ hΦ y hy`. Take `⟨ε, hε, hN⟩` from `(compact_support_facts P.k P.r Wp Wq Bs F hF).1`. Establish `hz` using `Bs.z_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz'` using `Bs.z'_mem`. Establish `hL` using `hD.2.2.1`. Establish `hst` using `hD.2.2.2.1`. Establish `hJ` using `Formalism.FourierDecayAlt.P.bessel_function_finite_class P.k P.r Wp Wq Bs F ε hε hN`. Establish `hGV : wCell P.k P.r (Fin.last P.r) y.1 * y.2 ∈ B.GV P.k P.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[P5.Rad.wCell_last_eq]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (big_cell_mem_holds _ _ _ 1 hy.1 (by simp)) hy.2.1.1`. Establish `hh : wCell P.k P.r (Fin.last P.r) y.1 * y.2 ∈ JF.Om P.k P.r Bs.z Bs.z'` using `⟨hGV, P5.Rad.wCell_mem_omPlus hz hz' hy.1 hy.2.1 hy.2.2⟩`. Establish `h1` using `JCx2.rma_QQi X L hL st s hst Y 0 0 Φ hy`. Establish `h2` using `(JCx2.rma_sandw X L hL Y P.r le_rfl _ _ (JCx2.rma_base X Y) (JCx2.rma_QL_loc Y)).2 0 0 (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) (resG P.k P.r (Fin.last P.r) (B.JF Bs F)) (fun y' hy' => hΦ y' hy') y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Formalism.FourierDecayAlt.P.chain_recursion_all_levels Wp Wq P.k P.r Bs.z Bs.z' Bs.π Bs.π' (Fin.last P.r) _ Y 0 0 hz hz' (JCx2.rma_isDom_omPlus hz hz') _ hJ y.1 hy.1 y.2 hy.2.1 hh.2`. Rewrite `h3` using `[Fin.val_last]`. Establish `h4` using `(JCx2.bcGood_tL (Bs := Bs) (ε := ε) s Y 0 0).2.1 F hN _ hh`. Establish `h5` using `Formalism.FourierDecayAlt.P.Qx8.JF_congr Bs (F := fun g => s • Q.tL P.k P.r Bs.z Bs.z' 0 Y 0 0 F g) (F' := B.opApply Dop F) (a := 1) (fun g hg => by`. Rewrite using `[one_smul, hApp F (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hF.1) g hg]`.
-
-Use the proof step `rfl) hGV`. Use `Eq.trans h1 ?_` and prove the remaining obligations. Rewrite using `[h2, ← h3]`. Simplify using `only [Q.resG]`. Establish `h4' : B.JF Bs (fun g => s • Q.tL P.k P.r Bs.z Bs.z' 0 Y 0 0 F g) (wCell P.k P.r (Fin.last P.r) y.1 * y.2) = s • Q.tL P.k P.r Bs.z Bs.z' 0 Y 0 0 (B.JF Bs F) (wCell P.k P.r (Fin.last P.r) y.1 * y.2)` using `h4`.
-
-Rewrite using `[h5, one_smul, h4', smul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_capelli_operators : TL.LiftCap := by
   intro Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 hD Y

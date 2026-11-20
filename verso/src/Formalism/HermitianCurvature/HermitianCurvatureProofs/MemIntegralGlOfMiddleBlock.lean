@@ -66,7 +66,7 @@ Both sides reduce to the same expression.
 variable [CommRing A]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b11, b11, b12, b13, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block11_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b11 (x * y) = b11 x * b11 y + b12 x * b21 y + b13 x * b31 y := by
@@ -74,7 +74,7 @@ theorem block11_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b11, b11, b12, b13, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b12, b11, b12, b13, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block12_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b12 (x * y) = b11 x * b12 y + b12 x * b22 y + b13 x * b32 y := by
@@ -82,7 +82,7 @@ theorem block12_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b12, b11, b12, b13, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b13, b11, b12, b13, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block13_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b13 (x * y) = b11 x * b13 y + b12 x * b23 y + b13 x * b33 y := by
@@ -90,7 +90,7 @@ theorem block13_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b13, b11, b12, b13, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b21, b21, b22, b23, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block21_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b21 (x * y) = b21 x * b11 y + b22 x * b21 y + b23 x * b31 y := by
@@ -98,7 +98,7 @@ theorem block21_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b21, b21, b22, b23, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b22, b21, b22, b23, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block22_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b22 (x * y) = b21 x * b12 y + b22 x * b22 y + b23 x * b32 y := by
@@ -106,7 +106,7 @@ theorem block22_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b22, b21, b22, b23, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b23, b21, b22, b23, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block23_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b23 (x * y) = b21 x * b13 y + b22 x * b23 y + b23 x * b33 y := by
@@ -114,7 +114,7 @@ theorem block23_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b23, b21, b22, b23, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b31, b31, b32, b33, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block31_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b31 (x * y) = b31 x * b11 y + b32 x * b21 y + b33 x * b31 y := by
@@ -122,7 +122,7 @@ theorem block31_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b31, b31, b32, b33, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b32, b31, b32, b33, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block32_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b32 (x * y) = b31 x * b12 y + b32 x * b22 y + b33 x * b32 y := by
@@ -130,7 +130,7 @@ theorem block32_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b32, b31, b32, b33, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b33, b31, b32, b33, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block33_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b33 (x * y) = b31 x * b13 y + b32 x * b23 y + b33 x * b33 y := by
@@ -138,189 +138,189 @@ theorem block33_mul (x y : Matrix (Idx r k) (Idx r k) A) :
   simp [b33, b31, b32, b33, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b11, hEmb, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block11_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b11 (hEmb r h) = 1 := by
   ext i j
   simp [b11, hEmb, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b12, hEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block12_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b12 (hEmb r h) = 0 := by
   ext i j
   simp [b12, hEmb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b13, hEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block13_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b13 (hEmb r h) = 0 := by
   ext i j
   simp [b13, hEmb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b21, hEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block21_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b21 (hEmb r h) = 0 := by
   ext i j
   simp [b21, hEmb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b22, hEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block22_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b22 (hEmb r h) = midEmb h := by
   ext i j
   simp [b22, hEmb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b23, hEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block23_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b23 (hEmb r h) = 0 := by
   ext i j
   simp [b23, hEmb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b31, hEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block31_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b31 (hEmb r h) = 0 := by
   ext i j
   simp [b31, hEmb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b32, hEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block32_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b32 (hEmb r h) = 0 := by
   ext i j
   simp [b32, hEmb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[b33, hEmb, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block33_levi_embedding (h : Matrix (Fin k) (Fin k) A) : b33 (hEmb r h) = 1 := by
   ext i j
   simp [b33, hEmb, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[block11_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block11_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b11 (x * hEmb r h) = b11 x := by
   simp [block11_mul]
 
 /- English proof (translation)
-Simplify using `[block12_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block12_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b12 (x * hEmb r h) = b12 x * midEmb h := by
   simp [block12_mul]
 
 /- English proof (translation)
-Simplify using `[block13_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block13_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b13 (x * hEmb r h) = b13 x := by
   simp [block13_mul]
 
 /- English proof (translation)
-Simplify using `[block21_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block21_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b21 (x * hEmb r h) = b21 x := by
   simp [block21_mul]
 
 /- English proof (translation)
-Simplify using `[block22_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block22_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b22 (x * hEmb r h) = b22 x * midEmb h := by
   simp [block22_mul]
 
 /- English proof (translation)
-Simplify using `[block23_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block23_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b23 (x * hEmb r h) = b23 x := by
   simp [block23_mul]
 
 /- English proof (translation)
-Simplify using `[block31_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block31_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b31 (x * hEmb r h) = b31 x := by
   simp [block31_mul]
 
 /- English proof (translation)
-Simplify using `[block32_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block32_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b32 (x * hEmb r h) = b32 x * midEmb h := by
   simp [block32_mul]
 
 /- English proof (translation)
-Simplify using `[block33_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block33_mul_levi_embedding (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b33 (x * hEmb r h) = b33 x := by
   simp [block33_mul]
 
 /- English proof (translation)
-Simplify using `[block11_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block11_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b11 (hEmb r h * x) = b11 x := by
   simp [block11_mul]
 
 /- English proof (translation)
-Simplify using `[block12_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block12_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b12 (hEmb r h * x) = b12 x := by
   simp [block12_mul]
 
 /- English proof (translation)
-Simplify using `[block13_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block13_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b13 (hEmb r h * x) = b13 x := by
   simp [block13_mul]
 
 /- English proof (translation)
-Simplify using `[block21_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block21_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b21 (hEmb r h * x) = midEmb h * b21 x := by
   simp [block21_mul]
 
 /- English proof (translation)
-Simplify using `[block22_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block22_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b22 (hEmb r h * x) = midEmb h * b22 x := by
   simp [block22_mul]
 
 /- English proof (translation)
-Simplify using `[block23_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block23_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b23 (hEmb r h * x) = midEmb h * b23 x := by
   simp [block23_mul]
 
 /- English proof (translation)
-Simplify using `[block31_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block31_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b31 (hEmb r h * x) = b31 x := by
   simp [block31_mul]
 
 /- English proof (translation)
-Simplify using `[block32_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block32_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b32 (hEmb r h * x) = b32 x := by
   simp [block32_mul]
 
 /- English proof (translation)
-Simplify using `[block33_mul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block33_levi_embedding_mul (x : Matrix (Idx r k) (Idx r k) A) (h : Matrix (Fin k) (Fin k) A) :
     b33 (hEmb r h * x) = b33 x := by
@@ -333,54 +333,54 @@ section Alg
 variable {A : Type} [CommRing A] {r k : ℕ}
 
 /- English proof (translation)
-Simplify using `[midEmb, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem midEmb_mul (a b : Matrix (Fin k) (Fin k) A) : midEmb (a * b) = midEmb a * midEmb b := by
   simp [midEmb, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[midEmb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem midEmb_one : midEmb (1 : Matrix (Fin k) (Fin k) A) = 1 := by
   simp [midEmb]
 
 /- English proof (translation)
-The claim follows from `(Matrix.fromBlocks_inj.1 h).1`.
+A detailed English derivation is pending.
 -/
 theorem midEmb_inj {a b : Matrix (Fin k) (Fin k) A} (h : midEmb a = midEmb b) : a = b :=
   (Matrix.fromBlocks_inj.1 h).1
 
 /- English proof (translation)
-Simplify using `[hEmb, Matrix.fromBlocks_multiply, midEmb_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hEmb_mul (a b : Matrix (Fin k) (Fin k) A) : hEmb r (a * b) = hEmb r a * hEmb r b := by
   simp [hEmb, Matrix.fromBlocks_multiply, midEmb_mul]
 
 /- English proof (translation)
-Simplify using `[hEmb, midEmb_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hEmb_one : hEmb r (1 : Matrix (Fin k) (Fin k) A) = 1 := by
   simp [hEmb, midEmb_one]
 
 /- English proof (translation)
-Simplify using `[hEmb, midEmb, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_hEmb (h : Matrix (Fin k) (Fin k) A) : (hEmb r h).det = h.det := by
   simp [hEmb, midEmb, Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Simplify using `[hEmb, midEmb, Matrix.fromBlocks_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hEmb_map {B : Type} [CommRing B] (f : A →+* B) (h : Matrix (Fin k) (Fin k) A) :
     (hEmb r h).map f = hEmb r (h.map f) := by
   simp [hEmb, midEmb, Matrix.fromBlocks_map]
 
 /- English proof (translation)
-Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hn`. Establish `e : n = Matrix.fromBlocks (b11 n) (n.toBlocks₁₂) 0 (Matrix.fromBlocks 1 (b23 n) 0 (b33 n))`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i | i <;> rcases j with j | j | j`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `congrFun (congrFun h21 i) j`. Conclude with `congrFun (congrFun h22 i) j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (congrFun h31 i) j`. Conclude with `congrFun (congrFun h32 i) j`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Formalism.DoubleCosetMeasures.isUpUni_det A h11, Formalism.DoubleCosetMeasures.isUpUni_det A h33]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_of_isN {n : Matrix (Idx r k) (Idx r k) A} (hn : IsN n) : n.det = 1 := by
   obtain ⟨h11, h33, h22, h21, h31, h32⟩ := hn
@@ -401,23 +401,23 @@ theorem det_of_isN {n : Matrix (Idx r k) (Idx r k) A} (hn : IsN n) : n.det = 1 :
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j hij => by simp [hx.1 hij], fun a => by simp [hx.2 a]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUpUni_map {B : Type} [CommRing B] (f : A →+* B) {n : ℕ} {x : Matrix (Fin n) (Fin n) A}
     (hx : IsUpUni x) : IsUpUni (x.map f) :=
   ⟨fun i j hij => by simp [hx.1 hij], fun a => by simp [hx.2 a]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j hij => hf (by simpa using hx.1 hij), fun a => hf (by simpa using hx.2 a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUpUni_of_map {B : Type} [CommRing B] (f : A →+* B) (hf : Function.Injective f) {n : ℕ}
     {x : Matrix (Fin n) (Fin n) A} (hx : IsUpUni (x.map f)) : IsUpUni x :=
   ⟨fun i j hij => hf (by simpa using hx.1 hij), fun a => hf (by simpa using hx.2 a)⟩
 
 /- English proof (translation)
-Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hn`. Use `⟨isUpUni_map f h11, isUpUni_map f h33, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[block22_map, h22]`. Simplify using the standard rewrite rules. Rewrite using `[block21_map, h21]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[block31_map, h31]`. Simplify using the standard rewrite rules. Rewrite using `[block32_map, h32]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isN_map {B : Type} [CommRing B] (f : A →+* B) {n : Matrix (Idx r k) (Idx r k) A}
     (hn : IsN n) : IsN (n.map f) := by
@@ -429,13 +429,11 @@ theorem isN_map {B : Type} [CommRing B] (f : A →+* B) {n : Matrix (Idx r k) (I
   · rw [block32_map, h32]; simp
 
 /- English proof (translation)
-Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hn`. Use `⟨isUpUni_of_map f hf h11, isUpUni_of_map f hf h33, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.map_injective hf` to reduce the goal to its premises. Use `show (b22 n).map f = _`. Rewrite using `[← block22_map, h22]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `Matrix.map_injective hf` to reduce the goal to its premises. Use `show (b21 n).map f = _`. Rewrite using `[← block21_map, h21]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.map_injective hf` to reduce the goal to its premises. Use `show (b31 n).map f = _`. Rewrite using `[← block31_map, h31]`. Simplify using the standard rewrite rules. Apply `Matrix.map_injective hf` to reduce the goal to its premises.
-
-Use `show (b32 n).map f = _`. Rewrite using `[← block32_map, h32]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isN_of_map {B : Type} [CommRing B] (f : A →+* B) (hf : Function.Injective f)
     {n : Matrix (Idx r k) (Idx r k) A} (hn : IsN (n.map f)) : IsN n := by
@@ -447,9 +445,9 @@ theorem isN_of_map {B : Type} [CommRing B] (f : A →+* B) (hf : Function.Inject
   · apply Matrix.map_injective hf; show (b32 n).map f = _; rw [← block32_map, h32]; simp
 
 /- English proof (translation)
-Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hn`. Use `⟨by simpa using h11, by simpa using h33, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h22, ← midEmb_mul, hab, midEmb_one]`. Simplify using `[h21]`. Simplify using `[h31]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h32]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isN_conj {a b : Matrix (Fin k) (Fin k) A} (hab : a * b = 1)
     {n : Matrix (Idx r k) (Idx r k) A} (hn : IsN n) : IsN (hEmb r a * n * hEmb r b) := by
@@ -461,7 +459,7 @@ theorem isN_conj {a b : Matrix (Fin k) (Fin k) A} (hab : a * b = 1)
   · simp [h32]
 
 /- English proof (translation)
-Establish `hdet : IsUnit u.det` using `by rw [Formalism.DoubleCosetMeasures.isUpUni_det A hu]; exact isUnit_one`. Use `⟨hEmb r u * n * hEmb r u⁻¹, hEmb r u, isN_conj (Matrix.mul_nonsing_inv u hdet) hn, ⟨u, hu, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hEmb_mul, Matrix.nonsing_inv_mul u hdet, hEmb_one, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isNU_hEmb_mul {u : Matrix (Fin k) (Fin k) A} (hu : IsUpUni u)
     {n : Matrix (Idx r k) (Idx r k) A} (hn : IsN n) : IsNU (hEmb r u * n) := by
@@ -477,7 +475,7 @@ section Integral
 variable (o : Type) [CommRing o] {k0 : Type} [Field k0] [Algebra o k0]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a * b, by rw [Matrix.det_mul]; exact ha.mul hb, by rw [Matrix.map_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inGLo_mul {ι : Type} [Fintype ι] [DecidableEq ι] {x y : Matrix ι ι k0} (hx : InGLo o x)
     (hy : InGLo o y) : InGLo o (x * y) := by
@@ -486,7 +484,7 @@ theorem inGLo_mul {ι : Type} [Fintype ι] [DecidableEq ι] {x y : Matrix ι ι 
   exact ⟨a * b, by rw [Matrix.det_mul]; exact ha.mul hb, by rw [Matrix.map_mul]⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Use `⟨a⁻¹, Matrix.isUnit_nonsing_inv_det a ha, ?_⟩` and prove the remaining obligations. Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv a ha]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -500,7 +498,7 @@ theorem inGLo_inv {ι : Type} [Fintype ι] [DecidableEq ι] {x : Matrix ι ι k0
   simp
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hh`. Conclude with `⟨hEmb r a, by rw [det_hEmb]; exact ha, hEmb_map _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inGLo_hEmb {r k : ℕ} {h : Matrix (Fin k) (Fin k) k0} (hh : InGLo o h) :
     InGLo o (hEmb r h) := by
@@ -510,9 +508,9 @@ theorem inGLo_hEmb {r k : ℕ} {h : Matrix (Fin k) (Fin k) k0} (hh : InGLo o h) 
 variable [IsFractionRing o k0]
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Establish `e : ((b22 y).toBlocks₁₁).map (algebraMap o k0) = h`. Use extensionality with `i j`. Use `congrFun (congrFun h22 (Sum.inl i)) (Sum.inl j)` as an intermediate fact. Simplify `this` using `[midEmb, Matrix.toBlocks₁₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨(b22 y).toBlocks₁₁, ?_, e⟩` and prove the remaining obligations. Establish `h2 : algebraMap o k0 ((b22 y).toBlocks₁₁).det = algebraMap o k0 y.det`. Rewrite using `[RingHom.map_det, RingHom.map_det, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, e, hdet]`. Rewrite using `[IsFractionRing.injective o k0 h2]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_integral_gl_of_middle_block {r k : ℕ} {x : Matrix (Idx r k) (Idx r k) k0} {h : Matrix (Fin k) (Fin k) k0}
     (hx : InGLo o x) (h22 : b22 x = midEmb h) (hdet : x.det = h.det) : InGLo o h := by
@@ -528,9 +526,9 @@ theorem mem_integral_gl_of_middle_block {r k : ℕ} {x : Matrix (Idx r k) (Idx r
   exact hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : InGLo o h` using `mem_integral_gl_of_middle_block o hx (by simp [hn.2.2.1]) (by rw [Matrix.det_mul, det_of_isN hn, det_hEmb, one_mul])`. Use `⟨?_, h1⟩` and prove the remaining obligations. Establish `h2` using `inGLo_mul o hx (inGLo_inv o (inGLo_hEmb o (r := r) h1))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.mul_nonsing_inv_cancel_right _ _ (by rw [det_hEmb]; exact hh)]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`. Conclude with `inGLo_mul o h1 (inGLo_hEmb o h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem inGLo_nh {r k : ℕ} {n : Matrix (Idx r k) (Idx r k) k0} {h : Matrix (Fin k) (Fin k) k0}
     (hn : IsN n) (hh : IsUnit h.det) : InGLo o (n * hEmb r h) ↔ InGLo o n ∧ InGLo o h := by
@@ -545,9 +543,9 @@ theorem inGLo_nh {r k : ℕ} {n : Matrix (Idx r k) (Idx r k) k0} {h : Matrix (Fi
     exact inGLo_mul o h1 (inGLo_hEmb o h2)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : InGLo o h` using `mem_integral_gl_of_middle_block o hx (by simp [hn.2.2.1]) (by rw [Matrix.det_mul, det_of_isN hn, det_hEmb, mul_one])`. Use `⟨?_, h1⟩` and prove the remaining obligations. Establish `h2` using `inGLo_mul o (inGLo_inv o (inGLo_hEmb o (r := r) h1)) hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.nonsing_inv_mul_cancel_left _ _ (by rw [det_hEmb]; exact hh)]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`. Conclude with `inGLo_mul o (inGLo_hEmb o h2) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem inGLo_hn {r k : ℕ} {n : Matrix (Idx r k) (Idx r k) k0} {h : Matrix (Fin k) (Fin k) k0}
     (hn : IsN n) (hh : IsUnit h.det) : InGLo o (hEmb r h * n) ↔ InGLo o n ∧ InGLo o h := by
@@ -564,15 +562,15 @@ theorem inGLo_hn {r k : ℕ} {n : Matrix (Idx r k) (Idx r k) k0} {h : Matrix (Fi
 variable [IsLocalRing o]
 
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective o k0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hdet, hNU⟩, hy⟩`. Take `⟨hn', yh, hyh, rfl⟩` from `(inGLo_nh o hn hh).1 ⟨y, hdet, hy⟩`. Use `⟨hn', yh, hyh, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨yn, hyn, rfl⟩` from `hn'`. Establish `e : y = yn * hEmb r yh`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `show y.map (algebraMap o k0) = (yn * hEmb r yh).map (algebraMap o k0)`. Rewrite using `[hy, Matrix.map_mul, hEmb_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `e` using the available equality. Take `⟨n', u', hn', ⟨u, hu, rfl⟩, e⟩` from `hNU`. Establish `hN` using `isN_map (IsLocalRing.residue o) (isN_of_map _ hinj hn)`. Establish `e2` using `congrArg b22 e`. Rewrite `e2` using `[Matrix.map_mul, hEmb_map, block22_mul_levi_embedding, block22_mul_levi_embedding, hN.2.2.1, hn'.2.2.1, one_mul, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[midEmb_inj e2]`. Conclude with `hu`. Introduce and unpack `⟨⟨yn, hyn, rfl⟩, yh, hyh, hu, rfl⟩`. Use `⟨yn * hEmb r yh, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, det_hEmb]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hyn.mul hyh`. Rewrite using `[Matrix.map_mul, hEmb_map]`. Conclude with `⟨_, _, isN_map (IsLocalRing.residue o) (isN_of_map _ hinj hn), ⟨_, hu, rfl⟩, rfl⟩`. Rewrite using `[Matrix.map_mul, hEmb_map]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kpp_nh {r k : ℕ} {n : Matrix (Idx r k) (Idx r k) k0} {h : Matrix (Fin k) (Fin k) k0}
     (hn : IsN n) (hh : IsUnit h.det) :
@@ -605,15 +603,15 @@ theorem kpp_nh {r k : ℕ} {n : Matrix (Idx r k) (Idx r k) k0} {h : Matrix (Fin 
     · rw [Matrix.map_mul, hEmb_map]
 
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective o k0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hdet, hNU⟩, hy⟩`. Take `⟨hn', yh, hyh, rfl⟩` from `(inGLo_hn o hn hh).1 ⟨y, hdet, hy⟩`. Use `⟨hn', yh, hyh, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨yn, hyn, rfl⟩` from `hn'`. Establish `e : y = hEmb r yh * yn`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `show y.map (algebraMap o k0) = (hEmb r yh * yn).map (algebraMap o k0)`. Rewrite using `[hy, Matrix.map_mul, hEmb_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `e` using the available equality. Take `⟨n', u', hn', ⟨u, hu, rfl⟩, e⟩` from `hNU`. Establish `hN` using `isN_map (IsLocalRing.residue o) (isN_of_map _ hinj hn)`. Establish `e2` using `congrArg b22 e`. Rewrite `e2` using `[Matrix.map_mul, hEmb_map, block22_levi_embedding_mul, block22_mul_levi_embedding, hN.2.2.1, hn'.2.2.1, one_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[midEmb_inj e2]`. Conclude with `hu`. Introduce and unpack `⟨⟨yn, hyn, rfl⟩, yh, hyh, hu, rfl⟩`. Use `⟨hEmb r yh * yn, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, det_hEmb]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hyh.mul hyn`. Rewrite using `[Matrix.map_mul, hEmb_map]`. Conclude with `isNU_hEmb_mul hu (isN_map (IsLocalRing.residue o) (isN_of_map _ hinj hn))`. Rewrite using `[Matrix.map_mul, hEmb_map]`.
+A detailed English derivation is pending.
 -/
 theorem kpp_hn {r k : ℕ} {n : Matrix (Idx r k) (Idx r k) k0} {h : Matrix (Fin k) (Fin k) k0}
     (hn : IsN n) (hh : IsUnit h.det) :
@@ -650,11 +648,9 @@ end Integral
 section Counting
 
 /- English proof (translation)
-Introduce `g`. Use `choose y hy using fun i j => IsLocalRing.residue_surjective ((g : Matrix ι ι (IsLocalRing.ResidueField o)) i j)`. Establish `hmap : (Matrix.of y).map (IsLocalRing.residue o) = g`. Use extensionality with `i j`. Simplify using `[hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (Matrix.of y).det`. Establish `h1 : IsUnit (IsLocalRing.residue o (Matrix.of y).det)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hmap]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`. Conclude with `isUnit_of_map_unit _ _ h1`.
-
-Use `⟨((Matrix.isUnit_iff_isUnit_det _).2 hdet).unit, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hmap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem red_surjective (o : Type) [CommRing o] [IsLocalRing o] (ι : Type) [Fintype ι]
     [DecidableEq ι] : Function.Surjective (red o ι) := by
@@ -672,15 +668,13 @@ theorem red_surjective (o : Type) [CommRing o] [IsLocalRing o] (ι : Type) [Fint
   exact hmap
 
 /- English proof (translation)
-Establish `e : K = (K.map f).comap f`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_comap, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, e⟩`. Rewrite using `[hK, ← e, ← hK]`. Conclude with `hy`. Establish `hmem : ∀ h, h ∈ K.map f ↔ P h`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨x, rfl⟩` from `hf h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Rewrite using `[← e, ← hK]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy`. Introduce `hp`. Conclude with `⟨x, (hK x).2 hp, rfl⟩`. Establish `h1 : K.index = (K.map f).index` using `(congrArg Subgroup.index e).trans (Subgroup.index_comap_of_surjective _ hf)`. Rewrite using `[h1, ← Subgroup.index_mul_card (K.map f)]`.
-
-Use `congr 1`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun h => (hmem h).symm))`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem index_mul_card {G H : Type} [Group G] [Group H] (f : G →* H)
     (hf : Function.Surjective f) (K : Subgroup G) (P : H → Prop) (hK : ∀ x, x ∈ K ↔ P (f x)) :
@@ -704,7 +698,7 @@ theorem index_mul_card {G H : Type} [Group G] [Group H] (f : G →* H)
   exact Nat.card_congr (Equiv.subtypeEquivRight (fun h => (hmem h).symm))
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (fun g => ⟨g.1, g.2⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `a b h`. Conclude with `Subtype.ext (Units.ext (congrArg Subtype.val h))`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨⟨((Matrix.isUnit_iff_isUnit_det x).2 (hP x hx)).unit, hx⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_GL_subtype {ι K : Type} [Fintype ι] [DecidableEq ι] [CommRing K]
     (P : Matrix ι ι K → Prop) (hP : ∀ x, P x → IsUnit x.det) :
@@ -718,11 +712,11 @@ theorem card_GL_subtype {ι K : Type} [Fintype ι] [DecidableEq ι] [CommRing K]
 variable {A : Type} [CommRing A] {r k : ℕ}
 
 /- English proof (translation)
-Rewrite using `[card_GL_subtype Q hQ, ← Nat.card_prod]`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun p => ⟨p.2.1 * hEmb r p.1.1, p.2.1, hEmb r p.1.1, p.2.2, ⟨p.1.1, p.1.2, rfl⟩, rfl⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨⟨g, hg⟩, ⟨n, hn⟩⟩ ⟨⟨g', hg'⟩, ⟨n', hn'⟩⟩ e`. Establish `e1 : n * hEmb r g = n' * hEmb r g'` using `congrArg Subtype.val e`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e2` using `congrArg b22 e1`. Rewrite `e2` using `[block22_mul_levi_embedding, block22_mul_levi_embedding, hn.2.2.1, hn'.2.2.1, one_mul, one_mul]`. Establish `e3 : g = g'` using `midEmb_inj e2`. Substitute `e3` using the available equality. Establish `hu : IsUnit (hEmb r g)` using `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [det_hEmb]; exact hQ g hg)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e4 : n = n'` using `hu.mul_left_injective e1`. Substitute `e4` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨x, n, h', hn, ⟨h, hh, rfl⟩, rfl⟩`. Conclude with `⟨⟨⟨h, hh⟩, ⟨n, hn⟩⟩, rfl⟩`.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem card_prod_set (Q : Matrix (Fin k) (Fin k) A → Prop) (hQ : ∀ h, Q h → IsUnit h.det) :
     Nat.card {x : Matrix (Idx r k) (Idx r k) A //
@@ -746,7 +740,7 @@ theorem card_prod_set (Q : Matrix (Fin k) (Fin k) A → Prop) (hQ : ∀ h, Q h �
     exact ⟨⟨⟨h, hh⟩, ⟨n, hn⟩⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, h', hn, ⟨h, hh, rfl⟩, rfl⟩` from `hx`. Rewrite using `[Matrix.det_mul, det_of_isN hn, det_hEmb, one_mul]`. Conclude with `hh`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_isS {x : Matrix (Idx r k) (Idx r k) A} (hx : IsS x) : IsUnit x.det := by
   obtain ⟨n, h', hn, ⟨h, hh, rfl⟩, rfl⟩ := hx
@@ -754,13 +748,13 @@ theorem isUnit_det_of_isS {x : Matrix (Idx r k) (Idx r k) A} (hx : IsS x) : IsUn
   exact hh
 
 /- English proof (translation)
-Rewrite using `[Formalism.DoubleCosetMeasures.isUpUni_det A hu]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_isUpUni {u : Matrix (Fin k) (Fin k) A} (hu : IsUpUni u) : IsUnit u.det := by
   rw [Formalism.DoubleCosetMeasures.isUpUni_det A hu]; exact isUnit_one
 
 /- English proof (translation)
-Take `⟨n, h', hn, ⟨h, hh, rfl⟩, rfl⟩` from `hx`. Rewrite using `[Matrix.det_mul, det_of_isN hn, det_hEmb, one_mul]`. Conclude with `isUnit_det_of_isUpUni hh`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_isNU {x : Matrix (Idx r k) (Idx r k) A} (hx : IsNU x) : IsUnit x.det := by
   obtain ⟨n, h', hn, ⟨h, hh, rfl⟩, rfl⟩ := hx
@@ -768,7 +762,7 @@ theorem isUnit_det_of_isNU {x : Matrix (Idx r k) (Idx r k) A} (hx : IsNU x) : Is
   exact isUnit_det_of_isUpUni hh
 
 /- English proof (translation)
-Establish `h` using `card_prod_set (r := r) (fun h : Matrix (Fin k) (Fin k) A => IsUnit h.det) (fun _ h => h)`. Establish `h2 : Nat.card {g : GL (Fin k) A // IsUnit (g : Matrix (Fin k) (Fin k) A).det} = Nat.card (GL (Fin k) A)` using `Nat.card_congr (Equiv.subtypeUnivEquiv fun g => (Matrix.isUnit_iff_isUnit_det _).1 g.isUnit)`. Rewrite `h` using `[h2]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_S : Nat.card {x : Matrix (Idx r k) (Idx r k) A // IsS x} =
     Nat.card (GL (Fin k) A) * Nat.card {x : Matrix (Idx r k) (Idx r k) A // IsN x} := by
@@ -780,7 +774,7 @@ theorem card_S : Nat.card {x : Matrix (Idx r k) (Idx r k) A // IsS x} =
   exact h
 
 /- English proof (translation)
-The claim follows from `card_prod_set (r := r) (fun h : Matrix (Fin k) (Fin k) A => IsUpUni h) (fun _ h => isUnit_det_of_isUpUni h)`.
+A detailed English derivation is pending.
 -/
 theorem card_NU : Nat.card {x : Matrix (Idx r k) (Idx r k) A // IsNU x} =
     Nat.card (upUniG A k) * Nat.card {x : Matrix (Idx r k) (Idx r k) A // IsN x} :=
@@ -794,7 +788,7 @@ section Levels
 variable (o : Type) [CommRing o] [IsLocalRing o] {r k : ℕ} (L : Levels o r k)
 
 /- English proof (translation)
-Rewrite using `[← card_NU, ← card_GL_subtype _ (fun _ h => isUnit_det_of_isNU h)]`. Conclude with `index_mul_card (red o (Idx r k)) (red_surjective o _) L.Kpp _ L.mem_Kpp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_Kpp : L.Kpp.index *
     (Nat.card (upUniG (IsLocalRing.ResidueField o) k) *
@@ -804,7 +798,7 @@ theorem index_Kpp : L.Kpp.index *
   exact index_mul_card (red o (Idx r k)) (red_surjective o _) L.Kpp _ L.mem_Kpp
 
 /- English proof (translation)
-Rewrite using `[← card_S, ← card_GL_subtype _ (fun _ h => isUnit_det_of_isS h)]`. Conclude with `index_mul_card (red o (Idx r k)) (red_surjective o _) L.Knat _ L.mem_Knat`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_Knat : L.Knat.index *
     (Nat.card (GL (Fin k) (IsLocalRing.ResidueField o)) *
@@ -814,7 +808,7 @@ theorem index_Knat : L.Knat.index *
   exact index_mul_card (red o (Idx r k)) (red_surjective o _) L.Knat _ L.mem_Knat
 
 /- English proof (translation)
-The claim follows from `index_mul_card (red o (Fin k)) (red_surjective o _) L.JH _ L.mem_JH`.
+A detailed English derivation is pending.
 -/
 theorem index_JH : L.JH.index * Nat.card (upUniG (IsLocalRing.ResidueField o) k) =
     Nat.card (GL (Fin k) (IsLocalRing.ResidueField o)) :=
@@ -823,13 +817,13 @@ theorem index_JH : L.JH.index * Nat.card (upUniG (IsLocalRing.ResidueField o) k)
 end Levels
 
 /- English proof (translation)
-Establish `hI1 : I1 ≠ 0` using `by rintro rfl; simp at h1; exact hG.ne h1`. Establish `hUk : cUk ≠ 0` using `by rintro rfl; simp at h1; exact hG.ne h1`. Establish `hN : cN ≠ 0` using `by rintro rfl; simp at h1; exact hG.ne h1`. Establish `hI2 : I2 ≠ 0` using `by rintro rfl; simp at h2; exact hG.ne h2`. Establish `hGLk : cGLk ≠ 0` using `by rintro rfl; simp at h2; exact hG.ne h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI3 : I3 ≠ 0` using `by rintro rfl; simp at h3; exact hGLk h3.symm`. Establish `hγ' : γ = I3` using `by rw [hγ, ← h3]; field_simp`. Establish `h12 : I1 = I2 * I3`. Establish `: I1 * (cUk * cN) = (I2 * I3) * (cUk * cN)` using `by rw [h1, ← h2, ← h3]; ring`. Conclude with `mul_right_cancel₀ (mul_ne_zero hUk hN) this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : volKnat = I3 * volKpp`. Establish `: I2 * volKnat = I2 * (I3 * volKpp)` using `by rw [← v2, v1, h12]; ring`. Conclude with `mul_left_cancel₀ hI2 this`. Substitute `hγ' hS` using the available equality. Substitute `v3 v1 hv h12` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2, ← h3]`. Establish `q1` using `p1.ne'`. Establish `q3` using `p3.ne'`. Establish `q4` using `p4.ne'`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ratios (I1 I2 I3 cN volK volKpp volKnat volKH volJH volNo cG cS cGLk cUk γ : ℝ)
     (hG : 0 < cG) (h1 : I1 * (cUk * cN) = cG) (h2 : I2 * (cGLk * cN) = cG) (h3 : I3 * cUk = cGLk)
@@ -867,11 +861,9 @@ end Formalism.FourierDecayAlt.P.S3x3
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `o _ _ _ r k L volK volKpp volKnat volKH volJH volNo p1 p2 p3 p4 v1 v2 v3 cG cS cGLk cUk γ hG hS hGLk hUk hγ`. Use `S3x3.ratios L.Kpp.index L.Knat.index L.JH.index (Nat.card {x : Matrix (S3.Idx r k) (S3.Idx r k) (IsLocalRing.ResidueField o) // S3.IsN x}) volK volKpp volKnat volKH volJH volNo cG cS cGLk cUk γ ?_ ?_ ?_ ?_ ?_ p1 p2 p3 p4 v1 v2 v3 hγ` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `Nat.card_pos` after adjusting the coercions. Rewrite using `[hG, hUk]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S3x3.index_Kpp o L` after adjusting the coercions. Rewrite using `[hG, hGLk]`. Conclude with `S3x3.index_Knat o L` after adjusting the coercions. Rewrite using `[hGLk, hUk]`. Conclude with `S3x3.index_JH o L` after adjusting the coercions.
-
-Rewrite using `[hS, hGLk]`. Conclude with `S3x3.card_S` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typedArithmetic_statement : Formalism.FourierDecayAlt.S3.TypedArithmetic := by
   intro o _ _ _ r k L volK volKpp volKnat volKH volJH volNo p1 p2 p3 p4 v1 v2 v3 cG cS cGLk cUk γ
@@ -886,7 +878,7 @@ theorem typedArithmetic_statement : Formalism.FourierDecayAlt.S3.TypedArithmetic
   · rw [hS, hGLk]; exact_mod_cast S3x3.card_S
 
 /- English proof (translation)
-Introduce `o _ _ _ k0 _ _ _ r k n h hn hh`. Conclude with `⟨S3x3.inGLo_nh o hn hh, S3x3.inGLo_hn o hn hh, S3x3.kpp_nh o hn hh, S3x3.kpp_hn o hn hh⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem integralProduct_statement : Formalism.FourierDecayAlt.S3.IntegralProduct := by
   intro o _ _ _ k0 _ _ _ r k n h hn hh

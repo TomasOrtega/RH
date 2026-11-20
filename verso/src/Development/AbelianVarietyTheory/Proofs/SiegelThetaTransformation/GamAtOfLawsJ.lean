@@ -12,15 +12,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 namespace GlobalTheory.RunIn
 
 /- English proof (translation)
-Introduce `j hj σ hσ k γ hst hc`. Take `⟨hgood, hA, -, -, -, -, hrest⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Establish `hr : 0 < D.R.r` using `(hrest j hj).2.1`. Establish `hpins` using `h.pins`. Unfold `Formalism.L2.Pj.Par.Pins at hpins`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hlev` using `hpins.2.1`. Unfold `Formalism.L2.Pj.Par.PinLevel at hlev`. Establish `hM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `hlev.1`. Establish `h3 : 3 ≤ T.Q.l.M`. Take `⟨p, hlt, hp⟩` from `Nat.exists_infinite_primes (T.Q.l.M + 1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : T.Q.l.M.factorization p = 0` using `Nat.factorization_eq_zero_of_lt (by omega)`. Use `hgood p hp` as an intermediate fact. Simplify `this` using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.GoodAt, h0]`. Establish `hU` using `(Formalism.L2.PjFree.isUnf_ofPj (T.U j σ)).2 (h.unf j hj σ hσ)`. Take `⟨γ', hγ', u, n, hn, hu, he⟩` from `GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity _ _ _ _ _ _ _ _ _ hU hA hr k γ hst hc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨th, hrk, hth, hD⟩` from `h.dictU j hj σ hσ`. Establish `hc' : ∀ x ∈ ((T.U j σ).X k).Λ, ∃ y ∈ ((T.U j σ).X k).Λ, Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) x - x = ((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E) • y`. Rewrite using `[← hM]`. Conclude with `hc`. Establish `hu1 : u = 1` using `GlobalTheory.PrincCore.root_eq_one (T.V j σ) hrk hr (T.U j σ).X (T.dict j σ) (T.mu j σ) (T.Kf j σ) th hth hD (h.muUnit j hj σ hσ) (D.host.g 0 * D.host.g 1) (hM ▸ h3) (h.levelK j hj σ hσ) k γ γ' hγ' hc' u n hn hu he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγγ : γ' = γ`. Use extensionality with `a b`. Use `congrFun (congrFun he a) b` as an intermediate fact. Simplify `this` using `[hu1]`. Conclude with `hγγ ▸ hγ'`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gamAt_of_lawsM (D : D7) (T : Core D) (h : LawsM T) : GamAt T := by
   intro j hj σ hσ k γ hst hc
@@ -54,7 +54,7 @@ theorem gamAt_of_lawsM (D : D7) (T : Core D) (h : LawsM T) : GamAt T := by
   exact hγγ ▸ hγ'
 
 /- English proof (translation)
-Introduce `D T h`. Conclude with `gamAt_of_lawsM D T.toCore h.toLawsM`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gamAt_of_lawsJ : ∀ (D : D7) (T : CoreJ D), LawsJ T → GamAt T.toCore := by
   intro D T h

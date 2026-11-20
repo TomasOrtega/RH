@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NBand
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime ((p : ℕ) : 𝓞 E) ((q : ℕ) : 𝓞 E)` using `Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Apply `w.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left a h1) (w.asIdeal.mul_mem_left b h2)`.
+A detailed English derivation is pending.
 -/
 theorem prime_eq_of_mem {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     {w : HeightOneSpectrum (𝓞 E)} (h1 : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal) (h2 : ((q : ℕ) : 𝓞 E) ∈ w.asIdeal) :
@@ -21,13 +21,13 @@ theorem prime_eq_of_mem {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p
   exact w.asIdeal.add_mem (w.asIdeal.mul_mem_left a h1) (w.asIdeal.mul_mem_left b h2)
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) < l` using `by linarith`. Establish `hlog4 : 0 ≤ Real.log 4` using `Real.log_nonneg (by norm_num)`. Establish `hloge : Real.log 4 + 1 ≤ Real.log l`. Establish `he` using `Real.exp_one_lt_d9`. Establish `: Real.log (4 * Real.exp 1) = Real.log 4 + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_mul (by norm_num) (Real.exp_pos 1).ne', Real.log_exp]`. Rewrite using `[← this]`. Conclude with `Real.log_le_log (by positivity) (by linarith)`. Establish `hlpos : 0 < Real.log l` using `Real.log_pos hl1`. Break down `h0.eq_or_lt with h0' | h0'` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0', Real.logb_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : Real.logb l h ≤ Real.logb l (4 * Real.exp large₂)` using `Real.logb_le_logb_of_le hl1 h0' hh`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[Real.logb, Real.log_mul (by norm_num) (Real.exp_pos _).ne', Real.log_exp, div_le_iff₀ hlpos]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem logb_le_of_le_four_exp {l : ℕ} (hl : (11 : ℝ) ≤ l) {large₂ h : ℝ} (hL : 1 ≤ large₂) (h0 : 0 ≤ h)
     (hh : h ≤ 4 * Real.exp large₂) : Real.logb l h ≤ large₂ := by
@@ -48,7 +48,7 @@ theorem logb_le_of_le_four_exp {l : ℕ} (hl : (11 : ℝ) ≤ l) {large₂ h : �
   nlinarith
 
 /- English proof (translation)
-The claim follows from `|lr * s - Lb| ≤ C * (lr * eta₃ + lr * Sc + Lb / lr + s + lr * large₂) := by set E := lr * eta₃ + lr * Sc + Lb / lr + s + lr * large₂ with hE have hlr0 : 0 < lr := by linarith rw [abs_le] at hzs habs have hA : lr * e + lr * S + Wb / lr + z + lr * lg ≤ E + lr * eta₃ := by have e1 : …`.
+A detailed English derivation is pending.
 -/
 theorem band_arith {lr s z Wb Lb e S Sc eta₃ lg large₂ T CB C : ℝ} (hl : 11 ≤ lr) (hs0 : 0 ≤ s)
     (hzs : |z - s| ≤ T) (hb1 : Lb - T ≤ Wb) (hb2 : Wb ≤ Lb - T + 1) (he : e ≤ eta₃) (hS : S ≤ Sc)
@@ -90,21 +90,19 @@ theorem band_arith {lr s z Wb Lb e S Sc eta₃ lg large₂ T CB C : ℝ} (hl : 1
 end GlobalTheory.NBand
 
 /- English proof (translation)
-Introduce `D L P HW X R C hX hR hpar`. Introduce `i lam hTw hb l hl hlp`. Take `⟨h11, π, hπ, hw, Cx, hG, Wd, hBase, hBox, hNT, hBand⟩` from `(hX.band i lam).1 hb`. Establish `hli : l = D.nd.l i` using `prime_eq_of_mem hlp (D.nd.lPrime i).out hl hw`. Substitute `hli` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨a, hnt, -, habs⟩` from `hBand`. Take `⟨s, hs1, hs2, hs3⟩` from `hBox.nt a hnt`. Use `⟨s, hs1, hs2, ?_⟩` and prove the remaining obligations. Take `⟨-, hCB, -, -, -, -, -, -, -, hC6, -⟩` from `hR`. Establish `hl11 : (11 : ℝ) ≤ (D.nd.l i : ℝ)` using `by exact_mod_cast h11`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLg : 1 ≤ TwistedPlaces.large₂ L`. Unfold `TwistedPlaces.large₂ Scale.L`. Conclude with `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`. Establish `hbexp : L.sc.b = Real.exp (TwistedPlaces.large₂ L)` using `rfl`. Establish `hpar' : L.Sc + L.etaSz + (D.R.t : ℝ) + 2 ≤ L.sc.b` using `hpar`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSc` using `L.Sc_pos`. Establish `hEt` using `L.etaSz_pos`. Establish `ht0 : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hetaP : TwistedPlaces.eta₃ L = L.etaSz + D.R.t + 2` using `rfl`. Establish `hhB : TwistedPlaces.hB L = L.sc.b + L.Sc + L.etaSz + D.R.t + 2` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh17n : Formalism.MainNotions.TruncatedSeriesCountingBounds.hB Wd.b Wd.w Wd.S Wd.η Wd.sz ≤ Wd.b + Wd.η + Wd.S`. Use `hNT.w20` as an intermediate fact. Apply the tactic sequence `unfold Formalism.MainNotions.TruncatedSeriesCountingBounds.hB; split_ifs <;> omega`. Establish `hh17 : ((Formalism.MainNotions.TruncatedSeriesCountingBounds.hB Wd.b Wd.w Wd.S Wd.η Wd.sz : ℕ) : ℝ) ≤ (Wd.b : ℝ) + Wd.η + Wd.S`. Conclude with `hh17n` after adjusting the coercions.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhle` using `hBase.h_le`. Establish `hlg : Real.logb (D.nd.l i : ℝ) (2 * ((Formalism.MainNotions.TruncatedSeriesCountingBounds.hB Wd.b Wd.w Wd.S Wd.η Wd.sz : ℕ) : ℝ)) ≤ TwistedPlaces.large₂ L`. Apply `logb_le_of_le_four_exp hl11 hLg (by positivity)` to reduce the goal to its premises. Rewrite using `[← hbexp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : 0 ≤ L.sc.w'' D.R.n`. Establish `hx : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Unfold `Scale.w'' Scale.b' Scale.a Scale.X' Scale.b`. Apply `div_nonneg` to reduce the goal to its premises. Conclude with `div_nonneg (mul_nonneg hx.le (Real.exp_pos _).le) (Real.exp_pos _).le`.
-
-Conclude with `mul_nonneg hx.le (Nat.cast_nonneg _)`. Conclude with `band_arith hl11 (hw0.trans hs1) hs3 hBox.b_lo hBox.b_hi hBase.η_le hBase.S_le hlg hLg hSc.le (by rw [hbexp]; exact (Real.exp_pos _).le) (by linarith) (by rw [hetaP]; linarith) hCB hC6 habs`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NBand.bandPlaceWeightApproximation_tabX : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (HW : HWOf D.loc) (X : KillingConditions.HubData D) (R : KillingConditions.RowK) (C : ℝ), KillingConditions.DataAD L HW X R → R.Le C → EmbeddingTypeJumps.ParametersPolynomiallyBounded L → TwistedPlaces.BandPlaceWeightApproximation L (tabX L X) C := by
   intro D L P HW X R C hX hR hpar

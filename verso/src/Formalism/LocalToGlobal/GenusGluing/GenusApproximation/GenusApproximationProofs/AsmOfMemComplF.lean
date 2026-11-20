@@ -18,9 +18,9 @@ private theorem glEquiv_apply_lemma {n : ℕ} (γ : GL (Fin n) E) (x : Sp E n) :
     Formalism.UG.glEquiv γ x = (γ : Matrix (Fin n) (Fin n) E) *ᵥ x := rfl
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[glEquiv_apply_lemma, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `hx`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[glEquiv_apply_lemma, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asm_mem_gmap {n : ℕ} (γ : GL (Fin n) E) (L : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
     y ∈ Formalism.HermitianLatticesTheory.gmap (Formalism.UG.glEquiv γ) L ↔ ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ y ∈ L := by
@@ -34,16 +34,16 @@ theorem asm_mem_gmap {n : ℕ} (γ : GL (Fin n) E) (L : Submodule (𝓞 E) (Sp E
     rw [glEquiv_apply_lemma, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[(hI F E).2.1 P P]`. Simplify using `only [and_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem placeIndicator_mul_self (hI : IdemCalc) (P : HeightOneSpectrum (𝓞 F) → Prop) : eP E P * eP E P = eP E P := by
   rw [(hI F E).2.1 P P]
   simp only [and_self]
 
 /- English proof (translation)
-Establish `he` using `placeIndicator_mul_self (E := E) hI P`. Express the relevant statement in the definitionally equal form `eP E P * (∑ j, M i j * w j) ∈ Formalism.L2.Herm.intAf F E`. Rewrite using `[Finset.mul_sum]`. Use `sum_mem (fun j _ => ?_)` and prove the remaining obligations. Establish `hj : eP E P * (M i j * w j) = (eP E P * M i j) * (eP E P * w j)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hj]`. Conclude with `mul_mem (hM i j) (hw j)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asm_mulVec_int {n : ℕ} (hI : IdemCalc) (P : HeightOneSpectrum (𝓞 F) → Prop)
     (M : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (w : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)
@@ -60,7 +60,7 @@ theorem asm_mulVec_int {n : ℕ} (hI : IdemCalc) (P : HeightOneSpectrum (𝓞 F)
   exact mul_mem (hM i j) (hw j)
 
 /- English proof (translation)
-Establish `hij : ∀ j, f * M i j = f * M' i j` using `fun j => by`. Establish `hh` using `congrFun (congrFun h i) j`. Simplify `hh` using `[Matrix.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `f * (∑ j, M i j * w j) = f * (∑ j, M' i j * w j)`. Simplify using `only [Finset.mul_sum, ← mul_assoc, hij]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem asm_smul_mulVec {n : ℕ} (f : E ⊗[F] Formalism.L2.Herm.Af F) (M M' : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (h : f • M = f • M') (w : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) (i : Fin n) :
@@ -72,7 +72,7 @@ theorem asm_smul_mulVec {n : ℕ} (f : E ⊗[F] Formalism.L2.Herm.Af F) (M M' : 
   simp only [Finset.mul_sum, ← mul_assoc, hij]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `rw [IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E r]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem asm_iota_OF (r : 𝓞 F) :
     iA F E (algebraMap (𝓞 F) E r) = iA F E (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r)) := by
@@ -81,7 +81,7 @@ theorem asm_iota_OF (r : 𝓞 F) :
     | rw [IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E r]
 
 /- English proof (translation)
-Apply `Subring.subset_closure` to reduce the goal to its premises. Use `Or.inl ⟨⟨algebraMap (𝓞 E) E b, b, rfl⟩, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem asm_iota_OE_mem (b : 𝓞 E) : iA F E (algebraMap (𝓞 E) E b) ∈ Formalism.L2.Herm.intAf F E := by
   apply Subring.subset_closure
@@ -89,28 +89,28 @@ theorem asm_iota_OE_mem (b : 𝓞 E) : iA F E (algebraMap (𝓞 E) E b) ∈ Form
   rfl
 
 /- English proof (translation)
-Rewrite using `[asm_iota_OF]`. Conclude with `asm_iota_OE_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asm_iota_OF_mem (r : 𝓞 F) : iA F E (algebraMap (𝓞 F) E r) ∈ Formalism.L2.Herm.intAf F E := by
   rw [asm_iota_OF]
   exact asm_iota_OE_mem _
 
 /- English proof (translation)
-Use `show c • y i = _`. Conclude with `Algebra.smul_def c (y i)`.
+A detailed English derivation is pending.
 -/
 theorem asm_smul_apply {n : ℕ} (c : 𝓞 E) (y : Sp E n) (i : Fin n) : (c • y) i = algebraMap (𝓞 E) E c * y i := by
   show c • y i = _
   exact Algebra.smul_def c (y i)
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Col.stdLat, Submodule.mem_pi, Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem asm_mem_std {n : ℕ} (y : Sp E n) :
     y ∈ stdLat E n ↔ ∀ i, ∃ b : 𝓞 E, algebraMap (𝓞 E) E b = y i := by
   simp [Formalism.L2.Col.stdLat, Submodule.mem_pi, Submodule.mem_one]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(asm_mem_std y).1 hy i`. Rewrite using `[← hb]`. Conclude with `asm_iota_OE_mem b`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asm_iota_std {n : ℕ} {y : Sp E n} (hy : y ∈ stdLat E n) (i : Fin n) : iA F E (y i) ∈ Formalism.L2.Herm.intAf F E := by
   obtain ⟨b, hb⟩ := (asm_mem_std y).1 hy i
@@ -118,7 +118,7 @@ theorem asm_iota_std {n : ℕ} {y : Sp E n} (hy : y ∈ stdLat E n) (i : Fin n) 
   exact asm_iota_OE_mem b
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem asm_bc_mulVec {n : ℕ} (γ : GL (Fin n) E) (y : Sp E n) :
     ((Formalism.UG.bc (iA F E) γ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ
@@ -128,7 +128,7 @@ theorem asm_bc_mulVec {n : ℕ} (γ : GL (Fin n) E) (y : Sp E n) :
   rfl
 
 /- English proof (translation)
-Unfold `complF`. Conclude with `Submonoid.mem_map_of_mem _ hr`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem asm_mem_complF (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) (hr : r ∉ v.asIdeal) :
     algebraMap (𝓞 F) (𝓞 E) r ∈ complF E v := by
@@ -136,7 +136,7 @@ theorem asm_mem_complF (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) (hr : r ∉
   exact Submonoid.mem_map_of_mem _ hr
 
 /- English proof (translation)
-Unfold `complF at hs`. Take `⟨r, hr, rfl⟩` from `Submonoid.mem_map.1 hs`. Conclude with `⟨r, hr, rfl⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem asm_of_mem_complF {v : HeightOneSpectrum (𝓞 F)} {s : 𝓞 E} (hs : s ∈ complF E v) :
     ∃ r : 𝓞 F, r ∉ v.asIdeal ∧ algebraMap (𝓞 F) (𝓞 E) r = s := by
@@ -147,14 +147,14 @@ theorem asm_of_mem_complF {v : HeightOneSpectrum (𝓞 F)} {s : 𝓞 E} (hs : s 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n hL N hN hU`. Conclude with `hG F E hc n N hN (hL hc.cmUnram N hN hU)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locToAd_of (hG : GenusToPoint) : LocToAd := by
   intro F E _ _ _ _ _ _ hc n hL N hN hU
   exact hG F E hc n N hN (hL hc.cmUnram N hN hU)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n hW hU _ N hN hUni`. Take `⟨x, hx, rfl⟩` from `hU N hN hUni`. Conclude with `hP F E hc n hW x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adToLoc_of (hP : PointToGenus) : AdToLoc := by
   intro F E _ _ _ _ _ _ hc n hW hU _ N hN hUni
@@ -162,26 +162,24 @@ theorem adToLoc_of (hP : PointToGenus) : AdToLoc := by
   exact hP F E hc n hW x hx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n hW`. Conclude with `⟨h1 F E hc n, h2 F E hc n hW⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem bridge_of (h1 : LocToAd) (h2 : AdToLoc) : Bridge := by
   intro F E _ _ _ _ _ _ hc n hW
   exact ⟨h1 F E hc n, h2 F E hc n hW⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun j => iA F E (y j))) ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (stdLat E n) ↔ _`. Generalize the expression as in `(((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun j => iA F E (y j))) = w`. Prove the components needed by the constructor for the conclusion. Introduce `hw i`. Set `Q : Submodule (Formalism.L2.Herm.intAf F E) (Fin n → E ⊗[F] Formalism.L2.Herm.Af F)` to `{ carrier := {w | ∀ i, w i ∈ Formalism.L2.Herm.intAf F E} add_mem' := by`.
+Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `a b ha hb k`. Conclude with `add_mem (ha k) (hb k)`. Use the proof step `zero_mem' := by`. Introduce `k`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `smul_mem' := by`. Introduce `c a ha k`. Conclude with `mul_mem c.2 (ha k) }`. Establish `hle : Formalism.UG.latS (F` using `F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (stdLat E n) ≤ Q := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩ j`. Conclude with `asm_iota_std hz j`. Conclude with `(hle hw : ∀ k, w k ∈ Formalism.L2.Herm.intAf F E) i`. Introduce `hw`. Establish `hsum : w = ∑ i, (⟨w i, hw i⟩ : Formalism.L2.Herm.intAf F E) • (fun j => iA F E ((Pi.single i (1 : E) : Fin n → E) j))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`. Simplify using `[Subring.smul_def]`. Introduce `b _ hb`. Simplify using `[Subring.smul_def, Pi.single_apply, Ne.symm hb]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Pi.single i (1 : E), ?_, rfl⟩))` and prove the remaining obligations. Use `(asm_mem_std _).2 (fun k => ⟨(Pi.single i (1 : 𝓞 E) : Fin n → 𝓞 E) k, ?_⟩)` and prove the remaining obligations.
-
-Break down `eq_or_ne k i with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+A detailed English derivation is pending.
 -/
 private theorem glob_lemma_2 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     {n : ℕ} (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : Sp E n) :
@@ -227,13 +225,11 @@ private theorem glob_lemma_2 {F E : Type} [Field F] [NumberField F] [Field E] [N
     · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Use `set γ : GL (Fin n) E := Matrix.GeneralLinearGroup.toLin.symm ((LinearMap.GeneralLinearGroup.generalLinearEquiv E (Fin n → E)).symm g) with hγdef`. Establish `hγg : Formalism.UG.glEquiv γ = g`. Simplify using `only [Formalism.UG.glEquiv, hγdef, MulEquiv.apply_symm_apply]`. Use `⟨γ, ?_, hγg⟩` and prove the remaining obligations. Use `show Formalism.UG.cT (hc.sig : E →+* E) (γ : Matrix (Fin n) (Fin n) E) * 1 * (γ : Matrix (Fin n) (Fin n) E) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mul_one]`. Express the relevant statement in the definitionally equal form `(γ : Matrix (Fin n) (Fin n) E)ᴴ * (γ : Matrix (Fin n) (Fin n) E) = 1`. Use extensionality with `j k`. Establish `h` using `hg (Pi.single j 1) (Pi.single k 1)`. Rewrite `h` using `[← hγg]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply, glEquiv_apply_lemma] at h`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.conjTranspose_apply]`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
-
-Simplify using `[Pi.single_apply, apply_ite star, ite_mul, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Conclude with `if_congr eq_comm rfl rfl`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem unit_lemma_5 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} (g : Sp E n ≃ₗ[E] Sp E n)
@@ -258,15 +254,15 @@ private theorem unit_lemma_5 {F E : Type} [Field F] [NumberField F] [Field E] [N
     exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-Use `haveI := v.isMaximal`. Use `haveI : Algebra.IsIntegral (𝓞 F) (𝓞 E) := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨fun x => (Algebra.IsIntegral.isIntegral (R := ℤ) x).tower_top⟩`. Establish `hker : RingHom.ker (algebraMap (𝓞 F) (𝓞 E)) ≤ v.asIdeal`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Rewrite `ha` using `[RingHom.mem_ker]`. Establish `e : algebraMap (𝓞 F) E a = algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a)` using `by first`. Consider the case `rfl`. Consider the case `exact IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E a`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[ha, map_zero]`. Establish `e2 : algebraMap (𝓞 F) E a = algebraMap F E (algebraMap (𝓞 F) F a)` using `by first`. Consider the case `rfl`. Consider the case `exact IsScalarTower.algebraMap_apply (𝓞 F) F E a`. Rewrite `e` using `[e2, map_eq_zero_iff _ (algebraMap F E).injective, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `zero_mem _`. Take `⟨Q, hQ, hQv⟩ : ∃ Q : Ideal (𝓞 E), Q.IsMaximal ∧ Q.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal` from `by first`. Consider the case `exact Ideal.exists_ideal_over_maximal_of_isIntegral v.asIdeal hker`. Consider the case `exact Ideal.exists_ideal_over_maximal_of_isIntegral inferInstance v.asIdeal hker`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hQ0 : Q ≠ ⊥` using `by first`. Consider the case `exact Ring.ne_bot_of_isMaximal_of_not_isField hQ (NumberField.RingOfIntegers.not_isField (K := E))`. Consider the case `exact Ring.ne_bot_of_isMaximal_of_not_isField hQ (NumberField.RingOfIntegers.not_isField E)`. Consider the case `exact Ideal.IsMaximal.ne_bot_of_isIntegral_int hQ`. Conclude with `⟨⟨Q, hQ.isPrime, hQ0⟩, IsDedekindDomain.HeightOneSpectrum.ext hQv⟩`.
+Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem over_lemma_6 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ PP : HeightOneSpectrum (𝓞 E), Formalism.L2.DIV.underPl F PP = v := by
@@ -303,9 +299,9 @@ private theorem over_lemma_6 {F E : Type} [Field F] [NumberField F] [Field E] [N
   exact ⟨⟨Q, hQ.isPrime, hQ0⟩, IsDedekindDomain.HeightOneSpectrum.ext hQv⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨fun v _ => mul_mem ((hI F E).1 _) hu, mul_mem ((hI F E).1 _) hu⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `e : u = ∑ v ∈ T, eAt E v * u + eP E (fun v => v ∉ T) * u`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_mul, ← add_mul, (hI F E).2.2 T, one_mul]`. Rewrite using `[e]`. Conclude with `add_mem (sum_mem fun v hv => h1 v hv) h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem split_lemma_8 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hI : IdemCalc) (T : Finset (HeightOneSpectrum (𝓞 F)))
     (u : E ⊗[F] Formalism.L2.Herm.Af F) :
@@ -320,47 +316,39 @@ private theorem split_lemma_8 {F E : Type} [Field F] [NumberField F] [Field E] [
     exact add_mem (sum_mem fun v hv => h1 v hv) h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n N hN hG`. Take `⟨D, hD, hD1, hD2⟩` from `hCm F E n N hN`. Establish `hfin : {v : HeightOneSpectrum (𝓞 F) | D ∈ v.asIdeal}.Finite`. Establish `h0 : Ideal.span ({D} : Set (𝓞 F)) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD`. Conclude with `(Ideal.finite_factors h0).subset (fun v hv => Ideal.dvd_span_singleton.2 hv)`. Use `set T := hfin.toFinset with hT`. Establish `memT : ∀ v, v ∈ T ↔ D ∈ v.asIdeal` using `fun v => hfin.mem_toFinset`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ γ ∈ URat hc n, Formalism.HermitianLatticesTheory.gmap (Formalism.UG.glEquiv γ) (locF v (stdLat E n)) = locF v N`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Take `⟨PP, hPP⟩` from `over_lemma_6 (E := E) v`. Take `⟨g, hg, hgl⟩` from `hG PP.asIdeal PP.isMaximal`. Take `⟨γ, hγ, rfl⟩` from `unit_lemma_5 hc g hg`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hgl` using `[hLoc F E hc n PP, hLoc F E hc n PP, hPP]`. Conclude with `hgl`. Use `choose γ hγ hγl using hloc`. Take `⟨x, hx, hx1, hx2⟩` from `hGl F E hc n T (fun v => ⟨γ v, hγ v⟩)`. Establish `hx1' : ∀ v ∈ T, eAt E v • ((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = eAt E v • ((Formalism.UG.bc (iA F E) ((γ v)⁻¹) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Her …` using `hx1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx2' : eP E (fun v => v ∉ T) • ((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = eP E (fun v => v ∉ T) • (1 : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))` using `hx2`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[glob_lemma_2]`. Establish `hTv : ∀ v ∈ T, ((∀ i, eAt E v * (((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun j => iA F E (y j))) i ∈ Formalism.L2.Herm.intAf F E) ↔ y ∈ locF v N)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv`. Rewrite using `[← hγl v, asm_mem_gmap, hMem F E n v]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[asm_smul_mulVec _ _ _ (hx1' v hv), asm_bc_mulVec]`. Establish `hout : ∀ i, eP E (fun v => v ∉ T) * (((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun j => iA F E (y j))) i = eP E (fun v => v ∉ T) * iA F E (y i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `i`. Rewrite using `[asm_smul_mulVec _ _ _ hx2', Matrix.one_mulVec]`. Establish `hPT : eP E (fun v => v ∉ T) = eP E (fun v : HeightOneSpectrum (𝓞 F) => D ∉ v.asIdeal)`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[memT]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hloc' : ∀ v ∈ T, y ∈ locF v N` using `fun v hv => (hTv v hv).1 (fun i => ((split_lemma_8 hI T _).1 (hy i)).1 v hv)`. Establish `hout' : ∀ i, eP E (fun v => v ∉ T) * iA F E (y i) ∈ Formalism.L2.Herm.intAf F E` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hout i]`. Conclude with `((split_lemma_8 hI T _).1 (hy i)).2`. Set `J : Ideal (𝓞 F)` to `{ carrier := {a | algebraMap (𝓞 F) (𝓞 E) a • y ∈ N} add_mem' := by`. Introduce `a b ha hb`. Use `show algebraMap (𝓞 F) (𝓞 E) (a + b) • y ∈ N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, add_smul]`. Conclude with `N.add_mem ha hb`. Use the proof step `zero_mem' := by show algebraMap (𝓞 F) (𝓞 E) 0 • y ∈ N`. Rewrite using `[map_zero, zero_smul]`. Conclude with `N.zero_mem`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Use the proof step `smul_mem' := by`. Introduce `c a ha`. Use `show algebraMap (𝓞 F) (𝓞 E) (c • a) • y ∈ N`. Rewrite using `[smul_eq_mul, map_mul, mul_smul]`. Conclude with `N.smul_mem _ ha }`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : J = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨Mx, hM, hJM⟩` from `Ideal.exists_le_maximal J hne`. Establish `hM0 : Mx ≠ ⊥` using `by first`. Consider the case `exact Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField (K := F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `exact Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField F)`. Consider the case `exact Ideal.IsMaximal.ne_bot_of_isIntegral_int hM`. Set `w : HeightOneSpectrum (𝓞 F)` to `⟨Mx, hM.isPrime, hM0⟩`. Distinguish the cases in `hw : w ∈ T`. Take `⟨s, hs, hsy⟩ : ∃ s ∈ complF E w, s • y ∈ N` from `hloc' w hw`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, rfl⟩` from `asm_of_mem_complF hs`. Conclude with `hr (hJM (show r ∈ J from hsy))`. Establish `hyw : y ∈ locF w (stdLat E n)`. Rewrite using `[hMem F E n w]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh` using `mul_mem ((hI F E).1 (fun u => u = w)) (hout' i)`. Rewrite `hh` using `[← mul_assoc, (hI F E).2.1]`. Establish `e : (fun u : HeightOneSpectrum (𝓞 F) => u = w ∧ u ∉ T) = (fun u => u = w)`. Use function extensionality and compare the values at `u`. Apply `propext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Introduce `h`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hw`. Rewrite `hh` using `[e]`. Conclude with `hh`. Take `⟨s, hs, hsy⟩ : ∃ s ∈ complF E w, s • y ∈ stdLat E n` from `hyw`. Take `⟨r, hr, rfl⟩` from `asm_of_mem_complF hs`.
-
-Establish `hDw : D ∉ w.asIdeal` using `fun h => hw ((memT w).2 h)`. Establish `hmem : D * r ∈ J` using `by show algebraMap (𝓞 F) (𝓞 E) (D * r) • y ∈ N`. Rewrite using `[map_mul, mul_smul]`. Conclude with `hD2 _ hsy`. Conclude with `(w.isPrime.mem_or_mem (hJM hmem)).elim hDw hr`.
-
-Establish `h1 : (1 : 𝓞 F) ∈ J` using `hJ ▸ Submodule.mem_top`. Establish `h1' : algebraMap (𝓞 F) (𝓞 E) 1 • y ∈ N` using `h1`. Rewrite `h1'` using `[map_one, one_smul]`. Then use the resulting hypothesis. Introduce `hy i`. Rewrite using `[split_lemma_8 hI T]`.
-
-Use `⟨fun v hv => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hTv v hv).2 (⟨1, (complF E v).one_mem, by rwa [one_smul]⟩ : ∃ s ∈ complF E v, s • y ∈ N) i`. Rewrite using `[hout i, hPT]`. Apply `hCof F E D hD` to reduce the goal to its premises. Establish `hh` using `asm_iota_std (F := F) (hD1 y hy) i`.
-
-Rewrite `hh` using `[asm_smul_apply, map_mul, ← asm_iota_OF]`. Conclude with `hh`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genusToPoint_of (hLoc : LocEq) (hMem : MemLocFStd) (hCof : IdemCof) (hI : IdemCalc) (hGl : GlueExists)
     (hCm : Commens) : GenusToPoint := by
@@ -478,9 +466,9 @@ theorem genusToPoint_of (hLoc : LocEq) (hMem : MemLocFStd) (hCof : IdemCof) (hI 
       exact hh
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT (hc.sig : E →+* E) (γ : Matrix (Fin n) (Fin n) E) * 1 * (γ : Matrix (Fin n) (Fin n) E) = 1` using `hγ`. Rewrite `h` using `[Matrix.mul_one]`. Establish `hU : (γ : Matrix (Fin n) (Fin n) E)ᴴ * (γ : Matrix (Fin n) (Fin n) E) = 1` using `h`. Introduce `a b`. Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply, glEquiv_apply_lemma]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `star ((γ : Matrix (Fin n) (Fin n) E) *ᵥ a) ⬝ᵥ ((γ : Matrix (Fin n) (Fin n) E) *ᵥ b) = star a ⬝ᵥ b`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, hU, Matrix.vecMul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isom_lemma_3 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} (γ : GL (Fin n) E) (hγ : γ ∈ URat hc n) :
@@ -494,23 +482,19 @@ private theorem isom_lemma_3 {F E : Type} [Field F] [NumberField F] [Field E] [N
   rw [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, hU, Matrix.vecMul_one]
 
 /- English proof (translation)
-Establish `K1 : ∀ z : Sp E n, (((Formalism.UG.bc (iA F E) γ)⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun j => iA F E (z j)) = fun i => iA F E (((((γ⁻¹ : GL (Fin n) E)) : Matrix (Fin n) (Fin n) E) *ᵥ z) i)`. Introduce `z`. Rewrite using `[← map_inv (Formalism.UG.bc (iA F E)) γ]`. Conclude with `asm_bc_mulVec γ⁻¹ z`. Use extensionality with `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[asm_mem_gmap]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy'` using `(hMem F E n v _).1 hy`. Establish `hu : ∀ i, eAt E v * (((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun j => iA F E (y j))) i ∈ Formalism.L2.Herm.intAf F E`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `e : ((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun j => iA F E (y j)) = ((x⁻¹ * Formalism.UG.bc (iA F E) γ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) …`. Rewrite using `[← K1 y, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right]`. Rewrite using `[e]`. Conclude with `asm_mulVec_int hI (fun w => w = v) _ _ h2 hy' i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose r hr hru using fun i => hDen F E v _ (hu i)`. Establish `hR : (∏ i, r i) ∈ v.asIdeal.primeCompl` using `prod_mem fun i _ => hr i`. Use `show ∃ s ∈ complF E v, s • y ∈ Formalism.UG.CS.globLat x (stdLat E n)`. Use `⟨algebraMap (𝓞 F) (𝓞 E) (∏ i, r i), asm_mem_complF v _ hR, ?_⟩` and prove the remaining obligations. Rewrite using `[glob_lemma_2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `es : (fun j => iA F E ((algebraMap (𝓞 F) (𝓞 E) (∏ i, r i) • y) j)) = iA F E (algebraMap (𝓞 F) E (∏ i, r i)) • (fun j => iA F E (y j))`. Use function extensionality and compare the values at `j`. Rewrite using `[asm_smul_apply, map_mul, asm_iota_OF]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[es, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_prod, map_prod, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i), mul_right_comm]`. Conclude with `mul_mem (hru i) (prod_mem fun j _ => asm_iota_OF_mem (r j))`. Introduce `hy`. Take `⟨s, hs, hsy⟩ : ∃ s ∈ complF E v, s • y ∈ Formalism.UG.CS.globLat x (stdLat E n)` from `hy`. Rewrite `hsy` using `[glob_lemma_2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw' : ∀ j, eP E (fun w => w = v) * (((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun j => iA F E ((s • y) j))) j ∈ Formalism.L2.Herm.intAf F E` using `fun j => mul_mem ((hI F E).1 _) (hsy j)`. Establish `hz : s • ((((γ⁻¹ : GL (Fin n) E)) : Matrix (Fin n) (Fin n) E) *ᵥ y) ∈ locF v (stdLat E n)`. Rewrite using `[hMem F E n v]`. Introduce `i`. Establish `e : (fun j => iA F E ((s • ((((γ⁻¹ : GL (Fin n) E)) : Matrix (Fin n) (Fin n) E) *ᵥ y)) j)) = (((Formalism.UG.bc (iA F E) γ)⁻¹ * x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (((x⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.He …`.
-
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right, K1, Matrix.mulVec_smul]`. Establish `hh` using `asm_mulVec_int hI (fun w => w = v) _ _ h1 hw' i`. Rewrite `hh` using `[← e]`. Conclude with `hh`. Take `⟨t, ht, htz⟩ : ∃ t ∈ complF E v, t • (s • ((((γ⁻¹ : GL (Fin n) E)) : Matrix (Fin n) (Fin n) E) *ᵥ y)) ∈ stdLat E n` from `hz`.
-
-Conclude with `(⟨t * s, (complF E v).mul_mem ht hs, by rw [mul_smul]; exact htz⟩ : ∃ t ∈ complF E v, t • ((((γ⁻¹ : GL (Fin n) E)) : Matrix (Fin n) (Fin n) E) *ᵥ y) ∈ stdLat E n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem pt_loc_lemma_4 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hMem : MemLocFStd) (hDen : IdemDenom) (hI : IdemCalc) {n : ℕ}
@@ -571,11 +555,11 @@ private theorem pt_loc_lemma_4 {F E : Type} [Field F] [NumberField F] [Field E] 
       ∃ t ∈ complF E v, t • ((((γ⁻¹ : GL (Fin n) E)) : Matrix (Fin n) (Fin n) E) *ᵥ y) ∈ stdLat E n)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n hW x hx p hp`. Establish `hne : p ≠ ⊥` using `by first`. Consider the case `exact Ring.ne_bot_of_isMaximal_of_not_isField hp (NumberField.RingOfIntegers.not_isField (K := E))`. Consider the case `exact Ring.ne_bot_of_isMaximal_of_not_isField hp (NumberField.RingOfIntegers.not_isField E)`. Consider the case `exact Ideal.IsMaximal.ne_bot_of_isIntegral_int hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨γ, hγ, h1, h2⟩` from `hW x hx (Formalism.L2.DIV.underPl F ⟨p, hp.isPrime, hne⟩)`. Use `⟨Formalism.UG.glEquiv γ, isom_lemma_3 hc γ hγ, ?_⟩` and prove the remaining obligations. Establish `e1` using `hLoc F E hc n ⟨p, hp.isPrime, hne⟩ (stdLat E n)`. Establish `e2` using `hLoc F E hc n ⟨p, hp.isPrime, hne⟩ (Formalism.UG.CS.globLat x (stdLat E n))`. Simplify using `only at e1 e2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Rewrite using `[e1, e2]`. Conclude with `pt_loc_lemma_4 hMem hDen hI x γ _ h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointToGenus_of (hLoc : LocEq) (hMem : MemLocFStd) (hDen : IdemDenom) (hI : IdemCalc) : PointToGenus := by
   intro F E _ _ _ _ _ _ hc n hW x hx p hp

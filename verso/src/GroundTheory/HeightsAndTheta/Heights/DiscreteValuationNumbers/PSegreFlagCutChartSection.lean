@@ -10,35 +10,31 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GenericProjClosureDiv
 noncomputable section
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht k hk c hc`. Establish `hsame₀ : ∀ i j : Fin N, i < j → w.repr (w i) j = 0` using `fun i j h => by`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply, if_neg (ne_of_lt h)]`. Prove the components needed by the constructor for the conclusion. Take `⟨β, δ, lam, Y, c'', hβ0, hlam, hlamv, hYh, hYs, hYv, hc''⟩` from `chart_data (O := O) y B w w e x hfl.flag hsame₀ a₀ φ hφ φ φ' t k hk c hc (some none) (fun l => X ⟨some none, l⟩) (fun l => isWeightedHomogeneous_X O _ _) (fun l => by rw [aeval_X]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `exists_flagCoord_eq w e k c'' hc''`. Use `⟨Pi.single (some none) 1 + vdeg (fun j => (β j + (x ⟨k, hk⟩ j - a₀ j)).toNat), vdeg β, lam, chartMonoZ O M M' c β, β, rfl, hlam, chartMonoZ_homog c β, ?_, hlamv, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `o`. Break down `o with _ | _ | j` into its components or cases. Simplify using `[vdeg, zetaFirst, liftPairDeg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[vdeg, zetaFirst, liftPairDeg]`. Use `hβ0 j` as an intermediate fact. Simplify using `[vdeg, zetaFirst, liftPairDeg]`. Use linear arithmetic over natural numbers and integers. Set `gg : (Σ o : Option K, bundleIdx (bundleIdx ι M) M' (Function.Embedding.some o)) → MRing (bundleIdx (bundleIdx ι M) M') O` to `fun p => match p with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Consider the case `⟨none, l⟩ => Y l`. Consider the case `⟨some kk, i⟩ => X ⟨some (some kk), i⟩`. Use `saturate Function.Embedding.some none (flagClosurePt y w e φ φ' t (k + 1)) lam (chartMonoZ O M M' c δ) _ _ (chartMonoZ_dvd c δ) (Pi.single (some none) 1 + vdeg δ) gg ?_ ?_ _ (isMultiHomogIdeal_pointIdeal _) ?_` and prove the remaining obligations. Introduce and unpack `⟨_ | kk, i⟩ h`. Conclude with `absurd rfl h`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨_ | kk, l⟩ h`. Conclude with `⟨hYh l, hYs l⟩`. Conclude with `absurd h (Option.some_ne_none kk)`. Introduce `q hq`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hpt : (fun p => aeval (flagClosurePt y w e φ φ' t (k + 1)) (gg p)) = flagProjPt Function.Embedding.some y w e φ φ' t' k`. Use function extensionality and compare the values at `p`. Break down `p with ⟨_ | kk, i⟩` into its components or cases. Use `show aeval _ (Y i) = _`. Rewrite using `[hYv i]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show genVal w c'' (φ i) = projCoord y w φ (flagCoord w e t' k) ⟨none, i⟩`. Rewrite using `[ht']`. Both sides reduce to the same expression. Use `show aeval _ (X _) = _`. Rewrite using `[aeval_X]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[hpt]`. Conclude with `aeval_flagProjPt_eq_zero _ y w e φ φ' ht k hq t'`. Take `⟨β, δ, lam, Y, c'', hβ0, hlam, hlamv, hYh, hYs, hYv, hc''⟩` from `chart_data (O := O) y B' w w' e x' hfl.flag' hfl.sameFlag a₀' φ' hφ' φ φ' t k hk c hc none (fun l => X ⟨none, l⟩) (fun l => isWeightedHomogeneous_X O _ _) (fun l => by rw [aeval_X]; rfl)`. Take `⟨t', ht'⟩` from `exists_flagCoord_eq w e k c'' hc''`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨Pi.single none 1 + vdeg (fun j => (β j + (x' ⟨k, hk⟩ j - a₀' j)).toNat), vdeg β, lam, chartMonoZ O M M' c β, β, rfl, hlam, chartMonoZ_homog c β, ?_, hlamv, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `o`. Break down `o with _ | _ | j` into its components or cases. Simplify using `[vdeg, zetaSecond, liftPairDeg]`. Simplify using `[vdeg, zetaSecond, liftPairDeg]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Use `hβ0 j` as an intermediate fact. Simplify using `[vdeg, zetaSecond, liftPairDeg]`. Use linear arithmetic over natural numbers and integers. Set `gg : (Σ o : Option K, bundleIdx (bundleIdx ι M) M' (secondFactorBlocks o)) → MRing (bundleIdx (bundleIdx ι M) M') O` to `fun p => match p with`. Consider the case `⟨none, l⟩ => Y l`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Consider the case `⟨some kk, i⟩ => X ⟨some (some kk), i⟩`. Use `saturate secondFactorBlocks none (flagClosurePt y w e φ φ' t (k + 1)) lam (chartMonoZ O M M' c δ) _ _ (chartMonoZ_dvd c δ) (Pi.single none 1 + vdeg δ) gg ?_ ?_ _ (isMultiHomogIdeal_pointIdeal _) ?_` and prove the remaining obligations. Introduce and unpack `⟨_ | kk, i⟩ h`. Conclude with `absurd rfl h`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨_ | kk, l⟩ h`. Conclude with `⟨hYh l, hYs l⟩`. Conclude with `absurd h (Option.some_ne_none kk)`. Introduce `q hq`. Establish `hpt : (fun p => aeval (flagClosurePt y w e φ φ' t (k + 1)) (gg p)) = flagProjPt secondFactorBlocks y w e φ φ' t' k`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `p`. Break down `p with ⟨_ | kk, i⟩` into its components or cases. Use `show aeval _ (Y i) = _`. Rewrite using `[hYv i]`. Use `show genVal w c'' (φ' i) = ∑ j, flagCoord w e t' k j * algebraMap Ω Φ (φ' i (w j))`.
-
-Rewrite using `[ht']`. Both sides reduce to the same expression. Use `show aeval _ (X _) = _`. Rewrite using `[aeval_X]`. Both sides reduce to the same expression.
-
-Rewrite using `[hpt]`. Conclude with `aeval_flagProjPt_eq_zero _ y w e φ φ' ht k hq t'`.
+A detailed English derivation is pending.
 -/
 theorem SegreFlagCutChartSection.proof : SegreFlagCutChartSection.Statement := by
   intro O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ'

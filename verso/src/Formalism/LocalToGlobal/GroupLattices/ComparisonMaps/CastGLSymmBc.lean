@@ -8,21 +8,21 @@ open Formalism.MainNotions.G Formalism.L2.Forms Formalism.UG NumberField IsDedek
 open scoped TensorProduct
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castGL_symm_bc {a b : ℕ} (h : a = b) {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (g : GL (Fin b) R) :
     (castGL h S).symm (bc f g) = bc f ((castGL h R).symm g) := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castGL_bc {a b : ℕ} (h : a = b) {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (g : GL (Fin a) R) :
     castGL h S (bc f g) = bc f (castGL h R g) := by
   subst h; rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem bc_comp {m : ℕ} {R S U : Type} [CommRing R] [CommRing S] [CommRing U] (f : R →+* S) (g : S →+* U) (x : GL (Fin m) R) :
     bc g (bc f x) = bc (g.comp f) x := by
@@ -37,7 +37,7 @@ def tPos (σ : E →ₐ[F] E) (tE : Tau → E →+* LL) (pos : (Σ v : Fin G.P.n
   if Even s.val then tE (pos ⟨v, s⟩) else (tE (pos ⟨v, s⟩)).comp (σ : E →+* E)
 
 /- English proof (translation)
-Unfold `tPos`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tPos_apply (σ : E →ₐ[F] E) (tE : Tau → E →+* LL) (pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ Tau)
     (v : Fin G.P.nV) (s : Fin (G.P.n' v)) (x : E) :
@@ -50,9 +50,9 @@ def blkLL (A : LocAt F E n G) (σ : E →ₐ[F] E) (tE : Tau → E →+* LL) (po
   bc (tPos σ tE pos v s) ((castGL A.rk E).symm (A.B⁻¹ * γ * A.B))
 
 /- English proof (translation)
-Establish `h1 : (G.lev i).act v γ = bc (A.iw v) ((castGL A.rk E).symm (A.B⁻¹ * A.gamI i γ * A.B))`. Rewrite using `[← castGL_symm_bc, ← hA i v γ, MulEquiv.symm_apply_apply]`. Rewrite using `[h1]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `show G.P.ι v ((G.P.σ v ^ s.val) (A.iw v _)) = e (tPos σ tE pos v s _)`. Rewrite using `[tPos_apply, hpos]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gPos_act (A : LocAt F E n G) (tE : Tau → E →+* LL) (pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ Tau)
     (e : LL →+* G.Kf) (hA : A.ActB)
@@ -69,7 +69,7 @@ theorem gPos_act (A : LocAt F E n G) (tE : Tau → E →+* LL) (pos : (Σ v : Fi
   rw [tPos_apply, hpos]
 
 /- English proof (translation)
-Unfold `Level.actX`. Rewrite using `[natAct_eq, map_natActR]`. Use `congr 2`. Use function extensionality and compare the values at `v s`. Conclude with `gPos_act A tE pos e hA hpos i γ v s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem actX_map (A : LocAt F E n G) (tE : Tau → E →+* LL) (pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ Tau)
     (e : LL →+* G.Kf) (hA : A.ActB)
@@ -87,11 +87,11 @@ theorem actX_map (A : LocAt F E n G) (tE : Tau → E →+* LL) (pos : (Σ v : Fi
 def atInfGL (emb : Tau → E →+* ℂ) (γ : GL (Fin n) E) : Tau → GL (Fin n) ℂ := fun τ => bc (emb τ) γ
 
 /- English proof (translation)
-Establish `h1 : cT (σ : E →+* E) (B⁻¹ : GL (Fin n) E).1 * cT (σ : E →+* E) B.1 = 1`. Rewrite using `[← cT_mul, ← Units.val_mul, mul_inv_cancel]`. Conclude with `cT_one _`. Establish `hJ : J = cT (σ : E →+* E) (B⁻¹ : GL (Fin n) E).1 * (B⁻¹ : GL (Fin n) E).1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules. Use `_ = cT (σ : E →+* E) (B⁻¹ : GL (Fin n) E).1 * (cT (σ : E →+* E) B.1 * J * B.1) * (B⁻¹ : GL (Fin n) E).1 := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hB, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `hγ' : cT (σ : E →+* E) γ.1 * J * γ.1 = J` using `hγ`. Simplify using `only [Units.val_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [← hJ, hγ', hB]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unit_of_std {J : Matrix (Fin n) (Fin n) E} (B γ : GL (Fin n) E) (hB : cT (σ : E →+* E) B.1 * J * B.1 = 1)
     (hγ : γ ∈ UJ (σ : E →+* E) J) : cT (σ : E →+* E) (B⁻¹ * γ * B).1 * (B⁻¹ * γ * B).1 = 1 := by
@@ -113,13 +113,13 @@ theorem unit_of_std {J : Matrix (Fin n) (Fin n) E} (B γ : GL (Fin n) E) (hB : c
     _ = 1 := by rw [← hJ, hγ', hB]
 
 /- English proof (translation)
-Establish `hM : atInfGL emb A.B⁻¹ (pos ⟨v, s⟩) * atInfGL emb γ (pos ⟨v, s⟩) * (atInfGL emb A.B⁻¹ (pos ⟨v, s⟩))⁻¹ = bc (emb (pos ⟨v, s⟩)) (A.B⁻¹ * γ * A.B)`. Simplify using `[atInfGL, map_mul, map_inv]`. Unfold `hAt`. Rewrite using `[hM]`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `a b`. Distinguish the cases in `hs : Even s.val`. Simplify using `only [hs, if_true] show embLL (tPos σ tE pos v s _) = emb (pos ⟨v, s⟩) _`. Rewrite using `[tPos_apply, if_pos hs, htE]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [hs, if_false]`. Establish `hinv : ((A.B⁻¹ * γ * A.B)⁻¹ : GL (Fin n) E).1 = cT (σ : E →+* E) (A.B⁻¹ * γ * A.B).1`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.inv_eq_left_inv hU`. Use `show embLL (tPos σ tE pos v s _) = ((reG G.P A.rk (bc (emb (pos ⟨v, s⟩)) (A.B⁻¹ * γ * A.B)))⁻¹ : GL (Fin (G.P.m + 1)) ℂ).1 b a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tPos_apply, if_neg hs, htE, ← map_inv, ← map_inv]`. Use `show _ = emb (pos ⟨v, s⟩) (((A.B⁻¹ * γ * A.B)⁻¹ : GL (Fin n) E).1 _ _)`. Rewrite using `[hinv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blk_hAt (A : LocAt F E n G) (tE : Tau → E →+* LL) (pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ Tau)
     (emb : Tau → E →+* ℂ) (embLL : LL →+* ℂ) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
@@ -151,9 +151,7 @@ theorem blk_hAt (A : LocAt F E n G) (tE : Tau → E →+* LL) (pos : (Σ v : Fin
     rfl
 
 /- English proof (translation)
-Rewrite using `[map_natActR]`. Establish `h1 : (fun v s => Matrix.GeneralLinearGroup.map embLL (blkLL A σ tE pos γ v s)) = hAt G.P A.rk pos (atInfGL emb A.B⁻¹) (atInfGL emb γ)`. Use function extensionality and compare the values at `v s`. Conclude with `blk_hAt A tE pos emb embLL htE γ hU v s`. Rewrite using `[h1]`.
-
-Conclude with `evC_natAct G.P A.rk pos Gm (atInfGL emb A.B⁻¹) (atInfGL emb γ) z z' hz (MvPolynomial.map embLL Q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evC_blk (A : LocAt F E n G) (tE : Tau → E →+* LL) (pos : (Σ v : Fin G.P.nV, Fin (G.P.n' v)) ≃ Tau)
     (emb : Tau → E →+* ℂ) (embLL : LL →+* ℂ) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)

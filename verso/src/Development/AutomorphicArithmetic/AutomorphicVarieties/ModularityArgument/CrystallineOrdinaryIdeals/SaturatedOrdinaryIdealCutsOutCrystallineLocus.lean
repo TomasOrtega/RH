@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 namespace GlobalTheory.OrdLoc
 
 /- English proof (translation)
-Introduce `hP l _ O _ _ _ _ _ _ _ D U`. Conclude with `⟨GlobalTheory.T.saturatedOrdIdeal_points_isLCrystalline hP D U, GlobalTheory.T.crystallinePoints_saturatedOrdinaryIdeal_artinian hP D U⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ideal_cuts_crystalline_locus : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]

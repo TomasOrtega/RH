@@ -12,13 +12,11 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.ConvContRep
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Take `⟨K, hK, hKx⟩` from `exists_compact_mem_nhds x₀`. Take `⟨C, hC⟩` from `hψ.bounded_above_of_compact_support hc`. Use `set L : Set G := (fun p : G × G => p.1 * p.2) '' (K ×ˢ tsupport ψ) with hLdef`. Establish `hL : IsCompact L` using `(hK.prod hc.isCompact).image continuous_mul`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousAt_of_dominated (bound := fun z => C * L.indicator (fun z => ‖f z‖) z) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun x => ((hψ.comp (continuous_mul_left x⁻¹)).aestronglyMeasurable).mul hf`. Use `filter_upwards [hKx] with x hx`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ L`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.indicator_of_mem hz, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hC _) (norm_nonneg _)`. Establish `h0 : ψ (x⁻¹ * z) = 0`. Use `image_eq_zero_of_notMem_tsupport fun hm => hz ?_` and prove the remaining obligations. Conclude with `⟨(x, x⁻¹ * z), ⟨hx, hm⟩, mul_inv_cancel_left x z⟩`.
-
-Simplify using `[h0, Set.indicator_of_notMem hz]`. Conclude with `(IntegrableOn.integrable_indicator (hi _ hL).norm hL.isClosed.measurableSet).const_mul C`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Establish `hz : Continuous fun x : G => ψ (x⁻¹ * z) * f z` using `by fun_prop`. Conclude with `hz.continuousAt`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_conv {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [T2Space G] [FirstCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -49,15 +47,15 @@ theorem continuous_conv {G : Type} [Group G] [TopologicalSpace G] [IsTopological
     exact hz.continuousAt
 
 /- English proof (translation)
-Introduce `B ψ F hψ hc`. Take `⟨iT2, iLC, iSC, -⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Establish `iK : IsFiniteMeasureOnCompacts (B.I.muA B.μf)`. Unfold `AutInst.muA`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨hl, -, -, -, -⟩` from `GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf`. Establish `iL : (B.I.muA B.μf).IsMulLeftInvariant` using `⟨hl⟩`. Take `⟨-, -, hiso, hcontR, hext⟩` from `GlobalTheory.T.rightRegularRep_unitary_stronglyContinuous B`. Take `⟨hEinv, hEm⟩` from `hext F`. Unfold `IsContRep`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_conv _ ψ _ hψ hc hEm fun C hC => ((GlobalTheory.T.invariantExtension_integrableOn_compact B C hC).choose_spec F).1`. Introduce `γ hγ x`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hEinv] with w hw`. Rewrite using `[hw γ hγ, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Establish `hint : Integrable (fun y => ψ y • B.R y F) (B.I.muA B.μf)` using `(hψ.smul (hcontR F)).integrable_of_hasCompactSupport hc.smul_right`. Establish `hK : AEStronglyMeasurable (fun p : B.I.GA × B.I.GA => B.I.ext F (p.1 * p.2)) (((B.I.muA B.μf).restrict B.fund).prod (B.I.muA B.μf))` using `hEm.comp_quasiMeasurePreserving (quasiMeasurePreserving_mul ((B.I.muA B.μf).restrict B.fund) (B.I.muA B.μf))`. Establish `hw` using `(GlobalTheory.ConvKernel.weak_integral_ae_eq (fun x g => B.I.ext F (x * g)) hK (fun g => B.R g F) (fun g => B.R_spec g F) ‖F‖ (fun g => (hiso g F).le) ψ (hψ.integrable_of_hasCompactSupport hc) (∫ y, ψ y • B.R y F ∂B.I.muA B.μf) (fun u => by rw [← integral_inner (𝕜 := ℂ) hint u]; …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hw] with x hx`. Use `hx.trans ?_` and prove the remaining obligations. Rewrite using `[← integral_mul_left_eq_self (fun z => ψ (x⁻¹ * z) * B.I.ext F z) x]`. Simplify using `only [inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem conv_isContRep : ∀ (B : RowsAut) (ψ : B.I.GA → ℂ) (F : B.I.L2 B.μf B.fund), Continuous ψ → HasCompactSupport ψ → IsContRep B (∫ y, ψ y • B.R y F ∂(B.I.muA B.μf)) (fun x => ∫ z, ψ (x⁻¹ * z) * B.I.ext F z ∂(B.I.muA B.μf)) := by
   intro B ψ F hψ hc

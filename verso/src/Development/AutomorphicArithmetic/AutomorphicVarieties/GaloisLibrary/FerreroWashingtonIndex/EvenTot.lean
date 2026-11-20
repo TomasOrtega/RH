@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Apply `Nat.totient_even` to reduce the goal to its premises. Unfold `ee`. Use `split_ifs with h`. Substitute `h` using the available equality. Evaluate the numerical expressions.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Substitute using the available equality. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use `hl.out.two_le` as an intermediate fact. Rewrite using `[pow_one]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem even_tot (l : ℕ) [hl : Fact l.Prime] : Even (Nat.totient (l ^ ee l)) := by
   apply Nat.totient_even
@@ -17,13 +17,13 @@ private theorem even_tot (l : ℕ) [hl : Fact l.Prime] : Even (Nat.totient (l ^ 
     rw [pow_one]; omega
 
 /- English proof (translation)
-The claim follows from `Nat.totient_pos.2 (pow_pos hl.out.pos _)`.
+A detailed English derivation is pending.
 -/
 private theorem pos_tot (l : ℕ) [hl : Fact l.Prime] : 0 < Nat.totient (l ^ ee l) :=
   Nat.totient_pos.2 (pow_pos hl.out.pos _)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (r : ℤ_[l]) = -(r : ℤ_[l])`. Use `congrArg Units.val h` as an intermediate fact. Simplify using `using this`. Conclude with `r.ne_zero (self_eq_neg.1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem neg_ne (l : ℕ) [Fact l.Prime] (r : ℤ_[l]ˣ) : r ≠ -r := by
   intro h
@@ -33,29 +33,27 @@ private theorem neg_ne (l : ℕ) [Fact l.Prime] (r : ℤ_[l]ˣ) : r ≠ -r := by
   exact r.ne_zero (self_eq_neg.1 h1)
 
 /- English proof (translation)
-Introduce `l _`. Establish `hev` using `even_tot l`. Establish `hpos` using `pos_tot l`. Use `haveI : NeZero (Nat.totient (l ^ ee l)) := ⟨hpos.ne'⟩`. Establish `hfin : (WW l : Set ℤ_[l]ˣ).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (rootsOfUnity (Nat.totient (l ^ ee l)) ℤ_[l])` using `inferInstance`. Conclude with `Set.finite_coe_iff.1 this`. Establish `hm1 : (-1 : ℤ_[l]ˣ) ∈ WW l`. Unfold `WW`. Rewrite using `[mem_rootsOfUnity]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hev.neg_one_pow`. Establish `hneg : ∀ w ∈ WW l, -w ∈ WW l` using `fun w hw => by`. Use `(WW l).mul_mem hm1 hw` as an intermediate fact. Simplify using `using this`. Use `letI : LinearOrder ℤ_[l]ˣ := linearOrderOfSTO WellOrderingRel`.
+Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `R : Finset ℤ_[l]ˣ` to `hfin.toFinset.filter fun r => r < -r`. Establish `hR : ∀ r, r ∈ R ↔ r ∈ WW l ∧ r < -r` using `fun r => by simp [R]`. Establish `h4 : ∀ r ∈ R, -r ∉ R` using `fun r hr hr' => by`. Establish `h1` using `((hR _).1 hr).2`. Establish `h2` using `((hR _).1 hr').2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h2` using `[neg_neg]`. Conclude with `lt_asymm h1 h2`. Establish `h5 : ∀ w ∈ WW l, w ∈ R ∨ -w ∈ R` using `fun w hw => by`. Break down `lt_or_gt_of_ne (neg_ne l w) with h | h` into its components or cases. Conclude with `Or.inl ((hR _).2 ⟨hw, h⟩)`.
+Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `Or.inr ((hR _).2 ⟨hneg w hw, by rwa [neg_neg]⟩)`. Use `⟨R, ?_, fun r hr => ((hR r).1 hr).1, ?_, h4, h5, hm1, ?_⟩` and prove the remaining obligations. Break down `h5 1 (WW l).one_mem with h | h` into its components or cases. Conclude with `⟨_, h⟩`. Conclude with `⟨_, h⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr r' hr' hne a b hab`. Assume the negation of the conclusion as `ha`. Establish `e1 : (r : ℤ_[l]) ^ Nat.totient (l ^ ee l) = 1` using `(mem_rootsOfUnity' _ _).1 ((hR _).1 hr).1`. Establish `e2 : (r' : ℤ_[l]) ^ Nat.totient (l ^ ee l) = 1` using `(mem_rootsOfUnity' _ _).1 ((hR _).1 hr').1`. Establish `e3` using `congrArg (· ^ Nat.totient (l ^ ee l)) hab`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [mul_pow, e1, e2, mul_one] at e3`. Establish `e4 : a ^ Nat.totient (l ^ ee l) = b ^ Nat.totient (l ^ ee l)` using `by exact_mod_cast e3`. Establish `ha' : (a : ℤ_[l]) ≠ 0` using `by exact_mod_cast ha`. Break down `(pow_eq_pow_iff_of_ne_zero hpos.ne').1 e4 with h | ⟨h, -⟩` into its components or cases. Substitute `h` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne (Units.ext (mul_left_cancel₀ ha' hab))`. Establish `hb : (b : ℤ_[l]) = -(a : ℤ_[l])` using `by rw [h]; simp`. Rewrite `hab` using `[hb, neg_mul, ← mul_neg]`. Establish `: r = -r'` using `Units.ext (by simpa using mul_left_cancel₀ ha' hab)`. Conclude with `h4 r' hr' (this ▸ hr)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `n hn w hw h1`. Establish `hle : ee l ≤ n`. Apply the tactic sequence `unfold ee; split_ifs <;> omega`. Establish `h2 : PadicInt.toZModPow n (w : ℤ_[l]) = 1`. Use `congrArg Units.val h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `this` using `[redU]`. Establish `h3 : PadicInt.toZModPow (ee l) (w : ℤ_[l]) = 1`. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow (ee l) n hle, RingHom.comp_apply, h2, map_one]`. Establish `h4 : ((redU l (ee l)).comp (WW l).subtype) ⟨w, hw⟩ = ((redU l (ee l)).comp (WW l).subtype) 1`. Rewrite using `[map_one]`.
-
-Apply `Units.ext` to reduce the goal to its premises. Simplify `h3` using `[redU]`. Conclude with `congrArg Subtype.val ((teich l).1 h4)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.reps :
     ∀ (l : ℕ) [Fact l.Prime], ∃ R : Finset ℤ_[l]ˣ, R.Nonempty ∧ (∀ r ∈ R, r ∈ WW l) ∧ (∀ r ∈ R, ∀ r' ∈ R, r ≠ r' → ∀ a b : ℤ, (a : ℤ_[l]) * r = (b : ℤ_[l]) * r' → a = 0) ∧ (∀ r ∈ R, -r ∉ R) ∧ (∀ w ∈ WW l, w ∈ R ∨ -w ∈ R) ∧ (-1 : ℤ_[l]ˣ) ∈ WW l ∧ ∀ n, 2 ≤ n → ∀ w ∈ WW l, redU l n w = 1 → w = 1 := by

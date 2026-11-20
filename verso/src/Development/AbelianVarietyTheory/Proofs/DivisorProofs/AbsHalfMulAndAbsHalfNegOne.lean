@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.AbsHalf
 
 /- English proof (translation)
-Establish `hx' : Valued.v x ≠ 0` using `by simpa using hx`. Establish `hy' : Valued.v y ≠ 0` using `by simpa using hy`. Establish `hxy : Valued.v (x * y) ≠ 0` using `by simpa using mul_ne_zero hx hy`. Unfold `ordL`. Rewrite using `[dif_neg hxy, dif_neg hx', dif_neg hy']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: WithZero.unzero hxy = WithZero.unzero hx' * WithZero.unzero hy'`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Simplify using `[map_mul]`. Rewrite using `[this, toAdd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ordL_mul {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (x y : L) (hx : x ≠ 0) (hy : y ≠ 0) :
     ordL (x * y) = ordL x + ordL y := by
@@ -25,9 +25,9 @@ theorem ordL_mul {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
   ring
 
 /- English proof (translation)
-Establish `h1 : Valued.v (-1 : L) ≠ 0` using `by simp`. Unfold `ordL`. Rewrite using `[dif_neg h1]`. Establish `: WithZero.unzero h1 = 1`. Apply `WithZero.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[WithZero.coe_unzero]`. Simplify using `only [Valuation.map_neg, Valuation.map_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ordL_neg_one {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] : ordL (-1 : L) = 0 := by
   have h1 : Valued.v (-1 : L) ≠ 0 := by simp
@@ -46,11 +46,11 @@ end GlobalTheory.AbsHalf
 namespace GlobalTheory.AbsHalf
 
 /- English proof (translation)
-Introduce `E _ _ _ w`. Establish `hq : (0 : ℝ) < (qV E w : ℝ)`. Establish `: qV E w ≠ 0`. Unfold `qV`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Use `⟨fun x y hx hy => ?_, ?_⟩` and prove the remaining obligations. Unfold `absHalf`. Rewrite using `[ordL_mul x y hx hy, neg_add, zpow_add₀ hq.ne', Real.sqrt_mul (zpow_nonneg hq.le _)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `absHalf`. Rewrite using `[ordL_neg_one]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absHalf_mul_neg_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E),
     (∀ x y : w.adicCompletion E, x ≠ 0 → y ≠ 0 → absHalf w (x * y) = absHalf w x * absHalf w y) ∧

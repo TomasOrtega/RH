@@ -23,7 +23,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hU hL` and use `GlobalTheory.familyUnif_of_parts GlobalTheory.datum_exists_period (GlobalTheory.PointUnif.exists_uniformisation_at_point_closed hU hL) (GlobalTheory.Moduli.exists_point_of_isPeriod hU hL) (GlobalTheory.UnifPoint.point_eq_iff_isometry_closed hU hL) (GlobalTheory.exists_local_perio …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem familyUnif_of_thetaUnif : ThetaUnifAV → Out.Laws → N1c := fun hU hL =>
   GlobalTheory.familyUnif_of_parts GlobalTheory.datum_exists_period

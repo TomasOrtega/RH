@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PrimeIndexConstruction.OrdPlain
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ ι ξ s c m a π r h`. Use `⟨π, h.reg, h.att, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hB : ∃ B, π.HasSat v B`. Conclude with `Or.inr hB`. Conclude with `Or.inl fun σ hσ => (UpperTheory.V.Z.Win.Birth.ordPlain F Ω l ι ξ s c m a π r h v σ hσ).resolve_right hB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 -/
 theorem UpperTheory.V.Z.Win.Birth.prOrd :
     UpperTheory.V.Z.Win.Birth.PrOrd := by

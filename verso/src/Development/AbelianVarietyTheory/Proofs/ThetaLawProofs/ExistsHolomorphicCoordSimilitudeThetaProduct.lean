@@ -32,9 +32,9 @@ namespace GlobalTheory.SimilTheta
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Rewrite using `[← (Fin.consEquiv fun _ => Fin N).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Use `show q (Fin.cons k J) * ∏ c, T ((Fin.cons k J : Fin (n + 1) → Fin N) c) (y c) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma sum_tensor_fin_cons {V : Type} {N n : ℕ} (T : Fin N → V → ℂ)
     (q : (Fin (n + 1) → Fin N) → ℂ) (y : Fin (n + 1) → V) :
@@ -51,29 +51,25 @@ private lemma sum_tensor_fin_cons {V : Type} {N n : ℕ} (T : Fin N → V → �
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F _ _`. Use `⟨fun _ => F (fun i => i.elim0), fun y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_unique]`. Simplify using `[Subsingleton.elim y (fun i => i.elim0)]`. Consider the case `succ n ih`. Introduce `F hF hA`. Establish `hcons : ∀ z : V, Differentiable ℂ fun e : Fin n → V => F (Fin.cons z e)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Establish `hl : Differentiable ℂ fun e : Fin n → V => (Fin.cons z e : Fin (n + 1) → V)`. Use `differentiable_pi.mpr fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using differentiable_const z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using differentiable_apply (𝕜 := ℂ) (F' := fun _ : Fin n => V) j`. Conclude with `hF.comp hl`. Establish `hrow : ∀ e : Fin n → V, ∃ d : Fin N → ℂ, ∀ z, F (Fin.cons z e) = ∑ k, d k * T k z`. Introduce `e`. Use `hspan _ ?_ fun l z => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl : Differentiable ℂ fun z : V => (Fin.cons z e : Fin (n + 1) → V)`. Use `differentiable_pi.mpr fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using differentiable_id`. Simplify using `using differentiable_const (e j)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hF.comp hl`. Establish `h` using `hA 0 (Fin.cons z e) l`. Simplify `h` using `[Fin.update_cons_zero]`. Use `choose d hd using hrow`. Establish `hind : ∀ (e : Fin n → V) (g : Fin N → ℂ), (∀ z, F (Fin.cons z e) = ∑ k, g k * T k z) → g = d e`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `e g hg`. Establish `h0` using `Fintype.linearIndependent_iff.mp hli (fun k => g k - d e k) (by`. Use function extensionality and compare the values at `z`. Use `(hg z).symm.trans (hd e z)` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, Pi.zero_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[this, sub_self])`. Use function extensionality and compare the values at `k`. Conclude with `sub_eq_zero.mp (h0 k)`. Establish `hdiff : ∀ k, Differentiable ℂ fun e => d e k`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← differentiableOn_univ]`. Conclude with `_root_.GlobalTheory.differentiableOn_coord_of_linearIndependent (Fin n → V) V (Fin N) Set.univ (fun j _ z => T j z) (fun e z => F (Fin.cons z e)) d isOpen_univ (fun _ _ => differentiableOn_const _) (fun z => (hcons z).differentiableOn) (fun _ _ => hli) (fun e _ z => hd e z) k`. Establish `haut : ∀ k (c : Fin n) (e : Fin n → V) (l : Λ), d (Function.update e c (e c + L l)) k = A l (e c) * d e k`. Introduce `k c e l`. Establish `h` using `hind (Function.update e c (e c + L l)) (fun j => A l (e c) * d e j) (fun z => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hA c.succ (Fin.cons z e) l`. Simplify using `only [Fin.cons_succ] at h1`. Rewrite using `[Fin.cons_update, h1, hd e z, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring)`. Conclude with `(congrFun h k).symm`.
-
-Use `choose qk hqk using fun k => ih (fun e => d e k) (hdiff k) (haut k)`. Use `⟨fun I => qk (I 0) (Fin.tail I), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_tensor_fin_cons]`. Use `conv_lhs => rw [← Fin.cons_self_tail y, hd]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hqk k]`. Simplify using `[Fin.tail]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma exists_tensor_expansion_of_quasiperiodic {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {N : ℕ} {Λ : Type} (L : Λ → V) (A : Λ → V → ℂ) (T : Fin N → V → ℂ)
@@ -152,7 +148,7 @@ private lemma exists_tensor_expansion_of_quasiperiodic {V : Type} [NormedAddComm
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SimilTheta.simTheta`. Simplify using `only [dotProduct]`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma differentiable_simTheta {g m : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     {a b : Fin g → ℂ} (al : Matrix (Fin 4) (Fin 4) ℤ) (k n : Fin 4 → Fin g → ℤ)
@@ -165,19 +161,19 @@ private lemma differentiable_simTheta {g m : ℕ} {τ : Matrix (Fin g) (Fin g) �
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Establish `hθ'` using `((_root_.GlobalTheory.SimilTheta.isLevel_iff_aut _ _ _ _ _).mp hθ).2`. Use `set v := _root_.GlobalTheory.SimilTheta.lat τ k₀ n₀ with hv`. Establish `hL : ∀ z : ℤ, z • v = _root_.GlobalTheory.SimilTheta.lat τ (z • k₀) (z • n₀)`. Introduce `z`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hv, _root_.GlobalTheory.SimilTheta.lat, Matrix.mulVec, dotProduct, Pi.add_apply, Pi.smul_apply, smul_eq_mul, zsmul_eq_mul, Int.cast_mul, mul_add, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hupd : Function.update y c (y c + v) = y + Pi.single c v`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : j = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hsum : ∀ r, ∑ c', al r c' • (y + Pi.single c v : Fin 4 → Fin g → ℂ) c' = ∑ c', al r c' • y c' + al r c • v`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `r`. Simplify using `[smul_add, Finset.sum_add_distrib, Pi.single_apply, smul_ite]`. Establish `hdot : ∑ c', (fun i => (n c' i : ℂ)) ⬝ᵥ (y + Pi.single c v : Fin 4 → Fin g → ℂ) c' = ∑ c', (fun i => (n c' i : ℂ)) ⬝ᵥ y c' + (fun i => (n c i : ℂ)) ⬝ᵥ v`. Establish `h1 : ∀ c', (fun i => (n c' i : ℂ)) ⬝ᵥ (y + Pi.single c v : Fin 4 → Fin g → ℂ) c' = (fun i => (n c' i : ℂ)) ⬝ᵥ y c' + if c' = c then (fun i => (n c i : ℂ)) ⬝ᵥ v else 0`. Introduce `c'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality. Simplify using `[dotProduct_add]`. Simplify using `[h]`. Rewrite using `[Finset.sum_congr rfl fun c' _ => h1 c', Finset.sum_add_distrib, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hfac : ∀ r, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaChar τ a b (∑ c', al r c' • y c' + al r c • v + _root_.GlobalTheory.SimilTheta.tors τ al m k n r) = _root_.GlobalTheory.SimilTheta.aut τ a b (al r c • k₀) (al r c • n₀) (∑ c', al r c' • y c' + _root_.GlobalTheor …`. Introduce `r`. Rewrite using `[add_right_comm, hL, hθ', pow_one]`. Unfold `_root_.GlobalTheory.SimilTheta.simTheta`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hupd]`. Simplify using `only [hsum, hdot, hfac, Finset.prod_mul_distrib, mul_add, Complex.exp_add]`. Rewrite using `[← (_root_.GlobalTheory.SimilTheta.aut_similitude_and_mul g m τ a b al ha hτ hm hal).1 k n y c k₀ n₀]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma simTheta_update_add_lat {g m : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     {a b : Fin g → ℂ} {al : Matrix (Fin 4) (Fin 4) ℤ} (ha : _root_.GlobalTheory.KeyPow.charHalf g a b)
@@ -230,15 +226,15 @@ private lemma simTheta_update_add_lat {g m : ℕ} {τ : Matrix (Fin g) (Fin g) �
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `q hq`. Use function extensionality and compare the values at `I`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `hq (fun i => i.elim0)`. Rewrite `h` using `[Fintype.sum_unique]`. Simplify `h` using `[Subsingleton.elim I default]`. Consider the case `succ n ih`. Introduce `q hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoef : ∀ (e : Fin n → V) k, ∑ J : Fin n → Fin N, q (Fin.cons k J) * ∏ c, T (J c) (e c) = 0`. Introduce `e`. Use `Fintype.linearIndependent_iff.mp hli _ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `h` using `hq (Fin.cons z e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h` using `[sum_tensor_fin_cons]`. Simplify `h` using `[Finset.sum_apply, smul_eq_mul]`. Establish `hk : ∀ k, (fun J => q (Fin.cons k J)) = 0` using `fun k => ih _ fun e => hcoef e k`. Use function extensionality and compare the values at `I`. Rewrite using `[← Fin.cons_self_tail I]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (hk (I 0)) (Fin.tail I)`.
+A detailed English derivation is pending.
 -/
 private lemma tensor_coeff_eq_zero_of_linearIndependent {V : Type} {N : ℕ} (T : Fin N → V → ℂ)
     (hli : LinearIndependent ℂ T) :
@@ -271,25 +267,23 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Introduce `g m a b al Th ha hm hal hB k n`. Take `⟨hfam, hbas⟩` from `hB`. Establish `hlev` using `_root_.GlobalTheory.SimilTheta.level_one_and_holomorphic g a b ha`. Establish `hli : ∀ p ∈ _root_.ReciprocityTheory.ChartRestriction.G.Key.phDom g, LinearIndependent ℂ fun j => Th j p`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fintype.linearIndependent_iff.mpr fun d hd => ?_` and prove the remaining obligations. Establish `h0 : _root_.GlobalTheory.KeyKa.IsLevel (_root_.GlobalTheory.KeyKa.per p) a b m (fun _ => 0)` using `(_root_.GlobalTheory.SimilTheta.isLevel_iff_aut _ _ _ _ _).mpr ⟨differentiable_const 0, fun _ _ _ => by simp⟩`. Take `⟨c₀, -, hc₀⟩` from `(hbas p hp).2 _ h0`. Establish `e1 : d = c₀` using `hc₀ d fun z => by`. Use `congrFun hd z` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Conclude with `this.symm`. Establish `e2 : (0 : Fin (m ^ g) → ℂ) = c₀` using `hc₀ 0 fun z => by simp`. Introduce `i`. Rewrite using `[e1, ← e2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hexp : ∀ p ∈ _root_.ReciprocityTheory.ChartRestriction.G.Key.phDom g, ∃ q : (Fin 4 → Fin (m ^ g)) → ℂ, ∀ y, _root_.GlobalTheory.SimilTheta.simTheta (_root_.GlobalTheory.KeyKa.per p) a b al m k n y = ∑ I, q I * ∏ c, Th (I c) p (y c)`. Introduce `p hp`. Establish `hsym : (_root_.GlobalTheory.KeyKa.per p).IsSymm`. Unfold `_root_.GlobalTheory.KeyKa.per`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `_root_.GlobalTheory.isSymm_phSym _`. Establish `hθ` using `hlev.1 p hp`. Establish `hθd` using `((_root_.GlobalTheory.SimilTheta.isLevel_iff_aut _ _ _ _ _).mp hθ).1`. Use `exists_tensor_expansion_of_quasiperiodic (Λ := (Fin g → ℤ) × (Fin g → ℤ)) (fun l => _root_.GlobalTheory.SimilTheta.lat (_root_.GlobalTheory.KeyKa.per p) l.1 l.2) (fun l z => _root_.GlobalTheory.SimilTheta.aut (_root_.GlobalTheory.KeyKa.per p) a b l.1 l.2 z ^ m) (fun j => Th j p) …` and prove the remaining obligations. Introduce `f hf hfa`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨d, hd, -⟩` from `(hbas p hp).2 f ((_root_.GlobalTheory.SimilTheta.isLevel_iff_aut _ _ _ _ _).mpr ⟨hf, fun k₀ n₀ z => hfa (k₀, n₀) z⟩)`. Conclude with `⟨d, hd⟩`. Use `choose! qa hqa using hexp`. Establish `huniq : ∀ p ∈ _root_.ReciprocityTheory.ChartRestriction.G.Key.phDom g, ∀ q : (Fin 4 → Fin (m ^ g)) → ℂ, (∀ y, _root_.GlobalTheory.SimilTheta.simTheta (_root_.GlobalTheory.KeyKa.per p) a b al m k n y = ∑ I, q I * ∏ c, Th (I c) p (y c)) → q = qa p`. Introduce `p hp q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `tensor_coeff_eq_zero_of_linearIndependent (fun j => Th j p) (hli p hp) 4 (q - qa p) (fun y => by` as an intermediate fact. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[← hq y, ← hqa p hp y, sub_self])`. Conclude with `sub_eq_zero.mp this`. Establish `hTh : ∀ j z, DifferentiableOn ℂ (fun p => Th j p z) (_root_.ReciprocityTheory.ChartRestriction.G.Key.phDom g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j z`. Establish `h` using `hfam j`. Unfold `_root_.GlobalTheory.KeyKa.HolFam at h`. Conclude with `h.comp (differentiableOn_id.prodMk (differentiableOn_const z)) (fun p hp => ⟨hp, Set.mem_univ _⟩)`. Use `⟨qa, fun I => ?_, fun p hp q => ⟨huniq p hp q, fun h => h ▸ hqa p hp⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `_root_.GlobalTheory.differentiableOn_coord_of_linearIndependent (Fin g → Fin g → ℂ) (Fin 4 → Fin g → ℂ) (Fin 4 → Fin (m ^ g)) (_root_.ReciprocityTheory.ChartRestriction.G.Key.phDom g) (fun J p y => ∏ c, Th (J c) p (y c)) (fun p y => _root_.GlobalTheory.SimilTheta.simTheta (_root_ …` and prove the remaining obligations. Introduce `p hp`. Establish `h' : ∀ c, DifferentiableAt ℂ (fun e => Th (J c) e (y c)) p` using `fun c => (hTh (J c) (y c)).differentiableAt ((_root_.GlobalTheory.isOpen_phDom g).mem_nhds hp)`. Establish `: DifferentiableAt ℂ (fun e => ∏ c, Th (J c) e (y c)) p` using `by fun_prop`. Conclude with `this.differentiableWithinAt`.
-
-Use `Fintype.linearIndependent_iff.mpr fun d hd i => ?_` and prove the remaining obligations. Use `tensor_coeff_eq_zero_of_linearIndependent (fun j => Th j p) (hli p hp) 4 d (fun y => by` as an intermediate fact. Use `congrFun hd y` as an intermediate fact. Simplify `this)` using `[Finset.sum_apply, smul_eq_mul]`. Conclude with `congrFun this i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SimilTheta.exists_holomorphic_coord_simTheta : ∀ (g m : ℕ) (a b : Fin g → ℂ)
     (al : Matrix (Fin 4) (Fin 4) ℤ) (Th : Fin (m ^ g) → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ),

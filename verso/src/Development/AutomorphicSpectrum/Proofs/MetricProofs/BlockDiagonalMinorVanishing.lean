@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.MinorCalc
 variable {R : Type} [CommRing R] {N : ℕ}
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Unfold `minorIJ`. Rewrite using `[dif_pos hI]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem minorIJ_eq_det (h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) (k : ℕ) (hI : I.card = k)
     (hJ : J.card = k) : minorIJ h I J = (h.submatrix (I.orderEmbOfFin hI) (J.orderEmbOfFin hJ)).det := by
@@ -21,7 +21,7 @@ theorem minorIJ_eq_det (h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) (k 
   rw [dif_pos hI]
 
 /- English proof (translation)
-Unfold `minorIJ`. Rewrite using `[dif_neg e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem minorIJ_of_card_ne (h : Matrix (Fin N) (Fin N) R) {I J : Finset (Fin N)} (e : I.card ≠ J.card) :
     minorIJ h I J = 0 := by
@@ -29,9 +29,9 @@ theorem minorIJ_of_card_ne (h : Matrix (Fin N) (Fin N) R) {I J : Finset (Fin N)}
   rw [dif_neg e]
 
 /- English proof (translation)
-Rewrite using `[minorIJ_eq_det _ _ _ k hI hJ]`. Establish `e : (T * h).submatrix (I.orderEmbOfFin hI) (J.orderEmbOfFin hJ) = T.submatrix (I.orderEmbOfFin hI) id * h.submatrix id (J.orderEmbOfFin hJ)`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e, GroundTheory.PAdicHodge.det_mul_eq_sum_minors]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[minorIJ_eq_det T I s.1 k hI s.2, minorIJ_eq_det h s.1 J k s.2 hJ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem minorIJ_mul_of_card (T h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) (k : ℕ) (hI : I.card = k)
     (hJ : J.card = k) :
@@ -47,11 +47,11 @@ theorem minorIJ_mul_of_card (T h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin 
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `e : I.card = J.card`. Rewrite using `[minorIJ_mul_of_card T h I J I.card rfl e.symm]`. Establish `h1 : ∑ I' : Finset (Fin N), minorIJ T I I' * minorIJ h I' J = ∑ I' ∈ Finset.univ.filter (fun I' : Finset (Fin N) => I'.card = I.card), minorIJ T I I' * minorIJ h I' J`. Use `symm`. Use `Finset.sum_subset (Finset.filter_subset _ _) fun s _ hs => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : s.card ≠ I.card` using `fun hc => hs (by simp [hc])`. Rewrite using `[minorIJ_of_card_ne T (Ne.symm hc), zero_mul]`. Rewrite using `[h1]`. Conclude with `(Finset.sum_subtype (Finset.univ.filter fun I' : Finset (Fin N) => I'.card = I.card) (p := fun s : Finset (Fin N) => s.card = I.card) (fun s => by simp) (fun I' => minorIJ T I I' * minorIJ h I' J)).symm`. Rewrite using `[minorIJ_of_card_ne _ e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hs : I.card = s.card`. Rewrite using `[minorIJ_of_card_ne h (fun h' => e (hs.trans h')), mul_zero]`. Rewrite using `[minorIJ_of_card_ne T hs, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorIJ_mul (T h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) :
     minorIJ (T * h) I J = ∑ I', minorIJ T I I' * minorIJ h I' J := by
@@ -76,11 +76,9 @@ theorem minorIJ_mul (T h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) :
     · rw [minorIJ_of_card_ne T hs, zero_mul]
 
 /- English proof (translation)
-Distinguish the cases in `e : I.card = C.card`. Rewrite using `[minorIJ_eq_det h I C _ e rfl]`. Establish `hr : a ∈ Set.range (I.orderEmbOfFin e)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `ha`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hr`. Use `Matrix.det_eq_zero_of_row_eq_zero x fun y => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply]`. Use `hz _ ?_` and prove the remaining obligations. Conclude with `Finset.orderEmbOfFin_mem _ _ _`.
-
-Conclude with `minorIJ_of_card_ne h e`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem minorIJ_eq_zero_of_row (h : Matrix (Fin N) (Fin N) R) {I C : Finset (Fin N)} {a : Fin N} (ha : a ∈ I)
     (hz : ∀ c ∈ C, h a c = 0) : minorIJ h I C = 0 := by
@@ -97,7 +95,7 @@ theorem minorIJ_eq_zero_of_row (h : Matrix (Fin N) (Fin N) R) {I C : Finset (Fin
   · exact minorIJ_of_card_ne h e
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.map_orderEmbOfFin_univ C rfl]`. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_mem_eq_sum_enum (C : Finset (Fin N)) (f : Fin N → R) :
     ∑ k ∈ C, f k = ∑ z, f (C.orderEmbOfFin rfl z) := by
@@ -106,7 +104,7 @@ theorem sum_mem_eq_sum_enum (C : Finset (Fin N)) (f : Fin N → R) :
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.map_orderEmbOfFin_univ C rfl]`. Rewrite using `[Finset.prod_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_mem_eq_prod_enum (C : Finset (Fin N)) (f : Fin N → R) :
     ∏ k ∈ C, f k = ∏ z, f (C.orderEmbOfFin rfl z) := by
@@ -115,11 +113,11 @@ theorem prod_mem_eq_prod_enum (C : Finset (Fin N)) (f : Fin N → R) :
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `e : I.card = C.card`. Rewrite using `[minorIJ_eq_det _ I C _ e rfl, minorIJ_eq_det A I C _ e rfl, minorIJ_eq_det B C C _ rfl rfl, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `x y`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hy : C.orderEmbOfFin rfl y ∈ C` using `Finset.orderEmbOfFin_mem _ _ _`. Establish `h1 : ∑ k, A (I.orderEmbOfFin e x) k * B k (C.orderEmbOfFin rfl y) = ∑ k ∈ C, A (I.orderEmbOfFin e x) k * B k (C.orderEmbOfFin rfl y)`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun k _ hk => ?_` and prove the remaining obligations. Rewrite using `[hz k _ hy hk, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, sum_mem_eq_sum_enum C]`. Rewrite using `[minorIJ_of_card_ne _ e, minorIJ_of_card_ne _ e, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem minorIJ_mul_of_support (A B : Matrix (Fin N) (Fin N) R) (I C : Finset (Fin N))
     (hz : ∀ k c, c ∈ C → k ∉ C → B k c = 0) :
@@ -139,9 +137,9 @@ theorem minorIJ_mul_of_support (A B : Matrix (Fin N) (Fin N) R) (I C : Finset (F
   · rw [minorIJ_of_card_ne _ e, minorIJ_of_card_ne _ e, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[minorIJ_eq_det B C C _ rfl rfl]`. Establish `ht : (B.submatrix (C.orderEmbOfFin rfl) (C.orderEmbOfFin rfl)).BlockTriangular id`. Introduce `x y hxy`. Conclude with `hB ((C.orderEmbOfFin rfl).strictMono hxy)`. Rewrite using `[Matrix.det_of_upperTriangular ht, prod_mem_eq_prod_enum C (fun c => B c c)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem minorIJ_self_of_triangular (B : Matrix (Fin N) (Fin N) R) (hB : B.BlockTriangular id) (C : Finset (Fin N)) :
     minorIJ B C C = ∏ c ∈ C, B c c := by
@@ -153,7 +151,7 @@ theorem minorIJ_self_of_triangular (B : Matrix (Fin N) (Fin N) R) (hB : B.BlockT
   rfl
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hc`. Use `split_ifs at hc ⊢ with h`. Conclude with `hc.1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_stepCols_block {N j : ℕ} {i c : Fin N} (hj : j ≤ N) (hc : c ∈ stepCols N j i) :
     if (i : ℕ) + 1 ≤ j then N - j ≤ (c : ℕ) else (c : ℕ) < N - j := by
@@ -164,11 +162,9 @@ theorem mem_stepCols_block {N j : ℕ} {i c : Fin N} (hj : j ≤ N) (hc : c ∈ 
   · omega
 
 /- English proof (translation)
-Distinguish the cases in `hkc : c < k`. Conclude with `ht hkc`. Establish `hkc' : (k : ℕ) ≤ c` using `by simpa using not_lt.mp hkc`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hc hk`. Use `split_ifs at hc hk with h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hd k c fun hiff => ?_` and prove the remaining obligations. Establish `: ¬ (k : ℕ) < N - j → False` using `fun h' => hk ⟨by omega, by omega⟩`. Establish `h3 : (k : ℕ) < N - j` using `by omega`. Use `hiff.mp h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `absurd (by omega) hk`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem support_stepCols {N j : ℕ} {i : Fin N} (hj : j ≤ N) (bb : Matrix (Fin N) (Fin N) R)
     (hd : IsBlockDiag j bb) (ht : bb.BlockTriangular id) (k c : Fin N) (hc : c ∈ stepCols N j i)
@@ -186,9 +182,9 @@ theorem support_stepCols {N j : ℕ} {i : Fin N} (hj : j ≤ N) (bb : Matrix (Fi
   · exact absurd (by omega) hk
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : ((a : ℕ) < N - j ↔ (k : ℕ) < N - j)`. Rewrite using `[hh k b (fun h' => hab (hk.trans h')), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT a k hk, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isBlockDiag_mul {j : ℕ} {T h : Matrix (Fin N) (Fin N) R} (hT : IsBlockDiag j T) (hh : IsBlockDiag j h) :
     IsBlockDiag j (T * h) := by
@@ -200,7 +196,7 @@ theorem isBlockDiag_mul {j : ℕ} {T h : Matrix (Fin N) (Fin N) R} (hT : IsBlock
   · rw [hT a k hk, zero_mul]
 
 /- English proof (translation)
-Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and] at hc hk`. Use `hh k c fun hiff => ?_` and prove the remaining obligations. Use `hiff.mp (not_le.mp hk)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem support_wIdx {j : ℕ} {h : Matrix (Fin N) (Fin N) R} (hh : IsBlockDiag j h) (k c : Fin N)
     (hc : c ∈ wIdx N j) (hk : k ∉ wIdx N j) : h k c = 0 := by
@@ -210,7 +206,7 @@ theorem support_wIdx {j : ℕ} {h : Matrix (Fin N) (Fin N) R} (hh : IsBlockDiag 
   omega
 
 /- English proof (translation)
-Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and] at hc hk`. Use `hh k c fun hiff => hk (hiff.mpr hc)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem support_omIdx {j : ℕ} {h : Matrix (Fin N) (Fin N) R} (hh : IsBlockDiag j h) (k c : Fin N)
     (hc : c ∈ omIdx N j) (hk : k ∉ omIdx N j) : h k c = 0 := by
@@ -218,7 +214,7 @@ theorem support_omIdx {j : ℕ} {h : Matrix (Fin N) (Fin N) R} (hh : IsBlockDiag
   refine hh k c fun hiff => hk (hiff.mpr hc)
 
 /- English proof (translation)
-Unfold `detFac`. Rewrite using `[minorIJ_mul_of_support T h _ _ (support_wIdx hh), minorIJ_mul_of_support T h _ _ (support_omIdx hh)]`. Apply the tactic sequence `split_ifs <;> ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem detFac_mul {j : ℕ} (i : Fin N) {T h : Matrix (Fin N) (Fin N) R} (hh : IsBlockDiag j h) :
     detFac j i (T * h) = detFac j i T * detFac j i h := by
@@ -227,11 +223,9 @@ theorem detFac_mul {j : ℕ} (i : Fin N) {T h : Matrix (Fin N) (Fin N) R} (hh : 
   split_ifs <;> ring
 
 /- English proof (translation)
-Distinguish the cases in `e : I.card = (stepCols N j i).card`. Establish `hs : ¬ I ⊆ if (i : ℕ) + 1 ≤ j then wIdx N j else omIdx N j` using `fun hs => hI ⟨e, hs⟩`. Take `⟨a, ha, has⟩` from `Finset.not_subset.mp hs`. Use `minorIJ_eq_zero_of_row h ha fun c hc => hd a c fun hiff => ?_` and prove the remaining obligations. Establish `hb` using `mem_stepCols_block hj hc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `split_ifs at has hb with h1`. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and] at has`. Use `hiff.mp (not_le.mp has)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and] at has`.
-
-Conclude with `has (hiff.mpr hb)`. Conclude with `minorIJ_of_card_ne h e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem minor_stepCols_eq_zero {N j : ℕ} {i : Fin N} (hj : j ≤ N) (h : Matrix (Fin N) (Fin N) R)
     (I : Finset (Fin N)) (hd : IsBlockDiag j h) (hI : ¬ IsStepRows N j i I) :
@@ -250,9 +244,9 @@ theorem minor_stepCols_eq_zero {N j : ℕ} {i : Fin N} (hj : j ≤ N) (h : Matri
   · exact minorIJ_of_card_ne h e
 
 /- English proof (translation)
-Introduce `R _ N j i hj`. Use `⟨minorIJ_mul, fun h I hd hI => Or.inl (minor_stepCols_eq_zero hj h I hd hI), ?_, ?_⟩` and prove the remaining obligations. Introduce `h bb I hd ht`. Rewrite using `[minorIJ_mul_of_support h bb I _ (support_stepCols hj bb hd ht), minorIJ_self_of_triangular bb ht]`. Introduce `T h hT hh`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨isBlockDiag_mul hT hh, detFac_mul i hh⟩`.
+Supply the required witnesses or components.
 -/
 theorem minors_main : ∀ (R : Type) [CommRing R] (N j : ℕ) (i : Fin N), j ≤ N →
     (∀ (T h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)),

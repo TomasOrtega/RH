@@ -18,23 +18,23 @@ namespace GlobalTheory.CompanionTheory.MixZ.Orbit
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ptChart _ k, GlobalTheory.CxPts.mem_ptsIn.2 (mem_ptChart _ k)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mem_blockChart (w : GlobalTheory.CxPts (mpStr ℤ m n) σ₀) (k : Fin (m + 1)) :
     ∃ i, w ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k i) :=
   ⟨ptChart _ k, GlobalTheory.CxPts.mem_ptsIn.2 (mem_ptChart _ k)⟩
 
 /- English proof (translation)
-The claim follows from `(exists_mem_blockChart w k).imp fun i hi => (h k i).1.1 hi`.
+A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_isUnder {w : GlobalTheory.CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ}
     (h : IsUnder w z) (k : Fin (m + 1)) : ∃ i, z ⟨k, i⟩ ≠ 0 :=
   (exists_mem_blockChart w k).imp fun i hi => (h k i).1.1 hi
 
 /- English proof (translation)
-Use `choose c hc using exists_mem_blockChart w`. Use `⟨fun k => z ⟨k, c k⟩ / z' ⟨k, c k⟩, fun k => div_ne_zero ((h k _).1.1 (hc k)) ((h' k _).1.1 (hc k)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨k, j⟩`. Establish `e` using `((h k (c k)).2 j (hc k)).symm.trans ((h' k (c k)).2 j (hc k))`. Establish `a` using `(h k _).1.1 (hc k)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `(h' k _).1.1 (hc k)`. Rewrite `e` using `[div_eq_div_iff a b]`. Use `show z ⟨k, j⟩ = z ⟨k, c k⟩ / z' ⟨k, c k⟩ * z' ⟨k, j⟩`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff b]`. Take the linear combination `e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sameOrbit_of_isUnder {w : GlobalTheory.CxPts (mpStr ℤ m n) σ₀} {z z' : (Σ k, Bk n k) → ℂ}
     (h : IsUnder w z) (h' : IsUnder w z') : SameOrbit z z' := by
@@ -51,9 +51,7 @@ theorem sameOrbit_of_isUnder {w : GlobalTheory.CxPts (mpStr ℤ m n) σ₀} {z z
   linear_combination e
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `sameOrbit_of_isUnder h h'`. Introduce `ho`. Establish `e` using `(Under.existsUnique_isUnder m n z (exists_ne_zero_of_isUnder h)).unique h (isUnder_of_sameOrbit m n _ z' z h' ho)`.
-
-Conclude with `Subtype.ext ((cancel_mono i).1 (congrArg Subtype.val e))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_iff_sameOrbit (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) (i : X ⟶ MP ℤ m n) [IsClosedImmersion i]
     (y y' : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀) (z z' : (Σ k, Bk n k) → ℂ)

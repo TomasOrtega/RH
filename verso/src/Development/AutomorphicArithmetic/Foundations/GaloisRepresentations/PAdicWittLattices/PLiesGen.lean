@@ -5,11 +5,11 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hf`. Use `haveI := h1`. Use `haveI := h2`. Use `⟨inferInstance, inferInstance, fun K _ _ x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 K (x ≫ inv i)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.subtypeEquivRight fun y => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `h`. Rewrite using `[← Category.assoc, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fEt_comp_iso {Y X X' : Scheme.{0}} (f : Y ⟶ X) (i : X ⟶ X') [IsIso i] (d : ℕ) (hf : FEt f d) :
     FEt (f ≫ i) d := by
@@ -29,27 +29,23 @@ private theorem fEt_comp_iso {Y X X' : Scheme.{0}} (f : Y ⟶ X) (i : X ⟶ X') 
     simp
 
 /- English proof (translation)
-Introduce `k L O _ _ _ _ H θ C g D s t hst m hL`. Take `⟨-, κ0, h0, h1, hF⟩` from `hL`. Establish `hq : κ0 ≫ s ≫ C.p = (H.s g ≫ H.q) ≫ gen O k`. Rewrite using `[← Category.assoc, ← h0, Category.assoc, C.ov, Category.assoc]`. Set `κ : H.Y g ⟶ pullback (s ≫ C.p) (gen O k)` to `pullback.lift κ0 (H.s g ≫ H.q) hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hA : H.s g ≫ piK C = κ ≫ bcMap (gen O k) s rfl`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [piK, bcMap, κ, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Conclude with `h0`. Simplify using `only [piK, bcMap, κ, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ, hA, ?_, ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [piK, bcMap, κ, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Conclude with `h1`. Simplify using `only [piK, bcMap, κ, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(H.comm g).symm`. Establish `w1 : pullback.snd C.π s ≫ s ≫ C.p = (pullback.fst C.π s ≫ H.q) ≫ gen O k`. Rewrite using `[← Category.assoc, ← pullback.condition, Category.assoc, C.ov, Category.assoc]`. Set `i0 : pullback C.π s ⟶ pullback (s ≫ C.p) (gen O k)` to `pullback.lift (pullback.snd C.π s) (pullback.fst C.π s ≫ H.q) w1`. Establish `w2 : pullback.fst C.π s ≫ piK C = i0 ≫ bcMap (gen O k) s rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [piK, bcMap, i0, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Conclude with `pullback.condition`. Simplify using `only [piK, bcMap, i0, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]`. Set `i : pullback C.π s ⟶ pullback (piK C) (bcMap (gen O k) s rfl)` to `pullback.lift (pullback.fst C.π s) i0 w2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c0` using `pullback.condition (f := piK C) (g := bcMap (gen O k) s rfl)`. Establish `c1` using `congrArg (· ≫ pullback.fst C.p (gen O k)) c0`. Establish `c2` using `congrArg (· ≫ pullback.snd C.p (gen O k)) c0`. Simplify using `only [piK, bcMap, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc] at c1 c2`. Establish `w3 : pullback.fst (piK C) (bcMap (gen O k) s rfl) ≫ C.π = (pullback.snd (piK C) (bcMap (gen O k) s rfl) ≫ pullback.fst (s ≫ C.p) (gen O k)) ≫ s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc]`. Conclude with `c1`. Set `j : pullback (piK C) (bcMap (gen O k) s rfl) ⟶ pullback C.π s` to `pullback.lift _ _ w3`. Use `haveI : IsIso i := by`. Use `⟨⟨j, ?_, ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [i, j, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc]`. Simplify using `only [i, j, i0, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [i, j, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [i, j, i0, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Simplify using `only [i, j, i0, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Conclude with `c2`. Establish `key : pullback.lift (H.s g) κ hA = pullback.lift (H.s g) κ0 h0 ≫ i`.
-
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [i, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [i, i0, κ, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Simplify using `only [i, i0, κ, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`.
-
-Rewrite using `[key]`. Conclude with `fEt_comp_iso _ i m hF`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pLiesGen :
     LiesGen := by

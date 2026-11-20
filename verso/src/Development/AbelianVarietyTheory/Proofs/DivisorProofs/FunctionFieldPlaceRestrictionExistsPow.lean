@@ -15,32 +15,32 @@ open WithZero
 variable {F : Type} [Field F]
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((pow_le_pow_iff_left₀ zero_le' zero_le' he).1 h.le) ((pow_le_pow_iff_left₀ zero_le' zero_le' he).1 h.ge)`.
+A detailed English derivation is pending.
 -/
 theorem pow_inj {e : ℕ} (he : e ≠ 0) {a b : ℤᵐ⁰} (h : a ^ e = b ^ e) : a = b :=
   le_antisymm ((pow_le_pow_iff_left₀ zero_le' zero_le' he).1 h.le)
     ((pow_le_pow_iff_left₀ zero_le' zero_le' he).1 h.ge)
 
 /- English proof (translation)
-Simplify using `using (pow_le_pow_iff_left₀ (zero_le' (a := a)) (zero_le' (a := (1 : ℤᵐ⁰))) he)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_le_one_iff' {e : ℕ} (he : e ≠ 0) {a : ℤᵐ⁰} : a ^ e ≤ 1 ↔ a ≤ 1 := by
   simpa using (pow_le_pow_iff_left₀ (zero_le' (a := a)) (zero_le' (a := (1 : ℤᵐ⁰))) he)
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `hq (exp (-1 : ℤ))`. Establish `hπ0 : π ≠ 0` using `by rintro rfl; rw [map_zero] at hπ; exact exp_ne_zero hπ.symm`. Establish `hvπ0 : v π ≠ 0` using `(Valuation.ne_zero_iff v).2 hπ0`. Take `⟨b, hb⟩ : ∃ b : ℤ, v π = exp b` from `⟨log (v π), (exp_log hvπ0).symm⟩`. Establish `hb0 : b < 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : v π ≤ 1` using `(h π).2 (by rw [hπ, ← exp_zero, exp_le_exp]; norm_num)`. Establish `h2 : v π ≠ 1`. Introduce `h1'`. Establish `: q π⁻¹ ≤ 1` using `(h _).1 (by rw [map_inv₀, h1', inv_one])`. Rewrite `this` using `[map_inv₀, hπ, ← exp_neg, ← exp_zero, exp_le_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at this`. Rewrite `h1` using `[hb, ← exp_zero, exp_le_exp]`. Rewrite `h2` using `[hb, ne_eq, exp_eq_one]`. Use linear arithmetic over natural numbers and integers. Establish `hbe : (((-b).toNat : ℕ) : ℤ) = -b` using `Int.toNat_of_nonneg (by omega)`.
+Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `⟨(-b).toNat, by omega, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, map_zero, map_zero, zero_pow (by omega)]`. Establish `hqx : q x ≠ 0` using `(Valuation.ne_zero_iff q).2 hx`. Establish `hvx : v x ≠ 0` using `(Valuation.ne_zero_iff v).2 hx`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c : ℤ, q x = exp c` from `⟨log (q x), (exp_log hqx).symm⟩`. Take `⟨a, ha⟩ : ∃ a : ℤ, v x = exp a` from `⟨log (v x), (exp_log hvx).symm⟩`. Establish `hqu : q (x * π ^ c) = 1`. Rewrite using `[map_mul, map_zpow₀, hc, hπ, ← exp_zsmul, ← exp_add, exp_eq_one, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hvu : v (x * π ^ c) = exp (a + c * b)`. Rewrite using `[map_mul, map_zpow₀, ha, hb, ← exp_zsmul, ← exp_add, smul_eq_mul]`. Establish `h1 : v (x * π ^ c) ≤ 1` using `(h _).2 hqu.le`. Establish `h2 : v (x * π ^ c)⁻¹ ≤ 1` using `(h _).2 (by rw [map_inv₀, hqu, inv_one])`. Rewrite `h1` using `[hvu, ← exp_zero, exp_le_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_inv₀, hvu, ← exp_neg, ← exp_zero, exp_le_exp]`. Establish `h3 : a + c * b = 0` using `by omega`. Rewrite using `[ha, hc, ← exp_nsmul, exp_inj, nsmul_eq_mul, hbe]`. Take the linear combination `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pow_of_iff (v q : Valuation F ℤᵐ⁰) (hq : Function.Surjective q)
     (h : ∀ x, v x ≤ 1 ↔ q x ≤ 1) : ∃ e : ℕ, 0 < e ∧ ∀ x, v x = q x ^ e := by
@@ -79,25 +79,23 @@ theorem pow_of_iff (v q : Valuation F ℤᵐ⁰) (hq : Function.Surjective q)
   linear_combination h3
 
 /- English proof (translation)
-Establish `hS : ∃ n : ℕ, 0 < n ∧ ∃ x, v x = exp (n : ℤ)`. Take `⟨a, ha⟩` from `hv`. Establish `ha0 : v a ≠ 0` using `ne_of_gt (lt_trans zero_lt_one ha)`. Take `⟨b, hb⟩ : ∃ b : ℤ, v a = exp b` from `⟨_, (exp_log ha0).symm⟩`. Rewrite `ha` using `[hb, ← exp_zero, exp_lt_exp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨b.toNat, by omega, a, by rw [hb, Int.toNat_of_nonneg ha.le]⟩`. Establish `he0 : 0 < Nat.find hS` using `(Nat.find_spec hS).1`. Take `⟨π, hπ⟩` from `(Nat.find_spec hS).2`. Establish `hdvd : ∀ x, x ≠ 0 → ∃ m : ℤ, v x = exp ((Nat.find hS : ℤ) * m)`. Introduce `x hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩ : ∃ a : ℤ, v x = exp a` from `⟨_, (exp_log ((Valuation.ne_zero_iff v).2 hx)).symm⟩`. Use `⟨a / (Nat.find hS : ℤ), ?_⟩` and prove the remaining obligations. Establish `hr0 : 0 ≤ a % (Nat.find hS : ℤ)` using `Int.emod_nonneg _ (by omega)`. Establish `hr1 : a % (Nat.find hS : ℤ) < Nat.find hS` using `Int.emod_lt_of_pos _ (by omega)`. Establish `hdec` using `Int.mul_ediv_add_emod a (Nat.find hS : ℤ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hr : 0 < a % (Nat.find hS : ℤ)`. Break down `hr0.lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[ha, exp_inj]`. Take the linear combination `-hdec - h`. Establish `hval : v (x * π ^ (-(a / (Nat.find hS : ℤ)))) = exp (((a % (Nat.find hS : ℤ)).toNat : ℕ) : ℤ)`. Rewrite using `[map_mul, map_zpow₀, ha, hπ, ← exp_zsmul, ← exp_add, Int.toNat_of_nonneg hr0, exp_inj, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hdec`. Conclude with `Nat.find_min hS (show (a % (Nat.find hS : ℤ)).toNat < Nat.find hS by omega) ⟨by omega, _, hval⟩`. Establish `hroot : ∀ x, ∃ c : ℤᵐ⁰, c ^ Nat.find hS = v x`. Introduce `x`. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, by rw [hx, map_zero, zero_pow he0.ne']⟩`. Take `⟨m, hm⟩` from `hdvd x hx`. Conclude with `⟨exp m, by rw [hm, ← exp_nsmul, nsmul_eq_mul]⟩`. Use `choose qf hqf using hroot`. Establish `hle : ∀ {a b : ℤᵐ⁰}, a ^ Nat.find hS ≤ b ^ Nat.find hS → a ≤ b` using `fun h => (pow_le_pow_iff_left₀ zero_le' zero_le' he0.ne').1 h`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `q : Valuation F ℤᵐ⁰` to `{ toFun := qf map_zero' := pow_inj he0.ne' (by rw [hqf, map_zero, zero_pow he0.ne']) map_one' := pow_inj he0.ne' (by rw [hqf, map_one, one_pow]) map_mul' := fun x y => pow_inj he0.ne' (by rw [hqf, mul_pow, hqf, hqf, map_mul]) map_add_le_max' := fun x y => by`. Establish `h` using `v.map_add x y`. Rewrite `h` using `[← hqf x, ← hqf y, ← hqf (x + y)]`. Break down `le_max_iff.1 h with h | h` into its components or cases. Conclude with `le_max_of_le_left (hle h)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_max_of_le_right (hle h) }`. Establish `hqq : ∀ x, q x = qf x` using `fun _ => rfl`. Use `⟨q, ?_, Nat.find hS, he0, fun x => by rw [hqq, hqf]⟩` and prove the remaining obligations. Establish `hqπ : q π = exp 1` using `pow_inj he0.ne' (by rw [hqq, hqf, hπ, ← exp_nsmul, nsmul_eq_mul, mul_one])`. Introduce `t`.
-
-Break down `eq_or_ne t 0 with rfl | ht` into its components or cases. Conclude with `⟨0, map_zero q⟩`. Use `⟨π ^ log t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, hqπ, ← exp_zsmul, smul_eq_mul, mul_one, exp_log ht]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root (v : Valuation F ℤᵐ⁰) (hv : ∃ a, 1 < v a) :
     ∃ q : Valuation F ℤᵐ⁰, Function.Surjective q ∧ ∃ e : ℕ, 0 < e ∧ ∀ x, v x = q x ^ e := by
@@ -160,11 +158,11 @@ theorem root (v : Valuation F ℤᵐ⁰) (hv : ∃ a, 1 < v a) :
     rw [map_zpow₀, hqπ, ← exp_zsmul, smul_eq_mul, mul_one, exp_log ht]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨y, hy⟩` from `hp (exp (1 : ℤ))`. Establish `hy1 : 1 < p y` using `by rw [hy, ← exp_zero, exp_lt_exp]; norm_num`. Take `⟨f, hfm, hfy⟩` from `Algebra.IsIntegral.isIntegral (R := F) y`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hfy` using `[hfm.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C] at hfy`. Establish `hlt : p (∑ i ∈ Finset.range f.natDegree, algebraMap F E (f.coeff i) * y ^ i) < p y ^ f.natDegree`. Apply `p.map_sum_lt (pow_ne_zero _ (ne_of_gt (lt_trans zero_lt_one hy1)))` to reduce the goal to its premises. Introduce `i hi`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : ∑ i ∈ Finset.range f.natDegree, algebraMap F E (f.coeff i) * y ^ i = -(y ^ f.natDegree)` using `by linear_combination hfy`. Rewrite `hlt` using `[hs, Valuation.map_neg, map_pow]`. Conclude with `lt_irrefl _ hlt`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_one_lt {E : Type} [Field E] [Algebra F E] [FiniteDimensional F E]
     (p : Valuation E ℤᵐ⁰) (hp : Function.Surjective p) : ∃ a : F, 1 < p (algebraMap F E a) := by
@@ -196,13 +194,13 @@ namespace GlobalTheory.Nef
 open WithZero
 
 /- English proof (translation)
-Introduce `k F E _ _ _ _ _ _ _ _`. Use `⟨?_, fun ρ hρ p => ?_⟩` and prove the remaining obligations. Establish `hex : ∀ p : Place k E, ∃ q : Place k F, ∀ x, p.1 (algebraMap F E x) ≤ 1 ↔ q.1 x ≤ 1`. Introduce `p`. Take `⟨a, ha⟩` from `PlaceResiduePowerBound.exists_one_lt (F := F) p.1 p.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, e, he, hpow⟩` from `PlaceResiduePowerBound.root (p.1.comap (algebraMap F E)) ⟨a, ha⟩`. Use `⟨⟨q, hq, fun c hc => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Apply `PlaceResiduePowerBound.pow_inj he.ne'` to reduce the goal to its premises. Rewrite using `[← hpow, Valuation.comap_apply, ← IsScalarTower.algebraMap_apply, p.2.2 c hc, one_pow]`. Establish `h` using `hpow x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Valuation.comap_apply]`. Rewrite using `[h, PlaceResiduePowerBound.pow_le_one_iff' he.ne']`. Use `choose ρ hρ using hex`. Conclude with `⟨ρ, hρ⟩`. Take `⟨e, he, hpow⟩` from `PlaceResiduePowerBound.pow_of_iff (p.1.comap (algebraMap F E)) (ρ p).1 (ρ p).2.1 (fun x => hρ p x)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e, he, fun x => hpow x, fun x => ?_⟩` and prove the remaining obligations. Establish `h : p.1 (algebraMap F E x) = (ρ p).1 x ^ e` using `hpow x`. Unfold `ord`. Rewrite using `[h, log_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem place_res_exists_pow : ∀ (k F E : Type) [Field k] [Field F] [Field E] [Algebra k F] [Algebra k E]
     [Algebra F E] [IsScalarTower k F E] [FiniteDimensional F E],

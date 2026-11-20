@@ -7,15 +7,15 @@ open scoped InnerProductSpace
 namespace PositivityTheory.RgHe3
 
 /- English proof (translation)
-Introduce `M _ _ u Z R hu hR hZ hpos x hx`. Establish `e : ∀ (r : ℝ) (y : M), r • y = (r : ℂ) • y` using `fun r y => (RCLike.real_smul_eq_coe_smul (K := ℂ) r y)`. Establish `hv : u x ∈ Z` using `hZ x hx`. Establish `hw : u (u x) ∈ Z` using `hZ _ hv`. Establish `h1` using `hpos (x - (R⁻¹ : ℂ) • u x) (Z.sub_mem hx (Z.smul_mem _ hv))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hpos (u x - (R⁻¹ : ℂ) • u (u x)) (Z.sub_mem hv (Z.smul_mem _ hw))`. Simplify using `only [e, map_add, map_sub, map_smul, add_sub_cancel_left, inner_add_left, inner_add_right, inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, Complex.conj_ofReal, Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_ …`. Rewrite `*` using `[hu (u x) x, hu (u (u x)) x, ← hu (u x) (u x)]`. Rewrite `h2` using `[hu (u (u x)) (u x)]`. Generalize the expression as in `(⟪u x, x⟫_ℂ).re = p at *`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(⟪u x, u x⟫_ℂ).re = a at *`. Generalize the expression as in `(⟪u (u x), u x⟫_ℂ).re = q at *`. Generalize the expression as in `(⟪u (u x), u (u x)⟫_ℂ).re = b at *`. Generalize the expression as in `(⟪u (u (u x)), u (u x)⟫_ℂ).re = r at *`. Establish `hR0 : R ≠ 0` using `hR.ne'`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `hs : R⁻¹ * R = 1` using `inv_mul_cancel₀ hR0`. Establish `hc : (R ^ 2)⁻¹ = R⁻¹ ^ 2` using `(inv_pow R 2).symm`. Rewrite using `[hc]`. Establish `key : p + R⁻¹ ^ 2 * q + R⁻¹ ^ 2 * (q + R⁻¹ ^ 2 * r) - (R⁻¹ ^ 2 * a + R⁻¹ ^ 2 * (R⁻¹ ^ 2 * b)) * (2 * R) = (p - R⁻¹ * a - R⁻¹ * (a - R⁻¹ * q)) + R⁻¹ ^ 2 * (q - R⁻¹ * b - R⁻¹ * (b - R⁻¹ * r))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(-(2 * R⁻¹ * a + 2 * R⁻¹ ^ 3 * b)) * hs`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg R⁻¹) h2]`.
+Take a linear combination of the given relations to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem markov_inequality_holds : Markov := by
   intro M _ _ u Z R hu hR hZ hpos x hx

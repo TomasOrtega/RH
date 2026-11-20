@@ -18,7 +18,7 @@ section Transport
 variable {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Set `U : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨P, Q, hPQ, hQP⟩`. Conclude with `Matrix.exp_units_conj U X`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma ioh_exp_conj (P Q X : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (hPQ : P * Q = 1) :
     NormedSpace.exp (P * X * Q) = P * NormedSpace.exp X * Q := by
@@ -26,9 +26,9 @@ lemma ioh_exp_conj (P Q X : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (hPQ :
   exact Matrix.exp_units_conj U X
 
 /- English proof (translation)
-Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `h1 : ((t : ℂ) • (P * X * Q)) = P * ((t : ℂ) • X) * Q`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ioh_exp_conj P Q _ hQP hPQ]`. Use `congr 1`. Establish `e : Q * (P * x * Q * (P * NormedSpace.exp ((t : ℂ) • X) * Q)) * P = (Q * P) * x * (Q * P) * NormedSpace.exp ((t : ℂ) • X) * (Q * P)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hQP]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -48,9 +48,9 @@ lemma ioh_rdV (P Q X x : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n)
   rw [e, hQP]; simp
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `hc : Pᴴ * Qᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hQP, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hH]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = Pᴴ * Qᴴ := by`. Rewrite using `[hPQ, Matrix.one_mul, ← Matrix.mul_assoc (Jm ε), Jm_mul_self, Matrix.one_mul]`. Use `_ = 1 := hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ioh_Hinv (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) : H⁻¹ = Q * Jm ε * Qᴴ := by
@@ -63,7 +63,7 @@ lemma ioh_Hinv (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP :
     _ = 1 := hc
 
 /- English proof (translation)
-Rewrite using `[ioh_Hinv ε H P Q hQP hPQ hH, hH]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P Q, hPQ, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_conj_part (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) :
@@ -73,7 +73,7 @@ lemma ioh_conj_part (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ)
   rw [← Matrix.mul_assoc P Q, hPQ, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h` using `ioh_conj_part ε H P Q Z hQP hPQ hH`. Unfold `hpart1 cpart1`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, ← h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_hpart1 (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) :
@@ -83,7 +83,7 @@ lemma ioh_hpart1 (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ) (h
   rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, ← h]
 
 /- English proof (translation)
-Establish `h` using `ioh_conj_part ε H P Q Z hQP hPQ hH`. Unfold `hpart2 cpart2`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, ← h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_hpart2 (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) :
@@ -93,7 +93,7 @@ lemma ioh_hpart2 (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ) (h
   rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, ← h]
 
 /- English proof (translation)
-Unfold `EabH EcV`. Rewrite using `[ioh_rdV P Q _ x f hQP hPQ, ioh_rdV P Q (hpart2 H _) x f hQP hPQ, ioh_hpart1 ε H P Q _ hQP hPQ hH, ioh_hpart2 ε H P Q _ hQP hPQ hH]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_EabH_eq (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ)
     (f : Matrix (Fin n) (Fin n) ℂ → E) (a b : Fin n) (hQP : Q * P = 1) (hPQ : P * Q = 1)
@@ -104,7 +104,7 @@ lemma ioh_EabH_eq (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ)
     ioh_hpart1 ε H P Q _ hQP hPQ hH, ioh_hpart2 ε H P Q _ hQP hPQ hH]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[ioh_EabH_eq ε H P Q f a b hQP hPQ hH]`. Use `congr 1`. Establish `: P * (Q * y * P) * Q = (P * Q) * y * (P * Q)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, hPQ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -120,9 +120,9 @@ lemma ioh_EabH_fun (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ)
   rw [this, hPQ]; simp
 
 /- English proof (translation)
-Unfold `inUH at hg`. Unfold `inUJ`. Establish `hc : Qᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = Qᴴ * Pᴴ * Jm ε * (P * Q) := by rw [← hH, hg, hH]; simp only [Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [hc, hPQ]; simp`.
+A detailed English derivation is pending.
 -/
 lemma ioh_inUJ (ε : Fin n → Bool) (H P Q g : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1)
     (hH : H = Pᴴ * Jm ε * P) (hg : inUH H g) : inUJ ε (P * g * Q) := by
@@ -135,9 +135,9 @@ lemma ioh_inUJ (ε : Fin n → Bool) (H P Q g : Matrix (Fin n) (Fin n) ℂ) (hPQ
     _ = Jm ε := by rw [hc, hPQ]; simp
 
 /- English proof (translation)
-Unfold `inUJ at hx`. Unfold `inUH`. Rewrite using `[hH]`. Establish `e : (Q * x * P)ᴴ * (Pᴴ * Jm ε * P) * (Q * x * P) = Pᴴ * (xᴴ * ((P * Q)ᴴ * Jm ε * (P * Q)) * x) * P`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, hPQ, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_inUH (ε : Fin n → Bool) (H P Q x : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1)
     (hH : H = Pᴴ * Jm ε * P) (hx : inUJ ε x) : inUH H (Q * x * P) := by
@@ -150,18 +150,18 @@ lemma ioh_inUH (ε : Fin n → Bool) (H P Q x : Matrix (Fin n) (Fin n) ℂ) (hPQ
   rw [e, hPQ, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, hx]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ioh_single (P Q : Matrix (Fin n) (Fin n) ℂ) (a b c d : Fin n) :
     (P * Matrix.single a b (1 : ℂ) * Q) c d = P c a * Q b d := by
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg₀U, hF, hfF⟩` from `hf (Q * g₀ * P) (ioh_inUH ε H P Q g₀ hPQ hH hg₀)`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `((LinearMap.mulLeft ℝ Q).comp (LinearMap.mulRight ℝ P)).toContinuousLinearMap`. Establish `hL : ∀ x, L x = Q * x * P`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[L, Matrix.mul_assoc]`. Use `⟨L ⁻¹' U, fun x => F (L x), hU.preimage L.continuous, by simpa [hL] using hg₀U, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hF.comp L.contDiff.contDiffOn (fun x hx => hx)`. Introduce `x hx hxJ`. Simplify using `only [Set.mem_preimage, hL] at hx`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hL]`. Conclude with `hfF _ hx (ioh_inUH ε H P Q x hPQ hH hxJ)`.
+A detailed English derivation is pending.
 -/
 lemma ioh_smooth (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ)
     (f : Matrix (Fin n) (Fin n) ℂ → E) (hPQ : P * Q = 1)
@@ -182,7 +182,7 @@ lemma ioh_smooth (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ)
 end Transport
 
 /- English proof (translation)
-Introduce `n ε E _ _ H P Q f a b g hQP hPQ hH hsm hg`. Rewrite using `[ioh_EabH_eq ε H P Q f a b hQP hPQ hH g, ecSumV n ε E _ _ _ hsm (ioh_inUJ ε H P Q g hPQ hH hg)]`. Simplify using `only [ioh_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conjugated_generator_transport : EabHTransport := by
   intro n ε E _ _ H P Q f a b g hQP hPQ hH hsm hg
@@ -191,15 +191,15 @@ theorem conjugated_generator_transport : EabHTransport := by
   simp only [ioh_single]
 
 /- English proof (translation)
-Introduce `n ε E _ _ H P Q f a b c d g hQP hPQ hH hf hg`. Establish `hsm` using `ioh_smooth ε H P Q f hPQ hH hf`. Establish `hg'` using `ioh_inUJ ε H P Q g hPQ hH hg`. Rewrite using `[ioh_EabH_eq ε H P Q (EabH H c d f) a b hQP hPQ hH g, ioh_EabH_fun ε H P Q f c d hQP hPQ hH, ioh_EabH_eq ε H P Q (EabH H a b f) c d hQP hPQ hH g, ioh_EabH_fun ε H P Q f a b hQP hPQ hH, vector_complexified_derivative_commutator rdLinV rdBracketV rdSmoothV ε _ _ _ _ hsm hg']`. Establish `hQPX : ∀ X : Matrix (Fin n) (Fin n) ℂ, Q * (P * X) = X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hQP, Matrix.one_mul]`. Establish `hm : Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 = (if b = c then Matrix.single a d 1 else 0) - (if d = a then Matrix.single c b 1 else 0)`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a`. Substitute `h1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Substitute `h1` using the available equality. Simplify using `[h2]`. Substitute `h2` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[h1]`. Simplify using `[h1, h2]`. Establish `hm2 : P * Matrix.single a b (1 : ℂ) * Q * (P * Matrix.single c d 1 * Q) - P * Matrix.single c d 1 * Q * (P * Matrix.single a b 1 * Q) = P * (Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1) * Q`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, hQPX]`. Rewrite using `[hm2, hm, Matrix.mul_sub, Matrix.sub_mul, vector_complexified_derivative_sub rdLinV hsm hg']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp only [Matrix.mul_zero, Matrix.zero_mul, vector_complexified_derivative_zero, sub_zero, zero_sub, ioh_EabH_eq ε H P Q f _ _ hQP hPQ hH g]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conjugated_generator_gl_relation : EabHGl := by
   intro n ε E _ _ H P Q f a b c d g hQP hPQ hH hf hg
@@ -236,9 +236,9 @@ def IOHRepr (Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (M
     IORep (Eop a b F) (Ealg a b x).1
 
 /- English proof (translation)
-Introduce `g hg`. Establish `he` using `hR a b F x h g hg`. Unfold `Top Tm`. Distinguish the cases in `hab : a = b`. Rewrite using `[if_pos hab, if_pos hab, LinearMap.add_apply, Module.algebraMap_end_apply, Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply, he, h g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hab, if_neg hab, zero_add, zero_add, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_Tm_rep {Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E)}
     {Ealg : Fin n → Fin n → Module.End ℂ (ioS ε E)} (hR : IOHRepr Eop Ealg)
@@ -253,7 +253,7 @@ lemma ioh_Tm_rep {Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) �
   · rw [if_neg hab, if_neg hab, zero_add, zero_add, he]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using h`. Consider the case `cons p l ih`. Simplify using `only [List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply]`. Conclude with `ioh_Tm_rep hR ih _ _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ioh_foldr_rep {Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E)}
     {Ealg : Fin n → Fin n → Module.End ℂ (ioS ε E)} (hR : IOHRepr Eop Ealg)
@@ -268,7 +268,7 @@ lemma ioh_foldr_rep {Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E
     exact ioh_Tm_rep hR ih _ _ _
 
 /- English proof (translation)
-Unfold `qminor`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.intCast_apply, List.map_ofFn, Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma ioh_qminor_apply {t : ℕ} (Ealg : Fin n → Fin n → Module.End ℂ (ioS ε E))
     (a b : Fin t → Fin n) (u : ℂ) (x : ioS ε E) :
@@ -282,9 +282,9 @@ lemma ioh_qminor_apply {t : ℕ} (Ealg : Fin n → Fin n → Module.End ℂ (ioS
   rfl
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite using `[ioh_qminor_apply]`. Establish `hs` using `io_rep_sum (fun σ : Equiv.Perm (Fin t) => (((Equiv.Perm.sign σ : ℤ) : ℂ))) (fun σ => ioh_foldr_rep hR (List.ofFn fun k : Fin t => (u - ((k : ℕ) : ℂ), a (σ k), b k)) h) g hg`. Rewrite using `[← hs]`. Unfold `qminorOp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, List.map_ofFn]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma ioh_qminor_rep {Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E)}
     {Ealg : Fin n → Fin n → Module.End ℂ (ioS ε E)} (hR : IOHRepr Eop Ealg)
@@ -306,9 +306,9 @@ def iohE (P Q : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) : Module.End ℂ (ioS 
   ∑ c, ∑ d, (P c a * Q b d) • ioE ε E c d
 
 /- English proof (translation)
-Introduce `a b F x h g hg`. Establish `hF : SmoothOnGV ε F` using `io_smooth_congr (fun g' hg' => (io_rep_ext x g' hg').trans (h g' hg').symm) (io_mem_smooth x)`. Use `show EcV ε (P * Matrix.single a b 1 * Q) F g = (((∑ c, ∑ d, (P c a * Q b d) • ioE ε E c d) x : ioS ε E) : IOPt ε → E) ⟨g, hg⟩`. Rewrite using `[ecSumV n ε E F _ g hF hg]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, ioh_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[ioE_rep h c d g hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ioh_repr (P Q : Matrix (Fin n) (Fin n) ℂ) :
     IOHRepr (fun a b => EcV ε (P * Matrix.single a b 1 * Q)) (iohE ε E P Q) := by
@@ -324,7 +324,7 @@ lemma ioh_repr (P Q : Matrix (Fin n) (Fin n) ℂ) :
   rw [ioE_rep h c d g hg]
 
 /- English proof (translation)
-The claim follows from `hAd (Module.End ℂ (ioS ε E)) n (ioE ε E) P Q (io_gl ε E) hQP`.
+A detailed English derivation is pending.
 -/
 lemma ioh_gl (hAd : GlRelAd) (P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) :
     GlRel (iohE ε E P Q) :=
@@ -337,23 +337,23 @@ section Conj
 variable {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `: P * (Q * y * P) * Q = (P * Q) * y * (P * Q)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, hPQ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma ioh_PQ (P Q y : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1) : P * (Q * y * P) * Q = y := by
   have : P * (Q * y * P) * Q = (P * Q) * y * (P * Q) := by simp only [Matrix.mul_assoc]
   rw [this, hPQ]; simp
 
 /- English proof (translation)
-Establish `: Q * (P * y * Q) * P = (Q * P) * y * (Q * P)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, hQP]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma ioh_QP (P Q y : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) : Q * (P * y * Q) * P = y := by
   have : Q * (P * y * Q) * P = (Q * P) * y * (Q * P) := by simp only [Matrix.mul_assoc]
   rw [this, hQP]; simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `Top`. Rewrite using `[ioh_EabH_eq ε H P Q _ a b hQP hPQ hH x]`. Establish `: (fun y => (fun x => R (P * x * Q)) (Q * y * P)) = R`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [ioh_PQ P Q y hPQ]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_Top (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) (u : ℂ) (a b : Fin n)
@@ -368,9 +368,9 @@ lemma ioh_Top (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : 
   rw [this]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use function extensionality and compare the values at `x`. Simplify using `only [List.map_nil, List.foldr_nil, ioh_QP P Q x hQP]`. Consider the case `cons p l ih`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [List.map_cons, List.foldr_cons]`. Rewrite using `[ih, ioh_Top ε H P Q hQP hPQ hH]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_foldr (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) (l : List (ℂ × Fin n × Fin n))
@@ -387,9 +387,9 @@ lemma ioh_foldr (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP 
     rw [ih, ioh_Top ε H P Q hQP hPQ hH]
 
 /- English proof (translation)
-Unfold `qminorOp`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `e1 : ∀ (Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E)), (List.ofFn fun k : Fin t => Top Eop (u - ((k : ℕ) : ℂ)) (α (σ k)) (β k)) = (List.ofFn fun k : Fin t => (u - ((k : ℕ) : ℂ), α (σ k), β k)).map fun p => Top Eop p.1 p.2.1 p.2.2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `Eop`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e1, e1, ioh_foldr ε H P Q hQP hPQ hH]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_qminor (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) {t : ℕ} (α β : Fin t → Fin n) (u : ℂ)
@@ -409,7 +409,7 @@ lemma ioh_qminor (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP
   rw [e1, e1, ioh_foldr ε H P Q hQP hPQ hH]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[ioh_qminor ε H P Q hQP hPQ hH, ioh_PQ P Q y hPQ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 lemma ioh_qminor_fun (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) {t : ℕ} (α β : Fin t → Fin n) (u : ℂ)
@@ -422,11 +422,11 @@ lemma ioh_qminor_fun (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) 
 end Conj
 
 /- English proof (translation)
-Introduce `n ε E _ _ H P Q f u c d g hQP hPQ hH hf hg`. Establish `hsm` using `ioh_smooth ε H P Q f hPQ hH hf`. Establish `hg'` using `ioh_inUJ ε H P Q g hPQ hH hg`. Take `⟨x, hx⟩` from `io_rep_mk hsm`. Establish `hR` using `ioh_repr (ε := ε) (E := E) P Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `capelliH qdetOp`. Rewrite using `[ioh_qminor ε H P Q hQP hPQ hH, ioh_EabH_fun ε H P Q f c d hQP hPQ hH, ioh_EabH_eq ε H P Q _ c d hQP hPQ hH g, ioh_qminor_fun ε H P Q hQP hPQ hH]`. Establish `h1` using `ioh_qminor_rep hR id id u (hR c d _ x hx) _ hg'`. Establish `h2` using `hR c d _ _ (ioh_qminor_rep hR id id u hx) _ hg'`. Establish `hc` using `qDetCentral (Module.End ℂ (ioS ε E)) n (iohE ε E P Q) (ioh_gl hAd P Q hQP) u c d`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at h1 h2`. Rewrite using `[h1, h2]`. Unfold `qdet at hc`. Conclude with `congrArg (fun T : Module.End ℂ (ioS ε E) => (T x).1 ⟨_, hg'⟩) hc`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem capCentralH_of (hAd : GlRelAd) : CapCentralH := by
   intro n ε E _ _ H P Q f u c d g hQP hPQ hH hf hg
@@ -446,15 +446,13 @@ theorem capCentralH_of (hAd : GlRelAd) : CapCentralH := by
   exact congrArg (fun T : Module.End ℂ (ioS ε E) => (T x).1 ⟨_, hg'⟩) hc
 
 /- English proof (translation)
-Introduce `n ε E _ _ H P Q f ν hQP hPQ hH hf hhw g hg u`. Establish `hsm` using `ioh_smooth ε H P Q f hPQ hH hf`. Establish `hg'` using `ioh_inUJ ε H P Q g hPQ hH hg`. Take `⟨x, hx⟩` from `io_rep_mk hsm`. Establish `hR` using `ioh_repr (ε := ε) (E := E) P Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEW : ∀ a b y, EcV ε (P * Matrix.single a b 1 * Q) (fun y => f (Q * y * P)) y = EabH H a b f (Q * y * P)` using `fun a b y => (congrFun (ioh_EabH_fun ε H P Q f a b hQP hPQ hH) y).symm`. Establish `hHW : IsHW (iohE ε E P Q) ν x`. Use `⟨fun a => io_rep_unique (hR a a _ x hx) (fun g' hg' => ?_), fun a b hab => io_rep_unique (hR a b _ x hx) (fun g' hg' => ?_)⟩` and prove the remaining obligations. Use `show EcV ε (P * Matrix.single a a 1 * Q) (fun y => f (Q * y * P)) g' = _`. Rewrite using `[hEW, (hhw _ (ioh_inUH ε H P Q g' hPQ hH hg')).1 a, Submodule.coe_smul, Pi.smul_apply, ← hx g' hg']`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show EcV ε (P * Matrix.single a b 1 * Q) (fun y => f (Q * y * P)) g' = _`. Rewrite using `[hEW, (hhw _ (ioh_inUH ε H P Q g' hPQ hH hg')).2 a b hab]`. Both sides reduce to the same expression. Establish `h1` using `ioh_qminor_rep hR id id u hx _ hg'`. Establish `h2` using `qDetHW (ioS ε E) n (iohE ε E P Q) ν x (ioh_gl hAd P Q hQP) hHW u`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `capelliH qdetOp`. Rewrite using `[ioh_qminor ε H P Q hQP hPQ hH, h1]`. Unfold `qdet at h2`. Rewrite using `[h2]`. Use `show (∏ k : Fin n, (u - ((k : ℕ) : ℂ) + ν k)) • x.1 ⟨_, hg'⟩ = _`.
-
-Rewrite using `[← hx _ hg']`. Use `show _ • f (Q * (P * g * Q) * P) = _`. Rewrite using `[ioh_QP P Q g hQP]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capHWH_of (hAd : GlRelAd) : CapHWH := by
   intro n ε E _ _ H P Q f ν hQP hPQ hH hf hhw g hg u
@@ -485,12 +483,12 @@ theorem capHWH_of (hAd : GlRelAd) : CapHWH := by
   rw [ioh_QP P Q g hQP]
 
 /- English proof (translation)
-The claim follows from `capCentralH_of gl_relation_adjoint_holds`.
+A detailed English derivation is pending.
 -/
 theorem capelli_central_conjugated : CapCentralH := capCentralH_of gl_relation_adjoint_holds
 
 /- English proof (translation)
-The claim follows from `capHWH_of gl_relation_adjoint_holds`.
+A detailed English derivation is pending.
 -/
 theorem capelli_highest_weight_conjugated : CapHWH := capHWH_of gl_relation_adjoint_holds
 

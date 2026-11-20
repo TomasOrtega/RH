@@ -12,13 +12,13 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : �
 variable (D : CassData (GU σ n))
 
 /- English proof (translation)
-Rewrite using `[hJ, IwU, Subgroup.mem_subgroupOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_J_iff (hJ : D.J = IwU σ n) (x : GU σ n) : x ∈ D.J ↔ (x : GL (Fin n) L) ∈ IwGL L n := by
   rw [hJ, IwU, Subgroup.mem_subgroupOf]
 
 /- English proof (translation)
-Establish `h` using `(mem_IwGL_iff _).1 ((mem_J_iff D hJ x).1 hx.1)`. Conclude with `⟨(hN _).1 hx.2, (hN _).1 (inv_mem hx.2), h.1, h.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem upper_facts (hJ : D.J = IwU σ n) (hN : ∀ g : GU σ n, g ∈ D.N ↔ IsUniM (g : GL (Fin n) L))
     {x : GU σ n} (hx : x ∈ D.J ⊓ D.N) :
@@ -28,7 +28,7 @@ theorem upper_facts (hJ : D.J = IwU σ n) (hN : ∀ g : GU σ n, g ∈ D.N ↔ I
   exact ⟨(hN _).1 hx.2, (hN _).1 (inv_mem hx.2), h.1, h.2⟩
 
 /- English proof (translation)
-Establish `h` using `(mem_IwGL_iff _).1 ((mem_J_iff D hJ x).1 hx.1)`. Conclude with `⟨(hNm _).1 hx.2, (hNm _).1 (inv_mem hx.2), h.1, h.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lower_facts (hJ : D.J = IwU σ n) (hNm : ∀ g : GU σ n, g ∈ D.Nm ↔ IsLowUniM (g : GL (Fin n) L))
     {x : GU σ n} (hx : x ∈ D.J ⊓ D.Nm) :
@@ -38,17 +38,17 @@ theorem lower_facts (hJ : D.J = IwU σ n) (hNm : ∀ g : GU σ n, g ∈ D.Nm ↔
   exact ⟨(hNm _).1 hx.2, (hNm _).1 (inv_mem hx.2), h.1, h.2⟩
 
 /- English proof (translation)
-Take `⟨d, hd, hne, hdd⟩ : ∃ d : Fin n → L, ((τ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal d ∧ (∀ i, d i ≠ 0) ∧ ∀ i, ((τ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = d i` from `⟨_, (diag_data ((hT _).1 hτ)).1, (diag_data ((hT _).1 hτ)).2, fun _ => rfl⟩`. Establish `hmono' : ∀ i j, i ≤ j → ordL (d j) ≤ ordL (d i)` using `by simpa only [hdd] using hmono`. Establish `hle : ∀ i j, i ≤ j → Valued.v (d i) * Valued.v (d j)⁻¹ ≤ 1` using `fun i j hij => ratio_le (hne j) (v_le_of_ordL_le (hne j) (hne i) (hmono' i j hij))`. Establish `hle' : ∀ i j, j ≤ i → Valued.v (d i)⁻¹ * Valued.v ((d j)⁻¹)⁻¹ ≤ 1` using `fun i j hij => by`. Rewrite using `[inv_inv, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle j i hij`. Establish `hs'` using `val_inv_diag hne hd`. Use `⟨fun x hx => ?_, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨u1, u2, i1, i2⟩` from `upper_facts D hJ hN hx`. Use `up_mem hne hd u1 u2 (fun i j hij => valuation_triple_mul_le (hle i j hij.le) (i1.1 i j)) (fun i j hij => valuation_triple_mul_le (hle i j hij.le) (i2.1 i j))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨(mem_J_iff D hJ _).2 this.1, (hN _).2 this.2⟩`. Take `⟨l1, l2, i1, i2⟩` from `lower_facts D hJ hNm hx`. Use `low_mem (fun i => inv_ne_zero (hne i)) hs' l1 l2 (fun i j hij => valuation_triple_mul_lt_one (hle' i j hij.le) (i1.2 i j hij)) (fun i j hij => valuation_triple_mul_lt_one (hle' i j hij.le) (i2.2 i j hij))` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `⟨(mem_J_iff D hJ _).2 this.1, (hNm _).2 this.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨hdx, -⟩` from `diag_data ((hT _).1 hx.2)`. Establish `hc : τ * x = x * τ`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show ((τ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((x : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = ((x : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((τ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hd, hdx, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_comm _ _`. Establish `e1 : τ * x * τ⁻¹ = x` using `by rw [hc, mul_inv_cancel_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `e2 : τ⁻¹ * x * τ = x` using `by rw [mul_assoc, ← hc, inv_mul_cancel_left]`. Rewrite using `[e1, e2]`. Conclude with `⟨hx, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem dom_core (hJ : D.J = IwU σ n) (hN : ∀ g : GU σ n, g ∈ D.N ↔ IsUniM (g : GL (Fin n) L))
     (hNm : ∀ g : GU σ n, g ∈ D.Nm ↔ IsLowUniM (g : GL (Fin n) L))
@@ -94,21 +94,21 @@ theorem dom_core (hJ : D.J = IwU σ n) (hN : ∀ g : GU σ n, g ∈ D.N ↔ IsUn
     exact ⟨hx, hx⟩
 
 /- English proof (translation)
-Take `⟨d, hd, hne, hdd⟩ : ∃ d : Fin n → L, ((τ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal d ∧ (∀ i, d i ≠ 0) ∧ ∀ i, ((τ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = d i` from `⟨_, (diag_data ((hT _).1 hτ)).1, (diag_data ((hT _).1 hτ)).2, fun _ => rfl⟩`. Establish `hst' : ∀ i j, i < j → ordL (d j) < ordL (d i)`. Introduce `i j hij`. Use `hst i j hij` as an intermediate fact. Rewrite `this` using `[hdd, hdd]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hr : ∀ i j, i < j → ∀ m : ℕ, Valued.v (d i ^ m) * Valued.v (d j ^ m)⁻¹ ≤ cc ^ m` using `fun i j hij m => ratio_pow_le (hne j) (v_le_of_ordL_lt (hne j) (hne i) (hst' i j hij)) m`. Establish `hpow : ∀ m : ℕ, (((τ ^ m : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => d i ^ m)` using `fun m => by`. Rewrite using `[SubmonoidClass.coe_pow, Units.val_pow_eq_pow_val, hd, Matrix.diagonal_pow]`. Both sides reduce to the same expression. Establish `hnep : ∀ m : ℕ, ∀ i, d i ^ m ≠ 0` using `fun m i => pow_ne_zero _ (hne i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨fun x hx => ?_, fun U hU h1 => ?_⟩` and prove the remaining obligations. Establish `u1 : IsUniM (x : GL (Fin n) L)` using `(hN _).1 hx`. Establish `u2 : IsUniM (x : GL (Fin n) L)⁻¹` using `(hN _).1 (inv_mem hx)`. Use `choose f hf using fun p : Fin n × Fin n => exists_pow_mul_le (Valued.v (((x : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) p.1 p.2))`. Use `choose f' hf' using fun p : Fin n × Fin n => exists_pow_mul_le (Valued.v ((((x : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) p.1 p.2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ p, f p ≤ Finset.univ.sup f ⊔ Finset.univ.sup f'` using `fun p => le_sup_of_le_left (Finset.le_sup (Finset.mem_univ p))`. Establish `hM' : ∀ p, f' p ≤ Finset.univ.sup f ⊔ Finset.univ.sup f'` using `fun p => le_sup_of_le_right (Finset.le_sup (Finset.mem_univ p))`. Generalize the expression as in `Finset.univ.sup f ⊔ Finset.univ.sup f' = M at hM hM'`. Establish `key : ∀ (y : L) (i j : Fin n), i < j → cc ^ M * Valued.v y ≤ 1 → Valued.v (d i ^ M * y * (d j ^ M)⁻¹) ≤ 1`. Introduce `y i j hij hy`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, mul_right_comm]`. Establish `h2` using `hr i j hij M`. Combine the equalities or inequalities in the displayed calculation. Use `up_mem (hnep M) (hpow M) u1 u2 (fun i j hij => key _ i j hij (hf (i, j) M (hM _))) (fun i j hij => key _ i j hij (hf' (i, j) M (hM' _)))` as an intermediate fact. Conclude with `⟨M, (mem_J_iff D hJ _).2 this.1, (hN _).2 this.2⟩`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, rfl⟩` from `isOpen_induced_iff.1 hU`. Take `⟨m, hm⟩` from `open_shrink W hW h1`. Use `⟨m, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨l1, l2, i1, i2⟩` from `lower_facts D hJ hNm hx`. Establish `hs` using `val_inv_diag (hnep m) (hpow m)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hes : ∀ i, (d i ^ m)⁻¹ ≠ 0` using `fun i => inv_ne_zero (hnep m i)`. Establish `hb : ∀ a b, b < a → Valued.v (d a ^ m)⁻¹ * Valued.v ((d b ^ m)⁻¹)⁻¹ ≤ cc ^ m` using `fun a b hab => by`. Rewrite using `[inv_inv, mul_comm]`. Conclude with `hr b a hab m`. Establish `c1` using `low_close hes hs l1 (B := cc ^ m) (fun a b hab => valuation_triple_mul_le (hb a b hab) (i1.1 a b))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c2` using `low_close hes hs l2 (B := cc ^ m) (fun a b hab => valuation_triple_mul_le (hb a b hab) (i2.1 a b))`. Use `hm _ c1 (by rw [GlobalTheory.CompanionTheory.DomGLVal.conj_inv]; exact c2)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem strict_core (hJ : D.J = IwU σ n) (hN : ∀ g : GU σ n, g ∈ D.N ↔ IsUniM (g : GL (Fin n) L))
     (hNm : ∀ g : GU σ n, g ∈ D.Nm ↔ IsLowUniM (g : GL (Fin n) L))
@@ -170,9 +170,7 @@ theorem strict_core (hJ : D.J = IwU σ n) (hN : ∀ g : GU σ n, g ∈ D.N ↔ I
     exact this
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q _ n D hJ hN hNm hT t`. Use `⟨fun h => dom_core D hJ hN hNm hT t t.2 h, fun h => ⟨?_, strict_core D hJ hN hNm hT t t.2 h⟩⟩` and prove the remaining obligations. Conclude with `dom_core D hJ hN hNm hT t t.2 fun i j hij => by`. Break down `hij.lt_or_eq with hij | rfl` into its components or cases. Conclude with `(h i j hij).le`.
-
-Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem domU : PositivityTheory.SphericalProduct.DomU := by
   intro L _ _ _ ϖ σ q _ n D hJ hN hNm hT t

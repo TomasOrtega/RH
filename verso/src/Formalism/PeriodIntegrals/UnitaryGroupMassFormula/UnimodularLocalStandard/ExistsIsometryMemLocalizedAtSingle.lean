@@ -10,9 +10,9 @@ open PI.ULS
 variable {a : ℕ} {b c : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
 
 /- English proof (translation)
-Take `⟨n, hln, hn⟩` from `hv`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hln (dvd_zero l)`. Use `set S := stdLat (cmL a b d ha hd lam hlam) m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : (S.addSubgroupOf Λ).index • (⟨n • v, hn⟩ : Λ) ∈ S.addSubgroupOf Λ` using `AddSubgroup.nsmul_index_mem _ _`. Rewrite `hmem` using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_nsmul, smul_smul]`. Establish `hN : (S.addSubgroupOf Λ).index * n ≠ 0` using `mul_ne_zero h1 hn0`. Conclude with `isKv_of_nsmul hN (isKv_of_mem hmem)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isKv_of_sat {m : Type*} [Fintype m] [DecidableEq m] {l : ℕ} (hl : l.Prime) {Λ : AddSubgroup (m → ℂ)}
     (h1 : relIdx (stdLat (cmL a b d ha hd lam hlam) m) Λ ≠ 0) {v : m → ℂ} (hv : SatMem l Λ v) :
@@ -29,39 +29,35 @@ lemma isKv_of_sat {m : Type*} [Fintype m] [DecidableEq m] {l : ℕ} (hl : l.Prim
   exact isKv_of_nsmul hN (isKv_of_mem hmem)
 
 /- English proof (translation)
-Establish `himg : ∀ (g : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)) (Λ : AddSubgroup (m → ℂ)), (∀ z ∈ Λ, cmTheta b d • z ∈ Λ) → ∀ z ∈ imgLat (g : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λ, cmTheta b d • z ∈ imgLat (g : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λ`. Introduce `g Λ hΛ z hz`. Take `⟨w, hw, rfl⟩` from `(mem_imgLat_iff g Λ z).1 hz`. Conclude with `(mem_imgLat_iff g Λ _).2 ⟨_, hΛ w hw, map_smul g _ w⟩`. Establish `hαK : (lam * ((x * a : ℂ) + y * cmTheta b d)) / lam = (x * a : ℂ) + y * cmTheta b d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hα0 : lam * ((x * a : ℂ) + y * cmTheta b d) ≠ 0`. Introduce `h0`. Rewrite `h0` using `[alpha_eq (ha := ha) (hd := hd) (hlam := hlam)]`. Take `⟨hx0, hy0⟩` from `LinearIndependent.pair_iff.1 (cmL a b d ha hd lam hlam).indep _ _ h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : x = 0` using `by exact_mod_cast hx0`. Establish `hy : y = 0` using `by exact_mod_cast hy0`. Apply `hQ` to reduce the goal to its premises. Simplify using `[hx, hy]`. Proceed by induction on `T using Finset.induction_on with`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `empty`. Establish `hid : ∀ Λ : AddSubgroup (m → ℂ), imgLat ((LinearEquiv.refl ℂ (m → ℂ) : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)) : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λ = Λ`. Introduce `Λ`. Use extensionality with `z`. Rewrite using `[mem_imgLat_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨LinearEquiv.refl ℂ (m → ℂ), fun _ _ => rfl, ?_, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[hid, relIdx, AddSubgroup.relIndex_self]`. Conclude with `one_ne_zero`. Rewrite using `[hid, relIdx, AddSubgroup.relIndex_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `one_ne_zero`. Consider the case `insert i₀ T hi₀ ih`. Take `⟨g, hgI, hg1, hg2, hgT⟩` from `ih`. Establish `hc` using `comm_img g hg1 hg2 h1 h2`. Establish `hsd'` using `selfDual_img _ g hgI hsd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hθ'` using `himg g Λa hθ`. Take `⟨v, hvS, hvT, hvv⟩` from `hkey a b c d ha hd lam hlam hok m _ hsd' hθ' hc.1 hc.2 l hl x y hQ T i₀ hi₀ hgT`. Establish `hvK : IsKv b d lam v` using `isKv_of_sat hl hc.1 hvS`. Establish `hK : ∀ s : ℂ, s = 1 ∨ s = -1 → IsK b d (s * (lam * ((x * a : ℂ) + y * cmTheta b d)) / lam)`. Introduce `s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : IsK b d ((x * a : ℂ) + y * cmTheta b d)` using `⟨x * a, y, 1, one_ne_zero, by push_cast; ring⟩`. Break down `hs with rfl | rfl` into its components or cases. Rewrite using `[one_mul, hαK]`. Conclude with `hb`. Rewrite using `[neg_one_mul, neg_div, hαK]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `isK_neg hb`. Establish `hee : stdH (cmL a b d ha hd lam hlam) m (Pi.single i₀ (lam * ((x * a : ℂ) + y * cmTheta b d))) (Pi.single i₀ (lam * ((x * a : ℂ) + y * cmTheta b d))) ≠ 0`. Rewrite using `[stdH_kappa _ hlam, Finset.sum_eq_single i₀ (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (fun h => absurd (Finset.mem_univ i₀) h), Pi.single_eq_same]`. Conclude with `mul_ne_zero (kappa_ne _ hlam) (mul_ne_zero (div_ne_zero hα0 hlam) ((map_ne_zero _).2 (div_ne_zero hα0 hlam)))`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hne⟩ : ∃ s : ℂ, (s = 1 ∨ s = -1) ∧ stdH (cmL a b d ha hd lam hlam) m v v - stdH (cmL a b d ha hd lam hlam) m v (Pi.single i₀ (s * (lam * ((x * a : ℂ) + y * cmTheta b d)))) ≠ 0 := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Distinguish the cases in `h : stdH (cmL a b d ha hd lam hlam) m v v - stdH (cmL a b d ha hd lam hlam) m v (Pi.single i₀ (1 * (lam * ((x * a : ℂ) + y * cmTheta b d)))) = 0`. Use `⟨-1, Or.inr rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[neg_one_mul, Pi.single_neg, map_neg]`. Rewrite `h` using `[one_mul, sub_eq_zero]`. Rewrite using `[sub_neg_eq_add, ← h, ← two_mul, hvv]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `mul_ne_zero two_ne_zero hee`. Conclude with `⟨1, Or.inl rfl, h⟩`. Establish `hss : s * s = 1`. Apply the tactic sequence `rcases hs with rfl | rfl <;> norm_num`. Establish `hvv' : stdH (cmL a b d ha hd lam hlam) m v v = stdH (cmL a b d ha hd lam hlam) m (Pi.single i₀ (s * (lam * ((x * a : ℂ) + y * cmTheta b d)))) (Pi.single i₀ (s * (lam * ((x * a : ℂ) + y * cmTheta b d))))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvv]`. Break down `hs with rfl | rfl` into its components or cases. Simplify using `only [one_mul]`. Simplify using `only [neg_one_mul, Pi.single_neg, map_neg, LinearMap.neg_apply, neg_neg]`. Take `⟨σ, hσI, hσ1, hσ2, hσv, hσfix⟩` from `qrefl_to hok v _ hvv' hne hvK (isKv_single (hK s hs) i₀)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨g.trans σ, isom_trans _ g σ hgI hσI, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[imgLat_trans]`. Conclude with `(comm_img σ hσ1 hσ2 hg1 hg2).1`. Rewrite using `[imgLat_trans]`. Conclude with `(comm_img σ hσ1 hσ2 hg1 hg2).2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Rewrite using `[imgLat_trans]`. Break down `Finset.mem_insert.1 hj with rfl | hjT` into its components or cases. Take `⟨n, hln, hn⟩` from `hvS`. Use `⟨n, hln, (mem_imgLat_iff σ _ _).2 ⟨s • n • v, ?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Break down `hs with rfl | rfl` into its components or cases. Rewrite using `[one_smul]` and apply the resulting hypothesis. Rewrite using `[neg_one_smul]`. Conclude with `AddSubgroup.neg_mem _ hn`. Rewrite using `[map_smul, map_nsmul, hσv, smul_comm, ← Pi.single_smul', smul_eq_mul, ← mul_assoc, hss, one_mul]`.
-
-Take `⟨n, hln, hn⟩` from `hgT j hjT`. Use `⟨n, hln, (mem_imgLat_iff σ _ _).2 ⟨_, hn, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, hσfix]`. Apply `stdH_single_zero` to reduce the goal to its premises. Establish `hne' : j ≠ i₀` using `fun h => hi₀ (h ▸ hjT)`.
-
-Simplify using `[hvT j hjT, Pi.single_eq_of_ne hne']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_isometry_memLocalizedAt_single (hkey : KeyRep) (hok : CmOK a b c d) (m : Type) [Fintype m] [DecidableEq m]
     (Λa : AddSubgroup (m → ℂ)) (hsd : IsSelfDual (stdH (cmL a b d ha hd lam hlam) m) Λa)
@@ -171,15 +167,15 @@ lemma exists_isometry_memLocalizedAt_single (hkey : KeyRep) (hok : CmOK a b c d)
         simp [hvT j hjT, Pi.single_eq_of_ne hne']
 
 /- English proof (translation)
-Introduce `a b c d ha hd lam hlam hok m _ _ Λa hsd hθ h1 h2 l hl`. Take `⟨x, y, hQ⟩` from `exists_good_form hok hl`. Take `⟨g, hgI, hg1, hg2, hgT⟩` from `exists_isometry_memLocalizedAt_single hkey hok m Λa hsd hθ h1 h2 hl x y hQ Finset.univ`. Establish `hc` using `comm_img g hg1 hg2 h1 h2`. Establish `hsd'` using `selfDual_img _ g hgI hsd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ' : ∀ z ∈ imgLat (g : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa, cmTheta b d • z ∈ imgLat (g : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa`. Introduce `z hz`. Take `⟨w, hw, rfl⟩` from `(mem_imgLat_iff g Λa z).1 hz`. Conclude with `(mem_imgLat_iff g Λa _).2 ⟨_, hθ w hw, map_smul g _ w⟩`. Take `⟨n, hln, hn⟩` from `sat_std_of_all hok hl x y hQ _ hsd' hθ' (fun j => hgT j (Finset.mem_univ j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, hgI, hc.1, ?_, hc.2⟩` and prove the remaining obligations. Introduce `hdvd`. Establish `hfi : ((stdLat (cmL a b d ha hd lam hlam) m).addSubgroupOf (imgLat (g : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa)).FiniteIndex` using `⟨hc.1⟩`. Establish `: Fact l.Prime` using `⟨hl⟩`. Take `⟨q, hq⟩` from `exists_prime_addOrderOf_dvd_card' l hdvd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnq : n • q = 0`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H w`. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_nsmul]`. Conclude with `hn w w.2`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `addOrderOf_dvd_of_nsmul_eq_zero hnq`. Rewrite `h` using `[hq]`. Conclude with `hln h`.
+A detailed English derivation is pending.
 -/
 theorem stepB_of_key (hkey : KeyRep) : StepB := by
   intro a b c d ha hd lam hlam hok m _ _ Λa hsd hθ h1 h2 l hl
@@ -209,7 +205,7 @@ theorem stepB_of_key (hkey : KeyRep) : StepB := by
   exact hln h
 
 /- English proof (translation)
-The claim follows from `target_of (stepB_of_key hkey) stepC`.
+A detailed English derivation is pending.
 -/
 theorem target_of_key (hkey : KeyRep) : PI.UnimodLocStd := target_of (stepB_of_key hkey) stepC
 

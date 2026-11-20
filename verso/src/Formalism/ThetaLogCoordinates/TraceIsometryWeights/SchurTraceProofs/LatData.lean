@@ -8,14 +8,14 @@ open Formalism.GM.M Formalism.GM.DimensionMonotonicity MvPolynomial Finset
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_toAddSubgroup, intPol_iff_norm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_intPol_addSubgroup {σ : Type} (x : MvPolynomial σ ℚ_[p]) :
     x ∈ (IntPol p σ).toAddSubgroup ↔ ∀ m, ‖x.coeff m‖ ≤ 1 := by
   rw [Submodule.mem_toAddSubgroup, intPol_iff_norm]
 
 /- English proof (translation)
-Introduce `c hc x hx`. Rewrite `hx`, the goal using `[mem_intPol_addSubgroup]`. Introduce `m`. Rewrite using `[coeff_smul, smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ hc (norm_nonneg _) (hx m)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intPol_zpClosed (σ : Type) : ZpClosed p (IntPol p σ).toAddSubgroup := by
   intro c hc x hx
@@ -25,9 +25,7 @@ theorem intPol_zpClosed (σ : Type) : ZpClosed p (IntPol p σ).toAddSubgroup := 
   exact mul_le_one₀ hc (norm_nonneg _) (hx m)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_intPol_addSubgroup]`. Introduce `m`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs`. Conclude with `hx m`.
-
-Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intPol_whc {σ M : Type} [AddCommMonoid M] (w : σ → M) (μ : M) (x : MvPolynomial σ ℚ_[p])
     (hx : x ∈ (IntPol p σ).toAddSubgroup) :
@@ -41,7 +39,7 @@ theorem intPol_whc {σ M : Type} [AddCommMonoid M] (w : σ → M) (μ : M) (x : 
   · rw [norm_zero]; exact zero_le_one
 
 /- English proof (translation)
-The claim follows from `GAe_pol_stable LL L2 j e fd := pol_fd L2 finW := GAe_pol_finW LL L2 j e bound := GAe_pol_bound LL L2 j e closed := intPol_zpClosed _ div := fun a b hab k x hx => divided_integral_holds p N r LL j (e a) (e b) (fun h => hab (e.injective h)) k x hx graded := fun μ x hx => intPol_whc …`.
+A detailed English derivation is pending.
 -/
 theorem polLatData_of (hB : LatBasisPol) {p : ℕ} [Fact p.Prime] {N r n : ℕ} (LL L2 : Letters N) (j : ℕ)
     (e : Fin n ↪o Fin r) :

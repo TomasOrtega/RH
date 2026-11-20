@@ -10,17 +10,15 @@ namespace RootFieldNumerics.Ref.Comp
 open ReciprocityTheory.AnForm.M GlobalTheory.CompanionTheory.Ar.PB Topology Filter
 
 /- English proof (translation)
-Introduce `x`. Take `⟨W, hW, hx, r, f, hf, hSW⟩` from `hS x`. Take `⟨W', hW', hx', r', f', hf', hTW⟩` from `hT x`. Use `⟨W ∩ W', hW.inter hW', ⟨hx, hx'⟩, r * r', fun i y => f (finProdFinEquiv.symm i).1 y * f' (finProdFinEquiv.symm i).2 y, fun i j t ht => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hf _ j t ⟨ht.1, ht.2.1⟩).mul (hf' _ j t ⟨ht.1, ht.2.2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Establish `h1` using `Set.ext_iff.1 hSW y`. Establish `h2` using `Set.ext_iff.1 hTW y`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_union] at h1 h2 ⊢`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h | h, hy⟩`. Conclude with `⟨hy, fun i => by rw [(h1.1 ⟨h, hy.1⟩).2, zero_mul]⟩`. Conclude with `⟨hy, fun i => by rw [(h2.1 ⟨h, hy.2⟩).2, mul_zero]⟩`. Introduce and unpack `⟨hy, h⟩`. Use `⟨?_, hy⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `a1 : ∃ i, f i y ≠ 0`. Assume the negation of the conclusion as `h3`. Use `push Not at h3`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hn.1 (h1.2 ⟨hy.1, h3⟩).1`. Establish `a2 : ∃ i, f' i y ≠ 0`. Assume the negation of the conclusion as `h3`. Use `push Not at h3`. Conclude with `hn.2 (h2.2 ⟨hy.2, h3⟩).1`.
-
-Take `⟨i, hi⟩` from `a1`. Take `⟨i', hi'⟩` from `a2`. Use `h (finProdFinEquiv (i, i'))` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply] at this`. Conclude with `mul_ne_zero hi hi' this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analytic_union {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {S T : Set X}
     (hS : A.IsAnalyticSubset S) (hT : A.IsAnalyticSubset T) : A.IsAnalyticSubset (S ∪ T) := by
@@ -57,24 +55,22 @@ theorem analytic_union {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtla
       exact mul_ne_zero hi hi' this
 
 /- English proof (translation)
-Rewrite using `[interior_union_isClosed_of_interior_empty hS h2, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interior_union_empty {X : Type} [TopologicalSpace X] {S T : Set X} (hS : IsClosed S) (h1 : interior S = ∅)
     (h2 : interior T = ∅) : interior (S ∪ T) = ∅ := by
   rw [interior_union_isClosed_of_interior_empty hS h2, h1]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hd : Dense (h ⁻¹' N)ᶜ` using `interior_eq_empty_iff_dense_compl.1 hNi`. Take `⟨z, hzN, hzO⟩` from `hd.exists_mem_open isOpen_interior (Set.nonempty_iff_ne_empty.2 hne)`. Establish `hC : IsClosed (h '' (interior (h ⁻¹' T))ᶜ)` using `(isOpen_interior.isClosed_compl.isCompact.image hh).isClosed`. Establish `hO : IsOpen ((h '' (interior (h ⁻¹' T))ᶜ)ᶜ ∩ Nᶜ)` using `hC.isOpen_compl.inter hN.isOpen_compl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : (h '' (interior (h ⁻¹' T))ᶜ)ᶜ ∩ Nᶜ ⊆ T`. Introduce and unpack `x ⟨h1, h2⟩`. Take `⟨c, hc⟩` from `Set.ncard_eq_one.1 (hfib x h2)`. Establish `hcx : h c = x`. Establish `: c ∈ h ⁻¹' {x}` using `by rw [hc]; rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `: c ∈ interior (h ⁻¹' T)`. Assume the negation of the conclusion as `hn`. Conclude with `h1 ⟨c, hn, hcx⟩`. Establish `h3 : c ∈ h ⁻¹' T` using `interior_subset this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcx]`. Conclude with `h3`. Establish `hmem : h z ∈ (h '' (interior (h ⁻¹' T))ᶜ)ᶜ ∩ Nᶜ`. Use `⟨?_, hzN⟩` and prove the remaining obligations. Introduce and unpack `⟨w, hw, hwz⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Set.ncard_eq_one.1 (hfib (h z) hzN)`. Establish `e1 : w ∈ h ⁻¹' {h z}` using `hwz`. Establish `e2 : z ∈ h ⁻¹' {h z}` using `rfl`. Rewrite `e1`, `e2` using `[hc]`. Conclude with `hw ((e1.trans e2.symm) ▸ hzO)`.
-
-Use `interior_maximal hsub hO hmem` as an intermediate fact. Rewrite `this` using `[hT]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interior_preimage {Y Z : Type} [TopologicalSpace Y] [TopologicalSpace Z] [T2Space Y] [CompactSpace Z]
     {h : Z → Y} (hh : Continuous h) {N T : Set Y} (hN : IsClosed N) (hNi : interior (h ⁻¹' N) = ∅)
@@ -110,39 +106,33 @@ theorem interior_preimage {Y Z : Type} [TopologicalSpace Y] [TopologicalSpace Z]
   exact this
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hdπ`. Take `⟨b1, b2, b3, b4, b5, b6⟩` from `hdh`. Establish `hcomp` using `CovMap.holoMap_comp hh hπ`. Establish `hbrc : IsClosed br` using `isClosed_of_isAnalyticSubset A a1`. Establish `hSi' : interior S = ∅`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hdn : Dense brᶜ` using `interior_eq_empty_iff_dense_compl.1 a2`. Take `⟨x, hx, hxO⟩` from `hdn.exists_mem_open isOpen_interior (Set.nonempty_iff_ne_empty.2 hne)`. Establish `hpos : 0 < (π ⁻¹' {x}).ncard` using `by rw [a5 x hx]; exact hd`. Take `⟨y, hy⟩` from `Set.nonempty_of_ncard_ne_zero hpos.ne'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy' : π y = x` using `hy`. Establish `: y ∈ interior (π ⁻¹' S)` using `preimage_interior_subset_interior_preimage hπ.1 (by show π y ∈ interior S`. Rewrite using `[hy']`. Conclude with `hxO)`. Rewrite `this` using `[hSi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hU` using `analytic_union a1 hS`. Use `⟨hU, interior_union_empty hbrc a2 hSi', CovMap.Deg.isAnalyticSubset_preimage hcomp hU, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.preimage_comp]`. Use `interior_preimage hh.1 (isClosed_of_isAnalyticSubset B b1) b4 b5 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.preimage_union]`. Conclude with `interior_union_empty (hbrc.preimage hπ.1) a4 hSi`. Introduce `x hx`. Establish `hx1 : x ∉ br` using `fun h => hx (Or.inl h)`. Establish `hx2 : x ∉ S` using `fun h => hx (Or.inr h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : ∀ y, π y = x → y ∉ N` using `fun y hy hn => hx2 (hy ▸ hNS hn)`. Rewrite using `[← a5 x hx1]`. Establish `himg : h '' ((π ∘ h) ⁻¹' {x}) = π ⁻¹' {x}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hz`. Introduce `hy`. Take `⟨c, hc⟩` from `Set.ncard_eq_one.1 (b5 y (hN y hy))`. Establish `hcx : h c = y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: c ∈ h ⁻¹' {y}` using `by rw [hc]; rfl`. Conclude with `this`. Use `⟨c, ?_, hcx⟩` and prove the remaining obligations. Use `show π (h c) = x`. Rewrite using `[hcx]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hy`. Rewrite using `[← himg]`. Use `(Set.ncard_image_of_injOn ?_).symm` and prove the remaining obligations. Introduce `z hz w _ hzw`. Take `⟨c, hc⟩` from `Set.ncard_eq_one.1 (b5 (h z) (hN _ hz))`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : w ∈ h ⁻¹' {h z}` using `hzw.symm`. Establish `e2 : z ∈ h ⁻¹' {h z}` using `rfl`. Rewrite `e1`, `e2` using `[hc]`. Conclude with `e2.trans e1.symm`. Introduce `j k y hy hnot hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnot1 : (C.chart j).symm y ∉ h ⁻¹' N` using `fun hn => hnot (Or.inr (hNS hn))`. Establish `hnot2 : h ((C.chart j).symm y) ∉ π ⁻¹' br` using `fun hn => hnot (Or.inl hn)`. Take `⟨l, hl⟩` from `B.cover (h ((C.chart j).symm y))`. Take `⟨Q, hQdef⟩ : ∃ Q : (Fin e → ℂ) → Fin e → ℂ, Q = B.chart l ∘ h ∘ (C.chart j).symm` from `⟨_, rfl⟩`. Take `⟨P, hPdef⟩ : ∃ P : (Fin e → ℂ) → Fin e → ℂ, P = A.chart k ∘ π ∘ (B.chart l).symm` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQa : AnalyticAt ℂ Q y`. Rewrite using `[hQdef]`. Conclude with `hh.2 j l y ⟨hy, hl⟩`. Establish `hu : (B.chart l).symm (Q y) = h ((C.chart j).symm y)`. Rewrite using `[hQdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(B.chart l).left_inv hl`. Establish `hQt : Q y ∈ (B.chart l).target`. Rewrite using `[hQdef]`. Conclude with `(B.chart l).map_source hl`. Establish `hk' : π ((B.chart l).symm (Q y)) ∈ (A.chart k).source`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hu]`. Conclude with `hk`. Establish `hPa : AnalyticAt ℂ P (Q y)`. Rewrite using `[hPdef]`. Conclude with `hπ.2 l k _ ⟨hQt, hk'⟩`.
-
-Establish `hc : ContinuousAt (h ∘ (C.chart j).symm) y` using `hh.1.continuousAt.comp ((C.chart j).continuousAt_symm hy)`. Establish `heq : (A.chart k ∘ (π ∘ h) ∘ (C.chart j).symm) =ᶠ[nhds y] P ∘ Q` using `by filter_upwards [hc ((B.chart l).open_source.mem_nhds hl)] with t ht`. Establish `ht' : h ((C.chart j).symm t) ∈ (B.chart l).source` using `ht`. Rewrite using `[hPdef, hQdef]`. Simplify using `only [Function.comp, (B.chart l).left_inv ht']`.
-
-Establish `hcomp' : fderiv ℂ (P ∘ Q) y = (fderiv ℂ P (Q y)).comp (fderiv ℂ Q y)` using `fderiv_comp y hPa.differentiableAt hQa.differentiableAt`. Rewrite using `[heq.fderiv_eq, hcomp']`. Express the relevant statement in the definitionally equal form `LinearMap.det ((fderiv ℂ P (Q y) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ∘ₗ (fderiv ℂ Q y : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) ≠ 0`. Rewrite using `[LinearMap.det_comp]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[hPdef]`. Conclude with `a6 l k _ hQt (by rw [hu]; exact hnot2) hk'`. Rewrite using `[hQdef]`. Conclude with `b6 j l y hy hnot1 hl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_comp {e d : ℕ} {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space Y]
     [TopologicalSpace Z] [CompactSpace Z] {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {C : FinHolAtlas e Z}

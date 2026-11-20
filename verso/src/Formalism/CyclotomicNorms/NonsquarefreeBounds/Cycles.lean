@@ -17,17 +17,17 @@ def resR {G V : Type*} [Group G] [AddCommGroup V] [Module k V] (ρ : Representat
   (ρ g).restrict (hW g)
 
 /- English proof (translation)
-Establish `hlt : flag i.castSucc < flag i.succ`. Use `lt_of_le_of_ne (hmono i) fun h => ?_` and prove the remaining obligations. Use `congrArg (fun S : Submodule k V => finrank k S) h` as an intermediate fact. Simplify using `only [hdim, Fin.val_castSucc, Fin.val_succ] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨x, hx, hxn⟩` from `SetLike.exists_of_lt hlt`. Establish `hz : ∀ a : k, a • x ∈ flag i.castSucc → a = 0`. Introduce `a ha`. Assume the negation of the conclusion as `hne`. Conclude with `hxn ((Submodule.smul_mem_iff _ hne).mp ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hchi i x hx 1 I.one_mem`. Simplify using `only [map_one, Module.End.one_apply] at h`. Establish `: (1 - χ i 1) • x ∈ flag i.castSucc` using `by rwa [sub_smul, one_smul]`. Use `hz _ this` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[sub_eq_zero]`. Conclude with `this.symm`. Introduce `y hy z hz'`. Establish `h1` using `hchi i x hx (y * z) (I.mul_mem hy hz')`. Establish `h2` using `hchi i x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hchi i x hx z hz'`. Establish `h4` using `hstab i.castSucc _ h3 y hy`. Establish `key : (χ i (y * z) - χ i y * χ i z) • x = (ρ y (ρ z x - χ i z • x) + χ i z • (ρ y x - χ i y • x)) - (ρ (y * z) x - χ i (y * z) • x)`. Rewrite using `[map_mul, Module.End.mul_apply, map_sub, map_smul]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : (χ i (y * z) - χ i y * χ i z) • x ∈ flag i.castSucc`. Rewrite using `[key]`. Conclude with `Submodule.sub_mem _ (Submodule.add_mem _ h4 (Submodule.smul_mem _ _ h2)) h1`. Use `hz _ hm` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem chi_mul {G V : Type*} [Group G] [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (ρ : Representation k G V) (N : ℕ) (I : Subgroup G) (χ : Fin N → G → k)

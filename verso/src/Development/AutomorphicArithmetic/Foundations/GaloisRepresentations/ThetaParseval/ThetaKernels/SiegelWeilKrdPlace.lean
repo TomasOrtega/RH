@@ -14,26 +14,26 @@ namespace PositivityTheory.SiegelWeilFormula.Place
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 /- English proof (translation)
-The claim follows from `d.ok.good.cm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.cm (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : IsCMExt F E σ := d.ok.good.cm
 /- English proof (translation)
-The claim follows from `d.ok.good.std`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.std (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : IsStd d.B.ψ := d.ok.good.std
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_map (continuous_piInf (d.B.emb w))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cw_k (w : InfinitePlace F) {p q : Type} : Continuous (fun X : Matrix p q (AE F E) => d.cw w X) :=
   continuous_id.matrix_map (continuous_piInf (d.B.emb w))
 /- English proof (translation)
-The claim follows from `mat_ext d.cm d.B.emb h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem cw_ext_k {p q : Type} {X Z : Matrix p q (AE F E)} (h1 : ∀ w, d.cw w X = d.cw w Z) (h2 : finOne F • X = finOne F • Z) :
     X = Z :=
   mat_ext d.cm d.B.emb h1 h2
 /- English proof (translation)
-The claim follows from `map_cA d.cm _ X`.
+A detailed English derivation is pending.
 -/
 theorem cw_cA_k (w : InfinitePlace F) {p q : Type} (X : Matrix p q (AE F E)) : d.cw w (X.map (cA σ)) = (d.cw w X).map star :=
   map_cA d.cm _ X

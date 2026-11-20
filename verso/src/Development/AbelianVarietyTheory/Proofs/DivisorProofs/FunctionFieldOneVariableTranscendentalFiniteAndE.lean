@@ -9,9 +9,9 @@ namespace GlobalTheory.Nef
 open IntermediateField
 
 /- English proof (translation)
-Establish `hind : AlgebraicIndependent k (fun _ : Unit => x)` using `algebraicIndependent_unique_type_iff.mpr hx`. Establish `hb : IsTranscendenceBasis k (fun _ : Unit => x)` using `hind.isTranscendenceBasis_of_trdeg_le_of_finite (by simpa using htr)`. Establish `halg : Algebra.IsAlgebraic k⟮x⟯ F`. Use `hb.isAlgebraic_field` as an intermediate fact. Rewrite `this` using `[Set.range_const]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: Algebra.EssFiniteType k⟮x⟯ F` using `Algebra.EssFiniteType.of_comp k k⟮x⟯ F`. Take `⟨S, hS⟩` from `IntermediateField.fg_top_iff.mpr this`. Establish `hfin : FiniteDimensional k⟮x⟯ (adjoin k⟮x⟯ (S : Set F))` using `IntermediateField.finiteDimensional_adjoin fun y _ => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral`. Rewrite `hfin` using `[hS]`. Conclude with `LinearEquiv.finiteDimensional (IntermediateField.topEquiv (F := k⟮x⟯) (E := F)).toLinearEquiv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_adjoin_of_trdeg_le_one {k F : Type} [Field k] [Field F] [Algebra k F]
     [Algebra.EssFiniteType k F] (htr : Algebra.trdeg k F ≤ 1) (x : F) (hx : Transcendental k x) :
@@ -31,9 +31,9 @@ theorem finiteDimensional_adjoin_of_trdeg_le_one {k F : Type} [Field k] [Field F
   exact LinearEquiv.finiteDimensional (IntermediateField.topEquiv (F := k⟮x⟯) (E := F)).toLinearEquiv
 
 /- English proof (translation)
-Take `⟨t, ht, hfin⟩` from `h`. Establish `h1 : Algebra.EssFiniteType k k⟮t⟯` using `IntermediateField.essFiniteType_iff.mpr ⟨{t}, by simp⟩`. Use `⟨Algebra.EssFiniteType.comp k k⟮t⟯ F, ?_⟩` and prove the remaining obligations. Use `open IntermediateField.algebraAdjoinAdjoin in`. Establish `: Algebra.IsAlgebraic (Algebra.adjoin k {t}) F` using `Algebra.IsAlgebraic.trans _ k⟮t⟯ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hind : AlgebraicIndependent k (fun _ : Unit => t)` using `algebraicIndependent_unique_type_iff.mpr ht`. Establish `hb : IsTranscendenceBasis k (fun _ : Unit => t)` using `hind.isTranscendenceBasis_iff_isAlgebraic.mpr (by rwa [Set.range_const])`. Rewrite using `[← hb.cardinalMk_eq_trdeg]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem essFiniteType_trdeg_of_isFF {k F : Type} [Field k] [Field F] [Algebra k F] (h : IsFF k F) :
     Algebra.EssFiniteType k F ∧ Algebra.trdeg k F ≤ 1 := by
@@ -51,11 +51,11 @@ theorem essFiniteType_trdeg_of_isFF {k F : Type} [Field k] [Field F] [Algebra k 
   simp
 
 /- English proof (translation)
-Introduce `k F _ _ _ h`. Take `⟨hfg, htr⟩` from `essFiniteType_trdeg_of_isFF h`. Use `⟨fun x hx => finiteDimensional_adjoin_of_trdeg_le_one htr x hx, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ _`. Establish `hfgE : Algebra.EssFiniteType k E` using `Algebra.EssFiniteType.comp k F E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : Algebra.trdeg F E = 0` using `trdeg_eq_zero_iff.mpr inferInstance`. Establish `htrE : Algebra.trdeg k E ≤ 1`. Rewrite using `[← trdeg_add_eq k F, h0, add_zero]`. Conclude with `htr`. Take `⟨t, ht, _⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht' : Transcendental k (algebraMap F E t)` using `(transcendental_algebraMap_iff (algebraMap F E).injective).mpr ht`. Conclude with `⟨algebraMap F E t, ht', finiteDimensional_adjoin_of_trdeg_le_one htrE _ ht'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFF_main : ∀ (k F : Type) [Field k] [Field F] [Algebra k F], IsFF k F →
     (∀ x : F, Transcendental k x → FiniteDimensional k⟮x⟯ F) ∧

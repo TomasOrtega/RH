@@ -7,15 +7,13 @@ open scoped Matrix
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d S hS hcov Ψ hΨ`. Take `⟨⟨hlc, hcs⟩, hz⟩` from `hΨ`. Establish `hcl : IsClosed (Function.support Ψ)`. Establish `h` using `(hlc.isOpen_fiber 0).isClosed_compl`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `Y`. Simplify using `[Function.mem_support]`. Establish `hK : IsCompact (Function.support Ψ)` using `IsCompact.of_isClosed_subset hcs hcl (subset_tsupport Ψ)`. Establish `hU : ∀ E : GL (Fin n) k, IsOpen ((fun Y : Matrix (Fin n) (Fin d) k => E.val * Y) ⁻¹' S)` using `fun E => hS.preimage (Continuous.matrix_mul continuous_const continuous_id)`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun E : GL (Fin n) k => (fun Y : Matrix (Fin n) (Fin d) k => E.val * Y) ⁻¹' S) hU (by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `Y hY`. Establish `hr : Y.rank = n`. Assume the negation of the conclusion as `h`. Conclude with `hY (hz Y h)`. Take `⟨E, hE⟩` from `hcov Y hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.mem_iUnion.2 ⟨E, hE⟩)`. Use `⟨t, fun Y hY => ?_⟩` and prove the remaining obligations. Use `ht hY` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_preimage] at this`. Take `⟨E, hEt, hE⟩` from `this`.
-
-Conclude with `⟨E, hEt, hE⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FullRankCoinv.fullRk_support_finite_cover : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (S : Set (Matrix (Fin n) (Fin d) k)), IsOpen S →

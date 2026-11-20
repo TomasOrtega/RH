@@ -18,7 +18,7 @@ namespace GlobalTheory
 namespace ExpUniqFamily
 
 /- English proof (translation)
-Establish `hc : Continuous (fun z => (⟨f z, hf z⟩ : Λ))` using `f.continuous_of_finiteDimensional.subtype_mk _`. Use `congrArg Subtype.val (PreconnectedSpace.constant inferInstance hc (x := z) (y := 0))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linear_eq_zero_of_discrete {g : ℕ} (Λ : AddSubgroup (Fin g → ℂ)) [DiscreteTopology Λ]
     (f : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (hf : ∀ z, f z ∈ Λ) (z : Fin g → ℂ) : f z = 0 := by
@@ -28,7 +28,7 @@ theorem linear_eq_zero_of_discrete {g : ℕ} (Λ : AddSubgroup (Fin g → ℂ)) 
   simpa using this
 
 /- English proof (translation)
-Establish `h` using `he (z - w) w`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h]`. Conclude with `mul_eq_right`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_iff_sub {V Q : Type} [AddCommGroup V] [Group Q] (e : V → Q) (he : ∀ z w, e (z + w) = e z * e w)
     (z w : V) : e z = e w ↔ e (z - w) = 1 := by
@@ -38,13 +38,13 @@ theorem eq_iff_sub {V Q : Type} [AddCommGroup V] [Group Q] (e : V → Q) (he : �
   exact mul_eq_right
 
 /- English proof (translation)
-Establish `hk : 0 < (n' - n).natAbs + 1` using `Nat.succ_pos _`. Take `⟨m, hm⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (h _ hk)`. Generalize the expression as in `hkk : (n' - n).natAbs + 1 = k at hk hm`. Establish `hk' : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `h2 : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((n' - n : ℤ) : ℂ) = ((k * m : ℤ) : ℂ)`. Use `push_cast`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Clear denominators, using `at hm ⊢` for the nonvanishing conditions. Take the linear combination `hm`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h4 : n' - n = k * m` using `Int.cast_injective h3`. Establish `h5 : n' - n = 0` using `Int.eq_zero_of_abs_lt_dvd (m := k) ⟨m, h4⟩ (by`. Rewrite using `[← hkk, Int.abs_eq_natAbs]`. Use `push_cast`. Use the proof step `omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem int_eq_of_exp (n n' : ℤ)
     (h : ∀ k : ℕ, 0 < k → Complex.exp (-(2 * Real.pi * Complex.I) * (n : ℂ) / k) =
@@ -65,15 +65,13 @@ theorem int_eq_of_exp (n n' : ℤ)
   omega
 
 /- English proof (translation)
-Establish `h1 : ∀ z, f' (f z) = z` using `fun z => sub_eq_zero.1 <| linear_eq_zero_of_discrete P.range (f' ∘ₗ f - LinearMap.id) (fun z => (hk _).1 <| (eq_iff_sub e ha _ _).1 (by simp [hf, hf'])) z`. Establish `h2 : ∀ z, f (f' z) = z` using `fun z => sub_eq_zero.1 <| linear_eq_zero_of_discrete P'.range (f ∘ₗ f' - LinearMap.id) (fun z => (hk' _).1 <| (eq_iff_sub e' ha' _ _).1 (by simp [hf, hf'])) z`. Set `d : O → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `fun a => LinearMap.pi fun k => χ k a • LinearMap.proj k`. Establish `hd : ∀ a z, d a z = fun k => χ k a * z k` using `fun a z => rfl`. Establish `h3 : ∀ a z, f (d a z) = d a (f z)` using `fun a z => sub_eq_zero.1 <| linear_eq_zero_of_discrete P'.range (f ∘ₗ d a - d a ∘ₗ f) (fun z => (hk' _).1 <| (eq_iff_sub e' ha' _ _).1 (by simp only [LinearMap.comp_apply, hf, hd, hl, hl'])) z`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : ∀ a, ∃ b, P' b = f (P a)` using `fun a => (hk' _).1 (by rw [hf]; exact (hk _).2 ⟨a, rfl⟩)`. Establish `m2 : ∀ b, ∃ a, P a = f' (P' b)` using `fun b => (hk _).1 (by rw [hf']; exact (hk' _).2 ⟨b, rfl⟩)`. Use `choose ga hga using m1`. Use `choose de hde using m2`. Set `gam : L ≃ₗ[O] L'` to `{ toFun := ga invFun := de map_add' := fun a b => iP' (by simp [hga]) map_smul' := fun c a => iP' (by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : P (c • a) = d c (P a)` using `funext fun i => hP c a i`. Establish `e2 : P' (c • ga a) = d c (P' (ga a))` using `funext fun i => hP' c _ i`. Rewrite using `[RingHom.id_apply, hga, e1, e2, hga, h3])`. Use `left_inv := fun a => iP (by rw [hde, hga, h1])`. Use `right_inv := fun b => iP' (by rw [hga, hde, h2]) }`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨LinearEquiv.ofLinear f f' (LinearMap.ext h2) (LinearMap.ext h1), gam, hf, hga, ?_⟩` and prove the remaining obligations. Introduce `k a b hk0 hab`. Establish `hk1 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk0.ne'`. Rewrite `hab` using `[← hf, map_smul, ← hga, eq_iff_sub e' ha', hk']`. Take `⟨c, hc⟩` from `hab`.
-
-Use `⟨c, iP' ?_⟩` and prove the remaining obligations. Use `show P' (ga a) = _`. Rewrite using `[map_add, map_nsmul, hc, ← Nat.cast_smul_eq_nsmul ℂ, ← smul_sub, smul_smul, mul_inv_cancel₀ hk1, one_smul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem algebraic {O Q L L' : Type} [CommRing O] [Group Q] [AddCommGroup L] [Module O L] [AddCommGroup L']
     [Module O L'] {g : ℕ} (χ : Fin g → O → ℂ) (P : L →+ (Fin g → ℂ)) (P' : L' →+ (Fin g → ℂ))
@@ -124,9 +122,9 @@ theorem algebraic {O Q L L' : Type} [CommRing O] [Group Q] [AddCommGroup L] [Mod
   abel
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Establish `hd : Differentiable ℂ (fun z : W => (b, z))` using `by fun_prop`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h1.preimage hd.continuous` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using the standard rewrite rules. Conclude with `h2.comp hd.differentiableOn (fun z hz => ⟨⟨trivial, trivial⟩, hz.2⟩)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHolTo_fibre {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W] [NormedSpace ℂ W]
     {X : Scheme.{0}} (y : V × W → (Sp ℂ ⟶ X)) (h : IsHolTo (Set.univ ×ˢ Set.univ) y) (b : V) :
@@ -144,7 +142,7 @@ theorem isHolTo_fibre {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [N
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-The claim follows from `isHolTo_fibre _ (U.hol i 0 Set.univ (fun _ => P) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2 0`.
+A detailed English derivation is pending.
 -/
 theorem isHolTo_ex {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (U : FamilyUnif Xo σ ty) (i : Fin U.n) (P : (U.Di i).La →+ (Fin g → ℂ))
@@ -153,13 +151,13 @@ theorem isHolTo_ex {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+
     ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2 0
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Establish `dk : DiscreteTopology {z // e z = 1}`. Establish `h0 : (fun z => e z = 1) = fun z => z ∈ P.range` using `funext fun z => propext (hk z)`. Use `show DiscreteTopology (Subtype fun z => e z = 1)`. Rewrite using `[h0]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hP.2.2.1`. Establish `dk' : DiscreteTopology {z // e' z = 1}`. Establish `h0 : (fun z => e' z = 1) = fun z => z ∈ P'.range` using `funext fun z => propext (hk' z)`. Use `show DiscreteTopology (Subtype fun z => e' z = 1)`. Rewrite using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hP'.2.2.1`. Take `⟨f, hf, -⟩` from `GlobalTheory.T.existsUnique_linear_lift_uniformised_fibres X X t.G t.G y y g g e e' (𝟙 _) (MonoidHom.id _) t.semi.smooth ha ha' hh hh' hd' dk' (Category.id_comp _) (fun _ => Category.comp_id _)`. Take `⟨f', hf', -⟩` from `GlobalTheory.T.existsUnique_linear_lift_uniformised_fibres X X t.G t.G y y g g e' e (𝟙 _) (MonoidHom.id _) t.semi.smooth ha' ha hh' hh hd dk (Category.id_comp _) (fun _ => Category.comp_id _)`. Take `⟨h, gam, h1, h2, h3⟩` from `algebraic (fun k (a : 𝓞 E) => ty k (a : E)) P P' hP.1 hP'.1 hP.2.1 hP'.2.1 hP.2.2.1 hP'.2.2.1 e e' ha ha' hk hk' (fun a x => x ≫ t.act.act a) hl hl' f f' hf hf'`. Use `⟨h, gam, fun z => by rw [h1], h2, fun a a' => ?_, fun k s a b hk0 e1 e2 => h3 k a b hk0 (e1.symm.trans e2)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `int_eq_of_exp _ _ fun k hk0 => ?_` and prove the remaining obligations. Establish `w1` using `hw k a a' (Units.mk0 _ (Complex.exp_ne_zero _)) hk0 rfl`. Establish `w2` using `hw' k (gam a) (gam a') (Units.mk0 _ (Complex.exp_ne_zero _)) hk0 rfl`. Rewrite `w2` using `[h2, h2, ← map_smul h, ← map_smul h, h1, h1]`. Conclude with `congrArg Units.val (weilIs_unique_fieldPoint X t.G t.PP.L t.PP.isLB ℂ y k _ _ _ _ w2 w1)`.
+A detailed English derivation is pending.
 -/
 theorem fibrewise {X : Scheme.{0}} (t : SAB H X) (D₁ D₂ : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ))
     (P : D₁.La →+ (Fin g → ℂ)) (P' : D₂.La →+ (Fin g → ℂ)) (hP : IsPeriod D₁ ty P) (hP' : IsPeriod D₂ ty P')
@@ -212,7 +210,7 @@ theorem fibrewise {X : Scheme.{0}} (t : SAB H X) (D₁ D₂ : Datum H) {g : ℕ}
 end ExpUniqFamily
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ g ty U i j P P' hP hP' hu`. Take `⟨h, gam, h1, h2, h3, h4⟩` from `ExpUniqFamily.fibrewise Xo.univ.t (U.Di i) (U.Di j) ty P P' hP hP' _ _ hu (U.ex i P) (U.ex j P') (U.ex_add i P hP) (U.ex_add j P' hP') (U.ex_ker i P hP) (U.ex_ker j P' hP') (U.ex_lin i P hP) (U.ex_lin j P' hP') (U.ex_weil i P hP) (U.ex_weil j P' hP') (ExpUniqFamily.isHolTo_ex U i …`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Conclude with `⟨h, gam, h1, h2, h3, fun a ha => h4 l.M _ _ _ hM (U.ex_eta i P hP a ha) (U.ex_eta j P' hP' a ha), fun a => h4 l.A _ _ _ l.A_pos (U.ex_etaA i P hP a) (U.ex_etaA j P' hP' a)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem familyUnif_exp_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (U : FamilyUnif Xo σ ty) (i j : Fin U.n) (P : (U.Di i).La →+ (Fin g → ℂ)) (P' : (U.Di j).La →+ (Fin g → ℂ)), IsPeriod (U.Di i) ty P → IsPeriod (U.Di j) ty P' → U.u i P = U.u j P' → ∃ (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (gam : (U.Di i).La ≃ₗ[𝓞 E] (U.Di j).La), (∀ z, (U.ex j P' (h z)).left = (U.ex i P z).left) ∧ (∀ a, P' (gam a) = h (P a)) ∧ (∀ a a', (U.Di j).EF (gam a) (gam a') = (U.Di i).EF a a') ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), ∃ e, gam (U.t i a) = U.t j a + l.M • e) ∧ ∀ a, ∃ e, gam (U.t i a) = U.t j a + l.A • e := by
   intro E _ _ _ H D l Xo σ g ty U i j P P' hP hP' hu

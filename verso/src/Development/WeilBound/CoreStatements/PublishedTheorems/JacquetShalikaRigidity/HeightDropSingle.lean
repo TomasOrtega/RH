@@ -16,7 +16,7 @@ namespace HeightDropSingle
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-Simplify using `only [euclidNorm]`. Rewrite using `[Fin.sum_univ_succAbove _ p, hz]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem euclid_drop {F : Type*} [NormedField F] {n : ℕ} (p : Fin (n + 1)) (z : Fin (n + 1) → F)
     (hz : z p = 0) : euclidNorm z = euclidNorm (fun j => z (p.succAbove j)) := by
@@ -25,9 +25,7 @@ theorem euclid_drop {F : Type*} [NormedField F] {n : ℕ} (p : Fin (n + 1)) (z :
   simp
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Break down `Fin.eq_self_or_eq_succAbove p i with rfl | ⟨j, rfl⟩` into its components or cases. Rewrite using `[hz, norm_zero]`. Conclude with `norm_nonneg _`.
-
-Conclude with `norm_le_pi_norm (fun j => z (p.succAbove j)) j`. Conclude with `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => norm_le_pi_norm z _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_drop {F : Type*} [NormedField F] {n : ℕ} (p : Fin (n + 1)) (z : Fin (n + 1) → F)
     (hz : z p = 0) : ‖z‖ = ‖fun j => z (p.succAbove j)‖ := by
@@ -39,9 +37,9 @@ theorem sup_drop {F : Type*} [NormedField F] {n : ℕ} (p : Fin (n + 1)) (z : Fi
   · exact (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => norm_le_pi_norm z _
 
 /- English proof (translation)
-Unfold `adelicNorm`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[euclid_drop p (infComp w y) (by show (y p).1 w = 0; rw [hy]; rfl)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[sup_drop p (finComp v y) (by show (y p).2 v = 0; rw [hy]; rfl)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adelicNorm_drop {K : Type*} [Field K] [NumberField K] {n : ℕ} (p : Fin (n + 1))
     (y : Fin (n + 1) → 𝔸[K]) (hy : y p = 0) :
@@ -56,7 +54,7 @@ theorem adelicNorm_drop {K : Type*} [Field K] [NumberField K] {n : ℕ} (p : Fin
     rfl
 
 /- English proof (translation)
-Unfold `Reduction.height`. Establish `: ratVec (Pi.single i (1 : K)) ᵥ* (x : Matrix (Fin n) (Fin n) 𝔸[K]) = x.val i`. Use extensionality with `c`. Simplify using `[ratVec, vecMul, dotProduct, Pi.single_apply]`. Rewrite using `[this, hx, adelicNorm_single_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem height_single {K : Type*} [Field K] [NumberField K] {n : ℕ} (x : GL (Fin n) 𝔸[K]) (i : Fin n)
     (hx : x.val i = Pi.single i 1) : Reduction.height x (Pi.single i (1 : K)) = 1 := by
@@ -69,41 +67,39 @@ theorem height_single {K : Type*} [Field K] [NumberField K] {n : ℕ} (x : GL (F
 end HeightDropSingle
 
 /- English proof (translation)
-Introduce `hD hG hK1 hK5e E _ _ _ m k hk hkm ι hι`. Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Take `⟨C, hC⟩` from `hG E n (by omega)`. Establish `hDm` using `hD E (n + 1)`. Establish `hDk` using `hD E k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDι : ∀ g, Dt (ι g) = Dt g` using `((hK5e E (n + 1) k hkm.le).2 ι hι).2.2.2.1`. Establish `hK` using `(hK1 E (n + 1) (by omega)).2.2.1`. Use `⟨C, fun g u => ⟨fun hu => ?_, fun hu => ?_⟩⟩` and prove the remaining obligations. Take `⟨x, hx⟩ : ∃ x, x = u * ι g` from `⟨_, rfl⟩`. Rewrite using `[← hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hDx : Dt x = Dt g` using `by rw [hx, hDm.2.1, hDm.2.2.2.2.1 0 u hu, hDι, one_mul]`. Establish `hrow : x.val (Fin.last n) = Pi.single (Fin.last n) 1`. Use extensionality with `c`. Rewrite using `[hx, Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (Fin.last n)]`. Rewrite using `[hu.2.1, one_mul, hι g]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : ¬ ((Fin.last n : ℕ) < k ∧ (c : ℕ) < k)` using `by simp; omega`. Simplify using `only [embM, Matrix.of_apply, dif_neg hk', Matrix.one_apply, Pi.single_apply, eq_comm]`. Introduce `j _ hj`. Rewrite using `[hu.1 _ _ (lt_of_le_of_ne (Fin.le_last j) hj), zero_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpos` using `hDk.1 g`. Use `(hK x (Pi.single (Fin.last n) 1) fun h => by simpa using congrFun h (Fin.last n)).trans (le_of_eq ?_)` and prove the remaining obligations. Unfold `ht`. Rewrite using `[HeightDropSingle.height_single x _ hrow, hDx, Real.rpow_neg hpos.le, one_div]`. Take `⟨x, hx⟩ : ∃ x, x = u * ι g` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hx]`. Establish `hDx : Dt x = Dt g` using `by rw [hx, hDm.2.1, hDm.2.2.2.2.1 (k + 1) u hu, hDι, one_mul]`. Use `set p : Fin (n + 1) := ⟨k, hkm⟩ with hp`. Establish `hcol : ∀ i, x.val i p = (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) (Ad E)) i p`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single p]`. Rewrite using `[hι g]`. Establish `hk' : ¬ ((p : ℕ) < k ∧ (p : ℕ) < k)` using `by simp [p]`. Simplify using `only [embM, Matrix.of_apply, dif_neg hk', Matrix.one_apply_eq, mul_one]`. Conclude with `hu.2.2 i p (by simp [p])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hj`. Rewrite using `[hι g]`. Establish `hk' : ¬ ((j : ℕ) < k ∧ (p : ℕ) < k)` using `by simp [p]`. Simplify using `only [embM, Matrix.of_apply, dif_neg hk', Matrix.one_apply_ne hj, mul_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set M' : Matrix (Fin n) (Fin n) (Ad E) := x.val.submatrix p.succAbove p.succAbove with hM'`. Establish `hdet : M'.det = x.val.det`. Rewrite using `[Matrix.det_succ_column x.val p, Finset.sum_eq_single p]`. Rewrite using `[hcol, Matrix.one_apply_eq, mul_one, Even.neg_one_pow ⟨(p : ℕ), rfl⟩, one_mul]`. Introduce `i _ hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hcol, Matrix.one_apply_ne hi, mul_zero, zero_mul]`. Simplify using the standard rewrite rules. Establish `hunit : IsUnit M'.det`. Rewrite using `[hdet]`. Conclude with `(Matrix.GeneralLinearGroup.det x).isUnit`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Set `g' : GA E n` to `M'.nonsingInvUnit hunit`. Establish `hDg' : Dt g' = Dt x`. Establish `: GeneralLinearGroup.det g' = GeneralLinearGroup.det x` using `Units.ext hdet`. Unfold `Dt`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ξ', hξ'0, hξ'⟩` from `hC g'`. Set `ξ : Fin (n + 1) → E` to `p.insertNth 0 ξ'`. Establish `hξ0 : ξ ≠ 0`. Introduce `h`. Apply `hξ'0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use extensionality with `j`. Simplify `congrFun h (p.succAbove j)` using `[ξ]`. Establish `hht : Reduction.height x ξ = Reduction.height g' ξ'`. Unfold `Reduction.height`. Rewrite using `[HeightDropSingle.adelicNorm_drop p]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `c`. Simplify using `only [vecMul, dotProduct]`. Rewrite using `[Fin.sum_univ_succAbove _ p]`. Simplify using `[ξ, ratVec, g', M']`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [vecMul, dotProduct]`. Rewrite using `[Fin.sum_univ_succAbove _ p]`. Simplify using `[ξ, ratVec, hcol, Matrix.one_apply_ne (Fin.succAbove_ne p _)]`. Establish `hpos` using `hDk.1 g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hK x ξ hξ0).trans ?_` and prove the remaining obligations. Unfold `ht at hξ' ⊢`. Rewrite using `[hht, hDx]`. Rewrite `hξ'` using `[hDg', hDx]`. Establish `h1 : Reduction.height g' ξ' ≤ C * Dt g ^ ((n : ℝ)⁻¹)` using `(div_le_iff₀ (Real.rpow_pos_of_pos hpos _)).1 hξ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[div_le_iff₀ (Real.rpow_pos_of_pos hpos _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.rpow_add hpos]`. Use `congr 2`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem short_rows_embedding_of : D0 → MinkowskiBoundAlt → K1 → CornerEmbedding → ShortRowsEmbedding := by
   intro hD hG hK1 hK5e E _ _ _ m k hk hkm ι hι

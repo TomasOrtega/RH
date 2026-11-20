@@ -11,9 +11,9 @@ open scoped ENNReal nonZeroDivisors Classical
 namespace GlobalTheory.BumpData
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨l, rfl⟩` from `Quotient.exists_rep M`. Use `⟨fun i => l.get ⟨i, by simpa using i.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map]`. Use `congr 1`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `List.ext_get (by simp)` to reduce the goal to its premises. Introduce `n h1 h2`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem exists_enum {X : Type} (M : Multiset X) {a : ℕ} (h : M.card = a) :
     ∃ f : Fin a → X, Finset.univ.val.map f = M := by
@@ -27,11 +27,11 @@ theorem exists_enum {X : Type} (M : Multiset X) {a : ℕ} (h : M.card = a) :
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ a π hπ T hT`. Proceed by induction on `π using Quotient.inductionOn with | _ π₀ => ?_`. Take `⟨ω, hωu, hω⟩` from `hπ`. Establish `hsat : ∀ w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, (CG.mk π₀).HasSat w.1 (sat (CG.mk π₀) w.1)`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : ∃ B, (CG.mk π₀).HasSat w.1 B` using `hT w.1 w.2`. Unfold `sat`. Rewrite using `[dif_pos hx]`. Conclude with `hx.choose_spec`. Establish `hα : ∀ w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, ∃ f : Fin a → ℂˣ, Finset.univ.val.map f = sat (CG.mk π₀) w.1` using `fun w => exists_enum _ (hsat w).card`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose α hα using hα`. Use `⟨α, π₀, ω, hα, rfl, hωu, hω, ⟨ω, hωu, CuspSub.hasCentral_iff.2 hω⟩, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hα w]`. Conclude with `hsat w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bumpData : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CG E a), π.IsUnitary →
     ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T π →

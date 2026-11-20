@@ -12,7 +12,7 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `a ∉ (PrimeSpectrum.comap χ t).asIdeal`. Introduce `h`. Conclude with `t.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h ha)`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem spMap_base_mem_basicOpen {R T : Type} [CommRing R] [CommRing T] (χ : R →+* T) (a : R)
     (ha : IsUnit (χ a)) (t : Sp T) : (spMap χ).base t ∈ (PrimeSpectrum.basicOpen a : (Sp R).Opens) := by
@@ -21,15 +21,13 @@ theorem spMap_base_mem_basicOpen {R T : Type} [CommRing R] [CommRing T] (χ : R 
   exact t.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h ha)
 
 /- English proof (translation)
-Introduce `R k _ _ φ X X' f f' π _ W H hW`. Establish `hc : IsClosed (f.base '' (W : Set X)ᶜ)` using `f.isClosedMap _ W.isOpen.isClosed_compl`. Set `t : Sp k` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hx : (spMap φ).base t ∈ (f.base '' (W : Set X)ᶜ)ᶜ`. Introduce and unpack `⟨x, hx, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback H x t e`. Conclude with `hx (hW.ge (Set.mem_univ z))`. Take `⟨_, ⟨a, rfl⟩, ha, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hx hc.isOpen_compl`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ha` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ a ∈ (⊥ : Ideal k)`. Conclude with `h0`. Introduce `T _ χ hχ Z g ρ H'`. Use `top_le_iff.1 fun z _ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hz`. Establish `hm` using `spMap_base_mem_basicOpen χ a hχ (g.base z)`. Establish `e : f.base (ρ.base z) = (spMap χ).base (g.base z)`. Use `congrArg (fun h : Z ⟶ Sp R => h.base z) H'.w` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `hle (e ▸ hm : f.base (ρ.base z) ∈ _) ⟨ρ.base z, hz, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tube_of_universallyClosed : ∀ (R k : Type) [CommRing R] [Field k] (φ : R →+* k) (X X' : Scheme.{0})
     (f : X ⟶ Sp R) (f' : X' ⟶ Sp k) (π : X' ⟶ X) [UniversallyClosed f] (W : X.Opens),

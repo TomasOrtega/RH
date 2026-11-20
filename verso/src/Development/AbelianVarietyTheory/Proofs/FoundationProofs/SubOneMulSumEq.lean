@@ -9,7 +9,7 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 namespace GlobalTheory.TateInv
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, mul_add, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -23,14 +23,14 @@ theorem sub_one_mul_sum {R : Type*} [CommRing R] (ω : R) (n : ℕ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[sub_one_mul_sum, hp, geom_sum_eq h1, hp, sub_self, zero_div, mul_zero, sub_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_one_mul_sum_eq {Ω : Type*} [Field Ω] (ω : Ω) (p : ℕ) (h1 : ω ≠ 1) (hp : ω ^ p = 1) :
     (ω - 1) * ∑ s ∈ Finset.range p, (s : Ω) * ω ^ s = p := by
   rw [sub_one_mul_sum, hp, geom_sum_eq h1, hp, sub_self, zero_div, mul_zero, sub_zero, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, map_pow, hγ, ← pow_mul, pow_succ]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -43,9 +43,9 @@ theorem pow_apply_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] (γ : Ω ≃ₐ[�
     congr 1; ring
 
 /- English proof (translation)
-Establish `h : Subring.closure {ζ} ≤ (Subring.closure {ζ}).comap ((γ ^ t : Ω ≃ₐ[ℚ] Ω) : Ω →+* Ω)`. Rewrite using `[Subring.closure_le]`. Introduce `y hy`. Rewrite using `[Set.mem_singleton_iff.1 hy, SetLike.mem_coe, Subring.mem_comap]`. Use `pow_apply_pow γ ζ a hγ t 1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [pow_one, one_mul] at this`. Use `show (γ ^ t) ζ ∈ _`. Rewrite using `[this]`. Conclude with `Subring.pow_mem _ (Subring.subset_closure (Set.mem_singleton _)) _`. Conclude with `h hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_apply_mem {Ω : Type} [Field Ω] [Algebra ℚ Ω] (γ : Ω ≃ₐ[ℚ] Ω) (ζ : Ω) (a : ℕ) (hγ : γ ζ = ζ ^ a)
     (t : ℕ) {x : Ω} (hx : x ∈ Subring.closure {ζ}) : (γ ^ t) x ∈ Subring.closure {ζ} := by
@@ -61,23 +61,21 @@ theorem pow_apply_mem {Ω : Type} [Field Ω] [Algebra ℚ Ω] (γ : Ω ≃ₐ[�
   exact h hx
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `hpf.out`. Take `⟨hmL, K, d, u, hd, hu, he, -⟩` from `GlobalTheory.K5.MonX.exists_pow_eq hp2 hm1 hi`. Establish `hpL : p ^ L = p ^ (L - 1) * p` using `by rw [← pow_succ, Nat.sub_add_cancel (by omega)]`. Establish `hpm : p ^ m = p ^ (m - 1) * p` using `by rw [← pow_succ, Nat.sub_add_cancel (by omega)]`. Use `set ω := ζ ^ (u * d * p ^ (L - 1)) with hω`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hω1 : ω ≠ 1`. Rewrite using `[hω, Ne, hζ.pow_eq_one_iff_dvd, hpL]`. Introduce `h`. Establish `h' : p ^ (L - 1) * p ∣ p ^ (L - 1) * (u * d)` using `by rwa [mul_comm (p ^ (L - 1)) (u * d)]`. Use `Nat.dvd_of_mul_dvd_mul_left (pow_pos hp.pos _) h'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(Nat.Prime.dvd_mul hp).1 this with h | h` into its components or cases. Conclude with `hu h`. Conclude with `hd h`. Establish `hωp : ω ^ p = 1`. Rewrite using `[hω, ← pow_mul, hζ.pow_eq_one_iff_dvd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨u * d, by rw [hpL]; ring⟩`. Establish `hγω : γ ω = ω`. Rewrite using `[hω, map_pow, hγ, ← pow_mul]`. Establish `e : (1 + p ^ m) * (u * d * p ^ (L - 1)) = u * d * p ^ (L - 1) + p ^ L * (u * d * p ^ (m - 1))`. Rewrite using `[hpL, hpm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pow_add, pow_mul ζ (p ^ L), hζ.pow_eq_one, one_pow, mul_one]`. Establish `hγtω : ∀ t : ℕ, (γ ^ t) ω = ω`. Introduce `t`. Proceed by induction on `t with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `succ t ih => rw [pow_succ', AlgEquiv.mul_apply, ih, hγω]`. Use `set S : Ω := ∑ s ∈ Finset.range p, (s : Ω) * ω ^ s with hS`. Establish `hγtS : ∀ t : ℕ, (γ ^ t) S = S`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hS, map_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [map_mul, map_natCast, map_pow, hγtω]`. Establish `hK : (γ ^ K) (ζ ^ i) = ω * ζ ^ i`. Rewrite using `[pow_apply_pow γ ζ _ hγ, he, pow_add, hω, mul_comm]`. Establish `hωmem : ω ∈ Subring.closure {ζ}` using `Subring.pow_mem _ (Subring.subset_closure (Set.mem_singleton _)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSmem : S ∈ Subring.closure {ζ}` using `Subring.sum_mem _ fun s _ => Subring.mul_mem _ (natCast_mem _ s) (Subring.pow_mem _ hωmem _)`. Establish `hH0 : S * ζ ^ i ∈ Subring.closure {ζ}` using `Subring.mul_mem _ hSmem (Subring.pow_mem _ (Subring.subset_closure (Set.mem_singleton _)) _)`. Use `⟨∑ t ∈ Finset.range K, (γ ^ t) (S * ζ ^ i), Subring.sum_mem _ fun t _ => pow_apply_mem γ ζ _ hγ t hH0, ?_⟩` and prove the remaining obligations. Establish `hγH : γ (∑ t ∈ Finset.range K, (γ ^ t) (S * ζ ^ i)) = ∑ t ∈ Finset.range K, (γ ^ (t + 1)) (S * ζ ^ i)`. Rewrite using `[map_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun t _ => by rw [pow_succ', AlgEquiv.mul_apply]`. Rewrite using `[hγH, ← Finset.sum_sub_distrib, Finset.sum_range_sub (fun t => (γ ^ t) (S * ζ ^ i)), pow_zero, AlgEquiv.one_apply, map_mul, hγtS, hK]`. Use `sub_one_mul_sum_eq ω p hω1 hωp` as an intermediate fact. Rewrite `this` using `[← hS]`. Take the linear combination `(-(ζ ^ i)) * this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mono {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p.Prime] (hp2 : p ≠ 2) (L m : ℕ) (hm1 : 1 ≤ m)
     (ζ : Ω) (hζ : IsPrimitiveRoot ζ (p ^ L)) (γ : Ω ≃ₐ[ℚ] Ω) (hγ : γ ζ = ζ ^ (1 + p ^ m)) (i : ℕ)
@@ -135,15 +133,15 @@ theorem mono {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p.Pri
 open Classical in
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `hpf.out`. Establish `hN : p ^ L = p ^ m * p ^ (L - m)` using `by rw [← pow_add, Nat.add_sub_cancel' hm]`. Establish `hs : ∀ a : (ZMod (p ^ L))ˣ, τ a (ζ ^ i) = ζ ^ ((a : ZMod (p ^ L)).val * i)`. Introduce `a`. Rewrite using `[map_pow, hτ, ← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hr` using `GlobalTheory.NTr.sum_reindex p L m hm1 hm (fun v => ζ ^ (v * i))`. Rewrite using `[Finset.sum_congr rfl (fun a _ => hs a), hr]`. Establish `hw : IsPrimitiveRoot (ζ ^ p ^ m) (p ^ (L - m))` using `hζ.pow (pow_pos hp.pos _) hN`. Establish `hterm : ∀ k, ζ ^ ((1 + p ^ m * k) * i) = ζ ^ i * ((ζ ^ p ^ m) ^ i) ^ k`. Introduce `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← pow_mul, ← pow_mul, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hterm, ← Finset.mul_sum]`. Use `split_ifs with hd`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (ζ ^ p ^ m) ^ i = 1`. Take `⟨j, hj⟩` from `hd`. Rewrite using `[hj, pow_mul, hw.pow_eq_one, one_pow]`. Rewrite using `[h1]`. Simplify using `only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, Nat.cast_pow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (ζ ^ p ^ m) ^ i ≠ 1` using `fun h => hd ((hw.pow_eq_one_iff_dvd i).mp h)`. Rewrite using `[geom_sum_eq h1, ← pow_mul, mul_comm i, pow_mul, hw.pow_eq_one, one_pow, sub_self, zero_div, mul_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_mono {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p.Prime] (L m : ℕ) (hm1 : 1 ≤ m) (hm : m ≤ L)
     (ζ : Ω) (hζ : IsPrimitiveRoot ζ (p ^ L)) (τ : (ZMod (p ^ L))ˣ → (Ω ≃ₐ[ℚ] Ω))
@@ -173,7 +171,7 @@ theorem trace_mono {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[trace_mono p L m hm1 hm ζ hζ τ hτ i]`. Use `split_ifs with hd`. Conclude with `⟨0, Subring.zero_mem _, ζ ^ i, by simp, rfl⟩`. Take `⟨H, hH, e⟩` from `mono p hp2 L m hm1 ζ hζ γ hγ i hd`. Conclude with `⟨H, hH, 0, by rw [sub_zero, e], rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem key_mono {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p.Prime] (hp2 : p ≠ 2) (L m : ℕ) (hm1 : 1 ≤ m)
     (hm : m ≤ L) (ζ : Ω) (hζ : IsPrimitiveRoot ζ (p ^ L)) (γ : Ω ≃ₐ[ℚ] Ω) (hγ : γ ζ = ζ ^ (1 + p ^ m))
@@ -190,11 +188,11 @@ theorem key_mono {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p
 open Classical in
 
 /- English proof (translation)
-Rewrite `hy` using `[Subring.mem_closure_iff, Submonoid.closure_singleton_eq]`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `key_mono p hp2 L m hm1 hm ζ hζ γ hγ τ hτ (Multiplicative.toAdd i)`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, Subring.zero_mem _, 0, by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨H1, h1, z1, e1, f1⟩` from `hx`. Take `⟨H2, h2, z2, e2, f2⟩` from `hy`. Conclude with `⟨H1 + H2, Subring.add_mem _ h1 h2, z1 + z2, by rw [map_add]; linear_combination e1 + e2, by simp only [map_add, Finset.sum_add_distrib, f1, f2]; ring⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `neg x _ hx`. Take `⟨H1, h1, z1, e1, f1⟩` from `hx`. Conclude with `⟨-H1, Subring.neg_mem _ h1, -z1, by rw [map_neg]; linear_combination -e1, by simp only [map_neg, Finset.sum_neg_distrib, f1]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem key {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p.Prime] (hp2 : p ≠ 2) (L m : ℕ) (hm1 : 1 ≤ m)
     (hm : m ≤ L) (ζ : Ω) (hζ : IsPrimitiveRoot ζ (p ^ L)) (γ : Ω ≃ₐ[ℚ] Ω) (hγ : γ ζ = ζ ^ (1 + p ^ m))
@@ -220,15 +218,15 @@ theorem key {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p.Prim
       by simp only [map_neg, Finset.sum_neg_distrib, f1]; ring⟩
 
 /- English proof (translation)
-Introduce `p hpf hp2`. Use `⟨1, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ _ ε L m hm1 hmL F F' hF hNT γ hγ`. Establish `hp : p.Prime` using `hpf.out`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ` using `GlobalTheory.NTr.zt_prim ε p L hp.pos`. Take `⟨D, hD, hDF⟩` from `hF`. Take `⟨τ, hτ, hT⟩` from `hNT`. Establish `hD0 : (D : Ω) ≠ 0`. Establish `: D ≠ 0` using `by rintro rfl; exact hD (dvd_zero p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hpN : (p : Ω) ^ (L - m) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp.ne_zero)`. Take `⟨H, hH, z, e1, e2⟩` from `key p hp2 L m hm1 hmL (zt ε p L) hζ γ hγ τ hτ _ hDF`. Establish `hz : z = D * F'`. Apply `mul_left_cancel₀ hpN` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e2]`. Simplify using `only [map_mul, map_natCast, ← Finset.mul_sum]`. Rewrite using `[← hT]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨H / D, ⟨D, hD, by rwa [mul_div_cancel₀ _ hD0]⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_div₀, map_natCast, pow_one, ← sub_div, ← e1, hz, eq_div_iff hD0]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem tate_inv : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (L m : ℕ), 1 ≤ m → m ≤ L → ∀ F F' : Ω, InZl ε p L F → IsNT ε p L m F F' →
   ∀ γ : Ω ≃ₐ[ℚ] Ω, γ (zt ε p L) = zt ε p L ^ (1 + p ^ m) → ∃ H : Ω, InZl ε p L H ∧ (p : Ω) ^ c * (F - F') = γ H - H := by

@@ -8,13 +8,13 @@ open NumberField Classical
 open scoped Pointwise
 
 /- English proof (translation)
-Simplify using `[liftM, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftM_val_ext {M : IntermediateField ℚ ℂ} {x : ℂ} (h : x ∈ M) : ((liftM M x : M) : ℂ) = x := by
   simp [liftM, h]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[liftM_val_ext (hσ (a * b)), IntermediateField.coe_mul, liftM_val_ext (hσ a), liftM_val_ext (hσ b), map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem liftM_mul_ext {E : Type} [Field E] (M : IntermediateField ℚ ℂ) (σ : E →+* ℂ) (hσ : ∀ y, σ y ∈ M)
     (a b : E) : liftM M (σ (a * b)) = liftM M (σ a) * liftM M (σ b) := by
@@ -23,7 +23,7 @@ theorem liftM_mul_ext {E : Type} [Field E] (M : IntermediateField ℚ ℂ) (σ :
     liftM_val_ext (hσ b), map_mul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[liftM_val_ext (hσ (a + b)), IntermediateField.coe_add, liftM_val_ext (hσ a), liftM_val_ext (hσ b), map_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftM_add_ext {E : Type} [Field E] (M : IntermediateField ℚ ℂ) (σ : E →+* ℂ) (hσ : ∀ y, σ y ∈ M)
     (a b : E) : liftM M (σ (a + b)) = liftM M (σ a) + liftM M (σ b) := by
@@ -32,7 +32,7 @@ theorem liftM_add_ext {E : Type} [Field E] (M : IntermediateField ℚ ℂ) (σ :
     liftM_val_ext (hσ b), map_add]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_one, liftM_val_ext (one_mem M), IntermediateField.coe_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftM_one_ext {E : Type} [Field E] (M : IntermediateField ℚ ℂ) (σ : E →+* ℂ) :
     liftM M (σ 1) = 1 := by
@@ -40,9 +40,9 @@ theorem liftM_one_ext {E : Type} [Field E] (M : IntermediateField ℚ ℂ) (σ :
   rw [map_one, liftM_val_ext (one_mem M), IntermediateField.coe_one]
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (σ (algebraMap (𝓞 E) E e))` using `(RingOfIntegers.isIntegral_coe e).map σ.toIntAlgHom`. Establish `hx : IsIntegral ℤ (liftM M (σ (algebraMap (𝓞 E) E e)))`. Rewrite using `[← isIntegral_algHom_iff (algebraMap M ℂ).toIntAlgHom (algebraMap M ℂ).injective]`. Express the relevant statement in the definitionally equal form `IsIntegral ℤ ((liftM M (σ (algebraMap (𝓞 E) E e)) : M) : ℂ)`. Rewrite using `[liftM_val_ext (hσ _)]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨⟨_, hx⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem liftM_int_ext {E : Type} [Field E] [NumberField E] (M : IntermediateField ℚ ℂ) [NumberField M]
     (σ : E →+* ℂ) (hσ : ∀ y, σ y ∈ M) (e : 𝓞 E) :
@@ -56,23 +56,19 @@ theorem liftM_int_ext {E : Type} [Field E] [NumberField E] (M : IntermediateFiel
   exact ⟨⟨_, hx⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hJJ : (1 : E) ∈ (J : Submodule (𝓞 E) E) * ((J⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E)`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hJ, FractionalIdeal.coe_one]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Establish `hint : ∀ z ∈ (J : Submodule (𝓞 E) E) * ((J⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E), liftM M (σ z) ∈ (algebraMap (𝓞 M) M).range`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hJ, FractionalIdeal.coe_one]`. Take `⟨y, rfl⟩` from `Submodule.mem_one.1 hz`. Conclude with `liftM_int_ext M σ hσ y`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Introduce `b hb`. Rewrite using `[← liftM_mul_ext M σ hσ]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hint _ (Submodule.mul_mem_mul ha hb)`. Consider the case `zero`. Introduce `b _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Introduce `b hb`. Rewrite using `[add_mul]`. Conclude with `add_mem (hy b hb) (hz b hb)`. Consider the case `smul r y _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Rewrite using `[smul_mul_assoc, Algebra.smul_def]`. Conclude with `mul_mem (RingHom.mem_range_self _ r) (hy b hb)`. Introduce `hx`. Establish `key : ∀ z ∈ (J : Submodule (𝓞 E) E) * ((J⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E), x * liftM M (σ z) ∈ imI M σ J`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `z hz`. Proceed by induction on `hz using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem a ha b hb`. Take `⟨r, hr⟩` from `hx b hb`. Rewrite using `[liftM_mul_ext M σ hσ, mul_comm (liftM M (σ a)), ← mul_assoc, ← hr, ← Algebra.smul_def]`.
-
-Conclude with `Submodule.smul_mem _ r (Submodule.subset_span ⟨a, ha, rfl⟩)`. Consider the case `add y _ z _ hy hz`. Rewrite using `[liftM_add_ext M σ hσ, mul_add]`. Conclude with `add_mem hy hz`. Use `key 1 hJJ` as an intermediate fact.
-
-Rewrite `this` using `[liftM_one_ext, mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_imI_iff {E : Type} [Field E] [NumberField E] (M : IntermediateField ℚ ℂ) [NumberField M]
     (σ : E →+* ℂ) (hσ : ∀ y, σ y ∈ M) (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hJ : J ≠ 0) (x : M) :

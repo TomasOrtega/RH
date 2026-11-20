@@ -15,7 +15,7 @@ namespace GlobalTheory.Mum.AdicSum
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_sdiff_sub_sum_sdiff (s₁ := T) (s₂ := S)]`. Conclude with `J.sub_mem (J.sum_mem fun α hα => hT α (Finset.mem_sdiff.1 hα).2) (J.sum_mem fun α hα => hS α (Finset.mem_sdiff.1 hα).2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sub_sum_mem {R : Type} [CommRing R] (J : Ideal R) {X : Type} (v : X → R)
     (S T : Finset X) (hS : ∀ α ∉ S, v α ∈ J) (hT : ∀ α ∉ T, v α ∈ J) :
@@ -25,15 +25,15 @@ theorem sum_sub_sum_mem {R : Type} [CommRing R] (J : Ideal R) {X : Type} (v : X 
     (J.sum_mem fun α hα => hS α (Finset.mem_sdiff.1 hα).2)
 
 /- English proof (translation)
-Introduce `R _ _ _ hR X v hfin`. Establish `hC : IsAdicComplete (maximalIdeal R) R` using `hR.1.2.2.2`. Establish `hfin' : ∀ n : ℕ, {α | v α ∉ maximalIdeal R ^ n}.Finite` using `fun n => (hfin n).subset fun α (hα : v α ∉ maximalIdeal R ^ n) (h : v α ∈ maximalIdeal R ^ (n + 1)) => hα (Ideal.pow_le_pow_right (Nat.le_succ n) h)`. Set `F : ℕ → Finset X` to `fun n => (hfin' n).toFinset`. Establish `hF : ∀ n, ∀ α ∉ F n, v α ∈ maximalIdeal R ^ n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `n α hα`. Assume the negation of the conclusion as `h`. Conclude with `hα ((hfin' n).mem_toFinset.2 h)`. Set `f : ℕ → R` to `fun n => ∑ α ∈ F n, v α`. Establish `hsm : ∀ n : ℕ, maximalIdeal R ^ n • (⊤ : Submodule R R) = maximalIdeal R ^ n` using `fun n => by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Take `⟨L, hL⟩` from `(hC.toIsPrecomplete).prec (f := f) (by`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, hsm]`. Conclude with `sum_sub_sum_mem (maximalIdeal R ^ m) v (F m) (F n) (hF m) fun α hα => Ideal.pow_le_pow_right hmn (hF n α hα))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, fun e S hS => ?_⟩` and prove the remaining obligations. Establish `h1 : f (e + 1) - L ∈ maximalIdeal R ^ (e + 1)`. Use `hL (e + 1)` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, hsm]`. Then use the resulting hypothesis. Establish `h2` using `sum_sub_sum_mem (maximalIdeal R ^ (e + 1)) v (F (e + 1)) S (hF (e + 1)) hS`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: L - ∑ α ∈ S, v α = (f (e + 1) - ∑ α ∈ S, v α) - (f (e + 1) - L)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ h2 h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_adic_sum : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (X : Type) (v : X → R), (∀ e : ℕ, {α | v α ∉ maximalIdeal R ^ (e + 1)}.Finite) →

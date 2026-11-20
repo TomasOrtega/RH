@@ -4,77 +4,77 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrb
 namespace UpperTheory.V.Z.Tf.Orb
 
 /- English proof (translation)
-The claim follows from `UpperTheory.ConvolutionTheory.Loc.orbProper`.
+A detailed English derivation is pending.
 -/
 theorem orbProper_holds : OrbProper := UpperTheory.ConvolutionTheory.Loc.orbProper
 
 /- English proof (translation)
-The claim follows from `gLTop_of`.
+A detailed English derivation is pending.
 -/
 theorem gLTop_holds : GLTop := gLTop_of
 
 /- English proof (translation)
-The claim follows from `extCont_of`.
+A detailed English derivation is pending.
 -/
 theorem extCont_holds : ExtCont := extCont_of
 
 /- English proof (translation)
-The claim follows from `centComm_of`.
+A detailed English derivation is pending.
 -/
 theorem centComm_holds : CentComm := centComm_of
 
 /- English proof (translation)
-The claim follows from `twCent_of`.
+A detailed English derivation is pending.
 -/
 theorem twCent_holds : TwCent := twCent_of
 
 /- English proof (translation)
-The claim follows from `haarComm_of`.
+A detailed English derivation is pending.
 -/
 theorem haarComm_holds : HaarComm := haarComm_of
 
 /- English proof (translation)
-The claim follows from `quotIndep_of`.
+A detailed English derivation is pending.
 -/
 theorem quotIndep_holds : QuotIndep := quotIndep_of
 
 /- English proof (translation)
-The claim follows from `normEx_of`.
+A detailed English derivation is pending.
 -/
 theorem normEx_holds : NormEx := normEx_of
 
 /- English proof (translation)
-The claim follows from `quotInt_of`.
+A detailed English derivation is pending.
 -/
 theorem quotInt_holds : QuotInt := quotInt_of
 
 /- English proof (translation)
-The claim follows from `convTest_of`.
+A detailed English derivation is pending.
 -/
 theorem convTest_holds : ConvTest := convTest_of
 
 /- English proof (translation)
-The claim follows from `untwist_of`.
+A detailed English derivation is pending.
 -/
 theorem untwist_holds : Untwist := untwist_of
 
 /- English proof (translation)
-The claim follows from `twOrbLin_of orbProper_holds`.
+A detailed English derivation is pending.
 -/
 theorem twOrbLin_holds : TwOrbLin := twOrbLin_of orbProper_holds
 
 /- English proof (translation)
-The claim follows from `orbLin_of orbProper_holds`.
+A detailed English derivation is pending.
 -/
 theorem orbLin_holds : OrbLin := orbLin_of orbProper_holds
 
 /- English proof (translation)
-The claim follows from `twOrbComm_of orbProper_holds`.
+A detailed English derivation is pending.
 -/
 theorem twOrbComm_holds : TwOrbComm := twOrbComm_of orbProper_holds
 
 /- English proof (translation)
-The claim follows from `orbComm_of orbProper_holds`.
+A detailed English derivation is pending.
 -/
 theorem orbComm_holds : OrbComm := orbComm_of orbProper_holds
 

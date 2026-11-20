@@ -30,9 +30,9 @@ namespace GlobalTheory.PrincipalModel
 open GlobalTheory.UU GlobalTheory.AbLaw
 
 /- English proof (translation)
-Set `_` to `f.toAlgebra`. Set `_` to `g.toAlgebra`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (TensorProduct k A B)`. Use `⟨TensorProduct k A B ⧸ m, Ideal.Quotient.field m, (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeLeftRingHom), (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeRight (R := k) (A := A) (B := B)).toRingHom, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap (R := k) (A := A) (B := B))`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_overfield {k A B : Type} [Field k] [Field A] [Field B] (f : k →+* A) (g : k →+* B) :
     ∃ (L : Type) (_ : Field L) (a : A →+* L) (b : B →+* L), a.comp f = b.comp g := by
@@ -46,9 +46,9 @@ theorem exists_common_overfield {k A B : Type} [Field k] [Field A] [Field B] (f 
   exact congrArg _ (Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap (R := k) (A := A) (B := B))
 
 /- English proof (translation)
-Take `⟨O, h, hl⟩` from `IsLocalRing.exists_factor_valuationRing φ`. Set `j : W →+* O` to `φ.codRestrict O.toSubring h`. Establish `: IsLocalHom j` using `hl`. Take `⟨L, _, a, b, e⟩` from `exists_common_overfield (IsLocalRing.ResidueField.lift f) (IsLocalRing.ResidueField.map j)`. Use `⟨O, j, L, inferInstance, a, b.comp (IsLocalRing.residue O), rfl, inferInstance, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← IsLocalRing.ResidueField.lift_comp_residue f, ← RingHom.comp_assoc, e, RingHom.comp_assoc, IsLocalRing.ResidueField.map_comp_residue, RingHom.comp_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_valuationSubring {W F Ω : Type} [CommRing W] [IsLocalRing W] [Field F] [Field Ω] (φ : W →+* F)
     (f : W →+* Ω) [IsLocalHom f] : ∃ (O : ValuationSubring F) (j : W →+* O) (L : Type) (_ : Field L) (a : Ω →+* L)
@@ -62,11 +62,11 @@ theorem exists_valuationSubring {W F Ω : Type} [CommRing W] [IsLocalRing W] [Fi
     IsLocalRing.ResidueField.map_comp_residue, RingHom.comp_assoc]
 
 /- English proof (translation)
-Establish `i : Function.Injective (algebraMap V (AlgebraicClosure K))`. Rewrite using `[IsScalarTower.algebraMap_eq V K]`. Conclude with `(algebraMap K _).injective.comp (IsFractionRing.injective V K)`. Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 h`. Establish `: FaithfulSMul V (AlgebraicClosure K)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : W →ₐ[V] AlgebraicClosure K` to `IsAlgClosed.lift`. Use `⟨φ.toRingHom, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := V) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, show φ.toRingHom.comp (algebraMap V W) = algebraMap V _ from φ.comp_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 i`. Rewrite using `[← IsScalarTower.algebraMap_eq]`. Conclude with `φ.comp_algebraMap`.
+A detailed English derivation is pending.
 -/
 theorem exists_embedding (V K W : Type) [CommRing V] [IsDomain V] [Field K] [Algebra V K] [IsFractionRing V K]
     [CommRing W] [IsDomain W] [Algebra V W] [Module.Finite V W] (h : Function.Injective (algebraMap V W)) :
@@ -86,11 +86,9 @@ theorem exists_embedding (V K W : Type) [CommRing V] [IsDomain V] [Field K] [Alg
   · rw [← IsScalarTower.algebraMap_eq]; exact φ.comp_algebraMap
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `h`. Establish `h4 : ∃ w : LB.Gen (LB.LinComb L _ _), w.IsGen` using `⟨_, DVR.pullGen_isGen _ _ _ d hd (g ▷ A).left⟩`. Establish `h3 : (fun k : Fin 2 => (g ▷ A).left ≫ ![(lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left, (snd T A).left] k) = ![(lift (fst T' A ≫ g ≫ x) (snd T' A) ≫ μ[A]).left, (snd T' A).left]`. Use function extensionality and compare the values at `k`. Use `fin_cases k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(g ▷ A ≫ lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left = (lift (fst T' A ≫ g ≫ x) (snd T' A) ≫ μ[A]).left`. Rewrite using `[comp_lift_assoc, whiskerRight_fst_assoc, whiskerRight_snd]`. Express the relevant statement in the definitionally equal form `(g ▷ A ≫ snd T A).left = (snd T' A).left`. Rewrite using `[whiskerRight_snd]`. Rewrite `h4` using `[h3]`.
-
-Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_comp {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T T' : Over S} (x : T ⟶ A) (g : T' ⟶ T)
     (h : Triv (translDiff A L x)) : Triv (translDiff A L (g ≫ x)) := by
@@ -109,15 +107,15 @@ theorem triv_comp {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T T'
   exact h4
 
 /- English proof (translation)
-Use `hA.proper` as an intermediate fact. Establish `hE : ValuativeCriterion.Existence A.hom`. Establish `h : UniversallyClosed A.hom` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `w : y.left ≫ A.hom = spMap (algebraMap O F) ≫ p` using `(Over.w y).trans ((Over.w ρF).symm.trans (by rw [hF]; rfl))`. Take `⟨l, hl₁, hl₂⟩` from `(hE { R := O, K := F, commSq := ⟨w⟩, .. }).exists_lift`. Set `Y : Over.mk p ⟶ A` to `Over.homMk l hl₂`. Establish `hYy : ρF ≫ Y = y` using `Over.OverMorphism.ext ((congrArg (· ≫ l) hF).trans hl₁)`. Establish `hY : Y ^ n = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `over_points_ext_of_injective S A O F _ (IsFractionRing.injective O F) p _ _ ?_` and prove the remaining obligations. Establish `e : ρF ≫ Y ^ n = ρF ≫ 1` using `by rw [MonObj.comp_pow, hYy, hy, MonObj.comp_one]`. Establish `e' : ρF.left ≫ (Y ^ n).left = ρF.left ≫ (1 : Over.mk p ⟶ A).left` using `congrArg (fun q => q.left) e`. Rewrite `e'` using `[hF]`. Conclude with `e'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ζ, hζ, -⟩` from `existsUnique_cubWeil c hX hY`. Establish `h₁` using `hζ.comp ρk`. Establish `h₂` using `KerPair.cubWeil_of_gen hG S A hA L c n _ _ _ h₁.1 h₁.2.1 ht`. Establish `h₃` using `h₁.unique h₂`. Rewrite `h₃` using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₄ : ζ = 1` using `unit_eq_one_of_localHom g hn hζ.pow_eq_one h₃`. Establish `h₅` using `hζ.comp ρF`. Rewrite `h₅` using `[h₄, map_one, hYy]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cubWeil_generic (hG : GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) {L : RigLB A} (c : CubicalStr A L) {O F k : Type} [CommRing O] [IsDomain O]
@@ -152,9 +150,9 @@ theorem cubWeil_generic (hG : GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [GrpObj
   rwa [h₄, map_one, hYy] at h₅
 
 /- English proof (translation)
-Set `β` to `pushHom hp T`. Establish `inj : Function.Injective β` using `fun a b e => Over.OverMorphism.ext (hp.1.hom_ext (congrArg (fun z => z.left) e) ((Over.w a).trans (Over.w b).symm))`. Set `u : T ⟶ A` to `Over.homMk (hp.1.lift x.left T.hom (Over.w x)) (hp.1.lift_snd _ _ _)`. Establish `hu : β u = x` using `Over.OverMorphism.ext (hp.1.lift_fst _ _ _)`. Establish `hun : u ^ n = 1` using `inj (by rw [map_pow, hu, map_one]; exact hx)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: u = 1` using `H u hun fun z hz => (weilIs_grpPullback_of_comm _ _ B A f φ L L' hL hL' hp hi T n u z x (β z) 1 (congrArg (fun q => q.left) hu.symm) rfl).2 (h _ (by rw [← map_pow, hz, map_one]))`. Rewrite using `[← hu, this, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nondeg_of_isGrpPullback {S S' : Scheme.{0}} {A : Over S'} [GrpObj A] {B : Over S} [GrpObj B] [IsCommMonObj B]
     {L' : LB A.left} {L : LB B.left} (hL' : L'.IsLB) (hL : L.IsLB) {f : S' ⟶ S} {φ : A.left ⟶ B.left}
@@ -174,9 +172,9 @@ theorem nondeg_of_isGrpPullback {S S' : Scheme.{0}} {A : Over S'} [GrpObj A] {B 
   rw [← hu, this, map_one]
 
 /- English proof (translation)
-Take `⟨P', g, hg, -, hmul, tw, htw⟩` from `hL.polBaseChange S' _ t P`. Establish `hp' : IsGrpPullback P'.A P.A t g` using `⟨hg, fun T x y x₀ y₀ hx hy => by`. Rewrite using `[show x₀ = toBase hg.w x from Over.OverMorphism.ext hx, show y₀ = toBase hg.w y from Over.OverMorphism.ext hy, ← hmul]`. Use the proof step `rfl⟩`. Use `P.isAb.comm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `nondeg_of_isGrpPullback P'.isLB P.isLB hp' (LBIso.symm ⟨tw, htw⟩) (baseOver _) n (hL.weilNondeg F P' n hn)`. Establish `e : (baseOver (Sp F)).hom ≫ t = t` using `Category.id_comp t`. Rewrite `H` using `[e]`. Conclude with `nondeg_of_isGrpPullback P.isLB L.isLB hp hi (Over.mk t) n H x hx fun y hy => (cubWeil_iff_weilIs hL.globalFns hB hx hy 1).1 (h y hy)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_cubWeil (hL : Laws) {S S' : Scheme.{0}} (P : PolAV S') {B : Over S} [GrpObj B] [IsCommMonObj B]
     (hB : IsAbelianScheme B) {L : RigLB B} (c : CubicalStr B L) {f : S' ⟶ S} {φ : P.A.left ⟶ B.left}
@@ -197,19 +195,19 @@ theorem eq_one_of_cubWeil (hL : Laws) {S S' : Scheme.{0}} (P : PolAV S') {B : Ov
     (cubWeil_iff_weilIs hL.globalFns hB hx hy 1).1 (h y hy)
 
 /- English proof (translation)
-Introduce `hL _ V K _ _ _ _ _ _ P B _ _ M φ hB hp hi _ Ω _ _ f hf n hn x hx ht`. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Establish `hnV : IsUnit (n : V)` using `isUnit_of_map_unit f _ (by rw [map_natCast]; exact hn.isUnit)`. Take `⟨W, _, _, _, _, _, f', _, inj, _, _, hf', lifts⟩` from `GlobalTheory.exists_finite_extension_torsion_lift hL.unramExt V B n hnV Ω f hf {x} (fun y hy => by rw [Finset.mem_singleton.1 hy]; exact hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX, hXx⟩` from `lifts x (Finset.mem_singleton_self x)`. Take `⟨ψ, hψ, eψ⟩` from `exists_embedding V K W inj`. Take `⟨O, j, k, _, a, g, hj, _, e⟩` from `exists_valuationSubring ψ f'`. Establish `sp : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (u : A →+* B) (v : B →+* C), spMap (v.comp u) = spMap v ≫ spMap u` using `fun u v => by`. Rewrite using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `TW : Over (Sp V)` to `Over.mk (spMap (algebraMap V W))`. Set `TO : Over (Sp V)` to `Over.mk (spMap j ≫ spMap (algebraMap V W))`. Set `σ : TO ⟶ TW` to `Over.homMk (spMap j) rfl`. Set `ρk : Over.mk (spMap a ≫ spMap f) ⟶ TO` to `Over.homMk (spMap g) (by show spMap g ≫ spMap j ≫ spMap (algebraMap V W) = spMap a ≫ spMap f`. Rewrite using `[← sp, ← sp, ← sp, ← RingHom.comp_assoc, ← e, RingHom.comp_assoc, hf'])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `ρF : Over.mk (spMap (algebraMap K (AlgebraicClosure K)) ≫ spMap (algebraMap V K)) ⟶ TO` to `Over.homMk (spMap (algebraMap O (AlgebraicClosure K))) (by show spMap (algebraMap O (AlgebraicClosure K)) ≫ spMap j ≫ spMap (algebraMap V W) = spMap (algebraMap K (AlgebraicClosure K)) ≫ spMap (algebraMap V K)`. Rewrite using `[← sp, ← sp, ← sp, ← RingHom.comp_assoc, hj, eψ])`. Set `τ : Over.mk (spMap a ≫ spMap f) ⟶ Over.mk (spMap f)` to `Over.homMk (spMap a) rfl`. Establish `hτ : τ ≫ x = ρk ≫ σ ≫ X` using `Over.OverMorphism.ext (by show spMap a ≫ x.left = spMap g ≫ spMap j ≫ X.left`. Rewrite using `[← hXx, ← Category.assoc, ← Category.assoc, ← sp, ← sp, e])`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσ : (σ ≫ X) ^ n = 1` using `by rw [← MonObj.comp_pow, hX, MonObj.comp_one]`. Establish `hnO : IsUnit (n : O)` using `by simpa using hnV.map (j.comp (algebraMap V W))`. Establish `key : ρF ≫ σ ≫ X = 1` using `eq_one_of_cubWeil hL P hB M.c hp hi _ (by simpa using (hnO.map (algebraMap O (AlgebraicClosure K))).ne_zero) _ (by rw [← MonObj.comp_pow, hσ, MonObj.comp_one]) (cubWeil_generic hL.globalFns hB M.c g hnO (σ ≫ X) hσ ρk rfl ρF rfl (hτ ▸ triv_comp x τ ht))`. Establish `hX1 : X = 1`. Use `over_points_ext_of_injective _ B W _ ψ hψ _ _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁ : (ρF ≫ σ) ≫ X = (ρF ≫ σ) ≫ 1` using `by rw [Category.assoc, key, MonObj.comp_one]`. Establish `e₂ : (spMap (algebraMap O (AlgebraicClosure K)) ≫ spMap j) ≫ X.left = (spMap (algebraMap O (AlgebraicClosure K)) ≫ spMap j) ≫ (1 : TW ⟶ B).left` using `congrArg (fun q => q.left) e₁`. Rewrite `e₂` using `[← sp, hj]`. Conclude with `e₂`. Set `ρ : Over.mk (spMap f) ⟶ TW` to `Over.homMk (spMap f') (by show spMap f' ≫ spMap (algebraMap V W) = spMap f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sp, hf'])`. Establish `: x = ρ ≫ X` using `Over.OverMorphism.ext hXx.symm`. Rewrite using `[this, hX1]`. Conclude with `MonObj.comp_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_eq_one_of_triv : Laws → Laws2 → ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (P : PolAV (Sp K)) (B : Over (Sp V)) [GrpObj B] [IsCommMonObj B] (M : GlobalTheory.UU.CP B) (φ : P.A.left ⟶ B.left), IsAbelianScheme B → IsGrpPullback P.A B (spMap (algebraMap V K)) φ → LBIso P.L (M.L.L.pull φ) → IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (f : V →+* Ω), IsLocalHom f → ∀ n : ℕ, (n : Ω) ≠ 0 → ∀ x : Over.mk (spMap f) ⟶ B, x ^ n = 1 → GlobalTheory.AbLaw.Triv (translDiff B M.L.L x) → x = 1 := by
   intro hL _ V K _ _ _ _ _ _ P B _ _ M φ hB hp hi _ Ω _ _ f hf n hn x hx ht

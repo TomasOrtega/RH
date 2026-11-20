@@ -46,9 +46,9 @@ def scaleZ (F : PtRepPf.Fr ε r k) (T' : ℝ) (hT' : 0 < T') : PtRepPf.Fr ε r k
   zw i := by rw [PtRepPf.hJ_smul_left, F.zw, mul_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with (a | a) | (_ | a) <;> rcases j with (b | b) | (_ | b) <;>`. Apply the tactic sequence `simp only [PtRepPf.Fr.bv, Sum.elim_inl, Sum.elim_inr] <;>`. Use `first`. Consider the case `(simp [F.ee, G.ee, F.ff, G.ff, F.ef, G.ef, F.ez, G.ez, F.fz, G.fz, F.zz, G.zz, hT, F.ww, G.ww, F.ew, G.ew, F.fw, G.fw, F.zw, G.zw]; done)`. Consider the case `(conv_lhs => rw [← PtRepPf.hJ_conj] conv_rhs => rw [← PtRepPf.hJ_conj]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[F.ee, G.ee, F.ff, G.ff, F.ef, G.ef, F.ez, G.ez, F.fz, G.fz, F.zz, G.zz, hT, F.ww, G.ww, F.ew, G.ew, F.fw, G.fw, F.zw, G.zw])`.
+A detailed English derivation is pending.
 -/
 theorem gram_eq (F G : PtRepPf.Fr ε r k) (hT : F.T = G.T) (i j : PtRepPf.Fr.Ix r k) :
     hJ ε (G.bv i) (G.bv j) = hJ ε (F.bv i) (F.bv j) := by
@@ -70,7 +70,7 @@ def trL (F G : PtRepPf.Fr ε r k) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ) 
 def trM (F G : PtRepPf.Fr ε r k) : Matrix (Fin n) (Fin n) ℂ := LinearMap.toMatrix' (trL F G)
 
 /- English proof (translation)
-Rewrite using `[trM, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trM_mulVec (F G : PtRepPf.Fr ε r k) (y : Fin n → ℂ) :
     trM F G *ᵥ y = ∑ i, hJ ε (F.dv i) y • G.bv i := by
@@ -78,14 +78,14 @@ theorem trM_mulVec (F G : PtRepPf.Fr ε r k) (y : Fin n → ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[trM_mulVec]`. Simplify using `[F.dual]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trM_bv (F G : PtRepPf.Fr ε r k) (j : PtRepPf.Fr.Ix r k) : trM F G *ᵥ F.bv j = G.bv j := by
   rw [trM_mulVec]
   simp [F.dual]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => unfold hJ`. Simplify using the standard rewrite rules. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, PtRepPf.hJ_add_right, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem hJ_finset_sum_right {κ : Type} (s : Finset κ) (x : Fin n → ℂ) (w : κ → Fin n → ℂ) :
     hJ ε x (∑ j ∈ s, w j) = ∑ j ∈ s, hJ ε x (w j) := by
@@ -94,7 +94,7 @@ private theorem hJ_finset_sum_right {κ : Type} (s : Finset κ) (x : Fin n → �
   | cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, PtRepPf.hJ_add_right, ih]
 
 /- English proof (translation)
-Rewrite using `[← PtRepPf.hJ_conj, hJ_finset_sum_right, star_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [PtRepPf.hJ_conj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hJ_finset_sum_left {κ : Type} (s : Finset κ) (u : κ → Fin n → ℂ) (y : Fin n → ℂ) :
     hJ ε (∑ i ∈ s, u i) y = ∑ i ∈ s, hJ ε (u i) y := by
@@ -102,7 +102,7 @@ private theorem hJ_finset_sum_left {κ : Type} (s : Finset κ) (u : κ → Fin n
   exact Finset.sum_congr rfl fun i _ => by rw [PtRepPf.hJ_conj]
 
 /- English proof (translation)
-Rewrite using `[hJ_finset_sum_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[PtRepPf.hJ_smul_left, hJ_finset_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[PtRepPf.hJ_smul_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -116,15 +116,15 @@ private theorem hJ_sum_smul_sum_smul {κ : Type} [Fintype κ] (c d : κ → ℂ)
   ring
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℂ F.bv`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Establish `h1` using `congrArg (hJ ε (F.dv j)) hg`. Simplify using `only [hJ_finset_sum_right, PtRepPf.hJ_smul_right, F.dual] at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `hJ at h1`. Simplify using `using h1`. Establish `hspan : Submodule.span ℂ (Set.range F.bv) = ⊤`. Establish `hcard : Fintype.card (PtRepPf.Fr.Ix r k) = Module.finrank ℂ (Fin n → ℂ)`. Rewrite using `[Module.finrank_fin_fun, F.card]`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[PtRepPf.Fr.Ix]`. Use `first`. Consider the case `exact hli.span_eq_top_of_card_eq_finrank hcard`. Consider the case `exact span_eq_top_of_linearIndependent_of_card_eq_finrank hli hcard`. Consider the case `exact hli.span_eq_top_of_card_eq_finrank' hcard`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hmem : ∀ z : Fin n → ℂ, ∃ c : PtRepPf.Fr.Ix r k → ℂ, ∑ i, c i • F.bv i = z` using `fun z => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (by rw [hspan]; exact Submodule.mem_top)`. Establish `hM : ∀ c : PtRepPf.Fr.Ix r k → ℂ, trM F G *ᵥ ∑ i, c i • F.bv i = ∑ i, c i • G.bv i`. Introduce `c`. Rewrite using `[Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, trM_bv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `hmem x`. Take `⟨d, rfl⟩` from `hmem y`. Rewrite using `[hM, hM, hJ_sum_smul_sum_smul, hJ_sum_smul_sum_smul]`. Simplify using `only [gram_eq F G hT]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trM_isom (F G : PtRepPf.Fr ε r k) (hT : F.T = G.T) (x y : Fin n → ℂ) :
     hJ ε (trM F G *ᵥ x) (trM F G *ᵥ y) = hJ ε x y := by
@@ -156,7 +156,7 @@ theorem trM_isom (F G : PtRepPf.Fr ε r k) (hT : F.T = G.T) (x y : Fin n → ℂ
   simp only [gram_eq F G hT]
 
 /- English proof (translation)
-Rewrite using `[← Pi.single_star, star_one, single_dotProduct, one_mul, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem single_dot (A : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) :
     star (Pi.single p (1 : ℂ) : Fin n → ℂ) ⬝ᵥ (A *ᵥ (Pi.single q (1 : ℂ) : Fin n → ℂ)) = A p q := by
@@ -164,7 +164,7 @@ theorem single_dot (A : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `p q`. Establish `h` using `trM_isom F G hT (Pi.single p 1) (Pi.single q 1)`. Unfold `hJ at h`. Rewrite using `[← single_dot ((trM F G)ᴴ * Formalism.REAL.Jm ε * trM F G) p q, ← single_dot (Formalism.REAL.Jm ε) p q, ← h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem trM_unitary (F G : PtRepPf.Fr ε r k) (hT : F.T = G.T) :
     (trM F G)ᴴ * Formalism.REAL.Jm ε * trM F G = Formalism.REAL.Jm ε := by
@@ -186,32 +186,32 @@ def m0X (u u' : D.what₂.Word) (v : InfinitePlace X.B.I.F) : Matrix (Fin X.B.I.
 variable (u u' : D.what₂.Word) (v : InfinitePlace X.B.I.F)
 
 /- English proof (translation)
-The claim follows from `trM_bv _ _ (Sum.inl (Sum.inl a))`.
+A detailed English derivation is pending.
 -/
 theorem transport_matrix_fix_isotropic_e (a : Fin D.R.rS) : m0X X u u' v *ᵥ rv X.B.I v (X.eR a) = rv X.B.I v (X.eR a) :=
   trM_bv _ _ (Sum.inl (Sum.inl a))
 
 /- English proof (translation)
-The claim follows from `trM_bv _ _ (Sum.inl (Sum.inr a))`.
+A detailed English derivation is pending.
 -/
 theorem transport_matrix_fix_isotropic_f (a : Fin D.R.rS) : m0X X u u' v *ᵥ rv X.B.I v (X.fR a) = rv X.B.I v (X.fR a) :=
   trM_bv _ _ (Sum.inl (Sum.inr a))
 
 /- English proof (translation)
-The claim follows from `trM_bv _ _ (Sum.inr (Sum.inl ⟨⟩))`.
+A detailed English derivation is pending.
 -/
 theorem transport_matrix_apply_anisotropic : m0X X u u' v *ᵥ rv X.B.I v (X.zR u') =
     ((√(Tw (D := D) u' / Tw (D := D) u) : ℝ) : ℂ) • rv X.B.I v (X.zR u) :=
   trM_bv _ _ (Sum.inr (Sum.inl ⟨⟩))
 
 /- English proof (translation)
-The claim follows from `trM_bv _ _ (Sum.inr (Sum.inr i))`.
+A detailed English derivation is pending.
 -/
 theorem transport_matrix_apply_frame (i : Fin D.R.k) : m0X X u u' v *ᵥ X.wfr u' v i = X.wfr u v i :=
   trM_bv _ _ (Sum.inr (Sum.inr i))
 
 /- English proof (translation)
-The claim follows from `trM_unitary _ _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem transportMatrix_unitary_hermitian : (m0X X u u' v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * m0X X u u' v = Formalism.REAL.Jm (X.B.I.ε v) :=
   trM_unitary _ _ rfl
@@ -225,7 +225,7 @@ variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what
   {Qim : Matrix (Fin (2 * r + k + 1)) (Fin X.B.I.n) ℂ}
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.herm`. Rewrite using `[← hQ.2.2.1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, Matrix.mulVec_mulVec _ Qm Qim, Matrix.mulVec_mulVec _ Qm Qim, hQ.2.1, Matrix.one_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem herm_Qi (hQ : IsTransp X v g k r Qm Qim) (x y : Fin X.B.I.n → ℂ) :
     Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (Qim *ᵥ x) (Qim *ᵥ y) = hJ (X.B.I.ε v) y x := by
@@ -235,7 +235,7 @@ theorem herm_Qi (hQ : IsTransp X v g k r Qm Qim) (x y : Fin X.B.I.n → ℂ) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.esI, Formalism.QuantumDeterminants.eI, Fin.ext_iff]`. Establish `ha` using `a.2`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_row_esI (a : Fin r) (b : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.esI k r a) b = if b = Formalism.QuantumDeterminants.eI k r a then 1 else 0 := by
@@ -244,7 +244,7 @@ theorem hpk_row_esI (a : Fin r) (b : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.esI, Formalism.QuantumDeterminants.eI, Fin.ext_iff]`. Establish `ha` using `a.2`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_row_eI (a : Fin r) (b : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) b = if b = Formalism.QuantumDeterminants.esI k r a then 1 else 0 := by
@@ -253,7 +253,7 @@ theorem hpk_row_eI (a : Fin r) (b : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.herm Formalism.QuantumDeterminants.bvec`. Rewrite using `[← Pi.single_star, star_one, single_dotProduct, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_bvec (y : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) y (Formalism.QuantumDeterminants.bvec j) = (Formalism.QuantumDeterminants.Hpk k r *ᵥ y) j := by
@@ -261,29 +261,29 @@ theorem herm_bvec (y : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
   rw [← Pi.single_star, star_one, single_dotProduct, one_mul]
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, hpk_row_esI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hpk_mulVec_esI (y : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (Formalism.QuantumDeterminants.Hpk k r *ᵥ y) (Formalism.QuantumDeterminants.esI k r a) = y (Formalism.QuantumDeterminants.eI k r a) := by
   simp [Matrix.mulVec, dotProduct, hpk_row_esI]
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, hpk_row_eI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hpk_mulVec_eI (y : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (Formalism.QuantumDeterminants.Hpk k r *ᵥ y) (Formalism.QuantumDeterminants.eI k r a) = y (Formalism.QuantumDeterminants.esI k r a) := by
   simp [Matrix.mulVec, dotProduct, hpk_row_eI]
 
 /- English proof (translation)
-Establish `hbv : ∀ j, Formalism.QuantumDeterminants.bvec j = Qim *ᵥ (Qm *ᵥ Formalism.QuantumDeterminants.bvec j)` using `fun j => by`. Rewrite using `[Matrix.mulVec_mulVec, hQ.1, Matrix.one_mulVec]`. Introduce `i hi`. Break down `hi with hi | hi` into its components or cases. Set `a : Fin r` to `⟨i.val, hi⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Establish `hia : i = Formalism.QuantumDeterminants.eI k r a` using `Fin.ext rfl`. Establish `h1 : (Qim *ᵥ w) i = Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (Qim *ᵥ w) (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI k r a))`. Rewrite using `[herm_bvec, hpk_mulVec_esI, hia]`. Rewrite using `[h1, hbv, herm_Qi X v hQ]`. Establish `hq` using `(hQ.2.2.2 a (Fin.cast hr a) rfl).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.QuantumDeterminants.bvec`. Rewrite using `[hq, PtRepPf.hJ_smul_left, hwf, mul_zero]`. Establish `hi2` using `i.2`. Set `a : Fin r` to `⟨2 * r + k - i.val, by omega⟩`. Establish `hia : i = Formalism.QuantumDeterminants.esI k r a` using `Fin.ext (by simp only [Formalism.QuantumDeterminants.esI, a]; omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (Qim *ᵥ w) i = Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (Qim *ᵥ w) (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a))`. Rewrite using `[herm_bvec, hpk_mulVec_eI, hia]`. Rewrite using `[h1, hbv, herm_Qi X v hQ]`. Establish `hq` using `(hQ.2.2.2 a (Fin.cast hr a) rfl).1`. Unfold `Formalism.QuantumDeterminants.bvec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hq, PtRepPf.hJ_smul_left, hwe, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inWb_Qi (hr : r = D.R.rS) (hQ : IsTransp X v g k r Qm Qim) (w : Fin X.B.I.n → ℂ)
     (hwe : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) w = 0) (hwf : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) w = 0) :
@@ -315,11 +315,11 @@ def m0Of (Qm : Matrix (Fin X.B.I.n) (Fin (2 * r + k + 1)) ℂ) (Qim : Matrix (Fi
   Qim * m0X X u u' v * Qm
 
 /- English proof (translation)
-Establish `h1 : Qm * Qim = 1` using `hQ.2.1`. Establish `h2 : Qimᴴ * Qmᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Establish `hU` using `transportMatrix_unitary_hermitian X u u' v`. Unfold `m0Of`. Rewrite using `[← hQ.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Qmᴴ * (((m0X X u u' v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * m0X X u u' v) * Qm) := by`. Rewrite using `[h1, h2]`. Simplify using `only [Matrix.one_mul, Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Qmᴴ * Formalism.REAL.Jm (X.B.I.ε v) * Qm := by`. Rewrite using `[hU, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem transportMatrix_unitary_form (hQ : IsTransp X v g k r Qm Qim) :
     (m0Of X u u' v Qm Qim)ᴴ * Formalism.QuantumDeterminants.Hpk k r * m0Of X u u' v Qm Qim = Formalism.QuantumDeterminants.Hpk k r := by
@@ -339,7 +339,7 @@ theorem transportMatrix_unitary_form (hQ : IsTransp X v g k r Qm Qim) :
         rw [hU, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hq` using `hQ.2.2.2 a (Fin.cast hr a) rfl`. Unfold `m0Of Formalism.QuantumDeterminants.bvec`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hq.1, Matrix.mulVec_smul, transport_matrix_fix_isotropic_e, ← hq.1, Matrix.mulVec_mulVec, hQ.1, Matrix.one_mulVec]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hq.2, Matrix.mulVec_smul, transport_matrix_fix_isotropic_f, ← hq.2, Matrix.mulVec_mulVec, hQ.1, Matrix.one_mulVec]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem transportMatrix_fixes_isotropic (hr : r = D.R.rS) (hQ : IsTransp X v g k r Qm Qim) (a : Fin r) :
     m0Of X u u' v Qm Qim *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a) = Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a) ∧
@@ -353,7 +353,7 @@ theorem transportMatrix_fixes_isotropic (hr : r = D.R.rS) (hQ : IsTransp X v g k
       Matrix.mulVec_mulVec, hQ.1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.Tz`. Rewrite using `[herm_Qi X v hQ]`. Use `(PtRepPf.frU X w v).zz` as an intermediate fact. Express the relevant statement in the definitionally equal form `hJ (X.B.I.ε v) (rv X.B.I v (X.zR w)) (rv X.B.I v (X.zR w)) = -((Tw (D := D) w : ℝ) : ℂ) at this`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -367,11 +367,9 @@ theorem tz_Qi (hQ : IsTransp X v g k r Qm Qim) (w : D.what₂.Word) :
   simp
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `inWb_Qi X v hr hQ _ (fun a => (PtRepPf.frU X u' v).ew a i) (fun a => (PtRepPf.frU X u' v).fw a i)`. Rewrite using `[hz', herm_Qi X v hQ]`. Conclude with `(PtRepPf.frU X u' v).zw i`. Rewrite using `[herm_Qi X v hQ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(PtRepPf.frU X u' v).ww i i` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`. Conclude with `this`. Conclude with `⟨transportMatrix_unitary_form X u u' v hQ, fun a _ => transportMatrix_fixes_isotropic X u u' v hr hQ a⟩`. Rewrite using `[hz, hz', tz_Qi X v hQ, tz_Qi X v hQ]`.
-
-Unfold `m0Of`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec _ Qm Qim, hQ.2.1, Matrix.one_mulVec, transport_matrix_apply_anisotropic, Matrix.mulVec_smul]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBaseFrame_of (hr : r = D.R.rS) (hQ : IsTransp X v g k r Qm Qim) {Wp Wq : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -393,9 +391,9 @@ theorem isBaseFrame_of (hr : r = D.R.rS) (hQ : IsTransp X v g k r Qm Qim) {Wp Wq
       transport_matrix_apply_anisotropic, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Introduce `w`. Use `⟨hi w, by simp, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.apply_symm_apply, m0Of]`. Establish `: Q w * (Qi w * m0X X u u' w * Q w) * Qi w = m0X X u u' w`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = m0X X u u' w := by rw [hQ w, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[this, transport_matrix_apply_frame]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseFromX_of [IsCMField D.host.E] {Wp Wq : InfinitePlace D.host.E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]

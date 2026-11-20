@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
 @[simp] theorem evPt_apply (T : Subalgebra O (X → O)) (x : X) (f : T) : evPt T x f = (f : X → O) x := rfl
 
 /- English proof (translation)
-Introduce `x y hxy`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf, hfxy⟩` from `hsep x y hne`. Conclude with `hfxy (congrArg (fun φ : T →ₐ[O] O => φ ⟨f, hf⟩) hxy)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem evPt_injective (T : Subalgebra O (X → O))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, (f : X → O) x ≠ (f : X → O) y) : Function.Injective (evPt T) := by
@@ -30,13 +30,13 @@ theorem evPt_injective (T : Subalgebra O (X → O))
   exact hfxy (congrArg (fun φ : T →ₐ[O] O => φ ⟨f, hf⟩) hxy)
 
 /- English proof (translation)
-Establish `key : ∀ y, y ≠ x → ∃ g ∈ T, g x ≠ 0 ∧ g y = 0`. Introduce `y hy`. Take `⟨f, hf, hne⟩` from `hsep x y (Ne.symm hy)`. Use `⟨f - algebraMap O (X → O) (f y), T.sub_mem hf (T.algebraMap_mem _), ?_, ?_⟩` and prove the remaining obligations. Simplify `hne` using `[sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Use `choose g hgT hgx hgy using key`. Set `e : X → T` to `fun y => if hy : y = x then 1 else ⟨g y hy, hgT y hy⟩`. Use `⟨∏ y, e y, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [SubmonoidClass.coe_finset_prod, Finset.prod_apply]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_ne_zero_iff.mpr fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y = x`. Simplify using `[e, hy]`. Simplify using `[e, hy, hgx y hy]`. Introduce `y hy`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [SubmonoidClass.coe_finset_prod, Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ y) (by simp [e, hy, hgy y hy])`.
+A detailed English derivation is pending.
 -/
 theorem exists_delta (T : Subalgebra O (X → O))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, (f : X → O) x ≠ (f : X → O) y) (x : X) :
@@ -61,19 +61,17 @@ theorem exists_delta (T : Subalgebra O (X → O))
     exact Finset.prod_eq_zero (Finset.mem_univ y) (by simp [e, hy, hgy y hy])
 
 /- English proof (translation)
-Introduce `φ`. Use `choose P hPx hPy using exists_delta T hsep`. Use `set N : O := ∏ y, ((P y : T) : X → O) y with hN`. Establish `hN0 : N ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun y _ => hPx y`. Set `c : X → O` to `fun x => ∏ y ∈ Finset.univ.erase x, ((P y : T) : X → O) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsum : (∑ x, c x • P x : T) = algebraMap O T N`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Establish `hR : ((algebraMap O T N : T) : X → O) z = N` using `by simp`. Rewrite using `[hR]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, SetLike.val_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single z (fun x _ hxz => by rw [hPy x z (fun h => hxz h.symm), mul_zero]) (fun h => absurd (Finset.mem_univ z) h)]`. Conclude with `Finset.prod_erase_mul _ _ (Finset.mem_univ z)`. Establish `hφ : ∃ x, φ (P x) ≠ 0`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hcon`. Establish `h1` using `congrArg φ hsum`. Rewrite `h1` using `[AlgHom.commutes]`. Conclude with `hN0 (by simpa [hcon] using h1.symm)`. Take `⟨x0, hx0⟩` from `hφ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `⟨x0, AlgHom.ext fun g => ?_⟩` and prove the remaining obligations. Establish `hmul : g * P x0 = ((g : X → O) x0) • P x0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z = x0`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hPy x0 z hz]`. Establish `h2` using `congrArg φ hmul`. Rewrite `h2` using `[map_mul, map_smul, smul_eq_mul]`.
-
-Establish `h3` using `mul_right_cancel₀ hx0 h2`. Rewrite using `[evPt_apply]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evPt_surjective (T : Subalgebra O (X → O))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, (f : X → O) x ≠ (f : X → O) y) : Function.Surjective (evPt T) := by
@@ -133,27 +131,27 @@ Both sides reduce to the same expression.
     ptsNd D i x f = (f : D.nd.X i → D.nd.O i) x := rfl
 
 /- English proof (translation)
-The claim follows from `Set.ext (D.Z_tie i)`.
+A detailed English derivation is pending.
 -/
 theorem Z_eq (i : D.nd.Loc) : (↑(D.nd.Z i) : Set (D.nd.X i)) = Formalism.MainNotions.N.ZN D.nd D.naut i :=
   Set.ext (D.Z_tie i)
 
 /- English proof (translation)
-The claim follows from `Set.ext (D.Zgood_tie i)`.
+A detailed English derivation is pending.
 -/
 theorem Zgood_eq (i : D.nd.Loc) : (↑(D.nd.Zgood i) : Set (D.nd.X i)) = Formalism.MainNotions.N.ZgoodN D.nd D.naut i :=
   Set.ext (D.Zgood_tie i)
 
 /- English proof (translation)
-Introduce `i x hx` and use `(D.Z_tie i x).2 ((D.Zgood_tie i x).1 hx).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zgoodSub : D.nd.ZgoodSub := fun i x hx =>
   (D.Z_tie i x).2 ((D.Zgood_tie i x).1 hx).1
 
 /- English proof (translation)
-Simplify using `only [NData.cc, ccIdeal, RingHom.mem_ker, RingHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `congrFun h ⟨x, fun hz => hx ((D.Z_tie i x).1 hz)⟩` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Use function extensionality and compare the values at `y`. Simplify using `using h y.1 (fun hz => y.2 ((D.Z_tie i y.1).2 hz))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_cc_iff (i : D.nd.Loc) (f : D.nd.T i) :
     f ∈ D.nd.cc i ↔ ∀ x, x ∉ Formalism.MainNotions.N.ZN D.nd D.naut i → (f : D.nd.X i → D.nd.O i) x = 0 := by
@@ -167,9 +165,9 @@ theorem mem_cc_iff (i : D.nd.Loc) (f : D.nd.T i) :
     simpa using h y.1 (fun hz => y.2 ((D.Z_tie i y.1).2 hz))
 
 /- English proof (translation)
-Rewrite using `[mem_cc_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h φ hφ`. Establish `h1` using `h _ hφ`. Rewrite `h1` using `[← ptsNd_apply, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Introduce `h x hx`. Establish `h1` using `h (ptsNd D i x) (by rwa [Equiv.symm_apply_apply])`. Rewrite `h1` using `[ptsNd_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_cc_iff_pts (i : D.nd.Loc) (f : D.nd.T i) :
     f ∈ D.nd.cc i ↔ ∀ φ : D.nd.T i →ₐ[D.nd.O i] D.nd.O i,
@@ -191,13 +189,13 @@ def etaOf (i : D.nd.Loc) (Y : Set (D.nd.X i)) : ℚ :=
   lenUnit (O := D.nd.O i) (D.nd.l i) (↥up ⧸ low.comap up.subtype)
 
 /- English proof (translation)
-Rewrite using `[← Zgood_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem etaLoc_eq (i : D.nd.Loc) : D.nd.etaLoc i = etaOf D i (Formalism.MainNotions.N.ZgoodN D.nd D.naut i) := by
   rw [← Zgood_eq]; rfl
 
 /- English proof (translation)
-Simplify using `only [NData.MtUp, Zgood_eq, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_sup]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_MtUp_iff (i : D.nd.Loc) (y : TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)) :
     y ∈ D.nd.MtUp i ↔ y ∈ D.nd.eigSum i (Formalism.MainNotions.N.ZgoodN D.nd D.naut i) ∧
@@ -205,7 +203,7 @@ theorem mem_MtUp_iff (i : D.nd.Loc) (y : TensorProduct (D.nd.O i) (FractionRing 
   simp only [NData.MtUp, Zgood_eq, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_sup]
 
 /- English proof (translation)
-Distinguish the cases in `h : D.nd.l i = 2`. Establish `h1 : 1 ≤ D.host.QS.factorization 2` using `(Nat.prime_two.dvd_iff_one_le_factorization D.host.QS_pos.ne').1 ((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd)`. Rewrite using `[D.nd.restNLevelExponent_of_two i h, h, max_eq_right h1]`. Conclude with `D.nd.restNLevelExponent_of_odd i h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem s0_eq (i : D.nd.Loc) : D.nd.s0 i = max 1 (D.host.QS.factorization (D.nd.l i)) := by
   by_cases h : D.nd.l i = 2
@@ -216,13 +214,13 @@ theorem s0_eq (i : D.nd.Loc) : D.nd.s0 i = max 1 (D.host.QS.factorization (D.nd.
   · exact D.nd.restNLevelExponent_of_odd i h
 
 /- English proof (translation)
-Rewrite using `[D.nd.restNLevelExponent_of_two i h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem two_pow_s0_eq_two_part_modulus (i : D.nd.Loc) (h : D.nd.l i = 2) : 2 ^ D.nd.s0 i = ordProj[2] D.host.QS := by
   rw [D.nd.restNLevelExponent_of_two i h]
 
 /- English proof (translation)
-Unfold `NData.vdel`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[s0_eq]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem vdel_eq (i : D.nd.Loc) : D.nd.vdel i = ∑ k ∈ Finset.Ioo 0 D.R.t,
     (((max 1 (D.host.QS.factorization (D.nd.l i)) : ℕ) : ℚ) + (padicValNat (D.nd.l i) k : ℚ)) := by
@@ -231,7 +229,7 @@ theorem vdel_eq (i : D.nd.Loc) : D.nd.vdel i = ∑ k ∈ Finset.Ioo 0 D.R.t,
   rw [s0_eq]
 
 /- English proof (translation)
-The claim follows from `D.nd.S_def i v`.
+A detailed English derivation is pending.
 -/
 theorem mem_S_iff (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)) : v ∈ D.nd.S i ↔
     (v ∈ placesOver D.host.E (D.host.g 0) ∨ v ∈ placesOver D.host.E (D.host.g 1) ∨
@@ -240,7 +238,7 @@ theorem mem_S_iff (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)) : v ∈
   D.nd.S_def i v
 
 /- English proof (translation)
-The claim follows from `(D.ntw.psiL_ram i v (D.nd.plOm.1 v) (D.nd.plOm.2 v)).symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_Q_iff (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)) :
     v ∈ D.nd.Q i ↔ ∃ σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 v), D.ntw.psiL i σ ≠ 1 :=
@@ -253,13 +251,11 @@ section Good
 open Polynomial
 
 /- English proof (translation)
-Establish `key : ∀ (a b : PP → J → (ZMod g)ˣ), (∀ v j, b v j = a v j ∨ b v j = (a v j)⁻¹) → Formalism.CyclotomicNorms.IsGood N g f a → Formalism.CyclotomicNorms.IsGood N g f (fun v j => (a v j)⁻¹) → Formalism.CyclotomicNorms.IsGood N g f b ∧ Formalism.CyclotomicNorms.IsGood N g f (fun v j = …`. Introduce `a b hab ha ha'`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `ha`. Take `⟨-, -, -, h4', -, -⟩` from `ha'`. Use `⟨⟨h1, h2, h3, ?_, h5, h6⟩, ⟨h1, h2, h3, ?_, h5, h6⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ℓ hℓ hg v j x hx`. Apply the tactic sequence `rcases hab v j with e | e <;> rw [e]`. Conclude with `h4 ℓ hℓ hg v j x hx`. Conclude with `h4' ℓ hℓ hg v j x hx`. Introduce `ℓ hℓ hg v j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion.
 
-Apply the tactic sequence `rcases hab v j with e | e <;> simp only [e, inv_inv]`. Conclude with `h4' ℓ hℓ hg v j x hx`. Conclude with `h4 ℓ hℓ hg v j x hx`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hg'⟩`.
-
-Apply the tactic sequence `exact key χ' χ (fun v j => by rcases h v j with e | e <;> simp [e]) hg hg'`. Introduce and unpack `⟨hg, hg'⟩`. Conclude with `key χ χ' h hg hg'`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isGood_pair_congr {N g : ℕ} [Fact g.Prime] {PP J : Type} (f : PP → (ZMod g)[X])
     (χ χ' : PP → J → (ZMod g)ˣ) (h : ∀ v j, χ' v j = χ v j ∨ χ' v j = (χ v j)⁻¹) :
@@ -287,7 +283,7 @@ theorem isGood_pair_congr {N g : ℕ} [Fact g.Prime] {PP J : Type} (f : PP → (
     exact key χ χ' h hg hg'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.host.g_prime k⟩ Formalism.CyclotomicNorms.IsGood D.R.r (D.host.g k) (D.nd.lab k σ) (χ' k) ∧ Formalism.CyclotomicNorms.IsGood D.R.r (D.host.g k) (D.nd.lab k σ) (fun v j => (χ' k v j)⁻¹) := by unfold NData.goodRow refine forall_congr' fun k => ?_ have : Fact (D.host.g k).Prime : …`.
+Supply the required witnesses or components.
 -/
 theorem goodRow_congr (D : D7) (σ : D.what₂.FT) (χ' : ∀ k, D.nd.PlG k → Fin D.R.m → (ZMod (D.host.g k))ˣ)
     (h : ∀ k v j, χ' k v j = D.nd.chiT k v j ∨ χ' k v j = (D.nd.chiT k v j)⁻¹) :
@@ -300,13 +296,13 @@ theorem goodRow_congr (D : D7) (σ : D.what₂.FT) (χ' : ∀ k, D.nd.PlG k → 
   exact (isGood_pair_congr _ _ _ (h k)).symm
 
 /- English proof (translation)
-Establish `key : ∀ k (u : (ZMod (D.host.g k))ˣ), haveI : Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩ D.ntypes.teichC k (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (((u⁻¹ : (ZMod (D.host.g k))ˣ) : ZMod (D.host.g k)))) = (D.ntypes.teichC k (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) ((u : ZMod ( …`. Introduce `k u`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Unfold `NTypes.Qchi`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `z ⟨k, v, j, rfl⟩`. Break down `h k v j with e | e` into its components or cases.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `IntermediateField.subset_adjoin _ _ ⟨k, v, j, by rw [e]⟩`. Rewrite using `[e, key]`. Conclude with `inv_mem (IntermediateField.subset_adjoin _ _ ⟨k, v, j, rfl⟩)`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `z ⟨k, v, j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `h k v j with e | e` into its components or cases. Conclude with `IntermediateField.subset_adjoin _ _ ⟨k, v, j, by rw [e]⟩`. Establish `e' : D.nd.chiT k v j = (χ' k v j)⁻¹` using `by rw [e, inv_inv]`. Rewrite using `[e', key]`. Conclude with `inv_mem (IntermediateField.subset_adjoin _ _ ⟨k, v, j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qchi_congr (D : D7) (χ' : ∀ k, D.nd.PlG k → Fin D.R.m → (ZMod (D.host.g k))ˣ)
     (h : ∀ k v j, χ' k v j = D.nd.chiT k v j ∨ χ' k v j = (D.nd.chiT k v j)⁻¹) :
@@ -345,15 +341,15 @@ end Good
 section Tame
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Simplify `sub_dvd_pow_sub_pow ζ 1 a` using `[one_pow]`. Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Break down `Nat.lt_or_ge 1 n with h1 | h1` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `haveI : NeZero n := ⟨by omega⟩`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, a * m % n = 1 := by`. Use `⟨((ZMod.unitOfCoprime a ha)⁻¹ : (ZMod n)ˣ).val.val, ?_⟩` and prove the remaining obligations. Establish `h2 : ((a * ((ZMod.unitOfCoprime a ha)⁻¹ : (ZMod n)ˣ).val.val : ℕ) : ZMod n) = ((1 : ℕ) : ZMod n)`. Simplify using `only [Nat.cast_mul, Nat.cast_one, ZMod.natCast_zmod_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3` using `(ZMod.unitOfCoprime a ha).mul_inv`. Rewrite `h3` using `[ZMod.coe_unitOfCoprime]`. Then use the resulting hypothesis. Rewrite `h2` using `[ZMod.natCast_eq_natCast_iff']`. Rewrite using `[h2, Nat.mod_eq_of_lt h1]`. Establish `hz : (ζ ^ a) ^ m = ζ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, ← Nat.div_add_mod (a * m) n, hm, pow_add, pow_mul, hn, one_pow, one_mul, pow_one]`. Combine the equalities or inequalities in the displayed calculation. Use `interval_cases n`. Rewrite `ha` using `[Nat.coprime_zero_right]`. Substitute `ha` using the available equality.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `hn` using `[pow_one]`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_pow_sub_one {A : Type} [CommRing A] (ζ : A) (n a : ℕ) (hn : ζ ^ n = 1) (ha : Nat.Coprime a n) :
     Ideal.span {ζ ^ a - 1} = Ideal.span {ζ - 1} := by
@@ -384,7 +380,7 @@ theorem span_pow_sub_one {A : Type} [CommRing A] (ζ : A) (n a : ℕ) (hn : ζ ^
         simp
 
 /- English proof (translation)
-Rewrite using `[span_pow_sub_one ζ n a hn ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lenUnit_pow_sub_one {O : Type} [CommRing O] (l : ℕ) (ζ : O) (n a : ℕ) (hn : ζ ^ n = 1)
     (ha : Nat.Coprime a n) :
@@ -411,7 +407,7 @@ def latRelSub {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [AddCommGrou
     rw [← Finset.smul_sum, ha, smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_latRelSub {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (L : Rows.OLat O φ V) (r : L.gen → O) : r ∈ latRelSub L ↔ r ∈ latRel L := Iff.rfl
@@ -434,7 +430,7 @@ Both sides reduce to the same expression.
 theorem plGF_over (D : D7) (k : Fin 2) (v : D.nd.PlG k) : NG.OverPl (D.naut.plGw k v) (plGF D k v) := rfl
 
 /- English proof (translation)
-Establish `h` using `D.naut.plGw_over k v`. Use `show ((D.host.g k : ℕ) : 𝓞 (maximalRealSubfield D.host.E)) ∈ (D.naut.plGw k v).asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plGF_mem (D : D7) (k : Fin 2) (v : D.nd.PlG k) : plGF D k v ∈ plF D k := by
   have h := D.naut.plGw_over k v
@@ -446,7 +442,7 @@ theorem plGF_mem (D : D7) (k : Fin 2) (v : D.nd.PlG k) : plGF D k v ∈ plF D k 
 def plGFs (D : D7) (k : Fin 2) (v : D.nd.PlG k) : plF D k := ⟨plGF D k v, plGF_mem D k v⟩
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (h.symm.trans (plGF_over D k v))`.
+A detailed English derivation is pending.
 -/
 theorem plGF_unique (D : D7) (k : Fin 2) (v : D.nd.PlG k)
     (u : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (h : NG.OverPl (D.naut.plGw k v) u) :
@@ -464,13 +460,13 @@ Both sides reduce to the same expression.
     (plGEquiv h k v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) = plGF D k v := rfl
 
 /- English proof (translation)
-Rewrite using `[← D.nd.embK_w i]`. Distinguish the cases in `h0 : D.what₂.OtoLL y = 0`. Rewrite using `[h0, AddValuation.map_zero]`. Conclude with `le_top`. Rewrite using `[D.val_eq _ _ h0]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint` using `D.O_int y`. Use `set x : 𝓞 D.what₂.LL := ⟨D.what₂.OtoLL y, hint⟩`. Establish `hx : (x : D.what₂.LL) = D.what₂.OtoLL y` using `rfl`. Establish `hle` using `(D.plEq (D.nd.w i)).valuation_le_one (K := D.what₂.LL) x`. Establish `hne : (D.plEq (D.nd.w i)).valuation D.what₂.LL (algebraMap (𝓞 D.what₂.LL) D.what₂.LL x) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Simplify `h0` using `[hx]`. Unfold `vAdd`. Establish `: WithZero.log ((D.plEq (D.nd.w i)).valuation D.what₂.LL (D.what₂.OtoLL y)) ≤ 0`. Establish `hne' : (D.plEq (D.nd.w i)).valuation D.what₂.LL (D.what₂.OtoLL y) ≠ 0` using `by simpa [hx] using hne`. Establish `hle' : (D.plEq (D.nd.w i)).valuation D.what₂.LL (D.what₂.OtoLL y) ≤ 1` using `by simpa [hx] using hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : WithZero.exp (WithZero.log ((D.plEq (D.nd.w i)).valuation D.what₂.LL (D.what₂.OtoLL y))) ≤ WithZero.exp (0 : ℤ)`. Rewrite using `[WithZero.exp_log hne']`. Simplify using `using hle'`. Conclude with `WithZero.exp_le_exp.mp h2`. Conclude with `(by omega : (0:ℤ) ≤ -WithZero.log ((D.plEq (D.nd.w i)).valuation D.what₂.LL (D.what₂.OtoLL y)))` after adjusting the coercions.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem embK_OtoLL_mem (D : D7) (i : D.nd.Loc) (y : D.what₂.O) :
     D.nd.embK i (D.what₂.OtoLL y) ∈ (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))).range := by
@@ -505,7 +501,7 @@ def sOf (D : D7) (i : D.nd.Loc) : D.what₂.O →+* D.nd.O i :=
     (((D.nd.embK i).comp D.what₂.OtoLL).codRestrict _ (embK_OtoLL_mem D i))
 
 /- English proof (translation)
-Establish `h` using `(fracRangeEquiv (D.nd.O i)).apply_symm_apply (((D.nd.embK i).comp D.what₂.OtoLL).codRestrict _ (embK_OtoLL_mem D i) y)`. Conclude with `congrArg Subtype.val h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sOf_spec (D : D7) (i : D.nd.Loc) (y : D.what₂.O) :
     algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (sOf D i y) = D.nd.embK i (D.what₂.OtoLL y) := by
@@ -514,7 +510,7 @@ theorem sOf_spec (D : D7) (i : D.nd.Loc) (y : D.what₂.O) :
   exact congrArg Subtype.val h
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun y => IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)) ((hs y).trans (sOf_spec D i y).symm)`.
+A detailed English derivation is pending.
 -/
 theorem sOf_unique (D : D7) (i : D.nd.Loc) (s : D.what₂.O →+* D.nd.O i)
     (hs : ∀ y, algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (s y) = D.nd.embK i (D.what₂.OtoLL y)) :

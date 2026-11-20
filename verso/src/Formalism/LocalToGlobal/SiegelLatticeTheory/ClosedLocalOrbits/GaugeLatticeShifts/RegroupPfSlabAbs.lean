@@ -14,15 +14,13 @@ section SlabAbsGen
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
 
 /- English proof (translation)
-Establish `hinv : ∀ (g : Γ) (x : G), f (g⁻¹ • x) = f x`. Introduce `g x`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hfi _ (g⁻¹).2 x`. Rewrite using `[hFS.setLIntegral_eq_tsum']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hinv]`. Rewrite using `[← lintegral_iUnion₀]`. Conclude with `lintegral_mono_set (Set.iUnion_subset fun g => Set.inter_subset_right)`. Introduce `g`. Conclude with `(hP.const_smul g).nullMeasurableSet.inter hFS.nullMeasurableSet`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g h hgh`. Apply `Disjoint.aedisjoint` to reduce the goal to its premises. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨⟨p, hp, rfl⟩, -⟩ ⟨⟨q, hq, hqx⟩, -⟩`. Apply `hgh` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (h : G) * q = (g : G) * p` using `by simpa [Subgroup.smul_def] using hqx`. Establish `hsq : ((h⁻¹ * g : Γ) : G) * p = q`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc, ← e, ← mul_assoc, inv_mul_cancel, one_mul]`. Establish `h1 : ((h⁻¹ * g : Γ) : G) = 1` using `huniq p hp _ (h⁻¹ * g).2 (by rw [hsq]; exact hq)`. Establish `h2 : h⁻¹ * g = 1` using `Subtype.ext h1`.
-
-Conclude with `(inv_mul_eq_one.mp h2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lintegral_le_of_uniq (Γ : Subgroup G) [Countable Γ] (FS : Set G) (hFS : IsFundamentalDomain Γ FS μ)
     (P : Set G) (hP : MeasurableSet P) (f : G → ℝ≥0∞) (hfm : Measurable f)
@@ -53,15 +51,13 @@ theorem lintegral_le_of_uniq (Γ : Subgroup G) [Countable Γ] (FS : Set G) (hFS 
 end SlabAbsGen
 
 /- English proof (translation)
-Establish `hs : MeasurableSet ((a * ·) '' K)`. Rewrite using `[Set.image_mul_left]`. Conclude with `measurable_const_mul a⁻¹ hK`. Establish `hvol : μf ((a * ·) '' K) = μf K`. Rewrite using `[Set.image_mul_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `measure_preimage_mul μf a⁻¹ K`. Establish `hin : ∀ y ∈ Ω, ∫⁻ x in (a * ·) '' K, f (y, x) ∂μf = f (y, a) * μf K`. Introduce `y _`. Rewrite using `[← hvol, ← setLIntegral_const]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `exact setLIntegral_congr_fun hs (fun x hx => by obtain ⟨k, hk, rfl⟩ := hx; exact hf y k hk)`. Consider the case `exact setLIntegral_congr_fun hs (Filter.Eventually.of_forall fun x hx => by`. Take `⟨k, hk, rfl⟩` from `hx`. Conclude with `hf y k hk)`. Establish `hfa : Measurable fun y : I.Ginf => f (y, a)` using `by fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Unfold `Formalism.MainNotions.S.AutInst.muA`. Rewrite using `[← Measure.prod_restrict, lintegral_prod _ hfm.aemeasurable]`. Establish `hout : ∫⁻ y in Ω, ∫⁻ x in (a * ·) '' K, f (y, x) ∂μf ∂(Measure.pi fun v => Formalism.REAL.muG (I.ε v)) = ∫⁻ y in Ω, f (y, a) * μf K ∂(Measure.pi fun v => Formalism.REAL.muG (I.ε v))` using `by first`. Consider the case `exact setLIntegral_congr_fun hΩ hin`. Consider the case `exact setLIntegral_congr_fun hΩ (Filter.Eventually.of_forall hin)`.
-
-Rewrite using `[hout, lintegral_mul_const _ hfa, mul_comm]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_slab (I : Formalism.MainNotions.S.AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsMulLeftInvariant]
     (K : Set I.Gf) (hK : MeasurableSet K) (Ω : Set I.Ginf) (hΩ : MeasurableSet Ω) (a : I.Gf) (f : I.GA → ℝ≥0∞)
@@ -98,37 +94,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.PoincareInHH.Cut Formalism.L2.SG.TermOp.KExpCut Formalism.L2.SG.Full
 
 /- English proof (translation)
-Introduce `D X Y u u' hH Ωs hΩ T T' ρ`. Take `⟨hKL, hOK, hOK', -⟩` from `hH`. Establish `hRX` using `hR D X hKL`. Establish `hWD` using `hW D X Y u hKL`. Establish `hWD'` using `hW D X Y u' hKL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨FS, hFS⟩, Ω₀, a, hc0, h10, hT⟩` from `hOK`. Take `⟨⟨F', hF'⟩, Ω₀', a', hc0', h10', hT'⟩` from `hOK'`. Establish `hΩc : IsCompact (Ω₀ ∪ Ω₀')` using `hc0.union hc0'`. Establish `h1 : (1 : X.B.I.GA) ∈ Ω₀ ∪ Ω₀'` using `Or.inl h10`. Establish `hFD` using `(hT T).1 _ hΩc Set.subset_union_left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFD'` using `(hT' T').1 _ hΩc Set.subset_union_right`. Establish `: LocallyCompactSpace X.B.I.GA` using `hRX.1`. Establish `: SecondCountableTopology X.B.I.GA` using `hRX.2.1`. Establish `: T2Space X.B.I.GA` using `hRX.2.2.1`. Establish `: BorelSpace X.B.I.GA` using `hRX.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: DiscreteTopology (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)` using `hRX.2.2.2.2`. Establish `: Countable (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)` using `Formalism.L2.SG.Pf.countable_of_discrete _`. Establish `: Countable (Srat X u)` using `Formalism.L2.SG.Pf.Slab.countable_of_le (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u) inf_le_left`. Establish `: SigmaFinite X.B.μf` using `X.B.sf`. Establish `: X.B.μf.IsHaarMeasure` using `X.B.haar`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `@muA_isHaar' X.B.I X.B.μf X.B.sf X.B.haar` as an intermediate fact. Establish `hD' : IsRightTransversal (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u') (Y.Dt u')` using `Y.reps u'`. Establish `: Countable (Y.Dt u')`. Establish `hinj : Function.Injective (fun d : Y.Dt u' => (⟨d.1, hD'.1 d.2⟩ : Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I))`. Introduce `d e h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (by simpa using congrArg Subtype.val h)`. Conclude with `hinj.countable`. Use `set ph := Ph X u Y.hK T with hph`. Use `set ph' := Ph X u' Y.hK T' with hph'`. Use `set g : X.B.I.GA → ℝ≥0∞ := fun x => ‖ph x‖ₑ * ∑' δ : Y.Dt u', ‖ph' ((δ : X.B.I.GA) * x)‖ₑ with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgm : Measurable g` using `hFD.1.enorm.mul (Measurable.tsum fun δ => hFD'.1.enorm.comp (measurable_const_mul _))`. Establish `hb` using `foldBound_holds X.B.I.GA (X.B.I.muA X.B.μf) (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u') inferInstance inf_le_left (Ω₀ ∪ Ω₀') hΩc.isClosed.measurableSet a' ph' hFD'.1 hFD'.2.1 hFD'.2.2 F' hF' (Y.Dt u') hD'`. Establish `hm1 : ∀ x, 1 ≤ mult (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Ω₀ ∪ Ω₀') x` using `fun x => PI.FoldMult.UnitaryGroupMassFormula.one_le_mult _ _ h1 x`. Establish `hq' : quotientLIntegral (X.B.I.muA X.B.μf) F' ph' ≠ ⊤`. Use `ne_top_of_le_ne_top ((hT' T').2 _ hΩc F' hF').ne (lintegral_mono fun y => ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfinFS : ∫⁻ x in FS, g x ∂(X.B.I.muA X.B.μf) < ⊤`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `gcongr`. Conclude with `hb x`. Use `_ = _ := by ring`. Use `_ = ((a' : ℝ≥0∞) * quotientLIntegral (X.B.I.muA X.B.μf) F' ph') * multiplicityLIntegral (X.B.I.muA X.B.μf) (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Ω₀ ∪ Ω₀') FS ph := by`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.mul_ne_top ENNReal.coe_ne_top hq')]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top hq'.lt_top) ((hT T).2 _ hΩc FS hFS)`. Establish `hgi : ∀ s ∈ Srat X u, ∀ y, g (s * y) = g y`. Introduce `s hs y`. Simplify using `only [hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hFD.2.1 s hs y]`. Use `congr 1`. Establish `e` using `PI.FoldDCUnfold.W.translation_independent X.B.I.GA (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u') (Y.Dt u') (Y.Dt u') hD' hD' s (Subgroup.mem_inf.1 hs).1 (fun z => ‖ph' (z * y)‖ₑ) (fun t ht z => by simp only [mul_assoc]; rw [hFD'.2.1 t ht])`. Simplify `e` using `[mul_assoc]`. Establish `hKm` using `level_subgroup_measurable X Y.hK hKL`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : MeasurableSet (slab (Y.cs u) ρ (Ωs ρ))` using `(hΩ ρ).1.prod ((MeasurableEquiv.mulLeft (aC (Y.cs u) ρ)).measurableSet_image.2 hKm)`. Establish `huniq` using `(hSC D X Y u Ωs hKL (hN D X Y u hKL) hΩ).2`. Establish `hslab` using `lintegral_le_of_uniq (X.B.I.muA X.B.μf) (Srat X u) FS hFS (slab (Y.cs u) ρ (Ωs ρ)) hsm g hgm hgi (fun y hy s hs hsy => (huniq ρ ρ y s hs hy hsy).1)`. Establish `hK2 : ∀ y : X.B.I.Ginf, ∀ k ∈ X.K2, g (y, aC (Y.cs u) ρ * k) = g (y, aC (Y.cs u) ρ)`. Introduce `y k hk`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyk : ((y, aC (Y.cs u) ρ * k) : X.B.I.GA) = (y, aC (Y.cs u) ρ) * (1, k)` using `by simp`. Establish `hn : ‖X.chi2 k‖ₑ = 1`. Rewrite using `[← ofReal_norm, Y.hK.2.2.2.2 k hk, ENNReal.ofReal_one]`. Simplify using `only [hg]`. Rewrite using `[hyk, hph, ph_right_K X u Y.hK hWD T _ k hk, enorm_mul, hn, one_mul]`.
-
-Use `congr 1`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Rewrite using `[hph', ← mul_assoc, ph_right_K X u' Y.hK hWD' T' _ k hk, enorm_mul, hn, one_mul]`. Establish `hEq` using `lintegral_slab X.B.I X.B.μf X.K2 hKm (Ωs ρ) (hΩ ρ).1 (aC (Y.cs u) ρ) g hgm hK2`. Establish `hlt : X.B.μf X.K2 * ∫⁻ y in Ωs ρ, g (y, aC (Y.cs u) ρ) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) < ⊤`.
-
-Rewrite using `[← hEq]`. Conclude with `lt_of_le_of_lt hslab hfinFS`. Establish `key : ∫⁻ y in Ωs ρ, g (y, aC (Y.cs u) ρ) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) < ⊤`. Break down `ENNReal.mul_lt_top_iff.1 hlt with h | h | h` into its components or cases. Conclude with `h.2`.
-
-Conclude with `absurd h hKL.2.2.1.ne'`. Rewrite using `[h]`. Conclude with `ENNReal.zero_lt_top`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slabAbsC_of (hW : PhWellDefC) (hSC : Formalism.L2.SG.Pf.Slab.SlabCoverC)
     (hR : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D), X.LevelSubgroupNormalized → FoldReadyX X)

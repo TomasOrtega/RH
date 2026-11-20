@@ -18,11 +18,9 @@ namespace GlobalTheory.BKLim.EtaleLimit
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i j`. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite `this` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_iff {m k : Type} (n : ℕ) (A B : Matrix m k (WCb l)) :
     (∀ i j, (l : WCb l) ^ n ∣ (A - B) i j) ↔
@@ -39,14 +37,14 @@ theorem cong_iff {m k : Type} (n : ℕ) (A B : Matrix m k (WCb l)) :
     exact this
 
 /- English proof (translation)
-Introduce `i j` and use `(pow_dvd_pow _ h).trans (hAB i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cong_mono {m k : Type} {n n' : ℕ} (h : n ≤ n') {A B : Matrix m k (WCb l)}
     (hAB : ∀ i j, (l : WCb l) ^ n' ∣ (A - B) i j) : ∀ i j, (l : WCb l) ^ n ∣ (A - B) i j :=
   fun i j => (pow_dvd_pow _ h).trans (hAB i j)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `h.map (WittVector.constantCoeff (p := l) (R := Cb l))`. Rewrite `h2` using `[map_natCast, CharP.cast_eq_zero]`. Conclude with `not_isUnit_zero h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isUnit_l : ¬ IsUnit (l : WCb l) := by
   intro h
@@ -55,20 +53,18 @@ theorem not_isUnit_l : ¬ IsUnit (l : WCb l) := by
   exact not_isUnit_zero h2
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.BSP.DescentStep.perfectRing_Cb (l := l)`. Conclude with `WittVector.isAdicCompleteIdealSpanP`.
+A detailed English derivation is pending.
 -/
 theorem complete : IsAdicComplete (Ideal.span {(l : WCb l)}) (WCb l) := by
   haveI := GlobalTheory.BSP.DescentStep.perfectRing_Cb (l := l)
   exact WittVector.isAdicCompleteIdealSpanP
 
 /- English proof (translation)
-Establish `hq` using `(cong_iff 1 A B).1 h`. Use `set q := Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ 1})`. Establish `hd : q A.det = q B.det`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Conclude with `congrArg Matrix.det hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hd` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton, pow_one]`. Rewrite `hB`, the goal using `[Matrix.isUnit_iff_isUnit_det]`. Take `⟨b, hb⟩` from `hB`. Use `haveI := complete (l := l)`. Establish `hj : (A.det - B.det) * ((b⁻¹ : (WCb l)ˣ) : WCb l) ∈ Ideal.jacobson ⊥` using `IsAdicComplete.le_jacobson_bot (Ideal.span {(l : WCb l)}) (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton.2 hd))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(Ideal.mem_jacobson_bot.1 hj) 1`. Establish `e : (A.det - B.det) * ((b⁻¹ : (WCb l)ˣ) : WCb l) * 1 + 1 = A.det * ((b⁻¹ : (WCb l)ˣ) : WCb l)`. Rewrite using `[← hb]`. Simplify using `only [mul_one, sub_mul, Units.mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `h1` using `[e]`. Conclude with `isUnit_of_mul_isUnit_left h1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_cong {d : ℕ} {A B : Matrix (Fin d) (Fin d) (WCb l)} (hB : IsUnit B)
     (h : ∀ i j, (l : WCb l) ^ 1 ∣ (A - B) i j) : IsUnit A := by
@@ -97,7 +93,7 @@ namespace GlobalTheory.BKLim.EtaleLimit
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact S.sum_mem fun x _ => S.mul_mem (hA i x) (hB x j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem {S : Subring (WCb l)} {m k o : Type} [Fintype k] {A : Matrix m k (WCb l)} {B : Matrix k o (WCb l)}
     (hA : ∀ i j, A i j ∈ S) (hB : ∀ i j, B i j ∈ S) : ∀ i j, (A * B) i j ∈ S := fun i j => by
@@ -105,17 +101,15 @@ theorem mul_mem {S : Subring (WCb l)} {m k o : Type} [Fintype k] {A : Matrix m k
   exact S.sum_mem fun x _ => S.mul_mem (hA i x) (hB x j)
 
 /- English proof (translation)
-Use `haveI := complete (l := l)`. Establish `hc : ∀ i j m n, m ≤ n → (l : WCb l) ^ m ∣ S n i j - S m i j`. Introduce `i j m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n hmn ih`. Establish `e : S (n + 1) i j - S m i j = (S (n + 1) - S n) i j + (S n i j - S m i j)`. Simplify using `only [Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_add ((pow_dvd_pow _ (by omega)).trans (h n i j)) ih`. Establish `key : ∀ i j, ∃ L : WCb l, ∀ n, (l : WCb l) ^ n ∣ L - S n i j`. Introduce `i j`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (IsAdicComplete.toIsPrecomplete (I := Ideal.span {(l : WCb l)}) (M := WCb l)) (f := fun m => S m i j) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← dvd_neg, neg_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hc i j m n hmn)`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Use `hL n` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Rewrite using `[← dvd_neg, neg_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Use `choose L hL using key`. Use `⟨Matrix.of L, fun k i j => ?_⟩` and prove the remaining obligations. Establish `e : (Matrix.of L - S k) i j = (L i j - S (k + 1) i j) + (S (k + 1) - S k) i j`. Simplify using `only [Matrix.sub_apply, Matrix.of_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_add (hL i j (k + 1)) (h k i j)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lim {d : ℕ} (S : ℕ → Matrix (Fin d) (Fin d) (WCb l))
     (h : ∀ k i j, (l : WCb l) ^ (k + 1) ∣ (S (k + 1) - S k) i j) :
@@ -155,9 +149,9 @@ namespace GlobalTheory.BKLim.EtaleLimit
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l}
 
 /- English proof (translation)
-Take `⟨-, -, -, hval, -⟩` from `GlobalTheory.T.integral_elements_unit_factorization l K bk`. Take `⟨k, v, v', hv, hv', hvv, rfl⟩` from `hval x hx hu.ne_zero`. Consider the cases of `k with`. Consider the case `zero => exact ⟨v', hv', by rw [pow_zero, one_mul, hvv]⟩`. Consider the case `succ k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-It suffices to derive a contradiction. Apply `not_isUnit_l (l := l)` to reduce the goal to its premises. Rewrite `hu` using `[pow_succ', mul_assoc]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem (bk : BK K) {x : WCb l} (hx : x ∈ bk.OE) (hu : IsUnit x) : ∃ v ∈ bk.OE, x * v = 1 := by
   obtain ⟨-, -, -, hval, -⟩ := GlobalTheory.T.integral_elements_unit_factorization l K bk
@@ -171,9 +165,9 @@ theorem inv_mem (bk : BK K) {x : WCb l} (hx : x ∈ bk.OE) (hu : IsUnit x) : ∃
     exact isUnit_of_mul_isUnit_left hu
 
 /- English proof (translation)
-Set `Mo : Matrix (Fin d) (Fin d) bk.OE` to `Matrix.of fun i j => ⟨M i j, hM i j⟩`. Establish `hMo : Mo.map bk.OE.subtype = M` using `by ext i j; rfl`. Establish `hdet : bk.OE.subtype Mo.det = M.det` using `by rw [RingHom.map_det]; exact congrArg Matrix.det hMo`. Rewrite `hu` using `[Matrix.isUnit_iff_isUnit_det, ← hdet]`. Take `⟨v, hv, hxv⟩` from `inv_mem bk (Mo.det).2 hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdu : IsUnit Mo.det` using `isUnit_iff_exists_inv.2 ⟨⟨v, hv⟩, Subtype.ext hxv⟩`. Use `⟨(Mo⁻¹).map bk.OE.subtype, fun i j => (Mo⁻¹ i j).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hMo, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hdu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_inv (bk : BK K) {d : ℕ} {M : Matrix (Fin d) (Fin d) (WCb l)} (hM : ∀ i j, M i j ∈ bk.OE)
     (hu : IsUnit M) : ∃ M' : Matrix (Fin d) (Fin d) (WCb l), (∀ i j, M' i j ∈ bk.OE) ∧ M * M' = 1 := by
@@ -192,20 +186,20 @@ end GlobalTheory.BKLim.EtaleLimit
 namespace GlobalTheory.BKLim.EtaleLimit
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, s, 0, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem evW_mem {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) (s : bk.S) : bk.evW s ∈ bk.OE :=
   fun _ => ⟨0, s, 0, by simp⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [← neg_sub, Matrix.neg_apply, dvd_neg]; exact h i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cong_symm {l : ℕ} [Fact l.Prime] {m k : Type} {n : ℕ} {A B : Matrix m k (WCb l)}
     (h : ∀ i j, (l : WCb l) ^ n ∣ (A - B) i j) : ∀ i j, (l : WCb l) ^ n ∣ (B - A) i j := fun i j => by
   rw [← neg_sub, Matrix.neg_apply, dvd_neg]; exact h i j
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs · exact bk.OE.one_mem · exact bk.OE.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem' {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) {d : ℕ} :
     ∀ i j, (1 : Matrix (Fin d) (Fin d) (WCb l)) i j ∈ bk.OE := fun i j => by
@@ -214,47 +208,39 @@ theorem one_mem' {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) {d : ℕ} :
   · exact bk.OE.zero_mem
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ d N ρ tw F`. Use `choose T R R' hTu hR hR' ha hb using fun k : ℕ => GlobalTheory.T.exists_etaleBasis_modPow l K bk τ hτ N d (tw.d' (k + 1)) (k + 1) ρ (tw.ρ' (k + 1)) (F (k + 1)) (tw.Pi (k + 1)) (by omega) (tw.onto (k + 1))`. Use `choose Y hY using fun k : ℕ => GlobalTheory.T.exists_equivariantMap_breuilKisinMatrix l K bk τ hτ N N (tw.d' (k + 1 + 1)) (tw.d' (k + 1)) (fun g => (tw.ρ' (k + 1 + 1) g).val) (fun g => (tw.ρ' (k + 1) g).val) (F (k + 1 + 1)) (F (k + 1)) (tw.f (k + 1)) (fun g => tw.f_equi (k + 1) g …`. Take `⟨U, hU⟩ : ∃ U : ℕ → Matrix (Fin d) (Fin d) (WCb l), ∀ k, U k = R k * (Y k).map bk.evW * R' (k + 1)` from `⟨_, fun _ => rfl⟩`. Establish `hUm : ∀ k i j, U k i j ∈ bk.OE` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hU k]`. Conclude with `mul_mem (mul_mem (hR k) (fun i j => evW_mem bk _)) (hR' (k + 1))`. Establish `hUT : ∀ k i j, (l : WCb l) ^ (k + 1) ∣ (T (k + 1) - T k * U k) i j`. Introduce `k`. Rewrite using `[cong_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (zW (tw.Pi (k + 1 + 1)) * (F (k + 1 + 1)).T * R' (k + 1)).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) = (T (k + 1)).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)}))` using `(cong_iff _ _ _).1 (cong_mono (by omega) (hb (k + 1)))`. Establish `h2 : (zW (tw.Pi (k + 1) * tw.f (k + 1))).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) = (zW (tw.Pi (k + 1 + 1))).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)}))`. Apply `(cong_iff _ _ _).1` to reduce the goal to its premises. Introduce `i j`. Use `map_dvd (algebraMap ℤ_[l] (WCb l)) (tw.f_Pi (k + 1) i j)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_pow, map_natCast, Matrix.sub_apply, map_sub]`. Conclude with `this`. Establish `h4 : (zW (tw.Pi (k + 1)) * (F (k + 1)).T).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) = (T k * R k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)}))` using `(cong_iff _ _ _).1 (ha k)`. Establish `h3` using `hY k`. Rewrite using `[← h1, hU k]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `e2 : zW (tw.Pi (k + 1) * tw.f (k + 1)) = zW (tw.Pi (k + 1)) * zW (tw.f (k + 1))` using `Matrix.map_mul`. Rewrite `h2` using `[e2]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = (zW (tw.Pi (k + 1)) * (zW (tw.f (k + 1)) * (F (k + 1 + 1)).T) * R' (k + 1)).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = (zW (tw.Pi (k + 1)) * (F (k + 1)).T).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) * ((Y k).map bk.evW * R' (k + 1)).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) := by`. Rewrite using `[← h3]`. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `_ = (T k * (R k * (Y k).map bk.evW * R' (k + 1))).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) := by`. Rewrite using `[h4]`. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`. Establish `hUu : ∀ k, IsUnit (U k)` using `fun k => by`. Establish `h` using `isUnit_of_cong (A := T k * U k) (hTu (k + 1)) (cong_symm (cong_mono (by omega) (hUT k)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite `h` using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right h)`. Use `choose V hVm hUV using fun k => exists_inv bk (hUm k) (hUu k)`. Take `⟨C, hC0, hCs⟩ : ∃ C : ℕ → Matrix (Fin d) (Fin d) (WCb l), C 0 = 1 ∧ ∀ k, C (k + 1) = V k * C k` from `⟨fun k => Nat.rec 1 (fun k Ck => V k * Ck) k, rfl, fun _ => rfl⟩`. Take `⟨D, hD0, hDs⟩ : ∃ D : ℕ → Matrix (Fin d) (Fin d) (WCb l), D 0 = 1 ∧ ∀ k, D (k + 1) = D k * U k` from `⟨fun k => Nat.rec 1 (fun k Dk => Dk * U k) k, rfl, fun _ => rfl⟩`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hCm : ∀ k i j, C k i j ∈ bk.OE`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hC0]`. Conclude with `one_mem' bk`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [hCs]`. Conclude with `mul_mem (hVm k) ih`. Establish `hDm : ∀ k i j, D k i j ∈ bk.OE`. Introduce `k`. Proceed by induction on `k with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => rw [hD0]`. Conclude with `one_mem' bk`. Consider the case `succ k ih => rw [hDs]`. Conclude with `mul_mem ih (hUm k)`. Establish `hDC : ∀ k, D k * C k = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hD0, hC0, Matrix.mul_one]`. Consider the case `succ k ih`. Rewrite using `[hDs, hCs, Matrix.mul_assoc, ← Matrix.mul_assoc (U k), hUV k, Matrix.one_mul, ih]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Establish `hCD : ∀ k, C k * D k = 1` using `fun k => mul_eq_one_comm.1 (hDC k)`. Establish `hS : ∀ k i j, (l : WCb l) ^ (k + 1) ∣ (T (k + 1) * C (k + 1) - T k * C k) i j`. Introduce `k`. Rewrite using `[cong_iff, hCs]`. Establish `h` using `(cong_iff _ _ _).1 (hUT k)`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hUV k, Matrix.mul_one]`. Take `⟨T0, hT0⟩` from `exists_lim (fun k => T k * C k) hS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨T0, isUnit_of_cong (B := T 0 * C 0) ?_ (hT0 0), ?_⟩` and prove the remaining obligations. Rewrite using `[hC0, Matrix.mul_one]`. Conclude with `hTu 0`. Introduce `n`. Consider the cases of `n with`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero`. Conclude with `⟨0, 0, fun _ _ => bk.OE.zero_mem, fun _ _ => bk.OE.zero_mem, fun _ _ => by rw [pow_zero]; exact one_dvd _, fun _ _ => by rw [pow_zero]; exact one_dvd _⟩`. Consider the case `succ k`. Use `⟨D k * R k, R' k * C k, mul_mem (hDm k) (hR k), mul_mem (hR' k) (hCm k), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cong_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `h4` using `(cong_iff _ _ _).1 (ha k)`. Establish `h5 : T0.map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) = (T k * C k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)}))` using `(cong_iff _ _ _).1 (hT0 k)`. Rewrite using `[h4]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hCD k, Matrix.mul_one]`.
-
-Use `_ = (T k * C k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) * (D k * R k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) := by`. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = (T0 * (D k * R k)).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) := by`. Rewrite using `[← h5, ← Matrix.map_mul]`. Rewrite using `[cong_iff]`.
-
-Establish `h4` using `(cong_iff _ _ _).1 (ha k)`. Establish `h6` using `(cong_iff _ _ _).1 (hb k)`. Establish `hTq : IsUnit ((T k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})))` using `(hTu k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})).mapMatrix`. Establish `hRR : (R k * R' k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) = 1`. Apply `hTq.mul_left_cancel` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = (zW (tw.Pi (k + 1)) * (F (k + 1)).T * R' k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) := by rw [← h4, ← Matrix.map_mul]`. Use `_ = (T k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) * 1 := by rw [h6, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = (D k * C k).map (Ideal.Quotient.mk (Ideal.span {(l : WCb l) ^ (k + 1)})) := by`. Rewrite using `[hRR, Matrix.mul_one, Matrix.map_mul]`. Use `_ = _ := by rw [hDC k]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d N : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (tw : Tower ρ) (F : ∀ n, Pre bk N (tw.d' n) fun g => (tw.ρ' n g).val), ∃ T0 : Matrix (Fin d) (Fin d) (WCb l), IsUnit T0 ∧ ∀ n, ∃ (R : Matrix (Fin d) (Fin (tw.d' n)) (WCb l)) (R' : Matrix (Fin (tw.d' n)) (Fin d) (WCb l)), (∀ i j, R i j ∈ bk.OE) ∧ (∀ i j, R' i j ∈ bk.OE) ∧ (∀ i j, (l : WCb l) ^ n ∣ (zW (tw.Pi n) * (F n).T - T0 * R) i j) ∧ (∀ i j, (l : WCb l) ^ n ∣ (R * R' - (1 : Matrix (Fin d) (Fin d) (WCb l))) i j) := by
   intro l _ K bk τ hτ d N ρ tw F

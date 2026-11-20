@@ -27,9 +27,9 @@ open GlobalTheory.StdFrames GlobalTheory.IdemSupport
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Establish `hs` using `map_sum ((cpt Q).comp (toEAf D)).toAddMonoidHom es S`. Use `hs.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single_of_mem Q hQ]`. Conclude with `(cpt_of_isIdemAt (hes Q hQ)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `R hR hne`. Conclude with `(cpt_of_isIdemAt (hes R hR)).2 Q hne.symm`.
+A detailed English derivation is pending.
 -/
 theorem cpt_idemSum {ea : AE D} {S : Finset (Pl D.host.E)} (h : IsIdemSum ea S) {Q : Pl D.host.E} (hQ : Q ∈ S) :
     cpt Q (toEAf D ea) = 1 := by
@@ -42,9 +42,9 @@ theorem cpt_idemSum {ea : AE D} {S : Finset (Pl D.host.E)} (h : IsIdemSum ea S) 
     exact (cpt_of_isIdemAt (hes R hR)).2 Q hne.symm
 
 /- English proof (translation)
-Introduce `hc`. Establish `h1` using `congrArg (fun t => cpt P (toEAf D t)) h.2`. Simplify using `only [RingHom.map_mul, RingHom.map_zero, cpt_idemSum h hP, one_mul] at h1`. Rewrite `h1` using `[toEAf_cA, ← hc]`. Establish `h2` using `cpt_sg_eq_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[sg_sg, cpt_idemSum h hQ]`. Conclude with `one_ne_zero h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPrime_ne {ea : AE D} {S : Finset (Pl D.host.E)} (h : IsIdemSum ea S) {P Q : Pl D.host.E} (hP : P ∈ S)
     (hQ : Q ∈ S) : cP Q ≠ P := by
@@ -57,9 +57,9 @@ theorem conjPrime_ne {ea : AE D} {S : Finset (Pl D.host.E)} (h : IsIdemSum ea S)
   exact one_ne_zero h2
 
 /- English proof (translation)
-Introduce `D P e f ea S h1 hS hP`. Take `⟨hd, ε, hε, hf⟩` from `of_isPrimeIdem (comp_toAd D) h1`. Establish `hinf : infPart D f = 0` using `hf ▸ (place_comp (comp_toAd D) hε).1`. Break down `h1 with ⟨h1, h2⟩ | ⟨rfl, -⟩` into its components or cases. Use `⟨h1, h2, ?_, hinf, fun Q hQ => conjPrime_ne hS hP hQ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, RingHom.map_add, Formalism.L2.Theta.cA_cA, add_comm]`. It suffices to derive a contradiction. Establish `h2` using `(place_comp (comp_toAd D) hε).2.1 (cP P) (under_cP P)`. Rewrite `h2` using `[← hf, hd.2.2 _ (conjPrime_ne hS hP hP)]`. Conclude with `zero_ne_one h2`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem branch : ∀ (D : D7) (P : Pl D.host.E) (e f ea : AE D) (S : Finset (Pl D.host.E)),
     IsPrimeIdem P e f → IsIdemSum ea S → P ∈ S → Formalism.L2.NTheta.IsIdemAt e P ∧ f = e + cA D e ∧ cA D f = f ∧

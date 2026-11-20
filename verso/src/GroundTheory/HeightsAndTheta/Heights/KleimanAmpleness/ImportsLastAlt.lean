@@ -22,7 +22,7 @@ def SpecialCurvesLift.Statement : Prop :=
             baseComap (IsLocalRing.ResidueField O) k₀ e W = P
 
 /- English proof (translation)
-Use `⟨SpecialCurves.hyps.1, ?_⟩` and prove the remaining obligations. Rewrite using `[ModelCurvesLift.oneBlock_pnPt]`. Conclude with `SpecialCurves.hyps.2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpecialCurvesLift.hyps :
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () ∧
@@ -33,7 +33,7 @@ theorem SpecialCurvesLift.hyps :
   exact SpecialCurves.hyps.2.1
 
 /- English proof (translation)
-The claim follows from `h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1 (Equiv.refl _) _ rfl SpecialCurvesLift.hyps.1 _ SpecialCurvesLift.hyps.2 le_rfl`.
+A detailed English derivation is pending.
 -/
 example (h : SpecialCurvesLift.Statement) :=
   h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1

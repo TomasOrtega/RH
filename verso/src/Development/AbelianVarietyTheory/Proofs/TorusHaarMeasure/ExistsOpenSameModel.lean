@@ -27,11 +27,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨hr, hty, -, -, -, g, e, F, ik, ψ, hef, hun⟩` from `hU`. Take `⟨B₁, k, P, hB₁, hb₁, hs₁, hP, hyP⟩` from `GlobalTheory.T.exists_holomorphic_periods_adapted E H Dw l Xo c σ g e F A yA m B φ y hB hφ hy b₀ hb₀`. Take `⟨P₁, hP₁, hP₁', hx₁, -⟩` from `hun k₀ x₁`. Take `rfl : ik k₀ = k` from `F.disj _ _ _ _ hP₁' (hP.1 b₀ hb₁) (hx₁.symm.trans (ht₁.1.symm.trans (hyP b₀ hb₁).1))`. Take `⟨d, hd, horth⟩` from `GlobalTheory.T.period_eq_triangular_orthonormal_alt E H Dw l c σ g e _ r (U.X k₀) (ψ k₀) hσ (F.sig _).1 (F.sig _).2 hr (hty k₀).1 (hty k₀).2 (hef k₀) (GlobalTheory.T.im_neg_of_frame_period_vector E H Dw l c σ g e _ r (U.X k₀) (ψ k₀) hσ hr (hty k₀).1 (hty k₀).2 (hef k₀) x₁.1 x₁.2 …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨B₁, hB₁, hb₁, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hp` using `hP.1 b hb`. Take `⟨x₀, hx₀, -, S, -, hsupp, hper, -⟩` from `horth _ hp`. Take `⟨P₀, hP₀, hP₀', hux, hud, -⟩` from `hun k₀ ⟨x₀, hx₀⟩`. Establish `hPS : ∀ a, P₀ a = S *ᵥ P b a` using `fun a => funext fun j => (hP₀ a j).trans (hper a j).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht, -⟩` from `GlobalTheory.T.triangular_frame_change_of_triangular_period E H Dw l Xo c σ g e F _ (P b) P₀ S (y b) (U.un k₀ ⟨x₀, hx₀⟩) hp hP₀' hPS hsupp (hyP b hb).1 hux (hyP b hb).2 hud`. Conclude with `⟨⟨x₀, hx₀⟩, t, ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_open_same_model (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) {A : Type} [CommRing A] [Algebra c.F A] (yA : FrPt Xo c A) {m : ℕ}
@@ -65,7 +65,7 @@ def algOf {Z : Comp Xo c} (P : Om Z →+* ℂ) (hP : P ∈ T0.PT (Ω := Om Z) σ
   { (show Om Z →+* CAt σ from P) with commutes' := fun a => RingHom.congr_fun hP a }
 
 /- English proof (translation)
-Take `⟨hL, -, -, -⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨P, hP⟩` from `T0.exists_embedding_over ((GlobalTheory.FlagDim.fnFG_fnTrdeg E H Dw l Xo c).1 Z) σ`. Take `⟨w, hw⟩` from `hL.bc _ _ (algOf P hP) (genFr h Z)`. Take `⟨k, x, t, ht⟩` from `hU.2.2.1 w`. Conclude with `⟨k, algOf P hP, w, x, t, hw, ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_model (U : Formalism.L2.PjFree.Unf Xo c σ r) (hU : Formalism.L2.PjFree.IsUnf U) (h : GenFrEx Xo c)
     (Z : Comp Xo c) : ∃ k, CarriesGeneric U h k Z := by
@@ -76,23 +76,21 @@ theorem exists_model (U : Formalism.L2.PjFree.Unf Xo c σ r) (hU : Formalism.L2.
   exact ⟨k, algOf P hP, w, x, t, hw, ht⟩
 
 /- English proof (translation)
-Take `⟨hL, -, -, hA⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨x₁, hx₁⟩` from `(GlobalTheory.frames_isConnected E r (U.X k)).nonempty`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨C, ψ₀, z₀, t₀, hz₀, hb₀⟩` from `hA h (CAt σ) (U.un k ⟨x₁, hx₁⟩)`. Take `⟨-, hmul, hinv, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `huniq` using `fun φ : C.R →ₐ[c.F] CAt σ => (GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c C.R (CAt σ) φ C.y).1`. Use `haveI := C.sm`. Use `haveI := GlobalTheory.SupGeneric.isFractionRing_chart C`. Set `φ₀ : C.R →+* ℂ` to `ψ₀.toRingHom`. Establish `hφ₀ : φ₀.comp (algebraMap c.F C.R) = σ` using `RingHom.ext fun a => ψ₀.commutes a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨m, s, B, ψ, S, ε, hB, hε, hψ, hd, hnear⟩` from `GlobalTheory.SmoothPointFamily.exists_holomorphic_family c.F C.R σ φ₀ hφ₀`. Set `ψ' : (Fin m → ℂ) → (C.R →ₐ[c.F] CAt σ)` to `fun b => if hb : b ∈ B then { (show C.R →+* CAt σ from ψ b) with commutes' := fun a => RingHom.congr_fun (hψ b hb).1 a } else ψ₀`. Establish `hψ' : ∀ b ∈ B, ∀ a, Formalism.L2.PjFree.toC (ψ' b a) = ψ b a`. Introduce `b hb a`. Simplify using `only [ψ', dif_pos hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Use `choose z hz using fun b => hL.bc _ _ (ψ' b) C.y`. Take `⟨h1, h2⟩` from `hnear φ₀ hφ₀ (fun a _ => by simpa using hε)`. Establish `e₀ : ψ' (fun i => φ₀ (s i)) = ψ₀` using `AlgHom.ext fun a => by`. Use `hψ' _ h1 a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[h2]`. Conclude with `this`. Establish `hz₀' : z₀ = z fun i => φ₀ (s i)` using `huniq ψ₀ _ _ hz₀ (e₀ ▸ hz _)`. Take `⟨B₁, hB₁, hb₁, hloc⟩` from `exists_open_same_model U hσ hU C.y ψ' z hB (fun a => (hd a).congr fun b hb => hψ' b hb a) (fun b _ => hz b) h1 (hz₀' ▸ hinv _ _ _ hb₀)`. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.1 hB₁ _ hb₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hPε⟩` from `GlobalTheory.generic_points_dense GlobalTheory.exists_algIndep_tuple_near c.F C.R (Om C.Z) σ φ₀ hφ₀ (S ∪ Finset.univ.image s) (min ε δ) (lt_min hε hδ)`. Set `ρ : C.R →+* ℂ` to `P.comp (algebraMap C.R (Om C.Z))`. Establish `hρ : ρ.comp (algebraMap c.F C.R) = σ` using `RingHom.ext fun a => RingHom.congr_fun hP a`. Take `⟨h3, h4⟩` from `hnear ρ hρ fun a ha => (hPε a (Finset.mem_union_left _ ha)).trans_le (min_le_left _ _)`. Establish `h5 : (fun i => ρ (s i)) ∈ B₁` using `hball (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Metric.mem_ball, dist_pi_lt_iff hδ]`. Introduce `i`. Rewrite using `[dist_eq_norm]`. Conclude with `(hPε (s i) (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))).trans_le (min_le_right _ _))`. Take `⟨x, t, ht⟩` from `hloc _ h5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e₁ : ψ' (fun i => ρ (s i)) = (algOf P hP).comp C.R.val` using `AlgHom.ext fun a => by`. Use `hψ' _ h3 a` as an intermediate fact. Rewrite `this` using `[h4]`. Conclude with `this`. Take `⟨w, hw⟩` from `hL.bc _ _ (algOf P hP) (genFr h C.Z)`.
-
-Take `⟨w', hw'⟩` from `hL.bc _ _ (algOf P hP) C.yg`. Establish `e₂ : w' = z fun i => ρ (s i)` using `huniq _ _ _ (PullbackSections.frMap_trans _ _ C.gen hw') (e₁ ▸ hz _)`. Establish `hbw` using `GlobalTheory.SupGeneric.frBor_of_frMap _ C.bor hw hw'`. Rewrite `hbw` using `[e₂]`. Conclude with `⟨C.Z, algOf P hP, w, x, _, hw, hmul _ _ _ _ _ ht (hinv _ _ _ hbw)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_comp (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (h : GenFrEx Xo c) (k : U.Comp) : ∃ Z, CarriesGeneric U h k Z := by
@@ -153,20 +151,20 @@ theorem exists_comp (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Formalism.L2.
   exact ⟨C.Z, algOf P hP, w, x, _, hw, hmul _ _ _ _ _ ht (hinv _ _ _ hbw)⟩
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.PjFree.rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos x.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rdU_apply (U : Formalism.L2.PjFree.Unf Xo c σ r) (f : Rul Xo c) (k : U.Comp) (x : (U.X k).dom) :
     Formalism.L2.PjFree.rdU U f k x.1 = Formalism.L2.PjFree.toC (evR Xo c f (U.un k x)) := by
   simp only [Formalism.L2.PjFree.rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos x.2]
 
 /- English proof (translation)
-Take `⟨hL, -, -, -⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨P, w, x, t, hw, ht⟩` from `hk`. Take `⟨-, -, hinv, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`. Use `⟨x.1, x.2, fun a n f hf => ?_⟩` and prove the remaining obligations. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Establish `e1` using `GlobalTheory.SupGeneric.evR_of_frMap hL hf P hw`. Establish `e2` using `hL.wt a n f hf _ t _ _ (hL.test _ _) (hL.test _ _) ht`. Establish `e3` using `hL.wt a n f hf _ _ _ _ (hL.test _ _) (hL.test _ _) (hinv _ _ _ ht)`. Rewrite using `[rdU_apply]`. Express the relevant statement in the definitionally equal form `evR Xo c f (genFr h Z) = 0 ↔ evR Xo c f (U.un k x) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[e3, e1, h0, map_zero, mul_zero]`. Introduce `h0`. Rewrite `e2` using `[h0, mul_zero, e1]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(map_eq_zero_iff P.toRingHom P.toRingHom.injective).1 e2`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame_iff {U : Formalism.L2.PjFree.Unf Xo c σ r} {h : GenFrEx Xo c} {k : U.Comp} {Z : Comp Xo c}
     (hk : CarriesGeneric U h k Z) : ∃ x ∈ (U.X k).dom, ∀ a n, ∀ f ∈ sec Xo c a n,
@@ -189,19 +187,17 @@ theorem exists_frame_iff {U : Formalism.L2.PjFree.Unf Xo c σ r} {h : GenFrEx Xo
     exact (map_eq_zero_iff P.toRingHom P.toRingHom.injective).1 e2
 
 /- English proof (translation)
-Take `⟨x₀, hx₀, hiff⟩` from `exists_frame_iff hk`. Use `⟨fun h0 x hx => ?_, fun h0 => (hiff a n f hf).2 (h0 x₀ hx₀)⟩` and prove the remaining obligations. Take `⟨hL, -, -, hA⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨χ, hχ, hi, h1, hz⟩` from `exists_idem_section E H Dw l Xo c hL h (hA h) Z`. Establish `hmul : ∀ Z' : Comp Xo c, evC h Z' (χ * f) = evC h Z' χ * evC h Z' f` using `fun Z' => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [evC, evR, evalAt_mul]`. Establish `hχf : χ * f = 0`. Use `sec_eq_zero_of_generic_values E H Dw l Xo c hL h (hA h) _ _ _ (sec_mul Xo c 0 a 0 n hχ hf) fun Z' => ?_` and prove the remaining obligations. Rewrite using `[hmul]`. Distinguish the cases in `hZ : Z' = Z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hZ, h0, mul_zero]`. Rewrite using `[hz Z' hZ, zero_mul]`. Establish `hD : Dom (E` using `E) 0 0 := ⟨fun τ _ _ _ => le_rfl, Even.zero⟩`. Establish `hs` using `hU.2.2.2.2.1 0 0 hD χ hχ k`. Rewrite `hs` using `[IdemCusp.laU_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hid : IdemCusp.IsIdemFn (U.X k) (Formalism.L2.PjFree.rdU U χ k)`. Use `IdemCusp.isIdemFn_of_isSec _ hs ?_` and prove the remaining obligations. Use `congrFun (IdemCusp.rdU_mul U χ χ) k` as an intermediate fact. Rewrite `this` using `[hi]`. Conclude with `this.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : Set.MapsTo (Formalism.L2.PjFree.rdU U χ k) (U.X k).dom ({0, 1} : Set ℂ)`. Introduce `s hs`. Apply the tactic sequence `rcases hid.1 _ hs with h | h <;> simp [h]`. Establish `hc` using `(GlobalTheory.frames_isConnected E r (U.X k)).isPreconnected.constant_of_mapsTo (Set.toFinite ({0, 1} : Set ℂ)).isDiscrete hid.2.1.continuousOn hT hx hx₀`. Establish `hne : Formalism.L2.PjFree.rdU U χ k x ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Introduce `h2`. Rewrite `h2` using `[← hiff 0 0 χ hχ, h1]`. Conclude with `one_ne_zero h2`. Establish `hp` using `congrFun (congrFun (IdemCusp.rdU_mul U χ f) k) x`.
-
-Rewrite `hp` using `[hχf, map_zero]`. Conclude with `(mul_eq_zero.1 hp.symm).resolve_left hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evC_eq_zero_iff {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) {h : GenFrEx Xo c}
     {k : U.Comp} {Z : Comp Xo c} (hk : CarriesGeneric U h k Z) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
@@ -248,9 +244,9 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj hG σ hσ`. Establish `hU : Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj (T.U j σ))` using `h.unf j hj σ hσ`. Establish `hs : ∀ (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u), (F.1 : T.R j) ∈ sec (T.Q.Xo j) T.Q.c (wtA u) u.n` using `fun u F => cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) (wtA u) u.n (cutR_le T.C j u F.2)`. Use `⟨fun Z => ?_, fun k => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_model _ hU hG Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, fun u F => evC_eq_zero_iff hU hk (hs u F)⟩`. Take `⟨Z, hk⟩` from `exists_comp _ hσ hU hG k`. Conclude with `⟨Z, fun u F => evC_eq_zero_iff hU hk (hs u F)⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp_read_on_model : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (σ : T.Q.c.F →+* ℂ), GoodEmb T.Q.c σ → (∀ Z : Comp (T.Q.Xo j) T.Q.c, ∃ k : (T.U j σ).Comp, ∀ (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u), evC hG Z F.1 = 0 ↔ ∀ x ∈ ((T.U j σ).X k).dom, rdU (T.U j σ) F.1 k x = 0) ∧ ∀ k : (T.U j σ).Comp, ∃ Z : Comp (T.Q.Xo j) T.Q.c, ∀ (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u), evC hG Z F.1 = 0 ↔ ∀ x ∈ ((T.U j σ).X k).dom, rdU (T.U j σ) F.1 k x = 0 := by
   intro D T h j hj hG σ hσ

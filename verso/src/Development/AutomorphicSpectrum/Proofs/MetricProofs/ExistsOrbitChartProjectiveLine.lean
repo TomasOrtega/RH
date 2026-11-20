@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 @[simp] theorem lineφ_one (w : Fin 1 → ℂ) : lineφ w ⟨(), 1⟩ = w 0 := rfl
 
 /- English proof (translation)
-Use `⟨fun k => ⟨0, by cases k; simp⟩, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: f = 0` using `by simpa using hf`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lineφ_mem (w : Fin 1 → ℂ) :
     lineφ w ∈ mcPts (⊥ : Ideal (MRing fun _ : Unit => Fin 2)) := by
@@ -34,7 +34,7 @@ theorem lineφ_mem (w : Fin 1 → ℂ) :
   simp [this]
 
 /- English proof (translation)
-Take `⟨⟨⟩, i⟩` from `q`. Use `fin_cases i`. Conclude with `analyticOnNhd_const`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticOnNhd _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lineφ_analytic (q : Σ _ : Unit, Fin 2) :
     AnalyticOnNhd ℂ (fun w : Fin 1 → ℂ => lineφ w q) Set.univ := by
@@ -44,7 +44,7 @@ theorem lineφ_analytic (q : Σ _ : Unit, Fin 2) :
   · exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticOnNhd _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[lineρ]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem lineρ_lineφ (w : Fin 1 → ℂ) : lineρ (lineφ w) = w := by
   funext i
@@ -52,11 +52,11 @@ theorem lineρ_lineφ (w : Fin 1 → ℂ) : lineρ (lineφ w) = w := by
   simp [lineρ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Establish `hp : p () = 0 ∨ p () = 1`. Break down `h : p () with ⟨n, hn⟩` into its components or cases. Use `interval_cases n`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Break down `hp with hp | hp` into its components or cases. Simplify using `[lineρ, affCoord, hp]`. Distinguish the cases in `h : w 0 = 0`.
+Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[lineρ, affCoord, hp, h]`. Simplify using `[lineρ, affCoord, hp, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lineρ_affCoord (p : (k : Unit) → Fin 2) (w : Fin 1 → ℂ) :
     lineρ (affCoord p (lineφ w)) = w := by
@@ -74,7 +74,7 @@ theorem lineρ_affCoord (p : (k : Unit) → Fin 2) (w : Fin 1 → ℂ) :
     · simp [lineρ, affCoord, hp, h]
 
 /- English proof (translation)
-Simplify using `only [div_eq_mul_inv]`. Conclude with `hf.fun_mul ((differentiableAt_inv h).comp x hg)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_diff_div {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f g : E → ℂ} {x : E}
     (hf : DifferentiableAt ℂ f x) (hg : DifferentiableAt ℂ g x) (h : g x ≠ 0) :
@@ -83,17 +83,15 @@ theorem line_diff_div {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f 
   exact hf.fun_mul ((differentiableAt_inv h).comp x hg)
 
 /- English proof (translation)
-Establish `hφ : ∀ q, DifferentiableAt ℂ (fun w' : Fin 1 → ℂ => lineφ w' q) w` using `fun q => ((lineφ_analytic q) w (Set.mem_univ _)).differentiableAt`. Establish `hF : DifferentiableAt ℂ (fun w' => affCoord p (lineφ w')) w` using `differentiableAt_pi.2 fun q => by show DifferentiableAt ℂ (fun w' => lineφ w' q / lineφ w' ⟨q.1, p q.1⟩) w`. Conclude with `line_diff_div (hφ q) (hφ ⟨q.1, p q.1⟩) (hw q.1)`. Establish `h0 : affCoord p (lineφ w) ⟨(), 0⟩ ≠ 0`. Establish `hp : p () = 0 ∨ p () = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h : p () with ⟨n, hn⟩` into its components or cases. Use `interval_cases n`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Use `hw ()` as an intermediate fact.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `hp with hp | hp` into its components or cases. Simplify using `[affCoord, hp]`. Rewrite `this` using `[hp]`. Simplify `this` using `[affCoord, hp]`. Establish `hG : DifferentiableAt ℂ lineρ (affCoord p (lineφ w))` using `differentiableAt_pi.2 fun _ => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `line_diff_div (differentiableAt_apply (𝕜 := ℂ) (⟨(), 1⟩ : Σ _ : Unit, Fin 2) _) (differentiableAt_apply (𝕜 := ℂ) (⟨(), 0⟩ : Σ _ : Unit, Fin 2) _) h0`. Establish `hcomp` using `hG.hasFDerivAt.comp w hF.hasFDerivAt`. Establish `hid : (lineρ ∘ fun w' => affCoord p (lineφ w')) = id`. Use function extensionality and compare the values at `w'`. Conclude with `lineρ_affCoord p w'`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hcomp` using `[hid]`. Establish `hEq` using `hcomp.unique (hasFDerivAt_id w)`. Use `LinearMap.ker_eq_bot.2 fun a b hab => ?_` and prove the remaining obligations. Use `congrArg (fun L : (Fin 1 → ℂ) →L[ℂ] (Fin 1 → ℂ) => L a) hEq` as an intermediate fact. Establish `h2` using `congrArg (fun L : (Fin 1 → ℂ) →L[ℂ] (Fin 1 → ℂ) => L b) hEq`.
-
-Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.id_apply] at this h2`. Rewrite using `[← this, ← h2]`. Conclude with `congrArg _ hab`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_immersion (w : Fin 1 → ℂ) (p : (k : Unit) → Fin 2)
     (hw : ∀ k, lineφ w ⟨k, p k⟩ ≠ 0) :

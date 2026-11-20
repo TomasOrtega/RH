@@ -12,7 +12,7 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDim
   [BorelSpace V]
 
 /- English proof (translation)
-Establish `h` using `integral_bilinear_hasFDerivAt_right_eq_neg_left_of_integrable (μ := volume) (f := fun _ : V => (1 : ℝ)) (f' := fun _ => 0) (g := F) (g' := fderiv ℝ F) (v := v) (B := ContinuousLinearMap.lsmul ℝ ℝ) (by simp) (by simpa using hF'.apply_continuousLinearMap v) (by simpa using hF) (fun …`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_fderiv_eq_zero {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [CompleteSpace W]
     {F : V → W} (hd : Differentiable ℝ F) (hF : Integrable F) (hF' : Integrable (fderiv ℝ F)) (v : V) :
@@ -25,7 +25,7 @@ theorem integral_fderiv_eq_zero {W : Type*} [NormedAddCommGroup W] [NormedSpace 
   simpa using h
 
 /- English proof (translation)
-The claim follows from `((integrable_one_add_norm (by linarith)).const_mul C).mono' hu.aestronglyMeasurable (Filter.Eventually.of_forall fun x => hdec x)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_decay {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] {u : V → W} (hu : Continuous u)
     (C : ℝ) (hdec : ∀ x, ‖u x‖ ≤ C * (1 + ‖x‖) ^ (-((finrank ℝ V : ℝ) + 1))) : Integrable u :=
@@ -33,11 +33,11 @@ theorem integrable_of_decay {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ 
     (Filter.Eventually.of_forall fun x => hdec x)
 
 /- English proof (translation)
-Establish `hint : ∀ i ≤ m, Integrable (iteratedFDeriv ℝ i D)` using `fun i hi => integrable_of_decay (hD.continuous_iteratedFDeriv (by exact_mod_cast hi)) C (hdec i hi)`. Use `⟨hint j hjm, ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `hdiff : Differentiable ℝ (iteratedFDeriv ℝ i D)` using `hD.differentiable_iteratedFDeriv (by exact_mod_cast (show i < m by omega))`. Establish `hF' : Integrable (fderiv ℝ (iteratedFDeriv ℝ i D))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hint (i + 1) hjm`. Establish `hc1 : ContDiff ℝ 1 (iteratedFDeriv ℝ i D)` using `hD.iteratedFDeriv_right (by exact_mod_cast (show 1 + i ≤ m by omega))`. Use `h.norm.mono' (hc1.continuous_fderiv one_ne_zero).aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_fderiv_iteratedFDeriv]`. Use extensionality with `m'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[ContinuousMultilinearMap.integral_apply (hint (i + 1) hjm)]`. Simplify using `only [iteratedFDeriv_succ_apply_left, ContinuousMultilinearMap.zero_apply]`. Establish `h0` using `integral_fderiv_eq_zero hdiff (hint i (by omega)) hF' (m' 0)`. Rewrite using `[← ContinuousMultilinearMap.integral_apply (hF'.apply_continuousLinearMap (m' 0)), h0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem integral_iteratedFDeriv_eq_zero {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [CompleteSpace W]
     {D : V → W} {m : ℕ} (hD : ContDiff ℝ m D) (C : ℝ)

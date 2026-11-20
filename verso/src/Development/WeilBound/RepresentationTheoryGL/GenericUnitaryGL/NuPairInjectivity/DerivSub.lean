@@ -12,17 +12,15 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.
 namespace GlobalTheory.RgGu.Nup2
 
 /- English proof (translation)
-Establish `hx : ∃ x : ∀ a, X a, φ (PiTensorProduct.tprod ℂ x) ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (PiTensorProduct.ext (MultilinearMap.ext fun x => by simpa using h x))`. Take `⟨x, hx⟩` from `hx`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ℓ : X i →ₗ[ℂ] D` to `φ ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap x i`. Establish `hℓ : ∀ w, ℓ w = φ (PiTensorProduct.tprod ℂ (Function.update x i w))` using `fun w => rfl`. Set `f : (ρ i).IntertwiningMap R` to `⟨ℓ, fun g => LinearMap.ext fun w => by show ℓ (ρ i g w) = R g (ℓ w)`. Rewrite using `[hℓ, hℓ, ← hφ, piTensor_tprod]`. Use `congr 2`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne h, Function.update_of_ne h]⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨f, ?_⟩` and prove the remaining obligations. Use `haveI := hi`. Break down `Representation.IsIrreducible.injective_or_eq_zero f with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hx` to reduce the goal to its premises. Establish `e` using `congrArg (fun F : (ρ i).IntertwiningMap R => F (x i)) h`. Establish `e2 : f (x i) = φ (PiTensorProduct.tprod ℂ x)` using `by show ℓ (x i) = _`. Rewrite using `[hℓ, Function.update_eq_self]`. Rewrite using `[← e2]`.
-
-Conclude with `e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_injective_of_tensor {α : Type} [DecidableEq α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (i : α)
@@ -63,25 +61,23 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hGT, hLT⟩` from `(hasFiniteLength_iff_wellFounded T).1 hT`. Set `P : Set (Subrepresentation T)` to `{B | ∃ x ∈ B, L x ≠ 0}`. Establish `hP : P.Nonempty`. Assume the negation of the conclusion as `h`. Apply `hne` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Assume the negation of the conclusion as `hx`. Conclude with `h ⟨⊤, x, trivial, hx⟩`. Take `⟨B, ⟨x0, hx0B, hx0⟩, hBmin⟩` from `wellFounded_lt.has_min P hP`. Establish `hbot : ⊥ < B`.
+By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `bot_lt_iff_ne_bot.2 fun h => ?_` and prove the remaining obligations. Substitute `h` using the available equality. Establish `: x0 = 0` using `(Submodule.mem_bot ℂ).1 hx0B`. Conclude with `hx0 (by rw [this, map_zero])`. Take `⟨C, hCB, hCmax⟩` from `wellFounded_gt.has_min {C : Subrepresentation T | C < B} ⟨⊥, hbot⟩`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov : C ⋖ B` using `⟨hCB, fun E hCE hEB => hCmax E hEB hCE⟩`. Establish `hCker : ∀ x ∈ C, L x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `hBmin C ⟨x, hx, h⟩ hCB`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K` to `C.toSubmodule.comap B.toSubmodule.subtype`. Set `φ : (B.toSubmodule ⧸ K) →ₗ[ℂ] D` to `K.liftQ (L ∘ₗ B.toSubmodule.subtype) (fun y hy => hCker y.1 hy)`. Establish `hφ : ∀ y : B.toSubmodule, φ (Submodule.Quotient.mk y) = L y.1` using `fun y => rfl`. Establish `hZi : (subQuot B C).IsIrreducible` using `isIrreducible_subQuot hcov`. Establish `hZsq : IsSubquotient (subQuot B C) T` using `⟨B, ⟨Submodule.mkQ _, fun _ => rfl⟩, Submodule.mkQ_surjective _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hZs : IsSmooth (subQuot B C)` using `hZsq.isSmooth hs`. Take `⟨σ, ⟨E⟩⟩` from `GlobalTheory.T.levi_irreducible_tensor_decomposition hA (dd n t) (⟨_, subQuot B C, hZs, hZi⟩ : IrrRep _)`. Set `φ'` to `φ ∘ₗ E.symm.toIntertwiningMap.toLinearMap`. Establish `hq : ∀ (g : GL (Fin (dd n t 0)) k) z, φ (subQuot B C (Pi.mulSingle 0 g) z) = R g (φ z)`. Introduce `g z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `hL g y.1`. Establish `hφ'rel : ∀ (g : GL (Fin (dd n t 0)) k) x, φ' ((piTensor fun a => (σ a).rep.ρ) (Pi.mulSingle 0 g) x) = R g (φ' x)`. Introduce `g x`. Establish `hE` using `LinearMap.congr_fun (E.symm.toIntertwiningMap.isIntertwining' (Pi.mulSingle 0 g)) x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(congrArg φ hE).trans (hq g _)`. Establish `hφ'ne : φ' ≠ 0`. Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Establish `e` using `LinearMap.congr_fun h0 (E.toIntertwiningMap (Submodule.Quotient.mk ⟨x0, hx0B⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : E.symm.toIntertwiningMap (E.toIntertwiningMap (Submodule.Quotient.mk ⟨x0, hx0B⟩)) = Submodule.Quotient.mk ⟨x0, hx0B⟩` using `E.toLinearEquiv.symm_apply_apply _`. Establish `e3 : φ' (E.toIntertwiningMap (Submodule.Quotient.mk ⟨x0, hx0B⟩)) = L x0` using `by show φ (E.symm.toIntertwiningMap _) = _`. Rewrite using `[e2]`. Both sides reduce to the same expression. Rewrite using `[← e3]`.
-
-Conclude with `e`. Take `⟨f, hf⟩` from `exists_injective_of_tensor (fun a => (σ a).rep.ρ) (0 : Fin 2) (σ 0).rep.irr (R := R) φ' hφ'rel hφ'ne`. Use `⟨(σ 0).rep, f, hf⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_irr_sub_of_quot (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {n t : ℕ} {X D : Type} [AddCommGroup X]
     [Module ℂ X] [AddCommGroup D] [Module ℂ D] (T : Representation ℂ (Levi k fun a => Fin (dd n t a)) X)
@@ -145,9 +141,9 @@ theorem exists_irr_sub_of_quot (hA : GlobalTheory.Published.IrreducibleAdmissibl
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨L, hL, hLe⟩` from `exists_jac_deriv ψ n j π`. Use `⟨L, hL, fun g x => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[twist_apply]`. Establish `h1` using `congrArg (fun c : ℂˣ => (c : ℂ) • GlobalTheory.BZMir.deriv k ψ j π g (L (Submodule.Quotient.mk v))) (delta_mulSingle n j g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Eq.trans ?_ h1` and prove the remaining obligations. Establish `h2` using `hLe g v`. Establish `h3 : (jac (stdBlocks (dd n (j + 1)) (dd_sum n j)) π).comp (iota n (j + 1)) g (Submodule.Quotient.mk v) = (((deltaHalf k (fun a => Fin (dd n (j + 1) a)) (Pi.mulSingle (M` using `fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g))⁻¹ : ℂˣ) : ℂ) • Submodule.Quotient.mk (π (leviEmb k (stdBlocks (dd n (j + 1)) (dd_sum n j)) (Pi.mulSingle (M := fun a => GL (Fin (dd n (j + 1) a)) k) (0 : Fin 2) g)) v) := jac_mk _ π _ v`. Rewrite using `[h3, map_smul, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem jac_deriv_rel (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) :
@@ -176,13 +172,13 @@ theorem jac_deriv_rel (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddCommGro
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `ψ n j V _ _ π hs hf hnt`. Establish `hχ : IsSmoothChar (detChar (Fin (n + 1)) (absPow k (-(((j : ℂ) + 1) / 2))))` using `(isSmoothChar_absPow _).detChar`. Establish `hχi : IsSmoothChar (detChar (Fin (n + 1)) (absPow k (-(((j : ℂ) + 1) / 2))))⁻¹`. Unfold `IsSmoothChar at hχ ⊢`. Use `hχ using 2` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker]`. Take `⟨L, hL, hLe⟩` from `jac_deriv_rel ψ (n + 1) j π`. Establish `hne : L ≠ 0`. Introduce `h0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : TwJacquet (iterPhi k ψ j (resM k π)).ρ (MirUin k (n + 1)) 1)`. Take `⟨x, rfl⟩` from `hL y`. Conclude with `hy (by rw [h0, LinearMap.zero_apply])`. Take `⟨S0, f, hf'⟩` from `exists_irr_sub_of_quot hA _ (isSmooth_jac _ hs) (GlobalTheory.CompanionTheory.JacquetBridge.jacquetFiniteLength k _ _ _ _ V π hs hf) _ L hLe hne`. Use `⟨⟨S0.V, twist S0.ρ (detChar (Fin (n + 1)) (absPow k (-(((j : ℂ) + 1) / 2))))⁻¹, isSmooth_twist S0.smooth hχi, isIrreducible_twist S0.irr _⟩, ⟨f.toLinearMap, fun g => ?_⟩, hf'⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Establish `e` using `LinearMap.congr_fun (f.isIntertwining' g) w`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, twist_apply] at e ⊢`. Rewrite using `[map_smul, e, smul_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem derivSub (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) : GlobalTheory.BZSeg.DerivSub k := by
   intro ψ n j V _ _ π hs hf hnt
@@ -210,7 +206,7 @@ theorem derivSub (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) : GlobalT
   simp
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ hA` and use `derivSub hA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem derivSub_main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.BZSeg.DerivSub k :=

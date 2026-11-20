@@ -17,9 +17,9 @@ def shift (v : ι) (g : G) : G := g * (e v (p v g))⁻¹
 end
 
 /- English proof (translation)
-Use `(hJ _ (he v k)).2 fun u => ?_` and prove the remaining obligations. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[hpe]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpe' u v h]`. Conclude with `(K u).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem e_mem_J {e : ∀ v, L v →* G} {p : ∀ v, G →* L v} {K : ∀ v, Subgroup (L v)} {J H : Subgroup G}
     (hpe : ∀ v a, p v (e v a) = a) (hpe' : ∀ u v, u ≠ v → ∀ a, p u (e v a) = 1)
@@ -31,7 +31,7 @@ theorem e_mem_J {e : ∀ v, L v →* G} {p : ∀ v, G →* L v} {K : ∀ v, Subg
   · rw [hpe' u v h]; exact (K u).one_mem
 
 /- English proof (translation)
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, hJ _ (g⁻¹ * h).2]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cls_eq {p : ∀ v, G →* L v} {K : ∀ v, Subgroup (L v)} {J H : Subgroup G}
     (hJ : ∀ g ∈ H, g ∈ J ↔ ∀ v, p v g ∈ K v) (g h : H) :
@@ -40,7 +40,7 @@ theorem cls_eq {p : ∀ v, G →* L v} {K : ∀ v, Subgroup (L v)} {J H : Subgro
   simp only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (J.subgroupOf H) g`. Conclude with `⟨((k : H) : G), Subgroup.mem_subgroupOf.1 k.2, by rw [hk]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem out_mul {J H : Subgroup G} (hJH : J ≤ H) (g : H) :
     ∃ k ∈ J, (((g : H ⧸ J.subgroupOf H).out : H) : G) = g * k := by
@@ -48,7 +48,7 @@ theorem out_mul {J H : Subgroup G} (hJH : J ≤ H) (g : H) :
   exact ⟨((k : H) : G), Subgroup.mem_subgroupOf.1 k.2, by rw [hk]; rfl⟩
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `out_mul hJH g`. Rewrite using `[h, hf _ g.2 _ hk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_out {E : Type} {J H : Subgroup G} (hJH : J ≤ H) (f : G → E)
     (hf : ∀ g ∈ H, ∀ k ∈ J, f (g * k) = f g) (g : H) :
@@ -57,7 +57,7 @@ theorem inv_out {E : Type} {J H : Subgroup G} (hJH : J ≤ H) (f : G → E)
   rw [h, hf _ g.2 _ hk]
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `out_mul hJH g`. Establish `hk'` using `(hJ k (hJH hk)).1 hk`. Simplify using `only [offSet, Set.mem_setOf_eq, h, map_mul]`. Conclude with `forall₂_congr fun v _ => Subgroup.mul_mem_cancel_right _ (hk' v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_offSet_mk {p : ∀ v, G →* L v} {K : ∀ v, Subgroup (L v)} {J H : Subgroup G}
     (hJH : J ≤ H) (hJ : ∀ g ∈ H, g ∈ J ↔ ∀ v, p v g ∈ K v) (T : Finset ι) (g : H) :
@@ -68,14 +68,14 @@ theorem mem_offSet_mk {p : ∀ v, G →* L v} {K : ∀ v, Subgroup (L v)} {J H :
   exact forall₂_congr fun v _ => Subgroup.mul_mem_cancel_right _ (hk' v)
 
 /- English proof (translation)
-Simplify using `[shift, hpe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem p_shift_self {e : ∀ v, L v →* G} {p : ∀ v, G →* L v} (hpe : ∀ v a, p v (e v a) = a)
     (v : ι) (g : G) : p v (shift e p v g) = 1 := by
   simp [shift, hpe]
 
 /- English proof (translation)
-Simplify using `[shift, hpe' u v h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem p_shift_ne {e : ∀ v, L v →* G} {p : ∀ v, G →* L v}
     (hpe' : ∀ u v, u ≠ v → ∀ a, p u (e v a) = 1) {u v : ι} (h : u ≠ v) (g : G) :
@@ -83,14 +83,14 @@ theorem p_shift_ne {e : ∀ v, L v →* G} {p : ∀ v, G →* L v}
   simp [shift, hpe' u v h]
 
 /- English proof (translation)
-The claim follows from `H.mul_mem hg (H.inv_mem (he _ _))`.
+A detailed English derivation is pending.
 -/
 theorem shift_mem {e : ∀ v, L v →* G} {p : ∀ v, G →* L v} {H : Subgroup G}
     (he : ∀ v a, e v a ∈ H) (v : ι) {g : G} (hg : g ∈ H) : shift e p v g ∈ H :=
   H.mul_mem hg (H.inv_mem (he _ _))
 
 /- English proof (translation)
-Rewrite using `[shift, ← map_inv]`. Conclude with `hf g hg _ (e_mem_J hpe hpe' he hJ v _ ((K v).inv_mem hv))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_val {E : Type} {e : ∀ v, L v →* G} {p : ∀ v, G →* L v} {K : ∀ v, Subgroup (L v)}
     {J H : Subgroup G}
@@ -114,7 +114,7 @@ variable [DecidableEq ι] {e : ∀ v, L v →* G} {p : ∀ v, G →* L v} {K : �
 include hJH hpe hpe' he hJ
 
 /- English proof (translation)
-Use `(mem_offSet_mk hJH hJ _ _).2 fun u hu => ?_` and prove the remaining obligations. Rewrite `hu` using `[Finset.mem_insert, not_or]`. Simplify using `only [map_mul, p_shift_ne hpe' hu.1, hpe' u v hu.1, mul_one]`. Conclude with `x.1.2 u hu.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stepMap_mem (T : Finset ι) (v : ι) (x : offSet p K J H T × (L v ⧸ K v)) :
     stepMap e p K J H he T v x ∈ offSet p K J H (insert v T) := by
@@ -124,13 +124,11 @@ theorem stepMap_mem (T : Finset ι) (v : ι) (x : offSet p K J H T × (L v ⧸ K
   exact x.1.2 u hu.2
 
 /- English proof (translation)
-Introduce and unpack `⟨y1, a1⟩ ⟨y2, a2⟩ h`. Establish `h'` using `(cls_eq hJ _ _).1 h`. Establish `ha : a1 = a2`. Use `h' v` as an intermediate fact. Simplify using `only [map_mul, p_shift_self hpe, hpe, one_mul] at this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← QuotientGroup.out_eq' a1, ← QuotientGroup.out_eq' a2]`. Conclude with `QuotientGroup.eq.2 this`. Establish `hy : y1 = y2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' y1.1, ← QuotientGroup.out_eq' y2.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(cls_eq hJ _ _).2 fun u => ?_` and prove the remaining obligations. Break down `eq_or_ne u v with rfl | hu` into its components or cases. Conclude with `(K u).mul_mem ((K u).inv_mem (y1.2 u hv)) (y2.2 u hv)`. Use `h' u` as an intermediate fact. Simplify `this` using `only [map_mul, p_shift_ne hpe' hu, hpe' u v hu, mul_one]`.
-
-Conclude with `Prod.ext hy ha`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stepMap_injective (T : Finset ι) (v : ι) (hv : v ∉ T) :
     Function.Injective (stepMap e p K J H he T v) := by
@@ -152,15 +150,13 @@ theorem stepMap_injective (T : Finset ι) (v : ι) (hv : v ∉ T) :
   exact Prod.ext hy ha
 
 /- English proof (translation)
-Use `set g : H := y.out with hg`. Set `h : H` to `⟨shift e p v g, shift_mem he v g.2⟩`. Establish `hh : (h : H ⧸ J.subgroupOf H) ∈ offSet p K J H T`. Use `(mem_offSet_mk hJH hJ _ _).2 fun u hu => ?_` and prove the remaining obligations. Break down `eq_or_ne u v with rfl | huv` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `show p u (shift e p u g) ∈ K u`. Rewrite using `[p_shift_self hpe]`. Conclude with `(K u).one_mem`. Use `show p u (shift e p v g) ∈ K u`. Rewrite using `[p_shift_ne hpe' huv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hy u (by simp [huv, hu])`. Use `⟨(⟨_, hh⟩, (p v g : L v ⧸ K v)), ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' y]`. Use `(cls_eq hJ _ _).2 fun u => ?_` and prove the remaining obligations. Take `⟨k, hk, hk'⟩` from `out_mul hJH h`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Break down `eq_or_ne u v with rfl | huv` into its components or cases. Simplify using `only [map_mul, p_shift_self hpe, hpe, one_mul]`. Conclude with `QuotientGroup.eq.1 (QuotientGroup.out_eq' (p u g : L u ⧸ K u))`. Simplify using `only [map_mul, p_shift_ne hpe' huv, hpe' u v huv, mul_one, hk']`. Establish `e1 : p u (h : G) = p u (y.out : G)` using `p_shift_ne hpe' huv _`.
-
-Simplify using `only [mul_inv_rev, mul_assoc, e1, inv_mul_cancel, mul_one]`. Conclude with `(K u).inv_mem ((hJ k (hJH hk)).1 hk u)`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_stepMap (T : Finset ι) (v : ι) (y : H ⧸ J.subgroupOf H)
     (hy : y ∈ offSet p K J H (insert v T)) : y ∈ Set.range (stepMap e p K J H he T v) := by
@@ -187,7 +183,7 @@ theorem mem_range_stepMap (T : Finset ι) (v : ι) (y : H ⧸ J.subgroupOf H)
     exact (K u).inv_mem ((hJ k (hJH hk)).1 hk u)
 
 /- English proof (translation)
-Simplify using `only [Function.comp, Set.indicator_of_mem (stepMap_mem hJH hpe hpe' he hJ T v x)]`. Conclude with `inv_out hJH f hf _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_stepMap {E : Type} [Zero E] (f : G → E) (hf : ∀ g ∈ H, ∀ k ∈ J, f (g * k) = f g)
     (T : Finset ι) (v : ι) (x : offSet p K J H T × (L v ⧸ K v)) :
@@ -197,7 +193,7 @@ theorem comp_stepMap {E : Type} [Zero E] (f : G → E) (hf : ∀ g ∈ H, ∀ k 
   exact inv_out hJH f hf _
 
 /- English proof (translation)
-Introduce `x hx` and use `Set.indicator_of_notMem (fun h => hx (mem_range_stepMap hJH hpe hpe' he hJ T v x h)) _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_off_stepMap {E : Type} [Zero E] (f : G → E) (T : Finset ι) (v : ι) :
     ∀ x ∉ Set.range (stepMap e p K J H he T v),
@@ -205,11 +201,11 @@ theorem zero_off_stepMap {E : Type} [Zero E] (f : G → E) (T : Finset ι) (v : 
   fun x hx => Set.indicator_of_notMem (fun h => hx (mem_range_stepMap hJH hpe hpe' he hJ T v x h)) _
 
 /- English proof (translation)
-Establish `hinj` using `stepMap_injective hJH hpe hpe' he hJ T v hv`. Establish `hzero` using `zero_off_stepMap hJH hpe hpe' he hJ f T v`. Establish `h1` using `(hinj.hasSum_iff hzero).2 hsum.hasSum`. Establish `h2 : HasSum (fun y : offSet p K J H T => c * f ((y.1.out : H) : G)) (∑' y, (offSet p K J H (insert v T)).indicator (fun y => f ((y.out : H) : G)) y)`. Use `h1.prod_fiberwise fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hfib _ (shift_mem he v (y.1.out).2) (p_shift_self hpe v _)` as an intermediate fact. Rewrite `this` using `[shift_val hpe hpe' he hJ f hf v (y.1.out).2 (y.2 v hv)]`. Simplify `this` using `only [comp_stepMap hJH hpe hpe' he hJ f hf]`. Establish `h3 : HasSum (fun y : offSet p K J H T => c * f ((y.1.out : H) : G)) (c * s)` using `(hasSum_subtype_iff_indicator.2 hs).mul_left c`. Rewrite `h1` using `[h2.unique h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hinj.hasSum_iff hzero).1 h1`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_step {E : Type} [NormedField E] (f : G → E)
     (hf : ∀ g ∈ H, ∀ k ∈ J, f (g * k) = f g)
@@ -233,11 +229,11 @@ theorem hasSum_step {E : Type} [NormedField E] (f : G → E)
   exact (hinj.hasSum_iff hzero).1 h1
 
 /- English proof (translation)
-Establish `hinj` using `stepMap_injective hJH hpe hpe' he hJ T v hv`. Establish `hzero` using `zero_off_stepMap hJH hpe hpe' he hJ f T v`. Use `(hinj.summable_iff hzero).1 ?_` and prove the remaining obligations. Establish `hnn : 0 ≤ (offSet p K J H (insert v T)).indicator (fun y => f ((y.out : H) : G)) ∘ stepMap e p K J H he T v` using `fun x => Set.indicator_nonneg (fun y _ => hf0 _ (y.out).2) _`. Establish `hfib' : ∀ y : offSet p K J H T, HasSum (fun a : L v ⧸ K v => f (shift e p v ((y.1.out : H) : G) * e v a.out)) (c * f ((y.1.out : H) : G))` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hfib _ (shift_mem he v (y.1.out).2) (p_shift_self hpe v _)` as an intermediate fact. Rewrite `this` using `[shift_val hpe hpe' he hJ f hf v (y.1.out).2 (y.2 v hv)]`. Then use the resulting hypothesis. Use `(summable_prod_of_nonneg hnn).2 ⟨fun y => ?_, ?_⟩` and prove the remaining obligations. Simplify `(hfib' y).summable` using `only [comp_stepMap hJH hpe hpe' he hJ f hf]`. Simplify using `only [comp_stepMap hJH hpe hpe' he hJ f hf, fun y => (hfib' y).tsum_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `((hasSum_subtype_iff_indicator.2 hs).mul_left c).summable`.
+A detailed English derivation is pending.
 -/
 theorem summable_step (f : G → ℝ) (hf0 : ∀ g ∈ H, 0 ≤ f g)
     (hf : ∀ g ∈ H, ∀ k ∈ J, f (g * k) = f g)
@@ -270,7 +266,7 @@ variable [DecidableEq ι] {e : ∀ v, L v →* G} {p : ∀ v, G →* L v} {K : �
 include hJH hJ
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Set.mem_singleton_iff, ← QuotientGroup.out_eq' y, mem_offSet_mk hJH hJ, cls_eq hJ]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem offSet_empty : offSet p K J H ∅ = {((1 : H) : H ⧸ J.subgroupOf H)} := by
   ext y
@@ -278,7 +274,7 @@ theorem offSet_empty : offSet p K J H ∅ = {((1 : H) : H ⧸ J.subgroupOf H)} :
   simp
 
 /- English proof (translation)
-Rewrite using `[offSet_empty hJH hJ]`. Use `hasSum_single (f := ({((1 : H) : H ⧸ J.subgroupOf H)} : Set (H ⧸ J.subgroupOf H)).indicator fun y => f ((y.out : H) : G)) ((1 : H) : H ⧸ J.subgroupOf H) (fun b hb => Set.indicator_of_notMem (Set.mem_singleton_iff.not.2 hb) _)` as an intermediate fact. Rewrite `this` using `[Set.indicator_of_mem (Set.mem_singleton _), inv_out hJH f hf]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_base {E : Type} [AddCommMonoid E] [TopologicalSpace E] (f : G → E)
     (hf : ∀ g ∈ H, ∀ k ∈ J, f (g * k) = f g) :
@@ -294,7 +290,7 @@ theorem hasSum_base {E : Type} [AddCommMonoid E] [TopologicalSpace E] (f : G →
 include hpe hpe' he
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using hasSum_base hJH hJ f hf`. Consider the case `@insert v T hv ih`. Rewrite using `[Finset.prod_insert hv, mul_assoc]`. Conclude with `hasSum_step hJH hpe hpe' he hJ f hf (A v) T v hv (hA v) ih (summable_step hJH hpe hpe' he hJ f hf0 hf (A v) T v hv (hA v) ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_offSet_nonneg (f : G → ℝ) (hf0 : ∀ g ∈ H, 0 ≤ f g)
     (hf : ∀ g ∈ H, ∀ k ∈ J, f (g * k) = f g) (A : ι → ℝ)
@@ -309,7 +305,7 @@ theorem hasSum_offSet_nonneg (f : G → ℝ) (hf0 : ∀ g ∈ H, 0 ≤ f g)
       (summable_step hJH hpe hpe' he hJ f hf0 hf (A v) T v hv (hA v) ih)
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using hasSum_base hJH hJ f hf`. Consider the case `@insert v T hv ih`. Rewrite using `[Finset.prod_insert hv, mul_assoc]`. Conclude with `hasSum_step hJH hpe hpe' he hJ f hf (Z v) T v hv (hZ v) ih (hsum.indicator _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_offSet_summable {E : Type} [NormedField E] [CompleteSpace E] (f : G → E)
     (hf : ∀ g ∈ H, ∀ k ∈ J, f (g * k) = f g) (Z : ι → E)
@@ -324,19 +320,17 @@ theorem hasSum_offSet_summable {E : Type} [NormedField E] [CompleteSpace E] (f :
 end ind
 
 /- English proof (translation)
-Introduce `G ι _ L _ e p K J H hJH hpe hpe' he _ hJ hfin Ψ Φ Z A z hΨ hΦ hΨΦ hZ hA hA1 hz`. Establish `hΦ0 : ∀ g ∈ H, 0 ≤ Φ g` using `fun g hg => (norm_nonneg _).trans (hΨΦ g hg)`. Establish `hphi` using `hasSum_offSet_nonneg hJH hpe hpe' he hJ Φ hΦ0 hΦ A hA`. Establish `hsA : Summable (fun v => |A v - 1|)` using `hA1.abs`. Establish `hφ : Summable fun y : H ⧸ J.subgroupOf H => Φ ((y.out : H) : G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `summable_of_sum_le (c := Real.exp (∑' v, |A v - 1|) * Φ 1) (fun y => hΦ0 _ (y.out).2) fun u => ?_` and prove the remaining obligations. Set `T : Finset ι` to `u.biUnion fun y => (hfin _ (y.out).2).toFinset`. Establish `hu : ∀ y ∈ u, y ∈ offSet p K J H T` using `fun y hy v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_biUnion.2 ⟨y, hy, (Set.Finite.mem_toFinset _).2 h⟩)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (hΦ0 1 H.one_mem)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `Real.add_one_le_exp |A v - 1|`. Establish `h2` using `abs_sub_abs_le_abs_sub (A v) 1`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[abs_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = Real.exp (∑ v ∈ T, |A v - 1|) := (Real.exp_sum _ _).symm`. Use `_ ≤ Real.exp (∑' v, |A v - 1|) := Real.exp_le_exp.2 (hsA.sum_le_tsum T fun v _ => abs_nonneg _)`. Establish `hψ : Summable fun y : H ⧸ J.subgroupOf H => Ψ ((y.out : H) : G)` using `Summable.of_norm_bounded hφ fun y => hΨΦ _ (y.out).2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpsi` using `hasSum_offSet_summable hJH hpe hpe' he hJ Ψ hΨ Z hZ hψ`. Establish `hlim : Tendsto (fun T : Finset ι => ∑' y, (offSet p K J H T).indicator (fun y => Ψ ((y.out : H) : G)) y) atTop (𝓝 (∑' y : H ⧸ J.subgroupOf H, Ψ ((y.out : H) : G)))`. Use `tendsto_tsum_of_dominated_convergence hφ (fun y => ?_) (Eventually.of_forall fun T y => ?_)` and prove the remaining obligations. Use `tendsto_const_nhds.congr' ?_ filter_upwards [eventually_ge_atTop (hfin _ (y.out).2).toFinset] with T hT` and prove the remaining obligations. Use `(Set.indicator_of_mem (show y ∈ offSet p K J H T from fun v hv => ?_) (fun y => Ψ ((y.out : H) : G))).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (hT ((Set.Finite.mem_toFinset _).2 h))`. Conclude with `(norm_indicator_le_norm_self _ _).trans (hΨΦ _ (y.out).2)`. Establish `hlim2 : Tendsto (fun T : Finset ι => ∑' y, (offSet p K J H T).indicator (fun y => Ψ ((y.out : H) : G)) y) atTop (𝓝 (z * Ψ 1))`. Simplify using `only [fun T => (hpsi T).tsum_eq]`.
-
-Conclude with `(hz : Tendsto (fun s : Finset ι => ∏ b ∈ s, Z b) atTop (𝓝 z)).mul_const _`. Rewrite using `[← tendsto_nhds_unique hlim hlim2]`. Conclude with `hψ.hasSum`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_cosets_eulerProduct : ∀ {G ι : Type} [Group G] {L : ι → Type} [∀ v, Group (L v)] (e : ∀ v, L v →* G) (p : ∀ v, G →* L v) (K : ∀ v, Subgroup (L v)) (J H : Subgroup G), J ≤ H → (∀ v a, p v (e v a) = a) → (∀ u v, u ≠ v → ∀ a, p u (e v a) = 1) → (∀ v a, e v a ∈ H) → (∀ v a g, p v g = 1 → Commute (e v a) g) → (∀ g ∈ H, g ∈ J ↔ ∀ v, p v g ∈ K v) → (∀ g ∈ H, {v | p v g ∉ K v}.Finite) → ∀ (Ψ : G → ℂ) (Φ : G → ℝ) (Z : ι → ℂ) (A : ι → ℝ) (z : ℂ), (∀ g ∈ H, ∀ k ∈ J, Ψ (g * k) = Ψ g) → (∀ g ∈ H, ∀ k ∈ J, Φ (g * k) = Φ g) → (∀ g ∈ H, ‖Ψ g‖ ≤ Φ g) → (∀ v, ∀ g ∈ H, p v g = 1 → HasSum (fun a : L v ⧸ K v => Ψ (g * e v a.out)) (Z v * Ψ g)) → (∀ v, ∀ g ∈ H, p v g = 1 → HasSum (fun a : L v ⧸ K v => Φ (g * e v a.out)) (A v * Φ g)) → Summable (fun v => A v - 1) → HasProd Z z → HasSum (fun y : H ⧸ J.subgroupOf H => Ψ (y.out : H)) (z * Ψ 1) := by
   intro G ι _ L _ e p K J H hJH hpe hpe' he _ hJ hfin Ψ Φ Z A z hΨ hΦ hΨΦ hZ hA hA1 hz

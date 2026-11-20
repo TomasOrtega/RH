@@ -5,9 +5,9 @@ open Complex
 namespace GlobalTheory.ExpSeries
 
 /- English proof (translation)
-Establish `h` using `(convexOn_exp.comp_linearMap (Complex.reLm ∘ₗ (L.restrictScalars ℝ))).smul (norm_nonneg c)`. Rewrite `h` using `[Set.preimage_univ]`. Establish `e : (fun z : V => ‖c * cexp (L z)‖) = fun z : V => ‖c‖ • (Real.exp ∘ ⇑(Complex.reLm ∘ₗ (L.restrictScalars ℝ))) z`. Use function extensionality and compare the values at `z`. Simplify using `[Complex.norm_exp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convexOn_norm_mul_cexp {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (c : ℂ) (L : V →ₗ[ℂ] ℂ) :
@@ -23,13 +23,11 @@ theorem convexOn_norm_mul_cexp {V : Type} [NormedAddCommGroup V] [NormedSpace �
   exact h
 
 /- English proof (translation)
-Introduce `V _ _ _ J c L`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy a b ha hb hab`. Simplify using `only [Set.mem_ofPred_eq] at hx hy ⊢`. Rewrite `hx`, `hy`, the goal using `[← summable_norm_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun j => ?_) ((hx.mul_left a).add (hy.mul_left b))` and prove the remaining obligations. Conclude with `(convexOn_norm_mul_cexp (c j) (L j)).2 (Set.mem_univ x) (Set.mem_univ y) ha hb hab`. Introduce `z0 hz0`. Establish `: FiniteDimensional ℝ V` using `Module.Finite.trans ℂ V`. Take `⟨b, hb0, hb⟩` from `exists_mem_interior_convexHull_affineBasis (mem_interior_iff_mem_nhds.1 hz0)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : Summable fun j => ∑ i, ‖c j * cexp (L j (b i))‖`. Use `summable_sum fun i _ => ?_` and prove the remaining obligations. Establish `: b i ∈ {z : V | Summable fun j => c j * cexp (L j z)}` using `hb (subset_convexHull ℝ _ ⟨i, rfl⟩)`. Conclude with `summable_norm_iff.2 this`. Establish `hd` using `(GlobalTheory.SCV.differentiableOn_tsum_of_normal_on_compacts (F := fun j z => c j * cexp (L j z)) (U := interior (convexHull ℝ (Set.range b))) isOpen_interior (fun j => ((((L j).toContinuousLinearMap.differentiable).cexp).const_mul (c j)).differentiableOn) (fun K hK _ => ⟨_, hsu …`.
-
-Take `⟨y, ⟨i, rfl⟩, hy⟩` from `(convexOn_norm_mul_cexp (c j) (L j)).exists_ge_of_mem_convexHull (Set.subset_univ _) (interior_subset (hK hz))`. Conclude with `hy.trans (Finset.single_le_sum (f := fun i => ‖c j * cexp (L j (b i))‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i))⟩)).1`. Conclude with `(hd.differentiableAt (isOpen_interior.mem_nhds hb0)).differentiableWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem convex_and_differentiableOn_tsum_cexp :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] (J : Type)

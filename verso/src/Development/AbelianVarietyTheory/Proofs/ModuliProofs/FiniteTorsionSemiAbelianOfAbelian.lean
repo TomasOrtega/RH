@@ -11,15 +11,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.TorsionFinite
 
 /- English proof (translation)
-Introduce `hB k _ _ G _ hG n hn`. Use `haveI := hG.comm`. Set `t : Sp k ⟶ Sp k` to `𝟙 _`. Establish `h` using `(semiAbelian_torsion_finite_and_closedPoint_finiteOrder hB).1 k ((Over.pullback t).obj G) (hG.fibres k t) n hn`. Establish `hp` using `isGrpPullback_pullback G t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective (pushHom hp (𝟙_ (Over (Sp k))))`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `e : x.left ≫ pullback.fst G.hom t = y.left ≫ pullback.fst G.hom t` using `congrArg (fun z => z.left) hxy`. Conclude with `Over.OverMorphism.ext (hp.1.hom_ext e ((Over.w x).trans (Over.w y).symm))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Use `⟨Over.homMk (hp.1.lift y.left (𝟙_ (Over (Sp k))).hom (Over.w y)) (hp.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Conclude with `Over.OverMorphism.ext (hp.1.lift_fst _ _ _)`. Set `e` to `MulEquiv.ofBijective _ hbij`. Establish `h2 : Finite {x : Over.mk ((𝟙_ (Over (Sp k))).hom ≫ t) ⟶ G // x ^ n = 1}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finite.of_equiv _ (e.toEquiv.subtypeEquiv (p := fun x => x ^ n = 1) fun x => ?_)` and prove the remaining obligations. Use `show x ^ n = 1 ↔ e x ^ n = 1`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff]`. Establish `h3 : (𝟙_ (Over (Sp k))).hom ≫ t = t` using `Category.id_comp t`. Rewrite `h2` using `[h3]`.
-
-Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_torsion_semiAbelian_of_abelian :
     (∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ n : ℕ, 1 ≤ n → Finite {x : 𝟙_ (Over (Sp K)) ⟶ B // x ^ n = 1}) → ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], IsSemiAbelian G → ∀ n : ℕ, 0 < n → Finite {x : 𝟙_ (Over (Sp k)) ⟶ G // x ^ n = 1} := by

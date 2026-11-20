@@ -8,19 +8,17 @@ open scoped ComplexConjugate BigOperators Topology
 namespace GlobalTheory.EllipticModel
 
 /- English proof (translation)
-Take `⟨m, P, A, B, hP, h⟩` from `GlobalTheory.EllipticPoles.exists_mul_prod_eq M.L φ hφ`. Establish `hc : M.c ≠ 0` using `hM.1`. Use `set r : ℂ := M.ι.symm (M.W.b₂ / 12) with hr`. Use `set a₁ : ℂ := M.ι.symm M.W.a₁ with ha₁`. Use `set a₃ : ℂ := M.ι.symm M.W.a₃ with ha₃`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hx : ∀ z, M.L.weierstrassP z = M.c ^ 2 * (M.x z + r)`. Introduce `z`. Simplify using `only [Mdl.x, ← hr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hy : ∀ z, M.L.derivWeierstrassP z = M.c ^ 3 * (2 * M.y z + a₁ * M.x z + a₃)`. Introduce `z`. Simplify using `only [Mdl.y, ← ha₁, ← ha₃]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `g : Polynomial ℂ` to `Polynomial.C (M.c ^ 2) * (Polynomial.X + Polynomial.C r)`. Set `k : ℂ` to `((M.c ^ 2) ^ m)⁻¹`. Use `⟨m, P, Polynomial.C k * (A.comp g + B.comp g * Polynomial.C (M.c ^ 3) * (Polynomial.C a₁ * Polynomial.X + Polynomial.C a₃)), Polynomial.C k * (B.comp g * Polynomial.C (2 * M.c ^ 3)), hP, fun z₀ => ?_⟩` and prove the remaining obligations. Use `filter_upwards [h z₀] with z hz`. Establish `hg : g.eval (M.x z) = M.L.weierstrassP z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx z]`. Simplify using `[g]`. Establish `hprod : ∏ i, (M.L.weierstrassP z - M.L.weierstrassP (P i)) = (M.c ^ 2) ^ m * ∏ i, (M.x z - M.x (P i))`. Establish `: ∀ i, M.L.weierstrassP z - M.L.weierstrassP (P i) = M.c ^ 2 * (M.x z - M.x (P i))`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hx z, hx (P i)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hk : k * (M.c ^ 2) ^ m = 1` using `inv_mul_cancel₀ (pow_ne_zero _ (pow_ne_zero _ hc))`. Rewrite `hz` using `[hprod, hy z]`.
-
-Simplify using `only [Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_add, Polynomial.eval_comp, hg]`. Take the linear combination `k * hz - (φ z * ∏ i, (M.x z - M.x (P i))) * hk`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mul_prod_eq_xy (q : ℕ) [Fact q.Prime] (M : Mdl q) (φ : ℂ → ℂ) (hM : M.Ok) (hφ : Ell M.L φ) :
     ∃ (m : ℕ) (P : Fin m → ℂ) (A B : Polynomial ℂ),

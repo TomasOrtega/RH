@@ -10,11 +10,11 @@ open NumberField MeasureTheory Topology Matrix GlobalTheory.AutomorphicL2Unitary
 namespace GlobalTheory.CompanionTheory.CasFamily
 
 /- English proof (translation)
-Establish `h1 : ∀ i j, (X i j + X j i) * (X i j + X j i) - (X i j - X j i) * (X i j - X j i) + ((Y i j - Y j i) * (Y i j - Y j i) - (Y i j + Y j i) * (Y i j + Y j i)) = (2 : ℂ) • (X i j * X j i) + (2 : ℂ) • (X j i * X i j) - ((2 : ℂ) • (Y i j * Y j i) + (2 : ℂ) • (Y j i * Y i j))`. Introduce `i j`. Simplify using `only [add_mul, mul_add, sub_mul, mul_sub]`. Apply the tactic sequence `match_scalars <;> ring`. Establish `h2 : ∀ i j, ((1 / 2 : ℂ) • (X i j - Complex.I • Y i j)) * ((1 / 2 : ℂ) • (X j i - Complex.I • Y j i)) + ((1 / 2 : ℂ) • (X i j + Complex.I • Y i j)) * ((1 / 2 : ℂ) • (X j i + Complex.I • Y j i)) = (1 / 2 : ℂ) • (X i j * X j i) - (1 / 2 : ℂ) • (Y i j * Y j i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i j`. Simplify using `only [smul_mul_assoc, mul_smul_comm, add_mul, mul_add, sub_mul, mul_sub, smul_add, smul_sub, smul_smul]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp <;> norm_num`. Establish `hX : ∑ i, ∑ j, X j i * X i j = ∑ i, ∑ j, X i j * X j i` using `Finset.sum_comm`. Establish `hY : ∑ i, ∑ j, Y j i * Y i j = ∑ i, ∑ j, Y i j * Y j i` using `Finset.sum_comm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Formalism.REAL.Cas (fun i j => (1 / 2 : ℂ) • (X i j - Complex.I • Y i j)) + Formalism.REAL.Cas (fun i j => (1 / 2 : ℂ) • (X i j + Complex.I • Y i j)) = ∑ i, ∑ j, ((1 / 2 : ℂ) • (X i j * X j i) - (1 / 2 : ℂ) • (Y i j * Y j i))`. Simplify using `only [Formalism.REAL.Cas, ← Finset.sum_add_distrib, h2]`. Rewrite using `[hc]`. Simplify using `only [h1, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.smul_sum, hX, hY]`. Apply the tactic sequence `match_scalars <;> norm_num`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_squares_eq {A : Type} [Ring A] [Algebra ℂ A] {a : ℕ} (X Y : Fin a → Fin a → A) :
     ∑ i, ∑ j, ((X i j + X j i) * (X i j + X j i) - (X i j - X j i) * (X i j - X j i) +
@@ -56,7 +56,7 @@ def fW (w : InfinitePlace E) : Cinf E := atEmb w.embedding Complex.I
 omit [NumberField E] [IsTotallyComplex E] in
 open Classical in
 /- English proof (translation)
-Unfold `atEmb`. Rewrite using `[InfinitePlace.mk_embedding, if_pos rfl, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem atEmb_embedding_apply (w v : InfinitePlace E) (z : ℂ) :
     atEmb w.embedding z v = if v = w then z else 0 := by
@@ -65,7 +65,7 @@ theorem atEmb_embedding_apply (w v : InfinitePlace E) (z : ℂ) :
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Rewrite using `[Pi.star_apply, atEmb_embedding_apply, atEmb_embedding_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_atEmb (w : InfinitePlace E) (z : ℂ) :
     star (atEmb w.embedding z) = atEmb w.embedding (starRingEnd ℂ z) := by
@@ -76,14 +76,14 @@ theorem star_atEmb (w : InfinitePlace E) (z : ℂ) :
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Simplify using `[eW, star_atEmb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_eW (w : InfinitePlace E) : star (eW w) = eW w := by
   simp [eW, star_atEmb]
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [fW, star_atEmb, Pi.neg_apply, atEmb_embedding_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_fW (w : InfinitePlace E) : star (fW w) = -fW w := by
   classical
@@ -93,7 +93,7 @@ theorem star_fW (w : InfinitePlace E) : star (fW w) = -fW w := by
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `e : ∀ w, (x w).re • eW w + (x w).im • fW w = atEmb w.embedding (x w)` using `fun w => (atEmb_eq _ _).symm`. Simplify using `only [e]`. Use function extensionality and compare the values at `v`. Simplify using `[Finset.sum_apply, atEmb_embedding_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_atEmb (x : Cinf E) : x = ∑ w, ((x w).re • eW w + (x w).im • fW w) := by
   classical
@@ -110,15 +110,13 @@ def famZ : InfinitePlace E × Fin a × Fin a × Bool × Bool → Lie E a
   | (w, i, j, true, true) => sgl i j (fW w) + sgl j i (fW w)
 
 /- English proof (translation)
-Use `set S := Submodule.span ℝ (Set.range (famZ (E := E) (a := a))) with hS`. Establish `hz : ∀ k, famZ (E` using `E) (a := a) k ∈ S := fun k => Submodule.subset_span ⟨k, rfl⟩`. Establish `hE : ∀ w i j, sgl (E` using `E) (a := a) i j (eW w) ∈ S := fun w i j => by`. Establish `e : sgl (E` using `E) (a := a) i j (eW w) = (1 / 2 : ℝ) • (famZ (w, i, j, false, false) + famZ (w, i, j, false, true)) := by`. Express the relevant statement in the definitionally equal form `_ = (1 / 2 : ℝ) • ((sgl i j (eW w) + sgl j i (eW w)) + (sgl i j (eW w) - sgl j i (eW w)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `module`. Rewrite using `[e]`. Conclude with `S.smul_mem _ (S.add_mem (hz _) (hz _))`. Establish `hF : ∀ w i j, sgl (E` using `E) (a := a) i j (fW w) ∈ S := fun w i j => by`. Establish `e : sgl (E` using `E) (a := a) i j (fW w) = (1 / 2 : ℝ) • (famZ (w, i, j, true, false) + famZ (w, i, j, true, true)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = (1 / 2 : ℝ) • ((sgl i j (fW w) - sgl j i (fW w)) + (sgl i j (fW w) + sgl j i (fW w)))`. Use `module`. Rewrite using `[e]`. Conclude with `S.smul_mem _ (S.add_mem (hz _) (hz _))`. Establish `hx : ∀ i j (x : Cinf E), sgl (a` using `a) i j x ∈ S := fun i j x => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[sum_atEmb x, map_sum]`. Use `S.sum_mem fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul]`. Conclude with `S.add_mem (S.smul_mem _ (hE w i j)) (S.smul_mem _ (hF w i j))`. Use `eq_top_iff.2 fun L _ => ?_` and prove the remaining obligations.
-
-Establish `e : L = ∑ i, ∑ j, sgl i j (L i j)` using `Matrix.matrix_eq_sum_single (Matrix.of L)`. Rewrite using `[e]`. Conclude with `S.sum_mem fun i _ => S.sum_mem fun j _ => hx i j _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_famZ : Submodule.span ℝ (Set.range (famZ (E := E) (a := a))) = ⊤ := by
   set S := Submodule.span ℝ (Set.range (famZ (E := E) (a := a))) with hS
@@ -148,16 +146,16 @@ theorem span_famZ : Submodule.span ℝ (Set.range (famZ (E := E) (a := a))) = �
   exact S.sum_mem fun i _ => S.sum_mem fun j _ => hx i j _
 
 /- English proof (translation)
-The claim follows from `Matrix.conjTranspose_single i j x`.
+A detailed English derivation is pending.
 -/
 theorem conjTranspose_sgl (i j : Fin a) (x : Cinf E) :
     (Matrix.of (sgl i j x))ᴴ = Matrix.of (sgl j i (star x)) :=
   Matrix.conjTranspose_single i j x
 
 /- English proof (translation)
-Take `⟨w, i, j, b, c⟩` from `k`. Take `rfl : c = true` from `hk`. Consider the cases of `b`. Express the relevant statement in the definitionally equal form `(Matrix.of (sgl i j (eW w)) - Matrix.of (sgl j i (eW w)))ᴴ = -(Matrix.of (sgl i j (eW w)) - Matrix.of (sgl j i (eW w)))`. Rewrite using `[Matrix.conjTranspose_sub, conjTranspose_sgl, conjTranspose_sgl, star_eW, neg_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Matrix.of (sgl i j (fW w)) + Matrix.of (sgl j i (fW w)))ᴴ = -(Matrix.of (sgl i j (fW w)) + Matrix.of (sgl j i (fW w)))`. Establish `hn : ∀ i j : Fin a, Matrix.of (sgl i j (-fW w)) = -Matrix.of (sgl i j (fW w))` using `fun i j => by`. Rewrite using `[map_neg]`. Both sides reduce to the same expression. Rewrite using `[Matrix.conjTranspose_add, conjTranspose_sgl, conjTranspose_sgl, star_fW, hn, hn, neg_add, add_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem skew_famZ (k : InfinitePlace E × Fin a × Fin a × Bool × Bool) (hk : k.2.2.2.2 = true) :
     (Matrix.of (famZ k))ᴴ = -(Matrix.of (famZ k)) := by
@@ -180,7 +178,7 @@ theorem Eop_embedding (w : InfinitePlace E) (i j : Fin a) :
     Eop w.embedding i j = (1 / 2 : ℂ) • (lieS E a i j (eW w) - Complex.I • lieS E a i j (fW w)) := rfl
 
 /- English proof (translation)
-Establish `h : atEmb w.embedding (-Complex.I) = -fW w`. Rewrite using `[atEmb_eq]`. Simplify using `[fW]`. Rewrite using `[Eop, atEmb_conj, atEmb_conj, map_one, Complex.conj_I, h, map_neg, smul_neg, sub_neg_eq_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Eop_conjugate (w : InfinitePlace E) (i j : Fin a) :
     Eop (ComplexEmbedding.conjugate w.embedding) i j =
@@ -191,13 +189,13 @@ theorem Eop_conjugate (w : InfinitePlace E) (i j : Fin a) :
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ f : InfinitePlace E × Fin a × Fin a × Bool × Bool → Module.End ℂ (Sm E a), ∑ k ∈ (Finset.univ.filter fun k : InfinitePlace E × Fin a × Fin a × Bool × Bool => k.2.2.2.2 = true)ᶜ, f k - ∑ k ∈ Finset.univ.filter fun k : InfinitePlace E × Fin a × Fin a × Bool × Bool => k.2.2.2. …` using `fun f => by`. Rewrite using `[Finset.compl_filter, Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : k.2.2.2.2 = true <;> simp [h]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h` using `sum_squares_eq (fun i j : Fin a => lieS E a i j (eW w)) (fun i j => lieS E a i j (fW w))`. Establish `c1 : Formalism.REAL.Cas (Eop (a` using `a) w.embedding) = Formalism.REAL.Cas (fun i j : Fin a => (1 / 2 : ℂ) • (lieS E a i j (eW w) - Complex.I • lieS E a i j (fW w))) := rfl`. Establish `c2 : Formalism.REAL.Cas (Eop (a` using `a) (ComplexEmbedding.conjugate w.embedding)) = Formalism.REAL.Cas (fun i j : Fin a => (1 / 2 : ℂ) • (lieS E a i j (eW w) + Complex.I • lieS E a i j (fW w))) := congrArg _ (funext fun i => funext fun j => Eop_conjugate w i j)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[c1, c2, ← h]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `f1 : lie E a (famZ (w, i, j, false, false)) = lieS E a i j (eW w) + lieS E a j i (eW w)` using `map_add _ _ _`. Establish `f2 : lie E a (famZ (w, i, j, false, true)) = lieS E a i j (eW w) - lieS E a j i (eW w)` using `map_sub _ _ _`. Establish `f3 : lie E a (famZ (w, i, j, true, false)) = lieS E a i j (fW w) - lieS E a j i (fW w)` using `map_sub _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4 : lie E a (famZ (w, i, j, true, true)) = lieS E a i j (fW w) + lieS E a j i (fW w)` using `map_add _ _ _`. Simplify using `only [if_true, Bool.false_eq_true, if_false, f1, f2, f3, f4]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem sum_famZ [DecidableEq (InfinitePlace E)] :
     ∑ k ∈ (Finset.univ.filter fun k : InfinitePlace E × Fin a × Fin a × Bool × Bool => k.2.2.2.2 = true)ᶜ,
@@ -232,7 +230,7 @@ theorem sum_famZ [DecidableEq (InfinitePlace E)] :
   abel
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Establish `: DecidableEq (InfinitePlace E)` using `Classical.decEq _`. Use `⟨InfinitePlace E × Fin a × Fin a × Bool × Bool, inferInstance, inferInstance, famZ, Finset.univ.filter fun k => k.2.2.2.2 = true, span_famZ, fun κ hκ => skew_famZ κ (Finset.mem_filter.1 hκ).2, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_famZ]`. Conclude with `Subalgebra.sum_mem _ fun w _ => Subalgebra.smul_mem _ (Subalgebra.add_mem _ (GlobalTheory.CompanionTheory.Inh.CapelliCasimir.cas_mem_Zalg E a _) (GlobalTheory.CompanionTheory.Inh.CapelliCasimir.cas_mem_Zalg E a _)) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_family : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableEq ι) (Z : ι → GlobalTheory.CuspRep.Lie E a) (K : Finset ι), Submodule.span ℝ (Set.range Z) = ⊤ ∧ (∀ κ ∈ K, (Matrix.of (Z κ))ᴴ = -(Matrix.of (Z κ))) ∧ (∑ i ∈ Kᶜ, lie E a (Z i) * lie E a (Z i) - ∑ κ ∈ K, lie E a (Z κ) * lie E a (Z κ)) ∈ Zalg E a := by
   intro E _ _ _ a

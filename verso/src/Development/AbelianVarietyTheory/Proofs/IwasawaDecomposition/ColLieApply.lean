@@ -36,14 +36,14 @@ def colLie (m : ℕ) (τ : ι) (k l : Fin n) : Pol ι m n →ₗ[ℂ] Pol ι m n
   ∑ i : Fin m, LinearMap.mulLeft ℂ (MvPolynomial.X (τ, i, k)) ∘ₗ (MvPolynomial.pderiv (τ, i, l)).toLinearMap
 
 /- English proof (translation)
-Simplify using `[rowLie, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowLie_apply (τ : ι) (k l : Fin m) (P : Pol ι m n) :
     rowLie n τ k l P = ∑ c : Fin n, MvPolynomial.X (τ, k, c) * MvPolynomial.pderiv (τ, l, c) P := by
   simp [rowLie, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `[colLie, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colLie_apply (τ : ι) (k l : Fin n) (P : Pol ι m n) :
     colLie m τ k l P = ∑ i : Fin m, MvPolynomial.X (τ, i, k) * MvPolynomial.pderiv (τ, i, l) P := by
@@ -69,40 +69,40 @@ def IsTensAct (M : DSModel V S) (π : D.what₂.Tau → Matrix.unitaryGroup (Fin
 variable {M : DSModel V S}
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Simplify using `[h τ]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem AllPlus.jm (h : AllPlus M) (τ : D.what₂.Tau) : Formalism.REAL.Jm (M.ε τ) = 1 := by
   unfold Formalism.REAL.Jm
   simp [h τ]
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`.
+A detailed English derivation is pending.
 -/
 theorem fr_det (M : DSModel V S) (τ : D.what₂.Tau) : IsUnit (M.fr τ).det :=
   (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
 
 /- English proof (translation)
-Rewrite using `[← M.fr_gram τ, h.jm, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem AllPlus.gram (h : AllPlus M) (τ : D.what₂.Tau) : gramAt D V τ = (M.fr τ)ᴴ * M.fr τ := by
   rw [← M.fr_gram τ, h.jm, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[h.gram]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 (M.fr_unit τ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AllPlus.posDef (h : AllPlus M) (τ : D.what₂.Tau) : (gramAt D V τ).PosDef := by
   rw [h.gram]
   exact Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 (M.fr_unit τ))
 
 /- English proof (translation)
-Unfold `Links.cart`. Rewrite using `[h.jm, Matrix.mul_one, Matrix.nonsing_inv_mul _ (fr_det M τ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem AllPlus.cart (h : AllPlus M) (τ : D.what₂.Tau) : cart M τ = 1 := by
   unfold Links.cart
   rw [h.jm, Matrix.mul_one, Matrix.nonsing_inv_mul _ (fr_det M τ)]
 
 /- English proof (translation)
-Unfold `unfr`. Rewrite using `[Matrix.mul_assoc (M.fr τ)⁻¹, Matrix.mul_nonsing_inv_cancel_left _ _ (fr_det M τ), Matrix.mul_nonsing_inv_cancel_right _ _ (fr_det M τ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fr_unfr (M : DSModel V S) (τ : D.what₂.Tau) (u : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     M.fr τ * unfr M τ u * (M.fr τ)⁻¹ = u := by
@@ -111,7 +111,7 @@ theorem fr_unfr (M : DSModel V S) (τ : D.what₂.Tau) (u : Matrix (Fin V.rank) 
     Matrix.mul_nonsing_inv_cancel_right _ _ (fr_det M τ)]
 
 /- English proof (translation)
-Unfold `DSModel.rep`. Rewrite using `[fr_unfr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_unfr (M : DSModel V S) (τ : D.what₂.Tau) (u : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     M.rep τ (unfr M τ u) = M.σ τ u := by
@@ -119,9 +119,9 @@ theorem rep_unfr (M : DSModel V S) (τ : D.what₂.Tau) (u : Matrix (Fin V.rank)
   rw [fr_unfr]
 
 /- English proof (translation)
-Establish `hu : (u : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᴴ * u = 1` using `Matrix.mem_unitaryGroup_iff'.1 u.2`. Establish `e : M.fr τ * unfr M τ u = u * M.fr τ`. Unfold `unfr`. Rewrite using `[Matrix.mul_assoc (M.fr τ)⁻¹, Matrix.mul_nonsing_inv_cancel_left _ _ (fr_det M τ)]`. Use `show (unfr M τ u)ᴴ * gramAt D V τ * unfr M τ u = gramAt D V τ`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.gram]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hu, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AllPlus.unfr_mem (h : AllPlus M) (τ : D.what₂.Tau) (u : Matrix.unitaryGroup (Fin V.rank) ℂ) :
     unfr M τ u ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
@@ -137,9 +137,9 @@ theorem AllPlus.unfr_mem (h : AllPlus M) (τ : D.what₂.Tau) (u : Matrix.unitar
     _ = _ := by rw [hu, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * ((M.fr τ)ᴴ * M.fr τ) * g = (M.fr τ)ᴴ * M.fr τ` using `by rw [← h.gram]; exact hg`. Use `⟨⟨M.fr τ * g * (M.fr τ)⁻¹, Matrix.mem_unitaryGroup_iff'.2 ?_⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [star_eq_conjTranspose, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (M.fr τ * (M.fr τ)⁻¹)ᴴ * (M.fr τ * (M.fr τ)⁻¹) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg']`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 1 := by rw [Matrix.mul_nonsing_inv _ (fr_det M τ)]; simp`. Use `show (M.fr τ)⁻¹ * (M.fr τ * g * (M.fr τ)⁻¹) * M.fr τ = g`. Rewrite using `[Matrix.mul_assoc (M.fr τ), Matrix.nonsing_inv_mul_cancel_left _ _ (fr_det M τ), Matrix.nonsing_inv_mul_cancel_right _ _ (fr_det M τ)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AllPlus.exists_unfr (h : AllPlus M) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : ∃ u : Matrix.unitaryGroup (Fin V.rank) ℂ, unfr M τ u = g := by

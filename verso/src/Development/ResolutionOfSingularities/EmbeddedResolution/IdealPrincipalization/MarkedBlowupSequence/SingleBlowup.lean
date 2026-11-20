@@ -20,7 +20,7 @@ noncomputable def residualByPow {Y : Scheme.{u}} (A F : Y.IdealSheafData) (m : �
   if h : ∃ B : Y.IdealSheafData, F ^ m * B = A then h.choose else ⊤
 
 /- English proof (translation)
-Establish `hx : residualByPow A F m = h.choose` using `dif_pos h`. Rewrite using `[hx]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_residualByPow {Y : Scheme.{u}} (A F : Y.IdealSheafData) (m : ℕ)
     (h : ∃ B : Y.IdealSheafData, F ^ m * B = A) : F ^ m * residualByPow A F m = A := by
@@ -29,7 +29,7 @@ theorem pow_mul_residualByPow {Y : Scheme.{u}} (A F : Y.IdealSheafData) (m : ℕ
   exact h.choose_spec
 
 /- English proof (translation)
-Proceed by induction on `E with`. Consider the case `nil => rfl`. Consider the case `cons a t ih => simp [Scheme.IdealSheafData.comap_id]`. Use the proof step `@[simp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem map_comap_id_list_idealSheafData {X : Scheme.{u}} (E : List X.IdealSheafData) :
     E.map (fun D => D.comap (𝟙 X)) = E := by
@@ -39,7 +39,7 @@ private theorem map_comap_id_list_idealSheafData {X : Scheme.{u}} (E : List X.Id
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exceptionalIdeal_id {X : Scheme.{u}} (Z : X.IdealSheafData) :
     Blowup.exceptionalIdeal (𝟙 X) Z = Z := by
@@ -75,7 +75,7 @@ private def singleBlowupBoundary {X : Scheme.{u}} (Z : X.IdealSheafData) (E : Li
       E.map (Blowup.strictTransform (Blowup.blowup.proj Z) Z) ++ [Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z]
 
 /- English proof (translation)
-Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show Blowup.IsBlowupAlongIdealSheaf (Blowup.blowup.proj Z) Z`. Conclude with `Blowup.blowup.isBlowupAlongIdealSheaf_proj Z`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem isBlowupAlongIdealSheaf_singleBlowupMap {X : Scheme.{u}} (Z : X.IdealSheafData) (i : ℕ) (hi : i < 1) :
     Blowup.IsBlowupAlongIdealSheaf (singleBlowupMap Z i) (singleBlowupCenter Z i) := by
@@ -92,7 +92,7 @@ private def singleBlowupSequenceData {X : Scheme.{u}} (Z : X.IdealSheafData) : B
   isBlowup := fun i hi => isBlowupAlongIdealSheaf_singleBlowupMap Z i hi
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero => show Blowup.blowup.proj Z = Blowup.blowup.proj Z ≫ 𝟙 X`. Conclude with `(Category.comp_id _).symm`. Consider the case `succ j => show Blowup.blowup.proj Z = 𝟙 (Blowup.blowup Z) ≫ Blowup.blowup.proj Z`. Conclude with `(Category.id_comp _).symm`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem singleBlowupProj_succ {X : Scheme.{u}} (Z : X.IdealSheafData) (i : ℕ) :
     singleBlowupProj Z (i + 1) = singleBlowupMap Z i ≫ singleBlowupProj Z i := by
@@ -105,7 +105,7 @@ private theorem singleBlowupProj_succ {X : Scheme.{u}} (Z : X.IdealSheafData) (i
       exact (Category.id_comp _).symm
 
 /- English proof (translation)
-Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show (Z.support : Set ↥X) ⊆ orderAtLeastLocus (I.comap (𝟙 X)) m`. Rewrite using `[Scheme.IdealSheafData.comap_id]`. Conclude with `hord`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem singleBlowupCenter_support_subset_orderAtLeastLocus {X : Scheme.{u}} (I Z : X.IdealSheafData) (m : ℕ)
     (hord : (Z.support : Set ↥X) ⊆ orderAtLeastLocus I m) :
@@ -118,7 +118,7 @@ private theorem singleBlowupCenter_support_subset_orderAtLeastLocus {X : Scheme.
   exact hord
 
 /- English proof (translation)
-Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show AlgebraicGeometry.Smooth (Z.subschemeι ≫ 𝟙 X ≫ p)`. Rewrite using `[Category.id_comp]`. Conclude with `hsm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_singleBlowupCenter_of_smooth {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} (Z : X.IdealSheafData)
@@ -132,7 +132,7 @@ private theorem smooth_singleBlowupCenter_of_smooth {k : Type u} [Field k] {X : 
   exact hsm
 
 /- English proof (translation)
-Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show HasStrictNormalCrossingsWith (𝟙 X ≫ p) Z (E.map (fun D => D.comap (𝟙 X)))`. Rewrite using `[map_comap_id_list_idealSheafData E, Category.id_comp]`. Conclude with `hsnc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasStrictNormalCrossingsWith_singleBlowupCenter {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} (Z : X.IdealSheafData) (E : List X.IdealSheafData)
@@ -146,7 +146,7 @@ private theorem hasStrictNormalCrossingsWith_singleBlowupCenter {k : Type u} [Fi
   exact hsnc
 
 /- English proof (translation)
-Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z ^ m * residualByPow (I.comap (Blowup.blowup.proj Z)) (Z.comap (Blowup.blowup.proj Z)) m = (I.comap (𝟙 X)).comap (Blowup.blowup.proj Z)`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`. Conclude with `pow_mul_residualByPow _ _ _ hdiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exceptionalIdeal_pow_mul_singleBlowupResidualIdeal_succ {X : Scheme.{u}} (I Z : X.IdealSheafData) (m : ℕ)
     (hdiv : ∃ B : (Blowup.blowup Z).IdealSheafData,
@@ -163,7 +163,7 @@ private theorem exceptionalIdeal_pow_mul_singleBlowupResidualIdeal_succ {X : Sch
   exact pow_mul_residualByPow _ _ _ hdiv
 
 /- English proof (translation)
-Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show E.map (Blowup.strictTransform (Blowup.blowup.proj Z) Z) ++ [Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z] = (E.map (fun D => D.comap (𝟙 X))).map (Blowup.strictTransform (Blowup.blowup.proj Z) Z) ++ [Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z]`. Rewrite using `[map_comap_id_list_idealSheafData E]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem singleBlowupBoundary_succ {X : Scheme.{u}} (Z : X.IdealSheafData)
     (E : List X.IdealSheafData) :
@@ -212,7 +212,7 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem ofSingleBlowup_length :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.length = 1 := rfl

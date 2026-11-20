@@ -25,11 +25,11 @@ namespace GlobalTheory.Mem.R3.DefLatBC
 open Formalism.L2.Col in
 
 /- English proof (translation)
-Apply `(S'.res hS').symm.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d'`. Apply `hrd'` to reduce the goal to its premises. Take `⟨d, hd⟩` from `hex d'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : (S'.res hS').symm (S'.repCSD hS' ρ' a' (L f)) = ρ' a' ((S'.res hS').symm (L f))`. Simplify using `[GSD.repCSD]`. Establish `e2 : (S.res hS).symm (S.repCSD hS ρ a f) = ρ a ((S.res hS).symm f)`. Simplify using `[GSD.repCSD]`. Rewrite using `[e1, hρ']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hC f (t d) (t' d') (ht d d' hd)`. Establish `h2` using `hC (S.repCSD hS ρ a f) d d' hd`. Rewrite `h2` using `[e2, hρ]`. Conclude with `eq_of_heq (h1.trans h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repCSD_lift_of_reading {K K' : Type} [Field K] [NumberField K] [StarRing K] [Field K'] [NumberField K'] [StarRing K']
     (S : GSD K) (S' : GSD K') (hS : S.Ok) (hS' : S'.Ok) {A A' : Type} [Group A] [Group A']
@@ -64,7 +64,7 @@ namespace GlobalTheory.Mem.R3.DefLatBC
 open Formalism.L2.Col in
 
 /- English proof (translation)
-Substitute `hQ` using the available equality. Conclude with `⟨fun d' => ⟨d', HEq.rfl⟩, fun g d d' hd => by cases hd; rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem decoratedLattice_translates_heq_of_eq_primes {X : Fields} {n r : ℕ} (h : r ≤ n) {SG Q Q' : Finset (HeightOneSpectrum (𝓞 X.E))} (hQ : Q' = Q) :
     (∀ d' : DecoSet X.E n ∅ (uSG SG Q'), ∃ d : DecoSet X.E n ∅ (uSG SG Q), HEq d' d) ∧
@@ -76,9 +76,9 @@ theorem decoratedLattice_translates_heq_of_eq_primes {X : Fields} {n r : ℕ} (h
 open Formalism.L2.Col in
 
 /- English proof (translation)
-Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h`. Substitute `h` using the available equality. Consider the cases of `hp`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Use `⟨fun d' => (decoratedLattice_translates_heq_of_eq_primes (r_le_nV _) (hQ'.trans hQ.symm)).1 d', fun g g' hg d d' hd => ?_⟩` and prove the remaining obligations. Establish `e` using `eq_of_heq hg`. Substitute `e` using the available equality. Conclude with `(decoratedLattice_translates_heq_of_eq_primes (r_le_nV _) (hQ'.trans hQ.symm)).2 _ d d' hd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem decoratedLattice_translates_heq_of_eq_preData (B B' : Base) (px : PreX B.toPre) (px' : PreX B'.toPre) (h : B'.toPre = B.toPre) (hp : HEq px' px)
     (sel : HeightOneSpectrum (𝓞 B.fields.F) → HeightOneSpectrum (𝓞 B.fields.E))
@@ -106,7 +106,7 @@ end GlobalTheory.Mem.R3.DefLatBC
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE _ _ hp Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ _ j j' _ φ _ e he L _ hC g f0 => ?_` and prove the remaining obligations. Establish `hP` using `GlobalTheory.Mem.R3.DefLatBC.decoratedLattice_translates_heq_of_eq_preData B B' w.px w'.px hE.1 hp w.I.sel w'.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}))).1 (Formalism.L2.Col.twi …`. Establish `hinj : Function.Injective fun v : (Formalism.L2.Col.mtKGSD (Pr` using `B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}))).1 ((j' : ℕ) + 1)).V => MvPolynomial.map (B'.embLL : B'.fields.K →+* ℂ) v.1 := (MvPolynomial.map_injective _ (B'.embLL : B'.fields.K →+* ℂ).injective).co …`. Conclude with `GlobalTheory.Mem.R3.DefLatBC.repCSD_lift_of_reading (Formalism.L2.Col.mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((j : ℕ) + 1)) (Formalism.L2.Col.mtKGSD (Pr := B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fie …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.DefLatBC.act_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

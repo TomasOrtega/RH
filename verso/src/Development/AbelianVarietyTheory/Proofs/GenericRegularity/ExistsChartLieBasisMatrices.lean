@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.ModelChart
 
 /- English proof (translation)
-Set `Z : irreducibleComponents X` to `⟨_, irreducibleComponent_mem_irreducibleComponents x⟩`. Use `⟨GlobalTheory.IsNormalScheme.component Z, mem_irreducibleComponent, fun U hx hU => ?_⟩` and prove the remaining obligations. Establish `: Nonempty U.toScheme` using `⟨⟨x, hx⟩⟩`. Establish `: IsIntegral U.toScheme` using `isIntegral_of_isOpenImmersion (X.homOfLE hU)`. Establish `e : Γ(U.toScheme, ⊤) ≅ Γ(X, U)` using `U.topIso`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.commRingCatIsoToRingEquiv.symm.toMulEquiv.isDomain _`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_isDomain (X : Scheme.{0}) [GlobalTheory.IsNormalScheme X] [IsLocallyNoetherian X] (x : X) :
     ∃ W : X.Opens, x ∈ W ∧ ∀ U : X.Opens, x ∈ U → U ≤ W → IsDomain Γ(X, U) := by
@@ -30,7 +30,7 @@ theorem exists_open_isDomain (X : Scheme.{0}) [GlobalTheory.IsNormalScheme X] [I
   exact e.commRingCatIsoToRingEquiv.symm.toMulEquiv.isDomain _
 
 /- English proof (translation)
-Introduce `i j`. Establish `e` using `congrArg (resG X (inf_le_inf_right _ (inf_le_inf_right _ h) : W ⊓ L.U i ⊓ L.U j ≤ V ⊓ L.U i ⊓ L.U j)) (hθ i j)`. Rewrite `e` using `[map_mul]`. Simplify `e` using `only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp, ← op_comp, homOfLE_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem res_mem_secOn {X : Scheme.{0}} (L : LB X) {V W : X.Opens} (h : W ≤ V) {θ : ∀ i, Γ(X, V ⊓ L.U i)}
     (hθ : θ ∈ secOn L V) : (fun i => resG X (inf_le_inf_right _ h) (θ i)) ∈ secOn L W := by
@@ -41,7 +41,7 @@ theorem res_mem_secOn {X : Scheme.{0}} (L : LB X) {V W : X.Opens} (h : W ≤ V) 
   simpa only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp, ← op_comp, homOfLE_comp] using e
 
 /- English proof (translation)
-Unfold `IsTangent at hv ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, IsMonHom.one_hom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_comp_hom {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {v : epsR R ⟶ G} (hv : IsTangent v)
     (a : G ⟶ G) [IsMonHom a] : IsTangent (v ≫ a) := by
@@ -49,7 +49,7 @@ theorem isTangent_comp_hom {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] 
   rw [Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, IsMonHom.one_hom]
 
 /- English proof (translation)
-Establish `: ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (RingHom.id R) = RingHom.id _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_dualMapR_id (R : Type) [CommRing R] :
     spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (RingHom.id R)) = 𝟙 _ := by
@@ -60,23 +60,21 @@ theorem spMap_dualMapR_id (R : Type) [CommRing R] :
   exact Spec.map_id _
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ _ β Y hP x`. Use `projProper _ _ _ Y.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`. Establish `: GlobalTheory.IsNormalScheme Y.X` using `GlobalTheory.IsNormalScheme.of_pred Y.normal`. Use `Y.t.semi.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, hxW, hW⟩` from `exists_open_isDomain Y.X x`. Take `⟨V, hxV, θ, hθ, -, nz⟩` from `hP x`. Take `⟨U, hU, hxU, hUW, n, v₀, hv⟩` from `GlobalTheory.exists_affine_lieBasis_baseChange Y.X Y.t.G x (W ⊓ V) ⟨hxW, hxV⟩`. Establish `hUV : U ≤ V` using `hUW.trans inf_le_right`. Use `⟨U, hU, hxU, hW U hxU (hUW.trans inf_le_left), ⟨_, res_mem_secOn _ (Y.t.G.hom.preimage_mono hUV) hθ, fun y hy => ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, i, rfl, hg⟩` from `nz y (hUV hy)`. Use `⟨g, i, rfl, ?_⟩` and prove the remaining obligations. Use `show g ∈ Y.t.G.left.basicOpen (Y.t.G.left.presheaf.map (homOfLE _).op (θ i))`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `⟨⟨hy, (Y.t.G.left.basicOpen_le _ hg).2⟩, hg⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨t₀, ⟨m₀⟩⟩` from `(GlobalTheory.ModelPoints.model_points_charts E H D l Xo c O β Y).2.1 (Sp Γ(Y.X, U)) hU.fromSpec`. Establish `c₀ : IsGrpPullback t₀.G Y.t.G (spMap (RingHom.id Γ(Y.X, U)) ≫ hU.fromSpec) m₀.φ`. Establish `e : spMap (RingHom.id Γ(Y.X, U)) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[e, Category.id_comp]`. Conclude with `m₀.cart`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨u, hu, hb⟩` from `hv _ (RingHom.id _) t₀.G m₀.φ c₀`. Simplify using `only [spMap_dualMapR_id, Category.id_comp] at hu`. Establish `ex : ∀ a j, ∃ r : Fin n → Γ(Y.X, U), IsLieComb r u (u j ≫ t₀.act.act a)` using `fun a j =>`. Use `t₀.act.hom a` as an intermediate fact. Use the proof step `(hb.2 _ (isTangent_comp_hom (hb.1 j) _)).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose r hr using ex`. Use `⟨n, v₀, fun a i j => r a j i, fun R' _ f t' m => ?_⟩` and prove the remaining obligations. Take `⟨v', hv', hb'⟩` from `hv R' f t'.G m.φ m.cart`. Use `⟨v', hv', hb', fun a j => ?_⟩` and prove the remaining obligations. Establish `hp` using `m₀.cart.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F : t'.G.left ⟶ t₀.G.left` to `hp.lift m.φ (t'.G.hom ≫ spMap f) (by rw [m.cart.1.w, Category.assoc])`. Establish `hF : F ≫ m₀.φ = m.φ` using `hp.lift_fst _ _ _`. Establish `hw : F ≫ t₀.G.hom = t'.G.hom ≫ spMap f` using `hp.lift_snd _ _ _`. Establish `hc : IsGrpPullback t'.G t₀.G (spMap f) F` using `m₀.cart.cancel (hF ▸ m.cart) hw`. Establish `lies : ∀ (w' : epsR R' ⟶ t'.G) (w : epsR Γ(Y.X, U) ⟶ t₀.G), w'.left ≫ m.φ = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ w.left ≫ m₀.φ → w'.left ≫ F = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ w.left` using `fun w' w h => by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hF, h, Category.assoc]`. Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Conclude with `(GlobalTheory.LieCombBaseChange.dualMap_over f).symm`. Use `(GlobalTheory.lieComb_baseChange _ _ f t₀.G t'.G F hc n u _ (r a j) v' _ (fun k => lies _ _ (by rw [hv', hu])) (hr a j)).1 (lies _ _ ?_)` and prove the remaining obligations.
-
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, m.act, m₀.act, ← Category.assoc, hv', ← Category.assoc (u j).left, hu, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_lieBasis_matrices :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsNoetherianRing O] (β : O →+* c.F) (Y : Model Xo c β), PushInvertible Y.t.G Y.t.PP.L → ∀ x : Y.X, ∃ (U : Y.X.Opens) (hU : IsAffineOpen U), x ∈ U ∧ IsDomain Γ(Y.X, U) ∧ (∃ θ ∈ secOn Y.t.PP.L (Y.t.G.hom ⁻¹ᵁ U), ∀ y ∈ U, ∃ (g : Y.t.G.left) (i : Y.t.PP.L.ι), Y.t.G.hom g = y ∧ g ∈ Y.t.G.left.basicOpen (θ i)) ∧ ∃ (n : ℕ) (v₀ : Fin n → (Sp (DualNumber Γ(Y.X, U)) ⟶ Y.t.G.left)) (ρ : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U)), ∀ (R' : Type) [CommRing R'] (f : Γ(Y.X, U) →+* R') (t' : SAB H (Sp R')) (m : SABMap t' Y.t (spMap f ≫ hU.fromSpec)), ∃ v' : Fin n → (epsR R' ⟶ t'.G), (∀ j, (v' j).left ≫ m.φ = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ v₀ j) ∧ IsLieBasis v' ∧ ∀ a j, IsLieComb (fun i => f (ρ a i j)) v' (v' j ≫ t'.act.act a) := by

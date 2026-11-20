@@ -11,13 +11,13 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ ω hω hωB _ t ht lam`. Take `⟨Ω, Kf, hΩ, hKf, hgeom⟩` from `GlobalTheory.T.siegelSet_adelicGL_exists_compact_decomposition E a ω hω hωB t ht`. Take `⟨S, hS⟩` from `GlobalTheory.T.finite_translates_smoothFunction_of_compact E a φ hφ.1.level Kf hKf`. Establish `hcore` using `fun f' : GL (Fin a) (Af E) => GlobalTheory.T.cuspForm_rapidDecay_siegelCone_realPoints hfin E a (finRep E a f' φ) (GlobalTheory.T.isCuspForm_operator_act hfin E a (.fin f') φ hφ) Ω hΩ t ht lam`. Use `choose C hC0 hC using hcore`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ f' ∈ S, C f', fun b hb r hr hchain hprod k hk => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hdiag⟩` from `GlobalTheory.T.exists_realDiagonal_infGL_eq_positiveIdeleDiagonal E a r hr`. Rewrite using `[hdiag]`. Take `⟨c, hc, f, hf, heq⟩` from `hgeom r d hr hchain hd b hb k hk`. Rewrite using `[heq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf', hff'⟩` from `hS f hf`. Establish `e : φ.1 (infGL E a (d * c) * finGL E a f) = (finRep E a f' φ).1 (infGL E a (d * c))`. Rewrite using `[← hff']`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hC f' r d hr hchain hd hprod c hc).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (Finset.single_le_sum (fun i _ => hC0 i) hf') (Finset.prod_nonneg fun i _ => Real.rpow_nonneg (hr i).le _)`.
+A detailed English derivation is pending.
 -/
 theorem cuspRapidDecaySiegelGL_of_finite (hfin : GlobalTheory.Published.AutomorphicFormsFiniteGL) :
     GlobalTheory.Published.CuspRapidDecaySiegelGL := by

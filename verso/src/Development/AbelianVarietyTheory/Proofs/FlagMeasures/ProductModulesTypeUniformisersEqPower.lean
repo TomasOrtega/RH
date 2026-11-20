@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VENatEqZero
 namespace GlobalTheory.HTThetaLeaf
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.NGHTie.HTTheta`. Conclude with `GlobalTheory.TypeUnifProd.main`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem main : Formalism.L2.SG.NGHTie.HTTheta := by
   unfold Formalism.L2.SG.NGHTie.HTTheta

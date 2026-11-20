@@ -17,12 +17,12 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Simplify using `[re, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem re_mul' (a b : A ℚ) : re (a * b) = re a * re b := by simp [re, map_mul]
 
 /- English proof (translation)
-Establish `h : TR.pInf ℚ (t : A ℚ) = 1` using `by show (TR.infEq ℚ).symm (t : A ℚ).1 = 1`. Rewrite using `[ht.1, map_one]`. Simplify using `[re, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem re_UU {t : (A ℚ)ˣ} (ht : t ∈ UU) : re (t : A ℚ) = 1 := by
   have h : TR.pInf ℚ (t : A ℚ) = 1 := by
@@ -31,14 +31,14 @@ private theorem re_UU {t : (A ℚ)ˣ} (ht : t ∈ UU) : re (t : A ℚ) = 1 := by
   simp [re, h]
 
 /- English proof (translation)
-Simplify using `[ab, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ab_mul' (a b : (A ℚ)ˣ) : ab (a * b) = ab a * ab b := by simp [ab, map_mul]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq', MvPolynomial.eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : m 0 + m 1 = d`. Use `hp (MvPolynomial.mem_support_iff.mp hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum_fintype, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, mul_pow, ← hdeg, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem homog {p : MvPolynomial (Fin 2) ℂ} {d : ℕ} (hp : p.IsHomogeneous d) (c a b : ℂ) :
     MvPolynomial.eval ![c * a, c * b] p = c ^ d * MvPolynomial.eval ![a, b] p := by
@@ -51,7 +51,7 @@ private theorem homog {p : MvPolynomial (Fin 2) ℂ} {d : ℕ} (hp : p.IsHomogen
   ring
 
 /- English proof (translation)
-Establish `hr' : (((|r| : ℝ)) : ℂ) ≠ 0` using `by exact_mod_cast abs_ne_zero.mpr hr`. Rewrite using `[Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (abs_nonneg r) (by positivity) (2 * s), Complex.cpow_sub _ _ hr', Complex.cpow_one, Complex.cpow_neg, Complex.ofReal_inv, Complex.ofReal_natCast, Complex.inv_cpow _ _ (by rw [Complex.natCast_arg]; exact Real.pi_pos.ne)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem cpow_split (r : ℝ) (hr : r ≠ 0) (n : ℕ) (hn : 0 < n) (s : ℂ) :
     (((|r| * (n : ℝ)⁻¹ : ℝ)) : ℂ) ^ (2 * s) / ((|r| : ℝ) : ℂ) =
@@ -63,37 +63,33 @@ private theorem cpow_split (r : ℝ) (hr : r ≠ 0) (n : ℕ) (hn : 0 < n) (s : 
   ring
 
 /- English proof (translation)
-Introduce `N hN e p hp s hs k hK hS t hsin hcos`. Apply the tactic sequence `obtain ⟨ζ, hζU, hζ⟩ := UpperTheory.exists_idele_correcting_lowerRight_entry N hN k hK hS`. Establish `hs0 : 0 < s.re` using `by linarith`. Establish `hs1 : 1 < s.re` using `by linarith`. Use `set ρ : ℂ := MvPolynomial.eval ![(Real.sin t : ℂ), (Real.cos t : ℂ)] p with hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f0 : IdeleGroup ℚ → ℂ` to `fun z => (PhiN N p fun j => ((z : (A ℚ)ˣ) : A ℚ) * row k j) * ((ab z : ℝ) : ℂ) ^ (2 * s)`. Set `f : IdeleGroup ℚ → ℂ` to `fun y => f0 (y * ζ)`. Establish `hshift : Zr N p s k = ∫ y, f y ∂(ideleMeasure ℚ)` using `(integral_mul_right_eq_self f0 ζ).symm`. Establish `habU : ∀ τ ∈ UU, ∀ y : (A ℚ)ˣ, ab (y * τ) = ab y` using `fun τ hτ y => by`. Rewrite using `[ab_mul', (UpperTheory.ratIdeleAbs_realIdele_natIdele_unitIdeles).2.2.1 τ hτ, mul_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hreU : ∀ τ : (A ℚ)ˣ, τ ∈ UU → ∀ y : (A ℚ)ˣ, re ((y * τ : (A ℚ)ˣ) : A ℚ) = re (y : A ℚ)` using `fun τ hτ y => by`. Rewrite using `[Units.val_mul, re_mul', re_UU hτ, mul_one]`. Establish `hf : ∀ y : (A ℚ)ˣ, f y = if ((∀ v, Bad N v → Dv N v (((y : (A ℚ)ˣ) : A ℚ) - 1)) ∧ ∀ v : H.P ℚ, Valued.v (H.cp v ((y : (A ℚ)ˣ) : A ℚ)) ≤ 1) then ((re (y : A ℚ) : ℝ) : ℂ) ^ (2 * e) * ρ * Complex.exp (-(Real.pi : ℂ) * ((re (y : A ℚ) ^ 2 : ℝ) : ℂ)) * ((ab y : ℝ) : ℂ) ^ (2 * s) else 0`. Introduce `y`. Establish `hre : ∀ j, re (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k j) = re (y : A ℚ) * re (k 1 j)` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[re_mul', hreU ζ hζU y]`. Both sides reduce to the same expression. Establish `hc` using `UpperTheory.bottomRow_congruence_iff_idele_congruence N hN k hK hS ζ hζU hζ y`. Establish `hfun : (fun i => ((re (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k i) : ℝ) : ℂ)) = ![((re (y : A ℚ) : ℝ) : ℂ) * (Real.sin t : ℂ), ((re (y : A ℚ) : ℝ) : ℂ) * (Real.cos t : ℂ)]`. Use function extensionality and compare the values at `i`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases i`. Use `show ((re (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k 0) : ℝ) : ℂ) = ((re (y : A ℚ) : ℝ) : ℂ) * (Real.sin t : ℂ)`. Rewrite using `[hre, hsin, Complex.ofReal_mul]`. Use `show ((re (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k 1) : ℝ) : ℂ) = ((re (y : A ℚ) : ℝ) : ℂ) * (Real.cos t : ℂ)`. Rewrite using `[hre, hcos, Complex.ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsq : re (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k 0) ^ 2 + re (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k 1) ^ 2 = re (y : A ℚ) ^ 2`. Rewrite using `[hre, hre, hsin, hcos]`. Use `Real.sin_sq_add_cos_sq t` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `show (PhiN N p fun j => ((y * ζ : (A ℚ)ˣ) : A ℚ) * row k j) * ((ab (y * ζ) : ℝ) : ℂ) ^ (2 * s) = _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[habU ζ hζU y]`. Distinguish the cases in `hq : ((∀ v, Bad N v → Dv N v (((y : (A ℚ)ˣ) : A ℚ) - 1)) ∧ ∀ v : H.P ℚ, Valued.v (H.cp v ((y : (A ℚ)ˣ) : A ℚ)) ≤ 1)`. Establish `hq' : ∀ v, Dv N v (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k 0) ∧ Dv N v (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k 1 - 1)`. Conclude with `hc.mpr hq`. Rewrite using `[if_pos hq, PhiN, if_pos hq', hfun, homog hp, hsq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hq' : ¬ ∀ v, Dv N v (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k 0) ∧ Dv N v (((y * ζ : (A ℚ)ˣ) : A ℚ) * row k 1 - 1)`. Introduce `h`. Conclude with `hq (hc.mp h)`. Rewrite using `[if_neg hq, PhiN, if_neg hq', zero_mul]`. Establish `hinv : ∀ τ ∈ TT N, ∀ y : IdeleGroup ℚ, f (y * τ) = f y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `τ hτ y`. Rewrite using `[hf, hf, hreU τ hτ.1 y, habU τ hτ.1 y]`. Simplify using `only [UpperTheory.ideleCongruenceCondition_mul_congruenceUnit_iff N hN τ hτ y]`. Establish `hsupp : ∀ y : IdeleGroup ℚ, f y ≠ 0 → ∃ (n : ℕ) (r : ℝ) (τ : (A ℚ)ˣ), 0 < n ∧ n.Coprime N ∧ r ≠ 0 ∧ τ ∈ TT N ∧ y = iy r * pin n * τ`. Introduce `y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `UpperTheory.exists_archIdele_natIdele_congruenceUnit_factorization N hN y ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy (by rw [hf, if_neg h])`. Set `J : ℝ → ℂ` to `fun r => (r : ℂ) ^ (2 * e) * Complex.exp (-(Real.pi : ℂ) * ((r ^ 2 : ℝ) : ℂ)) * ((|r| : ℝ) : ℂ) ^ (2 * s - 1)`. Establish `hJ` using `UpperTheory.integral_even_power_gaussian_mul_abs_rpow e s hs0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hval : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, ∀ r : ℝ, r ≠ 0 → f (iy r * pin n) / ((|r| : ℝ) : ℂ) = (ρ * ((n : ℕ) : ℂ) ^ (-(2 * s))) * J r`. Introduce `n r hr`. Establish `hab : ab (iy r * pin n) = |r| * ((n : ℕ) : ℝ)⁻¹`. Rewrite using `[ab_mul', (UpperTheory.ratIdeleAbs_realIdele_natIdele_unitIdeles).1 r hr, (UpperTheory.ratIdeleAbs_realIdele_natIdele_unitIdeles).2.1 n n.2.1]`. Rewrite using `[hf, if_pos (UpperTheory.ideleCongruence_archIdele_mul_finiteNatIdele N hN n r n.2.1 n.2.2 hr), (UpperTheory.ratIdeleAbs_realIdele_natIdele_unitIdeles).2.2.2 r n hr n.2.1, hab, mul_div_assoc, cpow_split r hr n n.2.1 s]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [J]`. Expand and normalize the polynomial expressions, which then agree. Establish `hae : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, (fun r : ℝ => f (iy r * pin n) / ((|r| : ℝ) : ℂ)) =ᵐ[volume] fun r => (ρ * ((n : ℕ) : ℂ) ^ (-(2 * s))) * J r`. Introduce `n`. Use `filter_upwards [compl_mem_ae_iff.mpr (measure_singleton (0 : ℝ))] with r hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hval n r hr`. Establish `hint : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, Integrable (fun r : ℝ => f (iy r * pin n) / ((|r| : ℝ) : ℂ))` using `fun n => (hJ.1.const_mul _).congr (hae n).symm`. Establish `hS0` using `UpperTheory.hasSum_coprime_inv_pow_two_mul_eq_LSeries N s hN hs1`. Establish `hnorm : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, ∫ r : ℝ, ‖f (iy r * pin n) / ((|r| : ℝ) : ℂ)‖ = ‖ρ‖ * ‖((n : ℕ) : ℂ) ^ (-(2 * s))‖ * ∫ r : ℝ, ‖J r‖`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae n] with r hr`. Rewrite using `[hr, norm_mul, norm_mul]`. Establish `hsm : Summable (fun n : {n : ℕ // 0 < n ∧ n.Coprime N} => ∫ r : ℝ, ‖f (iy r * pin n) / ((|r| : ℝ) : ℂ)‖)`.
-
-Simplify using `only [hnorm]`. Conclude with `(hS0.summable.norm.mul_left ‖ρ‖).mul_right _`. Establish `hmain` using `(UpperTheory.hasSum_coprime_integral_eq_idele_integral) N N hN f hinv hsupp hint hsm`. Establish `hterm : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, (cT N : ℂ) * ∫ r : ℝ, f (iy r * pin n) / ((|r| : ℝ) : ℂ) = ((cT N : ℂ) * ρ * ((Real.pi : ℂ) ^ (-(s + e)) * Complex.Gamma (s + e))) * ((n : ℕ) : ℂ) ^ (-(2 * s))`. Introduce `n`.
-
-Rewrite using `[integral_congr_ae (hae n), integral_const_mul, hJ.2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hterm] at hmain`. Rewrite using `[hshift, hmain.unique (hS0.mul_left _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.zeta_integral_eq_lseries_mul_gamma_mul_eval_of_mem_level :
     ∀ (N : ℕ), 0 < N → ∀ (e : ℕ) (p : MvPolynomial (Fin 2) ℂ), p.IsHomogeneous (2 * e) → ∀ s : ℂ, 4 < s.re → ∀ k ∈ KK ℚ, k ∈ SS N →

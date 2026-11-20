@@ -3,23 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Introduce `G _ d ρ S hS`. Take `⟨T, hT⟩` from `Submodule.exists_isCompl S`. Set `b` to `Module.finBasis ℂ S`. Set `P : (Fin d → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℂ S) → ℂ)` to `b.equivFun.toLinearMap ∘ₗ Submodule.linearProjOfIsCompl S T hT`. Set `I : (Fin (Module.finrank ℂ S) → ℂ) →ₗ[ℂ] (Fin d → ℂ)` to `S.subtype ∘ₗ b.equivFun.symm.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hIP : ∀ v, v ∈ S → I (P v) = v`. Introduce `v hv`. Establish `e : S.linearProjOfIsCompl T hT v = ⟨v, hv⟩` using `Submodule.linearProjOfIsCompl_apply_left hT ⟨v, hv⟩`. Use `show ((b.equivFun.symm (b.equivFun (S.linearProjOfIsCompl T hT v)) : S) : Fin d → ℂ) = v`. Rewrite using `[e, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPI : P ∘ₗ I = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Establish `e : S.linearProjOfIsCompl T hT ((b.equivFun.symm w : S) : Fin d → ℂ) = b.equivFun.symm w` using `Submodule.linearProjOfIsCompl_apply_left hT _`. Use `show b.equivFun (S.linearProjOfIsCompl T hT ((b.equivFun.symm w : S) : Fin d → ℂ)) = w`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[e, LinearEquiv.apply_symm_apply]`. Set `A` to `LinearMap.toMatrix' I`. Set `B` to `LinearMap.toMatrix' P`. Establish `hAw : ∀ w, A *ᵥ w = I w` using `fun w => LinearMap.toMatrix'_mulVec I w`. Establish `hBw : ∀ v, B *ᵥ v = P v` using `fun v => LinearMap.toMatrix'_mulVec P v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBA : B * A = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, hPI, LinearMap.toMatrix'_id]`. Establish `key : ∀ M : Matrix (Fin d) (Fin (Module.finrank ℂ S)) ℂ, (∀ w, M *ᵥ w ∈ S) → A * (B * M) = M`. Introduce `M hM`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hBw, hAw, hIP _ (hM w)]`. Establish `hAS : ∀ w, A *ᵥ w ∈ S`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hAw]`. Conclude with `(b.equivFun.symm w).2`. Establish `hcol : ∀ y w, (ρ y * A) *ᵥ w ∈ S`. Introduce `y w`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hS y _ (hAS w)`. Set `ρ' : G →* Matrix (Fin (Module.finrank ℂ S)) (Fin (Module.finrank ℂ S)) ℂ` to `{ toFun := fun y => B * ρ y * A map_one' := by simp only [map_one, Matrix.mul_one, hBA] map_mul' := by`. Introduce `x y`. Simplify using `only [map_mul, Matrix.mul_assoc]`. Rewrite using `[key _ (hcol y)] }`.
-
-Use `⟨_, A, B, ρ', rfl, hBA, hAS, fun y => rfl, fun y => ?_⟩` and prove the remaining obligations. Use `show ρ y * A = A * (B * ρ y * A)`. Rewrite using `[Matrix.mul_assoc B, key _ (hcol y)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.subMat :
     ∀ (G : Type) [Monoid G] (d : ℕ) (ρ : G →* Matrix (Fin d) (Fin d) ℂ) (S : Submodule ℂ (Fin d → ℂ)),

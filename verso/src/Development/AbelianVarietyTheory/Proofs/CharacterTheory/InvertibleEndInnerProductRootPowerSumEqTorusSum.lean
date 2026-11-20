@@ -10,11 +10,9 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Introduce `F _ _ V _ _ _ θ φ hcl hprim hpos l`. Rewrite using `[ipGL_charpoly_eq_finsum_mass F V φ (rootSum θ l)]`. Use `sum_poly_eq_sum_torus F θ (Module.finrank F V) hpos (mass φ) l ?_` and prove the remaining obligations. Introduce `P _ _ hP`. Unfold `mass`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[finsum_mem_def]`. Use `finsum_eq_zero_of_forall_eq_zero fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hg : LinearMap.charpoly g = P`. Rewrite using `[Set.indicator_of_mem (show g ∈ {g : Module.End F V | LinearMap.charpoly g = P} from hg)]`. Conclude with `GlobalTheory.T.classFn_eq_zero_of_charpoly_not_irreducible_pow F V φ hcl hprim hpos g (hg ▸ hP)`.
-
-Conclude with `Set.indicator_of_notMem (show g ∉ {g : Module.End F V | LinearMap.charpoly g = P} from hg) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipGL_rootSum_eq_sum_torus : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] (θ : AlgebraicClosure F →* ℂ) (φ : Module.End F V → ℂ), IsClassFn φ → IsPrimitive φ → 0 < Module.finrank F V → ∀ l : ℕ, ipGL φ (fun g : Module.End F V => rootSum θ l (LinearMap.charpoly g)) = ∑ᶠ α ∈ {α : AlgebraicClosure F | α ^ (Nat.card F ^ Module.finrank F V - 1) = 1}, ((Module.finrank F V / (minpoly F α).natDegree : ℕ) : ℂ) * mass φ (minpoly F α ^ (Module.finrank F V / (minpoly F α).natDegree)) * star (θ α ^ l) := by
   intro F _ _ V _ _ _ θ φ hcl hprim hpos l

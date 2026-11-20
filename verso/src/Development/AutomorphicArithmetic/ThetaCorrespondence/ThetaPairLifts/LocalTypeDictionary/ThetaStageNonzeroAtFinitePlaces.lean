@@ -19,13 +19,11 @@ open MeasureTheory
 open scoped TensorProduct
 namespace GlobalTheory.StageFinNonzero
 /- English proof (translation)
-Introduce `hP hK hL`. Use `gBig_of_two (_root_.GlobalTheory.T.finite_place_theta_matching hP hK hL) (_root_.GlobalTheory.T.theta_stage_unique hP hK hL) fun {D T Lc sc} G μ₀ C x b₀ hA hB => ?_` and prove the remaining obligations. Introduce `W i j a b A A' WW X hX FA FA' FW t hf hf' Pi rf rl p p' hm Pr Pf q q' r r' e hq hq' hp hp'`. Take `⟨Pi₀, rf₀, rl₀, p₀, p₀', hm₀, P, P', κ, hne, heq⟩` from `hA W i j a b A A' WW X hX FA FA' FW t hf hf'`. Take `⟨E, c, hc, hE, hE'⟩` from `hB W i j a b A A' WW X hX FA FA' FW t Pi₀ rf₀ rl₀ p₀ p₀' Pi rf rl p p' hm₀ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `m2 : GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P' ∈ GlobalTheory.SquareComm.algF W.ψ W.θ false FA' FW` using `Submodule.subset_span ⟨_, P', hf', rfl⟩`. Establish `n0 : p₀' (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P') ≠ 0`. Introduce `h0`. Rewrite `heq` using `[h0, smul_zero]`. Conclude with `hne heq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `n1 : p' (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P') ≠ 0`. Rewrite using `[hE' _ m2]`. Conclude with `(LinearEquiv.map_ne_zero_iff E).mpr n0`. Introduce `h0`. Rewrite `n1` using `[hp' _ hf' P', h0, TensorProduct.tmul_zero, map_zero]`.
-
-Conclude with `n1 rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_stage_finite_part_ne_zero : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)
@@ -74,7 +72,7 @@ open MeasureTheory
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.StageFinNonzero.theta_stage_finite_part_ne_zero | exact _root_.GlobalTheory.StageFinNonzero.theta_stage_finite_part_ne_zero | (intros; apply _root_.GlobalTheory.StageFinNonzero.theta_stage_finite_part_ne_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_stage_nonzero_at_finite_places : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)

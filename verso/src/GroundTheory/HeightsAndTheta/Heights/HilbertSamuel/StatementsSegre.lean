@@ -17,7 +17,7 @@ def segrePrime (q : Ideal (MRing ι F)) : Ideal (MRing (fun _ : Unit => ∀ k, �
   q.comap (segreMap F)
 
 /- English proof (translation)
-The claim follows from `aeval_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem segreMap_X (f : ∀ k, ι k) :
     segreMap F (X ⟨(), f⟩ : MRing (fun _ : Unit => ∀ k, ι k) F) = ∏ k, X ⟨k, f k⟩ :=

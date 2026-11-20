@@ -14,9 +14,9 @@ def onSpheres {k n : ℕ} (F : (Fin k → Fin n → ℂ) → ℂ) (z : Fin k →
   F fun b => spherePoint (z b)
 
 /- English proof (translation)
-Use `⟨hF.1.comp (continuous_const.finCons continuous_id), fun b p => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgF⟩` from `hF.2 b.succ (Fin.cons v p)`. Use `⟨g, hg, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Fin.cons_update]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgF w`.
+A detailed English derivation is pending.
 -/
 theorem BlockPoly.restrict {k n : ℕ} {a : Fin (k + 1) → ℕ} {F : (Fin (k + 1) → Fin n → ℂ) → ℂ}
     (hF : BlockPoly (k + 1) n a F) (v : Fin n → ℂ) :
@@ -29,53 +29,47 @@ theorem BlockPoly.restrict {k n : ℕ} {a : Fin (k + 1) → ℕ} {F : (Fin (k + 
   exact hgF w
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (sphereProb n) := by unfold sphereProb; infer_instance`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a F hF z0 hz0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hconst : ∀ z : Fin 0 → UnitSphereC n, onSpheres F z = onSpheres F z0`. Introduce `z`. Unfold `onSpheres`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `b.elim0`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hconst]`. Conclude with `integrable_const _`. Repeatedly rewrite using `[hconst]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hz0]`. Consider the case `succ k ih`. Introduce `a F hF z0 hz0`. Use `set μ := sphereProb n with hμ`. Use `set ν := Measure.pi fun _ : Fin k => sphereProb n with hν`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e` to `MeasurableEquiv.piFinSuccAbove (fun _ : Fin (k + 1) => UnitSphereC n) 0`. Establish `mp : MeasurePreserving e (Measure.pi fun _ : Fin (k + 1) => sphereProb n) (μ.prod ν)` using `measurePreserving_piFinSuccAbove (fun _ => sphereProb n) 0`. Set `e2` to `e.trans MeasurableEquiv.prodComm`. Establish `mp2 : MeasurePreserving e2 (Measure.pi fun _ : Fin (k + 1) => sphereProb n) (ν.prod μ)` using `(Measure.measurePreserving_swap).comp mp`. Establish `hcont : Continuous (onSpheres F : (Fin (k + 1) → UnitSphereC n) → ℂ)` using `hF.1.comp (continuous_pi fun b => (continuous_spherePoint n).comp (continuous_apply b))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `H : (Fin k → UnitSphereC n) × UnitSphereC n → ℂ` to `fun q => onSpheres F (e2.symm q)`. Establish `hHm : Measurable H` using `hcont.measurable.comp e2.symm.measurable`. Establish `hsymm : ∀ z' w, e2.symm (z', w) = Fin.cons w z'`. Introduce `z' w`. Simplify using `[e2, e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNth_zero']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Establish `hH : ∀ z' w, H (z', w) = F (Fin.cons (spherePoint w) (fun b => spherePoint (z' b)))`. Introduce `z' w`. Simplify using `only [H, onSpheres, hsymm]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) b <;> simp`. Establish `hcomp : ∀ z, onSpheres F z = H (e2 z)`. Introduce `z`. Simplify using `only [H, MeasurableEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set v0 := spherePoint (z0 0) with hv0`. Establish `hR` using `hF.restrict v0`. Establish `hG : ∀ z', onSpheres (fun p => F (Fin.cons v0 p)) z' = H (z', z0 0)`. Introduce `z'`. Rewrite using `[hH]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Both sides reduce to the same expression. Establish `hz0' : onSpheres (fun p => F (Fin.cons v0 p)) (fun j => z0 j.succ) ≠ 0`. Simplify using `only [onSpheres] at hz0 ⊢`. Use `hz0 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) b <;> simp [v0]`. Take `⟨ihInt, ihNull⟩` from `ih _ _ hR _ hz0'`. Rewrite `ihInt`, `ihNull` using `[hG]`. Establish `hgood : ∀ᵐ z' ∂ν, H (z', z0 0) ≠ 0`. Rewrite using `[ae_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using ihNull`. Establish `hslice : ∀ z', H (z', z0 0) ≠ 0 → Integrable (fun w => Real.log ‖H (z', w)‖) μ ∧ Real.log ‖H (z', z0 0)‖ - (a 0 : ℝ) / 2 * (harmonic (n - 1) : ℝ) ≤ ∫ w, Real.log ‖H (z', w)‖ ∂μ ∧ μ {w | H (z', w) = 0} = 0`. Introduce `z' hz'`. Take `⟨g, hg, hgF⟩` from `hF.2 0 (Fin.cons 0 (fun b => spherePoint (z' b)))`. Establish `hHw : ∀ w, H (z', w) = MvPolynomial.eval (spherePoint w) g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `w`. Rewrite using `[hH, ← hgF, Fin.update_cons_zero]`. Establish `hu : ‖(z0 0 : EuclideanSpace ℂ (Fin n))‖ = 1` using `norm_eq_of_mem_sphere _`. Establish `hgu : MvPolynomial.eval (WithLp.ofLp (z0 0 : EuclideanSpace ℂ (Fin n))) g ≠ 0`. Rewrite `hz'` using `[hHw]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hz'`. Take `⟨hI, hL⟩` from `hSJ n (a 0) g _ hg hu hgu`. Establish `hN` using `sphere_zero_null hSJ g hg _ hu hgu`. Repeatedly rewrite using `[hHw]`. Conclude with `⟨hI, hL, hN⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Choose the witnesses or unpack the hypotheses as in `⟨C, hC⟩ : ∃ C, ∀ z, ‖onSpheres F z‖ ≤ C := by`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hcont.continuousOn`. Conclude with `⟨C, fun z => hC z (Set.mem_univ _)⟩`. Use `set M := Real.log (max C 1) with hMdef`. Establish `hM0 : 0 ≤ M` using `Real.log_nonneg (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLM : ∀ q, Real.log ‖H q‖ ≤ M`. Introduce `q`. Break down `(norm_nonneg (H q)).eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, Real.log_zero]`. Conclude with `hM0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `Real.log_le_log hpos ((hC _).trans (le_max_left _ _))`. Establish `habs : ∀ q, ‖Real.log ‖H q‖‖ ≤ 2 * M - Real.log ‖H q‖`. Introduce `q`. Rewrite using `[Real.norm_eq_abs]`. Use `hLM q` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Break down `le_total 0 (Real.log ‖H q‖) with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_of_nonpos h]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm : AEStronglyMeasurable (fun q => Real.log ‖H q‖) (ν.prod μ)` using `(Real.measurable_log.comp hHm.norm).aestronglyMeasurable`. Establish `hInt2 : Integrable (fun q => Real.log ‖H q‖) (ν.prod μ)`. Rewrite using `[integrable_prod_iff hfm]`. Use `⟨hgood.mono fun z' hz' => (hslice z' hz').1, ?_⟩` and prove the remaining obligations. Use `Integrable.mono' (g := fun z' => ∫ _w, (2 * M) ∂μ - (Real.log ‖H (z', z0 0)‖ - (a 0 : ℝ) / 2 * (harmonic (n - 1) : ℝ))) ((integrable_const _).sub (ihInt.sub (integrable_const _))) hfm.norm.integral_prod_right' ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `filter_upwards [hgood] with z' hz'`. Take `⟨hI, hL, -⟩` from `hslice z' hz'`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hNull2 : (ν.prod μ) {q | H q = 0} = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hms : MeasurableSet {q | H q = 0}` using `hHm (measurableSet_singleton 0)`. Rewrite using `[Measure.measure_prod_null hms]`. Use `filter_upwards [hgood] with z' hz'`. Simplify `(hslice z' hz').2.2` using `[Set.preimage]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Establish `h1 : (fun z => Real.log ‖onSpheres F z‖) = (fun q => Real.log ‖H q‖) ∘ e2`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hcomp z]`. Rewrite using `[h1, mp2.integrable_comp_emb e2.measurableEmbedding]`.
-
-Conclude with `hInt2`. Establish `h1 : {z | onSpheres F z = 0} = e2 ⁻¹' {q | H q = 0}`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Rewrite using `[hcomp z]`.
-
-Rewrite using `[h1, mp2.measure_preimage_emb e2.measurableEmbedding]`. Conclude with `hNull2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockPoly_claim (hSJ : SJStatement) (n : ℕ) : ∀ (k : ℕ) (a : Fin k → ℕ)
     (F : (Fin k → Fin n → ℂ) → ℂ), BlockPoly k n a F → ∀ z0 : Fin k → UnitSphereC n,

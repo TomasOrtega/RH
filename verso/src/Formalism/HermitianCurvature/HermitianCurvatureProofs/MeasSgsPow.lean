@@ -15,7 +15,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `B.gN`. Use `Real.continuous_sqrt.comp ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gN_mt_cont : Continuous fun x : Mt k r => B.gN (Matrix.of x) := by
   unfold B.gN
@@ -24,19 +24,19 @@ theorem gN_mt_cont : Continuous fun x : Mt k r => B.gN (Matrix.of x) := by
   exact Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-The claim follows from `((hNI k r).2 g hg).2`.
+A detailed English derivation is pending.
 -/
 theorem one_le_gN (hNI : NormInv) {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : 1 ≤ B.gN g :=
   ((hNI k r).2 g hg).2
 
 /- English proof (translation)
-Take `⟨_, hmul, hinv⟩` from `Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) (Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r)`. Establish `htg : t⁻¹ * g ∈ UH (Hpk k r)` using `hmul _ (hinv t ht).2 _ hg`. Establish `hA : 1 ≤ B.gN t` using `((hNI k r).2 t ht).2`. Establish `hG : 1 ≤ B.gN g` using `((hNI k r).2 g hg).2`. Establish `hC : 1 ≤ B.gN (t⁻¹ * g)` using `((hNI k r).2 _ htg).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : B.gN g ≤ B.gN t * B.gN (t⁻¹ * g)`. Establish `h1 : t * (t⁻¹ * g) = g`. Rewrite using `[← mul_assoc, Matrix.mul_nonsing_inv _ (hinv t ht).1, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hA0 : 0 < B.gN t` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hC0 : 0 < B.gN (t⁻¹ * g)` using `by linarith`. Establish `hG0 : 0 < B.gN g` using `by linarith`. Establish `h1 : B.gN t ^ (-b) * B.gN (t⁻¹ * g) ^ (-b) ≤ B.gN g ^ (-b)`. Rewrite using `[← Real.mul_rpow hA0.le hC0.le, Real.rpow_neg (by positivity), Real.rpow_neg hG0.le]`. Conclude with `inv_anti₀ (Real.rpow_pos_of_pos hG0 b) (Real.rpow_le_rpow hG0.le hsub hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : B.gN (t⁻¹ * g) ^ (-a) ≤ B.gN (t⁻¹ * g) ^ (-b)` using `Real.rpow_le_rpow_of_exponent_le hC (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← Real.rpow_add hA0, show b - a + -b = -a by ring]`. Use `_ ≤ B.gN t ^ (b - a) * B.gN g ^ (-b) := mul_le_mul_of_nonneg_left h1 (Real.rpow_nonneg hA0.le _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_pt (hNI : NormInv) {a b : ℝ} (hb : 0 ≤ b) (hab : b ≤ a) {t g : Mx k r}
     (ht : t ∈ UH (Hpk k r)) (hg : g ∈ UH (Hpk k r)) :
@@ -101,7 +101,7 @@ def trivS {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   χ_int := D.χ_int
 
 /- English proof (translation)
-Repeatedly rewrite using `[Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Conclude with `Finset.measurable_sum _ fun σ _ => measurable_const.mul (Finset.measurable_prod _ fun i _ => hF (σ i) i)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma measurable_det_of_measurable_entries {α : Type*} [MeasurableSpace α] {n : ℕ} {F : α → Matrix (Fin n) (Fin n) ℂ}
     (hF : ∀ i j, Measurable fun p => F p i j) : Measurable fun p => (F p).det := by
@@ -110,7 +110,7 @@ private lemma measurable_det_of_measurable_entries {α : Type*} [MeasurableSpace
     measurable_const.mul (Finset.measurable_prod _ fun i _ => hF (σ i) i)
 
 /- English proof (translation)
-Introduce `i j`. Repeatedly rewrite using `[Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Use `(measurable_det_of_measurable_entries hF).inv.mul (measurable_det_of_measurable_entries fun a c => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases eq_or_ne a j with h | h <;> simp [Matrix.updateRow_apply, h, hF a c, measurable_const]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma measurable_inv_apply_of_measurable_entries {α : Type*} [MeasurableSpace α] {n : ℕ} {F : α → Matrix (Fin n) (Fin n) ℂ}
     (hF : ∀ i j, Measurable fun p => F p i j) : ∀ i j, Measurable fun p => (F p)⁻¹ i j := by
@@ -120,7 +120,7 @@ private lemma measurable_inv_apply_of_measurable_entries {α : Type*} [Measurabl
   rcases eq_or_ne a j with h | h <;> simp [Matrix.updateRow_apply, h, hF a c, measurable_const]
 
 /- English proof (translation)
-Introduce `i j`. Repeatedly rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.measurable_sum _ fun l _ => (hF i l).mul (hG l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma measurable_mul_apply_of_measurable_entries {α : Type*} [MeasurableSpace α] {n : ℕ} {F G : α → Matrix (Fin n) (Fin n) ℂ}
     (hF : ∀ i j, Measurable fun p => F p i j) (hG : ∀ i j, Measurable fun p => G p i j) :
@@ -130,11 +130,11 @@ private lemma measurable_mul_apply_of_measurable_entries {α : Type*} [Measurabl
   exact Finset.measurable_sum _ fun l _ => (hF i l).mul (hG l j)
 
 /- English proof (translation)
-Establish `e : ∀ f : B.SS k r → Mt k r, Measurable f → ∀ i j, Measurable fun p => Matrix.of (f p) i j` using `fun f hf i j => (measurable_pi_apply j).comp ((measurable_pi_apply i).comp hf)`. Establish `h11` using `e (fun p => p.1.1) (measurable_fst.comp measurable_fst)`. Establish `h12` using `e (fun p => p.1.2) (measurable_snd.comp measurable_fst)`. Establish `h22` using `e (fun p => p.2.2) (measurable_snd.comp measurable_snd)`. Establish `h21` using `e (fun p => p.2.1) (measurable_fst.comp measurable_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ : ∀ i j, Measurable fun _ : B.SS k r => γ i j` using `fun _ _ => measurable_const`. Establish `hS : ∀ i j, Measurable fun p => B.sgs p γ i j`. Unfold `B.sgs`. Conclude with `measurable_mul_apply_of_measurable_entries (measurable_mul_apply_of_measurable_entries (measurable_mul_apply_of_measurable_entries (measurable_mul_apply_of_measurable_entries (measurable_inv_apply_of_measurable_entries h11) (measurable_inv_apply_of_measurable_entries h12)) hγ) h2 …`. Unfold `B.gN`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measurable.pow_const (Measurable.sqrt ?_) _` and prove the remaining obligations. Use `Finset.measurable_sum _ fun i _ => Finset.measurable_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `Complex.continuous_normSq.measurable.comp (hS i j)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem meas_sgs_pow (γ : Mx k r) (b : ℝ) : Measurable fun p : B.SS k r => B.gN (B.sgs p γ) ^ (-b) := by
   have e : ∀ f : B.SS k r → Mt k r, Measurable f → ∀ i j, Measurable fun p => Matrix.of (f p) i j :=
@@ -156,13 +156,13 @@ theorem meas_sgs_pow (γ : Mx k r) (b : ℝ) : Measurable fun p : B.SS k r => B.
 def fZ (b : ℝ) (g : B.Mat k r) : ℂ →L[ℂ] ℂ := ((B.gN g ^ (-b) : ℝ) : ℂ) • (1 : ℂ →L[ℂ] ℂ)
 
 /- English proof (translation)
-Establish `hge : ∀ g ∈ B.GV k r, 1 ≤ B.gN g` using `fun g hg => ((hNI k r).2 g hg).2`. Establish `hcont : Continuous fun g : B.Mat k r => B.gN g`. Unfold `B.gN`. Use `Real.continuous_sqrt.comp ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Complex.continuous_normSq.comp (continuous_id.matrix_elem i j)`. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Use `⟨{g | 1 / 2 < B.gN g}, fZ b, isOpen_lt continuous_const hcont, show (1 / 2 : ℝ) < B.gN g₀ by linarith [hge g₀ hg₀], ?_, fun g _ _ => rfl⟩` and prove the remaining obligations. Establish `hc : ContinuousOn (fun g : B.Mat k r => fZ (k` using `k) (r := r) b g) {g | 1 / 2 < B.gN g} := by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ContinuousOn (fun g : B.Mat k r => B.gN g ^ (-b)) {g | 1 / 2 < B.gN g}` using `hcont.continuousOn.rpow_const fun g hg => Or.inl (ne_of_gt (by have : (1 / 2 : ℝ) < B.gN g := hg; linarith))`. Conclude with `(Complex.continuous_ofReal.comp_continuousOn h0).smul continuousOn_const`. Conclude with `(contDiffOn_zero.2 hc).of_le (by norm_num)`. Introduce `u v _ _ hlen g hg`. Take `rfl : u = []` from `List.eq_nil_of_length_eq_zero (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `rfl : v = []` from `List.eq_nil_of_length_eq_zero (by omega)`. Establish `hpos : 0 < B.gN g` using `lt_of_lt_of_le one_pos (hge g hg)`. Simplify using `only [B.dLR, B.Rw, List.foldr_nil, fZ, norm_smul, Complex.norm_real, norm_one, mul_one, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg hpos.le (-b))]`. Rewrite using `[Real.rpow_neg hpos.le, mul_inv_cancel₀ (Real.rpow_pos_of_pos hpos b).ne']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fZ_inCC (hNI : NormInv) (b : ℝ) : B.InCC b 0 (fZ (k := k) (r := r) b) := by
   have hge : ∀ g ∈ B.GV k r, 1 ≤ B.gN g := fun g hg => ((hNI k r).2 g hg).2
@@ -190,11 +190,9 @@ theorem fZ_inCC (hNI : NormInv) (b : ℝ) : B.InCC b 0 (fZ (k := k) (r := r) b) 
     rw [Real.rpow_neg hpos.le, mul_inv_cancel₀ (Real.rpow_pos_of_pos hpos b).ne']
 
 /- English proof (translation)
-Take `⟨-, h2⟩` from `hJC k r ℂ ℂ (trivS D) b (fZ b) hThr (fZ_inCC (k := k) (r := r) hNI b)`. Take `⟨bd, hbd, hle⟩` from `h2 {γ} isCompact_singleton (Set.singleton_subset_iff.2 hγ)`. Use `hbd.mono' (meas_sgs_pow γ b).aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [hle γ rfl] with p hp`. Establish `e : B.rho (trivS D) p (fZ b) γ = fZ b (B.sgs p γ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `[B.rho, trivS]`. Establish `e2 : ‖fZ (k` using `k) (r := r) b (B.sgs p γ)‖ = ‖B.gN (B.sgs p γ) ^ (-b)‖ := by`. Simplify using `[fZ, norm_smul, Complex.norm_real]`. Rewrite using `[← e2, ← e]`.
-
-Conclude with `hp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orb_gN (hJC : JF.JConv) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (hNI : NormInv) {b : ℝ}

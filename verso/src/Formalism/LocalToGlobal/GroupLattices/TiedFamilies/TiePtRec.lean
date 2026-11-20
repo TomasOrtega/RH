@@ -16,13 +16,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Re
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem reGL_rfl {a : ℕ} (R : Type) [CommRing R] (g : GL (Fin a) R) : reGL (rfl : a = a) R g = g := by
   apply Units.ext; ext x y; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[reGL_rfl, reGL_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_reGL {a b : ℕ} (h : a = b) {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (g : GL (Fin a) R) :
     bc φ (reGL h R g) = reGL h S (bc φ g) := by
@@ -30,7 +30,7 @@ theorem bc_reGL {a b : ℕ} (h : a = b) {R S : Type} [CommRing R] [CommRing S] (
   rw [reGL_rfl, reGL_rfl]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: J' = J` using `by ext x y; exact hJ x y`. Rewrite using `[this]`. Conclude with `hh`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHerm_re {a b : ℕ} (h : a = b) {R : Type} [CommRing R] (σ : R →+* R) (J : Matrix (Fin a) (Fin a) R)
     (J' : Matrix (Fin b) (Fin b) R) (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y)) (hh : IsHerm σ J) :
@@ -40,7 +40,7 @@ theorem isHerm_re {a b : ℕ} (h : a = b) {R : Type} [CommRing R] (σ : R →+* 
   rw [this]; exact hh
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: J' = J` using `by ext x y; exact hJ x y`. Rewrite using `[this]`. Conclude with `hh`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_re {a b : ℕ} (h : a = b) {R : Type} [CommRing R] (J : Matrix (Fin a) (Fin a) R)
     (J' : Matrix (Fin b) (Fin b) R) (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y)) (hh : IsUnit J.det) :
@@ -52,7 +52,7 @@ theorem det_re {a b : ℕ} (h : a = b) {R : Type} [CommRing R] (J : Matrix (Fin 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: J' = J` using `by ext x y; exact hJ x y`. Rewrite using `[this, reGL_rfl]`. Conclude with `hg`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reGL_mem_UPts {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (Fin a) (Fin a) E)
     (J' : Matrix (Fin b) (Fin b) E) (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y))
@@ -63,9 +63,9 @@ theorem reGL_mem_UPts {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (
   rw [this, reGL_rfl]; exact hg
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : J' = J` from `by ext x y; exact hJ x y`. Take `⟨i, hi⟩` from `hs (Quotient.mk'' x)`. Take `⟨g, hg, k, hk, e⟩` from `(DoubleCoset.eq _ _ (yG i) x).1 hi`. Take `⟨γ, hγ, eγ⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hg)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨i, γ, k.1, hγ, Subgroup.mem_subgroupOf.1 hk, k.2, ?_⟩` and prove the remaining obligations. Rewrite using `[reGL_rfl, reGL_rfl, eγ, e]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_re {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (Fin a) (Fin a) E)
     (J' : Matrix (Fin b) (Fin b) E) (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y))
@@ -95,7 +95,7 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.awayFrom₂`. Rewrite using `[Subgroup.mem_inf]`. Simplify using `only [Subgroup.mem_iInf, Subgroup.mem_comap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_awayP_iff (L : ColLevel R F E sp gp C A clsLat) (p : ℕ) (k : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
     k ∈ Formalism.L2.Herm.awayFrom₂ L p ↔ k ∈ UPts sp.cm.sig sp.gram0 (FiniteAdeleRing (𝓞 F) F) ∧
@@ -111,7 +111,7 @@ variable {D : D7} (X : Formalism.L2.Herm.Herm0 D)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `isHerm_re (rank_eq_first_level D.R) _ D.sp.gram0 _ (gramN_zero D) D.sp.baseGram_isHermitian det := det_re (rank_eq_first_level D.R) D.sp.gram0 _ (gramN_zero D) (isUnit_det_gram0 D.sp) sig := fun v x => (X.g u w hg).spl_sig _ ((X.g u w hg).pl v).2 x yG_mem := fun i => reGL_mem_UPt …`.
+A detailed English derivation is pending.
 -/
 theorem locGood_locAt (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (B : GL (Fin D.R.k) D.host.E) : LocGood (sigD D) (gramN D 0 (Nat.zero_le _)) (locAt X u w hg B) where
@@ -128,7 +128,7 @@ theorem locGood_locAt (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `ptEx_of (locGood_locAt X u w hg B) _ _ ((T u).cls0).y_bij.2`.
+A detailed English derivation is pending.
 -/
 theorem ptEx_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E) :
@@ -139,7 +139,7 @@ def SameUloc (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) : Pro
   ∀ v, ((T u).cls0).lev.Uloc v = ((X.lev0 u).Uloc v).map (reGL (rank_eq_first_level D.R) _).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `hJ.Uloc_eq`.
+A detailed English derivation is pending.
 -/
 theorem sameUloc_of_joint (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (hJ : Joint0 X.lev0 u (T u)) :
     SameUloc X T u := hJ.Uloc_eq
@@ -147,7 +147,7 @@ theorem sameUloc_of_joint (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what�
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `ptAll_of (locGood_locAt X u w hg B) _ _ fun x => ?_` and prove the remaining obligations. Take `⟨i, γ, k, hγ, hk, hkU, e⟩` from `comp_re (rank_eq_first_level D.R) D.sp.cm.sig D.sp.gram0 _ (gramN_zero D) (X.g u w hg).yG (Formalism.L2.Herm.awayFrom₂ (X.lev0 u) (D.what₂.places.resChar w)) (X.g u w hg).yG_bij.2 x`. Use `⟨i, γ, reGL (rank_eq_first_level D.R) _ k, hγ, reGL_mem_UPts (rank_eq_first_level D.R) D.sp.cm.sig D.sp.gram0 _ (gramN_zero D) _ _ hkU, e, fun w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[bc_reGL, hU w']`. Conclude with `Subgroup.mem_map.2 ⟨_, ((mem_awayP_iff _ _ k).1 hk).2 w' hw', rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptAll_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (hU : SameUloc X T u) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E) :
@@ -163,9 +163,9 @@ theorem ptAll_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `awayEx_of (locGood_locAt X u w hg B) _ (fun i γ => ?_) i γ` and prove the remaining obligations. Establish `h1 : (((X.g u w hg).yG i).1)⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((X.g u w hg).gamI i γ).1 * ((X.g u w hg).yG i).1 ∈ Formalism.L2.Herm.awayFrom₂ (X.lev0 u) (D.what₂.places.resChar w) := (mem_map_conj _ _ _).1 (((X.g u w hg).gamI_range i _).1 ⟨γ, rfl⟩)`. Establish `e : ((locAt X u w hg B).yG i)⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((locAt X u w hg B).gamI i γ) * (locAt X u w hg B).yG i = reGL (rank_eq_first_level D.R) _ ((((X.g u w hg).yG i).1)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((X.g u w hg).gamI i γ).1 * ((X.g u w hg). …`. Rewrite using `[map_mul, map_mul, map_inv, ← bc_reGL]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Take `⟨h2, h3⟩` from `(mem_awayP_iff _ _ _).1 h1`. Use `⟨reGL_mem_UPts (rank_eq_first_level D.R) D.sp.cm.sig D.sp.gram0 _ (gramN_zero D) _ _ h2, fun w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[bc_reGL, hU w']`. Conclude with `Subgroup.mem_map.2 ⟨_, h3 w' hw', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awayEx_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (hU : SameUloc X T u) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E)

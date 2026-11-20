@@ -16,11 +16,11 @@ namespace GlobalTheory.FinPl.PlacesAdeles
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `congGrp`. Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrArg (fun x : GL (Fin V.rank) (AE D ⧸ I) => x.1 i j) h` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`. Introduce `h`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `h i j` as an intermediate fact. Rewrite `this` using `[← Ideal.Quotient.eq]`. Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_congGrp {V : HSp D} {I : Ideal (AE D)} {g : GA D V} :
     g ∈ congGrp V I ↔ ∀ i j, mt V g i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j ∈ I := by
@@ -40,7 +40,7 @@ theorem mem_congGrp {V : HSp D} {I : Ideal (AE D)} {g : GA D V} :
     exact this
 
 /- English proof (translation)
-Introduce `a ha`. Unfold `idAt at ha ⊢`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf] at ha ⊢`. Use `⟨ha.1, fun w => ha.2 ⟨w.1, fun h => w.2 (by rw [h]; exact hv)⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem idAt_single_le {P : Pl D → Prop} {v : Pl D} (hv : P v) : idAt D (· = v) ≤ idAt D P := by
   intro a ha
@@ -49,9 +49,9 @@ theorem idAt_single_le {P : Pl D → Prop} {v : Pl D} (hv : P v) : idAt D (· = 
   refine ⟨ha.1, fun w => ha.2 ⟨w.1, fun h => w.2 (by rw [h]; exact hv)⟩⟩
 
 /- English proof (translation)
-Introduce `a ha`. Unfold `idAt at ha`. Unfold `idOff`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf] at ha ⊢`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : u.1 = v` using `u.2`. Conclude with `ha.2 ⟨u.1, fun e => h (hu.symm.trans e)⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idAt_le_idOff {v w : Pl D} (h : v ≠ w) : idAt D (· = w) ≤ idOff D (· = v) := by
   intro a ha
@@ -63,9 +63,9 @@ theorem idAt_le_idOff {v w : Pl D} (h : v ≠ w) : idAt D (· = w) ≤ idOff D (
   exact ha.2 ⟨u.1, fun e => h (hu.symm.trans e)⟩
 
 /- English proof (translation)
-Introduce `a ha`. Unfold `idOff at ha ⊢`. Simplify using `only [Submodule.mem_iInf] at ha ⊢`. Introduce `u`. Establish `hu : u.1 = v` using `u.2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ha ⟨u.1, by rw [hu]; exact hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem idOff_le_single {P : Pl D → Prop} {v : Pl D} (hv : P v) : idOff D P ≤ idOff D (· = v) := by
   intro a ha
@@ -76,7 +76,7 @@ theorem idOff_le_single {P : Pl D → Prop} {v : Pl D} (hv : P v) : idOff D P �
   exact ha ⟨u.1, by rw [hu]; exact hv⟩
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite `hg`, the goal using `[mem_congGrp]`. Conclude with `fun i j => h (hg i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem congGrp_mono {V : HSp D} {I J : Ideal (AE D)} (h : I ≤ J) : congGrp V I ≤ congGrp V J := by
   intro g hg
@@ -84,7 +84,7 @@ theorem congGrp_mono {V : HSp D} {I J : Ideal (AE D)} (h : I ≤ J) : congGrp V 
   exact fun i j => h (hg i j)
 
 /- English proof (translation)
-Take `⟨ε, -, -, -, hA, hO⟩` from `(GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).1`. Rewrite using `[← (hA a).1 h1]`. Conclude with `(hO a).1 h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_at_off (P : Pl D → Prop) {a : AE D} (h1 : a ∈ idAt D P) (h2 : a ∈ idOff D P) : a = 0 := by
   obtain ⟨ε, -, -, -, hA, hO⟩ := (GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).1
@@ -92,19 +92,19 @@ theorem eq_zero_of_at_off (P : Pl D → Prop) {a : AE D} (h1 : a ∈ idAt D P) (
   exact (hO a).1 h2
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (S : HSp D) (a b : GA D S) : mt S (a * b) = mt S a * mt S b := by
   simp [Formalism.L2.Theta.mt, map_mul]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one (S : HSp D) : mt S 1 = 1 := by
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem supp_mulVec (S : HSp D) (P : Pl D → Prop) (g : GA D S) {y : Fin S.rank → AE D}
     (hy : ∀ i, y i ∈ idAt D P) : ∀ i, (mt S g *ᵥ y) i ∈ idAt D P := by
@@ -113,9 +113,9 @@ theorem supp_mulVec (S : HSp D) (P : Pl D → Prop) (g : GA D S) {y : Fin S.rank
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
 /- English proof (translation)
-Rewrite `hb` using `[grpOff, mem_congGrp]`. Establish `key : (mt S b - 1) *ᵥ y = 0`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply `eq_zero_of_at_off P` to reduce the goal to its premises. Conclude with `Ideal.mul_mem_left _ _ (hy j)`. Conclude with `Ideal.mul_mem_right _ _ (by simpa using hb i j)`. Rewrite `key` using `[Matrix.sub_mulVec, sub_eq_zero, Matrix.one_mulVec]`. Conclude with `key`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_off {S : HSp D} {P : Pl D → Prop} {b : GA D S} (hb : b ∈ grpOff S P) {y : Fin S.rank → AE D}
     (hy : ∀ i, y i ∈ idAt D P) : mt S b *ᵥ y = y := by
@@ -131,7 +131,7 @@ theorem mulVec_off {S : HSp D} {P : Pl D → Prop} {b : GA D S} (hb : b ∈ grpO
   exact key
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[mt_mul, ← Matrix.mulVec_mulVec, hx' y hy]`. Conclude with `hx _ (supp_mulVec S P x' hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_mul {S : HSp D} {L : Lat S} {P : Pl D → Prop} {x x' : GA D S} (hx : Moves S x L L P)
     (hx' : Moves S x' L L P) : Moves S (x * x') L L P := by
@@ -140,7 +140,7 @@ theorem moves_mul {S : HSp D} {L : Lat S} {P : Pl D → Prop} {x x' : GA D S} (h
   exact hx _ (supp_mulVec S P x' hy)
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1` using `hx (mt S x⁻¹ *ᵥ y) (supp_mulVec S P _ hy)`. Rewrite `h1` using `[Matrix.mulVec_mulVec, ← mt_mul, mul_inv_cancel, mt_one, Matrix.one_mulVec]`. Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_inv {S : HSp D} {L : Lat S} {P : Pl D → Prop} {x : GA D S} (hx : Moves S x L L P) :
     Moves S x⁻¹ L L P := by
@@ -150,7 +150,7 @@ theorem moves_inv {S : HSp D} {L : Lat S} {P : Pl D → Prop} {x : GA D S} (hx :
   exact h1.symm
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[mulVec_off hb hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem moves_off {S : HSp D} {L : Lat S} {P : Pl D → Prop} {b : GA D S} (hb : b ∈ grpOff S P) :
     Moves S b L L P := by
@@ -158,7 +158,7 @@ theorem moves_off {S : HSp D} {L : Lat S} {P : Pl D → Prop} {b : GA D S} (hb :
   rw [mulVec_off hb hy]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lattices_agree_almost_everywhere`.
+A detailed English derivation is pending.
 -/
 theorem latV_eq_ae : ∀ (D : D7) (S : HSp D) (L M : Lat S), Submodule.IsLattice D.host.E L → Submodule.IsLattice D.host.E M → ∃ T : Finset (Pl D), ∀ v, v ∉ T → latV S L (· = v) = latV S M (· = v) := GlobalTheory.T.lattices_agree_almost_everywhere
 
@@ -169,33 +169,29 @@ namespace GlobalTheory.FinPl
 open GlobalTheory.FinPl.PlacesAdeles in
 
 /- English proof (translation)
-Introduce `S L P hL R h hyp`. Take `⟨M, hM, hmove⟩` from `(GlobalTheory.T.selfDual_image_adelicPoint_wittCore D S L hL).1 h`. Take `⟨T, hT⟩` from `latV_eq_ae D S L M hL.1 hM.1`. Establish `hfar : ∀ v, v ∉ T → Moves S h L L (· = v)`. Introduce `v hv y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hmove (· = v) y hy` as an intermediate fact. Rewrite `this` using `[← hT v hv]`. Then use the resulting hypothesis. Establish `hloc : ∀ v, P v → ∃ r ∈ R, r ∈ grpAt S (· = v) ∧ Moves S (r⁻¹ * h) L L (· = v)`. Introduce `v hv`. Take `⟨hv', -, h', hh', hdec, r, hr, hrv, κ, hκ, hvk⟩` from `hyp v hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨r, hr, hrv, ?_⟩` and prove the remaining obligations. Establish `: r⁻¹ * h = κ * h'` using `by rw [hdec, hvk]; group`. Rewrite using `[this]`. Conclude with `moves_mul hκ.2 (moves_off hh')`. Establish `key : ∀ T' : Finset (Pl D), (∀ v ∈ T', P v) → ∃ r ∈ R, r ∈ grpAt S P ∧ (∀ v, v ∉ T' → r ∈ grpOff S (· = v)) ∧ ∀ v ∈ T', Moves S (r⁻¹ * h) L L (· = v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T'`. Proceed by induction on `T' using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Conclude with `⟨1, R.one_mem, (grpAt S P).one_mem, fun _ _ => Subgroup.one_mem _, by simp⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `insert v₀ T' hv₀ ih`. Introduce `hP`. Take `⟨r, hr, hrP, hroff, hrm⟩` from `ih (fun v hv => hP v (Finset.mem_insert_of_mem hv))`. Establish `hP₀ : P v₀` using `hP v₀ (Finset.mem_insert_self _ _)`. Take `⟨r₀, hr₀, hr₀v, hm₀⟩` from `hloc v₀ hP₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r * r₀, R.mul_mem hr hr₀, (grpAt S P).mul_mem hrP (congGrp_mono (idAt_single_le hP₀) hr₀v), ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Establish `hne : v ≠ v₀` using `fun e => hv (e ▸ Finset.mem_insert_self _ _)`. Conclude with `(grpOff S _).mul_mem (hroff v fun h => hv (Finset.mem_insert_of_mem h)) (congGrp_mono (idAt_le_idOff hne) hr₀v)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[_root_.mul_inv_rev, mul_assoc]`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Establish `hroff0` using `hroff v hv₀`. Establish `hcomm : r₀⁻¹ * r⁻¹ = r⁻¹ * r₀⁻¹` using `((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).2 S).2.1 _ (inv_mem hr₀v) _ (inv_mem hroff0)`. Rewrite using `[← mul_assoc, hcomm, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `moves_mul (moves_off (inv_mem hroff0)) hm₀`. Establish `hne : v ≠ v₀` using `fun e => hv₀ (e ▸ hv)`. Conclude with `moves_mul (moves_off (inv_mem (congGrp_mono (idAt_le_idOff hne) hr₀v))) (hrm v hv)`. Take `⟨r, hr, hrP, hroff, hrm⟩` from `key (T.filter P) (fun v hv => (Finset.mem_filter.1 hv).2)`. Establish `hall : ∀ v, P v → Moves S (r⁻¹ * h) L L (· = v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `v hv`. Distinguish the cases in `hvT : v ∈ T`. Conclude with `hrm v (Finset.mem_filter.2 ⟨hvT, hv⟩)`. Conclude with `moves_mul (moves_off (inv_mem (hroff v (fun h => hvT (Finset.mem_filter.1 h).1)))) (hfar v hvT)`. Take `⟨hdec, hcomm, -, hlat⟩` from `(GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ, hκ, g, hg, hx⟩` from `hdec (r⁻¹ * h)`. Establish `hκv : ∀ v, P v → Moves S κ L L (· = v)`. Introduce `v hv`. Establish `: κ = (r⁻¹ * h) * g⁻¹` using `by rw [hx]; group`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `moves_mul (hall v hv) (moves_off (inv_mem (congGrp_mono (idOff_le_single hv) hg)))`. Use `⟨r, hr, hrP, g, hg, κ, ⟨hκ, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[hlat L y hL.1, hlat L _ hL.1]`. Establish `hy'` using `supp_mulVec S P κ hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hey : ∀ v e, e ∈ intAt D (· = v) → ∀ i, (e • y) i ∈ idAt D (· = v)` using `fun v e he i => by`. Simplify `Ideal.mul_mem_right (y i) _ he.1` using `[smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Use `⟨hy', fun v hv e he => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `(hκv v hv _ (hey v e he)).1 (h2 v hv e he)`. Introduce and unpack `⟨-, h2⟩`. Use `⟨hy, fun v hv e he => ?_⟩` and prove the remaining obligations. Use `h2 v hv e he` as an intermediate fact.
-
-Rewrite `this` using `[← Matrix.mulVec_smul]`. Conclude with `(hκv v hv _ (hey v e he)).2 this`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem placesToAdeles (D : D7) : PlacesToAdeles D := by
   classical
@@ -274,7 +270,7 @@ theorem placesToAdeles (D : D7) : PlacesToAdeles D := by
       _ = r * g * κ := by rw [hcomm κ hκ g hg, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `placesToAdeles`.
+A detailed English derivation is pending.
 -/
 theorem placesToAdeles_all : ∀ D : D7, PlacesToAdeles D := placesToAdeles
 

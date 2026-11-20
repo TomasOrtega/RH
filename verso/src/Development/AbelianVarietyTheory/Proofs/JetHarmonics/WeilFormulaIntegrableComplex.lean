@@ -7,17 +7,15 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hmx : ∀ x, Measurable (fun s => m s x)` using `fun x => hm.comp (measurable_id.prodMk measurable_const)`. Set `η : ProbabilityTheory.Kernel X Y` to `{ toFun := fun x => σ.map (fun s => m s x) measurable' := by`. Use `Measure.measurable_of_measurable_coe _ (fun A hA => ?_)` and prove the remaining obligations. Repeatedly rewrite using `[Measure.map_apply (hmx _) hA]`. Conclude with `measurable_measure_prodMk_right (hm hA) }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hη : ∀ x, η x = σ.map (fun s => m s x)` using `fun _ => rfl`. Establish `hμ : (ProbabilityTheory.Kernel.comp η (ProbabilityTheory.Kernel.const Unit ν)) () = μ`. Use extensionality with `A hA`. Rewrite using `[ProbabilityTheory.Kernel.comp_apply' _ _ _ hA, ProbabilityTheory.Kernel.const_apply, ← lintegral_indicator_one hA, hq _ (measurable_one.indicator hA)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hη, ← lintegral_indicator_one hA, lintegral_map (measurable_one.indicator hA) (hmx x)]`. Establish `hI : ∀ x, ∫ y, f y ∂η x = ∫ s, f (m s x) ∂σ` using `fun x => by`. Rewrite using `[hη, integral_map (hmx x).aemeasurable hf.aestronglyMeasurable]`. Rewrite `hi` using `[← hμ]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hi.ae_of_comp`. Rewrite `h` using `[ProbabilityTheory.Kernel.const_apply]`. Use `filter_upwards [h] with x hx`. Rewrite `hx` using `[hη]`. Conclude with `(integrable_map_measure hf.aestronglyMeasurable (hmx x).aemeasurable).1 hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `hi.integral_comp`. Rewrite `h` using `[ProbabilityTheory.Kernel.const_apply]`. Simplify `h` using `only [hI]`. Establish `h` using `ProbabilityTheory.Kernel.integral_comp hi`. Rewrite `h` using `[ProbabilityTheory.Kernel.const_apply, hμ]`.
-
-Simplify `h` using `only [hI]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unfold_integral_of_lintegral {S X Y E : Type*} [MeasurableSpace S] [MeasurableSpace X]
     [MeasurableSpace Y] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -59,9 +57,7 @@ theorem unfold_integral_of_lintegral {S X Y E : Type*} [MeasurableSpace S] [Meas
     simpa only [hI] using h
 
 /- English proof (translation)
-Introduce `k r μG μS νq _ f hq hf hi`. Establish `hc : Continuous (fun q : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of q.1 * Matrix.of q.2) i j : Formalism.QuantumDeterminants.Mt k r))`. Establish `h1 : Continuous (fun q : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of q.1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))` using `continuous_fst`. Establish `h2 : Continuous (fun q : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of q.2 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))` using `continuous_snd`. Conclude with `h1.matrix_mul h2`.
-
-Conclude with `unfold_integral_of_lintegral μG μS νq (fun s x => (fun i j => (Matrix.of s * Matrix.of x) i j : Formalism.QuantumDeterminants.Mt k r)) hc.measurable hq f hf.stronglyMeasurable hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weil_formula_integrable : ∀ (k r : ℕ) (μG μS νq : Measure (Formalism.QuantumDeterminants.Mt k r)) [SFinite μS] (f : Formalism.QuantumDeterminants.Mt k r → ℂ), PI.BesselPeriodGGP.IsQuotMeas μG μS νq → Measurable f → Integrable f μG → (∀ᵐ x ∂νq, Integrable (fun s => f (fun i j => (Matrix.of s * Matrix.of x) i j)) μS) ∧ Integrable (fun x => ∫ s, f (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS) νq ∧ ∫ x, f x ∂μG = ∫ x, (∫ s, f (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS) ∂νq := by
   intro k r μG μS νq _ f hq hf hi

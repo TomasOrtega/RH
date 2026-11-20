@@ -37,9 +37,9 @@ variable (E) in
 abbrev hatO : AddSubgroup (Af F ⊗[F] E) := GlobalTheory.AdLat.hat1 F (Set.range (algebraMap (𝓞 E) E))
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [mul_zero, map_zero, map_zero]`. Consider the case `tmul a t`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, show finPartF F E (a ⊗ₜ[F] t) = sndA F a ⊗ₜ[F] t from rfl, liftF_tmul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Prod.ext (zero_mul _) (one_mul _)`. Consider the case `add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fin_mul_eq (y : AEF F E) :
     algebraMap (AF F) (AEF F E) (pairA F 0 1) * y = liftF F E (finPartF F E y) := by
@@ -54,15 +54,13 @@ theorem fin_mul_eq (y : AEF F E) :
   | add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, _, ⟨b, rfl⟩, rfl⟩` from `hz`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨α, hα, γ, hγ, rfl⟩` from `hu`. Use `AddSubgroup.subset_closure ⟨a * α, fun v => GlobalTheory.AdLat.adele_mul_integral F (ha v) (hα v), b • γ, Λ.smul_mem b hγ, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [liftF_tmul, Matrix.smul_apply, smul_eq_mul, ratWF, Matrix.map_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `show (pairA F 0 a ⊗ₜ[F] (b : E)) * ((pairA F 0 α ⊗ₜ[F] (1 : E)) * ((1 : AF F) ⊗ₜ[F] γ i j)) = (pairA F 0 (a * α) ⊗ₜ[F] (1 : E)) * ((1 : AF F) ⊗ₜ[F] ((b • γ) i j))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_one, one_mul, one_mul, Matrix.smul_apply]`. Use `congr 1`. Conclude with `Prod.ext (mul_zero _) rfl`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`. Consider the case `zero => rw [map_zero, zero_smul]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, add_smul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg, neg_smul]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem liftF_smul_mem {z : Af F ⊗[F] E} (hz : z ∈ hatO (F := F) E) {u : WOF F E nS nT}
     (hu : u ∈ latOF F E nS nT Λ) : liftF F E z • u ∈ latOF F E nS nT Λ := by
@@ -91,7 +89,7 @@ theorem liftF_smul_mem {z : Af F ⊗[F] E} (hz : z ∈ hatO (F := F) E) {u : WOF
   | neg x _ hx => rw [map_neg, neg_smul]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `h1 : finPartF F E e ∈ hatO (F` using `F) E := GlobalTheory.AdIdem.mem_hat_of_idempotent F E _ (by rw [← map_mul, he])`. Rewrite using `[← hf, fin_mul_eq]`. Conclude with `liftF_smul_mem h1 hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_smul_mem {e : AEF F E} (he : e * e = e) (hf : algebraMap (AF F) (AEF F E) (pairA F 0 1) * e = e)
     {u : WOF F E nS nT} (hu : u ∈ latOF F E nS nT Λ) : e • u ∈ latOF F E nS nT Λ := by
@@ -101,7 +99,7 @@ theorem idem_smul_mem {e : AEF F E} (he : e * e = e) (hf : algebraMap (AF F) (AE
   exact liftF_smul_mem h1 hu
 
 /- English proof (translation)
-Rewrite using `[← h, ← mul_assoc, ← map_mul]`. Use `congr 2`. Conclude with `Prod.ext (zero_mul _) (one_mul _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem fin_of_place {e : AEF F E} {α : Af F} (h : algebraMap (AF F) (AEF F E) (pairA F 0 α) * e = e) :
     algebraMap (AF F) (AEF F E) (pairA F 0 1) * e = e := by
@@ -110,7 +108,7 @@ theorem fin_of_place {e : AEF F E} {α : Af F} (h : algebraMap (AF F) (AEF F E) 
   exact Prod.ext (zero_mul _) (one_mul _)
 
 /- English proof (translation)
-Take `⟨hee, hec, v, ε, ⟨α, rfl, -⟩, hs⟩` from `he`. Establish `hce : cAF σ e * cAF σ e = cAF σ e` using `by rw [← map_mul, hee]`. Use `⟨fin_of_place (α := α) ?_, fin_of_place (α := α) ?_, hce⟩` and prove the remaining obligations. Rewrite using `[← hs, add_mul, hee, mul_comm, hec, add_zero]`. Rewrite using `[← hs, add_mul, hec, hce, zero_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem split_parts {e : AEF F E} (he : IsSplitIdemF σ e) :
     (algebraMap (AF F) (AEF F E) (pairA F 0 1) * e = e) ∧

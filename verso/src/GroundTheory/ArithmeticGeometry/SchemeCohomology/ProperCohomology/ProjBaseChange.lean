@@ -16,11 +16,9 @@ noncomputable section
 namespace ProjSpace
 
 /- English proof (translation)
-Introduce `p hp`. Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `m hm`. Use `by_contra! h`. Establish `hm0 : m = 0` using `Finsupp.ext fun i => h i (Set.mem_univ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hm0` using the available equality. Establish `h0 : GradedRing.proj (grading A n) 0 p = 0` using `hp`. Rewrite `h0` using `[GradedRing.proj_apply]`. Express the relevant statement in the definitionally equal form `((MvPolynomial.decomposition.decompose' p 0 : homogeneousSubmodule (Fin (n + 1)) A 0) : MvPolynomial (Fin (n + 1)) A) = 0 at h0`. Rewrite `h0` using `[MvPolynomial.decomposition.decompose'_apply, homogeneousComponent_zero, C_eq_zero]`.
-
-Conclude with `(MvPolynomial.mem_support_iff.mp hm) h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma irrelevant_le_span_X (A : Type u) [CommRing A] (n : ℕ) :
     (HomogeneousIdeal.irrelevant (grading A n)).toIdeal ≤
@@ -52,13 +50,13 @@ lemma gradedMap_apply (p : MvPolynomial (Fin (n + 1)) A) :
     gradedMap A B n p = MvPolynomial.map (algebraMap A B) p := rfl
 
 /- English proof (translation)
-Simplify using `[gradedMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma gradedMap_X (j : Fin (n + 1)) : gradedMap A B n (X j) = X j := by
   simp [gradedMap_apply]
 
 /- English proof (translation)
-Rewrite using `[← toIdeal_le_toIdeal_iff, HomogeneousIdeal.toIdeal_map]`. Use `(irrelevant_le_span_X B n).trans (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[← gradedMap_X A B n j]`. Conclude with `Ideal.mem_map_of_mem _ (HomogeneousIdeal.mem_irrelevant_of_mem _ Nat.one_pos (X_mem j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma irrelevant_le_map :
     HomogeneousIdeal.irrelevant (grading B n) ≤
@@ -87,7 +85,7 @@ def awayCongr {s t : MvPolynomial (Fin (n + 1)) B} (h : s = t) :
   exact RingEquiv.refl _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma awayCongr_mk {s t : MvPolynomial (Fin (n + 1)) B} (h : s = t) {d : ℕ}
     (hs : s ∈ grading B n d) (ht : t ∈ grading B n d) (m : ℕ) (x : MvPolynomial (Fin (n + 1)) B)
@@ -97,7 +95,7 @@ lemma awayCongr_mk {s t : MvPolynomial (Fin (n + 1)) B} (h : s = t) {d : ℕ}
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma awayCongr_chartAlgebraMap {s t : MvPolynomial (Fin (n + 1)) B} (h : s = t) (b : B) :
     awayCongr B n h (chartAlgebraMap B s b) = chartAlgebraMap B t b := by
@@ -107,9 +105,9 @@ lemma awayCongr_chartAlgebraMap {s t : MvPolynomial (Fin (n + 1)) B} (h : s = t)
 variable {A B n}
 
 /- English proof (translation)
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Localization.mk _ _ = Localization.mk _ _`. Use `congr 1`. Simplify using `[gradedMap_apply, MvPolynomial.algebraMap_eq]`. Use `ext`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[gradedMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_chartAlgebraMap (j : Fin (n + 1)) (a : A) :
     Away.map (gradedMap A B n) (X j) (chartAlgebraMap A (X j) a) =
@@ -122,7 +120,7 @@ lemma map_chartAlgebraMap (j : Fin (n + 1)) (a : A) :
     simp [gradedMap_apply]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma awayCongr_symm {s t : MvPolynomial (Fin (n + 1)) B} (h : s = t) :
     (awayCongr B n h).symm = awayCongr B n h.symm := by
@@ -136,16 +134,16 @@ lemma chartEquiv_symm_apply (j : Fin (n + 1)) (p : MvPolynomial {i // i ≠ j} A
     (chartEquiv A j).symm p = polyToChart A j p := rfl
 
 /- English proof (translation)
-Simplify using `[polyToChart, chartAlgebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 lemma polyToChart_C (j : Fin (n + 1)) (a : A) :
     polyToChart A j (C a) = chartAlgebraMap A (X j) a := by
   simp [polyToChart, chartAlgebraMap]
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, map_C, polyToChart_C, map_chartAlgebraMap, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, awayCongr_symm, awayCongr_chartAlgebraMap]`. Introduce `k`. Simplify using `only [RingHom.comp_apply, map_X, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, awayCongr_symm, polyToChart, coe_eval₂Hom, eval₂_X, coordinate, Away.map_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[awayCongr_mk B n _ (X_mem j) (by rw [gradedMap_X]; exact X_mem j)]`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `[Away.val_mk]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 lemma map_polyToChart (j : Fin (n + 1)) :
     (Away.map (gradedMap A B n) (X j)).comp (polyToChart A j) =
@@ -163,7 +161,7 @@ lemma map_polyToChart (j : Fin (n + 1)) :
     simp [Away.val_mk]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ => φ p) (map_polyToChart (A := A) (B := B) j)`.
+A detailed English derivation is pending.
 -/
 lemma map_polyToChart_apply (j : Fin (n + 1)) (p : MvPolynomial {i // i ≠ j} A) :
     Away.map (gradedMap A B n) (X j) (polyToChart A j p) =
@@ -173,11 +171,11 @@ lemma map_polyToChart_apply (j : Fin (n + 1)) (p : MvPolynomial {i // i ≠ j} A
 attribute [local instance] MvPolynomial.algebraMvPolynomial in
 
 /- English proof (translation)
-Establish `h0` using `CommRingCat.isPushout_of_isPushout A B (MvPolynomial {i // i ≠ j} A) (MvPolynomial {i // i ≠ j} B)`. Use `h0.of_iso (Iso.refl _) (Iso.refl _) (chartEquiv A j).symm.toCommRingCatIso ((chartEquiv B j).symm.trans (awayCongr B n (gradedMap_X A B n j)).symm).toCommRingCatIso ?_ ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `x`. Both sides reduce to the same expression. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Simplify using `[chartEquiv_symm_apply, polyToChart_C]`. Use extensionality with `x`. Simplify using `[chartEquiv_symm_apply, polyToChart_C, awayCongr_symm, awayCongr_chartAlgebraMap]`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> intro x <;>`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[chartEquiv_symm_apply, map_polyToChart_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isPushout_chart (j : Fin (n + 1)) :
     IsPushout (CommRingCat.ofHom (algebraMap A B)) (CommRingCat.ofHom (chartAlgebraMap A (X j)))
@@ -201,7 +199,7 @@ theorem isPushout_chart (j : Fin (n + 1)) :
 variable (A) in
 
 /- English proof (translation)
-Rewrite using `[toSpecBase, ← Category.assoc, Proj.awayι_toSpecZero, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma awayι_toSpecBase {s : MvPolynomial (Fin (n + 1)) A} {d : ℕ} (hs : s ∈ grading A n d)
     (hd : 0 < d) :
@@ -213,11 +211,11 @@ lemma awayι_toSpecBase {s : MvPolynomial (Fin (n + 1)) A} {d : ℕ} (hs : s ∈
 variable (A B n) in
 
 /- English proof (translation)
-Use `Scheme.isPullback_of_openCover _ _ _ _ (stdAffineCover A n).openCover fun j => ?_` and prove the remaining obligations. Establish `hQ : IsPullback (Spec.map (CommRingCat.ofHom (Away.map (gradedMap A B n) (X j)))) (Proj.awayι (grading B n) (gradedMap A B n (X j)) ((gradedMap A B n).2 (X_mem j)) Nat.one_pos) (Proj.awayι (grading A n) (X j : MvPolynomial (Fin (n + 1)) A) (X_mem j) Nat.one_pos) (baseChangeMap A …` using `IsOpenImmersion.isPullback _ _ _ _ (Proj.awayι_comp_map _ _ _ _ _) (by rw [Proj.opensRange_awayι, Proj.opensRange_awayι]; rfl)`. Establish `hS` using `isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_chart (A := A) (B := B) (n := n) j)`. Use `hS.flip.of_iso hQ.flip.isoPullback (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [Iso.refl_hom]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(hQ.flip.isoPullback_hom_snd).symm`. Simplify using `only [Iso.refl_hom, Category.comp_id]`. Express the relevant statement in the definitionally equal form `_ = hQ.flip.isoPullback.hom ≫ pullback.fst _ _ ≫ toSpecBase B n`. Rewrite using `[hQ.flip.isoPullback_hom_fst_assoc, awayι_toSpecBase]`. Simplify using `only [Iso.refl_hom, Category.comp_id]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(awayι_toSpecBase A (X_mem j) Nat.one_pos).symm`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isPullback_baseChange :
     IsPullback (baseChangeMap A B n) (toSpecBase B n) (toSpecBase A n)

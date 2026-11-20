@@ -7,25 +7,23 @@ open scoped FourierTransform ContDiff
 namespace GlobalTheory.JSW.MirCinf
 
 /- English proof (translation)
-Use `set W := InfinitePlace E`. Use `set M : Matrix (Fin n) (Fin n) (Cinf E) := (A : Matrix (Fin n) (Fin n) (Cinf E)) with hM`. Use `set L : (Fin n → Fin n → Cinf E) →ₗ[ℝ] (Fin n → Fin n → Cinf E) := { toFun := fun x i j => (M * Matrix.of x) i j map_add' := fun x y => by`. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `(M * (Matrix.of x + Matrix.of y)) i j = (M * Matrix.of x) i j + (M * Matrix.of y) i j`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_add, Matrix.add_apply]`. Use the proof step `map_smul' := fun c x => by`. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `(M * (c • Matrix.of x)) i j = c • (M * Matrix.of x) i j`. Rewrite using `[Matrix.mul_smul, Matrix.smul_apply] } with hLdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL : ∀ h, L h = fun i j => (M * Matrix.of h) i j` using `fun h => rfl`. Set `e : (Fin n → Fin n → Cinf E) ≃ₗ[ℝ] (W → Fin n → Fin n → ℂ)` to `{ toFun := fun h w i j => h i j w invFun := fun g i j w => g w i j map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Set `Lw : W → (Fin n → Fin n → ℂ) →ₗ[ℝ] (Fin n → Fin n → ℂ)` to `fun w => (LinearMap.mulLeft ℂ (M.map (fun z => z w))).restrictScalars ℝ`. Establish `hconj : (e : _ →ₗ[ℝ] _) ∘ₗ L ∘ₗ (e.symm : _ →ₗ[ℝ] _) = LinearMap.pi (fun w => Lw w ∘ₗ LinearMap.proj w)`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Introduce `g`. Use function extensionality and compare the values at `w i j`. Express the relevant statement in the definitionally equal form `(M * Matrix.of (fun i j w => g w i j)) i j w = (M.map (fun z => z w) * Matrix.of (g w)) i j`. Simplify using `[Matrix.mul_apply, Finset.sum_apply, Matrix.map_apply]`. Establish `hdetw : ∀ w, LinearMap.det (Lw w) = Complex.normSq (M.det w) ^ n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Use `GroundTheory.Automorphic.det_restrictScalars_mulLeft (M.map (fun z => z w))` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, ← Complex.normSq_eq_norm_sq]`. Use `show LinearMap.det ((LinearMap.mulLeft ℂ (M.map fun z => z w)).restrictScalars ℝ) = _`. Rewrite using `[this]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `congr 2`. Conclude with `(RingHom.map_det (Pi.evalRingHom (fun _ : W => ℂ) w) M).symm`. Establish `hdet : LinearMap.det L = jacInf M`. Rewrite using `[← LinearMap.det_conj L e, hconj, LinearMap.det_pi]`. Simplify using `only [hdetw]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hpos : 0 < jacInf M`. Establish `hdA : M.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 A.isUnit).ne_zero`. Use `Finset.prod_pos fun w _ => pow_pos (Complex.normSq_pos.2 ?_) n` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit M.det` using `(Matrix.isUnit_iff_isUnit_det _).1 A.isUnit`. Establish `: IsUnit (M.det w)` using `hu.map (Pi.evalRingHom (fun _ : W => ℂ) w)`. Conclude with `this.ne_zero h0`. Establish `hd0 : LinearMap.det L ≠ 0` using `by rw [hdet]; exact hpos.ne'`. Establish `hmap : Measure.map L (volume : Measure (Fin n → Fin n → Cinf E)) = ENNReal.ofReal |(LinearMap.det L)⁻¹| • volume` using `Measure.map_linearMap_addHaar_eq_smul_addHaar volume hd0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `set Le : (Fin n → Fin n → Cinf E) ≃L[ℝ] (Fin n → Fin n → Cinf E) := (LinearMap.equivOfDetNeZero L hd0).toContinuousLinearEquiv`. Establish `hLe : (Le : (Fin n → Fin n → Cinf E) → (Fin n → Fin n → Cinf E)) = L` using `rfl`. Establish `hemb : MeasurableEmbedding (L : (Fin n → Fin n → Cinf E) → (Fin n → Fin n → Cinf E))`. Rewrite using `[← hLe]`. Conclude with `Le.toHomeomorph.measurableEmbedding`.
-
-Repeatedly rewrite using `[← hL]`. Rewrite using `[integral_const_mul, ← hemb.integral_map, hmap, integral_smul_measure, hdet, abs_of_pos (inv_pos.2 hpos), ENNReal.toReal_ofReal (inv_pos.2 hpos).le, Complex.real_smul, ← mul_assoc]`. Use `push_cast`. Rewrite using `[mul_inv_cancel₀ (by exact_mod_cast hpos.ne'), one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_integral_mulLeft_matrixInf (E : Type) [Field E] [NumberField E] (n : ℕ)
     (A : GL (Fin n) (Cinf E)) (F : (Fin n → Fin n → Cinf E) → ℂ) :

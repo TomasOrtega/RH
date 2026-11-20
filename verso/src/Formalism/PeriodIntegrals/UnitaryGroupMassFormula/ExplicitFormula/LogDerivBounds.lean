@@ -8,25 +8,23 @@ namespace PI.EF
 open Complex DirichletCharacter
 
 /- English proof (translation)
-Unfold `PI.EF.eps0`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_root_number_le_one {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : ‖eps0 χ‖ ≤ 1 := by
   unfold PI.EF.eps0
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `PI.EF.del1`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_character_correction_le {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : ‖del1 χ‖ ≤ 1 := by
   unfold PI.EF.del1
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hf` using `(hC N χ hχ s.im).1`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hf]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `ρ hρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_div, Complex.norm_natCast]`. Conclude with `div_le_div_of_nonneg_left (Nat.cast_nonneg _) hd (h ρ ((Set.Finite.mem_toFinset hf).mp hρ))`. Use `_ = (∑ ρ ∈ hf.toFinset, (mult χ ρ : ℝ)) / d := by rw [Finset.sum_div]`. Use `_ ≤ C * Real.log (N * (|s.im| + 2)) / d := by`. Apply `div_le_div_of_nonneg_right _ hd.le` to reduce the goal to its premises.
-
-Rewrite using `[← finsum_mem_eq_finite_toFinset_sum _ hf]`. Conclude with `(hC N χ hχ s.im).2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_near_sum_le {C : ℝ} (hC : ZerosWindowWith C) {N : ℕ} [NeZero N]
     (χ : DirichletCharacter ℂ N) (hχ : χ.IsPrimitive) (s : ℂ) {d : ℝ} (hd : 0 < d)
@@ -49,7 +47,7 @@ theorem norm_near_sum_le {C : ℝ} (hC : ZerosWindowWith C) {N : ℕ} [NeZero N]
         exact (hC N χ hχ s.im).2
 
 /- English proof (translation)
-Establish `e1 : a = (a - b - c + e) + b + c - e` using `by ring`. Rewrite using `[e1]`. Establish `k1` using `norm_sub_le ((a - b - c + e) + b + c) e`. Establish `k2` using `norm_add_le ((a - b - c + e) + b) c`. Establish `k3` using `norm_add_le (a - b - c + e) b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -63,11 +61,11 @@ private lemma norm_le_add_add_four_of_norm_sub_le {a b c e : ℂ} {x y : ℝ} (h
   linarith
 
 /- English proof (translation)
-Establish `hs1' : s ≠ 1`. Introduce and unpack `rfl`. Evaluate the numerical expressions using `at hs1`. Establish `hmain` using `hL N χ hχ s h1 h2 h0 hs1'`. Establish `hsum` using `norm_near_sum_le hW χ hχ s hd h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : ‖eps0 χ / s‖ ≤ 2`. Rewrite using `[norm_div, div_le_iff₀ (by linarith)]`. Combine the linear relations using `[norm_root_number_le_one χ]`. Establish `hD : ‖del1 χ / (s - 1)‖ ≤ 2`. Rewrite using `[norm_div, div_le_iff₀ (by linarith)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[norm_character_correction_le χ]`. Conclude with `norm_le_add_add_four_of_norm_sub_le hmain hsum hE hD`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_logDeriv_le {Cw Cl : ℝ} (hW : ZerosWindowWith Cw) (hL : LocalLemma Cl) {N : ℕ} [NeZero N]
     (χ : DirichletCharacter ℂ N) (hχ : χ.IsPrimitive) (s : ℂ) (h1 : -1 / 2 ≤ s.re) (h2 : s.re ≤ 3)
@@ -89,28 +87,28 @@ theorem norm_logDeriv_le {Cw Cl : ℝ} (hW : ZerosWindowWith Cw) (hL : LocalLemm
   exact norm_le_add_add_four_of_norm_sub_le hmain hsum hE hD
 
 /- English proof (translation)
-Establish `hN1 : (1 : ℝ) ≤ N` using `Nat.one_le_cast.mpr (Nat.pos_of_ne_zero (NeZero.ne N))`. Conclude with `Real.log_le_log (by norm_num) (by nlinarith)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem log_two_le_log {N : ℕ} [NeZero N] {x : ℝ} (hx : 2 ≤ x) : Real.log 2 ≤ Real.log (N * x) := by
   have hN1 : (1 : ℝ) ≤ N := Nat.one_le_cast.mpr (Nat.pos_of_ne_zero (NeZero.ne N))
   exact Real.log_le_log (by norm_num) (by nlinarith)
 
 /- English proof (translation)
-Unfold `PI.EF.LogDerivLeft PI.EF.ZeroLocus at *`. Introduce `N _ χ hχ t`. Establish `hre : (((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * I).re = -1 / 2` using `by norm_num`. Establish `him : (((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * I).im = t` using `by norm_num`. Establish `hne1 : ((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * I ≠ 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Use `congrArg Complex.re a` as an intermediate fact. Rewrite `this` using `[hre]`. Evaluate the numerical expressions using `at this`. Establish `hL0 : LFunction χ (((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * I) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `h0`. Break down `hZ N χ hχ _ (by rw [hre]; norm_num) hne1 h0 with ⟨a, _⟩ | ⟨a, _⟩ | ⟨a, _⟩` into its components or cases. Rewrite `a` using `[hre]`. Evaluate the numerical expressions using `at a`. Use `congrArg Complex.re a` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite `this` using `[hre]`. Evaluate the numerical expressions using `at this`. Use `congrArg Complex.re a` as an intermediate fact. Rewrite `this` using `[hre]`. Evaluate the numerical expressions using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hs0 : 1 / 2 ≤ ‖((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * I‖` using `le_trans (by rw [hre]; norm_num) (Complex.abs_re_le_norm _)`. Establish `hs1 : 1 / 2 ≤ ‖((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * I - 1‖` using `le_trans (by rw [Complex.sub_re, hre, Complex.one_re]; norm_num) (Complex.abs_re_le_norm _)`. Establish `hnear : ∀ ρ ∈ ZerosNear χ (((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * I).im, 1 / 2 ≤ ‖((-1 / 2 : ℝ) : ℂ) + (t : ℂ) * I - ρ‖`. Introduce `ρ hρ`. Unfold `PI.ZerosNear at hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `only [Set.mem_setOf_eq] at hρ`. Take `⟨a1, a2, -, -⟩` from `hρ`. Use `le_trans ?_ (Complex.abs_re_le_norm _)` and prove the remaining obligations. Rewrite using `[Complex.sub_re, hre, abs_of_neg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `key` using `norm_logDeriv_le hW hL χ hχ _ hre.symm.le (by rw [hre]; norm_num) hL0 hs0 hs1 (by norm_num : (0 : ℝ) < 1 / 2) hnear`. Rewrite `key` using `[him]`. Establish `hlog2 : Real.log 2 ≤ Real.log (N * (|t| + 2))` using `log_two_le_log (by linarith [abs_nonneg t])`. Establish `hl2` using `Real.log_two_gt_d9`. Use `le_trans key ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem logDerivLeft_of {Cw Cl : ℝ} (hCw : 0 ≤ Cw) (hCl : 0 ≤ Cl) (hW : ZerosWindowWith Cw)
     (hL : LocalLemma Cl) (hZ : ZeroLocus) : LogDerivLeft (Cl + 2 * Cw + 6) := by
@@ -160,29 +158,29 @@ theorem logDerivLeft_of {Cw Cl : ℝ} (hCw : 0 ≤ Cw) (hCl : 0 ≤ Cl) (hW : Ze
     _ = (Cl + 2 * Cw + 6) * Real.log (N * (|t| + 2)) := by ring
 
 /- English proof (translation)
-Establish `hN1 : (1 : ℝ) ≤ N` using `Nat.one_le_cast.mpr (Nat.pos_of_ne_zero (NeZero.ne N))`. Establish `hℓ2 : Real.log 2 ≤ Real.log (N * T')` using `log_two_le_log hT'`. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hlogT2 : Real.log (N * (T' + 2)) ≤ 2 * Real.log (N * T')`. Establish `e : 2 * Real.log (N * T') = Real.log ((N * T') ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_pow]`. Evaluate the numerical expressions. Rewrite using `[e]`. Apply `Real.log_le_log (by nlinarith)` to reduce the goal to its premises. Establish `hN2 : (N : ℝ) ≤ (N : ℝ) ^ 2` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hT2 : T' + 2 ≤ T' ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hlogpos2 : 0 ≤ Real.log (N * (T' + 2))` using `Real.log_nonneg (by nlinarith)`. Unfold `PI.EF.GoodHeight at hg`. Use `set ℓ := Real.log (N * T') with hℓ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hℓpos : 0 < ℓ` using `by linarith`. Establish `hd : 0 < 1 / (κ * ℓ)` using `one_div_pos.mpr (mul_pos hκ hℓpos)`. Establish `hsim : 2 ≤ |s.im|` using `by rw [him]; exact hT'`. Establish `hs0 : 1 / 2 ≤ ‖s‖` using `by linarith [Complex.abs_im_le_norm s]`. Establish `hs1 : 1 / 2 ≤ ‖s - 1‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Complex.abs_im_le_norm (s - 1)` as an intermediate fact. Rewrite `this` using `[Complex.sub_im, Complex.one_im, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1' : s ≠ 1`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at hsim`. Establish `hL0 : LFunction χ s ≠ 0`. Introduce `h0`. Break down `hZ N χ hχ s (by linarith) hs1' h0 with ⟨a1, a2⟩ | ⟨a, _⟩ | ⟨a, _⟩` into its components or cases. Use `hg s a1 a2 h0` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[him, sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hsim` using `[a]`. Evaluate the numerical expressions using `at hsim`. Rewrite `hsim` using `[a]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at hsim`. Establish `hnear : ∀ ρ ∈ ZerosNear χ s.im, 1 / (κ * ℓ) ≤ ‖s - ρ‖`. Introduce `ρ hρ`. Unfold `PI.ZerosNear at hρ`. Simplify using `only [Set.mem_setOf_eq] at hρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, -, a4⟩` from `hρ`. Establish `hgρ` using `hg ρ a1 a2 a4`. Establish `k1 : |(|ρ.im|) - T'| ≤ |s.im - ρ.im|`. Rewrite using `[← him, abs_sub_comm]`. Conclude with `abs_abs_sub_abs_le_abs_sub s.im ρ.im`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : |s.im - ρ.im| ≤ ‖s - ρ‖`. Rewrite using `[← Complex.sub_im]`. Conclude with `Complex.abs_im_le_norm _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `norm_logDeriv_le hW hL χ hχ s h1 h2 hL0 hs0 hs1 hd hnear`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `key` using `[him, div_div_eq_mul_div, div_one]`. Use `le_trans key ?_` and prove the remaining obligations. Establish `h_a : Cl * Real.log (N * (T' + 2)) ≤ Cl * (2 * ℓ)` using `mul_le_mul_of_nonneg_left hlogT2 hCl`. Establish `h_b : 2 * ℓ ≤ 4 * ℓ ^ 2` using `by nlinarith`. Establish `h_c : Cl * (2 * ℓ) ≤ Cl * (4 * ℓ ^ 2)` using `mul_le_mul_of_nonneg_left h_b hCl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h_d : Cw * Real.log (N * (T' + 2)) * (κ * ℓ) ≤ Cw * (2 * ℓ) * (κ * ℓ)` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hlogT2 hCw) (mul_pos hκ hℓpos).le`. Establish `h_e : 4 ≤ 16 * ℓ ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[h_a, h_c, h_d, h_e]`.
+A detailed English derivation is pending.
 -/
 theorem norm_logDeriv_horiz {Cw Cl κ : ℝ} (hCw : 0 ≤ Cw) (hCl : 0 ≤ Cl) (hκ : 0 < κ)
     (hW : ZerosWindowWith Cw) (hL : LocalLemma Cl) (hZ : ZeroLocus) {N : ℕ} [NeZero N]
@@ -252,9 +250,7 @@ theorem norm_logDeriv_horiz {Cw Cl κ : ℝ} (hCw : 0 ≤ Cw) (hCl : 0 ≤ Cl) (
   nlinarith [h_a, h_c, h_d, h_e]
 
 /- English proof (translation)
-Unfold `PI.EF.LogDerivHoriz`. Introduce `N _ χ hχ T' hT' hg σ h1 h2`. Establish `hT0 : (0 : ℝ) ≤ T'` using `by linarith`. Prove the components needed by the constructor for the conclusion. Conclude with `norm_logDeriv_horiz hCw hCl hκ hW hL hZ χ hχ hT' hg _ (by simpa using h1) (by simpa using h2) (by simp [abs_of_nonneg hT0])`.
-
-Conclude with `norm_logDeriv_horiz hCw hCl hκ hW hL hZ χ hχ hT' hg _ (by simpa using h1) (by simpa using h2) (by simp [abs_of_nonneg hT0])`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem logDerivHoriz_of {Cw Cl κ : ℝ} (hCw : 0 ≤ Cw) (hCl : 0 ≤ Cl) (hκ : 0 < κ)
     (hW : ZerosWindowWith Cw) (hL : LocalLemma Cl) (hZ : ZeroLocus) :

@@ -21,15 +21,15 @@ noncomputable section
 namespace GlobalTheory.TrOpTensor
 
 /- English proof (translation)
-Establish `hfin : (Set.range F).Finite` using `by haveI : CompactSpace ↥(tsupport F) := isCompact_iff_compactSpace.1 hc`. Establish `h1 : (Set.range (fun x : tsupport F => F x)).Finite` using `(hF.comp_continuous continuous_subtype_val).range_finite`. Use `(h1.union (Set.finite_singleton 0)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Distinguish the cases in `hx : x ∈ tsupport F`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl ⟨⟨x, hx⟩, rfl⟩`. Conclude with `Or.inr (image_eq_zero_of_notMem_tsupport hx)`. Use `⟨hfin.toFinset.filter (· ≠ 0), fun r hr => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hr0 : r ≠ 0` using `(Finset.mem_filter.1 hr).2`. Use `⟨hF.isOpen_fiber r, hc.of_isClosed_subset isClosed_closure (closure_minimal (fun x hx => subset_tsupport F ?_) (isClosed_tsupport F))⟩` and prove the remaining obligations.
+Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.mem_support, show F x = r from hx]`. Conclude with `hr0`. Distinguish the cases in `h0 : F x = 0`. Rewrite using `[h0]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun r hr => ?_` and prove the remaining obligations. Establish `hx : x ∉ F ⁻¹' {r}` using `fun hx => (Finset.mem_filter.1 hr).2 ((show F x = r from hx).symm.trans h0)`. Rewrite using `[Set.indicator_of_notMem hx, zero_smul]`. Rewrite using `[Finset.sum_eq_single (F x)]`. Rewrite using `[Set.indicator_of_mem (show x ∈ F ⁻¹' {F x} from rfl), one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r _ hne`. Rewrite using `[Set.indicator_of_notMem (s := F ⁻¹' {r}) (fun hx => hne (show F x = r from hx).symm), zero_smul]`. Introduce `hn`. Conclude with `absurd (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 ⟨x, rfl⟩, h0⟩) hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_sum_indicator {X W : Type} [TopologicalSpace X] [T2Space X] [AddCommGroup W] [Module ℂ W]
     (F : X → W) (hF : IsLocallyConstant F) (hc : HasCompactSupport F) :
@@ -65,13 +65,13 @@ theorem exists_sum_indicator {X W : Type} [TopologicalSpace X] [T2Space X] [AddC
         exact absurd (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 ⟨x, rfl⟩, h0⟩) hn
 
 /- English proof (translation)
-Use `set F := fun h => b h • σ h w with hF`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Establish `hpt : ∀ h, b h * l (σ h w) = ∑ r ∈ s, (F ⁻¹' {r}).indicator (fun _ => l r) h`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_eq_mul, ← map_smul]`. Express the relevant statement in the definitionally equal form `l (b h • σ h w) = _`. Rewrite using `[hsum h, map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hh : h ∈ F ⁻¹' {r}`. Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem hh, one_mul]`. Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem hh, zero_mul]`. Rewrite using `[map_sub, (hA w l).2, map_sum, integral_congr_ae (.of_forall hpt), integral_finsetSum _ fun r hr => (integrableOn_const (hs r hr).2).integrable_indicator (hs r hr).1, ← Finset.sum_sub_distrib]`. Use `Finset.sum_eq_zero fun r hr => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_indicator_const _ (hs r hr).1, map_smul, Measure.real, Complex.real_smul, smul_eq_mul, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem integralOp_eq_sum {G W : Type} [Group G] [MeasurableSpace G] [AddCommGroup W] [Module ℂ W]
     (ν : Measure G) (σ : Representation ℂ G W) (b : G → ℂ) (A : W →ₗ[ℂ] W)
@@ -99,7 +99,7 @@ theorem integralOp_eq_sum {G W : Type} [Group G] [MeasurableSpace G] [AddCommGro
   rw [integral_indicator_const _ (hs r hr).1, map_smul, Measure.real, Complex.real_smul, smul_eq_mul, sub_self]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.haar_eq_restrictedProductMeasure_unitaryFiniteAdelic D V μf νF hF ν hν s hs`.
+A detailed English derivation is pending.
 -/
 theorem measure_eq_of_isFinMeas {D : D7} (V : HSp D) {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
     {νF : Measure (GFin D.sp.cm.sig V.gram)} (hF : IsRestrictedProdFin D.sp.cm.sig V.gram (frameLat V) μf νF)
@@ -107,7 +107,7 @@ theorem measure_eq_of_isFinMeas {D : D7} (V : HSp D) {μf : ∀ v, Measure (GLoc
     ν s = νF ((finPtsEquiv D.sp.cm.sig V.gram) ⁻¹' s) := GlobalTheory.T.haar_eq_restrictedProductMeasure_unitaryFiniteAdelic D V μf νF hF ν hν s hs
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.integral_finiteIndicator_smul_archFunction D V μa μf μ hμ νF hF E B hB hB' a ha`.
+A detailed English derivation is pending.
 -/
 theorem integral_indicator_projFin_smul {D : D7} (V : HSp D) {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)}
     {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)} {μ : Measure (GA D V)}
@@ -125,13 +125,11 @@ theorem integral_indicator_projFin_smul {D : D7} (V : HSp D) {μa : ∀ w, Measu
 open scoped Classical in
 
 /- English proof (translation)
-Use `haveI : ∀ τ, CompleteSpace (M.H τ) := fun τ => (isIrrUnitary_dsRep M τ).complete`. Establish `hgen` using `GlobalTheory.T.integral_continuousMultilinearMap_pi_measure D.what₂.Tau (fun τ => GArch D.sp.cm.sig V.gram (placeOf D τ)) (fun τ => μa (placeOf D τ)) M.H H Φ (fun τ z => fa (placeOf D τ) z • dsRep M τ z (y τ)) hfa`. Take `⟨e, he⟩ : ∃ e : D.what₂.Tau ≃ InfinitePlace D.host.F, e = Equiv.ofBijective _ (placeOf_bijective D)` from `⟨_, rfl⟩`. Substitute `he` using the available equality. Establish `hP` using `measurePreserving_piCongrLeft μa (Equiv.ofBijective _ (placeOf_bijective D))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := MeasurableEquiv.piCongrLeft (fun w => GArch D.sp.cm.sig V.gram w) (Equiv.ofBijective _ (placeOf_bijective D)) with hPdef`. Establish `hcomp : ∀ x' : ∀ τ, GArch D.sp.cm.sig V.gram (placeOf D τ), (∏ w, fa w (P x' w)) • Φ (fun τ => dsRep M τ (P x' (placeOf D τ)) (y τ)) = Φ fun τ => fa (placeOf D τ) (x' τ) • dsRep M τ (x' τ) (y τ)`. Introduce `x'`. Establish `hx : ∀ τ, P x' (placeOf D τ) = x' τ` using `fun τ => Equiv.piCongrLeft_apply_apply (fun w => GArch D.sp.cm.sig V.gram w) (Equiv.ofBijective _ (placeOf_bijective D)) x' τ`. Rewrite using `[ContinuousMultilinearMap.map_smul_univ, ← Equiv.prod_comp (Equiv.ofBijective _ (placeOf_bijective D)) (fun w => fa w (P x' w))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg₂ (· • ·) (Finset.prod_congr rfl fun τ _ => ?_) (congrArg Φ (funext fun τ => ?_))` and prove the remaining obligations. Conclude with `congrArg (fa (placeOf D τ)) (hx τ)`. Conclude with `congrArg (fun z => dsRep M τ z (y τ)) (hx τ)`. Establish `hfun : ((fun x : ∀ w, GArch D.sp.cm.sig V.gram w => (∏ w, fa w (x w)) • Φ (fun τ => dsRep M τ (x (placeOf D τ)) (y τ))) ∘ P) = fun x' => Φ fun τ => fa (placeOf D τ) (x' τ) • dsRep M τ (x' τ) (y τ)` using `funext hcomp`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hP.integrable_comp_emb P.measurableEmbedding, hfun]`. Conclude with `hgen.1`. Rewrite using `[← hP.integral_comp' (fun x : ∀ w, GArch D.sp.cm.sig V.gram w => (∏ w, fa w (x w)) • Φ (fun τ => dsRep M τ (x (placeOf D τ)) (y τ))), ← hgen.2]`. Conclude with `integral_congr_ae (.of_forall hcomp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_pi_dsRep {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) [∀ w, SigmaFinite (μa w)]
@@ -175,9 +173,9 @@ theorem integral_pi_dsRep {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M :
 open scoped Classical in
 
 /- English proof (translation)
-Establish `h` using `mem_homTensorPi.1 hT`. Establish `e` using `GlobalTheory.T.infinitePart_act_discreteSeriesHom_factorwise D V S M H π ⊤ (T (σ (toFin V g) w)) (hT.1 _) g y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `_ = π (toInf V g : GA D V) (T (σ (toFin V g) w) y) := by rw [h.2.1]; rfl`. Use `_ = _ := e`.
+A detailed English derivation is pending.
 -/
 theorem apply_homFinDS {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {W : Type} [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ (GfC V) W} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -197,9 +195,9 @@ end GlobalTheory.TrOpTensor
 namespace GlobalTheory.TrOpTensor
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `GlobalTheory.FinTrace.finFn_mem_SB V hff`. Establish `h2 : IsLocallyConstant fun h : GfC V => σ h w`. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ⟨(fun h => x⁻¹ * h) ⁻¹' {g | σ g w = w}, (hσ w).preimage (continuous_const.mul continuous_id), by simp, fun x' hx' => ?_⟩` and prove the remaining obligations. Establish `e : x' = x * (x⁻¹ * x')` using `by group`. Rewrite using `[e, map_mul, Module.End.mul_apply, show σ (x⁻¹ * x') w = w from hx']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨hlc.comp₂ h2 (fun a b => a • b), hcs.smul_right⟩`.
+Supply the required witnesses or components.
 -/
 theorem locallyConstant_smul {D : D7} (V : HSp D) {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
     (hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff) {W : Type} [AddCommGroup W] [Module ℂ W]
@@ -214,7 +212,7 @@ theorem locallyConstant_smul {D : D7} (V : HSp D) {ff : ∀ v, GLoc D.sp.cm.sig 
   exact ⟨hlc.comp₂ h2 (fun a b => a • b), hcs.smul_right⟩
 
 /- English proof (translation)
-Unfold `finFn`. Use `finprod_congr fun v => congrArg (ff v) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `proj D.sp.cm.sig V.gram v (ofFin D.sp.cm.sig V.gram (projFin D.sp.cm.sig V.gram g)) = _`. Rewrite using `[proj_ofFin, projFinLoc_projFin]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finFn_toFin {D : D7} (V : HSp D) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ) (g : GA D V) :
     finFn V ff (toFin V g) = ∏ᶠ v, ff v (proj D.sp.cm.sig V.gram v g) := by
@@ -224,21 +222,19 @@ theorem finFn_toFin {D : D7} (V : HSp D) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v 
   rw [proj_ofFin, projFinLoc_projFin]
 
 /- English proof (translation)
-Introduce `D V S M μa μf μ hμ ν hν fa ff hfa hff W _ _ σ hσ H _ _ _ π hπ T hT A hA w y`. Use `hμ.haar` as an intermediate fact. Use `hμ.haar_arch` as an intermediate fact. Use `hμ.haar_loc` as an intermediate fact. Establish `hfc : ∀ w', Continuous (fa w')` using `fun w' => continuous_of_mem_ccSmooth (continuous_archCoord _ _ w') (hfa w')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfs : ∀ w', HasCompactSupport (fa w')` using `fun w' => (hfa w').1`. Establish `hD` using `fun τ => (isUnitaryRep_dsRep M τ).isRepOp (μ := μa (placeOf D τ)) (hfc (placeOf D τ)) (hfs (placeOf D τ))`. Take `⟨hcf, hcs⟩` from `continuous_of_mem_ccAd (tensor_mem_ccAd hfa hff)`. Establish `hR` using `hπ.isRepOp (μ := μ) hcf hcs`. Take `⟨hlc, hcF⟩` from `locallyConstant_smul V hff hσ w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsum⟩` from `exists_sum_indicator _ hlc hcF`. Take `⟨νF, hνF⟩` from `(existsUnique_isRestrictedProdFin D.sp.cm.sig V.gram (frameLat V) μf hμ.eventually_eq_one).exists`. Use `hν.1` as an intermediate fact. Use `set F : GfC V → W := fun h => finFn V ff h • σ h w with hF`. Establish `hfin : ∀ r ∈ s, ν (F ⁻¹' {r}) ≠ ⊤` using `fun r hr => ((measure_mono subset_closure).trans_lt (hs r hr).2.measure_lt_top).ne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAw` using `integralOp_eq_sum ν σ (finFn V ff) A hA w s (fun r hr => ⟨(hs r hr).1.measurableSet, hfin r hr⟩) hsum`. Use `set a : W → (∀ w', GArch D.sp.cm.sig V.gram w') → H := fun r x => (∏ w', fa w' (x w')) • T r (fun τ => dsRep M τ (x (placeOf D τ)) (y τ)) with ha`. Establish `hsf : ∀ w', SigmaFinite (μa w')` using `fun w' => inferInstance`. Establish `hpi` using `fun r => integral_pi_dsRep M μa (T r) fa y fun τ => (hD τ (y τ)).1`. Use `set B : W → Set (GFin D.sp.cm.sig V.gram) := fun r => (finPtsEquiv D.sp.cm.sig V.gram) ⁻¹' (F ⁻¹' {r}) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBm : ∀ r ∈ s, MeasurableSet (B r)` using `fun r hr => ((hs r hr).1.preimage (finPtsEquiv D.sp.cm.sig V.gram).continuous).measurableSet`. Establish `hνB : ∀ r ∈ s, νF (B r) = ν (F ⁻¹' {r})` using `fun r hr => (measure_eq_of_isFinMeas V hνF hν _ (hs r hr).2).symm`. Establish `hBf : ∀ r ∈ s, νF (B r) ≠ ⊤` using `fun r hr => by rw [hνB r hr]; exact hfin r hr`. Establish `hL` using `fun r (hr : r ∈ s) => integral_indicator_projFin_smul V hμ hνF (B r) (hBm r hr) (hBf r hr) (a r) (hpi r).1`. Establish `hpt : ∀ g : GA D V, tensor D.sp.cm.sig V.gram fa ff g • π g (T w y) = ∑ r ∈ s, (B r).indicator (fun _ => (1 : ℂ)) (projFin D.sp.cm.sig V.gram g) • a r (fun w' => projArch D.sp.cm.sig V.gram w' g)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Rewrite using `[apply_homFinDS hT, tensor, ← finFn_toFin, mul_smul, ← ContinuousMultilinearMap.smul_apply, ← LinearMap.map_smul, hsum, map_sum, ContinuousMultilinearMap.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ContinuousMultilinearMap.smul_apply, smul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hR (T w y)).2, integral_congr_ae (.of_forall hpt), integral_finset_sum _ fun r hr => (hL r hr).1, hAw, map_sum, ContinuousMultilinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun r hr => ?_` and prove the remaining obligations. Rewrite using `[(hL r hr).2, (hpi r).2, map_smul, ContinuousMultilinearMap.smul_apply, hνB r hr, Complex.coe_smul]`. Use `congr 2`. Use function extensionality and compare the values at `τ`.
-
-Conclude with `((hD τ (y τ)).2).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem opTensor : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (μ : Measure (GA D V)), IsRestrictedProd D.sp.cm.sig V.gram (frameLat V) μa μf μ → ∀ ν, IsFinMeas V μf ν → ∀ fa ff, (∀ w, fa w ∈ CcArch D.sp.cm.sig V.gram w) → IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), GlobalTheory.PRep.IsSmooth σ → ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsUnitaryRep π → ∀ T ∈ homFinDS σ M π ⊤, ∀ A, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V ff) A → ∀ w y, repOp π μ (tensor D.sp.cm.sig V.gram fa ff) (T w y) = T (A w) fun τ => repOp (dsRep M τ) (μa (placeOf D τ)) (fa (placeOf D τ)) (y τ) := by
   intro D V S M μa μf μ hμ ν hν fa ff hfa hff W _ _ σ hσ H _ _ _ π hπ T hT A hA w y

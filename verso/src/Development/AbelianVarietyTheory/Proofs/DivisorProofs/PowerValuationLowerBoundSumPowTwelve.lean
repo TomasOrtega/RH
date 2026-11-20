@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.LatValSum
 
 /- English proof (translation)
-Establish `h1 : IsIntegral (NormedField.valuation (K` using `ℂ_[q])).integer x := hx.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[q]))).mem_of_integral h1`. Establish `h3 : ‖x‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral_int {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   have h1 : IsIntegral (NormedField.valuation (K := ℂ_[q])).integer x := hx.tower_top
@@ -18,7 +18,7 @@ theorem norm_le_one_of_isIntegral_int {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `e : ((n : ℕ) : ℂ_[q]) = algebraMap ℚ_[q] ℂ_[q] ((n : ℕ) : ℚ_[q])` using `(map_natCast _ n).symm`. Rewrite using `[e]`. Establish `h : ‖algebraMap ℚ_[q] ℂ_[q] ((n : ℕ) : ℚ_[q])‖ = ‖((n : ℕ) : ℚ_[q])‖` using `PadicComplex.norm_extends' (p := q) _`. Rewrite using `[h]`. Conclude with `Padic.norm_natCast_eq_one_iff.mpr hn.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_eq_one {q : ℕ} [Fact q.Prime] {n : ℕ} (hn : n.Coprime q) : ‖(n : ℂ_[q])‖ = 1 := by
   have e : ((n : ℕ) : ℂ_[q]) = algebraMap ℚ_[q] ℂ_[q] ((n : ℕ) : ℚ_[q]) := (map_natCast _ n).symm
@@ -30,25 +30,23 @@ theorem norm_natCast_eq_one {q : ℕ} [Fact q.Prime] {n : ℕ} (hn : n.Coprime q
 local notation "K" => algebraicClosure ℚ ℂ
 
 /- English proof (translation)
-Introduce `l hl r J _ u x hu hx`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hx'` using `fun j => (GlobalTheory.T.powerIntegralValuationLowerBound_iff_forall_embedding l r (x j ^ 12)).1 (hx j)`. Use `(GlobalTheory.T.powerIntegralValuationLowerBound_iff_forall_embedding l r _).2 ?_` and prove the remaining obligations. Introduce `lam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `huK : ∀ j, ∃ h : u j ∈ K, ‖lam ⟨u j, h⟩‖ ≤ 1`. Introduce `j`. Take `⟨n, hn, hint⟩` from `hu j`. Establish `hn0 : (n : ℂ) ≠ 0`. Establish `: n ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hl.one_lt.ne' (Nat.coprime_zero_left _ |>.mp hn)`. Conclude with `this` after adjusting the coercions. Establish `hmK : (n : ℂ) * u j ∈ K` using `mem_algebraicClosure_iff.mpr (hint.tower_top (A := ℚ)).isAlgebraic`. Establish `hnK : (n : ℂ) ∈ K` using `IntermediateField.natCast_mem (algebraicClosure ℚ ℂ) n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `huj : u j = ((n : ℂ) * u j) * (n : ℂ)⁻¹` using `by field_simp`. Establish `hK : u j ∈ K` using `by rw [huj]; exact (algebraicClosure ℚ ℂ).mul_mem hmK ((algebraicClosure ℚ ℂ).inv_mem hnK)`. Use `⟨hK, ?_⟩` and prove the remaining obligations. Establish `he : (⟨(n : ℂ) * u j, hmK⟩ : K) = (n : K) * ⟨u j, hK⟩` using `Subtype.ext (by simp)`. Establish `hI : IsIntegral ℤ (lam ⟨(n : ℂ) * u j, hmK⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `h2 : IsIntegral ℤ (⟨(n : ℂ) * u j, hmK⟩ : K)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ K ℂ) Subtype.val_injective).mp hint`. Use `map_isIntegral_int lam h2` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`. Establish `h1` using `norm_le_one_of_isIntegral_int hI`. Rewrite `h1` using `[he, map_mul, map_natCast, norm_mul, norm_natCast_eq_one hn, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Conclude with `h1`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast hl.pos`. Establish `hpow : ((l : ℝ) ^ (r / 12)) ^ (12 : ℕ) = (l : ℝ) ^ r`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hl0.le]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxK : ∀ j, ∃ h : x j ∈ K, ‖lam ⟨x j, h⟩‖ ≤ (l : ℝ) ^ (r / 12)`. Introduce `j`. Take `⟨h12, hb⟩` from `hx' j lam`. Establish `hK : x j ∈ K` using `mem_algebraicClosure_iff.mpr ((mem_algebraicClosure_iff.mp h12).of_pow (by norm_num))`. Use `⟨hK, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : (⟨x j ^ 12, h12⟩ : K) = (⟨x j, hK⟩ : K) ^ 12` using `Subtype.ext (by simp)`. Rewrite `hb` using `[he, map_pow, norm_pow, ← hpow]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) (by norm_num)).mp hb`. Use `choose hu1 hu2 using huK`. Use `choose hx1 hx2 using hxK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSK : (∑ j, u j * x j) ∈ K` using `(algebraicClosure ℚ ℂ).sum_mem fun j _ => (algebraicClosure ℚ ℂ).mul_mem (hu1 j) (hx1 j)`. Establish `hS12 : (∑ j, u j * x j) ^ 12 ∈ K` using `(algebraicClosure ℚ ℂ).pow_mem hSK 12`. Use `⟨hS12, ?_⟩` and prove the remaining obligations. Establish `he : (⟨(∑ j, u j * x j) ^ 12, hS12⟩ : K) = (∑ j, (⟨u j, hu1 j⟩ : K) * ⟨x j, hx1 j⟩) ^ 12` using `Subtype.ext (by simp)`. Rewrite using `[he, map_pow, norm_pow, ← hpow]`.
-
-Use `pow_le_pow_left₀ (norm_nonneg _) ?_ 12` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem valGe_sum_pow_twelve : ∀ (l : ℕ), l.Prime → ∀ (r : ℝ) (J : Type) [Fintype J] (u x : J → ℂ), (∀ j, IntAt l (u j)) →
     (∀ j, GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ValGe_vp l r (x j ^ 12)) → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ValGe_vp l r ((∑ j, u j * x j) ^ 12) := by

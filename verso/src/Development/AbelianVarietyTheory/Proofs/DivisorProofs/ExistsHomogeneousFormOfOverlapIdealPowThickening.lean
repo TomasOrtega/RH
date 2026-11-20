@@ -16,7 +16,7 @@ namespace GlobalTheory.FormalAlg.JFrac
 open MvPolynomial
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Take `⟨M, a, ha⟩` from `exists_eq_pow_mul_of_isCompact_of_isQuasiSeparated X U hU.isCompact hU.isQuasiSeparated f b`. Conclude with `⟨M, a, ha⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rs_eq_pow_mul {X : Scheme} {U V : X.Opens} (hU : IsAffineOpen U) (f : Γ(X, U))
     (hV : X.basicOpen f = V) (h : V ≤ U) (b : Γ(X, V)) :
@@ -27,27 +27,25 @@ theorem exists_rs_eq_pow_mul {X : Scheme} {U V : X.Opens} (hU : IsAffineOpen U) 
   exact ⟨M, a, ha⟩
 
 /- English proof (translation)
-Introduce `R _ I Y β hP n C e i j c hc`. Take `⟨hbasic, -, -⟩` from `GlobalTheory.T.thickeningTower_liftedRatios_projective_relations R I Y β hP n C`. Take `⟨-, hsurj⟩` from `GlobalTheory.T.thickeningTower_liftedRatios_generate_surjective R I Y β hP n C`. Establish `hVU : C.D e i ⊓ C.D e j ≤ C.D e i` using `inf_le_left`. Establish `hX : ∀ l, C.ev e i (X l) = C.ρ e i l` using `fun l => by simp [Charts.ev]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `J : Ideal (MvPolynomial (Fin (n + 1)) R)` to `Ideal.map MvPolynomial.C (I ^ e)`. Set `S : Ideal Γ((Y e).left, C.D e i ⊓ C.D e j)` to `{ carrier := {c | ∃ N₁ : ℕ, ∃ G ∈ J, rs (Y e).left hVU (C.ev e i G) = rs (Y e).left hVU (C.ρ e i j) ^ N₁ * c} add_mem' := by`. Introduce and unpack `a b ⟨N₁, G, hG, h1⟩ ⟨N₂, G', hG', h2⟩`. Use `⟨N₁ + N₂, X j ^ N₂ * G + X j ^ N₁ * G', J.add_mem (J.mul_mem_left _ hG) (J.mul_mem_left _ hG'), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, hX, h1, h2]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use the proof step `zero_mem' := ⟨0, 0, J.zero_mem, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `b a ⟨N₁, G, hG, h1⟩`. Take `⟨M, a', ha'⟩` from `exists_rs_eq_pow_mul (C.aff e i) (C.ρ e i j) (hbasic e i j) hVU b`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨H, rfl⟩` from `hsurj e i a'`. Use `⟨M + N₁, H * G, J.mul_mem_left _ hG, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, ha', h1, smul_eq_mul]`. Use `ring }`. Establish `hcS : c ∈ S`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Ideal.map_le_iff_le_comap.2 (fun r hr => ?_)) hc` and prove the remaining obligations. Use `⟨0, MvPolynomial.C r, Ideal.mem_map_of_mem _ hr, ?_⟩` and prove the remaining obligations. Simplify using `[Charts.ev, rs_cst]`. Take `⟨N₁, G, hG, hN₁⟩` from `hcS`. Establish `hGc : ∀ d, homogeneousComponent d G ∈ J` using `fun d => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `MvPolynomial.mem_map_C_iff.2 fun m => ?_` and prove the remaining obligations. Rewrite using `[coeff_homogeneousComponent]`. Use `split_ifs`. Conclude with `MvPolynomial.mem_map_C_iff.1 hG m`. Conclude with `(I ^ e).zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hfix : ∀ d t, C.ρ e i i ^ t * C.ev e i (homogeneousComponent d G) = C.ev e i (homogeneousComponent d G)` using `fun d t => by`. Establish `h1` using `(GlobalTheory.T.homogeneousForm_chart_change_coeff_ideal_pow R I Y β hP n C e d (homogeneousComponent d G) (homogeneousComponent_isHomogeneous d G) (MvPolynomial.mem_map_C_iff.1 (hGc d)) i i).2.1`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih => rw [pow_succ (C.ρ e i i) t, mul_assoc, h1, ih]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N₁ + G.totalDegree, fun N hN k => ?_⟩` and prove the remaining obligations. Use `⟨X j ^ (N - N₁) * ∑ d ∈ Finset.range (G.totalDegree + 1), X i ^ (k + N + N₁ - d) * homogeneousComponent d G, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hdeg : k + 2 * N = (N - N₁) + (k + N + N₁)` using `by omega`. Rewrite using `[hdeg]`. Use `(isHomogeneous_X_pow _ _).mul (IsHomogeneous.sum _ _ _ fun d hd => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hd' : d ≤ k + N + N₁`. Use `Finset.mem_range.1 hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `(isHomogeneous_X_pow i (k + N + N₁ - d)).mul (homogeneousComponent_isHomogeneous d G)` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel hd']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MvPolynomial.mem_map_C_iff.1 (J.mul_mem_left _ (J.sum_mem fun d _ => J.mul_mem_left _ (hGc d)))`. Establish `hsum : C.ev e i (∑ d ∈ Finset.range (G.totalDegree + 1), X i ^ (k + N + N₁ - d) * homogeneousComponent d G) = C.ev e i G`. Rewrite using `[map_sum]`. Use `conv_rhs => rw [← sum_homogeneousComponent G, map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_pow, hX, hfix]`. Rewrite using `[map_mul, hsum, map_mul, hN₁, map_pow, map_pow, hX, ← mul_assoc, ← pow_add, Nat.sub_add_cancel (by omega : N₁ ≤ N)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_form : ∀ (R : Type) [CommRing R] (I : Ideal R), ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (n : ℕ) (C : Charts I Y β n), ∀ (e : ℕ) (i j : Fin (n + 1)) (c : Γ((Y e).left, C.D e i ⊓ C.D e j)), c ∈ towerIdeal Y e (I ^ e) _ → ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → ∀ k : ℕ, ∃ F : MvPolynomial (Fin (n + 1)) R, F.IsHomogeneous (k + 2 * N) ∧ (∀ m, MvPolynomial.coeff m F ∈ I ^ e) ∧ rs (Y e).left (inf_le_left : C.D e i ⊓ C.D e j ≤ C.D e i) (C.ev e i F) = rs (Y e).left (inf_le_left : C.D e i ⊓ C.D e j ≤ C.D e i) (C.ρ e i j) ^ N * c := by
   intro R _ I Y β hP n C e i j c hc

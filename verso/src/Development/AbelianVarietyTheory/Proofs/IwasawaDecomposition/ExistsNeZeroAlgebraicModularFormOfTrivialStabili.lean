@@ -12,9 +12,9 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 namespace GlobalTheory.ClassForm
 
 /- English proof (translation)
-Establish `key : g⁻¹ * ((γ' : GAf L n)⁻¹ * γ) * g = (κ' : GAf L n) * (κ : GAf L n)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : (γ' : GAf L n)⁻¹ * γ ∈ GQ L n` using `(GQ L n).mul_mem ((GQ L n).inv_mem γ'.2) γ.2`. Establish `h1` using `hg _ hmem (key ▸ J.mul_mem κ'.2 (J.inv_mem κ.2))`. Establish `hγ : (γ : GAf L n) = γ'`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[inv_mul_eq_one]`. Conclude with `h1.symm`. Use `⟨Subtype.ext hγ, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hγ, mul_assoc, mul_assoc]`. Conclude with `(mul_left_cancel (mul_left_cancel h))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem double_coset_unique {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {J : Subgroup (GAf L n)} {g : GAf L n}
@@ -41,7 +41,7 @@ noncomputable def cosetForm {L : Type} [Field L] [NumberField L] [IsCMField L] {
   if h : ∃ p : GQ L n × J, x = (p.1 : GAf L n) * g * p.2 then ((χ h.choose.2 : Kˣ) : K) • ρ h.choose.1 w else 0
 
 /- English proof (translation)
-Establish `hex : ∃ p : GQ L n × J, (γ : GAf L n) * g * κ = (p.1 : GAf L n) * g * p.2` using `⟨(γ, κ), rfl⟩`. Unfold `cosetForm`. Rewrite using `[dif_pos hex]`. Take `⟨h1, h2⟩` from `double_coset_unique hg hex.choose_spec`. Rewrite using `[← h1, ← h2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetForm_apply {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {K : Type} [Field K] {W : Type}
     [AddCommGroup W] [Module K W] (ρ : Representation K (GQ L n) W) (J : Subgroup (GAf L n)) (χ : J →* Kˣ)
@@ -54,7 +54,7 @@ theorem cosetForm_apply {L : Type} [Field L] [NumberField L] [IsCMField L] {n : 
   rw [← h1, ← h2]
 
 /- English proof (translation)
-Unfold `cosetForm`. Rewrite using `[dif_neg hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetForm_not {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {K : Type} [Field K] {W : Type}
     [AddCommGroup W] [Module K W] (ρ : Representation K (GQ L n) W) (J : Subgroup (GAf L n)) (χ : J →* Kˣ)
@@ -63,19 +63,19 @@ theorem cosetForm_not {L : Type} [Field L] [NumberField L] [IsCMField L] {n : �
   unfold cosetForm; rw [dif_neg hx]
 
 /- English proof (translation)
-Introduce `L _ _ _ n K _ W _ _ _ ρ J χ g hg`. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Use `⟨cosetForm ρ J χ g w, ⟨fun δ x => ?_, fun μ x => ?_⟩, fun h0 => hw ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : ∃ p : GQ L n × J, x = (p.1 : GAf L n) * g * p.2`. Take `⟨⟨γ, κ⟩, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `e : (δ : GAf L n) * ((γ : GAf L n) * g * κ) = ((δ * γ : GQ L n) : GAf L n) * g * κ`. Simplify using `[mul_assoc]`. Rewrite using `[e, cosetForm_apply ρ J χ g hg, cosetForm_apply ρ J χ g hg, map_smul, map_mul, Module.End.mul_apply]`. Establish `hx' : ¬ ∃ p : GQ L n × J, (δ : GAf L n) * x = (p.1 : GAf L n) * g * p.2`. Introduce and unpack `⟨⟨γ, κ⟩, hp⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `hx ⟨(δ⁻¹ * γ, κ), ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc] at hp ⊢`. Rewrite using `[← hp]`. Use `group`. Rewrite using `[cosetForm_not ρ J χ g w _ hx, cosetForm_not ρ J χ g w _ hx', map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : ∃ p : GQ L n × J, x = (p.1 : GAf L n) * g * p.2`. Take `⟨⟨γ, κ⟩, rfl⟩` from `hx`. Establish `e : (γ : GAf L n) * g * κ * μ = (γ : GAf L n) * g * ((κ * μ : J) : GAf L n)`. Simplify using `[mul_assoc]`. Rewrite using `[e, cosetForm_apply ρ J χ g hg, cosetForm_apply ρ J χ g hg, map_mul, Units.val_mul, mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : ¬ ∃ p : GQ L n × J, x * μ = (p.1 : GAf L n) * g * p.2`. Introduce and unpack `⟨⟨γ, κ⟩, hp⟩`. Use `hx ⟨(γ, κ * μ⁻¹), ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at hp ⊢`. Rewrite using `[← mul_assoc, ← hp]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[cosetForm_not ρ J χ g w _ hx, cosetForm_not ρ J χ g w _ hx', smul_zero]`. Use `congrFun h0 g` as an intermediate fact. Establish `e` using `cosetForm_apply ρ J χ g hg w 1 1`. Simplify using `only [OneMemClass.coe_one, one_mul, mul_one, map_one, Units.val_one, one_smul] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[e, Module.End.one_apply]`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_form_of_trivial_stabiliser : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (K : Type) [Field K] (W : Type) [AddCommGroup W] [Module K W] [Nontrivial W] (ρ : Representation K (GQ L n) W) (J : Subgroup (GAf L n)) (χ : J →* Kˣ) (g : GAf L n), (∀ γ ∈ GQ L n, g⁻¹ * γ * g ∈ J → γ = 1) → ∃ f ∈ NX.TypeSpF L n K ρ J χ, f ≠ 0 := by
   intro L _ _ _ n K _ W _ _ _ ρ J χ g hg

@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.
 namespace GlobalTheory.SelfDualFil
 
 /- English proof (translation)
-Establish `hd : M.det * N.det ≠ 0`. Rewrite using `[← Matrix.det_mul, H, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hc`. Conclude with `⟨Matrix.isRegular_of_isLeftRegular_det (IsRegular.of_ne_zero (left_ne_zero_of_mul hd)).1, Matrix.isRegular_of_isLeftRegular_det (IsRegular.of_ne_zero (right_ne_zero_of_mul hd)).1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isRegular_of_mul_eq_smul {A : Type} [CommRing A] [IsDomain A] {h : ℕ}
     {M N : Matrix (Fin h) (Fin h) A} {c : A} (hc : c ≠ 0)
@@ -24,7 +24,7 @@ theorem isRegular_of_mul_eq_smul {A : Type} [CommRing A] [IsDomain A] {h : ℕ}
     Matrix.isRegular_of_isLeftRegular_det (IsRegular.of_ne_zero (right_ne_zero_of_mul hd)).1⟩
 
 /- English proof (translation)
-Apply `(isRegular_of_mul_eq_smul hc H).1.1` to reduce the goal to its premises. Use `show M * (N * M) = M * (c • 1)`. Rewrite using `[← Matrix.mul_assoc, H]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_eq_smul_comm {A : Type} [CommRing A] [IsDomain A] {h : ℕ}
     {M N : Matrix (Fin h) (Fin h) A} {c : A} (hc : c ≠ 0)
@@ -42,9 +42,9 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [Algebra ℤ_[p] Γ]
 
 /- English proof (translation)
-Apply `(isRegular_of_mul_eq_smul hμ D.G_mul_F).2.2` to reduce the goal to its premises. Use `show D.G * D.F = D.G.map (phiInv p O) * D.Ψ' * D.F`. Establish `e1 : D.G.map (phiInv p O) * D.F.map (phiInv p O) = nu ε • 1`. Rewrite using `[← Matrix.map_mul, D.G_mul_F]`. Use `ext1 i j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, phiInv_mu]`. Establish `e2 : D.Ψ' * D.F = xi ε • D.F.map (phiInv p O)` using `by conv_lhs => rw [D.F_eq]`. Rewrite using `[← Matrix.mul_assoc, mul_eq_smul_comm hξ D.Ψ_mul]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_assoc, e2, Matrix.mul_smul, e1, smul_smul, xi_mul_nu, D.G_mul_F]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem G_eq [IsDomain (Ainf p O)] (hμ : mu ε ≠ 0) (hξ : xi ε ≠ 0) (D : Datum ε h Γ) :
     D.G = D.G.map (phiInv p O) * D.Ψ' := by

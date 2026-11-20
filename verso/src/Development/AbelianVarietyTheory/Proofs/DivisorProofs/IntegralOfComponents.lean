@@ -8,9 +8,9 @@ namespace GlobalTheory.ConeEulerGen
 open MeasureTheory Filter Topology
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SectionProjectionFormula.main`. Consider the case `exact _root_.GlobalTheory.SectionProjectionFormula.main`. Consider the case `(apply _root_.GlobalTheory.SectionProjectionFormula.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SectionProjectionFormula.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SectionProjectionFormula.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SectionProjectionFormula.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integral_of_components {G A : Type} {ι : Type} [Fintype ι] {B : ι → Type}
     [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]

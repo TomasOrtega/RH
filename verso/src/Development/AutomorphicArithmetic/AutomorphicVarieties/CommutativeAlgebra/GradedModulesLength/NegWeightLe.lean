@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum]`. Use `push_cast`. Rewrite using `[← Finset.sum_neg_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : -wt i ≤ ((negW wt i : ℕ) : ℤ)`. Simplify using `only [negW]`. Conclude with `Int.self_le_toNat _`. Establish `hc : (0 : ℤ) ≤ (ν i : ℤ)` using `Int.natCast_nonneg _`. Simplify using `only [nsmul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Alg.M.neg_weight_le {τ : Type} (wt : τ → ℤ) (ν : τ →₀ ℕ) :
     -Finsupp.weight wt ν ≤ ((Finsupp.weight (negW wt) ν : ℕ) : ℤ) := by
@@ -25,13 +25,13 @@ private theorem UpperTheory.V.Alg.M.neg_weight_le {τ : Type} (wt : τ → ℤ) 
   nlinarith
 
 /- English proof (translation)
-Introduce `E τ _ wt a b g h hg hh`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `ν hν`. Rewrite using `[MvPowerSeries.coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p hp`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hw : Finsupp.weight (negW wt) p.1 + Finsupp.weight (negW wt) p.2 = Finsupp.weight (negW wt) ν`. Rewrite using `[← hp, map_add]`. Distinguish the cases in `h1 : Finsupp.weight (negW wt) p.1 < a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hg p.1 h1, zero_mul]`. Rewrite using `[hh p.2 (by omega), mul_zero]`. Introduce `j hj ν hν`. Assume the negation of the conclusion as `hne`. Establish `hwj : Finsupp.weight wt ν = j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h'`. Conclude with `hne (hj ν h')`. Establish `key` using `neg_weight_le wt ν`. Rewrite `key` using `[hwj]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.fil_holds :
     ∀ (E τ : Type) [CommRing E] (wt : τ → ℤ) (a b : ℕ) (g h : MvPowerSeries τ E), g ∈ fil E wt a → h ∈ fil E wt b →

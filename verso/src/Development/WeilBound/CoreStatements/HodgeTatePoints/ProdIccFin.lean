@@ -21,7 +21,7 @@ section Gen
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {v : Valuation C NNReal}
 
 /- English proof (translation)
-Use `⟨fun i => e.symm (Pi.single i 1), fun i => ?_, fun x => ⟨fun i => Quotient.out (e x i), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← map_smul, single_smul_self, map_zero]`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [map_sum, map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `eq_sum_single c (e x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gens_of_len {M : Type} [AddCommGroup M] [Module R M] {m : ℕ} {c : Fin m → R}
     (e : M ≃ₗ[R] ((i : Fin m) → R ⧸ Ideal.span {c i})) :
@@ -33,19 +33,19 @@ lemma gens_of_len {M : Type} [AddCommGroup M] [Module R M] {m : ℕ} {c : Fin m 
     exact eq_sum_single c (e x)
 
 /- English proof (translation)
-Take `⟨m, α, ⟨e⟩, rfl⟩` from `ha`. Take `⟨n, γ, ⟨e'⟩, rfl⟩` from `hd`. Take `⟨u, hu0, hu⟩` from `gens_of_len e`. Take `⟨w, hw0, hw⟩` from `gens_of_len e'`. Use `choose z hz using fun j => hπ (w j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : ∀ x, π x = 0 → ∃ r : Fin m → R, x = ∑ i, r i • ι (u i)`. Introduce `x hx`. Take `⟨y, rfl⟩` from `hex x hx`. Take `⟨r, rfl⟩` from `hu y`. Conclude with `⟨r, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `prod_le_of_gen hv hb (Fin.append (fun i => ι (u i)) z) ?_ (Fin.append α γ) ?_`. Rewrite `h` using `[Fin.prod_univ_add]`. Simplify using `using h`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hw (π x)`. Take `⟨r, hr⟩` from `hk (x - ∑ j, s j • z j) (by simp [hz, ← hs])`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨Fin.append r s, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.append_left, Fin.append_right]`. Rewrite using `[← hr, sub_add_cancel]`. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun j => ?_) i` and prove the remaining obligations. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[← map_smul, hu0]`. Take `⟨r, hr⟩` from `hk (γ j • z j) (by rw [map_smul, hz, hw0])`. Use `⟨Fin.append r 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Establish `hlt : ∀ i : Fin m, Fin.castAdd n i < Fin.natAdd m j` using `fun i => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[hlt, hr]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma len_mul_le (hv : v.Integers R) {A B D : Type} [AddCommGroup A] [Module R A] [AddCommGroup B]
     [Module R B] [AddCommGroup D] [Module R D] (ι : A →ₗ[R] B) (π : B →ₗ[R] D)
@@ -90,9 +90,9 @@ variable {F : Type} [Field F] {N X : Type} [AddCommGroup N] [Module F N] [AddCom
   [Module F X]
 
 /- English proof (translation)
-Set `φ : (N → C) →ₗ[R] (F × N → C)` to `LinearMap.pi fun q => LinearMap.proj (q.1 • q.2) - χ q.1 • LinearMap.proj q.2`. Establish `hφ : ∀ g q, φ g q = g (q.1 • q.2) - algebraMap R C (χ q.1) * g q.2` using `fun g q => by`. Simplify using `[φ, Algebra.smul_def]`. Use `fg_of_iff (fg_inf_comap hv M hM φ ⊥ Submodule.fg_bot) fun g => ⟨fun hg => ⟨hg.1, ?_⟩, fun hg => ⟨hg.1, fun a x => ?_⟩⟩` and prove the remaining obligations. Use `show φ g = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Rewrite using `[hφ, hg.2, sub_self, Pi.zero_apply]`. Establish `: φ g (a, x) = 0` using `congrFun (hg.2 : φ g = 0) _`. Rewrite `this` using `[hφ]`. Conclude with `sub_eq_zero.1 this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eig_fg (hv : v.Integers R) (M : Submodule R (N → C)) (hM : M.FG) (χ : MulChar F R) :
     (eig M χ).FG := by
@@ -116,7 +116,7 @@ def omMap (χ : MulChar F R) (φ : X →ₗ[F] N) (M : Submodule R (N → C))
     (fun _ hg => sq_pull φ.toAddMonoidHom M M' h hg)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.prod_Icc_succ_top (by omega), ih, Fin.prod_univ_castSucc]; rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma prod_Icc_fin (r : ℕ → NNReal) (n : ℕ) :
     ∏ m ∈ Finset.Icc 1 n, r m = ∏ i : Fin n, r ((i : ℕ) + 1) := by
@@ -127,17 +127,17 @@ lemma prod_Icc_fin (r : ℕ → NNReal) (n : ℕ) :
 end Gen
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hvp F _ _ _ _ f _ N _ _ _ _ AA hAA K χ a b c ha hb hc`. Establish `hu` using `exists_inv_card (F := F) hv p hvp`. Establish `hQ : FStable F (AA.carrier.comap (LinearMap.funLeft R C K.mkQ))` using `fstable_comap _ hAA _`. Rewrite using `[mul_comm]`. Use `len_mul_le hv (omMap χ K.mkQ (AA.carrier.comap (LinearMap.funLeft R C K.mkQ)) AA.carrier (fun _ hg => hg)) (omMap χ K.subtype AA.carrier (AA.carrier.map (LinearMap.funLeft R C K.subtype)) (fun _ hg => Submodule.mem_map_of_mem hg)) ?_ ?_ hb hc ha` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Take `⟨⟨h, hh⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨g, hg, hgh⟩` from `hh.1`. Establish `hga : g ∈ augIdeal AA.carrier`. Rewrite using `[mem_aug]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hg, ?_⟩` and prove the remaining obligations. Use `((mem_aug _ _).1 (eig_le_aug _ χ hh)).2` as an intermediate fact. Rewrite `this` using `[← hgh]`. Conclude with `this`. Use `⟨Submodule.Quotient.mk ⟨projL χ g, projL_eig hu χ hAA hga⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Submodule.Quotient.mk (Subtype.ext ?_)` and prove the remaining obligations. Use `show LinearMap.funLeft R C K.subtype (projL χ g) = h`. Rewrite using `[← projL_funLeft, ← projL_self χ hh, ← hgh]`. Introduce `x hx`. Take `⟨⟨g, hg⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx'` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Take `⟨q, hq, hgq⟩` from `om_exact hv AA K.subtype.toAddMonoidHom K.mkQ.toAddMonoidHom K.mkQ_surjective Subtype.val_injective (range_subtype_eq K) g (eig_le_aug _ χ hg) hx'`. Use `⟨Submodule.Quotient.mk ⟨projL χ q, projL_eig hu χ hQ hq⟩, ?_⟩` and prove the remaining obligations. Use `symm`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show g - LinearMap.funLeft R C K.mkQ (projL χ q) ∈ sqIdeal (augIdeal AA.carrier)`. Use `projL_mem hu χ _ (fstable_sq hAA) hgq` as an intermediate fact. Rewrite `this` using `[map_sub, projL_self χ hg]`. Rewrite using `[← projL_funLeft]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_step : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (K : Submodule F N) (χ : MulChar F R) (a b c : NNReal), HasLen v R (OmType (AA.carrier.map (LinearMap.funLeft R C (Subtype.val : K → N))) χ) a → HasLen v R (OmType (AA.carrier.comap (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K))) χ) b → HasLen v R (OmType AA.carrier χ) c → a * b ≤ c := by
   intro p _ C _ _ _ v R _ _ hv hvp F _ _ _ _ f _ N _ _ _ _ AA hAA K χ a b c ha hb hc
@@ -176,27 +176,25 @@ theorem om_step : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed
     exact this
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hvp F _ _ _ _ f hf N _ _ _ _ AA hAA σ hσ`. Use `hv.hom_inj.isDomain` as an intermediate fact. Establish `hu` using `exists_inv_card (F := F) hv p hvp`. Establish `hfg` using `fg_of_isLat AA.lat`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `χ`. Take `⟨-, -, cO, -, -, hcO0, -, -, hcO⟩` from `lens p C v R hv hvp N (fun x => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul F, CharP.cast_eq_zero, zero_smul]) AA`. Take `⟨r, hr⟩` from `exists_hasLen hv _ _ (eig_fg hv _ hfg χ) (sq_aug_fg hv _ hfg)`. Use `⟨r, ?_, hr⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs0, hs⟩` from `(len_ne_zero_iff hv hcO).1 hcO0`. Use `(len_ne_zero_iff hv hr).2 ⟨s, hs0, fun m => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `h` using `hs (Submodule.Quotient.mk ⟨g, eig_le_aug _ χ g.2⟩)`. Rewrite `h`, the goal using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `h`. Introduce `r hr`. Take `⟨hord, -, -, -, hsep⟩` from `GlobalTheory.CompanionTheory.Ar.GR.FundGen.main p C v R hv hvp F f hf σ hσ`. Establish `hn : p ^ f - 1 = Fintype.card Fˣ` using `by rw [Fintype.card_units, hf]`. Rewrite `hr`, `hord`, the goal using `[hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum` using `sum_projL (C := C) (N := N) σ (fun a ha => by`. Assume the negation of the conclusion as `hne`. Use `hsep a 1 (fun h => hne (Units.ext h))` as an intermediate fact. Rewrite `this` using `[ha, map_one, sub_self, map_zero, map_zero]`. Conclude with `zero_ne_one this)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Ψ : augIdeal AA.carrier →ₗ[R] ((i : Fin (Fintype.card Fˣ)) → OmType AA.carrier (σ ^ ((i : ℕ) + 1)))` to `LinearMap.pi fun i => Submodule.mkQ _ ∘ₗ (projL (σ ^ ((i : ℕ) + 1))).restrict fun _ hg => projL_eig hu _ hAA hg`. Establish `hsurj : Function.Surjective Ψ`. Introduce `y`. Use `choose g hg using fun i => Submodule.Quotient.mk_surjective _ (y i)`. Use `⟨⟨∑ i, (g i : N → C), Submodule.sum_mem _ fun i _ => eig_le_aug _ _ (g i).2⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← hg i]`. Use `congrArg Submodule.Quotient.mk (Subtype.ext ?_)` and prove the remaining obligations. Use `show projL (σ ^ ((i : ℕ) + 1)) (∑ i, (g i : N → C)) = g i`. Rewrite using `[map_sum, Finset.sum_eq_single i, projL_self _ (g i).2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Use `projL_ne (fun h => hj ?_) (g j).2` and prove the remaining obligations. Rewrite `h` using `[pow_succ, pow_succ]`. Conclude with `Fin.ext (pow_injOn_Iio_orderOf (by rw [hord]; exact j.2) (by rw [hord]; exact i.2) (mul_right_cancel h).symm)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : (sqIdeal (augIdeal AA.carrier)).comap (augIdeal AA.carrier).subtype = LinearMap.ker Ψ`. Use extensionality with `g`. Rewrite using `[LinearMap.mem_ker, funext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hg i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (projL_mem hu _ _ (fstable_sq hAA) hg)`. Introduce `hg show (g : N → C) ∈ sqIdeal (augIdeal AA.carrier)`. Rewrite using `[← hsum g]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (Submodule.Quotient.mk (⟨projL (σ ^ ((i : ℕ) + 1)) (g : N → C), projL_eig hu _ hAA g.2⟩ : eig AA.carrier (σ ^ ((i : ℕ) + 1))) : OmType AA.carrier (σ ^ ((i : ℕ) + 1))) = 0` using `hg i`.
-
-Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `h1`. Rewrite using `[prod_Icc_fin]`. Conclude with `hasLen_of_equiv ((Submodule.quotEquivOfEq _ _ hker).trans (Ψ.quotKerEquivOfSurjective hsurj)) (Tot.hasLen_pi _ _ fun i => hr _ (Finset.mem_Icc.2 ⟨by omega, i.2⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_split : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ σ : MulChar F R, IsFund p σ → (∀ χ : MulChar F R, ∃ r : NNReal, r ≠ 0 ∧ HasLen v R (OmType AA.carrier χ) r) ∧ ∀ r : ℕ → NNReal, (∀ m ∈ Finset.Icc 1 (p ^ f - 1), HasLen v R (OmType AA.carrier (σ ^ m)) (r m)) → HasLen v R (OmAA AA.carrier) (∏ m ∈ Finset.Icc 1 (p ^ f - 1), r m) := by
   intro p _ C _ _ _ v R _ _ hv hvp F _ _ _ _ f hf N _ _ _ _ AA hAA σ hσ

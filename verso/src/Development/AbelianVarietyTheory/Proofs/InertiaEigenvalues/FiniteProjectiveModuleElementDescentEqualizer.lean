@@ -13,7 +13,7 @@ variable {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M
   [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N}
 
 /- English proof (translation)
-Take `⟨w, -, hw⟩` from `h (N ⧸ Submodule.span B (Set.range u)) 0`. Establish `h1` using `hw (Submodule.mkQ _) fun x => (Submodule.Quotient.mk_eq_zero _).2 (Submodule.subset_span ⟨x, rfl⟩)`. Establish `h2` using `hw 0 fun _ => rfl`. Rewrite using `[← Submodule.ker_mkQ (Submodule.span B (Set.range u)), h1, ← h2, LinearMap.ker_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_top (h : SemiBC u) : Submodule.span B (Set.range u) = ⊤ := by
   obtain ⟨w, -, hw⟩ := h (N ⧸ Submodule.span B (Set.range u)) 0
@@ -23,9 +23,9 @@ theorem span_top (h : SemiBC u) : Submodule.span B (Set.range u) = ⊤ := by
   rw [← Submodule.ker_mkQ (Submodule.span B (Set.range u)), h1, ← h2, LinearMap.ker_zero]
 
 /- English proof (translation)
-Establish `hy : y ∈ Submodule.span B (Set.range u)` using `by rw [span_top h]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem _ hx => obtain ⟨x, rfl⟩ := hx`. Conclude with `h0 x`. Consider the case `zero => rw [← map_zero u]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `h0 0`. Consider the case `add y z _ _ hy hz => exact h1 y z hy hz`. Consider the case `smul b y _ hy => exact h2 b y hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem induction (h : SemiBC u) (P : N → Prop) (h0 : ∀ x, P (u x)) (h1 : ∀ y z, P y → P z → P (y + z))
     (h2 : ∀ (b : B) y, P y → P (b • y)) (y : N) : P y := by
@@ -39,21 +39,21 @@ theorem induction (h : SemiBC u) (P : N → Prop) (h0 : ∀ x, P (u x)) (h1 : �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `A B D _ _ _ f p q hpq hf hfix P _ _ _ _ PB _ _ PD _ _ u u₁ u₂ w hu hw h₁ h₂`. Take `⟨n, s, g, -, -, hsg⟩` from `Module.Finite.exists_comp_eq_id_of_projective A P`. Establish `hx : ∀ x, s (g x) = x` using `fun x => LinearMap.congr_fun hsg x`. Use `set e : Fin n → P := fun i => s (fun j => if i = j then 1 else 0) with he`. Establish `hdec : ∀ c : Fin n → A, u (s c) = ∑ i, f (c i) • u (e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ s c, map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ, e]`. Take `⟨WB, hWB, -⟩` from `hu (Fin n → B) { toFun := fun x i => f (g x i) map_add' := fun x y => funext fun i => by simp map_smul' := fun a x => funext fun i => by simp }`. Take `⟨WD, hWD, -⟩` from `hw (Fin n → D) { toFun := fun x i => p (f (g x i)) map_add' := fun x y => funext fun i => by simp map_smul' := fun a x => funext fun i => by simp }`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWB' : ∀ x i, WB (u x) i = f (g x i)` using `fun x i => congrFun (hWB x) i`. Establish `hWD' : ∀ x i, WD (w x) i = p (f (g x i))` using `fun x i => congrFun (hWD x) i`. Establish `hrec : ∀ z, z = ∑ i, WB z i • u (e i)`. Introduce `z`. Use `induction hu (fun z => z = ∑ i, WB z i • u (e i)) (fun x => ?_) (fun y z hy hz => ?_) (fun b y hy => ?_) z` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hx x]`. Rewrite using `[hdec]`. Simplify using `only [hWB']`. Use `conv_lhs => rw [hy, hz]`. Simplify using `only [map_add, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [hy]`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`. Establish `hp : ∀ z i, p (WB z i) = WD (u₁ z) i`. Introduce `z`. Use `induction hu (fun z => ∀ i, p (WB z i) = WD (u₁ z) i) (fun x i => ?_) (fun y z hy hz i => ?_) (fun b y hy i => ?_) z` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h₁, hWD', hWB']`. Simplify using `only [map_add, Pi.add_apply, hy, hz]`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ, Pi.smul_apply, smul_eq_mul, map_mul, hy]`. Establish `hq : ∀ z i, q (WB z i) = WD (u₂ z) i`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `induction hu (fun z => ∀ i, q (WB z i) = WD (u₂ z) i) (fun x i => ?_) (fun y z hy hz i => ?_) (fun b y hy i => ?_) z` and prove the remaining obligations. Rewrite using `[← h₂, hWD', hWB']`. Conclude with `(RingHom.congr_fun hpq (g x i)).symm`. Simplify using `only [map_add, Pi.add_apply, hy, hz]`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ, Pi.smul_apply, smul_eq_mul, map_mul, hy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨fun x y hxy => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hg : g x = g y` using `funext fun i => hf (by rw [← hWB', ← hWB', hxy])`. Rewrite using `[← hx x, ← hx y, hg]`. Establish `hb : ∀ i, ∃ b, f b = WB z i` using `fun i => RingHom.mem_range.1 (hfix _ (by rw [hp, hq, hz])) choose b hb using hb`. Conclude with `⟨s b, by rw [hdec]; simp only [hb]; exact (hrec z).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem descent : ∀ (A B D : Type) [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (p q : B →+* D), p.comp f = q.comp f → Function.Injective f → (∀ b, p b = q b → b ∈ f.range) → ∀ (P : Type) [AddCommGroup P] [Module A P] [Module.Finite A P] [Module.Projective A P] (PB : Type) [AddCommGroup PB] [Module B PB] (PD : Type) [AddCommGroup PD] [Module D PD] (u : P →ₛₗ[f] PB) (u₁ : PB →ₛₗ[p] PD) (u₂ : PB →ₛₗ[q] PD) (w : P →ₛₗ[p.comp f] PD), SemiBC u → SemiBC w → (∀ x, w x = u₁ (u x)) → (∀ x, w x = u₂ (u x)) → Function.Injective u ∧ ∀ z, u₁ z = u₂ z → ∃ y, u y = z := by
   intro A B D _ _ _ f p q hpq hf hfix P _ _ _ _ PB _ _ PD _ _ u u₁ u₂ w hu hw h₁ h₂

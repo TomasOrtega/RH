@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Set `g : (Fin n → S) →ₗ[ℂ] (Fin n → M)` to `LinearMap.pi fun c => S.subtype ∘ₗ LinearMap.proj c`. Establish `: Submodule.pi Set.univ (fun _ : Fin n => S) = LinearMap.range g`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun c => ⟨f c, mem_pi_submodule_iff.1 hf c⟩, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `mem_pi_submodule_iff.2 fun c => by simp [g]`. Rewrite using `[this]`. Use `infer_instance`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_submodule_finiteDimensional {M : Type*} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) [FiniteDimensional ℂ S] :
     FiniteDimensional ℂ (Submodule.pi Set.univ fun _ : Fin n => S) := by
@@ -38,13 +38,11 @@ variable {ε : Fin n → Bool} {M : Type*} [NormedAddCommGroup M] [InnerProductS
   {φ : (Fin n → M) →ₗ[ℂ] N} {θ : ℝ}
 
 /- English proof (translation)
-Establish `hxg` using `(mem_euler_eigenspace_iff.1 hx).1`. Establish `hGs : ∀ a b, ∀ v ∈ genSub E V, E a b v ∈ genSub E V` using `fun a b v hv => generated_submodule_stable_under_action V a b hv`. Use `choose m hm using fun c => exists_layer_of_mem_genSub hE hVk (hxg c)`. Use `set K := Finset.univ.sup m`. Establish `hxK : ∀ c, x c ∈ layer ε E V K` using `fun c => layer_mono (Finset.le_sup (mem_univ c)) (hm c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfdL : FiniteDimensional ℂ (layer ε E V K)` using `finiteDimensional_layer hVfd K`. Establish `hLk` using `layer_kStable hE hVk K`. Use `pi_submodule_finiteDimensional (n := n) (layer ε E V K)` as an intermediate fact. Use `⟨Submodule.pi Set.univ (fun _ => layer ε E V K) ⊓ Xs (eeVd E) (genSub E V) θ, inf_le_right, Submodule.finiteDimensional_of_le inf_le_left, ?_, ⟨mem_pi_submodule_iff.2 hxK, hx⟩⟩` and prove the remaining obligations. Introduce `a b hab f hf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mem_pi_submodule_iff.2 fun c => ?_, euler_eigenspace_stable_under_action hE hGs a b hf.2⟩` and prove the remaining obligations. Rewrite using `[tensor_dual_action_apply_component]`. Use `sub_mem (hLk a b hab _ (mem_pi_submodule_iff.1 hf.1 c)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `mem_pi_submodule_iff.1 hf.1 a`.
-
-Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eigenspace_K_finite (hE : IsGlRep E) (hVfd : FiniteDimensional ℂ V) (hVk : IsKStableSub ε E V)
     {x : Fin n → M} (hx : x ∈ Xs (eeVd E) (genSub E V) θ) :
@@ -70,9 +68,9 @@ theorem eigenspace_K_finite (hE : IsGlRep E) (hVfd : FiniteDimensional ℂ V) (h
   · exact zero_mem _
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨S, hSX, hfd, hSk, hxS⟩` from `eigenspace_K_finite hE hVfd hVk hx`. Use `⟨S.map φ, Submodule.map_mono hSX, inferInstance, ?_, Submodule.mem_map_of_mem hxS⟩` and prove the remaining obligations. Introduce `a b hab v hv`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hφ a b f (mem_euler_eigenspace_iff.1 (hSX hf)).1]`. Conclude with `Submodule.mem_map_of_mem (hSk a b hab f hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_eigenspace_K_finite (hE : IsGlRep E) (hVfd : FiniteDimensional ℂ V) (hVk : IsKStableSub ε E V)
     (hφ : ∀ (a b : Fin n) (f : Fin n → M), (∀ c, f c ∈ genSub E V) → φ (tensVd E a b f) = EN a b (φ f))
@@ -88,9 +86,9 @@ theorem image_eigenspace_K_finite (hE : IsGlRep E) (hVfd : FiniteDimensional ℂ
   exact Submodule.mem_map_of_mem (hSk a b hab f hf)
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨S, hSX, hfd, hSk, hxS⟩` from `eigenspace_K_finite hE hVfd hVk hx`. Take `⟨x1, hx1S, hkhw, hfx⟩` from `exists_highest_weight_lift_pi (isKUnitary_of_isInfUnitary hU) φ hfd hSk (fun a b _ z hz => hφ a b z (mem_euler_eigenspace_iff.1 (hSX hz)).1) hxS hμ`. Establish `hx10 : x1 ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hfx` using `[map_zero]`. Conclude with `hy0 hfx.symm`. Conclude with `hK2 μ x1 (hSX hx1S) hx10 hkhw`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_weights_in_root_cone (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hVfd : FiniteDimensional ℂ V)
     (hVk : IsKStableSub ε E V)
@@ -118,13 +116,11 @@ variable {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n → Fin n → Mo
   {N : Type*} [AddCommGroup N] [Module ℂ N] {EN : Fin n → Fin n → Module.End ℂ N}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hGs : ∀ a b, ∀ v ∈ genSub E V, E a b v ∈ genSub E V` using `fun a b v hv => generated_submodule_stable_under_action V a b hv`. Use `set T : Submodule ℂ (Fin n → M) := Submodule.pi Set.univ (fun _ => genSub E V) ⊓ LinearMap.ker (φ ∘ₗ P) with hT`. Establish `hle : genSub (tensVd E) (Submodule.pi Set.univ fun _ => V) ≤ T`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `genSub`. Use `sInf_le ⟨fun u hu => ⟨mem_pi_submodule_iff.2 fun c => le_generatedSubmodule_dual V (mem_pi_submodule_iff.1 hu c), ?_⟩, fun a b v hv => ⟨mem_pi_submodule_iff.2 (dualTensorAction_mem hGs a b (mem_pi_submodule_iff.1 hv.1)), ?_⟩⟩` and prove the remaining obligations. Conclude with `LinearMap.mem_ker.2 (hcon u (mem_pi_submodule_iff.1 hu))`. Establish `hv2 : φ (P v) = 0` using `LinearMap.mem_ker.1 hv.2`. Use `LinearMap.mem_ker.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply]`. Establish `hc` using `(hPc a b).eq`. Establish `: P (tensVd E a b v) = tensVd E a b (P v)`. Rewrite using `[← Module.End.mul_apply, hc, Module.End.mul_apply]`. Rewrite using `[this, hφ a b _ (hPg v (mem_pi_submodule_iff.1 hv.1)), hv2, map_zero]`.
-
-Establish `hxT` using `hle (hGen x hx)`. Conclude with `hPx (LinearMap.mem_ker.1 hxT.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_commuting_projection_image (V : Submodule ℂ M)
     (hGen : ∀ f : Fin n → M, (∀ c, f c ∈ genSub E V) →

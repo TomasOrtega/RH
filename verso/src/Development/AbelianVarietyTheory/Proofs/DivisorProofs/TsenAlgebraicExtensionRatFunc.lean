@@ -8,7 +8,7 @@ namespace GlobalTheory
 
 open Polynomial in
 /- English proof (translation)
-Introduce `ν hν`. Apply `hp` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_map]`. Introduce `h`. Conclude with `hν (hφ (h.trans (map_zero φ).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isHomogeneous_of_map_of_injective {R S : Type} [CommRing R] [CommRing S] {φ : R →+* S}
     (hφ : Function.Injective φ) {n d : ℕ} {p : MvPolynomial (Fin n) R}
@@ -21,7 +21,7 @@ private theorem isHomogeneous_of_map_of_injective {R S : Type} [CommRing R] [Com
 
 open Polynomial in
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem mvPolynomial_eval_map_comp {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ}
     (x : Fin n → R) (p : MvPolynomial (Fin n) R) :
@@ -33,11 +33,11 @@ private theorem mvPolynomial_eval_map_comp {R S : Type} [CommRing R] [CommRing S
 
 open Polynomial in
 /- English proof (translation)
-Use `set E := IntermediateField.adjoin F (f.coeffs : Set K) with hE`. Use `haveI : FiniteDimensional F E := IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Choose the witnesses or unpack the hypotheses as in `⟨fE, hfE⟩ : f ∈ Set.range (MvPolynomial.map (algebraMap E K)) := by`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨a, IntermediateField.subset_adjoin F _ ha⟩, rfl⟩`. Establish `hfEh : fE.IsHomogeneous d` using `isHomogeneous_of_map_of_injective (algebraMap E K).injective (hfE ▸ hf)`. Take `⟨x, hx0, hx⟩` from `_root_.GlobalTheory.c_one_of_finite_extension F E hF n d fE hfEh hd hdn`. Use `⟨algebraMap E K ∘ x, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `(algebraMap E K).injective (by simpa using congrFun h i)`. Rewrite using `[← hfE, mvPolynomial_eval_map_comp, hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_homogeneous_zero_of_forall_subfield {F K : Type} [Field F] [Field K] [Algebra F K]
     [Algebra.IsAlgebraic F K]
@@ -66,7 +66,7 @@ private theorem exists_ne_zero_homogeneous_zero_of_forall_subfield {F K : Type} 
 open Polynomial in
 variable {σ k : Type} [CommRing k] in
 /- English proof (translation)
-Introduce `j` and use `by rw [Polynomial.finset_sum_coeff] exact MvPolynomial.IsHomogeneous.sum _ _ _ fun i hi => hp i hi j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem coeffHom_sum {ι : Type} (s : Finset ι) {e : ℕ} (p : ι → (MvPolynomial σ k)[X])
     (hp : ∀ i ∈ s, _root_.GlobalTheory.TsenCount.CoeffHom e (p i)) :
@@ -77,7 +77,7 @@ private theorem coeffHom_sum {ι : Type} (s : Finset ι) {e : ℕ} (p : ι → (
 open Polynomial in
 variable {σ k : Type} [CommRing k] in
 /- English proof (translation)
-Introduce `j` and use `by rw [Polynomial.coeff_mul] exact MvPolynomial.IsHomogeneous.sum _ _ _ fun x _ => (hp x.1).mul (hq x.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem coeffHom_mul {e e' : ℕ} {p q : (MvPolynomial σ k)[X]}
     (hp : _root_.GlobalTheory.TsenCount.CoeffHom e p) (hq : _root_.GlobalTheory.TsenCount.CoeffHom e' q) :
@@ -88,9 +88,9 @@ private theorem coeffHom_mul {e e' : ℕ} {p q : (MvPolynomial σ k)[X]}
 open Polynomial in
 variable {σ k : Type} [CommRing k] in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `j`. Rewrite using `[Finset.prod_empty, Finset.sum_empty, Polynomial.coeff_one]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `MvPolynomial.isHomogeneous_one _ _`. Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `coeffHom_mul (hp a (Finset.mem_insert_self a s)) (ih fun i hi => hp i (Finset.mem_insert_of_mem hi))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeffHom_prod {ι : Type} [DecidableEq ι] (s : Finset ι) (e : ι → ℕ)
     (p : ι → (MvPolynomial σ k)[X]) (hp : ∀ i ∈ s, _root_.GlobalTheory.TsenCount.CoeffHom (e i) (p i)) :
@@ -110,7 +110,7 @@ private theorem coeffHom_prod {ι : Type} [DecidableEq ι] (s : Finset ι) (e : 
 open Polynomial in
 variable {σ k : Type} [CommRing k] in
 /- English proof (translation)
-Use `coeffHom_prod (Finset.range m) (fun _ => e) (fun _ => p) (fun _ _ => hp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem coeffHom_pow {e : ℕ} {p : (MvPolynomial σ k)[X]}
     (hp : _root_.GlobalTheory.TsenCount.CoeffHom e p) (m : ℕ) :
@@ -119,21 +119,19 @@ private theorem coeffHom_pow {e : ℕ} {p : (MvPolynomial σ k)[X]}
   simpa using this
 
 /- English proof (translation)
-Establish `hM0 : (MvPolynomial.vanishingIdeal k {(0 : Fin m → k)}).IsMaximal` using `MvPolynomial.isMaximal_iff_eq_vanishingIdeal_singleton.2 ⟨0, rfl⟩`. Establish `hIM : Ideal.span (Set.range g) ≤ MvPolynomial.vanishingIdeal k {(0 : Fin m → k)}`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, MvPolynomial.mem_vanishingIdeal_singleton_iff, MvPolynomial.aeval_eq_eval]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg i`. Take `⟨Q, hQmin, hQM⟩` from `Ideal.exists_minimalPrimes_le hIM`. Establish `hQprime : Q.IsPrime` using `hQmin.1.1`. Establish `hht : Q.height ≤ r`. Use `(Ideal.height_le_spanRank_toENat_of_mem_minimalPrimes _ Q hQmin).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `Submodule.spanRank_span_le_card (R := MvPolynomial (Fin m) k) (Set.range g)`. Establish `h2 : Cardinal.mk (Set.range g) ≤ r`. Simplify using `using Cardinal.mk_range_le (f := g)`. Combine the equalities or inequalities in the displayed calculation. Establish `hQne : Q ≠ MvPolynomial.vanishingIdeal k {(0 : Fin m → k)}`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hQ`. Establish `hm` using `(_root_.ReciprocityTheory.CA.height_maximal_mvPolynomial_field k m (MvPolynomial.vanishingIdeal k {(0 : Fin m → k)})).2`. Establish `hm' : Q.height = m` using `hQ ▸ hm`. Rewrite `hht` using `[hm']`. Establish `: m ≤ r` using `by exact_mod_cast hht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hex : ∃ J : Ideal (MvPolynomial (Fin m) k), J.IsMaximal ∧ Q ≤ J ∧ J ≠ MvPolynomial.vanishingIdeal k {(0 : Fin m → k)}`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hjac : Q.jacobson = Q` using `isJacobsonRing_iff_prime_eq.1 inferInstance Q hQprime`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : MvPolynomial.vanishingIdeal k {(0 : Fin m → k)} ≤ Q.jacobson`. Rewrite using `[Ideal.jacobson]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `J ⟨hQJ, hJ⟩`. Rewrite using `[hcon J hJ hQJ]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hQne (le_antisymm hQM (hjac ▸ hle))`. Take `⟨J, hJ, hQJ, hJne⟩` from `hex`. Take `⟨x, rfl⟩` from `MvPolynomial.isMaximal_iff_eq_vanishingIdeal_singleton.1 hJ`. Use `⟨x, ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
-
-Conclude with `hJne rfl`. Establish `hx : g i ∈ MvPolynomial.vanishingIdeal k {x}` using `hQJ (hQmin.1.2 (Ideal.subset_span ⟨i, rfl⟩))`. Rewrite `hx` using `[MvPolynomial.mem_vanishingIdeal_singleton_iff, MvPolynomial.aeval_eq_eval]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_common_zero_of_lt {k : Type} [Field k] [IsAlgClosed k] {m r : ℕ}
     (g : Fin r → MvPolynomial (Fin m) k) (hg : ∀ i, MvPolynomial.eval 0 (g i) = 0) (hr : r < m) :
@@ -185,45 +183,39 @@ private theorem exists_ne_zero_common_zero_of_lt {k : Type} [Field k] [IsAlgClos
 
 open Polynomial in
 /- English proof (translation)
-Use `set D := F.support.sup fun ν => (F.coeff ν).natDegree with hD`. Establish `hDle : ∀ ν, (F.coeff ν).natDegree ≤ D`. Introduce `ν`. Distinguish the cases in `hν : ν ∈ F.support`. Conclude with `Finset.le_sup (f := fun ν => (F.coeff ν).natDegree) hν`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MvPolynomial.notMem_support_iff.1 hν]`. Simplify using the standard rewrite rules. Use `set s := D`. Use `set m := n * (s + 1)`. Use `set e : Fin n × Fin (s + 1) ≃ Fin m := finProdFinEquiv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Set `y : Fin n → (MvPolynomial (Fin m) k)[X]` to `fun i => ∑ j : Fin (s + 1), Polynomial.C (MvPolynomial.X (e (i, j))) * Polynomial.X ^ (j : ℕ)`. Set `Φ : (MvPolynomial (Fin m) k)[X]` to `MvPolynomial.eval₂ (Polynomial.mapRingHom (MvPolynomial.C)) y F`. Establish `hy : ∀ i, _root_.GlobalTheory.TsenCount.CoeffHom 1 (y i)`. Introduce `i`. Use `coeffHom_sum _ _ fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `l`. Rewrite using `[Polynomial.coeff_C_mul_X_pow]`. Use `split_ifs`. Conclude with `MvPolynomial.isHomogeneous_X _ _`. Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyd : ∀ i, (y i).natDegree ≤ s`. Introduce `i`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 j.2)`. Establish `hΦ : _root_.GlobalTheory.TsenCount.CoeffHom d Φ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Φ, MvPolynomial.eval₂_eq']`. Use `coeffHom_sum _ _ fun ν hν => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i, ν i = d`. Use `hF (MvPolynomial.mem_support_iff.1 hν)` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Establish `h1 : _root_.GlobalTheory.TsenCount.CoeffHom 0 ((Polynomial.mapRingHom (MvPolynomial.C (σ` using `Fin m))) (F.coeff ν)) := by`. Introduce `l`. Rewrite using `[Polynomial.coe_mapRingHom, Polynomial.coeff_map]`. Conclude with `MvPolynomial.isHomogeneous_C _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `coeffHom_prod Finset.univ (fun i => ν i * 1) (fun i => y i ^ ν i) (fun i _ => coeffHom_pow (hy i) (ν i))`. Establish `h3` using `coeffHom_mul h1 h2`. Simplify `h3` using `[hdeg]`. Establish `hΦdeg : Φ.natDegree ≤ D + d * s`. Simplify using `only [Φ, MvPolynomial.eval₂_eq']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν hν => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i, ν i = d`. Use `hF (MvPolynomial.mem_support_iff.1 hν)` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype]`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(Polynomial.natDegree_mul_le).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Conclude with `(Polynomial.natDegree_map_le).trans (hDle ν)`. Use `(Polynomial.natDegree_prod_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `set r := D + d * s + 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrm : r < m`. Simplify using `only [r, m, s]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨a, ha0, ha⟩` from `exists_ne_zero_common_zero_of_lt (k := k) (m := m) (r := r) (fun j => Φ.coeff j) (fun j => by`. Rewrite using `[MvPolynomial.eval_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hΦ j).coeff_eq_zero (by simp; omega)) hrm`. Set `x : Fin n → k[X]` to `fun i => ∑ j : Fin (s + 1), Polynomial.C (a (e (i, j))) * Polynomial.X ^ (j : ℕ)`. Establish `hmapΦ : Polynomial.map (MvPolynomial.eval a) Φ = 0`. Use extensionality with `j`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : j < r`. Conclude with `ha ⟨j, hj⟩`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), map_zero]`. Establish `hΦx : Polynomial.map (MvPolynomial.eval a) Φ = MvPolynomial.eval x F`. Establish `h1` using `MvPolynomial.eval₂_comp_left (Polynomial.mapRingHom (MvPolynomial.eval a)) (Polynomial.mapRingHom (MvPolynomial.C (σ := Fin m))) y F`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[Polynomial.coe_mapRingHom]`. Simplify using `only [Φ]`. Rewrite using `[h1]`. Establish `h2 : (Polynomial.mapRingHom (MvPolynomial.eval a)).comp (Polynomial.mapRingHom (MvPolynomial.C (σ` using `Fin m))) = RingHom.id k[X] := by`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : (MvPolynomial.eval a).comp (MvPolynomial.C (σ` using `Fin m)) = RingHom.id k := by`. Use extensionality with `c`. Simplify using the standard rewrite rules. Rewrite using `[RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.coe_mapRingHom, Polynomial.map_map, hc, Polynomial.map_id, RingHom.id_apply]`. Establish `h3 : Polynomial.map (MvPolynomial.eval a) ∘ y = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[y, x, Polynomial.map_sum]`. Rewrite using `[h2, h3]`. Both sides reduce to the same expression. Use `⟨x, ?_, hΦx ▸ hmapΦ⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, a t ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `ha0 (funext hcon)`. Take `⟨⟨i, j⟩, rfl⟩` from `e.surjective t`.
-
-Introduce `hx`. Establish `hxi : (x i).coeff j = 0`. Rewrite using `[congrFun hx i]`. Simplify using the standard rewrite rules. Establish `hc : (x i).coeff j = a (e (i, j))`.
-
-Simplify using `only [x, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`.
-
-Introduce `h`. Conclude with `hb (Fin.ext h.symm)`. Simplify using the standard rewrite rules. Conclude with `ht (hc.symm.trans hxi)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_polynomial_zero_of_homogeneous {k : Type} [Field k] [IsAlgClosed k] {n d : ℕ}
     (F : MvPolynomial (Fin n) k[X]) (hF : F.IsHomogeneous d) (hd : 0 < d) (hdn : d < n) :
@@ -343,17 +335,17 @@ private theorem exists_ne_zero_polynomial_zero_of_homogeneous {k : Type} [Field 
 
 open Polynomial in
 /- English proof (translation)
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors k[X]) f.coeffs`. Establish `hc0 : algebraMap k[X] (RatFunc k) b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Choose the witnesses or unpack the hypotheses as in `⟨F, hF⟩ : MvPolynomial.C (algebraMap k[X] (RatFunc k) b) * f ∈ Set.range (MvPolynomial.map (algebraMap k[X] (RatFunc k))) := by`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ν, hν, rfl⟩` from `MvPolynomial.mem_coeffs_iff.1 ha`. Rewrite using `[MvPolynomial.coeff_C_mul]`. Establish `hν' : f.coeff ν ∈ f.coeffs`. Use `MvPolynomial.coeff_mem_coeffs ν ?_` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hν` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C_mul, h, mul_zero]`. Conclude with `hν rfl`. Take `⟨p, hp⟩` from `hb _ hν'`. Conclude with `⟨p, hp.trans (Algebra.smul_def _ _)⟩`. Establish `hFh : F.IsHomogeneous d`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isHomogeneous_of_map_of_injective (IsFractionRing.injective k[X] (RatFunc k)) ?_` and prove the remaining obligations. Rewrite using `[hF]`. Simplify using `using (MvPolynomial.isHomogeneous_C (Fin n) (algebraMap k[X] (RatFunc k) b)).mul hf`. Take `⟨x, hx0, hx⟩` from `exists_ne_zero_polynomial_zero_of_homogeneous F hFh hd hdn`. Use `⟨algebraMap k[X] (RatFunc k) ∘ x, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `IsFractionRing.injective k[X] (RatFunc k) (by simpa using congrFun h i)`. Establish `key` using `mvPolynomial_eval_map_comp (algebraMap k[X] (RatFunc k)) x F`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[hF, hx, map_zero]`. Simplify using `only [map_mul, MvPolynomial.eval_C] at key`. Conclude with `(mul_eq_zero.1 key).resolve_left hc0`.
+A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_ratFunc_homogeneous_zero {k : Type} [Field k] [IsAlgClosed k] (n d : ℕ)
     (f : MvPolynomial (Fin n) (RatFunc k)) (hf : f.IsHomogeneous d) (hd : 0 < d) (hdn : d < n) :
@@ -393,7 +385,7 @@ private theorem exists_ne_zero_ratFunc_homogeneous_zero {k : Type} [Field k] [Is
 open Polynomial in
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ n d f hf hd hdn`. Conclude with `exists_ne_zero_homogeneous_zero_of_forall_subfield (F := RatFunc k) (fun n d f hf hd hdn => exists_ne_zero_ratFunc_homogeneous_zero (k := k) n d f hf hd hdn) n d f hf hd hdn`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.tsen_algebraic_extension_ratFunc :
     ∀ (k K : Type) [Field k] [IsAlgClosed k] [Field K] [Algebra (RatFunc k) K]

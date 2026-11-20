@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial GlobalTheory.Et
 namespace GlobalTheory.EtC.LaurentFinite
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_eq_id {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (g : B →+* A)
     (h : g.comp f = RingHom.id A) : spMap g ≫ spMap f = 𝟙 (sp A) := by
@@ -16,7 +16,7 @@ theorem spMap_comp_eq_id {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) 
   simp
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : Ht q (sp A) n i, pull _ (spMap g) _ _ (pull _ (spMap f) _ _ z) = z`. Introduce `z`. Rewrite using `[← pull_comp, spMap_comp_eq_id f g h, pull_id]`. Rewrite using `[← key x, ← key y, Subsingleton.elim (pull _ (spMap f) _ _ x) (pull _ (spMap f) _ _ y)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem subsingleton_of_retract (q : ℕ) (n i : ℤ) {A B : Type} [CommRing A] [CommRing B]
     (f : A →+* B) (g : B →+* A) (h : g.comp f = RingHom.id A)
@@ -28,14 +28,14 @@ theorem subsingleton_of_retract (q : ℕ) (n i : ℤ) {A B : Type} [CommRing A] 
   rw [← key x, ← key y, Subsingleton.elim (pull _ (spMap f) _ _ x) (pull _ (spMap f) _ _ y)]
 
 /- English proof (translation)
-The claim follows from `subsingleton_of_retract q n i e.toRingHom e.symm.toRingHom (by ext x; simp) hB`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_of_ringEquiv (q : ℕ) (n i : ℤ) {A B : Type} [CommRing A] [CommRing B]
     (e : A ≃+* B) (hB : Subsingleton (Ht q (sp B) n i)) : Subsingleton (Ht q (sp A) n i) :=
   subsingleton_of_retract q n i e.toRingHom e.symm.toRingHom (by ext x; simp) hB
 
 /- English proof (translation)
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `hfs : RingHom.fst T T = RingHom.snd T T` using `RingHom.ext fun _ => Subsingleton.elim _ _`. Take `⟨x, hx⟩` from `(GlobalTheory.EtC.ProdCoh.ht_prod_bijective q T T n i).2 (a, b)`. Simplify using `only [Prod.mk.injEq] at hx`. Rewrite using `[← hx.1, ← hx.2, hfs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem subsingleton_of_subsingleton (q : ℕ) (n i : ℤ) (T : Type) [CommRing T] [Subsingleton T] :
     Subsingleton (Ht q (sp T) n i) := by
@@ -60,7 +60,7 @@ noncomputable def laurentProd (T₁ T₂ : Type) [CommRing T₁] [CommRing T₂]
     (AddMonoidAlgebra.mapRingHom ℤ (RingHom.snd T₁ T₂))
 
 /- English proof (translation)
-Simplify using `only [← LaurentPolynomial.single_eq_C_mul_T, laurentProd, RingHom.prod_apply, AddMonoidAlgebra.mapRingHom_single, RingHom.coe_fst, RingHom.coe_snd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laurentProd_C_mul_T (T₁ T₂ : Type) [CommRing T₁] [CommRing T₂] (c : T₁ × T₂) (n : ℤ) :
     laurentProd T₁ T₂ (LaurentPolynomial.C c * LaurentPolynomial.T n) =
@@ -69,9 +69,9 @@ theorem laurentProd_C_mul_T (T₁ T₂ : Type) [CommRing T₁] [CommRing T₂] (
     AddMonoidAlgebra.mapRingHom_single, RingHom.coe_fst, RingHom.coe_snd]
 
 /- English proof (translation)
-Introduce `x y h`. Simplify using `only [laurentProd, RingHom.prod_apply, Prod.mk.injEq] at h`. Use extensionality with `m`. Use `all_goals`. Establish `h1` using `congrArg (fun z => AddMonoidAlgebra.coeff z m) h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun z => AddMonoidAlgebra.coeff z m) h.2`. Simplify using `only [AddMonoidAlgebra.coeff_mapRingHom, RingHom.coe_fst, RingHom.coe_snd] at h1 h2`. Use the matching hypothesis.
+Simplify using the standard rewrite rules. Use the matching hypothesis. A detailed English derivation is pending.
 -/
 theorem laurentProd_injective (T₁ T₂ : Type) [CommRing T₁] [CommRing T₂] :
     Function.Injective (laurentProd T₁ T₂) := by
@@ -89,13 +89,13 @@ end GlobalTheory.EtC.LaurentFinite
 namespace GlobalTheory.EtC.LaurentFinite
 
 /- English proof (translation)
-Establish `hl : ∀ f : LaurentPolynomial T₁, (f, 0) ∈ (laurentProd T₁ T₂).range`. Introduce `f`. Proceed by induction on `f using LaurentPolynomial.induction_on' with`. Consider the case `add p q hp hq => simpa using add_mem hp hq`. Consider the case `C_mul_T n a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨LaurentPolynomial.C (a, 0) * LaurentPolynomial.T n, ?_⟩` and prove the remaining obligations. Rewrite using `[laurentProd_C_mul_T]`. Simplify using the standard rewrite rules. Establish `hr : ∀ g : LaurentPolynomial T₂, (0, g) ∈ (laurentProd T₁ T₂).range`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `g using LaurentPolynomial.induction_on' with`. Consider the case `add p q hp hq => simpa using add_mem hp hq`. Consider the case `C_mul_T n a`. Use `⟨LaurentPolynomial.C (0, a) * LaurentPolynomial.T n, ?_⟩` and prove the remaining obligations. Rewrite using `[laurentProd_C_mul_T]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨f, g⟩`. Use `add_mem (hl f) (hr g)` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem laurentProd_surjective (T₁ T₂ : Type) [CommRing T₁] [CommRing T₂] :
     Function.Surjective (laurentProd T₁ T₂) := by
@@ -118,7 +118,7 @@ theorem laurentProd_surjective (T₁ T₂ : Type) [CommRing T₁] [CommRing T₂
   simpa using this
 
 /- English proof (translation)
-Set `e` to `RingEquiv.ofBijective (laurentProd T₁ T₂) ⟨laurentProd_injective T₁ T₂, laurentProd_surjective T₁ T₂⟩`. Use `subsingleton_of_ringEquiv q n i e ⟨fun x y => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.EtC.ProdCoh.ht_prod_bijective q _ _ n i).1 (Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subsingleton_laurent_prod (q : ℕ) (n i : ℤ) (T₁ T₂ : Type) [CommRing T₁] [CommRing T₂]
     (h₁ : Subsingleton (Ht q (sp (LaurentPolynomial T₁)) n i))
@@ -134,11 +134,9 @@ end GlobalTheory.EtC.LaurentFinite
 open GlobalTheory.EtC.LaurentFinite in
 
 /- English proof (translation)
-Introduce `q _ n hyp A _ _ hA hq`. Use `GlobalTheory.T.finiteAlgebra_strictlyHenselian_induction A hA (fun T _ _ => ∀ s i : ℤ, 2 ≤ s → s < n → Subsingleton (Ht q (sp (LaurentPolynomial T)) s i)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `T T' _ _ _ _ e hT s i h2 hs`. Conclude with `subsingleton_of_ringEquiv q s i (AddMonoidAlgebra.mapRingEquiv ℤ e.symm.toRingEquiv) (hT s i h2 hs)`. Introduce `T _ _ _ s i _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `subsingleton_of_subsingleton q s i _`. Introduce `T₁ T₂ _ _ _ _ _ _ h₁ h₂ s i h2 hs`. Conclude with `subsingleton_laurent_prod q s i T₁ T₂ (h₁ s i h2 hs) (h₂ s i h2 hs)`. Introduce `T _ _ hfin hT s i h2 hs haveI : IsNoetherian A T := isNoetherian_of_isNoetherianRing_of_finite A T haveI : IsNoetherianRing T := isNoetherian_of_tower A inferInstance`. Establish `hqT : IsUnit (q : T)`.
-
-Simplify using `using hq.map (algebraMap A T)`. Conclude with `hyp T hT hqT s i h2 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.laurent_vanishing_finite : ∀ (q : ℕ) [NeZero q] (n : ℤ), (∀ (A : Type) [CommRing A] [IsNoetherianRing A], SH A → IsUnit (q : A) →
     ∀ m i : ℤ, 2 ≤ m → m < n → Subsingleton (Ht q (sp (LaurentPolynomial A)) m i)) →

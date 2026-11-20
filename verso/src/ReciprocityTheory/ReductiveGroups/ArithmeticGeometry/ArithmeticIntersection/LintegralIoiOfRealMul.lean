@@ -9,7 +9,7 @@ noncomputable def coneFun (G : ℝ → ℝ≥0∞) (z s : ℝ) : ℝ≥0∞ :=
   if 0 < z ^ 2 + s ∧ z ^ 2 + s < 1 then G (z / Real.sqrt (z ^ 2 + s)) else 0
 
 /- English proof (translation)
-Unfold `coneFun`. Use `Measurable.ite ?_ (hG.comp ?_) measurable_const` and prove the remaining obligations. Conclude with `(measurableSet_lt (f := fun _ : ℝ × ℝ => (0 : ℝ)) (g := fun p : ℝ × ℝ => p.1 ^ 2 + p.2) measurable_const (by fun_prop)).inter (measurableSet_lt (g := fun _ : ℝ × ℝ => (1 : ℝ)) (f := fun p : ℝ × ℝ => p.1 ^ 2 + p.2) (by fun_prop) measurable_const)`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma measurable_coneFun {G : ℝ → ℝ≥0∞} (hG : Measurable G) :
     Measurable (fun p : ℝ × ℝ => coneFun G p.1 p.2) := by
@@ -21,11 +21,11 @@ lemma measurable_coneFun {G : ℝ → ℝ≥0∞} (hG : Measurable G) :
   · fun_prop
 
 /- English proof (translation)
-Establish `hΦ : MeasurePreserving (fun x : E3 => (x 0, (x 1, x 2))) volume volume`. Establish `h1` using `PiLp.volume_preserving_ofLp (Fin 3)`. Establish `h2` using `volume_preserving_piFinSuccAbove (fun _ : Fin 3 => ℝ) 0`. Establish `h3` using `(MeasurePreserving.id (volume : Measure ℝ)).prod (volume_preserving_finTwoArrow ℝ)`. Use `h3.comp (h2.comp h1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (fun x : E3 => (x 0, (x 1, x 2))) = Prod.map id MeasurableEquiv.finTwoArrow ∘ (MeasurableEquiv.piFinSuccAbove (fun _ : Fin 3 => ℝ) 0) ∘ WithLp.ofLp`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[hf, Measure.volume_eq_prod]`. Conclude with `this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ.lintegral_comp hH, Measure.volume_eq_prod, lintegral_prod _ hH.aemeasurable]`.
+A detailed English derivation is pending.
 -/
 lemma lintegral_cylindrical (H : ℝ × (ℝ × ℝ) → ℝ≥0∞) (hH : Measurable H) :
     ∫⁻ x : E3, H (x 0, (x 1, x 2)) = ∫⁻ z : ℝ, ∫⁻ p : ℝ × ℝ, H (z, p) := by
@@ -43,7 +43,7 @@ lemma lintegral_cylindrical (H : ℝ × (ℝ × ℝ) → ℝ≥0∞) (hH : Measu
   rw [hΦ.lintegral_comp hH, Measure.volume_eq_prod, lintegral_prod _ hH.aemeasurable]
 
 /- English proof (translation)
-Rewrite using `[← lintegral_comp_polarCoord_symm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma lintegral_plane_polar (K : ℝ × ℝ → ℝ≥0∞) :
     ∫⁻ p : ℝ × ℝ, K p =
@@ -52,13 +52,13 @@ lemma lintegral_plane_polar (K : ℝ × ℝ → ℝ≥0∞) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : ∫⁻ θ in Ioo (-π) π, ENNReal.ofReal (sin θ) * G (cos θ) = ∫⁻ θ in Ioo 0 π, ENNReal.ofReal (sin θ) * G (cos θ)`. Rewrite using `[← lintegral_indicator measurableSet_Ioo, ← lintegral_indicator measurableSet_Ioo]`. Use `congr 1`. Use function extensionality and compare the values at `θ`. Distinguish the cases in `h0 : θ ∈ Ioo 0 π`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `: θ ∈ Ioo (-π) π` using `⟨by linarith [h0.1, pi_pos], h0.2⟩`. Simplify using `[indicator_of_mem h0, indicator_of_mem this]`. Rewrite using `[indicator_of_notMem h0]`. Distinguish the cases in `h1 : θ ∈ Ioo (-π) π`. Rewrite using `[indicator_of_mem h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hθ : θ ≤ 0`. Assume the negation of the conclusion as `h`. Conclude with `h0 ⟨lt_of_not_ge h, h1.2⟩`. Establish `: sin θ ≤ 0` using `sin_nonpos_of_nonpos_of_neg_pi_le hθ h1.1.le`. Simplify using `[ENNReal.ofReal_of_nonpos this]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_notMem h1]`. Establish `h2 : cos '' Ioo 0 π = Ioo (-1 : ℝ) 1` using `cosPartialHomeomorph.image_source_eq_target`. Rewrite using `[h1, ← h2, lintegral_image_eq_lintegral_abs_deriv_mul measurableSet_Ioo (f' := fun x => -sin x) (fun x _ => (hasDerivAt_cos x).hasDerivWithinAt) (injOn_cos.mono Ioo_subset_Icc_self)]`. Use `setLIntegral_congr_fun measurableSet_Ioo (fun θ hθ => ?_)` and prove the remaining obligations. Rewrite using `[abs_neg, abs_of_pos (sin_pos_of_pos_of_lt_pi hθ.1 hθ.2)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lintegral_theta (G : ℝ → ℝ≥0∞) :
     ∫⁻ θ in Ioo (-π) π, ENNReal.ofReal (sin θ) * G (cos θ) = ∫⁻ t in Ioo (-1 : ℝ) 1, G t := by
@@ -87,9 +87,9 @@ lemma lintegral_theta (G : ℝ → ℝ≥0∞) :
   rw [abs_neg, abs_of_pos (sin_pos_of_pos_of_lt_pi hθ.1 hθ.2)]
 
 /- English proof (translation)
-Rewrite using `[← lintegral_indicator measurableSet_Ioi]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Distinguish the cases in `hr : r ∈ Ioi (0 : ℝ)`. Rewrite using `[indicator_of_mem hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_notMem hr, ENNReal.ofReal_of_nonpos (not_lt.mp hr), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma lintegral_Ioi_ofReal_mul (F : ℝ → ℝ≥0∞) :
     ∫⁻ r in Ioi (0 : ℝ), ENNReal.ofReal r * F r = ∫⁻ r, ENNReal.ofReal r * F r := by
@@ -101,23 +101,23 @@ lemma lintegral_Ioi_ofReal_mul (F : ℝ → ℝ≥0∞) :
   · rw [indicator_of_notMem hr, ENNReal.ofReal_of_nonpos (not_lt.mp hr), zero_mul]
 
 /- English proof (translation)
-Establish `hN` using `measurable_coneFun hG`. Rewrite using `[lintegral_cylindrical (fun q => coneFun G q.1 (q.2.1 ^ 2 + q.2.2 ^ 2)) (hN.comp (by fun_prop : Measurable fun q : ℝ × (ℝ × ℝ) => (q.1, q.2.1 ^ 2 + q.2.2 ^ 2)))]`. Establish `hin : ∀ z : ℝ, ∫⁻ p : ℝ × ℝ, coneFun G z (p.1 ^ 2 + p.2 ^ 2) = (∫⁻ r in Ioi (0 : ℝ), ENNReal.ofReal r * coneFun G z (r ^ 2)) * volume (Ioo (-π) π)`. Introduce `z`. Rewrite using `[lintegral_plane_polar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∀ q : ℝ × ℝ, ENNReal.ofReal q.1 * coneFun G z ((q.1 * cos q.2) ^ 2 + (q.1 * sin q.2) ^ 2) = (ENNReal.ofReal q.1 * coneFun G z (q.1 ^ 2)) * (fun _ : ℝ => (1 : ℝ≥0∞)) q.2`. Introduce `q`. Establish `: (q.1 * cos q.2) ^ 2 + (q.1 * sin q.2) ^ 2 = q.1 ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[h]`. Rewrite using `[Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod_mul (f := fun r : ℝ => ENNReal.ofReal r * coneFun G z (r ^ 2)) (g := fun _ : ℝ => (1 : ℝ≥0∞)) ((by fun_prop : Measurable fun r : ℝ => ENNReal.ofReal r).mul (hN.comp (by fun_prop : Measurable fun r : ℝ => (z, r ^ 2)) …`. Repeatedly rewrite using `[hin]`. Rewrite using `[lintegral_mul_const' _ _ measure_Ioo_lt_top.ne]`. Repeatedly rewrite using `[lintegral_Ioi_ofReal_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hprod : ∫⁻ z : ℝ, ∫⁻ r : ℝ, ENNReal.ofReal r * coneFun G z (r ^ 2) = ∫⁻ q : ℝ × ℝ, ENNReal.ofReal q.2 * coneFun G q.1 (q.2 ^ 2)`. Establish `hm : Measurable fun q : ℝ × ℝ => ENNReal.ofReal q.2 * coneFun G q.1 (q.2 ^ 2)` using `(by fun_prop : Measurable fun q : ℝ × ℝ => ENNReal.ofReal q.2).mul (hN.comp (by fun_prop : Measurable fun q : ℝ × ℝ => (q.1, q.2 ^ 2)))`. Rewrite using `[Measure.volume_eq_prod, lintegral_prod _ hm.aemeasurable]`. Rewrite using `[hprod, lintegral_plane_polar]`. Establish `hset : MeasurableSet (Ioi (0 : ℝ) ×ˢ Ioo (-π) π)` using `measurableSet_Ioi.prod measurableSet_Ioo`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[setLIntegral_congr_fun hset (g := fun q : ℝ × ℝ => (ENNReal.ofReal (q.1 ^ 2) * (Iio (1 : ℝ)).indicator 1 q.1) * (ENNReal.ofReal (sin q.2) * G (cos q.2))) ?_]`. Rewrite using `[Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod_mul (f := fun r : ℝ => ENNReal.ofReal (r ^ 2) * (Iio (1 : ℝ)).indicator 1 r) (g := fun θ : ℝ => ENNReal.ofReal (sin θ) * G (cos θ)) (by`. Use `((by fun_prop : Measurable fun r : ℝ => ENNReal.ofReal (r ^ 2)).mul ?_).aemeasurable` and prove the remaining obligations. Conclude with `measurable_const.indicator measurableSet_Iio)`. Use the proof step `((by fun_prop : Measurable fun θ : ℝ => ENNReal.ofReal (sin θ)).mul (hG.comp continuous_cos.measurable)).aemeasurable, lintegral_theta]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨r, θ⟩ ⟨hr, -⟩`. Simplify using `only at hr ⊢`. Establish `hr : 0 < r` using `hr`. Establish `hs : (r * cos θ) ^ 2 + (r * sin θ) ^ 2 = r ^ 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e1 : ENNReal.ofReal r * ENNReal.ofReal (r * sin θ) = ENNReal.ofReal (r ^ 2) * ENNReal.ofReal (sin θ)`. Rewrite using `[← ENNReal.ofReal_mul hr.le, ← ENNReal.ofReal_mul (sq_nonneg r)]`. Put the polynomial expressions in normal form. Unfold `coneFun`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hs, Real.sqrt_sq hr.le, mul_div_cancel_left₀ _ hr.ne']`. Distinguish the cases in `h1 : r < 1`. Establish `h2 : r ^ 2 < 1` using `by nlinarith`. Rewrite using `[if_pos ⟨by positivity, h2⟩, indicator_of_mem (show r ∈ Iio (1 : ℝ) from h1)]`. Rewrite using `[← mul_assoc, e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.one_apply, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ¬ r ^ 2 < 1` using `by nlinarith`. Rewrite using `[if_neg (fun h => h2 h.2), indicator_of_notMem (show r ∉ Iio (1 : ℝ) from h1)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma lintegral_coneFun (G : ℝ → ℝ≥0∞) (hG : Measurable G) :
     ∫⁻ x : E3, coneFun G (x 0) ((x 1) ^ 2 + (x 2) ^ 2) =
@@ -192,7 +192,7 @@ noncomputable def coneConst : ℝ≥0∞ :=
   volume (Ioo (-π) π) * ∫⁻ r in Ioi (0 : ℝ), ENNReal.ofReal (r ^ 2) * (Iio (1 : ℝ)).indicator 1 r
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, Fin.sum_univ_three]`. Simplify using `only [Real.norm_eq_abs, sq_abs]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 lemma norm_eq_sqrt_coord (y : E3) : ‖y‖ = Real.sqrt (y 0 ^ 2 + (y 1 ^ 2 + y 2 ^ 2)) := by
   rw [EuclideanSpace.norm_eq, Fin.sum_univ_three]
@@ -200,7 +200,7 @@ lemma norm_eq_sqrt_coord (y : E3) : ‖y‖ = Real.sqrt (y 0 ^ 2 + (y 1 ^ 2 + y 
   ring_nf
 
 /- English proof (translation)
-Use `(measurableSet_lt measurable_const measurable_norm).inter ((measurableSet_lt measurable_norm measurable_const).inter ?_)` and prove the remaining obligations. Conclude with `(by fun_prop : Measurable fun y : E3 => y 0 / ‖y‖) hs`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma measurableSet_cone0 {s : Set ℝ} (hs : MeasurableSet s) :
     MeasurableSet {y : E3 | 0 < ‖y‖ ∧ ‖y‖ < 1 ∧ y 0 / ‖y‖ ∈ s} := by
@@ -209,15 +209,15 @@ lemma measurableSet_cone0 {s : Set ℝ} (hs : MeasurableSet s) :
   exact (by fun_prop : Measurable fun y : E3 => y 0 / ‖y‖) hs
 
 /- English proof (translation)
-Rewrite using `[← lintegral_indicator_one (measurableSet_cone0 hs)]`. Establish `h : ∀ y : E3, {y : E3 | 0 < ‖y‖ ∧ ‖y‖ < 1 ∧ y 0 / ‖y‖ ∈ s}.indicator 1 y = coneFun (s.indicator 1) (y 0) ((y 1) ^ 2 + (y 2) ^ 2)`. Introduce `y`. Establish `hn` using `norm_eq_sqrt_coord y`. Use `set S := y 0 ^ 2 + (y 1 ^ 2 + y 2 ^ 2) with hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ S` using `by positivity`. Unfold `coneFun`. Distinguish the cases in `hc : 0 < S ∧ S < 1`. Rewrite using `[if_pos hc]`. Establish `h0 : 0 < ‖y‖` using `by rw [hn]; exact Real.sqrt_pos.2 hc.1`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖y‖ < 1`. Rewrite using `[hn, ← Real.sqrt_one]`. Conclude with `Real.sqrt_lt_sqrt hS0 hc.2`. Distinguish the cases in `hy : y 0 / ‖y‖ ∈ s`. Rewrite using `[indicator_of_mem (show y ∈ {y : E3 | 0 < ‖y‖ ∧ ‖y‖ < 1 ∧ y 0 / ‖y‖ ∈ s} from ⟨h0, h1, hy⟩), ← hn, indicator_of_mem hy]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[indicator_of_notMem (fun h => hy h.2.2), ← hn, indicator_of_notMem hy]`. Rewrite using `[if_neg hc, indicator_of_notMem]`. Introduce and unpack `⟨h0, h1, -⟩`. Apply `hc` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h0`, `h1` using `[hn]`. Use `⟨Real.sqrt_pos.1 h0, ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[Real.sq_sqrt hS0, Real.sqrt_nonneg S]`. Repeatedly rewrite using `[h]`. Rewrite using `[lintegral_coneFun (s.indicator 1) (measurable_one.indicator hs), lintegral_indicator_one hs, Measure.restrict_apply hs, coneConst]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma volume_cone0 {s : Set ℝ} (hs : MeasurableSet s) :
     volume {y : E3 | 0 < ‖y‖ ∧ ‖y‖ < 1 ∧ y 0 / ‖y‖ ∈ s} =
@@ -251,11 +251,11 @@ lemma volume_cone0 {s : Set ℝ} (hs : MeasurableSet s) :
     Measure.restrict_apply hs, coneConst]
 
 /- English proof (translation)
-Use `set e0 : E3 := EuclideanSpace.single 0 1`. Establish `he0 : ‖e0‖ = 1` using `by simp [e0]`. Use `set L : E3 ≃ₗᵢ[ℝ] E3 := (ℝ ∙ (u - e0))ᗮ.reflection`. Establish `hLu : L u = e0` using `Submodule.reflection_sub (by rw [hu, he0])`. Establish `hL0 : ∀ x : E3, (L x) 0 = inner ℝ x u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[← L.inner_map_map, hLu]`. Simplify using `[e0, EuclideanSpace.inner_single_right]`. Establish `hset : {x : E3 | 0 < ‖x‖ ∧ ‖x‖ < 1 ∧ inner ℝ x u / ‖x‖ ∈ s} = L ⁻¹' {y : E3 | 0 < ‖y‖ ∧ ‖y‖ < 1 ∧ y 0 / ‖y‖ ∈ s}`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mem_ofPred_eq, mem_preimage, LinearIsometryEquiv.norm_map, hL0]`. Rewrite using `[hset, L.measurePreserving.measure_preimage (measurableSet_cone0 hs).nullMeasurableSet, volume_cone0 hs]`.
+A detailed English derivation is pending.
 -/
 lemma volume_cone {u : E3} (hu : ‖u‖ = 1) {s : Set ℝ} (hs : MeasurableSet s) :
     volume {x : E3 | 0 < ‖x‖ ∧ ‖x‖ < 1 ∧ inner ℝ x u / ‖x‖ ∈ s} =
@@ -276,11 +276,11 @@ lemma volume_cone {u : E3} (hu : ‖u‖ = 1) {s : Set ℝ} (hs : MeasurableSet 
     volume_cone0 hs]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, _, ⟨n, hn, rfl⟩, rfl⟩`. Establish `hn1 : ‖(n : E3)‖ = 1` using `by simp`. Establish `ha0 : 0 < a` using `ha.1`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mem_ofPred_eq] at hn ⊢`. Rewrite using `[norm_smul, hn1, Real.norm_eq_abs, abs_of_pos ha0, mul_one, real_inner_smul_left, mul_div_cancel_left₀ _ ha0.ne']`. Conclude with `⟨ha0, ha.2, hn⟩`. Introduce and unpack `⟨h0, h1, h2⟩`. Use `⟨‖x‖, ⟨h0, h1⟩, ‖x‖⁻¹ • x, ⟨⟨‖x‖⁻¹ • x, ?_⟩, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[norm_smul, h0.ne']`. Use `show inner ℝ (‖x‖⁻¹ • x) u ∈ s`. Rewrite using `[real_inner_smul_left, inv_mul_eq_div]`. Conclude with `h2`. Conclude with `smul_inv_smul₀ h0.ne' x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cone_eq (u : E3) (s : Set ℝ) :
     Ioo (0 : ℝ) 1 • (((↑) : S2 → E3) '' {n : S2 | inner ℝ (n : E3) u ∈ s}) =
@@ -303,25 +303,25 @@ lemma cone_eq (u : E3) (s : Set ℝ) :
     · exact smul_inv_smul₀ h0.ne' x
 
 /- English proof (translation)
-The claim follows from `Measure.measure_univ_ne_zero.mpr (Measure.toSphere_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 lemma toSphere_univ_ne_zero : (volume : Measure E3).toSphere univ ≠ 0 :=
   Measure.measure_univ_ne_zero.mpr (Measure.toSphere_ne_zero _)
 
 /- English proof (translation)
-The claim follows from `measure_ne_top _ _`.
+A detailed English derivation is pending.
 -/
 lemma toSphere_univ_ne_top : (volume : Measure E3).toSphere univ ≠ ⊤ :=
   measure_ne_top _ _
 
 /- English proof (translation)
-Establish `hφ : Measurable (fun n : S2 => inner ℝ (n : E3) u)` using `by fun_prop`. Use `set c := (volume : Measure E3).toSphere univ`. Use `set K : ℝ≥0∞ := c⁻¹ * (Module.finrank ℝ E3 * coneConst)`. Establish `key : ∀ s : Set ℝ, MeasurableSet s → sphereMeasure.map (fun n : S2 => inner ℝ (n : E3) u) s = K * volume.restrict (Ioo (-1 : ℝ) 1) s`. Introduce `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_apply hφ hs, sphereMeasure, Measure.smul_apply, smul_eq_mul, Measure.toSphere_apply' _ (hφ hs)]`. Rewrite using `[show (fun n : S2 => inner ℝ (n : E3) u) ⁻¹' s = {n : S2 | inner ℝ (n : E3) u ∈ s} from rfl, cone_eq, volume_cone hu hs, Measure.restrict_apply hs]`. Simplify using `only [K, c]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK : K = 2⁻¹`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ENNReal.eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Establish `h1` using `key univ MeasurableSet.univ`. Rewrite `h1` using `[Measure.map_apply hφ MeasurableSet.univ, preimage_univ, sphereMeasure, Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel toSphere_univ_ne_zero toSphere_univ_ne_top, Measure.restrict_apply_univ, Real.volume_Ioo]`. Rewrite using `[h1]`. Evaluate the numerical expressions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `s hs`. Rewrite using `[key s hs, hK, Measure.smul_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 lemma map_inner_sphereMeasure {u : E3} (hu : ‖u‖ = 1) :
     sphereMeasure.map (fun n : S2 => inner ℝ (n : E3) u) =
@@ -357,9 +357,9 @@ namespace ReciprocityTheory.ChartRestriction.G.AI
 open ReciprocityTheory.ChartRestriction.G.AI.ArchimedeanConeVolume
 
 /- English proof (translation)
-Establish `hφ : Measurable (fun n : S2 => inner ℝ (n : E3) u)` using `by fun_prop`. Establish `hmap` using `map_inner_sphereMeasure hu`. Establish `hIoo : IntegrableOn f (Ioo (-1 : ℝ) 1)` using `((intervalIntegrable_iff_integrableOn_Ioc_of_le (by norm_num)).1 hf).mono_set Ioo_subset_Ioc_self`. Establish `hint : Integrable f ((2⁻¹ : ℝ≥0∞) • volume.restrict (Ioo (-1 : ℝ) 1))` using `hIoo.smul_measure (by simp)`. Rewrite `hint` using `[← hmap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(integrable_map_measure hint.aestronglyMeasurable hφ.aemeasurable).1 hint, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_map hφ.aemeasurable hint.aestronglyMeasurable, hmap, integral_smul_measure, intervalIntegral.integral_of_le (by norm_num), integral_Ioc_eq_integral_Ioo]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem arch0 (u : E3) (f : ℝ → ℝ) (hu : ‖u‖ = 1) (hf : IntervalIntegrable f MeasureTheory.volume (-1) 1) :
     MeasureTheory.Integrable (fun n : S2 => f (inner ℝ (n : E3) u)) sphereMeasure ∧

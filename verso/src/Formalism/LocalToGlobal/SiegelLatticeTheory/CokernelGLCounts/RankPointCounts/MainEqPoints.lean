@@ -14,17 +14,15 @@ namespace Formalism.L2.SG.Pf.MainEqPoints
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u _ νL νB ng γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨c, ν, t, ht, hv, -, hpt, -⟩` from `hγ`. Establish `hG : t.toTerm.G ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ht.1` to reduce the goal to its premises. Use `show Gt t = 0`. Establish `h' : t.G = 0` using `h`. Simplify using `[Gt, h']`. Establish `hrel : t.toTerm.relevant`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hr`. Apply `hv` to reduce the goal to its premises. Establish `h0 : OOt t = 0` using `hOV D X Y u u t hr`. Use `show vec (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t = 0`. Unfold `vec ampN`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Take `⟨w, hw⟩` from `hAt D X Y u u t.toTerm hG hrel`. Establish `hat` using `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm ⟨w, hw, hrel⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F', ⟨hP, -⟩, -, hcell⟩` from `hat`. Establish `hrow` using `(Y.rowsOK u).1 t.toTerm.lam t.toTerm.mem`. Establish `hF : ∀ b, frame (lf D (X.Fu u)) b ∈ t.toTerm.lam` using `frame_mem _ hrow.2.1.2.2.1.1 hrow.2.2`. Establish `hF' : ∀ b, frame F' b ∈ t.toTerm.lam` using `frame_mem _ hP.1.1 hP.2.2.2`. Establish `hE` using `blockEndMinors_of_cell _ (zhatOM_isIntegral _ _ hrow.2.1.2.1 hF hF') _ hcell`.
-
-Rewrite using `[← hpt]`. Conclude with `hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepPointsG_of
     (hOV : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -62,7 +60,7 @@ theorem stepPointsG_of
 
 open Formalism.L2.SG.TermOp.Vanish in
 /- English proof (translation)
-Use `stepPointsG_of ?_ hAt` and prove the remaining obligations. Introduce `D X Y u u'`. Unfold `Formalism.L2.SG.TermOp.KExpCut.OOVanish`. Introduce `t ht`. Conclude with `ooVanish_of hA hU hN hC hG h1 h2 h3 h4 Y t ht`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stepPointsG_of_leaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
     (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC)

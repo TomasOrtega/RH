@@ -8,9 +8,7 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.SmoothRep
 
 /- English proof (translation)
-Set `L : Lie E a →ₗ[ℝ] Lie E a` to `{ toFun := fun w => toL (Matrix.of w * Matrix.of X) map_add' := fun w v => by`. Simplify using `only [toL]`. Conclude with `congrArg Matrix.of.symm (Matrix.add_mul (Matrix.of w) (Matrix.of v) (Matrix.of X))`. Use the proof step `map_smul' := fun c w => by`. Simplify using `only [toL, RingHom.id_apply]`.
-
-Conclude with `congrArg Matrix.of.symm (Matrix.smul_mul c (Matrix.of w) (Matrix.of X)) }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_mulRight {E : Type} [Field E] [NumberField E] {a : ℕ} (X : Lie E a) :
     ContDiff ℝ ∞ (fun w : Lie E a => toL (Matrix.of w * Matrix.of X)) := by
@@ -25,7 +23,7 @@ theorem contDiff_mulRight {E : Type} [Field E] [NumberField E] {a : ℕ} (X : Li
   exact (LinearMap.toContinuousLinearMap L).contDiff
 
 /- English proof (translation)
-Use `(closure_mono fun w hw => ?_).trans (tsupport_fderiv_subset ℝ (f := β))` and prove the remaining obligations. Rewrite `hw`, the goal using `[Function.mem_support]`. Introduce `h`. Apply `hw` to reduce the goal to its premises. Simplify using `[dTest, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem tsupport_dTest_subset {E : Type} [Field E] [NumberField E] {a : ℕ} (X : Lie E a) (β : Lie E a → ℂ) :
     tsupport (dTest X β) ⊆ tsupport β := by
@@ -36,7 +34,7 @@ theorem tsupport_dTest_subset {E : Type} [Field E] [NumberField E] {a : ℕ} (X 
   simp [dTest, h]
 
 /- English proof (translation)
-Establish `hfd` using `(contDiff_infty_iff_fderiv.mp hβ.contDiff).2`. Use `IsTest.mk ?_ ?_ ?_` and prove the remaining obligations. Conclude with `hfd.clm_apply (contDiff_mulRight X)`. Conclude with `hβ.compact.mono' ((subset_tsupport _).trans (tsupport_dTest_subset X β))`. Conclude with `(tsupport_dTest_subset X β).trans hβ.support`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isTest_dTest (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (β : Lie E a → ℂ)
     (hβ : IsTest β) (X : Lie E a) : IsTest (dTest X β) := by

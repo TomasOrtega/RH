@@ -9,15 +9,15 @@ namespace GlobalTheory.SymplecticPeriods
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective F`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`. Establish `h0 : ∀ v : (ι → ℚ) × (ι → ℚ), u.1 ⬝ᵥ v.2 - u.2 ⬝ᵥ v.1 = 0` using `fun v => by`. Rewrite using `[← hF, hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use extensionality with `i`. Simplify using `using h0 (0, Pi.single i 1)`. Simplify using `using h0 (Pi.single i 1, 0)`. Establish `hsurj : Function.Surjective F` using `LinearMap.injective_iff_surjective.mp hinj`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `choose r hr using fun j : ι ⊕ ι => hsurj ((fun i => (Pi.single j 1 : ι ⊕ ι → ℚ) (Sum.inr i)), fun i => (Pi.single j 1 : ι ⊕ ι → ℚ) (Sum.inl i))`. Set `σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ` to `Matrix.of fun j => Sum.elim (fun i => (r j).2 i) (fun i => (r j).1 i)`. Establish `hrow : ∀ j, ((fun i => σ j (Sum.inr i)), (fun i => σ j (Sum.inl i))) = r j` using `fun j => rfl`. Use `⟨σ, ?_, fun j => by rw [hrow]; exact hr j⟩` and prove the remaining obligations. Rewrite using `[SymplecticGroup.mem_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Establish `e1 : (σ * Matrix.J ι ℚ * σᵀ) a b = (r a).1 ⬝ᵥ (r b).2 - (r a).2 ⬝ᵥ (r b).1`. Simplify using `[Matrix.mul_apply, Matrix.J, Fintype.sum_sum_type, σ, dotProduct, Matrix.one_apply, Finset.sum_neg_distrib, sub_eq_add_neg, add_comm]`. Rewrite using `[e1, ← hF, hr, hr]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.J, dotProduct, Pi.single_apply, Matrix.one_apply, eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_symplectic_rows (F : ((ι → ℚ) × (ι → ℚ)) →ₗ[ℚ] ((ι → ℚ) × (ι → ℚ)))
     (hF : ∀ u v, (F u).1 ⬝ᵥ (F v).2 - (F u).2 ⬝ᵥ (F v).1 = u.1 ⬝ᵥ v.2 - u.2 ⬝ᵥ v.1) :
@@ -53,21 +53,21 @@ theorem exists_symplectic_rows (F : ((ι → ℚ) × (ι → ℚ)) →ₗ[ℚ] (
     simp [Matrix.J, dotProduct, Pi.single_apply, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Take `⟨σ, hσ, hrows⟩` from `exists_symplectic_rows F hF`. Use `⟨σ, hσ, fun τ hτ τ' M hτ' hM => ?_⟩` and prove the remaining obligations. Establish `hτs : τ.IsSymm` using `hτ.1`. Use `set X := spDen σ τ with hX`. Use `set Y := qm σ.toBlocks₁₁ * τ + qm σ.toBlocks₁₂ with hY`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `colX : ∀ k, (fun l => Xᵀ l k) = qv (fun i => σ (Sum.inr k) (Sum.inr i)) + τ *ᵥ qv (fun i => σ (Sum.inr k) (Sum.inl i))`. Introduce `k`. Use function extensionality and compare the values at `l`. Simplify using `only [hX, spDen, Matrix.transpose_apply, Matrix.add_apply, Matrix.mul_apply, qm, Matrix.map_apply, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.of_apply, Pi.add_apply, qv, Matrix.mulVec, dotProduct]`. Rewrite using `[add_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hτs.apply m l, mul_comm]`. Establish `columnBlock : ∀ k, (fun l => Yᵀ l k) = qv (fun i => σ (Sum.inl k) (Sum.inr i)) + τ *ᵥ qv (fun i => σ (Sum.inl k) (Sum.inl i))`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `l`. Simplify using `only [hY, Matrix.transpose_apply, Matrix.add_apply, Matrix.mul_apply, qm, Matrix.map_apply, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.of_apply, Pi.add_apply, qv, Matrix.mulVec, dotProduct]`. Rewrite using `[add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hτs.apply m l, mul_comm]`. Establish `hA : M * Xᵀ = 1`. Use extensionality with `i k`. Establish `h` using `hM (fun i => σ (Sum.inr k) (Sum.inr i), fun i => σ (Sum.inr k) (Sum.inl i))`. Rewrite `h` using `[hrows (Sum.inr k), ← colX k]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (M * Xᵀ) i k = (M *ᵥ fun l => Xᵀ l k) i from rfl, congrFun h i]`. Simplify using `[qv, Pi.single_apply, Matrix.one_apply, Matrix.mulVec, dotProduct]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hB : τ' = M * Yᵀ`. Use extensionality with `i k`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hM (fun i => σ (Sum.inl k) (Sum.inr i), fun i => σ (Sum.inl k) (Sum.inl i))`. Rewrite `h` using `[hrows (Sum.inl k), ← columnBlock k]`. Rewrite using `[show (M * Yᵀ) i k = (M *ᵥ fun l => Yᵀ l k) i from rfl, congrFun h i]`. Simplify using `[qv, Pi.single_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single k (fun j _ hj => by simp [hj]) (by simp)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hMeq : M = (X⁻¹)ᵀ`. Rewrite using `[Matrix.transpose_nonsing_inv, Matrix.inv_eq_left_inv hA]`. Use `⟨?_, hMeq⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_symplectic_action (ι : Type) [Fintype ι] [DecidableEq ι]
     (F : ((ι → ℚ) × (ι → ℚ)) →ₗ[ℚ] ((ι → ℚ) × (ι → ℚ)))

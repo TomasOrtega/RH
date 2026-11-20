@@ -15,7 +15,7 @@ namespace PositivityTheory.Rg.BcB.F.FA.MatrixConvolutionPowers
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Unfold `thL`. Use `split_ifs`. Conclude with `⟨continuous_id, fun g => rfl⟩`. Conclude with `⟨GlobalTheory.LocTwist.continuous_thetaGL n (cj w) (GlobalTheory.CompanionTheory.IwUFacts.continuous_cj w), GlobalTheory.LocTwist.thetaGL_thetaGL n (cj w) (GlobalTheory.PrincCong.cj_cj w)⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thL_cont_invol (n : ℕ) (w : Pl E) : Continuous (thL n w) ∧ ∀ g : GLw n w, thL n w (thL n w g) = g := by
   unfold thL
@@ -25,9 +25,9 @@ theorem thL_cont_invol (n : ℕ) (w : Pl E) : Continuous (thL n w) ∧ ∀ g : G
       GlobalTheory.LocTwist.thetaGL_thetaGL n (cj w) (GlobalTheory.PrincCong.cj_cj w)⟩
 
 /- English proof (translation)
-Use `⟨⟨?_, fun g hg => hK g (Subgroup.mem_inf.1 hg).1, fun k hk => ?_⟩, fun g hg => (Subgroup.mem_inf.1 hg).1⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf, Subgroup.coe_comap, Subgroup.coe_comap]`. Conclude with `(hU.preimage hι).inter (hU.preimage (hι.comp hθ))`. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hk`. Use `Subgroup.mem_inf.2 ⟨h2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ι (θ (θ k)) ∈ U`. Rewrite using `[hθθ]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_of_comap {G₁ G₂ : Type} [Group G₁] [Group G₂] [TopologicalSpace G₁] [TopologicalSpace G₂]
     [IsTopologicalGroup G₁] [IsTopologicalGroup G₂]
@@ -43,9 +43,9 @@ theorem level_of_comap {G₁ G₂ : Type} [Group G₁] [Group G₂] [Topological
     rw [hθθ]; exact h1
 
 /- English proof (translation)
-Take `⟨c₁, i₁⟩` from `thL_cont_invol (E := E) a w`. Take `⟨c₂, i₂⟩` from `thL_cont_invol (E := E) b w`. Establish `hl` using `level_of_comap (thL a w) c₁ i₁ (MonoidHom.inl (GLw a w) (GLw b w)) (continuous_id.prodMk continuous_const) U hU (GlobalTheory.LFun.KGL w a) (fun g hg => (Subgroup.mem_prod.1 (hle hg)).1)`. Establish `hr` using `level_of_comap (thL b w) c₂ i₂ (MonoidHom.inr (GLw a w) (GLw b w)) (continuous_const.prodMk continuous_id) U hU (GlobalTheory.LFun.KGL w b) (fun g hg => (Subgroup.mem_prod.1 (hle hg)).2)`. Use `⟨_, _, hl.1, hr.1, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hx₁, hx₂⟩` from `Subgroup.mem_prod.1 hx`. Establish `e : x = MonoidHom.inl (GLw a w) (GLw b w) x.1 * MonoidHom.inr (GLw a w) (GLw b w) x.2`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e]`. Conclude with `U.mul_mem (hl.2 _ hx₁) (hr.2 _ hx₂)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_prod (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) (hU : IsOpen (U : Set (GLw a w × GLw b w)))
     (hle : U ≤ K2 a b w) :
@@ -67,15 +67,13 @@ theorem exists_level_prod (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) (hU : I
   exact U.mul_mem (hl.2 _ hx₁) (hr.2 _ hx₂)
 
 /- English proof (translation)
-Establish `hVo : IsOpen ((V₁.prod V₂ : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hV₁.1.prod hV₂.1`. Establish `hVc : IsClosed ((V₁.prod V₂ : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w))` using `Subgroup.isClosed_of_isOpen _ hVo`. Establish `hK : IsCompact ((K2 a b w : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[K2, Subgroup.coe_prod]`. Conclude with `(GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a).prod (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w b)`. Establish `hsub : ((V₁.prod V₂ : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w)) ⊆ (K2 a b w : Set _)`. Introduce `x hx`. Take `⟨h1, h2⟩` from `Subgroup.mem_prod.1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `Subgroup.mem_prod.2 ⟨hV₁.2.1 h1, hV₂.2.1 h2⟩`. Use `⟨HasCompactSupport.intro' (hK.of_isClosed_subset hVc hsub) hVc fun x hx => ?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Unfold `idem`. Conclude with `Set.indicator_of_notMem hx _`. Unfold `idem`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hx : x ∈ V₁.prod V₂`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((V₁.prod V₂).mul_mem hk hx)]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h => hx (by simpa using (V₁.prod V₂).mul_mem ((V₁.prod V₂).inv_mem hk) h))]`. Unfold `idem`. Distinguish the cases in `hx : x ∈ V₁.prod V₂`.
-
-Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((V₁.prod V₂).mul_mem hx hk)]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h => hx (by simpa using (V₁.prod V₂).mul_mem h ((V₁.prod V₂).inv_mem hk)))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHecke_idem {w : Pl E} (V₁ : Subgroup (GLw a w)) (V₂ : Subgroup (GLw b w))
     (hV₁ : IsLevel (thL a w) (GlobalTheory.LFun.KGL w a) V₁) (hV₂ : IsLevel (thL b w) (GlobalTheory.LFun.KGL w b) V₂) :

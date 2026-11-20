@@ -21,33 +21,29 @@ def ltOneIdeal {R : Type} [CommRing R] [IsDomain R] (μ : R →*₀ ℝ)
     nlinarith [h0 c, h0 x, h1 c]
 
 /- English proof (translation)
-Establish `hspan : ∀ y : R, y ≠ 0 → Ideal.span {y} ≠ 0` using `fun y hy => by`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hy`. Establish `hadd : ∀ y z : R, y ≠ 0 → z ≠ 0 → (normalizedFactors (Ideal.span {y * z})).count P = (normalizedFactors (Ideal.span {y})).count P + (normalizedFactors (Ideal.span {z})).count P`. Introduce `y z hy hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.span_singleton_mul_span_singleton, normalizedFactors_mul (hspan y hy) (hspan z hz), Multiset.count_add]`. Establish `hzero : ∀ y : R, y ∉ P → (normalizedFactors (Ideal.span {y})).count P = 0`. Introduce `y hy`. Apply `Ideal.count_normalizedFactors_eq` to reduce the goal to its premises. Rewrite using `[pow_zero, Ideal.one_eq_top]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_top`. Rewrite using `[zero_add, pow_one, Ideal.span_singleton_le_iff_mem]`. Conclude with `hy`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hπ2 (zero_mem _)`. Establish `hπ1 : (normalizedFactors (Ideal.span {π})).count P = 1`. Apply `Ideal.count_normalizedFactors_eq` to reduce the goal to its premises. Rewrite using `[pow_one, Ideal.span_singleton_le_iff_mem]`. Conclude with `hπ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `hπ2`. Take `⟨A, hA⟩ : P ∣ Ideal.span {π}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem P).2 hπ)`. Establish `hAP : ¬A ≤ P`. Introduce `hle`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `hπ2` to reduce the goal to its premises. Rewrite using `[← Ideal.span_singleton_le_iff_mem, hA, pow_two]`. Conclude with `Ideal.mul_mono_right hle`. Take `⟨s, hsA, hsP⟩` from `SetLike.not_le_iff_exists.1 hAP`. Establish `hs0 : s ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `rfl`. Conclude with `hsP (zero_mem _)`. Establish `hstep : ∀ y : R, y ∈ P → ∃ z, s * y = π * z`. Introduce `y hy`. Establish `: s * y ∈ Ideal.span {π}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA, mul_comm s y]`. Conclude with `Ideal.mul_mem_mul hy hsA`. Conclude with `Ideal.mem_span_singleton.1 this`. Establish `hdiv : ∀ y : R, y ≠ 0 → y ∈ P → ∃ z, z ≠ 0 ∧ (normalizedFactors (Ideal.span {y})).count P = (normalizedFactors (Ideal.span {z})).count P + 1 ∧ μ y = μ π * μ z`. Introduce `y hy hyP`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the argument to an intermediate assertion.
 
-Take `⟨z, hz⟩` from `hstep y hyP`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[mul_zero]`. Conclude with `mul_ne_zero hs0 hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hc` using `hadd s y hs0 hy`. Rewrite `hc` using `[hz, hadd π z hπ0 hz0, hπ1, hzero s hsP]`. Use `⟨z, hz0, by omega, ?_⟩` and prove the remaining obligations. Establish `hμ : μ s * μ y = μ π * μ z` using `by rw [← map_mul, ← map_mul, hz]`. Rewrite `hμ` using `[hone s hsP, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to establish `H : ∀ n : ℕ, ∀ y : R, y ≠ 0 → (normalizedFactors (Ideal.span {y})).count P = n → μ y = μ π ^ n from H _ x hx rfl`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `y hy hn`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `hyP : y ∈ P`. Take `⟨z, _, hc, _⟩` from `hdiv y hy hyP`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hone y hyP, pow_zero]`. Consider the case `succ n ih`.
-
-Introduce `y hy hn`. Distinguish the cases in `hyP : y ∈ P`. Take `⟨z, hz0, hc, hμ⟩` from `hdiv y hy hyP`. Rewrite using `[hμ, ih z hz0 (by omega), pow_succ, mul_comm]`. Rewrite `hn` using `[hzero y hyP]`.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem eq_pow_count_normalizedFactors_of_uniformizer {R : Type} [CommRing R] [IsDedekindDomain R]
     (μ : R →*₀ ℝ) (P : Ideal R) [P.IsPrime] (hone : ∀ x, x ∉ P → μ x = 1)
@@ -127,23 +123,19 @@ private theorem eq_pow_count_normalizedFactors_of_uniformizer {R : Type} [CommRi
       omega
 
 /- English proof (translation)
-Introduce `R _ _ μ a ha h0 h1 hadd hlt hne`. Use `set P := GlobalTheory.CompanionTheory.Ggeo.ltOneIdeal μ h0 h1 hadd with hPdef`. Establish `hmem : ∀ x, x ∈ P ↔ μ x < 1` using `fun x => Iff.rfl`. Establish `hPtop : P ≠ ⊤`. Introduce `htop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1P` using `(Ideal.eq_top_iff_one P).1 htop`. Rewrite `h1P` using `[hmem, map_one]`. Conclude with `lt_irrefl _ h1P`. Establish `hPprime : P.IsPrime`. Use `⟨hPtop, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y hxy`. Establish `hxy' : μ x * μ y < 1`. Rewrite using `[← map_mul]`. Conclude with `(hmem _).1 hxy`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[not_or]`. Establish `hx1 : ¬μ x < 1` using `fun h => hc.1 ((hmem x).2 h)`. Establish `hy1 : ¬μ y < 1` using `fun h => hc.2 ((hmem y).2 h)`. Rewrite `hx1`, `hy1` using `[not_lt]`. Use polynomial arithmetic with `[h0 x, h0 y]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hPprime`. Establish `haP : a ∈ P` using `(hmem a).2 hlt`. Establish `hbot : P ≠ ⊥`. Introduce `h`. Rewrite `haP` using `[h, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha haP`. Take `⟨π, hπ, hπ2⟩ : ∃ π ∈ P ^ 1, π ∉ P ^ 2` from `SetLike.exists_of_lt (Ideal.pow_right_strictAnti P hbot hPtop (by norm_num : 1 < 2))`. Rewrite `hπ` using `[pow_one]`. Establish `hone : ∀ x, x ∉ P → μ x = 1` using `fun x hx => le_antisymm (h1 x) (not_lt.1 fun h => hx ((hmem x).2 h))`. Establish `hkey` using `eq_pow_count_normalizedFactors_of_uniformizer μ P hone π hπ hπ2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hπne : μ π ≠ 0`. Introduce `h`. Establish `ha'` using `hkey a ha`. Rewrite `ha'` using `[h]`. Break down `Nat.eq_zero_or_pos ((normalizedFactors (Ideal.span {a})).count P) with hk | hk` into its components or cases.
-
-Rewrite `ha'` using `[hk, pow_zero]`. Rewrite `hlt` using `[ha']`. Conclude with `lt_irrefl _ hlt`. Rewrite `ha'` using `[zero_pow hk.ne']`. Conclude with `hne ha'`.
-
-Conclude with `⟨P, μ π, hPprime, hbot, haP, lt_of_le_of_ne (h0 π) (Ne.symm hπne), hkey⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_eq_pow_count_of_ultrametric :
     ∀ (R : Type) [CommRing R] [IsDedekindDomain R] (μ : R →*₀ ℝ) (a : R), a ≠ 0 →

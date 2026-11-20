@@ -17,13 +17,11 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hKP hC F E _ _ _ _ _ _ σ hσ n J hJ r Xf Yf hW hL v t`. Take `⟨B, hB⟩` from `GlobalTheory.T.witt_frame_local_compact_unitary hKP F E σ hσ n J hJ r Xf Yf hW hL v t`. Use `⟨B, fun K hK φ hφ V _ _ π hπ m T x hT hφs S φc hc hc0 l d hd hS1 hS2 hS3 => ?_⟩` and prove the remaining obligations. Take `⟨hld, U, Λ, hU, ⟨u₀, hu₀, hne⟩, hcusp, hN, hM⟩` from `hB K hK φ hφ V π hπ m T x hT hφs S φc hc hc0 l d hd hS1 hS2 hS3`. Take `⟨W, τ, p, hfW, hWst, hp0, hp⟩` from `GlobalTheory.CuspQuot.exists_stable_map_cuspSub hC E d (Λ u₀) (hcusp u₀ hu₀) hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', i1, i2, Q, hQ, f, hf⟩` from `GlobalTheory.MidJacquet.exists_subquotient_jacU_intertwining (Fv F v) n l d hld V π hπ m (U ⊓ W.comap Λ) (fun g u hu => ⟨hU g u hu.1, by`. Express the relevant statement in the definitionally equal form `Λ _ ∈ W`. Rewrite using `[hM g u hu.1]`. Conclude with `hWst (.fin _) _ hu.2⟩)`. Use the proof step `τ.V ((τ.locRep (splitPrime t)).comp (glEquiv d (complEquiv t (splitPrime_under t))).toMonoidHom) (p ∘ₗ Λ)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `⟨u₀, ⟨hu₀, hfW⟩, hp0⟩`. Use the proof step `(fun g hg u hu => by simp only [LinearMap.comp_apply]; rw [hN g hg u hu.1])`. Use the proof step `(fun g u hu => by`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hM g u hu.1]`.
-
-Conclude with `hp (.fin _) _ hu.2)`. Conclude with `⟨hld, τ, W', i1, i2, Q, hQ, f, hf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspBlock.exists_cuspSub_of_jacquet : GlobalTheory.ThK.KP → GlobalTheory.Published.CuspidalSpectrumGL → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

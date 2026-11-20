@@ -253,7 +253,7 @@ def weilCompatibilityOf (hS : SpSig D) (hW : WittLow D) (hψ : IsStdChar D ψ (-
   th := fun V W χ χ' _ b d hV μ 𝓕 hp Φ F h => thC_apply G Om f.petF ⟨b, d⟩ hV hp Φ F h
 
 /- English proof (translation)
-Introduce `_ _ _` and use `Subtype.range_coe om_heis := fun V W χ χ' _ b d => (Om.weil V W χ χ' ⟨b, d⟩).Heisenberg₂ om_aut := fun V W χ χ' _ b d => (Om.weil V W χ χ' ⟨b, d⟩).aut om_cont := fun V W χ χ' _ b d => (Om.weil V W χ χ' ⟨b, d⟩).cont om_unit := fun V W χ χ' _ b d => (Om.weil V W χ χ' ⟨b, d⟩).unit o …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weilTiedEqOf (hS : SpSig D) (hW : WittLow D) (hψ : IsStdChar D ψ (-1)) :
     WeilCompatibleEquivariance (weilCompatibilityOf G P hE Om c f hS hW hψ) where
@@ -267,11 +267,11 @@ theorem weilTiedEqOf (hS : SpSig D) (hW : WittLow D) (hψ : IsStdChar D ψ (-1))
   th := fun V W χ χ' _ b d hV μ 𝓕 hp Φ F h => thC_apply G Om f.petF ⟨b, d⟩ hV hp Φ F h
 
 /- English proof (translation)
-Establish `h : besselUnipotentSubgroup d f0 0 = ⊥`. Unfold `besselUnipotentSubgroup`. Rewrite using `[Subgroup.closure_eq_bot_iff]`. Introduce and unpack `g ⟨hg, -⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `hg i j` as an intermediate fact. Rewrite `this` using `[RingHom.map_zero, add_zero, zero_mul]`. Establish `e : (mt B g - 1) i j = 0` using `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[Matrix.sub_apply, sub_eq_zero]`. Conclude with `e`. Rewrite using `[h]`. Use `infer_instance`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besselUnipotentSubgroup_zero_subsingleton {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : BesDat A B ι) (f0 : Matrix (Fin B.rank) (Fin d.ρ) D.host.E) :
     Subsingleton (besselUnipotentSubgroup d f0 0) := by
@@ -291,7 +291,7 @@ theorem besselUnipotentSubgroup_zero_subsingleton {A B : HSp D} {ι : A.V →ₗ
   infer_instance
 
 /- English proof (translation)
-The claim follows from `{ toIsMulLeftInvariant := ⟨fun g => by rw [@Subsingleton.elim _ ‹Subsingleton G› g 1]; simp [Measure.map_id']⟩ toIsFiniteMeasureOnCompacts := inferInstance toIsOpenPosMeasure := ⟨fun U _ hne => by obtain ⟨x, hx⟩ := hne rw [@Subsingleton.elim _ ‹Subsingleton G› x 1] at hx rw [Meas …`.
+A detailed English derivation is pending.
 -/
 theorem dirac_haar {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] (_ : Subsingleton G) :
     (Measure.dirac (1 : G)).IsHaarMeasure :=
@@ -304,7 +304,7 @@ theorem dirac_haar {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
       exact one_ne_zero⟩ }
 
 /- English proof (translation)
-Rewrite using `[show g = fun _ => g 1 from funext fun x => by rw [@Subsingleton.elim _ hs x 1], integral_const]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_dirac_one_of_subsingleton {G : Type} [Group G] [MeasurableSpace G] (hs : Subsingleton G) (g : G → ℂ) :
     ∫ x, g x ∂(Measure.dirac (1 : G)) = g 1 := by
@@ -366,7 +366,7 @@ def allCompatibilitiesOf (hS : SpSig D) (hW : WittLow D) (hψ : IsStdChar D ψ (
   prov := hP
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨allCompatibilitiesOf G P hE Om c f hS hW hψ h0 hA hJ hD hR A hP⟩`.
+Supply the required witnesses or components.
 -/
 theorem allTied_thetaOf (hS : SpSig D) (hW : WittLow D) (hψ : IsStdChar D ψ (-1)) (h0 : TypZero D) (hA : TypAdd D)
     (hJ : FockCxEx D) (hD : PolAdd ψ) (hR : RealTied D) (A : ProvA) (hP : ProvisionCompatibility D A) :

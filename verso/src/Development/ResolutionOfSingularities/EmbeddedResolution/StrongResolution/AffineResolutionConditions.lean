@@ -73,9 +73,9 @@ theorem strictTransformZeroToBase_def :
     S.strictTransformZeroToBase = (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom := rfl
 
 /- English proof (translation)
-Establish `hemb : S.emb ≫ S.ambientToSpec = pY` using `S.emb_comp`. Establish `hz : S.ambientBlowups.projectionToBase 0 = S.ambientBlowups.isoZero.hom` using `SequenceOfBlowups.projectionToBase_zero S.ambientBlowups`. Establish `hspec` using `S.totalSpaceZeroIso_spec`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[strictTransformZeroToBase_def, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom ≫ (S.emb ≫ S.ambientBlowups.isoZero.inv)) ≫ (S.ambientBlowups.isoZero.hom ≫ S.ambientToSpec) := by`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc, hemb]`. Use `_ = S.strictTransformι 0 ≫ S.schemeAtToSpec 0 := by`. Rewrite using `[hspec, schemeAtToSpec_def, hz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictTransformZeroToBase_comp : S.strictTransformZeroToBase ≫ pY = S.strictTransformι 0 ≫ S.schemeAtToSpec 0 := by
   have hemb : S.emb ≫ S.ambientToSpec = pY := S.emb_comp
@@ -145,13 +145,13 @@ def BoundaryInStrictNormalCrossingPosition : Prop :=
   ∀ i, i ≤ S.ambientLength → InStrictNormalCrossingPosition (S.schemeAtToSpec i) (S.boundary i)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Establish `h0 : (S.blowupSequence h).projectionToBase 0 = S.totalSpaceZeroIso.hom` using `SequenceOfBlowups.projectionToBase_zero (S.blowupSequence h)`. Rewrite using `[h0, S.strictTransformToZero_zero, Category.id_comp, S.strictTransformZeroToBase_def]`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hdown : (S.blowupSequence h).transitionMap (Nat.le_succ j) = S.transitionMap j`. Rewrite using `[SequenceOfBlowups.transitionMap_def]`. Conclude with `S.tower_map_succ j`. Establish `hd` using `(S.blowupSequence h).transitionMap_comp_projectionToBase (Nat.le_succ j)`. Rewrite `hd` using `[hdown]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (coprod.inl : S.strictTransform (j + 1) ⟶ S.totalSpace (j + 1)) ≫ (S.blowupSequence h).projectionToBase (j + 1) = ((coprod.inl : S.strictTransform (j + 1) ⟶ S.totalSpace (j + 1)) ≫ S.transitionMap j) ≫ (S.blowupSequence h).projectionToBase j` using `((Category.assoc (coprod.inl : S.strictTransform (j + 1) ⟶ S.totalSpace (j + 1)) (S.transitionMap j) ((S.blowupSequence h).projectionToBase j)).trans (congrArg (fun f : S.totalSpace (j + 1) ⟶ Y => (coprod.inl : S.strictTransform (j + 1) ⟶ S.totalSpace (j + 1)) ≫ f) hd)).symm`. Establish `e2 : ((coprod.inl : S.strictTransform (j + 1) ⟶ S.totalSpace (j + 1)) ≫ S.transitionMap j) ≫ (S.blowupSequence h).projectionToBase j = (S.strictTransformMap j ≫ (coprod.inl : S.strictTransform j ⟶ S.totalSpace j)) ≫ (S.blowupSequence h).projectionToBase j` using `congrArg (fun g : S.strictTransform (j + 1) ⟶ S.totalSpace j => g ≫ (S.blowupSequence h).projectionToBase j) (S.inl_comp_transitionMap j)`. Establish `e3 : (S.strictTransformMap j ≫ (coprod.inl : S.strictTransform j ⟶ S.totalSpace j)) ≫ (S.blowupSequence h).projectionToBase j = S.strictTransformMap j ≫ ((coprod.inl : S.strictTransform j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j)` using `Category.assoc _ _ _`. Establish `e4 : S.strictTransformMap j ≫ ((coprod.inl : S.strictTransform j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j) = S.strictTransformMap j ≫ (S.strictTransformToZero j ≫ S.strictTransformZeroToBase)` using `congrArg (fun g : S.strictTransform j ⟶ Y => S.strictTransformMap j ≫ g) ih`. Establish `e5 : S.strictTransformMap j ≫ (S.strictTransformToZero j ≫ S.strictTransformZeroToBase) = S.strictTransformToZero (j + 1) ≫ S.strictTransformZeroToBase`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[S.strictTransformToZero_succ j, Category.assoc]`. Conclude with `e1.trans (e2.trans (e3.trans (e4.trans e5)))`.
+A detailed English derivation is pending.
 -/
 theorem inl_comp_blowupSequence_projectionToBase (h : S.TransitionsAreBlowups) (j : ℕ) :
     (coprod.inl : S.strictTransform j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j =
@@ -279,7 +279,7 @@ def AffineBoundaryInStrictNormalCrossingPosition (A : PrincipalizationAlgorithm.
     (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).BoundaryInStrictNormalCrossingPosition
 
 /- English proof (translation)
-Establish `hf : f = initial.to Z` using `initial.hom_ext _ _`. Rewrite using `[hf]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_from_initial {Z : Scheme.{u}} (f : (⊥_ Scheme.{u}) ⟶ Z) :
     AlgebraicGeometry.Smooth f := by
@@ -288,7 +288,7 @@ private theorem smooth_from_initial {Z : Scheme.{u}} (f : (⊥_ Scheme.{u}) ⟶ 
   infer_instance
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem preimage_comp_base_eq_preimage_preimage {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (W : Set ↥C) :
     (f ≫ g).base ⁻¹' W = f.base ⁻¹' (g.base ⁻¹' W) := by
@@ -296,19 +296,19 @@ private theorem preimage_comp_base_eq_preimage_preimage {A B C : Scheme.{u}} (f 
   simp
 
 /- English proof (translation)
-Introduce `x` and use `isEmptyElim x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem dense_of_isEmpty {α : Type u} [TopologicalSpace α] [IsEmpty α]
     (T : Set α) : Dense T := fun x => isEmptyElim x
 
 /- English proof (translation)
-Introduce `x` and use `(hX.false x).elim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isStrictNormalCrossingsDivisor_of_isEmpty {X : Scheme.{u}} (hX : IsEmpty ↥X)
     (D : X.IdealSheafData) : IsStrictNormalCrossingsDivisor D := fun x => (hX.false x).elim
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_of_eq {X Z : Scheme.{u}} {f g : X ⟶ Z} (h : f = g)
     (hg : AlgebraicGeometry.Smooth g) : AlgebraicGeometry.Smooth f := by
@@ -316,7 +316,7 @@ private theorem smooth_of_eq {X Z : Scheme.{u}} {f g : X ⟶ Z} (h : f = g)
   exact hg
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dense_preimage_of_eq {X Z : Scheme.{u}} {f g : X ⟶ Z} (h : f = g) (W : Set ↥Z)
     (hg : Dense (g.base ⁻¹' W)) : Dense (f.base ⁻¹' W) := by
@@ -324,7 +324,7 @@ private theorem dense_preimage_of_eq {X Z : Scheme.{u}} {f g : X ⟶ Z} (h : f =
   exact hg
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_of_eq {X Z : Scheme.{u}} {f g : X ⟶ Z} (h : f = g)
     (W : TopologicalSpace.Closeds ↥Z) (hg : IsStrictNormalCrossingsDivisor (reducedInverseImage g W)) :
@@ -333,15 +333,15 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_of_eq {X Z : 
   exact hg
 
 /- English proof (translation)
-Rewrite using `[dense_iff_inter_open]`. Introduce `U hU hne`. Take `⟨z, hz⟩` from `hne`. Distinguish the cases in `hzl : z ∈ Set.range ⇑(coprod.inl : A ⟶ A ⨿ B).base`. Take `⟨a, ha⟩` from `hzl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hopen : IsOpen ((coprod.inl : A ⟶ A ⨿ B).base ⁻¹' U)` using `hU.preimage (Scheme.Hom.continuous _)`. Establish `hne2 : ((coprod.inl : A ⟶ A ⨿ B).base ⁻¹' U).Nonempty`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, ha]`. Conclude with `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxU, hxT⟩` from `(dense_iff_inter_open.mp hA) _ hopen hne2`. Conclude with `⟨(coprod.inl : A ⟶ A ⨿ B).base x, hxU, hxT⟩`. Establish `hzr : z ∈ Set.range ⇑(coprod.inr : B ⟶ A ⨿ B).base`. Rewrite using `[Blowup.range_coprod_inr_eq_compl]`. Conclude with `hzl`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `hzr`. Establish `hopen : IsOpen ((coprod.inr : B ⟶ A ⨿ B).base ⁻¹' U)` using `hU.preimage (Scheme.Hom.continuous _)`. Establish `hne2 : ((coprod.inr : B ⟶ A ⨿ B).base ⁻¹' U).Nonempty`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, hb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hz`. Take `⟨x, hxU, hxT⟩` from `(dense_iff_inter_open.mp hB) _ hopen hne2`. Conclude with `⟨(coprod.inr : B ⟶ A ⨿ B).base x, hxU, hxT⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dense_of_dense_preimage_inl_inr {A B : Scheme.{u}} (T : Set ↥(A ⨿ B))
     (hA : Dense ((coprod.inl : A ⟶ A ⨿ B).base ⁻¹' T))
@@ -373,7 +373,7 @@ private theorem dense_of_dense_preimage_inl_inr {A B : Scheme.{u}} (T : Set ↥(
     exact ⟨(coprod.inr : B ⟶ A ⨿ B).base x, hxU, hxT⟩
 
 /- English proof (translation)
-Use `dense_of_dense_preimage_inl_inr _ ?_ ?_` and prove the remaining obligations. Rewrite `hA` using `[preimage_comp_base_eq_preimage_preimage]`. Then use the resulting hypothesis. Rewrite `hB` using `[preimage_comp_base_eq_preimage_preimage]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem dense_preimage_of_dense_preimage_inl_inr_comp {A B Z : Scheme.{u}} (g : A ⨿ B ⟶ Z) (W : Set ↥Z)
     (hA : Dense (((coprod.inl : A ⟶ A ⨿ B) ≫ g).base ⁻¹' W))
@@ -384,7 +384,7 @@ private theorem dense_preimage_of_dense_preimage_inl_inr_comp {A B Z : Scheme.{u
   · rwa [preimage_comp_base_eq_preimage_preimage] at hB
 
 /- English proof (translation)
-Use `dense_preimage_of_dense_preimage_inl_inr_comp (coprod.desc a b) W ?_ ?_` and prove the remaining obligations. Rewrite using `[coprod.inl_desc]`. Conclude with `ha`. Rewrite using `[coprod.inr_desc]`. Conclude with `hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dense_preimage_coprod_desc {P Q Z : Scheme.{u}} (a : P ⟶ Z) (b : Q ⟶ Z)
     (W : Set ↥Z) (ha : Dense (a.base ⁻¹' W)) (hb : Dense (b.base ⁻¹' W)) :
@@ -396,7 +396,7 @@ private theorem dense_preimage_coprod_desc {P Q Z : Scheme.{u}} (a : P ⟶ Z) (b
     exact hb
 
 /- English proof (translation)
-Use `IsStrictNormalCrossingsDivisor.reducedInverseImage_coprod (coprod.desc a b) W ?_ ?_` and prove the remaining obligations. Rewrite using `[coprod.inl_desc]`. Conclude with `ha`. Rewrite using `[coprod.inr_desc]`. Conclude with `hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_coprod_desc {P Q Z : Scheme.{u}} (a : P ⟶ Z) (b : Q ⟶ Z)
     (W : TopologicalSpace.Closeds ↥Z)
@@ -409,7 +409,7 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_coprod_desc {
     exact hb
 
 /- English proof (translation)
-Establish `hdesc : coprod.desc ((coprod.inl : A ⟶ A ⨿ P) ≫ g) ((coprod.inr : P ⟶ A ⨿ P) ≫ g) = g` using `coprod.hom_ext (by rw [coprod.inl_desc]) (by rw [coprod.inr_desc])`. Establish `hA' : AlgebraicGeometry.Smooth ((coprod.inl : A ⟶ A ⨿ P) ≫ g)`. Use `hA` as an intermediate fact. Conclude with `Blowup.smooth_of_isEmpty _`. Conclude with `smooth_of_eq hdesc.symm (Blowup.smooth_coprod_desc _ _ hA' hP)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem smooth_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P ⟶ Z) (hA : IsEmpty ↥A)
     (hP : AlgebraicGeometry.Smooth ((coprod.inr : P ⟶ A ⨿ P) ≫ g)) :
@@ -423,7 +423,7 @@ private theorem smooth_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P ⟶ Z) 
   exact smooth_of_eq hdesc.symm (Blowup.smooth_coprod_desc _ _ hA' hP)
 
 /- English proof (translation)
-Use `hA` as an intermediate fact. Conclude with `dense_preimage_of_dense_preimage_inl_inr_comp g W (dense_of_isEmpty _) hP`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem dense_preimage_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P ⟶ Z) (W : Set ↥Z)
     (hA : IsEmpty ↥A)
@@ -432,7 +432,7 @@ private theorem dense_preimage_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P
   exact dense_preimage_of_dense_preimage_inl_inr_comp g W (dense_of_isEmpty _) hP
 
 /- English proof (translation)
-The claim follows from `IsStrictNormalCrossingsDivisor.reducedInverseImage_coprod g W (isStrictNormalCrossingsDivisor_of_isEmpty hA _) hP`.
+A detailed English derivation is pending.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P ⟶ Z)
     (W : TopologicalSpace.Closeds ↥Z) (hA : IsEmpty ↥A)
@@ -441,7 +441,7 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_of_isEmpty_le
   IsStrictNormalCrossingsDivisor.reducedInverseImage_coprod g W (isStrictNormalCrossingsDivisor_of_isEmpty hA _) hP
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[eqToHom_refl, Category.id_comp]`. Conclude with `hg`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_eqToHom_comp_comp {X₁ X₂ Z W : Scheme.{u}} (e : X₁ = X₂) (g : X₂ ⟶ Z)
     (p : Z ⟶ W) (hg : AlgebraicGeometry.Smooth (g ≫ p)) :
@@ -451,7 +451,7 @@ private theorem smooth_eqToHom_comp_comp {X₁ X₂ Z W : Scheme.{u}} (e : X₁ 
   exact hg
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[eqToHom_refl, Category.id_comp]`. Conclude with `hg`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isProper_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁ = X₂) (g : X₂ ⟶ Z)
     (hg : AlgebraicGeometry.IsProper g) : AlgebraicGeometry.IsProper (eqToHom e ≫ g) := by
@@ -460,7 +460,7 @@ private theorem isProper_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁ = X�
   exact hg
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[eqToHom_refl, Category.id_comp]`. Conclude with `hg`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dense_preimage_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁ = X₂) (g : X₂ ⟶ Z)
     (W : Set ↥Z) (hg : Dense (g.base ⁻¹' W)) : Dense ((eqToHom e ≫ g).base ⁻¹' W) := by
@@ -469,7 +469,7 @@ private theorem dense_preimage_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁
   exact hg
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[eqToHom_refl, Category.id_comp]`. Conclude with `hg`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁ = X₂)
     (g : X₂ ⟶ Z) (W : TopologicalSpace.Closeds ↥Z) (hg : IsStrictNormalCrossingsDivisor (reducedInverseImage g W)) :
@@ -479,9 +479,9 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_eqToHom_comp 
   exact hg
 
 /- English proof (translation)
-Take `⟨hirr, hmax⟩` from `hC`. Use `⟨hirr.image g hg.continuousOn, ?_⟩` and prove the remaining obligations. Introduce `b hb hsub`. Establish `hb' : IsIrreducible (f '' b)` using `hb.image f hf.continuousOn`. Establish `hCsub : C ⊆ f '' b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Conclude with `⟨g y, hsub ⟨y, hy, rfl⟩, hfg y⟩`. Establish `hmax'` using `hmax hb' hCsub`. Introduce `x hx`. Conclude with `⟨f x, hmax' ⟨x, hx, rfl⟩, hgf x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem image_mem_irreducibleComponents_of_continuous_inverse {α β : Type u} [TopologicalSpace α]
     [TopologicalSpace β] (f : α → β) (g : β → α) (hf : Continuous f) (hg : Continuous g)
@@ -500,9 +500,9 @@ private theorem image_mem_irreducibleComponents_of_continuous_inverse {α β : T
   exact ⟨f x, hmax' ⟨x, hx, rfl⟩, hgf x⟩
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Rewrite using `[Blowup.idealSheafData_prod_nil]`. Simplify using `[AlgebraicGeometry.Scheme.IdealSheafData.support_top]`. Consider the case `cons D E ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Blowup.idealSheafData_prod_cons]`. Simplify using `[AlgebraicGeometry.Scheme.IdealSheafData.support_mul, ih]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem support_prod_eq_iUnion {X : Scheme.{u}} (L : List X.IdealSheafData) :
     ((L.prod.support : TopologicalSpace.Closeds ↥X) : Set ↥X)
@@ -516,7 +516,7 @@ private theorem support_prod_eq_iUnion {X : Scheme.{u}} (L : List X.IdealSheafDa
       simp [AlgebraicGeometry.Scheme.IdealSheafData.support_mul, ih]
 
 /- English proof (translation)
-Simplify using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem support_comap_eq_preimage {X Z : Scheme.{u}} (f : X ⟶ Z) (I : Z.IdealSheafData) :
     (((I.comap f).support : TopologicalSpace.Closeds ↥X) : Set ↥X)
@@ -524,13 +524,11 @@ private theorem support_comap_eq_preimage {X Z : Scheme.{u}} (f : X ⟶ Z) (I : 
   simp [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Rewrite using `[SequenceOfBlowups.projectionToBase_zero s]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Consider the case `succ n ih`. Introduce `hn`. Establish `hlt : n < s.length` using `hn`. Establish `: AlgebraicGeometry.IsNoetherian (s.schemeAt n)` using `isNoetherian_schemeAt s n (le_of_lt hlt)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: AlgebraicGeometry.IsProper (s.projectionToBase n)` using `ih (le_of_lt hlt)`. Establish `: AlgebraicGeometry.IsProper (s.transitionMapSucc n)` using `hproper _ _ _ _ (s.isBlowupAlongIdealSheaf_blowupMorphism n hlt)`. Establish `h1 : s.transitionMapSucc n ≫ s.projectionToBase n = s.projectionToBase (n + 1)`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `s.transitionMap_comp_projectionToBase (Nat.le_succ n)`.
-
-Rewrite using `[← h1]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isProper_projectionToBase (hproper : FunctorialResolution.Blowup.BlowupIsProper.{u}) {X : Scheme.{u}}
     [AlgebraicGeometry.IsNoetherian X] (s : SequenceOfBlowups X) :
@@ -556,13 +554,11 @@ private theorem isProper_projectionToBase (hproper : FunctorialResolution.Blowup
       infer_instance
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => rw [S.strictTransformToZero_zero, Category.id_comp]`. Consider the case `succ j ih`. Establish `h2 : S.ambientBlowupMorphism j ≫ S.ambientBlowups.projectionToBase j = S.ambientBlowups.projectionToBase (j + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[show S.ambientBlowupMorphism j = S.ambientBlowups.transitionMapSucc j from rfl, SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `S.ambientBlowups.transitionMap_comp_projectionToBase (Nat.le_succ j)`. Establish `h1 : S.ambientBlowupMorphism j ≫ S.schemeAtToSpec j = S.schemeAtToSpec (j + 1)`. Rewrite using `[S.schemeAtToSpec_def j, S.schemeAtToSpec_def (j + 1), ← Category.assoc, h2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[S.strictTransformToZero_succ j, Category.assoc]`. Use `_ = S.strictTransformMap j ≫ S.strictTransformι j ≫ S.schemeAtToSpec j := by rw [ih]`. Use `_ = (S.strictTransformMap j ≫ S.strictTransformι j) ≫ S.schemeAtToSpec j := by rw [Category.assoc]`. Use `_ = (S.strictTransformι (j + 1) ≫ S.ambientBlowupMorphism j) ≫ S.schemeAtToSpec j := by rw [S.strictTransformMap_comp_strictTransformι]`. Use `_ = S.strictTransformι (j + 1) ≫ (S.ambientBlowupMorphism j ≫ S.schemeAtToSpec j) := by rw [Category.assoc]`.
-
-Use `_ = S.strictTransformι (j + 1) ≫ S.schemeAtToSpec (j + 1) := by rw [h1]`.
+A detailed English derivation is pending.
 -/
 private theorem strictTransformToZero_comp_schemeAtToSpec {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -587,7 +583,7 @@ private theorem strictTransformToZero_comp_schemeAtToSpec {k : Type u} [Field k]
         _ = S.strictTransformι (j + 1) ≫ S.schemeAtToSpec (j + 1) := by rw [h1]
 
 /- English proof (translation)
-Rewrite using `[S.detachedToBase_def i, Category.assoc, Category.assoc, S.strictTransformZeroToBase_comp, strictTransformToZero_comp_schemeAtToSpec S i]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem detachedToBase_comp_eq {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -597,7 +593,7 @@ private theorem detachedToBase_comp_eq {k : Type u} [Field k] [CharZero k] {Y : 
     strictTransformToZero_comp_schemeAtToSpec S i]
 
 /- English proof (translation)
-Rewrite using `[← hw, ← hv, ← Category.assoc (coprod.inr : (P ⨿ Q) ⟶ (A₁ ⨿ (P ⨿ Q))) τ v, hτ]`. Apply the tactic sequence `apply coprod.hom_ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem inr_comp_eq_coprod_desc {A₁ A₀ P Q Z : Scheme.{u}} (φ : Q ⟶ A₀)
     (τ : (A₁ ⨿ (P ⨿ Q)) ⟶ (A₀ ⨿ P)) (u : (A₁ ⨿ (P ⨿ Q)) ⟶ Z) (v : (A₀ ⨿ P) ⟶ Z)
@@ -612,23 +608,21 @@ private theorem inr_comp_eq_coprod_desc {A₁ A₀ P Q Z : Scheme.{u}} (φ : Q �
   apply coprod.hom_ext <;> simp
 
 /- English proof (translation)
-Take `⟨T, hTclosed, e, he⟩` from `hClopen i hi`. Establish `: AlgebraicGeometry.Smooth (S.schemeAtToSpec i)` using `hLevels i (le_of_lt hi)`. Establish `hoi : AlgebraicGeometry.IsOpenImmersion e.inv` using `inferInstance`. Establish `hgf : ∀ x : ↥(S.discardedSubscheme i), e.inv.base (e.hom.base x) = x`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hfg : ∀ x : ↥(T.toScheme), e.hom.base (e.inv.base x) = x`. Introduce `x`. Simplify using the standard rewrite rules. Establish `hmor : e.inv ≫ (S.discardedι i ≫ S.strictTransformι i) = T.ι ≫ (S.ambientCenter i).subschemeι`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← he, ← Category.assoc, e.inv_hom_id, Category.id_comp]`. Establish `hbase : ∀ x : ↥(T.toScheme), (S.discardedι i ≫ S.strictTransformι i).base (e.inv.base x) = (T.ι ≫ (S.ambientCenter i).subschemeι).base x`. Introduce `x`. Establish `hh` using `congrArg (fun f : T.toScheme ⟶ S.ambientLevel i => f.base x) hmor`. Simplify using `using hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcond : ∀ D ∈ S.boundary i, ∀ C ∈ irreducibleComponents ↥(T.toScheme), ¬ ((T.ι ≫ (S.ambientCenter i).subschemeι).base '' C ⊆ ((D.support : TopologicalSpace.Closeds ↥(S.ambientLevel i)) : Set ↥(S.ambientLevel i)))`. Introduce `D hD C hC hsub`. Take `⟨j, hj, rfl⟩` from `List.mem_iff_getElem.mp hD`. Establish `hC' : e.inv.base '' C ∈ irreducibleComponents ↥(S.discardedSubscheme i)` using `image_mem_irreducibleComponents_of_continuous_inverse e.hom.base e.inv.base (Scheme.Hom.continuous _) (Scheme.Hom.continuous _) hgf hfg hC`. Establish `himg : (S.discardedι i ≫ S.strictTransformι i).base '' (e.inv.base '' C) = (T.ι ≫ (S.ambientCenter i).subschemeι).base '' C`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.image_image]`. Conclude with `Set.image_congr (fun x _ => hbase x)`. Establish `hoff` using `hNotInBoundary i hi j hj (e.inv.base '' C) hC'`. Rewrite `hoff` using `[List.get_eq_getElem]`. Conclude with `hoff (by rw [himg]; exact hsub)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsnc1` using `hsncClopen k (S.ambientLevel i) (S.schemeAtToSpec i) (S.boundary i) (S.ambientCenter i) (hBoundarySNC i (le_of_lt hi)) (hCentersSNC i hi) T hTclosed hcond`. Establish `hpre : ∀ W : Set ↥(S.ambientLevel i), (T.ι ≫ (S.ambientCenter i).subschemeι).base ⁻¹' W = e.inv.base ⁻¹' ((S.discardedι i ≫ S.strictTransformι i).base ⁻¹' W)`. Introduce `W`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hbase x]`. Establish `hJsupp : (((((S.boundary i).prod.comap (T.ι ≫ (S.ambientCenter i).subschemeι)).support) : TopologicalSpace.Closeds ↥(T.toScheme)) : Set ↥(T.toScheme)) = (T.ι ≫ (S.ambientCenter i).subschemeι).base ⁻¹' (⋃ D ∈ S.boundary i, ((D.support : TopologicalSpace.Closeds ↥(S.ambientLevel i) …`. Rewrite using `[support_comap_eq_preimage, support_prod_eq_iUnion]`. Establish `hrp : reducedInverseImage (e.inv ≫ S.detachedToBase i) (smoothLocusComplement pY) = ((S.boundary i).prod.comap (T.ι ≫ (S.ambientCenter i).subschemeι)).radical`. Use `reducedInverseImage_eq_radical _ _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hJsupp, hpre, ← hSing i hi, preimage_comp_base_eq_preimage_preimage]`. Use `IsStrictNormalCrossingsDivisor.of_isOpenImmersion_jointly_surjective (reducedInverseImage (S.detachedToBase i) (smoothLocusComplement pY)) (fun _ : Unit => T.toScheme) (fun _ => e.inv) (fun _ => hoi) ?_ ?_` and prove the remaining obligations. Introduce `x`. Conclude with `⟨(), e.hom.base x, hgf x⟩`. Introduce `_`.
-
-Rewrite using `[comap_reducedInverseImage_of_isOpenImmersion e.inv (S.detachedToBase i) (smoothLocusComplement pY), hrp]`. Conclude with `hsnc1`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_detachedToBase {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -700,11 +694,11 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_detachedToBas
     exact hsnc1
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Conclude with `smooth_from_initial (G 0 ≫ pY)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `hj`. Establish `hj' : j < S.ambientLength` using `hj`. Establish `e1 : G (j + 1) ≫ pY = coprod.desc (G j ≫ pY) (S.detachedToBase j ≫ pY)` using `(congrArg (fun t : S.discardedUnion (j + 1) ⟶ Y => t ≫ pY) (hG j)).trans (coprod.desc_comp pY (G j) (S.detachedToBase j))`. Use `smooth_of_eq e1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Blowup.smooth_coprod_desc _ _ (ih (le_of_lt hj')) ?_` and prove the remaining obligations. Conclude with `smooth_of_eq (detachedToBase_comp_eq S j) (hSmooth j hj')`.
+A detailed English derivation is pending.
 -/
 private theorem smooth_discardedUnion_comp {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -730,11 +724,9 @@ private theorem smooth_discardedUnion_comp {k : Type u} [Field k] [CharZero k] {
       exact smooth_of_eq (detachedToBase_comp_eq S j) (hSmooth j hj')
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Establish `: IsEmpty ↥(S.discardedUnion 0)` using `(inferInstance : IsEmpty ↥(⊥_ Scheme.{u}))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `dense_of_isEmpty _`. Consider the case `succ j ih`. Introduce `hj`. Establish `hj' : j < S.ambientLength` using `hj`. Use `dense_preimage_of_eq (hG j) _ ?_` and prove the remaining obligations.
-
-Conclude with `dense_preimage_coprod_desc _ _ _ (ih (le_of_lt hj')) (hDense j hj')`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem dense_preimage_smoothLocus_of_discardedUnion {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -756,9 +748,9 @@ private theorem dense_preimage_smoothLocus_of_discardedUnion {k : Type u} [Field
       exact dense_preimage_coprod_desc _ _ _ (ih (le_of_lt hj')) (hDense j hj')
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Conclude with `isStrictNormalCrossingsDivisor_of_isEmpty (inferInstance : IsEmpty ↥(⊥_ Scheme.{u})) (reducedInverseImage (G 0) (smoothLocusComplement pY))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `hj`. Establish `hj' : j < S.ambientLength` using `hj`. Use `isStrictNormalCrossingsDivisor_reducedInverseImage_of_eq (hG j) _ ?_` and prove the remaining obligations. Conclude with `isStrictNormalCrossingsDivisor_reducedInverseImage_coprod_desc _ _ _ (ih (le_of_lt hj')) (isStrictNormalCrossingsDivisor_reducedInverseImage_detachedToBase S hClopen hNotInBoundary hSing hCentersSNC hBoundarySNC hLevels hsncClopen j hj')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_discardedUnion {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -784,23 +776,19 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_discardedUnio
           hsncClopen j hj')
 
 /- English proof (translation)
-Establish `: IsNoetherianRing ↑(CommRingCat.of k)` using `inferInstanceAs (IsNoetherianRing k)`. Establish `: AlgebraicGeometry.IsNoetherian (Spec (CommRingCat.of k))` using `inferInstance`. Establish `: AlgebraicGeometry.IsNoetherian Y` using `isNoetherian_of_locallyOfFiniteType pY`. Establish `hFeq : ∀ j : ℕ, S.transitionMap j ≫ (S.blowupSequence h).projectionToBase j = (S.blowupSequence h).projectionToBase (j + 1)`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdown : (S.blowupSequence h).transitionMap (Nat.le_succ j) = S.transitionMap j`. Rewrite using `[SequenceOfBlowups.transitionMap_def]`. Conclude with `S.tower_map_succ j`. Establish `hd` using `(S.blowupSequence h).transitionMap_comp_projectionToBase (Nat.le_succ j)`. Rewrite `hd` using `[hdown]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd`. Establish `hWeq : ∀ j : ℕ, S.discardedι j ≫ ((coprod.inl : S.strictTransform j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j) = S.detachedToBase j`. Introduce `j`. Rewrite using `[S.inl_comp_blowupSequence_projectionToBase h j]`. Conclude with `(S.detachedToBase_def j).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGeq : ∀ j : ℕ, ((coprod.inr : S.discardedUnion (j + 1) ⟶ S.totalSpace (j + 1)) ≫ (S.blowupSequence h).projectionToBase (j + 1)) = coprod.desc ((coprod.inr : S.discardedUnion j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j) (S.detachedToBase j)` using `fun j => inr_comp_eq_coprod_desc (S.discardedι j) (S.transitionMap j) ((S.blowupSequence h).projectionToBase (j + 1)) ((S.blowupSequence h).projectionToBase j) (S.detachedToBase j) (coprod.inr_desc _ _) (hFeq j) (hWeq j)`. Establish `hStrictEmpty : IsEmpty ↥(S.strictTransform S.ambientLength)`. Establish `h2 : Set.range ⇑(S.strictTransformι S.ambientLength) = (((S.strictTransformIdeal S.ambientLength).support : TopologicalSpace.Closeds ↥(S.ambientLevel S.ambientLength)) : Set ↥(S.ambientLevel S.ambientLength))` using `AlgebraicGeometry.Scheme.IdealSheafData.range_subschemeι _`. Establish `h3 : (((S.strictTransformIdeal S.ambientLength).support : TopologicalSpace.Closeds ↥(S.ambientLevel S.ambientLength)) : Set ↥(S.ambientLevel S.ambientLength)) = ∅`. Establish `h1 : S.strictTransformIdeal S.ambientLength = ⊤` using `hEmpty`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[h1, AlgebraicGeometry.Scheme.IdealSheafData.support_top]`. Rewrite `h2` using `[h3]`. Conclude with `Set.range_eq_empty_iff.mp h2`. Establish `hLastStruct : (S.blowupSequenceWithoutIsos h).lastStructMap = eqToHom (SequenceOfBlowups.withoutIsoBlowups_lastObj (S.blowupSequence h)) ≫ (S.blowupSequence h).lastStructMap` using `SequenceOfBlowups.withoutIsoBlowups_lastStructMap (S.blowupSequence h)`. Establish `hLastProjection : (S.blowupSequence h).lastStructMap = (S.blowupSequence h).projectionToBase S.ambientLength` using `SequenceOfBlowups.lastStructMap_eq_projectionToBase (S.blowupSequence h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSmoothDiscarded : AlgebraicGeometry.Smooth (((coprod.inr : S.discardedUnion S.ambientLength ⟶ S.totalSpace S.ambientLength) ≫ (S.blowupSequence h).projectionToBase S.ambientLength) ≫ pY)` using `smooth_discardedUnion_comp S (fun j => (coprod.inr : S.discardedUnion j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j) hGeq hSmooth S.ambientLength le_rfl`. Establish `hDenseDiscarded : Dense ((((coprod.inr : S.discardedUnion S.ambientLength ⟶ S.totalSpace S.ambientLength) ≫ (S.blowupSequence h).projectionToBase S.ambientLength)).base ⁻¹' (pY.smoothLocus : Set ↥Y))` using `dense_preimage_smoothLocus_of_discardedUnion S (fun j => (coprod.inr : S.discardedUnion j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j) hGeq hDense S.ambientLength le_rfl`. Establish `hSNCDiscarded : IsStrictNormalCrossingsDivisor (reducedInverseImage ((coprod.inr : S.discardedUnion S.ambientLength ⟶ S.totalSpace S.ambientLength) ≫ (S.blowupSequence h).projectionToBase S.ambientLength) (smoothLocusComplement pY))` using `isStrictNormalCrossingsDivisor_reducedInverseImage_discardedUnion S (fun j => (coprod.inr : S.discardedUnion j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j) hGeq hClopen hNotInBoundary hSing hCentersSNC hBoundarySNC hLevels hsncClopen S.ambientLength le_rfl`. Establish `hstruct : AlgebraicGeometry.Smooth ((S.blowupSequence h).projectionToBase S.ambientLength ≫ pY)`. Use `smooth_of_isEmpty_left (A := S.strictTransform S.ambientLength) (P := S.discardedUnion S.ambientLength) ((S.blowupSequence h).projectionToBase S.ambientLength ≫ pY) hStrictEmpty ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smooth_of_eq (Category.assoc _ _ _).symm hSmoothDiscarded`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hLastStruct, hLastProjection]`. Use `smooth_eqToHom_comp_comp _ _ _ ?_` and prove the remaining obligations. Conclude with `hstruct`.
-
-Rewrite using `[hLastStruct, hLastProjection]`. Conclude with `isProper_eqToHom_comp _ _ (isProper_projectionToBase hproper (S.blowupSequence h) S.ambientLength le_rfl)`. Conclude with `isIso_restrict_lastStructMap_smoothLocus pY _ (SequenceOfBlowups.withoutIsoBlowups_centersLieOver _ hCenters)`. Rewrite using `[hLastStruct, hLastProjection]`. Use `dense_preimage_eqToHom_comp _ _ _ ?_` and prove the remaining obligations.
-
-Conclude with `dense_preimage_of_isEmpty_left (A := S.strictTransform S.ambientLength) (P := S.discardedUnion S.ambientLength) _ _ hStrictEmpty hDenseDiscarded`. Conclude with `SequenceOfBlowups.withoutIsoBlowups_centersLieOver _ hCenters`. Rewrite using `[hLastStruct, hLastProjection]`. Use `isStrictNormalCrossingsDivisor_reducedInverseImage_eqToHom_comp _ _ _ ?_` and prove the remaining obligations. Conclude with `isStrictNormalCrossingsDivisor_reducedInverseImage_of_isEmpty_left (A := S.strictTransform S.ambientLength) (P := S.discardedUnion S.ambientLength) _ _ hStrictEmpty hSNCDiscarded`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isStrongResolution_blowupSequenceWithoutIsos {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -892,7 +880,7 @@ private theorem isStrongResolution_blowupSequenceWithoutIsos {k : Type u} [Field
       (P := S.discardedUnion S.ambientLength) _ _ hStrictEmpty hSNCDiscarded
 
 /- English proof (translation)
-Introduce `k _ _ Y pY _ _ _ _`. Conclude with `isStrongResolution_blowupSequenceWithoutIsos (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY) (hPrincipalization k Y pY) (hEmpty k Y pY) (hSmooth k Y pY) (hDense k Y pY) (hCenters k Y pY) (hClopen k Y pY) (hNotInBoundary k Y pY) (hSing k Y pY) (hCentersSNC k Y pY …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isStrongResolution_blowupSequenceWithoutIsos_ofAffine (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

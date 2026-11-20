@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LineFunctionalEq
 import GroundTheory.PAdicHodge.AxLemma
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.line_functional_eq_period_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FLineFunctionalEqPeriodMul.lean&line=8#L8)
 -/

@@ -9,7 +9,7 @@ open NumberField MeasureTheory Topology GlobalTheory.AutomorphicL2Unitary Global
 namespace GlobalTheory.CompanionTheory.CuspRank
 
 /- English proof (translation)
-Use `SpecModel.finiteDimensional_zero μ` as an intermediate fact. Establish `: FiniteDimensional ℂ (L2cusp μ)` using `inferInstance`. Establish `: ProperSpace (L2cusp μ)` using `FiniteDimensional.proper ℂ _`. Conclude with `isCompactOperator_of_locallyCompactSpace_rng _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompactOperator_repOp_Rcusp_zero (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (μ : Measure (GA E 0)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (f : GA E 0 → ℂ) :

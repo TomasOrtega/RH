@@ -17,7 +17,7 @@ def placeHom (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F
   (AddMonoidHom.inr (Ainf F) (Af F)).comp (GlobalTheory.AdelicU.singleFin v).toAddMonoidHom
 
 /- English proof (translation)
-The claim follows from `Continuous.prodMk continuous_const (GlobalTheory.AdelicU.continuous_singleFin v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_placeHom (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (placeHom F v) :=
@@ -34,9 +34,9 @@ theorem coe_localChar (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) 
     (v : HeightOneSpectrum (𝓞 F)) : (localChar F ψ v : Fv F v → ℂ) = psiV F ψ v := rfl
 
 /- English proof (translation)
-Use `⟨hψ.1.comp (continuous_placeHom F v), fun t => hψ.2.1 _, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨t, ht⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp (m + 1))`. Use `(hm t).1 fun s _ => h _` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[ht, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isLocalChar (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (hψ : IsCharAF F ψ) (v : HeightOneSpectrum (𝓞 F)) (m : ℤ)

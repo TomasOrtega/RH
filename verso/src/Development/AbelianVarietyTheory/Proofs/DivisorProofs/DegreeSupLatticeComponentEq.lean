@@ -15,24 +15,22 @@ section General
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
 
 /- English proof (translation)
-Rewrite using `[IsTotallyComplex.finrank, Formalism.HN.nPl, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq_two_mul_nPl : Module.finrank ℚ K = 2 * Formalism.HN.nPl K := by
   rw [IsTotallyComplex.finrank, Formalism.HN.nPl, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
     IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]
 
 /- English proof (translation)
-Take `⟨-, hrk, hht⟩` from `Formalism.HN.plLat K V ι b X hX L hL`. Establish `hd : (0 : ℝ) < |(NumberField.discr K : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero K)`. Establish `hf : (0 : ℝ) < (Formalism.HN.nPl K : ℝ)`. Establish `: 0 < Formalism.HN.nPl K` using `Fintype.card_pos`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : (0 : ℝ) < (Formalism.HN.rkK L : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hr`. Establish `e₁ : Formalism.HN.ht b X L = (2 : ℝ) ^ (Formalism.HN.nPl K * Formalism.HN.rkK L) * |(NumberField.discr K : ℝ)| ^ (-(Formalism.HN.rkK L : ℝ) / 2) * Formalism.F.covol (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize b X) L)` using `rfl`. Establish `hC : 0 < Formalism.F.covol (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize b X) L)`. Rewrite `hht` using `[e₁]`. Conclude with `pos_of_mul_pos_right hht (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlog : Real.log (Formalism.HN.ht b X L) = ((Formalism.HN.nPl K : ℝ) * Formalism.HN.rkK L) * Real.log 2 + (-(Formalism.HN.rkK L : ℝ) / 2) * Real.log |(NumberField.discr K : ℝ)| + Real.log (Formalism.F.covol (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize b X) L))`. Rewrite using `[e₁, Real.log_mul (by positivity) hC.ne', Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_rpow hd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrk' : (Formalism.F.rk (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize b X) L) : ℝ) = 2 * (Formalism.HN.nPl K : ℝ) * Formalism.HN.rkK L`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Formalism.F.rk (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize b X) L) = Module.finrank ℚ K * Formalism.HN.rkK L` using `hrk`. Rewrite using `[this, finrank_eq_two_mul_nPl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmu : Formalism.HN.muDef b X L = 2 * (-Real.log (Formalism.F.covol (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize b X) L)) / (2 * (Formalism.HN.nPl K : ℝ) * Formalism.HN.rkK L)) - Real.log 2 + Real.log |(NumberField.discr K : ℝ)| / (2 * (Formalism.HN.nPl K : ℝ))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Formalism.HN.muDef, Formalism.HN.slope, Formalism.F.slope, Formalism.F.deg, hrk', Formalism.HN.logDisc, finrank_eq_two_mul_nPl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hmu, hlog]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rkK_mul_muDef [StarRing K] {V ι : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V)
@@ -71,13 +69,13 @@ theorem rkK_mul_muDef [StarRing K] {V ι : Type} [AddCommGroup V] [Module K V] [
   ring
 
 /- English proof (translation)
-Distinguish the cases in `h0 : L = ⊥`. Substitute `h0` using the available equality. Establish `hv : ReciprocityTheory.GeometryOfNumbersTheory.IsFrame K (⊥ : Submodule (𝓞 K) V) (Fin.elim0 : Fin 0 → V)` using `⟨fun i => i.elim0, linearIndependent_empty_type, by simp⟩`. Rewrite using `[AllWt.deg_bot, ReciprocityTheory.GeometryOfNumbersTheory.arakelovDegree_eq_degreeOfFamily h hL hv]`. Simplify using `[ReciprocityTheory.GeometryOfNumbersTheory.degreeOfFamily, ReciprocityTheory.GeometryOfNumbersTheory.HermFam.gram]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `letI : StarRing K := starRingOfComm`. Take `⟨n, ⟨b, X⟩, hG⟩` from `hg.some`. Use `haveI : FiniteDimensional K V := Module.Basis.finiteDimensional_of_finite b`. Establish `hr : Formalism.HN.rkK L ≠ 0`. Introduce `hr`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h0` to reduce the goal to its premises. Rewrite `hr` using `[Formalism.HN.rkK, Submodule.finrank_eq_zero]`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span K (L : Set V)` using `Submodule.subset_span hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[hr, Submodule.mem_bot]`. Rewrite using `[hx']`. Conclude with `zero_mem _`. Rewrite using `[GlobalTheory.T.hermitian_lattice_degree_eq_neg_log_frame_height K V h hinv (Fin n) b X (fun v => (hG v).1) (fun v x => ((hG v).2 x).trans (hN _ x).symm) L hL, AllWt.deg, AllWt.slope, AllWt.slope_sq_eq hG hL, rkK_mul_muDef b X (fun v => (hG v).1) hL hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pgeoDeg_eq_deg {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K V) (hinv : h.IsConjInv) {N : (K →+* ℂ) → V → ℝ} (hN : ∀ σ x, h.nrm σ x = N σ x)
@@ -107,7 +105,7 @@ theorem pgeoDeg_eq_deg {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K)
 end General
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v => by rw [← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff] exact fun e => CompHt.conj_comp_ne (c := c) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTotallyComplex_coeff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H}
     (c : Coeff l) : IsTotallyComplex c.F :=
@@ -116,11 +114,11 @@ theorem isTotallyComplex_coeff {E : Type} [Field E] [NumberField E] [IsCMField E
     exact fun e => CompHt.conj_comp_ne (c := c) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k j hj`. Use `haveI : IsTotallyComplex c.F := isTotallyComplex_coeff c`. Establish `hM : (h.data f₁ f₂ th k).M j = (GlobalTheory.AllWt.latOn U Z (GlobalTheory.AllWt.wtOf Dw (P.wt j) 0)).map ((h.equivV f₁ f₂ th k hj).toLinearMap.restrictScalars (𝓞 c.F))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Use `⟨(h.equivV f₁ f₂ th k hj).symm y, ?_, (h.equivV f₁ f₂ th k hj).apply_symm_apply y⟩` and prove the remaining obligations. Use `(h.equivV_mem f₁ f₂ th k hj _).1 ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `(h.equivV_mem f₁ f₂ th k hj g).2 hg`. Apply the tactic sequence `rw [HilbertSamuel.Data.degM, hM, ← FibIndep.deg_map_of_isometry (HermTools.comap ((h.data f₁ f₂ th k).nm j) (h.equivV f₁ f₂ th k hj).toLinearMap (h.equivV f₁ f₂ th k hj).injective) _ (h.equivV f₁ f₂ th k hj).toLinearMap (fun _ _ _ => rfl) (h.good j hj).2.1]`. Conclude with `pgeoDeg_eq_deg _ (HermTools.isConjInv_comap ((h.data f₁ f₂ th k).conjInv j) _ _) (fun σ x => h.nrm_equivV f₁ f₂ th k hj σ x) (h.good j hj).1 (h.good j hj).2.1`.
+A detailed English derivation is pending.
 -/
 theorem Ready.degM_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (X : GlobalTheory.FlagMod.FlagCover Y) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : WtPar Dw) (R : Choice X Z U P) (ω : CanId R.toModif) (x : ℝ) (D : Formalism.BasicNotions.D7) (V : (c.F →+* ℂ) → Formalism.BasicNotions.TH.HSp D) (dict : ∀ σ, Formalism.L2.Theta.GA D (V σ) → Σ k, FD.Frame ((U σ).X k).Ψ r) (h : Ready R ω x V dict) (f₁ : CuspFrame Z U x V dict P.u₁) (f₂ : CuspFrame Z U x V dict P.u₂) (th : R.L.Sec) (k : Consts), ∀ j ≤ P.T, (h.data f₁ f₂ th k).degM j = GlobalTheory.AllWt.degOn U x V dict Z (GlobalTheory.AllWt.wtOf Dw (P.wt j) 0) := by
   intro E _ _ _ H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k j hj

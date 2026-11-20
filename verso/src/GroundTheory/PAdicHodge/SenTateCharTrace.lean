@@ -22,29 +22,27 @@ variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)} [FiniteDimensional ℚ_[
   {η : Gal(PadicAlgCl p/K) →* ℤ_[p]ˣ}
 
 /- English proof (translation)
-Rewrite using `[nrm_le_nrm_iff, vle_iff_norm_le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_le_nrm_iff_norm_le' (x y : PadicAlgCl p) : nrm K x ≤ nrm K y ↔ ‖x‖ ≤ ‖y‖ := by
   rw [nrm_le_nrm_iff, vle_iff_norm_le]
 
 /- English proof (translation)
-Rewrite using `[← not_le, ← not_le, nrm_le_nrm_iff_norm_le']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_lt_nrm_iff_norm_lt' (x y : PadicAlgCl p) : nrm K x < nrm K y ↔ ‖x‖ < ‖y‖ := by
   rw [← not_le, ← not_le, nrm_le_nrm_iff_norm_le']
 
 /- English proof (translation)
-Rewrite using `[mem_lowerRamificationGroup_iff_valuation]`. Introduce `x hx`. Establish `hx1 : nrm K ((⟨x, hx⟩ : 𝒪[M]) : PadicAlgCl p) ≤ 1` using `(mem_integer_iff_nrm_le_one M x).1 hx`. Establish `hxn : ‖((x : M) : PadicAlgCl p)‖ ≤ 1`. Rewrite using `[← norm_one (α := PadicAlgCl p), ← nrm_le_nrm_iff_norm_le' (K := K), nrm_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx1`. Establish `h1` using `(mem_inertiaGal.1 hτ) _ hxn`. Use `set z : M := AlgEquiv.restrictNormalHom M τ x - x`. Establish `hz : ((z : M) : PadicAlgCl p) = τ (x : PadicAlgCl p) - (x : PadicAlgCl p)`. Simplify using `only [z, AddSubgroupClass.coe_sub, AlgEquiv.restrictNormalHom_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzlt : nrm K ((z : M) : PadicAlgCl p) < 1`. Rewrite using `[← nrm_one (K := K) (Ω := PadicAlgCl p), nrm_lt_nrm_iff_norm_lt', norm_one, hz]`. Conclude with `h1`. Establish `key : nrm K ((z : M) : PadicAlgCl p) ≤ unifNrm M ^ (1 : ℤ)`. Break down `eq_or_ne z 0 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, IntermediateField.coe_zero, nrm_zero]`. Conclude with `le_of_lt (zpow_pos (unifNrm_pos M) _)`. Rewrite `hzlt`, the goal using `[nrm_eq_unifNrm_zpow M h0]`. Establish `hord : 1 ≤ ord z`. Assume the negation of the conclusion as `hlt`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `push Not at hlt`. Establish `: (1 : ℝ) ≤ unifNrm M ^ ord z` using `one_le_zpow_of_nonpos₀ (unifNrm_pos M) (unifNrm_lt_one M).le (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `zpow_le_zpow_right_of_le_one₀ (unifNrm_pos M) (unifNrm_lt_one M).le hord`. Use `(normalizedValuation_le_exp_iff M z 1).2 key` as an intermediate fact.
-
-Simplify `this` using `[z]`.
+A detailed English derivation is pending.
 -/
 theorem restrictNormalHom_mem_lowerRamificationGroup_zero (M : IntermediateField K (PadicAlgCl p))
     [FiniteDimensional K M] [Normal K M] {τ : Gal(PadicAlgCl p/K)} (hτ : τ ∈ inertiaGal K) :
@@ -78,15 +76,15 @@ theorem restrictNormalHom_mem_lowerRamificationGroup_zero (M : IntermediateField
   simpa [z] using this
 
 /- English proof (translation)
-Take `⟨b, hb, hb'⟩` from `exists_level hτ1`. Establish `hb2 : 2 ≤ b`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Conclude with `hb' (unitsOneAdd_antitone (by omega) hτ2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional K (charTower η (b + 1))` using `finiteDimensional_charTower hη (b + 1)`. Establish `: IsAbelianGalois K (charTower η (b + 1))` using `isAbelianGalois_charTower hη (b + 1)`. Establish `h0` using `restrictNormalHom_mem_lowerRamificationGroup_zero (charTower η (b + 1)) hτ`. Rewrite `h0` using `[← upperRamificationGroup_zero, show (0 : ℝ) = ((0 : ℕ) : ℝ) by simp, restrictNormalHom_mem_upperRamificationGroup_iff hη, Subgroup.mem_sup]`. Take `⟨a, ⟨ρ, ⟨u, hu, hu'⟩, rfl⟩, w, hw, haw⟩` from `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : η ρ ∈ unitsOneAdd p b`. Establish `e : η ρ = η τ * w⁻¹` using `by rw [← haw, mul_inv_cancel_right]`. Rewrite using `[e]`. Conclude with `mul_mem hb (inv_mem (unitsOneAdd_antitone (Nat.le_succ b) hw))`. Establish `ha' : η ρ ∉ unitsOneAdd p (b + 1)` using `fun h => hb' (haw ▸ mul_mem h hw)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, j, hc, hcj⟩` from `exists_pow_mem_unitFiltrationUnits (K := K) p n`. Establish `hmem : ρ ^ (c * p ^ j) ∈ artinGal K n`. Use `⟨u ^ (c * p ^ j), hcj u hu, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hu', map_pow]`. Take `⟨h1, h2⟩` from `pow_not_mem_of_not_dvd (by omega) ha ha' hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨-, h4⟩` from `pow_prime_pow_mem_not_mem hb2 h1 h2 j`. Introduce `hbot`. Establish `: η (ρ ^ (c * p ^ j)) ∈ artinImage K η n` using `⟨_, hmem, rfl⟩`. Rewrite `this` using `[hbot, Subgroup.mem_bot, map_pow, pow_mul]`. Conclude with `h4 (this ▸ one_mem _)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artinImage_ne_bot (hη : Continuous η) {τ : Gal(PadicAlgCl p/K)} (hτ : τ ∈ inertiaGal K)
     (hτ2 : η τ ∈ unitsOneAdd p 2) (hτ1 : η τ ≠ 1) (n : ℕ) : artinImage K η n ≠ ⊥ := by
@@ -120,7 +118,7 @@ theorem artinImage_ne_bot (hη : Continuous η) {τ : Gal(PadicAlgCl p/K)} (hτ 
   exact h4 (this ▸ one_mem _)
 
 /- English proof (translation)
-Rewrite using `[← unifNrm_pow_ramificationIndex (⊥ : IntermediateField K (PadicAlgCl p))]`. Conclude with `pow_le_one₀ (unifNrm_pos _).le (unifNrm_lt_one _).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseUnifNrm_le_one : baseUnifNrm K (PadicAlgCl p) ≤ 1 := by
   rw [← unifNrm_pow_ramificationIndex (⊥ : IntermediateField K (PadicAlgCl p))]
@@ -129,11 +127,11 @@ theorem baseUnifNrm_le_one : baseUnifNrm K (PadicAlgCl p) ≤ 1 := by
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-Establish `hp0 : (p : ℝ) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hp1 : (p : ℝ)⁻¹ ≠ 1`. Rewrite using `[Ne, inv_eq_one]`. Conclude with `hp.out.one_lt.ne'` after adjusting the coercions. Establish `hr : ∑ i ∈ Finset.range q, (p : ℝ) ^ (-(i : ℤ)) = ∑ i ∈ Finset.range q, ((p : ℝ)⁻¹) ^ i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, inv_pow]`. Rewrite using `[hr, geom_sum_eq hp1, zpow_neg, zpow_natCast, inv_pow]`. Establish `hp1' : (p : ℝ)⁻¹ - 1 ≠ 0` using `sub_ne_zero.2 hp1`. Establish `hp1'' : (1 : ℝ) - p ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Combine the linear equalities and inequalities to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem div_mul_geom_sum_mul_sub_one (e q : ℕ) :
     (e : ℝ) / p * (∑ i ∈ Finset.range q, (p : ℝ) ^ (-(i : ℤ))) * ((p : ℝ) - 1) =
@@ -153,27 +151,25 @@ theorem div_mul_geom_sum_mul_sub_one (e q : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `: FiniteDimensional K (charTower η (k + 1))` using `finiteDimensional_charTower hη (k + 1)`. Take `⟨hτk, hτk'⟩` from `pow_prime_pow_mem_not_mem hb2 hτb hτb' (k - b)`. Rewrite `hτk`, `hτk'` using `[Nat.add_sub_cancel' hkb]`. Establish `hk2 : 2 ≤ k` using `hb2.trans hkb`. Establish `hητk : η (τ ^ p ^ (k - b)) = η τ ^ p ^ (k - b)` using `map_pow _ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτM : τ ^ p ^ (k - b) ∈ (charTower η k).fixingSubgroup`. Rewrite using `[fixingSubgroup_charTower hη, mem_charTowerGal, hητk]`. Conclude with `hτk`. Establish `hτp : (τ ^ p ^ (k - b)) ^ p ∈ (charTower η (k + 1)).fixingSubgroup`. Rewrite using `[fixingSubgroup_charTower hη, mem_charTowerGal, map_pow, hητk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_prime_mem_iff hk2 hτk).1`. Establish `hτ1 : τ ^ p ^ (k - b) ∉ (charTower η (k + 1)).fixingSubgroup`. Rewrite using `[fixingSubgroup_charTower hη, mem_charTowerGal, hητk]`. Conclude with `hτk'`. Establish `hgen : ∀ σ ∈ (charTower η k).fixingSubgroup, ∃ j : ℕ, ∀ z ∈ charTower η (k + 1), σ z = ((τ ^ p ^ (k - b)) ^ j) z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `σ hσ`. Rewrite `hσ` using `[fixingSubgroup_charTower hη, mem_charTowerGal]`. Take `⟨j, hj⟩` from `exists_mul_inv_pow_mem hk2 hτk hτk' hσ (k + 1)`. Use `⟨j, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hmem : ((τ ^ p ^ (k - b)) ^ j)⁻¹ * σ ∈ (charTower η (k + 1)).fixingSubgroup`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[fixingSubgroup_charTower hη, mem_charTowerGal, map_mul, map_inv, map_pow, hητk, mul_comm]`. Conclude with `hj`. Establish `hfix` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hmem z hz`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = ((τ ^ p ^ (k - b)) ^ j) ((((τ ^ p ^ (k - b)) ^ j)⁻¹ * σ) z) := rfl`. Use `_ = ((τ ^ p ^ (k - b)) ^ j) z := by rw [hfix]`. Establish `hτM' : ∀ z ∈ charTower η (k + 1), (τ ^ p ^ (k - b)) z ∈ charTower η (k + 1)` using `fun z hz => map_mem_charTower hη _ hz`. Establish `hϖ0 : 0 < baseUnifNrm K (PadicAlgCl p)` using `baseUnifNrm_pos`. Establish `hϖ1 : baseUnifNrm K (PadicAlgCl p) ≤ 1` using `baseUnifNrm_le_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X : ℝ := (absRamificationIndex K : ℝ) / p * ∑ i ∈ Finset.range (k - artinLevel K η n₀), (p : ℝ) ^ (-(i : ℤ)) with hXdef`. Establish `hX0 : 0 ≤ X` using `by positivity`. Establish `hρ0 : 0 ≤ baseUnifNrm K (PadicAlgCl p) ^ X` using `Real.rpow_nonneg hϖ0.le X`. Establish `hρ1 : baseUnifNrm K (PadicAlgCl p) ^ X ≤ 1` using `Real.rpow_le_one hϖ0.le hϖ1 hX0`. Establish `hρ : ∀ z ∈ charTower η (k + 1), nrm K ((τ ^ p ^ (k - b)) z - z) ≤ baseUnifNrm K (PadicAlgCl p) ^ X * nrm K z` using `fun z hz => nrm_sub_le_of_mem_unitsOneAdd hη hA hn' h2 hper hk (by rw [hητk]; exact hτk) hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h` using `nrm_normTrace_mul_le (M := charTower η k) (M' := charTower η (k + 1)) (hMM' := charTower_mono η (Nat.le_succ k)) (hτM := hτM) (hτp := hτp) (hτ1 := hτ1) (hgen := hgen) (hτM' := hτM') (hρ0 := hρ0) (hρ1 := hρ1) (hρ := hρ) (hy := hy)`. Establish `hp1 : 1 ≤ p` using `hp.out.one_lt.le`. Establish `hpe : nrm K (p : PadicAlgCl p) = baseUnifNrm K (PadicAlgCl p) ^ (absRamificationIndex K : ℝ)`. Rewrite using `[nrm_natCast_prime_eq p, Real.rpow_natCast]`. Establish `hρp : (baseUnifNrm K (PadicAlgCl p) ^ X) ^ (p - 1) = baseUnifNrm K (PadicAlgCl p) ^ (absRamificationIndex K : ℝ) * baseUnifNrm K (PadicAlgCl p) ^ (-((absRamificationIndex K : ℝ) * (p : ℝ) ^ (-((k - artinLevel K η n₀ : ℕ) : ℤ))))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hϖ0.le, ← Real.rpow_add hϖ0]`. Use `congr 1`. Rewrite using `[Nat.cast_sub hp1, Nat.cast_one, hXdef, div_mul_geom_sum_mul_sub_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hone : 1 ≤ baseUnifNrm K (PadicAlgCl p) ^ (-((absRamificationIndex K : ℝ) * (p : ℝ) ^ (-((k - artinLevel K η n₀ : ℕ) : ℤ))))` using `Real.one_le_rpow_of_pos_of_le_one_of_nonpos hϖ0 hϖ1 (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ (absRamificationIndex K : ℝ) * (p : ℝ) ^ (-((k - artinLevel K η n₀ : ℕ) : ℤ))`. Check the signs of the components of the expression. Use the proof step `linarith)`. Establish `hmax : max (nrm K (p : PadicAlgCl p)) ((baseUnifNrm K (PadicAlgCl p) ^ X) ^ (p - 1)) ≤ nrm K (p : PadicAlgCl p) * baseUnifNrm K (PadicAlgCl p) ^ (-((absRamificationIndex K : ℝ) * (p : ℝ) ^ (-((k - artinLevel K η n₀ : ℕ) : ℤ))))`. Use `max_le (le_mul_of_one_le_right (nrm_nonneg _) hone) ?_` and prove the remaining obligations.
-
-Rewrite using `[hρp, hpe]`. Establish `hpos : 0 < nrm K (p : PadicAlgCl p)` using `nrm_pos.2 (Nat.cast_ne_zero.2 hp.out.ne_zero)`. Establish `h3` using `h.trans (mul_le_mul_of_nonneg_right hmax (nrm_nonneg _))`. Rewrite `h3` using `[mul_comm (nrm K (normTrace (charTower η k) y)), mul_assoc]`. Conclude with `le_of_mul_le_mul_left h3 hpos`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_normTrace_step_le (hη : Continuous η) (hA : ∀ n, artinImage K η n ≠ ⊥)
     {n' n₀ : ℕ} (hn' : n' ≤ n₀) (h2 : 2 ≤ artinLevel K η n')
@@ -261,11 +257,11 @@ theorem nrm_normTrace_step_le (hη : Continuous η) (hA : ∀ n, artinImage K η
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_range_succ]`. Establish `e : (p : ℝ) ^ (-((j + 1 : ℕ) : ℤ)) = (p : ℝ) ^ (-(j : ℤ)) * (p : ℝ)⁻¹`. Rewrite using `[← zpow_neg_one, ← zpow_add₀ hp0.ne']`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hq : 0 ≤ (p : ℝ) ^ (-(j : ℤ))` using `by positivity`. Establish `hinv : (p : ℝ)⁻¹ ≤ 1 / 2`. Rewrite using `[inv_eq_one_div]; exact one_div_le_one_div_of_le (by norm_num) hp2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -286,21 +282,19 @@ theorem sum_zpow_neg_le (j : ℕ) :
     nlinarith
 
 /- English proof (translation)
-Establish `hfin : ∀ k, FiniteDimensional K (charTower η k)` using `fun k => finiteDimensional_charTower hη k`. Establish `hϖ0 : 0 < baseUnifNrm K (PadicAlgCl p)` using `baseUnifNrm_pos`. Establish `hϖ1 : baseUnifNrm K (PadicAlgCl p) ≤ 1` using `baseUnifNrm_le_one`. Establish `hone : 1 ≤ baseUnifNrm K (PadicAlgCl p) ^ (-(2 * absRamificationIndex K : ℝ))` using `Real.one_le_rpow_of_pos_of_le_one_of_nonpos hϖ0 hϖ1 (by`. Establish `: (0 : ℝ) ≤ 2 * absRamificationIndex K` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Break down `le_total m n with hmn | hnm` into its components or cases. Rewrite using `[normTrace_of_mem _ (charTower_mono η hmn hy)]`. Conclude with `le_mul_of_one_le_left (nrm_nonneg _) hone`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hnm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hclaim : ∀ j, ∀ z ∈ charTower η (n + j), nrm K (normTrace (charTower η n) z) ≤ baseUnifNrm K (PadicAlgCl p) ^ (-(∑ i ∈ Finset.range j, (absRamificationIndex K : ℝ) * (p : ℝ) ^ (-((n + i - artinLevel K η n₀ : ℕ) : ℤ)))) * nrm K z`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `z hz`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hz` using `[add_zero]`. Rewrite using `[normTrace_of_mem _ hz]`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `z hz`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : normTrace (charTower η (n + j)) z ∈ charTower η (n + j)` using `normTrace_mem _ z`. Establish `hcomp : normTrace (charTower η n) (normTrace (charTower η (n + j)) z) = normTrace (charTower η n) z` using `normTrace_normTrace_of_le (charTower_mono η (Nat.le_add_right n j)) z`. Establish `hstep` using `nrm_normTrace_step_le hη hA hn' h2 hper hb2 hτb hτb' (show b ≤ n + j by omega) (show artinLevel K η n₀ ≤ n + j by omega) (show z ∈ charTower η (n + j + 1) by simpa [add_assoc] using hz)`. Rewrite using `[← hcomp]`. Use `(ih _ hz').trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_range_succ, neg_add, Real.rpow_add hϖ0, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hstep (Real.rpow_nonneg hϖ0.le _)`. Use `(hclaim j y hy).trans (mul_le_mul_of_nonneg_right ?_ (nrm_nonneg _))` and prove the remaining obligations. Use `Real.rpow_le_rpow_of_exponent_ge hϖ0 hϖ1 (neg_le_neg ?_)` and prove the remaining obligations. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast hp.out.one_lt.le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Conclude with `zpow_le_zpow_right₀ hp1 (by omega)`. Use `_ = (absRamificationIndex K : ℝ) * ∑ i ∈ Finset.range j, (p : ℝ) ^ (-(i : ℤ)) := by`. Rewrite using `[Finset.mul_sum]`.
-
-Use `_ ≤ (absRamificationIndex K : ℝ) * 2 := by`. Use `mul_le_mul_of_nonneg_left ((sum_zpow_neg_le j).trans ?_) (Nat.cast_nonneg _)` and prove the remaining obligations. Establish `: 0 ≤ (p : ℝ) ^ (-(j : ℤ))` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 2 * absRamificationIndex K := by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nrm_normTrace_charTower_le (hη : Continuous η) (hA : ∀ n, artinImage K η n ≠ ⊥)
     {n' n₀ : ℕ} (hn' : n' ≤ n₀) (h2 : 2 ≤ artinLevel K η n')

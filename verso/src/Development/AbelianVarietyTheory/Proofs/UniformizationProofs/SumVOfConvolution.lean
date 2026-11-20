@@ -19,9 +19,9 @@ open GlobalTheory.UT
 namespace GlobalTheory.UT
 
 /- English proof (translation)
-Take `⟨S', hS'⟩` from `h q`. Establish `h1` using `hS' (S ∪ S') Finset.subset_union_right`. Establish `h2 : (q : WithTop ℚ) ≤ v (∑ i ∈ (S ∪ S') \ S, x i)` using `v.map_le_sum fun i hi => hS i (Finset.mem_sdiff.1 hi).2`. Establish `h3` using `Finset.sum_sdiff (f := x) (Finset.subset_union_left (s₁ := S) (s₂ := S'))`. Establish `h4 : s - ∑ i ∈ S, x i = (s - ∑ i ∈ S ∪ S', x i) + ∑ i ∈ (S ∪ S') \ S, x i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Conclude with `v.map_le_add h1 h2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumV_tail {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {Ix : Type} {x : Ix → F} {s : F}
     (h : SumV v x s) (q : ℚ) (S : Finset Ix) (hS : ∀ i, i ∉ S → (q : WithTop ℚ) ≤ v (x i)) :
@@ -38,9 +38,9 @@ theorem sumV_tail {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {Ix : 
   exact v.map_le_add h1 h2
 
 /- English proof (translation)
-Establish `hf` using `(h 0).image (fun i => (v (x i)).untopD 0)`. Take `⟨m, hm⟩` from `hf.bddBelow`. Use `⟨min m 0, fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : v (x i) < ((0 : ℚ) : WithTop ℚ)`. Establish `h1` using `hm ⟨i, hi, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 (ne_top_of_lt hi)`. Simplify using `only [← hr, WithTop.untopD_coe] at h1`. Rewrite using `[← hr]`. Conclude with `WithTop.coe_le_coe.2 ((min_le_left _ _).trans h1)`. Conclude with `(WithTop.coe_le_coe.2 (min_le_right _ _)).trans (not_lt.1 hi)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nullV_bdd {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {Ix : Type} {x : Ix → F}
     (h : NullV v x) : ∃ m : ℚ, ∀ i, (m : WithTop ℚ) ≤ v (x i) := by
@@ -56,7 +56,7 @@ theorem nullV_bdd {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {Ix : 
   · exact (WithTop.coe_le_coe.2 (min_le_right _ _)).trans (not_lt.1 hi)
 
 /- English proof (translation)
-Rewrite using `[v.map_mul, h, WithTop.coe_add]`. Conclude with `add_le_add hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_v_mul {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {x y : F} {p r q : ℚ}
     (hx : (p : WithTop ℚ) ≤ v x) (hy : (r : WithTop ℚ) ≤ v y) (h : q = p + r) : (q : WithTop ℚ) ≤ v (x * y) := by
@@ -64,21 +64,19 @@ theorem le_v_mul {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {x y : 
   exact add_le_add hx hy
 
 /- English proof (translation)
-Introduce `F _ v X _ a b c ha hb hc sb sc hsb hsc h0 q`. Take `⟨ma, hma⟩` from `nullV_bdd v ha`. Take `⟨mb, hmb⟩` from `nullV_bdd v hb`. Establish `hinv : v sb⁻¹ ≠ ⊤` using `v.ne_top_iff.2 (inv_ne_zero h0)`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 hinv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set q' : ℚ := q - r with hq'`. Use `⟨(ha (q' - mb)).toFinset, fun T hT => ?_⟩` and prove the remaining obligations. Use `set Sb := (hb (q' - ma)).toFinset with hSb`. Establish `hTa : ∀ χ, χ ∉ T → ((q' - mb : ℚ) : WithTop ℚ) ≤ v (a χ)` using `fun χ hχ => not_lt.1 fun h => hχ (hT ((Set.Finite.mem_toFinset _).2 h))`. Establish `hSb' : ∀ β, β ∉ Sb → ((q' - ma : ℚ) : WithTop ℚ) ≤ v (b β)` using `fun β hβ => not_lt.1 fun h => hβ ((Set.Finite.mem_toFinset _).2 h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U : Finset X := Finset.image₂ (· + ·) T Sb with hU`. Establish `h1 : ∀ α, (q' : WithTop ℚ) ≤ v (c α - ∑ χ ∈ T, a χ * b (α - χ))` using `fun α => sumV_tail v (hc α) q' T fun χ hχ => le_v_mul v (hTa χ hχ) (hmb _) (by ring)`. Establish `h2 : ∀ α, α ∉ U → (q' : WithTop ℚ) ≤ v (c α)`. Introduce `α hα`. Establish `: (q' : WithTop ℚ) ≤ v (∑ χ ∈ T, a χ * b (α - χ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `v.map_le_sum fun χ hχ => le_v_mul v (hma _) (hSb' _ fun h => hα ?_) (by ring)` and prove the remaining obligations. Conclude with `Finset.mem_image₂.2 ⟨χ, hχ, α - χ, h, by simp⟩`. Establish `h3` using `v.map_le_add (h1 α) this`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h3` using `sumV_tail v hsc q' U h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4 : (q' : WithTop ℚ) ≤ v (∑ α ∈ U, (c α - ∑ χ ∈ T, a χ * b (α - χ)))` using `v.map_le_sum fun α _ => h1 α`. Establish `h5 : ∀ χ ∈ T, ((q' - ma : ℚ) : WithTop ℚ) ≤ v (sb - ∑ α ∈ U, b (α - χ))`. Introduce `χ hχ`. Establish `e : ∑ α ∈ U, b (α - χ) = ∑ β ∈ U.image (· - χ), b β` using `(Finset.sum_image (f := b) (g := (· - χ)) fun x _ y _ h => sub_left_injective h).symm`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sumV_tail v hsb _ _ fun β hβ => hSb' β fun h => hβ ?_` and prove the remaining obligations. Conclude with `Finset.mem_image.2 ⟨χ + β, Finset.mem_image₂.2 ⟨χ, hχ, β, h, rfl⟩, by simp⟩`. Establish `h6 : (q' : WithTop ℚ) ≤ v (∑ χ ∈ T, a χ * (sb - ∑ α ∈ U, b (α - χ)))` using `v.map_le_sum fun χ hχ => le_v_mul v (hma χ) (h5 χ hχ) (by ring)`. Establish `h7` using `v.map_le_sub (v.map_le_add h3 h4) h6`. Establish `e : sc / sb - ∑ i ∈ T, a i = (sc - ∑ i ∈ U, c i + ∑ α ∈ U, (c α - ∑ χ ∈ T, a χ * b (α - χ)) - ∑ χ ∈ T, a χ * (sb - ∑ α ∈ U, b (α - χ))) * sb⁻¹`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_sub_distrib, mul_sub, Finset.mul_sum, ← Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (s := U) (t := T)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `le_v_mul v h7 hr.le (by rw [hq']; ring)`.
+A detailed English derivation is pending.
 -/
 theorem sumV_of_convolution : ∀ (F : Type) [Field F] (v : AddValuation F (WithTop ℚ)) (X : Type) [AddCommGroup X] (a b c : X → F), NullV v a → NullV v b → (∀ α, SumV v (fun χ => a χ * b (α - χ)) (c α)) → ∀ sb sc : F, SumV v b sb → SumV v c sc → sb ≠ 0 → SumV v a (sc / sb) := by
   classical

@@ -14,17 +14,17 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun i hi => lt_of_lt_of_le hi h)`.
+A detailed English derivation is pending.
 -/
 theorem xa_mono {T : E} (G : FlagG S r T) {a b : ℕ} (h : a ≤ b) : G.Xa a ≤ G.Xa b := Submodule.span_mono (Set.image_mono fun i hi => lt_of_lt_of_le hi h)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨i, Nat.lt_succ_self _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem e_mem_xa {T : E} (G : FlagG S r T) (i : Fin r) : G.e i ∈ G.Xa (i.val + 1) := Submodule.subset_span ⟨i, Nat.lt_succ_self _, rfl⟩
 
 /- English proof (translation)
-Establish `hset : {i : Fin r | i.1 < r} = Set.univ` using `Set.eq_univ_of_forall fun i => i.2`. Unfold `FlagG.Xa FlagG.X`. Rewrite using `[hset, Set.image_univ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem xa_r {T : E} (G : FlagG S r T) : G.Xa r = G.X := by
   have hset : {i : Fin r | i.1 < r} = Set.univ := Set.eq_univ_of_forall fun i => i.2
@@ -32,9 +32,9 @@ theorem xa_r {T : E} (G : FlagG S r T) : G.Xa r = G.X := by
   rw [hset, Set.image_univ]
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `FlagG.X at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `G.z_orth a`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem z_mem_perp {T : E} (G : FlagG S r T) : G.z ∈ perpS S G.X := by
   intro x hx
@@ -48,11 +48,11 @@ theorem z_mem_perp {T : E} (G : FlagG S r T) : G.z ∈ perpS S G.X := by
   | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Establish `hw'` using `hw`. Unfold `FlagG.Xa at hw'`. Take `⟨l, hl, hlw⟩` from `(Finsupp.mem_span_image_iff_linearCombination E).mp hw'`. Establish `hmem : c • G.e i + w ∈ Submodule.span E (Set.range G.e)` using `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) (Submodule.span_mono (Set.image_subset_range _ _) hw')`. Unfold `FlagG.coefX`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hmem]`. Establish `hrepr : G.e_indep.repr ⟨c • G.e i + w, hmem⟩ = Finsupp.single i c + l`. Apply `G.e_indep.repr_eq` to reduce the goal to its premises. Rewrite using `[map_add, Finsupp.linearCombination_single, hlw]`. Rewrite using `[hrepr, Finsupp.add_apply, Finsupp.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : l i = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `(Finsupp.mem_supported _ _).mp hl (Finsupp.mem_support_iff.mpr hne)`. Conclude with `lt_irrefl (i.1) h1`. Rewrite using `[hli, add_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefX_single_add {T : E} (G : FlagG S r T) (i : Fin r) (c : E) {w : S.V}
     (hw : w ∈ G.Xa i.val) : G.coefX (c • G.e i + w) i = c := by
@@ -76,9 +76,9 @@ theorem coefX_single_add {T : E} (G : FlagG S r T) (i : Fin r) (c : E) {w : S.V}
   rw [hli, add_zero]
 
 /- English proof (translation)
-Establish `hset : G.e '' {j : Fin r | j.1 < i.1 + 1} = insert (G.e i) (G.e '' {j | j.1 < i.1})`. Rewrite using `[← Set.image_insert_eq]`. Use `congr 1`. Use extensionality with `j`. Simplify using `only [Set.mem_insert_iff, Set.mem_setOf_eq, Fin.ext_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Unfold `FlagG.Xa at hv ⊢`. Rewrite `hv` using `[hset, Submodule.mem_span_insert]`. Conclude with `hv`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xa_succ_decomp {T : E} (G : FlagG S r T) (i : Fin r) {v : S.V} (hv : v ∈ G.Xa (i.val + 1)) :
     ∃ c : E, ∃ w ∈ G.Xa i.val, v = c • G.e i + w := by
@@ -93,7 +93,7 @@ theorem xa_succ_decomp {T : E} (G : FlagG S r T) (i : Fin r) {v : S.V} (hv : v �
   exact hv
 
 /- English proof (translation)
-Take `⟨c, w, hw, rfl⟩` from `xa_succ_decomp G i ha`. Rewrite using `[add_assoc, coefX_single_add G i c (Submodule.add_mem _ hw hb), coefX_single_add G i c hw]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_add_low {T : E} (G : FlagG S r T) (i : Fin r) {a b : S.V} (ha : a ∈ G.Xa (i.val + 1))
     (hb : b ∈ G.Xa i.val) : G.coefX (a + b) i = G.coefX a i := by
@@ -101,11 +101,11 @@ theorem coefX_add_low {T : E} (G : FlagG S r T) (i : Fin r) {a b : S.V} (ha : a 
   rw [add_assoc, coefX_single_add G i c (Submodule.add_mem _ hw hb), coefX_single_add G i c hw]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[FlagG.Xa, Submodule.span_le]`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `absurd hj (Nat.not_lt_zero _)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[FlagG.Xa, Submodule.span_le]`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hj' : j.1 ≤ k` using `Nat.lt_succ_iff.mp hj`. Establish `h1 : G'.e j ∈ G'.Xa (k + 1)` using `Submodule.subset_span ⟨j, hj, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : G'.e j - G.e j ∈ G'.Xa (k + 1)` using `xa_mono G' (Nat.le_succ k) (ih (xa_mono G hj' (h j)))`. Establish `h3` using `Submodule.sub_mem _ h1 h2`. Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xa_le_of {T T' : E} {G : FlagG S r T} {G' : FlagG S r T'}
     (h : ∀ a : Fin r, G'.e a - G.e a ∈ G.Xa a.val) (k : ℕ) : G.Xa k ≤ G'.Xa k := by
@@ -126,9 +126,9 @@ theorem xa_le_of {T T' : E} {G : FlagG S r T} {G' : FlagG S r T'}
     exact h3
 
 /- English proof (translation)
-Take `⟨c, w, hw, rfl⟩` from `xa_succ_decomp G i hv`. Establish `hle` using `xa_le_of h i.val`. Establish `h1 : c • G.e i + w = c • G'.e i + (w - c • (G'.e i - G.e i))`. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[coefX_single_add G i c hw, h1, coefX_single_add G' i c (hle (Submodule.sub_mem _ hw (Submodule.smul_mem _ _ (h i))))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_eq_of {T T' : E} {G : FlagG S r T} {G' : FlagG S r T'}
     (h : ∀ a : Fin r, G'.e a - G.e a ∈ G.Xa a.val) (i : Fin r) {v : S.V} (hv : v ∈ G.Xa (i.val + 1)) :
@@ -142,13 +142,13 @@ theorem coefX_eq_of {T T' : E} {G : FlagG S r T} {G' : FlagG S r T'}
     coefX_single_add G' i c (hle (Submodule.sub_mem _ hw (Submodule.smul_mem _ _ (h i))))]
 
 /- English proof (translation)
-Take `⟨_, hflag, hperp⟩` from `hY`. Distinguish the cases in `hi : i.val + 1 < r`. Establish `hfv : G.fvec i.succ = G.e ⟨i.val + 1, hi⟩`. Unfold `FlagG.fvec`. Establish `h0 : i.succ = Fin.castSucc ⟨i.val + 1, hi⟩` using `Fin.ext rfl`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[h0, Fin.snoc_castSucc]`. Rewrite using `[hfv]`. Establish `h1` using `hflag (i.val + 2) (by omega) (by omega) _ (e_mem_xa G ⟨i.val + 1, hi⟩)`. Simplify using `using h1`. Establish `hir : i.val + 1 = r` using `by omega`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hfv : G.fvec i.succ = G.z`. Unfold `FlagG.fvec`. Establish `h0 : i.succ = Fin.last r` using `Fin.ext (by simp [hir])`. Rewrite using `[h0, Fin.snoc_last]`. Rewrite using `[hfv, hir, xa_r]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hperp _ (z_mem_perp G)`.
+A detailed English derivation is pending.
 -/
 theorem fvec_succ_image_mem {T : E} {G : FlagG S r T} {Y : S.V →ₗ[E] S.V} (hY : Y ∈ G.LieN) (i : Fin r) :
     Y (G.fvec i.succ) ∈ G.Xa (i.val + 1) := by
@@ -170,11 +170,11 @@ theorem fvec_succ_image_mem {T : E} {G : FlagG S r T} {Y : S.V →ₗ[E] S.V} (h
     exact hperp _ (z_mem_perp G)
 
 /- English proof (translation)
-Take `⟨hU, hflag, hperp⟩` from `hY`. Establish `he : ∀ a : Fin r, G'.e a - G.e a ∈ G.Xa a.val`. Introduce `a`. Establish `h1` using `h a.castSucc`. Simplify `h1` using `[FlagG.fvec, Fin.snoc_castSucc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `FlagG.ell`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : Y (G.fvec i.succ) ∈ G.Xa (i.val + 1)` using `fvec_succ_image_mem ⟨hU, hflag, hperp⟩ i`. Establish `h2 : Y (G'.fvec i.succ - G.fvec i.succ) ∈ G.Xa i.val`. Establish `h0` using `hflag (i.val + 1) (by omega) (by omega) _ (h i.succ)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h0`. Establish `h3 : Y (G'.fvec i.succ) = Y (G.fvec i.succ) + Y (G'.fvec i.succ - G.fvec i.succ)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[h3, coefX_eq_of he i (Submodule.add_mem _ h1 (xa_mono G (Nat.le_succ _) h2)), coefX_add_low G i h1 h2]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem ell_eq_of {T T' : E} {G : FlagG S r T} {G' : FlagG S r T'}
     (h : ∀ i : Fin (r + 1), G'.fvec i - G.fvec i ∈ G.Xa i.val) {Y : S.V →ₗ[E] S.V} (hY : Y ∈ G.LieN) :
@@ -197,11 +197,9 @@ theorem ell_eq_of {T T' : E} {G : FlagG S r T} {G' : FlagG S r T'}
     coefX_add_low G i h1 h2]
 
 /- English proof (translation)
-Introduce `Y hY`. Establish `hfv : ∀ i : Fin (r + 1), F'.fl.fvec i - F.fl.fvec i ∈ F.fl.Xa i.val`. Introduce `i`. Use `Fin.lastCases ?_ (fun a => ?_) i` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last, Fin.val_last]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Xflag_r]`. Conclude with `h.2`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc, Fin.coe_castSucc]`. Conclude with `h.1 a`. Unfold `FlagG.dpsi`.
-
-Rewrite using `[ell_eq_of hfv hY.1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relevant_of_inSF (K : Type) [Field K] [Algebra K E] {T T' : E} {F : LFlag S r T}
     {F' : LFlag S r T'} (h : InSF F F') : Relevant K F.fl F'.fl := by
@@ -224,7 +222,7 @@ section D7
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `F0 Λ hΛ x hx`. Conclude with `relevant_of_inSF _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem termInSRel_main (D : D7) (u u' : D.what₂.Word) : TermInSRel D u u' := by
   intro F0 Λ hΛ x hx

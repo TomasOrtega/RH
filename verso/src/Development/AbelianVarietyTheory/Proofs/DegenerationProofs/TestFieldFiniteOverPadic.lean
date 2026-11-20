@@ -20,9 +20,9 @@ variable (V F : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 variable (V F : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [NormedField F] [Algebra (FractionRing V) F] in
 /- English proof (translation)
-Establish `h0 : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero`. Use `⟨norm_pos_iff.2 ((map_ne_zero _).2 h0), lt_of_not_ge fun hge => hϖ.not_isUnit ?_⟩` and prove the remaining obligations. Establish `hle : ‖algebraMap _ F (algebraMap V (FractionRing V) ϖ)⁻¹‖ ≤ 1`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hge`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `(h _).1 hle`. Use `IsUnit.of_mul_eq_one z ?_` and prove the remaining obligations. Apply `IsFractionRing.injective V (FractionRing V)` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, hz]`. Conclude with `mul_inv_cancel₀ h0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_uniformizer_pos_and_lt_one
     (h : ∀ x : FractionRing V, ‖algebraMap _ F x‖ ≤ 1 ↔
@@ -49,9 +49,9 @@ variable (V F : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 variable (V F : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [NormedField F] [Algebra (FractionRing V) F] in
 /- English proof (translation)
-Establish `h0 : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero`. Establish `hpos` using `(norm_uniformizer_pos_and_lt_one V F h hϖ).1`. Establish `hle : ‖algebraMap _ F (algebraMap V (FractionRing V) x / algebraMap V (FractionRing V) ϖ ^ n)‖ ≤ 1`. Rewrite using `[map_div₀, norm_div, map_pow, norm_pow]`. Conclude with `div_le_one_of_le₀ hx (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `(h _).1 hle`. Use `⟨z, IsFractionRing.injective V (FractionRing V) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hz, mul_div_cancel₀ _ (pow_ne_zero _ h0)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma dvd_of_norm_le_pow
     (h : ∀ x : FractionRing V, ‖algebraMap _ F x‖ ≤ 1 ↔
@@ -74,31 +74,27 @@ open scoped CategoryTheory.Obj in
 open IntermediateField in
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `set ιV := algebraMap V (FractionRing V) with hιV`. Use `set φ := algebraMap (FractionRing V) F with hφ`. Take `⟨hc0, hc1⟩` from `norm_uniformizer_pos_and_lt_one V F h hϖ`. Use `set c := ‖φ (ιV ϖ)‖ with hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : ιV ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero`. Establish `hnorm_dvd : ∀ (n : ℕ) (y : V), ϖ ^ n ∣ y → ‖φ (ιV y)‖ ≤ c ^ n`. Introduce and unpack `n y ⟨z, rfl⟩`. Rewrite using `[map_mul, map_mul, norm_mul, map_pow, map_pow, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) ((h _).2 ⟨z, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← completeSpace_coe_iff_isComplete]`. Apply `Metric.complete_of_cauchySeq_tendsto` to reduce the goal to its premises. Introduce `u hu`. Use `set v : ℕ → F := fun n => (u n : F) with hv`. Establish `hvc : CauchySeq v` using `uniformContinuous_subtype_val.comp_cauchySeq hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `isBounded_iff_forall_norm_le.1 hvc.isBounded_range`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (show 0 < 1 / (|B| + 1) by positivity) hc1`. Establish `hw : ∀ n, ∃ x : V, φ (ιV x) = φ (ιV ϖ) ^ k * v n`. Introduce `n`. Take `⟨t, ht⟩` from `(u n).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hle' : ‖φ (ιV ϖ ^ k * t)‖ ≤ 1`. Rewrite using `[map_mul, norm_mul, map_pow, norm_pow, ht]`. Establish `hBn : ‖v n‖ ≤ |B| + 1` using `(hB _ ⟨n, rfl⟩).trans (by linarith [le_abs_self B])`. Combine the equalities or inequalities in the displayed calculation. Take `⟨x, hx⟩` from `(h _).1 hle'`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨x, by rw [hx, map_mul, map_pow, ht]⟩`. Use `choose x hx using hw`. Establish `hxc : ∀ m : ℕ, ∃ N, ∀ a ≥ N, ∀ b ≥ N, ϖ ^ m ∣ x a - x b`. Introduce `m`. Take `⟨N, hN⟩` from `Metric.cauchySeq_iff.1 hvc (c ^ m / c ^ k) (by positivity)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨N, fun a ha b hb => dvd_of_norm_le_pow V F h hϖ m _ ?_⟩` and prove the remaining obligations. Establish `hd` using `hN a ha b hb`. Rewrite `hd` using `[dist_eq_norm]`. Rewrite using `[map_sub, map_sub, hx, hx, ← mul_sub, norm_mul, norm_pow]`. Use `(lt_div_iff₀' (by positivity : (0:ℝ) < c ^ k)).1 hd` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `this.le`. Use `choose N hN using hxc`. Use `set M : ℕ → ℕ := fun m => (Finset.range (m + 1)).sup N + m with hM`. Establish `hMN : ∀ m, N m ≤ M m` using `fun m => (Finset.le_sup (Finset.mem_range.2 (Nat.lt_succ_self m))).trans (Nat.le_add_right _ _)`. Establish `hMmono : StrictMono M`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `strictMono_nat_of_lt_succ fun m => ?_` and prove the remaining obligations. Establish `: (Finset.range (m + 1)).sup N ≤ (Finset.range (m + 1 + 1)).sup N` using `Finset.sup_mono (Finset.range_mono (Nat.le_succ _))`. Simplify using `only [hM]`. Use linear arithmetic over natural numbers and integers. Take `⟨ℓ, hℓ⟩` from `IsPrecomplete.prec (I := IsLocalRing.maximalIdeal V) (M := V) IsAdicComplete.toIsPrecomplete (f := fun m => x (M m)) (by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `hN m _ (hMN m) _ ((hMN m).trans (hMmono.monotone hmn)))`. Establish `hlim : Filter.Tendsto (fun m => v (M m)) Filter.atTop (nhds (φ (ιV ℓ) / φ (ιV ϖ) ^ k))`. Establish `hdiff : Filter.Tendsto (fun m => φ (ιV (x (M m)))) Filter.atTop (nhds (φ (ιV ℓ)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun m => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one hc0.le hc1)` and prove the remaining obligations. Rewrite using `[← map_sub, ← map_sub]`. Apply `hnorm_dvd` to reduce the goal to its premises. Use `hℓ m` as an intermediate fact.
-
-Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `this`. Establish `hk0 : φ (ιV ϖ) ^ k ≠ 0` using `pow_ne_zero _ ((map_ne_zero _).2 h0)`. Use `(hdiff.div_const (φ (ιV ϖ) ^ k)).congr fun m => ?_` and prove the remaining obligations. Simplify using `only [hx]`.
-
-Clear the denominators using the available nonvanishing facts. Use `⟨⟨φ (ιV ℓ / ιV ϖ ^ k), ιV ℓ / ιV ϖ ^ k, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[tendsto_subtype_rng]`. Use `tendsto_nhds_of_cauchySeq_of_subseq hvc hMmono.tendsto_atTop hlim` as an intermediate fact. Simplify `this` using `[map_div₀, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.FieldOfTest.isComplete_range_fractionRing (V F : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V]
@@ -186,9 +182,9 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj in
 open IntermediateField in
 /- English proof (translation)
-Take `⟨α, hα⟩` from `Field.exists_primitive_element K E'`. Establish `hint : IsIntegral K α` using `IsIntegral.of_finite K α`. Establish `h1 : Module.finrank K E' = (minpoly K α).natDegree`. Rewrite using `[← IntermediateField.adjoin.finrank hint, hα, IntermediateField.finrank_top']`. Establish `h2 : (minpoly K α).natDegree = Module.finrank K K⟮(α : E)⟯`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint' : IsIntegral K (α : E)` using `hint.map E'.val`. Rewrite using `[IntermediateField.adjoin.finrank hint', IntermediateField.minpoly_eq]`. Rewrite using `[h1, h2]`. Conclude with `h _ (hE' α.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma finrank_le_of_le_of_adjoin_finrank_le {K E : Type} [Field K] [Field E] [Algebra K E]
     [CharZero K] (N : ℕ) (F : IntermediateField K E)
@@ -208,13 +204,13 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj in
 open IntermediateField in
 /- English proof (translation)
-Set `P : ℕ → Prop` to `fun d => ∃ E' : IntermediateField K E, E' ≤ F ∧ FiniteDimensional K E' ∧ Module.finrank K E' = d`. Establish `hP1 : P 1` using `⟨⊥, bot_le, inferInstance, IntermediateField.finrank_bot⟩`. Establish `hbound : ∀ d, P d → d ≤ N`. Introduce and unpack `d ⟨E', hE'F, hfin, rfl⟩`. Conclude with `finrank_le_of_le_of_adjoin_finrank_le N F h E' hE'F`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨E', hE'F, hfin, hE'd⟩` from `Nat.findGreatest_spec (hbound 1 hP1) hP1`. Establish `hmax : ∀ E'' : IntermediateField K E, E'' ≤ F → FiniteDimensional K E'' → Module.finrank K E'' ≤ Module.finrank K E'`. Introduce `E'' hE'' hfin''`. Rewrite using `[hE'd]`. Conclude with `Nat.le_findGreatest (hbound _ ⟨E'', hE'', hfin'', rfl⟩) ⟨E'', hE'', hfin'', rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFE : F ≤ E'`. Introduce `x hx`. Establish `hfx : FiniteDimensional K K⟮x⟯` using `IntermediateField.adjoin.finiteDimensional (halg x hx)`. Establish `hle : E' ≤ E' ⊔ K⟮x⟯` using `le_sup_left`. Establish `heq : E' = E' ⊔ K⟮x⟯` using `IntermediateField.eq_of_le_of_finrank_le hle (hmax _ (sup_le hE'F ((IntermediateField.adjoin_simple_le_iff).2 hx)) inferInstance)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[heq]`. Conclude with `(le_sup_right : K⟮x⟯ ≤ E' ⊔ K⟮x⟯) (IntermediateField.mem_adjoin_simple_self K x)`. Take `rfl : F = E'` from `le_antisymm hFE hE'F`. Conclude with `hfin`.
+A detailed English derivation is pending.
 -/
 private lemma finiteDimensional_of_finrank_adjoin_le {K E : Type} [Field K] [Field E] [Algebra K E]
     [CharZero K] (N : ℕ) (F : IntermediateField K E) (halg : ∀ x ∈ F, IsIntegral K x)
@@ -248,47 +244,41 @@ open scoped CategoryTheory.Obj in
 open IntermediateField in
 
 /- English proof (translation)
-Establish `hQ : ∀ a : ℚ_[p], algebraMap ℚ_[p] (PadicAlgCl p) a ∈ L`. Introduce `a`. Establish `hcl : IsClosed (L : Set (PadicAlgCl p))` using `hL.isClosed`. Establish `hmem` using `map_mem_closure (continuous_algebraMap ℚ_[p] (PadicAlgCl p)) (Padic.denseRange_ratCast (p := p) a) (t := (L : Set (PadicAlgCl p))) (by`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `using SubfieldClass.ratCast_mem L q)`. Rewrite `hmem` using `[hcl.closure_eq]`. Then use the resulting hypothesis. Set `K : IntermediateField ℚ_[p] (PadicAlgCl p)` to `{ L with algebraMap_mem' := hQ }`. Use `haveI : CompleteSpace L := hL.completeSpace_coe`. Establish `hc : Continuous (fun z : ℤ_[p] => algebraMap ℚ_[p] (PadicAlgCl p) (z : ℚ_[p]))` using `(continuous_algebraMap ℚ_[p] (PadicAlgCl p)).comp continuous_subtype_val`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A : ℕ → Set L` to `fun n => {x | ∃ c : Fin (n + 1) → ℤ_[p], (∃ i, ‖c i‖ = 1) ∧ ∑ i, algebraMap ℚ_[p] (PadicAlgCl p) (c i : ℚ_[p]) * (x : PadicAlgCl p) ^ (i : ℕ) = 0}`. Establish `hAclosed : ∀ n, IsClosed (A n)`. Introduce `n`. Establish `hA : A n = Prod.snd '' {q : (Fin (n + 1) → ℤ_[p]) × L | (∃ i, ‖q.1 i‖ = 1) ∧ ∑ i, algebraMap ℚ_[p] (PadicAlgCl p) (q.1 i : ℚ_[p]) * (q.2 : PadicAlgCl p) ^ (i : ℕ) = 0}`. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[A]`. Rewrite using `[hA]`. Apply `isClosedMap_snd_of_compactSpace` to reduce the goal to its premises. Apply `IsClosed.inter` to reduce the goal to its premises. Establish `hset : {q : (Fin (n + 1) → ℤ_[p]) × L | ∃ i, ‖q.1 i‖ = 1} = ⋃ i, {q : (Fin (n + 1) → ℤ_[p]) × L | ‖q.1 i‖ = 1}`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `q`. Simplify using the standard rewrite rules. Establish `hcl : IsClosed {q : (Fin (n + 1) → ℤ_[p]) × L | ∃ i, ‖q.1 i‖ = 1}`. Rewrite using `[hset]`. Conclude with `isClosed_iUnion_of_finite fun i => isClosed_eq (continuous_norm.comp ((continuous_apply i).comp continuous_fst)) continuous_const`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hcl`. Conclude with `isClosed_eq (continuous_finset_sum _ fun i _ => (hc.comp ((continuous_apply i).comp continuous_fst)).mul ((continuous_subtype_val.comp continuous_snd).pow _)) continuous_const`. Establish `hcover : ⋃ n, A n = Set.univ`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_univ, iff_true]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf0, hfx⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := ℚ_[p]) (x : PadicAlgCl p)`. Take `⟨i₀, hi₀, hmax⟩` from `Finset.exists_max_image (Finset.range (f.natDegree + 1)) (fun i => ‖f.coeff i‖) ⟨f.natDegree, by simp⟩`. Establish `hc0 : f.coeff i₀ ≠ 0`. Introduce `h0`. Apply `hf0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `hmax f.natDegree (by simp)` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `Polynomial.leadingCoeff_eq_zero.1 (norm_le_zero_iff.1 this)`. Set `c : Fin (f.natDegree + 1) → ℤ_[p]` to `fun i => ⟨f.coeff i / f.coeff i₀, by`. Rewrite using `[norm_div]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `div_le_one_of_le₀ (hmax i (Finset.mem_range.2 i.2)) (norm_nonneg _)⟩`. Use `⟨f.natDegree, c, ⟨⟨i₀, Finset.mem_range.1 hi₀⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ‖f.coeff i₀ / f.coeff i₀‖ = 1`. Rewrite using `[div_self hc0, norm_one]`. Establish `hsum : ∑ i : Fin (f.natDegree + 1), algebraMap ℚ_[p] (PadicAlgCl p) (c i : ℚ_[p]) * (x : PadicAlgCl p) ^ (i : ℕ) = (algebraMap ℚ_[p] (PadicAlgCl p) (f.coeff i₀))⁻¹ * ∑ i ∈ Finset.range (f.natDegree + 1), algebraMap ℚ_[p] (PadicAlgCl p) (f.coeff i) * (x : PadicAlgCl p) ^ i`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.mul_sum, ← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show algebraMap ℚ_[p] (PadicAlgCl p) (f.coeff i / f.coeff i₀) * _ = _`. Rewrite using `[map_div₀, div_eq_inv_mul, _root_.mul_assoc]`. Rewrite `*` using `[hsum, Polynomial.aeval_eq_sum_range]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Algebra.smul_def] at hfx`. Rewrite using `[hfx, mul_zero]`. Take `⟨n, a, ha⟩` from `nonempty_interior_of_iUnion_of_closed hAclosed hcover`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 isOpen_interior a ha`. Establish `hdeg : ∀ y : L, y ∈ A n → (minpoly ℚ_[p] (y : PadicAlgCl p)).natDegree ≤ n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨c, ⟨i, hi⟩, hsum⟩`. Set `g : Polynomial ℚ_[p]` to `∑ j : Fin (n + 1), Polynomial.C (c j : ℚ_[p]) * Polynomial.X ^ (j : ℕ)`. Establish `hgi : g.coeff i = c i`. Simplify using `[g, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow, Fin.val_inj]`. Establish `hg0 : g ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hgi` using `[h0, Polynomial.coeff_zero]`. Establish `: ‖c i‖ = 0` using `by show ‖(c i : ℚ_[p])‖ = 0`. Rewrite using `[← hgi, norm_zero]`. Rewrite `this` using `[hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_ne_zero this`. Establish `hgy : Polynomial.aeval (y : PadicAlgCl p) g = 0`. Simplify `hsum` using `[g, map_sum]`. Establish `hgdeg : g.natDegree ≤ n` using `Polynomial.natDegree_sum_le_of_forall_le _ _ fun j _ => (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 j.2)`. Conclude with `(Polynomial.natDegree_le_natDegree (minpoly.degree_le_of_ne_zero ℚ_[p] _ hg0 hgy)).trans hgdeg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hint : ∀ z : PadicAlgCl p, IsIntegral ℚ_[p] z` using `fun z => Algebra.IsIntegral.isIntegral z`. Establish `hfr : ∀ y : L, y ∈ A n → Module.finrank ℚ_[p] ℚ_[p]⟮(y : PadicAlgCl p)⟯ ≤ n`. Introduce `y hy`. Rewrite using `[IntermediateField.adjoin.finrank (hint _)]`. Conclude with `hdeg y hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨K, ?_, rfl⟩` and prove the remaining obligations. Use `finiteDimensional_of_finrank_adjoin_le (n * n) K (fun x _ => hint x) fun x hx => ?_` and prove the remaining obligations. Establish `hp1 : ‖(p : PadicAlgCl p)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)), norm_algebraMap', Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `exists_pow_lt_of_lt_one (show 0 < r / (‖x‖ + 1) by positivity) hp1`. Set `b : L` to `a + ⟨(p : PadicAlgCl p) ^ j * x, L.mul_mem (L.pow_mem (_root_.natCast_mem L p) j) hx⟩`. Establish `hb : b ∈ A n`. Apply `interior_subset` to reduce the goal to its premises. Apply `hball` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Use `show ‖(a : PadicAlgCl p) + (p : PadicAlgCl p) ^ j * x - a‖ < r`. Rewrite using `[add_sub_cancel_left, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`.
-
-Use polynomial arithmetic with `[norm_nonneg x]`. Establish `ha' : a ∈ A n` using `interior_subset ha`. Use `haveI := IntermediateField.adjoin.finiteDimensional (hint (a : PadicAlgCl p))`. Use `haveI := IntermediateField.adjoin.finiteDimensional (hint (b : PadicAlgCl p))`. Establish `hxmem : x ∈ ℚ_[p]⟮(a : PadicAlgCl p)⟯ ⊔ ℚ_[p]⟮(b : PadicAlgCl p)⟯`.
-
-Establish `hpj : ((p : PadicAlgCl p) ^ j) ≠ 0` using `pow_ne_zero _ (by`. Use `(Fact.out : p.Prime).ne_zero` as an intermediate fact. Conclude with `this)` after adjusting the coercions. Establish `hx' : x = ((b : PadicAlgCl p) - a) / (p : PadicAlgCl p) ^ j` using `by show x = ((a : PadicAlgCl p) + (p : PadicAlgCl p) ^ j * x - a) / _`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx']`. Use `div_mem (sub_mem ((le_sup_right : ℚ_[p]⟮(b : PadicAlgCl p)⟯ ≤ _) (IntermediateField.mem_adjoin_simple_self _ _)) ((le_sup_left : ℚ_[p]⟮(a : PadicAlgCl p)⟯ ≤ _) (IntermediateField.mem_adjoin_simple_self _ _))) (pow_mem (_root_.natCast_mem _ p) j)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.FieldOfTest.exists_finiteDimensional_of_isComplete (p : ℕ) [Fact p.Prime]
     (L : Subfield (PadicAlgCl p)) (hL : IsComplete (L : Set (PadicAlgCl p))) :
@@ -437,19 +427,15 @@ open IntermediateField in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ p _ y₀ u`. Establish `hinj : Function.Injective u.j`. Introduce `x y hxy`. Establish `h` using `congrArg (fun z : _root_.GlobalTheory.ZH.OO p => (z : PadicAlgCl p)) hxy`. Simplify using `only [_root_.GlobalTheory.ZH.ThetaSys.Real.UTest.j] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `IsFractionRing.injective _ (FractionRing u.V) ((algebraMap (FractionRing u.V) (PadicAlgCl p)).injective h)`. Use `⟨?_, ?_, hinj, ?_⟩` and prove the remaining obligations. Establish `: CharZero (_root_.GlobalTheory.ZH.OO p)` using `inferInstance`. Conclude with `(RingHom.charZero_iff hinj).2 this`. Use `⟨fun x hx => ?_⟩ set F := FractionRing u.V set φ := algebraMap F (PadicAlgCl p) set y : F := algebraMap u.V F x` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjx : ((u.j x : _root_.GlobalTheory.ZH.OO p) : PadicAlgCl p) = φ y` using `rfl`. Establish `hge : 1 ≤ ‖φ y‖`. Use `(_root_.GlobalTheory.ZH.not_isUnit_OO_iff (u.j x)).not.1 (not_not.2 hx)` as an intermediate fact. Rewrite `this` using `[hjx]`. Conclude with `not_lt.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `h0`. Rewrite `hge` using `[h0, map_zero, norm_zero]`. Conclude with `absurd hge (by norm_num)`. Establish `hle : ‖φ y⁻¹‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hge`. Take `⟨z, hz⟩` from `(u.norm_le y⁻¹).1 hle`. Use `IsUnit.of_mul_eq_one z ?_` and prove the remaining obligations. Apply `IsFractionRing.injective u.V F` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, map_one, hz]`. Conclude with `mul_inv_cancel₀ hy0`. Use `haveI := u.complete`. Take `⟨K, hK, hKL⟩` from `_root_.GlobalTheory.ZH.FieldOfTest.exists_finiteDimensional_of_isComplete p (algebraMap (FractionRing u.V) (PadicAlgCl p)).fieldRange (by`. Rewrite using `[RingHom.coe_fieldRange]`.
-
-Conclude with `_root_.GlobalTheory.ZH.FieldOfTest.isComplete_range_fractionRing _ _ u.norm_le)`. Conclude with `⟨K, hK, by rw [hKL, RingHom.coe_fieldRange]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.FieldOfTest.fractionRing_finite_over_padic : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω]
     [_root_.GlobalTheory.ZH.ArithBase o Ω] (S : _root_.GlobalTheory.ZH.ThetaSys o Ω) (ρ : S.Real)

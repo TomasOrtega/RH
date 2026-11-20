@@ -13,9 +13,9 @@ namespace Two
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.Th1.B.fExp_add (K := K) (ι := Unit) (f := 0) (g := 0) (map_zero _) (map_zero _)`. Rewrite `h` using `[add_zero]`. Establish `hc : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.fExp (0 : MvPowerSeries Unit K)) = 1` using `Formalism.L2.Th1.B.constantCoeff_fExp (map_zero _)`. Establish `hne : Formalism.L2.Th1.B.fExp (0 : MvPowerSeries Unit K) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[h0, map_zero]`. Conclude with `zero_ne_one hc`. Conclude with `(mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fExp_zero : Formalism.L2.Th1.B.fExp (0 : PowerSeries K) = 1 := by
   have h := Formalism.L2.Th1.B.fExp_add (K := K) (ι := Unit) (f := 0) (g := 0) (map_zero _) (map_zero _)
@@ -27,9 +27,9 @@ theorem fExp_zero : Formalism.L2.Th1.B.fExp (0 : PowerSeries K) = 1 := by
   exact (mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm))
 
 /- English proof (translation)
-Take `⟨h0, hI⟩` from `h`. Rewrite `h0`, `hI` using `[sub_zero]`. Establish `h0n : MvPowerSeries.constantCoeff (-f : MvPowerSeries Unit K) = 0`. Rewrite using `[map_neg, h0, neg_zero]`. Establish `hf : OneUnit (Formalism.L2.Th1.B.fExp f)` using `⟨Formalism.L2.Th1.B.constantCoeff_fExp h0, (Ser.intS_iff_integral _).2 hI⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Ser.oneUnit_of_mul_eq_one hf ?_` and prove the remaining obligations. Rewrite using `[← Formalism.L2.Th1.B.fExp_add h0 h0n, add_neg_cancel]`. Conclude with `fExp_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneUnit_fExp_neg {f : PowerSeries K} (h : Formalism.InvariantFactorPaths.G7.Simeq (ι := Unit) f 0) :
     OneUnit (Formalism.L2.Th1.B.fExp (-f)) := by
@@ -46,7 +46,7 @@ theorem oneUnit_fExp_neg {f : PowerSeries K} (h : Formalism.InvariantFactorPaths
 end Two
 
 /- English proof (translation)
-Introduce `l _ L ι W hU hW ω₀ hω hω2 hx hS s N hN hlN hs`. Use `shiftAnalyticW l L ι W hU hW ω₀ hω hω2 hx ?_ s N hN hlN hs` and prove the remaining obligations. Rewrite using `[even_theta_half_period_in_model l L ι W hU ω₀ hω hω2]`. Conclude with `Two.oneUnit_fExp_neg hS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_from_phi_derivative : ThetaZeroFromPhiDerivative := by
   intro l _ L ι W hU hW ω₀ hω hω2 hx hS s N hN hlN hs

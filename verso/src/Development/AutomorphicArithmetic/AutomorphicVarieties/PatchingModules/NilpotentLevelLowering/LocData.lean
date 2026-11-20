@@ -15,7 +15,7 @@ open GlobalTheory.PRep
 
 open Polynomial in
 /- English proof (translation)
-Establish `hr : M.charpoly.roots = Finset.univ.val.map c`. Rewrite using `[h, Finset.prod_eq_multiset_prod, ← roots_multiset_prod_X_sub_C (Finset.univ.val.map c), Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly, hr]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem trace_of_charpoly {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : Fin n → ℂ)
     (h : M.charpoly = ∏ i, (X - C (c i))) : M.trace = ∑ i, c i := by
@@ -27,23 +27,21 @@ private theorem trace_of_charpoly {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c 
 
 open Polynomial in
 /- English proof (translation)
-Establish `hinv : ∀ i g, c i g⁻¹ * c i g = 1` using `fun i g => by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `hne : ∀ i g, c i g ≠ 0` using `fun i g h0 => by simpa [h0] using hinv i g`. Establish `hR : R f⁻¹ * R t * (R f⁻¹)⁻¹ = R t ^ q`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Rewrite using `[← map_pow, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hc : ∀ i, c i (t ^ (q - 1)) = 1` using `fun i => by`. Establish `e1 : c i (f⁻¹ * t * f) = c i t`. Rewrite using `[map_mul, map_mul, mul_right_comm, hinv, one_mul]`. Establish `e2 : c i (t ^ q) = c i t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h2 i` as an intermediate fact. Rewrite `this` using `[map_mul, e1, ← hinv i (t ^ q)]`. Conclude with `(mul_left_cancel₀ (hne _ _) this).symm`. Establish `e3 : t ^ q = t ^ (q - 1) * t` using `by rw [← pow_succ]; congr 1; omega`. Rewrite `e2` using `[e3, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ (hne i t) (e2.trans (one_mul _).symm)`. Establish `hN : IsNilpotent (((R t ^ (q - 1) : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) - 1)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `Matrix.aeval_self_charpoly (R (t ^ (q - 1)) : Matrix (Fin n) (Fin n) ℂ)` as an intermediate fact. Rewrite `this` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[hc]`. Establish `ha : ∀ i j, c i f⁻¹ ≠ (q : ℂ) * c j f⁻¹` using `fun i j e => by`. Establish `e' : c j f = (q : ℂ) * c i f`. Establish `a1` using `hinv i f`. Establish `a2` using `hinv j f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails.
 
-Take the linear combination `(c j f * c i f) * e - c j f * a1 + q * c i f * a2`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Establish `: (1 : ℂ) = q` using `mul_right_cancel₀ (hne j f) ((one_mul _).trans e')`. Establish `: 1 = q` using `by exact_mod_cast this`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `(h3 j i hij).2 e'`. Establish `hcm` using `(tamePair ℂ n q (R f⁻¹) (R t) (fun i => c i f⁻¹) hq hR (h _) ha hN).2`. Establish `hcm' : R f * R t = R t * R f`. Rewrite `hcm` using `[map_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Commute.inv_left_iff.1 hcm : Commute (R f) (R t))`. Use `pairRel ℂ n _ _ (fun i => c i f) (fun i => c i t) (fun i j e => ?_) ?_ (h f) (fun a => ?_) i` and prove the remaining obligations. Assume the negation of the conclusion as `hij`. Conclude with `(h3 i j hij).1 e`. Rewrite using `[← Units.val_mul, hcm', Units.val_mul]`.
-
-Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, ← map_pow, ← map_mul, trace_of_charpoly _ _ (h _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rel_of_chars {W : Type} [Group W] {n q : ℕ} (hq : 2 ≤ q) (R : W →* GL (Fin n) ℂ) (c : Fin n → W →* ℂ)
     (h : ∀ g, (R g : Matrix (Fin n) (Fin n) ℂ).charpoly = ∏ i, (X - C (c i g))) (f t : W)
@@ -95,13 +93,13 @@ private theorem rel_of_chars {W : Type} [Group W] {n q : ℕ} (hq : 2 ≤ q) (R 
     simp
 
 /- English proof (translation)
-Establish `e1 : torusChar ψ (Pi.mulSingle i u) = ψ i u`. Rewrite using `[torusChar_apply, Finset.prod_eq_single i, Pi.mulSingle_eq_same]`. Introduce `j _ hj`. Rewrite using `[Pi.mulSingle_eq_of_ne hj, map_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : ∀ (t : Fin n → kˣ) j, Matrix.GeneralLinearGroup.det (leviTorus k (Fin n) t j) = t j` using `fun t => congrFun ((leviTorus k (Fin n)).left_inv t)`. Establish `e2 : deltaHalf k (fun _ : Fin n => Unit) (leviTorus k (Fin n) (Pi.mulSingle i u)) = 1`. Rewrite using `[deltaHalf_apply, Finset.prod_eq_single i, hd, Pi.mulSingle_eq_same]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[val_absPow, GlobalTheory.LGrp.nabs_eq_zpow, hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[hd, Pi.mulSingle_eq_of_ne hj, map_one]`. Simplify using the standard rewrite rules. Rewrite `e1` using `[hχ, h1, MonoidHom.mul_apply, MonoidHom.comp_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [e2] at e1`. Simplify using `using e1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem chi_unit {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (ψ : Fin n → kˣ →* ℂˣ) (χ : (Fin n → kˣ) →* ℂˣ)
@@ -127,25 +125,25 @@ private theorem chi_unit {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   simpa using e1
 
 /- English proof (translation)
-Introduce `hP l _ E Ω _ _ _ _ _ Bq w hB hl fr τ hfr hF hτ`. Take `⟨rc, hrc, -⟩` from `hP.ll.1 E Ω Bq w hB`. Take `⟨a, ha, ε, -, L⟩` from `id hrc`. Take `⟨hq, h1, h2, hx, hδ, hk, hrel⟩` from `artinEl hP.tame l E Ω Bq w hB hl a ha fr τ hfr hF hτ`. Use `⟨hq, _, _, hx, hδ, fun n ι r σ H C hC θ hθ χ hχ α hα => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ, hψC, hψχ, hsub⟩` from `jqEmbed hP.bz _ n C σ.V σ.ρ σ.smooth σ.irred θ hθ χ hχ`. Establish `hν` using `nuChar l E Ω Bq w hB hl a ha ε rc L n σ ψ χ hψ hψχ hsub`. Take `⟨hw1, hw2⟩` from `wdChar l E Ω Bq w hB hl n ι r _ (H rc hrc)`. Establish `hq2 : 2 ≤ resCard (w.adicCompletion E)` using `Finite.one_lt_card (α := 𝓀[w.adicCompletion E])`. Establish `hq0 : (resCard (w.adicCompletion E) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : Fin n → Weil hB →* ℂ` to `fun i => { toFun := fun g => (resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a g)) * (χ (Pi.mulSingle i (a g)) : ℂ) map_one' := by`. Rewrite using `[map_one, Pi.mulSingle_one, map_one, ord_eq_zero (by simp)]`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun g g' => by`. Rewrite using `[map_mul, ord_mul, Pi.mulSingle_mul, map_mul, mul_add, zpow_add₀ hq0, Units.val_mul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `ring }`. Set `R : Weil hB →* GL (Fin n) ℂ` to `((Matrix.GeneralLinearGroup.map ι.toRingHom).comp r).comp (Weil hB).subtype`. Establish `hR : ∀ g, (R g : Matrix (Fin n) (Fin n) ℂ).charpoly = ∏ i, (Polynomial.X - Polynomial.C (c i g))` using `fun g => (hw1 g).trans (hν g)`. Establish `hord : ∀ g : Weil hB, (g : G E Ω) ∈ Ine (F` using `E) Bq → ord (w.adicCompletion E) (a g) = 0 := fun g hg => by`. Rewrite using `[ha.ord_eq, deg_eq_zero_iff.2 hg, neg_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : ∀ i, α i = c i ⟨fr, h1⟩` using `fun i => by`. Establish `e : ord (w.adicCompletion E) (a ⟨fr, h1⟩) = 1`. Establish `h2 : deg (⟨fr, h1⟩ : Weil hB)⁻¹ = 1` using `deg_eq_one_iff.2 hF`. Rewrite using `[ha.ord_eq, ← deg_inv, h2]`. Rewrite using `[hα]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = (resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a ⟨fr, h1⟩)) * _`. Rewrite using `[e, mul_one, zpow_natCast]`. Establish `ht : ∀ i, (χ (Pi.mulSingle i (a ⟨τ, h2⟩)) : ℂ) = c i ⟨τ, h2⟩` using `fun i => by`. Express the relevant statement in the definitionally equal form `_ = (resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a ⟨τ, h2⟩)) * _`. Rewrite using `[hord _ hτ.1, mul_zero, zpow_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl : α = fun i => c i ⟨fr, h1⟩` from `funext hf`. Use `⟨hR ⟨fr, h1⟩, fun hgen i => ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Use `set g : Weil hB := ((⟨τ, h2⟩ : Weil hB) ^ resCard (w.adicCompletion E))⁻¹ * ((⟨fr, h1⟩ : Weil hB)⁻¹ * ⟨τ, h2⟩ * ⟨fr, h1⟩) with hg`. Establish `hgk : (g : G E Ω) ∈ GlobalTheory.TameQuot.ineKer E Bq l`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hrel` using `[← hq]`. Conclude with `hrel`. Establish `hcg : ∀ i, c i g = 1` using `fun i => by`. Establish `e` using `hord g (GlobalTheory.TameQuot.ineKer_le_Ine Bq l hgk)`. Establish `e2 : a g ∈ unitsC _ C` using `Subgroup.map_mono (Subgroup.comap_mono hC) (hk g g.2 hgk)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a g)) * (χ (Pi.mulSingle i (a g)) : ℂ) = 1`. Rewrite using `[e, chi_unit ψ χ hψχ i _ e (hψC i _ e2)]`. Simplify using the standard rewrite rules. Establish `hRg : R g = 1`. Establish `e : r g = 1` using `hw2 g hgk (((hw1 g).trans (hν g)).trans (by`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∏ i, (Polynomial.X - Polynomial.C (c i g)) = _`. Simplify using `[hcg]))`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map ι.toRingHom (r g) = 1`. Rewrite using `[e, map_one]`. Conclude with `rel_of_chars hq2 R c hR ⟨fr, h1⟩ ⟨τ, h2⟩ hRg hcg hgen i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.locData :
     LocP → ∀ (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (Bq : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (hB : IsPlaceOver Bq w), ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → ∀ fr τ : G E Ω, fr ∈ Dec (F := E) Bq → IsFrob (F := E) Bq (normV w) fr⁻¹ → GlobalTheory.TameQuot.IsProGen E Bq l τ → resCard (w.adicCompletion E) = normV w ∧ ∃ x δ : (w.adicCompletion E)ˣ, IsUnif x ∧ IsGenMod _ (ellC l _) δ ∧ ∀ (n : ℕ) (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin n) (Qbar l)) (σ : SmIrr (GL (Fin n) (w.adicCompletion E))), (∀ rc : IrrGL (w.adicCompletion E) → WD hB, IsRec hB rc → UpperTheory.V.Lev.WO ι r (rc (algNorm σ))) → LocRel l x δ σ.ρ ((r fr : Matrix (Fin n) (Fin n) (Qbar l)).map ι) ((r τ : Matrix (Fin n) (Fin n) (Qbar l)).map ι) := by

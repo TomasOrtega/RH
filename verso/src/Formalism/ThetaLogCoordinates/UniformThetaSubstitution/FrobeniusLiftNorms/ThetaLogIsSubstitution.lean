@@ -9,9 +9,9 @@ namespace Formalism.InvariantFactorPaths.G7
 namespace ShapeDiagramLemmas
 
 /- English proof (translation)
-Establish `h : ∀ c : Fin (μ.rowLen 0), μ.colLen c = 1 ↔ μ.rowLen 1 ≤ c.val`. Introduce `c`. Establish `h0 : 0 < μ.colLen c` using `YoungDiagram.mem_iff_lt_colLen.1 (YoungDiagram.mem_iff_lt_rowLen.2 c.isLt)`. Establish `h1 : (1 < μ.colLen c) ↔ c.val < μ.rowLen 1`. Rewrite using `[← YoungDiagram.mem_iff_lt_colLen, YoungDiagram.mem_iff_lt_rowLen]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Repeatedly rewrite using `[h]`. Rewrite using `[Finset.card_filter, Fin.sum_univ_eq_sum_range (fun c => if μ.rowLen 1 ≤ c then 1 else 0), ← Finset.card_filter]`. Establish `: (range (μ.rowLen 0)).filter (fun c => μ.rowLen 1 ≤ c) = Ico (μ.rowLen 1) (μ.rowLen 0)` using `by ext; simp [and_comm]`. Rewrite using `[this, Nat.card_Ico]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem shape_al (μ : YoungDiagram) :
     (univ.filter (fun c : Fin (μ.rowLen 0) => μ.colLen c = 1)).card = μ.rowLen 0 - μ.rowLen 1 := by
@@ -30,7 +30,7 @@ theorem shape_al (μ : YoungDiagram) :
   rw [this, Nat.card_Ico]
 
 /- English proof (translation)
-Establish `h1 : (μ s).rowLen 1 ≤ (μ s).rowLen 0` using `(μ s).rowLen_anti 0 1 (by omega)`. Unfold `capG alG`. Use `split_ifs`. Rewrite using `[shape_al]; exact ⟨rfl, by dsimp only; omega⟩`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shape {ν : ℕ} (TT : Finset (ZMod (2 * ν))) (μ : ZMod (2 * ν) → YoungDiagram)
     (s : ZMod (2 * ν)) :

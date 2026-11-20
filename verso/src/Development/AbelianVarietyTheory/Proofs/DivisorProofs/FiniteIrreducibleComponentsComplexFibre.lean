@@ -11,9 +11,9 @@ open GlobalTheory
 namespace GlobalTheory.HorComp
 
 /- English proof (translation)
-Take `⟨N, i, hi, rfl⟩` from `hq`. Establish `: IsProper (PSpace.str k N)` using `isProper_str k N`. Establish `hp : IsProper (pullback.snd (i ≫ PSpace.str k N) (spMap (σ.comp β)))` using `inferInstance`. Establish `h1 : IsLocallyNoetherian (cxFib β (i ≫ PSpace.str k N) σ)` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd (i ≫ PSpace.str k N) (spMap (σ.comp β)))`. Establish `h2 : CompactSpace (cxFib β (i ≫ PSpace.str k N) σ)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd (i ≫ PSpace.str k N) (spMap (σ.comp β)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `{}`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherian_cxFib {k F : Type} [CommRing k] [CommRing F] (β : k →+* F) {Y : Scheme.{0}} {q : Y ⟶ Sp k}
     (σ : F →+* ℂ) (hq : IsProjOver q) : IsNoetherian (cxFib β q σ) := by
@@ -27,7 +27,7 @@ theorem isNoetherian_cxFib {k F : Type} [CommRing k] [CommRing F] (β : k →+* 
   exact {}
 
 /- English proof (translation)
-Introduce `k F _ _ β Y q σ n h`. Use `isNoetherian_cxFib β σ h.isProjOver` as an intermediate fact. Conclude with `NoetherianSpace.finite_irreducibleComponents`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_irreducibleComponents_cxFib : ∀ (k F : Type) [CommRing k] [CommRing F] (β : k →+* F) (Y : Scheme.{0})
     (q : Y ⟶ Sp k) (σ : F →+* ℂ) (n : ℕ), IsArithVar q n → (irreducibleComponents (cxFib β q σ)).Finite := by

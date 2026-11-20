@@ -3,15 +3,15 @@ import Mathlib
 open Polynomial
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ_[l] x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Set `F` to `IntermediateField.adjoin ℚ_[l] {x}`. Establish `hF : FiniteDimensional ℚ_[l] F` using `IntermediateField.adjoin.finiteDimensional hint`. Set `V : Submodule ℚ_[l] (PadicAlgCl l)` to `F.toSubalgebra.toSubmodule`. Establish `hV : FiniteDimensional ℚ_[l] V` using `hF`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hP : ProperSpace V` using `FiniteDimensional.proper ℚ_[l] V`. Establish `hxF : x ∈ F` using `IntermediateField.mem_adjoin_simple_self ℚ_[l] x`. Set `u : ℕ → V` to `fun n => ⟨x ^ n, pow_mem hxF n⟩`. Establish `hu : ∀ n, u n ∈ Metric.closedBall (0 : V) 1`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Express the relevant statement in the definitionally equal form `‖x ^ n‖ ≤ 1`. Rewrite using `[norm_pow, hx, one_pow]`. Take `⟨a, -, φ, hφ, ha⟩` from `(isCompact_closedBall (0 : V) 1).tendsto_subseq hu`. Take `⟨N, hN⟩` from `Metric.cauchySeq_iff'.1 ha.cauchySeq 1 one_pos`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hN (N + 1) (Nat.le_succ N)`. Establish `hlt : φ N < φ (N + 1)` using `hφ (Nat.lt_succ_self N)`. Use `⟨φ (N + 1) - φ N, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations. Establish `h2 : ‖x ^ φ (N + 1) - x ^ φ N‖ < 1`. Rewrite `h1` using `[dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `h3 : x ^ φ (N + 1) - x ^ φ N = x ^ φ N * (x ^ (φ (N + 1) - φ N) - 1)`. Rewrite using `[mul_sub, ← pow_add, Nat.add_sub_cancel' hlt.le, mul_one]`. Rewrite `h2` using `[h3, norm_mul, norm_pow, hx, one_pow, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem pow_congr {l : ℕ} [Fact (Nat.Prime l)] {x : PadicAlgCl l} (hx : ‖x‖ = 1) :
     ∃ n : ℕ, 0 < n ∧ ‖x ^ n - 1‖ < 1 := by
@@ -41,17 +41,13 @@ private theorem pow_congr {l : ℕ} [Fact (Nat.Prime l)] {x : PadicAlgCl l} (hx 
   rwa [h3, norm_mul, norm_pow, hx, one_pow, one_mul] at h2
 
 /- English proof (translation)
-Establish `hp : ‖(l : PadicAlgCl l)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Use `set z := y - 1 with hz`. Establish `hz1 : ‖z‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `IsUltrametricDist.norm_add_le_max y (-1)` as an intermediate fact. Rewrite `this` using `[norm_neg, norm_one, hy, max_self, ← sub_eq_add_neg]`. Conclude with `this`. Establish `hyz : y = z + 1` using `by rw [hz]; ring`. Establish `e` using `add_pow_prime_eq' hl.out z 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set S := ∑ k ∈ Finset.Ioo 0 l, z ^ k * 1 ^ (l - k) * ((l.choose k / l : ℕ) : PadicAlgCl l) with hS`. Establish `hS1 : ‖S‖ ≤ 1`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[one_pow, mul_one, norm_mul, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) hz1) (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _)`. Establish `e2 : z ^ l = (y ^ l - 1) + -((l : PadicAlgCl l) * S)`. Rewrite using `[hyz, e]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ‖z ^ l‖ < 1`.
-
-Rewrite using `[e2]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hp hS1`. Rewrite `h4` using `[norm_pow]`.
-
-Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) hl.out.ne_zero).1 h4`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem descend {l : ℕ} [hl : Fact (Nat.Prime l)] {y : PadicAlgCl l} (hy : ‖y‖ = 1)
     (h : ‖y ^ l - 1‖ < 1) : ‖y - 1‖ < 1 := by
@@ -84,9 +80,9 @@ private theorem descend {l : ℕ} [hl : Fact (Nat.Prime l)] {y : PadicAlgCl l} (
   exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hl.out.ne_zero).1 h4
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `pow_congr hx`. Take `⟨k, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' l hl.out.ne_one`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Use `clear hn`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Apply `descend (by rw [norm_pow, hx, one_pow])` to reduce the goal to its premises. Rewrite using `[← pow_mul, mul_right_comm, ← pow_succ]` and apply the resulting hypothesis.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem coprime_pow_congr {l : ℕ} [hl : Fact (Nat.Prime l)] {x : PadicAlgCl l}
     (hx : ‖x‖ = 1) : ∃ m : ℕ, ¬l ∣ m ∧ ‖x ^ m - 1‖ < 1 := by
@@ -102,11 +98,11 @@ private theorem coprime_pow_congr {l : ℕ} [hl : Fact (Nat.Prime l)] {x : Padic
     rwa [← pow_mul, mul_right_comm, ← pow_succ]
 
 /- English proof (translation)
-Introduce `l _ x hx`. Take `⟨m, hm, h⟩` from `coprime_pow_congr hx`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; exact hm (dvd_zero l))`. Use `haveI : NeZero m := ⟨hm0.ne'⟩`. Take `⟨μ, hμ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (PadicAlgCl l) m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `congrArg (eval x) (X_pow_sub_one_eq_prod hm0 hμ)`. Simplify using `only [eval_sub, eval_pow, eval_X, eval_one, eval_prod, eval_C] at e`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Rewrite `h` using `[e, norm_prod]`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `absurd h (not_lt.2 ?_)` and prove the remaining obligations. Use `Finset.prod_induction _ (fun r : ℝ => 1 ≤ r) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl ?_` and prove the remaining obligations. Introduce `ζ hζ`. Conclude with `hcon m ζ hm ((mem_nthRootsFinset hm0 1).1 hζ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExistsRootCongruence.exists_root_congr :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {x : PadicAlgCl l},

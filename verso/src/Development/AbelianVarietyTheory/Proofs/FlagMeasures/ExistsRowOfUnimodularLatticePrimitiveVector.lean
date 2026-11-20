@@ -11,19 +11,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D large₂ X Y u hStd L hL hU hprim`. Take `⟨hlat, hun⟩` from `GlobalTheory.RowsOrb.Glue.glue_isLattice_unimodular D large₂ X hStd L hL hU`. Establish `hgen` using `GlobalTheory.RowsOrb.ExGenus.mem_genus_of_isUnimodular D large₂ hStd X u _ hlat hun`. Take `⟨hx, hx0, hlm, hsub⟩` from `GlobalTheory.RowsOrb.parts_of_lat D X u L`. Establish `hzL : GlobalTheory.RowsOrb.zb X u ∈ L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(hprim 1).2 (Submodule.mem_one.2 ⟨1, map_one _⟩)`. Rewrite `h1` using `[one_smul]`. Then use the resulting hypothesis. Establish `hzΛ : X.zu u ∈ latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY`. Use `Submodule.mem_sup_left (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Conclude with `⟨GlobalTheory.RowsOrb.zb X u, hzL, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Establish `hfix0` using `(X.Fu_fixed u).2.2.2.1`. Establish `hlf : (lf D (X.Fu u)) = (⟨X.Fu u, X.zu u⟩ : Formalism.MainNotions.S.Lat.LFlag (VS D) D.R.rS (((D.mem u).A.T : ℕ) : D.host.E))` using `by show (⟨X.Fu u, (X.Fu u).z⟩ : Formalism.MainNotions.S.Lat.LFlag (VS D) D.R.rS _) = _`. Rewrite using `[X.flagZVector u]`. Establish `hfix : FixedHyp D (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) (lf D (X.Fu u))`. Use `⟨hlat, hun, ⟨?_, rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (X.Fu u).z ∈ _`. Rewrite using `[X.flagZVector u]`. Conclude with `hzΛ`. Introduce `P`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hx0, hlf]`. Conclude with `hfix0 P`. Introduce `c hc`. Establish `hc' : ((c • GlobalTheory.RowsOrb.zb X u : GlobalTheory.RowsOrb.Wb X) : (VS D).V) ∈ Lsub (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) (lf D (X.Fu u))`. Rewrite using `[Submodule.coe_smul, GlobalTheory.RowsOrb.zb_coe, ← X.flagZVector u]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hc`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 ((hprim c).1 (hsub _ hc'))`. Conclude with `⟨o, ho⟩`. Establish `hrow : IsRowLat D (X.Fu u) (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY)` using `⟨hgen, hfix, hx⟩`. Take `⟨Λ', ⟨hΛ', γ, hγ, hmap⟩, -⟩` from `(Y.rowsOK u).2 _ hrow`.
-
-Take `⟨g, hg⟩` from `GlobalTheory.RowsOrb.exists_gz_lmap D X u γ hγ`. Conclude with `⟨Λ', hΛ', g, by rw [hg, hmap, hlm]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowsOrb.exists_row_of_unimod : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), GlobalTheory.TypeAsm.Std D large₂ → ∀ L : Submodule (𝓞 D.host.E) (GlobalTheory.RowsOrb.Wb X), Submodule.IsLattice D.host.E L → Formalism.HermitianLatticesTheory.IsUnimodular (GlobalTheory.RowsOrb.hb X) L → (∀ t : D.host.E, t • GlobalTheory.RowsOrb.zb X u ∈ L ↔ t ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)) → ∃ Λ ∈ Y.what₂ u, ∃ g : GlobalTheory.RowsOrb.Gz X u, g • GlobalTheory.RowsOrb.Lmap X u Λ = L := by
   intro D large₂ X Y u hStd L hL hU hprim

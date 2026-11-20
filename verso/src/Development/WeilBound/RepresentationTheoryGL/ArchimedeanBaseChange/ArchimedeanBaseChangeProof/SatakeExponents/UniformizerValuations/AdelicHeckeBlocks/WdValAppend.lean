@@ -16,16 +16,16 @@ attribute [local instance] borelG borelF borelH
 namespace Word
 
 /- English proof (translation)
-Simplify using `[wdVal, List.map_append, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wdVal_append {A Γ : Type} [Monoid A] [Star A] (gen : Γ → A) (u v : List (Γ × Bool)) :
     wdVal gen (u ++ v) = wdVal gen u * wdVal gen v := by
   simp [wdVal, List.map_append, List.prod_append]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp [wdVal]`. Consider the case `cons p w ih`. Establish `e : wdVal gen (p :: w) = (if p.2 then star (gen p.1) else gen p.1) * wdVal gen w`. Simplify using `[wdVal]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, star_mul, ih, List.map_cons, List.reverse_cons, wdVal_append]`. Use `congr 1`. Take `⟨x, b⟩` from `p`. Apply the tactic sequence `cases b <;> simp [wdVal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wdVal_star {A Γ : Type} [Monoid A] [StarMul A] (gen : Γ → A) (w : List (Γ × Bool)) :
     star (wdVal gen w) = wdVal gen (w.map fun p => (p.1, !p.2)).reverse := by
@@ -40,9 +40,9 @@ theorem wdVal_star {A Γ : Type} [Monoid A] [StarMul A] (gen : Γ → A) (w : Li
     cases b <;> simp [wdVal]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [wdVal]`. Consider the case `succ k ih`. Rewrite using `[pow_succ', ih, Finset.sum_mul_sum, ← (Fin.consEquiv fun _ => J).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.consEquiv, Equiv.coe_fn_mk, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, List.ofFn_succ, List.flatten_cons, wdVal_append, smul_mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pow_eq {A Γ J : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype J] (gen : Γ → A) (c : J → ℂ)
     (w : J → List (Γ × Bool)) (k : ℕ) :
@@ -59,19 +59,19 @@ theorem pow_eq {A Γ J : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype J]
 end Word
 
 /- English proof (translation)
-Introduce `A Γ _ _ _ _ gen a ha`. It suffices to establish `h : ∃ (J : Type) (_ : Fintype J) (c : J → ℂ) (w : J → List (Γ × Bool)) (L : ℕ), (∀ j, (w j).length ≤ L) ∧ a = ∑ j, c j • wdVal gen (w j) by`. Take `⟨J, _, c, w, L, hL, rfl⟩` from `h`. Conclude with `⟨J, inferInstance, c, w, L, hL, rfl, Word.pow_eq gen c w⟩`. Proceed by induction on `ha using StarAlgebra.adjoin_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨Unit, inferInstance, fun _ => 1, fun _ => [(i, false)], 1, fun _ => le_rfl, by simp [wdVal]⟩`. Consider the case `algebraMap r`. Conclude with `⟨Unit, inferInstance, fun _ => r, fun _ => [], 0, fun _ => le_rfl, by`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components.
 
-Simplify using `[wdVal, Algebra.algebraMap_eq_smul_one]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨J, _, c, w, L, hL, rfl⟩` from `hx`. Take `⟨J', _, c', w', L', hL', rfl⟩` from `hy`. Use `⟨J ⊕ J', inferInstance, Sum.elim c c', Sum.elim w w', max L L', ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(j | j)`. Conclude with `(hL j).trans (le_max_left _ _)`. Conclude with `(hL' j).trans (le_max_right _ _)`. Simplify using `[Fintype.sum_sum_type]`. Consider the case `mul x y _ _ hx hy`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J, _, c, w, L, hL, rfl⟩` from `hx`. Take `⟨J', _, c', w', L', hL', rfl⟩` from `hy`. Use `⟨J × J', inferInstance, fun p => c p.1 * c' p.2, fun p => w p.1 ++ w' p.2, L + L', ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, j'⟩`. Simplify using `using Nat.add_le_add (hL j) (hL' j')`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[smul_mul_smul_comm, Word.wdVal_append]`. Consider the case `star x _ hx`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J, _, c, w, L, hL, rfl⟩` from `hx`. Use `⟨J, inferInstance, fun j => star (c j), fun j => ((w j).map fun p => (p.1, !p.2)).reverse, L, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Simplify using `using hL j`. Simplify using `[star_sum, star_smul, Word.wdVal_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjWords : AdjWords := by
   intro A Γ _ _ _ _ gen a ha
@@ -116,13 +116,13 @@ namespace Word
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {B : Block E}
 
 /- English proof (translation)
-Simplify using `[BGen.sc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_inl (c : ℂ) (w : List (BGen B)) : BGen.sc (Sum.inl c :: w) = c * BGen.sc w := by
   simp [BGen.sc]
 
 /- English proof (translation)
-Simplify using `[BGen.sc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_inr (s : PT B) (w : List (BGen B)) : BGen.sc (Sum.inr s :: w) = BGen.sc w := by
   simp [BGen.sc]
@@ -130,25 +130,25 @@ theorem sc_inr (s : PT B) (w : List (BGen B)) : BGen.sc (Sum.inr s :: w) = BGen.
 end Word
 
 /- English proof (translation)
-Introduce `E _ _ _ B w t₀ R hw ht₀ hR hs`. Establish `hadj : ∀ g : BGen B, g.Ok → g.adj.Ok ∧ g.adj.op = ContinuousLinearMap.adjoint g.op`. Introduce and unpack `(c | s) hg`. Use `⟨trivial, ?_⟩ show (starRingEnd ℂ c) • (1 : B.Hb →L[ℂ] B.Hb) = ContinuousLinearMap.adjoint (c • 1)` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.map_smulₛₗ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `ContinuousLinearMap.adjoint_id.symm`. Conclude with `⟨(h E B s s hg hg).2.2.2.2.1, (h E B s s hg hg).2.2.2.2.2.1⟩`. It suffices to establish `main : (BGen.wd w t₀).Ok ∧ (w.map BGen.op).prod * t₀.op = BGen.sc w • (BGen.wd w t₀).op ∧ (BGen.wd w t₀).T ≤ t₀.T + w.length * R ∧ (BGen.wd w t₀).r ≤ t₀.r + w.length * R ∧ ∀ χa χb, (BGen.wd w t₀).val χa χb = (w.map (Sum.elim (fun _ => 1) fun s => s.val χa χb)).prod * t₀.val χa χb …`. Take `⟨m1, m2, m3, m4, m5⟩` from `main`.
+Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m1, m2, m3, m4, hadj, m5⟩`. Proceed by induction on `w with`. Consider the case `nil => simp [BGen.wd, BGen.sc, ht₀]`. Consider the case `cons g w ih`. Take `⟨h1, h2, h3, h4, h5⟩` from `ih (fun g hg => hw g (List.mem_cons_of_mem _ hg)) (fun s hs' => hs s (List.mem_cons_of_mem _ hs'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg` using `hw g List.mem_cons_self`. Break down `g with c | s` into its components or cases. Establish `ew : BGen.wd (Sum.inl c :: w) t₀ = BGen.wd w t₀` using `rfl`. Rewrite using `[ew, Word.sc_inl]`. Use `⟨h1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[List.map_cons, List.prod_cons, mul_assoc, h2] show (c • (1 : B.Hb →L[ℂ] B.Hb)) * _ = _`. Rewrite using `[smul_mul_assoc, one_mul, smul_smul]`. Simplify using `only [List.length_cons]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.length_cons]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Introduce `χa χb`. Simplify using `[h5]`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ew : BGen.wd (Sum.inr s :: w) t₀ = s.mul (BGen.wd w t₀)` using `rfl`. Establish `hsR` using `hs s List.mem_cons_self`. Establish `hop` using `h E B s (BGen.wd w t₀) hg h1`. Rewrite using `[ew, Word.sc_inr]`. Use `⟨hop.2.2.1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[List.map_cons, List.prod_cons, mul_assoc, h2, hop.2.2.2.1] show s.op * _ = _`. Rewrite using `[mul_smul_comm]`. Use `show s.T + (BGen.wd w t₀).T ≤ _`. Simplify using `only [List.length_cons]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[hsR.1]`. Use `show s.r + (BGen.wd w t₀).r + B.c ≤ _`. Simplify using `only [List.length_cons]`. Use `push_cast`. Combine the linear relations using `[hsR.2]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `χa χb`. Rewrite using `[hop.2.2.2.2.2.2.1, h5]`. Simplify using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem blkWord (h : BlockOperatorsProductAdjoint) : BlockWordOperators := by
   intro E _ _ _ B w t₀ R hw ht₀ hR hs
@@ -200,9 +200,9 @@ theorem blkWord (h : BlockOperatorsProductAdjoint) : BlockWordOperators := by
         simp [mul_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D Ma Mb κ _ μa μb ha hb`. Establish `: BorelSpace (G a)` using `⟨rfl⟩`. Establish `: BorelSpace (G b)` using `⟨rfl⟩`. Establish `: BorelSpace (Hf E a b)` using `⟨rfl⟩`. Take `⟨ν, hν, hν', hc⟩` from `h1 E a b D μa μb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ca, hca⟩` from `(h2 E a).2.2.2`. Take `⟨cb, hcb⟩` from `(h2 E b).2.2.2`. Use `⟨ν, ha, hb, hν, hν', hc, max 0 (max ca cb), le_max_left _ _, fun g h => ?_, fun g h => ?_, rfl⟩` and prove the remaining obligations. Combine the linear relations using `[hca g h, le_max_left ca cb, le_max_right 0 (max ca cb)]`. Combine the linear relations using `[hcb g h, le_max_right ca cb, le_max_right 0 (max ca cb)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem blockEx (h1 : CompatEx) (h2 : SizeBasic) : BlockEx := by
   intro E _ _ _ a b D Ma Mb κ _ μa μb ha hb

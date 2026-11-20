@@ -25,7 +25,7 @@ def ext0 {Y : Type*} (U : Set Y) (f : U → ℂ) (y : Y) : ℂ :=
   if hy : y ∈ U then f ⟨y, hy⟩ else 0
 
 /- English proof (translation)
-Simplify using `[ext0, y.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extendByZeroOnSubset_apply_coe {Y : Type*} (U : Set Y) (f : U → ℂ) (y : U) : ext0 U f y = f y := by
   simp [ext0, y.2]
@@ -38,17 +38,15 @@ open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates Reci
 open scoped ENNReal ContDiff
 
 /- English proof (translation)
-Establish `hτy : τ (A.pick y) y ≠ 0` using `hy`. Establish `hτ0 : 0 < A.nsq Λ τ y`. Unfold `WeightedAtlas.nsq`. Conclude with `mul_pos (pow_pos (norm_pos_iff.mpr hτy) 2) (Real.exp_pos _)`. Establish `hs0 : 0 < A.sqn L s y`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Use `hC y` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hz`. Establish `hz' : ∀ k, s k (A.pick y) y = 0` using `hz`. Establish `: A.sqn L s y = 0`. Unfold `WeightedAtlas.sqn WeightedAtlas.nsq`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `[hz']`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `psi`. Use `Real.log_nonpos hs0.le (hsq y)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `psi`. Establish `h1 : Real.log (A.nsq Λ τ y) ≤ Real.log C + Real.log (A.sqn L s y)`. Rewrite using `[← Real.log_mul hC0.ne' hs0.ne']`. Conclude with `Real.log_le_log hτ0 (hC y)`. Use `mul_le_mul_of_nonneg_left h1 hn` as an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OTY.TwEst.nz_facts {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
     [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La] (A : WeightedAtlas n Y ι La)

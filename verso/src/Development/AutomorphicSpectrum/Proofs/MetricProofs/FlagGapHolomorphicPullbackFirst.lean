@@ -19,7 +19,7 @@ def SmMat (M : E → Matrix (Fin N) (Fin N) ℂ) (w : E) : Prop :=
   ∀ a b, ContDiffAt ℝ ∞ (fun u => M u a b) w
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffAt.sum fun c _ => (h a c).mul (h' c b)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SmMat.mul {M M' : E → Matrix (Fin N) (Fin N) ℂ} {w : E} (h : SmMat M w) (h' : SmMat M' w) :
     SmMat (fun u => M u * M' u) w := by
@@ -28,7 +28,7 @@ theorem SmMat.mul {M M' : E → Matrix (Fin N) (Fin N) ℂ} {w : E} (h : SmMat M
   exact ContDiffAt.sum fun c _ => (h a c).mul (h' c b)
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [Matrix.conjTranspose_apply]`. Conclude with `(Complex.conjCLE : ℂ ≃L[ℝ] ℂ).contDiff.contDiffAt.comp w (h b a)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SmMat.conjTranspose {M : E → Matrix (Fin N) (Fin N) ℂ} {w : E} (h : SmMat M w) :
     SmMat (fun u => (M u)ᴴ) w := by
@@ -37,9 +37,9 @@ theorem SmMat.conjTranspose {M : E → Matrix (Fin N) (Fin N) ℂ} {w : E} (h : 
   exact (Complex.conjCLE : ℂ ≃L[ℝ] ℂ).contDiff.contDiffAt.comp w (h b a)
 
 /- English proof (translation)
-Unfold `minorIJ`. Distinguish the cases in `e : I.card = J.card`. Simplify using `only [dif_pos e, Matrix.det_apply']`. Use `ContDiffAt.sum fun σ _ => contDiffAt_const.mul ?_` and prove the remaining obligations. Conclude with `contDiffAt_prod fun i _ => h _ _`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg e]`. Conclude with `contDiffAt_const`.
+A detailed English derivation is pending.
 -/
 theorem SmMat.minor {M : E → Matrix (Fin N) (Fin N) ℂ} {w : E} (h : SmMat M w) (I J : Finset (Fin N)) :
     ContDiffAt ℝ ∞ (fun u => minorIJ (M u) I J) w := by
@@ -52,17 +52,15 @@ theorem SmMat.minor {M : E → Matrix (Fin N) (Fin N) ℂ} {w : E} (h : SmMat M 
     exact contDiffAt_const
 
 /- English proof (translation)
-Establish `hre : ∀ {f : E → ℂ}, ContDiffAt ℝ ∞ f w → 0 < f w → ContDiffAt ℝ ∞ (fun u => Real.log (f u).re) w` using `fun hf h0 => (Complex.reCLM.contDiff.contDiffAt.comp w hf).log (Complex.lt_def.1 h0).1.ne'`. Establish `hfac : ContDiffAt ℝ ∞ (fun u => detFac j i (G u)) w`. Unfold `detFac`. Use `ContDiffAt.mul ?_ ?_` and prove the remaining obligations. Distinguish the cases in `c : j ≤ (i : ℕ) + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify `hG.minor _ _` using `only [if_pos c]`. Simplify `contDiffAt_const` using `only [if_neg c]`. Distinguish the cases in `c : (i : ℕ) + 1 = N`. Simplify `hG.minor _ _` using `only [if_pos c]`. Simplify `contDiffAt_const` using `only [if_neg c]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hfac0 : 0 < detFac j i (G w)`. Unfold `detFac`. Use `mul_pos ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `GramPot.minor_pos hpos _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_lt_one`. Use `split_ifs`. Conclude with `GramPot.minor_pos hpos _`. Conclude with `zero_lt_one`. Unfold `blockPot`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(contDiffAt_const.mul (hre hfac hfac0)).add ?_` and prove the remaining obligations. Distinguish the cases in `c : IsProperStep N j i`. Simplify using `only [if_pos c]`. Use `contDiffAt_const.mul (hre ((hh.conjTranspose.mul hG).mul hh |>.minor _ _) ?_)` and prove the remaining obligations. Establish `hu : IsUnit (h w)` using `(Matrix.isUnit_iff_isUnit_det _).2 hdet.isUnit`.
-
-Conclude with `GramPot.minor_pos (hpos.conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit hu)) _`. Simplify using `only [if_neg c]`. Conclude with `contDiffAt_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_blockPot (j : ℕ) (i : Fin N) {G h : E → Matrix (Fin N) (Fin N) ℂ} {w : E}
     (hG : SmMat G w) (hh : SmMat h w) (hpos : (G w).PosDef) (hdet : (h w).det ≠ 0) :
@@ -106,9 +104,9 @@ section Chart
 variable {e n : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `B.cover (pr ((A.chart c).symm w))`. Establish `h1 : ContDiffAt ℝ ∞ (f ∘ (B.chart k).symm) (B.chart k (pr ((A.chart c).symm w)))`. Use `(hf k).contDiffAt (((B.chart k).isOpen_inter_preimage_symm hU).mem_nhds ⟨(B.chart k).map_source hk, ?_⟩)` and prove the remaining obligations. Simplify `hwU` using `[(B.chart k).left_inv hk]`. Establish `h2 : ContDiffAt ℝ ∞ (B.chart k ∘ pr ∘ (A.chart c).symm) w` using `(hp.2 c k w ⟨hw, hk⟩).contDiffAt.restrict_scalars ℝ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(ContDiffAt.comp w h1 h2).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [((A.chart c).isOpen_inter_preimage_symm ((B.chart k).open_source.preimage hp.1)).mem_nhds ⟨hw, hk⟩] with u hu`. Simplify using `only [Function.comp_apply, (B.chart k).left_inv hu.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_comp_holoMap {A : FinHolAtlas e X} {B : FinHolAtlas n Y} {pr : X → Y}
     (hp : HoloMap A B pr) {U : Set Y} (hU : IsOpen U) {f : Y → ℝ} (hf : B.SmoothOn U f)
@@ -128,7 +126,7 @@ theorem contDiffAt_comp_holoMap {A : FinHolAtlas e X} {B : FinHolAtlas n Y} {pr 
   simp only [Function.comp_apply, (B.chart k).left_inv hu.2]
 
 /- English proof (translation)
-Establish `e : g = fun u => (((g u).re : ℝ) : ℂ) + (((g u).im : ℝ) : ℂ) * Complex.I`. Use function extensionality and compare the values at `u`. Conclude with `(Complex.re_add_im _).symm`. Rewrite using `[e]`. Conclude with `(Complex.ofRealCLM.contDiff.contDiffAt.comp w h1).add ((Complex.ofRealCLM.contDiff.contDiffAt.comp w h2).mul contDiffAt_const)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffAt_of_re_im {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {g : E → ℂ} {w : E}
     (h1 : ContDiffAt ℝ ∞ (fun u => (g u).re) w) (h2 : ContDiffAt ℝ ∞ (fun u => (g u).im) w) :
@@ -143,15 +141,15 @@ theorem contDiffAt_of_re_im {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
 end Chart
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM p Kk _ ιk _ κ v e R pr hp hS hP c w hw`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Take `⟨hwt, hwb⟩` from `hw`. Establish `hb : pr ((R.A.chart c).symm w) ∉ bdry BM.s` using `hwb`. Take `⟨W, l, H, D, hWo, hyW, hWU, hWO, hH, hHd, hD, hD0, heq⟩` from `hS ((R.A.chart c).symm w) ((R.A.chart c).symm w) (R.mem_U _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcl : IsClosed (bdry BM.s)` using `isClosed_bdry_of_isSection _ _ _ _ _ BM.sec`. Establish `hOo : IsOpen (W ∩ pr ⁻¹' (bdry BM.s)ᶜ)` using `hWo.inter (hcl.isOpen_compl.preimage hp.1)`. Establish `hnhd : (R.A.chart c).target ∩ (R.A.chart c).symm ⁻¹' (W ∩ pr ⁻¹' (bdry BM.s)ᶜ) ∈ 𝓝 w` using `((R.A.chart c).isOpen_inter_preimage_symm hOo).mem_nhds ⟨hwt, hyW, hb⟩`. Establish `hOb : IsOpen (BM.O l \ bdry BM.s)` using `(BM.O_open l).sdiff hcl`. Establish `hmemO : pr ((R.A.chart c).symm w) ∈ BM.O l \ bdry BM.s` using `⟨hWO _ hyW, hb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : SmMat (fun u => BM.G l p.1 (pr ((R.A.chart c).symm u))) w` using `fun a b => contDiffAt_of_re_im (contDiffAt_comp_holoMap hp hOb (BM.G_smooth l p.1 a b).1 c hwt hmemO) (contDiffAt_comp_holoMap hp hOb (BM.G_smooth l p.1 a b).2 c hwt hmemO)`. Establish `hHm : SmMat (fun u => H ((R.A.chart c).symm u)) w` using `fun a b => (hH a b c w ⟨hwt, hyW⟩).contDiffAt.restrict_scalars ℝ`. Establish `hDm : ContDiffAt ℝ ∞ (fun u => D ((R.A.chart c).symm u)) w` using `(hD c w ⟨hwt, hyW⟩).contDiffAt.restrict_scalars ℝ`. Establish `hD1 : D ((R.A.chart c).symm w) ≠ 0` using `hD0 _ hyW`. Establish `hbp` using `contDiffAt_blockPot j p.2 hG hHm (BM.G_pos l p.1 _ hmemO).2 (hHd _ hyW).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : ContDiffAt ℝ ∞ (fun u => Real.log ‖D ((R.A.chart c).symm u)‖) w` using `(hDm.norm ℝ hD1).log (norm_ne_zero_iff.2 hD1)`. Establish `hpot : ContDiffAt ℝ ∞ (fun u => Real.log ((fsHerm ιk fun k => M.dy p (κ k)).h (R.lift ((R.A.chart c).symm w) ((R.A.chart c).symm u)))) w` using `(hP.1 ((R.A.chart c).symm w) c).contDiffAt (((R.A.chart c).isOpen_inter_preimage_symm (R.isOpen_U _)).mem_nhds ⟨hwt, R.mem_U _⟩)`. Use `((hbp.add hlog).sub hpot).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hnhd] with u hu`. Use `heq _ hu.2.1 hu.2.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem smoothOn_stepPh : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (p : Ψ × Fin N) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (e : ℕ) (R : AnLogRes (mCoordIdeal (y ∘ v)) ⊤ e) (pr : R.X → BM.Rb.X) (hp : HoloMap R.A BM.Rb.A pr), HasStepCharts M BM p κ v R pr → IsPotential R.A (potOf R (fsHerm ιk fun k => M.dy p (κ k))) → R.A.SmoothOn (bdry (fun x y => BM.s (pr x) (pr y)))ᶜ (stepPh M BM p v R pr) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM p Kk _ ιk _ κ v e R pr hp hS hP c w hw

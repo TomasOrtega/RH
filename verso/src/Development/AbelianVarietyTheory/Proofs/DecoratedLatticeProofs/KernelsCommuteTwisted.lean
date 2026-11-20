@@ -24,7 +24,7 @@ variable {l' l : kˣ →* ℂˣ} {π' : Representation ℂ (GL n' k) V'} {π : R
   {θ : V' →ₗ[ℂ] SB (Matrix n n' k) →ₗ[ℂ] V}
 
 /- English proof (translation)
-Use `congrArg (fun w : ℂˣ => (w : ℂ)) (hχ _ hz)` as an intermediate fact. Simplify using `only [map_mul, Units.val_mul, Units.val_one] at this`. Conclude with `eq_inv_of_mul_eq_one_left this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unram_val {χ : kˣ →* ℂˣ} (hχ : IsUnram χ) (u z : kˣ) (hz : valuation k ((z * u : kˣ) : k) = 1) :
     (χ z : ℂ) = (χ u : ℂ)⁻¹ := by
@@ -33,7 +33,7 @@ theorem unram_val {χ : kˣ →* ℂˣ} (hχ : IsUnram χ) (u z : kˣ) (hz : val
   exact eq_inv_of_mul_eq_one_left this
 
 /- English proof (translation)
-Introduce `h hh` and use `by have hv := valuation_det_of_fix Q₀.lat (h := h) (by rw [← Pair.smul_lat, hh]) have := hθ 1 h v (phiOneSB P₀ Q₀) (phiOneSB P₀ Q₀) fun x => by have e := phiOne_smul (x := x) (P := P₀) (Q := Q₀) 1 h rw [one_smul, hh] at e simp only [phiOneSB, map_one, hl _ hv, Units.val_one, one_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_mem (hl : IsUnram l) (hθ : IsTwEquiv l' l π' π θ) (P₀ : Pair k n') (Q₀ : Pair k n) (v : V') :
     θ v (phiOneSB P₀ Q₀) ∈ levelVec π Q₀ := fun h hh => by
@@ -52,18 +52,18 @@ def KK : Form k n' V' →ₗ[ℂ] Form k n V :=
     LinearMap.codRestrict _ (θ.flip (phiOneSB P₀ Q₀) ∘ₗ LinearMap.proj P₀) fun φ => theta_mem hl hθ P₀ Q₀ (φ P₀)
 
 /- English proof (translation)
-The claim follows from `formOf_mem _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem KK_mem (φ : Form k n' V') : KK hl hθ P₀ Q₀ φ ∈ EqForm π := formOf_mem _ _ _
 
 /- English proof (translation)
-The claim follows from `formOf_smul π Q₀ _ h`.
+A detailed English derivation is pending.
 -/
 theorem KK_smul (φ : Form k n' V') (h : GL n k) :
     KK hl hθ P₀ Q₀ φ (h • Q₀) = π h (θ (φ P₀) (phiOneSB P₀ Q₀)) := formOf_smul π Q₀ _ h
 
 /- English proof (translation)
-Rewrite using `[KK_smul, hφ g, ← map_smul]`. Use `(hθ g h _ _ _ fun x => ?_).symm` and prove the remaining obligations. Simplify using `only [phiOneSB, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, phiOne_smul, unram_val hl' u _ hg, unram_val hl u _ hh]`. Rewrite using `[mul_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem KK_move (hl' : IsUnram l') {φ : Form k n' V'} (hφ : φ ∈ EqForm π') (u : kˣ) (g : GL n' k) (h : GL n k)
     (hg : valuation k ((Matrix.GeneralLinearGroup.det g * u : kˣ) : k) = 1)
@@ -76,7 +76,7 @@ theorem KK_move (hl' : IsUnram l') {φ : Form k n' V'} (hφ : φ ∈ EqForm π')
   rw [mul_inv]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq (GL n' k) P₀ P`. Take `⟨h, rfl⟩` from `MulAction.exists_smul_eq (GL n k) Q₀ Q`. Rewrite using `[KK_move hl hθ P₀ Q₀ hl' hφ 1 g h (by simpa only [mul_one] using valuation_det_of_fix _ hP) (by simpa only [mul_one] using valuation_det_of_fix _ hQ)]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem KK_same (hl' : IsUnram l') {φ : Form k n' V'} (hφ : φ ∈ EqForm π') {P : Pair k n'} {Q : Pair k n}
     (hP : P.lat = P₀.lat) (hQ : Q.lat = Q₀.lat) : KK hl hθ P₀ Q₀ φ Q = θ (φ P) (phiOneSB P Q) := by
@@ -87,7 +87,7 @@ theorem KK_same (hl' : IsUnram l') {φ : Form k n' V'} (hφ : φ ∈ EqForm π')
   simp
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq (GL n' k) P₀ P`. Take `⟨h, rfl⟩` from `MulAction.exists_smul_eq (GL n k) Q₀ Q`. Rewrite `hP`, `hQ` using `[Pair.smul_ker]`. Conclude with `KK_move hl hθ P₀ Q₀ hl' hφ q.unit g h (GlobalTheory.KernelComm.valuation_det q _ hP) (GlobalTheory.KernelComm.valuation_det q _ hQ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KK_up (hl' : IsUnram l') (q : Unif k) {φ : Form k n' V'} (hφ : φ ∈ EqForm π') {P : Pair k n'}
     {Q : Pair k n} (hP : P.ker = P₀.lat) (hQ : Q.ker = Q₀.lat) :
@@ -99,11 +99,11 @@ theorem KK_up (hl' : IsUnram l') (q : Unif k) {φ : Form k n' V'} (hφ : φ ∈ 
     (GlobalTheory.KernelComm.valuation_det q _ hQ)
 
 /- English proof (translation)
-Use `GlobalTheory.KernelComm.eq_of_base Q₀ (U_mem_EqForm q (KK_mem hl hθ P₀ Q₀ φ)) (Submodule.smul_mem _ _ (KK_mem hl hθ P₀ Q₀ _)) ?_` and prove the remaining obligations. Establish `h1 : ∀ P₁ ∈ withKer P₀.lat, U q (KK hl hθ P₀ Q₀ φ) Q₀ = ((l' q.unit : ℂ) * (l q.unit : ℂ))⁻¹ • ∑ P ∈ withLat P₀.lat, if cross q P₁ P = 1 then θ (φ P₁) (phiOneSB P Q₀) else 0` using `fun P₁ hP => by`. Rewrite `hP` using `[mem_withKer]`. Rewrite using `[U_apply, Finset.sum_congr rfl fun Q₁ hQ => KK_up hl hθ P₀ Q₀ hl' q hφ hP (mem_withKer.1 (Finset.mem_filter.1 hQ).1), ← Finset.smul_sum, ← Finset.sum_filter, ← map_sum, ← map_sum, ← hP]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_sum, Finset.sum_apply, phiOneSB]`. Conclude with `(GlobalTheory.KernelComm.sum_target q P₁.hasVal_vec Q₀ x).trans (GlobalTheory.KernelComm.sum_source q P₁.hasVal_vec Q₀ x)`. Establish `h2 : ∀ P ∈ withLat P₀.lat, KK hl hθ P₀ Q₀ (U q φ) Q₀ = ∑ P₁ ∈ withKer P₀.lat, if cross q P₁ P = 1 then θ (φ P₁) (phiOneSB P Q₀) else 0` using `fun P hP => by`. Rewrite `hP` using `[mem_withLat]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[KK_same hl hθ P₀ Q₀ hl' (U_mem_EqForm q hφ) hP rfl, U_apply, map_sum, LinearMap.sum_apply, hP, Finset.sum_filter]`. Establish `h3` using `Finset.sum_congr rfl h1`. Rewrite `h3` using `[← Finset.smul_sum, Finset.sum_comm, ← Finset.sum_congr rfl h2, Finset.sum_const, Finset.sum_const, GlobalTheory.KernelComm.card_withKer q, smul_comm, ← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ]`. Use `smul_right_injective V ?_ h3` and prove the remaining obligations. Conclude with `(Finset.card_pos.2 ⟨P₀, mem_withLat.2 rfl⟩).ne'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem U_KK (hl' : IsUnram l') (q : Unif k) {φ : Form k n' V'} (hφ : φ ∈ EqForm π') :
     U q (KK hl hθ P₀ Q₀ φ) = ((l' q.unit : ℂ) * (l q.unit : ℂ))⁻¹ • KK hl hθ P₀ Q₀ (U q φ) := by
@@ -133,7 +133,7 @@ theorem U_KK (hl' : IsUnram l') (q : Unif k) {φ : Form k n' V'} (hφ : φ ∈ E
   exact_mod_cast (Finset.card_pos.2 ⟨P₀, mem_withLat.2 rfl⟩).ne'
 
 /- English proof (translation)
-Use `GlobalTheory.KernelComm.eq_of_base Q₀ (KK_mem hl hθ P₀ Q₀ _) (dia_mem_EqForm s (KK_mem hl hθ P₀ Q₀ φ)) ?_` and prove the remaining obligations. Rewrite using `[dia_apply, KK_same hl hθ P₀ Q₀ hl' hφ (P := s • P₀) (Q := s • Q₀) rfl rfl, KK_same hl hθ P₀ Q₀ hl' (dia_mem_EqForm s hφ) rfl rfl, dia_apply]`. Use `congr 1`. Conclude with `Subtype.ext (phiOne_dia s).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem KK_dia (hl' : IsUnram l') (s : 𝓀[k]ˣ) {φ : Form k n' V'} (hφ : φ ∈ EqForm π') :
     KK hl hθ P₀ Q₀ (dia s φ) = dia s (KK hl hθ P₀ Q₀ φ) := by
@@ -144,7 +144,7 @@ theorem KK_dia (hl' : IsUnram l') (s : 𝓀[k]ˣ) {φ : Form k n' V'} (hφ : φ 
   exact Subtype.ext (phiOne_dia s).symm
 
 /- English proof (translation)
-Establish `: Nm (KK hl hθ P₀ Q₀ φ) = KK hl hθ P₀ Q₀ (Nm φ)`. Simplify using `only [Nm, LinearMap.sum_apply, map_sum, KK_dia hl hθ P₀ Q₀ hl' _ hφ]`. Rewrite `this` using `[show Nm φ = 0 from h, map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KK_ram (hl' : IsUnram l') {φ : Form k n' V'} (hφ : φ ∈ EqForm π') (h : φ ∈ Mram k n' V') :
     KK hl hθ P₀ Q₀ φ ∈ Mram k n V := by
@@ -154,9 +154,9 @@ theorem KK_ram (hl' : IsUnram l') {φ : Form k n' V'} (hφ : φ ∈ EqForm π') 
   exact this
 
 /- English proof (translation)
-Establish `h1 : GsStar χ (KK hl hθ P₀ Q₀ φ) = KK hl hθ P₀ Q₀ (GsStar χ φ)`. Simplify using `only [GsStar, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, KK_dia hl hθ P₀ Q₀ hl' _ hφ]`. Establish `h2 : GsStar χ φ ∈ EqForm π'`. Simplify using `only [GsStar, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `sum_mem fun c _ => Submodule.smul_mem _ _ (dia_mem_EqForm _ hφ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FFStar_eq_U_GsStar q χ h, FFStar_eq_U_GsStar q χ (KK_ram hl hθ P₀ Q₀ hl' hφ h), h1, U_KK hl hθ P₀ Q₀ hl' q h2]`.
+A detailed English derivation is pending.
 -/
 theorem FFStar_KK (hl' : IsUnram l') (q : Unif k) (χ : AddChar 𝓀[k] ℂ) {φ : Form k n' V'} (hφ : φ ∈ EqForm π')
     (h : φ ∈ Mram k n' V') :
@@ -170,7 +170,7 @@ theorem FFStar_KK (hl' : IsUnram l') (q : Unif k) (χ : AddChar 𝓀[k] ℂ) {φ
     U_KK hl hθ P₀ Q₀ hl' q h2]
 
 /- English proof (translation)
-Rewrite using `[FFStar_KK hl hθ P₀ Q₀ hl' q χ hφ h, smul_smul, mul_inv_cancel₀ (mul_ne_zero (Units.ne_zero _) (Units.ne_zero _)), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem KK_FFStar (hl' : IsUnram l') (q : Unif k) (χ : AddChar 𝓀[k] ℂ) {φ : Form k n' V'} (hφ : φ ∈ EqForm π')
     (h : φ ∈ Mram k n' V') :
@@ -183,9 +183,9 @@ end GlobalTheory.KernelCommTw
 namespace GlobalTheory.KernelCommTw
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n n' _ _ _ _ q ψ hψ l' l hl' hl P₀ Q₀`. Use `⟨(l' q.unit : ℂ) * (l q.unit : ℂ), mul_ne_zero (Units.ne_zero _) (Units.ne_zero _), ?_⟩` and prove the remaining obligations. Introduce `V' V _ _ _ _ π' π θ hθ`. Use `⟨LinearMap.codRestrict (EqForm π) (KK hl hθ P₀ Q₀ ∘ₗ (EqForm π').subtype) fun φ => KK_mem hl hθ P₀ Q₀ φ.1, fun φ => ?_, fun s φ => KK_dia hl hθ P₀ Q₀ hl' s φ.2, fun φ h => ⟨KK_ram hl hθ P₀ Q₀ hl' φ.2 h, KK_FFStar hl hθ P₀ Q₀ hl' q _ φ.2 h⟩⟩` and prove the remaining obligations. Use `show KK hl hθ P₀ Q₀ φ.1 Q₀ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using KK_smul hl hθ P₀ Q₀ φ.1 1`.
+A detailed English derivation is pending.
 -/
 theorem kernelsCommuteTwisted : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (q : Unif k) (ψ : AddChar k Circle) (hψ : HasConductor ψ 1) (l' l : kˣ →* ℂˣ), IsUnram l' → IsUnram l → ∀ (P₀ : Pair k n') (Q₀ : Pair k n), ∃ c : ℂ, c ≠ 0 ∧ ∀ (V' V : Type) [AddCommGroup V'] [Module ℂ V'] [AddCommGroup V] [Module ℂ V] (π' : Representation ℂ (GL n' k) V') (π : Representation ℂ (GL n k) V) (θ : V' →ₗ[ℂ] SB (Matrix n n' k) →ₗ[ℂ] V), (∀ (g : GL n' k) (h : GL n k) (v : V') (Ψ Ψ' : SB (Matrix n n' k)), (∀ x, Ψ'.1 x = (l' (Matrix.GeneralLinearGroup.det g) : ℂ) * (l (Matrix.GeneralLinearGroup.det h) : ℂ) * Ψ.1 ((h⁻¹ : GL n k).val * x * g.val)) → θ (π' g v) Ψ' = π h (θ v Ψ)) → ∃ K : EqForm π' →ₗ[ℂ] EqForm π, (∀ φ, (K φ).1 Q₀ = θ (φ.1 P₀) (phiOneSB P₀ Q₀)) ∧ (∀ (s : 𝓀[k]ˣ) φ, (K ⟨dia s φ.1, dia_mem_EqForm s φ.2⟩).1 = dia s (K φ).1) ∧ ∀ φ : EqForm π', φ.1 ∈ Mram k n' V' → (K φ).1 ∈ Mram k n V ∧ (K ⟨FFStar q (resChar ψ hψ q) φ.1, FFStar_mem_EqForm q _ φ.2⟩).1 = c • FFStar q (resChar ψ hψ q) (K φ).1 := by
   intro k _ _ _ _ n n' _ _ _ _ q ψ hψ l' l hl' hl P₀ Q₀

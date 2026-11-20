@@ -21,39 +21,35 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.GenCmp
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Take `⟨c, hc, pr, hpr, huniv, hbun, hdiag⟩` from `hS`. Take `⟨c', hc', pr', hpr', huniv', hbun', hdiag'⟩` from `hS'`. Take `⟨κ, κ₂, hκ, hsq, hw, -⟩` from `GlobalTheory.SiegelPullComp.pb_cancel hc' hc`. Establish `hκw : κ ≫ c'.A.hom = c.A.hom ≫ h` using `hκ.1.w`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x₀, hx₀, -⟩` from `huniv' (Over.mk (P.A.hom ≫ h)) (fun a => pushPt hκw (pr a))`. Set `α : P.A.left ⟶ P'.A.left` to `x₀.left`. Establish `hα : ∀ a, α ≫ (pr' a).left = (pr a).left ≫ κ` using `fun a => congrArg (fun q => q.left) (hx₀ a)`. Establish `hαw : α ≫ P'.A.hom = P.A.hom ≫ h` using `Over.w x₀`. Establish `ext' : ∀ {T₁ : Over T'} (v w : T₁ ⟶ P'.A), (∀ a, (v ≫ pr' a).left = (w ≫ pr' a).left) → v = w`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T₁ v w e`. Take `⟨_, -, hu⟩` from `huniv' T₁ (fun a => w ≫ pr' a)`. Conclude with `(hu v fun a => Over.OverMorphism.ext (e a)).trans (hu w fun _ => rfl).symm`. Establish `key : ∀ {Z : Scheme.{0}} (z₁ : Z ⟶ P'.A.left) (z₂ : Z ⟶ T), z₁ ≫ P'.A.hom = z₂ ≫ h → ∃! m : Z ⟶ P.A.left, m ≫ α = z₁ ∧ m ≫ P.A.hom = z₂`. Introduce `Z z₁ z₂ e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ea : ∀ a, (z₁ ≫ (pr' a).left) ≫ c'.A.hom = z₂ ≫ h` using `fun a => by`. Rewrite using `[Category.assoc, Over.w (pr' a), e]`. Set `ya : Fin 8 → (Over.mk z₂ ⟶ c.A)` to `fun a => Over.homMk (hκ.1.lift (z₁ ≫ (pr' a).left) z₂ (ea a)) (hκ.1.lift_snd _ _ _)`. Establish `hya : ∀ a, (ya a).left ≫ κ = z₁ ≫ (pr' a).left` using `fun a => hκ.1.lift_fst _ _ _`. Take `⟨x, hx, hxu⟩` from `huniv (Over.mk z₂) ya`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxw : x.left ≫ P.A.hom = z₂` using `Over.w x`. Use `⟨x.left, ⟨?_, hxw⟩, fun m ⟨hm₁, hm₂⟩ => ?_⟩` and prove the remaining obligations. Establish `w₁ : (x.left ≫ α) ≫ P'.A.hom = z₂ ≫ h` using `by rw [Category.assoc, hαw, ← Category.assoc, hxw]`. Use `ext' (T₁ := Over.mk (z₂ ≫ h)) (Over.homMk (x.left ≫ α) w₁) (Over.homMk z₁ e) fun a => by show (x.left ≫ α) ≫ (pr' a).left = z₁ ≫ (pr' a).left` as an intermediate fact. Rewrite using `[Category.assoc, hα, ← Category.assoc, ← hya a, ← hx a]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `congrArg (fun q => q.left) this`. Use `hxu (Over.homMk m hm₂) fun a => Over.OverMorphism.ext (hκ.1.hom_ext (by show (m ≫ (pr a).left) ≫ κ = (ya a).left ≫ κ` as an intermediate fact. Rewrite using `[Category.assoc, ← hα, ← Category.assoc, hm₁, hya]) (by`. Use `show (m ≫ (pr a).left) ≫ c.A.hom = (ya a).left ≫ c.A.hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, Over.w (pr a), hm₂]`. Conclude with `(Over.w (ya a)).symm))`. Conclude with `congrArg (fun q => q.left) this`. Establish `hpb : IsPullback α P.A.hom P'.A.hom h`. Use `⟨⟨hαw⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => (key s.fst s.snd s.condition).exists.choose) (fun s => (key s.fst s.snd s.condition).exists.choose_spec.1) (fun s => (key s.fst s.snd s.condition).exists.choose_spec.2) (fun s m h₁ h₂ => (key s.fst s.snd s.condition).unique ⟨h₁, h₂⟩ (k …` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hmul : ∀ (T₀ : Over T) (x y : T₀ ⟶ P.A) (x₁ y₁ : Over.mk (T₀.hom ≫ h) ⟶ P'.A), x₁.left = x.left ≫ α → y₁.left = y.left ≫ α → (x₁ * y₁).left = (x * y).left ≫ α`. Introduce `T₀ x y x₁ y₁ hx hy`. Establish `wz : ((x * y).left ≫ α) ≫ P'.A.hom = (Over.mk (T₀.hom ≫ h)).hom`. Rewrite using `[Category.assoc, hαw, ← Category.assoc, Over.w (x * y)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ext' (x₁ * y₁) (Over.homMk ((x * y).left ≫ α) wz) fun a => by haveI := hpr a haveI := hpr' a` as an intermediate fact. Rewrite using `[MonObj.mul_comp]`. Establish `e` using `hκ.2 T₀ (x ≫ pr a) (y ≫ pr a) (x₁ ≫ pr' a) (y₁ ≫ pr' a) (by show x₁.left ≫ (pr' a).left = x.left ≫ (pr a).left ≫ κ; rw [hx, Category.assoc, hα]) (by show y₁.left ≫ (pr' a).left = y.left ≫ (pr a).left ≫ κ; rw [hy, Category.assoc, hα])`. Rewrite using `[e, ← MonObj.mul_comp]`. Use `show ((x * y).left ≫ (pr a).left) ≫ κ = ((x * y).left ≫ α) ≫ (pr' a).left`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (hα a).symm).trans (Category.assoc _ _ _).symm)`. Conclude with `congrArg (fun q => q.left) this`. Establish `hq : ∀ ab : Fin 8 × Fin 8, (lift (pr ab.1) (pr ab.2)).left ≫ κ₂ = α ≫ (lift (pr' ab.1) (pr' ab.2)).left` using `fun ab => (Category.id_comp _).symm.trans (GlobalTheory.SiegelPull.lift_sq hsq (T := Over.mk (α ≫ P'.A.hom)) (T' := P.A) (𝟙 P.A.left) (pr ab.1) (pr ab.2) (Z := P'.A) α (pr' ab.1) (pr' ab.2) ((Category.id_comp _).trans (hα ab.1).symm) ((Category.id_comp _).trans (hα ab.2).symm))`. Set `wt : Fin 8 × Fin 8 → ℤ` to `fun ab => W ab.1 ab.2`. Set `q` to `fun ab : Fin 8 × Fin 8 => (lift (pr ab.1) (pr ab.2)).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `q'` to `fun ab : Fin 8 × Fin 8 => (lift (pr' ab.1) (pr' ab.2)).left`. Establish `l0 : (LB.LinComb c'.P q' wt).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c'.P c'.isLB q' wt`. Establish `l1 : (LB.LinComb c'.P (fun ab => α ≫ q' ab) wt).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c'.P c'.isLB _ wt`. Establish `l2 : (LB.LinComb (c'.P.pull κ₂) q wt).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB (c'.P.pull κ₂) (pull_isLB c'.isLB κ₂) q wt`. Establish `l3 : (LB.LinComb c.P q wt).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c.P c.isLB q wt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `refl1 : LBIso (LB.LinComb c'.P (fun ab => α ≫ q' ab) wt) (LB.LinComb c'.P (fun ab => α ≫ q' ab) wt)` using `ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gen_refl _ l1`. Establish `i2 : LBIso (P'.L.pull α) ((LB.LinComb c'.P q' wt).pull α)` using `GlobalTheory.SiegelPullComp.iso_pull α hbun'`. Establish `i3 : LBIso ((LB.LinComb c'.P q' wt).pull α) (LB.LinComb c'.P (fun ab => α ≫ q' ab) wt)` using `LBIso.chartPull (chartPullOut c'.P q' wt α _ fun _ => rfl) (chartPullId _) refl1`. Establish `i4 : LBIso (LB.LinComb c'.P (fun ab => α ≫ q' ab) wt) (LB.LinComb (c'.P.pull κ₂) q wt)` using `LBIso.chartPull (chartPullId _) (chartPullLinComb c'.P κ₂ q (fun ab => α ≫ q' ab) wt (𝟙 _) fun ab => (hq ab).trans (Category.id_comp _).symm) refl1`. Establish `i5 : LBIso (LB.LinComb (c'.P.pull κ₂) q wt) (LB.LinComb c.P q wt)` using `GlobalTheory.PowPrimitive.lbIso_linComb hw.symm q wt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `pull_isLB P'.isLB α`. Establish `h2` using `pull_isLB l0 α`. Establish `chain : LBIso (P'.L.pull α) (LB.LinComb c.P q wt)` using `LBIso.trans h1 h2 l3 i2 (LBIso.trans h2 l1 l3 i3 (LBIso.trans l1 l2 l3 i4 i5))`. Use `⟨α, ⟨hpb, hmul⟩, LBIso.trans P.isLB l3 h1 hbun chain.symm, fun E => ?_⟩` and prove the remaining obligations. Establish `w1 : ((ε E).left ≫ α) ≫ P'.A.hom = P.A.hom ≫ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hαw, ← Category.assoc, Over.w (ε E)]`. Set `v : Over.mk (P.A.hom ≫ h) ⟶ P'.A` to `Over.homMk ((ε E).left ≫ α) w1`. Establish `hvl : v.left = (ε E).left ≫ α` using `rfl`. Establish `hpl : ∀ x : P.A ⟶ c.A, (pushPt hκw x).left = x.left ≫ κ` using `fun _ => rfl`. Establish `e : v = x₀ ≫ ε' E` using `ext' v (x₀ ≫ ε' E) fun a => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `l : v ≫ pr' a = pushPt hκw (ε E ≫ pr a)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hvl, hpl, Over.comp_left, Category.assoc, hα]`. Conclude with `(Category.assoc _ _ _).symm`. Rewrite using `[l, Category.assoc x₀, hdiag E a, hdiag' E a]`.
-
-Establish `r1 : pushPt hκw (((List.finRange 8).map fun b => pr b ^ E a b).prod) = pushHom hκ P.A (((List.finRange 8).map fun b => pr b ^ E a b).prod)` using `rfl`. Establish `r2 : x₀ ≫ ((List.finRange 8).map fun b => pr' b ^ E a b).prod = diagPrecomp (M` using `c'.A) x₀ (((List.finRange 8).map fun b => pr' b ^ E a b).prod) := rfl`. Rewrite using `[r1, r2, map_list_prod, map_list_prod, List.map_map, List.map_map]`. Use `congr 2`. Use `List.map_congr_left fun b _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [Function.comp_apply, map_zpow]`. Use `congr 1`. Conclude with `(hx₀ b).symm`. Conclude with `congrArg (fun q => q.left) e`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem diagEnd_unique_comm {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) {T T' : Scheme.{0}}
     (P : PolAV T) (P' : PolAV T') (u : T ⟶ F.X) (u' : T' ⟶ F.X) (h : T ⟶ T') (hu : h ≫ u' = u)
@@ -174,9 +170,9 @@ end GlobalTheory.Poinc.GenCmp
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g n F W R R' K _ _ _ f f' P u ε P' u' hD hS' he`. Take `⟨P₀, a, -, ha, hLa⟩` from `GlobalTheory.PureType.exists_baseChange GlobalTheory.polBaseChange_holds (spMap f) P`. Take `⟨ε₀, hD₀, hc₀⟩` from `isDiagEnd_pullback F W P P₀ u (spMap f) a ε hD ha hLa`. Take `⟨ε', hD', -⟩` from `exists_diagEnd_isMonHom g n F W _ P' u' hS'`. Take `⟨a', ha', hLa', hc'⟩` from `GenCmp.diagEnd_unique_comm F W P₀ P' (spMap f ≫ u) u' (spMap f') he.symm ε₀ ε' hD₀ hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ε', hD', P₀, a, a', ε₀, ha, ha', hLa, hLa', fun E => ⟨hc₀ E, hc' E⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_common_fibre_diagEnd : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (R R' K : Type) [CommRing R] [CommRing R'] [Field K] (f : R →+* K) (f' : R' →+* K) (P : PolAV (Sp R)) (u : Sp R ⟶ F.X) (ε : Matrix (Fin 8) (Fin 8) ℤ → (P.A ⟶ P.A)) (P' : PolAV (Sp R')) (u' : Sp R' ⟶ F.X), IsDiagEnd F W P u ε → SharpOver F W P' u' → spMap f ≫ u = spMap f' ≫ u' → ∃ ε' : Matrix (Fin 8) (Fin 8) ℤ → (P'.A ⟶ P'.A), IsDiagEnd F W P' u' ε' ∧ ∃ (P₀ : PolAV (Sp K)) (a : P₀.A.left ⟶ P.A.left) (a' : P₀.A.left ⟶ P'.A.left) (ε₀ : Matrix (Fin 8) (Fin 8) ℤ → (P₀.A ⟶ P₀.A)), IsGrpPullback P₀.A P.A (spMap f) a ∧ IsGrpPullback P₀.A P'.A (spMap f') a' ∧ LBIso P₀.L (P.L.pull a) ∧ LBIso P₀.L (P'.L.pull a') ∧ ∀ E, (ε₀ E).left ≫ a = a ≫ (ε E).left ∧ (ε₀ E).left ≫ a' = a' ≫ (ε' E).left := by
   intro g n F W R R' K _ _ _ f f' P u ε P' u' hD hS' he

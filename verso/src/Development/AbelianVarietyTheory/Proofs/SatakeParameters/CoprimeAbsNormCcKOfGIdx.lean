@@ -6,11 +6,11 @@ open Formalism.BasicNotions NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `I using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hI`. Consider the case `h₂ J hJ`. Rewrite `h` using `[Ideal.isUnit_iff.1 hJ, Ideal.absNorm_top]`. Conclude with `absurd (Nat.dvd_one.1 h) hp.one_lt.ne'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `h₃ J P hJ hP ih`. Rewrite `h` using `[map_mul]`. Break down `(Nat.Prime.dvd_mul hp).1 h with h | h` into its components or cases. Conclude with `⟨P, Ideal.isPrime_of_prime hP, Ideal.mul_le_left, h⟩`. Take `⟨Q, hQ, hle, hd⟩` from `ih hJ h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Q, hQ, Ideal.mul_le_right.trans hle, hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_ge_dvd_absNorm {S : Type*} [CommRing S] [IsDedekindDomain S]
     [Module.Free ℤ S] {p : ℕ} (hp : p.Prime) (I : Ideal S) (hI : I ≠ ⊥)
@@ -29,9 +29,9 @@ theorem exists_prime_ge_dvd_absNorm {S : Type*} [CommRing S] [IsDedekindDomain S
       exact ⟨Q, hQ, Ideal.mul_le_right.trans hle, hd⟩
 
 /- English proof (translation)
-Introduce `D T p h`. Take `⟨hp, -, hc, -⟩` from `h`. Establish `hj : jacobiSym (-(D.host.d : ℤ)) p ≠ 1` using `((primeClass_eq_inert_iff _).1 hc).2.2.2.1`. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, hP, hle, hdP⟩` from `exists_prime_ge_dvd_absNorm hp _ D.host.ccK_ne_bot hd`. Take `⟨h1, h2⟩` from `D.host.ccK_split P hP hle`. Rewrite `h2` using `[← (Nat.prime_dvd_prime_iff_eq hp h1).1 hdP]`. Conclude with `hj h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_absNorm_ccK_of_gIdx :
     ∀ (D : D7) (T p : ℕ), GIdx D.host T p → Nat.Coprime (Ideal.absNorm D.host.ccK) p := by

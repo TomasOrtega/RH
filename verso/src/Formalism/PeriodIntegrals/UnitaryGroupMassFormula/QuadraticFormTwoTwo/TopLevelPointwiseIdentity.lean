@@ -16,7 +16,7 @@ section SlopeTestRemainingChoices
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk`. Simplify using `only [esI, eI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ffa_hpk_esI_row (a : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (esI k r a) j = if j = eI k r a then 1 else 0 := by
@@ -27,9 +27,9 @@ theorem ffa_hpk_esI_row (a : Fin r) (j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hs : star (bvec (esI k r a)) = bvec (esI k r a)`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : j = esI k r a <;> simp [bvec, h]`. Unfold `herm`. Rewrite using `[hs]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bvec, mulVec, dotProduct, Pi.single_apply, ffa_hpk_esI_row]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ffa_herm_esI (x : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) x (bvec (esI k r a)) = x (eI k r a) := by
@@ -41,7 +41,7 @@ theorem ffa_herm_esI (x : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   simp [bvec, mulVec, dotProduct, Pi.single_apply, ffa_hpk_esI_row]
 
 /- English proof (translation)
-Establish `hn' : nᴴ * Hpk k r * n = Hpk k r` using `hn`. Unfold `herm`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hn']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ffa_herm_UH {n : Mx k r} (hn : n ∈ UH (Hpk k r)) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (n *ᵥ x) (n *ᵥ y) = herm (Hpk k r) x y := by
@@ -50,7 +50,7 @@ theorem ffa_herm_UH {n : Mx k r} (hn : n ∈ UH (Hpk k r)) (x y : Fin (2 * r + k
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hn']
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk`. Simplify using `only [esI, eI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem hpk_eI_apply (a : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (eI k r a) j = if j = esI k r a then 1 else 0 := by
@@ -61,9 +61,9 @@ private theorem hpk_eI_apply (a : Fin r) (j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hs : star (bvec (eI k r a)) = bvec (eI k r a)`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : j = eI k r a <;> simp [bvec, h]`. Unfold `herm`. Rewrite using `[hs]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bvec, mulVec, dotProduct, Pi.single_apply, hpk_eI_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem herm_bvec_eI_quadratic_form_two_two (x : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) x (bvec (eI k r a)) = x (esI k r a) := by
@@ -75,15 +75,13 @@ private theorem herm_bvec_eI_quadratic_form_two_two (x : Fin (2 * r + k + 1) →
   simp [bvec, mulVec, dotProduct, Pi.single_apply, hpk_eI_apply]
 
 /- English proof (translation)
-Break down `hn with ⟨⟨hU, -, h3⟩, -, hG⟩` into its components or cases. Establish `hlast : ∀ a : Fin r, a.val < (Fin.last r).val` using `fun a => by simp`. Use function extensionality and compare the values at `i`. Establish `hi` using `i.isLt`. Distinguish the cases in `hlo : i.val < r`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hi' : i = eI k r ⟨i.val, hlo⟩` using `Fin.ext (by simp [eI])`. Rewrite using `[hi', ← ffa_herm_esI (n *ᵥ w), ← ffa_herm_esI w]`. Use `conv_lhs => rw [← (hG ⟨i.val, hlo⟩ (hlast _)).2]`. Conclude with `ffa_herm_UH hU w _`. Distinguish the cases in `hhi : r + k < i.val`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : 2 * r + k - i.val < r` using `by omega`. Establish `hi' : i = esI k r ⟨2 * r + k - i.val, hb⟩` using `Fin.ext (by simp [esI]; omega)`. Rewrite using `[hi', ← herm_bvec_eI_quadratic_form_two_two (n *ᵥ w), ← herm_bvec_eI_quadratic_form_two_two w]`. Use `conv_lhs => rw [← (hG ⟨2 * r + k - i.val, hb⟩ (hlast _)).1]`. Conclude with `ffa_herm_UH hU w _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[h3 i i (by omega) (by omega) (by omega), if_pos rfl, one_mul]`. Introduce `j _ hji`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`.
-
-Rewrite using `[h3 i j hj.1 hj.2 (by omega), if_neg (Ne.symm hji), zero_mul]`. Rewrite using `[hw j (by omega), mul_zero]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ffa_nlev_fix {n : Mx k r} (hn : n ∈ Nlev k r (Fin.last r)) {w : Fin (2 * r + k + 1) → ℂ}
     (hw : inWb k r w) : n *ᵥ w = w := by
@@ -112,14 +110,14 @@ theorem ffa_nlev_fix {n : Mx k r} (hn : n ∈ Nlev k r (Fin.last r)) {w : Fin (2
   · simp
 
 /- English proof (translation)
-Unfold `fvec`. Rewrite using `[dif_neg (by simp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ffa_fvec_last (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by
   unfold fvec
   rw [dif_neg (by simp)]
 
 /- English proof (translation)
-Unfold `zetaL`. Simplify using `only [ffa_fvec_last]`. Rewrite using `[← mulVec_mulVec, ← ffa_herm_UH hh (g *ᵥ z') z, hz]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem ffa_zeta_left {z z' : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ UH (Hpk k r)) (hz : h *ᵥ z = z)
     (g : Mx k r) : zetaL k r z z' (Fin.last r) (h * g) = zetaL k r z z' (Fin.last r) g := by
@@ -128,7 +126,7 @@ theorem ffa_zeta_left {z z' : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h 
   rw [← mulVec_mulVec, ← ffa_herm_UH hh (g *ᵥ z') z, hz]
 
 /- English proof (translation)
-Unfold `zetaL`. Simplify using `only [ffa_fvec_last]`. Rewrite using `[← mulVec_mulVec, hz']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ffa_zeta_right {z z' : Fin (2 * r + k + 1) → ℂ} {h' : Mx k r} (hz' : h' *ᵥ z' = z')
     (g : Mx k r) : zetaL k r z z' (Fin.last r) (g * h') = zetaL k r z z' (Fin.last r) g := by
@@ -137,7 +135,7 @@ theorem ffa_zeta_right {z z' : Fin (2 * r + k + 1) → ℂ} {h' : Mx k r} (hz' :
   rw [← mulVec_mulVec, hz']
 
 /- English proof (translation)
-Unfold `GGl`. Rewrite using `[ffa_zeta_left hh hz]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ffa_GG_left {z z' : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ UH (Hpk k r)) (hz : h *ᵥ z = z)
     (g : Mx k r) : GGl k r z z' (h * g) = GGl k r z z' g := by
@@ -145,7 +143,7 @@ theorem ffa_GG_left {z z' : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h �
   rw [ffa_zeta_left hh hz]
 
 /- English proof (translation)
-Unfold `GGl`. Rewrite using `[ffa_zeta_right hz']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ffa_GG_right {z z' : Fin (2 * r + k + 1) → ℂ} {h' : Mx k r} (hz' : h' *ᵥ z' = z')
     (g : Mx k r) : GGl k r z z' (g * h') = GGl k r z z' g := by
@@ -160,11 +158,11 @@ def ffaZetaLin (z z' : Fin (2 * r + k + 1) → ℂ) : Mx k r →ₗ[ℝ] ℂ whe
     rw [smul_mulVec, mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Establish `hζ : ContDiff ℝ ∞ (fun x : Mx k r => zetaL k r z z' (Fin.last r) x)`. Establish `h1` using `(LinearMap.toContinuousLinearMap (ffaZetaLin z z')).contDiff (n := ∞)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [zetaL, ffa_fvec_last]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hc : ContDiff ℝ ∞ (fun x : Mx k r => Complex.conjCLE (zetaL k r z z' (Fin.last r) x))` using `Complex.conjCLE.contDiff.comp hζ`. Establish `he : (fun x : Mx k r => (GGl k r z z' x : ℂ)) = fun x => zetaL k r z z' (Fin.last r) x * Complex.conjCLE (zetaL k r z z' (Fin.last r) x) - (Tz k r z : ℂ) * (Tz k r z' : ℂ)`. Use function extensionality and compare the values at `x`. Simplify using `[GGl, Complex.mul_conj]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[he]`. Conclude with `(hζ.mul hc).sub contDiff_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ffa_GG_contDiff (z z' : Fin (2 * r + k + 1) → ℂ) :
     ContDiff ℝ ∞ (fun x : Mx k r => (GGl k r z z' x : ℂ)) := by
@@ -191,7 +189,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddC
   {D : Set (Mx k r)}
 
 /- English proof (translation)
-Simplify using `only [FFl, SmoothLev, LeftEq, RightEq, Set.mem_ofPred_eq]`. Use `⟨fun g₀ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩, fun _ _ _ _ => (smul_zero _).symm, fun _ _ _ _ => (smul_zero _).symm, fun _ _ _ _ _ _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ff_zero : (fun _ => (0 : Wq →L[ℂ] Wp)) ∈ FFl k r z z' π π' (Fin.last r) D := by
   simp only [FFl, SmoothLev, LeftEq, RightEq, Set.mem_ofPred_eq]
@@ -201,11 +199,11 @@ theorem ff_zero : (fun _ => (0 : Wq →L[ℂ] Wp)) ∈ FFl k r z z' π π' (Fin.
   simp
 
 /- English proof (translation)
-Simplify using `only [FFl, SmoothLev, LeftEq, RightEq, Set.mem_ofPred_eq] at h₁ h₂ ⊢`. Take `⟨s₁, l₁, r₁, e₁⟩` from `h₁`. Take `⟨s₂, l₂, r₂, e₂⟩` from `h₂`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U₁, F₁, o₁, m₁, c₁, q₁⟩` from `s₁ g₀ hg₀`. Take `⟨U₂, F₂, o₂, m₂, c₂, q₂⟩` from `s₂ g₀ hg₀`. Use `⟨U₁ ∩ U₂, fun x => F₁ x + F₂ x, o₁.inter o₂, ⟨m₁, m₂⟩, (c₁.mono Set.inter_subset_left).add (c₂.mono Set.inter_subset_right), fun g hg hgl => ?_⟩` and prove the remaining obligations. Rewrite using `[q₁ g hg.1 hgl, q₂ g hg.2 hgl]`. Introduce `g hg n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[l₁ g hg n hn, l₂ g hg n hn, smul_add]`. Introduce `g hg n hn`. Rewrite using `[r₁ g hg n hn, r₂ g hg n hn, smul_add]`. Introduce `g hg h hh h' hh'`. Rewrite using `[e₁ g hg h hh h' hh', e₂ g hg h hh h' hh', ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ff_add {J₁ J₂ : Mx k r → (Wq →L[ℂ] Wp)} (h₁ : J₁ ∈ FFl k r z z' π π' (Fin.last r) D)
     (h₂ : J₂ ∈ FFl k r z z' π π' (Fin.last r) D) : (fun x => J₁ x + J₂ x) ∈ FFl k r z z' π π' (Fin.last r) D := by
@@ -228,11 +226,11 @@ theorem ff_add {J₁ J₂ : Mx k r → (Wq →L[ℂ] Wp)} (h₁ : J₁ ∈ FFl k
       ContinuousLinearMap.comp_add]
 
 /- English proof (translation)
-Simplify using `only [FFl, SmoothLev, LeftEq, RightEq, Set.mem_ofPred_eq] at h ⊢`. Take `⟨s, l, rr, e⟩` from `h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, F, o, m, cd, q⟩` from `s g₀ hg₀`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, fun x => c • F x, o, m, cd.const_smul c, fun g hg hgl => by rw [q g hg hgl]⟩`. Introduce `g hg n hn`. Rewrite using `[l g hg n hn, smul_comm]`. Introduce `g hg n hn`. Rewrite using `[rr g hg n hn, smul_comm]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg h hh h' hh'`. Rewrite using `[e g hg h hh h' hh', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ff_smul {J : Mx k r → (Wq →L[ℂ] Wp)} (h : J ∈ FFl k r z z' π π' (Fin.last r) D) (c : ℂ) :
     (fun x => c • J x) ∈ FFl k r z z' π π' (Fin.last r) D := by
@@ -250,13 +248,13 @@ theorem ff_smul {J : Mx k r → (Wq →L[ℂ] Wp)} (h : J ∈ FFl k r z z' π π
     rw [e g hg h hh h' hh', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]
 
 /- English proof (translation)
-Establish `hcd` using `ffa_GG_contDiff (k := k) (r := r) z z'`. Simplify using `only [FFl, SmoothLev, LeftEq, RightEq, Set.mem_ofPred_eq] at hJ ⊢`. Take `⟨s, l, rr, e⟩` from `hJ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, F, o, m, cd, q⟩` from `s g₀ hg₀`. Establish `ho : IsOpen {x : Mx k r | (GGl k r z z' x : ℂ) ≠ 0}` using `isOpen_ne_fun hcd.continuous continuous_const`. Use `⟨U ∩ {x : Mx k r | (GGl k r z z' x : ℂ) ≠ 0}, fun x => ((GGl k r z z' x : ℂ))⁻¹ • F x, o.inter ho, ⟨m, Complex.ofReal_ne_zero.mpr (hGG g₀ hg₀.2)⟩, ?_, fun g hg hgl => by rw [q g hg.1 hgl]⟩` and prove the remaining obligations. Conclude with `((hcd.contDiffOn.mono Set.inter_subset_left).inv (fun x hx => hx.2)).smul (cd.mono Set.inter_subset_left)`. Introduce `g hg n hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnz : n *ᵥ z = z` using `ffa_nlev_fix hn hz`. Rewrite using `[l g hg n hn, ffa_GG_left hn.1.1 hnz, smul_comm]`. Introduce `g hg n hn`. Establish `hnz : n *ᵥ z' = z'` using `ffa_nlev_fix hn hz'`. Rewrite using `[rr g hg n hn, ffa_GG_right hnz, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg h hh h' hh'`. Rewrite using `[e g hg h hh h' hh', ffa_GG_right hh'.2.2, ffa_GG_left hh.1 hh.2.2, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ff_GGinv (hz : inWb k r z) (hz' : inWb k r z') (hD : IsDom k r z z' (Fin.last r) D)
     (hGG : ∀ g ∈ D, GGl k r z z' g ≠ 0) {J : Mx k r → (Wq →L[ℂ] Wp)} (hJ : J ∈ FFl k r z z' π π' (Fin.last r) D) :
@@ -284,7 +282,7 @@ theorem ff_GGinv (hz : inWb k r z) (hz' : inWb k r z') (hD : IsDom k r z z' (Fin
       ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]
 
 /- English proof (translation)
-Establish `hBs' : IsFrameOf k r [z'] Bs` using `⟨hBs.1, hBs.2.1, fun a w hw => hBs.2.2 a w (List.mem_cons_of_mem _ hw)⟩`. Rewrite using `[hCap _ k r z z' D F hz hz' hD.1 hF.1 g hg hGG Bs hBs Y, _root_.smul_apply, hRTA Wp Wq k r (k - 1) z z' π π' D hz hz' hD hπ'r hπ'c F hF g hg Bs hBs']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem top_level_pointwise_identity (hCap : CapelliIdentityEntry) (hRTA : RightTypeAction) [FiniteDimensional ℂ Wq]
     (hz : inWb k r z) (hz' : inWb k r z') (hD : IsDom k r z z' (Fin.last r) D)

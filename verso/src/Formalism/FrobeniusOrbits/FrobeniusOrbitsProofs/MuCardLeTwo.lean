@@ -17,15 +17,13 @@ namespace Mu
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 L)) (span {(p : ℤ)}) = span {((p : ℤ) : 𝓞 L)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, algebraMap_int_eq, eq_intCast]`. Establish `hne0 : ((p : ℤ) : 𝓞 L) ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg (algebraMap (𝓞 L) L) h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (p : L) = 0` using `by simpa using h1`. Conclude with `hp.out.ne_zero (by exact_mod_cast h2)`. Establish `hne : Ideal.map (algebraMap ℤ (𝓞 L)) (span {(p : ℤ)}) ≠ ⊥`. Rewrite using `[hmap, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hne0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity (span {(p : ℤ)}) Q hne]`. Establish `hdvd : Q ^ k ∣ Ideal.map (algebraMap ℤ (𝓞 L)) (span {(p : ℤ)})`. Rewrite using `[Ideal.dvd_iff_le, hmap, Ideal.span_singleton_le_iff_mem]`. Conclude with `hk`. Establish `hQ : ¬ IsUnit Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Ideal.isUnit_iff]`. Conclude with `Ideal.IsPrime.ne_top ‹_›`. Use `first`. Consider the case `exact (FiniteMultiplicity.of_not_isUnit hQ hne).le_multiplicity_of_pow_dvd hdvd`. Consider the case `exact (multiplicity_finite_of_not_isUnit hQ hne).le_multiplicity_of_pow_dvd hdvd`.
-
-Consider the case `exact ((pow_dvd_iff_le_multiplicity (FiniteMultiplicity.of_not_isUnit hQ hne)).mp hdvd)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mu_le_ram (p : ℕ) [hp : Fact p.Prime] (Q : Ideal (𝓞 L)) [Q.IsPrime]
     [Q.LiesOver (span {(p : ℤ)})] (k : ℕ) (hk : ((p : ℤ) : 𝓞 L) ∈ Q ^ k) :
@@ -53,23 +51,21 @@ theorem mu_le_ram (p : ℕ) [hp : Fact p.Prime] (Q : Ideal (𝓞 L)) [Q.IsPrime]
     | exact ((pow_dvd_iff_le_multiplicity (FiniteMultiplicity.of_not_isUnit hQ hne)).mp hdvd)
 
 /- English proof (translation)
-Establish `hp0 : 0 < p` using `hp.out.pos`. Establish `hint : IsIntegral ℤ η` using `hη.isIntegral hp0`. Set `η' : 𝓞 L` to `⟨η, hint⟩`. Establish `hmapη : algebraMap (𝓞 L) L η' = η` using `rfl`. Establish `hinj : Function.Injective (algebraMap (𝓞 L) L)` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact FaithfulSMul.algebraMap_injective (𝓞 L) L`. Consider the case `exact NumberField.RingOfIntegers.coe_injective`. Establish `hη' : IsPrimitiveRoot η' p`. Use `⟨hinj ?_, fun l hl => hη.dvd_of_pow_eq_one l ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hmapη, map_one]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hη.pow_eq_one`. Rewrite using `[← hmapη, ← map_pow, hl, map_one]`. Establish `hprod : ((p : ℤ) : 𝓞 L) = ∏ μ ∈ primitiveRoots p (𝓞 L), (1 - μ)`. Establish `h1` using `Polynomial.eval_one_cyclotomic_prime (R := 𝓞 L) (p := p)`. Rewrite `h1` using `[Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hη', Polynomial.eval_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at h1`. Rewrite using `[Int.cast_natCast, ← h1]`. Establish `hmemQ : ((p : ℤ) : 𝓞 L) ∈ Q`. Establish `hover : span {(p : ℤ)} = Ideal.under ℤ Q` using `Ideal.LiesOver.over`. Establish `h1 : (p : ℤ) ∈ Ideal.under ℤ Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hover]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[Ideal.under, Ideal.mem_comap, algebraMap_int_eq, eq_intCast]`. Conclude with `h1`. Rewrite `hmemQ` using `[hprod]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Take `⟨μ0, hμ0mem, hμ0Q⟩ : ∃ μ ∈ primitiveRoots p (𝓞 L), 1 - μ ∈ Q` from `by first`. Consider the case `exact Ideal.IsPrime.prod_mem_iff.mp hmemQ`. Consider the case `exact (Ideal.IsPrime.prod_mem_iff_exists_mem ‹Q.IsPrime›).mp hmemQ`. Consider the case `exact (Ideal.IsPrime.prod_mem_iff ‹Q.IsPrime›).1 hmemQ`. Establish `hall : ∀ μ ∈ primitiveRoots p (𝓞 L), 1 - μ ∈ Q`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `μ hμ`. Establish `hμ0p : IsPrimitiveRoot μ0 p` using `(mem_primitiveRoots hp0).mp hμ0mem`. Establish `hμp : IsPrimitiveRoot μ p` using `(mem_primitiveRoots hp0).mp hμ`. Use `haveI : NeZero p := ⟨hp.out.ne_zero⟩`. Take `⟨i, -, hi⟩` from `hμ0p.eq_pow_of_pow_eq_one hμp.pow_eq_one`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hi]`. Establish `hd : 1 - μ0 ∣ 1 - μ0 ^ i` using `by simpa [one_pow] using sub_dvd_pow_sub_pow 1 μ0 i`. Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right c Q hμ0Q`.
-
-Rewrite using `[hprod]`. Establish `h2` using `Ideal.prod_mem_prod (I := fun _ => Q) hall`. Rewrite `h2` using `[Finset.prod_const, IsPrimitiveRoot.card_primitiveRoots hη', Nat.totient_prime hp.out]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_mem_pow (p : ℕ) [hp : Fact p.Prime] (Q : Ideal (𝓞 L)) [Q.IsPrime]
     [Q.LiesOver (span {(p : ℤ)})] (η : L) (hη : IsPrimitiveRoot η p) :
@@ -122,7 +118,7 @@ theorem mu_mem_pow (p : ℕ) [hp : Fact p.Prime] (Q : Ideal (𝓞 L)) [Q.IsPrime
   exact h2
 
 /- English proof (translation)
-Apply the tactic sequence `let g : H → ({1, t} : Set G) := fun ρ => ⟨f ρ, by rcases hH ρ ρ.2 with h | h <;> simp [h]⟩`. Establish `hg : Function.Injective g` using `fun x y hxy => Subtype.ext (hinj (congrArg Subtype.val hxy))`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mu_card_le_two {G : Type*} [One G] (f : Gal(L/ℚ) → G) (hinj : Function.Injective f)
     (t : G) (H : Subgroup Gal(L/ℚ)) (hH : ∀ ρ ∈ H, f ρ = 1 ∨ f ρ = t) : Nat.card H ≤ 2 := by
@@ -136,25 +132,23 @@ theorem mu_card_le_two {G : Type*} [One G] (f : Gal(L/ℚ) → G) (hinj : Functi
 variable {e q d : ℕ} {ζ a b : L}
 
 /- English proof (translation)
-Take `⟨hGal, -, -, hbij⟩` from `Formalism.FrobeniusOrbits.Galois.layer_galois hqd h`. Use `haveI := hGal`. Rewrite using `[← Formalism.TwoAdicCyclotomicDecomposition.odd_card L p Q]`. Establish `hinjF` using `hbij.1`. Establish `key : p ≠ q → p ≠ d → Nat.card (Q.inertia Gal(L/ℚ)) ≤ 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hpq hpd`. Take `⟨⟨σ, hσ⟩, hiff⟩` from `Formalism.TwoAdicCyclotomicDecomposition.layerFrob (e + 2) q d (by omega) hqd L ζ a b h p hp2 hpq hpd Q`. Establish `hρ1 : ∀ ρ ∈ Q.inertia Gal(L/ℚ), ρ = 1`. Introduce `ρ hρ`. Establish `hf` using `Formalism.FrobeniusOrbits.Frob.frob_mul_inertia Q ρ σ hρ hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A` using `(hiff _).1 hf`. Establish `B` using `(hiff _).1 hσ`. Establish `heq : galMap h.1 a b (ρ * σ) = galMap h.1 a b σ` using `Prod.ext (Units.ext (A.1.trans B.1.symm)) (Prod.ext (Units.ext (A.2.1.trans B.2.1.symm)) (Units.ext (A.2.2.trans B.2.2.symm)))`. Establish `h3` using `hinjF heq`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact mul_eq_right.mp h3`. Consider the case `exact mul_left_eq_self.mp h3`. Establish `hsub : Subsingleton (Q.inertia Gal(L/ℚ))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ρ, hρ⟩ ⟨ρ', hρ'⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hρ1 ρ hρ`. Establish `e2` using `hρ1 ρ' hρ'`. Substitute `e1` using the available equality. Substitute `e2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact Nat.card_le_one_iff_subsingleton.mpr hsub`. Consider the case `exact Finite.card_le_one_iff_subsingleton.mpr hsub`. Establish `tame` using `Formalism.TwoAdicCyclotomicDecomposition.layerInertiaTame (e + 2) q d (by omega) hqd L ζ a b h`. Establish `two_of : ∀ t : GalL (e + 2), t ^ 2 = 1 → (∀ ρ ∈ Q.inertia Gal(L/ℚ), galMap h.1 a b ρ ∈ Subgroup.zpowers t) → Nat.card (Q.inertia Gal(L/ℚ)) ≤ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht hmem`. Use `mu_card_le_two (galMap h.1 a b) hinjF t _ ?_` and prove the remaining obligations. Introduce `ρ hρ`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.mp (hmem ρ hρ)`. Establish `ht' : t ^ (2 : ℤ) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[show (2 : ℤ) = ((2 : ℕ) : ℤ) from rfl, zpow_natCast]`. Conclude with `ht`. Rewrite using `[← hk, zpow_eq_zpow_emod k ht']`. Apply the tactic sequence `rcases Int.emod_two_eq_zero_or_one k with h0 | h0 <;> rw [h0] <;> simp`. Use `⟨?_, fun hpq hpd => key hpq hpd⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Conclude with `two_of ((1, -1, 1) : GalL (e + 2)) (by simp [sq]) (fun ρ hρ => (tame.1 Q ρ).1 hρ)`. Distinguish the cases in `hpd : p = d`. Substitute `hpd` using the available equality.
-
-Conclude with `two_of ((1, 1, -1) : GalL (e + 2)) (by simp [sq]) (fun ρ hρ => (tame.2 Q ρ).1 hρ)`. Conclude with `(key hpq hpd).trans (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem mu_ram_bound (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (p : ℕ)
     [Fact p.Prime] (hp2 : p ≠ 2) (Q : Ideal (𝓞 L)) [Q.IsPrime] [Q.LiesOver (span {(p : ℤ)})] :
@@ -215,13 +209,11 @@ theorem mu_ram_bound (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (p : �
     · exact (key hpq hpd).trans (by norm_num)
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : (span {(p : ℤ)} : Ideal ℤ).IsMaximal := Int.ideal_span_isMaximal_of_prime p`. Take `⟨Q, hQmax, hQover⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) (span {(p : ℤ)})`. Use `haveI := hQmax.isPrime`. Use `haveI := hQover`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mu_mem_pow p Q η hη`. Establish `h2` using `mu_le_ram p Q (p - 1) h1`. Establish `h3` using `mu_ram_bound hq.toHypOdd h p hp2 Q`. Establish `hp3 : 3 ≤ p` using `by have := hp.two_le; omega`. Establish `h31` using `h3.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : p ≤ 3` using `by omega`. Establish `hpq : p ≠ q` using `by omega`. Establish `hpd : p ≠ d`. Introduce `hpd`. Use `hq.2.2.2.1` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Use `h3.2 hpq hpd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mu_no_odd (hq : HostHyp q d) (hq3 : q ≠ 3) (h : IsLayer (e + 2) q d ζ a b) (p : ℕ)
     (hp : p.Prime) (hp2 : p ≠ 2) (η : L) (hη : IsPrimitiveRoot η p) : False := by
@@ -246,19 +238,17 @@ theorem mu_no_odd (hq : HostHyp q d) (hq3 : q ≠ 3) (h : IsLayer (e + 2) q d ζ
   omega
 
 /- English proof (translation)
-Establish `hfix : Galois.tau0 hqd h y = y` using `(Formalism.FrobeniusOrbits.Galois.mem_hostE_iff hqd h y).mp hyE`. Establish `hζ` using `h.1`. Establish `hτζ : Galois.tau0 hqd h ζ = ζ⁻¹`. Establish `hg` using `Formalism.FrobeniusOrbits.Galois.galMap_zeta_inversion hqd h`. Establish `hau : hζ.autToPow ℚ (Galois.tau0 hqd h) = -1` using `congrArg Prod.fst hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspec : ζ ^ ((hζ.autToPow ℚ (Galois.tau0 hqd h) : ZMod (2 ^ (e + 2))).val) = Galois.tau0 hqd h ζ` using `by first`. Consider the case `exact hζ.autToPow_spec ℚ (Galois.tau0 hqd h)`. Consider the case `exact hζ.autToPow_spec (Galois.tau0 hqd h)`. Rewrite using `[← hspec, hau]`. Use `set v := (((-1 : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2)))).val with hvdef`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ((v + 1 : ℕ) : ZMod (2 ^ (e + 2))) = 0`. Rewrite using `[Nat.cast_add, hvdef, ZMod.natCast_zmod_val]`. Simplify using the standard rewrite rules. Establish `hv : 2 ^ (e + 2) ∣ v + 1` using `by first`. Consider the case `exact (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mp hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (ZMod.natCast_eq_zero_iff _ _).mp hz`. Consider the case `exact (ZMod.natCast_self_eq_zero_iff _ _).mp hz`. Establish `h1` using `(hζ.pow_eq_one_iff_dvd _).mpr hv`. Rewrite `h1` using `[pow_succ]`. Conclude with `eq_inv_of_mul_eq_one_left h1`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hyN : y ^ (2 ^ (e + 2)) = 1`. Rewrite using `[show 2 ^ (e + 2) = 4 * 2 ^ e by ring, pow_mul, hy.pow_eq_one, one_pow]`. Use `haveI : NeZero (2 ^ (e + 2)) := ⟨by positivity⟩`. Take `⟨j, -, hj⟩` from `hζ.eq_pow_of_pow_eq_one hyN`. Establish `hτy : Galois.tau0 hqd h y = y⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hj, map_pow, hτζ, inv_pow]`. Rewrite `hfix` using `[hτy]`. Establish `hy0 : y ≠ 0` using `hy.ne_zero (by norm_num)`. Establish `hy2 : y ^ 2 = 1`. Rewrite using `[sq]`.
-
-Use `nth_rewrite 1 [← hfix]`. Conclude with `inv_mul_cancel₀ hy0`. Establish `h4` using `(hy.pow_eq_one_iff_dvd 2).mp hy2`. Evaluate the numerical expressions using `at h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem mu_no_four (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (y : L)
     (hyE : y ∈ hostE ζ a b) (hy : IsPrimitiveRoot y 4) : False := by
@@ -304,17 +294,15 @@ end Mu
 open Mu
 
 /- English proof (translation)
-Introduce `e q d hq hq3 L _ _ ζ a b h x hx`. Take `⟨m, hm, hxm⟩` from `hx`. Establish `hfin : IsOfFinOrder x` using `isOfFinOrder_iff_pow_eq_one.mpr ⟨m, hm, hxm⟩`. Establish `hn0 : 0 < orderOf x` using `orderOf_pos_iff.mpr hfin`. Establish `hxo : IsPrimitiveRoot x (orderOf x)` using `IsPrimitiveRoot.orderOf x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoe : ∀ (y : hostE ζ a b) (k : ℕ), IsPrimitiveRoot y k → IsPrimitiveRoot (y : L) k` using `fun y k hy => IsPrimitiveRoot.coe_submonoidClass_iff.mpr hy`. Establish `h2 : x ^ 2 = 1`. Break down `Nat.eq_two_pow_or_exists_odd_prime_and_dvd (orderOf x) with ⟨k, hk⟩ | ⟨p, hp, hpn, hodd⟩` into its components or cases. Distinguish the cases in `hk2 : 2 ≤ k`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Establish `hsplit : orderOf x = 2 ^ (k - 2) * 4`. Rewrite using `[hk, show (4 : ℕ) = 2 ^ 2 by norm_num, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hy` using `IsPrimitiveRoot.pow hn0 hxo hsplit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `mu_no_four hq.toHypOdd h ((x ^ (2 ^ (k - 2)) : hostE ζ a b) : L) (x ^ (2 ^ (k - 2))).2 (hcoe _ _ hy)`. Establish `hd : orderOf x ∣ 2`. Rewrite using `[hk]`. Conclude with `(pow_dvd_pow 2 (by omega : k ≤ 1)).trans (by norm_num)`. Conclude with `orderOf_dvd_iff_pow_eq_one.mp hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Take `⟨c, hc⟩` from `hpn`. Establish `hy` using `IsPrimitiveRoot.pow hn0 hxo (show orderOf x = c * p by rw [hc, mul_comm])`. Establish `hp2 : p ≠ 2`. Introduce and unpack `rfl`.
-
-Conclude with `(Nat.not_even_iff_odd.mpr hodd) even_two`. Conclude with `mu_no_odd hq hq3 h p hp hp2 _ (hcoe _ _ hy)`. Conclude with `mul_self_eq_one_iff.mp (by rw [← sq]; exact h2)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hostMu : HostMu := by
   intro e q d hq hq3 L _ _ ζ a b h x hx

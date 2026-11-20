@@ -17,13 +17,13 @@ noncomputable section
 namespace GlobalTheory.Mum.Desc
 
 /- English proof (translation)
-Take `⟨x₀, h1, h2, h3⟩` from `h`. Establish `hw : a ≫ N.U.hom = (x ≫ pullback.snd G'.hom (pullback.fst π π)) ≫ pullback.fst π π ≫ π`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h1, Category.assoc, pullback.condition]`. Use `_ = (x ≫ pullback.snd G'.hom (pullback.fst π π)) ≫ pullback.fst π π ≫ π := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% h2, Category.assoc]`. Establish `hx₀ : pullback.lift a (x ≫ pullback.snd G'.hom (pullback.fst π π)) hw ≫ Desc.toS N (pullback.fst π π) rfl = x₀`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Desc.toS, pullback.lift_fst, pullback.lift_fst, h1]`. Rewrite using `[Category.assoc, Desc.toS, pullback.lift_snd, pullback.lift_snd_assoc, h2, Category.assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : pullback.lift a (x ≫ pullback.snd G'.hom (pullback.fst π π)) hw ≫ Desc.embL N (pullback.fst π π) rfl = x`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Desc.embL, pullback.lift_fst, reassoc_of% hx₀, h3]`. Rewrite using `[Category.assoc, Desc.embL, pullback.lift_snd, pullback.lift_snd]`. Establish `hφ : x ≫ φl = pullback.lift a (x ≫ pullback.snd G'.hom (pullback.fst π π)) hw ≫ Desc.embL N (pullback.snd π π) pullback.condition.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfix, ← Category.assoc, hx]`. Use `⟨pullback.lift a (x ≫ pullback.snd G'.hom (pullback.fst π π)) hw ≫ Desc.toS N (pullback.snd π π) pullback.condition.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Desc.toS, pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[Category.assoc, Desc.toS, pullback.lift_snd, pullback.lift_snd_assoc, Category.assoc]`. Rewrite using `[reassoc_of% hφ, Desc.embL, pullback.lift_fst, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_of_fix {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G' : Over S}
     (N : Near π G') (φl : pullback G'.hom (pullback.fst π π) ⟶ pullback G'.hom (pullback.snd π π))
@@ -57,19 +57,17 @@ theorem pt_of_fix {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π :
   · rw [reassoc_of% hφ, Desc.embL, pullback.lift_fst, Category.assoc]
 
 /- English proof (translation)
-Introduce `R _ _ _ hA S π hP hS hI G' _ _ hG N hL`. Establish `h1 : pullback.fst π π ≫ π = pullback.fst π π ≫ π` using `rfl`. Establish `h2 : pullback.snd π π ≫ π = pullback.fst π π ≫ π` using `pullback.condition.symm`. Take `⟨fl1, su1, qc1⟩` from `GlobalTheory.T.nearOpen_sumMap_flat_surjective_quasiCompact R hA S π hP hS hI G' hG N _ h1`. Take `⟨fl2, su2, qc2⟩` from `GlobalTheory.T.nearOpen_sumMap_flat_surjective_quasiCompact R hA S π hP hS hI G' hG N _ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e12` using `GlobalTheory.T.kernelPair_sum_eq_of_sum_eq_other_pullback R hA S π hP hS hI G' hG N hL _ _ h1 h2`. Establish `e21` using `GlobalTheory.T.kernelPair_sum_eq_of_sum_eq_other_pullback R hA S π hP hS hI G' hG N hL _ _ h2 h1`. Set `f` to `EffectiveEpi.desc (Desc.sum N _ h1).left (Desc.sum N _ h2).left (fun g g' h => e12 _ g g' h)`. Set `g` to `EffectiveEpi.desc (Desc.sum N _ h2).left (Desc.sum N _ h1).left (fun g g' h => e21 _ g g' h)`. Establish `hf : (Desc.sum N _ h1).left ≫ f = (Desc.sum N _ h2).left` using `EffectiveEpi.fac _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : (Desc.sum N _ h2).left ≫ g = (Desc.sum N _ h1).left` using `EffectiveEpi.fac _ _ _`. Establish `wf : f ≫ ((Over.pullback (pullback.snd π π)).obj G').hom = ((Over.pullback (pullback.fst π π)).obj G').hom`. Rewrite using `[← cancel_epi (Desc.sum N _ h1).left, reassoc_of% hf, Over.w, Over.w]`. Establish `wg : g ≫ ((Over.pullback (pullback.fst π π)).obj G').hom = ((Over.pullback (pullback.snd π π)).obj G').hom`. Rewrite using `[← cancel_epi (Desc.sum N _ h2).left, reassoc_of% hg, Over.w, Over.w]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfg : f ≫ g = 𝟙 _`. Rewrite using `[← cancel_epi (Desc.sum N _ h1).left, reassoc_of% hf, hg, Category.comp_id]`. Establish `hgf : g ≫ f = 𝟙 _`. Rewrite using `[← cancel_epi (Desc.sum N _ h2).left, reassoc_of% hg, hf, Category.comp_id]`. Establish `hs : Desc.sum N _ h1 ≫ Over.homMk f wf = Desc.sum N _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hf`. Establish `he` using `GlobalTheory.T.nearOpenEmbedding_comp_of_sumMap_comp R hA S π hP hS hI G' hG N hL _ _ h1 h2 (Over.homMk f wf) hs`. Establish `hm` using `GlobalTheory.T.isMonHom_of_sumMap_comp_fixing_nearOpen R hA S π hP hS hI G' hG N _ _ h1 h2 (Over.homMk f wf) hs he`. Use `⟨⟨Over.homMk f wf, Over.homMk g wg, ?_, ?_⟩, hm, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hfg`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hgf`. Introduce `T a x hx`.
-
-Establish `hfix : Desc.embL N _ h1 ≫ f = Desc.embL N _ h2` using `congrArg (fun k => k.left) he`. Conclude with `pt_of_fix N f hfix T a x hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_datum : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (S : Scheme.{0}) (π : S ⟶ Sp R), IsProper π → Surjective π → IsIntegral S → ∀ (G' : Over S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ N : Near π G', N.Law → ∃ φ, N.Datum φ := by
   intro R _ _ _ hA S π hP hS hI G' _ _ hG N hL

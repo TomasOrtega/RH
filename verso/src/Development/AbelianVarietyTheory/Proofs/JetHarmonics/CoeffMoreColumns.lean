@@ -10,7 +10,7 @@ namespace GlobalTheory.MoreColumns
 open GlobalTheory.DatumInverseCharacter
 
 /- English proof (translation)
-Rewrite using `[← (Fin.appendEquiv n m).sum_comp, Fintype.sum_prod_type, Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_append {A F : Type} [Fintype A] [CommRing F] {n m : ℕ} (f : (Fin n → A) → F) (χ : Fin (n + m) → A → F) :
     ∑ x : Fin (n + m) → A, f (fun b => x (Fin.castAdd m b)) * ∏ b, χ b (x b) =
@@ -22,7 +22,7 @@ theorem sum_append {A F : Type} [Fintype A] [CommRing F] {n m : ℕ} (f : (Fin n
   simp [mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add₀ hz, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_sum {F ι : Type} [Field F] {z : F} (hz : z ≠ 0) (s : Finset ι) (a : ι → ℤ) :
     z ^ (∑ i ∈ s, a i) = ∏ i ∈ s, z ^ a i := by
@@ -33,21 +33,19 @@ theorem zpow_sum {F ι : Type} [Field F] {z : F} (hz : z ≠ 0) (s : Finset ι) 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Take `⟨hc, hc1⟩` from `HalfPairing.cHalf_spec I hI`. Establish `hz0 : z ≠ 0` using `hz.ne_zero hN.ne'`. Establish `hmk : ∀ u : D.La, z ^ D.EF (qRep (Submodule.Quotient.mk u : D.La ⧸ (I.map (H.bar : 𝓞 E →+* 𝓞 E) • ⊤ : Submodule (𝓞 E) D.La))) (cHalf H I • v) = z ^ D.EF u (cHalf H I • v)`. Introduce `u`. Use `zpow_congr hN hz.pow_eq_one ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.sub_apply, ← map_sub]`. Conclude with `dvd_left D hp hc v ((Submodule.Quotient.eq _).1 (qRep_spec _))`. Set `χ : AddChar (D.La ⧸ (I.map (H.bar : 𝓞 E →+* 𝓞 E) • ⊤ : Submodule (𝓞 E) D.La)) F` to `{ toFun := fun x => z ^ D.EF (qRep x) (cHalf H I • v) map_zero_eq_one' := by`. Use `hmk 0` as an intermediate fact. Rewrite `this` using `[map_zero, LinearMap.zero_apply, zpow_zero]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Use the proof step `map_add_eq_mul' := fun x y => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← Submodule.Quotient.mk_add, hmk, hmk, hmk, map_add, LinearMap.add_apply, zpow_add₀ hz0] }`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiff : χ = 0 ↔ v ∈ (I • ⊤ : Submodule (𝓞 E) D.La)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ∀ y, (N : ℤ) ∣ D.EF (cHalf H I • v) y` using `fun y => by`. Establish `h2 : χ (Submodule.Quotient.mk y) = 1` using `by rw [h]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : z ^ D.EF y (cHalf H I • v) = 1` using `(hmk y).symm.trans h2`. Rewrite using `[HalfPairing.ef_swap, dvd_neg]`. Conclude with `(hz.zpow_eq_one_iff_dvd _).1 h3`. Establish `hNI : (N : 𝓞 E) ∈ I`. Establish `: Ideal.span {(N : 𝓞 E)} ≤ I` using `hp ▸ (Ideal.mul_le_inf.trans inf_le_left)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this (Ideal.subset_span rfl)`. Establish `h4` using `mem_of_modN D hNI (modN_of_dvd D hN h1)`. Establish `: v = cHalf H I • v - (cHalf H I - 1) • v` using `by rw [sub_smul, one_smul, sub_sub_cancel]`. Rewrite using `[this]`. Conclude with `sub_mem h4 (Submodule.smul_mem_smul hc1 trivial)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce `h`. Use extensionality with `x`. Conclude with `(hz.zpow_eq_one_iff_dvd _).2 (dvd_right D hp hc _ h)`. Use `AddChar.sum_eq_ite χ` as an intermediate fact. Rewrite using `[Nat.card_eq_fintype_card]`.
-
-Simplify using `only [← hiff]`. Use `this using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem char_sum (D : Datum H) {N : ℕ} (hN : 0 < N) {I : Ideal (𝓞 E)}
     (hp : I * I.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {(N : 𝓞 E)})
@@ -100,41 +98,35 @@ theorem char_sum (D : Datum H) {N : ℕ} (hN : 0 < N) {I : Ideal (𝓞 E)}
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n m d φ' hd hn ψ ph x₀ ph' x₀' hpin hpin'`. Take `⟨-, huniq, adj, -, hadj⟩` from `HalfPairing.halves_free_and_adjoint E H Dw l Xo c n d hd`. Take `⟨-, hM, -, hMb, hI, -⟩` from `hd`. Take `⟨ha, hb, hc, hone, hspan, hφ⟩` from `hpin`. Take `⟨ha', hb', hc', hone', hspan', hφ'⟩` from `hpin'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM₂ : 0 < d.l₂.M` using `by have := d.l₂.three_le; omega`. Establish `hpd : 0 < d.pd` using `Nat.pos_of_mul_pos_left (hM ▸ hM₂)`. Establish `hIJ` using `half_prod hM hMb`. Establish `hI0 : d.I ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hIJ` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Conclude with `hpd.ne' (by exact_mod_cast hIJ)`. Establish `hJ0 : d.I.map (H.bar : 𝓞 E →+* 𝓞 E) ≠ ⊥`. Introduce `h`. Rewrite `hIJ` using `[h, Ideal.mul_bot, eq_comm, Ideal.span_singleton_eq_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hpd.ne' (by exact_mod_cast hIJ)`. Use `haveI : Finite (𝓞 E ⧸ d.I.map (H.bar : 𝓞 E →+* 𝓞 E)) := Ideal.finiteQuotientOfFreeOfNeBot _ hJ0`. Use `haveI : Finite (𝓞 E ⧸ d.I) := Ideal.finiteQuotientOfFreeOfNeBot _ hI0`. Use `haveI := Dw.fin`. Use `haveI := Dw.proj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e⟩` from `HalfPairing.nonempty_equiv_quot (N := Dw.La) (d.I.map (H.bar : 𝓞 E →+* 𝓞 E)) _ Dw.rank`. Take `⟨e'⟩` from `HalfPairing.nonempty_equiv_quot (N := Dw.La) d.I _ Dw.rank`. Use `haveI : Finite (LaJ Xo c d) := Finite.of_equiv _ e.toEquiv.symm`. Use `haveI : Finite (LaI Xo c d) := Finite.of_equiv _ e'.toEquiv.symm`. Use `haveI : Finite (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) := Finite.of_injective (fun k : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d => (k : LaI Xo c d → LaI Xo c d)) DFunLike.coe_injective`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hcard : Nat.card (LaJ Xo c d) = Nat.card (LaI Xo c d)`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_congr e'.toEquiv, Nat.card_fun, Nat.card_fun, Nat.card_congr (Ideal.quotientEquiv d.I _ (H.bar : 𝓞 E ≃+* 𝓞 E) rfl).toEquiv]`. Establish `himg : ∀ {k : ℕ} (hk : Dw.p + Dw.q ≤ k) (x : Fin k → LaJ Xo c d), x '' {b | b.val < Dw.p + Dw.q} = Set.range (fun b : Fin (Dw.p + Dw.q) => x (Fin.castLE hk b))`. Introduce `k hk x`. Use extensionality with `y`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b.val, hb⟩, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨Fin.castLE hk b, b.2, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn' : Dw.p + Dw.q ≤ n + m` using `hn.trans (Nat.le_add_right _ _)`. Establish `hs₀` using `(congrArg (Submodule.span (𝓞 E)) (himg hn x₀)).symm.trans hspan`. Establish `hspan₁ : Submodule.span (𝓞 E) (x₀' '' {b | b.val < Dw.p + Dw.q}) = ⊤` using `hspan'`. Establish `hb₁ : ∀ x, ph' x ≠ 0 → Submodule.span (𝓞 E) (x '' {b | b.val < Dw.p + Dw.q}) = ⊤` using `hb'`. Establish `hs₀'` using `(congrArg (Submodule.span (𝓞 E)) (himg hn' x₀')).symm.trans hspan₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, -⟩` from `huniq _ _ hs₀ hs₀'`. Establish `hy₀ : ph (fun b => x₀' (Fin.castAdd m b)) = (((ψ (adj g))⁻¹ : c.Fˣ) : c.F)`. Establish `h1` using `hc (adj g) g ((hadj _ _).2 rfl) x₀`. Rewrite `h1` using `[hone, mul_one]`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha _ _ fun b hb => (hg ⟨b.1, hb⟩).symm`. Establish `hph : ∀ x : Fin (n + m) → LaJ Xo c d, ph' x = ((ψ (adj g) : c.Fˣ) : c.F) * ph (fun b => x (Fin.castAdd m b))`. Introduce `x`. Distinguish the cases in `hx : Submodule.span (𝓞 E) (Set.range (fun b : Fin (Dw.p + Dw.q) => x (Fin.castLE hn' b))) = ⊤`. Take `⟨g', hg', -⟩` from `huniq _ _ hs₀' hx`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ph' (fun b => g' (x₀' b)) = (((ψ (adj g'))⁻¹ : c.Fˣ) : c.F) * ph' x₀'` using `hc' (adj g') g' ((hadj _ _).2 rfl) x₀'`. Establish `h2` using `hc (adj g') g' ((hadj _ _).2 rfl) (fun b => x₀' (Fin.castAdd m b))`. Establish `h3 : ph' x = ph' (fun b => g' (x₀' b))` using `ha' _ _ fun b hb => (hg' ⟨b.1, hb⟩).symm`. Establish `h4 : ph (fun b => x (Fin.castAdd m b)) = ph (fun b => g' (x₀' (Fin.castAdd m b)))` using `ha _ _ fun b hb => (hg' ⟨b.1, hb⟩).symm`. Rewrite using `[h3, h4, h1, h2, hy₀, hone', mul_one, mul_left_comm, Units.mul_inv, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ph' x = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx ((congrArg (Submodule.span (𝓞 E)) (himg hn' x)).symm.trans (hb₁ x h))`. Establish `h2 : ph (fun b => x (Fin.castAdd m b)) = 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx ((congrArg (Submodule.span (𝓞 E)) (himg hn _)).symm.trans (hb _ h))`. Rewrite using `[h1, h2, mul_zero]`. Use `⟨((ψ (adj g) : c.Fˣ) : c.F), (Units.coeHom c.F).isOfFinOrder (ψ.isOfFinOrder (isOfFinOrder_of_finite _)), fun q => ?_⟩` and prove the remaining obligations. Use `set z : d.c₂.F := (⟨zeta d.l₂.M', d.c₂.zeta_mem⟩ : d.c₂.F) ^ (d.l₂.M' / d.pd) with hzdef`. Establish `hz : IsPrimitiveRoot z d.pd`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : d.pd ∣ d.l₂.M'` using `(hM ▸ Dvd.intro_left _ rfl : d.pd ∣ d.l₂.M).trans (Nat.dvd_lcm_left _ _)`. Establish `h2 : 0 < d.l₂.M'` using `Nat.lcm_pos hM₂ d.l₂.A_pos`. Establish `h0 : IsPrimitiveRoot (zeta d.l₂.M') d.l₂.M'` using `Complex.isPrimitiveRoot_exp _ h2.ne'`. Establish `h3 : IsPrimitiveRoot (⟨zeta d.l₂.M', d.c₂.zeta_mem⟩ : d.c₂.F) d.l₂.M'` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap d.c₂.F ℂ) h0 (algebraMap d.c₂.F ℂ).injective`. Conclude with `h3.pow h2 (Nat.div_mul_cancel h1).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz0 : z ≠ 0` using `hz.ne_zero hpd.ne'`. Use `haveI := Fintype.ofFinite (LaJ Xo c d)`. Establish `h1 : d.eF (φ' q) = ∑ᶠ x : Fin (n + m) → LaJ Xo c d, d.eF (ph' x) * z ^ (∑ b, Dw.EF (qRep (x b)) (cHalf H d.I • levRep (q b)))` using `hφ' q`. Apply `d.eF.injective` to reduce the goal to its premises. Rewrite using `[h1, map_mul, map_mul, hφ, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`.
-
-Simplify using `only [zpow_sum hz0, hph, map_mul, mul_assoc]`. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[sum_append (fun y => d.eF (ph y)) (fun b a => z ^ Dw.EF (qRep a) (cHalf H d.I • levRep (q b)))]`. Use `congr 1`.
-
-Simplify using `only [char_sum Dw hpd hIJ hI hz]`. Rewrite using `[Finset.prod_ite_zero]`. Simplify using `only [Finset.mem_univ, forall_true_left, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `split_ifs`. Rewrite using `[map_pow, map_natCast, ← hcard]`.
-
-Rewrite using `[map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_more_columns : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n m : ℕ) (d : DeltaDat Xo c n) (φ' : (Fin (n + m) → LevQ Dw d.l₂) → c.F), d.IsLev → Dw.p + Dw.q ≤ n → ∀ (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ) (ph : (Fin n → LaJ Xo c d) → c.F) (x₀ : Fin n → LaJ Xo c d) (ph' : (Fin (n + m) → LaJ Xo c d) → c.F) (x₀' : Fin (n + m) → LaJ Xo c d), d.PhiPin ph ψ x₀ → (withCoeff d φ').PhiPin ph' ψ x₀' → ∃ ζ : c.F, IsOfFinOrder ζ ∧ ∀ q : Fin (n + m) → LevQ Dw d.l₂, φ' q = ζ * d.φδ (fun b => q (Fin.castAdd m b)) * (if ∀ b : Fin m, levRep (q (Fin.natAdd n b)) ∈ (d.I • ⊤ : Submodule (𝓞 E) Dw.La) then (Nat.card (LaI Xo c d) : c.F) ^ m else 0) := by
   intro E _ _ _ H Dw l Xo c n m d φ' hd hn ψ ph x₀ ph' x₀' hpin hpin'

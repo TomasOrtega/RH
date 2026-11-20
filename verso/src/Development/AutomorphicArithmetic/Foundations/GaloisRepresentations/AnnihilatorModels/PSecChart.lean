@@ -5,21 +5,19 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `l Y T U hU`. Use `haveI := T.fin`. Use `letI := T.alg U`. Establish `hZ : IsAffineOpen (T.p ⁻¹ᵁ U)` using `hU.preimage T.p`. Establish `hsq : Spec.map (T.p.app U) ≫ hU.fromSpec = hZ.fromSpec ≫ T.p`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `IsAffineOpen.SpecMap_appLE_fromSpec T.p hU hZ le_rfl`. Use `⟨hZ, fun B _ _ => ?_⟩` and prove the remaining obligations. Establish `hrange : ∀ z : T.Sec (ptOf hU B (algebraMap Γ(Y, U) B)), Set.range z.1 ⊆ Set.range hZ.fromSpec`. Introduce and unpack `z _ ⟨x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZ.range_fromSpec]`. Establish `hx : (z.1 ≫ T.p) x ∈ Set.range hU.fromSpec`. Rewrite using `[z.2]`. Unfold `ptOf`. Rewrite using `[Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`. Rewrite `hx` using `[hU.range_fromSpec]`. Simplify using `using hx`. Establish `hlift : ∀ z : T.Sec (ptOf hU B (algebraMap Γ(Y, U) B)), Spec.map (T.p.app U ≫ Spec.preimage (IsOpenImmersion.lift hZ.fromSpec z.1 (hrange z))) = Spec.map (CommRingCat.ofHom (algebraMap Γ(Y, U) B))`. Introduce `z`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← cancel_mono hU.fromSpec, Spec.map_comp, Category.assoc, hsq, Spec.map_preimage, IsOpenImmersion.lift_fac_assoc]`. Conclude with `z.2`. Use `⟨{ toFun := fun g => ⟨Spec.map (CommRingCat.ofHom g.toRingHom) ≫ hZ.fromSpec, ?_⟩, invFun := fun z => { toRingHom := (Spec.preimage (IsOpenImmersion.lift hZ.fromSpec z.1 (hrange z))).hom commutes' := fun r => by` and prove the remaining obligations. Establish `h` using `congrArg (fun φ => φ.hom r) (Spec.map_injective (hlift z))`. Conclude with `h }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `left_inv := fun g => ?_`. Use `right_inv := fun z => ?_ }, fun z => rfl⟩`. Use `show _ = Spec.map _ ≫ hU.fromSpec`. Rewrite using `[Category.assoc, ← hsq, ← Spec.map_comp_assoc]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Conclude with `g.commutes r`. Apply `AlgHom.coe_ringHom_injective show (Spec.preimage _).hom = (CommRingCat.ofHom g.toRingHom).hom` to reduce the goal to its premises. Use `congr 1`. Apply `Spec.map_injective` to reduce the goal to its premises.
-
-Rewrite using `[Spec.map_preimage]`. Conclude with `(IsOpenImmersion.lift_uniq _ _ _ _ rfl).symm`. Apply `Subtype.ext show Spec.map (Spec.preimage _) ≫ _ = _` to reduce the goal to its premises. Rewrite using `[Spec.map_preimage, IsOpenImmersion.lift_fac]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.secChart_of :
     SecChart := by

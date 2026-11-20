@@ -25,7 +25,7 @@ variable (F ι) in
 def boxes : Set (Set (ι → Af F)) := {s | ∃ D, IsBoxD D ∧ s = boxS D}
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[boxS]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem boxS_eq (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) :
     boxS D = Set.pi univ fun c => {x : Af F | ∀ v, x v ∈ D c v} := by
@@ -33,21 +33,17 @@ theorem boxS_eq (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) :
   simp [boxS]
 
 /- English proof (translation)
-Use `set S : Set κ := {i | D i = A i} with hSdef`. Establish `hS : cofinite ≤ 𝓟 S` using `le_principal_iff.2 hcof`. Establish `hfin : Sᶜ.Finite` using `mem_cofinite.1 hcof`. Establish `himg : {f : Πʳ i, [R i, A i] | ∀ i, f i ∈ D i} = RestrictedProduct.inclusion R A hS '' (((↑) : Πʳ i, [R i, A i]_[𝓟 S] → Π i, R i) ⁻¹' (univ.pi D))`. Use extensionality with `f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `⟨⟨fun i => f i, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `eventually_principal.2 fun i hi => by`. Establish `h : D i = A i` using `hi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show f i ∈ A i`. Rewrite using `[← h]`. Conclude with `hf i`. Introduce `i _`. Conclude with `hf i`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨g, hg, rfl⟩ i`. Conclude with `hg i (mem_univ i)`. Rewrite using `[himg]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `(RestrictedProduct.isOpenEmbedding_inclusion_principal hA hS).isOpenMap _ ?_` and prove the remaining obligations. Establish `h : (((↑) : Πʳ i, [R i, A i]_[𝓟 S] → Π i, R i) ⁻¹' (univ.pi D)) = ((↑) : Πʳ i, [R i, A i]_[𝓟 S] → Π i, R i) ⁻¹' (Sᶜ.pi D)`. Use extensionality with `g`. Simplify using `only [mem_preimage, Set.mem_pi]`. Use `⟨fun h i _ => h i (mem_univ i), fun h i _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : i ∈ S`. Establish `h' : D i = A i` using `hi`. Rewrite using `[h']`. Conclude with `g.2 hi`. Conclude with `h i hi`.
-
-Rewrite using `[h]`. Conclude with `(isOpen_set_pi hfin fun i _ => hDo i).preimage RestrictedProduct.continuous_coe`. Use `IsCompact.image ?_ (RestrictedProduct.continuous_inclusion hS)` and prove the remaining obligations. Use `(RestrictedProduct.isEmbedding_coe_of_principal.isCompact_preimage_iff ?_).2 (isCompact_univ_pi hDc)` and prove the remaining obligations. Rewrite using `[RestrictedProduct.range_coe_principal]`.
-
-Introduce `g hg i hi`. Establish `h : D i = A i` using `hi`. Rewrite using `[← h]`. Conclude with `hg i (mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_isCompact_restrictedProduct_box {κ : Type*} {R : κ → Type*} [∀ i, TopologicalSpace (R i)]
     {A : ∀ i, Set (R i)} (hA : ∀ i, IsOpen (A i)) (D : ∀ i, Set (R i))
@@ -100,7 +96,7 @@ private theorem isOpen_isCompact_restrictedProduct_box {κ : Type*} {R : κ → 
     exact hg i (mem_univ i)
 
 /- English proof (translation)
-Rewrite using `[boxS_eq]`. Conclude with `isCompact_univ_pi fun c => (isOpen_isCompact_restrictedProduct_box (fun v => Valued.isOpen_valuationSubring _) (D c) (fun v => (hD.1 c v).1.isOpen) (fun v => (hD.1 c v).2) (hD.2.mono fun v h => h c)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_boxS {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)} (hD : IsBoxD D) :
     IsCompact (boxS D) := by
@@ -109,7 +105,7 @@ theorem isCompact_boxS {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F
     (D c) (fun v => (hD.1 c v).1.isOpen) (fun v => (hD.1 c v).2) (hD.2.mono fun v h => h c)).2
 
 /- English proof (translation)
-Rewrite using `[boxS_eq]`. Conclude with `isOpen_set_pi finite_univ fun c _ => (isOpen_isCompact_restrictedProduct_box (fun v => Valued.isOpen_valuationSubring _) (D c) (fun v => (hD.1 c v).1.isOpen) (fun v => (hD.1 c v).2) (hD.2.mono fun v h => h c)).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_boxS {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)} (hD : IsBoxD D) :
     IsOpen (boxS D) := by
@@ -119,11 +115,11 @@ theorem isOpen_boxS {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)
     (fun v => (hD.1 c v).2) (hD.2.mono fun v h => h c)).1
 
 /- English proof (translation)
-Take `⟨D, hD, rfl⟩` from `hs`. Take `⟨D', hD', rfl⟩` from `ht`. Use `⟨fun c v => D c v ∩ D' c v, ⟨fun c v => ⟨(hD.1 c v).1.inter (hD'.1 c v).1, (hD.1 c v).2.inter_right (hD'.1 c v).1.isClosed⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hD.2, hD'.2] with v h1 h2 c`. Rewrite using `[h1 c, h2 c, inter_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `only [boxS, mem_inter_iff, mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ c v`. Conclude with `⟨h1 c v, h2 c v⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨fun c v => (h c v).1, fun c v => (h c v).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem boxes_inter {s t : Set (ι → Af F)} (hs : s ∈ boxes F ι) (ht : t ∈ boxes F ι) :
     s ∩ t ∈ boxes F ι := by
@@ -142,11 +138,11 @@ theorem boxes_inter {s t : Set (ι → Af F)} (hs : s ∈ boxes F ι) (ht : t �
       exact ⟨fun c v => (h c v).1, fun c v => (h c v).2⟩
 
 /- English proof (translation)
-Establish `hOc` using `AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Establish `hOo : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Use `⟨IsClopen.preimage ⟨hOc.isClosed, hOo⟩ (continuous_id.sub continuous_const), (Homeomorph.subRight a).isCompact_preimage.2 hOc, ?_, fun ha => ?_⟩` and prove the remaining obligations. Simplify using `only [mem_preimage, sub_self, SetLike.mem_coe]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Simplify using `only [mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using add_mem h ha`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `sub_mem h ha`.
+A detailed English derivation is pending.
 -/
 private theorem preimage_sub_integers_mem_and_eq_of_mem (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) :
     IsClopen ((fun z => z - a) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))) ∧
@@ -170,7 +166,7 @@ private theorem preimage_sub_integers_mem_and_eq_of_mem (v : HeightOneSpectrum (
       exact sub_mem h ha
 
 /- English proof (translation)
-Use `⟨fun c v => (fun z => z - y c v) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v)), ⟨fun c v => ⟨(preimage_sub_integers_mem_and_eq_of_mem v (y c v)).1, (preimage_sub_integers_mem_and_eq_of_mem v (y c v)).2.1⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_all.2 fun c => (y c).2] with v hv c`. Conclude with `(preimage_sub_integers_mem_and_eq_of_mem v (y c v)).2.2.2 (hv c)`. Use `show ∀ c v, y c v ∈ (fun z => z - y c v) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`. Conclude with `fun c v => (preimage_sub_integers_mem_and_eq_of_mem v (y c v)).2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_box_mem (y : ι → Af F) : ∃ D, IsBoxD D ∧ y ∈ boxS D := by
   refine ⟨fun c v => (fun z => z - y c v) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v)),
@@ -181,13 +177,11 @@ theorem exists_box_mem (y : ι → Af F) : ∃ D, IsBoxD D ∧ y ∈ boxS D := b
     exact fun c v => (preimage_sub_integers_mem_and_eq_of_mem v (y c v)).2.2.1
 
 /- English proof (translation)
-Establish `hopen : ∀ s ∈ boxes F ι, IsOpen s`. Introduce and unpack `s ⟨D, hD, rfl⟩`. Conclude with `isOpen_boxS hD`. Take `⟨T, hTc, hTS, hTU⟩` from `TopologicalSpace.isOpen_sUnion_countable (boxes F ι) hopen`. Establish `hU : ⋃₀ boxes F ι = univ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Take `⟨D, hD, hy⟩` from `exists_box_mem y`. Conclude with `⟨boxS D, ⟨D, hD, rfl⟩, hy⟩`. Establish `hTne : T.Nonempty`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[not_nonempty_iff_eq_empty]`. Rewrite `hTU` using `[h, sUnion_empty, hU]`. Conclude with `empty_ne_univ hTU`. Take `⟨bs, rfl⟩` from `hTc.exists_eq_range hTne`. Use `⟨bs, fun n => hTS (mem_range_self n), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← sUnion_range, hTU, hU]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boxes_seq : ∃ bs : ℕ → Set (ι → Af F), (∀ n, bs n ∈ boxes F ι) ∧ ⋃ n, bs n = univ := by
   have hopen : ∀ s ∈ boxes F ι, IsOpen s := by
@@ -208,7 +202,7 @@ theorem boxes_seq : ∃ bs : ℕ → Set (ι → Af F), (∀ n, bs n ∈ boxes F
   rw [← sUnion_range, hTU, hU]
 
 /- English proof (translation)
-Take `⟨bs, h1, h2⟩` from `boxes_seq (F := F) (ι := ι)`. Conclude with `⟨bs, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCountablySpanning_boxes : IsCountablySpanning (boxes F ι) := by
   obtain ⟨bs, h1, h2⟩ := boxes_seq (F := F) (ι := ι)
@@ -221,27 +215,23 @@ def upd (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (c : ι)
   fun c' => if c' = c then Function.update (D c) v (D c v ∩ C) else D c'
 
 /- English proof (translation)
-Establish `hA : ∀ v : HeightOneSpectrum (𝓞 F), IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `fun v => Valued.isOpen_valuationSubring _`. Use `set S : Set (HeightOneSpectrum (𝓞 F)) := {v | x v ∈ v.adicCompletionIntegers F} with hSdef`. Establish `hSc : S ∈ cofinite` using `x.2`. Establish `hS : cofinite ≤ 𝓟 S` using `le_principal_iff.2 hSc`. Set `x' : Πʳ v : HeightOneSpectrum (𝓞 F), [Fv F v, (v.adicCompletionIntegers F : Set (Fv F v))]_[𝓟 S]` to `⟨fun v => x v, eventually_principal.2 fun v hv => hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hUx : U ∈ 𝓝 (RestrictedProduct.inclusion _ _ hS x')` using `hU.mem_nhds hx`. Rewrite `hUx` using `[RestrictedProduct.nhds_eq_map_inclusion hA hS]`. Establish `hUx2 : (RestrictedProduct.inclusion _ _ hS) ⁻¹' U ∈ 𝓝 x'` using `hUx`. Rewrite `hUx2` using `[RestrictedProduct.isEmbedding_coe_of_principal.nhds_eq_comap, mem_comap]`. Take `⟨N, hN, hNU⟩` from `hUx2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hIt⟩` from `hN`. Establish `key : ∀ v, ∃ V : Set (Fv F v), IsClopen V ∧ x v ∈ V ∧ V ⊆ t v ∩ (fun z => z - x v) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `v`. Take `⟨hT1, -, hT3, -⟩` from `preimage_sub_integers_mem_and_eq_of_mem v (x v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hWt, hWo, hxW⟩` from `mem_nhds_iff.1 (ht v)`. Take `⟨V, hV, hxV, hVW⟩` from `(loc_compact_Haus_tot_disc_of_zero_dim (H := Fv F v)).exists_subset_of_mem_open (show x v ∈ W ∩ _ from ⟨hxW, hT3⟩) (hWo.inter hT1.isOpen)`. Conclude with `⟨V, hV, hxV, hVW.trans (inter_subset_inter_left _ hWt)⟩`. Use `choose V hVc hxV hVsub using key`. Take `⟨E, hEv⟩ : ∃ E : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v), ∀ v, E v = if v ∈ I then V v else (fun z => z - x v) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))` from `⟨_, fun v => rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEsub : ∀ v, E v ⊆ (fun z => z - x v) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `v`. Distinguish the cases in `hv : v ∈ I`. Rewrite using `[hEv v, if_pos hv]`. Conclude with `(hVsub v).trans inter_subset_right`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hEv v, if_neg hv]`. Use `⟨E, fun v => ?_, ?_, fun v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hT1, hT2, -, -⟩` from `preimage_sub_integers_mem_and_eq_of_mem v (x v)`. Distinguish the cases in `hv : v ∈ I`. Rewrite using `[hEv v, if_pos hv]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hVc v, hT2.of_isClosed_subset (hVc v).1 ((hVsub v).trans inter_subset_right)⟩`. Rewrite using `[hEv v, if_neg hv]`. Conclude with `⟨hT1, hT2⟩`. Use `filter_upwards [hSc, hI.compl_mem_cofinite] with v hvS hvI`. Rewrite using `[hEv v, if_neg hvI]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(preimage_sub_integers_mem_and_eq_of_mem v (x v)).2.2.2 hvS`. Distinguish the cases in `hv : v ∈ I`. Rewrite using `[hEv v, if_pos hv]`. Conclude with `hxV v`. Rewrite using `[hEv v, if_neg hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(preimage_sub_integers_mem_and_eq_of_mem v (x v)).2.2.1`. Introduce `z hz`. Establish `hz1 : ∀ v, z v ∈ E v` using `hz`. Establish `hzE : ∀ v, z v - x v ∈ v.adicCompletionIntegers F` using `fun v => hEsub v (hz1 v)`. Set `z' : Πʳ v : HeightOneSpectrum (𝓞 F), [Fv F v, (v.adicCompletionIntegers F : Set (Fv F v))]_[𝓟 S]` to `⟨fun v => z v, eventually_principal.2 fun v hv => by`.
-
-Establish `h2 : x v ∈ v.adicCompletionIntegers F` using `hv`. Simplify using `using add_mem (hzE v) h2⟩`. Establish `hz' : z' ∈ ((↑) : _ → Π v, Fv F v) ⁻¹' N` using `hIt fun v hv => by`. Establish `h` using `hz1 v`. Rewrite `h` using `[hEv v, if_pos hv]`.
-
-Conclude with `((hVsub v) h).1`. Conclude with `hNU hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_restricted_box_subset_of_isOpen {x : Af F} {U : Set (Af F)} (hU : IsOpen U) (hx : x ∈ U) :
     ∃ E : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v),
@@ -315,17 +305,15 @@ private theorem exists_restricted_box_subset_of_isOpen {x : Af F} {U : Set (Af F
     exact hNU hz'
 
 /- English proof (translation)
-Use `le_antisymm (generateFrom_le ?_) ?_` and prove the remaining obligations. Introduce and unpack `s ⟨D, hD, rfl⟩`. Conclude with `(isOpen_boxS hD).measurableSet`. Establish `hb : (MeasurableSpace.pi : MeasurableSpace (ι → Af F)) = borel (ι → Af F)` using `BorelSpace.measurable_eq`. Rewrite using `[hb, borel]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `generateFrom_le fun O hO => ?_` and prove the remaining obligations. Establish `hO' : IsOpen O` using `hO`. Use `set Bs : Set (Set (ι → Af F)) := {s | s ∈ boxes F ι ∧ s ⊆ O} with hBs`. Take `⟨T, hTc, hTB, hTU⟩` from `TopologicalSpace.isOpen_sUnion_countable Bs (fun s hs => by`. Take `⟨D, hD, hsD⟩` from `hs.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsD]`. Conclude with `isOpen_boxS hD)`. Establish `hOU : ⋃₀ Bs = O`. Use `Subset.antisymm (sUnion_subset fun s hs => hs.2) fun y hy => ?_` and prove the remaining obligations. Establish `hN : O ∈ 𝓝 y` using `hO'.mem_nhds hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hN` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hIt⟩` from `hN`. Establish `hE : ∀ c, ∃ E : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v), (∀ v, IsClopen (E v) ∧ IsCompact (E v)) ∧ (∀ᶠ v in cofinite, E v = (v.adicCompletionIntegers F : Set (Fv F v))) ∧ (∀ v, y c v ∈ E v) ∧ {z : Af F | ∀ v, z v ∈ E v} ⊆ t c` using `fun c => by`. Take `⟨U, hUt, hUo, hyU⟩` from `mem_nhds_iff.1 (ht c)`. Take `⟨E, h1, h2, h3, h4⟩` from `exists_restricted_box_subset_of_isOpen hUo hyU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `⟨E, h1, h2, h3, h4.trans hUt⟩`. Use `choose E hE1 hE2 hE3 hE4 using hE`. Establish `hyE : y ∈ boxS E` using `by show ∀ c v, y c v ∈ E c v`. Conclude with `fun c v => hE3 c v`. Use `⟨boxS E, ⟨⟨E, ⟨hE1, eventually_all.2 hE2⟩, rfl⟩, fun z hz => hIt fun c _ => ?_⟩, hyE⟩` and prove the remaining obligations.
-
-Establish `hz' : ∀ c v, z c v ∈ E c v` using `hz`. Conclude with `hE4 c (hz' c)`. Rewrite using `[← hOU, ← hTU]`. Conclude with `MeasurableSet.sUnion hTc fun s hs => measurableSet_generateFrom (hTB hs).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generateFrom_boxes : generateFrom (boxes F ι) = (MeasurableSpace.pi : MeasurableSpace (ι → Af F)) := by
   refine le_antisymm (generateFrom_le ?_) ?_

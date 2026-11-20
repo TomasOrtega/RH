@@ -21,19 +21,17 @@ namespace GlobalTheory.Mem.R3.Rw.Bare
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hA hH hE`. Establish `holdsW : WeightCaseCondition` using `GlobalTheory.T.weight_set_residue_characteristic hH.h1 hH.h2 hH.h3 hH.multW`. Establish `holdsL : LowerUnitaryCaseCondition` using `GlobalTheory.T.holds_of_multiplicity_equal hH.h1 hH.h2 hH.h3 hH.multL`. Establish `datS : DatExS` using `GlobalTheory.T.exists_fineAdelicDatum_of_hypotheses hH.cover hA.a5 hA.a6 hA.a7 hA.a8 hA.a9 hA.a10`. Establish `hW` using `GlobalTheory.T.untwisted_adelic_data_saturated_over_fixed_field hH.h1.q12 datS holdsL hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPr` using `GlobalTheory.T.constructionStartingChoices_of_fine_adelicData hA.a8 hA.a9 hA.a10 hA.a6 holdsW`. Establish `pS : StepW Start Pinned` using `StepW.of_all fun _ _ _ _ _ _ _ h => h.1`. Establish `iS : StepW Start Start` using `StepW.of_all fun _ _ _ _ _ _ _ h => h`. Establish `s1 : StepW Start fun K B f T w => Pinned K B f T w ∧ ∃ P : Pre2 K w, (T = TwDat.untw B T.pl → ∀ v v', GlobalTheory.TwistChoice.OverOne (w.D P.Z₀) v v' → v ∈ P.Wt → v' ∈ P.Wt)`. Use `(iS.and ((pS.trans hW).and hPr)).trans (StepW.of_all fun K B f T w _ _ h => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hPin, hSupp, -⟩, hU, hP⟩` from `h`. Distinguish the cases in `hT : T = TwDat.untw B T.pl`. Take `⟨Z, hX, z, g, gr, ga, ka, hF, hsub, hpsi, hsat⟩` from `hU hT`. Take `⟨P, hZ, hWt, -⟩` from `hP Z hX z g gr ga ka hF hsub hpsi`. Use `⟨hPin, P, fun _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hWt, hZ]`. Conclude with `hsat`. Break down `hSupp with h | hG` into its components or cases. Conclude with `absurd h hT`. Take `⟨Z, hX, z, g, gr, ga, ka, ex, ig, core, std, hsub, hpsi⟩` from `hG`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨P, -, -, -⟩` from `hP Z hX z g gr ga ka ⟨ex, ig, core, std⟩ hsub hpsi`. Conclude with `⟨hPin, P, fun h => absurd h hT⟩`. Establish `hQ : StepW (fun K B f T w => Pinned K B f T w ∧ ∃ P : Pre2 K w, (T = TwDat.untw B T.pl → ∀ v v', GlobalTheory.TwistChoice.OverOne (w.D P.Z₀) v v' → v ∈ P.Wt → v' ∈ P.Wt)) (pinAnd HasPk)` using `StepW.of_all fun _ _ _ _ _ _ _ h => ⟨h.1, ⟨h.2.choose⟩⟩`. Use `s1.trans ((StepW.of_all fun _ _ _ _ _ _ _ h => h).and (hQ.trans GlobalTheory.T.localizationFreeStage_trueGroup_columnChoiceStep) |>.trans (StepW.of_all fun K B f T w hO _ h => ?_))` and prove the remaining obligations. Take `⟨⟨-, P, hsat⟩, hN⟩` from `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hEm, hG, hN⟩` from `hN P`. Take `⟨V, hV, -, -, hη, -, hB⟩` from `exists_divStage_of_pk B w.C (Gc B w.px) P.q.p P.q.e P.q.W₀ P.q.n (fun _ _ => 0) (fun _ _ => le_rfl) (frames_unit P.q.t) (fun u => ((w.C.fm u).lat 0).L) (fun _ => 0) (6 * K.s.x ^ (-K.C.P.CF))`. Take `⟨S, -⟩` from `GlobalTheory.Mem.SProv.exists_sStage_true K B w.C (P.q.W (fun _ _ => 0) fun _ _ => le_rfl) P.Z₀.G.cd hO (GlobalTheory.Mem.Df.cols_pos w.I w.ok w.pins w.l P.hX) (rows_le P.q.t)`. Take `⟨x, hx⟩` from `GlobalTheory.T.fittingLaterStages_row_is_constructionState hA.a8 hA.a9 hA.a10 hA.a6 K B f T w P ⟨_, _, V, S, N, P.Z₀.G⟩ ⟨hV, hG, (hN V S P.Z₀.G).1, (hN V S P.Z₀.G).2⟩ rfl hη (fun hr => hB hr)`. Use `⟨P, x, hsat, ?_⟩` and prove the remaining obligations.
-
-Conclude with `Eq.mpr (congrArg (fun o : P.q.Over => IsEmpty o.N.nd.Loc ∧ ∀ j v, o.η j v = 0) hx) ⟨hEm, fun _ _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasBare_sat : HypA → HypH → DatExt0 → StepW Start fun K B f T w => ∃ (P : Pre2 K w) (x : St P), (T = TwDat.untw B T.pl → ∀ v v', GlobalTheory.TwistChoice.OverOne (w.D P.Z₀) v v' → v ∈ P.Wt → v' ∈ P.Wt) ∧ IsEmpty x.o.N.nd.Loc ∧ ∀ j v, x.o.η j v = 0 := by
   intro hA hH hE

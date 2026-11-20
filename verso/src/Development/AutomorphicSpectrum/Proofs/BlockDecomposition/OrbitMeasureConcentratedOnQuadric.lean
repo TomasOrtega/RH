@@ -17,14 +17,14 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hc : Continuous (cA D)` using `GlobalTheory.FockCompare.ThetaCont.continuous_conj`. Conclude with `(continuous_id.matrix_map hc).matrix_transpose`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_adjM {a b : ℕ} : Continuous (adj : Mx D a b → Mx D b a) := by
   have hc : Continuous (cA D) := GlobalTheory.FockCompare.ThetaCont.continuous_conj
   exact (continuous_id.matrix_map hc).matrix_transpose
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Conclude with `(continuous_adjM.comp hf).matrix_mul (continuous_const.matrix_mul hg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_ipM {X : Type} [TopologicalSpace X] (V : HSp D) {a b : ℕ} {f : X → Mx D V.rank a}
     {g : X → Mx D V.rank b} (hf : Continuous f) (hg : Continuous g) :
@@ -33,9 +33,9 @@ theorem continuous_ipM {X : Type} [TopologicalSpace X] (V : HSp D) {a b : ℕ} {
   exact (continuous_adjM.comp hf).matrix_mul (continuous_const.matrix_mul hg)
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Establish `hT` using `(top_mx (D := D) t t).1`. Establish `hy : Continuous (yv (t` using `t) V b₀) := continuous_const.matrix_mul (continuous_ipM V continuous_fst continuous_snd)`. Establish `h2 : Continuous fun z : Mx D V.rank r × Mx D V.rank t => ip V z.2 z.2` using `continuous_ipM V continuous_snd continuous_snd`. Establish `h3 : Continuous fun z : Mx D V.rank r × Mx D V.rank t => pr b₀ (yv V b₀ z) (yv V b₀ z)` using `(continuous_adjM.comp hy).matrix_mul (continuous_const.matrix_mul hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ContinuousSub (Mx D t t)` using `@IsTopologicalAddGroup.to_continuousSub _ _ _ hT`. Conclude with `h2.sub h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_qvM (V : HSp D) {r t : ℕ} (b₀ : HermE D r) :
     Continuous (qv (t := t) V b₀) := by
@@ -52,13 +52,13 @@ theorem continuous_qvM (V : HSp D) {r t : ℕ} (b₀ : HermE D r) :
   exact h2.sub h3
 
 /- English proof (translation)
-Introduce `hZ hA D n t B W d hn I μ _ b₀ hb x₀ hx`. Take `⟨g1, -⟩` from `top_pair (D := D) B.rank W.rank t`. Establish `o1 : OpensMeasurableSpace (Mx D B.rank W.rank × Mx D B.rank t)` using `g1.opensMeasurable`. Establish `t1` using `(top_mx (D := D) W.rank W.rank).2.2.2.1`. Establish `t2` using `(top_mx (D := D) t t).2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed {z : Mx D B.rank W.rank × Mx D B.rank t | ip B z.1 z.1 = rat b₀.1 ∧ qv B b₀ z = 0}` using `(isClosed_eq (continuous_ipM B continuous_fst continuous_fst) continuous_const).inter (isClosed_eq (continuous_qvM B b₀) continuous_const)`. Establish `hS : {z : Mx D B.rank W.rank × Mx D B.rank t | ¬ ((1 : AE D) • z.1 = z.1 ∧ (1 : AE D) • z.2 = z.2 ∧ ip B z.1 z.1 = (1 : AE D) • rat b₀.1 ∧ qv B b₀ z = 0)} = {z | ip B z.1 z.1 = rat b₀.1 ∧ qv B b₀ z = 0}ᶜ`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_compl_iff, one_smul, true_and]`. Rewrite using `[hS]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `nuT`. Rewrite using `[Measure.map_apply (measurable_pi hn I x₀) hcl.measurableSet.compl]`. Establish `hE : (fun p : I.l.K × Par D n t W => ac B ((p.1 : GA D B)⁻¹) (zp d hn x₀ p.2)) ⁻¹' {z | ip B z.1 z.1 = rat b₀.1 ∧ qv B b₀ z = 0}ᶜ = ∅`. Use extensionality with `p`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨a1, -, a3⟩` from `hA D W.rank t B b₀ ((p.1 : GA D B)⁻¹) (zp d hn x₀ p.2)`. Take `⟨z1, -, z3⟩` from `hZ D n t B W d hn b₀ hb x₀ hx p.2`. Conclude with `⟨a1.trans z1, a3.trans z3⟩`. Rewrite using `[hE, measure_empty]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem nuT_supp : ZpEq → AcEq → ∀ (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t) (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t)), μ.IsAddHaarMeasure → ∀ (b₀ : HermE D W.rank), b₀.1.det ≠ 0 → ∀ x₀, gramQ W x₀ = b₀.1 → nuT hn I μ x₀ {z | ¬ ((1 : AE D) • z.1 = z.1 ∧ (1 : AE D) • z.2 = z.2 ∧ ip B z.1 z.1 = (1 : AE D) • rat b₀.1 ∧ qv B b₀ z = 0)} = 0 := by
   intro hZ hA D n t B W d hn I μ _ b₀ hb x₀ hx

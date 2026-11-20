@@ -17,14 +17,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {R : Type} [Zero R] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp continuous_subtype_val).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat_UAtSub (X : Spc F E n) (ev : AF F → R) :
     Continuous fun g : UAtSub σ X ev => mat g.1 :=
   (Units.continuous_val.comp continuous_subtype_val).comp continuous_subtype_val
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Conclude with `isClosed_eq ((continuous_mat_UAtSub X ev).matrix_mulVec continuous_const) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_stabAt_vec (X : Spc F E n) (ev : AF F → R) (x : Fin n → E) :
     IsClosed (stabAt σ X ev x : Set (UAtSub σ X ev)) := by
@@ -35,33 +35,27 @@ theorem isClosed_stabAt_vec (X : Spc F E n) (ev : AF F → R) (x : Fin n → E) 
   exact isClosed_eq ((continuous_mat_UAtSub X ev).matrix_mulVec continuous_const) continuous_const
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Use `set y : Fin n → AE F E := incV F x with hy`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : y = 0`. Establish `: {g : UAtSub σ X ev | ∃ q ∈ stabAt σ X ev x, ∃ t, g = q * m₀ t} = Set.univ`. Use `Set.eq_univ_of_forall fun g => ⟨g, ?_, 1, by rw [map_one, mul_one]⟩` and prove the remaining obligations. Use `show mat g.1 *ᵥ incV F x = incV F x`. Rewrite using `[← hy, h0, Matrix.mulVec_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `isClosed_univ`. Take `⟨i, hi⟩` from `Function.ne_iff.mp h0`. Establish `hxi : x i ≠ 0` using `fun h => hi (by simp [hy, incV, h])`. Establish `hyi : IsUnit (y i)` using `(IsUnit.mk0 (x i) hxi).map (inclR (F := F) (AF F))`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hyi`. Establish `key : {g : UAtSub σ X ev | ∃ q ∈ stabAt σ X ev x, ∃ t, g = q * m₀ t} = {g : UAtSub σ X ev | ∀ j, (mat g.1 *ᵥ y) j * y i = (mat g.1 *ᵥ y) i * y j}`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, t, rfl⟩ j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq' : mat q.1 *ᵥ y = y` using `hq`. Establish `e : mat (q * m₀ t).1 *ᵥ y = (t.1 : AE F E) • y` using `by show mat (q.1 * (m₀ t).1) *ᵥ y = _`. Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, hm t, Matrix.mulVec_smul, hq']`. Rewrite using `[e]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `hg set s : AE F E := (mat g.1 *ᵥ y) i * (u⁻¹ : (AE F E)ˣ) with hs`. Establish `hgy : mat g.1 *ᵥ y = s • y`. Use function extensionality and compare the values at `j`. Establish `h1` using `hg j`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← hu]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv_cancel_right]`. Use `_ = (mat g.1 *ᵥ y) i * y j * (u⁻¹ : (AE F E)ˣ) := by rw [h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `_ = _ := by ring`. Establish `hinv : mat g.1⁻¹ * mat g.1 = 1` using `Units.inv_mul g.1.1`. Establish `hback : y = s • (mat g.1⁻¹ *ᵥ y)`. Rewrite using `[← Matrix.mulVec_smul, ← hgy, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Establish `hsu : IsUnit s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : y i = s * (mat g.1⁻¹ *ᵥ y) i` using `by conv_lhs => rw [hback]`. Both sides reduce to the same expression. Rewrite `h2` using `[← hu]`. Conclude with `isUnit_of_mul_isUnit_left (h2 ▸ u.isUnit)`. Establish `hsAt : hsu.unit ∈ idelesAt E ev`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Establish `h3 : a • (mat g.1 - 1) = 0` using `g.2 a ha`. Establish `h4 : (a • (mat g.1 - 1)) *ᵥ y = 0` using `by rw [h3, Matrix.zero_mulVec]`. Rewrite `h4` using `[Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hgy]`. Establish `h5` using `congrFun h4 i`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul, Pi.zero_apply] at h5`. Use `show a • ((hsu.unit : AE F E) - 1) = 0`. Rewrite using `[IsUnit.unit_spec]`. Establish `h6 : (a • (s - 1)) * y i = 0`. Rewrite using `[smul_mul_assoc, sub_mul, one_mul]`.
-
-Conclude with `h5`. Rewrite `h6` using `[← hu]`. Conclude with `(Units.mul_left_eq_zero u).mp h6`. Set `t : idelesAt E ev` to `⟨hsu.unit, hsAt⟩`. Use `⟨g * (m₀ t)⁻¹, ?_, t, by rw [inv_mul_cancel_right]⟩` and prove the remaining obligations.
-
-Use `show mat (g.1 * (m₀ t)⁻¹.1) *ᵥ y = y`. Rewrite using `[← map_inv, GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, hm t⁻¹, Matrix.mulVec_smul, hgy, smul_smul]`. Establish `: ((t⁻¹ : idelesAt E ev).1 : AE F E) * s = 1`. Conclude with `hsu.val_inv_mul`. Rewrite using `[this, one_smul]`.
-
-Rewrite using `[key]`. Simplify using `only [Set.setOf_forall]`. Establish `hc : Continuous fun g : UAtSub σ X ev => mat g.1 *ᵥ y` using `(continuous_mat_UAtSub X ev).matrix_mulVec continuous_const`. Conclude with `isClosed_iInter fun j => isClosed_eq (((continuous_apply j).comp hc).mul continuous_const) (((continuous_apply i).comp hc).mul continuous_const)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_stabAt_mul_levi (X : Spc F E n) (ev : AF F → R) (x : Fin n → E)
     (m₀ : idelesAt E ev →* UAtSub σ X ev) (hm : ∀ t, mat (m₀ t).1 *ᵥ incV F x = (t.1 : AE F E) • incV F x) :
@@ -143,7 +137,7 @@ theorem isClosed_stabAt_mul_levi (X : Spc F E n) (ev : AF F → R) (x : Fin n �
 end LineStab
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' _ X om om' om₁ om₁' _ _ v m₀ hL`. Conclude with `⟨isClosed_stabAt_vec G.V (evFin F v) H.x, isClosed_stabAt_mul_levi G.V (evFin F v) H.x m₀ fun t => (hL t).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isClosed_stab_and_lineStab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

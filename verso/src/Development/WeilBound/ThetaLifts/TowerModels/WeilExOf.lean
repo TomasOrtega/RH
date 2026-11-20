@@ -11,11 +11,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW M hM χX χW hχX hχW hrX hrW`. Establish `hdX` using `det_herm hX`. Establish `hdW` using `det_skew hW`. Take `⟨hherm, -, -, -, -, -⟩` from `hX`. Take `⟨hskew, -, -, -, -, -⟩` from `hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hcm, -, -, hstd, -, -⟩` from `hB`. Take `⟨hrat, -, -, -, -⟩` from `hM`. Establish `hψ : B.ψ ≠ 1`. Introduce `h1`. Apply `Tw.PsiNontriv.psiV_ne_one B.ψ hstd B.v₁` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.VacAny.psiV, h1]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Conclude with `h F E σ hcm B.ψ hstd.1 hstd.2.1 hψ n d X.J W.J hherm hdX hskew hdW M.co hrat χX χW hχX hχW hrX hrW`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weilEx_of (h : WeilPairExists) : WeilEx := by
   intro F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW M hM χX χW hχX hχW hrX hrW

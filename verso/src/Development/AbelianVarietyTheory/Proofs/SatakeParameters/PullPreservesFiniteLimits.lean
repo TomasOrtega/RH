@@ -10,7 +10,7 @@ namespace GlobalTheory.EtC.Rel
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Establish `: AB5OfSize.{0, 1} (ModuleCat.{1} (ULift.{1} R))` using `AB5OfSize_of_univLE.{0, 1, 1, 1} _`. Establish `hf (U : Y.Etaleᵒᵖ) : IsFiltered (CostructuredArrow (bc f).op U)` using `IsFiltered.of_equivalence (structuredArrowOpEquivalence (bc f) (unop U))`. Establish `: PreservesFiniteLimits ((bc f).op.lan : (_ ⥤ _ ⥤ ModuleCat.{1} (ULift.{1} R)))` using `GlobalTheory.Et.Small.lan_preservesFiniteLimits _ _ (fun U => by have := hf U; infer_instance)`. Conclude with `Functor.sheafPullbackConstruction.preservesFiniteLimits (bc f) _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_preservesFiniteLimits (R : Type) [CommRing R] {X Y : Scheme.{0}} (f : Y ⟶ X) :
     PreservesFiniteLimits (pull R f) := by

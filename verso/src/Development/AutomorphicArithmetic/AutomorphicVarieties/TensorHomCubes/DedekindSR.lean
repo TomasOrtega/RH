@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TensorHomCubes.Sta
 open UpperTheory.V.KL
 
 /- English proof (translation)
-Establish `hI : Ideal.span {a} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := (Ideal.finite_factors hI).toFinset) (fun v => v.asIdeal) (fun _ => 1) (fun v _ => Ideal.prime_of_isPrime v.ne_bot v.isPrime) (fun v _ w _ hvw h => hvw (IsDedekindDomain.HeightOneSpectrum.ext h)) (fun v => if c v.1.asIdeal then 1 …`. Use `⟨y, fun P hP haP => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hPb : P ≠ ⊥`. Introduce `h`. Rewrite `haP` using `[h, Ideal.mem_bot]`. Conclude with `ha haP`. Set `v : IsDedekindDomain.HeightOneSpectrum R` to `⟨P, hP.isPrime, hPb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : v ∈ (Ideal.finite_factors hI).toFinset`. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `haP`. Establish `h` using `hy v hv`. Simplify using `only [pow_one] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Simplify `h` using `[v, hc]`. Introduce `hc`. Simplify `h` using `[v, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_crt_indicator {R : Type} [CommRing R] [IsDedekindDomain R] (a : R) (ha : a ≠ 0)
     (c : Ideal R → Prop) :
@@ -43,11 +43,9 @@ private theorem exists_crt_indicator {R : Type} [CommRing R] [IsDedekindDomain R
     simpa [v, hc] using h
 
 /- English proof (translation)
-Unfold `Unimodular`. Prove the components needed by the constructor for the conclusion. Introduce `h P hP hv`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← h, Ideal.span_le]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hv i`. Introduce `h`. Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`.
-
-Conclude with `h P hP fun i => hle (Ideal.subset_span ⟨i, rfl⟩)`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem unimod_iff {R : Type} [CommRing R] {n : ℕ} (v : Fin n → R) :
     Unimodular R v ↔ ∀ P : Ideal R, P.IsMaximal → ¬ ∀ i, v i ∈ P := by
@@ -64,29 +62,29 @@ private theorem unimod_iff {R : Type} [CommRing R] {n : ℕ} (v : Fin n → R) :
     exact h P hP fun i => hle (Ideal.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `R _ _ n hn r hr`. Rewrite `hr` using `[unimod_iff]`. Distinguish the cases in `hz : ∀ i : Fin n, r i.castSucc = 0`. Use `⟨fun _ => 1, ?_⟩` and prove the remaining obligations. Rewrite using `[unimod_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `P hP hall`. Apply `hr P hP` to reduce the goal to its premises. Establish `hl : r (Fin.last n) ∈ P`. Use `hall ⟨0, by omega⟩` as an intermediate fact. Simplify using `only [one_mul] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[hz, zero_add]`. Conclude with `this`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact hl`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast j`. Rewrite using `[hz j]`. Conclude with `P.zero_mem`. Use `push_neg at hz`. Take `⟨j, hj⟩` from `hz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hkj⟩ : ∃ k : Fin n, k ≠ j := by`. Distinguish the cases in `h0 : j.val = 0`. Use `⟨⟨1, by omega⟩, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[← h]`. Simplify using `at h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨⟨0, by omega⟩, fun h => h0 (by rw [← h])⟩`. Take `⟨t, ht⟩` from `exists_crt_indicator (r j.castSucc) hj (fun P => r k.castSucc ∈ P)`. Use `⟨fun i => if i = k then t else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[unimod_iff]`. Introduce `P hP hall`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `haP : r j.castSucc ∈ P`. Establish `hother : ∀ i : Fin n, i ≠ k → r i.castSucc ∈ P` using `fun i hi => by`. Simplify `hall i` using `[hi]`. Establish `hk : r k.castSucc + t * r (Fin.last n) ∈ P`. Simplify using `using hall k`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `ht P hP haP`. Distinguish the cases in `hc : r k.castSucc ∈ P`. Establish `htr : t * r (Fin.last n) ∈ P`. Use `P.sub_mem hk hc` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Break down `hP.isPrime.mem_or_mem htr with htP | hrP` into its components or cases. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Use `P.sub_mem htP (h1 hc)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Apply `hr P hP` to reduce the goal to its premises. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact hrP`. Consider the case `cast m`.
+Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hm : m = k`. Rewrite using `[hm]`. Conclude with `hc`. Conclude with `hother m hm`. Apply `hc` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `P.sub_mem hk (P.mul_mem_right (r (Fin.last n)) (h2 hc))` as an intermediate fact. Simplify using `using this`. Apply `haP` to reduce the goal to its premises. Use `hall j` as an intermediate fact. Simplify `this` using `[Ne.symm hkj]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KL.dedekindSR :
     ∀ (R : Type) [CommRing R] [IsDedekindDomain R], StableRangeLe R 2 := by

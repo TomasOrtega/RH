@@ -17,7 +17,7 @@ def dS (k r : ℕ) (l : ℂ) (i : Fin (2 * r + k + 1)) : ℂ :=
   else if r + k < i.val then (star (l ^ (r - (2 * r + k - i.val))))⁻¹ else 1
 
 /- English proof (translation)
-Unfold `dS`. Use `split_ifs`. Conclude with `pow_ne_zero _ hl`. Conclude with `inv_ne_zero (star_ne_zero.2 (pow_ne_zero _ hl))`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dS_ne {l : ℂ} (hl : l ≠ 0) (i : Fin (2 * r + k + 1)) : dS k r l i ≠ 0 := by
   unfold dS
@@ -27,20 +27,20 @@ theorem dS_ne {l : ℂ} (hl : l ≠ 0) (i : Fin (2 * r + k + 1)) : dS k r l i �
   · exact one_ne_zero
 
 /- English proof (translation)
-Unfold `dS eI`. Simplify using `[a.isLt]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dS_eI (l : ℂ) (a : Fin r) : dS k r l (eI k r a) = l ^ (r - a.val) := by
   unfold dS eI; simp [a.isLt]
 
 /- English proof (translation)
-Unfold `dS`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dS_mid (l : ℂ) (i : Fin (2 * r + k + 1)) (h : ¬ (i.val < r ∨ r + k < i.val)) : dS k r l i = 1 := by
   unfold dS
   rw [if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Unfold `dS`. Rewrite using `[if_pos hi, if_neg (by omega), if_pos (by omega)]`. Establish `: 2 * r + k - j.val = i.val` using `by omega`. Rewrite using `[this]`. Conclude with `mul_inv_cancel₀ (star_ne_zero.2 (pow_ne_zero _ hl))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dS_pair {l : ℂ} (hl : l ≠ 0) (i j : Fin (2 * r + k + 1)) (hi : i.val < r) (hij : i.val + j.val = 2 * r + k) :
     star (dS k r l i) * dS k r l j = 1 := by
@@ -51,7 +51,7 @@ theorem dS_pair {l : ℂ} (hl : l ≠ 0) (i j : Fin (2 * r + k + 1)) (hi : i.val
   exact mul_inv_cancel₀ (star_ne_zero.2 (pow_ne_zero _ hl))
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (hd i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem diag_inv {n : Type} [Fintype n] [DecidableEq n] (d : n → ℂ) (hd : ∀ i, d i ≠ 0) :
     (diagonal d)⁻¹ = diagonal fun i => (d i)⁻¹ := by
@@ -62,7 +62,7 @@ theorem diag_inv {n : Type} [Fintype n] [DecidableEq n] (d : n → ℂ) (hd : �
   exact mul_inv_cancel₀ (hd i)
 
 /- English proof (translation)
-Rewrite using `[diag_inv d hd]`. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_diag {n : Type} [Fintype n] [DecidableEq n] (d : n → ℂ) (hd : ∀ i, d i ≠ 0) (M : Matrix n n ℂ) (i j : n) :
     (diagonal d * M * (diagonal d)⁻¹) i j = d i * M i j * (d j)⁻¹ := by
@@ -70,9 +70,9 @@ theorem conj_diag {n : Type} [Fintype n] [DecidableEq n] (d : n → ℂ) (hd : �
   simp [Matrix.diagonal_mul, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Use `show (diagonal d)ᴴ * Hpk k r * diagonal d = Hpk k r`. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hM : Hpk k r i j = 0`. Rewrite using `[hM]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `h i j hM` as an intermediate fact. Rewrite using `[Pi.star_apply, mul_right_comm, this, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_mem_UH (d : Fin (2 * r + k + 1) → ℂ) (h : ∀ i j, Hpk k r i j ≠ 0 → star (d i) * d j = 1) :
     diagonal d ∈ UH (Hpk k r) := by
@@ -85,11 +85,9 @@ theorem diag_mem_UH (d : Fin (2 * r + k + 1) → ℂ) (h : ∀ i j, Hpk k r i j 
     rw [Pi.star_apply, mul_right_comm, this, one_mul]
 
 /- English proof (translation)
-Distinguish the cases in `h1 : i.val < r ∧ i.val + j.val = 2 * r + k`. Conclude with `dS_pair hl i j h1.1 h1.2`. Distinguish the cases in `h2 : j.val < r ∧ i.val + j.val = 2 * r + k`. Use `congrArg star (dS_pair hl j i h2.1 (by omega))` as an intermediate fact. Rewrite `this` using `[star_mul, star_star, star_one]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `this`. Distinguish the cases in `h3 : r ≤ i.val ∧ i.val ≤ r + k ∧ i = j`. Rewrite using `[← h3.2.2, dS_mid l i (by omega)]; simp`. It suffices to derive a contradiction. Unfold `Hpk at h`.
-
-Rewrite `h` using `[if_neg h1, if_neg h2, if_neg h3]`. Conclude with `h rfl`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dS_Hpk {l : ℂ} (hl : l ≠ 0) (i j : Fin (2 * r + k + 1)) (h : Hpk k r i j ≠ 0) :
     star (dS k r l i) * dS k r l j = 1 := by
@@ -107,11 +105,11 @@ theorem dS_Hpk {l : ℂ} (hl : l ≠ 0) (i j : Fin (2 * r + k + 1)) (h : Hpk k r
   exact h rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hn`. Use `⟨?_, fun a i hi => ?_, fun i j a b c => ?_⟩` and prove the remaining obligations. Use `Pv.Frames.UH_mul (Pv.Frames.UH_mul (diag_mem_UH d h) h1) ?_` and prove the remaining obligations. Rewrite using `[diag_inv d hd]`. Use `diag_mem_UH _ fun i j hij => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[star_inv₀, ← mul_inv, h i j hij, inv_one]`. Rewrite using `[conj_diag d hd, h2 a i hi] split_ifs with e`. Rewrite using `[e, mul_one, mul_inv_cancel₀ (hd _)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[conj_diag d hd, h3 i j a b c] split_ifs with e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_one, mul_inv_cancel₀ (hd _)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_mem_N (d : Fin (2 * r + k + 1) → ℂ) (hd : ∀ i, d i ≠ 0)
     (h : ∀ i j, Hpk k r i j ≠ 0 → star (d i) * d j = 1) {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -132,9 +130,9 @@ theorem conj_mem_N (d : Fin (2 * r + k + 1) → ℂ) (hd : ∀ i, d i ≠ 0)
     · ring
 
 /- English proof (translation)
-Use `⟨conj_mem_N d hd h, fun hn => ?_⟩` and prove the remaining obligations. Establish `hd' : ∀ i, (d i)⁻¹ ≠ 0` using `fun i => inv_ne_zero (hd i)`. Use `conj_mem_N (fun i => (d i)⁻¹) hd' (fun i j hij => by rw [star_inv₀, ← mul_inv, h i j hij, inv_one]) hn` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Rewrite using `[conj_diag _ hd', conj_diag _ hd]`. Use `hd i` as an intermediate fact. Use `hd j` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem conj_mem_N_iff (d : Fin (2 * r + k + 1) → ℂ) (hd : ∀ i, d i ≠ 0)
     (h : ∀ i j, Hpk k r i j ≠ 0 → star (d i) * d j = 1) (n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
@@ -151,11 +149,11 @@ theorem conj_mem_N_iff (d : Fin (2 * r + k + 1) → ℂ) (hd : ∀ i, d i ≠ 0)
   field_simp
 
 /- English proof (translation)
-Establish `key : h *ᵥ bvec j = bvec j`. Break down `hj with hj | hj` into its components or cases. Conclude with `(hh.2.1 ⟨j.val, hj⟩).1`. Use `(hh.2.1 ⟨2 * r + k - j.val, by omega⟩).2` as an intermediate fact. Establish `e : esI k r ⟨2 * r + k - j.val, by omega⟩ = j`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `j.isLt` as an intermediate fact. Use `show 2 * r + k - (2 * r + k - j.val) = j.val`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun key i` as an intermediate fact. Simplify `this` using `[bvec, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem UW_col {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) (i j : Fin (2 * r + k + 1)) (hj : j.val < r ∨ r + k < j.val) :
@@ -174,9 +172,9 @@ theorem UW_col {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1
   simpa [bvec, Pi.single_apply] using this
 
 /- English proof (translation)
-Unfold `Hpk`. Distinguish the cases in `e : p = i`. Substitute `e` using the available equality. Rewrite using `[if_pos rfl]`. Distinguish the cases in `h1 : j.val < r`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos ⟨h1, by omega⟩]`. Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Establish `e' : p.val ≠ i.val` using `fun x => e (Fin.ext x)`. Rewrite using `[if_neg e, if_neg (by omega), if_neg (by omega), if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hpk_outer (i j p : Fin (2 * r + k + 1)) (hj : j.val < r ∨ r + k < j.val) (hij : i.val + j.val = 2 * r + k) :
     Hpk k r j p = if p = i then 1 else 0 := by
@@ -191,11 +189,11 @@ theorem Hpk_outer (i j p : Fin (2 * r + k + 1)) (hj : j.val < r ∨ r + k < j.va
     rw [if_neg e, if_neg (by omega), if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Establish `hi0` using `i.isLt`. Set `q : Fin (2 * r + k + 1)` to `⟨2 * r + k - i.val, by omega⟩`. Establish `hq : q.val < r ∨ r + k < q.val` using `by show 2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val; omega`. Establish `hiq : i.val + q.val = 2 * r + k` using `by show i.val + (2 * r + k - i.val) = _; omega`. Establish `hU : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun hU q) j` as an intermediate fact. Rewrite `this` using `[Hpk_outer i q j hq hiq, Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, UW_col hh _ q hq] at this`. Rewrite `this` using `[Finset.sum_eq_single q (fun b _ hb => by simp [hb]) (by simp), Matrix.mul_apply]`. Simplify using `only [Hpk_outer i q _ hq hiq] at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UW_row {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) (i j : Fin (2 * r + k + 1)) (hi : i.val < r ∨ r + k < i.val) :
@@ -213,11 +211,11 @@ theorem UW_row {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1
   simpa using this
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Rewrite using `[UW_col hh i j hj] split_ifs with e`. Rewrite using `[e]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[UW_row hh i j hi] split_ifs with e`. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dS_mid l i hi, dS_mid l j hj]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dS_comm (l : ℂ) {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : diagonal (dS k r l) * h = h * diagonal (dS k r l) := by
@@ -236,9 +234,9 @@ theorem dS_comm (l : ℂ) {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 
   rw [dS_mid l i hi, dS_mid l j hj]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[hz i h]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hd i h, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_fix (d : Fin (2 * r + k + 1) → ℂ) (hd : ∀ i : Fin (2 * r + k + 1), ¬ (i.val < r ∨ r + k < i.val) → d i = 1)
     {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : diagonal d *ᵥ z = z := by
@@ -249,7 +247,7 @@ theorem diag_fix (d : Fin (2 * r + k + 1) → ℂ) (hd : ∀ i : Fin (2 * r + k 
   · rw [hd i h, one_mul]
 
 /- English proof (translation)
-Rewrite using `[diag_inv _ (dS_ne hl)]`. Conclude with `diag_fix _ (fun i hi => by rw [dS_mid l i hi, inv_one]) hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_fix {l : ℂ} (hl : l ≠ 0) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
     (diagonal (dS k r l))⁻¹ *ᵥ z = z := by
@@ -257,11 +255,11 @@ theorem inv_fix {l : ℂ} (hl : l ≠ 0) {z : Fin (2 * r + k + 1) → ℂ} (hz :
   exact diag_fix _ (fun i hi => by rw [dS_mid l i hi, inv_one]) hz
 
 /- English proof (translation)
-Unfold `ell`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[conj_diag _ (dS_ne hl), dS_eI, dS_eI]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : r - a.val = (r - (a.val + 1)) + 1` using `by omega`. Rewrite using `[e, pow_succ]`. Use `pow_ne_zero (r - (a.val + 1)) hl` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hra : r - a.val = 1` using `by have := a.isLt; omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, inv_fix hl hz, Matrix.mulVec_diagonal, dS_eI, hra, pow_one]`.
+A detailed English derivation is pending.
 -/
 theorem ell_conj {l : ℂ} (hl : l ≠ 0) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
@@ -279,7 +277,7 @@ theorem ell_conj {l : ℂ} (hl : l ≠ 0) {z : Fin (2 * r + k + 1) → ℂ} (hz 
     rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, inv_fix hl hz, Matrix.mulVec_diagonal, dS_eI, hra, pow_one]
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ max (x / 2) (2 / x)`. Break down `le_total x 2 with h | h` into its components or cases. Conclude with `le_max_of_le_right ((one_le_div hx).2 h)`. Conclude with `le_max_of_le_left ((one_le_div two_pos).2 h)`. Conclude with `⟨(pow_le_pow_left₀ (by positivity) (le_max_left _ _) m).trans (pow_le_pow_right₀ h1 hm), (pow_le_pow_left₀ (by positivity) (le_max_right _ _) m).trans (pow_le_pow_right₀ h1 hm)⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pow_bound {x : ℝ} (hx : 0 < x) {m : ℕ} (hm : m ≤ r) :
     (x / 2) ^ m ≤ max (x / 2) (2 / x) ^ r ∧ (2 / x) ^ m ≤ max (x / 2) (2 / x) ^ r := by
@@ -291,15 +289,15 @@ theorem pow_bound {x : ℝ} (hx : 0 < x) {m : ℕ} (hm : m ≤ r) :
     (pow_le_pow_left₀ (by positivity) (le_max_right _ _) m).trans (pow_le_pow_right₀ h1 hm)⟩
 
 /- English proof (translation)
-Introduce `k r c hc`. Establish `hS : cStd ≠ 0` using `by unfold cStd; simp`. Establish `hl : cStd / c ≠ 0` using `div_ne_zero hS hc`. Establish `hn : ‖cStd / c‖ = 2 / ‖c‖` using `by unfold cStd; simp`. Establish `hx : 0 < ‖c‖` using `norm_pos_iff.2 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨diagonal (dS k r (cStd / c)), diag_mem_UH _ (dS_Hpk hl), conj_mem_N_iff _ (dS_ne hl) (dS_Hpk hl), fun z hz => ⟨diag_fix _ (dS_mid _) hz, fun h hh => dS_comm _ hh, fun n _ => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Unfold `psi`. Rewrite using `[ell_conj hl hz, ← mul_assoc, mul_div_cancel₀ _ hc]`. Establish `hb` using `pow_bound (r := r) hx (Nat.sub_le r a.val)`. Use `⟨((cStd / c) ^ (r - a.val))⁻¹, inv_ne_zero (pow_ne_zero _ hl), ?_, ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_inv, norm_pow, hn, ← inv_pow, inv_div]`. Conclude with `hb.1`. Rewrite using `[norm_inv, inv_inv, norm_pow, hn]`. Conclude with `hb.2`. Unfold `fvec split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[diag_inv _ (dS_ne hl)]`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `e : i = eI k r ⟨a.val, h⟩`. Rewrite using `[e, dS_eI]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[bvec, e]`. Establish `: r - a.val = 0` using `by omega`. Rewrite using `[inv_fix hl hz, this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_torus_scale : ∀ (k r : ℕ) (c : ℂ), c ≠ 0 → ∃ t ∈ GG k r, (∀ n, n ∈ Nset k r ↔ t * n * t⁻¹ ∈ Nset k r) ∧ (∀ z, inWb k r z → t *ᵥ z = z ∧ (∀ h ∈ UWset k r z, t * h = h * t) ∧ ∀ n ∈ Nset k r, psi k r z cStd n = psi k r z c (t * n * t⁻¹)) ∧ ∀ a : Fin (r + 1), ∃ s : ℂ, s ≠ 0 ∧ ‖s‖ ≤ max (‖c‖ / 2) (2 / ‖c‖) ^ r ∧ ‖s‖⁻¹ ≤ max (‖c‖ / 2) (2 / ‖c‖) ^ r ∧ ∀ z, inWb k r z → t⁻¹ *ᵥ fvec k r z a = s • fvec k r z a := by
   intro k r c hc

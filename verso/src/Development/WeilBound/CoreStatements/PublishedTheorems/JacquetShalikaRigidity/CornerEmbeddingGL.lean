@@ -25,28 +25,28 @@ theorem embM_apply (A : Matrix (Fin k) (Fin k) R) (i c : Fin m) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[embM_apply, dif_pos ⟨i.2, c.2⟩]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem embM_castLE (h : k ≤ m) (A : Matrix (Fin k) (Fin k) R) (i c : Fin k) :
     embM m A (Fin.castLE h i) (Fin.castLE h c) = A i c := by
   rw [embM_apply, dif_pos ⟨i.2, c.2⟩]; rfl
 
 /- English proof (translation)
-Rewrite using `[embM_apply, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem embM_out (A : Matrix (Fin k) (Fin k) R) (i c : Fin m) (h : ¬ ((i : ℕ) < k ∧ (c : ℕ) < k)) :
     embM m A i c = (1 : Matrix (Fin m) (Fin m) R) i c := by
   rw [embM_apply, dif_neg h]
 
 /- English proof (translation)
-Simplify using `only [Matrix.one_apply, Fin.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_corner (i c : Fin m) (h : (i : ℕ) < k ∧ (c : ℕ) < k) :
     (1 : Matrix (Fin k) (Fin k) R) ⟨i, h.1⟩ ⟨c, h.2⟩ = (1 : Matrix (Fin m) (Fin m) R) i c := by
   simp only [Matrix.one_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `i c`. Rewrite using `[embM_apply]`. Use `split_ifs with h`. Conclude with `one_corner i c h`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem embM_one : embM m (1 : Matrix (Fin k) (Fin k) R) = 1 := by
   ext i c
@@ -58,25 +58,25 @@ theorem embM_one : embM m (1 : Matrix (Fin k) (Fin k) R) = 1 := by
 def eqv (h : k ≤ m) : Fin k ⊕ Fin (m - k) ≃ Fin m := finSumFinEquiv.trans (finCongr (Nat.add_sub_cancel' h))
 
 /- English proof (translation)
-Simplify using `[eqv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eqv_inl (h : k ≤ m) (x : Fin k) : ((eqv h (Sum.inl x) : Fin m) : ℕ) = x := by simp [eqv]
 
 /- English proof (translation)
-Simplify using `[eqv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eqv_inr (h : k ≤ m) (x : Fin (m - k)) : ((eqv h (Sum.inr x) : Fin m) : ℕ) = k + x := by simp [eqv]
 
 /- English proof (translation)
-Use extensionality with `i c`. Take `⟨x, rfl⟩` from `(eqv h).surjective i`. Take `⟨y, rfl⟩` from `(eqv h).surjective c`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[embM_apply, dif_pos (by rw [eqv_inl, eqv_inl]; exact ⟨x.2, y.2⟩), Matrix.fromBlocks_apply₁₁]`. Use `congr 1`. Rewrite using `[embM_out _ _ _ (by rw [eqv_inl, eqv_inr]; omega), Matrix.fromBlocks_apply₁₂, Matrix.one_apply_ne]`. Both sides reduce to the same expression. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[eqv_inl, eqv_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[embM_out _ _ _ (by rw [eqv_inl, eqv_inr]; omega), Matrix.fromBlocks_apply₂₁, Matrix.one_apply_ne]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[eqv_inl, eqv_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[embM_out _ _ _ (by rw [eqv_inr, eqv_inr]; omega), Matrix.fromBlocks_apply₂₂, Matrix.one_apply, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [(eqv h).injective.eq_iff, Sum.inr.injEq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embM_eq (h : k ≤ m) (A : Matrix (Fin k) (Fin k) R) :
     embM m A = Matrix.reindex (eqv h) (eqv h) (Matrix.fromBlocks A 0 0 1) := by
@@ -97,7 +97,7 @@ theorem embM_eq (h : k ≤ m) (A : Matrix (Fin k) (Fin k) R) :
     simp only [(eqv h).injective.eq_iff, Sum.inr.injEq]
 
 /- English proof (translation)
-Rewrite using `[embM_eq h, embM_eq h, embM_eq h]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem embM_mul (h : k ≤ m) (A B : Matrix (Fin k) (Fin k) R) : embM m (A * B) = embM m A * embM m B := by
   rw [embM_eq h, embM_eq h, embM_eq h]
@@ -105,7 +105,7 @@ theorem embM_mul (h : k ≤ m) (A B : Matrix (Fin k) (Fin k) R) : embM m (A * B)
   simp
 
 /- English proof (translation)
-Rewrite using `[embM_eq h, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem embM_det (h : k ≤ m) (A : Matrix (Fin k) (Fin k) R) : (embM m A).det = A.det := by
   rw [embM_eq h, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
@@ -113,13 +113,13 @@ theorem embM_det (h : k ≤ m) (A : Matrix (Fin k) (Fin k) R) : (embM m A).det =
 def cor (h : k ≤ m) (M : Matrix (Fin m) (Fin m) R) : Matrix (Fin k) (Fin k) R := M.submatrix (Fin.castLE h) (Fin.castLE h)
 
 /- English proof (translation)
-Use extensionality with `i c`. Conclude with `embM_castLE h A i c`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cor_embM (h : k ≤ m) (A : Matrix (Fin k) (Fin k) R) : cor h (embM m A) = A := by
   ext i c; exact embM_castLE h A i c
 
 /- English proof (translation)
-Use extensionality with `i c`. Rewrite using `[embM_apply]`. Use `split_ifs with hic`. Both sides reduce to the same expression. Conclude with `(hM i c (by omega)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem embM_cor (h : k ≤ m) (M : Matrix (Fin m) (Fin m) R)
     (hM : ∀ i c : Fin m, (k ≤ (i : ℕ) ∨ k ≤ (c : ℕ)) → M i c = (1 : Matrix (Fin m) (Fin m) R) i c) :
@@ -131,7 +131,7 @@ theorem embM_cor (h : k ≤ m) (M : Matrix (Fin m) (Fin m) R)
   · exact (hM i c (by omega)).symm
 
 /- English proof (translation)
-Use extensionality with `i c`. Simplify using `only [Matrix.map_apply, embM_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem embM_map {S : Type} [CommRing S] (f : R →+* S) (A : Matrix (Fin k) (Fin k) R) :
     (embM m A).map f = embM m (A.map f) := by
@@ -148,20 +148,20 @@ def embGL (h : k ≤ m) : GL (Fin k) R →* GL (Fin m) R where
   map_mul' g g' := Units.ext (by simp only [Units.val_mul]; exact embM_mul h _ _)
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isEmb_embGL (h : k ≤ m) : IsEmb (embGL (R := R) h) := fun _ => rfl
 
 variable {ι : GL (Fin k) R →* GL (Fin m) R}
 
 /- English proof (translation)
-Rewrite using `[← map_inv, hι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_inv (hι : IsEmb ι) (g : GL (Fin k) R) : ((ι g)⁻¹).val = embM m (g⁻¹).val := by
   rw [← map_inv, hι]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hS]`. Express the relevant statement in the definitionally equal form `(ι g).val.map p = _`. Rewrite using `[hι]`. Conclude with `embM_map p _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_emb {S : Type} [CommRing S] (p : R →+* S) {ιS : GL (Fin k) S →* GL (Fin m) S} (hι : IsEmb ι)
     (hS : IsEmb ιS) (g : GL (Fin k) R) :
@@ -173,9 +173,9 @@ theorem map_emb {S : Type} [CommRing S] (p : R →+* S) {ιS : GL (Fin k) S →*
   exact embM_map p _
 
 /- English proof (translation)
-Use extensionality with `i c`. Rewrite using `[embM_apply (m := m) (1 - matN k s 1 + matN k s A)]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin m) (Fin m) S) i c - s ((1 : Matrix (Fin m) (Fin m) R) i c) + s (embM m A i c) = _`. Rewrite using `[embM_apply]`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = (1 : Matrix (Fin k) (Fin k) S) ⟨i, h.1⟩ ⟨c, h.2⟩ - s ((1 : Matrix (Fin k) (Fin k) R) ⟨i, h.1⟩ ⟨c, h.2⟩) + s (A ⟨i, h.1⟩ ⟨c, h.2⟩)`. Rewrite using `[one_corner i c h, one_corner i c h]`. Conclude with `sub_add_cancel _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_embM {S : Type} [CommRing S] (s : R →ₙ+* S) (A : Matrix (Fin k) (Fin k) R) :
     (1 - matN m s 1 + matN m s (embM m A) : Matrix (Fin m) (Fin m) S) = embM m (1 - matN k s 1 + matN k s A) := by
@@ -189,7 +189,7 @@ theorem corner_embM {S : Type} [CommRing S] (s : R →ₙ+* S) (A : Matrix (Fin 
   · exact sub_add_cancel _ _
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hS]`. Express the relevant statement in the definitionally equal form `embM m (1 - matN k s 1 + matN k s g.val) = 1 - matN m s 1 + matN m s (ι g).val`. Rewrite using `[hι, corner_embM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cornerGL_emb {S : Type} [CommRing S] (s : R →ₙ+* S) {ιS : GL (Fin k) S →* GL (Fin m) S} (hι : IsEmb ι)
     (hS : IsEmb ιS) (g : GL (Fin k) R) : ιS (cornerGL k s g) = cornerGL m s (ι g) := by
@@ -199,13 +199,13 @@ theorem cornerGL_emb {S : Type} [CommRing S] (s : R →ₙ+* S) {ιS : GL (Fin k
   rw [hι, corner_embM]
 
 /- English proof (translation)
-Introduce `i c hic` and use `by rw [hι]; exact embM_out _ _ _ (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blk_emb (hι : IsEmb ι) (g : GL (Fin k) R) : GlobalTheory k (ι g) := fun i c hic => by
   rw [hι]; exact embM_out _ _ _ (by omega)
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, hι, embM_det h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_emb (h : k ≤ m) (hι : IsEmb ι) (g : GL (Fin k) R) :
     GeneralLinearGroup.det (ι g) = GeneralLinearGroup.det g := by
@@ -213,9 +213,9 @@ theorem det_emb (h : k ≤ m) (hι : IsEmb ι) (g : GL (Fin k) R) :
   rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, hι, embM_det h]
 
 /- English proof (translation)
-Establish `hx' : embM m (cor h x.val) = x.val` using `embM_cor h _ hx`. Establish `hd : IsUnit (cor h x.val).det`. Use `(Matrix.isUnit_iff_isUnit_det _).mp x.isUnit` as an intermediate fact. Rewrite `this` using `[← hx', embM_det h]`. Then use the resulting hypothesis. Use `⟨((Matrix.isUnit_iff_isUnit_det _).mpr hd).unit, Units.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hι, IsUnit.unit_spec, hx']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem surj_emb (h : k ≤ m) (hι : IsEmb ι) (x : GL (Fin m) R) (hx : GlobalTheory k x) : ∃ g, x = ι g := by
   have hx' : embM m (cor h x.val) = x.val := embM_cor h _ hx
@@ -226,7 +226,7 @@ theorem surj_emb (h : k ≤ m) (hι : IsEmb ι) (x : GL (Fin m) R) (hx : GlobalT
   rw [hι, IsUnit.unit_spec, hx']
 
 /- English proof (translation)
-Introduce `g g' e` and use `by refine Units.ext ?_ have := congrArg (fun x : GL (Fin m) R => cor h x.val) e rw [hι, hι, cor_embM, cor_embM] at this exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inj_emb (h : k ≤ m) (hι : IsEmb ι) : Function.Injective ι := fun g g' e => by
   refine Units.ext ?_
@@ -241,7 +241,7 @@ section Top
 variable {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] {k m : ℕ}
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun c => ?_` and prove the remaining obligations. Simplify using `only [embM_apply]`. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_embM : Continuous (embM (k := k) (R := R) m) := by
   refine continuous_pi fun i => continuous_pi fun c => ?_
@@ -251,7 +251,7 @@ theorem continuous_embM : Continuous (embM (k := k) (R := R) m) := by
   · exact continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cor (h : k ≤ m) : Continuous (cor (R := R) h) :=
   continuous_id.matrix_submatrix _ _
@@ -259,9 +259,9 @@ theorem continuous_cor (h : k ≤ m) : Continuous (cor (R := R) h) :=
 variable {ι : GL (Fin k) R →* GL (Fin m) R}
 
 /- English proof (translation)
-Use `Units.continuous_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (Units.val ∘ ι) = embM m ∘ (fun g : GL (Fin k) R => g.val)` using `funext hι`. Rewrite using `[e]`. Conclude with `continuous_embM.comp Units.continuous_val`. Establish `e : (fun g => ((ι g)⁻¹ : GL (Fin m) R).val) = embM m ∘ (fun g : GL (Fin k) R => (g⁻¹).val)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `(emb_inv hι)`. Rewrite using `[e]`. Conclude with `continuous_embM.comp Units.continuous_coe_inv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_emb (hι : IsEmb ι) : Continuous ι := by
   refine Units.continuous_iff.mpr ⟨?_, ?_⟩
@@ -274,11 +274,11 @@ theorem continuous_emb (hι : IsEmb ι) : Continuous ι := by
     exact continuous_embM.comp Units.continuous_coe_inv
 
 /- English proof (translation)
-Set `P : Matrix (Fin k) (Fin k) R × (Matrix (Fin k) (Fin k) R)ᵐᵒᵖ → Matrix (Fin m) (Fin m) R × (Matrix (Fin m) (Fin m) R)ᵐᵒᵖ` to `fun p => (embM m p.1, MulOpposite.op (embM m p.2.unop))`. Set `Q : Matrix (Fin m) (Fin m) R × (Matrix (Fin m) (Fin m) R)ᵐᵒᵖ → Matrix (Fin k) (Fin k) R × (Matrix (Fin k) (Fin k) R)ᵐᵒᵖ` to `fun p => (cor h p.1, MulOpposite.op (cor h p.2.unop))`. Establish `hQP : Function.LeftInverse Q P` using `fun p => by`. Simplify using `only [P, Q, cor_embM, MulOpposite.unop_op, MulOpposite.op_unop, Prod.mk.eta]`. Establish `hP : Continuous P` using `(continuous_embM.comp continuous_fst).prodMk (MulOpposite.continuous_op.comp (continuous_embM.comp (MulOpposite.continuous_unop.comp continuous_snd)))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : Continuous Q` using `((continuous_cor h).comp continuous_fst).prodMk (MulOpposite.continuous_op.comp ((continuous_cor h).comp (MulOpposite.continuous_unop.comp continuous_snd)))`. Establish `hPe : IsEmbedding P` using `hQP.isEmbedding hQ hP`. Establish `e : Units.embedProduct (Matrix (Fin m) (Fin m) R) ∘ ι = P ∘ Units.embedProduct (Matrix (Fin k) (Fin k) R)`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, Units.embedProduct_apply, P, MulOpposite.unop_op]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hι, emb_inv hι]`. Establish `h2 : IsInducing (Units.embedProduct (Matrix (Fin m) (Fin m) R) ∘ ι)`. Rewrite using `[e]`. Conclude with `hPe.isInducing.comp Units.isEmbedding_embedProduct.isInducing`. Conclude with `(Units.isEmbedding_embedProduct.isInducing.of_comp_iff).mp h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inducing_emb (h : k ≤ m) (hι : IsEmb ι) : IsInducing ι := by
   let P : Matrix (Fin k) (Fin k) R × (Matrix (Fin k) (Fin k) R)ᵐᵒᵖ → Matrix (Fin m) (Fin m) R × (Matrix (Fin m) (Fin m) R)ᵐᵒᵖ :=
@@ -303,13 +303,11 @@ theorem inducing_emb (h : k ≤ m) (hι : IsEmb ι) : IsInducing ι := by
   exact (Units.isEmbedding_embedProduct.isInducing.of_comp_iff).mp h2
 
 /- English proof (translation)
-Use `⟨⟨inducing_emb h hι, inj_emb h hι⟩, ?_⟩` and prove the remaining obligations. Establish `e : Set.range ι = ⋂ i : Fin m, ⋂ c : Fin m, {x : GL (Fin m) R | (k ≤ (i : ℕ) ∨ k ≤ (c : ℕ)) → x.val i c = (1 : Matrix (Fin m) (Fin m) R) i c}`. Use extensionality with `x`. Simplify using `only [Set.mem_range, Set.mem_iInter, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g, rfl⟩ i c hic`. Conclude with `blk_emb hι g i c hic`. Introduce `hx`. Take `⟨g, hg⟩` from `surj_emb h hι x hx`. Conclude with `⟨g, hg.symm⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `isClosed_iInter fun i => isClosed_iInter fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hp : (k ≤ (i : ℕ) ∨ k ≤ (c : ℕ))`. Simplify using `only [hp, true_implies]`. Conclude with `isClosed_eq ((Units.continuous_val (M := Matrix (Fin m) (Fin m) R)).matrix_elem i c) continuous_const`.
-
-Simplify using `only [hp, false_implies, Set.setOf_true]`. Conclude with `isClosed_univ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem closedEmb_emb (h : k ≤ m) (hι : IsEmb ι) : IsClosedEmbedding ι := by
   refine ⟨⟨inducing_emb h hι, inj_emb h hι⟩, ?_⟩
@@ -339,11 +337,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {ι : GL (Fin k) F →* GL (Fin m) F}
 
 /- English proof (translation)
-Rewrite `hn`, the goal using `[Iwasawa.mem_unipotent]`. Take `⟨hu, hd⟩` from `hn`. Use `⟨fun i c hlt => ?_, fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ι n).val i c = 0`. Rewrite using `[hι, embM_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Conclude with `hu (show (⟨c, h.2⟩ : Fin k) < ⟨i, h.1⟩ from hlt)`. Conclude with `Matrix.one_apply_ne (ne_of_gt hlt)`. Express the relevant statement in the definitionally equal form `(ι n).val i i = 1`. Rewrite using `[hι, embM_apply]`.
-
-Use `split_ifs with h`. Conclude with `hd _`. Conclude with `Matrix.one_apply_eq i`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_emb (hι : IsEmb ι) (n : GL (Fin k) F) (hn : n ∈ Iwasawa.unipotent F k) :
     ι n ∈ Iwasawa.unipotent F m := by
@@ -362,13 +358,11 @@ theorem unip_emb (hι : IsEmb ι) (n : GL (Fin k) F) (hn : n ∈ Iwasawa.unipote
     · exact Matrix.one_apply_eq i
 
 /- English proof (translation)
-Rewrite `hκ`, the goal using `[GLnLocal.mem_integralGL_iff]`. Take `⟨h1, h2⟩` from `hκ`. Use `⟨fun i c => ?_, fun i c => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ι κ).val i c ∈ _`. Rewrite using `[hι, embM_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `h1 _ _`. Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Express the relevant statement in the definitionally equal form `(ι κ⁻¹).val i c ∈ _`. Rewrite using `[hι, embM_apply]`. Use `split_ifs`. Conclude with `h2 _ _`.
-
-Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem int_emb (hι : IsEmb ι) (κ : GL (Fin k) F) (hκ : κ ∈ GLnLocal.integralGL F k) :
     ι κ ∈ GLnLocal.integralGL F m := by
@@ -394,9 +388,9 @@ theorem int_emb (hι : IsEmb ι) (κ : GL (Fin k) F) (hκ : κ ∈ GLnLocal.inte
       · exact zero_mem _
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hι, Iwasawa.coe_torusPow, Iwasawa.coe_torusPow]`. Use extensionality with `i c`. Rewrite using `[embM_apply]`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.diagonal_apply, Fin.ext_iff, pad, dif_pos h.1]`. Rewrite using `[Matrix.diagonal_apply, Matrix.one_apply] split_ifs with hic`. Substitute `hic` using the available equality. Rewrite using `[pad, dif_neg (fun hi => h ⟨hi, hi⟩), zpow_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem torus_emb (hι : IsEmb ι) (l : Fin k → ℤ) :
     ι (Iwasawa.torusPow F k l) = Iwasawa.torusPow F m (pad m l) := by
@@ -419,13 +413,11 @@ section Ad
 variable {E : Type} [Field E] [NumberField E] {k m : ℕ} {ι : GA E k →* GA E m}
 
 /- English proof (translation)
-Unfold `UU`. Rewrite using `[hι n]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, -⟩`. Use `⟨fun i c hc => ?_, fun i => ?_, fun i c hc => absurd hc (Nat.not_lt_zero _)⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 (Fin.castLE h i) (Fin.castLE h c) (show ((Fin.castLE h c : Fin m) : ℕ) < (Fin.castLE h i : Fin m) from hc)` as an intermediate fact. Rewrite `this` using `[embM_castLE]`. Then use the resulting hypothesis. Use `h2 (Fin.castLE h i)` as an intermediate fact. Rewrite `this` using `[embM_castLE]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2, -⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Use `⟨fun i c hc => ?_, fun i => ?_, fun i c hc => absurd hc (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Rewrite using `[embM_apply] split_ifs with hh`. Conclude with `h1 _ _ hc`. Conclude with `Matrix.one_apply_ne (ne_of_gt hc)`. Rewrite using `[embM_apply] split_ifs with hh`.
-
-Conclude with `h2 _`. Conclude with `Matrix.one_apply_eq i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uu_emb (h : k ≤ m) (hι : IsEmb ι) (n : GA E k) : UU 0 (ι n) ↔ UU 0 n := by
   unfold UU
@@ -449,11 +441,11 @@ theorem uu_emb (h : k ≤ m) (hι : IsEmb ι) (n : GA E k) : UU 0 (ι n) ↔ UU 
       · exact Matrix.one_apply_eq i
 
 /- English proof (translation)
-Unfold `psN`. Use `congr 1`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Use `symm`. Use `Fintype.sum_of_injective (Prod.map (Fin.castLE h) (Fin.castLE h)) ((Fin.castLE_injective h).prodMap (Fin.castLE_injective h)) _ _ ?_ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨i, c⟩ hx dsimp only split_ifs with hic`. Rewrite using `[hι, embM_out]`. Conclude with `Matrix.one_apply_ne (fun e => by rw [e] at hic; omega)`. Introduce and unpack `⟨hi, hc⟩`. Conclude with `hx ⟨(⟨i, hi⟩, ⟨c, hc⟩), rfl⟩`.
+Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨i, c⟩`. Simplify using `only [Prod.map, Fin.coe_castLE]`. Rewrite using `[hι, embM_castLE]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psN_emb (h : k ≤ m) (hι : IsEmb ι) (ψ : AddChar (Ad E) ℂ) (n : GA E k) : psN ψ (ι n) = psN ψ n := by
   unfold psN
@@ -479,11 +471,11 @@ end Ad
 end CornerEmbeddingGL
 
 /- English proof (translation)
-Introduce `_ E _ _ _ m k hkm`. Use `⟨fun R _ => ⟨CornerEmbeddingGL.embGL hkm, CornerEmbeddingGL.isEmb_embGL hkm⟩, fun ι hι => ?_⟩` and prove the remaining obligations. Establish `hce` using `CornerEmbeddingGL.closedEmb_emb hkm hι`. Use `⟨CornerEmbeddingGL.continuous_emb hι, CornerEmbeddingGL.blk_emb hι, CornerEmbeddingGL.surj_emb hkm hι, fun g => ?_, fun U hU => ?_, fun C hC => hce.isCompact_preimage hC, fun ιE hE γ => (CornerEmbeddingGL.map_emb _ hE hι γ).symm, fun w ιw hw => ?_, fun κ hκ => ?_, CornerEmbedding …` and prove the remaining obligations. Unfold `Dt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[CornerEmbeddingGL.det_emb hkm hι]`. Rewrite `hU` using `[hce.isInducing.nhds_eq_comap 1, map_one, Filter.mem_comap]`. Take `⟨t, ht, hsub⟩` from `hU`. Conclude with `⟨t, ht, fun g hg => hsub hg⟩`. Use `⟨fun x => ?_, fun g => CornerEmbeddingGL.map_emb _ hι hw g, fun n hn => CornerEmbeddingGL.unip_emb hw n hn, fun κ hκ => CornerEmbeddingGL.int_emb hw κ hκ, fun l => CornerEmbeddingGL.torus_emb hw l⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `ι (cornerGL k (sFin E) (cornerGL k (sLoc E w) x)) = cornerGL m (sFin E) (cornerGL m (sLoc E w) (ιw x))`. Rewrite using `[CornerEmbeddingGL.cornerGL_emb (sFin E) (CornerEmbeddingGL.isEmb_embGL hkm) hι, CornerEmbeddingGL.cornerGL_emb (sLoc E w) hw (CornerEmbeddingGL.isEmb_embGL hkm)]`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pInf E) (ι κ) = 1`. Rewrite using `[CornerEmbeddingGL.map_emb (pInf E) hι (CornerEmbeddingGL.isEmb_embGL hkm) κ, show GeneralLinearGroup.map (pInf E) κ = 1 from hκ, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_embedding_of : jumpWindows.G0 → CornerEmbedding := by
   intro _ E _ _ _ m k hkm

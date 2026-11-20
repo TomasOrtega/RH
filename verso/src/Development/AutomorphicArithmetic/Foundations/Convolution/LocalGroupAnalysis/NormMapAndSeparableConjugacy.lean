@@ -6,7 +6,7 @@ open PositivityTheory.Rg.Tf.Geo
 
 open PositivityTheory.Rg.Tf.Loc in
 /- English proof (translation)
-Unfold `UpperTheory.ConvolutionTheory.D.nm twNorm`. Use `congr 1`. Use `List.map_congr_left fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sigmaGL_pow]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem nm_eq_normGL {k E : Type} [Field k] [Field E] [Algebra k E] (σ : E ≃ₐ[k] E) (n q : ℕ)
     (d : GL (Fin n) E) : UpperTheory.ConvolutionTheory.D.nm σ q d = twNorm (sigmaGL σ) q d := by
@@ -18,13 +18,13 @@ private theorem nm_eq_normGL {k E : Type} [Field k] [Field E] [Algebra k E] (σ 
 
 open PositivityTheory.Rg.Tf.Loc in
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ σ hσ n`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `δ δ' γ hγ h1 h2`. Establish `hg` using `UpperTheory.ConvolutionTheory.D.galField k E σ hσ`. Establish `e : ∀ d : GL (Fin n) E, UpperTheory.ConvolutionTheory.D.nm σ (Module.finrank k E) d = normGL σ d` using `fun d => nm_eq_normGL σ n _ d`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : (UpperTheory.ConvolutionTheory.D.cp (UpperTheory.ConvolutionTheory.D.nm σ (Module.finrank k E) δ)).Separable`. Rewrite using `[e, h1]`. Establish `hm : UpperTheory.ConvolutionTheory.D.cp (incl γ : GL (Fin n) E) = ((γ : Matrix (Fin n) (Fin n) k).charpoly).map (algebraMap k E)`. Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hm]`. Conclude with `hγ.map`. Take `⟨x, hx⟩` from `UpperTheory.ConvolutionTheory.D.nmInj k E σ _ hg n δ δ' hsep (by rw [e, e, h1, h2])`. Conclude with `⟨x, hx⟩`. Introduce `γ γ' hγ hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `(UpperTheory.ConvolutionTheory.D.conjSep k k n (γ : Matrix (Fin n) (Fin n) k) hγ).1 γ' hc.symm`. Establish `hx' : γ * x = x * γ'` using `Units.ext hx`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hx', inv_mul_cancel_left]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.nm_agrees_with_twisted_norm_sigmaGL :
     N2 := by

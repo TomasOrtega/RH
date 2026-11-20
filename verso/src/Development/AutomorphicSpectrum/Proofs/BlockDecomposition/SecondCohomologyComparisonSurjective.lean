@@ -20,11 +20,11 @@ variable {R : Type} [CommRing R] {A₀ A₁ A₂ D₀ D₁ D₂ : Type}
   (k : Type) [AddCommGroup k] [Module R k]
 
 /- English proof (translation)
-Establish `hbS : b ∘ₗ S.subtype = 0` using `LinearMap.ext fun s ↦ hSb s.2`. Establish `hbS' : ∀ s, b.lTensor k (S.subtype.lTensor k s) = 0` using `fun s ↦ by`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, hbS, LinearMap.lTensor_zero]`. Both sides reduce to the same expression. Establish `hz : d'.lTensor k (ψ.lTensor k x) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, ← hψ, LinearMap.lTensor_comp, LinearMap.comp_apply, hx, map_zero]`. Take `⟨s, y, hy⟩` from `hs _ hz`. Take `⟨u, hu⟩` from `hq (S.subtype.lTensor k s - x) (by rw [map_sub, hbS', hx, sub_zero]) ⟨y, by rw [map_sub, hy]⟩`. Set `a' : A₀ →ₗ[R] S` to `a.codRestrict S fun v ↦ haS ⟨v, rfl⟩`. Establish `ha' : S.subtype ∘ₗ a' = a` using `LinearMap.ext fun _ ↦ rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨s - a'.lTensor k u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← LinearMap.comp_apply, ← LinearMap.lTensor_comp, ha', hu]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem mem_range_of_closed (a : A₀ →ₗ[R] A₁) (b : A₁ →ₗ[R] A₂) (d : D₀ →ₗ[R] D₁) (d' : D₁ →ₗ[R] D₂)
     (ψ : A₁ →ₗ[R] D₁) (ψ' : A₂ →ₗ[R] D₂) (hψ : ψ' ∘ₗ b = d' ∘ₗ ψ) (S : Submodule R A₁)
@@ -49,9 +49,9 @@ theorem mem_range_of_closed (a : A₀ →ₗ[R] A₁) (b : A₁ →ₗ[R] A₂) 
   abel
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `LinearMap.lTensor_surjective k (Submodule.mkQ_surjective S) x`. Rewrite `hx` using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, Submodule.liftQ_mkQ]`. Take `⟨z, rfl⟩` from `h y hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp]`. Establish `: S.mkQ ∘ₗ S.subtype = 0` using `LinearMap.ext fun s ↦ by simp`. Rewrite using `[this, LinearMap.lTensor_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lTensor_liftQ_injective (b : A₁ →ₗ[R] A₂) (S : Submodule R A₁) (hSb : S ≤ LinearMap.ker b)
     (h : ∀ x, b.lTensor k x = 0 → x ∈ LinearMap.range (S.subtype.lTensor k)) :
@@ -72,9 +72,9 @@ section Split
 variable {R : Type} [CommRing R] {A₁ A₂ : Type} [AddCommGroup A₁] [Module R A₁] [AddCommGroup A₂] [Module R A₂]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `GlobalTheory.split_injective_of_forall_lTensor_residueField_injective (S.liftQ b hSb) fun m _ ↦ lTensor_liftQ_injective _ b S hSb (h m)`. Use `⟨le_antisymm hSb fun x hx ↦ ?_, r, hr⟩` and prove the remaining obligations. Establish `: Submodule.Quotient.mk (p` using `S) x = 0 := by`. Establish `h1` using `LinearMap.congr_fun hr (Submodule.Quotient.mk x)`. Simplify using `only [LinearMap.comp_apply, Submodule.liftQ_apply, LinearMap.mem_ker.1 hx, map_zero, LinearMap.id_apply] at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1.symm`. Conclude with `(Submodule.Quotient.mk_eq_zero S).1 this`.
+A detailed English derivation is pending.
 -/
 theorem eq_ker_and_split [Module.Finite R A₁] [Module.Finite R A₂] [Module.Projective R A₂] (b : A₁ →ₗ[R] A₂)
     (S : Submodule R A₁) (hSb : S ≤ LinearMap.ker b)
@@ -92,11 +92,11 @@ theorem eq_ker_and_split [Module.Finite R A₁] [Module.Finite R A₂] [Module.P
   exact (Submodule.Quotient.mk_eq_zero S).1 this
 
 /- English proof (translation)
-Establish `: Module.Projective R (A₁ ⧸ LinearMap.ker b)` using `Module.Projective.of_split ((LinearMap.ker b).liftQ b h0) r hr`. Take `⟨t, ht⟩` from `Module.projective_lifting_property (LinearMap.ker b).mkQ LinearMap.id (Submodule.mkQ_surjective _)`. Establish `hmem : ∀ x, (LinearMap.id - t ∘ₗ (LinearMap.ker b).mkQ : A₁ →ₗ[R] A₁) x ∈ LinearMap.ker b` using `fun x ↦ by`. Use `LinearMap.congr_fun ht ((LinearMap.ker b).mkQ x)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Submodule.Quotient.mk_eq_zero (LinearMap.ker b)).1 ?_` and prove the remaining obligations. Establish `h2 : Submodule.Quotient.mk (p` using `LinearMap.ker b) ((LinearMap.id - t ∘ₗ (LinearMap.ker b).mkQ : A₁ →ₗ[R] A₁) x) = (LinearMap.ker b).mkQ x - (LinearMap.ker b).mkQ (t ((LinearMap.ker b).mkQ x)) := rfl`. Rewrite using `[h2, this, sub_self]`. Use `⟨LinearMap.codRestrict _ _ hmem, LinearMap.ext fun ⟨x, hx⟩ ↦ Subtype.ext ?_⟩` and prove the remaining obligations. Establish `: (LinearMap.ker b).mkQ x = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.mem_ker, Submodule.ker_mkQ]`. Conclude with `hx`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_retract [Module.Projective R A₂] (b : A₁ →ₗ[R] A₂) (h0 : LinearMap.ker b ≤ LinearMap.ker b)
     (r : A₂ →ₗ[R] A₁ ⧸ LinearMap.ker b) (hr : r ∘ₗ (LinearMap.ker b).liftQ b h0 = LinearMap.id) :
@@ -118,9 +118,9 @@ theorem ker_retract [Module.Projective R A₂] (b : A₁ →ₗ[R] A₂) (h0 : L
   simp [this]
 
 /- English proof (translation)
-Use `⟨Module.Finite.of_surjective θ hθ, ?_⟩` and prove the remaining obligations. Set `e` to `θ.quotKerEquivOfSurjective hθ`. Set `σ : H →ₗ[R] Y` to `(LinearMap.ker θ).liftQ τ (fun y hy ↦ h1 y hy) ∘ₗ e.symm.toLinearMap`. Use `Module.Projective.of_split σ θ (LinearMap.ext fun c ↦ ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hθ c`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: e.symm (θ y) = Submodule.Quotient.mk y`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [σ, LinearMap.comp_apply, LinearEquiv.coe_coe, this, LinearMap.id_apply]`. Conclude with `h2 y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_projective_of_split {Y H : Type} [AddCommGroup Y] [Module R Y] [AddCommGroup H] [Module R H]
     [Module.Finite R Y] [Module.Projective R Y] (θ : Y →ₗ[R] H) (hθ : Function.Surjective θ) (τ : Y →ₗ[R] Y)
@@ -144,7 +144,7 @@ def Rep {R : Type} [CommRing R] (k : Type) [CommRing k] [Algebra R k] {A B : Typ
 @[reducible] def Pm {J : Type} {A B : J → Type} (c : ∀ i, A i → B i) : (∀ i, A i) → ∀ i, B i := fun a i ↦ c i (a i)
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite J`. Use `choose e he using h`. Use `⟨(TensorProduct.piRight R k k A).trans (LinearEquiv.piCongrRight e), fun a ↦ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[TensorProduct.piRight_apply, TensorProduct.piRightHom_tmul, he]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rep.pi {R : Type} [CommRing R] (k : Type) [CommRing k] [Algebra R k] {J : Type} [Finite J]
     {A B : J → Type} [∀ i, AddCommGroup (A i)] [∀ i, Module R (A i)] [∀ i, AddCommGroup (B i)]
@@ -164,9 +164,9 @@ variable {R k : Type} [CommRing R] [CommRing k] [Algebra R k] {A A' B B' : Type}
   [AddCommGroup B'] [Module k B']
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul l a`. Establish `h1 : l ⊗ₜ[R] a = l • ((1 : k) ⊗ₜ[R] a)` using `by simp [TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2 : l ⊗ₜ[R] d a = l • ((1 : k) ⊗ₜ[R] d a)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[LinearMap.lTensor_tmul, h1, h2, map_smul, map_smul, map_smul, he, he', h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ladder {c : A → B} {c' : A' → B'} (e : k ⊗[R] A ≃ₗ[k] B) (e' : k ⊗[R] A' ≃ₗ[k] B')
     (he : ∀ a, e (1 ⊗ₜ a) = c a) (he' : ∀ a, e' (1 ⊗ₜ a) = c' a) (d : A →ₗ[R] A') (δ : B →ₗ[k] B')
@@ -190,11 +190,11 @@ variable {R k : Type} [CommRing R] [CommRing k] [Algebra R k]
   [AddCommGroup Hh] [Module R Hh] [AddCommGroup Hh'] [Module k Hh'] [AddCommGroup X] [Module R X]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add a b ha hb`. Take `⟨w, h1, h2⟩` from `ha`. Take `⟨w', h1', h2'⟩` from `hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w + w', by simp [h1, h1'], by simp [h2, h2']⟩`. Consider the case `tmul l x`. Use `⟨l • ⟨c (q x), hz _ (q x).2⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : l ⊗ₜ[R] (Z.subtype ∘ₗ q) x = l • ((1 : k) ⊗ₜ[R] (q x).1)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[LinearMap.lTensor_tmul, h1, map_smul, he]`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1 : l ⊗ₜ[R] (mk ∘ₗ q) x = l • ((1 : k) ⊗ₜ[R] mk (q x))` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[LinearMap.lTensor_tmul, h1, map_smul, map_smul, hΦ]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cocycle (Z : Submodule R D₁) (Z' : Submodule k E₁) (mk : Z →ₗ[R] Hh) (mk' : Z' →ₗ[k] Hh')
     {c : D₁ → E₁} (e : k ⊗[R] D₁ ≃ₗ[k] E₁) (he : ∀ a, e (1 ⊗ₜ a) = c a) (hz : ∀ z ∈ Z, c z ∈ Z')
@@ -215,9 +215,9 @@ theorem exists_cocycle (Z : Submodule R D₁) (Z' : Submodule k E₁) (mk : Z �
       rw [LinearMap.lTensor_tmul, h1, map_smul, map_smul, hΦ]
 
 /- English proof (translation)
-Establish `hw : δ' (e₁ z) = 0` using `by rw [← ladder e₁ e₂ he₁ he₂ d' δ' hd' z, hz0, map_zero]`. Set `w : Z'` to `⟨e₁ z, hZ' _ hw⟩`. Take `⟨s, hs⟩` from `hsurj (mk' w)`. Take `⟨w', h1, h2⟩` from `exists_cocycle Z Z' mk mk' e₁ he₁ hz Φ hΦ q s`. Take `⟨y', hy'⟩` from `hmk' (w' - w) (by rw [map_sub, h2, hs, sub_self])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s, e₀.symm y', e₁.injective ?_⟩` and prove the remaining obligations. Rewrite using `[ladder e₀ e₁ he₀ he₁ d δ hd, LinearEquiv.apply_symm_apply, hy', map_sub, ← h1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem closed_surj (d : D₀ →ₗ[R] D₁) (d' : D₁ →ₗ[R] D₂) (δ : E₀ →ₗ[k] E₁) (δ' : E₁ →ₗ[k] E₂)
     {c₀ : D₀ → E₀} {c₁ : D₁ → E₁} {c₂ : D₂ → E₂}
@@ -240,15 +240,15 @@ theorem closed_surj (d : D₀ →ₗ[R] D₁) (d' : D₁ →ₗ[R] D₂) (δ : E
   rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨v, rfl⟩` from `LinearMap.lTensor_surjective k hθ t`. Take `⟨w, h1, h2⟩` from `exists_cocycle Z Z' mk mk' e₁ he₁ hz Φ hΦ q v`. Take `⟨y', hy'⟩` from `hmk' w (h2.trans ht)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hψq : Z.subtype ∘ₗ q = ψ ∘ₗ (LinearMap.ker b).subtype` using `LinearMap.ext hq`. Establish `hb0 : b ∘ₗ (LinearMap.ker b).subtype = 0` using `LinearMap.ext fun y ↦ y.2`. Establish `e1 : d.lTensor k (e₀.symm y') = ψ.lTensor k ((LinearMap.ker b).subtype.lTensor k v)`. Apply `e₁.injective` to reduce the goal to its premises. Rewrite using `[ladder e₀ e₁ he₀ he₁ d δ hd, LinearEquiv.apply_symm_apply, hy', h1, hψq, LinearMap.lTensor_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨u, hu⟩` from `hqk _ (by`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, hb0, LinearMap.lTensor_zero]`. Use the proof step `rfl) ⟨_, e1⟩`. Set `a' : A₀ →ₗ[R] LinearMap.ker b` to `a.codRestrict _ hab`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha' : (LinearMap.ker b).subtype ∘ₗ a' = a` using `LinearMap.ext fun _ ↦ rfl`. Establish `hv : v = a'.lTensor k u` using `hinj (by`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, ha']`. Conclude with `hu.symm)`. Establish `h0 : (mk ∘ₗ q) ∘ₗ a' = 0` using `LinearMap.ext hθa`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hv, ← LinearMap.comp_apply, ← LinearMap.lTensor_comp, h0, LinearMap.lTensor_zero]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem phi_injective {A₀ A₁ A₂ : Type} [AddCommGroup A₀] [Module R A₀] [AddCommGroup A₁] [Module R A₁]
     [AddCommGroup A₂] [Module R A₂] (a : A₀ →ₗ[R] A₁) (b : A₁ →ₗ[R] A₂) (hab : ∀ x, a x ∈ LinearMap.ker b)
@@ -283,7 +283,7 @@ theorem phi_injective {A₀ A₁ A₂ : Type} [AddCommGroup A₀] [Module R A₀
   rw [hv, ← LinearMap.comp_apply, ← LinearMap.lTensor_comp, h0, LinearMap.lTensor_zero]; rfl
 
 /- English proof (translation)
-Use `mem_range_of_closed k a b d d' ψ ψ' hψ S haS hSb hqk (fun z hz0 ↦ ?_) x hx` and prove the remaining obligations. Take `⟨s, y, h⟩` from `closed_surj d d' δ δ' e₀ e₁ e₂ he₀ he₁ he₂ hd hd' Z Z' hZ' mk mk' hmk' hz Φ hΦ q hsurj z hz0`. Use `⟨s, y, ?_⟩` and prove the remaining obligations. Establish `hψq : Z.subtype ∘ₗ q = ψ ∘ₗ S.subtype` using `LinearMap.ext hq`. Rewrite using `[← h, hψq, LinearMap.lTensor_comp]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -312,7 +312,7 @@ theorem fibre_generic {A₀ A₁ A₂ : Type} [AddCommGroup A₀] [Module R A₀
 end Deg
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul r a => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lid_lTensor {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
     (f : A →ₗ[R] B) (y : R ⊗[R] A) : TensorProduct.lid R B (f.lTensor R y) = f (TensorProduct.lid R A y) := by
@@ -322,11 +322,11 @@ theorem lid_lTensor {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A] [A
   | tmul r a => simp
 
 /- English proof (translation)
-Use `⟨fun x hx ⟨y, hy⟩ ↦ ?_, fun z hz ↦ ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `h.1 (1 ⊗ₜ x) (by simp [hx]) ⟨1 ⊗ₜ y, by simp [hy]⟩`. Use `⟨TensorProduct.lid R A₀ u, ?_⟩` and prove the remaining obligations. Rewrite using `[← lid_lTensor, hu]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨x, y, h1, h2⟩` from `h.2 (1 ⊗ₜ z) (by simp [hz])`. Use `⟨TensorProduct.lid R A₁ x, TensorProduct.lid R B₀ y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← lid_lTensor, h1, map_zero]`. Use `congrArg (TensorProduct.lid R B₁) h2` as an intermediate fact. Rewrite `this` using `[map_sub, lid_lTensor, lid_lTensor]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem qIso_unit {R A₀ A₁ A₂ B₀ B₁ B₂ : Type} [CommRing R] [AddCommGroup A₀] [AddCommGroup A₁] [AddCommGroup A₂]
     [AddCommGroup B₀] [AddCommGroup B₁] [AddCommGroup B₂] [Module R A₀] [Module R A₁] [Module R A₂] [Module R B₀]
@@ -358,24 +358,24 @@ def c2 : C2 F → C2 F' := Pm fun T ↦ Pm fun T' ↦ Pm fun T'' ↦ Pm fun _ �
 def c3 : C3 F → C3 F' := Pm fun T ↦ Pm fun T' ↦ Pm fun T'' ↦ Pm fun T''' ↦ Pm fun _ ↦ Pm fun _ ↦ Pm fun _ ↦ m.α T'''
 
 /- English proof (translation)
-The claim follows from `Rep.pi k _ fun T ↦ m.bij T`.
+A detailed English derivation is pending.
 -/
 theorem rep0 [Finite C] : Rep (R := R) k (c0 m) := Rep.pi k _ fun T ↦ m.bij T
 
 /- English proof (translation)
-The claim follows from `Rep.pi k _ fun T ↦ Rep.pi k _ fun T' ↦ Rep.pi k _ fun _ ↦ m.bij T'`.
+A detailed English derivation is pending.
 -/
 theorem rep1 [Finite C] [∀ T T' : C, Finite (T ⟶ T')] : Rep (R := R) k (c1 m) :=
   Rep.pi k _ fun T ↦ Rep.pi k _ fun T' ↦ Rep.pi k _ fun _ ↦ m.bij T'
 
 /- English proof (translation)
-The claim follows from `Rep.pi k _ fun T ↦ Rep.pi k _ fun T' ↦ Rep.pi k _ fun T'' ↦ Rep.pi k _ fun _ ↦ Rep.pi k _ fun _ ↦ m.bij T''`.
+A detailed English derivation is pending.
 -/
 theorem rep2 [Finite C] [∀ T T' : C, Finite (T ⟶ T')] : Rep (R := R) k (c2 m) :=
   Rep.pi k _ fun T ↦ Rep.pi k _ fun T' ↦ Rep.pi k _ fun T'' ↦ Rep.pi k _ fun _ ↦ Rep.pi k _ fun _ ↦ m.bij T''
 
 /- English proof (translation)
-The claim follows from `Rep.pi k _ fun T ↦ Rep.pi k _ fun T' ↦ Rep.pi k _ fun T'' ↦ Rep.pi k _ fun T''' ↦ Rep.pi k _ fun _ ↦ Rep.pi k _ fun _ ↦ Rep.pi k _ fun _ ↦ m.bij T'''`.
+A detailed English derivation is pending.
 -/
 theorem rep3 [Finite C] [∀ T T' : C, Finite (T ⟶ T')] : Rep (R := R) k (c3 m) :=
   Rep.pi k _ fun T ↦ Rep.pi k _ fun T' ↦ Rep.pi k _ fun T'' ↦ Rep.pi k _ fun T''' ↦ Rep.pi k _ fun _ ↦
@@ -389,30 +389,30 @@ theorem d2_apply {S : Type} [CommRing S] (G : C ⥤ CommAlgCat.{0} S) (z : C2 G)
       z T T' T''' φ (ψ ≫ χ) - mp G χ (z T T' T'' φ ψ) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' φ`. Simplify using `only [c1, c0, Pm, amitsur_d0_apply, map_sub, m.naturality]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isOneCochain_diffZero (g : C0 F) : c1 m (d0 F g) = d0 F' (c0 m g) := by
   funext T T' φ
   simp only [c1, c0, Pm, amitsur_d0_apply, map_sub, m.naturality]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' T'' φ ψ`. Simplify using `only [c1, c2, Pm, d1_apply, map_sub, map_add, m.naturality]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isTwoCochain_diffOne (f : C1 F) : c2 m (d1 F f) = d1 F' (c1 m f) := by
   funext T T' T'' φ ψ
   simp only [c1, c2, Pm, d1_apply, map_sub, map_add, m.naturality]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' T'' T''' φ ψ χ`. Simplify using `only [c3, c2, Pm, d2_apply, map_sub, map_add, m.naturality]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cochain_map_degree_three_d2 (z : C2 F) : c3 m (d2 F z) = d2 F' (c2 m z) := by
   funext T T' T'' T''' φ ψ χ
   simp only [c3, c2, Pm, d2_apply, map_sub, map_add, m.naturality]
 
 /- English proof (translation)
-Use `⟨fun h ↦ ?_, fun h T T' T'' T''' φ ψ χ ↦ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' T''' φ ψ χ`. Use `h φ ψ χ` as an intermediate fact. Rewrite using `[d2_apply]`. Simplify using `only [Pi.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `-this`. Use `congrFun (congrFun (congrFun (congrFun (congrFun (congrFun (congrFun h T) T') T'') T''') φ) ψ) χ` as an intermediate fact. Rewrite `this` using `[d2_apply]`. Simplify using `only [Pi.zero_apply] at this`. Take the linear combination `-this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mem_Z2_iff {S : Type} [CommRing S] (G : C ⥤ CommAlgCat.{0} S) (z : C2 G) : z ∈ Z2 G ↔ d2 G z = 0 := by
   refine ⟨fun h ↦ ?_, fun h T T' T'' T''' φ ψ χ ↦ ?_⟩
@@ -456,25 +456,25 @@ variable {k : Type} [CommRing k] [Algebra R k] {F' : C ⥤ CommAlgCat.{0} k}
 def Phi2 (m : BC F F') : k ⊗[R] H2 F →ₗ[k] H2 F' := GlobalTheory.DeRham.liftSemi m.coef.pull2
 
 /- English proof (translation)
-Simplify using `[Phi2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Phi2_one (m : BC F F') (c : H2 F) : Phi2 m (1 ⊗ₜ c) = m.coef.pull2 c := by
   simp [Phi2]
 
 /- English proof (translation)
-Set `f : k ⊗[R] X →ₗ[k] H2 F'` to `Phi2 m ∘ₗ (H2.mk F ∘ₗ q).baseChange k`. Establish `hf : ∀ s, f s = Phi2 m ((H2.mk F ∘ₗ q).lTensor k s)` using `fun s ↦ rfl`. Establish `key0 : ∀ (l l' : k) (a b : H1 F), cup F' (e (l ⊗ₜ a)) (e (l' ⊗ₜ b)) ∈ LinearMap.range f`. Introduce `l l' a b`. Take `⟨x, hx⟩` from `hcup a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ (l : k) (a : H1 F), e (l ⊗ₜ a) = l • m.coef.pull1 a` using `fun l a ↦ by`. Rewrite using `[← he, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[h1, h1, map_smul, map_smul, LinearMap.smul_apply, ← m.coef.pullCohomologyTwo_cup, ← hx, ← Phi2_one]`. Use `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ ⟨1 ⊗ₜ x, ?_⟩)` and prove the remaining obligations. Simplify using `[hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ a b : H1 F', cup F' a b ∈ LinearMap.range f`. Introduce `a b`. Take `⟨ta, rfl⟩` from `e.surjective a`. Take `⟨tb, rfl⟩` from `e.surjective b`. Proceed by induction on `ta using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add u v hu hv => rw [map_add, map_add, LinearMap.add_apply]`. Conclude with `add_mem hu hv`. Consider the case `tmul l a`. Proceed by induction on `tb using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add u v hu hv => rw [map_add, map_add]`. Conclude with `add_mem hu hv`. Consider the case `tmul l' b => exact key0 l l' a b`. Take `⟨E, hE⟩` from `hW`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hall : (⊤ : Submodule k (⋀[k]^2 (H1 F'))) ≤ (LinearMap.range f).comap E.toLinearMap`. Rewrite using `[← exteriorPower.ιMulti_span, Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Establish `hv : v = ![v 0, v 1]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearEquiv.coe_coe]`. Rewrite using `[hv, hE]`. Conclude with `key _ _`. Take `⟨s, hs⟩` from `hall (Submodule.mem_top (x := E.symm c))`. Conclude with `⟨s, by rw [← hf, hs]; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem second_cohomology_comparison_surjective (m : BC F F') {X : Type} [AddCommGroup X] [Module R X] (q : X →ₗ[R] Z2 F)
     (hcup : ∀ a b, ∃ x, H2.mk F (q x) = cup F a b) (e : k ⊗[R] H1 F ≃ₗ[k] H1 F')
@@ -517,9 +517,9 @@ theorem second_cohomology_comparison_surjective (m : BC F F') {X : Type} [AddCom
 variable [Finite C] [∀ T T' : C, Finite (T ⟶ T')]
 
 /- English proof (translation)
-Take `⟨e₀, he₀⟩` from `rep0 m`. Take `⟨e₁, he₁⟩` from `rep1 m`. Take `⟨e₂, he₂⟩` from `rep2 m`. Use `fibre_generic a₀ a₁ ψ₁ ψ₂ (d0 F) (d1 F) hc2 (d0 F') (d1 F') e₀ e₁ e₂ he₀ he₁ he₂ (isOneCochain_diffZero m) (isTwoCochain_diffOne m) (Z1 F) (Z1 F') (fun w hw ↦ by rw [commAlgFunctorCocyclesOne_eq_ker]; exact hw) (H1.mk F) (H1.mk F') (fun w hw ↦ H1.mk_eq_zero.1 hw) (fun z hz ↦ (m.c …` and prove the remaining obligations. Take `⟨s, hs'⟩` from `LinearMap.lTensor_surjective k hs (e.symm c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, by simp [hs']⟩`.
+Supply the required witnesses or components.
 -/
 theorem fibre1 (m : BC F F') (h10 : a₁ ∘ₗ a₀ = 0) (hc2 : ψ₂ ∘ₗ a₁ = d1 F ∘ₗ ψ₁)
     (e : k ⊗[R] H1 F ≃ₗ[k] H1 F') (he : ∀ c, e (1 ⊗ₜ c) = m.coef.pull1 c)
@@ -539,7 +539,7 @@ theorem fibre1 (m : BC F F') (h10 : a₁ ∘ₗ a₀ = 0) (hc2 : ψ₂ ∘ₗ a�
   exact ⟨s, by simp [hs']⟩
 
 /- English proof (translation)
-Take `⟨e₁, he₁⟩` from `rep1 m`. Take `⟨e₂, he₂⟩` from `rep2 m`. Take `⟨e₃, he₃⟩` from `rep3 m`. Conclude with `fibre_generic a₁ a₂ ψ₂ ψ₃ (d1 F) (d2 F) hc3 (d1 F') (d2 F') e₁ e₂ e₃ he₁ he₂ he₃ (isTwoCochain_diffOne m) (cochain_map_degree_three_d2 m) (Z2 F) (Z2 F') (fun w hw ↦ (mem_Z2_iff F' w).2 hw) (H2.mk F) (H2.mk F') (fun w hw ↦ H2.mk_eq_zero.1 hw) (fun z hz ↦ (m.coef.pullbackTwoCocycle …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fibre2 (m : BC F F') (hc2 : ψ₂ ∘ₗ a₁ = d1 F ∘ₗ ψ₁) (hc3 : ψ₃ ∘ₗ a₂ = d2 F ∘ₗ ψ₂)
     (e : k ⊗[R] H1 F ≃ₗ[k] H1 F') (he : ∀ c, e (1 ⊗ₜ c) = m.coef.pull1 c) (hW : Wedge F')
@@ -557,7 +557,7 @@ theorem fibre2 (m : BC F F') (hc2 : ψ₂ ∘ₗ a₁ = d1 F ∘ₗ ψ₁) (hc3 
     (second_cohomology_comparison_surjective m _ hcup e he hW) hq x hx
 
 /- English proof (translation)
-Take `⟨e₁, he₁⟩` from `rep1 m`. Take `⟨e₂, he₂⟩` from `rep2 m`. Establish `hab : ∀ x, a₁ x ∈ LinearMap.ker a₂` using `fun x ↦ LinearMap.congr_fun h21 x`. Use `phi_injective a₁ a₂ hab ψ₂ (d1 F) (d1 F') e₁ e₂ he₁ he₂ (isTwoCochain_diffOne m) (Z2 F) (Z2 F') (H2.mk F) (H2.mk F') (fun w hw ↦ H2.mk_eq_zero.1 hw) (fun z hz ↦ (m.coef.pullbackTwoCocycle ⟨z, hz⟩).2) (Phi2 m) (fun z ↦ Phi2_one m _) (q2 a₂ ψ₂ ψ₃ hc3) (fun _ ↦ rfl) hθ (fun x ↦ ?_) …` and prove the remaining obligations. Conclude with `H2.mk_eq_zero.2 ⟨ψ₁ x, (LinearMap.congr_fun hc2 x).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem second_cohomology_comparison_injective (m : BC F F') (hc2 : ψ₂ ∘ₗ a₁ = d1 F ∘ₗ ψ₁) (hc3 : ψ₃ ∘ₗ a₂ = d2 F ∘ₗ ψ₂)
     (h21 : a₂ ∘ₗ a₁ = 0) (hθ : Function.Surjective (H2.mk F ∘ₗ q2 a₂ ψ₂ ψ₃ hc3))
@@ -578,47 +578,43 @@ section Core
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] [Finite C] [∀ T T' : C, Finite (T ⟶ T')]
 
 /- English proof (translation)
-Take `⟨P₀, P₁, P₂, P₃, a₀, a₁, a₂, ψ₀, ψ₁, ψ₂, ⟨f0, p0⟩, ⟨f1, p1⟩, ⟨f2, p2⟩, ⟨f3, p3⟩, h10, h21, hc1, hc2, ⟨ψ₃, hc3⟩, hQ⟩` from `hP`. Establish `hq1 : ∀ (k : Type) [CommRing k] [Algebra R k] (x : k ⊗[R] P₁), a₁.lTensor k x = 0 → (∃ y, (d0 F).lTensor k y = ψ₁.lTensor k x) → ∃ y, a₀.lTensor k y = x` using `fun k _ _ ↦ (hQ (ModuleCat.of R k)).2.1.1`. Establish `hq2 : ∀ (k : Type) [CommRing k] [Algebra R k] (x : k ⊗[R] P₂), a₂.lTensor k x = 0 → (∃ y, (d1 F).lTensor k y = ψ₂.lTensor k x) → ∃ y, a₁.lTensor k y = x` using `fun k _ _ ↦ (hQ (ModuleCat.of R k)).2.2.1`. Establish `hR1 : QIsoAt a₀ a₁ (d0 F) (d1 F) ψ₁` using `qIso_unit _ _ _ _ _ (hQ (ModuleCat.of R R)).2.1`. Establish `hR2 : QIsoAt a₁ a₂ (d1 F) (d2 F) ψ₂` using `qIso_unit _ _ _ _ _ (hQ (ModuleCat.of R R)).2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ₁ : Function.Surjective (H1.mk F ∘ₗ q1 a₁ ψ₁ ψ₂ hc2)` using `fun c ↦ by`. Take `⟨z, rfl⟩` from `H1.mk_surjective F c`. Establish `hz : z.1 ∈ LinearMap.ker (d1 F)` using `(commAlgFunctorCocyclesOne_eq_ker F).le z.2`. Take `⟨x, y, hx, h⟩` from `hR1.2 z.1 hz`. Conclude with `⟨⟨x, hx⟩, H1.mk_eq_mk.2 ⟨y, h.symm⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hθ₂ : Function.Surjective (H2.mk F ∘ₗ q2 a₂ ψ₂ ψ₃ hc3)` using `fun c ↦ by`. Take `⟨z, rfl⟩` from `H2.mk_surjective F c`. Take `⟨x, y, hx, h⟩` from `hR2.2 z.1 ((mem_Z2_iff F z.1).1 z.2)`. Conclude with `⟨⟨x, hx⟩, H2.mk_eq_mk.2 ⟨y, h.symm⟩⟩`. Use `set S' : Submodule R (H2 F) := Submodule.span R (Set.range fun x : H1 F × H1 F ↦ cup F x.1 x.2) with hS'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set W : Submodule R P₂ := (S'.comap (H2.mk F ∘ₗ q2 a₂ ψ₂ ψ₃ hc3)).map (LinearMap.ker a₂).subtype with hWdef`. Establish `hWle : W ≤ LinearMap.ker a₂` using `Submodule.map_subtype_le _ _`. Establish `haW : LinearMap.range a₁ ≤ W`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨⟨a₁ x, LinearMap.congr_fun h21 x⟩, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (H2.mk F ∘ₗ q2 a₂ ψ₂ ψ₃ hc3) ⟨a₁ x, LinearMap.congr_fun h21 x⟩ = 0` using `H2.mk_eq_zero.2 ⟨ψ₁ x, (LinearMap.congr_fun hc2 x).symm⟩`. Conclude with `Submodule.mem_comap.2 (this ▸ S'.zero_mem)`. Establish `hcup : ∀ a b, ∃ x : W, H2.mk F (q2 a₂ ψ₂ ψ₃ hc3 (Submodule.inclusion hWle x)) = cup F a b` using `fun a b ↦ by`. Take `⟨y, hy⟩` from `hθ₂ (cup F a b)`. Use `⟨⟨y.1, y, ?_, rfl⟩, hy⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(Submodule.mem_comap.2 (hy ▸ Submodule.subset_span ⟨(a, b), rfl⟩))`. Establish `hk1 : ∀ (m : Ideal R) [m.IsMaximal] (x : m.ResidueField ⊗[R] P₁), a₁.lTensor m.ResidueField x = 0 → x ∈ LinearMap.range ((LinearMap.ker a₁).subtype.lTensor m.ResidueField)` using `fun m _ x hx ↦ by`. Take `⟨F', bc, -⟩` from `hW m.ResidueField`. Take `⟨e, he⟩` from `hBC m.ResidueField F' bc`. Conclude with `fibre1 a₀ a₁ ψ₁ ψ₂ bc h10 hc2 e he hθ₁ (hq1 _) x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk2 : ∀ (m : Ideal R) [m.IsMaximal] (x : m.ResidueField ⊗[R] P₂), a₂.lTensor m.ResidueField x = 0 → x ∈ LinearMap.range (W.subtype.lTensor m.ResidueField)` using `fun m _ x hx ↦ by`. Take `⟨F', bc, hw⟩` from `hW m.ResidueField`. Take `⟨e, he⟩` from `hBC m.ResidueField F' bc`. Conclude with `fibre2 a₁ a₂ ψ₁ ψ₂ ψ₃ bc hc2 hc3 e he hw W haW hWle hcup (hq2 _) x hx`. Take `⟨-, r₁, hr₁⟩` from `eq_ker_and_split a₁ (LinearMap.ker a₁) le_rfl hk1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hWeq, -⟩` from `eq_ker_and_split a₂ W hWle hk2`. Establish `hk2' : ∀ (m : Ideal R) [m.IsMaximal] (x : m.ResidueField ⊗[R] P₂), a₂.lTensor m.ResidueField x = 0 → x ∈ LinearMap.range ((LinearMap.ker a₂).subtype.lTensor m.ResidueField)`. Rewrite using `[← hWeq]`. Conclude with `hk2`. Take `⟨-, r₂, hr₂⟩` from `eq_ker_and_split a₂ (LinearMap.ker a₂) le_rfl hk2'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ρ, hρ⟩` from `ker_retract a₂ le_rfl r₂ hr₂`. Establish `hYp : Module.Projective R (LinearMap.ker a₂)` using `Module.Projective.of_split (LinearMap.ker a₂).subtype ρ hρ`. Establish `hYf : Module.Finite R (LinearMap.ker a₂)` using `Module.Finite.of_surjective ρ fun y ↦ ⟨y.1, LinearMap.congr_fun hρ y⟩`. Set `l₁ : P₁ ⧸ LinearMap.ker a₁ →ₗ[R] P₂` to `(LinearMap.ker a₁).liftQ a₁ le_rfl`. Set `π : P₂ →ₗ[R] P₂` to `l₁ ∘ₗ r₁`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hπ1 : ∀ x, π (a₁ x) = a₁ x` using `fun x ↦ by`. Use `LinearMap.congr_fun hr₁ (Submodule.Quotient.mk x)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, Submodule.liftQ_apply] at this`. Simplify using `only [π, LinearMap.comp_apply, this]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ2 : ∀ y, ∃ x, π y = a₁ x` using `fun y ↦ by`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (r₁ y)`. Conclude with `⟨x, by simp only [π, LinearMap.comp_apply, ← hx]; rfl⟩`. Establish `hτ : ∀ y : LinearMap.ker a₂, ((LinearMap.id - π) ∘ₗ (LinearMap.ker a₂).subtype) y ∈ LinearMap.ker a₂` using `fun y ↦ by`. Take `⟨x, hx⟩` from `hπ2 y.1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : a₂ y.1 = 0` using `y.2`. Establish `h2 : a₂ (a₁ x) = 0` using `LinearMap.congr_fun h21 x`. Simplify using `[hx, h1, h2]`. Establish `hb0 : ∀ (x : P₁) (hx : a₁ x ∈ LinearMap.ker a₂), (H2.mk F ∘ₗ q2 a₂ ψ₂ ψ₃ hc3) ⟨a₁ x, hx⟩ = 0` using `fun x _ ↦ H2.mk_eq_zero.2 ⟨ψ₁ x, (LinearMap.congr_fun hc2 x).symm⟩`. Establish `hFP : Module.Finite R (H2 F) ∧ Module.Projective R (H2 F)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `finite_projective_of_split (H2.mk F ∘ₗ q2 a₂ ψ₂ ψ₃ hc3) hθ₂ (LinearMap.codRestrict _ _ hτ) (fun y hy ↦ ?_) (fun y ↦ ?_)` and prove the remaining obligations. Take `⟨f, hf⟩` from `H2.mk_eq_zero.1 hy`. Take `⟨u, hu⟩` from `hR2.1 y.1 y.2 ⟨f, hf⟩`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show y.1 - π y.1 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hu, hπ1, sub_self]`. Take `⟨x, hx⟩` from `hπ2 y.1`. Establish `hm : a₁ x ∈ LinearMap.ker a₂` using `LinearMap.congr_fun h21 x`. Establish `h1 : LinearMap.codRestrict _ _ hτ y = y - ⟨a₁ x, hm⟩` using `Subtype.ext (by show y.1 - π y.1 = y.1 - a₁ x`. Rewrite using `[hx])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_sub, hb0, sub_zero]`. Take `⟨hfin, hproj⟩` from `hFP`. Use `⟨⟨hfin, hproj, fun p ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨hf1, hp1, hr⟩` from `hV`. Take `⟨F', bc, hw⟩` from `hW p.asIdeal.ResidueField`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e, he⟩` from `hBC _ F' bc`. Establish `hinj : Function.Injective ((LinearMap.ker a₂).subtype.lTensor p.asIdeal.ResidueField)` using `Function.LeftInverse.injective (g := ρ.lTensor _) fun x ↦ by`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, hρ, LinearMap.lTensor_id]`. Both sides reduce to the same expression. Establish `hΦi` using `second_cohomology_comparison_injective a₁ a₂ ψ₁ ψ₂ ψ₃ bc hc2 hc3 h21 hθ₂ (hq2 _) hinj`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦs : Function.Surjective (Phi2 bc)` using `fun c ↦ by`. Take `⟨s, hs⟩` from `second_cohomology_comparison_surjective bc (q2 a₂ ψ₂ ψ₃ hc3) (fun a b ↦ hθ₂ (cup F a b)) e he hw c`. Conclude with `⟨_, hs⟩`. Set `E` to `LinearEquiv.ofBijective (Phi2 bc) ⟨hΦi, hΦs⟩`. Take `⟨E2, -⟩` from `hw`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Module.finrank p.asIdeal.ResidueField (H1 F') = g`. Rewrite using `[← e.finrank_eq]`. Use `Module.rankAtStalk_eq (M := H1 F) p` as an intermediate fact. Rewrite `this` using `[hr p]`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin' : Module.Finite p.asIdeal.ResidueField (H1 F')` using `Module.Finite.equiv e`. Rewrite using `[Module.rankAtStalk_eq p]`. Use `show Module.finrank _ (p.asIdeal.ResidueField ⊗[R] H2 F) = _`. Rewrite using `[E.finrank_eq, ← E2.finrank_eq, exteriorPower.finrank_eq, h1]`. Rewrite using `[eq_top_iff]`.
-
-Introduce `c _`. Take `⟨y, rfl⟩` from `hθ₂ c`. Establish `hy : y.1 ∈ W` using `hWeq.symm ▸ y.2`. Take `⟨y', hy', he⟩` from `hy`. Establish `: y' = y` using `Subtype.ext he`.
-
-Substitute `this` using the available equality. Conclude with `hy'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem core (F : C ⥤ CommAlgCat.{0} R) (g : ℕ) (hP : Perf F) (hV : VB R (H1 F) g) (hBC : H1CommutesBaseChange F)
     (hW : ∀ (k : Type) [Field k] [Algebra R k], ∃ (F' : C ⥤ CommAlgCat.{0} k) (_ : BC F F'), Wedge F') :
@@ -743,7 +739,7 @@ theorem core (F : C ⥤ CommAlgCat.{0} R) (g : ℕ) (hP : Perf F) (hV : VB R (H1
 end Core
 
 /- English proof (translation)
-Introduce `R _ P _ _ F g hP _ hV hBC hW`. Use `haveI : Finite Pᵒᵖ := Finite.of_equiv P Opposite.equivToOpposite`. Use `haveI : ∀ T T' : Pᵒᵖ, Finite (T ⟶ T') := fun _ _ ↦ inferInstance`. Conclude with `core F g hP hV hBC hW`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem perfect_second_cohomology_from_fibres : PerfectH2FromFibres := by
   intro R _ P _ _ F g hP _ hV hBC hW

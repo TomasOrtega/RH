@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 theorem finRat_apply (a : D.host.E) : finRat D a = pairA D.host.F 0 1 ⊗ₜ[D.host.F] a := rfl
 
 /- English proof (translation)
-Establish `h1 : (1 : AF D.host.F) = pairA D.host.F 1 0 + pairA D.host.F 0 1` using `Prod.ext (add_zero (1 : Ainf D.host.F)).symm (zero_add (1 : Af D.host.F)).symm`. Rewrite using `[finRat_apply]`. Use `show (1 : AF D.host.F) ⊗ₜ[D.host.F] a - _ = _`. Rewrite using `[h1, TensorProduct.add_tmul, add_sub_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finRat_eq (a : D.host.E) : incA D a - pairA D.host.F 1 0 ⊗ₜ[D.host.F] a = finRat D a := by
   have h1 : (1 : AF D.host.F) = pairA D.host.F 1 0 + pairA D.host.F 0 1 :=
@@ -38,7 +38,7 @@ theorem finRat_eq (a : D.host.E) : incA D a - pairA D.host.F 1 0 ⊗ₜ[D.host.F
   rw [h1, TensorProduct.add_tmul, add_sub_cancel_left]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (a ⊗ₜ[D.host.F] e) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem infPart_tmul' (a : AF D.host.F) (e : D.host.E) :
     infPart D (a ⊗ₜ[D.host.F] e) = fstA D.host.F a ⊗ₜ[D.host.F] e := by
@@ -46,7 +46,7 @@ private theorem infPart_tmul' (a : AF D.host.F) (e : D.host.E) :
   rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
 
 /- English proof (translation)
-Rewrite using `[finRat_apply, infPart_tmul']`. Establish `h0 : fstA D.host.F (pairA D.host.F 0 1) = 0` using `rfl`. Rewrite using `[h0, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_finRat (a : D.host.E) : infPart D (finRat D a) = 0 := by
   rw [finRat_apply, infPart_tmul']
@@ -54,7 +54,7 @@ theorem infPart_finRat (a : D.host.E) : infPart D (finRat D a) = 0 := by
   rw [h0, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).sum_repr w]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_witt_eq_teich_add_p_teich_frob_symm_add_p_sq_mul (w : AE D) :
     w = ∑ i, (Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).repr w i ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E i := by
@@ -63,9 +63,9 @@ private theorem exists_witt_eq_teich_add_p_teich_frob_symm_add_p_sq_mul (w : AE 
   rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `h1 : infPart D z = ∑ j, fstA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).repr z j) • Algebra.TensorProduct.basis (Ainf D.host.F) (Module.finBasis D.host.F D.host.E) j` using `by conv_lhs => rw [exists_witt_eq_teich_add_p_teich_frob_symm_add_p_sq_mul z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[infPart_tmul', Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h2` using `congrArg (fun v => (Algebra.TensorProduct.basis (Ainf D.host.F) (Module.finBasis D.host.F D.host.E)).repr v i) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hz, map_zero, Finsupp.coe_zero, Pi.zero_apply, Module.Basis.repr_sum_self] at h2`. Conclude with `h2.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fstA_basis_repr_eq_zero_of_infPart_eq_zero {z : AE D} (hz : infPart D z = 0) (i : Fin (Module.finrank D.host.F D.host.E)) :
     fstA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).repr z i) = 0 := by
@@ -81,7 +81,7 @@ private theorem fstA_basis_repr_eq_zero_of_infPart_eq_zero {z : AE D} (hz : infP
   exact h2.symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [exists_witt_eq_teich_add_p_teich_frob_symm_add_p_sq_mul z]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Prod.ext (fstA_basis_repr_eq_zero_of_infPart_eq_zero hz i) rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem eq_sum_pairA_zero_tmul_finBasis_of_infPart_eq_zero {z : AE D} (hz : infPart D z = 0) :
     z = ∑ i, pairA D.host.F 0 (sndA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).repr z i)) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E i := by
@@ -91,15 +91,13 @@ private theorem eq_sum_pairA_zero_tmul_finBasis_of_infPart_eq_zero {z : AE D} (h
   exact Prod.ext (fstA_basis_repr_eq_zero_of_infPart_eq_zero hz i) rfl
 
 /- English proof (translation)
-Establish `hd : DenseRange (Pi.map fun _ : Fin (Module.finrank D.host.F D.host.E) => ⇑(algebraMap D.host.F (Af D.host.F)))` using `DenseRange.piMap fun _ => AdeleCharTwist.denseRange_fin`. Establish `hc : Continuous fun y : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F => ∑ i, pairA D.host.F 0 (y i) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E i`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun a : AF D.host.F => a ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E i`. Establish `he : (fun a : AF D.host.F => a ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E i) = fun a => a • ((1 : AF D.host.F) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[he]`. Conclude with `Continuous.smul (M := AF D.host.F) (X := AE D) continuous_id continuous_const`. Establish `h2 : Continuous fun y : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F => pairA D.host.F 0 (y i)` using `by show Continuous fun y : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F => ((0 : Ainf D.host.F), y i)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuous_const.prodMk (continuous_apply i)`. Conclude with `h1.comp h2`. Establish `hm : Set.MapsTo (fun y : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F => ∑ i, pairA D.host.F 0 (y i) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E i) (Set.range (Pi.map fun _ : Fin (Module.finrank D.host.F D.host.E) => ⇑(algebraMap D.host.F (Af D.host.F)))) (Set.range (f …`. Introduce and unpack `_ ⟨q, rfl⟩`. Use `⟨∑ i, q i • Module.finBasis D.host.F D.host.E i, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[finRat_apply, ← TensorProduct.smul_tmul]`. Use `congr 1`. Conclude with `Prod.ext (smul_zero (q i)) ((Algebra.smul_def (q i) (1 : Af D.host.F)).trans (mul_one _))`.
-
-Establish `hz'` using `map_mem_closure hc (hd fun i => sndA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).repr z i)) hm`. Rewrite using `[eq_sum_pairA_zero_tmul_finBasis_of_infPart_eq_zero hz]`. Conclude with `hz'`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_finRat {z : AE D} (hz : infPart D z = 0) : z ∈ closure (Set.range (finRat D)) := by
   have hd : DenseRange (Pi.map fun _ : Fin (Module.finrank D.host.F D.host.E) =>
@@ -135,9 +133,9 @@ theorem mem_closure_finRat {z : AE D} (hz : infPart D z = 0) : z ∈ closure (Se
   exact hz'
 
 /- English proof (translation)
-Establish `h1 : ∀ i j, y i j ∈ closure (Set.range (finRat D))` using `fun i j => mem_closure_finRat (by simpa using congrFun (congrFun hy i) j)`. Establish `h2 : (y : Fin m → Fin n → AE D) ∈ closure (Set.univ.pi fun _ : Fin m => Set.univ.pi fun _ : Fin n => Set.range (finRat D))`. Use `mem_closure_pi.mpr fun i _ => ?_` and prove the remaining obligations. Use `mem_closure_pi.mpr fun j _ => ?_` and prove the remaining obligations. Conclude with `h1 i j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `closure_mono ?_ h2` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : ∀ i j, ∃ a, finRat D a = x i j` using `fun i j => hx i (Set.mem_univ i) j (Set.mem_univ j)`. Use `choose ℓ hℓ using hx'`. Conclude with `⟨Matrix.of ℓ, by ext i j; exact hℓ i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_closure_mat {m n : ℕ} {y : Mx D m n} (hy : y.map (infPart D) = 0) :
     y ∈ closure (Set.range fun ℓ : Matrix (Fin m) (Fin n) D.host.E => (ℓ.map (finRat D) : Mx D m n)) := by
@@ -155,7 +153,7 @@ theorem mem_closure_mat {m n : ℕ} {y : Mx D m n} (hy : y.map (infPart D) = 0) 
   exact ⟨Matrix.of ℓ, by ext i j; exact hℓ i j⟩
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hx, Matrix.mul_zero, Matrix.zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_fin {S T : HSp D} (g : GA D S) (h : GA D T) {x : WO S T} (hx : x.map (infPart D) = 0) :
     (actO S T g h x).map (infPart D) = 0 := by
@@ -163,7 +161,7 @@ theorem actO_fin {S T : HSp D} (g : GA D S) (h : GA D T) {x : WO S T} (hx : x.ma
   rw [Matrix.map_mul, Matrix.map_mul, hx, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Use `haveI := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Unfold `actO`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem continuous_actO_one {S T : HSp D} (h : GA D T) : Continuous (actO S T 1 h) := by
   haveI := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
@@ -171,15 +169,13 @@ private theorem continuous_actO_one {S T : HSp D} (h : GA D T) : Continuous (act
   fun_prop
 
 /- English proof (translation)
-Use `haveI := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Take `⟨U, hUo, hU⟩` from `hf.level`. Establish `hy : (actO S T 1 g x).map (infPart D) = 0` using `actO_fin 1 g hx`. Establish `hVo : IsOpen {v : WO S T | actO S T 1 g⁻¹ (actO S T 1 g x - v) ∈ U}` using `hUo.preimage ((continuous_actO_one (S := S) g⁻¹).comp (continuous_const.sub continuous_id))`. Establish `h0 : actO S T 1 g⁻¹ 0 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00` using `GlobalTheory.HeckeVacuum.act_sub g⁻¹ (0 : WO S T) 0`. Rewrite `h00` using `[sub_self, sub_self]`. Then use the resulting hypothesis. Establish `hyV : actO S T 1 g x ∈ {v : WO S T | actO S T 1 g⁻¹ (actO S T 1 g x - v) ∈ U}` using `by show actO S T 1 g⁻¹ (actO S T 1 g x - actO S T 1 g x) ∈ U`. Rewrite using `[sub_self, h0]`. Conclude with `U.zero_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, hvV, ℓ, rfl⟩` from `mem_closure_iff.mp (mem_closure_mat (m := T.rank) (n := S.rank) hy) _ hVo hyV`. Establish `hrat : ratW T S ℓ - GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt S T ℓ = (ℓ.map (finRat D) : WO S T)`. Use extensionality with `i j`. Conclude with `finRat_eq (ℓ i j)`. Establish `key : actO S T 1 g⁻¹ (ratW T S ℓ - GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt S T ℓ) = actO S T 1 g⁻¹ (ℓ.map (finRat D))` using `congrArg _ hrat`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hw : (actO S T 1 g⁻¹ (actO S T 1 g x - ℓ.map (finRat D))).map (infPart D) = 0`. Use `actO_fin 1 g⁻¹ ?_` and prove the remaining obligations. Use extensionality with `i j`. Establish `hij : infPart D (actO S T 1 g x i j) = 0` using `by simpa using congrFun (congrFun hy i) j`. Simplify using `[hij, infPart_finRat]`.
-
-Use `⟨ℓ, actO S T 1 g⁻¹ (actO S T 1 g x - ℓ.map (finRat D)), hw, hU (actO S T 1 g⁻¹ (actO S T 1 g x - ℓ.map (finRat D))) hvV hw, ?_⟩` and prove the remaining obligations. Rewrite using `[key, GlobalTheory.HeckeVacuum.act_sub, add_sub_cancel, ← GlobalTheory.HeckeVacuum.act_mul, inv_mul_cancel, GlobalTheory.HeckeVacuum.act_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (g : GA D T) {x : WO S T} (hx : x.map (infPart D) = 0) :
@@ -214,7 +210,7 @@ theorem exists_approx {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f : WO S T
     GlobalTheory.HeckeVacuum.act_one]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R _ _ hP i g x hx`. Conclude with `exists_approx (hP.vP i A.μ0).1.2.theta g hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_rat_approx : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F),

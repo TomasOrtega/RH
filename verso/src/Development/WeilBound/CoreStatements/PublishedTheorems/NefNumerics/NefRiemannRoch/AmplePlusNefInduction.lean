@@ -22,11 +22,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `t using WithBot.recBotCoe with`. Consider the case `bot => exact absurd bot_le h2`. Consider the case `coe t`. Proceed by induction on `t using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Establish `h1' : (⊤ : ℕ∞) ≤ ((d + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast h1`. Conclude with `absurd h1' (ENat.coe_lt_top (d + 1)).not_ge`. Consider the case `coe n`. Establish `h1' : n ≤ d + 1` using `by exact_mod_cast h1`. Establish `h2' : ¬ n ≤ d` using `fun h => h2 (by exact_mod_cast h)`.
+Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: n = d + 1` using `by omega`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem withBot_eq_succ_of_le_of_not_le {t : WithBot ℕ∞} {d : ℕ} (h1 : t ≤ ((d + 1 : ℕ) : WithBot ℕ∞))
     (h2 : ¬ t ≤ (d : WithBot ℕ∞)) : t = ((d + 1 : ℕ) : WithBot ℕ∞) := by
@@ -44,21 +44,17 @@ theorem withBot_eq_succ_of_le_of_not_le {t : WithBot ℕ∞} {d : ℕ} (h1 : t �
       subst this; rfl
 
 /- English proof (translation)
-Introduce `k _ _ d ih Y _ hproj hdimY A N hA hN`. Use `IsAmpleLB.tens_of_forall_isPsEff k Y (strHom k Y) hproj A N hA hN.isLB ?_` and prove the remaining obligations. Introduce `Z hZ`. Set `Z'` to `(Scheme.IdealSheafData.vanishingIdeal Z).subscheme`. Use `letI : Algebra k Γ(Z', ⊤) := ((redι Z).appTop.hom.comp (algebraMap k Γ(Y, ⊤))).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `compat : ∀ r : k, (redι Z).appTop.hom (algebraMap k Γ(Y, ⊤) r) = algebraMap k Γ(Z', ⊤) r` using `fun r => rfl`. Use `haveI hirr : IrreducibleSpace Z' := Subtype.irreducibleSpace (by simpa using hZ)`. Use `haveI hred : IsReduced Z' := ReducedSubgroup.isReduced_subscheme_vanishingIdeal Z`. Use `haveI hint : IsIntegral Z' := isIntegral_of_irreducibleSpace_of_isReduced Z'`. Establish `hdim : topologicalKrullDim Z' ≤ topologicalKrullDim Y` using `(redι Z).isClosedEmbedding.isInducing.topologicalKrullDim_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpZ : IsProjOver (strHom k Z')`. Take `⟨n, i, hi, hcomp⟩` from `hproj`. Use `⟨n, redι Z ≫ i, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsClosedImmersion.comp _ _`. Rewrite using `[Category.assoc, hcomp, comp_strHom compat]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI hne : Nonempty Z' := by`. Take `⟨y, hy⟩` from `hZ.nonempty`. Rewrite `hy` using `[← range_redι Z]`. Take `⟨z, _⟩` from `hy`. Conclude with `⟨z⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hnoeth : IsNoetherian Z' := isNoetherian_of_isProjOver hpZ`. Establish `hAZ : IsAmpleLB (A.pull (redι Z))` using `hA.pull_of_isClosedImmersion _`. Establish `hNZ : IsNef k (N.pull (redι Z))` using `hN.pull_of_isClosedImmersion (redι Z) compat`. Use `⟨hNZ.isLB, A.pull (redι Z), hAZ, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hNm : IsNef k (lbPow (N.pull (redι Z)) m)` using `hNZ.pow hAZ m`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hamp : IsAmpleLB (tens (A.pull (redι Z)) (lbPow (N.pull (redι Z)) m))`. Distinguish the cases in `hle : topologicalKrullDim Z' ≤ ((d : ℕ) : WithBot ℕ∞)`. Conclude with `ih Z' hpZ hle _ _ hAZ hNm`. Establish `hle2 : topologicalKrullDim Z' ≤ ((d + 1 : ℕ) : WithBot ℕ∞)` using `hdim.trans hdimY`. Establish `heq` using `withBot_eq_succ_of_le_of_not_le hle2 hle`.
-
-Conclude with `isAmpleLB_tens_of_nef_descent k d ih Z' hpZ heq _ _ hAZ hNm`. Establish `hL'LB : (tens (lbPow (N.pull (redι Z)) m) (A.pull (redι Z))).IsLB` using `isLB_tens (isLB_lbPow hNZ.isLB m) hAZ.isLB`. Establish `hL'amp : IsAmpleLB (tens (lbPow (N.pull (redι Z)) m) (A.pull (redι Z)))`. Use `IsAmpleLB.of_lbIso hamp hL'LB ((cls_eq_iff hL'LB hamp.isLB).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_tens (isLB_lbPow hNZ.isLB m) hAZ.isLB, cls_tens hAZ.isLB (isLB_lbPow hNZ.isLB m), add_comm]`.
-
-Take `⟨r, hr1, hsec⟩` from `IsAmpleLB.exists_hasNonzeroSec hL'amp (isLB_lbPow hL'LB 0)`. Conclude with `⟨r, hr1, hsec _ (isLB_lbPow hL'LB r) (by rw [cls_lbPow hL'LB, cls_lbPow hL'LB, zero_smul, zero_add])⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_tens_of_isNef_succ : ∀ (k : Type) [Field k] [Infinite k] (d : ℕ), (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → topologicalKrullDim Y ≤ (d : ℕ) → ∀ A N : LB Y, IsAmpleLB A → IsNef k N → IsAmpleLB (tens A N)) → (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → topologicalKrullDim Y ≤ (d + 1 : ℕ) → ∀ A N : LB Y, IsAmpleLB A → IsNef k N → IsAmpleLB (tens A N)) := by
   intro k _ _ d ih Y _ hproj hdimY A N hA hN

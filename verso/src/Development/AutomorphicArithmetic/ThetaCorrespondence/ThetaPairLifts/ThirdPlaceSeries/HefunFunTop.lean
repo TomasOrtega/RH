@@ -26,21 +26,19 @@ namespace Formalism.L2.DIV.FunSharpTop
 variable {𝒜 : FamClass} {sel : _root_.Formalism.L2.TwistSelection 𝒜} {selS : _root_.Formalism.L2.Top4.SelectionSpectralCondition 𝒜 sel} {selP : _root_.Formalism.L2.Top4.BaseLevelTiedChoiceAlt 𝒜 sel} {selDH : _root_.Formalism.L2.Top3.SelectionDefiniteHeightCondition 𝒜 sel}
   {selC : _root_.Formalism.L2.Top4.ColumnChoiceCompatibleSelection 𝒜 sel selP} {selK : _root_.Formalism.L2.Top4.KernelSelection 𝒜 sel}
 /- English proof (translation)
-Take `⟨Cd, x4, hFDG⟩` from `hDG`. Take `⟨C, hC, x1, hr⟩` from `hRows`. Take `⟨x2, ho⟩` from `hOne`. Use `⟨max (max (max x1 x2) (max x4 (x0F eps Fm.Ct Fm.Cc CH (ceF C 0 (2 + 9 * max Cd 0) (c0F Fm.Csz Fm.Cc Fm.CYL Fm.Ct))))) (max (sel Fm hc).1 56), fun x hx0 hx i => ?_⟩` and prove the remaining obligations. Establish `hx1 : x1 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_left _ _)) hx0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx2 : x2 ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_left _ _)) hx0`. Establish `hx4 : x4 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_left _ _)) hx0`. Establish `hx5 : x0F eps Fm.Ct Fm.Cc CH (ceF C 0 (2 + 9 * max Cd 0) (c0F Fm.Csz Fm.Cc Fm.CYL Fm.Ct)) ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_left _ _)) hx0`. Establish `h : (sel Fm hc).1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx0`. Establish `g56 : (56 : ℝ) ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ra, -⟩` from `hr x hx h hx1 i`. Take `⟨prows, hsep⟩` from `hPA Fm hc x hx h i`. Establish `hok1` using `(selC Fm hc x hx h i).ok1`. Establish `hP : CovolumeOntoIsometryConditions (selI Fm hc x hx h i).Rl (selI Fm hc x hx h i).F (selI Fm hc x hx h i).sEE (hkCan (selP Fm hc x hx h i).1.A3) C CH` using `{ toPrimRows3 := prows, w1 := ra.w1, covol := ra.covol, onto := ra.onto hN, lamLow := ra.lamLow (ho x hx h hx2 i), seeIso := ra.seeIso, miStar := ra.miStar, fun0 := ra.fun0 hN }`. Establish `hS` using `Fm.sizes x hx i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFD : FactDGam (Fm.D x i) (max Cd 0)` using `J.factDGam_mono (hFDG x hx4 i) (le_max_left _ _)`. Establish `hDGp` using `_root_.Formalism.L2.DIV.Cons.gamma_size_of_sizeData_alt (selP Fm hc x hx h i).2 (_root_.Formalism.L2.Top4Wire2.finite_T_of_squareIntegrableColumns (selC Fm hc x hx h i)) hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hS.2.2.2.2.2.1 (selDH Fm hc x hx h i).1.1 (selDH Fm hc x hx h i). …`. Establish `eCc : (Fm.L x i).Cc = Fm.Cc` using `Fm.Cc_eq x i`. Establish `eCt : (Fm.L x i).Ct = Fm.Ct` using `Fm.Ct_eq x i`. Establish `eCY : (Fm.params x hx i).CYL = Fm.CYL` using `Fm.params_CYL x hx i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxL : x0F (Fm.L x i).sc.eps (Fm.L x i).Ct (Fm.L x i).Cc CH (ceF C 0 (2 + 9 * max Cd 0) (c0F Fm.Csz (Fm.L x i).Cc (Fm.params x hx i).CYL (Fm.L x i).Ct)) ≤ (Fm.L x i).sc.x`. Rewrite using `[Fm.L_eps x i, eCt, eCc, eCY, Fm.L_x x i hx]`. Conclude with `hx5`. Take `⟨lam0', Sw, C1, H, dg, hdg, hdvd, hA⟩` from `arithClause_rec (Fm.L x i) (selDH Fm hc x hx h i).1.1 (selDH Fm hc x hx h i).1.2 hS (selDH Fm hc x hx h i).2.1 (selDH Fm hc x hx h i).2.2 (Fm.params x hx i) (Fm.ex x hx i).fdef (Fm.ex x hx i).kap_def (selP Fm hc x hx h i).1.A3 (selP Fm hc x hx h i).1.tied.div.grp.card (selP Fm hc …`. Take `⟨Qq, hq0, hq1, hq2, -⟩` from `(hA (Fm.D x i).u₀).q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `_root_.Formalism.L2.DIV.FunSharpTop.funSharp_pt_alt (selI Fm hc x hx h i) hok1 hsep C CH hP ra.pass (hR Fm hc x hx h i) ra.kap hq0 (third_of _ _ hq0 hq1 hq2)`. Establish `hla : Formalism.BasicNotions.lam0 (Fm.D x i) = Real.log (Fintype.card (selP Fm hc x hx h i).1.Gp)`. Unfold `Formalism.BasicNotions.lam0`. Rewrite using `[(selP Fm hc x hx h i).1.tied.div.grp.card]`. Establish `key' : (Fm.D x i).div.RR.muMax + DV.meanE (Fm.D x i) (fun e => Real.log ((Fm.X x i).kapR e)) ≤ (Fm.L x i).sc.x ^ CH * (Fm.L x i).sc.b + 14 * Formalism.BasicNotions.lam0 (Fm.D x i)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hla]`. Conclude with `key`. Establish `hB1 : 1 ≤ (Fm.L x i).sc.b`. Unfold `Scale.b`. Conclude with `Real.one_le_exp (by unfold Scale.L; exact Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _)`.
-
-Use `key'.trans (pow_absorb _ _ _ CH ?_ hB1 (Formalism.MainNotions.DIV.HookProducts.FunSharp.lambda_zero_le_four_b (Fm.L x i) hS))` and prove the remaining obligations. Rewrite using `[Fm.L_x x i hx]`. Conclude with `g56`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem funSharp_fam_alt [∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (i : Fm.Ix x), IsTotallyComplex (Fm.D x i).what₂.LL]
     (selI : _root_.Formalism.L2.Top4.IndefiniteRealisationChoice' 𝒜 sel selS selP selDH selC selK) (hPA : _root_.Formalism.L2.Top4.AllRealisationsPrimitive sel selI)
@@ -103,9 +101,9 @@ theorem funSharp_fam_alt [∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (i : Fm.Ix x
   rw [Fm.L_x x i hx]
   exact g56
 /- English proof (translation)
-Establish `: ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (i : Fm.Ix x), NumberField.IsTotallyComplex (Fm.D x i).what₂.LL` using `fun Fm x i => (Fm.D x i).tcLL`. Establish `hDivR : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) (x : ℝ) (hx : Fm.x1 < x) (h : (sel Fm hc).1 ≤ x) (i : Fm.Ix x), Formalism.L2.DIV.DivRows3 (Fm.D x i) (selP Fm hc x hx h i).1.A3 (selP Fm hc x hx h i).1.P0 (selP Fm hc x hx h i).1.ψ0 (selP Fm hc x hx h i).1.Ps (selP Fm hc x hx h i).1 …` using `fun Fm hc x hx h i => (hDivG Fm hc x hx h i).toRows (_root_.Formalism.IndefR.LevelRealisationRankEquality.tup_all_used_of_realisation (selB Fm hc x hx h i).Q)`. Establish `hCsz : Closed (D3 3 𝒜) fun Fm _ => 0 ≤ Fm.Csz` using `Formalism.MainNotions.DIV.closed_Csz_ge_fn (D3 3 𝒜) fun _ => 0`. Take `⟨f, hf⟩` from `closed_atMid (rRows.and hCsz)`. Use `⟨fun e l => max (f e l) 1 + 1, hf.imp fun Fm _ _ hh hc _ hD hN => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `_root_.Formalism.L2.DIV.FunSharpTop.funSharp_fam_alt (_root_.Formalism.L2.Top4.indefiniteRealisationChoiceOfSelection selB) hPA _ (_root_.Formalism.L2.Top4.SingleMapCondition selB) hDivR Fm (d3_a hc) _ hh.2 hD (hh.1 hc) ⟨0, fun x hx h _ i j => (hRB Fm (d3_a hc) x hx h i).oneMap j …`.
+A detailed English derivation is pending.
 -/
 theorem closed_funSharp_alt (𝒜 : FamClass)
     (sel : _root_.Formalism.L2.TwistSelection 𝒜)
@@ -137,7 +135,7 @@ theorem closed_funSharp_alt (𝒜 : FamClass)
   exact _root_.Formalism.L2.DIV.FunSharpTop.funSharp_fam_alt (_root_.Formalism.L2.Top4.indefiniteRealisationChoiceOfSelection selB) hPA _ (_root_.Formalism.L2.Top4.SingleMapCondition selB) hDivR Fm (d3_a hc) _ hh.2 hD (hh.1 hc)
     ⟨0, fun x hx h _ i j => (hRB Fm (d3_a hc) x hx h i).oneMap j⟩ hN
 /- English proof (translation)
-Take `⟨CF0, h⟩` from `_root_.Formalism.L2.DIV.FunSharpTop.closed_funSharp_alt 𝒜 sel selS selP selDH selC selB hRB hPA hDivG rRows`. Conclude with `closed_largeE (fun e => Formalism.MainNotions.DIV.Proofs.thrHH Eb Ec (CF0 e)) h fun {eps} Fm CH hL hP hc hT hD => ⟨CF0 eps, hL, hP hc hT hD⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem closed_funSharp_thr_alt (𝒜 : FamClass)
     (sel : _root_.Formalism.L2.TwistSelection 𝒜)

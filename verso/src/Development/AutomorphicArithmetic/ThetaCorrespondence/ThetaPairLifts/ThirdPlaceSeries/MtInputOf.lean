@@ -19,7 +19,7 @@ namespace GlobalTheory.FrameTypes
 open ReciprocityTheory.Aut Formalism.AUTREP GlobalTheory.CenFrame
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Establish `hm : mtL L M = M'` using `eq_of_heq hM`. Substitute `hm` using the available equality. Conclude with `⟨tp.tup, C.Q, { mt with }⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem mtInput_of_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL D' cf' C' tp') (M' : MtFam D') (hM : HEq (mtL nt.L nt.M) M') :
@@ -37,9 +37,9 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : DIV.FamIn3 D.w
 end Read
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE hR hP => ?_` and prove the remaining obligations. Introduce `ad i s k hs hnt s' φ b hPg _ hfr`. Take `⟨tup, Q, hin⟩` from `_root_.GlobalTheory.FrameTypes.mtInput_of_alt c.a.nt c.a.all.gal.mt c.a.mt_eq`. Take `⟨plg, iso, h1, -⟩` from `t.r.z.pins.keep.grp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `types_of (D := (w.st Z).toD7) ad hin t.r.z.pins.char.base.lev t.r.z.pins.char.base.grp.levels i _ k hs hnt s' φ b hPg ⟨(plg.symm ⟨s'.w, hPg⟩).1, (plg.symm ⟨s'.w, hPg⟩).2, by rw [← h1, plg.apply_symm_apply]⟩ hfr`.
+A detailed English derivation is pending.
 -/
 theorem main_alt_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ c =>
   ∀ (ad : MtAd t.r.Y c.a.all.gal.mt) (i : (w.st Z).toD7.nd.Loc) s (k : Fin (w.st Z).toD7.R.m), t.r.Y.tup s = (w.st Z).toD7.nd.mu i →

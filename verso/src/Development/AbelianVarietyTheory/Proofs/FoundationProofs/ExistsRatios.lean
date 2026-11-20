@@ -14,13 +14,13 @@ namespace GlobalTheory.Square.Ratio
 open Formalism.DivisionValues.ValuationRepresentative (vw_mul vw_inv)
 
 /- English proof (translation)
-Take `⟨a, k, k', hd, hx⟩` from `h`. Establish `hQk : ∀ k, (Qn : 𝓞 K) ^ k ∉ w.asIdeal` using `fun k h => hQ (w.isPrime.mem_of_pow_mem k h)`. Establish `ha : a ∉ w.asIdeal` using `fun h => hQk k' (Ideal.mem_of_dvd _ hd h)`. Establish `ha0 : (a : K) ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ha` to reduce the goal to its premises. Establish `: a = 0` using `by exact_mod_cast h`. Rewrite using `[this]`. Conclude with `zero_mem _`. Rewrite `ha0` using `[← hx]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Formalism.DivisionValues.ReductionFirst.vw_unit w a ha`. Establish `h2` using `Formalism.DivisionValues.ReductionFirst.vw_unit w _ (hQk k)`. Establish `e : (((Qn : 𝓞 K) ^ k : 𝓞 K) : K) = (Qn : K) ^ k` using `by simp`. Rewrite `h2` using `[e]`. Rewrite `h1` using `[← hx, vw_mul w _ _ (left_ne_zero_of_mul ha0) (right_ne_zero_of_mul ha0), h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨left_ne_zero_of_mul ha0, by simpa using h1⟩`.
+A detailed English derivation is pending.
 -/
 theorem away {K : Type} [Field K] [NumberField K] [StarRing K] {w : Pl K} {Qn : ℕ}
     (hQ : (Qn : 𝓞 K) ∉ w.asIdeal) {x : K} (h : IsAwayUnit Qn x) : x ≠ 0 ∧ vw w x = 0 := by
@@ -40,25 +40,25 @@ theorem away {K : Type} [Field K] [NumberField K] [StarRing K] {w : Pl K} {Qn : 
   exact ⟨left_ne_zero_of_mul ha0, by simpa using h1⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ σ₀ w Qn hQ e0 h he L0 L1 zT zTd zψ Ep gT n0 er hL hpos hneg`. Establish `he' : (e0 : ℤ) ≤ h` using `by exact_mod_cast he`. Establish `key : ∀ s : ℤ, 1 ≤ s → s ≤ h → zψ s ≠ 0 ∧ zψ s / zT s ≠ 0 ∧ σ₀ (zψ s / zT s) * L0 s = L1 s`. Introduce `s h1 h2`. Take `⟨hT, -, hrel, -, -⟩` from `hpos s h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hL1⟩` from `hL s (by omega) h2`. Establish `hT' : σ₀ (zT s) ≠ 0` using `(map_ne_zero σ₀).2 hT`. Establish `hψ : zψ s ≠ 0`. Introduce `h0`. Rewrite `hrel` using `[h0, map_zero, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero hT' hL1 hrel.symm`. Use `⟨hψ, div_ne_zero hψ hT, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hrel`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s => if 1 ≤ s then zψ s / zT s else Ep s * (zψ (1 - s) / zT (1 - s)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s h1 h2`. Distinguish the cases in `hs : 1 ≤ s`. Simplify using `only [hs, if_true]`. Conclude with `(key s hs h2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hs, if_false]`. Take `⟨hu, hrel⟩` from `hneg s h1 (by omega)`. Take `⟨-, hne, hk⟩` from `key (1 - s) (by omega) (by omega)`. Use `⟨mul_ne_zero (away hQ hu).1 hne, ?_⟩` and prove the remaining obligations. Establish `hL0` using `(hL (1 - s) (by omega) (by omega)).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ hL0` to reduce the goal to its premises. Rewrite using `[hrel, map_mul, ← hk]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s h1 h2`. Simplify using `only [h1, if_true]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hT, -, -, hb1, hb2⟩` from `hpos s h1 h2`. Establish `hψ` using `(key s h1 h2).1`. Establish `hv : vw w (zψ s / zT s) = vw w (zψ s) - vw w (zT s)`. Rewrite using `[div_eq_mul_inv, vw_mul w _ _ hψ (inv_ne_zero hT), vw_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv]`. Establish `a1` using `le_abs_self ((vw w (zT s) + gT s : ℤ) : ℝ)`. Establish `a2` using `neg_abs_le ((vw w (zT s) + gT s : ℤ) : ℝ)`. Establish `a3` using `le_abs_self ((vw w (zTd s) + gT s : ℤ) : ℝ)`. Generalize the expression as in `|((vw w (zT s) + gT s : ℤ) : ℝ)| = A at *`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations.
 
-Generalize the expression as in `|((vw w (zTd s) + gT s : ℤ) : ℝ)| = B at *`. Move the coercions through the operations in `at *`. Apply the tactic sequence `constructor <;> linarith`. Introduce `s h1 h2`. Establish `hs : ¬ 1 ≤ s` using `by omega`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs' : 1 ≤ 1 - s` using `by omega`. Simplify using `only [hs, hs', if_true, if_false]`. Take `⟨hu, -⟩` from `hneg s h1 h2`. Take `⟨hE, hv⟩` from `away hQ hu`. Rewrite using `[vw_mul w _ _ hE (key (1 - s) hs' (by omega)).2.1, hv, zero_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratios : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (σ₀ : K →+* ℂ) (w : Pl K) (Qn : ℕ), (Qn : 𝓞 K) ∉ w.asIdeal → ∀ (e0 h : ℕ), e0 ≤ h → ∀ (L0 L1 : ℤ → ℂ) (zT zTd zψ Ep : ℤ → K) (gT : ℤ → ℤ) (n0 : ℤ → ℝ) (er : ℝ), (∀ s : ℤ, 1 - (e0 : ℤ) ≤ s → s ≤ h → L0 s ≠ 0 ∧ L1 s ≠ 0) → (∀ s : ℤ, 1 ≤ s → s ≤ h → zT s ≠ 0 ∧ zTd s ≠ 0 ∧ σ₀ (zψ s) * L0 s = σ₀ (zT s) * L1 s ∧ -(n0 s) ≤ ((vw w (zψ s) + gT s : ℤ) : ℝ) ∧ (vw w (zψ s) : ℝ) ≤ (vw w (zTd s) : ℝ) + er) → (∀ s : ℤ, 1 - (e0 : ℤ) ≤ s → s ≤ 0 → IsAwayUnit Qn (Ep s) ∧ L1 s * L0 (1 - s) = σ₀ (Ep s) * (L1 (1 - s) * L0 s)) → ∃ ρ : ℤ → K, (∀ s : ℤ, 1 - (e0 : ℤ) ≤ s → s ≤ h → ρ s ≠ 0 ∧ σ₀ (ρ s) * L0 s = L1 s) ∧ (∀ s : ℤ, 1 ≤ s → s ≤ h → (vw w (ρ s) : ℝ) ≤ |((vw w (zT s) + gT s : ℤ) : ℝ)| + |((vw w (zTd s) + gT s : ℤ) : ℝ)| + er ∧ -(vw w (ρ s) : ℝ) ≤ |((vw w (zT s) + gT s : ℤ) : ℝ)| + n0 s) ∧ (∀ s : ℤ, 1 - (e0 : ℤ) ≤ s → s ≤ 0 → vw w (ρ s) = vw w (ρ (1 - s))) := by
   intro K _ _ _ σ₀ w Qn hQ e0 h he L0 L1 zT zTd zψ Ep gT n0 er hL hpos hneg

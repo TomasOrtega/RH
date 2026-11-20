@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Published
 
 /- English proof (translation)
-Introduce `F _ _ n π η`. Use `filter_upwards [(GlobalTheory.Mem.UnrAe.finite_ramified η).compl_mem_cofinite] with v hv`. Establish `hu : η.UnrAt v` using `not_not.mp hv`. Use `⟨hu, fun B hB => ?_⟩` and prove the remaining obligations. Consider the cases of `π with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cx π => exact GlobalTheory.SphGal.hasSatGL_twist F n π η v B hu hB`. Consider the case `re π => exact UpperTheory.V.TR.CuspSub.HasSat.twist hB hu`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.CBC.STwSat_holds : UpperTheory.CBC.STwSat := by
   intro F _ _ n π η

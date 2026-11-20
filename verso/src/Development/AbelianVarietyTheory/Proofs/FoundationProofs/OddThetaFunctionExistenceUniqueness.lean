@@ -8,13 +8,13 @@ open scoped BigOperators
 namespace GlobalTheory.OddTheta
 
 /- English proof (translation)
-Establish `hA` using `latticeArea_eq L`. Establish `hpos` using `latticeArea_pos L`. Establish `key : ∀ w₁ ∈ L.lattice, ∀ w₂ ∈ L.lattice, ∃ k : ℤ, ((starRingEnd ℂ) w₁ * w₂).im = k * ((starRingEnd ℂ) L.ω₁ * L.ω₂).im`. Introduce `w₁ hw₁ w₂ hw₂`. Take `⟨m, n, rfl⟩` from `PeriodPair.mem_lattice.1 hw₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m', n', rfl⟩` from `PeriodPair.mem_lattice.1 hw₂`. Use `⟨m * n' - n * m', ?_⟩` and prove the remaining obligations. Simplify using `[Complex.mul_im, Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree. Unfold `area`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Apply `IsLeast.csInf_eq` to reduce the goal to its premises. Use `⟨⟨hA ▸ hpos, L.ω₁, (h _).2 L.ω₁_mem_lattice, L.ω₂, (h _).2 L.ω₂_mem_lattice, hA⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨ha, w₁, hw₁, w₂, hw₂, rfl⟩`. Take `⟨k, hk⟩` from `key w₁ ((h _).1 hw₁) w₂ ((h _).1 hw₂)`. Rewrite `ha`, the goal using `[hk, abs_mul, ← hA]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Establish `hk1 : (1 : ℝ) ≤ |(k : ℝ)|` using `by exact_mod_cast Int.one_le_abs hk0`. Conclude with `le_mul_of_one_le_left hpos.le hk1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem area_eq (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice) :
     area Λ = latticeArea L := by
@@ -41,9 +41,9 @@ theorem area_eq (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ ↔
   exact le_mul_of_one_le_left hpos.le hk1
 
 /- English proof (translation)
-Establish `hs : Summable (fun l : L.lattice => 1 / (z - (l : ℂ)) ^ 2 - 1 / (l : ℂ) ^ 2)` using `(L.hasSum_weierstrassP z).summable`. Unfold `wpF PeriodPair.weierstrassP`. Rewrite using `[← hs.tsum_subtype_add_tsum_subtype_compl ({0} : Set L.lattice), tsum_singleton (0 : L.lattice) (fun l : L.lattice => 1 / (z - (l : ℂ)) ^ 2 - 1 / (l : ℂ) ^ 2)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Set `e : {w : ℂ // w ∈ Λ ∧ w ≠ 0} ≃ (({0} : Set L.lattice)ᶜ : Set L.lattice)` to `{ toFun := fun w => ⟨⟨w.1, (h w.1).1 w.2.1⟩, fun hh => w.2.2 (by simpa using congrArg Subtype.val (Set.mem_singleton_iff.1 hh))⟩ invFun := fun l => ⟨l.1.1, (h _).2 l.1.2, fun hh => l.2 (Set.mem_singleton_iff.2 (Subtype.ext (by simpa using hh)))⟩ left_inv := fun _ => rfl right_inv …`. Conclude with `(e.tsum_eq (fun l => 1 / (z - ((l : L.lattice) : ℂ)) ^ 2 - 1 / ((l : L.lattice) : ℂ) ^ 2))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem wpF_eq (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice) (z : ℂ) :
     wpF Λ z = L.weierstrassP z := by
@@ -64,11 +64,11 @@ theorem wpF_eq (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ ↔ 
     exact (e.tsum_eq (fun l => 1 / (z - ((l : L.lattice) : ℂ)) ^ 2 - 1 / ((l : L.lattice) : ℂ) ^ 2))
 
 /- English proof (translation)
-Establish `hs : (if ω / 2 ∈ Λ then (1 : ℂ) else -1) = sigmaSign L ω`. Distinguish the cases in `hw : ω / 2 ∈ Λ`. Rewrite using `[if_pos hw, sigmaSign_of_mem L ((h _).1 hw)]`. Rewrite using `[if_neg hw, sigmaSign_of_notMem L (fun hh => hw ((h _).2 hh))]`. Establish `hU : U1 Λ ω G z = G (z + ω) * (Complex.exp (Real.pi * latticeForm L z ω + Real.pi * latticeForm L ω ω / 2))⁻¹`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `U1`. Rewrite using `[area_eq L Λ h, ← Complex.exp_neg]`. Use `congr 2`. Simplify using `only [latticeForm]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hU, hs, mul_inv_eq_iff_eq_mul₀ (Complex.exp_ne_zero _)]`. Apply the tactic sequence `constructor <;> intro hh <;> rw [hh] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem law_iff (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice)
     (G : ℂ → ℂ) (ω z : ℂ) :
@@ -90,9 +90,9 @@ theorem law_iff (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ ↔
   constructor <;> intro hh <;> rw [hh] <;> ring
 
 /- English proof (translation)
-Establish `hlaw' : ∀ w ∈ L.lattice, ∀ z, G (z + w) = sigmaSign L w * Complex.exp (Real.pi * latticeForm L z w + Real.pi * latticeForm L w w / 2) * G z` using `fun w hw z => (law_iff L Λ h G w z).1 (hlaw w ((h w).2 hw) z)`. Take `⟨c, hc⟩` from `exists_eq_mul_canonicalSigma L hG hlaw'`. Establish `hGf : G = fun z => c * canonicalSigma L z` using `funext hc`. Establish `hd : deriv G 0 = c`. Rewrite using `[hGf]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hasDerivAt_canonicalSigma_zero L).const_mul c).deriv.trans (mul_one c)`. Rewrite using `[hd]`. Conclude with `hc z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_deriv_mul (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice)
     (G : ℂ → ℂ) (hG : Differentiable ℂ G)
@@ -110,7 +110,7 @@ theorem eq_deriv_mul (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ �
   exact hc z
 
 /- English proof (translation)
-Use `⟨differentiable_canonicalSigma L, (hasDerivAt_canonicalSigma_zero L).deriv, canonicalSigma_neg L, ?_⟩` and prove the remaining obligations. Introduce `ω hω z`. Conclude with `(law_iff L Λ h _ ω z).2 (canonicalSigma_add L ((h ω).1 hω) z)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem canonicalSigma_spec (L : PeriodPair) (Λ : AddSubgroup ℂ)
     (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice) :
@@ -124,7 +124,7 @@ theorem canonicalSigma_spec (L : PeriodPair) (Λ : AddSubgroup ℂ)
   exact (law_iff L Λ h _ ω z).2 (canonicalSigma_add L ((h ω).1 hω) z)
 
 /- English proof (translation)
-Establish `hP : ∃ G : ℂ → ℂ, Differentiable ℂ G ∧ deriv G 0 = 1 ∧ (∀ z, G (-z) = -G z) ∧ ∀ ω ∈ Λ, ∀ z, U1 Λ ω G z = (if ω / 2 ∈ Λ then 1 else -1) * G z` using `⟨_, canonicalSigma_spec L Λ h⟩`. Unfold `sgStar`. Take `⟨hd, h1, -, hl⟩` from `Classical.epsilon_spec hP`. Use function extensionality and compare the values at `z`. Rewrite using `[eq_deriv_mul L Λ h _ hd hl z, h1, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgStar_eq (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice) :
     sgStar Λ = canonicalSigma L := by
@@ -137,7 +137,7 @@ theorem sgStar_eq (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z, z ∈ Λ �
   rw [eq_deriv_mul L Λ h _ hd hl z, h1, one_mul]
 
 /- English proof (translation)
-Take `⟨w₁, w₂, hind, rfl⟩` from `hΛ`. Use `⟨⟨w₁, w₂, hind⟩, fun z => ?_⟩` and prove the remaining obligations. Use `show z ∈ AddSubgroup.closure {w₁, w₂} ↔ z ∈ Submodule.span ℤ {w₁, w₂}`. Rewrite using `[← Submodule.mem_toAddSubgroup, Submodule.span_int_eq_addSubgroupClosure]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_periodPair (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) :
@@ -148,17 +148,17 @@ theorem exists_periodPair (Λ : AddSubgroup ℂ)
   rw [← Submodule.mem_toAddSubgroup, Submodule.span_int_eq_addSubgroupClosure]
 
 /- English proof (translation)
-Introduce `Λ hΛ`. Take `⟨L, h⟩` from `exists_periodPair Λ hΛ`. Establish `hσ` using `sgStar_eq L Λ h`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `canonicalSigma_spec L Λ h`. Introduce `z`. Rewrite using `[hσ, canonicalSigma_eq_zero_iff L, h]`. Introduce `G hG hl z`. Rewrite using `[hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eq_deriv_mul L Λ h G hG hl z`. Introduce `u v hu hv`. Establish `hu' : u ∉ L.lattice` using `fun hh => hu ((h u).2 hh)`. Establish `hv' : v ∉ L.lattice` using `fun hh => hv ((h v).2 hh)`. Establish `hne : canonicalSigma L u ^ 2 * canonicalSigma L v ^ 2 ≠ 0` using `mul_ne_zero (pow_ne_zero _ ((canonicalSigma_eq_zero_iff L).not.2 hu')) (pow_ne_zero _ ((canonicalSigma_eq_zero_iff L).not.2 hv'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[wpF_eq L Λ h, wpF_eq L Λ h, hσ, weierstrassP_sub_weierstrassP_canonicalSigma L hu' hv']`. Conclude with `div_mul_cancel₀ _ hne`. Introduce `c hc z`. Establish `hhom` using `isHomothetic_scalePeriods L c hc`. Establish `h' : ∀ x, x ∈ Λ.map (AddMonoidHom.mulLeft c) ↔ x ∈ (scalePeriods L c hc).lattice`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(hhom y).2 ((h y).1 hy)`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Introduce `hx`. Use `⟨c⁻¹ * x, (h _).2 ((hhom _).1 ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hc, one_mul]` and apply the resulting hypothesis. Simplify using `[hc]`. Rewrite using `[sgStar_eq (scalePeriods L c hc) _ h', hσ, hhom.canonicalSigma_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgStar_laws : ∀ (Λ : AddSubgroup ℂ), (∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) → (Differentiable ℂ (sgStar Λ) ∧ deriv (sgStar Λ) 0 = 1 ∧ (∀ z, sgStar Λ (-z) = -sgStar Λ z) ∧ ∀ ω ∈ Λ, ∀ z, U1 Λ ω (sgStar Λ) z = (if ω / 2 ∈ Λ then 1 else -1) * sgStar Λ z) ∧ (∀ z, sgStar Λ z = 0 ↔ z ∈ Λ) ∧ (∀ G : ℂ → ℂ, Differentiable ℂ G → (∀ ω ∈ Λ, ∀ z, U1 Λ ω G z = (if ω / 2 ∈ Λ then 1 else -1) * G z) → ∀ z, G z = deriv G 0 * sgStar Λ z) ∧ (∀ u v : ℂ, u ∉ Λ → v ∉ Λ → (wpF Λ u - wpF Λ v) * (sgStar Λ u ^ 2 * sgStar Λ v ^ 2) = -(sgStar Λ (u + v) * sgStar Λ (u - v))) ∧ ∀ c : ℂ, c ≠ 0 → ∀ z, sgStar (Λ.map (AddMonoidHom.mulLeft c)) (c * z) = c * sgStar Λ z := by
   intro Λ hΛ

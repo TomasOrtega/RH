@@ -6,13 +6,13 @@ namespace GlobalTheory.CovNum
 open Formalism.NormVectorIdentities.Items
 
 /- English proof (translation)
-Establish `hD' : (1 : ℝ) ≤ D` using `by exact_mod_cast hD`. Establish `hL : 0 ≤ Real.log Λ` using `Real.log_nonneg hΛ`. Establish `hh : 0 ≤ |h|` using `abs_nonneg h`. Establish `h1 : 1 ≤ n * D * δ` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hn hD') hδ`. Establish `h2 : 1 ≤ n * D * δ * (2 + |h| + Real.log Λ)` using `one_le_mul_of_one_le_of_one_le h1 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : n * D * δ * (2 + |h| + Real.log Λ) ≤ (n * D * δ * (1 + Real.log Λ)) * (2 + |h|)`. Rewrite using `[mul_assoc (n * D * δ)]`. Use `mul_le_mul_of_nonneg_left ?_ (by linarith)` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg hL hh]`. Establish `h4 : Real.log (n * D * δ * (2 + |h| + Real.log Λ)) ≤ Real.log (n * D * δ * (1 + Real.log Λ)) + Real.log (2 + |h|)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.log_mul (by positivity) (by positivity)]`. Conclude with `Real.log_le_log (by linarith) h3`. Establish `h5` using `Real.log_nonneg h2`. Unfold `hsLogRho`. Rewrite using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem hsLogRho_bounds (D : ℕ) (n Λ δ h l₀ : ℝ) (hD : 1 ≤ D) (hn : 1 ≤ n) (hΛ : 1 ≤ Λ)
     (hδ : 1 ≤ δ)
@@ -41,19 +41,19 @@ theorem hsLogRho_bounds (D : ℕ) (n Λ δ h l₀ : ℝ) (hD : 1 ≤ D) (hn : 1 
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `T D n Λ β ΛD ΛT J δ h d deg z l₀ hT hD hn hΛ hβ hΛD hΛT hδ hd hz hz2 hP hl hc`. Take `⟨hρ0, hρ⟩` from `hsLogRho_bounds D n Λ δ h l₀ hD hn hΛ hδ hl`. Take `⟨-, -, hc⟩` from `hc`. Establish `hT' : (1 : ℝ) ≤ T` using `by exact_mod_cast hT`. Establish `hβ0 : 0 < β` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Real.log (Real.exp (hsLogRho 26 n D 1 Λ δ h) * T) = hsLogRho 26 n D 1 Λ δ h + Real.log T`. Rewrite using `[Real.log_mul (Real.exp_pos _).ne' (by positivity), Real.log_exp]`. Establish `e2 : Real.log (2 * Real.exp (hsLogRho 26 n D 1 Λ δ h) * Real.sqrt β) = Real.log 2 + hsLogRho 26 n D 1 Λ δ h + Real.log β / 2`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (Real.exp_pos _).ne', Real.log_exp, Real.log_sqrt hβ0.le]`. Rewrite `hc` using `[e1, e2, le_div_iff₀ hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `hsZ hsR at hc`. Generalize the expression as in `hsLogRho 26 n D 1 Λ δ h = ρ at hρ0 hρ hc`. Generalize the expression as in `((Nat.choose (T - 1) D : ℕ) : ℝ) * δ = P at hP hc ⊢`. Generalize the expression as in `hsG D n = g at hc ⊢`. Establish `hb` using `Real.log_nonneg hβ`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hLD` using `Real.log_nonneg hΛD`. Establish `hLT` using `Real.log_nonneg hΛT`. Establish `h2 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Generalize the expression as in `Real.log (2 + |h|) = L at hρ ⊢`. Establish `hdP : d ≤ 2 * P` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hP0 : 0 ≤ P` using `by linarith`. Establish `hdef : d - P ≤ 2 * z * P` using `by nlinarith`. Use `set A := (T : ℝ) * h - 3 * ((D : ℝ) + 1) * |h| - J - 26 * (D : ℝ) ^ 2 * (ρ + Real.log T) - ((T : ℝ) + D + 1) * Real.log β - ((T : ℝ) + (D : ℝ) ^ 2) * (g + 2) with hA`. Use `set B := (T : ℝ) * (Real.log 2 + ρ + Real.log β / 2) + Real.log ΛD + Real.log ΛT with hB`. Establish `hB0 : 0 ≤ B` using `by rw [hB]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `e3 : ((1 - (1 - P / d)) * A - (1 - P / d) * B) * d = P * A - (d - P) * B`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hc` using `[e3]`. Establish `h6 : (d - P) * B ≤ 2 * z * P * B` using `mul_le_mul_of_nonneg_right hdef hB0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : 0 ≤ (26 * (D : ℝ) ^ 2 + 2 * z * T) * (l₀ + 26 * L - ρ)` using `mul_nonneg (by positivity) (by linarith)`. Establish `h8 : P * (A - 2 * z * B - (26 * (D : ℝ) ^ 2 + 2 * z * T) * (l₀ + 26 * L - ρ)) ≤ P * (A - 2 * z * B)` using `mul_le_mul_of_nonneg_left (by linarith) hP0`. Use `le_trans (le_of_eq ?_) (h8.trans (by linarith))` and prove the remaining obligations. Rewrite using `[hA, hB]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deg_lower_of_claim : ∀ (T D : ℕ) (n Λ β ΛD ΛT J δ h d deg z l₀ : ℝ), 1 ≤ T → 1 ≤ D → 1 ≤ n → 1 ≤ Λ → 1 ≤ β → 1 ≤ ΛD → 1 ≤ ΛT → 1 ≤ δ → 0 < d → 0 ≤ z → z ≤ 1 / 2 → (1 - z) * d ≤ ((T - 1).choose D : ℕ) * δ → Real.log Λ + 26 * Real.log (n * D * δ * (1 + Real.log Λ)) ≤ l₀ → Formalism.NormVectorIdentities.Items.HSClaimS 26 T D n 1 Λ β ΛD ΛT J δ h d deg → ((T - 1).choose D : ℕ) * δ * (T * h - 3 * (D + 1) * |h| - 26 * (26 * D ^ 2 + 2 * z * T) * Real.log (2 + |h|) - (J + 26 * D ^ 2 * (l₀ + Real.log T) + (T + D + 1) * Real.log β + (T + D ^ 2) * (Formalism.NormVectorIdentities.Items.hsG D n + 2) + 2 * z * (T * (Real.log 2 + l₀ + Real.log β / 2) + Real.log ΛD + Real.log ΛT))) ≤ deg := by
   intro T D n Λ β ΛD ΛT J δ h d deg z l₀ hT hD hn hΛ hβ hΛD hΛT hδ hd hz hz2 hP hl hc

@@ -21,9 +21,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ}
   {LG : LB G.left} {LG' : LB G'.left}
 
 /- English proof (translation)
-Unfold `LB.div boxLB`. Use `le_trans inf_le_right ?_` and prove the remaining obligations. Introduce `x hx`. Use `first`. Consider the case `exact Set.mem_iInter.2 fun _ => hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa [LB.wchart] using hx`.
+A detailed English derivation is pending.
 -/
 lemma boxG_le_b (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) :
     (LB.div (boxLB LG pG.pr) LG').U (jN, jL) ≤ LB.wchart LG' (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => jL) := by
@@ -35,9 +35,9 @@ lemma boxG_le_b (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) :
     | simpa [LB.wchart] using hx
 
 /- English proof (translation)
-Unfold `LB.div boxLB`. Use `le_trans inf_le_left (le_trans (LB.wchart_le LG _ jN i) ?_)` and prove the remaining obligations. Introduce `x hx`. Use `first`. Consider the case `exact Set.mem_iInter.2 fun _ => hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa [LB.wchart] using hx`.
+A detailed English derivation is pending.
 -/
 lemma boxG_le_c (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) (i : Fin j) :
     (LB.div (boxLB LG pG.pr) LG').U (jN, jL) ≤

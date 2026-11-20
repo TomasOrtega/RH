@@ -16,51 +16,43 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgInf
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide v hv ξ K hK`. Establish `hStd'` using `hStd`. Establish `hSide'` using `hSide`. Take `⟨-, hrep, -, -, hHaar, hSchur, -, hDecay, -⟩` from `hStd'`. Take `⟨hz, hT, hπ, hμS, -⟩` from `hSide'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hclG, -, -, hclS, -⟩` from `GlobalTheory.SgInf.closedSub_groups k r z hz hT`. Establish `hUni : IsUnimod (Sset k r z) μS` using `((GlobalTheory.SgInf.unimodular_S_N_UW k r z hz hT μS).1) hμS`. Take `⟨ν, hν⟩` from `exists_isQuotMeas_Sset k r z μG μS hz hT hHaar hμS`. Take `⟨C₀, hC₀, hC⟩` from `GlobalTheory.T.lintegral_compact_le_quotientMeasure_bessel k r (Sset k r z) μG μS ν K hclS hHaar hμS hUni hν hK`. Establish `hstab : ∀ g ∈ GG k r, ∀ x ∈ DD σ w, σ g x ∈ DD σ w` using `(GlobalTheory.SgInfDD.DD_stable_dense k r σ w hrep).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD1` using `fun u (hu : u ∈ DD σ w) => GlobalTheory.T.besselForm_converges_equivariant_hermitian k r σ w a μG d z c π μS hStd hSide (DD σ w : Set H) (fun g hg x hx => hstab g hg x hx) hDecay u hu v hv`. Establish `hPi` using `(GlobalTheory.SgInf.PiUnitary.piS_unitary k r z c π hz hT hπ).2.1`. Establish `hD3` using `fun u (hu : u ∈ DD σ w) => GlobalTheory.T.norm_identity_besselCoefficient_quotient k r σ w a μG d z c π μS hStd hSide ν hν u hu u hu v hv ξ`. Use `set ψ := psiGen k r z c with hψ`. Use `set bc : ℂ := ⟪ξ, be ψ π μS σ v v ξ⟫_ℂ with hbc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨C₀.toReal * bc.re / d, fun u hu => ?_⟩` and prove the remaining obligations. Use `set A : Mt k r → Wp := fun x => Afun ψ π μS σ u v ξ (Matrix.of x) with hA`. Establish `hof : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r))` using `continuous_id`. Use `set GM : Set (Mt k r) := {x | Matrix.of x ∈ GG k r} with hGM`. Establish `hGMc : IsClosed GM` using `hclG.2.1.preimage hof`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAc : ContinuousOn A GM`. Establish `h1 : ContinuousOn (fun x : Mat k r => Afun ψ π μS σ u v ξ x) (GG k r)` using `(hD1 u hu).2.2.2.clm_apply continuousOn_const`. Conclude with `h1.comp hof.continuousOn (fun x hx => hx)`. Establish `hae : ∀ᵐ x ∂μG, x ∈ GM`. Rewrite using `[ae_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hHaar.2.2.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : AEStronglyMeasurable A (μG.restrict GM)` using `hAc.aestronglyMeasurable hGMc.measurableSet`. Rewrite `h1` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Conclude with `h1.restrict`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set F : Mt k r → ENNReal := GM.indicator (fun x => (‖A x‖₊ : ENNReal) ^ 2) with hF`. Establish `hFm : Measurable F`. Establish `h1 : ContinuousOn (fun x => (‖A x‖₊ : ENNReal) ^ 2) GM`. Establish `h0 : ContinuousOn (fun x => (‖A x‖₊ : ENNReal)) GM` using `(ENNReal.continuous_coe.comp continuous_nnnorm).comp_continuousOn hAc`. Conclude with `(ENNReal.continuous_pow 2).comp_continuousOn h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ContinuousOn.measurable_piecewise h1 (continuousOn_const (c := (0 : ENNReal)) (s := GMᶜ)) hGMc.measurableSet`. Establish `h3 : F = GM.piecewise (fun x => (‖A x‖₊ : ENNReal) ^ 2) (fun _ => 0)`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ GM <;> simp [hF, hx]`. Rewrite using `[h3]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `hFinv : ∀ s ∈ Sset k r z, ∀ x, F (lmulM s x) = F x`. Introduce `s hs x`. Establish `hsG : s ∈ GG k r` using `hclS.1 hs`. Establish `hmem : lmulM s x ∈ GM ↔ x ∈ GM`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : s⁻¹ * (s * (Matrix.of x : Mat k r)) ∈ GG k r` using `hclG.2.2.2.1 _ (hclG.2.2.2.2 _ hsG) _ h`. Establish `h2 : s⁻¹ * (s * (Matrix.of x : Mat k r)) = Matrix.of x`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (isUnit_det_of_mem_GG hsG), Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `h1`. Introduce `h`. Conclude with `hclG.2.2.2.1 _ hsG _ h`. Distinguish the cases in `hx : x ∈ GM`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx'` using `hmem.2 hx`. Rewrite using `[hF, Set.indicator_of_mem hx', Set.indicator_of_mem hx]`. Establish `hAeq : A (lmulM s x) = PiS ψ π s (A x)` using `by show be ψ π μS σ (σ (s * Matrix.of x) u) v ξ = PiS ψ π s (be ψ π μS σ (σ (Matrix.of x) u) v ξ)`. Establish `hm : σ (s * Matrix.of x) = (σ s).comp (σ (Matrix.of x))` using `hrep.1.2 s hsG _ hx`. Establish `hxu : σ (Matrix.of x) u ∈ DD σ w` using `hstab _ hx u hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `((hD1 _ hxu).2.1 s hs).1`. Rewrite using `[hm]`. Use `show be ψ π μS σ (σ s (σ (Matrix.of x) u)) v ξ = _`. Rewrite using `[he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hn : ‖PiS ψ π s (A x)‖₊ = ‖A x‖₊` using `Subtype.ext (hPi.2.1 s hs _)`. Rewrite using `[hAeq, hn]`. Establish `hx' : lmulM s x ∉ GM` using `fun h => hx (hmem.1 h)`. Rewrite using `[hF, Set.indicator_of_notMem hx', Set.indicator_of_notMem hx]`. Take `⟨-, -, hL2, hnorm, hb0, hbim⟩` from `hD3 u hu`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : Integrable (fun x => ‖A x‖ ^ 2) ν` using `hL2.integrable_norm_pow (by norm_num)`. Establish `hval : ∫ x, ‖A x‖ ^ 2 ∂ν = ‖u‖ ^ 2 * bc.re / d`. Establish `h1 : ∫ x, ⟪A x, A x⟫_ℂ ∂ν = ((∫ x, ‖A x‖ ^ 2 ∂ν : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h2 : bc = (bc.re : ℂ)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [hbim]`. Establish `h3 : ⟪u, u⟫_ℂ = ((‖u‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ((∫ x, ‖A x‖ ^ 2 ∂ν : ℝ) : ℂ) = ((‖u‖ ^ 2 * bc.re / d : ℝ) : ℂ)`. Rewrite using `[← h1]`. Use `hnorm.trans ?_` and prove the remaining obligations. Rewrite using `[h3]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h2]`. Conclude with `h4` after adjusting the coercions. Establish `hlin : ∫⁻ x, (‖A x‖₊ : ENNReal) ^ 2 ∂ν = ENNReal.ofReal (‖u‖ ^ 2 * bc.re / d)`. Rewrite using `[← hval, ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun x => by positivity)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
-
-Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ← enorm_eq_nnnorm, ofReal_norm_eq_enorm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[hF, Set.indicator_of_mem hx]`.
-
-Use `_ ≤ C₀ * ∫⁻ x, F x ∂ν := hC F hFm hFinv`. Use `_ ≤ C₀ * ∫⁻ x, (‖A x‖₊ : ENNReal) ^ 2 ∂ν := by`. Use `mul_le_mul_right ?_ _` and prove the remaining obligations. Conclude with `lintegral_mono fun x => Set.indicator_le_self _ _ x`. Use `_ = ENNReal.ofReal (C₀.toReal * bc.re / d * ‖u‖ ^ 2) := by`.
-
-Rewrite using `[hlin]`. Establish `hC₁ : C₀ = ENNReal.ofReal C₀.toReal` using `(ENNReal.ofReal_toReal hC₀.ne).symm`. Use `conv_lhs => rw [hC₁]`. Rewrite using `[← ENNReal.ofReal_mul ENNReal.toReal_nonneg]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lint_Afun_compact_le : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)), Std σ w a μG d → Side z π μS → ∀ v ∈ DD σ w, ∀ ξ : Wp, ∀ K : Set (Mt k r), IsCompact K → ∃ C : ℝ, ∀ u ∈ DD σ w, AEStronglyMeasurable (fun x : Mt k r => Afun (psiGen k r z c) π μS σ u v ξ (Matrix.of x)) (μG.restrict K) ∧ ∫⁻ x in K, (‖Afun (psiGen k r z c) π μS σ u v ξ (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μG ≤ ENNReal.ofReal (C * ‖u‖ ^ 2) := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide v hv ξ K hK

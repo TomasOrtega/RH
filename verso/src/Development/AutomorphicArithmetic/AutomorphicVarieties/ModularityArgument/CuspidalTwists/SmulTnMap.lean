@@ -13,7 +13,7 @@ open scoped Matrix
 namespace UpperTheory.V.Cu.IrreducibilityFourDim
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Cu.IrrKey.key h2 On A B hon hkp hkm hirr t hoff hBt hAt u hu hAu hne W hW`.
+A detailed English derivation is pending.
 -/
 theorem key {K : Type} [Field K] {ι : Type} (h2 : (2 : K) ≠ 0) (On : Set ι) (A B : ι → Matrix (Fin 2) (Fin 2) K)
     (hon : ∀ i ∈ On, B i 1 1 = B i 0 0 ∧ B i 1 0 = B i 0 1)
@@ -27,11 +27,11 @@ theorem key {K : Type} [Field K] {ι : Type} (h2 : (2 : K) ≠ 0) (On : Set ι) 
   UpperTheory.V.Cu.IrrKey.key h2 On A B hon hkp hkm hirr t hoff hBt hAt u hu hAu hne W hW
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Take `⟨h1, -, h3⟩` from `hr`. Use `⟨h1, fun _ _ _ => Submodule.mem_top, fun W _ hi => ?_⟩` and prove the remaining obligations. Establish `key` using `h3 (W.comap (Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) k))) le_top (fun s v hv => by`. Establish `h4` using `hi s _ hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[hg s]`. Simplify `h4)` using `[Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `hs : Function.Surjective (Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) k))` using `fun v => ⟨((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec v, by`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]⟩`. Establish `e` using `Submodule.map_comap_eq_of_surjective hs W`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `key with key | key` into its components or cases. Use `left`. Rewrite using `[← e, key, Submodule.map_bot]`. Use `right`. Rewrite using `[← e, key, Submodule.map_top, LinearMap.range_eq_top.mpr hs]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIrr_iso {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k} (h : RepIso r r')
     (hr : IsIrr r) : IsIrr r' := by
@@ -53,14 +53,14 @@ private theorem isIrr_iso {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : �
     rw [← e, key, Submodule.map_top, LinearMap.range_eq_top.mpr hs]
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one (ρ g⁻¹).det (by rw [← Matrix.det_mul, ← map_mul, mul_inv_cancel, map_one, Matrix.det_one])`.
+A detailed English derivation is pending.
 -/
 private theorem det_unit {Γ R : Type} [Group Γ] [CommRing R] (ρ : Γ →* Matrix (Fin 2) (Fin 2) R) (g : Γ) :
     IsUnit (ρ g).det :=
   IsUnit.of_mul_eq_one (ρ g⁻¹).det (by rw [← Matrix.det_mul, ← map_mul, mul_inv_cancel, map_one, Matrix.det_one])
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun hf 0) 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at e`. Use `first`. Consider the case `linear_combination e + (X 1 0 + X 0 1) * h10`. Consider the case `linear_combination -e + (X 1 0 + X 0 1) * h10`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem on_form {R : Type} [CommRing R] (X : Matrix (Fin 2) (Fin 2) R)
     (hf : Xᵀ * !![1, 0; 0, -1] * X = !![1, 0; 0, -1]) (h10 : X 1 0 = X 0 1) :
@@ -72,9 +72,9 @@ private theorem on_form {R : Type} [CommRing R] (X : Matrix (Fin 2) (Fin 2) R)
     | linear_combination -e + (X 1 0 + X 0 1) * h10
 
 /- English proof (translation)
-Establish `e00 : X 0 0 * Y 0 0 + X 0 1 * Y 1 0 = 1`. Use `congrFun (congrFun h 0) 0` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]`. Then use the resulting hypothesis. Establish `e01 : X 0 0 * Y 0 1 + X 0 1 * Y 1 1 = 0`. Use `congrFun (congrFun h 0) 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_ne (show (0 : Fin 2) ≠ 1 by decide)]`. Then use the resulting hypothesis. Rewrite `e00` using `[b2]`. Rewrite `e01` using `[a2]`. Conclude with `⟨by linear_combination e00 + e01, by linear_combination e00 - e01⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem on_inv {R : Type} [CommRing R] (X Y : Matrix (Fin 2) (Fin 2) R) (a1 : X 1 1 = X 0 0) (b1 : X 1 0 = X 0 1)
     (a2 : Y 1 1 = Y 0 0) (b2 : Y 1 0 = Y 0 1) (h : X * Y = 1) :
@@ -90,11 +90,11 @@ private theorem on_inv {R : Type} [CommRing R] (X Y : Matrix (Fin 2) (Fin 2) R) 
   exact ⟨by linear_combination e00 + e01, by linear_combination e00 - e01⟩
 
 /- English proof (translation)
-Establish `e00 : Y1 0 0 * Y2 0 0 + Y1 0 1 * Y2 1 0 = 1`. Use `congrFun (congrFun hY 0) 0` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]`. Then use the resulting hypothesis. Establish `e01 : Y1 0 0 * Y2 0 1 + Y1 0 1 * Y2 1 1 = 0`. Use `congrFun (congrFun hY 0) 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_ne (show (0 : Fin 2) ≠ 1 by decide)]`. Then use the resulting hypothesis. Rewrite `e00` using `[d2]`. Rewrite `e01` using `[c2]`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, a1, b1, a2, b2, c1, d1, c2, d2]`. Use `⟨by ring, by ring, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(X1 0 0 + X1 0 1) * (X2 0 0 - X2 0 1) * e00 + (X1 0 0 + X1 0 1) * (X2 0 0 - X2 0 1) * e01`. Take the linear combination `(X1 0 0 - X1 0 1) * (X2 0 0 + X2 0 1) * e00 - (X1 0 0 - X1 0 1) * (X2 0 0 + X2 0 1) * e01`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem shape4 {R : Type} [CommRing R] (X1 Y1 X2 Y2 : Matrix (Fin 2) (Fin 2) R)
     (a1 : X1 1 1 = X1 0 0) (b1 : X1 1 0 = X1 0 1) (a2 : X2 1 1 = X2 0 0) (b2 : X2 1 0 = X2 0 1)
@@ -117,7 +117,7 @@ private theorem shape4 {R : Type} [CommRing R] (X1 Y1 X2 Y2 : Matrix (Fin 2) (Fi
   · linear_combination (X1 0 0 - X1 0 1) * (X2 0 0 + X2 0 1) * e00 - (X1 0 0 - X1 0 1) * (X2 0 0 + X2 0 1) * e01
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [UpperTheory.V.Cu.tn]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem smul_tn_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (c : R) (X Y : Matrix (Fin 2) (Fin 2) R) :
     (c • UpperTheory.V.Cu.tn X Y).map f = f c • UpperTheory.V.Cu.tn (X.map f) (Y.map f) := by
@@ -125,7 +125,7 @@ private theorem smul_tn_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* 
   fin_cases i <;> fin_cases j <;> simp [UpperTheory.V.Cu.tn]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hi`. Establish `h' : IsIrr (r.toHomUnits.comp φ)` using `isIrr_iso (r := ρ.comp φ) ⟨g, fun s => hg (φ s)⟩ h`. Conclude with `h'.2.2 V le_top hV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem irr_mat {Γ S k : Type} [Group Γ] [Group S] [Field k] (φ : S →* Γ) (ρ : Γ →* GL (Fin 2) k)
     (r : Γ →* Matrix (Fin 2) (Fin 2) k) (hi : RepIso ρ r.toHomUnits) (h : IsIrr (ρ.comp φ)) (V : Submodule k (Fin 2 → k))
@@ -138,53 +138,49 @@ end UpperTheory.V.Cu.IrreducibilityFourDim
 
 open UpperTheory.V.Cu.IrreducibilityFourDim in
 /- English proof (translation)
-Introduce `hal Ω _ _ _ l _ d T hle hok`. Take `⟨t, htG, htK⟩` from `hal Ω l d T hle hok`. Establish `hD : d.D.Good` using `d.ctx.1`. Set `f : d.c₁.O →+* PadicAlgCl l` to `algebraMap d.c₁.O (PadicAlgCl l)`. Use `haveI : IsAlgClosure T.F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) T.F⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨hcont, -, -, -, hres, -⟩` from `resFacts ℚ T.F Ω l 2 d.ρ`. Establish `hop : IsOpen ((T.GalL ⊓ d.K'.fixingSubgroup.comap (resQ T.F) : Subgroup (G T.F Ω)) : Set (G T.F Ω))` using `((IntermediateField.fixingSubgroup_isOpen T.K).preimage hcont).inter ((IntermediateField.fixingSubgroup_isOpen d.K').preimage hcont)`. Establish `hI` using `irrAb l (G T.F Ω) 2 (d.ρ.comp (galEmb ℚ T.F Ω)) (d.eis.cont.comp hcont) (hres d.irr) (T.GalL ⊓ d.K'.fixingSubgroup.comap (resQ T.F)) (T.G' ⊓ d.K'.fixingSubgroup.comap (resQ T.F)) hop (inf_le_inf_right _ inf_le_left) (fun a ha b hb => ⟨⟨T.GalL.mul_mem (T.GalL.mul_mem (T.GalL.mul_m …`. Express the relevant statement in the definitionally equal form `_ ∈ (cycZ T.F Ω l).ker`. Rewrite using `[MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv]`. Rewrite using `[mul_comm (cycZ T.F Ω l a), mul_inv_cancel_right, mul_inv_cancel]⟩,`. Use the proof step `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.mul_mem _ ha.2 hb.2) (Subgroup.inv_mem _ ha.2)) (Subgroup.inv_mem _ hb.2)⟩)`. Establish `hirrA : ∀ V : Submodule (PadicAlgCl l) (Fin 2 → PadicAlgCl l), (∀ i ∈ {x : T.G' | resQ T.F (x : G T.F Ω) ∈ d.K'.fixingSubgroup}, ∀ v ∈ V, (d.ρ₁ (resQ T.F i)).map f *ᵥ v ∈ V) → V = ⊥ ∨ V = ⊤` using `fun V hV => by`. Use `irr_mat ((galEmb ℚ T.F Ω).comp (T.G' ⊓ d.K'.fixingSubgroup.comap (resQ T.F)).subtype) d.ρ (mapRep f d.ρ₁) d.mod.iso (by rw [← MonoidHom.comp_assoc]; exact hI) V fun s v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : mapRep f d.ρ₁ (((galEmb ℚ T.F Ω).comp (T.G' ⊓ d.K'.fixingSubgroup.comap (resQ T.F)).subtype) s) = (d.ρ₁ (resQ T.F s.1)).map f` using `rfl`. Rewrite using `[e]`. Conclude with `hV ⟨s.1, (Subgroup.mem_inf.1 s.2).1⟩ (Subgroup.mem_inf.1 s.2).2 v hv`. Establish `hl : l.Prime` using `Fact.out`. Establish `hA : (d.D.pl l).valuation (l : Ω) < 1` using `hD.pl_over l hl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n, hn, hsn⟩ : ∃ n : ℕ, 0 < n ∧ (d.D.s0 : G ℚ Ω) ^ n ∈ T.F.fixingSubgroup ⊓ T.K.fixingSubgroup ⊓ d.K'.fixingSubgroup := by`. Establish `hU : IsOpen ((T.F.fixingSubgroup ⊓ T.K.fixingSubgroup ⊓ d.K'.fixingSubgroup : Subgroup (G ℚ Ω)) : Set (G ℚ Ω))` using `((IntermediateField.fixingSubgroup_isOpen T.F).inter (IntermediateField.fixingSubgroup_isOpen T.K)).inter (IntermediateField.fixingSubgroup_isOpen d.K')`. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `haveI : Finite (G ℚ Ω ⧸ (T.F.fixingSubgroup ⊓ T.K.fixingSubgroup ⊓ d.K'.fixingSubgroup)) := Subgroup.quotient_finite_of_isOpen _ hU`. Use `haveI : (T.F.fixingSubgroup ⊓ T.K.fixingSubgroup ⊓ d.K'.fixingSubgroup).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨n, hn, -, h⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.FiniteIndex.index_ne_zero (H := T.F.fixingSubgroup ⊓ T.K.fixingSubgroup ⊓ d.K'.fixingSubgroup)) (d.D.s0 : G ℚ Ω)`. Conclude with `⟨n, hn, h⟩`. Take `⟨h, hhdef⟩ : ∃ h : G ℚ Ω, h = (d.D.s0 : G ℚ Ω) ^ n` from `⟨_, rfl⟩`. Rewrite `hsn` using `[← hhdef]`. Establish `hh : h ∈ Ine (F` using `ℚ) (d.D.pl l) := hhdef ▸ pow_mem hD.decompSigma_mem.1.1 n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `hT : G T.F Ω` to `AlgEquiv.ofRingEquiv (f := h.toRingEquiv) (fun x => hsn.1.1 ⟨x.1, x.2⟩)`. Establish `hhT : resQ T.F hT = h` using `AlgEquiv.ext fun _ => rfl`. Establish `hTL : hT ∈ T.GalL` using `by show resQ T.F hT ∈ T.K.fixingSubgroup`. Rewrite using `[hhT]`. Conclude with `hsn.1.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `huG : hT * t * hT⁻¹ * t⁻¹ ∈ T.G'` using `⟨T.GalL.mul_mem (T.GalL.mul_mem (T.GalL.mul_mem hTL htG.1) (T.GalL.inv_mem hTL)) (T.GalL.inv_mem htG.1), by`. Express the relevant statement in the definitionally equal form `_ ∈ (cycZ T.F Ω l).ker`. Rewrite using `[MonoidHom.mem_ker]`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[mul_comm (cycZ T.F Ω l hT), mul_inv_cancel_right, mul_inv_cancel]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hru : resQ T.F (hT * t * hT⁻¹ * t⁻¹) = h * resQ T.F t * h⁻¹ * (resQ T.F t)⁻¹`. Simplify using `only [map_mul, map_inv, hhT]`. Establish `onh` using `d.tau.on h hsn.2`. Establish `onhi` using `d.tau.on h⁻¹ (inv_mem hsn.2)`. Establish `offt` using `d.tau.off (resQ T.F t) htK`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `offti` using `d.tau.off (resQ T.F t)⁻¹ (fun hc => htK (by simpa using inv_mem hc))`. Establish `hYt : d.τ (resQ T.F t) * d.τ (resQ T.F t)⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hXh : d.τ h * d.τ h⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hZ : d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) = d.τ h * d.τ (resQ T.F t) * d.τ h⁻¹ * d.τ (resQ T.F t)⁻¹`. Rewrite using `[hru, map_mul, map_mul, map_mul]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z1, z2, zp, zm⟩` from `shape4 _ _ _ _ onh.1 onh.2 onhi.1 onhi.2 offt.1 offt.2 offti.1 offti.2 hYt`. Rewrite `z1`, `z2`, `zp`, `zm` using `[← hZ]`. Establish `huK : resQ T.F (hT * t * hT⁻¹ * t⁻¹) ∈ d.K'.fixingSubgroup`. Assume the negation of the conclusion as `hc`. Take `⟨o1, o2⟩` from `d.tau.off _ hc`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0 : (2 : PadicAlgCl l) * f (d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 0) = 0`. Use `congrArg f (z1.symm.trans o1)` as an intermediate fact. Rewrite `this` using `[map_neg]`. Take the linear combination `this`. Establish `e1 : (2 : PadicAlgCl l) * f (d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 1) = 0`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg f (z2.symm.trans o2)` as an intermediate fact. Rewrite `this` using `[map_neg]`. Take the linear combination `this`. Establish `h0` using `(mul_eq_zero.1 e0).resolve_left two_ne_zero`. Establish `h1` using `(mul_eq_zero.1 e1).resolve_left two_ne_zero`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `((det_unit d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹))).map f).ne_zero` to reduce the goal to its premises. Rewrite using `[Matrix.det_fin_two, map_sub, map_mul f, map_mul f, h0, h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : (f (d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 0) + f (d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 1)) ^ 2 ≠ (f (d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 0) - f (d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 1)) ^ 2`. Introduce `heq`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take `⟨i1, i2⟩` from `on_inv _ _ onh.1 onh.2 onhi.1 onhi.2 hXh`. Establish `fm` using `on_form _ (d.tau.form h) onh.2`. Establish `kp : d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 0 + d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 1 = (d.τ h 0 0 + d.τ h 0 1) ^ 2`. Take the linear combination `zp - (d.τ h 0 0 + d.τ h 0 1) * (d.τ h⁻¹ 0 0 - d.τ h⁻¹ 0 1) * fm + (d.τ h 0 0 + d.τ h 0 1) ^ 2 * i2`. Establish `km : d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 0 - d.τ (resQ T.F (hT * t * hT⁻¹ * t⁻¹)) 0 1 = (d.τ h 0 0 - d.τ h 0 1) ^ 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `zm - (d.τ h 0 0 - d.τ h 0 1) * (d.τ h⁻¹ 0 0 + d.τ h⁻¹ 0 1) * fm + (d.τ h 0 0 - d.τ h 0 1) ^ 2 * i1`. Establish `fm' : f (d.τ h 0 0 + d.τ h 0 1) * f (d.τ h 0 0 - d.τ h 0 1) = 1`. Rewrite using `[← map_mul, fm, map_one]`. Rewrite `heq` using `[← map_add, ← map_sub, kp, km, map_pow, map_pow]`. Establish `hx8 : f (d.τ h 0 0 + d.τ h 0 1) ^ 8 = 1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `f (d.τ h 0 0 + d.τ h 0 1) ^ 4 * heq + ((f (d.τ h 0 0 + d.τ h 0 1) * f (d.τ h 0 0 - d.τ h 0 1)) ^ 3 + (f (d.τ h 0 0 + d.τ h 0 1) * f (d.τ h 0 0 - d.τ h 0 1)) ^ 2 + f (d.τ h 0 0 + d.τ h 0 1) * f (d.τ h 0 0 - d.τ h 0 1) + 1) * fm'`. Establish `hy8 : f (d.τ h 0 0 - d.τ h 0 1) ^ 8 = 1`. Take the linear combination `-(f (d.τ h 0 0 - d.τ h 0 1) ^ 4) * heq + ((f (d.τ h 0 0 + d.τ h 0 1) * f (d.τ h 0 0 - d.τ h 0 1)) ^ 3 + (f (d.τ h 0 0 + d.τ h 0 1) * f (d.τ h 0 0 - d.τ h 0 1)) ^ 2 + f (d.τ h 0 0 + d.τ h 0 1) * f (d.τ h 0 0 - d.τ h 0 1) + 1) * fm'`. Establish `hi` using `d.tau.ine (d.D.pl l) hA h hh`. Establish `E8 : f (chiO ℚ Ω l d.c₁.O h : d.c₁.O) ^ (d.m * 8) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Break down `d.tau.sgn (d.D.pl l) with hs | hs` into its components or cases. Rewrite `hi` using `[hs, mul_one]`. Rewrite `hx8` using `[hi, Units.val_pow_eq_pow_val, map_pow, ← pow_mul]`. Conclude with `hx8`. Rewrite `hi` using `[hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi' : d.τ h 0 0 - d.τ h 0 1 = ((chiO ℚ Ω l d.c₁.O h ^ d.m : d.c₁.Oˣ) : d.c₁.O)`. Rewrite using `[← hi]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hy8` using `[hi', Units.val_pow_eq_pow_val, map_pow, ← pow_mul]`. Conclude with `hy8`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : f (chiO ℚ Ω l d.c₁.O h : d.c₁.O) = algebraMap ℤ_[l] (PadicAlgCl l) (cycZ ℚ Ω l h : ℤ_[l])` using `(IsScalarTower.algebraMap_apply ℤ_[l] d.c₁.O (PadicAlgCl l) _).symm`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] (PadicAlgCl l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp Subtype.val_injective`. Establish `hc : (cycZ ℚ Ω l h) ^ (d.m * 8) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one, ← hE]`. Conclude with `E8`. Rewrite `hc` using `[hhdef, map_pow, ← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hD.decompSigma_ord (isOfFinOrder_iff_pow_eq_one.2 ⟨n * (d.m * 8), Nat.mul_pos hn (Nat.mul_pos d.tau.pos (by norm_num)), hc⟩)`. Establish `hkpm : ∀ i : T.G', resQ T.F (i : G T.F Ω) ∈ d.K'.fixingSubgroup → (f (d.τ (resQ T.F i) 0 0) + f (d.τ (resQ T.F i) 0 1)) * (f (d.τ (resQ T.F i) 0 0) - f (d.τ (resQ T.F i) 0 1)) = 1` using `fun i hi => by`. Rewrite using `[← map_add, ← map_sub, ← map_mul, on_form _ (d.tau.form _) (d.tau.on _ hi).2, map_one]`. Apply `KStar.Schema.span_eq_top_of_irreducible` to reduce the goal to its premises. Introduce `W hW`.
-
-Use `key two_ne_zero {x : T.G' | resQ T.F (x : G T.F Ω) ∈ d.K'.fixingSubgroup} (fun i => (d.ρ₁ (resQ T.F i)).map f) (fun i => (d.τ (resQ T.F i)).map f) (fun i hi => ⟨congrArg f (d.tau.on _ hi).1, congrArg f (d.tau.on _ hi).2⟩) (fun i hi => left_ne_zero_of_mul_eq_one (hkpm i hi)) (fun …` and prove the remaining obligations. Introduce `i _ v hv`. Establish `e : ((d.Q T).map f).r.comp T.G'.subtype i = f (S3.toC d.h d.δ (resQ T.F i) : d.c₁.O) • UpperTheory.V.Cu.tn ((d.ρ₁ (resQ T.F i)).map f) ((d.τ (resQ T.F i)).map f)` using `smul_tn_map f (S3.toC d.h d.δ (resQ T.F i) : d.c₁.O) (d.ρ₁ (resQ T.F i)) (d.τ (resQ T.F i))`. Establish `h1 : (f (S3.toC d.h d.δ (resQ T.F i) : d.c₁.O) • UpperTheory.V.Cu.tn ((d.ρ₁ (resQ T.F i)).map f) ((d.τ (resQ T.F i)).map f)) *ᵥ v ∈ W`. Rewrite using `[← e]`.
-
-Conclude with `hW i v hv`. Rewrite `h1` using `[Matrix.smul_mulVec]`. Establish `hne0 : f (S3.toC d.h d.δ (resQ T.F i) : d.c₁.O) ≠ 0` using `((S3.toC d.h d.δ (resQ T.F i)).isUnit.map f).ne_zero`. Use `W.smul_mem (f (S3.toC d.h d.δ (resQ T.F i) : d.c₁.O))⁻¹ h1` as an intermediate fact. Rewrite `this` using `[inv_smul_smul₀ hne0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cu.irrOf4_of : AlNe → IrrOf4 := by
   intro hal Ω _ _ _ l _ d T hle hok

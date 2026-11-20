@@ -10,9 +10,9 @@ namespace GlobalTheory.QFam
 variable {g : ℂ ≃+* ℂ} {N : ℕ}
 
 /- English proof (translation)
-Use `⟨fun n => if n = 0 then c else 0, HasQ.const N c, ?_⟩` and prove the remaining obligations. Establish `e : (fun n : ℕ => g (if n = 0 then c else 0)) = fun n => if n = 0 then g c else 0`. Use function extensionality and compare the values at `n`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HasQ.const N (g c)`.
+A detailed English derivation is pending.
 -/
 theorem QConj.const (g : ℂ ≃+* ℂ) (N : ℕ) (c : ℂ) : QConj g N (fun _ => c) fun _ => g c := by
   refine ⟨fun n => if n = 0 then c else 0, HasQ.const N c, ?_⟩
@@ -23,7 +23,7 @@ theorem QConj.const (g : ℂ ≃+* ℂ) (N : ℕ) (c : ℂ) : QConj g N (fun _ =
   exact HasQ.const N (g c)
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `hf`. Take `⟨b, hb, hb'⟩` from `hh`. Use `⟨fun n => a n + b n, ha.add hb, ?_⟩` and prove the remaining obligations. Simplify `ha'.add hb'` using `only [map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem QConj.add {f f' h h' : ℍ → ℂ} (hf : QConj g N f f') (hh : QConj g N h h') :
     QConj g N (fun τ => f τ + h τ) fun τ => f' τ + h' τ := by
@@ -33,7 +33,7 @@ theorem QConj.add {f f' h h' : ℍ → ℂ} (hf : QConj g N f f') (hh : QConj g 
   simpa only [map_add] using ha'.add hb'
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `hf`. Take `⟨b, hb, hb'⟩` from `hh`. Use `⟨fun n => a n - b n, ha.sub hb, ?_⟩` and prove the remaining obligations. Simplify `ha'.sub hb'` using `only [map_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem QConj.sub {f f' h h' : ℍ → ℂ} (hf : QConj g N f f') (hh : QConj g N h h') :
     QConj g N (fun τ => f τ - h τ) fun τ => f' τ - h' τ := by
@@ -43,16 +43,16 @@ theorem QConj.sub {f f' h h' : ℍ → ℂ} (hf : QConj g N f f') (hh : QConj g 
   simpa only [map_sub] using ha'.sub hb'
 
 /- English proof (translation)
-Simplify using `only [conv, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_conv (g : ℂ ≃+* ℂ) (a b : ℕ → ℂ) (n : ℕ) :
     g (conv a b n) = conv (fun n => g (a n)) (fun n => g (b n)) n := by
   simp only [conv, map_sum, map_mul]
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `hf`. Take `⟨b, hb, hb'⟩` from `hh`. Use `⟨conv a b, ha.mul_conv hb, ?_⟩` and prove the remaining obligations. Establish `e : (fun n => g (conv a b n)) = conv (fun n => g (a n)) (fun n => g (b n))`. Use function extensionality and compare the values at `(map_conv g a b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `ha'.mul_conv hb'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QConj.mul (hN : 0 < N) {f f' h h' : ℍ → ℂ} (hf : QConj g N f f') (hh : QConj g N h h') :
     QConj g N (fun τ => f τ * h τ) fun τ => f' τ * h' τ := by
@@ -65,9 +65,9 @@ theorem QConj.mul (hN : 0 < N) {f f' h h' : ℍ → ℂ} (hf : QConj g N f f') (
   exact ha'.mul_conv hb'
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [pow_zero]`. Simplify using `using QConj.const g N 1`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `only [pow_succ]`. Conclude with `QConj.mul hN ih hf`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem QConj.pow (hN : 0 < N) {f f' : ℍ → ℂ} (k : ℕ) (hf : QConj g N f f') :
     QConj g N (fun τ => f τ ^ k) fun τ => f' τ ^ k := by
@@ -80,9 +80,9 @@ theorem QConj.pow (hN : 0 < N) {f f' : ℍ → ℂ} (k : ℕ) (hf : QConj g N f 
     exact QConj.mul hN ih hf
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `only [Finset.sum_empty]`. Simplify using `using QConj.const g N 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j s hj ih h`. Simplify using `only [Finset.sum_insert hj]`. Conclude with `QConj.add (h j (Finset.mem_insert_self j s)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem QConj.sum {κ : Type} (s : Finset κ) {f f' : κ → ℍ → ℂ}
     (h : ∀ k ∈ s, QConj g N (f k) (f' k)) :
@@ -99,9 +99,9 @@ theorem QConj.sum {κ : Type} (s : Finset κ) {f f' : κ → ℍ → ℂ}
       (ih fun k hk => h k (Finset.mem_insert_of_mem hk))
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `only [Finset.prod_empty]`. Simplify using `using QConj.const g N 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j s hj ih h`. Simplify using `only [Finset.prod_insert hj]`. Conclude with `QConj.mul hN (h j (Finset.mem_insert_self j s)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem QConj.prod (hN : 0 < N) {κ : Type} (s : Finset κ) {f f' : κ → ℍ → ℂ}
     (h : ∀ k ∈ s, QConj g N (f k) (f' k)) :
@@ -118,7 +118,7 @@ theorem QConj.prod (hN : 0 < N) {κ : Type} (s : Finset κ) {f f' : κ → ℍ �
       (ih fun k hk => h k (Finset.mem_insert_of_mem hk))
 
 /- English proof (translation)
-Introduce `g N hN`. Conclude with `⟨fun c => QConj.const g N c, fun _ _ _ _ hf hh => QConj.add hf hh, fun _ _ _ _ hf hh => QConj.sub hf hh, fun _ _ _ _ hf hh => QConj.mul hN hf hh, fun _ _ k hf => QConj.pow hN k hf, fun _ s _ _ h => ⟨QConj.sum s h, QConj.prod hN s h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem qConj_ring : ∀ (g : ℂ ≃+* ℂ) (N : ℕ), 0 < N → (∀ c : ℂ, QConj g N (fun _ => c) fun _ => g c) ∧ (∀ f f' h h', QConj g N f f' → QConj g N h h' → QConj g N (fun τ => f τ + h τ) fun τ => f' τ + h' τ) ∧ (∀ f f' h h', QConj g N f f' → QConj g N h h' → QConj g N (fun τ => f τ - h τ) fun τ => f' τ - h' τ) ∧ (∀ f f' h h', QConj g N f f' → QConj g N h h' → QConj g N (fun τ => f τ * h τ) fun τ => f' τ * h' τ) ∧ (∀ f f' (k : ℕ), QConj g N f f' → QConj g N (fun τ => f τ ^ k) fun τ => f' τ ^ k) ∧ (∀ (κ : Type) (s : Finset κ) (f f' : κ → ℍ → ℂ), (∀ k ∈ s, QConj g N (f k) (f' k)) → (QConj g N (fun τ => ∑ k ∈ s, f k τ) fun τ => ∑ k ∈ s, f' k τ) ∧ QConj g N (fun τ => ∏ k ∈ s, f k τ) fun τ => ∏ k ∈ s, f' k τ) := by
   intro g N hN

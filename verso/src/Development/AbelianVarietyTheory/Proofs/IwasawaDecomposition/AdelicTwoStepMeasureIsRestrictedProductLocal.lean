@@ -28,9 +28,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {d : ℕ} (b : Module.Basis (Fin d) F E)
 
 /- English proof (translation)
-Establish `h` using `((GlobalTheory.T.integralPointsFinitePlaceTensor_properties F E σ d b).1 v).2`. Establish `: latV (n` using `n) (M := M) b v = ⋂ a, ⋂ i, (fun Y => Y a i) ⁻¹' intV b v := by`. Use extensionality with `Y`. Simplify using `[mem_latV_iff]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `IsOpen.measurableSet ?_` and prove the remaining obligations. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => h.preimage (by fun_prop)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurableSet_latV (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (n M : ℕ) :
     MeasurableSet (latV (n := n) (M := M) b v) := by
@@ -42,7 +42,7 @@ theorem measurableSet_latV (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F))
   exact isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => h.preimage (by fun_prop)
 
 /- English proof (translation)
-Use `⟨hc, fun S fi fv hfi hfv => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ v, v ∈ S ∪ S₀ ↔ v ∈ S ∨ v ∈ S₀ \ S` using `by intro v; simp; tauto`. Establish `h2 : Disjoint S (S₀ \ S)` using `Finset.disjoint_sdiff`. Rewrite using `[GlobalTheory.T.restrictedProduct_tail_split_finite_factors F E d b n M mi mv S (S₀ \ S) (S ∪ S₀) hc h1 h2]`. Conclude with `GlobalTheory.T.product_formula_change_sets_outside_finite_set F E d b n M ν mi mv S (S₀ \ S) (S ∪ S₀) (fun v => latV b v) h1 h2 (fun v => measurableSet_latV b σ v n M) (fun _ _ => rfl) (h _ Finset.subset_union_right) fi fv hfi hfv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProd_of_large (σ : E →ₐ[F] E) {n M : ℕ} (ν : Measure (Fin n → Fin M → AF F ⊗[F] E))
     (mi : Measure (Fin n → Fin M → Ainf F ⊗[F] E))
@@ -66,9 +66,9 @@ theorem isProd_of_large (σ : E →ₐ[F] E) {n M : ℕ} (ν : Measure (Fin n �
     (h _ Finset.subset_union_right) fi fv hfi hfv
 
 /- English proof (translation)
-Establish `hfin : {v | ¬ A v = latV b v}.Finite` using `hAe`. Use `set S₀ := hfin.toFinset with hS₀`. Establish `h1 : ∀ v, v ∈ S ∪ S₀ ↔ v ∈ S ∨ v ∈ S₀ \ S` using `by intro v; simp; tauto`. Establish `h2 : Disjoint S (S₀ \ S)` using `Finset.disjoint_sdiff`. Rewrite using `[GlobalTheory.T.restrictedProduct_tail_split_finite_factors F E d b n M mi mv S (S₀ \ S) (S ∪ S₀) h.1 h1 h2, GlobalTheory.T.product_formula_change_sets_outside_finite_set F E d b n M ν mi mv S (S₀ \ S) (S ∪ S₀) A h1 h2 hA (fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 hne)))`. Use the proof step `(h.2 _) fi fv hfi hfv]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun v hv => hAm v (Finset.mem_sdiff.1 hv).2`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isProd_sets {n M : ℕ} {ν : Measure (Fin n → Fin M → AF F ⊗[F] E)}
     {mi : Measure (Fin n → Fin M → Ainf F ⊗[F] E)}
@@ -99,9 +99,9 @@ theorem isProd_sets {n M : ℕ} {ν : Measure (Fin n → Fin M → AF F ⊗[F] E
 
 include b in
 /- English proof (translation)
-Establish `hc : Countable (HeightOneSpectrum (𝓞 F))` using `GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F`. Establish `: {X : Fin n → Fin M → AF F ⊗[F] E | ∀ v ∉ S, projV v (projFin X) ∈ A v} = ⋂ v, ⋂ (_ : v ∉ S), (fun X => projV v (projFin X)) ⁻¹' A v`. Use extensionality with `X`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MeasurableSet.iInter fun v => MeasurableSet.iInter fun _ => ((GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b n M).2.2.2 v).measurable (hA v)`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_cyl {n M : ℕ} (S : Finset (HeightOneSpectrum (𝓞 F)))
     (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E))
@@ -127,14 +127,14 @@ variable (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologic
   [LocallyCompactSpace R] [SecondCountableTopology R]
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.continuous_unitaryTwoStepVectorAndTranslatePair F E σ R M J B).comp (continuous_const.prodMk (continuous_const.prodMk continuous_id))).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_pair (y : Fin 1 → Fin (M + 1) → R ⊗[F] E) (g : HA R σ J) :
     Measurable fun y' => pairOf R σ J B y g y' :=
   ((GlobalTheory.T.continuous_unitaryTwoStepVectorAndTranslatePair F E σ R M J B).comp (continuous_const.prodMk (continuous_const.prodMk continuous_id))).measurable
 
 /- English proof (translation)
-Take `⟨h1, s, hs, hs'⟩` from `GlobalTheory.T.measurableSet_orbit_exists_measurable_section (HA R σ J) (Fin 1 → Fin (M + 1) → R ⊗[F] E) (ratTup (F := F) R x)`. Use `⟨h1, s, hs', fun m' hm' f hf => ?_⟩` and prove the remaining obligations. Establish `hm : Measurable fun p : (Fin 1 → Fin (M + 1) → R ⊗[F] E) × (Fin 1 → Fin M → R ⊗[F] E) => f (pairOf R σ J B p.1 (s p.1) p.2)` using `hf.comp ((GlobalTheory.T.continuous_unitaryTwoStepVectorAndTranslatePair F E σ R M J B).measurable.comp (measurable_fst.prodMk ((hs.comp measurable_fst).prodMk measurable_snd)))`. Conclude with `hm.lintegral_prod_right'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sec (x : Fin 1 → Fin (M + 1) → E) :
     MeasurableSet {y : Fin 1 → Fin (M + 1) → R ⊗[F] E | ∃ g : HA R σ J, g • ratTup (F := F) R x = y} ∧
@@ -154,7 +154,7 @@ end
 variable {d : ℕ} (b : Module.Basis (Fin d) F E)
 
 /- English proof (translation)
-Introduce `c i k`. Use `h 0 i k` as an intermediate fact. Rewrite using `[Subsingleton.elim c 0]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_mem {v : HeightOneSpectrum (𝓞 F)} {y : Fin 1 → Fin (M + 1) → Fv F v ⊗[F] E}
     {g : HA (Fv F v) σ J} {y' : Fin 1 → Fin M → Fv F v ⊗[F] E}
@@ -165,11 +165,11 @@ theorem fst_mem {v : HeightOneSpectrum (𝓞 F)} {y : Fin 1 → Fin (M + 1) → 
   exact this
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.T.eventually_integral_orthogonalComplement_pair F E σ d b M J x a B J' hS, GlobalTheory.T.integral_witt_theorem_almost_all_places F E σ hCM d b (M + 1) J x a hS.1 hS.2.1 hS.2.2.1] with v h1 h2 m' hm' y g hg hy`. Take `⟨k, hk, hk'⟩` from `h2 y hy (hg ▸ GlobalTheory.T.hermitian_quadratic_form_orbit_rational_vector_eq F E σ hCM _ _ J x a hS.2.2.1 g)`. Establish `hL` using `measurableSet_latV b σ v 2 (M + 1)`. Establish `h3` using `GlobalTheory.T.lintegral_orthogonalComplement_pair_indep_groupElement F E σ hCM (Fv F v) M J x a B J' m' hS hm' y g k (hg.trans hk.symm) ((latV b v).indicator 1) (measurable_one.indicator hL)`. Establish `h4 : ∀ g : HA (Fv F v) σ J, ∫⁻ y', (latV b v).indicator (1 : (Fin 2 → Fin (M + 1) → Fv F v ⊗[F] E) → ℝ≥0∞) (pairOf (Fv F v) σ J B y g y') ∂m' = m' {y' | pairOf (Fv F v) σ J B y g y' ∈ latV b v}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Conclude with `lintegral_indicator_one (measurable_pair (B := B) (Fv F v) y g hL)`. Rewrite `h3` using `[h4, h4]`. Rewrite using `[h3]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `y'`. Simplify using `[h1 k hk' y y', hy]`.
+A detailed English derivation is pending.
 -/
 theorem good_ae (hCM : IsCMExt F E σ) (hS : StepData σ J x a B J') :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
@@ -194,13 +194,11 @@ theorem good_ae (hCM : IsCMExt F E σ) (hS : StepData σ J x a B J') :
   simp [h1 k hk' y y', hy]
 
 /- English proof (translation)
-Take `⟨-, s, hs, -⟩` from `exists_sec (σ := σ) (J := J) (B := B) (Fv F v) x`. Establish `hL` using `measurableSet_latV b σ v 2 (M + 1)`. Establish `h1` using `hN ((latV b v).indicator 1) (measurable_one.indicator hL) s hs`. Rewrite `h1` using `[lintegral_indicator_one hL]`. Rewrite using `[h1, mul_comm, ← setLIntegral_const, ← lintegral_indicator (measurableSet_latV b σ v 1 (M + 1))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Establish `hm' : ∀ᵐ y ∂m, ∃ g : HA (Fv F v) σ J, g • ratTup (F` using `F) (Fv F v) x = y := hm`. Use `filter_upwards [hm'] with y hy`. Establish `h4 : ∫⁻ y', (latV b v).indicator (1 : (Fin 2 → Fin (M + 1) → Fv F v ⊗[F] E) → ℝ≥0∞) (pairOf (Fv F v) σ J B y (s y) y') ∂m' = m' {y' | pairOf (Fv F v) σ J B y (s y) y' ∈ latV b v}`. Conclude with `lintegral_indicator_one (measurable_pair (B := B) (Fv F v) y (s y) hL)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h4]`. Distinguish the cases in `hyL : y ∈ latV b v`. Rewrite using `[Set.indicator_of_mem hyL, h y (s y) (hs y hy) hyL]`. Rewrite using `[Set.indicator_of_notMem hyL]`. Establish `: {y' | pairOf (Fv F v) σ J B y (s y) y' ∈ latV b v} = ∅` using `Set.eq_empty_of_forall_notMem fun y' hy' => hyL (fst_mem b hy')`.
-
-Rewrite using `[this, measure_empty]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_mul {v : HeightOneSpectrum (𝓞 F)} {m : Measure (Fin 1 → Fin (M + 1) → Fv F v ⊗[F] E)}
     {m' : Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)} {N : Measure (Fin 2 → Fin (M + 1) → Fv F v ⊗[F] E)}
@@ -229,11 +227,9 @@ theorem mass_mul {v : HeightOneSpectrum (𝓞 F)} {m : Measure (Fin 1 → Fin (M
     rw [this, measure_empty]
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.restrictedProductMeasure_basic_properties F E d b 1 (M + 1) ν mi mv h).2.2.2 {y | ∃ g : HA (Ainf F) σ J, g • ratTup (F := F) (Ainf F) x = y} (fun v => {y | ∃ g : HA (Fv F v) σ J, g • ratTup (F := F) (Fv F v) x = y}) (exists_sec (σ := σ) (J := J) (B := B) (Ainf F) …`. Establish `h2 : ∀ᵐ y ∂ν, projInf y ∈ {y | ∃ g : HA (Ainf F) σ J, g • ratTup (F` using `F) (Ainf F) x = y} ∧ ∀ v, projV v (projFin y) ∈ {y | ∃ g : HA (Fv F v) σ J, g • ratTup (F := F) (Fv F v) x = y} := h1`. Use `filter_upwards [h2] with y ⟨⟨gi, hgi⟩, hy⟩`. Use `GlobalTheory.T.witt_theorem_adelic_one_vector F E σ hCM (M + 1) J x a hS.1 hS.2.1 hS.2.2.1 y ?_` and prove the remaining obligations. Use `((q_and_unitary_local_components F E σ (M + 1) J).1 (y 0) a).2 ⟨?_, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.T.hermitian_quadratic_form_orbit_rational_vector_eq F E σ hCM _ _ J x a hS.2.2.1 gi` as an intermediate fact. Rewrite `this` using `[hgi]`. Conclude with `this`. Take `⟨g, hg⟩` from `hy v`. Use `GlobalTheory.T.hermitian_quadratic_form_orbit_rational_vector_eq F E σ hCM _ _ J x a hS.2.2.1 g` as an intermediate fact.
-
-Rewrite `this` using `[hg]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_orbit (hCM : IsCMExt F E σ) (hS : StepData σ J x a B J')
     {ν : Measure (Fin 1 → Fin (M + 1) → AF F ⊗[F] E)}
@@ -268,15 +264,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {d : ℕ} (b : Module.Basis (Fin d) F E)
 
 /- English proof (translation)
-Take `⟨gi, gv, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.exists_local_components_adelic_unitary_element F E σ d b M J x B g`. Rewrite `h1`, `h2` using `[hy]`. Distinguish the cases in `hyL : y ∈ {X : Fin 1 → Fin (M + 1) → AF F ⊗[F] E | ∀ v ∉ S, projV v (projFin X) ∈ latV b v}`. Rewrite using `[Set.indicator_of_mem hyL]`. Establish `hA : ∀ v, MeasurableSet {y' | pairOf (Fv F v) σ J B (projV v (projFin y)) (gv v) y' ∈ latV b v}` using `fun v => measurable_pair (Fv F v) _ _ (measurableSet_latV b σ v 2 (M + 1))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `isProd_sets b h S (fun v => {y' | pairOf (Fv F v) σ J B (projV v (projFin y)) (gv v) y' ∈ latV b v}) hA (by filter_upwards [GlobalTheory.T.eventually_integral_orthogonalComplement_pair F E σ d b M J x a B J' hS, h5, S.finite_toSet.compl_mem_cofinite] with v e1 e2 e3`. Use extensionality with `y'`. Simplify using `[e1 _ e2, hyL v e3])`. Use the proof step `(fun v hv => hg v hv _ _ (h2 v).symm (hyL v hv))`. Use the proof step `(fun y' => fi (pairOf (Ainf F) σ J B (projInf y) gi y'))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun v y' => fv v (pairOf (Fv F v) σ J B (projV v (projFin y)) (gv v) y'))`. Use the proof step `(hfi.comp (measurable_pair (Ainf F) _ _)) (fun v => (hfv v).comp (measurable_pair (Fv F v) _ _))`. Rewrite using `[← GlobalTheory.T.lintegral_orthogonalComplement_pair_indep_groupElement F E σ hCM (Ainf F) M J x a B J' mi' hS hi (projInf y) gi _ (h1.symm.trans (hsi _ ⟨gi, h1.symm⟩).symm) fi hfi, Finset.prod_congr rfl fun v _ => (GlobalTheory.T.lintegral_orthogonalComplement_pair_indep_groupE …`. Use `lintegral_congr fun y' => ?_` and prove the remaining obligations. Distinguish the cases in `hq : ∀ v ∉ S, pairOf (Fv F v) σ J B (projV v (projFin y)) (gv v) (projV v (projFin y')) ∈ latV b v`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (by simpa only [Set.mem_setOf_eq, h4] using hq), Set.indicator_of_mem (by simpa only [Set.mem_setOf_eq] using hq)]`. Simplify using `only [h3, h4]`. Rewrite using `[Set.indicator_of_notMem (by simpa only [Set.mem_setOf_eq, h4] using hq), Set.indicator_of_notMem (by simpa only [Set.mem_setOf_eq] using hq)]`. Rewrite using `[Set.indicator_of_notMem hyL, zero_mul]`. Use `(lintegral_congr fun y' => ?_).trans lintegral_zero` and prove the remaining obligations.
-
-Use `Set.indicator_of_notMem (fun hm => hyL fun v hv => ?_) _` and prove the remaining obligations. Use `hm v hv` as an intermediate fact. Rewrite `this` using `[h4]`. Conclude with `fst_mem b this`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_eq (hCM : IsCMExt F E σ) (hS : StepData σ J x a B J')
     {ν' : Measure (Fin 1 → Fin M → AF F ⊗[F] E)}
@@ -340,15 +334,13 @@ theorem inner_eq (hCM : IsCMExt F E σ) (hS : StepData σ J x a B J')
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM d b M J x a B J' ν mi mv ν' mi' mv' N Ni Nv hS hν hν' hoi hov hii hiv hNi hNv hN`. Establish `hfin` using `Filter.eventually_cofinite.1 (good_ae b hCM hS)`. Establish `hg : ∀ v ∉ hfin.toFinset, ∀ (y : Fin 1 → Fin (M + 1) → Fv F v ⊗[F] E) (g : HA (Fv F v) σ J), g • ratTup (F` using `F) (Fv F v) x = y → y ∈ latV b v → mv' v {y' | pairOf (Fv F v) σ J B y g y' ∈ latV b v} = mv' v (latV b v) := by`. Introduce `v hv`. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hv _ (hiv v)`. Take `⟨hsum, htail⟩` from `GlobalTheory.T.tailProd_mul_of_lattice_mass_mul F E d b _ _ _ _ _ _ mi mv mi' mv' Nv hfin.toFinset hν.1 hν'.1 (fun v hv => mass_mul b (hov v) (hNv v) (hg v hv))`. Establish `hnice` using `nice_ainf_fv F`. Use `isProd_of_large b σ N Ni Nv hfin.toFinset ⟨GlobalTheory.T.twoStep_pair_measure_finite_on_compacts F E σ hCM (Ainf F) hnice.1 M J x a B J' mi mi' Ni hS hoi hν.1.1 hν'.1.1 hii hNi, fun v => GlobalTheory.T.twoStep_pair_measure_finite_on_compacts F E σ hCM (Fv F v) (hnice.2 v) M J x …` and prove the remaining obligations. Take `⟨-, s, hs, -⟩` from `exists_sec (σ := σ) (J := J) (B := B) (AF F) x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, si, hsi, hsi'⟩` from `exists_sec (σ := σ) (J := J) (B := B) (Ainf F) x`. Use `choose sv hsv hsv' using fun v : HeightOneSpectrum (𝓞 F) => (exists_sec (σ := σ) (J := J) (B := B) (Fv F v) x).2`. Establish `hG` using `GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b 2 (M + 1)`. Establish `hG1` using `GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b 1 (M + 1)`. Establish `hc2` using `measurableSet_cyl b S _ fun v => measurableSet_latV b σ v 2 (M + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1` using `measurableSet_cyl b S _ fun v => measurableSet_latV b σ v 1 (M + 1)`. Establish `hFi` using `hsi' mi' hν'.1.1 fi hfi`. Establish `hFv` using `fun v => hsv' v (mv' v) (hν'.1.2.1 v) (fv v) (hfv v)`. Establish `hm : Measurable fun X : Fin 2 → Fin (M + 1) → AF F ⊗[F] E => fi (projInf X) * ∏ v ∈ S, fv v (projV v (projFin X))` using `(hfi.comp hG.2.2.1.measurable).mul (Finset.measurable_prod _ fun v _ => (hfv v).comp (hG.2.2.2 v).measurable)`. Rewrite using `[← lintegral_indicator hc2, hN _ (hm.indicator hc2) s hs, hNi fi hfi si hsi, Finset.prod_congr rfl fun v _ => hNv v (fv v) (hfv v) (sv v) (hsv v), htail S hSS, ← mul_assoc, ← hν.2 S _ _ hFi hFv, ← lintegral_indicator hc1, ← lintegral_mul_const' (tailProd b mv' S) _ ENNReal.ofReal …`.
-
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [adelic_orbit b hCM hS hν hoi hov] with y hy`. Conclude with `inner_eq b hCM hS hν' hii hiv S (fun v hv => hg v fun h => hv (hSS h)) fi fv hfi hfv hsi hsv y (s y) (hs y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twoStep_isProd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (M : ℕ) (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (x : Fin 1 → Fin (M + 1) → E) (a : F) (B : Matrix (Fin (M + 1)) (Fin M) E) (J' : Matrix (Fin M) (Fin M) E) (ν : Measure (Fin 1 → Fin (M + 1) → AF F ⊗[F] E)) (mi : Measure (Fin 1 → Fin (M + 1) → Ainf F ⊗[F] E)) (mv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 1 → Fin (M + 1) → Fv F v ⊗[F] E)) (ν' : Measure (Fin 1 → Fin M → AF F ⊗[F] E)) (mi' : Measure (Fin 1 → Fin M → Ainf F ⊗[F] E)) (mv' : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)) (N : Measure (Fin 2 → Fin (M + 1) → AF F ⊗[F] E)) (Ni : Measure (Fin 2 → Fin (M + 1) → Ainf F ⊗[F] E)) (Nv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 2 → Fin (M + 1) → Fv F v ⊗[F] E)), StepData σ J x a B J' → IsProd b ν mi mv → IsProd b ν' mi' mv' → OnOrbit (Ainf F) σ J x mi → (∀ v, OnOrbit (Fv F v) σ J x (mv v)) → IsInvTup (Ainf F) σ J' mi' → (∀ v, IsInvTup (Fv F v) σ J' (mv' v)) → TwoStep (Ainf F) σ J x B mi mi' Ni → (∀ v, TwoStep (Fv F v) σ J x B (mv v) (mv' v) (Nv v)) → TwoStep (AF F) σ J x B ν ν' N → IsProd b N Ni Nv := by
   intro F E _ _ _ _ _ σ hCM d b M J x a B J' ν mi mv ν' mi' mv' N Ni Nv hS hν hν' hoi hov hii hiv

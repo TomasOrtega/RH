@@ -27,9 +27,7 @@ open NumberField IsDedekindDomain GlobalTheory.Mem.Col2 Formalism.L2.Forms Globa
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Establish `key : ∀ k : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S, k = _root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y.y → ∀ t : k.P.T, k.P.I.tup t = D.what₂.mu0 →`. Use `letI := k.B.alg`. Use the proof step `GlobalTheory.Core.Rk.Top.TopLev K₀ (levS _ k.B.Q.Rl.toRealDat.βX (datXP k.B.Q.Rl.toRealDat (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true) t)) (levChi _ k.B.Q.Rl.toRealDat.βX (datXP k.B.Q.Rl.toRealDat (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true) t)) := by`. Introduce `k hk`. Substitute `hk` using the available equality.
-
-Conclude with `h`. Conclude with `key (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b) y.eq t ht`.
+Establish an intermediate fact. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem topLev_of_btw_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition D O c) (x : R3.TwIn O.ex) (y : _root_.GlobalTheory.Mem.Top.Bl.TwistedBundle b x)
     {u : D.what₂.Word} (K₀ : ClsPTied u) (h : PairDataBaseTupleLevelEqualsClassLevel x K₀) (t : (_root_.GlobalTheory.Fam.packB_alt b).P.T) (ht : (_root_.GlobalTheory.Fam.packB_alt b).P.I.tup t = D.what₂.mu0) :
@@ -46,11 +44,11 @@ theorem topLev_of_btw_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheor
   exact key (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b) y.eq t ht
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR`. Consider the cases of `x with`. Consider the case `mk G Pl0 I0 T' A3 core R F' cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH`. Consider the cases of `pack`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Introduce `t ht`. Establish `hT' : Y.tup = q.x.what₂.r.Y.tup` using `eq_of_heq htup`. Establish `z` using `q.x.what₂.r.z.lev`. Establish `hix : R3.ixOf q.w.I _ t = q.w.I.mu0` using `(q.x.what₂.r.tup_ix t).symm.trans ((congrFun hT' t).symm.trans ht)`. Establish `hQ : q.x.what₂.r.z.R.Q t = ∅` using `(z.Q t).trans ((congrArg q.w.I.Q hix).trans q.w.I.twistPrimes_reference_tuple_eq_empty)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `z.is.chi`. Rewrite `hc` using `[z.C]`. Conclude with `topLev_levPOf q.w.I q.w.l q.Z q.w.ok q.w.pins v F hF r_le_X q.x.what₂.r.z.R.Pg (q.x.what₂.r.z.R.Q t) q.x.what₂.r.z.R.βX z.Pg hQ z.beta.2 q.x.what₂.r.z.R.eG q.x.what₂.r.z.idG q.x.what₂.r.z.R.chi (q.x.what₂.r.z.R.xiR t) hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairDataBaseTupleLevel_eq_classLevel_of_stdF {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K)
     (a : R3.TwArgs q.O.ex q.x.what₂) (v : q.B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((q.w.D q.Z).mem v).C.cls i → Ch i}
@@ -72,7 +70,7 @@ theorem pairDataBaseTupleLevel_eq_classLevel_of_stdF {hL : _root_.UpperTheory.Ze
     z.Pg hQ z.beta.2 q.x.what₂.r.z.R.eG q.x.what₂.r.z.idG q.x.what₂.r.z.R.chi (q.x.what₂.r.z.R.xiR t) hc
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `hL p K q c b hw u t ht`. Take `⟨-, -, -, ⟨hC⟩, -⟩` from `_root_.GlobalTheory.Fam.colsStd_of_bWit_alt q b hw`. Establish `hx : hw.a.x = hw.x` using `eq_of_heq hw.ax`. Conclude with `(levG_one_iff _ _ _).2 (_root_.GlobalTheory.Fam.BaseLevel.topLev_of_btw_alt b hw.x hw.y _ (hx ▸ _root_.GlobalTheory.Fam.BaseLevel.pairDataBaseTupleLevel_eq_classLevel_of_stdF q hw.a u _ (hC u)) t ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levG_base_of_bWit_alt : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → ∀ (u : (q.w.D q.Z).what₂.Word) (t : (_root_.GlobalTheory.Fam.packB_alt b).P.T), (_root_.GlobalTheory.Fam.packB_alt b).P.I.tup t = (q.w.D q.Z).what₂.mu0 → LevG ((_root_.GlobalTheory.Fam.packB_alt b).R.T.cols.forms u).clsP.toG 1 (levS _ (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).βX (datXP (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)) (_root_.GlobalTheory.Fam.complexLevelStructure (_root_.GlobalTheory.Fam.packB_alt b)) t)) (levChi _ (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).βX (datXP (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)) (_root_.GlobalTheory.Fam.complexLevelStructure (_root_.GlobalTheory.Fam.packB_alt b)) t)) := by
   intro hL p K q c b hw u t ht

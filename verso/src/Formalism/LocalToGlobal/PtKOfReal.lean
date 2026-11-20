@@ -16,9 +16,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `h'` using `eq_of_heq hd`. Consider the cases of `R1`. Consider the cases of `R2`. Simplify using `only at h'`.
+Substitute using the available equality. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Substitute `h'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem rows_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 = Z2) (R1 : IndefRows (P.A3.side3 P.P0 P.ψ0 Z1))
     (R2 : IndefRows (P.A3.side3 P.P0 P.ψ0 Z2)) (hd : HEq R1.toIndefData R2.toIndefData) : HEq R1 R2 := by
@@ -31,9 +31,9 @@ theorem rows_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 
   rfl
 
 /- English proof (translation)
-Substitute `hZ` using the available equality. Take `rfl` from `eq_of_heq hD`. Take `rfl` from `eq_of_heq hS0`. Take `rfl` from `eq_of_heq hS1`. Take `rfl` from `eq_of_heq hI`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hDc`.
+A detailed English derivation is pending.
 -/
 theorem dcPt_move {P : RowSideFamily ex} (hDc : RowsHoldDcPt3 P) {Z : DefSub P.A3.fam3.amb3} (hZ : Z = P.Zs)
     {S0' : IndefData (P.A3.side3 P.P0 P.ψ0 Z)} {S1' : IndefData (P.A3.side3 P.Ps P.ψs Z)} {Dc' : DefCols (P.A3.side3 P.Ps P.ψs Z)}
@@ -51,7 +51,7 @@ theorem dcPt_move {P : RowSideFamily ex} (hDc : RowsHoldDcPt3 P) {Z : DefSub P.A
   exact hDc
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[eq_of_heq hS]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 = Z2) {S1 : IndefData (P.A3.side3 P.Ps P.ψs Z1)}
     {S2 : IndefData (P.A3.side3 P.Ps P.ψs Z2)} (hS : HEq S1 S2) : S1.κ = S2.κ := by
@@ -59,7 +59,7 @@ theorem kap_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 =
   rw [eq_of_heq hS]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[eq_of_heq hS]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 = Z2) {S1 : IndefData (P.A3.side3 P.P0 P.ψ0 Z1)}
     {S2 : IndefData (P.A3.side3 P.P0 P.ψ0 Z2)} (hS : HEq S1 S2) : S1.Tw = S2.Tw := by
@@ -96,9 +96,9 @@ def InpAt [IsTotallyComplex D.what₂.LL] {Rc : Formalism.L2.RecT ex} {P : RowSi
         ∃ hQ : ∀ u, ChainTie (inp u).ch (c.memQ (I.wU u)), ∀ u, FirstCols c.hE (hQ u)
 
 /- English proof (translation)
-Establish `hr` using `Q.rowsHold hOk hsep Cl CHl hP hI hbu`. Establish `hZs : (pkOf Q hOk hsep Cl CHl hP hI).Zs = P.Zs` using `Q.zs`. Establish `hS0 : HEq (pkOf Q hOk hsep Cl CHl hP hI).core.base.toIndefData P.S0` using `Q.s0`. Establish `hS1 : HEq (pkOf Q hOk hsep Cl CHl hP hI).core.cols.toIndefData P.S1` using `Q.s1`. Establish `hRows : HEq (pkOf Q hOk hsep Cl CHl hP hI).core.base.toIndefRows (Classical.choose hr.rows0)` using `rows_heq hZs _ _ (hS0.trans (heq_of_eq (Classical.choose_spec hr.rows0).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDc : HEq (c.face (pkOf Q hOk hsep Cl CHl hP hI).Zs) P.Dc` using `(congr_arg_heq c.face hZs).trans (heq_of_eq hCT.1)`. Conclude with `pkg_of_rows Rc.T P hr X e c Sp Zsc hCT hCTT hR C Cabs Cl CHl _ (pkOf Q hOk hsep Cl CHl hP hI) hZs hRows hS1 Q.col Del h0 lam0 C0 ce Ch Sw C1 eJ H (fun NuC I hT hI' => ⟨Formalism.L2.G.ServJointF.brTied_of hT ⟨s, hOk.ok2⟩ (dcPt_move hPt hZs hDc hS0 hS1 hI'), hInp NuC I hT hI'⟩) hN …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pt_of_real [IsTotallyComplex D.what₂.LL] (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (hpin : RowSideDetermined Rc.T P)
     (hkap : RowsHoldKap3 P) (hPt : RowsHoldDcPt3 P)
@@ -131,9 +131,9 @@ theorem pt_of_real [IsTotallyComplex D.what₂.LL] (Rc : Formalism.L2.RecT ex) (
     hC0 hC1 hC2 hCabs hLa
 
 /- English proof (translation)
-Establish `hZs : (pkOf Q R.ok1 hsep Cl CHl hP hI).Zs = R.P.Zs` using `Q.zs`. Establish `hS0 : HEq (pkOf Q R.ok1 hsep Cl CHl hP hI).core.base.toIndefData R.P.S0` using `Q.s0`. Establish `hS1 : HEq (pkOf Q R.ok1 hsep Cl CHl hP hI).core.cols.toIndefData R.P.S1` using `Q.s1`. Establish `hRows : HEq (pkOf Q R.ok1 hsep Cl CHl hP hI).core.base.toIndefRows (Classical.choose R.hr.rows0)` using `rows_heq hZs _ _ (hS0.trans (heq_of_eq (Classical.choose_spec R.hr.rows0).symm))`. Establish `hDc : HEq (R.c.face (pkOf Q R.ok1 hsep Cl CHl hP hI).Zs) R.P.Dc` using `(congr_arg_heq R.c.face hZs).trans (heq_of_eq R.colTie.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pkg_of_rowsK R hR C Cabs Cl CHl _ (pkOf Q R.ok1 hsep Cl CHl hP hI) hZs hRows hS1 Q.col Del h0 lam0 C0 ce Ch Sw C1 eJ H (fun NuC I hT' hI' => ⟨Formalism.L2.G.ServJointF.brTied_of hT' ⟨1, R.ok1.ok2⟩ (dcPt_move hPt hZs hDc hS0 hS1 hI'), hInp NuC I hT' hI'⟩) hN Y (fun σ => (hkap σ).t …`.
+A detailed English derivation is pending.
 -/
 theorem ptK_of_real [IsTotallyComplex D.what₂.LL] (Rc : Formalism.L2.RecT ex) (R : DivisionRowsKernel ex) (hT : R.T = Rc.T)
     (hpin : RowSideDetermined Rc.T R.P) (hkap : RowsHoldKap3 R.P) (hPt : RowsHoldDcPt3 R.P)

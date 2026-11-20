@@ -15,7 +15,7 @@ def dz (s : ℂ) (n : ℕ) : ℂ :=
 def Dz (s : ℂ) : ℂ := ∑' n, dz s n
 
 /- English proof (translation)
-Establish `ha : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Rewrite using `[dz, d_eq ha s, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (norm_eint_le ha hs) (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_dz_le {s : ℂ} (hs : 0 < s.re) (n : ℕ) :
     ‖dz s n‖ ≤ ‖s - 1‖ * ‖s‖ * ((n : ℝ) + 1) ^ (-s.re - 1) := by
@@ -24,35 +24,33 @@ lemma norm_dz_le {s : ℂ} (hs : 0 < s.re) (n : ℕ) :
   exact mul_le_mul_of_nonneg_left (norm_eint_le ha hs) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `h` using `(summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr hp)`. Simplify `h` using `[Nat.cast_add, Nat.cast_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma summable_shift {p : ℝ} (hp : p < -1) : Summable (fun n : ℕ => ((n : ℝ) + 1) ^ p) := by
   have h := (summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr hp)
   simpa [Nat.cast_add, Nat.cast_one] using h
 
 /- English proof (translation)
-The claim follows from `Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => norm_dz_le hs n) ((summable_shift (by linarith : -s.re - 1 < -1)).mul_left _)`.
+A detailed English derivation is pending.
 -/
 lemma summable_norm_dz {s : ℂ} (hs : 0 < s.re) : Summable (fun n => ‖dz s n‖) :=
   Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => norm_dz_le hs n)
     ((summable_shift (by linarith : -s.re - 1 < -1)).mul_left _)
 
 /- English proof (translation)
-Introduce `s0 hs0`. Establish `hs0' : 0 < s0.re` using `hs0`. Set `U : Set ℂ` to `{s | s0.re / 2 < s.re} ∩ Metric.ball s0 1`. Establish `hU : IsOpen U` using `(isOpen_lt continuous_const Complex.continuous_re).inter Metric.isOpen_ball`. Establish `hmem : s0 ∈ U` using `⟨by show s0.re / 2 < s0.re; linarith, Metric.mem_ball_self one_pos⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : ∀ n : ℕ, DifferentiableOn ℂ (fun s => dz s n) U`. Introduce `n`. Apply `Differentiable.differentiableOn` to reduce the goal to its premises. Introduce `s`. Establish `h1 : (((n : ℝ) + 1 : ℝ) : ℂ) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(by positivity : ((n : ℝ) + 1) ≠ 0)` after adjusting the coercions. Establish `h2 : ((((n : ℝ) + 1) + 1 : ℝ) : ℂ) ≠ 0`. Conclude with `(by positivity : ((n : ℝ) + 1 + 1) ≠ 0)` after adjusting the coercions. Unfold `dz`. Use `((DifferentiableAt.sub ?_ ?_).sub ((differentiableAt_id.sub_const 1).mul ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((differentiableAt_const _).sub differentiableAt_id).const_cpow (Or.inl h1)`. Conclude with `((differentiableAt_const _).sub differentiableAt_id).const_cpow (Or.inl h2)`. Conclude with `differentiableAt_id.neg.const_cpow (Or.inl h2)`. Establish `hbound : ∀ n : ℕ, ∀ s ∈ U, ‖dz s n‖ ≤ (‖s0‖ + 1 + 1) * (‖s0‖ + 1) * ((n : ℝ) + 1) ^ (-(s0.re / 2) - 1)`. Introduce `n s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hre : s0.re / 2 < s.re` using `hs.1`. Establish `hd : ‖s - s0‖ < 1`. Use `hs.2` as an intermediate fact. Rewrite `this` using `[Metric.mem_ball, dist_eq_norm]`. Then use the resulting hypothesis. Establish `hpos : 0 < s.re` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsR : ‖s‖ ≤ ‖s0‖ + 1`. Use `norm_sub_norm_le s s0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1 : ‖s - 1‖ ≤ ‖s0‖ + 1 + 1`. Use `norm_sub_le s 1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `this` using `[norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : ((n : ℝ) + 1) ^ (-s.re - 1) ≤ ((n : ℝ) + 1) ^ (-(s0.re / 2) - 1)` using `Real.rpow_le_rpow_of_exponent_le (by linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)]) (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : Summable (fun n : ℕ => (‖s0‖ + 1 + 1) * (‖s0‖ + 1) * ((n : ℝ) + 1) ^ (-(s0.re / 2) - 1))` using `(summable_shift (by linarith)).mul_left _`.
-
-Establish `hD : DifferentiableOn ℂ (fun s => ∑' n, dz s n) U` using `differentiableOn_tsum_of_summable_norm hsum hdiff hU hbound`. Conclude with `(hD.differentiableAt (hU.mem_nhds hmem)).differentiableWithinAt`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma Dz_differentiableOn : DifferentiableOn ℂ Dz {s : ℂ | 0 < s.re} := by
   intro s0 hs0

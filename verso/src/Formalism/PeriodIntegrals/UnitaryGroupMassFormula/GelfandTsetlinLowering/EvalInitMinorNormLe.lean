@@ -7,9 +7,9 @@ namespace PI.WGL.XiB
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [hP0]`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, eq_sub_of_add_eq' ih]`. Simplify using `only [Finset.sum_range_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_add, smul_sub, add_smul, sub_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem teleA {G : Type*} [AddCommGroup G] (n : ℕ) (P : ℕ → G) (hP0 : P 0 = 0) (w : G) (ℓ σ : ℕ → ℤ) :
     ℓ n • (P n + w) + ∑ i ∈ Finset.range n, ((σ i - ℓ (i + 1)) • P (i + 1) + (ℓ i - σ i) • (P i + w)) =
@@ -24,7 +24,7 @@ theorem teleA {G : Type*} [AddCommGroup G] (n : ℕ) (P : ℕ → G) (hP0 : P 0 
     abel
 
 /- English proof (translation)
-Establish `h` using `teleA (G := Additive G) n (fun i => Additive.ofMul (P i)) (by simp [hP0]) (Additive.ofMul w) ℓ σ`. Establish `h2` using `congrArg Additive.toMul h`. Simplify `h2` using `[toMul_sum, toMul_zsmul, toMul_sub, toMul_add, mul_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem teleM {G : Type*} [CommGroup G] (n : ℕ) (P : ℕ → G) (hP0 : P 0 = 1) (w : G) (ℓ σ : ℕ → ℤ) :
     (P n * w) ^ ℓ n * ∏ i ∈ Finset.range n, (P (i + 1) ^ (σ i - ℓ (i + 1)) * (P i * w) ^ (ℓ i - σ i)) =
@@ -36,33 +36,31 @@ theorem teleM {G : Type*} [CommGroup G] (n : ℕ) (P : ℕ → G) (hP0 : P 0 = 1
   simpa [toMul_sum, toMul_zsmul, toMul_sub, toMul_add, mul_zpow] using h2
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `set v : ℕ → ℂˣ := fun p => if hp : p < n + 1 then s ⟨p, hp⟩ else 1 with hv`. Use `set P : ℕ → ℂˣ := fun k => ∏ p ∈ Finset.range k, v p with hP`. Use `set ℓ : ℕ → ℤ := fun k => if hk : k < n + 1 then lam.w ⟨k, hk⟩ else 0 with hℓ`. Use `set σ : ℕ → ℤ := fun k => if hk : k < n then sg.w ⟨k, hk⟩ else 0 with hσ`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set w : ℂˣ := s ⟨n, by omega⟩ with hw`. Establish `hPa : ∀ k (hk : k ≤ n + 1), ∏ p : Fin k, s (Fin.castLE hk p) = P k`. Introduce `k hk`. Use `show ∏ p : Fin k, s (Fin.castLE hk p) = ∏ p ∈ Finset.range k, v p`. Rewrite using `[← Fin.prod_univ_eq_prod_range]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Establish `: p.1 < n + 1` using `by omega`. Simplify using `only [hv, dif_pos this]`. Both sides reduce to the same expression. Establish `hPs : ∀ k, P (k + 1) = P k * v k` using `fun k => by simp only [hP, Finset.prod_range_succ]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : Matrix.GeneralLinearGroup.det (diagGL ℂ (n + 1) s) = P n * w`. Use `ext`. Establish `e` using `hPa (n + 1) le_rfl`. Simplify using `only [Fin.castLE_rfl, id] at e`. Rewrite `e` using `[hPs, show v n = w by simp [hv, hw]]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Simplify using `[diagGL, Matrix.det_diagonal]`. Establish `hshift : lam.detShift = ℓ n`. Simplify using `[DomWeight.detShift, hℓ]`. Establish `hx : XiA.xiScal rfl lam sg (Matrix.diagonal fun a => (s a : ℂ)) = ((∏ i ∈ Finset.range n, (P (i + 1) ^ (σ i - ℓ (i + 1)) * (P i * w) ^ (ℓ i - σ i)) : ℂˣ) : ℂ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Fin.prod_univ_eq_prod_range (fun i => P (i + 1) ^ (σ i - ℓ (i + 1)) * (P i * w) ^ (ℓ i - σ i)) n]`. Unfold `XiA.xiScal`. Rewrite using `[Units.coe_prod]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `hi` using `i.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA : 0 ≤ aa rfl lam sg i` using `by have := (hI i).2; unfold aa; omega`. Establish `hB : 0 ≤ bb rfl lam sg i` using `by have := (hI i).1; unfold bb; omega`. Establish `e1 : ∏ p : Fin (i.1 + 1), (Matrix.diagonal fun a => (s a : ℂ)) (Fin.castLE (by omega) p) (Fin.castLE (by omega) p) = ((P (i.1 + 1) : ℂˣ) : ℂ)`. Rewrite using `[← hPa (i.1 + 1) (by omega), Units.coe_prod]`. Simplify using `[Matrix.diagonal_apply_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : ∏ p : Fin (i.1 + 1), (Matrix.diagonal fun a => (s a : ℂ)) (rowsZ rfl i p) (rowsZ rfl i p) = ((P i.1 * w : ℂˣ) : ℂ)`. Simplify using `only [Matrix.diagonal_apply_eq]`. Rewrite using `[Fin.prod_univ_castSucc, ← hPa i.1 (by omega), Units.val_mul, Units.coe_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun p _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Fin.castSucc p).1 ≠ i.1` using `by simp; omega`. Simplify using `only [rowsZ, this, if_false]`. Both sides reduce to the same expression. Simplify using `only [rowsZ, Fin.val_last, if_true, hw]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← Units.val_mul]`. Use `congr 1`. Rewrite using `[← zpow_natCast, ← zpow_natCast, Int.toNat_of_nonneg hA, Int.toNat_of_nonneg hB]`. Use `congr 2`. Simplify using `[aa, hσ, hℓ, hi]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[bb, hσ, hℓ, hi]`. Establish `htarget : ((∏ j : Fin n, s ⟨j.1, by omega⟩ ^ sg.w j) * s ⟨n, by omega⟩ ^ degZ lam sg : ℂˣ) = (∏ j ∈ Finset.range n, (P (j + 1) / P j) ^ σ j) * w ^ ((∑ p ∈ Finset.range (n + 1), ℓ p) - ∑ j ∈ Finset.range n, σ j)`. Use `congr 1`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j => (P (j + 1) / P j) ^ σ j) n]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hj` using `j.2`. Rewrite using `[hPs, mul_div_cancel_left]`. Simplify using `[hv, hσ, hj, show j.1 < n + 1 by omega]`. Use `congr 1`. Unfold `degZ wsum`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range ℓ (n + 1), ← Fin.sum_univ_eq_sum_range σ n]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Simplify using `only [hℓ]`. Rewrite using `[dif_pos p.2]`.
-
-Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Simplify using `only [hσ]`. Rewrite using `[dif_pos p.2]`. Unfold `detPow`. Rewrite using `[hx, hdet, hshift, htarget, ← Units.val_mul, teleM n P (by simp [hP]) w ℓ σ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_scalar {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (hI : Interlace h lam sg)
     (s : Fin N → ℂˣ) :
@@ -143,11 +141,11 @@ theorem diag_scalar {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWei
   rw [hx, hdet, hshift, htarget, ← Units.val_mul, teleM n P (by simp [hP]) w ℓ σ]
 
 /- English proof (translation)
-Establish `hG : XiA.GoodG n h (Matrix.diagonal fun a => (s a : ℂ))`. Unfold `XiA.GoodG`. Use `⟨fun a b hab => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `Matrix.diagonal_apply_ne _ (ne_of_lt hab).symm`. Apply `Matrix.diagonal_apply_ne` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Apply `hb` to reduce the goal to its premises. Rewrite using `[e]`. Establish `hcoe : ((diagGL ℂ N s : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = Matrix.diagonal fun a => (s a : ℂ)`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Unfold `diagGL`. Simplify using `[Matrix.diagonal_apply]`. Unfold `sqAct`. Rewrite using `[hcoe, XiA.rowAct_xi h lam sg _ hG, MvPolynomial.C_mul', smul_smul, diag_scalar h lam sg hI s]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqAct_diag_xi {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (hI : Interlace h lam sg)
     (s : Fin N → ℂˣ) :
@@ -170,15 +168,15 @@ theorem sqAct_diag_xi {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomW
   rw [hcoe, XiA.rowAct_xi h lam sg _ hG, MvPolynomial.C_mul', smul_smul, diag_scalar h lam sg hI s]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[XiA.embGL_apply]`. Unfold `diagGL`. Simplify using `only [Matrix.diagonal_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ha : a.1 < n`. Distinguish the cases in `hb : b.1 < n`. Simplify using `only [ha, hb, dite_true]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hab' : (⟨a.1, ha⟩ : Fin n) ≠ ⟨b.1, hb⟩` using `fun e => hab (Fin.ext (Fin.mk.inj_iff.mp e))`. Simplify using `[hab, hab']`. Establish `hab : a ≠ b` using `fun e => hb (e ▸ ha)`. Simplify using `[ha, hb, hab]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hb : b.1 < n`. Establish `hab : a ≠ b` using `fun e => ha (e ▸ hb)`. Simplify using `[ha, hb, hab]`. Establish `hab : a = b` using `Fin.ext (by omega)`. Substitute `hab` using the available equality.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `[ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embGL_diag {n N : ℕ} (h : n + 1 = N) (t : Fin n → ℂˣ) :
     embGL ℂ n N h (diagGL ℂ n t) = diagGL ℂ N (fun a => if ha : a.1 < n then t ⟨a.1, ha⟩ else 1) := by
@@ -205,7 +203,7 @@ theorem embGL_diag {n N : ℕ} (h : n + 1 = N) (t : Fin n → ℂˣ) :
       simp [ha]
 
 /- English proof (translation)
-Rewrite using `[embGL_diag, sqAct_diag_xi h lam sg hI]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem xi_torus {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (hI : Interlace h lam sg)
     (t : Fin n → ℂˣ) :
@@ -215,9 +213,9 @@ theorem xi_torus {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight
   simp
 
 /- English proof (translation)
-Establish `hL : lastGL ℂ N a = diagGL ℂ N (fun b => if b.1 < n then 1 else a)`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Unfold `lastGL diagGL`. Simplify using `[Matrix.diagonal_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp_all <;> omega`. Rewrite using `[hL, sqAct_diag_xi h lam sg hI]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem xi_last {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (hI : Interlace h lam sg)
     (a : ℂˣ) :
@@ -232,21 +230,21 @@ theorem xi_last {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight 
   simp
 
 /- English proof (translation)
-Use `set G := ((embGL ℂ n N h g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) with hGdef`. Establish `hlowG : ∀ a b : Fin N, a < b → G b a = 0`. Introduce `a b hab`. Establish `hab'` using `Fin.lt_def.mp hab`. Rewrite using `[hGdef, XiA.embGL_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : b.1 < n`. Establish `ha : a.1 < n` using `by omega`. Rewrite using `[dif_pos hb, dif_pos ha]`. Conclude with `hlow _ _ (Fin.mk_lt_mk.mpr hab')`. Establish `hbN` using `b.isLt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_neg hb, if_pos (by omega)]`. Establish `hcol : ∀ b : Fin N, b.1 ≠ n → G b ⟨n, by omega⟩ = 0`. Introduce `b hb`. Establish `hbN` using `b.isLt`. Establish `hb' : b.1 < n` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hGdef, XiA.embGL_apply, dif_pos hb', dif_neg (lt_irrefl n)]`. Establish `hdg : ∀ a : Fin N, G a a = 1`. Introduce `a`. Rewrite using `[hGdef, XiA.embGL_apply]`. Distinguish the cases in `ha : a.1 < n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ha, dif_pos ha]`. Conclude with `hdiag ⟨a.1, ha⟩`. Rewrite using `[dif_neg ha, if_neg ha]`. Establish `hgood : XiA.GoodG n h G`. Unfold `XiA.GoodG`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hlowG, hcol⟩`. Establish `hdet : G.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hlowG j i hij)]`. Simplify using `[hdg]`. Establish `hxs : XiA.xiScal h lam sg G = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `XiA.xiScal`. Simplify using `[hdg]`. Unfold `sqAct`. Rewrite using `[XiA.rowAct_xi h lam sg G hgood, hxs, MvPolynomial.C_1, one_mul]`. Establish `hdu : Matrix.GeneralLinearGroup.det (embGL ℂ n N h g) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one, Matrix.GeneralLinearGroup.val_det_apply, ← hGdef, hdet]`. Unfold `detPow`. Rewrite using `[hdu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xi_unitri {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n)
     (g : GL (Fin n) ℂ) (hlow : ∀ i j, j < i → (g : Matrix (Fin n) (Fin n) ℂ) i j = 0)
@@ -294,9 +292,9 @@ theorem xi_unitri {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeigh
   simp
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.dualWeyl at hf hg ⊢`. Rewrite `hf`, `hg`, the goal using `[Submodule.mem_inf]`. Take `⟨hf1, hf2⟩` from `hf`. Take `⟨hg1, hg2⟩` from `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hf1`, `hg1`, the goal using `[MvPolynomial.mem_weightedHomogeneousSubmodule]`. Conclude with `hf1.mul hg1`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero] at hf2 hg2 ⊢`. Introduce `l j hlj`. Rewrite using `[map_mul, map_mul, hf2 l j hlj, hg2 l j hlj]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_mem_dualWeyl_complex_add {N : ℕ} (ν μ : Fin N → ℕ) (f g : MvPolynomial (Fin N × Fin N) ℂ)
     (hf : f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℂ N N ν) (hg : g ∈ Formalism.GradedWeylDivisibility.dualWeyl ℂ N N μ) :
@@ -314,17 +312,17 @@ private theorem mul_mem_dualWeyl_complex_add {N : ℕ} (ν μ : Fin N → ℕ) (
     rw [map_mul, map_mul, hf2 l j hlj, hg2 l j hlj]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `set ℓ : ℕ → ℤ := fun k => if hk : k < n + 1 then lam.w ⟨k, hk⟩ else 0 with hℓ`. Apply `Nat.cast_injective (R := ℤ)` to reduce the goal to its premises. Establish `hnat : ((lam.natW t : ℕ) : ℤ) = lam.w t - lam.w ⟨n, by omega⟩`. Establish `hle : t ≤ ⟨n, by omega⟩` using `by rw [Fin.le_def]; have := t.2; simp; omega`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lam.anti hle` as an intermediate fact. Simplify using `only [DomWeight.natW, DomWeight.detShift, dif_pos (show 0 < n + 1 by omega)]`. Rewrite using `[Int.toNat_of_nonneg (by simp; omega)]`. Simplify using the standard rewrite rules. Rewrite using `[hnat]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[Finset.sum_congr rfl (g := fun i : Fin n => (fun k : ℕ => if t.1 ≤ k then ℓ k - ℓ (k + 1) else 0) i.1)]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun k : ℕ => if t.1 ≤ k then ℓ k - ℓ (k + 1) else 0) n, XiA.tele_sum ℓ n t.1 (by have := t.2; omega)]`. Simplify using `only [hℓ, dif_pos t.2, dif_pos (show n < n + 1 by omega)]`. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi` using `i.2`. Establish `hA : 0 ≤ aa rfl lam sg i` using `by have := (hI i).2; unfold aa; omega`. Establish `hB : 0 ≤ bb rfl lam sg i` using `by have := (hI i).1; unfold bb; omega`. Rewrite using `[Int.toNat_of_nonneg hA, Int.toNat_of_nonneg hB]`. Simplify using `only [hℓ, dif_pos (show i.1 < n + 1 by omega), dif_pos (show i.1 + 1 < n + 1 by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hti : t.1 ≤ i.1`. Rewrite using `[if_pos (by omega), if_pos hti]`. Unfold `aa bb`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (by omega), if_neg hti]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem nu_eq {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (hI : Interlace h lam sg)
     (t : Fin N) :
@@ -359,11 +357,11 @@ theorem nu_eq {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n)
       ring
 
 /- English proof (translation)
-Unfold `nablaSq`. Establish `key : lam.natW = ∑ i : Fin n, ((aa h lam sg i).toNat • (fun t : Fin N => if t.1 < i.1 + 1 then 1 else 0) + (bb h lam sg i).toNat • (fun t : Fin N => if t.1 < i.1 + 1 then 1 else 0))`. Use function extensionality and compare the values at `t`. Rewrite using `[← nu_eq h lam sg hI t]`. Simplify using `only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `xi`. Rewrite using `[key]`. Use `XiA.prod_mem Finset.univ _ _ (fun i _ => ?_)` and prove the remaining obligations. Apply `mul_mem_dualWeyl_complex_add` to reduce the goal to its premises. Apply `XiA.pow_mem` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[XiA.lpMinor_eq]`. Conclude with `XiA.initMinor_mem _ _`. Apply `XiA.pow_mem` to reduce the goal to its premises. Conclude with `XiA.initMinor_mem _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem xi_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (hI : Interlace h lam sg) :
     xi ℂ h lam sg ∈ nablaSq ℂ N lam := by
@@ -384,15 +382,15 @@ theorem xi_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n
     exact XiA.initMinor_mem _ _
 
 /- English proof (translation)
-Introduce `h0`. Set `v : Fin N × Fin N → ℂ` to `fun w => if ∃ p : Fin s, I p = w.1 ∧ Fin.castLE hs p = w.2 then 1 else 0`. Establish `h1` using `congrArg (MvPolynomial.eval v) h0`. Rewrite `h1` using `[map_zero]`. Unfold `Formalism.GradedWeylDivisibility.initMinor at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[RingHom.map_det]`. Establish `hM : (MvPolynomial.eval v).mapMatrix (Matrix.of fun p q : Fin s => (X (I p, Fin.castLE hs q) : MvPolynomial (Fin N × Fin N) ℂ)) = 1`. Use extensionality with `p q`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X, Matrix.one_apply, v]`. Distinguish the cases in `hpq : p = q`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hpq` using the available equality. Rewrite using `[if_pos ⟨p, rfl, rfl⟩, if_pos rfl]`. Rewrite using `[if_neg hpq, if_neg]`. Introduce and unpack `⟨p', h2, h3⟩`. Establish `h4 : p' = p` using `hI h2`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `h4` using the available equality. Apply `hpq` to reduce the goal to its premises. Establish `h5` using `congrArg Fin.val h3`. Simplify using `only [Fin.coe_castLE] at h5`. Conclude with `Fin.ext h5`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hM, Matrix.det_one]`. Conclude with `one_ne_zero h1`.
+A detailed English derivation is pending.
 -/
 theorem initMinor_ne {N s : ℕ} (I : Fin s → Fin N) (hI : Function.Injective I) (hs : s ≤ N) :
     Formalism.GradedWeylDivisibility.initMinor ℂ (n := N) I hs ≠ 0 := by
@@ -423,9 +421,9 @@ theorem initMinor_ne {N s : ℕ} (I : Fin s → Fin N) (hI : Function.Injective 
   exact one_ne_zero h1
 
 /- English proof (translation)
-Unfold `xi`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Apply `mul_ne_zero` to reduce the goal to its premises. Apply `pow_ne_zero` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[XiA.lpMinor_eq]`. Conclude with `initMinor_ne _ (Fin.castLE_injective _) _`. Apply `pow_ne_zero` to reduce the goal to its premises. Conclude with `initMinor_ne _ (XiA.rowsZ_strictMono h i).injective _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem xi_ne {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) : xi ℂ h lam sg ≠ 0 := by
   unfold xi
@@ -439,9 +437,9 @@ theorem xi_ne {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n)
     exact initMinor_ne _ (XiA.rowsZ_strictMono h i).injective _
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.initMinor`. Rewrite using `[RingHom.map_det]`. Establish `: (MvPolynomial.eval fun v : Fin N × Fin N => x v.1 v.2).mapMatrix (Matrix.of fun p q : Fin s => (X (I p, Fin.castLE hs q) : MvPolynomial (Fin N × Fin N) ℂ)) = Matrix.of fun p q => x (I p) (Fin.castLE hs q)`. Use extensionality with `p q`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `XiU.det_sub_norm_le_one x hx I (Fin.castLE hs) hI (Fin.castLE_injective hs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_initMinor_norm_le {N s : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (hx : x ∈ Matrix.unitaryGroup (Fin N) ℂ)
     (I : Fin s → Fin N) (hI : Function.Injective I) (hs : s ≤ N) :
@@ -456,9 +454,9 @@ theorem eval_initMinor_norm_le {N s : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (hx 
   exact XiU.det_sub_norm_le_one x hx I (Fin.castLE hs) hI (Fin.castLE_injective hs)
 
 /- English proof (translation)
-Unfold `xi`. Rewrite using `[map_prod, norm_prod]`. Apply `Finset.prod_le_one (fun i _ => norm_nonneg _)` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[map_mul, map_pow, map_pow, norm_mul, norm_pow, norm_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) ?_) (pow_nonneg (norm_nonneg _) _) (pow_le_one₀ (norm_nonneg _) ?_)` to reduce the goal to its premises. Rewrite using `[XiA.lpMinor_eq]`. Conclude with `eval_initMinor_norm_le x hx _ (Fin.castLE_injective _) _`. Conclude with `eval_initMinor_norm_le x hx _ (XiA.rowsZ_strictMono h i).injective _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_unitary {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n)
     (x : Matrix (Fin N) (Fin N) ℂ) (hx : x ∈ Matrix.unitaryGroup (Fin N) ℂ) :

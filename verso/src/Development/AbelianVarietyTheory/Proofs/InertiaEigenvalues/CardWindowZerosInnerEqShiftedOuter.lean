@@ -15,7 +15,7 @@ variable {F : Type*} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [Perfe
 def frobPerm : Equiv.Perm F := (frobeniusEquiv F p).toEquiv
 
 /- English proof (translation)
-Rewrite using `[Equiv.Perm.coe_pow]`. Establish `: (⇑(frobPerm (F` using `F) p)) = frobenius F p := by`. Use function extensionality and compare the values at `y`. Simplify using `[frobPerm]`. Rewrite using `[this, iterate_frobenius]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobPerm_pow_apply (n : ℕ) (x : F) : (frobPerm (F := F) p ^ n) x = x ^ p ^ n := by
   rw [Equiv.Perm.coe_pow]
@@ -24,11 +24,9 @@ theorem frobPerm_pow_apply (n : ℕ) (x : F) : (frobPerm (F := F) p ^ n) x = x ^
   rw [this, iterate_frobenius]
 
 /- English proof (translation)
-Unfold `pw`. Use `split_ifs with hk`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hk`. Rewrite using `[zpow_natCast, frobPerm_pow_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hk`. Take `⟨n, hn⟩ : ∃ n : ℕ, k = -(n : ℤ)` from `⟨(-k).toNat, by omega⟩`. Substitute `hn` using the available equality. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow, Equiv.Perm.coe_pow]`. Simplify using `only [neg_neg, Int.toNat_natCast]`.
-
-Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pw_eq_zpow (k : ℤ) (x : F) : pw p k x = (frobPerm (F := F) p ^ k) x := by
   unfold pw
@@ -44,15 +42,15 @@ theorem pw_eq_zpow (k : ℤ) (x : F) : pw p k x = (frobPerm (F := F) p ^ k) x :=
     rfl
 
 /- English proof (translation)
-Rewrite using `[pw_eq_zpow, pw_eq_zpow, ← frobPerm_pow_apply, ← Equiv.Perm.mul_apply, ← zpow_natCast, ← zpow_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pw_pow (k : ℤ) (h : ℕ) (y : F) : pw p k (y ^ p ^ h) = pw p (k + h) y := by
   rw [pw_eq_zpow, pw_eq_zpow, ← frobPerm_pow_apply, ← Equiv.Perm.mul_apply, ← zpow_natCast, ← zpow_add]
 
 /- English proof (translation)
-Unfold `term`. Rewrite using `[pw_pow]`. Establish `h1 : ((r : ℤ) + n * h + h) = (r : ℤ) + (n + 1) * h` using `by ring`. Establish `h2 : ϖ ^ (-n) = ϖ * ϖ ^ (-(n + 1))`. Rewrite using `[show -n = -(n + 1) + 1 by ring, zpow_add_one₀ hϖ]; ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_pow {h : ℕ} (ϖ : F) (hϖ : ϖ ≠ 0) (lam x' : Fin h → F) (r j : Fin h) (n : ℤ) :
     term p ϖ lam (fun i => x' i ^ p ^ h) r j n = ϖ * term p ϖ lam x' r j (n + 1) := by
@@ -64,9 +62,9 @@ theorem term_pow {h : ℕ} (ϖ : F) (hϖ : ϖ ≠ 0) (lam x' : Fin h → F) (r j
   rw [h1, h2]; ring
 
 /- English proof (translation)
-Unfold `rowT rowS`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[term_pow p ϖ hϖ]`. Rewrite using `[← Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hI : Finset.Icc (-((K - 1 : ℕ) : ℤ)) ((K + 1 : ℕ) : ℤ) = (Finset.Icc (-(K : ℤ)) (K : ℤ)).map (addRightEmbedding 1)`. Rewrite using `[Finset.map_add_right_Icc]`. Apply the tactic sequence `congr 1 <;> push_cast [hK] <;> ring`. Rewrite using `[hI, Finset.sum_map]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -88,15 +86,15 @@ theorem rowT_pow {h : ℕ} (ϖ : F) (hϖ : ϖ ≠ 0) (lam x' : Fin h → F) (K :
 end WinInner
 
 /- English proof (translation)
-Introduce `F _ p _ _ _ h K ϖ hϖ hK lam π`. Set `e : (Fin h → F) ≃ (Fin h → F)` to `Equiv.piCongrRight fun _ => frobPerm (F := F) p ^ h`. Establish `he : ∀ x' : Fin h → F, e x' = fun i => x' i ^ p ^ h`. Introduce `x'`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[e, frobPerm_pow_apply]`. Use `symm`. Use `Nat.card_congr (e.subtypeEquiv fun x' => ?_)` and prove the remaining obligations. Rewrite using `[he]`. Establish `hq : p ^ h ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun j => ?_, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (h1 j) _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rowT_pow p ϖ hϖ lam x' K hK, h2 r, mul_zero]`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun j => ?_, fun r => ?_⟩` and prove the remaining obligations. Use `h1 j` as an intermediate fact. Rewrite `this` using `[norm_pow]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) hq).1 this`. Use `h2 r` as an intermediate fact. Rewrite `this` using `[rowT_pow p ϖ hϖ lam x' K hK]`. Conclude with `(mul_eq_zero.1 this).resolve_left hϖ`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem win_inner : ∀ (F : Type) [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p] (h K : ℕ) (ϖ : F),
     ϖ ≠ 0 → 1 ≤ K → ∀ lam π : Fin h → F,

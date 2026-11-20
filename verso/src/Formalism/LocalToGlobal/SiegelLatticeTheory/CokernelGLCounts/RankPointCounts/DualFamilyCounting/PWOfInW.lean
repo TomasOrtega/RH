@@ -29,7 +29,7 @@ def pWL : (VS D).V →ₗ[D.host.E] (VS D).V :=
   LinearMap.id - ∑ c, ((VS D).hT (X.fY c)).smulRight (X.eX c) - ∑ c, ((VS D).hT (X.eX c)).smulRight (X.fY c)
 
 /- English proof (translation)
-Simplify using `[pWL, pW, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pWL_apply (y : (VS D).V) : pWL X y = pW X y := by
   simp [pWL, pW, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]
@@ -39,7 +39,7 @@ def nL : (VS D).V →ₗ[D.host.E] (VS D).V :=
     (nWL X xs).comp (pWL X)
 
 /- English proof (translation)
-Simplify using `[nL, nWL, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.comp_apply, pWL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nL_apply (y : (VS D).V) : nL X X0 xs M y =
     ∑ c, (VS D).hT (X.fY c) y • nE X X0 c + ∑ c, (VS D).hT (X.eX c) y • nF X X0 xs M c +
@@ -47,42 +47,42 @@ theorem nL_apply (y : (VS D).V) : nL X X0 xs M y =
   simp [nL, nWL, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.comp_apply, pWL_apply]
 
 /- English proof (translation)
-Unfold `pW`. Simplify using `[(hw _).1, (hw _).2]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pW_of_inW {w : (VS D).V} (hw : InW X w) : pW X w = w := by
   unfold pW
   simp [(hw _).1, (hw _).2]
 
 /- English proof (translation)
-Unfold `pW`. Simplify using `[h_fe, X.ee, Finset.sum_ite_eq']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pW_e (a : Fin D.R.rS) : pW X (X.eX a) = 0 := by
   unfold pW
   simp [h_fe, X.ee, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Unfold `pW`. Simplify using `[X.ef, X.ff, Finset.sum_ite_eq']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pW_f (a : Fin D.R.rS) : pW X (X.fY a) = 0 := by
   unfold pW
   simp [X.ef, X.ff, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[nL_apply, pW_e]`. Simplify using `[h_fe, X.ee, Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nL_e (a : Fin D.R.rS) : nL X X0 xs M (X.eX a) = nE X X0 a := by
   rw [nL_apply, pW_e]
   simp [h_fe, X.ee, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[nL_apply, pW_f]`. Simplify using `[X.ef, X.ff, Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nL_f (a : Fin D.R.rS) : nL X X0 xs M (X.fY a) = nF X X0 xs M a := by
   rw [nL_apply, pW_f]
   simp [X.ef, X.ff, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[nL_apply, pW_of_inW X hw]`. Simplify using `[(hw _).1, (hw _).2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nL_w {w : (VS D).V} (hw : InW X w) : nL X X0 xs M w = w + ∑ b, (VS D).hT (xs b) w • X.eX b := by
   rw [nL_apply, pW_of_inW X hw]

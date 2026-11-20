@@ -19,7 +19,7 @@ namespace GrassmannianFibreDegree
 variable (n p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `(Bridge.GeoNum.ker_red p).symm`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_ker :
     (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n))) =
@@ -27,14 +27,14 @@ theorem span_eq_ker :
   (Bridge.GeoNum.ker_red p).symm
 
 /- English proof (translation)
-Rewrite using `[span_eq_ker]`. Conclude with `RingHom.ker_isPrime _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrime : (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n))).IsPrime := by
   rw [span_eq_ker]
   exact RingHom.ker_isPrime _
 
 /- English proof (translation)
-Introduce `k`. Use `⟨plAnchor 1 n, ?_⟩` and prove the remaining obligations. Rewrite using `[span_eq_ker, RingHom.mem_ker, Bridge.GeoNum.red, map_X]`. Conclude with `X_ne_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRelevant : IsRelevant (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n))) := by
   intro k
@@ -43,9 +43,9 @@ theorem isRelevant : IsRelevant (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBloc
   exact X_ne_zero _
 
 /- English proof (translation)
-Use `isPrime n p` as an intermediate fact. Use extensionality with `W`. Simplify using `only [divSupp, bot_sup_eq, Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_ofPred_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce and unpack `rfl`. Conclude with `⟨rfl, isRelevant n p⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem divSupp_eq :
     divSupp (⊥ : Ideal (MRing (plBlocks 1 1 n))) (C (p : ℤ)) = {Ideal.span {C (p : ℤ)}} := by
@@ -59,9 +59,9 @@ theorem divSupp_eq :
     exact ⟨rfl, isRelevant n p⟩
 
 /- English proof (translation)
-Rewrite using `[span_eq_ker, ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective (Bridge.GeoNum.red_surjective p)), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]`. Establish `hc : Nat.card ((_ : Fin 1) × PlIdx 1 n) = n + 1`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hc, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ringKrullDim_quot :
     ringKrullDim (MRing (plBlocks 1 1 n) ⧸ (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n)))) =
@@ -80,7 +80,7 @@ def coordEquiv : (Σ _ : Unit, Fin (n + 1)) ≃ (Σ _ : Fin 1, PlIdx 1 n) :=
     ⟨(GrassmannianLinesProjective.isBlockMap n).2.1, GrassmannianLinesProjective.coordMap_surjective n⟩
 
 /- English proof (translation)
-Establish `h` using `FieldNumbers.Relabel.intNum_map_rename (F := ZMod p) (Equiv.ofUnique Unit (Fin 1)) (coordEquiv n) (fun _ => Subsingleton.elim _ _) (⊥ : Ideal (NumbersDVR.MRing (FieldNumbers.ProjIdx n) (ZMod p))) (fun _ : Fin n => fun _ : Fin 1 => (1 : ℤ))`. Rewrite `h` using `[Ideal.map_bot]`. Rewrite using `[h]`. Conclude with `FieldNumbers.intNum_projectiveSpace (ZMod p) n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intNum_bot :
     NumbersDVR.intNum (ZMod p) (⊥ : Ideal (NumbersDVR.MRing (plBlocks 1 1 n) (ZMod p)))
@@ -94,9 +94,9 @@ theorem intNum_bot :
   exact FieldNumbers.intNum_projectiveSpace (ZMod p) n
 
 /- English proof (translation)
-Use `isPrime n p` as an intermediate fact. Establish `hV : IsMultiProjPrime (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n)))` using `⟨isPrime n p, ⟨{C (p : ℤ)}, fun f hf => ⟨0, by`. Rewrite using `[Set.mem_singleton_iff.mp hf]`. Conclude with `Inter.Conservation.isMultiHomog_C _⟩, rfl⟩, isRelevant n p⟩`. Rewrite using `[← Bridge.intNum_map_eq_geoNum p n _ hV (Ideal.mem_span_singleton_self _) (ringKrullDim_quot n p)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n))).map (MvPolynomial.map (Int.castRingHom (ZMod p))) = ⊥` using `(Ideal.map_eq_bot_iff_le_ker _).mpr (span_eq_ker n p).le`. Rewrite using `[hb]`. Conclude with `intNum_bot n p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoNum_span :
     geoNum n (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n)))
@@ -118,9 +118,9 @@ end GrassmannianFibreDegree
 open GrassmannianFibreDegree in
 
 /- English proof (translation)
-Introduce `n p hp`. Establish `: Fact p.Prime` using `⟨hp⟩`. Use `isPrime n p` as an intermediate fact. Establish `hW : (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n))) ∈ divSupp (⊥ : Ideal (MRing (plBlocks 1 1 n))) (C (p : ℤ))`. Rewrite using `[divSupp_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hg : geoNum n (Ideal.span {C (p : ℤ)} : Ideal (MRing (plBlocks 1 1 n))) (fun j => ((fun _ : Fin n => fsMulti (plBlocks 1 1 n)) j).a) = 1` using `geoNum_span n p`. Rewrite using `[GrassmannianLinesProjective.grassIdeal_eq_bot]`. Unfold `vertR`. Rewrite using `[divSupp_eq, finsum_mem_singleton, if_neg (Inter.Conservation.not_horizontal hp hW), Inter.Conservation.charOf_eq hp hW, bot_sup_eq, ReciprocityTheory.ChartRestriction.G.AI.I1.inh_multAt_self, hg]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

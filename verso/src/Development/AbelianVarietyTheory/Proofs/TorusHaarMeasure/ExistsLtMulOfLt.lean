@@ -17,11 +17,11 @@ namespace GlobalTheory.ClosedModes
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Break down `ha.eq_or_lt with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `⟨1 / 2, by norm_num, by norm_num, by simpa using hs⟩`. Establish `hm : max s 0 < a` using `max_lt hs h`. Establish `h0 : 0 ≤ max s 0` using `le_max_right _ _`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : s ≤ max s 0` using `le_max_left _ _`. Use `⟨(max s 0 + a) / (2 * a), by positivity, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_lt_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (max s 0 + a) / (2 * a) * a = (max s 0 + a) / 2` using `by field_simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_lt_mul_of_lt {s a : ℝ} (ha : 0 ≤ a) (hs : s < a) :
     ∃ θ : ℝ, 0 < θ ∧ θ < 1 ∧ s < θ * a := by
@@ -39,7 +39,7 @@ theorem exists_lt_mul_of_lt {s a : ℝ} (ha : 0 ≤ a) (hs : s < a) :
       linarith
 
 /- English proof (translation)
-Introduce `r X la F ps a hF hps ha hmean ξ hξ ν hν x hx`. Take `⟨θ, hθ0, hθ1, hνθ⟩` from `exists_lt_mul_of_lt ha hν`. Conclude with `ModeDecay.fj_eq_zero_of_decay fj_norm_mul_exp_le_sup_flow ClosedDiscontinuity.propDisc_and_la1GG.2 r X la F (θ * a) hF (pnorm_le_exp_neg_tt_near_cusp (MajNear.maj_near_orth MajorantContinuity.majorant_continuity.1) maj_lact_rmul NormFactor.nfac_transform r X la F ps a hF hps ha h …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem modeHalf_closed : (∀ (r : ℕ) (X : Data E r), ModeHalfStatement X) := by
   intro r X la F ps a hF hps ha hmean ξ hξ ν hν x hx

@@ -5,7 +5,7 @@ open Matrix
 namespace UpperTheory.Esk.CentralTermsContribution
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul]`. Rewrite using `[Matrix.trace_mul_cycle, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_conj {F : Type} [Field F] (γ δ : GL (Fin 2) F) :
     ((δ * γ * δ⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F).trace = (γ : Matrix (Fin 2) (Fin 2) F).trace := by
@@ -15,13 +15,13 @@ theorem trace_conj {F : Type} [Field F] (γ δ : GL (Fin 2) F) :
 end UpperTheory.Esk.CentralTermsContribution
 
 /- English proof (translation)
-Introduce `F _ γ δ htr h`. Establish `h' : ((δ * γ * δ⁻¹ : GL (Fin 2) F) : UpperTheory.Esk.PG F) = (γ : UpperTheory.Esk.PG F)`. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.mk_mul, QuotientGroup.mk_inv]`. Conclude with `h`. Rewrite `h'` using `[QuotientGroup.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set c := (δ * γ * δ⁻¹)⁻¹ * γ with hc`. Take `⟨h1, h2, h3⟩` from `UpperTheory.Esk.center_entries h'`. Establish `hcv : (c : Matrix (Fin 2) (Fin 2) F) = c 0 0 • (1 : Matrix (Fin 2) (Fin 2) F)`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [h1, h2, h3]`. Establish `hγ : γ = (δ * γ * δ⁻¹) * c` using `by rw [hc]; group`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : (γ : Matrix (Fin 2) (Fin 2) F) = ((δ * γ * δ⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) * (c : Matrix (Fin 2) (Fin 2) F)` using `by conv_lhs => rw [hγ]`. Rewrite using `[Units.val_mul]`. Establish `htr2 : c 0 0 * (γ : Matrix (Fin 2) (Fin 2) F).trace = 1 * (γ : Matrix (Fin 2) (Fin 2) F).trace` using `by conv_rhs => rw [hv, hcv, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul, UpperTheory.Esk.CentralTermsContribution.trace_conj]`. Expand and normalize the polynomial expressions, which then agree. Establish `ht : c 0 0 = 1` using `mul_right_cancel₀ htr htr2`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hc1 : c = 1`. Use extensionality with `: 1`. Rewrite using `[hcv, ht, one_smul, Units.val_one]`. Rewrite `hγ` using `[hc1, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.pf_Fcen : UpperTheory.Esk.Fcen := by
   intro F _ γ δ htr h

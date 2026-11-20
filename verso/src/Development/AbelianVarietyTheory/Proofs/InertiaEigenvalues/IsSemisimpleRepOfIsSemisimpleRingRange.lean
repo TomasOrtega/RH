@@ -5,15 +5,13 @@ open Formalism.MainNotions.N
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Γ k _ _ d ρ hss W hW`. Establish `hB : ∀ x : MonoidAlgebra k Γ, ∀ v ∈ W, (ρ x).mulVec v ∈ W`. Introduce `x`. Proceed by induction on `x using MonoidAlgebra.induction_on with`. Consider the case `of g => intro v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `hW g v hv`. Consider the case `add x y hx hy`. Introduce `v hv`. Rewrite using `[map_add, Matrix.add_mulVec]`. Conclude with `W.add_mem (hx v hv) (hy v hv)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c x hx`. Introduce `v hv`. Rewrite using `[map_smul, Matrix.smul_mulVec]`. Conclude with `W.smul_mem c (hx v hv)`. Set `WB : Submodule ρ.range (Fin d → k)` to `{ carrier := W add_mem' := W.add_mem zero_mem' := W.zero_mem smul_mem' := by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨b, x, rfl⟩ v hv`. Conclude with `hB x v hv }`. Establish `hWB : WB.restrictScalars k = W` using `by ext v; rfl`. Take `⟨WB', hc⟩` from `exists_isCompl WB`. Use `⟨WB'.restrictScalars k, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `g v hv`. Establish `hmem : ρ (MonoidAlgebra.of k Γ g) ∈ ρ.range` using `⟨_, rfl⟩`. Conclude with `WB'.smul_mem ⟨_, hmem⟩ hv`. Rewrite using `[← hWB]`. Conclude with `hc.map (Submodule.restrictScalarsLatticeHom k ρ.range (Fin d → k))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSSRep_of_isSemisimpleRing_range :
     ∀ (Γ k : Type) [Group Γ] [Field k] (d : ℕ) (ρ : MonoidAlgebra k Γ →ₐ[k] Matrix (Fin d) (Fin d) k),

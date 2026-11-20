@@ -29,14 +29,14 @@ def actLin (N : Matrix (Fin h) (Fin h) ℤ) (W : X.Opens) :
   (coords X h W).symm.toLinearMap ∘ₗ (N.map (Int.cast : ℤ → Γ(X, W))).mulVecLin ∘ₗ (coords X h W).toLinearMap
 
 /- English proof (translation)
-The claim follows from `(coords X h W).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem coords_actLin (N : Matrix (Fin h) (Fin h) ℤ) (W : X.Opens) (s : Γ(freeModule X (Fin h), W)) :
     coords X h W (actLin X h N W s) = (N.map (Int.cast : ℤ → Γ(X, W))).mulVec (coords X h W s) :=
   (coords X h W).apply_symm_apply _
 
 /- English proof (translation)
-Apply `(coords X h W).injective` to reduce the goal to its premises. Rewrite using `[coords_actLin, coords_resM, coords_resM, coords_actLin]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, GlobalTheory.PerfdLat.piMap_apply, map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem actLin_resM (N : Matrix (Fin h) (Fin h) ℤ) {V W : X.Opens} (hle : W ≤ V) (s : Γ(freeModule X (Fin h), V)) :
     actLin X h N W (resM _ hle s) = resM _ hle (actLin X h N V s) := by
@@ -49,7 +49,7 @@ def act (N : Matrix (Fin h) (Fin h) ℤ) : freeModule X (Fin h) ⟶ freeModule X
   GlobalTheory.LB.homOfLinear (actLin X h N) fun hle s => actLin_resM X h N hle s
 
 /- English proof (translation)
-The claim follows from `coords_actLin X h N W s`.
+A detailed English derivation is pending.
 -/
 theorem coords_act (N : Matrix (Fin h) (Fin h) ℤ) (W : X.Opens) (s : Γ(freeModule X (Fin h), W)) :
     coords X h W ((act X h N).app W s) = ((Int.castRingHom Γ(X, W)).mapMatrix N).mulVec (coords X h W s) :=
@@ -87,7 +87,7 @@ def actHom : Matrix (Fin h) (Fin h) ℤ →+* End (freeModule X (Fin h)) where
     rfl
 
 /- English proof (translation)
-Introduce `X h` and use `⟨actHom X h, fun N W s => coords_actLin X h N W s⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_act : ∀ (X : Scheme.{0}) (h : ℕ), ∃ μ : Matrix (Fin h) (Fin h) ℤ →+* End (freeModule X (Fin h)), ∀ (N : Matrix (Fin h) (Fin h) ℤ) (W : X.Opens) (s : Γ(freeModule X (Fin h), W)), GlobalTheory.LatGlue.coords X h W ((μ N : freeModule X (Fin h) ⟶ freeModule X (Fin h)).app W s) = mv (RingHom.id _) N (GlobalTheory.LatGlue.coords X h W s) :=
   fun X h => ⟨actHom X h, fun N W s => coords_actLin X h N W s⟩

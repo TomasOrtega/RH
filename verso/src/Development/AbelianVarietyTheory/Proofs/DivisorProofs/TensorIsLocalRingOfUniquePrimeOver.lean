@@ -6,45 +6,41 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P T L _ _ _ _ _ _ _ 𝔐 _ hM huniq hres`. Set `fκ : P →ₐ[P] L ⧸ maximalIdeal L` to `Algebra.ofId P _`. Establish `hfκ : ∀ a, fκ a = Ideal.Quotient.mk (maximalIdeal L) (algebraMap P L a)` using `fun a => rfl`. Establish `hsurj : Function.Surjective fκ`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨a, ha⟩` from `hres y`. Conclude with `⟨a, by rw [hfκ]; exact (Ideal.Quotient.eq.mpr ha).symm⟩`. Establish `hker : RingHom.ker fκ = (maximalIdeal L).comap (algebraMap P L)`. Use extensionality with `a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[RingHom.mem_ker, hfκ, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_comap]`. Set `e : (P ⧸ RingHom.ker fκ) ≃ₐ[P] L ⧸ maximalIdeal L` to `Ideal.quotientKerAlgEquivOfSurjective hsurj`. Set `q : (P ⧸ RingHom.ker fκ) →ₐ[P] T ⧸ 𝔐` to `Ideal.quotientMapₐ 𝔐 (Algebra.ofId P T) (le_of_eq (by rw [hker, ← hM]; rfl))`. Set `g : L →ₐ[P] T ⧸ 𝔐` to `(q.comp e.symm.toAlgHom).comp (Ideal.Quotient.mkₐ P (maximalIdeal L))`. Establish `hg : ∀ a : P, ∀ y : L, y - algebraMap P L a ∈ maximalIdeal L → g y = Ideal.Quotient.mk 𝔐 (algebraMap P T a)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a y hy`. Establish `h1 : Ideal.Quotient.mkₐ P (maximalIdeal L) y = Ideal.Quotient.mkₐ P (maximalIdeal L) (algebraMap P L a)`. Rewrite using `[Ideal.Quotient.mkₐ_eq_mk]`. Conclude with `Ideal.Quotient.eq.mpr hy`. Establish `h2 : g y = g (algebraMap P L a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, AlgHom.comp_apply]`. Rewrite using `[h1]`. Rewrite using `[h2, AlgHom.commutes]`. Both sides reduce to the same expression. Set `ψ : TensorProduct P T L →ₐ[P] T ⧸ 𝔐` to `Algebra.TensorProduct.lift (Ideal.Quotient.mkₐ P 𝔐) g (fun _ _ => Commute.all _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ∀ t y, ψ (t ⊗ₜ[P] y) = Ideal.Quotient.mk 𝔐 t * g y`. Introduce `t y`. Simplify using `[ψ, Algebra.TensorProduct.lift_tmul]`. Use `haveI : Nontrivial (T ⧸ 𝔐) := Ideal.Quotient.nontrivial_iff.mpr (Ideal.IsPrime.ne_top inferInstance)`. Establish `hψs : Function.Surjective ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨t ⊗ₜ[P] 1, by rw [hψ, map_one, mul_one]⟩`. Use `haveI : Nontrivial (TensorProduct P T L) := hψs.nontrivial`. Use `letI : Algebra L (TensorProduct P T L) := Algebra.TensorProduct.rightAlgebra`.
+Supply the required witnesses or components. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hmap : ∀ x, algebraMap L (TensorProduct P T L) x = (1 : T) ⊗ₜ[P] x` using `fun _ => rfl`. Establish `hint : Algebra.IsIntegral L (TensorProduct P T L)`. Prove the components needed by the constructor for the conclusion. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact isIntegral_zero`. Consider the case `add a b ha hb => exact ha.add hb`. Consider the case `tmul a b`. Establish `h1 : a ⊗ₜ[P] b = (a ⊗ₜ[P] (1 : L)) * algebraMap L (TensorProduct P T L) b`. Rewrite using `[hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `IsIntegral.mul ?_ isIntegral_algebraMap` and prove the remaining obligations. Establish `ha : IsIntegral P a` using `Algebra.IsIntegral.isIntegral a`. Establish `h2 : IsIntegral P (a ⊗ₜ[P] (1 : L))` using `ha.map (Algebra.TensorProduct.includeLeft : T →ₐ[P] TensorProduct P T L)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp, hp0⟩` from `h2`. Use `⟨p.map (algebraMap P L), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `: (algebraMap L (TensorProduct P T L)).comp (algebraMap P L) = algebraMap P _`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Algebra.TensorProduct.includeRight : L →ₐ[P] TensorProduct P T L).commutes x`. Rewrite using `[this]`. Conclude with `hp0`. Establish `hPB : ∀ a : P, (algebraMap P T a) ⊗ₜ[P] (1 : L) = (1 : T) ⊗ₜ[P] (algebraMap P L a)`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `key : ∀ 𝔫 : Ideal (TensorProduct P T L), 𝔫.IsMaximal → 𝔫 = RingHom.ker ψ`. Introduce `𝔫 h𝔫`. Establish `hLmax : (𝔫.comap (algebraMap L (TensorProduct P T L))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := L) 𝔫`. Establish `hL : 𝔫.comap (algebraMap L (TensorProduct P T L)) = maximalIdeal L` using `IsLocalRing.eq_maximalIdeal hLmax`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `iT : T →+* TensorProduct P T L` to `Algebra.TensorProduct.includeLeftRingHom`. Establish `hiT : ∀ t, iT t = t ⊗ₜ[P] (1 : L)` using `fun _ => rfl`. Establish `hcomp : iT.comp (algebraMap P T) = (algebraMap L (TensorProduct P T L)).comp (algebraMap P L)`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, hiT, hmap]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hPB a`. Establish `hT : 𝔫.comap iT = 𝔐`. Apply `huniq` to reduce the goal to its premises. Conclude with `Ideal.comap_isPrime iT 𝔫`. Rewrite using `[Ideal.comap_comap, hcomp, ← Ideal.comap_comap, hL]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Set `j : T ⧸ 𝔐 →+* TensorProduct P T L ⧸ 𝔫` to `Ideal.quotientMap 𝔫 iT hT.ge`. Establish `hj : Function.Injective j` using `Ideal.quotientMap_injective' hT.le`. Establish `hφ : ∀ b, Ideal.Quotient.mk 𝔫 b = j (ψ b)`. Introduce `b`. Proceed by induction on `b using TensorProduct.induction_on with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Consider the case `tmul t y`. Take `⟨a, ha⟩` from `hres y`. Establish `hy1 : (1 : T) ⊗ₜ[P] (y - algebraMap P L a) ∈ 𝔫`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← hmap, ← Ideal.mem_comap, hL]`. Conclude with `ha`. Establish `hsplit : t ⊗ₜ[P] y - (t * algebraMap P T a) ⊗ₜ[P] (1 : L) = (t ⊗ₜ[P] (1 : L)) * ((1 : T) ⊗ₜ[P] (y - algebraMap P L a))`. Rewrite using `[TensorProduct.tmul_sub, mul_sub, ← hPB]`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
-
-Rewrite using `[hψ, hg a y ha, ← map_mul]`. Use `show _ = Ideal.quotientMap 𝔫 iT hT.ge (Ideal.Quotient.mk 𝔐 (t * algebraMap P T a))`. Rewrite using `[Ideal.quotientMap_mk, Ideal.Quotient.eq, hiT, hsplit]`. Conclude with `𝔫.mul_mem_left _ hy1`. Use extensionality with `b`.
-
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hφ, RingHom.mem_ker, map_eq_zero_iff j hj]`. Take `⟨𝔫₀, h0⟩` from `Ideal.exists_maximal (TensorProduct P T L)`. Conclude with `IsLocalRing.of_unique_max_ideal ⟨𝔫₀, h0, fun 𝔫 h => (key 𝔫 h).trans (key 𝔫₀ h0).symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tensor_isLocalRing_of_unique_prime_over : ∀ (P T L : Type) [CommRing P] [CommRing T] [CommRing L] [Algebra P T] [Algebra P L] [IsLocalRing L] [Algebra.IsIntegral P T] (𝔐 : Ideal T) [𝔐.IsPrime],
     𝔐.comap (algebraMap P T) = (maximalIdeal L).comap (algebraMap P L) →

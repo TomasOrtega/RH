@@ -11,15 +11,13 @@ namespace GlobalTheory.LamF
 open TensorProduct in
 
 /- English proof (translation)
-Establish `het' : Algebra.Etale K (K ⊗[R] A)`. Establish `: (algebraMap K (K ⊗[R] A)).Etale` using `het`. Conclude with `RingHom.etale_algebraMap.mp this`. Establish `hred : _root_.IsReduced (K ⊗[R] A)` using `Algebra.FormallyUnramified.isReduced_of_field K (K ⊗[R] A)`. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeRight : A →ₐ[R] K ⊗[R] A)` using `Algebra.TensorProduct.includeRight_injective (IsFractionRing.injective R K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Apply `IsNilpotent.eq_zero` to reduce the goal to its premises. Rewrite using `[← mem_nilradical, nilradical_eq_sInf, Ideal.mem_sInf]`. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp' : p.IsPrime` using `hp`. Set `k'` to `AlgebraicClosure p.ResidueField`. Set `χ : (K ⊗[R] A) →+* k'` to `(algebraMap p.ResidueField k').comp (algebraMap (K ⊗[R] A) p.ResidueField)`. Establish `: CharZero k'`. Set `: Algebra K k'` to `(χ.comp (algebraMap K (K ⊗[R] A))).toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `charZero_of_injective_algebraMap (algebraMap K k').injective`. Establish `h1` using `h k' (χ.comp (Algebra.TensorProduct.includeRight : A →ₐ[R] K ⊗[R] A).toRingHom)`. Rewrite using `[← Ideal.algebraMap_residueField_eq_zero]`. Apply `(algebraMap p.ResidueField k').injective` to reduce the goal to its premises. Rewrite using `[map_zero, map_sub, map_sub, sub_eq_zero]`.
-
-Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_geomPoints_alg (R K A : Type) [CommRing R] [IsDomain R] [Field K] [CharZero K]
     [Algebra R K] [IsFractionRing R K] [CommRing A] [Algebra R A] [Module.Flat R A]
@@ -53,21 +51,19 @@ theorem eq_of_geomPoints_alg (R K A : Type) [CommRing R] [IsDomain R] [Field K] 
   exact h1
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ T hfin hflat het a b h`. Establish `haff : IsAffine T.left` using `isAffine_of_isAffineHom T.hom`. Set `A : CommRingCat` to `Γ(T.left, ⊤)`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := A) (T.left.isoSpec.inv ≫ T.hom)`. Set `: Algebra R A` to `φ.hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hφ' : spMap (algebraMap R A) = T.left.isoSpec.inv ≫ T.hom` using `hφ`. Establish `hfl : Module.Flat R A`. Establish `: Flat (Spec.map φ)` using `by rw [hφ]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).mp this`. Establish `het2 : (Algebra.TensorProduct.includeLeftRingHom : K →+* TensorProduct R K A).Etale`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Etale (pullback.fst (spMap (algebraMap R K)) (spMap (algebraMap R A)))`. Apply the tactic sequence `have e : pullback.fst (spMap (algebraMap R K)) (spMap (algebraMap R A)) = (pullbackSymmetry _ _).hom ≫ pullback.map _ _ T.hom (spMap (algebraMap R K)) T.left.isoSpec.inv (𝟙 _) (𝟙 _) (by simp [hφ']) (by simp) ≫ pullback.snd T.hom (spMap (algebraMap R K)) := by`. Rewrite using `[pullback.map, pullback.lift_snd, Category.comp_id, pullbackSymmetry_hom_comp_snd]`. Rewrite using `[e]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Etale (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom : K →+* TensorProduct R K A)))`. Rewrite using `[← pullbackSpecIso_inv_fst]`. Use `infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Etale)).mp h2`. Use `eq_of_geomPoints_alg R K A het2 a b ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k' _ _ _ ψ`. Set `t : Over.mk (spMap (ψ.comp (algebraMap R A))) ⟶ T` to `Over.homMk (spMap ψ ≫ T.left.isoSpec.inv) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Use `erw [← hφ', ← Spec.map_comp]`. Use the proof step `rfl)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h3` using `h k' _ t`. Establish `key : ∀ x : Γ(T.left, ⊤), t.left.appTop.hom x = (Scheme.ΓSpecIso (CommRingCat.of k')).inv.hom (ψ x)`. Introduce `x`. Establish `e : (spMap ψ ≫ T.left.isoSpec.inv).appTop = CommRingCat.ofHom ψ ≫ (Scheme.ΓSpecIso (CommRingCat.of k')).inv`. Rewrite using `[Scheme.Hom.comp_appTop, Scheme.ΓSpecIso_inv_naturality]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Establish `e2 : T.left.isoSpec.inv.appTop ≫ T.left.isoSpec.hom.appTop = 𝟙 _`. Rewrite using `[← Scheme.Hom.comp_appTop]`. Simplify using the standard rewrite rules. Establish `e3 : T.left.isoSpec.hom.appTop = (Scheme.ΓSpecIso Γ(T.left, ⊤)).hom` using `Scheme.toSpecΓ_appTop _`.
-
-Rewrite `e2` using `[e3]`. Conclude with `(Iso.comp_hom_eq_id _).mp e2`. Conclude with `congrArg (fun f => f.hom x) e`. Rewrite `h3` using `[key, key]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of k')).symm.commRingCatIsoToRingEquiv.injective h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_geomPoints : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [CharZero K] [Algebra R K] [IsFractionRing R K] (T : Over (Sp R)), IsFinite T.hom → Flat T.hom → Etale (pullback.snd T.hom (spMap (algebraMap R K))) → ∀ a b : Γ(T.left, ⊤), (∀ (k' : Type) [Field k'] [IsAlgClosed k'] [CharZero k'] (β : R →+* k') (t : Over.mk (spMap β) ⟶ T), t.left.appTop.hom a = t.left.appTop.hom b) → a = b := by
   intro R K _ _ _ _ _ _ T hfin hflat het a b h

@@ -18,7 +18,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDim
 end SuccMinTransference
 
 /- English proof (translation)
-Introduce `n L _ _ i h1 hi`. Simplify `hi)` using `using h _ L i h1 (by simpa`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SuccMinTransference.of_forall
     (h : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
@@ -30,7 +30,7 @@ theorem SuccMinTransference.of_forall
   simpa using h _ L i h1 (by simpa using hi)
 
 /- English proof (translation)
-Use `minNorm_one_real` as an intermediate fact. Rewrite `this` using `[minNorm]`. Simplify using `[dualLattice_one_real, this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : succMin (1 : Submodule ℤ ℝ) 1 * succMin (dualLattice (1 : Submodule ℤ ℝ)) (1 - 1 + 1) =
     ((1 : ℕ) : ℝ) := by
@@ -39,7 +39,7 @@ example : succMin (1 : Submodule ℤ ℝ) 1 * succMin (dualLattice (1 : Submodul
   simp [dualLattice_one_real, this]
 
 /- English proof (translation)
-The claim follows from `h n _ i h1 hi`.
+A detailed English derivation is pending.
 -/
 example (h : SuccMinTransference) (n : ℕ) (i : ℕ) (h1 : 1 ≤ i) (hi : i ≤ n) :
     let L := span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)

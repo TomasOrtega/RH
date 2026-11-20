@@ -14,15 +14,15 @@ variable (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   (ι : Type) [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hecke_algebra_structure F ι`.
+A detailed English derivation is pending.
 -/
 theorem hkAlg : HkAlg F ι := GlobalTheory.T.hecke_algebra_structure F ι
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_length_of_products F ι`.
+A detailed English derivation is pending.
 -/
 theorem prodFinLen : ProdFinLen F ι := GlobalTheory.T.finite_length_of_products F ι
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.subquotient_of_non_nilpotent_variant F ι`.
+A detailed English derivation is pending.
 -/
 theorem subOfNonNil' : SubOfNonNil' F ι := GlobalTheory.T.subquotient_of_non_nilpotent_variant F ι
 

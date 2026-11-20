@@ -14,7 +14,7 @@ variable {l : ℕ} [hl : Fact l.Prime] {L Q : Type} [CommRing L] [CommRing Q] {i
 omit hl in
 
 /- English proof (translation)
-Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, Ideal.map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_top_eq (n : ℕ) : ((J.map i) ^ n • ⊤ : Submodule Q Q) = (J ^ n).map i := by
   rw [Ideal.smul_eq_mul, Ideal.mul_top, Ideal.map_pow]
@@ -22,7 +22,7 @@ theorem smul_top_eq (n : ℕ) : ((J.map i) ^ n • ⊤ : Submodule Q Q) = (J ^ n
 omit hl in
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (hc.complete.toIsHausdorff.haus (u - v) fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, smul_top_eq]`. Conclude with `h n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_forall (hc : IsCompl i J) {u v : Q} (h : ∀ n, u - v ∈ (J ^ n).map i) : u = v := by
   refine sub_eq_zero.1 (hc.complete.toIsHausdorff.haus (u - v) fun n => ?_)
@@ -30,15 +30,15 @@ theorem eq_of_forall (hc : IsCompl i J) {u v : Q} (h : ∀ n, u - v ∈ (J ^ n).
 
 omit hl in
 /- English proof (translation)
-The claim follows from `Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ n)) h`.
+A detailed English derivation is pending.
 -/
 theorem mem_succ {x : Q} {n : ℕ} (h : x ∈ (J ^ (n + 1)).map i) : x ∈ (J ^ n).map i :=
   Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ n)) h
 
 /- English proof (translation)
-Establish `hab : a - b ∈ J ^ (n + 1)` using `hc.ker _ _ (by`. Use `sub_mem hb ha` as an intermediate fact. Rewrite using `[map_sub]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.delta_add_sub_mem_pow_of_mem_pow_succ l L D J hlJ n b (a - b) hab`. Rewrite `h` using `[add_sub_cancel]`. Rewrite using `[← map_sub]`. Conclude with `Ideal.mem_map_of_mem _ h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (hc : IsCompl i J) (hlJ : (l : L) ∈ J) (D : Delta l L) {x : Q} {a b : L} {n : ℕ}
     (ha : x - i a ∈ (J ^ (n + 1)).map i) (hb : x - i b ∈ (J ^ (n + 1)).map i) :
@@ -51,11 +51,9 @@ theorem key (hc : IsCompl i J) (hlJ : (l : L) ∈ J) (D : Delta l L) {x : Q} {a 
   rw [← map_sub]; exact Ideal.mem_map_of_mem _ h
 
 /- English proof (translation)
-Use `choose ap hap using hc.surj x`. Take `⟨z, hz⟩` from `hc.complete.toIsPrecomplete.prec (f := fun n => i (D.δ (ap (n + 1)))) fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_top_eq]`. Conclude with `key hc hlJ D (hap (m + 1)) (Ideal.map_mono (Ideal.pow_le_pow_right (by omega)) (hap (n + 1)))`. Use `⟨z, fun n a ha => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hz n`. Rewrite `h1` using `[SModEq.sub_mem, smul_top_eq]`. Establish `h2` using `key hc hlJ D (hap (n + 1)) ha`. Use `sub_mem h2 h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_lim (hc : IsCompl i J) (hlJ : (l : L) ∈ J) (D : Delta l L) (x : Q) :
     ∃ z : Q, ∀ (n : ℕ) (a : L), x - i a ∈ (J ^ (n + 1)).map i → z - i (D.δ a) ∈ (J ^ n).map i := by
@@ -75,21 +73,17 @@ end GlobalTheory.BSP.CDelta
 open GlobalTheory.BSP.CDelta in
 
 /- English proof (translation)
-Introduce `l _ L _ Q _ i J hc hlJ D`. Use `choose d hd using exists_lim hc hlJ D`. Establish `sep : ∀ u v : W2 l Q, (∀ n, W2.map (Ideal.Quotient.mk ((J ^ n).map i)) u = W2.map (Ideal.Quotient.mk ((J ^ n).map i)) v) → u = v`. Introduce `u v h`. Establish `h1 : ∀ n, Ideal.Quotient.mk ((J ^ n).map i) u.fst = Ideal.Quotient.mk ((J ^ n).map i) v.fst` using `fun n => congrArg W2.fst (h n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ n, Ideal.Quotient.mk ((J ^ n).map i) u.snd = Ideal.Quotient.mk ((J ^ n).map i) v.snd` using `fun n => congrArg W2.snd (h n)`. Conclude with `W2.ext (eq_of_forall hc fun n => Ideal.Quotient.eq.1 (h1 n)) (eq_of_forall hc fun n => Ideal.Quotient.eq.1 (h2 n))`. Establish `ap : ∀ (x : Q) (n : ℕ) (a : L), x - i a ∈ (J ^ (n + 1)).map i → W2.map (Ideal.Quotient.mk ((J ^ n).map i)) (⟨x, d x⟩ : W2 l Q) = W2.map ((Ideal.Quotient.mk ((J ^ n).map i)).comp i) (deltaSectionToWittLengthTwo D a)`. Introduce `x n a ha`. Establish `h1 : Ideal.Quotient.mk ((J ^ n).map i) x = Ideal.Quotient.mk ((J ^ n).map i) (i a)` using `Ideal.Quotient.eq.2 (mem_succ ha)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h2 : Ideal.Quotient.mk ((J ^ n).map i) (d x) = Ideal.Quotient.mk ((J ^ n).map i) (i (D.δ a))` using `Ideal.Quotient.eq.2 (hd x n a ha)`. Conclude with `W2.ext h1 h2`. Set `s : Q →+* W2 l Q` to `{ toFun := fun x => ⟨x, d x⟩ map_one' := sep _ _ fun n => by`. Rewrite using `[ap 1 n 1 (by simp), map_one, map_one, map_one]`. Use the proof step `map_zero' := sep _ _ fun n => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ap 0 n 0 (by simp), map_zero, map_zero, map_zero]`. Use the proof step `map_add' := fun x y => sep _ _ fun n => by`. Take `⟨a, ha⟩` from `hc.surj x (n + 1)`. Take `⟨b, hb⟩` from `hc.surj y (n + 1)`. Establish `hab : x + y - i (a + b) ∈ (J ^ (n + 1)).map i`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add]`. Use `add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `show W2.map _ (⟨x + y, d (x + y)⟩ : W2 l Q) = W2.map _ ((⟨x, d x⟩ : W2 l Q) + ⟨y, d y⟩)`. Rewrite using `[ap _ n _ hab, map_add (W2.map (Ideal.Quotient.mk _)), ap x n a ha, ap y n b hb, map_add (deltaSectionToWittLengthTwo D), map_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_mul' := fun x y => sep _ _ fun n => by`. Take `⟨a, ha⟩` from `hc.surj x (n + 1)`. Take `⟨b, hb⟩` from `hc.surj y (n + 1)`. Establish `hab : x * y - i (a * b) ∈ (J ^ (n + 1)).map i`. Establish `: x * y - i (a * b) = y * (x - i a) + i a * (y - i b)` using `by rw [map_mul]; ring`.
-
-Rewrite using `[this]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ ha) (Ideal.mul_mem_left _ _ hb)`. Use `show W2.map _ (⟨x * y, d (x * y)⟩ : W2 l Q) = W2.map _ ((⟨x, d x⟩ : W2 l Q) * ⟨y, d y⟩)`. Rewrite using `[ap _ n _ hab, map_mul (W2.map (Ideal.Quotient.mk _)), ap x n a ha, ap y n b hb, map_mul (deltaSectionToWittLengthTwo D), map_mul] }`. Use `⟨deltaStructureOfWittLengthTwoSection s fun _ => rfl, fun a => ?_⟩` and prove the remaining obligations.
-
-Use `show i (D.δ a) = d (i a)`. Conclude with `(eq_of_forall hc fun n => hd (i a) n a (by simp)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BSP.exists_delta_completion : ∀ (l : ℕ) [Fact l.Prime] (L : Type) [CommRing L] (Q : Type) [CommRing Q]
     (i : L →+* Q) (J : Ideal L), IsCompl i J → (l : L) ∈ J → ∀ D : Delta l L, ∃ D' : Delta l Q, IsδMap D D' i := by

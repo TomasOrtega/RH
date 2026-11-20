@@ -12,7 +12,7 @@ variable (l : ℕ) [Fact l.Prime]
 abbrev B : Type := BdRPlus l (Cmp6.OC l)
 
 /- English proof (translation)
-Rewrite using `[BdRPlus.ker_thetaC, ← RingHom.mem_ker, BdRPlus.ker_eval]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_ker_pow_iff (x : B l) (n : ℕ) :
     x ∈ RingHom.ker (BdRPlus.thetaC l (PadicComplexInt l)) ^ n ↔ BdRPlus.eval l (Cmp6.OC l) n x = 0 := by
@@ -20,9 +20,9 @@ theorem mem_ker_pow_iff (x : B l) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Unfold `truncLog`. Rewrite using `[Finset.sum_Ico_eq_sum_range]`. Simplify using `only [Nat.add_sub_cancel]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem truncLog_eq (N : ℕ) (x : AinfInv l (Cmp6.OC l) ⧸ AinfInv.kerTheta l (Cmp6.OC l) ^ N) :
     truncLog N x = ∑ i ∈ Finset.Ico 1 (N + 1), algebraMap ℚ _ ((-1) ^ (i + 1) / i) * x ^ i := by
@@ -43,9 +43,9 @@ abbrev sA (ε : PreTilt ↥(PadicComplexInt l) l) (n : ℕ) : B l :=
   ∑ i ∈ Finset.Ico 1 n, algebraMap ℚ (B l) ((-1) ^ (i + 1) / i) * (u l ε - 1) ^ i
 
 /- English proof (translation)
-Establish `hk : u l ε - 1 ∈ RingHom.ker (BdRPlus.thetaC l (PadicComplexInt l))`. Rewrite using `[BdRPlus.ker_thetaC, RingHom.mem_ker, map_sub, h, map_one, sub_self]`. Establish `hX : BdRPlus.eval l (Cmp6.OC l) n ((u l ε - 1) ^ n) = 0` using `(mem_ker_pow_iff l _ n).1 (Ideal.pow_mem_pow hk n)`. Rewrite using `[mem_ker_pow_iff, map_sub, BdRPlus.eval_log, truncLog_eq, map_sum]`. Simplify using `only [map_mul, map_pow, RingHom.map_rat_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_Ico_succ_top hn, add_sub_cancel_left, ← map_pow, hX, mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_sub_mem (ε : PreTilt ↥(PadicComplexInt l) l) (h : BdRPlus.theta l (Cmp6.OC l) (u l ε) = 1) (n : ℕ) :
     BdRPlus.log (u l ε) h - sA l ε n ∈ RingHom.ker (BdRPlus.thetaC l (PadicComplexInt l)) ^ n := by
@@ -60,13 +60,13 @@ theorem log_sub_mem (ε : PreTilt ↥(PadicComplexInt l) l) (h : BdRPlus.theta l
   · rw [Finset.sum_Ico_succ_top hn, add_sub_cancel_left, ← map_pow, hX, mul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩ n`. Conclude with `log_sub_mem l ε h n`. Introduce `hy`. Establish `h1` using `hy 1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hy 2`. Establish `hu : BdRPlus.theta l (Cmp6.OC l) (u l ε) = 1`. Establish `h3` using `sub_mem (by simpa using h1) (Ideal.pow_le_self two_ne_zero h2)`. Establish `h4 : u l ε - 1 ∈ RingHom.ker (BdRPlus.theta l (Cmp6.OC l))`. Rewrite using `[← BdRPlus.ker_thetaC]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3`. Rewrite `h4` using `[RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `h4`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Apply `BdRPlus.ext_eval` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Establish `h5` using `sub_mem (hy n) (log_sub_mem l ε hu n)`. Rewrite `h5` using `[sub_sub_sub_cancel_right, mem_ker_pow_iff, map_sub, sub_eq_zero]`. Conclude with `h5`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLog_iff (ε : PreTilt ↥(PadicComplexInt l) l) (y : B l) :
     (∃ h : BdRPlus.theta l (Cmp6.OC l) (u l ε) = 1, y = BdRPlus.log (u l ε) h) ↔ Cmp6.IsLogA l ε y := by

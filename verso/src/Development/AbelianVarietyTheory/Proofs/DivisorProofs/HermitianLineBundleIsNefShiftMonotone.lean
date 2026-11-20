@@ -15,13 +15,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.NefShift
 
 /- English proof (translation)
-Introduce `_ k _ X _ p D hX M t t' htt h`. Use `⟨fun σ => ?_, h.vertical, ?_⟩` and prove the remaining obligations. Use `(h.semiPos σ).addFn_const (2 * (t' - t))` as an intermediate fact. Establish `e : (((M.shift (fun _ => t) fun _ => rfl).φ σ).addFn fun _ => 2 * (t' - t)) = (M.shift (fun _ => t') fun _ => rfl).φ σ`. Simplify using `only [HermLB.shift, Weight.addFn]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `a b`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e ▸ this`. Introduce `Z i _ _ _ hc hd`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, h0⟩` from `h.horizontal Z i hc hd`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `e₁` using `HtSelfInter.curveDeg_shift hX M t i hc hd (r := r) hr`. Establish `e₂` using `HtSelfInter.curveDeg_shift hX M t' i hc hd (r := r) hr`. Rewrite using `[e₂]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[e₁]`. Use polynomial arithmetic with `[(Nat.cast_nonneg _ : (0:ℝ) ≤ Nat.card (X.residueField (i (genericPoint Z)) →+* ℂ))]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isNef_shift_mono : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (M : HermLB p) (t t' : ℝ), t ≤ t' →

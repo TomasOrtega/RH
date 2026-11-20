@@ -9,11 +9,11 @@ namespace GlobalTheory.DI
 open CategoryTheory AlgebraicGeometry TopologicalSpace in
 
 /- English proof (translation)
-Introduce and unpack `z ⟨c, ⟨g, hg, hcg⟩, b, hb, rfl⟩`. Take `⟨k, hk, hk1⟩` from `h y`. Establish `hH : H.IsEqn y (k * g ^ p)`. Use `hk.add (hg.nsmul p)` as an intermediate fact. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨k * g ^ p, hH, ?_⟩` and prove the remaining obligations. Rewrite `hcg`, `hk1`, the goal using `[← _root_.GlobalTheory.LogDR.mem_locRing]`. Establish `hz : c ^ p * b * ((k * g ^ p : (X.functionField)ˣ) : X.functionField) = (c * g) ^ p * b * (1 * k)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hz]`. Conclude with `mul_mem (mul_mem (pow_mem hcg p) hb) hk1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DI.pow_mul_locRing_subset_regularAt {X : Scheme.{0}} [IsIntegral X] (p : ℕ)
     (G H : _root_.GlobalTheory.Cartier.CartierDiv X) (y : X) (h : (H - p • G).Eff) :

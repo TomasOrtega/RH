@@ -15,13 +15,13 @@ variable {K K' LL : FinExt l} (h : K.1 ≤ K'.1) {V : Type} [AddCommGroup V] [Mo
   [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V)
 
 /- English proof (translation)
-Use `LL.2` as an intermediate fact. Establish `: IsDomain P.R.B` using `isDomain_of_tied T K`. Establish `: FiniteDimensional ℚ_[l] V` using `Module.Finite.trans ↥LL.1 V`. Establish `hc'` using `isCrys_restrict h ρ T hc`. Take `⟨h1, -⟩` from `finite_le₀ (P.PD K) (fracInv_of_tied T K) ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h2, -⟩` from `finite_le₀ (P.PD K') (fracInv_of_tied T K') (ρ.comp (Subgroup.inclusion (GK_le h)))`. Rewrite `hc`, `hc'` using `[isCrys_iff_finrank]`. Set `e` to `Module.finBasisOfFinrankEq ↥(K0 K) _ hc`. Establish `hB` using `indepB (P.PD K) (fracInv_of_tied T K) ρ e e.linearIndependent`. Set `d : Fin (Module.finrank ℚ_[l] V) → ↥(DcrisK₀ (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))))` to `fun i => ⟨e i, dcris_le h ρ (e i).2⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd : LinearIndependent ↥(K0 K') d` using `LinearIndependent.of_comp (DcrisK₀ (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h)))).subtype (hB.restrict_scalars' ↥(K0 K'))`. Establish `htop : Submodule.span ↥(K0 K') (Set.range d) = ⊤` using `Submodule.eq_top_of_finrank_eq (by rw [finrank_span_eq_card hd]; simpa using hc'.symm)`. Introduce `x hx`. Establish `hx' : (⟨x, hx⟩ : ↥(DcrisK₀ (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))))) ∈ Submodule.span ↥(K0 K') (Set.range d)`. Rewrite using `[htop]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `hm` using `Submodule.apply_mem_span_image_of_mem_span (DcrisK₀ (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h)))).subtype hx'`. Use `Submodule.span_mono ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `(e i).2`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem le_span_restrict (T : LocTied l P AI) (hc : IsCrys (P.PD K) ρ) :
     DcrisK₀ (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) ≤
@@ -53,7 +53,7 @@ theorem le_span_restrict (T : LocTied l P AI) (hc : IsCrys (P.PD K) ρ) :
   exact (e i).2
 
 /- English proof (translation)
-Introduce `l _ P AI hS LL T K K'' h hc`. Establish `eρ : T.ρ.comp (inclG K'') = (T.ρ.comp (inclG K)).comp (Subgroup.inclusion (GK_le h))` using `MonoidHom.ext fun _ => rfl`. Rewrite using `[eρ]`. Conclude with `le_span_restrict h _ hS.some hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dcris_span : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), IsStd P AI →
     ∀ (LL : FinExt l) (T : QLat LL) (K K'' : FinExt l), K.1 ≤ K''.1 → IsCrys (P.PD K) (T.ρ.comp (inclG K)) →

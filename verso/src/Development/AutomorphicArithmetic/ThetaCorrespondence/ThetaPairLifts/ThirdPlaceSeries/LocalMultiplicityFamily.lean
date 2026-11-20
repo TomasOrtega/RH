@@ -52,12 +52,12 @@ def placeMapLocal : HeightOneSpectrum (𝓞 (maximalRealSubfield (DL x L).host.E
 def localEigenvalueDegree : ℕ → (DL x L).what₂.FT → ℕ → PlE (DL x L).host → ↥(DL x L).LL0 := (by with_unfolding_all exact (l.rat.In.eig :))
 def smallPlaceSet : Finset (PlE (DL x L).host) := (by with_unfolding_all exact (l.rat.In.Sb :))
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (l.c.ok :))`.
+A detailed English derivation is pending.
 -/
 theorem twist_ok_local : ∀ v, TwistedAt (DL x L) v → IntegralHeckeForms.TwOK ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).twI v) ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).k' v) ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).Q v)
     (((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).psi' v).comp ((DL x L).ntw.art ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).twI v) ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).Q v))) := (by with_unfolding_all exact (l.c.ok :))
 /- English proof (translation)
-Take `⟨g⟩` from `l.b.geo`. Conclude with `⟨⟨fun i j b => ⟨(by with_unfolding_all exact ((g.side ((i)) ((j)) b).pt : _)), (by with_unfolding_all exact ((g.side ((i)) ((j)) b).cover : _)), (by with_unfolding_all exact ((g.side ((i)) ((j)) b).ev_eq : _)), kc% (g.side (kc% i) (kc% j) b).fmUr, (by with_unfolding_all exact ((g …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem thetaTie_yStructureLocal_nonempty : Nonempty (GlobalTheory.GeoTie.ThetaTie (_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l) (datL x L).geo.fw (DL x L).nth) := by
   obtain ⟨g⟩ := l.b.geo
@@ -65,13 +65,13 @@ theorem thetaTie_yStructureLocal_nonempty : Nonempty (GlobalTheory.GeoTie.ThetaT
     (by with_unfolding_all exact ((g.side ((i)) ((j)) b).ev_eq : _)), kc% (g.side (kc% i) (kc% j) b).fmUr, (by with_unfolding_all exact ((g.side ((i)) ((j)) b).hk : _)),
     (by with_unfolding_all exact ((g.side ((i)) ((j)) b).hk_none : _))⟩, (by with_unfolding_all exact (g.isUnramified₂ :))⟩⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sameGaloisL L, twistDataAgreeAcrossCoefficients_localized L, sameFormsL L, (by with_unfolding_all exact ((HEq.refl (Dof x).ntwbr) :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.twI) :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.sd) :)), (by with_unfolding_all exact (( …`.
+Supply the required witnesses or components.
 -/
 theorem kept_characterChoiceLocal : Kept l.c.ch (_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l) :=
   ⟨sameGaloisL L, twistDataAgreeAcrossCoefficients_localized L, sameFormsL L, (by with_unfolding_all exact ((HEq.refl (Dof x).ntwbr) :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.twI) :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.sd) :)),
     (by with_unfolding_all exact ((HEq.refl l.c.ch.Q) :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.k') :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.psi') :))⟩
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (l.b.fi :))`.
+A detailed English derivation is pending.
 -/
 theorem yStructureLocal_fi_e_heq : ∀ i y, HEq (((_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l).fi i).e y) y := (by with_unfolding_all exact (l.b.fi :))
 end GlobalTheory.HeightCounting.Fin3

@@ -10,13 +10,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `key : ∀ n, ∀ T : Finset Ix, S n ⊆ T → ∑ i ∈ T, c i - ∑ i ∈ S n, c i ∈ I ^ n`. Introduce `n T hT`. Rewrite using `[← Finset.sum_sdiff hT, add_sub_cancel_right]`. Conclude with `Ideal.sum_mem _ fun i hi => hS n i (Finset.mem_sdiff.mp hi).2`. Establish `hsm : ∀ n, (I ^ n • ⊤ : Submodule R R) = I ^ n` using `fun n => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `IsPrecomplete.prec (I := I) (M := R) inferInstance (f := fun n => ∑ i ∈ S n, c i) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, hsm, ← neg_mem_iff, neg_sub]`. Conclude with `key m _ (hmono hmn))`. Use `⟨a, fun n T hT => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `ha n`. Rewrite `h1` using `[SModEq.sub_mem, hsm]`. Establish `h2` using `key n T hT`. Establish `h3` using `Ideal.add_mem _ h1 h2`. Rewrite using `[← neg_mem_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_adic_sum_of_finsets {R : Type} [CommRing R] (I : Ideal R) [IsAdicComplete I R]
     {Ix : Type} (c : Ix → R) (S : ℕ → Finset Ix) (hmono : Monotone S)
@@ -43,11 +43,11 @@ theorem exists_adic_sum_of_finsets {R : Type} [CommRing R] (I : Ideal R) [IsAdic
   ring
 
 /- English proof (translation)
-Establish `hmono : Monotone (fun n => (h n).toFinset)`. Introduce `m n hmn i hi`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hi ⊢`. Conclude with `fun hk => hi fun k => Ideal.pow_le_pow_right hmn (hk k)`. Establish `hS : ∀ k n i, i ∉ (h n).toFinset → c i k ∈ I ^ n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Introduce `k n i hi`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not] at hi`. Conclude with `hi k`. Use `choose a ha using fun k => exists_adic_sum_of_finsets I (fun i => c i k) (fun n => (h n).toFinset) hmono (hS k)`. Establish `hg : ∀ k, g k ∈ Submodule.span R (Set.range g)` using `fun k => Submodule.subset_span ⟨k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ k, a k • g k, Submodule.span R (Set.range g), Submodule.fg_span (Set.finite_range g), Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hg k), fun i => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hg k), fun n => ⟨(h n).toFinset, fun T hT => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← sub_smul]`. Conclude with `Submodule.smul_mem_smul (ha k n T hT) (hg k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sumI_of_coeff {R : Type} [CommRing R] (I : Ideal R) [IsAdicComplete I R]
     {E : Type} [AddCommGroup E] [Module R E] {Jx : Type} [Fintype Jx] (g : Jx → E)
@@ -77,11 +77,11 @@ theorem exists_sumI_of_coeff {R : Type} [CommRing R] (I : Ideal R) [IsAdicComple
   exact Submodule.smul_mem_smul (ha k n T hT) (hg k)
 
 /- English proof (translation)
-Introduce `R _ _ _ _ hc F _ _ Jx _ g Ix c h`. Use `letI : Module R F := Module.compHom F (algebraMap R (FractionRing R))`. Take `⟨s, hs⟩` from `exists_sumI_of_coeff (maximalIdeal R) g c h`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `e : (fun i => ∑ k, algebraMap (FractionRing R) F (algebraMap R _ (c i k)) * g k) = fun i => ∑ k, c i k • g k`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem exists_sumF_of_coeff : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R], IsAdicComplete (maximalIdeal R) R → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (Jx : Type) [Fintype Jx] (g : Jx → F) (Ix : Type) (c : Ix → Jx → R), (∀ n : ℕ, {i | ¬ ∀ k, c i k ∈ maximalIdeal R ^ n}.Finite) → ∃ s : F, GlobalTheory.UT.SumF (maximalIdeal R) F (fun i => ∑ k, algebraMap (FractionRing R) F (algebraMap R _ (c i k)) * g k) s := by
   intro R _ _ _ _ hc F _ _ Jx _ g Ix c h

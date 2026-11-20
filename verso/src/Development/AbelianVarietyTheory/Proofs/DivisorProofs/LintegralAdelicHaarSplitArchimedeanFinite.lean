@@ -11,13 +11,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.Glo
 namespace GlobalTheory.WeilAdm.HaarSplit
 
 /- English proof (translation)
-Introduce `F _ _ κ _ mA _ mI _ mf _ μ _ μi _ μf _`. Use `haveI : LocallyCompactSpace (Af F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : SecondCountableTopology (Af F) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `haveI : BorelSpace ((κ → mixedEmbedding.mixedSpace F) × (κ → Af F)) := Prod.borelSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : (μi.prod μf).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure μi μf`. Establish `hH : ((μ.map (splitE F κ).symm)).IsAddHaarMeasure` using `(splitE F κ).symm.isAddHaarMeasure_map μ (continuous_splitE_symm F κ) (continuous_splitE F κ)`. Set `em : (κ → AF F) ≃ᵐ ((κ → mixedEmbedding.mixedSpace F) × (κ → Af F))` to `(Homeomorph.mk (splitE F κ).symm.toEquiv (continuous_splitE_symm F κ) (continuous_splitE F κ)).toMeasurableEquiv`. Use `set c : NNReal := Measure.addHaarScalarFactor (μ.map (splitE F κ).symm) (μi.prod μf) with hc`. Establish `heq : μ.map (splitE F κ).symm = c • (μi.prod μf)` using `Measure.isAddLeftInvariant_eq_smul _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(c : ℝ≥0∞), ?_, ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.coe_ne_zero.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne'`. Introduce `fi g hfi hg`. Establish `h1 : ∫⁻ x, fi (fun i => evI F (x i)) * g (fun i => sndA F (x i)) ∂μ = ∫⁻ p, fi p.1 * g p.2 ∂(μ.map (splitE F κ).symm)`. Rewrite using `[show μ.map (splitE F κ).symm = μ.map em from rfl, lintegral_map_equiv]`.
-
-Both sides reduce to the same expression. Rewrite using `[h1, heq, lintegral_smul_measure, lintegral_prod_mul hfi.aemeasurable hg.aemeasurable]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lintegral_split_mul : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → AF F)] [BorelSpace (κ → AF F)]
     [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)] [BorelSpace (κ → mixedEmbedding.mixedSpace F)]

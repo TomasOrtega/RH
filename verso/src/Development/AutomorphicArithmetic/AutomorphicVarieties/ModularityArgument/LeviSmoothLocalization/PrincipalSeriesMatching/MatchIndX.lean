@@ -22,31 +22,27 @@ namespace UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 variable {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
 
 /- English proof (translation)
-Establish `hOps` using `pairGOps`. Establish `hCross : CrossG` using `crossGOf Inf.expAlg Inf.expIndep secDiff`. Take `⟨cP, hcP⟩` from `satBd K (2 * 2) P`. Take `⟨cπ, hcπ⟩` from `satBd M 2 π`. Establish `hfin` using `finite_above (M := M) (S : Set (HeightOneSpectrum (𝓞 K))) S.finite_toSet`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨SM, memSM⟩ : ∃ SM : Finset (HeightOneSpectrum (𝓞 M)), ∀ w, w ∈ SM ↔ w.under (𝓞 K) ∈ S` from `⟨hfin.toFinset, fun w => by rw [Set.Finite.mem_toFinset]; rfl⟩`. Take `⟨BK, hBK⟩ : ∃ BK, BK = pick (CG.mk P).HasSat` from `⟨_, rfl⟩`. Take `⟨BM, hBM⟩ : ∃ BM, BM = pick (CG.mk π).HasSat` from `⟨_, rfl⟩`. Establish `satK : ∀ p ∉ S, (CG.mk P).HasSat p (BK p)` using `fun p hp => by`. Take `⟨w, rfl⟩` from `exists_over (M := M) p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hBK]`. Take `⟨B, h⟩` from `(Key.sat (hkey w hp)).2`. Conclude with `pick_spec h`. Establish `satM : ∀ w ∉ SM, (CG.mk π).HasSat w (BM w)` using `fun w hw => by`. Rewrite using `[hBM]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B, h⟩` from `(Key.sat (hkey w fun h => hw ((memSM w).2 h))).1`. Conclude with `pick_spec h`. Establish `hq : 1 < Ideal.absNorm v.asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Take `⟨β, hβ, pK⟩` from `sideX K (2 * 2) (by norm_num) P S hK BK satK sK _ (fun _ => 1) hq fun u hu => ⟨hsK u, fun h => by`. Rewrite using `[pow_one, not_not.1 fun e => h (zK u hu e)]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨β', hβ', pM⟩` from `sideX M 2 le_rfl π SM (fun w hw => (memSM w).2 (hM w hw)) BM satM sM _ (fun w => v.asIdeal.inertiaDeg' w.asIdeal) hq fun w hw => ⟨hsM w, fun h => by`. Establish `e : w.under (𝓞 K) = v` using `not_not.1 fun e => h (zM w ((memSM w).1 hw) e)`. Rewrite using `[← e]`. Conclude with `absNorm_pow w⟩`. Take `⟨c, hc⟩` from `regroup K M h2 (S : Set (HeightOneSpectrum (𝓞 K))) (SM : Set (HeightOneSpectrum (𝓞 M))) (cx BK) (cx BM) (max cP cπ) 4 (fun w => by simpa using memSM w) (fun p hp => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs` using `satK p (by simpa using hp)`. Use `⟨by simp [cx, sat_card P hs], bound_cx p (le_max_left cP cπ) (hcP p _ hs)⟩)` and prove the remaining obligations. Use the proof step `(fun w hw => by`. Establish `hs` using `satM w (by simpa using hw)`. Use `⟨by simp [cx, sat_card π hs], bound_cx w (le_max_right cP cπ) (hcπ w _ hs)⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun w hw => by`. Establish `hw₁ : w ∉ SM` using `by simpa using hw`. Establish `hw' : w.under (𝓞 K) ∉ S` using `fun h => hw₁ ((memSM w).2 h)`. Establish `s1` using `satK _ hw'`. Establish `s2` using `satM w hw₁`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hkey w hw' with ⟨hN, w', hne, hu, B, B', h1, h3, h4⟩ | ⟨hN, B, B', h1, h3, h4⟩` into its components or cases. Use `left`. Use `⟨hN, w', hne, hu, ?_⟩` and prove the remaining obligations. Establish `s3` using `satM w' fun h => hw' (hu ▸ (memSM w').1 h)`. Rewrite using `[cx, cx, cx, sat_unique P s1 h4, sat_unique π s2 h1, sat_unique π s3 h3, Multiset.map_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `right`. Use `⟨hN, B'.map fun b : ℂˣ => (b : ℂ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cx, sat_unique π s2 h1, Multiset.map_map, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun b _ => by simp`. Rewrite using `[cx, sat_unique P s1 h4, h3, Multiset.map_add, Multiset.map_map, Multiset.map_map]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 1)`. Establish `pM'` using `hOps.2.2.1 _ _ _ _ _ _ _ c pM (fun s hs => ((hc s).1 hs).symm) (fun s hs => ((hc s).2 hs).symm)`. Establish `e1 : ∏ w ∈ SM, (pol (sM w) 1).comp (X ^ v.asIdeal.inertiaDeg' w.asIdeal) = ∏ w : PlacesOver M v, (pol (sM w.1) 1).comp (X ^ fdeg w)`. Establish `hsub : (Finset.univ : Finset (PlacesOver M v)).map (Function.Embedding.subtype _) ⊆ SM` using `fun w hw => by`. Take `⟨w, -, rfl⟩` from `Finset.mem_map.1 hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: w.1.under (𝓞 K) = v` using `HeightOneSpectrum.ext w.2.over.symm`. Conclude with `(memSM w.1).2 (by rw [this]; exact hv)`. Rewrite using `[← Finset.prod_subset hsub (fun w hw hw' => ?_), Finset.prod_map]`. Both sides reduce to the same expression. Rewrite using `[pol_one _ (zM w ((memSM w).1 hw) fun e => hw' ?_), one_comp]`.
-
-Conclude with `Finset.mem_map.2 ⟨⟨w, ⟨congrArg HeightOneSpectrum.asIdeal e.symm⟩⟩, Finset.mem_univ _, rfl⟩`. Establish `e2 : ∏ u ∈ S, (pol (sK u) 1).comp (X ^ 1) = pol (sK v) 1`. Rewrite using `[Finset.prod_eq_single_of_mem v hv (fun u hu hne => by rw [pol_one _ (zK u hu hne), one_comp]), pow_one, comp_X]`. Rewrite `pM'` using `[e1]`. Rewrite `pK` using `[e2]`.
-
-Use `hCross _ _ _ _ _ _ _ (by exact_mod_cast hq) hβ hβ' ((polFacts _).2.2.2 _ 1).1 ?_ pK pM'` and prove the remaining obligations. Rewrite using `[eval_prod]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[eval_comp, eval_pow, eval_X, zero_pow (normVal K M v w 1).2.2.1.ne']`. Conclude with `((polFacts _).2.2.2 _ 1).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem indCore [IsTotallyComplex K] [IsTotallyComplex M]
     (h2 : Module.finrank K M = 2) (P : CuspSub K (2 * 2)) (π : CuspSub M 2) (S : Finset (HeightOneSpectrum (𝓞 K)))
@@ -136,25 +132,21 @@ end UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 open UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter in
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ h2 P π hI v s s' hs hs' θ hθ`. Take `⟨S₁, hkey⟩` from `ind_key h2 _ _ hI`. Take `⟨⟨T, hT⟩, -⟩` from `norm_units h2`. Establish `FK` using `suppFacts K (2 * 2) (by norm_num) P`. Establish `FM` using `suppFacts M 2 (by norm_num) π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose sK hsK using fun u => (FK u).1`. Use `choose sM hsM using fun w => (FM w).1`. Use `choose bK hbK using fun u => exists_bad (sK u)`. Use `choose bM hbM using fun w => exists_bad (sM w)`. Take `⟨S₀, hS₀⟩ : ∃ S₀ : Finset (HeightOneSpectrum (𝓞 K)), ∀ u, u ∈ S₀ ↔ u = v ∨ u ∈ S₁ ∨ u ∈ T ∨ u ∈ GroundTheory.Automorphic.GJStandardL.ramifiedPlaces K ∨ ∃ w ∈ GroundTheory.Automorphic.GJStandardL.ramifiedPlaces M, w.under (𝓞 K) = u` from `⟨insert v (S₁ ∪ (T ∪ (GroundTheory.Automorphic.GJStandardL.ramifiedPlaces K ∪ (GroundTheory.Automorphic.GJStandardL.ramifiedPlaces M).image fun w => w.under (𝓞 K)))), fun u => by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨χ, hχv, hχ⟩` from `globTw K M v θ hθ S₀ bK bM`. Take `⟨ξ, hξ⟩` from `normLoc K M χ`. Take `⟨S, hS⟩ : ∃ S : Finset (HeightOneSpectrum (𝓞 K)), ∀ u, u ∈ S ↔ u ∈ S₀ ∨ ¬ χ.UnrAt u` from `⟨S₀ ∪ (GlobalTheory.Mem.UnrAe.finite_ramified χ).toFinset, fun u => by simp⟩`. Use `choose tK htK using fun u => suppTw K (2 * 2) (by norm_num) P u χ _ (hsK u)`. Use `choose tM htM using fun w => suppTw M 2 (by norm_num) π w ξ _ (hsM w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `k₀ : ∀ w : HeightOneSpectrum (𝓞 M), w.under (𝓞 K) ∉ S₀ → Key (CG.mk π).HasSat (CG.mk P).HasSat w` using `fun w hw => hkey w fun h => hw ((hS₀ _).2 (Or.inr (Or.inl h)))`. Establish `main` using `indCore h2 (P.twist χ) (π.twist ξ) S (fun w hw => key_twist h2 χ ξ (fun w hu => (hξ (w.under (𝓞 K)) ⟨w, ⟨rfl⟩⟩).2.1 hu) (not_not.1 fun h => hw ((hS _).2 (Or.inr h))) (k₀ w fun h => hw ((hS _).2 (Or.inl h)))) (fun u hu => (hS _).2 (Or.inl ((hS₀ _).2 (by tauto)))) (fun w hw => (hS …`. Establish `e : cnt (tK u) 1 = cnt (sK u) (χ.loc u * 1)` using `cnt_of_pol ((htK u).2.1 1)`. Rewrite using `[e, mul_one]`. Distinguish the cases in `h0 : u ∈ S₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `cnt_zero _ _ fun ζ hζ hy => (hχ u h0 hne).1 ζ (hbK u ζ hζ hy)`. Take `⟨w, rfl⟩` from `exists_over (M := M) u`. Take `⟨B, hB⟩` from `(Key.sat (k₀ w h0)).2`. Conclude with `cnt_zero_of_unr _ _ ((FK _).2.2.2.1 _ B (hsK _) hB) fun h => ((hS _).1 hu).resolve_left h0 ((unrAt_iff χ _).2 h))`. Use the proof step `(fun w hu hne => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : cnt (tM w) 1 = cnt (sM w) (ξ.loc w * 1)` using `cnt_of_pol ((htM w).2.1 1)`. Rewrite using `[e, mul_one, (hξ (w.under (𝓞 K)) ⟨w, ⟨rfl⟩⟩).1]`. Distinguish the cases in `h0 : w.under (𝓞 K) ∈ S₀`. Conclude with `cnt_zero _ _ fun ζ hζ hy => (hχ _ h0 hne).2 ⟨w, ⟨rfl⟩⟩ ζ (hbM w ζ hζ hy)`. Take `⟨B, hB⟩` from `(Key.sat (k₀ w h0)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cnt_zero_of_unr _ _ ((FM _).2.2.2.1 _ B (hsM _) hB) fun h => ((hS _).1 hu).resolve_left h0 ((unrAt_iff χ _).2 (hT _ (fun h' => h0 ((hS₀ _).2 (by tauto))) _ _ (GlobalTheory.HeckeComp.smooth_loc χ _) h)))`. Take `⟨μ, hμ, hχθ⟩ : ∃ μ, IsUnram μ ∧ χ.loc v = θ * μ` from `⟨χ.loc v * θ⁻¹, hχv, by rw [mul_comm (χ.loc v), mul_inv_cancel_left]⟩`. Take `⟨a, ha⟩ : ∃ a : ℂˣ, a = μ (unif (v.adicCompletion K))` from `⟨_, rfl⟩`. Establish `eL : pol (tK v) 1 = (pol s θ).comp (C (a : ℂ) * X)`. Rewrite using `[(htK v).2.1, (FK v).2.1 _ _ (hsK v) hs, ha, ← ((polFacts _).2.2.2 s _).2.2.2 μ hμ, hχθ, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `eR : ∀ w : PlacesOver M v, (pol (tM w.1) 1).comp (X ^ fdeg w) = ((pol (s' w) (θ.comp (nm w))).comp (X ^ fdeg w)).comp (C (a : ℂ) * X)` using `fun w => by`. Take `⟨n1, n2⟩` from `(normVal K M v w μ).1 hμ`. Establish `e0 : pol (tM w.1) 1 = (pol (s' w) (θ.comp (nm w))).comp (C ((a : ℂ) ^ fdeg w) * X)`. Establish `e1 : (θ * μ).comp (nm w) = θ.comp (nm w) * μ.comp (nm w)` using `rfl`. Establish `e2 : (((μ.comp (nm w)) (unif (w.1.adicCompletion M)) : ℂˣ) : ℂ) = (a : ℂ) ^ fdeg w`.
-
-Rewrite using `[MonoidHom.comp_apply, n2, ← ha, Units.val_pow_eq_pow_val]`. Rewrite using `[(htM w.1).2.1, (hξ v w).1, (FM w.1).2.1 _ _ (hsM w.1) (hs' w), mul_one, hχθ, e1, ((polFacts _).2.2.2 _ _).2.2.2 _ n1, e2]`. Rewrite using `[e0, comp_assoc, comp_assoc]`. Use `congr 1`. Simplify using `[mul_pow]`.
-
-Use `comp_cancel a.ne_zero ?_` and prove the remaining obligations. Rewrite using `[Polynomial.prod_comp, ← eL, Finset.prod_congr rfl fun w _ => (eR w).symm]`. Conclude with `main`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.matchIndX :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.MatchIndX := by

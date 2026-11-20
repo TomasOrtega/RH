@@ -6,7 +6,7 @@ open TensorProduct CrystallineSemistableComparison.Pb.Psi
 namespace GlobalTheory.CompanionTheory.FrobPsi
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a y`. Rewrite using `[LinearMap.lTensor_tmul, T_tmul, T_tmul, LinearMap.comp_apply, LinearMap.baseChange_tmul]`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem T_lTensor {W A C₀ : Type} [CommRing W] [CommRing A] [CommRing C₀] [Algebra W A]
     {K₀ : Type} [Field K₀] [Algebra W K₀] {L : Type 1} [AddCommGroup L] [Module W L]

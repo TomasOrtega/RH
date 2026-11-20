@@ -42,7 +42,7 @@ theorem incQ₂_apply (F : FourPieces ω P₁ P₂ Q₁ Q₂) (q : Q₂) :
     F.incQ₂ q = F.e.symm ((0, 0), (0, q)) := rfl
 
 /- English proof (translation)
-Rewrite using `[F.form, incP₂_apply, incQ₂_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_incP₂_incQ₂ (F : FourPieces ω P₁ P₂ Q₁ Q₂) (p : P₂) (q : Q₂) :
     ω (F.incP₂ p) (F.incQ₂ q) = F.a₂ p q := by
@@ -76,7 +76,7 @@ def adelicPairing₂ (F : FourPieces ω P₁ P₂ Q₁ Q₂) (p : AdelicPoints K
   ω.baseChange 𝔸[K] (F.incP₂.baseChange 𝔸[K] p) (F.incQ₂.baseChange 𝔸[K] q)
 
 /- English proof (translation)
-Rewrite using `[adelicPairing₂, LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, form_incP₂_incQ₂, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicPairing₂_tmul (F : FourPieces ω P₁ P₂ Q₁ Q₂) (a a' : 𝔸[K]) (p : P₂) (q : Q₂) :
     F.adelicPairing₂ (a ⊗ₜ p) (a' ⊗ₜ q) = algebraMap K 𝔸[K] (F.a₂ p q) * (a * a') := by

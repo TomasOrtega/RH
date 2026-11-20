@@ -18,7 +18,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.Mem.An
 
 /- English proof (translation)
-Introduce `N _ χ hχ`. Take `⟨h1, h2⟩` from `h N χ hχ`. Conclude with `⟨h1, h2.trans (mul_le_mul_of_nonneg_right hC hx)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem boundsAtX_mono_const {x eps C C' : ℝ} {f : ℕ → ℂ} {M : ℕ} (hx : 0 ≤ Real.log x) (hC : C ≤ C')
     (h : BoundsAtX x eps C f M) : BoundsAtX x eps C' f M := by
@@ -27,13 +27,13 @@ theorem boundsAtX_mono_const {x eps C C' : ℝ} {f : ℕ → ℂ} {M : ℕ} (hx 
   exact ⟨h1, h2.trans (mul_le_mul_of_nonneg_right hC hx)⟩
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `(Real.exp_pos 5).trans_le hx`. Establish `hL : 5 ≤ Real.log x` using `(Real.le_log_iff_exp_le hx0).2 hx`. Establish `hx1 : 1 ≤ x` using `le_trans (Real.one_le_exp (by norm_num)) hx`. Establish `hy : 1 ≤ x ^ (eps / 5)` using `Real.one_le_rpow hx1 (by positivity)`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hq1`. Establish `hd0 : (0 : ℝ) < d` using `by exact_mod_cast hd1`. Establish `hlq : Real.log q ≤ x ^ (eps / 5)` using `(Real.log_le_iff_le_exp hq0).2 hq`. Establish `hld : Real.log d ≤ x ^ (eps / 5) * Real.log x ^ 2` using `(Real.log_le_iff_le_exp hd0).2 hd`. Establish `hln : Real.log n ≤ Real.log 2 + (2 + 8 * eps) * Real.log x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_log hn0 hn` as an intermediate fact. Rewrite `this` using `[Real.log_mul (by norm_num) (Real.rpow_pos_of_pos hx0 _).ne', Real.log_rpow hx0]`. Then use the resulting hypothesis. Establish `h4 : Real.log 4 ≤ 3` using `by have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 4 by norm_num); linarith`. Establish `h2 : Real.log 2 ≤ 1` using `by have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith`. Rewrite using `[Real.log_mul (by positivity) hd0.ne', Real.log_mul (by positivity) hq0.ne', Real.log_mul (by norm_num) hn0.ne']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (2 + 8 * eps) * Real.log x ≤ 3 * Real.log x` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `h5 : 5 * Real.log x ≤ Real.log x ^ 2` using `by nlinarith`. Establish `h6 : Real.log x ^ 2 - 1 ≤ x ^ (eps / 5) * (Real.log x ^ 2 - 1)` using `le_mul_of_one_le_left (by linarith) hy`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_four_mul_nqd_le {x eps : ℝ} {n q d : ℕ} (he : 0 < eps) (he' : eps < 1 / 52)
     (hx : Real.exp 5 ≤ x) (hn1 : 1 ≤ n) (hq1 : 1 ≤ q) (hd1 : 1 ≤ d)
@@ -63,13 +63,13 @@ theorem log_four_mul_nqd_le {x eps : ℝ} {n q d : ℕ} (he : 0 < eps) (he' : ep
   nlinarith
 
 /- English proof (translation)
-Introduce `p1 p2 p3 p4 p5 p6 p7 p8 eps he he'`. Take `⟨x1, C1, hC1, H1⟩` from `GlobalTheory.T.exists_prime_three_mod_eight_good p1 p2 p3 p4 p5 p6 p7 p8 eps he he'`. Take `⟨x2, C2, hC2, H2⟩` from `GlobalTheory.T.exists_prime_seven_mod_sixteen_good p1 p2 p3 p4 p5 p6 p7 p8 eps he he'`. Use `⟨max (max x1 x2) (Real.exp 5), max C1 C2, lt_max_of_lt_left hC1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : x1 ≤ x` using `((le_max_left _ _).trans (le_max_left _ _)).trans hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx2 : x2 ≤ x` using `((le_max_right _ _).trans (le_max_left _ _)).trans hx`. Establish `hx5 : Real.exp 5 ≤ x` using `(le_max_right _ _).trans hx`. Establish `hL : 0 ≤ Real.log x` using `Real.log_nonneg (le_trans (Real.one_le_exp (by norm_num)) hx5)`. Take `⟨q, hq, hq8, hql, hqu, Hq⟩` from `H1 x hx1`. Take `⟨d, hd, hd16, hdl, hdu, hk, hsp, hg, hb1, hb2⟩` from `H2 x hx2 q hq hq8 hql hqu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, g2, b0⟩` from `Hq d hd (by omega) (by rintro rfl; omega)`. Use `⟨q, d, ⟨g1, g2, ?_, ?_, ?_, ?_⟩, ⟨boundsAtX_mono_const hL (le_max_left _ _) b0, boundsAtX_mono_const hL (le_max_right _ _) hb1, boundsAtX_mono_const hL (le_max_right _ _) hb2⟩, fun n hn1 hn => ⟨hq, hq8, hql, hqu, hd, hd16, hdl, hdu, hk, hsp, log_four_mul_nqd_le he he' hx5 hn1 hq. …` and prove the remaining obligations. Simplify using `using hg 0 0`. Simplify using `using hg 0 1`. Simplify using `using hg 1 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hg 1 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_q_d_box_bounds_rows : GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet → GlobalTheory.Mem.An.TZRat → GlobalTheory.Mem.An.PageThm → GlobalTheory.Mem.An.Jutila → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x₀ C : ℝ, 0 < C ∧ ∀ x : ℝ, x₀ ≤ x → ∃ q d : ℕ, Boxq x eps q d ∧ QDq x eps C q d ∧ ∀ n : ℕ, 1 ≤ n → (n : ℝ) ≤ 2 * x ^ (2 + 8 * eps) → Rowq x eps n q d := by
   intro p1 p2 p3 p4 p5 p6 p7 p8 eps he he'

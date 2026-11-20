@@ -20,7 +20,7 @@ section Steps
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `rfl : σ = (D.R.m - 1 - j) / 2` from `by omega`. Conclude with `dif_pos hj`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rowGrp_odd (j σ : ℕ) (hj : j + 2 * σ + 1 = D.R.m) :
     rowGrp G j = jacGrp (rowJac G j (by omega) σ (by omega)) := by
@@ -28,7 +28,7 @@ theorem rowGrp_odd (j σ : ℕ) (hj : j + 2 * σ + 1 = D.R.m) :
   exact dif_pos hj
 
 /- English proof (translation)
-Take `rfl : σ = (D.R.m - 2 - j) / 2` from `by omega`. Unfold `rowGrp`. Rewrite using `[dif_neg (by omega), dif_pos hj]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowGrp_even (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m) :
     rowGrp G j = besGrp (besDecAt G j σ hj) (GlobalTheory.OrthSumExists.orthDecHsum D _ _) := by
@@ -50,7 +50,7 @@ abbrev handAt (j σ : ℕ) (hj : j + 2 * (σ + 1) + 2 = D.R.m) (Φ : SchDown G t
     (Φ ⟨j, by omega⟩) (Φ ⟨j + 1, by omega⟩) φ g h₁ h₂
 
 /- English proof (translation)
-Take `rfl : σ = (D.R.m - 4 - j) / 2` from `by omega`. Use `Eq.trans ?_ (dbl_hand_eq_biLift G W t hM _ j hj _ _ _ φ (hΦ ⟨j, by omega⟩) (hΦ ⟨j + 1, by omega⟩) hφ _ _ _).symm` and prove the remaining obligations. Establish `e : conAt W hM Φ h j = _` using `(dif_neg (by omega)).trans (dif_pos hj)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem biL_conAt (j σ : ℕ) (hj : j + 2 * (σ + 1) + 2 = D.R.m) (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j))
     (φ : GA D (G.V (.top j)) → ℂ) (hφ : GlobalTheory.Unf.IsContAut _ φ) (h : Pts G) :
@@ -62,9 +62,9 @@ theorem biL_conAt (j σ : ℕ) (hj : j + 2 * (σ + 1) + 2 = D.R.m) (Φ : SchDown
   rfl
 
 /- English proof (translation)
-Set `B` to `besAt G hM j (σ + 1) hj (GlobalTheory.Unf.Inhab.nonempty_volN _).some`. Set `J` to `jacAt G hM (j + 1) (σ + 1) (by omega)`. Set `B'` to `besAt G hM (j + 1 + 1) σ (by omega) (GlobalTheory.Unf.Inhab.nonempty_volN (besDecAt G (j + 1 + 1) σ (by omega))).some`. Set `s₁ : GlobalTheory.Unf.StepBF W.ψ B J` to `stepAt G W t hM j (by omega) (besDecAt G j (σ + 1) hj) (rowJac G (j + 1) (by omega) (σ + 1) (by omega))`. Set `s₂ : GlobalTheory.Unf.StepFB W.ψ J B'` to `stepAt G W t hM (j + 1) (by omega) (rowJac G (j + 1) (by omega) (σ + 1) (by omega)) (besDecAt G (j + 1 + 1) σ (by omega))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `t₁ : IsThetaFunO W.ψ B.V₀ J.W₀ (GlobalTheory.Unf.flatBF s₁ (s₁.om (g, h₁) (Φ ⟨j, by omega⟩)))` using `(GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) W.ψ).1 _ B J s₁ _ (s₁.weil.om_pres (g, h₁) _ (hΦ ⟨j, by omega⟩))`. Establish `t₂ : IsThetaFunO W.ψ J.W₀ B'.V₀ (GlobalTheory.Unf.flatFB s₂ (s₂.om (h₁, h₂) (Φ ⟨j + 1, by omega⟩)))` using `(GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) W.ψ).2 _ J B' s₂ _ (s₂.weil.om_pres (h₁, h₂) _ (hΦ ⟨j + 1, by omega⟩))`. Conclude with `GlobalTheory.FinPl.ValDbl.contAut_hand0 s₁ s₂ (linkAt hM j σ hj _ (by omega) (GlobalTheory.Unf.Inhab.nonempty_volN _).some) ((GlobalTheory.Unf.Inhab.nonempty_volM D _ _).some) hφ t₁ t₂`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem handAt_contAut (j σ : ℕ) (hj : j + 2 * (σ + 1) + 2 = D.R.m) (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j))
     (φ : GA D (G.V (.top j)) → ℂ) (hφ : GlobalTheory.Unf.IsContAut _ φ) (g h₁ h₂) :
@@ -85,7 +85,7 @@ theorem handAt_contAut (j σ : ℕ) (hj : j + 2 * (σ + 1) + 2 = D.R.m) (Φ : Sc
     ((GlobalTheory.Unf.Inhab.nonempty_volM D _ _).some) hφ t₁ t₂
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.m_even`. Take `⟨b, hb⟩` from `hi`. Rewrite using `[biL_conAt W hM i (a - b - 2) (by omega) Φ hΦ ψ hψ]`. Conclude with `handAt_contAut W hM _ _ _ Φ hΦ ψ hψ _ _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biL_contAut (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)) (h : Pts G) (i : ℕ) (hi : Even i) (hm : i + 2 < D.R.m)
     (ψ : GA D (G.V (.top i)) → ℂ) (hψ : GlobalTheory.Unf.IsContAut _ ψ) : GlobalTheory.Unf.IsContAut _ (biL W M t i ψ (conAt W hM Φ h i)) := by
@@ -95,7 +95,7 @@ theorem biL_contAut (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)
   exact handAt_contAut W hM _ _ _ Φ hΦ ψ hψ _ _ _
 
 /- English proof (translation)
-Rewrite using `[biL_conAt W hM i σ hi Φ hΦ ψ hψ, biL_conAt W hM i σ hi Φ hΦ ψ hψ, Function.update_self, Function.update_of_ne (show i ≠ i + 1 by omega), Function.update_of_ne (show i + 1 + 1 ≠ i + 1 by omega)]`. Rewrite `hr` using `[rowGrp_odd (i + 1) (σ + 1) (by omega)]`. Conclude with `(GlobalTheory.FinPl.HandInvPf.handInv D W.ψ σ (besAt G hM i (σ + 1) hi (GlobalTheory.Unf.Inhab.nonempty_volN _).some) (jacAt G hM (i + 1) (σ + 1) (by omega)) (besAt G hM (i + 1 + 1) σ (by omega) (GlobalTheory.Unf.Inhab.nonempty_volN _).some) _ _ _ _ _ _ (hΦ ⟨i, by omega⟩) (hΦ ⟨i …`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem odd_step (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)) (h : Pts G) (i σ : ℕ)
     (hi : i + 2 * (σ + 1) + 2 = D.R.m) (r) (hr : r ∈ rowGrp G (i + 1)) (ψ : GA D (G.V (.top i)) → ℂ)
@@ -109,7 +109,7 @@ theorem odd_step (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)) (
     _ _ _ _ _ _ (hΦ ⟨i, by omega⟩) (hΦ ⟨i + 1, by omega⟩) ψ hψ _ _ _).1 r hr
 
 /- English proof (translation)
-Rewrite using `[biL_conAt W hM i σ hi Φ hΦ ψ hψ, biL_conAt W hM i σ hi Φ hΦ ψ hψ, Function.update_self, Function.update_of_ne (show i ≠ i + 1 + 1 by omega), Function.update_of_ne (show i + 1 ≠ i + 1 + 1 by omega)]`. Conclude with `GlobalTheory.BesMove.hand_right (B := besAt G hM i (σ + 1) hi (GlobalTheory.Unf.Inhab.nonempty_volN _).some) (J := jacAt G hM (i + 1) (σ + 1) (by omega)) (B' := besAt G hM (i + 1 + 1) σ hi' (GlobalTheory.Unf.Inhab.nonempty_volN _).some) _ _ _ _ _ (hΦ ⟨i + 1, by omega⟩) ψ _ _ _ hn …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem even_first (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)) (h : Pts G) (i σ : ℕ)
     (hi : i + 2 * (σ + 1) + 2 = D.R.m) (hi' : i + 1 + 1 + 2 * σ + 2 = D.R.m) (n) (hn : n ∈ flagN (besDecAt G (i + 1 + 1) σ hi')) (a)
@@ -125,15 +125,13 @@ theorem even_first (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j))
     (hΦ ⟨i + 1, by omega⟩) ψ _ _ _ hn a
 
 /- English proof (translation)
-Break down `σ with _ | σ` into its components or cases. Establish `e : ∀ h' : Pts G, conAt W hM Φ h' j = lastDat W hM j hj (GlobalTheory.Unf.Inhab.nonempty_volN _).some (h' j) (Φ ⟨j, by omega⟩) (castSch G (show j + 1 + 1 = D.R.m by omega) (Φ ⟨j + 1, by omega⟩))` using `fun h' => dif_pos hj`. Rewrite using `[e, e, Function.update_self]`. Take `⟨χz, hzH, hzE, -, -, hodd⟩` from `GlobalTheory.T.thetaGrid_lastRow_column_characters_differ G W t`. Take `⟨hS0, hT0⟩` from `hodd j (by omega) (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `B` to `besAt G hM j 0 hj (GlobalTheory.Unf.Inhab.nonempty_volN _).some`. Set `s` to `(lastAt G W t hM j hj (GlobalTheory.Unf.Inhab.nonempty_volN _).some).s`. Establish `homa : IsWeilDatumO W.ψ (G.V (.top j)) (G.V (.top (j + 1))) (G.chrS (.top t j)) (G.chrT (.top t j)) (W.om (.top t j))` using `W.om_is (.top t j) (by show j + 1 ≤ D.R.m; omega)`. Establish `hom₁ : IsWeilDatumO W.ψ B.V₀ (G.V (.top (j + 1))) (G.chrS (.top t j) * χz) (G.chrT (.top t j)) s.om₀`. Rewrite using `[← hS0, ← hT0]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `s.weil₀`. Take `⟨omz, homz⟩` from `GlobalTheory.WeilDatumExistence.weilDatumExists D (GlobalTheory.SeeSaw.Model.nLine D) (G.V (.top (j + 1))) W.ψ χz (G.chrT (.top t j)) W.ψ_std hzH homa.hecT hzE homa.resT`. Establish `hΞ` using `(GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) W.ψ).1 _ B _ s _ (s.weil.om_pres (h j, 1) _ (hΦ ⟨j, by omega⟩))`. Establish `k` using `GlobalTheory.BesMove.flatBF_bes (B := B) s (hΦ ⟨j, by omega⟩) hn a (h j) 1`. Establish `k'` using `GlobalTheory.BesMove.biLift_last B.o (topOrthAt G (show D.R.m = j + 1 + 1 by omega)) lastTau hom₁ homa homz (W.om (.top t (j + 1))) (volAt hM (.top j) (by show j ≤ D.R.m; omega)) (volAt hM (.top (j + 1)) (by show j + 1 ≤ D.R.m; omega)) hφ.1 hΞ (fun w => castSch G (show j + 1 + 1 …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `erw [← k] at k'`. Conclude with `k'`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top j))`. Establish `hφ' : GlobalTheory.Unf.IsContAut _ (star (psiBes W.ψ (besDecAt G j (σ + 1) hj) 1 (vecB (GlobalTheory.OrthSumExists.orthDecHsum D _ _) fun _ => D.host.xi0 ^ (σ + 1)) n) • rTrans a φ)` using `⟨fun γ hγ x => by simp only [Pi.smul_apply, rTrans, mul_assoc, hφ.1 γ hγ], (hφ.2.comp (continuous_mul_const a)).const_smul _⟩`. Rewrite using `[biL_conAt W hM j σ hj Φ hΦ _ hφ', biL_conAt W hM j σ hj Φ hΦ φ hφ, Function.update_self, Function.update_of_ne (show j + 1 ≠ j by omega), Function.update_of_ne (show j + 1 + 1 ≠ j by omega)]`.
-
-Conclude with `GlobalTheory.BesMove.hand_left (B := besAt G hM j (σ + 1) hj (GlobalTheory.Unf.Inhab.nonempty_volN _).some) (J := jacAt G hM (j + 1) (σ + 1) (by omega)) (B' := besAt G hM (j + 1 + 1) σ (by omega) (GlobalTheory.Unf.Inhab.nonempty_volN _).some) _ _ _ _ _ (hΦ ⟨j, by omega⟩) hφ.1 _ _ …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem even_second (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)) (h : Pts G) (j σ : ℕ)
     (hj : j + 2 * σ + 2 = D.R.m) (n) (hn : n ∈ flagN (besDecAt G j σ hj)) (a)
@@ -180,9 +178,9 @@ theorem even_second (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)
       (hΦ ⟨j, by omega⟩) hφ.1 _ _ _ hn a
 
 /- English proof (translation)
-Establish `hi' : i + 1 + 1 + 2 * σ + 2 = D.R.m` using `by omega`. Rewrite `hr` using `[rowGrp_even (i + 1 + 1) σ hi']`. Take `⟨n, hn, a, rfl⟩` from `(GlobalTheory.CharLaws.mem_besGrp _ _ r).1 hr`. Rewrite using `[even_first W hM Φ hΦ h i σ hi hi' n hn a ψ hψ]`. Use `even_second W hM Φ hΦ h (i + 1 + 1) σ hi' n hn a _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[biL_conAt W hM i σ hi Φ hΦ ψ hψ]`. Conclude with `handAt_contAut W hM _ _ _ Φ hΦ ψ hψ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem even_step (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)) (h : Pts G) (i σ : ℕ)
     (hi : i + 2 * (σ + 1) + 2 = D.R.m) (r) (hr : r ∈ rowGrp G (i + 1 + 1)) (ψ : GA D (G.V (.top i)) → ℂ)
@@ -200,7 +198,7 @@ theorem even_step (Φ : SchDown G t) (hΦ : ∀ j, IsThetaFunO W.ψ _ _ (Φ j)) 
 
 omit hM in
 /- English proof (translation)
-The claim follows from `| 0, j, hj, φ, he, hC => by simp only [jPer] rw [hC j he le_rfl] | σ + 1, j, hj, φ, he, hC => by simp only [jPer] rw [hC j he le_rfl] exact jPer_congr_above M t C C' F σ (j + 1 + 1) _ _ (by obtain ⟨a, ha⟩ := he; exact ⟨a + 1, by omega⟩) fun i hi hji => hC i hi (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem jPer_congr_above (M : GlobalTheory.FunObj.Vol G) (t : T) (C C' : BiFam G) (F : Fn G (.grid D.R.m D.R.m)) :
     ∀ (σ j : ℕ) (hj : j + 2 * σ + 2 = D.R.m) (φ : Fn G (.top j)), Even j → (∀ i, Even i → j ≤ i → C i = C' i) →
@@ -217,7 +215,7 @@ theorem jPer_congr_above (M : GlobalTheory.FunObj.Vol G) (t : T) (C C' : BiFam G
 omit hM in
 
 /- English proof (translation)
-The claim follows from `| 0, j, hj, φ, he, hk, hjk, hφ => by have h1 : j + 2 = D.R.m := by simpa using hj have h2 : j ≤ k := hjk omega | σ + 1, j, hj, φ, he, hk, hjk, hφ => by rcases Nat.lt_or_ge j k with hlt | hge · have hCj : C j = C' j := hC j he (by omega) (by omega) simp only [jPer] rw [← hCj] refi …`.
+A detailed English derivation is pending.
 -/
 theorem jPer_congr_window (M : GlobalTheory.FunObj.Vol G) (t : T) (C C' : BiFam G) (F : Fn G (.grid D.R.m D.R.m)) (k : ℕ)
     (hk4 : k + 1 + 1 + 2 ≤ D.R.m) (hC : ∀ i, Even i → i ≠ k → i ≠ k + 1 + 1 → C i = C' i)
@@ -251,7 +249,7 @@ theorem jPer_congr_window (M : GlobalTheory.FunObj.Vol G) (t : T) (C C' : BiFam 
         (by obtain ⟨a, ha⟩ := he; exact ⟨a + 2, by omega⟩) fun i hi hji => hC i hi (by omega) (by omega)
 
 /- English proof (translation)
-Unfold `conAt`. Simplify using `only [Function.update_of_ne h0, Function.update_of_ne h1, Function.update_of_ne h2]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem conAt_update (Φ : SchDown G t) (h : Pts G) (j : ℕ) (x : GA D (G.V (.grid D.R.m j))) (i : ℕ) (h0 : i ≠ j)
     (h1 : i + 1 ≠ j) (h2 : i + 1 + 1 ≠ j) : conAt W hM Φ (Function.update h j x) i = conAt W hM Φ h i := by
@@ -261,23 +259,21 @@ theorem conAt_update (Φ : SchDown G t) (h : Pts G) (j : ℕ) (x : GA D (G.V (.g
 end Steps
 
 /- English proof (translation)
-Introduce `t M hM Φ f hΦ hf P φ F hφ hF j hj r hr h`. Take `⟨c, hc⟩` from `D.R.m_even`. Establish `hm2` using `D.R.two_le_m`. Establish `hj' : 1 ≤ j ∧ j + 2 ≤ D.R.m`. Simplify using `only [idx, List.mem_range'_1] at hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Unfold `per`. Break down `Nat.even_or_odd j with he | ho` into its components or cases. Take `⟨i, rfl⟩ : ∃ i, j = i + 1 + 1` from `⟨j - 2, by obtain ⟨a, ha⟩ := he; omega⟩`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : Even i := by`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `he`. Conclude with `⟨a - 1, by omega⟩`. Use `jPer_congr_window ch.W M t _ _ _ i (by omega) ?_ ?_ ?_ _ 0 top_idx _ ⟨0, rfl⟩ ⟨b, hb⟩ (Nat.zero_le _) hφ` and prove the remaining obligations. Introduce `i' hi' h1 h2`. Use `conAt_update ch.W hM Φ h _ _ i' h2 ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e`. Take `⟨a, ha⟩` from `hi'`. Use linear arithmetic over natural numbers and integers. Introduce `e; exact h1 (by omega)`. Introduce `i' hi' hlt ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `biL_contAut ch.W hM Φ hΦ _ i' hi' (by omega) ψ hψ`. Introduce `ψ hψ`. Conclude with `even_step ch.W hM Φ hΦ h i (c - b - 2) (by omega) r hr ψ hψ`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : Even i := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `ho`. Conclude with `⟨a, by omega⟩`. Use `jPer_congr_window ch.W M t _ _ _ i (by omega) ?_ ?_ ?_ _ 0 top_idx _ ⟨0, rfl⟩ ⟨b, hb⟩ (Nat.zero_le _) hφ` and prove the remaining obligations. Introduce `i' hi' h1 h2`. Use `conAt_update ch.W hM Φ h _ _ i' ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `e`. Take `⟨a, ha⟩` from `hi'`. Use linear arithmetic over natural numbers and integers. Introduce `e; exact h1 (by omega)`. Introduce `e`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨a, ha⟩` from `hi'`. Use linear arithmetic over natural numbers and integers. Introduce `i' hi' hlt ψ hψ`. Conclude with `biL_contAut ch.W hM Φ hΦ _ i' hi' (by omega) ψ hψ`. Introduce `ψ hψ`.
-
-Rewrite using `[odd_step ch.W hM Φ hΦ h i (c - b - 2) (by omega) r hr ψ hψ, conAt_update ch.W hM Φ h (i + 1) _ (i + 1 + 1) (by omega) (by omega) (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rinv_all {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) : RInv ch := by
@@ -319,7 +315,7 @@ theorem rinv_all {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A 
         conAt_update ch.W hM Φ h (i + 1) _ (i + 1 + 1) (by omega) (by omega) (by omega)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ => rinv_all ch⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem rinv : Big fun ch => RInv ch :=
   ⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ => rinv_all ch⟩⟩

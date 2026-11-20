@@ -10,22 +10,20 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Spa
 noncomputable def ind (K : Subgroup G) : G → ℂ := Set.indicator (K : Set G) fun _ => 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(LocallyConstant.charFn ℂ ⟨K.isClosed_of_isOpen ho, ho⟩).isLocallyConstant, HasCompactSupport.intro hc fun _ hx => Set.indicator_of_notMem hx _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ind_mem {K : Subgroup G} (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G)) : ind K ∈ SB G :=
   ⟨(LocallyConstant.charFn ℂ ⟨K.isClosed_of_isOpen ho, ho⟩).isLocallyConstant,
     HasCompactSupport.intro hc fun _ hx => Set.indicator_of_notMem hx _⟩
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc`. Use `haveI : DiscreteTopology (K ⧸ H.subgroupOf K) := QuotientGroup.discreteTopology (ho.preimage continuous_subtype_val)`. Use `haveI : Fintype (K ⧸ H.subgroupOf K) := @Fintype.ofFinite _ finite_of_compact_of_discrete`. Establish `hH` using `ind_mem ho (hc.of_isClosed_subset (H.isClosed_of_isOpen ho) hHK)`. Establish `: ind K = ∑ q : K ⧸ H.subgroupOf K, fun x => ind H (x * q.out.1)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `x`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hx : x ∈ K`. Establish `hmem : ∀ q : K ⧸ H.subgroupOf K, x * q.out.1 ∈ (H : Set G) ↔ ((⟨x, hx⟩⁻¹ : K) : K ⧸ H.subgroupOf K) = q`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← QuotientGroup.out_eq' q, QuotientGroup.eq, inv_inv]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_eq_single ((⟨x, hx⟩⁻¹ : K) : K ⧸ H.subgroupOf K)]`. Rewrite using `[ind, ind, Set.indicator_of_mem ((hmem _).2 rfl), Set.indicator_of_mem (by exact hx)]`. Introduce `q _ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Set.indicator_of_notMem (fun h => hq ((hmem q).1 h).symm) _`. Simplify using the standard rewrite rules. Rewrite using `[ind, Set.indicator_of_notMem (by exact hx)]`. Conclude with `(Finset.sum_eq_zero fun q _ => Set.indicator_of_notMem (fun h => hx ((mul_mem_cancel_right q.out.2).1 (hHK h))) _).symm`. Rewrite using `[this, map_sum, Finset.sum_congr rfl fun q _ => by rw [hl _ hH, hχ _ q.out.2, one_mul]]`.
-
-Simplify using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+A detailed English derivation is pending.
 -/
 theorem ind_index (χ : G → ℂ) (l : (G → ℂ) →ₗ[ℂ] ℂ) (hl : ∀ φ ∈ SB G, ∀ h, l (fun x => φ (x * h)) = χ h * l φ)
     {H K : Subgroup G} (hHK : H ≤ K) (ho : IsOpen (H : Set G)) (hc : IsCompact (K : Set G)) (hχ : ∀ k ∈ K, χ k = 1) :
@@ -54,9 +52,9 @@ theorem ind_index (χ : G → ℂ) (l : (G → ℂ) →ₗ[ℂ] ℂ) (hl : ∀ �
   simp [Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Establish `h` using `hl _ (ind_mem ho hc) k`. Establish `: (fun x => ind K (x * k)) = ind K` using `by classical`. Use extensionality with `x`. Conclude with `if_congr (K.mul_mem_cancel_right hk) rfl rfl`. Rewrite `h` using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hχ (mul_right_cancel₀ h0 (by rw [← h, one_mul]))`.
+A detailed English derivation is pending.
 -/
 theorem ind_zero (χ : G → ℂ) (l : (G → ℂ) →ₗ[ℂ] ℂ) (hl : ∀ φ ∈ SB G, ∀ h, l (fun x => φ (x * h)) = χ h * l φ)
     {K : Subgroup G} (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G)) {k : G} (hk : k ∈ K) (hχ : χ k ≠ 1) :
@@ -70,37 +68,35 @@ theorem ind_zero (χ : G → ℂ) (l : (G → ℂ) →ₗ[ℂ] ℂ) (hl : ∀ φ
   exact hχ (mul_right_cancel₀ h0 (by rw [← h, one_mul]))
 
 /- English proof (translation)
-Distinguish the cases in `h0 : φ = 0`. Substitute `h0; exact (map_zero l).trans (by rw [map_zero, mul_zero])` using the available equality. Take `⟨x₀, hx₀⟩` from `Function.ne_iff.1 h0`. Set `K₀ : Subgroup G` to `{ carrier := {k | ∀ x, φ (k * x) = φ x} one_mem' := fun x => by rw [one_mul] mul_mem' := fun {a b} ha hb x => by rw [mul_assoc, ha, hb] inv_mem' := fun {a} ha x => by rw [← ha, mul_inv_cancel_left] }`. Establish `o₀ : IsOpen (K₀ : Set G)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `K₀.isOpen_of_mem_nhds (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [sb_unif hφ (fun k x => k * x) (1 : G) (by fun_prop) one_mul, sb_unif hφ (fun k x => k⁻¹ * x) (1 : G) (by fun_prop) (by simp)] with k h1 h2 x`. Distinguish the cases in `hx : x ∈ tsupport φ`. Conclude with `h1 x hx`. Distinguish the cases in `hx' : k * x ∈ tsupport φ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (h2 _ hx').symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']`. Establish `c₀ : IsCompact (K₀ : Set G)` using `(IsCompact.image hφ.2 (continuous_mul_right x₀⁻¹)).of_isClosed_subset (K₀.isClosed_of_isOpen o₀) fun k hk => ⟨k * x₀, subset_tsupport _ (by rw [Function.mem_support, hk x₀]; exact hx₀), by simp⟩`. Set `K` to `K₀ ⊓ K₀.comap θ`. Establish `o : IsOpen (K : Set G)` using `o₀.inter (o₀.preimage cθ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c : IsCompact (K : Set G)` using `c₀.of_isClosed_subset (K.isClosed_of_isOpen o) fun k hk => hk.1`. Establish `hθ : ∀ x, θ x ∈ K ↔ x ∈ K` using `fun x => by show θ x ∈ K₀ ∧ θ (θ x) ∈ K₀ ↔ x ∈ K₀ ∧ θ x ∈ K₀`. Rewrite using `[iθ]`. Conclude with `and_comm`. Set `K'` to `K.comap (MulAut.conj g).toMonoidHom`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK' : ∀ x, x ∈ K' ↔ g * x * g⁻¹ ∈ K` using `fun x => Iff.rfl`. Establish `hs : ind K' = fun x => ind K (g * x * g⁻¹)` using `rfl`. Establish `o' : IsOpen (K' : Set G)` using `o.preimage (f := fun x => g * x * g⁻¹) (by fun_prop)`. Establish `c' : IsCompact (K' : Set G)` using `(c.image (f := fun x => g⁻¹ * x * g) (by fun_prop)).of_isClosed_subset (K'.isClosed_of_isOpen o') fun x hx => ⟨_, (hK' x).1 hx, by group⟩`. Establish `hconj : ∀ x, χ (g * x * g⁻¹) = χ x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul, map_mul, mul_comm (χ g), mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Establish `key : l (ind K') = l (ind K)`. Distinguish the cases in `hχ : ∀ k ∈ K, χ k = 1`. Establish `hχ' : ∀ k ∈ K', χ k = 1` using `fun k hk => by rw [← hconj, hχ _ ((hK' k).1 hk)]`. Rewrite using `[ind_index χ l hl (inf_le_left : K ⊓ K' ≤ K) (o.inter o') c hχ, ind_index χ l hl (inf_le_right : K ⊓ K' ≤ K') (o.inter o') c' hχ', Subgroup.inf_relIndex_left, Subgroup.inf_relIndex_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `α` to `θ.comp (MulAut.conj g).toMonoidHom`. Establish `hα : ∀ x, α x = θ (g * x * g⁻¹)` using `fun _ => rfl`. Establish `e1 : K.comap α = K'` using `by ext x; rw [Subgroup.mem_comap, hα, hθ, hK']`. Establish `e2 : K.map α = K'`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Subgroup.mem_map, hK']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[hα, map_mul, map_mul, map_inv, hg]`. Simplify `(hθ y).2 hy` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Use `⟨_, (hθ _).2 hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hα, map_mul, map_mul, map_inv, hg, iθ]`. Use `group`. Use `conv_rhs => rw [← e1, Subgroup.relIndex_comap, e2, e1]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `push Not at hχ`. Take `⟨k, hk, hχ⟩` from `hχ`. Rewrite using `[ind_zero χ l hl o c hk hχ, ind_zero χ l hl o' c' (k := g⁻¹ * k * g) ((hK' _).2 (by simpa [mul_assoc] using hk))]`. Rewrite using `[← hconj]`. Simplify `hχ` using `[mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology o`. Establish `hfin : ((fun x : G => ((x⁻¹ : G) : G ⧸ K)) '' tsupport φ).Finite` using `(IsCompact.image hφ.2 (QuotientGroup.continuous_mk.comp continuous_inv)).finite_of_discrete`. Establish `hmem : ∀ (x : G) (q : G ⧸ K), x * q.out ∈ (K : Set G) ↔ ((x⁻¹ : G) : G ⧸ K) = q`. Introduce `x q`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q, QuotientGroup.eq, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `dec : ∀ x, φ x = ∑ q ∈ hfin.toFinset, φ q.out⁻¹ * ind K (x * q.out)` using `fun x => by`. Establish `hx : φ ((x⁻¹ : G) : G ⧸ K).out⁻¹ = φ x`. Rewrite using `[← ((hmem x _).2 rfl).1, mul_inv_cancel_right]`. Rewrite using `[Finset.sum_eq_single ((x⁻¹ : G) : G ⧸ K)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[ind, Set.indicator_of_mem ((hmem x _).2 rfl), hx, mul_one]`. Introduce `q _ hq`. Rewrite using `[ind, Set.indicator_of_notMem (fun h => hq ((hmem x q).1 h).symm), mul_zero]`. Introduce `h`. Rewrite using `[hx, image_eq_zero_of_notMem_tsupport (f := φ) (x := x), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun hs => h (hfin.mem_toFinset.2 ⟨_, hs, rfl⟩)`. Establish `d1 : φ = ∑ q ∈ hfin.toFinset, φ q.out⁻¹ • fun x => ind K (x * q.out)`. Use extensionality with `x`. Rewrite using `[dec x]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `d2 : (fun x => φ (g * x)) = ∑ q ∈ hfin.toFinset, φ q.out⁻¹ • fun x => ind K' (x * (q.out * g))`. Use extensionality with `x`. Rewrite using `[dec, hs]`. Simplify using `[mul_assoc]`. Rewrite using `[d2]`.
-
-Use `conv_rhs => rw [d1]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, hl _ (ind_mem o' c'), hl _ (ind_mem o c), key, map_mul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem left_of_right (χ : G →* ℂ) (θ : G →* G) (cθ : Continuous θ) (iθ : ∀ x, θ (θ x) = x) {g : G} (hg : θ g = g⁻¹)
     (l : (G → ℂ) →ₗ[ℂ] ℂ) (hl : ∀ φ ∈ SB G, ∀ h, l (fun x => φ (x * h)) = χ h * l φ) {φ : G → ℂ} (hφ : φ ∈ SB G) :

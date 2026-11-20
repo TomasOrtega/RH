@@ -17,45 +17,35 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Use `set Lk := layer ε E V k with hLk`. Use `haveI : FiniteDimensional ℂ Lk := finiteDimensional_layer (ε := ε) (E := E) hVfd k`. Use `set N := ncV ε V (k + 1) with hN`. Use `haveI : FiniteDimensional ℂ N := finiteDimensional_ncV (ε := ε) hVfd (k + 1)`. Use `set U : Submodule ℂ (Big n (k + 1) M) := N ⊓ Lk.comap (phi E (k + 1)) with hUdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ U := Submodule.finiteDimensional_of_le inf_le_left`. Establish `hKu : ∀ a b, ε a = ε b → ∀ x y : M, inner ℂ x (E a b y) = inner ℂ (E b a x) y`. Introduce `a b hab x y`. Rewrite using `[hU b a x y]`. Simplify using `[adjSign, hab.symm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hLkK : IsKStableSub ε E Lk` using `layer_kStable hE hVk k`. Establish `hLkoK : ∀ a b, ε a = ε b → ∀ y ∈ Lkᗮ, E a b y ∈ Lkᗮ`. Introduce `a b hab y hy`. Rewrite `hy`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hKu a b hab u y]`. Conclude with `hy _ (hLkK b a hab.symm u hu)`. Establish `hBu` using `bAct_isKUnitary hU (k + 1)`. Establish `hNK : IsKStableSub ε (bAct E (k + 1)) N` using `ncV_kStable hVk (k + 1)`. Establish `hUK : ∀ a b, ε a = ε b → ∀ H ∈ U, bAct E (k + 1) a b H ∈ U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab H hH`. Use `⟨hNK a b hab H hH.1, ?_⟩` and prove the remaining obligations. Use `show phi E (k + 1) (bAct E (k + 1) a b H) ∈ Lk`. Rewrite using `[wordContraction_tensorAction hE]`. Conclude with `hLkK a b hab _ hH.2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUoK : ∀ a b, ε a = ε b → ∀ H ∈ Uᗮ, bAct E (k + 1) a b H ∈ Uᗮ`. Introduce `a b hab H hH`. Rewrite `hH`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← hBu b a hab.symm u H]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hH _ (hUK b a hab.symm u hu)`. Set `Ψ : Big n (k + 1) M →ₗ[ℂ] M` to `(LinearMap.id - ((Lk.starProjection : M →L[ℂ] M) : M →ₗ[ℂ] M)) ∘ₗ phi E (k + 1)`. Establish `hΨ : ∀ H, Ψ H = phi E (k + 1) H - Lk.starProjection (phi E (k + 1) H)` using `fun H => rfl`. Establish `hPmem : ∀ v, Lk.starProjection v ∈ Lk` using `fun v => by`. Rewrite using `[Submodule.starProjection_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `SetLike.coe_mem _`. Establish `hzero : ∀ x, x ∈ Lk → x ∈ Lkᗮ → x = 0`. Introduce `x h1 h2`. Establish `hm : x ∈ Lk ⊓ Lkᗮ` using `⟨h1, h2⟩`. Rewrite `hm` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hm`. Establish `hΨo : ∀ H, Ψ H ∈ Lkᗮ` using `fun H => by`. Rewrite using `[hΨ]`. Conclude with `Submodule.sub_starProjection_mem_orthogonal _`. Establish `hΨeq : ∀ a b, ε a = ε b → ∀ H, Ψ (bAct E (k + 1) a b H) = E a b (Ψ H)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b hab H`. Rewrite using `[← sub_eq_zero]`. Apply `hzero` to reduce the goal to its premises. Rewrite using `[hΨ, hΨ, wordContraction_tensorAction hE, map_sub]`. Establish `e : E a b (phi E (k + 1) H) - Lk.starProjection (E a b (phi E (k + 1) H)) - (E a b (phi E (k + 1) H) - E a b (Lk.starProjection (phi E (k + 1) H))) = E a b (Lk.starProjection (phi E (k + 1) H)) - Lk.starProjection (E a b (phi E (k + 1) H))` using `by abel`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Lk.sub_mem (hLkK a b hab _ (hPmem _)) (hPmem _)`. Conclude with `Lkᗮ.sub_mem (hΨo _) (hLkoK a b hab _ (hΨo _))`. Establish `hinj : ∀ H ∈ Uᗮ, H ∈ N → Ψ H = 0 → H = 0`. Introduce `H hHo hHN h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hphi : phi E (k + 1) H ∈ Lk`. Rewrite `h0` using `[hΨ, sub_eq_zero]`. Rewrite using `[h0]`. Conclude with `hPmem _`. Establish `hm : H ∈ U ⊓ Uᗮ` using `⟨⟨hHN, hphi⟩, hHo⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot]`. Conclude with `hm`. Take `⟨l, hl, y, hy, hly⟩` from `Submodule.mem_sup.mp (layer_succ_le hE hVk k hw)`. Take `⟨G0, hG0, rfl⟩` from `Submodule.mem_map.mp hy`. Establish `hUmem : U.starProjection G0 ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Submodule.starProjection_apply]`. Conclude with `SetLike.coe_mem _`. Use `set G := G0 - U.starProjection G0 with hG`. Establish `hGo : G ∈ Uᗮ` using `Submodule.sub_starProjection_mem_orthogonal G0`. Establish `hGN : G ∈ N` using `N.sub_mem hG0 hUmem.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwo : w ∈ Lkᗮ` using `by rw [Submodule.mem_orthogonal]; exact hperp`. Establish `hΨG : Ψ G = w`. Rewrite using `[← sub_eq_zero]`. Apply `hzero` to reduce the goal to its premises. Rewrite using `[hΨ, hG, map_sub, ← hly]`.
-
-Establish `hpu : phi E (k + 1) (U.starProjection G0) ∈ Lk` using `hUmem.2`. Establish `e : phi E (k + 1) G0 - phi E (k + 1) (U.starProjection G0) - Lk.starProjection (phi E (k + 1) G0 - phi E (k + 1) (U.starProjection G0)) - (l + phi E (k + 1) G0) = -(phi E (k + 1) (U.starProjection G0)) - Lk.starProjection (phi E (k + 1) G0 - phi E (k + 1) (U.starProjection G0)) - …`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Lk.sub_mem (Lk.sub_mem (Lk.neg_mem hpu) (hPmem _)) hl`.
-
-Conclude with `Lkᗮ.sub_mem (hΨo G) hwo`. Use `⟨G, hGN, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hw0` to reduce the goal to its premises. Rewrite using `[← hΨG, h0, map_zero]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `a`. Establish `hD : bAct E (k + 1) a a G - ((μ a : ℂ)) • G = 0`. Apply `hinj` to reduce the goal to its premises. Conclude with `Uᗮ.sub_mem (hUoK a a rfl G hGo) (Uᗮ.smul_mem _ hGo)`.
-
-Conclude with `N.sub_mem (hNK a a rfl G hGN) (N.smul_mem _ hGN)`. Rewrite using `[map_sub, map_smul, hΨeq a a rfl, hΨG, hμ.1 a, sub_self]`. Conclude with `sub_eq_zero.mp hD`. Introduce `a b hab hεab`. Apply `hinj _ (hUoK a b hεab G hGo) (hNK a b hεab G hGN)` to reduce the goal to its premises.
-
-Rewrite using `[hΨeq a b hεab, hΨG, hμ.2 a b hab hεab]`. Introduce `F hF hphi`. Rewrite `hGo` using `[Submodule.mem_orthogonal]`. Conclude with `hGo F ⟨hF, hphi⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_layer (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hVfd : FiniteDimensional ℂ V)
     (hVk : IsKStableSub ε E V) {k : ℕ} {w : M} (hw : w ∈ layer ε E V (k + 1))
@@ -172,19 +162,19 @@ theorem lift_layer (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hVfd : FiniteDimen
     exact hGo F ⟨hF, hphi⟩
 
 /- English proof (translation)
-Take `⟨w₀, hw₀V, hw₀, ws, hsum, hws⟩` from `layer_khw_decomp hE hU hV.1 hV.2.1 hw hμ`. Distinguish the cases in `h0 : w₀ = 0`. Establish `hex : ∃ j, ws j ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hw0` to reduce the goal to its premises. Rewrite using `[hsum, h0]`. Simplify using `[hc]`. Take `⟨j, hj⟩` from `hex`. Take `⟨hj1, hj2, hj3⟩` from `hws j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hPN, hP0, hPk, -⟩` from `lift_layer hE hU hV.1 hV.2.1 hj1 hj2 hj3 hj`. Conclude with `⟨(j : ℕ) + 1, by omega, khw_big_weight hE hV hPN hP0 hPk⟩`. Set `F : Big n 0 M` to `WithLp.toLp 2 (fun _ => w₀)`. Establish `hF : ∀ κ, F κ = w₀` using `fun κ => rfl`. Establish `hFN : F ∈ ncV ε V 0`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_ncV_iff]`. Introduce `κ`. Simplify using `[hF, hw₀V]`. Establish `hF0 : F ≠ 0`. Introduce `hF'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h0` to reduce the goal to its premises. Use `congrArg (fun G : Big n 0 M => G (fun i => i.elim0)) hF'` as an intermediate fact. Simplify `this` using `[hF]`. Establish `hFk : IsKHWVec ε (bAct E 0) μ F`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Use extensionality with `κ`. Rewrite using `[bAct_apply]`. Simplify using `[hF, hw₀.1 a]`. Introduce `a b hab hε`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `κ`. Rewrite using `[bAct_apply]`. Simplify using `[hF, hw₀.2 a b hab hε]`. Conclude with `⟨0, Nat.zero_le _, khw_big_weight hE hV hFN hF0 hFk⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem khw_layer_weight (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (k : ℕ) {μ : Fin n → ℝ} {w : M}

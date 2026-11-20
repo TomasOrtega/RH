@@ -11,31 +11,29 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.Glue
 
 /- English proof (translation)
-Introduce `p v hv`. Establish `hsingle : ∀ i : Fin n, ((N : E) • (Pi.single i 1 : Fin n → E)) ∈ Γ`. Introduce `i`. Rewrite using `[hΓ]`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : A.bc q ((N : E) • (Pi.single i 1 : Fin n → E)) = (N : (A.loc q).Ep) • (Pi.single i 1 : Fin n → (A.loc q).Ep)`. Use function extensionality and compare the values at `j`. Simplify using `only [Places.bc, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[h1]`. Apply `hN` to reduce the goal to its premises. Introduce `j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[Subring.one_mem]`. Simplify using `[Pi.single_apply, h, Subring.zero_mem]`. Establish `hint : ∀ w : Fin n → (A.loc p).Ep, (∀ i, w i ∈ (A.L p).O) → (N : (A.loc p).Ep) • w ∈ A.lat p Γ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hw' : (N : (A.loc p).Ep) • w = ∑ i, (⟨w i, hw i⟩ : (A.L p).O) • A.bc p ((N : E) • (Pi.single i 1 : Fin n → E))`. Use function extensionality and compare the values at `j`. Simplify using `[Places.bc, Subring.smul_def, Pi.single_apply, Finset.sum_apply, mul_comm]`. Simplify using `[apply_ite (A.loc p).ιE, mul_ite, Finset.sum_ite_eq, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hw']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hsingle i, rfl⟩)`. Establish `hfin : ∀ i, {q | (Pi.single p (v i) : ∀ q, (A.loc q).Ep) q ∉ (A.L q).O}.Finite`. Introduce `i`. Apply `(Set.finite_singleton p).subset` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Assume the negation of the conclusion as `h`. Apply `hq` to reduce the goal to its premises. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `(A.L q).O.zero_mem`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose x hx using fun i => happ _ (hfin i)`. Use `choose o ho hxo using hx`. Establish `hbc : ∀ q, A.bc q (fun i => x i) = (fun i => (Pi.single p (v i) : ∀ q, (A.loc q).Ep) q) + (N : (A.loc q).Ep) • (fun i => o i q)`. Introduce `q`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2` using `hxo i q`. Simplify using `only [Places.bc, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hX : (fun i => x i) ∈ Γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΓ]`. Introduce `q`. Rewrite using `[hbc q]`. Use `(Λ q).add_mem ?_ (hN q _ fun i => ho i q)` and prove the remaining obligations. Distinguish the cases in `hq : q = p`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Substitute `hq` using the available equality. Simplify using `using hv`. Establish `h3 : (fun i => (Pi.single p (v i) : ∀ q, (A.loc q).Ep) q) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[Pi.single_eq_of_ne hq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h3]`. Conclude with `(Λ q).zero_mem`. Establish `hv' : v = A.bc p (fun i => x i) - (N : (A.loc p).Ep) • (fun i => o i p)`. Rewrite using `[hbc p]`. Use function extensionality and compare the values at `i`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hv']`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨_, hX, rfl⟩) (hint _ fun i => ho i p)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_le_lat_of_approx {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : Places F E sig) (n : ℕ) (Λ : ∀ p, Submodule (A.L p).O (Fin n → (A.loc p).Ep))

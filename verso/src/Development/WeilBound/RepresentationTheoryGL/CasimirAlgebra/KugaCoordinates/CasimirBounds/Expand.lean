@@ -10,7 +10,7 @@ section
 variable {n : ℕ} {Q : Type} [Fintype Q] [DecidableEq Q]
 
 /- English proof (translation)
-Simplify using `only [eAt, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eAt_applyC (p : Q) (a c : Fin n) (f : TV n ℂ Q) (I : Q → Fin n) :
     (eAt p a c : Module.End ℂ (TV n ℂ Q)) f I = if I p = a then f (Function.update I p c) else 0 := by
@@ -18,7 +18,7 @@ theorem eAt_applyC (p : Q) (a c : Fin n) (f : TV n ℂ Q) (I : Q → Fin n) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `[tE, lift, LinearMap.add_apply, LinearMap.sum_apply, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tE_zero_apply (S : Finset Q) (a c : Fin n) (f : TV n ℂ Q) (I : Q → Fin n) :
     (tE S (0 : Fin n → Fin n → Module.End ℂ ℂ) a c : Module.End ℂ (TV n ℂ Q)) f I =
@@ -26,9 +26,7 @@ theorem tE_zero_apply (S : Finset Q) (a c : Fin n) (f : TV n ℂ Q) (I : Q → F
   simp [tE, lift, LinearMap.add_apply, LinearMap.sum_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => Finset.sum_comm` and prove the remaining obligations. Use `_ = ∑ p ∈ s, ∑ a, ∑ c, ∑ q ∈ t, F a c p q := Finset.sum_comm`. Use `_ = ∑ p ∈ s, ∑ a, ∑ q ∈ t, ∑ c, F a c p q := by`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun a _ => Finset.sum_comm` and prove the remaining obligations.
-
-Use `_ = _ := by`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_comm` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum4 {α β : Type} (s : Finset α) (t : Finset β) (F : Fin n → Fin n → α → β → ℂ) :
     ∑ a, ∑ c, ∑ p ∈ s, ∑ q ∈ t, F a c p q = ∑ p ∈ s, ∑ q ∈ t, ∑ a, ∑ c, F a c p q := by
@@ -41,13 +39,13 @@ theorem sum4 {α β : Type} (s : Finset α) (t : Finset β) (F : Fin n → Fin n
         refine Finset.sum_congr rfl fun p _ => Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [eAt_applyC]`. Rewrite using `[Finset.sum_eq_single (I p)]`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using `[Function.update_idem, Finset.card_univ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hqp : q ≠ p` using `Ne.symm hpq`. Simplify using `only [if_true, Function.update_of_ne hqp, hpq, if_false]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x = q`. Substitute `hx` using the available equality. Simplify using `[Equiv.swap_apply_right]`. Distinguish the cases in `hx' : x = p`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hx'` using the available equality. Simplify using `[Function.update_apply, hx, Equiv.swap_apply_left]`. Simplify using `[Function.update_apply, hx, hx', Equiv.swap_apply_of_ne_of_ne hx' hx]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -77,7 +75,7 @@ theorem pair_apply (p q : Q) (f : TV n ℂ Q) (I : Q → Fin n) :
   · simp
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Use function extensionality and compare the values at `I`. Rewrite using `[tE_zero_apply]`. Simplify using `[LinearMap.sum_apply, Finset.sum_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tE_zero_eq_sum_eAt (S : Finset Q) (a c : Fin n) :
     (tE S (0 : Fin n → Fin n → Module.End ℂ ℂ) a c : Module.End ℂ (TV n ℂ Q)) =
@@ -89,13 +87,13 @@ private theorem tE_zero_eq_sum_eAt (S : Finset Q) (a c : Fin n) :
   simp [LinearMap.sum_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Repeatedly rewrite using `[tE_zero_eq_sum_eAt, Finset.sum_mul_sum]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Use function extensionality and compare the values at `I`. Simplify using `only [LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply, Pi.add_apply, Pi.smul_apply, Module.End.one_apply]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum4]`. Repeatedly rewrite using `[pair_apply]`. Establish `hpm : ∀ p q : Q, (pm (Equiv.swap p q) : Module.End ℂ (TV n ℂ Q)) f I = f (I ∘ Equiv.swap p q)`. Introduce `p q`. Simplify using `[pm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[hpm]`. Establish `hsplit : ∀ p ∈ S, (∑ q ∈ S, if p = q then (n : ℂ) * f I else f (I ∘ Equiv.swap p q)) = (n : ℂ) * f I + ∑ q ∈ S.erase p, f (I ∘ Equiv.swap p q)`. Introduce `p hp`. Rewrite using `[← Finset.add_sum_erase S _ hp]`. Use `congr 1`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[if_neg (Finset.ne_of_mem_erase hq).symm]`. Rewrite using `[Finset.sum_congr rfl hsplit, Finset.sum_add_distrib]`. Simplify using `[Finset.sum_const, nsmul_eq_mul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

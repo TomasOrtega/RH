@@ -8,11 +8,11 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hψne : ∀ v, ψ v ≠ 0` using `fun v hv => by`. Establish `h1` using `AddChar.map_add_eq_mul ψ v (-v)`. Rewrite `h1` using `[add_neg_cancel, AddChar.map_zero_eq_one, hv, zero_mul]`. Conclude with `one_ne_zero h1`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `hne' : b.1 + c.1 ≠ a.1` using `fun e => hne e.symm`. Establish `h0` using `congrFun (h fun v => if v = a.1 then 1 else 0) 0`. Simplify using `only [GlobalTheory.WeilM.schr, zero_add, if_pos rfl, if_true, if_neg hne', mul_zero, mul_one] at h0`. Conclude with `hψne _ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrFun (h fun _ => 1) x`. Simplify using `only [GlobalTheory.WeilM.schr, mul_one] at h1`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem schr_factor_data {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     {a b c : (κ → R) × (κ → R)}
@@ -35,13 +35,13 @@ theorem schr_factor_data {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddC
     exact h1
 
 /- English proof (translation)
-Introduce `R _ _ ψ κ _ a b c a' b' c' h h' Φ`. Take `⟨ha1, hE⟩` from `schr_factor_data ψ h`. Take `⟨ha1', hE'⟩` from `schr_factor_data ψ h'`. Use function extensionality and compare the values at `X`. Take `⟨x, x', rfl⟩ : ∃ x x' : κ → R, X = Sum.elim x x'` from `⟨_, _, (Sum.elim_comp_inl_inr X).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Simplify using `only [GlobalTheory.WeilM.schr, ← Sum.elim_add_add, sumElim_dotProduct_sumElim, dotProduct_neg, neg_dotProduct, dotProduct_zero, zero_dotProduct, add_zero, zero_add]`. Establish `hP : Sum.elim (x + a.1) (x' + a'.1) = Sum.elim (x + b.1 + c.1) (x' + b'.1 + c'.1)`. Rewrite using `[ha1, ha1', add_assoc, add_assoc]`. Rewrite using `[hP]`. Simplify using `only [← mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Establish `hN : ∀ u v w : R, ψ u = ψ v * ψ w → ψ (-u) = ψ (-v) * ψ (-w)` using `fun u v w e => by`. Rewrite using `[AddChar.map_neg_eq_inv, AddChar.map_neg_eq_inv, AddChar.map_neg_eq_inv, e, mul_inv]`. Establish `e1` using `hE x`. Establish `e2` using `hN _ _ _ (hE' x')`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show x ⬝ᵥ a.2 + -(x' ⬝ᵥ a'.2) + ⅟(2 : R) * (a.1 ⬝ᵥ a.2 + -(a'.1 ⬝ᵥ a'.2)) = (x ⬝ᵥ a.2 + ⅟(2 : R) * (a.1 ⬝ᵥ a.2)) + -(x' ⬝ᵥ a'.2 + ⅟(2 : R) * (a'.1 ⬝ᵥ a'.2)) by ring, AddChar.map_add_eq_mul, e1, e2]`. Simplify using `only [← AddChar.map_add_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_block_factor : ∀ {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (a b c a' b' c' : (κ → R) × (κ → R)),

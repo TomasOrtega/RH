@@ -11,7 +11,7 @@ variable {σ σ' G : Type}
 def evL (φ : (σ →₀ ℕ) → ℝ) : MvPolynomial σ ℝ →ₗ[ℝ] ℝ := (basisMonomials σ ℝ).constr ℝ φ
 
 /- English proof (translation)
-Establish `hm : monomial μ c = c • (basisMonomials σ ℝ) μ`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[evL, hm, map_smul, Module.Basis.constr_basis, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem evL_monomial (φ : (σ →₀ ℕ) → ℝ) (μ : σ →₀ ℕ) (c : ℝ) :
     evL φ (monomial μ c) = c * φ μ := by
@@ -20,7 +20,7 @@ theorem evL_monomial (φ : (σ →₀ ℕ) → ℝ) (μ : σ →₀ ℕ) (c : �
   rw [evL, hm, map_smul, Module.Basis.constr_basis, smul_eq_mul]
 
 /- English proof (translation)
-Use `conv_rhs => rw [H.as_sum]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl (fun μ _ => (evL_monomial φ μ _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evL_eq (φ : (σ →₀ ℕ) → ℝ) (H : MvPolynomial σ ℝ) :
     ∑ μ ∈ H.support, H.coeff μ * φ μ = evL φ H := by
@@ -29,14 +29,14 @@ theorem evL_eq (φ : (σ →₀ ℕ) → ℝ) (H : MvPolynomial σ ℝ) :
   exact Finset.sum_congr rfl (fun μ _ => (evL_monomial φ μ _).symm)
 
 /- English proof (translation)
-Rewrite using `[C_mul', map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evL_C_mul (φ : (σ →₀ ℕ) → ℝ) (c : ℝ) (H : MvPolynomial σ ℝ) :
     evL φ (C c * H) = c * evL φ H := by
   rw [C_mul', map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' H (fun μ c => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[rename_monomial, evL_monomial, evL_monomial]`. Rewrite using `[map_add, map_add, map_add, hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem evL_rename (e : σ → σ') (φ : (σ' →₀ ℕ) → ℝ) (H : MvPolynomial σ ℝ) :
     evL φ (rename e H) = evL (fun μ => φ (μ.mapDomain e)) H := by
@@ -45,14 +45,14 @@ theorem evL_rename (e : σ → σ') (φ : (σ' →₀ ℕ) → ℝ) (H : MvPolyn
   · rw [map_add, map_add, map_add, hp, hq]
 
 /- English proof (translation)
-Rewrite using `[← Finsupp.toMultiset_map, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem classes_mapDomain (e : σ → σ') (cls : σ' → G) (μ : σ →₀ ℕ) :
     ((μ.mapDomain e).toMultiset.map cls).toList = (μ.toMultiset.map (cls ∘ e)).toList := by
   rw [← Finsupp.toMultiset_map, Multiset.map_map]
 
 /- English proof (translation)
-Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.coe_add, ← Multiset.coe_add, ← Multiset.coe_add]`. Simplify using `only [Multiset.coe_toList, map_add, Multiset.map_add, add_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem classes_add_perm (cls : σ → G) (ν μ : σ →₀ ℕ) (Q : List G) :
     (((ν + μ).toMultiset.map cls).toList ++ Q).Perm
@@ -61,9 +61,9 @@ theorem classes_add_perm (cls : σ → G) (ν μ : σ →₀ ℕ) (Q : List G) :
   simp only [Multiset.coe_toList, map_add, Multiset.map_add, add_assoc]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' P (fun μ b => ?_) (fun p q ih1 ih2 => ?_)` and prove the remaining obligations. Simplify using `only [evL_monomial]`. Use `MvPolynomial.induction_on' H (fun ν a => ?_) (fun p q ih1 ih2 => ?_)` and prove the remaining obligations. Simplify using `only [monomial_mul, evL_monomial]`. Rewrite using `[hp _ _ (classes_add_perm cls ν μ Q)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[add_mul, map_add, ih1, ih2, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_add, map_add, ih1, ih2, map_add]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem evL_mul (n : List G → ℝ) (hp : ∀ l l', l.Perm l' → n l = n l') (cls : σ → G)
     (H P : MvPolynomial σ ℝ) (Q : List G) :
@@ -81,7 +81,7 @@ theorem evL_mul (n : List G → ℝ) (hp : ∀ l l', l.Perm l' → n l = n l') (
   · rw [mul_add, map_add, ih1, ih2, map_add]
 
 /- English proof (translation)
-Rewrite using `[evL_mul n hp cls H (X i) Q, X, evL_monomial, one_mul]`. Simplify using `only [Finsupp.toMultiset_single, one_nsmul, Multiset.map_singleton, Multiset.toList_singleton, List.singleton_append]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evL_mul_X (n : List G → ℝ) (hp : ∀ l l', l.Perm l' → n l = n l') (cls : σ → G)
     (H : MvPolynomial σ ℝ) (i : σ) (Q : List G) :
@@ -92,7 +92,7 @@ theorem evL_mul_X (n : List G → ℝ) (hp : ∀ l l', l.Perm l' → n l = n l')
     List.singleton_append]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_map_toMultiset {A : Type} [CommMonoid A] (f : σ → A) (μ : σ →₀ ℕ) :
     (μ.toMultiset.map f).prod = μ.prod fun a k => f a ^ k := by
@@ -100,17 +100,17 @@ theorem prod_map_toMultiset {A : Type} [CommMonoid A] (f : σ → A) (μ : σ �
     Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]
 
 /- English proof (translation)
-Establish `hlin : ∀ (l : List G), l.length + 1 = d → ∀ k : σ → ℤ, n ((∑ i, k i • cls i) :: l) = ∑ i, (k i : ℝ) * n (cls i :: l)`. Introduce `l hl k`. Set `f : G →+ ℝ` to `AddMonoidHom.mk' (fun b => n (b :: l)) (fun b b' => ha b b' l hl)`. Establish `hf : ∀ b, f b = n (b :: l)` using `fun _ => rfl`. Rewrite using `[← hf, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, hf]`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`. Introduce `Q _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Multiset.map_zero, Multiset.map_zero, Multiset.prod_zero, Multiset.toList_zero, List.nil_append, ← C_1, C_apply, evL_monomial, one_mul]`. Simplify using the standard rewrite rules. Consider the case `cons t s ih`. Introduce `Q hQ`. Rewrite `hQ` using `[Multiset.card_cons]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hperm : ((Multiset.map (fun t => ∑ i, M t i • cls i) (t ::ₘ s)).toList ++ Q).Perm ((∑ i, M t i • cls i) :: ((Multiset.map (fun t => ∑ i, M t i • cls i) s).toList ++ Q))`. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.coe_add, ← Multiset.cons_coe, ← Multiset.coe_add]`. Simplify using `only [Multiset.coe_toList, Multiset.map_cons, Multiset.cons_add]`. Establish `hlen : ((Multiset.map (fun t => ∑ i, M t i • cls i) s).toList ++ Q).length + 1 = d`. Rewrite using `[List.length_append, Multiset.length_toList, Multiset.card_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hp _ _ hperm, hlin _ hlen, Multiset.map_cons, Multiset.prod_cons, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `hmid : n (cls i :: ((Multiset.map (fun t => ∑ i, M t i • cls i) s).toList ++ Q)) = n ((Multiset.map (fun t => ∑ i, M t i • cls i) s).toList ++ (cls i :: Q))` using `hp _ _ List.perm_middle.symm`. Establish `hring : ∀ R : MvPolynomial σ ℝ, C (M t i : ℝ) * X i * R = C (M t i : ℝ) * (R * X i)` using `fun R => by ring`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hmid, ih (cls i :: Q) (by rw [List.length_cons]; omega), hring, evL_C_mul, evL_mul_X n hp cls _ i Q]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_multiset [AddCommGroup G] [Fintype σ] (d : ℕ) (n : List G → ℝ)
     (hp : ∀ l l', l.Perm l' → n l = n l')
@@ -154,9 +154,9 @@ theorem subst_multiset [AddCommGroup G] [Fintype σ] (d : ℕ) (n : List G → �
     rw [hmid, ih (cls i :: Q) (by rw [List.length_cons]; omega), hring, evL_C_mul, evL_mul_X n hp cls _ i Q]
 
 /- English proof (translation)
-Use `conv_rhs => rw [H.as_sum]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl (fun μ hμ => ?_)` and prove the remaining obligations. Establish `hdeg : Multiset.card μ.toMultiset = m`. Establish `h` using `hH (mem_support_iff.mp hμ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Simplify using `[Finsupp.card_toMultiset, Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[aeval_monomial, algebraMap_eq, evL_C_mul, ← prod_map_toMultiset, ← subst_multiset d n hp ha cls M μ.toMultiset Q (by rw [hdeg]; exact hQ)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_abs [AddCommGroup G] [Fintype σ] (d : ℕ) (n : List G → ℝ)
     (hp : ∀ l l', l.Perm l' → n l = n l')

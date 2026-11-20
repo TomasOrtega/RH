@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdelicModulus.RowMat
 
 /- English proof (translation)
-Establish `e : inst = MeasurableSpace.pi` using `hB.measurable_eq.trans (@BorelSpace.measurable_eq (Fin ρ → V) _ MeasurableSpace.pi Pi.borelSpace).symm`. Substitute `e` using the available equality. Establish `hp : MeasurePreserving f (Measure.addHaar : Measure V) Measure.addHaar` using `⟨hf, hfH _ inferInstance⟩`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul lam (Measure.pi fun _ : Fin ρ => (Measure.addHaar : Measure V)), Measure.map_smul]`. Use `congr 1`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(measurePreserving_pi (fun _ : Fin ρ => (Measure.addHaar : Measure V)) (fun _ => Measure.addHaar) (fun _ => hp)).map_eq`.
+A detailed English derivation is pending.
 -/
 theorem map_coord_eq {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V]
@@ -33,9 +33,9 @@ theorem map_coord_eq {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopolog
     (fun _ => Measure.addHaar) (fun _ => hp)).map_eq
 
 /- English proof (translation)
-Introduce `D S₀ ρ lam hlam h`. Take `⟨h1, h2, h3, h4, h5⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Establish `hcm` using `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm`. Establish `hrow` using `GlobalTheory.AdelicModulus.Row.map_vecMul_unitary _ _ D.sp.cm.sig hcm.1 S₀.rank S₀.gram (hcm.2 S₀) h`. Establish `e : (fun b : Mx D ρ S₀.rank => b ⬝ mt S₀ h) = fun b i => Matrix.vecMul (b i) (mt S₀ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `b i j`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hm : Measurable (fun x : Fin S₀.rank → AE D => Matrix.vecMul x (mt S₀ h))` using `(Continuous.matrix_vecMul continuous_id continuous_const).measurable`. Conclude with `map_coord_eq (V := Fin S₀.rank → AE D) (f := fun x => Matrix.vecMul x (mt S₀ h)) (hf := hm) (hfH := fun μ hμ => hrow μ hμ) (ρ := ρ) (inst := measMx ρ S₀.rank) (hB := @BorelSpace.mk _ _ (measMx ρ S₀.rank) rfl) (lam := lam) (hlam := hlam)`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_mul_mt_eq : ∀ (D : D7) (S₀ : HSp D) (ρ : ℕ) (lam : Measure (Mx D ρ S₀.rank)),
     lam.IsAddHaarMeasure → ∀ h : GA D S₀,

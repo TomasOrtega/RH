@@ -14,15 +14,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `hinj` using `φ_inj B (n := n)`. Establish `hZ : ∀ x, x ∈ Z' B Z ↔ ∃ y ∈ Z, φ B y = x` using `fun x => by`. Rewrite using `[← SetLike.mem_coe, coe_Z', Set.mem_image]`. Simplify using `only [SetLike.mem_coe]`. Establish `hidem : ∀ x : Matrix (Fin n) (Fin n) k, IsIdempotentElem (φ B x) ↔ IsIdempotentElem x` using `fun x => by show φ B x * φ B x = φ B x ↔ x * x = x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_mul]`. Conclude with `hinj.eq_iff`. Use extensionality with `e'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨he'Z, hid, hne, hmin⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨e, heZ, rfl⟩` from `(hZ e').1 he'Z`. Use `⟨e, ⟨heZ, (hidem e).1 hid, fun h => hne (by rw [h, map_zero]), fun f hfZ hf hfe => ?_⟩, rfl⟩` and prove the remaining obligations. Break down `hmin (φ B f) ((hZ _).2 ⟨f, hfZ, rfl⟩) ((hidem f).2 hf) (by rw [← map_mul, hfe]) with h | h` into its components or cases. Use `left`. Conclude with `hinj (by rw [h, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `right`. Conclude with `hinj h`. Introduce and unpack `⟨e, ⟨heZ, hid, hne, hmin⟩, rfl⟩`. Use `⟨(hZ _).2 ⟨e, heZ, rfl⟩, (hidem e).2 hid, fun h => hne (hinj (by rw [h, map_zero])), fun f' hf'Z hf' hfe => ?_⟩` and prove the remaining obligations. Take `⟨f, hfZ, rfl⟩` from `(hZ f').1 hf'Z`.
-
-Break down `hmin f hfZ ((hidem f).1 hf') (hinj (by rw [map_mul, hfe])) with h | h` into its components or cases. Use `left`. Rewrite using `[h, map_zero]`. Use `right`. Rewrite using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primIdem_Z' (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : primIdem (Z' B Z) = φ B '' primIdem Z := by
   have hinj := φ_inj B (n := n)
@@ -55,13 +53,11 @@ theorem primIdem_Z' (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : primIdem (Z'
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `hc : ∀ {m : ℕ} (W : Subalgebra k (Matrix (Fin m) (Fin m) k)) (x : Matrix (Fin m) (Fin m) k), x ∈ cenSub W ↔ x ∈ Bz W` using `fun W x => Iff.rfl`. Establish `hcen` using `cen B Z`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : x' ∈ φ B '' Bz Z`. Rewrite using `[← hcen]`. Conclude with `(hc _ _).1 hx'`. Take `⟨x, hx, rfl⟩` from `h1`. Conclude with `⟨e * x, ⟨x, (hc _ _).2 hx, rfl⟩, by show φ B (e * x) = φ B e * φ B x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `map_mul _ _ _⟩`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Establish `h1 : φ B x ∈ Bz (Z' B Z)`. Rewrite using `[hcen]`. Conclude with `⟨x, (hc _ _).1 hx, rfl⟩`.
-
-Conclude with `⟨φ B x, (hc _ _).2 h1, by show φ B e * φ B x = φ B (e * x)`. Conclude with `(map_mul _ _ _).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cen_map (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n) k) :
     (cenSub (Z' B Z)).map (LinearMap.mulLeft k (φ B e)) = img B ((cenSub Z).map (LinearMap.mulLeft k e)) := by
@@ -88,11 +84,11 @@ theorem cen_map (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `hZ : ∀ x, x ∈ Z' B Z ↔ ∃ y ∈ Z, φ B y = x` using `fun x => by`. Rewrite using `[← SetLike.mem_coe, coe_Z', Set.mem_image]`. Simplify using `only [SetLike.mem_coe]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x', hx', rfl⟩`. Take `⟨x, hx, rfl⟩` from `(hZ x').1 hx'`. Conclude with `⟨e * x, ⟨x, hx, rfl⟩, by show φ B (e * x) = φ B e * φ B x`. Conclude with `map_mul _ _ _⟩`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨φ B x, (hZ _).2 ⟨x, hx, rfl⟩, by show φ B e * φ B x = φ B (e * x)`. Conclude with `(map_mul _ _ _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem z_map (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n) k) :
     (Z' B Z).toSubmodule.map (LinearMap.mulLeft k (φ B e)) = img B (Z.toSubmodule.map (LinearMap.mulLeft k e)) := by
@@ -113,7 +109,7 @@ theorem z_map (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) 
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Unfold `mu`. Rewrite using `[primIdem_Z', finsum_mem_image (fun x _ y _ h => φ_inj B h)]`. Use `finsum_mem_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[cen_map, z_map, finrank_img, finrank_img]`. Conclude with `Nat.mul_div_mul_left _ _ (d_pos B)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_Z' (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : mu (Z' B Z) = mu Z := by
   unfold mu

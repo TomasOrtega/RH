@@ -25,9 +25,9 @@ def rdSq (lam : DomWeight n) (g : GL (Fin n) K) :
   detPow K n g lam.detShift • (Formalism.GradedWeylDivisibility.rowAct K (n := n) (g : Matrix (Fin n) (Fin n) K)ᵀ).toLinearMap
 
 /- English proof (translation)
-Establish `h : Formalism.GradedWeylDivisibility.rowAct K (n` using `n) (1 : Matrix (Fin n) (Fin n) K) = AlgHom.id K _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Formalism.GradedWeylDivisibility.rowAct, aeval_X, Matrix.one_apply, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -45,7 +45,7 @@ theorem rd_rowAct_one (f : MvPolynomial (Fin n × Fin n) K) :
   rw [h]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Formalism.GradedWeylDivisibility.rowActMul K n n g h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rd_rowAct_rowAct (g h : Matrix (Fin n) (Fin n) K) (f : MvPolynomial (Fin n × Fin n) K) :
     Formalism.GradedWeylDivisibility.rowAct K g (Formalism.GradedWeylDivisibility.rowAct K h f) = Formalism.GradedWeylDivisibility.rowAct K (h * g) f := by

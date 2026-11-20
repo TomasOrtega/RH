@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.TwV.Xc
 
 /- English proof (translation)
-Introduce `H i g g' x x' hx hx' v hg w hw`. Distinguish the cases in `hp : ((p : ℕ) : 𝓞 F) ∈ w.asIdeal`. Take `⟨v', rfl⟩` from `LocGood.exists_pl A w hp`. Establish `hv : v' ≠ v` using `fun h => hw (h ▸ rfl)`. Establish `h1` using `hx.2 v'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hx'.2 v'`. Rewrite `h1` using `[hg v' hv]`. Establish `hmem : bc (prV (E` using `E) (A.pl v').1) ((x.1)⁻¹ * x'.1) ∈ UPts σ J ((A.pl v').1.adicCompletion F) := Formalism.UG.P.afsplit_bc_mem σ J (A.pl v').1 _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ x.2) x'.2)`. Establish `h3` using `H.eq_one_of_ph v' _ hmem (by rw [map_mul, map_mul, map_inv, map_inv, h1, h2]; exact inv_mul_cancel _)`. Rewrite `h3` using `[map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(inv_mul_eq_one.1 h3)`. Rewrite using `[hx.1 w hp, hx'.1 w hp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameOff_of_isPt (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n p : ℕ) (G : GAtP p) (A : LocAt F E n G) (J : Matrix (Fin n) (Fin n) E) :
     LocGood σ J A → ∀ (i : G.comp) (g g' : (∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))) (x x' : UPts σ J (FiniteAdeleRing (𝓞 F) F)), A.IsPt i g x.1 → A.IsPt i g' x'.1 → ∀ v, (∀ v', v' ≠ v → g v' = g' v') → SameOff (A.pl v).1 x.1 x'.1 := by

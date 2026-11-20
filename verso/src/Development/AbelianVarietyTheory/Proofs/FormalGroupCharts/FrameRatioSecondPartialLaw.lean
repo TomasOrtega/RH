@@ -21,9 +21,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : S
   {x : ∀ m, jOG x0 d m 1 ⟶ t.G} {y : (jOG x0 d m n).left} {J : ((jOG x0 d m n).left ⟶ t.G.left) → t.PP.L.ι}
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `hf m`. Establish `hc` using `gm_unit (y := y) U ![u, v, w]`. Establish `e₀` using `val_peG x hJ e ![u, v, w] ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => psIn d m ![1, 2] (G.F j)] (gen 0) (op (FQ G) (gen 1) (gen 2)) (by rintro ⟨l, j⟩; fin_cases l; exacts [hX 0 j, hF 1 2 j]) (by rintro ⟨l, j⟩; fin_cases l; exacts [MvPolynomial.constantCoeff_X _ _, (cc_ps …`. Rewrite `e₀` using `[sq_op, sq_gen, sq_gen, sq_gen]`. Establish `k` using `(val_th hJ ![u, v, w] 1 2 0).symm.trans ((val_corr hJ h _).trans ((val_scale hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) e₀ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_inv _ _).trans (congrArg (·⁻¹) (peXX hJ _ 0 1))) ((val_inv _ _).t …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(hc _ hU).symm.trans (congrArg Units.val (Additive.ofMul.injective ?_))` and prove the remaining obligations. Establish `k'` using `congrArg Additive.ofMul k`. Simplify using `only [ofMul_mul, ofMul_inv, Matrix.cons_val] at k' ⊢`. Take the linear combination `(norm := abel) -k'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem frame_value_second_partial_law (hJ : Good t.PP.L y J) (G : FGLaw S d) {e : ∀ m, FrTyG t x0 d x m} {ph2 : PS S 3 d}
     (hf : FamPh2 t x0 d x G.F ph2 e) (u v w : Q S d n) :
@@ -44,7 +44,7 @@ theorem frame_value_second_partial_law (hJ : Good t.PP.L y J) (G : FGLaw S d) {e
   linear_combination (norm := abel) -k'
 
 /- English proof (translation)
-The claim follows from `(mk_psIn m _ _).trans (congrArg (fun b => psJet m (sb b (Φ.1 j))) (funext fun l => by fin_cases l; rfl))`.
+A detailed English derivation is pending.
 -/
 theorem mk_psIn_one (Φ : Q S d 1) (i : Fin k) (j : Fin d) :
     (Ideal.Quotient.mk _ (psIn d m ![i] (Φ.1 j)) : Jet S (Fin k × Fin d) m) = psJet m ((ac Φ (gen i) : Q S d k).1 j) :=
@@ -59,7 +59,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {t : SA
   {J : ((jOG (𝟙 (Sp V)) d m n).left ⟶ t.G.left) → t.PP.L.ι}
 
 /- English proof (translation)
-Establish `e` using `h m`. Rewrite `e` using `[subst_eq m _ ![Φ] (fun s => by obtain ⟨j, s⟩ := s; fin_cases j; rfl) (fun s => (cc_psTrunc m _).trans (Φ.2 _))]`. Conclude with `(congrArg (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jQ m ![u]) ≫ ·) e).trans (PP_sq m x _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PP_rel (Φ : Q V d 1) (h : CoordRel x x' Φ.1) (u : Q V d n) : PP m x' u = PP m x (ac Φ u) := by
   have e := h m
@@ -68,9 +68,9 @@ theorem PP_rel (Φ : Q V d 1) (h : CoordRel x x' Φ.1) (u : Q V d n) : PP m x' u
   exact (congrArg (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jQ m ![u]) ≫ ·) e).trans (PP_sq m x _ _)
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `h`. Establish `hc` using `gm_unit (y := y) U ![u, v]`. Establish `e₀` using `val_peG x hJ e ![u, v] ![fun j => psIn d m ![0] (Φ.1 j), fun j => psIn d m ![1] (Φ.1 j)] (ac Φ (gen 0)) (ac Φ (gen 1)) (by rintro ⟨l, j⟩; fin_cases l; exacts [mk_psIn_one Φ 0 j, mk_psIn_one Φ 1 j]) (by rintro ⟨l, j⟩; fin_cases l; exacts [(cc_psIn d m _ _).trans (Φ.2 j), (cc_psIn …`. Rewrite `e₀` using `[sq_ac, sq_ac, sq_gen, sq_gen]`. Establish `k : ee x' e' y J u v = _` using `(val_corr hJ h _).trans ((val_scale hJ _ _ _).trans (congrArg₂ (· * ·) rfl e₀))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hc _ hU).symm.trans (congrArg Units.val (eq_mul_inv_of_mul_eq k.symm))`.
+A detailed English derivation is pending.
 -/
 theorem val_eps (hJ : Good t.PP.L y J) (Φ : Q V d 1) {e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m}
     {e' : ∀ m, FrTyG t (𝟙 (Sp V)) d x' m} {ε : PS V 2 d} (h : FrRel t x x' e e' Φ.1 m ε) (u v : Q V d n) :
@@ -86,11 +86,9 @@ theorem val_eps (hJ : Good t.PP.L y J) (Φ : Q V d 1) {e : ∀ m, FrTyG t (𝟙 
   exact (hc _ hU).symm.trans (congrArg Units.val (eq_mul_inv_of_mul_eq k.symm))
 
 /- English proof (translation)
-Establish `h1 : (FQ G' : Q V d 2) = ac Ψ (op (FQ G) (ac Φ (gen 0)) (ac Φ (gen 1)))`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [ac_val, op_val]`. Conclude with `funext h`. Establish `h2 : ac Φ Ψ = gen 0` using `Subtype.ext ((ac_val _ _).trans hi)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ w : Q V d n, ac Φ (ac Ψ w) = w` using `fun w => by`. Use `congrArg (sq ![w]) h2` as an intermediate fact. Rewrite `this` using `[sq_ac, sq_gen]`. Conclude with `this`. Rewrite using `[op, h1, sq_ac, h3, sq_op, sq_ac, sq_ac, sq_gen, sq_gen]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ac_op_trans (G G' : FGLaw V d) (Φ Ψ : Q V d 1) (hi : comp1 Φ.1 Ψ.1 = pt V (n := 1) d 0)
     (h : ∀ i, G'.F i = transF G.F Φ.1 Ψ.1 i) (u v : Q V d n) :
@@ -110,11 +108,11 @@ theorem ac_op_trans (G G' : FGLaw V d) (Φ Ψ : Q V d 1) (hi : comp1 Φ.1 Ψ.1 =
 end Rel
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ V _ _ t d B B' κ κ' _ _ tg tg' uv uv' x x' e e' φ φi m ε _ _ hi hco hl _ _ _ hr hf hf'`. Set `Φ : Q V d 1` to `⟨φ, hi.1⟩`. Set `Ψ : Q V d 1` to `⟨φi, hi.2.1⟩`. Establish `key : psJet m (E3 B'.ph2 (gen 0 : Q V d 3) (gen 1) (gen 2) * E2 ε (gen 0) (op (FQ B'.G) (gen 1) (gen 2))) = psJet m (E3 B.ph2 (ac Φ (gen 0)) (ac Φ (gen 1)) (ac Φ (gen 2)) * (E2 ε (gen 0) (gen 1) * E2 ε (gen 0) (gen 2)))`. Use `cst_ext fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose J hJ using fun ψ : (jOG (𝟙 (Sp V)) d m 3).left ⟶ t.G.left => exists_chart t.PP.isLB (ψ y)`. Establish `hJ : Good t.PP.L (Z` using `(jOG (𝟙 (Sp V)) d m 3).left) y J := hJ`. Use `show VV (x0 := 𝟙 (Sp V)) m y _ = VV (x0 := 𝟙 (Sp V)) m y _`. Simplify using `only [VV_mul, frame_value_second_partial_law hJ _ hf, frame_value_second_partial_law hJ _ hf', val_eps hJ Φ hr, PP_rel Φ hco, ac_op_trans B.G B'.G Φ Ψ hi.2.2.1 hl, ← Units.val_mul]`. Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Rewrite `key` using `[formalSeriesValueAtThreePoints_genericPoints, formalSeriesValueAtThreePoints_eq_ev, formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtTwoPoints_eq_ev, op_val, ac_val, ac_val, ac_val]`. Conclude with `((JCalc.jeq_calculus V m).2.2.2.2.1 _ _ _).2 key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_second_law : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (V : Type) [CommRing V] [IsLocalRing V] (t : SAB H (Sp V)) (d : ℕ) (B B' : FB V d (𝓞 E)) (κ κ' : Type) [Fintype κ] [Fintype κ'] (tg : κ → (Sp (DualNumber V) ⟶ t.G.left)) (tg' : κ' → (Sp (DualNumber V) ⟶ t.G.left)) (uv : κ → Fin d → V) (uv' : κ' → Fin d → V) (x x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G) (e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m) (e' : ∀ m, FrTyG t (𝟙 (Sp V)) d x' m) (φ φi : Pt V 1 d) (m : ℕ) (ε : PS V 2 d), IsChartG t (𝟙 (Sp V)) d B.G.F B.A.act tg uv x → IsChartG t (𝟙 (Sp V)) d B'.G.F B'.A.act tg' uv' x' → IsInvPair φ φi → CoordRel x x' φ → (∀ i, B'.G.F i = transF B.G.F φ φi i) → (∀ a, B'.A.act a = comp1 φi (comp1 (B.A.act a) φ)) → (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → FrRel t x x' e e' φ m ε → FamPh2 t (𝟙 (Sp V)) d x B.G.F B.ph2 e → FamPh2 t (𝟙 (Sp V)) d x' B'.G.F B'.ph2 e' → JEq m (B'.ph2 * ev (n := 3) ![pt V (n := 3) d 0, addOf B'.G.F (pt V (n := 3) d 1) (pt V (n := 3) d 2)] ε) (ev (n := 3) ![comp1 φ (pt V (n := 3) d 0), comp1 φ (pt V (n := 3) d 1), comp1 φ (pt V (n := 3) d 2)] B.ph2 * (ev (n := 3) ![pt V (n := 3) d 0, pt V (n := 3) d 1] ε * ev (n := 3) ![pt V (n := 3) d 0, pt V (n := 3) d 2] ε)) := by
   intro E _ _ _ H _ V _ _ t d B B' κ κ' _ _ tg tg' uv uv' x x' e e' φ φi m ε _ _ hi hco hl _ _ _ hr hf hf'

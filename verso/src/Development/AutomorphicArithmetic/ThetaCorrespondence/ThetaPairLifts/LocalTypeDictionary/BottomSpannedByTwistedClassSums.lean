@@ -30,17 +30,17 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {
   {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}
 end Real
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX`. Take `⟨K, hK⟩` from `vanish_off_finite hX`. Take `⟨J, hJ, hl⟩` from `level_right hX`. Take `⟨H, hH, hc⟩` from `_root_.GlobalTheory.BotClassFin.bottomClass_exists_finite_reps hP hI hL hX J hJ`. Use `⟨H, K, conjField D, finiteDimensional_conjField, hH, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t h hh k`. Take `⟨γ, hγ, r, hrI, h₀, hh₀, κ, hκJ, hκf, rfl⟩` from `hc h hh`. Establish `hx : h₀ * κ ∈ GfC WW` using `mul_mem (hH h₀ hh₀) hκf`. Establish `hγr : γ * r ∈ GfC WW`. Establish `e : γ * r = (γ * r * h₀ * κ) * (h₀ * κ)⁻¹` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `mul_mem hh (inv_mem hx)`. Take `⟨c, hcM, hcE⟩` from `real_right hX t hγ hrI hγr (h₀ * κ) k`. Establish `e1 : X.I' W.ψ W.θ t (MvPolynomial.monomial k 1) (γ * r * h₀ * κ) = ∑ k' ∈ c.support, c.coeff k' * X.I' W.ψ W.θ t (MvPolynomial.monomial k' 1) h₀`. Establish `e0 : γ * r * h₀ * κ = γ * ((h₀ * κ) * r)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.AdelicSplit.commute_GinfC_GfC WW hrI hx]`. Simplify using `only [mul_assoc]`. Rewrite using `[e0, rat_left hX t _ hγ, hcE]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[hl t κ hκJ hκf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h' k' => if h' = h₀ then c.coeff k' else 0, fun a b => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hcM b`. Conclude with `zero_mem _`. Rewrite using `[e1, Finset.sum_eq_single_of_mem h₀ hh₀ (fun b _ hb => by simp [hb])]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_true]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MvPolynomial.notMem_support_iff.1 hk', zero_mul]`. Use `_ = ∑ k' ∈ K, c.coeff k' * X.I' W.ψ W.θ t (MvPolynomial.monomial k' 1) h₀ := (Finset.sum_subset Finset.subset_union_right fun k' _ hk' => by`. Rewrite using `[hK t h₀ k' hk', mul_zero]).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistedClassSums_span_bottom : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -96,7 +96,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotSpanSnd.twistedClassSums_span_bottom | exact _root_.GlobalTheory.BotSpanSnd.twistedClassSums_span_bottom | (intros; apply _root_.GlobalTheory.BotSpanSnd.twistedClassSums_span_bottom <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottom_spanned_by_twistedClassSums : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

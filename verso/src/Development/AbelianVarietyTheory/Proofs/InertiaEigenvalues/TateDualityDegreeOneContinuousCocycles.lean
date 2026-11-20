@@ -12,9 +12,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hT l _ P K LL _ _ _ O _ _ hO A A' m hm`. Take `⟨β, hβ⟩` from `GlobalTheory.T.exists_rational_tatePairing_bilinear hT l P K LL O hO A A' m hm`. Establish `hflip : IsDual1 (P.PD K) A'.ρ A.ρ m.flip` using `⟨fun g x y => hm.1 g y x, hm.2.2.1, hm.2.1, hm.2.2.2.symm⟩`. Establish `hanti` using `GlobalTheory.T.cup_one_cocycles_anticomm_up_to_coboundary l P K LL O hO A A' m hm`. Use `⟨β, hβ, fun a => ⟨fun h => ?_, fun ha b => ?_⟩, fun b => ⟨fun h => ?_, fun hb a => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.cocycle_mem_coboundaries_of_tate_orthogonal hT l P K LL O hO A' A m.flip hflip a.1 a.2 (fun b hb => ?_)` and prove the remaining obligations. Conclude with `((hanti a.1 a.2 b hb).1).1 ((hβ a ⟨b, hb⟩).1 (h ⟨b, hb⟩))`. Conclude with `(hβ a b).2 ((hanti a.1 a.2 b.1 b.2).2 (Or.inl ha))`. Conclude with `GlobalTheory.T.cocycle_mem_coboundaries_of_tate_orthogonal hT l P K LL O hO A A' m hm b.1 b.2 (fun a ha => (hβ ⟨a, ha⟩ b).1 (h ⟨a, ha⟩))`. Conclude with `(hβ a b).2 ((hanti a.1 a.2 b.1 b.2).2 (Or.inr hb))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateDuality_degreeOne_cocycles : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), ∀ (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 (P.PD K) A.ρ A'.ρ m → ∃ β : ↥(continuousCocycles A.ρ) →ₗ[LL] ↥(continuousCocycles A'.ρ) →ₗ[LL] LL, (∀ a b, β a b = 0 ↔ CobL (P.PD K) (cupL A'.ρ m a.1 b.1)) ∧ (∀ a, (∀ b, β a b = 0) ↔ a.1 ∈ B1 A.ρ) ∧ ∀ b, (∀ a, β a b = 0) ↔ b.1 ∈ B1 A'.ρ := by
   intro hT l _ P K LL _ _ _ O _ _ hO A A' m hm

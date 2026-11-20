@@ -14,7 +14,7 @@ namespace GlobalTheory.SecFactor
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Take `⟨B, hAB, j, hj⟩` from `PLC.exists_atlas_with A ψ hψ`. Use `holoOn_of_compatible hAB hU hg j` as an intermediate fact. Rewrite `this` using `[hj]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem holo_chart {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)}
     (hψ : IsCompatChart A ψ) {U : Set X} (hU : IsOpen U) {g : X → ℂ} (hg : A.HoloOn U g) :
@@ -24,7 +24,7 @@ theorem holo_chart {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e �
   rwa [hj] at this
 
 /- English proof (translation)
-Take `⟨B, hAB, j, hj⟩` from `PLC.exists_atlas_with A ψ hψ`. Use `smoothOn_of_compatible hAB hU hg j` as an intermediate fact. Rewrite `this` using `[hj]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smooth_chart {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)}
     (hψ : IsCompatChart A ψ) {U : Set X} (hU : IsOpen U) {g : X → ℝ} (hg : A.SmoothOn U g) :
@@ -34,14 +34,14 @@ theorem smooth_chart {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e 
   rwa [hj] at this
 
 /- English proof (translation)
-Introduce `j z hz` and use `((ContinuousLinearMap.proj i : (Fin e → ℂ) →L[ℂ] ℂ).analyticAt _).comp ((hψ j).1 z hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holo_coord {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)}
     (hψ : IsCompatChart A ψ) (i : Fin e) : A.HoloOn ψ.source (fun y => ψ y i) := fun j z hz =>
   ((ContinuousLinearMap.proj i : (Fin e → ℂ) →L[ℂ] ℂ).analyticAt _).comp ((hψ j).1 z hz)
 
 /- English proof (translation)
-Introduce `z hz` and use `by rw [analyticAt_pi_iff] intro i exact holo_chart hψ ψ'.open_source (holo_coord hψ' i) z hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem transition {A : FinHolAtlas e X} {ψ ψ' : OpenPartialHomeomorph X (Fin e → ℂ)}
     (hψ : IsCompatChart A ψ) (hψ' : IsCompatChart A ψ') :
@@ -51,53 +51,49 @@ theorem transition {A : FinHolAtlas e X} {ψ ψ' : OpenPartialHomeomorph X (Fin 
   exact holo_chart hψ ψ'.open_source (holo_coord hψ' i) z hz
 
 /- English proof (translation)
-Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sq_norm_exp (a b : ℝ) (ha : 0 ≤ a) : (a * Real.exp (-b)) ^ 2 = a ^ 2 * Real.exp (-2 * b) := by
   rw [mul_pow, ← Real.exp_nat_mul]; congr 2; push_cast; ring
 
 /- English proof (translation)
-Take `⟨hPot, hSec, hSNC, -⟩` from `hB i`. Take `⟨hcψ, hball, -, hD⟩` from `hP`. Use `set y0 := ψ.symm z0 with hy0def`. Take `⟨ψ', hc', hy0, hsub, σ', -, hW, u, hu, hu0, hs⟩` from `hSNC y0`. Use `set Ω := ψ.target ∩ ψ.symm ⁻¹' ψ'.source ∩ Metric.ball (0 : Fin e → ℂ) 1 with hΩdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΩ : IsOpen Ω` using `(ψ.isOpen_inter_preimage_symm ψ'.open_source).inter Metric.isOpen_ball`. Establish `hz0Ω : z0 ∈ Ω` using `⟨⟨hball hz0, hy0⟩, hz0⟩`. Use `set mf : (Fin e → ℂ) → ℂ := fun z => Option.elim (σ' i) 1 (fun j => ψ' (ψ.symm z) j) with hmf`. Establish `hs' : ∀ y ∈ ψ'.source, s i y0 y = u y * Option.elim (σ' i) 1 (fun j => ψ' y j)`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs y hy]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single i]`. Apply the tactic sequence `cases h : σ' i <;> simp [h]`. Introduce `k' _ hk'`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `cases h : σ' k' <;> simp [h, Pi.single_apply, hk']`. Simplify using the standard rewrite rules. Establish `hnorm : ∀ z ∈ Ω, normSec (L i) (s i) (ψ.symm z) ^ 2 = (‖u (ψ.symm z)‖ ^ 2 * ‖mf z‖ ^ 2) * Real.exp (-2 * (L i).φ y0 (ψ.symm z))`. Introduce `z hz`. Establish `hy : ψ.symm z ∈ ψ'.source` using `hz.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hg` using `hSec.2 (ψ.symm z) y0 (ψ.symm z) ⟨(L i).mem_U _, hsub hy⟩`. Unfold `normSec`. Rewrite using `[hg, hs' _ hy, sq_norm_exp _ _ (norm_nonneg _), norm_mul, mul_pow]`. Establish `hΦ : ContDiffOn ℝ ∞ (fun z => (L i).φ y0 (ψ.symm z)) Ω` using `(smooth_chart hcψ ((L i).isOpen_U y0) (hPot.1 y0)).mono fun z hz => ⟨hz.1.1, hsub hz.1.2⟩`. Establish `hU' : AnalyticOnNhd ℂ (fun z => u (ψ.symm z)) Ω` using `(holo_chart hcψ ψ'.open_source hu).mono fun z hz => hz.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : AnalyticOnNhd ℂ (fun z => ψ' (ψ.symm z)) Ω` using `(transition hcψ hc').mono fun z hz => hz.1`. Establish `hTj : ∀ j, AnalyticOnNhd ℂ (fun z => ψ' (ψ.symm z) j) Ω` using `fun j z hz => ((ContinuousLinearMap.proj j : (Fin e → ℂ) →L[ℂ] ℂ).analyticAt _).comp (hT z hz)`. Establish `hm : AnalyticOnNhd ℂ mf Ω`. Consider the cases of `h : σ' i with`. Consider the case `none => simp only [hmf, h]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `analyticOnNhd_const`. Consider the case `some j => simp only [hmf, h]`. Conclude with `hTj j`. Establish `hmne : ∀ z ∈ Ω, ψ.symm z ∉ D i → mf z ≠ 0`. Introduce `z hz hzD hzero`.
+Reduce the claim to the hypotheses of an applicable result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Apply `hzD` to reduce the goal to its premises. Consider the cases of `h : σ' i with`. Consider the case `none => simp [hmf, h] at hzero`. Consider the case `some j`. Simplify using `only [hmf, h, Option.elim] at hzero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `(Set.ext_iff.1 (hW i) (ψ.symm z)).2 ⟨hz.1.2, j, h, hzero⟩` as an intermediate fact. Conclude with `this.1`. Establish `key : ∃ V ⊆ Ω, IsOpen V ∧ z0 ∈ V ∧ ∃ a : (Fin e → ℂ) → ℂ, ContDiffOn ℝ ∞ a V ∧ (∀ z ∈ V, a z ≠ 0) ∧ ∀ z ∈ V, ‖mf z‖ ^ 2 = Option.elim (σ i) 1 (fun k => ‖z k‖ ^ 2) * ‖a z‖ ^ 2`. Establish `hmC : ContDiffOn ℝ ∞ mf Ω` using `(hm.contDiffOn hΩ.uniqueDiffOn).restrict_scalars ℝ`. Consider the cases of `hσ : σ i with`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `none`. Use `⟨Ω, subset_rfl, hΩ, hz0Ω, mf, hmC, fun z hz => hmne z hz ?_, fun z _ => by simp⟩` and prove the remaining obligations. Introduce `hzD`. Take `⟨k, hk, -⟩` from `(hD z hz.2 i).1 hzD`. Simplify using `[hσ] at hk`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `some k`. Distinguish the cases in `hk0 : z0 k = 0`. Establish `hy0D : y0 ∈ D i` using `(hD z0 hz0 i).2 ⟨k, hσ, hk0⟩`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, σ' i = some j := by`. Use `(Set.ext_iff.1 (hW i) y0).1 ⟨hy0D, hy0⟩` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, -⟩` from `this.2`. Conclude with `⟨j, hj⟩`. Establish `hvan : ∀ z ∈ Ω, z k = 0 → ψ' (ψ.symm z) j = 0`. Introduce `z hz hzk`. Establish `hzD : ψ.symm z ∈ D i` using `(hD z hz.2 i).2 ⟨k, hσ, hzk⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j', hj', hzero⟩` from `((Set.ext_iff.1 (hW i) (ψ.symm z)).1 ⟨hzD, hz.1.2⟩).2`. Rewrite `hj'` using `[hj]`. Consider the cases of `hj'`. Conclude with `hzero`. Take `⟨r, hr, hrV⟩` from `Metric.isOpen_iff.1 hΩ z0 hz0Ω`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hg, hg0, hgeq⟩` from `GlobalTheory.T.holomorphic_vanishing_divisible_coord (fun z => ψ' (ψ.symm z) j) z0 r k hr hk0 ((hTj j).mono hrV) (fun z hz hzk => hvan z (hrV hz) hzk)`. Establish `hS : AnalyticOnNhd ℂ (fun w => ψ (ψ'.symm w)) (ψ'.target ∩ ψ'.symm ⁻¹' ψ.source)` using `transition hc' hcψ`. Establish `hy0ψ : y0 ∈ ψ.source` using `ψ.map_target (hball hz0)`. Establish `hTz0 : ψ' y0 ∈ ψ'.target ∩ ψ'.symm ⁻¹' ψ.source` using `⟨ψ'.map_source hy0, by simp only [Set.mem_preimage, ψ'.left_inv hy0]; exact hy0ψ⟩`. Establish `hne` using `GlobalTheory.T.inverse_map_coord_derivative_ne_zero (fun z => ψ' (ψ.symm z)) (fun w => ψ (ψ'.symm w)) z0 j k ((hT z0 hz0Ω).differentiableAt) ((hS _ hTz0).differentiableAt) (by show ψ (ψ'.symm (ψ' y0)) = z0; rw [ψ'.left_inv hy0, hy0def, ψ.right_inv (hball hz0)]) (by filter_upwards …`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ψ.left_inv hw.2, ψ'.right_inv hw.1])`. Use `hk0`. Use the proof step `(by filter_upwards [hΩ.mem_nhds hz0Ω] with z hz hzk using hvan z hz hzk)`. Rewrite `hne` using `[← hg0]`. Use `⟨Metric.ball z0 r ∩ g ⁻¹' {0}ᶜ, fun z hz => hrV hz.1, hg.continuousOn.isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton, ⟨Metric.mem_ball_self hr, hne⟩, g, hg.mono Set.inter_subset_left, fun z hz => hz.2, fun z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hmf, hj, hσ, Option.elim]`. Rewrite using `[hgeq z hz.1, norm_mul, mul_pow]`. Establish `hVo : IsOpen (Ω ∩ {z | z k ≠ 0})` using `hΩ.inter (isOpen_ne_fun (continuous_apply k) continuous_const)`. Establish `hcoord : AnalyticOnNhd ℂ (fun z : Fin e → ℂ => z k) (Ω ∩ {z | z k ≠ 0})` using `fun z _ => (ContinuousLinearMap.proj k : (Fin e → ℂ) →L[ℂ] ℂ).analyticAt z`. Establish `hdiv : AnalyticOnNhd ℂ (fun z => mf z / z k) (Ω ∩ {z | z k ≠ 0})` using `(hm.mono Set.inter_subset_left).div hcoord fun z hz => hz.2`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨Ω ∩ {z | z k ≠ 0}, Set.inter_subset_left, hVo, ⟨hz0Ω, hk0⟩, fun z => mf z / z k, (hdiv.contDiffOn hVo.uniqueDiffOn).restrict_scalars ℝ, fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `div_ne_zero (hmne z hz.1 fun hzD => ?_) hz.2` and prove the remaining obligations. Take `⟨k', hk', hzk'⟩` from `(hD z hz.1.2 i).1 hzD`. Rewrite `hk'` using `[hσ]`. Consider the cases of `hk'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hz.2 hzk'`. Establish `h2 : z k ≠ 0` using `hz.2`. Simplify using `only [hσ, Option.elim]`. Rewrite using `[norm_div, div_pow]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨V, hVΩ, hV, hz0V, a, ha, ha0, hma⟩` from `key`. Use `⟨V, hV, hz0V, fun z => -Real.log (‖u (ψ.symm z)‖ ^ 2 * ‖a z‖ ^ 2) + 2 * (L i).φ y0 (ψ.symm z), ?_, ?_⟩` and prove the remaining obligations. Establish `hu2 : ContDiffOn ℝ ∞ (fun z => ‖u (ψ.symm z)‖ ^ 2) V` using `(contDiff_norm_sq ℝ).comp_contDiffOn (((hU'.contDiffOn hΩ.uniqueDiffOn).restrict_scalars ℝ).mono hVΩ)`. Establish `ha2 : ContDiffOn ℝ ∞ (fun z => ‖a z‖ ^ 2) V` using `(contDiff_norm_sq ℝ).comp_contDiffOn ha`. Use `((hu2.mul ha2).log fun z hz => ?_).neg.add ((hΦ.mono hVΩ).const_smul (2 : ℝ) |>.congr fun z _ => ?_)` and prove the remaining obligations.
-
-Conclude with `mul_ne_zero (pow_ne_zero _ (norm_ne_zero_iff.2 (hu0 _ (hVΩ hz).1.2))) (pow_ne_zero _ (norm_ne_zero_iff.2 (ha0 z hz)))`. Simplify using `[smul_eq_mul]`. Introduce `z hz`. Rewrite using `[hnorm z (hVΩ hz.1), hma z hz.1]`. Establish `hpos : 0 < ‖u (ψ.symm z)‖ ^ 2 * ‖a z‖ ^ 2` using `mul_pos (pow_pos (norm_pos_iff.2 (hu0 _ (hVΩ hz.1).1.2)) _) (pow_pos (norm_pos_iff.2 (ha0 z hz.1)) _)`.
-
-Rewrite using `[neg_add, neg_neg, Real.exp_add, Real.exp_log hpos]`. Establish `: Real.exp (-(2 * (L i).φ y0 (ψ.symm z))) = Real.exp (-2 * (L i).φ y0 (ψ.symm z))` using `by ring_nf`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem key_factor (A : FinHolAtlas e X) {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ)
     (D : Fin m → Set X) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (σ : Fin m → Option (Fin e))
@@ -236,9 +232,9 @@ theorem key_factor (A : FinHolAtlas e X) {m : ℕ} (L : Fin m → LocPot X) (s :
     rw [this]; ring
 
 /- English proof (translation)
-Introduce `e X _ A m L s D ψ σ hB hP i`. Use `GlobalTheory.T.local_smooth_potential_glue (fun z => normSec (L i) (s i) (ψ.symm z) ^ 2) (fun z => Option.elim (σ i) 1 (fun k => ‖z k‖ ^ 2)) _ Metric.isOpen_ball ?_ (fun z0 hz0 => key_factor A L s D ψ σ hB hP i z0 hz0)` and prove the remaining obligations. Consider the cases of `h : σ i with`. Consider the case `none => simp`. Consider the case `some k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `: {z : Fin e → ℂ | Option.elim (some k) (1 : ℝ) (fun k => ‖z k‖ ^ 2) ≠ 0} = (fun z : Fin e → ℂ => z k) ⁻¹' {0}ᶜ`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(dense_compl_singleton (0 : ℂ)).preimage (isOpenMap_eval k)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_on_polydisc : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {m : ℕ}
     (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X)

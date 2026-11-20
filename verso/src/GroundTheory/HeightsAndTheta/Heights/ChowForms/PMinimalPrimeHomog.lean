@@ -9,9 +9,7 @@ open MvPolynomial
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i r hr`. Use `h r hr i using 1` and compare the differences between its conclusion and the goal. Conclude with `decomposition.decompose'_apply r i`. Introduce `h f hf d`.
-
-Conclude with `homogeneousComponent_mem_of_mem h hf d`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isHomogIdeal_iff_isHomogeneous_degree {R : Type*} [CommRing R] {n : ℕ}
     (I : Ideal (MvPolynomial (Fin n) R)) :
@@ -24,9 +22,9 @@ theorem isHomogIdeal_iff_isHomogeneous_degree {R : Type*} [CommRing R] {n : ℕ}
     exact homogeneousComponent_mem_of_mem h hf d
 
 /- English proof (translation)
-Introduce `F _ n J W hJ hW`. Rewrite `hJ`, the goal using `[isHomogIdeal_iff_isHomogeneous_degree]`. Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hcore : (W.homogeneousCore (homogeneousSubmodule (Fin n) F)).toIdeal = W`. Apply `le_antisymm (Ideal.toIdeal_homogeneousCore_le _ _)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hW.2 ⟨hWp.homogeneousCore, ?_⟩ (Ideal.toIdeal_homogeneousCore_le _ _)` and prove the remaining obligations. Conclude with `hJ.toIdeal_homogeneousCore_eq_self.symm.trans_le (Ideal.homogeneousCore_mono _ hW.1.2)`. Rewrite using `[← hcore]`. Conclude with `(W.homogeneousCore _).isHomogeneous`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MinimalPrimeHomog.proof : MinimalPrimeHomog.Statement := by
   intro F _ n J W hJ hW

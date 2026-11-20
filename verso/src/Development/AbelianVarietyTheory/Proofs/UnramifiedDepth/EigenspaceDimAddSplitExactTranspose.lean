@@ -20,11 +20,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.EigAdd
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.order_rep_diagonalisable C OE).2 V ρ`. Establish `hI` using `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top h1 h2`. Establish `hv : ∀ (τ : OE →+* C) (v : V), v ∈ (⨅ b : OE, Module.End.eigenspace (ρ b) (τ b)) → ρ a v = τ a • v` using `fun τ v hv => Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hv a)`. Establish `hf : ∀ τ : OE →+* C, Set.MapsTo (ρ a) ↑(⨅ b : OE, Module.End.eigenspace (ρ b) (τ b)) ↑(⨅ b : OE, Module.End.eigenspace (ρ b) (τ b))` using `fun τ v h => by`. Establish `h' : v ∈ (⨅ b : OE, Module.End.eigenspace (ρ b) (τ b))` using `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.smul_mem _ (τ a) h'` as an intermediate fact. Rewrite `this` using `[← hv τ v h']`. Conclude with `this`. Rewrite using `[LinearMap.trace_eq_sum_trace_restrict hI hf]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (ρ a).restrict (hf τ) = τ a • LinearMap.id`. Use extensionality with `v`. Conclude with `hv τ v.1 v.2`. Rewrite using `[this, map_smul, LinearMap.trace_id, smul_eq_mul, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_eq (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (OE : Type) [CommRing OE] [IsDomain OE]
     [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [Fintype (OE →+* C)]
@@ -50,7 +50,7 @@ private theorem trace_eq (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (OE :
   rw [this, map_smul, LinearMap.trace_id, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use `trace_eq C OE (Fin d → C) ((Matrix.toLinAlgEquiv' (R := C) (n := Fin d)).toRingEquiv.toRingHom.comp ((algebraMap O C).mapMatrix.comp ρ)) a` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = LinearMap.trace C _ (Matrix.toLin' ((ρ a).map (algebraMap O C)))`. Rewrite using `[Matrix.trace_toLin'_eq, ← AddMonoidHom.map_trace]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_mat (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (O : Type) [CommRing O] [Algebra O C]
     (OE : Type) [CommRing OE] [IsDomain OE]
@@ -65,7 +65,7 @@ private theorem trace_mat (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (O :
   rw [Matrix.trace_toLin'_eq, ← AddMonoidHom.map_trace]
 
 /- English proof (translation)
-Establish `li : LinearIndependent C (fun τ : OE →+* C => (τ : OE → C))` using `(linearIndependent_monoidHom OE C).comp (fun τ : OE →+* C => (τ : OE →* C)) RingHom.coe_monoidHom_injective`. Use `Fintype.linearIndependent_iffₛ.1 li (fun τ => (m τ : C)) (fun τ => (n τ : C)) (by funext a; simpa [Finset.sum_apply] using h a) τ` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem coeff_eq (C : Type) [Field C] [CharZero C] (OE : Type) [CommRing OE] [Fintype (OE →+* C)]
     (m n : (OE →+* C) → ℕ) (h : ∀ a, ∑ τ : OE →+* C, (m τ : C) * τ a = ∑ τ : OE →+* C, (n τ : C) * τ a)
@@ -86,13 +86,13 @@ private def trHom {O OE : Type} [CommRing O] [CommRing OE] {d : ℕ} (ρ : OE �
   map_add' a b := by simp
 
 /- English proof (translation)
-Introduce `C _ _ _ O _ _ OE _ _ _ _ _ d r g A B hS ρ ρA ρB hB hA τ`. Use `haveI : Finite (OE →+* C) := (GlobalTheory.order_rep_diagonalisable C OE).1`. Use `letI : Fintype (OE →+* C) := Fintype.ofFinite _`. Take `⟨-, A', B', h1, h2, h3⟩` from `hS`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `coeff_eq C OE (fun τ => eigDim C ρ τ) (fun τ => eigDim C ρA τ + eigDim C ρB τ) (fun a => ?_) τ` and prove the remaining obligations. Establish `ht : (ρ a).trace = (ρA a).trace + (ρB a).trace`. Establish `e1 : (ρ a * (A * A')).trace = (ρA a).trace`. Rewrite using `[← Matrix.mul_assoc, hA, Matrix.trace_mul_comm, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `e2 : (ρ a * (B' * B)).trace = (ρB a).trace`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hB, Matrix.mul_assoc, h2, Matrix.mul_one]`. Rewrite using `[← e1, ← e2, ← Matrix.trace_add, ← Matrix.mul_add, h3, Matrix.mul_one]`. Simplify using `only [Nat.cast_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[← trace_mat, ← trace_mat, ← trace_mat, ht, map_add]`. Use `coeff_eq C OE (fun τ => eigDim C (trHom ρ) τ) (fun τ => eigDim C ρ τ) (fun a => ?_) τ` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← trace_mat, ← trace_mat]`. Conclude with `congrArg _ (Matrix.trace_transpose _)`.
+A detailed English derivation is pending.
 -/
 theorem eigDim_add_transpose : ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (O : Type) [CommRing O] [Algebra O C] (OE : Type) [CommRing OE] [IsDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] (d r g : ℕ) (A : Matrix (Fin d) (Fin r) O) (B : Matrix (Fin g) (Fin d) O), SplitEx A B → ∀ (ρ : OE →+* Matrix (Fin d) (Fin d) O) (ρA : OE →+* Matrix (Fin r) (Fin r) O) (ρB : OE →+* Matrix (Fin g) (Fin g) O), (∀ a, B * ρ a = ρB a * B) → (∀ a, ρ a * A = A * ρA a) → ∀ τ : OE →+* C, eigDim C ρ τ = eigDim C ρA τ + eigDim C ρB τ ∧ eigDim C (fun a => (ρ a)ᵀ) τ = eigDim C ρ τ := by
   intro C _ _ _ O _ _ OE _ _ _ _ _ d r g A B hS ρ ρA ρB hB hA τ

@@ -22,9 +22,7 @@ open Set Metric
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `hterm : ∀ x : hermA D n, ContinuousOn (fun p : ℂ × KAt D n v => E p.1 (g * ↑p.2 * nb x)) (U ×ˢ univ)`. Introduce `x`. Establish `hc : Continuous (fun p : ℂ × KAt D n v => (p.1, g * ↑p.2 * nb x))` using `continuous_fst.prodMk ((continuous_const.mul (continuous_subtype_val.comp continuous_snd)).mul continuous_const)`. Conclude with `hE.cont.comp hc.continuousOn (fun p hp => ⟨hp.1, Set.mem_univ _⟩)`. Use `show ContinuousOn (fun p : ℂ × KAt D n v => ∑ x ∈ C.s, C.co x * E p.1 (g * ↑p.2 * nb x)) (U ×ˢ univ)`.
-
-Conclude with `continuousOn_finsetSum _ (fun x _ => continuousOn_const.mul (hterm x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cut_cont {H : G D n → ℝ≥0} {φ : G D n → ℂ} {s₀ : ℂ} {U : Set ℂ} {d : Polynomial ℂ} {E : ℂ → G D n → ℂ} {σ : ℝ}
     (hE : IsCont H φ s₀ U d E σ) (nb : hermA D n → G D n) {v : Pl D} (C : Cut D n v) (g : G D n) :
@@ -40,9 +38,9 @@ theorem cut_cont {H : G D n → ℝ≥0} {φ : G D n → ℂ} {s₀ : ℂ} {U : 
   exact continuousOn_finsetSum _ (fun x _ => continuousOn_const.mul (hterm x))
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `(hS.prod (isCompact_cset nb C g)).exists_bound_of_continuousOn (hE.cont.mono (Set.prod_mono hSU (Set.subset_univ _)))`. Use `⟨∑ x ∈ C.s, ‖C.co x‖ * B, fun z hz u => ?_⟩` and prove the remaining obligations. Use `show ‖∑ x ∈ C.s, C.co x * E z (g * ↑u * nb x)‖ ≤ _`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : (z, g * ↑u * nb x) ∈ S ×ˢ cset nb C g` using `Set.mk_mem_prod hz (mem_cset nb C g u hx)`. Establish `hb : ‖E z (g * ↑u * nb x)‖ ≤ B` using `hB _ hmem`. Conclude with `mul_le_mul_of_nonneg_left hb (norm_nonneg _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cut_bound {H : G D n → ℝ≥0} {φ : G D n → ℂ} {s₀ : ℂ} {U : Set ℂ} {d : Polynomial ℂ} {E : ℂ → G D n → ℂ}
     {σ : ℝ} (hE : IsCont H φ s₀ U d E σ) (nb : hermA D n → G D n) {v : Pl D} (C : Cut D n v) (g : G D n) {S : Set ℂ}
@@ -58,11 +56,11 @@ theorem cut_bound {H : G D n → ℝ≥0} {φ : G D n → ℂ} {s₀ : ℂ} {U :
   exact mul_le_mul_of_nonneg_left hb (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hh : DifferentiableOn ℂ (fun z => ∫ u, cutR nb C (E z) (g * u) ∂νv) U` using `diffOn_integral νv (fun z (u : KAt D n v) => cutR nb C (E z) (g * u)) hE.isOpen (cut_cont hE nb C g) (fun u => by simp only [cutR]; exact DifferentiableOn.fun_sum fun x _ => (hE.hol _).const_mul _) (fun S hSU hS => cut_bound hE nb C g hSU hS)`. Establish `hg : DifferentiableOn ℂ (fun z => c z * E z g) U` using `hc.differentiableOn.mul (hE.hol g)`. Use `eqOn_right hE.isOpen hE.right.1 hE.right.isPreconnected hh hg (max σ ((n : ℝ) / 2)) fun z hz => ?_` and prove the remaining obligations. Establish `h1 : σ < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`. Establish `h2 : (n : ℝ) / 2 < z.re` using `lt_of_le_of_lt (le_max_right _ _) hz`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ u : KAt D n v, cutR nb C (E z) (g * u) = d.eval z * cutR nb C (eisS (fam H φ s₀ z)) (g * u)`. Introduce `u`. Simplify using `only [cutR, hE.eq z h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Simplify using `only [e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul, farRight hH hφc hφl nb C c νv hrel h2 g, hE.eq z h1 g]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem onU {χ : (AE D)ˣ →* Circle} {H : G D n → ℝ≥0} (hH : IsHt H) {s₀ : ℂ} {φ : G D n → ℂ}
     (hφc : Continuous φ) (hφl : IsLaw χ s₀ φ) {U : Set ℂ} {d : Polynomial ℂ} {E : ℂ → G D n → ℂ} {σ : ℝ}
@@ -90,31 +88,25 @@ end LCfRel
 
 open LCfRel Set Metric in
 /- English proof (translation)
-Introduce `_ D n χ _ H hH s₀ φ hφc hφl U d E σ hE ε hrad nb _ v C c hc νv hν hrel k hk hvan g`. Use `haveI : IsProbabilityMeasure νv := hν`. Take `⟨hε, hball, hne⟩` from `hrad`. Establish `hsph : Metric.sphere s₀ ε ⊆ U` using `fun z hz => hball (Metric.sphere_subset_closedBall hz)`. Establish `hdne : ∀ z ∈ Metric.sphere s₀ ε, Polynomial.eval z d ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Use `hne z (Metric.sphere_subset_closedBall hz) ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hz` using `[Metric.mem_sphere, dist_self]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hEc : ∀ y, ContinuousOn (fun z => E z y) (Metric.sphere s₀ ε)` using `fun y => ((hE.hol y).continuousOn).mono hsph`. Establish `hdc : ContinuousOn (fun z => Polynomial.eval z d) (Metric.sphere s₀ ε)` using `(Polynomial.continuous d).continuousOn`. Establish `hpc : ContinuousOn (fun z : ℂ => (z - s₀) ^ (k - 1)) (Metric.sphere s₀ ε)` using `((continuous_id.sub continuous_const).pow _).continuousOn`. Establish `hstep1 : ∀ u : KAt D n v, cutR nb C (cf d E s₀ ε k) (g * ↑u) = (2 * ↑Real.pi * Complex.I)⁻¹ * ∮ z in C(s₀, ε), (z - s₀) ^ (k - 1) * (cutR nb C (E z) (g * ↑u) / Polynomial.eval z d)`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcs` using `circle_sum C.s C.co (fun x z => (z - s₀) ^ (k - 1) * (E z (g * ↑u * nb x) / Polynomial.eval z d)) s₀ hε.le (fun x _ => hpc.mul ((hEc _).div hdc hdne))`. Use `beta_reduce at hcs`. Establish `hsum : (∮ z in C(s₀, ε), (z - s₀) ^ (k - 1) * (cutR nb C (E z) (g * ↑u) / Polynomial.eval z d)) = ∑ x ∈ C.s, C.co x * ∮ z in C(s₀, ε), (z - s₀) ^ (k - 1) * (E z (g * ↑u * nb x) / Polynomial.eval z d)`. Rewrite using `[← hcs]`. Use `circleIntegral.integral_congr hε.le (fun z _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (z - s₀) ^ (k - 1) * ((∑ x ∈ C.s, C.co x * E z (g * ↑u * nb x)) / Polynomial.eval z d) = _`. Rewrite using `[Finset.sum_div, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun x _ => by ring)`. Rewrite using `[hsum, Finset.mul_sum]`. Use `show ∑ x ∈ C.s, C.co x * cf d E s₀ ε k (g * ↑u * nb x) = _`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Use `show C.co x * ((2 * ↑Real.pi * Complex.I)⁻¹ * ∮ z in C(s₀, ε), (z - s₀) ^ (k - 1) * (E z (g * ↑u * nb x) / Polynomial.eval z d)) = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hcont2 : ContinuousOn (fun p : ℂ × KAt D n v => (p.1 - s₀) ^ (k - 1) * (cutR nb C (E p.1) (g * ↑p.2) / Polynomial.eval p.1 d)) (Metric.sphere s₀ ε ×ˢ univ)`. Establish `h1 : ContinuousOn (fun p : ℂ × KAt D n v => cutR nb C (E p.1) (g * ↑p.2)) (Metric.sphere s₀ ε ×ˢ univ)` using `(cut_cont hE nb C g).mono (Set.prod_mono hsph subset_rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hpc.comp continuousOn_fst (fun p hp => hp.1)).mul (h1.div (hdc.comp continuousOn_fst (fun p hp => hp.1)) (fun p hp => hdne p.1 hp.1))`. Establish `hbound : ∃ M, ∀ z ∈ Metric.sphere s₀ ε, ∀ u : KAt D n v, ‖(z - s₀) ^ (k - 1) * (cutR nb C (E z) (g * ↑u) / Polynomial.eval z d)‖ ≤ M`. Take `⟨M1, hM1⟩` from `cut_bound hE nb C g hsph (isCompact_sphere s₀ ε)`. Take `⟨A, hA⟩` from `(isCompact_sphere s₀ ε).exists_bound_of_continuousOn hpc`. Take `⟨B, hB⟩` from `(isCompact_sphere s₀ ε).exists_bound_of_continuousOn (hdc.inv₀ hdne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨A * (M1 * B), fun z hz u => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, div_eq_mul_inv, norm_mul]`. Establish `hA' : ‖(z - s₀) ^ (k - 1)‖ ≤ A` using `hA z hz`. Establish `hM' : ‖cutR nb C (E z) (g * ↑u)‖ ≤ M1` using `hM1 z hz u`. Establish `hB' : ‖(Polynomial.eval z d)⁻¹‖ ≤ B` using `hB z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `mul_le_mul hA' (mul_le_mul hM' hB' (norm_nonneg _) ((norm_nonneg _).trans hM')) (by positivity) ((norm_nonneg _).trans hA')`. Take `⟨M, hM⟩` from `hbound`. Establish `hswap` using `circle_swap νv (fun z (u : KAt D n v) => (z - s₀) ^ (k - 1) * (cutR nb C (E z) (g * ↑u) / Polynomial.eval z d)) s₀ hε.le hcont2 hM`. Use `beta_reduce at hswap`. Establish `hinner : ∀ z ∈ Metric.sphere s₀ ε, ∫ u, (z - s₀) ^ (k - 1) * (cutR nb C (E z) (g * ↑u) / Polynomial.eval z d) ∂νv = (z - s₀) ^ (k - 1) * (c z * (E z g / Polynomial.eval z d))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `z hz`. Rewrite using `[MeasureTheory.integral_const_mul, MeasureTheory.integral_div, onU hH hφc hφl hE nb C c hc νv hrel g z (hsph hz)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvan' : ∀ j : ℕ, k < j → ∮ z in C(s₀, ε), (z - s₀) ^ (j - 1) * (E z g / Polynomial.eval z d) = 0`. Introduce `j hj`.
-
-Establish `h0' : (2 * ↑Real.pi * Complex.I)⁻¹ * ∮ z in C(s₀, ε), (z - s₀) ^ (j - 1) * (E z g / Polynomial.eval z d) = 0` using `congrFun (hvan j hj) g`. Break down `mul_eq_zero.1 h0' with h | h` into its components or cases. Conclude with `absurd h (inv_ne_zero Complex.two_pi_I_ne_zero)`. Conclude with `h`. Establish `hce` using `circle_entire_mul c hc (fun z => E z g / Polynomial.eval z d) s₀ hε ((hEc g).div hdc hdne) k hk hvan'`.
-
-Use `beta_reduce at hce`. Use `show ∫ u, cutR nb C (cf d E s₀ ε k) (g * ↑u) ∂νv = c s₀ * cf d E s₀ ε k g`. Repeatedly rewrite using `[hstep1]`. Rewrite using `[MeasureTheory.integral_const_mul, ← hswap, circleIntegral.integral_congr hε.le hinner, hce]`. Use `show _ = c s₀ * ((2 * ↑Real.pi * Complex.I)⁻¹ * ∮ z in C(s₀, ε), (z - s₀) ^ (k - 1) * (E z g / Polynomial.eval z d))`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cfRel : HtExist → CfRel := by
   intro _ D n χ _ H hH s₀ φ hφc hφl U d E σ hE ε hrad nb _ v C c hc νv hν hrel k hk hvan g

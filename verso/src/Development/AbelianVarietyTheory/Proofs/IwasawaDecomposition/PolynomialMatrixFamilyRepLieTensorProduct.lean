@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.GoodMetric.PolyRep
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, c⟩, rfl⟩` from `finProdFinEquiv.surjective i`. Take `⟨⟨b, d⟩, rfl⟩` from `finProdFinEquiv.surjective j`. Use `set X : Mat m (DualNumber R) := fun τ => Matrix.of fun a b => TrivSqZeroExt.inl ((1 : Mat m R) τ a b) + TrivSqZeroExt.inr (A τ a b) with hX`. Establish `h` using `ev_dual_model (ρ.tensor σ) A (finProdFinEquiv (a, c)) (finProdFinEquiv (b, d))`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : (ρ.tensor σ).ev X = kron (ρ.ev X) (σ.ev X)` using `evEnt_kron ρ.ent σ.ent X`. Rewrite `h` using `[hk]`. Establish `h2` using `congrArg TrivSqZeroExt.snd h`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add] at h2`. Establish `hr : (kron (ρ.lie A) (1 : Matrix (Fin σ.M) (Fin σ.M) R) + kron (1 : Matrix (Fin ρ.M) (Fin ρ.M) R) (σ.lie A)) (finProdFinEquiv (a, c)) (finProdFinEquiv (b, d)) = ρ.lie A a b * (1 : Matrix (Fin σ.M) (Fin σ.M) R) c d + (1 : Matrix (Fin ρ.M) (Fin ρ.M) R) a b * σ.lie A c d`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[kron]`. Establish `hl : kron (ρ.ev X) (σ.ev X) (finProdFinEquiv (a, c)) (finProdFinEquiv (b, d)) = ρ.ev X a b * σ.ev X c d`. Simplify using `[kron]`. Rewrite `h2` using `[hl, ev_dual_model ρ A a b, ev_dual_model σ A c d]`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ hr.symm` and prove the remaining obligations. Simplify using `[TrivSqZeroExt.snd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lie_tensor {ι : Type} [Fintype ι] {m : ι → ℕ} (ρ σ : PolyRep m) {R : Type} [CommRing R]
     (A : Mat m R) :

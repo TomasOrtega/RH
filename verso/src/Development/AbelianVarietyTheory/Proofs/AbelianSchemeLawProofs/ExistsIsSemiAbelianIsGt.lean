@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hG S E`. Use `letI := E.free`. Use `letI := E.finite`. Establish `hN : ∀ k, (E.O (E.basis k)).L.IsLB` using `fun k => (E.O (E.basis k)).isLB`. Take `⟨G, q, u, hu⟩` from `exists_generatorScheme E.B.left _ (fun k => (E.O (E.basis k)).L) hN`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂, h₃, -, -⟩` from `generatorScheme_properties E.B.left _ (fun k => (E.O (E.basis k)).L) hN G q u hu`. Take `⟨inst, hc, d, -⟩` from `GlobalTheory.T.exists_grpObj_splitExtension_of_generators hG S E G q u hu h₁ inferInstance h₃`. Conclude with `⟨Over.mk (q ≫ E.B.hom), inst, isSemiAbelian_of_isGt S E _ ⟨d⟩, ⟨d⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isSemiAbelian_isGt :
     GlobalFnsSt → ∀ (S : Scheme.{0}) (E : SplitExt S),

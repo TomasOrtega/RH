@@ -28,23 +28,23 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
   (h : HermitianForm F E W) (v : Basis ι E W)
 
 /- English proof (translation)
-The claim follows from `TorusEmbedding.proof h v (HermAtPlace.full h v) (GramAtData.full h v)`.
+A detailed English derivation is pending.
 -/
 theorem te : TorusEmbedding.Statement h v :=
   TorusEmbedding.proof h v (HermAtPlace.full h v) (GramAtData.full h v)
 
 /- English proof (translation)
-The claim follows from `LineEigenvalue.proof h v (VecAtNeZero.full v)`.
+A detailed English derivation is pending.
 -/
 theorem le : LineEigenvalue.Statement h v := LineEigenvalue.proof h v (VecAtNeZero.full v)
 
 /- English proof (translation)
-The claim follows from `SemidirectHaar.proof _ _`.
+A detailed English derivation is pending.
 -/
 theorem sh : SemidirectHaar.Statement (archUnitary h v) (InfinitePlace E → ℂˣ) := SemidirectHaar.proof _ _
 
 /- English proof (translation)
-The claim follows from `TorusModulus.proof h v (HermAtPlace.full h v) (GramAtData.full h v) (ComplementForm.full h) (StabilizerLevi.proof h v) (UnipotentModulus.proof h v) (RadicalTorusModulus.proof h v) fun _ _ _ _ _ => SemidirectHaar.proof _ _`.
+A detailed English derivation is pending.
 -/
 theorem tm : TorusModulus.Statement h v :=
   TorusModulus.proof h v (HermAtPlace.full h v) (GramAtData.full h v) (ComplementForm.full h)
@@ -52,14 +52,14 @@ theorem tm : TorusModulus.Statement h v :=
     fun _ _ _ _ _ => SemidirectHaar.proof _ _
 
 /- English proof (translation)
-The claim follows from `UnipotentHorizontal.proof h v (RationalUnipotent.proof h) (UnipRadicalOfRational.proof h v) (ComplementArchCocompact.proof h v)`.
+A detailed English derivation is pending.
 -/
 theorem uh : UnipotentHorizontal.Statement h v :=
   UnipotentHorizontal.proof h v (RationalUnipotent.proof h) (UnipRadicalOfRational.proof h v)
     (ComplementArchCocompact.proof h v)
 
 /- English proof (translation)
-The claim follows from `UnipotentCentral.proof h v (RationalUnipotent.proof h) (UnipRadicalOfRational.proof h v) ImaginaryLatticeCocompact.proof`.
+A detailed English derivation is pending.
 -/
 theorem uz : UnipotentCentral.Statement h v :=
   UnipotentCentral.proof h v (RationalUnipotent.proof h) (UnipRadicalOfRational.proof h v)
@@ -68,7 +68,7 @@ theorem uz : UnipotentCentral.Statement h v :=
 end steps
 
 /- English proof (translation)
-The claim follows from `AdelicCovolumeFinite.of_remaining (fun _ _ _ _ h _ v => te h v) (fun _ _ _ _ h _ v => le h v) (fun _ _ _ _ h _ v => tm h v) (fun _ _ _ _ h _ v => sh h v) (UnitsInvHaar.proof _) (fun _ _ _ _ h _ v => UnipotentCoordProper.proof h v) (fun _ _ _ _ h _ v => uh h v) (fun _ _ _ _ h _ v …`.
+A detailed English derivation is pending.
 -/
 theorem adelicCovolumeFinite {W : Type u} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
     (h : HermitianForm F E W) (v : Basis ι E W) : AdelicCovolumeFinite.Statement h v :=

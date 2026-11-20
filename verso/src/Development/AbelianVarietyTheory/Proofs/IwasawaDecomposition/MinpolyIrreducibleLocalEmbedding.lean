@@ -10,23 +10,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocIrred
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ A v hA hdec ι hι α`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Use `haveI : Normal K Ω := IsAlgClosure.normal K Ω`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Use `set a : Ω := algebraMap L Ω α with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hPa : minpoly K a = minpoly K α`. Use `minpoly.algHom_eq (IsScalarTower.toAlgHom K L Ω) (algebraMap L Ω).injective α` as an intermediate fact. Simplify `this` using `[ha]`. Rewrite using `[← hPa]`. Establish `haint : IsIntegral K a` using `(Algebra.IsAlgebraic.isAlgebraic a).isIntegral`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set P := minpoly K a with hP`. Establish `hsep : P.Separable` using `(minpoly.irreducible haint).separable`. Use `set β := ι a with hβdef`. Establish `hβ : IsIntegral (v.adicCompletion K) β` using `Algebra.IsIntegral.isIntegral β`. Use `set Q := minpoly (v.adicCompletion K) β with hQ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQdvd : Q ∣ P.map (algebraMap K (v.adicCompletion K))`. Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[Polynomial.aeval_map_algebraMap, hβdef, Polynomial.aeval_algHom_apply, hP, minpoly.aeval, map_zero]`. Take `⟨θ, -, -, hlift⟩` from `GlobalTheory.LocDec.decomposition_mulEquiv_galLoc K Ω A v hA ι hι`. Use `set R := (P.map (algebraMap K Ω)).roots with hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hRcard : Multiset.card R = P.natDegree`. Rewrite using `[hR, IsAlgClosed.card_roots_eq_natDegree, Polynomial.natDegree_map]`. Establish `hRnd : R.Nodup` using `Polynomial.nodup_roots (hsep.map)`. Establish `hSnd : (R.map ι).Nodup` using `hRnd.map ι.injective`. Establish `hQ0 : Q ≠ 0` using `minpoly.ne_zero hβ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hsub : R.map ι ≤ (Q.map (algebraMap (v.adicCompletion K) (Kbar v))).roots`. Rewrite using `[Multiset.le_iff_subset hSnd]`. Introduce `y hy`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.mp hy`. Establish `hr0 : Polynomial.aeval r P = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Polynomial.mem_roots_map (minpoly.ne_zero haint)).mp hr` as an intermediate fact. Rewrite using `[Polynomial.aeval_def]` and apply the resulting hypothesis. Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root' haint.isAlgebraic hr0`. Take `⟨τ, hτ, hτσ⟩` from `hdec σ`. Establish `hg : θ ⟨τ, hτ⟩ β = ι r`.
-
-Rewrite using `[hβdef, hlift ⟨τ, hτ⟩ a, ← hσ]`. Conclude with `congrArg ι (hτσ α)`. Rewrite using `[Polynomial.mem_roots_map hQ0, ← Polynomial.aeval_def, ← hg, Polynomial.aeval_algEquiv, AlgHom.comp_apply, hQ, minpoly.aeval, map_zero]`. Establish `hdeg : P.natDegree ≤ Q.natDegree`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `heq : P.map (algebraMap K (v.adicCompletion K)) = Q` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hβ) ((minpoly.monic haint).map _) hQdvd (by rw [Polynomial.natDegree_map]; exact hdeg)`. Rewrite using `[heq]`. Conclude with `minpoly.irreducible hβ`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minpoly_map_adicCompletion_irreducible : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] [Field L] [NumberField L] [Algebra L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)), IsPlaceOver A v → (∀ σ : G K Ω, ∃ τ ∈ Dec (F := K) A, ∀ x : L, τ (algebraMap L Ω x) = σ (algebraMap L Ω x)) → ∀ ι : Ω →ₐ[K] Kbar v, IsLocEmb A v ι → ∀ α : L, Irreducible ((minpoly K α).map (algebraMap K (v.adicCompletion K))) := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ A v hA hdec ι hι α

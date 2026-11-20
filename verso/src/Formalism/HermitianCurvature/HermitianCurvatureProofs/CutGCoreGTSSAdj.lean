@@ -17,7 +17,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))}
 
 /- English proof (translation)
-Establish `h : (NO.Pj d ρ' * d.QQ Y 1 0 * NO.Pj d ρ).1 Z = (M.xEx P {l} ρ Y • (NO.Pj d ρ' * d.SS l * NO.Pj d ρ)).1 Z` using `congrArg (fun p : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => p.1 Z) (NO.B1 hRel hl hU Y)`. Rewrite `h` using `[← hQQ Y]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_block_lower_component (hRel : d.Rel) (hQQ : ∀ Y : ℂ, X.QQ Y = d.QQ Y) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1))
     {ρ ρ' : M.Ty P} (hU : M.Up P l ρ ρ') (Y : ℂ) (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
@@ -28,7 +28,7 @@ theorem shift_block_lower_component (hRel : d.Rel) (hQQ : ∀ Y : ℂ, X.QQ Y = 
   exact h
 
 /- English proof (translation)
-Establish `h : (NO.Pj d ρ * d.QQ Y 0 1 * NO.Pj d ρ').1 Z = (M.xEx P {l} ρ Y • (NO.Pj d ρ * star (d.SS l) * NO.Pj d ρ')).1 Z` using `congrArg (fun p : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => p.1 Z) (NO.B4 hRel hl hU Y)`. Rewrite `h` using `[← hQQ Y]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_block_upper_component (hRel : d.Rel) (hQQ : ∀ Y : ℂ, X.QQ Y = d.QQ Y) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1))
     {ρ ρ' : M.Ty P} (hU : M.Up P l ρ ρ') (Y : ℂ) (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
@@ -41,7 +41,7 @@ theorem shift_block_upper_component (hRel : d.Rel) (hQQ : ∀ Y : ℂ, X.QQ Y = 
   exact h
 
 /- English proof (translation)
-Establish `h : (NO.Pj d ρ' * d.SS l * NO.Pj d ρ).1 Z = (0 : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')).1 Z` using `congrArg (fun p : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => p.1 Z) (NO.block_zero hRel hU)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blk_zero (hRel : d.Rel) {l : ℕ} {ρ ρ' : M.Ty P} (hU : ¬ M.Up P l ρ ρ')
     (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
@@ -51,7 +51,7 @@ theorem blk_zero (hRel : d.Rel) {l : ℕ} {ρ ρ' : M.Ty P} (hU : ¬ M.Up P l ρ
   exact h
 
 /- English proof (translation)
-Establish `h : (NO.Pj d ρ * star (d.SS l) * NO.Pj d ρ').1 Z = (0 : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')).1 Z` using `congrArg (fun p : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => p.1 Z) (NO.star_block_zero hRel hU)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blk_zero_star (hRel : d.Rel) {l : ℕ} {ρ ρ' : M.Ty P} (hU : ¬ M.Up P l ρ ρ')
     (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
@@ -68,7 +68,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `kap_pt P Bs hpl hk2 e he d hk _ Z σ q`.
+A detailed English derivation is pending.
 -/
 theorem pj_pt (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk2 : 2 ≤ P.k)
     (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)) (he : IsFrameB P Bs e)
@@ -81,11 +81,11 @@ theorem pj_pt (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace 
 end pj
 
 /- English proof (translation)
-Unfold `M.xEx`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Establish `hi' : i ∈ Finset.Icc 1 (P.k - 1)` using `(Finset.mem_sdiff.1 hi).1`. Establish `h1 : |M.rho P ρ i| ≤ ∑ j ∈ Finset.Icc 1 (P.k - 1), |M.rho P ρ j|` using `Finset.single_le_sum (f := fun j => |M.rho P ρ j|) (fun j _ => abs_nonneg _) hi'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 < 1 + ∑ j ∈ Finset.Icc 1 (P.k - 1), |M.rho P ρ j| + M.rho P ρ i`. Use `neg_abs_le (M.rho P ρ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ((1 + ∑ j ∈ Finset.Icc 1 (P.k - 1), |M.rho P ρ j| + M.rho P ρ i : ℝ) : ℂ) ≠ 0`. Conclude with `h2.ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h3 ⊢`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem xEx_ne (P : M.Par) (l : ℕ) (ρ : M.Ty P) :
     M.xEx P {l} ρ (((1 + ∑ i ∈ Finset.Icc 1 (P.k - 1), |M.rho P ρ i| : ℝ)) : ℂ) ≠ 0 := by
@@ -104,7 +104,7 @@ theorem xEx_ne (P : M.Par) (l : ℕ) (ρ : M.Ty P) :
   exact h3
 
 /- English proof (translation)
-Unfold `M.xEx`. Use `show (starRingEnd ℂ) _ = _`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, Complex.conj_ofReal, Complex.conj_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xEx_star (P : M.Par) (l : ℕ) (ρ : M.Ty P) (Y : ℝ) : star (M.xEx P {l} ρ (Y : ℂ)) = M.xEx P {l} ρ (Y : ℂ) := by
   unfold M.xEx
@@ -119,59 +119,53 @@ end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.SSAdj
 
 open Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.SSAdj Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.SSAdjH Formalism.FourierDecayAlt.P.NFx4 in
 /- English proof (translation)
-Introduce `hRA Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk s t hst hL l hl ρ ρ' ζ0 hζ0`. Establish `hpl` using `hH.1`. Establish `hk2` using `hH.2.1`. Establish `hRel` using `hH.2.2.2.2.2.1`. Establish `hQQ` using `hH.2.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c0 : Fin P.r → ℂ` to `fun _ => 1`. Establish `hc0 : c0 ∈ OmX P.r` using `fun _ => one_ne_zero`. Set `qOf : ∀ ζ : ℂ, ζ ∈ Ann P → MA.Qp P.r P.TT` to `fun ζ hζ => ⟨(c0, ζ), ⟨fun _ => one_ne_zero, hζ⟩⟩`. Distinguish the cases in `hU : M.Up P l ρ ρ'`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 (ann_open P) ζ0 hζ0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `set r : ℝ := ε / 3 with hrdef`. Establish `hr : 0 < r` using `by rw [hrdef]; linarith`. Establish `hK : Metric.closedBall ζ0 (2 * r) ⊆ Ann P` using `(Metric.closedBall_subset_ball (by rw [hrdef]; linarith)).trans hball`. Establish `hBr : Metric.ball ζ0 r ⊆ Ann P` using `(Metric.ball_subset_ball (by rw [hrdef]; linarith)).trans hball`. Use `set Yr : ℝ := 1 + ∑ i ∈ Finset.Icc 1 (P.k - 1), |M.rho P ρ i| with hYr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x : ℂ := M.xEx P {l} ρ (Yr : ℂ) with hxdef`. Establish `hx : x ≠ 0` using `xEx_ne P l ρ`. Establish `hxs : star x = x` using `xEx_star P l ρ Yr`. Establish `hYs : star (Yr : ℂ) = (Yr : ℂ)` using `Complex.conj_ofReal Yr`. Set `χ : ContDiffBump ζ0` to `⟨r, 2 * r, hr, by linarith⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : ℂ → ℂ := fun ζ => ((χ ζ : ℝ) : ℂ) with hgdef`. Establish `hgc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) g` using `Complex.ofRealCLM.contDiff.comp χ.contDiff`. Establish `hg : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) g (Ann P)` using `hgc.contDiffOn`. Establish `hg1 : ∀ ζ ∈ Metric.closedBall ζ0 r, g ζ = 1`. Introduce `ζ hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hgdef, χ.one_of_mem_closedBall hζ, Complex.ofReal_one]`. Establish `hg0 : ∀ ζ, ζ ∉ Metric.closedBall ζ0 (2 * r) → g ζ = 0`. Introduce `ζ hζ`. Establish `h0 : χ ζ = 0`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hs : ζ ∈ Function.support χ` using `h`. Rewrite `hs` using `[χ.support_eq]`. Conclude with `hζ (Metric.ball_subset_closedBall hs)`. Simplify using `only [hgdef, h0, Complex.ofReal_zero]`. Take `⟨Ψ, hΨr, hΨp⟩` from `exists_proj P Bs hpl hk2 e he d hk g hg ρ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-Use `set H : ℂ → ℂ := fun ζ => x * (star (s l ρ' ρ ζ) - t l ρ ρ' ζ) with hHdef`. Establish `hsc : ContinuousOn (s l ρ' ρ) (Ann P)` using `(hst l ρ' ρ).1.continuousOn`. Establish `htc : ContinuousOn (t l ρ ρ') (Ann P)` using `(hst l ρ ρ').2.continuousOn`. Establish `hHc : ContinuousOn H (Ann P)` using `continuousOn_const.mul ((continuous_star.comp_continuousOn hsc).sub htc)`. It suffices to establish `hH0 : H ζ0 = 0 by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : star (s l ρ' ρ ζ0) - t l ρ ρ' ζ0 = 0` using `(mul_eq_zero.1 hH0).resolve_left hx`. Conclude with `(sub_eq_zero.1 h1).symm`. Use `pt_of_tests Metric.isOpen_ball (hHc.mono hBr) (fun φ hφ hφc hφs => ?_) ζ0 (Metric.mem_ball_self hr)` and prove the remaining obligations. Use `set f : ℂ → ℂ := fun ζ => ((φ ζ : ℝ) : ℂ) with hfdef`. Establish `hf : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f (Ann P)` using `(Complex.ofRealCLM.contDiff.comp hφ).contDiffOn`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hφ0 : ∀ ζ, ζ ∉ Metric.ball ζ0 r → φ ζ = 0` using `fun ζ hζ => image_eq_zero_of_notMem_tsupport (fun h => hζ (hφs h))`. Establish `hfg : ∀ ζ, ((φ ζ : ℝ) : ℂ) * g ζ = ((φ ζ : ℝ) : ℂ)`. Introduce `ζ`. Distinguish the cases in `hζ : ζ ∈ Metric.closedBall ζ0 r`. Rewrite using `[hg1 ζ hζ, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hφ0 ζ (fun h => hζ (Metric.ball_subset_closedBall h))]`. Simplify using the standard rewrite rules. Take `⟨Φ, hΦr, hΦp⟩` from `exists_proj P Bs hpl hk2 e he d hk f hf ρ`. Establish `hT1 : ∀ q : MA.Qp P.r P.TT, rawR P Bs.μsec e ((X.t (Yr : ℂ) 1 0 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ' q = x * (s l ρ' ρ q.1.2 * f q.1.2)`. Introduce `q`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `shift_block_lower_component hRel hQQ hl hU (Yr : ℂ) Φ`. Rewrite `hb` using `[hΦp]`. Establish `h1` using `pj_pt P Bs hpl hk2 e he d hk ρ' (X.t (Yr : ℂ) 1 0 Φ) ρ' q`. Rewrite `h1` using `[if_pos rfl, one_mul]`. Rewrite using `[← h1, hb, Submodule.coe_smul, rawR_smul, pj_pt P Bs hpl hk2 e he d hk, if_pos rfl, one_mul, (ss_pt P Bs hpl hk2 e he d s t hst hL hl Φ ρ' q).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_eq_single ρ (fun σ _ hσ => by rw [hΦr, if_neg hσ, zero_mul, mul_zero]) (by simp), hΦr, if_pos rfl, one_mul]`. Establish `hT2 : ∀ q : MA.Qp P.r P.TT, rawR P Bs.μsec e ((X.t (Yr : ℂ) 0 1 Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q = x * (t l ρ ρ' q.1.2 * g q.1.2)`. Introduce `q`. Establish `hb` using `shift_block_upper_component hRel hQQ hl hU (Yr : ℂ) Ψ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hb` using `[hΨp]`. Establish `h1` using `pj_pt P Bs hpl hk2 e he d hk ρ (X.t (Yr : ℂ) 0 1 Ψ) ρ q`. Rewrite `h1` using `[if_pos rfl, one_mul]`. Rewrite using `[← h1, hb, Submodule.coe_smul, rawR_smul, pj_pt P Bs hpl hk2 e he d hk, if_pos rfl, one_mul, (ss_pt P Bs hpl hk2 e he d s t hst hL hl Ψ ρ q).2]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single ρ' (fun σ _ hσ => by rw [hΨr, if_neg hσ, zero_mul, mul_zero]) (by simp), hΨr, if_pos rfl, one_mul]`. Establish `hvan : ∃ K : Set ℂ, IsCompact K ∧ K ⊆ Ann P ∧ ∀ ζ ∈ Ann P, ζ ∉ K → (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ) = 0 ∧ (Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ) = 0`. Use `⟨Metric.closedBall ζ0 (2 * r), isCompact_closedBall _ _, hK, fun ζ hζ hnK => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hfz : f ζ = 0`. Rewrite using `[hfdef]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hφ0 ζ (fun h => hnK ((Metric.ball_subset_ball (by linarith)).trans Metric.ball_subset_closedBall h))]`. Simplify using the standard rewrite rules. Use `(sec_expand P Bs hpl hk2 e he Φ (qOf ζ hζ)).trans (Finset.sum_eq_zero fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[hΦr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (_ * ((if σ = ρ then 1 else 0) * f ζ)) • _ = _`. Rewrite using `[hfz, mul_zero, mul_zero, zero_smul]`. Use `(sec_expand P Bs hpl hk2 e he Ψ (qOf ζ hζ)).trans (Finset.sum_eq_zero fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[hΨr]`. Use `show (_ * ((if σ = ρ' then 1 else 0) * g ζ)) • _ = _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg0 ζ hnK, mul_zero, mul_zero, zero_smul]`. Establish `hRA'` using `hRA Wp Wq P Bs X d hH (Yr : ℂ) 1 0 c0 hc0 Φ Ψ hvan`. Rewrite `hRA'` using `[hYs]`. Establish `hmA : MeasurableSet (Ann P)` using `(ann_open P).measurableSet`. Establish `hI1 : ∫ ζ in Ann P, (((wR P.k P.TT ζ) ^ 2 : ℝ) : ℂ) * inner ℂ (B.hsVec ((X.t (Yr : ℂ) 1 0 Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ))) (B.hsVec ((Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ))) = ∫ ζ in Ann P, star (x * (s l ρ' ρ ζ * f ζ)) * g ζ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `setIntegral_congr_fun hmA fun ζ hζ => ?_` and prove the remaining obligations. Use `(hs_pair P Bs hpl hk2 e he (X.t (Yr : ℂ) 1 0 Φ) Ψ (qOf ζ hζ)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single ρ' (fun σ _ hσ => by rw [hΨr, if_neg hσ, zero_mul, mul_zero]) (by simp), hΨr, if_pos rfl, one_mul, hT1]`. Establish `hI2 : ∫ ζ in Ann P, (((wR P.k P.TT ζ) ^ 2 : ℝ) : ℂ) * inner ℂ (B.hsVec ((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ))) (B.hsVec ((X.t (Yr : ℂ) 0 1 Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ))) = ∫ ζ in Ann P, star (f ζ) * (x * (t l ρ ρ' ζ * g ζ …`. Use `setIntegral_congr_fun hmA fun ζ hζ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hs_pair P Bs hpl hk2 e he Φ (X.t (Yr : ℂ) 0 1 Ψ) (qOf ζ hζ)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single ρ (fun σ _ hσ => by rw [hΦr, if_neg hσ, zero_mul, star_zero, zero_mul]) (by simp), hΦr, if_pos rfl, one_mul, hT2]`. Rewrite `hRA'` using `[hI1, hI2]`. Establish `hfc : Continuous f` using `(Complex.ofRealCLM.contDiff.comp hφ).continuous`. Establish `hgcc : Continuous g` using `hgc.continuous`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hIA : IntegrableOn (fun ζ => star (x * (s l ρ' ρ ζ * f ζ)) * g ζ) (Ann P) volume`. Establish `hc : ContinuousOn (fun ζ => star (x * (s l ρ' ρ ζ * f ζ)) * g ζ) (Metric.closedBall ζ0 (2 * r))` using `((continuous_star.comp_continuousOn (continuousOn_const.mul ((hsc.mono hK).mul hfc.continuousOn))).mul hgcc.continuousOn)`. Conclude with `(hc.integrableOn_compact (isCompact_closedBall _ _)).of_forall_sdiff_eq_zero hmA fun ζ hζ => by simp [hg0 ζ hζ.2]`. Establish `hIB : IntegrableOn (fun ζ => star (f ζ) * (x * (t l ρ ρ' ζ * g ζ))) (Ann P) volume`. Establish `hc : ContinuousOn (fun ζ => star (f ζ) * (x * (t l ρ ρ' ζ * g ζ))) (Metric.closedBall ζ0 (2 * r))` using `(continuous_star.comp hfc).continuousOn.mul (continuousOn_const.mul ((htc.mono hK).mul hgcc.continuousOn))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hc.integrableOn_compact (isCompact_closedBall _ _)).of_forall_sdiff_eq_zero hmA fun ζ hζ => by simp [hg0 ζ hζ.2]`. Establish `hdiff : ∫ ζ in Ann P, (star (x * (s l ρ' ρ ζ * f ζ)) * g ζ - star (f ζ) * (x * (t l ρ ρ' ζ * g ζ))) = 0`. Rewrite using `[integral_sub hIA hIB, hRA', sub_self]`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (s := Ann P) (fun ζ hζ => by`. Rewrite using `[hφ0 ζ (fun h => hζ (hBr h)), zero_smul])]`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hdiff]`. Use `setIntegral_congr_fun hmA fun ζ _ => ?_` and prove the remaining obligations. Establish `hfs : star (f ζ) = f ζ` using `Complex.conj_ofReal _`. Use `show (φ ζ) • (x * (star (s l ρ' ρ ζ) - t l ρ ρ' ζ)) = _`. Rewrite using `[Complex.real_smul, star_mul', star_mul', hxs, hfs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hfg ζ` as an intermediate fact. Rewrite using `[hfdef]`. Simplify using `only`. Take the linear combination `(x * t l ρ ρ' ζ - x * star (s l ρ' ρ ζ)) * this`. Take `⟨U0, hU0r, hU0p⟩` from `exists_proj P Bs hpl hk2 e he d hk (fun _ => 1) contDiffOn_const ρ`.
-
-Take `⟨V0, hV0r, hV0p⟩` from `exists_proj P Bs hpl hk2 e he d hk (fun _ => 1) contDiffOn_const ρ'`. Establish `hs0 : s l ρ' ρ ζ0 = 0`. Establish `h0` using `blk_zero hRel hU U0`. Establish `h1` using `pj_pt P Bs hpl hk2 e he d hk ρ' ((d.SS l).1 ((NO.Pj d ρ).1 U0)) ρ' (qOf ζ0 hζ0)`. Rewrite `h1` using `[h0, if_pos rfl, one_mul, Submodule.coe_zero, rawR_zero, hU0p, (ss_pt P Bs hpl hk2 e he d s t hst hL hl U0 ρ' (qOf ζ0 hζ0)).1, Finset.sum_eq_single ρ (fun σ _ hσ => by rw [hU0r, if_neg hσ, zero_mul, mul_zero]) (by simp), hU0r, if_pos rfl, one_mul, mul_one]`.
-
-Conclude with `h1.symm`. Establish `ht0 : t l ρ ρ' ζ0 = 0`. Establish `h0` using `blk_zero_star hRel hU V0`. Establish `h1` using `pj_pt P Bs hpl hk2 e he d hk ρ ((star (d.SS l)).1 ((NO.Pj d ρ').1 V0)) ρ (qOf ζ0 hζ0)`. Rewrite `h1` using `[h0, if_pos rfl, one_mul, Submodule.coe_zero, rawR_zero, hV0p, (ss_pt P Bs hpl hk2 e he d s t hst hL hl V0 ρ (qOf ζ0 hζ0)).2, Finset.sum_eq_single ρ' (fun σ _ hσ => by rw [hV0r, if_neg hσ, zero_mul, mul_zero]) (by simp), hV0r, if_pos rfl, one_mul, mul_one]`.
-
-Conclude with `h1.symm`. Rewrite using `[hs0, ht0, star_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.gTSSAdjPt_of_radAdj : GTRadAdj → GTSSAdjPt := by
   intro hRA Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk s t hst hL l hl ρ ρ' ζ0 hζ0
@@ -346,7 +340,7 @@ theorem Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.gTSSAdjPt_of_radAdj : GTRadAd
     rw [hs0, ht0, star_zero]
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.gTSSAdjPt_of_radAdj Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.radial_adjoint_identity_holds`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.second_shift_adjoint_pointwise : Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.GTSSAdjPt :=
   Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.gTSSAdjPt_of_radAdj Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.radial_adjoint_identity_holds

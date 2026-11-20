@@ -3,29 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ hF C _ _ _ K _ _ ρ hC v`. Take `⟨g, hg⟩` from `hF.f3 v`. Take `⟨χ, hχ, hχρ⟩` from `hC.psi`. Establish `key : ∀ a : C, res O C a ≠ 0 → IsUnit (algebraMap C K a)`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `IsUnit.map` to reduce the goal to its premises. Assume the negation of the conclusion as `hu`. Conclude with `ha ((res_eq_zero_iff O C a).mpr ((IsLocalRing.mem_maximalIdeal a).mpr (mem_nonunits_iff.mpr hu)))`. Establish `w0 : w 3 0 = 1` using `by simp [w]`. Establish `w1 : w 3 1 = 0` using `by simp [w]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w2 : w 3 2 = -1` using `by simp [w]`. Establish `hg' : F.Ψ ((F.loc0 v g : F.del.ker) : F.Γ) ^ 2 ≠ 1` using `hg`. Establish `hu1 : ((F.Ψ ((F.loc0 v g : F.del.ker) : F.Γ) : (ResidueField O)ˣ) : ResidueField O) ≠ 1`. Introduce `h`. Apply `hg'` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, h, one_pow, Units.val_one]`. Establish `hu2 : (((F.Ψ ((F.loc0 v g : F.del.ker) : F.Γ))⁻¹ : (ResidueField O)ˣ) : ResidueField O) ≠ 1`. Introduce `h`. Apply `hg'` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : F.Ψ ((F.loc0 v g : F.del.ker) : F.Γ) = 1` using `inv_eq_one.mp (Units.ext (by rw [h, Units.val_one]))`. Rewrite using `[h1, one_pow]`. Take `⟨c0, hc0, hr0⟩` from `hC.dg (F.loc0 v g) 0`. Take `⟨c1, hc1, hr1⟩` from `hC.dg (F.loc0 v g) 1`. Take `⟨c2, hc2, hr2⟩` from `hC.dg (F.loc0 v g) 2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr0` using `[w0, zpow_one]`. Rewrite `hr1` using `[w1, zpow_zero, Units.val_one]`. Rewrite `hr2` using `[w2, _root_.zpow_neg_one]`. Establish `x0 : res O C (χ v 0 g) = ((F.Ψ ((F.loc0 v g : F.del.ker) : F.Γ) : (ResidueField O)ˣ) : ResidueField O)`. Establish `h` using `(hχ v 0).2 g`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[w0, zpow_one]`. Conclude with `h`. Establish `x1 : res O C (χ v 1 g) = 1`. Establish `h` using `(hχ v 1).2 g`. Rewrite `h` using `[w1, zpow_zero, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `x2 : res O C (χ v 2 g) = (((F.Ψ ((F.loc0 v g : F.del.ker) : F.Γ))⁻¹ : (ResidueField O)ˣ) : ResidueField O)`. Establish `h` using `(hχ v 2).2 g`. Rewrite `h` using `[w2, _root_.zpow_neg_one]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h02 : ((0 : Fin 3) : Fin 3) ≠ 2` using `by decide`. Take `⟨m, hm, hme⟩` from `hC.cyc [(F.loc0 v g, 0, 2), (F.loc0 v g, 2, 0)] (by simp [w]) ⟨(F.loc0 v g, 0, 2), by simp, h02⟩`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one] at hme`. Use `⟨g, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hk` using `key (c1 - χ v 0 g) ?_`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hk` using `[map_sub, hc1, hχρ]`. Then use the resulting hypothesis. Rewrite using `[map_sub, hr1, x0]`. Conclude with `sub_ne_zero.mpr (Ne.symm hu1)`. Establish `hk` using `key (c1 - χ v 2 g) ?_`. Rewrite `hk` using `[map_sub, hc1, hχρ]`. Then use the resulting hypothesis.
-
-Rewrite using `[map_sub, hr1, x2]`. Conclude with `sub_ne_zero.mpr (Ne.symm hu2)`. Establish `hk` using `key ((c0 - χ v 1 g) * (c2 - χ v 1 g) - m) ?_`. Rewrite `hk` using `[map_sub, map_mul, map_sub, map_sub, hc0, hc2, hχρ, hme]`. Then use the resulting hypothesis. Rewrite using `[map_sub, map_mul, map_sub, map_sub, hr0, hr2, x1, (res_eq_zero_iff O C m).mpr hm, sub_zero]`.
-
-Conclude with `mul_ne_zero (sub_ne_zero.mpr hu1) (sub_ne_zero.mpr hu2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.frobenius_corner_units :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (K : Type) [CommRing K] [Algebra C K] (ρ : NRep F 3 K), Cone O C ρ → CornerUnits ρ := by

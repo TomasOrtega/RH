@@ -7,16 +7,16 @@ open scoped ComplexConjugate
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `s M`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem slice_exponent_identity : C2.SliceExponentIdentity := by
   intro s M
   ring
 
 /- English proof (translation)
-Introduce `c c₃ A a₁ r n hc3 hc3c hn hA ha`. Establish `hn' : (1:ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hr : (0:ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hn3 : (n:ℝ) ≤ (n:ℝ) ^ 3`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ n) (by linarith : (0:ℝ) ≤ n - 1)) (by linarith : (0:ℝ) ≤ n + 1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : (r:ℝ) * n + 1 ≤ ((r:ℝ) + 1) * A`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ r + 1) (by linarith : (0:ℝ) ≤ A - (n:ℝ) ^ 3), mul_nonneg (by linarith : (0:ℝ) ≤ r + 1) (by linarith : (0:ℝ) ≤ (n:ℝ) ^ 3 - n)]`. Establish `h2 : 0 ≤ ((r:ℝ) + 1) ^ 2` using `by positivity`. Establish `h3 : 0 ≤ A` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem slice_threshold_bound : C2.SliceThresholdBound := by
   intro c c₃ A a₁ r n hc3 hc3c hn hA ha
@@ -38,13 +38,13 @@ theorem slice_threshold_bound : C2.SliceThresholdBound := by
     _ ≤ a₁ := ha
 
 /- English proof (translation)
-Introduce `p s h lh uh gs ls us a b hh hgs`. Simplify using `only [Matrix.fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`. Rewrite using `[Matrix.fromBlocks_inj]`. Simplify using `only [Matrix.mul_assoc]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨e11, e12, e21, e22⟩`. Establish `hb : h * b = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `hb0 : b = 0`. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `ha : a * h = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `ha0 : a = 0`. Combine the equalities or inequalities in the displayed calculation. Substitute `hb0` using the available equality.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Substitute using the available equality.
 
-Substitute `ha0` using the available equality. Use `⟨rfl, rfl, e11, ?_⟩` and prove the remaining obligations. Simplify using `using e22`. Introduce and unpack `⟨rfl, rfl, e1, e2⟩`. Simplify using `[e1, e2]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem stabilizer_block_form : C2.StabBlock := by
   intro p s h lh uh gs ls us a b hh hgs
@@ -75,7 +75,7 @@ theorem stabilizer_block_form : C2.StabBlock := by
     simp [e1, e2]
 
 /- English proof (translation)
-Introduce `x`. Establish `hre : ((-2 * Complex.I) * -(starRingEnd ℂ) x).re = ((-2 * Complex.I) * x).re`. Simplify using `[Complex.mul_re]`. Simplify using `only [C2.psiC, cStd, hre]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem psi_neg_conj_identity : C2.PsiNegConj := by
   intro x
@@ -84,49 +84,45 @@ theorem psi_neg_conj_identity : C2.PsiNegConj := by
   simp only [C2.psiC, cStd, hre]
 
 /- English proof (translation)
-Introduce `m w d hd a b hab hw x`. Establish `hab' : a ≠ b` using `ne_of_lt hab`. Establish `hw' : w a ≠ w b` using `ne_of_gt hw`. Establish `hdb` using `hd b`. Use `set c : ℂ := -(x * d a / d b) with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE1P : C2.Eij (w a) (w b) c * C2.monoP w d = C2.Eij (w a) b (c * d b)`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, C2.Eij, C2.monoP, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (w b)]`. Apply the tactic sequence `by_cases hi : i = w a <;> by_cases hj : j = b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using `[hi]`. Simplify using `[hi, hj, Equiv.apply_eq_iff_eq, Ne.symm hj]`. Simplify using `[hi]`. Simplify using `[hi]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ hl`. Simplify using `[hl]`. Simplify using the standard rewrite rules. Establish `hPE2 : C2.monoP w d * C2.Eij a b x = C2.Eij (w a) b (d a * x)`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, C2.Eij, C2.monoP, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Apply the tactic sequence `by_cases hi : i = w a <;> by_cases hj : j = b <;> simp [hi, hj]`. Introduce `l _ hl`. Simplify using `[hl]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hEE : ∀ v : ℂ, C2.Eij (w a) b v * C2.Eij a b x = 0`. Introduce `v`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, C2.Eij, Matrix.of_apply, Matrix.zero_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = b`. Substitute `hl` using the available equality. Simplify using `[Ne.symm hab']`. Simplify using `[hl]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : C2.Eij (w a) b (c * d b) + C2.Eij (w a) b (d a * x) = 0`. Use extensionality with `i j`. Simplify using `only [C2.Eij, Matrix.of_apply, Matrix.add_apply, Matrix.zero_apply]`. Use `split_ifs`. Rewrite using `[hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_apply, Matrix.one_apply, C2.Eij, Matrix.of_apply]`. Rewrite using `[if_neg (ne_of_lt hij), if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hij (not_lt.2 hw.le)`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Simplify using `only [Matrix.add_apply, Matrix.one_apply_eq, C2.Eij, Matrix.of_apply]`. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw' (h1.symm.trans h2)`. Introduce `i j hij`. Simplify using `only [Matrix.add_apply, Matrix.one_apply, C2.Eij, Matrix.of_apply]`. Rewrite using `[if_neg (ne_of_gt hij), if_neg]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hij (not_lt.2 hab.le)`. Introduce `i`. Simplify using `only [Matrix.add_apply, Matrix.one_apply_eq, C2.Eij, Matrix.of_apply]`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hab' (h1.symm.trans h2)`. Establish `e : (1 + C2.Eij (w a) (w b) c) * C2.monoP w d * (1 + C2.Eij a b x) = C2.monoP w d + (C2.Eij (w a) (w b) c * C2.monoP w d + C2.monoP w d * C2.Eij a b x) + C2.Eij (w a) (w b) c * C2.monoP w d * C2.Eij a b x` using `by noncomm_ring`. Rewrite using `[e, hE1P, hPE2, hsum, hEE, add_zero, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : C2.simpleLow (1 + C2.Eij (w a) (w b) c) = if (w a).val = (w b).val + 1 then c else 0`. Unfold `C2.simpleLow`. Rewrite using `[Finset.sum_eq_single (w b)]`. Distinguish the cases in `hq : (w a).val = (w b).val + 1`. Establish `h : (w b).val + 1 < m` using `hq ▸ (w a).isLt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-Rewrite using `[dif_pos h, if_pos hq]`. Simplify using `[C2.Eij, Matrix.add_apply, Matrix.one_apply, Fin.ext_iff, hq]`. Rewrite using `[if_neg hq] split_ifs with h`. Simplify using `[C2.Eij, Matrix.add_apply, Matrix.one_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce `l _ hl`. Establish `hl' : l.val ≠ _` using `fun h => hl (Fin.ext h)`. Use `split_ifs with h`. Simplify using `[C2.Eij, Matrix.add_apply, Matrix.one_apply, Fin.ext_iff, hl']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `hU : C2.simpleUp (1 + C2.Eij a b x) = if b.val = a.val + 1 then x else 0`. Unfold `C2.simpleUp`. Rewrite using `[Finset.sum_eq_single a]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `hq : b.val = a.val + 1`. Establish `h : a.val + 1 < m` using `hq ▸ b.isLt`. Rewrite using `[dif_pos h, if_pos hq]`. Simplify using `[C2.Eij, Matrix.add_apply, Matrix.one_apply, Fin.ext_iff, hq]`. Rewrite using `[if_neg hq] split_ifs with h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[C2.Eij, Matrix.add_apply, Matrix.one_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Introduce `l _ hl`. Establish `hl' : l.val ≠ _` using `fun h => hl (Fin.ext h)`.
-
-Use `split_ifs with h`. Simplify using `[C2.Eij, Matrix.add_apply, Matrix.one_apply, Fin.ext_iff, hl']`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[hL, hU, hc]`.
-
-Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem relevant_pair_criterion : C2.RelevantPair := by
   intro m w d hd a b hab hw x
@@ -242,19 +238,19 @@ theorem relevant_pair_criterion : C2.RelevantPair := by
     split_ifs <;> ring
 
 /- English proof (translation)
-Introduce `m w d c hd hc a b hab hw`. Establish `key : ∀ κ : ℂ, (∀ x : ℂ, C2.psiC c (κ * x) = 1) ↔ κ = 0`. Introduce `κ`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hκ`. Establish `h1` using `h (1 / (c * κ))`. Establish `hcx : c * (κ * (1 / (c * κ))) = 1` using `by field_simp`. Simplify using `only [C2.psiC, hcx, Complex.one_re, Complex.ofReal_one, mul_one] at h1`. Rewrite `h1` using `[Complex.exp_eq_one_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn⟩` from `h1`. Establish `hre : (1 : ℝ) = n * (2 * Real.pi)`. Use `congrArg Complex.im hn` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hpi` using `Real.pi_gt_three`. Break down `lt_trichotomy n 0 with hn0 | hn0 | hn0` into its components or cases. Establish `: (n : ℝ) ≤ -1` using `by exact_mod_cast Int.le_sub_one_of_lt hn0`. Use the polynomial consequences of the given equalities and inequalities. Substitute `hn0` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Substitute using the available equality.
 
-Simplify using `at hre`. Establish `: (1 : ℝ) ≤ n` using `by exact_mod_cast hn0`. Use the polynomial consequences of the given equalities and inequalities. Introduce and unpack `rfl x`. Simplify using `[C2.psiC]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hA : ∀ x : ℂ, ((if b.val = a.val + 1 then x else 0) - (if (w a).val = (w b).val + 1 then x * d a / d b else 0)) = ((if b.val = a.val + 1 then (1 : ℂ) else 0) - (if (w a).val = (w b).val + 1 then d a / d b else 0)) * x`. Introduce `x`. Apply the tactic sequence `split_ifs <;> ring`. Simplify using `only [hA, key]`. Establish `hda` using `hd a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdb` using `hd b`. Apply the tactic sequence `by_cases hP : b.val = a.val + 1 <;> by_cases hQ : (w a).val = (w b).val + 1`. Simplify using `only [hP, hQ, if_true, iff_self, true_and, forall_const]`. Rewrite using `[sub_eq_zero, eq_comm, div_eq_one_iff_eq hdb]`. Apply the tactic sequence `all_goals simp [hP, hQ, hda, hdb]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relevant_trivial_case : C2.RelevantTriv := by
   intro m w d c hd hc a b hab hw
@@ -296,9 +292,9 @@ theorem relevant_trivial_case : C2.RelevantTriv := by
   all_goals simp [hP, hQ, hda, hdb]
 
 /- English proof (translation)
-Introduce `k r z z' hz hz' g hG hdet`. Establish `hD : Dmin k r z z' g (Fin.last (r + 1)) = (Zhat k r z z' g).det` using `rfl`. Establish `h1 : Complex.normSq (Dmin k r z z' g (Fin.last (r + 1))) = 0`. Rewrite using `[hD, hdet, map_zero]`. Unfold `Gf at hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hG` using `[h1]`. Establish `h2` using `mul_nonneg (mul_nonneg hz.2.le hz'.2.le) (Complex.normSq_nonneg (Dmin k r z z' g ⟨r, by omega⟩))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem determinant_nonzero : C2.DetNonzero := by
   intro k r z z' hz hz' g hG hdet
@@ -312,17 +308,17 @@ theorem determinant_nonzero : C2.DetNonzero := by
   linarith
 
 /- English proof (translation)
-Introduce `k r z z' γ hstd hpos`. Establish `hγ : IsUnit γ.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hpos.1`. Establish `hS : ∀ {w : Fin (2 * r + k + 1) → ℂ} {s : B.Mat k r}, s ∈ Sset k r w → IsUnit s.det`. Introduce and unpack `w s ⟨h, hh, m, hm, rfl⟩`. Rewrite using `[Matrix.det_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh.1).mul (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hm.1)`. Establish `key : ∀ a : B.Mat k r, IsUnit a.det → a⁻¹ * γ * (γ⁻¹ * a * γ) = γ`. Introduce `a ha`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hγ, Matrix.nonsing_inv_mul_cancel_left _ _ ha]`. Use extensionality with `⟨a, b⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb, he⟩`. Establish `h1 : γ * b = a * γ`. Use `congrArg (a * ·) he` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (hS ha)]`. Establish `hb' : b = γ⁻¹ * a * γ`. Use `congrArg (γ⁻¹ * ·) h1` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hγ]`. Use `⟨a, ⟨ha, b, hb, ?_⟩, rfl, hb'.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb']`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hγ, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hγ]`. Introduce and unpack `⟨g, hgH, rfl, rfl⟩`. Take `⟨hg, s', hs', hgs⟩` from `hgH`. Use `⟨hg, ?_, key g (hS hg)⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : γ⁻¹ * g * γ = s'`. Rewrite using `[hgs]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hγ, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ hγ]`. Rewrite using `[hb]`. Conclude with `hs'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabilizer_fourth_condition : C2.C1iv := by
   intro k r z z' γ hstd hpos

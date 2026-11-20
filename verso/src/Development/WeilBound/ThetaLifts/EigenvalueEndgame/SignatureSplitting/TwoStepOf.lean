@@ -15,7 +15,7 @@ open GlobalTheory.Eis.Conv (halfE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `funext e ▸ split2_smul (f := fun x => f (x * y)) ⟨isCT_right h.1 y, hasLaw_right h.2.1 y, hasLaw_right h.2.2 y⟩ c`.
+A detailed English derivation is pending.
 -/
 theorem split_move {a a' d₁ : ℕ} {W : Spc F E (a + a')} {W₁ : Spc F E d₁} {H : Plane E (a + a') d₁} {X : Chars F E}
     {f fa fb g : UA σ W.J → ℂ} (h : Split2 W₁ H X f fa fb) (c : ℂ) (y : UA σ W.J) (e : ∀ x, c * f (x * y) = g x) :
@@ -23,35 +23,33 @@ theorem split_move {a a' d₁ : ℕ} {W : Spc F E (a + a')} {W₁ : Spc F E d₁
   funext e ▸ split2_smul (f := fun x => f (x * y)) ⟨isCT_right h.1 y, hasLaw_right h.2.1 y, hasLaw_right h.2.2 y⟩ c
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ X om om' om₁ om₁' H H' t t₁ hC hq f hf fa hs hlow k hk f₁ hf₁ hL`. Establish `cm` using `t.base.cm`. Establish `hJ` using `t.geo.hW.skew`. Establish `hJ₁` using `t₁.geo.hW.skew`. Establish `hd` using `det_ne_zero t.geo.hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨pl, iw⟩` from `hI F E σ B _ _ _ _ H' _ _ _ _ t.base t.geo.hW hC.hH'`. Take `⟨d₂, W₂, H₁, pl₁, sp⟩` from `hS F E σ B b a' G₁ X om₁ om₁' t₁ (by have := hC.eq; omega)`. Establish `aut` using `sig_isAut hA t hf`. Establish `h0 : IsCT H' f fa` using `by simpa using hs.1`. Take `⟨lev, -, -, -, v1, -⟩` from `levi_data cm hJ pl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `com : ∀ {s m} y, IsLevi (W₁` using `G₁.W) H' s 1 m → lev y * m = m * lev y := fun y hm => levi_uniq cm hJ pl (by simpa using levi_mul (v1 y) hm) (by simpa using levi_mul hm (v1 y))`. Establish `low : ∀ {k f₁}, IsLow H' fa k f₁ → ∀ y z, fa (lev z * (lev y * k)) = f₁ (z * y)` using `fun h y z => by`. Rewrite using `[h _ _ (v1 _), map_mul, mul_assoc]`. Establish `ex : ∀ x, ∃ A C, Split2 W₂ H₁ X (fun y => fa (lev y * x)) A C` using `fun x => by`. Take `⟨u, hu, s, m, y, l, κ, hκ, hm, hl, rfl⟩` from `iw x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `levi_uniq cm hJ pl hl (v1 y)`. Take `⟨g, hg, hg'⟩` from `hlow κ hκ`. Take `⟨A, C, h⟩` from `sp g hg`. Use `⟨_, _, split_move h ((X.α s : ℂ) * (((absE F E s : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ)) y fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← low hg', ← hs.2.1 s m hm, ← mul_assoc m, ← com z hm, ← ct_inv (unipGood cm (Or.inr hJ) hd pl) aut h0 ((leviPlane F E σ cm _ _ _ _ H' hJ pl).2 _ _ _ (v1 z) u hu)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `group`. Use `choose A C hAC using ex`. Take `⟨μ, 𝓕, m1, m2, m3⟩` from `(unipGood cm (Or.inr hJ₁) pl.nondeg pl₁).ex`. Establish `val : ∀ {x A' C'}, Split2 W₂ H₁ X (fun y => fa (lev y * x)) A' C' → A x 1 + C x 1 = A' 1 + C' 1` using `fun {x _ _} h => ((hAC x).1 μ 𝓕 m1 m2 m3 1).trans (h.1 μ 𝓕 m1 m2 m3 1).symm`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩ : ∃ u, u = (halfE F E)⁻¹` from `⟨_, rfl⟩`. Take `⟨m, hm⟩` from `(leviPlane F E σ cm _ _ _ W₂ H₁ hJ₁ pl₁).1 u⁻¹ 1`. Take `⟨m₀, hm₀⟩` from `(leviPlane F E σ cm _ _ _ G₁.W H' hJ pl).1 u 1`. Establish `ea : m₀ * lev m = emb2 cm hJ pl pl₁ (dia u)` using `levi_uniq cm hJ pl (by simpa using levi_mul hm₀ (v1 m)) (emb2_dia_isLevi cm hJ pl pl₁ hJ₁ u hm)`. Take `⟨r, hr⟩ : ∃ r : ℝ, r = absE F E u` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `r1 : 1 < r`. Rewrite using `[hr, hu, map_inv, GlobalTheory.Eis.Conv.absE_halfE F E σ cm, inv_inv]`. Conclude with `one_lt_pow₀ (by norm_num) Fintype.card_ne_zero` after adjusting the coercions. Establish `r0 : 0 < r` using `one_pos.trans r1`. Take `⟨l, hl⟩ : ∃ l : ℂ, l = (X.α u : ℂ) * ((r ^ ((a' : ℝ) / 2) : ℝ) : ℂ) * ((X.β u⁻¹ : ℂ) * ((r⁻¹ ^ ((b : ℝ) / 2) : ℝ) : ℂ))` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `l1 : ‖l‖ < 1`. Establish `: (a' : ℝ) < b` using `by exact_mod_cast t₁.geo.lt`. Rewrite using `[hl]`. Simplify using `only [norm_mul, Circle.norm_coe, one_mul, Complex.norm_real]`. Rewrite using `[Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (by positivity), Real.inv_rpow r0.le, mul_inv_lt_iff₀ (by positivity), one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_lt_rpow_of_exponent_lt r1 (by linarith)`. Establish `step : ∀ {x A' C'}, Split2 W₂ H₁ X (fun y => fa (lev y * x)) A' C' → ∃ A'' C'', Split2 W₂ H₁ X (fun y => fa (lev y * (m₀ * lev m * x))) A'' C'' ∧ A'' 1 = A' 1 ∧ C'' 1 = l * C' 1` using `fun {x A' C'} h => by`. Use `⟨_, _, split_move h ((X.α u : ℂ) * (((absE F E u : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ)) m fun z => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs.2.1 u m₀ hm₀, map_mul, ← mul_assoc, ← mul_assoc, ← com z hm₀]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h.2.1 _ m hm 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[one_mul, this, map_inv, map_inv, NNReal.coe_inv, ← hr, Real.inv_rpow r0.le, Circle.coe_inv, Complex.ofReal_inv]`. Establish `a1 : (X.α u : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `a2 : ((r ^ ((a' : ℝ) / 2) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (by positivity)`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `h.2.2 _ m hm 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[one_mul, this, hl, map_inv (absE F E), NNReal.coe_inv, ← hr]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `key` using `two_kill cm hJ pl pl₁ hd hJ₁ (c := fun x => A x 1 + C x 1) aut (hM F E σ B _ _ G X om om' t f hf) h0 (fun lev' hv ν 𝓖 n1 n2 n3 x => by`. Take `rfl : lev' = lev` from `funext fun y => levi_uniq cm hJ pl (hv y) (v1 y)`. Simplify using `using (hAC x).1 ν 𝓖 n1 n2 n3 1) l1 (hu ▸ ea) fun x => by`. Take `⟨A₁, C₁, s1, e1, e2⟩` from `step (hAC x)`. Take `⟨A₂, C₂, s2, e3, e4⟩` from `step s1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[val s2, val s1, e3, e4, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨A', C', h⟩` from `sp f₁ hf₁`. Establish `z : C' = 0` using `funext fun y => by`. Establish `s0 : Split2 W₂ H₁ X (fun z => fa (lev z * (lev y * k))) _ _` using `split_move h 1 y fun z => (one_mul _).trans (low hL y z).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨A₁, C₁, s1, e1, e2⟩` from `step s0`. Use `key (lev y * k)` as an intermediate fact. Simplify using `only [val s1, val s0, e1, e2, one_mul, add_right_inj] at this`. Establish `l2 : l - 1 ≠ 0` using `sub_ne_zero.2 fun e => by simp [e] at l1`. Conclude with `(mul_eq_zero.1 (by linear_combination this : (l - 1) * C' y = 0)).resolve_left l2`.
-
-Conclude with `⟨d₂, W₂, H₁, A', pl₁, by simpa [z] using h.1, h.2.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twoStep_of' (hM : SigMod) (hS : SigSplit) (hI : Iwa) (hA : IAut) : TwoStep := by
   intro F E _ _ _ _ _ σ B b a' G G₁ X om om' om₁ om₁' H H' t t₁ hC hq f hf fa hs hlow k hk f₁ hf₁ hL
@@ -136,7 +134,7 @@ theorem twoStep_of' (hM : SigMod) (hS : SigSplit) (hI : Iwa) (hA : IAut) : TwoSt
   exact ⟨d₂, W₂, H₁, A', pl₁, by simpa [z] using h.1, h.2.1⟩
 
 /- English proof (translation)
-The claim follows from `twoStep_of' (sigMod_of hW hD) (sigSplit_of hS hP hI ctBasic hA hR) hI hA`.
+A detailed English derivation is pending.
 -/
 theorem twoStep_of (hW : WeilConv) (hD : KDecay) (hS : SplitEx) (hP : Tow.PlaneSkew) (hI : Iwa) (hA : IAut) (hR : SigRe) : TwoStep :=
   twoStep_of' (sigMod_of hW hD) (sigSplit_of hS hP hI ctBasic hA hR) hI hA

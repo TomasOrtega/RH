@@ -11,7 +11,7 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefTransfer.Loc.locU_iff | exact GlobalTheory.DefTransfer.Loc.locU_iff | (intros; apply GlobalTheory.DefTransfer.Loc.locU_iff <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.definiteUnitary_localPoints_transfer_iff : ∀ (D : D7) [IsCMField D.host.E] (V : HSp D) (j : UA D.host.E V.rank ≃ₜ* GA D V) (h₀ : GA D V)
     (M : Matrix (Fin V.rank) (Fin V.rank) D.host.E),

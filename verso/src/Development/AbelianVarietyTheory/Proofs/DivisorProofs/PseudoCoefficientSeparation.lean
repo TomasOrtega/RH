@@ -39,11 +39,11 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
 open Classical in
 
 /- English proof (translation)
-Take `⟨T, hT, hinj, hspan⟩` from `h`. Use `⟨T ∘ₗ f.symm.toLinearEquiv.toLinearMap, ?_, hinj.comp f.symm.toLinearEquiv.injective, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `mem_homTensorPi.1 hT`. Use `mem_homTensorPi.2 ⟨fun _ _ => Submodule.mem_top, fun g w y => ?_, fun i g w y => h3 i g _ y⟩` and prove the remaining obligations. Establish `e : f.symm.toLinearEquiv (σ' g w) = σ g (f.symm.toLinearEquiv w)` using `LinearMap.congr_fun (f.symm.isIntertwining' g) w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2'` using `h2 g (f.symm.toLinearEquiv w) y`. Rewrite `h2'` using `[← e]`. Conclude with `h2'`. Rewrite using `[← hspan]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Set.mem_setOf_eq]`. Conclude with `⟨fun ⟨w, y, hv⟩ => ⟨_, y, hv⟩, fun ⟨w, y, hv⟩ => ⟨f.toLinearEquiv w, y, by simpa using hv⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCopyFinDS_of_equiv {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ρ : GA D V →* (H →L[ℂ] H)} {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
@@ -67,15 +67,15 @@ theorem isCopyFinDS_of_equiv {H : Type} [NormedAddCommGroup H] [InnerProductSpac
 open Classical in
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hρ`. Take `⟨T, hT, hinj, hspan⟩` from `h`. Set `C` to `(ContinuousLinearMap.compContinuousMultilinearMapL ℂ M.H H H' (A.toContinuousLinearEquiv : H →L[ℂ] H')).toLinearMap`. Establish `hC : ∀ w y, (C ∘ₗ T) w y = A (T w y)` using `fun _ _ => rfl`. Use `⟨C ∘ₗ T, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2, h3⟩` from `mem_homTensorPi.1 hT`. Use `mem_homTensorPi.2 ⟨fun _ _ => Submodule.mem_top, fun g w y => ?_, fun i g w y => ?_⟩` and prove the remaining obligations. Rewrite using `[hC, hC, h2, hA]`. Rewrite using `[hC, hC, h3, hA]`. Introduce `w w' e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hinj (ContinuousMultilinearMap.ext fun y => A.injective ?_)` and prove the remaining obligations. Rewrite using `[← hC, ← hC, e]`. Establish `hS : {v | ∃ w y, v = (C ∘ₗ T) w y} = A '' {v | ∃ w y, v = T w y}`. Use extensionality with `v`. Simplify using `only [hC, Set.mem_setOf_eq, Set.mem_image]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun ⟨w, y, hv⟩ => ⟨_, ⟨w, y, rfl⟩, hv.symm⟩, fun ⟨_, ⟨w, y, rfl⟩, hv⟩ => ⟨w, y, hv.symm⟩⟩`. Rewrite using `[hS]`. Establish `hd : Dense ((Submodule.span ℂ {v | ∃ w y, v = T w y} : Submodule ℂ H) : Set H)` using `Submodule.dense_iff_topologicalClosure_eq_top.2 hspan`. Use `Submodule.dense_iff_topologicalClosure_eq_top.1 ?_` and prove the remaining obligations. Establish `e2 : (Submodule.span ℂ ((A.toLinearEquiv : H →ₗ[ℂ] H') '' {v | ∃ w y, v = T w y}) : Set H') = (A.toLinearEquiv : H →ₗ[ℂ] H') '' (Submodule.span ℂ {v | ∃ w y, v = T w y} : Set H)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_image, Submodule.map_coe]`. Establish `e3 : (A.toLinearEquiv : H →ₗ[ℂ] H') '' {v | ∃ w y, v = T w y} = A '' {v | ∃ w y, v = T w y}` using `rfl`. Rewrite using `[← e3, e2]`. Conclude with `A.surjective.denseRange.dense_image A.continuous hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCopyFinDS_of_uEquiv {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H'] [InnerProductSpace ℂ H']
@@ -111,9 +111,9 @@ theorem isCopyFinDS_of_uEquiv {H H' : Type} [NormedAddCommGroup H] [InnerProduct
     exact A.surjective.denseRange.dense_image A.continuous hd
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨A, hA, -, rfl⟩` from `h`. Take `rfl` from `hA.unique h0`. Use `hc ?_` and prove the remaining obligations. Establish `e : (LinearMap.restrict (0 : W →ₗ[ℂ] W) (p` using `LinearMap.range (0 : W →ₗ[ℂ] W)) (q := LinearMap.range (0 : W →ₗ[ℂ] W)) fun v _ => LinearMap.mem_range_self _ v) = 0 := LinearMap.ext fun x => Subtype.ext rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem not_isIntegralOp_zero {G W : Type} [Group G] [MeasurableSpace G] [AddCommGroup W] [Module ℂ W]
     {ν : Measure G} {σ : Representation ℂ G W} {F : G → ℂ} {c : ℂ}
@@ -128,19 +128,17 @@ theorem not_isIntegralOp_zero {G W : Type} [Group G] [MeasurableSpace G] [AddCom
   rw [e, map_zero]
 
 /- English proof (translation)
-Introduce `hDSC _ _ _ hFlath hChar hCO hPCT hPCS`. Introduce `D V lam S M T U μa μf μ _ _ fa ff hTD ν hν n Ws _ _ σs hIrr hcover c hc`. Establish `hcusp` using `GlobalTheory.T.discrete_series_multiplicity hCO hPCT D V lam S M T U μa μf μ fa ff hTD`. Establish `hpone` using `GlobalTheory.T.discrete_series_model_trace_terms hDSC hFlath hChar hPCS D V lam S M T U μa μf μ fa ff hTD ν hν`. Use `⟨hcusp.traceClass, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.eq_sum_of_hasSum_of_bijective_matching (UDual (GA D V)) n (fun x => (mCusp V μ x.rep.π).toNat) (fun x => repTrace x.rep.π μ (tensor D.sp.cm.sig V.gram fa ff)) (fun i => (mCuspDS μ (σs i) M).toNat) c (fun x i => IsCopyFinDS (σs i) M x.rep.π ⊤) _ hcusp.hasSum_trace ? …` and prove the remaining obligations. Introduce `x hm ht`. Establish `hm' : mCusp V μ x.rep.π ≠ 0` using `fun h => hm (by rw [h]; simp)`. Establish `htr : HasTrace (repOp x.rep.π μ (tensor D.sp.cm.sig V.gram fa ff)) (repTrace x.rep.π μ (tensor D.sp.cm.sig V.gram fa ff))` using `⟨hcusp.traceClass_rep x hm', rfl⟩`. Take `⟨W, _, _, σ, hσi, hσa, hcopy, hσt⟩` from `hpone x.rep.H x.rep.π x.rep.isIrr _ htr ht`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmσ : mCuspDS μ σ M ≠ 0`. Rewrite using `[← GlobalTheory.T.cuspMultiplicity_completion_eq_discreteSeriesModel D V S M μ x.rep.H x.rep.π x.rep.isIrr W σ hσi hσa hcopy]` and apply the resulting hypothesis. Take `⟨i, ⟨f⟩⟩` from `hcover W σ hσi hσa hmσ (not_isIntegralOp_zero hσt ht)`. Conclude with `⟨i, isCopyFinDS_of_equiv f hcopy⟩`. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi' : mCuspDS μ (σs i) M ≠ 0` using `fun h => hi (by rw [h]; simp)`. Take `⟨H, _, _, π, hπ, hcopy⟩` from `GlobalTheory.T.exists_irreducibleUnitary_completion_finiteTimesDS D V S M μ (Ws i) (σs i) (hIrr.1 i) (hIrr.2.1 i) hi'`. Set `R : IrrU (GA D V)` to `⟨H, π, hπ⟩`. Use `⟨R.cl, isCopyFinDS_of_uEquiv ?_ hcopy⟩` and prove the remaining obligations. Conclude with `(IrrU.cl_eq_iff.1 (UDual.cl_rep R.cl)).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x i hR`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.cuspMultiplicity_completion_eq_discreteSeriesModel D V S M μ x.rep.H x.rep.π x.rep.isIrr (Ws i) (σs i) (hIrr.1 i) (hIrr.2.1 i) hR]`. Conclude with `(GlobalTheory.T.test_data_haar_factorization D V lam S M T U μa μf μ fa ff hTD ν hν x.rep.H x.rep.π x.rep.isIrr (Ws i) (σs i) (hIrr.1 i) (hIrr.2.1 i) hR (c i) (hc i)).2`. Introduce `x i j hi hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `e` using `(GlobalTheory.T.unitaryEquiv_iff_finitePart_equiv_discreteSeries D V S M x.rep.H x.rep.π x.rep.isIrr (Ws i) (σs i) (hIrr.1 i) (hIrr.2.1 i) hi x.rep.H x.rep.π x.rep.isIrr (Ws j) (σs j) (hIrr.1 j) (hIrr.2.1 j) hj).1 (UEquiv.refl _)`. Conclude with `(hIrr.2.2 i j hne).false e.some`. Introduce `x y i hx hy`. Establish `e` using `(GlobalTheory.T.unitaryEquiv_iff_finitePart_equiv_discreteSeries D V S M x.rep.H x.rep.π x.rep.isIrr (Ws i) (σs i) (hIrr.1 i) (hIrr.2.1 i) hx y.rep.H y.rep.π y.rep.isIrr (Ws i) (σs i) (hIrr.1 i) (hIrr.2.1 i) hy).2 ⟨Representation.Equiv.refl _⟩`.
-
-Rewrite using `[← UDual.cl_rep x, ← UDual.cl_rep y]`. Conclude with `IrrU.cl_eq_iff.2 e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specTrace : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.HarishChandraCharacters → (∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.CuspidalOperators V μ) → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTerm → GlobalTheory.IndefiniteRowSideFullHecke.PseudoCoefficientSeparation.PseudoCoeffSeparation → SpecTrace := by
   intro hDSC _ _ _ hFlath hChar hCO hPCT hPCS

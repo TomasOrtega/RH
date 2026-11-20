@@ -17,7 +17,7 @@ variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [FiniteDimensional K L]
   [IsSepClosure K Ω] in
 /- English proof (translation)
-The claim follows from `have := IsGalois.of_algEquiv ι.equivFieldRange { toIsMulCommutative := ⟨⟨fun σ τ => (AlgEquiv.autCongr ι.equivFieldRange).symm.injective ((map_mul _ σ τ).trans ((mul_comm' _ _).trans (map_mul _ τ σ).symm))⟩⟩ }`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianGalois_fieldRange (ι : L →ₐ[K] Ω) : IsAbelianGalois K ι.fieldRange :=
   have := IsGalois.of_algEquiv ι.equivFieldRange
@@ -27,7 +27,7 @@ theorem isAbelianGalois_fieldRange (ι : L →ₐ[K] Ω) : IsAbelianGalois K ι.
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsAbelianGalois K L]
   [IsSepClosure K Ω] in
 /- English proof (translation)
-The claim follows from `LinearEquiv.finiteDimensional ι.equivFieldRange.toLinearEquiv`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_fieldRange (ι : L →ₐ[K] Ω) : FiniteDimensional K ι.fieldRange :=
   LinearEquiv.finiteDimensional ι.equivFieldRange.toLinearEquiv
@@ -39,9 +39,9 @@ def artinOfEmbedding (ι : L →ₐ[K] Ω) : Kˣ →* (L ≃ₐ[K] L) :=
     ((restrictAb ι.fieldRange (le_maximalAbelianExtension _)).comp (localArtinMap K Ω))
 
 /- English proof (translation)
-Use `isAbelianGalois_fieldRange ι` as an intermediate fact. Use `finiteDimensional_fieldRange ι` as an intermediate fact. Establish `h : ι (artinOfEmbedding ι x z) = ((restrictAb ι.fieldRange (le_maximalAbelianExtension _) (localArtinMap K Ω x) (ι.equivFieldRange z) : ι.fieldRange) : Ω)`. Simplify using `only [artinOfEmbedding, MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom, Function.comp_apply, AlgEquiv.autCongr_symm, AlgEquiv.autCongr_apply, AlgEquiv.trans_apply]`. Rewrite using `[← AlgHom.equivFieldRange_apply_coe, AlgEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h, restrictAb_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem apply_artinOfEmbedding (ι : L →ₐ[K] Ω) (x : Kˣ) (z : L) :
     ι (artinOfEmbedding ι x z) =
@@ -60,15 +60,15 @@ theorem apply_artinOfEmbedding (ι : L →ₐ[K] Ω) (x : Kˣ) (z : L) :
   rfl
 
 /- English proof (translation)
-Establish `: Algebra.IsSeparable K Ω` using `IsSepClosure.separable`. Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Establish `: Algebra.IsSeparable ι₁.fieldRange Ω` using `Algebra.isSeparable_tower_top_of_isSeparable K ι₁.fieldRange Ω`. Take `⟨φ, hφ⟩` from `IsSepClosed.surjective_domRestrict_of_isSeparable (K := K) ι₁.fieldRange (M := Ω) (E := Ω) (ι₂.comp ι₁.equivFieldRange.symm.toAlgHom)`. Establish `hφι : ∀ z : L, φ (ι₁ z) = ι₂ z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z`. Use `congrArg (fun f : ι₁.fieldRange →ₐ[K] Ω => f (ι₁.equivFieldRange z)) hφ` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgEquiv.symm_apply_apply] at this`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set τ : Ω ≃ₐ[K] Ω := AlgEquiv.ofBijective φ (Algebra.IsAlgebraic.algHom_bijective φ)`. Use `set t := topologicalAbelianizationEquiv K Ω (τ : TopologicalAbelianization (Ω ≃ₐ[K] Ω))`. Establish `ht : ∀ w : maximalAbelianExtension K Ω, ((t w : maximalAbelianExtension K Ω) : Ω) = τ w` using `fun w => topologicalAbelianizationEquiv_mk_apply K Ω τ w`. Use extensionality with `x z`. Establish `key : ι₂ (artinOfEmbedding ι₁ x z) = ι₂ (artinOfEmbedding ι₂ x z)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hφι (artinOfEmbedding ι₁ x z), apply_artinOfEmbedding ι₂]`. Express the relevant statement in the definitionally equal form `τ (ι₁ (artinOfEmbedding ι₁ x z)) = _`. Rewrite using `[apply_artinOfEmbedding ι₁]`. Use `set w : maximalAbelianExtension K Ω := ⟨ι₁ z, (have := isAbelianGalois_fieldRange ι₁; le_maximalAbelianExtension ι₁.fieldRange) ⟨z, rfl⟩⟩`. Establish `htw : t w = ⟨ι₂ z, (have` using `isAbelianGalois_fieldRange ι₂; le_maximalAbelianExtension ι₂.fieldRange) ⟨z, rfl⟩⟩ := Subtype.ext ((ht w).trans (hφι z))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (localArtinMap K Ω x) (t w) = t ((localArtinMap K Ω x) w)`. Rewrite using `[← AlgEquiv.mul_apply, mul_comm' (localArtinMap K Ω x) t, AlgEquiv.mul_apply]`. Rewrite using `[← ht, ← hc, htw]`. Conclude with `ι₂.injective key`.
+A detailed English derivation is pending.
 -/
 theorem artinOfEmbedding_eq (ι₁ ι₂ : L →ₐ[K] Ω) : artinOfEmbedding ι₁ = artinOfEmbedding ι₂ := by
   have : Algebra.IsSeparable K Ω := IsSepClosure.separable
@@ -105,9 +105,9 @@ theorem artinOfEmbedding_eq (ι₁ ι₂ : L →ₐ[K] Ω) : artinOfEmbedding ι
 variable {Ω' : Type*} [Field Ω'] [Algebra K Ω'] [IsSepClosure K Ω']
 
 /- English proof (translation)
-Use extensionality with `x z`. Establish `key : ((ε : Ω →ₐ[K] Ω').comp ι) (artinOfEmbedding ((ε : Ω →ₐ[K] Ω').comp ι) x z) = ((ε : Ω →ₐ[K] Ω').comp ι) (artinOfEmbedding ι x z)`. Rewrite using `[apply_artinOfEmbedding]`. Express the relevant statement in the definitionally equal form `_ = ε (ι (artinOfEmbedding ι x z))`. Rewrite using `[apply_artinOfEmbedding, localArtinMap_algEquiv_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `((ε : Ω →ₐ[K] Ω').comp ι).injective key`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem artinOfEmbedding_algEquiv_comp (ε : Ω ≃ₐ[K] Ω') (ι : L →ₐ[K] Ω) :
     artinOfEmbedding ((ε : Ω →ₐ[K] Ω').comp ι) = artinOfEmbedding ι := by
@@ -131,7 +131,7 @@ def localArtinMapOfField : Kˣ →* (L ≃ₐ[K] L) :=
   artinOfEmbedding (IsSepClosed.lift : L →ₐ[K] SeparableClosure K)
 
 /- English proof (translation)
-Establish `: Algebra.IsSeparable K L` using `IsGalois.to_isSeparable`. Set `ε : SeparableClosure K ≃ₐ[K] Ω` to `IsSepClosure.equiv K (SeparableClosure K) Ω`. Rewrite using `[localArtinMapOfField, ← artinOfEmbedding_algEquiv_comp ε]`. Conclude with `artinOfEmbedding_eq _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localArtinMapOfField_eq_artinOfEmbedding {Ω : Type*} [Field Ω] [Algebra K Ω]
     [IsSepClosure K Ω] (ι : L →ₐ[K] Ω) : localArtinMapOfField K L = artinOfEmbedding ι := by
@@ -141,11 +141,11 @@ theorem localArtinMapOfField_eq_artinOfEmbedding {Ω : Type*} [Field Ω] [Algebr
   exact artinOfEmbedding_eq _ _
 
 /- English proof (translation)
-Use `isAbelianGalois_fieldRange ι` as an intermediate fact. Use `finiteDimensional_fieldRange ι` as an intermediate fact. Establish `hker : (artinOfEmbedding ι).ker = ((restrictAb ι.fieldRange (le_maximalAbelianExtension _)).comp (localArtinMap K Ω)).ker`. Use extensionality with `x`. Simplify using `[artinOfEmbedding, MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hker, ker_restrictAb_localArtinMap]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Use `⟨Units.map ι.equivFieldRange.symm.toRingEquiv.toRingHom.toMonoidHom w, Units.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[coe_normUnits, Algebra.norm_eq_of_algEquiv]`. Introduce and unpack `⟨w, rfl⟩`. Use `⟨Units.map ι.equivFieldRange.toRingEquiv.toRingHom.toMonoidHom w, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `[coe_normUnits, Algebra.norm_eq_of_algEquiv]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ker_artinOfEmbedding {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     (ι : L →ₐ[K] Ω) : (artinOfEmbedding ι).ker = (normUnits K L).range := by
@@ -166,16 +166,16 @@ theorem ker_artinOfEmbedding {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosur
     simp [coe_normUnits, Algebra.norm_eq_of_algEquiv]
 
 /- English proof (translation)
-Establish `: Algebra.IsSeparable K L` using `IsGalois.to_isSeparable`. Conclude with `ker_artinOfEmbedding _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_localArtinMapOfField : (localArtinMapOfField K L).ker = (normUnits K L).range := by
   have : Algebra.IsSeparable K L := IsGalois.to_isSeparable
   exact ker_artinOfEmbedding _
 
 /- English proof (translation)
-Establish `: Algebra.IsSeparable K L` using `IsGalois.to_isSeparable`. Use `set ι : L →ₐ[K] SeparableClosure K := IsSepClosed.lift`. Use `isAbelianGalois_fieldRange ι` as an intermediate fact. Use `finiteDimensional_fieldRange ι` as an intermediate fact. Introduce `σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `surjective_restrictAb_localArtinMap (Ω := SeparableClosure K) ι.fieldRange (AlgEquiv.autCongr ι.equivFieldRange σ)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(AlgEquiv.autCongr ι.equivFieldRange).symm _ = σ`. Rewrite using `[hx, MulEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_localArtinMapOfField : Function.Surjective (localArtinMapOfField K L) := by
   have : Algebra.IsSeparable K L := IsGalois.to_isSeparable

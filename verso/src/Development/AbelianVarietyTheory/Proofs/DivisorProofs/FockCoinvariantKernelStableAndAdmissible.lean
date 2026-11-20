@@ -15,11 +15,11 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Introduce `Z y hy`. Establish `hcomm` using `(GlobalTheory.T.fockActions_lie_rationalWeights_commute P Q R S).2.2.2.2`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨X, f, rfl⟩` from `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨X, fockAct2 P Q R S Z f, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hcomm]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+A detailed English derivation is pending.
 -/
 theorem coinv_stab_snd (P Q R S : ℕ) (x : ℂ) : Stab (fockAct2 P Q R S) (coinv P Q R S x) := by
   intro Z y hy
@@ -34,9 +34,9 @@ theorem coinv_stab_snd (P Q R S : ℕ) (x : ℂ) : Stab (fockAct2 P Q R S) (coin
   | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Unfold `degW`. Establish `h : ∀ a, |shiftNu c μ a| ≤ B + |c|`. Introduce `a`. Break down `a with i | j` into its components or cases. Simplify using `only [shiftNu]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `(abs_sub _ _).trans (add_le_add (hμ _) le_rfl)`. Simplify using `only [shiftNu]`. Conclude with `(abs_add_le _ _).trans (add_le_add (hμ _) le_rfl)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem degW_le_of_abs_le {p q : ℕ} (c : ℚ) (μ : Ix p q → ℚ) (B : ℚ) (hμ : ∀ a, |μ a| ≤ B) :
     degW c μ ≤ ((p + q : ℕ) : ℚ) * (B + |c|) := by
@@ -50,11 +50,11 @@ theorem degW_le_of_abs_le {p q : ℕ} (c : ℚ) (μ : Ix p q → ℚ) (B : ℚ) 
     _ = _ := by simp [Finset.card_univ, Fintype.card_sum]; ring
 
 /- English proof (translation)
-Introduce `B`. Use `⟨restrictTotalDegree (Ln P Q R S) ℂ ⌊((R + S : ℕ) : ℚ) * (B + |cPair P Q|)⌋₊, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `μ hμ v hv`. Take `⟨-, hL2, -, hw2, -⟩` from `GlobalTheory.T.fockActions_lie_rationalWeights_commute P Q R S`. Establish `hgood : Good (fockAct2 P Q R S)` using `⟨hL2, hw2, GlobalTheory.T.fockAction_isLocallyBlockUnitary P Q R S⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hspan, -, hK2, -⟩` from `GlobalTheory.FockAlg.harm_graded_stable P Q R S _ (Or.inr (Or.inl rfl))`. Establish `hKc : KStable (fockAct2 P Q R S) (coinv P Q R S x)` using `fun X _ w hw => coinv_stab_snd P Q R S x X w hw`. Establish `hv' : v ∈ (Submodule.span ℂ (harm2 P Q R S) ⊔ coinv P Q R S x) ⊓ hwSub (fockAct2 P Q R S) μ` using `⟨by rw [GlobalTheory.T.fockHarmonics_sup_coinvariants_eq_top]; exact Submodule.mem_top, hv⟩`. Establish `hsplit` using `GlobalTheory.T.howeHighestWeight_sup_stable_le R S _ (fockAct2 P Q R S) hgood _ _ hK2 hKc μ hv'`. Take `⟨h, hh, c, hc, rfl⟩` from `Submodule.mem_sup.1 hsplit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Submodule.add_mem_sup ?_ hc.1` and prove the remaining obligations. Rewrite using `[mem_restrictTotalDegree]`. Establish `hh2 : h ∈ harm2 P Q R S` using `by rw [← hspan]; exact hh.1`. Conclude with `(GlobalTheory.DegKeep.deg_le_of_harm hh2 hh.2).trans (Nat.floor_mono (degW_le_of_abs_le _ μ B hμ))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fockCoinvariantKernel_highestWeight_admissible (P Q R S : ℕ) (x : ℂ) : AdmMod (fockAct2 P Q R S) (coinv P Q R S x) := by
   intro B
@@ -74,7 +74,7 @@ theorem fockCoinvariantKernel_highestWeight_admissible (P Q R S : ℕ) (x : ℂ)
   exact (GlobalTheory.DegKeep.deg_le_of_harm hh2 hh.2).trans (Nat.floor_mono (degW_le_of_abs_le _ μ B hμ))
 
 /- English proof (translation)
-Introduce `P Q R S x` and use `⟨coinv_stab_snd P Q R S x, fockCoinvariantKernel_highestWeight_admissible P Q R S x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem coinv_stab_adm : ∀ (P Q R S : ℕ) (x : ℂ),
     Stab (fockAct2 P Q R S) (coinv P Q R S x) ∧ AdmMod (fockAct2 P Q R S) (coinv P Q R S x) :=

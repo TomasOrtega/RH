@@ -4,23 +4,21 @@ open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 
   Formalism.LFunctionChainParameters.LChain Formalism.LFunctionChainParameters.LHost
 
 /- English proof (translation)
-Introduce `y`. Establish `hsum : ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, ArithmeticFunction.vonMangoldt n * (y / (n : ℝ) - 1) = ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, An.abelian₂ n * max (y / (n : ℝ) - 1) 0`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Icc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn.1`. Establish `hy : (n : ℝ) ≤ y`. Establish `hk : 0 < ⌊y⌋₊` using `lt_of_lt_of_le Nat.zero_lt_one (le_trans hn.1 hn.2)`. Establish `hy0 : 0 ≤ y`. Assume the negation of the conclusion as `hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hneg`. Rewrite `hk` using `[Nat.floor_eq_zero.2 (lt_trans hneg zero_lt_one)]`. Conclude with `lt_irrefl 0 hk`. Conclude with `le_trans (by exact_mod_cast hn.2) (Nat.floor_le hy0)`. Establish `hpos : (0 : ℝ) < n` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 ≤ y / (n : ℝ) - 1`. Rewrite using `[sub_nonneg, le_div_iff₀ hpos, one_mul]`. Conclude with `hy`. Rewrite using `[max_eq_left this]`. Establish `hre : (Deduction.ramp (fun _ => 1) y).re = ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, An.abelian₂ n * max (y / (n : ℝ) - 1) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : Finset.Icc 1 ⌊y⌋₊ ⊆ Finset.range (⌊y⌋₊ + 1)`. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Icc]`. Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_subset hsub]`. Simplify using `[Deduction.ramp, Complex.re_sum]`. Introduce `n hn hn'`. Establish `h0 : n = 0`. Rewrite `hn` using `[Finset.mem_range]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite `hn'` using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.Gz, Formalism.Sz, An.G]`. Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [An.G, Deduction.G]`. Rewrite using `[hre]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Comparison₂.Gz_eq :
     ∀ y : ℝ, Formalism.Gz y = An.G y ∧ An.G y = Deduction.G y := by

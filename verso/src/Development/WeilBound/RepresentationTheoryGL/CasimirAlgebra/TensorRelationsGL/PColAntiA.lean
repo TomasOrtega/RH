@@ -13,11 +13,9 @@ variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M]
 variable {m : ℕ} {E : Fin n → Fin n → Module.End ℂ M}
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `one d => intro d' _`. Conclude with `Deg.one d'`. Consider the case `add _ _ ih1 ih2 => intro d' h`. Conclude with `Deg.add (ih1 d' h) (ih2 d' h)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c _ ih => intro d' h`. Conclude with `Deg.smul c (ih d' h)`. Consider the case `@om d g p _ ih`. Introduce `d' h`. Take `⟨k, rfl⟩ : ∃ k, d' = k + 1` from `⟨d' - 1, by omega⟩`.
-
-Conclude with `Deg.om p (ih k (by omega))`. Consider the case `perm σ _ ih => intro d' h`. Conclude with `Deg.perm σ (ih d' h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem deg_mono {d : ℕ} {g : Module.End ℂ (TV n M (Fin m))} (h : Deg E d g) :
     ∀ d', d ≤ d' → Deg E d' g := by
@@ -32,9 +30,9 @@ theorem deg_mono {d : ℕ} {g : Module.End ℂ (TV n M (Fin m))} (h : Deg E d g)
   | perm σ _ ih => intro d' h; exact Deg.perm σ (ih d' h)
 
 /- English proof (translation)
-Proceed by induction on `hh with`. Consider the case `one d' => rw [mul_one]; exact deg_mono hg _ (by omega)`. Consider the case `add _ _ ih1 ih2 => rw [mul_add]`. Conclude with `Deg.add ih1 ih2`. Consider the case `smul c _ ih => rw [mul_smul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Deg.smul c ih`. Consider the case `om p _ ih => rw [← mul_assoc]`. Conclude with `Deg.om p ih`. Consider the case `perm σ _ ih => rw [← mul_assoc]`. Conclude with `Deg.perm σ ih`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem deg_mul {d d' : ℕ} {g h : Module.End ℂ (TV n M (Fin m))} (hg : Deg E d g) (hh : Deg E d' h) :
     Deg E (d + d') (g * h) := by
@@ -46,14 +44,14 @@ theorem deg_mul {d d' : ℕ} {g h : Module.End ℂ (TV n M (Fin m))} (hg : Deg E
   | perm σ _ ih => rw [← mul_assoc]; exact Deg.perm σ ih
 
 /- English proof (translation)
-Use `Deg.smul (E := E) (0 : ℂ) (Deg.one (P := Fin m) d)` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem deg_zero (d : ℕ) : Deg E d (0 : Module.End ℂ (TV n M (Fin m))) := by
   have := Deg.smul (E := E) (0 : ℂ) (Deg.one (P := Fin m) d)
   rwa [zero_smul] at this
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction f (Deg E d) (fun _ _ ha hb => Deg.add ha hb) (deg_zero d) hf`.
+A detailed English derivation is pending.
 -/
 theorem deg_sum {d : ℕ} (s : Finset (Fin m)) (f : Fin m → Module.End ℂ (TV n M (Fin m)))
     (hf : ∀ i ∈ s, Deg E d (f i)) : Deg E d (∑ i ∈ s, f i) := by
@@ -61,9 +59,9 @@ theorem deg_sum {d : ℕ} (s : Finset (Fin m)) (f : Fin m → Module.End ℂ (TV
   exact Finset.sum_induction f (Deg E d) (fun _ _ ha hb => Deg.add ha hb) (deg_zero d) hf
 
 /- English proof (translation)
-Unfold `xJ`. Use `Deg.add ?_ (deg_sum _ _ fun i _ => ?_)` and prove the remaining obligations. Use `Deg.om (E := E) j (Deg.one (P := Fin m) 0)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Use `Deg.perm (E := E) (Equiv.swap i j) (Deg.one (P := Fin m) 1)` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem deg_xJ (j : Fin m) : Deg E 1 (xJ E j) := by
   unfold xJ
@@ -74,9 +72,9 @@ theorem deg_xJ (j : Fin m) : Deg E 1 (xJ E j) := by
     rwa [one_mul] at this
 
 /- English proof (translation)
-Use `split_ifs`. Use `Deg.add ?_ (Deg.one 1)` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg]`. Use `Deg.add (deg_xJ i) ?_` and prove the remaining obligations. Establish `h1` using `Deg.smul (-1 : ℂ) (deg_xJ (E := E) j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[neg_one_smul]`. Then use the resulting hypothesis. Conclude with `Deg.one 0`.
+A detailed English derivation is pending.
 -/
 theorem deg_factor (i j : Fin m) (c : Prop) [Decidable c] :
     Deg E (if c then 1 else 0) (if c then xJ E i - xJ E j + 1 else 1) := by
@@ -89,9 +87,9 @@ theorem deg_factor (i j : Fin m) (c : Prop) [Decidable c] :
   · exact Deg.one 0
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro f e _`. Simplify using `using Deg.one (E := E) (P := Fin m) 0`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `f e hf`. Rewrite using `[List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ]`. Conclude with `deg_mul (hf 0) (ih _ _ fun i => hf i.succ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_prod : ∀ (k : ℕ) (f : Fin k → Module.End ℂ (TV n M (Fin m))) (e : Fin k → ℕ),
     (∀ i, Deg E (e i) (f i)) → Deg E (∑ i, e i) (List.ofFn f).prod := by
@@ -104,7 +102,7 @@ theorem deg_prod : ∀ (k : ℕ) (f : Fin k → Module.End ℂ (TV n M (Fin m)))
     exact deg_mul (hf 0) (ih _ _ fun i => hf i.succ)
 
 /- English proof (translation)
-Unfold `npairs`. Rewrite using `[Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem npairs_eq (col : Fin m → ℕ) :
     (∑ j : Fin m, ∑ i : Fin m, if i < j ∧ col i = col j then 1 else 0) = npairs col := by
@@ -112,7 +110,7 @@ theorem npairs_eq (col : Fin m → ℕ) :
   rw [Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm]
 
 /- English proof (translation)
-Establish `h` using `deg_prod m (fun j => (List.ofFn fun i : Fin m => if i < j ∧ col i = col j then xJ E i - xJ E j + 1 else 1).prod) (fun j => ∑ i : Fin m, if i < j ∧ col i = col j then 1 else 0) (fun j => deg_prod m _ _ (fun i => deg_factor i j _))`. Rewrite `h` using `[npairs_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_colD {m : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (col : Fin m → ℕ) :
     Deg E (npairs col) (colD E col : Module.End ℂ (TV n M (Fin m))) := by

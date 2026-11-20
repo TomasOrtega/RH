@@ -6,14 +6,14 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelSplitting.LevelSAl
 namespace PI.LevelKSplit.W.MeasAll
 
 /- English proof (translation)
-The claim follows from `PI.LevelKSplit.W.Meas.measKf_of PI.LevelKSplit.W.Cont.continuous_at_place PI.LevelKSplit.W.Meas.lattice_borel`.
+A detailed English derivation is pending.
 -/
 theorem maximal_compact_measurable : PI.LevelKSplit.W.MeasKfAll :=
   PI.LevelKSplit.W.Meas.measKf_of PI.LevelKSplit.W.Cont.continuous_at_place
     PI.LevelKSplit.W.Meas.lattice_borel
 
 /- English proof (translation)
-The claim follows from `PI.LevelKSplit.W.Split.levelSAll_of_existS_measKf h1 maximal_compact_measurable`.
+A detailed English derivation is pending.
 -/
 theorem levelSAll_of_exist (h1 : PI.LevelKSplit.W.ExistSAll) : PI.LevelKSplit.LevelSAll :=
   PI.LevelKSplit.W.Split.levelSAll_of_existS_measKf h1 maximal_compact_measurable

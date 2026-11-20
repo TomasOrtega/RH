@@ -22,7 +22,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-The claim follows from `| [], g, hg => e g hg | p :: w, g, hg => by simp only [Formalism.REAL.Eword] exact Formalism.REAL.lie_derivative_congr p.1 p.2 (fun x hx => tmA_eword_congr e w x hx) hg`.
+A detailed English derivation is pending.
 -/
 theorem tmA_eword_congr {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (e : ∀ x, Formalism.REAL.inUJ ε x → f x = h x) :
     ∀ (w : List (Fin n × Fin n)) (g : Matrix (Fin n) (Fin n) ℂ), Formalism.REAL.inUJ ε g →
@@ -33,7 +33,7 @@ theorem tmA_eword_congr {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (e : ∀ x, F
       exact Formalism.REAL.lie_derivative_congr p.1 p.2 (fun x hx => tmA_eword_congr e w x hx) hg
 
 /- English proof (translation)
-The claim follows from `| [], g, _ => rfl | p :: w, g, hg => by simp only [Formalism.REAL.Eword] rw [Formalism.REAL.lie_derivative_congr (h := fun x => Formalism.REAL.Eword ε w f x + c * Formalism.REAL.Eword ε w h x) p.1 p.2 (fun x hx => tmA_eword_lin hf hh c w x hx) hg] exact Formalism.REAL.lie_derivat …`.
+A detailed English derivation is pending.
 -/
 theorem tmA_eword_lin {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Formalism.REAL.SmoothOnG ε f)
     (hh : Formalism.REAL.SmoothOnG ε h) (c : ℂ) :
@@ -47,7 +47,7 @@ theorem tmA_eword_lin {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Formalism
       exact Formalism.REAL.lie_derivative_add_smul p.1 p.2 c (Formalism.REAL.smooth_iterated_lie_derivative hf w) (Formalism.REAL.smooth_iterated_lie_derivative hh w) hg
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | p :: w, g, hg => by simp only [Formalism.REAL.Eword] rw [Formalism.REAL.lie_derivative_congr (h := fun _ => (0 : ℂ)) p.1 p.2 (fun x hx => tmA_eword_zero w x hx) hg] exact Formalism.REAL.lie_derivative_const_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem tmA_eword_zero :
     ∀ (w : List (Fin n × Fin n)) (g : Matrix (Fin n) (Fin n) ℂ), Formalism.REAL.inUJ ε g →
@@ -59,7 +59,7 @@ theorem tmA_eword_zero :
       exact Formalism.REAL.lie_derivative_const_zero _ _ _
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | p :: w => by simp only [Formalism.REAL.Eword] rw [tmA_eword_left x f w] funext g simp only [Formalism.REAL.Eab, Formalism.REAL.Ec, Formalism.REAL.Rd, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem tmA_eword_left (x : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     ∀ w : List (Fin n × Fin n),
@@ -72,7 +72,7 @@ theorem tmA_eword_left (x : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin
       simp only [Formalism.REAL.Eab, Formalism.REAL.Ec, Formalism.REAL.Rd, Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inUJ at *`. Rewrite using `[Matrix.conjTranspose_mul, show gᴴ * xᴴ * Formalism.REAL.Jm ε * (x * g) = gᴴ * (xᴴ * Formalism.REAL.Jm ε * x) * g by`. Simplify using `only [Matrix.mul_assoc], hx, hg]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tmA_inUJ_mul {x g : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inUJ ε x) (hg : Formalism.REAL.inUJ ε g) :
     Formalism.REAL.inUJ ε (x * g) := by
@@ -82,7 +82,7 @@ theorem tmA_inUJ_mul {x g : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inU
       simp only [Matrix.mul_assoc], hx, hg]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Unfold `Formalism.REAL.inUJ at hx`. Rewrite using `[show Formalism.REAL.Jm ε * xᴴ * Formalism.REAL.Jm ε * x = Formalism.REAL.Jm ε * (xᴴ * Formalism.REAL.Jm ε * x) by`. Simplify using `only [Matrix.mul_assoc], hx, Formalism.REAL.Jm_mul_self]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tmA_inv_eq {x : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inUJ ε x) :
     x⁻¹ = Formalism.REAL.Jm ε * xᴴ * Formalism.REAL.Jm ε := by
@@ -92,7 +92,7 @@ theorem tmA_inv_eq {x : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inUJ ε
     simp only [Matrix.mul_assoc], hx, Formalism.REAL.Jm_mul_self]
 
 /- English proof (translation)
-Establish `h : Formalism.REAL.Jm ε * xᴴ * Formalism.REAL.Jm ε * x = 1`. Unfold `Formalism.REAL.inUJ at hx`. Rewrite using `[show Formalism.REAL.Jm ε * xᴴ * Formalism.REAL.Jm ε * x = Formalism.REAL.Jm ε * (xᴴ * Formalism.REAL.Jm ε * x) by`. Simplify using `only [Matrix.mul_assoc], hx, Formalism.REAL.Jm_mul_self]`. Conclude with `Matrix.mul_nonsing_inv x (Matrix.isUnit_det_of_left_inverse h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tmA_mul_inv {x : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inUJ ε x) : x * x⁻¹ = 1 := by
   have h : Formalism.REAL.Jm ε * xᴴ * Formalism.REAL.Jm ε * x = 1 := by
@@ -102,9 +102,9 @@ theorem tmA_mul_inv {x : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inUJ �
   exact Matrix.mul_nonsing_inv x (Matrix.isUnit_det_of_left_inverse h)
 
 /- English proof (translation)
-Establish `h1` using `tmA_mul_inv hx`. Rewrite `h1`, the goal using `[tmA_inv_eq hx]`. Unfold `Formalism.REAL.inUJ`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Formalism.REAL.Jm_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Establish `hJJ : ∀ M : Matrix (Fin n) (Fin n) ℂ, Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * M) = M` using `fun M => by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc] at h1 ⊢`. Rewrite using `[hJJ, h1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmA_inUJ_inv {x : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inUJ ε x) : Formalism.REAL.inUJ ε x⁻¹ := by
   have h1 := tmA_mul_inv hx
@@ -118,7 +118,7 @@ theorem tmA_inUJ_inv {x : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inUJ 
   rw [hJJ, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Use `contDiff_pi.mpr fun i => contDiff_pi.mpr fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiff.sum fun k _ => contDiff_const.mul (contDiff_apply_apply ℝ ℂ k j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tmA_contDiff_mulLeft (x : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => x * g) := by
@@ -127,9 +127,9 @@ theorem tmA_contDiff_mulLeft (x : Matrix (Fin n) (Fin n) ℂ) :
   exact ContDiff.sum fun k _ => contDiff_const.mul (contDiff_apply_apply ℝ ℂ k j)
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf (x * g₀) (tmA_inUJ_mul hx hg₀)`. Establish `hL` using `tmA_contDiff_mulLeft x`. Use `⟨(fun g => x * g) ⁻¹' U, fun g => F (x * g), hU.preimage hL.continuous, hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hF.comp hL.contDiffOn (fun g hg => hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hgJ`. Conclude with `hfF (x * g) hg (tmA_inUJ_mul hx hgJ)`.
+A detailed English derivation is pending.
 -/
 theorem tmA_sm_left {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Formalism.REAL.SmoothOnG ε f)
     {x : Matrix (Fin n) (Fin n) ℂ} (hx : Formalism.REAL.inUJ ε x) : Formalism.REAL.SmoothOnG ε (fun g => f (x * g)) := by
@@ -142,16 +142,16 @@ theorem tmA_sm_left {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Formalism.REA
     exact hfF (x * g) hg (tmA_inUJ_mul hx hgJ)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} .. | (apply UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tmA_sm_sum {ι : Type*} (s : Finset ι) (F : ι → Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hF : ∀ i ∈ s, Formalism.REAL.SmoothOnG ε (F i)) : Formalism.REAL.SmoothOnG ε (fun x => ∑ i ∈ s, F i x) := by
   first | exact UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} .. | (apply UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> first | assumption | infer_instance)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Formalism.REAL.lie_derivative_const_zero (ε := ε) a b g`. Consider the case `insert i s hi ih`. Establish `hs : ∀ j ∈ s, Formalism.REAL.SmoothOnG ε (F j)` using `fun j hj => hF j (Finset.mem_insert_of_mem hj)`. Establish `e : (fun x => ∑ j ∈ insert i s, F j x) = fun x => F i x + 1 * ∑ j ∈ s, F j x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_insert hi, one_mul]`. Rewrite using `[e, Formalism.REAL.lie_derivative_add_smul a b 1 (hF i (Finset.mem_insert_self i s)) (tmA_sm_sum s F hs) hg, ih hs, one_mul, Finset.sum_insert hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmA_eab_sum {ι : Type*} (s : Finset ι) (F : ι → Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hF : ∀ i ∈ s, Formalism.REAL.SmoothOnG ε (F i)) (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
@@ -177,12 +177,12 @@ attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNo
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `S7.sqrt_hs_frobVG A`.
+A detailed English derivation is pending.
 -/
 theorem tmA_frob_eq (A : Matrix (Fin n) (Fin n) ℂ) : frob A = ‖A‖ := S7.sqrt_hs_frobVG A
 
 /- English proof (translation)
-Rewrite using `[tmA_frob_eq, tmA_frob_eq, tmA_frob_eq]`. Conclude with `Matrix.frobenius_norm_mul A B`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmA_frob_mul (A B : Matrix (Fin n) (Fin n) ℂ) : frob (A * B) ≤ frob A * frob B := by
   rw [tmA_frob_eq, tmA_frob_eq, tmA_frob_eq]
@@ -195,7 +195,7 @@ section Gen
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `h` using `Real.abs_le_sqrt (S7.hs_entry_leVG g i j)`. Rewrite `h` using `[abs_of_nonneg (norm_nonneg _)]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmA_entry_le_frob (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g i j‖ ≤ frob g := by
   have h := Real.abs_le_sqrt (S7.hs_entry_leVG g i j)
@@ -203,9 +203,9 @@ theorem tmA_entry_le_frob (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g 
   exact h
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hg a) a`. Establish `h1 : ‖(gᴴ * Formalism.REAL.Jm ε * g) a a‖ = 1`. Apply the tactic sequence `rw [h]; unfold Formalism.REAL.Jm; rw [Matrix.diagonal_apply_eq]; split_ifs <;> simp`. Establish `h2 : ‖(gᴴ * Formalism.REAL.Jm ε * g) a a‖ ≤ ∑ i, ‖g i a‖ ^ 2`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.mul_diagonal, norm_mul, norm_mul, Matrix.conjTranspose_apply, norm_star]`. Apply the tactic sequence `split_ifs <;> simp [sq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem tmA_one_le_col {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) (a : Fin n) :
     1 ≤ ∑ i, ‖g i a‖ ^ 2 := by
@@ -221,7 +221,7 @@ theorem tmA_one_le_col {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inU
   linarith
 
 /- English proof (translation)
-Unfold `frob`. Rewrite using `[Real.one_le_sqrt]`. Use `(tmA_one_le_col hg a).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.single_le_sum (f := fun j => ∑ i, ‖g i j‖ ^ 2) (fun j _ => Finset.sum_nonneg fun i _ => by positivity) (Finset.mem_univ a)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmA_one_le_frob {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) (a : Fin n) : 1 ≤ frob g := by
   unfold frob
@@ -232,9 +232,9 @@ theorem tmA_one_le_frob {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.in
     (fun j _ => Finset.sum_nonneg fun i _ => by positivity) (Finset.mem_univ a)
 
 /- English proof (translation)
-Establish `hX` using `tmA_one_le_frob hx₀ a₀`. Establish `hG` using `tmA_one_le_frob hg a₀`. Establish `hle : frob g ≤ frob x₀ * frob (x₀⁻¹ * g)`. Combine the equalities or inequalities in the displayed calculation. Establish `hq : frob g / frob x₀ ≤ frob (x₀⁻¹ * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ (by linarith)]; linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow (by linarith) (by linarith), Real.rpow_neg (by linarith : (0:ℝ) ≤ frob x₀)]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem tmA_frob_trans {x₀ g : Matrix (Fin n) (Fin n) ℂ} (hx₀ : Formalism.REAL.inUJ ε x₀) (hg : Formalism.REAL.inUJ ε g)
     (a₀ : Fin n) {a : ℝ} (ha : 0 ≤ a) : frob (x₀⁻¹ * g) ^ (-a) ≤ frob x₀ ^ a * frob g ^ (-a) := by
@@ -260,11 +260,11 @@ variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {H : Type*} [NormedAddC
   {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
 
 /- English proof (translation)
-Use `set L : H →L[ℝ] ℂ := ((innerSL ℂ w).comp (σ (x₀⁻¹ * g))).restrictScalars ℝ with hL`. Establish `h1 : (fun t : ℝ => coefX σ x₀ w (m : H) (g * NormedSpace.exp ((t : ℂ) • X))) = fun t : ℝ => L (σ (NormedSpace.exp ((t : ℂ) • X)) (m : H))`. Use function extensionality and compare the values at `t`. Simplify using `only [coefX, ← Matrix.mul_assoc]`. Rewrite using `[hσ.1.2 _ hy _ (exp_smul_mem_UJset hX t)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hL, innerSL_apply_apply]`. Establish `h2` using `(L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hD.deriv X hX m)).deriv`. Simplify using `only [Function.comp_def] at h2`. Unfold `Formalism.REAL.Rd`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hL, coefX, innerSL_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem tmB_rd_coef (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {x₀ g X : Mat k r}
     (hy : x₀⁻¹ * g ∈ UJset ε) (hX : inG ε X) (w : H) (m : D) :
@@ -283,9 +283,9 @@ theorem tmB_rd_coef (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) 
   simp [hL, coefX, innerSL_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[Formalism.REAL.lie_derivative_def, tmB_rd_coef (X := Formalism.REAL.cpart1 ε (Matrix.single a b 1)) hσ hD hy (Formalism.REAL.real_part_single_mem ε a b) w m, tmB_rd_coef (X := Formalism.REAL.cpart2 ε (Matrix.single a b 1)) hσ hD hy (Formalism.REAL.imaginary_part_single_mem ε a b …`. Establish `hZ` using `(Formalism.REAL.complex_parts_mem_lie_algebra_holds _ ε (Matrix.single a b 1)).2.2.1`. Establish `key : E a b = actM E (Formalism.REAL.cpart1 ε (Matrix.single a b 1)) + Complex.I • actM E (Formalism.REAL.cpart2 ε (Matrix.single a b 1))`. Rewrite using `[← actM_single' E a b, ← actM_smul', ← actM_add', ← hZ]`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[coefX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmB_eab_coef (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {x₀ g : Mat k r}
     (hy : x₀⁻¹ * g ∈ UJset ε) (w : H) (m : D) (a b : Fin (2 * r + k + 1)) :

@@ -14,7 +14,7 @@ Both sides reduce to the same expression.
 theorem rtL_apply (k : H) (φ : H → ℂ) : rtL k φ = rt k φ := rfl
 
 /- English proof (translation)
-Introduce `φ hφ k hk`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hφ`. Rewrite using `[← rtL_apply, map_add]`. Conclude with `Submodule.add_mem_sup (hA a ha k hk) (hB b hb k hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rStable_sup {G₀ : Subgroup H} {A B : Submodule ℂ (H → ℂ)} (hA : RStable G₀ A) (hB : RStable G₀ B) :
     RStable G₀ (A ⊔ B) := by
@@ -24,13 +24,13 @@ theorem rStable_sup {G₀ : Subgroup H} {A B : Submodule ℂ (H → ℂ)} (hA : 
   exact Submodule.add_mem_sup (hA a ha k hk) (hB b hb k hk)
 
 /- English proof (translation)
-Introduce `φ hφ k hk` and use `⟨hA φ hφ.1 k hk, hB φ hφ.2 k hk⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rStable_inf {G₀ : Subgroup H} {A B : Submodule ℂ (H → ℂ)} (hA : RStable G₀ A) (hB : RStable G₀ B) :
     RStable G₀ (A ⊓ B) := fun φ hφ k hk => ⟨hA φ hφ.1 k hk, hB φ hφ.2 k hk⟩
 
 /- English proof (translation)
-Introduce `φ hφ k hk`. Rewrite using `[← rtL_apply]`. Use `(Submodule.span_le (p := (Submodule.span ℂ {ψ | ∃ g ∈ G₀, ψ = rt g a}).comap (rtL k))).2 ?_ hφ` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `Submodule.subset_span ⟨k * g, G₀.mul_mem hk hg, by rw [rtL_apply, rt_rt]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem rStable_span_orbit (G₀ : Subgroup H) (a : H → ℂ) :
     RStable G₀ (Submodule.span ℂ {ψ | ∃ g ∈ G₀, ψ = rt g a}) := by
@@ -41,31 +41,25 @@ theorem rStable_span_orbit (G₀ : Subgroup H) (a : H → ℂ) :
   exact Submodule.subset_span ⟨k * g, G₀.mul_mem hk hg, by rw [rtL_apply, rt_rt]⟩
 
 /- English proof (translation)
-Introduce `H _ G₀ S hS hCR hQT x hx k hk`. It suffices to establish `h : rt k x = x from fun g => congrFun h g`. Assume the negation of the conclusion as `hne`. Use `set a₀ : H → ℂ := rt k x - x with ha₀`. Establish `ha₀S : a₀ ∈ S` using `S.sub_mem (hS x hx k hk) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C : Submodule ℂ (H → ℂ) := Submodule.span ℂ {ψ | ∃ g ∈ G₀, ψ = rt g a₀} with hCdef`. Establish `hCst : RStable G₀ C` using `rStable_span_orbit G₀ a₀`. Establish `ha₀C : a₀ ∈ C` using `Submodule.subset_span ⟨1, G₀.one_mem, (rt_one a₀).symm⟩`. Establish `hCS : C ≤ S`. Rewrite using `[hCdef, Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hS a₀ ha₀S g hg`. Take `⟨C', hC'S, hC'st, hCC'inf, hCC'sup⟩` from `hCR C hCS hCst`. Set `P : Set (Submodule ℂ (H → ℂ))` to `{M | M ≤ C ∧ RStable G₀ M ∧ a₀ ∉ M}`. Establish `hbot : (⊥ : Submodule ℂ (H → ℂ)) ∈ P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `⟨bot_le, fun φ hφ k _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hφ`, the goal using `[Submodule.mem_bot]`. Substitute `hφ` using the available equality. Both sides reduce to the same expression. Rewrite using `[Submodule.mem_bot]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Conclude with `h0`. Take `⟨M, -, hMmax⟩` from `zorn_le_nonempty₀ P (fun c hcP hch y hy => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hne' : c.Nonempty` using `⟨y, hy⟩`. Establish `hdir` using `hch.directedOn`. Use `⟨sSup c, ⟨sSup_le fun z hz => (hcP hz).1, fun φ hφ k hk => ?_, fun ha => ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Take `⟨z, hz, hφz⟩` from `(Submodule.mem_sSup_of_directed hne' hdir).1 hφ`. Conclude with `le_sSup hz ((hcP hz).2.1 φ hφz k hk)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz, haz⟩` from `(Submodule.mem_sSup_of_directed hne' hdir).1 ha`. Conclude with `(hcP hz).2.2 haz) ⊥ hbot`. Take `⟨⟨hMC, hMst, ha₀M⟩, hMle⟩` from `hMmax`. Use `set N := M ⊔ C' with hN`. Establish `hNst : RStable G₀ N` using `rStable_sup hMst hC'st`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNS : N ≤ S` using `sup_le (hMC.trans hCS) hC'S`. Establish `hNC : N ⊓ C = M`. Rewrite using `[hN, sup_inf_assoc_of_le C' hMC, inf_comm, hCC'inf, sup_bot_eq]`. Establish `ha₀N : a₀ ∉ N` using `fun h => ha₀M (hNC ▸ ⟨h, ha₀C⟩)`. Establish `hNneS : N ≠ S` using `fun h => ha₀N (h ▸ ha₀S)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hmaxN : ∀ N' : Submodule ℂ (H → ℂ), RStable G₀ N' → N ≤ N' → N' ≤ S → N' = N ∨ N' = S`. Introduce `N' hN'st hNN' hN'S`. Distinguish the cases in `ha : a₀ ∈ N'`. Use `right`. Use `le_antisymm hN'S ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCN' : C ≤ N'`. Rewrite using `[hCdef, Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hN'st a₀ ha g hg`. Rewrite using `[← hCC'sup]`.
-
-Conclude with `sup_le hCN' ((le_sup_right : C' ≤ N).trans hNN')`. Use `left`. Establish `hC'N' : C' ≤ N'` using `(le_sup_right : C' ≤ N).trans hNN'`. Establish `hMN' : M ≤ N' ⊓ C` using `le_inf ((le_sup_left : M ≤ N).trans hNN') hMC`. Establish `hP : N' ⊓ C ∈ P` using `⟨inf_le_right, rStable_inf hN'st hCst, fun h => ha h.1⟩`.
-
-Establish `hle : N' ⊓ C ≤ M` using `hMle hP hMN'`. Use `le_antisymm ?_ hNN'` and prove the remaining obligations. Establish `e : N' = C' ⊔ C ⊓ N'`. Rewrite using `[← sup_inf_assoc_of_le C hC'N', sup_comm, hCC'sup]`. Conclude with `(inf_eq_right.2 hN'S).symm`.
-
-Rewrite using `[e, hN, sup_comm M C']`. Conclude with `sup_le_sup_left (by rw [inf_comm]; exact hle) C'`. Conclude with `ha₀N (hQT N hNS hNst hNneS hmaxN x hx k hk)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_of_compRed_quotTriv :
     ∀ (H : Type) [Group H] (G₀ : Subgroup H) (S : Submodule ℂ (H → ℂ)), RStable G₀ S → CompRed G₀ S → QuotTriv G₀ S →

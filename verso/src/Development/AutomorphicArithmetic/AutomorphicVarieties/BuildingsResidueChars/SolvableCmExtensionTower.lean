@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField UpperTheory.V.Af.Sol
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hlt : 1 < Nat.card G`. Use `Nat.card_pos (α := G)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Use `haveI : Nontrivial G := Finite.one_lt_card_iff_nontrivial.1 hlt`. Use `haveI : IsSimpleGroup G := { eq_bot_or_eq_top_of_normal := fun N hN => by`. Distinguish the cases in `h : N = ⊥`. Conclude with `Or.inl h`. Conclude with `Or.inr (hne N hN h) }`.
-
-Establish `hc` using `(IsSimpleGroup.comm_iff_isSolvable (G := G)).2 hs`. Use `letI : CommGroup G := { ‹Group G› with mul_comm := hc }`. Conclude with `hp (CommGroup.is_simple_iff_prime_card.1 ‹IsSimpleGroup G›)`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem exists_proper_nontrivial_normal_of_solvable_not_prime_card (G : Type) [Group G] [Finite G] (hs : IsSolvable G)
     (h1 : Nat.card G ≠ 1) (hp : ¬ (Nat.card G).Prime) :
@@ -28,25 +26,21 @@ private theorem exists_proper_nontrivial_normal_of_solvable_not_prime_card (G : 
   exact hp (CommGroup.is_simple_iff_prime_card.1 ‹IsSimpleGroup G›)
 
 /- English proof (translation)
-Establish `hext : ∀ φ : K →+* ℂ, ∃ Φ : M →+* ℂ, ∀ x : K, Φ x = φ x`. Introduce `φ`. Use `letI : Algebra K ℂ := φ.toAlgebra`. Use `⟨(IsAlgClosed.lift : M →ₐ[K] ℂ).toRingHom, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(IsAlgClosed.lift : M →ₐ[K] ℂ).commutes x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `τ : K ≃+* K` to `{ toFun := fun x => ⟨IsCMField.complexConj M x, hK x x.2⟩ invFun := fun x => ⟨IsCMField.complexConj M x, hK x x.2⟩ left_inv := fun x => Subtype.ext (IsCMField.complexConj_apply_apply M x) right_inv := fun x => Subtype.ext (IsCMField.complexConj_apply_apply M x) map_mul' := fun x …`. Set `σ : Gal(K/ℚ)` to `τ.toRatAlgEquiv`. Establish `hσ : ∀ x : K, ((σ x : K) : M) = IsCMField.complexConj M x` using `fun x => rfl`. Establish `hconj : ∀ φ : K →+* ℂ, ComplexEmbedding.IsConj φ σ`. Introduce `φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ⟩` from `hext φ`. Unfold `ComplexEmbedding.IsConj`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hΦ]`. Use `show _ = φ (σ x)`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hΦ, hσ, IsCMField.complexEmbedding_complexConj]`. Distinguish the cases in `h1 : σ = 1`. Use `left`. Use `⟨fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `hconj w.embedding` as an intermediate fact. Rewrite `this` using `[h1]`. Unfold `ComplexEmbedding.IsConj at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `right haveI : IsTotallyComplex K := ⟨fun w => InfinitePlace.isComplex_iff.2 ((ComplexEmbedding.isConj_ne_one_iff (hconj _)).1 h1)⟩`. Take `⟨φ0⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hord : Nat.card (Subgroup.zpowers σ) = 2`. Rewrite using `[Nat.card_zpowers]`. Conclude with `ComplexEmbedding.orderOf_isConj_two_of_ne_one (hconj φ0) h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (Subgroup.zpowers σ) := Nat.finite_of_card_ne_zero (by rw [hord]; norm_num)`. Use `haveI : Fintype (Subgroup.zpowers σ) := Fintype.ofFinite _`. Set `L : IntermediateField ℚ K` to `FixedPoints.intermediateField (Subgroup.zpowers σ)`. Establish `hfix : ∀ x : L, σ (x : K) = x` using `fun x => x.2 ⟨σ, Subgroup.mem_zpowers σ⟩`. Use `haveI : IsTotallyReal L := ⟨fun w => by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W, rfl⟩` from `w.comap_surjective (K := K)`. Simplify using `only`. Rewrite using `[← InfinitePlace.mk_embedding W, InfinitePlace.comap_mk, InfinitePlace.isReal_mk_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Establish `h` using `RingHom.congr_fun (hconj W.embedding) (x : K)`.
-
-Rewrite `h`, the goal using `[ComplexEmbedding.conjugate_coe_eq]`. Simplify using `only [RingHom.comp_apply] at h ⊢`. Rewrite using `[show algebraMap L K x = (x : K) from rfl, h]`. Conclude with `congrArg W.embedding (hfix x)⟩`. Use `haveI : Algebra.IsQuadraticExtension L K := ⟨by`.
-
-Rewrite `hord` using `[Nat.card_eq_fintype_card]`. Rewrite using `[← hord]`. Conclude with `FixedPoints.finrank_eq_card (Subgroup.zpowers σ) K⟩`. Conclude with `IsCMField.ofCMExtension L K`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rc_of_intermediateField_stable_under_complexConj {F M : Type} [Field F] [NumberField F] [Field M] [NumberField M] [Algebra F M]
     [IsCMField M] (K : IntermediateField F M)
@@ -112,15 +106,13 @@ private theorem rc_of_intermediateField_stable_under_complexConj {F M : Type} [F
     exact IsCMField.ofCMExtension L K
 
 /- English proof (translation)
-Introduce `F M _ _ _ _ _ _ hs hF hM h1 hp`. Take `⟨N, hN, hbot, htop⟩` from `exists_proper_nontrivial_normal_of_solvable_not_prime_card Gal(M/F) hs (by rwa [IsGalois.card_aut_eq_finrank]) (by rwa [IsGalois.card_aut_eq_finrank])`. Use `⟨IntermediateField.fixedField N, ?_, ?_, IsGalois.of_fixedField_normal_subgroup N, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `htop` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← IntermediateField.fixingSubgroup_fixedField N, h, IntermediateField.fixingSubgroup_bot]`. Introduce `h`. Apply `hbot` to reduce the goal to its premises. Rewrite using `[← IntermediateField.fixingSubgroup_fixedField N, h, IntermediateField.fixingSubgroup_top]`. Break down `hM with hM | hM` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Conclude with `IsTotallyReal.of_algebra (IntermediateField.fixedField N) M`. Apply `rc_of_intermediateField_stable_under_complexConj` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx`, the goal using `[IntermediateField.mem_fixedField_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n hn`. Take `⟨Φ⟩ : Nonempty (M →+* ℂ)` from `inferInstance`. Apply `Φ.injective` to reduce the goal to its premises. Establish `h2` using `IsCMField.complexEmbedding_complexConj M (Φ.comp n.toRingHom) x`. Express the relevant statement in the definitionally equal form `Φ (n (IsCMField.complexConj M x)) = (starRingEnd ℂ) (Φ (n x)) at h2`.
-
-Rewrite using `[h2, hx n hn, IsCMField.complexEmbedding_complexConj]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.solvable_cm_extension_tower :
     UpperTheory.V.Af.Sol.Tower := by

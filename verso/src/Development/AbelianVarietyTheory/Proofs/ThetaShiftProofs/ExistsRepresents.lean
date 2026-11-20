@@ -17,7 +17,7 @@ namespace GlobalTheory.ExpTan
 open GlobalTheory.HolHom GlobalTheory.TorusModel
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (h hy) k, fun h _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (h hy) k⟩`.
+Supply the required witnesses or components.
 -/
 theorem le_wchart_iff {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (ψ : K → (Y ⟶ X)) (x : Z ⟶ Y)
     (j : K → L.ι) : ⊤ ≤ LB.wchart L (fun k => x ≫ ψ k) j ↔ ⊤ ≤ x ⁻¹ᵁ LB.wchart L ψ j :=
@@ -25,9 +25,9 @@ theorem le_wchart_iff {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (ψ
     fun h _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (h hy) k⟩
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Take `rfl` from `TorusCoord.gen_eq_of_corr hL hu (DVR.pullGen_isGen _ _ _ _ ht x) h`. Distinguish the cases in `hj : ⊤ ≤ x ⁻¹ᵁ LB.wchart L ψ j`. Establish `hj' : ⊤ ≤ (𝟙 (Sp A)) ⁻¹ᵁ LB.wchart L (fun k => x ≫ ψ k) j` using `(le_wchart_iff L ψ x j).2 hj`. Use `(valR_res (U := x ⁻¹ᵁ LB.wchart L ψ j) (𝟙 (Sp A)) _ _ hj').trans ?_` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(valR_comp (𝟙 (Sp A)) x (LB.wchart L ψ j) _).symm.trans (by rw [Category.id_comp])`. Establish `h₀ : valR x (LB.wchart L ψ j) (t.s j).val = 0` using `dif_neg hj`. Conclude with `(dif_neg (fun h => hj ((le_wchart_iff L ψ x j).1 h))).trans h₀.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valR_of_corr {A : Type} [CommRing A] {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     {φ : K → (Sp A ⟶ X)} {ψ : K → (Y ⟶ X)} {ε : K → ℤ} {u : LB.Gen (LB.LinComb L φ ε)} (hu : u.IsGen)
@@ -52,31 +52,25 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : 
 open CoordToExt in
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ D.X`. Set `p` to `(x z ≫ c.q.left) (default : PrimeSpectrum ℂ)`. Use `choose a ha using fun k => exists_chart (DVR.linComb_isLB (Y := (thickObj R I e D.P.A).left) D.P.L D.P.isLB (D.Oφ (D.prBe I e) (b k)) Oε) p`. Establish `hW : ⊤ ≤ (x z ≫ c.q.left) ⁻¹ᵁ ⨅ k, (bundle I D e (b k)).U (a k)`. Rewrite using `[le_preimage_iff, ← SetLike.mem_coe, TopologicalSpace.Opens.coe_iInf]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_iInter.2 ha`. Take `⟨P, hP, hxP, hle⟩` from `exists_affine _ hW`. Establish `hl : ∀ k, c.q.left ⁻¹ᵁ P ≤ c.q.left ⁻¹ᵁ (bundle I D e (b k)).U (a k)` using `fun k => Scheme.Hom.preimage_mono _ (hle.trans (iInf_le _ k))`. Set `u : ∀ k, Γ((thickObj R I e G).left, c.q.left ⁻¹ᵁ P)ˣ` to `fun k => res (hl k) (coordUnit c (b k) (a k))`. Use `c.q_hom` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `c.q_affine` as an intermediate fact. Establish `bij` using `bijective_of_basis b c.q c.i c.q_hom c.i_hom c.q_flat c.q_surj c.q_affine c.isKernel P hP u (fun k Z t g w hw => by`. Establish `hw'` using `GtBaseChange.translate_mem c.q c.i c.isKernel t g P w hw`. Conclude with `(gm_res _ w (hl k) hw' _).trans ((coordUnit_weight c (b k) (a k) Z t g w (hl k hw)).trans (congrArg _ (gm_res _ w (hl k) hw _).symm)))`. Establish `ev : ∀ᶠ t in 𝓝 z, ⊤ ≤ x t ⁻¹ᵁ (c.q.left ⁻¹ᵁ P)` using `(hb P hxP).1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `S : Subring Γ((thickObj R I e G).left, c.q.left ⁻¹ᵁ P)` to `{ carrier := {f | DifferentiableAt ℂ (fun t => valAt' (x t) _ f) z} mul_mem' := fun {f f'} h h' => (h.mul h').congr_of_eventuallyEq (ev.mono fun t ht => by`. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_mul, Pi.mul_apply])`. Use the proof step `add_mem' := fun {f f'} h h' => (h.add h').congr_of_eventuallyEq (ev.mono fun t ht => by`. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_add, Pi.add_apply])`. Use the proof step `neg_mem' := fun {f} h => h.neg.congr_of_eventuallyEq (ev.mono fun t ht => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_neg, Pi.neg_apply])`. Use the proof step `one_mem' := (differentiableAt_const (1 : ℂ)).congr_of_eventuallyEq (ev.mono fun t ht => by`. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_one])`. Use the proof step `zero_mem' := (differentiableAt_const (0 : ℂ)).congr_of_eventuallyEq (ev.mono fun t ht => by`. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_zero]) }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : ∀ k, (u k).val ∈ S` using `fun k => by`. Establish `h₁` using `hs (b k) (a k) (fun y hy => mem_chart c _ _ _ (hl k (hxP hy)))`. Use `h₁.congr_of_eventuallyEq (ev.mono fun t ht => ?_)` and prove the remaining obligations. Conclude with `(valR_res (x t) (hl k) _ ht).trans (valR_res (x t) _ _ (fun y hy => hl k (ht hy)))`. Establish `hi : ∀ w : Γ((thickObj R I e G).left, c.q.left ⁻¹ᵁ P)ˣ, w.val ∈ S → (w⁻¹).val ∈ S` using `fun w hw => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Establish `hne : valAt' (x z) _ w.val ≠ 0`. Rewrite using `[valAt'_eq_valR, valR_eq (x z) (c.q.left ⁻¹ᵁ P) hxP]`. Conclude with `(w.isUnit.map _).ne_zero`. Use `(DifferentiableAt.inv hw hne).congr_of_eventuallyEq (ev.mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, Pi.inv_apply, map_units_inv]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `holAt_of_affine (hP.preimage c.q.left) hxP ev fun f => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `bij.2 f`. Express the relevant statement in the definitionally equal form `_ ∈ S`. Proceed by induction on `f using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add f f' h h' => rw [map_add]`. Conclude with `add_mem h h'`. Consider the case `single χ r`. Establish `hχ : ∀ χ : D.X, ((b.constr ℤ (fun k => Additive.ofMul (u k)) χ).toMul).val ∈ S` using `fun χ => by`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `: χ ∈ Submodule.span ℤ (Set.range b)` using `b.mem_span χ`. Proceed by induction on `this using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨k, rfl⟩ := h`. Rewrite using `[b.constr_basis]`. Conclude with `hu k`.
-
-Consider the case `zero => rw [map_zero]`. Conclude with `one_mem _`. Consider the case `add _ _ _ _ h h' => rw [map_add]`. Conclude with `mul_mem h h'`. Consider the case `smul n w _ h`.
-
-Rewrite using `[map_smul, toMul_zsmul]`. Consider the cases of `n with`. Consider the case `ofNat n => simpa using pow_mem h n`. Consider the case `negSucc n => rw [zpow_negSucc]; exact hi _ (by simpa using pow_mem h (n + 1))`. Rewrite using `[AddMonoidAlgebra.liftNCRingHom_single]`.
-
-Use `mul_mem ?_ (hχ χ)` and prove the remaining obligations. Conclude with `((hb P hxP).2 r).congr_of_eventuallyEq (Eventually.of_forall fun t => (valR_comp (x t) c.q.left P r).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem holAt_of_coord {x : V → (Sp ℂ ⟶ (thickObj R I e G).left)} {z : V}
     (hb : HolAt (fun t => x t ≫ c.q.left) z)
@@ -149,19 +143,17 @@ theorem holAt_of_coord {x : V → (Sp ℂ ⟶ (thickObj R I e G).left)} {z : V}
 end Coord
 
 /- English proof (translation)
-Set `j` to `inv (fstG (⊥ : Ideal R) 0 H).left`. Establish `hj : j ≫ (thickObj R ⊥ 0 H).hom ≫ thick R ⊥ 0 = H.hom` using `(congrArg (j ≫ ·) (Over.w (fstG (⊥ : Ideal R) 0 H)).symm).trans (IsIso.inv_hom_id_assoc _ _)`. Use `choose φ hφ using fun T (x : T ⟶ H) => TorusCoord.exists_isPointOf c (T := T) (x.left ≫ j) (by rw [Category.assoc, hj, Over.w])`. Establish `bij : ∀ T, Function.Bijective (φ T)` using `fun T => by`. Use `⟨fun x x' e => Over.OverMorphism.ext ((cancel_mono j).1 ((hφ T x).unique_left c (e ▸ hφ T x'))), fun ξ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `TorusCoord.exists_point c (T.hom ≫ inv (thick R ⊥ 0)) (by simp) ξ`. Use `⟨Over.homMk (y ≫ (fstG (⊥ : Ideal R) 0 H).left) ((Category.assoc _ _ _).trans ((congrArg (y ≫ ·) (Over.w (fstG (⊥ : Ideal R) 0 H))).trans (hy.comp_hom c))), (hφ T _).unique_right c ?_⟩` and prove the remaining obligations. Establish `: (y ≫ (fstG (⊥ : Ideal R) 0 H).left) ≫ j = y` using `by simp [j]`. Conclude with `this.symm ▸ hy`. Use `⟨fun T => Equiv.ofBijective _ (bij T), ⟨fun T' T k x => (hφ T x).isPull c ?_, fun T x x' => ?_⟩, hφ⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hφ T' (k ≫ x)` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Category.assoc]`. Then use the resulting hypothesis. Take `⟨T, ⟨⟨⟩⟩, s⟩` from `T`. Express the relevant statement in the definitionally equal form `T ⟶ Spec (CommRingCat.of R) at s`. Take `⟨σ, rfl⟩ : ∃ σ, s = σ ≫ thick R ⊥ 0` from `⟨s ≫ inv (thick R ⊥ 0), by simp⟩`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `Z : Over (Spec (CommRingCat.of (R ⧸ (⊥ : Ideal R) ^ (0 + 1))))` to `Over.mk σ`. Take `⟨a, ha⟩` from `FormalPoint.exists_lift_fstG (Z := Z) x`. Take `⟨a', ha'⟩` from `FormalPoint.exists_lift_fstG (Z := Z) x'`. Establish `key : ∀ (b : Z ⟶ thickObj R ⊥ 0 H) (w : (Over.map (thick R ⊥ 0)).obj Z ⟶ H), (Over.map (thick R ⊥ 0)).map b ≫ fstG ⊥ 0 H = w → φ _ w = TorusCoord.pointsEquiv c Z b`. Introduce and unpack `b _ rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((TorusCoord.toGtPt_eq_iff c b _).2 ?_).symm` and prove the remaining obligations. Establish `e : ((Over.map (thick R ⊥ 0)).map b ≫ fstG ⊥ 0 H).left ≫ j = b.left`. Rewrite using `[Over.comp_left, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Both sides reduce to the same expression. Conclude with `e ▸ hφ _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `key a x ha`. Establish `e₂` using `key a' x' ha'`. Establish `e₃` using `key (a * a') (x * x') (by rw [FormalPoint.map_mul_fstG, ha, ha'])`. Use `TorusCoord.isAdd_pointsEquiv c hG a a'` as an intermediate fact. Rewrite `this` using `[← e₁, ← e₂, ← e₃]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_represents {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {H : Over (Spec (CommRingCat.of R))}
     [GrpObj H] [IsCommMonObj H] (hG : GlobalFnsSt) (c : GtCoord ⊥ D 0 H) :
@@ -204,13 +196,13 @@ theorem exists_represents {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {H
     exact this
 
 /- English proof (translation)
-Take `⟨H, _, _, h⟩` from `exists_isGt hG (splitExt D)`. Take `⟨c⟩` from `nonempty_gtCoord hG h ⊥ 0`. Take `⟨Φ, h₁, h₂⟩` from `exists_represents hG c`. Use `⟨H, inferInstance, Φ, (GlobalTheory.UnitRigidity.smooth_geometricallyConnected_of_isGt _ H h).1, h₁, fun V _ _ y e z hb hs => ?_⟩` and prove the remaining obligations. Set `j` to `inv (fstG (⊥ : Ideal ℂ) 0 H).left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hφ : ∀ t χ, DegPre.gtφT D _ (Φ _ (e t)).b χ = fun k => ((e t).left ≫ j) ≫ D.Oφ c.pG χ k` using `fun t χ =>`. Use function extensionality and compare the values at `fun k => (Category.id_comp _).symm.trans ((TorusCoord.comp_eq_of_left (Φ _ (e t)).b c.pG (𝟙 _) ((e t).left ≫ j) ((Category.id_comp _).trans (h₂ _ (e t)).1)).1 χ k)`. Establish `H₁ : HolAt (fun t => (show Sp ℂ ⟶ _ from (e t).left ≫ j)) z`. Use `holAt_of_coord c ?_ fun χ a ha => ?_` and prove the remaining obligations. Use `hb.comp (inv (fstG (⊥ : Ideal ℂ) 0 D.P.A).left)` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(congrArg (fun q => HolAt q z) (funext fun t => ?_)).mp this` and prove the remaining obligations. Conclude with `((IsIso.eq_comp_inv (fstG (⊥ : Ideal ℂ) 0 D.P.A).left).2 ((h₂ _ (e t)).1.trans (Category.assoc _ _ _).symm).symm).symm`. Use `hs χ a (by rw [hφ]; exact (le_wchart_iff _ _ _ a).2 ha)` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Conclude with `(valR_of_corr (A := ℂ) D.P.isLB ((Φ _ (e t)).isGen χ) (c.t_gen χ) _ (hφ t χ) ((h₂ _ (e t)).2 χ) a).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `H₁.comp (fstG (⊥ : Ideal ℂ) 0 H).left` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Simplify using `[j]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_model (hG : GlobalFnsSt) (D : DegPre ℂ) :
     ∃ (H : Over (Sp ℂ)) (_ : GrpObj H) (Φ : ∀ T, (T ⟶ H) ≃ GtPt D T), Smooth H.hom ∧ Represents Φ ∧

@@ -30,13 +30,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V`.
+A detailed English derivation is pending.
 -/
 theorem isHermND_gram (V : HSp D) : IsHermND D.sp.cm.sig V.gram :=
   (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V
 
 /- English proof (translation)
-Take `⟨⟨e, he, -⟩, w', -, -, h1, -⟩` from `SplitChart.split_chart_and_places (isCMExt_host D) (isHermND_gram V) (frameLat_fg V) (SelfDual.isLattice_frameLat V).span_eq_top h hv (SelfDual.isSelfDualAt_frameLat D V v)`. Conclude with `⟨⟨e, he⟩, h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chart (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h : w.under (𝓞 D.host.F) = v) (hv : IsSplit (E := D.host.E) v) :

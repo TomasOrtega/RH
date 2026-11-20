@@ -10,13 +10,11 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial Matrix
 
 /- English proof (translation)
-Establish `hm : (∏ x ∈ s, (Polynomial.X - Polynomial.C (r x))).Monic` using `Polynomial.monic_prod_of_monic _ _ (fun x _ => Polynomial.monic_X_sub_C _)`. Establish `hdeg : (∏ x ∈ s, (Polynomial.X - Polynomial.C (r x))).natDegree = s.card`. Rewrite using `[Polynomial.natDegree_prod_of_monic _ _ (fun x _ => Polynomial.monic_X_sub_C _), Finset.sum_congr rfl (fun x _ => Polynomial.natDegree_X_sub_C _), Finset.sum_const, smul_eq_mul, mul_one]`. Establish `hs : Polynomial.Splits ((∏ x ∈ s, (Polynomial.X - Polynomial.C (r x))).map (RingHom.id ℂ))`. Rewrite using `[Polynomial.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.Splits.prod (fun x _ => Polynomial.Splits.X_sub_C _)`. Establish `h` using `Polynomial.coeff_le_of_roots_le (f := RingHom.id ℂ) (B := B) i hm hs (by`. Introduce `z hz`. Rewrite `hz` using `[Polynomial.map_id]`. Establish `hz'` using `(Polynomial.mem_roots hm.ne_zero).1 hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz'` using `[Polynomial.IsRoot, Polynomial.eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨x, hx, hx0⟩` from `hz'`. Rewrite `hx0` using `[Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_eq_zero]`. Rewrite using `[hx0]`. Conclude with `hB x hx)`.
-
-Rewrite `h` using `[Polynomial.map_id, hdeg]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem PieceRootProductPolynomial.coeff_bound {ι : Type*} (s : Finset ι) (r : ι → ℂ) (B : ℝ)
     (hB : ∀ x ∈ s, ‖r x‖ ≤ B) (i : ℕ) :
@@ -41,11 +39,11 @@ theorem PieceRootProductPolynomial.coeff_bound {ι : Type*} (s : Finset ι) (r :
   rwa [Polynomial.map_id, hdeg] at h
 
 /- English proof (translation)
-Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.finsetSum_coeff]`. Repeatedly rewrite using `[Polynomial.coeff_C_mul_X_pow]`. Distinguish the cases in `hi : i < k`. Rewrite using `[Finset.sum_eq_single ⟨i, hi⟩, if_neg hi.ne, if_pos rfl, if_pos hi, zero_add]`. Introduce `j _ hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hj (Fin.ext h.symm)`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero, if_neg hi, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hi (h ▸ j.isLt)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PieceRootProductPolynomial.coeff_monic_of_coeffs {R : Type*} [CommRing R] (k : ℕ) (p : ℕ → R)
     (i : ℕ) :
@@ -67,19 +65,17 @@ theorem PieceRootProductPolynomial.coeff_monic_of_coeffs {R : Type*} [CommRing R
     exact hi (h ▸ j.isLt)
 
 /- English proof (translation)
-Introduce `n d N k A Z c m Q O F hm hQ hroot hcov hO hF hOF hk`. Establish `hhol` using `h1 n d N A Z c Q O F hcov hO hF hOF`. Take `⟨C, M, hC⟩` from `h2 d m hm`. Establish `hfin : ∀ y : Fin d → ℂ, eval y Q ≠ 0 → {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = y}.Finite` using `fun y hy => (hcov y hy).1.subset (fun x hx => ⟨hx.1, hx.2.2⟩)`. Establish `hprod : ∀ (y : Fin d → ℂ) (hy : eval y Q ≠ 0), (∏ᶠ x ∈ {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = y}, (Polynomial.X - Polynomial.C (∑ j, c j * x j))) = ∏ x ∈ (hfin y hy).toFinset, (Polynomial.X - Polynomial.C (∑ j, c j * x j))` using `fun y hy => finprod_mem_eq_finite_toFinset_prod _ (hfin y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : ∀ (y : Fin d → ℂ) (hy : eval y Q ≠ 0), (hfin y hy).toFinset.card = k` using `fun y hy => by rw [← Set.ncard_eq_toFinset_card _ (hfin y hy), hk y hy]`. Establish `hgrowth : ∀ (i : ℕ) (y : Fin d → ℂ), eval y Q ≠ 0 → ‖(∏ᶠ x ∈ {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = y}, (Polynomial.X - Polynomial.C (∑ j, c j * x j))).coeff i‖ ≤ ((k.choose i : ℝ) * |C| ^ (k - i)) * (1 + ‖y‖) ^ (M * (k - i))`. Introduce `i y hy`. Rewrite using `[hprod y hy]`. Establish `hb` using `PieceRootProductPolynomial.coeff_bound (hfin y hy).toFinset (fun x => ∑ j, c j * x j) (|C| * (1 + ‖y‖) ^ M) (fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hxZ, -, hxy⟩` from `(Set.Finite.mem_toFinset _).1 hx`. Establish `h` using `hC y _ (hxy ▸ hroot x hxZ)`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))) i`. Rewrite `hb` using `[hcard y hy]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hp : ∀ i : ℕ, ∃ p : MvPolynomial (Fin d) ℂ, ∀ y : Fin d → ℂ, eval y Q ≠ 0 → (∏ᶠ x ∈ {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = y}, (Polynomial.X - Polynomial.C (∑ j, c j * x j))).coeff i = eval y p` using `fun i => h3 d Q _ _ _ hQ (hhol i) (hgrowth i)`. Use `choose p hp using hp`. Use `⟨Polynomial.X ^ k + ∑ j : Fin k, Polynomial.C (p j) * Polynomial.X ^ (j : ℕ), Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt _), ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_add_eq_left_of_degree_lt, Polynomial.natDegree_X_pow]`. Rewrite using `[Polynomial.degree_X_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Polynomial.degree_sum_fin_lt _`. Establish `hmon : (∏ x ∈ (hfin y hy).toFinset, (Polynomial.X - Polynomial.C (∑ j, c j * x j))).Monic` using `Polynomial.monic_prod_of_monic _ _ (fun x _ => Polynomial.monic_X_sub_C _)`. Establish `hdeg : (∏ x ∈ (hfin y hy).toFinset, (Polynomial.X - Polynomial.C (∑ j, c j * x j))).natDegree = k`. Rewrite using `[Polynomial.natDegree_prod_of_monic _ _ (fun x _ => Polynomial.monic_X_sub_C _), Finset.sum_congr rfl (fun x _ => Polynomial.natDegree_X_sub_C _), Finset.sum_const, smul_eq_mul, mul_one, hcard y hy]`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coeff_map, PieceRootProductPolynomial.coeff_monic_of_coeffs]`. Distinguish the cases in `hi : i < k`. Rewrite using `[if_pos hi, hp i y hy]`. Rewrite using `[if_neg hi, hprod y hy]`. Distinguish the cases in `hik : i = k`.
-
-Rewrite using `[if_pos hik, map_one, hik, ← hdeg]`. Conclude with `hmon.coeff_natDegree.symm`. Rewrite using `[if_neg hik, map_zero, Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PieceRootProductPolynomial.proof (h1 : PieceCoefficientsHolomorphic.Statement)
     (h2 : MonicRootGrowth.Statement) (h3 : GrowthOffHypersurfacePolynomial.Statement) :

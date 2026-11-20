@@ -22,33 +22,33 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.TorusModel in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `V _ _ D C _ _ N ν gm₀ htan`. Establish `hG : GlobalFnsSt` using `GlobalTheory.SemiRigid.globalFns`. Take `⟨H, _, _, hH⟩` from `exists_isGt hG (splitExt D)`. Take `⟨Φ, hp, ha⟩` from `exists_points hG hH`. Establish `hz : ∀ T, (Φ T 1).IsZero` using `fun T => GtVec.isZero_of_isAdd (by simpa using ha T 1 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTF : spMap (toF V C) = (TF (R` using `V) C).hom := by`. Simplify using `[spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hTE : spMap (dualMap (toF V C)) ≫ (epsR V).hom = (TE V C).hom`. Rewrite using `[TanLift.dualMap_over, hTF]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `hh : TE V C ⟶ epsR V` to `Over.homMk (spMap (dualMap (toF V C))) hTE`. Take `⟨x₀, rfl⟩` from `(Φ (epsR V)).surjective gm₀`. Use `⟨Φ _ (hh ≫ x₀), hp _ _ hh x₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨o₀, ho₀, hpo⟩` from `htan`. Set `r : baseOver (Sp V) ⟶ epsR V` to `Over.homMk (redE V) (TanLift.redE_over V)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `e₀ : o₀ = Φ _ (r ≫ x₀)` using `isPull_unique hpo (hp _ _ r x₀)`. Establish `e₁ : r ≫ x₀ = 1` using `(Φ _).injective ((e₀.symm.trans (GtVec.isZero_unique ho₀ (hz _))))`. Set `k : TF (R` to `V) C ⟶ TE V C := Over.homMk (redE C) (by show redE C ≫ spMap (algebraMap C (DualNumber C)) ≫ (TF (R := V) C).hom = (TF (R := V) C).hom`. Rewrite using `[← Category.assoc, GtVec.red_comp, Category.id_comp])`. Set `tf : TF (R` to `V) C ⟶ baseOver (Sp V) := Over.homMk (TF (R := V) C).hom (Category.comp_id _)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e₂ : k ≫ hh = tf ≫ r`. Use `ext`. Use `show redE C ≫ spMap (dualMap (toF V C)) = (TF (R := V) C).hom ≫ redE V`. Rewrite using `[← hTF]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e₃ : k ≫ hh ≫ x₀ = 1`. Rewrite using `[← Category.assoc, e₂, Category.assoc, e₁, MonObj.comp_one]`. Establish `hpk` using `hp _ _ k (hh ≫ x₀)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpk` using `[e₃]`. Set `g` to `Φ (TF (R := V) C) 1`. Use `⟨⟨g.b, g.s, g.isGen, g.s_zero, g.mult⟩, ⟨(hz _).1, (hz _).2⟩, hpk⟩` and prove the remaining obligations. Introduce `hb`. Establish `e` using `((TorusModel.isPull_iff _ _ _).1 (hp _ _ hh x₀)).1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hb]`. Simplify using the standard rewrite rules. Introduce `a χ hval`. Establish `hloc : IsLocalRing (DualNumber C)` using `TanLift.isLocalRing_dualNumber C`. Establish `hlocH : IsLocalHom (TrivSqZeroExt.fstHom C C C).toRingHom` using `⟨fun x hx => (TrivSqZeroExt.isUnit_iff_isUnit_fst).2 hx⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set gm := Φ _ (hh ≫ x₀)`. Set `J' : (Sp (DualNumber C) ⟶ D.P.A.left) → D.P.L.ι` to `fun ψ => ν.J (redE C ≫ ψ)`. Establish `hJ' : Good D.P.L (cpt (DualNumber C)) J'` using `fun ψ => by`. Establish `h1` using `ν.good (redE C ≫ ψ) (show cpt C ∈ (⊤ : (Sp C).Opens) from trivial)`. Establish `hc : (redE C) (cpt C) = cpt (DualNumber C)` using `IsLocalRing.comap_closedPoint (TrivSqZeroExt.fstHom C C C).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ψ ((redE C) (cpt C)) ∈ D.P.L.U (J' ψ)` using `h1`. Rewrite `h2` using `[hc]`. Conclude with `h2`. Establish `ht` using `(top_le_iff_cpt (𝟙 (Sp (DualNumber C))) _).2 (hJ'.mem (DegPre.gtφT D (TE V C) gm.b χ) (𝟙 _))`. Apply `toStkA_injective (A := DualNumber C)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l1` using `toStkA_valR (𝟙 (Sp (DualNumber C))) _ (cpt (DualNumber C)) ht ((gm.s χ).s _)`. Establish `l2` using `(val_corr hJ' ((hp _ _ hh x₀).2 χ) (𝟙 _)).trans (val_pull hJ' _ _ _)`. Establish `l3` using `hval _ (𝟙 _ ≫ hh.left) _ _ hJ'`. Establish `hv1 : valR (𝟙 (Sp (DualNumber V))) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber V))).inv.hom (1 + TrivSqZeroExt.inr a)) = 1 + TrivSqZeroExt.inr a`. Establish `h0 : ⊤ ≤ 𝟙 (Sp (DualNumber V)) ⁻¹ᵁ ⊤` using `fun _ _ => trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[valR, dif_pos h0]`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Use `erw [show (homOfLE h0) = 𝟙 (⊤ : (Sp (DualNumber V)).Opens) from rfl]`. Simplify using the standard rewrite rules. Establish `l4` using `FormalValue.toStkA_map_valR (dualMap (toF V C)) (𝟙 (Sp (DualNumber V))) ⊤ (cpt (DualNumber C)) (fun _ _ => trivial) ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber V))).inv.hom (1 + TrivSqZeroExt.inr a))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `l4` using `[hv1, Category.comp_id]`. Establish `hd : dualMap (toF V C) (1 + TrivSqZeroExt.inr a) = 1 + TrivSqZeroExt.inr (toF V C a)`. Apply the tactic sequence `ext <;> simp [dualMap]`. Rewrite `l4` using `[hd]`. Rewrite using `[l4]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `l1.trans ?_` and prove the remaining obligations. Use `(congrArg Units.val l2).trans ?_` and prove the remaining obligations. Use `l3.trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (C : Type) [Field C] [Algebra (FractionRing V) C] (N : NumD C) (ν : NumOf D C N) (gm₀ : GtPt D (epsR V)), GtTan gm₀ → ∃ gm : GtPt D (TE V C), GtPt.IsPull (spMap (dualMap (toF V C))) gm₀ gm ∧ (∃ o : GtPtF D C, o.IsZero ∧ GtPt.IsPullF C (redE C) gm o) ∧ (gm₀.b = DegPre.zeroT D (epsR V) → gm.b = DegPre.zeroT D (TE V C)) ∧ ∀ (a : V) (χ : D.X), (∀ (Z : Scheme.{0}) (q : Z ⟶ (epsR V).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), ReciprocityTheory.ChartRestriction.G.Geo.Tor.Good D.P.L z J → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.val (gm₀.s χ) q z J).val = ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber V))).inv.hom (1 + TrivSqZeroExt.inr a))) → vE (gm.s χ) (𝟙 _) ν.J = 1 + TrivSqZeroExt.inr (toF V C a) := by
   intro V _ _ D C _ _ N ν gm₀ htan

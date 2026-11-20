@@ -32,14 +32,14 @@ structure ATower (R₀ : Type u) [CommRing R₀] (p : ℕ) where
 variable {R₀ : Type u} [CommRing R₀]
 
 /- English proof (translation)
-Rewrite using `[LHom.ker, Submodule.restrictScalars_mem, Tw.ker_eq]`. Conclude with `Ideal.subset_span (Set.mem_singleton _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ATower.ξ_mem {p : ℕ} (Tw : ATower R₀ p) (n : ℕ) : Tw.ξ n ∈ (Tw.π n).ker := by
   rw [LHom.ker, Submodule.restrictScalars_mem, Tw.ker_eq]
   exact Ideal.subset_span (Set.mem_singleton _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Tw.surj n, by rw [Tw.ker_eq, sq, Ideal.span_singleton_mul_span_singleton, Tw.ξ_sq, Ideal.span_singleton_eq_bot]⟩`.
+Supply the required witnesses or components.
 -/
 lemma ATower.sqZero {p : ℕ} (Tw : ATower R₀ p) (n : ℕ) : (Tw.π n).SqZero := ⟨Tw.surj n, by
     rw [Tw.ker_eq, sq, Ideal.span_singleton_mul_span_singleton, Tw.ξ_sq, Ideal.span_singleton_eq_bot]⟩

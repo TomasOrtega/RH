@@ -11,7 +11,7 @@ open GlobalTheory.CompanionTheory.ConeHaar
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.ConeLin.cone_lin` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCongruenceActionDeterminant.lean&line=98#L98)
 -/

@@ -16,7 +16,7 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪`. Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Use `haveI : CharZero (FractionRing V) := (RingHom.charZero_iff (IsFractionRing.injective V (FractionRing V))).1 inferInstance`. Conclude with `GlobalTheory.ThetaGeneric.exists_th_ne_zero GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 _ _ X₁.S X₁.ρ (FractionRing V) 𝔪.yK`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UMem.exists_th_ne_zero : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0})
     (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type)

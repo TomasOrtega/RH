@@ -17,13 +17,13 @@ section Nhd
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) c`. Establish `hb0 : algebraMap (𝓞 E) E b ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero hb`. Establish `ha0 : algebraMap (𝓞 E) E a ≠ 0` using `fun h => hc (by rw [h, zero_div])`. Use `set A : AfE F E := inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E a) with hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B : AfE F E := inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E a)⁻¹ with hB`. Establish `hAB : A * B = 1`. Rewrite using `[hA, hB, ← map_mul, mul_inv_cancel₀ ha0, map_one]`. Establish `hop : IsOpen ((fun y : AfE F E => B * y) ⁻¹' (Formalism.L2.Herm.intAf F E : Set (AfE F E)))` using `rlt_isOpen_intAf.preimage (continuous_const.mul continuous_id)`. Establish `h0 : (0 : AfE F E) ∈ (fun y : AfE F E => B * y) ⁻¹' (Formalism.L2.Herm.intAf F E : Set (AfE F E))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `filter_upwards [hop.mem_nhds h0] with y hy`. Establish `hw : ∀ Q : HeightOneSpectrum (𝓞 E), Valued.v (afIso F E (B * y) Q) ≤ 1` using `(mem_rInt_iff F E (B * y)).1 hy`. Establish `hy' : y = A * (B * y)` using `by rw [← mul_assoc, hAB, one_mul]`. Use `⟨algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E b) * adAt F P (B * y), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (by rw [valued_algebraMap]; exact P.valuation_le_one b) (by rw [adAt_apply]; exact hw P)`. Establish `e : adAt F P y = algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E a) * adAt F P (B * y)` using `by conv_lhs => rw [hy', map_mul, hA, adAt_inclE]`. Rewrite using `[e, ← mul_assoc, ← map_mul, div_mul_cancel₀ _ hb0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adAt_nhds (P : HeightOneSpectrum (𝓞 E)) {c : E} (hc : c ≠ 0) :
     ∀ᶠ y in 𝓝 (0 : AfE F E), ∃ z ∈ P.adicCompletionIntegers E, adAt F P y = algebraMap E (P.adicCompletion E) c * z := by
@@ -53,7 +53,7 @@ theorem adAt_nhds (P : HeightOneSpectrum (𝓞 E)) {c : E} (hc : c ≠ 0) :
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `e : ((rhoP F P w : GL (Fin n) (P.adicCompletion E)) : Matrix (Fin n) (Fin n) (P.adicCompletion E)) i j = adAt F P ((w : Matrix (Fin n) (Fin n) (AfE F E)) i j)` using `rfl`. Rewrite using `[e, map_sub, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bc_adAt_sub (P : HeightOneSpectrum (𝓞 E)) (w : GL (Fin n) (AfE F E)) (i j : Fin n) :
     ((rhoP F P w : GL (Fin n) (P.adicCompletion E)) : Matrix (Fin n) (Fin n) (P.adicCompletion E)) i j -
@@ -65,7 +65,7 @@ theorem bc_adAt_sub (P : HeightOneSpectrum (𝓞 E)) (w : GL (Fin n) (AfE F E)) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j` and use `by have := Subring.add_mem _ (h i j) (qbInt_one (v := P) (F := E) (n := n) i j) simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_of_sub {P : HeightOneSpectrum (𝓞 E)} {A : Matrix (Fin n) (Fin n) (P.adicCompletion E)}
     (h : ∀ i j, A i j - (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) i j ∈ P.adicCompletionIntegers E) : qbInt A := fun i j => by
@@ -73,15 +73,13 @@ theorem int_of_sub {P : HeightOneSpectrum (𝓞 E)} {A : Matrix (Fin n) (Fin n) 
   simpa using this
 
 /- English proof (translation)
-Establish `hval : ∀ (c' : E), c' ≠ 0 → ∀ i j : Fin n, ∀ᶠ u : GL (Fin n) (AfE F E) in 𝓝 1, ∃ z ∈ P.adicCompletionIntegers E, adAt F P ((u : Matrix (Fin n) (Fin n) (AfE F E)) i j - (1 : Matrix (Fin n) (Fin n) (AfE F E)) i j) = algebraMap E (P.adicCompletion E) c' * z`. Introduce `c' hc' i j`. Establish `hcont : Continuous fun u : GL (Fin n) (AfE F E) => (u : Matrix (Fin n) (Fin n) (AfE F E)) i j - (1 : Matrix (Fin n) (Fin n) (AfE F E)) i j` using `(Units.continuous_val.matrix_elem i j).sub continuous_const`. Establish `ht` using `hcont.tendsto 1`. Simplify using `only [Units.val_one, sub_self] at ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `ht.eventually (adAt_nhds P hc')`. Establish `hinv : ∀ i j : Fin n, ∀ᶠ u : GL (Fin n) (AfE F E) in 𝓝 1, ∃ z ∈ P.adicCompletionIntegers E, adAt F P (((u⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j - (1 : Matrix (Fin n) (Fin n) (AfE F E)) i j) = algebraMap E (P.adicCompletion E) 1 * z`. Introduce `i j`. Establish `ht : Filter.Tendsto (fun u : GL (Fin n) (AfE F E) => u⁻¹) (𝓝 1) (𝓝 1)`. Simplify using `using (continuous_inv (G := GL (Fin n) (AfE F E))).tendsto 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `ht.eventually (hval 1 one_ne_zero i j)`. Establish `h1` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hval c hc i j`. Establish `h2` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hval 1 one_ne_zero i j`. Establish `h3` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hinv i j`. Use `filter_upwards [h1, h2, h3] with u a1 a2 a3`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨int_of_sub fun i j => ?_, int_of_sub fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `a2 i j`. Rewrite using `[bc_adAt_sub, e, map_one, one_mul]`. Conclude with `hz`. Take `⟨z, hz, e⟩` from `a3 i j`.
-
-Rewrite using `[← map_inv, bc_adAt_sub, e, map_one, one_mul]`. Conclude with `hz`. Take `⟨z, hz, e⟩` from `a1 i j`. Conclude with `⟨z, hz, by rw [Matrix.sub_apply, bc_adAt_sub, e]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_localComponent_mem (P : HeightOneSpectrum (𝓞 E)) {c : E} (hc : c ≠ 0) :
     ∀ᶠ u : GL (Fin n) (AfE F E) in 𝓝 1, rhoP F P u ∈ qbK (algebraMap E (P.adicCompletion E) c) := by
@@ -117,7 +115,7 @@ theorem eventually_localComponent_mem (P : HeightOneSpectrum (𝓞 E)) {c : E} (
     exact ⟨z, hz, by rw [Matrix.sub_apply, bc_adAt_sub, e]⟩
 
 /- English proof (translation)
-Establish `hcont : Continuous fun x : GL (Fin n) (AfE F E) => t⁻¹ * x * t⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Establish `ht` using `hcont.tendsto 1`. Simplify using `only [mul_one, inv_inv, inv_mul_cancel] at ht`. Conclude with `ht.eventually (eventually_localComponent_mem P hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rhoT_nhds (P : HeightOneSpectrum (𝓞 E)) (t : GL (Fin n) (AfE F E)) {c : E} (hc : c ≠ 0) :
     ∀ᶠ x : GL (Fin n) (AfE F E) in 𝓝 1, rhoT F P t x ∈ qbK (algebraMap E (P.adicCompletion E) c) := by
@@ -130,18 +128,18 @@ theorem rhoT_nhds (P : HeightOneSpectrum (𝓞 E)) (t : GL (Fin n) (AfE F E)) {c
 end Nhd
 
 /- English proof (translation)
-Introduce `k hk` and use `⟨hk.1, hk.2.1, 1, Θ.H.one_mem, by simpa using hk⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem qbK_le_locLev {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ} (P : HeightOneSpectrum (𝓞 E))
     (Θ : LevI E K n P) (d : E) : qbK (algebraMap E (P.adicCompletion E) d) ≤ locLev P Θ d := fun k hk =>
   ⟨hk.1, hk.2.1, 1, Θ.H.one_mem, by simpa using hk⟩
 
 /- English proof (translation)
-Introduce `F E K _ _ _ _ _ _ _ σ n J Q U t Θ d hd hU`. Establish `hW : ∀ P : Q, IsOpen {x : UPts σ J (FiniteAdeleRing (𝓞 F) F) | (x : GL (Fin n) (AfE F E)) ∈ (locLev P.1 (Θ P) (d P)).comap (rhoT F P.1 t)}`. Introduce `P`. Set `W : Subgroup (UPts σ J (FiniteAdeleRing (𝓞 F) F))` to `((locLev P.1 (Θ P) (d P)).comap (rhoT F P.1 t)).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))`. Establish `hn : (W : Set (UPts σ J (FiniteAdeleRing (𝓞 F) F))) ∈ 𝓝 (1 : UPts σ J (FiniteAdeleRing (𝓞 F) F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ht : Filter.Tendsto (fun x : UPts σ J (FiniteAdeleRing (𝓞 F) F) => (x : GL (Fin n) (AfE F E))) (𝓝 1) (𝓝 1)` using `continuous_subtype_val.tendsto 1`. Use `filter_upwards [ht.eventually (rhoT_nhds P.1 t (hd P))] with x hx`. Conclude with `qbK_le_locLev P.1 (Θ P) (d P) hx`. Conclude with `Subgroup.isOpen_of_mem_nhds W hn`. Establish `e : {x : UPts σ J (FiniteAdeleRing (𝓞 F) F) | (x : GL (Fin n) (AfE F E)) ∈ topU U t Θ d} = {x : UPts σ J (FiniteAdeleRing (𝓞 F) F) | (x : GL (Fin n) (AfE F E)) ∈ U} ∩ ⋂ P : Q, {x : UPts σ J (FiniteAdeleRing (𝓞 F) F) | (x : GL (Fin n) (AfE F E)) ∈ (locLev P.1 (Θ P) (d P)).comap (r …`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `only [topU, Subgroup.mem_inf, Subgroup.mem_iInf, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[e]`. Conclude with `hU.inter (isOpen_iInter_of_finite hW)`.
+A detailed English derivation is pending.
 -/
 theorem topU_open : ∀ (F E K : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (Q : Finset (HeightOneSpectrum (𝓞 E))) (U : Subgroup (GL (Fin n) (AfE F E))) (t : GL (Fin n) (AfE F E)) (Θ : LevQFam E K n Q) (d : Q → E), (∀ P, d P ≠ 0) → (letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F); IsOpen {x : UPts σ J (FiniteAdeleRing (𝓞 F) F) | (x : GL _ _) ∈ U}) → (letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F); IsOpen {x : UPts σ J (FiniteAdeleRing (𝓞 F) F) | (x : GL _ _) ∈ topU U t Θ d}) := by
   intro F E K _ _ _ _ _ _ _ σ n J Q U t Θ d hd hU

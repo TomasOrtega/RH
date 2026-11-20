@@ -17,15 +17,15 @@ open GlobalTheory.TorusExt GlobalTheory.BXOf GlobalTheory.UnramTorsion
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Introduce `R _ _ D hB F _ _ T _ φ₁ hφ J₀ h₀ J hJ eJ hψ k p b hb hbA χ`. Set `H : Subgroup Fˣ` to `(Units.map T.subtype.toMonoidHom).range`. Set `w : ((TF (R` to `R) F).left.presheaf.stalk (closedPoint F))ˣ →* Fˣ ⧸ H := (QuotientGroup.mk' H).comp (sig F)`. Set `ρ : TF (R` to `R) F ⟶ Over.mk (spMap φ₁) := Over.homMk (spMap T.subtype) (by show spMap T.subtype ≫ spMap φ₁ = jFK (R := R) F ≫ jK R`. Rewrite using `[jFK, jK, spMap, spMap, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `RingHom.ext hφ)`. Set `b' : Over.mk (spMap φ₁) ⟶ D.P.A` to `Over.homMk b hbA`. Establish `hb' : ρ ≫ b' = p.g.b` using `Over.OverMorphism.ext hb`. Establish `mem : ∀ s : ((TF (R` using `R) F).left.presheaf.stalk (closedPoint F))ˣ, (∃ u : Tˣ, (sig F s : F) = ((u : T) : F)) → w s = 1 := fun s ⟨u, hu⟩ => by show (QuotientGroup.mk' H) (sig F s) = 1`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `⟨u, Units.ext hu.symm⟩`. Establish `hw : ∀ (Y : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y ⟶ D.P.A.left)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb D.P.L φ ε)) (r : (Over.mk (spMap φ₁)).left ⟶ Y), w (val t (ρ.left ≫ r) (closedPoint F) J) = 1`. Introduce `Y K _ φ ε t r`. Conclude with `mem _ (val_integral T.subtype h₀ eJ t r)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁` using `w_nsmul ρ hJ w hw p.g b' hb' χ k`. Rewrite `e₁` using `[qk_nsmul hB, iota_val hB _ _ hJ, w_tau ρ hJ w hw, mem _ (hψ _), mem _ (hψ _), mem _ (hψ _)]`. Simplify using `only [inv_one, _root_.mul_one] at e₁`. Establish `e₂ : (QuotientGroup.mk' H) (sig F (charVal p.g χ (closedPoint F) J) ^ k) = 1`. Rewrite using `[map_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `e₁.symm`. Rewrite `e₂` using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Take `⟨u, hu⟩` from `e₂`. Conclude with `⟨u, by rw [← Units.val_pow_eq_pow_val, ← hu]; rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem charVal_pow_unit : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (T : Subring F) [IsLocalRing T] (φ₁ : R →+* T), (∀ r, (φ₁ r : F) = algebraMap (FractionRing R) F (algebraMap R _ r)) → ∀ (J₀ : D.P.A.left → D.P.L.ι), (∀ x, x ∈ D.P.L.U (J₀ x)) → ∀ (J : ((TF (R := R) F).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L (Z := (TF (R := R) F).left) (closedPoint F) J → (∀ ψ : Sp T ⟶ D.P.A.left, J (spMap T.subtype ≫ ψ) = J₀ (ψ (closedPoint T))) → (∀ χ, ∃ u : Tˣ, (GlobalTheory.BXOf.sig F (val (D.psi χ) ((𝟙 (TF (R := R) F) :).left ≫ jFK (R := R) F) (closedPoint F) J) : F) = ((u : T) : F)) → ∀ (k : ℕ) (p : QkPt D F k) (b : Sp T ⟶ D.P.A.left), spMap T.subtype ≫ b = p.g.b.left → b ≫ D.P.A.hom = spMap φ₁ → ∀ χ, ∃ u : Tˣ, (GlobalTheory.BXOf.sig F (GlobalTheory.TorusExt.charVal p.g χ (closedPoint F) J) : F) ^ k = ((u : T) : F) := by
   intro R _ _ D hB F _ _ T _ φ₁ hφ J₀ h₀ J hJ eJ hψ k p b hb hbA χ

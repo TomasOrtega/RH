@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.PlkProper
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k V hV`. Establish `: IsProper s.T.Z.s`. Take `⟨N, i, _, hi⟩` from `s.T.Z.proj`. Use `isProper_str (𝓞 ↥κ.c.F) N` as an intermediate fact. Rewrite using `[← hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `: IsIso (spMap κ.e.toRingHom)`. Establish `: IsIso (CommRingCat.ofHom κ.e.toRingHom)` using `κ.e.toCommRingCatIso.isIso_hom`. Use `infer_instance`. Establish `: IsProper ((Φ.C k).π ≫ genStr s.T.Z ≫ spMap κ.e.toRingHom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(Φ.C k).π_str]`. Use `infer_instance`. Establish `: IsProper (Φ.C k).π` using `IsProper.of_comp (Φ.C k).π (genStr s.T.Z ≫ spMap κ.e.toRingHom)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isProper_restrict_isoSpec : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (V : (gen s.T.Z).Opens) (hV : IsAffineOpen V), IsProper (((Φ.C k).π ∣_ V) ≫ hV.isoSpec.hom) := by
   intro D A N j S κ s Φ k V hV

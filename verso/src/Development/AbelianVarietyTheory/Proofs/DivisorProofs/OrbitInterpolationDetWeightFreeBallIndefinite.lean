@@ -23,19 +23,19 @@ namespace GlobalTheory.OrbitInterpWeight
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `_ _ _ h` and use `if_congr h rfl rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockConst_deMul {r : ℕ} (X : Data E r) (s : ℕ) : GlobalTheory.Up.BlockConst X (deMul X.Ψ r X.p0 s) :=
   fun _ _ _ h => if_congr h rfl rfl
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hs`. Establish `hk : (k + k) / 2 = k` using `by omega`. Introduce `τ`. Use `⟨fun i j hj hp => ?_, fun i0 i1 h0' h1' => ?_⟩` and prove the remaining obligations. Establish `e : ((j : ℕ) < X.p0 ↔ (i : ℕ) < X.p0)` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj' : ((j : ℕ) : ℤ) = (i : ℕ) + 1` using `by exact_mod_cast hj`. Simplify using `only [Pi.sub_apply, deMul, kapW, hj']`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Rewrite using `[if_pos (e.2 hi), if_pos hi]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_neg (mt e.1 hi), if_neg hi]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Pi.sub_apply, deMul, kapW, h0', h1', hk]`. Rewrite using `[if_pos h0, if_neg (by omega)]`. Establish `hr : ((r - 1 : ℕ) : ℤ) = (r : ℤ) - 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gapsPairing_deMul {r : ℕ} (X : Data E r) (h0 : 0 < X.p0) (h1 : X.p0 < r) {s : ℕ} (hs : Even s) :
     GlobalTheory.IndefiniteRowSideFullHecke.SpanSubtraction.GapsPairing X (deMul X.Ψ r X.p0 s - kapW X) ((s : ℝ) - 2 * r + 2) := by
@@ -57,19 +57,19 @@ theorem gapsPairing_deMul {r : ℕ} (X : Data E r) (h0 : 0 < X.p0) (h1 : X.p0 < 
     linarith
 
 /- English proof (translation)
-Introduce `r X G x0 hx0 hFB h0 h1 hq s hs hsb`. Establish `hd : 1 ≤ GlobalTheory.Up.dimX X` using `(GlobalTheory.Up.one_le_dimX_iff X).2 ⟨h0, h1⟩`. Establish `hD : GlobalTheory.Up.dimX X = X.Ψ.card * (X.p0 * (r - X.p0))` using `rfl`. Establish `hOI` using `GlobalTheory.Up.OrbitInterpolation.orbitInterp (E := E) ⟨normFactor_rightBorel_holds, normFactor_leftAction_holds, pointwiseNorm_invariance_holds⟩ poin_holds extFStatement_holds measInv_holds GlobalTheory.PoleExistence.poleEx_holds (GlobalTheory.PoleDbar.poleSolve measInv_holds) …`. Establish `hc : 0 < X.Ψ.card`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos X.Ψ.card with h | h` into its components or cases. Rewrite `hd` using `[hD, h, zero_mul]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Take `⟨τ, hτ⟩` from `Finset.card_pos.1 hc`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : (0 : ℝ) < r` using `by exact_mod_cast (h0.trans h1)`. Establish `hρ : (0 : ℝ) < 1 / (49 * (r : ℝ) ^ 2)` using `by positivity`. Establish `hDq : (4 : ℝ) * X.Ψ.card ≤ GlobalTheory.Up.dimX X`. Rewrite using `[hD, Nat.cast_mul]`. Establish `: (4 : ℝ) ≤ ((X.p0 * (r - X.p0) : ℕ) : ℝ)` using `by exact_mod_cast hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[(Nat.cast_nonneg (α := ℝ) X.Ψ.card)]`. Establish `hsR : 2 * (r : ℝ) + 50 * (r : ℝ) ^ 2 * (GlobalTheory.Up.dimX X : ℝ) + 1 ≤ s`. Rewrite using `[hD]`. Conclude with `hsb` after adjusting the coercions. Establish `hq1 : (GlobalTheory.Up.dimX X : ℝ) / (1 / (49 * (r : ℝ) ^ 2)) = 49 * (r : ℝ) ^ 2 * GlobalTheory.Up.dimX X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hcurv` using `(GlobalTheory.DivisionVolume.margin_iff h0 h1 (deMul X.Ψ r X.p0 s) ((s : ℝ) - 2 * r + 2)).2 (gapsPairing_deMul X h0 h1 hs) x0 hx0`. Establish `hs2 : 1 ≤ s / 2` using `by obtain ⟨k, rfl⟩ := hs; omega`. Use `hOI r X G x0 _ _ (4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1) ((s : ℝ) - 2 * r + 2) (GlobalTheory.ClosedDiscontinuity.propDisc_closed r X) hx0 hd hρ hFB (blockConst_deMul X s) (by linarith) (by rw [hq1]; nlinarith [sq_nonneg (r : ℝ)]) hcurv ?_` and prove the remaining obligations. Use `cuspStatement_holds r X _ ⟨τ, hτ⟩ h0 h1 (fun i j hj hp => ?_) (fun i0 i1 h0' h1' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : ((j : ℕ) < X.p0 ↔ (i : ℕ) < X.p0)` using `by omega`. Simplify using `only [deMul]`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Rewrite using `[if_pos (e.2 hi), if_pos hi]`. Rewrite using `[if_neg (mt e.1 hi), if_neg hi]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [deMul]`. Rewrite using `[if_pos (by omega), if_neg (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem large : ∀ (r : ℕ) (X : Data E r) (G : Subgroup (GL (Fin r) E)) (x0 : Frame X.Ψ r), IsOrth X x0 →
     GlobalTheory.Up.FreeBall X G x0 (1 / (49 * (r : ℝ) ^ 2)) → 0 < X.p0 → X.p0 < r → 4 ≤ X.p0 * (r - X.p0) →
@@ -114,7 +114,7 @@ theorem large : ∀ (r : ℕ) (X : Data E r) (G : Subgroup (GL (Fin r) E)) (x0 :
     omega
 
 /- English proof (translation)
-Introduce `E _ _ _ r X hχ G x0 hx0 hFB h0 h1 s hs hsb`. Distinguish the cases in `hq : 4 ≤ X.p0 * (r - X.p0)`. Conclude with `large r X G x0 hx0 hFB h0 h1 hq s hs hsb`. Conclude with `GlobalTheory.T.freeBallCentre_interpolation_detWeight_smallSignature E r X hχ G x0 hx0 hFB h0 h1 (by omega) s hs hsb`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem orbit_interp_deMul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
     (∀ la, ∀ γ ∈ X.Γ, X.χ la γ = 1) → ∀ (G : Subgroup (GL (Fin r) E)) (x0 : Frame X.Ψ r), IsOrth X x0 →

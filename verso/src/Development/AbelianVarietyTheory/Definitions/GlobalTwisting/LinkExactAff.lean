@@ -39,7 +39,7 @@ def splitPairs (R : Type) [CommRing R] (n : ℕ) : Set (List ((Fin n → R) × (
   {z | z.1 ∈ splitSeq R n ∧ z.2 ∈ uniSeq R n ∧ ∀ y ∈ z.1, ∀ u ∈ z.2, y.2 ⬝ᵥ u = 0}
 
 /- English proof (translation)
-Use `⟨fun _ => Finsupp.lapply 0, fun i j => ?_⟩` and prove the remaining obligations. Take `rfl : i = j` from `Subsingleton.elim (α := Fin 1) i j`. Use `fin_cases i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : [Finsupp.single 0 (1 : ℤ)] ∈ uniM ℤ (ℕ →₀ ℤ) := by
   refine ⟨fun _ => Finsupp.lapply 0, fun i j => ?_⟩

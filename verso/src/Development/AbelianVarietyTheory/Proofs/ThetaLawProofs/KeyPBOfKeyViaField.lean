@@ -21,7 +21,7 @@ namespace GlobalTheory.KeyDesc
 open GlobalTheory.KeyCancel
 
 /- English proof (translation)
-Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -29,33 +29,33 @@ theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A 
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_algebraMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (a : A) :
     Chart.dualMapR f (algebraMap A _ a) = algebraMap B _ (f a) := by
   ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_eps {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     Chart.dualMapR f DualNumber.eps = DualNumber.eps := by
   ext <;> simp [Chart.dualMapR]
 
 /- English proof (translation)
-Introduce `R k K _ _ _ α β y z x φ w₀ ψ w₁ ⟨he₀, hg₀, F₀, hc₀, hw₀, hr₀, hs₀, hF₀, hFe₀, hv₀⟩ ⟨he₁, hg₁, F₁, hc₁, hw₁, hr₁, hs₁, hF₁, hFe₁, hv₁⟩ hψ ⟨u, hu⟩`. Establish `he : eSec z.P.A ≫ ψ = spMap α ≫ eSec y.P.A` using `PolBaseChange.eSec_comm hψ`. Take `⟨w, g, m⟩` from `KeyPow.exists_rescale y.P.isLB z.P.isLB ((isGen_iff u).1 hu) (p := z.P.A.hom) (Over.w η[z.P.A]) he z.rig_gen y.rig_gen`. Establish `g₀` using `(isGen_iff w₀).1 hw₀`. Take `⟨w₂, T⟩` from `exists_comp z.P.isLB w w₀ g g₀ y.P.isLB x.P.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `r₀` using `(maps_iff w₀ _ (fun _ => eSec z.P.A) _ x.rig z.rig (spMap β) _ (rigPull_le φ (spMap β) he₀ z.P.L) (fun _ => rfl)).1 hr₀`. Establish `r₂` using `T.pmaps_comp z.P.isLB (fun _ => he₀) m r₀`. Rewrite `r₂` using `[← spMap_comp]`. Take `rfl : w₂ = w₁` from `rigidified_iso_unique globalFns_holds x.P y.P.isLB (φ ≫ ψ) w₂ w₁ ((isGen_iff _).2 (T.pgen_comp z.P.isLB g g₀)) hw₁ x.rig _ ((maps_iff w₂ _ (fun _ => eSec y.P.A) _ x.rig y.rig (spMap (β.comp α)) _ (rigPull_le (φ ≫ ψ) (spMap (β.comp α)) he₁ y.P.L) (fun _ => rfl)).2 r₂) hr₁`. Use `z.P.isAb.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `y.P.isAb.proper` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (spMap β)` using `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom β) β.injective`. Establish `: IsSchemeTheoreticallyDominant φ` using `.of_isPullback hc₀.1.flip`. Establish `: QuasiCompact φ` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hc₀.1.flip inferInstance`. Take `rfl : F₀ = Chart.dualMapR β` from `dualNumber_ringHom_ext (fun a => (hF₀ a).trans (dualMapR_algebraMap β a).symm) (hFe₀.trans (dualMapR_eps β).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : F₁ = (Chart.dualMapR β).comp (Chart.dualMapR α)` from `dualNumber_ringHom_ext (fun a => by rw [hF₁, RingHom.comp_apply, RingHom.comp_apply, dualMapR_algebraMap, dualMapR_algebraMap]) (by rw [hFe₁, RingHom.comp_apply, dualMapR_eps, dualMapR_eps])`. Use `⟨ψ, he, w, hg₀.symm.trans hg₁, Chart.dualMapR α, hψ, (isGen_iff w).2 g, (maps_iff w _ (fun _ => eSec y.P.A) _ z.rig y.rig (spMap α) _ (rigPull_le ψ (spMap α) he y.P.L) (fun _ => rfl)).2 m, fun j i hle => φ.app_injective _ (fn_ext fun q hq => ?_), dualMapR_algebraMap α, dualMapR_e …` and prove the remaining obligations. Establish `hq' : φ ((𝟙 x.P.A.left : _ ⟶ _) q) ∈ (y.P.L.pull ψ).U j ⊓ z.P.L.U i` using `hq`. Take `⟨l, hl⟩` from `exists_chart x.P.isLB q`. Establish `a` using `(appLE_eq_iff_stalk w₀ z.th x.th).1 hs₀ _ (𝟙 _) q i l hq'.2 hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `b` using `(appLE_eq_iff_stalk w₂ y.th x.th).1 hs₁ _ (𝟙 _) q (j PUnit.unit) l ((mem_pull (F := ψ)).1 hq'.1) hl`. Rewrite `b` using `[T _ (𝟙 _) q (j PUnit.unit) i l (mem_pull.1 hq'.1) hq'.2 hl, Units.val_mul, _root_.mul_assoc, ← a, ← Category.assoc]`. Use `(gs_pull (𝟙 _) φ q _ hq' _).trans (Eq.trans ?_ (gs_pull (𝟙 _) φ q _ hq' _).symm)` and prove the remaining obligations. Use `(gs_appLE ψ _ _ hle (𝟙 _ ≫ φ) q hq' _).trans (b.trans ?_)` and prove the remaining obligations. Rewrite using `[gs_mul (𝟙 _ ≫ φ) q _ hq', gs_res (𝟙 _ ≫ φ) q _ hq']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· * _) (gs_unit (𝟙 _ ≫ φ) q _ hq' _).symm`. Use `Spread.tangent_ext β β.injective y.P.A.hom ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hψ.1.w, ← Category.assoc, Over.w, Category.assoc, Over.w] show spMap _ ≫ spMap _ = spMap _ ≫ spMap _`. Rewrite using `[← spMap_comp, ← spMap_comp]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `RingHom.ext fun a => (dualMapR_algebraMap α a).symm`. Establish `a` using `hv₀ (i.cast hg₀.symm)`. Establish `b` using `hv₁ (i.cast hg₀.symm)`. Rewrite `b` using `[← Category.assoc, a, spMap_comp, Category.assoc, Category.assoc]`. Conclude with `b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keyPB_of_keyVia_field : ∀ (R k K : Type) [CommRing R] [Field k] [Field K] (α : R →+* k) (β : k →+* K)
     (y : KeyIn R) (z : KeyIn k) (x : KeyIn K) (φ : x.P.A.left ⟶ z.P.A.left) (w₀ : LB.Iso x.P.L (z.P.L.pull φ))

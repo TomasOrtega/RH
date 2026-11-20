@@ -9,19 +9,17 @@ open Classical
 namespace PI.SqfRootsInj.W
 
 /- English proof (translation)
-Use `set k := r - h.natDegree`. Set `φ : (ZMod g)[X] → (Fin k → ZMod g)` to `fun f i => (f /ₘ h).coeff i`. Establish `key : ∀ f ∈ T.filter (h ∣ ·), (f /ₘ h).Monic ∧ (f /ₘ h).natDegree = k ∧ h * (f /ₘ h) = f`. Introduce `f hf`. Rewrite `hf` using `[Finset.mem_filter]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hfT, hdv⟩` from `hf`. Take `⟨hm, hd⟩` from `hT f hfT`. Establish `e1 : h * (f /ₘ h) = f`. Use `modByMonic_add_div f h` as an intermediate fact. Rewrite `this` using `[(modByMonic_eq_zero_iff_dvd hh).2 hdv, zero_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `⟨?_, ?_, e1⟩` and prove the remaining obligations. Establish `hm' : (h * (f /ₘ h)).Monic` using `by rw [e1]; exact hm`. Conclude with `hh.of_mul_monic_left hm'`. Rewrite using `[natDegree_divByMonic f hh, hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Set.InjOn φ (T.filter (h ∣ ·))`. Introduce `f hf f' hf' heq`. Take `⟨m1, d1, e1⟩` from `key f hf`. Take `⟨m2, d2, e2⟩` from `key f' hf'`. Establish `hq : f /ₘ h = f' /ₘ h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Use extensionality with `n`. Break down `lt_trichotomy n k with hn | hn | hn` into its components or cases. Conclude with `congrFun heq ⟨n, hn⟩`. Substitute `hn` using the available equality. Establish `a1` using `m1.coeff_natDegree`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a2` using `m2.coeff_natDegree`. Rewrite `a1` using `[d1]`. Rewrite `a2` using `[d2]`. Rewrite using `[a1, a2]`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]`.
-
-Rewrite using `[← e1, ← e2, hq]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem divCount {g : ℕ} [Fact g.Prime] (r : ℕ) (T : Finset (ZMod g)[X])
     (hT : ∀ f ∈ T, f.Monic ∧ f.natDegree = r) (h : (ZMod g)[X]) (hh : h.Monic) :

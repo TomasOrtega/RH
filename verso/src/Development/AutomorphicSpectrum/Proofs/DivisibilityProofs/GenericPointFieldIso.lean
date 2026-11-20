@@ -8,9 +8,9 @@ namespace GlobalTheory.CompanionTheory.Ar.GenIso
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Substitute `hyq` using the available equality. Establish `: genMap η ⟨genPt η, hy⟩ = (Scheme.stalkClosedPointTo η).hom`. Simplify using `[genMap, TopCat.Presheaf.stalkSpecializes_refl]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hη.bij`.
+A detailed English derivation is pending.
 -/
 theorem genMap_bijective_of_eq {X : Scheme.{0}} {K : Type} [Field K] (η : Spec (CommRingCat.of K) ⟶ X)
     (hη : IsCptGen η) (y : X) (hy : genPt η ⤳ y) (hyq : y = genPt η) :
@@ -23,7 +23,7 @@ theorem genMap_bijective_of_eq {X : Scheme.{0}} {K : Type} [Field K] (η : Spec 
   exact hη.bij
 
 /- English proof (translation)
-Establish `hy' : η (IsLocalRing.closedPoint (CommRingCat.of K)) ⤳ y` using `hy`. Express the relevant statement in the definitionally equal form `Spec.map (X.presheaf.stalkSpecializes hy' ≫ Scheme.stalkClosedPointTo η) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk η`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genMap_comp {X : Scheme.{0}} {K : Type} [Field K] (η : Spec (CommRingCat.of K) ⟶ X) (y : X)
     (hy : genPt η ⤳ y) : spMap (genMap η ⟨y, hy⟩) ≫ X.fromSpecStalk y = η := by
@@ -33,15 +33,15 @@ theorem genMap_comp {X : Scheme.{0}} {K : Type} [Field K] (η : Spec (CommRingCa
   exact Scheme.Spec_stalkClosedPointTo_fromSpecStalk η
 
 /- English proof (translation)
-Introduce `X Ω Ω' _ _ ξ ξ' h h' hq`. Establish `hs : genPt ξ ⤳ genPt ξ'` using `hq ▸ specializes_rfl`. Set `p : Cpt ξ` to `⟨genPt ξ', hs⟩`. Set `p' : Cpt ξ'` to `⟨genPt ξ', specializes_rfl⟩`. Set `e` to `RingEquiv.ofBijective (genMap ξ p) (genMap_bijective_of_eq ξ h _ hs hq.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e'` to `RingEquiv.ofBijective (genMap ξ' p') (genMap_bijective_of_eq ξ' h' _ specializes_rfl rfl)`. Use `⟨e'.symm.trans e, ?_⟩` and prove the remaining obligations. Establish `c1 : spMap (genMap ξ p) ≫ X.fromSpecStalk (genPt ξ') = ξ` using `genMap_comp ξ _ hs`. Establish `c2 : spMap (genMap ξ' p') ≫ X.fromSpecStalk (genPt ξ') = ξ'` using `genMap_comp ξ' _ specializes_rfl`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[c2]`. Use `_ = spMap (genMap ξ p) ≫ X.fromSpecStalk (genPt ξ') := by`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `e (e'.symm (genMap ξ' p' x)) = genMap ξ p x`. Rewrite using `[show e'.symm (genMap ξ' p' x) = x from e'.symm_apply_apply x]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `_ = ξ := c1`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_of_genPt_eq : ∀ (X : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω']
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω') ⟶ X),

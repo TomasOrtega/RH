@@ -9,7 +9,7 @@ namespace LateralTheory.E.LeafOneSpecPf
 open LateralTheory.E.CupProductRingLaws
 
 /- English proof (translation)
-Unfold `res`. Unfold `InjectiveResolution.cochainComplex`. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce and unpack `i rfl`. Express the relevant statement in the definitionally equal form `((i : ℤ)) < 0 at hn`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -21,7 +21,7 @@ theorem res_neg_zero (R : Type) [CommRing R] (F : Shv R) (n : ℤ) (hn : n < 0) 
   change ((i : ℤ)) < 0 at hn
   omega
 /- English proof (translation)
-Unfold `chains`. Simplify using `only [Functor.comp_obj, ComplexShape.Embedding.extendFunctor_obj]`. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce and unpack `i rfl`. Express the relevant statement in the definitionally equal form `0 < -((i : ℤ)) at hn`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -33,9 +33,9 @@ theorem chains_pos_zero (R : Type) [CommRing R] (E : Spc) (n : ℤ) (hn : 0 < n)
   change 0 < -((i : ℤ)) at hn
   omega
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Apply `sheafify_hom_ext _ _ _ G.property` to reduce the goal to its premises. Use extensionality with `U : 2`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h U.unop x.down`.
+A detailed English derivation is pending.
 -/
 theorem free_hom_ext (R : Type) [CommRing R] (P : PSh) (G : Shv R) (f g : (free R).obj P ⟶ G)
     (h : ∀ (U : Scheme.{0}) (x : P.obj (op U)), (f.hom.app (op U)).hom (freeGen R P U x) = (g.hom.app (op U)).hom (freeGen R P U x)) :
@@ -47,9 +47,9 @@ theorem free_hom_ext (R : Type) [CommRing R] (P : PSh) (G : Shv R) (f g : (free 
   intro x
   exact h U.unop x.down
 /- English proof (translation)
-Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`. Break down `lt_trichotomy p 0 with hp | rfl | hp` into its components or cases. Conclude with `(res_neg_zero R F q (by omega)).eq_of_tgt _ _`. Establish `key : (chainsXIso R E 0).inv ≫ α.v (-((0 : ℕ) : ℤ)) 0 (by simp) = (chainsXIso R E 0).inv ≫ β.v (-((0 : ℕ) : ℤ)) 0 (by simp)` using `free_hom_ext R _ _ _ _ (fun U x => h U x)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : q = 0` from `by omega`. Simplify using `using key`. Conclude with `(chains_pos_zero R E p hp).eq_of_src _ _`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cochain0_ext (R : Type) [CommRing R] (F : Shv R) (E : Spc)
     (α β : Cochain ((chains R).obj E) (res R F) 0)
@@ -70,7 +70,7 @@ def LeafCochain0Ext : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (E : Spc)
   (∀ (U : Scheme.{0}) (x : Sx E 0 U), ev α 0 0 (by simp) U x = ev β 0 0 (by simp) U x) → α = β
 
 /- English proof (translation)
-Introduce `R _ F E α β h` and use `cochain0_ext R F E α β h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leafCochain0Ext_pf : LeafCochain0Ext := fun R _ F E α β h => cochain0_ext R F E α β h
 
@@ -83,7 +83,7 @@ def LeafSecPrimLocal : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (q : ℕ)
   IsUnit (q : Γ(U, ⊤)) → (∀ (V : Scheme.{0}) (g : V ⟶ U), Nonempty (Prim q Γ(V, ⊤)) → Sec.res g a = Sec.res g b) → a = b
 
 /- English proof (translation)
-Establish `hF` using `(Presheaf.isSheaf_iff_isSheaf_forget Scheme.etaleTopology F.obj (forget (ModuleCat.{1} (ULift.{1} R)))).1 F.property`. Rewrite `hF` using `[isSheaf_iff_isSheaf_of_type]`. Conclude with `(hF S hS).isSeparatedFor.ext (fun V g hg => h V g hg)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_sep (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}) (S : Sieve U) (hS : S ∈ Scheme.etaleTopology U)
     (a b : Sec F U) (h : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec.res g a = Sec.res g b) : a = b := by
@@ -92,7 +92,7 @@ theorem sec_sep (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}) (S : Sieve 
   exact (hF S hS).isSeparatedFor.ext (fun V g hg => h V g hg)
 
 /- English proof (translation)
-Introduce `R _ F q _ U a b hq h`. Take `⟨S, hS, hSP⟩` from `hP q U hq`. Conclude with `sec_sep R F U S hS a b fun V g hg => h V g (hSP V g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem leafSecPrimLocal_of (hP : LeafPrimCover) : LeafSecPrimLocal := by
   intro R _ F q _ U a b hq h
@@ -100,9 +100,9 @@ theorem leafSecPrimLocal_of (hP : LeafPrimCover) : LeafSecPrimLocal := by
   exact sec_sep R F U S hS a b fun V g hg => h V g (hSP V g hg)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `hB (ZMod q) (tw q 0) E α.1 β.1` to reduce the goal to its premises. Introduce `U x`. Use `hC (ZMod q) _ q U _ _ (hE U ⟨x⟩) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨ζ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← LateralTheory.EtaleFoundations.ev_nat_pf α.1 0 0 (by simp) g x, ← LateralTheory.EtaleFoundations.ev_nat_pf β.1 0 0 (by simp) g x]`. Conclude with `(hα V _ ζ).trans (hβ V _ ζ).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_cocycle_eq (hB : LeafCochain0Ext) (hC : LeafSecPrimLocal) (q : ℕ) [NeZero q] (E : Spc) (hE : Inv q E)
     (α β : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0) (hα : IsOneCocycle q E α) (hβ : IsOneCocycle q E β) :
@@ -116,9 +116,9 @@ theorem one_cocycle_eq (hB : LeafCochain0Ext) (hC : LeafSecPrimLocal) (q : ℕ) 
   exact (hα V _ ζ).trans (hβ V _ ζ).symm
 
 /- English proof (translation)
-Establish `hB` using `leafCochain0Ext_pf`. Establish `hC` using `leafSecPrimLocal_of hP`. Introduce `q _ E hE`. Use `⟨hA q E hE, fun α hα => ?_⟩` and prove the remaining obligations. Take `⟨α₀, h₀⟩` from `hA q E hE`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨α₁, h₁, hα₁⟩` from `pick_spec (P := fun c : Ht q E 0 0 => ∃ α : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0, CohomologyClass.mk α = c ∧ ∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ) ⟨CohomologyClass.mk α₀, α₀, rfl, h₀⟩`. Express the relevant statement in the definitionally equal form `pick _ = _`. Rewrite using `[← h₁, one_cocycle_eq hB hC q E hE α₁ α hα₁ hα]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafOneSpec_of (hA : LeafOneExists) (hP : LeafPrimCover) : LeafOneSpec := by
   have hB := leafCochain0Ext_pf

@@ -16,17 +16,15 @@ namespace GlobalTheory.ThetaInvPart
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω}
 
 /- English proof (translation)
-Establish `hζ : S.ζ ≠ 0` using `S.prim.ne_zero (pow_ne_zero _ (Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega)))`. Use `choose c e hce using horb`. Establish `key : ∀ a b, π a = π b → ∃ k : ℕ, ∀ l, S.ρ b l i₀ = S.ζ ^ k * S.ρ a l i₀` using `fun a b h => by`. Take `⟨k, hk⟩` from `S.ρ_mul b (a - b)`. Use `⟨k, fun l => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrFun (congrFun hk l) i₀` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, add_sub_cancel, Matrix.smul_apply, smul_eq_mul]`. Simplify `this` using `[hfix (a - b) (by rw [map_sub, h, sub_self])]`. Establish `inj : Function.Injective fun i => π (c i)` using `fun i j h => by`. Take `⟨k, hk⟩` from `key _ _ h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hij`. Use `hk j` as an intermediate fact. Rewrite `this` using `[hce, hce, if_pos rfl, if_neg (Ne.symm hij), mul_zero]`. Conclude with `pow_ne_zero _ hζ this`. Establish `surj` using `((Fintype.bijective_iff_injective_and_card _).2 ⟨inj, hc⟩).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `zero : ∀ a i, π (c i) = π a → i ≠ i₀ → S.ρ a i₀ i₀ = 0` using `fun a i h hi => by`. Take `⟨k, hk⟩` from `key _ _ h`. Rewrite using `[hk, hce, if_neg (Ne.symm hi), mul_zero]`. Use `split_ifs with ha`. Rewrite using `[hfix a ha, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `surj (π a)`. Use `zero a i hi fun h => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `surj (π 0)`. Distinguish the cases in `h' : j = i₀`. Conclude with `ha (by rw [← hi, h, ← h', hj, map_zero])`.
-
-Use `zero 0 j hj h'` as an intermediate fact. Rewrite `this` using `[hfix 0 (map_zero π), if_pos rfl]`. Conclude with `one_ne_zero this`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_eq [IsDomain o] {Q : Type} [AddCommGroup Q] [Fintype Q] (π : S.Gam →+ Q) (i₀ : S.J)
     (hc : Fintype.card S.J = Fintype.card Q)
@@ -64,13 +62,13 @@ theorem diag_eq [IsDomain o] {Q : Type} [AddCommGroup Q] [Fintype Q] (π : S.Gam
       exact one_ne_zero this
 
 /- English proof (translation)
-Use `ρ.P.isAb.comm` as an intermediate fact. Establish `h0 : ρ.pt 0 = 1`. Use `ρ.pt_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : ∀ (n : ℕ) b, ρ.pt (n • b) = ρ.pt b ^ n` using `fun n b => by`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ n ih => rw [succ_nsmul, ρ.pt_add, ih, pow_succ]`. Establish `hm : ρ.pt (S.r • a) ^ (ρ.n ^ ρ.k) = 1` using `by rw [← hp, ha, h0]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ρ.pt (S.r • a) ^ S.N = 1` using `(congrArg _ (ρ.N_eq.trans (sq _))).trans (by rw [pow_mul, hm, one_pow])`. Take `⟨ν, hν⟩` from `exists_gen_negLB hG _ ρ.P 1 (baseOver (Sp S.R))`. Establish `hact` using `ThetaCoord.isActOf_self hG ρ.P.isAb ρ.P.isLB (q := S.N) (b := 1) (by rw [ρ.N_eq]; exact ρ.n_odd.pow.pow) hν ρ.α_gen ρ.s_zero hm hN (ρ.U_sym a)`. Establish `h₁` using `ρ.U_act a ρ.i₀ _ hact`. Establish `h₂ : ∀ j, (ρ.s ρ.i₀).f j = ∑ l, liftFun ρ.P.A _ (fn (algebraMap o S.R (if l = ρ.i₀ then 1 else 0))) * (ρ.s l).f j` using `fun j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single ρ.i₀ (fun b _ hb => by simp [hb, liftFun]) (by simp)]`. Simplify using `[liftFun]`. Establish `h₃` using `congrFun ((ρ.s_basis (ρ.s ρ.i₀)).unique h₁ h₂) l`. Establish `h₄` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of S.R)).inv).1 h₃`. Conclude with `hi (congrArg Subtype.val h₄)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_fix (hG : GlobalFnsSt) (hi : Function.Injective (algebraMap o Ω)) (ρ : S.Real) (a : S.Gam)
     (ha : (ρ.n ^ ρ.k) • S.r • a = 0) (l : S.J) : S.ρ a l ρ.i₀ = if l = ρ.i₀ then 1 else 0 := by
@@ -105,21 +103,19 @@ namespace GlobalTheory
 open ThetaInvPart
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ hA S ρ k _ y T _`. Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Establish `: NeZero (ρ.n ^ ρ.k)` using `⟨pow_ne_zero _ ρ.n_prime.ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDomain o` using `hA.inj.isDomain _`. Establish `hd : ρ.n ^ ρ.k ∣ S.r * S.N`. Rewrite using `[ρ.N_eq]`. Conclude with `Dvd.dvd.mul_left (dvd_pow_self _ two_ne_zero) _`. Set `π : S.Gam →+ (Fin S.g ⊕ Fin S.g → ZMod (ρ.n ^ ρ.k))` to `(ZMod.castHom hd (ZMod (ρ.n ^ ρ.k))).toAddMonoidHom.compLeft _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdiag` using `diag_eq π ρ.i₀ (by`. Rewrite using `[ρ.card, ρ.N_eq, ← pow_mul]`. Simplify using `[two_mul])`. Use the proof step `(fun a ha => rho_fix hL.1.globalFns hA.inj ρ a (funext fun i => by`. Establish `h : ZMod.castHom hd (ZMod (ρ.n ^ ρ.k)) (a i) = 0` using `congrFun ha i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[← ZMod.natCast_zmod_val (a i), map_natCast, ZMod.natCast_eq_zero_iff]`. Take `⟨c, hc⟩` from `h`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, ← ZMod.natCast_zmod_val (a i), hc, nsmul_eq_mul, nsmul_eq_mul, ← Nat.cast_mul, ← Nat.cast_mul, Pi.zero_apply, ZMod.natCast_eq_zero_iff]`. Conclude with `⟨c, by rw [ρ.N_eq]; ring⟩)) ρ.orbit`. Establish `hu : ∀ n : ℕ, n ∣ Nat.card S.Gam → IsUnit (n : o)` using `fun n hn => by`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `isUnit_of_dvd_unit (Nat.cast_dvd_cast hn) ?_` and prove the remaining obligations. Rewrite using `[Nat.card_fun, Nat.card_zmod, Nat.cast_pow]`. Conclude with `S.unit.pow _`. Use `⟨ρ.i₀, (IsUnit.map y ?_).ne_zero⟩` and prove the remaining obligations. Use `Fintype.ofFinite T` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `AddSubgroup.card_addSubgroup_dvd_card T`. Establish `hK` using `(AddSubgroup.card_addSubgroup_dvd_card (π.comp T.subtype).ker).trans hT`. Establish `hs : ∑ t : T, S.ρ t ρ.i₀ ρ.i₀ = (Nat.card (π.comp T.subtype).ker : o)`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, Finset.card_filter, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiag]`. Apply the tactic sequence `by_cases h : π t = 0 <;> simp [AddMonoidHom.mem_ker, h]`. Rewrite using `[ThetaSys.proj, finsum_eq_sum_of_fintype, Matrix.smul_apply, Matrix.sum_apply, smul_eq_mul]`. Simplify using `only [AddMonoidHom.zero_apply, neg_zero, ZMod.val_zero, pow_zero, one_smul]`. Rewrite using `[hs]`.
-
-Conclude with `(hu _ hT).ringInverse.mul (hu _ hK)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_zero_pullback_ne_zero : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω]
     (S : ThetaSys o Ω) (ρ : S.Real) (k : Type) [Field k] (y : o →+* k) (T : AddSubgroup S.Gam), S.IsoFree T →

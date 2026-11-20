@@ -8,7 +8,7 @@ open NumberField Matrix
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Rewrite using `[← Submodule.prod_span]`. Simplify using `only [Submodule.span_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_eq_span_prod {K : Type} [Field K] [NumberField K] {k : ℕ}
     (p : Fin k → Submodule (𝓞 K) K) :
@@ -17,7 +17,7 @@ theorem prod_eq_span_prod {K : Type} [Field K] [NumberField K] {k : ℕ}
   simp only [Submodule.span_eq]
 
 /- English proof (translation)
-The claim follows from `map_prod (FractionalIdeal.coeSubmoduleHom (𝓞 K)⁰ K) F Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem coe_prod_frac {K : Type} [Field K] [NumberField K] {k : ℕ}
     (F : Fin k → FractionalIdeal (𝓞 K)⁰ K) :
@@ -28,25 +28,23 @@ def vecIdx {K : Type} [Field K] [NumberField K] {k : ℕ} (X : Submodule (𝓞 K
   (intVec K k).toAddSubgroup.relIndex X.toAddSubgroup
 
 /- English proof (translation)
-Take `⟨C, z, hfgC, h1, htri, hdiag, hin, hdec, hidx⟩` from `lattice_split K k X hfg hstd`. Set `CF : Fin k → FractionalIdeal (𝓞 K)⁰ K` to `fun i => ⟨C i, FractionalIdeal.isFractional_of_fg (hfgC i)⟩`. Set `cF : Fin k → FractionalIdeal (𝓞 K)⁰ K` to `fun i => ⟨cImage S.c (C i), FractionalIdeal.isFractional_of_fg (cImage_fg S.c S.c_invol (C i) (hfgC i))⟩`. Set `D : FractionalIdeal (𝓞 K)⁰ K` to `FractionalIdeal.spanSingleton (𝓞 K)⁰ S.G.det`. Establish `hcF0 : ∀ i, cF i ≠ 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i h`. Establish `: (1 : K) ∈ (cF i : Submodule (𝓞 K) K)` using `one_le_cImage S.c (C i) (h1 i) (Submodule.mem_one.2 ⟨1, map_one _⟩)`. Rewrite `this` using `[h, FractionalIdeal.coe_zero]`. Simplify using `at this`. Use `⟨(∏ i, cF i) * D * ∏ i, CF i, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_one, FractionalIdeal.coe_mul, FractionalIdeal.coe_mul, coe_prod_frac, coe_prod_frac, FractionalIdeal.coe_spanSingleton]`. Express the relevant statement in the definitionally equal form `(∏ i, cImage S.c (C i)) * Submodule.span (𝓞 K) {S.G.det} * (∏ i, C i) ≤ 1`. Rewrite using `[prod_eq_span_prod, prod_eq_span_prod, Submodule.span_mul_span, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `x hx`. Take `⟨_, ⟨a, ha, _, rfl, rfl⟩, b, hb, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, rfl⟩` from `(Set.mem_fintype_prod _ _).1 ha`. Take `⟨t, ht, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hb`. Conclude with `split_integral S htri hdiag hin hint g t (fun i => hg i) ht`. Introduce `hsd hG`. Establish `hCc : (∏ i, cF i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hcF0 i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : (∏ i, cF i)⁻¹ ≤ D * ∏ i, CF i`. Rewrite using `[← Finset.prod_inv_distrib, ← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_mul, coe_prod_frac, coe_prod_frac, FractionalIdeal.coe_spanSingleton, prod_eq_span_prod, Submodule.span_le]`. Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hx`. Use `split_selfDual S htri hdiag hdec hsd hG g fun j w hw => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(FractionalIdeal.mem_inv_iff (hcF0 j)).1 (hg j) w hw` as an intermediate fact. Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff _).1 this`. Conclude with `Submodule.mem_one.2 ⟨a, ha⟩`. Combine the equalities or inequalities in the displayed calculation. Set `ι : Fin k → ℚ` to `fun i => ((1 : Submodule (𝓞 K) K).toAddSubgroup.relIndex (C i).toAddSubgroup : ℚ)`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCF : ∀ i, FractionalIdeal.absNorm (CF i) * ι i = 1` using `fun i => absNorm_mul_relIndex_one (C i) (hfgC i) (h1 i)`. Establish `hcFn : ∀ i, FractionalIdeal.absNorm (cF i) * ι i = 1`. Introduce `i`. Use `absNorm_mul_relIndex_one (cImage S.c (C i)) (cImage_fg S.c S.c_invol (C i) (hfgC i)) (one_le_cImage S.c (C i) (h1 i))` as an intermediate fact. Rewrite `this` using `[relIndex_cImage S.c S.c_invol]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι0 : ∀ i, ι i ≠ 0` using `fun i h => by simpa [h] using hCF i`. Establish `hP0 : ∏ i, ι i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hι0 i`. Establish `hA : FractionalIdeal.absNorm (∏ i, CF i) = (∏ i, ι i)⁻¹`. Rewrite using `[map_prod, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => eq_inv_of_mul_eq_one_left (hCF i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : FractionalIdeal.absNorm (∏ i, cF i) = (∏ i, ι i)⁻¹`. Rewrite using `[map_prod, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => eq_inv_of_mul_eq_one_left (hcFn i)`. Establish `hI : (vecIdx X : ℚ) = ∏ i, ι i`. Simplify using `only [vecIdx, hidx, Nat.cast_prod, ι]`.
-
-Rewrite using `[map_mul, map_mul, hA, hC, FractionalIdeal.absNorm_span_singleton, hI]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem split_norm {K : Type} [Field K] [NumberField K] {k : ℕ} (S : HermForm K k)
     (X : Submodule (𝓞 K) (Fin k → K)) (hfg : X.FG) (hstd : intVec K k ≤ X)
@@ -115,13 +113,11 @@ theorem split_norm {K : Type} [Field K] [NumberField K] {k : ℕ} (S : HermForm 
     field_simp
 
 /- English proof (translation)
-Take `⟨J, hJ1, -, hJ⟩` from `split_norm S X hfg hstd hint`. Establish `hN : (0 : ℚ) < |Algebra.norm ℚ S.G.det|` using `abs_pos.2 (Algebra.norm_ne_zero_iff.2 hG)`. Establish `hpos : (0 : ℚ) < FractionalIdeal.absNorm J * (vecIdx X : ℚ) ^ 2`. Rewrite using `[hJ]`. Conclude with `hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨I, rfl⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 hJ1`. Rewrite `hJ`, `hpos` using `[FractionalIdeal.coeIdeal_absNorm]`. Establish `hI : Ideal.absNorm I ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hpos`. Establish `h1 : (1 : ℚ) ≤ (Ideal.absNorm I : ℚ)`. Conclude with `Nat.one_le_iff_ne_zero.2 hI` after adjusting the coercions. Establish `hv : (0 : ℚ) ≤ (vecIdx X : ℚ) ^ 2` using `by positivity`. Rewrite using `[← hJ]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem vec_integral_bound {K : Type} [Field K] [NumberField K] {k : ℕ} (S : HermForm K k)
     (X : Submodule (𝓞 K) (Fin k → K)) (hfg : X.FG) (hstd : intVec K k ≤ X)
@@ -144,9 +140,9 @@ theorem vec_integral_bound {K : Type} [Field K] [NumberField K] {k : ℕ} (S : H
   nlinarith
 
 /- English proof (translation)
-Distinguish the cases in `hG : S.G.det = 0`. Rewrite using `[hG, Algebra.norm_zero, abs_zero]`. Check the signs of the components of the expression. Take `⟨J, hJ1, hJsd, hJ⟩` from `split_norm S X hfg hstd hsd.1`. Establish `hJe : J = 1` using `le_antisymm hJ1 (hJsd hsd hG)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hJ` using `[hJe, map_one, one_mul]`. Conclude with `hJ.ge`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vec_selfDual_bound {K : Type} [Field K] [NumberField K] {k : ℕ} (S : HermForm K k)
     (X : Submodule (𝓞 K) (Fin k → K)) (hfg : X.FG) (hstd : intVec K k ≤ X)

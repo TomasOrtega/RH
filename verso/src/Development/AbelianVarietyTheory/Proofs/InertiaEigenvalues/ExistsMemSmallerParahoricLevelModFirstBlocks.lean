@@ -15,17 +15,15 @@ namespace GlobalTheory.SmallerParahoric
 open GlobalTheory.LevelProduct
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.cons_induction_on with`. Consider the case `empty`. Use `⟨1, ?_, fun PP => ⟨fun hh => absurd hh (Finset.notMem_empty _), fun _ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.map_one]`. Conclude with `Subgroup.one_mem _`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.map_one]`. Conclude with `redFn_one PP`. Consider the case `cons v S hv ih`. Take `⟨k, hk, hr⟩` from `ih`. Establish `hc : Lev.finE V (cmp V v h) ∈ St β`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[finE_cmp]`. Conclude with `piece_mem_St (phi_idem v) (phi_idem' v) hS`. Establish `hpos : ∀ PP : Pl D.host.E, PP.under (𝓞 D.host.F) = v → redFn β PP (Lev.finE V (cmp V v h)) = redFn β PP (Lev.finE V h)` using `fun PP e => by`. Rewrite using `[finE_cmp]`. Conclude with `redFn_piece (phi_idem v) (phi_idem' v) hS PP (resS_phi_pos e)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg : ∀ PP : Pl D.host.E, ¬ PP.under (𝓞 D.host.F) = v → redFn β PP (Lev.finE V (cmp V v h)) = 1` using `fun PP e => by`. Rewrite `hc`, the goal using `[finE_cmp]`. Conclude with `redFn_piece_eq_one (phi_idem' v) hc PP (resS_phi_neg e)`. Use `⟨cmp V v h * k, ?_, fun PP => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.map_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mul_mem _ hc hk`. Rewrite using `[MonoidHom.map_mul, redFn_mul hc hk, Finset.mem_cons]`. Distinguish the cases in `e : PP.under (𝓞 D.host.F) = v`. Use `⟨fun _ => ?_, fun hn => absurd (Or.inl e) hn⟩` and prove the remaining obligations. Rewrite using `[hpos PP e, (hr PP).2 (e ▸ hv), mul_one]`.
-
-Rewrite using `[hneg PP e, one_mul]`. Conclude with `⟨fun hh => (hr PP).1 (hh.resolve_left e), fun hh => (hr PP).2 fun h' => hh (Or.inr h')⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cut {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (h : GA D V) (hS : Lev.finE V h ∈ St β)
     (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
@@ -59,23 +57,19 @@ theorem exists_cut {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (h : 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D V β Λ _ L Q' xq hQ hoff g hg`. Take `⟨_, h, rfl⟩` from `g`. Establish `hh : Lev.finE V h ∈ lev D.sp.cm V.gram β (Lev.flagL L)` using `hg`. Take `⟨-, hS, hP, hq⟩` from `mem_parLev.1 (lev_le_parLev hh)`. Take `⟨k, hk, hr⟩` from `exists_cut V β h hS (L.Pg.image fun PP => PP.under (𝓞 D.host.F))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ PP ∈ L.Pg, redFn β PP (Lev.finE V k) = redFn β PP (Lev.finE V h)` using `fun PP hPP => (hr PP).1 (Finset.mem_image_of_mem _ hPP)`. Establish `h2 : ∀ PP ∈ Q', redFn β PP (Lev.finE V k) = 1` using `fun PP' hPP' => (hr PP').2 fun hm => by`. Take `⟨PP, hPP, e⟩` from `Finset.mem_image.1 hm`. Take `⟨a, b, -⟩` from `hoff PP hPP PP' hPP'`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e.symm with e' | e'` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `a e'.symm`. Use `b ?_` and prove the remaining obligations. Rewrite using `[e']`. Conclude with `fun c hc => ⟨Formalism.DivisionValues.cO _ c, Ideal.mem_map_of_mem _ hc, rfl⟩`. Establish `hS' : Lev.finE V h⁻¹ ∈ St β` using `by rw [MonoidHom.map_inv]; exact Subgroup.inv_mem _ hS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ PP, redFn β PP (Lev.finE V (h⁻¹ * k)) = (redFn β PP (Lev.finE V h))⁻¹ * redFn β PP (Lev.finE V k)` using `fun PP => by rw [MonoidHom.map_mul, redFn_mul hS' hk, MonoidHom.map_inv, redFn_inv hS]`. Establish `A : Lev.finE V k ∈ lev D.sp.cm V.gram β (Lev.flagL { L with Q` using `Q', xq := xq }) := by`. Use `mem_lev.2 ⟨mem_parLev.2 ⟨GlobalTheory.LevSplit.finE_mem_UA V k, hk, fun PP hPP => ?_, fun PP hPP => ?_⟩, Subgroup.mem_top _⟩` and prove the remaining obligations. Rewrite using `[h1 PP hPP]`. Conclude with `hP PP hPP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2 PP hPP]`. Conclude with `Subgroup.one_mem _`. Establish `B : Lev.finE V (h⁻¹ * k) ∈ lev D.sp.cm V.gram β (Lev.flag1L L)`. Use `mem_lev.2 ⟨mem_parLev.2 ⟨GlobalTheory.LevSplit.finE_mem_UA V _, ?_, fun PP hPP => ?_, fun PP hPP => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subgroup.mul_mem _ hS' hk`. Rewrite using `[h3, h1 PP hPP, inv_mul_cancel]`. Conclude with `Subgroup.one_mem _`. Rewrite using `[h3, h2 PP (hQ hPP), mul_one]`. Conclude with `Subgroup.inv_mem _ (hq PP hPP)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : rTup β (Lev.flag1L L) (Lev.finE V (h⁻¹ * k)) = 1`. Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock L.hr (redFn β PP.1 (Lev.finE V (h⁻¹ * k))) = 1`. Rewrite using `[h3, h1 PP.1 PP.2, inv_mul_cancel]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
-
-Rewrite using `[e]`. Conclude with `Subgroup.one_mem _`. Use `⟨(finHom V).rangeRestrict k, A, ?_⟩` and prove the remaining obligations. Establish `e : (⟨finHom V h, h, rfl⟩ : Bridge.Gf V)⁻¹ * (finHom V).rangeRestrict k = (finHom V).rangeRestrict (h⁻¹ * k)`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `((MonoidHom.map_mul (finHom V) _ _).trans (congrArg (· * finHom V k) (MonoidHom.map_inv (finHom V) h))).symm`. Rewrite using `[e]`. Conclude with `B`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_smaller : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSDFrame V β Λ 1 → ∀ (L : LevDat D.host.E ℂ V.rank) (Q' : Finset (Pl D.host.E)) (xq : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ), L.Q ⊆ Q' → (∀ PP ∈ L.Pg, ∀ PP' ∈ Q', PP ≠ PP' ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP PP' ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP' PP) → ∀ g ∈ (levEnv V β L).Q, ∃ g' ∈ (levEnv V β { L with Q := Q', xq := xq }).Q, g⁻¹ * g' ∈ (levEnv V β L).J := by
   classical

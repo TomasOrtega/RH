@@ -9,7 +9,7 @@ open scoped GlobalTheory.Idele
 namespace GlobalTheory.CompanionTheory.ConjPointDict
 
 /- English proof (translation)
-Introduce `_ X σ P`. Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Both sides reduce to the same expression. Take `⟨h', e⟩` from `GroundTheory.Global.pointMapRing_some σ X h`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

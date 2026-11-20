@@ -19,7 +19,7 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Rewrite using `[HahnSeries.algebraMap_apply', PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, HahnSeries.ofPowerSeries_C, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma hahnSeries_coeff_algebraMap_mul (c : Ω) (x : HahnSeries ℚ Ω) (r : ℚ) :
     (algebraMap Ω (HahnSeries ℚ Ω) c * x).coeff r = c * x.coeff r := by
@@ -31,7 +31,7 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Introduce `r`. Rewrite using `[map_mul, AlgHom.commutes, hahnSeries_coeff_algebraMap_mul]`. Conclude with `V.mul_mem _ _ hc (hf r)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ES.Quot.intC_const_mul {X : _root_.GlobalTheory.KZ.Tower Ω ε}
     {V : ValuationSubring Ω} {c : Ω} (hc : c ∈ V) {f : X.K}
@@ -45,7 +45,7 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Introduce `r`. Rewrite using `[map_add, HahnSeries.coeff_add]`. Conclude with `V.add_mem _ _ (hf r) (hg r)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ES.Quot.intC_add {X : _root_.GlobalTheory.KZ.Tower Ω ε}
     {V : ValuationSubring Ω} {f g : X.K}
@@ -59,7 +59,7 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Introduce `r`. Rewrite using `[map_mul, HahnSeries.coeff_mul]`. Conclude with `V.toSubring.sum_mem fun ij _ => V.mul_mem _ _ (hf _) (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ES.Quot.intC_mul {X : _root_.GlobalTheory.KZ.Tower Ω ε}
     {V : ValuationSubring Ω} {f g : X.K}
@@ -73,7 +73,7 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Introduce `r`. Rewrite using `[map_one, HahnSeries.coeff_one]`. Use `split_ifs`. Conclude with `V.one_mem`. Conclude with `V.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ES.Quot.intC_one {X : _root_.GlobalTheory.KZ.Tower Ω ε}
     {V : ValuationSubring Ω} : _root_.GlobalTheory.KZ.ES.IntC X V 1 := by
@@ -123,9 +123,9 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Establish `hcast : ∀ a : ℤ, (ZMod.castHom h (ZMod n)) (a : ZMod m) = (a : ZMod n)` using `fun a => map_intCast _ a`. Take `⟨h1, h2, h3, h4⟩` from `hγ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcast, h1, map_one]`. Rewrite using `[← hcast, h2, map_zero]`. Rewrite using `[← hcast, h3, map_zero]`. Rewrite using `[← hcast, h4, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gamma_le_gamma_of_dvd' {n m : ℕ} (h : n ∣ m) :
     CongruenceSubgroup.Gamma m ≤ CongruenceSubgroup.Gamma n := by
@@ -144,15 +144,15 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Establish `hint : ∀ z : Ω, IsIntegral ℤ z → z ∈ V` using `fun z hz => by`. Take `⟨w, hw⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hz.tower_top : IsIntegral V z)`. Rewrite using `[← hw]`. Conclude with `w.2`. Establish `hD1 : V.valuation (D : Ω) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm ((V.valuation_le_one_iff _).2 (natCast_mem V D)) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `hg` using `Nat.gcd_eq_gcd_ab q D`. Rewrite `hg` using `[((Nat.Prime.coprime_iff_not_dvd hq).2 hqD : Nat.gcd q D = 1)]`. Establish `huw : ((q.gcdA D : ℤ) : Ω) * (q : Ω) + ((q.gcdB D : ℤ) : Ω) * (D : Ω) = 1`. Establish `: (q.gcdA D) * (q : ℤ) + q.gcdB D * (D : ℤ) = 1` using `by push_cast at hg; linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (Int.cast : ℤ → Ω) this`. Move the coercions through the operations in `at h'`. Conclude with `h'`. Establish `hqlt : V.valuation ((q : ℕ) : Ω) < 1` using `(V.mem_nonunits_iff).1 hqV`. Establish `hlt1 : V.valuation (((q.gcdA D : ℤ) : Ω) * (q : Ω) + ((q.gcdB D : ℤ) : Ω) * (D : Ω)) < 1`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((V.valuation_le_one_iff _).2 (intCast_mem V _))) hqlt`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((V.valuation_le_one_iff _).2 (intCast_mem V _))) hlt`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hlt1` using `[huw, map_one]`. Conclude with `lt_irrefl _ hlt1`. Rewrite using `[← V.valuation_le_one_iff]`. Establish `h` using `(V.valuation_le_one_iff _).2 (hint _ hy)`. Rewrite `h` using `[map_mul, map_pow, hD1, one_pow, one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private lemma mem_valuationSubring_of_isIntegral_natCast_pow_mul {V : ValuationSubring Ω} {q : ℕ} (hq : q.Prime)
     (hqV : ((q : ℕ) : Ω) ∈ V.nonunits) {D : ℕ} (hqD : ¬ q ∣ D) {y : Ω} {e : ℕ}
@@ -189,15 +189,13 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Use `haveI := IsAlgClosure.isAlgClosed ℚ (K := Ω)`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `set n := s.den with hn`. Use `haveI : NeZero n := ⟨s.den_nz⟩`. Use `set w : ℂ := Complex.exp (2 * Real.pi * Complex.I * s) with hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwn : w ^ n = 1`. Rewrite using `[hw, ← Complex.exp_nat_mul]`. Establish `e : (n : ℂ) * (2 * Real.pi * Complex.I * s) = (s.num : ℂ) * (2 * Real.pi * Complex.I)`. Establish `hs : (s : ℂ) * n = s.num` using `by exact_mod_cast Rat.mul_den_eq_num s`. Rewrite using `[← hs]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.exp_int_mul_two_pi_mul_I]`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic n Ω) (Polynomial.degree_cyclotomic_pos n Ω (NeZero.pos n)).ne'`. Use `haveI : NeZero (n : Ω) := ⟨Nat.cast_ne_zero.2 (NeZero.ne n)⟩`. Establish `hζ' : IsPrimitiveRoot ζ n` using `Polynomial.isRoot_cyclotomic_iff.1 hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, -, hi⟩` from `(hζ'.map_of_injective ε.injective).eq_pow_of_pow_eq_one hwn`. Establish `hrange : ∃ z, ε z = w` using `⟨ζ ^ i, by rw [map_pow, hi]⟩`. Establish `hz : ε (_root_.GlobalTheory.KZ.eOm ε s) = w` using `Function.invFun_eq hrange`. Establish `hzn : _root_.GlobalTheory.KZ.eOm ε s ^ n = 1`. Apply `ε.injective` to reduce the goal to its premises.
-
-Rewrite using `[map_pow, hz, hwn, map_one]`. Establish `hint : IsIntegral ℤ (_root_.GlobalTheory.KZ.eOm ε s)` using `⟨Polynomial.X ^ n - 1, Polynomial.monic_X_pow_sub_C 1 (NeZero.ne n), by simp [hzn]⟩`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hint.tower_top : IsIntegral V _)`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eOm_mem_valuationSubring (ε : Ω →+* ℂ) (V : ValuationSubring Ω) (s : ℚ) :
     _root_.GlobalTheory.KZ.eOm ε s ∈ V := by
@@ -233,11 +231,11 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Establish `h2P : (2 * P) ^ 2 ≠ 0` using `pow_ne_zero _ (mul_ne_zero two_ne_zero hP)`. Establish `h1 : (2 * P) ^ k ∣ y * ((2 * P) ^ 2 * y + 2)`. Rewrite `hxx` using `[pow_add, mul_comm ((2 * P) ^ k), mul_assoc]`. Conclude with `(mul_dvd_mul_iff_left h2P).1 hxx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : P ^ k ∣ (2 * y) * (2 * P ^ 2 * y + 1)`. Establish `h` using `(pow_dvd_pow_of_dvd (dvd_mul_left P 2) k).trans h1`. Establish `e : y * ((2 * P) ^ 2 * y + 2) = (2 * y) * (2 * P ^ 2 * y + 1)` using `by ring`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hcop : IsCoprime (P ^ k) (2 * P ^ 2 * y + 1)` using `IsCoprime.pow_left ⟨-(2 * P * y), 1, by ring⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : P ^ k ∣ 2 * y` using `hcop.dvd_of_dvd_mul_right h2`. Establish `e : (2 * P) ^ 2 * y = (2 * P ^ 2) * (2 * y)` using `by ring`. Establish `e' : 2 * P ^ (k + 2) = (2 * P ^ 2) * P ^ k` using `by ring`. Rewrite using `[e, e']`. Conclude with `mul_dvd_mul_left _ h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma two_mul_pow_dvd_of_sq_dvd_of_dvd_mul_add_two {P x : ℤ} (k : ℕ) (hP : P ≠ 0)
     (hx : (2 * P) ^ 2 ∣ x) (hxx : (2 * P) ^ (k + 2) ∣ x * (x + 2)) : 2 * P ^ (k + 2) ∣ x := by
@@ -262,21 +260,17 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨g00, -, -, g11⟩` from `hγ`. Use `replace g00 := (ZMod.intCast_eq_intCast_iff_dvd_sub (γ 0 0) 1 ((2 * M₀ * l) ^ 2)).1 (by rw [Int.cast_one]; exact g00)`. Use `replace g11 := (ZMod.intCast_eq_intCast_iff_dvd_sub (γ 1 1) 1 ((2 * M₀ * l) ^ 2)).1 (by rw [Int.cast_one]; exact g11)`. Rewrite `h01`, `h10` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hdiag` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Establish `hM : ((M₀ * l ^ k : ℕ) : ℤ) ∣ (((2 * M₀ * l) ^ (k + 2) : ℕ) : ℤ)`. Conclude with `(show M₀ * l ^ k ∣ (2 * M₀ * l) ^ (k + 2) from ⟨2 ^ (k + 2) * M₀ ^ (k + 1) * l ^ 2, by ring⟩)` after adjusting the coercions. Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Use `set P : ℤ := (M₀ : ℤ) * l`. Establish `hP : P ≠ 0` using `mul_ne_zero (by exact_mod_cast hM₀.ne') (by exact_mod_cast hl.ne')`. Establish `hcast : (((2 * M₀ * l) ^ (k + 2) : ℕ) : ℤ) = (2 * P) ^ (k + 2)` using `by push_cast; ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcast2 : (((2 * M₀ * l) ^ 2 : ℕ) : ℤ) = (2 * P) ^ 2` using `by push_cast; ring`. Rewrite `h01`, `h10`, `hdiag`, `hM` using `[hcast]`. Rewrite `g00`, `g11` using `[hcast2]`. Establish `hx : (2 * P) ^ 2 ∣ γ 0 0 - 1` using `dvd_sub_comm.1 g00`. Establish `hxx : (2 * P) ^ (k + 2) ∣ (γ 0 0 - 1) * (γ 0 0 - 1 + 2)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (γ 0 0 - 1) * (γ 0 0 - 1 + 2) = γ 0 0 * (γ 1 1 - γ 0 0) * (-1) + γ 0 1 * γ 1 0 + 0`. Take the linear combination `hdet`. Rewrite using `[e]`. Conclude with `dvd_add (dvd_add (dvd_mul_of_dvd_left (dvd_mul_of_dvd_right hdiag _) _) (dvd_mul_of_dvd_left h01 _)) (dvd_zero _)`. Establish `ha : ((M₀ * l ^ k : ℕ) : ℤ) ∣ γ 0 0 - 1`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `dvd_trans ?_ (two_mul_pow_dvd_of_sq_dvd_of_dvd_mul_add_two k hP hx hxx)` and prove the remaining obligations. Conclude with `⟨2 * M₀ ^ (k + 1) * l ^ 2, by push_cast [P]; ring⟩`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(ZMod.intCast_eq_intCast_iff_dvd_sub (γ 0 0) 1 (M₀ * l ^ k)).2 (dvd_sub_comm.1 ha)`. Rewrite `h` using `[Int.cast_one]`. Then use the resulting hypothesis.
-
-Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `hM.trans h01`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `hM.trans h10`. Establish `e : γ 1 1 - 1 = (γ 0 0 - 1) + (γ 1 1 - γ 0 0)` using `by ring`.
-
-Establish `h` using `(ZMod.intCast_eq_intCast_iff_dvd_sub (γ 1 1) 1 (M₀ * l ^ k)).2 (dvd_sub_comm.1 (e ▸ dvd_add ha (hM.trans hdiag)))`. Rewrite `h` using `[Int.cast_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private lemma mem_gamma_of_scalar_mod_two_mul_pow {M₀ l k : ℕ} (hM₀ : 0 < M₀) (hl : 0 < l) {γ : SL(2, ℤ)}
     (hγ : γ ∈ CongruenceSubgroup.Gamma ((2 * M₀ * l) ^ 2))
@@ -330,37 +324,31 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Establish `hn : 0 < 2 * M₀ * l` using `Nat.mul_pos (Nat.mul_pos two_pos hM₀) hl.pos`. Take `⟨T, hTlev, hTspan⟩` from `_root_.GlobalTheory.KZ.ES.LevFin.exists_finset_span ε X hj ((2 * M₀ * l) ^ 2) (pow_pos hn 2)`. Use `choose D hD hDint using fun t : X.K => X.bdd t`. Use `⟨(T.prod D).primeFactors, fun q hq hqS V hqV k f hf => ?_⟩` and prove the remaining obligations. Use `set m := (2 * M₀ * l) ^ (k + 2) with hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : 0 < m` using `pow_pos hn _`. Use `set B := _root_.GlobalTheory.KZ.ES.Quot.bddRing X V m`. Use `set L : IntermediateField Ω X.K := (Subfield.closure (B : Set X.K)).toIntermediateField fun c => Subfield.subset_closure (B.algebraMap_mem c)`. Establish `hN₀m : (2 * M₀ * l) ^ 2 ∣ m` using `pow_dvd_pow _ (by omega)`. Establish `hdvd : M₀ * l ^ k ∣ m`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, pow_add, mul_comm ((2 * M₀ * l) ^ k)]`. Conclude with `mul_dvd_mul (dvd_pow ⟨2 * l, by ring⟩ two_ne_zero) (pow_dvd_pow_of_dvd (dvd_mul_left l _) k)`. Establish `hT : ∀ t ∈ T, t ∈ B`. Introduce `t ht`. Use `⟨fun γ hγ => hTlev t ht γ (gamma_le_gamma_of_dvd' hN₀m hγ), 1, one_ne_zero, fun r => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one, one_mul]`. Take `⟨e, he⟩` from `hDint t r`. Establish `hqD : ¬ q ∣ D t` using `fun h => hqS (Nat.mem_primeFactors.2 ⟨hq, h.trans (Finset.dvd_prod_of_mem D ht), (Finset.prod_pos fun i _ => hD i).ne'⟩)`. Conclude with `mem_valuationSubring_of_isIntegral_natCast_pow_mul hq hqV hqD he`. Establish `hjB : X.jK ∈ B`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_root_.GlobalTheory.KZ.ES.lev_jK X m, 1, one_ne_zero, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`. Take `⟨z, hz⟩` from `X.j_exp.2.2 r`. Rewrite using `[hz]`. Conclude with `intCast_mem V z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hY : ∀ g ∈ ({!![(m : ℤ), 0; 0, 1], !![1, 0; 0, (m : ℤ)], !![1, 1; 0, (m : ℤ)]} : Set (Matrix (Fin 2) (Fin 2) ℤ)), X.sl (_root_.GlobalTheory.KZ.toGQ g) X.jK ∈ B`. Introduce `g hg`. Use `⟨(_root_.GlobalTheory.KZ.ES.Scal.lev_and_scalar ε X m hm0).1 g hg, 1, one_ne_zero, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`. Establish `hm' : (m : ℤ) ≠ 0` using `by exact_mod_cast hm0.ne'`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hg' : 0 < g.det ∧ g 1 0 = 0 ∧ g 0 0 ≠ 0 ∧ g 1 1 ≠ 0`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Establish `hm'' : (0 : ℤ) < m` using `by exact_mod_cast hm0`. Apply the tactic sequence `rcases hg with rfl | rfl | rfl <;> simp [Matrix.det_fin_two, hm', hm'', hm0, hm0.ne']`. Take `⟨hd, h10, h00, h11⟩` from `hg'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hE : ∀ i j, _root_.GlobalTheory.KZ.ent (_root_.GlobalTheory.KZ.toGQ g) i j = g i j` using `fun i j => by`. Unfold `_root_.GlobalTheory.KZ.ent _root_.GlobalTheory.KZ.toGQ`. Rewrite using `[dif_pos hd]`. Simplify using the standard rewrite rules. Establish `h` using `X.exp_upper (_root_.GlobalTheory.KZ.toGQ g) (by rw [hE, h10]; simp) X.jK (r * g 1 1 / g 0 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hE] at h`. Establish `h00' : (g 0 0 : ℚ) ≠ 0` using `by exact_mod_cast h00`. Establish `h11' : (g 1 1 : ℚ) ≠ 0` using `by exact_mod_cast h11`. Establish `hr : r * (g 1 1 : ℚ) / (g 0 0) * (g 0 0) / (g 1 1) = r` using `by field_simp`. Rewrite `h` using `[hr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h]`. Take `⟨z, hz⟩` from `X.j_exp.2.2 (r * g 1 1 / g 0 0)`. Rewrite using `[hz]`. Conclude with `V.mul_mem _ _ (eOm_mem_valuationSubring ε V _) (intCast_mem V z)`. Establish `hfix : ∀ x : X.K, _root_.GlobalTheory.KZ.ES.Lev X ((2 * M₀ * l) ^ 2) x → x ∈ Subfield.closure (B : Set X.K)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `x hx`. Establish `hjL : IntermediateField.adjoin Ω {X.jK} ≤ L` using `IntermediateField.adjoin_simple_le_iff.2 (Subfield.subset_closure hjB)`. Establish `hspan` using `hTspan x hx`. Use `clear hx`. Proceed by induction on `hspan using Submodule.span_induction with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `mem t ht => exact Subfield.subset_closure (hT t ht)`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul r y _ hy => show (r : X.K) * y ∈ Subfield.closure (B : Set X.K)`. Conclude with `mul_mem (hjL r.2) hy`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : NeZero m := ⟨hm0.ne'⟩`. Establish `hart` using `_root_.GlobalTheory.ArtinFix.mem_closure_of_fixed X.K (CongruenceSubgroup.Gamma ((2 * M₀ * l) ^ 2)) (_root_.GlobalTheory.KZ.ES.Quot.rho X _) ((CongruenceSubgroup.Gamma m).subgroupOf _) ((CongruenceSubgroup.Gamma_normal m).subgroupOf _) inferInstance ((fun g => X.sl (_root_.Global …`. Use `Subfield.closure_le.2 (Set.union_subset (fun x hx => hfix x ?_) ?_) hart` and prove the remaining obligations. Introduce `γ hγ`. Establish `h` using `hx ⟨γ⁻¹, inv_mem hγ⟩`.
-
-Express the relevant statement in the definitionally equal form `X.sl (_root_.GlobalTheory.KZ.ofSL (γ⁻¹)⁻¹) x = x at h`. Rewrite `h` using `[inv_inv]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `Subfield.subset_closure (hY g hg)`. Introduce and unpack `_ ⟨g, hg, rfl⟩ δ hδ`.
-
-Express the relevant statement in the definitionally equal form `X.sl (_root_.GlobalTheory.KZ.ofSL (δ : SL(2, ℤ))⁻¹) _ = _`. Conclude with `(_root_.GlobalTheory.KZ.ES.Scal.lev_and_scalar ε X m hm0).1 g hg _ (inv_mem (Subgroup.mem_subgroupOf.1 hδ))`. Introduce `δ hδ`. Express the relevant statement in the definitionally equal form `X.sl (_root_.GlobalTheory.KZ.ofSL (δ : SL(2, ℤ))⁻¹) f = f`. Conclude with `hf _ (gamma_le_gamma_of_dvd' hdvd (inv_mem (Subgroup.mem_subgroupOf.1 hδ)))`.
-
-Introduce and unpack `⟨g, hg⟩ hgY`. Express the relevant statement in the definitionally equal form `X.sl (_root_.GlobalTheory.KZ.ofSL g⁻¹) f = f`. Take `⟨h01, h10, hdiag⟩` from `(_root_.GlobalTheory.KZ.ES.Scal.lev_and_scalar ε X m hm0).2 g⁻¹ fun g' hg' => hgY _ ⟨g', hg', rfl⟩`. Conclude with `hf _ (mem_gamma_of_scalar_mod_two_mul_pow hM₀ hl.pos (inv_mem hg) h01 h10 hdiag)`.
+Express the relevant assertion in an equivalent form by its definition. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma exists_finset_lev_mem_closure_bddRing (X : _root_.GlobalTheory.KZ.Tower Ω ε)
     (hj : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ _root_.GlobalTheory.KZ.Hs ∧
@@ -471,13 +459,11 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Take `⟨hlev, c, hc, hcx⟩` from `hx`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Take `⟨F, hF, hcoef⟩` from `_root_.GlobalTheory.KZ.ES.NF.coeff_numberField ε X x`. Establish `hne : ∃ r, (X.exp x).coeff r ≠ 0`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at h`. Apply `hx0` to reduce the goal to its premises. Apply `(X.exp : X.K →+* HahnSeries ℚ Ω).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `HahnSeries.ext (funext h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr0, hmax⟩` from `_root_.GlobalTheory.ValMax.exists_max_valuation F hF q hq V hqV ℚ (fun r => (X.exp x).coeff r) c hc hcoef (fun r => by simpa [map_mul, AlgHom.commutes, hahnSeries_coeff_algebraMap_mul] using hcx r) hne`. Establish `hval : 0 < V.valuation ((X.exp x).coeff r)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hr0)`. Use `⟨(X.exp x).coeff r, algebraMap Ω X.K ((X.exp x).coeff r)⁻¹ * x, hr0, fun γ hγ => by rw [map_mul, AlgEquiv.commutes, hlev γ hγ], ⟨fun r' => ?_, r, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes, hahnSeries_coeff_algebraMap_mul, ← ValuationSubring.valuation_le_one_iff, map_mul, map_inv₀]`. Conclude with `(inv_mul_le_one₀ hval).2 (hmax r')`.
-
-Rewrite using `[map_mul, AlgHom.commutes, hahnSeries_coeff_algebraMap_mul, inv_mul_cancel₀ hr0, map_one]`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hr0, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_prim_mul_of_mem_bddRing {X : _root_.GlobalTheory.KZ.Tower Ω ε}
     {q : ℕ} (hq : q.Prime) {V : ValuationSubring Ω} (hqV : ((q : ℕ) : Ω) ∈ V.nonunits) {M : ℕ}
@@ -513,17 +499,15 @@ open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} in
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X hj l M₀ hl hM₀`. Take `⟨S, hS⟩` from `exists_finset_lev_mem_closure_bddRing X hj hl hM₀`. Use `⟨S ∪ (2 * M₀ * l).primeFactors, fun q hq hqS V hqV k f hf0 hf => ?_⟩` and prove the remaining obligations. Establish `hN : 0 < 2 * M₀ * l` using `Nat.mul_pos (Nat.mul_pos two_pos hM₀) hl.pos`. Establish `hcop : Nat.Coprime q (2 * M₀ * l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Nat.Prime.coprime_iff_not_dvd hq).2 fun hdvd => hqS ?_` and prove the remaining obligations. Conclude with `Finset.mem_union_right _ (Nat.mem_primeFactors.2 ⟨hq, hdvd, hN.ne'⟩)`. Establish `hmem` using `hS q hq (fun h => hqS (Finset.mem_union_left _ h)) V hqV k f hf`. Use `set B := _root_.GlobalTheory.KZ.ES.Quot.bddRing X V ((2 * M₀ * l) ^ (k + 2))`. Take `⟨y, hy, z, hz, hyz⟩` from `Subfield.mem_closure_iff.1 hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB : Subring.closure (B : Set X.K) = B.toSubring` using `Subring.closure_eq B.toSubring`. Rewrite `hy`, `hz` using `[hB]`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hyz` using `[div_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hf0 hyz.symm`. Establish `hfz : f * z = y` using `by rw [← hyz, div_mul_cancel₀ _ hz0]`. Establish `hy0 : y ≠ 0`. Rewrite using `[← hfz]`. Conclude with `mul_ne_zero hf0 hz0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨α, a, hα, ha, hpa, rfl⟩` from `exists_prim_mul_of_mem_bddRing hq hqV hy hy0`. Take `⟨β, b, hβ, hb, hpb, rfl⟩` from `exists_prim_mul_of_mem_bddRing hq hqV hz hz0`. Use `⟨(2 * M₀ * l) ^ (k + 2), a, b, β⁻¹ * α, by positivity, Nat.Coprime.pow_right _ hcop, ?_, ha, hb, hpa, hpb, mul_ne_zero (inv_ne_zero hβ) hα, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm ((2 * M₀ * l) ^ k)]`. Conclude with `mul_dvd_mul (dvd_pow ⟨2 * l, by ring⟩ two_ne_zero) (pow_dvd_pow_of_dvd (dvd_mul_left l _) k)`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm f, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hβ, map_one, one_mul]`. Use `_ = algebraMap Ω X.K (β⁻¹ * α) * a := by rw [hfz, map_mul, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ES.Quot.quot_prim : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : _root_.GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ _root_.GlobalTheory.KZ.Hs ∧ X.an X.jK = (φ : _root_.GlobalTheory.KZ.Mero)) → ∀ (l M₀ : ℕ), l.Prime → 0 < M₀ → ∃ S : Finset ℕ, ∀ q : ℕ, q.Prime → q ∉ S → ∀ V : ValuationSubring Ω, ((q : ℕ) : Ω) ∈ V.nonunits → ∀ (k : ℕ) (f : X.K), f ≠ 0 → _root_.GlobalTheory.KZ.ES.Lev X (M₀ * l ^ k) f → ∃ (M' : ℕ) (a b : X.K) (c : Ω), 0 < M' ∧ Nat.Coprime q M' ∧ M₀ * l ^ k ∣ M' ∧ _root_.GlobalTheory.KZ.ES.Lev X M' a ∧ _root_.GlobalTheory.KZ.ES.Lev X M' b ∧ _root_.GlobalTheory.KZ.ES.Prim X V a ∧ _root_.GlobalTheory.KZ.ES.Prim X V b ∧ c ≠ 0 ∧ f * b = algebraMap Ω X.K c * a := by
   intro Ω _ _ _ ε X hj l M₀ hl hM₀

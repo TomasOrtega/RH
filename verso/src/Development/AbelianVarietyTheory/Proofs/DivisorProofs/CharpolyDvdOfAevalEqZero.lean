@@ -9,11 +9,11 @@ open Polynomial Matrix Formalism.UG
 namespace GlobalTheory.SepCharpoly
 
 /- English proof (translation)
-Introduce `R _ _ n M p hs hp`. Set `K` to `FractionRing R`. Set `f : R →+* K` to `algebraMap R K`. Establish `hf : Function.Injective f` using `IsFractionRing.injective R K`. Rewrite using `[← Polynomial.map_dvd_map f hf M.charpoly_monic, ← Matrix.charpoly_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.ClassParam.charpoly_dvd_of_aeval (M.map f) ?_ (p.map f) ?_` and prove the remaining obligations. Rewrite using `[Matrix.charpoly_map]`. Conclude with `hs.map`. Rewrite using `[show M.map f = (f.mapMatrix : Matrix (Fin n) (Fin n) R →+* _) M from rfl]`. Use `congrArg (AlgHom.mapMatrix (m := Fin n) (Algebra.ofId R K)) hp` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← aeval_algHom_apply, map_zero]`. Rewrite using `[aeval_map_algebraMap]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_dvd_of_aeval_eq_zero :
     ∀ (R : Type) [CommRing R] [IsDomain R] (n : ℕ) (M : Matrix (Fin n) (Fin n) R) (p : R[X]),

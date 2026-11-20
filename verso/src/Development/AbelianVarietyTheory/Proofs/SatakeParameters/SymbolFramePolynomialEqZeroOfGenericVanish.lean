@@ -7,13 +7,13 @@ noncomputable section
 namespace GlobalTheory.TwV.DelA.Dense
 
 /- English proof (translation)
-Establish `hev : ∀ x : σ → ℂ, MvPolynomial.eval (ι ∘ x) (MvPolynomial.map ι h) = ι (MvPolynomial.eval x h)`. Introduce `x`. Rewrite using `[MvPolynomial.eval_map, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left, RingHom.comp_id]`. Establish `hh : MvPolynomial.map ι h ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx0` to reduce the goal to its premises. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[← hev, h0, map_zero, map_zero]`. Establish `hinf : ∀ _ : σ, (Set.range ι).Infinite` using `fun _ => Set.infinite_range_of_injective ι.injective`. Establish `hprod : R * MvPolynomial.map ι h = 0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MvPolynomial.funext_set (fun _ => Set.range ι) hinf (fun y hy => ?_)` and prove the remaining obligations. Use `choose x hx using fun i => hy i (Set.mem_univ i)`. Establish `hy' : y = ι ∘ x` using `funext fun i => (hx i).symm`. Rewrite using `[hy', map_mul, map_zero, hev]`. Distinguish the cases in `hz : MvPolynomial.eval x h = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, map_zero, mul_zero]`. Rewrite using `[hR x hz, zero_mul]`. Conclude with `(mul_eq_zero.mp hprod).resolve_right hh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_vanish_off {σ Kc : Type} [Field Kc] (ι : ℂ →+* Kc) (R : MvPolynomial σ Kc)
     (h : MvPolynomial σ ℂ) (x0 : σ → ℂ) (hx0 : MvPolynomial.eval x0 h ≠ 0)
@@ -48,9 +48,9 @@ def dOf (x : X.ZA j → ℂ) (τ : D.what₂.Tau) : Matrix (Fin (D.R.N j)) (Fin 
   fun a b => x (idxSym X D pos hN τ a b)
 
 /- English proof (translation)
-Take `⟨v, s, a, b⟩` from `z`. Establish `key : ∀ q : (Σ v : X.Pl, Fin (X.G.P.n' v)), q = ⟨v, s⟩ → (⟨q.1, (q.2, a, b)⟩ : X.ZA j) = ⟨v, (s, a, b)⟩`. Introduce and unpack `q rfl`. Both sides reduce to the same expression. Simplify using `only [dOf, idxSym, Fin.cast_cast, Fin.cast_eq_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[key _ (pos.symm_apply_apply _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dOf_read (x : X.ZA j → ℂ) (z : X.ZA j) :
     dOf X D pos hN x (pos ⟨z.1, z.2.1⟩) (Fin.cast hN.1.symm z.2.2.1) (Fin.cast hN.2.symm z.2.2.2) = x z := by
@@ -62,7 +62,7 @@ theorem dOf_read (x : X.ZA j → ℂ) (z : X.ZA j) :
   rw [key _ (pos.symm_apply_apply _)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a b`. Simplify using `[dOf, idxSym]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dOf_surj (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ) :
     dOf X D pos hN (fun z => d (pos ⟨z.1, z.2.1⟩) (Fin.cast hN.1.symm z.2.2.1) (Fin.cast hN.2.symm z.2.2.2)) = d := by
@@ -74,9 +74,9 @@ def hD (f' : D.what₂.Tau → Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))
     MvPolynomial.X (idxSym X D pos hN τ a k) * MvPolynomial.C (f' τ k (Fin.castLE (rk_le X D hN) b)))
 
 /- English proof (translation)
-Rewrite using `[hD, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[dfr, Matrix.mul_apply, dOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_hD (f' : D.what₂.Tau → Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) ℂ) (x : X.ZA j → ℂ) :
     MvPolynomial.eval x (hD X D pos hN f') = ∏ τ, (dfr X D hN (dOf X D pos hN x) f' τ).det := by
@@ -94,9 +94,9 @@ def blkOf (w : Formalism.L2.G.Cmp.Var (X.Pj (j + 1)) → ℂ) (τ : D.what₂.Ta
   fun a b => w (idxFr X D pos hN τ a b)
 
 /- English proof (translation)
-Take `⟨v, s, a, b⟩` from `y`. Establish `key : ∀ q : (Σ v : X.Pl, Fin (X.G.P.n' v)), q = ⟨v, s⟩ → (⟨q.1, (q.2, a, b)⟩ : Formalism.L2.G.Cmp.Var (X.Pj (j + 1))) = ⟨v, (s, a, b)⟩`. Introduce and unpack `q rfl`. Both sides reduce to the same expression. Simplify using `only [blkOf, idxFr, Fin.cast_cast, Fin.cast_eq_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[key _ (pos.symm_apply_apply _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blkOf_read (w : Formalism.L2.G.Cmp.Var (X.Pj (j + 1)) → ℂ) (y : Formalism.L2.G.Cmp.Var (X.Pj (j + 1))) :
     blkOf X D pos hN w (pos ⟨y.1, y.2.1⟩) (Fin.cast (rkT X D hN) y.2.2.1) (Fin.cast (rkT X D hN) y.2.2.2) = w y := by
@@ -111,9 +111,9 @@ def hY : MvPolynomial (Formalism.L2.G.Cmp.Var (X.Pj (j + 1))) ℂ :=
   ∏ τ, Matrix.det (Matrix.of fun a b : Fin (D.R.N (j + 1)) => MvPolynomial.X (idxFr X D pos hN τ a b))
 
 /- English proof (translation)
-Rewrite using `[hY, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[blkOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_hY (w : Formalism.L2.G.Cmp.Var (X.Pj (j + 1)) → ℂ) :
     MvPolynomial.eval w (hY X D pos hN) = ∏ τ, (blkOf X D pos hN w τ).det := by
@@ -128,7 +128,7 @@ def fOf {n : ℕ} (g : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (τ : D.wha
   if IsOddPos (pos.symm τ).2 then (((g τ).submatrix id Fin.rev).transpose)⁻¹ else g τ
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_transpose]`. Establish `h` using `Matrix.det_permute' (Fin.revPerm : Equiv.Perm (Fin n)) M`. Rewrite `h` using `[show M.submatrix id ⇑(Fin.revPerm : Equiv.Perm (Fin n)) = M.submatrix id Fin.rev from rfl]`. Rewrite using `[h]`. Conclude with `mul_ne_zero (Int.cast_ne_zero.mpr (Units.ne_zero _)) hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_rev_ne_zero {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hM : M.det ≠ 0) : (M.submatrix id Fin.rev).transpose.det ≠ 0 := by
   rw [Matrix.det_transpose]
@@ -138,9 +138,9 @@ theorem det_rev_ne_zero {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hM : M.det �
   exact mul_ne_zero (Int.cast_ne_zero.mpr (Units.ne_zero _)) hM
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Unfold `zT fOf`. Distinguish the cases in `ho : IsOddPos (pos.symm τ).2`. Rewrite using `[if_pos ho, if_pos ho, Matrix.nonsing_inv_nonsing_inv _ (isUnit_iff_ne_zero.mpr (det_rev_ne_zero (g τ) (hg τ)))]`. Use extensionality with `a b`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg ho, if_neg ho]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zT_fOf {n : ℕ} (g : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (hg : ∀ τ, (g τ).det ≠ 0) :
     zT X D pos (fOf X D pos g) = g := by
@@ -154,9 +154,7 @@ theorem zT_fOf {n : ℕ} (g : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (hg 
   · rw [if_neg ho, if_neg ho]
 
 /- English proof (translation)
-Unfold `fOf`. Distinguish the cases in `ho : IsOddPos (pos.symm τ).2`. Rewrite using `[if_pos ho]`. Conclude with `(Matrix.isUnit_nonsing_inv_det _ (isUnit_iff_ne_zero.mpr (det_rev_ne_zero (g τ) (hg τ)))).ne_zero`. Rewrite using `[if_neg ho]`.
-
-Conclude with `hg τ`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_fOf {n : ℕ} (g : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (hg : ∀ τ, (g τ).det ≠ 0) (τ : D.what₂.Tau) :
     (fOf X D pos g τ).det ≠ 0 := by
@@ -171,7 +169,7 @@ def yv {Kc : Type} [Field Kc] (ι : ℂ →+* Kc) (f' : D.what₂.Tau → Matrix
   ι (zT X D pos f' (pos ⟨y.1, y.2.1⟩) (Fin.cast (rkT X D hN) y.2.2.1) (Fin.cast (rkT X D hN) y.2.2.2))
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evD_eq_eval {Kc : Type} [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc)
     (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ)
@@ -187,25 +185,21 @@ end GlobalTheory.TwV.DelA.Dense
 open GlobalTheory.TwV.DelA.Dense in
 
 /- English proof (translation)
-Introduce `p _ X D pos Kc _ _ ι j hN P hP`. Establish `step1 : ∀ f' : D.what₂.Tau → Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) ℂ, (∀ τ, (f' τ).det ≠ 0) → MvPolynomial.map (MvPolynomial.eval (yv X D pos hN ι f')) P = 0`. Introduce `f' hf'`. Use `set E : Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ := (1 : Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) ℂ).submatrix (Fin.castLE (rk_le X D hN)) id with hE`. Use `set d0 : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ := fun τ => E * (f' τ)⁻¹ with hd0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_zero_of_vanish_off ι _ (hD X D pos hN f') (fun z => d0 (pos ⟨z.1, z.2.1⟩) (Fin.cast hN.1.symm z.2.2.1) (Fin.cast hN.2.symm z.2.2.2)) ?_ ?_` and prove the remaining obligations. Rewrite using `[eval_hD, dOf_surj]`. Use `Finset.prod_ne_zero_iff.mpr fun τ _ => ?_` and prove the remaining obligations. Establish `: dfr X D hN d0 f' τ = 1`. Unfold `dfr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hd0]`. Simplify using `only`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (hf' τ)), Matrix.mul_one, hE, Matrix.submatrix_submatrix, Function.comp_id, Function.id_comp]`. Conclude with `Matrix.submatrix_one _ (Fin.castLE_injective _)`. Rewrite using `[this, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero`. Introduce `x hx`. Rewrite `hx` using `[eval_hD]`. Establish `hdet : ∀ τ, (dfr X D hN (dOf X D pos hN x) f' τ).det ≠ 0` using `fun τ => (Finset.prod_ne_zero_iff.mp hx) τ (Finset.mem_univ _)`. Establish `h` using `hP (dOf X D pos hN x) f' hf' hdet`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[evD_eq_eval]`. Establish `hxv : (fun z : X.ZA j => ι (dOf X D pos hN x (pos ⟨z.1, z.2.1⟩) (Fin.cast hN.1.symm z.2.2.1) (Fin.cast hN.2.symm z.2.2.2))) = ι ∘ x`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, dOf_read]`. Rewrite `h` using `[hxv]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use extensionality with `m : 1`. Rewrite using `[MvPolynomial.coeff_zero]`. Use `eq_zero_of_vanish_off ι _ (hY X D pos hN) (fun y => if y.2.2.1 = y.2.2.2 then 1 else 0) ?_ ?_` and prove the remaining obligations. Rewrite using `[eval_hY]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_ne_zero_iff.mpr fun τ _ => ?_` and prove the remaining obligations. Establish `: blkOf X D pos hN (fun y => if y.2.2.1 = y.2.2.2 then 1 else 0) τ = 1`. Use extensionality with `a b`. Simplify using `[GlobalTheory.TwV.DelA.Dense.blkOf, GlobalTheory.TwV.DelA.Dense.idxFr, Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero`. Introduce `w hw`. Rewrite `hw` using `[eval_hY]`. Establish `hg : ∀ τ, (blkOf X D pos hN w τ).det ≠ 0` using `fun τ => (Finset.prod_ne_zero_iff.mp hw) τ (Finset.mem_univ _)`. Establish `h1` using `step1 (fOf X D pos (blkOf X D pos hN w)) (det_fOf X D pos _ hg)`.
-
-Establish `h2 : yv X D pos hN ι (fOf X D pos (blkOf X D pos hN w)) = ι ∘ w`. Use function extensionality and compare the values at `y`. Simplify using `only [yv, zT_fOf X D pos _ hg, Function.comp_apply, blkOf_read]`. Establish `h3` using `congrArg (MvPolynomial.coeff m) h1`. Rewrite `h3` using `[MvPolynomial.coeff_map, h2, MvPolynomial.coeff_zero]`.
-
-Conclude with `h3`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.DelA.eq_zero_of_evD_generic : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (j : ℕ) (hN : RankTie X D j) (P : DA X Kc j), (∀ (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ) (f' : D.what₂.Tau → Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) ℂ), (∀ τ, (f' τ).det ≠ 0) → (∀ τ, (dfr X D hN d f' τ).det ≠ 0) → evD X D pos ι hN d f' P = 0) → P = 0 := by
   intro p _ X D pos Kc _ _ ι j hN P hP

@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RamTwist
 
 /- English proof (translation)
-Introduce `x h1 h2 h3`. Establish `e` using `h x h1 h2 h3`. Rewrite `e` using `[MonoidHom.div_apply, MonoidHom.mul_apply, ha x h1 h2 h3, hc x h1 h2 h3, one_mul, div_one]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramAt_of_div {D : D7} {ε : AF D.host.F} {a b c : (AE D)ˣ →* Circle}
     (h : GlobalTheory.WeilParts.UnramAt ε (a * b / c)) (ha : GlobalTheory.WeilParts.UnramAt ε a) (hc : GlobalTheory.WeilParts.UnramAt ε c) :
@@ -22,9 +22,9 @@ theorem unramAt_of_div {D : D7} {ε : AF D.host.F} {a b c : (AE D)ˣ →* Circle
   exact e
 
 /- English proof (translation)
-Introduce `h`. Establish `hk : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal`. Substitute `hPP` using the available equality. Use `show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ PP.asIdeal`. Rewrite using `[map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Use `hv (G.pl.mem_S0_of_sum_eq.2 (Or.inr ((S1_mem_OmF D).2 ?_)))` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem not_overP_g {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc)
     {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∉ G.pl.S0) (PP : HeightOneSpectrum (𝓞 D.host.E))
@@ -45,9 +45,9 @@ end GlobalTheory.RamTwist
 open GlobalTheory.RamTwist in
 
 /- English proof (translation)
-Introduce `D T Lc sc G μ₀ hμ t v e he hv PP hPP hPv i j hU`. Establish `hmi1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`. Establish `hmi2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Establish `hchi : GlobalTheory.WeilParts.UnramAt e (G.ch.chi (D.R.m - i))` using `GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ (G.ch.chi_eq _ hmi1 hmi2) v e he fun P hP => G.ch.unr _ hmi1 hmi2 P (hP ▸ hv)`. Establish `hmu : GlobalTheory.WeilParts.UnramAt e (Lc.mu0 ((j : ℕ) + 1))` using `GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ (hμ.mu0 j) v e he fun P hP => (Lc.C.isMu0 j).unr P (not_overP_g G hv P hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi : GlobalTheory.WeilParts.UnramAt e (Lc.xi t)`. Use `unramAt_of_div (a := Lc.mu0 ((j : ℕ) + 1)) (c := G.ch.chi (D.R.m - i)) ?_ hmu hchi` and prove the remaining obligations. Conclude with `hU`. Establish `h1` using `GlobalTheory.UnrOverPlace.unrAt_of_unramAt D (Lc.xi t) v e he hxi PP hPv`. Conclude with `(hμ.Q_ram t PP).2 (Or.inl hPP) ((GlobalTheory.LFun.unrAt_iff_of_chrEq (hμ.xi t) PP).1 h1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SqTop.not_unramAt_twist : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T), Lc.Is μ₀ → ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AF D.host.F), IsPlaceIdem D v e → v ∉ G.pl.S0 → ∀ PP ∈ Lc.Q t, PP.under (𝓞 D.host.F) = v → ∀ i j : Fin D.R.m, ¬ GlobalTheory.WeilParts.UnramAt e (Lc.mu t (j + 1) / G.ch.chi (D.R.m - i)) := by
   intro D T Lc sc G μ₀ hμ t v e he hv PP hPP hPv i j hU

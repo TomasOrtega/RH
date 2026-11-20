@@ -20,9 +20,9 @@ namespace GlobalTheory.BCT.GeoFin
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `w hw h0`. Establish `hfin : (S ∩ Function.mulSupport f).Finite` using `hf.subset Set.inter_subset_right`. Apply `h` to reduce the goal to its premises. Rewrite using `[finprod_mem_eq_prod_of_inter_mulSupport_eq f (t := hfin.toFinset) (by`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_inter_iff, Set.Finite.coe_toFinset]`. Use the proof step `tauto)]`. Conclude with `Finset.prod_eq_zero (i := w) (by simp [hw, h0]) h0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_finprod_mem_ne_zero {α : Type} (f : α → ℂ) (S : Set α) (hf : (Function.mulSupport f).Finite)
     (h : ∏ᶠ w ∈ S, f w ≠ 0) : ∀ w ∈ S, f w ≠ 0 := by
@@ -34,9 +34,9 @@ theorem ne_zero_of_finprod_mem_ne_zero {α : Type} (f : α → ℂ) (S : Set α)
   exact Finset.prod_eq_zero (i := w) (by simp [hw, h0]) h0
 
 /- English proof (translation)
-Take `⟨δ, ⟨hδ₁, hδ₂⟩, x, hx⟩` from `exists_ne_zero_of_clSum_ne_zero _ _ _ _ _ h`. Use `⟨_, hx, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(nrmL a w (x.1⁻¹ * δ.1 * thL a w x.1)).val.charpoly = Q₁`. Rewrite using `[nrmL_twConj, ← hδ₁, Units.val_mul, Matrix.charpoly_mul_comm, ← Units.val_mul, mul_inv_cancel_left]`. Express the relevant statement in the definitionally equal form `(nrmL b w (x.2⁻¹ * δ.2 * thL b w x.2)).val.charpoly = Q₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[nrmL_twConj, ← hδ₂, Units.val_mul, Matrix.charpoly_mul_comm, ← Units.val_mul, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_support_of_stTw2_ne_zero (a b : ℕ) (w : Pl E) (Q₁ Q₂ : (w.adicCompletion E)[X])
     (φ : GLw a w × GLw b w → ℂ) (h : stTw2 a b w Q₁ Q₂ φ ≠ 0) :

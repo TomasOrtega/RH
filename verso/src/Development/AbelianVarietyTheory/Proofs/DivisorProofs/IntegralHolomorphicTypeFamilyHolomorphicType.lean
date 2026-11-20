@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict
 
 /- English proof (translation)
-Establish `hdet : b.det = ∏ i, b i i` using `Matrix.det_of_upperTriangular (fun i j hij => hb.2 i j hij)`. Establish `h` using `hb.1`. Rewrite `h` using `[hdet, Finset.prod_ne_zero_iff]`. Conclude with `h a (Finset.mem_univ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpT.diag_ne_zero {n : ℕ} {b : Mt n} (hb : UpT b) (a : Fin n) : b a a ≠ 0 := by
   have hdet : b.det = ∏ i, b i i := Matrix.det_of_upperTriangular (fun i j hij => hb.2 i j hij)
@@ -20,29 +20,25 @@ theorem UpT.diag_ne_zero {n : ℕ} {b : Mt n} (hb : UpT b) (a : Fin n) : b a a �
   exact h a (Finset.mem_univ a)
 
 /- English proof (translation)
-Introduce `n ι _ _ Hm q x₀ w hx Ω _ ν _ f C hf hC hmeas`. Establish `hf' : ∀ o, ∃ P, HolSec Hm q w P ∧ ∀ u ∈ UG Hm, f o u = P fun τ => (u τ * x₀ τ : Mt n)` using `hf`. Use `choose Pc hPc using hf'`. Establish `hβ` using `fun τ => GlobalTheory.T.smooth_gram_schmidt_indefinite_hermitian_frames n (Hm τ) (q τ) (x₀ τ) (hx τ)`. Use `choose β hβc hβ using hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨hopen, -, hmul, hx0⟩` from `GlobalTheory.T.negativeFrameDomainProduct_open_preconnected_stable n ι Hm q x₀ hx`. Set `uu : (ι → Fin n → Fin n → ℂ) → ι → Mt n` to `fun y τ => Matrix.of (y τ) * (Matrix.of (β τ (y τ)))⁻¹ * (x₀ τ)⁻¹`. Set `cc : (ι → Fin n → Fin n → ℂ) → ℂ` to `fun y => ∏ τ, ∏ a, (β τ (y τ)) a a ^ w τ a`. Establish `huu : ∀ y ∈ frDoms Hm q, uu y ∈ UG Hm` using `fun y hy τ => (hβ τ (y τ) (hy τ)).2`. Establish `hkey : ∀ o, ∀ y ∈ frDoms Hm q, Pc o y = cc y * f o (uu y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `o y hy`. Establish `hu` using `huu y hy`. Establish `hone : ∀ _τ : ι, UpT (1 : Mt n)` using `fun _ => ⟨by simp, fun a c hca => Matrix.one_apply_ne (ne_of_gt hca)⟩`. Establish `hfr : (fun τ => (uu y τ * x₀ τ : Mt n)) ∈ frDoms Hm q`. Use `hmul (uu y) hu (fun _ => 1) hone (fun τ => (x₀ τ : Mt n)) hx0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_one] at this`. Conclude with `this`. Establish `hB : ∀ τ, UpT (Matrix.of (β τ (y τ)))` using `fun τ => (hβ τ (y τ) (hy τ)).1`. Establish `heq` using `(hPc o).1.2 (fun τ => (uu y τ * x₀ τ : Mt n)) hfr (fun τ => Matrix.of (β τ (y τ))) hB`. Establish `hrec : (fun τ => (Matrix.of ((uu y τ * x₀ τ : Mt n)) * Matrix.of (β τ (y τ)) : Mt n)) = y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Establish `hX : (x₀ τ)⁻¹ * x₀ τ = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (hx0 τ).1)`. Establish `hBB : (Matrix.of (β τ (y τ)))⁻¹ * Matrix.of (β τ (y τ)) = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (hB τ).1)`. Use `show Matrix.of (y τ) * (Matrix.of (β τ (y τ)))⁻¹ * (x₀ τ)⁻¹ * x₀ τ * Matrix.of (β τ (y τ)) = y τ`. Rewrite using `[Matrix.mul_assoc (Matrix.of (y τ) * (Matrix.of (β τ (y τ)))⁻¹), hX, Matrix.mul_one, Matrix.mul_assoc, hBB, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `heq` using `[hrec]`. Rewrite using `[heq, ← (hPc o).2 (uu y) hu]`. Both sides reduce to the same expression. Establish `hcc : ContinuousOn cc (frDoms Hm q)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `continuousOn_finset_prod` to reduce the goal to its premises. Introduce `τ _`. Apply `continuousOn_finset_prod` to reduce the goal to its premises. Introduce `a _`. Establish `h1 : ContinuousOn (fun y : ι → Fin n → Fin n → ℂ => β τ (y τ)) (frDoms Hm q)` using `(hβc τ).continuousOn.comp (continuous_apply τ).continuousOn (fun y hy => hy τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ContinuousOn (fun y : ι → Fin n → Fin n → ℂ => β τ (y τ) a a) (frDoms Hm q)` using `(show Continuous fun M : Fin n → Fin n → ℂ => M a a from (continuous_apply a).comp (continuous_apply a)).comp_continuousOn h1`. Conclude with `h2.zpow₀ _ (fun y hy => Or.inl (UpT.diag_ne_zero (hβ τ (y τ) (hy τ)).1 a))`. Establish `hPmeas : ∀ y ∈ frDoms Hm q, AEStronglyMeasurable (fun o => Pc o y) ν`. Introduce `y hy`. Establish `: (fun o => Pc o y) = fun o => cc y * f o (uu y)` using `funext fun o => hkey o y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(hmeas (uu y) (huu y hy)).const_mul (cc y)`. Establish `hdom : ∀ x ∈ frDoms Hm q, ∃ s ∈ 𝓝 x, ∃ bound : Ω → ℝ, Integrable bound ν ∧ ∀ᵐ o ∂ν, ∀ y ∈ s, ‖Pc o y‖ ≤ bound o`. Introduce `x hxm`. Establish `hca : ContinuousAt cc x` using `hcc.continuousAt (hopen.mem_nhds hxm)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ᶠ y in 𝓝 x, ‖cc y‖ < ‖cc x‖ + 1` using `hca.norm.eventually (Iio_mem_nhds (lt_add_one _))`. Use `⟨{y | ‖cc y‖ < ‖cc x‖ + 1} ∩ frDoms Hm q, Filter.inter_mem hev (hopen.mem_nhds hxm), fun _ => (‖cc x‖ + 1) * max C 0, integrable_const _, Filter.Eventually.of_forall ?_⟩` and prove the remaining obligations. Introduce `o y hy`. Rewrite using `[hkey o y hy.2, norm_mul]`. Conclude with `mul_le_mul hy.1.le (le_max_of_le_left (hC o (uu y) (huu y hy.2))) (norm_nonneg _) (by positivity)`.
-
-Unfold `HolFn HolSec`. Use `⟨fun y => ∫ o, Pc o y ∂ν, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.differentiableOn_integral_of_holomorphic_of_locally_dominated hopen hPmeas (Filter.Eventually.of_forall fun o => (hPc o).1.1) hdom).1`. Introduce `x hxm b hb`. Combine the equalities or inequalities in the displayed calculation.
-
-Introduce `u hu`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun o => (hPc o).2 u hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem holFn_integral : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : ι → Mt n) (q : ι → ℕ) (x₀ : ι → Mt n) (w : ι → Fin n → ℤ), (∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) → ∀ (Ω : Type) [MeasurableSpace Ω] (ν : Measure Ω) [IsFiniteMeasure ν] (f : Ω → (ι → Mt n) → ℂ) (C : ℝ), (∀ o, HolFn Hm q x₀ w (f o)) → (∀ o, ∀ u ∈ UG Hm, ‖f o u‖ ≤ C) → (∀ u ∈ UG Hm, AEStronglyMeasurable (fun o => f o u) ν) → HolFn Hm q x₀ w fun u => ∫ o, f o u ∂ν := by
   intro n ι _ _ Hm q x₀ w hx Ω _ ν _ f C hf hC hmeas

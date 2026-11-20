@@ -38,9 +38,9 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `w hw`. Use `letI := modS i r π dc g0 eB e₁ s Dd hD hc`. Use `haveI := KLat.towerT Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc)`. Use `letI := modS' i r π dc g0 eB e₁ s Dd hD hc`. Use `haveI := KLat.towerT' Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreal` using `(KLat.rowLat Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc) (D.nd.l i) (Topo.padicCoeff_O i) (Topo.fracTop_O i) w).2.1`. Establish `hin : KBKa.RowIn i dc (KLat.VT (O` using `D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (DatS i r π dc g0 eB e₁ s Dd hD hc) w := KBKa.rowIn_of i dc _ _ (DatS i r π dc g0 eB e₁ s Dd hD hc) (fun _ => rfl) (fun hn => ⟨KOrb.homeoK i hn, KOrb.topMatch_pi …`. Conclude with `KBKa.bk_a_of_admitted_bk_a i dc _ _ (DatS i r π dc g0 eB e₁ s Dd hD hc) hBK hG hw hreal hin`.
+A detailed English derivation is pending.
 -/
 theorem bKa_clause (hBK : LargeLevelLemmas.BlochKatoAnnihilators i) (hG : K.SelfGood i) (hdR : RowDR i r π dc g0 eB e₁ s Dd hD hc) :
     ∀ w ∈ rowsN i dc, ∀ a, a ∈ HfWS i r π dc g0 eB e₁ s Dd hD hc w ↔
@@ -63,11 +63,11 @@ variable (hT : Dd.Top (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBl
   (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.mp hn`. Establish `hpl : w ∈ plSet i dc`. Unfold `plSet`. Conclude with `Finset.mem_union.mpr (Or.inl (Finset.mem_union.mpr (Or.inl hw)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hwo : plOf i dc (idx i dc w) ∈ placesOver D.host.E (D.nd.l i)`. Rewrite using `[plOf_idx i dc hpl]`. Conclude with `(dc.cover w).mp (Or.inl hw)`. Establish `hrw : plOf i dc (idx i dc w) ∈ dc.row`. Rewrite using `[plOf_idx i dc hpl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hw`. Establish `hrow` using `hR (plOf i dc (idx i dc w)) hwo hrw (TruncatedSeriesCountingIdentities.CoefExt.self i _ hwo) (hG _ hwo)`. Take `⟨h1, h2⟩` from `hRT _ hn hwo _ hrow`. Use `⟨h1, h2.trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[mul_comm, Sel.lenOlSelf i _ hwo]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_clause (hG : K.SelfGood i) (hR : TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i r ρ π dc lenRow)
     (hRT : Sel.RowTie i dc r ρ π (rowLenS i r π dc g0 eB e₁ s Dd hD hc hT hrk)) :

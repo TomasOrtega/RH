@@ -15,33 +15,29 @@ set_option autoImplicit false
 namespace GlobalTheory.RegOrInvModel
 
 /- English proof (translation)
-Introduce `X _ _ n U m A hU hA`. Use `choose J hJU hJp using fun j => GlobalTheory.Principalise.kerIdealAffine X (U j) (hU j) (Ideal.span (Set.range (A j)))`. Take `⟨_, ⟨V₀, hV₀, rfl⟩, hηV₀, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint X)) isOpen_univ`. Establish `hsupp : ∀ I : X.IdealSheafData, genericPoint X ∉ I.support ↔ ∃ f ∈ I.ideal ⟨V₀, hV₀⟩, genericPoint X ∈ X.basicOpen f`. Introduce `I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨V₀, hV₀⟩) hηV₀, Scheme.mem_zeroLocus_iff]`. Use `push_neg`. Both sides reduce to the same expression. Establish `hmul : ∀ I I' : X.IdealSheafData, genericPoint X ∉ I.support → genericPoint X ∉ I'.support → genericPoint X ∉ (I * I').support`. Introduce `I I' h h'`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hηf⟩` from `(hsupp I).1 h`. Take `⟨f', hf', hηf'⟩` from `(hsupp I').1 h'`. Use `(hsupp _).2 ⟨f * f', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.ideal_mul, Pi.mul_apply]`. Conclude with `Ideal.mul_mem_mul hf hf'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Scheme.basicOpen_mul]`. Conclude with `⟨hηf, hηf'⟩`. Establish `hone : genericPoint X ∉ (1 : X.IdealSheafData).support`. Use `(hsupp _).2 ⟨1, ?_, ?_⟩` and prove the remaining obligations. Use `show (1 : Γ(X, V₀)) ∈ (⊤ : X.IdealSheafData).ideal ⟨V₀, hV₀⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Scheme.IdealSheafData.ideal_top]`. Conclude with `Submodule.mem_top`. Rewrite using `[Scheme.basicOpen_one]`. Conclude with `hηV₀`. Establish `hJj : ∀ j, genericPoint X ∉ (J j).support`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `j`. Take `⟨k, hk⟩` from `hA j`. Establish `hb : X.basicOpen (A j k) ≠ ⊥` using `fun h0 => hk ((basicOpen_eq_bot_iff _).1 h0)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, x ∈ X.basicOpen (A j k) := by`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hc`. Conclude with `hb (eq_bot_iff.2 fun x hx => (hc x hx).elim)`. Establish `hηb : genericPoint X ∈ X.basicOpen (A j k)` using `gen_mem hx`. Establish `hηU : genericPoint X ∈ U j` using `X.basicOpen_le _ hηb`. Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨U j, hU j⟩) hηU, Scheme.mem_zeroLocus_iff, hJU j]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun h => h _ (Ideal.subset_span ⟨k, rfl⟩) hηb`. Use `⟨∏ j, J j, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_induction J (fun I => genericPoint X ∉ I.support) hmul hone fun j _ => hJj j`. Introduce `W b hE w j hw`. Take `⟨V₁, f, hw₁, hf, hV₁⟩` from `hE w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hgle, hwg⟩` from `V₁.2.exists_basicOpen_le (V := V₁.1 ⊓ b ⁻¹ᵁ U j) ⟨w, hw₁, hw⟩ hw₁`. Establish `hDU : (W.affineBasicOpen g).1 ≤ b ⁻¹ᵁ U j` using `hgle.trans inf_le_right`. Establish `hDV : (W.affineBasicOpen g).1 ≤ V₁.1` using `W.basicOpen_le g`. Establish `hfD : (W.presheaf.map (homOfLE hDV).op).hom f ∈ nonZeroDivisors Γ(W, (W.affineBasicOpen g).1)` using `(GlobalTheory.Cartier.isRegularFn_iff_of_isAffineOpen (W.affineBasicOpen g).2).1 (((GlobalTheory.Cartier.isRegularFn_iff_of_isAffineOpen V₁.2).2 hf).resG hDV)`. Establish `hI1` using `((∏ i, J i).comap b).map_ideal_basicOpen V₁ g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hI1` using `[hV₁, Ideal.map_span, Set.image_singleton]`. Establish `hI2` using `GlobalTheory.Principalise.comapIdealAffine (∏ i, J i) b ⟨U j, hU j⟩ (W.affineBasicOpen g) hDU`. Rewrite `hI2` using `[← Finset.mul_prod_erase Finset.univ J (Finset.mem_univ j), Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul, hJU, Ideal.map_span, ← Set.range_comp]`. Rewrite `hI1` using `[← Finset.mul_prod_erase Finset.univ J (Finset.mem_univ j)]`. Establish `hwD : w ∈ (W.affineBasicOpen g).1` using `hwg`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, s, hsP, hdiv⟩` from `GlobalTheory.Principalise.exists_dvd_of_span_mul_eq (Ideal.comap (W.presheaf.germ (W.affineBasicOpen g).1 w hwD).hom (IsLocalRing.maximalIdeal _)) _ _ (hI2.symm.trans hI1.symm) hfD`. Establish `hsu : w ∈ W.basicOpen s`. Rewrite using `[Scheme.mem_basicOpen _ _ _ hwD]`. Assume the negation of the conclusion as `hc`. Conclude with `hsP ((IsLocalRing.mem_maximalIdeal _).2 hc)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hED : W.basicOpen s ≤ (W.affineBasicOpen g).1` using `W.basicOpen_le s`. Establish `hV : W.basicOpen s ≤ b ⁻¹ᵁ U j` using `fun x hx => hDU (hED hx)`. Use `⟨W.basicOpen s, hV, hsu, (W.affineBasicOpen g).2.basicOpen s, k, fun k' => ?_⟩` and prove the remaining obligations. Establish `key : b.appLE (U j) _ hDU ≫ W.presheaf.map (homOfLE hED).op = b.appLE (U j) (W.basicOpen s) hV` using `Scheme.Hom.appLE_map _ _ _`. Establish `hu` using `W.toRingedSpace.isUnit_res_basicOpen s`.
-
-Establish `h1` using `map_dvd (W.presheaf.map (homOfLE hED).op).hom (hdiv k')`. Rewrite `h1` using `[map_mul]`. Establish `h2` using `hu.dvd_mul_left.1 h1`. Rewrite using `[← key]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`.
-
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_idealSheaf_principalises_of_ne_zero : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (n : ℕ) (U : Fin n → X.Opens) (m : Fin n → ℕ) (A : ∀ j, Fin (m j) → Γ(X, U j)), (∀ j, IsAffineOpen (U j)) → (∀ j, ∃ k, A j k ≠ 0) → ∃ J : X.IdealSheafData, genericPoint X ∉ J.support ∧ ∀ (W : Scheme.{0}) (b : W ⟶ X), ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (J.comap b) → ∀ (w : W) (j : Fin n), b w ∈ U j → ∃ (V : W.Opens) (hV : V ≤ b ⁻¹ᵁ U j), w ∈ V ∧ IsAffineOpen V ∧ ∃ k, ∀ k', (b.appLE (U j) V hV).hom (A j k) ∣ (b.appLE (U j) V hV).hom (A j k') := by
   intro X _ _ n U m A hU hA
@@ -121,31 +117,27 @@ theorem exists_idealSheaf_principalises_of_ne_zero : ∀ (X : Scheme.{0}) [IsInt
     exact h2
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX g hg`. Use `hX.isLocallyNoetherian` as an intermediate fact. Use `hX.isNoetherian` as an intermediate fact. Use `choose V hVa hxV using fun x : X => (by`. Take `⟨_, ⟨V, hV, rfl⟩, hx, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨V, hV, hx⟩ : ∃ V : X.Opens, IsAffineOpen V ∧ x ∈ V)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : X => (V x : Set X)) (fun x => (V x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hxV x⟩)`. Set `e` to `t.equivFin`. Set `U : Fin t.card → X.Opens` to `fun j => V (e.symm j).1`. Establish `hU : ∀ j, IsAffineOpen (U j)` using `fun j => hVa _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : ∀ j, genericPoint X ∈ U j` using `fun j => gen_mem (hxV (e.symm j).1)`. Establish `hfr : ∀ j, ∃ a b : Γ(X, U j), b ≠ 0 ∧ fnOf (U j) (hη j) a / fnOf (U j) (hη j) b = g`. Introduce `j`. Establish `: Nonempty (U j)` using `⟨⟨_, hη j⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen X (U j) (hU j)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := Γ(X, U j)) g`. Conclude with `⟨a, b, nonZeroDivisors.ne_zero hb, hab⟩`. Use `choose a b hb hab using hfr`. Set `A : ∀ j, Fin 2 → Γ(X, U j)` to `fun j => ![a j, b j]`. Take `⟨J, hJη, hJdiv⟩` from `exists_idealSheaf_principalises_of_ne_zero X t.card U (fun _ => 2) A hU fun j => ⟨1, hb j⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y, ρ, hY, hE, hiso⟩` from `GlobalTheory.BlowArith.exists_isArithVar_effCartier_isIso k X p D hX J hJη`. Establish `: IsIntegral Y` using `hY.isIntegral`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.isBirationalModel_of_isIso_over_nonempty_open X Y ρ J.support.compl ⟨genericPoint X, hJη⟩ (hiso _ fun _ hx => hx)`. Take `⟨-, -, hfn, -⟩` from `GlobalTheory.T.birationalModel_regular_unit_values k X Y p (ρ ≫ p) ρ rfl φ hφ`. Use `⟨Y, inferInstance, ρ, φ, hY, hφ, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hxt, hyx⟩ : ∃ x ∈ t, ρ y ∈ V x := by`. Simplify using `using ht (Set.mem_univ (ρ y))`. Use `set j := e ⟨x, hxt⟩ with hj`. Establish `hyj : ρ y ∈ U j` using `by simpa [U, j] using hyx`. Take `⟨W, hW, hyW, -, kk, hdiv⟩` from `hJdiv Y ρ hE y j hyj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWη : genericPoint Y ∈ W` using `gen_mem hyW`. Establish `key : ∀ c : Γ(X, U j), fnOf W hWη ((ρ.appLE (U j) W hW).hom c) = φ (fnOf (U j) (hη j) c)`. Introduce `c`. Rewrite using `[hfn (U j) (hη j) (hW hWη) c]`. Conclude with `fnOf_resG hW hWη ((ρ.app (U j)).hom c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hbne : φ (fnOf (U j) (hη j) (b j)) ≠ 0`. Rewrite using `[map_ne_zero]`. Conclude with `fun h0 => hb j (fnOf_injective _ _ (h0.trans (map_zero _).symm))`. Establish `hane : φ (fnOf (U j) (hη j) (a j)) ≠ 0`. Rewrite using `[map_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hg` to reduce the goal to its premises. Rewrite using `[← hab j, h0, zero_div]`. Establish `hφg : φ g = φ (fnOf (U j) (hη j) (a j)) / φ (fnOf (U j) (hη j) (b j))`. Rewrite using `[← hab j, map_div₀]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `fin_cases kk`. Use `right`. Take `⟨c, hc⟩` from `hdiv 1`. Establish `e1` using `congrArg (fnOf W hWη) hc`. Rewrite `e1` using `[map_mul, key, key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (φ g)⁻¹ = fnOf W hWη c`. Rewrite using `[hφg, inv_div, div_eq_iff hane]`. Conclude with `e1.trans (mul_comm _ _)`. Rewrite using `[this]`. Conclude with `regAt_fnOf hyW hWη c`.
-
-Use `left`. Take `⟨c, hc⟩` from `hdiv 0`. Establish `e1` using `congrArg (fnOf W hWη) hc`. Rewrite `e1` using `[map_mul, key, key]`. Establish `: φ g = fnOf W hWη c`.
-
-Rewrite using `[hφg, div_eq_iff hbne]`. Conclude with `e1.trans (mul_comm _ _)`. Rewrite using `[this]`. Conclude with `regAt_fnOf hyW hWη c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_model_regAt_or_regAt_inv : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ g : X.functionField, g ≠ 0 → ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (π : Y ⟶ X) (φ : X.functionField →+* Y.functionField), IsArithVar (π ≫ p) D ∧ IsModel π φ ∧ ∀ y : Y, RegAt y (φ g) ∨ RegAt y (φ g)⁻¹ := by
   intro k _ X _ p D hX g hg

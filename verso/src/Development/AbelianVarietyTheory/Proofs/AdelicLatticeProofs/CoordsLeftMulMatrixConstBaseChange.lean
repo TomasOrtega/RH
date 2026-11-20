@@ -6,9 +6,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Establish `hq : ∀ q : ℚ, algebraMap F A (algebraMap ℚ F q) = algebraMap R A (algebraMap ℚ R q)`. Introduce `q`. Establish `h : (algebraMap F A).comp (algebraMap ℚ F) = (algebraMap R A).comp (algebraMap ℚ R)` using `RingHom.ext_rat _ _`. Conclude with `RingHom.congr_fun h q`. Establish `hx : algebraMap F A x = ∑ j, algebraMap ℚ R (ω.repr x j) • b j` using `by conv_lhs => rw [← ω.sum_repr x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, hq, hb, Algebra.smul_def]`. Rewrite using `[hx, b.repr_sum_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_algebraMap_of_basis_image (F β : Type) [Field F] [Algebra ℚ F] [Fintype β]
     (ω : Module.Basis β ℚ F) (R A : Type) [CommRing R] [CommRing A] [Algebra ℚ R] [Algebra R A]
@@ -27,7 +27,7 @@ theorem repr_algebraMap_of_basis_image (F β : Type) [Field F] [Algebra ℚ F] [
   rw [hx, b.repr_sum_self]
 
 /- English proof (translation)
-Introduce `F β _ _ _ _ ω R A _ _ _ _ _ b hb x`. Use `⟨repr_algebraMap_of_basis_image F β ω R A b hb x, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, hb j, ← map_mul, repr_algebraMap_of_basis_image F β ω R A b hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_const_baseChange : ∀ (F β : Type) [Field F] [Algebra ℚ F] [Fintype β] [DecidableEq β] (ω : Module.Basis β ℚ F) (R A : Type) [CommRing R] [CommRing A] [Algebra ℚ R] [Algebra R A] [Algebra F A] (b : Module.Basis β R A), (∀ i, b i = algebraMap F A (ω i)) → ∀ x : F, (∀ k, b.repr (algebraMap F A x) k = algebraMap ℚ R (ω.repr x k)) ∧ Algebra.leftMulMatrix b (algebraMap F A x) = (Algebra.leftMulMatrix ω x).map (algebraMap ℚ R) := by
   intro F β _ _ _ _ ω R A _ _ _ _ _ b hb x

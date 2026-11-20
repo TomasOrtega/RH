@@ -21,7 +21,7 @@ def DualMetricEnergy.Statement : Prop :=
         geomDeg (grassIdeal 1 1 (i - 1)) (fsMulti (plBlocks 1 1 (i - 1))) (1 * 1 * (i - 1))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, dualEmbMatrix_standard_bijective, le_rfl, fun h => by have h1 := congrFun (congrFun (congrFun h (Rat.castHom ℂ)) 0) 0 simp [HermLattice.scaledExample, HermLattice.withStdMetric] at h1⟩`.
+Supply the required witnesses or components.
 -/
 example : Σ' (b : Module.Basis Unit ℤ (dualLattice HermLattice.scaledExample)),
     Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)) ∧ 1 ≤ 1 ∧

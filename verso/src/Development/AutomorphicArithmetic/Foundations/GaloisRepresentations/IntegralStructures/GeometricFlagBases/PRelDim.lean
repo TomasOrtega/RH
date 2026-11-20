@@ -9,7 +9,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `k _ X p hp hX`. Use `haveI := hp`. Use `haveI := hX`. Use `haveI : ConnectedSpace X := inferInstance`. Conclude with `CrystallineSemistableComparison.exists_smoothOfRelativeDimension p`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.relDim_of :
     RelDim := by

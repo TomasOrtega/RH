@@ -7,7 +7,7 @@ open scoped ComplexConjugate Real
 namespace GlobalTheory.SW
 
 /- English proof (translation)
-Establish `h : (τ.map fun z => (z.im : ℂ)) = Complex.ofRealHom.mapMatrix (τ.map Complex.im)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h, ← RingHom.map_det]`. Conclude with `(hτ.2.det_pos.ne'.isUnit).map _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_im_of_mem_siegel {ι : Type} [Fintype ι] [DecidableEq ι] {τ : Matrix ι ι ℂ}
     (hτ : τ ∈ Siegel ι) : IsUnit (τ.map fun z => (z.im : ℂ)).det := by
@@ -20,7 +20,7 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SW.qm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma qm_add' {α β : Type} (M N : Matrix α β ℚ) :
     _root_.GlobalTheory.SW.qm (M + N) = _root_.GlobalTheory.SW.qm M + _root_.GlobalTheory.SW.qm N := by
@@ -31,7 +31,7 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SW.qm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma qm_neg' {α β : Type} (M : Matrix α β ℚ) :
     _root_.GlobalTheory.SW.qm (-M) = -_root_.GlobalTheory.SW.qm M := by
@@ -42,7 +42,7 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SW.qm, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma qm_mul_siegel_theta_transformation {α β γ : Type} [Fintype β] (M : Matrix α β ℚ) (N : Matrix β γ ℚ) :
     _root_.GlobalTheory.SW.qm (M * N) = _root_.GlobalTheory.SW.qm M * _root_.GlobalTheory.SW.qm N := by
@@ -62,7 +62,7 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SW.qm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma qm_zero' {α β : Type} : _root_.GlobalTheory.SW.qm (0 : Matrix α β ℚ) = 0 := by
   ext i j
@@ -72,7 +72,7 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [_root_.GlobalTheory.SW.qm, one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma qm_one' : _root_.GlobalTheory.SW.qm (1 : Matrix ι ι ℚ) = 1 := by
   ext i j
@@ -82,7 +82,7 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `hτ.apply i j`. Simplify using `only [Matrix.sub_apply, conjTranspose_apply, Matrix.smul_apply, map_apply, smul_eq_mul, h]`. Rewrite using `[show star (τ i j) = conj (τ i j) from rfl, Complex.sub_conj]`. Use `push_cast`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -99,7 +99,7 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SW.qm, conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma qm_conjTranspose_eq_transpose {α β : Type} (M : Matrix α β ℚ) :
     (_root_.GlobalTheory.SW.qm M)ᴴ = (_root_.GlobalTheory.SW.qm M)ᵀ := by
@@ -110,9 +110,9 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, Finset.mul_sum, Complex.re_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Complex.mul_re, Complex.mul_im]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma re_star_dotProduct_ofReal_mulVec (Y : Matrix ι ι ℝ) (v : ι → ℂ) :
     (star v ⬝ᵥ (Y.map (fun t => (t : ℂ)) *ᵥ v)).re =
@@ -128,7 +128,7 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[mulVec_transpose, dotProduct_comm, dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma dotProduct_transpose_mulVec_self (N : Matrix ι ι ℂ) (ζ : ι → ℂ) :
     ζ ⬝ᵥ (Nᵀ *ᵥ ζ) = ζ ⬝ᵥ (N *ᵥ ζ) := by
@@ -138,49 +138,43 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 
 /- English proof (translation)
-Introduce `ι _ _ σ hσ τ hτ ζ`. Take `⟨hsym, hpos⟩` from `hτ`. Establish `h2` using `SymplecticGroup.mem_iff'.mp hσ`. Rewrite `h2` using `[← fromBlocks_toBlocks σ]`. Simplify using `[Matrix.J, fromBlocks_transpose, fromBlocks_multiply] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨r1, r2, r3, r4⟩` from `h2`. Use `replace r1 := congrArg _root_.GlobalTheory.SW.qm r1`. Use `replace r2 := congrArg _root_.GlobalTheory.SW.qm r2`. Use `replace r3 := congrArg _root_.GlobalTheory.SW.qm r3`. Use `replace r4 := congrArg _root_.GlobalTheory.SW.qm r4`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [qm_add', qm_neg', qm_mul_siegel_theta_transformation, qm_transpose', qm_zero', qm_one'] at r1 r2 r3 r4`. Use `set A := _root_.GlobalTheory.SW.qm σ.toBlocks₁₁ with hA`. Use `set B := _root_.GlobalTheory.SW.qm σ.toBlocks₁₂ with hB`. Use `set C := _root_.GlobalTheory.SW.qm σ.toBlocks₂₁ with hC`. Use `set D := _root_.GlobalTheory.SW.qm σ.toBlocks₂₂ with hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set J := _root_.GlobalTheory.SW.spDen σ τ with hJdef`. Establish `hJ : J = C * τ + D` using `rfl`. Use `set M := A * τ + B with hM`. Establish `hact : _root_.GlobalTheory.SW.spAct σ τ = M * J⁻¹` using `rfl`. Use `set Y := τ.map fun z => (z.im : ℂ) with hYdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hY : τ - τᴴ = (2 * I) • Y` using `sub_conjTranspose_of_isSymm τ hsym`. Establish `hτt : τᵀ = τ` using `hsym`. Establish `hCh : Cᴴ = Cᵀ` using `qm_conjTranspose_eq_transpose _`. Establish `hDh : Dᴴ = Dᵀ` using `qm_conjTranspose_eq_transpose _`. Establish `hAh : Aᴴ = Aᵀ` using `qm_conjTranspose_eq_transpose _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBh : Bᴴ = Bᵀ` using `qm_conjTranspose_eq_transpose _`. Establish `hI1 : Jᴴ * M - Mᴴ * J = τ - τᴴ`. Rewrite using `[hJ, hM, conjTranspose_add, conjTranspose_add, conjTranspose_mul, conjTranspose_mul, hCh, hDh, hAh, hBh]`. Establish `hE : (τᴴ * Cᵀ + Dᵀ) * (A * τ + B) - (τᴴ * Aᵀ + Bᵀ) * (C * τ + D) = τᴴ * (Cᵀ * A + -(Aᵀ * C)) * τ + τᴴ * (Cᵀ * B + -(Aᵀ * D)) + (Dᵀ * A + -(Bᵀ * C)) * τ + (Dᵀ * B + -(Bᵀ * D))` using `by noncomm_ring`. Rewrite using `[hE, r1, r2, r3, r4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `noncomm_ring`. Establish `hI2 : Mᵀ * J = Jᵀ * M`. Rewrite using `[hJ, hM, transpose_add, transpose_add, transpose_mul, transpose_mul, hτt]`. Establish `hE : (τ * Aᵀ + Bᵀ) * (C * τ + D) - (τ * Cᵀ + Dᵀ) * (A * τ + B) = -(τ * (Cᵀ * A + -(Aᵀ * C)) * τ) - τ * (Cᵀ * B + -(Aᵀ * D)) - (Dᵀ * A + -(Bᵀ * C)) * τ - (Dᵀ * B + -(Bᵀ * D))` using `by noncomm_ring`. Rewrite `hE` using `[r1, r2, r3, r4]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, hE]`. Use `noncomm_ring`. Establish `hYr : Y = (τ.map Complex.im).map (fun t => (t : ℂ))` using `rfl`. Establish `hdetY : Y.det ≠ 0`. Establish `: Y.det = ((τ.map Complex.im).det : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hYr]`. Conclude with `(RingHom.map_det Complex.ofRealHom _).symm`. Rewrite using `[this, Complex.ofReal_ne_zero]`. Conclude with `hpos.det_pos.ne'`. Establish `h2I : (2 * I : ℂ) ≠ 0` using `by simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdetJ : J.det ≠ 0`. Introduce `hdet`. Take `⟨v, hv, hJv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `h0 : star v ⬝ᵥ ((Jᴴ * M - Mᴴ * J) *ᵥ v) = 0`. Rewrite using `[sub_mulVec, dotProduct_sub, ← mulVec_mulVec, ← mulVec_mulVec, hJv, mulVec_zero, dotProduct_zero, dotProduct_mulVec, ← star_mulVec, hJv, star_zero, zero_dotProduct, sub_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[hI1, hY, smul_mulVec, dotProduct_smul, smul_eq_mul, mul_eq_zero]`. Establish `h1` using `congrArg Complex.re (h0.resolve_left h2I)`. Rewrite `h1` using `[hYr, re_star_dotProduct_ofReal_mulVec, Complex.zero_re]`. Establish `hna` using `hpos.posSemidef.dotProduct_mulVec_nonneg (fun i => (v i).re)`. Establish `hnb` using `hpos.posSemidef.dotProduct_mulVec_nonneg (fun i => (v i).im)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [star_trivial] at hna hnb`. Establish `ha : (fun i => (v i).re) = 0`. Assume the negation of the conclusion as `h`. Use `hpos.dotProduct_mulVec_pos h` as an intermediate fact. Simplify using `only [star_trivial] at this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : (fun i => (v i).im) = 0`. Assume the negation of the conclusion as `h`. Use `hpos.dotProduct_mulVec_pos h` as an intermediate fact. Simplify using `only [star_trivial] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using congrFun ha i`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using congrFun hb i`. Establish `hJu : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hdetJ`. Establish `hYu : IsUnit Y.det` using `isUnit_iff_ne_zero.mpr hdetY`. Establish `hJJ : J * J⁻¹ = 1` using `mul_nonsing_inv J hJu`. Establish `hJJ' : J⁻¹ * J = 1` using `nonsing_inv_mul J hJu`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hYY : Y⁻¹ * Y = 1` using `nonsing_inv_mul Y hYu`. Establish `hτ'sym : (M * J⁻¹).IsSymm`. Establish `hJtu : IsUnit Jᵀ.det` using `by rwa [det_transpose]`. Unfold `Matrix.IsSymm`. Rewrite using `[transpose_mul, transpose_nonsing_inv]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set Y' := (_root_.GlobalTheory.SW.spAct σ τ).map fun z => (z.im : ℂ) with hY'def`. Establish `hY' : (2 * I) • Y' = M * J⁻¹ - (M * J⁻¹)ᴴ`. Rewrite using `[hY'def, hact]`. Conclude with `(sub_conjTranspose_of_isSymm _ hτ'sym).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkey : Jᴴ * Y' * J = Y`. Apply `smul_right_injective _ h2I` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul, Matrix.mul_sub, Matrix.sub_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Matrix.mul_assoc, hJJ', Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc Jᴴ, ← conjTranspose_mul, hJJ', conjTranspose_one, Matrix.one_mul]`. Use `_ = (2 * I) • Y := by rw [hI1, hY]`. Establish `hY'inv : Y'⁻¹ = J * Y⁻¹ * Jᴴ`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, hJJ, Matrix.mul_one]`. Use `_ = 1 := by rw [hkey, Matrix.mul_assoc J, hYY, Matrix.mul_one, hJJ]`. Establish `hJh : Jᴴ = Jᵀ - (2 * I) • (Y * Cᵀ)`. Establish `hτh : τᴴ = τ - (2 * I) • Y` using `by rw [← hY]; abel`.
-
-Rewrite using `[hJ, conjTranspose_add, conjTranspose_mul, transpose_add, transpose_mul, hCh, hDh, hτt, hτh, Matrix.sub_mul, Matrix.smul_mul]`. Normalize the expressions using the abelian group laws. Establish `hJt : Jᵀ * (J⁻¹)ᵀ = 1` using `by rw [← transpose_mul, hJJ', transpose_one]`. Establish `hmat : J⁻¹ * (J * Y⁻¹ * Jᴴ) * (J⁻¹)ᵀ = Y⁻¹ - (2 * I) • (J⁻¹ * C)ᵀ`. Rewrite using `[hJh, transpose_mul]`.
-
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, hJJ', Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc Y⁻¹ Jᵀ, hJt, Matrix.mul_one, hYY, Matrix.one_mul]`. Rewrite using `[hY'inv, ← dotProduct_mulVec, ← mulVec_transpose, mulVec_mulVec, mulVec_mulVec, hmat, sub_mulVec, dotProduct_sub, smul_mulVec, dotProduct_smul, dotProduct_transpose_mulVec_self, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SW.canon_exponent_invariant : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ), σ ∈ Matrix.symplecticGroup ι ℚ → ∀ τ ∈ _root_.GlobalTheory.SW.Siegel ι, ∀ ζ : ι → ℂ, (ζ ᵥ* (_root_.GlobalTheory.SW.spDen σ τ)⁻¹) ⬝ᵥ ((_root_.GlobalTheory.SW.spAct σ τ).map fun z => (z.im : ℂ))⁻¹ *ᵥ (ζ ᵥ* (_root_.GlobalTheory.SW.spDen σ τ)⁻¹) + 2 * I * (ζ ⬝ᵥ ((_root_.GlobalTheory.SW.spDen σ τ)⁻¹ * _root_.GlobalTheory.SW.qm σ.toBlocks₂₁) *ᵥ ζ) = ζ ⬝ᵥ (τ.map fun z => (z.im : ℂ))⁻¹ *ᵥ ζ := by
   intro ι _ _ σ hσ τ hτ ζ

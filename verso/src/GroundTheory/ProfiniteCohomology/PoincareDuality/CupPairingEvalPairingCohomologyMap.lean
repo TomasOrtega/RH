@@ -20,7 +20,7 @@ section Additive
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction with`. Consider the case `empty => simp [cohomologyMap_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, cohomologyMap_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cohomologyMap_finsetSum {B C : Rep.{u} k G} [IsDiscreteRep B] [IsDiscreteRep C] {ι : Type*}
     (s : Finset ι) (f : ι → (B ⟶ C)) (m : ℕ) :
@@ -33,9 +33,9 @@ theorem cohomologyMap_finsetSum {B C : Rep.{u} k G} [IsDiscreteRep B] [IsDiscret
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Apply `Rep.Hom.ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `g`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Use `show g ((f₁ + f₂).hom a) = g (f₁.hom a) + g (f₂.hom a)`. Rewrite using `[Rep.add_hom, Representation.IntertwiningMap.coe_add, Pi.add_apply, map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualMap_add (D : Rep.{u} k G) {A B : Rep.{u} k G} (f₁ f₂ : A ⟶ B) :
     dualMap D (f₁ + f₂) = dualMap D f₁ + dualMap D f₂ := by
@@ -50,9 +50,9 @@ theorem dualMap_add (D : Rep.{u} k G) {A B : Rep.{u} k G} (f₁ f₂ : A ⟶ B) 
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 /- English proof (translation)
-Apply `Rep.Hom.ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `g`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Use `show g ((0 : A ⟶ B).hom a) = 0`. Rewrite using `[Rep.zero_hom, Representation.IntertwiningMap.coe_zero, Pi.zero_apply, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualMap_zero (D : Rep.{u} k G) {A B : Rep.{u} k G} :
     dualMap D (0 : A ⟶ B) = 0 := by
@@ -68,7 +68,7 @@ theorem dualMap_zero (D : Rep.{u} k G) {A B : Rep.{u} k G} :
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction with`. Consider the case `empty => simp [dualMap_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, dualMap_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dualMap_finsetSum (D : Rep.{u} k G) {A B : Rep.{u} k G} {ι : Type*} (s : Finset ι)
     (f : ι → (A ⟶ B)) : dualMap D (∑ i ∈ s, f i) = ∑ i ∈ s, dualMap D (f i) := by
@@ -85,7 +85,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (D : Rep.{u} k G) [IsDiscreteRep D] {n m r s : ℕ} (h : r + s = m) (t : cohomology D m →+ ZMod n)
 
 /- English proof (translation)
-Establish `hy : y = cohomologyMap (𝟙 (dualRep D B)) s y` using `by rw [cohomologyMap_id]; rfl`. Establish `hx : x = cohomologyMap (𝟙 A) r x` using `by rw [cohomologyMap_id]; rfl`. Use `conv_lhs => rw [hy]`. Use `conv_rhs => rw [hx]`. Rewrite using `[cupPairing_cohomologyMap, cupPairing_cohomologyMap, tensorHom_evalPairing]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupPairing_evalPairing_cohomologyMap {A B : Rep.{u} k G} [IsDiscreteRep A]
     [IsDiscreteRep B] [IsDiscreteRep (dualRep D A)] [IsDiscreteRep (dualRep D B)] (f : A ⟶ B)
@@ -99,7 +99,7 @@ theorem cupPairing_evalPairing_cohomologyMap {A B : Rep.{u} k G} [IsDiscreteRep 
   rw [cupPairing_cohomologyMap, cupPairing_cohomologyMap, tensorHom_evalPairing]
 
 /- English proof (translation)
-Rewrite using `[dualityMap_apply, dualityMap_apply, cupPairing_evalPairing_cohomologyMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualityMap_cohomologyMap {A B : Rep.{u} k G} [IsDiscreteRep A]
     [IsDiscreteRep B] [IsDiscreteRep (dualRep D A)] [IsDiscreteRep (dualRep D B)] (f : A ⟶ B)
@@ -109,17 +109,17 @@ theorem dualityMap_cohomologyMap {A B : Rep.{u} k G} [IsDiscreteRep A]
   rw [dualityMap_apply, dualityMap_apply, cupPairing_evalPairing_cohomologyMap]
 
 /- English proof (translation)
-Establish `hdecomp : ∀ x : cohomology P r, x = ∑ j, cohomologyMap (i j) r (cohomologyMap (p j) r x)`. Introduce `x`. Establish `e` using `congrArg (fun φ => (cohomologyMap φ r).hom x) hsum`. Simplify using `only [cohomologyMap_finsetSum, cohomologyMap_id, cohomologyMap_comp, ModuleCat.hom_sum, LinearMap.sum_apply, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_id, LinearMap.id_apply] at e`. Conclude with `e.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdual : ∀ y : cohomology (dualRep D P) s, ∑ j, cohomologyMap (dualMap D (p j)) s (cohomologyMap (dualMap D (i j)) s y) = y`. Introduce `y`. Establish `e` using `congrArg (fun φ => (cohomologyMap (dualMap D φ) s).hom y) hsum`. Simplify using `only [dualMap_finsetSum, dualMap_comp, cohomologyMap_finsetSum, dualMap_id, cohomologyMap_id, cohomologyMap_comp, ModuleCat.hom_sum, LinearMap.sum_apply, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_id, LinearMap.id_apply] at e`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hj : ∀ j, cohomologyMap (p j) r x = 0`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(hX j).1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `y`. Rewrite using `[AddMonoidHom.zero_apply, dualityMap_cohomologyMap, hx, AddMonoidHom.zero_apply]`. Rewrite using `[hdecomp x]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hj]`. Introduce `χ choose a ha using fun j => (hX j).2 (χ.comp (cohomologyMap (dualMap D (p j)) s).hom.toAddMonoidHom)`. Use `⟨∑ j, cohomologyMap (i j) r (a j), ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[map_sum, AddMonoidHom.finsetSum_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hdual y, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[dualityMap_cohomologyMap, ha j]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bijective_dualityMap_of_sum {J : Type*} [Fintype J] (X : J → Rep.{u} k G)
     [∀ j, IsDiscreteRep (X j)] [∀ j, IsDiscreteRep (dualRep D (X j))] (P : Rep.{u} k G)
@@ -175,7 +175,7 @@ instance hasFiniteBiproducts_rep : HasFiniteBiproducts (Rep.{u} k G) :=
   HasFiniteBiproducts.of_hasFiniteProducts
 
 /- English proof (translation)
-Combine the equalities or inequalities in the calculation `calc x = (𝟙 (⨁ X) : ⨁ X ⟶ ⨁ X).hom x := rfl _ = (∑ j, biproduct.π X j ≫ biproduct.ι X j : ⨁ X ⟶ ⨁ X).hom x := by rw [biproduct.total (f := X)] _ = _ := by rw [Rep.sum_hom, Representation.IntertwiningMap.sum_apply] rfl`.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem biproduct_eq_sum {J : Type} [Fintype J] (X : J → Rep.{u} k G) (x : ((⨁ X : Rep.{u} k G) : Type u)) :
     x = ∑ j, (biproduct.ι X j).hom ((biproduct.π X j).hom x) :=
@@ -200,7 +200,7 @@ instance isDiscreteRep_dualRep_biproduct (D : Rep.{u} k G) [IsDiscreteRep D] {J 
   isDiscreteRep_dualRep D (⨁ X)
 
 /- English proof (translation)
-The claim follows from `bijective_dualityMap_of_sum D h t X (⨁ X) (biproduct.ι X) (biproduct.π X) (biproduct.total (f := X)) hX`.
+A detailed English derivation is pending.
 -/
 theorem bijective_dualityMap_biproduct (D : Rep.{u} k G) [IsDiscreteRep D] {n : ℕ} {J : Type}
     [Fintype J] (X : J → Rep.{u} k G) [∀ j, IsDiscreteRep (X j)] [∀ j, Finite (X j)] {r s : ℕ}
@@ -224,7 +224,7 @@ def fixingOpenSubgroup (M : Rep.{u} k Γ) [IsDiscreteRep M] [Finite M] : OpenSub
     exact Filter.iInter_mem.2 fun m => (isOpen_stabilizer M m).mem_nhds (one_mem _)
 
 /- English proof (translation)
-Establish `: w ∈ ⨅ m : M, stabilizer M.ρ m` using `hw`. Rewrite `this` using `[Subgroup.mem_iInf]`. Conclude with `this m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixingOpenSubgroup_apply (M : Rep.{u} k Γ) [IsDiscreteRep M] [Finite M] {w : Γ}
     (hw : w ∈ fixingOpenSubgroup M) (m : M) : M.ρ w m = m := by
@@ -252,13 +252,13 @@ theorem charHom_hom_apply (W : Subgroup Γ) (M : Rep.{u} (ULift.{u} ℤ) Γ)
   rfl
 
 /- English proof (translation)
-Set `W` to `fixingOpenSubgroup M`. Establish `hW : ∀ w ∈ (W : Subgroup Γ), ∀ m : M, M.ρ w m = m` using `fun w hw m => fixingOpenSubgroup_apply M hw m`. Set `e` to `(Finite.equivFin (M →+ ZMod n)).symm`. Set `F : ∀ _ : Fin (Nat.card (M →+ ZMod n)), M ⟶ Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n)` to `fun j => Rep.resCoindToHom (W : Subgroup Γ).subtype M _ (charHom (W : Subgroup Γ) M hW (e j))`. Use `⟨W, Fin (Nat.card (M →+ ZMod n)), inferInstance, biproduct.lift F, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Take `⟨χ, hχ⟩` from `zmod_exists_apply_ne_zero hM (sub_ne_zero.2 hne)`. Apply `hχ` to reduce the goal to its premises. Establish `hj` using `congrArg (biproduct.π (fun _ : Fin (Nat.card (M →+ ZMod n)) => Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n)) (e.symm χ)).hom hab`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(biproduct.lift F ≫ biproduct.π _ (e.symm χ)).hom a = (biproduct.lift F ≫ biproduct.π _ (e.symm χ)).hom b at hj`. Rewrite `hj` using `[biproduct.lift_π]`. Establish `h1` using `congrArg (fun f => ULift.down (f.1 1 : ULift.{u} (ZMod n))) hj`. Simplify using `only [F, Rep.resCoindToHom_hom_apply_coe, map_one, Module.End.one_apply, Equiv.apply_symm_apply] at h1`. Rewrite `h1` using `[charHom_hom_apply, charHom_hom_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `χ a = χ b at h1`. Rewrite using `[map_sub, h1, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_injective_biproduct_coind [NeZero n] (M : Rep.{u} (ULift.{u} ℤ) Γ)
     [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) :

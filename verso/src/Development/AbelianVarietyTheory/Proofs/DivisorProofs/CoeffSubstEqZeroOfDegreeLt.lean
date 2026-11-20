@@ -4,13 +4,13 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ σ τ _ u f M hu hf β hβ`. Establish `hs : HasSubst u` using `⟨fun i => by rw [hu i]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Rewrite using `[coeff_subst hs]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hd : d.degree < M`. Simplify using `[hf d hd]`. Use `push_neg at hd`. Establish `hord : ((d.degree : ℕ) : ℕ∞) ≤ (d.prod fun s e => u s ^ e).order`. Unfold `Finsupp.prod`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (le_order_prod (fun s => u s ^ d s) d.support)` and prove the remaining obligations. Establish `hdeg : d.degree = ∑ i ∈ d.support, d i` using `rfl`. Rewrite using `[hdeg, Nat.cast_sum]`. Conclude with `Finset.sum_le_sum fun s _ => le_order_pow_of_constantCoeff_eq_zero (d s) (hu s)`. Establish `h0 : coeff β (d.prod fun s e => u s ^ e) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `coeff_of_lt_order` to reduce the goal to its premises. Conclude with `lt_of_lt_of_le (by exact_mod_cast (lt_of_lt_of_le hβ hd)) hord`. Rewrite using `[h0, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_subst_eq_zero_of_degree_lt :
     ∀ (R : Type) [CommRing R] (σ τ : Type) [Fintype σ] (u : σ → MvPowerSeries τ R)

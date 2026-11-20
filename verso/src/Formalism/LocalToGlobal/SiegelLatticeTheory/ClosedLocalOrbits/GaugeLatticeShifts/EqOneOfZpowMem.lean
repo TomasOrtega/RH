@@ -13,13 +13,13 @@ variable {G : Type*} [TopologicalSpace G] [Group G] [IsTopologicalGroup G] [Loca
 local notation "Δ" => Measure.modularCharacterFun (G := G)
 
 /- English proof (translation)
-The claim follows from `Measure.map_right_mul_eq_modularCharacterFun_smul _ g`.
+A detailed English derivation is pending.
 -/
 theorem map_right (g : G) : (Measure.haar : Measure G).map (· * g) = Δ g • (Measure.haar : Measure G) :=
   Measure.map_right_mul_eq_modularCharacterFun_smul _ g
 
 /- English proof (translation)
-Establish `h : ((Measure.haar : Measure G).map (· * g)) A = (Δ g • (Measure.haar : Measure G)) A` using `by rw [map_right]`. Rewrite `h` using `[Measure.map_apply (measurable_mul_const g) hA]`. Rewrite using `[h, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem haar_preimage (g : G) {A : Set G} (hA : MeasurableSet A) :
     (Measure.haar : Measure G) ((· * g) ⁻¹' A) = (Δ g : ℝ≥0∞) * (Measure.haar : Measure G) A := by
@@ -28,7 +28,7 @@ theorem haar_preimage (g : G) {A : Set G} (hA : MeasurableSet A) :
   rw [h, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨C, hC, h1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `⟨C, hC, ?_, hC.measure_lt_top.ne⟩` and prove the remaining obligations. Conclude with `Measure.measure_pos_of_nonempty_interior _ ⟨1, mem_interior_iff_mem_nhds.2 h1⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_compact_pos : ∃ C : Set G, IsCompact C ∧ 0 < (Measure.haar : Measure G) C ∧
     (Measure.haar : Measure G) C ≠ ⊤ := by
@@ -37,19 +37,19 @@ theorem exists_compact_pos : ∃ C : Set G, IsCompact C ∧ 0 < (Measure.haar : 
   exact Measure.measure_pos_of_nonempty_interior _ ⟨1, mem_interior_iff_mem_nhds.2 h1⟩
 
 /- English proof (translation)
-Take `⟨C, hC, hpos, hfin⟩` from `exists_compact_pos (G := G)`. Establish `hCQ : IsCompact (C * Q⁻¹)` using `hC.mul hQ.inv`. Use `set M := (Measure.haar : Measure G) (C * Q⁻¹) with hM`. Establish `hMfin : M ≠ ⊤` using `hCQ.measure_lt_top.ne`. Establish `hbound : ∀ j : ℤ, ((Δ k ^ j : ℝ≥0) : ℝ≥0∞) * (Measure.haar : Measure G) C ≤ M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `hsub : (· * k ^ j) ⁻¹' C ⊆ C * Q⁻¹`. Introduce `x hx`. Use `⟨x * k ^ j, hx, (k ^ j)⁻¹, Set.inv_mem_inv.2 (hk j), by group⟩` and prove the remaining obligations. Use `haar_preimage (k ^ j) hC.isClosed.measurableSet` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : Δ (k ^ j) = Δ k ^ j` using `map_zpow (Measure.modularCharacter (G := G)) k j`. Rewrite `this` using `[hz]`. Combine the equalities or inequalities in the displayed calculation. Establish `hx : 0 < (Δ k : ℝ)` using `by exact_mod_cast Measure.modularCharacterFun_pos k`. Use `set B := M.toReal / ((Measure.haar : Measure G) C).toReal with hB`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCr : 0 < ((Measure.haar : Measure G) C).toReal` using `ENNReal.toReal_pos hpos.ne' hfin`. Establish `hb : ∀ j : ℤ, (Δ k : ℝ) ^ j ≤ B`. Introduce `j`. Establish `h1` using `hbound j`. Rewrite using `[hB, le_div_iff₀ hCr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(ENNReal.toReal_le_toReal (ENNReal.mul_ne_top ENNReal.coe_ne_top hfin) hMfin).2 h1`. Rewrite `h2` using `[ENNReal.toReal_mul]`. Simplify using `using h2`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne (show (Δ k : ℝ) ≠ 1 from fun h => hne (by exact_mod_cast h)) with hlt | hgt` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht : Tendsto (fun j : ℕ => ((Δ k : ℝ)⁻¹) ^ j) atTop atTop` using `tendsto_pow_atTop_atTop_of_one_lt (one_lt_inv₀ hx |>.2 hlt)`. Take `⟨j, hj⟩` from `(ht.eventually_gt_atTop B).exists`. Use `hb (-(j : ℤ))` as an intermediate fact. Rewrite `this` using `[zpow_neg, zpow_natCast, ← inv_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht : Tendsto (fun j : ℕ => (Δ k : ℝ) ^ j) atTop atTop` using `tendsto_pow_atTop_atTop_of_one_lt hgt`. Take `⟨j, hj⟩` from `(ht.eventually_gt_atTop B).exists`. Use `hb (j : ℤ)` as an intermediate fact. Rewrite `this` using `[zpow_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_one_of_zpow_mem {k : G} {Q : Set G} (hQ : IsCompact Q) (hk : ∀ j : ℤ, k ^ j ∈ Q) : Δ k = 1 := by
   obtain ⟨C, hC, hpos, hfin⟩ := exists_compact_pos (G := G)
@@ -92,15 +92,13 @@ theorem eq_one_of_zpow_mem {k : G} {Q : Set G} (hQ : IsCompact Q) (hk : ∀ j : 
     linarith
 
 /- English proof (translation)
-Take `⟨C, hC, hpos, hfin⟩` from `exists_compact_pos (G := G)`. Establish `hlt : (Measure.haar : Measure G) C < ENNReal.ofReal (1 + ε) * (Measure.haar : Measure G) C`. Establish `h1 : (1 : ℝ≥0∞) < ENNReal.ofReal (1 + ε)`. Rewrite using `[← ENNReal.ofReal_one]; exact (ENNReal.ofReal_lt_ofReal_iff (by linarith)).2 (by linarith)`. Use `ENNReal.mul_lt_mul_right hpos.ne' hfin h1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[mul_comm]`. Take `⟨U, hCU, hU, hUlt⟩` from `Set.exists_isOpen_lt_of_lt C _ hlt`. Take `⟨V, hV, hCV⟩` from `compact_open_separated_mul_right hC hU hCU`. Establish `hV' : ∀ᶠ h in 𝓝 (1 : G), h⁻¹ ∈ V`. Establish `ht : Tendsto (fun h : G => h⁻¹) (𝓝 1) (𝓝 1)` using `by simpa using continuous_inv.tendsto (1 : G)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ht hV`. Use `filter_upwards [hV'] with h hh`. Establish `hsub : (· * h) ⁻¹' C ⊆ U`. Introduce `x hx`. Apply `hCV` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨x * h, hx, h⁻¹, hh, by group⟩`. Establish `h2 : (Δ h : ℝ≥0∞) * (Measure.haar : Measure G) C < ENNReal.ofReal (1 + ε) * (Measure.haar : Measure G) C`. Rewrite using `[← haar_preimage h hC.isClosed.measurableSet]`. Conclude with `lt_of_le_of_lt (measure_mono hsub) hUlt`. Establish `h3 : (Δ h : ℝ≥0∞) < ENNReal.ofReal (1 + ε)` using `not_le.1 fun hle => lt_irrefl _ (lt_of_le_of_lt (mul_le_mul_of_nonneg_right hle zero_le) h2)`.
-
-Rewrite `h3` using `[← ENNReal.ofReal_coe_nnreal]`. Conclude with `(ENNReal.ofReal_lt_ofReal_iff (by linarith)).1 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_lt (ε : ℝ) (hε : 0 < ε) : ∀ᶠ h in 𝓝 (1 : G), (Δ h : ℝ) < 1 + ε := by
   obtain ⟨C, hC, hpos, hfin⟩ := exists_compact_pos (G := G)
@@ -128,13 +126,13 @@ theorem eventually_lt (ε : ℝ) (hε : 0 < ε) : ∀ᶠ h in 𝓝 (1 : G), (Δ 
   exact (ENNReal.ofReal_lt_ofReal_iff (by linarith)).1 h3
 
 /- English proof (translation)
-Take `⟨C, hC, hpos, hfin⟩` from `exists_compact_pos (G := G)`. Establish `hmeas : Measurable α` using `α.continuous.measurable`. Establish `: ((Measure.haar : Measure G).map α).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map _ α`. Use `set c := ((Measure.haar : Measure G).map α).haarScalarFactor Measure.haar with hc`. Establish `hcpos : 0 < c` using `Measure.haarScalarFactor_pos_of_isHaarMeasure _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : (Measure.haar : Measure G).map α = c • Measure.haar` using `Measure.isMulLeftInvariant_eq_smul _ _`. Establish `key : ((Measure.haar : Measure G).map α).map (· * α g) = ((Measure.haar : Measure G).map (· * g)).map α`. Rewrite using `[Measure.map_map (measurable_mul_const _) hmeas, Measure.map_map hmeas (measurable_mul_const _)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[map_mul]`. Rewrite `key` using `[hmap, map_right, Measure.map_smul, Measure.map_smul, map_right, hmap, smul_smul, smul_smul]`. Use `congrArg (fun μ : Measure G => μ C) key` as an intermediate fact. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at this`. Establish `hcC : ((c * Δ (α g) : ℝ≥0) : ℝ≥0∞) = ((Δ g * c : ℝ≥0) : ℝ≥0∞)` using `(ENNReal.mul_left_inj hpos.ne' hfin).1 (by simpa [ENNReal.coe_mul] using this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : c * Δ (α g) = Δ g * c` using `by exact_mod_cast hcC`. Rewrite `h2` using `[mul_comm (Δ g)]`. Conclude with `mul_left_cancel₀ hcpos.ne' h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_aut (α : G ≃ₜ* G) (g : G) : Δ (α g) = Δ g := by
   obtain ⟨C, hC, hpos, hfin⟩ := exists_compact_pos (G := G)
@@ -159,19 +157,19 @@ theorem comp_aut (α : G ≃ₜ* G) (g : G) : Δ (α g) = Δ g := by
   exact mul_left_cancel₀ hcpos.ne' h2
 
 /- English proof (translation)
-Establish `hit : ∀ m : ℕ, Δ ((⇑α)^[m] g) = Δ g`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', comp_aut, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `set hseq := fun m : ℕ => k⁻¹ * (⇑α)^[m] g with hh`. Establish `hlim1 : Tendsto hseq atTop (𝓝 1)`. Use `(tendsto_const_nhds (x := k⁻¹)).mul hlim` as an intermediate fact. Simplify using `using this`. Establish `hval : ∀ m, Δ (hseq m) = Δ g` using `fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hh, Measure.modularCharacterFun_map_mul, hit]`. Establish `: Δ k⁻¹ = 1`. Establish `h1` using `Measure.modularCharacterFun_map_mul (G := G) k⁻¹ k`. Rewrite `h1` using `[inv_mul_cancel, Measure.modularCharacterFun_map_one, hk, mul_one]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, one_mul]`. Establish `hvalinv : ∀ m, Δ (hseq m)⁻¹ * Δ g = 1` using `fun m => by`. Rewrite using `[← hval m, ← Measure.modularCharacterFun_map_mul, inv_mul_cancel, Measure.modularCharacterFun_map_one]`. Establish `hx : 0 < (Δ g : ℝ)` using `by exact_mod_cast Measure.modularCharacterFun_pos g`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `lt_or_gt_of_ne (show (Δ g : ℝ) ≠ 1 from fun h => hne (by exact_mod_cast h)) with hlt | hgt` into its components or cases. Establish `hlim2 : Tendsto (fun m => (hseq m)⁻¹) atTop (𝓝 1)` using `by simpa using hlim1.inv`. Establish `hε : 0 < (Δ g : ℝ)⁻¹ - 1` using `by rw [sub_pos]; exact (one_lt_inv₀ hx).2 hlt`. Take `⟨m, hm⟩` from `(hlim2.eventually (eventually_lt _ hε)).exists`. Establish `h1` using `hvalinv m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (Δ (hseq m)⁻¹ : ℝ) * Δ g = 1` using `by exact_mod_cast h1`. Establish `h3 : (Δ (hseq m)⁻¹ : ℝ) = (Δ g : ℝ)⁻¹` using `by field_simp; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hε : 0 < (Δ g : ℝ) - 1` using `by linarith`. Take `⟨m, hm⟩` from `(hlim1.eventually (eventually_lt _ hε)).exists`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hval m` as an intermediate fact. Rewrite `hm` using `[show (Δ (hseq m) : ℝ) = Δ g by exact_mod_cast this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_one_of_iterate (α : G ≃ₜ* G) (g k : G) (hk : Δ k = 1)
     (hlim : Tendsto (fun m : ℕ => (⇑α)^[m] g) atTop (𝓝 k)) : Δ g = 1 := by

@@ -18,13 +18,13 @@ Both sides reduce to the same expression.
 theorem stdE_apply (x y : Fin 2 → ℤ) : stdE x y = x 1 * y 0 - x 0 * y 1 := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Establish `h0` using `LinearMap.congr_fun h ![1, 0]`. Establish `h1` using `LinearMap.congr_fun h ![0, 1]`. Simplify using `[stdE_apply] at h0 h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [h0, h1]`. Introduce `f`. Use `⟨![-f ![0, 1], f ![1, 0]], ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : y = y 0 • ![1, 0] + y 1 • ![0, 1]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Use `conv_rhs => rw [hy, map_add, map_smul, map_smul]`. Simplify using `[stdE_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem stdE_bij : Function.Bijective stdE := by
   constructor
@@ -61,7 +61,7 @@ def mon : (Fin 2 → ℤ) →ₗ[ℤ] (Fin 2 → ℤ) where
   map_smul' c x := by funext i; fin_cases i <;> simp; ring
 
 /- English proof (translation)
-Simplify using `[expCover, Complex.norm_exp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem log_exp (w : Fin 1 → ℂ) : Real.log ‖expCover 1 w 0‖ = (w 0).re := by
   simp [expCover, Complex.norm_exp]
@@ -137,7 +137,7 @@ def tate : LogPeriods 1 1 1 (Fin 2 → ℤ) where
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun (LinearMap.congr_fun h ![0, 1]) 0` as an intermediate fact. Simplify using `[tate, mon] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tate_T_ne : tate.T 0 ≠ LinearMap.id := by
   intro h
@@ -145,9 +145,9 @@ theorem tate_T_ne : tate.T 0 ≠ LinearMap.id := by
   simp [tate, mon] at this
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Apply `L.unimod.1` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `L.im w hw x y` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hx]`. Simplify using `only [zero_dotProduct, Complex.zero_im] at this`. Simplify using `only [map_zero, LinearMap.zero_apply]`. Conclude with `this.symm` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem P_injective {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] (L : LogPeriods n a g Λ)
     {w : Fin n → ℂ} (hw : w ∈ logCover L.a_le) : Function.Injective (L.P w) := by

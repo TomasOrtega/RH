@@ -28,7 +28,7 @@ def tw {k G Q : Type} [CommRing k] [CommGroup G] [CommGroup Q] (χ : G →* kˣ)
       map_mul' a b := by simp [MonoidAlgebra.single_mul_single] }
 
 /- English proof (translation)
-Simplify using `[tw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tw_single {k G Q : Type} [CommRing k] [CommGroup G] [CommGroup Q] (χ : G →* kˣ) (π : G →* Q) (g : G) (a : k) :
     tw χ π (MonoidAlgebra.single g a) = MonoidAlgebra.single (π g) (a * χ g) := by
@@ -75,7 +75,7 @@ def evenF {G : Type} [Group G] (J : G) : AddSubgroup (G → ZMod 2) where
   neg_mem' {a} ha g := by simp [ha g]
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 example : gc 7 3 1 = 1 := by decide +kernel
 

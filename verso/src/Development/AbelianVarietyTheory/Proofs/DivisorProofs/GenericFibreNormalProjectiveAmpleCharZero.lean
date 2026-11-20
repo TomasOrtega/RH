@@ -20,13 +20,11 @@ open Classical
 namespace GlobalTheory.GenFibNormal
 
 /- English proof (translation)
-Introduce `o K _ _ _ _ b hb Z z L hP hN hL hA`. Use `haveI hsa : IsAffineHom (spMap b) := inferInstance`. Use `haveI : IsAffineHom (pullback.fst z (spMap b)) := MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback z (spMap b)).flip hsa`. Use `⟨ProjSpace.isProjOver_pullback_snd b hP, ?_, LB.isLB_pull hL _, IsAmpleLB.pull_of_isAffineHom hA _⟩` and prove the remaining obligations. Use `haveI : CharZero o := ⟨fun m n h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `congrArg b h` as an intermediate fact. Simplify using `only [map_natCast] at this`. Conclude with `this⟩` after adjusting the coercions. Set `F` to `FractionRing o`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (IsFractionRing.injective o F)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b' : F →+* K` to `IsFractionRing.lift hb`. Establish `hbb : b'.comp (algebraMap o F) = b` using `RingHom.ext fun x => IsFractionRing.lift_algebraMap hb x`. Establish `hZF : GlobalTheory.IsNormalScheme (pullback z (spMap (algebraMap o F)))` using `IsNormalScheme.of_pred (FlagCls.isNormalScheme_of_isPullback_fractionField o F Z _ z (pullback.fst z (spMap (algebraMap o F))) (pullback.snd z (spMap (algebraMap o F))) (IsPullback.of_hasPullback _ _) ((isNormalScheme_iff_pred Z).mp hN))`. Establish `h1` using `hd2 F K b' _ (pullback.snd z (spMap (algebraMap o F))) hZF`. Establish `e` using `pullbackLeftPullbackSndIso z (spMap (algebraMap o F)) (spMap b')`.
-
-Establish `hc : spMap b' ≫ spMap (algebraMap o F) = spMap b`. Rewrite using `[← hbb]`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Conclude with `(IsNormalScheme.iff_of_iso (e ≪≫ pullback.congrHom rfl hc)).mp h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genFibre_of_fieldChange (hd2 : ∀ (F K : Type) [Field F] [CharZero F] [Field K] (c : F →+* K) (Y : Scheme.{0}) (g : Y ⟶ Sp F), GlobalTheory.IsNormalScheme Y → GlobalTheory.IsNormalScheme (pullback g (spMap c))) : ∀ (o K : Type) [CommRing o] [IsDomain o] [Field K] [CharZero K] (b : o →+* K), Function.Injective b → ∀ (Z : Scheme.{0}) (z : Z ⟶ Sp o) (L : LB Z), IsProjOver z → GlobalTheory.IsNormalScheme Z → L.IsLB → IsAmpleLB L → IsProjOver (pullback.snd z (spMap b)) ∧ GlobalTheory.IsNormalScheme (pullback z (spMap b)) ∧ (L.pull (pullback.fst z (spMap b))).IsLB ∧ IsAmpleLB (L.pull (pullback.fst z (spMap b))) := by
   intro o K _ _ _ _ b hb Z z L hP hN hL hA
@@ -53,7 +51,7 @@ theorem genFibre_of_fieldChange (hd2 : ∀ (F K : Type) [Field F] [CharZero F] [
   exact (IsNormalScheme.iff_of_iso (e ≪≫ pullback.congrHom rfl hc)).mp h1
 
 /- English proof (translation)
-The claim follows from `genFibre_of_fieldChange (GlobalTheory.T.isNormalScheme_pullback_spMap_of_isNormalScheme (GlobalTheory.T.isDomain_and_isIntegrallyClosed_atPrime_tensor_field_alt GlobalTheory.T.exists_smooth_subalgebra_containing_finset_charZero GlobalTheory.T.isDomain_isIntegrallyClosed_atPrime_o …`.
+A detailed English derivation is pending.
 -/
 theorem genericFibre_normal_projective_ample : ∀ (o K : Type) [CommRing o] [IsDomain o] [Field K] [CharZero K] (b : o →+* K), Function.Injective b → ∀ (Z : Scheme.{0}) (z : Z ⟶ Sp o) (L : LB Z), IsProjOver z → GlobalTheory.IsNormalScheme Z → L.IsLB → IsAmpleLB L → IsProjOver (pullback.snd z (spMap b)) ∧ GlobalTheory.IsNormalScheme (pullback z (spMap b)) ∧ (L.pull (pullback.fst z (spMap b))).IsLB ∧ IsAmpleLB (L.pull (pullback.fst z (spMap b))) :=
   genFibre_of_fieldChange (GlobalTheory.T.isNormalScheme_pullback_spMap_of_isNormalScheme (GlobalTheory.T.isDomain_and_isIntegrallyClosed_atPrime_tensor_field_alt GlobalTheory.T.exists_smooth_subalgebra_containing_finset_charZero GlobalTheory.T.isDomain_isIntegrallyClosed_atPrime_of_finset_subrings))

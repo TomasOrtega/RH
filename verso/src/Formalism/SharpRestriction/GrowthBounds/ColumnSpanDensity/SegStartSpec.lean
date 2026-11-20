@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Use `show (x.val + (y.val + n' - x.val) % n') % n' = y.val`. Rewrite using `[Nat.add_mod_mod]`. Establish `h : x.val + (y.val + n' - x.val) = y.val + n'`. Use `x.isLt` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h, Nat.add_mod_right, Nat.mod_eq_of_lt y.isLt]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posAdd_cdist {n' : ℕ} (x y : Fin n') : posAdd x (cdist x y) = y := by
   apply Fin.ext
@@ -21,9 +21,9 @@ theorem posAdd_cdist {n' : ℕ} (x y : Fin n') : posAdd x (cdist x y) = y := by
   rw [h, Nat.add_mod_right, Nat.mod_eq_of_lt y.isLt]
 
 /- English proof (translation)
-Unfold `segDists`. Rewrite using `[Finset.mem_sort, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`. Rewrite `hs` using `[Finset.mem_filter]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨s, hs.1, hs.2.1, hs.2.2.1, hs.2.2.2, rfl⟩`. Introduce and unpack `⟨s, hs, h1, h2, h3, rfl⟩`. Conclude with `⟨s, Finset.mem_filter.2 ⟨hs, h1, h2, h3⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_segDists {n' : ℕ} (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (d : ℕ) :
     d ∈ segDists TT j ↔ ∃ s ∈ TT, ¬ Even s.val ∧ 0 < cdist (segStart TT j) s ∧
@@ -38,9 +38,9 @@ theorem mem_segDists {n' : ℕ} (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (d 
     exact ⟨s, Finset.mem_filter.2 ⟨hs, h1, h2, h3⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨s, hs, h1, h2, h3, h4⟩` from `(mem_segDists TT j _).1 (List.get_mem (segDists TT j) i)`. Establish `e : segPos TT j i = s`. Unfold `segPos`. Rewrite using `[← h4]`. Conclude with `posAdd_cdist _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `⟨hs, h1, h4, h4 ▸ h2, h4 ▸ h3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem segPos_spec {n' : ℕ} (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     segPos TT j i ∈ TT ∧ ¬ Even (segPos TT j i).val ∧
@@ -55,23 +55,23 @@ theorem segPos_spec {n' : ℕ} (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i :
   exact ⟨hs, h1, h4, h4 ▸ h2, h4 ▸ h3⟩
 
 /- English proof (translation)
-Unfold `evenTops`. Rewrite using `[Finset.mem_sort, Finset.mem_filter]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_evenTops {n' : ℕ} (TT : Finset (Fin n')) (x : Fin n') : x ∈ evenTops TT ↔ x ∈ TT ∧ Even x.val := by
   unfold evenTops
   rw [Finset.mem_sort, Finset.mem_filter]
 
 /- English proof (translation)
-The claim follows from `(mem_evenTops TT _).1 (List.get_mem _ _)`.
+A detailed English derivation is pending.
 -/
 theorem segStart_spec {n' : ℕ} (TT : Finset (Fin n')) (j : Fin (numSeg TT)) :
     segStart TT j ∈ TT ∧ Even (segStart TT j).val :=
   (mem_evenTops TT _).1 (List.get_mem _ _)
 
 /- English proof (translation)
-Unfold `ex`. Rewrite using `[dif_pos hs]`. Establish `h : ((z s + c).toNat : ℤ) = z s + c` using `Int.toNat_of_nonneg (by positivity)`. Establish `h' : (((z s + c).toNat : ℤ) : ℝ) = ((z s + c : ℤ) : ℝ)` using `by rw [h]`. Move the coercions through the operations in `at h'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 theorem ex_cast {n' : ℕ} {TT : Finset (Fin n')} (z : Fin n' → ℤ) (c : ℕ) (s : Fin n') (hs : s ∈ TT) (h0 : 0 ≤ z s) :
     ((ex (TT := TT) (fun s => (z s + c).toNat) s : ℕ) : ℝ) = (z s : ℝ) + c := by
@@ -83,7 +83,7 @@ theorem ex_cast {n' : ℕ} {TT : Finset (Fin n')} (z : Fin n' → ℤ) (c : ℕ)
   exact h'
 
 /- English proof (translation)
-Establish `hP0 : 0 < P` using `by linarith`. Establish `h1 : c / P ≤ c` using `div_le_self hc hP`. Establish `h2 : (a + c) / P = a / P + c / P` using `add_div _ _ _`. Rewrite using `[← min_add_add_right]`. Conclude with `min_le_min le_rfl (by rw [h2]; linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem min_shift (b a c P : ℝ) (hc : 0 ≤ c) (hP : 1 ≤ P) : min (b + c) ((a + c) / P) ≤ min b (a / P) + c := by
   have hP0 : 0 < P := by linarith
@@ -94,35 +94,33 @@ theorem min_shift (b a c P : ℝ) (hc : 0 ≤ c) (hP : 1 ≤ P) : min (b + c) ((
 
 open Classical in
 /- English proof (translation)
-Establish `hseg2 : 2 ≤ numSeg X.TT` using `h.2.2.2.1`. Establish `hbl : 0 ≤ X.bl`. Use `lowb_of h` as an intermediate fact. Combine the linear relations using `[B.hb8]`. Establish `hp1 : (1 : ℝ) ≤ X.p` using `by linarith [B.hp25]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `har200 : (200 : ℝ) ≤ X.ar`. Use `mul_le_mul B.hp25 B.hb8 (by norm_num) (by linarith [B.hp25])` as an intermediate fact. Combine the linear relations using `[B.hpa]`. Establish `ha0 : ∀ s ∈ X.TT, 0 ≤ aw s` using `fun s hs => le_trans (Int.ceil_nonneg (by linarith)) (Finset.mem_Icc.1 (hw s hs).1).1`. Establish `hb0 : ∀ s ∈ X.TT, 0 ≤ bw s` using `fun s hs => le_trans (Int.ceil_nonneg hbl) (Finset.mem_Icc.1 (hw s hs).2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : ℝ := ∑ y ∈ X.TT.filter (fun y => ¬ IsTypeV y), min (bw y : ℝ) ((aw (yPrev X.TT y) : ℝ) / (X.p : ℝ) ^ dPrev X.TT y) with hS`. Use `set S' : ℝ := ∑ j : Fin (numSeg X.TT), ∑ i : Fin (segS X.TT j), min ((ex (TT := X.TT) (fun s => (bw s + X.ccl).toNat) (segPos X.TT j i) : ℕ) : ℝ) (((ex (TT := X.TT) (fun s => (aw s + X.ccl).toNat) (segStart X.TT j) : ℕ) : ℝ) / (X.p : ℝ) ^ ((segDists X.TT j).get i)) with hS'`. Establish `hcount : (∑ j : Fin (numSeg X.TT), ∑ _i : Fin (segS X.TT j), (X.ccl : ℝ)) ≤ X.N * X.ccl`. Use `hO X.n' X.TT hseg2 (fun _ _ _ => (X.ccl : ℝ))` as an intermediate fact. Rewrite using `[this, Finset.sum_const, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Unfold `Dat.N`. Conclude with `Finset.card_filter_le _ _` after adjusting the coercions. Establish `hSS : S' ≤ S + X.N * X.ccl`. Establish `e` using `hO X.n' X.TT hseg2 (fun y x d => min (bw y : ℝ) ((aw x : ℝ) / (X.p : ℝ) ^ d))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : S' ≤ ∑ j : Fin (numSeg X.TT), ∑ i : Fin (segS X.TT j), (min (bw (segPos X.TT j i) : ℝ) ((aw (segStart X.TT j) : ℝ) / (X.p : ℝ) ^ ((segDists X.TT j).get i)) + (X.ccl : ℝ))`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ex_cast bw X.ccl _ (segPos_spec X.TT j i).1 (hb0 _ (segPos_spec X.TT j i).1), ex_cast aw X.ccl _ (segStart_spec X.TT j).1 (ha0 _ (segStart_spec X.TT j).1)]`. Conclude with `min_shift _ _ _ _ (by positivity) (one_le_pow₀ hp1)`. Simplify using `only [Finset.sum_add_distrib] at h1`. Rewrite `h1` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hS'0 : 0 ≤ S'`. Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `j _`. Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_min (by positivity) (by positivity)`. Establish `ha1 : (1 : ℝ) ≤ X.a` using `by linarith [B.haa]`. Establish `hlog0 : 0 ≤ Real.log X.a` using `Real.log_nonneg ha1`. Establish `hlog2 : Real.log X.a ≤ 2 * Real.log X.ar`. Establish `h10 : (X.a : ℝ) ≤ X.ar ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 2 * X.ar ≤ X.ar * X.ar` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `e : X.ar ^ 2 = X.ar * X.ar` using `by ring`. Rewrite using `[e]`. Combine the linear relations using `[B.haa1]`. Use `Real.log_le_log (by linarith) h10` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_pow]`. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hC0 : 0 < K.C₀` using `hK.1`. Establish `hcn : 0 ≤ K.C₀ * (X.N₁ : ℝ) ^ 2` using `by positivity`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hLa'0 : 0 ≤ LaI K.C₀ X.N₁ X.a` using `by unfold LaI; exact mul_nonneg hcn hlog0`. Establish `hLa'2 : LaI K.C₀ X.N₁ X.a ≤ 2 * LaI K.C₀ X.N₁ X.ar`. Unfold `LaI`. Use `mul_le_mul_of_nonneg_left hlog2 hcn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : (1 : ℝ) ≤ X.k` using `by linarith [B.hk5]`. Establish `hb : 0 < X.b'` using `by linarith [B.hb8]`. Establish `hp0 : (0 : ℝ) < X.p` using `by linarith`. Establish `hJ : X.J0 K = LaI K.C₀ X.N₁ X.a * X.b' / X.k` using `rfl`. Establish `key` using `tle_abs K.Ct C X.N X.N₁ X.p X.k ((X.p : ℝ) ^ X.G') (Real.logb X.p X.ar) X.ar X.a X.b' (LaI K.C₀ X.N₁ X.ar) (LaI K.C₀ X.N₁ X.a) X.ccl X.cStar X.n' S S' hK.2.2.2.2.2.2.2.1 hC (by linarith [B.hN2]) B.hN1 hp0 hk1 B.hQ (by linarith [B.hL1]) (by linarith) (by linarith) (by linarith [B. …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 ≤ X.t0 K (fun s => (aw s + X.ccl).toNat) (fun s => (bw s + X.ccl).toNat) + X.N * X.J0 K`. Rewrite using `[initial_level_formula, hJ]`. Establish `hCt : 0 < K.Ct` using `hK.2.2.2.2.2.2.2.1`. Establish `hk0 : 0 < X.k` using `by linarith`. Establish `hQ0 : (0 : ℝ) < (X.p : ℝ) ^ X.G'` using `by positivity`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `hS'0` as an intermediate fact. Check the signs of the components of the expression. Establish `hceil : (X.tStar K (fun s => (aw s + X.ccl).toNat) (fun s => (bw s + X.ccl).toNat) : ℝ) ≤ (S' + K.Ct * X.N * ((X.a : ℝ) / (X.p : ℝ) ^ 2 + X.b' / X.p + LaI K.C₀ X.N₁ X.a * X.a / (X.p * X.k) + LaI K.C₀ X.N₁ X.a * X.b' / X.k + X.k * (X.p : ℝ) ^ X.G' + (X.p : ℝ) ^ X.G' * ((X.cStar : …`. Establish `h1` using `(Nat.ceil_lt_add_one hx0).le`. Establish `h2` using `initial_level_formula K X (fun s => (aw s + X.ccl).toNat) (fun s => (bw s + X.ccl).toNat)`.
-
-Unfold `Dat.tStar`. Combine the equalities or inequalities in the displayed calculation. Establish `htI : tI K.C₀ C X.p X.n' X.m X.TT X.G' X.N₁ X.ar X.b' X.ccl X.cStar aw bw = S + C * X.N * X.N₁ * (X.ar / (X.p : ℝ) ^ 2 + X.b' / X.p + LaI K.C₀ X.N₁ X.ar * X.ar / (X.p * X.k) + LaI K.C₀ X.N₁ X.ar * X.b' / X.k) + C * X.N * ((X.p : ℝ) ^ X.G' * ((X.cStar : ℝ) + C * X.N * X.k * Real.l …` using `rfl`. Rewrite using `[htI]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tle_of (hO : RestOddTops) {K : Cst} (hK : K.Pos) {CH : ℝ} {C : ℝ} (hC : 4 * K.Ct + 4 ≤ C)
     {X : Dat} (h : X.Hyp K.C₀ CH) (B : Base K CH X) (aw bw : Fin X.n' → ℤ)

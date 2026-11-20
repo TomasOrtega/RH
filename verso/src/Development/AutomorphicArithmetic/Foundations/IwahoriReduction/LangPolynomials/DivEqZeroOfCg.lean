@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolyno
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
 /- English proof (translation)
-Establish `key : ∀ s : G ℚ Ω, cycMod ℚ Ω l r s = 1 ↔ ((cycZ ℚ Ω l s : ℤ_[l])) ∈ Metric.closedBall (1 : ℤ_[l]) ((l : ℝ) ^ (-(r : ℤ)))`. Introduce `s`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero, Units.ext_iff]`. Simplify using `[cycMod]`. Establish `e : {s : G ℚ Ω | cycMod ℚ Ω l r s = 1} = (fun s => ((cycZ ℚ Ω l s : ℤ_[l]))) ⁻¹' Metric.closedBall (1 : ℤ_[l]) ((l : ℝ) ^ (-(r : ℤ)))` using `Set.ext key`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : Nat.Prime l).pos`. Conclude with `(IsUltrametricDist.isOpen_closedBall _ (zpow_pos hl _).ne').preimage (Units.continuous_val.comp (continuous_cycZ ℚ Ω l))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isOpen_setOf_cycMod_eq_one (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (r : ℕ) :
     IsOpen {s : G ℚ Ω | cycMod ℚ Ω l r s = 1} := by
@@ -27,7 +27,7 @@ private theorem isOpen_setOf_cycMod_eq_one (l : ℕ) [Fact (Nat.Prime l)] (Ω : 
     (Units.continuous_val.comp (continuous_cycZ ℚ Ω l))
 
 /- English proof (translation)
-Use `show ‖(l : PadicAlgCl l)‖ < 1`. Establish `h : ((l : ℚ_[l]) : PadicAlgCl l) = (l : PadicAlgCl l)` using `map_natCast _ l`. Rewrite using `[← h, PadicAlgCl.norm_extends]`. Apply the tactic sequence `first | exact padicNormE.norm_p_lt_one | exact Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_natCast_prime_lt_one_qbar (l : ℕ) [Fact (Nat.Prime l)] : ‖(l : Qbar l)‖ < 1 := by
   show ‖(l : PadicAlgCl l)‖ < 1
@@ -36,7 +36,7 @@ private theorem norm_natCast_prime_lt_one_qbar (l : ℕ) [Fact (Nat.Prime l)] : 
   first | exact padicNormE.norm_p_lt_one | exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Use `ext`. Simplify using `[un, red, ZMod.unitOfCoprime, ZMod.cast_natCast (pow_dvd_pow l (Nat.le_succ r))]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem red_un_succ (l : ℕ) [Fact (Nat.Prime l)] (r : ℕ) (g : ℕ) (hg : ¬ l ∣ g) :
     red l r (un g hg (r + 1)) = un g hg r := by
@@ -44,7 +44,7 @@ private theorem red_un_succ (l : ℕ) [Fact (Nat.Prime l)] (r : ℕ) (g : ℕ) (
   simp [un, red, ZMod.unitOfCoprime, ZMod.cast_natCast (pow_dvd_pow l (Nat.le_succ r))]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[cycMod, red, PadicInt.cast_toZModPow r (r + 1) (Nat.le_succ r)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem red_cycMod_succ (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (r : ℕ)
     (s : G ℚ Ω) : red l r (cycMod ℚ Ω l (r + 1) s) = cycMod ℚ Ω l r s := by
@@ -52,7 +52,7 @@ private theorem red_cycMod_succ (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Fiel
   simp [cycMod, red, PadicInt.cast_toZModPow r (r + 1) (Nat.le_succ r)]
 
 /- English proof (translation)
-Use `haveI : Fact (1 < l ^ r) := ⟨Nat.one_lt_pow (by omega) (Fact.out : Nat.Prime l).one_lt⟩`. Simplify using `[eta, ZMod.val_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem eta_one_of_one_le (l : ℕ) [Fact (Nat.Prime l)] (φ : DirichletCharacter (Qbar l) l) (k r : ℕ)
     (hr : 1 ≤ r) : eta φ k r 1 = 1 := by
@@ -60,66 +60,62 @@ private theorem eta_one_of_one_le (l : ℕ) [Fact (Nat.Prime l)] (φ : Dirichlet
   simp [eta, ZMod.val_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem cg_iff_norm_sub_le_norm_pow (l : ℕ) [Fact (Nat.Prime l)] (n : ℕ) (a b : Qbar l) :
     Cg n a b ↔ ‖a - b‖ ≤ ‖(l : Qbar l) ^ n‖ := Iff.rfl
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `l _ hl Ω _ _ _ A hA c Z hZ hC φ k hk hS`. Take `⟨g, hg, hg2, hgen⟩` from `UpperTheory.Kd.C7.pGenEx l hl`. Take `⟨c₂, w, hw, hcob⟩` from `UpperTheory.Kd.C7.pCob l hl Ω A hA c Z hZ φ k hk hS`. Take `⟨hZint, hZcoc, hZnrm⟩` from `hZ`. Establish `hdiv` using `UpperTheory.Kd.C7.pDivAlg l c g hg hg2 hgen φ k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨μ, hμ⟩ : ∃ μ : G ℚ Ω → (r : ℕ) → (ZMod (l ^ r))ˣ → Qbar l, ∀ s r x, μ s r x = (l : Qbar l) ^ c₂ * Z r s x - w * ((if x = cycMod ℚ Ω l r s then 1 else 0) - (if x = 1 then 1 else 0))` from `⟨_, fun _ _ _ => rfl⟩`. Establish `hOl : ((l : Qbar l) ^ c₂) ∈ c.O` using `Subalgebra.pow_mem _ (Subalgebra.natCast_mem _ l) _`. Establish `hμint : ∀ s ∈ Ine A, ∀ r x, μ s r x ∈ c.O`. Introduce `s hs r x`. Rewrite using `[hμ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.sub_mem _ (Subalgebra.mul_mem _ hOl (hZint r s hs x)) (Subalgebra.mul_mem _ hw ?_)` and prove the remaining obligations. Apply the tactic sequence `refine Subalgebra.sub_mem _ ?_ ?_ <;> split_ifs <;> simp`. Establish `hsumind : ∀ r (y : (ZMod (l ^ r))ˣ) (a : (ZMod (l ^ (r + 1)))ˣ), ∑ x' with red l r x' = y, (if x' = a then (1 : Qbar l) else 0) = if y = red l r a then 1 else 0`. Introduce `r y a`. Rewrite using `[Finset.sum_ite_eq']`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd h1.symm h2`. Conclude with `absurd h2.symm h1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hμnrm : ∀ s ∈ Ine A, ∀ r x, μ s r x = ∑ x' with red l r x' = x, μ s (r + 1) x'`. Introduce `s hs r x`. Establish `e1` using `hsumind r x (cycMod ℚ Ω l (r + 1) s)`. Establish `e2` using `hsumind r x 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[red_cycMod_succ]`. Rewrite `e2` using `[map_one]`. Simplify using `only [hμ]`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_sub_distrib, e1, e2, ← hZnrm r s hs x]`. Establish `heta : ∀ s ∈ Ine A, ∀ n, ∃ r₀, ∀ r, r₀ ≤ r → Cg n (∑ x, eta φ k r x * μ s r x) 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs n`. Take `⟨r₀, hr₀⟩` from `hcob s hs n`. Use `⟨max r₀ 1, fun r hr => ?_⟩` and prove the remaining obligations. Establish `h` using `hr₀ r (le_of_max_le_left hr)`. Establish `hx : ∀ x, eta φ k r x * μ s r x = (l : Qbar l) ^ c₂ * (eta φ k r x * Z r s x) - w * (if x = cycMod ℚ Ω l r s then eta φ k r x else 0) + w * (if x = 1 then eta φ k r x else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `x`. Rewrite using `[hμ]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `e : ∑ x, eta φ k r x * μ s r x = (l : Qbar l) ^ c₂ * sp (eta φ k r) (Z r) s - (eta φ k r (cycMod ℚ Ω l r s) - 1) * w`. Rewrite using `[Finset.sum_congr rfl (fun x _ => hx x), Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _), eta_one_of_one_le l φ k r (le_of_max_le_r …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cg_iff_norm_sub_le_norm_pow, sub_zero, e]`. Rewrite `h` using `[cg_iff_norm_sub_le_norm_pow]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hex : ∀ s ∈ Ine A, ∀ r, ∃ q : (ZMod (l ^ r))ˣ → Qbar l, (∀ x, q x ∈ c.O) ∧ ∀ x, μ s r x = q (x * un g hg r) - φ ↑g * ↑g ^ k * q x` using `fun s hs => hdiv.2 (μ s) (hμint s hs) (hμnrm s hs) (heta s hs)`. Choose the witnesses or unpack the hypotheses as in `⟨Z', hZ'⟩ : ∃ Z' : Sy Ω l, ∀ r, ∀ s ∈ Ine A, (∀ x, Z' r s x ∈ c.O) ∧ ∀ x, μ s r x = Z' r s (x * un g hg r) - φ ↑g * ↑g ^ k * Z' r s x := by`. Use `⟨fun r s => @dite _ (s ∈ Ine A) (Classical.dec _) (fun h => Classical.choose (hex s h r)) (fun _ => fun _ => 0), ?_⟩` and prove the remaining obligations. Introduce `r s hs`. Simplify using `only [dif_pos hs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Classical.choose_spec (hex s hs r)`. Establish `inj : ∀ r (q : (ZMod (l ^ r))ˣ → Qbar l), (∀ x, q (x * un g hg r) - φ ↑g * ↑g ^ k * q x = 0) → ∀ x, q x = 0`. Introduce `r q hq x`. Take `⟨c₃, hc₃⟩` from `hdiv.1 r`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < ‖q x‖` using `norm_pos_iff.mpr hne`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hpos (norm_natCast_prime_lt_one_qbar l)`. Establish `h` using `hc₃ q n (fun y => by`. Rewrite using `[cg_iff_norm_sub_le_norm_pow, hq y, sub_zero, norm_zero]`. Conclude with `norm_nonneg _) x`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[cg_iff_norm_sub_le_norm_pow, sub_zero, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hIwI : IwI c A Z'`. Use `⟨fun r s hs x => (hZ' r s hs).1 x, ?_, ?_⟩` and prove the remaining obligations. Introduce `r s hs t ht x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst : s * t ∈ Ine A` using `(Ine A).mul_mem hs ht`. Establish `key` using `inj r (fun y => Z' r (s * t) y - (Z' r s y + Z' r t (y * (cycMod ℚ Ω l r s)⁻¹))) ?_ x`. Conclude with `sub_eq_zero.mp key`. Introduce `y beta_reduce`. Establish `e1` using `(hZ' r (s * t) hst).2 y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2` using `(hZ' r s hs).2 y`. Establish `e3` using `(hZ' r t ht).2 (y * (cycMod ℚ Ω l r s)⁻¹)`. Rewrite `e3` using `[mul_right_comm y (cycMod ℚ Ω l r s)⁻¹ (un g hg r)]`. Establish `e4 : μ (s * t) r y = μ s r y + μ t r (y * (cycMod ℚ Ω l r s)⁻¹)`. Rewrite using `[hμ, hμ, hμ, hZcoc r s hs t ht y, map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [mul_inv_eq_iff_eq_mul, mul_inv_eq_one, one_mul, mul_comm (cycMod ℚ Ω l r t) (cycMod ℚ Ω l r s)]`. Apply the tactic sequence `split_ifs <;> ring`. Take the linear combination `-e1 + e2 + e3 + e4`. Introduce `r s hs x`. Establish `key` using `inj r (fun y => Z' r s y - ∑ x' with red l r x' = y, Z' (r + 1) s x') ?_ x`.
+Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.mp key`. Introduce `y beta_reduce`. Establish `e1` using `(hZ' r s hs).2 y`. Establish `e2` using `hμnrm s hs r y`. Establish `e3 : ∑ x' with red l r x' = y * un g hg r, Z' (r + 1) s x' = ∑ x' with red l r x' = y, Z' (r + 1) s (x' * un g hg (r + 1))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Finset.sum_nbij' (· * un g hg (r + 1)) (· * (un g hg (r + 1))⁻¹) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Rewrite using `[map_mul, ha, red_un_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Rewrite using `[map_mul, map_inv, ha, red_un_succ, mul_inv_cancel_right]`. Introduce `a _`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `a _`. Simplify using the standard rewrite rules. Introduce `a _`. Both sides reduce to the same expression. Establish `e4 : ∑ x' with red l r x' = y, μ s (r + 1) x' = ∑ x' with red l r x' = y, (Z' (r + 1) s (x' * un g hg (r + 1)) - φ ↑g * ↑g ^ k * Z' (r + 1) s x')` using `Finset.sum_congr rfl (fun x' _ => (hZ' (r + 1) s hs).2 x')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e4` using `[Finset.sum_sub_distrib, ← Finset.mul_sum]`. Rewrite using `[e3]`. Take the linear combination `-e1 + e2 + e4`. Establish `hCont : UpperTheory.Kd.C7.Cont A Z'`. Introduce `r n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨c₃, hc₃⟩` from `hdiv.1 r`. Take `⟨U, hU, hUZ⟩` from `hC r (n + c₃)`. Use `⟨U ⊓ (cycMod ℚ Ω l r).ker, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Use `hU.inter ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk' : ((cycMod ℚ Ω l r).ker : Set (G ℚ Ω)) = {s | cycMod ℚ Ω l r s = 1}`. Use extensionality with `s`. Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[hk']`. Conclude with `isOpen_setOf_cycMod_eq_one l Ω r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs hsI x`. Rewrite `hs` using `[Subgroup.mem_inf]`. Take `⟨hsU, hsK⟩` from `hs`. Establish `hc1 : cycMod ℚ Ω l r s = 1` using `hsK`. Use `hc₃ (Z' r s) n (fun y => ?_) x` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← (hZ' r s hsI).2 y, hμ, hc1, sub_self, mul_zero, sub_zero]`. Establish `hz` using `hUZ s hsU hsI y`. Rewrite `hz`, the goal using `[cg_iff_norm_sub_le_norm_pow, sub_zero]`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `⟨g, hg, c₂, Z', hIwI, hCont, ?_⟩` and prove the remaining obligations. Introduce `m s hs x`. Take `⟨hsI, hsK⟩` from `hs`. Establish `hc1 : cycMod ℚ Ω l m s = 1` using `hsK`. Establish `e` using `(hZ' m s hsI).2 x`.
-
-Rewrite `e` using `[hμ, hc1, sub_self, mul_zero, sub_zero]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pDiv :
     UpperTheory.Kd.C7.SDiv := by

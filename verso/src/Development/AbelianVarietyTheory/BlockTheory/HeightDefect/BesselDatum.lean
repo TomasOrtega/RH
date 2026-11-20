@@ -143,7 +143,7 @@ theorem period_sym (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ F) :
 end PosDatum
 
 /- English proof (translation)
-Unfold `BesselDatum.toPos`. Rewrite using `[List.filter_eq_nil_iff.2 (fun i _ => by have := i.2; simp; omega)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toPos_sym {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : BesselDatum A B ι) (ε m b) :
     d.toPos ε m (d.ρ + 1) b = b := by
@@ -152,11 +152,11 @@ theorem toPos_sym {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : BesselDatum
   rfl
 
 /- English proof (translation)
-Establish `h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot)` after adjusting the coercions. Establish `h2 : D.host.sqrtMinusD ≠ 0`. Introduce `h`. Use `D.host.sqrtMinusD_sq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h]`. Establish `hd : (D.host.d : D.host.E) ≠ 0`. Use `D.host.qd_big.2` as an intermediate fact. Conclude with `(by omega : D.host.d ≠ 0)` after adjusting the coercions. Apply `hd` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Take the linear combination `this`. Unfold `Host.xi0`. Conclude with `div_ne_zero (by norm_num) (mul_ne_zero h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem embedding_xi_zero_ne_zero (D : D7) : D.host.xi0 ≠ 0 := by
   have h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0 := by
@@ -174,7 +174,7 @@ theorem embedding_xi_zero_ne_zero (D : D7) : D.host.xi0 ≠ 0 := by
   exact div_ne_zero (by norm_num) (mul_ne_zero h1 h2)
 
 /- English proof (translation)
-Rewrite using `[← h]`. Conclude with `(S.herm.eq x y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hT_swap {S : HSp D} {x y : S.V} {c : D.host.E} (h : S.hT x y = c) : S.hT y x = star c := by
   rw [← h]; exact (S.herm.eq x y).symm
@@ -218,7 +218,7 @@ def memberDatum (D : D7) (u : D.what₂.Word) : BesselDatum (D.sp.X 0) (D.sp.Y 0
   θ_ne := embedding_xi_zero_ne_zero D
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨d.ρ, by rw [d.rank_eq]; omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem odd_codim {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : BesselDatum A B ι) : Odd (B.rank - A.rank) :=
   ⟨d.ρ, by rw [d.rank_eq]; omega⟩

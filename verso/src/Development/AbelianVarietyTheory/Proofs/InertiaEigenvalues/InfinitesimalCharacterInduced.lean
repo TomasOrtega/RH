@@ -26,11 +26,11 @@ namespace GlobalTheory.NormIndCap
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Set `L : ((∀ j, GA E (n j)) → ℂ) →ₗ[ℂ] (GA E (n i) → ℂ)` to `{ toFun := fun F y => F (Function.update m i y), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hle : tensorSp V ≤ ((V i).map (Sm E (n i)).subtype).comap L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, rfl⟩`. Use `⟨(∏ j ∈ Finset.univ.erase i, (φ j).1.1 (m j)) • (φ i).1, (V i).smul_mem _ (φ i).2, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `(∏ j ∈ Finset.univ.erase i, (φ j).1.1 (m j)) * (φ i).1.1 y = ∏ j, (φ j).1.1 (Function.update m i y j)`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), Function.update_self, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`. Take `⟨θ, hθ, e⟩` from `hle hF`. Conclude with `⟨θ, hθ, fun y => (congrFun e y).symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tensorSp_update {c : ℕ} {n : Fin c → ℕ} (V : ∀ i, Submodule ℂ (Sm E (n i))) (i : Fin c)
     (m : ∀ j, GA E (n j)) {F : (∀ j, GA E (n j)) → ℂ} (hF : F ∈ tensorSp V) :
@@ -53,11 +53,11 @@ theorem tensorSp_update {c : ℕ} {n : Fin c → ℕ} (V : ∀ i, Submodule ℂ 
   exact ⟨θ, hθ, fun y => (congrFun e y).symm⟩
 
 /- English proof (translation)
-Take `⟨θ, hθ, hθe⟩` from `tensorSp_update V i m hψ`. Establish `hR : restrLin (stdBlocks n h) m i ψ = θ` using `Subtype.ext (funext fun y => hθe y)`. Establish `key` using `LinearMap.congr_fun (qdet_intertwine (restrLin (stdBlocks n h) m i) _ (Eop τ) (restrLin_Eop (stdBlocks n h) m i τ) (u + ((n i : ℂ) - 1) / 2)) ψ`. Rewrite `key` using `[LinearMap.comp_apply, LinearMap.comp_apply, hR]`. Establish `k2` using `congrArg (fun φ : Sm E (n i) => φ.1 (m i)) key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Formalism.REAL.qdet (Eop τ) (u + ((n i : ℂ) - 1) / 2) θ = (M.map (u + ·)).prod • θ` using `hM.2 u θ hθ`. Establish `hm : Function.update m i (m i) = m` using `Function.update_eq_self i m`. Simplify using `only [hc] at k2`. Establish `k3 : (Formalism.REAL.qdet (fun p q : Fin (n i) => Eop (a` using `N) τ (stdBlocks n h ⟨i, p⟩) (stdBlocks n h ⟨i, q⟩)) (u + ((n i : ℂ) - 1) / 2) ψ).1 (leviEmb (Ad E) (stdBlocks n h) (Function.update m i (m i))) = (M.map (u + ·)).prod * θ.1 (m i) := k2`. Rewrite `k3` using `[hm, ← hθe, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `k3`.
+A detailed English derivation is pending.
 -/
 theorem qdet_block_levi {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (V : ∀ i, Submodule ℂ (Sm E (n i)))
     (τ : E →+* ℂ) (i : Fin c) (M : Multiset ℂ) (hM : HasInfCharGL (V i) τ M) (u : ℂ) (ψ : Sm E N)
@@ -81,9 +81,9 @@ theorem qdet_block_levi {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (V 
   exact k3
 
 /- English proof (translation)
-Use `⟨by rw [Multiset.card_map]; exact h.1, ?_⟩` and prove the remaining obligations. Introduce and unpack `u _ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `cap τ u (mulChi a χ φ) = _ • mulChi a χ φ`. Rewrite using `[cap_mulChi, h.2 _ φ hφ, map_smul, Multiset.map_map]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring`.
+A detailed English derivation is pending.
 -/
 theorem hasInfCharGL_map_mulChi {a : ℕ} {V : Submodule ℂ (Sm E a)} {τ : E →+* ℂ} {m : Multiset ℂ}
     (h : HasInfCharGL V τ m) (χ : HChar E) :

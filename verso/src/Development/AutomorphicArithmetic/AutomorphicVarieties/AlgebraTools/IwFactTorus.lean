@@ -13,31 +13,31 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `le_sup_of_le_left le_sup_right`.
+A detailed English derivation is pending.
 -/
 private theorem unipO_le (C : Subgroup 𝓀[k]ˣ) : unipO k n ≤ iwC k n C := le_sup_of_le_left le_sup_right
 
 /- English proof (translation)
-The claim follows from `le_sup_of_le_left le_sup_left`.
+A detailed English derivation is pending.
 -/
 private theorem KOne_le (C : Subgroup 𝓀[k]ˣ) : KOne k (Fin n) ≤ iwC k n C := le_sup_of_le_left le_sup_left
 
 /- English proof (translation)
-Introduce `g hg` and use `(((memIwC k n C).1 g).1 hg).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem iwC_le (C : Subgroup 𝓀[k]ˣ) : iwC k n C ≤ iwahori k (Fin n) :=
   fun g hg => (((memIwC k n C).1 g).1 hg).1
 
 /- English proof (translation)
-The claim follows from `le_antisymm (inf_le_inf_left _ ((iwC_le C).trans (iwahori_le_KO k _))) (le_inf inf_le_left (unipO_le C))`.
+A detailed English derivation is pending.
 -/
 private theorem inf_U (C : Subgroup 𝓀[k]ˣ) : unipB k (Fin n) ⊓ iwC k n C = unipO k n :=
   le_antisymm (inf_le_inf_left _ ((iwC_le C).trans (iwahori_le_KO k _))) (le_inf inf_le_left (unipO_le C))
 
 /- English proof (translation)
-Use `le_antisymm (fun c hc => ⟨hc.1, GlobalTheory.StepData.mem_KOne.2 fun i j => ?_⟩) (inf_le_inf_left _ (KOne_le C))` and prove the remaining obligations. Take `⟨h2, h3⟩` from `mem_unipBLower.1 hc.1`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[h2 i j h, one_apply_ne h.ne]`. Simplify using `[h3 i]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify `(mem_iwahori.1 (iwC_le C hc.2)).2 i j h` using `[one_apply_ne h.ne']`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem inf_L (C : Subgroup 𝓀[k]ˣ) :
     unipBLower k (Fin n) ⊓ iwC k n C = unipBLower k (Fin n) ⊓ KOne k (Fin n) := by
@@ -49,7 +49,7 @@ private theorem inf_L (C : Subgroup 𝓀[k]ˣ) :
   · simpa [one_apply_ne h.ne'] using (mem_iwahori.1 (iwC_le C hc.2)).2 i j h
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀]`. Conclude with `mul_inv_le_one_of_le₀ (ht i j h) zero_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dom_le {t : Fin n → kˣ} (ht : Dom t) {i j : Fin n} (h : i ≤ j) :
     valuation k ((t i * (t j)⁻¹ : kˣ) : k) ≤ 1 := by
@@ -57,9 +57,9 @@ private theorem dom_le {t : Fin n → kˣ} (ht : Dom t) {i j : Fin n} (h : i ≤
   exact mul_inv_le_one_of_le₀ (ht i j h) zero_le
 
 /- English proof (translation)
-Establish `key : ∀ u ∈ unipO k n, GlobalTheory.StepData.IntM (diagT k (Fin n) t * u * (diagT k (Fin n) t)⁻¹).val` using `fun u hu i j => by`. Rewrite using `[← map_inv, diag_mul_mul_diag]`. Break down `lt_or_ge j i with h | h` into its components or cases. Rewrite using `[((mem_unipB k).1 hu.1).1 i j h, mul_zero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_mem (dom_le ht h) (GlobalTheory.StepData.intM_of_mem_KO hu.2 i j)`. Introduce `u hu`. Use `⟨conj_mem_unipB _ hu.1, GlobalTheory.StepData.mem_KO.2 ⟨key u hu, ?_⟩⟩` and prove the remaining obligations. Use `key _ (inv_mem hu) using 2` and compare the differences between its conclusion and the goal. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem dom_U {t : Fin n → kˣ} (ht : Dom t) :
     ∀ u ∈ unipO k n, diagT k (Fin n) t * u * (diagT k (Fin n) t)⁻¹ ∈ unipO k n := by
@@ -76,11 +76,11 @@ private theorem dom_U {t : Fin n → kˣ} (ht : Dom t) :
   group
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1` using `conj_mem_unipBLower t⁻¹ hu.1`. Rewrite `h1` using `[map_inv, inv_inv]`. Use `GlobalTheory.StepData.mem_KOne.2 fun i j => ?_` and prove the remaining obligations. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Matrix.sub_apply, (mem_unipBLower.1 h1).1 i j h, one_apply_ne h.ne, sub_self, map_zero, zero_lt_one]`. Simplify using `only [Matrix.sub_apply, (mem_unipBLower.1 h1).2 i, one_apply_eq, sub_self, map_zero, zero_lt_one]`. Establish `h2` using `GlobalTheory.StepData.mem_KOne.1 hu.2 i j`. Rewrite `h2`, the goal using `[Matrix.sub_apply, one_apply_ne h.ne', sub_zero]`. Rewrite using `[← map_inv, diag_mul_mul_diag, mul_comm (_ : kˣ), map_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_le_of_le_one_left' (dom_le ht h.le)).trans_lt h2`.
+A detailed English derivation is pending.
 -/
 private theorem dom_L {t : Fin n → kˣ} (ht : Dom t) :
     ∀ u ∈ unipBLower k (Fin n) ⊓ KOne k (Fin n),
@@ -139,9 +139,9 @@ end
 end UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n C`. Use `⟨torFact C, rfl, rfl, rfl, inf_U C, inf_L C, fun t => ⟨?_, fun ht => ⟨⟨t, rfl⟩, fun u hu => ?_, fun l hl => ?_⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨s, rfl⟩, hs⟩`. Establish `e : diagT k (Fin n) t * diagT k (Fin n) s = diagT k (Fin n) s * diagT k (Fin n) t`. Rewrite using `[← map_mul, mul_comm, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[e, mul_inv_cancel_right]` and apply the resulting hypothesis. Rewrite using `[mul_assoc, ← e, inv_mul_cancel_left]` and apply the resulting hypothesis. Conclude with `unipO_le C (dom_U ht u (inf_U C ▸ hu))`. Conclude with `KOne_le C (dom_L ht l (inf_L C ▸ hl))`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.factTorus :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ), ∃ F : LeviFact (iwC k n C), F.Uf = unipB k (Fin n) ∧ F.Mf = (diagT k (Fin n)).range ∧ F.Lf = unipBLower k (Fin n) ∧ F.Uf ⊓ iwC k n C = unipO k n ∧ F.Lf ⊓ iwC k n C = unipBLower k (Fin n) ⊓ KOne k (Fin n) ∧ ∀ t : Fin n → kˣ, F.NormJ (diagT k (Fin n) t) ∧ (Dom t → F.Pos (diagT k (Fin n) t)) := by

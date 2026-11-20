@@ -10,15 +10,15 @@ noncomputable section
 namespace GlobalTheory.EnvelopingExtension
 
 /- English proof (translation)
-Set `f : L →ₗ[ℝ] A` to `{ toFun := ρ map_add' := hadd map_smul' := fun c X => by`. Rewrite using `[hsmul]`. Conclude with `Complex.coe_smul c (ρ X) }`. Set `F : ℂ ⊗[ℝ] L →ₗ[ℂ] A` to `f.liftBaseChange ℂ`. Establish `hF : ∀ (a : ℂ) (x : L), F (a ⊗ₜ x) = a • ρ x` using `fun a x => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[F, f, LinearMap.liftBaseChange_tmul]`. Establish `hlie : ∀ u v : ℂ ⊗[ℝ] L, F ⁅u, v⁆ = ⁅F u, F v⁆`. Introduce `u v`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add u₁ u₂ h₁ h₂ => rw [add_lie, map_add, h₁, h₂, map_add, add_lie]`. Consider the case `tmul a x`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add v₁ v₂ h₁ h₂ => rw [lie_add, map_add, h₁, h₂, map_add, lie_add]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul b y`. Rewrite using `[LieAlgebra.ExtendScalars.bracket_tmul, hF, hF, hF, hbr, Ring.lie_def, smul_mul_smul_comm, smul_mul_smul_comm, mul_comm b a, smul_sub]`. Set `G : ℂ ⊗[ℝ] L →ₗ⁅ℂ⁆ A` to `{ F with map_lie' := fun {u v} => hlie u v }`. Use `⟨UniversalEnvelopingAlgebra.lift ℂ G, fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[UniversalEnvelopingAlgebra.lift_ι_apply]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `F ((1 : ℂ) ⊗ₜ X) = ρ X`. Rewrite using `[hF, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algHom_of_real (L : Type) [LieRing L] [LieAlgebra ℝ L] (A : Type) [Ring A] [Algebra ℂ A] (ρ : L → A)
     (hadd : ∀ X Y, ρ (X + Y) = ρ X + ρ Y) (hsmul : ∀ (c : ℝ) X, ρ (c • X) = (c : ℂ) • ρ X)
@@ -53,7 +53,7 @@ theorem exists_algHom_of_real (L : Type) [LieRing L] [LieAlgebra ℝ L] (A : Typ
   rw [hF, one_smul]
 
 /- English proof (translation)
-Introduce `n J A _ _ ρ hadd hsmul hbr`. Conclude with `exists_algHom_of_real _ A ρ hadd hsmul fun X Y => hbr X Y ⁅X, Y⁆ (by`. Rewrite using `[LieSubalgebra.coe_bracket, Ring.lie_def])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algHom_unitary : ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) ℂ) (A : Type) [Ring A] [Algebra ℂ A] (ρ : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J → A), (∀ X Y, ρ (X + Y) = ρ X + ρ Y) → (∀ (c : ℝ) X, ρ (c • X) = (c : ℂ) • ρ X) → (∀ X Y Z : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J, Z.1 = X.1 * Y.1 - Y.1 * X.1 → ρ Z = ρ X * ρ Y - ρ Y * ρ X) → ∃ π : UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J) →ₐ[ℂ] A, ∀ X, π (UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X)) = ρ X := by
   intro n J A _ _ ρ hadd hsmul hbr

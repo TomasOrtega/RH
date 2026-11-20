@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open UpperTheory.V UpperTheory.V.PropA
 
 /- English proof (translation)
-Introduce `l _ X _ _ g a b hab`. Apply `cokLen_le_of_range_le` to reduce the goal to its premises. Take `⟨k, rfl⟩` from `hab`. Rewrite using `[pow_mul, ← mul_geom_sum]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.mono :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] (g : Module.End ℤ_[l] X) (a b : ℕ), a ∣ b →

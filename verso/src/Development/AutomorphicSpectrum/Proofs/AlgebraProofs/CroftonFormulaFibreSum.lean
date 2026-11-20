@@ -11,15 +11,13 @@ open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `n e δ h W f hW hf hδ φ hφ hlev`. Establish `hcnt : ∀ s : ℝ≥0∞, Measurable fun π : Fin (e + 1) → Fin n → ℂ => cntOver (coneSet h W ∩ {y | s < φ y}) π (firstCoordVec (e + 1))` using `fun s => ModelDimension.FnCrofton.measurable_cntOver_first (isSigmaCompact_cone_inter h W (hlev s).1)`. Take `⟨hm, hi⟩` from `GlobalTheory.T.random_set_sum_expectation (planeMass n e • gaussM (e + 1) n) ((Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)).restrict (coneBall h W)) (fun π => fibrePts (coneSet h W) π) φ (gaussM (e + 1) n Set.univ) hφ (fun s => by`. Simplify using `only [ModelDimension.FnCrofton.encard_fibrePts_inter]`. Conclude with `hcnt s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(fun s => by`. Establish `hA` using `(hlev s).1`. Establish `T` using `GlobalTheory.T.crofton_formula_open_cone n e δ h W f hW hf hδ {y | s < φ y} hA (hlev s).2`. Simplify using `only [ModelDimension.FnCrofton.encard_fibrePts_inter]`. Rewrite using `[lintegral_smul_measure, smul_eq_mul, Measure.restrict_apply hA.measurableSet, gaussM, lintegral_withDensity_eq_lintegral_mul _ (ModelDimension.FnCrofton.measurable_matrix_gaussian _ _) (hcnt s)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hset : {y | s < φ y} ∩ coneBall h W = {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ coneSet h W ∩ {y | s < φ y}}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2, h3, h1⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h3, h1, h2⟩`. Rewrite using `[hset]`. Simplify `T)` using `only [Pi.mul_apply, gaussM]`. Use `⟨hm, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hi` using `[lintegral_smul_measure, smul_eq_mul]`. Conclude with `hi`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.crofton_formula_fibre_sum : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ), IsProjPrime W → IsChowForm W (e + 1) f → IsMultiHomog δ f →

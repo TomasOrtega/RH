@@ -18,11 +18,11 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
 variable {ρ : S.Real} {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀)
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible u.V`. Use `⟨‖(u.j π : PadicAlgCl p)‖, norm_nonneg _, ?_, fun e x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h0 : algebraMap u.V (FractionRing u.V) π ≠ 0` using `fun h₀ => hπ.ne_zero (IsFractionRing.injective u.V (FractionRing u.V) (h₀.trans (map_zero _).symm))`. Take `⟨z, hz⟩` from `(u.norm_le (algebraMap u.V _ π)⁻¹).1 (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (not_lt.1 h))`. Use `hπ.not_isUnit (IsUnit.of_mul_eq_one z (IsFractionRing.injective u.V (FractionRing u.V) ?_))` and prove the remaining obligations. Rewrite using `[map_mul, hz, map_one, mul_inv_cancel₀ h0]`. Rewrite `hx` using `[ThetaSys.Real.UTest.lev, hπ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hx`. Rewrite using `[map_pow]`. Use `show ‖(a : PadicAlgCl p) * (u.j π : PadicAlgCl p) ^ (e + 1)‖ ≤ _`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) ((mem_OO_iff _).1 a.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lev_norm : ∃ r : ℝ, 0 ≤ r ∧ r < 1 ∧ ∀ e, ∀ x ∈ u.lev e, ‖(x : PadicAlgCl p)‖ ≤ r ^ (e + 1) := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible u.V
@@ -43,7 +43,7 @@ theorem exists_lev_norm : ∃ r : ℝ, 0 ≤ r ∧ r < 1 ∧ ∀ e, ∀ x ∈ u.
     exact mul_le_of_le_one_left (by positivity) ((mem_OO_iff _).1 a.2)
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨r, h0, h1, h2⟩ := exists_lev_norm u have := h2 e 1 (h ▸ trivial) have h3 : r ^ (e + 1) < 1 := pow_lt_one₀ h0 h1 (Nat.succ_ne_zero e) simp only [OneMemClass.coe_one, norm_one] at this linarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lev_ne_top (e : ℕ) : u.lev e ≠ ⊤ := fun h => by
   obtain ⟨r, h0, h1, h2⟩ := exists_lev_norm u
@@ -61,9 +61,9 @@ instance isLocalHom_lev (e : ℕ) : IsLocalHom (Ideal.Quotient.mk (u.lev e)) :=
   IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `(isUnit_of_map_unit _ x h).exists_right_inv`. Establish `h1 : ‖(x : PadicAlgCl p)‖ * ‖(y : PadicAlgCl p)‖ = 1`. Rewrite using `[← norm_mul, show (x : PadicAlgCl p) * y = 1 from congrArg Subtype.val hy, norm_one]`. Establish `hx` using `(mem_OO_iff _).1 x.2`. Establish `hy` using `(mem_OO_iff _).1 y.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_nonneg (x : PadicAlgCl p)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_eq_one_of_isUnit {e : ℕ} {x : OO p} (h : IsUnit (Ideal.Quotient.mk (u.lev e) x)) :
     ‖(x : PadicAlgCl p)‖ = 1 := by
@@ -76,13 +76,13 @@ theorem norm_eq_one_of_isUnit {e : ℕ} {x : OO p} (h : IsUnit (Ideal.Quotient.m
   nlinarith
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.comap_closedPoint (Ideal.Quotient.mk (u.lev e))`.
+A detailed English derivation is pending.
 -/
 theorem mk_cpt (e : ℕ) : spMap (Ideal.Quotient.mk (u.lev e)) (cpt _) = cpt (OO p) :=
   IsLocalRing.comap_closedPoint (Ideal.Quotient.mk (u.lev e))
 
 /- English proof (translation)
-Use `⟨pullback.lift (spMap (Ideal.Quotient.mk (u.lev e)) ≫ c) (spMap (Ideal.quotientMap (u.lev e) u.j Ideal.le_comap_map)) ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hc]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_level_point (c : Sp (OO p) ⟶ u.G.left) (hc : c ≫ u.G.hom = spMap u.j) (e : ℕ) :
     ∃ ce : Sp (OO p ⧸ u.lev e) ⟶ (thickObj u.V (IsLocalRing.maximalIdeal u.V) e u.G).left,
@@ -95,7 +95,7 @@ theorem exists_level_point (c : Sp (OO p) ⟶ u.G.left) (hc : c ≫ u.G.hom = sp
   rfl
 
 /- English proof (translation)
-The claim follows from `Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ _))`.
+A detailed English derivation is pending.
 -/
 theorem lev_succ_le (e : ℕ) : u.lev (e + 1) ≤ u.lev e :=
   Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ _))
@@ -109,7 +109,7 @@ variable (c : Sp (OO p) ⟶ u.G.left) (b₀ : Sp (OO p) ⟶ u.D.toPre.P.A.left)
 include hce hbe hL hM
 
 /- English proof (translation)
-Introduce `z _` and use `⟨mem_pull.2 ((congrArg (fun q => q (r z) ∈ u.D.toPre.P.L.U jM) (hbe e)).mpr (top_le_comp hM _ trivial)), mem_pull.2 ((congrArg (fun q => q (r z) ∈ u.U.LG.L.U jL) (hce e)).mpr (top_le_comp hL _ trivial))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem top_le_wchart (e : ℕ) {T : Type} [CommRing T] (r : Sp T ⟶ Sp (OO p ⧸ u.lev e)) :
     ⊤ ≤ (r ≫ ce e) ⁻¹ᵁ ((u.D.toPre.P.L.pull (u.U.gt e).pG.left).U (fun _ => jM) ⊓
@@ -118,7 +118,7 @@ theorem top_le_wchart (e : ℕ) {T : Type} [CommRing T] (r : Sp T ⟶ Sp (OO p �
     mem_pull.2 ((congrArg (fun q => q (r z) ∈ u.U.LG.L.U jL) (hce e)).mpr (top_le_comp hL _ trivial))⟩
 
 /- English proof (translation)
-The claim follows from `top_le_wchart u c b₀ ce hce hbe hL hM e (𝟙 _)`.
+A detailed English derivation is pending.
 -/
 theorem top_le_wchart' (e : ℕ) :
     ⊤ ≤ (ce e) ⁻¹ᵁ ((u.D.toPre.P.L.pull (u.U.gt e).pG.left).U (fun _ => jM) ⊓
@@ -126,11 +126,11 @@ theorem top_le_wchart' (e : ℕ) :
   top_le_wchart u c b₀ ce hce hbe hL hM e (𝟙 _)
 
 /- English proof (translation)
-Use `fstG_mono (I := IsLocalRing.maximalIdeal u.V) (G := u.G) (e + 1)` as an intermediate fact. Establish `ht` using `top_le_wchart' u c b₀ ce hce hbe hL hM e`. Establish `e₁ : spMap (Ideal.Quotient.factor (lev_succ_le u e)) ≫ ce (e + 1) = ce e ≫ thickMap u.V (IsLocalRing.maximalIdeal u.V) e u.G`. Rewrite using `[← cancel_mono (fstG (IsLocalRing.maximalIdeal u.V) (e + 1) u.G).left, Category.assoc, Category.assoc]`. Use `(congrArg (_ ≫ ·) (hce (e + 1))).trans (Eq.trans ?_ ((hce e).symm.trans (congrArg (_ ≫ ·) (thickMap_comp_fGl _ e u.G).symm)))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]`. Establish `e₂ : Ideal.Quotient.factor (lev_succ_le u e) (wVal u.U.toUnifPre (e + 1) (ce (e + 1)) jL jM) = wVal u.U.toUnifPre (e + 1) (spMap (Ideal.Quotient.factor (lev_succ_le u e)) ≫ ce (e + 1)) jL jM` using `(valR_spMap _ _ _ (top_le_wchart' u c b₀ ce hce hbe hL hM (e + 1)) _).symm`. Apply `toStkA_injective` to reduce the goal to its premises. Rewrite using `[e₂]`. Use `(toStkA_valR _ _ _ (top_le_wchart u c b₀ ce hce hbe hL hM (e + 1) _) _).trans (Eq.trans ?_ (toStkA_valR _ _ _ ht _).symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `wv_comp_thickMap (U := u.U.toUnifPre) e (ce e) (cpt _) jM jL (mem_pull.1 (ht trivial).1) (mem_pull.1 (ht trivial).2)`. Rewrite `h` using `[← e₁]`. Conclude with `congrArg Units.val h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_wVal (e : ℕ) :
     Ideal.Quotient.factor (lev_succ_le u e) (wVal u.U.toUnifPre (e + 1) (ce (e + 1)) jL jM) =
@@ -155,13 +155,13 @@ theorem factor_wVal (e : ℕ) :
   exact congrArg Units.val h
 
 /- English proof (translation)
-Take `⟨-, -, -, K₀, hK₀, hK₀'⟩` from `GlobalTheory.T.testField_finite_over_padic o Ω S ρ p y₀ u`. Use `u.U.smooth` as an intermediate fact. Take `⟨K, hK, hval⟩` from `exists_finite_values u.j K₀ (fun x => by show _ ∈ (K₀ : Set (PadicAlgCl p))`. Rewrite using `[hK₀']`. Conclude with `⟨_, rfl⟩) u.G.hom c hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hcl : ∀ e, IsClosedImmersion (fGl (IsLocalRing.maximalIdeal u.V) u.G e)` using `fun e => haveI : IsClosedImmersion (thick u.V (IsLocalRing.maximalIdeal u.V) e) := IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective inferInstanceAs (IsClosedImmersion (pullback.fst u.G.hom (thick u.V (IsLocalRing.maximalIdeal u.V) e)))`. Use `choose U' f' hU' hf' using fun e => exists_lift_valR (Ideal.Quotient.mk (u.lev e)) _ c (ce e) (hce e) _ (top_le_wchart' u c b₀ ce hce hbe hL hM e) ((u.U.w e).s (fun _ => jM, fun _ => jL)).val`. Establish `hw : ∀ e, Ideal.Quotient.mk (u.lev e) (valR c (U' e) (f' e)) = wVal u.U.toUnifPre e (ce e) jL jM` using `hf'`. Take `⟨r, h0, h1, h2⟩` from `exists_lev_norm u`. Take `⟨ω, hω⟩` from `exists_tendsto K h1 (fun e => (valR c (U' e) (f' e) : OO p)) (fun e => hval _ (hU' e) _) fun e => h2 e (valR c (U' (e + 1)) (f' (e + 1)) - valR c (U' e) (f' e)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq, hw e, ← factor_wVal u c b₀ ce hce hbe hL hM e, ← hw (e + 1), Ideal.Quotient.factor_mk])`. Use `⟨ω, _, fun h => ?_, hω, hw⟩` and prove the remaining obligations. Establish `h3` using `hω.norm`. Establish `h4 : ∀ e, ‖((valR c (U' e) (f' e) : OO p) : PadicAlgCl p)‖ = 1` using `fun e => norm_eq_one_of_isUnit u (e := e) (by`. Rewrite using `[hw]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `isUnit_valR _ _ (top_le_wchart' u c b₀ ce hce hbe hL hM e) _)`. Simplify using `only [h4, h, norm_zero] at h3`. Conclude with `one_ne_zero (tendsto_nhds_unique tendsto_const_nhds h3)`.
+A detailed English derivation is pending.
 -/
 theorem exists_omega [ArithBase o Ω] (hc : c ≫ u.G.hom = spMap u.j) : ∃ (ω : PadicAlgCl p) (ωe : ℕ → OO p), ω ≠ 0 ∧
     Tendsto (fun e => (ωe e : PadicAlgCl p)) atTop (𝓝 ω) ∧
@@ -194,14 +194,14 @@ theorem exists_omega [ArithBase o Ω] (hc : c ≫ u.G.hom = spMap u.j) : ∃ (ω
 end
 
 /- English proof (translation)
-The claim follows from `(WeightPf.Oφ_comp x (𝟙 _) χ k).trans (by rw [Category.comp_id])`.
+A detailed English derivation is pending.
 -/
 theorem comp_Oφ_id {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {T : Over (Spec (CommRingCat.of R))}
     (x : T ⟶ D.P.A) (χ : D.X) (k : Fin 4) : x.left ≫ D.Oφ (𝟙 D.P.A) χ k = D.Oφ x χ k :=
   (WeightPf.Oφ_comp x (𝟙 _) χ k).trans (by rw [Category.comp_id])
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← hbe, Category.assoc]`. Conclude with `congrArg (ce ≫ ·) (comp_Oφ_id u.D.toPre (u.U.gt e).pG χ i).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_Oφ (b₀ : Sp (OO p) ⟶ u.D.toPre.P.A.left) {e : ℕ}
     (ce : Sp (OO p ⧸ u.lev e) ⟶ (thickObj u.V (IsLocalRing.maximalIdeal u.V) e u.G).left)
@@ -211,15 +211,15 @@ theorem level_Oφ (b₀ : Sp (OO p) ⟶ u.D.toPre.P.A.left) {e : ℕ}
   exact congrArg (ce ≫ ·) (comp_Oφ_id u.D.toPre (u.U.gt e).pG χ i).symm
 
 /- English proof (translation)
-Take `⟨r, h0, h1, h2⟩` from `exists_lev_norm u`. Use `hasSum_of_levels h0 h1 _ (fun e => ((ωe e ^ k * secVal u.U.toUnifPre σ c jL : OO p) : PadicAlgCl p)) _ ((hω.pow k).mul_const _) fun e => ?_` and prove the remaining obligations. Take `⟨F, hF⟩` from `expandsAt_val u.U.toUnifPre e k σ f (hE e)`. Use `⟨F, fun T hT => ?_⟩` and prove the remaining obligations. Set `J : (Sp (OO p ⧸ u.lev e) ⟶ u.D.toPre.P.A.left) → u.D.toPre.P.L.ι` to `fun ψ => d (ψ (cpt _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hJ : Good u.D.toPre.P.L (cpt (OO p ⧸ u.lev e)) J` using `fun ψ => hd _`. Establish `eJ : ∀ ψ : Sp (OO p) ⟶ u.D.toPre.P.A.left, J (spMap (Ideal.Quotient.mk (u.lev e)) ≫ ψ) = d (ψ (cpt _))` using `fun ψ => congrArg (fun y => d (ψ y)) (mk_cpt u e)`. Establish `hM : ⊤ ≤ b₀ ⁻¹ᵁ u.D.toPre.P.L.U (d (b₀ (cpt _)))` using `(top_le_iff_cpt _ _).2 (hd _)`. Take `⟨H₀, H₁⟩` from `hF _ (ce e) (cpt _) J hJ`. Establish `H` using `H₁ jL ((congrArg (fun q => q (cpt _) ∈ u.U.LG.L.U jL) (hce e)).mpr (top_le_comp hL _ trivial))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `H₀` using `[hbe e]`. Rewrite `H` using `[hbe e, hce e, eJ, Finset.sum_subset hT (fun α _ hα => by rw [H₀ α hα, zero_mul])]`. Rewrite using `[← AddSubmonoidClass.coe_finset_sum, ← AddSubgroupClass.coe_sub]`. Use `h2 e _ (Ideal.Quotient.eq.1 (toStkA_injective ?_))` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hωe, map_mul, map_pow, map_sum, map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg₂ (· * ·) ?_ (toStkA_map_valR _ c _ _ (top_le_secChart hL) _)).trans (H.trans (Finset.sum_congr rfl fun α _ => ?_))` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `congrArg (· ^ k) (toStkA_valR _ _ _ (top_le_wchart' u c b₀ ce hce hbe hL hM e) _)`. Rewrite using `[map_mul, map_mul, hx e α, sval_of (f α) _ _ J (fun i => d ((b₀ ≫ u.D.toPre.famφB α i) (cpt _))) (fun i => by rw [Category.assoc, eJ]), val_of (tG u.U.toUnifPre e α) _ _ J (fun i => d ((b₀ ≫ u.D.toPre.Oφ (𝟙 _) α i) (cpt _))) (fun i => by rw [level_Oφ u b₀ _ (hbe e), eJ])]`. Use `(congrArg₂ (· * ·) (toStkA_map_valR _ b₀ _ _ ((top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun i => hd ((b₀ ≫ u.D.toPre.famφB α i) (cpt _)))) _) (toStkA_valR _ _ _ ((top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun i => ?_)) _)).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hJ (ce e ≫ Oφl u.U.toUnifPre e α i)` as an intermediate fact. Rewrite `this` using `[show J (ce e ≫ Oφl u.U.toUnifPre e α i) = _ by rw [level_Oφ u b₀ _ (hbe e), eJ]]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_integral (c : Sp (OO p) ⟶ u.G.left) (b₀ : Sp (OO p) ⟶ u.D.toPre.P.A.left)
     (ce : ∀ e, Sp (OO p ⧸ u.lev e) ⟶ (thickObj u.V (IsLocalRing.maximalIdeal u.V) e u.G).left)

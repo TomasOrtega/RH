@@ -14,7 +14,7 @@ namespace GlobalTheory.DefU.EquivWt
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `(Subgroup.mem_inf.1 hx).2`. Rewrite `h1` using `[Subgroup.mem_iInf]`. Establish `h2` using `h1 τ'`. Rewrite `h2` using `[Subgroup.mem_iInf]`. Conclude with `h2 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cEmb_eq_one_of_mem_embU {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ' ≠ InfinitePlace.mk τ) {x : UA E n}
     (hx : x ∈ embU n τ) : cEmb τ' x = 1 := by
@@ -25,9 +25,9 @@ theorem cEmb_eq_one_of_mem_embU {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ'
   exact h2 h
 
 /- English proof (translation)
-Rewrite using `[rhoK_tenMul]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Function.update_self]`. Both sides reduce to the same expression. Establish `hne : InfinitePlace.mk (σ τ) ≠ InfinitePlace.mk (σ τ₀)` using `fun e' => h (hσ e')`. Simplify using `only [Function.update_of_ne h, MonoidHom.pi_apply, cEmb_eq_one_of_mem_embU hne hx, map_one, Module.End.one_apply]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem rhoK_tenMul_update {ι : Type} [Fintype ι] [DecidableEq ι] (σ : ι → (E →+* ℂ)) (lam : ι → DomWeight n)
     (hσ : Function.Injective (fun τ => InfinitePlace.mk (σ τ))) (τ₀ : ι) {x : UA E n} (hx : x ∈ embU n (σ τ₀))
@@ -47,13 +47,11 @@ theorem rhoK_tenMul_update {ι : Type} [Fintype ι] [DecidableEq ι] (σ : ι �
       Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ n ι _ σ lam hσ π hπ f hf0 hfπ hfeq τ₀`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, f (GlobalTheory.CoefIrred.tenMul lam e) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1` using `(GlobalTheory.T.dualWeylModule_tensor_coefficient_universal ι n lam (UA E n → ℂ) 0).unique (y₁ := f) (y₂ := 0) (fun u => hc u) (fun u => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hf0 h1`. Establish `h1 : HasWeightAt π (σ τ₀) (lam τ₀)`. Use `⟨isIrreducible_sqRep n (lam τ₀), f ∘ₗ (GlobalTheory.CoefIrred.tenMul lam).toLinearMap e τ₀, fun h0 => he ?_, fun a => hfπ _, fun x a => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h0 (e τ₀)` as an intermediate fact. Simplify `this` using `[MultilinearMap.toLinearMap]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x.1 ∈ infU E n` using `embU_le_infU _ x.2`. Establish `h2` using `hfeq ⟨x.1, hx⟩ (GlobalTheory.CoefIrred.tenMul lam (Function.update e τ₀ a))`. Express the relevant statement in the definitionally equal form `f (Formalism.L2.DIV.rhoK (K := ℂ) lam ((MonoidHom.pi fun τ => cEmb (E := E) (n := n) (σ τ)) x.1) _) = _ at h2`. Rewrite `h2` using `[rhoK_tenMul_update σ lam hσ τ₀ x.2]`. Conclude with `h2`.
-
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h3 : (AU.mk (⟨π, hπ⟩ : AutSub E n)).HasWt (σ τ₀) (lam τ₀)` using `(AU.hasWt_mk _ _ _).2 h1`. Conclude with `(AU.hasWt_mk _ _ _).1 h3.conjugate`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasWeightAt_of_equivariant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (ι : Type) [Fintype ι]
     (σ : ι → (E →+* ℂ)) (lam : ι → DomWeight n), Function.Injective (fun τ => InfinitePlace.mk (σ τ)) →

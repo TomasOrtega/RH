@@ -22,13 +22,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `q _ i B B' _ _ φ hq ⟨ζ, hζ⟩ hid`. Take `⟨E, hE⟩` from `UpperTheory.exists_tateTwist_sections_equiv_locallyConstant q i`. Take `⟨-, e, he, -⟩` from `GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q i)`. Set `g : Spec (CommRingCat.of B') ⟶ Spec (CommRingCat.of B)` to `Spec.map (CommRingCat.ofHom φ)`. Set `ζ₀ : Prim q Γ(Spec (CommRingCat.of B), ⊤)` to `Prim.map (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom ⟨ζ, hq, hζ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hres : Function.Bijective (Sec.res (F` using `tw q i) g) := by`. Establish `h1` using `UpperTheory.locallyConstant_comap_bijective B B' φ (ZMod q) hid`. Establish `hc : ∀ s, E _ (ζ₀.map g.appTop.hom) (Sec.res g s) = (E _ ζ₀ s).comap ⟨g, g.continuous⟩` using `hE _ _ g ζ₀`. Establish `hcomp : (E _ (ζ₀.map g.appTop.hom)) ∘ (Sec.res (F` using `tw q i) g) = (fun a : LocallyConstant (PrimeSpectrum B) (ZMod q) => a.comap ⟨PrimeSpectrum.comap φ, PrimeSpectrum.continuous_comap φ⟩) ∘ (E _ ζ₀) := by`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hc s`. Use `(Function.Bijective.of_comp_iff' (E _ (ζ₀.map g.appTop.hom)).bijective _).1 ?_` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `h1.comp (E _ ζ₀).bijective`. Establish `hp : (pull _ (sch.map g) (tw q i) 0) ∘ (e _) = (e _) ∘ (Sec.res (F` using `tw q i) g) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `s`. Conclude with `he g s`. Use `(Function.Bijective.of_comp_iff _ (e _).bijective).1 ?_` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `(e _).bijective.comp hres`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bijective_pull_spMap_tw_zero : ∀ (q : ℕ) [NeZero q] (i : ℤ) (B B' : Type) [CommRing B] [CommRing B'] (φ : B →+* B'), IsUnit (q : B) →
     (∃ ζ : B, Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0) →
@@ -57,13 +57,11 @@ private theorem bijective_pull_spMap_tw_zero : ∀ (q : ℕ) [NeZero q] (i : ℤ
   exact (e _).bijective.comp hres
 
 /- English proof (translation)
-Introduce `q O R K _ _ _ _ _ _ _ hSH hq i n`. Take `⟨hH, -⟩` from `id hSH`. Use `haveI : NeZero q := ⟨by`. Introduce and unpack `rfl`. Simplify using `at hq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hqR : IsUnit (q : R)` using `by simpa using hq.map (algebraMap O R)`. Use `haveI : Algebra.IsIntegral O (R ⊗[O] K) := by`. Establish `: Algebra.IsIntegral R (R ⊗[O] K)` using `inferInstance`. Conclude with `Algebra.IsIntegral.trans R`. Break down `lt_trichotomy n 0 with hn | rfl | hn` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hs` using `(GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q i)).1 haveI := hs (sp R) n hn haveI := hs (sp (R ⊗[O] K)) n hn`. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`. Take `⟨ζ, hζ⟩` from `UpperTheory.exists_cyclotomic_root_of_strictHenselian q O hSH hq`. Use `bijective_pull_spMap_tw_zero q i R _ _ hqR ⟨algebraMap O R ζ, ?_⟩ (UpperTheory.existsUnique_idempotent_lift_tensor_field_strictHenselian O R K hSH)` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_algebraMap_apply, hζ, map_zero]`.
-
-Use `haveI := UpperTheory.acyclic_spec_integral_algebra_strictHenselian q O R hSH hq n i hn haveI := UpperTheory.acyclic_spec_integral_algebra_strictHenselian q O (R ⊗[O] K) hSH hq n i hn`. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem eqv_ring : ∀ (q : ℕ) (O R K : Type) [CommRing O] [CommRing R] [Field K] [Algebra O R] [Algebra O K]
     [Algebra.IsIntegral O R] [Algebra.IsIntegral O K], SH O → IsUnit (q : O) → ∀ i : ℤ,
@@ -90,21 +88,19 @@ private theorem eqv_ring : ∀ (q : ℕ) (O R K : Type) [CommRing O] [CommRing R
     exact ⟨fun _ _ _ => Subsingleton.elim _ _, fun y => ⟨0, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Introduce `q O K _ _ _ _ hSH hq i Z Z' W r _ e c g' hpb`. Take `⟨hiso, hcomp, -, -⟩` from `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Establish `hg : IsIntegralHom (r ≫ e.hom)` using `inferInstance`. Use `haveI : IsAffine Z := isAffine_of_isAffineHom (r ≫ e.hom)`. Set `φ : CommRingCat.of O ⟶ Γ(Z, ⊤)` to `Spec.preimage (Z.isoSpec.inv ≫ r ≫ e.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : Spec.map φ = Z.isoSpec.inv ≫ r ≫ e.hom` using `Spec.map_preimage _`. Use `letI alg : Algebra O Γ(Z, ⊤) := φ.hom.toAlgebra`. Establish `hmap : Spec.map (CommRingCat.ofHom (algebraMap O Γ(Z, ⊤))) = Z.isoSpec.inv ≫ r ≫ e.hom` using `hφ`. Use `haveI hint : Algebra.IsIntegral O Γ(Z, ⊤) := by`. Establish `h2 : IsIntegralHom (Spec.map (CommRingCat.ofHom (algebraMap O Γ(Z, ⊤))))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hmap]`. Use `infer_instance`. Rewrite `h2` using `[IsIntegralHom.SpecMap_iff]`. Conclude with `(algebraMap_isIntegral_iff (R := O) (A := Γ(Z, ⊤))).1 h2`. Establish `sq1` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct O Γ(Z, ⊤) K)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `sq2 : IsPullback (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom : Γ(Z, ⊤) →+* Γ(Z, ⊤) ⊗[O] K)) ≫ Z.isoSpec.inv) (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R` using `O) (A := Γ(Z, ⊤)) (B := K)).toRingHom)) (r ≫ e.hom) (Spec.map (CommRingCat.ofHom (algebraMap O K))) := by`. Use `IsPullback.of_iso sq1 (Iso.refl _) Z.isoSpec.symm (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `[hmap]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `sq3 : IsPullback c g' (r ≫ e.hom) (Spec.map (CommRingCat.ofHom (algebraMap O K)))`. Use `IsPullback.of_iso hpb (Iso.refl _) (Iso.refl _) (Iso.refl _) e ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take `⟨u, hu⟩ : ∃ u : Z' ≅ Spec (CommRingCat.of (Γ(Z, ⊤) ⊗[O] K)), u.hom ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom : Γ(Z, ⊤) →+* Γ(Z, ⊤) ⊗[O] K)) ≫ Z.isoSpec.inv = c` from `⟨_, sq3.isoIsPullback_hom_fst _ _ sq2⟩`. Establish `hE` using `eqv_ring q O Γ(Z, ⊤) K hSH hq i`. Establish `h1 : sch.map c ≫ sch.map Z.isoSpec.hom = sch.map u.hom ≫ spMap (Algebra.TensorProduct.includeLeftRingHom : Γ(Z, ⊤) →+* Γ(Z, ⊤) ⊗[O] K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sch.map_comp, ← sch.map_comp, ← hu]`. Simplify using the standard rewrite rules. Establish `h2 : Eqv _ (sch.map c ≫ sch.map Z.isoSpec.hom) (tw q i)`. Rewrite using `[h1]`. Conclude with `(hcomp _ _ _ _ _).1 (hiso _ _ _ inferInstance) hE`.
-
-Conclude with `(hcomp _ _ _ _ _).2.2 (hiso _ _ _ inferInstance) h2`.
+A detailed English derivation is pending.
 -/
 private theorem T_key : ∀ (q : ℕ) (O K : Type) [CommRing O] [Field K] [Algebra O K] [Algebra.IsIntegral O K], SH O → IsUnit (q : O) →
     ∀ (i : ℤ) {Z Z' W : Scheme.{0}} (r : Z ⟶ W) [IsIntegralHom r] (e : W ≅ Spec (CommRingCat.of O)) (c : Z' ⟶ Z)
@@ -148,31 +144,27 @@ private theorem T_key : ∀ (q : ℕ) (O K : Type) [CommRing O] [Field K] [Algeb
   exact (hcomp _ _ _ _ _).2.2 (hiso _ _ _ inferInstance) h2
 
 /- English proof (translation)
-Introduce `n` and use `(h (n + 1)).1 n (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem eqv_of_forall_conn {R : Type} [CommRing R] {E E' : Spc} {f : E ⟶ E'} {F : Shv R}
     (h : ∀ m, UpperTheory.RedSh.Conn f F m) : Eqv R f F := fun n => (h (n + 1)).1 n (by omega)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n _ => h n, (h m).1⟩`.
+Supply the required witnesses or components.
 -/
 private theorem conn_of_eqv {R : Type} [CommRing R] {E E' : Spc} {f : E ⟶ E'} {F : Shv R}
     (h : Eqv R f F) (m : ℤ) : UpperTheory.RedSh.Conn f F m := ⟨fun n _ => h n, (h m).1⟩
 
 /- English proof (translation)
-Introduce `q O _ hSH hq i Y W g _ _ e`. Take `⟨hH, hS⟩` from `id hSH`. Take `⟨hiso, hcomp, -, -⟩` from `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Set `K` to `AlgebraicClosure (IsLocalRing.ResidueField O)`. Use `haveI : Algebra.IsIntegral O (IsLocalRing.ResidueField O) := Algebra.IsIntegral.of_surjective (Algebra.ofId O (IsLocalRing.ResidueField O)) IsLocalRing.residue_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.IsIntegral O K := Algebra.IsIntegral.trans (IsLocalRing.ResidueField O)`. Set `b : Spec (CommRingCat.of K) ⟶ W` to `Spec.map (CommRingCat.ofHom (algebraMap O K)) ≫ e.inv`. Establish `hpb` using `IsPullback.of_hasPullback g b`. Use `haveI : IsIntegralHom (pullback.snd g b) := MorphismProperty.of_isPullback hpb inferInstance`. Use `haveI : Surjective (pullback.snd g b) := MorphismProperty.of_isPullback hpb inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `UpperTheory.exists_section_of_integral_surjective_algClosed K (pullback.snd g b)`. Establish `hsplit : Eqv _ (cechAug (pullback.snd g b)) (tw q i)` using `UpperTheory.cechAugmentation_equiv_of_section _ _ s hs _`. Take `⟨m, hm, -⟩` from `GlobalTheory.T.etaleCechNerve_baseChange_isPullback _ _ _ _ _ _ _ _ hpb`. Establish `hb : Eqv _ (sch.map b) (tw q i)`. Establish `: IsPullback b (𝟙 _) (𝟙 W) b` using `IsPullback.of_vert_isIso ⟨by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `T_key q O K hSH hq i (𝟙 W) e b (𝟙 _) this`. Establish `hlev : Eqv _ m (tw q i)`. Use `eqv_of_forall_conn fun n => UpperTheory.sheafConnected_of_levelwise_connected _ _ m n fun k => conn_of_eqv ?_ _` and prove the remaining obligations. Take `⟨Z, π, ez, hπ, hz⟩` from `GlobalTheory.T.exists_representable_cech_level_of_stable @IsIntegralHom _ _ g inferInstance (op (SimplexCategory.mk k))`. Establish `hpz` using `IsPullback.of_hasPullback (π ≫ g) b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ez', hez'⟩` from `UpperTheory.cechNerve_pullback_representable_of_isPullback g (pullback.snd g b) b m hm (op (SimplexCategory.mk k)) ez (π ≫ g) (pullback.fst (π ≫ g) b) (pullback.snd (π ≫ g) b) hz hpz`. Establish `h1 : Eqv _ (sch.map (pullback.fst (π ≫ g) b)) (tw q i)` using `T_key q O K hSH hq i (π ≫ g) e _ _ hpz`. Establish `h3 : Eqv _ (disc.map ez'.hom ≫ disc.map (m.app (op (SimplexCategory.mk k)))) (tw q i)`. Rewrite using `[← Functor.map_comp, hez', Functor.map_comp]`. Conclude with `(hcomp _ _ _ _ _).1 h1 (hiso _ _ _ inferInstance)`.
-
-Conclude with `(hcomp _ _ _ _ _).2.1 (hiso _ _ _ inferInstance) h3`. Establish `hc : m ≫ cechAug g = cechAug (pullback.snd g b) ≫ sch.map b` using `hm.w`. Establish `h2 : Eqv _ (m ≫ cechAug g) (tw q i)`. Rewrite using `[hc]`. Conclude with `(hcomp _ _ _ _ _).1 hsplit hb`.
-
-Conclude with `(hcomp _ _ _ _ _).2.1 hlev h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem L_loc : ∀ (q : ℕ) (O : Type) [CommRing O], SH O → IsUnit (q : O) → ∀ (i : ℤ) {Y W : Scheme.{0}} (g : Y ⟶ W)
     [IsIntegralHom g] [Surjective g] (e : W ≅ Spec (CommRingCat.of O)), Eqv _ (cechAug g) (tw q i) := by
@@ -211,17 +203,15 @@ private theorem L_loc : ∀ (q : ℕ) (O : Type) [CommRing O], SH O → IsUnit (
   exact (hcomp _ _ _ _ _).2.1 hlev h2
 
 /- English proof (translation)
-Introduce `q Y X f _ _ hq i`. Take `⟨hiso, hcomp, -, -⟩` from `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Establish `hqc₁ : QcqsOver (cechAug f ≫ sch.map (𝟙 X))`. Introduce `k`. Take `⟨Z, π, e, hπ, he⟩` from `GlobalTheory.T.exists_representable_cech_level_of_stable @IsIntegralHom _ _ f inferInstance k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Z, π ≫ f, e, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[sch.map_id, Category.comp_id]`. Conclude with `he`. Establish `hqc₂ : QcqsOver (sch.map (𝟙 X))`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨X, 𝟙 X, Iso.refl _, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[sch.map_id]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Use `UpperTheory.Cb.equiv_of_stalkwise_base_change _ (tw q i) X (cech f) (sch.obj X) (cechAug f) (sch.map (𝟙 X)) (UpperTheory.Cb.tateTwist_finitary q i) hqc₁ hqc₂ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `O _ s hs`. Take `⟨e₁, e₂, h⟩` from `GlobalTheory.T.baseChange_cechNerveAugmentation_iso X X Y (𝟙 X) f (Over.mk s)`. Establish `hO : IsUnit (q : O)`. Simplify using `using (hq.map s.appTop.hom).map (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom`. Set `w : pullback (𝟙 X) (Over.mk s).hom ≅ Spec (CommRingCat.of O)` to `asIso (pullback.snd _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfst : IsPullback (pullback.fst f (pullback.fst (𝟙 X) (Over.mk s).hom)) (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom)) f (pullback.fst (𝟙 X) (Over.mk s).hom)` using `IsPullback.of_hasPullback _ _`. Use `haveI : IsIntegralHom (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom)) := MorphismProperty.of_isPullback hfst inferInstance`. Use `haveI : Surjective (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom)) := MorphismProperty.of_isPullback hfst inferInstance`. Establish `h2 : Eqv _ (cechAug (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom))) (tw q i)` using `L_loc q O hs.1 hO i _ w`. Establish `h3 : Eqv _ (e₁.hom ≫ (bcMap (cechAug f) (sch.map (𝟙 X))).app (Over.mk s)) (tw q i)`.
-
-Rewrite using `[h]`. Conclude with `(hcomp _ _ _ _ _).1 h2 (hiso _ _ _ inferInstance)`. Conclude with `(hcomp _ _ _ _ _).2.1 (hiso _ _ _ inferInstance) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.etaleCohomology_excisionAxiom_holds : GlobalTheory.EtC.B4 := by
   intro q Y X f _ _ hq i

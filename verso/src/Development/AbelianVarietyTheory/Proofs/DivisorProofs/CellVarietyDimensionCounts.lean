@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FlagZ GlobalTheor
 namespace GlobalTheory.FlagZ.Count
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_prod]`. Conclude with `Nat.card_congr ⟨fun x => (x.1.1, ⟨x.1.2, x.2⟩), fun x => ⟨(x.1, x.2.1), x.2.2⟩, fun _ => rfl, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_sub_prod {ι β : Type} (p : β → Prop) :
     Nat.card {x : ι × β // p x.2} = Nat.card ι * Nat.card {y : β // p y} := by
@@ -15,14 +15,14 @@ theorem card_sub_prod {ι β : Type} (p : β → Prop) :
   exact Nat.card_congr ⟨fun x => (x.1.1, ⟨x.1.2, x.2⟩), fun x => ⟨(x.1, x.2.1), x.2.2⟩, fun _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, _, h₁, h₂⟩ => h₁.trans_le h₂, fun h => ⟨(τ, j.succ), rfl, by simp, by simpa using h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem below_full {ι : Type} {N : ℕ} (τ : ι) (i j : Fin N) :
     Below (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd τ i j ↔ j < i :=
   ⟨fun ⟨_, _, h₁, h₂⟩ => h₁.trans_le h₂, fun h => ⟨(τ, j.succ), rfl, by simp, by simpa using h⟩⟩
 
 /- English proof (translation)
-Establish `h` using `Fintype.card_product_filter_lt (α := (Fin N)ᵒᵈ)`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, ← Nat.choose_two_right]`. Rewrite `h` using `[Fintype.card_orderDual, Fintype.card_fin]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_lt (N : ℕ) : Nat.card {y : Fin N × Fin N // y.2 < y.1} = N * (N - 1) / 2 := by
   have h := Fintype.card_product_filter_lt (α := (Fin N)ᵒᵈ)
@@ -31,16 +31,16 @@ theorem card_lt (N : ℕ) : Nat.card {y : Fin N × Fin N // y.2 < y.1} = N * (N 
   exact h
 
 /- English proof (translation)
-Rewrite using `[card_sub_prod (fun y : Fin N × Fin N => y.2 < y.1), card_lt, Nat.card_eq_fintype_card, dimFl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_full (ι : Type) [Fintype ι] (N : ℕ) :
     Nat.card {x : ι × Fin N × Fin N // x.2.2 < x.2.1} = dimFl ι N := by
   rw [card_sub_prod (fun y : Fin N × Fin N => y.2 < y.1), card_lt, Nat.card_eq_fintype_card, dimFl]
 
 /- English proof (translation)
-Establish `hj` using `j.is_le`. Establish `e : {y : Fin N × Fin N // (y.2 : ℕ) < j ∧ (j : ℕ) ≤ y.1} ≃ Fin j × Fin (N - j)` using `⟨fun y => (⟨y.1.2, y.2.1⟩, ⟨y.1.1 - j, by have := y.1.1.2; have := y.2.2; omega⟩), fun z => ⟨(⟨z.2 + j, by have := z.2.2; omega⟩, ⟨z.1, by have := z.1.2; omega⟩), z.1.2, by simp⟩, fun y => by`. Use `y.2.2` as an intermediate fact. Apply the tactic sequence `ext <;> simp`. Use the proof step `omega,`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fun z => by ext <;> simp⟩`. Rewrite using `[Nat.card_congr e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_block (N : ℕ) (j : Fin (N + 1)) :
     Nat.card {y : Fin N × Fin N // (y.2 : ℕ) < j ∧ (j : ℕ) ≤ y.1} = j * (N - j) := by
@@ -57,17 +57,17 @@ theorem card_block (N : ℕ) (j : Fin (N + 1)) :
   simp
 
 /- English proof (translation)
-Use `⟨?_, fun j => ?_, fun x h0 hN => ?_⟩` and prove the remaining obligations. Rewrite using `[← card_full]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun _ => below_full _ _ _)`. Rewrite using `[dimGr, ← card_block, ← Nat.card_eq_fintype_card, ← card_sub_prod (fun y : Fin N × Fin N => (y.2 : ℕ) < j ∧ (j : ℕ) ≤ y.1)]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun y => ⟨fun ⟨_, _, h⟩ => h, fun h => ⟨y.1, rfl, h⟩⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← card_full]`. Take `⟨τ, m⟩` from `x`. Simplify using `only at h0 hN`. Set `p : ι × Fin N × Fin N` to `(τ, ⟨m, hN⟩, ⟨m - 1, by omega⟩)`. Set `S : Set (ι × Fin N × Fin N)` to `{z | z.2.2 < z.2.1}`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hp : p ∈ S`. Express the relevant statement in the definitionally equal form `(m : ℕ) - 1 < m`. Use linear arithmetic over natural numbers and integers. Establish `h` using `Set.ncard_diff_singleton_add_one hp`. Use `Eq.trans (congrArg (· + 1) ?_) h` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Nat.card_congr (Equiv.subtypeEquivRight fun z => ?_)` and prove the remaining obligations. Take `⟨σ, i, j⟩` from `z`. Express the relevant statement in the definitionally equal form `_ ↔ (j : ℕ) < i ∧ ¬ (σ, i, j) = p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨σ', k⟩, hk⟩, rfl, h₁, h₂⟩`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at h₁ h₂`. Use `⟨h₁.trans_le h₂, fun e => hk ?_⟩` and prove the remaining obligations. Simplify using `only [p, Prod.mk.injEq, Fin.ext_iff] at e ⊢`. Conclude with `⟨e.1, by omega⟩`. Introduce and unpack `⟨h₁, h₂⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `e : (σ, j.succ) = (τ, m)`. Use `⟨⟨(σ, i.castSucc), fun e' => h₂ ?_⟩, rfl, by simpa using h₁, by simp⟩` and prove the remaining obligations. Simplify using `only [p, Prod.mk.injEq, Fin.ext_iff, Fin.val_succ, Fin.val_castSucc] at e e' ⊢`. Conclude with `⟨e.1, by omega, by omega⟩`. Conclude with `⟨⟨(σ, j.succ), e⟩, rfl, by simp, by simpa using h₁⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_cellVar (ι : Type) [Fintype ι] (N : ℕ) :
     Nat.card (CellVar (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd) = dimFl ι N ∧

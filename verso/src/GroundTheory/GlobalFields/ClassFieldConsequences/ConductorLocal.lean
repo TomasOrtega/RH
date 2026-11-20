@@ -17,7 +17,7 @@ namespace Modulus
 omit [NumberField K] in
 
 /- English proof (translation)
-Consider the cases of `𝔪`. Consider the cases of `𝔫`. Consider the cases of `hi`. Consider the cases of `hr`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem ext' {𝔪 𝔫 : Modulus K} (hi : 𝔪.ideal = 𝔫.ideal) (hr : 𝔪.real = 𝔫.real) : 𝔪 = 𝔫 := by
   cases 𝔪
@@ -31,20 +31,20 @@ instance : Dvd (Modulus K) :=
 
 omit [NumberField K] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem dvd_iff {𝔪 𝔫 : Modulus K} : 𝔪 ∣ 𝔫 ↔ 𝔪.ideal ∣ 𝔫.ideal ∧ 𝔪.real ⊆ 𝔫.real :=
   Iff.rfl
 
 omit [NumberField K] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dvd_rfl, subset_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem dvd_refl' (𝔪 : Modulus K) : 𝔪 ∣ 𝔪 :=
   ⟨dvd_rfl, subset_rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Ideal.finprod_heightOneSpectrum_pow_multiplicity 𝔪.ideal_ne_bot]`. Conclude with `finprod_asIdeal_pow_dvd_iff 𝔪.finite_support_exponent 𝔫.ideal_ne_bot`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_dvd_ideal_iff {𝔪 𝔫 : Modulus K} :
     𝔪.ideal ∣ 𝔫.ideal ↔ ∀ v, 𝔪.exponent v ≤ 𝔫.exponent v := by
@@ -54,21 +54,17 @@ theorem ideal_dvd_ideal_iff {𝔪 𝔫 : Modulus K} :
 end Modulus
 
 /- English proof (translation)
-Use `set I := ∏ᶠ w : HeightOneSpectrum (𝓞 K), w.asIdeal ^ a w`. Establish `hI : I ≠ ⊥` using `finprod_asIdeal_pow_ne_bot a`. Establish `h1 : a v ≤ multiplicity v.asIdeal I` using `(finprod_asIdeal_pow_dvd_iff ha hI).1 dvd_rfl v`. Use `le_antisymm ?_ h1` and prove the remaining obligations. Assume the negation of the conclusion as `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at h2`. Use `set b : HeightOneSpectrum (𝓞 K) → ℕ := fun w ↦ a w + if w = v then 1 else 0`. Establish `hb : (support b).Finite` using `(ha.union (Set.finite_singleton v)).subset fun w hw ↦ by`. Assume the negation of the conclusion as `hw'`. Simplify using `only [Set.mem_union, mem_support, Set.mem_singleton_iff, not_or, not_not] at hw'`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `hw (by simp [b, hw'.1, hw'.2])`. Establish `hdvd : (∏ᶠ w, w.asIdeal ^ b w) ∣ I`. Use `(finprod_asIdeal_pow_dvd_iff hb hI).2 fun w ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [b, if_true]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [b, if_neg hw, add_zero]`. Conclude with `(finprod_asIdeal_pow_dvd_iff ha hI).1 dvd_rfl w`. Establish `hfa : HasFiniteMulSupport fun w : HeightOneSpectrum (𝓞 K) ↦ w.asIdeal ^ a w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[HasFiniteMulSupport, mulSupport_asIdeal_pow]`. Conclude with `ha`. Establish `hfv : HasFiniteMulSupport fun w : HeightOneSpectrum (𝓞 K) ↦ w.asIdeal ^ (if w = v then 1 else 0)`. Use `(Set.finite_singleton v).subset fun w hw ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hw'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw (by simp [Set.mem_singleton_iff.not.1 hw'])`. Establish `hsplit : (∏ᶠ w, w.asIdeal ^ b w) = I * v.asIdeal`. Simplify using `only [b, pow_add]`. Rewrite using `[finprod_mul_distrib hfa hfv]`. Use `congr 1`.
-
-Rewrite using `[finprod_eq_single _ v fun w hw ↦ by simp [hw], if_pos rfl, pow_one]`. Rewrite `hdvd` using `[hsplit]`. Establish `h1' : I * v.asIdeal ∣ I * 1` using `by rwa [mul_one]`. Establish `hv1` using `(mul_dvd_mul_iff_left (show I ≠ 0 from hI)).1 h1'`. Rewrite `hv1` using `[Ideal.dvd_iff_le, Ideal.one_eq_top, top_le_iff]`.
-
-Conclude with `v.isPrime.ne_top hv1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiplicity_finprod_asIdeal_pow_eq {a : HeightOneSpectrum (𝓞 K) → ℕ}
     (ha : (support a).Finite) (v : HeightOneSpectrum (𝓞 K)) :
@@ -117,7 +113,7 @@ variable (L : Type*) [Field L] [NumberField L] [Algebra K L] [IsGalois K L]
   [IsMulCommutative (L ≃ₐ[K] L)]
 
 /- English proof (translation)
-Take `⟨w⟩` from `nonempty_placesOver L v`. Rewrite using `[ker_localSymbol L v w]`. Conclude with `LocalField.isOpen_range_normUnits _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_localSymbol (v : HeightOneSpectrum (𝓞 K)) :
     IsOpen ((localSymbol L v).ker : Set (v.adicCompletion K)ˣ) := by
@@ -126,7 +122,7 @@ theorem isOpen_ker_localSymbol (v : HeightOneSpectrum (𝓞 K)) :
   exact LocalField.isOpen_range_normUnits _ _
 
 /- English proof (translation)
-Take `⟨n, -, hn⟩` from `exists_unitsLevel_subset (K := K) v ((isOpen_ker_localSymbol L v).mem_nhds (localSymbol L v).ker.one_mem)`. Conclude with `⟨n, hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unitsLevel_le_ker_localSymbol (v : HeightOneSpectrum (𝓞 K)) :
     ∃ n : ℕ, unitsLevel v n ≤ (localSymbol L v).ker := by
@@ -138,7 +134,7 @@ def localConductorExponent (v : HeightOneSpectrum (𝓞 K)) : ℕ :=
   sInf {n : ℕ | unitsLevel v n ≤ (localSymbol L v).ker}
 
 /- English proof (translation)
-Establish `hne : {n : ℕ | unitsLevel v n ≤ (localSymbol L v).ker}.Nonempty` using `exists_unitsLevel_le_ker_localSymbol L v`. Conclude with `⟨fun h ↦ Nat.sInf_le h, fun h ↦ (unitsLevel_antitone v h).trans (Nat.sInf_mem hne)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem unitsLevel_le_ker_localSymbol_iff (v : HeightOneSpectrum (𝓞 K)) {n : ℕ} :
     unitsLevel v n ≤ (localSymbol L v).ker ↔ localConductorExponent L v ≤ n := by
@@ -148,7 +144,7 @@ theorem unitsLevel_le_ker_localSymbol_iff (v : HeightOneSpectrum (𝓞 K)) {n : 
     fun h ↦ (unitsLevel_antitone v h).trans (Nat.sInf_mem hne)⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_unitFiltrationUnits_zero_iff_valued, mem_unitsLevel]`. Use `⟨fun h ↦ ⟨h, ?_⟩, fun h ↦ h.1⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, neg_zero, exp_zero]`. Conclude with `Valuation.map_sub_le _ h.le (by simp)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitFiltrationUnits_zero_eq_unitsLevel_zero (v : HeightOneSpectrum (𝓞 K)) :
     LocalField.unitFiltrationUnits (v.adicCompletion K) 0 = unitsLevel v 0 := by
@@ -159,9 +155,9 @@ theorem unitFiltrationUnits_zero_eq_unitsLevel_zero (v : HeightOneSpectrum (𝓞
   exact Valuation.map_sub_le _ h.le (by simp)
 
 /- English proof (translation)
-Rewrite using `[← Nat.le_zero, ← unitsLevel_le_ker_localSymbol_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `ramificationIdx_eq_one_of_units_le_ker_localSymbol v (by rw [unitFiltrationUnits_zero_eq_unitsLevel_zero]; exact h) w`. Introduce `he`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unitsLevel_zero]`. Conclude with `units_le_ker_localSymbol L v ⟨w, inferInstance⟩ he`.
+A detailed English derivation is pending.
 -/
 theorem localConductorExponent_eq_zero_iff (v : HeightOneSpectrum (𝓞 K))
     (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal] :
@@ -176,9 +172,9 @@ theorem localConductorExponent_eq_zero_iff (v : HeightOneSpectrum (𝓞 K))
     exact units_le_ker_localSymbol L v ⟨w, inferInstance⟩ he
 
 /- English proof (translation)
-Establish `h` using `eventually_units_le_ker_localSymbol (K := K) L`. Use `(Filter.eventually_cofinite.1 h).subset fun v hv ↦ ?_` and prove the remaining obligations. Introduce `hu`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← Nat.le_zero, ← unitsLevel_le_ker_localSymbol_iff, unitsLevel_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem finite_support_localConductorExponent :
     (support (localConductorExponent (K := K) L)).Finite := by

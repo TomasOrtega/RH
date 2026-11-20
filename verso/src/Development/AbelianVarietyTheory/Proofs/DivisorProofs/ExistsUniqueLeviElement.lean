@@ -13,14 +13,14 @@ namespace GlobalTheory.PlaneLeviExt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cA_incl (σ : E →ₐ[F] E) (e : E) :
     cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Unfold `incM`. Conclude with `Matrix.map_mul (f := inclR (F := F) (AF F))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma incM_mul {l m n : Type} [Fintype m] (A : Matrix l m E) (B : Matrix m n E) :
     incM F (A * B) = incM F A * incM F B := by
@@ -32,14 +32,14 @@ Both sides reduce to the same expression.
 lemma incM_transpose {m n : Type} (A : Matrix m n E) : incM F Aᵀ = (incM F A)ᵀ := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, cA_incl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma cA_incM (σ : E →ₐ[F] E) {m n : Type} (A : Matrix m n E) :
     (incM F A).map (cA σ) = incM F (A.map σ) := by
   ext i j; simp [incM, cA_incl]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma form_swap (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = -J i j) (a b : Fin n → E) : form σ J a b = -σ (form σ J b a) := by
@@ -49,7 +49,7 @@ lemma form_swap (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : ℕ} (J :
   rw [hJ]; ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma entry (σ : E →ₐ[F] E) {n p q : Type} [Fintype n] (J : Matrix n n E) (A : Matrix n p E) (B : Matrix n q E) (k : p) (l : q) :
     (Aᵀ * J * B.map σ) k l = (fun i => A i k) ⬝ᵥ J *ᵥ fun i => σ (B i l) := by
@@ -57,11 +57,11 @@ lemma entry (σ : E →ₐ[F] E) {n p q : Type} [Fintype n] (J : Matrix n n E) (
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨i, hi⟩` from `Function.ne_iff.mp h`. Establish `hfg : (L.map (LinearMap.proj (R` using `𝓞 E) (φ := fun _ : Fin n => E) i)).FG := hL.fg.map _`. Establish `htop : L.map (LinearMap.proj (R` using `𝓞 E) (φ := fun _ : Fin n => E) i) = ⊤ := by`. Use `eq_top_iff.mpr fun z _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(z / u i) • u, hu _, ?_⟩` and prove the remaining obligations. Simplify using `[div_mul_cancel₀ _ hi]`. Rewrite `hfg` using `[htop]`. Establish `: Module.Finite (𝓞 E) E` using `⟨hfg⟩`. Establish `: Algebra.IsIntegral (𝓞 E) E` using `Algebra.IsIntegral.of_finite _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `NumberField.RingOfIntegers.not_isField E (isField_of_isIntegral_of_isField (FaithfulSMul.algebraMap_injective (𝓞 E) E) (Field.toIsField E))`.
+A detailed English derivation is pending.
 -/
 lemma not_line {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.IsLattice E) (u : Fin n → E)
     (hu : ∀ a : E, a • u ∈ L) : u = 0 := by
@@ -88,19 +88,17 @@ def frame (H' : Plane E d d₁) : Matrix (Fin d) (Fin d₁ ⊕ Fin 2) E := Matri
 def hyp : Matrix (Fin 2) (Fin 2) E := !![0, 1; -1, 0]
 
 /- English proof (translation)
-Establish `hcol : ∀ k, (fun i => H'.ι i k) = H'.ι *ᵥ Pi.single k 1` using `fun k => by`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `ho : ∀ l, form σ W.J (H'.ι.col l) H'.x = 0 ∧ form σ W.J (H'.ι.col l) H'.y = 0` using `fun l => by`. Establish `hc : H'.ι.col l = H'.ι *ᵥ Pi.single l 1` using `hcol l`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Conclude with `hA.orth _`. Establish `hxy : form σ W.J H'.y H'.x = -1`. Rewrite using `[form_swap σ hσ W.J hW.skew, hA.xy, map_one]`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[entry]`. Express the relevant statement in the definitionally equal form `form σ W.J _ _ = _`. Apply the tactic sequence `rcases a with k | k <;> rcases b with l | l`. Rewrite using `[← hA.gram, Matrix.fromBlocks_apply₁₁, entry]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `fin_cases l`. Simplify using `only [frame, twoCols, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, Matrix.of_apply]`. Conclude with `(ho k).1`. Simplify using `only [frame, twoCols, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, Matrix.of_apply]`. Conclude with `(ho k).2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `fin_cases k`. Simplify using `[frame, twoCols, hcol]`. Rewrite using `[form_swap σ hσ W.J hW.skew]`. Simplify using `[(ho l).1]`. Simplify using `[frame, twoCols, hcol]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[form_swap σ hσ W.J hW.skew]`. Simplify using `[(ho l).2]`. Apply the tactic sequence `fin_cases k <;> fin_cases l`. Simplify `hA.xx` using `[frame, twoCols, hyp]`. Simplify `hA.xy` using `[frame, twoCols, hyp]`.
-
-Simplify `hxy` using `[frame, twoCols, hyp]`. Simplify `hA.yy` using `[frame, twoCols, hyp]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma gram_frame (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {W : Spc F E d} {W₁ : Spc F E d₁}
     {H' : Plane E d d₁} {i₀ i₁ r' s' : ℕ} (hW : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
@@ -132,15 +130,13 @@ lemma gram_frame (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E
     · simpa [frame, twoCols, hyp] using hA.yy
 
 /- English proof (translation)
-Establish `hg` using `gram_frame σ hσ B hW hA`. Establish `h0 : v ᵥ* Matrix.fromBlocks W₁.J 0 0 hyp = 0`. Rewrite using `[← hg, Matrix.mul_assoc, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hv, Matrix.zero_vecMul]`. Establish `h1 : v (Sum.inr 0) = 0 ∧ v (Sum.inr 1) = 0`. Establish `a` using `congrFun h0 (Sum.inr 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `congrFun h0 (Sum.inr 1)`. Simplify using `[Matrix.vecMul_fromBlocks, hyp, Matrix.vecMul, dotProduct, Fin.sum_univ_two] at a b`. Conclude with `⟨b, a⟩`. Establish `h2 : (fun k : Fin 2 => v (Sum.inr k)) = 0`. Use extensionality with `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `fin_cases k`. Conclude with `h1.1`. Conclude with `h1.2`. Establish `hu : H'.ι *ᵥ (fun k => v (Sum.inl k)) = 0`. Establish `: frame H' *ᵥ v = H'.ι *ᵥ (fun k => v (Sum.inl k)) + twoCols H' *ᵥ (fun k => v (Sum.inr k))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[frame, Matrix.fromCols_mulVec]`. Both sides reduce to the same expression. Rewrite `hv` using `[this, h2, Matrix.mulVec_zero, add_zero]`. Conclude with `hv`. Establish `hu0` using `not_line W₁.L hW₁.lat (fun k => v (Sum.inl k)) fun a => (hA.low _).mpr (by rw [Matrix.mulVec_smul, hu, smul_zero]; exact zero_mem _)`.
-
-Use extensionality with `(k | k)`. Conclude with `congrFun hu0 k`. Conclude with `congrFun h2 k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma frame_mulVec_eq_zero (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {W : Spc F E d}
     {W₁ : Spc F E d₁} {H' : Plane E d d₁} {i₀ i₁ r' s' r₁ s₁ : ℕ} (hW : W.IsSkew σ B r' s')
@@ -177,9 +173,9 @@ def coframe (hd : d = d₁ + 2) (H' : Plane E d d₁) : Matrix (Fin d₁ ⊕ Fin
   (sq hd H')⁻¹.submatrix (num hd) id
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_injective_iff_isUnit]`. Introduce `a b hab`. Establish `h0 : sq hA.rank H' *ᵥ (a - b) = 0` using `by rw [Matrix.mulVec_sub, hab, sub_self]`. Rewrite `h0` using `[sq, Matrix.submatrix_mulVec_equiv]`. Establish `h1` using `frame_mulVec_eq_zero σ hσ B hW hW₁ hA _ (by simpa using h0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : a - b = 0`. Use extensionality with `i`. Use `congrFun h1 ((num hA.rank).symm i)` as an intermediate fact. Simplify using `using this`. Conclude with `sub_eq_zero.mp h2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma isUnit_sq (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {W : Spc F E d}
     {W₁ : Spc F E d₁} {H' : Plane E d d₁} {i₀ i₁ r' s' r₁ s₁ : ℕ} (hW : W.IsSkew σ B r' s')
@@ -196,13 +192,13 @@ lemma isUnit_sq (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E)
   exact sub_eq_zero.mp h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[sq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma frame_eq (hd : d = d₁ + 2) (H' : Plane E d d₁) : frame H' = (sq hd H').submatrix id (num hd) := by
   ext i j; simp [sq]
 
 /- English proof (translation)
-Rewrite using `[frame_eq hd, coframe, Matrix.submatrix_mul_equiv, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp hu)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma frame_mul_coframe (hd : d = d₁ + 2) (H' : Plane E d d₁) (hu : IsUnit (sq hd H')) :
     frame H' * coframe hd H' = 1 := by
@@ -210,7 +206,7 @@ lemma frame_mul_coframe (hd : d = d₁ + 2) (H' : Plane E d d₁) (hu : IsUnit (
   simp
 
 /- English proof (translation)
-Rewrite using `[frame_eq hd, coframe, show (sq hd H').submatrix id (num hd) = (sq hd H').submatrix (Equiv.refl _) (num hd) from rfl, show (sq hd H')⁻¹.submatrix (num hd) id = (sq hd H')⁻¹.submatrix (num hd) (Equiv.refl _) from rfl, Matrix.submatrix_mul_equiv, Matrix.nonsing_inv_mul _ ((Matrix.i …`. Conclude with `Matrix.submatrix_one_equiv _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coframe_mul_frame (hd : d = d₁ + 2) (H' : Plane E d d₁) (hu : IsUnit (sq hd H')) :
     coframe hd H' * frame H' = 1 := by
@@ -228,13 +224,13 @@ def blk (g : Matrix (Fin d₁) (Fin d₁) (AE F E)) : Matrix (Fin d₁ ⊕ Fin 2
   Matrix.fromBlocks g 0 0 1
 
 /- English proof (translation)
-Simplify using `[blk, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma blk_mul (g g' : Matrix (Fin d₁) (Fin d₁) (AE F E)) : blk g * blk g' = blk (g * g') := by
   simp [blk, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-The claim follows from `Matrix.fromBlocks_one`.
+A detailed English derivation is pending.
 -/
 lemma blk_one : blk (1 : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1 := Matrix.fromBlocks_one
 
@@ -245,25 +241,25 @@ def leviM (hd : d = d₁ + 2) (H' : Plane E d d₁) (g : Matrix (Fin d₁) (Fin 
 variable {hd : d = d₁ + 2} {H' : Plane E d d₁}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 lemma incM_one {n : Type} [Fintype n] [DecidableEq n] : incM F (1 : Matrix n n E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[← incM_mul, frame_mul_coframe hd H' hu, incM_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma S_T (hu : IsUnit (sq hd H')) : incM F (frame H') * incM F (coframe hd H') = 1 := by
   rw [← incM_mul, frame_mul_coframe hd H' hu, incM_one]
 
 /- English proof (translation)
-Rewrite using `[← incM_mul, coframe_mul_frame hd H' hu, incM_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma T_S (hu : IsUnit (sq hd H')) : incM F (coframe hd H') * incM F (frame H') = 1 := by
   rw [← incM_mul, coframe_mul_frame hd H' hu, incM_one]
 
 /- English proof (translation)
-Simplify using `only [leviM, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (coframe hd H')), T_S hu, Matrix.one_mul, ← Matrix.mul_assoc (blk g), blk_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma leviM_mul (hu : IsUnit (sq hd H')) (g g' : Matrix (Fin d₁) (Fin d₁) (AE F E)) :
     leviM (F := F) hd H' g * leviM hd H' g' = leviM hd H' (g * g') := by
@@ -271,30 +267,30 @@ lemma leviM_mul (hu : IsUnit (sq hd H')) (g g' : Matrix (Fin d₁) (Fin d₁) (A
   rw [← Matrix.mul_assoc (incM F (coframe hd H')), T_S hu, Matrix.one_mul, ← Matrix.mul_assoc (blk g), blk_mul]
 
 /- English proof (translation)
-Rewrite using `[leviM, blk_one, Matrix.mul_one, S_T hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma leviM_one (hu : IsUnit (sq hd H')) : leviM (F := F) hd H' 1 = 1 := by
   rw [leviM, blk_one, Matrix.mul_one, S_T hu]
 
 /- English proof (translation)
-Rewrite using `[leviM, Matrix.mul_assoc, T_S hu, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma leviM_frame (hu : IsUnit (sq hd H')) (g : Matrix (Fin d₁) (Fin d₁) (AE F E)) :
     leviM hd H' g * incM F (frame H') = incM F (frame H') * blk g := by
   rw [leviM, Matrix.mul_assoc, T_S hu, Matrix.mul_one]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i (j | j) <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma incM_frame : incM F (frame H') = Matrix.fromCols (incM F H'.ι) (incM F (twoCols H')) := by
   ext i (j | j) <;> rfl
 
 /- English proof (translation)
-Rewrite using `[incM_frame, Matrix.mul_fromCols, blk, Matrix.fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.mul_zero, add_zero, Matrix.mul_one, zero_add]`. Rewrite using `[Matrix.fromCols_inj.eq_iff]`. Establish `: m * incM F (twoCols H') = incM F (twoCols H') ↔ (m *ᵥ incV F H'.x = incV F H'.x ∧ m *ᵥ incV F H'.y = incV F H'.y)`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `⟨funext fun i => congrFun (congrFun h i) 0, funext fun i => congrFun (congrFun h i) 1⟩`. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `i k`. Use `fin_cases k`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun h1 i`. Conclude with `congrFun h2 i`. Rewrite using `[this, and_comm]`.
+A detailed English derivation is pending.
 -/
 lemma levi_cols (m : Matrix (Fin d) (Fin d) (AE F E)) (g : Matrix (Fin d₁) (Fin d₁) (AE F E)) :
     m * incM F (frame H') = incM F (frame H') * blk g ↔
@@ -315,13 +311,13 @@ lemma levi_cols (m : Matrix (Fin d) (Fin d) (AE F E)) (g : Matrix (Fin d₁) (Fi
   rw [this, and_comm]
 
 /- English proof (translation)
-Establish `hmap : ∀ {a b c : Type} [Fintype b] (X : Matrix a b (AE F E)) (Y : Matrix b c (AE F E)), (X * Y).map (cA σ) = X.map (cA σ) * Y.map (cA σ)` using `fun X Y => Matrix.map_mul (f := (cA σ).toRingHom)`. Establish `hG : (incM F (frame H'))ᵀ * incM F W.J * (incM F (frame H')).map (cA σ) = incM F (Matrix.fromBlocks W₁.J 0 0 hyp)`. Rewrite using `[← gram_frame σ hσ B hW hA, incM_mul, incM_mul, incM_transpose, cA_incM]`. Establish `hJ : incM F W.J = (incM F (coframe hd H'))ᵀ * incM F (Matrix.fromBlocks W₁.J 0 0 hyp) * (incM F (coframe hd H')).map (cA σ)`. Establish `h1 : (incM F (frame H') * incM F (coframe hd H'))ᵀ * incM F W.J * (incM F (frame H') * incM F (coframe hd H')).map (cA σ) = incM F W.J`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[S_T hu, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, hmap]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hG]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB : (blk g)ᵀ * incM F (Matrix.fromBlocks W₁.J 0 0 hyp) * (blk g).map (cA σ) = incM F (Matrix.fromBlocks W₁.J 0 0 hyp)`. Establish `e1 : incM F (Matrix.fromBlocks W₁.J 0 0 hyp) = Matrix.fromBlocks (incM F W₁.J) 0 0 (incM F hyp)`. Simplify using `[incM, Matrix.fromBlocks_map]`. Establish `e2 : (blk g).map (cA σ) = Matrix.fromBlocks (g.map (cA σ)) 0 0 1`. Rewrite using `[blk, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, blk, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [leviM, Matrix.transpose_mul, hmap, Matrix.mul_assoc]`. Use `_ = incM F W.J := by rw [hG, hB, ← hJ]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma leviM_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {W : Spc F E d}
     {W₁ : Spc F E d₁} {i₀ i₁ r' s' : ℕ} (hW : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i₁)
@@ -362,13 +358,13 @@ lemma leviM_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base 
 end Adelic
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r' s' r₁ s₁ hσ hW hW₁ hA h₁`. Establish `hu` using `isUnit_sq σ hσ B hW hW₁ hA`. Establish `hinv : mat h₁ * mat h₁⁻¹ = 1` using `by show ((h₁.1 * (h₁⁻¹).1 : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1`. Rewrite using `[← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hinv' : mat h₁⁻¹ * mat h₁ = 1` using `by show (((h₁⁻¹).1 * h₁.1 : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1`. Rewrite using `[← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Set `mU : GL (Fin d) (AE F E)` to `⟨leviM hA.rank H' (mat h₁), leviM hA.rank H' (mat h₁⁻¹), by rw [leviM_mul hu, hinv, leviM_one hu], by rw [leviM_mul hu, hinv', leviM_one hu]⟩`. Establish `hmem : mU ∈ UG (cA σ) (incM F W.J)` using `leviM_unitary σ hσ B hW hA hu (mat h₁) h₁.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc` using `(levi_cols (leviM hA.rank H' (mat h₁)) (mat h₁)).mp (leviM_frame hu (mat h₁))`. Use `⟨⟨mU, hmem⟩, ⟨by simp only [Units.val_one, one_smul]; exact hc.1.1, by simp only [inv_one, Units.val_one, map_one, one_smul]; exact hc.1.2, hc.2⟩, fun m' hm' => ?_⟩` and prove the remaining obligations. Establish `h1 : mat m' * incM F (frame H') = incM F (frame H') * blk (mat h₁)` using `(levi_cols _ _).mpr ⟨⟨by simpa using hm'.1, by simpa using hm'.2.1⟩, hm'.2.2⟩`. Establish `h2 : mat m' = leviM hA.rank H' (mat h₁)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Subtype.ext (Units.ext h2)`.
+A detailed English derivation is pending.
 -/
 theorem levi_existsUnique : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁)

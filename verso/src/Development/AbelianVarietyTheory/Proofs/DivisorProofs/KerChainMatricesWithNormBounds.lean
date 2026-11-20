@@ -21,7 +21,7 @@ def bund (Dc : DefCols Df) (u : Dc.Mem) (Q : KerChain K) (nF : ℕ → ℕ) (XF 
 omit [NumberField K] [StarRing K] in
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem normAt_of_eq (p : Σ n : ℕ, (InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)) (n : ℕ)
     (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hp : p = ⟨n, X⟩) (hc : n = p.1) (v : InfinitePlace K) (x : Fin p.1 → K) :
@@ -31,7 +31,7 @@ theorem normAt_of_eq (p : Σ n : ℕ, (InfinitePlace K → Matrix (Fin n) (Fin n
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Substitute `hp` using the available equality. Conclude with `hX`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem unit_of_eq (p : Σ n : ℕ, (InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)) (n : ℕ)
     (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hp : p = ⟨n, X⟩) (v : InfinitePlace K) (hX : IsUnit (X v).det) :
@@ -46,13 +46,13 @@ variable (Dc : DefCols Df) (u : Dc.Mem) (Q : KerChain K) (f0 : (Fin (Dc.a u) →
   (nS : ℕ) (eS : (Fin nS → K) ≃ₗ[K] Q.S₁.EqFun) (XS : InfinitePlace K → Matrix (Fin nS) (Fin nS) ℂ)
 
 /- English proof (translation)
-Simplify using `[bund, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bund_succ_le (k : ℕ) (h : k + 1 ≤ Q.n) : bund Dc u Q nF XF nS XS (k + 1) = ⟨nF (k + 1), XF (k + 1)⟩ := by
   simp [bund, h]
 
 /- English proof (translation)
-Simplify using `[bund, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bund_succ_gt (k : ℕ) (h : ¬ k + 1 ≤ Q.n) : bund Dc u Q nF XF nS XS (k + 1) = ⟨nS, XS⟩ := by
   simp [bund, h]
@@ -87,7 +87,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df 
   (nS : ℕ) (eS : (Fin nS → K) ≃ₗ[K] Q.S₁.EqFun) (XS : InfinitePlace K → Matrix (Fin nS) (Fin nS) ℂ)
 
 /- English proof (translation)
-Use `show coFN Dc u Q f0 nF eF XF nS XS (j + 1) h ((KjN Dc u Q f0 nF eF XF nS eS XS (Fin.castSucc ⟨j, h⟩)).mulVec x) = _`. Rewrite using `[KjN, Fin.lastCases_castSucc, LinearMap.toMatrix'_mulVec]`. Simplify using `[coFN]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerF_N (j : ℕ) (h : j < Q.n) (x : Fin (bund Dc u Q nF XF nS XS j).1 → K) :
     coFN Dc u Q f0 nF eF XF nS XS (j + 1) h ((KjN Dc u Q f0 nF eF XF nS eS XS ⟨j, by omega⟩).mulVec x) =
@@ -97,7 +97,7 @@ theorem kerF_N (j : ℕ) (h : j < Q.n) (x : Fin (bund Dc u Q nF XF nS XS j).1 �
   simp [coFN]
 
 /- English proof (translation)
-Use `show eL Dc u Q nF XF nS eS XS Q.n (by omega) ((KjN Dc u Q f0 nF eF XF nS eS XS (Fin.last Q.n)).mulVec x) = _`. Rewrite using `[KjN, Fin.lastCases_last, LinearMap.toMatrix'_mulVec]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerC_N (x : Fin (bund Dc u Q nF XF nS XS Q.n).1 → K) :
     eL Dc u Q nF XF nS eS XS Q.n (by omega) ((KjN Dc u Q f0 nF eF XF nS eS XS ⟨Q.n, by omega⟩).mulVec x) =
@@ -108,7 +108,7 @@ theorem kerC_N (x : Fin (bund Dc u Q nF XF nS XS Q.n).1 → K) :
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Simplify using `[Formalism.DivisionValues.chainMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chainMat_zero {m : ℕ} {c : Fin (m + 1) → ℕ} (Kj : ∀ j : Fin m, Matrix (Fin (c j.succ)) (Fin (c j.castSucc)) K) :
     Formalism.DivisionValues.chainMat Kj 0 = 1 := by
@@ -116,7 +116,7 @@ theorem chainMat_zero {m : ℕ} {c : Fin (m + 1) → ℕ} (Kj : ∀ j : Fin m, M
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Simplify using `[Formalism.DivisionValues.chainMat, Fin.induction_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chainMat_succ {m : ℕ} {c : Fin (m + 1) → ℕ} (Kj : ∀ j : Fin m, Matrix (Fin (c j.succ)) (Fin (c j.castSucc)) K)
     (j : Fin m) : Formalism.DivisionValues.chainMat Kj j.succ = Kj j * Formalism.DivisionValues.chainMat Kj j.castSucc := by
@@ -125,7 +125,7 @@ theorem chainMat_succ {m : ℕ} {c : Fin (m + 1) → ℕ} (Kj : ∀ j : Fin m, M
 abbrev cF : Fin (Q.n + 2) → ℕ := fun j => (bund Dc u Q nF XF nS XS j.val).1
 
 /- English proof (translation)
-The claim follows from `| 0, h, x => by show coFN Dc u Q f0 nF eF XF nS XS 0 h ((Formalism.DivisionValues.chainMat (c := cF Dc u Q nF XF nS XS) (KjN Dc u Q f0 nF eF XF nS eS XS) 0).mulVec x) = coFN Dc u Q f0 nF eF XF nS XS 0 (Nat.zero_le _) x rw [chainMat_zero, Matrix.one_mulVec] | i + 1, h, x => by hav …`.
+A detailed English derivation is pending.
 -/
 theorem chain_le_N : ∀ i (h : i ≤ Q.n) (x : Fin (cF Dc u Q nF XF nS XS 0) → K),
     coFN Dc u Q f0 nF eF XF nS XS i h
@@ -144,7 +144,7 @@ theorem chain_le_N : ∀ i (h : i ≤ Q.n) (x : Fin (cF Dc u Q nF XF nS XS 0) �
     exact kerF_N Dc u Q f0 nF eF XF nS eS XS i h _
 
 /- English proof (translation)
-Establish `hi : Q.n < Q.n + 1` using `by omega`. Use `show eL Dc u Q nF XF nS eS XS Q.n (by omega) ((Formalism.DivisionValues.chainMat (c := cF Dc u Q nF XF nS XS) (KjN Dc u Q f0 nF eF XF nS eS XS) (Fin.succ ⟨Q.n, hi⟩)).mulVec x) = Q.cpl (Q.kk.colTo Q.hF Q.n (coFN Dc u Q f0 nF eF XF nS XS 0 (Nat.zero_le _) x))`. Rewrite using `[chainMat_succ, ← Matrix.mulVec_mulVec, ← chain_le_N Dc u Q f0 nF eF XF nS eS XS Q.n le_rfl x]`. Conclude with `kerC_N Dc u Q f0 nF eF XF nS eS XS _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_N (x : Fin (cF Dc u Q nF XF nS XS 0) → K) :
     eL Dc u Q nF XF nS eS XS Q.n (by omega)
@@ -167,7 +167,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df 
   (nS : ℕ) (eS : (Fin nS → K) ≃ₗ[K] Q.S₁.EqFun) (XS : InfinitePlace K → Matrix (Fin nS) (Fin nS) ℂ)
 
 /- English proof (translation)
-The claim follows from `| 0, v => h1 v | k + 1, v => by by_cases h : k + 1 ≤ Q.n · exact unit_of_eq _ _ _ (bund_succ_le Dc u Q nF XF nS XS k h) v (hXu _ v) · exact unit_of_eq _ _ _ (bund_succ_gt Dc u Q nF XF nS XS k h) v (hSu v)`.
+A detailed English derivation is pending.
 -/
 theorem unit_N (h1 : ∀ v, IsUnit (Dc.Xc u v).det) (hXu : ∀ i v, IsUnit (XF i v).det) (hSu : ∀ v, IsUnit (XS v).det) :
     ∀ k v, IsUnit ((bund Dc u Q nF XF nS XS k).2 v).det
@@ -178,7 +178,7 @@ theorem unit_N (h1 : ∀ v, IsUnit (Dc.Xc u v).det) (hXu : ∀ i v, IsUnit (XF i
     · exact unit_of_eq _ _ _ (bund_succ_gt Dc u Q nF XF nS XS k h) v (hSu v)
 
 /- English proof (translation)
-The claim follows from `| 0, _, v, x => h2 v x | k + 1, h, v, x => by rw [normAt_of_eq _ _ _ (bund_succ_le Dc u Q nF XF nS XS k h) (congrArg Sigma.fst (bund_succ_le Dc u Q nF XF nS XS k h)).symm] exact hXi (k + 1) v _`.
+A detailed English derivation is pending.
 -/
 theorem metF_N (h2 : ∀ v x, ((Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) v x ^ 2 : ℝ) : ℂ) =
       famIpAt (Q.F 0) (Q.hF 0) v (f0 x) (f0 x))
@@ -193,7 +193,7 @@ theorem metF_N (h2 : ∀ v x, ((Formalism.HermitianLatticesTheory.normAt (Pi.bas
     exact hXi (k + 1) v _
 
 /- English proof (translation)
-Rewrite using `[normAt_of_eq _ _ _ (bund_succ_gt Dc u Q nF XF nS XS k h) (congrArg Sigma.fst (bund_succ_gt Dc u Q nF XF nS XS k h)).symm]`. Conclude with `hSi v _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem metL_N (hSi : ∀ v x, ((Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin nS)) XS v x ^ 2 : ℝ) : ℂ) = Q.S₁.ipAt Q.hS₁ v (eS x) (eS x))
     (k : ℕ) (h : ¬ k + 1 ≤ Q.n) (v : InfinitePlace K) (x : Fin (bund Dc u Q nF XF nS XS (k + 1)).1 → K) :
@@ -254,7 +254,7 @@ end GlobalTheory.DefRowsChain
 namespace GlobalTheory.DefRowsChain
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Rewrite `hs` using `[Complex.ofReal_re, Complex.ofReal_re]`. Conclude with `hs`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_le_of (a b s : ℝ) (za zb : ℂ) (ha : ((a ^ 2 : ℝ) : ℂ) = za) (hb : ((b ^ 2 : ℝ) : ℂ) = zb)
     (hs : za.re ≤ Real.exp s * zb.re) : a ^ 2 ≤ Real.exp s * b ^ 2 := by
@@ -267,21 +267,19 @@ def tOf {K : Type} [Field K] [NumberField K] [StarRing K] {J Pl : Type} [Fintype
   ∑ l ∈ Finset.univ.filter (fun l => (⟨min (no l) n, by omega⟩ : Fin (n + 1)) = j), hn.sz l v
 
 /- English proof (translation)
-Introduce `K _ _ _ _ Bs Df Dc u Q f0 g Pl _ _ R hn no X0 h1 h2 h3 h4 h5 h6 h7 h8`. Use `choose nF eF XF hXu hXi using h3`. Take `⟨nS, eS, XS, hSu, hSi⟩` from `h4`. Set `ch` to `chainOf Dc u Q f0 g no nF eF XF nS eS XS h1 hXu hSu h5`. Set `T` to `tieOf Dc u Q f0 g no nF eF XF nS eS XS h1 hXu hSu h5 h2 hXi hSi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : ∀ (j : Fin (Q.n + 1)) v (x : Fin (ch.c j.castSucc) → K), Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (ch.c j.succ))) (ch.X j.succ) v ((ch.Kj j).mulVec x) ^ 2 ≤ Real.exp (tOf hn Q.n no j v) * Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (ch.c …`. Introduce `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Introduce `v x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : tOf hn Q.n no (Fin.last Q.n) v = ∑ l ∈ Finset.univ.filter (fun l => Q.n ≤ no l), hn.sz l v`. Use `Finset.sum_congr (Finset.filter_congr fun l _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Simplify using `only [Fin.ext_iff, Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hs]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sq_le_of _ _ _ _ _ (T.cpl_norm v x) (T.metF Q.n le_rfl v x) ?_` and prove the remaining obligations. Conclude with `h7.2 v _`. Consider the case `cast i`. Introduce `v x`. Establish `hs : tOf hn Q.n no (Fin.castSucc i) v = ∑ l ∈ Finset.univ.filter (fun l => no l = i.val), hn.sz l v`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr (Finset.filter_congr fun l _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Simplify using `only [Fin.ext_iff, Fin.val_castSucc]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hs]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `sq_le_of _ _ _ _ _ (T.step_norm i.val i.isLt v x) (T.metF i.val i.isLt.le v x) ?_` and prove the remaining obligations. Conclude with `h7.1 i.val i.isLt v _`. Take `⟨cb, hcb⟩` from `GlobalTheory.DefRowsCB.exists_cbData K (Q.n + 1) ch.c ch.X ch.Kj (tOf hn Q.n no) ch.X_unit hb`. Use `⟨ch, T, fun _ => rfl, X0, h6, hn, fun v => ?_, cb, hcb⟩` and prove the remaining obligations. Use `GlobalTheory.T.opNormAt_pairing_sq_le_of_value_bound K _ _ (ch.X (Fin.last ch.mm)) X0 ch.PtL v hn.hPn (ch.X_unit _ v) (h6 v).1 fun y F => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `T.metL v y`. Establish `e : Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (ch.c (Fin.last ch.mm)))) (ch.X (Fin.last ch.mm)) v y ^ 2 = (Q.S₁.ipAt Q.hS₁ v (T.coL y) (T.coL y)).re`. Use `congrArg Complex.re hm` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_re]`. Conclude with `this`.
-
-Rewrite using `[e]`. Conclude with `h8 v (T.coL y) F`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowsBody_of_framed : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (Bs : DefBase K) (Df : DefSide Bs) (Dc : DefCols Df) (u : Dc.Mem) (Q : KerChain K) (f0 : (Fin (Dc.a u) → K) →ₗ[K] (Q.F 0).Forms) (g : Q.S₁.EqFun →ₗ[K] Module.Dual K (Fin (Df.nV Bs.μ0) → K)) (Pl : Type) [Fintype Pl] [DecidableEq Pl] (R : RecNums Bs.J Pl) (hn : HtNums R (InfinitePlace K)) (no : Bs.J → ℕ) (X0 : InfinitePlace K → Matrix (Fin (Df.nV Bs.μ0)) (Fin (Df.nV Bs.μ0)) ℂ), (∀ v, IsUnit (Dc.Xc u v).det) → (∀ v x, ((Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) v x ^ 2 : ℝ) : ℂ) = famIpAt (Q.F 0) (Q.hF 0) v (f0 x) (f0 x)) → (∀ i, FamFramed (Q.F i) (Q.hF i)) → DatFramed Q.S₁ Q.hS₁ → (∀ φ F, Dc.Pt u Bs.μ0 φ F = g (Q.col (f0 φ)) F) → IsFrames Df X0 → FactorBounds Q no hn.sz → (∀ (v : InfinitePlace K) (ψ : Q.S₁.EqFun) F, v (g ψ F) ^ 2 ≤ Real.exp hn.hPn * (Q.S₁.ipAt Q.hS₁ v ψ ψ).re * Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (Df.nV Bs.μ0))) X0 v F ^ 2) → RowsBody Dc u Q f0 R := by
   intro K _ _ _ _ Bs Df Dc u Q f0 g Pl _ _ R hn no X0 h1 h2 h3 h4 h5 h6 h7 h8

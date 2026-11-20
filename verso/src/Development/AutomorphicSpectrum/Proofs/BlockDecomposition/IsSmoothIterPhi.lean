@@ -31,13 +31,13 @@ section Proofs
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hs hi` and use `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).1 (Fin n) V π hs hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem irrAdm : GlobalTheory.Published.IrreducibleAdmissibleGL := fun k _ _ _ _ n V _ _ π hs hi =>
   (GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).1 (Fin n) V π hs hi
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.nontrivial_iff, Submodule.Quotient.nontrivial_iff, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twJ_congr {G G' V : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V}
     {π' : Representation ℂ G' V} {N : Subgroup G} {N' : Subgroup G'} {θ : N →* ℂˣ} {θ' : N' →* ℂˣ}
@@ -46,15 +46,15 @@ theorem twJ_congr {G G' V : Type} [Group G] [Group G'] [AddCommGroup V] [Module 
   rw [Submodule.Quotient.nontrivial_iff, Submodule.Quotient.nontrivial_iff, h]
 
 /- English proof (translation)
-Establish `h0 : ¬ Nontrivial (TwJacquet π (derUnip k N 0) (derChar k ψ N 0))` using `fun h => hg ((twJ_congr (GlobalTheory.T.derivative_zero_whittaker_kernel k ψ N V π)).1 h)`. Break down `N with _ | m` into its components or cases. It suffices to derive a contradiction. Use `hg ?_` and prove the remaining obligations. Use `show Nontrivial (V ⧸ twKer π (unipB k (Fin 0)) (whitChar ψ 0))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : twKer π (unipB k (Fin 0)) (whitChar ψ 0) = ⊥`. Unfold `twKer`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `w ⟨u, v, rfl⟩`. Establish `hu : (u : GL (Fin 0) k) = 1` using `Subsingleton.elim _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : u = 1` using `Subtype.ext hu`. Substitute `hu'` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hb]`. Conclude with `(Submodule.quotEquivOfEqBot ⊥ rfl).toEquiv.nontrivial`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∃ n, n ≤ m ∧ Nontrivial (TwJacquet π (derUnip k (m + 1) n) (derChar k ψ (m + 1) n))`. Take `⟨n, hnm, h⟩` from `GlobalTheory.T.exists_nontrivial_derivative k ψ hc h1 m V (resM k π).ρ (isSmooth_comp hs _ continuous_subtype_val) hn`. Conclude with `⟨n, hnm, (twJ_congr (GlobalTheory.T.restriction_mirabolic_twisted_kernel k ψ m n V π)).1 h⟩`. Establish `hmin` using `fun (l : ℕ) (hl : l < Nat.find hex) => Nat.find_min hex hl`. Take `⟨hle, hnt⟩` from `Nat.find_spec hex`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Nat.find hex, Nat.pos_of_ne_zero fun e => h0 (e ▸ hnt), by omega, hnt, fun l hl => ?_⟩` and prove the remaining obligations. Use `hmin l hl` as an intermediate fact. Rewrite `this` using `[not_and]`. Conclude with `not_nontrivial_iff_subsingleton.1 (this (by omega))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_highest (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (N : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hn : Nontrivial V)
@@ -89,7 +89,7 @@ theorem exists_highest (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠
   exact not_nontrivial_iff_subsingleton.1 (this (by omega))
 
 /- English proof (translation)
-The claim follows from `| 0, _, h => h | j + 1, τ, h => isSmooth_iterPhi ψ n j (MRep.phiM k ψ τ) (GlobalTheory.T.smooth_phi_minus k ψ _ _ τ.ρ h)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_iterPhi (ψ : AddChar k Circle) (n : ℕ) : ∀ (j : ℕ) (τ : MRep k (n + j)), IsSmooth τ.ρ →
     IsSmooth (iterPhi k ψ j τ).ρ
@@ -97,20 +97,20 @@ theorem isSmooth_iterPhi (ψ : AddChar k Circle) (n : ℕ) : ∀ (j : ℕ) (τ :
   | j + 1, τ, h => isSmooth_iterPhi ψ n j (MRep.phiM k ψ τ) (GlobalTheory.T.smooth_phi_minus k ψ _ _ τ.ρ h)
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp h _ continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_resM {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin (n + 1)) k) V}
     (h : IsSmooth π) : IsSmooth (resM k π).ρ := isSmooth_comp h _ continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.smooth_psi_minus k _ _ _ (isSmooth_iterPhi ψ n j _ (isSmooth_resM h))`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_deriv (ψ : AddChar k Circle) {n : ℕ} (j : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin (n + j + 1)) k) V} (h : IsSmooth π) : IsSmooth (GlobalTheory.BZMir.deriv k ψ j π) :=
   GlobalTheory.T.smooth_psi_minus k _ _ _ (isSmooth_iterPhi ψ n j _ (isSmooth_resM h))
 
 /- English proof (translation)
-The claim follows from `| 0, _ => ⟨LinearEquiv.refl _ _⟩ | j + 1, τ => by obtain ⟨e₁⟩ := iterPhi_derUnip ψ n₂ n' hn j (MRep.phiM k ψ τ) obtain ⟨e₂⟩ := GlobalTheory.T.twisted_jacquet_phi_minus_equiv k ψ (n' + j) n₂ (by omega) _ τ.ρ exact ⟨e₁.trans e₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem iterPhi_derUnip (ψ : AddChar k Circle) (n₂ n' : ℕ) (hn : n₂ ≤ n') : ∀ (j : ℕ) (τ : MRep k (n' + j)),
     Nonempty (TwJacquet (iterPhi k ψ j τ).ρ (derUnipM k n' n₂) (derCharM k ψ n' n₂) ≃ₗ[ℂ]
@@ -122,9 +122,9 @@ theorem iterPhi_derUnip (ψ : AddChar k Circle) (n₂ n' : ℕ) (hn : n₂ ≤ n
     exact ⟨e₁.trans e₂⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Establish `hnt : Nontrivial (TwJacquet (iterPhi k ψ j (resM k π)).ρ (MirUin k (n + 1)) (mirChar k ψ n))` using `not_subsingleton_iff_nontrivial.1 hcon`. Establish `hT` using `isSmooth_iterPhi ψ (n + 1) j (resM k π) (isSmooth_resM hs)`. Take `⟨m, hm, h⟩` from `GlobalTheory.T.exists_nontrivial_derivative k ψ hc h1 n _ (phiMinus k ψ (iterPhi k ψ j (resM k π)).ρ) (GlobalTheory.T.smooth_phi_minus k ψ _ _ _ hT) hnt`. Take `⟨e₂⟩` from `GlobalTheory.T.twisted_jacquet_phi_minus_equiv k ψ n m hm _ (iterPhi k ψ j (resM k π)).ρ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₁⟩` from `iterPhi_derUnip ψ m (n + 1) (by omega) j (resM k π)`. Establish `h3 : Nontrivial (TwJacquet (resM k π).ρ (derUnipM k (n + 1 + j) m) (derCharM k ψ (n + 1 + j) m))` using `(e₂.trans e₁).symm.toEquiv.nontrivial`. Establish `h4` using `(twJ_congr (GlobalTheory.T.restriction_mirabolic_twisted_kernel k ψ (n + 1 + j) m V π)).1 h3`. Conclude with `not_subsingleton_iff_nontrivial.2 h4 (hlow m (by omega))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phi_vanish (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (n j : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin (n + 1 + j + 1)) k) V) (hs : IsSmooth π)
@@ -144,7 +144,7 @@ theorem phi_vanish (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) 
   exact not_subsingleton_iff_nontrivial.2 h4 (hlow m (by omega))
 
 /- English proof (translation)
-Take `⟨e⟩` from `GlobalTheory.T.twisted_jacquet_iterated_phi_equiv k ψ (n + 1) j (resM k π)`. Establish `h2` using `(twJ_congr (GlobalTheory.T.restriction_mirabolic_twisted_kernel k ψ (n + 1 + j) (n + 1) V π)).2 h`. Conclude with `e.toEquiv.nontrivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deriv_nontrivial (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin (n + 1 + j + 1)) k) V)
@@ -155,7 +155,7 @@ theorem deriv_nontrivial (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddComm
   exact e.toEquiv.nontrivial
 
 /- English proof (translation)
-Establish `: absPow k ((0 : ℕ) : ℂ) = 1`. Rewrite using `[Nat.cast_zero, absPow_zero]`. Rewrite using `[this]`. Simplify using `[detChar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detChar_zero {n : ℕ} (g : GL (Fin n) k) : ((detChar (Fin n) (absPow k ((0 : ℕ) : ℂ)) g : ℂˣ) : ℂ) = 1 := by
   have : absPow k ((0 : ℕ) : ℂ) = 1 := by
@@ -166,7 +166,7 @@ theorem detChar_zero {n : ℕ} (g : GL (Fin n) k) : ((detChar (Fin n) (absPow k 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `| 0, s, τ, τ', hs, hs', B, hB, hn, hv => GlobalTheory.T.invariant_pairing_mirabolic_vanishing k ψ hc h1 n s τ.V τ'.V τ.ρ τ'.ρ hs hs' B hB hn hv | j + 1, s, τ, τ', hs, hs', B, hB, hn, hv => by obtain ⟨B₁, hB₁, hn₁⟩ := GlobalTheory.T.invariant_pairing_mirabolic_smooth k ψ hc h1 (n …`.
+A detailed English derivation is pending.
 -/
 theorem pair_iter (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (n : ℕ) : ∀ (j s : ℕ) (τ τ' : MRep k (n + 1 + j)),
     IsSmooth τ.ρ → IsSmooth τ'.ρ → ∀ B : τ.V →ₗ[ℂ] τ'.V →ₗ[ℂ] ℂ,
@@ -193,9 +193,9 @@ theorem pair_iter (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hB0 : ∀ (p : Mir k (n + 1 + j)) v v', B ((resM k π).ρ p v) ((resM k π').ρ p v') = ((detChar (Fin (n + 1 + j + 1)) (absPow k ((0 : ℕ) : ℂ)) (p : GL (Fin (n + 1 + j + 1)) k) : ℂˣ) : ℂ) * B v v'`. Introduce `p v v'`. Rewrite using `[detChar_zero, one_mul]`. Conclude with `hB (p : GL (Fin (n + 1 + j + 1)) k) v v'`. Take `⟨B', h2, h3⟩` from `pair_iter ψ hc h1 n j 0 (resM k π) (resM k π') (isSmooth_resM hs) (isSmooth_resM hs') B hB0 hn hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B', fun g w w' => ?_, h3⟩` and prove the remaining obligations. Use `h2 g w w'` as an intermediate fact. Rewrite `this` using `[Nat.zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pair_deriv (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (n j : ℕ) {V V' : Type} [AddCommGroup V]
     [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (π : Representation ℂ (GL (Fin (n + 1 + j + 1)) k) V)

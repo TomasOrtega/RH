@@ -17,7 +17,7 @@ namespace GlobalTheory.VolBr.Model
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`. Take `⟨W, hW, b, rfl⟩` from `hg.exists_fnOf`. Establish `hy : y ∈ ptsIn p σ (U ⊓ W)` using `mem_ptsIn.2 ⟨hU, hW⟩`. Rewrite using `[← fnOf_resG (inf_le_left : U ⊓ W ≤ U) (gen_mem (memInf hU hW)), ← fnOf_resG (inf_le_right : U ⊓ W ≤ W) (gen_mem (memInf hU hW)), ← map_add, ratVal_fnOf hy, ratVal_fnOf hy, ratVal_fnOf hy, ev_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVal_add {σ : k →+* ℂ} {y : CxPts p σ} {f g : X.functionField} (hf : RegAt (under y) f)
     (hg : RegAt (under y) g) : ratVal (f + g) y = ratVal f y + ratVal g y := by
@@ -29,7 +29,7 @@ theorem ratVal_add {σ : k →+* ℂ} {y : CxPts p σ} {f g : X.functionField} (
     ratVal_fnOf hy, ratVal_fnOf hy, ratVal_fnOf hy, ev_add]
 
 /- English proof (translation)
-Establish `h : (n : X.functionField) = fnOf ⊤ (Opens.mem_top _) (n : Γ(X, ⊤))` using `(map_intCast _ n).symm`. Establish `hr : RegAt (under y) (n : X.functionField)` using `⟨n, map_intCast _ n⟩`. Use `⟨hr.mul hf, ?_⟩` and prove the remaining obligations. Rewrite using `[ratVal_mul hr hf, h, ratVal_fnOf mem_ptsIn_top, ev_eq mem_ptsIn_top, map_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVal_intCast_mul {σ : k →+* ℂ} {y : CxPts p σ} {f : X.functionField} (hf : RegAt (under y) f) (n : ℤ) :
     RegAt (under y) ((n : X.functionField) * f) ∧ ratVal ((n : X.functionField) * f) y = n * ratVal f y := by
@@ -39,7 +39,7 @@ theorem ratVal_intCast_mul {σ : k →+* ℂ} {y : CxPts p σ} {f : X.functionFi
   rw [ratVal_mul hr hf, h, ratVal_fnOf mem_ptsIn_top, ev_eq mem_ptsIn_top, map_intCast]
 
 /- English proof (translation)
-The claim follows from `h.1 zero_mem r hr := ⟨zero_mem _, fun σ y => by have := (ratVal_intCast_mul (y := y) (regAt_zero _) 0).2 simp only [Int.cast_zero, zero_mul] at this simpa [Pair.nu, Pair.loc, this] using hr⟩ sub_mem r r' f g hf hg := ⟨sub_mem hf.1 hg.1, fun σ y => by have hi := mem_ptsIn.1 (mem_p …`.
+A detailed English derivation is pending.
 -/
 theorem isBallFam_Bl (P : Pair p) (a b : ℤ) : IsBallFam (P.H a b) (P.Bl a b) where
   subset _ _ h := h.1
@@ -73,7 +73,7 @@ theorem isBallFam_Bl (P : Pair p) (a b : ℤ) : IsBallFam (P.H a b) (P.Bl a b) w
       fun h => ⟨nsmul_mem hf n, fun σ y => e σ y ▸ (mul_le_mul_iff_right₀ hn').2 (h.2 σ y)⟩⟩
 
 /- English proof (translation)
-Rewrite using `[hr i j h, mul_div_cancel_right₀ _ (r j).ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem div_eq {B : LB X} {r : B.ι → X.functionFieldˣ} (hr : IsRatSec B r) {i j : B.ι}
     (h : genericPoint X ∈ B.U i ⊓ B.U j) :
@@ -81,9 +81,9 @@ theorem div_eq {B : LB X} {r : B.ι → X.functionFieldˣ} (hr : IsRatSec B r) {
   rw [hr i j h, mul_div_cancel_right₀ _ (r j).ne_zero]
 
 /- English proof (translation)
-Establish `e (c i j) : (P.r c : X.functionField) / P.loc 1 0 1 i j = P.r c / P.r i` using `by simp [Pair.loc]`. Use `⟨P.r, P.hr, fun x c i j hc hi _ => ?_, fun σ y c i j hc hi _ => ?_⟩` and prove the remaining obligations. Rewrite using `[e, div_eq P.hr (gen_mem (memInf hc hi))]`. Conclude with `unitAt_fnOf (memInf hc hi) _ _`. Establish `h` using `mem_ptsIn_inf.2 ⟨hc, hi⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, div_eq P.hr (gen_mem (mem_ptsIn.1 h)), ratVal_fnOf h, (P.L.φ σ).trans c i y hc hi, Real.log_pow, CxPts.gv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rep_fst (P : Pair p) : P.Rep 1 0 P.L := by
   have e (c i j) : (P.r c : X.functionField) / P.loc 1 0 1 i j = P.r c / P.r i := by simp [Pair.loc]
@@ -104,9 +104,9 @@ abbrev dbl : Pair p := ⟨A, A, ratOfSec u hu, ratOfSec u hu, isRatSec_ratOfSec 
 variable {A u hu}
 
 /- English proof (translation)
-Establish `key (n : ℕ) : UnitAt x (f ^ n)`. Proceed by induction on `n with`. Consider the case `zero => simpa using unitAt_one x`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `a with n | n` into its components or cases. Simplify using `using key n`. Simplify using `using (key (n + 1)).inv`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unitAt_zpow {x : X} {f : X.functionField} (h : UnitAt x f) (a : ℤ) : UnitAt x (f ^ a) := by
   have key (n : ℕ) : UnitAt x (f ^ n) := by
@@ -118,7 +118,7 @@ theorem unitAt_zpow {x : X} {f : X.functionField} (h : UnitAt x f) (a : ℤ) : U
   · simpa using (key (n + 1)).inv
 
 /- English proof (translation)
-Establish `h0` using `(ratOfSec u hu j).ne_zero`. Take `rfl : b = 1 - a` from `by omega`. Simplify using `only [Pair.loc, div_zpow, zpow_sub₀ h0, zpow_one]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem loc_dbl (t : X.functionField) (a b : ℤ) (hab : a + b = 1) (i j : A.B.ι) : (dbl A u hu).loc a b t i j =
       t * ratOfSec u hu j * ((ratOfSec u hu i : X.functionField) / ratOfSec u hu j) ^ a := by
@@ -128,7 +128,7 @@ theorem loc_dbl (t : X.functionField) (a b : ℤ) (hab : a + b = 1) (i j : A.B.�
   field_simp
 
 /- English proof (translation)
-Rewrite using `[div_eq (isRatSec_ratOfSec u hu) (gen_mem (memInf hi hj))]`. Conclude with `unitAt_fnOf (memInf hi hj) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_div {x : X} {i j : A.B.ι} (hi : x ∈ A.B.U i) (hj : x ∈ A.B.U j) :
     UnitAt x ((ratOfSec u hu i : X.functionField) / ratOfSec u hu j) := by
@@ -136,11 +136,11 @@ theorem unitAt_div {x : X} {i j : A.B.ι} (hi : x ∈ A.B.U i) (hj : x ∈ A.B.U
   exact unitAt_fnOf (memInf hi hj) _ _
 
 /- English proof (translation)
-Use `⟨fun x i j hi hj => ?_, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[loc_dbl t a b hab, ht j (gen_mem hj)]`. Conclude with `(regAt_fnOf hj _ _).mul (unitAt_zpow (unitAt_div hi hj) a).regAt`. Establish `hi` using `mem_pick (A.φ σ).isLB y`. Establish `h` using `hv σ y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Weight.nsq, secVal_apply]`. Rewrite using `[Pair.nu, loc_dbl t a b hab, div_self (Units.ne_zero _), one_zpow, mul_one, ht _ (gen_mem (mem_ptsIn.1 hi)), ratVal_fnOf hi, ← add_mul, ← Int.cast_add, hab, Int.cast_one, one_mul]`. Use `(pow_le_one_iff_of_nonneg (by positivity) two_ne_zero).1 (le_of_eq_of_le ?_ h)` and prove the remaining obligations. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_Bl {v : A.B.Sec} (hv : v ∈ A.smallSec) {t : X.functionField}
     (ht : ∀ i (h : genericPoint X ∈ A.B.U i), t * ratOfSec u hu i = fnOf _ h (v.f i)) (a b : ℤ) (hab : a + b = 1) :
@@ -160,11 +160,11 @@ theorem mem_Bl {v : A.B.Sec} (hv : v ∈ A.smallSec) {t : X.functionField}
     ring
 
 /- English proof (translation)
-Take `⟨c, hc0⟩` from `exists_chart A.isLB (genericPoint X)`. Establish `ht : ∀ i (h : genericPoint X ∈ A.B.U i), ((ratOfSec v hv0 c : X.functionField) / ratOfSec u hu c) * ratOfSec u hu i = fnOf _ h (v.f i)`. Introduce `i h`. Use `(ratOfSec u hu c).ne_zero` as an intermediate fact. Rewrite using `[← val_ratOfSec (hs := hv0) h, isRatSec_ratOfSec u hu i c ⟨h, hc0⟩, isRatSec_ratOfSec v hv0 i c ⟨h, hc0⟩]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `h1 : ∀ i (h : genericPoint X ∈ A.B.U i), 1 * (ratOfSec u hu i : X.functionField) = fnOf _ h (u.f i)` using `fun i h => (one_mul _).trans (val_ratOfSec h)`. Use `⟨_, ht, hA, hN, two_pos, mem_Bl hs h1 0 1 rfl, one_ne_zero, mem_Bl hv ht (-1) _ rfl, div_ne_zero (Units.ne_zero _) (Units.ne_zero _), fun x i j hi hj g hg h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[loc_dbl _ (-1) _ rfl, ht j (gen_mem hj)]`. Break down `hc x with hx | hx` into its components or cases.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[loc_dbl _ 0 1 rfl, h1 j (gen_mem hj), zpow_zero, mul_one, div_eq_mul_inv]`. Conclude with `hg.mul ((unitAt_fnOf_iff hj _ _).2 ((mem_nonzeroLocus_iff u j hj).1 hx)).inv.regAt`. Establish `hw` using `((unitAt_fnOf_iff hj (gen_mem hj) _).2 ((mem_nonzeroLocus_iff v j hj).1 hx)).mul (unitAt_zpow (unitAt_div (u := u) (hu := hu) hi hj) (-1))`. Use `h.mul hw.inv.regAt` as an intermediate fact. Rewrite `this` using `[mul_div_right_comm, mul_inv_cancel_right₀ hw.ne_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem good_dbl {D : ℕ} (hA : IsAmpleLB A.B) (hN : A.IsNef D) (hs : u ∈ A.smallSec) {v : A.B.Sec} (hv : v ∈ A.smallSec)
     (hv0 : genericPoint X ∈ nonzeroLocus v) (hc : ∀ x, x ∈ nonzeroLocus u ∨ x ∈ nonzeroLocus v) :
@@ -190,7 +190,7 @@ theorem good_dbl {D : ℕ} (hA : IsAmpleLB A.B) (hN : A.IsNef D) (hs : u ∈ A.s
     rwa [mul_div_right_comm, mul_inv_cancel_right₀ hw.ne_zero] at this
 
 /- English proof (translation)
-Introduce `h` and use `h0 <| by refine top_le_iff.1 fun x _ => ?_ obtain ⟨j, hj⟩ := exists_chart A.isLB x have hr := h.reg x j j hj hj 1 (unitAt_one x).regAt rw [loc_dbl _ (-1) _ rfl, loc_dbl _ 0 1 rfl, div_self (Units.ne_zero _), one_zpow, one_zpow] at hr simp only [one_mul, mul_one, div_self (Units.n …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_good_dbl {D : ℕ} (h0 : nonzeroLocus u ≠ ⊤) : ¬ (dbl A u hu).Good D 2 1 1 := fun h => h0 <| by
   refine top_le_iff.1 fun x _ => ?_
@@ -208,7 +208,7 @@ end Two
 omit [IsIntegral X] in
 
 /- English proof (translation)
-The claim follows from `hs vertical := hf horizontal Z i _ _ _ hc hd := by have hZ : IsArithVar (i ≫ p) 0 := hX.of_isClosedImmersion i hc hd obtain ⟨u, hu, ha⟩ := hg (i (genericPoint Z)) have hgen : genericPoint Z ∈ nonzeroLocus (GlobalTheory.secPull u i) := by rw [GlobalTheory.nonzeroLocus_secPull]; ex …`.
+A detailed English derivation is pending.
 -/
 theorem isNef_of_small {D : ℕ} (hX : IsArithVar p D) (L : HermLB p) (hs : L.SemiPos D) (hf : ArInt.NefFib L)
     (hg : ∀ x : X, ∃ u ∈ L.smallSec, x ∈ nonzeroLocus u) : L.IsNef D where
@@ -235,7 +235,7 @@ theorem isNef_of_small {D : ℕ} (hX : IsArithVar p D) (L : HermLB p) (hs : L.Se
         mul_nonneg (Int.cast_nonneg (mult_divOfSec_nonneg z)) (Real.log_natCast_nonneg _)
 
 /- English proof (translation)
-The claim follows from `have := Geo.Tor.isProper_str ℤ N isNef_of_small (isArithVar_int N) _ (HermLB.semiPos_fs _ _ _ _ _ _) (ProjModel.nefFib_of_isAmpleLB (hermitianTwistingSheaf ℤ N) (isAmple_projective_O_one ℤ N)) fun x => have ⟨a, ha⟩ := Opens.mem_iSup.1 ((iSup_nonzeroLocus_coord ℤ N).ge (Opens.mem_ …`.
+A detailed English derivation is pending.
 -/
 theorem isNef_hermitianTwistingSheaf (N : ℕ) : (hermitianTwistingSheaf ℤ N).IsNef N :=
   have := Geo.Tor.isProper_str ℤ N
@@ -249,7 +249,7 @@ local instance isIntegral_line : IsIntegral (PSpace ℤ 1) := isIntegral_of_isDo
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Set `η : ProjectiveSpectrum (grading ℤ 1)` to `⟨⊥, Ideal.isPrime_bot, fun h => MvPolynomial.X_ne_zero _ (h (HomogeneousIdeal.mem_irrelevant_of_mem _ one_pos (X_mem ℤ 1 0)))⟩`. Rewrite using `[nonzeroLocus_coord]`. Conclude with `gen_mem (x := η) fun h => MvPolynomial.X_ne_zero a h`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mem_coord (a : Fin 2) : genericPoint (PSpace ℤ 1) ∈ nonzeroLocus (coord ℤ 1 a) := by
   let η : ProjectiveSpectrum (grading ℤ 1) := ⟨⊥, Ideal.isPrime_bot, fun h =>
@@ -258,9 +258,9 @@ theorem gen_mem_coord (a : Fin 2) : genericPoint (PSpace ℤ 1) ∈ nonzeroLocus
   exact gen_mem (x := η) fun h => MvPolynomial.X_ne_zero a h
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[nonzeroLocus_coord]`. Establish `h1 : (PSpace ℤ 1).basicOpen (ratio ℤ 1 0 1) = chart ℤ 1 0` using `basicOpen_ratioOn.trans ((congrArg (_ ⊓ ·) h).trans (inf_top_eq _))`. Establish `h2 : IsUnit (ratio ℤ 1 0 1)` using `(PSpace ℤ 1).toRingedSpace.isUnit_of_isUnit_germ _ _ fun x hx => ((PSpace ℤ 1).mem_basicOpen _ x hx).1 (h1.ge hx)`. Rewrite `h2` using `[← chartAlgEquiv_X ℤ 1 0 ⟨1, by decide⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `(h2.map (chartAlgEquiv ℤ 1 0).symm).map MvPolynomial.constantCoeff`. Rewrite `h3` using `[AlgEquiv.symm_apply_apply, MvPolynomial.constantCoeff_X]`. Conclude with `not_isUnit_zero h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_ne_top : nonzeroLocus (coord ℤ 1 1) ≠ ⊤ := by
   intro h
@@ -275,9 +275,7 @@ theorem coord_ne_top : nonzeroLocus (coord ℤ 1 1) ≠ ⊤ := by
   exact not_isUnit_zero h3
 
 /- English proof (translation)
-Take `⟨t, -, ht⟩` from `good_dbl (A := hermitianTwistingSheaf ℤ 1) (u := coord ℤ 1 1) (hu := gen_mem_coord 1) (isAmple_projective_O_one ℤ 1) (isNef_hermitianTwistingSheaf 1) (ProjModel.coord_mem_smallSec ℤ 1 1) (ProjModel.coord_mem_smallSec ℤ 1 0) (gen_mem_coord 0) fun x => by`. Take `⟨a, ha⟩` from `Opens.mem_iSup.1 ((iSup_nonzeroLocus_coord ℤ 1).ge (Opens.mem_top x))`. Use `fin_cases a`. Conclude with `.inr ha`. Conclude with `.inl ha`.
-
-Conclude with `⟨isArithVar_int 1, _, t, rfl, rfl, ht, not_good_dbl coord_ne_top⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good : IsArithVar (PSpace.str ℤ 1) 1 ∧ ∃ (P : Pair (PSpace.str ℤ 1)) (t : (PSpace ℤ 1).functionField),
     P.L = hermitianTwistingSheaf ℤ 1 ∧ P.A = hermitianTwistingSheaf ℤ 1 ∧ P.Good 1 2 1 t ∧ ¬ P.Good 1 2 1 1 := by
@@ -295,7 +293,7 @@ section IntValues
 open IntExample
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_fnOf_eq (U := ⊤) trivial fun x _ => h x`. Take `⟨n, rfl⟩` from `ArithBase.surjective_intCast (𝟙 (Sp ℤ)) a`. Conclude with `⟨n, ha.symm.trans (map_intCast _ n)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_of_regAt {f : (Sp ℤ).functionField} (h : ∀ x, RegAt x f) : ∃ n : ℤ, f = n := by
   obtain ⟨a, ha⟩ := exists_fnOf_eq (U := ⊤) trivial fun x _ => h x
@@ -303,7 +301,7 @@ theorem exists_int_of_regAt {f : (Sp ℤ).functionField} (h : ∀ x, RegAt x f) 
   exact ⟨n, ha.symm.trans (map_intCast _ n)⟩
 
 /- English proof (translation)
-Use `(ratVal_intCast_mul (y := y) (unitAt_one _).regAt n).2` as an intermediate fact. Establish `e` using `ratVal_nat y 1`. Rewrite `e` using `[Nat.cast_one, Nat.cast_one]`. Rewrite `this` using `[mul_one, e, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ratVal_int {σ : k →+* ℂ} (y : CxPts p σ) (n : ℤ) : ratVal (n : X.functionField) y = n := by
   have := (ratVal_intCast_mul (y := y) (unitAt_one _).regAt n).2
@@ -312,7 +310,7 @@ theorem ratVal_int {σ : k →+* ℂ} (y : CxPts p σ) (n : ℤ) : ratVal (n : X
   rwa [mul_one, e, mul_one] at this
 
 /- English proof (translation)
-Rewrite using `[Pair.nu, loc_eq, ratVal_int]`. Establish `: ∀ (t : ℝ) i, ((ArithBase.trivShift t).φ σ).φ i y = 0 + 2 * t` using `fun _ _ => rfl`. Simplify using `only [pair, this]`. Use `congr 2`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -328,11 +326,9 @@ def intPt : CxPts (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) :=
   ⟨Spec.map (CommRingCat.ofHom (Int.castRingHom ℂ)), Category.comp_id _⟩
 
 /- English proof (translation)
-Establish `e (n : ℤ) (σ) (y : CxPts (𝟙 (Sp ℤ)) σ) : pair.nu a 1 σ y n ≤ 1 ↔ n ∈ Set.Icc (-3 : ℤ) 3`. Rewrite using `[nu_int, Int.cast_one, one_mul, Real.exp_neg, Real.exp_log (by norm_num), ← div_eq_mul_inv, div_le_one (by norm_num), Set.mem_Icc, ← abs_le]`. Conclude with `Iff.rfl` after adjusting the coercions. Use extensionality with `f`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `exists_int_of_regAt (f := f) fun x => by`. Use `h.1 x PUnit.unit PUnit.unit trivial trivial` as an intermediate fact. Use `erw [loc_eq] at this`. Conclude with `this`. Conclude with `⟨n, (e n _ intPt).1 (h.2 _ _), rfl⟩`.
-
-Introduce and unpack `⟨n, hn, rfl⟩`. Conclude with `⟨fun x i j _ _ => by rw [loc_eq]; exact ⟨n, map_intCast _ n⟩, fun σ y => (e n σ y).2 hn⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Bl_one (a : ℤ) : pair.Bl a 1 1 = (fun n : ℤ => (n : (Sp ℤ).functionField)) '' Set.Icc (-3) 3 := by
   have e (n : ℤ) (σ) (y : CxPts (𝟙 (Sp ℤ)) σ) : pair.nu a 1 σ y n ≤ 1 ↔ n ∈ Set.Icc (-3 : ℤ) 3 := by
@@ -350,7 +346,7 @@ theorem Bl_one (a : ℤ) : pair.Bl a 1 1 = (fun n : ℤ => (n : (Sp ℤ).functio
     exact ⟨fun x i j _ _ => by rw [loc_eq]; exact ⟨n, map_intCast _ n⟩, fun σ y => (e n σ y).2 hn⟩
 
 /- English proof (translation)
-Use `charZero_functionField` as an intermediate fact. Rewrite using `[Pair.lc, Bl_one, Set.ncard_image_of_injective _ Int.cast_injective, ← Finset.coe_Icc, Set.ncard_coe_finset, Int.card_Icc]`. Evaluate the numerical expressions using `[show Int.toNat 7 = 7 from rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem lc_one (a : ℤ) : pair.lc a 1 1 = Real.log 7 := by
   have := charZero_functionField
@@ -359,15 +355,13 @@ theorem lc_one (a : ℤ) : pair.lc a 1 1 = Real.log 7 := by
   norm_num [show Int.toNat 7 = 7 from rfl]
 
 /- English proof (translation)
-Use `⟨fun ⟨ρ, _, hu, hn⟩ => ?_, fun h => h ▸ rep a b⟩` and prove the remaining obligations. Use `charZero_functionField` as an intermediate fact. Establish `hu' (x) : UnitAt x (ρ PUnit.unit : (Sp ℤ).functionField)`. Use `hu x PUnit.unit PUnit.unit PUnit.unit trivial trivial trivial` as an intermediate fact. Use `erw [loc_eq] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[div_one]`. Then use the resulting hypothesis. Take `⟨m, hm⟩` from `exists_int_of_regAt fun x => (hu' x).regAt`. Take `⟨m', hm'⟩` from `exists_int_of_regAt fun x => (hu' x).inv.regAt`. Establish `h1 : m * m' = 1`. Establish `: ((m * m' : ℤ) : (Sp ℤ).functionField) = (1 : ℤ)` using `by push_cast; rw [← hm, ← hm', mul_inv_cancel₀ (Units.ne_zero _)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Int.cast_injective this`. Establish `h` using `hn _ intPt PUnit.unit PUnit.unit PUnit.unit mem_ptsIn_top mem_ptsIn_top mem_ptsIn_top`. Use `erw [loc_eq] at h`. Rewrite `h` using `[div_one]`. Use `erw [hm] at h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h` using `[ratVal_int]`. Express the relevant statement in the definitionally equal form `_ - (0 + 2 * t) / 2 = -(a * (0 + 2 * (0 : ℝ)) + b * (0 + 2 * Real.log 3)) / 2 at h`. Establish `h0 : Real.log ‖(m : ℂ)‖ = 0`. Apply the tactic sequence `rcases Int.eq_one_or_neg_one_of_mul_eq_one h1 with rfl | rfl <;> simp`. Rewrite `h` using `[h0]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rep_iff (a b : ℤ) (t : ℝ) : pair.Rep a b (ArithBase.trivShift t) ↔ t = b * Real.log 3 := by
   refine ⟨fun ⟨ρ, _, hu, hn⟩ => ?_, fun h => h ▸ rep a b⟩
@@ -394,7 +388,7 @@ theorem rep_iff (a b : ℤ) (t : ℝ) : pair.Rep a b (ArithBase.trivShift t) ↔
   linarith
 
 /- English proof (translation)
-Introduce `h` and use `by have := charZero_functionField obtain ⟨n, hn⟩ := exists_int_of_regAt (f := 1 / (2 : ℕ)) fun x => by have hr := h.reg x PUnit.unit PUnit.unit trivial trivial 1 (unitAt_one x).regAt erw [loc_eq, loc_eq] at hr rw [one_mul, div_self h.s_ne] at hr exact hr (unitAt_one x).regAt have …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_good_two_two : ¬ pair.Good 0 1 (2 : ℕ) (2 : ℕ) := fun h => by
   have := charZero_functionField
@@ -411,15 +405,15 @@ theorem not_good_two_two : ¬ pair.Good 0 1 (2 : ℕ) (2 : ℕ) := fun h => by
 end IntValues
 
 /- English proof (translation)
-Take `⟨ρ, hρ, hu, hn⟩` from `h`. Establish `e (f) (c i j) : P.loc a b f i j = f * ρ c * ((ρ c : X.functionField) / P.loc a b 1 i j)⁻¹`. Use `(ρ c).ne_zero` as an intermediate fact. Simplify using `only [Pair.loc]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨ρ, hρ, fun v f hf => ⟨fun x i j hi hj => ?_, fun σ y => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_chart M.isLB x`. Rewrite using `[e f c, hf c (gen_mem hc)]`. Conclude with `(regAt_fnOf hc _ _).mul (hu x c i j hc hi hj).inv.regAt`. Establish `hc` using `mem_pick (M.φ σ).isLB y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `mem_pick (P.L.φ σ).isLB y`. Establish `hj` using `mem_pick (P.A.φ σ).isLB y`. Establish `hU` using `hu _ _ _ _ (mem_ptsIn.1 hc) (mem_ptsIn.1 hi) (mem_ptsIn.1 hj)`. Establish `hN` using `hn σ y _ _ _ hc hi hj`. Establish `hinv` using `ratVal_mul hU.regAt hU.inv.regAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `IntExample.ratVal_nat y 1`. Rewrite `e1` using `[Nat.cast_one, Nat.cast_one]`. Rewrite `hinv` using `[mul_inv_cancel₀ hU.ne_zero, e1]`. Establish `hne` using `ratVal_ne_zero hU`. Rewrite using `[Weight.nsq, secVal_apply, Pair.nu, e f (pick (M.φ σ).isLB y), hf _ (gen_mem (mem_ptsIn.1 hc)), ratVal_mul (regAt_fnOf (mem_ptsIn.1 hc) _ _) hU.inv.regAt, ratVal_fnOf hc, ← hN, (eq_inv_of_mul_eq_one_right hinv.symm), Real.exp_sub, Real.exp_log (norm_pos_iff.2 hne), norm_mul, norm …`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nu_sq_of_rep (P : Pair p) {a b : ℤ} {M : HermLB p} (h : P.Rep a b M) :
     ∃ ρ : M.B.ι → X.functionFieldˣ, IsRatSec M.B ρ ∧ ∀ (v : M.B.Sec) (f : X.functionField),
@@ -454,7 +448,7 @@ theorem nu_sq_of_rep (P : Pair p) {a b : ℤ} {M : HermLB p} (h : P.Rep a b M) :
     ring
 
 /- English proof (translation)
-Introduce `h` and use `by have := (h.nsmul_iff 2 (1 / 2) 1 two_pos trivial).1 (by norm_num) norm_num at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isBallFam_discrete :
     ¬ IsBallFam (⊤ : AddSubgroup ℤ) fun r => {x | if x = 0 then 0 ≤ r else 1 ≤ r} := fun h => by

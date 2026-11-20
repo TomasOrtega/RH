@@ -7,9 +7,9 @@ open scoped NNReal ENNReal TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : ‖(x : Fv F v)‖ ≤ 1` using `(Valued.toNormedField.norm_le_one_iff).mpr x.2`. Establish `hy : ‖(y : Fv F v)‖ ≤ 1` using `(Valued.toNormedField.norm_le_one_iff).mpr y.2`. Establish `hxy : ‖(x : Fv F v)‖ * ‖(y : Fv F v)‖ = 1`. Rewrite using `[← norm_mul]`. Establish `: ((x : Fv F v) * (y : Fv F v)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun z : v.adicCompletionIntegers F => (z : Fv F v)) h` as an intermediate fact. Simplify using `using this`. Rewrite using `[this, norm_one]`. Establish `h0` using `norm_nonneg (x : Fv F v)`. Establish `h0'` using `norm_nonneg (y : Fv F v)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

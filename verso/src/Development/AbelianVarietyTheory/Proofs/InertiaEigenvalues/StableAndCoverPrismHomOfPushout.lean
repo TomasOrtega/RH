@@ -14,26 +14,26 @@ namespace GlobalTheory.BSP.CoverBC
 variable {l : ℕ} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Consider the cases of `a`. Consider the cases of `b`. Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem hom_ext {P P' : Obj l R} {a b : Hom P P'} (h : a.f = b.f) : a = b := by
   cases a; cases b; cases h; rfl
 
 /- English proof (translation)
-The claim follows from `hom_ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem comp_assoc {P₁ P₂ P₃ P₄ : Obj l R} (c : Hom P₃ P₄) (b : Hom P₂ P₃) (a : Hom P₁ P₂) :
     (c.comp b).comp a = c.comp (b.comp a) := hom_ext rfl
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem qmap_comp {P₁ P₂ P₃ : Obj l R} (g : Hom P₂ P₃) (f : Hom P₁ P₂) (m : ℕ) :
     qmap (g.comp f) m = (qmap g m).comp (qmap f m) :=
   Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)
 
 /- English proof (translation)
-Use `algebraize [φ, α, β, φ', φ'.comp α]`. Establish `: IsScalarTower A B B'` using `IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom H.w).symm`. Establish `: Algebra.IsPushout A B A' B'` using `CommRingCat.isPushout_iff_isPushout.1 H`. Conclude with `hP A B A' B' h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem of_isPushout {P : ∀ {A B : Type} [CommRing A] [CommRing B], (A →+* B) → Prop}
     (hP : RingHom.IsStableUnderBaseChange @P)
@@ -53,14 +53,14 @@ namespace GlobalTheory.BSP.CoverBC
 variable {l : ℕ} {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `of_isPushout RingHom.Flat.isStableUnderBaseChange (H.po m) (hf m)`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_isPO {B C B' C' : Obj l R} {h : Hom B C} {k : Hom B B'} {k' : Hom C C'} {h' : Hom B' C'}
     (H : IsPO h k k' h') (hf : ∀ m : ℕ, (qmap h m).Flat) (m : ℕ) : (qmap h' m).Flat :=
   of_isPushout RingHom.Flat.isStableUnderBaseChange (H.po m) (hf m)
 
 /- English proof (translation)
-The claim follows from `of_isPushout RingHom.FaithfullyFlat.isStableUnderBaseChange (H.po m) (hf m)`.
+A detailed English derivation is pending.
 -/
 theorem faithfullyFlat_of_isPO {B C B' C' : Obj l R} {h : Hom B C} {k : Hom B B'} {k' : Hom C C'}
     {h' : Hom B' C'} (H : IsPO h k k' h') (hf : ∀ m : ℕ, (qmap h m).FaithfullyFlat) (m : ℕ) :
@@ -72,11 +72,11 @@ end GlobalTheory.BSP.CoverBC
 open GlobalTheory.BSP.CoverBC in
 
 /- English proof (translation)
-Introduce `l _ R _ B C B' C' h k k' h' H`. Establish `st : Stable h → Stable h'`. Introduce `hs`. Use `⟨flat_of_isPO H hs.flat, fun B'' k₂ => ?_⟩` and prove the remaining obligations. Take `⟨C'', k₀, h'', H₂⟩` from `hs.po B'' (k₂.comp k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : k₀.comp h = (h''.comp k₂).comp k` using `by rw [H₂.comm, comp_assoc]`. Take `⟨c, ⟨hc₁, hc₂⟩, -⟩` from `GlobalTheory.T.prismPushoutModAdicPow_universal l R B C B' C' h k k' h' H C'' k₀ (h''.comp k₂) e`. Use `⟨C'', c, h'', ⟨hc₂, fun m => ?_⟩⟩` and prove the remaining obligations. Establish `s` using `H₂.po m`. Rewrite `s` using `[← hc₁, qmap_comp, qmap_comp, CommRingCat.ofHom_comp, CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `IsPushout.of_top s ?_ (H.po m)` and prove the remaining obligations. Rewrite using `[← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, ← qmap_comp, ← qmap_comp, hc₂]`. Conclude with `⟨st, fun hc => ⟨st hc.stable, faithfullyFlat_of_isPO H hc.ff⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.BSP.stable_cover_of_isPO : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (B C B' C' : Obj l R)
     (h : Hom B C) (k : Hom B B') (k' : Hom C C') (h' : Hom B' C'),

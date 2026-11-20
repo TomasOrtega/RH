@@ -22,9 +22,9 @@ open ThetaReal GlobalGen
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω}
 
 /- English proof (translation)
-Use extensionality with `l i`. Establish `key` using `h i`. Use `congrFun (uniq (fun l => (m₁ * m₂) l i) (fun l => (x • m₃) l i) ?_) l` and prove the remaining obligations. Rewrite `key` using `[h₂, h₃, map_sum, Finset.smul_sum]`. Simplify using `only [map_smul, h₁, Finset.smul_sum, smul_smul] at key`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[Finset.sum_comm]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.sum_smul, Matrix.smul_apply, smul_eq_mul]`. Use `Eq.trans ?_ key` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem matrix_mul_of_comp {A M J : Type} [CommRing A] [AddCommGroup M] [Module A M] [Fintype J] (φ : o →+* A)
     (s : J → M) (uniq : ∀ c c' : J → o, ∑ l, φ (c l) • s l = ∑ l, φ (c' l) • s l → c = c')
@@ -42,18 +42,18 @@ theorem matrix_mul_of_comp {A M J : Type} [CommRing A] [AddCommGroup M] [Module 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]
 
 /- English proof (translation)
-Take `⟨h0, hsm⟩` from `pt_nsmul ρ.pt ρ.pt_add`. Rewrite using `[← hsm, smul_smul, mul_comm S.N S.r, nsmul_self, h0]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_pow (ρ : S.Real) (a : S.Gam) : ρ.pt (S.r • a) ^ S.N = 1 := by
   obtain ⟨h0, hsm⟩ := pt_nsmul ρ.pt ρ.pt_add
   rw [← hsm, smul_smul, mul_comm S.N S.r, nsmul_self, h0]
 
 /- English proof (translation)
-Use `hA.ded` as an intermediate fact. Establish `: Algebra.FiniteType o S.R` using `(Subalgebra.fg_iff_finiteType _).1 S.fg`. Establish `: IsNoetherianRing S.R` using `Algebra.FiniteType.isNoetherianRing o S.R`. Establish `: IsLocallyNoetherian (Sp S.R)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of S.R)))`. Set `φ : o →+* Γ((baseOver (Sp S.R)).left, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of S.R)).inv.hom.comp (algebraMap o S.R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨h0, hsm⟩` from `pt_nsmul ρ.pt ρ.pt_add`. Establish `h₁` using `ρ.weil a (S.r • b) c (by rw [eStd_nsmul, hc])`. Establish `h₂` using `(hL.weil _ ρ.P S.N (baseOver (Sp S.R))).2.2.2 S.r (ρ.pt a) (ρ.pt (S.r • b)) (unitOn c) (by rw [mul_comm, ← map_natCast φ]; exact S.unit.map φ) (by rw [← hsm, mul_comm S.N S.r, nsmul_self, h0]) (pt_pow ρ b)`. Rewrite using `[hsm S.r a]`. Use `h₂.1 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Nat.cast_mul, mul_comm S.N S.r]`. Conclude with `h₁`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_level (hL : Laws) [hA : ArithBase o Ω] (ρ : S.Real) (a b : S.Gam) (c : (S.R)ˣ)
     (hc : (c : S.R) = algebraMap o S.R (S.ζ ^ (S.r * S.N * (S.r • eStd S.g _ a b).val))) :
@@ -75,13 +75,13 @@ theorem weil_level (hL : Laws) [hA : ArithBase o Ω] (ρ : S.Real) (a b : S.Gam)
   exact h₁
 
 /- English proof (translation)
-Use `ρ.P.isAb.comm` as an intermediate fact. Set `φ : o →+* Γ((baseOver (Sp S.R)).left, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of S.R)).inv.hom.comp (algebraMap o S.R)`. Establish `hφ : Function.Injective φ` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of S.R)).inv).1.comp fun b b' h => hA.inj (congrArg Subtype.val h)`. Take `⟨u, hu, -⟩` from `GlobalTheory.thetaGrp_acts_linearly hL.globalFns _ ρ.P S.N (baseOver (Sp S.R))`. Establish `hodd : Odd S.N` using `by rw [ρ.N_eq]; exact ρ.n_odd.pow.pow`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `act : ∀ a v, IsActOf ρ.P.A ρ.P.L S.N (ρ.U a) (SecM.toSec ρ.P.A v) (SecM.toSec ρ.P.A (u (ρ.U a) v))` using `fun a v => (hu _ _ _).2 rfl`. Take `⟨c, hc⟩ : IsUnit (algebraMap o S.R (S.ζ ^ (S.r * S.N * (S.r • eStd S.g _ a b).val)))` from `((S.prim.isUnit (pow_ne_zero _ (NeZero.ne (S.r * S.N)))).pow _).map _`. Establish `weil` using `weil_level hL ρ a b c hc`. Establish `hc' : (unitOn c).val = φ (S.ζ ^ (S.r * S.N * (S.r • eStd S.g _ a b).val))` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of S.R)).inv.hom hc`. Set `s : S.J → SecM ρ.P.A ρ.P.L S.N (baseOver (Sp S.R))` to `fun i => SecM.ofSec ρ.P.A (ρ.s i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs : ∀ a i, u (ρ.U a) (s i) = ∑ l, φ (S.ρ a l i) • s l` using `fun a i => (sum_iff _ s fun l => φ (S.ρ a l i)).1 (ρ.U_act a i _ (act a (s i)))`. Use `matrix_mul_of_comp φ s (fun c c' h => ?_) (hs a) (hs b) (hs (a + b)) fun i => ?_` and prove the remaining obligations. Use `(ρ.s_basis (SecM.toSec ρ.P.A (∑ l, φ (c l) • s l))).unique ((sum_iff _ s fun l => φ (c l)).2 rfl) ((sum_iff _ s fun l => φ (c' l)).2 h)` as an intermediate fact. Conclude with `funext fun l => hφ (congrFun this l)`. Use `act_act hL.globalFns ρ.P.isAb ρ.P.isLB hodd (pt_pow ρ b) (ρ.U_sym a) (ρ.U_sym b) (by rw [← ρ.pt_add, ← smul_add, add_comm]; exact ρ.U_sym (a + b)) weil (act b (s i)) (act a _) (act (a + b) (s i))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.trans (congrArg (· • _) ?_)` and prove the remaining obligations. Rewrite using `[pow_mul S.ζ (_ * _), map_pow φ, ← hc']`. Conclude with `Units.val_pow_eq_pow_val _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_mul_rho (hL : Laws) [hA : ArithBase o Ω] (ρ : S.Real) (a b : S.Gam) :
     S.ρ a * S.ρ b =
@@ -116,9 +116,9 @@ theorem rho_mul_rho (hL : Laws) [hA : ArithBase o Ω] (ρ : S.Real) (a b : S.Gam
     exact Units.val_pow_eq_pow_val _ _
 
 /- English proof (translation)
-Take `⟨-, d, ⟨E⟩⟩` from `hT`. Use `choose a ha using fun t : T => ZModPerp.exists_eq_nsmul_zmod (mul_comm S.N S.r) _ (h t)`. Take `⟨b, hb⟩` from `Weights.exists_eStd_eq (T.subtype.comp E.symm.toAddMonoidHom) (Subtype.val_injective.comp E.symm.injective) (fun i => a (E.symm (Pi.single i 1)))`. Establish `h3` using `Weights.addHom_ext_single ((Weights.eLeft S.g _ x).comp (T.subtype.comp E.symm.toAddMonoidHom)) (S.N • (Weights.eLeft S.g _ b).comp (T.subtype.comp E.symm.toAddMonoidHom)) fun i => by`. Conclude with `(ha _).trans (congrArg (S.N • ·) (hb i).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨b, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h5 : eStd S.g _ t x = S.N • eStd S.g _ t b`. Simplify `DFunLike.congr_fun h3 (E ⟨t, ht⟩)` using `[Weights.eLeft_apply]`. Rewrite using `[← Weights.eLeft_apply, map_sub, map_nsmul, Weights.eLeft_apply, Weights.eLeft_apply, Weights.eStd_swap, h5, Weights.eStd_swap _ _ t b]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_perp {T : AddSubgroup S.Gam} (hT : S.IsoFree T) (x : S.Gam)
     (h : ∀ t : T, S.r • eStd S.g _ t x = 0) : ∃ b : S.Gam, x - S.N • b ∈ S.perp T := by
@@ -137,7 +137,7 @@ theorem exists_perp {T : AddSubgroup S.Gam} (hT : S.IsoFree T) (x : S.Gam)
   simp
 
 /- English proof (translation)
-Use `Fintype.ofFinite T` as an intermediate fact. Rewrite using `[proj_eq, mul_smul_comm, smul_comm, Finset.mul_sum, Finset.smul_sum, ← Equiv.sum_comp (Equiv.addLeft s) fun t : T => chi S (c t) • S.ρ t]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_smul, ρ_mul_ρ hT, ← chi_add, ← map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -152,13 +152,13 @@ theorem chi_smul_rho_mul_proj {T : AddSubgroup S.Gam} (hT : S.IsoFree T) (c : T 
   rfl
 
 /- English proof (translation)
-Establish `hω : IsPrimitiveRoot (S.ζ ^ (S.r * S.N)) (S.r * S.N)` using `S.prim.pow (pow_pos (NeZero.pos _) 2) (sq _)`. Rewrite using `[hmul, hmul b a, add_comm b a, smul_smul, _root_.mul_assoc, _root_.mul_assoc (S.r * S.N), pow_mul S.ζ (S.r * S.N), pow_mul S.ζ (S.r * S.N) (_ * _), ← pow_add]`. Use `congr 1`. Rewrite using `[pow_eq_pow_mod _ hω.pow_eq_one, pow_eq_pow_mod (_ + _) hω.pow_eq_one]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(ZMod.natCast_eq_natCast_iff' _ _ _).1 ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hodd`. Establish `h1 : (S.N + 1) / 2 = m + 1` using `by omega`. Establish `h2 : ((S.r : ZMod (S.r * S.N)) * (2 * m + 1)) = 0`. Use `ZMod.natCast_self (S.r * S.N)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.cast_mul]`. Rewrite using `[← this]`. Use `congr 1`. Conclude with `congrArg (Nat.cast : ℕ → ZMod (S.r * S.N)) hm.symm` after adjusting the coercions. Rewrite using `[h1, Weights.eStd_swap _ _ a b]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_add, Nat.cast_mul, ZMod.natCast_zmod_val, nsmul_eq_mul, Nat.cast_one]`. Take the linear combination `(eStd S.g _ a b) * h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rho_comm (hodd : Odd S.N) (hmul : ∀ a b, S.ρ a * S.ρ b =
       S.ζ ^ (S.r * S.N * (S.r • eStd S.g _ a b).val * ((S.N + 1) / 2)) • S.ρ (a + b)) (a b : S.Gam) :
@@ -184,45 +184,41 @@ theorem rho_comm (hodd : Odd S.N) (hmul : ∀ a b, S.ρ a * S.ρ b =
   linear_combination (eStd S.g _ a b) * h2
 
 /- English proof (translation)
-Distinguish the cases in `hbot : W = ⊥`. Conclude with `Or.inl hbot`. Use `right`. Take `⟨u, huW, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Set `Λ : Matrix S.J S.J o →+* Module.End F (S.J → F)` to `(Matrix.toLinAlgEquiv' (R := F) (n := S.J)).toRingEquiv.toRingHom.comp y.mapMatrix`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΛ : ∀ M v, Λ M v = (M.map y).mulVec v` using `fun M v => Matrix.toLinAlgEquiv'_apply _ _`. Establish `hΛs : ∀ (x : o) M, Λ (x • M) = y x • Λ M` using `fun x M => LinearMap.ext fun v => by`. Rewrite using `[LinearMap.smul_apply, hΛ, hΛ, ← Matrix.smul_mulVec]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [← hΛ] at hW hst ⊢`. Establish `hω : IsPrimitiveRoot (y (S.ζ ^ (S.r * S.N))) (S.r * S.N)`. Establish `hω : IsPrimitiveRoot (S.ζ ^ (S.r * S.N)) (S.r * S.N)` using `S.prim.pow (pow_pos (NeZero.pos _) 2) (sq _)`. Establish `: NeZero ((S.r * S.N : ℕ) : F)` using `⟨by simpa only [map_natCast] using (S.unit.map y).ne_zero⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic _ y]`. Conclude with `(hω.isRoot_cyclotomic (NeZero.pos _)).map`. Establish `hζ : y S.ζ ≠ 0` using `((S.prim.isUnit (pow_ne_zero _ (NeZero.ne (S.r * S.N)))).map y).ne_zero`. Set `ψ : ZMod (S.r * S.N) → F` to `fun x => y (S.ζ ^ (S.r * S.N)) ^ x.val`. Establish `ψinj : Function.Injective ψ` using `fun x x' h => ZMod.val_injective _ (hω.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ψadd : ∀ x x', ψ (x + x') = ψ x * ψ x'` using `fun x x' => by`. Simplify using `only [ψ]`. Rewrite using `[ZMod.val_add, ← pow_add]`. Conclude with `(pow_eq_pow_mod _ hω.pow_eq_one).symm`. Establish `ψ0 : ψ 0 = 1` using `by simp [ψ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `comm : ∀ a b v, Λ (S.ρ a) (Λ (S.ρ b) v) = ψ (S.r • eStd S.g _ a b) • Λ (S.ρ b) (Λ (S.ρ a) v)` using `fun a b v => by`. Use `LinearMap.congr_fun (congrArg Λ (hcomm a b)) v` as an intermediate fact. Rewrite `this` using `[hΛs, map_mul, map_mul, map_pow]`. Then use the resulting hypothesis. Establish `mul : ∀ a b, ∃ k : F, k ≠ 0 ∧ ∀ v, Λ (S.ρ a) (Λ (S.ρ b) v) = k • Λ (S.ρ (a + b)) v` using `fun a b => by`. Take `⟨k, hk⟩` from `S.ρ_mul a b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨y S.ζ ^ k, pow_ne_zero _ hζ, fun v => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (congrArg Λ hk) v` as an intermediate fact. Rewrite `this` using `[hΛs, map_mul, map_pow]`. Then use the resulting hypothesis. Establish `inj : ∀ a, Function.Injective (Λ (S.ρ a))` using `fun a v v' h => by`. Take `⟨k, hk, h'⟩` from `mul (-a) a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h'` using `[neg_add_cancel, S.ρ_one 0 (smul_zero _), map_one]`. Conclude with `smul_right_injective _ hk ((h' v).symm.trans ((congrArg _ h).trans (h' v')))`. Set `σ : (Fin S.g ⊕ Fin S.g → ZMod S.N) → S.Gam` to `fun a i => ((a i).val : ZMod (S.r * S.N))`. Establish `hli : LinearIndependent F fun a => Λ (S.ρ (σ a))`. Use `linearIndependent_of_comm_smul _ (fun a b => ψ (S.r • eStd S.g _ (σ a) (σ b))) (fun a => inj _) (fun a b v => comm _ _ v) fun a a' h => funext fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : (1 : ZMod S.N).val = 1`. Establish `: Fact (1 < S.N)` using `⟨S.N_ge⟩`. Conclude with `ZMod.val_one _`. Establish `h2 : ∀ j, σ (Pi.single j 1) = Pi.single j 1` using `fun j => funext fun l => by`. Distinguish the cases in `hl : l = j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hl` using the available equality. Simplify using `only [σ, Pi.single_eq_same, h1, Nat.cast_one]`. Simplify using `[σ, hl]`. Establish `h3 : S.r • σ a i = S.r • σ a' i`. Break down `i with i | i` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ψinj (congrFun h (Pi.single (.inr i) 1))` as an intermediate fact. Rewrite `this` using `[h2]`. Simplify `this` using `[eStd, Pi.single_apply]`. Use `ψinj (congrFun h (Pi.single (.inl i) 1))` as an intermediate fact. Rewrite `this` using `[h2]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[eStd, Pi.single_apply]`. Simplify using `only [σ, nsmul_eq_mul, ← Nat.cast_mul] at h3`. Establish `h4` using `Nat.ModEq.mul_left_cancel' (by have := S.r_pos; omega) ((ZMod.natCast_eq_natCast_iff _ _ _).1 h3)`. Rewrite `h4` using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Conclude with `h4`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span F (Set.range fun a => Λ (S.ρ (σ a))) = ⊤`. Apply `hli.span_eq_top_of_card_eq_finrank'` to reduce the goal to its premises. Rewrite using `[Module.finrank_linearMap, Module.finrank_fintype_fun_eq_card, hc, ← pow_add]`. Simplify using the standard rewrite rules. Use `Fintype.ofFinite T` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : ∀ t : T, y (chi S (c t)) • Λ (S.ρ t) u = u` using `fun t => by`. Use `LinearMap.congr_fun (congrArg Λ (chi_smul_rho_mul_proj hT c t)) u` as an intermediate fact. Rewrite `this` using `[hΛs, map_mul, LinearMap.smul_apply, Module.End.mul_apply, hW u huW]`. Then use the resulting hypothesis. Establish `hP : ∀ a, Λ (S.proj T c) (Λ (S.ρ a) u) ∈ W` using `fun a => by`. Establish `e : Λ (S.proj T c) (Λ (S.ρ a) u) = y (Ring.inverse (Nat.card T : o)) • (∑ t : T, ψ (S.r • eStd S.g _ t a)) • Λ (S.ρ a) u`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[proj_eq, hΛs, map_sum, LinearMap.smul_apply, LinearMap.sum_apply, Finset.sum_smul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hΛs, LinearMap.smul_apply, comm, smul_comm, ← map_smul, hu]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `W.smul_mem _ ?_` and prove the remaining obligations. Distinguish the cases in `h : ∀ t : T, S.r • eStd S.g _ t a = 0`. Take `⟨b, hb⟩` from `exists_perp hT a h`. Take `⟨k, hk, h'⟩` from `mul (a - S.N • b) (S.N • b)`. Rewrite `h'` using `[sub_add_cancel, S.ρ_one (S.N • b) (by rw [smul_smul, nsmul_self]), map_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `W.smul_mem _ ((W.smul_mem_iff hk).1 ?_)` and prove the remaining obligations. Rewrite using `[← h']`. Conclude with `hst _ hb u huW`. Take `⟨t, ht⟩` from `not_forall.1 h`. Rewrite using `[sum_eq_zero_of_mul (fun t : T => ψ (S.r • eStd S.g _ t a)) (a := t) (fun s t => ?_) (fun h => ht (ψinj (h.trans ψ0.symm))), zero_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.zero_mem`. Rewrite using `[← ψadd, ← smul_add]`. Conclude with `congrArg (fun x => ψ (S.r • x)) ((Weights.eLeft S.g _ a).map_add s t)`. Introduce `v hv`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : (S.J → F) →ₗ[F] (S.J → F), f u = v := by`.
-
-Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one F hu0`. Conclude with `⟨φ.smulRight v, by simp [hφ]⟩`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun F).mp (hspan ▸ Submodule.mem_top : f ∈ Submodule.span F (Set.range fun a => Λ (S.ρ (σ a))))`. Rewrite using `[← hv, ← hf, ← hd, LinearMap.sum_apply, map_sum]`. Use `W.sum_mem fun a _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.smul_apply, map_smul]`. Conclude with `W.smul_mem _ (hP _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irred_of_comm [IsDomain o] (hc : Fintype.card S.J = S.N ^ S.g)
     (hcomm : ∀ a b, S.ρ a * S.ρ b = (S.ζ ^ (S.r * S.N)) ^ (S.r • eStd S.g _ a b).val • (S.ρ b * S.ρ a))
@@ -344,7 +340,7 @@ namespace GlobalTheory
 open WeightIrred in
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ hA S ρ p _ y T hT c W hW hst`. Establish `: IsDomain o` using `hA.inj.isDomain _`. Conclude with `irred_of_comm ρ.card (rho_comm (by rw [ρ.N_eq]; exact ρ.n_odd.pow.pow) (rho_mul_rho hL.1 ρ)) ((IsLocalRing.residue (OO p)).comp y) hT c W hW hst`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weightSpace_irreducible_residue : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y : o →+* OO p) (T : AddSubgroup S.Gam), S.IsoFree T → ∀ (c : T →+ ZMod S.N) (W : Submodule (kb p) (S.J → kb p)), (∀ v ∈ W, ((S.proj T c).map fun a => IsLocalRing.residue (OO p) (y a)).mulVec v = v) → (∀ h ∈ S.perp T, ∀ v ∈ W, ((S.ρ h).map fun a => IsLocalRing.residue (OO p) (y a)).mulVec v ∈ W) → W = ⊥ ∨ ∀ v, ((S.proj T c).map fun a => IsLocalRing.residue (OO p) (y a)).mulVec v = v → v ∈ W := by
   intro hL o Ω _ _ _ hA S ρ p _ y T hT c W hW hst

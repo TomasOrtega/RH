@@ -14,7 +14,7 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 namespace GlobalTheory.SiegelOpen
 
 /- English proof (translation)
-Establish `han : AnalyticAt ℂ f a` using `analyticAt_pi_iff.mpr fun i => ReciprocityTheory.AnForm.Osgood.osgood n U (fun x => f x i) hU (differentiableOn_pi.mp hf i) a ha`. Establish `hb` using `GlobalTheory.InjHol.bijective_fderiv_of_injOn n U f hU hf hinj a ha`. Establish `hm : Filter.map f (nhds a) = nhds (f a)` using `han.hasStrictFDerivAt.map_nhds_eq_of_surj (LinearMap.range_eq_top.mpr hb.2)`. Rewrite using `[← hm]`. Conclude with `Filter.image_mem_map (hU.mem_nhds ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_mem_nhds_of_injOn {n : ℕ} {U : Set (Fin n → ℂ)} {f : (Fin n → ℂ) → (Fin n → ℂ)}
     (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) (hinj : Set.InjOn f U) {a : Fin n → ℂ}
@@ -28,9 +28,9 @@ theorem image_mem_nhds_of_injOn {n : ℕ} {U : Set (Fin n → ℂ)} {f : (Fin n 
   exact Filter.image_mem_map (hU.mem_nhds ha)
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1` using `h s(i, j)`. Establish `h2 : s((s(i, j) : Sym2 J).out.1, (s(i, j) : Sym2 J).out.2) = s(i, j)` using `Quot.out_eq (s(i, j) : Sym2 J)`. Break down `Sym2.eq_iff.mp h2 with ⟨h3, h4⟩ | ⟨h3, h4⟩` into its components or cases. Rewrite `h1` using `[h3, h4]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[h3, h4]`. Rewrite using `[← hs.apply i j, ← ht.apply i j]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_out {J R : Type} {s t : Matrix J J R} (hs : s.IsSymm) (ht : t.IsSymm)
     (h : ∀ z : Sym2 J, s z.out.1 z.out.2 = t z.out.1 z.out.2) : s = t := by
@@ -45,11 +45,11 @@ theorem eq_of_out {J R : Type} {s t : Matrix J J R} (hs : s.IsSymm) (ht : t.IsSy
     exact h1
 
 /- English proof (translation)
-Introduce `h B τ b₀ hB hb₀ hd hs hinj`. Set `e : Sym2 (Fin h) ≃ Fin (h * (h + 1) / 2)` to `Fintype.equivFinOfCardEq (GlobalTheory.card_sym2_fin h)`. Set `p : Matrix (Fin h) (Fin h) ℂ → (Fin (h * (h + 1) / 2) → ℂ)` to `fun t k => t (e.symm k).out.1 (e.symm k).out.2`. Establish `hpc : Continuous p` using `continuous_pi fun k => continuous_id.matrix_elem _ _`. Establish `hp : ∀ s t : Matrix (Fin h) (Fin h) ℂ, s.IsSymm → t.IsSymm → p s = p t → s = t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s t hs' ht' hst`. Use `eq_of_out hs' ht' fun z => ?_` and prove the remaining obligations. Use `congrFun hst (e z)` as an intermediate fact. Simplify `this` using `only [p, Equiv.symm_apply_apply]`. Establish `key` using `image_mem_nhds_of_injOn (f := fun b => p (τ b)) hB (differentiableOn_pi.mpr fun k => hd _ _) (fun x hx y hy hxy => hinj hx hy (hp _ _ (hs x hx).1 (hs y hy).1 hxy)) hb₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨_, hpc.continuousAt.preimage_mem_nhds key, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨b, hb, hbt⟩ ht -`. Conclude with `⟨b, hb, hp _ _ (hs b hb).1 ht hbt⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_nhds_subset_image :
     ∀ (h : ℕ) (B : Set (Fin (h * (h + 1) / 2) → ℂ)) (τ : (Fin (h * (h + 1) / 2) → ℂ) → Matrix (Fin h) (Fin h) ℂ) (b₀ : Fin (h * (h + 1) / 2) → ℂ), IsOpen B → b₀ ∈ B → (∀ i j, DifferentiableOn ℂ (fun b => τ b i j) B) → (∀ b ∈ B, (τ b).IsSymm ∧ ((τ b).map Complex.im).PosDef) → Set.InjOn τ B → ∃ N ∈ nhds (τ b₀), ∀ t ∈ N, t.IsSymm → (t.map Complex.im).PosDef → ∃ b ∈ B, τ b = t := by

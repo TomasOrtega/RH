@@ -21,9 +21,9 @@ theorem iota_comp_mk (hI : RingHom.ker π = I) (S : Subring R) :
     (iota I π hI S).comp (Ideal.Quotient.mk _) = π.comp S.subtype := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `(x : R) ∈ I`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hI]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_injective (hI : RingHom.ker π = I) (S : Subring R) : Function.Injective (iota I π hI S) := by
   rw [injective_iff_map_eq_zero]
@@ -38,7 +38,7 @@ def trans {S S' : Subring R} (h : S ≤ S') : S ⧸ I.comap S.subtype →+* S' �
   Ideal.quotientMap _ (Subring.inclusion h) fun x hx => hx
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem iota_comp_trans (hI : RingHom.ker π = I) {S S' : Subring R} (h : S ≤ S') :
     (iota I π hI S').comp (trans I h) = iota I π hI S := by

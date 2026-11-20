@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.WeilLinA
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Simplify using `[GlobalTheory.SplitFlip.omA]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem omA_h_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {A D : Type}
     [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ν β : kˣ →* ℂˣ) (g : GL A k) (Φ : Matrix A D k → ℂ) :
@@ -31,7 +31,7 @@ theorem omA_h_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   funext X; simp [GlobalTheory.SplitFlip.omA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Simplify using `[GlobalTheory.SplitFlip.omA]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem omA_g_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {A D : Type}
     [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ν β : kˣ →* ℂˣ) (h : GL D k) (Φ : Matrix A D k → ℂ) :
@@ -39,7 +39,7 @@ theorem omA_g_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   funext X; simp [GlobalTheory.SplitFlip.omA]
 
 /- English proof (translation)
-Introduce `u _`. Simplify using `[mat]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_UAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (Y : Spc F E n) {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ Y.J) ∈ UAt σ Y ev := by
@@ -47,7 +47,7 @@ theorem one_mem_UAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   simp [mat]
 
 /- English proof (translation)
-Establish `e : (χ⁻¹).ker = χ.ker` using `by ext x; simp [MonoidHom.mem_ker]`. Unfold `GlobalTheory.SmGL.IsSmoothChar at h ⊢`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothChar_inv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ : kˣ →* ℂˣ) (h : GlobalTheory.SmGL.IsSmoothChar χ) : GlobalTheory.SmGL.IsSmoothChar χ⁻¹ := by
@@ -56,7 +56,7 @@ theorem isSmoothChar_inv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   rw [e]; exact h
 
 /- English proof (translation)
-Introduce `x`. Use `h x` as an intermediate fact. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isUnitaryChar_inv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ : kˣ →* ℂˣ) (h : GlobalTheory.SmGL.IsUnitaryChar χ) : GlobalTheory.SmGL.IsUnitaryChar χ⁻¹ := by
@@ -65,21 +65,21 @@ theorem isUnitaryChar_inv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   simp [this]
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hTr v hv`. Take `⟨t, ι, hι⟩` from `GlobalTheory.T.exists_linear_functional_good_place hP F E σ B a a' G X om om' hTr v hv`. Take `⟨ν₀, hV⟩` from `GlobalTheory.T.linear_weil_functional_spherical_value hP F E σ B a a' G X om om' hTr v hv t ι hι (GlobalTheory.T.linear_weil_functional_good_place_equivariant hP F E σ B a a' G X om om' hTr v hv t ι hι)`. Take `⟨t', ht'⟩` from `GlobalTheory.T.linear_weil_functional_local_uniqueness hP F E σ B a a' G X om om' hTr v hv t ι hι ν₀ hV`. Take `⟨β₀, hW⟩` from `GlobalTheory.T.linear_weil_functional_translation_equivariant hP F E σ B a a' G X om om' hTr v hv t ι hι (GlobalTheory.T.linear_weil_functional_unramified_vector hP F E σ B a a' G X om om' hTr v hv t ι hι)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hβs, hβu⟩` from `GlobalTheory.T.linear_weil_functional_determined_by_unramified hP F E σ B a a' G X om om' hTr v hv t ι hι β₀ hW`. Take `⟨hs, hu⟩` from `GlobalTheory.T.local_character_smooth_unitary hP F E σ B a a' G X om om' hTr v hv t'`. Establish `hνs : GlobalTheory.SmGL.IsSmoothChar ν₀`. Break down `ht' with h | h` into its components or cases. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Rewrite using `[h]`. Conclude with `isSmoothChar_inv _ hs`. Establish `hνu : GlobalTheory.SmGL.IsUnitaryChar ν₀`. Break down `ht' with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `hu`. Rewrite using `[h]`. Conclude with `isUnitaryChar_inv _ hu`. Establish `hloc` using `((GlobalTheory.T.theta_action_exists hP) F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ (GlobalTheory.ThK.Check.isPair_of_isTriple hTr).1 v).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨ν₀, β₀, ι, ⟨t', ht'⟩, hνs, hνu, hβs, hβu, hι.bij, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨g', -, hg'⟩` from `hV g hg`. Conclude with `⟨g', fun φ hφ φ₁ hφ₁ hA => by rw [hg' φ hφ φ₁ hφ₁ hA, omA_h_one ν₀ β₀]⟩`. Introduce `g'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgt⟩` from `GlobalTheory.T.local_unitary_group_surjects_general_linear hP F E σ B a a' G X om om' hTr v hv t g'`. Use `⟨g, hg, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨φ₁, ⟨hφ₁, hA⟩, -⟩` from `hloc g hg 1 (one_mem_UAt σ G.W _) φ hφ`. Take `⟨g'', hg'', hgeq⟩` from `hV g hg`. Establish `: g'' = g'` using `Units.ext (hg''.symm.trans hgt)`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Substitute `this` using the available equality. Conclude with `⟨φ₁, hφ₁, hA, by rw [hgeq φ hφ φ₁ hφ₁ hA, omA_h_one ν₀ β₀]⟩`. Introduce `h'`. Take `⟨h, hh, hht⟩` from `GlobalTheory.T.local_unitary_group_surjects_general_linear_right hP F E σ B a a' G X om om' hTr v hv t h'`. Use `⟨h, hh, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨φ₁, ⟨hφ₁, hA⟩, -⟩` from `hloc 1 (one_mem_UAt σ G.V _) h hh φ hφ`. Take `⟨h'', hh'', hheq⟩` from `hW h hh`. Establish `: h'' = h'` using `Units.ext (hh''.symm.trans hht)`. Substitute `this` using the available equality. Conclude with `⟨φ₁, hφ₁, hA, by rw [hheq φ hφ φ₁ hφ₁ hA, omA_g_one ν₀ β₀]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localOps_eq_omA : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

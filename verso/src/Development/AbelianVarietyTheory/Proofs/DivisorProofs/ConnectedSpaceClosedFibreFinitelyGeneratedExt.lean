@@ -12,37 +12,29 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ S π hprop hsurj hbij K _ κ L hL n c hLc`. Use `haveI := hprop`. Use `haveI := hsurj`. Establish `hc : ∀ j, c j ∈ L` using `fun j => hLc ▸ Subfield.subset_closure (Or.inr ⟨j, rfl⟩)`. Use `set A := MvPolynomial (Fin n) R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set ιC : R →+* A := MvPolynomial.C with hC`. Use `set β : R →+* L := (κ.codRestrict L hL).comp (residue R) with hβ`. Use `set φ : A →+* L := MvPolynomial.eval₂Hom β (fun j => ⟨c j, hc j⟩) with hφ`. Establish `hφC : φ.comp ιC = β`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show MvPolynomial.eval₂ β (fun j => (⟨c j, hc j⟩ : L)) (MvPolynomial.C r) = β r`. Conclude with `MvPolynomial.eval₂_C _ _ _`. Establish `hx : spMap β = spMap φ ≫ spMap ιC`. Rewrite using `[← hφC]`. Use `show Spec.map (CommRingCat.ofHom (φ.comp ιC)) = Spec.map (CommRingCat.ofHom φ) ≫ Spec.map (CommRingCat.ofHom ιC)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hdiv : ∀ x : L, ∃ a b : A, φ b ≠ 0 ∧ φ b * x = φ a`. Establish `hsub : Subring.closure (Set.range κ ∪ Set.range c) ≤ (φ.range).map L.subtype`. Rewrite using `[Subring.closure_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `y (⟨z, rfl⟩ | ⟨j, rfl⟩)`. Take `⟨r, rfl⟩` from `residue_surjective z`. Conclude with `⟨β r, ⟨MvPolynomial.C r, MvPolynomial.eval₂_C _ _ _⟩, rfl⟩`. Conclude with `⟨⟨c j, hc j⟩, ⟨MvPolynomial.X j, MvPolynomial.eval₂_X _ _ _⟩, rfl⟩`. Introduce `x`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx' : (x : K) ∈ Subfield.closure (Set.range κ ∪ Set.range c)` using `hLc ▸ x.2`. Take `⟨y, hy, z, hz, hyz⟩` from `Subfield.mem_closure_iff.1 hx'`. Take `⟨y', ⟨a, rfl⟩, rfl⟩` from `hsub hy`. Take `⟨z', ⟨b, rfl⟩, rfl⟩` from `hsub hz`. Distinguish the cases in `hb : φ b = 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, 1, by simp, ?_⟩` and prove the remaining obligations. Establish `: (x : K) = 0` using `by rw [← hyz]; simp [hb]`. Establish `: x = 0` using `Subtype.ext this`. Simplify using `[this]`. Use `⟨a, b, hb, ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hb' : ((φ b : L) : K) ≠ 0` using `fun h => hb (Subtype.ext h)`. Simplify using `only [Subfield.coe_mul, L.subtype_apply] at hyz ⊢`. Rewrite using `[← hyz]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hstalk : φ.SurjectiveOnStalks`. Use `RingHom.surjectiveOnStalks_of_exists_div fun x => ?_` and prove the remaining obligations. Take `⟨a, b, hb, e⟩` from `hdiv x`. Conclude with `⟨a, b, (isUnit_iff_ne_zero).2 hb, e⟩`. Use `haveI hpre : IsPreimmersion (spMap φ) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[IsPreimmersion.SpecMap_iff]`. Use `⟨?_, hstalk⟩` and prove the remaining obligations. Use `haveI : Subsingleton (PrimeSpectrum L) := inferInstance`. Conclude with `Topology.IsEmbedding.of_subsingleton _`. Use `set π' : pullback π (spMap ιC) ⟶ Sp A := pullback.snd π (spMap ιC) with hπ'`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hflat : Flat (spMap ιC)`. Use `Flat.SpecMap_iff.2 ?_` and prove the remaining obligations. Use `show (algebraMap R A).Flat`. Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`. Establish `hbij' : ∀ V : (Sp A).Opens, Function.Bijective (π'.app V).hom` using `GlobalTheory.Mum.app_bijective_of_flat_baseChange R S (Sp A) _ π (spMap ιC) _ _ inferInstance inferInstance hbij hflat (IsPullback.of_hasPullback π (spMap ιC)).flip`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q⟩ : Nonempty (PrimeSpectrum L)` from `inferInstance`. Establish `hconn` using `GlobalTheory.T.zariski_connectedness_isPreconnected_fibre _ _ π' inferInstance inferInstance hbij' (spMap φ q)`. Establish `hrange : Set.range (spMap φ) = {spMap φ q}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨q', rfl⟩`. Rewrite using `[Subsingleton.elim q' q]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨q, rfl⟩`.
-
-Use `set f := pullback.fst π' (spMap φ) with hf`. Establish `hfr : Set.range f = {s | π' s = spMap φ q}`. Rewrite using `[hf, Scheme.Pullback.range_fst, hrange]`. Both sides reduce to the same expression. Establish `hP : PreconnectedSpace ↥(pullback π' (spMap φ))`.
-
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← f.isEmbedding.isInducing.isPreconnected_image, Set.image_univ, hfr]`. Conclude with `hconn`. Establish `e : pullback π (spMap β) ≅ pullback π' (spMap φ)` using `pullback.congrHom rfl hx ≪≫ (pullbackLeftPullbackSndIso π (spMap ιC) (spMap φ)).symm`. Take `⟨z, -⟩` from `(pullback.snd π (spMap β)).surjective q`.
-
-Use `haveI : ConnectedSpace ↥(pullback π' (spMap φ)) := ConnectedSpace.mk ⟨e.hom z⟩`. Conclude with `(Scheme.homeoOfIso e).symm.surjective.connectedSpace (Scheme.homeoOfIso e).symm.continuous`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem connectedSpace_pullback_of_finitelyGenerated_residue :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (S : Scheme.{0}) (π : S ⟶ Sp R),

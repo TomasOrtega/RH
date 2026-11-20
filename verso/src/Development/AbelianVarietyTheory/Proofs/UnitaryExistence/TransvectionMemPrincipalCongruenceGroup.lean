@@ -18,31 +18,27 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.PrincTransv
 
 /- English proof (translation)
-Introduce `E _ _ _ H l Di r ξ₀ Gm φ0 hξ h`. Establish `hξ' : IsCMField.complexConj E ξ₀ = -ξ₀` using `hξ`. Establish `hG` using `h.2.2.1`. Establish `hint` using `(GlobalTheory.HermModel.rank_integral_selfDual E H Di r (-ξ₀) Gm φ0 (by simp [cc, hξ']) h).2.2.1`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d : ℕ := (NumberField.discr E).natAbs with hd`. Establish `hd0 : 0 < d` using `Int.natAbs_pos.2 (NumberField.discr_ne_zero E)`. Use `⟨l.M * l.A * d, Nat.mul_pos (Nat.mul_pos hM l.A_pos) hd0, ?_⟩` and prove the remaining obligations. Introduce `κ0 hκ ξ hξΛ hiso s hs hsi`. Establish `hκc : IsCMField.complexConj E κ0 = -κ0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hκ with h | h <;> simp [h, hξ', map_ofNat]`. Establish `hs' : IsCMField.complexConj E s = s` using `hs`. Use `set α : E := ((l.M * l.A * d : ℕ) : E) * s * κ0 with hαdef`. Establish `hα : cc α = -α`. Simplify using `[hαdef, cc, hs', hκc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsIntegral ℤ (2 : E)` using `isIntegral_natCast 2`. Establish `hint' : ∀ v ∈ LinearMap.range φ0, IsIntegral ℤ ((d : E) * κ0 * herm Gm v ξ)`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y, rfl⟩` from `hξΛ`. Establish `h1` using `h2.mul (hint x y)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hdd : (d : E) = (NumberField.discr E : E) ∨ (d : E) = -(NumberField.discr E : E)`. Break down `Int.natAbs_eq (NumberField.discr E) with h | h` into its components or cases. Use `left`. Rewrite using `[h, Int.cast_natCast]`. Use `right`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, Int.cast_neg, Int.cast_natCast, neg_neg]`. Establish `hpm : (d : E) * κ0 * herm Gm (φ0 x) (φ0 y) = 2 * ((NumberField.discr E : E) * (-ξ₀ * herm Gm (φ0 x) (φ0 y))) ∨ (d : E) * κ0 * herm Gm (φ0 x) (φ0 y) = -(2 * ((NumberField.discr E : E) * (-ξ₀ * herm Gm (φ0 x) (φ0 y))))`. Apply the tactic sequence `rcases hdd with e | e <;> rcases hκ with e' | e' <;> rw [e, e']`. Use `right`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `left`. Expand and normalize the polynomial expressions, which then agree. Use `left`. Expand and normalize the polynomial expressions, which then agree. Use `right`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `rcases hpm with e | e <;> rw [e]`. Conclude with `h1`. Conclude with `h1.neg`. Establish `key : ∀ v ∈ LinearMap.range φ0, (s * ((d : E) * κ0 * herm Gm v ξ)) • ξ ∈ LinearMap.range φ0` using `fun v hv => GlobalTheory.FlagData.smul_mem_of_isIntegral _ (hsi.mul (hint' v hv)) hξΛ`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ v, (α * herm Gm v ξ) • ξ = (l.M * l.A) • ((s * ((d : E) * κ0 * herm Gm v ξ)) • ξ)`. Introduce `v`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, hαdef]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨GlobalTheory.FlagData.transv Gm hiso α, ⟨⟨GlobalTheory.FlagData.herm_transvMat hG hiso hα, fun x => ?_⟩, fun a _ => ?_, fun a => ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ LinearMap.range φ0 ↔ transvMat Gm ξ α *ᵥ x ∈ LinearMap.range φ0`. Rewrite using `[GlobalTheory.FlagData.transvMat_mulVec]`. Use `⟨fun hx => Submodule.add_mem _ hx (by rw [e]; exact nsmul_mem (key x hx) _), fun hx => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h` using `nsmul_mem (key _ hx) (l.M * l.A)`. Rewrite `h` using `[← e, GlobalTheory.FlagData.herm_add_smul_left, hiso, mul_zero, add_zero]`. Simplify using `using Submodule.sub_mem _ hx h`. Take `⟨b, hb⟩` from `key _ (LinearMap.mem_range_self φ0 a)`. Use `⟨l.A • b, ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `transvMat Gm ξ α *ᵥ φ0 a = _`. Rewrite using `[GlobalTheory.FlagData.transvMat_mulVec, e, ← hb, map_nsmul, mul_smul]`. Take `⟨b, hb⟩` from `key _ (LinearMap.mem_range_self φ0 a)`. Use `⟨l.M • b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `transvMat Gm ξ α *ᵥ φ0 a = _`.
-
-Rewrite using `[GlobalTheory.FlagData.transvMat_mulVec, e, ← hb, map_nsmul, mul_comm, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transv_mem_princ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (Di : Datum H) (r : ℕ) (ξ₀ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ0 : Di.La →ₗ[𝓞 E] (Fin r → E)), cc ξ₀ = -ξ₀ → (Function.Injective φ0 ∧ Submodule.span E (Set.range φ0) = ⊤ ∧ (∀ a b, cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((Di.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-ξ₀ * herm Gm (φ0 x) (φ0 y))) → ∃ m : ℕ, 0 < m ∧ ∀ κ0 : E, (κ0 = 2 * ξ₀ ∨ κ0 = -(2 * ξ₀)) → ∀ ξ ∈ LinearMap.range φ0, herm Gm ξ ξ = 0 → ∀ s : E, cc s = s → IsIntegral ℤ s → ∃ γ ∈ princ l Gm Di φ0, (γ : Matrix (Fin r) (Fin r) E) = transvMat Gm ξ ((m : E) * s * κ0) := by
   intro E _ _ _ H l Di r ξ₀ Gm φ0 hξ h

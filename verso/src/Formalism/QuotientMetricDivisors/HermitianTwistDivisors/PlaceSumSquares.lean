@@ -12,7 +12,7 @@ namespace Formalism.DivisionValues
 namespace W5
 
 /- English proof (translation)
-Establish `h` using `Real.log_le_sub_one_of_pos (div_pos hp hq)`. Rewrite `h` using `[Real.log_div hp.ne' hq.ne']`. Establish `: (p - q) / q = p / q - 1` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma log_le_near (p q : ℝ) (hp : 0 < p) (hq : 0 < q) :
     Real.log p ≤ Real.log q + (p - q) / q := by
@@ -22,7 +22,7 @@ lemma log_le_near (p q : ℝ) (hp : 0 < p) (hq : 0 < q) :
   linarith
 
 /- English proof (translation)
-Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_pow, Real.log_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma log_smooth (a b c d : ℕ) :
     Real.log ((2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) =
@@ -32,7 +32,7 @@ lemma log_smooth (a b c d : ℕ) :
     Real.log_pow]
 
 /- English proof (translation)
-Establish `h` using `log_le_near p ((2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) hp (by positivity)`. Rewrite `h` using `[log_smooth]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma logp (p : ℝ) (a b c d : ℕ) (e : ℝ) (hp : 0 < p)
     (he : (p - (2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) / ((2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) ≤ e) :
@@ -42,7 +42,7 @@ lemma logp (p : ℝ) (a b c d : ℕ) (e : ℝ) (hp : 0 < p)
   linarith
 
 /- English proof (translation)
-Establish `h` using `logp ((3 : ℝ) ^ 12) 19 0 0 0 (7153 / 524288) (by positivity) (by norm_num)`. Rewrite `h` using `[Real.log_pow]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma log_three_le : Real.log 3 ≤ (19 * Real.log 2 + 7153 / 524288) / 12 := by
   have h := logp ((3 : ℝ) ^ 12) 19 0 0 0 (7153 / 524288) (by positivity) (by norm_num)
@@ -51,7 +51,7 @@ lemma log_three_le : Real.log 3 ≤ (19 * Real.log 2 + 7153 / 524288) / 12 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `logp ((5 : ℝ) ^ 3) 7 0 0 0 (-3 / 128) (by positivity) (by norm_num)`. Rewrite `h` using `[Real.log_pow]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma log_five_le : Real.log 5 ≤ (7 * Real.log 2 - 3 / 128) / 3 := by
   have h := logp ((5 : ℝ) ^ 3) 7 0 0 0 (-3 / 128) (by positivity) (by norm_num)
@@ -60,7 +60,7 @@ lemma log_five_le : Real.log 5 ≤ (7 * Real.log 2 - 3 / 128) / 3 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `logp ((7 : ℝ) ^ 2) 4 1 0 0 (1 / 48) (by positivity) (by norm_num)`. Rewrite `h` using `[Real.log_pow]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma place_sum_over_primes : Real.log 7 ≤ (4 * Real.log 2 + Real.log 3 + 1 / 48) / 2 := by
   have h := logp ((7 : ℝ) ^ 2) 4 1 0 0 (1 / 48) (by positivity) (by norm_num)
@@ -69,47 +69,27 @@ lemma place_sum_over_primes : Real.log 7 ≤ (4 * Real.log 2 + Real.log 3 + 1 / 
   linarith
 
 /- English proof (translation)
-Establish `l2` using `Real.log_two_lt_d9`. Establish `l3` using `log_three_le`. Establish `l5` using `log_five_le`. Establish `l7` using `place_sum_over_primes`. Establish `h11 : Real.log 11 ≤ 2 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 12`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `logp 11 2 1 0 0 ((-1 : ℝ) / 12) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h13 : Real.log 13 ≤ 1 * Real.log 2 + 0 * Real.log 3 + 0 * Real.log 5 + 1 * Real.log 7 + (-1 : ℝ) / 14`. Conclude with `logp 13 1 0 0 1 ((-1 : ℝ) / 14) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h17 : Real.log 17 ≤ 1 * Real.log 2 + 2 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 18`. Conclude with `logp 17 1 2 0 0 ((-1 : ℝ) / 18) (by norm_num) (by norm_num)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h19 : Real.log 19 ≤ 2 * Real.log 2 + 0 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 20`. Conclude with `logp 19 2 0 1 0 ((-1 : ℝ) / 20) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h23 : Real.log 23 ≤ 3 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 24`. Conclude with `logp 23 3 1 0 0 ((-1 : ℝ) / 24) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h29 : Real.log 29 ≤ 1 * Real.log 2 + 1 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 30`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `logp 29 1 1 1 0 ((-1 : ℝ) / 30) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h31 : Real.log 31 ≤ 5 * Real.log 2 + 0 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 32`. Conclude with `logp 31 5 0 0 0 ((-1 : ℝ) / 32) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h37 : Real.log 37 ≤ 2 * Real.log 2 + 2 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 36`. Conclude with `logp 37 2 2 0 0 ((1 : ℝ) / 36) (by norm_num) (by norm_num)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h41 : Real.log 41 ≤ 1 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 1 * Real.log 7 + (-1 : ℝ) / 42`. Conclude with `logp 41 1 1 0 1 ((-1 : ℝ) / 42) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h43 : Real.log 43 ≤ 1 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 1 * Real.log 7 + (1 : ℝ) / 42`. Conclude with `logp 43 1 1 0 1 ((1 : ℝ) / 42) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h47 : Real.log 47 ≤ 4 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 48`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `logp 47 4 1 0 0 ((-1 : ℝ) / 48) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h53 : Real.log 53 ≤ 1 * Real.log 2 + 3 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 54`. Conclude with `logp 53 1 3 0 0 ((-1 : ℝ) / 54) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h59 : Real.log 59 ≤ 2 * Real.log 2 + 1 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 60`. Conclude with `logp 59 2 1 1 0 ((-1 : ℝ) / 60) (by norm_num) (by norm_num)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h61 : Real.log 61 ≤ 2 * Real.log 2 + 1 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 60`. Conclude with `logp 61 2 1 1 0 ((1 : ℝ) / 60) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h67 : Real.log 67 ≤ 1 * Real.log 2 + 0 * Real.log 3 + 1 * Real.log 5 + 1 * Real.log 7 + (-3 : ℝ) / 70`. Conclude with `logp 67 1 0 1 1 ((-3 : ℝ) / 70) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h71 : Real.log 71 ≤ 3 * Real.log 2 + 2 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 72`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `logp 71 3 2 0 0 ((-1 : ℝ) / 72) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h73 : Real.log 73 ≤ 3 * Real.log 2 + 2 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 72`. Conclude with `logp 73 3 2 0 0 ((1 : ℝ) / 72) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h79 : Real.log 79 ≤ 4 * Real.log 2 + 0 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 80`. Conclude with `logp 79 4 0 1 0 ((-1 : ℝ) / 80) (by norm_num) (by norm_num)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h83 : Real.log 83 ≤ 2 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 1 * Real.log 7 + (-1 : ℝ) / 84`. Conclude with `logp 83 2 1 0 1 ((-1 : ℝ) / 84) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h89 : Real.log 89 ≤ 1 * Real.log 2 + 2 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 90`. Conclude with `logp 89 1 2 1 0 ((-1 : ℝ) / 90) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h97 : Real.log 97 ≤ 1 * Real.log 2 + 0 * Real.log 3 + 0 * Real.log 5 + 2 * Real.log 7 + (-1 : ℝ) / 98`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `logp 97 1 0 0 2 ((-1 : ℝ) / 98) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h101 : Real.log 101 ≤ 2 * Real.log 2 + 0 * Real.log 3 + 2 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 100`. Conclude with `logp 101 2 0 2 0 ((1 : ℝ) / 100) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h103 : Real.log 103 ≤ 0 * Real.log 2 + 1 * Real.log 3 + 1 * Real.log 5 + 1 * Real.log 7 + (-2 : ℝ) / 105`. Conclude with `logp 103 0 1 1 1 ((-2 : ℝ) / 105) (by norm_num) (by norm_num)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h107 : Real.log 107 ≤ 2 * Real.log 2 + 3 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 108`. Conclude with `logp 107 2 3 0 0 ((-1 : ℝ) / 108) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h109 : Real.log 109 ≤ 2 * Real.log 2 + 3 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 108`. Conclude with `logp 109 2 3 0 0 ((1 : ℝ) / 108) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h113 : Real.log 113 ≤ 4 * Real.log 2 + 0 * Real.log 3 + 0 * Real.log 5 + 1 * Real.log 7 + (1 : ℝ) / 112`.
-
-Conclude with `logp 113 4 0 0 1 ((1 : ℝ) / 112) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h127 : Real.log 127 ≤ 7 * Real.log 2 + 0 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 128`. Conclude with `logp 127 7 0 0 0 ((-1 : ℝ) / 128) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h131 : Real.log 131 ≤ 7 * Real.log 2 + 0 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (3 : ℝ) / 128`. Conclude with `logp 131 7 0 0 0 ((3 : ℝ) / 128) (by norm_num) (by norm_num)` after adjusting the coercions.
-
-Establish `h137 : Real.log 137 ≤ 0 * Real.log 2 + 3 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (2 : ℝ) / 135`. Conclude with `logp 137 0 3 1 0 ((2 : ℝ) / 135) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h139 : Real.log 139 ≤ 2 * Real.log 2 + 0 * Real.log 3 + 1 * Real.log 5 + 1 * Real.log 7 + (-1 : ℝ) / 140`. Conclude with `logp 139 2 0 1 1 ((-1 : ℝ) / 140) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h149 : Real.log 149 ≤ 1 * Real.log 2 + 1 * Real.log 3 + 2 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 150`.
-
-Conclude with `logp 149 1 1 2 0 ((-1 : ℝ) / 150) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h151 : Real.log 151 ≤ 1 * Real.log 2 + 1 * Real.log 3 + 2 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 150`. Conclude with `logp 151 1 1 2 0 ((1 : ℝ) / 150) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h157 : Real.log 157 ≤ 5 * Real.log 2 + 0 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-3 : ℝ) / 160`. Conclude with `logp 157 5 0 1 0 ((-3 : ℝ) / 160) (by norm_num) (by norm_num)` after adjusting the coercions.
-
-Establish `h163 : Real.log 163 ≤ 1 * Real.log 2 + 4 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 162`. Conclude with `logp 163 1 4 0 0 ((1 : ℝ) / 162) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h167 : Real.log 167 ≤ 3 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 1 * Real.log 7 + (-1 : ℝ) / 168`. Conclude with `logp 167 3 1 0 1 ((-1 : ℝ) / 168) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h173 : Real.log 173 ≤ 0 * Real.log 2 + 0 * Real.log 3 + 2 * Real.log 5 + 1 * Real.log 7 + (-2 : ℝ) / 175`.
-
-Conclude with `logp 173 0 0 2 1 ((-2 : ℝ) / 175) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h179 : Real.log 179 ≤ 2 * Real.log 2 + 2 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 180`. Conclude with `logp 179 2 2 1 0 ((-1 : ℝ) / 180) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h181 : Real.log 181 ≤ 2 * Real.log 2 + 2 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 180`. Conclude with `logp 181 2 2 1 0 ((1 : ℝ) / 180) (by norm_num) (by norm_num)` after adjusting the coercions.
-
-Establish `h191 : Real.log 191 ≤ 6 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 192`. Conclude with `logp 191 6 1 0 0 ((-1 : ℝ) / 192) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h193 : Real.log 193 ≤ 6 * Real.log 2 + 1 * Real.log 3 + 0 * Real.log 5 + 0 * Real.log 7 + (1 : ℝ) / 192`. Conclude with `logp 193 6 1 0 0 ((1 : ℝ) / 192) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h197 : Real.log 197 ≤ 2 * Real.log 2 + 0 * Real.log 3 + 0 * Real.log 5 + 2 * Real.log 7 + (1 : ℝ) / 196`.
-
-Conclude with `logp 197 2 0 0 2 ((1 : ℝ) / 196) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h199 : Real.log 199 ≤ 3 * Real.log 2 + 0 * Real.log 3 + 2 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 200`. Conclude with `logp 199 3 0 2 0 ((-1 : ℝ) / 200) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h211 : Real.log 211 ≤ 1 * Real.log 2 + 1 * Real.log 3 + 1 * Real.log 5 + 1 * Real.log 7 + (1 : ℝ) / 210`. Conclude with `logp 211 1 1 1 1 ((1 : ℝ) / 210) (by norm_num) (by norm_num)` after adjusting the coercions.
-
-Establish `h223 : Real.log 223 ≤ 5 * Real.log 2 + 0 * Real.log 3 + 0 * Real.log 5 + 1 * Real.log 7 + (-1 : ℝ) / 224`. Conclude with `logp 223 5 0 0 1 ((-1 : ℝ) / 224) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h227 : Real.log 227 ≤ 0 * Real.log 2 + 2 * Real.log 3 + 2 * Real.log 5 + 0 * Real.log 7 + (2 : ℝ) / 225`. Conclude with `logp 227 0 2 2 0 ((2 : ℝ) / 225) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h229 : Real.log 229 ≤ 0 * Real.log 2 + 2 * Real.log 3 + 2 * Real.log 5 + 0 * Real.log 7 + (4 : ℝ) / 225`.
-
-Conclude with `logp 229 0 2 2 0 ((4 : ℝ) / 225) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h233 : Real.log 233 ≤ 4 * Real.log 2 + 1 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-7 : ℝ) / 240`. Conclude with `logp 233 4 1 1 0 ((-7 : ℝ) / 240) (by norm_num) (by norm_num)` after adjusting the coercions. Establish `h239 : Real.log 239 ≤ 4 * Real.log 2 + 1 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-1 : ℝ) / 240`. Conclude with `logp 239 4 1 1 0 ((-1 : ℝ) / 240) (by norm_num) (by norm_num)` after adjusting the coercions.
-
-Establish `h234 : Real.log 234 ≤ 4 * Real.log 2 + 1 * Real.log 3 + 1 * Real.log 5 + 0 * Real.log 7 + (-6 : ℝ) / 240`. Conclude with `logp 234 4 1 1 0 ((-6 : ℝ) / 240) (by norm_num) (by norm_num)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma head_num :
     Real.log 2 / 2 ^ 2 + Real.log 3 / 3 ^ 2 + Real.log 5 / 5 ^ 2 + Real.log 7 / 7 ^ 2 + Real.log 11 / 11 ^ 2 + Real.log 13 / 13 ^ 2 + Real.log 17 / 17 ^ 2 + Real.log 19 / 19 ^ 2 + Real.log 23 / 23 ^ 2 + Real.log 29 / 29 ^ 2 + Real.log 31 / 31 ^ 2 + Real.log 37 / 37 ^ 2 + Real.log 41 / 41 ^ 2 + Real.log 43 / 43 ^ 2 + Real.log 47 / 47 ^ 2 + Real.log 53 / 53 ^ 2 + Real.log 59 / 59 ^ 2 + Real.log 61 / 61 ^ 2 + Real.log 67 / 67 ^ 2 + Real.log 71 / 71 ^ 2 + Real.log 73 / 73 ^ 2 + Real.log 79 / 79 ^ 2 + Real.log 83 / 83 ^ 2 + Real.log 89 / 89 ^ 2 + Real.log 97 / 97 ^ 2 + Real.log 101 / 101 ^ 2 + Real.log 103 / 103 ^ 2 + Real.log 107 / 107 ^ 2 + Real.log 109 / 109 ^ 2 + Real.log 113 / 113 ^ 2 + Real.log 127 / 127 ^ 2 + Real.log 131 / 131 ^ 2 + Real.log 137 / 137 ^ 2 + Real.log 139 / 139 ^ 2 + Real.log 149 / 149 ^ 2 + Real.log 151 / 151 ^ 2 + Real.log 157 / 157 ^ 2 + Real.log 163 / 163 ^ 2 + Real.log 167 / 167 ^ 2 + Real.log 173 / 173 ^ 2 + Real.log 179 / 179 ^ 2 + Real.log 181 / 181 ^ 2 + Real.log 191 / 191 ^ 2 + Real.log 193 / 193 ^ 2 + Real.log 197 / 197 ^ 2 + Real.log 199 / 199 ^ 2 + Real.log 211 / 211 ^ 2 + Real.log 223 / 223 ^ 2 + Real.log 227 / 227 ^ 2 + Real.log 229 / 229 ^ 2 + Real.log 233 / 233 ^ 2 + Real.log 239 / 239 ^ 2 + (Real.log 234 + 1) / 234 / 3 ≤ 4995 / 10000 := by
@@ -219,7 +199,7 @@ lemma head_num :
 
 set_option maxRecDepth 100000 in
 /- English proof (translation)
-Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 lemma head_sum :
     ∑ n ∈ Finset.range 240, (if n.Prime then Real.log (n : ℝ) / (n : ℝ) ^ 2 else 0) =
@@ -232,13 +212,13 @@ end W5
 namespace W5
 
 /- English proof (translation)
-Take `⟨v, hv⟩ : ∃ v, v = u - h` from `⟨_, rfl⟩`. Establish `hu' : u = v + h` using `by linarith`. Establish `hv0 : 0 < v` using `by linarith`. Establish `hu0 : 0 < u` using `by linarith`. Rewrite using `[← hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `log_le_near u v hu0 hv0`. Establish `h2 : Real.log u - h / v ≤ Real.log v`. Establish `: (u - v) / v = h / v` using `by rw [hu']; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set ℓ := Real.log u with hℓ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : (ℓ - h / v + 1) / v ≤ (Real.log v + 1) / v` using `div_le_div_of_nonneg_right (by linarith) hv0.le`. Establish `h4 : (ℓ - h / v + 1) / v - (ℓ + 1) / u - h * (ℓ / u ^ 2) = h ^ 2 * (ℓ * v - u) / (u ^ 2 * v ^ 2)`. Rewrite using `[hu']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h5 : 0 ≤ h ^ 2 * (ℓ * v - u) / (u ^ 2 * v ^ 2)`. Apply `div_nonneg _ (by positivity)` to reduce the goal to its premises. Apply `mul_nonneg (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma tele (u h : ℝ) (hh : 0 < h) (hu : 2 * h ≤ u) (hlog : 2 ≤ Real.log u) :
     h * (Real.log u / u ^ 2) ≤ (Real.log (u - h) + 1) / (u - h) - (Real.log u + 1) / u := by
@@ -266,7 +246,7 @@ lemma tele (u h : ℝ) (hh : 0 < h) (hu : 2 * h ≤ u) (hlog : 2 ≤ Real.log u)
   linarith
 
 /- English proof (translation)
-Establish `h` using `Real.exp_one_lt_d9`. Establish `h0` using `Real.exp_pos 1`. Establish `: Real.exp 2 = Real.exp 1 * Real.exp 1` using `by rw [← Real.exp_add]; norm_num`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma exp_two_le : Real.exp 2 ≤ 8 := by
   have h := Real.exp_one_lt_d9
@@ -276,9 +256,9 @@ lemma exp_two_le : Real.exp 2 ≤ 8 := by
   nlinarith
 
 /- English proof (translation)
-Establish `hA` using `Real.log_div_self_rpow_antitoneOn (a := 2) (by norm_num)`. Establish `he : Real.exp (2 : ℝ)⁻¹ ≤ 8`. Use `le_trans (Real.exp_le_exp.2 ?_) exp_two_le` and prove the remaining obligations. Evaluate the numerical expressions. Use `hA (a := u) (b := v) (Set.mem_Ici.2 (by linarith)) (Set.mem_Ici.2 (by linarith)) huv` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Simplify `this` using `[Real.rpow_two]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma anti (u v : ℝ) (hu : 8 ≤ u) (huv : u ≤ v) :
     Real.log v / v ^ 2 ≤ Real.log u / u ^ 2 := by
@@ -290,15 +270,15 @@ lemma anti (u v : ℝ) (hu : 8 ≤ u) (huv : u ≤ v) :
   simpa [Real.rpow_two] using this
 
 /- English proof (translation)
-Proceed by induction on `K, hK using Nat.le_induction with`. Consider the case `base => norm_num`. Consider the case `succ K hK ih`. Establish `e : 6 * (K + 1) = 6 * K + 1 + 1 + 1 + 1 + 1 + 1` using `by ring`. Establish `c0 : ¬ ((6 * K) % 6 = 1 ∨ (6 * K) % 6 = 5)` using `by omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : ((6 * K + 1) % 6 = 1 ∨ (6 * K + 1) % 6 = 5)` using `by omega`. Establish `c2 : ¬ ((6 * K + 1 + 1) % 6 = 1 ∨ (6 * K + 1 + 1) % 6 = 5)` using `by omega`. Establish `c3 : ¬ ((6 * K + 1 + 1 + 1) % 6 = 1 ∨ (6 * K + 1 + 1 + 1) % 6 = 5)` using `by omega`. Establish `c4 : ¬ ((6 * K + 1 + 1 + 1 + 1) % 6 = 1 ∨ (6 * K + 1 + 1 + 1 + 1) % 6 = 5)` using `by omega`. Establish `c5 : ((6 * K + 1 + 1 + 1 + 1 + 1) % 6 = 1 ∨ (6 * K + 1 + 1 + 1 + 1 + 1) % 6 = 5)` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ n ∈ Finset.Ico 240 (6 * (K + 1)), (if n % 6 = 1 ∨ n % 6 = 5 then Real.log (n : ℝ) / (n : ℝ) ^ 2 else 0) = ∑ n ∈ Finset.Ico 240 (6 * K), (if n % 6 = 1 ∨ n % 6 = 5 then Real.log (n : ℝ) / (n : ℝ) ^ 2 else 0) + Real.log ((6 * K + 1 : ℕ) : ℝ) / ((6 * K + 1 : ℕ) : ℝ) ^ 2 + Re …`. Rewrite using `[e, Finset.sum_Ico_succ_top (by omega), Finset.sum_Ico_succ_top (by omega), Finset.sum_Ico_succ_top (by omega), Finset.sum_Ico_succ_top (by omega), Finset.sum_Ico_succ_top (by omega), Finset.sum_Ico_succ_top (by omega), if_neg c0, if_pos c1, if_neg c2, if_neg c3, if_neg c4, if_po …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Establish `hKr : (240 : ℝ) ≤ ((6 * K : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 240 ≤ 6 * K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `anti ((6 * K : ℕ) : ℝ) ((6 * K + 1 : ℕ) : ℝ) (by linarith) (by push_cast; linarith)`. Establish `a5` using `anti ((6 * K : ℕ) : ℝ) ((6 * K + 1 + 1 + 1 + 1 + 1 : ℕ) : ℝ) (by linarith) (by push_cast; linarith)`. Establish `hl : 2 ≤ Real.log ((6 * K : ℕ) : ℝ)`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Combine the linear relations using `[exp_two_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `t` using `tele ((6 * K : ℕ) : ℝ) 6 (by norm_num) (by linarith) hl`. Establish `e2 : (((6 * (K + 1) : ℕ) : ℝ) - 6) = ((6 * K : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma blk (K : ℕ) (hK : 40 ≤ K) :
     ∑ n ∈ Finset.Ico 240 (6 * K),
@@ -339,7 +319,7 @@ lemma blk (K : ℕ) (hK : 40 ≤ K) :
     linarith
 
 /- English proof (translation)
-Establish `h2 : ¬ 2 ∣ p` using `fun hd => by`. Use `(Nat.prime_dvd_prime_iff_eq Nat.prime_two hp).1 hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h3 : ¬ 3 ∣ p` using `fun hd => by`. Use `(Nat.prime_dvd_prime_iff_eq Nat.prime_three hp).1 hd` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 -/
@@ -353,25 +333,23 @@ lemma aux_statement_15 (p : ℕ) (hp : p.Prime) (h : 240 ≤ p) : p % 6 = 1 ∨ 
   omega
 
 /- English proof (translation)
-The claim follows from `div_nonneg (Real.log_natCast_nonneg n) (by positivity)`.
+A detailed English derivation is pending.
 -/
 lemma term_nonneg (n : ℕ) : 0 ≤ Real.log (n : ℝ) / (n : ℝ) ^ 2 :=
   div_nonneg (Real.log_natCast_nonneg n) (by positivity)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨K, hK40, hK⟩ : ∃ K : ℕ, 40 ≤ K ∧ ∀ p ∈ s, p < 6 * K := by`. Use `⟨s.sup id + 40, by omega, fun p hp => ?_⟩` and prove the remaining obligations. Establish `: p ≤ s.sup id` using `Finset.le_sup (f := id) hp`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.sum_filter_add_sum_filter_not s (fun p => p < 240)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hhead : ∑ p ∈ s.filter (fun p => p < 240), Real.log (p : ℝ) / (p : ℝ) ^ 2 ≤ ∑ n ∈ Finset.range 240, (if n.Prime then Real.log (n : ℝ) / (n : ℝ) ^ 2 else 0)`. Rewrite using `[← Finset.sum_filter]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.mem_filter.2 ⟨Finset.mem_range.2 hp.2, hs p hp.1⟩`. Introduce `n _ _`. Conclude with `term_nonneg n`. Establish `htail : ∑ p ∈ s.filter (fun p => ¬ p < 240), Real.log (p : ℝ) / (p : ℝ) ^ 2 ≤ ∑ n ∈ Finset.Ico 240 (6 * K), (if n % 6 = 1 ∨ n % 6 = 5 then Real.log (n : ℝ) / (n : ℝ) ^ 2 else 0)`. Rewrite using `[← Finset.sum_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_Ico.2 ⟨by omega, hK p hp.1⟩, aux_statement_15 p (hs p hp.1) (by omega)⟩`. Introduce `n _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `term_nonneg n`. Establish `hb` using `blk K hK40`. Establish `hpos : 0 ≤ (Real.log ((6 * K : ℕ) - 6 : ℝ) + 1) / ((6 * K : ℕ) - 6 : ℝ)`. Establish `h1 : (234 : ℝ) ≤ ((6 * K : ℕ) : ℝ) - 6`. Establish `: (240 : ℝ) ≤ ((6 * K : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 240 ≤ 6 * K)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply `div_nonneg _ (by linarith)` to reduce the goal to its premises. Use `Real.log_nonneg (by linarith : (1 : ℝ) ≤ ((6 * K : ℕ) : ℝ) - 6)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hhead` using `[head_sum]`.
-
-Establish `hn` using `head_num`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma prime_sum_le (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) :
     ∑ p ∈ s, Real.log (p : ℝ) / (p : ℝ) ^ 2 ≤ 4995 / 10000 := by
@@ -416,13 +394,13 @@ lemma prime_sum_le (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) :
 end W5
 
 /- English proof (translation)
-Establish `h1 : ∀ s : Finset ℕ, (∀ p ∈ s, p.Prime) → ∑ p ∈ s, 2 * Real.log (p : ℝ) / (p : ℝ) ^ 2 ≤ 999 / 1000`. Introduce `s hs`. Establish `h` using `W5.prime_sum_le s hs`. Establish `e : ∑ p ∈ s, 2 * Real.log (p : ℝ) / (p : ℝ) ^ 2 = 2 * ∑ p ∈ s, Real.log (p : ℝ) / (p : ℝ) ^ 2`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun p _ => by ring)`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ∀ u : Finset Nat.Primes, ∑ p ∈ u, 2 * Real.log ((p : ℕ) : ℝ) / ((p : ℕ) : ℝ) ^ 2 ≤ 999 / 1000`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `h1 (u.map ⟨Subtype.val, Subtype.val_injective⟩) (by`. Introduce `p hp`. Take `⟨q, -, rfl⟩` from `Finset.mem_map.1 hp`. Conclude with `q.2)`. Establish `e` using `Finset.sum_map u ⟨Subtype.val, Subtype.val_injective⟩ (fun p : ℕ => 2 * Real.log (p : ℝ) / (p : ℝ) ^ 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `le_of_eq_of_le e.symm h`. Establish `h0 : 0 ≤ fun p : Nat.Primes => 2 * Real.log ((p : ℕ) : ℝ) / ((p : ℕ) : ℝ) ^ 2` using `fun p => div_nonneg (mul_nonneg (by norm_num) (Real.log_natCast_nonneg _)) (by positivity)`. Conclude with `⟨h1, summable_of_sum_le h0 h2, lt_of_le_of_lt (Real.tsum_le_of_sum_le h0 h2) (by norm_num)⟩`.
+A detailed English derivation is pending.
 -/
 theorem prime_mod_six_of_large : PrimeSumSq := by
   have h1 : ∀ s : Finset ℕ, (∀ p ∈ s, p.Prime) →
@@ -455,13 +433,13 @@ namespace W5
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 lemma lw_nonneg (w : HeightOneSpectrum (𝓞 K)) : 0 ≤ lw w :=
   div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma vw_int (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) :
     vw w (x : K) = FractionalIdeal.count K w
@@ -470,7 +448,7 @@ lemma vw_int (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) :
   rw [FractionalIdeal.coeIdeal_span_singleton]
 
 /- English proof (translation)
-Establish `h : ((n : 𝓞 K) : K) = (n : K)` using `map_natCast _ n`. Rewrite using `[← h, vw_int]`. Conclude with `FractionalIdeal.count_coe_nonneg K w _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma vw_nat_nonneg (w : HeightOneSpectrum (𝓞 K)) (n : ℕ) : 0 ≤ vw w (n : K) := by
   have h : ((n : 𝓞 K) : K) = (n : K) := map_natCast _ n
@@ -480,21 +458,19 @@ lemma vw_nat_nonneg (w : HeightOneSpectrum (𝓞 K)) (n : ℕ) : 0 ≤ vw w (n :
 end W5
 
 /- English proof (translation)
-Introduce `K _ _ n hn`. Establish `ha : (n : K) ≠ 0` using `by exact_mod_cast hn.ne'`. Use `set I := FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (n : K) with hIdef`. Establish `hD` using `Formalism.LatticeIndexTer.log_product_formula K (n : K) ha`. Establish `hdeg : (finrank ℚ K : ℝ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Module.finrank_pos (R := ℚ) (M := K)).ne'` after adjusting the coercions. Use `set g : HeightOneSpectrum (𝓞 K) → ℝ := fun w => (FractionalIdeal.count K w I : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℝ) with hg`. Establish `hgfin : (Function.support g).Finite`. Establish `hf` using `FractionalIdeal.finite_factors (K := K) I`. Rewrite `hf` using `[Filter.eventually_cofinite]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hf.subset ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[Function.mem_support]`. Introduce `h0`. Apply `hw` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hg, h0, Int.cast_zero, zero_mul]`. Establish `hfun : (fun w : HeightOneSpectrum (𝓞 K) => lw w * (vw w (n : K) : ℝ)) = fun w => (finrank ℚ K : ℝ)⁻¹ * g w`. Use function extensionality and compare the values at `w`. Simplify using `only [lw, vw, hg, hIdef]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : (Function.support fun w : HeightOneSpectrum (𝓞 K) => lw w * (vw w (n : K) : ℝ)).Finite`. Rewrite using `[hfun]`. Conclude with `hgfin.subset (Function.support_mul_subset_right _ _)`. Establish `hlhs : ∑ σ : K →+* ℂ, Real.log ‖σ (n : K)‖ = (finrank ℚ K : ℝ) * Real.log (n : ℝ)`. Establish `: ∀ σ : K →+* ℂ, Real.log ‖σ (n : K)‖ = Real.log (n : ℝ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `σ`. Rewrite using `[map_natCast, Complex.norm_natCast]`. Rewrite using `[Finset.sum_congr rfl (fun σ _ => this σ), Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul]`. Establish `hsum : ∑ᶠ w : HeightOneSpectrum (𝓞 K), lw w * (vw w (n : K) : ℝ) = Real.log (n : ℝ)`. Rewrite using `[hfun, ← mul_finsum, hg, ← hD, hlhs]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨hfin, hsum, fun S => ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum, finsum_eq_sum_of_support_subset (s := S ∪ hfin.toFinset) _ (by`. Introduce `w hw`. Rewrite using `[Finset.coe_union]`.
-
-Conclude with `Or.inr (by simpa using hw))]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_left (fun w _ _ => mul_nonneg (W5.lw_nonneg w) (by exact_mod_cast W5.vw_nat_nonneg w n))`.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem place_sum_natural : PlaceSumNat := by
   intro K _ _ n hn
@@ -542,19 +518,17 @@ theorem place_sum_natural : PlaceSumNat := by
     (fun w _ _ => mul_nonneg (W5.lw_nonneg w) (by exact_mod_cast W5.vw_nat_nonneg w n))
 
 /- English proof (translation)
-Introduce `Pl J _ S Tw D hD hTS l ell I Ic jT F err Jx η hA hF h3 h4`. Establish `hD' : (0 : ℝ) < D` using `by exact_mod_cast hD`. Use `⟨fun w j => if w ∈ Tw then err w j else (I w j + Ic w j) / D, fun w j => if w ∈ Tw then Jx w j else jT w j / D, fun w j => if w ∈ Tw then η w j else 0, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw j`. Simplify using `only [hw, if_true, and_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w hw`. Distinguish the cases in `hT : w ∈ Tw`. Simplify `h3 w hT` using `only [hT, if_true]`. Simplify using `only [hT, if_false]`. Establish `e : ∑ j, (2 * F w j + (I w j + Ic w j) / D) = (∑ j, (I w j + Ic w j)) / D`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl (fun j _ => by rw [hF w hw hT j]; ring)`. Rewrite using `[e, add_mul, div_mul_cancel₀ _ hD'.ne']`. Establish `: 0 ≤ 2 / ell w ^ 2 * (D : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw j`. Distinguish the cases in `hT : w ∈ Tw`. Simplify `h4 w hT j` using `only [hT, if_true]`. Simplify using `only [hT, if_false]`. Rewrite using `[div_mul_cancel₀ _ hD'.ne', add_zero]`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[← Finset.sum_subset hTS (fun w hw hT => by`. Simplify using `only [hT, if_false]`. Rewrite using `[← add_div, hA w hw hT j, zero_div, mul_zero])]`. Conclude with `Finset.sum_congr rfl (fun w hw => by simp only [hw, if_true])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[← Finset.sum_subset hTS (fun w hw hT => by`. Simplify using `only [hT, if_false, mul_zero, zero_div])]`. Conclude with `Finset.sum_congr rfl (fun w hw => by simp only [hw, if_true])`. Introduce `j`.
-
-Conclude with `(Finset.sum_subset hTS (fun w hw hT => by rw [hF w hw hT j, mul_zero])).symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem untwisted_choice : UntwistedChoice := by
   intro Pl J _ S Tw D hD hTS l ell I Ic jT F err Jx η hA hF h3 h4

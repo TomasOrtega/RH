@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExten
 namespace GlobalTheory.CompanionTheory.CommAlg.JoinPullbackAlt
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x K' _ ι' _ z N V _ _ E E' hE`. Take `⟨EB, hEB⟩` from `(GlobalTheory.CompanionTheory.Ar.Num.PullExists.main O Ω K ι x N V E).1 K' ι' z`. Take `⟨E'B, hE'B⟩` from `(GlobalTheory.CompanionTheory.Ar.Num.PullExists.main O Ω K ι x N V E').1 K' ι' z`. Conclude with `⟨EB, E'B, hEB, hE'B, (GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve O Ω K ι x N V E E' K' ι' z EB E'B hEB hE'B).2.1 hE⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.JoinPullbackAlt.Statement := by
   classical

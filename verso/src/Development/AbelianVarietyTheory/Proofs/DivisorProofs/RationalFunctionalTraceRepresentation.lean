@@ -4,13 +4,11 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ g hg`. Use `choose f hf using hg`. Set `g' : E →ₗ[ℚ] ℚ` to `{ toFun := f map_add' := by`. Introduce `x y`. Apply `(Rat.cast_injective (α := ℝ))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Rat.cast_add, ← hf, ← hf, ← hf, map_add]`. Use the proof step `map_smul' := by`. Introduce `c x`. Apply `(Rat.cast_injective (α := ℝ))` to reduce the goal to its premises. Rewrite using `[smul_eq_mul, RingHom.id_apply, Rat.cast_mul, ← hf, ← hf, map_smul, Rat.smul_def] }`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB` using `traceForm_nondegenerate ℚ E`. Use `⟨(LinearMap.BilinForm.toDual _ hB).symm g', fun z => ?_⟩` and prove the remaining obligations. Establish `h1 : (LinearMap.BilinForm.toDual _ hB ((LinearMap.BilinForm.toDual _ hB).symm g')) z = g' z`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Rewrite `h1` using `[LinearMap.BilinForm.toDual_def, Algebra.traceForm_apply]`.
-
-Rewrite using `[h1]`. Conclude with `hf z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearMap_rat_valued_eq_trace : ∀ (E : Type) [Field E] [NumberField E] (g : E →ₗ[ℚ] ℝ), (∀ z, ∃ q : ℚ, g z = q) →
     ∃ mu : E, ∀ z, g z = ((Algebra.trace ℚ E (mu * z) : ℚ) : ℝ) := by

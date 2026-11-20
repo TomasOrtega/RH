@@ -17,11 +17,11 @@ variable {K : Type*} [Field K] [NumberField K] {L : Type*} [Field L] [NumberFiel
   [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]
 
 /- English proof (translation)
-Establish `hk : orderOf ζ ≠ 0` using `(orderOf_pos_iff.2 (isOfFinOrder_iff_pow_eq_one.2 ⟨n, Nat.pos_of_ne_zero hn, hζ⟩)).ne'`. Establish `: NeZero (orderOf ζ)` using `⟨hk⟩`. Establish `hprim : IsPrimitiveRoot ζ (orderOf ζ)` using `IsPrimitiveRoot.orderOf ζ`. Use `set L₀ : IntermediateField ℚ L := ℚ⟮ζ⟯ with hL₀`. Establish `: IsCyclotomicExtension {orderOf ζ} ℚ L₀` using `hprim.intermediateField_adjoin_isCyclotomicExtension ℚ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsGalois ℚ L₀` using `IsCyclotomicExtension.isGalois {orderOf ζ} ℚ L₀`. Establish `: IsMulCommutative (L₀ ≃ₐ[ℚ] L₀)` using `IsCyclotomicExtension.isMulCommutative {orderOf ζ} ℚ L₀`. Establish `h` using `restrictNormal_restrictScalars_ideleSymbol (K := ℚ) (L := L₀) (L' := L) (diagonal K a)`. Rewrite `h` using `[ideleNorm_diagonal, RationalSymbol.ideleSymbol_diagonal_eq_one L₀ {orderOf ζ}]`. Establish `h'` using `congrArg (fun σ : L₀ ≃ₐ[ℚ] L₀ ↦ ((σ ⟨ζ, mem_adjoin_simple_self ℚ ζ⟩ : L₀) : L)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgEquiv.one_apply] at h'`. Conclude with `(AlgEquiv.restrictNormal_commutes ((ideleSymbol K L (diagonal K a)).restrictScalars ℚ) L₀ ⟨ζ, mem_adjoin_simple_self ℚ ζ⟩).symm.trans h'`.
+A detailed English derivation is pending.
 -/
 theorem ideleSymbol_diagonal_apply_of_pow_eq_one (a : Kˣ) {n : ℕ} (hn : n ≠ 0) {ζ : L}
     (hζ : ζ ^ n = 1) : ideleSymbol K L (diagonal K a) ζ = ζ := by
@@ -42,7 +42,7 @@ theorem ideleSymbol_diagonal_apply_of_pow_eq_one (a : Kˣ) {n : ℕ} (hn : n ≠
     ⟨ζ, mem_adjoin_simple_self ℚ ζ⟩).symm.trans h'
 
 /- English proof (translation)
-The claim follows from `IsCyclotomicExtension.algEquiv_eq_of_apply_eq S K L fun m hm hm0 ↦ by obtain ⟨r, hr⟩ := IsCyclotomicExtension.exists_isPrimitiveRoot K L hm hm0 exact ⟨r, hr, ideleSymbol_diagonal_apply_of_pow_eq_one a hm0 hr.pow_eq_one⟩`.
+A detailed English derivation is pending.
 -/
 theorem ideleSymbol_diagonal_eq_one (S : Set ℕ) [IsCyclotomicExtension S K L] (a : Kˣ) :
     ideleSymbol K L (diagonal K a) = 1 :=
@@ -51,7 +51,7 @@ theorem ideleSymbol_diagonal_eq_one (S : Set ℕ) [IsCyclotomicExtension S K L] 
     exact ⟨r, hr, ideleSymbol_diagonal_apply_of_pow_eq_one a hm0 hr.pow_eq_one⟩
 
 /- English proof (translation)
-The claim follows from `ideleSymbol_diagonal_eq_one {m} a`.
+A detailed English derivation is pending.
 -/
 theorem ideleSymbol_diagonal_eq_one_of_isCyclotomicExtension_singleton (m : ℕ)
     [IsCyclotomicExtension {m} K L] (a : Kˣ) : ideleSymbol K L (diagonal K a) = 1 :=
@@ -66,7 +66,7 @@ variable {K : Type*} [Field K] [NumberField K] (L M : Type*) [Field L] [NumberFi
   [IsGalois K L] [IsGalois K M] [IsMulCommutative (L ≃ₐ[K] L)] [IsMulCommutative (M ≃ₐ[K] M)]
 
 /- English proof (translation)
-Rewrite using `[← restrictNormal_ideleSymbol L M, ideleSymbol_diagonal_eq_one S a]`. Conclude with `map_one (AlgEquiv.restrictNormalHom (F := K) (K₁ := M) L)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleSymbol_diagonal_eq_one_of_le (S : Set ℕ) [IsCyclotomicExtension S K M] (a : Kˣ) :
     ideleSymbol K L (diagonal K a) = 1 := by
@@ -74,7 +74,7 @@ theorem ideleSymbol_diagonal_eq_one_of_le (S : Set ℕ) [IsCyclotomicExtension S
   exact map_one (AlgEquiv.restrictNormalHom (F := K) (K₁ := M) L)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `ideleSymbol_diagonal_eq_one_of_le L M S a`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_diagonal_le_ker_ideleSymbol (S : Set ℕ) [IsCyclotomicExtension S K M] :
     (diagonal K).range ≤ (ideleSymbol K L).ker := by
@@ -103,7 +103,7 @@ theorem ideleClassSymbol_mk (h : (diagonal K).range ≤ (ideleSymbol K L).ker) (
   rfl
 
 /- English proof (translation)
-The claim follows from `(QuotientGroup.isQuotientMap_mk _).continuous_iff.2 (continuous_ideleSymbol L)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ideleClassSymbol (h : (diagonal K).range ≤ (ideleSymbol K L).ker) :
     Continuous (ideleClassSymbol L h) :=
@@ -114,7 +114,7 @@ end ClassSymbol
 universe u
 
 /- English proof (translation)
-The claim follows from `fun σ ↦ let ⟨x, hx⟩ := ideleSymbol_surjective (K := K) (L := L) σ ⟨IdeleClassGroup.mk K x, hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ideleClassSymbol_surjective {K L : Type u} [Field K] [NumberField K] [Field L]
     [NumberField L] [Algebra K L] [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]

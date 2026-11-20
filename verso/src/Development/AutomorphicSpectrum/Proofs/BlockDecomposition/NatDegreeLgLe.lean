@@ -19,18 +19,18 @@ def dv (k : ℕ) (x : S) : S := ((k.factorial : ℚ)⁻¹) • x ^ k
 def DP (T : Subring S) (x : S) : Prop := ∀ k, dv k x ∈ T
 
 /- English proof (translation)
-Simplify using `[dv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dv_one (x : S) : dv 1 x = x := by simp [dv]
 
 /- English proof (translation)
-Unfold `dv`. Rewrite using `[(Commute.all x y).add_pow', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Take `⟨i, j⟩` from `p`. Establish `hk : i + j = k` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hk` using the available equality. Simplify using `only`. Rewrite using `[smul_mul_smul_comm, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul]`. Use `congr 1`. Establish `h` using `Nat.add_choose_mul_factorial_mul_factorial i j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h' : (((i + j).choose i : ℕ) : ℚ) * (i.factorial : ℚ) * (j.factorial : ℚ) = ((i + j).factorial : ℚ)`. Rewrite using `[Nat.choose_symm_add]`. Conclude with `h` after adjusting the coercions. Establish `hi : (i.factorial : ℚ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`. Establish `hj : (j.factorial : ℚ) ≠ 0` using `by exact_mod_cast j.factorial_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hij : ((i + j).factorial : ℚ) ≠ 0` using `by exact_mod_cast (i + j).factorial_ne_zero`. Rewrite using `[← h']`. Rewrite `hij` using `[← h']`. Establish `hc : (((i + j).choose i : ℕ) : ℚ) ≠ 0` using `fun h0 => hij (by rw [h0]; ring)`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dv_add (k : ℕ) (x y : S) :
     dv k (x + y) = ∑ p ∈ Finset.HasAntidiagonal.antidiagonal k, dv p.1 x * dv p.2 y := by
@@ -55,35 +55,35 @@ theorem dv_add (k : ℕ) (x y : S) :
   field_simp
 
 /- English proof (translation)
-Unfold `dv`. Rewrite using `[mul_pow, mul_smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_mul (k : ℕ) (x y : S) : dv k (x * y) = x ^ k * dv k y := by
   unfold dv
   rw [mul_pow, mul_smul_comm]
 
 /- English proof (translation)
-Use `h 1` as an intermediate fact. Rewrite `this` using `[dv_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem DP.mem {T : Subring S} {x : S} (h : DP T x) : x ∈ T := by
   have := h 1
   rwa [dv_one] at this
 
 /- English proof (translation)
-Introduce `k` and use `by rw [dv_add] exact T.sum_mem fun p _ => T.mul_mem (hx _) (hy _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DP.add {T : Subring S} {x y : S} (hx : DP T x) (hy : DP T y) : DP T (x + y) := fun k => by
   rw [dv_add]
   exact T.sum_mem fun p _ => T.mul_mem (hx _) (hy _)
 
 /- English proof (translation)
-Introduce `k` and use `by rw [dv_mul] exact T.mul_mem (T.pow_mem hx.mem _) (hy _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DP.mul {T : Subring S} {x y : S} (hx : DP T x) (hy : DP T y) : DP T (x * y) := fun k => by
   rw [dv_mul]
   exact T.mul_mem (T.pow_mem hx.mem _) (hy _)
 
 /- English proof (translation)
-The claim follows from `(hx.add hy).add (hx.mul hy)`.
+A detailed English derivation is pending.
 -/
 theorem DP.comb {T : Subring S} {x y : S} (hx : DP T x) (hy : DP T y) : DP T (x + y + x * y) :=
   (hx.add hy).add (hx.mul hy)
@@ -94,7 +94,7 @@ def large₂ (N : ℕ) (u : S) : S :=
 def FF (N : ℕ) (x y : S) : S := large₂ N (x + y + x * y) - large₂ N x - large₂ N y
 
 /- English proof (translation)
-Unfold `dv`. Rewrite using `[map_rat_smul, map_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_dv {S' : Type*} [CommRing S'] [Algebra ℚ S'] (f : S →+* S') (k : ℕ) (x : S) :
     f (dv k x) = dv k (f x) := by
@@ -102,7 +102,7 @@ theorem map_dv {S' : Type*} [CommRing S'] [Algebra ℚ S'] (f : S →+* S') (k :
   rw [map_rat_smul, map_pow]
 
 /- English proof (translation)
-Unfold `large₂`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow, map_neg, map_one, map_natCast, map_dv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_Lg {S' : Type*} [CommRing S'] [Algebra ℚ S'] (f : S →+* S') (N : ℕ) (x : S) :
     f (large₂ N x) = large₂ N (f x) := by
@@ -112,7 +112,7 @@ theorem map_Lg {S' : Type*} [CommRing S'] [Algebra ℚ S'] (f : S →+* S') (N :
   rw [map_mul, map_mul, map_pow, map_neg, map_one, map_natCast, map_dv]
 
 /- English proof (translation)
-Unfold `FF`. Rewrite using `[map_sub, map_sub, map_Lg, map_Lg, map_Lg, map_add, map_add, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_FF {S' : Type*} [CommRing S'] [Algebra ℚ S'] (f : S →+* S') (N : ℕ) (x y : S) :
     f (FF N x y) = FF N (f x) (f y) := by
@@ -120,11 +120,11 @@ theorem map_FF {S' : Type*} [CommRing S'] [Algebra ℚ S'] (f : S →+* S') (N :
   rw [map_sub, map_sub, map_Lg, map_Lg, map_Lg, map_add, map_add, map_mul]
 
 /- English proof (translation)
-Proceed by induction on `M, hNM using Nat.le_induction with`. Consider the case `base => exact ⟨0, T.zero_mem, by simp⟩`. Consider the case `succ M hM ih`. Take `⟨c, hc, e⟩` from `ih`. Take `⟨d, hd⟩` from `Nat.factorial_dvd_factorial hM`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c + (-1) ^ M * (d : S) * dv (M + 1) u, T.add_mem hc (T.mul_mem (T.mul_mem (T.pow_mem (T.neg_mem T.one_mem) _) (natCast_mem T d)) (h _)), ?_⟩` and prove the remaining obligations. Establish `e2 : large₂ (M + 1) u = large₂ M u + (-1) ^ M * (M.factorial : S) * dv (M + 1) u`. Unfold `large₂`. Rewrite using `[Finset.sum_range_succ]`. Rewrite using `[e2, hd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `e`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Lg_sub {T : Subring S} {u : S} (h : DP T u) {N M : ℕ} (hNM : N ≤ M) :
     ∃ c ∈ T, large₂ M u - large₂ N u = (N.factorial : S) * c := by
@@ -143,9 +143,9 @@ theorem Lg_sub {T : Subring S} {u : S} (h : DP T u) {N M : ℕ} (hNM : N ≤ M) 
     linear_combination e
 
 /- English proof (translation)
-Take `⟨a, ha, ea⟩` from `Lg_sub (hx.comb hy) hNM`. Take `⟨b, hb, eb⟩` from `Lg_sub hx hNM`. Take `⟨c, hc, ec⟩` from `Lg_sub hy hNM`. Use `⟨a - b - c, T.sub_mem (T.sub_mem ha hb) hc, ?_⟩` and prove the remaining obligations. Unfold `FF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take the linear combination `ea - eb - ec`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem FF_sub {T : Subring S} {x y : S} (hx : DP T x) (hy : DP T y) {N M : ℕ} (hNM : N ≤ M) :
     ∃ c ∈ T, FF M x y - FF N x y = (N.factorial : S) * c := by
@@ -157,13 +157,13 @@ theorem FF_sub {T : Subring S} {x y : S} (hx : DP T x) (hy : DP T y) {N M : ℕ}
   linear_combination ea - eb - ec
 
 /- English proof (translation)
-Rewrite using `[truncEval_eq_sum, Finset.sum_range_succ']`. Simplify using `only [PowerSeries.coeff_log]`. Rewrite using `[if_pos trivial, map_zero, zero_mul, add_zero]`. Unfold `large₂`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (Nat.succ_ne_zero k)]`. Unfold `dv`. Rewrite using `[Algebra.smul_def, ← mul_assoc]`. Use `congr 1`. Establish `e : (-1 : S) ^ k * (k.factorial : S) * algebraMap ℚ S (((k + 1).factorial : ℚ)⁻¹) = algebraMap ℚ S ((-1) ^ k * (k.factorial : ℚ) * ((k + 1).factorial : ℚ)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, map_pow, map_neg, map_one, map_natCast]`. Rewrite using `[e]`. Use `congr 1`. Establish `hk : (k.factorial : ℚ) ≠ 0` using `by exact_mod_cast k.factorial_ne_zero`. Establish `hk1 : ((k : ℚ) + 1) ≠ 0` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.factorial_succ]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Lg_eq_truncEval {n : ℕ} (s : S) (hs : s ^ (n + 1) = 0) :
     truncEval s hs (PowerSeries.log ℚ) = large₂ n s := by
@@ -190,11 +190,11 @@ theorem Lg_eq_truncEval {n : ℕ} (s : S) (hs : s ^ (n + 1) = 0) :
   ring
 
 /- English proof (translation)
-Use `set J : Ideal R := Ideal.span {t ^ (M + 1)} with hJ`. Establish `hpow : ∀ u : R, t ∣ u → (Ideal.Quotient.mk J u) ^ (M + 1) = 0`. Introduce `u hu`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem, hJ, Ideal.mem_span_singleton]`. Conclude with `pow_dvd_pow_of_dvd hu _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : t ∣ a + b + a * b` using `dvd_add (dvd_add ha hb) (ha.mul_right b)`. Establish `key` using `truncEval_log_mul (hpow a ha) (hpow b hb) (hpow _ hz) (by`. Rewrite using `[map_add, map_add, map_mul]`. Use the proof step `ring)`. Rewrite `key` using `[Lg_eq_truncEval, Lg_eq_truncEval, Lg_eq_truncEval, ← map_Lg, ← map_Lg, ← map_Lg, ← map_add, Ideal.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: FF M a b ∈ J`. Establish `e : FF M a b = large₂ M (a + b + a * b) - (large₂ M a + large₂ M b)` using `by unfold FF; ring`. Rewrite using `[e]`. Conclude with `key`. Rewrite `this` using `[hJ, Ideal.mem_span_singleton]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pow_dvd_FF {R : Type*} [CommRing R] [Algebra ℚ R] {t a b : R} (ha : t ∣ a) (hb : t ∣ b)
     (M : ℕ) : t ^ (M + 1) ∣ FF M a b := by
@@ -239,19 +239,19 @@ def TX (T : Subring S) : Subring S[X] where
     exact T.neg_mem (hp n)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_TX {T : Subring S} {p : S[X]} : p ∈ TX T ↔ ∀ n, p.coeff n ∈ T := Iff.rfl
 
 /- English proof (translation)
-Unfold `dv`. Rewrite using `[mul_pow, ← C_pow, ← smul_C, smul_mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_CX (k : ℕ) (x : S) : dv k (C x * X : S[X]) = C (dv k x) * X ^ k := by
   unfold dv
   rw [mul_pow, ← C_pow, ← smul_C, smul_mul_assoc]
 
 /- English proof (translation)
-Introduce `k n` and use `by rw [dv_CX, coeff_C_mul, coeff_X_pow] split_ifs · rw [mul_one]; exact hx k · rw [mul_zero]; exact T.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DP_CX {T : Subring S} {x : S} (hx : DP T x) : DP (TX T) (C x * X : S[X]) := fun k n => by
   rw [dv_CX, coeff_C_mul, coeff_X_pow]
@@ -260,9 +260,9 @@ theorem DP_CX {T : Subring S} {x : S} (hx : DP T x) : DP (TX T) (C x * X : S[X])
   · rw [mul_zero]; exact T.zero_mem
 
 /- English proof (translation)
-Unfold `large₂`. Use `natDegree_sum_le_of_forall_le _ _ fun k hk => ?_` and prove the remaining obligations. Establish `e : (-1 : S[X]) ^ k * (k.factorial : S[X]) * dv (k + 1) u = C ((-1) ^ k * (k.factorial : S) * algebraMap ℚ S (((k + 1).factorial : ℚ)⁻¹)) * u ^ (k + 1)`. Unfold `dv`. Rewrite using `[Algebra.smul_def, Polynomial.algebraMap_apply, map_mul, map_mul, map_pow, map_neg, map_one, map_natCast]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(natDegree_C_mul_le _ _).trans ((natDegree_pow_le).trans ?_)` and prove the remaining obligations. Establish `hk' : k + 1 ≤ N` using `Finset.mem_range.1 hk`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem natDegree_Lg_le {u : S[X]} {d : ℕ} (hu : u.natDegree ≤ d) (N : ℕ) :
     (large₂ N u).natDegree ≤ d * N := by
@@ -281,11 +281,11 @@ theorem natDegree_Lg_le {u : S[X]} {d : ℕ} (hu : u.natDegree ≤ d) (N : ℕ) 
     _ = d * N := Nat.mul_comm _ _
 
 /- English proof (translation)
-Establish `hx : ∀ s : S, (C s * X : S[X]).natDegree ≤ 1` using `fun s => (natDegree_C_mul_le _ _).trans natDegree_X_le`. Establish `hz : (C x * X + C y * X + (C x * X) * (C y * X) : S[X]).natDegree ≤ 2`. Use `natDegree_add_le_of_degree_le (natDegree_add_le_of_degree_le ((hx x).trans (by norm_num)) ((hx y).trans (by norm_num))) (natDegree_mul_le.trans ?_)` and prove the remaining obligations. Use `hx x` as an intermediate fact. Use `hx y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `natDegree_Lg_le hz N`. Establish `h2` using `natDegree_Lg_le (hx x) N`. Establish `h3` using `natDegree_Lg_le (hx y) N`. Unfold `FF`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `refine (natDegree_sub_le _ _).trans (max_le ((natDegree_sub_le _ _).trans (max_le h1 ?_)) ?_) <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem natDegree_FF_le (x y : S) (N : ℕ) :
     (FF N (C x * X : S[X]) (C y * X)).natDegree ≤ 2 * N := by
@@ -303,11 +303,11 @@ theorem natDegree_FF_le (x y : S) (N : ℕ) :
   refine (natDegree_sub_le _ _).trans (max_le ((natDegree_sub_le _ _).trans (max_le h1 ?_)) ?_) <;> omega
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `FF_sub (DP_CX hx) (DP_CX hy) (show N ≤ 2 * N by omega)`. Establish `hd : (X : S[X]) ^ (2 * N + 1) ∣ FF (2 * N) (C x * X) (C y * X)` using `pow_dvd_FF (dvd_mul_left _ _) (dvd_mul_left _ _) _`. Establish `hdeg : (FF N (C x * X : S[X]) (C y * X)).natDegree < 2 * N + 1` using `Nat.lt_succ_of_le (natDegree_FF_le x y N)`. Establish `hcoef : ∀ i ∈ Finset.range (2 * N + 1), (FF N (C x * X : S[X]) (C y * X)).coeff i * 1 ^ i = (N.factorial : S) * (-(c.coeff i))`. Introduce `i hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `X_pow_dvd_iff.1 hd i (Finset.mem_range.1 hi)`. Establish `h1` using `congrArg (fun p : S[X] => p.coeff i) e`. Simplify using `only [coeff_sub, coeff_natCast_mul, h0] at h1`. Rewrite using `[one_pow, mul_one]`. Take the linear combination `-h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨∑ i ∈ Finset.range (2 * N + 1), -(c.coeff i), T.sum_mem fun i _ => T.neg_mem (hc i), ?_⟩` and prove the remaining obligations. Establish `hev : FF N x y = eval 1 (FF N (C x * X : S[X]) (C y * X))`. Use `map_FF (evalRingHom (1 : S)) N (C x * X : S[X]) (C y * X)` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[hev, eval_eq_sum_range' hdeg, Finset.sum_congr rfl hcoef, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem FF_mem {T : Subring S} {x y : S} (hx : DP T x) (hy : DP T y) (N : ℕ) :
     ∃ c ∈ T, FF N x y = (N.factorial : S) * c := by
@@ -334,11 +334,11 @@ theorem FF_mem {T : Subring S} {x y : S} (hx : DP T x) (hy : DP T y) (N : ℕ) :
 end Poly
 
 /- English proof (translation)
-Introduce `S _ _ T γ hγ x y hx hy`. Establish `hγ' : γ = dv`. Use function extensionality and compare the values at `k u`. Conclude with `hγ k u`. Substitute `hγ'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨DP.comb hx hy, fun N => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `FF_mem (T := T) hx hy N`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `large₂ N (x + y + x * y) = large₂ N x + large₂ N y + _`. Unfold `FF at e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e`.
+A detailed English derivation is pending.
 -/
 theorem logAlg : CrystallineSemistableComparison.E.LogAlg := by
   intro S _ _ T γ hγ x y hx hy

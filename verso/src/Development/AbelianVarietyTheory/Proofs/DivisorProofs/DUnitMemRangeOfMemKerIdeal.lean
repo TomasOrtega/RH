@@ -13,18 +13,18 @@ variable {R A C D : Type*} [CommRing R] [CommRing A] [CommRing C] [CommRing D]
   [Bialgebra R A] [Bialgebra R C] [Bialgebra R D]
 
 /- English proof (translation)
-The claim follows from `AugCot.map_surjective _ _ hf`.
+A detailed English derivation is pending.
 -/
 theorem cotMap_surjective {f : C →ₐc[R] A} (hf : Function.Surjective f) :
     Function.Surjective (cotMap f) :=
   AugCot.map_surjective _ _ hf
 
 /- English proof (translation)
-It suffices to establish `h : counitAlgHom R C c = 0 ∧ dUnit R c ∈ LinearMap.range (cotMap g) from h.2`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Use `⟨?_, dUnit R a, cotMap_d g a⟩` and prove the remaining obligations.
+Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha' : counit (R` using `R) a = 0 := ha`. Simplify using `using ha'`. Consider the case `zero => exact ⟨map_zero _, by rw [dUnit, map_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨by rw [map_add, hx.1, hy.1, add_zero], by rw [dUnit, map_add]; exact add_mem hx.2 hy.2⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `smul a x _ hx`. Use `⟨by rw [smul_eq_mul, map_mul, hx.1, mul_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, dUnit, AugCot.d_mul, hx.1, zero_smul, add_zero]`. Conclude with `Submodule.smul_mem _ _ hx.2`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dUnit_mem_range_of_mem_kerIdeal (g : D →ₐc[R] C) {c : C} (hc : c ∈ kerIdeal g) :
     dUnit R c ∈ LinearMap.range (cotMap g) := by
@@ -44,11 +44,11 @@ theorem dUnit_mem_range_of_mem_kerIdeal (g : D →ₐc[R] C) {c : C} (hc : c ∈
     exact Submodule.smul_mem _ _ hx.2
 
 /- English proof (translation)
-Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨x, rfl⟩` from `(AugCot.exact_kerMap_map (f : C →ₐ[R] A) (BialgHomClass.counitAlgHom_comp f) hf w).1 hw`. Take `⟨v, hv⟩` from `dUnit_mem_range_of_mem_kerIdeal g (hk.le x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, hv.trans (AugCot.kerMap_apply _ _ x).symm⟩`. Introduce and unpack `⟨v, rfl⟩`. Take `⟨a, rfl⟩` from `AugCot.d_surjective _ v`. Rewrite using `[cotMap_d, cotMap_d]`. Establish `h` using `(kerIdeal_le_ker_iff g (f : C →ₐ[R] A)).1 hk.ge a`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg (dUnit R) h).trans (AugCot.d_algebraMap _ _)`.
+A detailed English derivation is pending.
 -/
 theorem exact_cotMap {f : C →ₐc[R] A} (hf : Function.Surjective f) (g : D →ₐc[R] C)
     (hk : RingHom.ker f = kerIdeal g) : Function.Exact (cotMap g) (cotMap f) := by
@@ -66,7 +66,7 @@ theorem exact_cotMap {f : C →ₐc[R] A} (hf : Function.Surjective f) (g : D �
     exact (congrArg (dUnit R) h).trans (AugCot.d_algebraMap _ _)
 
 /- English proof (translation)
-Rewrite using `[mulBy, cotMap_pow, ofConv_toConv, cotMap_id, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cotMap_mulBy [IsCocomm R C] (m : ℕ) (w : Cot R C) :
     cotMap (mulBy R C m) w = (m : R) • w := by
@@ -74,7 +74,7 @@ theorem cotMap_mulBy [IsCocomm R C] (m : ℕ) (w : Cot R C) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[exact_cotMap hf _ hk w]`. Conclude with `exists_congr fun v => by rw [cotMap_mulBy, eq_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cotMap_eq_zero_iff [IsCocomm R C] {f : C →ₐc[R] A} (hf : Function.Surjective f) {m : ℕ}
     (hk : RingHom.ker f = torsionIdeal R C m) (w : Cot R C) :
@@ -83,7 +83,7 @@ theorem cotMap_eq_zero_iff [IsCocomm R C] {f : C →ₐc[R] A} (hf : Function.Su
   exact exists_congr fun v => by rw [cotMap_mulBy, eq_comm]
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[LinearMap.mem_ker, cotMap_eq_zero_iff hf hk, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `exists_congr fun v => by simp [eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_cotMap [IsCocomm R C] {f : C →ₐc[R] A} (hf : Function.Surjective f) {m : ℕ}
     (hk : RingHom.ker f = torsionIdeal R C m) :
@@ -102,7 +102,7 @@ open PDiv
 variable {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O)
 
 /- English proof (translation)
-Rewrite using `[ker_cotMap hf hk, Nat.cast_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_cotMap_of_ker_eq {m n : ℕ} {f : G.A n →ₐc[O] G.A m} (hf : Function.Surjective f)
     (hk : RingHom.ker f = torsionIdeal O _ (p ^ m)) :
@@ -110,13 +110,13 @@ theorem ker_cotMap_of_ker_eq {m n : ℕ} {f : G.A n →ₐc[O] G.A m} (hf : Func
   rw [ker_cotMap hf hk, Nat.cast_pow]
 
 /- English proof (translation)
-The claim follows from `cotMap_surjective (G.res_surjective n)`.
+A detailed English derivation is pending.
 -/
 theorem cotMap_res_surjective (n : ℕ) : Function.Surjective (cotMap (G.res n)) :=
   cotMap_surjective (G.res_surjective n)
 
 /- English proof (translation)
-Rewrite using `[cotMap_eq_zero_iff (G.res_surjective n) (G.ker_res n), Nat.cast_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cotMap_res_eq_zero_iff (n : ℕ) (w : Cot O (G.A (n + 1))) :
     cotMap (G.res n) w = 0 ↔ ∃ v, w = (p : O) ^ n • v := by
@@ -131,13 +131,13 @@ Both sides reduce to the same expression.
 @[simp] theorem omegaLevel_apply (n : ℕ) (w : G.omega) : G.omegaLevel n w = w.1 n := rfl
 
 /- English proof (translation)
-The claim follows from `w.2 n`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem cotMap_res_omega (n : ℕ) (w : G.omega) :
     cotMap (G.res n) (w.1 (n + 1)) = w.1 n := w.2 n
 
 /- English proof (translation)
-Proceed by induction on `n, h using Nat.le_induction with`. Consider the case `base => exact hw`. Consider the case `succ n _ ih => exact ih (by rw [← w.2 n, hw, map_zero])`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem omega_val_eq_zero_of_le {m n : ℕ} (h : m ≤ n) {w : G.omega} (hw : w.1 n = 0) :
     w.1 m = 0 := by
@@ -146,21 +146,21 @@ theorem omega_val_eq_zero_of_le {m n : ℕ} (h : m ≤ n) {w : G.omega} (hw : w.
   | succ n _ ih => exact ih (by rw [← w.2 n, hw, map_zero])
 
 /- English proof (translation)
-Simplify using `using G.pow_smul_cot 0 w`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cot_zero_eq_zero (w : Cot O (G.A 0)) : w = 0 := by
   simpa using G.pow_smul_cot 0 w
 
 /- English proof (translation)
-Establish `hsec` using `fun k => (G.cotMap_res_surjective k).hasRightInverse`. Use `choose s hs using hsec`. Establish `key : ∀ (n : ℕ) (x : Cot O (G.A (n + 1))), cotMap (G.res n) x = 0 → ∃ w : G.omega, w.1 (n + 1) = x`. Introduce `n x hx`. Set `u : ∀ k, Cot O (G.A k)` to `fun k => if h : n + 1 ≤ k then Nat.leRecOn h (fun {k} => s k) x else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨u, fun k => ?_⟩, by simp [u, Nat.leRecOn_self]⟩` and prove the remaining obligations. Break down `lt_trichotomy k n with hk | rfl | hk` into its components or cases. Simplify using `only [u]`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), map_zero]`. Simplify using `only [u]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos le_rfl, dif_neg (by omega), Nat.leRecOn_self, hx]`. Simplify using `only [u]`. Rewrite using `[dif_pos (by omega), dif_pos (show n + 1 ≤ k from hk), Nat.leRecOn_succ (show n + 1 ≤ k from hk)]`. Conclude with `hs k _`. Proceed by induction on `n with`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact fun x => ⟨0, (G.cot_zero_eq_zero _).trans (G.cot_zero_eq_zero _).symm⟩`. Consider the case `succ n ih`. Introduce `x`. Take `⟨v, hv⟩` from `ih (cotMap (G.res n) x)`. Take `⟨w, hw⟩` from `key n (x - v.1 (n + 1)) (by rw [map_sub, v.2 n, ← hv]; exact sub_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w + v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, omegaLevel_apply, omegaLevel_apply, hw, sub_add_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem omegaLevel_surjective (n : ℕ) : Function.Surjective (G.omegaLevel n) := by
   have hsec := fun k => (G.cotMap_res_surjective k).hasRightInverse
@@ -190,7 +190,7 @@ theorem omegaLevel_surjective (n : ℕ) : Function.Surjective (G.omegaLevel n) :
     rw [map_add, omegaLevel_apply, omegaLevel_apply, hw, sub_add_cancel]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `(G.cotMap_res_eq_zero_iff n (w.1 (n + 1))).1 ((w.2 n).trans hw)`. Take `⟨v, rfl⟩` from `G.omegaLevel_surjective (n + 1) x`. Use `⟨v, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `w.1 (n + 1) - (p : O) ^ n • v.1 (n + 1) = 0`. Rewrite using `[hx, omegaLevel_apply, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sub_pow_smul_val_succ (n : ℕ) (w : G.omega) (hw : w.1 n = 0) :
     ∃ v : G.omega, (w - (p : O) ^ n • v).1 (n + 1) = 0 := by
@@ -201,17 +201,15 @@ theorem exists_sub_pow_smul_val_succ (n : ℕ) (w : G.omega) (hw : w.1 n = 0) :
   rw [hx, omegaLevel_apply, sub_self]
 
 /- English proof (translation)
-Use `⟨fun hw => ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `G.pow_smul_cot n (v.1 n)`. Use `choose! c hc using G.exists_sub_pow_smul_val_succ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction.
 
-Set `r : ℕ → G.omega` to `fun j => Nat.rec w (fun j x => x - (p : O) ^ (n + j) • c (n + j) x) j`. Establish `hr : ∀ j, (r j).1 (n + j) = 0` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => exact hw`. Consider the case `succ j ih => exact hc _ _ ih`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction.
 
-Set `t : ℕ → G.omega` to `fun k => ∑ j ∈ Finset.range k, (p : O) ^ j • c (n + j) (r j)`. Establish `ht : ∀ k, w = r k + (p : O) ^ n • t k` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simp [t, r]`. Consider the case `succ k ih`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : r (k + 1) = r k - (p : O) ^ (n + k) • c (n + k) (r k)` using `rfl`. Establish `h2 : t (k + 1) = t k + (p : O) ^ k • c (n + k) (r k)` using `Finset.sum_range_succ _ _`. Rewrite using `[h1, h2, smul_add, smul_smul, ← pow_add]`. Conclude with `ih.trans (by abel)`. Use `⟨⟨fun k => (t k).1 k, fun k => ?_⟩, Subtype.ext (funext fun k => ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : t (k + 1) = t k + (p : O) ^ k • c (n + k) (r k)` using `Finset.sum_range_succ _ _`. Rewrite using `[(t (k + 1)).2 k, h2]`. Express the relevant statement in the definitionally equal form `(t k).1 k + (p : O) ^ k • (c (n + k) (r k)).1 k = _`. Rewrite using `[pow_smul_cot, add_zero]`. Establish `h` using `congrArg (fun x : G.omega => x.1 k) (ht k)`.
-
-Use `h.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(r k).1 k + (p : O) ^ n • (t k).1 k = (p : O) ^ n • (t k).1 k`. Rewrite using `[G.omega_val_eq_zero_of_le (Nat.le_add_left k n) (hr k), zero_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omega_val_eq_zero_iff (n : ℕ) (w : G.omega) :
     w.1 n = 0 ↔ ∃ v : G.omega, w = (p : O) ^ n • v := by
@@ -245,7 +243,7 @@ theorem omega_val_eq_zero_iff (n : ℕ) (w : G.omega) :
     rw [G.omega_val_eq_zero_of_le (Nat.le_add_left k n) (hr k), zero_add]
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[LinearMap.mem_ker, omegaLevel_apply, omega_val_eq_zero_iff, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `exists_congr fun v => by simp [eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_omegaLevel (n : ℕ) :
     LinearMap.ker (G.omegaLevel n) = Ideal.span {(p : O)} ^ n • (⊤ : Submodule O G.omega) := by
@@ -266,7 +264,7 @@ Both sides reduce to the same expression.
     G.omegaQuotEquiv n (Submodule.Quotient.mk w) = w.1 n := rfl
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, ← ker_omegaLevel, LinearMap.mem_ker, map_sub, sub_eq_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem omega_smodEq_iff (n : ℕ) (v w : G.omega) :
     v ≡ w [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O G.omega)] ↔ v.1 n = w.1 n := by

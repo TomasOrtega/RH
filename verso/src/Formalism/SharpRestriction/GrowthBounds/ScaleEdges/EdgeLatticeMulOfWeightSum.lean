@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.Pf14
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility MvPolynomial
 
 /- English proof (translation)
-Unfold `lamAt`. Use `split_ifs`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, neg_add]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lamAt_add {n' m : ℕ} (lam mu : Fin n' → Fin (m + 1) → ℤ) (s : Fin n') :
     lamAt (lam + mu) s = lamAt lam s + lamAt mu s := by
@@ -19,7 +19,7 @@ theorem lamAt_add {n' m : ℕ} (lam mu : Fin n' → Fin (m + 1) → ℤ) (s : Fi
     simp only [Pi.add_apply, neg_add]
 
 /- English proof (translation)
-Unfold `Ar`. Simplify using `only [lamAt_add, Pi.add_apply, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Ar_add {n' m : ℕ} (r : ℕ) (lam mu : Fin n' → Fin (m + 1) → ℤ) :
     Ar r (lam + mu) = Ar r lam + Ar r mu := by
@@ -27,7 +27,7 @@ theorem Ar_add {n' m : ℕ} (r : ℕ) (lam mu : Fin n' → Fin (m + 1) → ℤ) 
   simp only [lamAt_add, Pi.add_apply, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Introduce `s`. Conclude with `(h1 s).add (h2 s)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isDominant_add {n' m : ℕ} {lam mu : Fin n' → Fin (m + 1) → ℤ} (h1 : IsDominant lam) (h2 : IsDominant mu) :
     IsDominant (lam + mu) := by
@@ -35,9 +35,9 @@ theorem isDominant_add {n' m : ℕ} {lam mu : Fin n' → Fin (m + 1) → ℤ} (h
   exact (h1 s).add (h2 s)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `h1 : 0 ≤ a t - a (Fin.last m)` using `sub_nonneg.2 (ha (Fin.le_last t))`. Establish `h2 : 0 ≤ b t - b (Fin.last m)` using `sub_nonneg.2 (hb (Fin.le_last t))`. Simplify using `only [nuOf, Pi.add_apply]`. Rewrite using `[show a t + b t - (a (Fin.last m) + b (Fin.last m)) = (a t - a (Fin.last m)) + (b t - b (Fin.last m)) by ring]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Int.toNat_add h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem nuOf_add {m : ℕ} {a b : Fin (m + 1) → ℤ} (ha : Antitone a) (hb : Antitone b) :
     nuOf (a + b) = nuOf a + nuOf b := by
@@ -50,7 +50,7 @@ theorem nuOf_add {m : ℕ} {a b : Fin (m + 1) → ℤ} (ha : Antitone a) (hb : A
   exact Int.toNat_add h1 h2
 
 /- English proof (translation)
-Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, mem_weightedHomogeneousSubmodule] at hF hG ⊢`. Use `⟨hF.1.mul hG.1, fun l j hlj => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hF.2 l j hlj, hG.2 l j hlj]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualWeyl_mul (R : Type*) [CommRing R] (r n : ℕ) (ν ν' : Fin n → ℕ)
     {F G : MvPolynomial (Fin r × Fin n) R} (hF : F ∈ dualWeyl R r n ν) (hG : G ∈ dualWeyl R r n ν') :
@@ -61,9 +61,9 @@ theorem dualWeyl_mul (R : Type*) [CommRing R] (r n : ℕ) (ν ν' : Fin n → �
   rw [map_mul, map_mul, hF.2 l j hlj, hG.2 l j hlj]
 
 /- English proof (translation)
-Establish `key : tensorLat R K M * tensorLat R K M' ≤ tensorLat R K M''`. Unfold `tensorLat`. Rewrite using `[Submodule.span_mul_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ⟨F, hF, rfl⟩, b, ⟨G, hG, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Use `⟨fun s => F s * G s, fun s => h s _ (hF s) _ (hG s), ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, Finset.prod_mul_distrib]`. Conclude with `key (Submodule.mul_mem_mul hx hy)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensorLat_mul (R K : Type*) [CommRing R] [CommRing K] [Algebra R K] {S : Type*} [Fintype S] {k n : ℕ}
     (M M' M'' : S → Submodule R (MvPolynomial (Fin k × Fin n) K))
@@ -80,13 +80,13 @@ theorem tensorLat_mul (R K : Type*) [CommRing R] [CommRing K] [Algebra R K] {S :
   exact key (Submodule.mul_mem_mul hx hy)
 
 /- English proof (translation)
-Substitute `hnu` using the available equality. Unfold `Vsp at hx hy ⊢`. Use `tensorLat_mul Kf Kf _ _ _ ?_ hx hy` and prove the remaining obligations. Introduce `s F hF G hG`. Establish `hs` using `lamAt_add lam mu s`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `ha : Antitone (lamAt lam s)`. Distinguish the cases in `hb : Antitone (lamAt mu s)`. Establish `hab : Antitone (lamAt (lam + mu) s)`. Rewrite using `[hs]`. Conclude with `ha.add hb`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hF` using `[if_pos ha]`. Rewrite `hG` using `[if_pos hb]`. Rewrite using `[if_pos hab, hs, nuOf_add ha hb]`. Conclude with `dualWeyl_mul Kf (m + 1) (m + 1) _ _ hF hG`. Rewrite `hG` using `[if_neg hb, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hG, mul_zero]`. Conclude with `Submodule.zero_mem _`. Rewrite `hF` using `[if_neg ha, Submodule.mem_bot]`. Rewrite using `[hF, zero_mul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem V_mul (Kf : Type*) [Field Kf] {n' m : ℕ} {lam mu nu : Fin n' → Fin (m + 1) → ℤ} (hnu : nu = lam + mu)
     (h1 : IsDominant lam) (h2 : IsDominant mu)
@@ -130,9 +130,9 @@ variable {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X
   [IsScalarTower O Kf X]
 
 /- English proof (translation)
-Unfold `scale`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x`. Use `show a • (b • x) = (a * b) • x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem scale_scale (a b : Kf) (M : Submodule O X) : scale a (scale b M) = scale (a * b) M := by
   unfold scale
@@ -149,9 +149,9 @@ section Lat
 variable {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] {n' m : ℕ}
 
 /- English proof (translation)
-Substitute `hnu` using the available equality. Take `⟨x0, hx0, rfl⟩` from `Submodule.mem_map.1 hx`. Take `⟨y0, hy0, rfl⟩` from `Submodule.mem_map.1 hy`. Establish `hmem : ((x0 : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) * y0) ∈ Hten O (lam + mu) Λ` using `hM O Kf n' m lam mu Λ h1 h2 _ (Submodule.mem_comap.1 hx0) _ (Submodule.mem_comap.1 hy0)`. Use `Submodule.mem_map.2 ⟨⟨(x0 : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) * y0, V_mul Kf rfl h1 h2 x0.2 y0.2⟩, hmem, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hz]`. Use `show (α * β) • ((x0 : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) * (y0 : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)) = (α • (x0 : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)) * (β • (y0 : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf …`. Rewrite using `[smul_mul_smul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toV_mul (D : Formalism.BasicNotions.D7) (hM : tableLineDegreeFive.LevelPrimesProviso D) {lam mu nu : Fin n' → Fin (m + 1) → ℤ} (hnu : nu = lam + mu)
     (h1 : IsDominant lam) (h2 : IsDominant mu) (Λ : Fin n' → Submodule O (Fin (m + 1) → Kf)) (α β : Kf)
@@ -176,7 +176,7 @@ theorem toV_mul (D : Formalism.BasicNotions.D7) (hM : tableLineDegreeFive.LevelP
 variable {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq]
 
 /- English proof (translation)
-Rewrite using `[zpow_add₀ hc]`. Conclude with `toV_mul D hM hnu h1 h2 _ _ _ hz hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HL_mul (D : Formalism.BasicNotions.D7) (hM : tableLineDegreeFive.LevelPrimesProviso D) (ι : Qq →+* Kf) (σ : Qq ≃+* Qq)
     {lam mu nu : Fin n' → Fin (m + 1) → ℤ} (hnu : nu = lam + mu)
@@ -189,9 +189,9 @@ theorem HL_mul (D : Formalism.BasicNotions.D7) (hM : tableLineDegreeFive.LevelPr
   exact toV_mul D hM hnu h1 h2 _ _ _ hz hx hy
 
 /- English proof (translation)
-Substitute `hnu` using the available equality. Unfold `Re HLe at hx hy ⊢`. Rewrite `hx`, `hy`, the goal using `[scale_scale]`. Establish `hz'` using `toV_mul D hM rfl h1 h2 _ _ _ hz hx hy`. Use `hz' using 2` and compare the differences between its conclusion and the goal.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Ar_add, ← zpow_add₀ hw, ← zpow_add₀ hw, ← zpow_add₀ hw, ← zpow_add₀ hw]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Re_mul (D : Formalism.BasicNotions.D7) (hM : tableLineDegreeFive.LevelPrimesProviso D) (p : ℕ) (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (w : O)
     (hw : algebraMap O Kf w ≠ 0) (r : ℕ)
@@ -212,9 +212,9 @@ theorem Re_mul (D : Formalism.BasicNotions.D7) (hM : tableLineDegreeFive.LevelPr
   ring
 
 /- English proof (translation)
-Establish `h1s : ∀ {lam0 : Fin n' → Fin (m + 1) → ℤ} (M : Submodule O (Vsp Kf lam0)), scale (1 : Kf) M = M`. Introduce `lam0 M`. Unfold `scale`. Establish `hid : (LinearMap.lsmul Kf (Vsp Kf lam0) (1 : Kf)).restrictScalars O = LinearMap.id` using `LinearMap.ext fun v => by simp`. Rewrite using `[hid, Submodule.map_id]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Re_mul D hM p ι σ w hw r hnu h1 h2 e 0 0 hz (by rw [zpow_zero, h1s]; exact hx) (by rw [zpow_zero, h1s]; exact hy)` as an intermediate fact. Rewrite `this` using `[add_zero, zpow_zero, h1s]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem edge_lattice_mul_of_weight_sum (D : Formalism.BasicNotions.D7) (hM : tableLineDegreeFive.LevelPrimesProviso D) (p : ℕ) (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (w : O)
     (hw : algebraMap O Kf w ≠ 0) (r : ℕ)

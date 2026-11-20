@@ -14,15 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ a A' C _ _ _ _ μ _ σ ν Ψ g h`. Set `f : Matrix (Fin a) (Fin a) k →* Matrix C C k` to `{ toFun := fun M => (Matrix.fromBlocks M (0 : Matrix (Fin a) A' k) 0 (1 : Matrix A' A' k)).submatrix σ.symm σ.symm map_one' := by rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv] map_mul' := fun M N => by`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `}`. Set `E : GL C k` to `Units.map f g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hE : ∀ M : Matrix (Fin a) (Fin a) k, f M = (Matrix.fromBlocks M (0 : Matrix (Fin a) A' k) 0 (1 : Matrix A' A' k)).submatrix σ.symm σ.symm` using `fun _ => rfl`. Establish `hX : g.val * X0 k σ = X0 k σ * E.val`. Use extensionality with `i j`. Rewrite using `[frameMatrixFirstColumnBlock_mul_apply]`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := σ.surjective j <;> simp [X0, E, hE, Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hY : Y0 k σ * (invT E).val = Y0 k σ`. Use extensionality with `i j`. Rewrite using `[frameMatrixSecondColumnBlock_mul_apply, invT_val]`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := σ.surjective j <;> simp [Y0, E, hE, ← map_inv, Matrix.one_apply, eq_comm]`. Establish `hdet : gdet E = gdet g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[E, hE, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Establish `h1 : g.val * (X0 k σ * (invT h).val) = X0 k σ * (invT (invT E * h)).val`. Rewrite using `[map_mul, invT_invT, Units.val_mul, ← Matrix.mul_assoc, hX, Matrix.mul_assoc]`. Establish `h2 : Y0 k σ * (invT E * h).val = Y0 k σ * h.val`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, hY]`. Establish `h3 : gdet (invT E * h) = (gdet g)⁻¹ * gdet h` using `by rw [gdet_mul, gdet_invT, hdet]`. Rewrite using `[h1, splitTheta_fFun_frameFirstBlock_mul μ σ ν Ψ, splitTheta_fFun_frameFirstBlock_mul μ σ ν Ψ, h2, h3, map_mul, map_inv, apow_mul, apow_inv, apow_neg, Units.val_mul, Units.val_inv_eq_inv_val]`. Establish `hν : ((ν (gdet g) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `ha : apow (gdet g) ((Fintype.card C : ℂ) / 2) ≠ 0` using `apow_ne_zero _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts.
 -/

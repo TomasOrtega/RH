@@ -31,7 +31,7 @@ def PairWit (E E' : (D.host.E →+* ℂ) → Bs.Modules) (h : ∀ σ, VMetric q 
     ∀ σ, IsLieMet O.s.T.Z O.κ.e q jB πB (E' σ) _ σ false rfl G (h' σ) (t' σ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Bg, jB, πB, pb, t, t', G, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩`. Conclude with `⟨Bg, jB, πB, t, t', G, pb, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩`. Introduce and unpack `⟨Bg, jB, πB, t, t', G, pb, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩`. Conclude with `⟨Bg, jB, πB, pb, t, t', G, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pairBase_iff (E E' : (D.host.E →+* ℂ) → Bs.Modules) (h : ∀ σ, VMetric q (E σ) (O.S.Dw.mult σ))
     (h' : ∀ σ, VMetric q (E' σ) (O.S.Dw.mult σ)) (u : ∀ σ, E σ ⟶ E' σ) :

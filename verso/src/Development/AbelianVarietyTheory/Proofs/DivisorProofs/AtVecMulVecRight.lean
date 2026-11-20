@@ -26,9 +26,9 @@ def lagSetB (M : Model σ X W) (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) 
         incM F H.ι * z * (incM F H'.ι)ᵀ)).2)}
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h` using `ha u hu`. Use extensionality with `i j`. Establish `hj : u • a j = 0` using `by simpa using congrFun h j`. Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_smul_comm, hj, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem at_vecMulVec_right {m k : ℕ} (x : Fin m → AE F E) {a : Fin k → AE F E} (ha : At (evI F) a) :
     At (evI F) (Matrix.vecMulVec x a) := by
@@ -40,9 +40,9 @@ theorem at_vecMulVec_right {m k : ℕ} (x : Fin m → AE F E) {a : Fin k → AE 
   rw [← mul_smul_comm, hj, mul_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h` using `hx u hu`. Use extensionality with `i j`. Establish `hi : u • x i = 0` using `by simpa using congrFun h i`. Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← smul_mul_assoc, hi, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem at_vecMulVec_left {m k : ℕ} {x : Fin m → AE F E} (hx : At (evI F) x) (a : Fin k → AE F E) :
     At (evI F) (Matrix.vecMulVec x a) := by
@@ -54,7 +54,7 @@ theorem at_vecMulVec_left {m k : ℕ} {x : Fin m → AE F E} (hx : At (evI F) x)
   rw [← smul_mul_assoc, hi, zero_mul]
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[← Matrix.mulVec_smul, hc u hu, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_mulVec {m k : ℕ} (A : Matrix (Fin m) (Fin k) (AE F E)) {c : Fin k → AE F E} (hc : At (evI F) c) :
     At (evI F) (A *ᵥ c) := by
@@ -62,7 +62,7 @@ theorem at_mulVec {m k : ℕ} (A : Matrix (Fin m) (Fin k) (AE F E)) {c : Fin k �
   rw [← Matrix.mulVec_smul, hc u hu, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : AF F).1 = 0`. Conclude with `map_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem arch_zero' {κ : Type} : arch F (0 : κ → AF F) = 0 := by
   funext i
@@ -70,7 +70,7 @@ theorem arch_zero' {κ : Type} : arch F (0 : κ → AF F) = 0 := by
   exact map_zero _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulVec_zero' {m k : ℕ} (x : Fin m → AE F E) : Matrix.vecMulVec x (0 : Fin k → AE F E) = 0 := by
   ext i j; simp [Matrix.vecMulVec_apply]
@@ -80,7 +80,7 @@ section Mem
 variable (M : Model σ X W) (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H' : Plane E d d₁)
 
 /- English proof (translation)
-Use `⟨x, 0, 0, hx, fun _ _ => smul_zero _, fun _ _ => smul_zero _, by simp [arch_zero'], ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_zero, Matrix.zero_vecMulVec, Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_lagSetB_x {x : Fin d → AE F E} (hx : At (evI F) x) :
     (arch F (M.co.e (Matrix.vecMulVec (incV F H.x) x)).1, arch F (M.co.e (Matrix.vecMulVec (incV F H.x) x)).2) ∈
@@ -89,7 +89,7 @@ theorem mem_lagSetB_x {x : Fin d → AE F E} (hx : At (evI F) x) :
   simp only [Matrix.mulVec_zero, Matrix.zero_vecMulVec, Matrix.mul_zero, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Use `⟨0, c, z, fun _ _ => smul_zero _, hc, hz, hz1, ?_⟩` and prove the remaining obligations. Simplify using `only [vecMulVec_zero', zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_lagSetB_cz {c : Fin n₁ → AE F E} {z : Matrix (Fin n₁) (Fin d₁) (AE F E)} (hc : At (evI F) c)
     (hz : At (evI F) z) (hz1 : arch F (M₁.co.e z).1 = 0) :
@@ -100,7 +100,7 @@ theorem mem_lagSetB_cz {c : Fin n₁ → AE F E} {z : Matrix (Fin n₁) (Fin d�
   simp only [vecMulVec_zero', zero_add]
 
 /- English proof (translation)
-Use `⟨0, c, 0, fun _ _ => smul_zero _, hc, fun _ _ => smul_zero _, by simp [arch_zero'], ?_⟩` and prove the remaining obligations. Simplify using `only [vecMulVec_zero', zero_add, Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_lagSetB_c {c : Fin n₁ → AE F E} (hc : At (evI F) c) :
     (arch F (M.co.e (Matrix.vecMulVec (incM F H.ι *ᵥ c) (incV F H'.x))).1,
@@ -109,7 +109,7 @@ theorem mem_lagSetB_c {c : Fin n₁ → AE F E} (hc : At (evI F) c) :
   simp only [vecMulVec_zero', zero_add, Matrix.mul_zero, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Use `⟨0, 0, z, fun _ _ => smul_zero _, fun _ _ => smul_zero _, hz, hz1, ?_⟩` and prove the remaining obligations. Simplify using `only [vecMulVec_zero', zero_add, Matrix.mulVec_zero, Matrix.zero_vecMulVec]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_lagSetB_z {z : Matrix (Fin n₁) (Fin d₁) (AE F E)} (hz : At (evI F) z) (hz1 : arch F (M₁.co.e z).1 = 0) :
     (arch F (M.co.e (incM F H.ι * z * (incM F H'.ι)ᵀ)).1, arch F (M.co.e (incM F H.ι * z * (incM F H'.ι)ᵀ)).2) ∈

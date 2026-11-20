@@ -24,7 +24,7 @@ theorem castAddImage_eq_image_castAdd (c d : ℕ) :
     castAddImage c d = (Finset.univ : Finset (Fin c)).image (Fin.castAdd d) := rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Fin.castAdd d : Fin c → Fin (c + d))`. Introduce `a b hab`. Establish `hv : ((Fin.castAdd d a : Fin (c + d)) : ℕ) = ((Fin.castAdd d b : Fin (c + d)) : ℕ)` using `congrArg (fun z : Fin (c + d) => (z : ℕ)) hab`. Conclude with `Fin.ext hv`. Rewrite using `[castAddImage_eq_image_castAdd, Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_castAddImage (c d : ℕ) : (castAddImage c d).card = c := by
   have hinj : Function.Injective (Fin.castAdd d : Fin c → Fin (c + d)) := by
@@ -36,7 +36,7 @@ theorem card_castAddImage (c d : ℕ) : (castAddImage c d).card = c := by
     Fintype.card_fin]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨y, hy⟩, h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mem_image_ι_of_mem {X' : Scheme.{u}} (U : X'.Opens)
     (V : U.toScheme.Opens) (y : X') (hy : y ∈ U) (h : (⟨y, hy⟩ : ↥U) ∈ V) :
@@ -44,9 +44,9 @@ private theorem mem_image_ι_of_mem {X' : Scheme.{u}} (U : X'.Opens)
   ⟨⟨y, hy⟩, h, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨_, w.2, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨a, ha⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem range_ι_comp_ι_eq_image {X' : Scheme.{u}} (U : X'.Opens) (V : U.toScheme.Opens) :
     Set.range ((V.ι ≫ U.ι).base) = (↑(U.ι ''ᵁ V) : Set ↥X') := by
@@ -70,7 +70,7 @@ private theorem etaleChartTop_map (k : Type u) [Field k] (c : ℕ) :
     (etaleChartTop k c).map = (⊤ : (affineSpaceFin k c).Opens).ι := rfl
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_eq_comap_ι, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, etaleChartTop_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem restrictIdeal_top_coordSubspaceIdeal_univ (k : Type u) [Field k] (c : ℕ) :
     restrictIdeal (coordSubspaceIdeal k c (Finset.univ : Finset (Fin c)))
@@ -78,13 +78,11 @@ private theorem restrictIdeal_top_coordSubspaceIdeal_univ (k : Type u) [Field k]
   rw [restrictIdeal_eq_comap_ι, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, etaleChartTop_map]
 
 /- English proof (translation)
-Establish `hr : Set.range ((U.ι ''ᵁ V).ι).base = Set.range ((V.ι ≫ U.ι).base)`. Rewrite using `[Scheme.Opens.range_ι, ← range_ι_comp_ι_eq_image]`. Set `φ : (U.ι ''ᵁ V).toScheme ≅ V.toScheme` to `AlgebraicGeometry.IsOpenImmersion.isoOfRangeEq ((U.ι ''ᵁ V).ι) (V.ι ≫ U.ι) hr`. Establish `hfac : φ.hom ≫ (V.ι ≫ U.ι) = (U.ι ''ᵁ V).ι` using `AlgebraicGeometry.IsOpenImmersion.isoOfRangeEq_hom_fac _ _ hr`. Establish `hcs : (φ.hom ≫ ch.map) ≫ affineSpaceFinToSpec k n = (U.ι ''ᵁ V).ι ≫ p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: AlgebraicGeometry.Etale ch.map` using `ch.isEtale`. Establish `hkey : (D.comap U.ι).comap V.ι = (coordSubspaceIdeal k n S).comap ch.map`. Rewrite using `[← restrictIdeal_eq_comap_ι, ← restrictIdeal_eq_comap_ι, h, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`. Use `⟨⟨φ.hom ≫ ch.map, hcs, inferInstance⟩, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[restrictIdeal_eq_comap_ι, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hfac, Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp]`. Use `_ = ((coordSubspaceIdeal k n S).comap ch.map).comap φ.hom := by rw [hkey]`. Use `_ = (coordSubspaceIdeal k n S).comap (φ.hom ≫ ch.map) := by`.
-
-Rewrite using `[Scheme.IdealSheafData.comap_comp]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_image_of_restrictIdeal_eq {X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (U : X'.Opens) (V : U.toScheme.Opens) (n : ℕ)
@@ -116,11 +114,11 @@ theorem exists_etaleChart_image_of_restrictIdeal_eq {X' : Scheme.{u}} {k : Type 
         rw [Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.Smooth (affineSpaceFinToSpec k c)` using `affineSpaceIsSmooth ..`. Take `⟨V, hVU, d, ch, hVaff, hyV, hcoord⟩` from `exists_etaleChart_comap_coord_eq (affineSpaceFinToSpec k c) q (etaleChartTop k c) (⟨τ.base x, hx⟩ : ↥U) (by trivial)`. Establish `hidtop : (coordSubspaceIdeal k c (Finset.univ : Finset (Fin c))).ideal ⟨⊤, isAffineOpen_top (affineSpaceFin k c)⟩ = Ideal.span ((etaleChartTop k c).coord '' ((Finset.univ : Finset (Fin c)) : Set (Fin c)))` using `EtaleChart.ideal_eq_span_coord (etaleChartTop k c) (isAffineOpen_top (affineSpaceFin k c)) (coordSubspaceIdeal k c (Finset.univ : Finset (Fin c))) Finset.univ (restrictIdeal_top_coordSubspaceIdeal_univ k c)`. Establish `hspanV : (restrictIdeal τ.ker U).ideal ⟨V, hVaff⟩ = Ideal.span (ch.coord '' ((castAddImage c d : Finset (Fin (c + d))) : Set (Fin (c + d))))`. Rewrite using `[hker, Scheme.IdealSheafData.comap_ideal_eq_map_appLE (coordSubspaceIdeal k c (Finset.univ : Finset (Fin c))) q ⟨⊤, isAffineOpen_top (affineSpaceFin k c)⟩ ⟨V, hVaff⟩ hVU, hidtop, Ideal.map_span]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Set.image_image, castAddImage_eq_image_castAdd, Finset.coe_image, Set.image_image]`. Conclude with `Set.image_congr (fun j _ => (hcoord j).symm)`. Establish `hcs : ch.map ≫ affineSpaceFinToSpec k (c + d) = V.ι ≫ (U.ι ≫ p)`. Rewrite using `[ch.comp_struct, hq]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, hVaff, hyV, d, ⟨ch.map, hcs, ch.isEtale⟩, ?_⟩` and prove the remaining obligations. Conclude with `restrictIdeal_eq_coordIdeal_of_ideal_eq_span hVaff _ _ (castAddImage c d) hspanV`.
+A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_of_restrictIdeal_ker_eq_comap
     {X X' : Scheme.{u}} {k : Type u} [Field k] (p : X' ⟶ Spec (CommRingCat.of k))
@@ -160,9 +158,9 @@ theorem exists_etaleChart_of_restrictIdeal_ker_eq_comap
   exact restrictIdeal_eq_coordIdeal_of_ideal_eq_span hVaff _ _ (castAddImage c d) hspanV
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, hxU, q, hqsm, hqc, hker⟩` from `h x`. Use `hqsm` as an intermediate fact. Take `⟨V, hVaff, hxV, d, ch, hch⟩` from `exists_etaleChart_of_restrictIdeal_ker_eq_comap p τ c U q hqc hker x hxU`. Take `⟨ch', hch'⟩` from `exists_etaleChart_image_of_restrictIdeal_eq p U V (c + d) ch τ.ker (castAddImage c d) hch`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U.ι ''ᵁ V, mem_image_ι_of_mem U V (τ.base x) hxU hxV, c + d, ch', castAddImage c d, card_castAddImage c d, hch'⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasEtaleCoordCodim_of_locally_smooth_over_affineSpace {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (τ : X ⟶ X') (c : ℕ)

@@ -12,7 +12,7 @@ open MvPolynomial Formalism.BasicNotions Formalism.GradedWeylDivisibility
 open Formalism.REAL (fockF)
 
 /- English proof (translation)
-Unfold `fockF`. Apply `Finset.sum_subset ht` to reduce the goal to its premises. Introduce `m _ hm`. Establish `h0 : f.coeff m = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Rewrite using `[h0, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_eq_sum_coeff {σ : Type} (f g : MvPolynomial σ ℂ) (t : Finset (σ →₀ ℕ)) (ht : f.support ⊆ t) :
     fockF f g = ∑ m ∈ t, f.coeff m * star (g.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℂ) := by
@@ -23,7 +23,7 @@ theorem fock_eq_sum_coeff {σ : Type} (f g : MvPolynomial σ ℂ) (t : Finset (�
   rw [h0, zero_mul, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum_coeff (f + f') g (f.support ∪ f'.support) MvPolynomial.support_add, fock_eq_sum_coeff f g (f.support ∪ f'.support) Finset.subset_union_left, fock_eq_sum_coeff f' g (f.support ∪ f'.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockF_add_left_g_l4 {σ : Type} (f f' g : MvPolynomial σ ℂ) :
     fockF (f + f') g = fockF f g + fockF f' g := by
@@ -36,7 +36,7 @@ theorem fockF_add_left_g_l4 {σ : Type} (f f' g : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum_coeff g f (f.support ∪ g.support) Finset.subset_union_right, fock_eq_sum_coeff f g (f.support ∪ g.support) Finset.subset_union_left, star_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', star_mul', star_star, star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_conj_symm {σ : Type} (f g : MvPolynomial σ ℂ) : fockF g f = star (fockF f g) := by
   classical
@@ -47,7 +47,7 @@ theorem fock_conj_symm {σ : Type} (f g : MvPolynomial σ ℂ) : fockF g f = sta
   ring
 
 /- English proof (translation)
-Unfold `fockF`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockF_add_right_g_l4 {σ : Type} (f g g' : MvPolynomial σ ℂ) :
     fockF f (g + g') = fockF f g + fockF f g' := by
@@ -58,7 +58,7 @@ theorem fockF_add_right_g_l4 {σ : Type} (f g g' : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum_coeff (c • f) g f.support MvPolynomial.support_smul]`. Unfold `fockF`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,7 +72,7 @@ theorem fockF_smul_left' {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `fockF`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockF_smul_right_eq_star_mul {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
     fockF f (c • g) = star c * fockF f g := by
@@ -83,7 +83,7 @@ theorem fockF_smul_right_eq_star_mul {σ : Type} (c : ℂ) (f g : MvPolynomial �
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Unfold `fockF`. Simplify using the standard rewrite rules. Conclude with `(Formalism.GradedWeylDivisibility.fockPos σ f hf).1.le`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_self_re_nonneg {σ : Type} (f : MvPolynomial σ ℂ) : 0 ≤ (fockF f f).re := by
   by_cases hf : f = 0
@@ -93,7 +93,7 @@ theorem fock_self_re_nonneg {σ : Type} (f : MvPolynomial σ ℂ) : 0 ≤ (fockF
   · exact (Formalism.GradedWeylDivisibility.fockPos σ f hf).1.le
 
 /- English proof (translation)
-Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Unfold `fockF`. Simplify using the standard rewrite rules. Conclude with `(Formalism.GradedWeylDivisibility.fockPos σ f hf).2`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_self_im_eq_zero {σ : Type} (f : MvPolynomial σ ℂ) : (fockF f f).im = 0 := by
   by_cases hf : f = 0
@@ -103,7 +103,7 @@ theorem fock_self_im_eq_zero {σ : Type} (f : MvPolynomial σ ℂ) : (fockF f f)
   · exact (Formalism.GradedWeylDivisibility.fockPos σ f hf).2
 
 /- English proof (translation)
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[fock_self_im_eq_zero f]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fock_self_eq_re {σ : Type} (f : MvPolynomial σ ℂ) : fockF f f = (((fockF f f).re : ℝ) : ℂ) := by
   apply Complex.ext
@@ -156,7 +156,7 @@ theorem fockSp_inner {σ : Type} (f g : FockSp σ) :
     (inner ℂ f g : ℂ) = fockF (show MvPolynomial σ ℂ from g) (show MvPolynomial σ ℂ from f) := rfl
 
 /- English proof (translation)
-Establish `h` using `inner_mul_inner_self_le (𝕜 := ℂ) (show FockSp σ from f) (show FockSp σ from g)`. Establish `h' : ‖fockF g f‖ * ‖fockF f g‖ ≤ (fockF f f).re * (fockF g g).re` using `h`. Rewrite `h'` using `[fock_conj_symm f g, norm_star]`. Rewrite using `[sq]`. Conclude with `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_cauchy_schwarz {σ : Type} (f g : MvPolynomial σ ℂ) : ‖fockF f g‖ ^ 2 ≤ (fockF f f).re * (fockF g g).re := by
   have h := inner_mul_inner_self_le (𝕜 := ℂ) (show FockSp σ from f) (show FockSp σ from g)
@@ -166,9 +166,9 @@ theorem fock_cauchy_schwarz {σ : Type} (f g : MvPolynomial σ ℂ) : ‖fockF f
   exact h'
 
 /- English proof (translation)
-Establish `hP : 0 ≤ (fockF p p).re` using `fock_self_re_nonneg p`. Establish `hYn : 0 ≤ (fockF Y Y).re` using `fock_self_re_nonneg Y`. Establish `hJn : 0 ≤ (fockF J J).re` using `fock_self_re_nonneg J`. Establish `hcs` using `fock_cauchy_schwarz Y J`. Establish `hre : (fockF p p).re ≤ ‖fockF Y J‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `RCLike.re_le_norm (fockF Y J)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hYn, mul_self_le_mul_self hP hre, mul_nonneg hK hYn]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem fock_adjoint_bound {κ ι : Type} (p : MvPolynomial κ ℂ) (Y J : MvPolynomial ι ℂ) (K : ℝ) (hK : 0 ≤ K)
     (h1 : fockF p p = fockF Y J) (h2 : (fockF J J).re ≤ K * (fockF p p).re) :
@@ -183,14 +183,14 @@ theorem fock_adjoint_bound {κ ι : Type} (p : MvPolynomial κ ℂ) (Y J : MvPol
   nlinarith [mul_le_mul_of_nonneg_left h2 hYn, mul_self_le_mul_self hP hre, mul_nonneg hK hYn]
 
 /- English proof (translation)
-Conclude with `map_sum (fockLin g) f s`.
+A detailed English derivation is pending.
 -/
 theorem fockF_finset_sum_left {σ ι : Type} (s : Finset ι) (f : ι → MvPolynomial σ ℂ) (g : MvPolynomial σ ℂ) :
     fockF (∑ i ∈ s, f i) g = ∑ i ∈ s, fockF (f i) g := by
   exact map_sum (fockLin g) f s
 
 /- English proof (translation)
-Rewrite using `[fock_conj_symm (∑ i ∈ s, g i) f, fockF_finset_sum_left, star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(fock_conj_symm (g i) f).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fockF_finset_sum_right {σ ι : Type} (s : Finset ι) (f : MvPolynomial σ ℂ) (g : ι → MvPolynomial σ ℂ) :
     fockF f (∑ i ∈ s, g i) = ∑ i ∈ s, fockF f (g i) := by
@@ -199,15 +199,13 @@ theorem fockF_finset_sum_right {σ ι : Type} (s : Finset ι) (f : MvPolynomial 
   exact (fock_conj_symm (g i) f).symm
 
 /- English proof (translation)
-Set `V' : Submodule ℂ (FockSp κ)` to `V`. Use `haveI : FiniteDimensional ℂ V' := ‹FiniteDimensional ℂ V›`. Set `e` to `stdOrthonormalBasis ℂ V'`. Set `ev : Fin (Module.finrank ℂ V') → V` to `fun k => ⟨((e k : V') : FockSp κ), (e k).2⟩`. Use `⟨∑ k, (fockLin (j (ev k))).smulRight ((ev k : V) : MvPolynomial κ ℂ), ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F`. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (ev k).2`. Introduce `F v`. Set `v' : V'` to `⟨v.1, v.2⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hv : v = ∑ l, (inner ℂ (e l) v') • ev l`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2` using `congrArg (fun x : V' => (x : FockSp κ)) (e.sum_repr' v')`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2 ⊢`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [hv]`. Rewrite using `[map_sum, fockF_finset_sum_right]`. Simplify using `only [map_smul, fockF_smul_right_eq_star_mul, LinearMap.sum_apply, LinearMap.smulRight_apply, fockF_finset_sum_left, fockF_smul_left', fockLin_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
-
-Use `congr 1`. Conclude with `fock_conj_symm (v : MvPolynomial κ ℂ) ((ev l : V) : MvPolynomial κ ℂ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem fock_adjoint_exists {κ ι : Type} (V : Submodule ℂ (MvPolynomial κ ℂ)) [FiniteDimensional ℂ V]
     (j : V →ₗ[ℂ] MvPolynomial ι ℂ) :

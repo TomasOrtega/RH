@@ -14,7 +14,7 @@ section Local
 variable {X : Scheme.{0}} [IsIntegral X] {x : X}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `unitAt_one x`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitAt_pow {f : X.functionField} (h : UnitAt x f) (n : ℕ) : UnitAt x (f ^ n) := by
   induction n with
@@ -22,7 +22,7 @@ theorem unitAt_pow {f : X.functionField} (h : UnitAt x f) (n : ℕ) : UnitAt x (
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`. Rewrite using `[zpow_natCast]`. Conclude with `unitAt_pow h m`. Rewrite using `[zpow_neg, zpow_natCast]`. Conclude with `(unitAt_pow h m).inv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_zpow {f : X.functionField} (h : UnitAt x f) (n : ℤ) : UnitAt x (f ^ n) := by
   obtain ⟨m, rfl | rfl⟩ := n.eq_nat_or_neg
@@ -30,16 +30,14 @@ theorem unitAt_zpow {f : X.functionField} (h : UnitAt x f) (n : ℤ) : UnitAt x 
   · rw [zpow_neg, zpow_natCast]; exact (unitAt_pow h m).inv
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction _ _ (fun _ _ ha hb => ha.mul hb) (unitAt_one x) h`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_prod {ι : Type} (s : Finset ι) (f : ι → X.functionField)
     (h : ∀ i ∈ s, UnitAt x (f i)) : UnitAt x (∏ i ∈ s, f i) :=
   Finset.prod_induction _ _ (fun _ _ ha hb => ha.mul hb) (unitAt_one x) h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty]`. Conclude with `CartierDiv.isEqn_zero x`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`.
-
-Conclude with `((h a (Finset.mem_insert_self a s)).zsmul (b a)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEqn_sum {ι : Type} (s : Finset ι) (D : ι → CartierDiv X) (b : ι → ℤ)
     (t : ι → X.functionFieldˣ) (h : ∀ i ∈ s, (D i).IsEqn x (t i)) :
@@ -59,11 +57,11 @@ end GlobalTheory.CombUnit
 open GlobalTheory.CombUnit in
 
 /- English proof (translation)
-Introduce `F _ _ Y ι _ DM D q b x fM f hrel hM hD`. Take `⟨tM, htM⟩` from `DM.exists_isEqn x`. Use `choose t ht using fun i => (D i).exists_isEqn x`. Establish `uM` using `htM.generatesAt_iff.1 hM`. Establish `ui : ∀ i, UnitAt x (f i * t i)` using `fun i => (ht i).generatesAt_iff.1 (hD i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (q • DM).IsEqn x (tM ^ q)` using `htM.nsmul q`. Establish `e2 : (q • DM).IsEqn x (∏ i, t i ^ b i)` using `hrel ▸ isEqn_sum Finset.univ D b t fun i _ => ht i`. Establish `uq` using `e1.iff_unitAt.1 e2`. Establish `key` using `((unitAt_pow uM q).mul uq).mul (unitAt_prod Finset.univ _ fun i _ => unitAt_zpow (ui i) (b i)).inv`. Use `key using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `hT : (∏ i, ((t i : Y.Fn)) ^ b i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (t i).ne_zero`. Establish `htq : ((tM : Y.Fn)) ^ q ≠ 0` using `pow_ne_zero _ tM.ne_zero`. Simplify using `only [Units.val_pow_eq_pow_val, Units.coe_prod, Units.val_zpow_eq_zpow_val, mul_zpow, Finset.prod_mul_distrib, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CombUnit.unitAt_quot_of_relation : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (ι : Type) [Fintype ι] (DM : Y.Dv) (D : ι → Y.Dv) (q : ℕ) (b : ι → ℤ) (x : Y.X) (fM : Y.Fn) (f : ι → Y.Fn), q • DM = ∑ i, b i • D i → DM.GeneratesAt x fM → (∀ i, (D i).GeneratesAt x (f i)) → UnitAt x (fM ^ q / ∏ i, f i ^ b i) := by
   intro F _ _ Y ι _ DM D q b x fM f hrel hM hD

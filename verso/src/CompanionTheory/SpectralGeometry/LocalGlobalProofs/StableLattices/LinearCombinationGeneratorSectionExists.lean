@@ -11,11 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.SecNorm
 
 /- English proof (translation)
-Introduce `X Y S₀ M hM K K₂ _ _ φ ε φ₂ ε₂ p e he hF t ht R hR`. Take `⟨t', ht', hv⟩` from `exists_gen hM (φ' := φ) (ε' := ε) (fun U _ h => by`. Establish `c` using `hF U (fun ψ => h (p ≫ ψ))`. Simplify using `only [Category.assoc] at c`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Category.assoc, c.symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `simp)`. Use the proof step `(LB.mulGen M _ _ _ _ (LB.mulGen M _ _ _ _ t (LB.invGen M _ _ (LB.pullGen M _ _ t (p ≫ e)))) (LB.pullGen M _ _ R p))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _))) (DVR.pullGen_isGen _ _ _ _ hR _))`. Use `⟨t', ht', fun Z s z J hJ => ?_⟩` and prove the remaining obligations. Establish `h₁ : (s ≫ e) ≫ p = s` using `by rw [Category.assoc, he, Category.comp_id]`.
-
-Establish `h₂ : (s ≫ e) ≫ p ≫ e = s ≫ e` using `by rw [← Category.assoc, h₁]`. Rewrite using `[hv Z (s ≫ e) z J hJ, val_mul hJ, val_mul hJ, val_inv, val_pull hJ, val_pull hJ, h₁, h₂, mul_inv_cancel, _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_normalised_along : ∀ {X Y S₀ : Scheme.{0}} {M : LB X}, M.IsLB → ∀ {K K₂ : Type} [Fintype K] [Fintype K₂] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ₂ : K₂ → (S₀ ⟶ X)) (ε₂ : K₂ → ℤ) (p : Y ⟶ S₀) (e : S₀ ⟶ Y), e ≫ p = 𝟙 S₀ → FormEq (fun k => e ≫ φ k) ε φ₂ ε₂ →

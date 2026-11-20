@@ -12,9 +12,7 @@ namespace GlobalTheory.WildFull
 open Polynomial
 
 /- English proof (translation)
-Introduce `D T hL k v L hdeg s hsI hsW`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `h1` using `hL k v L`. Rewrite `hdeg` using `[h1, ← T.dim]`. Rewrite using `[T.inePol _ L s hsI, ← T.dim]`.
-
-Conclude with `GlobalTheory.WeilDeligne.WD.inePol_wild_of_natDegree_lab hdeg hsW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), GlobalTheory.HeightCounting.LabTrue D T → GlobalTheory.TypeLeaf.WildOne D := by
   intro D T hL k v L hdeg s hsI hsW

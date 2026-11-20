@@ -9,7 +9,7 @@ open GlobalTheory.CatH (face toLast)
 namespace GlobalTheory.CompanionTheory.ConeZcoc
 
 /- English proof (translation)
-Unfold `plogK`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow, map_neg, map_one, map_natCast, ← hf.2 x hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem plogK_map {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : Ideal B'}
     {δ : DividedPowers J} {δ' : DividedPowers J'} {f : B →+* B'} (hf : IsDPMorphism δ δ' f) (s : ℕ)
@@ -20,7 +20,7 @@ theorem plogK_map {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : I
   rw [map_mul, map_mul, map_pow, map_neg, map_one, map_natCast, ← hf.2 x hx]
 
 /- English proof (translation)
-Establish `h1 : (a * b * c⁻¹) * (c * d * e⁻¹) = a * b * d * e⁻¹`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Establish `h2 : (b * d * f⁻¹) * (a * f * e⁻¹) = (a * b * d) * e⁻¹ * (f⁻¹ * f)`. Simplify using `only [mul_assoc, mul_left_comm, mul_comm]`. Rewrite using `[h1, h2, inv_mul_cancel, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem units_cancel {G : Type} [CommGroup G] (a b c d e f : G) :
     (a * b * c⁻¹) * (c * d * e⁻¹) = (b * d * f⁻¹) * (a * f * e⁻¹) := by
@@ -31,7 +31,7 @@ theorem units_cancel {G : Type} [CommGroup G] (a b c d e f : G) :
   rw [h1, h2, inv_mul_cancel, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.T.truncated_log_multiplicative δ s hs hu ha hb, ← GlobalTheory.T.truncated_log_multiplicative δ s hs hu hc hd]`. Simplify using `only [add_sub_cancel]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem plogK_four {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (s : ℕ) (hs : pdP δ s = ⊥)
     (hu : ∀ n : ℕ, n ≠ 0 → IsUnit (n : B)) {a b c d : B} (ha : a - 1 ∈ J) (hb : b - 1 ∈ J) (hc : c - 1 ∈ J)
@@ -42,7 +42,7 @@ theorem plogK_four {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) 
   rw [h]
 
 /- English proof (translation)
-Rewrite using `[h₁, h₂, h₃, h₄, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_eq {B : Type} [CommRing B] {a c d b a' c' d' b' : B} (h₁ : a = a') (h₂ : c = c') (h₃ : d = d')
     (h₄ : b = b') (h : a' + c' = d' + b') : a + c = d + b := by
@@ -61,9 +61,9 @@ theorem r_eq (Λ : CLiftK g D) (σ : ComposableArrows C 2) :
     Λ.r σ = rr Λ (σ.map' 0 1) (σ.map' 1 2) (σ.map' 0 2) := rfl
 
 /- English proof (translation)
-Substitute `h₀₂ h₁₃` using the available equality. Establish `e : Units.map (g.map (f₁₂ ≫ f₂₃)).φ.toMonoidHom (Λ.w f₀₁) = Units.map (g.map f₂₃).φ.toMonoidHom (Units.map (g.map f₁₂).φ.toMonoidHom (Λ.w f₀₁))`. Rewrite using `[g.map_comp]`. Both sides reduce to the same expression. Unfold `rr`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, map_mul, map_mul, map_inv]`. Conclude with `units_cancel _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rr_coboundary (Λ : CLiftK g D) {c₀ c₁ c₂ c₃ : C} (f₀₁ : c₀ ⟶ c₁) (f₁₂ : c₁ ⟶ c₂) (f₂₃ : c₂ ⟶ c₃)
     (f₀₂ : c₀ ⟶ c₂) (f₁₃ : c₁ ⟶ c₃) (f₀₃ : c₀ ⟶ c₃) (h₀₂ : f₀₂ = f₀₁ ≫ f₁₂) (h₁₃ : f₁₃ = f₁₂ ≫ f₂₃) :
@@ -78,7 +78,7 @@ theorem rr_coboundary (Λ : CLiftK g D) {c₀ c₁ c₂ c₃ : C} (f₀₁ : c�
   exact units_cancel _ _ _ _ _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(g.map ρ).φ (plogK (g.obj (σ.obj (Fin.last 2))).δ s ((Λ.r σ : (g.obj (σ.obj (Fin.last 2))).B) - 1)) = _`. Rewrite using `[plogK_map (g.map ρ).dp s (GlobalTheory.T.cone_lift_ratio_mem_ideal Λ σ), map_sub, map_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_zK (Λ : CLiftK g D) (s : ℕ) (σ : ComposableArrows C 2) {c : C} (ρ : σ.obj (Fin.last 2) ⟶ c) :
     (show (g.obj c).B from ((g ⋙ O (smFun X q)).map ρ).hom (zK Λ s σ)) =
@@ -88,7 +88,7 @@ theorem map_zK (Λ : CLiftK g D) (s : ℕ) (σ : ComposableArrows C 2) {c : C} (
   rfl
 
 /- English proof (translation)
-Use `(g.map ρ).hle (GlobalTheory.T.cone_lift_ratio_mem_ideal Λ σ)` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, map_sub, map_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_J (Λ : CLiftK g D) (σ : ComposableArrows C 2) {c : C} (ρ : σ.obj (Fin.last 2) ⟶ c) :
     ((Units.map (g.map ρ).φ.toMonoidHom (Λ.r σ) : (g.obj c).Bˣ) : (g.obj c).B) - 1 ∈ (g.obj c).J := by
@@ -97,7 +97,7 @@ theorem mem_J (Λ : CLiftK g D) (σ : ComposableArrows C 2) {c : C} (ρ : σ.obj
   exact this
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[g.map_id]`. Use `ext`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_id_unit {c : C} (ρ : c ⟶ c) (h : ρ = 𝟙 c) (u : (g.obj c).Bˣ) :
     Units.map (g.map ρ).φ.toMonoidHom u = u := by
@@ -106,7 +106,7 @@ theorem map_id_unit {c : C} (ρ : c ⟶ c) (h : ρ = 𝟙 c) (u : (g.obj c).Bˣ)
   ext; rfl
 
 /- English proof (translation)
-Establish `h : IsUnit (n : K)` using `(Nat.cast_ne_zero.2 hn).isUnit`. Use `h.map T.i` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nat_isUnit (T : Thick (smFun X q)) (n : ℕ) (hn : n ≠ 0) : IsUnit (n : T.B) := by
   have h : IsUnit (n : K) := (Nat.cast_ne_zero.2 hn).isUnit
@@ -114,19 +114,19 @@ theorem nat_isUnit (T : Thick (smFun X q)) (n : ℕ) (hn : n ≠ 0) : IsUnit (n 
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Introduce `K _ _ X q C _ g D Λ s hs`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `∑ i : Fin 4, (-1 : ℤ) ^ (i : ℕ) • ((g ⋙ O (smFun X q)).map (toLast i τ)).hom (zK Λ s (face i τ)) = 0`. Rewrite using `[Fin.sum_univ_four]`. Establish `h0` using `map_zK Λ s (face 0 τ) (toLast 0 τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `map_zK Λ s (face 1 τ) (toLast 1 τ)`. Establish `h2` using `map_zK Λ s (face 2 τ) (toLast 2 τ)`. Establish `h3` using `map_zK Λ s (face 3 τ) (toLast 3 τ)`. Establish `m0` using `mem_J Λ (face 0 τ) (toLast 0 τ)`. Establish `m1` using `mem_J Λ (face 1 τ) (toLast 1 τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2` using `mem_J Λ (face 2 τ) (toLast 2 τ)`. Establish `m3` using `mem_J Λ (face 3 τ) (toLast 3 τ)`. Establish `e0 : Units.map (g.map (toLast 0 τ)).φ.toMonoidHom (Λ.r (face 0 τ)) = Λ.r (face 0 τ)` using `map_id_unit (g := g) (c := τ.obj (Fin.last 3)) (toLast 0 τ) (τ.map_id _) _`. Establish `e1 : Units.map (g.map (toLast 1 τ)).φ.toMonoidHom (Λ.r (face 1 τ)) = Λ.r (face 1 τ)` using `map_id_unit (g := g) (c := τ.obj (Fin.last 3)) (toLast 1 τ) (τ.map_id _) _`. Establish `e2 : Units.map (g.map (toLast 2 τ)).φ.toMonoidHom (Λ.r (face 2 τ)) = Λ.r (face 2 τ)` using `map_id_unit (g := g) (c := τ.obj (Fin.last 3)) (toLast 2 τ) (τ.map_id _) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : Units.map (g.map (toLast 3 τ)).φ.toMonoidHom (Λ.r (face 3 τ)) * Units.map (g.map (toLast 1 τ)).φ.toMonoidHom (Λ.r (face 1 τ)) = Units.map (g.map (toLast 0 τ)).φ.toMonoidHom (Λ.r (face 0 τ)) * Units.map (g.map (toLast 2 τ)).φ.toMonoidHom (Λ.r (face 2 τ))`. Rewrite using `[e0, e1, e2]`. Conclude with `rr_coboundary Λ (τ.map' 0 1) (τ.map' 1 2) (τ.map' 2 3) (τ.map' 0 2) (τ.map' 1 3) (τ.map' 0 3) (τ.map'_comp 0 1 2) (τ.map'_comp 1 2 3)`. Establish `hval` using `congrArg (Units.val) key`. Rewrite `hval` using `[Units.val_mul, Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `p` using `plogK_four (g.obj (τ.obj (Fin.last 3))).δ s (hs _) (nat_isUnit (g.obj (τ.obj (Fin.last 3)))) m3 m1 m0 m2 hval`. Establish `fin : ∀ a b c d : (g ⋙ O (smFun X q)).obj (τ.obj (Fin.last 3)), a + c = d + b → (-1 : ℤ) ^ ((0 : Fin 4) : ℕ) • a + (-1 : ℤ) ^ ((1 : Fin 4) : ℕ) • b + (-1 : ℤ) ^ ((2 : Fin 4) : ℕ) • c + (-1 : ℤ) ^ ((3 : Fin 4) : ℕ) • d = 0`. Introduce `a b c d h`. Establish `e3 : ((3 : Fin 4) : ℕ) = 3` using `rfl`. Establish `e2 : ((2 : Fin 4) : ℕ) = 2` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ((1 : Fin 4) : ℕ) = 1` using `rfl`. Establish `e0 : ((0 : Fin 4) : ℕ) = 0` using `rfl`. Rewrite using `[e0, e1, e2, e3]`. Establish `: (-1 : ℤ) ^ 3 = -1` using `by norm_num`. Rewrite using `[this, pow_zero, pow_one, show (-1 : ℤ) ^ 2 = 1 by norm_num, one_smul, one_smul, neg_one_smul, neg_one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `fin _ _ _ _ ?_` and prove the remaining obligations. Conclude with `add_eq (B := (g.obj (τ.obj (Fin.last 3))).B) h0 h2 h3 h1 p.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} {C : Type 1} [Category.{0} C] {g : C ⥤ Thick (smFun X q)} {D : E.LineData X} (Λ : CLiftK g D) (s : ℕ), (∀ c, (g.obj c).pdPow s = ⊥) → CH.d _ 2 (zK Λ s) = 0 := by
   intro K _ _ X q C _ g D Λ s hs

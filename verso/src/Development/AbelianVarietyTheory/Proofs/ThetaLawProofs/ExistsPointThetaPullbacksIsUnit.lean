@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.SimilNonvan
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Establish `hj' : r z ∈ H.U j` using `X.basicOpen_le _ hj`. Rewrite using `[gs_compat t r z hk hj']`. Use `(Units.isUnit _).mul ?_` and prove the remaining obligations. Rewrite using `[gs_eq r z _ hj']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Z.mem_basicOpen ((r.app _).hom (t.f j)) z hj').1 ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_basicOpen]`. Conclude with `hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_gs_of_mem {X Z : Scheme.{0}} {H : LB X} (t : LB.Sec H) (r : Z ⟶ X) (z : Z) {k : H.ι}
     (hk : r z ∈ H.U k) (h : r z ∈ Out.nonzeroLocus t) : IsUnit (gs r z _ (t.f k)) := by
@@ -37,13 +37,13 @@ theorem isUnit_gs_of_mem {X Z : Scheme.{0}} {H : LB X} (t : LB.Sec H) (r : Z ⟶
   exact hj
 
 /- English proof (translation)
-Set `f : ℤ →+* ℚ` to `Int.castRingHom ℚ`. Establish `hm' : (m : ℚ) ≠ 0` using `Int.cast_ne_zero.2 hm`. Establish `e : ∀ B : Matrix n n ℤ, B = m • (1 : Matrix n n ℤ) ↔ (m : ℚ)⁻¹ • B.map f = 1` using `fun B => by`. Rewrite using `[inv_smul_eq_iff₀ hm']`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `rfl`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [f]`. Introduce `hB`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Use `congrFun (congrFun hB i) j` as an intermediate fact. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Apply the tactic sequence `by_cases hij : i = j <;> simpa [f, Matrix.one_apply, hij] using this`. Rewrite `h`, the goal using `[e, Matrix.map_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h` using `[← Matrix.smul_mul]`. Rewrite using `[← Matrix.mul_smul]`. Conclude with `mul_eq_one_comm.1 h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_transpose_eq {n : Type} [Fintype n] [DecidableEq n] {al : Matrix n n ℤ} {m : ℤ} (hm : m ≠ 0)
     (h : al.transpose * al = m • (1 : Matrix n n ℤ)) : al * al.transpose = m • (1 : Matrix n n ℤ) := by
@@ -69,9 +69,7 @@ theorem mul_transpose_eq {n : Type} [Fintype n] [DecidableEq n] {al : Matrix n n
 variable {K : Type} [Field K] [IsAlgClosed K]
 
 /- English proof (translation)
-Take `⟨a, -, ha⟩` from `x.th_ne (IsLocalRing.closedPoint K)`. Use `haveI := x.P.isAb.proper`. Establish `: JacobsonSpace x.P.A.left` using `LocallyOfFiniteType.jacobsonSpace x.P.A.hom`. Take `⟨c, hc, hc'⟩` from `nonempty_inter_closedPoints (Z := (Out.nonzeroLocus x.th : Set x.P.A.left)) ⟨a, ha⟩ (Out.nonzeroLocus x.th).isOpen.isLocallyClosed`. Use `⟨Over.homMk (pointOfClosedPoint x.P.A.hom c hc') (pointOfClosedPoint_comp _ _ _), fun p => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(pointOfClosedPoint_apply x.P.A.hom c hc' p).symm ▸ hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pt_mem (x : KeyIn K) : ∃ z : Pt x, ∀ p, z.left p ∈ Out.nonzeroLocus x.th := by
   obtain ⟨a, -, ha⟩ := x.th_ne (IsLocalRing.closedPoint K)
@@ -83,11 +81,9 @@ theorem exists_pt_mem (x : KeyIn K) : ∃ z : Pt x, ∀ p, z.left p ∈ Out.nonz
   exact (pointOfClosedPoint_apply x.P.A.hom c hc' p).symm ▸ hc
 
 /- English proof (translation)
-Take `⟨hfin, -, hsurj, -, -⟩` from `hM _ x.P n (Nat.pos_of_ne_zero hn)`. Take `⟨u, hu⟩` from `ReciprocityTheory.ChartRestriction.G.H1.SectionDivision.exists_section (k := K) (pullback.snd (Out.mulA x.P.A n).left a.left)`. Establish `hb : (u ≫ pullback.fst (Out.mulA x.P.A n).left a.left) ≫ (Out.mulA x.P.A n).left = a.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hu]`. Conclude with `Category.id_comp _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : (u ≫ pullback.fst (Out.mulA x.P.A n).left a.left) ≫ x.P.A.hom = (𝟙_ (Over (Sp K))).hom`. Rewrite using `[← Over.w (Out.mulA x.P.A n), ← Category.assoc, hb]`. Conclude with `Over.w a`. Use `⟨Over.homMk _ hw, ?_⟩` and prove the remaining obligations. Establish `e : ∀ b : Pt x, b ^ n = b ≫ Out.mulA x.P.A n` using `fun b => (congrArg (· ^ n) (Category.comp_id b).symm).trans (MonObj.comp_pow (𝟙 x.P.A) n b).symm`.
-
-Rewrite using `[e]`. Conclude with `Over.OverMorphism.ext hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq (hM : Out.MulNSt) (x : KeyIn K) {n : ℕ} (hn : n ≠ 0) (a : Pt x) : ∃ b : Pt x, b ^ n = a := by
   obtain ⟨hfin, -, hsurj, -, -⟩ := hM _ x.P n (Nat.pos_of_ne_zero hn)
@@ -105,17 +101,17 @@ theorem exists_pow_eq (hM : Out.MulNSt) (x : KeyIn K) {n : ℕ} (hn : n ≠ 0) (
   exact Over.OverMorphism.ext hb
 
 /- English proof (translation)
-Introduce `laws K _ _ x m al ξ hm hal`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm Nat.cast_zero`. Establish `hal'` using `mul_transpose_eq (Int.natCast_ne_zero.2 hm0) hal`. Use `haveI := x.P.isAb.comm`. Take `⟨z, hz⟩` from `exists_pt_mem x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose u hu using fun r => exists_pow_eq laws.mulN x hm0 (z * (ξ r)⁻¹)`. Set `v : Fin 4 → Pt x` to `fun c => ∏ r', u r' ^ al r' c`. Set `y : 𝟙_ (Over (Sp K)) ⟶ Out.powObj x.P.A 4` to `(Out.powIsLimit x.P.A 4).lift (Fan.mk _ v)`. Establish `hy : ∀ c, y ≫ Out.powPr x.P.A c = v c` using `fun c => (Out.powIsLimit x.P.A 4).fac (Fan.mk _ v) ⟨c⟩`. Establish `key : ∀ r, y ≫ alMap x al r (ξ r) = z` using `fun r => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : y ≫ alMap x al r (ξ r) = (∏ c, v c ^ al r c) * ξ r`. Establish `e₀ : y ≫ toUnit _ = 𝟙 _` using `toUnit_unique _ _`. Simplify using `only [alMap, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, MonObj.comp_mul, GrpObj.comp_zpow, MonObj.comp_one, hy, reassoc_of% e₀, Fin.prod_univ_succ, Fin.prod_univ_zero]`. Establish `e₂ : ∏ c, v c ^ al r c = u r ^ m`. Simplify using `only [v, ← Finset.prod_zpow, ← zpow_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_comm]`. Establish `e₃ : ∀ r', ∏ c, u r' ^ (al r' c * al r c) = if r' = r then u r' ^ m else 1` using `fun r' => by`. Establish `h` using `congrFun (congrFun hal' r') r`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] at h`. Rewrite `h` using `[Fin.sum_univ_four]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Fin.prod_univ_four, ← zpow_add, ← zpow_add, ← zpow_add, h]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [e₃, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[e₁, e₂, hu, inv_mul_cancel_right]`. Use `⟨y, fun p J hJ r => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `isUnit_gs_of_mem x.th _ p (hJ _) ?_` and prove the remaining obligations. Establish `e : y.left ≫ (alMap x al r (ξ r)).left = z.left` using `congrArg (·.left) (key r)`. Rewrite using `[e]`. Conclude with `hz p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pt_isUnit : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (m : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ) (ξ : Fin 4 → Pt x), (m : K) ≠ 0 → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → ∃ y : 𝟙_ (Over (Sp K)) ⟶ Out.powObj x.P.A 4, ∀ (p : (𝟙_ (Over (Sp K))).left) J, Good x.P.L p J → ∀ r, IsUnit (gs (y.left ≫ (alMap x al r (ξ r)).left) p (x.P.L.U (J (y.left ≫ (alMap x al r (ξ r)).left))) (x.th.f (J (y.left ≫ (alMap x al r (ξ r)).left)))) := by
   intro laws K _ _ x m al ξ hm hal

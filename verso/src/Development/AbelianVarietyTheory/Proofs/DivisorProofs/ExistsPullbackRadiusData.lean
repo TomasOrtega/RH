@@ -20,7 +20,7 @@ variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} (g : Y ≅ Y)
 include hg in
 
 /- English proof (translation)
-Rewrite using `[Iso.inv_comp_eq, hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_comp : g.inv ≫ p = p := by rw [Iso.inv_comp_eq, hg]
 
@@ -60,7 +60,7 @@ def comapChart (c : AlgChart p σ D) : AlgChart p σ D where
     exact ev_of_comp (m := ptMap g.symm (inv_comp g hg)) (f := g.inv) (fun _ => rfl) W f _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem comapChart_source (c : AlgChart p σ D) (y : CxPts p σ) :
     y ∈ (comapChart g hg c).e.source ↔ ptMap g hg y ∈ c.e.source := Iff.rfl
@@ -79,13 +79,13 @@ variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} (g : Y ≅ Y)
   {σ : k →+* ℂ} {D : ℕ}
 
 /- English proof (translation)
-The claim follows from `(ptH g hg).left_inv y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ptMap_symm_ptMap (y : CxPts p σ) : ptMap g.symm (inv_comp g hg) (ptMap g hg y) = y :=
   (ptH g hg).left_inv y
 
 /- English proof (translation)
-The claim follows from `(ptH g hg).right_inv y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ptMap_ptMap_symm (y : CxPts p σ) : ptMap g hg (ptMap g.symm (inv_comp g hg) y) = y :=
   (ptH g hg).right_inv y
@@ -93,32 +93,32 @@ The claim follows from `(ptH g hg).right_inv y`.
 def cpre (C : Closeds Y) : Closeds Y := ⟨g.hom.base ⁻¹' C, C.isClosed.preimage g.hom.base.hom.continuous⟩
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_apply, Iso.inv_hom_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inv_hom_apply (a : Y) : g.hom (g.inv a) = a := by
   rw [← Scheme.Hom.comp_apply, Iso.inv_hom_id]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hom_inv_apply (a : Y) : g.inv (g.hom a) = a := by
   rw [← Scheme.Hom.comp_apply, Iso.hom_inv_id]; rfl
 
 include hg in
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem liesIn_cpre (C : Closeds Y) (y : CxPts p σ) : LiesIn y (cpre g C) ↔ LiesIn (ptMap g hg y) C := by
   exact Iff.rfl
 
 /- English proof (translation)
-Use `⟨fun j => ?_, ?_, fun i j hij => h.2.2 i j fun a ha => ?_⟩` and prove the remaining obligations. Establish `e : (cpre g (C j) : Set Y) = g.inv.base '' (C j : Set Y)`. Use extensionality with `a`. Use `⟨fun ha => ⟨g.hom a, ha, hom_inv_apply g a⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `g.hom (g.inv b) ∈ C j`. Rewrite using `[inv_hom_apply]` and apply the resulting hypothesis. Rewrite using `[e]`. Conclude with `(h.1 j).image _ g.inv.base.hom.continuous.continuousOn`. Use extensionality with `a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_iUnion]`. Rewrite using `[← hB, ← h.2.1, Set.mem_iUnion]`. Both sides reduce to the same expression. Use `hij (show g.inv a ∈ cpre g (C i) from by change g.hom (g.inv a) ∈ C i; rwa [inv_hom_apply])` as an intermediate fact. Express the relevant statement in the definitionally equal form `g.hom (g.inv a) ∈ C j at this`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[inv_hom_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem compList_cpre {B : Set Y} {q : ℕ} {C : Fin q → Closeds Y} (h : ReciprocityTheory.AnForm.R.FinalTheorems.CompList B C)
     (hB : ∀ a, g.hom a ∈ B ↔ a ∈ B) : ReciprocityTheory.AnForm.R.FinalTheorems.CompList B (fun i => cpre g (C i)) := by
@@ -140,13 +140,13 @@ theorem compList_cpre {B : Set Y} {q : ℕ} {C : Fin q → Closeds Y} (h : Recip
     rwa [inv_hom_apply] at this
 
 /- English proof (translation)
-Set `φ : Γ(Y, W.1) ≃+* Γ(Y, g.hom ⁻¹ᵁ W.1)` to `(asIso (g.hom.app W.1)).commRingCatIsoToRingEquiv`. Establish `hφ : ∀ s, φ s = g.hom.app W.1 s` using `fun _ => rfl`. Use extensionality with `u`. Take `⟨s, rfl⟩ : ∃ s, φ s = u` from `φ.surjective u`. Establish `key : φ s ∈ (Scheme.IdealSheafData.vanishingIdeal (cpre g C)).ideal ⟨g.hom ⁻¹ᵁ W.1, W.2.preimage_of_isIso g.hom⟩ ↔ s ∈ (Scheme.IdealSheafData.vanishingIdeal C).ideal W`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.SncIso.mem_vanishingIdeal_ideal_iff, GlobalTheory.SncIso.mem_vanishingIdeal_ideal_iff, hφ, ← Scheme.preimage_basicOpen]`. Prove the components needed by the constructor for the conclusion. Introduce `H b hbU hbZ hbs`. Use `H (g.inv b) ?_ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g.hom (g.inv b) ∈ W.1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[inv_hom_apply]` and apply the resulting hypothesis. Express the relevant statement in the definitionally equal form `g.hom (g.inv b) ∈ C`. Rewrite using `[inv_hom_apply]` and apply the resulting hypothesis. Express the relevant statement in the definitionally equal form `g.hom (g.inv b) ∈ Y.basicOpen s`. Rewrite using `[inv_hom_apply]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `H a haU haZ has`. Conclude with `H (g.hom a) haU haZ has`. Rewrite using `[key, ht, Ideal.mem_span_singleton, Ideal.mem_span_singleton, ← hφ, map_dvd_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishingIdeal_cpre (C : Closeds Y) (W : Y.affineOpens) {t : Γ(Y, W.1)}
     (ht : (Scheme.IdealSheafData.vanishingIdeal C).ideal W = Ideal.span {t}) :
@@ -170,9 +170,9 @@ theorem vanishingIdeal_cpre (C : Closeds Y) (W : Y.affineOpens) {t : Γ(Y, W.1)}
   rw [key, ht, Ideal.mem_span_singleton, Ideal.mem_span_singleton, ← hφ, map_dvd_iff]
 
 /- English proof (translation)
-Use `⟨fun y => h.1 _, fun y => ?_⟩` and prove the remaining obligations. Take `⟨W, t, f, hy, ht, hf, e⟩` from `h.2 (ptMap g hg y)`. Establish `hm : ∀ z : CxPts p σ, (ptMap g hg z).1 = z.1 ≫ g.hom` using `fun _ => rfl`. Use `⟨⟨g.hom ⁻¹ᵁ W.1, W.2.preimage_of_isIso g.hom⟩, g.hom.app W.1 t, f ∘ ptMap g hg, (mem_ptsIn_preimage hm).2 hy, vanishingIdeal_cpre g C W ht, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `(hf.comp_map (isOpen_ptsIn _) hm R').mono fun z hz => (mem_ptsIn_preimage hm).1 hz`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `e _ ((mem_ptsIn_preimage hm).1 hz)` as an intermediate fact. Rewrite `this` using `[ev_of_comp hm]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDivNorm_cpre {R R' : AnRead p σ D} {C : Closeds Y} {n : CxPts p σ → ℝ} (h : IsDivNorm R C n) :
     IsDivNorm R' (cpre g C) (n ∘ ptMap g hg) := by
@@ -189,7 +189,7 @@ theorem isDivNorm_cpre {R R' : AnRead p σ D} {C : Closeds Y} {n : CxPts p σ �
 include hg in
 
 /- English proof (translation)
-Introduce `z` and use `by change (j _).1 ≫ g.hom = _ rw [hj] change (spMap (starRingEnd ℂ) ≫ z.1 ≫ g.inv) ≫ g.hom = _ simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConjMap_conj {σ' : k →+* ℂ} {j : CxPts p σ' → CxPts p σ} (hj : IsConjMap j) :
     IsConjMap (fun z => ptMap g hg (j (ptMap g.symm (inv_comp g hg) z))) := fun z => by
@@ -202,7 +202,7 @@ def pullForm (a : ChartForm p σ D) : ChartForm p σ D :=
   fun c y ξ => a (comapChart g.symm (inv_comp g hg) c) (ptMap g hg y) ξ
 
 /- English proof (translation)
-Rewrite using `[ddcForm, ddcForm, levi_comapChart, ptMap_symm_ptMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ddcForm_comap (F : CxPts p σ → ℝ) (c : AlgChart p σ D) (y : CxPts p σ) (ξ : Fin D → ℂ) :
     ddcForm F (comapChart g.symm (inv_comp g hg) c) (ptMap g hg y) ξ = ddcForm (F ∘ ptMap g hg) c y ξ := by
@@ -210,14 +210,14 @@ theorem ddcForm_comap (F : CxPts p σ → ℝ) (c : AlgChart p σ D) (y : CxPts 
   rfl
 
 /- English proof (translation)
-Rewrite using `[comapChart_source, ptMap_symm_ptMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_comap_source (c : AlgChart p σ D) (y : CxPts p σ) :
     ptMap g hg y ∈ (comapChart g.symm (inv_comp g hg) c).e.source ↔ y ∈ c.e.source := by
   rw [comapChart_source, ptMap_symm_ptMap]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.preimage (ptH g hg).continuous, h.2.1.comp_map h.1 (fun _ => rfl) R', fun c y hy hyS ξ => by rw [pullForm, h.2.2 _ _ ((mem_comap_source g hg c y).2 hy) hyS ξ, ddcForm_comap]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPotential_pull {R R' : AnRead p σ D} {a : ChartForm p σ D} {S : Set (CxPts p σ)} {ψ : CxPts p σ → ℝ}
     (h : IsPotential R a S ψ) : IsPotential R' (pullForm g hg a) (ptMap g hg ⁻¹' S) (ψ ∘ ptMap g hg) :=
@@ -225,7 +225,7 @@ theorem isPotential_pull {R R' : AnRead p σ D} {a : ChartForm p σ D} {S : Set 
     rw [pullForm, h.2.2 _ _ ((mem_comap_source g hg c y).2 hy) hyS ξ, ddcForm_comap]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => by obtain ⟨W, φ, hW, hp⟩ := h.1 (ptMap g hg y) exact ⟨_, _, hW, isPotential_pull g hg hp⟩, fun c y hy ξ hξ => h.2 _ _ ((mem_comap_source g hg c y).2 hy) ξ hξ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isKaehlerForm_pull {R R' : AnRead p σ D} {a : ChartForm p σ D} (h : IsKaehlerForm R a) :
     IsKaehlerForm R' (pullForm g hg a) :=
@@ -235,7 +235,7 @@ theorem isKaehlerForm_pull {R R' : AnRead p σ D} {a : ChartForm p σ D} (h : Is
     fun c y hy ξ hξ => h.2 _ _ ((mem_comap_source g hg c y).2 hy) ξ hξ⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Establish `e : c'.e ∘ c.e.symm =ᶠ[nhds (c.e y)] id` using `Filter.eventually_of_mem (c.e.open_target.mem_nhds (c.e.map_source hy)) fun v hv => by`. Simplify using `only [Function.comp_apply, h, c.e.right_inv hv, id]`. Rewrite using `[AlgChart.dtrans, e.fderiv_eq, fderiv_id]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dtrans_eq_self {c c' : AlgChart p σ D} (h : ∀ z, c'.e z = c.e z) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (ξ : Fin D → ℂ) : c.dtrans c' y ξ = ξ := by
@@ -247,11 +247,11 @@ theorem dtrans_eq_self {c c' : AlgChart p σ D} (h : ∀ z, c'.e z = c.e z) {y :
   rfl
 
 /- English proof (translation)
-Establish `h2` using `isPotential_pull g.symm (inv_comp g hg) (R' := R) h`. Use `⟨h2.1, h2.2.1, fun c z hz hzW ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2.2.2 c z hz hzW ξ]`. Set `c''` to `comapChart g.symm (inv_comp g hg) (comapChart g hg c)`. Establish `he : ∀ w, c''.e w = c.e w` using `fun w => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `c.e (ptMap g hg (ptMap g.symm (inv_comp g hg) w)) = _`. Rewrite using `[ptMap_ptMap_symm]`. Establish `hz'' : z ∈ c''.e.source`. Express the relevant statement in the definitionally equal form `ptMap g hg (ptMap g.symm (inv_comp g hg) z) ∈ c.e.source`. Rewrite using `[ptMap_ptMap_symm]` and apply the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `a c z ξ = a c'' (ptMap g hg (ptMap g.symm (inv_comp g hg) z)) ξ`. Rewrite using `[ptMap_ptMap_symm, ha.trans hz hz'' ξ, dtrans_eq_self he hz]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPotential_of_pull {R : AnRead p σ D} {a : ChartForm p σ D} (ha : IsKaehlerForm R a) {W : Set (CxPts p σ)}
     {φ : CxPts p σ → ℝ} (h : IsPotential R (pullForm g hg a) W φ) :
@@ -318,7 +318,7 @@ theorem auxiliary_data_pullback_r (T : Tw Z) (x : OddPrimesWithRootsOfUnity Z) (
     (auxiliary_data_pullback T x).r σ y = x.r σ (T.pt y) := rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ T x` and use `⟨auxiliary_data_pullback T x, auxiliary_data_pullback_r T x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_auxiliary_data_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F)

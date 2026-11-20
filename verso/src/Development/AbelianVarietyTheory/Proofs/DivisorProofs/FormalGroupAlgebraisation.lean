@@ -17,7 +17,7 @@ variable {R : Type} [CommRing R] {I : Ideal R}
   {b : ∀ e, (Y e).left ⟶ B.left}
 
 /- English proof (translation)
-Take `⟨g, hg, -⟩` from `hM.existsUnique_thick hc₀ Z B (fun e => (φ e).left ≫ b e) (fun e => by`. Rewrite using `[Category.assoc, (hb e).w, Over.w_assoc]`. Conclude with `pullback.condition.symm)`. Use the proof step `(fun e => by rw [← Category.assoc, hφ, Category.assoc, hβb])`. Conclude with `⟨g, hg⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hom [IsNoetherianRing R] (hM : GlobalTheory.Published.FormalAlgebraisation.Morphisms) (hc₀ : IsAdicComplete I R)
     {β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left} (hB : IsProper B.hom)
@@ -33,7 +33,7 @@ theorem exists_hom [IsNoetherianRing R] (hM : GlobalTheory.Published.FormalAlgeb
   exact ⟨g, hg⟩
 
 /- English proof (translation)
-Establish `ex : ∀ e i, ∃ x : thickObj R I e Z ⟶ Y e, pullback.fst Z.hom (thick R I e) ≫ (p i).left = x.left ≫ b e` using `fun e i => ⟨Over.homMk ((hb e).lift (pullback.fst Z.hom (thick R I e) ≫ (p i).left) (pullback.snd _ _) (by rw [Category.assoc, Over.w, pullback.condition])) ((hb e).lift_snd _ _ _), ((hb e).lift_fst _ _ _).symm⟩`. Use `choose X hX using ex`. Take `⟨g, hg⟩` from `exists_hom hM hc₀ hB hb hβb Z hZ (fun e => FreeGroup.lift (X e) w) fun e => word_compat (hβ e) (hb (e + 1)) (hβb e) ((pullback.lift_fst _ _ _).trans (Category.comp_id _)) (pullback.lift_snd _ _ _) p (X e) (X (e + 1)) (hX e) (hX (e + 1)) w`. Conclude with `⟨g, fun e T k x hx => word_points (hb e) (IsPullback.of_hasPullback _ _) p (X e) (hX e) w g (hg e) T k x hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_word [IsNoetherianRing R] (hM : GlobalTheory.Published.FormalAlgebraisation.Morphisms) (hc₀ : IsAdicComplete I R) [∀ e, GrpObj (Y e)]
     {β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left}
@@ -57,7 +57,7 @@ theorem exists_word [IsNoetherianRing R] (hM : GlobalTheory.Published.FormalAlge
     word_points (hb e) (IsPullback.of_hasPullback _ _) p (X e) (hX e) w g (hg e) T k x hx⟩
 
 /- English proof (translation)
-Use `hM.hom_ext hc₀ fun e ↦ ?_` and prove the remaining obligations. Conclude with `h e (thickObj R _ e Z) (Over.homMk (pullback.fst Z.hom (thick R _ e)) pullback.condition)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hom_eq_of_points [IsNoetherianRing R] (hM : GlobalTheory.Published.FormalAlgebraisation.Morphisms) (hc₀ : IsAdicComplete I R)
     {Z : Over (Spec (CommRingCat.of R))} (hZ : IsProper Z.hom) [IsProper B.hom] {f g : Z ⟶ B}
@@ -67,23 +67,23 @@ theorem hom_eq_of_points [IsNoetherianRing R] (hM : GlobalTheory.Published.Forma
   exact h e (thickObj R _ e Z) (Over.homMk (pullback.fst Z.hom (thick R _ e)) pullback.condition)
 
 /- English proof (translation)
-Establish `ex` using `exists_point hb`. Establish `h2` using `isProper_tensorObj_over hB hB`. Establish `h3` using `isProper_tensorObj_over h2 hB`. Establish `one_mul' : lift (toUnit B ≫ un) (𝟙 B) ≫ mu = 𝟙 B`. Use `hom_eq_of_points hM hc₀ hB fun e T k ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `ex e T k`. Rewrite using `[comp_lift_assoc, comp_toUnit_assoc, Category.comp_id, hm e T 1 x _ _ (hu e T) hx, _root_.one_mul, hx]`. Establish `mul_one' : lift (𝟙 B) (toUnit B ≫ un) ≫ mu = 𝟙 B`. Use `hom_eq_of_points hM hc₀ hB fun e T k ↦ ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `ex e T k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[comp_lift_assoc, comp_toUnit_assoc, Category.comp_id, hm e T x 1 _ _ hx (hu e T), _root_.mul_one, hx]`. Establish `linv : lift io (𝟙 B) ≫ mu = toUnit B ≫ un`. Use `hom_eq_of_points hM hc₀ hB fun e T k ↦ ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `ex e T k`. Rewrite using `[comp_lift_assoc, comp_toUnit_assoc, Category.comp_id, hm e T _ x _ _ (hi e T x k hx) hx, inv_mul_cancel, hu e T]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `rinv : lift (𝟙 B) io ≫ mu = toUnit B ≫ un`. Use `hom_eq_of_points hM hc₀ hB fun e T k ↦ ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `ex e T k`. Rewrite using `[comp_lift_assoc, comp_toUnit_assoc, Category.comp_id, hm e T x _ _ _ hx (hi e T x k hx), mul_inv_cancel, hu e T]`. Establish `assoc' : (mu ▷ B) ≫ mu = (α_ B B B).hom ≫ (B ◁ mu) ≫ mu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hom_eq_of_points hM hc₀ h3 fun e T k ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨p, q, r, rfl⟩ : ∃ p q r, k = lift (lift p q) r := ⟨k ≫ fst _ _ ≫ fst _ _, k ≫ fst _ _ ≫ snd _ _, k ≫ snd _ _, by ext1 <;> [ext1; skip] <;> simp⟩`. Take `⟨x, hx⟩` from `ex e T p`. Take `⟨y, hy⟩` from `ex e T q`. Take `⟨z, hz⟩` from `ex e T r`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, hm e T _ z _ _ (hm e T x y _ _ hx hy) hz, hm e T x _ _ _ hx (hm e T y z _ _ hy hz), _root_.mul_assoc]`. Set `G : GrpObj B` to `{ one := un mul := mu inv := io one_mul := by`. Rewrite using `[← cancel_epi (λ_ B).inv, Iso.inv_hom_id, ← one_mul', ← Category.assoc]`. Use `congr 1`. Apply the tactic sequence `ext1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `mul_one := by`. Rewrite using `[← cancel_epi (ρ_ B).inv, Iso.inv_hom_id, ← mul_one', ← Category.assoc]`. Use `congr 1`. Apply the tactic sequence `ext1 <;> simp`. Use `mul_assoc := assoc'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `left_inv := linv`. Use `right_inv := rinv }`. Use `⟨G, ⟨?_⟩, fun e ↦ ⟨hb e, fun T x y x₀ y₀ hx hy ↦ hm e T x y x₀ y₀ hx hy⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(β_ B B).hom ≫ mu = mu`. Use `hom_eq_of_points hM hc₀ h2 fun e T k ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `obtain ⟨p, q, rfl⟩ : ∃ p q, k = lift p q := ⟨k ≫ fst _ _, k ≫ snd _ _, by ext1 <;> simp⟩`. Take `⟨x, hx⟩` from `ex e T p`. Take `⟨y, hy⟩` from `ex e T q`. Use `hc e` as an intermediate fact. Rewrite using `[lift_braiding_hom_assoc, hm e T x y _ _ hx hy, hm e T y x _ _ hy hx, _root_.mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_grpObj [IsNoetherianRing R] (hM : GlobalTheory.Published.FormalAlgebraisation.Morphisms) (hc₀ : IsAdicComplete I R) [∀ e, GrpObj (Y e)]
     (hc : ∀ e, IsCommMonObj (Y e)) (hB : IsProper B.hom)
@@ -156,13 +156,11 @@ theorem exists_grpObj [IsNoetherianRing R] (hM : GlobalTheory.Published.FormalAl
   rw [lift_braiding_hom_assoc, hm e T x y _ _ hx hy, hm e T y x _ _ hy hx, _root_.mul_comm]
 
 /- English proof (translation)
-Introduce `hM R _ _ I hc Y _ β hY hβ B b hB hb hβb`. Take `⟨mu, hm⟩` from `exists_word hM hc hβ hB hb hβb (FreeGroup.of true * FreeGroup.of false) (B ⊗ B) (isProper_tensorObj_over hB hB) (fun i => bif i then fst B B else snd B B)`. Take `⟨io, hi⟩` from `exists_word hM hc hβ hB hb hβb (FreeGroup.of ())⁻¹ B hB (fun _ => 𝟙 B)`. Take `⟨un, hu⟩` from `exists_word hM hc hβ hB hb hβb (1 : FreeGroup Empty) (𝟙_ _) (inferInstanceAs (IsProper (𝟙 _))) Empty.elim`. Conclude with `exists_grpObj hM hc hY hB hb mu io un (fun e T x y x₀ y₀ hx hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hm e T (lift x₀ y₀) (fun i => bif i then x else y) (fun i => by` as an intermediate fact. Consider the cases of `i`. Simplify using `using hy`. Simplify using `using hx)`. Rewrite using `[map_mul, FreeGroup.lift_apply_of, FreeGroup.lift_apply_of] at this)` and apply the resulting hypothesis.
+Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use the proof step `(fun e T x x₀ hx => by`. Use `hi e T x₀ (fun _ => x) (fun _ => by rwa [Category.comp_id])` as an intermediate fact. Rewrite using `[map_inv, FreeGroup.lift_apply_of] at this)` and apply the resulting hypothesis. Use the proof step `(fun e T => by`. Use `hu e T (toUnit _) Empty.elim (fun i => i.elim)` as an intermediate fact.
-
-Rewrite using `[map_one] at this)` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_grpObj_of_thickenings : GlobalTheory.Published.FormalAlgebraisation.Morphisms → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) [∀ e, GrpObj (Y e)] (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsCommMonObj (Y e)) → (∀ e, IsGrpPullback (Y e) (Y (e + 1)) (thickTrans R I e) (β e)) → ∀ (B : Over (Spec (CommRingCat.of R))) (b : ∀ e, (Y e).left ⟶ B.left), IsProper B.hom → (∀ e, IsPullback (b e) (Y e).hom B.hom (thick R I e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∃ _ : GrpObj B, IsCommMonObj B ∧ ∀ e, IsGrpPullback (Y e) B (thick R I e) (b e) := by
   intro hM R _ _ I hc Y _ β hY hβ B b hB hb hβb

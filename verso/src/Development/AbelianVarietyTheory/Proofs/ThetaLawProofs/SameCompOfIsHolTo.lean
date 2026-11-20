@@ -14,19 +14,19 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 namespace GlobalTheory.KeyFam
 
 /- English proof (translation)
-Introduce `K _ σ X s m B y hB hc hs hy b hb b' hb'`. Establish `hs' : ∀ w ∈ B, y w ≫ s = 𝟙 _ ≫ spMap σ` using `fun w hw => by rw [Category.id_comp]; exact hs w hw`. Set `c : (Fin m → ℂ) → (Sp ℂ ⟶ pullback s (spMap σ))` to `fun w => if h : w ∈ B then pullback.lift (y w) (𝟙 _) (hs' w h) else pullback.lift (y b) (𝟙 _) (hs' b hb)`. Establish `hcw : ∀ w (h : w ∈ B), c w = pullback.lift (y w) (𝟙 _) (hs' w h)` using `fun w h => dif_pos h`. Establish `h1 : ∀ w ∈ B, c w ≫ pullback.fst s (spMap σ) = y w` using `fun w h => by rw [hcw w h, pullback.lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ w, c w ≫ pullback.snd s (spMap σ) = 𝟙 _` using `fun w => by`. Distinguish the cases in `h : w ∈ B`. Rewrite using `[hcw w h, pullback.lift_snd]`. Rewrite using `[show c w = pullback.lift (y b) (𝟙 _) (hs' b hb) from dif_neg h, pullback.lift_snd]`. Establish `hopen : ∀ U : (pullback s (spMap σ)).Opens, IsOpen {w | w ∈ B ∧ ⊤ ≤ c w ⁻¹ᵁ U}` using `fun U => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(GlobalTheory.holFamily_of_isPullback GlobalTheory.valAt'_rules B (IsPullback.of_hasPullback s (spMap σ)) c (fun U f => ?_) (fun U f => ?_) U 0).1` and prove the remaining obligations. Establish `e : {w | w ∈ B ∧ ⊤ ≤ (c w ≫ pullback.fst s (spMap σ)) ⁻¹ᵁ U} = {w | w ∈ B ∧ ⊤ ≤ y w ⁻¹ᵁ U}`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `and_congr_right fun h => by rw [h1 w h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `⟨(hy U f).1, (hy U f).2.congr fun w hw => by rw [h1 w hw.1]⟩`. Simplify using `only [h2]`. Use `⟨?_, differentiableOn_const _⟩` and prove the remaining obligations. Distinguish the cases in `h : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ U`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hB` using `only [h, and_true, Set.setOf_mem_eq]`. Simplify using `only [h, and_false, Set.setOf_false, isOpen_empty]`. Establish `hcont : ContinuousOn (fun w => c w (default : PrimeSpectrum ℂ)) B`. Rewrite using `[continuousOn_open_iff hB]`. Introduce `t ht`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hopen ⟨t, ht⟩ using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, GlobalTheory.top_le_preimage_iff_mem]`. Both sides reduce to the same expression. Use `⟨hs' b hb, hs' b' hb', fun z => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : z = (default : PrimeSpectrum ℂ)` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Rewrite using `[← hcw b hb, ← hcw b' hb']`. Conclude with `(hc.image _ hcont).subset_connectedComponent ⟨b', hb', rfl⟩ ⟨b, hb, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameComp_of_isHolTo : ∀ (K : Type) [Field K] (σ : K →+* ℂ) (X : Scheme.{0}) (s : X ⟶ Sp K) (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)), IsOpen B → IsPreconnected B → (∀ b ∈ B, y b ≫ s = spMap σ) → IsHolTo B y → ∀ b ∈ B, ∀ b' ∈ B, SameComp s σ (y b) (y b') := by
   intro K _ σ X s m B y hB hc hs hy b hb b' hb'

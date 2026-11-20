@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[sum_range_succ, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem CombHookShapeFacts.sum_lt_indicator (l : ℕ) :
     ∀ m : ℕ, (∑ i ∈ range m, if i < l then 1 else 0) = min m l := by
@@ -21,13 +21,13 @@ theorem CombHookShapeFacts.sum_lt_indicator (l : ℕ) :
     split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `r s l hls hsr`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Simplify using `only [hookShape]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> omega`. Take `⟨m, rfl⟩ : ∃ m, r = m + 1` from `⟨r - 1, by omega⟩`. Establish `h` using `Fin.sum_univ_eq_sum_range (fun k : ℕ => if k = 0 then s - l else if k ≤ l then 1 else 0) (m + 1)`. Simplify using `only [hookShape]`. Rewrite using `[h, sum_range_succ']`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (∑ i ∈ range m, (if i + 1 = 0 then s - l else if i + 1 ≤ l then 1 else 0)) = ∑ i ∈ range m, (if i < l then 1 else 0)`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (Nat.succ_ne_zero i)]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[h2, CombHookShapeFacts.sum_lt_indicator l m]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_true]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem CombHookShapeFacts.proof : CombHookShapeFacts.Statement := by
   intro r s l hls hsr

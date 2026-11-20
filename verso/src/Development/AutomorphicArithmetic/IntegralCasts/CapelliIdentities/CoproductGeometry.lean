@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R κ _ _ _ _ m y h1 hm`. Establish `key : ∀ T : Finset R, (∀ s ∈ T, ‖y s‖ < 1) → ∃ a < (1 : ℝ), (0 : ℝ) ≤ a ∧ ∀ s ∈ T, ‖y s‖ ≤ a`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨0, by norm_num, le_rfl, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert b T hb ih`. Introduce `h`. Take `⟨a, ha1, ha0, ha⟩` from `ih (fun s hs => h s (Finset.mem_insert_of_mem hs))`. Use `⟨max a ‖y b‖, max_lt ha1 (h b (Finset.mem_insert_self _ _)), le_max_of_le_left ha0, ?_⟩` and prove the remaining obligations. Introduce `s hs`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_insert.mp hs with rfl | hs` into its components or cases. Conclude with `le_max_right _ _`. Conclude with `(ha s hs).trans (le_max_left _ _)`. Take `⟨S, hS⟩ : m.FG` from `IsNoetherian.noetherian m`. Take `⟨a, ha1, ha0, ha⟩` from `key S (fun s hs => hm s (hS ▸ Ideal.subset_span hs))`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgen : ∀ z ∈ m, ‖y z‖ ≤ a`. Introduce `z hz`. Rewrite `hz` using `[← hS]`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact ha x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using ha0`. Consider the case `add u v _ _ hu hv`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu hv)`. Consider the case `smul r u _ hu`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨a, ha1, ha0, ?_⟩` and prove the remaining obligations. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `zero => intro x _`. Simplify using `using h1 x`. Consider the case `succ n ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hx using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem u hu v hv`. Rewrite using `[map_mul, norm_mul, pow_succ]`. Conclude with `mul_le_mul (ih u hu) (hgen v hv) (norm_nonneg _) (pow_nonneg ha0 n)`. Consider the case `add u _ v _ hu hv`.
-
-Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu hv)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CoproductGeometry.cop_geom :
     ∀ {R κ : Type} [inst : CommRing R] [IsNoetherianRing R]

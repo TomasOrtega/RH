@@ -11,9 +11,9 @@ namespace Formalism.ELL.ExponentialCoefficientWeight
 variable {K : Type*} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[coeff_mul]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `x hx`. Establish `hx : x.1 + x.2 = d` using `by simpa using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, ← hx, pow_add]`. Establish `h1` using `hf x.1 (by omega)`. Establish `h2` using `hg x.2 (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_le {f g : PowerSeries K} {r A B : ℝ} (hr : 0 ≤ r) (hA : 0 ≤ A) (hB : 0 ≤ B)
     {N : ℕ} (hf : ∀ d ≤ N, ‖coeff d f‖ ≤ A * r ^ d) (hg : ∀ d ≤ N, ‖coeff d g‖ ≤ B * r ^ d) :
@@ -31,11 +31,11 @@ theorem mul_le {f g : PowerSeries K} {r A B : ℝ} (hr : 0 ≤ r) (hA : 0 ≤ A)
     _ = A * B * (r ^ x.1 * r ^ x.2) := by ring
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `d hd`. Rewrite using `[pow_zero, pow_zero, one_mul, coeff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[norm_zero]`. Check the signs of the components of the expression.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `d hd`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `mul_le hr (by positivity) hA ih hf d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le {f : PowerSeries K} {r A : ℝ} (hr : 0 ≤ r) (hA : 0 ≤ A) {N : ℕ}
     (hf : ∀ d ≤ N, ‖coeff d f‖ ≤ A * r ^ d) :
@@ -54,11 +54,11 @@ theorem pow_le {f : PowerSeries K} {r A : ℝ} (hr : 0 ≤ r) (hA : 0 ≤ A) {N 
     exact mul_le hr (by positivity) hA ih hf d hd
 
 /- English proof (translation)
-Rewrite using `[coeff_mul]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `x hx`. Establish `hx : x.1 + x.2 = n` using `by simpa using hx`. Break down `Nat.eq_zero_or_pos x.1 with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h1, coeff_zero_eq_constantCoeff_apply, hf0, zero_mul, norm_zero]`. Check the signs of the components of the expression. Break down `Nat.eq_zero_or_pos x.2 with h2 | h2` into its components or cases. Rewrite using `[h2, coeff_zero_eq_constantCoeff_apply, hg0, mul_zero, norm_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Rewrite using `[norm_mul, ← hx, pow_add]`. Establish `e1` using `hf x.1 (by omega)`. Establish `e2` using `hg x.2 (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_le_strict {f g : PowerSeries K} {r A B : ℝ} (hr : 0 ≤ r) (hA : 0 ≤ A)
     (hB : 0 ≤ B) {n : ℕ} (hf0 : constantCoeff f = 0) (hg0 : constantCoeff g = 0)
@@ -80,27 +80,27 @@ theorem mul_le_strict {f g : PowerSeries K} {r A B : ℝ} (hr : 0 ≤ r) (hA : 0
     _ = A * B * (r ^ x.1 * r ^ x.2) := by ring
 
 /- English proof (translation)
-Establish `hS : HasSubst E` using `HasSubst.of_constantCoeff_zero' hE0`. Establish `hexp : ∀ n, coeff n (X : PowerSeries K) = ∑ m ∈ Finset.range (n + 1), coeff m l * coeff n (E ^ m)`. Introduce `n`. Rewrite using `[← hsub, coeff_subst' hS]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (n + 1)) ?_]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Introduce `m hm`. Simplify using `only [Function.mem_support] at hm`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hm` to reduce the goal to its premises. Rewrite using `[coeff_of_lt_order n, smul_zero]`. Conclude with `lt_of_lt_of_le (by exact_mod_cast (by omega : n < m)) (le_order_pow_of_constantCoeff_eq_zero m hE0)`. Establish `hri : 0 < r⁻¹` using `inv_pos.mpr hr`. Introduce `n`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Establish `hEb : ∀ d < k + 1, ‖coeff d E‖ ≤ r⁻¹ * r ^ d`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Break down `Nat.eq_zero_or_pos d with h0 | h0` into its components or cases. Rewrite using `[h0, coeff_zero_eq_constantCoeff_apply, hE0, norm_zero]`. Check the signs of the components of the expression. Conclude with `ih d hd h0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEb' : ∀ d ≤ k, ‖coeff d E‖ ≤ r⁻¹ * r ^ d` using `fun d hd => hEb d (by omega)`. Establish `hE : coeff (k + 1) E = coeff (k + 1) (X : PowerSeries K) - ∑ i ∈ Finset.range k, coeff (i + 2) l * coeff (k + 1) (E ^ (i + 2))`. Establish `h` using `hexp (k + 1)`. Rewrite `h` using `[Finset.sum_range_succ', Finset.sum_range_succ']`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [zero_add, pow_one, pow_zero, hl1, one_mul, coeff_one, Nat.add_one_ne_zero, if_false, mul_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hE]`. Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coeff_X] split_ifs with h1`. Establish `: k = 0` using `by omega`. Substitute `this` using the available equality. Rewrite using `[norm_one, zero_add, pow_one, inv_mul_cancel₀ hr.ne']`. Rewrite using `[norm_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Rewrite using `[norm_neg]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Rewrite using `[norm_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow0 : constantCoeff (E ^ (i + 1)) = 0`. Rewrite using `[map_pow, hE0, zero_pow (Nat.succ_ne_zero _)]`. Establish `hc : ‖coeff (k + 1) (E ^ (i + 2))‖ ≤ (r⁻¹ * r⁻¹ ^ (i + 1)) * r ^ (k + 1)`. Rewrite using `[pow_succ' E (i + 1)]`. Conclude with `mul_le_strict hr.le hri.le (by positivity) hE0 hpow0 hEb (fun d hd => pow_le hr.le hri.le hEb' (i + 1) d (by omega))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha` using `hl (i + 2) (by omega)`. Establish `hone : r ^ (i + 2) * r⁻¹ ^ (i + 2) = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hr.ne', one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inv_le {l E : PowerSeries K} {r : ℝ} (hr : 0 < r)
     (hE0 : constantCoeff E = 0) (hl1 : coeff 1 l = 1)
@@ -178,9 +178,9 @@ namespace Formalism.ELL
 open Formalism.G
 
 /- English proof (translation)
-Introduce `K _ _ _ p q hp hp0 hp1 hq F e l E he hei he1 hegap hlog hE0 _hEl hlE n hn`. Establish `hlw` using `h K p q hp hp0 hp1 hq F e l he hei he1 hegap hlog`. Establish `hr0 : 0 < ‖(p : K)‖ ^ (-1 / ((q : ℝ) - 1))` using `Real.rpow_pos_of_pos hp0 _`. Establish `key : ∀ m : ℕ, (‖(p : K)‖ ^ (-1 / ((q : ℝ) - 1)))⁻¹ * (‖(p : K)‖ ^ (-1 / ((q : ℝ) - 1))) ^ m = ‖(p : K)‖ ^ (-((m : ℝ) - 1) / ((q : ℝ) - 1))`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp0.le, ← Real.rpow_neg hp0.le, ← Real.rpow_add hp0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `ExponentialCoefficientWeight.inv_le hr0 hE0 hlog.2.1 (fun m hm => by rw [key m]; exact hlw m (by omega)) hlE n hn` as an intermediate fact. Rewrite `this` using `[key n]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem expWeight_of (h : LogWeight.{u}) : ExpWeight.{u} := by
   intro K _ _ _ p q hp hp0 hp1 hq F e l E he hei he1 hegap hlog hE0 _hEl hlE n hn

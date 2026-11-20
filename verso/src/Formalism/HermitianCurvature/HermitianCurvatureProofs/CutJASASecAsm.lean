@@ -11,21 +11,19 @@ open NumberField Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.C
 noncomputable section
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, hval⟩` from `hR Wp Wq P Bs hpl e he U`. Take `⟨D₀, hD₀, K, hK, hKv⟩` from `hD Wp Wq P.k P.r Bs.z Bs.z' Bs.π Bs.π' Bs.z_mem Bs.z'_mem Φ hΦ`. Establish `hsub : ∀ g ∈ Q.Glev P.k P.r 0 ∩ Q.OmPlus P.k P.r Bs.z Bs.z', g ∈ D₀`. Introduce `g hg`. Take `⟨n, hn, n', hn', c, hc, g₁, hg₁, hGG, hgeq⟩` from `hC P.k P.r Bs.z Bs.z' Bs.z_mem Bs.z'_mem g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hw` using `(hKv c hc g₁ hg₁ hGG).1`. Establish `hwG : Q.wCell P.k P.r (Fin.last P.r) c * g₁ ∈ Q.Glev P.k P.r 0` using `Formalism.FourierDecayAlt.P.Qx3.glev_mul (Formalism.FourierDecayAlt.P.Qx3.wlist_glev hc _) (Formalism.FourierDecayAlt.P.Qx3.glev_mono (Fin.zero_le _) hg₁)`. Rewrite using `[hgeq]`. Conclude with `hD₀.2 _ ⟨hwG, hw⟩ n ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one _, n, hn, (Matrix.one_mul n).symm⟩ n' ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one _, n', hn', (Matrix.one_mul n').symm⟩`. Use `⟨K, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hs, hL, hRt, hW⟩` from `hK`. Conclude with `⟨fun g₀ hg₀ => hs g₀ ⟨hg₀.1, hsub g₀ hg₀⟩, fun g hg n hn => hL g ⟨hg.1, hsub g hg⟩ n hn, fun g hg n hn => hRt g ⟨hg.1, hsub g hg⟩ n hn, fun g hg h hh h' hh' => hW g ⟨hg.1, hsub g hg⟩ h hh h' hh'⟩`. Use function extensionality and compare the values at `ρ`. Establish `hraw : Gauge.rawJ P Bs e K ρ = (U ρ : MA.Qp P.r P.TT → ℂ)`. Use function extensionality and compare the values at `q`.
+Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hζ : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq q.1.2`. Rewrite using `[Gauge.GC.SSTr.tz_eq P Bs hpl]`. Conclude with `q.2.2`. Establish `hG : NF.muZ P.k P.r Bs.μsec q.1.2 ∈ Q.Glev P.k P.r (Fin.last P.r)` using `Formalism.FourierDecayAlt.P.NFRadRedA.uwb_glev (Formalism.FourierDecayAlt.P.NFRadRedA.muZ_uwb Bs.sec hζ)`. Establish `hGG : 0 < Q.GGl P.k P.r Bs.z Bs.z' (NF.muZ P.k P.r Bs.μsec q.1.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Q.GGl`. Rewrite using `[Formalism.FourierDecayAlt.P.NFRadRedA.zeta_muZ Bs.z_mem Bs.z'_mem Bs.sec hζ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hζ' : P.TT < Complex.normSq q.1.2` using `q.2.2`. Establish `horth` using `(he.2 q.1.2 hζ').2.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwpos : 0 < Real.sqrt (MA.wq P.k q.1 P.TT)` using `Real.sqrt_pos.2 (Formalism.FourierDecayAlt.P.CutMP.En.wq_pos q.2)`. Establish `hw : ((Real.sqrt (MA.wq P.k q.1 P.TT) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hwpos.ne'`. Simplify using `only [Gauge.rawJ]`. Rewrite using `[Gauge.tc_gq, (hKv q.1.1 q.2.1 _ hG hGG).2, hval q, Gauge.tc_hsVec_smul, inner_smul_right, Gauge.tc_hsVec_sum, inner_sum]`. Simplify using `only [Gauge.tc_hsVec_smul, inner_smul_right, horth, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `show MA.toSm P (Gauge.rawJ P Bs e K ρ) = U ρ`. Establish `hm : Gauge.rawJ P Bs e K ρ ∈ MA.smSub P.r P.TT` using `by rw [hraw]; exact (U ρ).2`. Rewrite using `[Gauge.toSm_of_mem P hm]`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hraw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem sec_at (hR : SARadSec) (hD : SADescend) (hC : SACover)
     {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -78,9 +76,9 @@ theorem sec_at (hR : SARadSec) (hD : SADescend) (hC : SACover)
     exact hraw
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e he U _`. Take `⟨hIB, -, -, -⟩` from `hB`. Take `⟨-, -, -, hIsB, -⟩` from `hIB`. Establish `hpl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hIsB.2 v).2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hK, hKU⟩` from `sec_at hR hD hC (D.parOf S v) (T v).base hpl e he U`. Use `⟨K, ?_, hKU⟩` and prove the remaining obligations. Use `show K ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v)`. Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.JA.FFS.omP_eq E Wp Wq S T v]`. Conclude with `hK`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sASection_of_parts (hR : SARadSec) (hD : SADescend) (hC : SACover) : SASection := by
   refine ⟨0, ?_⟩

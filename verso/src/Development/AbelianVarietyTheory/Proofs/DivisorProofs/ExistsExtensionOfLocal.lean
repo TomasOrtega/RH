@@ -24,7 +24,7 @@ namespace GlobalTheory.DenseGlue
 open GlobalTheory.PicGlue GlobalTheory.CechPic
 
 /- English proof (translation)
-Substitute `w` using the available equality. Rewrite using `[← cls_pull h s (pull_isLB h s)]`. Conclude with `((cls_eq_iff _ _).2 (isOn_pull_comp P _ _ _ L g s hL hg)).symm`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_pull_comp {P T T' : Scheme.{0}} {W : P.Opens} {L : LB P} (hL : IsOn W L) (g : T ⟶ P)
     (hg : ∀ z, g z ∈ W) (s : T' ⟶ T) {g' : T' ⟶ P} (w : s ≫ g = g') (h : (L.pull g).IsLB)
@@ -34,13 +34,13 @@ theorem cls_pull_comp {P T T' : Scheme.{0}} {W : P.Opens} {L : LB P} (hL : IsOn 
   exact ((cls_eq_iff _ _).2 (isOn_pull_comp P _ _ _ L g s hL hg)).symm
 
 /- English proof (translation)
-Establish `hpe` using `retract_section_apply p e he`. Establish `hι : ∀ z, (p ⁻¹ᵁ V).ι z ∈ p ⁻¹ᵁ V` using `fun z ↦ z.2`. Establish `hι' : ∀ z, ((p ⁻¹ᵁ V).ι ≫ p ≫ e) z ∈ p ⁻¹ᵁ V` using `fun z ↦ by`. Express the relevant statement in the definitionally equal form `p (e (p _)) ∈ V`. Rewrite using `[hpe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `z.2`. Establish `k₁` using `pull_isLB_of_isOn P _ _ M _ hM hι`. Establish `k₂` using `pull_isLB_of_isOn P _ _ M _ hM hι'`. Take `⟨N, hN, hc⟩` from `cls_surj (cls _ k₁ - cls _ k₂)`. Take `⟨M', hM', hi⟩` from `exists_isOn_of_openImmersion P _ (p ⁻¹ᵁ V).ι N hN`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM'` using `[Scheme.Opens.opensRange_ι]`. Use `⟨M', hM', fun T g hg h₁ h₂ h₃ ↦ ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩ : ∃ t : T ⟶ (p ⁻¹ᵁ V).toScheme, t ≫ (p ⁻¹ᵁ V).ι = g` from `⟨IsOpenImmersion.lift (p ⁻¹ᵁ V).ι g (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hg z), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `k₃` using `pull_isLB_of_isOn P _ _ M' _ hM' hι`. Rewrite using `[cls_pull_comp hM' _ hι t ht k₃, cls_pull_comp hM _ hι t ht k₁, cls_pull_comp hM _ hι' t (by rw [reassoc_of% ht]) k₂, ← map_sub, ← hc, (cls_eq_iff k₃ hN).2 hi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rigidify {X P : Scheme.{0}} (p : P ⟶ X) {e : X ⟶ P} (he : e ≫ p = 𝟙 X) {V : X.Opens} {M : LB P}
     (hM : IsOn (p ⁻¹ᵁ V) M) : ∃ M' : LB P, IsOn (p ⁻¹ᵁ V) M' ∧ ∀ (T : Scheme.{0}) (g : T ⟶ P),
@@ -68,11 +68,9 @@ theorem exists_rigidify {X P : Scheme.{0}} (p : P ⟶ X) {e : X ⟶ P} (he : e �
     cls_pull_comp hM _ hι' t (by rw [reassoc_of% ht]) k₂, ← map_sub, ← hc, (cls_eq_iff k₃ hN).2 hi]
 
 /- English proof (translation)
-Establish `hpe` using `retract_section_apply p e he`. Establish `hR : ∀ {W : X.Opens} {M : LB P}, IsOn (p ⁻¹ᵁ W) M → (∃ t : LB.Gen (M.pull (W.ι ≫ e)), t.IsGen) → ∃ r : RigD e M, RigOn e M r` using `fun {W M} hM ht ↦ rigOn_of_triv_open P X e W M (fun a y hy ↦ by`. Establish `: p (e y) ∈ W` using `hM.le a hy`. Rewrite using `[hpe] at this) ht` and apply the resulting hypothesis. Take `⟨r₀, hr₀⟩` from `hR h₀ t₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `choose r hr using fun i ↦ hR (hL i) (t i)`. Establish `hv : ∀ i, ∃ v : Cmp (p ⁻¹ᵁ (V i ⊓ U)) (L i) L₀, IsoOn _ (L i) L₀ v ∧ PicGlue.Norm e _ (L i) L₀ v (r i) r₀` using `fun i ↦ by`. Take `⟨w, hw⟩` from `isoOn_of_lbIso P _ (L i) L₀ (hi i)`. Conclude with `exists_norm P X p e he _ _ _ (L i) L₀ w (r i) r₀ (hL i) h₀ (fun _ h ↦ h.1) (fun _ h ↦ h.2) hw (hr i) hr₀`. Use `choose v hv hn using hv`.
-
-Take `⟨w, hw, hc⟩` from `exists_cocycle U p he h₀ r₀ V L hL r v hv hn`. Conclude with `lb_glue P Ix (fun i ↦ p ⁻¹ᵁ V i) L w (fun x ↦ hV (p x)) hL hw hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_glue_of_rigid {X P : Scheme.{0}} [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] [IsReduced X]
     (U : X.Opens) [IsDominant U.ι] (p : P ⟶ X) [Smooth p] [GeometricallyIntegral p] {e : X ⟶ P}
@@ -98,35 +96,33 @@ theorem exists_glue_of_rigid {X P : Scheme.{0}} [IsLocallyNoetherian X] [GlobalT
   exact lb_glue P Ix (fun i ↦ p ⁻¹ᵁ V i) L w (fun x ↦ hV (p x)) hL hw hc
 
 /- English proof (translation)
-Establish `hpe` using `retract_section_apply p e he`. Establish `: IsOpenImmersion a` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) sq.flip ‹_›`. Set `U₀ : X.Opens` to `j.opensRange`. Establish `: IsDominant U₀.ι` using `⟨by rw [DenseRange, Scheme.Opens.range_ι]; exact hj⟩`. Establish `hD : a.opensRange = p ⁻¹ᵁ U₀`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ Set.range a ↔ p x ∈ Set.range j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Conclude with `⟨π q, by rw [← Scheme.Hom.comp_apply, ← sq.w, Scheme.Hom.comp_apply]⟩`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `hx`. Choose the witnesses or unpack the hypotheses as in `⟨q, rfl⟩ : x ∈ Set.range (pullback.fst p j) := by`. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `hx`. Conclude with `⟨sq.isoPullback.inv q, by rw [← Scheme.Hom.comp_apply, sq.isoPullback_inv_fst]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨L₀, h₀, i₀⟩` from `exists_isOn_of_openImmersion P Q a L hL`. Rewrite `h₀` using `[hD]`. Establish `ha : ∀ z, a z ∈ p ⁻¹ᵁ U₀` using `fun z ↦ hD ▸ ⟨z, rfl⟩`. Establish `k₀` using `pull_isLB_of_isOn P _ _ L₀ a h₀ ha`. Establish `c₀ : cls _ k₀ = cls L hL` using `(cls_eq_iff _ _).2 i₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z₀ : ∀ (T : Scheme.{0}) (s : T ⟶ X), (∀ z, s z ∈ U₀) → ∀ h : (L₀.pull (s ≫ e)).IsLB, cls _ h = 0`. Introduce `T s hs h`. Set `κ` to `IsOpenImmersion.lift j s (by rintro _ ⟨z, rfl⟩; exact hs z)`. Establish `hκ : κ ≫ j = s` using `IsOpenImmersion.lift_fac _ _ _`. Rewrite using `[cls_pull_comp h₀ a ha (κ ≫ eU) (by rw [Category.assoc, w, reassoc_of% hκ]) k₀, c₀, pull_comp, ← cls_pull hL eU (pull_isLB hL eU), (cls_eq_zero_iff _).2 hrig, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hse : ∀ {T : Scheme.{0}} (s : T ⟶ X) {W : X.Opens}, (∀ z, s z ∈ W) → ∀ z, (s ≫ e) z ∈ p ⁻¹ᵁ W` using `fun s W hs z ↦ by`. Express the relevant statement in the definitionally equal form `p (e (s z)) ∈ W`. Rewrite using `[hpe]`. Conclude with `hs z`. Establish `t₀ : ∃ t : LB.Gen (L₀.pull (U₀.ι ≫ e)), t.IsGen` using `(cls_eq_zero_iff (pull_isLB_of_isOn P _ _ L₀ _ h₀ (hse U₀.ι fun z ↦ z.2))).1 (z₀ _ U₀.ι (fun z ↦ z.2) _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `key : ∀ o : Option X, ∃ (V : X.Opens) (M : LB P), (∀ y, o = some y → y ∉ U₀ → y ∈ V) ∧ (o = none → V = U₀ ∧ M = L₀) ∧ IsOn (p ⁻¹ᵁ V) M ∧ (∃ t : LB.Gen (M.pull (V.ι ≫ e)), t.IsGen) ∧ LBIso (M.pull (p ⁻¹ᵁ (V ⊓ U₀)).ι) (L₀.pull (p ⁻¹ᵁ (V ⊓ U₀)).ι)` using `fun o ↦ by`. Distinguish the cases in `ho : ∃ y, o = some y ∧ y ∉ U₀`. Use `swap`. Establish `k` using `pull_isLB_of_isOn P _ _ L₀ (p ⁻¹ᵁ (U₀ ⊓ U₀)).ι h₀ fun z ↦ z.2.1`. Conclude with `⟨U₀, L₀, fun y h h' ↦ (ho ⟨y, h, h'⟩).elim, fun _ ↦ ⟨rfl, rfl⟩, h₀, t₀, (cls_eq_iff k k).1 rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl, hy⟩` from `ho`. Take `⟨V, hyV, M, hM, iM⟩` from `H y hy`. Take `⟨M', hM', hc⟩` from `exists_rigidify p he hM`. Establish `hb : ∀ z, ((a ⁻¹ᵁ (p ⁻¹ᵁ V)).ι ≫ a) z ∈ p ⁻¹ᵁ V` using `fun z ↦ z.2`. Establish `kb` using `pull_isLB_of_isOn P _ _ M _ hM hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Establish `cmp : ∀ (T : Scheme.{0}) (g : T ⟶ P), (∀ z, g z ∈ p ⁻¹ᵁ (V ⊓ U₀)) → ∀ (h₁ : (M.pull g).IsLB) (h₂ : (L₀.pull g).IsLB), cls _ h₁ = cls _ h₂` using `fun T g hg h₁ h₂ ↦ by`. Set `t` to `IsOpenImmersion.lift ((a ⁻¹ᵁ (p ⁻¹ᵁ V)).ι ≫ a) g (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨q, hq⟩ : g z ∈ a.opensRange` from `hD ▸ (hg z).2`. Conclude with `⟨⟨q, show a q ∈ p ⁻¹ᵁ V from hq ▸ (hg z).1⟩, hq⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : t ≫ (a ⁻¹ᵁ (p ⁻¹ᵁ V)).ι ≫ a = g` using `IsOpenImmersion.lift_fac _ _ _`. Rewrite using `[cls_pull_comp hM _ hb t ht kb, (cls_eq_iff kb (pull_isLB hL _)).2 iM, cls_pull_comp h₀ a ha (t ≫ (a ⁻¹ᵁ (p ⁻¹ᵁ V)).ι) (by rw [Category.assoc, ht]) k₀, c₀, pull_comp, cls_pull hL]`. Use `⟨V, M', fun y' h _ ↦ by cases h; exact hyV, fun h ↦ (by cases h), hM', ?_, ?_⟩` and prove the remaining obligations. Establish `hs` using `hse V.ι fun z ↦ z.2`. Establish `k₂` using `pull_isLB_of_isOn P _ _ M _ hM hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : (V.ι ≫ e) ≫ p ≫ e = V.ι ≫ e` using `by rw [Category.assoc, reassoc_of% he]`. Use `(cls_eq_zero_iff (pull_isLB_of_isOn P _ _ M' _ hM' hs)).1 ?_` and prove the remaining obligations. Rewrite using `[hc _ _ hs _ k₂ (e₁.symm ▸ k₂), sub_eq_zero]`. Conclude with `(cls_pull_comp hM _ hs (𝟙 _) (by rw [Category.id_comp, e₁]) k₂ _).trans (pull_id _) |>.symm`. Set `g` to `(p ⁻¹ᵁ (V ⊓ U₀)).ι`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ z, g z ∈ p ⁻¹ᵁ (V ⊓ U₀)` using `fun z ↦ z.2`. Establish `hg' : ∀ z, ((g ≫ p) ≫ e) z ∈ p ⁻¹ᵁ (V ⊓ U₀)` using `hse (g ≫ p) hg`. Establish `k₁` using `pull_isLB_of_isOn P _ _ M' g hM' fun z ↦ (hg z).1`. Establish `k₂` using `pull_isLB_of_isOn P _ _ M g hM fun z ↦ (hg z).1`. Establish `k₃` using `pull_isLB_of_isOn P _ _ M _ hM fun z ↦ (hg' z).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `k₄` using `pull_isLB_of_isOn P _ _ L₀ g h₀ fun z ↦ (hg z).2`. Establish `k₅` using `pull_isLB_of_isOn P _ _ L₀ _ h₀ fun z ↦ (hg' z).2`. Use `(cls_eq_iff k₁ k₄).1 ?_` and prove the remaining obligations. Rewrite using `[hc _ g (fun z ↦ (hg z).1) k₁ k₂ k₃, cmp _ g hg k₂ k₄]`. Conclude with `sub_eq_self.2 ((cmp _ _ hg' k₃ k₅).trans (z₀ _ (g ≫ p) (fun z ↦ (hg z).2) k₅))`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose V M h₁ h₂ h₃ h₄ h₅ using key`. Take `⟨N, hN, hv⟩` from `exists_glue_of_rigid U₀ p he h₀ t₀ V (fun y ↦ by`. Distinguish the cases in `hy : y ∈ U₀`. Conclude with `⟨none, (h₂ none rfl).1 ▸ hy⟩`. Conclude with `⟨some y, h₁ _ y rfl hy⟩) M h₃ h₄ h₅`.
-
-Take `⟨v, hv⟩` from `hv none`. Establish `i₁` using `lbIso_pull_of_isoOn P Q _ N (M none) v a hv fun z ↦ (h₂ none rfl).1 ▸ ha z`. Rewrite `i₁` using `[(h₂ none rfl).2]`. Conclude with `⟨N, hN, (cls_eq_iff (pull_isLB hN a) hL).1 (((cls_eq_iff _ k₀).2 i₁).trans c₀)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_glue {X P U Q : Scheme.{0}} [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] [IsReduced X]
     (j : U ⟶ X) [IsOpenImmersion j] (hj : Dense (Set.range j)) (p : P ⟶ X) [Smooth p] [GeometricallyIntegral p]

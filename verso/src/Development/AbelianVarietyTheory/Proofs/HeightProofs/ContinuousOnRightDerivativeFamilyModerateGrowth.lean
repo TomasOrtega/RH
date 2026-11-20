@@ -10,29 +10,25 @@ open scoped Topology
 namespace GlobalTheory.TypeSum.DerFamCont
 
 /- English proof (translation)
-Establish `: CompleteSpace E` using `FiniteDimensional.complete ℝ E`. Set `: NormedAlgebra ℚ E` to `NormedAlgebra.restrictScalars ℚ ℝ E`. Set `S : Submodule ℝ E` to `LinearMap.ker (σ + LinearMap.id)`. Establish `hS : ∀ X, X ∈ S ↔ σ X = -X` using `fun X => by simp [S, add_eq_zero_iff_eq_neg]`. Set `b` to `Module.finBasis ℝ S`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : Fin (Module.finrank ℝ S) → E` to `fun i => b i`. Establish `hli : LinearIndependent ℝ e` using `b.linearIndependent.map' S.subtype S.ker_subtype`. Establish `he : ∀ i, σ (e i) = -e i` using `fun i => (hS _).1 (b i).2`. Establish `hsp : ∀ X, σ X = -X → X ∈ Submodule.span ℝ (Set.range e)` using `fun X hX => by`. Establish `h` using `congrArg S.subtype (b.sum_repr ⟨X, (hS X).2 hX⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, Submodule.subtype_apply] at h`. Rewrite using `[← h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hexp : ∀ a, σ (NormedSpace.exp a) = NormedSpace.exp (σ a)` using `fun a => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ n : ℕ, σ (a ^ n) = σ a ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ, hm, ih, pow_succ']`. Establish `h2` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) a).map σ.toAddMonoidHom σ.continuous_of_finiteDimensional`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.unique ?_` and prove the remaining obligations. Use `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) (σ a) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Simplify using `[hp]`. Use `set Θ : (Fin _ → ℝ) → E := fun t => (List.ofFn fun i => NormedSpace.exp (t i • e i)).prod with hΘ`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU : ∀ t, σ (Θ t) * Θ t = 1 ∧ Θ t * σ (Θ t) = 1` using `fun t => GlobalTheory.UnitaryChart.unitary_list_prod σ hm h1 _ (fun u hu => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hu`. Rewrite using `[hexp, map_smul, he, smul_neg, ← NormedSpace.exp_add_of_commute (Commute.refl _).neg_left, ← NormedSpace.exp_add_of_commute (Commute.refl _).neg_right]`. Use the proof step `simp)`. Set `T : (Fin _ → ℝ) →L[ℝ] E` to `∑ i, (ContinuousLinearMap.toSpanSingleton ℝ (e i)).comp (ContinuousLinearMap.proj i)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : ∀ t, T t = ∑ i, t i • e i` using `fun t => by simp [T]`. Take `⟨h0, hD⟩ : Θ 0 = 1 ∧ HasStrictFDerivAt Θ T 0` from `GlobalTheory.UnitaryChart.hasStrictFDerivAt_ofFn_prod _ (fun i (t : Fin _ → ℝ) => NormedSpace.exp (t i • e i)) _ (fun i => ⟨by simp, HasStrictFDerivAt.comp (0 : Fin _ → ℝ) (g := fun s : ℝ => NormedSpace.exp (s • e i)) (by simpa using (hasStrictDerivAt_exp_smul_const (𝕂 := ℝ) (e i …`. Take `⟨P, hP1, hP2, hP3⟩` from `GlobalTheory.UnitaryChart.exists_skew_coord σ e hσ hli he hsp`. Establish `hΦ : HasStrictFDerivAt (fun t => P (Θ t)) ((ContinuousLinearEquiv.refl ℝ (Fin (Module.finrank ℝ S) → ℝ) : (Fin (Module.finrank ℝ S) → ℝ) →L[ℝ] (Fin (Module.finrank ℝ S) → ℝ))) 0`. Use `(P.hasStrictFDerivAt.comp 0 hD).congr_fderiv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext1 t`. Simplify using `[hT, hP1]`. Establish `hP0 : P 1 = 0` using `hP2 _ h1`. Establish `hΦ0 : P (Θ 0) = 0` using `by rw [h0, hP0]`. Establish `p1` using `hΦ.localInverse_tendsto`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3` using `hΦ.eventually_right_inverse`. Simplify using `only [hΦ0] at p1 p3`. Use `set Ψ := hΦ.localInverse _ _ _`. Establish `hσc : Continuous σ` using `σ.continuous_of_finiteDimensional`. Establish `hnear : ∀ᶠ m in 𝓝 (1 : E), ‖1 - σ m‖ ≤ 1 / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ContinuousAt (fun m => ‖1 - σ m‖) 1` using `by fun_prop`. Conclude with `this.eventually_le_const (by simp [h1])`. Establish `hPt : Tendsto P (𝓝 1) (𝓝 0)` using `hP0 ▸ P.continuous.tendsto 1`. Establish `ht : Tendsto (fun a => Θ (Ψ (P a))) (𝓝 1) (𝓝 1)`. Use `hD.continuousAt.tendsto.comp p1` as an intermediate fact.
-
-Rewrite `this` using `[h0]`. Conclude with `this.comp hPt`. Use `⟨_, e, fun a => Ψ (P a), he, p1.comp hPt, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hPt.eventually p3, hnear, ht.eventually hnear] with a q1 q2 q3 ha`. Use `haveI : IsArtinianRing E := IsArtinianRing.of_finite ℝ E`.
-
-Conclude with `GlobalTheory.UnitaryChart.eq_of_skew_eq (hU _).1 (mul_eq_one_comm.1 ha) (hP3 _ _ q1) q3 q2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_chart {E : Type} [NormedRing E] [NormedAlgebra ℝ E] [FiniteDimensional ℝ E] (σ : E →ₗ[ℝ] E)
     (hσ : ∀ a, σ (σ a) = a) (hm : ∀ a b, σ (a * b) = σ b * σ a) (h1 : σ 1 = 1) :
@@ -107,13 +103,13 @@ theorem exists_chart {E : Type} [NormedRing E] [NormedAlgebra ℝ E] [FiniteDime
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Use `letI : NormedRing (Mx n) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Mx n) := Matrix.linftyOpNormedAlgebra`. Establish `h2` using `Jm_mul_self ε`. Establish `hH : (Jm ε)ᴴ = Jm ε`. Establish `h : (Jm ε)ᴴ * Jm ε = 1` using `(maximal_compact_facts n ε).2.2.1.1.1`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.inv_eq_left_inv h, Matrix.inv_eq_left_inv h2]`. Use `set J := Jm ε with hJdef`. Set `s : Mx n →ₗ[ℝ] Mx n` to `{ toFun := fun x => J * xᴴ * J map_add' := fun x y => by rw [conjTranspose_add, mul_add, add_mul] map_smul' := fun c x => by simp [conjTranspose_smul] }`. Establish `hs : ∀ x, s x = J * xᴴ * J` using `fun _ => rfl`. Establish `hJJ : ∀ x : Mx n, J * (J * x) = x` using `fun x => by rw [← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, Y, Ψ, hY, hΨ, hE⟩` from `exists_chart s (fun a => by simp only [hs, conjTranspose_mul, conjTranspose_conjTranspose, hH, Matrix.mul_assoc, hJJ, h2, Matrix.mul_one]) (fun a b => by simp only [hs, conjTranspose_mul, Matrix.mul_assoc, hJJ]) (by simp [hs, h2])`. Use `⟨N, Y, Ψ, fun i => ?_, hΨ, hE.mono fun g q hg => q ?_⟩` and prove the remaining obligations. Use `congrArg (J * ·) (hY i)` as an intermediate fact. Simplify using `only [hs, Matrix.mul_assoc, hJJ, Matrix.mul_neg] at this`. Use `show (Y i)ᴴ * J + J * Y i = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, neg_add_cancel]`. Establish `hg' : gᴴ * J * g = J` using `hg`. Rewrite using `[hs, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_UJ (ε : Fin n → Bool) :
     ∃ (N : ℕ) (Y : Fin N → Mx n) (Ψ : Mx n → Fin N → ℝ), (∀ i, Y i ∈ lieSet ε) ∧ Tendsto Ψ (𝓝 1) (𝓝 0) ∧
@@ -144,11 +140,11 @@ theorem exists_chart_UJ (ε : Fin n → Bool) :
     rw [hs, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', h2]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `(isCompact_closedBall (0 : ℝ) 1).bddAbove_image (f := fun u : ℝ => 1 + hs (NormedSpace.exp (u • X))) (continuous_const.add (continuous_hs.comp (continuous_exp_smul X))).continuousOn`. Use `⟨B, fun a ha s hs1 => ?_⟩` and prove the remaining obligations. Use `(convex_closedBall (0 : ℝ) 1).norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun t : ℝ => f (a * NormedSpace.exp (t • X))) (f' := fun t => f' (a * NormedSpace.exp (t • X))) (C := |C| * ((1 + hs a) * B) ^ N) (x := 0) (y := s) (fun t _ => ?_) (fun t ht => ?_) (Metric.mem_closedB …` as an intermediate fact. Simplify using `using this`. Establish `k` using `hd _ (mul_mem_UJ ha (exp_mem_UJ hX t))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `k2` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact k)`. Use `(k2.congr_of_eventuallyEq (Eventually.of_forall fun u => ?_)).hasDerivWithinAt` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Matrix.mul_assoc, ← exp_add_smul, add_sub_cancel]`. Use `(hb _ (mul_mem_UJ ha (exp_mem_UJ hX t))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `hs_nonneg (a * NormedSpace.exp (t • X))`. Establish `h1` using `hs_nonneg a`. Use `mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (by positivity) ?_ N) (by positivity) (abs_nonneg C)` and prove the remaining obligations. Conclude with `(one_add_hs_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hB ⟨t, ht, rfl⟩) (by positivity))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_step_bound {f f' : Mx n → ℂ} {X : Mx n} (hX : X ∈ lieSet ε) {C : ℝ} {N : ℕ}
     (hd : ∀ g ∈ UJset ε, HasDerivAt (fun t : ℝ => f (g * NormedSpace.exp (t • X))) (f' g) 0)
@@ -176,13 +172,13 @@ theorem exists_step_bound {f f' : Mx n → ℂ} {X : Mx n} (hX : X ∈ lieSet ε
     exact (one_add_hs_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hB ⟨t, ht, rfl⟩) (by positivity))
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro Y t a _ _ _ _ h`. Simplify using `using h`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `Y t a hY ht ha hag hc`. Simplify using `only [List.ofFn_succ, List.prod_cons, ← Matrix.mul_assoc]`. Use `ih (fun i => Y i.succ) (fun p i => t p i.succ) (fun p => a p * NormedSpace.exp (t p 0 • Y 0)) (fun i => hY _) (fun i => ht _) (fun p => mul_mem_UJ (ha p) (exp_mem_UJ (hY 0) _)) ?_ ?_` and prove the remaining obligations. Use `hag.mul (((continuous_exp_smul (Y 0)).tendsto 0).comp (ht 0))` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨f', C, h1, h2⟩` from `hf _ (hY 0)`. Take `⟨B, hB⟩` from `exists_step_bound (hY 0) h1 h2`. Establish `h3 : Tendsto (fun p => f (a p * NormedSpace.exp (t p 0 • Y 0)) - f (a p)) L (𝓝 0)`. Use `squeeze_zero_norm' (a := fun p => |C| * ((1 + hs (a p)) * B) ^ N * ‖t p 0‖) ?_ ?_` and prove the remaining obligations. Use `filter_upwards [(ht 0).eventually (Metric.closedBall_mem_nhds (0 : ℝ) one_pos)] with p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hB _ (ha p) _ hp`. Use `(((((continuous_hs.tendsto g₀).comp hag).const_add 1).mul_const B).pow N |>.const_mul |C|).mul (ht 0).norm` as an intermediate fact. Simplify using `using this`. Simplify using `using h3.add hc`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_prod {f : Mx n → ℂ} {α : Type} {L : Filter α} {g₀ : Mx n} {c : ℂ} {N : ℕ}
     (hf : ∀ X ∈ lieSet ε, ∃ (f' : Mx n → ℂ) (C : ℝ),
@@ -214,11 +210,11 @@ theorem tendsto_prod {f : Mx n → ℂ} {α : Type} {L : Filter α} {g₀ : Mx n
       simpa using h3.add hc
 
 /- English proof (translation)
-Introduce `n ε N F hF hG l hl g₀ hg₀`. Take `⟨d, Y, Ψ, hY, hΨ, hE⟩` from `exists_chart_UJ ε`. Establish `ht : Tendsto (fun g => g₀⁻¹ * g) (𝓝[UJset ε] g₀) (𝓝 1)`. Use `((continuous_const (y := g₀⁻¹)).matrix_mul continuous_id).tendsto g₀` as an intermediate fact. Rewrite `this` using `[id, inv_mul_UJ hg₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.mono_left nhdsWithin_le_nhds`. Establish `key` using `tendsto_prod (ε := ε) (f := F l) (L := 𝓝[UJset ε] g₀) (g₀ := g₀) (c := F l g₀) (N := N) (fun X hX => by`. Take `⟨C, hC⟩` from `hG (X :: l) (List.forall_mem_cons.2 ⟨hX, hl⟩)`. Conclude with `⟨F (X :: l), C, hF l hl X hX, hC⟩)`. Use `d Y (fun g => Ψ (g₀⁻¹ * g)) (fun _ => g₀) hY (fun i => tendsto_pi_nhds.1 (hΨ.comp ht) i) (fun _ => hg₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `tendsto_const_nhds tendsto_const_nhds`. Use `key.congr' ?_` and prove the remaining obligations. Use `filter_upwards [ht.eventually hE, self_mem_nhdsWithin] with g q hg`. Rewrite using `[q (mul_mem_UJ (inv_mem_UJ hg₀) hg), ← Matrix.mul_assoc, mul_inv_UJ hg₀, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_of_isDerFam : ∀ (n : ℕ) (ε : Fin n → Bool) (N : ℕ) (F : List (Mx n) → Mx n → ℂ),
     IsDerFam ε F → FamGrowth ε N F →

@@ -17,31 +17,31 @@ noncomputable section
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `_` and use `by simpa using (hasSum_zero : HasSum (fun _ : ℕ => (0 : ℂ)) 0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjEx_hasQ_zero (N : ℕ) : HasQ N (fun _ => (0 : ℂ)) (fun _ => 0) := fun _ => by
   simpa using (hasSum_zero : HasSum (fun _ : ℕ => (0 : ℂ)) 0)
 
 /- English proof (translation)
-Simplify using `[conv, PowerSeries.coeff_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjEx_conv_coeff (a b : ℕ → ℂ) (n : ℕ) :
     conv a b n = PowerSeries.coeff n (PowerSeries.mk a * PowerSeries.mk b) := by
   simp [conv, PowerSeries.coeff_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using `[conv, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conjEx_conv_map (g : ℂ ≃+* ℂ) (a b : ℕ → ℂ) :
     (fun n => g (conv a b n)) = conv (fun n => g (a n)) (fun n => g (b n)) := by
   funext n; simp [conv, map_sum, map_mul]
 
 /- English proof (translation)
-Establish `hmk : PowerSeries.mk d ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Use function extensionality and compare the values at `n`. Use `congrArg (PowerSeries.coeff n) h0` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hm : PowerSeries.mk a * PowerSeries.mk d = PowerSeries.mk b * PowerSeries.mk d`. Use extensionality with `n`. Use `congrFun h n` as an intermediate fact. Rewrite `this` using `[conjEx_conv_coeff, conjEx_conv_coeff]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `mul_right_cancel₀ hmk hm` as an intermediate fact. Use function extensionality and compare the values at `n`. Use `congrArg (PowerSeries.coeff n) this` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conjEx_conv_cancel (a b d : ℕ → ℂ) (hd : d ≠ 0) (h : conv a d = conv b d) : a = b := by
   have hmk : PowerSeries.mk d ≠ 0 := by
@@ -58,29 +58,27 @@ theorem conjEx_conv_cancel (a b d : ℕ → ℂ) (hd : d ≠ 0) (h : conv a d = 
   simpa using this
 
 /- English proof (translation)
-Introduce `g N n f D D' A A' s s' hN ⟨a, ha⟩ ⟨d, hd, hd'⟩ ⟨e, he, he'⟩ hs hD hfA hpol`. Take `⟨uc, uf⟩` from `GlobalTheory.QFam.hasQ_unique_both`. Establish `hz` using `conjEx_hasQ_zero N`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hD (uf N D (fun _ => 0) _ hd hz)`. Establish `hgd0 : (fun n => g (d n)) ≠ 0`. Introduce `h0`. Apply `hd0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h0 k` as an intermediate fact. Simplify using `using this`. Establish `hD' : D' ≠ 0`. Introduce and unpack `rfl`. Conclude with `hgd0 (uc N (fun _ => 0) _ _ hN hd' hz)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, hadd, _, hmul, hpow, hsumprod⟩` from `GlobalTheory.QFam.qConj_ring g N hN`. Establish `hA : QConj g N A A'` using `⟨e, he, he'⟩`. Establish `hDD : QConj g N D D'` using `⟨d, hd, hd'⟩`. Establish `hP : QConj g N (fun τ => A τ ^ n + ∑ j, s j τ * A τ ^ (j : ℕ) * D τ ^ (n - j)) (fun τ => A' τ ^ n + ∑ j, s' j τ * A' τ ^ (j : ℕ) * D' τ ^ (n - j))`. Use `hadd _ _ _ _ (hpow _ _ n hA) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hsumprod (Fin n) Finset.univ (fun j τ => s j τ * A τ ^ (j : ℕ) * D τ ^ (n - j)) (fun j τ => s' j τ * A' τ ^ (j : ℕ) * D' τ ^ (n - j)) ?_).1` and prove the remaining obligations. Introduce `j _`. Conclude with `hmul _ _ _ _ (hmul _ _ _ _ (hs j) (hpow _ _ _ hA)) (hpow _ _ _ hDD)`. Establish `hP0 : (fun τ => A τ ^ n + ∑ j, s j τ * A τ ^ (j : ℕ) * D τ ^ (n - j)) = fun _ => 0`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hx : A τ ^ n + ∑ j, s j τ * A τ ^ (j : ℕ) * D τ ^ (n - j) = D τ ^ n * (f τ ^ n + ∑ j, s j τ * f τ ^ (j : ℕ))`. Rewrite using `[mul_add, Finset.mul_sum, ← hfA τ, mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _`. Rewrite using `[mul_pow, show D τ ^ n = D τ ^ (j : ℕ) * D τ ^ (n - j) by`. Rewrite using `[← pow_add, Nat.add_sub_cancel' j.2.le]]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx, hpol τ, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hP'0 : ∀ τ, A' τ ^ n + ∑ j, s' j τ * A' τ ^ (j : ℕ) * D' τ ^ (n - j) = 0`. Take `⟨c, hc, hc'⟩` from `hP`. Rewrite `hc` using `[hP0]`. Establish `hc0 : c = fun _ => 0` using `uc N _ _ _ hN hc hz`. Substitute `hc0` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [map_zero] at hc'`. Use `uf N _ _ _ hc' hz` as an intermediate fact. Conclude with `fun τ => congrFun this τ`. Take `⟨h, b, hb, hAh⟩` from `GlobalTheory.T.exists_hasQ_quotient_of_integral N n A' D' s' hN ⟨_, he'⟩ ⟨_, hd'⟩ (fun j => by obtain ⟨c, _, hc'⟩ := hs j; exact ⟨_, hc'⟩) hD' hP'0`. Establish `hfD : HasQ N A (conv a d)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `GlobalTheory.QFam.hasQ_mul_conv N f D a d hN ha hd` as an intermediate fact. Establish `hAe : (fun τ => f τ * D τ) = A` using `funext hfA`. Rewrite `this` using `[hAe]`. Then use the resulting hypothesis. Establish `he1 : e = conv a d` using `uc N A _ _ hN he hfD`. Establish `hhD : HasQ N A' (conv b fun n => g (d n))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `GlobalTheory.QFam.hasQ_mul_conv N h D' b _ hN hb hd'` as an intermediate fact. Establish `hAe : (fun τ => h τ * D' τ) = A'` using `funext fun τ => (hAh τ).symm`. Rewrite `this` using `[hAe]`. Then use the resulting hypothesis. Establish `he2 : (fun n => g (e n)) = conv b fun n => g (d n)` using `uc N A' _ _ hN he' hhD`. Rewrite `he2` using `[he1, conjEx_conv_map]`.
-
-Establish `hba : b = fun n => g (a n)` using `(conjEx_conv_cancel _ _ _ hgd0 he2).symm`. Use `⟨h, ⟨a, ha, hba ▸ hb⟩, fun τ => (hAh τ).symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conj_exists : ∀ (g : ℂ ≃+* ℂ) (N n : ℕ) (f D D' A A' : ℍ → ℂ) (s s' : Fin n → ℍ → ℂ), 0 < N → (∃ a, HasQ N f a) → QConj g N D D' → QConj g N A A' → (∀ j, QConj g N (s j) (s' j)) → D ≠ 0 → (∀ τ, f τ * D τ = A τ) → (∀ τ, f τ ^ n + ∑ j, s j τ * f τ ^ (j : ℕ) = 0) → ∃ f' : ℍ → ℂ, QConj g N f f' ∧ ∀ τ, f' τ * D' τ = A' τ := by
   intro g N n f D D' A A' s s' hN ⟨a, ha⟩ ⟨d, hd, hd'⟩ ⟨e, he, he'⟩ hs hD hfA hpol

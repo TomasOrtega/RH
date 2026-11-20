@@ -23,7 +23,7 @@ open GlobalTheory.InvForm
 namespace GlobalTheory.InvFormRetract
 
 /- English proof (translation)
-Use `letI : Algebra B D := (redHom φ).toAlgebra`. Use `haveI : IsScalarTower R B D := IsScalarTower.of_algebraMap_eq fun r ↦ (redHom_algebraMap φ r).symm`. Unfold `dVal`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.map_smul]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dVal_smul {R B D : Type} [CommRing R] [CommRing B] [Algebra R B] [CommRing D] [Algebra R D] (φ : B →ₐ[R] DualNumber D) (b : B) (x : Ω[B⁄R]) : dVal φ (b • x) = redHom φ b * dVal φ x := by
   letI : Algebra B D := (redHom φ).toAlgebra
@@ -33,23 +33,21 @@ theorem dVal_smul {R B D : Type} [CommRing R] [CommRing B] [Algebra R B] [CommRi
   rfl
 
 /- English proof (translation)
-Use `haveI : Smooth A.hom := hab.smooth`. Use `haveI : IsProper A.hom := hab.proper`. Use `haveI : CompactSpace A.left := ⟨by simpa using QuasiCompact.isCompact_preimage (f := A.hom) Set.univ isOpen_univ isCompact_univ⟩`. Use `haveI : Algebra.Smooth R (Sec A.hom U.unop.1) := smooth_sec_affine A.hom U.unop`. Use `haveI : Module.Flat R (Sec A.hom U.unop.1) := Algebra.Smooth.flat R _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, V, hV⟩` from `GlobalTheory.T.exists_finite_affineCover_globalForm_eq_zero_of_restrictions R A.left A.hom inferInstance`. Set `f : ∀ k, InvForm A →ₗ[R] Ω[Sec A.hom (V k).unop.1⁄R]` to `fun k => evForm A.hom (V k) ∘ₗ (InvForm A).subtype`. Set `F : InvForm A →ₗ[R] ((k : Fin n) → Ω[Sec A.hom (V k).unop.1⁄R])` to `LinearMap.pi f`. Establish `hF : Function.Injective F`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `w hw`. Conclude with `Subtype.ext (hV w.1 fun k => congrFun hw k)`. Establish `hFB : Function.Injective (LinearMap.lTensor (Sec A.hom U.unop.1) F)` using `Module.Flat.lTensor_preserves_injective_linearMap F hF`. Establish `hk : ∀ (k : Fin n) (z : Sec A.hom U.unop.1 ⊗[R] InvForm A), TensorProduct.piRight R R (Sec A.hom U.unop.1) (fun k : Fin n => Ω[Sec A.hom (V k).unop.1⁄R]) (LinearMap.lTensor (Sec A.hom U.unop.1) F z) k = LinearMap.lTensor (Sec A.hom U.unop.1) (f k) z`. Introduce `k z`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b w => simp [F]`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `z hz`. Apply `hFB` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `(TensorProduct.piRight R R (Sec A.hom U.unop.1) (fun k : Fin n => Ω[Sec A.hom (V k).unop.1⁄R])).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[hk, Pi.zero_apply]`. Use `haveI : Algebra.Smooth R (Sec A.hom (V k).unop.1) := smooth_sec_affine A.hom (V k).unop`. Use `GlobalTheory.T.eq_zero_of_liftBaseChange_derivations_eq_zero R (Sec A.hom U.unop.1) _ inferInstance _ (fun θ hθ => ?_)` and prove the remaining obligations. Take `⟨ψ, hfst, hψ⟩` from `GlobalTheory.T.exists_groupLawTranslate_derivation_invariantForms R A U (V k) θ hθ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ y, LinearMap.liftBaseChange (Sec A.hom U.unop.1) θ (LinearMap.lTensor (Sec A.hom U.unop.1) (f k) y) = dVal ψ (LinearMap.liftBaseChange (Sec A.hom U.unop.1) (evForm A.hom U ∘ₗ (InvForm A).subtype) y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.lTensor_tmul, LinearMap.liftBaseChange_tmul, LinearMap.liftBaseChange_tmul, dVal_smul]`. Establish `h1 : redHom ψ b = b ⊗ₜ 1` using `hfst b`. Rewrite using `[h1, Algebra.smul_def]`. Simplify using `only [f, LinearMap.comp_apply, Submodule.subtype_apply, hψ]`. Both sides reduce to the same expression.
-
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[key, hz, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem injective_baseChange {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (hab : IsAbelianScheme A) (U : AffOp A.left) :
     Function.Injective (LinearMap.liftBaseChange (Sec A.hom U.unop.1) (evForm A.hom U ∘ₗ (InvForm A).subtype)) := by
@@ -100,11 +98,11 @@ theorem injective_baseChange {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A
   rw [key, hz, map_zero]
 
 /- English proof (translation)
-Introduce `R _ A _ g hab hdim U`. Establish `hsurj : Function.Surjective (LinearMap.liftBaseChange (Sec A.hom U.unop.1) (evForm A.hom U ∘ₗ (InvForm A).subtype))`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← GlobalTheory.T.span_invariantOneForms_affineOpen_abelianScheme_eq_top R A g hab hdim U, Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨1 ⊗ₜ w, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `e` to `LinearEquiv.ofBijective _ ⟨injective_baseChange A hab U, hsurj⟩`. Use `⟨e.symm.toLinearMap, fun w => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.coe_toLinearMap, LinearEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `_ = LinearMap.liftBaseChange _ _ (1 ⊗ₜ w)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem retract : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ U : AffOp A.left, ∃ r : Ω[Sec A.hom U.unop.1⁄R] →ₗ[Sec A.hom U.unop.1] (Sec A.hom U.unop.1 ⊗[R] GlobalTheory.InvForm.InvForm A), ∀ w : GlobalTheory.InvForm.InvForm A, r (evForm A.hom U w.1) = 1 ⊗ₜ w := by
   intro R _ A _ g hab hdim U

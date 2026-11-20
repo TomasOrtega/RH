@@ -12,7 +12,7 @@ namespace GlobalTheory.FinClsLoc
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C) ((1 : AfP p) ⊗ₜ c) = (1 : w.1.adicCompletion ℚ) ⊗ₜ c`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueL_evalT_inC (G : HTGroup p) (w : AwayP p) (c : G.C) :
     Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C) (inC G (AfP p) c) =
@@ -21,7 +21,7 @@ theorem glueL_evalT_inC (G : HTGroup p) (w : AwayP p) (c : G.C) :
   rw [Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y => simp only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, starT_tmul]`. Consider the case `add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem glueL_evalT_starT (G : HTGroup p) (w : AwayP p) (a : AfP p ⊗[ℚ] G.C) :
     Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C) (starT G.star (AfP p) a).unop =
@@ -32,7 +32,7 @@ theorem glueL_evalT_starT (G : HTGroup p) (w : AwayP p) (a : AfP p ⊗[ℚ] G.C)
   | add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glueL_evalT_algebraMap (G : HTGroup p) (w : AwayP p) (t : AfP p) :
     Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C) (algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) t) =
@@ -40,7 +40,7 @@ theorem glueL_evalT_algebraMap (G : HTGroup p) (w : AwayP p) (t : AfP p) :
   simp [Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C) ((x : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)) = _`. Rewrite using `[map_mul, map_mul, glueL_evalT_inC]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueL_compL_toAfF_fst (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (y : grp G β) (w : AwayP p) :
@@ -55,30 +55,28 @@ theorem glueL_compL_toAfF_fst (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] 
   rw [map_mul, map_mul, glueL_evalT_inC]
 
 /- English proof (translation)
-Simplify using `only [sh]`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.mul_inv, map_one, MulOpposite.unop_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem glueL_sh_inv_mul (G : HTGroup p) (c : G.Cˣ) : sh G ((c⁻¹ : G.Cˣ) : G.C) * sh G (c : G.C) = 1 := by
   simp only [sh]
   rw [← MulOpposite.unop_mul, ← map_mul, Units.mul_inv, map_one, MulOpposite.unop_one]
 
 /- English proof (translation)
-Introduce `p _ G β x t hx y g c Y hy w`. Set `φ` to `Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C)`. Set `u : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ` to `((compL G w g : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).1`. Set `ν : (w.1.adicCompletion ℚ)ˣ` to `((compL G w g : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).2`. Set `xw : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ` to `Units.map (φ : AfP p ⊗[ℚ] G.C →* w.1.adicCompletion ℚ ⊗[ℚ] G.C) x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ci : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ` to `Units.map (inC G (w.1.adicCompletion ℚ)).toMonoidHom c`. Set `mY : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ` to `Units.map (inC G (w.1.adicCompletion ℚ)).toMonoidHom Y`. Set `tw : (w.1.adicCompletion ℚ)ˣ` to `Units.map (AfP.eval w : AfP p →* w.1.adicCompletion ℚ) t`. Establish `hT : ((compL G w (toAfF G β x t hx y) : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).1 = xw * (ci * mY * ci⁻¹) * xw⁻¹`. Apply `Units.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[glueL_compL_toAfF_fst]`. Establish `hy' : ((y : G.Cˣ × ℚˣ).1 : G.Cˣ) = c * Y * c⁻¹` using `Units.ext (by rw [hy]; rfl)`. Rewrite using `[hy', ← map_inv, ← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression. Establish `E : ((compL G w (g⁻¹ * toAfF G β x t hx y * g) : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).1 = (u⁻¹ * xw * ci) * mY * (u⁻¹ * xw * ci)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, map_inv]`. Express the relevant statement in the definitionally equal form `u⁻¹ * ((compL G w (toAfF G β x t hx y) : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).1 * u = _`. Rewrite using `[hT]`. Use `group`. Use `⟨u⁻¹ * xw * ci, tw * ν⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[E]`. Both sides reduce to the same expression. Rewrite using `[E, show (u⁻¹ * xw * ci * mY * (u⁻¹ * xw * ci)⁻¹)⁻¹ = (u⁻¹ * xw * ci) * mY⁻¹ * (u⁻¹ * xw * ci)⁻¹ by group]`. Both sides reduce to the same expression. Establish `hu : ((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * (starT G.star (w.1.adicCompletion ℚ) ((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C)).unop = algebraMap (w.1.adicCompletion ℚ) (w.1.adicCompletion ℚ ⊗[ℚ] G.C) ((ν⁻¹ : (w.1 …` using `((compL G w g)⁻¹).2`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxw : φ (x : AfP p ⊗[ℚ] G.C) * inC G (w.1.adicCompletion ℚ) (β : G.C) * (starT G.star (w.1.adicCompletion ℚ) (φ (x : AfP p ⊗[ℚ] G.C))).unop = algebraMap (w.1.adicCompletion ℚ) (w.1.adicCompletion ℚ ⊗[ℚ] G.C) (tw : w.1.adicCompletion ℚ)`. Establish `h` using `congrArg φ hx`. Rewrite `h` using `[map_mul, map_mul, glueL_evalT_inC, glueL_evalT_starT, glueL_evalT_algebraMap]`. Conclude with `h`. Establish `hs : ∀ z : G.C, (starT G.star (w.1.adicCompletion ℚ) (inC G (w.1.adicCompletion ℚ) z)).unop = inC G (w.1.adicCompletion ℚ) (sh G z)` using `fun z => starT_tmul G.star _ 1 z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hC : (c : G.C) * (((c⁻¹ : G.Cˣ) : G.C) * β * sh G ((c⁻¹ : G.Cˣ) : G.C) * ((β⁻¹ : G.Cˣ) : G.C)) * β * sh G (c : G.C) = β`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv, Units.inv_mul, one_mul, mul_one, mul_assoc]`. Use `_ = β := by rw [glueL_sh_inv_mul, mul_one]`. Establish `hk : (((u⁻¹ * xw * ci : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ)) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) = ((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * φ (x : AfP p ⊗[ℚ] G.C) * inC G (w.1.adicCompletion ℚ) (c : G.C)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk, RingHom.map_mul (starT G.star (w.1.adicCompletion ℚ)), RingHom.map_mul (starT G.star (w.1.adicCompletion ℚ)), MulOpposite.unop_mul, MulOpposite.unop_mul, hs]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, mul_assoc]`. Use `_ = algebraMap (w.1.adicCompletion ℚ) (w.1.adicCompletion ℚ ⊗[ℚ] G.C) (tw : w.1.adicCompletion ℚ) * (((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * (starT G.star (w.1.adicCompletion ℚ) ((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ …`. Rewrite using `[hC, hxw, ← mul_assoc, ← Algebra.commutes, mul_assoc]`.
-
-Use `_ = _ := by rw [hu, ← map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueL_main : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (y : grp G β) (g : G.GAf) (c Y : G.Cˣ),

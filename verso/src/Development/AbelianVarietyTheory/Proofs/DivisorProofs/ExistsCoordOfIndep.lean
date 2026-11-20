@@ -20,15 +20,13 @@ namespace GlobalTheory.BigOn.Exp
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hrf : rd f ≠ 0` using `(hF 1 (fun _ => f) (linearIndependent_unique_iff.2 hf)).ne_zero 0`. Distinguish the cases in `hli : LinearIndependent K ![f, f']`. Establish `h2` using `hF 2 _ hli`. Establish `h2' : LinearIndependent ℂ ![rd f, rd f']`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `c`. Apply the tactic sequence `fin_cases c <;> rfl`. Use `(LinearIndependent.pair_iff.1 h2') (-μ) 1 (by rw [h, one_smul, neg_smul, neg_add_cancel])` as an intermediate fact. Conclude with `absurd this.2 one_ne_zero`. Rewrite `hli` using `[LinearIndependent.pair_iff] at hli push_neg`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, t, hst, hne⟩` from `hli`. Establish `ht : t ≠ 0`. Introduce `ht0`. Rewrite `hst` using `[ht0, zero_smul, add_zero]`. Conclude with `hne ((smul_eq_zero.1 hst).resolve_right hf) ht0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : f' = (-(s / t)) • f`. Establish `: t • f' = -(s • f)` using `eq_neg_of_add_eq_zero_right hst`. Combine the equalities or inequalities in the displayed calculation. Use `⟨-(s / t), ?_⟩` and prove the remaining obligations. Establish `h3 : e (-(s / t)) • rd f = μ • rd f` using `by rw [← h, hf', map_smulₛₗ]`.
-
-Conclude with `smul_left_injective ℂ hrf h3`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_coord_of_indep {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     (e : K →+* ℂ) (rd : V →ₛₗ[e] W)
@@ -59,9 +57,9 @@ theorem exists_coord_of_indep {K V W : Type} [Field K] [AddCommGroup V] [Module 
     exact smul_left_injective ℂ hrf h3
 
 /- English proof (translation)
-Unfold `CoordRange AtTw AtPts`. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p hr hm w _ j ρ hρ ν μ hν f f' hf hff => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨Z⟩` from `hm.2.2.series`. Establish `hU : p.R.toRealDat.LUnif` using `hr.prim.unif`. Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Conclude with `exists_coord_of_indep _ _ (GlobalTheory.SeriesTie.realRd_faithful _ _ _ _ _ _ _ p.R p.cG p.Sx p.nexp p.v₀ ρ hρ _ j _ ν hν hU hW (Z.vec j) hK) hf hff`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coordRange : CoordRange := by
   unfold CoordRange AtTw AtPts

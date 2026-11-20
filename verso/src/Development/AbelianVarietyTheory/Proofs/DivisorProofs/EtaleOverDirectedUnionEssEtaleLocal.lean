@@ -6,9 +6,7 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.EtaleOverDirectedUnion
 
 /- English proof (translation)
-Introduce `R S' E _ _ _ _ _ _ _ _ ⟨A, _, _, _, q, _, ⟨ψ⟩⟩ P hP`. Use `letI : Algebra (Localization.AtPrime q) S' := ψ.toRingHom.toAlgebra`. Use `letI : Algebra (Localization.AtPrime q) E := ((algebraMap S' E).comp ψ.toRingHom).toAlgebra`. Use `haveI : IsScalarTower (Localization.AtPrime q) S' E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.Etale (Localization.AtPrime q) S' := Algebra.Etale.of_equiv (R := Localization.AtPrime q) ({ ψ.toRingEquiv with commutes' := fun _ => rfl } : Localization.AtPrime q ≃ₐ[Localization.AtPrime q] S')`.
-
-Use `haveI : Algebra.Etale (Localization.AtPrime q) E := Algebra.Etale.comp (Localization.AtPrime q) S' E`. Use `haveI : IsScalarTower R (Localization.AtPrime q) E := IsScalarTower.of_algebraMap_eq (fun r => by show algebraMap R E r = algebraMap S' E (ψ (algebraMap R _ r))`. Rewrite using `[ψ.commutes, ← IsScalarTower.algebraMap_apply])`. Conclude with `GlobalTheory.T.etale_local_ring_of_localization R A E q P`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localRing_of_etale_over_essEtale : ∀ (R S' E : Type) [CommRing R] [CommRing S'] [CommRing E] [Algebra R S'] [Algebra S' E] [Algebra R E] [IsScalarTower R S' E] [Algebra.Etale S' E], (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] S')) → ∀ (P : Ideal E) (_ : P.IsPrime), (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Localization.AtPrime P)) := by
   intro R S' E _ _ _ _ _ _ _ _ ⟨A, _, _, _, q, _, ⟨ψ⟩⟩ P hP
@@ -25,11 +23,9 @@ theorem localRing_of_etale_over_essEtale : ∀ (R S' E : Type) [CommRing R] [Com
   exact GlobalTheory.T.etale_local_ring_of_localization R A E q P
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[← e.symm_apply_apply y]`. Proceed by induction on `e y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `tmul s b`. Establish `: s ⊗ₜ[A₀] b = s • ((1 : S) ⊗ₜ[A₀] b)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
-
-Consider the case `add x z hx hz => rw [map_add]`. Conclude with `add_mem hx hz`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_one_tmul_eq_top (S B : Type) [CommRing S] [CommRing B] [Algebra S B] (A₀ B₀ : Type)
     [CommRing A₀] [CommRing B₀] [Algebra A₀ S] [Algebra A₀ B₀] (e : B ≃ₐ[S] S ⊗[A₀] B₀) :
@@ -46,7 +42,7 @@ theorem span_one_tmul_eq_top (S B : Type) [CommRing S] [CommRing B] [Algebra S B
   | add x z hx hz => rw [map_add]; exact add_mem hx hz
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `h`. Use `choose f hf using hcov`. Take `⟨M, hM⟩` from `Finset.exists_le (t.image f)`. Conclude with `⟨M, Algebra.adjoin_le fun s hs => hmono (hM _ (Finset.mem_image_of_mem f hs)) (hf s)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fg_le_member {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {ι : Type} [Preorder ι]
     [IsDirected ι (· ≤ ·)] [Nonempty ι] (Si : ι → Subalgebra R S) (hmono : Monotone Si)
@@ -59,19 +55,19 @@ theorem fg_le_member {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {ι : 
   exact ⟨M, Algebra.adjoin_le fun s hs => hmono (hM _ (Finset.mem_image_of_mem f hs)) (hf s)⟩
 
 /- English proof (translation)
-Introduce `R S B _ _ _ _ _ _ _ _ ⟨ι, _, _, _, Si, hmono, hcov, hloc⟩`. Take `⟨A₀, B₀, _, _, hfg, hét, ⟨e⟩⟩` from `Algebra.Etale.exists_subalgebra_fg R S B`. Take `⟨i₀, hi₀⟩` from `fg_le_member Si hmono hcov A₀ hfg`. Set `g : B₀ → B` to `fun b => e.symm (1 ⊗ₜ b)`. Set `C : {j // i₀ ≤ j} → Subalgebra R B` to `fun j => Algebra.adjoin R ((algebraMap S B) '' (Si j.1 : Set S) ∪ Set.range g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hdir : IsDirected {j // i₀ ≤ j} (· ≤ ·)` using `⟨fun a b => by`. Take `⟨k, hak, hbk⟩` from `directed_of (· ≤ ·) a.1 b.1`. Conclude with `⟨⟨k, a.2.trans hak⟩, hak, hbk⟩⟩`. Establish `hCmono : Monotone C` using `fun a b hab => Algebra.adjoin_mono (Set.union_subset_union_left _ (Set.image_mono (hmono hab)))`. Use `⟨{j // i₀ ≤ j}, inferInstance, hdir, ⟨⟨i₀, le_rfl⟩⟩, C, hCmono, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b`. Establish `hb : b ∈ Submodule.span S (Set.range g)`. Rewrite using `[span_one_tmul_eq_top S B A₀ B₀ e]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hb using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Consider the case `mem x hx => exact ⟨⟨i₀, le_rfl⟩, Algebra.subset_adjoin (Or.inr hx)⟩`. Consider the case `zero => exact ⟨⟨i₀, le_rfl⟩, zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hak, hbk⟩` from `directed_of (· ≤ ·) a b`. Conclude with `⟨k, add_mem (hCmono hak ha) (hCmono hbk hb)⟩`. Consider the case `smul s x _ hx`. Take `⟨a, ha⟩` from `hx`. Take `⟨j, hj⟩` from `hcov s`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hak, hjk⟩` from `directed_of (· ≤ ·) a.1 j`. Use `⟨⟨k, a.2.trans hak⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `mul_mem (Algebra.subset_adjoin (Or.inl ⟨s, hmono hjk hj, rfl⟩)) (hCmono hak ha)`. Introduce `j P hP`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _⟩` from `GlobalTheory.T.etale_adjoin_baseChange_image' R S B A₀ B₀ e (Si j.1) (hi₀.trans (hmono j.2))`. Conclude with `localRing_of_etale_over_essEtale R (Si j.1) (C j) (hloc j.1) P hP`.
+A detailed English derivation is pending.
 -/
 theorem construct : ∀ (R S B : Type) [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [Algebra S B] [Algebra R B] [IsScalarTower R S B] [Algebra.Etale S B], (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra R S), Monotone Si ∧ (∀ s : S, ∃ i, s ∈ Si i) ∧ ∀ i, (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Si i))) → ∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (C : ι → Subalgebra R B), Monotone C ∧ (∀ b : B, ∃ i, b ∈ C i) ∧ ∀ i (P : Ideal (C i)) (_ : P.IsPrime), (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Localization.AtPrime P)) := by
   intro R S B _ _ _ _ _ _ _ _ ⟨ι, _, _, _, Si, hmono, hcov, hloc⟩

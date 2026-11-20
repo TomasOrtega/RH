@@ -20,9 +20,7 @@ def unipMat (H : Matrix ι ι ℂ) (X W₀ u : ι → ℂ) : Matrix ι ι ℂ :=
   Matrix.of fun i j => unipVec H X W₀ u (Pi.single j 1) i
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `hc : Continuous fun u => unipVec H X W₀ u (Pi.single j 1)`. Unfold `unipVec`. Apply `Continuous.sub` to reduce the goal to its premises. Conclude with `continuous_const.add (continuous_const_smul _)`.
-
-Conclude with `(continuous_star.dotProduct continuous_const).smul continuous_const`. Conclude with `(continuous_apply i).comp hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem continuous_unipMat (H : Matrix ι ι ℂ) (X W₀ : ι → ℂ) :
     Continuous (unipMat H X W₀) := by
@@ -35,19 +33,17 @@ theorem continuous_unipMat (H : Matrix ι ι ℂ) (X W₀ : ι → ℂ) :
   exact (continuous_apply i).comp hc
 
 /- English proof (translation)
-Establish `ip : ∀ a b, star (G *ᵥ a) ⬝ᵥ (H *ᵥ (G *ᵥ b)) = star a ⬝ᵥ (H *ᵥ b)`. Introduce `a b`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hU]`. Use `set u := G *ᵥ W₀ - W₀ with hu`. Establish `huX : star u ⬝ᵥ (H *ᵥ X) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ip W₀ X` as an intermediate fact. Rewrite `this` using `[hX]`. Simplify using `only [hu, star_sub, sub_dotProduct, this, sub_self]`. Establish `key : ∀ e, G *ᵥ e = unipVec H X W₀ u e`. Introduce `e`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set b := star X ⬝ᵥ (H *ᵥ e) with hb`. Use `set z := e - b • W₀ with hzdef`. Establish `hXz : star X ⬝ᵥ (H *ᵥ z) = 0`. Simplify using `only [hzdef, mulVec_sub, mulVec_smul, dotProduct_sub, dotProduct_smul, hXW, smul_eq_mul, mul_one, b, sub_self]`. Take `⟨c, hc⟩` from `hz z hXz`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGW : G *ᵥ W₀ = W₀ + u` using `by rw [hu]; abel`. Establish `hc' : c = -(star u ⬝ᵥ (H *ᵥ z))`. Use `ip W₀ z` as an intermediate fact. Rewrite `this` using `[hc, hGW]`. Simplify using `only [star_add, add_dotProduct, mulVec_add, mulVec_smul, dotProduct_add, dotProduct_smul, hWX, huX, smul_eq_mul] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `this`. Establish `he : e = z + b • W₀` using `by rw [hzdef]; abel`. Establish `: G *ᵥ e = z + c • X + b • (W₀ + u)`. Rewrite using `[he, mulVec_add, mulVec_smul, hc, hGW]`. Rewrite using `[this, hc']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [unipVec, ← hb, ← hzdef]`. Rewrite using `[he]`. Simplify using `only [smul_add, neg_smul]`. Normalize the expressions using the abelian group laws. Use extensionality with `i j`.
-
-Rewrite using `[unipMat, of_apply, ← key, mulVec_single_one, col_apply]`.
+Normalize the expressions using the abelian group laws. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_unipMat {H G : Matrix ι ι ℂ} {X W₀ : ι → ℂ} (hU : Gᴴ * H * G = H)
     (hX : G *ᵥ X = X) (hz : ∀ z, star X ⬝ᵥ (H *ᵥ z) = 0 → ∃ c : ℂ, G *ᵥ z = z + c • X)
@@ -96,23 +92,17 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `x₀ w₀ hp K hK`. Establish `hherm` using `HermAtPlace.proof h v`. Use `set H := gramAt h v`. Use `set X := vecAt v x₀`. Use `set W0 := vecAt v w₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXW : ∀ w, star (X w) ⬝ᵥ (H w *ᵥ W0 w) = 1` using `fun w => by`. Rewrite using `[← hherm, hp.2.2, map_one]`. Establish `hWX : ∀ w, star (W0 w) ⬝ᵥ (H w *ᵥ X w) = 1` using `fun w => by`. Rewrite using `[← hherm, ← h.conj_toSesq, hp.2.2, map_one, map_one]`. Establish `hHdet : ∀ w, IsUnit (H w).det` using `fun w => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [H, gramAt]`. Rewrite using `[show ((gram h.toSesq v).map w.embedding).det = w.embedding (gram h.toSesq v).det from (RingHom.map_det w.embedding _).symm]`. Conclude with `(isUnit_det_gram h v).map w.embedding`. Use `set Φ : InfinitePlace E → (ι → ℂ) → Matrix ι ι ℂ := fun w => unipMat (H w) (X w) (W0 w)`. Use `set Ψ : InfinitePlace E → (ι → ℂ) → Matrix ι ι ℂ := fun w u => (H w)⁻¹ * (Φ w u)ᴴ * H w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦc : ∀ w, Continuous (Φ w)` using `fun w => continuous_unipMat _ _ _`. Establish `hΨc : ∀ w, Continuous (Ψ w)` using `fun w => (continuous_const.matrix_mul (hΦc w).matrix_conjTranspose).matrix_mul continuous_const`. Establish `key : ∀ (n : unipRadical h v x₀) (w : InfinitePlace E), (((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) = Φ w (unipCoord h v x₀ w₀ n w) ∧ (((((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w)⁻¹ : GL ι ℂ) : Matrix ι ι ℂ) = Ψ w (unipCoord h v x₀ w₀ n w)`. Introduce `n w`. Use `set G : Matrix ι ι ℂ := (((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : Gᴴ * H w * G = H w` using `(mem_archUnitary.mp (n : archUnitary h v).2) w`. Establish `hG : G = Φ w (unipCoord h v x₀ w₀ n w)` using `eq_unipMat hU ((n.2 w).1) ((n.2 w).2) (hXW w) (hWX w)`. Use `⟨hG, ?_⟩` and prove the remaining obligations. Use `set Gi : Matrix ι ι ℂ := (((((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w)⁻¹ : GL ι ℂ) : Matrix ι ι ℂ)`. Establish `hGGi : G * Gi = 1` using `Units.mul_inv _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Gi = (H w)⁻¹ * (Φ w (unipCoord h v x₀ w₀ n w))ᴴ * H w`. Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU, Matrix.nonsing_inv_mul _ (hHdet w), Matrix.one_mul]`. Use `_ = (H w)⁻¹ * Gᴴ * H w * (G * Gi) := by simp only [Matrix.mul_assoc]`.
-
-Use `_ = (H w)⁻¹ * Gᴴ * H w := by rw [hGGi, Matrix.mul_one]`. Use `set Kw : InfinitePlace E → Set (ι → ℂ) := fun w => (fun y => y w) '' K`. Establish `hKw : ∀ w, IsCompact (Kw w)` using `fun w => hK.image (continuous_apply w)`. Use `set C : InfinitePlace E → Set (GL ι ℂ) := fun w => Units.embedProduct (Matrix ι ι ℂ) ⁻¹' ((Φ w '' Kw w) ×ˢ (MulOpposite.unop ⁻¹' (Ψ w '' Kw w)))`. Establish `hC : ∀ w, IsCompact (C w)` using `fun w => Units.isClosedEmbedding_embedProduct.isCompact_preimage (((hKw w).image (hΦc w)).prod (MulOpposite.opHomeomorph.isCompact_preimage.mp ((hKw w).image (hΨc w))))`.
-
-Establish `hS : IsClosed {n : unipRadical h v x₀ | unipCoord h v x₀ w₀ n ∈ K}` using `hK.isClosed.preimage (continuous_unipCoord h v x₀ w₀)`. Rewrite using `[Subtype.isCompact_iff, Subtype.isCompact_iff, Set.image_image]`. Use `(isCompact_univ_pi hC).of_isClosed_subset ?_ ?_` and prove the remaining obligations. Rewrite using `[← Set.image_image]`. Conclude with `(isClosed_archUnitary h v).isClosedEmbedding_subtypeVal.isClosedMap _ ((isClosed_unipRadical h v x₀).isClosedEmbedding_subtypeVal.isClosedMap _ hS)`.
-
-Introduce and unpack `_ ⟨n, hn, rfl⟩ w -`. Conclude with `⟨⟨_, ⟨_, hn, rfl⟩, (key n w).1.symm⟩, ⟨_, ⟨_, hn, rfl⟩, (key n w).2.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UnipotentCoordProper.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     UnipotentCoordProper.Statement h v := by

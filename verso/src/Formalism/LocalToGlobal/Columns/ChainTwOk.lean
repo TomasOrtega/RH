@@ -16,7 +16,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Take `⟨⟨hbar, hred⟩, hiff⟩` from `reductionExistsInLatticeStabilizer_holds Ch sel mu cst σ m2 hB i hi P hP h hs`. Establish `hin : ocbInAt R i P.1 hbar` using `@residueFieldUnfolding_claims_hold.1 (𝓞 X.E ⧸ P.1.asIdeal) (resField P.1) (resFintype P.1) (ocbPsiC Ch σ P.1) (ocbChiC Ch σ P.1) R.k R.m R.t (i + 1) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) (ocbPsiC_ne hB.hCh σ hP) (ocbRanks_step hB.hm hi) hbar ((hiff hbar hred).1 H)`. Conclude with `liftFromResidueParabolicProduct_holds Ch sel mu cst m2 hB i hi P hP h hs hbar hred hin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twSurjG (σ : X.K →+* ℂ) {m2 : ℕ} (hB : OcbBase Ch sel mu cst m2) {i : ℕ} (hi : i < m2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     (h : AutY X R (i + 1)) (hs : h ∈ stabL X.E _ (lamYat (Pr := Pr) (i + 1) P.1)) (H : FiniteSumNonzeroLargeDepth Ch sel mu cst i P 1 h) :
@@ -28,7 +28,7 @@ theorem twSurjG (σ : X.K →+* ℂ) {m2 : ℕ} (hB : OcbBase Ch sel mu cst m2) 
   exact liftFromResidueParabolicProduct_holds Ch sel mu cst m2 hB i hi P hP h hs hbar hred hin
 
 /- English proof (translation)
-Establish `h` using `(reductionExistsInLatticeStabilizer_holds Ch sel mu cst σ m2 hB i hi P hP 1 (Subgroup.one_mem _)).2 1 (ocbIsRed_one P.1 (qOf P.1) _ _)`. Use `h.2 ?_` and prove the remaining obligations. Conclude with `(@ocbNe_one (𝓞 X.E ⧸ P.1.asIdeal) (resField P.1) (resFintype P.1) (ocbPsiC Ch σ P.1) (ocbChiC Ch σ P.1) R.k R.m R.t (i + 1) (R.N i) (cOf R (i + 1)) (R.N (i + 1))).2 (@residueFieldUnfolding_claims_hold.2 (𝓞 X.E ⧸ P.1.asIdeal) (resField P.1) (resFintype P.1) (ocbPsiC Ch σ P.1) (ocb …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twNonVanG (σ : X.K →+* ℂ) {m2 : ℕ} (hB : OcbBase Ch sel mu cst m2) {i : ℕ} (hi : i < m2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) :
     FiniteSumNonzeroLargeDepth Ch sel mu cst i P 1 1 := by
@@ -46,9 +46,9 @@ section TwLat
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Rewrite using `[ciMem_stdAt, ciMem_stdAt]`. Prove the components needed by the constructor for the conclusion. Introduce `h l`. Establish `h1` using `h (Fin.castAdd c l)`. Rewrite `h1` using `[ciInX_apply, dif_pos (by simp)]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h l`. Rewrite using `[ciInX_apply]`. Use `split_ifs with hl`. Conclude with `h _`. Conclude with `⟨0, 1, one_notMem P, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twInX_mem_std (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} (x : Sp E n) :
     Loc.inX E n c x ∈ stdAt E (n + c) P ↔ x ∈ stdAt E n P := by
@@ -64,9 +64,9 @@ theorem twInX_mem_std (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} (x : Sp E n) 
     · exact ⟨0, 1, one_notMem P, by simp⟩
 
 /- English proof (translation)
-Introduce and unpack `g ⟨ρ, hr, hg⟩ x`. Establish `hr' : ρ ∈ LocE.JQ P q kj n c`. Use `hr.2` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`. Rewrite using `[← twInX_mem_std P (c := c) (g x), ← hg]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hr'.1 _).trans (twInX_mem_std P x)`.
+A detailed English derivation is pending.
 -/
 theorem twPrX_le_Q (P : HeightOneSpectrum (𝓞 E)) (q kj n c : ℕ) : Loc.prX (Loc.Cbe (LocE.JQ P q kj n c) 1) ≤ GLint E n P := by
   rintro g ⟨ρ, hr, hg⟩ x
@@ -154,7 +154,7 @@ structure TwAnQ (m2 : ℕ) : Prop where
 variable {Ch sel mu cst}
 
 /- English proof (translation)
-Introduce `x hx` and use `by refine ⟨by simpa using hx, ?_⟩ have e : ((qOf P : X.E) ^ j) = algebraMap (𝓞 X.E) X.E ((qOf P : 𝓞 X.E) ^ j) := by simp rw [e, algebraMap_smul] exact Submodule.smul_mem _ _ (by simpa using hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twBdd_one (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) : TwBdd (Pr := Pr) (R := R) j P 1 := fun x hx => by
   refine ⟨by simpa using hx, ?_⟩
@@ -163,9 +163,9 @@ theorem twBdd_one (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) : TwBdd (Pr := Pr
   exact Submodule.smul_mem _ _ (by simpa using hx)
 
 /- English proof (translation)
-Introduce `P D hD`. Take `⟨h, hhD, hb, al, hal⟩` from `hD`. Establish `hP` using `(Finset.mem_sdiff.1 P.2).2`. Take `⟨h', hs, hb', hnf, hint, hal'⟩` from `hN i hi (twRow P) hP (hd (twRow P) hP) _ h (hsrc al (twRow P) hP).1 (hsrc al (twRow P) hP).2 hb hal`. Use `⟨h', ?_, ⟨hb', al, hal'⟩, hnf, hint⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hhD]`. Conclude with `(Quotient.sound hs).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twNormAt_of' {m2 : ℕ} (hN : TwNormDC Ch sel mu cst m2) (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1) {i : ℕ} (hi : i < m2)
     (hsrc : ∀ (al : (twSt Ch sel mu cst m2 i).β) (P : rowSG Pr sel mu), P.1 ∉ Pr.vGs →
@@ -180,7 +180,7 @@ theorem twNormAt_of' {m2 : ℕ} (hN : TwNormDC Ch sel mu cst m2) (hd : ∀ P : r
   exact (Quotient.sound hs).symm
 
 /- English proof (translation)
-Use `revert b`. Rewrite using `[twSt_succ_le Ch sel mu cst hi]`. Introduce `b`. Take `⟨-, ⟨hb, al, hal⟩, hnf, hint⟩` from `twNext_spec hN b ⟨P.1, tw_mem_QOff hP⟩`. Conclude with `⟨hb, hnf, ⟨al, hal⟩, hint⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twSt_cand {m2 i : ℕ} (hi : i + 1 ≤ m2) (hN : TwNormAt (Ch := Ch) (cst := cst) (twSt Ch sel mu cst m2 i))
     (b : (twSt Ch sel mu cst m2 (i + 1)).β) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) :
@@ -195,17 +195,17 @@ theorem twSt_cand {m2 i : ℕ} (hi : i + 1 ≤ m2) (hN : TwNormAt (Ch := Ch) (cs
   exact ⟨hb, hnf, ⟨al, hal⟩, hint⟩
 
 /- English proof (translation)
-Use `⟨fun _ => 0, 0, fun _ => ⟨by simp, le_refl _⟩, zero_mem _, fun v => ?_⟩` and prove the remaining obligations. Establish `hl : lamYat (Pr` using `Pr) (R := R) 0 P = LocE.lamY P (qOf P) (R.N 0) (cOf R 0) 0 := by`. Unfold `lamYat`. Rewrite using `[if_neg hP]`. Rewrite using `[inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show v ∈ _ ↔ _`. Rewrite using `[hl]`. Unfold `LocE.lamY`. Rewrite using `[ciMem_sclLat]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨fun l => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `h (Fin.castAdd _ l)`. Simplify using `only [Fin.val_castAdd, LocE.scE, if_pos l.2, zpow_zero, inv_one, one_mul] at h1`. Simplify using `using h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `h (Fin.natAdd _ i)`. Simplify using `only [Fin.val_natAdd, LocE.scE] at h1`. Simplify using `using h1`. Introduce and unpack `⟨h1, h2⟩ l`. Use `Fin.addCases (fun l => ?_) (fun i => ?_) l` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1 l` as an intermediate fact. Simplify using `only [Fin.val_castAdd, LocE.scE, if_pos l.2, zpow_zero, inv_one, one_mul]`. Simplify using `using this`. Use `h2 i` as an intermediate fact. Simplify using `only [Fin.val_natAdd, LocE.scE]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem twNF_one_zero {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) : TwNF (Pr := Pr) (R := R) 0 P 1 := by
   refine ⟨fun _ => 0, 0, fun _ => ⟨by simp, le_refl _⟩, zero_mem _, fun v => ?_⟩
@@ -236,7 +236,7 @@ theorem twNF_one_zero {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) : T
       simpa using this
 
 /- English proof (translation)
-The claim follows from `| 0, hi => twNormAt_of' hN hd hi fun _ P hP => ⟨twBdd_one 0 P.1, twNF_one_zero hP⟩ | i + 1, hi => twNormAt_of' hN hd hi fun al P hP => have H := twSt_cand (by omega) (twNormAt_all hN hd i (by omega)) al P hP ⟨H.1, H.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem twNormAt_all {m2 : ℕ} (hN : TwNormDC Ch sel mu cst m2) (hd : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → TwDegOne X P.1) :
     ∀ i, i < m2 → TwNormAt (Ch := Ch) (cst := cst) (twSt Ch sel mu cst m2 i)
@@ -246,7 +246,7 @@ theorem twNormAt_all {m2 : ℕ} (hN : TwNormDC Ch sel mu cst m2) (hd : ∀ P : r
       ⟨H.1, H.2.1⟩
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, P, hP => ⟨twBdd_one 0 P.1, twNF_one_zero hP⟩ | i + 1, hi, al, P, hP => have H := twSt_cand (by omega) (hN i (by omega)) al P hP ⟨H.1, H.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem twSt_of_twNormAt {m2 : ℕ} (hN : ∀ i, i < m2 → TwNormAt (Ch := Ch) (cst := cst) (twSt Ch sel mu cst m2 i)) :
     ∀ i, i < m2 → ∀ (al : (twSt Ch sel mu cst m2 i).β) (P : rowSG Pr sel mu), P.1 ∉ Pr.vGs →
@@ -257,7 +257,7 @@ theorem twSt_of_twNormAt {m2 : ℕ} (hN : ∀ i, i < m2 → TwNormAt (Ch := Ch) 
       ⟨H.1, H.2.1⟩
 
 /- English proof (translation)
-The claim follows from `| 0, _, P, _ => twBdd_one 0 P.1 | i + 1, b, P, hP => by by_cases h1 : i + 1 ≤ m2 · exact (twSt_cand h1 (hN i (by omega)) b P hP).1 · revert b by_cases h2 : i + 1 = m2 + 1 · rw [show twSt Ch sel mu cst m2 (i + 1) = twUnitSt _ (i + 1) by rw [twSt, if_neg h1, if_pos h2]] intro _; ex …`.
+A detailed English derivation is pending.
 -/
 theorem twSt_bdd {m2 : ℕ} (hN : ∀ i, i < m2 → TwNormAt (Ch := Ch) (cst := cst) (twSt Ch sel mu cst m2 i)) :
     ∀ (j : ℕ) (b : (twSt Ch sel mu cst m2 j).β) (P : rowSG Pr sel mu), P.1 ∉ Pr.vGs →
@@ -274,7 +274,7 @@ theorem twSt_bdd {m2 : ℕ} (hN : ∀ i, i < m2 → TwNormAt (Ch := Ch) (cst := 
           intro b; exact b.elim
 
 /- English proof (translation)
-Unfold `Jat`. Rewrite using `[if_neg hP]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twJat_Q (sharp : Bool) (j : ℕ) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) :
     Jat (Pr := Pr) (R := R) sharp j P = LocE.JQ P (qOf P) (R.k + j) (R.N j) (cOf R j) := by
@@ -282,15 +282,13 @@ theorem twJat_Q (sharp : Bool) (j : ℕ) {P : HeightOneSpectrum (𝓞 X.E)} (hP 
   rw [if_neg hP]
 
 /- English proof (translation)
-Introduce `j b P`. Distinguish the cases in `hG : P.1 ∈ Pr.vGs`. Rewrite using `[twSt_h_g Ch sel mu cst m2 j b P hG, hs] show Loc.prX (Loc.Cbe (Jat (Pr := Pr) true j P.1) 1) ≤ _`. Rewrite using `[ookJat j hG]`. Conclude with `ookPrX_le`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ b' : (twSt Ch sel mu cst m2 j).β, (twSt Ch sel mu cst m2 j).h b' P = 1 → prCat (Pr` using `Pr) cst.sharp j P.1 ((twSt Ch sel mu cst m2 j).h b' P) ≤ GLint X.E (R.N j) P.1 := fun b' e => by`. Rewrite using `[e]`. Use `show Loc.prX (Loc.Cbe (Jat (Pr := Pr) cst.sharp j P.1) 1) ≤ _`. Rewrite using `[twJat_Q _ j hG]`. Conclude with `twPrX_le_Q _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `j with`. Consider the case `zero => exact h1 b rfl`. Consider the case `succ i`. Distinguish the cases in `h2 : i + 1 ≤ m2`. Conclude with `(twSt_cand h2 (hN i (by omega)) b P hG).2.2.2`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `revert b h1`. Distinguish the cases in `h3 : i + 1 = m2 + 1`. Rewrite using `[show twSt Ch sel mu cst m2 (i + 1) = twUnitSt _ (i + 1) by rw [twSt, if_neg h2, if_pos h3]]`. Introduce `b h1`. Conclude with `h1 b rfl`.
-
-Rewrite using `[show twSt Ch sel mu cst m2 (i + 1) = twEmptySt _ (i + 1) by rw [twSt, if_neg h2, if_neg h3]]`. Introduce `b`. Conclude with `b.elim`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twSt_int {m2 : ℕ} (hs : cst.sharp = true) (hN : ∀ i, i < m2 → TwNormAt (Ch := Ch) (cst := cst) (twSt Ch sel mu cst m2 i)) :
     ∀ (j : ℕ) (b : (twSt Ch sel mu cst m2 j).β) (P : rowSG Pr sel mu),

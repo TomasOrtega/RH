@@ -18,9 +18,9 @@ namespace GlobalTheory.TameGenRep
 open Formalism.L2.NT
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RangeOfPowerFixed.main`. Consider the case `exact _root_.GlobalTheory.RangeOfPowerFixed.main`. Consider the case `(apply _root_.GlobalTheory.RangeOfPowerFixed.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RangeOfPowerFixed.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RangeOfPowerFixed.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RangeOfPowerFixed.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_zmod_eq {g : ℕ} [Fact g.Prime] (z : Formalism.CyclotomicNorms.Fbar g) (hz : z ^ g = z) :
     ∃ c : ZMod g, algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) c = z := by
@@ -33,33 +33,31 @@ theorem exists_zmod_eq {g : ℕ} [Fact g.Prime] (z : Formalism.CyclotomicNorms.F
   | (intros; exact _root_.GlobalTheory.RangeOfPowerFixed.main ..)
 
 /- English proof (translation)
-Introduce `D hG k v`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Use `haveI : IsAlgClosed D.nd.Om := IsAlgClosure.isAlgClosed D.host.E`. Use `haveI : CharZero D.nd.Om := charZero_of_injective_algebraMap (algebraMap D.host.E D.nd.Om).injective`. Establish `hgp : (D.host.g k).Prime` using `D.host.g_prime k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAP : IsPlaceOver (F` using `D.host.E) (D.nd.plOm.1 (D.naut.plGw k v)) (D.naut.plGw k v) := D.nd.plOm.2 (D.naut.plGw k v)`. Establish `hgP : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `D.naut.plGw_over k v`. Establish `hspl` using `GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) hgp (D.nd.g_split k) (D.naut.plGw k v) hgP`. Establish `hN : normV (D.naut.plGw k v) = D.host.g k`. Rewrite using `[← hspl.1, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hg1 : 0 < D.host.g k - 1` using `by have := hgp.two_le; omega`. Establish `hgΩ : ((D.host.g k : ℕ) : D.nd.Om) ≠ 0` using `Nat.cast_ne_zero.mpr hgp.ne_zero`. Take `⟨π, hπ⟩` from `IsAlgClosed.exists_pow_nat_eq ((D.host.g k : ℕ) : D.nd.Om) hg1`. Establish `hT : redThrough (D.nd.plOm.1 (D.naut.plGw k v)) (hG.kv k v) (D.ntypes.tg k v π / π) = hG.ζ k 1` using `hG.tg_tame k v 1 one_pos π (by rw [pow_one]; exact hπ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : D.ntypes.tg k v π / π ∈ D.nd.plOm.1 (D.naut.plGw k v)` using `tameQuot_mem (D.nd.plOm.1 (D.naut.plGw k v)) (D.ntypes.tg k v) hg1 hgΩ hπ`. Establish `hpow : (D.ntypes.tg k v π / π) ^ (D.host.g k - 1) = 1` using `tameQuot_pow (D.ntypes.tg k v) hgΩ hπ`. Establish `hζ` using `(hG.ζ_gen k 1 one_pos).1`. Rewrite `hζ` using `[pow_one]`. Establish `hζ1 : hG.ζ k 1 ^ (D.host.g k - 1) = 1` using `by rw [← hζ]; exact pow_orderOf_eq_one _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hζpow : hG.ζ k 1 ^ D.host.g k = hG.ζ k 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hζ0 : hG.ζ k 1 ≠ 0`. Introduce `h`. Rewrite `hζ1` using `[h, zero_pow hg1.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one hζ1`. Take `⟨c, hc⟩` from `exists_zmod_eq _ hζpow`. Establish `hca : ((c.val : ℕ) : Formalism.CyclotomicNorms.Fbar (D.host.g k)) = hG.ζ k 1`. Rewrite using `[← hc, ← map_natCast (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k))), ZMod.natCast_zmod_val]`. Take `⟨n, hn⟩ : ∃ n : ℕ, n = c.val` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hca` using `[← hn]`. Establish `hcast : algebraMap D.host.E D.nd.Om ((n : 𝓞 D.host.E) : D.host.E) = (n : D.nd.Om)`. Simplify using the standard rewrite rules. Establish `haA : (n : D.nd.Om) ∈ D.nd.plOm.1 (D.naut.plGw k v)` using `natCast_mem _ _`. Establish `hra : redThrough (D.nd.plOm.1 (D.naut.plGw k v)) (hG.kv k v) (n : D.nd.Om) = hG.kv k v (IsLocalRing.residue _ ⟨_, haA⟩)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `redThrough`. Rewrite using `[dif_pos haA]`. Establish `hra' : hG.kv k v (IsLocalRing.residue _ ⟨_, haA⟩) = hG.ζ k 1`. Establish `: (⟨(n : D.nd.Om), haA⟩ : D.nd.plOm.1 (D.naut.plGw k v)) = (n : D.nd.plOm.1 (D.naut.plGw k v))` using `Subtype.ext (by simp)`. Rewrite using `[this, map_natCast, map_natCast, hca]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrq : redThrough (D.nd.plOm.1 (D.naut.plGw k v)) (hG.kv k v) (D.ntypes.tg k v π / π) = hG.kv k v (IsLocalRing.residue _ ⟨_, hq⟩)`. Unfold `redThrough`. Rewrite using `[dif_pos hq]`. Establish `hval : (D.nd.plOm.1 (D.naut.plGw k v)).valuation (D.ntypes.tg k v π / π - (n : D.nd.Om)) < 1`. Establish `h1` using `(hG.kv k v).injective (((hrq.symm.trans hT).trans hra'.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `Ideal.Quotient.eq.1 h1`. Establish `h3` using `((D.nd.plOm.1 (D.naut.plGw k v)).valuation_lt_one_iff _).1 h2`. Conclude with `h3`. Establish `hu : (n : 𝓞 D.host.E) ∉ (D.naut.plGw k v).asIdeal`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hAP _).2 h`. Establish `h2 : (n : D.nd.Om) ∈ D.nd.plOm.1 (D.naut.plGw k v)` using `haA`. Establish `h3 : (⟨_, haA⟩ : D.nd.plOm.1 (D.naut.plGw k v)) ∈ IsLocalRing.maximalIdeal _` using `((D.nd.plOm.1 (D.naut.plGw k v)).valuation_lt_one_iff _).2 (by rw [hcast] at h1; exact h1)`. Rewrite `h3` using `[← IsLocalRing.residue_eq_zero_iff]`. Rewrite `hra'` using `[h3, map_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `hζ0 hra'.symm`. Establish `hord : orderOf (D.ntypes.tg k v π / π) = D.host.g k - 1`. Apply `Nat.dvd_antisymm (orderOf_dvd_of_pow_eq_one hpow)` to reduce the goal to its premises. Rewrite using `[← hζ]`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (⟨_, hq⟩ : D.nd.plOm.1 (D.naut.plGw k v)) ^ orderOf (D.ntypes.tg k v π / π) = 1` using `Subtype.ext (by simp [pow_orderOf_eq_one])`. Rewrite using `[← hT, hrq, ← map_pow, ← map_pow, h1, map_one, map_one]`. Use `⟨hN, (n : 𝓞 D.host.E), ((D.host.g k : ℕ) : 𝓞 D.host.E), π, hu, hgP, hspl.2.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`. Simplify using `using hπ`.
-
-Rewrite using `[hcast]`. Conclude with `hval`. Rewrite using `[hN]`. Conclude with `hord`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep : ∀ (D : D7), GrpSide D → ∀ (k : Fin 2) (v : D.nd.PlG k), normV (D.naut.plGw k v) = D.host.g k ∧ ∃ (u ϖ : 𝓞 D.host.E) (π : D.nd.Om), u ∉ (D.naut.plGw k v).asIdeal ∧ ϖ ∈ (D.naut.plGw k v).asIdeal ∧ ϖ ∉ (D.naut.plGw k v).asIdeal ^ 2 ∧ π ^ (normV (D.naut.plGw k v) - 1) = algebraMap D.host.E D.nd.Om (ϖ : D.host.E) ∧ (D.nd.plOm.1 (D.naut.plGw k v)).valuation (D.ntypes.tg k v π / π - algebraMap D.host.E D.nd.Om (u : D.host.E)) < 1 ∧ orderOf (D.ntypes.tg k v π / π) = normV (D.naut.plGw k v) - 1 := by
   intro D hG k v

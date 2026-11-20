@@ -6,11 +6,11 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h1 : ∏ p ∈ Hk.pairs n, (u p.2 - c * u p.1) = ∏ i, ∏ i' ∈ Finset.univ.filter (fun i' => i' < i), (u i - c * u i')`. Unfold `Hk.pairs`. Rewrite using `[Finset.prod_filter, ← Finset.univ_product_univ, Finset.prod_product_right]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_filter]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `Finset.prod_dvd_prod_of_dvd _ _ fun i _ => ?_` and prove the remaining obligations. Use `(Finset.prod_dvd_prod_of_subset _ (Finset.univ.erase i) _ ?_).trans (Finset.prod_dvd_prod_of_dvd _ _ fun i' _ => dvd_mul_left _ _)` and prove the remaining obligations. Introduce `i' hi'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hi'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hi'.ne]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem prod_pairs_dvd {A : Type} [CommRing A] {n : ℕ} (u : Fin n → A) (c : A) :
     ∏ p ∈ Hk.pairs n, (u p.2 - c * u p.1) ∣ ∏ i, ∏ i' ∈ Finset.univ.erase i, (u i - u i') * (u i - c * u i') := by
@@ -29,9 +29,9 @@ private theorem prod_pairs_dvd {A : Type} [CommRing A] {n : ℕ} (u : Fin n → 
   simp [hi'.ne]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hfg`. Take `⟨φ, ψ, h1, h2, h3, h4⟩` from `h`. Use `⟨φ, ψ.comp (act c).toAddMonoidHom, h1, fun t v => ?_, fun v => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `show ψ (act c (act t v)) = _ • ψ (act c v)`. Rewrite using `[← h2, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show φ (ψ (act c v)) = _`. Rewrite using `[h3, map_mul, Module.End.mul_apply]`. Use `show ψ (act c (φ z)) = _`. Rewrite using `[h2, h4, mul_comm f c, map_mul, map_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem twoMaps_of_dvd {R B M V : Type} [CommRing R] [CommRing B] [AddCommGroup M] [Module B M] [AddCommGroup V]
     [Module R V] {q n : ℕ} (β : R →+* B) (P : Fin q → Polynomial B) (act : PU R q n →ₐ[R] Module.End R V) {f g : PU R q n}
@@ -47,11 +47,11 @@ private theorem twoMaps_of_dvd {R B M V : Type} [CommRing R] [CommRing B] [AddCo
     rw [h2, h4, mul_comm f c, map_mul, map_mul, mul_smul]
 
 /- English proof (translation)
-Introduce `O R B M V _ _ _ _ _ _ _ _ q n β P act Nq h`. Use `twoMaps_of_dvd β P act ?_ h` and prove the remaining obligations. Unfold `fEl`. Use `Finset.prod_dvd_prod_of_dvd _ _ fun j _ => ?_` and prove the remaining obligations. Establish `e : emb O R j (Hk.NN n (Nq j : O)) = ∏ p ∈ Hk.pairs n, ((MvPolynomial.X (j, p.2) : PU R q n) - (Nq j : PU R q n) * MvPolynomial.X (j, p.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `Hk.NN`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[emb]`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `prod_pairs_dvd (fun i => (MvPolynomial.X (j, i) : PU R q n)) _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.twoMul :
     ∀ (O R B M V : Type) [CommRing O] [CommRing R] [Algebra O R] [CommRing B] [AddCommGroup M] [Module B M] [AddCommGroup V] [Module R V] (q n : ℕ) (β : R →+* B) (P : Fin q → Polynomial B) (act : PU R q n →ₐ[R] Module.End R V) (Nq : Fin q → ℕ), TwoMaps (M := M) β P act (∏ j, emb O R j (Hk.NN n (Nq j : O))) → TwoMaps (M := M) β P act (fEl Nq fun j i => MvPolynomial.X (j, i)) := by

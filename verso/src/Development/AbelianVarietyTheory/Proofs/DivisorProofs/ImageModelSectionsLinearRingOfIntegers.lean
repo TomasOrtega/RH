@@ -11,15 +11,15 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.ImageModel
 
 /- English proof (translation)
-Introduce `K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev m β u x hx i`. Establish `hw : ∃ w' : W, ev w' ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨N, n, b, g, A, c, gw, -, -, hb, -⟩` from `hM.fs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hev (b.ext fun j => by rw [hb j, map_sum]; simp [map_smul, hne])`. Take `⟨w', hw'⟩` from `hw`. Apply `GlobalTheory.Cartier.fn_ext` to reduce the goal to its premises. Introduce `hU`. Establish `ha : ψ (ev w') ≠ 0` using `(map_ne_zero ψ).mpr hw'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ y : W, ψ (ev w') * GlobalTheory.Cartier.fnOf _ hU ((s y).f i) = ψ (ev y) * GlobalTheory.Cartier.fnOf _ hU ((s w').f i)` using `fun y => (hM.ratio y w' i hU).symm`. Establish `hc : ∀ b : 𝓞 K, GlobalTheory.Cartier.fnOf _ hU (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (L.B.U i) b) = ψ (algebraMap K Ω (b : K))`. Introduce `b`. Rewrite using `[hM.base]`. Conclude with `RingHom.congr_fun (GlobalTheory.Cartier.fnOf_comp_algX p _ hU) b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ψ (ev x) = ∑ k, ψ (algebraMap K Ω (β k : K)) * ψ (ev (u k))`. Rewrite using `[hx, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_smul K (β k) (u k : V), map_smul, Algebra.smul_def, map_mul]`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, hc]`. Apply `mul_left_cancel₀ ha` to reduce the goal to its premises. Rewrite using `[hr x, hex, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm (ψ (ev w')), hr (u k), mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_linear : ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → ev ≠ 0 → ∀ (m : ℕ) (β : Fin m → 𝓞 K) (u : Fin m → W) (x : W), (x : V) = ∑ k, β k • (u k : V) → ∀ i : L.B.ι, (s x).f i = ∑ k, ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (L.B.U i) (β k) * (s (u k)).f i := by
   intro K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev m β u x hx i

@@ -5,9 +5,9 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.FlagBundles
 
 /- English proof (translation)
-Introduce `R _ N a l hl`. Unfold `leadingMinor`. Rewrite using `[Matrix.det_of_isUpperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[unipotentMatrix]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `i j hji`. Establish `hji' : Fin.castLE hl j < Fin.castLE hl i` using `hji`. Simplify using `only [Matrix.submatrix_apply, unipotentMatrix, Matrix.of_apply]`. Rewrite using `[dif_neg (not_lt.mpr hji'.le), if_neg (ne_of_gt hji')]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UnipotentLeadingMinor.proof : UnipotentLeadingMinor.Statement := by
   intro R _ N a l hl

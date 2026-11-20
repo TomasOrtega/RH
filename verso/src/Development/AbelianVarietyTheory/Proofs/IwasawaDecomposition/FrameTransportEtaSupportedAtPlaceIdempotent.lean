@@ -11,7 +11,7 @@ open GlobalTheory.Mem.R3.LiftBrg
 namespace GlobalTheory.Mem.R3.LiftBrg.EtaSupp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[castGL, Formalism.UG.bc]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_bc_comm {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m k : ℕ} (h : m = k) (x : GL (Fin m) R) :
     castGL h (Formalism.UG.bc φ x) = Formalism.UG.bc φ (castGL h x) := by
@@ -20,9 +20,9 @@ theorem castGL_bc_comm {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {
   simp [castGL, Formalism.UG.bc]
 
 /- English proof (translation)
-Apply `(castGL h.symm).injective` to reduce the goal to its premises. Rewrite using `[map_one, castGL_bc_comm]`. Use `show Formalism.UG.bc (Formalism.UG.prV (E := D.host.E) w) (castGL h.symm (Formalism.UG.bc (swapAE D) (finHom V α))) = 1`. Rewrite using `[hα]`. Establish `key : ∀ {G H : Type} [Group G] [Group H] (f : G →* H) (c x : G), f x = 1 → f (c * x * c⁻¹) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `G H _ _ f c x hx`. Rewrite using `[map_mul, map_mul, hx, mul_one, map_inv, mul_inv_cancel]`. Establish `h1 : Formalism.UG.bc (Formalism.UG.prV (E` using `D.host.E) w) ((Formalism.L2.Col.mhlEta D.sp.cm n v Ut.hπ0 d : Formalism.L2.Col.UAd D.sp.cm n) : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) = 1 := Formalism.L2.Col.rll_put_ne n v w hw _`. Conclude with `key _ _ _ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finE_prV_eq_one {D : D7} (V : HSp D) (n : ℕ) [NeZero n] (h : n = V.rank) (v : HeightOneSpectrum (𝓞 D.host.F))
     (Pb : Formalism.L2.DIV.Pl D.host.E) (Ut : Formalism.L2.Col.MhlUnif Pb) (d : ℕ) (C : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) (α : GA D V)
@@ -46,7 +46,7 @@ end GlobalTheory.Mem.R3.LiftBrg.EtaSupp
 namespace GlobalTheory.Mem.R3.LiftBrg
 
 /- English proof (translation)
-Introduce `D V n _ h v Pb Ut d e C α hv he hα hη`. Conclude with `GlobalTheory.T.supportedAt_conjPrimeIdempotent_of_trivial_offPlace V v Pb e hv he α hα fun w hw => EtaSupp.finE_prV_eq_one V n h v Pb Ut d C α hη w hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eta_suppAt : ∀ {D : D7} (V : HSp D) (n : ℕ) [NeZero n] (h : n = V.rank) (v : HeightOneSpectrum (𝓞 D.host.F)) (Pb : Formalism.L2.DIV.Pl D.host.E) (Ut : Formalism.L2.Col.MhlUnif Pb) (d : ℕ) (e : Formalism.L2.Theta.AE D) (C : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) (α : GA D V), Formalism.L2.Col.IsOver v Pb → Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) → α ∈ GfC V → castGL h.symm (Formalism.UG.bc (swapAE D) (finHom V α)) = C * ((Formalism.L2.Col.mhlEta D.sp.cm n v Ut.hπ0 d : Formalism.L2.Col.UAd D.sp.cm n) : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) * C⁻¹ → SuppAt e V α := by
   intro D V n _ h v Pb Ut d e C α hv he hα hη

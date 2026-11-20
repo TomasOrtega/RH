@@ -14,7 +14,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Simplify using `only [opE]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem opE_const_mul {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
     (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (C : ℂ)
@@ -25,7 +25,7 @@ theorem opE_const_mul {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [De
   congr 1; funext e; ring
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.opEFJ, opE_const_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem opEFJ_const_mul {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
     (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (Φ₀ : (n' → k) → ℂ) (C : ℂ)
@@ -36,7 +36,7 @@ theorem opEFJ_const_mul {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [
   congr 1; funext u; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[om, nabs]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_eq_const_mul {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ' : kˣ →* ℂˣ)
     (x : GL a k) (y : GL b k) (Φ : Matrix b a k → ℂ) :
@@ -51,19 +51,17 @@ end GlobalTheory.LocFlat.CellsContr
 open GlobalTheory.LocFlat.CellsContr in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ hψc hψ1 ν hsd n₀ n₁ n₂ _ _ _ _ _ _ c ρ hcρ μ μ' J hJ Φ₁ Φ₂ a x`. Use `haveI : ν.IsAddHaarMeasure := hsd.1`. Establish `hρ1 : 1 ≤ ρ` using `by omega`. Establish `hρc : ρ ≤ c` using `by omega`. Establish `hker : IsOpen (((1 : kˣ →* ℂˣ).ker : Subgroup kˣ) : Set kˣ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.ker_one]`. Conclude with `isOpen_univ`. Set `Φ₁' : SB (Matrix (n₁ ⊕ Fin (c + 1)) (n₀ ⊕ Fin (c + 1 + 1)) k)` to `⟨om μ a x Φ₁.1, om_mem_SB μ a x Φ₁.2⟩`. Take `⟨m, Ψ, Φ₀, hdec⟩` from `(GlobalTheory.LocFlat.ContrSum.contr_flat_eq_sum k ψ hψc hψ1 ν hsd n₀ n₁ n₂ c ρ hcρ μ Φ₁' Φ₂).2.2.2.1`. Set `Φ : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)` to `⟨om 1 x 1 Φ₂.1, om_mem_SB 1 x 1 Φ₂.2⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hav` using `fun i => (GlobalTheory.PosOne.avg_self_and_props k n₂ n₁ c ρ hρ1 hρc ψ hψc hψ1 ν hsd 1 hker Φ).2 (Φ₀ i)`. Establish `hcov : ∀ i, ∃ T : Finset (GL (n₂ ⊕ Fin c) k), GlobalTheory.PosOne.Covers ρ J T fun h => opE ψ ν ρ (om 1 1 h (GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.avg ψ ν 1 ρ (Φ₀ i).1 Φ.1))` using `fun i => GlobalTheory.PosOne.covers_opE_finite k n₂ n₁ c ρ hρ1 hρc ψ hψc hψ1 ν 1 hker J hJ ⟨_, (hav i).1⟩`. Use `choose Ti hTi using hcov`. Use `⟨Finset.univ.biUnion Ti, fun y hy => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨X, hX⟩ : ∃ X, GlobalTheory.LocFlat.contr ψ ν (GlobalTheory.LocFlat.flCol ψ ν (ρ + 1) Φ₁'.1) (GlobalTheory.LocFlat.flRow ψ ν ρ (om μ' x y Φ₂.1)) X ≠ 0 := by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hy (funext h)`. Set `Φ₂' : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)` to `⟨om μ' x y Φ₂.1, om_mem_SB μ' x y Φ₂.2⟩`. Establish `hid` using `(GlobalTheory.LocFlat.ContrSum.contr_flat_eq_sum k ψ hψc hψ1 ν hsd n₀ n₁ n₂ c ρ hcρ μ Φ₁' Φ₂').2.2.2.2 m Ψ Φ₀ hdec X`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX'` using `hX`. Express the relevant statement in the definitionally equal form `GlobalTheory.LocFlat.contr ψ ν (GlobalTheory.LocFlat.flCol ψ ν (ρ + 1) Φ₁'.1) (GlobalTheory.LocFlat.flRow ψ ν ρ Φ₂'.1) X ≠ 0 at hX'`. Rewrite `hX'` using `[hid]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hX'`. Establish `hi2 : GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.opEFJ ψ ν ρ (Φ₀ i).1 (om μ' x y Φ₂.1) X.2 ≠ 0` using `right_ne_zero_of_mul hi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi2` using `[om_eq_const_mul, opEFJ_const_mul]`. Establish `hi3 : GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.opEFJ ψ ν ρ (Φ₀ i).1 (om 1 1 y Φ.1) X.2 ≠ 0` using `right_ne_zero_of_mul hi2`. Establish `hne : opE ψ ν ρ (om 1 1 y (GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.avg ψ ν 1 ρ (Φ₀ i).1 Φ.1)) ≠ 0`. Rewrite using `[(hav i).2.1 y]`. Introduce `h0`.
-
-Conclude with `hi3 (congrFun h0 X.2)`. Take `⟨t, ht, hmk⟩` from `(hTi i).2 y hne`. Take `⟨r, hr, j, hj, hy'⟩` from `(DoubleCoset.eq _ _ t y).1 hmk.symm`. Conclude with `⟨r, hr, t, Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, ht⟩, j, hj, hy'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocFlat.contr_support_finite_cells :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

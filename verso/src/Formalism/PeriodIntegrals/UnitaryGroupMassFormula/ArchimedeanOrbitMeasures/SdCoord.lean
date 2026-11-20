@@ -23,7 +23,7 @@ def complReal (v : InfinitePlace F) (hv : v.IsReal) : v.Completion ≃ₜ ℝ :=
     exact (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.isInducing)
 
 /- English proof (translation)
-The claim follows from `map_add (InfinitePlace.Completion.ringEquivRealOfIsReal hv) x y`.
+A detailed English derivation is pending.
 -/
 theorem complReal_add (v : InfinitePlace F) (hv : v.IsReal) (x y : v.Completion) :
     complReal v hv (x + y) = complReal v hv x + complReal v hv y :=
@@ -33,7 +33,7 @@ def ainfReal (hF : ∀ v : InfinitePlace F, v.IsReal) : InfiniteAdeleRing F ≃�
   Homeomorph.piCongrRight fun v => complReal v (hF v)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Conclude with `complReal_add v (hF v) (x v) (y v)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ainfReal_add (hF : ∀ v : InfinitePlace F, v.IsReal) (x y : InfiniteAdeleRing F) :
     ainfReal hF (x + y) = ainfReal hF x + ainfReal hF y := by
@@ -54,7 +54,7 @@ def tensCoord : R ⊗[F] E ≃ₜ (Module.Free.ChooseBasisIndex R (R ⊗[F] E) �
     continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }
 
 /- English proof (translation)
-The claim follows from `map_add (Module.Free.chooseBasis R (R ⊗[F] E)).equivFun x y`.
+A detailed English derivation is pending.
 -/
 theorem tensCoord_add (x y : R ⊗[F] E) : tensCoord R (x + y) = tensCoord R x + tensCoord R y :=
   map_add (Module.Free.chooseBasis R (R ⊗[F] E)).equivFun x y
@@ -74,7 +74,7 @@ def flat4 (A B C P : Type) [Fintype A] [Fintype B] [Fintype C] [Fintype P] :
     (continuous_apply (a, b, c, d)).comp (EuclideanSpace.equiv (A × B × C × P) ℝ).continuous
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[flat4]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem flatten_four_add (A B C P : Type) [Fintype A] [Fintype B] [Fintype C] [Fintype P] (f g : A → B → C → P → ℝ) :
     flat4 A B C P (f + g) = flat4 A B C P f + flat4 A B C P g := by

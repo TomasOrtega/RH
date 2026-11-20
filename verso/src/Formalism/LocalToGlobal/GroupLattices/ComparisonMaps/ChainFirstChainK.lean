@@ -20,7 +20,7 @@ structure CmpMaps where
 variable {c Tw u w h Lv}
 
 /- English proof (translation)
-The claim follows from `inj_of_li (M.cmp j) ((Tw.fm u (D.what₂.muAt w)).lat j).b (M.li j hj)`.
+A detailed English derivation is pending.
 -/
 theorem CmpMaps.inj (M : CmpMaps c Tw u w h Lv) (j : ℕ) (hj : j ≤ D.R.m) : Function.Injective (M.cmp j) :=
   inj_of_li (M.cmp j) ((Tw.fm u (D.what₂.muAt w)).lat j).b (M.li j hj)
@@ -32,7 +32,7 @@ def KLx (j : ℕ) : ((Tw.fm u (D.what₂.muAt w)).lat j).V →ₗ[D.what₂.LL] 
     ((Tw.fm u (D.what₂.muAt w)).emb_inj (j + 1)) ((D.chTw u (D.what₂.muAt w)).Klin j)
 
 /- English proof (translation)
-The claim follows from `ratMap_eq _ _ _ _ x y hxy`.
+A detailed English derivation is pending.
 -/
 theorem KLx_eq (j : ℕ) (x : ((Tw.fm u (D.what₂.muAt w)).lat j).V) (y : ((Tw.fm u (D.what₂.muAt w)).lat (j + 1)).V)
     (hxy : (Tw.fm u (D.what₂.muAt w)).emb (j + 1) y =
@@ -40,7 +40,7 @@ theorem KLx_eq (j : ℕ) (x : ((Tw.fm u (D.what₂.muAt w)).lat j).V) (y : ((Tw.
   ratMap_eq _ _ _ _ x y hxy
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => KLx_eq j x _ ((Tw.fm u (D.what₂.muAt w)).KL_spec j hK x)`.
+A detailed English derivation is pending.
 -/
 theorem KLx_eq_KL (j : ℕ) (hK : (Tw.fm u (D.what₂.muAt w)).KRat j) :
     KLx Tw u w j = (Tw.fm u (D.what₂.muAt w)).KL j hK :=
@@ -58,7 +58,7 @@ def chainFirst (M : CmpMaps c Tw u w h Lv) : Chain Lv where
     else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos hj`.
+A detailed English derivation is pending.
 -/
 theorem chainFirst_Kz (M : CmpMaps c Tw u w h Lv) (j : ℕ) (hj : j < D.R.m) :
     (chainFirst M).Kz j =
@@ -66,7 +66,7 @@ theorem chainFirst_Kz (M : CmpMaps c Tw u w h Lv) (j : ℕ) (hj : j < D.R.m) :
   dif_pos hj
 
 /- English proof (translation)
-Rewrite using `[chainFirst_Kz M j hj, extK_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chainFirst_apply (M : CmpMaps c Tw u w h Lv) (j : ℕ) (hj : j < D.R.m)
     (x : ((Tw.fm u (D.what₂.muAt w)).lat j).V) :
@@ -74,7 +74,7 @@ theorem chainFirst_apply (M : CmpMaps c Tw u w h Lv) (j : ℕ) (hj : j < D.R.m)
   rw [chainFirst_Kz M j hj, extK_apply]
 
 /- English proof (translation)
-Introduce `j hj x y hxy`. Rewrite using `[chainFirst_apply M j hj, KLx_eq j x y hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem chainFirst_cmp_K (M : CmpMaps c Tw u w h Lv) : ∀ j, j < D.R.m →
     ∀ (x : ((Tw.fm u (D.what₂.muAt w)).lat j).V) (y : ((Tw.fm u (D.what₂.muAt w)).lat (j + 1)).V),
@@ -84,7 +84,7 @@ theorem chainFirst_cmp_K (M : CmpMaps c Tw u w h Lv) : ∀ j, j < D.R.m →
   rw [chainFirst_apply M j hj, KLx_eq j x y hxy]
 
 /- English proof (translation)
-Rewrite using `[chainFirst_apply M j hj, KLx_eq_KL j hK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chainFirst_KL (M : CmpMaps c Tw u w h Lv) (j : ℕ) (hj : j < D.R.m)
     (hK : (Tw.fm u (D.what₂.muAt w)).KRat j) (x : ((Tw.fm u (D.what₂.muAt w)).lat j).V) :
@@ -92,7 +92,7 @@ theorem chainFirst_KL (M : CmpMaps c Tw u w h Lv) (j : ℕ) (hj : j < D.R.m)
   rw [chainFirst_apply M j hj, KLx_eq_KL j hK]
 
 /- English proof (translation)
-Rewrite using `[chainFirst_Kz M j hj]`. Use `extK_unique _ _ _ _ _ (Ch.Kz j) (fun x => ?_) F hF` and prove the remaining obligations. Rewrite using `[KLx_eq_KL j hK]`. Conclude with `(hC x _ ((Tw.fm u (D.what₂.muAt w)).KL_spec j hK x)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainFirst_unique (M : CmpMaps c Tw u w h Lv) (Ch : Chain Lv) (j : ℕ) (hj : j < D.R.m)
     (hK : (Tw.fm u (D.what₂.muAt w)).KRat j)
@@ -110,7 +110,7 @@ def KLchain : (j : ℕ) → ((Tw.fm u (D.what₂.muAt w)).lat 0).V →ₗ[D.what
   | j + 1 => (KLx Tw u w j).comp (KLchain j)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => show (chainFirst M).Kz j ((chainFirst M).chainK j (M.cmp 0 x)) = _`. Rewrite using `[ih (by omega), chainFirst_apply M j (by omega)]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chainFirst_chainK (M : CmpMaps c Tw u w h Lv) (j : ℕ) (hj : j ≤ D.R.m)
     (x : ((Tw.fm u (D.what₂.muAt w)).lat 0).V) :
@@ -136,12 +136,12 @@ def vramC (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.me
 def withVram (Y : LatInst D) : LatInst D := { Y with Vram := vramC c }
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem withVram_def (Y : LatInst D) : c.VramDef (withVram c Y) := fun _ _ _ => rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u w hg`. Conclude with `SetLike.coe_injective (hv u w hg)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem vram_unique (Y : LatInst D) (hv : c.VramDef Y) : Y.Vram = vramC c := by
   funext u w hg

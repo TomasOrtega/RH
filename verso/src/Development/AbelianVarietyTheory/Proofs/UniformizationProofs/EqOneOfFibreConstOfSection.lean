@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hG S B W _ hB π _ _ _ ρ σ h hσ`. Take `⟨a, rfl⟩` from `FunDescent.exists_appTop_eq π.left ρ (by`. Introduce `Z g₁ g₂ e`. Set `Z' : Over S` to `Over.mk (g₂ ≫ W.hom)`. Set `k₂ : Z' ⟶ W` to `Over.homMk g₂ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k₁ : Z' ⟶ W` to `Over.homMk g₁ (by`. Express the relevant statement in the definitionally equal form `g₁ ≫ W.hom = g₂ ≫ W.hom`. Rewrite using `[← Over.w π, reassoc_of% e])`. Conclude with `h Z' k₁ k₂ (Over.OverMorphism.ext e))`. Take `⟨s, rfl⟩` from `(hG S B hB).2 a`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hσ` using `[← FunDescent.comp_appTop_apply, ← FunDescent.comp_appTop_apply, Category.assoc, Over.w π, Over.w σ]`. Establish `hs : s = 1`. Establish `e : (𝟙_ (Over S)).hom = 𝟙 S` using `rfl`. Rewrite `hσ` using `[e]`. Simplify using `using hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, map_one, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_fibre_const_of_section :
     GlobalFnsSt → ∀ (S : Scheme.{0}) (B W : Over S) [GrpObj B], IsAbelianScheme B → ∀ (π : W ⟶ B) [Flat π.left] [Surjective π.left] [QuasiCompact π.left] (ρ : Γ(W.left, ⊤)) (σ : 𝟙_ (Over S) ⟶ W), (∀ (Z : Over S) (g₁ g₂ : Z ⟶ W), g₁ ≫ π = g₂ ≫ π → g₁.left.appTop.hom ρ = g₂.left.appTop.hom ρ) → σ.left.appTop.hom ρ = 1 → ρ = 1 := by

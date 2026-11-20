@@ -8,15 +8,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GroundTheory.PAdicHodge Cr
 namespace GlobalTheory.CompanionTheory.LineLift
 
 /- English proof (translation)
-Introduce `l _ H O _ X q κ C _ G D`. Establish `key : ∀ p : ∀ T : C, Spec (CommRingCat.of (G.obj T).1.obj.U) ⟶ D.Y, (∀ T, p T ≫ D.f = (G.obj T).2.1) → ∃ Λ : Lift G D, Λ.p = p`. Introduce `p hp`. Establish `hh : ∀ {T T' : C} (φ : T ⟶ T'), (Spec.map (CommRingCat.ofHom (PAlg.mapU (G.map φ).1.hom)) ≫ p T) ≫ D.f = p T' ≫ D.f`. Introduce `T T' φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, hp, hp]`. Conclude with `congrArg Subtype.val (G.map φ).2`. Establish `ex : ∀ {T T' : C} (φ : T ⟶ T'), ∃ w : ((G.obj T').1.obj.A)ˣ, (G.obj T').1.obj.sharp w = (Scheme.ΓSpecIso (CommRingCat.of (G.obj T').1.obj.U)).hom.hom (D.u (Spec.map (CommRingCat.ofHom (PAlg.mapU (G.map φ).1.hom)) ≫ p T) (p T') (hh φ))`. Introduce `T T' φ`. Conclude with `H.sharp _ (G.obj T').1.property (Units.map (Scheme.ΓSpecIso (CommRingCat.of (G.obj T').1.obj.U)).hom.hom.toMonoidHom (D.u (Spec.map (CommRingCat.ofHom (PAlg.mapU (G.map φ).1.hom)) ≫ p T) (p T') (hh φ)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨{ p := p, hp := hp, w := fun φ => (ex φ).choose, hw := fun φ _ => (ex φ).choose_spec }, rfl⟩`. Use `⟨key, fun hE => ?_⟩` and prove the remaining obligations. Establish `sec : ∀ T : C, ∃ p : Spec (CommRingCat.of (G.obj T).1.obj.U) ⟶ D.Y, p ≫ D.f = (G.obj T).2.1`. Introduce `T`. Use `haveI := D.surj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `H.splitU _ (G.obj T).1.property (pullback D.f (G.obj T).2.1) (pullback.snd D.f (G.obj T).2.1) inferInstance inferInstance`. Use `⟨s ≫ pullback.fst D.f (G.obj T).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]`. Use `choose p hp using sec`. Take `⟨Λ, -⟩` from `key p hp`.
-
-Conclude with `⟨Λ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liftEx : CrystallineSemistableComparison.E.LiftEx := by
   intro l _ H O _ X q κ C _ G D

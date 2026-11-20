@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.QPl.SphOne
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c P h1 h2 ψ _ hψ ν hν L hJ hlam`. Take `⟨J, lam⟩` from `L`. Simplify using `only at hJ hlam`. Substitute `hJ` using the available equality. Establish `e : lam = 1` using `MonoidHom.ext fun j => hlam j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Use `⟨?_, GlobalTheory.QPl.PinTest.prX_KO⟩` and prove the remaining obligations. Conclude with `GlobalTheory.QPl.PinTest.isOneComb_sph hψ hν h1 h2`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOneComb_sph_level : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c P : ℕ), 1 ≤ P → P ≤ c → ∀ (ψ : AddChar k Circle), Continuous ψ → HasConductor ψ 1 → ∀ ν : Measure k, IsUnitVol ν → ∀ (L : Level (GL (n ⊕ Fin c) k)), L.J = KO k _ → (∀ j, L.lam j = 1) → IsOneComb ψ ν P L 1 (Finsupp.single 1 1) ∧ prX (Cgrp L.J 1) = KO k n := by
   intro k _ _ _ _ _ _ n _ _ c P h1 h2 ψ _ hψ ν hν L hJ hlam

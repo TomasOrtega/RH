@@ -28,7 +28,7 @@ def permGL (τ : Equiv.Perm (Fin N)) : GL (Fin N) k where
     simp [Matrix.one_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply]
 
 /- English proof (translation)
-Use `show τ.toPEquiv.toMatrix * (M : Matrix (Fin N) (Fin N) k) * τ.symm.toPEquiv.toMatrix = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem permGL_conj (τ : Equiv.Perm (Fin N)) (M : GL (Fin N) k) :
     ((permGL τ * M * (permGL τ)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) =
@@ -38,23 +38,21 @@ theorem permGL_conj (τ : Equiv.Perm (Fin N)) (M : GL (Fin N) k) :
   rfl
 
 /- English proof (translation)
-Set `σ : Equiv.Perm (Fin N)` to `Tuple.sort b`. Establish `hmono : Monotone (b ∘ σ)` using `Tuple.monotone_sort b`. Set `τ : Equiv.Perm (Fin N)` to `σ⁻¹`. Set `w : GL (Fin N) k` to `permGL τ`. Set `c : Fin N → ℕ` to `fun i => (b (σ i) : ℕ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcτ : ∀ i, c (τ i) = b i` using `fun i => by simp [c, τ]`. Establish `hc : Monotone c` using `fun i j hij => hmono hij`. Establish `hne : ∃ i j, c i ≠ c j`. Take `⟨i, hi⟩` from `hb ⟨0, by omega⟩`. Take `⟨j, hj⟩` from `hb ⟨1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨τ i, τ j, ?_⟩` and prove the remaining obligations. Rewrite using `[hcτ, hcτ, hi, hj]`. Simplify using the standard rewrite rules. Establish `key : ∀ u ∈ GlobalTheory.FiniteGL.unipRadical k c, ∀ i j, (b j : ℕ) ≤ b i → ((w * u * w⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j = if i = j then 1 else 0`. Introduce `u hu i j hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hu (τ i) (τ j) (by rw [hcτ, hcτ]; exact hij)`. Rewrite using `[permGL_conj, Matrix.submatrix_apply]`. Rewrite `h1` using `[Matrix.sub_apply, sub_eq_zero]`. Rewrite using `[h1, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmem : ∀ u ∈ GlobalTheory.FiniteGL.unipRadical k c, w * u * w⁻¹ ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip k b`. Introduce `u hu`. Use `⟨⟨fun i j hij => ?_, fun i j hij => ?_⟩, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[key u hu i j (Nat.le_of_lt hij), if_neg]`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_irrefl _ hij`. Establish `e : (w * u * w⁻¹ : GL (Fin N) k)⁻¹ = w * u⁻¹ * w⁻¹` using `by group`. Rewrite using `[e, key u⁻¹ (inv_mem hu) i j (Nat.le_of_lt hij), if_neg]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key u hu i j (by rw [hij])`. Establish `hfix : ∀ u ∈ GlobalTheory.FiniteGL.unipRadical k c, ρ u (ρ w⁻¹ v) = ρ w⁻¹ v`. Introduce `u hu`. Establish `h1` using `hv _ (hmem u hu)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Use `_ = ρ w⁻¹ v := by rw [h1]`. Establish `h0` using `h c hc hne _ hfix`.
-
-Establish `h2` using `congrArg (ρ w) h0`. Rewrite `h2` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, map_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V)
     (h : GlobalTheory.FiniteGL.IsCuspidal ρ) (s : ℕ) (b : Fin N → Fin s) (hb : Function.Surjective b) (hs : 2 ≤ s)
@@ -105,7 +103,7 @@ theorem fixed_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Represent
   exact h2
 
 /- English proof (translation)
-Introduce `s b hb hs v hv` and use `fixed_eq_zero ρ h s b hb hs v hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCuspidal_of {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ (GL (Fin N) k) V) (h : GlobalTheory.FiniteGL.IsCuspidal ρ) :
@@ -121,7 +119,7 @@ variable {k : Type} [Field k] {d : ℕ}
 abbrev upU (d : ℕ) (k : Type) [Field k] : Subgroup (GL (Fin d) k) := Formalism.L2.DIV.unip k d
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_upU {u : GL (Fin d) k} : u ∈ upU d k ↔
     (∀ i j : Fin d, j < i → (u : Matrix (Fin d) (Fin d) k) i j = 0) ∧ ∀ i, (u : Matrix (Fin d) (Fin d) k) i i = 1 :=
@@ -130,7 +128,7 @@ theorem mem_upU {u : GL (Fin d) k} : u ∈ upU d k ↔
 def sdSum (M : Matrix (Fin d) (Fin d) k) : k := Formalism.L2.SG.GGMirabolic.superdiag d M
 
 /- English proof (translation)
-Unfold `sdSum Formalism.L2.SG.GGMirabolic.superdiag Formalism.L2.DIV.edgeSum Formalism.L2.DIV.supEdge`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (j : ℕ) = (i : ℕ) + 1 <;> simp [h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sdSum_eq_edgeSum (g : GL (Fin d) k) :
     sdSum (g : Matrix (Fin d) (Fin d) k) = Formalism.L2.DIV.edgeSum Formalism.L2.DIV.supEdge g := by
@@ -139,7 +137,7 @@ theorem sdSum_eq_edgeSum (g : GL (Fin d) k) :
   by_cases h : (j : ℕ) = (i : ℕ) + 1 <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[sdSum_eq_edgeSum, sdSum_eq_edgeSum, sdSum_eq_edgeSum]`. Conclude with `GlobalTheory.FinGL.Mir.edgeSum_mul Formalism.L2.DIV.supEdge (fun _ _ h => h) hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sdSum_mul {x y : GL (Fin d) k} (hx : x ∈ upU d k) (hy : y ∈ upU d k) :
     sdSum ((x * y : GL (Fin d) k) : Matrix (Fin d) (Fin d) k) =
@@ -158,9 +156,9 @@ variable {k : Type} [Field k] [Fintype k] [DecidableEq k] {d : ℕ}
 def sdg (u : GL (Fin d) k) : k := sdSum (u : Matrix (Fin d) (Fin d) k)
 
 /- English proof (translation)
-Unfold `patChar sdg sdSum Formalism.L2.SG.GGMirabolic.superdiag`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (j : ℕ) = i + 1`. Simplify using `[cutE, h]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[cutE, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem patChar_eq (ψ₀ : AddChar k ℂ) (u : GL (Fin d) k) :
     patChar (cutE k d 0) ψ₀ u = ψ₀ (sdg u) := by
@@ -172,9 +170,9 @@ theorem patChar_eq (ψ₀ : AddChar k ℂ) (u : GL (Fin d) k) :
   · simp [cutE, h]
 
 /- English proof (translation)
-Use extensionality with `u`. Rewrite using `[SetLike.mem_coe, mem_upU]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j hij => (h i j).2 (ne_of_gt hij) (not_lt.2 hij.le), fun i => (h i i).1 rfl⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨h1, h2⟩ i j`. Use `⟨fun e => e ▸ h2 i, fun hne hlt => h1 i j (lt_of_le_of_ne (not_lt.1 hlt) (Ne.symm hne))⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem patSet_eq : patSet k (fun i j : Fin d => i < j) = (upU d k : Set (GL (Fin d) k)) := by
   ext u
@@ -186,11 +184,11 @@ theorem patSet_eq : patSet k (fun i j : Fin d => i < j) = (upU d k : Set (GL (Fi
     refine ⟨fun e => e ▸ h2 i, fun hne hlt => h1 i j (lt_of_le_of_ne (not_lt.1 hlt) (Ne.symm hne))⟩
 
 /- English proof (translation)
-Use `haveI : Fintype (upU d k) := Fintype.ofFinite _`. Establish `h` using `GlobalTheory.FinGL.Mir.card_mul_finrank_eig ρ ψ₀ (upU d k) sdg (fun x hx y hy => sdSum_mul hx hy)`. Establish `hc : (Fintype.card (upU d k) : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Unfold `wh`. Establish `hn : (patSet k (fun i j : Fin d => i < j)).ncard = Fintype.card (upU d k)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[patSet_eq, ← Nat.card_coe_set_eq]`. Conclude with `Nat.card_eq_fintype_card`. Establish `hs : (∑ u : GL (Fin d) k, if u ∈ patSet k (fun i j : Fin d => i < j) then (patChar (cutE k d 0) ψ₀ u)⁻¹ * (FDRep.of ρ).character u else 0) = ∑ x : upU d k, ψ₀ (-sdg (x : GL (Fin d) k)) * LinearMap.trace ℂ V (ρ x)`. Rewrite using `[patSet_eq, ← Finset.sum_filter, Finset.sum_subtype (p := fun u => u ∈ upU d k) _ (by simp)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[patChar_eq, AddChar.map_neg_eq_inv]`. Both sides reduce to the same expression. Rewrite using `[hn, hs, ← h, inv_mul_cancel_left₀ hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wh_eq_finrank {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ (GL (Fin d) k) V) (ψ₀ : AddChar k ℂ) :
@@ -224,7 +222,7 @@ variable {k : Type} [Field k] [Fintype k] [DecidableEq k] {d : ℕ}
   {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Rewrite using `[mem_upU]`. Conclude with `⟨fun h => ⟨h.2, h.1⟩, fun h => ⟨h.2, h.1⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUni_iff (u : GL (Fin d) k) : IsUni d u ↔ u ∈ upU d k := by
   rw [mem_upU]
@@ -239,7 +237,7 @@ def whProj [Fintype (upU d k)] (ρ : Representation ℂ (GL (Fin d) k) V) (ψ₀
   ∑ u : upU d k, ψ₀ (-sdg (u : GL (Fin d) k)) • ρ u
 
 /- English proof (translation)
-Simplify using `only [whProj, LinearMap.sum_apply, LinearMap.smul_apply, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight (⟨u₀, h₀⟩ : upU d k)) _ _ fun u => ?_` and prove the remaining obligations. Establish `e : sdg ((u * ⟨u₀, h₀⟩ : upU d k) : GL (Fin d) k) = sdg (u : GL (Fin d) k) + sdg u₀` using `sdSum_mul u.2 h₀`. Simplify using `only [Equiv.coe_mulRight, e, smul_smul]`. Rewrite using `[← AddChar.map_add_eq_mul, show sdg u₀ + -(sdg (u : GL (Fin d) k) + sdg u₀) = -sdg (u : GL (Fin d) k) by ring, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem whProj_comp [Fintype (upU d k)] (ρ : Representation ℂ (GL (Fin d) k) V) (ψ₀ : AddChar k ℂ)
     (u₀ : GL (Fin d) k) (h₀ : u₀ ∈ upU d k) (y : V) :
@@ -253,7 +251,7 @@ theorem whProj_comp [Fintype (upU d k)] (ρ : Representation ℂ (GL (Fin d) k) 
     Subgroup.coe_mul, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite `hy` using `[GlobalTheory.FinGL.Mir.mem_eig]`. Simplify using `only [whProj, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => y) fun u _ => by`. Rewrite using `[hy u u.2, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul]]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem whProj_eig [Fintype (upU d k)] (ρ : Representation ℂ (GL (Fin d) k) V) (ψ₀ : AddChar k ℂ) (y : V)
     (hy : y ∈ GlobalTheory.FinGL.eig ρ (upU d k) fun g => ψ₀ (sdg g)) :
@@ -265,7 +263,7 @@ theorem whProj_eig [Fintype (upU d k)] (ρ : Representation ℂ (GL (Fin d) k) V
   rw [Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Introduce `u hu v`. Rewrite using `[LinearMap.comp_apply, whProj_comp ρ ψ₀ u ((isUni_iff u).1 hu), map_smul, psiU_eq, smul_eq_mul, LinearMap.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWhit_comp [Fintype (upU d k)] (ρ : Representation ℂ (GL (Fin d) k) V) (ψ₀ : AddChar k ℂ)
     (l : Module.Dual ℂ V) : IsWhit ψ₀ ρ (l ∘ₗ whProj ρ ψ₀) := by
@@ -274,23 +272,19 @@ theorem isWhit_comp [Fintype (upU d k)] (ρ : Representation ℂ (GL (Fin d) k) 
     LinearMap.comp_apply]
 
 /- English proof (translation)
-Use `haveI : Fintype (upU d k) := Fintype.ofFinite _`. Establish `hcard : (Fintype.card (upU d k) : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hW : (Module.finrank ℂ V : ℂ) = _ * _` using `GlobalTheory.CompanionTheory.TyFin.ColStep.cuspWh k d ψ₀ (FDRep.of ρ) hψ (isCuspidal_of ρ hc)`. Rewrite `hW` using `[wh_eq_finrank]`. Use `set D := GlobalTheory.FinGL.eig ρ (upU d k) fun g => ψ₀ (sdg g) with hD`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Nontrivial V := by`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `hb : (⊥ : Subrepresentation ρ) = ⊤` using `Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _)`. Conclude with `bot_ne_top hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hV0 : (Module.finrank ℂ V : ℂ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `hD0 : Module.finrank ℂ D ≠ 0`. Introduce `h0`. Rewrite `hW` using `[h0]`. Conclude with `hV0 (by simpa using hW)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hDbot : D ≠ ⊥` using `fun h0 => hD0 (by rw [h0]; simp)`. Take `⟨x, hxD, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hDbot`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l : Module.Dual ℂ V, l x ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx0 ((Module.forall_dual_apply_eq_zero_iff ℂ x).1 hn)`. Use `set L : Module.Dual ℂ V := l ∘ₗ whProj ρ ψ₀ with hLdef`. Establish `hLx : L x ≠ 0`. Rewrite using `[hLdef, LinearMap.comp_apply, whProj_eig ρ ψ₀ x hxD, map_smul, smul_eq_mul]`. Conclude with `mul_ne_zero hcard hl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hL0 : L ≠ 0` using `fun h0 => hLx (by rw [h0]; rfl)`. Establish `hLw : IsWhit ψ₀ ρ L` using `isWhit_comp ρ ψ₀ l`. Establish `hinj : Function.Injective (L ∘ₗ D.subtype)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨y, hy⟩ hy0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy0' : L y = 0` using `hy0`. Establish `hall : ∀ l' : Module.Dual ℂ V, l' y = 0`. Introduce `l'`. Take `⟨c, hc'⟩` from `GlobalTheory.CompanionTheory.GG.gelfandGraevMultOne_holds k d ψ₀ hψ V ρ hi L (l' ∘ₗ whProj ρ ψ₀) hLw (isWhit_comp ρ ψ₀ l') hL0`. Establish `h1` using `LinearMap.congr_fun hc' y`.
-
-Rewrite `h1` using `[LinearMap.comp_apply, whProj_eig ρ ψ₀ y hy, map_smul, LinearMap.smul_apply, hy0', smul_zero, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left hcard`. Conclude with `Subtype.ext ((Module.forall_dual_apply_eq_zero_iff ℂ y).1 hall)`. Establish `hD1 : Module.finrank ℂ D = 1`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hinj`.
-
-Rewrite `h1` using `[Module.finrank_self]`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, L, hL0, hLw⟩` and prove the remaining obligations. Rewrite `hW` using `[hD1]`. Simplify using `using hW`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_and_whit (ψ₀ : AddChar k ℂ) (hψ : ψ₀ ≠ 1) (ρ : Representation ℂ (GL (Fin d) k) V)
     (hi : ρ.IsIrreducible) (hc : GlobalTheory.FiniteGL.IsCuspidal ρ) :
@@ -355,9 +349,9 @@ variable {k : Type} [Field k] [Fintype k] [DecidableEq k] {n : ℕ}
   {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Unfold `sdSum superdiag supd`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `hl : (∑ j : Fin (n + 1), if (j : ℕ) = ((Fin.last n : Fin (n + 1)) : ℕ) + 1 then M (Fin.last n) j else 0) = 0` using `Finset.sum_eq_zero fun j _ => if_neg (by have := j.2; simp; omega)`. Rewrite using `[hl, add_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single i.succ]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Conclude with `if_neg fun e => hj (Fin.ext (by simpa using e))`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sdSum_eq_supd (M : Matrix (Fin (n + 1)) (Fin (n + 1)) k) : sdSum M = supd M := by
   unfold sdSum superdiag supd
@@ -386,21 +380,19 @@ def whitMap (ψ₀ : AddChar k ℂ) (ρ : Representation ℂ (GL (Fin (n + 1)) k
 end Main
 
 /- English proof (translation)
-Introduce `k _ _ n ψ₀ hψ V _ _ _ ρ hi hc`. Take `⟨hdim, L, hL0, hLw⟩` from `finrank_and_whit ψ₀ hψ ρ hi hc`. Set `T` to `whitMap ψ₀ ρ L hLw`. Set `W : Subrepresentation (GlobalTheory.FiniteGL.mirabInduced n ψ₀)` to `⟨LinearMap.range T, by`. Introduce and unpack `q _ ⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Use `⟨ρ (q : GL (Fin (n + 1)) k) x, Subtype.ext (funext fun y => ?_)⟩` and prove the remaining obligations. Use `show L (ρ (y : GL (Fin (n + 1)) k) (ρ (q : GL (Fin (n + 1)) k) x)) = L (ρ ((y * q : Formalism.L2.Indef.Tree.mirabSub k n) : GL (Fin (n + 1)) k) x)`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply]⟩`. Establish `hirr` using `PositivityTheory.Mirab.mirabInduced_isIrreducible n ψ₀ hψ`. Establish `hsurj : Function.Surjective T`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hirr.eq_bot_or_eq_top W with hW | hW` into its components or cases. It suffices to derive a contradiction. Use `hL0 (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Establish `h1 : T x ∈ (⊥ : Submodule ℂ _)`. Establish `: T x ∈ W.toSubmodule` using `⟨x, rfl⟩`.
+It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hW]`. Conclude with `this`. Establish `h2` using `congrFun (congrArg Subtype.val ((Submodule.mem_bot ℂ).1 h1)) 1`. Establish `h3 : L (ρ 1 x) = 0` using `h2`. Simplify using `using h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : LinearMap.range T = ⊤` using `congrArg Subrepresentation.toSubmodule hW`. Conclude with `LinearMap.range_eq_top.1 h1`. Establish `hfin : Module.finrank ℂ V = Module.finrank ℂ (GlobalTheory.FiniteGL.MirabInducedSpace n ψ₀)`. Rewrite using `[PositivityTheory.Mirab.finrank_mirabInducedSpace]`. Establish `h2 : (Module.finrank ℂ V : ℂ) = ((∏ i ∈ Finset.Ico 1 (n + 1), (Fintype.card k ^ i - 1) : ℕ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdim, Nat.cast_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ Fintype.card_pos), Nat.cast_pow, Nat.cast_one]`. Conclude with `h2` after adjusting the coercions. Establish `hinj : Function.Injective T` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfin).2 hsurj`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Set `E : V ≃ₗ[ℂ] GlobalTheory.FiniteGL.MirabInducedSpace n ψ₀` to `LinearEquiv.ofBijective T ⟨hinj, hsurj⟩`. Establish `hint : ∀ g, T ∘ₗ GlobalTheory.FiniteGL.restrictMirab n ρ g = GlobalTheory.FiniteGL.mirabInduced n ψ₀ g ∘ₗ T`. Introduce `g`. Use `LinearMap.ext fun x => Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show L (ρ (y : GL (Fin (n + 1)) k) (ρ (g : GL (Fin (n + 1)) k) x)) = L (ρ ((y * g : Formalism.L2.Indef.Tree.mirabSub k n) : GL (Fin (n + 1)) k) x)`.
-
-Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Conclude with `⟨{ toIntertwiningMap := ⟨T, hint⟩ invFun := E.symm left_inv := E.left_inv right_inv := E.right_inv }⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cuspidalRestrictsToInduced : GlobalTheory.Published.CuspidalRestrictsToInduced := by
   intro k _ _ n ψ₀ hψ V _ _ _ ρ hi hc

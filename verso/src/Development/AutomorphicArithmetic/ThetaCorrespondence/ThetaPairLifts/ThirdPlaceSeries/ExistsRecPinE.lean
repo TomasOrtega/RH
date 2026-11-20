@@ -19,9 +19,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Top.Bl
 /- English proof (translation)
-Introduce `hA hW hR hL p K q hLT hZe hE`. Take `⟨S, hS⟩` from `_root_.GlobalTheory.T.exists_spectral_data_compatible hA hW hL p K q hLT hZe`. Take `⟨t, hK, hstd, hrd⟩` from `GlobalTheory.Mem.Top.Bl.WPt.exists_kerTie p.s K q hE`. Take `⟨T, hTS, hTk, hcrd, hpin, hj, ⟨⟨hw⟩⟩⟩` from `_root_.GlobalTheory.Mem.Top.Bl.exists_kernel_spectral_data_at_witnesses hL p K q S t hS hK`. Establish `hp` using `GlobalTheory.Mem.Top.Bl.hostPins_wpt hR p.s K q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hTS hTk` using the available equality. Take `⟨hd, -⟩` from `_root_.GlobalTheory.HostDatumExists.exists_hostDatum_alt hA _ _ _ _ _ _ _ _ q.O.ex T.toTiedDataS hp q.x.pin.d3b`. Conclude with `⟨⟨T, hpin, hj, ⟨hd⟩, hw⟩, ⟨⟨hS, hK, hcrd⟩, hE, hstd, hrd⟩⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem WPt.exists_recPinE_alt : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.WeberRayFieldSt → GlobalTheory.NT.RayField →
     ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (K : Ctx) (q : WPt p.s K), Formalism.L2.Host.LevelTied (q.w.D q.Z) →

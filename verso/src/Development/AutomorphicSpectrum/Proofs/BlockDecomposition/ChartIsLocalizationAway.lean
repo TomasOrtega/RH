@@ -15,25 +15,25 @@ namespace GlobalTheory.CompanionTheory.ChartBijOf
 open CrystallineSemistableComparison.Pb CrystallineSemistableComparison.HT
 
 /- English proof (translation)
-Establish `ne : ∀ {m : ℕ} (i : Fin (m + 1) → ι), (ent i).Nonempty` using `fun i => ⟨i 0, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩`. Set `φ : ∀ m, P.cech.X m → (A.coh a).cech.X m` to `fun m x i => E (ent i) (ne i) (x i)`. Set `ψ : ∀ m, (A.coh a).cech.X m → P.cech.X m` to `fun m y i => (E (ent i) (ne i)).symm (y i)`. Establish `hφψ : ∀ m y, φ m (ψ m y) = y` using `fun m y => funext fun i => LinearEquiv.apply_symm_apply _ _`. Establish `hφ0 : ∀ m x, φ m x = 0 → x = 0` using `fun m x hx => funext fun i => (LinearEquiv.map_eq_zero_iff (E (ent i) (ne i))).1 (congrFun hx i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : ∀ m (k : Fin (m + 2)) x, (A.coh a).cech.δ m k (φ m x) = φ (m + 1) (P.cech.δ m k x)` using `fun m k x => funext fun i => (hE _ _ (ent_comp i k.succAbove) (ne _) (ne _) (x (i ∘ k.succAbove))).symm`. Establish `hd : ∀ m x, (A.coh a).cech.d m (φ m x) = φ (m + 1) (P.cech.d m x)`. Introduce `m x`. Rewrite using `[Cos.d_apply, Cos.d_apply]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hδ, Finset.sum_apply, Pi.smul_apply, φ, map_sum, map_zsmul]`. Establish `hφ1 : ∀ m x y, φ m (x - y) = φ m x - φ m y` using `fun m x y => funext fun i => map_sub _ _ _`. Take `⟨-, hinj, hex, hup⟩` from `hP`. Establish `hres : (A.coh a).cech.cx.ResUpTo 1 (LinearMap.ker ((A.coh a).cech.d 0)).subtype`. Use `⟨fun x => x.2, fun x hx => ?_, fun y hy => ⟨⟨y, hy⟩, (one_smul R y).symm⟩, fun m y hy => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_smul]`. Conclude with `Subtype.ext hx`. Establish `h0 : P.cech.d (m + 1) (ψ (m + 1) y) = 0` using `hφ0 _ _ (by`. Rewrite using `[← hd, hφψ]`. Conclude with `hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `hup m (ψ (m + 1) y) h0`. Use `⟨φ m x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A.coh a).cech.d m (φ m x) = _`. Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `φ (m + 1) (P.cech.d m x) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show P.cech.d m x = ψ (m + 1) y from hx.trans (one_smul R _), hφψ, one_smul]`. Take `⟨hz, -⟩` from `hR R ι A a hD hO hres`. Take `⟨-, hin', hex'⟩` from `hL R ι A a hD hO`. Distinguish the cases in `hn : n = a`. Substitute `hn` using the available equality.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hg : ∀ y, (A.coh n).aug (f.mapH n (r y)) = φ 0 (P.aug y)` using `fun y => funext fun i => hr _ (ne i) y`. Prove the components needed by the constructor for the conclusion. Introduce `x x' hxx`. Take `⟨y, rfl⟩` from `r.surjective x`. Take `⟨y', rfl⟩` from `r.surjective x'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : φ 0 (P.aug (y - y')) = 0`. Rewrite using `[map_sub, hφ1, ← hg, ← hg, hxx, sub_self]`. Establish `h2` using `hinj _ (hφ0 _ _ h1)`. Rewrite `h2` using `[one_smul, sub_eq_zero]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Establish `h0 : P.cech.d 0 (ψ 0 ((A.coh n).aug z)) = 0` using `hφ0 _ _ (by`. Rewrite using `[← hd, hφψ]`. Conclude with `(hex' _).2 ⟨z, rfl⟩)`. Take `⟨y, hy⟩` from `hex _ h0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨r y, hin' ?_⟩` and prove the remaining obligations. Rewrite using `[hg, show P.aug y = ψ 0 ((A.coh n).aug z) from hy.trans (one_smul R _), hφψ]`. Use `haveI := hX n hn haveI := hz n hn`. Conclude with `⟨fun x y _ => Subsingleton.elim x y, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem one_bij (hL : OneLow) (hR : OneRes) {R : Type} [CommRing R] {ι : Type} [DecidableEq ι] (A : Sy.{1} R ι) (a : ℕ)
     (hD : A.Desc) (hO : A.One a) (P : PM.{0} R ι) (hP : P.Ex)
@@ -100,11 +100,9 @@ section Abstract
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {Q : ObjectProperty C} (hQ : Cosieve Q)
 
 /- English proof (translation)
-Establish `hO : (covSy F U hQ).One a` using `fun S hS j hj => by`. Use `hOne S hS j hj` as an intermediate fact. Conclude with `(castH F hQ (hW S hS).symm j).toEquiv.subsingleton_congr.1 this`. Establish `hb` using `one_bij hL hR (covSy F U hQ) a hD hO P hP (fun S hS => (E S hS).trans (castH F hQ (hW S hS).symm a)) (fun S T h hS hT y => by`. Express the relevant statement in the definitionally equal form `castH F hQ (hW T hT).symm a (E T hT (P.res h y)) = (RC.res F hQ _).mapH a (castH F hQ (hW S hS).symm a (E S hS y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE S T h hS hT y, cast_res F hQ (hW S hS).symm (hW T hT).symm (hWle S T h hS hT)])`. Use `X (m.comp (RC.res F hQ hV)) hX r`. Use the proof step `(fun S hS y => by`. Express the relevant statement in the definitionally equal form `(RC.res F hQ _).mapH a ((m.comp (RC.res F hQ hV)).mapH a (r y)) = castH F hQ (hW S hS).symm a (E S hS (P.res _ y))`. Rewrite using `[← hr S hS y, cast_res' F hQ (hW S hS).symm (hWV S hS) ((hW S hS).le.trans (hWV S hS)), comp_mapH, res_res F hQ hV _ ((hW S hS).le.trans (hWV S hS))]) n`.
-
-Establish `hb' : Function.Bijective ((RC.res F hQ hV).mapH n ∘ m.mapH n)` using `Eq.mp (congrArg Function.Bijective (funext fun x => comp_mapH m (RC.res F hQ hV) n x)) hb`. Conclude with `(Function.Bijective.of_comp_iff' (hZ n) _).1 hb'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cov_bij (hL : OneLow) (hR : OneRes) {ι : Type} [DecidableEq ι] (U : ι → ObjectProperty C)
     (hD : (covSy F U hQ).Desc) (a : ℕ) (P : PM.{0} R ι) (hP : P.Ex)
@@ -158,14 +156,14 @@ section Chart
 variable {K : Type} [Field K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {d : ℕ} {V : Z.Opens}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op).hom f = f`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem rs_self {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (f : Γ(X, U)) : rs h f = f := by
   change (X.presheaf.map (homOfLE h).op).hom f = f
   simp
 
 /- English proof (translation)
-Substitute `e₁ e₂` using the available equality. Simplify using `only [rs_self]`. Conclude with `(c.C_aff k).isLocalization_basicOpen (∏ j ∈ S, c.u k j)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart_isLocalization_away_alt (c : BChart q i π d V) (S : Finset (Fin d)) (k : Fin d) (D₁ D₂ : Y.Opens) (e₁ : D₁ = c.C k)
     (e₂ : D₂ = Y.basicOpen (∏ j ∈ S, c.u k j)) (h : D₂ ≤ D₁) (hu : D₁ ≤ c.C k) :
@@ -176,7 +174,7 @@ theorem chart_isLocalization_away_alt (c : BChart q i π d V) (S : Finset (Fin d
   exact (c.C_aff k).isLocalization_basicOpen (∏ j ∈ S, c.u k j)
 
 /- English proof (translation)
-The claim follows from `chart_isLocalization_away_alt c S k _ _ Finset.inf_singleton (inf_eq_basicOpen c hk) _ _`.
+A detailed English derivation is pending.
 -/
 theorem chart_loc (c : BChart q i π d V) (S : Finset (Fin d)) (k : Fin d) (hk : k ∈ S) :
     letI : Algebra (Sec (π ≫ q) (({k} : Finset (Fin d)).inf c.C)) (Sec (π ≫ q) (S.inf c.C)) :=
@@ -186,7 +184,7 @@ theorem chart_loc (c : BChart q i π d V) (S : Finset (Fin d)) (k : Fin d) (hk :
   chart_isLocalization_away_alt c S k _ _ Finset.inf_singleton (inf_eq_basicOpen c hk) _ _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using `only [rs_self]`. Conclude with `⟨c.surj k, c.rel k⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem chart_presentation_kernel (c : BChart q i π d V) (k : Fin d) (D : Y.Opens) (e : D = c.C k) (hle : D ≤ π ⁻¹ᵁ V) (hu : D ≤ c.C k) :
     Function.Surjective (MvPolynomial.eval₂Hom (π.appLE V D hle).hom fun j => rs hu (c.u k j)) ∧
@@ -197,7 +195,7 @@ theorem chart_presentation_kernel (c : BChart q i π d V) (k : Fin d) (D : Y.Ope
   exact ⟨c.surj k, c.rel k⟩
 
 /- English proof (translation)
-The claim follows from `chart_presentation_kernel c k _ Finset.inf_singleton _ _`.
+A detailed English derivation is pending.
 -/
 theorem chart_pres (c : BChart q i π d V) (k : Fin d) :
     Function.Surjective (MvPolynomial.eval₂Hom (π.appLE V (({k} : Finset (Fin d)).inf c.C)
@@ -208,11 +206,9 @@ theorem chart_pres (c : BChart q i π d V) (k : Fin d) :
   chart_presentation_kernel c k _ Finset.inf_singleton _ _
 
 /- English proof (translation)
-Establish `hm : (MvPolynomial.C (c.t j) - MvPolynomial.C (c.t k) * MvPolynomial.X j : MvPolynomial (Fin d) Γ(Z, V)) ∈ RingHom.ker (MvPolynomial.eval₂Hom (π.appLE V (c.C k) (c.C_le k)).hom (c.u k))`. Rewrite using `[c.rel k]`. Conclude with `Ideal.subset_span (Set.mem_insert_of_mem _ ⟨j, rfl⟩)`. Rewrite `hm` using `[RingHom.mem_ker]`. Simplify using `only [map_sub, map_mul, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C, MvPolynomial.eval₂_X] at hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrs : ∀ x, rs (inf_le_C c hk) ((π.appLE V (c.C k) (c.C_le k)).hom x) = (π.appLE V (S.inf c.C) (inf_le_pre c ⟨k, hk⟩)).hom x`. Introduce `x`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE _).op).hom ((π.appLE V _ _).hom x) = (π.appLE V _ _).hom x`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`. Rewrite using `[← hrs, ← hrs, ← map_mul]`.
-
-Conclude with `congrArg _ (sub_eq_zero.1 hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_alt_alt (c : BChart q i π d V) (S : Finset (Fin d)) (k : Fin d) (hk : k ∈ S) (j : Fin d) :
     (π.appLE V (S.inf c.C) (inf_le_pre c ⟨k, hk⟩)).hom (c.t j) =
@@ -232,15 +228,13 @@ theorem chart_alt_alt (c : BChart q i π d V) (S : Finset (Fin d)) (k : Fin d) (
 end Chart
 
 /- English proof (translation)
-Use `haveI := hx`. Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, n, rfl⟩`. Use `(isUnit_map_iff e₂ _).1 ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `IsLocalization.map_units (M := Submonoid.powers (e₁ x)) S' ⟨e₁ x ^ n, n, rfl⟩` as an intermediate fact. Simplify using `using this`. Introduce `z`. Take `⟨⟨a, ⟨_, n, rfl⟩⟩, hz⟩` from `IsLocalization.surj (Submonoid.powers (e₁ x)) (e₂ z)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨e₁.symm a, ⟨x ^ n, n, rfl⟩⟩, e₂.injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, h, RingEquiv.apply_symm_apply, map_pow] at hz ⊢`. Conclude with `hz`. Introduce `a b`. Establish `h1 : algebraMap R S a = algebraMap R S b ↔ algebraMap R' S' (e₁ a) = algebraMap R' S' (e₁ b)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, ← h]`. Conclude with `e₂.injective.eq_iff.symm`. Rewrite using `[h1, IsLocalization.eq_iff_exists (Submonoid.powers (e₁ x)) S']`. Introduce and unpack `⟨⟨_, n, rfl⟩, hc⟩`. Use `⟨⟨x ^ n, n, rfl⟩, e₁.injective ?_⟩` and prove the remaining obligations.
-
-Simplify using `using hc`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem away_of_equiv {R R' S S' : Type} [CommRing R] [CommRing R'] [CommRing S] [CommRing S'] [Algebra R S] [Algebra R' S']
     (e₁ : R ≃+* R') (e₂ : S ≃+* S') (h : ∀ x, e₂ (algebraMap R S x) = algebraMap R' S' (e₁ x)) (x : R)
@@ -270,19 +264,19 @@ def eqvOf {K : Type} [CommRing K] {X X' : CommAlgCat.{0} K} (e : X = X') : X ≃
   subst e; exact AlgEquiv.refl
 
 /- English proof (translation)
-Set `Rf : Finset ι → CommAlgCat.{0} K` to `fun S => if S.Nonempty then CommAlgCat.of K (B S) else CommAlgCat.of K A`. Set `b : ∀ S : Finset ι, S.Nonempty → (Rf S ≃ₐ[K] B S)` to `fun S hS => eqvOf (if_pos hS)`. Set `bA : ∀ S : Finset ι, ¬ S.Nonempty → (Rf S ≃ₐ[K] A)` to `fun S hS => eqvOf (if_neg hS)`. Set `res : ∀ {S T : Finset ι}, S ⊆ T → (Rf S →ₐ[K] Rf T)` to `fun {S T} h => if hS : S.Nonempty then ((b T (hS.mono h)).symm : B T →ₐ[K] Rf T).comp ((ρ h).comp (b S hS : Rf S →ₐ[K] B S)) else if hT : T.Nonempty then ((b T hT).symm : B T →ₐ[K] Rf T).comp ((τ T hT).comp (bA S hS : Rf S →ₐ[K] A)) else ((bA T hT).symm : A →ₐ[K] Rf T).comp (bA S …`. Establish `r1 : ∀ {S T : Finset ι} (h : S ⊆ T) (hS : S.Nonempty) (y : Rf S), res h y = (b T (hS.mono h)).symm (ρ h (b S hS y))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `S T h hS y`. Simplify using `only [res, dif_pos hS]`. Both sides reduce to the same expression. Establish `r2 : ∀ {S T : Finset ι} (h : S ⊆ T) (hS : ¬ S.Nonempty) (hT : T.Nonempty) (y : Rf S), res h y = (b T hT).symm (τ T hT (bA S hS y))`. Introduce `S T h hS hT y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [res, dif_neg hS, dif_pos hT]`. Both sides reduce to the same expression. Establish `r3 : ∀ {S T : Finset ι} (h : S ⊆ T) (hS : ¬ S.Nonempty) (hT : ¬ T.Nonempty) (y : Rf S), res h y = (bA T hT).symm (bA S hS y)`. Introduce `S T h hS hT y`. Simplify using `only [res, dif_neg hS, dif_neg hT]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h0 : ¬ (∅ : Finset ι).Nonempty` using `Finset.not_nonempty_empty`. Use `⟨Rf, res, bA ∅ h0, b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S h y`. Distinguish the cases in `hS : S.Nonempty`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[r1 h hS, ρ_id, AlgEquiv.symm_apply_apply]`. Rewrite using `[r3 h hS hS, AlgEquiv.symm_apply_apply]`. Introduce `S T U h h' y`. Distinguish the cases in `hS : S.Nonempty`. Rewrite using `[r1 h hS, r1 h' (hS.mono h), r1 _ hS, AlgEquiv.apply_symm_apply, ρ_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hT : T.Nonempty`. Rewrite using `[r2 h hS hT, r1 h' hT, r2 _ hS (hT.mono h'), AlgEquiv.apply_symm_apply, hτ h' hT (hT.mono h')]`. Distinguish the cases in `hU : U.Nonempty`. Rewrite using `[r3 h hS hT, r2 h' hT hU, r2 _ hS hU, AlgEquiv.apply_symm_apply]`. Rewrite using `[r3 h hS hT, r3 h' hT hU, r3 _ hS hU, AlgEquiv.apply_symm_apply]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `S T h hS hT y`. Rewrite using `[r1 h hS, AlgEquiv.apply_symm_apply]`. Introduce `T hT g`. Rewrite using `[r2 _ h0 hT, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem glue_rings {K : Type} [CommRing K] {ι : Type} (A : Type) [CommRing A] [Algebra K A] (B : Finset ι → Type)
     [∀ S, CommRing (B S)] [∀ S, Algebra K (B S)] (ρ : ∀ {S T : Finset ι}, S ⊆ T → (B S →ₐ[K] B T))
@@ -338,7 +332,7 @@ theorem glue_rings {K : Type} [CommRing K] {ι : Type} (A : Type) [CommRing A] [
     rw [r2 _ h0 hT, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [hg]`. Consider the case `add p p' hp hp' => simp only [map_add, hp, hp']`. Consider the case `mul_X p j hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval₂Hom_X', hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pres_transport {A R B ι : Type} [CommRing A] [CommRing R] [CommRing B] [Algebra A R] (g : A →+* B) (β : R ≃+* B)
     (hg : ∀ a, β (algebraMap A R a) = g a) (v : ι → R) (w : ι → B) (hw : ∀ j, β (v j) = w j)
@@ -349,25 +343,21 @@ theorem pres_transport {A R B ι : Type} [CommRing A] [CommRing R] [CommRing B] 
   | mul_X p j hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval₂Hom_X', hw]
 
 /- English proof (translation)
-Take `⟨R, res, base, b, res_id, res_comp, hb1, hb2⟩` from `glue_rings (K := K) (Sec q V) (fun S : Finset (Fin d) => Sec (π ≫ q) (S.inf c.C)) (fun h => secRes (π ≫ q) (Finset.inf_mono h)) (fun S h y => by`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE _).op).hom y = y`. Use the proof step `simp)`. Use the proof step `(fun h h' y => by`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE _).op).hom ((Y.presheaf.map (homOfLE _).op).hom y) = (Y.presheaf.map (homOfLE _).op).hom y`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Use the proof step `rfl)`. Use the proof step `(fun S hS => secPull q π (inf_le_pre c hS))`. Use the proof step `(fun h hS hT x => by`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE _).op).hom ((π.appLE V _ _).hom x) = (π.appLE V _ _).hom x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map])`. Use `⟨{ x := c.x, t := c.t, etale := c.etale, R := fun S => R S, cr := fun S => inferInstance, alg := fun S => inferInstance, res := res, res_id := res_id, res_comp := res_comp, base := base, u := fun S k hk j => (b S ⟨k, hk⟩).symm (rs (inf_le_C c hk) (c.u k j)), t_eq := ?_, u_res := …` and prove the remaining obligations. Introduce `S k hk j`. Apply `(b S ⟨k, hk⟩).injective` to reduce the goal to its premises. Rewrite using `[map_mul, hb2, hb2, AlgEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `chart_alt_alt c S k hk j`. Introduce `S T h k hk j`. Apply `(b T ⟨k, h hk⟩).injective` to reduce the goal to its premises. Rewrite using `[hb1 S T h ⟨k, hk⟩ ⟨k, h hk⟩, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE _).op).hom ((Y.presheaf.map (homOfLE _).op).hom _) = (Y.presheaf.map (homOfLE _).op).hom _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Introduce `k`. Use `letI : Algebra (Sec q V) (R {k}) := ((res (Finset.empty_subset {k})).toRingHom.comp base.symm.toRingHom).toAlgebra`. Introduce `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Establish `hk : ({k} : Finset (Fin d)).Nonempty` using `Finset.singleton_nonempty k`. Take `⟨p, hp⟩` from `(chart_pres c k).1 (b {k} hk y)`. Use `⟨p, (b {k} hk).injective ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ hp` and prove the remaining obligations. Conclude with `pres_transport (A := Sec q V) (R := R {k}) (B := Sec (π ≫ q) (({k} : Finset (Fin d)).inf c.C)) (secPull q π (inf_le_pre c hk)).toRingHom (b {k} hk).toRingEquiv (fun a => hb2 {k} hk a) _ _ (fun j => AlgEquiv.apply_symm_apply _ _) p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Use `letI : Algebra (Sec q V) (R {k}) := ((res (Finset.empty_subset {k})).toRingHom.comp base.symm.toRingHom).toAlgebra`. Establish `hk : ({k} : Finset (Fin d)).Nonempty` using `Finset.singleton_nonempty k`. Use `Eq.trans ?_ (chart_pres c k).2` and prove the remaining obligations. Use extensionality with `p`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, RingHom.mem_ker]`. Establish `hp` using `pres_transport (A := Sec q V) (R := R {k}) (B := Sec (π ≫ q) (({k} : Finset (Fin d)).inf c.C)) (secPull q π (inf_le_pre c hk)).toRingHom (b {k} hk).toRingEquiv (fun a => hb2 {k} hk a) (fun j => (b {k} hk).symm (rs (inf_le_C c (Finset.mem_singleton_self k)) (c.u k j))) (fun j => r …`. Use `Iff.trans ?_ (Eq.congr_left hp)` and prove the remaining obligations. Conclude with `(map_eq_zero_iff _ (b {k} hk).injective).symm`. Introduce `S k hk`.
-
-Use `letI : Algebra (R {k}) (R S) := (res (Finset.singleton_subset_iff.2 hk)).toRingHom.toAlgebra`. Establish `hk1 : ({k} : Finset (Fin d)).Nonempty` using `Finset.singleton_nonempty k`. Establish `hS : S.Nonempty` using `⟨k, hk⟩`. Use `letI : Algebra (Sec (π ≫ q) (({k} : Finset (Fin d)).inf c.C)) (Sec (π ≫ q) (S.inf c.C)) := (secRes (π ≫ q) (Finset.inf_mono (Finset.singleton_subset_iff.2 hk))).toRingHom.toAlgebra`. Use `away_of_equiv (S' := Sec (π ≫ q) (S.inf c.C)) (b {k} hk1).toRingEquiv (b S hS).toRingEquiv (fun x => hb1 {k} S _ hk1 hS x) _ ?_` and prove the remaining obligations.
-
-Establish `he : (b {k} hk1).toRingEquiv (∏ j ∈ S, (b {k} hk1).symm (rs (inf_le_C c (Finset.mem_singleton_self k)) (c.u k j))) = ∏ j ∈ S, rs (inf_le_C c (Finset.mem_singleton_self k)) (c.u k j)`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun j _ => AlgEquiv.apply_symm_apply _ _`. Conclude with `he ▸ chart_loc c S k hk`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_exists (K : Type) [Field K] (W Z Y : Scheme.{0}) (q : Z ⟶ Spec (CommRingCat.of K)) (i : W ⟶ Z)
     (π : Y ⟶ Z) (d : ℕ) (V : Z.Opens) (c : BChart q i π d V) :
@@ -444,31 +434,29 @@ section Main
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hH hS hL hR hC hZ hA hN hOR hAR hF hCL K _ _ W Z Y q i _ π d hd V hc hQ hQ' a h h' n`. Take `⟨c⟩` from `hc`. Take `⟨C, b, hb1, hb2, ht⟩` from `chart_exists K W Z Y q i π d V c`. Take `⟨hI, hI0⟩` from `chart_ideal hCL K W Z Y q i π d V c C b hb2 ht`. Take `⟨P, eP, hPc, hPEx⟩` from `rel_pm hH K (Sec q V) c.n d hd C a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlaws` using `hCL K W Z Y q i π d V c`. Establish `hloc : ∀ (S : Finset (Fin d)) (hS : S.Nonempty), ∃ e : Om K (Sec (π ≫ q) (S.inf c.C)) a →ₗ[K] HV (π ≫ q) (S.inf c.C) a a, IsOm (π ≫ q) (S.inf c.C) a e ∧ (∀ j, j ≠ a → Subsingleton ((RC (G (π ≫ q) a) (inU (π ≫ q) (S.inf c.C)) hQ').H j)) ∧ Function.Injective ((incl (G (π ≫ q) a) (i …` using `fun S hS => by`. Take `⟨k, hk⟩` from `id hS`. Take `⟨h1, h2, -, -⟩` from `hlaws.2.2.2 k (S.inf c.C) (inf_le_C c hk) (inf_affine c hS)`. Conclude with `loc_iso hA hAR K (pullback i π) Y (π ≫ q) (pullback.snd i π) hQ' (S.inf c.C) _ _ h1 h2 a (C.I S) (b S hS) (hI S hS) (eP S)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose e he hone hinj E hEe using hloc`. Take `⟨e0, he0, hone0, hinj0, r, hr0⟩` from `loc_iso hA hAR K W Z q i hQ V _ _ hlaws.2.1 hlaws.2.2.1 a (C.I ∅) C.base hI0 (eP ∅)`. Take `⟨hcos, -, htop, hinf, -⟩` from `hS K (pullback i π) Y Y (π ≫ q) (pullback.snd i π) (𝟙 Y)`. Establish `hmono : ∀ D D₀ : Y.Opens, D ≤ D₀ → inU (π ≫ q) D ≤ inU (π ≫ q) D₀` using `fun D D₀ hle T hT => ((hinf D D₀ T).1 (by rwa [inf_eq_left.2 hle])).2`. Establish `hall : ∀ (T : Thick (smFun Y (π ≫ q))) (S : Finset (Fin d)), (∀ α ∈ S, inU (π ≫ q) (c.C α) T) → inU (π ≫ q) (S.inf c.C) T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `T S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `using htop T`. Consider the case `insert j S hj ih`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hT`. Rewrite using `[Finset.inf_insert]`. Conclude with `(hinf _ _ T).2 ⟨hT j (Finset.mem_insert_self j S), ih fun α hα => hT α (Finset.mem_insert_of_mem hα)⟩`. Establish `hcap : ∀ S : Finset (Fin d), S.Nonempty → capU (fun k => inU (π ≫ q) (c.C k)) S = inU (π ≫ q) (S.inf c.C)`. Introduce `S hS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `T`. Use `propext ⟨fun hT => hall T S hT.2, fun hT => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hS`. Conclude with `⟨⟨k, hmono _ _ (inf_le_C c hk) T hT⟩, fun α hα => hmono _ _ (inf_le_C c hα) T hT⟩`. Establish `hV : capU (fun k => inU (π ≫ q) (c.C k)) ∅ ≤ inU (π ≫ q) (π ⁻¹ᵁ V)` using `fun T hT => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `hT.1`. Conclude with `hmono _ _ (c.C_le k) T hk`. Establish `hgen : ∀ (U₀ : ObjectProperty (Thick (smFun Y (π ≫ q)))) (e₀ : U₀ = fun T => ∃ α, inU (π ≫ q) (c.C α) T) (hle : U₀ ≤ inU (π ≫ q) (π ⁻¹ᵁ V)) (n : ℕ), Function.Bijective ((RC.res (G (π ≫ q) a) hQ' hle).mapH n)`. Introduce `U₀ e₀ hle n`. Substitute `e₀` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hZ K (pullback i π) Y (π ≫ q) (pullback.snd i π) hQ' (Fin d) (π ⁻¹ᵁ V) c.C (le_antisymm (iSup_le c.C_le) c.C_cover) hle a n`. Establish `hZ'` using `hgen _ (by`. Use function extensionality and compare the values at `T`. Conclude with `propext ⟨fun hT => hT.1, fun hT => ⟨hT, fun α hα => absurd hα (Finset.notMem_empty α)⟩⟩) hV`. Establish `hWV : ∀ S : Finset (Fin d), S.Nonempty → inU (π ≫ q) (S.inf c.C) ≤ inU (π ≫ q) (π ⁻¹ᵁ V)` using `fun S hS => hmono _ _ (inf_le_pre c hS)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hWle : ∀ S T : Finset (Fin d), S ⊆ T → S.Nonempty → T.Nonempty → inU (π ≫ q) (T.inf c.C) ≤ inU (π ≫ q) (S.inf c.C)` using `fun S T h _ _ => hmono _ _ (Finset.inf_mono h)`. Use `cov_bij (G (π ≫ q) a) hQ' hL hR (fun k => inU (π ≫ q) (c.C k)) (hC K (Fin d) _ (G (π ≫ q) a) _ _ hQ' fun k => hcos _) a P hPEx (fun S => inU (π ≫ q) (S.inf c.C)) hcap (inU (π ≫ q) (π ⁻¹ᵁ V)) hV hZ' hWV hWle hone E ?_ _ (pullRC π rfl a (U := inU q V) (U' := inU (π ≫ q) (π ⁻¹ᵁ V)) …` and prove the remaining obligations. Introduce `S T hST hS' hT y`. Apply `hinj T hT` to reduce the goal to its premises. Rewrite using `[hEe T hT, incl_res, hEe S hS']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ, hφ, -, hnat⟩` from `hOR K Y (π ≫ q) (S.inf c.C) (T.inf c.C) (Finset.inf_mono hST) (hWle S T hST hS' hT)`. Establish `hcomp : φ.comp (b S hS' : C.R S →ₐ[K] Sec (π ≫ q) (S.inf c.C)) = (b T hT : C.R T →ₐ[K] Sec (π ≫ q) (T.inf c.C)).comp (C.res hST)` using `AlgHom.ext fun y => by`. Express the relevant statement in the definitionally equal form `φ (b S hS' y) = b T hT (C.res hST y)`. Rewrite using `[hφ, hb1 S T hST hS' hT y]`. Rewrite using `[hnat a _ _ (he S hS') (he T hT), hPc S T hST y, GlobalTheory.CompanionTheory.SurjectionOntoH4.omMap_comp, GlobalTheory.CompanionTheory.SurjectionOntoH4.omMap_comp, hcomp]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S hS' y`. Apply `hinj S hS'` to reduce the goal to its premises. Establish `h₁ : ∀ T, inU (π ≫ q) (S.inf c.C) T → inU q V ((smS π rfl).G.obj T)` using `fun T hT => h T (hWV S hS' T hT)`. Take `⟨φ, hφ, hnat⟩` from `hN K Z Y q (π ≫ q) π rfl V (S.inf c.C) (inf_le_pre c hS') h₁`. Use `((incl_pull (i := i) (π := π) a hQ hQ' V (π ⁻¹ᵁ V) (S.inf c.C) (hWV S hS') h h₁ h' (r y)).trans ((congrArg _ (hr0 y)).trans (hnat a _ _ he0 (he S hS') _))).trans (Eq.trans ?_ (hEe S hS' _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ ?_` and prove the remaining obligations. Establish `hcomp : φ.comp (C.base : C.R ∅ →ₐ[K] Sec q V) = (b S hS' : C.R S →ₐ[K] Sec (π ≫ q) (S.inf c.C)).comp (C.res (Finset.empty_subset S))` using `AlgHom.ext fun y => by`. Express the relevant statement in the definitionally equal form `φ (C.base y) = b S hS' (C.res _ y)`. Establish `h2` using `hb2 S hS' (C.base y)`. Rewrite `h2` using `[AlgEquiv.symm_apply_apply]`.
-
-Rewrite using `[hφ, h2]`. Rewrite using `[hPc ∅ S _ y, GlobalTheory.CompanionTheory.SurjectionOntoH4.omMap_comp, GlobalTheory.CompanionTheory.SurjectionOntoH4.omMap_comp, hcomp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartBij_of : ChartFormsCechExact → SiteLaws → OneLow → OneRes → CovDesc → ZarRel → AffOm → OmNat → OmRes → AffRel → FormLaws →
     ChartLaws → ChartBij := by

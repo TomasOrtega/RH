@@ -3,19 +3,17 @@ import Mathlib.Algebra.Module.Lattice
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Set `S : Set (Fin m → F)` to `Set.range fun p : G × Fin m => (r p.1 : Matrix (Fin m) (Fin m) F) *ᵥ (Pi.single p.2 1)`. Establish `hd' : algebraMap A F d ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective A F)]` and apply the resulting hypothesis. Use `⟨Submodule.span A S, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Set `N : Submodule A (Fin m → F)` to `Submodule.span A (Set.range fun i : Fin m => (Pi.single i (algebraMap A F d)⁻¹ : Fin m → F))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hN : N.FG` using `Submodule.fg_span (Set.finite_range _)`. Use `hN.of_le ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨g, j⟩, rfl⟩`. Use `choose a ha using h g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : (r g : Matrix (Fin m) (Fin m) F) *ᵥ (Pi.single j 1) = ∑ i, a i j • (Pi.single i (algebraMap A F d)⁻¹ : Fin m → F)`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply, Finset.sum_apply, Pi.smul_apply, Pi.single_apply, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Algebra.smul_def, ← ha]`. Clear the denominators using the available nonvanishing facts.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => N.smul_mem _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[eq_top_iff, ← (Pi.basisFun F (Fin m)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨(1, i), by`. Simplify using `only [map_one, Units.val_one, Matrix.one_mulVec, Pi.basisFun_apply]⟩`. Introduce `g x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Consider the case `mem x hx`. Take `⟨⟨g', i⟩, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(g * g', i), by`. Simplify using `only [map_mul, Units.val_mul, Matrix.mulVec_mulVec]⟩`. Consider the case `zero => simp`.
-
-Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem exists_stable_lattice {A F G : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [Field F] [Algebra A F] [IsFractionRing A F] [Group G] {m : ℕ} (r : G →* GL (Fin m) F) (d : A)
@@ -61,17 +59,15 @@ private theorem exists_stable_lattice {A F G : Type} [CommRing A] [IsDomain A] [
     | smul a x _ hx => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Introduce `A F G _ _ _ _ _ _ _ m r d hd h`. Take `⟨L, hL, hst⟩` from `exists_stable_lattice r d hd h`. Establish `hr : Module.finrank A L = m`. Simplify using `using Submodule.IsLattice.finrank_of_pi F L`. Set `bL : Module.Basis (Fin m) A L` to `Module.finBasisOfFinrankEq A L hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `b : Module.Basis (Fin m) F (Fin m → F)` to `bL.extendOfIsLattice F`. Set `Q₀ : Matrix (Fin m) (Fin m) F` to `(Pi.basisFun F (Fin m)).toMatrix b`. Establish `hQ : IsUnit Q₀`. Use `letI := (Pi.basisFun F (Fin m)).invertibleToMatrix b`. Conclude with `isUnit_of_invertible _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hQa : ∀ i j, Q₀ i j = (bL j : Fin m → F) i` using `fun i j => by`. Simplify using `[Q₀, b, Module.Basis.toMatrix_apply]`. Set `M : G → Matrix (Fin m) (Fin m) A` to `fun g k j => bL.repr ⟨_, hst g _ (bL j).2⟩ k`. Establish `hM : ∀ g, (r g : Matrix (Fin m) (Fin m) F) * Q₀ = Q₀ * (M g).map (algebraMap A F)`. Introduce `g`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `e` using `congrArg (fun x : L => (x : Fin m → F) i) (bL.sum_repr ⟨_, hst g _ (bL j).2⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, Algebra.smul_def] at e`. Simplify using `only [Matrix.mul_apply, hQa, Matrix.map_apply]`. Use `Eq.trans e.symm ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `inj : ∀ X Y : Matrix (Fin m) (Fin m) A, Q₀ * X.map (algebraMap A F) = Q₀ * Y.map (algebraMap A F) → X = Y` using `fun X Y hXY => Matrix.map_injective (IsFractionRing.injective A F) (hQ.mul_left_cancel hXY)`. Set `M' : G →* Matrix (Fin m) (Fin m) A` to `{ toFun := M map_one' := inj _ _ (by rw [← hM]; simp) map_mul' := fun g g' => inj _ _ (by`. Rewrite using `[← hM, Matrix.map_mul, ← mul_assoc, ← hM, mul_assoc, ← hM, map_mul, Units.val_mul, mul_assoc]) }`. Use `⟨hQ.unit, M'.toHomUnits, fun g => Units.ext ?_⟩` and prove the remaining obligations.
-
-Conclude with `hM g`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.latInt :
     ∀ {A F G : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Field F] [Algebra A F] [IsFractionRing A F] [Group G] {m : ℕ} (r : G →* GL (Fin m) F) (d : A), d ≠ 0 → (∀ g i j, ∃ a : A, algebraMap A F d * r g i j = algebraMap A F a) → ∃ (Q : GL (Fin m) F) (r₀ : G →* GL (Fin m) A), ∀ g, r g * Q = Q * pushRep (algebraMap A F) r₀ g := by

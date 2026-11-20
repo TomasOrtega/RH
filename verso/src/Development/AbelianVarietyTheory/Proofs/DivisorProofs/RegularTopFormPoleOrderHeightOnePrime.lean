@@ -18,57 +18,51 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 namespace GlobalTheory.PD
 
 /- English proof (translation)
-Introduce `k F K _ _ _ _ _ _ _ _ _ d u hu A _ hA B hB _ τ hτ Q hQ hQh t s e ht he hsQ hQs hts z`. Take `⟨a₀, r₀, ha₀, hr₀, hrt⟩` from `hts`. Establish `htQ : ∀ b : B, (b : K) = algebraMap F K t → b ∈ Q`. Introduce `b hb`. Establish `h1 : r₀ * b = a₀ * s ^ e` using `Subtype.ext (by push_cast; rw [hb]; exact hrt)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : r₀ * b ∈ Q` using `h1 ▸ Q.mul_mem_left _ (Q.pow_mem_of_mem hsQ e (by omega))`. Conclude with `(hQ.mem_or_mem h2).resolve_left hr₀`. Establish `hcomap` using `GlobalTheory.T.mem_heightOne_prime_integralClosure_iff_dvd_irreducible k F K d u hu A hA B hB Q hQ hQh t ht htQ`. Take `⟨htp, m, rfl, y, hy⟩` from `GlobalTheory.T.polynomial_ring_irreducible_prime_reduction k F d u hu A hA t ht`. Establish `hAft : Algebra.FiniteType k A`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hA` using the available equality. Conclude with `(Subalgebra.fg_iff_finiteType _).1 ⟨Finset.univ.image u, by simp⟩`. Establish `ht0 : t ≠ 0` using `ht.ne_zero`. Establish `hP : (Ideal.span {t}).IsPrime` using `(Ideal.span_singleton_prime ht0).2 htp`. Establish `genA` using `GlobalTheory.T.exists_not_mem_smul_D_eq_sum k F K A (Ideal.span {t}) hP t (Ideal.mem_span_singleton_self t) ht0 (fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Conclude with `⟨c, 1, (Ideal.ne_top_iff_one _).1 hP.ne_top, by ring⟩) m y hy`. Establish `memB : ∀ a : A, algebraMap F K (a : F) ∈ B` using `fun a => by`. Rewrite using `[hB]`. Conclude with `(Subalgebra.mem_restrictScalars k).2 ((integralClosure A K).algebraMap_mem a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ιB : A → B` to `fun a => ⟨algebraMap F K (a : F), memB a⟩`. Establish `hιQ : ∀ a : A, ιB a ∈ Q ↔ a ∈ Ideal.span {t}` using `fun a => by`. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `hcomap a (ιB a) rfl`. Use `set du : DR k K := ExteriorAlgebra.ιMulti K (m + 1) fun j => D k K (algebraMap F K (u j)) with hdu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hdu0 : du ≠ 0` using `fun h => by rw [h, map_zero] at hτ; exact zero_ne_one hτ`. Use `set gA : Fin (m + 1) → Ω[K⁄k] := Fin.cons (D k K (algebraMap F K (t : F))) (fun j => D k K (algebraMap F K (y j : F))) with hgA`. Take `⟨rA, hrA, aA, hA1⟩` from `GlobalTheory.T.exterior_wedge_eq_of_localized_span A K Ω[K⁄k] (Ideal.span {t}).primeCompl (m + 1) gA (fun j => D k K (algebraMap F K (u j))) (fun i => by`. Take `⟨r, hr, c, hc⟩` from `genA ⟨u i, hA ▸ Algebra.subset_adjoin (Set.mem_range_self i)⟩`. Conclude with `⟨r, hr, c, hc⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r', hr', c', hA2⟩` from `GlobalTheory.T.exterior_wedge_eq_of_localized_span A K Ω[K⁄k] (Ideal.span {t}).primeCompl (m + 1) (fun j => D k K (algebraMap F K (u j))) gA (fun i => by`. Establish `key : ∀ v : A, ∃ c : Fin (m + 1) → A, D k K (algebraMap F K (v : F)) = ∑ l, algebraMap A K (c l) • D k K (algebraMap F K (u l))`. Introduce `v`. Take `⟨c, hc, hc'⟩` from `GlobalTheory.T.exists_D_eq_sum_smul_D_of_mem_adjoin k F K (m + 1) u (v : F) (hA ▸ v.2)`. Conclude with `⟨fun j => ⟨c j, hA ▸ hc j⟩, hc'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Take `⟨c, hc⟩` from `key t`. Conclude with `⟨1, Submonoid.one_mem _, c, by rw [map_one, one_smul]; exact hc⟩`. Take `⟨c, hc⟩` from `key (y j)`. Conclude with `⟨1, Submonoid.one_mem _, c, by rw [map_one, one_smul]; exact hc⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAeq : rA * r' = aA * c'`. Apply `FaithfulSMul.algebraMap_injective A K` to reduce the goal to its premises. Establish `h3 : (algebraMap A K (rA * r')) • du = (algebraMap A K (aA * c')) • du`. Rewrite using `[map_mul, map_mul, mul_comm, mul_smul, hA1, smul_comm, hA2, smul_smul, mul_comm]`. Conclude with `smul_left_injective K hdu0 h3`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `haA : aA ∉ Ideal.span {t}` using `fun h => by`. Establish `: rA * r' ∈ Ideal.span {t}` using `hAeq ▸ Ideal.mul_mem_right _ _ h`. Break down `hP.mem_or_mem this with h4 | h4` into its components or cases. Conclude with `hrA h4`. Conclude with `hr' h4`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `y' : Fin m → B` to `fun j => ιB (y j)`. Establish `hy'` using `GlobalTheory.T.isTranscendenceBasis_quotient_integralClosure' k F K A B hB Q hQ t hcomap m y hy y' (fun j => rfl)`. Use `haveI := GlobalTheory.T.integralClosure_finiteType_over_adjoin k F K (m + 1) u hu A hA B hB`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (r₀ : K) * algebraMap F K t = 0` using `by rw [hrt]; simp [zero_pow (by omega : e ≠ 0)]`. Break down `mul_eq_zero.1 h5 with h6 | h6` into its components or cases. Conclude with `hr₀ (by rw [show r₀ = 0 from Subtype.ext h6]; exact Q.zero_mem)`. Conclude with `ht0 (by`. Establish `: (t : F) = 0` using `(map_eq_zero_iff _ (algebraMap F K).injective).1 h6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Subtype.ext this)`. Establish `genB` using `GlobalTheory.T.exists_not_mem_smul_D_eq_sum k K K B Q hQ s hsQ hs0 hQs m y' hy'`. Simplify using `only [Algebra.algebraMap_self_apply] at genB`. Take `⟨N, Dn, hN, hDn, hND⟩` from `GlobalTheory.T.differential_relation_local_ring_bound k K B Q hQ s m (fun j => (y' j : K)) (algebraMap F K t) e he hsQ genB ⟨a₀, r₀, ha₀, hr₀, hrt⟩`. Use `set ω : DR k K := ExteriorAlgebra.ιMulti K (m + 1) (Fin.cons (D k K (s : K)) (fun j => D k K (y' j : K)) : Fin (m + 1) → Ω[K⁄k]) with hω`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `Dt : B` to `Dn * ιB rA`. Set `Nt : B` to `N * ιB aA`. Establish `hDt : Dt ∉ Q` using `fun h => (hQ.mem_or_mem h).elim hDn (fun h' => hrA ((hιQ rA).1 h'))`. Establish `hNt : Nt ∉ Q` using `fun h => (hQ.mem_or_mem h).elim hN (fun h' => haA ((hιQ aA).1 h'))`. Establish `hmain : (Dt : K) • du = ((Nt : K) * (s : K) ^ (e - 1)) • ω`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h7 : (Dn : K) • ExteriorAlgebra.ιMulti K (m + 1) gA = ((N : K) * (s : K) ^ (e - 1)) • ω` using `hND`. Establish `hA1' : (algebraMap F K (rA : F)) • du = (algebraMap F K (aA : F)) • ExteriorAlgebra.ιMulti K (m + 1) gA` using `hA1`. Use `show ((Dn : K) * algebraMap F K (rA : F)) • du = ((N : K) * algebraMap F K (aA : F) * (s : K) ^ (e - 1)) • ω`. Rewrite using `[mul_smul, hA1', smul_comm, h7, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hkey : (Dt : K) = (Nt : K) * (s : K) ^ (e - 1) * τ ω`. Use `congrArg τ hmain` as an intermediate fact. Rewrite `this` using `[map_smul, map_smul, hτ, smul_eq_mul, smul_eq_mul, mul_one]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv0 : (Fin.cons (D k K (s : K)) (fun j => D k K (y' j : K)) : Fin (m + 1) → Ω[K⁄k]) = fun j => D k K ((Fin.cons (s : K) (fun j => (y' j : K)) : Fin (m + 1) → K) j)`. Use function extensionality and compare the values at `j`. Conclude with `Fin.cases rfl (fun j => rfl) j`. Establish `hωmem : ∀ b : B, (b : K) • ω ∈ omB k K B (m + 1)` using `fun b => by`. Use `Submodule.subset_span ⟨b, b.2, Fin.cons (s : K) (fun j => (y' j : K)), fun j => Fin.cases s.2 (fun j => (y' j).2) j, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hω, hv0]`. Establish `P : ∀ yy ∈ omB k K B (m + 1), ∃ c ρ : B, ρ ∉ Q ∧ (ρ : K) * (s : K) ^ (e - 1) * τ yy = c`. Introduce `yy hyy`. Unfold `omB at hyy`. Proceed by induction on `hyy using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem x hx`. Take `⟨b, hb, v, hv, rfl⟩` from `hx`. Take `⟨ρ, hρ, β, hβ⟩` from `GlobalTheory.T.exterior_wedge_eq_of_localized_span B K Ω[K⁄k] Q.primeCompl (m + 1) (Fin.cons (D k K (s : K)) (fun j => D k K (y' j : K))) (fun j => D k K (v j)) (fun i => genB ⟨v i, hv i⟩)`. Establish `hβ' : (ρ : K) • ExteriorAlgebra.ιMulti K (m + 1) (fun j => D k K (v j)) = (β : K) • ω` using `hβ`. Establish `h8` using `congrArg τ hβ'`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite `h8` using `[map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Use `⟨⟨b, hb⟩ * β * Dt, ρ * Nt, fun h => (hQ.mem_or_mem h).elim hρ hNt, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Use `push_cast`. Rewrite using `[hkey]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take the linear combination `((b : K) * (Nt : K) * (s : K) ^ (e - 1)) * h8`. Consider the case `zero => exact ⟨0, 1, (Ideal.ne_top_iff_one _).1 hQ.ne_top, by simp⟩`. Consider the case `add x w _ _ hx hw`. Take `⟨c1, ρ1, h1, e1⟩` from `hx`. Take `⟨c2, ρ2, h2, e2⟩` from `hw`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ρ2 * c1 + ρ1 * c2, ρ1 * ρ2, fun h => (hQ.mem_or_mem h).elim h1 h2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Use `push_cast`. Take the linear combination `(ρ2 : K) * e1 + (ρ1 : K) * e2`. Consider the case `smul a x _ hx`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, ρ, h1, e1⟩` from `hx`. Use `⟨algebraMap k B a * c, ρ, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[τ.map_smul_of_tower, Algebra.smul_def]`. Use `push_cast`. Rewrite using `[← e1]`.
-
-Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, yy, hyy, hτy⟩`. Take `⟨c, ρ, hρ, hc⟩` from `P yy hyy`. Use `⟨c, ρ * r, fun h => (hQ.mem_or_mem h).elim hρ hr, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hc, hτy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨c, r, hr, hc⟩`. Use `⟨Dt * r, fun h => (hQ.mem_or_mem h).elim hDt hr, ((c * Nt : B) : K) • ω, hωmem _, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_smul, smul_eq_mul]`. Use `push_cast`. Rewrite using `[hkey]`. Take the linear combination `(-((Nt : K) * τ ω)) * hc`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem omB_top_coeff_iff_pole : ∀ (k F K : Type) [Field k] [CharZero k] [Field F] [Field K] [Algebra k F] [Algebra k K] [Algebra F K] [IsScalarTower k F K] [FiniteDimensional F K] (d : ℕ) (u : Fin d → F), AlgebraicIndependent k u → ∀ (A : Subalgebra k F) [IsFractionRing A F], A = Algebra.adjoin k (Set.range u) → ∀ (B : Subalgebra k K), B = (integralClosure A K).restrictScalars k → Algebra.Smooth k B → ∀ τ : DR k K →ₗ[K] K, τ (ExteriorAlgebra.ιMulti K d fun j => D k K (algebraMap F K (u j))) = 1 → ∀ (Q : Ideal B), Q.IsPrime → Q.height = 1 → ∀ (t : A) (s : B) (e : ℕ), Irreducible t → 1 ≤ e → s ∈ Q → (∀ y ∈ Q, ∃ c r : B, r ∉ Q ∧ r * y = c * s) → (∃ a r : B, a ∉ Q ∧ r ∉ Q ∧ (r : K) * algebraMap F K t = a * s ^ e) → ∀ z : K, (∃ r : B, r ∉ Q ∧ ∃ y ∈ omB k K B d, τ y = r * z) ↔ ∃ c r : B, r ∉ Q ∧ (r : K) * s ^ (e - 1) * z = c := by
   intro k F K _ _ _ _ _ _ _ _ _ d u hu A _ hA B hB _ τ hτ Q hQ hQh t s e ht he hsQ hQs hts z

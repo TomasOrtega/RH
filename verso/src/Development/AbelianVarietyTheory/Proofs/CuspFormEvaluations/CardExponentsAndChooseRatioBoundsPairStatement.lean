@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardExponents
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.BinomRatio
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.card_exponents_and_choose_ratio_bounds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FCardExponentsAndChooseRatioBoundsPair.lean&line=40#L40)
 -/

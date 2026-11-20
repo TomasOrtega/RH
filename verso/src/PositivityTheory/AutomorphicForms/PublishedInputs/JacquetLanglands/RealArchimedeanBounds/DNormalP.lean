@@ -16,9 +16,9 @@ def up {F : Type} [Field F] (u t : F) (hu : u ≠ 0) : GL (Fin 2) F :=
     by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hu] <;> field_simp <;> ring⟩
 
 /- English proof (translation)
-Establish `hI : ∀ g : GL (Fin 2) F, (∀ i j, IsIntegral ℤ (g.val i j)) → ∀ i j, (jF F g).val i j ∈ Ohat F`. Introduce `g hg i j`. Express the relevant statement in the definitionally equal form `algebraMap F (Af F) (g.val i j) ∈ Ohat F`. Conclude with `((hM F).2.2.2.2.2.1 _).1 (hg i j)`. Use `((hM F).1 _).2 ⟨hI _ ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro i j; fin_cases i <;> fin_cases j <;> simp [up, h1, h3, isIntegral_zero, isIntegral_one]`. Rewrite using `[← map_inv]`. Use `hI _ ?_` and prove the remaining obligations. Apply the tactic sequence `intro i j; fin_cases i <;> fin_cases j <;> simp [up, h2, isIntegral_zero, isIntegral_one, h3.mul h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem up_mem (hM : AMem) {F : Type} [Field F] [NumberField F] (u t : F) (hu : u ≠ 0)
     (h1 : IsIntegral ℤ u) (h2 : IsIntegral ℤ u⁻¹) (h3 : IsIntegral ℤ t) : jF F (up u t hu) ∈ K0 F := by
@@ -33,26 +33,26 @@ theorem up_mem (hM : AMem) {F : Type} [Field F] [NumberField F] (u t : F) (hu : 
     intro i j; fin_cases i <;> fin_cases j <;> simp [up, h2, isIntegral_zero, isIntegral_one, h3.mul h2]
 
 /- English proof (translation)
-Simplify using `[Dat.Ht]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ht01 {F I Gf : Type} [Field F] [Group Gf] [Fintype I] (D : Dat F I Gf) (z : X I) (x : Gf) :
     D.Ht ![0, 1] z x = (∏ v, |(z v).1.im|) * D.hf ![0, 1] x := by
   simp [Dat.Ht]
 
 /- English proof (translation)
-Establish `hs : (![0, 1] : Fin 2 → F) ≠ 0`. Introduce `h`. Use `congrFun h 1` as an intermediate fact. Simplify using `at this`. Establish `hdb : b.val.det = b 0 0 * b 1 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_fin_two]`. Simplify using `[hb]`. Establish `hdet : b.val.det ≠ 0` using `b.det_ne_zero`. Establish `hd : b 1 1 ≠ 0` using `fun e => hdet (by rw [hdb, e, mul_zero])`. Establish `hv : (![0, 1] : Fin 2 → F) ᵥ* b.val = b 1 1 • ![0, 1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i; fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, hb]`. Establish `key` using `h2 _ hs b x`. Rewrite `key` using `[hv, h3 _ hs _ hd]`. Establish `him : ∀ v, ((D.act b z v).1).im = D.σ v (b 0 0) / D.σ v (b 1 1) * (z v).1.im`. Introduce `v`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hσ : D.σ v (b 1 1) ≠ 0` using `(map_ne_zero _).2 hd`. Simplify using `only [Dat.act, coe_smul]`. Rewrite using `[im_div, det_eq]`. Simplify using `[den, Dat.r, hb, Complex.normSq_ofReal]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[ht01, ht01]`. Repeatedly rewrite using `[him]`. Establish `hpd : ∏ v, |D.σ v b.val.det| ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => abs_ne_zero.2 ((map_ne_zero _).2 hdet)`. Apply `mul_right_cancel₀ hpd` to reduce the goal to its premises. Establish `e : (∏ v, |D.σ v (b 0 0) / D.σ v (b 1 1) * (z v).1.im|) * ∏ v, D.σ v (b 1 1) ^ 2 = (∏ v, |(z v).1.im|) * ∏ v, |D.σ v b.val.det|`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hσ : D.σ v (b 1 1) ≠ 0` using `(map_ne_zero _).2 hd`. Rewrite using `[hdb, map_mul, abs_mul, abs_mul, abs_div, ← sq_abs (D.σ v (b 1 1))]`. Establish `: |D.σ v (b 1 1)| ≠ 0` using `abs_ne_zero.2 hσ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_assoc, key]`. Take the linear combination `D.hf ![0, 1] x * e`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ht_inv {F I Gf : Type} [Field F] [Group Gf] [Fintype I] (D : Dat F I Gf)
     (h2 : ∀ s : Fin 2 → F, s ≠ 0 → ∀ γ x, D.hf s (D.j γ * x) * ∏ v, |D.σ v γ.val.det| = D.hf (s ᵥ* γ.val) x)
@@ -93,7 +93,7 @@ theorem ht_inv {F I Gf : Type} [Field F] [Group Gf] [Fintype I] (D : Dat F I Gf)
   linear_combination D.hf ![0, 1] x * e
 
 /- English proof (translation)
-Simplify using `[Dat.act, coe_smul, num, den, Dat.r, up, mkDat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_up {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (c : Pl F → ℕ) (χ : Hc c →* ℂˣ)
     (u t : F) (hu : u ≠ 0) (z : X (InfinitePlace F)) (v : InfinitePlace F) :
@@ -101,11 +101,9 @@ theorem act_up {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (c : Pl F 
   simp [Dat.act, coe_smul, num, den, Dat.r, up, mkDat]
 
 /- English proof (translation)
-Rewrite using `[div_le_iff₀ hC, mul_comm]`. Establish `ha : 0 ≤ C * |y v|` using `by positivity`. Break down `le_or_gt 1 (C * |y v|) with h1 | h1` into its components or cases. Conclude with `(min_le_left _ _).trans h1`. Establish `: Nonempty ι` using `⟨v⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∏ v', |y v'| ≤ (C * |y v|) ^ Fintype.card ι`. Rewrite using `[← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun _ _ => abs_nonneg _) fun v' _ => hy v' v`. Establish `hpow` using `pow_le_of_le_one ha h1.le (Fintype.card_ne_zero (α := ι))`. Establish `hcm : c₀ / M ≤ C * |y v|`.
-
-Rewrite using `[div_le_iff₀ hM]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (hp.trans hpow) hM.le)`. Conclude with `(min_le_right _ _).trans hcm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low {ι : Type} [Fintype ι] (y : ι → ℝ) {C c₀ M : ℝ} (hC : 0 < C) (hM : 0 < M)
     (hy : ∀ v v', |y v| ≤ C * |y v'|) (h : c₀ ≤ (∏ v, |y v|) * M) (v : ι) : min 1 (c₀ / M) / C ≤ |y v| := by
@@ -127,27 +125,25 @@ end UnipotentNormalization
 
 open UnipotentNormalization in
 /- English proof (translation)
-Introduce `hM hB hO hU hT hH hMu F _ _ _ c hc χ c₀ hc₀`. Take `⟨S0, hS0⟩` from `hB F c hc`. Use `choose S' hS' using fun x1 : GF F => hO F c hc x1`. Take `⟨CU, hCU, hU'⟩` from `hU F`. Take `⟨CT, hCT, hT'⟩` from `hT F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h2, h3⟩` from `hH F c hc χ`. Take `⟨hm, -⟩` from `hMu F c hc χ`. Establish `hs : (![0, 1] : Fin 2 → F) ≠ 0`. Introduce `h`. Use `congrFun h 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use `set S := S0.biUnion S' with hSdef`. Use `set M : ℝ := 1 + ∑ x' ∈ S, |(mkDat c χ).hf ![0, 1] x'| with hMdef`. Establish `hM0 : 0 < M` using `by positivity`. Establish `hMS : ∀ x' ∈ S, (mkDat c χ).hf ![0, 1] x' ≤ M` using `fun x' hx' => (le_abs_self _).trans ((Finset.single_le_sum (f := fun x' => |(mkDat c χ).hf ![0, 1] x'|) (fun _ _ => abs_nonneg _) hx').trans (le_add_of_nonneg_left zero_le_one))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨S, max CU CT, min 1 (c₀ / M) / CU, by positivity, fun z x hz => ?_⟩` and prove the remaining obligations. Take `⟨b1, hb1, x1, hx1, h1, hh1, e1⟩` from `hS0 x`. Take `⟨u, hu0, hui, hui', hu⟩` from `hU' (fun v => (((mkDat c χ).act b1 z) v).1.im) (fun v => (((mkDat c χ).act b1 z) v).2)`. Take `⟨t, hti, ht⟩` from `hT' (fun v => sg v u * (((mkDat c χ).act b1 z) v).1.re)`. Take `⟨x', hx', h2', hh2, e2⟩` from `hS' x1 _ (up_mem hM u t hu0 hui hui' hti)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb : (up u t hu0 * b1) 1 0 = 0`. Simplify using `[up, Matrix.mul_apply, Fin.sum_univ_two, hb1]`. Establish `hact : (mkDat c χ).act (up u t hu0 * b1) z = (mkDat c χ).act (up u t hu0) ((mkDat c χ).act b1 z)`. Use function extensionality and compare the values at `v`. Simplify using `only [Dat.act, map_mul, mul_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : (mkDat c χ).j (up u t hu0 * b1) * x = x' * (h2' * h1)`. Express the relevant statement in the definitionally equal form `jF F (up u t hu0 * b1) * x = _`. Rewrite using `[map_mul, mul_assoc, e1, ← mul_assoc, e2, mul_assoc]`. Establish `hH' : h2' * h1 ∈ (mkDat c χ).H` using `Subgroup.mem_sup_left (mul_mem hh2 hh1)`. Establish `hx'S : x' ∈ S` using `Finset.mem_biUnion.2 ⟨x1, hx1, hx'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨up u t hu0 * b1, hb, ⟨x', hx'S, h2' * h1, hH', hj⟩, ?_⟩` and prove the remaining obligations. Establish `e` using `ht_inv (mkDat c χ) h2 h3 _ hb z x`. Rewrite `hz` using `[← e, hj, hact, ht01, hm _ hs _ _ hH']`. Rewrite using `[hact]`. Establish `hre : ∀ v, (((mkDat c χ).act (up u t hu0) ((mkDat c χ).act b1 z)) v).1.re = sg v u * (((mkDat c χ).act b1 z) v).1.re + sg v t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `v`. Rewrite using `[act_up]`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Establish `him : ∀ v, (((mkDat c χ).act (up u t hu0) ((mkDat c χ).act b1 z)) v).1.im = sg v u * (((mkDat c χ).act b1 z) v).1.im`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[act_up]`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]`. Establish `hy : ∀ v v', |(((mkDat c χ).act (up u t hu0) ((mkDat c χ).act b1 z)) v).1.im| ≤ CU * |(((mkDat c χ).act (up u t hu0) ((mkDat c χ).act b1 z)) v').1.im|`. Introduce `v v'`. Rewrite using `[him, him]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu v v'`. Establish `hprod : c₀ ≤ (∏ v, |(((mkDat c χ).act (up u t hu0) ((mkDat c χ).act b1 z)) v).1.im|) * M` using `hz.trans (mul_le_mul_of_nonneg_left (hMS x' hx'S) (Finset.prod_nonneg fun _ _ => abs_nonneg _))`. Introduce `v`. Use `⟨?_, low _ hCU hM0 hy hprod v, fun v' => ?_⟩` and prove the remaining obligations. Rewrite using `[hre]`.
-
-Conclude with `(ht v).trans (le_max_right _ _)`. Conclude with `(hy v v').trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (abs_nonneg _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dNormal : AMem → ABnfH → AOrb → AUnit → ATrans → DHt → DMul → DNormal := by
   intro hM hB hO hU hT hH hMu F _ _ _ c hc χ c₀ hc₀

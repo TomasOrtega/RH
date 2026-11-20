@@ -21,9 +21,9 @@ open Filter Topology Laurent Polynomial
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (mul_pos hε hq) ha1`. Establish `hlim : Tendsto (fun s : ℝ => s ^ n) (𝓝[<] 1) (𝓝 1)`. Simplify using `using ((continuous_pow n).tendsto (1 : ℝ)).mono_left nhdsWithin_le_nhds`. Establish `hmax : max a b < 1` using `max_lt ha1 hb1`. Establish `hI : ∀ᶠ s in 𝓝[<] (1 : ℝ), s ∈ Set.Ioo (max a b) 1` using `Ioo_mem_nhdsLT hmax`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs1, hs2⟩` from `(hI.and (hlim.eventually (lt_mem_nhds hq1))).exists`. Establish `hs0 : 0 < s` using `ha.trans_le ((le_max_left _ _).trans hs1.1.le)`. Use `⟨s, n, hs1.1.le, hs1.2, hs2.le, ?_⟩` and prove the remaining obligations. Rewrite using `[div_pow, div_le_iff₀ (pow_pos hs0 n)]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_next_radius {q : ℝ} (hq : 0 < q) (hq1 : q < 1) {a b ε : ℝ} (ha : 0 < a)
     (ha1 : a < 1) (hb1 : b < 1) (hε : 0 < ε) :
@@ -41,19 +41,17 @@ theorem exists_next_radius {q : ℝ} (hq : 0 < q) (hq1 : q < 1) {a b ε : ℝ} (
     _ ≤ ε * s ^ n := mul_le_mul_of_nonneg_left hs2.le hε.le
 
 /- English proof (translation)
-Establish `next : ∀ (k : ℕ) (x : {x : ℝ // 0 < x ∧ x < 1}), ∃ y : {x : ℝ // 0 < x ∧ x < 1}, ∃ n : ℕ, max x.1 (1 - 1 / ((k : ℝ) + 2)) ≤ y.1 ∧ q ≤ y.1 ^ n ∧ (x.1 / y.1) ^ n ≤ (1 / 2) ^ (k + 1)`. Introduce `k x`. Establish `hb : 1 - 1 / ((k : ℝ) + 2) < 1`. Establish `: 0 < 1 / ((k : ℝ) + 2)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨s, n, h1, h2, h3, h4⟩` from `exists_next_radius hq hq1 x.2.1 x.2.2 hb (by positivity : (0 : ℝ) < (1 / 2) ^ (k + 1))`. Conclude with `⟨⟨s, x.2.1.trans_le ((le_max_left _ _).trans h1), h2⟩, n, h1, h3, h4⟩`. Use `choose y n hy using next`. Set `T : ℕ → {x : ℝ // 0 < x ∧ x < 1}` to `fun k => Nat.rec ⟨r, hr, hr1⟩ (fun k x => y k x) k`. Establish `hT : ∀ k, T (k + 1) = y k (T k)` using `fun k => rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => (T k).1, fun k => n k (T k), rfl, ?_, fun k => (T k).2, ?_, fun k => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `monotone_nat_of_le_succ fun k => ?_` and prove the remaining obligations. Rewrite using `[hT]`. Conclude with `(le_max_left _ _).trans (hy k (T k)).1`. Introduce `ρ hρ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `exists_nat_gt (1 / (1 - ρ))`. Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Establish `h1` using `(le_max_right _ _).trans (hy k (T k)).1`. Rewrite `h1` using `[← hT]`. Establish `hpos : 0 < 1 - ρ` using `by linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 1 / ((k : ℝ) + 2) < 1 - ρ`. Rewrite using `[div_lt_iff₀ (by positivity)]`. Rewrite `hk` using `[div_lt_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show q ≤ (T (k + 1)).1 ^ n k (T k)`. Rewrite using `[hT]`. Conclude with `(hy k (T k)).2.1`. Use `show ((T k).1 / (T (k + 1)).1) ^ n k (T k) ≤ _`. Rewrite using `[hT]`.
-
-Conclude with `(hy k (T k)).2.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_radii {q : ℝ} (hq : 0 < q) (hq1 : q < 1) {r : ℝ} (hr : 0 < r) (hr1 : r < 1) :
     ∃ (t : ℕ → ℝ) (n₀ : ℕ → ℕ), t 0 = r ∧ Monotone t ∧ (∀ k, 0 < t k ∧ t k < 1) ∧
@@ -97,9 +95,9 @@ namespace AnnulusRing
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
 /- English proof (translation)
-Use `convergesAt_of_support (A := 0) (B := p.natDegree) (fun n hn => ?_) ρ` and prove the remaining obligations. Simplify using `only [polySeq]`. Break down `hn with hn | hn` into its components or cases. Rewrite using `[if_neg (by omega)]`. Rewrite using `[if_pos (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `coeff_eq_zero_of_natDegree_lt (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem convergesAt_polySeq (p : K[X]) (ρ : ℝ) : ConvergesAt (polySeq p) ρ := by
   refine convergesAt_of_support (A := 0) (B := p.natDegree) (fun n hn => ?_) ρ
@@ -110,7 +108,7 @@ theorem convergesAt_polySeq (p : K[X]) (ρ : ℝ) : ConvergesAt (polySeq p) ρ :
     exact coeff_eq_zero_of_natDegree_lt (by omega)
 
 /- English proof (translation)
-Introduce `h`. Apply `hp` to reduce the goal to its premises. Use extensionality with `i`. Use `congrFun h (i : ℤ)` as an intermediate fact. Simplify `this` using `[polySeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem polySeq_ne_zero {p : K[X]} (hp : p ≠ 0) : polySeq p ≠ 0 := by
   intro h
@@ -120,7 +118,7 @@ theorem polySeq_ne_zero {p : K[X]} (hp : p ≠ 0) : polySeq p ≠ 0 := by
   simpa [polySeq] using this
 
 /- English proof (translation)
-Rewrite using `[← Polynomial.aeval_algHom_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrict_aeval_T {I J : Set ℝ} [Fact (∃ ρ ∈ I, 0 < ρ)] [Fact (∃ ρ ∈ J, 0 < ρ)]
     (hJ : J ⊆ I) (p : K[X]) :
@@ -136,51 +134,43 @@ variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [Complete
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨q, hq, hq1, hbig⟩` from `exists_q_of_isDiscreteValuationRing (K := K)`. Take `⟨t, n₀, ht0, hmono, ht01, htlim, hn₀, hβ⟩` from `exists_radii hq hq1 hr hr1`. Establish `hrt : ∀ k, r ≤ t k` using `fun k => ht0 ▸ hmono (Nat.zero_le k)`. Establish `ht1 : ∀ k, t k < 1` using `fun k => (ht01 k).2`. Use `haveI hinst : ∀ k, Fact (∃ ρ ∈ Set.Icc r (t (k + 1)), 0 < ρ) := fun k => ⟨⟨r, ⟨le_rfl, hrt _⟩, hr⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ k, Set.Icc r (t (k + 1)) ⊆ Set.Ico r 1` using `fun k ρ hρ => ⟨hρ.1, hρ.2.trans_lt (ht1 _)⟩`. Establish `hgen` using `fun k => hloc r (t (k + 1)) hr (hrt _) (restrict (hsub k) f) (restrict (hsub k) g)`. Use `choose p hp using hgen`. Establish `hf0 : f.coeff ≠ 0` using `fun e => hf (AnnulusRing.ext e)`. Establish `hg0 : g.coeff ≠ 0` using `fun e => hg (AnnulusRing.ext e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp0 : ∀ k, p k ≠ 0`. Introduce `k hpk`. Establish `h1 : restrict (hsub k) f ∈ Ideal.span ({restrict (hsub k) f, restrict (hsub k) g} : Set (AnnulusRing K (Set.Icc r (t (k + 1)))))` using `Ideal.subset_span (by simp)`. Rewrite `h1` using `[hp k, hpk, map_zero, Ideal.span_singleton_eq_bot.2 rfl, Ideal.mem_bot]`. Conclude with `hf0 (congrArg AnnulusRing.coeff h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : ∀ k, ∃ v, IsUnitOn v r (t (k + 1)) ∧ cmul (polySeq (p k)) v = polySeq (p (k + 1))`. Introduce `k`. Establish `hJ : Set.Icc r (t (k + 1)) ⊆ Set.Icc r (t (k + 1 + 1))` using `Set.Icc_subset_Icc le_rfl (hmono (Nat.le_succ _))`. Establish `e1` using `hp (k + 1)`. Establish `e2` using `congrArg (Ideal.map (restrict hJ)) e1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[Ideal.map_span, Ideal.map_span, Set.image_pair, Set.image_singleton, restrict_aeval_T]`. Establish `e3 : restrict hJ (restrict (hsub (k + 1)) f) = restrict (hsub k) f` using `rfl`. Establish `e4 : restrict hJ (restrict (hsub (k + 1)) g) = restrict (hsub k) g` using `rfl`. Rewrite `e2` using `[e3, e4, hp k, Ideal.span_singleton_eq_span_singleton]`. Take `⟨u, hu⟩` from `e2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(u : AnnulusRing K (Set.Icc r (t (k + 1)))).coeff, ⟨fun ρ hρ => (u : AnnulusRing K _).convergesAt hρ (hr.trans_le hρ.1), fun h0 => ?_, lowIndex_eq_highIndex_of_isUnit hr u.isUnit⟩, ?_⟩` and prove the remaining obligations. Conclude with `u.ne_zero (AnnulusRing.ext h0)`. Use `congrArg AnnulusRing.coeff hu` as an intermediate fact. Rewrite `this` using `[coeff_mul, coeff_aeval_alt, coeff_aeval_alt]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hDc, hDu⟩` from `exists_divisor hr ht0 hmono ht1 htlim hq hbig hn₀ hβ (fun k ρ _ => convergesAt_polySeq (p k) ρ) (fun k => polySeq_ne_zero (hp0 k)) hv`. Set `eD : AnnulusRing K (Set.Ico r 1)` to `⟨D, fun ρ hρ _ => hDc ρ hρ.1 hρ.2⟩`. Establish `hD0 : D ≠ 0`. Introduce `h0`. Take `⟨u, hu, hDu'⟩` from `hDu 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `cmul_ne_zero hr (convergesAt_polySeq _ r) (hu.1 r ⟨le_rfl, hrt _⟩) (polySeq_ne_zero (hp0 0)) hu.2.1 (hDu'.symm.trans h0)`. Establish `hunit : ∀ m, ∃ w : AnnulusRing K (Set.Icc r (t (m + 1))), IsUnit w ∧ restrict (hsub m) eD = aeval T (p m) * w`. Introduce `m`. Take `⟨u, hu, hDu'⟩` from `hDu m`. Use `⟨⟨u, fun ρ hρ _ => hu.1 ρ hρ⟩, isUnit_of_lowIndex_eq_highIndex hr _ (fun h0 => hu.2.1 (congrArg AnnulusRing.coeff h0)) hu.2.2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `n`. Rewrite using `[coeff_mul, coeff_aeval_alt]`. Conclude with `congrFun hDu' n`. Establish `hdiv : ∀ x : AnnulusRing K (Set.Ico r 1), (∀ m, restrict (hsub m) x ∈ Ideal.span ({aeval T (p m)} : Set (AnnulusRing K (Set.Icc r (t (m + 1)))))) → ∃ y : AnnulusRing K (Set.Ico r 1), x = eD * y`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `loc : ∀ m, ∃ h : ℤ → K, (∀ ρ ∈ Set.Icc r (t (m + 1)), ConvergesAt h ρ) ∧ cmul D h = x.coeff`. Introduce `m`. Take `⟨w, hw, hwD⟩` from `hunit m`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 (hx m)`. Take `⟨wi, hwi⟩` from `hw.exists_right_inv`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨(wi * z).coeff, fun ρ hρ => (wi * z).convergesAt hρ (hr.trans_le hρ.1), ?_⟩` and prove the remaining obligations. Establish `: restrict (hsub m) eD * (wi * z) = restrict (hsub m) x`. Rewrite using `[hwD, ← hz]`. Take the linear combination `(aeval T (p m) * z) * hwi`. Conclude with `congrArg AnnulusRing.coeff this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose h hh hhD using loc`. Establish `hall : ∀ m, h m = h 0`. Introduce `m`. Establish `hc : ∀ ρ ∈ Set.Icc r (t 1), ConvergesAt (h m) ρ` using `fun ρ hρ => hh m ρ ⟨hρ.1, hρ.2.trans (hmono (by omega))⟩`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub0 : h m - h 0 ≠ 0` using `sub_ne_zero.2 hne`. Establish `hzero : cmul D (h m - h 0) = 0` using `by haveI : Fact (∃ ρ ∈ Set.Icc r (t 1), 0 < ρ) := ⟨⟨r, ⟨le_rfl, hrt _⟩, hr⟩⟩`. Establish `e` using `cmul_add hr (hDc r le_rfl hr1) (hc r ⟨le_rfl, hrt _⟩) ((hh 0 r ⟨le_rfl, hrt _⟩).neg)`. Rewrite `e` using `[← sub_eq_add_neg, cmul_neg, hhD m, hhD 0, ← sub_eq_add_neg, sub_self]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `cmul_ne_zero hr (hDc r le_rfl hr1) ((hc r ⟨le_rfl, hrt _⟩).sub hr (hh 0 r ⟨le_rfl, hrt _⟩)) hD0 hsub0 hzero`. Use `⟨⟨h 0, fun ρ hρ hρ0 => ?_⟩, AnnulusRing.ext ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `htlim ρ hρ.2`. Rewrite using `[← hall k]`. Conclude with `hh k ρ ⟨hρ.1, hk.trans (hmono (Nat.le_succ k))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hhD 0).symm`. Establish `memf : ∀ m, restrict (hsub m) f ∈ Ideal.span ({aeval T (p m)} : Set (AnnulusRing K (Set.Icc r (t (m + 1)))))` using `fun m => by`. Rewrite using `[← hp m]; exact Ideal.subset_span (by simp)`. Establish `memg : ∀ m, restrict (hsub m) g ∈ Ideal.span ({aeval T (p m)} : Set (AnnulusRing K (Set.Icc r (t (m + 1)))))` using `fun m => by`. Rewrite using `[← hp m]; exact Ideal.subset_span (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨f', hf'⟩` from `hdiv f memf`. Take `⟨g', hg'⟩` from `hdiv g memg`. Establish `hloc' : ∀ k, ∃ a b : ℤ → K, (∀ ρ, r ≤ ρ → ρ ≤ t (k + 1) → ConvergesAt a ρ ∧ ConvergesAt b ρ) ∧ cmul a f'.coeff + cmul b g'.coeff = Pi.single 0 1`. Introduce `k`. Establish `hmem : aeval T (p k) ∈ Ideal.span ({restrict (hsub k) f, restrict (hsub k) g} : Set (AnnulusRing K (Set.Icc r (t (k + 1)))))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp k]`. Conclude with `Ideal.subset_span rfl`. Take `⟨α, β, hαβ⟩` from `Ideal.mem_span_pair.1 hmem`. Take `⟨w, hw, hwD⟩` from `hunit k`. Establish `hDne : restrict (hsub k) eD ≠ 0` using `fun h0 => hD0 (congrArg AnnulusRing.coeff h0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : restrict (hsub k) eD * (w * α * restrict (hsub k) f' + w * β * restrict (hsub k) g' - 1) = 0`. Establish `e1 : restrict (hsub k) f = restrict (hsub k) eD * restrict (hsub k) f'`. Rewrite using `[hf', map_mul]`. Establish `e2 : restrict (hsub k) g = restrict (hsub k) eD * restrict (hsub k) g'`. Rewrite using `[hg', map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hαβ` using `[e1, e2]`. Take the linear combination `w * hαβ - hwD`. Break down `mul_eq_zero.1 key with h0 | h0` into its components or cases. Conclude with `absurd h0 hDne`. Use `⟨(w * α).coeff, (w * β).coeff, fun ρ h1 h2 => ⟨(w * α).convergesAt ⟨h1, h2⟩ (hr.trans_le h1), (w * β).convergesAt ⟨h1, h2⟩ (hr.trans_le h1)⟩, ?_⟩` and prove the remaining obligations.
-
-Use `congrArg AnnulusRing.coeff (sub_eq_zero.1 h0)` as an intermediate fact. Rewrite `this` using `[coeff_add, coeff_mul, coeff_mul]`. Conclude with `this`. Take `⟨a, b, hab, hid⟩` from `mittag_leffler (s := fun k => t (k + 1)) hr (hrt 1) (fun i j hij => hmono (Nat.add_le_add_right hij 1)) (fun k => ht1 _) (fun ρ hρ => let ⟨k, hk⟩ := htlim ρ hρ; ⟨k, hk.trans (hmono (Nat.le_succ k))⟩) (fun ρ h1 h2 => f'.convergesAt ⟨h1, h2⟩ (hr.trans_le h1)) (fun ρ h1 h2 => g'.con …`. Set `ea : AnnulusRing K (Set.Ico r 1)` to `⟨a, fun ρ hρ _ => (hab ρ hρ.1 hρ.2).1⟩`.
-
-Set `eb : AnnulusRing K (Set.Ico r 1)` to `⟨b, fun ρ hρ _ => (hab ρ hρ.1 hρ.2).2⟩`. Establish `hone : ea * f' + eb * g' = 1` using `AnnulusRing.ext hid`. Use `⟨eD, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x (rfl | rfl)`.
-
-Conclude with `Ideal.mem_span_singleton'.2 ⟨f', by rw [hf', mul_comm]⟩`. Conclude with `Ideal.mem_span_singleton'.2 ⟨g', by rw [hg', mul_comm]⟩`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `Ideal.mem_span_pair.2 ⟨ea, eb, ?_⟩` and prove the remaining obligations. Rewrite using `[hf', hg']`.
-
-Take the linear combination `eD * hone`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem span_pair_isPrincipal_Ico [IsDiscreteValuationRing (normInteger K)]
     (hloc : ∀ (α β : ℝ) [Fact (∃ ρ ∈ Set.Icc α β, 0 < ρ)], 0 < α → α ≤ β →
@@ -341,11 +331,11 @@ namespace AnnulusRing
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
 /- English proof (translation)
-Rewrite using `[IsBezout.iff_span_pair_isPrincipal]`. Introduce `f g`. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Rewrite using `[show ({0, g} : Set (AnnulusRing.halfOpen K r)) = insert 0 {g} from rfl, Ideal.span_insert_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨g, rfl⟩`. Distinguish the cases in `hg : g = 0`. Substitute `hg` using the available equality. Rewrite using `[Set.pair_comm, show ({0, f} : Set (AnnulusRing.halfOpen K r)) = insert 0 {f} from rfl, Ideal.span_insert_zero]`. Conclude with `⟨f, rfl⟩`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨D, hD⟩` from `span_pair_isPrincipal_Ico (fun α β _ hα _ f g => exists_span_eq_aeval hα f g) hr Fact.out f g hf hg`. Conclude with `⟨D, hD⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isBezout_halfOpen [IsDiscreteValuationRing (normInteger K)] {r : ℝ} [Fact (r < 1)]
     (hr : 0 < r) : IsBezout (AnnulusRing.halfOpen K r) := by

@@ -24,7 +24,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Simplify using `[B.hsVec, PiLp.inner_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_inner_sum (A₁ A₂ : Wq →L[ℂ] Wp) :
     inner ℂ (B.hsVec A₁) (B.hsVec A₂) =
@@ -39,7 +39,7 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `c1` using `Qx5.smoothLev_continuousOn (Qx5.slice_smooth Θ₁.2 hc)`. Establish `c2` using `Qx5.smoothLev_continuousOn (Qx5.slice_smooth Θ₂.2 hc)`. Conclude with `Qx5.integrable_cpt hμ (p := fun g => inner ℂ ((Θ₁ : Q.Fn k r (Wq →L[ℂ] Wp)) c g v) ((Θ₂ : Q.Fn k r (Wq →L[ℂ] Wp)) c g v)) hK hKD ((c1.clm_apply continuousOn_const).inner (c2.clm_apply continuousOn_const)) h0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem int_pair {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Q.Glev k r (Fin.last r)) μ)
     (Θ₁ Θ₂ : Q.RadSp k r z z' π π') {c : Fin r → ℂ} (hc : c ∈ OmX r) {K : Set (Q.Mx k r)} (hK : IsCompact K)
@@ -55,7 +55,7 @@ theorem int_pair {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Q.Glev k r (Fin.last
     ((c1.clm_apply continuousOn_const).inner (c2.clm_apply continuousOn_const)) h0
 
 /- English proof (translation)
-Repeatedly rewrite using `[hs_inner_sum]`. Use `integral_finsetSum _ fun i _ => int_pair hμ Θ₁ Θ₂ hc hK hKD _ fun g hg hgK => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases h0 g hg hgK with h | h <;> simp [h]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem int_hs_sum [FiniteDimensional ℂ Wq] {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Q.Glev k r (Fin.last r)) μ)
     (Θ₁ Θ₂ : Q.RadSp k r z z' π π') {c : Fin r → ℂ} (hc : c ∈ OmX r) {K : Set (Q.Mx k r)} (hK : IsCompact K)
@@ -75,11 +75,11 @@ end int
 section weight
 
 /- English proof (translation)
-Establish `hm : MeasurableSet (Ann P)` using `measurableSet_lt measurable_const Complex.continuous_normSq.measurable`. Rewrite using `[← integral_indicator hm]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [JCx2.rb_ae_ne_circle hTT] with ζ hζ`. Distinguish the cases in `h : ζ ∈ Ann P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem h]`. Establish `h' : P.TT < Complex.normSq ζ` using `h`. Establish `hle : P.T * P.T' ≤ Complex.normSq ζ` using `le_of_lt h'`. Unfold `wR B2.zWeight`. Rewrite using `[if_pos hle, Real.sq_sqrt (pow_nonneg (sub_nonneg.2 (le_of_lt (show P.TT < Complex.normSq ζ from h))) _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, JCx2.rb_zWeight_zero_of_not (k := P.k) (T := P.T) (T' := P.T') h hζ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zw_ann (P : M.Par) (hTT : 0 < P.TT) (ψ : ℂ → ℂ) :
     (∫ ζ, (B2.zWeight P.k P.T P.T' ζ : ℂ) * ψ ζ) =
@@ -101,51 +101,45 @@ theorem zw_ann (P : M.Par) (hTT : 0 < P.TT) (ψ : ℂ → ℂ) :
 end weight
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH Y a b c hc Φ Ψ hKz`. Take `⟨Kz, hKzc, hKzA, hKz0⟩` from `hKz`. Establish `hP` using `hH.1`. Establish `hT : Tz P.k P.r Bs.z = P.T` using `hP.2.2.2.1`. Establish `hT' : Tz P.k P.r Bs.z' = P.T'` using `hP.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAnn : ∀ ζ : ℂ, ζ ∈ Ann P ↔ Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ`. Introduce `ζ`. Rewrite using `[hT, hT']`. Both sides reduce to the same expression. Establish `hmem` using `Formalism.FourierDecayAlt.P.b2_rank_one_mem P.k P.r Bs.z Bs.z' Bs.μsec Bs.z_mem Bs.z'_mem Bs.sec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdom : ∀ ζ : ℂ, Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ → ∀ h ∈ UWset P.k P.r Bs.z, ∀ h' ∈ UWset P.k P.r Bs.z', (c, h⁻¹ * NF.muZ P.k P.r Bs.μsec ζ * h') ∈ Q.DomR P.k P.r Bs.z Bs.z'`. Introduce `ζ hζ h hh h' hh'`. Take `⟨hm, hherm⟩` from `hmem ζ hζ h hh h' hh'`. Use `⟨hc, JCx2.rb_uwb_glev hm, ?_⟩` and prove the remaining obligations. Unfold `Q.GGl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[P5.Rad.zetaL_last]`. Use `erw [hherm]`. Conclude with `sub_pos.2 hζ`. Establish `hdom0 : ∀ ζ : ℂ, Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ → (c, NF.muZ P.k P.r Bs.μsec ζ) ∈ Q.DomR P.k P.r Bs.z Bs.z'`. Introduce `ζ hζ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hdom ζ hζ 1 (Qx8.uw_one _) 1 (Qx8.uw_one _)` as an intermediate fact. Simplify using `using this`. Set `SW : Set (Mt P.k P.r)` to `{x | (Matrix.of x : Q.Mx P.k P.r) ∈ UWset P.k P.r Bs.z}`. Set `SW' : Set (Mt P.k P.r)` to `{x | (Matrix.of x : Q.Mx P.k P.r) ∈ UWset P.k P.r Bs.z'}`. Set `F : ℂ × (Mt P.k P.r × Mt P.k P.r) → Mt P.k P.r` to `fun p => JCx2.rbMul (JCx2.rbMul (p.2.1, JCx2.rbEf P.k P.r Bs.μsec p.1), p.2.2)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : ∀ p : ℂ × (Mt P.k P.r × Mt P.k P.r), (Matrix.of (F p) : Q.Mx P.k P.r) = Matrix.of p.2.1 * NF.muZ P.k P.r Bs.μsec p.1 * Matrix.of p.2.2` using `fun p => rfl`. Establish `hSW : IsCompact SW` using `Formalism.FourierDecayAlt.P.B2x3.compactW P.k P.r Bs.z Bs.z_mem Bs.T_pos`. Establish `hSW' : IsCompact SW'` using `Formalism.FourierDecayAlt.P.B2x3.compactW P.k P.r Bs.z' Bs.z'_mem Bs.T'_pos`. Establish `hS : IsCompact (Kz ×ˢ (SW ×ˢ SW'))` using `hKzc.prod (hSW.prod hSW')`. Establish `hEc : ContinuousOn (JCx2.rbEf P.k P.r Bs.μsec) (Ann P)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `JCx2.rb_contOn_E (k := P.k) (r := P.r) (T := Tz P.k P.r Bs.z) (T' := Tz P.k P.r Bs.z') (μsec := Bs.μsec) fun i j => (Bs.sec.1 i j).continuousOn`. Use `h1.mono fun ζ hζ => ?_` and prove the remaining obligations. Conclude with `(hAnn ζ).1 hζ`. Establish `hFc : ContinuousOn F (Kz ×ˢ (SW ×ˢ SW'))`. Establish `hA : ContinuousOn (fun p : ℂ × (Mt P.k P.r × Mt P.k P.r) => (p.2.1, JCx2.rbEf P.k P.r Bs.μsec p.1)) (Kz ×ˢ (SW ×ˢ SW'))` using `(continuous_fst.comp continuous_snd).continuousOn.prodMk (hEc.comp continuousOn_fst fun p hp => hKzA hp.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ContinuousOn (fun p : ℂ × (Mt P.k P.r × Mt P.k P.r) => (JCx2.rbMul (p.2.1, JCx2.rbEf P.k P.r Bs.μsec p.1), p.2.2)) (Kz ×ˢ (SW ×ˢ SW'))` using `(Formalism.FourierDecayAlt.P.B7.continuous_mulM.comp_continuousOn hA).prodMk (continuous_snd.comp continuous_snd).continuousOn`. Conclude with `Formalism.FourierDecayAlt.P.B7.continuous_mulM.comp_continuousOn hB`. Set `K' : Set (Q.Mx P.k P.r)` to `F '' (Kz ×ˢ (SW ×ˢ SW'))`. Establish `hK'c : IsCompact K'` using `hS.image_of_continuousOn hFc`. Establish `hinvinv : ∀ x : Mt P.k P.r, (Matrix.of x : Q.Mx P.k P.r) ∈ UWset P.k P.r Bs.z → ((Matrix.of x : Q.Mx P.k P.r)⁻¹)⁻¹ = Matrix.of x` using `fun x hx => Matrix.inv_eq_right_inv (Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK'D : K' ⊆ Qx5.Dp P.k P.r Bs.z Bs.z'`. Introduce and unpack `g ⟨p, ⟨hp1, hp2, hp3⟩, rfl⟩`. Establish `hζ` using `(hAnn p.1).1 (hKzA hp1)`. Establish `hd` using `hdom p.1 hζ ((Matrix.of p.2.1 : Q.Mx P.k P.r)⁻¹) (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hp2) (Matrix.of p.2.2) hp3`. Rewrite `hd` using `[hinvinv _ hp2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `show (Matrix.of (F p) : Q.Mx P.k P.r) ∈ Qx5.Dp P.k P.r Bs.z Bs.z'`. Rewrite using `[hF]`. Conclude with `hd.2.2`. Establish `hvan : ∀ g ∈ Q.Glev P.k P.r (Fin.last P.r), g ∉ K' → (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g = 0 ∧ (Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g = 0`. Introduce `g hg hgK`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `hG : 0 < Q.GGl P.k P.r Bs.z Bs.z' g`. Establish `hu` using `P5.Rad.glev_last_uwb hg`. Establish `hζA : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq (herm (Hpk P.k P.r) (g.mulVec Bs.z') Bs.z)`. Unfold `Q.GGl at hG`. Rewrite `hG` using `[P5.Rad.zetaL_last]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h, hh, h', hh', hgeq⟩` from `Formalism.FourierDecayAlt.P.b2_rank_one_coord P.k P.r Bs.z Bs.z' Bs.μsec Bs.k_pos Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos Bs.sec g hu hζA`. Establish `hζK : herm (Hpk P.k P.r) (g.mulVec Bs.z') Bs.z ∉ Kz`. Introduce `hK`. Apply `hgK` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(herm (Hpk P.k P.r) (g.mulVec Bs.z') Bs.z, ((h⁻¹ : Q.Mx P.k P.r), (h' : Q.Mx P.k P.r))), ⟨hK, Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh, hh'⟩, ?_⟩` and prove the remaining obligations. Use `show (Matrix.of (F _) : Q.Mx P.k P.r) = g`. Rewrite using `[hF]`. Conclude with `hgeq.symm`. Take `⟨e1, e2⟩` from `hKz0 _ ((hAnn _).2 hζA) hζK`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd` using `hdom0 _ hζA`. Establish `q1` using `Φ.2.2.2 _ hd _ (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh) _ hh'`. Establish `q2` using `Ψ.2.2.2 _ hd _ (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh) _ hh'`. Rewrite using `[hgeq]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `erw [q1, e1]`. Simplify using the standard rewrite rules. Use `erw [q2, e2]`. Simplify using the standard rewrite rules. Establish `hnd : (c, g) ∉ Q.DomR P.k P.r Bs.z Bs.z'` using `fun hd => hG hd.2.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨Φ.2.1 (c, g) hnd, Ψ.2.1 (c, g) hnd⟩`. Take `⟨μ, hμb⟩` from `Formalism.FourierDecayAlt.P.opposite_weyl_haar_exists P.k P.r`. Establish `hμ : B.IsHaarOn (Q.Glev P.k P.r (Fin.last P.r)) μ`. Rewrite using `[← JCx2.rb_uwb_eq]`. Conclude with `hμb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadj : (∫ x : Mt P.k P.r, inner ℂ (B.hsVec ((X.t Y a b Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of x))) (B.hsVec ((Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of x))) ∂μ) = ∫ x : Mt P.k P.r, inner ℂ (B.hsVec ((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of x))) (B.hsVec ((X.t (star …`. Rewrite using `[int_hs_sum hμ _ _ hc hK'c hK'D fun g hg hgK => Or.inr (hvan g hg hgK).2, int_hs_sum hμ _ _ hc hK'c hK'D fun g hg hgK => Or.inl (hvan g hg hgK).1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Formalism.FourierDecayAlt.P.actual_adjointness Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hP X μ hμ Φ Ψ c hc ⟨K', hK'c, hK'D, hvan⟩ Y a b _`. Take `⟨C, hC, hmap⟩` from `JCx2.rb_map Bs.k_pos Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos Bs.sec hμb Bs.haarW Bs.haarW'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfW : IsFiniteMeasure Bs.μW` using `Formalism.FourierDecayAlt.P.RankOneEmbeddings.R1.haar_finite Formalism.FourierDecayAlt.P.B2x3.compactW Bs.z_mem Bs.T_pos Bs.haarW`. Establish `hfW' : IsFiniteMeasure Bs.μW'` using `Formalism.FourierDecayAlt.P.RankOneEmbeddings.R1.haar_finite Formalism.FourierDecayAlt.P.B2x3.compactW Bs.z'_mem Bs.T'_pos Bs.haarW'`. Establish `hm : 0 < (Bs.μW.prod Bs.μW').real Set.univ`. Rewrite using `[Measure.real_def, ← Set.univ_prod_univ, Measure.prod_prod, ENNReal.toReal_mul]`. Use `mul_pos (ENNReal.toReal_pos ?_ (measure_ne_top _ _)) (ENNReal.toReal_pos ?_ (measure_ne_top _ _))` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Measure.measure_univ_ne_zero.2 Bs.haarW.ne_zero`. Conclude with `Measure.measure_univ_ne_zero.2 Bs.haarW'.ne_zero`. Establish `hC1 : ((C : ℝ) * (Bs.μW.prod Bs.μW').real Set.univ) ≠ 0` using `(mul_pos (by exact_mod_cast hC) hm).ne'`. Establish `hTT : 0 < P.TT`. Unfold `M.Par.TT`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hT, ← hT']`. Conclude with `mul_pos Bs.T_pos Bs.T'_pos`. Establish `hrad : ∀ Θ₁ Θ₂ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', (∫ x : Mt P.k P.r, inner ℂ (B.hsVec ((Θ₁ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of x))) (B.hsVec ((Θ₂ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of x))) ∂μ) = (((C : ℝ) * (Bs.μW.prod Bs.μW').real Set.univ : ℝ) : ℂ) * ∫ ζ in An …`. Introduce `Θ₁ Θ₂`. Rewrite using `[JCx2.rb_integral Bs.T_pos Bs.T'_pos Bs.sec Bs.haarW Bs.haarW' hmap (fun x : Mt P.k P.r => inner ℂ (B.hsVec ((Θ₁ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of x))) (B.hsVec ((Θ₂ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of x)))) (JCx2.rb_pair_sm Θ₂ Θ₁ c) (fun ζ => inner ℂ (B.hsVec ((Θ …`.
-
-Use `congr 1`. Rewrite using `[hT, hT']`. Conclude with `zw_ann P hTT _`. Introduce `ζ hζ x y hx hy`. Establish `hPsi : (Matrix.of (JCx2.rbPsi P.k P.r (Tz P.k P.r Bs.z) (Tz P.k P.r Bs.z') Bs.μsec (ζ, (x, y))) : Q.Mx P.k P.r) = (Matrix.of x)⁻¹ * NF.muZ P.k P.r Bs.μsec ζ * Matrix.of y`.
-
-Rewrite using `[JCx2.rb_Psi_eq hζ]`. Both sides reduce to the same expression. Establish `hd` using `hdom0 ζ hζ`. Establish `hinv` using `Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hx`. Use `show inner ℂ (B.hsVec ((Θ₁ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of (JCx2.rbPsi P.k P.r (Tz P.k P.r Bs.z) (Tz P.k P.r Bs.z') Bs.μsec (ζ, (x, y)))))) (B.hsVec ((Θ₂ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of (JCx2.rbPsi P.k P.r (Tz P.k P.r Bs.z) (Tz P.k P.r Bs.z') Bs.μsec (ζ, (x, …`.
-
-Rewrite using `[hPsi]`. Use `erw [Θ₁.2.2.2 _ hd _ hinv _ hy, Θ₂.2.2.2 _ hd _ hinv _ hy]`. Conclude with `Formalism.FourierDecayAlt.P.B7.al_hs_inv _ (Bs.π_unitary _ hinv) _ (Bs.π'_unitary _ hy) _ _`. Rewrite `hadj` using `[hrad, hrad]`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hC1) hadj`.
+A detailed English derivation is pending.
 -/
 theorem radial_adjoint_identity_holds : GTRadAdj := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH Y a b c hc Φ Ψ hKz
@@ -317,7 +311,7 @@ end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.RadAdj
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 /- English proof (translation)
-The claim follows from `RadAdj.radial_adjoint_identity_holds`.
+A detailed English derivation is pending.
 -/
 theorem radial_adjoint_identity_holds : GTRadAdj := RadAdj.radial_adjoint_identity_holds
 

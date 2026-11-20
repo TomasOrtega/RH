@@ -11,7 +11,7 @@ namespace Formalism.DworkPowerSeriesWeights.OddLevelGainBounds
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Unfold `gam`. Establish `hl' : (3:ℝ) ≤ l` using `by exact_mod_cast hl`. Apply `div_nonneg (by linarith)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma gamma_nonneg {l : ℕ} (hl : 3 ≤ l) : 0 ≤ gam l := by
   unfold gam
@@ -20,9 +20,9 @@ lemma gamma_nonneg {l : ℕ} (hl : 3 ≤ l) : 0 ≤ gam l := by
   nlinarith
 
 /- English proof (translation)
-Unfold `gam`. Establish `hl' : (3:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : (0:ℝ) < l` using `by linarith`. Establish `h2 : (0:ℝ) < (l:ℝ) ^ 2 - 1` using `by nlinarith`. Use `first`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(rw [div_le_div_iff₀ h1 h2]; nlinarith)`. Consider the case `(rw [div_le_div_iff h1 h2]; nlinarith)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma inv_le_gamma {l : ℕ} (hl : 3 ≤ l) : 1 / (l : ℝ) ≤ gam l := by
   unfold gam
@@ -34,9 +34,9 @@ lemma inv_le_gamma {l : ℕ} (hl : 3 ≤ l) : 1 / (l : ℝ) ≤ gam l := by
   | (rw [div_le_div_iff h1 h2]; nlinarith)
 
 /- English proof (translation)
-Unfold `gam`. Establish `hl' : (3:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : (0:ℝ) < l` using `by linarith`. Establish `h2 : (0:ℝ) < (l:ℝ) ^ 2 - 1` using `by nlinarith`. Rewrite using `[mul_div_assoc']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `(rw [div_le_div_iff₀ h2 h1]; nlinarith)`. Consider the case `(rw [div_le_div_iff h2 h1]; nlinarith)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma two_gamma_le_three_div {l : ℕ} (hl : 3 ≤ l) : 2 * gam l ≤ 3 / (l : ℝ) := by
   unfold gam
@@ -49,43 +49,39 @@ lemma two_gamma_le_three_div {l : ℕ} (hl : 3 ≤ l) : 2 * gam l ≤ 3 / (l : �
   | (rw [div_le_div_iff h2 h1]; nlinarith)
 
 /- English proof (translation)
-Introduce `l d inst hl hd hev TT k D w E hk hw hE hoff hon`. Establish `hA` using `lemmaFa`. Establish `hc` using `lemmaFc`. Establish `hI` using `incomingBound`. Establish `hl3 : (3:ℝ) ≤ l` using `by exact_mod_cast hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : (0:ℝ) < l` using `by linarith`. Establish `hk3 : (3:ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hg` using `gamma_nonneg hl`. Take `⟨S, hS⟩ : ∃ S : ℝ, S = ∑ s : ZMod d, w s` from `⟨_, rfl⟩`. Take `⟨T, hT⟩ : ∃ T : ℝ, T = ∑ s ∈ TT, w s` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hS0 : 0 ≤ S` using `by rw [hS]; exact Finset.sum_nonneg (fun s _ => (hw s).le)`. Establish `hTS : T ≤ S`. Rewrite using `[hS, hT]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun s _ _ => (hw s).le)`. Take `⟨Ws, hWs⟩ : ∃ f : ZMod d → ℝ, f = fun s => ((k:ℝ) - 1) * w s` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E', hE'⟩ : ∃ f : ZMod d → ℝ, f = fun s => if s ∈ TT then 2 * w s else 0` from `⟨_, rfl⟩`. Establish `hWsapp : ∀ s, Ws s = ((k:ℝ) - 1) * w s` using `fun s => by rw [hWs]`. Rewrite using `[← hS, ← hT, ← hWs]`. Establish `hD0 : 0 ≤ D` using `fun s => by show (0:ℝ) ≤ D s`. Establish `h1` using `hw s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hE s).1`. Distinguish the cases in `hs : s ∈ TT`. Rewrite using `[hon s hs]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hoff s hs]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hE'0 : 0 ≤ E'` using `fun s => by show (0:ℝ) ≤ E' s`. Rewrite using `[hE']`. Apply the tactic sequence `try dsimp only`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Combine the linear relations using `[hw s]`. Conclude with `le_rfl`. Establish `hDE : D + E' = Ws + E`. Use function extensionality and compare the values at `s`. Simplify using `only [Pi.add_apply, hE', hWs]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hs : s ∈ TT`. Rewrite using `[if_pos hs, hon s hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hs, hoff s hs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨⟨sD, hsD, -, hFsD⟩, -⟩` from `hA l d hl hd hev D hD0`. Establish `h2` using `(hc l d hl hd hev D E' sD hD0 hE'0 ⟨hsD, hFsD⟩).2`. Rewrite `h2` using `[hDE]`. Establish `hE'sum : ∑ s, E' s = 2 * T`. Rewrite using `[hT, Finset.mul_sum, hE', ← Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h2` using `[hE'sum]`. Establish `hWs0 : 0 ≤ Ws` using `fun s => by show (0:ℝ) ≤ Ws s`. Rewrite using `[hWsapp]`. Use `hw s` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (0:ℝ) ≤ (k:ℝ) - 1` using `by linarith`. Check the signs of the components of the expression. Take `⟨⟨sW, hsW, -, hFsW⟩, -⟩` from `hA l d hl hd hev Ws hWs0`. Establish `hoptW : IsOptDual l d Ws sW` using `⟨hsW, hFsW⟩`. Establish `h3` using `(hc l d hl hd hev Ws E sW hWs0 (fun s => (hE s).1) hoptW).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinc` using `hI l d hl hd hev Ws sW hWs0 hoptW`. Establish `hfilt : ∑ s ∈ Finset.univ.filter (fun s : ZMod d => 2 / (l : ℝ) ≤ sW s), w s ≤ S / l`. Establish `e1 : ∑ s ∈ Finset.univ.filter (fun s : ZMod d => 2 / (l : ℝ) ≤ sW s), Ws s = ((k:ℝ) - 1) * ∑ s ∈ Finset.univ.filter (fun s : ZMod d => 2 / (l : ℝ) ≤ sW s), w s`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun s _ => hWsapp s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∑ s, Ws s = ((k:ℝ) - 1) * S`. Rewrite using `[hS, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun s _ => hWsapp s)`. Rewrite `hinc` using `[e1, e2, mul_div_assoc]`. Establish `hk1 : 0 < (k:ℝ) - 1` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_of_mul_le_mul_left hinc hk1`. Establish `hgl` using `inv_le_gamma hl`. Establish `hpt : ∀ s, E s * max (sW s - gam l) 0 ≤ 4 * w s / l + 4 * (if 2 / (l:ℝ) ≤ sW s then w s else 0)`. Introduce `s`. Take `⟨hE0, hE4⟩` from `hE s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hs0` using `(hsW.1 s).1`. Establish `hs1` using `(hsW.1 s).2`. Establish `hws` using `hw s`. Establish `hm0 : 0 ≤ max (sW s - gam l) 0` using `le_max_right _ _`. Establish `hq : 0 ≤ 4 * w s / l` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `split_ifs with hcase`. Establish `hm : max (sW s - gam l) 0 ≤ 1` using `max_le (by linarith) zero_le_one`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at hcase`. Establish `h21 : 2 / (l:ℝ) = 1 / l + 1 / l` using `by ring`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hm : max (sW s - gam l) 0 ≤ 1 / l` using `max_le (by linarith) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum3 : ∑ s, E s * max (sW s - gam l) 0 ≤ 8 / l * S`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_filter, ← Finset.sum_div, ← Finset.mul_sum, ← hS]`.
-
-Use `_ ≤ 4 * S / l + 4 * (S / l) := by linarith`. Use `_ = 8 / l * S := by ring`. Prove the components needed by the constructor for the conclusion. Establish `: gam l * (2 * T) = 2 * gam l * T` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `h2g` using `two_gamma_le_three_div hl`. Establish `hT' : 2 * gam l * T ≤ 3 / l * S`. Combine the equalities or inequalities in the displayed calculation. Establish `h11 : 11 / (l:ℝ) * S = 3 / l * S + 8 / l * S` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem proposition_six : PropSix7 := by
   intro l d inst hl hd hev TT k D w E hk hw hE hoff hon
@@ -198,7 +194,7 @@ theorem proposition_six : PropSix7 := by
     linarith
 
 /- English proof (translation)
-Establish `hf : Summable f` using `Summable.of_nonneg_of_le (fun e => (hg0 e).trans (hgf e)) hfb hb`. Establish `hg : Summable g` using `Summable.of_nonneg_of_le hg0 (fun e => (hgf e).trans (hfb e)) hb`. Use `first`. Consider the case `exact Summable.tsum_le_tsum hgf hg hf`. Consider the case `exact tsum_le_tsum hgf hg hf`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma tsum_le_of_dominated {f g b : ℕ → ℝ} (hg0 : ∀ e, 0 ≤ g e) (hgf : ∀ e, g e ≤ f e)
     (hfb : ∀ e, f e ≤ b e) (hb : Summable b) : ∑' e, g e ≤ ∑' e, f e := by
@@ -209,19 +205,15 @@ lemma tsum_le_of_dominated {f g b : ℕ → ℝ} (hg0 : ∀ e, 0 ≤ g e) (hgf :
   | exact tsum_le_tsum hgf hg hf
 
 /- English proof (translation)
-Establish `hex : ∃ e' : ℕ, Odd e' ∧ s + (e' : ZMod d) ∈ TT`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `htop : dTop d TT s = ⊤`. Unfold `dTop`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [iInf_eq_top]`. Introduce `e' he'`. Conclude with `absurd he'.2 (hne e' he'.1)`. Rewrite `h` using `[htop]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact ENat.top_ne_coe e h`. Consider the case `simp at h`. Establish `hle : ∀ e' : ℕ, Odd e' → s + (e' : ZMod d) ∈ TT → dTop d TT s ≤ (e' : ℕ∞)`. Introduce `e' h1 h2`. Unfold `dTop`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Conclude with `iInf₂_le e' ⟨h1, h2⟩`. Establish `hfind : dTop d TT s = ((Nat.find hex : ℕ) : ℕ∞)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `hle _ (Nat.find_spec hex).1 (Nat.find_spec hex).2`. Unfold `dTop`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_iInf₂` to reduce the goal to its premises. Introduce `e' he'`. Conclude with `Nat.find_min' hex he'` after adjusting the coercions. Establish `he : e = Nat.find hex`. Rewrite `hfind` using `[h]`.
-
-Conclude with `hfind` after adjusting the coercions. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `Nat.find_spec hex`. Introduce `e' h1 h2`.
-
-Establish `h3` using `hle e' h1 h2`. Rewrite `h3` using `[h]`. Conclude with `h3` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma least_odd_top_level_spec {d : ℕ} [NeZero d] (TT : Finset (ZMod d)) (s : ZMod d) (e : ℕ)
     (h : dTop d TT s = (e : ℕ∞)) :
@@ -262,23 +254,19 @@ lemma least_odd_top_level_spec {d : ℕ} [NeZero d] (TT : Finset (ZMod d)) (s : 
     exact_mod_cast h3
 
 /- English proof (translation)
-Introduce `l d inst hl TT nu1 nu2 s`. Establish `hl2 : (2:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hl0 : (0:ℝ) < l` using `by linarith`. Establish `hb : Summable (fun e : ℕ => (nu1 s : ℝ) / (l:ℝ) ^ e)`. Establish `: Summable (fun e : ℕ => ((l:ℝ)⁻¹) ^ e)` using `summable_geometric_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ (by linarith))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this.mul_left (nu1 s : ℝ)` using `[div_eq_mul_inv, inv_pow]`. Unfold `topTerm oddLevelGainSum`. Use `tsum_le_of_dominated (b := fun e : ℕ => (nu1 s : ℝ) / (l:ℝ) ^ e) ?_ ?_ ?_ hb` and prove the remaining obligations. Apply the tactic sequence `intro e try dsimp only split_ifs`. Conclude with `le_max_right _ _`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_rfl`. Apply the tactic sequence `intro e try dsimp only`. Establish `hcap : (0:ℝ) ≤ capL d TT nu1 nu2 (s + (e : ZMod d))` using `Nat.cast_nonneg _`. Establish `hpe : (0:ℝ) < (l:ℝ) ^ e` using `pow_pos hl0 e`. Establish `hn2 : (0:ℝ) ≤ (nu2 s : ℝ) / (l:ℝ) ^ e` using `div_nonneg (Nat.cast_nonneg _) hpe.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : (0:ℝ) ≤ (nu1 s : ℝ) / (l:ℝ) ^ e` using `div_nonneg (Nat.cast_nonneg _) hpe.le`. Establish `hsub : ((nu1 s : ℝ) - nu2 s) / (l:ℝ) ^ e = (nu1 s : ℝ) / (l:ℝ) ^ e - (nu2 s : ℝ) / (l:ℝ) ^ e` using `sub_div _ _ _`. Distinguish the cases in `ho : Odd e`. Use `swap`. Simplify using `[ho]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `lt_trichotomy (e : ℕ∞) (dTop d TT s) with hlt | heq | hgt` into its components or cases. Rewrite using `[if_pos (show Odd e ∧ (e : ℕ∞) < dTop d TT s from ⟨ho, hlt⟩)] split_ifs`. Apply `max_le_max _ le_rfl` to reduce the goal to its premises. Rewrite using `[hsub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_max_right _ _`. Take `⟨⟨-, hmem⟩, hmin⟩` from `least_odd_top_level_spec TT s e heq.symm`. Establish `hP : ∃ s' ∈ TT, IsLeast {e' : ℕ | Odd e' ∧ s + (e' : ZMod d) = s'} e` using `⟨s + (e : ZMod d), hmem, ⟨ho, rfl⟩, fun e' he' => hmin e' he'.1 (he'.2 ▸ hmem)⟩`. Rewrite using `[if_neg (show ¬ (Odd e ∧ (e : ℕ∞) < dTop d TT s) from fun h => (lt_irrefl _ (heq ▸ h.2))), if_neg (show ¬ (Odd e ∧ dTop d TT s < (e : ℕ∞)) from fun h => (lt_irrefl _ (heq ▸ h.2)))]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd hP h.2`. Conclude with `le_rfl`. Rewrite using `[if_neg (show ¬ (Odd e ∧ (e : ℕ∞) < dTop d TT s) from fun h => (not_lt.mpr hgt.le h.2)), if_pos (show Odd e ∧ dTop d TT s < (e : ℕ∞) from ⟨ho, hgt⟩)] split_ifs`. Conclude with `max_le (by rw [hsub]; linarith) hA'`. Conclude with `hA'`.
-
-Apply the tactic sequence `intro e try dsimp only`. Establish `hcap : (0:ℝ) ≤ capL d TT nu1 nu2 (s + (e : ZMod d))` using `Nat.cast_nonneg _`. Establish `hpe : (0:ℝ) < (l:ℝ) ^ e` using `pow_pos hl0 e`. Establish `hA' : (0:ℝ) ≤ (nu1 s : ℝ) / (l:ℝ) ^ e` using `div_nonneg (Nat.cast_nonneg _) hpe.le`. Use `split_ifs`.
-
-Conclude with `max_le (by linarith) hA'`. Conclude with `le_rfl`. Conclude with `hA'`.
+A detailed English derivation is pending.
 -/
 theorem gain_ge_inner_sum : GainDominatesInnerSum := by
   intro l d inst hl TT nu1 nu2 s

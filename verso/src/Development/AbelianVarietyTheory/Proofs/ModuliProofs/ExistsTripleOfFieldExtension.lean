@@ -23,21 +23,21 @@ namespace GlobalTheory.TripleDescent
 variable {S S' : Scheme.{0}} {f : S' ⟶ S}
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.left) (lift_fst a b)`.
+A detailed English derivation is pending.
 -/
 theorem lift_left_fst {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) : (lift a b).left ≫ (fst X Y).left = a.left :=
   congrArg (fun q => q.left) (lift_fst a b)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.left) (lift_snd a b)`.
+A detailed English derivation is pending.
 -/
 theorem lift_left_snd {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) : (lift a b).left ≫ (snd X Y).left = b.left :=
   congrArg (fun q => q.left) (lift_snd a b)
 
 /- English proof (translation)
-Establish `p : IsPullback (snd X Y).left (fst X Y).left Y.hom X.hom` using `(IsPullback.of_hasPullback X.hom Y.hom).flip`. Establish `p' : IsPullback (snd X' Y').left (fst X' Y').left Y'.hom X'.hom` using `(IsPullback.of_hasPullback X'.hom Y'.hom).flip`. Establish `q` using `p'.paste_horiz hb`. Rewrite `q` using `[← c₂, ← ha.w]`. Establish `r` using `(IsPullback.of_right q c₁ p).paste_vert ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `r` using `[Over.w, Over.w]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isPullback_tensor {X Y : Over S} {X' Y' : Over S'} {a : X'.left ⟶ X.left} {b : Y'.left ⟶ Y.left}
     (ha : IsPullback a X'.hom X.hom f) (hb : IsPullback b Y'.hom Y.hom f) (c : (X' ⊗ Y').left ⟶ (X ⊗ Y).left)
@@ -55,7 +55,7 @@ variable {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [Is
   {φ : G'.left ⟶ G.left} {L : LB G.left} {L' : LB G'.left}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw`. Conclude with `(iso_linComb ((isGen_iff w).1 hw) _ _).chartPull (chartPullId _) (chartPullOut L _ _ U.left _ fun I => psum_push h x' x U hx I.down)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lbIso_cubeLB_pull (h : IsGrpPullback G' G f φ) (hw : LBIso L' (L.pull φ)) {T' : Over S'} {T : Over S} {n : ℕ}
     (x' : Fin n → (T' ⟶ G')) (x : Fin n → (T ⟶ G)) (U : Over.mk (T'.hom ≫ f) ⟶ T)
@@ -66,7 +66,7 @@ theorem lbIso_cubeLB_pull (h : IsGrpPullback G' G f φ) (hw : LBIso L' (L.pull �
     (chartPullOut L _ _ U.left _ fun I => psum_push h x' x U hx I.down)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw`. Take `⟨c, hc, -⟩` from `exists_up ((isGen_iff w).1 hw) hL hL' t ht`. Conclude with `gen_chartPull (chartPullOut L _ _ U.left _ fun I => psum_push h x' x U hx I.down) c hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen_cubeLB_pull (h : IsGrpPullback G' G f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ))
     {T' : Over S'} {T : Over S} {n : ℕ} (x' : Fin n → (T' ⟶ G')) (x : Fin n → (T ⟶ G))
@@ -81,23 +81,21 @@ end GlobalTheory.TripleDescent
 open GlobalTheory.TripleDescent in
 
 /- English proof (translation)
-Introduce `hLaws E _ _ _ H K₀ K _ _ i τ A₀ _ φ L₀ r hA h hL₀ hw hact`. Use `hA.comm` as an intermediate fact. Establish `A₂` using `AbelianSchemeGerms.isAbelianScheme_tensor A₀ A₀ hA hA`. Establish `A₃` using `AbelianSchemeGerms.isAbelianScheme_tensor A₀ _ hA A₂`. Establish `lb : ∀ {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ B)) {L : LB B.left}, L.IsLB → (cubeLB B x L).IsLB` using `fun x L hL => DVR.linComb_isLB _ hL _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pa : ∀ {T : Over (Sp K)} (x : T ⟶ τ.G) a, pushPt h.1.w (x ≫ τ.act.act a) = pushPt h.1.w x ≫ r.act a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hact, Category.assoc])`. Establish `hP` using `τ.PP.isLB`. Set `U₁` to `pushPt h.1.w (𝟙 τ.G)`. Establish `e₁ : U₁.left = φ` using `Category.id_comp _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `U₂` to `lift (pushPt h.1.w (fst τ.G τ.G)) (pushPt h.1.w (snd τ.G τ.G))`. Set `U₃` to `lift (pushPt h.1.w (x3 τ.G 0)) (lift (pushPt h.1.w (x3 τ.G 1)) (pushPt h.1.w (x3 τ.G 2)))`. Establish `u₁ : U₂.left ≫ (fst A₀ A₀).left = (fst τ.G τ.G).left ≫ φ` using `lift_left_fst _ _`. Establish `u₂ : U₂.left ≫ (snd A₀ A₀).left = (snd τ.G τ.G).left ≫ φ` using `lift_left_snd _ _`. Establish `P₂ : IsPullback U₂.left (τ.G ⊗ τ.G).hom (A₀ ⊗ A₀).hom (spMap i)` using `isPullback_tensor h.1 h.1 _ u₁ u₂`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P₃ : IsPullback U₃.left (τ.G ⊗ τ.G ⊗ τ.G).hom (A₀ ⊗ A₀ ⊗ A₀).hom (spMap i)`. Use `isPullback_tensor h.1 P₂ _ (lift_left_fst _ _) ?_` and prove the remaining obligations. Use `(lift_left_snd _ _).trans ?_` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(lift_left_fst _ _).trans (Eq.symm ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) u₁).trans (Category.assoc _ _ _).symm)`. Use `(lift_left_snd _ _).trans (Eq.symm ?_)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) u₂).trans (Category.assoc _ _ _).symm)`. Establish `D₁` using `GlobalTheory.T.lineBundle_trivial_iso_descend_field K₀ K i _ _ A₀.hom _ _ hA.smooth hA.proper hA.geomConnected h.1`. Establish `D₂` using `GlobalTheory.T.lineBundle_trivial_iso_descend_field K₀ K i _ _ (A₀ ⊗ A₀).hom _ _ A₂.smooth A₂.proper A₂.geomConnected P₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `D₃` using `GlobalTheory.T.lineBundle_trivial_iso_descend_field K₀ K i _ _ (A₀ ⊗ A₀ ⊗ A₀).hom _ _ A₃.smooth A₃.proper A₃.geomConnected P₃`. Apply the tactic sequence `have hT : ∃ t : LB.Gen (Theta A₀ L₀), t.IsGen := D₃.1 _ (lb _ hL₀) (exists_gen_cubeLB_pull h hL₀ hP hw (x3 τ.G) (x3 A₀) U₃ (fun j => by fin_cases j <;> simp [x3, U₃]) τ.cub.t τ.cub.isGen)`. Establish `ha : ∀ a, LBIso (cubeLB A₀ ![fst A₀ A₀ ≫ r.act a, snd A₀ A₀] L₀) (cubeLB A₀ ![fst A₀ A₀, snd A₀ A₀ ≫ r.act (H.bar a)] L₀)` using `fun a => by`. Establish `k₁` using `lbIso_cubeLB_pull h hw ![fst τ.G τ.G ≫ τ.act.act a, snd τ.G τ.G] ![fst A₀ A₀ ≫ r.act a, snd A₀ A₀] U₂ (fun j => by fin_cases j`. Conclude with `(pa _ a).trans (by simp [U₂])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[U₂])`. Establish `k₂` using `lbIso_cubeLB_pull h hw ![fst τ.G τ.G, snd τ.G τ.G ≫ τ.act.act (H.bar a)] ![fst A₀ A₀, snd A₀ A₀ ≫ r.act (H.bar a)] U₂ (fun j => by fin_cases j`. Simplify using `[U₂]`. Conclude with `(pa _ _).trans (by simp [U₂]))`. Conclude with `D₂.2 _ _ (lb _ hL₀) (lb _ hL₀) (LBIso.trans (pull_isLB (lb _ hL₀) _) (by exact lb _ hP) (pull_isLB (lb _ hL₀) _) k₁.symm (LBIso.trans (by exact lb _ hP) (by exact lb _ hP) (pull_isLB (lb _ hL₀) _) (τ.adj a) k₂))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hp : LBIso L₀ (cubeLB A₀ ![𝟙 A₀, r.act H.w0] L₀)`. Establish `k` using `lbIso_cubeLB_pull h hw ![𝟙 τ.G, τ.act.act H.w0] ![𝟙 A₀, r.act H.w0] U₁ (fun j => by fin_cases j`. Simplify using `[U₁]`. Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _ _))`. Rewrite `k` using `[e₁]`.
-
-Conclude with `D₁.2 _ _ hL₀ (lb _ hL₀) (LBIso.trans (pull_isLB hL₀ _) hP (pull_isLB (lb _ hL₀) _) hw.symm (LBIso.trans hP (by exact lb _ hP) (pull_isLB (lb _ hL₀) _) τ.prim k))`. Take `⟨PP, cub, sym, iso, -, prim, adj⟩` from `GlobalTheory.PrimNorm.exists_primitive_normalisation hLaws.globalFns E H _ A₀ r L₀ hA hL₀ hT ha`. Use `⟨⟨A₀, GlobalTheory.isSemiAbelian_of_isAbelianScheme A₀ hA, r, PP, cub, sym, adj, prim⟩, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 A₀)), ?_, fun c => (Category.comp_id _).trans (Category.id_comp _).symm⟩` and prove the remaining obligations. Conclude with `(LBIso.trans PP.isLB (lb _ hL₀) hL₀ iso hp.symm).chartPull (chartPullId _) (chartPullPull L₀ _ (𝟙 _) rfl)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_triple_of_fieldExtension : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (τ : SAB H (Sp K)) (A₀ : Over (Sp K₀)) [GrpObj A₀] (φ : τ.G.left ⟶ A₀.left) (L₀ : LB A₀.left) (r : OAct (𝓞 E) A₀), IsAbelianScheme A₀ → IsGrpPullback τ.G A₀ (spMap i) φ → L₀.IsLB → LBIso τ.PP.L (L₀.pull φ) → (∀ c, (τ.act.act c).left ≫ φ = φ ≫ (r.act c).left) → ∃ (τ₀ : SAB H (Sp K₀)) (e : τ₀.G ≅ A₀), IsMonHom e.hom ∧ LBIso τ₀.PP.L (L₀.pull e.hom.left) ∧ ∀ c, τ₀.act.act c ≫ e.hom = e.hom ≫ r.act c := by
   intro hLaws E _ _ _ H K₀ K _ _ i τ A₀ _ φ L₀ r hA h hL₀ hw hact

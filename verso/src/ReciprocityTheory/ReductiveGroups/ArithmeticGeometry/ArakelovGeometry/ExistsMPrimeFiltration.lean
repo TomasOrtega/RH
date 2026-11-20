@@ -8,7 +8,7 @@ open scoped ComplexOrder
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
 /- English proof (translation)
-The claim follows from `exists_primeFiltration_of_isMultiHomogIdeal J hJ`.
+A detailed English derivation is pending.
 -/
 theorem exists_mPrimeFiltration {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (J : Ideal (MRing ι)) (hJ : IsMultiHomogIdeal J) :
@@ -21,7 +21,7 @@ theorem exists_mPrimeFiltration {K : Type} [Fintype K] {ι : K → Type} [∀ k,
   exists_primeFiltration_of_isMultiHomogIdeal J hJ
 
 /- English proof (translation)
-The claim follows from `|Real.log (Nat.card (mPiece W a)) / Real.log (charOf W) - (geoNum d W (fun _ k => (a k : ℤ)) : ℝ) / (d.factorial : ℝ)| ≤ C * ((∑ k, a k : ℕ) + 1 : ℝ) ^ d / ((∑ k, a k : ℕ) + 1 : ℝ) := hilbert_multidegree_piece_divisor_sum hR4 hSymm W hW hp d hd`.
+A detailed English derivation is pending.
 -/
 theorem hilbert_mPiece {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (hR4 : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin (n + 1) → K → ℤ) (k : K) (i : ι k),

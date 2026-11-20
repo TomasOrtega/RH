@@ -8,9 +8,9 @@ namespace Formalism.L2.Th1.F
 namespace SigmaLog
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun z : ℂ => 1 - z / l) (-(1 / l)) z`. Simplify using `using ((hasDerivAt_id z).div_const l).const_sub 1`. Establish `h2 : HasDerivAt (fun z : ℂ => z / l + z ^ 2 / (2 * l ^ 2)) (1 / l + 2 * z / (2 * l ^ 2)) z`. Use `((hasDerivAt_id z).div_const l).fun_add ((hasDerivAt_pow 2 z).div_const (2 * l ^ 2))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h1.mul h2.cexp`.
+A detailed English derivation is pending.
 -/
 lemma hasDerivAt_wFactor (l z : ℂ) :
     HasDerivAt (wFactor l)
@@ -24,15 +24,15 @@ lemma hasDerivAt_wFactor (l z : ℂ) :
   exact h1.mul h2.cexp
 
 /- English proof (translation)
-Introduce `z` and use `(hasDerivAt_wFactor l z).differentiableAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma differentiable_wFactor (l : ℂ) : Differentiable ℂ (wFactor l) :=
   fun z => (hasDerivAt_wFactor l z).differentiableAt
 
 /- English proof (translation)
-Unfold `wFactor`. Use `mul_ne_zero ?_ (Complex.exp_ne_zero _)` and prove the remaining obligations. Distinguish the cases in `hl : l = 0`. Simplify using `[hl]`. Introduce `h0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h` to reduce the goal to its premises. Clear denominators, using `at h0` for the nonvanishing conditions. Take the linear combination `-h0`.
+Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma wFactor_ne_zero {l z : ℂ} (h : z ≠ l) : wFactor l z ≠ 0 := by
   unfold wFactor
@@ -45,11 +45,11 @@ lemma wFactor_ne_zero {l z : ℂ} (h : z ≠ l) : wFactor l z ≠ 0 := by
     linear_combination -h0
 
 /- English proof (translation)
-Rewrite using `[logDeriv_apply, (hasDerivAt_wFactor l z).deriv]`. Distinguish the cases in `hl : l = 0`. Simplify using `[hl, wFactor]`. Establish `h1 : z - l ≠ 0` using `sub_ne_zero.mpr h`. Establish `h2 : 1 - z / l ≠ 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Clear denominators, using `at h0` for the nonvanishing conditions. Take the linear combination `-h0`. Establish `h3 : l - z ≠ 0` using `sub_ne_zero.mpr (Ne.symm h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `he` using `Complex.exp_ne_zero (z / l + z ^ 2 / (2 * l ^ 2))`. Rewrite using `[if_neg hl, wFactor, sub_zero, div_eq_iff (mul_ne_zero h2 he)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma logDeriv_wFactor {l z : ℂ} (h : z ≠ l) :
     logDeriv (wFactor l) z
@@ -73,21 +73,19 @@ end SigmaLog
 
 open SigmaLog in
 /- English proof (translation)
-Introduce `L z hz`. Establish `hne : ∀ l : L.lattice, z ≠ (l : ℂ)` using `fun l h => hz (h ▸ l.2)`. Establish `hz0 : z ≠ 0` using `fun h => hz (h ▸ L.lattice.zero_mem)`. Use `set P : ℂ → ℂ := fun z => ∏' l : L.lattice, wFactor (l : ℂ) z with hP`. Establish `hPne : P z ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `tprod_one_add_ne_zero_of_summable (f := fun l : L.lattice => wFactor (l : ℂ) z - 1) (fun l => by simpa using wFactor_ne_zero (hne l)) (h2 L z)` as an intermediate fact. Simplify `this` using `[hP]`. Establish `hPd : DifferentiableOn ℂ P Set.univ`. Establish `ht` using `hasProdLocallyUniformlyOn_iff_tendstoLocallyUniformlyOn.mp (h1 L)`. Use `ht.differentiableOn (.of_forall fun s => ?_) isOpen_univ` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `DifferentiableOn.fun_finsetProd fun i _ => (differentiable_wFactor _).differentiableOn`. Establish `hPdz : DifferentiableAt ℂ P z` using `(hPd z (Set.mem_univ z)).differentiableAt Filter.univ_mem`. Establish `hc : HasSum (fun l : L.lattice => if (l : ℂ) = 0 then 1 / z else 0) (1 / z)`. Establish `: (fun l : L.lattice => if (l : ℂ) = 0 then 1 / z else 0) = fun l : L.lattice => if l = 0 then 1 / z else 0`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hasSum_ite_eq 0 (1 / z)`. Establish `hs : HasSum (fun l : L.lattice => logDeriv (wFactor (l : ℂ)) z) (wZeta L z - 1 / z)`. Use `(h3 L z).hasSum.sub hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `he : (fun l : L.lattice => logDeriv (wFactor (l : ℂ)) z) = fun l : L.lattice => (1 / (z - (l : ℂ)) + 1 / (l : ℂ) + z / (l : ℂ) ^ 2) - (if (l : ℂ) = 0 then 1 / z else 0)`. Use function extensionality and compare the values at `l`. Conclude with `logDeriv_wFactor (hne l)`. Rewrite using `[he]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : logDeriv P z = wZeta L z - 1 / z`. Use `logDeriv_tprod_eq_tsum (s := Set.univ) isOpen_univ (Set.mem_univ z) (f := fun (l : L.lattice) (z : ℂ) => wFactor (l : ℂ) z) (fun l => wFactor_ne_zero (hne l)) (fun l => (differentiable_wFactor _).differentiableOn) hs.summable (h1 L).multipliableLocallyUniformlyOn hPne` as an intermediate fact. Rewrite `this` using `[hs.tsum_eq]`. Conclude with `this`. Establish `hPderiv : HasDerivAt P ((wZeta L z - 1 / z) * P z) z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `hPdz.hasDerivAt` as an intermediate fact. Rewrite using `[← hlog, logDeriv_apply, div_mul_cancel₀ _ hPne]`. Conclude with `this`. Use `(hasDerivAt_id z).mul hPderiv` as an intermediate fact. Establish `he : wZeta L z * wSigma L z = 1 * P z + id z * ((wZeta L z - 1 / z) * P z)`.
-
-Simplify using `only [wSigma, id, hP]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `this`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaLogDeriv_of (h1 : SigmaProdLU) (h2 : SigmaSummable) (h3 : ZetaSummable) :
     SigmaLogDeriv := by

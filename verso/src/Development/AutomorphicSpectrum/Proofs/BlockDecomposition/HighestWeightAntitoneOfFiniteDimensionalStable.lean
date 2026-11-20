@@ -9,9 +9,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 namespace GlobalTheory.CompanionTheory.RealCount
 
 /- English proof (translation)
-Introduce `n V _ _ Kf S ν v hG hfd hS hv hv0 hK a b hab`. Break down `eq_or_lt_of_le hab with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Take `⟨m, hm⟩` from `ReciprocityTheory.ChartRestriction.DS.HW.exists_nat_weight_sub_eq_of_highest_vector_in_stable (ε := fun _ => true) (F := Kf) (Formalism.REAL.glRel_kRel (fun _ => true) Kf hG) (ne_of_lt hlt) rfl S (fun y hy => hS b a y hy) hv hv0 (hK.1 a) (hK.1 b) (hK.2 a b hlt rfl)`. Establish `hm' : ν a - ν b = (m : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Conclude with `hm`. Establish `h0 : (0 : ℝ) ≤ (m : ℝ)` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem highestWeight_antitone_of_finiteDimensional_stable :
     ∀ {n : ℕ} (V : Type) [AddCommGroup V] [Module ℂ V] (Kf : Fin n → Fin n → Module.End ℂ V) (S : Submodule ℂ V)

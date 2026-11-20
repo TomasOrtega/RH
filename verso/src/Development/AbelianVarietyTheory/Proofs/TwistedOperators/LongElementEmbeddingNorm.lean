@@ -18,21 +18,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SepPer.LongSum
 
 /- English proof (translation)
-Introduce `D θ hθ Y V d A B hAd Λ x s _ hs0 hs1 hL`. Establish `hzero : ∀ τ, nrm θ A x τ 0 = 0` using `fun τ => by`. Establish `e : (fun i => tauE D τ ((0 : Fin Y.rank → D.host.E) i)) = 0` using `by funext i; simp`. Unfold `nrm`. Rewrite using `[e, mulVec_zero, mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eu]`. Establish `hz : ∀ τ (u : D.host.E), nrm θ B (stabilizerEmbedding d x) τ (u • zv d) = ‖tauE D τ u‖` using `fun τ u => by`. Establish `h` using `GlobalTheory.T.norm_sq_unitaryEmbedding_orthogonal D θ hθ Y V d A B hAd x τ 0 u`. Rewrite `h` using `[mulVec_zero, zero_add, hzero]`. Establish `h2 : nrm θ B (stabilizerEmbedding d x) τ (u • zv d) ^ 2 = ‖tauE D τ u‖ ^ 2` using `by rw [h]; ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ nrm θ B (stabilizerEmbedding d x) τ (u • zv d)` using `Real.sqrt_nonneg _`. Conclude with `(pow_left_inj₀ h0 (norm_nonneg _) two_ne_zero).1 h2`. Establish `hge : ∀ τ y (u : D.host.E), nrm θ A x τ y ≤ nrm θ B (stabilizerEmbedding d x) τ (frameMat V Y d.ι *ᵥ y + u • zv d)` using `fun τ y u => by`. Establish `h` using `GlobalTheory.T.norm_sq_unitaryEmbedding_orthogonal D θ hθ Y V d A B hAd x τ y u`. Establish `h0 : 0 ≤ nrm θ B (stabilizerEmbedding d x) τ (frameMat V Y d.ι *ᵥ y + u • zv d)` using `Real.sqrt_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ nrm θ A x τ y` using `Real.sqrt_nonneg _`. Use polynomial arithmetic with `[sq_nonneg ‖tauE D τ u‖]`. Use `⟨?_, fun τ => ?_, fun γ z hγ hz' τ => GlobalTheory.T.one_le_norm_rational_translate D θ hθ Y V d B x γ z hγ hz' τ⟩` and prove the remaining obligations. Introduce `𝔪 h𝔪 w hw hw0`. Take `⟨y, hy, u, hu, rfl⟩` from `GlobalTheory.T.exists_decomp_smul_lattice_embedding D Y V d Λ x 𝔪 w hw`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality. Rewrite `hw0`, the goal using `[mulVec_zero, zero_add]`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl; exact hw0 (by simp)`.
+Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : ∏ τ, nrm θ B (stabilizerEmbedding d x) τ ((u : D.host.E) • zv d) = ∏ τ, ‖tauE D τ (u : D.host.E)‖` using `Finset.prod_congr rfl fun τ _ => hz τ _`. Rewrite using `[e]`. Use `le_trans ?_ (GlobalTheory.T.sqrt_absNorm_le_prod_norm_cmTypeEmbeddings D 𝔪 u hu hu0)` and prove the remaining obligations. Establish `h1 : s ^ Fintype.card D.what₂.Tau ≤ 1` using `pow_le_one₀ hs0 hs1`. Establish `h2 : 0 ≤ Real.sqrt (Ideal.absNorm 𝔪)` using `Real.sqrt_nonneg _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `le_trans (hL 𝔪 h𝔪 y hy hy0) ?_` and prove the remaining obligations. Conclude with `Finset.prod_le_prod (fun τ _ => Real.sqrt_nonneg _) fun τ _ => hge τ y u`. Establish `h` using `hz τ 1`. Rewrite `h` using `[one_smul, map_one, norm_one]`.
-
-Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem long_sum : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (A : Fr Y) (B : Fr V), Adapted d A B → ∀ (Λ : Lat Y) (x : GA D Y) (s : ℝ), IsSelfDualC Y Λ → 0 ≤ s → s ≤ 1 → Long θ A Λ x s → Long θ B (d.lat Λ fun _ => 1) (stabilizerEmbedding d x) s ∧ (∀ τ, nrm θ B (stabilizerEmbedding d x) τ (zv d) = 1) ∧ ∀ (γ : GA D V) z, γ ∈ GQ V → mt V γ *ᵥ ratV (zv d) = ratV z → ∀ τ, 1 ≤ nrm θ B (stabilizerEmbedding d x) τ z := by
   intro D θ hθ Y V d A B hAd Λ x s _ hs0 hs1 hL

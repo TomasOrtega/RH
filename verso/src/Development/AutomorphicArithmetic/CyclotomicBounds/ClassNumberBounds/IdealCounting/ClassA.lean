@@ -5,11 +5,11 @@ namespace KStar.IdealCounting
 open Finset
 
 /- English proof (translation)
-Use `Finset.card_le_card_of_injOn (fun a => Fin.tail a) ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [coe_filter, mem_filter, Fintype.mem_piFinset, mem_Icc, Set.mem_setOf_eq] at ha ⊢`. Take `⟨⟨h1, h2⟩, h3⟩` from `ha`. Rewrite `h2` using `[Fin.prod_univ_succ, h3]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : ∏ i, Fin.tail a i ≤ M / k`. Rewrite using `[Nat.le_div_iff_mul_le (by omega), mul_comm]`. Conclude with `h2`. Use `⟨fun i => ⟨(h1 _).1, le_trans ?_ h4⟩, h4⟩` and prove the remaining obligations. Conclude with `Finset.single_le_prod' (f := fun i => Fin.tail a i) (fun j _ => (h1 _).1) (mem_univ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a ha b hb hab`. Simplify using `only [coe_filter, Set.mem_setOf_eq] at ha hb`. Establish `: Fin.tail a = Fin.tail b` using `hab`. Rewrite using `[← Fin.cons_self_tail a, ← Fin.cons_self_tail b, ha.2, hb.2, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_fiber_le (n M k : ℕ) (hk : 1 ≤ k) :
     (((Fintype.piFinset fun _ : Fin (n + 2) => Icc 1 M).filter
@@ -32,19 +32,19 @@ private theorem card_fiber_le (n M k : ℕ) (hk : 1 ≤ k) :
     rw [← Fin.cons_self_tail a, ← Fin.cons_self_tail b, ha.2, hb.2, this]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing M with`. Consider the case `zero`. Use `Finset.card_filter_le (Fintype.piFinset fun _ : Fin (0 + 1) => Icc 1 M) (fun a => ∏ i, a i ≤ M)` as an intermediate fact. Rewrite `this` using `[Fintype.card_piFinset]`. Simplify using `only [Nat.card_Icc, Nat.add_sub_cancel, prod_const, card_univ, Fintype.card_fin, zero_add, pow_one] at this`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_zero, mul_one]`. Conclude with `this` after adjusting the coercions. Consider the case `succ n ih`. Establish `hlog : 0 ≤ Real.log M` using `Real.log_natCast_nonneg M`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := fun a : Fin (n + 1 + 1) → ℕ => a 0) (t := Icc 1 M) (by`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Simplify using `only [coe_filter, Fintype.mem_piFinset, Set.mem_setOf_eq] at ha`. Conclude with `ha.1 0)]` after adjusting the coercions. Use `push_cast`. Establish `key : ∀ k ∈ Icc 1 M, ((((Fintype.piFinset fun _ : Fin (n + 1 + 1) => Icc 1 M).filter (fun a => ∏ i, a i ≤ M)).filter (fun a => a 0 = k)).card : ℝ) ≤ (M * (1 + Real.log M) ^ n) * ((k : ℝ))⁻¹`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k hk`. Rewrite `hk` using `[mem_Icc]`. Establish `hk0 : (0 : ℝ) < k` using `by exact_mod_cast hk.1`. Establish `h1 : 1 ≤ M / k` using `(Nat.le_div_iff_mul_le (by omega)).2 (by omega)`. Establish `h2` using `ih (M / k) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `card_fiber_le n M k hk.1`. Establish `h4 : ((M / k : ℕ) : ℝ) ≤ M * (k : ℝ)⁻¹`. Rewrite using `[← div_eq_mul_inv]`. Conclude with `Nat.cast_div_le`. Establish `h5 : Real.log ((M / k : ℕ) : ℝ) ≤ Real.log M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Apply `Real.log_le_log (by exact_mod_cast h1)` to reduce the goal to its premises. Conclude with `Nat.div_le_self M k` after adjusting the coercions. Establish `h6 : 0 ≤ Real.log ((M / k : ℕ) : ℝ)` using `Real.log_natCast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `hh : ∑ k ∈ Icc 1 M, ((k : ℝ))⁻¹ ≤ 1 + Real.log M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Use `harmonic_le_one_add_log M` as an intermediate fact. Rewrite `this` using `[harmonic_eq_sum_Icc]`. Move the coercions through the operations in `at this`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem card_tuples_le (n M : ℕ) (hM : 1 ≤ M) :
     (((Fintype.piFinset fun _ : Fin (n + 1) => Icc 1 M).filter

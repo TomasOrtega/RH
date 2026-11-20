@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GE.KerSupp
 
 /- English proof (translation)
-Set `S : ShortComplex X.Modules` to `ShortComplex.mk (kernel.ι g) g (kernel.condition _)`. Establish `hex : S.Exact` using `ShortComplex.exact_kernel _`. Establish `hm : Mono (cokernel.desc S.f S.g S.zero)` using `S.exact_iff_mono_cokernel_desc.1 hex`. Establish `h1 : Scheme.Modules.SupportedIn (cokernel (kernel.ι g)) T` using `Scheme.Modules.SupportedIn.of_mono (cokernel.desc S.f S.g S.zero) h`. Establish `e : (kernelSubobjectIso g).hom ≫ kernel.ι g = (kernelSubobject g).arrow` using `kernelSubobject_arrow g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `i : cokernel (kernelSubobject g).arrow ≅ cokernel (kernel.ι g)` to `cokernelIsoOfEq e.symm ≪≫ (cokernelEpiComp (kernelSubobjectIso g).hom _)`. Conclude with `h1.of_iso i.symm`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem supportedIn_cokernel_kernelSubobject {X : Scheme.{0}} {F G : X.Modules} (g : F ⟶ G) {T : Set X}
     (h : Scheme.Modules.SupportedIn G T) :
@@ -28,9 +28,9 @@ theorem supportedIn_cokernel_kernelSubobject {X : Scheme.{0}} {F G : X.Modules} 
   exact h1.of_iso i.symm
 
 /- English proof (translation)
-Use `⟨fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : f.imageι y ∈ (f.ker.support : Set X)` using `f.ker.range_subschemeι.le ⟨y, rfl⟩`. Rewrite `h1` using `[Scheme.Hom.support_ker, f.isClosedMap.isClosed_range.closure_eq]`. Take `⟨x, hx⟩` from `h1`. Use `⟨x, f.imageι.isEmbedding.injective ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hx, ← Scheme.Hom.comp_apply, Scheme.Hom.toImage_imageι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toImage_surjective {Y X : Scheme.{0}} (f : Y ⟶ X) [IsProper f] : Surjective f.toImage := by
   refine ⟨fun y => ?_⟩
@@ -41,9 +41,9 @@ theorem toImage_surjective {Y X : Scheme.{0}} (f : Y ⟶ X) [IsProper f] : Surje
   rw [← hx, ← Scheme.Hom.comp_apply, Scheme.Hom.toImage_imageι]
 
 /- English proof (translation)
-Use `toImage_surjective f` as an intermediate fact. Establish `hu : UniversallyClosed (f.toImage ≫ f.ker.subschemeι ≫ p)`. Rewrite using `[← Category.assoc]`. Express the relevant statement in the definitionally equal form `UniversallyClosed ((f.toImage ≫ f.imageι) ≫ p)`. Rewrite using `[Scheme.Hom.toImage_imageι]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `: UniversallyClosed (f.ker.subschemeι ≫ p)` using `.of_comp_surjective f.toImage _`. Conclude with `⟨⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProper_image {S Y X : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S) [IsSeparated p]
     [LocallyOfFiniteType p] [QuasiCompact p] [IsProper f] (hY : IsProper (f ≫ p)) :
@@ -58,13 +58,13 @@ theorem isProper_image {S Y X : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S) [IsSepar
   exact ⟨⟩
 
 /- English proof (translation)
-Take `⟨TZ, hTZ, hsupp⟩` from `hB`. Set `f : TZ.subscheme ⟶ X` to `TZ.subschemeι ≫ φ`. Establish `hf : IsProper f` using `inferInstance`. Establish `hfp : IsProper (f ≫ (X ↘ Spec (.of A)))`. Express the relevant statement in the definitionally equal form `IsProper ((TZ.subschemeι ≫ φ) ≫ (X ↘ Spec (.of A)))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.assoc, hc]`. Conclude with `hTZ`. Use `⟨f.ker, isProper_image f _ hfp, ?_⟩` and prove the remaining obligations. Establish `hpush` using `hsupp.pushforward φ`. Establish `hsub : φ.base '' (TZ.support : Set Z) ⊆ (f.ker.support : Set X)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨w, hw⟩` from `TZ.range_subschemeι.ge hz`. Rewrite using `[Scheme.Hom.support_ker]`. Use `subset_closure ⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `supportedIn_cokernel_kernelSubobject (adjMap φ B) (hpush.mono hsub)`.
+A detailed English derivation is pending.
 -/
 theorem propSupp_adjKer {A : Type} [CommRing A] [IsNoetherianRing A] {X Z : Scheme.{0}}
     [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] [IsSeparated (X ↘ Spec (.of A))]

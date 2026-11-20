@@ -4,11 +4,11 @@ open MeasureTheory Topology
 open scoped ENNReal
 
 /- English proof (translation)
-Establish `hint : ∀ i, Integrable (fun t => (f i t : ℝ)) (ν i)` using `fun i => by`. Use `integrable_toReal_of_lintegral_ne_top (μ := ν i) (f := fun t => (f i t : ℝ≥0∞)) (hf i).coe_nnreal_ennreal.aemeasurable (by rw [h1 i]; exact ENNReal.one_ne_top)` as an intermediate fact. Simplify using `using this`. Establish `hI : ∀ i, ∫ t, (f i t : ℝ) ∂(ν i) = 1` using `fun i => by`. Use `lintegral_coe_eq_integral (f i) (hint i)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h1 i]`. Conclude with `ENNReal.ofReal_eq_one.1 this.symm`. Establish `hP : Integrable (fun t : ∀ i, T i => ((∏ i, f i (t i) : NNReal) : ℝ)) (Measure.pi ν)`. Simplify using `only [NNReal.coe_prod]`. Conclude with `Integrable.fintype_prod_dep hint`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lintegral_coe_eq_integral _ hP]`. Simplify using `only [NNReal.coe_prod]`. Rewrite using `[integral_fintype_prod_eq_prod (fun i t => (f i t : ℝ))]`. Simplify using `[hI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lintegral_pi_one {ι : Type} [Fintype ι] {T : ι → Type} [∀ i, MeasurableSpace (T i)]
     (ν : ∀ i, Measure (T i)) [∀ i, SigmaFinite (ν i)] (f : ∀ i, T i → NNReal)
@@ -31,19 +31,15 @@ private theorem lintegral_pi_one {ι : Type} [Fintype ι] {T : ι → Type} [∀
   simp [hI]
 
 /- English proof (translation)
-Introduce `hN hE ι _ G _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ μ j ν hP J hJ`. Use `haveI : ∀ i, (μ i).IsHaarMeasure := fun i => (hP i).1.1`. Use `haveI : ∀ i, (μ i).IsInvInvariant := fun i => (hP i).1.2`. Use `haveI : ∀ i, (ν i).IsHaarMeasure := fun i => (hP i).2.2.1`. Use `haveI : ∀ i, (ν i).IsInvInvariant := fun i => (hP i).2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hJe : (J : (∀ i, T i) → ∀ i, G i) = Pi.map (fun i => (j i : T i → G i))`. Use function extensionality and compare the values at `t i`. Conclude with `hJ t i`. Establish `hPair : UpperTheory.ConvolutionTheory.G.Pair (Measure.pi μ) J (Measure.pi ν)`. Use `⟨⟨inferInstance, inferInstance⟩, ?_, ⟨inferInstance, inferInstance⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hJe]`. Conclude with `IsClosedEmbedding.piMap fun i => (hP i).2.1`. Use `⟨hPair, fun F hF => ?_⟩` and prove the remaining obligations. Use `choose ρ hρc hρn _ using fun i => hN (G i) (T i) (μ i) (j i) (ν i) (hP i)`. Establish `hR : UpperTheory.ConvolutionTheory.G.IsNrm J (Measure.pi ν) (fun g => ((∏ i, ρ i (g i) : NNReal) : ℝ≥0∞))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.measurable_prod _ fun i _ => (hρc i).measurable.comp (measurable_pi_apply i)).coe_nnreal_ennreal`. Use `lintegral_pi_one ν (fun i t => ρ i (j i t * x i)) (fun i => ((hρc i).comp ((hP i).2.1.continuous.mul continuous_const)).measurable) (fun i => (hρn i).2 (x i))` as an intermediate fact. Simplify `this` using `only [Pi.mul_apply, hJ]`. Establish `hFm : Measurable fun g : ∀ i, G i => ∏ i, F i (g i)` using `Finset.measurable_prod _ fun i _ => (hF i).1.comp (measurable_pi_apply i)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFi : ∀ t g, (fun g : ∀ i, G i => ∏ i, F i (g i)) (J t * g) = (fun g : ∀ i, G i => ∏ i, F i (g i)) g` using `fun t g => by`. Simplify using `only [Pi.mul_apply, hJ, (hF _).2]`. Take `⟨h1, -, h2⟩` from `hE _ _ _ _ _ hPair _ hFm hFi _ hR`. Establish `hloc` using `fun i => hE (G i) (T i) (μ i) (j i) (ν i) (hP i) (F i) (hF i).1 (hF i).2 _ (hρn i)`. Establish `hfun : (fun x : ∀ i, G i => (∏ i, F i (x i)) * ((((∏ i, ρ i (x i) : NNReal) : ℝ≥0∞).toReal : ℝ) : ℂ)) = fun x => ∏ i, (F i (x i) * (((ρ i (x i) : ℝ≥0∞).toReal : ℝ) : ℂ))`.
-
-Use function extensionality and compare the values at `x`. Simplify using `only [ENNReal.coe_toReal, NNReal.coe_prod, Complex.ofReal_prod, Finset.prod_mul_distrib]`. Use `⟨fun hq => h1.2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `Integrable.fintype_prod_dep (f := fun i x => F i x * (((ρ i x : ℝ≥0∞).toReal : ℝ) : ℂ)) fun i => (hloc i).1.1 (hq i)`.
-
-Rewrite using `[h2, hfun, integral_fintype_prod_eq_prod (fun i x => F i x * (((ρ i x : ℝ≥0∞).toReal : ℝ) : ℂ))]`. Conclude with `Finset.prod_congr rfl fun i _ => (hloc i).2.2.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.quotPi_of :
     UpperTheory.ConvolutionTheory.G.NormEx → UpperTheory.ConvolutionTheory.G.QuotEq → UpperTheory.ConvolutionTheory.G.QuotPi := by

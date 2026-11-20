@@ -15,7 +15,7 @@ open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `L : U →ₗᵢ[ℂ] U` to `⟨(π h).toLinearMap, hπ.norm_apply h⟩`. Conclude with `L.inner_map_map x y`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem unitaryRep_inner_map {n : ℕ} {ε : Fin n → Bool} {U : Type} [NormedAddCommGroup U]
     [InnerProductSpace ℂ U] {π : UJ ε →* (U →L[ℂ] U)} (hπ : IsUnitaryRep π) (h : UJ ε) (x y : U) :
@@ -24,7 +24,7 @@ theorem unitaryRep_inner_map {n : ℕ} {ε : Fin n → Bool} {U : Type} [NormedA
   exact L.inner_map_map x y
 
 /- English proof (translation)
-Use `haveI : (muG ε).IsHaarMeasure := by unfold muG; infer_instance`. Establish `hμ` using `Measure.isMulLeftInvariant_eq_smul μ (muG ε)`. Prove the components needed by the constructor for the conclusion. Introduce `g`. Rewrite using `[hμ, Measure.map_smul, indefinite_unitary_unimodular n ε g]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_haar_UJ {n : ℕ} (ε : Fin n → Bool) (μ : Measure (UJ ε))
     [μ.IsHaarMeasure] : μ.IsMulRightInvariant := by
@@ -35,27 +35,23 @@ theorem isMulRightInvariant_haar_UJ {n : ℕ} (ε : Fin n → Bool) (μ : Measur
   rw [hμ, Measure.map_smul, indefinite_unitary_unimodular n ε g]
 
 /- English proof (translation)
-Use `haveI := isMulRightInvariant_haar_UJ ε μ`. Establish `gen : ∀ h g₀ : UJ ε, MemLp (fun g => ⟪π h v, π g (π g₀ v)⟫_ℂ) q μ`. Introduce `h g₀`. Establish `e : (fun g => ⟪π h v, π g (π g₀ v)⟫_ℂ) = (fun g => ⟪v, π g v⟫_ℂ) ∘ (fun g => h⁻¹ * g) ∘ (fun g => g * g₀)`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp]`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, ← unitaryRep_inner_map hπ h⁻¹ (π h v), ← ContinuousLinearMap.mul_apply, ← map_mul, ← ContinuousLinearMap.mul_apply (π h⁻¹), ← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]`. Rewrite using `[e]`. Conclude with `(hv.comp_measurePreserving (measurePreserving_mul_left μ h⁻¹)).comp_measurePreserving (measurePreserving_mul_right μ g₀)`. Establish `step1 : ∀ h : UJ ε, ∀ u ∈ Submodule.span ℂ (Set.range fun g => π g v), MemLp (fun g => ⟪π h v, π g u⟫_ℂ) q μ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `h u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g₀, rfl⟩` from `hx`. Conclude with `gen h g₀`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Establish `: (fun g => ⟪π h v, π g (0 : U)⟫_ℂ) = 0` using `by funext g; simp`. Rewrite using `[this]`. Conclude with `MemLp.zero`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun g => ⟪π h v, π g (x + y)⟫_ℂ) = (fun g => ⟪π h v, π g x⟫_ℂ) + (fun g => ⟪π h v, π g y⟫_ℂ)`. Use function extensionality and compare the values at `g`. Simplify using `[map_add, inner_add_right]`. Rewrite using `[this]`. Conclude with `hx.add hy`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx`. Establish `: (fun g => ⟪π h v, π g (c • x)⟫_ℂ) = c • (fun g => ⟪π h v, π g x⟫_ℂ)`. Use function extensionality and compare the values at `g`. Simplify using `[map_smul, inner_smul_right]`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hx.const_smul c`. Proceed by induction on `hu' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Conclude with `step1 h u hu`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `zero`. Establish `: (fun g => ⟪(0 : U), π g u⟫_ℂ) = 0` using `by funext g; simp`. Rewrite using `[this]`. Conclude with `MemLp.zero`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (fun g => ⟪x + y, π g u⟫_ℂ) = (fun g => ⟪x, π g u⟫_ℂ) + (fun g => ⟪y, π g u⟫_ℂ)`. Use function extensionality and compare the values at `g`. Simplify using `[inner_add_left]`. Rewrite using `[this]`. Conclude with `hx.add hy`.
-
-Consider the case `smul c x _ hx`. Establish `: (fun g => ⟪c • x, π g u⟫_ℂ) = (starRingEnd ℂ c) • (fun g => ⟪x, π g u⟫_ℂ)`. Use function extensionality and compare the values at `g`. Simplify using `[inner_smul_left, mul_comm]`. Rewrite using `[this]`.
-
-Conclude with `hx.const_smul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_orbit_coeff_memLp {n : ℕ} {ε : Fin n → Bool} (μ : Measure (UJ ε)) [μ.IsHaarMeasure]
     {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] {π : UJ ε →* (U →L[ℂ] U)}
@@ -114,11 +110,11 @@ theorem span_orbit_coeff_memLp {n : ℕ} {ε : Fin n → Bool} (μ : Measure (UJ
     rw [this]; exact hx.const_smul _
 
 /- English proof (translation)
-Introduce `n ε μ _ U _ _ π hπ p hp v hv u hu u' hu'`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hq0 : ENNReal.ofReal p ≠ 0` using `by simpa using hp0`. Establish `hqt : ENNReal.ofReal p ≠ ∞` using `ENNReal.ofReal_ne_top`. Establish `hpr : (ENNReal.ofReal p).toReal = p` using `ENNReal.toReal_ofReal hp0.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cont : ∀ a b : U, Continuous fun g => ⟪a, π g b⟫_ℂ` using `fun a b => continuous_const.inner (hπ.continuous_apply b)`. Establish `hv' : MemLp (fun g => ⟪v, π g v⟫_ℂ) (ENNReal.ofReal p) μ`. Rewrite using `[← integrable_norm_rpow_iff (cont v v).aestronglyMeasurable hq0 hqt, hpr]`. Conclude with `hv`. Establish `h` using `span_orbit_coeff_memLp μ hπ _ v hv' u hu u' hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← integrable_norm_rpow_iff (cont u' u).aestronglyMeasurable hq0 hqt, hpr]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem span_orbit_coeff_integrable : ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (U : Type) [NormedAddCommGroup U] [InnerProductSpace ℂ U] (π : UJ ε →* (U →L[ℂ] U)), IsUnitaryRep π → ∀ (p : ℝ), 1 ≤ p → ∀ v : U, Integrable (fun g => ‖⟪v, π g v⟫_ℂ‖ ^ p) μ → ∀ u ∈ Submodule.span ℂ (Set.range fun g => π g v), ∀ u' ∈ Submodule.span ℂ (Set.range fun g => π g v), Integrable (fun g => ‖⟪u', π g u⟫_ℂ‖ ^ p) μ := by
   intro n ε μ _ U _ _ π hπ p hp v hv u hu u' hu'

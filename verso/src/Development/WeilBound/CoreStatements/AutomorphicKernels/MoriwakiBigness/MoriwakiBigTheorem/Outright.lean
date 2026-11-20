@@ -7,14 +7,14 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArithIntersectionSyst
 namespace PositivityTheory.Pf1.HilbertSamuelMoriwaki
 
 /- English proof (translation)
-The claim follows from `moriwakiBig_of_classicalTheorems PositivityTheory.ResPlug.FromRes.resK (GlobalTheory.T.arith_intersection_system_of_poincare_lelong PositivityTheory.Tls2.Pl.poincareLelong PositivityTheory.ResPlug.FromRes.resK) PositivityTheory.MbAis.DenseCurves.main`.
+A detailed English derivation is pending.
 -/
 theorem moriwakiBig_outright : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement :=
   moriwakiBig_of_classicalTheorems PositivityTheory.ResPlug.FromRes.resK
     (GlobalTheory.T.arith_intersection_system_of_poincare_lelong PositivityTheory.Tls2.Pl.poincareLelong PositivityTheory.ResPlug.FromRes.resK) PositivityTheory.MbAis.DenseCurves.main
 
 /- English proof (translation)
-The claim follows from `hsUse_of_hypotheses PositivityTheory.ResPlug.FromRes.resK (GlobalTheory.T.arith_intersection_system_of_poincare_lelong PositivityTheory.Tls2.Pl.poincareLelong PositivityTheory.ResPlug.FromRes.resK) PositivityTheory.MbAis.DenseCurves.main`.
+A detailed English derivation is pending.
 -/
 theorem hsUse_outright : HSUse :=
   hsUse_of_hypotheses PositivityTheory.ResPlug.FromRes.resK

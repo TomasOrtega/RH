@@ -18,11 +18,9 @@ def resS (S : Set (HeightOneSpectrum (𝓞 F))) : G F Ω →* galUnramifiedOutsi
   AlgEquiv.restrictNormalHom (maxUnramifiedOutside F Ω S)
 
 /- English proof (translation)
-Establish `key : ∀ x y : Γ, ∀ a : A, A.ρ x (A.ρ y a) = A.ρ (x * y) a` using `fun x y a => by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Use `Nat.card_congr { toFun := fun a => ⟨A.ρ g⁻¹ a.1, ?_⟩ invFun := fun a => ⟨A.ρ g a.1, ?_⟩ left_inv := fun a => Subtype.ext ?_ right_inv := fun a => Subtype.ext ?_ }` and prove the remaining obligations. Use `conv_rhs => rw [← a.2]`. Rewrite using `[key, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `group`. Use `conv_rhs => rw [← a.2]`. Rewrite using `[key, key]`. Use `congr 1`.
-
-Use `group`. Use `show A.ρ g (A.ρ g⁻¹ a.1) = a.1`. Rewrite using `[key, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `show A.ρ g⁻¹ (A.ρ g a.1) = a.1`. Rewrite using `[key, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fix_conj {k Γ : Type} [CommRing k] [Group Γ] (A : Rep.{0} k Γ) (g c : Γ) :
     Nat.card {a : A // A.ρ (g * c * g⁻¹) a = a} = Nat.card {a : A // A.ρ c a = a} := by
@@ -47,18 +45,16 @@ theorem card_fix_conj {k Γ : Type} [CommRing k] [Group Γ] (A : Rep.{0} k Γ) (
     rw [key, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Conclude with `PositivityTheory.Lit1.GEN.W_dictfwd_b.isCCAt_conj hw hc hc'`.
+A detailed English derivation is pending.
 -/
 theorem isCCAt_conj {w : InfinitePlace F} (hw : w.IsReal) {c c' : G F Ω} (hc : IsCCAt w c)
     (hc' : IsCCAt w c') : ∃ g : G F Ω, c' = g * c * g⁻¹ := by
   exact PositivityTheory.Lit1.GEN.W_dictfwd_b.isCCAt_conj hw hc hc'
 
 /- English proof (translation)
-Set `σ0 : F →ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosed.lift`. Set `K : FiniteSubfield` to `⟨σ0.fieldRange, LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField σ0).toLinearEquiv⟩`. Use `letI : Algebra F (AlgebraicClosure ℚ) := σ0.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ F (AlgebraicClosure ℚ) := IsScalarTower.of_algebraMap_eq fun q => (σ0.commutes q).symm`. Use `haveI : Algebra.IsAlgebraic F (AlgebraicClosure ℚ) := Algebra.IsAlgebraic.tower_top (K := ℚ) F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsAlgClosure F (AlgebraicClosure ℚ) := ⟨inferInstance, inferInstance⟩`. Set `τ : Ω ≃ₐ[F] AlgebraicClosure ℚ` to `IsAlgClosure.equiv F Ω (AlgebraicClosure ℚ)`. Use `⟨K, τ.toRingEquiv, (AlgEquiv.ofInjectiveField σ0).toRingEquiv, fun x => ?_⟩` and prove the remaining obligations. Use `show τ (algebraMap F Ω x) = _`. Rewrite using `[τ.commutes]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_fieldTransport :
     ∃ (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1),
@@ -78,7 +74,7 @@ theorem exists_fieldTransport :
   rfl
 
 /- English proof (translation)
-Conclude with `PositivityTheory.Lit1.GEN.W_dictfwd_b.places_transport K τ σ hτ S`.
+A detailed English derivation is pending.
 -/
 theorem places_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ))
@@ -134,13 +130,13 @@ def galTransport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ :
   map_mul' a b := by ext y; simp [tauE]
 
 /- English proof (translation)
-Establish `hc : Continuous (galTransport K τ σ hτ S S' hmem)`. Set `f : galUnramifiedOutside F Ω S →* galUnramifiedOutside K.1 (AlgebraicClosure ℚ) S'` to `(galTransport K τ σ hτ S S' hmem).toMonoidHom`. Express the relevant statement in the definitionally equal form `Continuous f`. Use `continuous_of_continuousAt_one f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Take `⟨K0, hK0, hK0s⟩` from `(krullTopology_mem_nhds_one_iff K.1 _ s).1 hs`. Set `b` to `Module.finBasis K.1 K0`. Set `L0 : IntermediateField F (maxUnramifiedOutside F Ω S)` to `IntermediateField.adjoin F (Set.range fun i => (tauE τ S S' hmem).symm (b i : _))`. Establish `hL0 : FiniteDimensional F L0` using `IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Filter.mem_map]`. Use `Filter.mem_of_superset ((krullTopology_mem_nhds_one_iff F _ _).2 ⟨L0, hL0, le_rfl⟩) fun h hh => hK0s ?_` and prove the remaining obligations. Rewrite `hh`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Establish `hb : ∀ i, f h (b i : _) = b i` using `fun i => by`. Express the relevant statement in the definitionally equal form `(tauE τ S S' hmem) (h ((tauE τ S S' hmem).symm (b i : _))) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hh _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩), RingEquiv.apply_symm_apply]`. Introduce `y hy`. Establish `key` using `b.ext (f₁ := (f h).toLinearMap ∘ₗ K0.val.toLinearMap) (f₂ := K0.val.toLinearMap) fun i => hb i`. Conclude with `LinearMap.congr_fun key ⟨y, hy⟩`. Conclude with `⟨hc, Continuous.continuous_symm_of_equiv_compact_to_t2 (f := (galTransport K τ σ hτ S S' hmem).toEquiv) hc⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem continuous_galTransport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ))
@@ -177,11 +173,11 @@ theorem continuous_galTransport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClo
     (f := (galTransport K τ σ hτ S S' hmem).toEquiv) hc⟩
 
 /- English proof (translation)
-Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Take `⟨h1, h2⟩` from `continuous_galTransport K τ σ hτ S S' hmem`. Use `⟨{ galTransport K τ σ hτ S S' hmem with continuous_toFun := h1, continuous_invFun := h2 }, fun g g' hg => ?_⟩` and prove the remaining obligations. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show τ ((g.restrictNormal (maxUnramifiedOutside F Ω S) ((tauE τ S S' hmem).symm y) : Ω)) = ((g'.restrictNormal (maxUnramifiedOutside K.1 (AlgebraicClosure ℚ) S') y : maxUnramifiedOutside K.1 (AlgebraicClosure ℚ) S') : AlgebraicClosure ℚ)`. Establish `e1` using `AlgEquiv.restrictNormal_commutes g (maxUnramifiedOutside F Ω S) ((tauE τ S S' hmem).symm y)`. Establish `e2` using `AlgEquiv.restrictNormal_commutes g' (maxUnramifiedOutside K.1 (AlgebraicClosure ℚ) S') y`. Simplify using `only [IntermediateField.algebraMap_apply] at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, ← hg]`. Use `show g' (τ (τ.symm (y : AlgebraicClosure ℚ))) = _`. Rewrite using `[RingEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem galEquiv_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ))
@@ -209,7 +205,7 @@ theorem galEquiv_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure 
   rw [RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨S', hS', hn, hmem⟩` from `places_transport K τ σ hτ S`. Take `⟨θ, hθ⟩` from `galEquiv_transport K τ σ hτ _ S' hmem`. Conclude with `⟨S', hS', θ, hn, hθ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gsTransport_compat (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ))
@@ -227,9 +223,7 @@ theorem gsTransport_compat (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure 
   exact ⟨S', hS', θ, hn, hθ⟩
 
 /- English proof (translation)
-Use `⟨AlgEquiv.ofRingEquiv (f := τ.trans (g'.toRingEquiv.trans τ.symm)) fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show τ.symm (g' (τ (algebraMap F Ω x))) = algebraMap F Ω x`. Rewrite using `[hτ, τ.symm_apply_eq, hτ]`. Conclude with `g'.commutes (σ x)`. Use `show g' (τ x) = τ (τ.symm (g' (τ x)))`.
-
-Rewrite using `[RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transport_elem (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ))
@@ -242,7 +236,7 @@ theorem exists_transport_elem (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosu
     rw [RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Conclude with `PositivityTheory.Lit1.GEN.W_dictfwd_b.realPlaces_transport K τ σ hτ`.
+A detailed English derivation is pending.
 -/
 theorem realPlaces_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ)) :
@@ -253,7 +247,7 @@ theorem realPlaces_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosur
   exact PositivityTheory.Lit1.GEN.W_dictfwd_b.realPlaces_transport K τ σ hτ
 
 /- English proof (translation)
-Conclude with `PositivityTheory.Lit1.GEN.W_dictfwd_b.real_H0_card_eq_fixed K S' ιr v`.
+A detailed English derivation is pending.
 -/
 theorem real_H0_card_eq_fixed (K : FiniteSubfield) (S' : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal},
@@ -268,7 +262,7 @@ theorem real_H0_card_eq_fixed (K : FiniteSubfield) (S' : Set (HeightOneSpectrum 
 open scoped Classical in
 
 /- English proof (translation)
-The claim follows from `IsDiscreteRep.res (φ := θ.symm.toMulEquiv.toMonoidHom) θ.symm.continuous A gsRealH0Card S' (Rep.res θ.symm.toMulEquiv.toMonoidHom A) ιr (e w) = Nat.card {a : A // A.ρ (resS (Ω := Ω) (S : Set (HeightOneSpectrum (𝓞 F))) (c' w.1)) a = a} := by obtain ⟨K, τ, σ, hτ⟩ := exists_fieldTra …`.
+A detailed English derivation is pending.
 -/
 theorem transport_data {l : ℕ} [Fact l.Prime] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (hS : ContainsAbove S l) :
@@ -308,11 +302,11 @@ theorem transport_data {l : ℕ} [Fact l.Prime] (S : Finset (HeightOneSpectrum (
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨K, S', hS', θ, ιr, c', e, hl, hc', hcard, hfix⟩` from `transport_data (Ω := Ω) S hS`. Use `⟨c', hc', fun A _ _ r hA => ?_⟩` and prove the remaining obligations. Use `haveI := IsDiscreteRep.res (φ := θ.symm.toMulEquiv.toMonoidHom) θ.symm.continuous A`. Use `haveI hBf : Finite (Rep.res θ.symm.toMulEquiv.toMonoidHom A) := inferInstanceAs (Finite A)`. Establish `h1` using `h K S' hS' hl trivial ιr (Rep.res θ.symm.toMulEquiv.toMonoidHom A) ⟨r, hA⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hχ` using `eulerChar_res_continuousMulEquiv θ.symm A`. Unfold `gsEulerRatio at h1`. Establish `hP : (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S' (Rep.res θ.symm.toMulEquiv.toMonoidHom A) ιr v : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => by`. Conclude with `(gsRealH0Card_pos S' (Rep.res θ.symm.toMulEquiv.toMonoidHom A) ιr v).ne'` after adjusting the coercions. Rewrite `h1` using `[div_eq_one_iff_eq hP, hχ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : Nat.card (Rep.res θ.symm.toMulEquiv.toMonoidHom A) = Nat.card A` using `rfl`. Rewrite `h1` using `[hn]`. Rewrite using `[hcard, h1]`. Conclude with `(Fintype.prod_equiv e _ _ (fun w => by rw [hfix A w])).symm`.
+A detailed English derivation is pending.
 -/
 theorem ratio_F_exists {l : ℕ} [Fact l.Prime] (h : RatioOne l (fun _ => True))
     (S : Finset (HeightOneSpectrum (𝓞 F))) (hS : ContainsAbove S l) :
@@ -342,9 +336,9 @@ theorem ratio_F_exists {l : ℕ} [Fact l.Prime] (h : RatioOne l (fun _ => True))
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨c', hc', hrat⟩` from `ratio_F_exists (Ω := Ω) h S hS`. Rewrite using `[hrat A r hA]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `isCCAt_conj w.2 (hc' w.1 w.2) (hc w.1 w.2)`. Establish `e` using `card_fix_conj A (resS (Ω := Ω) (S : Set (HeightOneSpectrum (𝓞 F))) g) (resS (Ω := Ω) (S : Set (HeightOneSpectrum (𝓞 F))) (c' w.1))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[← map_inv, ← map_mul, ← map_mul, ← hg]`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratio_F {l : ℕ} [Fact l.Prime] (h : RatioOne l (fun _ => True))
     (S : Finset (HeightOneSpectrum (𝓞 F))) (hS : ContainsAbove S l)
@@ -364,7 +358,7 @@ theorem ratio_F {l : ℕ} [Fact l.Prime] (h : RatioOne l (fun _ => True))
   rw [e]
 
 /- English proof (translation)
-Conclude with `PositivityTheory.Lit1.GEN.W_dictfwd_b.dict_A S rhoS hc`.
+A detailed English derivation is pending.
 -/
 theorem dict_A {l : ℕ} [Fact l.Prime] {r : ℕ} {M : Type} [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
@@ -381,15 +375,15 @@ theorem dict_A {l : ℕ} [Fact l.Prime] {r : ℕ} {M : Type} [AddCommGroup M]
 
 open scoped Classical in
 /- English proof (translation)
-Introduce `_ hS hc c hcc`. Take `⟨A, hAd, hAf, hAt, hcard, h0, h1, h2, hfix⟩` from `dict_A S rhoS hc`. Establish `key` using `ratio_F h S hS A r hAt c hcc`. Simplify using `only [eulerChar, Finset.prod_range_succ, Finset.prod_range_zero, one_mul, pow_zero, pow_one, zpow_one, zpow_neg, neg_one_sq, Int.reduceNeg, hcard, h0, h1, h2] at key`. Establish `hP : ∏ w : {w : InfinitePlace F // w.IsReal}, (Nat.card {a : A // A.ρ (resS (Ω` using `Ω) (S : Set (HeightOneSpectrum (𝓞 F))) (c w.1)) a = a} : ℚ) = ((∏ w ∈ Finset.univ.filter (fun w : InfinitePlace F => w.IsReal), Nat.card {m : M // rhoS (toGS Ω _ (c w)) m = m} : ℕ) : ℚ) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_prod, Finset.prod_subtype (p := fun w : InfinitePlace F => w.IsReal) (Finset.univ.filter (fun w : InfinitePlace F => w.IsReal)) (fun w => by simp)]`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [hfix]`. Rewrite `key` using `[hP]`. Establish `hR` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank F`. Establish `hI : Fintype.card (InfinitePlace F) = InfinitePlace.nrRealPlaces F + InfinitePlace.nrComplexPlaces F` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces F`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `archH0Card`. Rewrite using `[← hR]`. Rewrite `key` using `[hI]`. Establish `hpos : 0 < ∏ w ∈ Finset.univ.filter (fun w : InfinitePlace F => w.IsReal), Nat.card {m : M // rhoS (toGS Ω _ (c w)) m = m}` using `Finset.prod_pos fun w _ => Nat.card_pos_iff.2 ⟨⟨⟨0, map_zero _⟩⟩, inferInstance⟩`. Distinguish the cases in `hh1 : Nat.card (H1 rhoS) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hh1]`. Simplify using `at key`. Conclude with `absurd key.symm (by exact_mod_cast hpos.ne')`. Establish `hq : ((Nat.card (H0 rhoS) * Nat.card (H2 rhoS) * Nat.card M ^ (InfinitePlace.nrRealPlaces F + 2 * InfinitePlace.nrComplexPlaces F) : ℕ) : ℚ) = ((Nat.card (H1 rhoS) * ((∏ w ∈ Finset.univ.filter (fun w : InfinitePlace F => w.IsReal), Nat.card {m : M // rhoS (toGS Ω _ (c w)) m = m}) …`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_prod, ← key]`. Establish `: (Nat.card (H1 rhoS) : ℚ) ≠ 0` using `by exact_mod_cast hh1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `hq` after adjusting the coercions.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem globalEulerCharAt_of_ratioOne {l : ℕ} [Fact l.Prime] {r : ℕ} {M : Type} [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]

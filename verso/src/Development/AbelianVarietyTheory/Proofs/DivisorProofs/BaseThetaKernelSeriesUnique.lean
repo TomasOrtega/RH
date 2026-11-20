@@ -24,9 +24,9 @@ namespace GlobalTheory.BaseKernelUniq
 variable {D : D7}
 
 /- English proof (translation)
-Use `MonoidHom.ext fun u => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : kP P)`. Use `haveI : Nontrivial (kP P) := Ideal.Quotient.nontrivial_iff.2 P.isPrime.ne_top`. Establish `ha0 : (a : D.host.E) ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : a = 0` using `RingOfIntegers.coe_eq_zero_iff.1 h0`. Apply `u.ne_zero` to reduce the goal to its premises. Rewrite using `[← ha, h1, map_zero]`. Rewrite using `[h a (Units.mk0 _ ha0) u rfl ha.symm, h' a (Units.mk0 _ ha0) u rfl ha.symm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_unique {χ : Formalism.L2.Host.HChar D.host.E} {P : Pl D.host.E} {c c' : (kP P)ˣ →* ℂˣ}
     (h : IsRes χ P c) (h' : IsRes χ P c') : c = c' := by
@@ -41,7 +41,7 @@ theorem res_unique {χ : Formalism.L2.Host.HChar D.host.E} {P : Pl D.host.E} {c 
   rw [h a (Units.mk0 _ ha0) u rfl ha.symm, h' a (Units.mk0 _ ha0) u rfl ha.symm]
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Take `⟨⟨es', hes', rfl⟩, -⟩` from `h'`. Conclude with `Finset.sum_congr rfl fun PP hP => (GlobalTheory.HeckeParts.idem_unique V (hes PP hP) (hes' PP hP)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idemSum_unique (V : HSp D) {e e' : AE D} {P : Finset (Pl D.host.E)} (h : IsIdemSum e P)
     (h' : IsIdemSum e' P) : e = e' := by
@@ -50,7 +50,7 @@ theorem idemSum_unique (V : HSp D) {e e' : AE D} {P : Finset (Pl D.host.E)} (h :
   exact Finset.sum_congr rfl fun PP hP => (GlobalTheory.HeckeParts.idem_unique V (hes PP hP) (hes' PP hP)).symm
 
 /- English proof (translation)
-Unfold `omegaQ`. Use `split_ifs with hy`. Conclude with `Finset.prod_congr rfl fun PP _ => by rw [hξ PP.1 PP.2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem omegaQ_congr {a b : ℕ} {Q : Finset (Pl D.host.E)} {ξ ξ' : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ}
     (hξ : ∀ PP ∈ Q, ξ PP = ξ' PP) (r : ℕ) (k : ℤ) (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) :
@@ -61,9 +61,9 @@ theorem omegaQ_congr {a b : ℕ} {Q : Finset (Pl D.host.E)} {ξ ξ' : ∀ PP : P
   · rfl
 
 /- English proof (translation)
-Take `⟨-, e, he, hT⟩` from `h`. Take `⟨-, e', he', hT'⟩` from `h'`. Take `rfl` from `idemSum_unique S he he'`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hT`. Rewrite using `[hall Tm hTm, hT'.2 Tm hTm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [omegaQ_congr hξ]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thPVec_unique {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -82,9 +82,9 @@ theorem thPVec_unique {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HS
   simp only [omegaQ_congr hξ]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F _ i v _ _ ω φ ω' φ' hk hk'`. Take `⟨χ, ξR, hχ, hres, hω, hv⟩` from `hk`. Take `⟨χ', ξR', hχ', hres', hω', hv'⟩` from `hk'`. Take `rfl : χ = χ'` from `(GlobalTheory.ChrEqUnique.chrEq_unique D).2.1 χ χ' _ hχ hχ'`. Take `rfl : φ = φ'` from `thPVec_unique hv hv' fun PP hP => res_unique (hres PP hP) (hres' PP hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hθφ` using `GlobalTheory.VecTheta.isThetaFunO_thPVec hv`. Establish `hinf : IsInfFam R.θ` using `hv.1.2.inf`. Use function extensionality and compare the values at `h w u g`. Conclude with `congrFun (GlobalTheory.WeilUniq.weilDatum_unique D R.ψ hω.std _ _ _ _ ω ω' hω hω' (h, g) _ (GlobalTheory.Chain.InnerSteps.theta_pureTensorO hω.std hinf _ _ _ _ hθφ _)) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem baseKernelUnique : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)), v ∈ R.twPl → R.tup_mu_on → BaseKernelUnique R i v (ownAt D v) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F _ i v _ _ ω φ ω' φ' hk hk'

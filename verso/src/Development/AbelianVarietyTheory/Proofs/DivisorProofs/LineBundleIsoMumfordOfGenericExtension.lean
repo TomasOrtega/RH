@@ -19,23 +19,19 @@ namespace GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ G _ _ hG L' N PP hL' hN hNL hE`. Establish `hsm : Smooth G.hom` using `hG.smooth`. Establish `hgc : GeometricallyConnected G.hom` using `hG.geomConnected`. Establish `hsm₂ : Smooth (G ⊗ G).hom` using `by show Smooth (pullback.fst G.hom G.hom ≫ G.hom) infer_instance`. Establish `hgc₂ : GeometricallyConnected (G ⊗ G).hom` using `by show GeometricallyConnected (pullback.fst G.hom G.hom ≫ G.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GeometricallyConnected.comp _ _`. Establish `hgi₂ : GeometricallyIntegral (G2 G).hom` using `GlobalTheory.geometricallyIntegral_of_smooth _`. Establish `hLam : (abelian₂ G L').IsLB` using `DVR.linComb_isLB _ hL' _ _`. Establish `hPP : PP.IsLB` using `hE.1`. Establish `hpb` using `isGrpPullback_pullback G (jK R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β₂, hsq, hβ⟩` from `GlobalTheory.T.exists_mumfordBundle_pullback_grpPullback _ _ (jK R) G ((Over.pullback (jK R)).obj G) (pullback.fst G.hom (jK R)) hpb`. Establish `h1 : LBIso (abelian₂ G L') ((abelian₂ G L').pull (𝟙 _))` using `LBIso.chartPull (chartPullId _) (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) (GlobalTheory.PolBaseChange.lbIso_refl hLam)`. Establish `h2` using `hβ L' N _ (abelian₂ G L') (𝟙 _) hL' hN hLam hNL h1`. Rewrite `h2` using `[Category.comp_id]`. Establish `h3` using `hE.2 β₂ hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : LBIso ((abelian₂ G L').pull β₂) (PP.pull β₂)` using `LBIso.trans (pull_isLB hLam _) (DVR.linComb_isLB _ hN _ _) (pull_isLB hPP _) (LBIso.symm h2) h3`. Set `p1` to `pullback.fst (G2 G).hom (jK R)`. Set `p2` to `pullback.snd (G2 G).hom (jK R)`. Set `T : Over (Spec (CommRingCat.of (FractionRing R)))` to `Over.mk p2`. Establish `wx : (p1 ≫ (fst G G).left) ≫ G.hom = p2 ≫ jK R`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Over.w (fst G G)]`. Conclude with `pullback.condition`. Establish `wy : (p1 ≫ (snd G G).left) ≫ G.hom = p2 ≫ jK R`. Rewrite using `[Category.assoc, Over.w (snd G G)]`. Conclude with `pullback.condition`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x : T ⟶ (Over.pullback (jK R)).obj G` to `Over.homMk (hpb.1.lift _ _ wx) (hpb.1.lift_snd _ _ _)`. Set `y : T ⟶ (Over.pullback (jK R)).obj G` to `Over.homMk (hpb.1.lift _ _ wy) (hpb.1.lift_snd _ _ _)`. Set `i : pullback (G2 G).hom (jK R) ⟶ (G2 ((Over.pullback (jK R)).obj G)).left` to `(lift x y).left`. Establish `hi : i ≫ β₂ = p1`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show i ≫ β₂ ≫ (fst G G).left = p1 ≫ (fst G G).left`. Rewrite using `[hsq.1, ← Category.assoc]`. Use `show (lift x y ≫ fst _ _).left ≫ _ = _`. Rewrite using `[lift_fst]`. Conclude with `hpb.1.lift_fst _ _ _`.
-
-Use `show i ≫ β₂ ≫ (snd G G).left = p1 ≫ (snd G G).left`. Rewrite using `[hsq.2, ← Category.assoc]`. Use `show (lift x y ≫ snd _ _).left ≫ _ = _`. Rewrite using `[lift_snd]`. Conclude with `hpb.1.lift_fst _ _ _`.
-
-Establish `hK : LBIso ((abelian₂ G L').pull p1) (PP.pull p1)` using `LBIso.chartPull (chartPullSame (abelian₂ G L') (fun _ => p1) (fun _ => β₂) (fun _ => 1) i (fun _ => hi.symm)) (chartPullSame PP (fun _ => p1) (fun _ => β₂) (fun _ => 1) i (fun _ => hi.symm)) hgen`. Conclude with `GlobalTheory.T.lineBundleIso_of_generic_normal_local_base R (G2 G) (lift η[G] η[G]).left (Over.w (lift η[G] η[G])) (abelian₂ G L') PP hLam hPP hK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_lam_of_extLam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (L' : LB G.left) (N : LB ((Over.pullback (jK R)).obj G).left) (PP : LB (G2 G).left), L'.IsLB → N.IsLB → LBIso N (L'.pull (pullback.fst G.hom (jK R))) → ExtLam G N PP → LBIso (abelian₂ G L') PP := by
   intro R _ _ _ _ _ G _ _ hG L' N PP hL' hN hNL hE

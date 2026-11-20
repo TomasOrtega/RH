@@ -12,9 +12,9 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open UpperTheory.Gal.GamX
 
 /- English proof (translation)
-Establish `hex : ∃ ζ : kˣ →* ℂˣ, ∃ hζ, IrrGL.ofChar ξ hξ = IrrGL.ofChar ζ hζ` using `⟨ξ, hξ, rfl⟩`. Establish `hc : hex.choose = ξ`. Take `⟨hζ, e⟩` from `hex.choose_spec`. Conclude with `(IrrGL.ofChar_inj.1 e).symm`. Unfold `chs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Multiset.cons_zero (IrrGL.ofChar ξ hξ), Multiset.filterMap_cons_some _ _ _ (b := ξ) (by rw [dif_pos hex, hc])]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem chs_single {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ξ : kˣ →* ℂˣ) (hξ : IsSmoothChar ξ) : chs ({IrrGL.ofChar ξ hξ} : Multiset (IrrGL k)) = {ξ} := by
@@ -27,11 +27,11 @@ private theorem chs_single {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   simp
 
 /- English proof (translation)
-Unfold `RkSupp`. Introduce `K _ _ _ π ψ hπ v s hs`. Take `⟨σ, hσ, h⟩` from `id hs`. Establish `h1` using `GlobalTheory.rankOne_algNorm_locComp K π ψ hπ v σ hσ`. Establish `h2 : IrrGL.of σ.ρ σ.smooth σ.irred = IrrGL.ofChar (ψ.loc v) (ParLaws.isSmoothChar_loc ψ v)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Simplify using `[GlobalTheory.GalOfCusp.algNorm]`. Establish `hc : (IrrGL.of σ.ρ σ.smooth σ.irred).IsCusp` using `h2 ▸ IrrGL.isCusp_ofChar _ _`. Establish `h3 : SuppAt π v {IrrGL.of σ.ρ σ.smooth σ.irred}` using `⟨σ, hσ, (hasSupport_self hc).of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm⟩`. Establish `h4` using `(UpperTheory.V.Z.Gam.suppFacts K 1 le_rfl π v).2.1 _ _ hs h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h4, h2, chs_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.GamX.rkSupp :
     UpperTheory.Gal.GamX.RkSupp := by

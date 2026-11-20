@@ -9,33 +9,33 @@ section Pf
 variable {R : Type} [CommRing R] {A B D : Cx R} {i : A ⟶ B} {l r : B ⟶ D} {I : Cx R}
 
 /- English proof (translation)
-Simplify using `[pb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pb_δ (f : A ⟶ B) {n m : ℤ} (c : Cochain B I n) : pb f (δ n m c) = δ n m (pb f c) := by
   simp [pb]
 
 /- English proof (translation)
-Simplify using `[pb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pb_sub (f : A ⟶ B) {n : ℤ} (c c' : Cochain B I n) : pb f (c - c') = pb f c - pb f c' := by
   simp [pb]
 
 /- English proof (translation)
-Simplify using `[pb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pb_zero (f : A ⟶ B) {n : ℤ} : pb f (0 : Cochain B I n) = 0 := by
   simp [pb]
 
 /- English proof (translation)
-Simplify using `[pb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pb_add (f : A ⟶ B) {n : ℤ} (c c' : Cochain B I n) : pb f (c + c') = pb f c + pb f c' := by
   simp [pb]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Take `⟨h1', h2', h3'⟩` from `h'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pb_sub, h1, h1', Cocycle.coe_sub]`. Rewrite using `[Cocycle.coe_sub, pb_sub, h2, h2', δ_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Cocycle.coe_sub, pb_sub, h3, h3', sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Tri.sub {n : ℤ} {a a' : Cocycle A I n} {c c' : Cochain B I n} {b b' : Cocycle D I (n + 1)}
     (h : Tri i l r a c b) (h' : Tri i l r a' c' b') : Tri i l r (a - a') (c - c') (b - b') := by
@@ -47,9 +47,9 @@ theorem Tri.sub {n : ℤ} {a a' : Cocycle A I n} {c c' : Cochain B I n} {b b' : 
   · rw [Cocycle.coe_sub, pb_sub, h3, h3', sub_zero]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Take `⟨h1', h2', h3'⟩` from `h'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pb_add, h1, h1', Cocycle.coe_add]`. Rewrite using `[Cocycle.coe_add, pb_add, h2, h2', δ_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Cocycle.coe_add, pb_add, h3, h3', add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Tri.add {n : ℤ} {a a' : Cocycle A I n} {c c' : Cochain B I n} {b b' : Cocycle D I (n + 1)}
     (h : Tri i l r a c b) (h' : Tri i l r a' c' b') : Tri i l r (a + a') (c + c') (b + b') := by
@@ -61,9 +61,9 @@ theorem Tri.add {n : ℤ} {a a' : Cocycle A I n} {c c' : Cochain B I n} {b b' : 
   · rw [Cocycle.coe_add, pb_add, h3, h3', add_zero]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Take `⟨f, hf⟩` from `(mem_coboundaries_iff a (n - 1) (by omega)).1 ha`. Take `⟨g, hg⟩` from `hG.surj (n - 1) f`. Take `⟨e, he1, he2⟩` from `hG.glue n (c - δ (n - 1) n g) 0 (by`. Rewrite using `[pb_sub, pb_δ, hg, hf, h1, sub_self, pb_zero])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff b n rfl]`. Use `⟨e, hG.ext (n + 1) _ _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[pb_δ, he1, h2, δ_sub, δ_δ, sub_zero]`. Rewrite using `[pb_δ, he2, h3, δ_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Good.mk_zero (hG : Good i l r I) {n : ℤ} {a : Cocycle A I n} {c : Cochain B I n} {b : Cocycle D I (n + 1)}
     (h : Tri i l r a c b) (ha : a ∈ coboundaries A I n) : CohomologyClass.mk b = 0 := by
@@ -78,7 +78,7 @@ theorem Good.mk_zero (hG : Good i l r I) {n : ℤ} {a : Cocycle A I n} {c : Coch
   · rw [pb_δ, he2, h3, δ_zero]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub]`. Conclude with `hG.mk_zero (h.sub h') ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Good.mk_eq (hG : Good i l r I) {n : ℤ} {a a' : Cocycle A I n} {c c' : Cochain B I n}
     {b b' : Cocycle D I (n + 1)} (h : Tri i l r a c b) (h' : Tri i l r a' c' b')
@@ -87,15 +87,15 @@ theorem Good.mk_eq (hG : Good i l r I) {n : ℤ} {a a' : Cocycle A I n} {c c' : 
   exact hG.mk_zero (h.sub h') ha
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [pb_zero, Cocycle.coe_zero], by rw [Cocycle.coe_zero, pb_zero, δ_zero], by rw [Cocycle.coe_zero, pb_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tri_zero {n : ℤ} : Tri i l r (0 : Cocycle A I n) 0 (0 : Cocycle D I (n + 1)) :=
   ⟨by rw [pb_zero, Cocycle.coe_zero], by rw [Cocycle.coe_zero, pb_zero, δ_zero], by rw [Cocycle.coe_zero, pb_zero]⟩
 
 /- English proof (translation)
-Rewrite using `[AddMonoidHom.mem_ker, hpb, cpre_mk, CohomologyClass.mk_eq_zero_iff]`. Establish `: zcomp (Cocycle.ofHom r) b (zero_add (n + 1)) = 0` using `Cocycle.ext (by`. Express the relevant statement in the definitionally equal form `pb r b.1 = _`. Rewrite using `[h.2.2, Cocycle.coe_zero])`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem Tri.ker {n : ℤ} {a : Cocycle A I n} {c : Cochain B I n} {b : Cocycle D I (n + 1)} (h : Tri i l r a c b) :
     CohomologyClass.mk b ∈ (hpb r I (n + 1)).ker := by
@@ -107,13 +107,11 @@ theorem Tri.ker {n : ℤ} {a : Cocycle A I n} {c : Cochain B I n} {b : Cocycle D
   exact zero_mem _
 
 /- English proof (translation)
-Introduce `R _ A B D i l r I hG n`. Use `choose c b hcb using fun a : Cocycle A I n => hG.tri a`. Set `F : Cocycle A I n →+ (hpb r I (n + 1)).ker` to `AddMonoidHom.mk' (fun a => ⟨CohomologyClass.mk (b a), (hcb a).ker⟩) (fun a a' => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (b (a + a')) = CohomologyClass.mk (b a) + CohomologyClass.mk (b a')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CohomologyClass.mk_add]`. Conclude with `hG.mk_eq (hcb _) ((hcb a).add (hcb a')) (by rw [sub_self]; exact zero_mem _))`. Use `⟨CohomologyClass.descAddMonoidHom F ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[AddMonoidHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (b a) = 0`. Rewrite using `[← CohomologyClass.mk_zero D I (n + 1)]`. Conclude with `hG.mk_eq (hcb a) tri_zero (by rw [sub_zero]; exact ha)`. Introduce `a c' b' h`.
-
-Express the relevant statement in the definitionally equal form `CohomologyClass.mk (b a) = _`. Conclude with `hG.mk_eq (hcb a) h (by rw [sub_self]; exact zero_mem _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem LeafDelta_of : LeafDelta := by
   intro R _ A B D i l r I hG n

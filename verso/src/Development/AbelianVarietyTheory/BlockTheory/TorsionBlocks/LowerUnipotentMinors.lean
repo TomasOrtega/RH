@@ -130,7 +130,7 @@ def JointHarmonicIntegral : Prop :=
     NormSqIntegral h ap am
 
 /- English proof (translation)
-Establish `h0 : Finset.Ioi (0 : Fin 2) = {1}` using `by decide`. Establish `h1 : Finset.Ioi (1 : Fin 2) = ∅` using `by decide`. Simplify using `[hookProd, Fin.prod_univ_two, h0, h1, Nat.factorial]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : hookProd ![2, 1] = 3 := by
   have h0 : Finset.Ioi (0 : Fin 2) = {1} := by decide
@@ -139,7 +139,7 @@ example : hookProd ![2, 1] = 3 := by
   norm_num
 
 /- English proof (translation)
-Simplify using `[del, delPlus, delMinus, powProd, nextRow, topMinor, botMinor, zPlus, zMinus, Matrix.det_unique]`.
+Simplify using the standard rewrite rules.
 -/
 example (k m : ℕ) : del (n := 2) (p := 1) (q := 1) le_rfl ![k] ![m] =
     X (0, Sum.inl 0) ^ k * X (1, Sum.inr 0) ^ m := by

@@ -18,13 +18,13 @@ noncomputable section
 namespace GlobalTheory.StalkDer
 
 /- English proof (translation)
-Introduce `X X' f _ U d x hx`. Establish `hU' : IsAffineOpen (f ⁻¹ᵁ U.1)` using `U.2.preimage f`. Set `φ : Γ(X, U.1) ≃+* Γ(X', f ⁻¹ᵁ U.1)` to `(asIso (f.app U.1)).commRingCatIsoToRingEquiv`. Use `letI : Algebra Γ(X', f ⁻¹ᵁ U.1) (X'.presheaf.stalk x) := X'.presheaf.algebra_section_stalk (⟨x, hx⟩ : f ⁻¹ᵁ U.1)`. Use `haveI := hU'.isLocalization_stalk ⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `halg : ∀ a, algebraMap Γ(X', f ⁻¹ᵁ U.1) (X'.presheaf.stalk x) a = (X'.presheaf.germ (f ⁻¹ᵁ U.1) x hx).hom a` using `fun a => rfl`. Set `g : Γ(X', f ⁻¹ᵁ U.1) →+ X'.presheaf.stalk x` to `(X'.presheaf.germ (f ⁻¹ᵁ U.1) x hx).hom.toAddMonoidHom.comp (φ.toRingHom.toAddMonoidHom.comp (d.toLinearMap.toAddMonoidHom.comp φ.symm.toRingHom.toAddMonoidHom))`. Establish `hg : ∀ a, g a = (X'.presheaf.germ (f ⁻¹ᵁ U.1) x hx).hom (φ (d (φ.symm a)))` using `fun a => rfl`. Take `⟨D', hD'⟩` from `derivation_extend_localization_atPrime ℤ Γ(X', f ⁻¹ᵁ U.1) (X'.presheaf.stalk x) (hU'.primeIdealOf ⟨x, hx⟩).asIdeal (intDerivationOfLeibniz g (fun a b => by`. Simplify using `only [hg, map_mul, Derivation.leibniz, smul_eq_mul, map_add, Algebra.smul_def, halg, RingEquiv.apply_symm_apply]))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D', fun r => ?_⟩` and prove the remaining obligations. Establish `h1` using `hD' (φ r)`. Rewrite `h1` using `[halg]`. Use `h1.trans ?_` and prove the remaining obligations. Use `show g (φ r) = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hg, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem derivation_extend_stalk_of_iso : ∀ (X X' : Scheme.{0}) (f : X' ⟶ X) [IsIso f] (U : X.affineOpens) (d : Derivation ℤ Γ(X, U.1) Γ(X, U.1)) (x : X') (hx : x ∈ f ⁻¹ᵁ U.1), ∃ δ : Derivation ℤ (X'.presheaf.stalk x) (X'.presheaf.stalk x), ∀ r, δ ((X'.presheaf.germ (f ⁻¹ᵁ U.1) x hx).hom ((f.app U.1).hom r)) = (X'.presheaf.germ (f ⁻¹ᵁ U.1) x hx).hom ((f.app U.1).hom (d r)) := by
   intro X X' f _ U d x hx

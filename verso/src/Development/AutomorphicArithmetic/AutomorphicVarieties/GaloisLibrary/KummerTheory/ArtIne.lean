@@ -4,7 +4,7 @@ import GroundTheory.GlobalFields.CompletionAtPlace.Inertia
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Establish `h : IsIntegral A (b : Ω)` using `b.isIntegral_coe.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[A.valuation_le_one_iff, ← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_le {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (b : 𝓞 Ω) : A.valuation (b : Ω) ≤ 1 := by
   have h : IsIntegral A (b : Ω) := b.isIntegral_coe.tower_top
@@ -13,7 +13,7 @@ private theorem int_le {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (b : �
   exact y.2
 
 /- English proof (translation)
-Set `f : 𝓞 Ω →+* A` to `(algebraMap (𝓞 Ω) Ω).codRestrict A fun b => (A.valuation_le_one_iff _).1 (int_le A b)`. Conclude with `⟨(IsLocalRing.maximalIdeal A).comap f, inferInstance, fun b => A.valuation_lt_one_iff (f b)⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 private theorem exists_cen {Ω : Type} [Field Ω] (A : ValuationSubring Ω) :
     ∃ Q : Ideal (𝓞 Ω), Q.IsPrime ∧ ∀ b : 𝓞 Ω, b ∈ Q ↔ A.valuation (b : Ω) < 1 := by
@@ -22,13 +22,13 @@ private theorem exists_cen {Ω : Type} [Field Ω] (A : ValuationSubring Ω) :
 
 open GroundTheory.Global in
 /- English proof (translation)
-Take `⟨Q, hQ, hmem⟩` from `exists_cen A`. Establish `hc : ∀ x : 𝓞 L, AlgEquiv.restrictNormalHom L g • x - x ∈ Q.under (𝓞 L)` using `fun x => by`. Rewrite using `[Ideal.mem_comap, map_sub, hmem]`. Use `hg _ (int_le A (algebraMap (𝓞 L) (𝓞 Ω) x))` as an intermediate fact. Establish `e : ((algebraMap (𝓞 L) (𝓞 Ω) (AlgEquiv.restrictNormalHom L g • x) : 𝓞 Ω) : Ω) = g (algebraMap (𝓞 L) (𝓞 Ω) x : 𝓞 Ω)` using `AlgEquiv.restrictNormal_commutes g L x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← e]`. Then use the resulting hypothesis. Distinguish the cases in `hP : Q.under (𝓞 L) = ⊥`. Establish `h0 : ∀ x : 𝓞 L, AlgEquiv.restrictNormalHom L g (algebraMap (𝓞 L) L x) = algebraMap (𝓞 L) L x` using `fun x => congrArg (algebraMap (𝓞 L) L) (sub_eq_zero.1 ((Submodule.mem_bot _).1 (hP.le (hc x)))) ext1 y`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 L) y`. Rewrite using `[map_div₀, h0, h0, AlgEquiv.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `w : HeightOneSpectrum (𝓞 L)` to `⟨_, inferInstance, hP⟩`. Establish `hwv : w.asIdeal.LiesOver (HeightOneSpectrum.under (𝓞 E) w).asIdeal` using `⟨rfl⟩`. Establish `hram` using `(isUnramifiedIn_iff_ramificationIdx E L _).1 (hL.1 _) w hwv`. Establish `hI : w.asIdeal.inertia (L ≃ₐ[E] L) = ⊥`. Rewrite using `[← Subgroup.card_eq_one, natCard_inertia (HeightOneSpectrum.under (𝓞 E) w) w, hram]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mem_bot.1 (hI ▸ hc)`.
+A detailed English derivation is pending.
 -/
 private theorem restrict_ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (L : IntermediateField E Ω) [NumberField L] [IsGalois E L] (hL : IsUnramifiedEverywhere E L)
@@ -57,11 +57,11 @@ private theorem restrict_ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] 
 
 open GroundTheory.Global in
 /- English proof (translation)
-Rewrite using `[← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Set `j₀ : L →+* ℂ` to `j.comp (algebraMap _ Ω)`. Establish `hE : ComplexEmbedding.IsReal (j₀.comp (algebraMap E _))`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `(hj (algebraMap E Ω y)).symm.trans (congrArg j (g.commutes y))`. Establish `hu` using `hL.2 _ (InfinitePlace.mk j₀) rfl`. Rewrite `hu` using `[InfinitePlace.isUnramified_iff, InfinitePlace.comap_mk, ← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_mk_iff, InfinitePlace.isReal_mk_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr` using `ComplexEmbedding.isReal_iff.1 (hu.resolve_right fun h => h hE)`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj]`. Conclude with `DFunLike.congr_fun hr ⟨x, hx⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem restrict_conj {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (L : IntermediateField E Ω) [NumberField L] [IsGalois E L] (hL : IsUnramifiedEverywhere E L)
@@ -84,9 +84,9 @@ private theorem restrict_conj {E Ω : Type} [Field E] [NumberField E] [Field Ω]
   exact DFunLike.congr_fun hr ⟨x, hx⟩
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed K`. Establish `: NumberField (GroundTheory.Global.hilbertClassField K Ω)` using `NumberField.of_module_finite K _`. Establish `hL` using `GroundTheory.Global.isUnramifiedEverywhere_hilbertClassField K Ω`. Use `⟨fun A g hg => ?_, fun c ⟨j, hj⟩ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (GroundTheory.Global.hilbertClassFieldArtinEquiv K Ω).symm (AlgEquiv.restrictNormalHom _ g) = 1`. Rewrite using `[restrict_ine _ hL A g hg.2, map_one]`. Use `show (GroundTheory.Global.hilbertClassFieldArtinEquiv K Ω).symm (AlgEquiv.restrictNormalHom _ c) = 1`. Rewrite using `[restrict_conj _ hL c j hj, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.artIne :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω], (∀ (A : ValuationSubring Ω), ∀ g ∈ Ine (F := K) A, artCl K Ω g = 1) ∧ ∀ c : G K Ω, IsConjOm c.toRingEquiv → artCl K Ω c = 1 := by

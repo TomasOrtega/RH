@@ -16,11 +16,11 @@ variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
   {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Set `eq` to `Fintype.equivFin ι`. Take `⟨P, Q, e, -, h⟩` from `Cartan.exists_eq_mul_diagonal_pow_mul hϖ (reindex eq eq A) (by rwa [det_reindex_self])`. Set `φ` to `reindexAlgEquiv R R eq.symm`. Use `⟨Units.map φ.toMonoidHom P, Units.map φ.toMonoidHom Q, e ∘ eq, ?_⟩` and prove the remaining obligations. Establish `h1 : φ (reindex eq eq A) = A`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[φ, reindexAlgEquiv_apply]`. Establish `h2 : φ (diagonal fun i => ϖ ^ e i) = diagonal fun i => ϖ ^ (e ∘ eq) i`. Rewrite using `[reindexAlgEquiv_apply, reindex_apply, Equiv.symm_symm, submatrix_diagonal_equiv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1, h, map_mul, map_mul, h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_eq_mul_diagonal_pow_mul_fintype {ϖ : R} (hϖ : Irreducible ϖ)
     (A : Matrix ι ι R) (hA : A.det ≠ 0) :
@@ -62,7 +62,7 @@ def blocks (X : Matrix (Fin n) (Fin n) R) (a : Set.range β) : Matrix (Fiber β 
 variable {β R}
 
 /- English proof (translation)
-Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sigmaFiberEquiv_symm_eq {i : Fin n} {a : Set.range β} (hi : blockOf β i = a) :
     (Equiv.sigmaFiberEquiv (blockOf β)).symm i = ⟨a, ⟨i, hi⟩⟩ := by
@@ -78,7 +78,7 @@ theorem blockAssemble_apply (X : ∀ a : Set.range β, Matrix (Fiber β a) (Fibe
       ((Equiv.sigmaFiberEquiv (blockOf β)).symm j) := rfl
 
 /- English proof (translation)
-Rewrite using `[blockAssemble_apply, sigmaFiberEquiv_symm_eq hi, sigmaFiberEquiv_symm_eq hj, blockDiagonal'_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockAssemble_apply_of_eq (X : ∀ a : Set.range β, Matrix (Fiber β a) (Fiber β a) R)
     {i j : Fin n} {a : Set.range β} (hi : blockOf β i = a) (hj : blockOf β j = a) :
@@ -87,7 +87,7 @@ theorem blockAssemble_apply_of_eq (X : ∀ a : Set.range β, Matrix (Fiber β a)
     blockDiagonal'_apply_eq]
 
 /- English proof (translation)
-Rewrite using `[blockAssemble_apply, sigmaFiberEquiv_symm_eq rfl, sigmaFiberEquiv_symm_eq rfl]`. Conclude with `blockDiagonal'_apply_ne _ _ _ fun e => h (congrArg Subtype.val e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockAssemble_apply_of_ne (X : ∀ a : Set.range β, Matrix (Fiber β a) (Fiber β a) R)
     {i j : Fin n} (h : β i ≠ β j) : blockAssemble β R X i j = 0 := by
@@ -95,7 +95,7 @@ theorem blockAssemble_apply_of_ne (X : ∀ a : Set.range β, Matrix (Fiber β a)
   exact blockDiagonal'_apply_ne _ _ _ fun e => h (congrArg Subtype.val e)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Conclude with `blockAssemble_apply_of_eq X i.2 j.2`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem blocks_blockAssemble (X : ∀ a : Set.range β, Matrix (Fiber β a) (Fiber β a) R) :
     blocks β R (blockAssemble β R X) = X := by
@@ -104,9 +104,9 @@ theorem blocks_blockAssemble (X : ∀ a : Set.range β, Matrix (Fiber β a) (Fib
   exact blockAssemble_apply_of_eq X i.2 j.2
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : β i = β j`. Establish `hj : blockOf β j = blockOf β i` using `Subtype.ext h.symm`. Rewrite using `[blockAssemble_apply_of_eq _ rfl hj]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[blockAssemble_apply_of_ne _ h, hX i j h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockAssemble_blocks {X : Matrix (Fin n) (Fin n) R}
     (hX : ∀ i j, β i ≠ β j → X i j = 0) : blockAssemble β R (blocks β R X) = X := by
@@ -118,9 +118,9 @@ theorem blockAssemble_blocks {X : Matrix (Fin n) (Fin n) R}
   · rw [blockAssemble_apply_of_ne _ h, hX i j h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : β i = β j`. Establish `hj : blockOf β j = blockOf β i` using `Subtype.ext h.symm`. Rewrite using `[blockAssemble_apply_of_eq _ rfl hj]`. Distinguish the cases in `hij : i = j`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[diagonal_apply_ne _ (fun e => hij (congrArg Subtype.val e)), diagonal_apply_ne _ hij]`. Establish `hij : i ≠ j` using `fun e => h (by rw [e])`. Rewrite using `[blockAssemble_apply_of_ne _ h, diagonal_apply_ne _ hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockAssemble_diagonal (d : ∀ a : Set.range β, Fiber β a → R) :
     blockAssemble β R (fun a => diagonal (d a)) =
@@ -137,7 +137,7 @@ theorem blockAssemble_diagonal (d : ∀ a : Set.range β, Fiber β a → R) :
     rw [blockAssemble_apply_of_ne _ h, diagonal_apply_ne _ hij]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← blockAssemble_blocks hX, ← blockAssemble_blocks hY, ← map_mul]`. Rewrite using `[blocks_blockAssemble]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blocks_mul {X Y : Matrix (Fin n) (Fin n) R} (hX : ∀ i j, β i ≠ β j → X i j = 0)
     (hY : ∀ i j, β i ≠ β j → Y i j = 0) :
@@ -151,33 +151,29 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} {α : Type*} [LinearOrder α] {β : Fin n → α}
 
 /- English proof (translation)
-Establish `hϖ` using `Cartan.uniformizer_ne_zero F`. Take `⟨t, ht⟩` from `exists_pow_mul_mem_of_isCompact F n (isCompact_singleton (x := m))`. Establish `ht' : ∀ i j, (uniformizer F : F) ^ t * m i j ∈ 𝒪[F]` using `ht m rfl`. Set `A : Matrix (Fin n) (Fin n) 𝒪[F]` to `Matrix.of fun i j => ⟨_, ht' i j⟩`. Establish `hAmap : A.map (𝒪[F]).subtype = (uniformizer F : F) ^ t • (m : Matrix (Fin n) (Fin n) F)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hm0 : ∀ i j, β i ≠ β j → (m : Matrix (Fin n) (Fin n) F) i j = 0` using `mem_levi.1 hm`. Establish `hminv0 : ∀ i j, β i ≠ β j → ((m⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0` using `mem_levi.1 ((levi F n β).inv_mem hm)`. Establish `hA0 : ∀ i j, β i ≠ β j → A i j = 0`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j h`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (uniformizer F : F) ^ t * m i j = 0`. Rewrite using `[hm0 i j h, mul_zero]`. Establish `hblk : blocks β F (m : Matrix (Fin n) (Fin n) F) * blocks β F ((m⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← blocks_mul hm0 hminv0, Units.mul_inv]`. Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Use `show (1 : Matrix (Fin n) (Fin n) F) i.1 j.1 = (1 : Matrix (Fiber β a) (Fiber β a) F) i j`. Distinguish the cases in `hij : i = j`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hij, one_apply_eq, one_apply_eq]`. Rewrite using `[one_apply_ne hij, one_apply_ne (fun e => hij (Subtype.ext e))]`. Establish `hdet : ∀ a, (blocks β 𝒪[F] A a).det ≠ 0`. Introduce `a h`. Establish `h1` using `congrArg (𝒪[F]).subtype h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_zero, RingHom.map_det]`. Establish `h2 : (RingHom.mapMatrix (𝒪[F]).subtype) (blocks β 𝒪[F] A a) = (uniformizer F : F) ^ t • blocks β F (m : Matrix (Fin n) (Fin n) F) a`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, det_smul]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (blocks β F (m : Matrix (Fin n) (Fin n) F) a) * (blocks β F ((m⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a) = 1` using `congrFun hblk a`. Establish `h4` using `congrArg Matrix.det h3`. Rewrite `h4` using `[det_mul, det_one]`. Conclude with `mul_ne_zero (pow_ne_zero _ (pow_ne_zero _ hϖ)) (left_ne_zero_of_mul_eq_one h4) h1`. Use `choose P Q e hPQ using fun a => exists_eq_mul_diagonal_pow_mul_fintype (irreducible_uniformizer F) (blocks β 𝒪[F] A a) (hdet a)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Ψ` to `blockAssemble β 𝒪[F]`. Set `PU : GL (Fin n) 𝒪[F]` to `Units.map Ψ.toMonoidHom (MulEquiv.piUnits.symm P)`. Set `QU : GL (Fin n) 𝒪[F]` to `Units.map Ψ.toMonoidHom (MulEquiv.piUnits.symm Q)`. Set `e' : Fin n → ℕ` to `fun i => e (blockOf β i) ⟨i, rfl⟩`. Establish `hAeq : A = (PU : Matrix (Fin n) (Fin n) 𝒪[F]) * diagonal (fun i => (GLnLocal.uniformizer F) ^ e' i) * (QU : Matrix (Fin n) (Fin n) 𝒪[F])`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : blocks β 𝒪[F] A = (fun a => (P a : Matrix _ _ 𝒪[F])) * (fun a => diagonal fun i => (GLnLocal.uniformizer F) ^ e a i) * (fun a => (Q a : Matrix _ _ 𝒪[F]))`. Use function extensionality and compare the values at `a`. Conclude with `hPQ a`. Establish `hPU : (PU : Matrix (Fin n) (Fin n) 𝒪[F]) = Ψ (fun a => (P a : Matrix _ _ 𝒪[F]))` using `rfl`. Establish `hQU : (QU : Matrix (Fin n) (Fin n) 𝒪[F]) = Ψ (fun a => (Q a : Matrix _ _ 𝒪[F]))` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPU, hQU, ← blockAssemble_blocks hA0, hb, map_mul, map_mul, blockAssemble_diagonal]`. Establish `hlevi : ∀ U : GL (Fin n) 𝒪[F], (∀ i j, β i ≠ β j → (U : Matrix (Fin n) (Fin n) 𝒪[F]) i j = 0) → integralGLHom F n U ∈ levi F n β ⊓ integralGL F n`. Introduce `U hU`. Use `⟨mem_levi.2 fun i j h => ?_, ⟨U, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[integralGLHom_apply, hU i j h]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨fun i => (e' i : ℤ) - t, integralGLHom F n PU, hlevi PU fun i j h => blockAssemble_apply_of_ne _ h, integralGLHom F n QU, hlevi QU fun i j h => blockAssemble_apply_of_ne _ h, ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg (RingHom.mapMatrix (𝒪[F]).subtype) hAeq`. Simplify using `only [map_mul, RingHom.mapMatrix_apply] at key`. Rewrite `key` using `[hAmap, diagonal_map (map_zero _)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hdiag : (diagonal fun i => ((𝒪[F]).subtype (GLnLocal.uniformizer F ^ e' i))) = (uniformizer F : F) ^ t • diagonal fun i => (uniformizer F : F) ^ ((e' i : ℤ) - t)`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, diagonal_apply, diagonal_apply]`. Use `split_ifs`. Rewrite using `[smul_eq_mul, map_pow, zpow_sub₀ hϖ, zpow_natCast, zpow_natCast, mul_div_cancel₀ _ (pow_ne_zero _ hϖ)]`.
-
-Both sides reduce to the same expression. Rewrite using `[smul_zero]`. Rewrite `key` using `[hdiag, Matrix.mul_smul, Matrix.smul_mul]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, Cartan.coe_diagPow]`.
-
-Conclude with `smul_right_injective _ (pow_ne_zero t hϖ) key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul_diagPow_mul_levi {m : GL (Fin n) F} (hm : m ∈ levi F n β) :
     ∃ μ : Fin n → ℤ, ∃ k₁ ∈ levi F n β ⊓ integralGL F n, ∃ k₂ ∈ levi F n β ⊓ integralGL F n,

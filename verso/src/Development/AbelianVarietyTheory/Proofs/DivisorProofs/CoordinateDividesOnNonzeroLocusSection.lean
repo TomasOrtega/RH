@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.ThetaDiv
 
 /- English proof (translation)
-Take `rfl : W = ⊤` from `top_le_iff.1 hW`. Introduce `x y h`. Establish `e : (homOfLE (le_top : (⊤ : X.Opens) ≤ ⊤)).op = 𝟙 (Opposite.op (⊤ : X.Opens))` using `rfl`. Simplify `h` using `only [resG, e, CategoryTheory.Functor.map_id, CommRingCat.hom_id, RingHom.id_apply]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem resG_top_injective {X : Scheme.{0}} {W : X.Opens} (hW : ⊤ ≤ W) :
     Function.Injective (resG X (le_top : W ≤ ⊤)) := by
@@ -23,23 +23,23 @@ theorem resG_top_injective {X : Scheme.{0}} {W : X.Opens} (hW : ⊤ ≤ W) :
   simpa only [resG, e, CategoryTheory.Functor.map_id, CommRingCat.hom_id, RingHom.id_apply] using h
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M δ I t th _ hsc a z hz`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Establish `hDU : M.Z.basicOpen ((t a).f k) ≤ δ.U k` using `M.Z.basicOpen_le _`. Establish `hD : ((M.Z.basicOpen ((t a).f k) : M.Z.Opens) : Set M.Z).Nonempty` using `⟨z, hk⟩`. Establish `hptD` using `M.top_le_preimage_pt hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hptU : ⊤ ≤ M.pt ⁻¹ᵁ δ.U k` using `fun x hx => hDU (hptD hx)`. Take `⟨τ, -, hτ⟩` from `hsc`. Set `j : PUnit → δ.ι` to `fun _ => k`. Establish `hj : (δ.pull M.pt).U j ≤ M.pt ⁻¹ᵁ δ.U (j PUnit.unit)` using `LB.wchart_le δ _ j PUnit.unit`. Establish `hW : ⊤ ≤ (δ.pull M.pt).U j` using `fun x _ => Set.mem_iInter.2 fun _ => hptU (x := x) trivial`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj` using `resG_top_injective hW`. Set `e` to `Scheme.ΓSpecIso (CommRingCat.of Ω)`. Establish `hc : ∀ b, resG (Sp Ω) (le_top : (δ.pull M.pt).U j ≤ ⊤) ((M.pt.appLE (δ.U k) ⊤ hptU).hom ((t b).f k)) = resG (Sp Ω) le_top (e.inv.hom (th b)) * (τ.s j).val`. Introduce `b`. Rewrite using `[← hτ b j hj]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (M.pt.appLE _ ⊤ hptU ≫ (Sp Ω).presheaf.map (homOfLE le_top).op).hom _ = _`. Rewrite using `[Scheme.Hom.appLE_map]`. Establish `hv : ∀ b, valF M.pt (δ.U k) ((t b).f k) = e.hom.hom ((M.pt.appLE (δ.U k) ⊤ hptU).hom ((t b).f k))` using `fun b => dif_pos hptU`. Establish `hei : ∀ x : Ω, e.hom.hom (e.inv.hom x) = x` using `fun x => by`. Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ b, valF M.pt (δ.U k) ((t b).f k) * th a = valF M.pt (δ.U k) ((t a).f k) * th b`. Introduce `b`. Establish `h1 : (M.pt.appLE (δ.U k) ⊤ hptU).hom ((t b).f k) * e.inv.hom (th a) = (M.pt.appLE (δ.U k) ⊤ hptU).hom ((t a).f k) * e.inv.hom (th b)`. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hc b, hc a]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg e.hom.hom h1`. Rewrite `h2` using `[map_mul, map_mul, hei, hei, ← hv, ← hv]`. Then use the resulting hypothesis. Establish `hua : valF M.pt (δ.U k) ((t a).f k) ≠ 0` using `((GlobalTheory.Points.le_preimage_basicOpen_iff M.pt hptU ((t a).f k)).1 hptD).ne_zero`. Establish `hth : th a ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hua` to reduce the goal to its premises. Rewrite using `[hv]`. Establish `h1` using `hc a`. Rewrite `h1` using `[h0, map_zero, map_zero, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inj (h1.trans (map_zero _).symm), map_zero]`. Use `⟨hth, fun b => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (resG M.Z hDU ((t a).f k))` using `RingedSpace.isUnit_res_basicOpen M.Z.toLocallyRingedSpace.toRingedSpace ((t a).f k)`. Establish `hval : valF M.pt _ (resG M.Z hDU ((t b).f k) * ((hu.unit⁻¹ : (Γ(M.Z, M.Z.basicOpen ((t a).f k)))ˣ) : Γ(M.Z, M.Z.basicOpen ((t a).f k)))) = th b / th a`. Rewrite using `[← ZH.RatModel.res_apply M _ hD, map_mul, map_units_inv, IsUnit.unit_spec, ZH.RatModel.res_resG, ZH.RatModel.res_resG, ZH.RatModel.res_apply, ZH.RatModel.res_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `key b`. Conclude with `hval ▸ ZH.RatModel.valF_mem_O hk _`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem div_of_mem_nonzeroLocus : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : ZH.RatModel o Ω) (δ : LB M.Z) {I : Type} (t : I → δ.Sec) (th : I → Ω), δ.IsLB → ZM.SecCoord δ t M.pt th → ∀ (a : I) (z : M.Z), z ∈ nonzeroLocus (t a) → M.Div th a z := by
   intro o Ω _ _ _ M δ I t th _ hsc a z hz

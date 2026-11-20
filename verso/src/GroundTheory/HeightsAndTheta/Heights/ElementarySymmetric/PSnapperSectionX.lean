@@ -23,20 +23,20 @@ universe u w
 namespace SnapperSectionClosed
 
 /- English proof (translation)
-The claim follows from `SnapperFinite.proof Extension.full Extension.full TwistTilde.proof TwistTilde.proof TildeShift.proof (TildeFiniteE.proof SerreFinite.full)`.
+A detailed English derivation is pending.
 -/
 theorem snapperFinite : SnapperFinite.Statement.{u, w, w} :=
   SnapperFinite.proof Extension.full Extension.full TwistTilde.proof TwistTilde.proof TildeShift.proof
     (TildeFiniteE.proof SerreFinite.full)
 
 /- English proof (translation)
-The claim follows from `SnapperQuotAdd.proof (SnapperSubquotFinite.proof snapperFinite)`.
+A detailed English derivation is pending.
 -/
 theorem quotAdd : SnapperQuotAdd.Statement.{u, w, w} :=
   SnapperQuotAdd.proof (SnapperSubquotFinite.proof snapperFinite)
 
 /- English proof (translation)
-The claim follows from `SnapperQuotDevissage.proof SnapperQuotFilt.proof SnapperQuotIso.proof quotAdd SubFamilyTwist.proof`.
+A detailed English derivation is pending.
 -/
 theorem quotDevissage : SnapperQuotDevissage.Statement.{u, w, w} :=
   SnapperQuotDevissage.proof SnapperQuotFilt.proof SnapperQuotIso.proof quotAdd SubFamilyTwist.proof
@@ -46,7 +46,7 @@ end SnapperSectionClosed
 open SnapperSectionClosed in
 
 /- English proof (translation)
-The claim follows from `SnapperSection.proof quotAdd quotDevissage MulQuotEq.proof SectionNonvanish.proof SectionMulInj.proof`.
+A detailed English derivation is pending.
 -/
 theorem SnapperSection.full : SnapperSection.Statement.{u, w} :=
   SnapperSection.proof quotAdd quotDevissage MulQuotEq.proof SectionNonvanish.proof SectionMulInj.proof

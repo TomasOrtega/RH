@@ -10,19 +10,17 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
 /- English proof (translation)
-Establish `key : ∀ (n d : ℕ) (J : Ideal (MvPolynomial (Fin n) ℂ)) (f g : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ), J.IsPrime → ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = (d + 1 : ℕ) → SmoothNear (zeroSet J) f → SmoothNear (zeroSet J) g → (∀ i, SmoothNear (zeroSet J) (φ i)) → HasCompa …`. Introduce `n d J f g φ hJ hdim hf hg hφ hc`. Unfold `varInt`. Use `split_ifs with hA`. Establish `hAf` using `hA.choose_spec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hA.choose = A at hAf ⊢`. Take `⟨P, hP0, hPcov⟩` from `hD n (d + 1) J A hJ hdim hAf`. Establish `hsheet : ∀ x ∈ zeroSet J, eval (A *ᵥ x) P ≠ 0 → ∃ s, IsSheetAt J A x s`. Introduce `x hx hPx`. Take `⟨-, -, hloc⟩` from `hPcov (A *ᵥ x) hPx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, V, s, hU, hyU, hV, hxV, hs, hsy, hAs, hZV⟩` from `hloc x ⟨hx, rfl⟩`. Use `⟨s, U, hU, hyU, hs, hsy, fun w hw => ⟨hAs w hw, ?_⟩, V, hV.mem_nhds hxV, ?_⟩` and prove the remaining obligations. Establish `hw' : s w ∈ zeroSet J ∩ V` using `hZV ▸ Set.mem_image_of_mem s hw`. Conclude with `hw'.1`. Introduce and unpack `x' hx' -`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx'` using `[hZV]`. Take `⟨w, hw, rfl⟩` from `hx'`. Rewrite using `[hAs w hw]`. Take `⟨χ, hχs, hχU, hlim⟩` from `hL n d J A P hJ hdim hAf hP0`. Take `⟨h1, h2⟩` from `hlim f g φ hf hg hφ hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `tendsto_nhds_unique h1 (Tendsto.congr (fun k => ?_) h2)` and prove the remaining obligations. Take `⟨U, hU, hDU, hχ0⟩` from `hχU k`. Take `⟨V, hV, hZV, hfV⟩` from `hf`. Establish `hcχ : HasCompactSupport (fun x => χ k x * f x)` using `hc.mul_left (f := χ k)`. Use `(hS n d J A P hJ hdim hAf hP0 hsheet (fun x => χ k x * f x) g φ ⟨V, hV, hZV, (hχs k).contDiffOn.mul hfV⟩ hg hφ hcχ ⟨U, hU, hDU, fun x hx => ?_⟩).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hχ0 x hx, zero_mul]`. Both sides reduce to the same expression. Introduce `n d J f g φ hJ hdim hf hg hφ hc`. Break down `hc with hc | hc` into its components or cases. Conclude with `key n d J f g φ hJ hdim hf hg hφ hc`.
-
-Conclude with `(key n d J g f φ hJ hdim hg hf hφ hc).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem StokesOnVariety.proof (hD : ComplexSets.DiscriminantCover.Statement)
     (hS : StokesOffDiscriminant.Statement) (hL : CutOffLimit.Statement) :

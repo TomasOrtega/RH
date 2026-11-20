@@ -19,7 +19,7 @@ namespace GlobalTheory.Core.Rk.SchLaws
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `hW.std hecS := hW.hecS hecT := hW.hecT resS := ⟨hW.resS.1, fun η _ a => by rw [show (zeroSp D).rank = 0 from rfl, pow_zero]; rfl⟩ resT := hW.resT om_pres := fun _ _ hf => hf om_heis := fun g h w₀ f _ => by have e : actO (zeroSp D) B g h w₀ = w₀ := Matrix.ext fun _ j => Fin.elim0 …`.
+A detailed English derivation is pending.
 -/
 theorem isWeilDatumO_zero_one {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χB : (AE D)ˣ →* Circle}
     {omh : WRep (dblSp A) B} (hW : IsWeilDatumO ψ (dblSp A) B 1 χB omh) :
@@ -47,7 +47,7 @@ theorem isWeilDatumO_zero_one {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χ
     simp [splitFacO, hx1]
 
 /- English proof (translation)
-Rewrite using `[chr, HypDec.qS, HypDec.symplOH_extX_extY, pairS, adj_mul, mem_skewA.1 c.2, Matrix.mul_assoc, Matrix.neg_mul, Matrix.trace_neg, map_neg (trHalf D), Matrix.trace_mul_comm, gramOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chr_gramOf_eq (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (x : Mx D B.rank A.rank) (c : skewA D A.rank) :
     chr ψ (gramOf B x) c = ψ ((dblDec A).qS B c x) := by
@@ -55,11 +55,11 @@ theorem chr_gramOf_eq (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (x : Mx D B
     Matrix.trace_neg, map_neg (trHalf D), Matrix.trace_mul_comm, gramOf]
 
 /- English proof (translation)
-Introduce `D ψ A B χB omh hW ν 𝓨 hν f hf`. Establish `h` using `GlobalTheory.MixSourceFormulas.mixed_source D ψ (dblSp A) (zeroSp D) B A.rank (dblDec A) 1 χB omh 1 hW (isWeilDatumO_zero_one hW) ν 𝓨 hν f hf`. Use `⟨fun g x => ?_, fun m x => ?_, fun c x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sch, h.target]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[sch, h.levi, Pi.smul_apply, smul_eq_mul, MonoidHom.inv_apply, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, GlobalTheory.Doubling.npow, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[sch, h.centre, chr_gramOf_eq ψ A B]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[sch, mixS_dblDec_zero, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec, Prod.mk_one_one, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sch_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f → (∀ h x, sch ψ A B ν 𝓨 (omh (1, h) f) x = sch ψ A B ν 𝓨 f (mt B h⁻¹ ⬝ x)) ∧ (∀ (m : GL (Fin A.rank) (AE D)) x, sch ψ A B ν 𝓨 (omh ((dblDec A).levi m, 1) f) x = ((χB⁻¹ (Matrix.GeneralLinearGroup.det m) : Circle) : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det m)) ((B.rank : ℂ) / 2) * sch ψ A B ν 𝓨 f (x ⬝ m.1)) ∧ (∀ c x, sch ψ A B ν 𝓨 (omh ((dblDec A).nC c, 1) f) x = chr ψ (gramOf B x) c * sch ψ A B ν 𝓨 f x) ∧ swSec A B omh ν 𝓨 f 1 = sch ψ A B ν 𝓨 f 0 := by
   intro D ψ A B χB omh hW ν 𝓨 hν f hf

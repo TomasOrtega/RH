@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockSymAppl
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DomainDens.topCoeff_prod_blockSym_det_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTopDegreeFormCoeffProdBlockSymbolDetPow.lean&line=219#L219)
 -/

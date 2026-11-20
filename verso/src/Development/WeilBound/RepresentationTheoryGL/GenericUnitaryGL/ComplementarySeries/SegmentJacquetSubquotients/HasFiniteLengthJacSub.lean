@@ -26,14 +26,14 @@ def revTensor {d : ℕ} (σ : IrrRep (GL (Fin d) k)) :=
   piTensor fun a : Fin 2 => segTerm σ.ρ 2 a.rev
 
 /- English proof (translation)
-The claim follows from `isSmooth_twist σ.smooth (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_segTerm' {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) (a : Fin l) :
     IsSmooth (segTerm σ.ρ l a) :=
   isSmooth_twist σ.smooth (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocGL.isIrreducible_twist σ.irr _`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_segTerm' {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) (a : Fin l) :
     (segTerm σ.ρ l a).IsIrreducible :=
@@ -42,7 +42,7 @@ theorem isIrreducible_segTerm' {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) (a : Fin
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ (fun a => isIrreducible_segTerm' σ a) fun a φ hφ => GlobalTheory.CompanionTheory.SocleFrob.exists_eq_smul_id _ (isSmooth_segTerm' σ a) (isIrreducible_segTerm' σ a) φ hφ`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_segTensor {d : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) :
     (piTensor (segTerm σ.ρ 2)).IsIrreducible :=
@@ -53,9 +53,9 @@ theorem isIrreducible_segTensor {d : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hsρ : IsSmooth (piTensor (segTerm σ.ρ 2))` using `isSmooth_piTensor fun a => isSmooth_twist σ.smooth (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _))`. Establish `hρ` using `PositivityTheory.Lit1.SegRep.PIrr.isIrreducible_piTensor_segTerm σ 2`. Establish `hsπ : IsSmooth (multiProd (consecBlocks 2 d) (segTerm σ.ρ 2))` using `isSmooth_parInd _ _`. Establish `hfl : HasFiniteLength (multiProd (consecBlocks 2 d) (segTerm σ.ρ 2))` using `GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k _ _ _ _ _ _ hsρ (hasFiniteLength_of_isIrreducible hρ)`. Establish `hsS : IsSmooth S.toRepresentation` using `GlobalTheory.CompanionTheory.JacExp.isSmooth_sub hsπ S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hflS : HasFiniteLength S.toRepresentation` using `GlobalTheory.CompanionTheory.IrrSub.hasFiniteLength_of_isSubquotient (IsSubquotient.of_injective ⟨S.toSubmodule.subtype, fun _ => rfl⟩ Subtype.val_injective) hfl`. Conclude with `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).2.1 _ _ _ (consecBlocks 2 d) _ S.toRepresentation hsS hflS`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_jac_sub {d : ℕ} (hd : 0 < d)
     (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ)

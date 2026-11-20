@@ -24,7 +24,7 @@ variable {p K L}
       rw [← zpow_add, ← zpow_add, add_comm] }
 
 /- English proof (translation)
-Set `_ : CommGroup G` to `commGroupOfZpowers g₀ hg`. Take `⟨e⟩` from `Herbrand.nonempty_groupCohomology_odd M.rho g₀ hg i hi`. Conclude with `⟨(finEquiv M i).toAddEquiv.trans e⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_H_odd {R G : Type} [CommRing R] [Group G] [Fintype G] [TopologicalSpace G]
     [IsTopologicalGroup G] [DiscreteTopology G] (M : TRep R G) (g₀ : G) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) (i : ℕ) (hi : Odd i) :
@@ -34,7 +34,7 @@ theorem nonempty_H_odd {R G : Type} [CommRing R] [Group G] [Fintype G] [Topologi
   exact ⟨(finEquiv M i).toAddEquiv.trans e⟩
 
 /- English proof (translation)
-Set `_ : CommGroup G` to `commGroupOfZpowers g₀ hg`. Take `⟨e⟩` from `Herbrand.nonempty_groupCohomology_even M.rho g₀ hg i h0 hi`. Conclude with `⟨(finEquiv M i).toAddEquiv.trans e⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_H_even {R G : Type} [CommRing R] [Group G] [Fintype G] [TopologicalSpace G]
     [IsTopologicalGroup G] [DiscreteTopology G] (M : TRep R G) (g₀ : G) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) (i : ℕ) (h0 : i ≠ 0)
@@ -44,11 +44,9 @@ theorem nonempty_H_even {R G : Type} [CommRing R] [Group G] [Fintype G] [Topolog
   exact ⟨(finEquiv M i).toAddEquiv.trans e⟩
 
 /- English proof (translation)
-Establish `he : 0 < eK p L` using `eK_pos p L hL`. Take `⟨hU, hU1⟩` from `herbrand_layerU hK hL h g₀ hg`. Take `⟨hZ, -, -, hZ1⟩` from `Herbrand.h_int (trivRep (GalLK p K L) ℤ).rho (fun _ _ => rfl) g₀`. Take `⟨h1, h2⟩` from `Herbrand.h_mul (layerU p K L).rho (layer p K L).rho (trivRep (GalLK p K L) ℤ).rho g₀ (layerUIncl p K L).u.toAddMonoidHom (vLayer p K L).u.toAddMonoidHom (layerUIncl_injective p) (fun x => by`. Use `ker_vLayer p he h` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(LinearMap.mem_ker.symm.trans (by rw [this])).trans LinearMap.mem_range)`. Use the proof step `(vLayer_surjective p he h) (fun c a => (layerUIncl p K L).equiv c a)`. Use the proof step `(fun c b => (vLayer p K L).equiv c b) hU hZ`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, hU1, one_mul]`.
-
-Conclude with `hZ1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herbrand_layer (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] [Fintype (GalLK p K L)] (g₀ : GalLK p K L) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) :
@@ -68,9 +66,9 @@ theorem herbrand_layer (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensiona
   exact hZ1
 
 /- English proof (translation)
-Establish `h1 : Subsingleton ((layer p K L).H 1)` using `quotient_multiplicative_h1_subsingleton p K (subG p K L) (layer p K L) (layerInf p K L) (InflationRestrictionInvariants.invariants_isInvRep (kbarT p K) (subG p K L))`. Establish `hS` using `totallySeparatedSpace_GalLK p K L`. Establish `hT2 : T2Space (GalLK p K L)` using `TotallySeparatedSpace.t2Space`. Establish `hT : T1Space (GalLK p K L)` using `T2Space.t1Space`. Establish `hF : Finite (GalLK p K L)` using `Finite.of_fintype _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : DiscreteTopology (GalLK p K L)` using `Finite.instDiscreteTopology`. Take `⟨e⟩` from `nonempty_H_odd (layer p K L) g₀ hg 1 odd_one`. Conclude with `e.symm.toEquiv.subsingleton`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_h1_cyclic_layer (h : K ≤ L) [(subG p K L).Normal] [Fintype (GalLK p K L)] (g₀ : GalLK p K L)
     (hg : ∀ g, g ∈ Subgroup.zpowers g₀) : Subsingleton (Herbrand.H1 (layer p K L).rho g₀) := by
@@ -86,7 +84,7 @@ theorem subsingleton_h1_cyclic_layer (h : K ≤ L) [(subG p K L).Normal] [Fintyp
   exact e.symm.toEquiv.subsingleton
 
 /- English proof (translation)
-Use `subsingleton_h1_cyclic_layer h g₀ hg` as an intermediate fact. Establish `h1` using `(herbrand_layer hK hL h g₀ hg).2`. Rewrite `h1` using `[Herbrand.h_eq_card_H0hat]`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_H0hat_layer (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] [Fintype (GalLK p K L)] (g₀ : GalLK p K L) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) :
@@ -97,7 +95,7 @@ theorem card_H0hat_layer (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensio
   exact_mod_cast h1
 
 /- English proof (translation)
-Use `finite_GalLK (K := K) hL` as an intermediate fact. Establish `hD : DiscreteTopology (GalLK p K L)` using `discreteTopology_GalLK hL`. Set `_ : Fintype (GalLK p K L)` to `Fintype.ofFinite _`. Take `⟨e⟩` from `nonempty_H_even (layer p K L) g₀ hg 2 two_ne_zero even_two`. Rewrite using `[Nat.card_congr e.toEquiv, card_H0hat_layer hK hL h g₀ hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_h2_cyclic_layer (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] (g₀ : GalLK p K L) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) :

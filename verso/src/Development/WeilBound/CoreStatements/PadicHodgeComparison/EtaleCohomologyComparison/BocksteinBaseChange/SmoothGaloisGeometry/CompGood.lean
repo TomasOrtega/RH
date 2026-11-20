@@ -13,7 +13,7 @@ namespace CrystallineSemistableComparison
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Take `⟨-, ϖ, hϖ, hss⟩` from `hM`. Use `OK_away hϖ` as an intermediate fact. Use `OK_dvr (l := l) (K := K)` as an intermediate fact. Conclude with `smooth_snd_of_isStrictlySemistable ϖ M.p hss (fun m r h1 h2 ↦ GlobalTheory.T.semistable_generic_fibre_localization (OK l K) ϖ hϖ m r h1 h2 K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Model.smooth_q [FiniteDimensional ℚ_[l] K] (M : Model l K) (hM : M.Good) : Smooth M.q := by
   obtain ⟨-, ϖ, hϖ, hss⟩ := hM
@@ -23,7 +23,7 @@ theorem Model.smooth_q [FiniteDimensional ℚ_[l] K] (M : Model l K) (hM : M.Goo
     (fun m r h1 h2 ↦ GlobalTheory.T.semistable_generic_fibre_localization (OK l K) ϖ hϖ m r h1 h2 K)
 
 /- English proof (translation)
-Introduce `l _ K _`. Use `compM_of _ isOpenImmersion_gen (fun M hM U hU ↦ M.good_sub hM U hU) (fun M hM ↦ M.noetherianSpace hM) ?_` and prove the remaining obligations. Introduce `M hM`. Use `good_flat M hM` as an intermediate fact. Conclude with `⟨good_isNormalScheme M hM, good_isLocallyNoetherian M hM, Flat.generalizingMap M.p, M.smooth_q hM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem compGood : ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
     CompM (Model.Good (l := l) (K := K)) := by

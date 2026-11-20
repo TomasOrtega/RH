@@ -12,7 +12,7 @@ open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CovTest.SwapLine.onLine_sub_onBase_factor` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHomogeneousLineBaseDifference.lean&line=40#L40)
 -/

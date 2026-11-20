@@ -26,27 +26,23 @@ noncomputable section
 namespace GlobalTheory.HSNefCore
 
 /- English proof (translation)
-Introduce `hA hAmp hSP k _ X _ p D hX B β hB hβ x Δ hx hΔ J _ _ e n he hsm`. Establish `hne : ∀ c, boxFam e x c ≠ 0`. Introduce `c`. Simplify using `only [boxFam]`. Use `mul_ne_zero (he.ne_zero c.1) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hx.ne_zero i`. Take `⟨Y, hY, π, φ, hvarY, hmod, htot⟩` from `GlobalTheory.T.exists_birationalModel_totallyOrdered_family k X p D hX (J × Finset (Fin D)) (boxFam e x) hne`. Use `haveI := hY`. Use `set q := π ≫ p with hq`. Use `set f : J × Finset (Fin D) → Y.functionField := fun c => φ (boxFam e x c) with hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hbox : f = boxFam (φ ∘ e) (φ ∘ x)`. Use function extensionality and compare the values at `c`. Simplify using `[hf, boxFam, map_mul, map_prod]`. Establish `hx' : AlgebraicIndependent ℤ (φ ∘ x)` using `hx.map' (f := φ.toIntAlgHom) φ.injective`. Establish `he' : LinearIndependent ℤ (φ ∘ e)` using `he.map' φ.toIntAlgHom.toLinearMap (LinearMap.ker_eq_bot.2 φ.injective)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `set w : J × Finset (Fin D) → ℝ := fun c => n c.1 * Δ with hw`. Take `⟨M, hM⟩` from `GlobalTheory.T.exists_fubiniStudy_of_totallyOrdered_ratFnFamily k Y q (J × Finset (Fin D)) f w htot`. Choose the witnesses or unpack the hypotheses as in `⟨μ, hμ⟩ : ∃ μ, M.IsSelfInter μ := by`. Take `⟨Φ, hΦ⟩` from `((hA.arExists k Y q D hvarY).2 PUnit fun _ => M).1`. Conclude with `⟨_, ((hA.arIso k Y q D hvarY).2 PUnit _ Φ hΦ).1 PUnit.unit⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∀ j, n j ≤ ∑ i, n i` using `fun j => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Establish `hchain` using `GlobalTheory.T.boxFamily_movingParts_chain_bound hA hAmp hSP k Y q D hvarY (φ ∘ x) Δ hx' hΔ (∑ i, n i) J (φ ∘ e) n M μ he' hN (hbox ▸ htot) (hbox ▸ hM) hμ`. Use `set s : ℝ := Real.log (Fintype.card (J × Finset (Fin D))) / 2 with hs`. Use `set B' := B.pull π rfl with hB'`. Establish `hsmall : SmallFam B' f w` using `GlobalTheory.T.ratFnFamilySmall_pullback_birationalModel k X Y p q π rfl φ hmod B _ (boxFam e x) w hsm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hle : Le M (B'.shift (fun _ => s) fun _ => rfl)` using `GlobalTheory.T.fubiniStudy_le_shift_of_smallSections k Y q M B' _ f w hM hsmall`. Establish `hle'` using `(GlobalTheory.T.hermLBLeBySmallSection_tensor_isometric_trans_shift k Y q (B'.shift (fun _ => s) fun _ => rfl) M M).2.2.2 Δ hle`. Establish `hs0 : 0 ≤ s`. Rewrite using `[hs]`. Establish `: (1 : ℝ) ≤ Fintype.card (J × Finset (Fin D))` using `by exact_mod_cast Fintype.card_pos`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_nonneg this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMnef : M.IsNef D` using `GlobalTheory.T.fubiniStudy_bundle_isNef_of_nonneg_weights hA k Y q D hvarY M _ f w hM fun c => by`. Simplify using `only [hw]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) hΔ.le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB'nef : B'.IsNef D` using `GlobalTheory.T.hermitianLineBundle_isNef_pullback hA hSP k X Y p q D D hX hvarY π rfl B hB`. Establish `hA1` using `GlobalTheory.NefShift.isNef_shift_nonneg k Y q D hvarY B' s hs0 hB'nef`. Establish `hA2` using `GlobalTheory.NefShift.isNef_shift_nonneg k Y q D hvarY _ Δ hΔ.le hA1`. Establish `hM2` using `GlobalTheory.NefShift.isNef_shift_nonneg k Y q D hvarY M Δ hΔ.le hMnef`. Take `⟨hg, hgs⟩` from `GlobalTheory.T.geometricDegree_pull_birationalModel hA k X Y p q D hX hvarY π rfl φ hmod B`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h1` using `hgs β s hβ`. Establish `h2` using `hA.arShift k Y q D hvarY _ _ Δ h1`. Establish `h3` using `hA.arShift k Y q D hvarY M μ Δ hμ`. Establish `hmono` using `GlobalTheory.T.arithSelfIntersection_mono_of_isNef hA hAmp hSP k Y q D hvarY _ _ _ _ hA2 hM2 hle' h2 h3`. Rewrite `hmono` using `[GlobalTheory.CovTest.GeoSwap.gdeg_shift_const, hg]`.
-
-Establish `hcard : s = Real.log (Fintype.card J) / 2 + D * Real.log 2 / 2`. Rewrite using `[hs, Fintype.card_prod, Fintype.card_finset, Fintype.card_fin]`. Use `push_cast`. Rewrite using `[Real.log_mul (by exact_mod_cast Fintype.card_ne_zero) (by positivity), Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `hmono` using `[hcard]`. Use polynomial arithmetic with `[hchain, hmono]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem key_ineq : GlobalTheory.Published.ArCalc → AmpleHS → SemiPull → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (B : HermLB p) (β : ℝ), B.IsNef D → B.IsSelfInter β → ∀ (x : Fin D → X.functionField) (Δ : ℝ), AlgebraicIndependent ℤ x → 0 < Δ → ∀ (J : Type) [Fintype J] [Nonempty J] (e : J → X.functionField) (n : J → ℕ), LinearIndependent ℤ e → SmallFam B (boxFam e x) (fun c => n c.1 * Δ) → ((D + 1).factorial : ℝ) * Δ * ((∑ j, (n j + 1) : ℕ) : ℝ) ≤ β + ((D : ℝ) + 1) * (Δ + D * Real.log 2 / 2 + Real.log (Fintype.card J) / 2) * gdeg B D := by
   intro hA hAmp hSP k _ X _ p D hX B β hB hβ x Δ hx hΔ J _ _ e n he hsm

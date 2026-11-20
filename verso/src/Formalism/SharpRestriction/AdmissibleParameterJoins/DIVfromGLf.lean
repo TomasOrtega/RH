@@ -9,21 +9,21 @@ namespace Formalism.MainNotions.J
 open Formalism.BasicNotions Formalism.BasicNotions.DV
 
 /- English proof (translation)
-Establish `: NeZero D.host.d` using `⟨D.host.hyp.2.1.ne_zero⟩`. Establish `: Fact D.host.d.Prime` using `⟨D.host.hyp.2.1⟩`. Use `⟨⟨chiK D, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `n`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[chiK, MulChar.ringHomComp_apply, legendreSym]`. Establish `him` using `GlobalTheoryTheory.log_deriv_L_one_real_im_eq_zero (chiK D) (GlobalTheoryTheory.jnt_chiK_ne_one D) (GlobalTheoryTheory.jnt_chiK_real D)`. Rewrite using `[L.logDerivative_at_one_eq]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[dlogL]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify `him.symm` using `[GlobalTheoryTheory.logDerivativeAtOne]`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hv : D.host.v = D.host.rdE / 2` using `rfl`. Establish `hrd0 : 0 < D.host.rdE` using `by linarith`. Establish `hlrd : 0 ≤ Real.log D.host.rdE` using `Real.log_nonneg hrd`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.log (Real.pi / D.host.v) = Real.log (2 * Real.pi) - Real.log D.host.rdE`. Rewrite using `[hv, ← Real.log_div (by positivity) hrd0.ne']`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `h2 : Real.log (2 * Real.pi) ≤ 3 * Real.log 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `: Real.log (2 * Real.pi) ≤ Real.log ((2 : ℝ) ^ 3)` using `Real.log_le_log (by positivity) (by nlinarith [Real.pi_le_four])`. Rewrite `this` using `[Real.log_pow]`. Then use the resulting hypothesis. Establish `h2' : 0 ≤ Real.log (2 * Real.pi)` using `Real.log_nonneg (by nlinarith [Real.pi_gt_three])`. Establish `h3 : 4 * Real.log 2 ≤ Real.log L.sc.x`. Establish `: Real.log ((2 : ℝ) ^ 4) ≤ Real.log L.sc.x` using `Real.log_le_log (by positivity) (by linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_pow]`. Then use the resulting hypothesis. Establish `h4 : L.La = Real.log L.sc.x + L.sc.L + Real.log D.host.rdE`. Unfold `SizeData₂.La Scale.a Scale.b`. Rewrite using `[Real.log_mul (by positivity) hrd0.ne', Real.log_mul hx0.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `h5 : |L.logDerivativeAtOne| ≤ L.sc.L` using `hdl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg` using `Real.eulerMascheroniConstant_lt_two_thirds`. Establish `hg0 : 0 < Real.eulerMascheroniConstant`. Use `Real.one_half_lt_eulerMascheroniConstant` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl2` using `Real.log_two_gt_d9`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Take `⟨h5a, h5b⟩` from `abs_le.mp h5`. Unfold `SizeData₂.logOm`. Rewrite using `[h1, h4, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem logDerivative_and_regulator_bound (D : D7) (L : SizeData₂ D) (hdl : |L.logDerivativeAtOne| ≤ L.sc.x ^ L.sc.eps)
     (hrd : 1 ≤ D.host.rdE) (hx : 16 ≤ L.sc.x) :
@@ -69,9 +69,9 @@ theorem logDerivative_and_regulator_bound (D : D7) (L : SizeData₂ D) (hdl : |L
     constructor <;> linarith
 
 /- English proof (translation)
-Take `⟨xE, hE⟩` from `hE`. Use `⟨max xE (max 16 (Fm.x1 + 1)), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hxE : xE ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx16 : 16 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hx1 : Fm.x1 < x` using `lt_of_lt_of_le (by linarith) (le_trans (le_trans (le_max_right 16 _) (le_max_right _ _)) hx)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`. Conclude with `logDerivative_and_regulator_bound _ _ (hE x hxE i).1 (hE x hxE i).2 (by rw [hsx]; exact hx16)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem family_logDerivative_regulator_bound {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (hE : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,

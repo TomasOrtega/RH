@@ -21,7 +21,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `h` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem r_pos (D : D7) : D.R.r - 1 + 1 = D.R.r := by
   have h := D.R.m_add_three_le_k
@@ -177,7 +177,7 @@ Both sides reduce to the same expression.
 theorem tieU_rfl : TieU (onObjOf R F c I) (fun v => uniSub (kP v.1) (D.R.r - 1)) := rfl
 
 /- English proof (translation)
-Use `⟨rfl, ?_⟩` and prove the remaining obligations. Use `show (D.R.r : ℝ) = ((D.R.r - 1 : ℕ) : ℝ) + 1`. Rewrite using `[← Nat.cast_add_one, r_pos]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tieLevelNum : TieLevelNum (onObjOf R F c I) (D.R.r - 1) D.R.f := by
   refine ⟨rfl, ?_⟩
@@ -190,7 +190,7 @@ Both sides reduce to the same expression.
 theorem proj_range (j : Fin D.R.m) : LinearMap.range ((onObjOf R F c I).e j) = (onObjOf R F c I).V₀ j := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pageTies_rfl : OnPage.SecondRatioDefinition (onObjOf R F c I) ∧
     OnPage.TieBp (onObjOf R F c I) ∧ OnPage.TieNc (onObjOf R F c I) := ⟨rfl, rfl, rfl⟩
@@ -226,7 +226,7 @@ structure OnLeaves (N : IndefNum A.fam.base) : Prop where
   jExp : LeafJExp N (onObjOf R F c I)
 
 /- English proof (translation)
-The claim follows from `on_of_leaves (R.num F C CH) (onObjOf R F c I) C hRk hL.mackey hL.sup hL.proj hL.coord hL.span hL.lemmaS hL.t0 hL.data hL.rankJ hL.identity hL.tw2 hL.tw1 hL.shareI hL.indexU hL.badShare hL.unip hL.depthGood hL.depthRam hL.depth2 hL.depthLevel hL.page hL.sizes hL.X hL.bad hL.jSum h …`.
+A detailed English derivation is pending.
 -/
 theorem onto_of_leaves (C CH : ℝ) (hRk : RankRows (Sb R F)) (hL : OnLeaves R F c I (R.num F C CH)) (hCE : c.CE ≤ C)
     (hE : TieUnit R F c I) (tErr : TieErr (onObjOf R F c I)) : R.LOnto F C CH :=

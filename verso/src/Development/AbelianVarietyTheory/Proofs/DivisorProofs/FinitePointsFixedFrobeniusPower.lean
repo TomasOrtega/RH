@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.AV.GalPow
 
 /- English proof (translation)
-Set `M` to `IntermediateField.adjoin K (X : Set L)`. Establish `: FiniteDimensional K M` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `: Finite M` using `Module.finite_of_finite K`. Take `⟨i, hi⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow K M).2 (σ.restrictNormal M)`. Use `⟨i, fun x hx => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `AlgEquiv.restrictNormal_commutes σ M ⟨x, IntermediateField.subset_adjoin _ _ hx⟩`. Rewrite `h1` using `[← hi]`. Simplify using `only at h1`. Rewrite `h1` using `[AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate]`. Simplify using `using h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_pow_card_of_finset {K L : Type} [Field K] [Fintype K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L] (σ : L ≃ₐ[K] L) (X : Finset L) :
@@ -34,13 +34,11 @@ theorem exists_pow_card_of_finset {K L : Type} [Field K] [Fintype K] [Field L] [
   simpa using h1.symm
 
 /- English proof (translation)
-Introduce `K _ _ σ X s hX`. Use `set Φ := FiniteField.frobeniusAlgEquivOfAlgebraic K (AlgebraicClosure K) with hΦ`. Establish `hF : ∀ x : ptOver K (AlgebraicClosure K) ⟶ X, ∃ t : Finset (AlgebraicClosure K), ∀ τ : Gal K, (∀ a ∈ t, τ a = a) → specAut τ ≫ x = x` using `fun x => GlobalTheory.PtFin.exists_finset_fix K (AlgebraicClosure K) X hX x`. Use `choose F hF using hF`. Take `⟨i, hi⟩` from `exists_pow_card_of_finset σ (s.biUnion F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦi : ∀ a : AlgebraicClosure K, (Φ ^ i) a = a ^ Fintype.card K ^ i` using `fun a => by`. Rewrite using `[AlgEquiv.coe_pow, hΦ, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate]`. Use `⟨i, fun x hx => ?_⟩` and prove the remaining obligations. Use `set τ : Gal K := (Φ ^ i)⁻¹ * σ with hτ`. Establish `hτfix : ∀ a ∈ F x, τ a = a` using `fun a ha => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hi a (Finset.mem_biUnion.2 ⟨x, hx, ha⟩)`. Rewrite using `[hτ, AlgEquiv.mul_apply, h1, ← hΦi]`. Conclude with `(Φ ^ i).symm_apply_apply a`. Establish `hτx : specAut τ ≫ x = x` using `hF x τ hτfix`. Establish `hσ : σ = Φ ^ i * τ` using `by rw [hτ, mul_inv_cancel_left]`.
-
-Rewrite using `[hσ, specAut_mul, Category.assoc, hτx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frob_pow_on_finset : ∀ (K : Type) [Field K] [Fintype K] (σ : Gal K) (X : Over (Sp K)) (s : Finset (ptOver K (AlgebraicClosure K) ⟶ X)), LocallyOfFiniteType X.hom → ∃ m : ℕ, ∀ x ∈ s, specAut σ ≫ x = specAut (FiniteField.frobeniusAlgEquivOfAlgebraic K (AlgebraicClosure K) ^ m) ≫ x := by
   classical

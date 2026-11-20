@@ -10,7 +10,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Clear the denominators using the available nonvanishing facts. Take the linear combination `C₁ * e`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alg_B {C₀ C₁ C₂ s l x y c : ℂ} (h : C₀ ≠ 0) (e : C₂ * s * l * x = c * y) :
     C₂ * C₁ / C₀ * s * l * (C₀ * x) = c * (C₁ * y) := by
@@ -24,7 +24,7 @@ theorem alg_A {C₀ C₁ C₂ s l y c : ℂ} (h : C₀ ≠ 0) : C₁ * (c * (C�
   field_simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf t l` and use `h F E σ B a a' G X om om' R Rf t (l.trans_le hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Below.mono {n m : ℕ} (h : Below n) (hm : m ≤ n) : Below m :=
   fun F E _ _ _ _ _ σ B a a' G X om om' R Rf t l => h F E σ B a a' G X om om' R Rf t (l.trans_le hm)
@@ -44,19 +44,19 @@ def KeyB (e₁ e₂ s : ℤˣ) : Prop :=
         ∃ h₁ m, IsLevi (W₁ := G₁.W) H' 1 h₁ m ∧ fb m ≠ 0
 
 /- English proof (translation)
-Take `⟨e₁, e₂, s, hl⟩` from `hl`. Use `⟨e₁, e₂, s, fun F E _ _ _ _ _ σ B a b G G₁ H H' cfg R R₁ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : ∃ X om om' om₁ om₁', IsTriple B G X om om' ∧ IsTriple B G₁ X om₁ om₁'`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun X om om' Rf om₁ om₁' Rf₁ m m₁ => (hw ⟨X, om, om', om₁, om₁', m.triple, m₁.triple⟩).elim⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨X₀, o, o', o₁, o₁', t, t₁⟩` from `hw`. Take `⟨⟨e, he⟩, hon⟩` from `h0 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV t) _ G₁.V G₁.W H' _ _ G₁.M cfg.eV cfg.hH' t₁.geo.hM`. Take `⟨-, e', he'⟩` from `hc F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' t) _ _ G₁.V' G₁.W H H' _ _ _ _ G₁.M' cfg.hH cfg.hH' t₁.geo.hM'`. Take `⟨K, μK, μ, hK, -, hμK, hμ⟩` from `hs F E σ B _ G.V' _ _ t.base t.geo.hV'`. Take `⟨C₀, hC₀, k0⟩` from `c0 F E σ B a b G G₁ H H' cfg e he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, hC₁, k1⟩` from `c1 F E σ B a b G G₁ H H' cfg e' he' K μK μ hK hμK hμ`. Take `⟨C₂, hC₂, k2⟩` from `hl F E σ B a b G G₁ H H' cfg R R₁ e e' he he' K μK μ hK hμK hμ`. Use `⟨C₂ * C₁ / C₀, div_ne_zero (mul_ne_zero hC₂ hC₁) hC₀, fun X om om' Rf om₁ om₁' Rf₁ m m₁ hB => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `c₁ hc₁ Φ Φ' hΦ' hm fa fb fa' fb' sp sp' h₁ l hlv`. Establish `a0` using `k0 X om om' om₁ om₁' m.triple m₁.triple Φ (polMatch_mem hm).1 fa fb sp h₁ l hlv 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `k1 X om om' om₁ om₁' m.triple m₁.triple Φ' ⟨(polMatch_mem hm).2, hΦ'⟩ fa' fb' sp' h₁ l hlv 1`. Take `⟨so, pm⟩` from `k2 X om om' Rf om₁ om₁' Rf₁ m m₁ hB Φ Φ' hΦ' hm`. Establish `a2` using `hc₁ _ _ so pm h₁`. Rewrite `a2` using `[I_smul]`. Rewrite `a0`, `a1` using `[mul_one, Prod.mk_one_one, map_one, Module.End.one_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a0, a1]`. Conclude with `alg_B hC₀ a2`. Establish `hlt : G₁.p + G₁.q < G.p + G.q` using `by have := cfg.ep; have := cfg.eq; omega`. Take `⟨-, ⟨Φ₁, h1, hne⟩, -⟩` from `hB F E σ B _ _ G₁ X om₁ om₁' R₁ Rf₁ m₁ hlt`. Rewrite `h1` using `[← hon e he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Φ, hΦ, rfl⟩` from `h1`. Use `⟨Φ, hΦ, fun fa fb sp => ?_⟩` and prove the remaining obligations. Take `⟨h₁, hh⟩` from `Function.ne_iff.1 hne`. Take `⟨l, hlv⟩` from `hL F E σ B _ _ G.W G₁.W H' _ _ _ _ t.base t.geo.hW cfg.hH' h₁`. Establish `a0` using `k0 X om om' om₁ om₁' m.triple m₁.triple Φ hΦ fa fb sp h₁ l hlv 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `a0` using `[mul_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Conclude with `⟨h₁, l, hlv, a0 ▸ mul_ne_zero hC₀ hh⟩`.
+A detailed English derivation is pending.
 -/
 theorem keyB_of (h0 : EvZero) (hc : EvCone) (hs : StabEx) (c0 : CTBigZero) (c1 : CTSmallCone) (hl : LocB') (hL : LeviEx) :
     ∃ e₁ e₂ s, KeyB e₁ e₂ s := by
@@ -110,21 +110,19 @@ def KeyA (e₁ e₂ s : ℤˣ) : Prop :=
           ∃ h₁ m, IsLevi (W₁ := G₁.W) H' 1 h₁ m ∧ fa' m ≠ 0
 
 /- English proof (translation)
-Take `⟨e₁, e₂, s, hl⟩` from `hl`. Use `⟨e₁, e₂, s, fun F E _ _ _ _ _ σ B b a' G G₁ H H' cfg R R₁ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : ∃ X om om' om₁ om₁', IsTriple B G X om om' ∧ IsTriple B G₁ X om₁ om₁'`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun X om om' Rf om₁ om₁' Rf₁ m m₁ => (hw ⟨X, om, om', om₁, om₁', m.triple, m₁.triple⟩).elim⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨X₀, o, o', o₁, o₁', t, t₁⟩` from `hw`. Take `⟨⟨e', he'⟩, hon⟩` from `h0 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' t) _ G₁.V' G₁.W H' _ _ G₁.M' cfg.eV cfg.hH' t₁.geo.hM'`. Take `⟨⟨e, he⟩, -⟩` from `hc F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV t) _ _ G₁.V G₁.W H H' _ _ _ _ G₁.M cfg.hH cfg.hH' t₁.geo.hM`. Take `⟨K, μK, μ, hK, -, hμK, hμ⟩` from `hs F E σ B _ G.V _ _ t.base t.geo.hV`. Take `⟨C₀, hC₀, k0⟩` from `c0 F E σ B b a' G G₁ H H' cfg e' he'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, hC₁, k1⟩` from `c1 F E σ B b a' G G₁ H H' cfg e he K μK μ hK hμK hμ`. Take `⟨C₂, hC₂, k2⟩` from `hl F E σ B b a' G G₁ H H' cfg R R₁ e e' he he' K μK μ hK hμK hμ`. Use `⟨C₂ * C₁ / C₀, div_ne_zero (mul_ne_zero hC₂ hC₁) hC₀, fun X om om' Rf om₁ om₁' Rf₁ m m₁ hB c₁ hc₁ k hk => ?_⟩` and prove the remaining obligations. Establish `main : ∀ Φ Φ', PolMatch B G X R Rf Φ Φ' → ∃ fa', RelA G G₁.W H' X (G.M.I om Φ) (G.M'.I om' Φ') fa' k ∧ ∀ h₁ l, IsLevi (W₁` using `G₁.W) H' 1 h₁ l → fa' l = C₀ * G₁.M'.I om₁' (e' Φ') h₁ := by`. Introduce `Φ Φ' hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨fa', sp', a0⟩` from `k0 X om om' om₁ om₁' m.triple m₁.triple Φ' (polMatch_mem hm).2`. Establish `a0' : ∀ h₁ l, IsLevi (W₁` using `G₁.W) H' 1 h₁ l → fa' l = C₀ * G₁.M'.I om₁' (e' Φ') h₁ := fun h₁ l hlv => by`. Use `a0 h₁ l hlv 1` as an intermediate fact. Rewrite `this` using `[mul_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Use `⟨fa', ⟨sp', fun fa fb sp h₁ l hlv => ?_⟩, a0'⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a1` using `k1 X om om' om₁ om₁' m.triple m₁.triple Φ (polMatch_mem hm).1 fa fb sp h₁ l hlv 1`. Rewrite `a1` using `[mul_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Establish `a2` using `hA F E σ B _ _ G₁ X om₁ om₁' R₁ Rf₁ m₁ cfg.q1 c₁ hc₁ _ _ (k2 X om om' Rf om₁ om₁' Rf₁ m m₁ hB Φ Φ' hm) h₁`. Rewrite `a2` using `[I_smul]`. Rewrite using `[a1, a0' h₁ l hlv, a2, hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `alg_A hC₀`. Use `⟨fun Φ Φ' hm => (main Φ Φ' hm).imp fun _ h => h.1, ?_⟩` and prove the remaining obligations. Establish `hlt : G₁.p + G₁.q < G.p + G.q` using `by have := cfg.ep; have := cfg.q0; have := cfg.q1; omega`. Take `⟨-, -, Φ₁, ⟨h1, -⟩, hne⟩` from `hB F E σ B _ _ G₁ X om₁ om₁' R₁ Rf₁ m₁ hlt`. Rewrite `h1` using `[SetLike.mem_coe, ← hon e' he']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ', hΦ', rfl⟩` from `h1`. Take `⟨Φ, hm⟩` from `(hM F E σ B _ _ G X om om' R Rf m).2.1 Φ' hΦ'`. Take `⟨fa', rel, a0⟩` from `main Φ Φ' hm`. Take `⟨h₁, hh⟩` from `Function.ne_iff.1 hne`. Take `⟨l, hlv⟩` from `hL F E σ B _ _ G.W G₁.W H' _ _ _ _ t.base t.geo.hW cfg.hH' h₁`.
-
-Conclude with `⟨Φ, Φ', fa', hm, rel, h₁, l, hlv, a0 h₁ l hlv ▸ mul_ne_zero hC₀ hh⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem keyA_of (h0 : EvZero) (hc : EvCone) (hs : StabEx) (c0 : CTSmallZero) (c1 : CTBigCone) (hl : LocA') (hL : LeviEx)
     (hA : AnAll) (hM : MatchEx) : ∃ e₁ e₂ s, KeyA e₁ e₂ s := by

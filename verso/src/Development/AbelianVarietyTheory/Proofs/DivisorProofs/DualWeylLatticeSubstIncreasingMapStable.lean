@@ -13,9 +13,9 @@ def colPull {k N : ℕ} (τ : Fin k → Fin N) : (Fin N → ℕ) →+ (Fin k →
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `(Pi.single (τ s) 1 : Fin N → ℕ) (τ t) = _`. Distinguish the cases in `h : t = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_eq_of_ne (fun h' => h (hτ h')), Pi.single_eq_of_ne h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem colPull_single_mem {k N : ℕ} {τ : Fin k → Fin N} (hτ : Function.Injective τ) (s : Fin k) :
     colPull τ (Pi.single (τ s) 1) = Pi.single s 1 := by
@@ -26,7 +26,7 @@ theorem colPull_single_mem {k N : ℕ} {τ : Fin k → Fin N} (hτ : Function.In
   · rw [Pi.single_eq_of_ne (fun h' => h (hτ h')), Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `(Pi.single y 1 : Fin N → ℕ) (τ t) = 0`. Conclude with `Pi.single_eq_of_ne (fun h => hy ⟨t, h⟩) _`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem colPull_single_not {k N : ℕ} {τ : Fin k → Fin N} {y : Fin N} (hy : y ∉ Set.range τ) :
     colPull τ (Pi.single y 1) = 0 := by
@@ -35,7 +35,7 @@ theorem colPull_single_not {k N : ℕ} {τ : Fin k → Fin N} {y : Fin N} (hy : 
   exact Pi.single_eq_of_ne (fun h => hy ⟨t, h⟩) _
 
 /- English proof (translation)
-Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, mem_weightedHomogeneousSubmodule, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dualWeyl_iff' {R : Type} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ}
     {f : MvPolynomial (Fin r × Fin n) R} :
@@ -45,9 +45,9 @@ theorem mem_dualWeyl_iff' {R : Type} [CommRing R] {r n : ℕ} {ν : Fin n → �
     LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero]
 
 /- English proof (translation)
-Use `conv => enter [2, 2]`. Rewrite using `[x.as_sum]`. Rewrite using `[map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, ← hx (mem_support_iff.mp hd), Finsupp.weight_apply, MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsWeightedHomogeneous.C_mul ?_ _` and prove the remaining obligations. Unfold `Finsupp.prod Finsupp.sum`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun v _ => (hφ v).pow _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem aeval_isWeightedHomogeneous {R σ ι Mo : Type} [CommRing R] [AddCommMonoid Mo] (w : ι → Mo)
     (φ : σ → MvPolynomial ι R) (ω : σ → Mo) (hφ : ∀ v, IsWeightedHomogeneous w (φ v) (ω v))
@@ -62,7 +62,7 @@ theorem aeval_isWeightedHomogeneous {R σ ι Mo : Type} [CommRing R] [AddCommMon
   exact IsWeightedHomogeneous.prod _ _ _ fun v _ => (hφ v).pow _
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[← hx hd, Finsupp.weight_apply, Finsupp.weight_apply, map_finsuppSum]`. Use `Finsupp.sum_congr fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWeightedHomogeneous_map_weight {R σ M M' : Type} [CommRing R] [AddCommMonoid M] [AddCommMonoid M']
     (π : M →+ M') (w : σ → M) (x : MvPolynomial σ R) (κ : M) (hx : IsWeightedHomogeneous w x κ) :
@@ -73,27 +73,25 @@ theorem isWeightedHomogeneous_map_weight {R σ M M' : Type} [CommRing R] [AddCom
   rw [map_nsmul]
 
 /- English proof (translation)
-Introduce `R _ k N τ hτ ψ h1 h2 h3 ν f hf`. Rewrite `hf`, the goal using `[mem_dualWeyl_iff']`. Establish `hinj` using `hτ.injective`. Use `⟨?_, fun l j hlj => ?_⟩` and prove the remaining obligations. Establish `hvar : ∀ v : Fin N × Fin N, IsWeightedHomogeneous (colW k k) (ψ v) (colPull τ (colW N N v))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, y⟩`. Express the relevant statement in the definitionally equal form `IsWeightedHomogeneous _ _ (colPull τ (Pi.single y 1))`. Distinguish the cases in `hy : y ∈ Set.range τ`. Take `⟨s, rfl⟩` from `hy`. Rewrite using `[colPull_single_mem hinj]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ Set.range τ`. Take `⟨a, rfl⟩` from `hx`. Rewrite using `[h1]`. Conclude with `isWeightedHomogeneous_X _ _ _`. Rewrite using `[h2 x s hx]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isWeightedHomogeneous_zero _ _ _`. Rewrite using `[colPull_single_not hy]`. Take `⟨c, hc⟩` from `h3 x y hy`. Rewrite using `[hc]`. Conclude with `isWeightedHomogeneous_C _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `aeval_isWeightedHomogeneous (colW k k) ψ _ hvar f _ (isWeightedHomogeneous_map_weight (colPull τ) _ f ν hf.1)`. Set `ψO : Option (Fin N × Fin N) → MvPolynomial (Option (Fin k × Fin k)) R` to `fun o => o.elim (X none) fun v => rename some (ψ v)`. Establish `hA : (aeval ψO).comp (rename some) = (rename some).comp (aeval ψ)`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Simplify using `[ψO]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hB : (aeval ψO).comp (colAddGen R (r` using `N) (τ l) (τ j)) = (colAddGen R l j).comp (aeval ψ) := by`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Take `⟨x, y⟩` from `v`. Simplify using `only [AlgHom.comp_apply, aeval_X]`. Rewrite using `[colAddGen, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hy : y ∈ Set.range τ`. Take `⟨s, rfl⟩` from `hy`. Distinguish the cases in `hx : x ∈ Set.range τ`. Take `⟨a, rfl⟩` from `hx`. Rewrite using `[h1, colAddGen, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hinj.eq_iff]`. Use `split_ifs with hs`. Substitute `hs` using the available equality. Simplify using `[ψO, h1]`. Simplify using `[ψO, h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2 x s hx, map_zero]`. Simplify using `only [hinj.eq_iff]`. Use `split_ifs with hs`. Substitute `hs` using the available equality. Simplify using `[ψO, h2 x _ hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ψO, h2 x _ hx]`. Take `⟨c, hc⟩` from `h3 x y hy`. Establish `hyj : y ≠ τ j` using `fun h => hy ⟨j, h.symm⟩`. Rewrite using `[if_neg hyj, hc]`. Simplify using `[ψO, hc]`.
-
-Establish `e1` using `congrArg (fun φ => φ f) hA`. Establish `e2` using `congrArg (fun φ => φ f) hB`. Simplify using `only [AlgHom.comp_apply] at e1 e2`. Rewrite using `[← e2, hf.2 (τ l) (τ j) (hτ hlj), e1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem substMem : SubstMem := by
   intro R _ k N τ hτ ψ h1 h2 h3 ν f hf

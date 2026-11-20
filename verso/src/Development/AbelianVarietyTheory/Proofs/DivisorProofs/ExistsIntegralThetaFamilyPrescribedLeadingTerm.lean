@@ -22,14 +22,14 @@ namespace GlobalTheory.ThFam
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
 /- English proof (translation)
-Establish `h : scal p (1 : R) = 1` using `by simp [scal]`. Rewrite using `[h, gs_eq _ y ⊤ trivial, map_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_scal_one {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (y : Y) : gs (𝟙 Y) y ⊤ (scal p 1) = 1 := by
   have h : scal p (1 : R) = 1 := by simp [scal]
   rw [h, gs_eq _ y ⊤ trivial, map_one, map_one]
 
 /- English proof (translation)
-Use `(GlobalTheory.FieldBaseChange.secScal_iff_val D.toPre.P.isLB _ _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.FieldBaseChange.sval_pullOver _ _ _ _ hJ).symm.trans ((_root_.one_mul _).symm.trans (congrArg (· * _) (gs_scal_one _ y).symm))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem secScal_generic (D : DegData R (maximalIdeal R)) (k : ℕ) (α : D.toPre.X) (b : D.toPre.SecB k α) :
     GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) α) (DegPre.famε k)
@@ -40,9 +40,9 @@ theorem secScal_generic (D : DegData R (maximalIdeal R)) (k : ℕ) (α : D.toPre
     ((_root_.one_mul _).symm.trans (congrArg (· * _) (gs_scal_one _ y).symm))
 
 /- English proof (translation)
-Establish `e : ∀ x : Rˣ, algebraMap R (FractionRing R) ((x⁻¹ : Rˣ) : R) = (algebraMap R (FractionRing R) (x : R))⁻¹` using `fun x => map_units_inv (algebraMap R (FractionRing R) : R →* FractionRing R) x`. Establish `ne : ∀ x : Rˣ, algebraMap R (FractionRing R) (x : R) ≠ 0` using `fun x => (x.isUnit.map (algebraMap R (FractionRing R))).ne_zero`. Establish `h₁` using `ne (u mu)`. Establish `h₂` using `ne (u (mu + α))`. Establish `h₃` using `ne (u α)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₄` using `(κ mu).ne_zero`. Establish `h₅` using `(κ (mu + α)).ne_zero`. Establish `h₆` using `(κ α).ne_zero`. Simplify using `only [lead, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, hu, e, map_mul, map_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -62,31 +62,25 @@ theorem lead_units {X : Type} [AddCommGroup X] (κ κ' : X → (FractionRing R)�
   ring
 
 /- English proof (translation)
-Use `choose u hu using hu`. Establish `inj` using `IsFractionRing.injective R (FractionRing R)`. Establish `h1' : ∀ mu, ∃ s : R, mu ≠ 0 → s ∈ maximalIdeal R ∧ ((lead κ' k α mu : (FractionRing R)ˣ) : FractionRing R) = algebraMap R (FractionRing R) s` using `fun mu => by`. Distinguish the cases in `h : mu = 0`. Conclude with `⟨0, fun h' => absurd h h'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, e⟩` from `h1 mu h`. Conclude with `⟨s, fun _ => ⟨hs, e⟩⟩`. Use `choose s hs using h1'`. Set `w : D.toPre.X → R` to `fun mu => (((u mu ^ k * (u (mu + α) * (u mu)⁻¹ * (u α)⁻¹))⁻¹ : Rˣ) : R)`. Set `r : D.toPre.X → R` to `fun mu => s mu * w mu`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ mu, mu ≠ 0 → algebraMap R (FractionRing R) (r mu) = ((lead κ k α mu : (FractionRing R)ˣ) : FractionRing R) ∧ r mu ∈ maximalIdeal R` using `fun mu h => ⟨by rw [lead_units κ κ' u hu k α mu, (hs mu h).2, map_mul], Ideal.mul_mem_right _ _ (hs mu h).1⟩`. Establish `key : ∀ mu, mu ≠ 0 → ∀ e : ℕ, r mu ∉ maximalIdeal R ^ (e + 1) → ¬ ∃ s' ∈ maximalIdeal R ^ (e + 1), ((lead κ' k α mu : (FractionRing R)ˣ) : FractionRing R) = algebraMap R (FractionRing R) s'`. Introduce and unpack `mu h e hn ⟨s', hs'm, hs'e⟩`. Establish `: s mu = s'` using `inj ((hs mu h).2.symm.trans hs'e)`. Conclude with `hn (Ideal.mul_mem_right _ _ (this ▸ hs'm))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : GlobalFnsSt` using `GlobalTheory.SemiRigid.globalFns`. Establish `hcls : ∀ a c : D.toPre.X, α + k • a = α + k • c → a = c` using `fun a c h => by`. Establish `h' : (k : ℤ) • a = (k : ℤ) • c` using `by simpa using add_left_cancel h`. Conclude with `smul_right_injective D.toPre.X (show (k : ℤ) ≠ 0 by omega) h'`. Take `⟨F, hFα, hF0⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.UUA.exists_fam_rep (F := FractionRing R) hG D.tau_bimult k α hcls (GlobalTheory.FieldBaseChange.genericTerm D k α b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) α) (DegPre.famε k) (F.s α) (D.toPre.famφB α) (DegPre.famε k) b (DegPre.prB D.toPre (FractionRing R)).left (scal (DegPre.BF D.toPre (FractionRing R)).hom 1)`. Rewrite using `[hFα]`. Conclude with `secScal_generic D k α b`. Establish `hex : ∀ β : D.toPre.X, ∃ g : D.toPre.SecB k β, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) β) (DegPre.famε k) (F.s β) (D.toPre.famφB β) (DegPre.famε k) g (DegPre.prB D.toPre (FractionRing R)).left (scal (DegPre.BF D.toPre (FractionRing R)).hom 1) ∧ …`. Introduce `β`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hβ : β = α`. Substitute `hβ` using the available equality. Conclude with `⟨b, hb, fun h => absurd rfl h⟩`. Distinguish the cases in `hc : ∃ mu, α + k • mu = β`. Take `⟨mu, rfl⟩` from `hc`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmu : mu ≠ 0`. Introduce and unpack `rfl`. Conclude with `hβ (by simp)`. Take `⟨f, hf1, hf2⟩` from `GlobalTheory.T.thetaFamily_translatedMembers_leading_times_integral R hR D κ hκ k hk α b F hb mu (r mu) (hr mu hmu).1`. Use `⟨f, hf1, fun _ => ⟨hf2 0 (by simpa using (hr mu hmu).2), fun e he => ⟨mu, rfl, ?_⟩⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `key mu hmu e (fun h => he (hf2 e h))`. Use `push_neg at hc`. Use `⟨ReciprocityTheory.ChartRestriction.G.DVR.SecOps.secZero, ?_, fun _ => ⟨fun j => map_zero _, fun e he => absurd (fun j => map_zero _) he⟩⟩` and prove the remaining obligations. Use `(GlobalTheory.FieldBaseChange.secScal_iff_val D.toPre.P.isLB _ _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.UUA.sval_zero_of (fun j => rfl) _ y J (hJ.mem _ _), ReciprocityTheory.ChartRestriction.G.DVR.UUA.sval_zero_of (hF0 β hc) _ y J (hJ.mem _ _), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `choose g hg using hex`. Use `⟨⟨F, Function.update g α b, fun β => ?_, fun e => ?_⟩, Function.update_self α b g, fun β hβ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : β = α`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `hb`. Rewrite using `[Function.update_of_ne h]`. Conclude with `(hg β).1`. Use `(((h2 (e + 1)).image (fun mu => α + k • mu)).insert α).subset fun β hβ => ?_` and prove the remaining obligations. Distinguish the cases in `h : β = α`.
-
-Conclude with `Or.inl h`. Use `right`. Establish `hβ' : ¬ VanMod (maximalIdeal R) (g β) e`. Use `hβ` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq] at this`.
-
-Rewrite `this` using `[Function.update_of_ne h]`. Then use the resulting hypothesis. Take `⟨mu, hmu, hn⟩` from `((hg β).2 h).2 e hβ'`. Conclude with `⟨mu, hn, hmu⟩`. Use `show VanMod (maximalIdeal R) (Function.update g α b β) 0`. Rewrite using `[Function.update_of_ne hβ]`.
-
-Conclude with `((hg β).2 hβ).1`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hR : Base R) (D : DegData R (maximalIdeal R)) (κ : D.toPre.X → (FractionRing R)ˣ)
     (hκ : Reads D.toPre κ) (κ' : D.toPre.X → (FractionRing R)ˣ)
@@ -173,17 +167,15 @@ theorem core (hR : Base R) (D : DegData R (maximalIdeal R)) (κ : D.toPre.X → 
     exact ((hg β).2 hβ).1
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D`. Use `haveI := hR.1.1`. Use `haveI := hR.1.2.2.1`. Take `⟨κ, hκ, hev, hcub, hpos, htend⟩` from `GlobalTheory.T.exists_even_cubic_integral_reading_of_trivialisations R hR D`. Take `⟨κ', hev', hcub', hu⟩` from `GlobalTheory.T.exists_even_cubic_unit_multiple_fractionRing R D.toPre.X κ hev hcub`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0` using `hu`. Use `choose u hu' using hu0`. Establish `hpos' : ∀ a, a ≠ 0 → ∃ s ∈ maximalIdeal R, ((κ' a : (FractionRing R)ˣ) : FractionRing R) = algebraMap R (FractionRing R) s` using `fun a ha => by`. Take `⟨s, hs, e⟩` from `hpos a ha`. Conclude with `⟨s * u a, Ideal.mul_mem_right _ _ hs, by rw [hu' a, e, map_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : κ' 0 = 1`. Use `hcub' 0 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`. Conclude with `mul_eq_left.1 this`. Use `⟨fun α => ?_, fun k hk b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨k₁, H⟩` from `GlobalTheory.T.cubical_even_character_leading_terms_mem_maximalIdeal R D.toPre.X κ' hev' hcub' hpos' α`. Conclude with `⟨max k₁ 1, fun k hk b => core hR D κ hκ κ' hu k (le_of_max_le_right hk) α (H k (le_of_max_le_left hk)).1 (H k (le_of_max_le_left hk)).2 b⟩`. Establish `hl : ∀ mu, lead κ' k 0 mu = κ' mu ^ k` using `fun mu => by`. Simplify using `[lead, h0]`. Use `core hR D κ hκ κ' hu k hk 0 (fun mu hmu => ?_) (fun n => ?_) b` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, e⟩` from `hpos' mu hmu`. Conclude with `⟨s ^ k, Ideal.pow_mem_of_mem _ hs k (by omega), by rw [hl, Units.val_pow_eq_pow_val, e, map_pow]⟩`. Use `(htend n).subset fun mu hmu h => hmu ?_` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `h`. Use `⟨(s * u mu) ^ k, Ideal.pow_mem_of_mem _ (Ideal.mul_mem_right _ _ hs) k (by omega), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hl, Units.val_pow_eq_pow_val, hu' mu, e, ← map_mul, ← map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intFam_lead : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (D : DegData R (maximalIdeal R)), (∀ α : D.toPre.X, ∃ k₀ : ℕ, ∀ k ≥ k₀, ∀ b : D.toPre.SecB k α,

@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteHalfOfTwi
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.EulerFinOf
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinHalfAsm.finHalfOf | exact GlobalTheory.CompanionTheory.FinHalfAsm.finHalfOf | (intros; apply GlobalTheory.CompanionTheory.FinHalfAsm.finHalfOf <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finite_half_of_twist : PositivityTheory.Rg.BcB.G8.Fin.FinHalfOf := by
   first | exact @GlobalTheory.CompanionTheory.FinHalfAsm.finHalfOf | exact GlobalTheory.CompanionTheory.FinHalfAsm.finHalfOf | (intros; apply GlobalTheory.CompanionTheory.FinHalfAsm.finHalfOf <;> assumption)

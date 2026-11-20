@@ -9,7 +9,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 /- English proof (translation)
-Use `AdicCompletion.isMaximal_map_of_le m m le_rfl fg` as an intermediate fact. Use `AdicCompletion.isAdicComplete_self m fg` as an intermediate fact. Conclude with `isLocalRing_of_isAdicComplete_maximal (m.map (algebraMap A (AdicCompletion m A)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adicCompletion_isLocalRing_of_isMaximal {A : Type*} [CommRing A] (m : Ideal A) [m.IsMaximal]
     (fg : m.FG) : IsLocalRing (AdicCompletion m A) := by
@@ -18,9 +18,9 @@ theorem adicCompletion_isLocalRing_of_isMaximal {A : Type*} [CommRing A] (m : Id
   exact isLocalRing_of_isAdicComplete_maximal (m.map (algebraMap A (AdicCompletion m A)))
 
 /- English proof (translation)
-Introduce `σ _ I m hI hIC hm`. Establish `: I.IsPrime` using `hI`. Establish `: m.IsMaximal` using `hm`. Establish `hloc` using `adicCompletion_isLocalRing_of_isMaximal m (Ideal.fg_of_isNoetherianRing m)`. Use `hF (MvPolynomial σ ℂ ⧸ I) (AdicCompletion m (MvPolynomial σ ℂ ⧸ I)) inferInstance inferInstance hloc inferInstance inferInstance hIC fun P _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hR ℂ (MvPolynomial σ ℂ ⧸ I) inferInstance m hm P` as an intermediate fact. Conclude with `⟨inferInstance, GroundTheory.Arith.SchemeCoh.IsRegularLocalRing.isIntegrallyClosed _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem AffineCompletionNormal.proof (hF : FlatNormalFibres.Statement) (hR : FormalFibresRegular.Statement) :
     AffineCompletionNormal.Statement := by

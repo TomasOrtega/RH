@@ -14,15 +14,13 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker C
 namespace GlobalTheory.Ggeo.KerShapeD
 
 /- English proof (translation)
-Introduce `hIn D L hT Gi Gl K Y cX ex t hH hA ep be sg`. Introduce `u μ w hlev hcls i hi c c'`. Establish `hpd : D.what₂.places.resChar w = D.host.d`. Establish `h` using `hcls`. Simplify using `only [Host.cls, primeClass] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs at h with h1 h2 h3 <;> first | exact h3 | cases h`. Establish `hAd : AdPl D w` using `Or.inr (Or.inr hcls)`. Establish `hlev' : LevFree Y u μ w` using `hlev`. Take `⟨Pm, hBas, -, hConj, hTh⟩` from `hA w hAd u μ hlev'`. Establish `hStd : ∀ j, j ≤ D.R.m → ∀ cl, GlobalTheory.KerStd.StdBases D (t.ent.lam w) ((t.O u μ).lat j cl).1 (Pm j cl)` using `fun j hj cl => GlobalTheory.T.isStandardBasesLatticeAtPlace_of_adapted_bases D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat j cl).2.1 (fun τ => hBas j hj cl τ) (fun τ τ' h => hConj j hj cl τ τ' h)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomb` using `GlobalTheory.Ggeo.KerComb.comb_of_tied hIn.algT D L hT Gi Gl K Y cX ex t hH u μ w hlev' i hi c c'`. Establish `hdg : IsDgen D t.cD`. Rewrite using `[← t.O_dgen u μ]`. Conclude with `(t.O u μ).dgen_gen`. Establish `hnorm : ∀ τ, ‖(fun _ => (1 : ℂ_[D.what₂.places.resChar w])) τ‖ ≤ ‖TaylorLogMetric.lamC (t.ent.lam w) (t.cD τ)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Rewrite using `[GlobalTheory.EigenGenerator.norm_dgen_eq_one D t.cD hdg _ (t.ent.lam w) hpd τ]`. Simplify using the standard rewrite rules. Use `show OrbitPlaces.ShapeD D _ (t.ent.Th u μ w i c c')`. Rewrite using `[hTh i hi c c', GlobalTheory.atLin_adCoef_eq_stdSer]`.
-
-Conclude with `GlobalTheory.T.shape_normalisedThetaCombinations_dualBases_at_d hIn D t.cc t.δ t.cc_ok t.δ_ok t.B t.χ t.χ_ok t.X t.seam t.seam_ok _ _ _ _ hcomb.1 _ (t.ent.lam w) hpd t.cD hdg (Pm i c) (Pm (i + 1) c') _ (hStd i hi.le c) (hStd (i + 1) hi c') hnorm _ hcomb.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaKernelShapeAtD_ofKer_of_hyp_adapted : GlobalTheory.ThLoc.Inputs → ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D)
     (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), t.Hyp → t.Adapted →

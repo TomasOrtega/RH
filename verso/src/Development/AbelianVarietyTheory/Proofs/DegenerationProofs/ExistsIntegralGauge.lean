@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.IntegralGauge
 
 /- English proof (translation)
-Establish `h : ψ (IsLocalRing.closedPoint V) ∈ (⨆ i, L.U i)` using `by rw [hL.1]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨j, fun w _ => (IsLocalRing.specializes_closedPoint (R := V) w).mem_open (ψ ⁻¹ᵁ L.U j).isOpen hj⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_local {V : Type} [CommRing V] [IsLocalRing V] {X : Scheme.{0}} {L : LB X} (hL : L.IsLB)
     (ψ : Sp V ⟶ X) : ∃ j, ⊤ ≤ ψ ⁻¹ᵁ L.U j := by
@@ -18,11 +18,9 @@ theorem exists_chart_local {V : Type} [CommRing V] [IsLocalRing V] {X : Scheme.{
   exact ⟨j, fun w _ => (IsLocalRing.specializes_closedPoint (R := V) w).mem_open (ψ ⁻¹ᵁ L.U j).isOpen hj⟩
 
 /- English proof (translation)
-Use `haveI := D.P.isAb.proper`. Establish `hE : ValuativeCriterion.Existence D.P.A.hom`. Establish `h : UniversallyClosed D.P.A.hom` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : R →+* S` to `((algebraMap (FractionRing R) F).comp (algebraMap R _)).codRestrict S hS`. Set `Q : ValuativeCommSq D.P.A.hom` to `{ R := S, K := F, i₁ := x.left, i₂ := Spec.map (CommRingCat.ofHom f), commSq := ⟨by`. Use `(Over.w x).trans ?_` and prove the remaining obligations. Use `show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
-
-Use the proof step `rfl⟩ }`. Take `⟨⟨l, h1, -⟩⟩` from `hE Q`. Conclude with `⟨l, h1⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extension {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {F : Type} [Field F]
     [Algebra (FractionRing R) F] (S : ValuationSubring F)
@@ -45,9 +43,9 @@ theorem exists_extension {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {F 
   exact ⟨l, h1⟩
 
 /- English proof (translation)
-Establish `key : ∀ ψ : Sp F ⟶ D.P.A.left, ∃ j, ⊤ ≤ ψ ⁻¹ᵁ D.P.L.U j ∧ ((∃ x₀ : Sp S ⟶ D.P.A.left, spMap S.subtype ≫ x₀ = ψ) → ∃ x₀ : Sp S ⟶ D.P.A.left, spMap S.subtype ≫ x₀ = ψ ∧ ⊤ ≤ x₀ ⁻¹ᵁ D.P.L.U j)` using `fun ψ => by`. Distinguish the cases in `h : ∃ x₀ : Sp S ⟶ D.P.A.left, spMap S.subtype ≫ x₀ = ψ`. Take `⟨x₀, rfl⟩` from `h`. Take `⟨j, hj⟩` from `exists_chart_local D.P.isLB x₀`. Conclude with `⟨j, fun w _ => hj (trivial : spMap S.subtype w ∈ (⊤ : (Sp S).Opens)), fun _ => ⟨x₀, rfl, hj⟩⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j, hj⟩` from `exists_chart_local D.P.isLB ψ`. Conclude with `⟨j, hj, fun h' => (h h').elim⟩`. Use `choose J h₁ h₂ using key`. Conclude with `⟨J, h₁, fun x => h₂ x.left (exists_extension D S hS x)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_integral_gauge (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (S : ValuationSubring F)

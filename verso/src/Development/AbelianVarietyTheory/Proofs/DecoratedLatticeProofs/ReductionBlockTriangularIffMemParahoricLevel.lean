@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.TwLevRed
 
 /- English proof (translation)
-Rewrite using `[mem_KO, mem_KO, ← map_inv, reGL_symm_val, reGL_symm_val]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `using h1 (e.symm i) (e.symm j)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2 (e.symm i) (e.symm j)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun i j => h1 _ _, fun i j => h2 _ _⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem reGL_symm_mem_KO_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (e : a ≃ b)
@@ -31,27 +31,27 @@ theorem reGL_symm_mem_KO_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalS
     exact ⟨fun i j => h1 _ _, fun i j => h2 _ _⟩
 
 /- English proof (translation)
-Introduce `E _ _ k _ _ _ _ PP ι hPP K T s j d hd δ hδ η n e he x hx R hR`. Establish `hent : ∀ a b, R.val a b = 0 ↔ valuation k (x.val (stdOrd (Fin K) (Fin T) j d hd (e.symm a)) (stdOrd (Fin K) (Fin T) j d hd (e.symm b))) < 1`. Introduce `a b`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hR a b 0 (by rw [h0, map_zero])` as an intermediate fact. Simplify using `using this`. Introduce `hv`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (R.val a b)`. Establish `h1` using `hR a b z hz.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : valuation k (ι (z : E)) < 1`. Establish `: ι (z : E) = x.val (stdOrd (Fin K) (Fin T) j d hd (e.symm a)) (stdOrd (Fin K) (Fin T) j d hd (e.symm b)) - (x.val (stdOrd (Fin K) (Fin T) j d hd (e.symm a)) (stdOrd (Fin K) (Fin T) j d hd (e.symm b)) - ι (z : E))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt hv h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hPP z h2`. Establish `hblk : ∀ q : Ix (Fin K ⊕ Fin (s + 1)) (Fin T) j, Formalism.L2.DIV.blk2 (K + (s + 1)) (e q) = Sum.elim (fun _ => 0) (fun _ => 1) q`. Introduce `q`. Establish `h` using `he q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Unfold `Formalism.L2.DIV.blk2`. Break down `q with (i | i) | p` into its components or cases. Establish `: (e (.inl (.inl i))).val < K + (s + 1)` using `by rw [h]; simp [GlobalTheory.SymBridge.zPos]; omega`. Simplify using `[this]`. Establish `: (e (.inl (.inr i))).val < K + (s + 1)` using `by rw [h]; simp [GlobalTheory.SymBridge.zPos]; omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this]`. Establish `: ¬ (e (.inr p)).val < K + (s + 1)`. Rewrite using `[h, not_lt]`. Simplify using `only [GlobalTheory.SymBridge.zPos]`. Conclude with `(Nat.le_add_right _ _).trans (Nat.le_add_right _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[this]`. Establish `hJ : x ∈ ((twistChain s (Fin T) (Fin K) δ hδ η).lev j d hd).J ↔ ∀ (p : Fin j × Fin T) (i : Fin K ⊕ Fin (s + 1)), valuation k (x.val (stdOrd (Fin K) (Fin T) j d hd (.inr p)) (stdOrd (Fin K) (Fin T) j d hd (.inl i))) < 1`. Express the relevant statement in the definitionally equal form `(plainFrame (k := k) (stdOrd (Fin K) (Fin T) j d hd)).conj.symm x ∈ (parahoric (Fin K ⊕ Fin (s + 1)) (Fin j × Fin T) δ hδ).J ↔ _`. Rewrite using `[mem_parahoric]`. Establish `e' : (plainFrame (k` using `k) (stdOrd (Fin K) (Fin T) j d hd)).conj.symm x = (reGL (stdOrd (Fin K) (Fin T) j d hd)).symm x := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[LatFrame.conj, plainFrame]`. Both sides reduce to the same expression. Rewrite using `[e', reGL_symm_mem_KO_iff]`. Simplify using `only [hx, true_and]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hJ, Formalism.L2.DIV.mem_blockTri]`. Prove the components needed by the constructor for the conclusion. Introduce `h p i`. Use `h (e (.inr p)) (e (.inl i)) (by rw [hblk, hblk]; simp)` as an intermediate fact. Rewrite `this` using `[hent]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Introduce `h a b hab`. Take `⟨q, rfl⟩` from `e.surjective a`. Take `⟨q', rfl⟩` from `e.surjective b`. Rewrite `hab` using `[hblk, hblk]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hent]`. Apply the tactic sequence `rcases q with q | q <;> rcases q' with q' | q' <;> simp at hab`. Simplify using `using h q q'`.
+A detailed English derivation is pending.
 -/
 theorem blockTri_iff_mem_lev : ∀ (E : Type) [Field E] [NumberField E] (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (PP : HeightOneSpectrum (𝓞 E)) (ι : E →+* k), (∀ z : 𝓞 E, valuation k (ι z) < 1 → z ∈ PP.asIdeal) → ∀ (K T s j d : ℕ) (hd : j + d = s + 1) (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → kˣ →* ℂˣ) (n : ℕ) (e : Ix (Fin K ⊕ Fin (s + 1)) (Fin T) j ≃ Fin n), GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.zPos e → ∀ (x : GL (XIx (Fin K) (Fin T) j ⊕ Fin d) k), x ∈ KO k _ → ∀ (R : GL (Fin n) (𝓞 E ⧸ PP.asIdeal)), (∀ (a a' : Fin n) (z : 𝓞 E), R.val a a' = Ideal.Quotient.mk PP.asIdeal z → valuation k (x.val (stdOrd (Fin K) (Fin T) j d hd (e.symm a)) (stdOrd (Fin K) (Fin T) j d hd (e.symm a')) - ι z) < 1) → (R ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 (K + (s + 1))) ↔ x ∈ ((twistChain s (Fin T) (Fin K) δ hδ η).lev j d hd).J) := by
   intro E _ _ k _ _ _ _ PP ι hPP K T s j d hd δ hδ η n e he x hx R hR

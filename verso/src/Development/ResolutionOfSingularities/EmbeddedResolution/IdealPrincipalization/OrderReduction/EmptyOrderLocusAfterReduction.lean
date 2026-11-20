@@ -62,9 +62,9 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace BoundarySeparationByMaxContact
 
 /- English proof (translation)
-Establish `hlt : m - 1 < m` using `by omega`. Establish `hd` using `orderAtLeastLocus_derivIdealSheafIterate k p A (r := m - 1) (m := m) hlt`. Rewrite `hd` using `[show m - (m - 1) = 1 from by omega]`. Use extensionality with `x`. Rewrite using `[← hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_orderAtLeastLocus_one_iff _ x`.
+A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_eq_support_maxContactIdeal (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -84,7 +84,7 @@ private theorem restrictIdeal_eq_comap {X : Scheme.{u}} (D : X.IdealSheafData) (
     restrictIdeal D V = D.comap V.ι := rfl
 
 /- English proof (translation)
-Rewrite using `[← iteratedStrictTransform_eq_toBlowupSequenceData s H i]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_support_toBlowupSequenceData_iteratedStrictTransform {k : Type u} [Field k]
     {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -96,13 +96,11 @@ private theorem mem_support_toBlowupSequenceData_iteratedStrictTransform {k : Ty
   exact hx
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨U, _, hxU, hcase⟩` from `hH x`. Break down `hcase with ⟨hdisj, _⟩ | ⟨_, _, _, hcoord, hmcc⟩` into its components or cases. Conclude with `absurd hxU (Set.disjoint_left.1 hdisj hx)`. Establish `hmc : x ∈ ((maxContactIdeal k p A μ).support : Set ↥P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← orderAtLeastLocus_eq_support_maxContactIdeal k p A μ hμ]`. Conclude with `hx`. Establish `hbase : (U.ι).base (⟨x, hxU⟩ : ↥U) = x` using `rfl`. Establish `h1 : (⟨x, hxU⟩ : ↥U) ∈ ((maxContactIdeal k p A μ).comap U.ι).support`. Use `AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hbase]`. Conclude with `hmc`. Establish `hle : (H.comap U.ι) ≤ ((maxContactIdeal k p A μ).comap U.ι)`. Rewrite using `[← restrictIdeal_eq_comap, ← restrictIdeal_eq_comap, hcoord]`. Conclude with `hmcc`.
-
-Establish `h2 : (⟨x, hxU⟩ : ↥U) ∈ (H.comap U.ι).support` using `Scheme.IdealSheafData.support_antitone hle h1`. Establish `h3` using `AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.1 h2`. Rewrite `h3` using `[hbase]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_subset_support_of_isMaxContactHypersurface (k : Type u) [Field k]
     [CharZero k] {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k))
@@ -132,7 +130,7 @@ private theorem orderAtLeastLocus_subset_support_of_isMaxContactHypersurface (k 
     exact h3
 
 /- English proof (translation)
-Rewrite using `[orderAtLeastLocus_comap_iso e J n, hJ, Set.preimage_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem orderAtLeastLocus_comap_iso_eq_empty {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : Y.IdealSheafData) (n : ℕ) (hJ : orderAtLeastLocus J n = ∅) :
@@ -140,11 +138,11 @@ private theorem orderAtLeastLocus_comap_iso_eq_empty {X Y : Scheme.{u}} (e : X �
   rw [orderAtLeastLocus_comap_iso e J n, hJ, Set.preimage_empty]
 
 /- English proof (translation)
-Rewrite `hJ` using `[orderAtLeastLocus_comap_iso e J n]`. Establish `hsurj : ∀ y : ↥Y, ∃ x : ↥X, e.hom x = y`. Introduce `y`. Use `⟨e.inv y, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hy`. Take `⟨x, hx⟩` from `hsurj y`. Establish `hmem : x ∈ (⇑e.hom ⁻¹' orderAtLeastLocus J n)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage, hx]`. Conclude with `hy`. Rewrite `hmem` using `[hJ]`. Conclude with `hmem`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_eq_empty_of_comap_iso {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : Y.IdealSheafData) (n : ℕ) (hJ : orderAtLeastLocus (J.comap e.hom) n = ∅) :
@@ -165,11 +163,11 @@ private theorem orderAtLeastLocus_eq_empty_of_comap_iso {X Y : Scheme.{u}} (e : 
   exact hmem
 
 /- English proof (translation)
-Establish `key : ∀ i : ℕ, i = s.length + t.length → orderAtLeastLocus ((s.append t hinv).ideal i) n = ∅`. Introduce and unpack `i rfl`. Rewrite using `[MarkedBlowupSequenceData.append_ideal]`. Break down `Nat.eq_zero_or_pos t.length with hz | hpos` into its components or cases. Establish `hle : s.length + t.length ≤ s.length` using `by omega`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hobj : (s.appendToBlowupSequenceData t).obj (s.length + t.length) = s.obj (s.length + t.length)` using `MarkedBlowupSequenceData.appendToBlowupSequenceData_schemeAt_of_le_length s t hle`. Rewrite using `[MarkedBlowupSequenceData.appendIdeal_of_le_length s t hle]`. Conclude with `orderAtLeastLocus_comap_iso_eq_empty (eqToIso hobj) _ _ (hs hz _ (by omega))`. Establish `hgt : s.length < s.length + t.length` using `by omega`. Establish `hobj : (s.appendToBlowupSequenceData t).obj (s.length + t.length) = t.obj (s.length + t.length - s.length)` using `MarkedBlowupSequenceData.appendToBlowupSequenceData_schemeAt_of_length_lt s t hgt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MarkedBlowupSequenceData.appendIdeal_of_length_lt s t hgt]`. Conclude with `orderAtLeastLocus_comap_iso_eq_empty (eqToIso hobj) _ _ (ht _ (by omega))`. Conclude with `key _ (MarkedBlowupSequenceData.append_length s t hinv)`.
+A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_append_eq_empty {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -198,21 +196,21 @@ private theorem orderAtLeastLocus_append_eq_empty {k : Type u} [Field k] {X : Sc
   exact key _ (MarkedBlowupSequenceData.append_length s t hinv)
 
 /- English proof (translation)
-Introduce and unpack `i rfl`. Use `hft` as an intermediate fact. Use `hsm` as an intermediate fact. Establish `: CharZero S.base` using `hSV.charZero`. Establish `hOB : (MaxContactCoverData.derivedTriple S s hft [Hc] keep).IsOrderBoundedByMult` using `LowerDimReductionPullback.isOrderBoundedByMult_derivedTriple hstar S hSV hmS hSO s hft [Hc] keep hVc`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbalanced : (MaxContactCoverData.derivedTriple S s hft [Hc] keep).IsBalanced hVc.locallyOfFiniteType` using `LowerDimReductionPullback.isBalanced_derivedTriple hstar S hSV hmS hSO s hft [Hc] keep hVc`. Establish `hj : 0 < (MaxContactCoverData.derivedTriple S s hft [Hc] keep).boundary.length`. Rewrite using `[MaxContactCoverData.derivedTriple_boundary]`. Simplify using the standard rewrite rules. Take `⟨Dv, bv, _, hDvEq, _, hBoundaryOfMem, hBoundaryOfLt, hBoundaryEq, _⟩` from `(hspec 0).shape (MaxContactCoverData.derivedTriple S s hft [Hc] keep) hVc hPdim hOB hbalanced hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `htuned : @IsMaxContactHypersurface S.base _ (s.obj s.length) (s.proj s.length ≫ S.structMap) hft (LowerDimReductionPullback.tunedIdealAtLength S s hft) (tuningExponent S.mult) Hc` using `isMaxContactHypersurface_balancedTunedSheaf hstar S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult hmS (LowerDimReductionPullback.orderAt_ideal_length_le hstar S hSV hSO s) Hc hHc`. Establish `hadm2 : @IsMaxContactHypersurface (MaxContactCoverData.derivedTriple S s hft [Hc] keep).base _ (MaxContactCoverData.derivedTriple S s hft [Hc] keep).scheme (MaxContactCoverData.derivedTriple S s hft [Hc] keep).structMap hVc.locallyOfFiniteType (MaxContactCoverData.derivedTriple S …`. Rewrite using `[MaxContactCoverData.derivedTriple_mult]`. Conclude with `@isMaxContactHypersurface_of_eq_of_eq_of_eq S.base _ (s.obj s.length) (s.proj s.length ≫ S.structMap) (MaxContactCoverData.derivedTriple S s hft [Hc] keep).structMap hft hVc.locallyOfFiniteType (LowerDimReductionPullback.tunedIdealAtLength S s hft) (MaxContactCoverData.derivedTri …`. Establish `hordT : ∀ x : ↥(MaxContactCoverData.derivedTriple S s hft [Hc] keep).scheme, orderAt (MaxContactCoverData.derivedTriple S s hft [Hc] keep).ideal x ≤ (((MaxContactCoverData.derivedTriple S s hft [Hc] keep).mult : ℕ) : ℕ∞)` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff _).1 hOB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharZero (MaxContactCoverData.derivedTriple S s hft [Hc] keep).base` using `hVc.charZero`. Establish `hftL` using `locallyOfFiniteType_projectionToBase_comp hstar (MaxContactCoverData.derivedTriple S s hft [Hc] keep) hVc (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep))) (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.d …`. Establish `hsmL` using `smooth_projectionToBase_comp hstar (MaxContactCoverData.derivedTriple S s hft [Hc] keep) hVc (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep))) (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple …`. Establish `hadmL` using `isMaxContactHypersurface_iteratedStrictTransform hstar (MaxContactCoverData.derivedTriple S s hft [Hc] keep) hVc hordT Hc hadm2 (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep))) (MarkedBlowupSequenceData.ofMarkedSequence (A 0 …`. Establish `hsub1` using `@orderAtLeastLocus_subset_support_of_isMaxContactHypersurface (MaxContactCoverData.derivedTriple S s hft [Hc] keep).base _ _ _ ((MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep))).proj (MarkedBlowupSequenceData.ofMarkedSequence …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Dv 0 = Hc.comap (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep))).toBlowupSequenceData.isoZero.hom`. Rewrite using `[hDvEq]`. Both sides reduce to the same expression. Establish `hstep : ∀ tt : ℕ, tt < (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep))).toBlowupSequenceData.length → Dv (tt + 1) = Blowup.strictTransform ((MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple S …`. Introduce `tt htt`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : bv = true ∧ tt = 0`. Take `⟨hb1, hb2⟩` from `hb`. Substitute `hb2` using the available equality. Conclude with `Or.inr (hBoundaryOfMem hb1).2.2`. Conclude with `Or.inl (hBoundaryOfLt tt htt hb)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Prove the second alternative. Prove the first alternative. Establish an intermediate fact.
 
-Establish `hsub2raw` using `BlowupSequenceData.support_iteratedStrictTransform_subset_support (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep))).toBlowupSequenceData hN Hc Dv h0 hstep (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (MaxContactCoverData.de …`. Use extensionality with `x`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hx`. Establish `hx2` using `mem_support_toBlowupSequenceData_iteratedStrictTransform _ _ _ _ (hsub1 hx)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : x ∈ orderAtLeastLocus (MarkedSequenceOfBlowups.lastIdeal (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep))) (MaxContactCoverData.derivedTriple S s hft [Hc] keep).mult ∩ (((Dv (A 0 (MaxContactCoverData.derivedTriple S s hft [Hc] keep)).length).support) : Set ↥((A …` using `⟨hx, hsub2raw hx2⟩`. Rewrite `hmem` using `[hBoundaryEq]`. Conclude with `hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_derivedTriple_ideal_length_eq_empty (hstar : MaxContactCoverProperties.{u}) (P : ℕ → Prop)
     (A : ℕ → PrincipalizationAssignment.{u}) (B : PrincipalizationAssignment.{u})
@@ -338,15 +336,13 @@ private theorem orderAtLeastLocus_derivedTriple_ideal_length_eq_empty (hstar : M
   exact hmem
 
 /- English proof (translation)
-Take `⟨hft, hVc, hPdim, hmk, heq, hcs⟩` from `exists_cover_eq_separateAllBoundary_append hstar hinv P hmono A B hspec T h`. Establish `hScV : (MaxContactCoverData.coverTriple T h.valid).IsAdmissible` using `isAdmissible_coverTriple hstar P T h`. Establish `hScO` using `orderAt_coverTriple_ideal_le_mult hstar P T h`. Establish `hsmS : AlgebraicGeometry.Smooth ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap)` using `smooth_projectionToBase_comp hstar (MaxContactCoverData.coverTriple T h.valid) hScV (separateAllBoundary T h.valid hinv A) (separateAllBoundary T h.valid hinv A).length (le_refl _)`. Establish `hadm0 : @IsMaxContactHypersurface (MaxContactCoverData.coverTriple T h.valid).base _ ((separateAllBoundary T h.valid hinv A).obj (separateAllBoundary T h.valid hinv A).length) ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContact …` using `isMaxContactHypersurface_iteratedStrictTransform hstar (MaxContactCoverData.coverTriple T h.valid) hScV hScO (MaxContactCoverData.coverMaxContactIdeal T h.valid) (isMaxContactHypersurface_coverMaxContactIdeal hstar P T h) (separateAllBoundary T h.valid hinv A) (separateAllBoundar …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNo : ∀ i ≤ (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft))).toBlowupSequenceData.length, AlgebraicGeometry.IsLocallyNoetherian ((MarkedBlowupSequenceData.ofMarkedSequence (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A h …`. Introduce `i hi`. Conclude with `isLocallyNoetherian_tunedMarkedBlowupSeq_schemeAt hstar (MaxContactCoverData.coverTriple T h.valid) hScV (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.va …`. Establish `hlow` using `orderAtLeastLocus_derivedTriple_ideal_length_eq_empty hstar P A B hspec (MaxContactCoverData.coverTriple T h.valid) hScV hScV.one_le_mult hScO (separateAllBoundary T h.valid hinv A) hft hsmS (MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxC …`. Rewrite using `[heq, ← MaxContactCoverData.coverTriple_mult T h.valid]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `orderAtLeastLocus_append_eq_empty (separateAllBoundary T h.valid hinv A) (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactC …` and prove the remaining obligations. Introduce and unpack `i rfl`. Use `Eq.trans (hcs (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups.length (le_refl _)) ?_` and prove the remaining obligations. Rewrite using `[← MaxContactCoverData.derivedTriple_mult (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCo …`. Conclude with `hlow _ rfl`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `hz i hi`. Substitute `hi` using the available equality. Use `orderAtLeastLocus_eq_empty_of_comap_iso (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).isoZero _ _ ?_` and prove the remaining obligations. Use `Eq.trans (hcs 0 (Nat.zero_le _)) ?_` and prove the remaining obligations. Rewrite using `[← MaxContactCoverData.derivedTriple_mult (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCo …`.
-
-Conclude with `hlow 0 hz.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_coverMarkedBlowupData_eq_empty (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})
@@ -424,11 +420,11 @@ theorem orderAtLeastLocus_coverMarkedBlowupData_eq_empty (hstar : MaxContactCove
     exact hlow 0 hz.symm
 
 /- English proof (translation)
-Introduce `htop`. Use `hJ ((Scheme.IdealSheafData.eq_top_iff_support_eq_empty J).2 ?_)` and prove the remaining obligations. Establish `h0 : ((J.comap f).support : Set ↥Y) = ∅` using `(Scheme.IdealSheafData.eq_top_iff_support_eq_empty (J.comap f)).1 htop`. Use extensionality with `x`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `hx`. Take `⟨y, hy⟩` from `hf x`. Establish `h1 : (1 : ℕ∞) ≤ orderAt J (f.base y)`. Rewrite using `[hy]`. Conclude with `(one_le_orderAt_iff_mem_support J x).2 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : y ∈ ((J.comap f).support : Set ↥Y)` using `(one_le_orderAt_iff_mem_support (J.comap f) y).1 (le_trans h1 (orderAt_le_orderAt_comap f J y))`. Rewrite `h2` using `[h0]`. Conclude with `(Set.mem_empty_iff_false y).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_ne_top_of_surjective_base {X Y : Scheme.{u}} (f : Y ⟶ X)
     (hf : ∀ x : ↥X, ∃ y : ↥Y, f.base y = x) (J : X.IdealSheafData) (hJ : J ≠ ⊤) :
@@ -451,7 +447,7 @@ private theorem comap_ne_top_of_surjective_base {X Y : Scheme.{u}} (f : Y ⟶ X)
   exact (Set.mem_empty_iff_false y).1 h2
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem exists_base_eqToHom_eq {X Y : Scheme.{u}} (h : X = Y) (x : ↥Y) :
     ∃ y : ↥X, (CategoryTheory.eqToHom h).base y = x := by
@@ -460,14 +456,14 @@ private theorem exists_base_eqToHom_eq {X Y : Scheme.{u}} (h : X = Y) (x : ↥Y)
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e.hom.base x, congrArg (fun f : X ⟶ X => f.base x) e.hom_inv_id⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_base_iso_inv_eq {X Y : Scheme.{u}} (e : X ≅ Y) (x : ↥X) :
     ∃ y : ↥Y, e.inv.base y = x :=
   ⟨e.hom.base x, congrArg (fun f : X ⟶ X => f.base x) e.hom_inv_id⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Nat.succ_pos _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem length_pos_of_eq_cons {α : Type*} {L : List α} {a : α} {M : List α}
     (h : L = a :: M) : 0 < L.length := by
@@ -475,11 +471,11 @@ private theorem length_pos_of_eq_cons {α : Type*} {L : List α} {a : α} {M : L
   exact Nat.succ_pos _
 
 /- English proof (translation)
-Introduce `i hi`. Rewrite `hi` using `[MarkedBlowupSequenceData.append_length]`. Rewrite using `[MarkedBlowupSequenceData.append_toBlowupSequenceData]`. Break down `lt_trichotomy i s.length with hlt | hmid | hgt` into its components or cases. Rewrite using `[MarkedBlowupSequenceData.appendToBlowupSequenceData_center_of_lt_length s t hlt]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comap_ne_top_of_surjective_base _ (exists_base_eqToHom_eq _) _ (hs i hlt)`. Substitute `hmid` using the available equality. Rewrite using `[MarkedBlowupSequenceData.appendToBlowupSequenceData_center_length s t]`. Use `comap_ne_top_of_surjective_base _ (exists_base_eqToHom_eq _) _ ?_` and prove the remaining obligations. Use `comap_ne_top_of_surjective_base _ (exists_base_iso_inv_eq _) _ ?_` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht 0 (by omega)`. Rewrite using `[MarkedBlowupSequenceData.appendToBlowupSequenceData_center_of_length_lt s t hgt]`. Conclude with `comap_ne_top_of_surjective_base _ (exists_base_eqToHom_eq _) _ (ht _ (by omega))`.
+A detailed English derivation is pending.
 -/
 private theorem center_append_ne_top {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -504,11 +500,11 @@ private theorem center_append_ne_top {k : Type u} [Field k] {X : Scheme.{u}}
     exact comap_ne_top_of_surjective_base _ (exists_base_eqToHom_eq _) _ (ht _ (by omega))
 
 /- English proof (translation)
-Take `⟨hft, hVc, hP, hmk, heq, _⟩` from `exists_cover_eq_separateAllBoundary_append hstar hinv P hmono A B hspec T h`. Establish `hV : (MaxContactCoverData.coverTriple T h.valid).IsAdmissible` using `isAdmissible_coverTriple hstar P T h`. Establish `hO` using `orderAt_coverTriple_ideal_le_mult hstar P T h`. Establish `hOB : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).IsOrderBoundedByMult` using `LowerDimReductionPullback.isOrderBoundedByMult_derivedTriple hstar (MaxContactCoverData.coverTriple T h.valid) hV hV.one_le_mult hO (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData. …`. Establish `hbalanced : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).IsBalanced hVc.locallyOfFiniteType` using `LowerDimReductionPullback.isBalanced_derivedTriple hstar (MaxContactCoverData.coverTriple T h.valid) hV hV.one_le_mult hO (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxCo …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).boundary = MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid) :: ((separateAllBoundary T h.valid hinv A).boundary (separateAllBoundary T …` using `MaxContactCoverData.derivedTriple_boundary (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactC …`. Establish `hbd : 0 < (reduceAlongHypersurfaceTriple T h.valid hinv A hft).boundary.length` using `length_pos_of_eq_cons hb`. Establish `hcn` using `(hspec 0).center_nonempty (reduceAlongHypersurfaceTriple T h.valid hinv A hft) hVc hP hOB hbalanced hbd`. Establish `hfacts` using `separateBoundaryInvariant_separateBoundarySeq hstar hinv P hmono A B hspec T h (MaxContactCoverData.coverTriple T h.valid).boundary.length (le_refl _)`. Rewrite using `[heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `center_append_ne_top _ _ _ (And.left (And.right hfacts)) ?_` and prove the remaining obligations. Introduce `i hi htop`. Establish `hi' : i < (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).length` using `hi`. Conclude with `(hcn i hi').ne_empty ((Scheme.IdealSheafData.eq_top_iff_support_eq_empty _).1 htop)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem center_coverMarkedBlowupData_ne_top (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})

@@ -15,7 +15,7 @@ namespace IdeleClassLimit
 open FiniteSubfield RationalSymbol CyclotomicSymbol _root_.GroundTheory.Global.Cyclotomic ProfiniteInteger
 
 /- English proof (translation)
-Establish `h` using `val_norm_of (U := K.1.fixingSubgroup) rfl a (fixedEquiv K a).2`. Use `h using 3` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (coe_fixedEquiv K a)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem val_norm_fixedEquiv (K : FiniteSubfield) (a : IdeleClassGroup K.1) :
     val (norm IdeleClassLimit ⊤ K.1.fixingSubgroup (fixedEquiv K a)) = cycDegree (cycSymbol K a) := by
@@ -24,9 +24,9 @@ theorem val_norm_fixedEquiv (K : FiniteSubfield) (a : IdeleClassGroup K.1) :
   exact Subtype.ext (coe_fixedEquiv K a)
 
 /- English proof (translation)
-Establish `h3 : degree g = cycDegree (cycSymbol K a)`. Rewrite using `[← hg, ← MonoidHom.comp_apply, cycDegree_comp_cycRestrict]`. Rewrite using `[classFieldTheory.valuation_pow K.openSubgroup (fixedEquiv K a)]`. Use `h3.trans (val_norm_fixedEquiv K a).symm using 2` and compare the differences between its conclusion and the goal. Conclude with `classFieldTheory_deg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem degree_eq_valuation_pow (K : FiniteSubfield) (a : IdeleClassGroup K.1) {g : ℚ̄ ≃ₐ[ℚ] ℚ̄}
     (hg : cycRestrict g = cycSymbol K a) :
@@ -44,19 +44,17 @@ variable (K L : FiniteSubfield) [hKL : Fact (K ≤ L)]
   [(L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal]
 
 /- English proof (translation)
-Use `set D := classFieldTheory.toClassFieldData`. Establish `hLK : L.openSubgroup ≤ K.openSubgroup` using `openSubgroup_le hKL.out`. Establish `hu : (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) ⊓ D.deg.ker ≤ L.openSubgroup` using `inf_ker_degree_le_of_le_sup_zhatField K L hL`. Take `⟨φ, hφ⟩` from `D.relDeg_surjective K.openSubgroup (Multiplicative.ofAdd 1)`. Establish `hr` using `D.reciprocityAbEquiv_symm_of_unramified hLK classFieldTheory.classFieldAxiom hu hφ (fixedEquiv K a)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set f := D.relInertiaDegreePNat hLK with hf`. Use `set z := Multiplicative.toAdd (D.valuation K.openSubgroup (fixedEquiv K a)) with hz`. Use `set n := (proj f z).val with hn`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : ℤ̂, z - (n : ℤ̂) = (f : ℕ) • y := by`. Use `exists_eq_nsmul_of_proj_eq_zero ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, map_natCast, hn, ZMod.natCast_zmod_val, sub_self]`. Establish `hmem : ((φ ^ n)⁻¹ * g : (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄))) ∈ (L.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)).subgroupOf K.openSubgroup`. Rewrite using `[Subgroup.mem_subgroupOf, mem_iff_map_mem_of_unramified (d := D.deg) hLK hu ((φ ^ n)⁻¹ * g : (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄))).2, D.mem_map_deg_iff L.openSubgroup]`. Use `⟨Multiplicative.ofAdd y, ?_⟩` and prove the remaining obligations. Establish `hφd : D.deg φ = Multiplicative.ofAdd 1 ^ inertiaDegree D.deg (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← D.relDeg_pow K.openSubgroup φ, hφ]`. Establish `hgd : D.deg g = D.valuation K.openSubgroup (fixedEquiv K a) ^ inertiaDegree D.deg (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄))` using `degree_eq_valuation_pow K a hg`. Rewrite using `[inertiaDegree_eq_mul D.surjective_deg hLK]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_pow, map_mul, map_inv, map_pow]`. Rewrite using `[hφd, show D.deg (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) = _ from hgd]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Simplify using `only [toAdd_pow, toAdd_mul, toAdd_inv, toAdd_ofAdd]`. Express the relevant statement in the definitionally equal form `_ = _ + _ • z`. Rewrite using `[sub_eq_iff_eq_add'.1 hy, hf, ClassFieldData.coe_relInertiaDegreePNat]`. Simplify using `only [nsmul_eq_mul, Nat.cast_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e : (reciprocityEquiv K L).symm (normClass K L a) = Abelianization.of (QuotientGroup.mk (s` using `(L.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)).subgroupOf K.openSubgroup) g) := by`. Use `hr.trans ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← QuotientGroup.mk_pow]`. Conclude with `congrArg _ (QuotientGroup.eq.2 hmem)`.
-
-Rewrite using `[abstractSymbol_apply, e, Abelianization.map_of]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem abstractSymbol_eq_of_cycRestrict_eq (hL : L.1 ≤ K.1 ⊔ zhatField) (a : IdeleClassGroup K.1)
     (g : K.1.fixingSubgroup) (hg : cycRestrict (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) = cycSymbol K a) :
@@ -107,7 +105,7 @@ theorem abstractSymbol_eq_of_cycRestrict_eq (hL : L.1 ≤ K.1 ⊔ zhatField) (a 
   rfl
 
 /- English proof (translation)
-Take `⟨g, hgK, hg⟩` from `exists_mem_fixingSubgroup_cycRestrict_eq K (IdeleClassGroup.mk K.1 x)`. Rewrite using `[abstractSymbol_eq_of_cycRestrict_eq K L hL _ ⟨g, hgK⟩ hg, restrictHom_eq_ideleSymbol_of_le_sup K L (hL.trans (sup_le_sup_left zhatField_le_maxCyclotomic _)) ⟨g, hgK⟩ x hg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem abstractSymbol_mk_of_le_sup_zhatField [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
     (hL : L.1 ≤ K.1 ⊔ zhatField) (x : IdeleGroup K.1) :
@@ -118,7 +116,7 @@ theorem abstractSymbol_mk_of_le_sup_zhatField [IsMulCommutative (L.1 ≃ₐ[K.1]
       ⟨g, hgK⟩ x hg]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `ideleSymbol_diagonal_eq_one_of_le_sup K L (hL.trans (sup_le_sup_left zhatField_le_maxCyclotomic _)) a`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_diagonal_le_ker_ideleSymbol_of_le_sup_zhatField [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
     (hL : L.1 ≤ K.1 ⊔ zhatField) : (diagonal K.1).range ≤ (ideleSymbol K.1 L.1).ker := by
@@ -127,7 +125,7 @@ theorem range_diagonal_le_ker_ideleSymbol_of_le_sup_zhatField [IsMulCommutative 
     (hL.trans (sup_le_sup_left zhatField_le_maxCyclotomic _)) a
 
 /- English proof (translation)
-Use `MonoidHom.ext fun c ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K.1 c`. Rewrite using `[MonoidHom.comp_apply, ideleClassSymbol_mk, abstractSymbol_mk_of_le_sup_zhatField K L hL]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem abstractSymbol_eq_ideleClassSymbol [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
     (hL : L.1 ≤ K.1 ⊔ zhatField) :

@@ -18,15 +18,13 @@ def TypCount : Prop :=
     (Finset.univ.filter (fun p : TypX X => gAt X p.1 = D.host.g i)).card = D.R.f
 
 /- English proof (translation)
-Introduce `D X`. Establish `hgA : ∀ p : TypX X, ((Ideal.absNorm p.1.asIdeal : ℕ) : ℝ) = ((gAt X p.1 : ℕ) : ℝ)` using `fun p => by`. Rewrite using `[(hG D X p).1]`. Simplify using `only [hgA]`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun p : TypX X => gAt X p.1 = D.host.g 0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ p ∈ Finset.univ.filter (fun p : TypX X => gAt X p.1 = D.host.g 0), ((gAt X p.1 : ℕ) : ℝ) = ((D.host.g 0 : ℕ) : ℝ)` using `fun p hp => by`. Rewrite using `[(Finset.mem_filter.1 hp).2]`. Establish `h1 : ∀ p ∈ Finset.univ.filter (fun p : TypX X => ¬ gAt X p.1 = D.host.g 0), ((gAt X p.1 : ℕ) : ℝ) = ((D.host.g 1 : ℕ) : ℝ)` using `fun p hp => by`. Establish `h` using `(Finset.mem_filter.1 hp).2`. Unfold `gAt at h ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs at h ⊢ with hg`. Conclude with `absurd rfl h`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_congr rfl h0, Finset.prod_congr rfl h1, Finset.prod_const, Finset.prod_const]`. Establish `hc1 : Finset.univ.filter (fun p : TypX X => ¬ gAt X p.1 = D.host.g 0) = Finset.univ.filter (fun p : TypX X => gAt X p.1 = D.host.g 1)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `p`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Unfold `gAt`. Establish `hne` using `D.host.g_ne`. Apply the tactic sequence `split_ifs <;> simp [hne, Ne.symm hne]`.
-
-Rewrite using `[hc1, hC D X 0, hC D X 1, Formalism.MainNotions.S.Lat.gS, Nat.cast_mul, mul_pow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typNorm_of (hG : StepGSplit) (hC : TypCount) : TypNorm := by
   intro D X
@@ -62,11 +60,11 @@ theorem dN_eq {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v : PlX 
       (v.maxPowDividing (differentIdeal ℤ (𝓞 X.B.I.F))) := rfl
 
 /- English proof (translation)
-Introduce `D X`. Establish `hne : differentIdeal ℤ (𝓞 X.B.I.F) ≠ ⊥`. Introduce `h`. Establish `h2` using `NumberField.absNorm_differentIdeal (K := X.B.I.F) (𝓞 X.B.I.F)`. Rewrite `h2` using `[h, Ideal.absNorm_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `NumberField.discr_ne_zero X.B.I.F (Int.natAbs_eq_zero.mp h2.symm)`. Establish `hfin` using `Ideal.finite_mulSupport hne`. Establish `hdN : dN X = fun v => ((Nat.castRingHom ℝ : ℕ →* ℝ).comp (Ideal.absNorm : Ideal (𝓞 X.B.I.F) →*₀ ℕ).toMonoidHom) (v.maxPowDividing (differentIdeal ℤ (𝓞 X.B.I.F)))`. Use function extensionality and compare the values at `(fun v => dN_eq X v)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdN]`. Conclude with `hfin.subset (Function.mulSupport_comp_subset (map_one _) _)`. Rewrite using `[hdN, ← MonoidHom.map_finprod _ hfin, Ideal.finprod_heightOneSpectrum_factorization hne] show ((Ideal.absNorm (differentIdeal ℤ (𝓞 X.B.I.F)) : ℕ) : ℝ) = _`. Rewrite using `[NumberField.absNorm_differentIdeal (K := X.B.I.F) (𝓞 X.B.I.F), Nat.cast_natAbs, Int.cast_abs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffProd_holds : DiffProd := by
   intro D X
@@ -93,13 +91,13 @@ def DiscEF : Prop :=
 def DegE : Prop := ∀ (D : D7), Module.finrank ℚ D.host.E = 2 * D.R.f
 
 /- English proof (translation)
-Introduce `D X`. Establish `hdisc : NumberField.discr X.B.I.E = NumberField.discr D.host.E` using `NumberField.discr_eq_discr_of_algEquiv (K := X.B.I.E) X.ιE.toRatAlgEquiv`. Establish `h1` using `hE D X`. Rewrite `h1` using `[hdisc]`. Establish `h2` using `hd D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : 0 ≤ |((NumberField.discr X.B.I.F : ℤ) : ℝ)|` using `abs_nonneg _`. Establish `hpos : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Establish `hf : (D.R.f : ℝ) ≠ 0`. Establish `: D.R.f ≠ 0` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.BasicNotions.Host.rdE`. Rewrite using `[h1, h2, ← Real.rpow_natCast (|((NumberField.discr X.B.I.F : ℤ) : ℝ)|) 2, ← Real.rpow_mul ha, ← Real.rpow_natCast _ D.R.f, ← Real.rpow_mul ha]`. Establish `hex : ((2 : ℕ) : ℝ) * (1 / ((2 * D.R.f : ℕ) : ℝ)) * (D.R.f : ℝ) = 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hex, Real.rpow_one]`.
+A detailed English derivation is pending.
 -/
 theorem discRd_of (hE : DiscEF) (hd : DegE) : DiscRd := by
   intro D X
@@ -122,7 +120,7 @@ theorem discRd_of (hE : DiscEF) (hd : DegE) : DiscRd := by
   rw [hex, Real.rpow_one]
 
 /- English proof (translation)
-Conclude with `lemmaMSStd_of hO hT diffProd_holds (discRd_of hE hd) (typNorm_of hG hC) X u u' ψ`.
+A detailed English derivation is pending.
 -/
 theorem lemmaMSStd_of_leaves (hO : MSOrd) (hT : MSTyp) (hG : StepGSplit) (hC : TypCount) (hE : DiscEF) (hd : DegE)
     {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word)

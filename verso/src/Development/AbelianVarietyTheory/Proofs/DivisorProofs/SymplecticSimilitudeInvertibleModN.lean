@@ -4,7 +4,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory.SympModN
 
 /- English proof (translation)
-Unfold `omegaStd`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omegaStd_nsmul_left {h : ℕ} (N : ℕ) (a b : Fin h ⊕ Fin h → ℤ) :
     omegaStd (N • a) b = N * omegaStd a b := by
@@ -15,23 +15,23 @@ theorem omegaStd_nsmul_left {h : ℕ} (N : ℕ) (a b : Fin h ⊕ Fin h → ℤ) 
   ring
 
 /- English proof (translation)
-Simplify using `[omegaStd, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omegaStd_single_inr {h : ℕ} (a : Fin h ⊕ Fin h → ℤ) (i : Fin h) :
     omegaStd a (Pi.single (.inr i) 1) = a (.inl i) := by
   simp [omegaStd, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[omegaStd, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omegaStd_single_inl {h : ℕ} (a : Fin h ⊕ Fin h → ℤ) (i : Fin h) :
     omegaStd a (Pi.single (.inl i) 1) = -a (.inr i) := by
   simp [omegaStd, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[Int.modEq_iff_dvd]`. Unfold `omegaStd`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨-(b (.inl i) * y (.inr i) + x (.inl i) * c (.inr i) + N * b (.inl i) * c (.inr i)) + (b (.inr i) * y (.inl i) + x (.inr i) * c (.inl i) + N * b (.inr i) * c (.inl i)), by ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem omegaStd_add_nsmul_modEq {h : ℕ} (N : ℕ) (x y b c : Fin h ⊕ Fin h → ℤ) :
     omegaStd (x + N • b) (y + N • c) ≡ omegaStd x y [ZMOD N] := by
@@ -44,9 +44,9 @@ theorem omegaStd_add_nsmul_modEq {h : ℕ} (N : ℕ) (x y b c : Fin h ⊕ Fin h 
     (b (.inr i) * y (.inl i) + x (.inr i) * c (.inl i) + N * b (.inr i) * c (.inl i)), by ring⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩ j`. Simplify using `[nsmul_eq_mul]`. Introduce `hd`. Use `⟨fun j => a j / N, funext fun j => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[nsmul_eq_mul, Int.mul_ediv_cancel' (hd j)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_eq_nsmul_iff {ι : Type*} (N : ℕ) (hN : N ≠ 0) (a : ι → ℤ) :
     (∃ b, a = N • b) ↔ ∀ j, (N : ℤ) ∣ a j := by
@@ -58,35 +58,33 @@ theorem exists_eq_nsmul_iff {ι : Type*} (N : ℕ) (hN : N ≠ 0) (a : ι → �
     simp [nsmul_eq_mul, Int.mul_ediv_cancel' (hd j)]
 
 /- English proof (translation)
-Introduce `h N m T hN hm hT`. Establish `h1 : ∀ a, (∃ b, T a = N • b) → ∃ b, a = N • b`. Introduce and unpack `a ⟨b, hb⟩`. Establish `hd : ∀ y, (N : ℤ) ∣ omegaStd a y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `hT a y`. Rewrite `e` using `[hb, omegaStd_nsmul_left]`. Establish `hdm : (N : ℤ) ∣ (m : ℤ) * omegaStd a y`. Establish `h3` using `Int.modEq_iff_dvd.1 e`. Establish `h2 : (N : ℤ) ∣ (N : ℤ) * omegaStd b (T y)` using `dvd_mul_right _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using dvd_add h3 h2`. Conclude with `(Nat.isCoprime_iff_coprime.2 hm.symm).dvd_of_dvd_mul_left hdm`. Use `(exists_eq_nsmul_iff N hN a).2 fun j => ?_` and prove the remaining obligations. Break down `j with i | i` into its components or cases. Simplify `hd (Pi.single (.inr i) 1)` using `[omegaStd_single_inr]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hd (Pi.single (.inl i) 1)` using `[omegaStd_single_inl]`. Use `haveI : NeZero N := ⟨hN⟩`. Set `red : (Fin h ⊕ Fin h → ℤ) → (Fin h ⊕ Fin h → ZMod N)` to `fun a j => (a j : ZMod N)`. Set `lift : (Fin h ⊕ Fin h → ZMod N) → (Fin h ⊕ Fin h → ℤ)` to `fun v j => ((v j).val : ℤ)`. Establish `hred0 : ∀ a, red a = 0 ↔ ∃ b, a = N • b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[exists_eq_nsmul_iff N hN a, funext_iff]`. Conclude with `forall_congr' fun j => ZMod.intCast_zmod_eq_zero_iff_dvd _ _`. Establish `hredlift : ∀ v, red (lift v) = v`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `[red, lift]`. Establish `hred_sub : ∀ a a', red (a - a') = red a - red a'`. Introduce `a a'`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[red]`. Establish `finj : Function.Injective fun v => red (T (lift v))`. Introduce `v w hvw`. Establish `e : red (T (lift v - lift w)) = 0`. Rewrite using `[map_sub, hred_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.2 hvw`. Take `⟨b', hb'⟩` from `h1 _ ((hred0 _).1 e)`. Establish `e2 : red (lift v - lift w) = 0` using `(hred0 _).2 ⟨b', hb'⟩`. Rewrite `e2` using `[hred_sub, hredlift, hredlift]`. Conclude with `sub_eq_zero.1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `fsurj` using `Finite.injective_iff_surjective.1 finj`. Establish `h2 : ∀ a, ∃ a' b, T a' = a + N • b`. Introduce `a`. Take `⟨v, hv⟩` from `fsurj (red a)`. Establish `e : red (T (lift v) - a) = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hred_sub]`. Conclude with `sub_eq_zero.2 hv`. Take `⟨b, hb⟩` from `(hred0 _).1 e`. Conclude with `⟨lift v, b, by rw [← hb]; abel⟩`. Use `choose v b hvb using fun i : Fin h ⊕ Fin h => h2 (Pi.single i 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `T' : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)` to `∑ i, (LinearMap.proj i : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] ℤ).smulRight (v i)`. Establish `hT' : ∀ x, T' x = ∑ i, x i • v i`. Introduce `x`. Simplify using `[T']`. Establish `h3 : ∀ x, T (T' x) = x + N • ∑ i, x i • b i`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[hT', map_sum]`. Simplify using `only [map_zsmul, hvb, smul_add, Finset.sum_add_distrib]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Use `⟨h1, h2, T', fun x => ⟨_, h3 x⟩, ?_⟩` and prove the remaining obligations. Introduce `m' hmm' x y`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `e1` using `hT (T' x) (T' y)`. Rewrite `e1` using `[h3, h3]`. Establish `e2` using `omegaStd_add_nsmul_modEq N x y (∑ i, x i • b i) (∑ i, y i • b i)`. Establish `e3 : (m : ℤ) * omegaStd (T' x) (T' y) ≡ omegaStd x y [ZMOD N]` using `e1.symm.trans e2`. Establish `hmm'' : (m : ℤ) * m' ≡ 1 [ZMOD N]`.
-
-Unfold `Nat.ModEq at hmm'`. Unfold `Int.ModEq`. Conclude with `hmm'` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem symplecticSimilitude_modN : ∀ (h N m : ℕ) (T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)), N ≠ 0 →
     m.Coprime N → (∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N]) →

@@ -7,9 +7,9 @@ namespace GlobalTheory.SymDesc
 variable {R R₁ : Type} [CommRing R] [IsDomain R] [CommRing R₁] [Algebra R R₁]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `: r ∈ Q.comap (algebraMap R R₁)`. Rewrite using `[Ideal.mem_comap, ← Ideal.Quotient.eq_zero_iff_mem, Ideal.Quotient.mk_algebraMap]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hQ, Ideal.mem_bot]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem injective_quotient (Q : Ideal R₁) (hQ : Q.comap (algebraMap R R₁) = ⊥) :
     Function.Injective (algebraMap R (R₁ ⧸ Q)) := by
@@ -21,21 +21,19 @@ theorem injective_quotient (Q : Ideal R₁) (hQ : Q.comap (algebraMap R R₁) = 
   rwa [hQ, Ideal.mem_bot] at this
 
 /- English proof (translation)
-Set `A` to `R₁ ⧸ Q`. Set `K₀` to `FractionRing A`. Set `F` to `FractionRing R`. Establish `hRA : Function.Injective (algebraMap R A)` using `injective_quotient Q hQ`. Establish `hRK : Function.Injective (algebraMap R K₀)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_eq R A K₀]`. Conclude with `(IsFractionRing.injective A K₀).comp hRA`. Use `haveI : FaithfulSMul R K₀ := (faithfulSMul_iff_algebraMap_injective R K₀).2 hRK`. Use `letI : Algebra F K₀ := FractionRing.liftAlgebra R K₀`. Use `haveI : IsScalarTower R F K₀ := FractionRing.isScalarTower_liftAlgebra R K₀`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : FaithfulSMul R A := (faithfulSMul_iff_algebraMap_injective R A).2 hRA`. Use `haveI : Algebra.IsAlgebraic R A := Algebra.IsIntegral.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic R K₀ := (IsFractionRing.isAlgebraic_iff' R A K₀).1 inferInstance`. Use `haveI : Algebra.IsAlgebraic F K₀ := ⟨fun x => (IsFractionRing.isAlgebraic_iff R F K₀).1 (Algebra.IsAlgebraic.isAlgebraic x)⟩`. Set `π : R₁ →+* K₀` to `(algebraMap A K₀).comp (Ideal.Quotient.mk Q)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπ : ∀ r : R, π (algebraMap R R₁ r) = algebraMap F K₀ (algebraMap R F r)`. Introduce `r`. Apply the tactic sequence `have hq : (Ideal.Quotient.mk Q) ((algebraMap R R₁) r) = algebraMap R A r := by first | rfl | exact Ideal.Quotient.mk_algebraMap _ _ | simp [A]`. Simplify using `only [π, RingHom.comp_apply]`. Rewrite using `[hq, ← IsScalarTower.algebraMap_apply R A K₀, ← IsScalarTower.algebraMap_apply R F K₀]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨e', he'⟩` from `GlobalTheory.mem_range_of_forall_algHom_eq F K₀ inferInstance (π s) (by`. Introduce `Ω _ _ φ₁ φ₂`. Establish `h` using `hs Ω (φ₁.toRingHom.comp π) (φ₂.toRingHom.comp π) (by`. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, hπ, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h)`. Establish `hint : IsIntegral R (π s)`. Establish `h1 : IsIntegral R (Ideal.Quotient.mk Q s)` using `Algebra.IsIntegral.isIntegral _`. Conclude with `h1.map (IsScalarTower.toAlgHom R A K₀)`. Rewrite `hint` using `[← he']`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint' : IsIntegral R e'` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom R F K₀) (algebraMap F K₀).injective).1 hint`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint'`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Apply `IsFractionRing.injective A K₀` to reduce the goal to its premises.
-
-Rewrite using `[map_zero]`. Establish `h : π (s - algebraMap R R₁ y) = 0`. Rewrite using `[map_sub, hπ, hy, he', sub_self]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_of_under_eq_bot [IsIntegrallyClosed R] [CharZero R]
     [Algebra.IsIntegral R R₁] (s : R₁)
@@ -88,19 +86,17 @@ theorem exists_sub_mem_of_under_eq_bot [IsIntegrallyClosed R] [CharZero R]
   exact h
 
 /- English proof (translation)
-Set `F` to `FractionRing R`. Set `M` to `AlgebraicClosure F`. Establish `hRM : Function.Injective (algebraMap R M)`. Rewrite using `[IsScalarTower.algebraMap_eq R F M]`. Conclude with `(algebraMap F M).injective.comp (IsFractionRing.injective R F)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FaithfulSMul R M := (faithfulSMul_iff_algebraMap_injective R M).2 hRM`. Use `haveI : Module.IsTorsionFree R M := by`. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective]`. Conclude with `hRM`. Establish `key : ∀ (P : Ideal R₁) [P.IsPrime], P.comap (algebraMap R R₁) = ⊥ → ∃ j : R₁ →+* M, j.comp (algebraMap R R₁) = algebraMap R M ∧ ∀ x ∈ P, j x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `P _ hP`. Establish `hRA : Function.Injective (algebraMap R (R₁ ⧸ P))` using `injective_quotient P hP`. Use `haveI : FaithfulSMul R (R₁ ⧸ P) := (faithfulSMul_iff_algebraMap_injective R _).2 hRA`. Use `haveI : Module.IsTorsionFree R (R₁ ⧸ P) := by`. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hRA`. Use `haveI : Algebra.IsAlgebraic R (R₁ ⧸ P) := Algebra.IsIntegral.isAlgebraic`. Set `l : (R₁ ⧸ P) →ₐ[R] M` to `IsAlgClosed.lift`. Use `⟨l.toRingHom.comp (Ideal.Quotient.mk P), ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply, Ideal.Quotient.mk_algebraMap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Simplify using `only [RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]`. Take `⟨j, hj, hj0⟩` from `key Q hQ`. Take `⟨j', hj', hj0'⟩` from `key Q' hQ'`. Establish `h` using `hs M j j' (hj.trans hj'.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : j s = algebraMap R M e`. Use `hj0 _ he` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[this, ← RingHom.comp_apply, hj]`. Establish `h2 : j' s = algebraMap R M e'`.
-
-Use `hj0' _ he'` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[this, ← RingHom.comp_apply, hj']`. Conclude with `hRM (h1.symm.trans (h.trans h2))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_sub_mem [Algebra.IsIntegral R R₁] (s : R₁)
     (hs : ∀ (K : Type) [Field K] (i₁ i₂ : R₁ →+* K),
@@ -149,15 +145,13 @@ end GlobalTheory.SymDesc
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R R₁ _ _ _ _ _ _ hfin hff s hs`. Use `haveI := hfin`. Use `haveI := hff`. Use `haveI : Algebra.IsIntegral R R₁ := Algebra.IsIntegral.of_finite R R₁`. Establish `hinj : Function.Injective (algebraMap R R₁)` using `FaithfulSMul.algebraMap_injective R R₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hker : Ideal.comap (algebraMap R R₁) (⊥ : Ideal R₁) ≤ ⊥`. Introduce `r hr`. Rewrite `hr` using `[Ideal.mem_comap, Ideal.mem_bot]`. Rewrite using `[Ideal.mem_bot]`. Conclude with `hinj (by rw [hr, map_zero])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨Q₀, -, hQ₀, hQ₀b⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (⊥ : Ideal R) ⊥ hker`. Use `haveI := hQ₀`. Take `⟨e, he⟩` from `SymDesc.exists_sub_mem_of_under_eq_bot s hs Q₀ hQ₀b`. Use `⟨e, fun K _ i₁ => ?_⟩` and prove the remaining obligations. Set `P` to `RingHom.ker i₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Use `haveI : P.IsPrime := RingHom.ker_isPrime i₁`. Use `haveI : P.LiesOver (P.under R) := ⟨rfl⟩`. Take `⟨Q, hQP, hQ, hQo⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := (⊥ : Ideal R)) (q := P.under R) P bot_le`. Establish `hQb : Q.comap (algebraMap R R₁) = ⊥` using `hQo.over.symm`. Take `⟨e₁, he₁⟩` from `SymDesc.exists_sub_mem_of_under_eq_bot s hs Q hQb`.
-
-Establish `hee` using `SymDesc.eq_of_sub_mem s hs Q₀ Q hQ₀b hQb e e₁ he he₁`. Substitute `hee` using the available equality. Establish `hm : s - algebraMap R R₁ e ∈ P` using `hQP he₁`. Rewrite `hm` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap_of_forall_ringHom_eq : ∀ (R R₁ : Type) [CommRing R] [IsDomain R]
     [IsIntegrallyClosed R] [CharZero R] [CommRing R₁] [Algebra R R₁], Module.Finite R R₁ →

@@ -13,7 +13,7 @@ open GlobalTheory.AnPer GlobalTheory.PeriodFamily
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Consider the case `tmul x y`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply, AlgHom.comp_apply, Hol.ev_apply, Hol.ev_apply, Charts.shA_apply, Charts.fn_sh h y hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -31,19 +31,17 @@ theorem evT_map_shA {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup �
     rfl
 
 /- English proof (translation)
-Introduce `I _ _ g Λ _ F F₀ K K₀ R _ _ J N hJ r m hm hmm hτ l k k' k₀ k₀' h h₀ hW ρ ρ' hρ hρ'`. Distinguish the cases in `hne : ∃ p, p ∈ K₀.W k₀'`. Use `swap`. Establish `e : ρ'.comp (Charts.sh h) = (Algebra.TensorProduct.map (AlgHom.id ℂ R) (Charts.shA h₀)).toRingHom.comp ρ` using `RingHom.ext fun f ↦ GlobalTheory.tensor_hol_ext_of_values _ _ _ _ fun p hp ↦ (hne ⟨p, hp⟩).elim`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Relation.ReflTransGen.refl`. Take `⟨p₀, hp₀⟩` from `hne`. Establish `h0 : (0 : I → ℂ) ∈ F.V` using `K.base k' _ (hW p₀ hp₀)`. Establish `hτa : AnalyticAt ℂ (F.τ l) 0` using `F.hol l _ h0`. Take `⟨n, hn, hnn, hd⟩` from `GlobalTheory.T.taylor_sub_value_eq_sum_sqZero_vector J N hJ r m hm hmm (F.τ l) hτa`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ∀ i, (fun i ↦ ∑ j, m j i) i ∈ J` using `fun i ↦ J.sum_mem fun j _ ↦ hm j i`. Establish `htN : ∀ s : Fin (N + 1) → I, ∏ a, (fun i ↦ ∑ j, m j i) (s a) = 0` using `fun s ↦ hJ _ fun a ↦ ht (s a)`. Establish `hin : ∀ p ∈ K₀.W k₀', (((0 : I → ℂ), p.2 + F.τ l 0) : Tot I g) ∈ K.W k` using `fun p hp ↦ K.maps h _ (hW p hp)`. Take `⟨-, -, hconst, hgerm, -, -⟩` from `taylor_formal_properties N (fun i ↦ ∑ j, m j i)`. Use `close_of_sliceTaylor J N hJ _ ht r n hn hnn (K.W k) (K₀.W k₀') (fun p ↦ p.2 + F.τ l 0) (fun p _ ↦ analyticAt_snd.add analyticAt_const) hin _ _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f p hp`. Use `(hρ' (Charts.sh h f) p hp).trans ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun z : I → ℂ ↦ ((z, p.2) : Tot I g)) 0` using `by fun_prop`. Establish `e : (fun z ↦ (Charts.sh h f).fn (z, p.2)) =ᶠ[𝓝 0] fun z ↦ f.fn (z, p.2 + F.τ l z)` using `by filter_upwards [hc.preimage_mem_nhds ((K.W k').isOpen.mem_nhds (hW p hp))] with z hz`. Conclude with `Charts.fn_sh h f hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hgerm _ _ e, taylor_shear N _ htN f.fn (F.τ l) p.2 hτa (f.analytic _ (hin p hp))]`. Simplify using `only [hd]`. Introduce `f p hp`. Use `(evT_map_shA h₀ p hp (ρ f)).trans ?_` and prove the remaining obligations. Use `(hρ f _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (F₀.shift l p).2 = p.2 + F.τ l 0`. Express the relevant statement in the definitionally equal form `p.2 + F₀.τ l p.1 = _`. Rewrite using `[hτ]`. Rewrite using `[e]`. Use `(taylor_shear N _ htN f.fn (fun _ ↦ F.τ l 0) p.2 analyticAt_const (f.analytic _ (hin p hp))).trans ?_` and prove the remaining obligations.
-
-Simplify using `only [hconst, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem close_taylor_shift : ∀ {I : Type} [Fintype I] [DecidableEq I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} {F₀ : Fam Empty g Λ} (K : Charts F) (K₀ : Charts F₀) {R : Type} [CommRing R] [Algebra ℂ R] (J : Ideal R) (N : ℕ), (∀ s : Fin (N + 1) → R, (∀ a, s a ∈ J) → ∏ a, s a = 0) → ∀ (r : ℕ) (m : Fin r → I → R), (∀ j i, m j i ∈ J) → (∀ j i i', m j i * m j i' = 0) → (∀ l z, F₀.τ l z = F.τ l 0) → ∀ (l : Λ) (k k' : K.K) (k₀ k₀' : K₀.K) (h : K.le l k' k) (h₀ : K₀.le l k₀' k₀), (∀ p ∈ K₀.W k₀', (((0 : I → ℂ), p.2) : Tot I g) ∈ K.W k') → ∀ (ρ : Hol (K.W k) →+* R ⊗[ℂ] Hol (K₀.W k₀)) (ρ' : Hol (K.W k') →+* R ⊗[ℂ] Hol (K₀.W k₀')), IsTay N (fun i ↦ ∑ j, m j i) ρ → IsTay N (fun i ↦ ∑ j, m j i) ρ' → Close (J.map (Algebra.TensorProduct.includeLeft : R →ₐ[ℂ] R ⊗[ℂ] Hol (K₀.W k₀'))) (ρ'.comp (Charts.sh h)) ((Algebra.TensorProduct.map (AlgHom.id ℂ R) (Charts.shA h₀)).toRingHom.comp ρ) := by
   intro I _ _ g Λ _ F F₀ K K₀ R _ _ J N hJ r m hm hmm hτ l k k' k₀ k₀' h h₀ hW ρ ρ' hρ hρ'

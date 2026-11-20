@@ -34,7 +34,7 @@ theorem val_leviMap (τ : ∀ a, m' a ≃ m a) (l : Levi k m') (a : α) :
   rfl
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, val_leviMap, Matrix.det_reindex_self]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_leviMap (τ : ∀ a, m' a ≃ m a) (l : Levi k m') (a : α) :
     Matrix.GeneralLinearGroup.det (leviMap k τ l a) = Matrix.GeneralLinearGroup.det (l a) := by
@@ -43,7 +43,7 @@ theorem det_leviMap (τ : ∀ a, m' a ≃ m a) (l : Levi k m') (a : α) :
     Matrix.det_reindex_self]
 
 /- English proof (translation)
-Establish `hc : ∀ a, Fintype.card (m a) = Fintype.card (m' a)` using `fun a => (Fintype.card_congr (τ a)).symm`. Establish `he : ∀ a, modExp m a = modExp m' a` using `fun a => by simp only [modExp, hc]`. Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[he a, det_leviMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem deltaHalf_leviMap (τ : ∀ a, m' a ≃ m a) (l : Levi k m') :
     deltaHalf k m (leviMap k τ l) = deltaHalf k m' l := by
@@ -54,9 +54,9 @@ theorem deltaHalf_leviMap (τ : ∀ a, m' a ≃ m a) (l : Levi k m') :
   rw [he a, det_leviMap]
 
 /- English proof (translation)
-Establish `hs : ∀ a x, ψ.symm (e ⟨a, x⟩) = e' ⟨a, (τ a).symm x⟩` using `fun a x => by`. Rewrite using `[Equiv.symm_apply_eq, h, Equiv.apply_symm_apply]`. Use `⟨⟨Units.map (Matrix.reindexAlgEquiv k k ψ).toMonoidHom (p : GL n' k), mem_parab_iff.2 fun a b i j hab => ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Use `show Matrix.reindex ψ ψ ((p : GL n' k) : Matrix n' n' k) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, hs, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mem_parab_iff.1 p.2 a b _ _ hab`. Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Use `show Matrix.reindex ψ ψ ((p : GL n' k) : Matrix n' n' k) (e ⟨a, i⟩) (e ⟨a, j⟩) = Matrix.reindex (τ a) (τ a) ((leviProj k e' p a : GL (m' a) k) : Matrix (m' a) (m' a) k) i j`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, hs, hs, Matrix.reindex_apply, Matrix.submatrix_apply, leviProj_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_parab_reindex {e : (Σ a, m a) ≃ n} {e' : (Σ a, m' a) ≃ n'} (τ : ∀ a, m' a ≃ m a) (ψ : n' ≃ n)
     (h : ∀ a i, ψ (e' ⟨a, i⟩) = e ⟨a, τ a i⟩) (p : parab k e') :
@@ -77,9 +77,9 @@ theorem exists_parab_reindex {e : (Σ a, m a) ≃ n} {e' : (Σ a, m' a) ≃ n'} 
       leviProj_apply]
 
 /- English proof (translation)
-Use `⟨⟨Units.map (Matrix.reindexAlgEquiv k k ψ.symm).toMonoidHom (q : GL n k), mem_parab_iff.2 fun a b i j hab => ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Use `show Matrix.reindex ψ.symm ψ.symm ((q : GL n k) : Matrix n n k) (e' ⟨a, i⟩) (e' ⟨b, j⟩) = 0`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, h, h]`. Conclude with `mem_parab_iff.1 q.2 a b _ _ hab`. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Use `show Matrix.reindex (τ a) (τ a) (Matrix.of fun x y => Matrix.reindex ψ.symm ψ.symm ((q : GL n k) : Matrix n n k) (e' ⟨a, x⟩) (e' ⟨a, y⟩)) i j = ((q : GL n k) : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩)`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.symm_symm, h, Equiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_parab_reindex_symm {e : (Σ a, m a) ≃ n} {e' : (Σ a, m' a) ≃ n'} (τ : ∀ a, m' a ≃ m a) (ψ : n' ≃ n)
     (h : ∀ a i, ψ (e' ⟨a, i⟩) = e ⟨a, τ a i⟩) (q : parab k e) :
@@ -99,7 +99,7 @@ theorem exists_parab_reindex_symm {e : (Σ a, m a) ≃ n} {e' : (Σ a, m' a) ≃
       Equiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_pi fun i => continuous_pi fun j => continuous_apply_apply (ψ.symm i) (ψ.symm j))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_reindex (ψ : n' ≃ n) :
     Continuous (Units.map (Matrix.reindexAlgEquiv k k ψ).toMonoidHom) :=
@@ -107,11 +107,11 @@ theorem continuous_reindex (ψ : n' ≃ n) :
     continuous_apply_apply (ψ.symm i) (ψ.symm j))
 
 /- English proof (translation)
-Use `Relabel.smInd_equiv_comp (Units.map (Matrix.reindexAlgEquiv k k ψ).toMonoidHom) (Units.map (Matrix.reindexAlgEquiv k k ψ.symm).toMonoidHom) (continuous_reindex ψ) (continuous_reindex ψ.symm) (fun x => ?_) (fun x => ?_) (fun q => ?_) (fun p => ?_)` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.coe_reindexAlgEquiv]`. Use extensionality with `i j`. Simplify using `[Matrix.coe_reindexAlgEquiv]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨p, hp, hl⟩` from `exists_parab_reindex_symm τ ψ h q`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using `only [MonoidHom.comp_apply, twist_apply, deltaHalf_leviMap, hl]`. Rewrite using `[← deltaHalf_leviMap τ, hl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq, hl⟩` from `exists_parab_reindex τ ψ h p`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using `only [MonoidHom.comp_apply, twist_apply, hl, deltaHalf_leviMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem parInd_transport (e : (Σ a, m a) ≃ n) (e' : (Σ a, m' a) ≃ n') (τ : ∀ a, m' a ≃ m a) (ψ : n' ≃ n)
     (h : ∀ a i, ψ (e' ⟨a, i⟩) = e ⟨a, τ a i⟩) {W : Type} [AddCommGroup W] [Module ℂ W]
@@ -153,14 +153,14 @@ def twoBlocks (d : Bool → ℕ) : ∀ x : Bool, Two (Fin (d false)) (Fin (d tru
   | true => Equiv.refl _
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_three]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_three_one (d : Fin 3 → ℕ) :
     modExp (fun j : Fin 3 => Fin (d j)) 1 = (d 2 : ℤ) - d 0 := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_three]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Fin.prod_univ_three, Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (0 : Fin 3) ≠ 1), Pi.mulSingle_eq_of_ne (by decide : (2 : Fin 3) ≠ 1), map_one, map_one, map_one, map_one, one_mul, mul_one, modExp_three_one]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deltaHalf_mulSingle_one (d : Fin 3 → ℕ) (h : GL (Fin (d 1)) k) :
     deltaHalf k (fun j : Fin 3 => Fin (d j)) (Pi.mulSingle (M := fun j : Fin 3 => GL (Fin (d j)) k) 1 h) =
@@ -173,7 +173,7 @@ theorem deltaHalf_mulSingle_one (d : Fin 3 → ℕ) (h : GL (Fin (d 1)) k) :
   ring
 
 /- English proof (translation)
-Rewrite using `[det_leviEmb, Fin.prod_univ_three, Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (0 : Fin 3) ≠ 1), Pi.mulSingle_eq_of_ne (by decide : (2 : Fin 3) ≠ 1), map_one, map_one, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_leviEmb_mulSingle_one (d : Fin 3 → ℕ) {X : Type} [Fintype X] [DecidableEq X]
     (e : (Σ j, Fin (d j)) ≃ X) (h : GL (Fin (d 1)) k) :
@@ -184,9 +184,9 @@ theorem det_leviEmb_mulSingle_one (d : Fin 3 → ℕ) {X : Type} [Fintype X] [De
     map_one, map_one, one_mul, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show (Pi.mulSingle (M := fun j : Fin 3 => Levi k fun i => Fin (b i j)) 1 L) j i = _`. Distinguish the cases in `hj : j = 1`. Substitute `hj` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne hj, Pi.mulSingle_eq_of_ne hj]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem swapBlocks_mulSingle_one (b : Bool → Fin 3 → ℕ) (L : ∀ i, GL (Fin (b i 1)) k) (i : Bool) :
     swapBlocks k (fun i j => Fin (b i j)) (Pi.mulSingle (M := fun j : Fin 3 => Levi k fun i => Fin (b i j)) 1 L) i =
@@ -200,7 +200,7 @@ theorem swapBlocks_mulSingle_one (b : Bool → Fin 3 → ℕ) (L : ∀ i, GL (Fi
     rfl
 
 /- English proof (translation)
-The claim follows from `CellTorus.extTensor_detRep_apply α₀ β₀ _ v`.
+A detailed English derivation is pending.
 -/
 theorem detPair_apply (a a' : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (x : Levi k (Two (Fin a) (Fin a'))) (v : ℂ ⊗[ℂ] ℂ) :
     detPair k a a' α₀ β₀ x v =
@@ -208,7 +208,7 @@ theorem detPair_apply (a a' : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (x : Levi k (T
   CellTorus.extTensor_detRep_apply α₀ β₀ _ v
 
 /- English proof (translation)
-Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Establish `hu : ∀ i, Matrix.GeneralLinearGroup.det ((u : Levi k (Two (Fin a) (Fin a'))) i) = 1` using `fun i => det_eq_one_of_mem_unipRad k ((Subgroup.mem_pi _).1 u.2 i (Set.mem_univ i))`. Rewrite using `[detPair_apply, hu, hu]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem twKer_detPair {a a' : ℕ} {c : Bool → Fin 3 → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)]
     (f : ∀ i, (Σ j, c i j) ≃ Two (Fin a) (Fin a') i) (α₀ β₀ : kˣ →* ℂˣ) :
@@ -221,13 +221,13 @@ theorem twKer_detPair {a a' : ℕ} {c : Bool → Fin 3 → Type} [∀ i j, Finty
   simp
 
 /- English proof (translation)
-Use `⟨.mk (Submodule.quotEquivOfEqBot _ (twKer_detPair f α₀ β₀)) fun l => ?_⟩` and prove the remaining obligations. Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, MonoidHom.comp_apply]`. Rewrite using `[show colRep f (detPair k a a' α₀ β₀) 1 (leviMap k (twoBlocks fun i => b i 1) l) = relJac f (detPair k a a' α₀ β₀) (swapBlocks k (fun i j => Fin (b i j)) (Pi.mulSingle (M := fun j : Fin 3 => Levi k fun i => Fin (b i j)) 1 (leviMap k (twoBlocks fun i => b i 1) l))) from rfl, relJa …`. Simplify using `only [LinearEquiv.coe_coe, Submodule.quotEquivOfEqBot_apply_mk]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[CellTorus.extTensor_detRep_apply, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[relDeltaHalf_apply, Fintype.prod_bool, relEmb_apply, relEmb_apply, swapBlocks_mulSingle_one, swapBlocks_mulSingle_one, deltaHalf_mulSingle_one, deltaHalf_mulSingle_one, det_leviEmb_mulSingle_one, det_leviEmb_mulSingle_one]`. Establish `hd : ∀ x, Matrix.GeneralLinearGroup.det (leviMap k (twoBlocks fun i => b i 1) l x) = Matrix.GeneralLinearGroup.det (l x)` using `fun x => det_leviMap _ l x`. Rewrite using `[hd false, hd true]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = (α₀ * _) (Matrix.GeneralLinearGroup.det (l false)) * (β₀ * _) (Matrix.GeneralLinearGroup.det (l true))`. Establish `hn : ∀ x y : ℕ, absPow k (((x : ℂ) - (y : ℂ)) / 2) = (absPow k (((y : ℂ) - (x : ℂ)) / 2))⁻¹`. Introduce `x y`. Rewrite using `[← absPow_neg]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, hn (b false 0), hn (b true 0)]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, MonoidHom.inv_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem colRep_detPair_equiv (a a' : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (b : Bool → Fin 3 → ℕ)
     (f : ∀ i, (Σ j, Fin (b i j)) ≃ Two (Fin a) (Fin a') i) :
@@ -266,9 +266,9 @@ theorem colRep_detPair_equiv (a a' : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (b : Bo
 end Column
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a a' m α₀ β₀ b f g hm`. Set `e' : (Σ x, Two (Fin (b.1 false 1)) (Fin (b.1 true 1)) x) ≃ Fin (b.1 false 1 + b.1 true 1)` to `(Equiv.sigmaCongrRight (twoBlocks fun i => b.1 i 1)).trans ((g 1).trans (finCongr hm).symm)`. Set `ρ₂` to `(extTensor (detRep (Fin (b.1 false 1)) (α₀ * absPow k ((((b.1 false 0 : ℕ) : ℂ) - (b.1 false 2 : ℕ)) / 2))) (detRep (Fin (b.1 true 1)) (β₀ * absPow k ((((b.1 true 0 : ℕ) : ℂ) - (b.1 true 2 : ℕ)) / 2)))).comp (leviTwo k (Fin (b.1 false 1)) (Fin (b.1 true 1))).symm.toMonoidHom`. Establish `h₁ : Nonempty (Representation.Equiv (parInd e' ((colRep f (detPair k a a' α₀ β₀) 1).comp (leviMap k (twoBlocks fun i => b.1 i 1)))) ((parInd (g 1) (colRep f (detPair k a a' α₀ β₀) 1)).comp (glCast k hm)))` using `parInd_transport (k := k) (g 1) e' (twoBlocks fun i => b.1 i 1) (finCongr hm) (fun x i => Equiv.apply_symm_apply _ _) (colRep f (detPair k a a' α₀ β₀) 1)`. Establish `h₂ : Nonempty (Representation.Equiv ((colRep f (detPair k a a' α₀ β₀) 1).comp (leviMap k (twoBlocks fun i => b.1 i 1))) ρ₂)` using `colRep_detPair_equiv (k := k) a a' α₀ β₀ b.1 f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : Nonempty (Representation.Equiv (parInd e' ρ₂) (cellMid k α₀ β₀ b.1))` using `(Placing.parInd_jac_placing k Bool (Fin (b.1 false 1 + b.1 true 1)) (Two (Fin (b.1 false 1)) (Fin (b.1 true 1))) e' (two (stdSum rfl)) (ℂ ⊗[ℂ] ℂ)).1 ρ₂`. Take `⟨φ₁⟩` from `h₁`. Take `⟨φ₂⟩` from `h₂`. Take `⟨φ₃⟩` from `h₃`. Conclude with `⟨(φ₁.symm.trans (GlobalTheory.LocGL.parIndEquiv e' φ₂)).trans φ₃⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem parInd_colRep_equiv_cellMid : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k]

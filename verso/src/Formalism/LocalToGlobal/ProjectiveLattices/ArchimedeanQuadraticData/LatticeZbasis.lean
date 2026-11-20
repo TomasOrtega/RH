@@ -9,29 +9,25 @@ namespace Formalism.L2.Pj.FundamentalDomainD5
 open NumberField Matrix
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 K) L := Module.Finite.iff_fg.mpr hfg`. Use `haveI : Module.Finite ℤ L := Module.Finite.trans (𝓞 K) L`. Use `haveI : Module.Free ℤ L := Module.free_of_finite_type_torsion_free'`. Use `set b := Module.Free.chooseBasis ℤ L`. Use `set f : Module.Free.ChooseBasisIndex ℤ L → (Fin r → K) := fun j => (b j : Fin r → K) with hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfZ : LinearIndependent ℤ f` using `b.linearIndependent.map' (L.subtype.restrictScalars ℤ) (LinearMap.ker_eq_bot.mpr Subtype.val_injective)`. Establish `hfQ : LinearIndependent ℚ f` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp hfZ`. Establish `hrep : ∀ v ∈ L, ∃ c : Module.Free.ChooseBasisIndex ℤ L → ℤ, v = ∑ j, (c j : ℚ) • f j`. Introduce `v hv`. Use `⟨fun j => b.repr ⟨v, hv⟩ j, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h'` using `congrArg (fun z : L => (z : Fin r → K)) (b.sum_repr ⟨v, hv⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h'`. Use `conv_lhs => rw [← h']`. Conclude with `Finset.sum_congr rfl fun j _ => (Int.cast_smul_eq_zsmul ℚ _ _).symm`. Establish `hS : ∀ v ∈ L, v ∈ Submodule.span ℚ (Set.range f)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `v hv`. Take `⟨c, hc⟩` from `hrep v hv`. Rewrite using `[hc]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hKL : ∀ v ∈ L, ∀ k : K, k • v ∈ Submodule.span ℚ (Set.range f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `v hv k`. Establish `halg : IsAlgebraic ℤ k` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).mpr (Algebra.IsAlgebraic.isAlgebraic k)`. Take `⟨y, hy0, hyi⟩` from `halg.exists_integral_multiple`. Establish `hmem : ((⟨y • k, hyi⟩ : 𝓞 K)) • v ∈ L` using `L.smul_mem _ hv`. Establish `hyK : (y : K) ≠ 0` using `by exact_mod_cast hy0`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq : k • v = ((y : ℚ)⁻¹) • ((⟨y • k, hyi⟩ : 𝓞 K) • v)`. Rewrite using `[algebra_compatible_smul K ((y : ℚ)⁻¹), algebra_compatible_smul K (⟨y • k, hyi⟩ : 𝓞 K), smul_smul]`. Use `congr 1`. Simplify using `only [map_inv₀, map_intCast, zsmul_eq_mul]`. Use `show k = (y : K)⁻¹ * ((y : K) * k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ (hS _ hmem)`. Establish `htop : ⊤ ≤ Submodule.span ℚ (Set.range f)`. Introduce `x _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hx : x ∈ Submodule.span K (L : Set (Fin r → K))` using `hspan ▸ Submodule.mem_top`. Establish `key : ∀ z ∈ Submodule.span K (L : Set (Fin r → K)), ∀ k : K, k • z ∈ Submodule.span ℚ (Set.range f)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem v hv => exact hKL v hv`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => intro k`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a c _ _ ha hc => intro k`. Rewrite using `[smul_add]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (ha k) (hc k)`. Consider the case `smul c a _ ha => intro k`. Rewrite using `[smul_smul]`. Conclude with `ha (k * c)`. Simplify using `using key x hx 1`.
-
-Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ L) = Module.finrank ℚ K * r`. Rewrite using `[← Module.finrank_eq_card_basis (Module.Basis.mk hfQ htop), Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`. Set `eqv` to `Fintype.equivFinOfCardEq hcard`. Use `⟨f ∘ eqv.symm, fun j => (b (eqv.symm j)).2, hfQ.comp _ eqv.symm.injective, fun v hv => ?_⟩` and prove the remaining obligations.
-
-Take `⟨c, hc⟩` from `hrep v hv`. Use `⟨c ∘ eqv.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `(Fintype.sum_equiv eqv.symm _ _ (fun j => rfl)).symm`.
+A detailed English derivation is pending.
 -/
 theorem lattice_zbasis {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (𝓞 K) (Fin r → K))
     (hfg : L.FG) (hspan : Submodule.span K (L : Set (Fin r → K)) = ⊤) :

@@ -17,9 +17,9 @@ namespace GlobalTheory.SW
 namespace DblVan
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `u ∈ Submodule.span E (Set.range fun b : Fin N => γ (Sum.inr b)) at hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Establish `hrow : (γ (Sum.inr b) ᵥ* γ⁻¹) (Sum.inl a) = (γ * γ⁻¹) (Sum.inr b) (Sum.inl a)` using `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hrow, Matrix.mul_nonsing_inv γ hγ, Matrix.one_apply_ne (by simp)]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_vecMul, Pi.add_apply, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [Matrix.smul_vecMul, Pi.smul_apply, hx, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem vecMul_inv_inl {E : Type} [Field E] {N : ℕ} {γ : M2 E N} (hγ : IsUnit γ.det)
     {u : Fin N ⊕ Fin N → E} (hu : u ∈ botSpan γ) (a : Fin N) : (u ᵥ* γ⁻¹) (Sum.inl a) = 0 := by
@@ -35,16 +35,16 @@ theorem vecMul_inv_inl {E : Type} [Field E] {N : ℕ} {γ : M2 E N} (hγ : IsUni
   | smul c x _ hx => rw [Matrix.smul_vecMul, Pi.smul_apply, hx, smul_zero]
 
 /- English proof (translation)
-Simplify using `[heisH, cc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heisH_zero_apply_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {n N : ℕ}
     (b : Matrix (Fin n) (Fin N) E) (ψ : Matrix (Fin n) (Fin N) E → ℂ) : heisH 0 b ψ 0 = ψ 0 := by
   simp [heisH, cc]
 
 /- English proof (translation)
-Use extensionality with `k a`. Rewrite using `[Matrix.toCols₁_apply, Matrix.zero_apply]`. Establish `hrow : (Matrix.fromCols (vecMulVec v ξ) (0 : Matrix (Fin n) (Fin N) E) * T) k = v k • (Sum.elim ξ 0 ᵥ* T)`. Use extensionality with `j`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, Fintype.sum_sum_type, vecMulVec_apply, Finset.mul_sum, mul_assoc]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `have hentry : (Matrix.fromCols (vecMulVec v ξ) (0 : Matrix (Fin n) (Fin N) E) * T * γ⁻¹) k (Sum.inl a) = ((v k • (Sum.elim ξ 0 ᵥ* T)) ᵥ* γ⁻¹) (Sum.inl a) := by`. Rewrite using `[← hrow]`. Both sides reduce to the same expression. Rewrite using `[hentry]`. Conclude with `vecMul_inv_inl hγ (Submodule.smul_mem _ _ hu) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toCols_eq_zero {E : Type} [Field E] {n N : ℕ} {γ T : M2 E N} (hγ : IsUnit γ.det)
     {ξ : Fin N → E} (hu : Sum.elim ξ 0 ᵥ* T ∈ botSpan γ) (v : Fin n → E) :
@@ -68,23 +68,23 @@ end DblVan
 open DblVan in
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs hn φ₁ φ₂ h₁ h₂ ξ hker γ hγ hξ`. Take `⟨s, a, hsum, hkill⟩` from `hker`. Establish `hΨ : IsType X.Ψ` using `X.cmType`. Establish `hγu : IsUnit γ.det` using `(HAct.group_part hγ).1`. Establish `hSBd : ∀ ψ : TF n g, IsSB ψ → IsSB (dbl X bas idx ψ φ₂)` using `fun ψ hψ => (GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn ψ φ₂ hψ h₂).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ` using `hSBd φ₁ h₁`. Establish `hG` using `(heisG_laws E r X g bas idx n hs hn).2.2.2`. Establish `hwadd : ∀ f f' : Matrix (Fin n) (Fin r) E → ℂ, IsSB f → IsSB f' → weil X.Ψ γ (f + f') = weil X.Ψ γ f + weil X.Ψ γ f'` using `fun f f' hf hf' => ((GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E X.Ψ hΨ n r hn γ hγ f hf).2.2.2.1 f' hf').2`. Establish `hwsmul : ∀ (c : ℂ) (f : Matrix (Fin n) (Fin r) E → ℂ), IsSB f → weil X.Ψ γ (c • f) = c • weil X.Ψ γ f` using `fun c f hf => (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E X.Ψ hΨ n r hn γ hγ f hf).2.2.2.2.1 c`. Establish `hdbl0 : dbl X bas idx (0 : TF n g) φ₂ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn φ₁ φ₂ h₁ h₂).2.1 0 1`. Rewrite `h` using `[zero_smul, one_smul, zero_mul, zero_smul]`. Then use the resulting hypothesis. Establish `hw0 : weil X.Ψ γ (0 : Matrix (Fin n) (Fin r) E → ℂ) = 0`. Establish `h` using `hwsmul 0 _ hΦ`. Rewrite `h` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hone : ∀ v : Fin n → E, weil X.Ψ γ (dbl X bas idx (heisG X bas (vecMulVec v ξ) φ₁) φ₂) 0 = weil X.Ψ γ (dbl X bas idx φ₁ φ₂) 0`. Introduce `v`. Establish `h3` using `(GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn φ₁ φ₂ h₁ h₂).2.2 (vecMulVec v ξ) 0`. Rewrite `h3` using `[(hG 0 φ₂ h₂).2.1]`. Rewrite using `[h3, (GlobalTheory.T.hermitianHeisenbergOperator_laws E X.Ψ hΨ n r hn _ _ _ hΦ).2.2 γ hγ, Matrix.fromCols_toCols, DblVan.toCols_eq_zero hγu hξ v, DblVan.heisH_zero_apply_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin : ∀ t : Finset (Fin n → E), IsSB (∑ v ∈ t, a v • heisG X bas (vecMulVec v ξ) φ₁) ∧ weil X.Ψ γ (dbl X bas idx (∑ v ∈ t, a v • heisG X bas (vecMulVec v ξ) φ₁) φ₂) = ∑ v ∈ t, a v • weil X.Ψ γ (dbl X bas idx (heisG X bas (vecMulVec v ξ) φ₁) φ₂)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨isSB_zero, by rw [Finset.sum_empty, Finset.sum_empty, hdbl0, hw0]⟩`. Consider the case `insert w t hw ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨hS, hval⟩` from `ih`. Establish `hGw` using `(hG (vecMulVec w ξ) φ₁ h₁).1`. Establish `hcGw` using `(isSB_algebra_haar_linear ℚ (Fin n) (Fin g) _ _ hGw hGw).2.1 (a w)`. Rewrite using `[Finset.sum_insert hw, Finset.sum_insert hw]`. Use `⟨(isSB_algebra_haar_linear ℚ (Fin n) (Fin g) _ _ hcGw hS).1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hI` using `GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn _ φ₂ hcGw h₂`. Establish `hJ` using `GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn _ φ₂ hGw h₂`. Establish `hsm : dbl X bas idx (a w • heisG X bas (vecMulVec w ξ) φ₁) φ₂ = a w • dbl X bas idx (heisG X bas (vecMulVec w ξ) φ₁) φ₂`. Establish `h` using `hJ.2.1 (a w) 1`. Rewrite `h` using `[one_smul, map_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[(hI.1 _ hS).1, hwadd _ _ (hSBd _ hcGw) (hSBd _ hS), hval, hsm, hwsmul _ _ (hSBd _ hGw)]`. Establish `hmain` using `(hlin s).2`. Rewrite `hmain` using `[hkill, hdbl0, hw0]`. Establish `h0` using `congrFun hmain 0`. Simplify using `only [Pi.zero_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hone, ← Finset.sum_mul] at h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(mul_eq_zero.mp h0.symm).resolve_left hsum`.
+A detailed English derivation is pending.
 -/
 theorem weil_dbl_zero_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ → ∀ ξ : Fin r → E, (∃ (s : Finset (Fin n → E)) (a : (Fin n → E) → ℂ), ∑ v ∈ s, a v ≠ 0 ∧ ∑ v ∈ s, a v • heisG X bas (vecMulVec v ξ) φ₁ = 0) → ∀ γ ∈ UU E r, Sum.elim ξ 0 ᵥ* dblT X ∈ botSpan γ → weil X.Ψ γ (dbl X bas idx φ₁ φ₂) 0 = 0 := by
   intro E _ _ _ r X g bas idx n hs hn φ₁ φ₂ h₁ h₂ ξ hker γ hγ hξ

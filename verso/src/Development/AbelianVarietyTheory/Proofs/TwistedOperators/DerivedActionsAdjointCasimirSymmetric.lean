@@ -7,13 +7,13 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 namespace GlobalTheory.FockTensor
 
 /- English proof (translation)
-Establish `hreal : ∀ Y ∈ upq p q, ∀ x y, inner ℂ (E₁ (a₁ Y x)) (E₂ y) = - inner ℂ (E₁ x) (E₂ (a₂ Y y))`. Introduce `Y hY x y`. Establish `h` using `(h₁ Y hY x).inner ℂ (h₂ Y hY y)`. Simplify using `only [inner_pi_pi] at h`. Establish `h0` using `h.unique (hasDerivAt_const (0 : ℝ) _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [zero_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply] at h0`. Take the linear combination `h0`. Establish `hZ : ∀ Z x y, inner ℂ (E₁ (a₁ Z x)) (E₂ y) = inner ℂ (E₁ x) (E₂ (a₂ (adjZ Z) y))`. Introduce `Z x y`. Take `⟨X, hX, Y, hY, rfl⟩` from `exists_upq_add Z`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[adjZ_add, adjZ_smul, (mem_upq_iff X).1 hX, (mem_upq_iff Y).1 hY]`. Simplify using `only [map_add, map_smul, map_neg, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.neg_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, inner_neg_right, hreal X hX, hreal Y hY]`. Both sides reduce to the same expression. Use `⟨hZ, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [casimir, LinearMap.sum_apply, map_sum, sum_inner, inner_sum, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hZ, hZ, adjZ_Eab, adjZ_Eab]`. Simplify using `only [map_smul, LinearMap.smul_apply, inner_smul_right]`. Take the linear combination `(sgnIx b * sgnIx b * inner ℂ (E₁ x) (E₂ (a₂ (Eab a b) (a₂ (Eab b a) y)))) * sgnIx_mul_self a + inner ℂ (E₁ x) (E₂ (a₂ (Eab a b) (a₂ (Eab b a) y))) * sgnIx_mul_self b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem derived_adjoint_and_casimir (p q : ℕ) (T : GrpData p q) (πU : URep T) (V₁ V₂ : Type)
     [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]

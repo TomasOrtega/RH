@@ -26,13 +26,11 @@ def extendAddHom {K K' : Type} (j : K ↪ K') : (K → ℕ) →+ (K' → ℕ) wh
     · simp [Function.extend_apply' _ _ _ h]
 
 /- English proof (translation)
-Establish `key : (Finsupp.weight (R` using `ℕ) (blockWeight ι')).comp (Finsupp.mapDomain.addMonoidHom (M := ℕ) g) = (extendAddHom j).comp (Finsupp.weight (R := ℕ) (blockWeight ι)) := by`. Use extensionality with `v`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, Finsupp.singleAddHom_apply, Finsupp.mapDomain.addMonoidHom_apply, Finsupp.mapDomain_single, Finsupp.weight_single, one_smul]`. Use `show blockWeight ι' (g v) _ = Function.extend j (blockWeight ι v) 0 _`. Name the introduced variables `k'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [blockWeight, hg v]`. Distinguish the cases in `h : ∃ a, j a = k'`. Take `⟨a, rfl⟩` from `h`. Rewrite using `[j.injective.extend_apply]`. Distinguish the cases in `hav : a = v.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hav` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne (fun e => hav (j.injective e)), Pi.single_eq_of_ne hav]`. Rewrite using `[Function.extend_apply' _ _ _ h, Pi.single_eq_of_ne (fun e => h ⟨v.1, e.symm⟩)]`. Both sides reduce to the same expression.
-
-Conclude with `DFunLike.congr_fun key u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem weight_mapDomain_blockWeight {K K' : Type} [DecidableEq K] [DecidableEq K'] (j : K ↪ K')
     (ι : K → Type) (ι' : K' → Type) (g : (Σ k, ι k) → (Σ k', ι' k'))
@@ -60,7 +58,7 @@ theorem weight_mapDomain_blockWeight {K K' : Type} [DecidableEq K] [DecidableEq 
   exact DFunLike.congr_fun key u
 
 /- English proof (translation)
-Introduce `R _ K K' _ _ j ι ι' g hg f d hf e he`. Take `⟨u, rfl, hu⟩` from `coeff_rename_ne_zero g f e he`. Rewrite using `[weight_mapDomain_blockWeight j ι ι' g hg u, hf hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem RenameMultiHomog.proof : RenameMultiHomog.Statement.{u} := by
   intro R _ K K' _ _ j ι ι' g hg f d hf e he

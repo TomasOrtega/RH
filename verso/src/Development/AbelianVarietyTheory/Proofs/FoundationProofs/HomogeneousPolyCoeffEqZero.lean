@@ -6,15 +6,13 @@ open scoped MatrixGroups TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set V : Matrix (Fin (w + 1)) (Fin (w + 1)) ℤ_[l] := Matrix.vandermonde (fun t : Fin (w + 1) => ((t : ℕ) : ℤ_[l])) with hVdef`. Establish `hrow : ∀ t : Fin (w + 1), ∑ i, V t i • c i = 0`. Introduce `t`. Use `hv ![((t : ℕ) : ℤ_[l]), 1]` as an intermediate fact. Simplify `this` using `[hVdef, Matrix.vandermonde_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hdet : V.det ≠ 0`. Rewrite using `[hVdef, Matrix.det_vandermonde_ne_zero_iff]`. Introduce `a b hab`. Apply `Fin.ext` to reduce the goal to its premises. Establish `hab' : ((a : ℕ) : ℤ_[l]) = ((b : ℕ) : ℤ_[l])` using `hab`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hab'` after adjusting the coercions. Establish `key : ∀ j, V.det • c j = 0`. Introduce `j`. Establish `h1 : ∑ t, V.adjugate j t • ∑ i, V t i • c i = 0` using `by simp [hrow]`. Establish `h2 : ∑ t, V.adjugate j t • ∑ i, V t i • c i = ∑ i, (V.adjugate * V) j i • c i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Rewrite `h1` using `[h2, Matrix.adjugate_mul]`. Simplify `h1` using `[Matrix.smul_apply, Matrix.one_apply, ite_smul, Finset.sum_ite_eq]`. Use function extensionality and compare the values at `j`.
-
-Conclude with `htf _ _ hdet (key j)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem homogeneous_poly_coeff_eq_zero (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M]
     (htf : ∀ (c : ℤ_[l]) (x : M), c ≠ 0 → c • x = 0 → x = 0) (w : ℕ) (c : Fin (w + 1) → M)

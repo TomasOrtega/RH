@@ -20,7 +20,7 @@ namespace GlobalTheory.Cartier.PullDominant
 variable {M W : Scheme.{0}} [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h`. Conclude with `⟨f.stalkMap x a, ha.map _, (GlobalTheory.functionFieldMap_algebraMap f x a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitAt_map {x : M} {u : W.functionField} (h : UnitAt (f x) u) :
     UnitAt x (GlobalTheory.functionFieldMap f u) := by
@@ -28,7 +28,7 @@ theorem unitAt_map {x : M} {u : W.functionField} (h : UnitAt (f x) u) :
   exact ⟨f.stalkMap x a, ha.map _, (GlobalTheory.functionFieldMap_algebraMap f x a).symm⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `h`. Conclude with `⟨f.stalkMap x a, (GlobalTheory.functionFieldMap_algebraMap f x a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem regAt_map {x : M} {u : W.functionField} (h : RegAt (f x) u) :
     RegAt x (GlobalTheory.functionFieldMap f u) := by
@@ -38,7 +38,7 @@ theorem regAt_map {x : M} {u : W.functionField} (h : RegAt (f x) u) :
 abbrev unitsMap : W.functionFieldˣ →* M.functionFieldˣ := Units.map (GlobalTheory.functionFieldMap f).toMonoidHom
 
 /- English proof (translation)
-Rewrite using `[germOf_eq_iff]`. Use `unitAt_map f (h.iff_unitAt.1 h')` as an intermediate fact. Simplify `this` using `[map_div₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem germOf_map_eq {D₀ : CartierDiv W} {x : M} {g g' : W.functionFieldˣ}
     (h : D₀.IsEqn (f x) g) (h' : D₀.IsEqn (f x) g') :
@@ -51,7 +51,7 @@ def pullGerm (D₀ : CartierDiv W) (x : M) : Germ x :=
   germOf x (unitsMap f (D₀.exists_isEqn (f x)).choose)
 
 /- English proof (translation)
-The claim follows from `germOf_map_eq f (D₀.exists_isEqn (f x)).choose_spec h`.
+A detailed English derivation is pending.
 -/
 theorem pullGerm_eq {D₀ : CartierDiv W} {x : M} {g : W.functionFieldˣ} (h : D₀.IsEqn (f x) g) :
     pullGerm f D₀ x = germOf x (unitsMap f g) :=
@@ -63,14 +63,14 @@ def pull (D₀ : CartierDiv W) : CartierDiv M :=
     exact ⟨f ⁻¹ᵁ U, hU, unitsMap f g, fun y hy => pullGerm_eq f (hg (f y) hy)⟩⟩
 
 /- English proof (translation)
-The claim follows from `pullGerm_eq f h`.
+A detailed English derivation is pending.
 -/
 theorem isEqn_pull {D₀ : CartierDiv W} {x : M} {g : W.functionFieldˣ} (h : D₀.IsEqn (f x) g) :
     (pull f D₀).IsEqn x (unitsMap f g) :=
   pullGerm_eq f h
 
 /- English proof (translation)
-Introduce `x`. Take `⟨g, hg⟩` from `D₀.exists_isEqn (f x)`. Use `⟨unitsMap f g, isEqn_pull f hg, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `regAt_map f (CartierDiv.eff_iff.1 hD _ _ hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eff_pull {D₀ : CartierDiv W} (hD : D₀.Eff) : (pull f D₀).Eff := by
   intro x
@@ -84,7 +84,7 @@ end GlobalTheory.Cartier.PullDominant
 open GlobalTheory.Cartier.PullDominant in
 
 /- English proof (translation)
-Introduce `M W _ _ f _ D₀ hD`. Conclude with `⟨pull f D₀, eff_pull f hD, fun x g h => isEqn_pull f h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Cartier.exists_pull_dominant :
     ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f] (D₀ : CartierDiv W), D₀.Eff → ∃ D₁ : CartierDiv M, D₁.Eff ∧ ∀ x g, D₀.IsEqn (f x) g → D₁.IsEqn x (Units.map (GlobalTheory.functionFieldMap f).toMonoidHom g) := by

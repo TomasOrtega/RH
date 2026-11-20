@@ -15,19 +15,17 @@ open scoped TensorProduct
 namespace GlobalTheory.GoodSpan
 
 /- English proof (translation)
-Introduce `i hi j hj b`. Use `D.nexp.towFm i j b` as an intermediate fact. Establish `hspan : ∀ x ∈ V0 D.nexp i j b, x ∈ Submodule.span (FractionRing (D.ntw.O i)) (Set.range (D.nexp.embB i j b))`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span (FractionRing (D.ntw.O i)) (D.nexp.Bsup i j b : Set (D.nexp.Fm i j b))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[(hSF i hi j hj b).2]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy, z, rfl⟩` from `(IsLocalization.mem_span_iff (nonZeroDivisors (D.ntw.O i))).1 hx'`. Rewrite `hy` using `[Submodule.span_eq]`. Establish `hyV : y ∈ V0 D.nexp i j b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : y = (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (z : D.ntw.O i)) • (IsLocalization.mk' (FractionRing (D.ntw.O i)) (1 : D.ntw.O i) z • y)`. Rewrite using `[smul_smul, mul_comm, IsLocalization.mk'_spec, map_one, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hyR : y ∈ LinearMap.range (D.nexp.embB i j b)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hBr i hi j hj b]`. Conclude with `Submodule.mem_inf.2 ⟨hy, (Submodule.restrictScalars_mem _ _ _).2 hyV⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (LinearMap.mem_range.1 hyR))`. Establish `hpoly : ∀ k P, HkIdx i k P → ∃ p : (FractionRing (D.ntw.O i))[X], p.Separable ∧ p.Splits ∧ ∀ x ∈ V0 D.nexp i j b, Polynomial.aeval (D.nexp.hkF i j b k P) p x = 0`. Introduce `k P hkP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p1, hp10, hp1s, hp1k⟩` from `GlobalTheory.T.split_charpoly_lattice_kills_span (D.ntw.O i) (D.nexp.Fm i j b) (D.ntw.B i j b) (D.nexp.embB i j b) (D.ntw.hk i j b k P) (D.nexp.hkF i j b k P) (hEmb i hi j hj b k P hkP) (hSp i hi j hj b k P hkP)`. Take `⟨p2, hp2s, hp2k⟩` from `GlobalTheory.GoodSS.hkF_separable Rl F cG S Y H hG hC X hR hU hI hS0c hS02 hS0b i hi j hj b k P hkP`. Use `⟨EuclideanDomain.gcd p1 p2, hp2s.of_dvd (EuclideanDomain.gcd_dvd_right _ _), hp1s.of_dvd hp10 (EuclideanDomain.gcd_dvd_left _ _), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[EuclideanDomain.gcd_eq_gcd_ab, mul_comm p1, mul_comm p2, map_add, map_mul, map_mul, LinearMap.add_apply, Module.End.mul_apply, Module.End.mul_apply, hp1k x (hspan x hx), hp2k x hx, map_zero, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hJ` using `GlobalTheory.JointDiag.le_iSup_jointEigenspace_inf (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b) {a : ℕ × PlE D.host // HkIdx i a.1 a.2} (fun a => D.nexp.hkF i j b a.1.1 a.1.2) (V0 D.nexp i j b) (fun a c => hC i hi j hj b _ _ _ _ a.2 c.2) (fun a x hx => GlobalTheory.T.hecke_preser …`. Use `hJ.trans (iSup_le fun ev => ?_)` and prove the remaining obligations. Use `le_iSup_of_le (fun k P => if h : HkIdx i k P then ev ⟨(k, P), h⟩ else 0) (inf_le_inf_right _ ?_)` and prove the remaining obligations. Unfold `Eigsp`. Use `le_iInf fun k => le_iInf fun P => le_iInf fun h => ?_` and prove the remaining obligations.
-
-Use `(iInf_le _ ⟨(k, P), h⟩).trans ?_` and prove the remaining obligations. Simplify using `only [dif_pos h]`. Conclude with `le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hkSS_of_rows_guarded {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks]

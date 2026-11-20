@@ -47,13 +47,13 @@ def boundedRepartitions (D : WeilDivisor X) : Submodule k (repartitions k X) whe
       _ = _ := one_mul _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_boundedRepartitions (D : WeilDivisor X) (a : repartitions k X) :
     a ∈ boundedRepartitions k D ↔ ∀ Z : PrimeDivisor X, a.1 Z ∈ Z.divisorSubgroup D := Iff.rfl
 
 /- English proof (translation)
-Use `(finite_not_mem_divisorSubgroup (0 : WeilDivisor X) f).subset fun Z hZ => ?_` and prove the remaining obligations. Simplify `hZ` using `only [Set.mem_ofPred_eq, PrimeDivisor.mem_divisorSubgroup, Finsupp.coe_zero, Pi.zero_apply, WithZero.exp_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma const_mem_repartitions (f : X.functionField) :
     (fun _ : PrimeDivisor X => f) ∈ repartitions k X := by
@@ -81,7 +81,7 @@ noncomputable def extendRep (a : PrimeDivisor X → X.functionField) (x : X) : X
 
 omit [AlgebraicGeometry.IsNoetherian X] [IsNormalScheme X] in
 /- English proof (translation)
-Rewrite using `[extendRep, dif_pos (show ringKrullDim (X.presheaf.stalk Z.point) = 1 from Z.2)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma extendRep_point (a : PrimeDivisor X → X.functionField) (Z : PrimeDivisor X) :
     extendRep a Z.point = a Z := by
@@ -89,7 +89,7 @@ lemma extendRep_point (a : PrimeDivisor X → X.functionField) (Z : PrimeDivisor
   rfl
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite using `[QuotientAddGroup.eq_zero_iff, mem_pointSubgroup_iff]`. Conclude with `fun h => absurd h hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma quot_eq_zero_of_not_primeDivisor {x : X} (hx : ¬ ringKrullDim (X.presheaf.stalk x) = 1)
     (q : X.functionField ⧸ pointSubgroup D x) : q = 0 := by
@@ -98,13 +98,13 @@ lemma quot_eq_zero_of_not_primeDivisor {x : X} (hx : ¬ ringKrullDim (X.presheaf
   exact fun h => absurd h hx
 
 /- English proof (translation)
-Introduce `y`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Establish `hfin : {Z : PrimeDivisor X | a.1 Z ∉ Z.divisorSubgroup D}.Finite`. Use `(a.2.union D.support.finite_toSet).subset fun Z hZ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not, Finset.mem_coe, Finsupp.mem_support_iff] at hc`. Apply `hZ` to reduce the goal to its premises. Rewrite using `[PrimeDivisor.mem_divisorSubgroup, hc.2, WithZero.exp_zero]`. Conclude with `hc.1`. Establish `hinj : Function.Injective (fun z : (⊤ : X.Opens) => z.1)` using `Subtype.val_injective`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hfin.image PrimeDivisor.point).preimage hinj.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨-, hz⟩`. Distinguish the cases in `h : ringKrullDim (X.presheaf.stalk z.1) = 1`. Use `⟨PrimeDivisor.ofPoint z.1 h, fun hmem => hz ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq_zero_iff, extendRep, dif_pos h, mem_pointSubgroup_iff]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h'`. Conclude with `(PrimeDivisor.mem_divisorSubgroup _ _ _).mp hmem`. Conclude with `absurd (quot_eq_zero_of_not_primeDivisor D h _) hz`.
+A detailed English derivation is pending.
 -/
 lemma mk_extendRep_mem (a : repartitions k X) :
     (fun z : (⊤ : X.Opens) =>
@@ -159,11 +159,11 @@ lemma repToQuot_apply (a : repartitions k X) (z : (⊤ : X.Opens)) :
     (repToQuot k D a).1 z = QuotientAddGroup.mk (extendRep a.1 z.1) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h Z`. Use `congrArg (fun s : quotSections D ⊤ => s.1 ⟨Z.point, trivial⟩) h` as an intermediate fact. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (extendRep a.1 Z.point) : X.functionField ⧸ pointSubgroup D Z.point) = 0 at this`. Rewrite `this` using `[QuotientAddGroup.eq_zero_iff, extendRep_point, mem_pointSubgroup_primeDivisor]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (extendRep a.1 z.1) : X.functionField ⧸ pointSubgroup D z.1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : ringKrullDim (X.presheaf.stalk z.1) = 1`. Rewrite using `[QuotientAddGroup.eq_zero_iff, extendRep, dif_pos hz, mem_pointSubgroup_iff]`. Introduce `_`. Conclude with `(PrimeDivisor.mem_divisorSubgroup _ _ _).mp (h _)`. Conclude with `quot_eq_zero_of_not_primeDivisor D hz _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma repToQuot_eq_zero_iff (a : repartitions k X) :
     repToQuot k D a = 0 ↔ a ∈ boundedRepartitions k D := by
@@ -185,7 +185,7 @@ lemma repToQuot_eq_zero_iff (a : repartitions k X) :
     · exact quot_eq_zero_of_not_primeDivisor D hz _
 
 /- English proof (translation)
-Use `choose W hW hfin using fun y : (⊤ : X.Opens) => s.2 y`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y : (⊤ : X.Opens) => (W y : Set X)) (fun y => (W y).isOpen) (fun x _ => Set.mem_iUnion.mpr ⟨⟨x, trivial⟩, hW _⟩)`. Use `(t.finite_toSet.biUnion fun y _ => hfin y).subset fun z hz => ?_` and prove the remaining obligations. Take `⟨y, hy, hzy⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ z.1))`. Conclude with `Set.mem_iUnion₂.mpr ⟨y, hy, hzy, hz⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma quotSections_top_finite (s : quotSections D ⊤) :
     {z : (⊤ : X.Opens) | s.1 z ≠ 0}.Finite := by
@@ -199,17 +199,15 @@ lemma quotSections_top_finite (s : quotSections D ⊤) :
 open Classical in
 
 /- English proof (translation)
-Introduce `s`. Set `r : PrimeDivisor X → X.functionField` to `fun Z => if s.1 ⟨Z.point, trivial⟩ = 0 then 0 else (QuotientAddGroup.mk_surjective (s.1 ⟨Z.point, trivial⟩)).choose`. Establish `hr : ∀ Z : PrimeDivisor X, (QuotientAddGroup.mk (r Z) : X.functionField ⧸ pointSubgroup D Z.point) = s.1 ⟨Z.point, trivial⟩`. Introduce `Z`. Simplify using `only [r]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Rewrite using `[h]`. Both sides reduce to the same expression. Conclude with `(QuotientAddGroup.mk_surjective (s.1 ⟨Z.point, trivial⟩)).choose_spec`. Establish `hmem : r ∈ repartitions k X`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective (fun Z : PrimeDivisor X => (⟨Z.point, trivial⟩ : (⊤ : X.Opens)))` using `fun Z Z' h => PrimeDivisor.point_injective (congrArg (fun p : (⊤ : X.Opens) => p.1) h :)`. Use `((quotSections_top_finite D s).preimage hinj.injOn).subset fun Z hZ => ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1 : r Z = 0` using `if_pos h0`. Express the relevant statement in the definitionally equal form `¬ Z.valuation (r Z) ≤ 1 at hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hZ` using `[h1, map_zero]`. Conclude with `hZ zero_le`. Use `⟨⟨r, hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[repToQuot_apply]`. Distinguish the cases in `hz : ringKrullDim (X.presheaf.stalk z.1) = 1`. Use `hr (PrimeDivisor.ofPoint z.1 hz)` as an intermediate fact. Rewrite using `[extendRep, dif_pos hz]`. Conclude with `this`.
-
-Conclude with `(quot_eq_zero_of_not_primeDivisor D hz _).trans (quot_eq_zero_of_not_primeDivisor D hz _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma repToQuot_surjective : Function.Surjective (repToQuot k D) := by
   intro s
@@ -246,9 +244,9 @@ lemma repToQuot_surjective : Function.Surjective (repToQuot k D) := by
       (quot_eq_zero_of_not_primeDivisor D hz _).symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `quotMul D c z.1 (QuotientAddGroup.mk (extendRep a.1 z.1)) = QuotientAddGroup.mk (extendRep (c • a.1) z.1)`. Rewrite using `[quotMul_mk]`. Unfold `extendRep`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma quotSmul_repToQuot (c : k) (a : repartitions k X) :
     (quotSmul D c).hom.app (op ⊤) (repToQuot k D a) = repToQuot k D (c • a) := by
@@ -263,9 +261,9 @@ lemma quotSmul_repToQuot (c : k) (a : repartitions k X) :
   · rw [mul_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Rewrite using `[constToQuot_app_apply, repToQuot_apply]`. Distinguish the cases in `hz : ringKrullDim (X.presheaf.stalk z.1) = 1`. Rewrite using `[extendRep, dif_pos hz, constSections_apply_eq t z ⟨genericPoint X, trivial⟩]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `(quot_eq_zero_of_not_primeDivisor D hz _).trans (quot_eq_zero_of_not_primeDivisor D hz _).symm`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma constToQuot_top (t : constSections (⊤ : X.Opens)) :
     (constToQuot D).hom.app (op ⊤) t =
@@ -296,7 +294,7 @@ noncomputable def repToQuotTop : repartitions k X →+ (quotSheaf D).obj.obj (op
 
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})] in
 /- English proof (translation)
-The claim follows from `quotSmul_repToQuot D c a`.
+A detailed English derivation is pending.
 -/
 lemma quotSmul_repToQuotTop (c : k) (a : repartitions k X) :
     (quotSmul D c).hom.app (op ⊤) (repToQuotTop k D a) = repToQuotTop k D (c • a) :=
@@ -304,7 +302,7 @@ lemma quotSmul_repToQuotTop (c : k) (a : repartitions k X) :
 
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})] in
 /- English proof (translation)
-The claim follows from `constToQuot_top D (constSection ⊤ f)`.
+A detailed English derivation is pending.
 -/
 lemma constToQuot_constSection (f : X.functionField) :
     (constToQuot D).hom.app (op ⊤) (show (constSheaf X).obj.obj (op ⊤) from constSection ⊤ f) =
@@ -316,14 +314,14 @@ noncomputable def quotDelta :
   H.δ.{w'} (divisorSeq_shortExact D hX) 0 1 rfl
 
 /- English proof (translation)
-Introduce `x` and use `H.exact₁ (divisorSeq_shortExact D hX) (n₀ := 0) rfl x (H_eq_zero_of_isFlasque (constSheaf X) 0 _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma quotDelta_surjective : Function.Surjective (quotDelta.{w'} hX D) := fun x =>
   H.exact₁ (divisorSeq_shortExact D hX) (n₀ := 0) rfl x
     (H_eq_zero_of_isFlasque (constSheaf X) 0 _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => H.exact₃ (divisorSeq_shortExact D hX) rfl y h, fun ⟨w, hw⟩ => hw ▸ H.δ_map_g (divisorSeq_shortExact D hX) rfl w⟩`.
+Supply the required witnesses or components.
 -/
 lemma quotDelta_eq_zero_iff (y : Sheaf.H.{w'} (quotSheaf D) 0) :
     quotDelta hX D y = 0 ↔
@@ -332,7 +330,7 @@ lemma quotDelta_eq_zero_iff (y : Sheaf.H.{w'} (quotSheaf D) 0) :
     H.δ_map_g (divisorSeq_shortExact D hX) rfl w⟩
 
 /- English proof (translation)
-The claim follows from `H.δ_naturality (divisorSeq_shortExact D hX) (divisorSeq_shortExact D hX) (divisorSeqSmul D c) 0 1 rfl y`.
+A detailed English derivation is pending.
 -/
 lemma quotDelta_smul (c : k) (y : Sheaf.H.{w'} (quotSheaf D) 0) :
     quotDelta hX D (Sheaf.H.map (quotSmul D c) 0 y) = c • quotDelta hX D y :=
@@ -353,9 +351,9 @@ lemma repartitionToH1_apply (a : repartitions k X) :
       ((Sheaf.H.equiv₀ (quotSheaf D) isTerminalTop).symm (repToQuotTop k D a)) := rfl
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y, rfl⟩` from `quotDelta_surjective hX D x`. Take `⟨a, ha⟩` from `repToQuot_surjective (k := k) D (Sheaf.H.equiv₀ (quotSheaf D) isTerminalTop y)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `ha' : repToQuotTop k D a = Sheaf.H.equiv₀ (quotSheaf D) isTerminalTop y` using `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[repartitionToH1_apply, ha', AddEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma repartitionToH1_surjective : Function.Surjective (repartitionToH1.{w'} k hX D) := by
   intro x
@@ -367,15 +365,15 @@ lemma repartitionToH1_surjective : Function.Surjective (repartitionToH1.{w'} k h
   rw [repartitionToH1_apply, ha', AddEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[repartitionToH1_apply, quotDelta_eq_zero_iff]`. Take `⟨w, hw⟩` from `h`. Set `t : (constSheaf X).obj.obj (op ⊤)` to `Sheaf.H.equiv₀ (constSheaf X) isTerminalTop w`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `e1 : (constToQuot D).hom.app (op ⊤) t = Sheaf.H.equiv₀ (quotSheaf D) isTerminalTop (Sheaf.H.map (constToQuot D) 0 w)` using `Sheaf.H.equiv₀_naturality (hT := isTerminalTop) (constToQuot D) w`. Rewrite `e1` using `[hw, AddEquiv.apply_symm_apply]`. Establish `e3 : (constToQuot D).hom.app (op ⊤) t = repToQuotTop k D (diagRepartition k X ((show constSections ⊤ from t).1 ⟨genericPoint X, trivial⟩))` using `constToQuot_top D t`. Establish `hb : a - diagRepartition k X ((show constSections ⊤ from t).1 ⟨genericPoint X, trivial⟩) ∈ boundedRepartitions k D`. Rewrite using `[← repToQuot_eq_zero_iff, map_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `repToQuotTop k D a - repToQuotTop k D _ = 0`. Rewrite using `[← e1, e3, sub_self]`. Conclude with `Submodule.mem_sup.mpr ⟨_, hb, _, ⟨_, rfl⟩, sub_add_cancel _ _⟩`. Introduce `h`. Take `⟨b, hb, d, ⟨f, rfl⟩, rfl⟩` from `Submodule.mem_sup.mp h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Establish `h1 : repartitionToH1.{w'} k hX D b = 0`. Establish `: repToQuotTop k D b = repToQuotTop k D 0` using `((repToQuot_eq_zero_iff D b).mpr hb).trans (map_zero (repToQuot k D)).symm`. Rewrite using `[repartitionToH1_apply, this, ← repartitionToH1_apply hX D 0, map_zero]`. Establish `h2 : repartitionToH1.{w'} k hX D (diagRepartition k X f) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repartitionToH1_apply, ← constToQuot_constSection, ← Sheaf.H.equiv₀_symm_naturality, quotDelta_eq_zero_iff]`. Conclude with `⟨_, rfl⟩`. Rewrite using `[h1, h2, add_zero]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma repartitionToH1_eq_zero_iff (a : repartitions k X) :
     repartitionToH1.{w'} k hX D a = 0 ↔
@@ -413,7 +411,7 @@ lemma repartitionToH1_eq_zero_iff (a : repartitions k X) :
     rw [h1, h2, add_zero]
 
 /- English proof (translation)
-Rewrite using `[repartitionToH1_apply, repartitionToH1_apply, ← quotSmul_repToQuotTop, ← quotDelta_smul, Sheaf.H.equiv₀_symm_naturality]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma repartitionToH1_smul (c : k) (a : repartitions k X) :
     repartitionToH1.{w'} k hX D (c • a) = c • repartitionToH1.{w'} k hX D a := by
@@ -429,7 +427,7 @@ noncomputable def repartitionToH1Linear :
   map_smul' := repartitionToH1_smul hX D
 
 /- English proof (translation)
-Use extensionality with `a`. Conclude with `repartitionToH1_eq_zero_iff hX D a`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma ker_repartitionToH1Linear :
     LinearMap.ker (repartitionToH1Linear.{w'} k hX D) =

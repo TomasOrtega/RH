@@ -7,19 +7,19 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D T E _ _ _ _ _ ι F hF χ hχ`. Establish `hχι : ∀ t, χ (ι t) = t` using `fun t => by simpa using DFunLike.congr_fun hχ t`. Use `set J : Ideal E := Ideal.span ((fun f => f - ι (χ f)) '' (F : Set E)) with hJ`. Establish `key : ∀ x, x - ι (χ x) ∈ J`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : x ∈ Algebra.adjoin D (Set.range ι ∪ (F : Set E))` using `by rw [hF]; exact Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨t, rfl⟩ | hx` into its components or cases. Simplify using `[hχι]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `Ideal.subset_span ⟨x, hx, rfl⟩`. Consider the case `algebraMap r => simp [AlgHom.commutes]`. Consider the case `add x y _ _ hx hy`. Establish `e : x + y - ι (χ (x + y)) = (x - ι (χ x)) + (y - ι (χ y))`. Simplify using `only [map_add]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `J.add_mem hx hy`. Consider the case `mul x y _ _ hx hy`. Establish `e : x * y - ι (χ (x * y)) = (x - ι (χ x)) * y + ι (χ x) * (y - ι (χ y))`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `J.add_mem (J.mul_mem_right _ hx) (J.mul_mem_left _ hy)`. Establish `hker : RingHom.ker χ = J`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Simplify `key x` using `[hx]`. Rewrite using `[hJ, Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨f, _, rfl⟩`. Simplify using `[RingHom.mem_ker, hχι]`. Rewrite using `[hker]`. Conclude with `⟨F.image (fun f => f - ι (χ f)), by rw [Finset.coe_image]⟩`.
+A detailed English derivation is pending.
 -/
 theorem ker_retraction_fg : ∀ (D T E : Type) [CommRing D] [CommRing T] [Algebra D T] [CommRing E] [Algebra D E] (ι : T →ₐ[D] E) (F : Finset E), Algebra.adjoin D (Set.range ι ∪ (F : Set E)) = ⊤ → ∀ χ : E →ₐ[D] T, χ.comp ι = AlgHom.id D T → (RingHom.ker χ).FG := by
   intro D T E _ _ _ _ _ ι F hF χ hχ

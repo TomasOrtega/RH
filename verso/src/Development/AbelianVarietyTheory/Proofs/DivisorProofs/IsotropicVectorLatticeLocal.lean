@@ -15,9 +15,9 @@ open IsDedekindDomain
 namespace GlobalTheory.InertIwasawaUnram
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ hU n J hJ x y hx hy L hL v hv hSD g`. Use `haveI := hL`. Take `⟨c, hc⟩` from `GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified F E σ hσ inferInstance`. Establish `hram : ∀ P : HeightOneSpectrum (𝓞 E), P.asIdeal.ramificationIdx (𝓞 F) = 1` using `fun P => by haveI := P.isPrime haveI : Algebra.IsUnramifiedAt (𝓞 F) P.asIdeal := inferInstance`. Conclude with `Ideal.ramificationIdx_eq_one _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUn : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.UnramAt F E v` using `fun P _ => hram P`. Establish `hIU : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) v := fun P _ => hram P`. Take `⟨w, hw⟩` from `((GlobalTheory.LFun.exists_isInertChart σ hσ v).1 hIU).resolve_left hv`. Take `⟨q, k, hk, hg, β, hβ⟩` from `GlobalTheory.InertIwasawaLoc.exists_loc hσ hc hJ hw hUn hSD (e := x) (p := cT (σ : E →+* E) y * J) (by rw [Matrix.mul_assoc] at hy ⊢; exact hy) hx g`. Conclude with `⟨q, k, hk, hg, β, hβ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (x y : Matrix (Fin n) (Fin 1) E), cT (σ : E →+* E) x * J * x = 0 → cT (σ : E →+* E) y * J * x = 1 → ∀ (L : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E L → ∀ (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)), ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → IsSelfDualAt σ J L v → ∀ g : GLoc σ J v, ∃ q k : GLoc σ J v, k ∈ stabLoc σ J L v ∧ g = q * k ∧ ∃ β : GL (Fin 1) (Fv F v ⊗[F] E), (matHom _ σ J q).1 * x.map (inclR (F := F) (Fv F v)) = x.map (inclR (F := F) (Fv F v)) * β.1 := by
   intro F E _ _ _ _ _ σ hσ hU n J hJ x y hx hy L hL v hv hSD g

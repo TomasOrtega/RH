@@ -19,7 +19,7 @@ namespace GlobalTheory.LatVal
 open Neutral.B1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_cmCurve_torsionTransport_secondPeriod h2 ι Λ₀ Ω₀ hΛ hΩ`.
+A detailed English derivation is pending.
 -/
 theorem exists_uniformisation_torsTransport {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
     (h2 : Module.finrank ℚ K = 2) (ι : K →+* ℂ) (Λ₀ : PeriodPair) (Ω₀ : ℂ)
@@ -33,21 +33,19 @@ theorem exists_uniformisation_torsTransport {K : Type} [Field K] [NumberField K]
   GlobalTheory.T.exists_cmCurve_torsionTransport_secondPeriod h2 ι Λ₀ Ω₀ hΛ hΩ
 
 /- English proof (translation)
-Take `⟨φ, hφc, hφb, hφ⟩` from `GlobalTheory.T.exists_continuous_bijective_abelianization_of_algEquiv e`. Set `ψ : Ideles K →* Field.absoluteGaloisGroupAbelianization K` to `φ.comp art⁻¹`. Establish `hψ : ∀ s, ψ s = φ (art s)⁻¹` using `fun s => rfl`. Establish `hle : (diagUnits K).range ≤ ψ.ker`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hk : diagUnits K k ∈ art.ker`. Rewrite using `[ha.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`. Rewrite using `[MonoidHom.mem_ker, hψ, MonoidHom.mem_ker.mp hk, inv_one, map_one]`. Set `Art : IdeleClassGroup K →* Field.absoluteGaloisGroupAbelianization K` to `QuotientGroup.lift _ ψ hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hArt : ∀ s, Art (QuotientGroup.mk s) = φ ((art s)⁻¹)` using `fun s => rfl`. Establish `hArtσ : ∀ (s : Ideles K) (σ : Formalism.ConjugateSelfDual.G K Ω), (art s)⁻¹ = GlobalTheory.HeckeGal.toAb K Ω σ → Art (QuotientGroup.mk s) = Neutral.B1.toAb K ((e.symm.trans σ).trans e)` using `fun s σ h => by`. Rewrite using `[hArt, h, hφ]`. Use `⟨Art, ⟨?_, ?_, ?_, ?_, ?_⟩, hArtσ⟩` and prove the remaining obligations. Use `(QuotientGroup.isQuotientMap_mk _).continuous_iff.mpr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hφc.comp (ha.quot.continuous.inv)`. Introduce `c`. Take `⟨y, rfl⟩` from `hφb.2 c`. Take `⟨x, rfl⟩` from `ha.quot.surjective y`. Conclude with `⟨QuotientGroup.mk x⁻¹, by rw [hArt, map_inv art, inv_inv]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `c`. Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective c`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker, hArt, GlobalTheory.T.ideleClass_identityComponent_iff_artin_kernel ha, ← map_one φ, hφb.1.eq_iff, inv_eq_one]`. Introduce `L h v hv a hsupp`. Take `⟨x, hx, rfl⟩` from `GlobalTheory.T.supportedIdele_eq_localIdele hsupp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨A, hA⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver Ω v`. Prove the components needed by the constructor for the conclusion. Introduce `hu Q hQ hQv`. Rewrite `hu` using `[← hx]`. Take `⟨σ, hσ, hσe⟩` from `(ha.frob v A hA (art (localIdele K v x))).1 ⟨x, (GlobalTheory.T.isUniformiserAt_iff_adicCompletion_isUnifAt v x).1 hu, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hArtσ _ σ (by rw [← hσe, map_inv, inv_inv]), abRestrict_mk]`. Conclude with `GlobalTheory.T.isFrobAt_restrict_finiteAbelian_subextension e L h v A hA σ hσ Q hQ hQv`. Introduce `hu`. Rewrite `hu` using `[← hx]`. Take `⟨σ, hσ, hσe⟩` from `(ha.ine v A hA (art (localIdele K v x))).1 ⟨x, hu, rfl⟩`.
-
-Rewrite using `[hArtσ _ σ⁻¹ (by rw [← hσe, map_inv]), abRestrict_mk]`. Conclude with `GlobalTheory.T.inertia_restrict_finiteAbelian_unramified_eq_one e L h v hv A hA σ⁻¹ ((ReciprocityTheory.Gal.Ine A).inv_mem hσ)`. Introduce `L h w hw`. Conclude with `absurd hw (InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_globalArtinMap {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {Ω : Type}
     [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] {art : Ideles K →* GlobalTheory.HeckeGal.Gab K Ω}
@@ -99,15 +97,15 @@ theorem exists_globalArtinMap {K : Type} [Field K] [NumberField K] [IsTotallyCom
     exact absurd hw (InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w))
 
 /- English proof (translation)
-Introduce `hMT K _ _ _ ι h2 Λ₀ Ω₀ hΛ hΩ Ω _ _ _ j art hj ha g σ t hσg hsym`. Use `letI : Algebra K ℂ := ι.toAlgebra`. Establish `hg : ∀ x : K, g (algebraMap K ℂ x) = algebraMap K ℂ x` using `fun x => by`. Express the relevant statement in the definitionally equal form `g (ι x) = ι x`. Rewrite using `[← hj, RingHom.comp_apply, ← hσg, AlgEquiv.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `gK : ℂ ≃ₐ[K] ℂ` to `AlgEquiv.ofRingEquiv (f := g) hg`. Take `⟨X, hX, ξ, hξ, hT⟩` from `exists_uniformisation_torsTransport h2 ι Λ₀ Ω₀ hΛ hΩ`. Set `e` to `IsAlgClosure.equiv K Ω (AlgebraicClosure K)`. Take `⟨Art, hArt, hArtσ⟩` from `exists_globalArtinMap ha e`. Establish `hjK : ∀ x : K, j (algebraMap K Ω x) = algebraMap K ℂ x` using `fun x => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.comp_apply, hj]`. Both sides reduce to the same expression. Set `jK : Ω →ₐ[K] ℂ` to `{ j with commutes' := hjK }`. Establish `hR : GlobalTheory.EllipticCM.RestrictsTo gK (Art (QuotientGroup.mk (finIdele K t)))`. Rewrite using `[hArtσ _ σ hsym]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨jK.comp e.symm.toAlgHom, (e.symm.trans σ).trans e, fun x => ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (j (e.symm x)) = j (e.symm (e (σ (e.symm x))))`. Rewrite using `[AlgEquiv.symm_apply_apply, hσg]`. Establish `hTr` using `hMT K h2 Art hArt gK (finIdele K t) hR X 1 one_ne_zero ξ hξ`. Rewrite `hTr` using `[show GlobalTheory.EllipticCM.finitePart (finIdele K t) = t from GlobalTheory.EllipticCM.finitePart_inr t]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hT gK t hTr`.
+A detailed English derivation is pending.
 -/
 theorem periodEx_of_mainTheorem : GlobalTheory.Published.EllipticMainTheoremCM → PeriodEx := by
   intro hMT K _ _ _ ι h2 Λ₀ Ω₀ hΛ hΩ Ω _ _ _ j art hj ha g σ t hσg hsym

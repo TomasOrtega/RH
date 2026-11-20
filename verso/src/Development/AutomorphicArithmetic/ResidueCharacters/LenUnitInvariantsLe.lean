@@ -7,19 +7,15 @@ open IsDiscreteValuationRing GlobalTheory.InvariantsKO
 namespace UpperTheory.N
 
 /- English proof (translation)
-Use `haveI := D.nd.lPrime i`. Take `⟨g, hgI, hg⟩` from `GlobalTheory.PtCore.EpsAll.exists_generator (GlobalTheory.EpsInertia.epsAll D i) w hw`. Establish `hgD : g ∈ Dec (F` using `D.host.E) (D.nd.plOm.1 w) := Ine_le_Dec _ hgI`. Use `set b : (D.nd.O i)ˣ := Formalism.MainNotions.N.Glob.epsO D.nd i g with hbdef`. Establish `hb : (b : D.nd.O i) = algebraMap ℤ_[D.nd.l i] (D.nd.O i) (1 + (D.nd.l i : ℤ_[D.nd.l i]) ^ D.nd.s0 i * ((1 : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Units.val_one, mul_one, ← hg]`. Both sides reduce to the same expression. Use `set a : D.nd.O i := (b : D.nd.O i) ^ n - 1 with hadef`. Establish `hva : addVal (D.nd.O i) a = ((D.nd.s0 i + padicValNat (D.nd.l i) n : ℕ) : ℕ∞) * addVal (D.nd.O i) ((D.nd.l i : ℕ) : D.nd.O i)`. Rewrite using `[hadef, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.addVal_pow_sub_one (O := D.nd.O i) (D.nd.l i) (Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.l_ne_zero D.nd i) (Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.l_not_unit D.nd i) (D.nd.s0 i) hs hl2 …`. Establish `ha0 : a ≠ 0`. Introduce `h`. Establish `ht : addVal (D.nd.O i) a = ⊤` using `by rw [h]; simp`. Rewrite `ht` using `[hva]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, he0, he⟩` from `Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.exists_eO D.nd i`. Rewrite `ht` using `[he]`. Conclude with `absurd ht (by rw [← Nat.cast_mul]; exact ENat.coe_ne_top _)`. Establish `hkill : ∀ x ∈ Representation.invariants ((Formalism.MainNotions.N.Glob.KOtw D.nd i (n : ℤ)).comp (decS D.nd w)), a • x = 0`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfix` using `(Representation.mem_invariants _ x).mp hx ⟨g, hgD⟩`. Establish `hfix' : ((b ^ n)⁻¹ : (D.nd.O i)ˣ) • x = x`. Establish `e1 : ((Formalism.MainNotions.N.Glob.KOtw D.nd i (n : ℤ)).comp (decS D.nd w)) ⟨g, hgD⟩ x = (((b ^ (-(n : ℤ)) : (D.nd.O i)ˣ)) : D.nd.O i) • x`. Both sides reduce to the same expression. Rewrite `hfix` using `[e1]`.
-
-Rewrite using `[Units.smul_def, ← zpow_natCast, ← zpow_neg]`. Conclude with `hfix`. Rewrite using `[hadef, sub_smul, one_smul]`. Use `conv_lhs => rw [← hfix']`. Rewrite using `[Units.smul_def, smul_smul, ← Units.val_pow_eq_pow_val, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul, ← Units.smul_def, hfix', sub_self]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lenUnit_invariants_le (D : D7) (i : D.nd.Loc) (hl2 : D.nd.l i = 2 → 2 ≤ D.nd.s0 i) (hs : 1 ≤ D.nd.s0 i)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (n : ℕ) (hn : 0 < n) :
@@ -68,11 +64,11 @@ theorem lenUnit_invariants_le (D : D7) (i : D.nd.Loc) (hl2 : D.nd.l i = 2 → 2 
     _ = _ := Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.lenUnit_span D.nd i hva
 
 /- English proof (translation)
-Use `haveI := D.nd.lPrime i`. Establish `key : h0 D.nd i col ≤ ((D.nd.s0 i + Nat.log (D.nd.l i) D.R.t : ℕ) : ℚ)`. Unfold `h0`. Use `unbotD_le ?_ (by positivity)` and prove the remaining obligations. Apply `Finset.max_le` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨⟨w, n⟩, hp, rfl⟩` from `Finset.mem_image.mp hy`. Take `⟨hw, hn⟩` from `Finset.mem_product.mp hp`. Take `⟨hn0, hnt⟩` from `Finset.mem_Ioo.mp hn`. Use `WithBot.coe_le_coe.mpr ((UpperTheory.N.lenUnit_invariants_le D i hl2 hs w (hcol w hw) n hn0).trans ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: padicValNat (D.nd.l i) n ≤ Nat.log (D.nd.l i) D.R.t` using `(padicValNat_le_nat_log _).trans (Nat.log_mono_right hnt.le)`. Conclude with `Nat.add_le_add_left this _` after adjusting the coercions. Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem h0_le (D : D7) (i : D.nd.Loc) (col : Finset (HeightOneSpectrum (𝓞 D.host.E))) (hl2 : D.nd.l i = 2 → 2 ≤ D.nd.s0 i)
     (hs : 1 ≤ D.nd.s0 i) (hcol : ∀ u ∈ col, u ∈ placesOver D.host.E (D.nd.l i)) :

@@ -17,14 +17,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
 
 /- English proof (translation)
-Simplify using `only [J0, Subgroup.mem_inf, Subgroup.mem_iInf, and_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_mirabolicLevel_iff_local {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} :
     x ∈ J0 hc n ST ↔ x ∈ UAd hc n ∧ x ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ∧ ∀ P ∈ ST, x ∈ mirAt (F := F) n P := by
   simp only [J0, Subgroup.mem_inf, Subgroup.mem_iInf, and_assoc]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.DIV.redFn, Formalism.L2.DIV.extendOne_of_mem _ (congruence_subgroup_le_stabilizer hc n ST k.2)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rld_redG_apply (k : J0 hc n ST) (w : SG) :
     redG hc n ST SG k w = redFn (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) w.1 (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := by
@@ -32,13 +32,11 @@ theorem rld_redG_apply (k : J0 hc n ST) (w : SG) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_levU]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hJ, hH⟩`. Take `⟨h1, h2, h3⟩` from `(mem_mirabolicLevel_iff_local hc n ST).1 hJ`. Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun w : SG => redFn (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) w.1 x) = redG hc n ST SG ⟨x, hJ⟩`. Use function extensionality and compare the values at `fun w => (rld_redG_apply hc n ST SG ⟨x, hJ⟩ w).symm`. Rewrite using `[e]`. Conclude with `hH`. Introduce and unpack `⟨h1, h2, h3, hH⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hJ` using `(mem_mirabolicLevel_iff_local hc n ST).2 ⟨h1, h2, h3⟩`. Use `⟨hJ, ?_⟩` and prove the remaining obligations. Establish `e : redG hc n ST SG ⟨x, hJ⟩ = fun w : SG => redFn (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) w.1 x`. Use function extensionality and compare the values at `fun w => rld_redG_apply hc n ST SG ⟨x, hJ⟩ w`. Rewrite using `[e]`.
-
-Conclude with `hH`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_levU_iff {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} :
     x ∈ levU hc n ST SG H ↔ x ∈ UAd hc n ∧ x ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ∧
@@ -62,9 +60,9 @@ theorem mem_levU_iff {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} :
     exact hH
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Subgroup.mem_inf, mem_levU_iff, mem_levU_iff]`. Simplify using `only [Subgroup.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1, h2, fun P hP => by simp at hP, h4⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2, -, h4⟩, h3⟩`. Conclude with `⟨h1, h2, h3, h4⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem levU_eq_inf : levU hc n ST SG H = levU hc n ∅ SG H ⊓ ⨅ P ∈ ST, mirAt (F := F) n P := by
   ext x
@@ -77,7 +75,7 @@ theorem levU_eq_inf : levU hc n ST SG H = levU hc n ∅ SG H ⊓ ⨅ P ∈ ST, m
     exact ⟨h1, h2, h3, h4⟩
 
 /- English proof (translation)
-The claim follows from `rld_redG_apply hc n ST SG (Subgroup.inclusion (unipotentLevel_le_mirabolicLevel hc n ST SG H) x) w`.
+A detailed English derivation is pending.
 -/
 theorem levRed_apply (x : levU hc n ST SG H) (w : SG) :
     (levRed hc n ST SG H x : GLG E n SG) w =
@@ -91,7 +89,7 @@ section Fin
 variable {κ : Type} [CommRing κ] {n r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [coarse, blkIdx, Formalism.L2.DIV.blkOf]`. Use `split_ifs with hi`. Both sides reduce to the same expression. Rewrite using `[blkIdx_replicate ht s (i.val - r) (by have := i.isLt; omega)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rld_coarse_eq {t s : ℕ} (ht : 0 < t) (hn : n = r + s * t) :
     (fun i : Fin n => coarse r (List.replicate s t) i.val) = Formalism.L2.DIV.blkOf r t := by
@@ -102,7 +100,7 @@ theorem rld_coarse_eq {t s : ℕ} (ht : 0 < t) (hn : n = r + s * t) :
   · rw [blkIdx_replicate ht s (i.val - r) (by have := i.isLt; omega)]
 
 /- English proof (translation)
-Use extensionality with `M`. Use `show (M : Matrix (Fin n) (Fin n) κ).BlockTriangular (fun i => coarse r (List.replicate s t) i.val) ↔ (M : Matrix (Fin n) (Fin n) κ).BlockTriangular (Formalism.L2.DIV.blkOf r t)`. Rewrite using `[rld_coarse_eq ht hn]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rld_blockUT_eq {t s : ℕ} (ht : 0 < t) (hn : n = r + s * t) :
     blockUT n κ r (List.replicate s t) = Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t) := by
@@ -112,7 +110,7 @@ theorem rld_blockUT_eq {t s : ℕ} (ht : 0 < t) (hn : n = r + s * t) :
   rw [rld_coarse_eq ht hn]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.DIV.upperLeftBlock, Formalism.L2.DIV.extendOne_of_mem _ hM']`. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem blockZero_eq_restrictedBlock (h : r ≤ n) (bl : List ℕ) {M : GL (Fin n) κ} (hM : M ∈ blockUT n κ r bl)
     (hM' : M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) : blk0 n κ h bl ⟨M, hM⟩ = Formalism.L2.DIV.upperLeftBlock h M := by
@@ -121,9 +119,9 @@ theorem blockZero_eq_restrictedBlock (h : r ≤ n) (bl : List ℕ) {M : GL (Fin 
   rfl
 
 /- English proof (translation)
-Establish `hM2 : (M : Matrix (Fin n) (Fin n) κ).BlockTriangular (Formalism.L2.DIV.blkOf r t)` using `hM`. Use `show (M : Matrix (Fin n) (Fin n) κ).BlockTriangular (Formalism.L2.DIV.blk2 r)`. Introduce `i j hij`. Apply `hM2` to reduce the goal to its premises. Simplify using `only [Formalism.L2.DIV.blk2, Formalism.L2.DIV.blkOf] at hij ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs at hij ⊢ <;> first | omega | exact Nat.succ_pos _`.
+A detailed English derivation is pending.
 -/
 private theorem mem_blockTri_blk2_of_mem_blockTri_blkOf {t : ℕ} {M : GL (Fin n) κ}
     (hM : M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)) : M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) := by
@@ -135,13 +133,11 @@ private theorem mem_blockTri_blk2_of_mem_blockTri_blkOf {t : ℕ} {M : GL (Fin n
   split_ifs at hij ⊢ <;> first | omega | exact Nat.succ_pos _
 
 /- English proof (translation)
-Rewrite using `[mem_HPar]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hM, h0⟩`. Establish `hM' : M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)`. Rewrite using `[← rld_blockUT_eq ht hn]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM`. Use `⟨hM', ?_⟩` and prove the remaining obligations. Rewrite using `[← blockZero_eq_restrictedBlock h _ hM (mem_blockTri_blk2_of_mem_blockTri_blkOf hM')]`. Conclude with `h0`. Introduce and unpack `⟨hM', h0⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : M ∈ blockUT n κ r (List.replicate s t)`. Rewrite using `[rld_blockUT_eq ht hn]`. Conclude with `hM'`. Use `⟨hM, ?_⟩` and prove the remaining obligations. Rewrite using `[blockZero_eq_restrictedBlock h _ hM (mem_blockTri_blk2_of_mem_blockTri_blkOf hM')]`.
-
-Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_HPar_iff (h : r ≤ n) {t s : ℕ} (ht : 0 < t) (hn : n = r + s * t) (H₀ : Subgroup (GL (Fin r) κ)) {M : GL (Fin n) κ} :
     M ∈ HPar n κ h (List.replicate s t) H₀ ↔
@@ -164,9 +160,9 @@ theorem mem_HPar_iff (h : r ≤ n) {t s : ℕ} (ht : 0 < t) (hn : n = r + s * t)
     exact h0
 
 /- English proof (translation)
-Establish `hM' : M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)`. Rewrite using `[← rld_blockUT_eq ht hn]`. Conclude with `hM`. Rewrite using `[Formalism.L2.DIV.dBlk, Formalism.L2.DIV.extendOne_of_mem _ hM']`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `key : ∀ b : Fin n → ℕ, b = Formalism.L2.DIV.blkOf r t → ((M : Matrix (Fin n) (Fin n) κ).toSquareBlock b c).det = ((M : Matrix (Fin n) (Fin n) κ).submatrix (Subtype.val : {a : Fin n // Formalism.L2.DIV.blkOf r t a = c} → Fin n) Subtype.val).det`. Introduce and unpack `b rfl`. Both sides reduce to the same expression. Conclude with `key _ (rld_coarse_eq ht hn)`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rld_blkDet_eq {t s : ℕ} (ht : 0 < t) (hn : n = r + s * t) (c : ℕ) {M : GL (Fin n) κ}
     (hM : M ∈ blockUT n κ r (List.replicate s t)) :
@@ -194,9 +190,9 @@ variable (hc : Formalism.BasicNotions.CMData F E) {n r : ℕ} [NeZero n] (h : r 
 include ht hn in
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_levU_iff, Formalism.L2.DIV.mem_lev]`. Simplify using `only [Formalism.L2.DIV.parLev, Subgroup.mem_inf, Subgroup.mem_iInf, Formalism.L2.DIV.mem_parah, LevFam.grp, Subgroup.mem_pi, Set.mem_univ, true_implies, parFam, mem_HPar_iff h ht hn, parDat, Formalism.L2.DIV.LevelP.ofLocal, Formalism.L2.DIV.rTup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, -, h4⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨⟨⟨h1, h2⟩, fun PP hP => ⟨h2, (h4 ⟨PP, hP⟩).1⟩⟩, fun _ hP => by simp at hP⟩, fun w _ => (h4 w).2⟩`. Introduce and unpack `⟨⟨⟨⟨h1, h2⟩, h3⟩, -⟩, h4⟩`. Conclude with `⟨h1, h2, fun _ hP => by simp at hP, fun w => ⟨(h3 w.1 w.2).2, h4 w (Set.mem_univ w)⟩⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem levU_parFam_eq_lev :
     levU hc n ∅ SG (parFam h t s P χ).grp =
@@ -215,7 +211,7 @@ theorem levU_parFam_eq_lev :
 include ht hn in
 
 /- English proof (translation)
-Rewrite using `[levU_eq_inf, levU_parFam_eq_lev hc h ht hn P χ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levU_parFam_eq_lev_inf (ST : Finset (Pl E)) :
     levU hc n ST SG (parFam h t s P χ).grp =
@@ -225,7 +221,7 @@ theorem levU_parFam_eq_lev_inf (ST : Finset (Pl E)) :
 
 omit [StarRing E] in
 /- English proof (translation)
-Use `show (∏ PP : SG, (cl PP).comp (Formalism.L2.DIV.LevelP.prj Hl PP)) y = _`. Rewrite using `[MonoidHom.finset_prod_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rld_ofLocal_chi (Hl : ∀ PP : SG, Subgroup (GL (Fin r) (kP PP.1))) (cl : ∀ PP : SG, Hl PP →* Kˣ)
     (y : (Subgroup.pi Set.univ Hl : Subgroup (Formalism.L2.DIV.G0 SG r))) :
@@ -236,7 +232,7 @@ theorem rld_ofLocal_chi (Hl : ∀ PP : SG, Subgroup (GL (Fin r) (kP PP.1))) (cl 
 
 omit [StarRing E] in
 /- English proof (translation)
-Simplify using `only [parDat, dif_pos w.2, Nat.add_sub_cancel, Subtype.coe_eta]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rld_parDat_cg (c : ℕ) (w : SG) : (parDat h t s P χ).cg (c + 1) w.1 = χ w c := by
   simp only [parDat, dif_pos w.2, Nat.add_sub_cancel, Subtype.coe_eta]
@@ -244,17 +240,17 @@ theorem rld_parDat_cg (c : ℕ) (w : SG) : (parDat h t s P χ).cg (c + 1) w.1 = 
 include ht hn in
 
 /- English proof (translation)
-Establish `e1 : (levRed hc n ∅ SG (parFam h t s P χ).grp ⟨x, h1⟩ : GLG E n SG) = fun w : SG => redFn (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) w.1 x`. Use function extensionality and compare the values at `(levRed_apply hc n ∅ SG _ ⟨x, h1⟩)`. Establish `hx` using `e1 ▸ (levRed hc n ∅ SG (parFam h t s P χ).grp ⟨x, h1⟩).2`. Establish `k1 : levRed hc n ∅ SG (parFam h t s P χ).grp ⟨x, h1⟩ = ⟨_, hx⟩` using `Subtype.ext e1`. Establish `hw : ∀ w : SG, redFn (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) w.1 x ∈ HPar n (𝓞 E ⧸ w.1.asIdeal) h (List.replicate s t) (P w).H` using `fun w => (Subgroup.mem_pi _).mp hx w (Set.mem_univ w)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw'` using `fun w : SG => (mem_HPar_iff h ht hn (P w).H).1 (hw w)`. Establish `eL : levChr (parFam h t s P χ).chr ⟨x, h1⟩ = ∏ w : SG, ((P w).lam ⟨Formalism.L2.DIV.upperLeftBlock h (redFn (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) w.1 x), (hw' w).2⟩ * ∏ c ∈ Finset.range s, χ w c (Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blkOf r t) (c + 1) (redFn (1 : GL …`. Simplify using `only [levChr, MonoidHom.comp_apply]`. Rewrite using `[k1]`. Unfold `LevFam.chr piChar`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `erw [MonoidHom.finset_prod_apply]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `show (P w).lam (HPar0 h (List.replicate s t) (P w).H ⟨_, hw w⟩) * detChar (χ w) n r (List.replicate s t) ⟨_, HPar_le h _ _ (hw w)⟩ = _`. Use `congr 1`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `blockZero_eq_restrictedBlock h _ _ (mem_blockTri_blk2_of_mem_blockTri_blkOf (hw' w).1)`. Rewrite using `[detChar, MonoidHom.finset_prod_apply, List.length_replicate]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, rld_blkDet_eq ht hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD` using `(Formalism.L2.DIV.mem_lev.mp h2).2`. Establish `eR : Formalism.L2.DIV.levChar hc 1 1 (parDat h t s P χ) ⟨x, h2⟩ = (∏ w : SG, (P w).lam ⟨Formalism.L2.DIV.upperLeftBlock h (redFn (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) w.1 x), (hw' w).2⟩) * ∏ w : SG, ∏ c ∈ Finset.range s, χ w c (Formalism.L2.DIV.dBlk (Formalism.L2.DIV.b …`. Rewrite using `[Formalism.L2.DIV.levChar_apply, Formalism.L2.DIV.levFn, Formalism.L2.DIV.extendOne_of_mem _ hD]`. Rewrite using `[show (parDat h t s P χ).P.chi ⟨_, hD⟩ = _ from rld_ofLocal_chi (fun w => (P w).H) (fun w => (P w).lam) ⟨_, hD⟩]`. Simplify using `only [parDat, Finset.prod_empty, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Rewrite using `[← Finset.prod_coe_sort SG]`. Use `Finset.prod_congr rfl fun w _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [dif_pos w.2, Nat.add_sub_cancel, Subtype.coe_eta]`. Rewrite using `[eL, eR, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levChr_parFam_eq_levChar (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (h1 : x ∈ levU hc n ∅ SG (parFam h t s P χ).grp)
@@ -317,7 +313,7 @@ open Formalism.BasicNotions (Ranks)
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (hc : Formalism.BasicNotions.CMData X.F X.E) (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-Conclude with `R.t_odd.pos`.
+A detailed English derivation is pending.
 -/
 theorem t_pos (R : Ranks) : 0 < R.t := by
   exact R.t_odd.pos
@@ -337,14 +333,14 @@ open Formalism.BasicNotions (Ranks)
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (hc : Formalism.BasicNotions.CMData X.F X.E) (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [colLevS, if_pos hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colLevS_of_lt {j : ℕ} (hj : j + 1 < R.m) : colLevS Ch j = colLev Ch j := by
   funext w
   simp only [colLevS, if_pos hj]
 
 /- English proof (translation)
-Simplify using `only [colLevS, if_neg (show ¬ j + 1 < R.m by omega), if_neg (show ¬ j + 1 = R.m by omega)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colLevS_top_H {j : ℕ} (hj : R.m ≤ j) (w : Pr.vGs) :
     (colLevS Ch j w).H = HXmsharp (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.r R.t R.m := by

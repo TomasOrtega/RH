@@ -12,7 +12,7 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 namespace GlobalTheory.CompanionTheory.MM.LatCO
 
 /- English proof (translation)
-Unfold `PositivityTheory.SiegelWeilFormula.Gen.matV`. Conclude with `Matrix.map_mul (f := (Algebra.TensorProduct.map ((HeckeCharacterZeroLocus.SiegelWeilU.evalV D.host.F v).comp (HeckeCharacterZeroLocus.SiegelWeilU.sndA D.host.F)) (AlgHom.id D.host.F D.host.E)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem matV_mul {D : D7} {n : ℕ} (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F))
     (a b : Matrix (Fin n) (Fin n) (AE D)) :
@@ -23,7 +23,7 @@ theorem matV_mul {D : D7} {n : ℕ} (v : IsDedekindDomain.HeightOneSpectrum (Num
     ((HeckeCharacterZeroLocus.SiegelWeilU.evalV D.host.F v).comp (HeckeCharacterZeroLocus.SiegelWeilU.sndA D.host.F)) (AlgHom.id D.host.F D.host.E)))
 
 /- English proof (translation)
-Unfold `PositivityTheory.SiegelWeilFormula.Gen.matV`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem matV_one {D : D7} {n : ℕ} (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F)) :
     PositivityTheory.SiegelWeilFormula.Gen.matV v (1 : Matrix (Fin n) (Fin n) (AE D)) = 1 := by
@@ -31,9 +31,9 @@ theorem matV_one {D : D7} {n : ℕ} (v : IsDedekindDomain.HeightOneSpectrum (Num
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Establish `e : (((latLoc D.host.F (stdLattice D.host.E n) v).toAddSubgroup : AddSubgroup _) : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)) = Set.univ.pi fun _ => (intLoc D.host.F D.host.E v : Set (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D …`. Use extensionality with `y`. Simplify using `using (mem_latLoc_stdLattice (F := D.host.F) (E := D.host.E) (n := n) (v := v) (y := y))`. Take `⟨hc, ho⟩` from `GlobalTheory.ThK.isCompact_isOpen_intLoc (F := D.host.F) (E := D.host.E) v`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => ho`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCO_std {D : D7} {n : ℕ} (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F)) :
     PositivityTheory.SiegelWeilFormula.Gen.IsCO (latLoc D.host.F (stdLattice D.host.E n) v).toAddSubgroup := by
@@ -52,13 +52,11 @@ end GlobalTheory.CompanionTheory.MM.LatCO
 namespace GlobalTheory.CompanionTheory.MM
 
 /- English proof (translation)
-Introduce `D n h v`. Use `haveI : IsTopologicalRing (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `set M := PositivityTheory.SiegelWeilFormula.Gen.matV v h.1 with hM`. Use `set M' := PositivityTheory.SiegelWeilFormula.Gen.matV v (h⁻¹).1 with hM'`. Establish `h1 : M * M' = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, hM', ← LatCO.matV_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, LatCO.matV_one]`. Establish `h2 : M' * M = 1`. Rewrite using `[hM, hM', ← LatCO.matV_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, LatCO.matV_one]`. Set `φ : (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E) ≃ₜ (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)` to `{ toFun := fun y => M *ᵥ y invFun := fun y => M' *ᵥ y left_inv := fun y => by simp only [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec] right_inv := fun y => by simp only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] continuous_toFun := Continuous.matrix_mulVec continuous_const con …`. Establish `e : ((latAt h.1 v : AddSubgroup _) : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)) = φ '' ((latLoc D.host.F (stdLattice D.host.E n) v).toAddSubgroup : AddSubgroup _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use extensionality with `y`. Simplify using `only [latAt, AddSubgroup.coe_map, Set.mem_image]`. Both sides reduce to the same expression. Take `⟨ho, hc⟩` from `LatCO.isCO_std (D := D) (n := n) v`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e]`. Conclude with `φ.isOpenMap _ ho`. Rewrite using `[e]`. Conclude with `hc.image φ.continuous`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAt_isCO : ∀ (D : D7) (n : ℕ) (h : GL (Fin n) (AE D))
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F)),

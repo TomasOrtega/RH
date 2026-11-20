@@ -34,7 +34,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.Xgn.farguesHodgeTate_of_farguesExact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FTorusUniformisation%2FChowMahlerFamilies%2FXXgzFarOfExact.lean&line=50#L50)
 -/

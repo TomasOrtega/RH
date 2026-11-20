@@ -24,11 +24,9 @@ variable {G H : Type} [Group G] [Group H] {V W : Type} [AddCommGroup V] [Module 
   {ρ : Representation ℂ G V} {ρ' : Representation ℂ H W} {p : G ≃* H} {e : V ≃ₗ[ℂ] W}
 
 /- English proof (translation)
-Simplify using `only [fixed, eig, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq, MonoidHom.one_apply, Units.val_one, one_smul, Subtype.forall]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ ((hJ x).1 hx)`. Introduce `h y hy`. Establish `hx : p.symm y ∈ J` using `(hJ _).2 (by simpa using hy)`. Use `he (p.symm y) v` as an intermediate fact. Rewrite `this` using `[h _ hx, MulEquiv.apply_symm_apply]`.
-
-Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fixed_iff (he : ∀ g v, e (ρ g v) = ρ' (p g) (e v)) {J : Subgroup G} {J' : Subgroup H}
     (hJ : ∀ x, x ∈ J ↔ p x ∈ J') (v : V) : e v ∈ fixed ρ' J' ↔ v ∈ fixed ρ J := by
@@ -46,9 +44,9 @@ theorem mem_fixed_iff (he : ∀ g v, e (ρ g v) = ρ' (p g) (e v)) {J : Subgroup
     exact this.symm
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `(mem_fixed_iff he hJ v).2 hv`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hw`. Use `⟨e.symm w, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[← mem_fixed_iff he hJ]`. Simplify using `using hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_fixed (he : ∀ g v, e (ρ g v) = ρ' (p g) (e v)) {J : Subgroup G} {J' : Subgroup H}
     (hJ : ∀ x, x ∈ J ↔ p x ∈ J') : (fixed ρ J).map (e : V →ₗ[ℂ] W) = fixed ρ' J' := by
@@ -73,11 +71,11 @@ theorem fixEquiv_apply (he : ∀ g v, e (ρ g v) = ρ' (p g) (e v)) {J : Subgrou
     (hJ : ∀ x, x ∈ J ↔ p x ∈ J') (v : fixed ρ J) : ((fixEquiv he hJ v : fixed ρ' J') : W) = e v := rfl
 
 /- English proof (translation)
-Introduce `v f hf`. Establish `hf0 : ∀ x ∈ J, (f ∘ₗ (e : V →ₗ[ℂ] W)) ∘ₗ ρ x = f ∘ₗ (e : V →ₗ[ℂ] W)`. Introduce `x hx`. Use extensionality with `u`. Use `LinearMap.congr_fun (hf (p x) ((hJ x).1 hx)) (e u)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe] at this ⊢`. Rewrite using `[he, this]`. Establish `key` using `hU ((fixEquiv he hJ).symm v) (f ∘ₗ (e : V →ₗ[ℂ] W)) hf0`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe] at key`. Establish `h1 : e (((fixEquiv he hJ).symm v : fixed ρ J) : V) = v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← fixEquiv_apply he hJ, LinearEquiv.apply_symm_apply]`. Rewrite `key` using `[he, h1]`. Rewrite using `[key, LinearEquiv.conj_apply]`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[fixEquiv_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hecke_transport (he : ∀ g v, e (ρ g v) = ρ' (p g) (e v)) {J : Subgroup G} {J' : Subgroup H}
     (hJ : ∀ x, x ∈ J ↔ p x ∈ J') (g : G) (U : Module.End ℂ (fixed ρ J)) (hU : PositivityTheory.Lbc.IsHeckeOpG ρ J g U) :
@@ -99,19 +97,17 @@ theorem hecke_transport (he : ∀ g v, e (ρ g v) = ρ' (p g) (e v)) {J : Subgro
   rw [fixEquiv_apply]
 
 /- English proof (translation)
-Use `⟨fun w => ?_, fun K' hKo hKc => ?_⟩` and prove the remaining obligations. Establish `e1 : {h : H | ρ' h w = w} = p.symm ⁻¹' {g : G | ρ g (e.symm w) = e.symm w}`. Use extensionality with `h`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage]`. Use `he (p.symm h) (e.symm w)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[MulEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[← this]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Apply `e.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h1]`. Simplify using the standard rewrite rules. Introduce `h1`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Conclude with `(hA.1 _).preimage hps`. Set `K : Subgroup G` to `K'.comap p.toMonoidHom`. Establish `hK : ∀ x, x ∈ K ↔ p x ∈ K'` using `fun x => Iff.rfl`. Establish `hKo' : IsOpen (K : Set G)` using `hKo.preimage hp`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKc' : IsCompact (K : Set G)`. Establish `e2 : (K : Set G) = p.symm '' (K' : Set H)`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx; exact ⟨p x, hx, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `show p (p.symm y) ∈ K'`. Simplify using `using hy`. Rewrite using `[e2]`.
-
-Conclude with `hKc.image hps`. Use `hA.2 K hKo' hKc'` as an intermediate fact. Conclude with `LinearEquiv.finiteDimensional (fixEquiv he hK)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem admissible_transport [TopologicalSpace G] [TopologicalSpace H] (he : ∀ g v, e (ρ g v) = ρ' (p g) (e v))
     (hp : Continuous p) (hps : Continuous p.symm) (hA : IsAdmissible ρ) : IsAdmissible ρ' := by
@@ -145,9 +141,9 @@ theorem admissible_transport [TopologicalSpace G] [TopologicalSpace H] (he : ∀
 end Transport
 
 /- English proof (translation)
-Establish `h1 : J.map (MulAut.conj t).toMonoidHom = (J'.map (MulAut.conj (p t)).toMonoidHom).comap p.toMonoidHom`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_map_equiv, Subgroup.mem_comap, Subgroup.mem_map_equiv, MulAut.conj_symm_apply, MulAut.conj_symm_apply, hJ]`. Simplify using the standard rewrite rules. Establish `h2 : J.map p.toMonoidHom = J'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `y`. Rewrite using `[Subgroup.mem_map_equiv, hJ, MulEquiv.apply_symm_apply]`. Rewrite using `[h1, Subgroup.relIndex_comap, h2]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_transport {G H : Type} [Group G] [Group H] (p : G ≃* H) {J : Subgroup G} {J' : Subgroup H}
     (hJ : ∀ x, x ∈ J ↔ p x ∈ J') (t : G) :
@@ -165,7 +161,7 @@ theorem relIndex_transport {G H : Type} [Group G] [Group H] (p : G ≃* H) {J : 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Unfold `cj`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `continuous_id`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cj_continuous (w : Pl E) : Continuous (cj w) := by
   unfold cj
@@ -174,7 +170,7 @@ theorem cj_continuous (w : Pl E) : Continuous (cj w) := by
   · exact continuous_id
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g).1, GlobalTheory.CompanionTheory.IwGLV.mem_IwGL_iff hϖ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_iwGL_iff {w : Pl E} (n : ℕ) {ϖ : w.adicCompletion E}
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
@@ -183,7 +179,7 @@ theorem mem_iwGL_iff {w : Pl E} (n : ℕ) {ϖ : w.adicCompletion E}
   rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.UnitaryWitt.mem_iwU_iff, PositivityTheory.SphericalProduct.IwU, Subgroup.mem_subgroupOf, hp, mem_iwGL_iff n hϖ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_iwU_iff_p {n : ℕ} {w : Pl E} {b : GLw n w} {ϖ : w.adicCompletion E}
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
@@ -192,7 +188,7 @@ theorem mem_iwU_iff_p {n : ℕ} {w : Pl E} {b : GLw n w} {ϖ : w.adicCompletion 
   rw [GlobalTheory.CompanionTheory.UnitaryWitt.mem_iwU_iff, PositivityTheory.SphericalProduct.IwU, Subgroup.mem_subgroupOf, hp, mem_iwGL_iff n hϖ]
 
 /- English proof (translation)
-Rewrite using `[Topology.IsInducing.subtypeVal.continuous_iff]`. Establish `hc : Continuous fun x : UL n w => b⁻¹ * x.1 * b` using `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Use `hc.congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem p_continuous {n : ℕ} {w : Pl E} {b : GLw n w}
     (p : UL n w ≃* GU (cj w) n) (hp : ∀ x, (p x).1 = b⁻¹ * x.1 * b) : Continuous p := by
@@ -203,7 +199,7 @@ theorem p_continuous {n : ℕ} {w : Pl E} {b : GLw n w}
   rw [Function.comp_apply, hp]
 
 /- English proof (translation)
-Use `hp (p.symm g)` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[this]`. Use `group`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_symm_val {n : ℕ} {w : Pl E} {b : GLw n w}
     (p : UL n w ≃* GU (cj w) n) (hp : ∀ x, (p x).1 = b⁻¹ * x.1 * b) (g : GU (cj w) n) :
@@ -214,7 +210,7 @@ theorem p_symm_val {n : ℕ} {w : Pl E} {b : GLw n w}
   group
 
 /- English proof (translation)
-Rewrite using `[Topology.IsInducing.subtypeVal.continuous_iff]`. Establish `hc : Continuous fun x : GU (cj w) n => b * x.1 * b⁻¹` using `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Use `hc.congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, p_symm_val p hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem p_symm_continuous {n : ℕ} {w : Pl E} {b : GLw n w}
     (p : UL n w ≃* GU (cj w) n) (hp : ∀ x, (p x).1 = b⁻¹ * x.1 * b) : Continuous p.symm := by
@@ -225,11 +221,11 @@ theorem p_symm_continuous {n : ℕ} {w : Pl E} {b : GLw n w}
   rw [Function.comp_apply, p_symm_val p hp]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j hij`. Use `hl.1 i j (by omega)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `i j hij`. Establish `hk : (i : ℕ) + k + 1 < m` using `by omega`. Establish `h1` using `ih i ⟨(i : ℕ) + k + 1, hk⟩ rfl`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hl.1 ⟨(i : ℕ) + k + 1, hk⟩ j (by simp only; omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cone_gap {m : ℕ} {l : Fin m → ℤ} (hl : Cone l) :
     ∀ k : ℕ, ∀ i j : Fin m, (j : ℕ) = i + k + 1 → l j + 2 ≤ l i := by
@@ -247,7 +243,7 @@ theorem cone_gap {m : ℕ} {l : Fin m → ℤ} (hl : Cone l) :
     omega
 
 /- English proof (translation)
-Establish `hij : (i : ℕ) < j` using `h`. Use `cone_gap hl ((j : ℕ) - i - 1) i j (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cone_anti {m : ℕ} {l : Fin m → ℤ} (hl : Cone l) {i j : Fin m} (h : i < j) : l j < l i := by
   have hij : (i : ℕ) < j := h
@@ -255,7 +251,7 @@ theorem cone_anti {m : ℕ} {l : Fin m → ℤ} (hl : Cone l) {i j : Fin m} (h :
   omega
 
 /- English proof (translation)
-Unfold `wexp`. Rewrite using `[dif_pos (show ((⟨i, h⟩ : Fin n) : ℕ) < n / 2 from i.2)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wexp_lt (n : ℕ) (l : Fin (n / 2) → ℤ) (i : Fin (n / 2)) (h : (i : ℕ) < n) :
     wexp n l ⟨i, h⟩ = l i := by
@@ -263,11 +259,11 @@ theorem wexp_lt (n : ℕ) (l : Fin (n / 2) → ℤ) (i : Fin (n / 2)) (h : (i : 
   rw [dif_pos (show ((⟨i, h⟩ : Fin n) : ℕ) < n / 2 from i.2)]
 
 /- English proof (translation)
-Unfold `wexp`. Establish `hr : (i.rev : ℕ) = n - 1 - i` using `by rw [Fin.val_rev]; omega`. Establish `hi` using `i.2`. Distinguish the cases in `h1 : (i : ℕ) < n / 2`. Establish `h2 : ¬ (i.rev : ℕ) < n / 2` using `by omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h3 : n - 1 - (i.rev : ℕ) < n / 2` using `by omega`. Establish `e : (⟨n - 1 - (i.rev : ℕ), h3⟩ : Fin (n / 2)) = ⟨i, h1⟩` using `Fin.ext (by show n - 1 - (i.rev : ℕ) = i; omega)`. Rewrite using `[dif_neg h2, dif_pos h3, dif_pos h1, e]`. Distinguish the cases in `h4 : n - 1 - (i : ℕ) < n / 2`. Establish `h5 : (i.rev : ℕ) < n / 2` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e : (⟨(i.rev : ℕ), h5⟩ : Fin (n / 2)) = ⟨n - 1 - i, h4⟩` using `Fin.ext (by show (i.rev : ℕ) = n - 1 - i; omega)`. Rewrite using `[dif_pos h5, dif_neg h1, dif_pos h4, neg_neg, e]`. Establish `h5 : ¬ (i.rev : ℕ) < n / 2` using `by omega`. Establish `h6 : ¬ n - 1 - (i.rev : ℕ) < n / 2` using `by omega`. Rewrite using `[dif_neg h5, dif_neg h6, dif_neg h1, dif_neg h4, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wexp_rev (n : ℕ) (l : Fin (n / 2) → ℤ) (i : Fin n) : wexp n l i.rev = - wexp n l i := by
   unfold wexp
@@ -287,17 +283,15 @@ theorem wexp_rev (n : ℕ) (l : Fin (n / 2) → ℤ) (i : Fin n) : wexp n l i.re
       rw [dif_neg h5, dif_neg h6, dif_neg h1, dif_neg h4, neg_zero]
 
 /- English proof (translation)
-Establish `hij : (i : ℕ) < j` using `h`. Establish `hjn` using `j.2`. Unfold `wexp`. Distinguish the cases in `hj : (j : ℕ) < n / 2`. Rewrite using `[dif_pos hj, dif_pos (show (i : ℕ) < n / 2 by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cone_anti hl (Fin.mk_lt_mk.2 hij)`. Rewrite using `[dif_neg hj]`. Distinguish the cases in `hi : (i : ℕ) < n / 2`. Rewrite using `[dif_pos hi]`. Use `hl.2 ⟨i, hi⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with hj'`. Use `hl.2 ⟨_, hj'⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hi]`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj' : n - 1 - (j : ℕ) < n / 2`. Rewrite using `[dif_pos hj']`. Distinguish the cases in `hi' : n - 1 - (i : ℕ) < n / 2`. Rewrite using `[dif_pos hi']`. Use `cone_anti hl (Fin.mk_lt_mk.2 (show n - 1 - (j : ℕ) < n - 1 - i by omega) : (⟨n - 1 - (j : ℕ), hj'⟩ : Fin (n / 2)) < ⟨n - 1 - (i : ℕ), hi'⟩)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hi']`. Use `hl.2 ⟨_, hj'⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem wexp_anti (n : ℕ) {l : Fin (n / 2) → ℤ} (hl : Cone l) {i j : Fin n} (h : i < j) :
     wexp n l j < wexp n l i := by
@@ -330,7 +324,7 @@ theorem wexp_anti (n : ℕ) {l : Fin (n / 2) → ℤ} (hl : Cone l) {i j : Fin n
         omega
 
 /- English proof (translation)
-Use `Finset.sum_nonneg fun i _ => mul_nonneg ?_ (by have := hl.2 i; omega)` and prove the remaining obligations. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem S_nonneg (n : ℕ) {l : Fin (n / 2) → ℤ} (hl : Cone l) :
     0 ≤ ∑ i : Fin (n / 2), ((n : ℤ) - 1 - 2 * (i : ℕ)) * l i := by
@@ -342,7 +336,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [IsCMField E] in
 /- English proof (translation)
-Unfold `tdiag`. Rewrite using `[GlobalTheory.SmGL.val_diagT]`. Simplify using `only [Units.val_zpow_eq_zpow_val]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tdiag_val {n : ℕ} {w : Pl E} (ϖ : (w.adicCompletion E)ˣ) (a : Fin n → ℤ) :
     ((tdiag ϖ a : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) =
@@ -352,7 +346,7 @@ theorem tdiag_val {n : ℕ} {w : Pl E} (ϖ : (w.adicCompletion E)ˣ) (a : Fin n 
   simp only [Units.val_zpow_eq_zpow_val]
 
 /- English proof (translation)
-Unfold `tdiag`. Rewrite using `[GlobalTheory.CompanionTheory.UnitaryWitt.diagT_mem_UJ_antiJ_iff]`. Introduce `i`. Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀, hc, wexp_rev]`. Rewrite using `[← zpow_add₀ (Units.ne_zero ϖ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -367,9 +361,9 @@ theorem tdiag_mem {n : ℕ} {w : Pl E} (ϖ : (w.adicCompletion E)ˣ) (hc : cj w 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `h1 : qV E w = q ^ 2`. Unfold `qV`. Rewrite using `[← GroundTheory.Global.natCard_residueField_adicCompletionIntegers]`. Conclude with `hU.2.2.2.2.2.2`. Unfold `qh`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `push_cast`. Rewrite using `[Real.sqrt_sq (Nat.cast_nonneg q)]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qh_eq {w : Pl E} {ϖ : w.adicCompletion E} {σ : w.adicCompletion E →+* w.adicCompletion E} {q : ℕ}
     (hU : IsUnramInv ϖ σ q) : qh w = (q : ℂ) := by
@@ -384,11 +378,9 @@ theorem qh_eq {w : Pl E} {ϖ : w.adicCompletion E} {σ : w.adicCompletion E →+
   simp
 
 /- English proof (translation)
-Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Establish `hent : ∀ (i : Fin (n / 2)) (h : (i : ℕ) < n), ordL (((t : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) ⟨i, h⟩ ⟨i, h⟩) = l i`. Introduce `i h`. Rewrite using `[ht, tdiag_val, Matrix.diagonal_apply_eq, GlobalTheory.CompanionTheory.KUFactsU.ordL_zpow hv, wexp_lt]`. Unfold `chiDeltaU pw`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.prod_congr rfl fun i _ => by rw [dif_pos (show (i : ℕ) < n by have := i.2; omega), hent], Finset.prod_mul_distrib, ← GlobalTheory.BorelUMod.zpow_finset_sum hq0]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [Units.val_zpow_eq_zpow_val]`. Use `congr 1`. Rewrite using `[← Finset.sum_neg_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_eq {n : ℕ} {w : Pl E} {ϖ : (w.adicCompletion E)ˣ}
     (hv : Valued.v (ϖ : w.adicCompletion E) =
@@ -418,31 +410,31 @@ namespace PositivityTheory.Rg.BcB.F.Eig
 
 open GluingInclusion in
 /- English proof (translation)
-Introduce `hAbs hSum hIdx E _ _ _ n w hw b ϖ q σ α hb _ hU hA hSat`. Take `⟨p, σ', hp, hS', ⟨e⟩⟩` from `hSat`. Establish `hc` using `cj_continuous w`. Establish `hv : Valued.v (ϖ : w.adicCompletion E) = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))` using `hU.2.2.2.1`. Establish `hq : q ≠ 0` using `by have := hU.2.2.2.2.2.1; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ` using `mem_iwU_iff_p hv p hp`. Establish `he : ∀ g v, e.toLinearEquiv (σ.ρ g v) = σ'.ρ (p g) (e.toLinearEquiv v)` using `fun g v => by`. Use `LinearMap.congr_fun (e.isIntertwining' g) v` as an intermediate fact. Simplify using `using this`. Establish `hA' : IsAdmissible σ'.ρ` using `admissible_transport he (p_continuous p hp) (p_symm_continuous p hp) hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨β, hW, hmono, hge, y', hy'0, hy'⟩` from `hAbs (w.adicCompletion E) ϖ (cj w) q n σ'.V σ'.ρ α hU hA' σ'.irred hS'`. Use `set φ := fixEquiv he hJ with hφ`. Use `⟨β, hW, hmono, hge, ((φ.symm y' : fixed σ.ρ (iwU n w b)) : σ.V), (φ.symm y').2, ?_, fun l hl => ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h3 : φ.symm y' = 0` using `by rw [← Submodule.coe_eq_zero]; exact h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hy'0` to reduce the goal to its premises. Simplify using `using congrArg φ h3`. Take `⟨t, htv⟩ : ∃ t : GU (cj w) n, (t : GLw n w) = tdiag ϖ (wexp n l)` from `⟨⟨_, tdiag_mem ϖ hU.2.2.1 l⟩, rfl⟩`. Establish `htm : ((t : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal fun i => (ϖ : w.adicCompletion E) ^ wexp n l i`. Rewrite using `[htv, tdiag_val]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiag : PositivityTheory.SphericalProduct.IsDiagM (t : GL (Fin n) (w.adicCompletion E))` using `fun i j hij => by`. Rewrite using `[htm]`. Conclude with `Matrix.diagonal_apply_ne _ hij`. Establish `hdom : PositivityTheory.SphericalProduct.IsStrictDom (t : GL (Fin n) (w.adicCompletion E))` using `fun i j hij => by`. Rewrite using `[htm, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, GlobalTheory.CompanionTheory.KUFactsU.ordL_zpow hv, GlobalTheory.CompanionTheory.KUFactsU.ordL_zpow hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `wexp_anti n hl hij`. Establish `ht' : (p.symm t).1 = b * tdiag ϖ (wexp n l) * b⁻¹` using `by rw [p_symm_val p hp, htv]`. Establish `ht'p : p (p.symm t) = t` using `p.apply_symm_apply t`. Generalize the expression as in `p.symm t = t' at ht' ht'p`. Take `⟨U, hUH, -⟩` from `GlobalTheory.T.hecke_character_exists_unique (UL n w) (iwU n w b) (GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b) (GlobalTheory.CompanionTheory.UnitaryWitt.isCompact_iwU hw n b hc) σ.V σ.ρ σ.smooth t'`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hUy : U (φ.symm y') = chiDeltaU q (fun i => (β i : ℂ)) t • φ.symm y'`. Establish `h2` using `hecke_transport he hJ t' U hUH`. Rewrite `h2` using `[ht'p, ← hφ]`. Establish `h1` using `hy' t hdiag hdom _ h2`. Rewrite `h1` using `[LinearEquiv.conj_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : φ (U (φ.symm y')) = chiDeltaU q (fun i => (β i : ℂ)) t • y'` using `by simpa using h1`. Combine the equalities or inequalities in the displayed calculation. Establish `hf : fU n w b ϖ l = fun g => if ∃ x ∈ iwU n w b, ∃ z ∈ iwU n w b, g = x * t' * z then 1 else 0`. Use function extensionality and compare the values at `g`. Unfold `fU`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Apply `propext` to reduce the goal to its premises. Use `exists_congr fun x => and_congr_right fun _ => exists_congr fun z => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff, Subgroup.coe_mul, Subgroup.coe_mul, ht']`. Establish `key` using `hSum (UL n w) σ.V σ.ρ σ.smooth (KL n w) (iwU n w b) (GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b) (GlobalTheory.CompanionTheory.IwLevels.isCompact_KL hw n hc) (GlobalTheory.CompanionTheory.IwLevels.iwU_le_KL n w b hb.1) t' U hUH (φ.symm y')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf, key]`. Rewrite using `[hUy]`. Simplify using `only [Submodule.coe_smul, smul_smul]`. Use `congrArg (· • ((φ.symm y' : fixed σ.ρ (iwU n w b)) : σ.V)) ?_` and prove the remaining obligations. Establish `hidx` using `hIdx (w.adicCompletion E) ϖ (cj w) q n hU l hl t htm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[relIndex_transport p hJ t', ht'p]`. Establish `hR : ((((PositivityTheory.SphericalProduct.IwU (cj w) n).map (MulAut.conj t).toMonoidHom).relIndex (PositivityTheory.SphericalProduct.IwU (cj w) n) : ℕ) : ℂ) = (q : ℂ) ^ (2 * ∑ i : Fin (n / 2), (((n : ℤ) - 1 - 2 * (i : ℕ)) * l i))`. Use `congrArg (fun z : ℤ => (z : ℂ)) hidx` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this, ← zpow_natCast, Int.toNat_of_nonneg (by have := S_nonneg n hl; omega)]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR, chi_eq hv hq β l t htv]`. Unfold `dlt`. Rewrite using `[qh_eq hU]`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Establish `hpow : (q : ℂ) ^ (2 * ∑ i : Fin (n / 2), (((n : ℤ) - 1 - 2 * (i : ℕ)) * l i)) * (q : ℂ) ^ (-∑ i : Fin (n / 2), (((n : ℤ) - 1 - 2 * (i : ℕ)) * l i)) = (q : ℂ) ^ (∑ i : Fin (n / 2), (((n : ℤ) - 1 - 2 * (i : ℕ)) * l i))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← zpow_add₀ hq0]`. Put the polynomial expressions in normal form. Take the linear combination `(((iwU n w b).relIndex (KL n w) : ℂ)⁻¹ * pw β l) * hpow`.
+A detailed English derivation is pending.
 -/
 theorem eigInertOf : EigInertOf := by
   intro hAbs hSum hIdx E _ _ _ n w hw b ϖ q σ α hb _ hU hA hSat

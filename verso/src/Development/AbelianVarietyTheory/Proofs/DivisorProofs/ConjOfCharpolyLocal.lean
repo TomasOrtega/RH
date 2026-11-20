@@ -6,11 +6,11 @@ open Polynomial Matrix
 namespace GlobalTheory.ConjLocal
 
 /- English proof (translation)
-Introduce `R _ _ n Y Y' h hs`. Take `⟨v, hv⟩` from `exists_isUnit_det_iterMat Y hs`. Take `⟨v', hv'⟩` from `exists_isUnit_det_iterMat Y' (h ▸ hs)`. Set `u : GL (Fin n) R` to `nonsingInvUnit (iterMat Y v) hv`. Set `u' : GL (Fin n) R` to `nonsingInvUnit (iterMat Y' v') hv'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e1 : Y * u.val = u.val * compMat Y.charpoly` using `mul_iterMat Y v`. Establish `e2 : Y' * u'.val = u'.val * compMat Y.charpoly` using `by rw [h]; exact mul_iterMat Y' v'`. Use `⟨u * u'⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← mul_assoc (u⁻¹ : GL (Fin n) R).val, Units.inv_mul, one_mul]`. Use `_ = u'.val * ((u⁻¹ : GL (Fin n) R).val * (Y * u.val)) * (u'⁻¹ : GL (Fin n) R).val := by rw [e1]`. Use `_ = _ := by simp only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_of_charpoly_local : ∀ (R : Type) [CommRing R] [IsLocalRing R] (n : ℕ) (Y Y' : Matrix (Fin n) (Fin n) R),
     Y.charpoly = Y'.charpoly → Y.charpoly.Separable →

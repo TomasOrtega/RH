@@ -13,15 +13,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `hall : ∀ᶠ t : k in 𝓝 0, ∀ w ∈ ((lat0 : COSub k d).sub : Set (Fin d → k)), t • w ∈ U`. Use `(lat0 : COSub k d).isCompact.eventually_forall_of_forall_eventually fun w _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : k × (Fin d → k) => p.1 • p.2` using `continuous_fst.smul continuous_snd`. Establish `h0 : U ∈ 𝓝 (((0 : k), w).1 • ((0 : k), w).2)` using `by simpa using hU`. Conclude with `hc.continuousAt.eventually h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Filter.Tendsto (fun n : ℕ => ϖ ^ n) Filter.atTop (𝓝 0)`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' k).tendsto_right_iff]`. Introduce `γ hγ`. Establish `: MulArchimedean (ValuativeRel.ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hϖ (Units.mk0 γ hγ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [Filter.eventually_ge_atTop n] with m hm`. Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' hϖ.le hm) hn`. Take `⟨r, hr⟩` from `(ht.eventually hall).exists`. Use `⟨r, fun y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ϖ ^ r • ((((z ^ (r : ℤ) : GL (Fin d) k)⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y) ∈ U` using `hr _ hy`. Establish `h2 : ϖ ^ r • ((((z ^ (r : ℤ) : GL (Fin d) k)⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y) = y`. Use `zpow_mulVec z ϖ hz hϖ0 (r : ℤ) ((((z ^ (r : ℤ) : GL (Fin d) k)⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y)` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec, zpow_natCast]`. Conclude with `this.symm`.
-
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_latZ_subset_of_mem_nhds (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
@@ -53,13 +51,13 @@ theorem exists_latZ_subset_of_mem_nhds (z : GL (Fin d) k) (ϖ : k)
   rwa [h2] at h1
 
 /- English proof (translation)
-Establish `hlc : IsLocallyConstant f.1` using `f.2.1`. Establish `hK : IsCompact (tsupport f.1)` using `f.2.2`. Establish `hW : ∀ᶠ l : Fin d → k in 𝓝 0, ∀ y ∈ tsupport f.1, f.1 (y + l) = f.1 y`. Use `hK.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : (Fin d → k) × (Fin d → k) => p.2 + p.1` using `continuous_snd.add continuous_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(IsLocallyConstant.iff_eventually_eq _).1 (hlc.comp_continuous hc) ((0 : Fin d → k), y)`. Establish `h2` using `(IsLocallyConstant.iff_eventually_eq _).1 (hlc.comp_continuous continuous_snd) ((0 : Fin d → k), y)`. Use `filter_upwards [h1, h2] with p hp1 hp2`. Establish `e1 : f.1 (p.2 + p.1) = f.1 (y + 0)` using `hp1`. Establish `e2 : f.1 p.2 = f.1 y` using `hp2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, add_zero]`. Take `⟨r₀, hr₀⟩` from `exists_latZ_subset_of_mem_nhds z ϖ hz hϖ hϖ0 hW`. Use `⟨r₀, fun y l hl => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ tsupport f.1`. Conclude with `hr₀ hl y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hyl : y + l ∈ tsupport f.1`. Use `hr₀ ((latZ z (r₀ : ℤ)).sub.neg_mem hl) (y + l) hyl` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyl]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_latZ_invariant (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
@@ -88,21 +86,21 @@ theorem exists_latZ_invariant (z : GL (Fin d) k) (ϖ : k)
   · rw [image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyl]
 
 /- English proof (translation)
-Establish `hK : IsCompact (tsupport f.1)` using `f.2.2`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun c : Fin d → k => {y | y - c ∈ L.sub}) (fun c => (isClopen_coset L c).isOpen) (fun y _ => Set.mem_iUnion.2 ⟨y, by simp⟩)`. Set `mk : (Fin d → k) → (Fin d → k) ⧸ L.sub` to `QuotientAddGroup.mk`. Establish `hmk : ∀ (q : (Fin d → k) ⧸ L.sub) (y : Fin d → k), y - Quotient.out q ∈ L.sub ↔ mk y = q`. Introduce `q y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : mk (Quotient.out q) = q` using `QuotientAddGroup.out_eq' q`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← e]`. Conclude with `(QuotientAddGroup.eq.2 (by simpa [sub_eq_add_neg, add_comm] using h)).symm`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : mk (Quotient.out q) = mk y` using `e.trans h.symm`. Simplify `QuotientAddGroup.eq.1 h'` using `[sub_eq_add_neg, add_comm]`. Set `Q : Finset ((Fin d → k) ⧸ L.sub)` to `t.image mk`. Set `φ : ((Fin d → k) ⧸ L.sub) → (Fin d → k) × V` to `fun q => (Quotient.out q, f.1 (Quotient.out q))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : Function.Injective φ` using `fun q q' h => by`. Establish `h1 : Quotient.out q = Quotient.out q'` using `congrArg Prod.fst h`. Rewrite using `[← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q', h1]`. Use `⟨Q.image φ, Subtype.ext (funext fun y => ?_)⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image hφ.injOn, Submodule.coe_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hterm : ∀ q ∈ Q, ((ind L (φ q).1 (φ q).2 : SchF k d V) : (Fin d → k) → V) y = if mk y = q then f.1 y else 0`. Introduce `q _`. Use `show (ind L (φ q).1 (φ q).2).1 y = _`. Rewrite using `[ind_apply]`. Distinguish the cases in `h : mk y = q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : y - Quotient.out q ∈ L.sub` using `(hmk q y).2 h`. Rewrite using `[if_pos hm, if_pos h]`. Use `hf (Quotient.out q) _ hm` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_neg (fun hm => h ((hmk q y).1 hm)), if_neg h]`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_ite_eq]`. Use `split_ifs with hy`. Both sides reduce to the same expression. Use `image_eq_zero_of_notMem_tsupport fun hyK => hy ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hct, hc⟩` from `Set.mem_iUnion₂.1 (ht hyK)`. Establish `hc' : y - c ∈ L.sub` using `hc`. Establish `: mk y = mk c` using `(QuotientAddGroup.eq.2 (by simpa [sub_eq_add_neg, add_comm] using hc')).symm`. Rewrite using `[this]`. Conclude with `Finset.mem_image_of_mem mk hct`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_sum_ind_of_invariant (L : COSub k d) (f : SchF k d V)
     (hf : ∀ y, ∀ l ∈ L.sub, f.1 (y + l) = f.1 y) :
@@ -152,7 +150,7 @@ theorem exists_eq_sum_ind_of_invariant (L : COSub k d) (f : SchF k d V)
     exact Finset.mem_image_of_mem mk hct
 
 /- English proof (translation)
-Take `⟨r₀, hr₀⟩` from `exists_latZ_invariant z ϖ hz hϖ hϖ0 f`. Use `⟨r₀, fun r hr => exists_eq_sum_ind_of_invariant _ f fun y l hl => hr₀ y l ?_⟩` and prove the remaining obligations. Conclude with `latZ_anti z ϖ hz hϖ hϖ0 _ _ (by exact_mod_cast hr) hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem schF_eq_sum_ind (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))

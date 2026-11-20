@@ -11,7 +11,7 @@ open PositivityTheory.Rg.Sw
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hl : HasDerivAt (fun t : ℝ => y + t • h) h 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const h).const_add y`. Establish `hF' : HasFDerivAt F (fderiv ℝ F y) (y + (0 : ℝ) • h)` using `by simpa using hF.hasFDerivAt`. Conclude with `hF'.comp_hasDerivAt (0 : ℝ) hl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem line_hasDerivAt {F : E n → ℂ} {y : E n} (hF : DifferentiableAt ℝ F y) (h : E n) :
     HasDerivAt (fun t : ℝ => F (y + t • h)) (fderiv ℝ F y h) 0 := by
@@ -21,13 +21,13 @@ theorem line_hasDerivAt {F : E n → ℂ} {y : E n} (hF : DifferentiableAt ℝ F
   exact hF'.comp_hasDerivAt (0 : ℝ) hl
 
 /- English proof (translation)
-Use `set P := M⁻¹ * N with hP`. Use `set Q : Polynomial ℂ := Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • P.map Polynomial.C) with hQ`. Establish `e : ∀ t : ℂ, (M + t • N).det = M.det * Q.eval t`. Introduce `t`. Establish `h1 : M + t • N = M * (1 + t • P)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hM), Matrix.one_mul]`. Rewrite using `[h1, Matrix.det_mul, hQ, ← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, Polynomial.coe_evalRingHom, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hp` using `(Polynomial.hasDerivAt Q ((0 : ℝ) : ℂ)).comp_ofReal.const_mul M.det`. Establish `hv : Q.derivative.eval ((0 : ℝ) : ℂ) = P.trace`. Rewrite using `[Complex.ofReal_zero, hQ]`. Conclude with `Matrix.derivative_det_one_add_X_smul P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp` using `[hv]`. Establish `e2 : (fun t : ℝ => (M + (t : ℂ) • N).det) = fun t : ℝ => M.det * Q.eval (t : ℂ)` using `funext fun t => e t`. Rewrite using `[e2]`. Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem det_line (M N : Matrix (Fin n) (Fin n) ℂ) (hM : M.det ≠ 0) :
     HasDerivAt (fun t : ℝ => (M + (t : ℂ) • N).det) (M.det * (M⁻¹ * N).trace) 0 := by
@@ -53,7 +53,7 @@ theorem det_line (M N : Matrix (Fin n) (Fin n) ℂ) (hM : M.det ≠ 0) :
   rw [e2]; exact hp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Am, herm_add, herm_smul, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.neg_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Am_line (s : ℂ) (y h : E n) (t : ℝ) :
     Am s (y + t • h) = Am s y + (t : ℂ) • (-((Complex.I * s) • herm h)) := by
@@ -63,7 +63,7 @@ theorem Am_line (s : ℂ) (y h : E n) (t : ℝ) :
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Bm, herm_add, herm_smul, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Bm_line (s : ℂ) (y h : E n) (t : ℝ) :
     Bm s (y + t • h) = Bm s y + (t : ℂ) • ((Complex.I * s) • herm h) := by
@@ -72,21 +72,21 @@ theorem Bm_line (s : ℂ) (y h : E n) (t : ℝ) :
   ring
 
 /- English proof (translation)
-The claim follows from `contDiff_det_of (contDiff_Am_entry s)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_detAm (s : ℂ) : ContDiff ℝ (⊤ : ℕ∞) (fun y : E n => (Am s y).det) :=
   contDiff_det_of (contDiff_Am_entry s)
 
 /- English proof (translation)
-The claim follows from `contDiff_det_of (contDiff_Bm_entry s)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_detBm (s : ℂ) : ContDiff ℝ (⊤ : ℕ∞) (fun y : E n => (Bm s y).det) :=
   contDiff_det_of (contDiff_Bm_entry s)
 
 /- English proof (translation)
-Establish `h1` using `line_hasDerivAt (diffAt_of (contDiff_detAm s) y) h`. Establish `h2` using `det_line (Am s y) (-((Complex.I * s) • herm h)) (det_Am_ne hs y)`. Establish `e : (fun t : ℝ => (Am s (y + t • h)).det) = fun t : ℝ => (Am s y + (t : ℂ) • (-((Complex.I * s) • herm h))).det`. Use function extensionality and compare the values at `fun t => by rw [Am_line]`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.unique h2`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_detAm {s : ℂ} (hs : s = 1 ∨ s = -1) (y h : E n) :
     fderiv ℝ (fun y => (Am s y).det) y h = (Am s y).det * ((Am s y)⁻¹ * (-((Complex.I * s) • herm h))).trace := by
@@ -98,9 +98,9 @@ theorem fderiv_detAm {s : ℂ} (hs : s = 1 ∨ s = -1) (y h : E n) :
   exact h1.unique h2
 
 /- English proof (translation)
-Establish `h1` using `line_hasDerivAt (diffAt_of (contDiff_detBm s) y) h`. Establish `h2` using `det_line (Bm s y) ((Complex.I * s) • herm h) (det_Bm_ne hs y)`. Establish `e : (fun t : ℝ => (Bm s (y + t • h)).det) = fun t : ℝ => (Bm s y + (t : ℂ) • ((Complex.I * s) • herm h)).det`. Use function extensionality and compare the values at `fun t => by rw [Bm_line]`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.unique h2`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_detBm {s : ℂ} (hs : s = 1 ∨ s = -1) (y h : E n) :
     fderiv ℝ (fun y => (Bm s y).det) y h = (Bm s y).det * ((Bm s y)⁻¹ * ((Complex.I * s) • herm h)).trace := by
@@ -112,7 +112,7 @@ theorem fderiv_detBm {s : ℂ} (hs : s = 1 ∨ s = -1) (y h : E n) :
   exact h1.unique h2
 
 /- English proof (translation)
-Rewrite using `[← trace_mul_single U k l, ← hc_vkl k l]`. Simplify using `only [Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.trace_add, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_combo (U : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (k l : Fin n) :
     (U * (c • herm (fun a b => (vkl k l a b).re))).trace + Complex.I * (U * (c • herm (fun a b => (vkl k l a b).im))).trace =
@@ -122,7 +122,7 @@ theorem trace_combo (U : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (k l : Fin n) :
   ring
 
 /- English proof (translation)
-Use `trace_combo U c k l` as an intermediate fact. Simplify using `only [Matrix.mul_neg, Matrix.trace_neg]`. Take the linear combination `-this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem trace_comboN (U : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (k l : Fin n) :
     (U * -(c • herm (fun a b => (vkl k l a b).re))).trace +
@@ -132,7 +132,7 @@ theorem trace_comboN (U : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (k l : Fin n) :
   linear_combination -this
 
 /- English proof (translation)
-Rewrite using `[dirC, fderiv_detAm hs, fderiv_detAm hs, ← uM_eq]`. Take the linear combination `(Am s y).det * trace_comboN (uM s y) (Complex.I * s) k l`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dirC_detAm {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) :
     dirC (fun y => (Am s y).det) (vkl k l) y = -(Complex.I * s) * (Am s y).det * uM s y k l := by
@@ -140,7 +140,7 @@ theorem dirC_detAm {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) :
   linear_combination (Am s y).det * trace_comboN (uM s y) (Complex.I * s) k l
 
 /- English proof (translation)
-Rewrite using `[dirC, fderiv_detBm hs, fderiv_detBm hs, ← vM_eq]`. Take the linear combination `(Bm s y).det * trace_combo (vM s y) (Complex.I * s) k l`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dirC_detBm {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) :
     dirC (fun y => (Bm s y).det) (vkl k l) y = Complex.I * s * (Bm s y).det * vM s y k l := by
@@ -148,31 +148,31 @@ theorem dirC_detBm {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) :
   linear_combination (Bm s y).det * trace_combo (vM s y) (Complex.I * s) k l
 
 /- English proof (translation)
-Rewrite using `[uM_eq, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detU_eq (s : ℂ) (y : E n) : (uM s y).det = ((Am s y).det)⁻¹ := by
   rw [uM_eq, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
 
 /- English proof (translation)
-Rewrite using `[vM_eq, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detV_eq (s : ℂ) (y : E n) : (vM s y).det = ((Bm s y).det)⁻¹ := by
   rw [vM_eq, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
 
 /- English proof (translation)
-Repeatedly rewrite using `[detU_eq]`. Conclude with `(contDiff_detAm s).inv (det_Am_ne hs)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_detU {s : ℂ} (hs : s = 1 ∨ s = -1) : ContDiff ℝ (⊤ : ℕ∞) (fun y : E n => (uM s y).det) := by
   simp_rw [detU_eq]; exact (contDiff_detAm s).inv (det_Am_ne hs)
 
 /- English proof (translation)
-Repeatedly rewrite using `[detV_eq]`. Conclude with `(contDiff_detBm s).inv (det_Bm_ne hs)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_detV {s : ℂ} (hs : s = 1 ∨ s = -1) : ContDiff ℝ (⊤ : ℕ∞) (fun y : E n => (vM s y).det) := by
   simp_rw [detV_eq]; exact (contDiff_detBm s).inv (det_Bm_ne hs)
 
 /- English proof (translation)
-Repeatedly rewrite using `[detU_eq]`. Rewrite using `[dirC_comp (hasDerivAt_inv (det_Am_ne hs y)) (diffAt_of (contDiff_detAm s) y), dirC_detAm hs]`. Use `det_Am_ne hs y` as an intermediate fact. Apply the tactic sequence `field_simp <;> ring`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dirC_detU {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) :
     dirC (fun y => (uM s y).det) (vkl k l) y = Complex.I * s * uM s y k l * (uM s y).det := by
@@ -182,7 +182,7 @@ theorem dirC_detU {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) :
   field_simp <;> ring
 
 /- English proof (translation)
-Repeatedly rewrite using `[detV_eq]`. Rewrite using `[dirC_comp (hasDerivAt_inv (det_Bm_ne hs y)) (diffAt_of (contDiff_detBm s) y), dirC_detBm hs]`. Use `det_Bm_ne hs y` as an intermediate fact. Apply the tactic sequence `field_simp <;> ring`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dirC_detV {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) :
     dirC (fun y => (vM s y).det) (vkl k l) y = -(Complex.I * s * vM s y k l * (vM s y).det) := by
@@ -192,7 +192,7 @@ theorem dirC_detV {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) :
   field_simp <;> ring
 
 /- English proof (translation)
-Rewrite using `[dirC_comp (hasDerivAt_pow p (f y)) hf, hc]`. Consider the cases of `p with`. Consider the case `zero => simp`. Consider the case `succ p => simp only [Nat.cast_succ, Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dirC_pow {f : E n → ℂ} {y : E n} (hf : DifferentiableAt ℝ f y) (p : ℕ) (w : Fin n → Fin n → ℂ) (c : ℂ)
     (hc : dirC f w y = c * f y) : dirC (fun y => f y ^ p) w y = p * c * f y ^ p := by
@@ -202,17 +202,17 @@ theorem dirC_pow {f : E n → ℂ} {y : E n} (hf : DifferentiableAt ℝ f y) (p 
   | succ p => simp only [Nat.cast_succ, Nat.add_sub_cancel, pow_succ]; ring
 
 /- English proof (translation)
-The claim follows from `(det_Bm_mul_det_Am hs y).symm`.
+A detailed English derivation is pending.
 -/
 theorem dP_eq {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) : ((dP y : ℝ) : ℂ) = (Bm s y).det * (Am s y).det :=
   (det_Bm_mul_det_Am hs y).symm
 
 /- English proof (translation)
-Establish `hP : ContDiff ℝ (⊤ : ℕ∞) (fun y : E n => ((dP y : ℝ) : ℂ))`. Establish `: (fun y : E n => ((dP y : ℝ) : ℂ)) = fun y => (1 + herm y * herm y).det`. Use function extensionality and compare the values at `fun y => (det_one_add_eq y).symm`. Rewrite using `[this]`. Use `contDiff_det_of fun a b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.add_apply, Matrix.mul_apply]`. Apply the tactic sequence `exact contDiff_const.add (ContDiff.sum fun c _ => (contDiff_herm_entry a c).mul (contDiff_herm_entry c b))`. Establish `e : (fun y : E n => ((dP y : ℝ) : ℂ) ^ (-z)) = fun y => Complex.exp (Complex.log ((dP y : ℝ) : ℂ) * (-z))`. Use function extensionality and compare the values at `fun y => Complex.cpow_def_of_ne_zero (by exact_mod_cast (dP_pos y).ne') _`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiff.cexp (ContDiff.mul ?_ contDiff_const)` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `y`. Conclude with `((Complex.contDiffAt_log (Complex.ofReal_mem_slitPlane.mpr (dP_pos y))).restrict_scalars ℝ).comp y hP.contDiffAt`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiff_dPpow (z : ℂ) : ContDiff ℝ (⊤ : ℕ∞) (fun y : E n => ((dP y : ℝ) : ℂ) ^ (-z)) := by
   have hP : ContDiff ℝ (⊤ : ℕ∞) (fun y : E n => ((dP y : ℝ) : ℂ)) := by
@@ -231,9 +231,9 @@ theorem contDiff_dPpow (z : ℂ) : ContDiff ℝ (⊤ : ℕ∞) (fun y : E n => (
   exact ((Complex.contDiffAt_log (Complex.ofReal_mem_slitPlane.mpr (dP_pos y))).restrict_scalars ℝ).comp y hP.contDiffAt
 
 /- English proof (translation)
-Establish `hmem : ((dP y : ℝ) : ℂ) ∈ Complex.slitPlane` using `Complex.ofReal_mem_slitPlane.mpr (dP_pos y)`. Establish `hne : ((dP y : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (dP_pos y).ne'`. Establish `hPd : DifferentiableAt ℝ (fun y : E n => (Bm s y).det * (Am s y).det) y` using `(diffAt_of (contDiff_detBm s) y).mul (diffAt_of (contDiff_detAm s) y)`. Establish `e : (fun y : E n => ((dP y : ℝ) : ℂ) ^ (-z)) = fun y => ((Bm s y).det * (Am s y).det) ^ (-z)`. Use function extensionality and compare the values at `fun y => by rw [dP_eq hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Rewrite `hmem` using `[dP_eq hs]`. Rewrite using `[dirC_comp (Complex.hasStrictDerivAt_cpow_const hmem).hasDerivAt hPd, dirC_mul (diffAt_of (contDiff_detBm s) y) (diffAt_of (contDiff_detAm s) y), dirC_detAm hs, dirC_detBm hs, ← dP_eq hs, Complex.cpow_sub _ _ hne, Complex.cpow_one]`. Rewrite using `[show ((Bm s y).det * (-(Complex.I * s) * (Am s y).det * uM s y k l) + (Am s y).det * (Complex.I * s * (Bm s y).det * vM s y k l)) = -(Complex.I * s) * ((Bm s y).det * (Am s y).det) * (uM s y k l - vM s y k l) by ring, ← dP_eq hs]`. Apply the tactic sequence `field_simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dirC_dPpow {s : ℂ} (hs : s = 1 ∨ s = -1) (z : ℂ) (y : E n) (k l : Fin n) :
     dirC (fun y : E n => ((dP y : ℝ) : ℂ) ^ (-z)) (vkl k l) y =
@@ -263,7 +263,7 @@ theorem evUV_eq (s : ℂ) (R : MvPolynomial (Bool × Fin n × Fin n) ℂ) (y : E
     evUV s R y = MvPolynomial.eval (fun e => ent s e y) R := rfl
 
 /- English proof (translation)
-Unfold `ent`. Use `split_ifs`. Apply the tactic sequence `exact contDiff_vM_entry hs _ _`. Apply the tactic sequence `exact contDiff_uM_entry hs _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_ent {s : ℂ} (hs : s = 1 ∨ s = -1) (e : Bool × Fin n × Fin n) :
     ContDiff ℝ (⊤ : ℕ∞) (ent (n := n) s e) := by
@@ -277,9 +277,9 @@ def dEnt (s : ℂ) (k l : Fin n) (e : Bool × Fin n × Fin n) : MvPolynomial (Bo
   else C (Complex.I * s) * X (false, e.2.1, l) * X (false, k, e.2.2)
 
 /- English proof (translation)
-Take `⟨b, a, c⟩` from `e`. Consider the cases of `b`. Establish `e1 : ent (n` using `n) s (false, a, c) = fun y => uM s y a c := by funext y; simp [ent]`. Rewrite using `[e1, dirC_uM hs]`. Apply the tactic sequence `simp [dEnt, ent] <;> ring`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e1 : ent (n` using `n) s (true, a, c) = fun y => vM s y a c := by funext y; simp [ent]`. Rewrite using `[e1, dirC_vM hs]`. Apply the tactic sequence `simp [dEnt, ent] <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dirC_ent {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) (e : Bool × Fin n × Fin n) :
     dirC (ent s e) (vkl k l) y = MvPolynomial.eval (fun e => ent s e y) (dEnt s k l e) := by
@@ -293,14 +293,14 @@ theorem dirC_ent {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) (e : 
     simp [dEnt, ent] <;> ring
 
 /- English proof (translation)
-The claim follows from `contDiff_eval (fun e y => ent s e y) (contDiff_ent hs) R`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_evUV {s : ℂ} (hs : s = 1 ∨ s = -1) (R : MvPolynomial (Bool × Fin n × Fin n) ℂ) :
     ContDiff ℝ (⊤ : ℕ∞) (evUV s R) :=
   contDiff_eval (fun e y => ent s e y) (contDiff_ent hs) R
 
 /- English proof (translation)
-Rewrite using `[show evUV s R = fun y => MvPolynomial.eval (fun e => ent s e y) R from rfl, dirC_eval (fun e y => ent s e y) (contDiff_ent hs) (vkl k l) y R, evUV_eq]`. Simplify using `only [map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun e _ => by rw [dirC_ent hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dirC_evUV {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (k l : Fin n) (R : MvPolynomial (Bool × Fin n × Fin n) ℂ) :
     dirC (evUV s R) (vkl k l) y = evUV s (∑ e, MvPolynomial.pderiv e R * dEnt s k l e) y := by
@@ -315,16 +315,16 @@ def dR (s z : ℂ) (p q : ℕ) (k l : Fin n) (R : MvPolynomial (Bool × Fin n ×
     C (q : ℂ) * X (true, k, l)) * R + ∑ e, MvPolynomial.pderiv e R * dEnt s k l e
 
 /- English proof (translation)
-The claim follows from `(((contDiff_dPpow z).mul ((contDiff_detU hs).pow p)).mul ((contDiff_detV hs).pow q)).mul (contDiff_evUV hs R)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_cls {s : ℂ} (hs : s = 1 ∨ s = -1) (z : ℂ) (p q : ℕ) (R : MvPolynomial (Bool × Fin n × Fin n) ℂ) :
     ContDiff ℝ (⊤ : ℕ∞) (cls s z p q R) :=
   (((contDiff_dPpow z).mul ((contDiff_detU hs).pow p)).mul ((contDiff_detV hs).pow q)).mul (contDiff_evUV hs R)
 
 /- English proof (translation)
-Establish `h1` using `diffAt_of (contDiff_dPpow (n := n) z) y`. Establish `h2` using `diffAt_of ((contDiff_detU (n := n) hs).pow p) y`. Establish `h3` using `diffAt_of ((contDiff_detV (n := n) hs).pow q) y`. Establish `h4` using `diffAt_of (contDiff_evUV hs R) y`. Rewrite using `[show cls s z p q R = fun y => ((dP y : ℝ) : ℂ) ^ (-z) * (uM s y).det ^ p * (vM s y).det ^ q * evUV s R y from rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[dirC_mul (f := fun y => ((dP y : ℝ) : ℂ) ^ (-z) * (uM s y).det ^ p * (vM s y).det ^ q) (g := evUV s R) ((h1.mul h2).mul h3) h4, dirC_mul (f := fun y => ((dP y : ℝ) : ℂ) ^ (-z) * (uM s y).det ^ p) (g := fun y => (vM s y).det ^ q) (h1.mul h2) h3, dirC_mul (f := fun y => ((dP y : ℝ …`. Simplify using `only [cls, dR, evUV_eq, map_add, map_mul, map_sub, eval_C, eval_X, ent]`. Simplify using `only [Bool.false_eq_true, if_false, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dirC_cls {s : ℂ} (hs : s = 1 ∨ s = -1) (z : ℂ) (p q : ℕ) (R : MvPolynomial (Bool × Fin n × Fin n) ℂ)
     (y : E n) (k l : Fin n) : dirC (cls s z p q R) (vkl k l) y = cls s z p q (dR s z p q k l R) y := by
@@ -346,9 +346,9 @@ theorem dirC_cls {s : ℂ} (hs : s = 1 ∨ s = -1) (z : ℂ) (p q : ℕ) (R : Mv
   ring
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `: ‖∏ i ∈ m.support, x i ^ m i‖ ≤ 1`. Rewrite using `[norm_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => by`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (hx i)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_eval_le {σ : Type} (x : σ → ℂ) (hx : ∀ i, ‖x i‖ ≤ 1) (R : MvPolynomial σ ℂ) :
     ‖MvPolynomial.eval x R‖ ≤ ∑ m ∈ R.support, ‖MvPolynomial.coeff m R‖ := by
@@ -364,7 +364,7 @@ theorem norm_eval_le {σ : Type} (x : σ → ℂ) (hx : ∀ i, ‖x i‖ ≤ 1) 
     _ = _ := mul_one _
 
 /- English proof (translation)
-Unfold `ent`. Use `split_ifs`. Conclude with `norm_vM_le hs y _ _`. Conclude with `norm_uM_le hs y _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem norm_ent_le {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (e : Bool × Fin n × Fin n) : ‖ent s e y‖ ≤ 1 := by
   unfold ent; split_ifs
@@ -372,11 +372,11 @@ theorem norm_ent_le {s : ℂ} (hs : s = 1 ∨ s = -1) (y : E n) (e : Bool × Fin
   · exact norm_uM_le hs y _ _
 
 /- English proof (translation)
-Establish `hd` using `dP_pos y`. Establish `e1 : ‖((dP y : ℝ) : ℂ) ^ (-z)‖ = (dP y) ^ (-z.re)`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hd, Complex.neg_re]`. Establish `e2` using `norm_det_pow hd (norm_det_uM_sq hs y) p`. Establish `e3` using `norm_det_pow hd (norm_det_vM_sq hs y) q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `norm_eval_le (fun e => ent s e y) (norm_ent_le hs y) R`. Simplify using `only [cls, norm_mul]`. Rewrite using `[e1, e2, e3]`. Establish `hC : 0 ≤ ∑ m ∈ R.support, ‖MvPolynomial.coeff m R‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hpos : 0 ≤ (dP y) ^ (-z.re) * (dP y) ^ (-(p : ℝ) / 2) * (dP y) ^ (-(q : ℝ) / 2)` using `by positivity`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hd, ← Real.rpow_add hd]`. Rewrite using `[mul_comm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cls_bound {s : ℂ} (hs : s = 1 ∨ s = -1) (z : ℂ) (p q : ℕ) (R : MvPolynomial (Bool × Fin n × Fin n) ℂ)
     (y : E n) : ‖cls s z p q R y‖ ≤
@@ -399,11 +399,11 @@ theorem cls_bound {s : ℂ} (hs : s = 1 ∨ s = -1) (z : ℂ) (p q : ℕ) (R : M
       rw [mul_comm]; congr 2; ring
 
 /- English proof (translation)
-Introduce `n s hs p q R z`. Use `⟨contDiff_cls hs z p q R, fun L => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨R', hR'⟩ : ∃ R', L.foldr (fun kl g => Dkl kl.1 kl.2 g) (cls s z p q R) = cls s z p q R' := by`. Proceed by induction on `L with`. Consider the case `nil => exact ⟨R, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `cons kl L ih`. Take `⟨R', h⟩` from `ih`. Use `⟨dR s z p q kl.1 kl.2 R', ?_⟩` and prove the remaining obligations. Rewrite using `[List.foldr_cons, h]`. Use function extensionality and compare the values at `y`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `dirC_cls hs z p q R' y kl.1 kl.2`. Rewrite using `[hR']`. Conclude with `⟨_, fun y => cls_bound hs z p q R' y⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem clsBound : ClsBound := by
   intro n s hs p q R z

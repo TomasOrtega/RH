@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 def eps' (p : ℕ) {n : ℕ} (k : Fin n) : ℂ := if (k : ℕ) < p then 1 else -1
 
 /- English proof (translation)
-Unfold `eps'`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma eps'_sq (p : ℕ) {n : ℕ} (k : Fin n) : eps' p k * eps' p k = 1 := by
   unfold eps'
@@ -28,11 +28,11 @@ variable (X : Data E r) (τ : X.Ψ) {n : ℕ} (p : ℕ) (f : Fin n → Fin r →
 include hf
 
 /- English proof (translation)
-Establish `hsumR : ∀ (u : Fin r → ℂ) (w : Fin n → Fin r → ℂ), hermC τ.1 X.Gm u (∑ l, w l) = ∑ l, hermC τ.1 X.Gm u (w l)`. Introduce `u w`. Simplify using `only [hermC, Finset.sum_apply, map_sum, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsmulR : ∀ (c : ℂ) (u w : Fin r → ℂ), hermC τ.1 X.Gm u (c • w) = conj c * hermC τ.1 X.Gm u w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `c u w`. Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[hermC_sum_left]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermC_smul_left, hsumR]`. Simplify using `only [hsmulR, hf, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma hC_comb_f (y y' : Fin n → ℂ) :
     hermC τ.1 X.Gm (∑ j, y' j • f j) (∑ l, y l • f l) = ∑ j, eps' p j * (conj (y j) * y' j) := by
@@ -55,9 +55,9 @@ lemma hC_comb_f (y y' : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hv`. Establish `key : ∀ j, hermC τ.1 X.Gm (∑ i, c i • f i) (f j) = c j * eps' p j`. Introduce `j`. Rewrite using `[hermC_sum_left]`. Simplify using `only [hermC_smul_left, hf, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[key]`. Use `congr 1`. Take the linear combination `(-(c j)) * eps'_sq p j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma coord_f {v : Fin r → ℂ} (hv : v ∈ Submodule.span ℂ (Set.range f)) :
     v = ∑ j, (eps' p j * hermC τ.1 X.Gm v (f j)) • f j := by
@@ -82,11 +82,11 @@ section Uc
 variable (X : Data E r) {z0 : Frame X.Ψ r} (ξ : Fin r → E) (τ : X.Ψ)
 
 /- English proof (translation)
-Set `L : (Fin r → ℂ) →ₗ[ℂ] (Fin r → ℂ)` to `{ toFun := X.ppos z0 τ, map_add' := X.ppos_add z0 τ, map_smul' := fun k u => X.ppos_smul_eq z0 τ k u }`. Establish `hHf : ∀ u w, X.Hf z0 τ u w = hermC τ.1 X.Gm ((2 : ℂ) • L u - u) w` using `fun u w => rfl`. Establish `hsum : X.Hf z0 τ (∑ k, a k • V k) (Data.emb τ.1 ξ) = ∑ k, a k * X.Hf z0 τ (V k) (Data.emb τ.1 ξ)`. Rewrite using `[hHf, map_sum]`. Simplify using `only [map_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (2 : ℂ) • ∑ k, a k • L (V k) - ∑ k, a k • V k = ∑ k, a k • ((2 : ℂ) • L (V k) - V k)`. Rewrite using `[Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_sub, smul_comm]`. Rewrite using `[e, hermC_sum_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_left, hHf]`. Unfold `uc`. Rewrite using `[hsum]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, Finset.sum_div, Finset.sum_smul, smul_smul, mul_div_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma uc_comb (hz : z0 ∈ X.dom) {n : ℕ} (a : Fin n → ℂ) (V : Fin n → Fin r → ℂ) :
     uc X z0 ξ τ (∑ k, a k • V k) = ∑ k, a k • uc X z0 ξ τ (V k) := by
@@ -112,13 +112,13 @@ lemma uc_comb (hz : z0 ∈ X.dom) {n : ℕ} (a : Fin n → ℂ) (V : Fin n → F
     mul_div_assoc]
 
 /- English proof (translation)
-Establish `hsubR : ∀ u w w' : Fin r → ℂ, hermC τ.1 X.Gm u (w - w') = hermC τ.1 X.Gm u w - hermC τ.1 X.Gm u w'`. Introduce `u w w'`. Simplify using `only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`. Establish `hsmulR : ∀ (c : ℂ) (u w : Fin r → ℂ), hermC τ.1 X.Gm u (c • w) = conj c * hermC τ.1 X.Gm u w`. Introduce `c u w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Establish `hsym : hermC τ.1 X.Gm (Data.emb τ.1 ξ) v = 0`. Establish `hc : hermC τ.1 X.Gm (Data.emb τ.1 ξ) v = conj (hermC τ.1 X.Gm v (Data.emb τ.1 ξ))`. Simplify using `only [hermC, map_sum, map_mul, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.FD.emb_cc, X.Gm_herm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, hv, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `uc`. Simplify using `only [hermC_sub_left, hsubR, hermC_smul_left, hsmulR, hv', hξξ, hsym, mul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma uc_perp (hξξ : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0) (v v' : Fin r → ℂ)
     (hv : hermC τ.1 X.Gm v (Data.emb τ.1 ξ) = 0) (hv' : hermC τ.1 X.Gm v' (Data.emb τ.1 ξ) = 0) :
@@ -146,7 +146,7 @@ lemma uc_perp (hξξ : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0
 end Uc
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[Data.emb, Finset.sum_apply, map_sum, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma emb_sum {n : ℕ} (τ : E →+* ℂ) (c : Fin n → E) (β : Fin n → Fin r → E) :
     Data.emb τ (∑ k, c k • β k) = ∑ k, τ (c k) • Data.emb τ (β k) := by

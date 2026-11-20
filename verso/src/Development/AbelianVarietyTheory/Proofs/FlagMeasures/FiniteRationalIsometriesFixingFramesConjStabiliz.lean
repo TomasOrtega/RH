@@ -23,9 +23,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨g' x, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem img_mul (g g' : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) :
     LocNG.img (g * g') Λ = LocNG.img g (LocNG.img g' Λ) := by
@@ -35,9 +35,9 @@ theorem img_mul (g g' : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) :
   · rintro ⟨_, ⟨x, hx, rfl⟩, rfl⟩; exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `hv`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨v, hv, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem img_one (Λ : Submodule M.L.O V) : LocNG.img (1 : V ≃ₗ[E] V) Λ = Λ := by
   ext v
@@ -46,16 +46,16 @@ theorem img_one (Λ : Submodule M.L.O V) : LocNG.img (1 : V ≃ₗ[E] V) Λ = Λ
   · intro hv; exact ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← h, ← img_mul, inv_mul_cancel, img_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem img_inv {g : V ≃ₗ[E] V} {Λ Λ' : Submodule M.L.O V} (h : LocNG.img g Λ = Λ') :
     LocNG.img g⁻¹ Λ' = Λ := by
   rw [← h, ← img_mul, inv_mul_cancel, img_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Unfold `LocNG.Aut at hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Consider the case `one => exact img_one Λ`. Consider the case `mul x y _ _ hx hy => rw [img_mul, hy, hx]`. Consider the case `inv x _ hx => exact img_inv hx`. Introduce `h`. Conclude with `Subgroup.subset_closure h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_Aut {g : V ≃ₗ[E] V} {Λ : Submodule M.L.O V} : g ∈ LocNG.Aut Λ ↔ LocNG.img g Λ = Λ := by
   constructor
@@ -69,7 +69,7 @@ theorem mem_Aut {g : V ≃ₗ[E] V} {Λ : Submodule M.L.O V} : g ∈ LocNG.Aut �
   · intro h; exact Subgroup.subset_closure h
 
 /- English proof (translation)
-Use `⟨h.1.map _, ?_⟩` and prove the remaining obligations. Establish `e : (LocNG.img g L : Set V) = (g : V →ₗ[E] V) '' (L : Set V)` using `rfl`. Rewrite using `[e, Submodule.span_image, h.2, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `g.surjective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem img_fg_span (g : V ≃ₗ[E] V) (L : Submodule M.L.O V)
     (h : L.FG ∧ Submodule.span E (L : Set V) = ⊤) :
@@ -84,7 +84,7 @@ end Img
 variable {D : D7}
 
 /- English proof (translation)
-Use `(GlobalTheory.T.numberField_lattice_determined_by_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) (LatLoc.cL Λ) (LatLoc.isLattice_map _ _ h)).2.1 p` as an intermediate fact. Rewrite using `[LatLoc.localLattice_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localLattice_fg_span (Z : LocDat D) (Λ : LV D) (h : Submodule.IsLattice D.host.E Λ) (p : PlF D) :
     (lattice₂ D Z.M p Λ).FG ∧ Submodule.span (D.s.atP p).Ep (lattice₂ D Z.M p Λ : Set (Vp D p)) = ⊤ := by
@@ -98,13 +98,13 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.Unfold.FixFin in
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hw hG Z FP hB hR φ hφ Λ₀ hΛ₀ a ha`. Establish `hLG` using `LatLoc.lattices_local_global D Z`. Take `⟨Λa, hΛa, hΛap⟩` from `hLG.2 Λ₀ hΛ₀ (fun p => LocNG.img ((a p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (lattice₂ D Z.M p Λ₀)) (fun p => img_fg_span _ _ (localLattice_fg_span Z Λ₀ hΛ₀ p)) (ha.subset fun p hp hA => hp (mem_Aut.1 hA))`. Establish `H128` using `GlobalTheory.T.rationalAutomorphism_local_extension_moves_lattices D X Y u u' F F' w hw hG Z FP hB hR`. Establish `H133` using `(GlobalTheory.T.rationalLatticeClasses_finite_localOrbits D X Y u u' F F' w hw hG Z FP hB hR Λa hΛa).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(H133.preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `h hh`. Use `⟨h.2, ?_⟩` and prove the remaining obligations. Establish `hgl : Submodule.IsLattice D.host.E (Formalism.HermitianLatticesTheory.gmap (h : GV D) Λa)` using `LatLoc.isLattice_map (h : GV D) Λa hΛa`. Apply `(hLG.1 _ _ hgl hΛa).2` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Rewrite using `[H128.2.2.1 (h : GV D) p _ Λa (hφ h p), hΛap p]`. Establish `e` using `mem_Aut.1 (hh p)`. Rewrite `e` using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, img_mul, img_mul]`. Establish `e2` using `congrArg (LocNG.img ((a p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)) e`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[← img_mul, mul_inv_cancel, img_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GlobalTheory.Unfold.FixFin.conj_aut_finite : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (φ : ↥(FlagPairStabilizer F F') →* (∀ p, ↥(FP p).UW0)), (∀ (h : ↥(FlagPairStabilizer F F')) p, Ext p (h : GV D) ((φ h p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)) → ∀ Λ₀ : LV D, Submodule.IsLattice D.host.E Λ₀ → ∀ a : ∀ p, ↥(FP p).UW0, {p | ((a p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) ∉ LocNG.Aut (lattice₂ D Z.M p Λ₀)}.Finite → {h : ↥(FlagPairStabilizer F F') | ∀ p, (((a p)⁻¹ * φ h p * a p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) ∈ LocNG.Aut (lattice₂ D Z.M p Λ₀)}.Finite := by
   intro D X Y u u' F F' w hw hG Z FP hB hR φ hφ Λ₀ hΛ₀ a ha

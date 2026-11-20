@@ -18,7 +18,7 @@ variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S₀ : Scheme
     {X : Obj F 𝔠 S} {X₀ : Obj F 𝔠 S₀} {b : S₀ ⟶ S} {i : X₀.A.left ⟶ X.A.left}
 
 /- English proof (translation)
-Establish `e' : z.left ≫ i = z'.left ≫ i` using `congrArg (fun f => CommaMorphism.left f) e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h.grp.1.hom_ext e' (by rw [Over.w z, Over.w z'])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem push_injective (h : X₀.IsPullBy X b i) {T : Over S₀} {z z' : T ⟶ X₀.A}
     (e : pushPt h.grp.1.w z = pushPt h.grp.1.w z') : z = z' := by
@@ -27,7 +27,7 @@ theorem push_injective (h : X₀.IsPullBy X b i) {T : Over S₀} {z z' : T ⟶ X
   exact h.grp.1.hom_ext e' (by rw [Over.w z, Over.w z'])
 
 /- English proof (translation)
-Establish `hy : y.left ≫ X.A.hom = T.hom ≫ b` using `by simpa using Over.w y`. Use `⟨Over.homMk (h.grp.1.lift y.left T.hom hy) (h.grp.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h.grp.1.lift_fst _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem push_surjective (h : X₀.IsPullBy X b i) {T : Over S₀} (y : Over.mk (T.hom ≫ b) ⟶ X.A) :
     ∃ z : T ⟶ X₀.A, pushPt h.grp.1.w z = y := by
@@ -37,7 +37,7 @@ theorem push_surjective (h : X₀.IsPullBy X b i) {T : Over S₀} (y : Over.mk (
   exact h.grp.1.lift_fst _ _ _
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(h.grp.2 T z z' _ _ rfl rfl).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem push_mul (h : X₀.IsPullBy X b i) {T : Over S₀} (z z' : T ⟶ X₀.A) :
     pushPt h.grp.1.w (z * z') = pushPt h.grp.1.w z * pushPt h.grp.1.w z' := by
@@ -45,7 +45,7 @@ theorem push_mul (h : X₀.IsPullBy X b i) {T : Over S₀} (z z' : T ⟶ X₀.A)
   exact (h.grp.2 T z z' _ _ rfl rfl).symm
 
 /- English proof (translation)
-Establish `e` using `push_mul h (1 : T ⟶ X₀.A) 1`. Rewrite `e` using `[_root_.mul_one]`. Conclude with `mul_left_cancel (e.symm.trans (_root_.mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_one (h : X₀.IsPullBy X b i) (T : Over S₀) :
     pushPt h.grp.1.w (1 : T ⟶ X₀.A) = 1 := by
@@ -54,7 +54,7 @@ theorem push_one (h : X₀.IsPullBy X b i) (T : Over S₀) :
   exact mul_left_cancel (e.symm.trans (_root_.mul_one _).symm)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [_root_.pow_zero, _root_.pow_zero, push_one h]`. Consider the case `succ n ih => rw [_root_.pow_succ, _root_.pow_succ, push_mul h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem push_pow (h : X₀.IsPullBy X b i) {T : Over S₀} (z : T ⟶ X₀.A) (n : ℕ) :
     pushPt h.grp.1.w (z ^ n) = pushPt h.grp.1.w z ^ n := by
@@ -63,7 +63,7 @@ theorem push_pow (h : X₀.IsPullBy X b i) {T : Over S₀} (z : T ⟶ X₀.A) (n
   | succ n ih => rw [_root_.pow_succ, _root_.pow_succ, push_mul h, ih]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [pushPt, Over.homMk_left, Over.comp_left, Over.toUnit_left, Over.mk_hom, Category.assoc, h.act a]`. Rewrite using `[reassoc_of% (hpq k)]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem push_pt_act (h : X₀.IsPullBy X b i) {N : ℕ} (α₀ : X₀.Level N) (q : Fin 2 → (𝟙_ (Over S) ⟶ X.A))
     (hpq : ∀ k, (α₀.pt k).left ≫ i = b ≫ (q k).left) {W : Scheme.{0}} (t₀ : W ⟶ S₀) (k : Fin 2) (a : 𝓞 F) :
@@ -81,13 +81,13 @@ namespace GlobalTheory.RealMult
 open LevelDescend in
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 S S₀ X X₀ b i h hfac N α₀ q hq hpq`. Use `⟨{ pt := q, tors := hq, inj := ?_, surj := ?_ }⟩` and prove the remaining obligations. Introduce `Ω _ _ t a c e`. Take `⟨t₀, rfl⟩` from `hfac Ω t`. Apply `α₀.inj Ω t₀ a c` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `push_injective h` to reduce the goal to its premises. Rewrite using `[push_mul h, push_one h, push_pt_act h α₀ q hpq, push_pt_act h α₀ q hpq]`. Conclude with `e`. Introduce `Ω _ _ t y hy`. Take `⟨t₀, rfl⟩` from `hfac Ω t`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `push_surjective h (T := Over.mk t₀) y`. Establish `hz : z ^ N = 1`. Apply `push_injective h` to reduce the goal to its premises. Rewrite using `[push_pow h, push_one h]`. Conclude with `hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, c, hac⟩` from `α₀.surj Ω t₀ z hz`. Use `⟨a, c, ?_⟩` and prove the remaining obligations. Rewrite using `[hac, push_mul h, push_pt_act h α₀ q hpq, push_pt_act h α₀ q hpq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_descend : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S₀ : Scheme.{0}}
     {X : Obj F 𝔠 S} {X₀ : Obj F 𝔠 S₀} {b : S₀ ⟶ S} {i : X₀.A.left ⟶ X.A.left}, X₀.IsPullBy X b i →

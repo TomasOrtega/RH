@@ -10,11 +10,11 @@ namespace GlobalTheory.TeichGalois
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Establish `h2 : t 0 * (t 0 - 1) = 0`. Rewrite using `[mul_sub, mul_one, ← map_mul, mul_zero, sub_self]`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : t 0 = 1` using `sub_eq_zero.1 h`. Establish `hall : ∀ x, t x = 1` using `fun x => by`. Establish `: t (x * 0) = t x * t 0` using `map_mul t x 0`. Rewrite `this` using `[mul_zero, h1, mul_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨y, hy⟩` from `Infinite.exists_notMem_finset ({0, 1} : Finset (Formalism.CyclotomicNorms.Fbar g))`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hy`. Conclude with `hy.2 (ht y 1 hy.1 one_ne_zero (by rw [hall, hall]))`.
+A detailed English derivation is pending.
 -/
 theorem map_zero_eq_zero (t : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     (ht : ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y) : t 0 = 0 := by
@@ -34,13 +34,13 @@ theorem map_zero_eq_zero (t : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     exact hy.2 (ht y 1 hy.1 one_ne_zero (by rw [hall, hall]))
 
 /- English proof (translation)
-Set `K` to `IntermediateField.adjoin (ZMod g) ({x} : Set (Formalism.CyclotomicNorms.Fbar g))`. Use `haveI : FiniteDimensional (ZMod g) K := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Establish `hxK : (⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩ : K) ≠ 0`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hx` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val h`. Set `u` to `Units.mk0 _ hxK`. Establish `hn : x ^ orderOf u = 1`. Establish `h3 : (u : K) ^ orderOf u = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, pow_orderOf_eq_one, Units.val_one]`. Establish `h4 : ((u : K) : Formalism.CyclotomicNorms.Fbar g) ^ orderOf u = 1`. Rewrite using `[← IntermediateField.coe_pow, h3, IntermediateField.coe_one]`. Conclude with `h4`. Establish `hpos : 0 < orderOf u` using `orderOf_pos u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a, m, hm, heq⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hpos.ne' g (Fact.out : g.Prime).ne_one`. Use `⟨m, (Nat.Prime.coprime_iff_not_dvd Fact.out).2 hm, ?_⟩` and prove the remaining obligations. Establish `h2 : (x ^ m - 1) ^ (g ^ a) = 0`. Rewrite using `[sub_pow_char_pow, one_pow, ← pow_mul, mul_comm, ← heq, hn, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : g.Prime).ne_zero) |>.1 h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coprime_pow_eq_one {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ≠ 0) :
     ∃ m : ℕ, g.Coprime m ∧ x ^ m = 1 := by
@@ -65,7 +65,7 @@ theorem exists_coprime_pow_eq_one {x : Formalism.CyclotomicNorms.Fbar g} (hx : x
   exact sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : g.Prime).ne_zero) |>.1 h2)
 
 /- English proof (translation)
-Establish `h` using `fun x (hx : x ∈ s) => exists_coprime_pow_eq_one (hs x hx)`. Use `choose! e he using h`. Use `⟨∏ x ∈ s, e x, Nat.Coprime.prod_right fun x hx => (he x hx).1, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem e hx`. Rewrite using `[hc, pow_mul, (he x hx).2, one_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_exponent (s : Finset (Formalism.CyclotomicNorms.Fbar g)) (hs : ∀ x ∈ s, x ≠ 0) :
     ∃ m : ℕ, g.Coprime m ∧ ∀ x ∈ s, x ^ m = 1 := by
@@ -76,7 +76,7 @@ theorem exists_common_exponent (s : Finset (Formalism.CyclotomicNorms.Fbar g)) (
   rw [hc, pow_mul, (he x hx).2, one_pow]
 
 /- English proof (translation)
-Establish `hu0 : u ≠ 0` using `hu.ne_zero hm.ne'`. Use `⟨by rw [← map_pow, hu.pow_eq_one, map_one], fun l hl => hu.dvd_of_pow_eq_one l ?_⟩` and prove the remaining obligations. Conclude with `ht _ _ (pow_ne_zero _ hu0) one_ne_zero (by rw [map_pow, hl, map_one])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_map (t : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     (ht : ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y) {u : Formalism.CyclotomicNorms.Fbar g} {m : ℕ}
@@ -86,7 +86,7 @@ theorem isPrimitiveRoot_map (t : Formalism.CyclotomicNorms.Fbar g →* ℂ)
   exact ht _ _ (pow_ne_zero _ hu0) one_ne_zero (by rw [map_pow, hl, map_one])
 
 /- English proof (translation)
-Rewrite using `[MonoidAlgebra.lift_apply, Finsupp.sum]`. Simplify using `[zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lift_apply_eq_sum (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (f : MonoidAlgebra ℤ (Formalism.CyclotomicNorms.Fbar g)) :
     MonoidAlgebra.lift ℤ ℂ (Formalism.CyclotomicNorms.Fbar g) t f = ∑ x ∈ f.coeff.support, (f.coeff x : ℂ) * t x := by
@@ -94,17 +94,15 @@ theorem lift_apply_eq_sum (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (f : M
   simp [zsmul_eq_mul]
 
 /- English proof (translation)
-Use `set s := f.coeff.support.filter (· ≠ 0) with hs`. Take `⟨m, hmc, hpow⟩` from `exists_common_exponent s (fun x hx => (Finset.mem_filter.1 hx).2)`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `(Fact.out : g.Prime).ne_one (Nat.coprime_zero_right _ |>.1 hmc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : 0 < m` using `Nat.pos_of_ne_zero hm0`. Use `haveI : NeZero m := ⟨hm0⟩`. Use `haveI : NeZero (m : Formalism.CyclotomicNorms.Fbar g) := ⟨by`. Rewrite using `[Ne, CharP.cast_eq_zero_iff (Formalism.CyclotomicNorms.Fbar g) g]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).1 hmc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨u, hu⟩` from `IsAlgClosed.exists_root (cyclotomic m (Formalism.CyclotomicNorms.Fbar g)) (degree_cyclotomic_pos m _ hm).ne'`. Establish `hu : IsPrimitiveRoot u m` using `isRoot_cyclotomic_iff.1 hu`. Establish `hk : ∀ x ∈ s, ∃ i : ℕ, u ^ i = x` using `fun x hx => by`. Take `⟨i, -, hi⟩` from `hu.eq_pow_of_pow_eq_one (hpow x hx)`. Conclude with `⟨i, hi⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose! k hk using hk`. Set `P : ℤ[X]` to `∑ x ∈ s, C (f.coeff x) * X ^ (k x)`. Establish `heval : ∀ τ : Formalism.CyclotomicNorms.Fbar g →* ℂ, τ 0 = 0 → MonoidAlgebra.lift ℤ ℂ (Formalism.CyclotomicNorms.Fbar g) τ f = aeval (τ u) P`. Introduce `τ hτ`. Rewrite using `[lift_apply_eq_sum, ← Finset.sum_filter_of_ne (p := (· ≠ 0)) (fun x _ hx h0 => hx (by rw [h0, hτ, mul_zero]))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [P, map_sum, map_mul, aeval_C, map_pow, aeval_X, algebraMap_int_eq, eq_intCast, map_intCast]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, hk x hx]`. Establish `hζ` using `isPrimitiveRoot_map t ht hm hu`. Establish `hζ'` using `isPrimitiveRoot_map t' ht' hm hu`.
-
-Establish `h1 : aeval (t' u) P = 0` using `by rw [← heval t' (map_zero_eq_zero t' ht'), h]`. Establish `hdvd : minpoly ℤ (t' u) ∣ P` using `minpoly.isIntegrallyClosed_dvd (hζ'.isIntegral hm) h1`. Rewrite `hdvd` using `[← cyclotomic_eq_minpoly hζ' hm, cyclotomic_eq_minpoly hζ hm]`. Rewrite using `[heval t (map_zero_eq_zero t ht)]`. Conclude with `aeval_eq_zero_of_dvd_aeval_eq_zero hdvd (minpoly.aeval ℤ (t u))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_eq_zero_of_lift_eq_zero (t t' : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     (ht : ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y)
@@ -150,21 +148,19 @@ instance countable_fbar : Countable (Formalism.CyclotomicNorms.Fbar g) :=
     (max_le Cardinal.mk_le_aleph0 le_rfl))
 
 /- English proof (translation)
-Introduce `g _ t t' ht ht'`. Set `α : MonoidAlgebra ℤ (Formalism.CyclotomicNorms.Fbar g) →+* ℂ` to `(MonoidAlgebra.lift ℤ ℂ (Formalism.CyclotomicNorms.Fbar g) t').toRingHom`. Set `β : MonoidAlgebra ℤ (Formalism.CyclotomicNorms.Fbar g) →+* ℂ` to `(MonoidAlgebra.lift ℤ ℂ (Formalism.CyclotomicNorms.Fbar g) t).toRingHom`. Establish `hker : RingHom.ker α ≤ RingHom.ker β` using `fun f hf => lift_eq_zero_of_lift_eq_zero t t' ht ht' f hf`. Establish `hker' : RingHom.ker β ≤ RingHom.ker α` using `fun f hf => lift_eq_zero_of_lift_eq_zero t' t ht' ht f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : (RingHom.ker α).IsPrime := RingHom.ker_isPrime α`. Set `Q` to `MonoidAlgebra ℤ (Formalism.CyclotomicNorms.Fbar g) ⧸ RingHom.ker α`. Set `α' : Q →+* ℂ` to `RingHom.kerLift α`. Set `β' : Q →+* ℂ` to `Ideal.Quotient.lift (RingHom.ker α) β hker`. Establish `hα' : Function.Injective α'` using `RingHom.kerLift_injective α`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ' : Function.Injective β'`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `: β f = 0` using `hq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hker' this)`. Use `haveI : Countable (MonoidAlgebra ℤ (Formalism.CyclotomicNorms.Fbar g)) := Function.Injective.countable (f := MonoidAlgebra.coeff) (fun a b h => by ext x; rw [h])`. Use `haveI : Countable Q := Function.Surjective.countable Ideal.Quotient.mk_surjective`. Use `haveI : Countable (FractionRing Q) := Function.Surjective.countable (IsLocalization.mk'_surjective (nonZeroDivisors Q) (S := FractionRing Q))`. Set `a : FractionRing Q →+* ℂ` to `IsFractionRing.lift hα'`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b : FractionRing Q →+* ℂ` to `IsFractionRing.lift hβ'`. Take `⟨σ, hσ⟩` from `GlobalTheory.GaloisDescent.exists_complex_ringEquiv_comp_eq a b`. Use `⟨σ, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hσ (algebraMap Q (FractionRing Q) (Ideal.Quotient.mk _ (MonoidAlgebra.single x 1)))`. Establish `ha : a (algebraMap Q (FractionRing Q) (Ideal.Quotient.mk _ (MonoidAlgebra.single x 1))) = t' x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [a]`. Rewrite using `[IsFractionRing.lift_algebraMap]`. Simplify using `only [α']`. Rewrite using `[RingHom.kerLift_mk]`. Simplify using `[α, MonoidAlgebra.lift_single]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : b (algebraMap Q (FractionRing Q) (Ideal.Quotient.mk _ (MonoidAlgebra.single x 1))) = t x`. Simplify using `only [b]`. Rewrite using `[IsFractionRing.lift_algebraMap]`. Use `show β (MonoidAlgebra.single x 1) = t x`. Simplify using `[β, MonoidAlgebra.lift_single]`.
-
-Rewrite `h` using `[ha, hb]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_comp_eq : ∀ (g : ℕ) [Fact g.Prime] (t t' : Formalism.CyclotomicNorms.Fbar g →* ℂ), (∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y) → (∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t' x = t' y → x = y) → ∃ σ : ℂ ≃+* ℂ, ∀ x, σ (t' x) = t x := by
   intro g _ t t' ht ht'

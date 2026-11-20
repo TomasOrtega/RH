@@ -7,27 +7,27 @@ noncomputable section
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Introduce `T _ _ V _ _ R S a C v hgen N hN hC hv`. Establish `key : ∀ s : Finset T, ∀ f : ∀ w, V w, (∀ w, w ∉ s → f w = v w) → PiTensorProduct.tprod ℂ f ∈ N`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `f hf`. Establish `: f = v` using `funext fun w => hf w (Finset.notMem_empty w)`. Rewrite using `[this]`. Conclude with `hv`. Consider the case `insert w s hws ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Set `K : Submodule ℂ (V w)` to `Submodule.comap ((PiTensorProduct.tprod ℂ (s := V)).toLinearMap f w) N`. Establish `hmem : ∀ x, x ∈ K ↔ PiTensorProduct.tprod ℂ (Function.update f w x) ∈ N`. Introduce `x`. Simplify using `[K, MultilinearMap.toLinearMap_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hstab : ∀ Z, ∀ y ∈ K, a w Z y ∈ K`. Introduce `Z y hy`. Rewrite `hy`, the goal using `[hmem]`. Establish `h1` using `hN w Z _ hy`. Rewrite `h1` using `[actAt_apply, atPl, PiTensorProduct.map_tprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h1 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne h]`. Establish `hvK : v w ∈ K`. Rewrite using `[hmem]`. Apply `ih` to reduce the goal to its premises. Introduce `u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]`. Conclude with `hf u (by simp [h, hu])`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hCK : C w ≤ K`. Introduce `c hc`. Rewrite using `[hmem]`. Apply `hC` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨Function.update f w c, ⟨w, by simpa using hc⟩, rfl⟩`. Establish `hgK : genSub (a w) {v w} ≤ K`. Apply `sInf_le` to reduce the goal to its premises. Use `⟨?_, hstab⟩` and prove the remaining obligations. Simplify using `using hvK`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htop : K = ⊤`. Rewrite using `[eq_top_iff, ← hgen w]`. Conclude with `sup_le hgK hCK`. Establish `: f w ∈ K` using `by rw [htop]; trivial`. Rewrite `this` using `[hmem, Function.update_eq_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `this`. Establish `hall : ∀ f : ∀ w, V w, PiTensorProduct.tprod ℂ f ∈ N` using `fun f => key Finset.univ f (fun w hw => absurd (Finset.mem_univ w) hw)`. Rewrite using `[eq_top_iff, ← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `hall f`.
+A detailed English derivation is pending.
 -/
 theorem tprod_cyclic_top : ∀ (T : Type) [Fintype T] [DecidableEq T] (V : T → Type) [∀ w, AddCommGroup (V w)] [∀ w, Module ℂ (V w)], ∀ (R S : T → ℕ) (a : ∀ w, Mat (R w) (S w) →ₗ[ℂ] Module.End ℂ (V w)) (C : ∀ w, Submodule ℂ (V w)) (v : ∀ w, V w), (∀ w, genSub (a w) {v w} ⊔ C w = ⊤) → ∀ N : Submodule ℂ (PiTensorProduct ℂ V), (∀ w, Stab (actAt w (a w)) N) → tensAny C ≤ N → PiTensorProduct.tprod ℂ v ∈ N → N = ⊤ := by
   intro T _ _ V _ _ R S a C v hgen N hN hC hv

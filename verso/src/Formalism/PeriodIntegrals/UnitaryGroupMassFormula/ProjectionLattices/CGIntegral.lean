@@ -16,7 +16,7 @@ variable {K : Type} [Field K] {G : Type} [Group G] [Fintype G]
 def cG (T : GoodSet K G) (x : G) : K := ∑ s, cS T s x
 
 /- English proof (translation)
-Rewrite using `[eG, map_sum]`. Repeatedly rewrite using `[asAlg_eS]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[cG, Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem asAlg_eG {V : Type} [AddCommGroup V] [Module K V] (ρ : Representation K G V)
     (T : GoodSet K G) : ρ.asAlgebraHom (eG T) = ∑ x : G, cG T x • ρ x := by
@@ -27,11 +27,11 @@ theorem asAlg_eG {V : Type} [AddCommGroup V] [Module K V] (ρ : Representation K
   rw [cG, Finset.sum_smul]
 
 /- English proof (translation)
-Establish `h : ((Fintype.card G : ℕ) : K) * cG T x = ∑ s, ((Module.finrank K (T.W s) : ℕ) : K) * LinearMap.trace K _ (T.tau s x⁻¹)`. Rewrite using `[cG, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `card_ne_zero (K := K) (G := G)` as an intermediate fact. Rewrite using `[cS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h]`. Use `IsIntegral.sum _ fun s _ => ?_` and prove the remaining obligations. Use `IsIntegral.mul ?_ ?_` and prove the remaining obligations. Use `(isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ K ((Module.finrank K (T.W s) : ℕ) : ℤ)))` as an intermediate fact.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `isIntegral_trace_of_pow _ (Fintype.card G) Fintype.card_pos (by rw [← map_pow, pow_card_eq_one, map_one])`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cG_integral [CharZero K] (T : GoodSet K G) (x : G) :
     IsIntegral ℤ (((Fintype.card G : ℕ) : K) * cG T x) := by
@@ -51,7 +51,7 @@ theorem cG_integral [CharZero K] (T : GoodSet K G) (x : G) :
       (by rw [← map_pow, pow_card_eq_one, map_one])
 
 /- English proof (translation)
-Simplify using `only [cG, cS, map_sum, map_mul, map_div₀, map_natCast, star_sum, star_mul', star_div₀, star_natCast, PI.Dv.GLPTr.star_map_trace_rep, inv_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_cG (σ : K →+* ℂ) (T : GoodSet K G) (g : G) :
     star (σ (cG T g)) = σ (cG T g⁻¹) := by
@@ -59,13 +59,11 @@ theorem star_cG (σ : K →+* ℂ) (T : GoodSet K G) (g : G) :
     star_natCast, PI.Dv.GLPTr.star_map_trace_rep, inv_inv]
 
 /- English proof (translation)
-Introduce `K _ _ _ _ G _ _ T A ρ hA`. Take `⟨hgood, hL, hnorm⟩` from `hA`. Use `⟨hgood, Fintype.card_pos, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, eG_mul_eG]`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[asAlg_eG]`. Establish `hz : ∀ x : G, ∃ a : 𝓞 K, algebraMap (𝓞 K) K a = ((Fintype.card G : ℕ) : K) * cG T x` using `fun x => ⟨⟨_, cG_integral T x⟩, rfl⟩`. Use `choose a ha using hz`. Establish `h1 : (((Fintype.card G : ℕ) : 𝓞 K)) • (∑ x : G, cG T x • ρ x) y = ∑ x : G, a x • ρ x y`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul K, LinearMap.sum_apply, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_smul, ← ha, algebraMap_smul]`. Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun x _ => Submodule.smul_mem _ _ (hL x y hy)`. Introduce `v x y`.
-
-Rewrite using `[asAlg_eG]`. Conclude with `majAt_selfadj' A.b A.X v ρ (fun g z => hnorm g v z) (cG T) (fun g => star_cG v.embedding T g) x y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glatProj : PI.Dv.GLatProj := by
   intro K _ _ _ _ G _ _ T A ρ hA

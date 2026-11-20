@@ -6,13 +6,9 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ _ _`. Take `⟨a, ha0, hfree⟩` from `(generic_freeness A).2.1 B B`. Use `⟨a, ha0, fun c A' B' _ _ _ _ _ _ _ _ hA hB => ?_⟩` and prove the remaining obligations. Use `haveI := hA`. Establish `hu : IsUnit (algebraMap A A' a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsLocalization.Away.algebraMap_isUnit (S := A') (a * c)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`. Use `letI : Algebra (Localization.Away a) A' := (IsLocalization.Away.lift a (S := Localization.Away a) hu).toAlgebra`. Use `haveI : IsScalarTower A (Localization.Away a) A' := IsScalarTower.of_algebraMap_eq fun x => (IsLocalization.Away.lift_eq (S := Localization.Away a) a hu x).symm`.
-
-Use `haveI : Module.Free (Localization.Away a) ((Localization.Away a) ⊗[A] B) := Module.Free.of_equiv (LocalizedModule.equivTensorProduct (Submonoid.powers a) B)`. Use `haveI : Module.Free A' (A' ⊗[A] B) := Module.Free.of_equiv (TensorProduct.AlgebraTensorModule.cancelBaseChange A (Localization.Away a) A' A' B)`. Use `haveI hloc : IsLocalizedModule (Submonoid.powers (a * c)) (IsScalarTower.toAlgHom A B B').toLinearMap := by`. Rewrite using `[isLocalizedModule_iff_isLocalization, Algebra.algebraMapSubmonoid, Submonoid.map_powers]`. Conclude with `hB`.
-
-Establish `hbc` using `IsLocalizedModule.isBaseChange (Submonoid.powers (a * c)) A' (IsScalarTower.toAlgHom A B B').toLinearMap`. Conclude with `Module.Free.of_equiv hbc.equiv`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem free_away_mul_of_finiteType : ∀ {A B : Type} [CommRing A] [CommRing B] [IsDomain A] [IsNoetherianRing A] [Algebra A B] [Algebra.FiniteType A B] [Algebra.IsAlgebraic A B], ∃ a : A, a ≠ 0 ∧ ∀ (c : A) (A' B' : Type) [CommRing A'] [CommRing B'] [Algebra A A'] [Algebra B B'] [Algebra A' B'] [Algebra A B'] [IsScalarTower A A' B'] [IsScalarTower A B B'], IsLocalization.Away (a * c) A' → IsLocalization.Away (algebraMap A B (a * c)) B' → Module.Free A' B' := by
   intro A B _ _ _ _ _ _ _

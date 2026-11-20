@@ -16,11 +16,11 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨s, hs, h1, hu⟩` from `h`. Use `⟨s.map (·.tw χ hχ), (hs.tw χ hχ).of_equiv (x.twEquiv χ hχ), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨y', hy', rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `h1 y' hy'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy z hz e`. Take `⟨y', hy', rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨z', hz', rfl⟩` from `Multiset.mem_map.1 hz`. Rewrite `e` using `[IrrGL.tw_nu]`. Establish `hinv : IsSmoothChar χ⁻¹` using `hχ.inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (·.tw χ⁻¹ hinv) e`. Simplify using `only [IrrGL.tw_tw, mul_inv_cancel, IrrGL.tw_one] at e2`. Conclude with `hu y' hy' z' hz' e2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem plainTor_tw {x : IrrGL k} (h : GlobalTheory.RoadU.PlainTor x) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     GlobalTheory.RoadU.PlainTor (x.tw χ hχ) := by
@@ -43,13 +43,13 @@ end Local
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {n : ℕ}
 
 /- English proof (translation)
-Introduce `σ hσ`. Establish `e : (π.twist χ).twist χ⁻¹ = π`. Rewrite using `[← TR.CuspSub.twist_mul, mul_inv_cancel, TR.CuspSub.twist_one]`. Establish `h1` using `hσ.twist χ⁻¹`. Rewrite `h1` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `h _ h1`. Establish `hsm` using `GlobalTheory.HeckeComp.smooth_loc χ⁻¹ v`. Establish `hsm'` using `GlobalTheory.HeckeComp.smooth_loc χ v`. Establish `h3 : IrrGL.of (σ.twist (CuspSub.locDet n χ⁻¹ v) (TR.CuspSub.isOpen_ker_locDet χ⁻¹ v)).ρ (σ.twist (CuspSub.locDet n χ⁻¹ v) (TR.CuspSub.isOpen_ker_locDet χ⁻¹ v)).smooth (σ.twist (CuspSub.locDet n χ⁻¹ v) (TR.CuspSub.isOpen_ker_locDet χ⁻¹ v)).irred = (IrrGL.of σ.ρ σ.smooth σ.irred).t …` using `(IrrGL.tw_of σ.ρ σ.smooth σ.irred _ hsm).symm`. Rewrite `h2` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `plainTor_tw h2 (χ.loc v) hsm'`. Rewrite `h4` using `[IrrGL.tw_tw]`. Establish `e3 : χ⁻¹.loc v * χ.loc v = 1` using `MonoidHom.ext fun x => by`. Express the relevant statement in the definitionally equal form `(χ.loc v x)⁻¹ * χ.loc v x = 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ (c : (v.adicCompletion F)ˣ →* ℂˣ) (hc : IsSmoothChar c), c = 1 → (IrrGL.of σ.ρ σ.smooth σ.irred).tw c hc = IrrGL.of σ.ρ σ.smooth σ.irred`. Introduce and unpack `_ hc rfl`. Conclude with `IrrGL.tw_one _ _`. Rewrite `h4` using `[key _ _ e3]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem plainAtR_twist {π : TR.CuspSub F n} {v : HeightOneSpectrum (𝓞 F)} (h : PlainAtR π v) (χ : HChar F) :
     PlainAtR (π.twist χ) v := by
@@ -81,9 +81,9 @@ private theorem plainAtR_twist {π : TR.CuspSub F n} {v : HeightOneSpectrum (�
 end UpperTheory.V.Z.Win.Birth
 
 /- English proof (translation)
-Introduce and unpack `F Ω _ _ _ _ _ _ l _ ι r κ ⟨-, art, χ, a, ha, hχ, hL⟩ ⟨π, hr, hA, hP⟩`. Use `⟨π.twist χ, hr.twist (expo_intR hχ), sys_twist hA ha hL fun w B hB hu => hB.twist hu, fun v => ?_⟩` and prove the remaining obligations. Break down `hP v with h | ⟨B, hB⟩` into its components or cases. Conclude with `Or.inl (plainAtR_twist h χ)`. Distinguish the cases in `hu : χ.UnrAt v`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr ⟨_, hB.twist hu⟩`. Conclude with `Or.inl (plainAtR_twist (plainAtR_of_hasSat (by norm_num) π v B hB) χ)`.
+Prove the second alternative. Prove the first alternative.
 -/
 theorem UpperTheory.V.Z.Win.Birth.prTw :
     UpperTheory.V.Z.Win.Birth.PrTw := by

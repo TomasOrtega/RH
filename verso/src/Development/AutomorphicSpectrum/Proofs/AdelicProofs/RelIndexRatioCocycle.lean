@@ -6,17 +6,15 @@ open scoped Pointwise ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Introduce `G _ A B C hAB hBA hBC hCB`. Establish `hAC : A.relIndex C ≠ 0` using `Subgroup.relIndex_ne_zero_trans hAB hBC`. Establish `hCA : C.relIndex A ≠ 0` using `Subgroup.relIndex_ne_zero_trans hCB hBA`. Use `⟨hAC, hCA, ?_⟩` and prove the remaining obligations. Use `set T : Subgroup G := A ⊓ B ⊓ C with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hTAB : T ≤ A ⊓ B` using `inf_le_left`. Establish `hTBC : T ≤ B ⊓ C` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `hTAC : T ≤ A ⊓ C` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `h1` using `Subgroup.relIndex_mul_relIndex T (A ⊓ B) A hTAB inf_le_left`. Establish `h2` using `Subgroup.relIndex_mul_relIndex T (A ⊓ B) B hTAB inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Subgroup.relIndex_mul_relIndex T (B ⊓ C) B hTBC inf_le_left`. Establish `h4` using `Subgroup.relIndex_mul_relIndex T (B ⊓ C) C hTBC inf_le_right`. Establish `h5` using `Subgroup.relIndex_mul_relIndex T (A ⊓ C) A hTAC inf_le_left`. Establish `h6` using `Subgroup.relIndex_mul_relIndex T (A ⊓ C) C hTAC inf_le_right`. Rewrite `h1` using `[Subgroup.inf_relIndex_left A B]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3`, `h5` using `[Subgroup.inf_relIndex_left]`. Rewrite `h2`, `h4`, `h6` using `[Subgroup.inf_relIndex_right]`. Establish `hTC : T.relIndex C ≠ 0`. Rewrite using `[hT, Subgroup.inf_relIndex_right]`. Conclude with `Subgroup.relIndex_inf_ne_zero hAC hBC`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTB : T.relIndex B ≠ 0` using `Subgroup.relIndex_ne_zero_trans hTC hCB`. Establish `hx : T.relIndex (A ⊓ B) ≠ 0` using `left_ne_zero_of_mul (h2 ▸ hTB)`. Establish `hy : T.relIndex (B ⊓ C) ≠ 0` using `left_ne_zero_of_mul (h4 ▸ hTC)`. Establish `hz : T.relIndex (A ⊓ C) ≠ 0` using `left_ne_zero_of_mul (h6 ▸ hTC)`. Apply `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero hx hy) hz)` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem relIndex_ratio_cocycle : ∀ (G : Type) [Group G] (A B C : Subgroup G), A.relIndex B ≠ 0 → B.relIndex A ≠ 0 → B.relIndex C ≠ 0 → C.relIndex B ≠ 0 → A.relIndex C ≠ 0 ∧ C.relIndex A ≠ 0 ∧ B.relIndex A * C.relIndex B * A.relIndex C = A.relIndex B * B.relIndex C * C.relIndex A := by
   intro G _ A B C hAB hBA hBC hCB

@@ -13,11 +13,11 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Substitute `hμ hS` using the available equality. Take `⟨ψ, hψ, -, -⟩` from `kType_unique T T'`. Set `Θ : T.V ≃ₗ[ℂ] R.V` to `ψ.toLinearEquiv ≪≫ₗ φ.toLinearEquiv ≪≫ₗ LinearEquiv.ofTop ⊤ rfl`. Establish `hΘ : ∀ v, Θ (T.op k v) = R.op k (Θ v)`. Introduce `v`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((φ (ψ (T.op k v)) : R.V)) = R.op k (φ (ψ v))`. Rewrite using `[hψ, hφ]`. Establish `e : (R.op k : R.V →ₗ[ℂ] R.V) = Θ.conj (T.op k : T.V →ₗ[ℂ] T.V)`. Use extensionality with `v`. Rewrite using `[LinearEquiv.conj_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show R.op k v = Θ (T.op k (Θ.symm v))`. Rewrite using `[hΘ, LinearEquiv.apply_symm_apply]`. Rewrite using `[e, LinearMap.trace_conj']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_trace_piece {Λ' μ : Fin n → ℝ} (T : KType ε Λ') (T' : KType ε μ) (hμ : μ = Λ') (R : KRep ε)
     (S : Submodule ℂ R.V) (hS : S = ⊤) (φ : T'.V ≃ₗᵢ[ℂ] S)
@@ -38,17 +38,17 @@ theorem sp_trace_piece {Λ' μ : Fin n → ℝ} (T : KType ε Λ') (T' : KType �
   rw [e, LinearMap.trace_conj']
 
 /- English proof (translation)
-Take `⟨m, xs, μ, h1, h2, h3, -, -, h6⟩` from `compRed n ε R`. Use `choose c hc using fun i => huniq (μ i) (xs i) (h1 i).1 (h1 i).2`. Establish `hc0 : ∀ i, c i ≠ 0`. Introduce `i h`. Apply `(h1 i).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc i, h, zero_smul]`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Establish `: x ∈ (⨆ i : Fin 0, Formalism.REAL.kSpan ε R.units (xs i))` using `by rw [h3]; trivial`. Rewrite `this` using `[iSup_of_empty, Submodule.mem_bot]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx this`. Establish `hm1 : m ≤ 1`. Assume the negation of the conclusion as `hm`. Establish `hne : (⟨0, by omega⟩ : Fin m) ≠ ⟨1, by omega⟩` using `by simp [Fin.ext_iff]`. Establish `h` using `h2 _ _ hne (xs ⟨0, by omega⟩) (Formalism.REAL.mem_compact_span_self (ε := ε) (F := R.units) _) (xs ⟨1, by omega⟩) (Formalism.REAL.mem_compact_span_self (ε := ε) (F := R.units) _)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[hc, hc, inner_smul_left, inner_smul_right]`. Use `(mul_ne_zero ((map_ne_zero _).mpr (hc0 _)) (mul_ne_zero (hc0 _) (inner_self_ne_zero.mpr hx))) h` and prove the remaining obligations. Take `rfl : m = 1` from `by omega`. Establish `htop : Formalism.REAL.kSpan ε R.units (xs 0) = ⊤` using `by rw [← h3, iSup_unique]; rfl`. Establish `hμ : μ 0 = Λ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Establish `e1` using `(h1 0).2.1 a`. Establish `e2` using `hxw.1 a`. Establish `hne : xs 0 ≠ 0` using `(h1 0).1`. Rewrite `e1` using `[hc 0, map_smul, e2, smul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e3 : ((μ 0 a : ℝ) : ℂ) • xs 0 = ((Λ' a : ℝ) : ℂ) • xs 0` using `by rw [hc 0]; exact e1.symm`. Conclude with `smul_left_injective ℂ hne e3` after adjusting the coercions. Take `⟨T', φ, -, hφ, -, -⟩` from `h6 0`. Conclude with `sp_trace_piece T T' hμ R _ htop φ hφ k`.
+A detailed English derivation is pending.
 -/
 theorem sp_trace_of_rep {Λ' : Fin n → ℝ} (T : KType ε Λ') (R : KRep ε) (x : R.V) (hx : x ≠ 0)
     (hxw : Formalism.REAL.KHighest ε R.units Λ' x)

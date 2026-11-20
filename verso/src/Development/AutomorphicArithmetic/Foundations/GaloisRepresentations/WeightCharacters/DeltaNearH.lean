@@ -7,11 +7,11 @@ open UpperTheory.Gal.Wt
 open MvPolynomial
 
 /- English proof (translation)
-Establish `hu0 : u ≠ 0` using `fun e => by simp [e] at hu`. Establish `step : ∀ w x : k, ‖w‖ = 1 → ‖w - 1‖ ≤ ε → ‖x - 1‖ ≤ ε → ‖x * w - 1‖ ≤ ε` using `fun w x hw h1 h2 => by`. Rewrite using `[show x * w - 1 = (x - 1) * w + (w - 1) by ring]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ h1)` and prove the remaining obligations. Rewrite using `[norm_mul, hw, mul_one]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [zpow_add_one₀ hu0]`. Conclude with `step _ _ hu h ih`. Consider the case `pred n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub_one₀ hu0]`. Use `step _ _ (by rw [norm_inv, hu, inv_one]) ?_ ih` and prove the remaining obligations. Rewrite using `[show u⁻¹ - 1 = -(u⁻¹ * (u - 1)) by field_simp; ring, norm_neg, norm_mul, norm_inv, hu, inv_one, one_mul]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zp {k : Type} [NormedField k] [IsUltrametricDist k] {u : k} {ε : ℝ} (h0 : 0 ≤ ε) (hu : ‖u‖ = 1) (h : ‖u - 1‖ ≤ ε)
     (n : ℤ) : ‖u ^ n - 1‖ ≤ ε := by
@@ -30,25 +30,25 @@ private theorem zp {k : Type} [NormedField k] [IsUltrametricDist k] {u : k} {ε 
     exact h
 
 /- English proof (translation)
-Introduce `l _ ι a ν h hI`. Set `m : GL (Fin a) ℂ → Fin a × Fin a → Qbar l` to `fun g p => ι.symm ((g : Matrix (Fin a) (Fin a) ℂ) p.2 p.1)`. Set `D : MvPolynomial (Fin a × Fin a) ℤ` to `(Matrix.of fun i j => (X (j, i) : MvPolynomial (Fin a × Fin a) ℤ)).det`. Establish `hmap : ∀ (w : Fin a × Fin a → ℂ) (P : MvPolynomial (Fin a × Fin a) ℤ), ι.symm (aeval w P) = aeval (fun j => ι.symm (w j)) P`. Introduce `w P`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C n => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p j hp => simp [hp]`. Establish `hD : ∀ g : GL (Fin a) ℂ, ι.symm (g : Matrix (Fin a) (Fin a) ℂ).det = aeval (m g) D` using `fun g => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← hmap, AlgHom.map_det]`. Use `congr 2`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hδ : ∀ g : GL (Fin a) ℂ, ι.symm (delta ν g) = (aeval (m g) D) ^ ν.detShift * aeval (m g) (extremal ℤ a ν)` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : (aeval fun p : Fin a × Fin a => (1 : Matrix (Fin a) (Fin a) ℂ) p.1 p.2).comp (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `a) (g : Matrix (Fin a) (Fin a) ℂ).transpose) = aeval fun p : Fin a × Fin a => (g : Matrix (Fin a) (Fin a) ℂ) p.2 p.1 := MvPolynomial.algHom_ext fun v => by simp [Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply]`. Establish `e2 : delta ν g = (g : Matrix (Fin a) (Fin a) ℂ).det ^ ν.detShift * aeval (fun p : Fin a × Fin a => (g : Matrix (Fin a) (Fin a) ℂ) p.2 p.1) (extremal ℤ a ν)`. Express the relevant statement in the definitionally equal form `aeval _ (sqAct ℂ a ν g (extremal ℂ a ν)) = _`. Rewrite using `[sqAct, map_smul, ← AlgHom.comp_apply, e1, detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, ← Formalism.L2.DIV.map_extremal (algebraMap ℤ ℂ), aeval_map_algebraMap, smul_eq_mul]`. Rewrite using `[e2, map_mul, map_zpow₀, hD, hmap]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ∀ p, ‖m h p‖ ≤ 1` using `fun p => (hI _ _).1`. Establish `hb : ∀ (x : Fin a × Fin a → Qbar l), (∀ p, ‖x p‖ ≤ 1) → ∀ P : MvPolynomial (Fin a × Fin a) ℤ, ‖aeval x P‖ ≤ 1` using `fun x hx P => (aeval_sub_le le_rfl hx hx (fun _ => by simp) P).1`. Establish `hd1 : ‖aeval (m h) D‖ = 1`. Establish `h1` using `hb _ hm D`. Establish `h2` using `hb (m h⁻¹) (fun p => (hI _ _).2) D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖aeval (m h) D‖ * ‖aeval (m h⁻¹) D‖ = 1`. Rewrite using `[← norm_mul, ← hD, ← hD, ← map_mul, ← Matrix.det_mul, Units.mul_inv, Matrix.det_one, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (aeval (m h) D), norm_nonneg (aeval (m h⁻¹) D)]`. Use `⟨by rw [hδ, norm_mul, norm_zpow, hd1, one_zpow, one_mul]; exact hb _ hm _, fun ε hε hN => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ p, ‖m 1 p‖ ≤ 1` using `fun p => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [m, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hc : ∀ p, ‖m h p - m 1 p‖ ≤ ε` using `fun p => by`. Use `hN p.2 p.1` as an intermediate fact. Rewrite `this` using `[map_sub]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `eD : aeval (m 1) D = 1` using `by rw [← hD]; simp`. Establish `eE : aeval (m 1) (extremal ℤ a ν) = 1`. Rewrite using `[extremal, Formalism.GradedWeylDivisibility.hw, map_prod]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, Formalism.GradedWeylDivisibility.lpMinor, AlgHom.map_det]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ∀ M : Matrix (Fin (s.val + 1)) (Fin (s.val + 1)) (Qbar l), M = 1 → M.det ^ (ν.natW s - Formalism.GradedWeylDivisibility.nuNext ν.natW s) = 1 from fun M hM => by rw [hM, Matrix.det_one, one_pow]]`. Use extensionality with `i j`. Simplify using `[m, Matrix.one_apply, eq_comm]`. Establish `c1 : ‖aeval (m h) D - 1‖ ≤ ε` using `by rw [← eD]; exact (aeval_sub_le hε hm h1 hc D).2.2`. Establish `c2 : ‖aeval (m h) (extremal ℤ a ν) - 1‖ ≤ ε` using `by rw [← eE]; exact (aeval_sub_le hε hm h1 hc (extremal ℤ a ν)).2.2`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_one, hδ, show ∀ x y : Qbar l, x * y - 1 = x * (y - 1) + (x - 1) from fun x y => by ring]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (zp hε hd1 c1 _))` and prove the remaining obligations. Rewrite using `[norm_mul, norm_zpow, hd1, one_zpow, one_mul]` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Gal.Wt.deltaNear_h : DeltaNear := by
   intro l _ ι a ν h hI

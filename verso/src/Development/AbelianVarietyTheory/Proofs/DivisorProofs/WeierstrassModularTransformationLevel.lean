@@ -16,11 +16,11 @@ open GlobalTheory.WpFam
 namespace GlobalTheory.WpFam
 
 /- English proof (translation)
-Introduce `N _ x γ τ`. Establish `h` using `congrFun (EisensteinSeries.G2_slash_action γ) τ`. Rewrite `h` using `[ModularForm.SL_slash_apply, Pi.sub_apply, EisensteinSeries.D2]`. Establish `hj : UpperHalfPlane.denom γ τ ≠ 0` using `UpperHalfPlane.denom_ne_zero _ _`. Establish `hd : UpperHalfPlane.denom γ τ = ((γ 1 0 : ℤ) : ℂ) * τ + ((γ 1 1 : ℤ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[ModularGroup.denom_apply]`. Establish `hG : EisensteinSeries.G2 (γ • τ) = UpperHalfPlane.denom γ τ ^ 2 * EisensteinSeries.G2 τ - 2 * Real.pi * Complex.I * ((γ 1 0 : ℤ) : ℂ) * UpperHalfPlane.denom γ τ`. Rewrite `h` using `[zpow_neg, zpow_ofNat]`. Clear denominators, using `at h` for the nonvanishing conditions. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hwp` using `((GlobalTheory.QFam.isFam_iff_values _ _ _ _).1 (GlobalTheory.T.weierstrassP_torsion_isModularFamily N).1) x γ τ`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Rewrite `hwp` using `[zpow_ofNat]`. Rewrite using `[wB, wB, gN, gN, hwp, hG, hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/

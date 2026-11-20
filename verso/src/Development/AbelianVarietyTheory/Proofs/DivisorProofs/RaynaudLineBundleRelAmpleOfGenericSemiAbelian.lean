@@ -16,13 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AmpleGenericSemiAb
 
 /- English proof (translation)
-Take `⟨M, hMa, hMs⟩` from `GlobalTheory.T.exists_ample_symmetric_lineBundle_semiAbelian R G hG hA`. Establish `hMK : RelAmple ((Over.pullback (jK R)).obj G) (M.pull (pullback.fst G.hom (jK R)))`. Establish `: IsProper ((Over.pullback (jK R)).obj G).hom` using `hA.proper`. Establish `h1 : IsAffineHom (jK R)` using `by unfold jK; infer_instance`. Establish `: IsAffineHom (pullback.fst G.hom (jK R))` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback G.hom (jK R)).flip h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(relAmple_iff_isAmpleLB_of_isAffine ((Over.pullback (jK R)).obj G) (LB.isLB_linComb hMa.isLB _ _)).2 (hMa.pull_of_isAffineHom _)`. Take `⟨R', _, _, _, _, _, ρ, G', _, π, hinj, hfin, hpb, N, a₀, r, a, β, hN, ha₀, -, hiso⟩` from `GlobalTheory.T.exists_finiteNormalCover_symmBundle_power_decomposition R hc G hG hA L M hL hMa.isLB hLK hMK hs hMs`. Establish `: IsFinite π`. Establish `: IsFinite (spMap ρ)`. Unfold `spMap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `hfin`. Conclude with `MorphismProperty.of_isPullback (P := @IsFinite) hpb.1.flip this`. Establish `hamp` using `GlobalTheory.AmplePowLinComb.isAmpleLB_of_lbPow_lbIso_linComb _ (L.pull π) (M.pull π) (hMa.pull_of_isFinite π) (LB.isLB_linComb hL _ _) N a₀ r a (fun i => (β i).left) hN ha₀ hiso`. Take `⟨_, _⟩` from `isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R`.
-
-Conclude with `GlobalTheory.AmpleFiniteBase.isAmpleLB_of_pull R R' ρ hinj hfin G G' π hG hpb L hL hamp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_of_generic_of_symm (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] [CharZero R]
     (hc : IsAdicComplete (maximalIdeal R) R) (G : Over (Sp R)) [GrpObj G] (hG : IsSemiAbelian G)
@@ -50,7 +48,7 @@ theorem isAmpleLB_of_generic_of_symm (R : Type) [CommRing R] [IsRegularLocalRing
   exact GlobalTheory.AmpleFiniteBase.isAmpleLB_of_pull R R' ρ hinj hfin G G' π hG hpb L hL hamp
 
 /- English proof (translation)
-Introduce `R _ _ _ _ hc G _ hG hA L hL hLK hs` and use `isAmpleLB_of_generic_of_symm R hc G hG hA L hL hLK hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_of_generic : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] [CharZero R],
     IsAdicComplete (maximalIdeal R) R → ∀ (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G →

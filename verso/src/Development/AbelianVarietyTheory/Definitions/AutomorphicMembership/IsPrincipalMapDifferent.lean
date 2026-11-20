@@ -68,7 +68,7 @@ def FrameAt (q : LatChart Z L) {k : Type} [Field k] (x : Sp k ⟶ Z.X) (u : Vecs
   ⊤ ≤ x ⁻¹ᵁ q.U ∧ Z.FlagAt x u ∧ HasCoord q.g L q.m x u fun σ i l => valR x q.U (q.c σ i l)
 
 /- English proof (translation)
-The claim follows from `(q.adapted k x h ho).imp fun _ hu => ⟨h, hu⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_frameAt (q : LatChart Z L) {k : Type} [Field k] {x : Sp k ⟶ Z.X} (h : ⊤ ≤ x ⁻¹ᵁ q.U)
     (ho : Set.range x ⊆ Z.opn) : ∃ u, q.FrameAt x u :=
@@ -85,7 +85,7 @@ def tr (q q' : LatChart Z L) (e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ
   if h : ∃ a : Γ(Z.X, q.U ⊓ q'.U)ˣ, q.IsTr q' e a.val then h.choose else 1
 
 /- English proof (translation)
-Rewrite using `[tr, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTr_tr {q q' : LatChart Z L} {e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ}
     (h : ∃ a : Γ(Z.X, q.U ⊓ q'.U)ˣ, q.IsTr q' e a.val) : q.IsTr q' e (q.tr q' e).val := by
@@ -128,7 +128,7 @@ def diffGen {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (σ : E →+*
   Submodule.IsPrincipal.generator ((differentIdeal ℤ (𝓞 E)).map (embV c W σ))
 
 /- English proof (translation)
-The claim follows from `Ideal.span_singleton_generator _`.
+A detailed English derivation is pending.
 -/
 theorem span_diffGen {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (σ : E →+* ℂ) :
     Ideal.span {diffGen c W σ} = (differentIdeal ℤ (𝓞 E)).map (embV c W σ) := Ideal.span_singleton_generator _

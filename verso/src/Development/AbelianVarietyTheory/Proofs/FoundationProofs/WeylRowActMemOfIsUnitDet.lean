@@ -4,7 +4,7 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Wlocal
 namespace GlobalTheory.TestLat
 
 /- English proof (translation)
-Introduce `R _ _ n ν _ g hg f hf`. Conclude with `Formalism.UG.P.wlocal_main (le_refl n) ν n 0 (by omega) g g⁻¹ (Matrix.nonsing_inv_mul g hg) (fun _ _ hj => absurd hj (Nat.not_lt_zero _)) f hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weyl_rowAct_mem_of_isUnit_det :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (n : ℕ) (ν : Fin n → ℕ), Antitone ν →

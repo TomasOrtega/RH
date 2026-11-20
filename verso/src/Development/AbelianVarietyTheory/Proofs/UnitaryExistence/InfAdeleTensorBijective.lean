@@ -21,14 +21,14 @@ theorem ext_apply (σ : F →+* ℂ) (a : InfiniteAdeleRing F) :
     ext σ a = InfinitePlace.Completion.extensionEmbedding (InfinitePlace.mk σ) (a (InfinitePlace.mk σ)) := rfl
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbedding (InfinitePlace.mk σ)).continuous.comp (continuous_apply (InfinitePlace.mk σ))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ext (σ : F →+* ℂ) : Continuous (ext σ) :=
   (InfinitePlace.Completion.isometry_extensionEmbedding (InfinitePlace.mk σ)).continuous.comp
     (continuous_apply (InfinitePlace.mk σ))
 
 /- English proof (translation)
-Establish `h : (InfinitePlace.mk σ).embedding = σ` using `InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal σ)`. Rewrite using `[ext_apply, InfiniteAdeleRing.algebraMap_apply]`. Simplify using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ext_algebraMap [IsTotallyReal F] (σ : F →+* ℂ) (x : F) :
     ext σ (algebraMap F (InfiniteAdeleRing F) x) = σ x := by
@@ -38,7 +38,7 @@ theorem ext_algebraMap [IsTotallyReal F] (σ : F →+* ℂ) (x : F) :
   simp [h]
 
 /- English proof (translation)
-Rewrite using `[ext_apply, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_eq_ofReal [IsTotallyReal F] (σ : F →+* ℂ) (a : InfiniteAdeleRing F) :
     ext σ a = (InfinitePlace.Completion.extensionEmbeddingOfIsReal
@@ -46,7 +46,7 @@ theorem ext_eq_ofReal [IsTotallyReal F] (σ : F →+* ℂ) (a : InfiniteAdeleRin
   rw [ext_apply, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]
 
 /- English proof (translation)
-Rewrite using `[ext_eq_ofReal, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_ext [IsTotallyReal F] (σ : F →+* ℂ) (a : InfiniteAdeleRing F) :
     starRingEnd ℂ (ext σ a) = ext σ a := by
@@ -55,11 +55,11 @@ theorem conj_ext [IsTotallyReal F] (σ : F →+* ℂ) (a : InfiniteAdeleRing F) 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `letI : Algebra F ℂ := (τ.comp (algebraMap F E)).toAlgebra`. Set `f : InfiniteAdeleRing F →ₐ[F] ℂ` to `{ ext (τ.comp (algebraMap F E)) with commutes' := fun x => ext_algebraMap _ x }`. Set `g : E →ₐ[F] ℂ` to `{ τ with commutes' := fun x => rfl }`. Use `⟨(Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[g]`. Establish `: (fun a : InfiniteAdeleRing F => (Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom (a ⊗ₜ (1 : E))) =`. Use extensionality with `(τ.comp (algebraMap F E)) := by`. Use function extensionality and compare the values at `a`. Simplify using `[f]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `continuous_ext _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom [IsTotallyReal F] (τ : E →+* ℂ) :
     ∃ θ : InfiniteAdeleRing F ⊗[F] E →+* ℂ, (∀ x, θ (1 ⊗ₜ x) = τ x) ∧
@@ -80,9 +80,9 @@ theorem exists_hom [IsTotallyReal F] (τ : E →+* ℂ) :
     exact continuous_ext _
 
 /- English proof (translation)
-Establish `: (fun a : InfiniteAdeleRing F => θ (a ⊗ₜ (1 : E))) = ext (τ.comp (algebraMap F E))`. Use `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer h2 (continuous_ext _) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, ext_algebraMap, RingHom.comp_apply]`. Rewrite using `[← h1, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, ← h1, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_tmul [IsTotallyReal F] (τ : E →+* ℂ) (θ : InfiniteAdeleRing F ⊗[F] E →+* ℂ)
     (h1 : ∀ x, θ (1 ⊗ₜ x) = τ x) (h2 : Continuous fun a : InfiniteAdeleRing F => θ (a ⊗ₜ (1 : E)))
@@ -96,17 +96,17 @@ theorem hom_tmul [IsTotallyReal F] (τ : E →+* ℂ) (θ : InfiniteAdeleRing F 
   rw [← this, ← h1, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, c y ≠ y := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hc (AlgEquiv.ext h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : c (c y) = y` using `τ.injective (by rw [hτ, hτ, Complex.conj_conj])`. Establish `hδ : y - c y ≠ 0` using `sub_ne_zero.2 hy.symm`. Establish `hcδ : c (y - c y) = -(y - c y)` using `by rw [map_sub, hcc]; ring`. Use `⟨y - c y, hδ, hcδ, ?_⟩` and prove the remaining obligations. Generalize the expression as in `y - c y = δ at hδ hcδ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : LinearIndependent F ![(1 : E), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h'` using `congrArg c hst`. Establish `hsm : ∀ (p : F) (x : E), c (p • x) = p • c x` using `fun p x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, c.commutes]`. Rewrite `h'` using `[map_add, hsm, hsm, map_one, hcδ, map_zero, smul_neg]`. Establish `ht : t • δ = 0`. Establish `: (2 : E) * (t • δ) = 0` using `by linear_combination hst - h'`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht' : t = 0` using `by simpa [hδ] using ht`. Use `⟨?_, ht'⟩` and prove the remaining obligations. Simplify `hst` using `[ht']`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by simp [h2])`. Introduce `x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : x ∈ Submodule.span F (Set.range ![(1 : E), δ])` using `hsp ▸ Submodule.mem_top`. Rewrite `hx` using `[Matrix.range_cons_cons_empty, Submodule.mem_span_pair]`. Take `⟨p, q, rfl⟩` from `hx`. Conclude with `⟨p, q, by simp [Algebra.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_delta (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1)
     (hτ : ∀ (τ : E →+* ℂ) x, τ (c x) = starRingEnd ℂ (τ x)) :
@@ -142,13 +142,11 @@ theorem exists_delta (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c �
   exact ⟨p, q, by simp [Algebra.smul_def]⟩
 
 /- English proof (translation)
-Establish `hp : ∀ p, τ (algebraMap F E p) = τ' (algebraMap F E p)` using `fun p => RingHom.congr_fun h p`. Take `⟨p, q, hpq⟩` from `hs (δ * δ)`. Establish `h'` using `congrArg c hpq`. Rewrite `h'` using `[map_mul, map_add, map_mul, hc, c.commutes, c.commutes]`. Establish `hsq : δ * δ = algebraMap F E p` using `by linear_combination (hpq + h') / 2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: τ δ * τ δ = τ' δ * τ' δ` using `by rw [← map_mul, ← map_mul, hsq, hp]`. Break down `mul_self_eq_mul_self_iff.1 this with e | e` into its components or cases. Use `left`. Use extensionality with `x`. Take `⟨p, q, rfl⟩` from `hs x`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[hp, e]`. Use `right`. Use extensionality with `x`. Take `⟨p, q, rfl⟩` from `hs x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hτ]`.
-
-Simplify using `[hp, e, hc]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_or_conj (c : E ≃ₐ[F] E) (hτ : ∀ (τ : E →+* ℂ) x, τ (c x) = starRingEnd ℂ (τ x))
     {δ : E} (h0 : δ ≠ 0) (hc : c δ = -δ)
@@ -173,9 +171,9 @@ theorem eq_or_conj (c : E ≃ₐ[F] E) (hτ : ∀ (τ : E →+* ℂ) x, τ (c x)
     simp [hp, e, hc]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul a x`. Take `⟨p, q, rfl⟩` from `hs x`. Use `⟨p • a, q • a, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.tmul_add, TensorProduct.smul_tmul, TensorProduct.smul_tmul, Algebra.smul_def, Algebra.smul_def, mul_one]`. Consider the case `add x y hx hy`. Take `⟨a, b, rfl⟩` from `hx`. Take `⟨a', b', rfl⟩` from `hy`. Conclude with `⟨a + a', b + b', by rw [TensorProduct.add_tmul, TensorProduct.add_tmul]; abel⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_decomp {δ : E} (hs : ∀ x : E, ∃ p q : F, x = algebraMap F E p + algebraMap F E q * δ)
     (z : InfiniteAdeleRing F ⊗[F] E) : ∃ a b : InfiniteAdeleRing F, z = a ⊗ₜ 1 + b ⊗ₜ δ := by
@@ -192,18 +190,18 @@ theorem exists_decomp {δ : E} (hs : ∀ x : E, ∃ p q : F, x = algebraMap F E 
     exact ⟨a + a', b + b', by rw [TensorProduct.add_tmul, TensorProduct.add_tmul]; abel⟩
 
 /- English proof (translation)
-Rewrite using `[← InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal σ), h, InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal σ')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_eq_iff [IsTotallyReal F] {σ σ' : F →+* ℂ} (h : InfinitePlace.mk σ = InfinitePlace.mk σ') : σ = σ' := by
   rw [← InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal σ), h,
     InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal σ')]
 
 /- English proof (translation)
-Establish `h : InfinitePlace.mk ((ComplexEmbedding.lift E w.embedding).comp (algebraMap F E)) = w`. Rewrite using `[ComplexEmbedding.lift_comp_algebraMap, InfinitePlace.mk_embedding]`. Distinguish the cases in `hm : ComplexEmbedding.lift E w.embedding ∈ Ψ`. Conclude with `⟨_, hm, h⟩`. Use `⟨ComplexEmbedding.conjugate (ComplexEmbedding.lift E w.embedding), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hm ((hΨ _).2 hn)`. Rewrite using `[← h, ← InfinitePlace.mk_conjugate_eq]`. Use `congr 1`. Use extensionality with `x`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_over [IsTotallyReal F] (Ψ : Set (E →+* ℂ))
     (hΨ : ∀ τ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) (w : InfinitePlace F) :
@@ -221,23 +219,23 @@ theorem exists_over [IsTotallyReal F] (Ψ : Set (E →+* ℂ))
       simp
 
 /- English proof (translation)
-Take `⟨δ, h0, hcδ, hs⟩` from `exists_delta c h2 hc hτ`. Establish `hre : ∀ τ : E →+* ℂ, (τ δ).re = 0`. Introduce `τ`. Use `congrArg Complex.re (hτ τ δ)` as an intermediate fact. Rewrite `this` using `[hcδ, map_neg, Complex.neg_re, Complex.conj_re]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `him : ∀ τ : E →+* ℂ, (τ δ).im ≠ 0`. Introduce `τ h`. Conclude with `h0 (τ.injective (by rw [map_zero]; exact Complex.ext (hre τ) h))`. Set `r : ∀ w : InfinitePlace F, w.Completion →+* ℝ` to `fun w => InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : ∀ w, Function.Bijective (r w)` using `fun w => InfinitePlace.Completion.bijective_extensionEmbeddingOfIsReal _`. Establish `hval : ∀ (τ : E →+* ℂ) (a b : InfiniteAdeleRing F), θ τ (a ⊗ₜ 1 + b ⊗ₜ δ) = ⟨r _ (a (InfinitePlace.mk (τ.comp (algebraMap F E)))), r _ (b (InfinitePlace.mk (τ.comp (algebraMap F E)))) * (τ δ).im⟩`. Introduce `τ a b`. Rewrite using `[map_add, hθ, hθ, ext_eq_ofReal, ext_eq_ofReal, map_one, mul_one]`. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul, hre, mul_zero, add_zero, r]`. Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul, zero_add, r]`. Use `choose t ht htw using exists_over (F := F) Ψ hΨ`. Prove the components needed by the constructor for the conclusion. Introduce `z z' hz`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, rfl⟩` from `exists_decomp hs z`. Take `⟨a', b', rfl⟩` from `exists_decomp hs z'`. Establish `key : ∀ w, a w = a' w ∧ b w = b' w`. Introduce `w`. Use `congrFun hz ⟨t w, ht w⟩` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hval, Complex.mk.injEq] at this`. Rewrite `this` using `[htw w]`. Conclude with `⟨(hr w).1 this.1, (hr w).1 (mul_right_cancel₀ (him _) this.2)⟩`. Establish `ha : a = a'` using `funext fun w => (key w).1`. Establish `hb : b = b'` using `funext fun w => (key w).2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ha, hb]`. Introduce `y choose a ha using fun w => (hr w).2 (y ⟨t w, ht w⟩).re choose b hb using fun w => (hr w).2 ((y ⟨t w, ht w⟩).im / (t w δ).im)`. Use `⟨(show InfiniteAdeleRing F from a) ⊗ₜ[F] (1 : E) + (show InfiniteAdeleRing F from b) ⊗ₜ[F] δ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Take `⟨τ, hτΨ⟩` from `τ`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : t (InfinitePlace.mk (τ.comp (algebraMap F E))) = τ`. Break down `eq_or_conj c hτ h0 hcδ hs _ _ (mk_eq_iff (htw (InfinitePlace.mk (τ.comp (algebraMap F E))))) with e | e` into its components or cases. Conclude with `e`. Conclude with `absurd (e ▸ ht _) ((hΨ τ).1 hτΨ)`. Use `hval τ a b` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 
-Simplify using `only [ha, hb, e] at this`. Use `this.trans ?_` and prove the remaining obligations. Apply `Complex.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Conclude with `div_mul_cancel₀ _ (him τ)`.
+A detailed English derivation is pending.
 -/
 theorem bijective [IsTotallyReal F] (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1)
     (hτ : ∀ (τ : E →+* ℂ) x, τ (c x) = starRingEnd ℂ (τ x))
@@ -298,11 +296,11 @@ theorem bijective [IsTotallyReal F] (c : E ≃ₐ[F] E) (h2 : Module.finrank F E
     · exact div_mul_cancel₀ _ (him τ)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c h2 hc hF hτ`. Use `letI : TopologicalSpace (InfiniteAdeleRing F ⊗[F] E) := moduleTopology (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E)`. Use `haveI : IsModuleTopology (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E) := ⟨rfl⟩`. Use `⟨exists_hom, fun θ hθ => ?_⟩` and prove the remaining obligations. Establish `hθ'` using `fun τ => hom_tmul τ (θ τ) (hθ τ).1 (hθ τ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun τ => ?_, fun τ z => ?_, bijective c h2 hc hτ θ hθ'⟩` and prove the remaining obligations. Conclude with `IsModuleTopology.continuous_of_ringHom (R := InfiniteAdeleRing F) (θ τ) (hθ τ).2`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sg, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id, hθ', map_mul, conj_ext]`. Rewrite using `[← hτ]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Both sides reduce to the same expression. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem infAdele_tensor_bijective : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E), Module.finrank F E = 2 → c ≠ 1 → IsTotallyReal F → (∀ (τ : E →+* ℂ) x, τ (c x) = starRingEnd ℂ (τ x)) → letI : TopologicalSpace (InfiniteAdeleRing F ⊗[F] E) := moduleTopology (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E); (∀ τ : E →+* ℂ, ∃ θ : InfiniteAdeleRing F ⊗[F] E →+* ℂ, (∀ x, θ (1 ⊗ₜ x) = τ x) ∧ Continuous fun a : InfiniteAdeleRing F => θ (a ⊗ₜ (1 : E))) ∧ ∀ θ : (E →+* ℂ) → (InfiniteAdeleRing F ⊗[F] E →+* ℂ), (∀ τ, (∀ x, θ τ (1 ⊗ₜ x) = τ x) ∧ Continuous fun a : InfiniteAdeleRing F => θ τ (a ⊗ₜ (1 : E))) → (∀ τ, Continuous (θ τ)) ∧ (∀ τ z, θ τ (sg (InfiniteAdeleRing F) c z) = starRingEnd ℂ (θ τ z)) ∧ ∀ Ψ : Set (E →+* ℂ), (∀ τ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) → Function.Bijective (fun (z : InfiniteAdeleRing F ⊗[F] E) (τ : Ψ) => θ τ.1 z) := by
   intro F E _ _ _ _ _ c h2 hc hF hτ

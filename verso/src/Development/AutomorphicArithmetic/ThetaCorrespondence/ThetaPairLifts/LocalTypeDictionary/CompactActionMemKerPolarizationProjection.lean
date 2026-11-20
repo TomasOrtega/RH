@@ -18,13 +18,11 @@ namespace GlobalTheory.SquareAgree.KerPCpt
 end GlobalTheory.SquareAgree.KerPCpt
 namespace GlobalTheory.SquareAgree.KerPCpt
 /- English proof (translation)
-Introduce `hPr D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hM k hk f hf f₁ hf₁ hAct φ hφ hv`. Establish `hS` using `_root_.GlobalTheory.T.kInfty_exponential_line_in_derivative_span hPr D.host.F D.host.E D.sp.cm.sig Bs W₁.rank (W.rank + W₁.rank) Γ.V' Γ.W Γ.M' Xc.α (Xc.α / Xc.β) om' _ _ _ _ (isPair_small hT) k hk f hf f₁ hAct`. Establish `key : ∀ g ∈ Submodule.span ℂ {g₁ | g₁ ∈ Γ.M'.Pol Bs.ψ Bs.emb ∧ ∃ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Γ.V', ∃ g ∈ Γ.M'.Pol Bs.ψ Bs.emb, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFullHeck …`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨hx1, γ, hγ, g₀, hg₀, hD⟩` from `hx`. Conclude with `_root_.GlobalTheory.T.ker_polarizationProjection_lie_stable hPr D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hM γ hγ g₀ hg₀ x hx1 hD φ hφ hv`. Consider the case `zero => rw [pure_zero']`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [pure_add']`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [pure_smul']`. Conclude with `Submodule.smul_mem _ c hx`. Use `key _ hS` as an intermediate fact.
-
-Rewrite `this` using `[pure_sub']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem compact_action_mem_ker_polarizationProjection : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
@@ -70,7 +68,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.KerPCpt.compact_action_mem_ker_polarizationProjection | exact _root_.GlobalTheory.SquareAgree.KerPCpt.compact_action_mem_ker_polarizationProjection | (intros; apply _root_.GlobalTheory.SquareAgree.KerPCpt.compact_action_mem_ker_polar …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ker_polarizationProjection_compact_stable : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

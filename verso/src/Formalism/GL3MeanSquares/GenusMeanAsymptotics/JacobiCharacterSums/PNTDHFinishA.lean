@@ -7,45 +7,41 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.DHF
 
 /- English proof (translation)
-Establish `hre : ∀ i, 0 ≤ (u i).re` using `fun i => le_trans (by positivity) (hu i)`. Establish `hle1 : ∀ i, ‖u i‖ ≤ 1`. Introduce `i`. Establish `h1` using `hu i`. Establish `h2 : (u i).re ≤ ‖u i‖` using `Complex.re_le_norm _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg (u i)]`. Use `set near := (univ : Finset (Fin N)).filter (fun i => ε ≤ ‖u i‖) with hnear`. Take `⟨i0, hi0⟩` from `hi`. Establish `hi0n : i0 ∈ near` using `by simp [hnear]; linarith`. Establish `hne : near.Nonempty` using `⟨i0, hi0n⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨is, his, hmax⟩` from `near.exists_max_image (fun i => ‖u i‖) hne`. Use `set R := ‖u is‖ with hR`. Establish `hR2 : 1 / 2 ≤ R` using `le_trans hi0 (hmax i0 hi0n)`. Establish `hR0 : 0 < R` using `by linarith`. Establish `hR1 : R ≤ 1` using `hle1 is`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set n := near.card with hn`. Establish `hcount : (n : ℝ) * ε ^ 2 ≤ ∑ i, (u i).re`. Combine the equalities or inequalities in the displayed calculation. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ε ≤ ‖u i‖` using `by simpa [hnear] using hi`. Conclude with `pow_le_pow_left₀ hε0.le this 2`. Use `_ ≤ ∑ i ∈ near, (u i).re := sum_le_sum (fun i _ => hu i)`. Use `_ ≤ ∑ i, (u i).re := sum_le_sum_of_subset_of_nonneg (subset_univ _) (fun i _ _ => hre i)`. Establish `hBn : B * n ≤ K`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1 : (B : ℝ) * n * ε ^ 2 ≤ ε ^ 2 * K`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (B : ℝ) * n ≤ K`. Establish `: 0 < ε ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2` after adjusting the coercions. Establish `hn1 : 1 ≤ n` using `Finset.card_pos.mpr hne`. Set `e` to `near.equivFin`. Set `z : Fin n → ℂ` to `fun k => u (e.symm k) / (R : ℂ)`. Establish `hz : ∀ k, z k = u (e.symm k) / (R : ℂ)` using `fun k => rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzn : ∀ k, ‖z k‖ = ‖u (e.symm k)‖ / R`. Introduce `k`. Rewrite using `[hz, norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hR0]`. Take `⟨j, hKj, hjA, hj⟩` from `hT n K z hn1 hBn (by`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hzn, div_le_one hR0]`. Conclude with `hmax _ (e.symm k).2)`. Use the proof step `(by`. Use `⟨e ⟨is, his⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hzn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[R, div_self (ne_of_gt hR0)])`. Use the proof step `(by`. Introduce `k`. Rewrite using `[hzn, hz, Complex.div_ofReal_re]`. Establish `h1` using `hu (e.symm k)`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖u (e.symm k)‖ ≤ R` using `hmax _ (e.symm k).2`. Rewrite using `[div_pow, div_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show 2 * ((u (e.symm k)).re / R) * R ^ 2 = (u (e.symm k)).re * (2 * R) by field_simp]`. Establish `: 1 ≤ 2 * R` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[hre (e.symm k)])`. Use `⟨j, hKj, hjA, ?_⟩` and prove the remaining obligations. Establish `hsumz : (∑ k, z k ^ j) * (R : ℂ) ^ j = ∑ i ∈ near, u i ^ j`. Rewrite using `[Finset.sum_mul]`. Rewrite using `[← Finset.sum_coe_sort near (fun i => u i ^ j)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[← e.symm.sum_comp]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[hz, div_pow, div_mul_cancel₀]`. Conclude with `pow_ne_zero _ (by exact_mod_cast hR0.ne')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnear_re : c ^ K * (1 / 2) ^ j ≤ (∑ i ∈ near, u i ^ j).re`. Rewrite using `[← hsumz, ← Complex.ofReal_pow, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero]`. Establish `: (1 / 2 : ℝ) ^ j ≤ R ^ j` using `pow_le_pow_left₀ (by norm_num) hR2 j`. Establish `hcK : 0 < c ^ K` using `pow_pos hc K`. Use polynomial arithmetic with `[pow_pos hR0 j]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hfar : -(ε ^ (j - 2) * ∑ i, (u i).re) ≤ (∑ i ∈ univ.filter (fun i => ¬ ε ≤ ‖u i‖), u i ^ j).re`. Rewrite using `[Complex.re_sum]`. Establish `hj2 : 2 ≤ j` using `le_trans hK2 hKj`. Establish `: ∀ i ∈ univ.filter (fun i => ¬ ε ≤ ‖u i‖), -(ε ^ (j - 2) * (u i).re) ≤ (u i ^ j).re`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ‖u i‖ < ε` using `by simpa using hi`. Establish `h1 : -(u i ^ j).re ≤ ‖u i‖ ^ j`. Use `Complex.abs_re_le_norm (u i ^ j)` as an intermediate fact. Rewrite `this` using `[norm_pow]`. Combine the linear relations using `[neg_abs_le (u i ^ j).re]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : ‖u i‖ ^ j = ‖u i‖ ^ (j - 2) * ‖u i‖ ^ 2`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h3 : ‖u i‖ ^ (j - 2) ≤ ε ^ (j - 2)` using `pow_le_pow_left₀ (norm_nonneg _) hlt.le _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4 : ‖u i‖ ^ (j - 2) * ‖u i‖ ^ 2 ≤ ε ^ (j - 2) * (u i).re` using `mul_le_mul h3 (hu i) (by positivity) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `: ∑ i ∈ univ.filter (fun i => ¬ ε ≤ ‖u i‖), (u i).re ≤ ∑ i, (u i).re` using `sum_le_sum_of_subset_of_nonneg (subset_univ _) (fun i _ _ => hre i)`. Establish `: 0 ≤ ε ^ (j - 2)` using `by positivity`.
-
-Use the polynomial consequences of the given equalities and inequalities. Use `_ = ∑ i ∈ univ.filter (fun i => ¬ ε ≤ ‖u i‖), -(ε ^ (j - 2) * (u i).re) := by`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `_ ≤ _ := sum_le_sum this`. Establish `hsplit` using `Finset.sum_filter_add_sum_filter_not (univ : Finset (Fin N)) (fun i => ε ≤ ‖u i‖) (fun i => u i ^ j)`.
-
-Establish `hnr : (∑ x ∈ univ.filter (fun x => ε ≤ ‖u x‖), u x ^ j) = ∑ i ∈ near, u i ^ j` using `rfl`. Rewrite using `[← hsplit, Complex.add_re, hnr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem near_far (c : ℝ) (A B : ℕ) (hc : 0 < c)
     (hT : ∀ (n K : ℕ) (z : Fin n → ℂ), 1 ≤ n → B * n ≤ K →
@@ -160,13 +156,13 @@ theorem near_far (c : ℝ) (A B : ℕ) (hc : 0 < c)
   linarith
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, K = m + 3` from `⟨K - 3, by omega⟩`. Establish `hB : (1 : ℝ) + (m + 1 : ℕ) * 7 ≤ (1 + 7) ^ (m + 1)` using `one_add_mul_le_pow (by norm_num) _`. Move the coercions through the operations in `at hB ⊢`. Rewrite using `[div_pow, ← pow_mul]`. Establish `h8 : (0 : ℝ) < 8 ^ (m + 2)` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq' : q ^ (2 * (m + 2)) = q ^ (m + 3) * q ^ (m + 1)` using `by rw [← pow_add]; congr 1; ring`. Establish `hqm : q ^ (m + 1) ≤ 1` using `pow_le_one₀ hq0 hq1`. Establish `hq3 : 0 ≤ q ^ (m + 3)` using `by positivity`. Rewrite using `[hq', mul_div_assoc', div_le_div_iff₀ h8 (by norm_num)]`. Establish `: (8 : ℝ) ^ (m + 2) = 8 * 8 ^ (m + 1)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `h1 : ((m : ℝ) + 3) ≤ 8 ^ (m + 1)` using `by norm_num at hB; linarith`. Establish `h2 : ((m : ℝ) + 3) * (q ^ (m + 3) * q ^ (m + 1)) ≤ ((m : ℝ) + 3) * q ^ (m + 3)`. Establish `: 0 ≤ (m : ℝ) + 3` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hqm hq3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 hq3]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pow_small_a (q : ℝ) (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (K : ℕ) (hK3 : 3 ≤ K) :
     (K : ℝ) * (q ^ 2 / 8) ^ (K - 1) ≤ q ^ K / 8 := by
@@ -188,11 +184,11 @@ theorem pow_small_a (q : ℝ) (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (K : ℕ) (hK3 : 3
   nlinarith [mul_le_mul_of_nonneg_right h1 hq3]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, K = m + 3` from `⟨K - 3, by omega⟩`. Establish `hB : (1 : ℝ) + (m : ℕ) * 3 ≤ (1 + 3) ^ m` using `one_add_mul_le_pow (by norm_num) _`. Rewrite using `[div_pow]`. Establish `h4 : (4 : ℝ) ^ (m + 3) = 64 * 4 ^ m` using `by ring`. Rewrite using `[h4]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq3 : 0 ≤ q ^ (m + 3)` using `by positivity`. Establish `h4p : (0 : ℝ) < 4 ^ m` using `by positivity`. Rewrite using `[mul_div_assoc', div_le_div_iff₀ (by positivity) (by norm_num)]`. Use `push_cast`. Evaluate the numerical expressions using `at hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Evaluate the numerical expressions.
 
-Establish `: ((m : ℝ) + 3) * 8 ≤ 64 * 4 ^ m` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this hq3]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pow_small_b (q : ℝ) (hq0 : 0 ≤ q) (K : ℕ) (hK3 : 3 ≤ K) :
     (K : ℝ) * (q / 4) ^ K ≤ q ^ K / 8 := by
@@ -210,19 +206,19 @@ theorem pow_small_b (q : ℝ) (hq0 : 0 ≤ q) (K : ℕ) (hK3 : 3 ≤ K) :
   nlinarith [mul_le_mul_of_nonneg_right this hq3]
 
 /- English proof (translation)
-Establish `h1` using `pow_small_a q hq0.le (by linarith) K hK3`. Establish `h2` using `pow_small_b q hq0.le K hK3`. Establish `hl0 : 0 ≤ l`. Rewrite using `[hl]; have := Real.log_nonpos hq0.le (by linarith); linarith`. Establish `h3 : (3 / 4) * q ^ K ≤ 2 * A * K * Real.exp (-K0)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqK : Real.exp (-(K0 / 2) - l * b) ≤ q ^ K`. Rewrite using `[← Real.rpow_natCast, Real.rpow_def_of_pos hq0, Real.exp_le_exp]`. Establish `hlog : Real.log q = -l` using `by rw [hl]; ring`. Rewrite using `[hlog]`. Establish `hla : 2 * l * a ≤ 1` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hE` using `Real.exp_pos (l * b)`. Establish `hsplit : Real.exp (-(K0 / 2) - l * b) * Real.exp (l * b) * Real.exp K0 = Real.exp (K0 / 2)`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Use `congr 1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hexp : K0 ^ 2 / 8 ≤ Real.exp (K0 / 2)`. Use `Real.pow_div_factorial_le_exp (x := K0 / 2) (by positivity) 2` as an intermediate fact. Evaluate the numerical expressions using `[Nat.factorial] at this`. Use the polynomial consequences of the given equalities and inequalities.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hKK : (K : ℝ) ≤ 2 * K0`. Establish `: a ≤ 1 / 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hexpK : Real.exp (-K0) * Real.exp K0 = 1` using `by rw [← Real.exp_add]; simp`. Establish `h4 : (3 / 4) * Real.exp (K0 / 2) ≤ 2 * A * K * Real.exp (l * b)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `mul_le_mul_of_nonneg_right (le_trans (mul_le_mul_of_nonneg_left hqK (by norm_num)) h3) (le_of_lt (mul_pos hE (Real.exp_pos K0)))`. Rewrite using `[← hsplit]`. Establish `: 2 * A * K * Real.exp (-K0) * (Real.exp (l * b) * Real.exp K0) = 2 * A * K * Real.exp (l * b) * (Real.exp (-K0) * Real.exp K0)` using `by ring`. Rewrite `hx` using `[this, hexpK]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hAE : 0 ≤ A * Real.exp (l * b)` using `by positivity`. Establish `h5 : (3 / 32) * K0 ^ 2 ≤ 4 * K0 * (A * Real.exp (l * b))` using `by nlinarith`. Establish `h6 : (3 / 32) * K0 ≤ 4 * (A * Real.exp (l * b))` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem final_contra (q A K0 a b l : ℝ) (K : ℕ) (hq0 : 0 < q) (hq : q ≤ 1 / 4) (hl : l = -Real.log q)
     (hA : 1 ≤ A) (hK3 : 3 ≤ K) (hK0 : 0 < K0) (ha0 : 0 ≤ a) (ha : a * (2 * l + 2) ≤ 1) (hb : 0 ≤ b)

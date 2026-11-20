@@ -22,9 +22,9 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl
 
 /- English proof (translation)
-Rewrite using `[← integral_indicator hA, ← integral_indicator hD, ← integral_add_left_eq_self (μ := m) (Set.indicator A f) g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ D`. Simplify using `[Set.indicator, hy, (h y).2 hy]`. Establish `: g + y ∉ A` using `fun hh => hy ((h y).1 hh)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Set.indicator, hy, this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem setIntegral_translate_of_iff {X : Type} [AddCommGroup X] [TopologicalSpace X]
     [IsTopologicalAddGroup X] [MeasurableSpace X] [BorelSpace X] (m : Measure X)
@@ -40,41 +40,35 @@ theorem setIntegral_translate_of_iff {X : Type} [AddCommGroup X] [TopologicalSpa
     simp [Set.indicator, hy, this]
 
 /- English proof (translation)
-Introduce `X _ _ _ _ _ _ _ m _ L hLc hLo q B hq hq1 hqB hB1 hB2 x₀`. Use `set C : Set X := {y | y - x₀ ∈ L} with hCdef`. Establish `hLm : MeasurableSet (L : Set X)` using `hLo.measurableSet`. Establish `hCo : IsOpen C` using `hLo.preimage (continuous_id.sub continuous_const)`. Establish `hCm : MeasurableSet C` using `hCo.measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLfin : m (L : Set X) < ⊤` using `hLc.measure_lt_top`. Establish `hmC : m C = m (L : Set X)`. Establish `: C = (fun h => -x₀ + h) ⁻¹' (L : Set X)`. Use extensionality with `y`. Simplify using `[hCdef, sub_eq_neg_add]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, measure_preimage_add]`. Establish `hCfin : m C < ⊤` using `hmC ▸ hLfin`. Use `haveI : IsFiniteMeasure (m.restrict C) := ⟨by simpa using hCfin⟩`. Use `haveI : IsFiniteMeasure (m.restrict (L : Set X)) := ⟨by simpa using hLfin⟩`. Establish `hq0 : ∀ x, q x ≠ 0` using `fun x h => by simpa [h] using hq1 x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hBnorm : ∀ x y, ‖B x y‖ = 1` using `fun x y => by`. Use `congrArg norm (hqB x y)` as an intermediate fact. Simplify `this.symm` using `[hq1]`. Establish `hBform : ∀ x y, B x y = q (x + y) / (q x * q y)` using `fun x y => by`. Rewrite using `[hqB x y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear denominators, using `[hq0 x, hq0 y]` for the nonvanishing conditions. Establish `hBc : Continuous (Function.uncurry B)`. Establish `: Function.uncurry B = fun p : X × X => q (p.1 + p.2) / (q p.1 * q p.2)`. Use function extensionality and compare the values at `p`. Conclude with `hBform p.1 p.2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(hq.comp (continuous_fst.add continuous_snd)).div ((hq.comp continuous_fst).mul (hq.comp continuous_snd)) fun p => mul_ne_zero (hq0 _) (hq0 _)`. Establish `hconj : ∀ x, (starRingEnd ℂ) (q x) * q x = 1` using `fun x => by`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hq1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set I : ℂ := ∫ x in C, q x ∂m with hI`. Use `set J : X → ℂ := fun y => ∫ x in C, B x y ∂m with hJ`. Establish `hstep : I * (starRingEnd ℂ) I = ∫ y in (L : Set X), q y * J y ∂m`. Establish `h1 : I * (starRingEnd ℂ) I = ∫ x' in C, (starRingEnd ℂ) (q x') * I ∂m`. Rewrite using `[integral_mul_const, integral_conj, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∫ x' in C, (starRingEnd ℂ) (q x') * I ∂m = ∫ x' in C, ∫ y in (L : Set X), q y * B x' y ∂m ∂m`. Use `setIntegral_congr_fun hCm fun x' hx' => ?_` and prove the remaining obligations. Establish `hx'' : x' - x₀ ∈ L` using `hx'`. Establish `ht : I = ∫ y in (L : Set X), q (x' + y) ∂m`. Use `setIntegral_translate_of_iff m hCm hLm x' (fun y => ?_) q` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : x' + y - x₀ = (x' - x₀) + y` using `by abel`. Simplify using `only [hCdef, Set.mem_setOf_eq, e, SetLike.mem_coe]`. Conclude with `L.add_mem_cancel_left hx''`. Rewrite using `[ht, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[hqB x' y]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ∫ x' in C, ∫ y in (L : Set X), q y * B x' y ∂m ∂m = ∫ y in (L : Set X), ∫ x' in C, q y * B x' y ∂m ∂m`. Use `integral_integral_swap ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (Function.uncurry fun x' y => q y * B x' y)` using `(hq.comp continuous_snd).mul hBc`. Use `Integrable.of_bound hc.aestronglyMeasurable 1 (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `[Function.uncurry, hq1, hBnorm]`. Rewrite using `[h1, h2, h3]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hJ]`. Rewrite using `[integral_const_mul]`. Establish `hJle : ∀ y, ‖J y‖ ≤ (m (L : Set X)).toReal` using `fun y => by`. Use `norm_setIntegral_le_of_norm_le_const (μ := m) (s := C) (f := fun x => B x y) (C := 1) hCfin (fun x _ => (hBnorm x y).le)` as an intermediate fact. Simplify `this` using `[Measure.real, hmC]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hJ0 : ∀ y l, l ∈ L → B l y ≠ 1 → J y = 0` using `fun y l hl hne => by`. Establish `ht : J y = ∫ x in C, B (l + x) y ∂m`. Use `setIntegral_translate_of_iff m hCm hCm l (fun x => ?_) (fun x => B x y)` and prove the remaining obligations. Establish `e : l + x - x₀ = l + (x - x₀)` using `by abel`. Simplify using `only [hCdef, Set.mem_setOf_eq, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `L.add_mem_cancel_left hl`. Establish `h2 : J y = B l y * J y` using `by conv_lhs => rw [ht]`. Simplify using `only [hJ, hB1, integral_const_mul]`. Establish `h3 : (1 - B l y) * J y = 0` using `by rw [sub_mul, one_mul, ← h2, sub_self]`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `absurd (sub_eq_zero.1 h).symm hne`. Conclude with `h`. Use `set S : Set X := {y | y ∈ L ∧ ∀ l ∈ L, B l y = 1} with hS`. Establish `hSL : S ⊆ (L : Set X)` using `fun y hy => hy.1`. Establish `hSfin : m S < ⊤` using `(measure_mono hSL).trans_lt hLfin`.
-
-Establish `hcut : ∫ y in (L : Set X), q y * J y ∂m = ∫ y in S, q y * J y ∂m`. Use `setIntegral_eq_of_subset_of_forall_diff_eq_zero hLm hSL fun y hy => ?_` and prove the remaining obligations. Establish `: ¬ ∀ l ∈ L, B l y = 1` using `fun h => hy.2 ⟨hy.1, h⟩`. Use `push_neg at this`. Take `⟨l, hl, hne⟩` from `this`.
-
-Simplify using `[hJ0 y l hl hne]`. Establish `hbound : ‖∫ y in S, q y * J y ∂m‖ ≤ (m (L : Set X)).toReal * (m S).toReal`. Use `norm_setIntegral_le_of_norm_le_const (μ := m) (s := S) (f := fun y => q y * J y) (C := (m (L : Set X)).toReal) hSfin (fun y _ => by simpa [hq1] using hJle y)` as an intermediate fact. Simplify `this` using `[Measure.real]`. Establish `hsq : ‖I‖ ^ 2 = ‖I * (starRingEnd ℂ) I‖`.
-
-Rewrite using `[norm_mul, RCLike.norm_conj, sq]`. Rewrite using `[hsq, hstep, hcut]`. Conclude with `hbound`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weyl_sq_compact_open : ∀ (X : Type) [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     [SecondCountableTopology X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (m : Measure X) [m.IsAddHaarMeasure]

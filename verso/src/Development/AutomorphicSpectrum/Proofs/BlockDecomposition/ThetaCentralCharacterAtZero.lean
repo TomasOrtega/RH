@@ -23,19 +23,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CenTheta
 
 /- English proof (translation)
-Introduce `K _ _ h2 c n t M hM z g`. Take `⟨hok, S0, hS0⟩` from `hM`. Take `⟨hfin, hreal, hrealdg, hcomp⟩` from `GlobalTheory.T.adelic_realPart_properties`. Take `⟨S1, hS1⟩` from `GlobalTheory.CompanionTheory.AdelicIntegral.exists_finset_finAt_mem_integralGL g`. Take `⟨S2, hS2⟩` from `hcomp z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hloc : ∀ v : Pl, (M v).val (finAt v (dg2 z z * g)) 0 = om0 (M v) (Ad3.R.lc v z) * (M v).val (finAt v g) 0`. Introduce `v`. Establish `hmul : finAt v (dg2 z z * g) = dg2 (Ad3.R.lc v z) (Ad3.R.lc v z) * finAt v g`. Rewrite using `[GroundTheory.Automorphic.Reduction.finAt_mul, hfin]`. Rewrite using `[hmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hs : (M v).IsSp`. Conclude with `GlobalTheory.T.special_datum_central_character_at_zero K c v (M v) (hok v) hs _ _`. Establish `h` using `GlobalTheory.T.local_theta_central_character K h2 c v (M v) (hok v) hs (Ad3.R.lc v z) (finAt v g) 0`. Rewrite using `[h]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hm : M v with`. Consider the case `sp w₁ w₂ Φ => rw [hm] at hs`. Conclude with `absurd trivial hs`. Consider the case `ns w σ η Φ => rfl`. Establish `hoff : ∀ v ∉ S0 ∪ S1 ∪ S2, om0 (M v) (Ad3.R.lc v z) = 1 ∧ (M v).val (finAt v g) 0 = 1`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v hv`. Simplify using `only [Finset.mem_union, not_or] at hv`. Take `⟨⟨h0, h1⟩, h2'⟩` from `hv`. Take `⟨hU, hs⟩` from `hS0 v h0`. Conclude with `⟨(GlobalTheory.T.unramified_central_scalars_trivial K h2 c v (M v) hU (hok v) _ (hS2 v h2')).2, (GlobalTheory.T.unramified_standard_values_at_integral K h2 c v (M v) hU (hok v) hs _ (hS1 v h1)).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hA : (Function.mulSupport fun v => om0 (M v) (Ad3.R.lc v z)).Finite` using `(S0 ∪ S1 ∪ S2).finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `hn`. Conclude with `hv (hoff v (by simpa using hn)).1`. Establish `hB : (Function.mulSupport fun v => (M v).val (finAt v g) 0).Finite` using `(S0 ∪ S1 ∪ S2).finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `hv (hoff v (by simpa using hn)).2`. Simplify using `only [thT, u0]`. Rewrite using `[hreal, hrealdg, GlobalTheory.T.real_weil_action_central_character n t, finprod_congr hloc, finprod_mul_distrib hA hB]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem thT_zero_central : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (M : ∀ v : Pl, LM c v), AdmM M → ∀ (z : Jd) (g : G2), thT n t M (dg2 z z * g) 0 = u0 n t M z * thT n t M g 0 := by
   intro K _ _ h2 c n t M hM z g

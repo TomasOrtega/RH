@@ -12,7 +12,7 @@ def rowMat {d : ℕ} (j₀ : Fin d) (b : Fin d → k) : Matrix (Fin d) (Fin d) k
   Matrix.of fun j' j => if j' = j₀ then b j else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.add_apply]`. Simplify using `[rowMat, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_one_add_rowMat_apply {n d : ℕ} (j₀ : Fin d) (b : Fin d → k) (Y : Matrix (Fin n) (Fin d) k)
     (i : Fin n) (j : Fin d) : (Y * (1 + rowMat j₀ b) : Matrix (Fin n) (Fin d) k) i j = Y i j + Y i j₀ * b j := by
@@ -20,7 +20,7 @@ theorem mul_one_add_rowMat_apply {n d : ℕ} (j₀ : Fin d) (b : Fin d → k) (Y
   simp [rowMat, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `j' j`. Simplify using `[rowMat, Matrix.mul_apply, hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rowMat_mul_rowMat {d : ℕ} (j₀ : Fin d) (b c : Fin d → k) (hc : c j₀ = 0) :
     rowMat j₀ c * rowMat j₀ b = 0 := by
@@ -28,14 +28,14 @@ theorem rowMat_mul_rowMat {d : ℕ} (j₀ : Fin d) (b c : Fin d → k) (hc : c j
   simp [rowMat, Matrix.mul_apply, hc]
 
 /- English proof (translation)
-Use extensionality with `j' j`. Apply the tactic sequence `simp [rowMat]; split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowMat_neg {d : ℕ} (j₀ : Fin d) (b : Fin d → k) : rowMat j₀ (-b) = - rowMat j₀ b := by
   ext j' j
   simp [rowMat]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `rowMat_mul_rowMat j₀ (-b) b hb`. Rewrite `h`, the goal using `[rowMat_neg]`. Rewrite using `[mul_add, add_mul, add_mul, one_mul, mul_one, one_mul, h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem one_add_rowMat_mul_neg {d : ℕ} (j₀ : Fin d) (b : Fin d → k) (hb : b j₀ = 0) :
     (1 + rowMat j₀ b) * (1 + rowMat j₀ (-b)) = 1 := by
@@ -45,18 +45,18 @@ theorem one_add_rowMat_mul_neg {d : ℕ} (j₀ : Fin d) (b : Fin d → k) (hb : 
   abel
 
 /- English proof (translation)
-Simplify using `only [ebox, Set.mem_setOf_eq, Matrix.sub_apply, Matrix.zero_apply, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ebox_zero_iff {A D : Type} (ϖ : kˣ) (C X : Matrix A D k) (r : A → D → ℕ) :
     X ∈ ebox ϖ C r ↔ X - C ∈ ebox ϖ 0 r := by
   simp only [ebox, Set.mem_setOf_eq, Matrix.sub_apply, Matrix.zero_apply, sub_zero]
 
 /- English proof (translation)
-Establish `hδ' : ∀ i j, valuation k (δ i j) ≤ valuation k ((ϖ ^ r i j : kˣ) : k)` using `fun i j => by`. Simplify using `using hδ i j`. Introduce `i j`. Simplify using `only [Matrix.zero_apply, sub_zero]`. Rewrite using `[mul_one_add_rowMat_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_le _ (hδ' i j) ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `[hb0]`. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, map_pow]`. Conclude with `pow_le_pow_right_of_le_one' hϖ (hr i j hj)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_ebox_zero {n d : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) ≤ 1) (j₀ : Fin d)
     (r : Fin n → Fin d → ℕ) (hr : ∀ i j, j ≠ j₀ → r i j ≤ r i j₀) (b : Fin d → k) (hb0 : b j₀ = 0)
@@ -78,11 +78,11 @@ theorem mul_mem_ebox_zero {n d : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) ≤
         exact pow_le_pow_right_of_le_one' hϖ (hr i j hj)
 
 /- English proof (translation)
-Establish `hna0 : (-a) j₀ = 0` using `by simp [ha0]`. Establish `hna : ∀ j, valuation k ((-a) j) ≤ 1` using `fun j => by simpa using ha j`. Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[mem_ebox_zero_iff, mem_ebox_zero_iff ϖ C, ← hCP, ← Matrix.sub_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `mul_mem_ebox_zero ϖ hϖ j₀ r hr a ha0 ha _ h` as an intermediate fact. Rewrite using `[Matrix.mul_assoc, show (1 + rowMat j₀ (-a)) * (1 + rowMat j₀ a) = 1 by` and apply the resulting hypothesis. Simplify using `using one_add_rowMat_mul_neg j₀ (-a) hna0, Matrix.mul_one] at this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `mul_mem_ebox_zero ϖ hϖ j₀ r hr (-a) hna0 hna _`.
+A detailed English derivation is pending.
 -/
 theorem setOf_mul_mem_ebox {n d : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) ≤ 1) (j₀ : Fin d)
     (r : Fin n → Fin d → ℕ) (hr : ∀ i j, j ≠ j₀ → r i j ≤ r i j₀) (a : Fin d → k) (ha0 : a j₀ = 0)
@@ -102,25 +102,25 @@ theorem setOf_mul_mem_ebox {n d : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) �
   · exact mul_mem_ebox_zero ϖ hϖ j₀ r hr (-a) hna0 hna _
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d i₀ j₀ ϖ hϖ p₁ p₂ N hN hp₁ hp₁' hp₂ x₁ hx₁`. Establish `hv : valuation k (ϖ : k) ≤ 1`. Rewrite using `[show valuation k (ϖ : k) = uniformizer k from hϖ]`. Conclude with `uniformizer_lt_one.le`. Use `set a : Fin d → k := fun j => if j = j₀ then 0 else x₁ i₀ j with ha_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : a j₀ = 0` using `by simp [a]`. Establish `ha : ∀ j, valuation k (a j) ≤ 1`. Introduce `j`. Distinguish the cases in `hj : j = j₀`. Simplify using `[a, hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hx₁ i₀ j`. Simplify using `only [scaledBoxRadiiAtEntry, ne_eq, hj, not_false_eq_true, and_self, if_true, hp₁ j, if_neg hj, if_false, sub_zero] at h1`. Simplify using `only [a, if_neg hj]`. Use `h1.trans ?_` and prove the remaining obligations. Use `first`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `(rw [Units.val_pow_eq_pow_val, map_pow]; exact pow_le_one' hv _)`. Consider the case `exact pow_le_one' hv _`. Establish `hna0 : (-a) j₀ = 0` using `by simp [ha0]`. Set `h : GL (Fin d) k` to `⟨1 + rowMat j₀ (-a), 1 + rowMat j₀ a, by simpa using one_add_rowMat_mul_neg j₀ (-a) hna0, one_add_rowMat_mul_neg j₀ a ha0⟩`. Apply the tactic sequence `have hr1 : ∀ i j, j ≠ j₀ → baseCellRadiiAtEntry i₀ j₀ N i j ≤ baseCellRadiiAtEntry i₀ j₀ N i j₀ := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `intro i j hj; simp only [baseCellRadiiAtEntry, hj, false_and, if_false]; split_ifs <;> omega`. Establish `hr2 : ∀ i j, j ≠ j₀ → baseCellRadiiAtColumn (n` using `n) j₀ N i j ≤ baseCellRadiiAtColumn j₀ N i j₀ := by`. Introduce `i j hj`. Simplify using `only [baseCellRadiiAtColumn, hj, if_false, if_true]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `c : Matrix (Fin n) (Fin d) k` to `p₁ + Matrix.of fun i j => if i = i₀ then a j else 0`. Establish `hc : c * (1 + rowMat j₀ (-a)) = p₁`. Use extensionality with `i j`. Rewrite using `[mul_one_add_rowMat_apply]`. Distinguish the cases in `hi : i = i₀`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hi` using the available equality. Simplify using `[c, hp₁ j₀, ha0]`. Simplify using `[c, hi, hp₁' i hi]`. Apply the tactic sequence `have hxc : x₁ ∈ ebox ϖ c (baseCellRadiiAtEntry i₀ j₀ N) := by`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h1` using `hx₁ i j`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[c, a, scaledBoxRadiiAtEntry, baseCellRadiiAtEntry]`. Simplify using `[c, a, hj, hp₁ j]`. Simplify `h1` using `[c, hi, scaledBoxRadiiAtEntry, baseCellRadiiAtEntry]`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ebox_eq_of_mem hxc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `setOf_mul_mem_ebox ϖ hv j₀ _ hr1 a ha0 ha c p₁ hc`. Use `setOf_mul_mem_ebox ϖ hv j₀ _ hr2 a ha0 ha p₂ p₂ ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[mul_one_add_rowMat_apply]`. Simplify using `[hp₂ i]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unipotent_move : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (i₀ : Fin n) (j₀ : Fin d) (ϖ : kˣ), IsUnif ϖ → ∀ (p₁ p₂ : Matrix (Fin n) (Fin d) k) (N : ℕ), 1 ≤ N → (∀ j, p₁ i₀ j = if j = j₀ then 1 else 0) → (∀ i, i ≠ i₀ → p₁ i j₀ = 0) → (∀ i, p₂ i j₀ = 0) → ∀ x₁ ∈ ebox ϖ p₁ (scaledBoxRadiiAtEntry i₀ j₀ N), ∃ h : GL (Fin d) k, {Y : Matrix (Fin n) (Fin d) k | Y * h.1 ∈ ebox ϖ p₁ (baseCellRadiiAtEntry i₀ j₀ N)} = ebox ϖ x₁ (baseCellRadiiAtEntry i₀ j₀ N) ∧ {Y : Matrix (Fin n) (Fin d) k | Y * h.1 ∈ ebox ϖ p₂ (baseCellRadiiAtColumn j₀ N)} = ebox ϖ p₂ (baseCellRadiiAtColumn j₀ N) := by
   intro k _ _ _ _ n d i₀ j₀ ϖ hϖ p₁ p₂ N hN hp₁ hp₁' hp₂ x₁ hx₁

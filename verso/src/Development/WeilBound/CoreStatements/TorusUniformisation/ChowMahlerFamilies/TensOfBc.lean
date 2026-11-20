@@ -10,7 +10,7 @@ noncomputable section
 namespace PositivityTheory.Xgn.TestGroupPoint
 
 /- English proof (translation)
-Use `haveI : ValuationRing RC := ValuationRing.of_integers v hv`. Conclude with `PositivityTheory.HtPt.Twpair.bichar_mem_prodSpan (PositivityTheory.HtPt.Twpair.henselian hv) (fun P => (PositivityTheory.HtPt.Twpair.prime_eq_bot_or_maximal hv P.asIdeal).imp id fun h => PrimeSpectrum.ext h) Γ β s hs`.
+A detailed English derivation is pending.
 -/
 theorem bichar_mem {C RC : Type} [Field C] [IsAlgClosed C] [CommRing RC] [IsDomain RC] [Algebra RC C]
     {v : Valuation C NNReal} (hv : v.Integers RC) {T : Type} [CommGroup T] [Finite T] (Γ : QFGroup RC T)
@@ -23,25 +23,23 @@ theorem bichar_mem {C RC : Type} [Field C] [IsAlgClosed C] [CommRing RC] [IsDoma
     Γ β s hs
 
 /- English proof (translation)
-Establish `lem : ∀ x : RC ⊗[R] A, (fun y => algebraMap RC C ((ee x).1 (Multiplicative.ofAdd y))) ∈ M`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero`. Use `M.zero_mem using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Consider the case `tmul r a`. Establish `e1 : r ⊗ₜ[R] a = r • ((1 : RC) ⊗ₜ[R] a)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun y => algebraMap RC C ((ee (r ⊗ₜ[R] a)).1 (Multiplicative.ofAdd y))) = r • fun y => φ (a.1 (Multiplicative.ofAdd y))`. Use function extensionality and compare the values at `y`. Rewrite using `[e1, map_smul]`. Simplify using `[hee, hφ, Algebra.smul_def]`. Rewrite using `[e2, hM]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ r (Submodule.subset_span ⟨a.1, a.2, rfl⟩)`. Consider the case `add x y hx hy`. Establish `e2 : (fun t => algebraMap RC C ((ee (x + y)).1 (Multiplicative.ofAdd t))) = (fun t => algebraMap RC C ((ee x).1 (Multiplicative.ofAdd t))) + (fun t => algebraMap RC C ((ee y).1 (Multiplicative.ofAdd t)))`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `M.add_mem hx hy`. Establish `lem' : ∀ a ∈ A', (fun y => algebraMap RC C (a (Multiplicative.ofAdd y))) ∈ M`. Introduce `a ha`. Take `⟨x, hx⟩` from `ee.surjective ⟨a, ha⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k` using `lem x`. Rewrite `k` using `[hx]`. Conclude with `k`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem g hg`. Take `⟨a, ha, b, hb, rfl⟩` from `hg`. Use `Submodule.subset_span ⟨_, lem' a ha, _, lem' b hb, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `zero`. Use `(GR.tens M M).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Consider the case `add g₁ g₂ _ _ h₁ h₂`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `(GR.tens M M).add_mem h₁ h₂ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Consider the case `smul r g _ h`. Use `(GR.tens M M).smul_mem r h using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `z`. Simplify using `[Algebra.smul_def]`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tens_of_bc {R RC C N : Type} [CommRing R] [CommRing RC] [Field C] [Algebra R RC] [Algebra RC C]
     [AddCommGroup N] (φ : R →+* C) (hφ : ∀ r, algebraMap RC C (algebraMap R RC r) = φ r)

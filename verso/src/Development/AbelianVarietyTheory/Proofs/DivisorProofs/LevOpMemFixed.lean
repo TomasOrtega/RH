@@ -10,14 +10,14 @@ namespace GlobalTheory.TwTrLevel
 variable {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Simplify using `[fixed, GlobalTheory.PRep.eig]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_fixed_iff (ρ : Representation ℂ G V) (H : Subgroup G) (v : V) :
     v ∈ fixed ρ H ↔ ∀ h ∈ H, ρ h v = v := by
   simp [fixed, GlobalTheory.PRep.eig]
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H g`. Rewrite using `[hh, hF g h h.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem out_eq_of_inv {M : Type} (H : Subgroup G) (F : G → M) (hF : ∀ g, ∀ h ∈ H, F (g * h) = F g) (g : G) :
     F (QuotientGroup.mk g : G ⧸ H).out = F g := by
@@ -25,7 +25,7 @@ theorem out_eq_of_inv {M : Type} (H : Subgroup G) (F : G → M) (hF : ∀ g, ∀
   rw [hh, hF g h h.2]
 
 /- English proof (translation)
-Use `haveI := QuotientGroup.discreteTopology hH`. Establish `hc : IsCompact ((QuotientGroup.mk : G → G ⧸ H) '' tsupport f)` using `hf.isCompact.image QuotientGroup.continuous_mk`. Use `hc.finite_of_discrete.subset ?_` and prove the remaining obligations. Introduce `q hq`. Conclude with `⟨q.out, subset_tsupport f hq, QuotientGroup.out_eq' q⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_supp [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G) (hH : IsOpen (H : Set G))
     (f : G → ℂ) (hf : HasCompactSupport f) : {q : G ⧸ H | f q.out ≠ 0}.Finite := by
@@ -37,9 +37,9 @@ theorem finite_supp [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G)
   exact ⟨q.out, subset_tsupport f hq, QuotientGroup.out_eq' q⟩
 
 /- English proof (translation)
-Unfold `levOp`. Rewrite using `[LinearMap.smul_apply]`. Use `congr 1`. Use `AddMonoidHom.map_finsum (LinearMap.applyₗ (R := ℂ) (M := V) (M₂ := V) v).toAddMonoidHom (f := fun q : G ⧸ H => f q.out • (ρ q.out ∘ₗ A)) (hs.subset ?_)` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `q hq`. Simplify using `only [Function.mem_support, ne_eq, Set.mem_setOf_eq] at hq ⊢`. Introduce `h0`. Conclude with `hq (by rw [h0, zero_smul])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem levOp_apply (ρ : Representation ℂ G V) (K H : Subgroup G) (f : G → ℂ) (A : V →ₗ[ℂ] V) (v : V)
     (hs : {q : G ⧸ H | f q.out ≠ 0}.Finite) :
@@ -56,7 +56,7 @@ theorem levOp_apply (ρ : Representation ℂ G V) (K H : Subgroup G) (f : G → 
     exact hq (by rw [h0, zero_smul])
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[mem_fixed_iff]`. Introduce `k hk`. Establish `h1` using `LinearMap.congr_fun (hA (θ k)) w`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, hθ] at h1`. Rewrite using `[← h1, hw _ (hH k hk)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem A_mem_fixed (ρ : Representation ℂ G V) (θ : G →* G) (hθ : ∀ g, θ (θ g) = g) (A : V →ₗ[ℂ] V)
     (hA : ∀ g, A ∘ₗ ρ g = ρ (θ g) ∘ₗ A) (H : Subgroup G) (hH : ∀ k ∈ H, θ k ∈ H) (w : V)
@@ -68,17 +68,17 @@ theorem A_mem_fixed (ρ : Representation ℂ G V) (θ : G →* G) (hθ : ∀ g, 
   rw [← h1, hw _ (hH k hk)]
 
 /- English proof (translation)
-Establish `hs` using `finite_supp H hHo f hf.1`. Establish `hu` using `A_mem_fixed ρ θ hθ A hA H hH v hv`. Rewrite `hu` using `[mem_fixed_iff]`. Rewrite using `[levOp_apply ρ K H f A v hs, mem_fixed_iff]`. Introduce `k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set F : G → V := fun g => f g • ρ g (A v) with hFdef`. Establish `hF : ∀ g, ∀ h ∈ H, F (g * h) = F g`. Introduce `g h hh`. Simplify using `only [hFdef, (hf.2 h hh g).2, map_mul, Module.End.mul_apply, hu h hh]`. Establish `hsupp : (Function.support fun q : G ⧸ H => F q.out).Finite`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hs.subset ?_` and prove the remaining obligations. Introduce `q hq`. Simplify using `only [Function.mem_support, ne_eq, Set.mem_setOf_eq, hFdef] at hq ⊢`. Introduce `h0`. Conclude with `hq (by rw [h0, zero_smul])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `ρ k (∑ᶠ q : G ⧸ H, F q.out) = ∑ᶠ q : G ⧸ H, F q.out`. Establish `hm` using `AddMonoidHom.map_finsum (ρ k).toAddMonoidHom hsupp`. Simplify using `only [LinearMap.toAddMonoidHom_coe] at hm`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Establish `hk' : ∀ q : G ⧸ H, ρ k (F q.out) = F (k • q).out`. Introduce `q`. Establish `e1 : (k • q : G ⧸ H) = QuotientGroup.mk (k * q.out)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, out_eq_of_inv H F hF]`. Simplify using `only [hFdef, map_smul, map_mul, Module.End.mul_apply, (hf.2 k hk q.out).1]`. Repeatedly rewrite using `[hk']`. Conclude with `finsum_comp_equiv (MulAction.toPerm k : Equiv.Perm (G ⧸ H)) (f := fun q : G ⧸ H => F q.out)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levOp_mem_fixed [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G V) (θ : G →* G)
     (hθ : ∀ g, θ (θ g) = g) (A : V →ₗ[ℂ] V) (hA : ∀ g, A ∘ₗ ρ g = ρ (θ g) ∘ₗ A) (K H : Subgroup G)
@@ -119,7 +119,7 @@ def avgOp (ρ : Representation ℂ G V) (K' K'' : Subgroup G) : V →ₗ[ℂ] V 
   ((K''.relIndex K' : ℕ) : ℂ)⁻¹ • ∑ᶠ j : K' ⧸ K''.subgroupOf K', ρ (j.out : G)
 
 /- English proof (translation)
-Establish `hc : IsCompact (K' : Set G)` using `hK.of_isClosed_subset (Subgroup.isClosed_of_isOpen K' h') hle`. Use `haveI : CompactSpace K' := isCompact_iff_compactSpace.mp hc`. Establish `ho : IsOpen ((K''.subgroupOf K' : Subgroup K') : Set K')` using `h''.preimage continuous_subtype_val`. Use `haveI := QuotientGroup.discreteTopology ho`. Conclude with `finite_of_compact_of_discrete`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_quot [TopologicalSpace G] [IsTopologicalGroup G] (K K' K'' : Subgroup G)
     (hK : IsCompact (K : Set G)) (h' : IsOpen (K' : Set G)) (h'' : IsOpen (K'' : Set G)) (hle : K' ≤ K) :
@@ -131,7 +131,7 @@ theorem finite_quot [TopologicalSpace G] [IsTopologicalGroup G] (K K' K'' : Subg
   exact finite_of_compact_of_discrete
 
 /- English proof (translation)
-Unfold `avgOp`. Rewrite using `[LinearMap.smul_apply]`. Use `congr 1`. Use `AddMonoidHom.map_finsum (LinearMap.applyₗ (R := ℂ) (M := V) (M₂ := V) u).toAddMonoidHom (f := fun j : K' ⧸ K''.subgroupOf K' => ρ (j.out : G)) (Set.toFinite _)` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem avgOp_apply (ρ : Representation ℂ G V) (K' K'' : Subgroup G) [Finite (K' ⧸ K''.subgroupOf K')] (u : V) :
     avgOp ρ K' K'' u = ((K''.relIndex K' : ℕ) : ℂ)⁻¹ • ∑ᶠ j : K' ⧸ K''.subgroupOf K', ρ (j.out : G) u := by
@@ -143,21 +143,19 @@ theorem avgOp_apply (ρ : Representation ℂ G V) (K' K'' : Subgroup G) [Finite 
   simpa using this
 
 /- English proof (translation)
-Establish `hs'` using `finite_supp K' h'o f hf.1`. Establish `hs''` using `finite_supp K'' h''o f hf.1`. Rewrite `hu` using `[mem_fixed_iff]`. Rewrite using `[levOp_apply ρ K K'' f _ u hs'', levOp_apply ρ K K' f _ _ hs', avgOp_apply]`. Simplify using `only [LinearMap.id_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set F : G → V := fun g => f g • ρ g u with hFdef`. Establish `hF : ∀ g, ∀ h ∈ K'', F (g * h) = F g`. Introduce `g h hh`. Simplify using `only [hFdef, (hf.2 h (hle hh) g).2, map_mul, Module.End.mul_apply, hu h hh]`. Use `set e := Subgroup.quotientEquivProdOfLE hle with hedef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ∀ (q : G ⧸ K') (j : K' ⧸ K''.subgroupOf K'), F (e.symm (q, j)).out = f q.out • ρ q.out (ρ (j.out : G) u)`. Introduce `q j`. Establish `h1 : e.symm (q, j) = (QuotientGroup.mk (q.out * (j.out : G)) : G ⧸ K'')`. Rewrite using `[hedef, Subgroup.quotientEquivProdOfLE_symm_apply]`. Use `conv_lhs => rw [← QuotientGroup.out_eq' j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[h1, out_eq_of_inv K'' F hF]`. Simplify using `only [hFdef, (hf.2 _ (j.out).2 q.out).2, map_mul, Module.End.mul_apply]`. Use `set S : G ⧸ K' → V := fun q => ∑ᶠ j : K' ⧸ K''.subgroupOf K', f q.out • ρ q.out (ρ (j.out : G) u) with hSdef`. Establish `hL : ∑ᶠ r : G ⧸ K'', F r.out = ∑ᶠ q, S q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← finsum_comp_equiv e.symm]`. Rewrite using `[finsum_curry]`. Simplify using `only [he, hSdef]`. Use `(hs'.prod (Set.finite_univ (α := K' ⧸ K''.subgroupOf K'))).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨q, j⟩ hp`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Function.mem_support, ne_eq, he] at hp`. Simplify using `only [Set.mem_prod, Set.mem_setOf_eq, Set.mem_univ, and_true]`. Introduce `h0`. Conclude with `hp (by rw [h0, zero_smul])`. Establish `hR : ∀ q : G ⧸ K', f q.out • ρ q.out (((K''.relIndex K' : ℕ) : ℂ)⁻¹ • ∑ᶠ j : K' ⧸ K''.subgroupOf K', ρ (j.out : G) u) = ((K''.relIndex K' : ℕ) : ℂ)⁻¹ • S q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `q`. Establish `hm` using `AddMonoidHom.map_finsum (f q.out • ρ q.out).toAddMonoidHom (f := fun j : K' ⧸ K''.subgroupOf K' => ρ (j.out : G) u) (Set.toFinite _)`. Simplify using `only [LinearMap.toAddMonoidHom_coe, LinearMap.smul_apply] at hm`. Rewrite using `[map_smul, smul_comm, hm]`. Simplify using `only [hR]`.
-
-Rewrite using `[hL, ← smul_finsum, smul_smul, ← Subgroup.relIndex_mul_relIndex K'' K' K hle hK'K]`. Use `congr 1`. Use `push_cast`. Rewrite using `[mul_inv, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levOp_le [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G V) (K K' K'' : Subgroup G)
     (hle : K'' ≤ K') (hK'K : K' ≤ K) [Finite (K' ⧸ K''.subgroupOf K')] (h'o : IsOpen (K' : Set G))
@@ -207,15 +205,13 @@ theorem levOp_le [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representatio
   rw [mul_inv, mul_comm]
 
 /- English proof (translation)
-Rewrite `hu` using `[mem_fixed_iff]`. Rewrite using `[avgOp_apply, mem_fixed_iff]`. Introduce `k hk`. Use `set F : K' → V := fun x => ρ (x : G) u with hFdef`. Establish `hF : ∀ x : K', ∀ h ∈ K''.subgroupOf K', F (x * h) = F x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x h hh`. Simplify using `only [hFdef, Subgroup.coe_mul, map_mul, Module.End.mul_apply, hu _ (Subgroup.mem_subgroupOf.mp hh)]`. Rewrite using `[map_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `ρ k (∑ᶠ j : K' ⧸ K''.subgroupOf K', F j.out) = ∑ᶠ j : K' ⧸ K''.subgroupOf K', F j.out`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hm` using `AddMonoidHom.map_finsum (ρ k).toAddMonoidHom (f := fun j : K' ⧸ K''.subgroupOf K' => F j.out) (Set.toFinite _)`. Simplify using `only [LinearMap.toAddMonoidHom_coe] at hm`. Rewrite using `[hm]`. Establish `hk' : ∀ j : K' ⧸ K''.subgroupOf K', ρ k (F j.out) = F ((⟨k, hk⟩ : K') • j).out`. Introduce `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : ((⟨k, hk⟩ : K') • j : K' ⧸ K''.subgroupOf K') = QuotientGroup.mk ((⟨k, hk⟩ : K') * j.out)` using `by conv_lhs => rw [← QuotientGroup.out_eq' j]`. Both sides reduce to the same expression. Rewrite using `[e1, out_eq_of_inv _ F hF]`. Simplify using `only [hFdef, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Repeatedly rewrite using `[hk']`.
-
-Conclude with `finsum_comp_equiv (MulAction.toPerm (⟨k, hk⟩ : K') : Equiv.Perm (K' ⧸ K''.subgroupOf K')) (f := fun j : K' ⧸ K''.subgroupOf K' => F j.out)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgOp_mem (ρ : Representation ℂ G V) (K' K'' : Subgroup G) [Finite (K' ⧸ K''.subgroupOf K')] (u : V)
     (hu : u ∈ fixed ρ K'') : avgOp ρ K' K'' u ∈ fixed ρ K' := by
@@ -245,11 +241,9 @@ theorem avgOp_mem (ρ : Representation ℂ G V) (K' K'' : Subgroup G) [Finite (K
     (f := fun j : K' ⧸ K''.subgroupOf K' => F j.out)
 
 /- English proof (translation)
-Rewrite `hu` using `[mem_fixed_iff]`. Rewrite using `[avgOp_apply]`. Establish `h1 : ∀ j : K' ⧸ K''.subgroupOf K', ρ (j.out : G) u = u` using `fun j => hu _ (j.out).2`. Simplify using `only [h1]`. Use `haveI := Fintype.ofFinite (K' ⧸ K''.subgroupOf K')`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Establish `h2 : (K''.relIndex K' : ℕ) = Fintype.card (K' ⧸ K''.subgroupOf K')`. Rewrite using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`. Establish `h3 : (Fintype.card (K' ⧸ K''.subgroupOf K') : ℂ) ≠ 0`. Conclude with `(Fintype.card_pos (α := K' ⧸ K''.subgroupOf K')).ne'` after adjusting the coercions.
-
-Rewrite using `[h2, inv_mul_cancel₀ h3, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgOp_fix (ρ : Representation ℂ G V) (K' K'' : Subgroup G) [Finite (K' ⧸ K''.subgroupOf K')] (u : V)
     (hu : u ∈ fixed ρ K') : avgOp ρ K' K'' u = u := by

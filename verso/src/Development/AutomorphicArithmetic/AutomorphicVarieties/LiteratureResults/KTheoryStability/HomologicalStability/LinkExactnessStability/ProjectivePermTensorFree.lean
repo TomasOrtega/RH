@@ -22,7 +22,7 @@ def freeLEquiv (k G X ι : Type) [CommRing k] [Group G] [MulAction G X] :
     Finsupp.mapRange.linearEquiv (MonoidAlgebra.coeffLinearEquiv k).symm
 
 /- English proof (translation)
-Simplify using `[freeLEquiv, freeSwap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem freeLEquiv_single (X ι : Type) [MulAction G X] (x : X) (i : ι) (g : G) (r : k) :
     freeLEquiv k G X ι (Finsupp.single x (Finsupp.single i (MonoidAlgebra.single g r))) =
@@ -40,7 +40,7 @@ def permFreeIso (k G : Type) [CommRing k] [Group G] (X ι : Type) [MulAction G X
       simp [freeLEquiv_single, Representation.free_single_single, mul_smul] }
 
 /- English proof (translation)
-Introduce `k G _ _ X ι _`. Conclude with `Projective.of_iso (permFreeIso k G X ι).symm inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k G : Type) [CommRing k] [Group G] (X ι : Type) [MulAction G X],
     Projective (permT X (Rep.free k G ι)) := by
@@ -54,7 +54,7 @@ end
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.HomStab.main`. Consider the case `exact @GlobalTheory.HomStab.freeLEquiv_single`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.projective_perm_tensor_free : ∀ (k G : Type) [CommRing k] [Group G] (X ι : Type) [MulAction G X], Projective (permT X (Rep.free k G ι)) := by
   first

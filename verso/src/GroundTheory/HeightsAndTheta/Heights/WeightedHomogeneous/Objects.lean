@@ -165,7 +165,7 @@ end HermLine
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [chartMonomial, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartMonomial_add (c : (k : ι) → Fin (n k + 1)) (d d' : ι → ℕ) :
     chartMonomial c (d + d') = chartMonomial c d * chartMonomial c d' := by
@@ -173,7 +173,7 @@ theorem chartMonomial_add (c : (k : ι) → Fin (n k + 1)) (d d' : ι → ℕ) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [chartMonomial, Pi.smul_apply, smul_eq_mul, ← Finset.prod_pow, ← pow_mul, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartMonomial_nsmul (c : (k : ι) → Fin (n k + 1)) (m : ℕ) (d : ι → ℕ) :
     chartMonomial c (m • d) = chartMonomial c d ^ m := by
@@ -181,7 +181,7 @@ theorem chartMonomial_nsmul (c : (k : ι) → Fin (n k + 1)) (m : ℕ) (d : ι �
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[chartMonomial]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartMonomial_zero (c : (k : ι) → Fin (n k + 1)) : chartMonomial c 0 = 1 := by
   simp [chartMonomial]

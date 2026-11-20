@@ -17,7 +17,7 @@ noncomputable section
 namespace BranchFillDimension
 
 /- English proof (translation)
-Establish `hr : Module.finrank ℝ (Fin d → ℂ) = 2 * d`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`. Rewrite using `[← hr]`. Conclude with `hV.measure_pos _ hne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hausdorffMeasure_pos_of_isOpen {d : ℕ} {V : Set (Fin d → ℂ)} (hV : IsOpen V)
     (hne : V.Nonempty) : 0 < μH[((2 * d : ℕ) : ℝ)] V := by
@@ -27,17 +27,17 @@ theorem hausdorffMeasure_pos_of_isOpen {d : ℕ} {V : Set (Fin d → ℂ)} (hV :
   exact hV.measure_pos _ hne
 
 /- English proof (translation)
-Introduce `hsub`. Set `T : (Fin d → ℂ) →L[ℂ] (Fin k → ℂ)` to `ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (Fin.castLE hkd.le i)`. Establish `hT : ∀ u i, T u i = u (Fin.castLE hkd.le i)` using `fun _ _ => rfl`. Establish `hU' : IsOpen (T ⁻¹' U)` using `hU.preimage T.continuous`. Establish `hg : DifferentiableOn ℂ (F ∘ T) (T ⁻¹' U)` using `hF.comp T.differentiableOn (fun _ hu => hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcrit : T ⁻¹' U ⊆ {s | s ∈ T ⁻¹' U ∧ ¬ Function.Injective (fderiv ℂ (F ∘ T) s)}`. Introduce `u hu`. Use `⟨hu, fun hinj => ?_⟩` and prove the remaining obligations. Establish `hTe : T (Pi.single ⟨k, hkd⟩ 1) = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi : Fin.castLE hkd.le i ≠ ⟨k, hkd⟩` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[hT, hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Establish `hfd : fderiv ℂ (F ∘ T) u = (fderiv ℂ F (T u)).comp T`. Rewrite using `[fderiv_comp u ((hF (T u) hu).differentiableAt (hU.mem_nhds hu)) T.differentiableAt, T.fderiv]`. Establish `h0 : (Pi.single ⟨k, hkd⟩ (1 : ℂ) : Fin d → ℂ) = 0` using `hinj (by rw [hfd]; simp [hTe])`. Use `congrFun h0 ⟨k, hkd⟩` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hnull` using `CriticalImageNull.proof d d (T ⁻¹' U) (F ∘ T) hU' hg`. Establish `hsub' : V ⊆ (F ∘ T) '' {s | s ∈ T ⁻¹' U ∧ ¬ Function.Injective (fderiv ℂ (F ∘ T) s)}`. Introduce `y hy`. Take `⟨t, ht, rfl⟩` from `hsub hy`. Establish `hext : T (fun j => if hj : j.val < k then t ⟨j.val, hj⟩ else 0) = t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[hT]`. Use `⟨_, hcrit (show _ ∈ T ⁻¹' U from hext ▸ ht), ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hext]`. Conclude with `(hausdorffMeasure_pos_of_isOpen hV hne).ne' (measure_mono_null hsub' hnull)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_open_subset_image {k d : ℕ} (hkd : k < d) {U : Set (Fin k → ℂ)} (hU : IsOpen U)
     {F : (Fin k → ℂ) → Fin d → ℂ} (hF : DifferentiableOn ℂ F U) {V : Set (Fin d → ℂ)}
@@ -77,25 +77,23 @@ theorem not_open_subset_image {k d : ℕ} (hkd : k < d) {U : Set (Fin k → ℂ)
   exact (hausdorffMeasure_pos_of_isOpen hV hne).ne' (measure_mono_null hsub' hnull)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d : ℕ, ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d := by`. Establish `h0 : 0 ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J)` using `ringKrullDim_nonneg_of_nontrivial`. Establish `h1` using `ringKrullDim_quotient_le J`. Rewrite `h1` using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`. Generalize the expression as in `ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = x at h0 h1 ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => simp at h0`. Consider the case `coe m`. Proceed by induction on `m using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h2 : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ ((n : ℕ∞) : WithBot ℕ∞)` using `h1`. Conclude with `absurd (WithBot.coe_le_coe.1 h2) (by simp)`. Consider the case `coe m => exact ⟨m, rfl⟩`. Take `⟨A, hA⟩` from `GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.proof n d J hd`.
+It suffices to derive a contradiction. Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `π : (Fin n → ℂ) → Fin d → ℂ` to `fun z => A.mulVec z`. Establish `hπe : (fun z : Fin n → ℂ => fun i => eval z (GroundTheory.Heights₂.Heights.ComplexSets.linPoly A i)) = π`. Use function extensionality and compare the values at `z i`. Simplify using `[π, GroundTheory.Heights₂.Heights.ComplexSets.linPoly, Matrix.mulVec, dotProduct]`. Establish `hπd : Differentiable ℂ π` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin A)).differentiable`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨z0, ⟨hz0, hhz0⟩, hz0B⟩ : ∃ z0, (z0 ∈ zeroLocus J ∧ eval z0 h ≠ 0) ∧ z0 ∈ interior B := by`. Establish `hfreq : ∃ᶠ y in 𝓝 w, y ∈ zeroLocus J ∧ eval y h ≠ 0`. Introduce `hev`. Conclude with `hh (VanishNearPoint.proof FiniteMapOpen.proof n J h w hJ hw (hev.mono fun y hy hyZ => by by_contra hne; exact hy ⟨hyZ, hne⟩))`. Conclude with `(hfreq.and_eventually (interior_mem_nhds.2 hB)).exists`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hUo : IsOpen (interior B ∩ {z | eval z h ≠ 0})` using `isOpen_interior.inter (isOpen_ne_fun (MvPolynomial.continuous_eval h) continuous_const)`. Establish `hnb` using `FiniteMapOpen.proof n d J (GroundTheory.Heights₂.Heights.ComplexSets.linPoly A) hJ hA.injective hA.finite z0 hz0 _ (hUo.mem_nhds ⟨hz0B, hhz0⟩)`. Rewrite `hnb` using `[hπe]`. Establish `hsub : π '' (zeroLocus J ∩ (interior B ∩ {z | eval z h ≠ 0})) ⊆ (π ∘ φ) '' Metric.ball 0 r`. Introduce and unpack `_ ⟨z, ⟨hzZ, hzB, hzh⟩, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨t, ht, rfl⟩` from `hcov ⟨⟨hzZ, interior_subset hzB⟩, hzh⟩`. Conclude with `⟨t, ht, rfl⟩`. Establish `hΔ : (Metric.ball (0 : Fin k → ℂ) r).Nonempty`. Take `⟨t, ht, -⟩` from `hcov ⟨⟨hz0, interior_subset hz0B⟩, hhz0⟩`. Conclude with `⟨t, ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hle : k ≤ d`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨y, hy⟩` from `hHF k d _ (π ∘ φ) hlt Metric.isOpen_ball hΔ (hπd.comp_differentiableOn hφd)`. Establish `hfin` using `(GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.proof n d J A hJ hd hA y).2.1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Apply `hy` to reduce the goal to its premises. Establish `hmaps : φ '' {t | t ∈ Metric.ball 0 r ∧ (π ∘ φ) t = y} ⊆ GroundTheory.Heights₂.Heights.ComplexSets.fibre J A y`. Introduce and unpack `_ ⟨t, ⟨ht, hty⟩, rfl⟩`. Conclude with `⟨hφm ht, hty⟩`. Conclude with `Set.Finite.of_finite_image (hfin.subset hmaps) (hφi.mono fun t ht => ht.1)`.
-
-Establish `hge : d ≤ k`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Conclude with `not_open_subset_image hlt Metric.isOpen_ball (hπd.comp_differentiableOn hφd) isOpen_interior ⟨_, mem_interior_iff_mem_nhds.2 hnb⟩ (interior_subset.trans hsub)`. Rewrite using `[hd, le_antisymm hge hle]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_fin (hHF : HolomorphicFibreInfinite.Statement) (n : ℕ) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (h : MvPolynomial (Fin n) ℂ) (w : Fin n → ℂ) (k : ℕ) (r : ℝ) (φ : (Fin k → ℂ) → Fin n → ℂ)
@@ -164,21 +162,19 @@ theorem of_fin (hHF : HolomorphicFibreInfinite.Statement) (n : ℕ) (J : Ideal (
 end BranchFillDimension
 
 /- English proof (translation)
-Introduce `σ _ I h w k r φ B hI hh hw hφd hφi hφm hB hcov`. Set `e : σ ≃ Fin (Fintype.card σ)` to `Fintype.equivFin σ`. Set `ψ : MvPolynomial σ ℂ ≃+* MvPolynomial (Fin (Fintype.card σ)) ℂ` to `(renameEquiv ℂ e).toRingEquiv`. Establish `hψ : ∀ q, ψ q = rename e q` using `fun _ => rfl`. Establish `hψs : ∀ q, ψ.symm q = rename e.symm q` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `J : Ideal (MvPolynomial (Fin (Fintype.card σ)) ℂ)` to `I.comap ψ.symm`. Establish `hJ : J.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hmemJ : ∀ q, q ∈ J ↔ ψ.symm q ∈ I` using `fun _ => Iff.rfl`. Set `L : (σ → ℂ) →L[ℂ] (Fin (Fintype.card σ) → ℂ)` to `ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (e.symm i)`. Set `M : (Fin (Fintype.card σ) → ℂ) →L[ℂ] (σ → ℂ)` to `ContinuousLinearMap.pi fun s => ContinuousLinearMap.proj (e s)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hLM : ∀ x, L (M x) = x` using `fun x => funext fun i => by simp [L, M]`. Establish `hML : ∀ z, M (L z) = z` using `fun z => funext fun s => by simp [L, M]`. Establish `heval : ∀ z q, eval (L z) (ψ q) = eval z q`. Introduce `z q`. Establish `hc : L z ∘ e = z` using `funext fun s => by simp [L]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hψ, eval_rename, hc]`. Establish `hZ : ∀ z, L z ∈ zeroLocus J ↔ z ∈ zeroSetIn I`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz q hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← heval]`. Conclude with `hz _ (by rw [hmemJ, RingEquiv.symm_apply_apply]; exact hq)`. Introduce `hz q hq`. Rewrite using `[← ψ.apply_symm_apply q, heval]`. Conclude with `hz _ ((hmemJ q).1 hq)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdim : ringKrullDim (MvPolynomial σ ℂ ⧸ I) = ringKrullDim (MvPolynomial (Fin (Fintype.card σ)) ℂ ⧸ J)` using `ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv I J ψ (Ideal.comap_symm (I := I) ψ))`. Rewrite using `[hdim]`. Use `BranchFillDimension.of_fin hHF _ J (ψ h) (L w) k r (L ∘ φ) (M ⁻¹' B) hJ ?_ ((hZ w).2 hw) (L.differentiable.comp_differentiableOn hφd) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hmemJ, RingEquiv.symm_apply_apply]`. Conclude with `hh`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce `t ht t' ht' htt`. Conclude with `hφi ht ht' (by simpa [hML] using congrArg M htt)`. Introduce `t ht`. Conclude with `(hZ _).2 (hφm ht)`. Conclude with `M.continuous.continuousAt.preimage_mem_nhds (by rwa [hML])`.
-
-Introduce and unpack `x ⟨⟨hxZ, hxB⟩, hxh⟩`. Rewrite `hxZ`, `hxh` using `[← hLM x]`. Take `⟨t, ht, hteq⟩` from `hcov ⟨⟨(hZ _).1 hxZ, hxB⟩, fun h0 => hxh (by simpa [heval] using h0)⟩`. Conclude with `⟨t, ht, by simp [hteq, hLM]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BranchFillDimension.proof (hHF : HolomorphicFibreInfinite.Statement) :
     BranchFillDimension.Statement := by

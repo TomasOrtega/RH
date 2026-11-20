@@ -16,11 +16,9 @@ open GlobalTheory.LamTie.AuxiliaryPrimeFunction
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Use `haveI : Finite (𝓞 L ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`. Use `haveI := v.isPrime`. Establish `hN : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 L ⧸ v.asIdeal) = 0`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, ← nsmul_one, card_nsmul_eq_zero']`. Establish `h1` using `GlobalTheory.Mem.WildChar.one_lt_absNorm v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp0 : ((p : ℕ) : 𝓞 L ⧸ v.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem.2 hv]`. Use `(Nat.Prime.coprime_iff_not_dvd hp).2 fun ⟨t, ht⟩ => one_ne_zero (α := 𝓞 L ⧸ v.asIdeal) ?_` and prove the remaining obligations. Establish `e : Ideal.absNorm v.asIdeal = p * t + 1` using `by omega`. Rewrite `hN` using `[e]`.
-
-Simplify `hN` using `[hp0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coprime_absNorm_sub_one (v : HeightOneSpectrum (𝓞 L)) {p : ℕ} (hp : p.Prime) (hv : (p : 𝓞 L) ∈ v.asIdeal) :
     Nat.Coprime p (Ideal.absNorm v.asIdeal - 1) := by
@@ -37,37 +35,31 @@ theorem coprime_absNorm_sub_one (v : HeightOneSpectrum (𝓞 L)) {p : ℕ} (hp :
   simpa [hp0] using hN
 
 /- English proof (translation)
-Use `haveI : Nonempty (HeightOneSpectrum (𝓞 L)) := ⟨w0⟩`. Set `u : HeightOneSpectrum (𝓞 L) → HeightOneSpectrum (𝓞 F)` to `fun w => w.under (𝓞 F)`. Set `r : HeightOneSpectrum (𝓞 L) → HeightOneSpectrum (𝓞 L)` to `fun w => Function.invFun u (u w)`. Establish `hr : ∀ w, (r w).under (𝓞 F) = w.under (𝓞 F)` using `fun w => Function.invFun_eq (f := u) ⟨w, rfl⟩`. Establish `hrr : ∀ w w', w.under (𝓞 F) = w'.under (𝓞 F) → r w = r w'` using `fun w w' h => congrArg (Function.invFun u) h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w1 := r w0 with hw1`. Establish `hu1 : w1.under (𝓞 F) = w0.under (𝓞 F)` using `hr w0`. Establish `h1 : ¬ O w1` using `fun h => h0 (hO _ _ hu1 h)`. Set `S : Finset (HeightOneSpectrum (𝓞 L))` to `insert w1 (hfin.toFinset.filter fun w => r w = w)`. Establish `hS : ∀ w, w ∈ S ↔ w = w1 ∨ (O w ∧ r w = w)` using `fun w => by simp [S]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hfix : ∀ w ∈ S, r w = w` using `fun w hw => by`. Break down `(hS w).1 hw with rfl | h` into its components or cases. Use `exacts [hrr _ _ hu1, h.2]`. Establish `hne : ∀ w, O w → w ≠ w1` using `fun w hw h => h1 (h ▸ hw)`. Establish `hwild : ∀ w : HeightOneSpectrum (𝓞 L), ∃ θ : (w.adicCompletion L)ˣ →* ℂˣ, O w → ∃ p : ℕ, p.Prime ∧ (p : 𝓞 L) ∈ w.asIdeal ∧ (∀ x, θ x ^ p = 1) ∧ (∀ x, IsUnitAt w x → Valued.v ((x : w.adicCompletion L) - 1) ≤ WithZero.exp (-2 : ℤ) → θ x = 1) ∧ ∃ k : Lˣ, IsUnitAt w (atFin w k) ∧ Val …` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hw : O w`. Take `⟨p, hp, hp'⟩` from `hpr w hw`. Take `⟨θ, hθ⟩` from `exists_wild w hp hp'`. Conclude with `⟨θ, fun _ => ⟨p, hp, hp', hθ⟩⟩`. Conclude with `⟨1, fun h => absurd h hw⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose θ1 hθ1 using hwild`. Establish `hw0 : w1 ∈ S` using `(hS _).2 (Or.inl rfl)`. Take `⟨θ0, ht0, hθ0, k0, hk0, hk0'⟩` from `exists_tame_par w1 hq h5 (natCast_mem_of_under hu1.symm hq0) φ e (S.erase w1) θ1`. Set `θ : ∀ w : HeightOneSpectrum (𝓞 L), (w.adicCompletion L)ˣ →* ℂˣ` to `Function.update θ1 w1 θ0`. Establish `e0 : θ w1 = θ0` using `Function.update_self _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ w, w ≠ w1 → θ w = θ1 w` using `fun w hw => Function.update_of_ne hw _ _`. Take `⟨χ, hu, ht, hi, hunr, hloc⟩` from `exists_hecke_level hcm e S θ (fun w hw => by`. Break down `(hS w).1 hw with rfl | ⟨h2, -⟩` into its components or cases. Rewrite using `[e0]`. Conclude with `GlobalTheory.ModelChar.continuous_of_tameLoc ht0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, -, -, -, h, -⟩` from `hθ1 w h2`. Rewrite using `[e1 w (hne w h2)]`. Conclude with `continuous_of_level h)`. Use the proof step `(fun w hw x => by`. Break down `(hS w).1 hw with rfl | ⟨h2, -⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[e0]`. Conclude with `ht0.1 x`. Take `⟨p, hp, -, h, -⟩` from `hθ1 w h2`. Rewrite using `[e1 w (hne w h2)]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one (by rw [← Units.val_pow_eq_pow_val, h, Units.val_one]) hp.ne_zero)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use the proof step `(fun w hw w' hcj hw' => by`. Use `(under_eq_iff_conjPl c hcm.rank hcm.ne _ _).2 (Or.inr hcj)` as an intermediate fact. Take `rfl : w' = w` from `by rw [← hfix w' hw', hrr _ _ this, hfix w hw]`. Use `hsp w' ?_ hcj` and prove the remaining obligations. Break down `(hS w').1 hw with rfl | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `exacts [Or.inr hu1, Or.inl h.1])`. Use the proof step `(fun k hk => by`. Establish `ep : ∏ w ∈ S.erase w1, θ w (atFin w k) = ∏ w ∈ S.erase w1, θ1 w (atFin w k)` using `Finset.prod_congr rfl fun w hw => by rw [e1 w (Finset.ne_of_mem_erase hw)]`. Rewrite using `[← Finset.mul_prod_erase _ _ hw0, e0, ep]`. Conclude with `hθ0 k hk)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨χ, hu, ht, hi, fun Q hQ hQ' => hunr Q fun w hw h => ?_, fun Q hQ => ?_, fun Q hQ => ?_, fun Q hQ x hx => ?_⟩` and prove the remaining obligations. Break down `(hS w).1 hw with rfl | h2 exacts [hQ' (h.trans hu1), hQ (hO _ _ h.symm h2.1)]` into its components or cases. Establish `hOr : O (r Q)` using `hO _ _ (hr Q).symm hQ`. Take `⟨σ, s1, s2, s3, -, s5⟩` from `hloc (r Q) ((hS _).2 (Or.inr ⟨hOr, hrr _ _ (hr Q)⟩)) Q (hr Q).symm`. Take `⟨p, -, -, -, t2, k, t3, t4, t5⟩` from `hθ1 _ hOr`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `s5` using `[e1 _ (hne _ hOr)]`. Use `expAt_succ (n := 1) (fun x hx hx' => (s5 x hx).2 (t2 _ ((s2 x).2 hx) (by rw [s3]; exact hx'))) fun H => t5 ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `s1 k`. Rewrite `t3`, `t4`, the goal using `[← hx]`. Rewrite `t4` using `[s3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(s5 x ((s2 x).1 t3)).1 (H x ((s2 x).1 t3) t4)`. Take `⟨σ, s1, s2, s3, -, s5⟩` from `hloc w1 hw0 Q (hQ.trans hu1.symm)`. Rewrite `s5` using `[e0]`. Use `expAt_succ (n := 0) (fun x hx hx' => (s5 x hx).2 (ht0.2 _ ((s2 x).2 hx) (by rw [s3]; exact hx'))) fun H => hk0' ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `s1 k0`.
-
-Rewrite `hk0`, the goal using `[← hx]`. Conclude with `(s5 x ((s2 x).1 hk0)).1 ((χ.unrAt_iff Q).2 H x ((s2 x).1 hk0))`. Establish `hOr : O (r Q)` using `hO _ _ (hr Q).symm hQ`. Take `⟨σ, -, -, -, s4, s5⟩` from `hloc (r Q) ((hS _).2 (Or.inr ⟨hOr, hrr _ _ (hr Q)⟩)) Q (hr Q).symm`. Take `⟨p, hp, hpm, t1, -⟩` from `hθ1 _ hOr`.
-
-Rewrite `s5` using `[e1 _ (hne _ hOr)]`. Establish `hpQ : (p : 𝓞 L) ∈ Q.asIdeal` using `natCast_mem_of_under (hr Q) hpm`. Use `(s5 x (GlobalTheory.LamTie.isUnitAt_of_pow_eq_one hx)).2 ?_` and prove the remaining obligations. Establish `a2 : θ1 (r Q) (σ x) ^ (Ideal.absNorm Q.asIdeal - 1) = 1` using `by rw [← map_pow, s4 x _ hx, map_one]`. Establish `: θ1 (r Q) (σ x) ^ Nat.gcd p (Ideal.absNorm Q.asIdeal - 1) = 1`.
-
-Rewrite using `[pow_gcd_eq_one]`. Conclude with `⟨t1 _, a2⟩`. Rewrite `this` using `[Nat.Coprime.gcd_eq_one (coprime_absNorm_sub_one Q hp hpQ), pow_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_char_teich {F : Type} [Field F] [NumberField F] [Algebra F L] {c : L ≃ₐ[F] L} {I : Type} [Fintype I]
     {φ : I → L →+* ℂ} (hcm : CMData F c φ) (e : I → ℤ) (O : HeightOneSpectrum (𝓞 L) → Prop) (hfin : {w | O w}.Finite)
@@ -169,23 +161,17 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 open GlobalTheory.LamTie.AuxiliaryPrimeFunction
 
 /- English proof (translation)
-Introduce `R H q0 w0 c hP h5`. Take `⟨cc, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Use `haveI : IsCMField H.E := H.isCMField_hostE`. Establish `hd` using `hP.distinct`. Simplify using `only [List.nodup_cons, List.mem_cons, not_or, List.not_mem_nil] at hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq` using `hP.splits q0 (by simp)`. Establish `hpr : ∀ w, Over4 H w → ∃ p ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], p ≠ q0 ∧ (p : 𝓞 H.E) ∈ w.asIdeal`. Introduce and unpack `w (⟨k, h⟩ | h | h)`. Use `fin_cases k`. Conclude with `⟨H.g 0, by simp, by tauto, h⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨H.g 1, by simp, by tauto, h⟩`. Conclude with `⟨H.pde, by simp, by tauto, h⟩`. Conclude with `⟨H.pde', by simp, by tauto, h⟩`. Establish `hsp : ∀ p ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], ∀ w : HeightOneSpectrum (𝓞 H.E), (p : 𝓞 H.E) ∈ w.asIdeal → ¬ GlobalTheory.Mem.Chr.ConjPl cc.toRingEquiv w w` using `fun p hp w hw hc => by`. Take `⟨h1, -, h2, h3⟩` from `hP.splits p hp`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, P', hne, hP1, hP2⟩` from `GlobalTheory.LamTie.SplitBelow.splits_below_of_absNorm H.E p h1 h2 h3 w hw`. Establish `key : ∀ Q, GlobalTheory.CMVal.Over Q (below w) → Q = w` using `fun Q hQ => by`. Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl cc hcm.rank hcm.ne w Q).1 (HeightOneSpectrum.ext hQ) with h | h` into its components or cases. Conclude with `h`. Conclude with `(GlobalTheory.Mem.Chr.existsUnique_conjPl cc.toRingEquiv w).unique h hc`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hne ((key P hP1).trans (key P' hP2).symm)`. Take `⟨χ, h1, h2, h3, h4, h5, h6, h7⟩` from `exists_char_teich hcm c (Over4 H) ((((finite_over (L := H.E) (hP.splits (H.g 0) (by simp)).1).union (finite_over (hP.splits (H.g 1) (by simp)).1)).union ((finite_over (hP.splits H.pde (by simp)).1).union (finite_over (hP.splits H.pde' (by simp)).1))).subset (by`. Introduce and unpack `w (⟨k, h⟩ | h | h)`. Use `fin_cases k exacts [Or.inl (Or.inl h), Or.inl (Or.inr h)]`. Use `exacts [Or.inr (Or.inl h), Or.inr (Or.inr h)]))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(by`. Introduce and unpack `w w' h (⟨k, h'⟩ | h' | h')`. Use `exacts [Or.inl ⟨k, natCast_mem_of_under h h'⟩, Or.inr (Or.inl (natCast_mem_of_under h h')), Or.inr (Or.inr (natCast_mem_of_under h h'))])`. Use `w0 (fun h => by`. Take `⟨p, hp, h1, h2⟩` from `hpr w0 h`.
-
-Conclude with `h1 (prime_eq (hP.splits p hp).1 hq.1 h2 hP.referencePlaceOverPrime))`. Use the proof step `(fun w h => by`. Take `⟨p, hp, -, h2⟩` from `hpr w h`. Conclude with `⟨p, (hP.splits p hp).1, h2⟩)`. Use the proof step `hq.1 h5 hP.referencePlaceOverPrime`.
-
-Use the proof step `(by`. Introduce and unpack `w (h | h)`. Take `⟨p, hp, -, h2⟩` from `hpr w h`. Conclude with `hsp p hp w h2`. Conclude with `hsp q0 (by simp) w (natCast_mem_of_under h.symm hP.referencePlaceOverPrime))`.
-
-Conclude with `⟨χ, ⟨h1, h2, ⟨fun g => 2 * c g, fun g => by push_cast; rfl, h3⟩, h4, h5, h6⟩, fun w hw => h7 w (Or.inr hw)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_auxiliaryHeckeCharacter_trivial_tame_part : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (q0 : ℕ) (w0 : HeightOneSpectrum (𝓞 H.E)) (c : R.Psi → ℤ),
     PlacesOk H q0 w0 → Units.torsionOrder H.E + 1 < q0 → ∃ χ, IsAuxiliaryHeckeCharacter H w0 c χ ∧ TeichTriv H χ := by

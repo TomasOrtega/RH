@@ -37,7 +37,7 @@ open GlobalTheory.Mem.RealTranslate (derEnd)
 open GlobalTheory.RegSch (wordDer)
 
 /- English proof (translation)
-The claim follows from `| [] => by simp | a :: l => by rw [List.map_cons, List.prod_cons, prod_map_neg l, List.prod_cons, List.length_cons, pow_succ, mul_smul_comm, neg_mul, mul_comm, mul_smul, neg_one_smul, smul_neg]`.
+A detailed English derivation is pending.
 -/
 theorem prod_map_neg {R : Type} [Ring R] [Algebra ℂ R] :
     ∀ l : List R, (l.map fun a => -a).prod = (-1 : ℂ) ^ l.length • l.prod
@@ -47,11 +47,11 @@ theorem prod_map_neg {R : Type} [Ring R] [Algebra ℂ R] :
       mul_smul_comm, neg_mul, mul_comm, mul_smul, neg_one_smul, smul_neg]
 
 /- English proof (translation)
-Set `ψ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Rᵐᵒᵖ` to `(MulOpposite.opLinearEquiv ℂ).toLinearMap ∘ₗ φ`. Establish `h` using `congrArg MulOpposite.unop (GlobalTheory.RegSch.GelfCyc.sum_words ψ M hM k)`. Establish `e : ∀ l : List R, (l.map MulOpposite.op).prod = MulOpposite.op l.reverse.prod` using `fun l => by`. Rewrite using `[MulOpposite.op_list_prod, List.map_reverse, List.reverse_reverse]`. Establish `e' : ∀ l : List R, (l.map MulOpposite.op).reverse.prod = MulOpposite.op l.prod` using `fun l => (MulOpposite.op_list_prod l).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψ : ∀ g : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ, (List.ofFn fun a => ψ (g a)) = (List.ofFn fun a => φ (g a)).map MulOpposite.op`. Introduce `g`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Establish `hs : ∀ f : (Fin (k + 1) → Fin n) → R, ∑ i, MulOpposite.op (f i) = MulOpposite.op (∑ i, f i)` using `fun f => (map_sum MulOpposite.opAddEquiv f _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [hψ, e, e', hs, MulOpposite.unop_smul, MulOpposite.unop_op] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_words_rev {R : Type} [Ring R] [Algebra ℂ R] {n : ℕ} (φ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] R)
     (M : Matrix (Fin n) (Fin n) ℂ) (hM : IsUnit M.det) (k : ℕ) :
@@ -83,14 +83,14 @@ open GlobalTheory.RegSch (wordDer)
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
 /- English proof (translation)
-Simplify using `only [wordDer, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wordDer_append (τ : D.what₂.Tau) (l l' : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)) (f : GA D V → ℂ) :
     wordDer θ V τ (l ++ l') f = wordDer θ V τ l (wordDer θ V τ l' f) := by
   simp only [wordDer, List.foldr_append]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons Z l ih => exact hA Z _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem wordDer_mem {τ : D.what₂.Tau} {A : Submodule ℂ (GA D V → ℂ)} (hA : ∀ Z, ∀ f ∈ A, RderC θ V τ Z f ∈ A)
     (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)) {f : GA D V → ℂ} (hf : f ∈ A) : wordDer θ V τ l f ∈ A := by
@@ -99,7 +99,7 @@ theorem wordDer_mem {τ : D.what₂.Tau} {A : Submodule ℂ (GA D V → ℂ)} (h
   | cons Z l ih => exact hA Z _ ih
 
 /- English proof (translation)
-The claim follows from `| [], x, _, y, _ => rfl | Z :: l, x, hx, y, hy => by show b x (RderC θ V τ Z (wordDer θ V τ l y)) = _ rw [hb Z x hx _ (wordDer_mem hA l hy), adj_word hA b hb l _ (hA _ _ hx) y hy, List.reverse_cons, List.map_append, wordDer_append] rfl`.
+A detailed English derivation is pending.
 -/
 theorem adj_word {τ : D.what₂.Tau} {A : Submodule ℂ (GA D V → ℂ)} (hA : ∀ Z, ∀ f ∈ A, RderC θ V τ Z f ∈ A)
     (b : (GA D V → ℂ) →ₗ⋆[ℂ] (GA D V → ℂ) →ₗ[ℂ] ℂ)
@@ -122,19 +122,19 @@ open GlobalTheory.RegSch (wordDer) in
 open GlobalTheory.GelfSymm in
 
 /- English proof (translation)
-Introduce `D θ V hθ τ A hAS hA b hb k x hx y hy`. Establish `hu : IsUnit (gramAt D V τ).det` using `GlobalTheory.SmoothAutCheck.gramAt_unit V τ`. Establish `hM : IsUnit ((gramAt D V τ)⁻¹).det` using `Matrix.isUnit_nonsing_inv_det_iff.2 hu`. Set `E : (Fin (k + 1) → Fin V.rank) → Fin (k + 1) → Matrix (Fin V.rank) (Fin V.rank) ℂ` to `fun idx a => Matrix.single (idx a) (idx (a + 1)) 1`. Establish `hg : ∀ f, gelf θ V τ k f = ∑ idx, wordDer θ V τ (List.ofFn (E idx)) f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `f`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Rewrite using `[wordDer, ← List.foldr_map (f := RderC θ V τ) (g := fun A acc => A acc), List.map_ofFn]`. Both sides reduce to the same expression. Establish `hs : ∀ i j, (gramAt D V τ)⁻¹ * Matrix.conjTranspose (Matrix.single i j (1 : ℂ)) * gramAt D V τ = -(-((gramAt D V τ)⁻¹ * (Matrix.single i j (1 : ℂ))ᵀ * (gramAt D V τ)⁻¹⁻¹))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[neg_neg, Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.conjTranspose_single, Matrix.transpose_single, star_one]`. Establish `key : ∑ idx, (((List.ofFn (E idx)).reverse.map fun Z => (gramAt D V τ)⁻¹ * Matrix.conjTranspose Z * gramAt D V τ).map (derEnd hθ τ)).prod = ∑ idx, ((List.ofFn (E idx)).map (derEnd hθ τ)).prod`. Establish `h1` using `sum_words_rev (derEnd hθ τ) (gramAt D V τ)⁻¹ hM k`. Establish `e : ∀ idx, ((List.ofFn (E idx)).reverse.map fun Z => (gramAt D V τ)⁻¹ * Matrix.conjTranspose Z * gramAt D V τ).map (derEnd hθ τ) = (List.ofFn fun a => derEnd hθ τ (-((gramAt D V τ)⁻¹ * (E idx a)ᵀ * (gramAt D V τ)⁻¹⁻¹))).reverse.map fun a => -a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `idx`. Rewrite using `[List.map_map, List.map_reverse, List.map_reverse, List.map_ofFn, List.map_ofFn]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, E, hs, map_neg]`. Simplify using `only [e, prod_map_neg, List.length_reverse, List.length_ofFn, List.map_ofFn]`. Rewrite using `[← Finset.smul_sum, h1, smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul]`. Both sides reduce to the same expression. Establish `hxS : x ∈ GlobalTheory.Mem.AutSpace.SmFun θ V` using `hAS hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `wx : ∀ w, wordDer θ V τ w x = ((w.map (derEnd hθ τ)).prod ⟨x, hxS⟩).1` using `fun w => GlobalTheory.RegSch.GelfCyc.wordDer_eq hθ τ w ⟨x, hxS⟩`. Establish `hgx : ∑ idx, wordDer θ V τ ((List.ofFn (E idx)).reverse.map fun Z => (gramAt D V τ)⁻¹ * Matrix.conjTranspose Z * gramAt D V τ) x = gelf θ V τ k x`. Rewrite using `[hg x]`. Simplify using `only [wx]`. Rewrite using `[← Submodule.coe_sum, ← Submodule.coe_sum, ← LinearMap.sum_apply, ← LinearMap.sum_apply, key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg y, map_sum, ← hgx, map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun idx _ => adj_word hA b hb _ x hx y hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GelfSymm.gelf_symm : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D), IsInfFam (D := D) θ →
     ∀ (τ : D.what₂.Tau) (A : Submodule ℂ (GA D V → ℂ)), A ≤ GlobalTheory.Mem.AutSpace.SmFun θ V →

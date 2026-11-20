@@ -23,7 +23,7 @@ def drAt (la : AllWt.Weight S.Dw) {C : Type} [NontriviallyNormedField C] [IsUltr
         ((Φ.C k).gr_spec (below x)).choose_spec.choose.v τ i) p (a.1 p) a.2.2)
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (norm_nonneg _) (Real.exp_pos _).le`.
+A detailed English derivation is pending.
 -/
 theorem drAt_nonneg (la : AllWt.Weight S.Dw) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (p : ℕ)
     (x : Sp C ⟶ (Φ.C k).Y.X) (f : (Φ.C k).Y.Fn) : 0 ≤ drAt Φ k la p x f :=

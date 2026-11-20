@@ -26,15 +26,15 @@ namespace GlobalTheory.HolUnifEnd
 open GlobalTheory GlobalTheory.SurjIsogeny GlobalTheory.IsogenyModel in
 
 /- English proof (translation)
-Use `hB.proper` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.comm` as an intermediate fact. Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ B.hom hB.smooth hB.geomConnected` as an intermediate fact. Establish `: IsIntegral B.left` using `GeometricallyIntegral.isIntegral_of_subsingleton B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected` as an intermediate fact. Establish `: IsIntegral A.left` using `GeometricallyIntegral.isIntegral_of_subsingleton A.hom`. Establish `: IsProper (ψ.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsProper ψ.left` using `IsProper.of_comp ψ.left B.hom`. Establish `hA' : SmoothOfRelativeDimension g (ψ.left ≫ B.hom)` using `by rw [Over.w]; exact hgA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `ψ.left.surjective (genericPoint B.left)`. Establish `: LocallyQuasiFinite ψ.left`. Use `locallyQuasiFinite_of_finite_fibre ψ a ((Set.finite_singleton (genericPoint _)).subset ?_)` and prove the remaining obligations. Introduce `x hx`. Conclude with `eq_genericPoint_of_apply_eq ψ.left B.hom hgB hA' (ha ▸ hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf : IsFinite ψ.left` using `.of_isProper_of_locallyQuasiFinite _`. Take `⟨Z, _, i, _, hi, hZ, hk⟩` from `exists_kernel ψ`. Establish `hm : Mono i` using `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono i.left))`. Use `isCommMonObj_of_mono i` as an intermediate fact. Take `⟨N, hN, hZN⟩` from `FiniteFlatKilled.main ℂ Z hZ inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, hN, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : i ^ N = 1`. Rewrite using `[← Category.id_comp i, ← MonObj.pow_comp, hZN, MonObj.one_comp]`. Rewrite using `[← hk.lift_fst x (toUnit _) hx, ← MonObj.comp_pow, h1, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_one_of_surjective (A B : Over (Sp ℂ)) [GrpObj A] [GrpObj B] (g : ℕ)
     (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hgA : SmoothOfRelativeDimension g A.hom)
@@ -68,21 +68,21 @@ theorem exists_pow_eq_one_of_surjective (A B : Over (Sp ℂ)) [GrpObj A] [GrpObj
   rw [← hk.lift_fst x (toUnit _) hx, ← MonObj.comp_pow, h1, MonObj.comp_one]
 
 /- English proof (translation)
-Establish `hunit : IsUnit ((N : ℕ) : Γ(Sp ℂ, ⊤))`. Use `(IsUnit.mk0 (N : ℂ) (by exact_mod_cast (show N ≠ 0 by omega))).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨hmon, hfin, het, hsurj⟩` from `abelianScheme_id_pow_finite_etale_surjective _ A N hA hunit`. Establish `key : ∀ (T : Over (Sp ℂ)) (x : T ⟶ A), x ≫ (𝟙 A ^ N) = 1 → x ≫ φ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `T x hx`. Set `K` to `pullback (𝟙 A ^ N) η[A]`. Set `inc : K ⟶ A` to `pullback.fst ((𝟙 A ^ N)) η[A]`. Establish `hinc : inc ≫ (𝟙 A ^ N) = 1`. Rewrite using `[pullback.condition, toUnit_unique (pullback.snd ((𝟙 A ^ N)) η[A]) (toUnit K)]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hp` using `(IsPullback.of_hasPullback ((𝟙 A ^ N)) η[A]).map (Over.forget (Sp ℂ))`. Establish `he : Etale (pullback.snd ((𝟙 A ^ N)) η[A]).left` using `MorphismProperty.of_isPullback (P := @Etale) hp het`. Establish `hw : (pullback.snd ((𝟙 A ^ N)) η[A]).left = K.hom`. Simplify using `using Over.w (pullback.snd ((𝟙 A ^ N)) η[A])`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `he` using `[hw]`. Establish `: IsReduced K.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced K.hom`. Establish `hk : inc ≫ φ = 1`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `: LocallyOfFiniteType ((inc ≫ φ).left ≫ A'.hom)` using `by rw [Over.w]; infer_instance`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ext_of_apply_eq A'.hom Set.univ isClosed_univ.isLocallyClosed dense_univ (fun z _ hz => ?_) ((Over.w _).trans (Over.w _).symm)` and prove the remaining obligations. Set `p : Over.mk (𝟙 (Sp ℂ)) ⟶ K` to `Over.homMk (pointOfClosedPoint K.hom z hz) (pointOfClosedPoint_comp _ _ _)`. Establish `hpN : (p ≫ inc) ^ N = 1`. Establish `: (p ≫ inc) ^ N = (p ≫ inc) ≫ (𝟙 A ^ N)` using `by rw [MonObj.comp_pow, Category.comp_id]`. Rewrite using `[this, Category.assoc, hinc, MonObj.comp_one]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : p ≫ inc ≫ φ = p ≫ 1`. Rewrite using `[MonObj.comp_one, ← Category.assoc]`. Conclude with `h _ hpN`. Establish `e'` using `congrArg (fun q => q.left (IsLocalRing.closedPoint ℂ)) e`. Establish `hz' : p.left (IsLocalRing.closedPoint ℂ) = z` using `pointOfClosedPoint_apply K.hom z hz _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left] at e'`. Rewrite using `[← hz']`. Conclude with `e'`. Establish `hx' : x ≫ (𝟙 A ^ N) = toUnit T ≫ η[A]` using `hx`. Rewrite using `[← pullback.lift_fst x (toUnit T) hx', Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ≫ inc ≫ φ = 1`. Rewrite using `[hk, MonObj.comp_one]`. Take `⟨⟨α, hα, hc⟩, -⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective _ A A A' ((𝟙 A ^ N)) φ hmon inferInstance inferInstance hsurj inferInstance key`. Conclude with `⟨α, hα, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_factor_pow (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (hA : IsAbelianScheme A)
     [IsSeparated A'.hom] [LocallyOfFiniteType A'.hom] (N : ℕ) (hN : 1 ≤ N) (φ : A ⟶ A') [IsMonHom φ]
@@ -133,37 +133,33 @@ theorem exists_factor_pow (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (hA : Is
   exact ⟨α, hα, hc⟩
 
 /- English proof (translation)
-Introduce `A _ g hA hgA L u M hM`. Take `⟨hL, -⟩` from `abelianSchemeLaws_all`. Take `⟨B, _, MB, i, r, m, hB, hgB, hMB, hamp, hK, hi, hr, hm, hri⟩` from `SS.PrincIsog.exists_isogeny_kTriv ℂ A g hA hgA`. Take `⟨Q, i', r', -, hi', hr', hir'⟩` from `EighthPowerFactor.exists_polAV_hypS_retract ℂ B g hB hgB MB hMB hamp hK`. Take `⟨rig, hrig⟩` from `Q.rigid`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, -, -, -, -, -, hv1, hv2, -⟩` from `thetaUnifAV_all Q rig hrig`. Establish `hu` using `TorusTransfer.tangent_bijective u hgA`. Use `haveI := hi`. Use `haveI := hr`. Use `haveI := hi'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hr'`. Take `⟨J, hJ, hJΛ, -, -⟩` from `HomLinear.exists_linear_of_isMonHom A Q.A hA Q.isAb L Q.L g Q.g u v hv1 hv2 (i ≫ i') inferInstance`. Take `⟨R, hR, hRΛ, -, -⟩` from `HomLinear.exists_linear_of_isMonHom Q.A A Q.isAb hA Q.L L Q.g g v u hu.1 hu.2 (r' ≫ r) inferInstance`. Establish `hunit : IsUnit ((m : ℕ) : Γ(Sp ℂ, ⊤))`. Use `(IsUnit.mk0 (m : ℂ) (by exact_mod_cast (show m ≠ 0 by omega))).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hsB` using `(abelianScheme_id_pow_finite_etale_surjective _ B m hB hunit).2.2.2`. Establish `: Surjective (r.left ≫ i.left)` using `by rw [← Over.comp_left, hri]; exact hsB`. Establish `: Surjective i.left` using `Surjective.of_comp r.left i.left`. Take `⟨n, hn, hkill⟩` from `exists_pow_eq_one_of_surjective A B g hA hB hgA hgB i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ x : 𝟙_ (Over (Sp ℂ)) ⟶ A, x ≫ (i ≫ i') ≫ (r' ≫ r) ≫ (i ≫ i') = (x ≫ i ≫ i') ^ m`. Introduce `x`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hir', reassoc_of% hri, ← Category.assoc x i, ← Category.assoc (x ≫ i), MonObj.comp_pow, Category.comp_id, MonObj.pow_comp, Category.assoc]`. Establish `hsubv : ∀ a b, v.ex a = v.ex b → a - b ∈ v.Λ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b h`. Rewrite using `[← v.ker]`. Establish `e` using `v.ex_add (a - b) b`. Rewrite `e` using `[sub_add_cancel, h]`. Establish `e2` using `congrArg (· * (v.ex b)⁻¹) e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using e2.symm`. Establish `hRJ : ∀ z, R (J z) = m • z`. Introduce `z`. Establish `hJy : ∀ t : ℂ, J (t • (R (J z) - m • z)) ∈ v.Λ`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : v.ex (J (R (J (t • z)))) = v.ex (m • J (t • z))`. Rewrite using `[hJ, hR, hJ, holUnif_ex_nsmul_eq_pow, hJ, ← hpt]`. Simplify using `only [Category.assoc]`. Establish `h2` using `hsubv _ _ h1`. Establish `h3 : t • (R (J z) - m • z) = R (J (t • z)) - m • (t • z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_smul, map_smul, smul_sub, smul_comm t m z]`. Rewrite using `[h3, map_sub, map_nsmul]`. Conclude with `h2`. Establish `hJy0 : J (R (J z) - m • z) = 0` using `LatticeHom.eq_zero_of_forall_smul_mem v.Λ v.discrete fun t => by rw [← map_smul]; exact hJy t`. Establish `hker : ∀ t : ℂ, u.ex (t • (R (J z) - m • z)) ≫ i = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Establish `h2 : u.ex (t • (R (J z) - m • z)) ≫ i ≫ i' = 1`. Rewrite using `[← hJ, map_smul, hJy0, smul_zero, holUnif_ex_zero_eq_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hir', Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = (u.ex (t • (R (J z) - m • z)) ≫ i ≫ i') ≫ r' := by simp only [Category.assoc]`. Use `_ = 1 := by rw [h2, MonObj.one_comp]`. Establish `hn0 : (n : ℂ) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`. Establish `hy0 : R (J z) - m • z = 0` using `LatticeHom.eq_zero_of_forall_smul_mem u.Λ u.discrete fun t => by`. Rewrite using `[← u.ker]`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `hkill _ (hker ((n : ℂ)⁻¹ * t))`. Rewrite `e` using `[← holUnif_ex_nsmul_eq_pow, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ← _root_.mul_assoc, mul_inv_cancel₀ hn0, _root_.one_mul]`. Conclude with `e`. Conclude with `sub_eq_zero.1 hy0`. Take `⟨β, hβ, hβe⟩` from `_root_.GlobalTheory.exists_isMonHom_of_map_lattice thetaUnifAV_all hL Q Q Q.g v v (J ∘ₗ M ∘ₗ R)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `rfl rfl (fun l hl => hJΛ _ (hM _ (hRΛ _ hl)))`. Use `haveI := hβ`. Establish `hφ : ∀ z, u.ex z ≫ (i ≫ i') ≫ β ≫ (r' ≫ r) = u.ex ((m * m) • M z)`. Introduce `z`. Establish `e` using `hβe (J z)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply] at e`. Rewrite using `[← Category.assoc, ← hJ, ← Category.assoc, ← e, ← hR, hRJ, hRJ, map_nsmul, smul_smul]`. Use `hA.proper` as an intermediate fact. Take `⟨α, hα, hαφ⟩` from `exists_factor_pow A A hA (m * m) (Nat.one_le_iff_ne_zero.2 (by positivity)) ((i ≫ i') ≫ β ≫ (r' ≫ r)) fun y hy => by`. Take `⟨z, rfl⟩` from `u.ex_onto y`.
-
-Rewrite `hy` using `[← holUnif_ex_nsmul_eq_pow, u.ker]`. Rewrite using `[hφ, u.ker, ← map_nsmul]`. Conclude with `hM _ hy`. Use `⟨α, hα, fun w => ?_⟩` and prove the remaining obligations. Establish `hN0 : ((m * m : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (show m * m ≠ 0 by positivity)`.
-
-Establish `hw : (m * m) • (((m * m : ℕ) : ℂ)⁻¹ • w) = w`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hN0, one_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, MonObj.comp_pow, Category.comp_id, ← holUnif_ex_nsmul_eq_pow, hw]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isMonHom_of_map_lattice :
     ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →

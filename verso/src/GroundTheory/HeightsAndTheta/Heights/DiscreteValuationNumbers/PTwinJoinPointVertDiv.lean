@@ -18,7 +18,7 @@ variable {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → 
 variable [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)]
 
 /- English proof (translation)
-Rewrite using `[← BundleExamples.joinCoords_eq, ← BundleExamples.joinForm_eq]`. Conclude with `joinForm_mem_pointIdeal_iff R y z h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_mem_mcIdeal_iff (R : Type) [CommRing R] {Ω : Type} [Field Ω] [Algebra R Ω]
     (y : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (h : MvPolynomial (Σ k, ι k) R) :
@@ -27,7 +27,7 @@ theorem rename_mem_mcIdeal_iff (R : Type) [CommRing R] {Ω : Type} [Field Ω] [A
   exact joinForm_mem_pointIdeal_iff R y z h
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[← Objects.isMultiHomog_iff]`. Conclude with `isMultiHomog_joinForm hf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename {R : Type} [CommRing R] {f : MvPolynomial (Σ k, ι k) R} {a : K → ℕ}
     (hf : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog f a) :
@@ -39,9 +39,9 @@ theorem isMultiHomog_rename {R : Type} [CommRing R] {f : MvPolynomial (Σ k, ι 
 omit [Fintype K'] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Proceed by induction on `h using MvPolynomial.induction_on' with`. Consider the case `monomial d r`. Establish `hm : IsMultiHomog (monomial d r : MRing ι R) (Finsupp.weight (blockWeight ι) d)` using `isWeightedHomogeneous_monomial _ _ _ rfl`. Establish `hj : IsMultiHomog (rename (liftVar ι') (monomial d r : MRing ι R)) (Sum.elim (Finsupp.weight (blockWeight ι) d) 0)` using `isMultiHomog_joinForm hm`. Distinguish the cases in `hb : b = Finsupp.weight (blockWeight ι) d`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Rewrite using `[IsWeightedHomogeneous.weightedHomogeneousComponent_same hm, IsWeightedHomogeneous.weightedHomogeneousComponent_same hj]`. Establish `hb' : (Sum.elim b 0 : K ⊕ K' → ℕ) ≠ Sum.elim (Finsupp.weight (blockWeight ι) d) 0` using `fun e => hb (funext fun k => congrFun e (Sum.inl k))`. Rewrite using `[IsWeightedHomogeneous.weightedHomogeneousComponent_ne b hm hb, IsWeightedHomogeneous.weightedHomogeneousComponent_ne _ hj hb', map_zero]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem rename_weightedHomogeneousComponent [DecidableEq K] [DecidableEq K'] {R : Type} [CommRing R]
     (b : K → ℕ) (h : MvPolynomial (Σ k, ι k) R) :
@@ -65,9 +65,9 @@ theorem rename_weightedHomogeneousComponent [DecidableEq K] [DecidableEq K'] {R 
   | add p q hp hq => simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Rewrite `hQ`, the goal using `[← Objects.isMultiProjPrime_iff]`. Use `hQ.isPrime` as an intermediate fact. Use `⟨Ideal.comap_isPrime _ Q, fun h hh b => ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite `hh`, the goal using `[Ideal.mem_comap]`. Rewrite using `[rename_weightedHomogeneousComponent]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ.multiHomog _ hh _`. Take `⟨i, hi⟩` from `hQ.relevant (Sum.inl k)`. Conclude with `⟨i, by rw [Ideal.mem_comap, rename_X]; exact hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comap_isMultiProjPrime {R : Type} [CommRing R]
     {Q : Ideal (MvPolynomial (Σ k : K ⊕ K', Sum.elim ι ι' k) R)}
@@ -88,13 +88,13 @@ end JoinPointVerticalDivisor
 open JoinPointVerticalDivisor in
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ y b f g hD`. Take `⟨⟨α, β, hf, hg, hb⟩, hfP, hgP, hU⟩` from `hD`. Use `⟨⟨Sum.elim α 0, Sum.elim β 0, isMultiHomog_rename hf, isMultiHomog_rename hg, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(k | k)`. Simplify `hb k` using `[pullDeg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[pullDeg]`. Rewrite using `[rename_mem_mcIdeal_iff]` and apply the resulting hypothesis. Rewrite using `[rename_mem_mcIdeal_iff]` and apply the resulting hypothesis. Introduce `Q hQ hPQ hQO`. Establish `hle : mcIdeal O y ≤ Q.comap (rename (liftVar (ι` using `ι) ptIdx)) := fun h hh => Ideal.mem_comap.mpr (hPQ ((rename_mem_mcIdeal_iff O y ptCoord h).mpr hh))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hO : (Q.comap (rename (liftVar (ι` using `ι) ptIdx))).comap (C : O →+* ReciprocityTheory.ChartRestriction.G.Geo.MRingOver O ι) = ⊥ := by`. Rewrite `hQO`, the goal using `[eq_bot_iff]`. Introduce `c hc`. Apply `hQO` to reduce the goal to its premises. Simplify `hc` using `[Ideal.mem_comap, rename_C]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨u, v, ⟨γ, hu⟩, ⟨δ, hv⟩, huQ, hvQ, huv⟩` from `hU _ (comap_isMultiProjPrime hQ) hle hO`. Use `⟨rename (liftVar ptIdx) u, rename (liftVar ptIdx) v, ⟨_, isMultiHomog_rename hu⟩, ⟨_, isMultiHomog_rename hv⟩, huQ, hvQ, ?_⟩` and prove the remaining obligations. Use `(rename_mem_mcIdeal_iff O y ptCoord _).mpr huv` as an intermediate fact. Simplify `this` using `only [map_sub, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem JoinPointVerticalDivisor.proof : JoinPointVerticalDivisor.Statement := by
   intro O _ _ _ Ω _ _ K _ ι _ y b f g hD

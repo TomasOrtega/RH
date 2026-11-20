@@ -71,7 +71,7 @@ def StepSha : Prop :=
       DataM P.𝔓 P.F P.G P.E1 P.E2 P.Z → V.Vlen l e χ ≤ VPrime P.𝔓 P.F
 
 /- English proof (translation)
-Introduce `hG l _ e χ K _ g1 dat`. Take `⟨T⟩` from `hG.1.1 l e χ K dat.data g1 dat.norm`. Take `⟨P, ⟨tie⟩, hD⟩` from `h1 hG l e χ K g1 dat T`. Conclude with `⟨P, hD, h2 hG l e χ K g1 dat T P tie hD, h3 hG l e χ K g1 dat T P tie hD⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stepA_of (h1 : StepPresT V) (h2 : FirstModuleCondition V) (h3 : StepSha V) : StepA V := by
   intro hG l _ e χ K _ g1 dat

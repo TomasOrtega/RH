@@ -13,11 +13,11 @@ namespace GlobalTheory.CompanionTheory.LimV.NodeApply
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `lev_mul_unip (m⁻¹) (-u + u')`. Establish `hu : (unip u : GA E (r + s))⁻¹ = unip (-u)`. Rewrite using `[inv_eq_iff_mul_eq_one, ← D.unip_add', add_neg_cancel, unip_zero]`. Establish `key : unip v * lev (Ad E) r s (m⁻¹ * m') = cf (r + s) (k * k'⁻¹) (c * c'⁻¹)`. Rewrite using `[← cf_mul, ← cf_inv, map_mul, ← mul_assoc, ← hv, D.unip_add', map_inv, ← hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : unip u' * lev (Ad E) r s m' = unip u * lev (Ad E) r s m * cf (r + s) k c * (cf (r + s) k' c')⁻¹`. Rewrite using `[h]`. Use `group`. Rewrite using `[mul_assoc (lev (Ad E) r s m)⁻¹, mul_assoc (unip u)⁻¹, h2]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k₁, c₁, k₂, c₂, h₁, h₂, hm⟩` from `GlobalTheory.T.levi_factor_of_unipotent_decomp v (m⁻¹ * m') _ _ (mul_mem hc (inv_mem hc')) key`. Use `⟨k₁, c₁, k₂, c₂, h₁, h₂, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem levi_eq_mul_cf (u u' : BlockIx (r + s) r → Ad E) (m m' : GA E r × GA E s) (k k' : Kinf E (r + s))
     (c c' : GL (Fin (r + s)) (Af E)) (hc : c ∈ KO E (r + s)) (hc' : c' ∈ KO E (r + s))
@@ -41,7 +41,7 @@ theorem levi_eq_mul_cf (u u' : BlockIx (r + s) r → Ad E) (m m' : GA E r × GA 
     _ = _ := by rw [hm]; rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ r s e₁ e₂ f₁ f₂ u m k c hc`. Take `⟨k', c', hc', hx'⟩` from `(exists_iw (unip u * lev (Ad E) r s m * cf (r + s) k c)).choose_spec.choose_spec`. Take `⟨k₁, c₁, k₂, c₂, h₁, h₂, hm⟩` from `levi_eq_mul_cf u _ m _ k k' c c' hc hc' hx'`. Establish `hl : leviOf (unip u * lev (Ad E) r s m * cf (r + s) k c) = (m.1 * cf r k₁ c₁, m.2 * cf s k₂ c₂)` using `hm`. Rewrite using `[nodeFn, hl, f₁.rinv _ _ _ h₁, f₂.rinv _ _ _ h₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nodeFn_apply : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ} (e₁ : GA E r → ℂ) (e₂ : GA E s → ℂ), FlatFn e₁ → FlatFn e₂ → ∀ (u : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (k : Kinf E (r + s)) (c : GL (Fin (r + s)) (Af E)), c ∈ KO E (r + s) → nodeFn e₁ e₂ (unip u * lev (Ad E) r s m * cf (r + s) k c) = e₁ m.1 * e₂ m.2 := by
   intro E _ _ _ r s e₁ e₂ f₁ f₂ u m k c hc

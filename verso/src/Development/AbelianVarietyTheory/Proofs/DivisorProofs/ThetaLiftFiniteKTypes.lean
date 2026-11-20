@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.ThKAutV.KFin
 
 /- English proof (translation)
-Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[show ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem I_mul_right {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → ℂ)
@@ -22,13 +22,11 @@ theorem I_mul_right {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rw [show ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ`. Take `⟨K, hK, hKin⟩` from `GlobalTheory.T.maximal_compact_of_skew_hermitian_twist F E σ hσ B _ _ _ G.W hT.base hT.geo.hW c hc hcs`. Take `⟨S, hSf, hSle, hS⟩` from `GlobalTheory.T.polynomial_datum_finite_dimensional_orbit F E σ B _ _ G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hKP (GlobalTheory.ThK.Inhab.pairV hT) Φ hΦ`. Take `⟨L, hL⟩` from `GlobalTheory.T.theta_integral_linear_in_polynomial F E σ B a a' G X om om' hKP hT`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `P` to `GlobalTheory.ThK.PolData B G.M`. Set `S' : Submodule ℂ P` to `S.comap P.subtype`. Use `haveI : FiniteDimensional ℂ S := hSf`. Use `haveI : FiniteDimensional ℂ S' := FiniteDimensional.of_injective (K := ℂ) (V₂ := S) ((P.subtype.domRestrict S').codRestrict S fun x => x.2) fun x y e => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : GlobalTheory.ThK.Fn F a (a + a'))) e))`. Set `T : P →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `LinearMap.funLeft ℂ ℂ (toGAd hσ G.W.J hc).symm ∘ₗ L`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := S'.map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk` using `hS _ (hKin k k.2)`. Use `⟨⟨om (1, (toGAd hσ G.W.J hc).symm k) Φ, hSle hk⟩, hk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
-
-Simplify using `only [T, LinearMap.coe_comp, Function.comp_apply, LinearMap.funLeft_apply, hL, map_mul, I_mul_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kfin_thetaIntegral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

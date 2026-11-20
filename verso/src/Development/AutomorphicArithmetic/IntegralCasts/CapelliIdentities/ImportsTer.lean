@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R _ P hP t`. Proceed by induction on `t using Nat.strong_induction_on with`. Consider the case `_ t ih`. Introduce `ht hmem`. Establish `h1 : t ≠ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).2 (by simpa using hmem))`. Take `⟨p, hp, k, rfl⟩` from `Nat.exists_prime_and_dvd h1`. Rewrite `hmem` using `[Nat.cast_mul]`. Break down `hP.mem_or_mem hmem with h | h` into its components or cases.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨p, hp, dvd_mul_right p k, h⟩`. Establish `hk : k ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ht`. Establish `hlt : k < p * k` using `lt_mul_of_one_lt_left (Nat.pos_of_ne_zero hk) hp.one_lt`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hqk, hqP⟩` from `ih k hlt hk h`. Conclude with `⟨q, hq, hqk.mul_left p, hqP⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYdc5.main.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] (P : Ideal R) [hP : P.IsPrime] (t : ℕ),

@@ -13,43 +13,41 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LevelType
 
 /- English proof (translation)
-Introduce `F _ _ _ _ p _ α n _ _ _ _ m _ _ e X _ _ s a θ χ U _ _ ρ φ hp hθ hs hφ hint`. Use `haveI : Fact (1 < p) := ⟨(Fact.out : p.Prime).one_lt⟩`. Set `Λ : U →ₗ[ℂ] (⨂[ℂ] b, X b)` to `{ toFun := fun w => (φ w).1.1 1 map_add' := fun x y => by rw [map_add]; rfl map_smul' := fun c x => by rw [map_smul]; rfl }`. Establish `hΛ : ∀ w, Λ w = (φ w).1.1 1` using `fun _ => rfl`. Establish `hΛ0 : Λ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩ : ∃ w, φ w ≠ 0` from `by by_contra! h`. Conclude with `hφ (LinearMap.ext h)`. Take `⟨x, hx⟩ : ∃ x, (φ w).1.1 x ≠ 0` from `by by_contra! h`. Conclude with `hw (Subtype.ext (Subtype.ext (funext h)))`. Take `⟨q, κ, hκ, rfl⟩` from `MultiIrr.exists_parab_mul e x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨g, hg⟩` from `exists_isLift_of_mem_KO hp hκ`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Establish `h1 : (φ w).1.1 κ = 0`. Establish `h2 : Λ (ρ g w) = 0` using `by rw [h0]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[hΛ, ← hint g κ hg w]`. Establish `h3 : (multiProd e s κ (φ w)).1.1 1 = (φ w).1.1 (1 * κ)` using `rfl`. Rewrite `h2` using `[h3, one_mul]`. Then use the resulting hypothesis. Rewrite using `[parInd_law, h1, map_zero, smul_zero]`. Set `H : Subgroup (GL n (ZMod p))` to `Subgroup.map (parab (ZMod p) e).subtype (⨅ b : {b // b ≠ a}, ((Pi.evalMonoidHom (fun c => GL (m c) (ZMod p)) b.1).comp (leviProj (ZMod p) e)).ker)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hH : ∀ x : parab (ZMod p) e, (∀ b, b ≠ a → leviProj (ZMod p) e x b = 1) → (x : GL n (ZMod p)) ∈ H`. Introduce `x hx`. Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Subgroup.mem_iInf]`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `MonoidHom.mem_ker.2 (hx b.1 b.2)`. Establish `hH' : ∀ y ∈ H, ∃ x : parab (ZMod p) e, (x : GL n (ZMod p)) = y ∧ ∀ b, b ≠ a → leviProj (ZMod p) e x b = 1`. Introduce and unpack `y ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, Subgroup.mem_iInf]`. Conclude with `⟨x, rfl, fun b hb => MonoidHom.mem_ker.1 (hx ⟨b, hb⟩)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ y ∈ H, ∀ w, Λ (ρ y w) = ((θ.comp GeneralLinearGroup.det y : ℂˣ) : ℂ) • Λ w`. Introduce `y hy w`. Take `⟨x, rfl, hx⟩` from `hH' y hy`. Take `⟨h, hh, hl⟩` from `exists_canon_lift hp (x : GL n (ZMod p))`. Establish `hP : h ∈ parab F e` using `mem_parab.2 fun i j hij => by`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0` using `mem_parab.1 x.2 i j hij`. Express the relevant statement in the definitionally equal form `h.val i j = 0`. Rewrite using `[hh]`. Express the relevant statement in the definitionally equal form `((((x : GL n (ZMod p)) : Matrix n n (ZMod p)) i j).val : F) = 0`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Set `q : parab F e` to `⟨h, hP⟩`. Establish `hq : ∀ b, b ≠ a → leviProj F e q b = 1`. Introduce `b hb`. Establish `h2` using `hx b hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h3` using `congrArg (fun g : GL (m b) (ZMod p) => (g : Matrix (m b) (m b) (ZMod p)) i j) h2`. Simplify using `only [leviProj_apply] at h3`. Rewrite using `[leviProj_apply]`. Express the relevant statement in the definitionally equal form `h.val _ _ = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hh]`. Express the relevant statement in the definitionally equal form `((((x : GL n (ZMod p)) : Matrix n n (ZMod p)) _ _).val : F) = _`. Rewrite using `[h3]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij, ZMod.val_one]`. Establish `hqa : leviProj F e q = Pi.mulSingle a (leviProj F e q a)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne hb, hq b hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hKa : leviProj F e q a ∈ KO F (m a)`. Use `IsLift.mem_KO hp (g := leviProj (ZMod p) e x a) fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `valuation F (h.val _ _ - _) < 1`. Rewrite using `[hh]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hδ : deltaHalf F m (leviProj F e q) = 1`. Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun b _ => isUnram_absPow F _ _ ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `valuation_det_of_mem_KO hKa`. Rewrite using `[hq b hb, map_one]`. Simplify using the standard rewrite rules. Establish `hdet : χ (GeneralLinearGroup.det (leviProj F e q a)) = θ (GeneralLinearGroup.det (x : GL n (ZMod p)))`. Rewrite using `[← CharLift.det hp hθ hl]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = GeneralLinearGroup.det (q : GL n F)`. Rewrite using `[det_parab F e q, Finset.prod_eq_single a]`. Introduce `b _ hb`. Rewrite using `[hq b hb, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hv` using `hint _ h hl w`. Rewrite using `[hΛ, hΛ, ← hv]`. Express the relevant statement in the definitionally equal form `(φ w).1.1 (1 * h) = _`. Rewrite using `[one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hlaw` using `parInd_law e (piTensor s) (φ w) q 1`. Rewrite `hlaw` using `[mul_one]`. Express the relevant statement in the definitionally equal form `(φ w).1.1 (q : GL n F) = _`. Rewrite using `[hlaw, hδ, Units.val_one, one_smul, hqa, piTensor_mulSingle s a _ _ (hs _ hKa), MonoidHom.comp_apply, hdet]`. Take `⟨v, hv0, hv⟩` from `exists_eigen_of_map ρ H (θ.comp GeneralLinearGroup.det) Λ hΛ0 key`.
-
-Conclude with `⟨v, hv0, fun x hx => hv _ (hH x hx)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_parVec_of_map : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (p : ℕ) [Fact p.Prime] (α n : Type) [Fintype α] [LinearOrder α] [Fintype n] [DecidableEq n] (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] (e : (Σ a, m a) ≃ n) (X : α → Type) [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (s : ∀ a, Representation ℂ (GL (m a) F) (X a)) (a : α) (θ : (ZMod p)ˣ →* ℂˣ) (χ : Fˣ →* ℂˣ) (U : Type) [AddCommGroup U] [Module ℂ U] (ρ : Representation ℂ (GL n (ZMod p)) U) (φ : U →ₗ[ℂ] IndSp e (piTensor s)), resCard F = p → CharLift θ χ → (∀ g ∈ KO F (m a), ∀ v, s a g v = (χ (Matrix.GeneralLinearGroup.det g) : ℂ) • v) → φ ≠ 0 → (∀ (g : GL n (ZMod p)) (h : GL n F), IsLift g h → ∀ w, multiProd e s h (φ w) = φ (ρ g w)) → ∃ v : U, v ≠ 0 ∧ ParVec ρ e a θ v := by
   intro F _ _ _ _ p _ α n _ _ _ _ m _ _ e X _ _ s a θ χ U _ _ ρ φ hp hθ hs hφ hint

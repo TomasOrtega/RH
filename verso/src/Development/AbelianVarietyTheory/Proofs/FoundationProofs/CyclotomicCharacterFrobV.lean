@@ -7,15 +7,15 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 namespace GlobalTheory.KZ.ES
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Apply `hm` to reduce the goal to its premises. Establish `hv : v η = 1`. Use `v.map_one_add_of_lt h1` as an intermediate fact. Simplify using `using this`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hi : ∀ i : ℕ, v (1 - η ^ i) < 1`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : 1 - η ^ (i + 1) = (1 - η ^ i) + -(η ^ i * (η - 1))` using `by ring`. Rewrite using `[e]`. Use `v.map_add_lt ih ?_` and prove the remaining obligations. Rewrite using `[v.map_neg, map_mul, map_pow, hv, one_pow, one_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∑ i ∈ Finset.range m, η ^ i = 0`. Use `mul_geom_sum η m` as an intermediate fact. Rewrite `this` using `[hη, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne)`. Establish `e : (m : K) = ∑ i ∈ Finset.range m, (1 - η ^ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_sub_distrib, hs]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `v.map_sum_lt one_ne_zero fun i _ => hi i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootOfUnity_eq_one_of_val {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ)
     {m : ℕ} (hm : ¬ v (m : K) < 1) {η : K} (hη : η ^ m = 1) (h1 : v (η - 1) < 1) : η = 1 := by
@@ -44,11 +44,11 @@ theorem rootOfUnity_eq_one_of_val {K Γ : Type*} [Field K] [LinearOrderedCommGro
   exact v.map_sum_lt one_ne_zero fun i _ => hi i
 
 /- English proof (translation)
-Introduce `hm`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr h`. Establish `e : (1 : K) = (a : K) * m + (b : K) * q`. Use `congrArg (Int.cast : ℤ → K) hab` as an intermediate fact. Move the coercions through the operations in `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this.symm`. Establish `hz : ∀ (c : ℤ) (x : K), V.valuation x < 1 → V.valuation ((c : K) * x) < 1`. Introduce `c x hx`. Rewrite using `[map_mul]`. Establish `hc : V.valuation (c : K) ≤ 1` using `(V.valuation_le_one_iff _).mpr (intCast_mem V c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hc) hx`. Use `V.valuation.map_add_lt (hz a _ hm) (hz b _ hq)` as an intermediate fact. Rewrite `this` using `[← e, map_one]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_val_lt_one_of_coprime {K : Type*} [Field K] (V : ValuationSubring K) {m q : ℕ} (h : Nat.Coprime m q)
     (hq : V.valuation (q : K) < 1) : ¬ V.valuation (m : K) < 1 := by
@@ -68,13 +68,11 @@ theorem not_val_lt_one_of_coprime {K : Type*} [Field K] (V : ValuationSubring K)
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `hq : V.valuation (q : Ω) < 1` using `V.mem_nonunits_iff.mp hs.1`. Establish `hv : V.valuation ζ = 1`. Use `congrArg V.valuation hζ` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `(pow_eq_one_iff_left hm0).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hv`. Establish `hV : ζ ∈ V` using `(V.valuation_le_one_iff _).mp hv.le`. Establish `h` using `(hs.2 ζ hV).2.2`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : ζ ^ q ≠ 0` using `pow_ne_zero _ hζ0`. Establish `key : s ζ / ζ ^ q = 1`. Use `rootOfUnity_eq_one_of_val V.valuation (not_val_lt_one_of_coprime V hm hq) ?_ ?_` and prove the remaining obligations. Rewrite using `[div_pow, ← map_pow, hζ, map_one, ← pow_mul, mul_comm, pow_mul, hζ, one_pow, div_one]`. Rewrite using `[div_sub_one hq0, map_div₀, map_pow, hv, one_pow, div_one]`.
-
-Conclude with `h`. Conclude with `(div_eq_one_iff_eq hq0).mp key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FrobV.apply_rootOfUnity {Ω : Type} [Field Ω] [Algebra ℚ Ω] {V : ValuationSubring Ω} {q : ℕ}
     {s : Ω ≃ₐ[ℚ] Ω} (hs : FrobV V q s) {m : ℕ} (hm0 : m ≠ 0) (hm : Nat.Coprime m q) {ζ : Ω} (hζ : ζ ^ m = 1) :
@@ -98,11 +96,11 @@ theorem FrobV.apply_rootOfUnity {Ω : Type} [Field Ω] [Algebra ℚ Ω] {V : Val
   exact (div_eq_one_iff_eq hq0).mp key
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l q hl hq hql V s hs`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : ∀ i, NeZero ((l ^ i : ℕ) : Ω) := fun i => ⟨by exact_mod_cast pow_ne_zero i hl.out.ne_zero⟩`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Rewrite using `[cyclotomicCharacter.toZModPow, map_natCast]`. Use `symm`. Apply `modularCyclotomicCharacter.unique` to reduce the goal to its premises. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : (t : Ω) ^ (l ^ n) = 1` using `(mem_rootsOfUnity' _ _).mp ht`. Establish `hc : Nat.Coprime (l ^ n) q` using `((Nat.coprime_primes hl.out hq).mpr hql.symm).pow_left n`. Use `hs.apply_rootOfUnity (pow_ne_zero n hl.out.ne_zero) hc ht'` as an intermediate fact. Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod q ht']`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem cyclotomicCharacter_frobV : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l q : ℕ) [Fact l.Prime],
     q.Prime → q ≠ l → ∀ (V : ValuationSubring Ω) (s : Ω ≃ₐ[ℚ] Ω), FrobV V q s →

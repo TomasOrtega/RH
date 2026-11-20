@@ -5,7 +5,7 @@ open SchwartzMap Filter Topology
 open scoped Nat
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.schwartz_tendsto_of_pointwise_of_uniform_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzTendstoOfPointwiseUniformBounds.lean&line=9#L9)
 -/

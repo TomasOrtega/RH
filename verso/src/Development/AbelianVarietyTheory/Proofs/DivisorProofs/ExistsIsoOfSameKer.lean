@@ -16,17 +16,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SameKer
 
 /- English proof (translation)
-Introduce `Tb G' B A' _ _ _ π' χ₁ χ₁' k hA hk hπ hχ hχ' fl su qc hcomp hker`. Take `⟨⟨α, hα, hαeq⟩, -⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective Tb G' B A' π' χ₁' hπ hχ' fl su qc (fun T x hx => (hker T x).2 hx)`. Establish `ker : ∀ (T : Over Tb) (x : T ⟶ B), x ≫ α = 1 → x = 1`. Introduce `T x hx`. Establish `pb` using `(IsPullback.of_hasPullback x π').map (Over.forget Tb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Flat (pullback.fst x π').left` using `MorphismProperty.of_isPullback (P := @Flat) pb.flip fl`. Establish `: Surjective (pullback.fst x π').left` using `MorphismProperty.of_isPullback (P := @Surjective) pb.flip su`. Establish `: Epi (pullback.fst x π').left` using `Flat.epi_of_flat_of_surjective _`. Establish `: Epi (pullback.fst x π')` using `Over.epi_of_epi_left _`. Establish `h1 : pullback.snd x π' ≫ χ₁' = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hαeq, ← Category.assoc, ← pullback.condition, Category.assoc, hx, MonObj.comp_one]`. Establish `h2` using `(hker _ _).1 h1`. Rewrite using `[← cancel_epi (pullback.fst x π'), pullback.condition, h2, MonObj.comp_one]`. Establish `hmono : Mono α` using `⟨fun {Z} u v huv => by`. Establish `h : (u * v⁻¹) ≫ α = 1` using `by rw [MonObj.mul_comp, GrpObj.inv_comp, huv, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_inv_eq_one.1 (ker _ _ h)⟩`. Take `⟨hkm, hkf, hke, hks⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective Tb A' k hA hk`. Take `⟨⟨β, hβ, hβeq⟩, hepik⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective Tb A' A' B ((𝟙 A') ^ k) (χ₁ ≫ π') hkm inferInstance inferInstance hks inferInstance (fun T x hx => by`. Establish `h` using `(hker T (x ≫ χ₁)).1 (by rw [Category.assoc, hcomp, hx])`. Rewrite `h` using `[Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h)`. Establish `e1 : β ≫ α = 𝟙 A'`. Rewrite using `[← cancel_epi ((𝟙 A') ^ k), ← Category.assoc, hβeq, Category.assoc, hαeq, hcomp, Category.comp_id]`. Establish `e2 : α ≫ β = 𝟙 B`. Rewrite using `[← cancel_mono α, Category.assoc, e1, Category.comp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨β, ⟨⟨α, e1, e2⟩⟩, hβ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hαeq, Category.assoc, e2, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_of_sameKer : ∀ (Tb : Scheme.{0}) (G' B A' : Over Tb) [GrpObj G'] [GrpObj B] [GrpObj A'] (π' : G' ⟶ B) (χ₁ : A' ⟶ G') (χ₁' : G' ⟶ A') (k : ℕ), IsAbelianScheme A' → IsUnit (k : Γ(Tb, ⊤)) → IsMonHom π' → IsMonHom χ₁ → IsMonHom χ₁' → Flat π'.left → Surjective π'.left → QuasiCompact π'.left → χ₁ ≫ χ₁' = (𝟙 A') ^ k → (∀ (T : Over Tb) (x : T ⟶ G'), x ≫ χ₁' = 1 ↔ x ≫ π' = 1) → ∃ β : A' ⟶ B, IsIso β ∧ IsMonHom β ∧ χ₁' ≫ β = π' := by
   intro Tb G' B A' _ _ _ π' χ₁ χ₁' k hA hk hπ hχ hχ' fl su qc hcomp hker

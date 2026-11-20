@@ -30,7 +30,7 @@ def wg (w : LB.Iso (L.pull φ) (M.pull j)) {Z : Scheme.{0}} (q : Z ⟶ HK) (z : 
   gm q z ((M.pull j).U (fun _ => a) ⊓ (L.pull φ).U (fun _ => b)) (w.s (fun _ => a, fun _ => b))
 
 /- English proof (translation)
-Establish `hm : q z ∈ (M.pull j).U (fun _ => a) ⊓ (L.pull φ).U (fun _ => b) ⊓ ((M.pull j).U (fun _ => a') ⊓ (L.pull φ).U (fun _ => b'))` using `⟨⟨mem_pull.2 ha, mem_pull.2 hb⟩, mem_pull.2 ha', mem_pull.2 hb'⟩`. Establish `e` using `congrArg (gm q z _) (hw (fun _ => a, fun _ => b) (fun _ => a', fun _ => b'))`. Use `(gm_res q z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_div (L.pull φ) (M.pull j) q z (fun _ => a, fun _ => b) (fun _ => a', fun _ => b') hm).trans ?_) (gm_res q z _ hm _))))` and prove the remaining obligations. Conclude with `congrArg₂ (fun s t => s * t⁻¹) (gm_pull_g M j q z _ _ hm.1.1 hm.2.1) (gm_pull_g L φ q z _ _ hm.1.2 hm.2.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wg_trans {w : LB.Iso (L.pull φ) (M.pull j)} (hw : w.IsGen) {Z : Scheme.{0}} (q : Z ⟶ HK) (z : Z)
     {a a' : M.ι} {b b' : L.ι} (ha : j (q z) ∈ M.U a) (ha' : j (q z) ∈ M.U a') (hb : φ (q z) ∈ L.U b)
@@ -49,13 +49,13 @@ def wv (w : LB.Iso (L.pull φ) (M.pull j)) (q : Sp (PadicAlgCl p) ⟶ HK) (a : M
   un p (wg w q (z₀ p) a b)
 
 /- English proof (translation)
-The claim follows from `un_pos _`.
+A detailed English derivation is pending.
 -/
 theorem wv_pos (w : LB.Iso (L.pull φ) (M.pull j)) (q : Sp (PadicAlgCl p) ⟶ HK) (a : M.ι) (b : L.ι) :
     0 < wv w q a b := un_pos _
 
 /- English proof (translation)
-Establish `m : ∀ {a}, c (cPt p) ∈ M.U a → j (q (z₀ p)) ∈ M.U a` using `fun {a} ha => by show (q ≫ j) _ ∈ M.U a`. Rewrite using `[h]`. Conclude with `gen_mem c ha`. Rewrite using `[wv, wg_trans hw q _ (m ha) (m ha') hb hb', map_mul, map_mul, map_inv, h, un_integral c (U := M.U a ⊓ M.U a') ⟨ha, ha'⟩, _root_.one_mul, mul_inv_cancel_left₀ (un_pos _).ne']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wv_trans {w : LB.Iso (L.pull φ) (M.pull j)} (hw : w.IsGen) {c : Sp (OO p) ⟶ H}
     {q : Sp (PadicAlgCl p) ⟶ HK} (h : q ≫ j = gPt p ≫ c) {a a' : M.ι} {b b' : L.ι} (ha : c (cPt p) ∈ M.U a)
@@ -73,11 +73,11 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {K : T
   [Algebra V K] [IsFractionRing V K]
 
 /- English proof (translation)
-Substitute `hψ` using the available equality. Establish `m : ∀ {c : Sp (OO p) ⟶ H} {q : Sp (PadicAlgCl p) ⟶ HK}, q ≫ j = gPt p ≫ c → ∀ {a b}, c (cPt p) ∈ M.U a → (c ≫ ψ) (cPt p) ∈ L.U b → q (z₀ p) ∈ (M.pull j).U (fun _ => a) ⊓ (L.pull (j ≫ ψ)).U (fun _ => b)` using `fun {c q} hc {a b} ha hb => by`. Establish `: (q ≫ j) (z₀ p) ∈ M.U a ⊓ ψ ⁻¹ᵁ L.U b`. Rewrite using `[hc]`. Conclude with `gen_mem c ⟨ha, hb⟩`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨mem_pull.2 this.1, mem_pull.2 this.2⟩`. Use `un_eq_of_fine_charts hK e he (α := M.ι × L.ι) (κ := PUnit) (fun s => M.U s.1 ⊓ ψ ⁻¹ᵁ L.U s.2) (fun s t => res (inf_le_inf inf_le_left inf_le_left) (M.g s.1 t.1) * (res (inf_le_inf inf_le_right inf_le_right : _ ≤ ψ ⁻¹ᵁ L.U s.2 ⊓ ψ ⁻¹ᵁ L.U t.2) (pullU ψ (L.U s.2 ⊓ L.U t.2) (L.g s.2 …` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart hM x`. Take `⟨b, hb⟩` from `exists_chart hL (ψ x)`. Conclude with `⟨(a, b), ha, hb⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => ⟨⟨⟩, mem_pull.2 h.1, mem_pull.2 h.2⟩, fun ⟨_, h⟩ => ⟨mem_pull.1 h.1, mem_pull.1 h.2⟩⟩`. Establish `hm : j x ∈ M.U s.1 ⊓ ψ ⁻¹ᵁ L.U s.2 ⊓ (M.U t.1 ⊓ ψ ⁻¹ᵁ L.U t.2)` using `⟨⟨mem_pull.1 hs.1, mem_pull.1 hs.2⟩, mem_pull.1 ht.1, mem_pull.1 ht.2⟩`. Use `(wg_trans hw (𝟙 HK) x hm.1.1 hm.2.1 hm.1.2 hm.2.2).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp]`. Conclude with `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res j x _ hm _) ((map_inv _ _).trans (congrArg (·⁻¹) ((gm_res j x _ hm _).trans (gm_pull j ψ x (L.U s.2 ⊓ L.U t.2) ⟨hm.1.2, hm.2.2⟩ _)))))).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wv_eq_of_extends (hM : M.IsLB) (hL : L.IsLB) {w : LB.Iso (L.pull φ) (M.pull j)} (hw : w.IsGen)
     {f : H ⟶ Sp V} [Smooth f] [GeometricallyIntegral f] {fK : HK ⟶ Sp K}
@@ -113,17 +113,15 @@ theorem wv_eq_of_extends (hM : M.IsLB) (hL : L.IsLB) {w : LB.Iso (L.pull φ) (M.
       ((gm_res j x _ hm _).trans (gm_pull j ψ x (L.U s.2 ⊓ L.U t.2) ⟨hm.1.2, hm.2.2⟩ _)))))).symm
 
 /- English proof (translation)
-Set `D` to `LB.div (M.pull j) (L.pull φ)`. Set `s : (I → M.ι) → (I → L.ι) → I → D.ι` to `fun a b k => (fun _ => a k, fun _ => b k)`. Establish `p₁ : ∀ k x, j (ψ k x) = α k (i x)` using `fun k x => congrArg (fun g => g x) (h₁ k)`. Establish `p₂ : ∀ k x, φ (ψ k x) = β k (Φ x)` using `fun k x => congrArg (fun g => g x) (h₂ k)`. Establish `mem : ∀ a b x, x ∈ LB.wchart D ψ (s a b) ↔ (∀ k, α k (i x) ∈ M.U (a k)) ∧ ∀ k, β k (Φ x) ∈ L.U (b k)` using `fun a b x => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.mem_iInter.trans (Iff.trans (forall_congr' fun k => ?_) forall_and)` and prove the remaining obligations. Rewrite using `[← p₁, ← p₂]`. Conclude with `and_congr mem_pull mem_pull`. Establish `le : ∀ a b, LB.wchart D ψ (s a b) ≤ Φ ⁻¹ᵁ LB.wchart L β b` using `fun a b x hx => Set.mem_iInter.2 ((mem a b x).1 hx).2`. Set `r : ∀ a b, Γ(YK, LB.wchart D ψ (s a b))ˣ` to `fun a b => res (le a b) (pullU Φ _ (t.s b)) * ∏ k, res (LB.wchart_le D ψ (s a b) k) (pullU (ψ k) _ (w.s (s a b k))) ^ ε k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `v : ∀ (Z : Scheme.{0}) (u : Z ⟶ YK) (z : Z) a b, u z ∈ LB.wchart D ψ (s a b) → gm u z _ (r a b) = gm (u ≫ Φ) z (LB.wchart L β b) (t.s b) * ∏ k, wg w (u ≫ ψ k) z (a k) (b k) ^ ε k` using `fun Z u z a b hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res u z _ hz _).trans (gm_pull u Φ z _ (le a b hz) _)) ((map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ((gm_res u z _ hz _).trans (gm_pull u (ψ k) z _ (LB.wchart …`. Establish `m : ∀ {c : Sp (OO p) ⟶ Y} {q : Sp (PadicAlgCl p) ⟶ YK}, q ≫ i = gPt p ≫ c → ∀ {a b}, (∀ k, (c ≫ α k) (cPt p) ∈ M.U (a k)) → (∀ k, ((q ≫ Φ) ≫ β k) (z₀ p) ∈ L.U (b k)) → q (z₀ p) ∈ LB.wchart D ψ (s a b)` using `fun {c q} hc {a b} ha hb => (mem a b _).2 ⟨fun k => by show ((q ≫ i) ≫ α k) _ ∈ M.U (a k)`. Rewrite using `[hc, Category.assoc]`. Conclude with `gen_mem _ (ha k), hb⟩`. Establish `key` using `un_eq_of_fine_charts hK e he (LB.wchart M α) (LB.LinComb M α ε).g (fun a b => LB.wchart D ψ (s a b)) r (fun x => by choose a ha using fun k => exists_chart hM (α k x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨a, Set.mem_iInter.2 ha⟩)`. Use the proof step `(fun a x => by choose b hb using fun k => exists_chart hL (β k (Φ x))`. Conclude with `⟨fun h => ⟨b, (mem a b x).2 ⟨Set.mem_iInter.1 h, hb⟩⟩, fun ⟨b, h⟩ => Set.mem_iInter.2 ((mem a b x).1 h).1⟩)`. Use the proof step `(fun a b a' b' x hx hx' => by`. Take `⟨m₁, m₂⟩` from `(mem a b x).1 hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m₁', m₂'⟩` from `(mem a' b' x).1 hx'`. Rewrite using `[v _ (𝟙 YK) x a b hx, v _ (𝟙 YK) x a' b' hx', Category.id_comp, gen_trans ht Φ x (Set.mem_iInter.2 m₂) (Set.mem_iInter.2 m₂')]`. Use `erw [gm_linComb M α ε i x a a' (Set.mem_iInter.2 m₁) (Set.mem_iInter.2 m₁')]`. Rewrite using `[trF, mul_left_comm, _root_.mul_assoc, mul_left_comm, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `congrArg (_ * ·) (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[← mul_zpow, ← mul_zpow, Category.id_comp, wg_trans hw (ψ k) x (a := a k) (a' := a' k) (b := b k) (b' := b' k) (by rw [p₁]; exact m₁ k) (by rw [p₁]; exact m₁' k) (by rw [p₂]; exact m₂ k) (by rw [p₂]; exact m₂' k), h₁, h₂, _root_.mul_assoc, mul_left_comm, mul_inv_cancel_left])`. Use `hc hc' h (Set.mem_iInter.2 ha) (Set.mem_iInter.2 ha') (m hc ha hb) (m hc' ha' hb')`. Rewrite `key` using `[v _ _ _ _ _ (m hc ha hb), v _ _ _ _ _ (m hc' ha' hb')]`. Simplify `key` using `only [map_mul, map_prod, map_zpow, wv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gen_wv_eq (hM : M.IsLB) (hL : L.IsLB) {w : LB.Iso (L.pull φ) (M.pull j)} (hw : w.IsGen)
     {Y YK B : Scheme.{0}} {f : Y ⟶ Sp V} [Smooth f] [GeometricallyIntegral f] {i : YK ⟶ Y} {fK : YK ⟶ Sp K}
@@ -187,7 +185,7 @@ theorem gen_wv_eq (hM : M.IsLB) (hL : L.IsLB) {w : LB.Iso (L.pull φ) (M.pull j)
 end Bundle
 
 /- English proof (translation)
-Use `InvExt.isDominant_gPt p` as an intermediate fact. Conclude with `ext_of_isDominant_of_isSeparated s h (gPt p) h'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_gPt {X S : Scheme.{0}} (s : X ⟶ S) [IsSeparated s] {b b' : Sp (OO p) ⟶ X} (h : b ≫ s = b' ≫ s)
     (h' : gPt p ≫ b = gPt p ≫ b') : b = b' := by
@@ -195,13 +193,13 @@ theorem ext_gPt {X S : Scheme.{0}} (s : X ⟶ S) [IsSeparated s] {b b' : Sp (OO 
   exact ext_of_isDominant_of_isSeparated s h (gPt p) h'
 
 /- English proof (translation)
-Establish `hp` using `gp.1`. Establish `f3 : ∀ i, (cubeMapOf gp).F3 ≫ (x3 G i).left = (x3 A i).left ≫ F` using `cubeMap_comp_proj_three (cubeMapOf gp)`. Establish `w : (cubeMapOf gp).F3 ≫ (G3 G).hom = (G3 A).hom ≫ j` using `Over.w (lift (pushPt hp.w (x3 A 0)) (lift (pushPt hp.w (x3 A 1)) (pushPt hp.w (x3 A 2))))`. Establish `ex : ∀ s : PullbackCone (G3 G).hom j, ∃ l : s.pt ⟶ (G3 A).left, l ≫ (cubeMapOf gp).F3 = s.fst ∧ l ≫ (G3 A).hom = s.snd`. Introduce `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `P : Over U` to `Over.mk s.snd`. Set `x : Fin 3 → (P ⟶ A)` to `fun i => Over.homMk (hp.lift (s.fst ≫ (x3 G i).left) P.hom (by`. Rewrite using `[Category.assoc, Over.w]`. Conclude with `s.condition)) (hp.lift_snd _ _ _)`. Establish `hx : ∀ i, (x i).left ≫ F = s.fst ≫ (x3 G i).left` using `fun i => hp.lift_fst _ _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `l : P ⟶ G3 A` to `lift (x 0) (lift (x 1) (x 2))`. Apply the tactic sequence `have lx : ∀ i, l ≫ x3 A i = x i := fun i => by fin_cases i <;> simp [l, x3]`. Use `⟨l.left, hom_ext_triple _ fun i => ?_, Over.w l⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, f3, ← hx, ← lx]`. Conclude with `(Category.assoc _ _ _).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose l h₁ h₂ using ex`. Use `⟨⟨w⟩, ⟨PullbackCone.IsLimit.mk w l h₁ h₂ fun s m m₁ m₂ => hom_ext_triple _ fun i => hp.hom_ext ?_ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← f3, ← Category.assoc, ← Category.assoc, m₁, h₁]`. Rewrite using `[Category.assoc, Category.assoc, Over.w, m₂, h₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_cube {S U : Scheme.{0}} {j : U ⟶ S} {G : Over S} [GrpObj G] [IsCommMonObj G]
     {A : Over U} [GrpObj A] [IsCommMonObj A] {F : A.left ⟶ G.left} (gp : IsGrpPullback A G j F) :
@@ -234,7 +232,7 @@ Evaluate the decidable proposition.
 theorem sum_thε : ∑ I : thK.{0}, thε I = 0 := by decide
 
 /- English proof (translation)
-Establish `: ∀ s : Finset thK.{0}, ∏ I ∈ s, t ^ thε I = t ^ ∑ I ∈ s, thε I` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ ht.ne']`. Rewrite using `[this, sum_thε, zpow_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_thε {t : ℝ} (ht : 0 < t) : ∏ I : thK.{0}, t ^ thε I = 1 := by
   have : ∀ s : Finset thK.{0}, ∏ I ∈ s, t ^ thε I = t ^ ∑ I ∈ s, thε I := fun s => by
@@ -249,7 +247,7 @@ section Test
 variable {C : Core} {T : C.Theta} {y : Sp (OO p) ⟶ C.Z} (τ : C.Test y)
 
 /- English proof (translation)
-The claim follows from `have := C.sep ext_gPt C.π (specZIsTerminal.hom_ext _ _) h`.
+A detailed English derivation is pending.
 -/
 theorem base_ext {y y' : Sp (OO p) ⟶ C.Z} (h : gPt p ≫ y = gPt p ≫ y') : y = y' :=
   have := C.sep
@@ -261,7 +259,7 @@ def IsLift (c : Sp (OO p) ⟶ τ.H.left) (q : Sp (PadicAlgCl p) ⟶ pullback τ.
   c ≫ τ.H.hom = spMap τ.j ∧ q ≫ jg τ = gPt p ≫ c
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `spMap_factor_jK ((OO p).subtype.comp τ.j) (Subtype.val_injective.comp τ.j_inj)`. Conclude with `⟨r, (Spec.map_comp _ _).symm.trans hr⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frac : ∃ r, gPt p ≫ spMap τ.j = r ≫ Out.jK τ.V := by
   obtain ⟨r, hr⟩ := spMap_factor_jK ((OO p).subtype.comp τ.j) (Subtype.val_injective.comp τ.j_inj)
@@ -270,32 +268,32 @@ theorem exists_frac : ∃ r, gPt p ≫ spMap τ.j = r ≫ Out.jK τ.V := by
 variable {τ} {c c' : Sp (OO p) ⟶ τ.H.left} {q q' : Sp (PadicAlgCl p) ⟶ pullback τ.H.hom (Out.jK τ.V)}
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, τ.φ_f, ← Category.assoc, h.2, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLift.gen (h : IsLift τ c q) : (q ≫ τ.φ) ≫ C.a = gPt p ≫ c ≫ τ.f := by
   rw [Category.assoc, τ.φ_f, ← Category.assoc, h.2, Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, τ.f_over, ← Category.assoc, h.1, τ.fac]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLift.over (h : IsLift τ c q) : (c ≫ τ.f) ≫ C.GG.hom = y := by
   rw [Category.assoc, τ.f_over, ← Category.assoc, h.1, τ.fac]
 
 /- English proof (translation)
-Rewrite using `[← C.isPullback_a.w, ← Category.assoc, h.gen, Category.assoc, h.over]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLift.base (h : IsLift τ c q) : (q ≫ τ.φ) ≫ C.A.hom ≫ C.U.ι = gPt p ≫ y := by
   rw [← C.isPullback_a.w, ← Category.assoc, h.gen, Category.assoc, h.over]
 
 /- English proof (translation)
-Use `τ.j_loc` as an intermediate fact. Conclude with `(congrArg (fun g => g (cPt p)) h.1).trans (IsLocalRing.comap_closedPoint τ.j)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsLift.centre (h : IsLift τ c q) : τ.H.hom (c (cPt p)) = IsLocalRing.closedPoint τ.V := by
   have := τ.j_loc
   exact (congrArg (fun g => g (cPt p)) h.1).trans (IsLocalRing.comap_closedPoint τ.j)
 
 /- English proof (translation)
-Use `τ.sep` as an intermediate fact. Use `DvrModel.isOpenImmersion_generic (IsPullback.of_hasPullback τ.H.hom (Out.jK τ.V))` as an intermediate fact. Establish `e₁ : c = c'` using `ext_gPt τ.H.hom (h.1.trans h'.1.symm) (hp.hom_ext (by rw [Category.assoc, Category.assoc, ← h.gen, ← h'.gen, e]) (by rw [Category.assoc, Category.assoc, h.1, h'.1]))`. Conclude with `⟨e₁, (cancel_mono (jg τ)).1 (by rw [h.2, h'.2, e₁])⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsLift.unique (hp : IsPullback τ.f τ.H.hom C.GG.hom τ.y₀) (h : IsLift τ c q) (h' : IsLift τ c' q')
     (e : q ≫ τ.φ = q' ≫ τ.φ) : c = c' ∧ q = q' := by
@@ -308,7 +306,7 @@ theorem IsLift.unique (hp : IsPullback τ.f τ.H.hom C.GG.hom τ.y₀) (h : IsLi
 
 variable (τ) in
 /- English proof (translation)
-Use `C.isOpenImmersion_a` as an intermediate fact. Take `⟨c, h₁, h₂⟩` from `τ.lift b hb`. Take `⟨r, hr⟩` from `exists_frac τ`. Establish `h : IsLift τ c (pullback.lift (gPt p ≫ c) r (by rw [Category.assoc, h₁, hr]))` using `⟨h₁, pullback.lift_fst _ _ _⟩`. Conclude with `⟨c, _, h, h₂, (cancel_mono C.a).1 (by rw [h.gen, h₂, hx])⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_lift {b : Sp (OO p) ⟶ C.G.toScheme} {x : Sp (PadicAlgCl p) ⟶ C.A.left} (hb : b ≫ C.GG.hom = y)
     (hx : gPt p ≫ b = x ≫ C.a) : ∃ c q, IsLift τ c q ∧ c ≫ τ.f = b ∧ q ≫ τ.φ = x := by
@@ -322,11 +320,9 @@ theorem exists_lift {b : Sp (OO p) ⟶ C.G.toScheme} {x : Sp (PadicAlgCl p) ⟶ 
 variable (E : T.Ext τ)
 
 /- English proof (translation)
-Establish `ha' : jg τ (q (z₀ p)) ∈ E.L.L.U a` using `by show (q ≫ jg τ) _ ∈ _`. Rewrite using `[h.2]`. Conclude with `gen_mem c ha`. Establish `hm : q (z₀ p) ∈ (E.L.L.pull (jg τ)).U (fun _ => a) ⊓ (T.L.L.pull τ.φ).U (fun _ => b)` using `⟨mem_pull.2 ha', mem_pull.2 hb⟩`. Establish `e` using `congrArg (q.stalkMap (z₀ p)).hom (E.θ_eq _ a b ha' hb)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[map_mul, ← gs_comp q _ _ _ ha', ← gs_comp q _ _ _ hb, h.2]`. Establish `e₁` using `(gs_stalkMap q (z₀ p) _ hm (E.w.s (fun _ => a, fun _ => b)).val).symm.trans (gs_unit q _ _ hm _)`. Establish `e₂ : ‖valF (q ≫ τ.φ) _ (T.θ.f b)‖ * wv E.w q a b = sn p (gs (gPt p ≫ c) (z₀ p) _ (E.θ.f a))`. Rewrite using `[e, map_mul, ← sn_gs _ hb, _root_.mul_comm]`. Conclude with `congrArg (· * _) (congrArg (sn p) e₁).symm`.
-
-Rewrite using `[e₂, mem_nonzeroLocus_iff E.θ c _ ha, isUnit_gs_iff c _ _ ha]`. Conclude with `sn_integral c ha _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLift.theta (h : IsLift τ c q) {a : E.L.L.ι} {b : T.L.L.ι} (ha : c (cPt p) ∈ E.L.L.U a)
     (hb : (q ≫ τ.φ) (z₀ p) ∈ T.L.L.U b) :
@@ -354,11 +350,11 @@ def IsRigNorm (ρ : ℝ) : Prop :=
       wv E.w q a b = ρ
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ c q, ∃ (u : Sp (PadicAlgCl p) ⟶ C.U.toScheme) (a : E.L.L.ι) (b : T.L.L.ι), IsLift τ c q ∧ q ≫ τ.φ = u ≫ eSec C.A ∧ c (cPt p) ∈ E.L.L.U a ∧ (q ≫ τ.φ) (z₀ p) ∈ T.L.L.U b`. Use `swap`. Conclude with `⟨1, one_pos, fun c q u a b h₁ h₂ h₃ h₄ => absurd ⟨c, q, u, a, b, h₁, h₂, h₃, h₄⟩ h⟩`. Take `⟨c', q', u', a', b', k₁, k₂, k₃, k₄⟩` from `h`. Use `⟨_, mul_pos (un_pos (gm u' (z₀ p) (LB.wchart T.L.L (fun _ : PUnit => eSec C.A) fun _ => b') (T.L.rig.s fun _ => b'))) (wv_pos E.w q' a' b'), fun c q u a b h₁ h₂ h₃ h₄ => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he : eSec C.A ≫ C.A.hom = 𝟙 _` using `Over.w η[C.A]`. Establish `base : ∀ {c q} {u : Sp (PadicAlgCl p) ⟶ C.U.toScheme}, IsLift τ c q → q ≫ τ.φ = u ≫ eSec C.A → u ≫ C.U.ι = gPt p ≫ y` using `fun {c q u} h₁ h₂ => by`. Rewrite using `[← h₁.base, h₂, Category.assoc]`. Conclude with `congrArg (u ≫ ·) ((Category.id_comp _).symm.trans ((congrArg (· ≫ C.U.ι) he.symm).trans (Category.assoc _ _ _)))`. Take `rfl : u = u'` from `(cancel_mono C.U.ι).1 ((base h₁ h₂).trans (base k₁ k₂).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨rfl, rfl⟩` from `h₁.unique hp k₁ (h₂.trans k₂.symm)`. Establish `m : ∀ {b}, (q ≫ τ.φ) (z₀ p) ∈ T.L.L.U b → u (z₀ p) ∈ LB.wchart T.L.L (fun _ : PUnit => eSec C.A) fun _ => b` using `fun {b} hb => Set.mem_iInter.2 fun _ => by rw [h₂] at hb; exact hb`. Rewrite using `[gen_trans T.L.rigGen u _ (m h₄) (m k₄), trF, Fintype.prod_unique, zpow_one, map_mul, ← h₂, ← wv_trans E.w_gen h₁.2 h₃ k₃ h₄ k₄]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_isRigNorm (hp : IsPullback τ.f τ.H.hom C.GG.hom τ.y₀) : ∃ ρ, 0 < ρ ∧ IsRigNorm E ρ := by
   by_cases h : ∃ c q, ∃ (u : Sp (PadicAlgCl p) ⟶ C.U.toScheme) (a : E.L.L.ι) (b : T.L.L.ι), IsLift τ c q ∧
@@ -386,17 +382,15 @@ theorem exists_isRigNorm (hp : IsPullback τ.f τ.H.hom C.GG.hom τ.y₀) : ∃ 
 variable {E}
 
 /- English proof (translation)
-Use `C.isOpenImmersion_a` as an intermediate fact. Establish `hG` using `τ.isSemiAbelian`. Use `hG.smooth` as an intermediate fact. Use `geometricallyIntegral_of_isSemiAbelian τ.H` as an intermediate fact. Establish `hy : (s ≫ C.A.hom) ≫ C.U.ι = y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ← C.isPullback_a.w, ← Category.assoc, ← hs, h.over]`. Take `⟨y₁, hy₁⟩` from `exists_fac_of_closedPoint τ.y₀ C.U (by`. Rewrite using `[← h.centre]`. Use `show (c ≫ τ.H.hom ≫ τ.y₀) (cPt p) ∈ C.U`. Rewrite using `[← Category.assoc, h.1, τ.fac, ← hy]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `((s ≫ C.A.hom) (cPt p)).2)`. Set `ψ : τ.H.left ⟶ C.A.left` to `C.isPullback_a.lift τ.f (τ.H.hom ≫ y₁) (by rw [τ.f_over, Category.assoc, hy₁])`. Establish `hψ : ψ ≫ C.a = τ.f` using `C.isPullback_a.lift_fst _ _ _`. Establish `hφ : jg τ ≫ ψ = τ.φ` using `(cancel_mono C.a).1 (by rw [Category.assoc, hψ, τ.φ_f])`. Establish `he : eSec C.A ≫ C.A.hom = 𝟙 _` using `Over.w η[C.A]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `s₀ : Sp (OO p) ⟶ C.A.left` to `(s ≫ C.A.hom) ≫ eSec C.A`. Take `⟨c₀, q₀, k₁, k₂, k₃⟩` from `exists_lift τ (b := s₀ ≫ C.a) (x := gPt p ≫ s₀) (by`. Rewrite using `[Category.assoc, C.isPullback_a.w, ← hy, ← Category.assoc]`. Conclude with `congrArg (· ≫ C.U.ι) ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) he).trans (Category.comp_id _))))`. Use the proof step `(Category.assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e₁ : c ≫ ψ = s` using `(cancel_mono C.a).1 (by rw [Category.assoc, hψ, hs])`. Establish `e₂ : c₀ ≫ ψ = s₀` using `(cancel_mono C.a).1 (by rw [Category.assoc, hψ, k₂])`. Take `⟨a₀, ha₀⟩` from `exists_chart E.L.isLB (c₀ (cPt p))`. Take `⟨b₀, hb₀⟩` from `exists_chart T.L.isLB (s₀ (cPt p))`. Establish `e₃` using `hρ c₀ q₀ (gPt p ≫ s ≫ C.A.hom) a₀ b₀ k₁ (k₃.trans (Category.assoc _ _ _).symm) ha₀ (by rw [k₃]; exact gen_mem s₀ hb₀)`.
-
-Establish `e₄` using `un_integral (s ≫ C.A.hom) (U := LB.wchart T.L.L (fun _ : PUnit => eSec C.A) fun _ => b₀) (Set.mem_iInter.2 fun _ => hb₀) (T.L.rig.s fun _ => b₀)`. Rewrite using `[← ((_root_.one_mul _).symm.trans (congrArg (· * _) e₄.symm)).trans e₃]`. Conclude with `wv_eq_of_extends E.L.isLB T.L.isLB E.w_gen (IsPullback.of_hasPullback τ.H.hom (Out.jK τ.V)) (eSec τ.H) (Over.w η[τ.H]) ψ hφ h.2 k₁.2 (h.1.trans k₁.1.symm) ha ha₀ (by rw [e₁]; exact hb) (by rw [e₂]; exact hb₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRigNorm.integral {ρ : ℝ} (hρ : IsRigNorm E ρ) {s : Sp (OO p) ⟶ C.A.left} (h : IsLift τ c q)
     (hs : c ≫ τ.f = s ≫ C.a) {a : E.L.L.ι} {b : T.L.L.ι} (ha : c (cPt p) ∈ E.L.L.U a)

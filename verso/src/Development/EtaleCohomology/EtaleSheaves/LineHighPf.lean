@@ -18,9 +18,9 @@ def Cover2 : Prop := ∀ (q : ℕ) (A : Type) [CommRing A] [IsLocalRing A], IsUn
     QAIC q U ∧ QAIC q V ∧ QAIC q (pullback f g)
 
 /- English proof (translation)
-Introduce `n i hn`. Use `h n i hn` as an intermediate fact. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ z : Ht q (sch.obj W) n i, pull _ (sch.map e.hom) (tw q i) n (pull _ (sch.map e.inv) (tw q i) n z) = z`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← pull_comp, ← Functor.map_comp, Iso.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]`. Rewrite using `[← hs x, ← hs y, Subsingleton.elim (pull _ (sch.map e.inv) (tw q i) n x) (pull _ (sch.map e.inv) (tw q i) n y)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem acyc_of_iso {q : ℕ} {W W' : Scheme.{0}} (e : W ≅ W') (h : Acyc q (sch.obj W')) : Acyc q (sch.obj W) := by
   intro n i hn
@@ -33,18 +33,18 @@ theorem acyc_of_iso {q : ℕ} {W W' : Scheme.{0}} (e : W ≅ W') (h : Acyc q (sc
   rw [← hs x, ← hs y, Subsingleton.elim (pull _ (sch.map e.inv) (tw q i) n x) (pull _ (sch.map e.inv) (tw q i) n y)]
 
 /- English proof (translation)
-Take `⟨B, _, _, I, hB, hq, ⟨e⟩⟩` from `h`. Conclude with `acyc_of_iso e (hQ H q B I hB hq)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem acyc_of_QAIC (H : Hyp) (hQ : QuotAcyc) {q : ℕ} {W : Scheme.{0}} (h : QAIC q W) : Acyc q (sch.obj W) := by
   obtain ⟨B, _, _, I, hB, hq, ⟨e⟩⟩ := h
   exact acyc_of_iso e (hQ H q B I hB hq)
 
 /- English proof (translation)
-Take `⟨δ, hδ, -⟩` from `hM H (ZMod q) (tw q i)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Establish `key : ∀ x : Ht q (sch.obj X) (m + 1) i, x = 0`. Introduce `x`. Establish `h3` using `((hδ f g hc m).2.2 x).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hU (m + 1) i (by omega)` as an intermediate fact. Use `hV (m + 1) i (by omega)` as an intermediate fact. Use `hW m i (by omega)` as an intermediate fact. Take `⟨w, hw⟩` from `h3 ⟨Subsingleton.elim _ _, Subsingleton.elim _ _⟩`. Rewrite using `[← hw, Subsingleton.elim w 0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun x y => by rw [key x, key y]⟩`.
+Supply the required witnesses or components.
 -/
 theorem high_of_cover (H : Hyp) (hM : MV) {q : ℕ} {U V X : Scheme.{0}} (f : U ⟶ X) (g : V ⟶ X) [IsOpenImmersion f]
     [IsOpenImmersion g] (hc : Set.range f ∪ Set.range g = Set.univ) (hU : Acyc q (sch.obj U)) (hV : Acyc q (sch.obj V))
@@ -62,7 +62,7 @@ theorem high_of_cover (H : Hyp) (hM : MV) {q : ℕ} {U V X : Scheme.{0}} (f : U 
   exact ⟨fun x y => by rw [key x, key y]⟩
 
 /- English proof (translation)
-Introduce `H q i A _ _ hq Z p hp hZ n hn`. Take `⟨U, V, f, g, hf, hg, hc, hU, hV, hW⟩` from `hC q A hq p hp hZ`. Conclude with `high_of_cover H hM f g hc (acyc_of_QAIC H hQ hU) (acyc_of_QAIC H hQ hV) (acyc_of_QAIC H hQ hW) i n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LineHigh_of (hQ : QuotAcyc) (hM : MV) (hC : Cover2) : LineHigh := by
   intro H q i A _ _ hq Z p hp hZ n hn
@@ -70,7 +70,7 @@ theorem LineHigh_of (hQ : QuotAcyc) (hM : MV) (hC : Cover2) : LineHigh := by
   exact high_of_cover H hM f g hc (acyc_of_QAIC H hQ hU) (acyc_of_QAIC H hQ hV) (acyc_of_QAIC H hQ hW) i n hn
 
 /- English proof (translation)
-Use `⟨pullbackSpecIso A B (IsLocalRing.ResidueField A) ≪≫ ?_⟩` and prove the remaining obligations. Conclude with `Scheme.Spec.mapIso (RingEquiv.toCommRingCatIso (Algebra.TensorProduct.quotIdealMapEquivTensorQuot B (IsLocalRing.maximalIdeal A)).toRingEquiv).op`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fibre_affine (A B : Type) [CommRing A] [IsLocalRing A] [CommRing B] [Algebra A B] :
     Nonempty (pullback (Spec.map (CommRingCat.ofHom (algebraMap A B))) (cpt A) ≅
@@ -95,7 +95,7 @@ def FibCov : Prop := ∀ (q : ℕ) (A : Type) [CommRing A] [IsLocalRing A], IsUn
     QAIC q U ∧ QAIC q V ∧ QAIC q (pullback f g)
 
 /- English proof (translation)
-Introduce `q A _ _ hq Z p hp hZA`. Take `⟨U, V, f, g, hf, hg, hc, h1, h2, h3⟩` from `hZ A p hp hZA`. Conclude with `hF q A hq p hZA f g hc h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Cover2_of (hZ : ZCov) (hF : FibCov) : Cover2 := by
   intro q A _ _ hq Z p hp hZA

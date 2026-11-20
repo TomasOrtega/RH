@@ -16,19 +16,19 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-Introduce `g _ n _ _ F Z z i _ _ _ _ _ W _ _ X₁ z₁ act hact 𝔗 z₂ hz₂ x₀ hx V _ _ _ ev X _ m t δ _`. Establish `hk : 0 < X₁.S.r * X₁.S.N` using `Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)`. Establish `hdvd : X₁.S.r * X₁.S.N ∣ 𝔗.X₂.S.r * 𝔗.X₂.S.N` using `⟨𝔗.d, 𝔗.lev⟩`. Take `⟨a, ha, hdv⟩` from `DivDeep.exists_div_torsion 𝔗.X₂ 𝔗.isAct z₂ (X₁.S.N_ge.trans (Nat.le_mul_of_pos_left _ X₁.S.r_pos)) hdvd`. Establish `hL : 0 < 𝔗.X₂.S.r * 𝔗.X₂.S.N` using `Nat.mul_pos 𝔗.X₂.S.r_pos (by have := 𝔗.X₂.S.N_ge; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose x hxa using fun s => DivDeep.exists_eq_smul_of_smul_eq_zero hL hdvd (a s) (congrFun ha s)`. Establish `hd : 𝔗.X₂.S.r * 𝔗.X₂.S.N / (X₁.S.r * X₁.S.N) = 𝔗.d`. Rewrite using `[𝔗.lev]`. Conclude with `Nat.mul_div_cancel_left _ hk`. Rewrite `hxa` using `[hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `𝔗.lam_range x`. Take `rfl : 𝔗.lam b = a` from `hb.trans (funext hxa)`. Take `⟨k, hk, e⟩` from `DivDeep.same_ratio (GlobalTheory.T.thetaSetupTower_same_genericFibre_realisations g n F W Z i X₁ act hact 𝔗) x₀ b`. Use `set φ := algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁`. Establish `h₁ : φ (X₁.S.th x₀) ≠ 0` using `(map_ne_zero φ).2 hx.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₂` using `hdv.1`. Establish `h₃ : 𝔗.X₂.S.th (𝔗.lam x₀) * φ (X₁.S.th b) ≠ 0` using `fun h => by`. Rewrite `e` using `[h, zero_pow hk.ne']`. Conclude with `pow_ne_zero k (mul_ne_zero h₂ h₁) e.symm`. Establish `h₄` using `left_ne_zero_of_mul h₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h₅` using `right_ne_zero_of_mul h₃`. Establish `hN : IsIntegrallyClosed (𝔗.X₂.M.O z₂)` using `RatModel.isIntegrallyClosed_O (fun z => by haveI := 𝔗.X₂.normal`. Conclude with `⟨𝔗.X₂.normal.isDomain_stalk z, GlobalTheory.IsNormalScheme.isIntegrallyClosed_stalk z⟩) z₂`. Establish `m₁ : 𝔗.X₂.S.th (𝔗.lam b) * φ (X₁.S.th x₀) / (𝔗.X₂.S.th (𝔗.lam x₀) * φ (X₁.S.th b)) ∈ 𝔗.X₂.M.O z₂` using `DivDeep.root_mem_O hN hk (by rw [div_pow, e, div_self (pow_ne_zero k (mul_ne_zero h₂ h₁))])`. Establish `m₂ : φ (X₁.S.th b / X₁.S.th x₀) ∈ 𝔗.X₂.M.O z₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨U, f, hU, hf⟩` from `hx.2 b`. Use `⟨𝔗.p ⁻¹ᵁ U, 𝔗.p.app U f, show 𝔗.p z₂ ∈ U from hz₂ ▸ hU, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.Points.valR_comp 𝔗.X₂.M.pt 𝔗.p U f).symm.trans ?_` and prove the remaining obligations. Rewrite using `[𝔗.p_pt, ← hf]`. Conclude with `GlobalTheory.Points.valR_spMap_comp _ X₁.M.pt U (X₁.M.top_le_preimage_pt ⟨_, hU⟩) f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨h₄, fun j => ?_⟩` and prove the remaining obligations. Use `mul_mem (hdv.2 j) (mul_mem m₁ m₂)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem Tower.div_lam : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) [IsOpenImmersion i], IsProjOver z → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → i ≫ z = F.s → Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ThetaInt F W i → ∀ (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsAct X₁ act → ∀ (𝔗 : Tower X₁ act) (z₂ : 𝔗.X₂.M.Z), 𝔗.p z₂ = z₁ → ∀ x₀ : X₁.S.Gam, X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ), 𝔗.X₂.M.Div 𝔗.X₂.S.th (𝔗.lam x₀) z₂ := by
   intro g _ n _ _ F Z z i _ _ _ _ _ W _ _ X₁ z₁ act hact 𝔗 z₂ hz₂ x₀ hx V _ _ _ ev X _ m t δ _

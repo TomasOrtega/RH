@@ -9,9 +9,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Unfold `SepXSt`. Establish `hq` using `Xo.qproj`. Unfold `IsQProjOver at hq`. Take `⟨N, i, hi, -, hcomp⟩` from `hq`. Rewrite using `[← hcomp]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hi`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sepX (Xo : Moduli Dw l) : SepXSt Xo := by
   unfold SepXSt
@@ -23,9 +23,7 @@ theorem sepX (Xo : Moduli Dw l) : SepXSt Xo := by
   infer_instance
 
 /- English proof (translation)
-Unfold `spMap`. Prove the components needed by the constructor for the conclusion. Establish `hd : DenseRange (PrimeSpectrum.comap φ)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot φ).1 hφ]`. Conclude with `bot_le`.
-
-Conclude with `hd`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_isDominant {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (hφ : Function.Injective φ) :
     IsDominant (spMap φ) := by
@@ -37,9 +35,7 @@ theorem spMap_isDominant {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T)
   exact hd
 
 /- English proof (translation)
-Use `haveI : IsSeparated Xo.s := sepX Xo`. Use `haveI : IsDominant (spMap φ) := spMap_isDominant φ hφ`. Use `first`. Consider the case `exact ext_of_isDominant_of_isSeparated Xo.s hs (spMap φ) h`. Consider the case `exact ext_of_isDominant_of_isSeparated Xo.s hs h`.
-
-Consider the case `exact ext_of_isDominant_of_isSeparated (s := Xo.s) hs (ι := spMap φ) h`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem x_eq_of_inj (Xo : Moduli Dw l) {S T : Type} [CommRing S] [IsReduced S] [CommRing T] (φ : S →+* T)
     (hφ : Function.Injective φ) {f g : Sp S ⟶ Xo.X} (hs : f ≫ Xo.s = g ≫ Xo.s)

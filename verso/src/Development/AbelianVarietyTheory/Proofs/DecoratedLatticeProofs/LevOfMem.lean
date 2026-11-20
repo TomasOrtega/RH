@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.ValMoveProof
 
 /- English proof (translation)
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.lev`. Consider the case `zero => intros`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `v k hk g`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, hx v k hk g, hy v k hk g, mul_add]`. Consider the case `smul a x _ hx`. Introduce `v k hk g`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, hx v k hk g]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,15 +35,15 @@ theorem lev_of_mem {D : D7} (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → S
     ring
 
 /- English proof (translation)
-Introduce `D θ hθ V S M J χ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `G hG x k hk`. Rewrite `hG` using `[mem_multT]`. Establish `h` using `lev_of_mem θ M J χ _ hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ f, G (PiTensorProduct.tprod ℂ f) = (PiTensorProduct.lift.symm G) f` using `fun f => by`. Simplify using `[PiTensorProduct.lift_symm]`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [rTrans, map_smul, Pi.smul_apply, smul_eq_mul, e, h f k hk g]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`. Use function extensionality and compare the values at `g`. Establish `hx'` using `congrFun hx g`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hy'` using `congrFun hy g`. Simplify using `only [rTrans, map_add, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hx' hy' ⊢`. Rewrite using `[hx', hy', mul_add]`. Introduce `a ha v`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.realTranslation_cuspFormMaps_eq_smooth_linear_map D θ V S M hθ a ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨σ v, fun G hG => (hσ J χ G hG v).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem valMove : ∀ D : D7, ValMove D := by
   intro D θ hθ V S M J χ

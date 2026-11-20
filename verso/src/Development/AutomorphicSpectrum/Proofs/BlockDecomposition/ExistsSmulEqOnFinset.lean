@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.SimpleDensity
 
 /- English proof (translation)
-Establish `key : ∀ (φ : Module.End R (∀ i, M i)) (m : ∀ i, M i) (i : ι), φ m i = ((LinearMap.proj i) ∘ₗ φ ∘ₗ LinearMap.single R M i) (m i)`. Introduce `φ m i`. Establish `hm : m = ∑ j, Pi.single j (m j)` using `(Finset.univ_sum_single m).symm`. Use `conv_lhs => rw [hm]`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_eq_single i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `j _ hj`. Use `hne j i hj ((LinearMap.proj i) ∘ₗ φ ∘ₗ LinearMap.single R M j)` as an intermediate fact. Conclude with `LinearMap.congr_fun this (m j)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Set `F : Module.End (Module.End R (∀ i, M i)) (∀ i, M i)` to `{ toFun := fun m i => f i (m i) map_add' := fun a b => by ext i; simp map_smul' := fun φ m => by`. Use extensionality with `i`. Simplify using `only [Module.End.smul_def, RingHom.id_apply]`. Rewrite using `[key φ m i, key φ _ i, hf] }`. Take `⟨r, hr⟩` from `jacobson_density F s`.
-
-Conclude with `⟨r, fun m hm i => congrFun (hr m hm) i⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_on_finset {R ι : Type} [Ring R] [Fintype ι] (M : ι → Type)
     [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] [∀ i, IsSimpleModule R (M i)]
@@ -41,11 +39,11 @@ theorem exists_smul_eq_on_finset {R ι : Type} [Ring R] [Fintype ι] (M : ι →
   exact ⟨r, fun m hm i => congrFun (hr m hm) i⟩
 
 /- English proof (translation)
-Use `haveI : Nontrivial N := IsSimpleModule.nontrivial A N`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (φ.restrictScalars ℂ : Module.End ℂ N)`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hw1 : φ w = c • w` using `hw.apply_eq_smul`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : N →ₗ[A] N` to `φ - c • LinearMap.id`. Break down `LinearMap.injective_or_eq_zero ψ with hi | h0` into its components or cases. It suffices to derive a contradiction. Establish `hz : ψ w = 0` using `by simp [ψ, hw1]`. Conclude with `hw.2 (hi (by rw [hz, map_zero]))`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Use `LinearMap.congr_fun h0 x` as an intermediate fact. Simplify `this` using `[ψ, sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_scalar_of_simple {A N : Type} [Ring A] [Algebra ℂ A] [AddCommGroup N] [Module ℂ N] [Module A N]
     [IsScalarTower ℂ A N] [FiniteDimensional ℂ N] [IsSimpleModule A N] (φ : N →ₗ[A] N) :
@@ -65,13 +63,13 @@ theorem exists_scalar_of_simple {A N : Type} [Ring A] [Algebra ℂ A] [AddCommGr
     simpa [ψ, sub_eq_zero] using this
 
 /- English proof (translation)
-Introduce `A _ _ J _ M _ _ _ _ _ _ hiso f`. Establish `hne : ∀ i j, i ≠ j → ∀ φ : M i →ₗ[A] M j, φ = 0`. Introduce `i j hij φ`. Assume the negation of the conclusion as `h`. Conclude with `hij (hiso i j ⟨LinearEquiv.ofBijective φ (LinearMap.bijective_of_ne_zero h)⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hf : ∀ i (φ : M i →ₗ[A] M i) x, (f i).toAddMonoidHom (φ x) = φ ((f i).toAddMonoidHom x)`. Introduce `i φ x`. Take `⟨c, hc⟩` from `exists_scalar_of_simple φ`. Simplify using `[hc]`. Set `b : ∀ j, Module.Basis (Module.Free.ChooseBasisIndex ℂ (M j)) ℂ (M j)` to `fun j => Module.Free.chooseBasis ℂ (M j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : ∀ j, Fintype (Module.Free.ChooseBasisIndex ℂ (M j)) := fun j => inferInstance`. Set `s : Finset (∀ j, M j)` to `Finset.univ.biUnion fun j => Finset.univ.image fun k => (Pi.single j (b j k) : ∀ j, M j)`. Take `⟨r, hr⟩` from `exists_smul_eq_on_finset M hne (fun j => (f j).toAddMonoidHom) hf s`. Use `⟨r, fun j x => ?_⟩` and prove the remaining obligations. Establish `hlin : (Algebra.lsmul ℂ ℂ (M j) r : Module.End ℂ (M j)) = f j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(b j).ext fun k => ?_` and prove the remaining obligations. Establish `hm : (Pi.single j (b j k) : ∀ j, M j) ∈ s` using `Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, Finset.mem_image.2 ⟨k, Finset.mem_univ _, rfl⟩⟩`. Use `hr _ hm j` as an intermediate fact. Simplify using `using this.symm`. Conclude with `LinearMap.congr_fun hlin x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_end : ∀ (A : Type) [Ring A] [Algebra ℂ A] (J : Type) [Fintype J] (M : J → Type)
     [∀ j, AddCommGroup (M j)] [∀ j, Module ℂ (M j)] [∀ j, Module A (M j)] [∀ j, IsScalarTower ℂ A (M j)]

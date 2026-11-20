@@ -11,31 +11,29 @@ open GlobalTheory.Poinc.Tors
 namespace GlobalTheory.Poinc.Tors
 
 /- English proof (translation)
-Introduce `hL R _ _ _ P N hN1 hNu C b hb hgen K _ _ x p hp`. Establish `hNu' : IsUnit (N : Γ(Spec (CommRingCat.of R), ⊤))`. Simplify using `using hNu.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Take `⟨hfin, -, -, het, hcard⟩` from `hL.mulN (Spec (CommRingCat.of R)) P N hN1`. Establish `: Etale (mulA P.A N).left` using `het hNu'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsSeparated (mulA P.A N).left` using `inferInstance`. Establish `hmul : ∀ {Z : Over (Spec (CommRingCat.of R))} (y : Z ⟶ P.A), y ≫ mulA P.A N = y ^ N` using `fun y => by`. Rewrite using `[mulA, MonObj.comp_pow, Category.comp_id]`. Establish `hone : ∀ {Z : Over (Spec (CommRingCat.of R))}, (1 : Z ⟶ P.A).left = Z.hom ≫ η[P.A].left` using `fun {Z} => by`. Rewrite using `[Hom.one_def, Over.comp_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `Kk : Over (Spec (CommRingCat.of R))` to `Over.mk (pullback.snd (mulA P.A N).left η[P.A].left)`. Establish `hη : η[P.A].left ≫ P.A.hom = 𝟙 _` using `Over.w η[P.A]`. Set `i : Kk ⟶ P.A` to `Over.homMk (pullback.fst (mulA P.A N).left η[P.A].left) (by`. Express the relevant statement in the definitionally equal form `pullback.fst (mulA P.A N).left η[P.A].left ≫ P.A.hom = pullback.snd (mulA P.A N).left η[P.A].left`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Over.w (mulA P.A N), pullback.condition_assoc]`. Use `erw [hη]`. Conclude with `Category.comp_id _)`. Establish `hlift : ∀ {Z : Over (Spec (CommRingCat.of R))} (y : Z ⟶ P.A), y ^ N = 1 → ∃ l : Z ⟶ Kk, l ≫ i = y`. Introduce `Z y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : y.left ≫ (mulA P.A N).left = Z.hom ≫ η[P.A].left`. Rewrite using `[← Over.comp_left, hmul, hy, hone]`. Conclude with `⟨Over.homMk (pullback.lift _ _ e) (pullback.lift_snd _ _ _), Over.OverMorphism.ext (pullback.lift_fst _ _ _)⟩`. Establish `hmono : ∀ {Z : Over (Spec (CommRingCat.of R))} (l l' : Z ⟶ Kk), l ≫ i = l' ≫ i → l = l'`. Introduce `Z l l' e`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `congr(($e).left)`. Conclude with `(Over.w l).trans (Over.w l').symm`. Establish `: Etale Kk.hom` using `inferInstanceAs (Etale (pullback.snd (mulA P.A N).left η[P.A].left))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: IsSeparated Kk.hom` using `inferInstanceAs (IsSeparated (pullback.snd (mulA P.A N).left η[P.A].left))`. Establish `inj : ∀ {F : Type} [Field F] (y : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of R)) (σ τ : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ P.A), σ ^ N = 1 → τ ^ N = 1 → toUnit (Over.mk y) ≫ σ = toUnit (Over.mk y) ≫ τ → σ = τ`. Introduce `F _ y σ τ hσ hτ e`. Take `⟨ls, rfl⟩` from `hlift σ hσ`. Take `⟨lt, rfl⟩` from `hlift τ hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e' : toUnit (Over.mk y) ≫ ls = toUnit (Over.mk y) ≫ lt` using `hmono _ _ (by simpa using e)`. Establish `hu : (toUnit (Over.mk y)).left = y`. Simplify using `using Over.w (toUnit (Over.mk y))`. Establish `: ConnectedSpace (𝟙_ (Over (Spec (CommRingCat.of R)))).left` using `inferInstanceAs (ConnectedSpace (Spec (CommRingCat.of R)))`. Establish `key : ls.left = lt.left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.eq_of_connected_of_unramified_of_point Kk.hom ((Over.w ls).trans (Over.w lt).symm) y ?_` and prove the remaining obligations. Establish `h2` using `congr(($e').left)`. Rewrite `h2` using `[Over.comp_left, Over.comp_left, hu]`. Conclude with `h2`. Rewrite using `[Over.OverMorphism.ext key]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `natK : ∀ {F : Type} [Field F] (y : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of R)), (N : F) ≠ 0` using `fun y => by simpa using (hNu.map (Spec.preimage y).hom).ne_zero`. Set `T0` to `{σ : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ P.A // σ ∈ Set.range b}`. Establish `tor : ∀ σ : T0, σ.1 ^ N = 1` using `fun σ => by obtain ⟨c, hc⟩ := σ.2; rw [← hc]; exact hb c`. Set `res : ∀ {F : Type} [Field F] (y : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of R)), T0 → {q : Over.mk y ⟶ P.A // q ^ N = 1}` to `fun y σ => ⟨toUnit _ ≫ σ.1, by rw [← MonObj.comp_pow, tor σ, MonObj.comp_one]⟩`. Establish `resInj : ∀ {F : Type} [Field F] (y : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of R)), Function.Injective (res y)` using `fun y σ τ e => Subtype.ext (inj y σ.1 τ.1 (tor σ) (tor τ) (congrArg Subtype.val e))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Ω` to `AlgebraicClosure (FractionRing R)`. Establish `c0` using `hcard Ω (TF (R := R) Ω).hom (natK (TF (R := R) Ω).hom)`. Establish `cx` using `hcard K x (natK x)`. Establish `hpos : N ^ (2 * P.g) ≠ 0` using `pow_ne_zero _ (by omega)`. Establish `: Finite {q : Over.mk (TF (R` using `R) Ω).hom ⟶ P.A // q ^ N = 1} := Nat.finite_of_card_ne_zero (c0 ▸ hpos)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: Finite {q : Over.mk x ⟶ P.A // q ^ N = 1}` using `Nat.finite_of_card_ne_zero (cx ▸ hpos)`. Establish `bij0 : Function.Bijective (res (TF (R` using `R) Ω).hom) := by`. Use `⟨resInj _, fun q => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hgen q.1 q.2`. Conclude with `⟨⟨b c, c, rfl⟩, Subtype.ext hc.symm⟩`.
-
-Establish `cT : Nat.card T0 = N ^ (2 * P.g)` using `(Nat.card_eq_of_bijective _ bij0).trans c0`. Establish `bijx` using `(Nat.bijective_iff_injective_and_card (res x)).2 ⟨resInj x, cT.trans cx.symm⟩`. Take `⟨⟨σ, c, rfl⟩, hσ⟩` from `bijx.2 ⟨p, hp⟩`. Conclude with `⟨c, (congrArg Subtype.val hσ).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torsion_exhaust_geometric : Laws → ∀ (R : Type) [CommRing R] [IsDomain R], IsNoetherianRing R → ∀ (P : PolAV (Spec (CommRingCat.of R))) (N : ℕ), 1 ≤ N → IsUnit (N : R) → ∀ (C : Type) (b : C → (𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ P.A)), (∀ c, b c ^ N = 1) → (∀ p : TF (R := R) (AlgebraicClosure (FractionRing R)) ⟶ P.A, p ^ N = 1 → ∃ c, p = toUnit _ ≫ b c) → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of R)) (p : Over.mk x ⟶ P.A), p ^ N = 1 → ∃ c, p = toUnit _ ≫ b c := by
   intro hL R _ _ _ P N hN1 hNu C b hb hgen K _ _ x p hp

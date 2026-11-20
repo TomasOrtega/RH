@@ -13,15 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConjInner
 
 /- English proof (translation)
-Establish `hd : ∀ z : H, ∃ a, IsMultIP M μ 𝓕 (e z) (e z) a`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Use `⟨0, fun v v' => ?_⟩` and prove the remaining obligations. Substitute `hz` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hn`. Use `h z z` as an intermediate fact. Simplify using `only [ipM, dif_neg hn, mul_zero] at this`. Conclude with `hz (inner_self_eq_zero.1 this)`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hd x`. Take `⟨b, hb⟩` from `hd y`. Take `⟨s, hs⟩` from `hd (x + y)`. Take `⟨t, ht⟩` from `hd (x + Complex.I • y)`. Rewrite `hs`, `ht` using `[map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[map_smul]`. Establish `h1` using `(ipM_spec M μ 𝓕 _ _ ⟨_, GlobalTheory.SchurPolar.exists_of_diag M μ 𝓕 _ _ ha hb hs ht⟩ v v).2`. Rewrite using `[h, h1, Finset.prod_eq_one, mul_one]`. Introduce `τ _`. Rewrite using `[inner_self_eq_norm_sq_to_K, hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem inner_eq_integral {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (μ : Measure (GA D V))
     (𝓕 : Set (GA D V)) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (e : H →ₗ[ℂ] MMap M) (c : ℂ)
@@ -50,7 +50,7 @@ theorem inner_eq_integral {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M :
   simp
 
 /- English proof (translation)
-Rewrite using `[map_mul, hq, ← integral_conj]`. Use `congr 2`. Use function extensionality and compare the values at `g`. Rewrite using `[ha, hb, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_integral {X : Type} [MeasurableSpace X] (μ : Measure X) (q : ℂ) (hq : starRingEnd ℂ q = q) {a b a' b' : X → ℂ}
     (ha : ∀ g, a g = starRingEnd ℂ (a' g)) (hb : ∀ g, b g = starRingEnd ℂ (b' g)) :
@@ -62,11 +62,11 @@ theorem conj_integral {X : Type} [MeasurableSpace X] (μ : Measure X) (q : ℂ) 
   rfl
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span L s` using `hs ▸ Submodule.mem_top`. Establish `hy : y ∈ Submodule.span L s` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `mem y hy => exact h x hx y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2 => rw [map_add, map_add, inner_add_right, inner_add_right, map_add, h1, h2]`. Consider the case `smul a y _ h1`. Rewrite using `[map_smulₛₗ, map_smulₛₗ, inner_smul_right, inner_smul_right, map_mul, h1, RingHom.comp_apply, Complex.conj_conj]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ h1 h2 => rw [map_add, map_add, inner_add_left, inner_add_left, map_add, h1, h2]`. Consider the case `smul a x _ h1`. Rewrite using `[map_smulₛₗ, map_smulₛₗ, inner_smul_left, inner_smul_left, map_mul, h1, RingHom.comp_apply, Complex.conj_conj]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_conj_of_span {L W H H' : Type} [Field L] [AddCommGroup W] [Module L W] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] (σ : L →+* ℂ) (j : W →ₛₗ[σ] H)
@@ -89,7 +89,7 @@ theorem inner_conj_of_span {L W H H' : Type} [Field L] [AddCommGroup W] [Module 
     rw [map_smulₛₗ, map_smulₛₗ, inner_smul_left, inner_smul_left, map_mul, h1, RingHom.comp_apply, Complex.conj_conj]
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Unfold `kapAt`. Rewrite using `[GlobalTheory.ConjEval.lab_conj]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dim_conj {D : D7} (W : HSp D) (σ : D.what₂.LL →+* ℂ) :
     (∏ ρ, ((dimK _ _ (kapAt W ((starRingEnd ℂ).comp σ) ρ) : ℚ) : ℂ)) = ∏ ρ, ((dimK _ _ (kapAt W σ ρ) : ℚ) : ℂ) := by
@@ -98,7 +98,7 @@ theorem dim_conj {D : D7} (W : HSp D) (σ : D.what₂.LL →+* ℂ) :
   rw [GlobalTheory.ConjEval.lab_conj]
 
 /- English proof (translation)
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun ρ _ => map_ratCast _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_real {D : D7} (W : HSp D) (σ : D.what₂.LL →+* ℂ) :
     starRingEnd ℂ (∏ ρ, ((dimK _ _ (kapAt W σ ρ) : ℚ) : ℂ)) = ∏ ρ, ((dimK _ _ (kapAt W σ ρ) : ℚ) : ℂ) := by
@@ -108,7 +108,7 @@ theorem dim_real {D : D7} (W : HSp D) (σ : D.what₂.LL →+* ℂ) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h1` using `inner_eq_integral (R.MW i σ) (R.νW i) (R.fdW i) (R.HW i σ).e _ (he i σ).2.2 v hv x y`. Establish `h2` using `inner_eq_integral (R.MW i _) (R.νW i) (R.fdW i) (R.HW i _).e _ (he i _).2.2 v' hv' x' y'`. Rewrite `h2` using `[dim_conj]`. Conclude with `h1.trans ((conj_integral _ _ (dim_real _ σ) hx hy).trans (congrArg (starRingEnd ℂ) h2).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_conj_of_values {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (he : R.models_HW) (i : Fin D.R.m)
@@ -125,13 +125,13 @@ theorem inner_conj_of_values {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κw v₀ hC fw i hE hB hT σ hσ`. Establish `hg : GoodEmb T.Q.c (resC T σ)` using `good_resC T hσ`. Establish `hV : T.V ((i : ℕ) + 1) (resC T σ) = Wc D i` using `fw.laws.spaceW _ (inR i) _ hg`. Establish `h1` using `(hT i σ hσ hV).1 (hB i σ hσ hV)`. Take `⟨v, hv, h1⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `fw.evaluates hE i ((starRingEnd ℂ).comp σ) hg hV`. Establish `h3 : ∀ f g, evAt R i σ v (fw.jK i σ f) g = starRingEnd ℂ (evAt R i _ (v₀ i ((starRingEnd ℂ).comp σ)) (fw.jK i ((starRingEnd ℂ).comp σ) f) g)` using `fun f g => (congrFun (h1 f) g).trans (congrArg (starRingEnd ℂ) (congrFun (h2 f) g).symm)`. Establish `h4 : ∀ f f', ⟪fw.jK i σ f, fw.jK i σ f'⟫_ℂ = starRingEnd ℂ ⟪fw.jK i ((starRingEnd ℂ).comp σ) f, fw.jK i ((starRingEnd ℂ).comp σ) f'⟫_ℂ` using `fun f f' => inner_conj_of_values R hC.models.HW i σ hv (fun τ => ((fw.hv₀ i _).1 τ).1) (h3 f) (h3 f')`. Establish `h5` using `fw.ks i`. Take `⟨n, b, hb, -, -, -, h5⟩` from `h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `inner_conj_of_span σ _ _ _ h5 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩ _ ⟨l, rfl⟩`. Establish `e : ∀ k, ∃ f, ((fw.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) = b k` using `fun k => ⟨(fw.e i).symm ⟨b k, hb k⟩, congrArg Subtype.val ((fw.e i).apply_symm_apply _)⟩`. Establish `e1` using `e k`. Establish `e2` using `e l`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, e1⟩` from `e1`. Take `⟨f', e2⟩` from `e2`. Rewrite using `[← e1, ← e2]`. Conclude with `h4 f f'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_reading_conj : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → ∀ (fw : FWTie T R κw v₀) (i : Fin D.R.m), JEvExists T R κw v₀ → JEvBar T R κw → BarTie fw → ∀ (σ : D.what₂.LL →+* ℂ), ¬ GoodEmb T.Q.c (res T σ) → ∀ y y', ⟪(R.FW i).j σ y, (R.FW i).j σ y'⟫_ℂ = starRingEnd ℂ ⟪(R.FW i).j ((starRingEnd ℂ).comp σ) y, (R.FW i).j ((starRingEnd ℂ).comp σ) y'⟫_ℂ := by
   intro D G _ _ Pl0 T0 A T _ R F κw v₀ hC fw i hE hB hT σ hσ

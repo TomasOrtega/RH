@@ -5,7 +5,7 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.FreeModuleQuotient.freeN_quot s I K hIK c e he`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.Core.freeN_quot {R S M : Type} [CommRing R] [CommRing S] [AddCommGroup M] [Module R M]
     (s : S →+* R) (I K : Ideal S) (hIK : I ≤ K) (c : ℕ) (e : M ≃+ (Fin c → S ⧸ I))
@@ -14,11 +14,11 @@ private theorem UpperTheory.V.Pa.Core.freeN_quot {R S M : Type} [CommRing R] [Co
   _root_.UpperTheory.Reformulated.B.FreeModuleQuotient.freeN_quot s I K hIK c e he
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `h1` using `ha p.1`. Establish `h2 : a p.1 - j < l ^ (a p.1 - j)` using `Nat.lt_pow_self hl.one_lt`. Establish `h` using `one_add_pow_sub_one_mem (MvPowerSeries (Fin q × Fin n) R) l hl (MvPowerSeries.X p) (a p.1) j k (by omega) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(sup_le_sup ?_ ?_ : _ ≤ kjIdeal R (Fin q × Fin n) k j) h` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self p)) k`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Use `Ideal.mem_map_of_mem (MvPowerSeries.C : R →+* MvPowerSeries (Fin q × Fin n) R) (Ideal.pow_mem_pow hR j)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_pow, map_natCast]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.Core.freeN_le (l : ℕ) (hl : l.Prime) (R : Type) [CommRing R] [IsLocalRing R]
     (hR : (l : R) ∈ maximalIdeal R) (q n : ℕ) (a : Fin q → ℕ) (k j : ℕ) (ha : ∀ i, j + k ≤ a i) :
@@ -37,11 +37,11 @@ private theorem UpperTheory.V.Pa.Core.freeN_le (l : ℕ) (hl : l.Prime) (R : Typ
     rwa [map_pow, map_natCast] at this
 
 /- English proof (translation)
-Introduce `l hl L G0 T Λ n O _ _ _ hO _ r B _ _ _ u J D A W m k j`. Establish `hlm : (l : abelian₂ O Unit D) ∈ maximalIdeal (abelian₂ O Unit D)`. Introduce `hu`. Establish `h1` using `hu.map ((residue O).comp (MvPowerSeries.constantCoeff : abelian₂ O Unit D →+* O))`. Use `haveI := hO.char`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_natCast, CharP.cast_eq_zero]`. Conclude with `not_isUnit_zero h1`. Use `Λ.U_le ((eventually_ge_atTop (j + k)).mono fun N hN => ⟨(A.A N).rk, ?_⟩)` and prove the remaining obligations. Use `freeN_quot (M := MN m N) m.s.toRingHom _ _ (freeN_le l hl.out _ hlm T.q n (A.A N).a k j fun i => hN.trans ((A.A N).le_a i)) _ (A.A N).e ?_` and prove the remaining obligations. Introduce `z x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(A.A N).e_smul z x` as an intermediate fact. Rewrite `this` using `[← m.specializationMap_comp_universalSection N z]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.freeN :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W) (k j : ℕ), ∀ᶠ N in (Λ.U : Filter ℕ), ∃ (c : ℕ) (e : (MN m N ⧸ ((kjIdeal (abelian₂ O Unit D) (Fin T.q × Fin n) k j).map m.s.toRingHom • ⊤ : Submodule W.R (MN m N))) ≃+ (Fin c → Sinf O Unit D T.q n ⧸ kjIdeal (abelian₂ O Unit D) (Fin T.q × Fin n) k j)), ∀ a x, e (m.s.toRingHom a • x) = a • e x := by

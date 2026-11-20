@@ -8,13 +8,11 @@ namespace Formalism.MainNotions.Pf14
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Distinguish the cases in `hfin : Finite ιb`. Use `Fintype.ofFinite ιb` as an intermediate fact. Set `e : ιb ≃ Fin (Module.finrank O Sg)` to `Fintype.equivFinOfCardEq (Module.finrank_eq_card_basis b).symm`. Use `⟨fun i => (b (e.symm i) : M), fun i => hb _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(b.linearIndependent.map' Sg.subtype (Submodule.ker_subtype Sg)).comp e.symm e.symm.injective`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr : Set.range (fun i => (b (e.symm i) : M)) = Sg.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Conclude with `e.symm.surjective.range_comp (fun j => (b j : M))`. Take `⟨T, hT⟩` from `hc`. Use `⟨T, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Conclude with `hT`. Use `Module.Free.of_basis b` as an intermediate fact. Establish `hnf : ¬ Module.Finite O Sg` using `fun h => hfin (Module.Finite.finite_basis b)`. Rewrite using `[Module.finrank_of_not_finite hnf]`.
-
-Use `⟨Fin.elim0, fun i => i.elim0, linearIndependent_empty_type, ⊤, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_eq_empty, Submodule.span_empty]`. Conclude with `isCompl_bot_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_fin {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M] (Sg : Submodule O M)
     {ιb : Type} (b : Module.Basis ιb O Sg) (hc : ∃ T : Submodule O M, IsCompl Sg T) (Pr : M → Prop)
@@ -43,9 +41,9 @@ theorem basis_fin {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [Modul
     exact isCompl_bot_top
 
 /- English proof (translation)
-Introduce `s i j hij`. Simplify using `only [flW, Pi.single_apply]`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `hi : i = 0` using `le_antisymm hij (Fin.zero_le _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hi` using the available equality. Conclude with `le_refl _`. Apply the tactic sequence `rw [if_neg hj] split_ifs <;> positivity`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem flW_dom {n' m : ℕ} (d : Fin n' → ℕ) : IsDominant (flW (m := m) d) := by
   intro s i j hij
@@ -59,17 +57,15 @@ theorem flW_dom {n' m : ℕ} (d : Fin n' → ℕ) : IsDominant (flW (m := m) d) 
     split_ifs <;> positivity
 
 /- English proof (translation)
-Introduce `s i j hij`. Establish `hA` using `h s`. Establish `h1v : (1 : Fin (m + 1)).val = 1`. Rewrite using `[Fin.val_one']`. Conclude with `Nat.mod_eq_of_lt (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : (dT TT lam0 s : ℤ) = if s ∈ TT then lam0 s 0 - lam0 s 1 else 0`. Unfold `dT flatDeg`. Use `split_ifs`. Conclude with `Int.toNat_of_nonneg (sub_nonneg.mpr (hA (Fin.zero_le _)))`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [restW, flW, Pi.sub_apply, Pi.single_apply, hd]`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `hi : i = 0` using `le_antisymm hij (Fin.zero_le _)`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_refl _`. Establish `h1j : (1 : Fin (m + 1)) ≤ j`. Rewrite using `[Fin.le_def, h1v]`. Establish `: j.val ≠ 0` using `fun h0 => hj (Fin.ext h0)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hj]`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Rewrite using `[if_pos rfl]`. Use `split_ifs`.
-
-Combine the linear relations using `[hA h1j]`. Combine the linear relations using `[hA (Fin.zero_le j)]`. Rewrite using `[if_neg hi]`. Combine the linear relations using `[hA hij]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem restW_dom {n' m : ℕ} (hm : 1 ≤ m) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ)
     (h : IsDominant lam0) : IsDominant (restW TT lam0) := by
@@ -104,7 +100,7 @@ theorem restW_dom {n' m : ℕ} (hm : 1 ≤ m) (TT : Finset (Fin n')) (lam0 : Fin
       linarith [hA hij]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s i`. Simplify using `only [restW, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lambda_zero_eq_product {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ) :
     lam0 = flW (dT TT lam0) + restW TT lam0 := by
@@ -113,11 +109,11 @@ theorem lambda_zero_eq_product {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n
   ring
 
 /- English proof (translation)
-Use `push_cast`. Establish `hq' : 0 < q⁻¹` using `inv_pos.mpr hq`. Break down `le_or_gt 0 (1 - A' * x) with hB | hB` into its components or cases. Establish `e1 : 1 - A' * x ≤ 1 - A * x` using `by nlinarith`. Establish `s1 : (1 - A' * x) * u * dV ≤ (1 - A' * x) * (Pi * n2)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left h2 hB`. Establish `s2 : (1 - A' * x) * (Pi * n2) ≤ (1 - A * x) * (Pi * n2)` using `mul_le_mul_of_nonneg_right e1 (by positivity)`. Establish `s3 : q⁻¹ * ((1 - A * x) * Pi) * n2 ≤ nb * n2` using `mul_le_mul_of_nonneg_right h1 (by positivity)`. Rewrite using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hn : (1 - A' * x) * u * dV ≤ 0`. Use `mul_nonneg hu hdV` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(div_nonpos_of_nonpos_of_nonneg hn hq.le).trans (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_index_count_bound (A A' x u dV Pi q : ℝ) (nb n2 : ℕ) (hA : A ≤ A') (hx : 0 ≤ x) (hu : 0 ≤ u) (hdV : 0 ≤ dV)
     (hPi : 0 ≤ Pi) (hq : 0 < q) (h1 : q⁻¹ * ((1 - A * x) * Pi) ≤ nb) (h2 : u * dV ≤ Pi * n2) :
@@ -144,15 +140,13 @@ theorem norm_index_count_bound (A A' x u dV Pi q : ℝ) (nb n2 : ℕ) (hA : A �
     exact (div_nonpos_of_nonpos_of_nonneg hn hq.le).trans (by positivity)
 
 /- English proof (translation)
-Unfold `Hyps at H`. Take `⟨hp, hr, -, hN1, -, hY, -, -, -, -, hcS, hsz⟩` from `H`. Establish `hcard : 1 ≤ TT.card`. Establish `h1 : 1 ≤ orbitWindowCount r de h x` using `by unfold orbitWindowCount; omega`. Establish `h2 : 1 ≤ r * TT.card` using `le_trans (Nat.one_le_pow _ _ h1) hN1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos TT.card with h0 | h0` into its components or cases. Rewrite `h2` using `[h0]`. Simplify using `at h2`. Conclude with `h0`. Establish `hr' : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY' : (2 : ℝ) ≤ Y` using `hr'.trans hY`. Establish `hp' : (1 : ℝ) ≤ p` using `by exact_mod_cast (by omega : 1 ≤ p)`. Establish `hQ : (1 : ℝ) ≤ (p : ℝ) ^ goodG' r de h x` using `one_le_pow₀ hp'`. Establish `hcS' : (8 : ℝ) ≤ cStar` using `by exact_mod_cast (by omega : 8 ≤ cStar)`. Establish `hk : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ m + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (1 : ℝ) ≤ (TT.card : ℝ)` using `by exact_mod_cast hcard`. Take `⟨ha, hkc⟩` from `num_size C ((m + 1 : ℕ) : ℝ) r TT.card (p ^ goodG' r de h x) cStar c0 (2 * r * n' * cpp) Y a hC hk hr' hN hQ hcS' (Nat.cast_nonneg _) (by positivity) hY' hsz`. Establish `hle : ((m + 1 : ℕ) : ℝ) * c0 ≤ a`. Establish `h0 : 0 ≤ ((m + 1 : ℕ) : ℝ) * c0` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul hN (by linarith : (1 : ℝ) ≤ Y) zero_le_one (by linarith)]`.
-
-Conclude with `div_le_one_of_le₀ hle (by linarith)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rank_mul_conductor_div_le_one {C : ℝ} (hC : 2 ≤ C) {p n' m r : ℕ} {TT : Finset (Fin n')} {L₁ L₂ : ℕ} {de h x : ℝ}
     {lam0 : Fin n' → Fin (m + 1) → ℤ} {aT bT : Fin n' → ℤ} {a Y : ℝ} {cpp c0 Dp cStar : ℕ}
@@ -182,9 +176,9 @@ theorem rank_mul_conductor_div_le_one {C : ℝ} (hC : 2 ≤ C) {p n' m r : ℕ} 
   exact div_le_one_of_le₀ hle (by linarith)
 
 /- English proof (translation)
-Establish `hC0 : 0 ≤ C` using `(abs_nonneg _).trans h3`. Establish `hCt0 : 0 ≤ Ct0` using `(abs_nonneg _).trans h1`. Establish `hX : |CLa * s * w + v| ≤ C * s' * w + v`. Establish `hm : |CLa| * s ≤ C * s'` using `mul_le_mul h3 hss hs hC0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private lemma mul_mul_add_le_of_abs_le (Cdeg CLa C Ct0 s s' w v N : ℝ) (h1 : |Cdeg| ≤ Ct0) (h3 : |CLa| ≤ C)
     (hs : 0 ≤ s) (hss : s ≤ s') (hw : 0 ≤ w) (hv : 0 ≤ v) (hN : 0 ≤ N) :
@@ -202,11 +196,11 @@ private lemma mul_mul_add_le_of_abs_le (Cdeg CLa C Ct0 s s' w v N : ℝ) (h1 : |
       mul_le_mul (mul_le_mul_of_nonneg_right h1 hN) hX (abs_nonneg _) (mul_nonneg hCt0 hN)
 
 /- English proof (translation)
-Unfold `t0 tableLineDegreeFive.La`. Establish `hlog : 0 ≤ Real.log a` using `Real.log_nonneg ha`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp`. Establish `hk0 : (0 : ℝ) < k` using `by exact_mod_cast hk`. Establish `hNs' : (Ns : ℝ) ^ 2 ≤ (N₁ : ℝ) ^ 2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Ns : ℝ) ≤ N₁` using `by exact_mod_cast hNs`. Conclude with `pow_le_pow_left₀ (Nat.cast_nonneg _) this 2`. Establish `hw : 0 ≤ Real.log a * a / ((p : ℝ) * (k : ℝ))` using `by positivity`. Establish `hv : 0 ≤ a * (p : ℝ) ^ (-(L₁ : ℤ)) + (k : ℝ) * (p : ℝ) ^ G'` using `by positivity`. Establish `key` using `mul_mul_add_le_of_abs_le Cdeg CLa C Ct0 ((Ns : ℝ) ^ 2) ((N₁ : ℝ) ^ 2) _ _ (N : ℝ) h1 h3 (by positivity) hNs' hw hv (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine le_trans (le_of_eq ?_) (key.trans_eq ?_) <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem level_lower_bound_terms (Cdeg CLa C Ct0 : ℝ) (h1 : |Cdeg| ≤ Ct0) (h3 : |CLa| ≤ C)
     (p N N₁ Ns L₁ G' k : ℕ) (hNs : Ns ≤ N₁) (hp : 1 ≤ p) (hk : 1 ≤ k) (a : ℝ) (ha : 1 ≤ a) :

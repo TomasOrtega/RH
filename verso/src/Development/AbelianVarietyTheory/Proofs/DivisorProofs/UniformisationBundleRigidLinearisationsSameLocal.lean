@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.Mum.RigLinUnique
 
 /- English proof (translation)
-Establish `cmp : ∀ {A B C : Scheme.{0}} (a : A ⟶ B) (b : B ⟶ C) (x : Γ(C, ⊤)), a.appTop.hom (b.appTop.hom x) = (a ≫ b).appTop.hom x` using `fun a b x => by`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Take `⟨c, hc⟩` from `hs ((pullback.fst p j).appTop.hom u)`. Set `e' : S' ⟶ pullback p j` to `pullback.lift (j ≫ e) (𝟙 S') (by rw [Category.assoc, he, Category.comp_id, Category.id_comp])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `h1 : e' ≫ pullback.fst p j = j ≫ e` using `pullback.lift_fst _ _ _`. Establish `h2 : e' ≫ pullback.snd p j = 𝟙 S'` using `pullback.lift_snd _ _ _`. Establish `hc' : c = j.appTop.hom (e.appTop.hom u)`. Use `congrArg e'.appTop.hom hc` as an intermediate fact. Rewrite `this` using `[cmp, cmp, h1, h2, ← cmp, Scheme.Hom.id_appTop]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Apply `hi` to reduce the goal to its premises. Rewrite using `[cmp, pullback.condition, ← cmp, ← hc', hc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_pull_section {X S S' : Scheme.{0}} (p : X ⟶ S) (e : S ⟶ X) (he : e ≫ p = 𝟙 S) (j : S' ⟶ S)
     (hi : Function.Injective (pullback.fst p j).appTop.hom)
@@ -38,11 +38,11 @@ theorem eq_pull_section {X S S' : Scheme.{0}} (p : X ⟶ S) (e : S ⟶ X) (he : 
   rw [cmp, pullback.condition, ← cmp, ← hc', hc]
 
 /- English proof (translation)
-Establish `key : ∀ (Y : Scheme.{0}) (g : Y ⟶ X') (y : Y) (j : L.ι) (k : L'.ι), gm g y ((L.pull F).U (fun _ => j) ⊓ L'.U k) (w₂.s (fun _ => j, k) * (w₁.s (fun _ => j, k))⁻¹) = gw w₂ g y j k * (gw w₁ g y j k)⁻¹` using `fun Y g y j k => (map_mul _ _ _).trans (congrArg (gw w₂ g y j k * ·) (map_inv _ _))`. Take `⟨u, hu⟩` from `glue_unit (X := X') (J := L.ι × L'.ι) ⊤ (fun p => (L.pull F).U (fun _ => p.1) ⊓ L'.U p.2) (fun _ => le_top) (fun x _ => by`. Take `⟨j, hj⟩` from `exists_chart hL (F x)`. Take `⟨k, hk⟩` from `exists_chart hL' x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(j, k), mem_pull.2 hj, hk⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun p => w₂.s (fun _ => p.1, p.2) * (w₁.s (fun _ => p.1, p.2))⁻¹) (fun p q x hx => by`. Establish `a` using `h₁ _ (𝟙 X') x p.1 q.1 p.2 q.2 (mem_pull.1 hx.1.1) (mem_pull.1 hx.2.1) hx.1.2 hx.2.2`. Establish `b` using `h₂ _ (𝟙 X') x p.1 q.1 p.2 q.2 (mem_pull.1 hx.1.1) (mem_pull.1 hx.2.1) hx.1.2 hx.2.2`. Use `(key _ _ x p.1 p.2).trans (Eq.trans ?_ (key _ _ x q.1 q.2).symm)` and prove the remaining obligations. Rewrite using `[a, b, ← div_eq_mul_inv, mul_div_mul_left_eq_div, div_eq_mul_inv])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨u, fun Y g y j k hj hk => ?_⟩` and prove the remaining obligations. Establish `hm : g y ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `: gm g y ⊤ u = gw w₂ g y j k * (gw w₁ g y j k)⁻¹` using `(gm_res g y le_top hm u).symm.trans ((congrArg (gm g y ((L.pull F).U (fun _ => j) ⊓ L'.U k)) (hu (j, k))).trans (key Y g y j k))`. Rewrite using `[this]`. Conclude with `(inv_mul_cancel_right _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (hL : L.IsLB) (hL' : L'.IsLB)
     (w₁ w₂ : LB.Iso L' (L.pull F)) (h₁ : PGen w₁) (h₂ : PGen w₂) :
@@ -70,19 +70,17 @@ theorem exists_ratio {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} 
   exact (inv_mul_cancel_right _ _).symm
 
 /- English proof (translation)
-Introduce `R' _ _ _ D' A' G' _ _ hS U' s f₁ f₂ hf he₁ he₂ w₁ w₂ g₁ g₂ m₁ m₂ z j k hk hj`. Substitute `hf` using the available equality. Establish `hL` using `U'.LG.isLB`. Take `⟨u, hu⟩` from `exists_ratio hL hL w₁ w₂ ((isGen_iff w₁).1 g₁) ((isGen_iff w₂).1 g₂)`. Establish `p₁` using `(maps_iff w₁ _ (fun _ => eSec G') _ U'.LG.rig U'.LG.rig s _ (rigPull_le f₁ s he₁ U'.LG.L) (fun _ => rfl)).1 m₁`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `p₂` using `(maps_iff w₂ _ (fun _ => eSec G') _ U'.LG.rig U'.LG.rig s _ (rigPull_le f₁ s he₂ U'.LG.L) (fun _ => rfl)).1 m₂`. Establish `he1 : pullU (eSec G') ⊤ u = 1`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x _`. Take `⟨a, ha⟩` from `exists_chart hL (f₁ (eSec G' x))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `exists_chart hL (eSec G' x)`. Establish `q₁` using `p₁ _ (𝟙 _) x (fun _ => a) (fun _ => b) (fun _ => ha) (fun _ => hb)`. Establish `q₂` using `p₂ _ (𝟙 _) x (fun _ => a) (fun _ => b) (fun _ => ha) (fun _ => hb)`. Establish `q` using `mul_right_cancel (q₂.symm.trans q₁)`. Rewrite `q` using `[Fintype.prod_unique, Fintype.prod_unique, zpow_one, zpow_one, hu _ (𝟙 _ ≫ eSec G') x a b ha hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_one]`. Conclude with `(gm_pull (𝟙 _) (eSec G') x ⊤ trivial u).trans (mul_eq_right.1 q)`. Use `U'.smooth` as an intermediate fact. Establish `: Flat G'.hom` using `inferInstance`. Establish `: IsDominant (jK R')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isDominant_iff]`. Use `show DenseRange (PrimeSpectrum.comap (algebraMap R' (FractionRing R')))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R' (FractionRing R'))]`. Conclude with `bot_le`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R')` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSchemeTheoreticallyDominant (pullback.fst G'.hom (jK R'))` using `IsSchemeTheoreticallyDominant.of_isPullback (IsPullback.of_hasPullback G'.hom (jK R')).flip`. Establish `hb` using `GlobalFunctionsDvrPowers.bijective_of_iso U'.gen (GlobalTheory.SemiRigid.globalFns _ A'.A A'.isAb)`. Establish `hv` using `eq_pull_section G'.hom (eSec G') (Over.w η[G']) (jK R') ((pullback.fst G'.hom (jK R')).app_injective ⊤) hb.2 u.val`. Establish `he2 : (eSec G').appTop.hom u.val = 1` using `congrArg Units.val he1`. Establish `hu1 : u = 1` using `Units.ext (hv.trans ((congrArg G'.hom.appTop.hom he2).trans (map_one _)))`.
-
-Rewrite using `[hu _ (𝟙 _) z j k hj hk, hu1, map_one, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gw_eq_of_rigidified : ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (D' : DegData R' (maximalIdeal R')) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G') (s : Sp R' ⟶ Sp R') (f₁ f₂ : G'.left ⟶ G'.left), f₁ = f₂ → ∀ (he₁ : eSec G' ≫ f₁ = s ≫ eSec G') (he₂ : eSec G' ≫ f₂ = s ≫ eSec G') (w₁ : LB.Iso U'.LG.L (U'.LG.L.pull f₁)) (w₂ : LB.Iso U'.LG.L (U'.LG.L.pull f₂)), w₁.IsGen → w₂.IsGen → LB.Gen.Maps (LB.linCombIso w₁ (K := PUnit) (fun _ => eSec G') (fun _ => 1)) U'.LG.rig (rigPullOf f₁ s he₁ U'.LG.L U'.LG.rig) → LB.Gen.Maps (LB.linCombIso w₂ (K := PUnit) (fun _ => eSec G') (fun _ => 1)) U'.LG.rig (rigPullOf f₂ s he₂ U'.LG.L U'.LG.rig) → ∀ (z : G'.left) (j k : U'.LG.L.ι), z ∈ U'.LG.L.U k → f₁ z ∈ U'.LG.L.U j → gw w₁ (𝟙 G'.left) z j k = gw w₂ (𝟙 G'.left) z j k := by
   intro R' _ _ _ D' A' G' _ _ hS U' s f₁ f₂ hf he₁ he₂ w₁ w₂ g₁ g₂ m₁ m₂ z j k hk hj

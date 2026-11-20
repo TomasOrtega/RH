@@ -11,11 +11,11 @@ open scoped CategoryTheory.Obj UpperHalfPlane
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hU hB R _ P v s L hg hv hΛ`. Establish `key : ∀ r, IsLieNormSq P v s r → 0 < r ∧ r = Real.pi / |(L.ω₁ * starRingEnd ℂ L.ω₂).im|`. Introduce and unpack `r ⟨P', φ, v', u, Hm, χ, w, hP, hv', hA, hd, rfl⟩`. Take `⟨hw, hL⟩` from `hΛ P' φ v' u w hP hv' hd`. Take `⟨Ef, hEf, hbij⟩` from `(GlobalTheory.T.holomorphicUniformisation_tangent_unimodular_riemannForm hU P' u).2.2 Hm χ hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < (hermForm Hm w w).re` using `hA.2.1 w hw`. Establish `e` using `hermForm_principal_dim_one P'.g u.Λ w L Hm Ef (hP.1.trans hg) hw hL hA.1 hpos hEf hbij 1 1`. Use `⟨mul_pos Real.pi_pos hpos, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[one_smul, map_one, _root_.mul_one, one_div, ← Complex.ofReal_inv]`. Rewrite using `[e, Complex.ofReal_re, div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r₀, h₀⟩` from `exists_isLieNormSq hU hB P hv s`. Take `⟨h1, h2⟩` from `key r₀ h₀`. Conclude with `⟨h2 ▸ h1, fun r => ⟨fun h => (key r h).2, fun h => (h.trans h2.symm) ▸ h₀⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLieNormSq_iff_eq_pi_div_covolume :
     ThetaUnifAV → Out.PolBaseChangeSt → ∀ (R : Type) [CommRing R] (P : Out.PolAV (Sp R)) (v : epsR R ⟶ P.A) (s : R →+* ℂ) (L : PeriodPair), P.g = 1 → IsTangent v → (∀ (P' : Out.PolAV (Sp ℂ)) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR ℂ ⟶ P'.A) (u' : HolUnif P'.A P'.L P'.g) (w' : Fin P'.g → ℂ), IsPolFibre s P P' φ' → IsVecOver s φ' v v' → u'.IsDiff w' v' → w' ≠ 0 ∧ ∀ z : ℂ, z ∈ L.lattice ↔ z • w' ∈ u'.Λ) → 0 < Real.pi / |(L.ω₁ * starRingEnd ℂ L.ω₂).im| ∧ ∀ r, IsLieNormSq P v s r ↔ r = Real.pi / |(L.ω₁ * starRingEnd ℂ L.ω₂).im| := by

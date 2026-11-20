@@ -32,13 +32,13 @@ def shEqJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.v
   MeasurableEquiv.piCongrLeft (fun _ => ℂ) (shIdxJ i j jl hjl)
 
 /- English proof (translation)
-The claim follows from `volume_measurePreserving_piCongrLeft (fun _ => ℂ) (shIdxJ i j jl hjl)`.
+A detailed English derivation is pending.
 -/
 theorem shEqJ_mp (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) : MeasurePreserving (shEqJ i j jl hjl) volume volume :=
   volume_measurePreserving_piCongrLeft (fun _ => ℂ) (shIdxJ i j jl hjl)
 
 /- English proof (translation)
-Unfold `shEqJ`. Rewrite using `[MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem shEqJ_apply (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c' : Cf (r - i) (jl))
     (p : {p : Fin r // j.val ≤ p.val}) : shEqJ i j jl hjl c' p = c' ((shIdxJ i j jl hjl).symm p) := by
@@ -50,11 +50,11 @@ def shiftV (i : Fin (r + 1)) (c' : Fin r → ℂ) : Fin (r - i) → ℂ :=
   fun m => c' ⟨m.val + i.val, by have := m.isLt; have := i.isLt; omega⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Distinguish the cases in `h1 : j.val ≤ p.val`. Establish `h2 : i.val ≤ p.val` using `by omega`. Establish `h3 : (jl).val ≤ p.val - i.val` using `by omega`. Simplify using `only [glue, dif_pos h1, dif_pos h2, Formalism.FourierDecayAlt.P.PTie.shiftCf, dif_pos h3, shEqJ_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Distinguish the cases in `h2 : i.val ≤ p.val`. Establish `h3 : ¬ (jl).val ≤ p.val - i.val` using `by omega`. Simplify using `only [glue, dif_neg h1, dif_pos h2, Formalism.FourierDecayAlt.P.PTie.shiftCf, dif_neg h3, shiftV]`. Use `congr 1`.
+Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `show p.val = p.val - i.val + i.val`. Use linear arithmetic over natural numbers and integers. Simplify using `only [glue, dif_neg h1, dif_neg h2]`. Conclude with `hc p (by omega)`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glue_shEqJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c c' : Fin r → ℂ)
     (hc : ∀ p : Fin r, p.val < i.val → c' p = c p) (c'' : Cf (r - i) (jl)) :
@@ -77,7 +77,7 @@ theorem glue_shEqJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.
       exact hc p (by omega)
 
 /- English proof (translation)
-Unfold `wtI`. Use `congr 1`. Repeatedly rewrite using `[shEqJ_apply]`. Conclude with `Fintype.prod_equiv (shIdxJ i j jl hjl).symm _ _ fun l => rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtI_shEqJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c'' : Cf (r - i) (jl)) :
     wtI j (shEqJ i j jl hjl c'') = wtI (jl) c'' := by
@@ -96,7 +96,7 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp �
   {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `hκ0 : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.ne'`. Rewrite using `[wtI_shEqJ, glue_shEqJ i j jl hjl c c' hc]`. Repeatedly rewrite using `[hT]`. Rewrite using `[← Finset.mul_sum]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem integrand_tr (μ : Measure (Mt k r)) (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c c' : Fin r → ℂ)
     (hc : ∀ p : Fin r, p.val < i.val → c' p = c p) {zi zi' : Fin (2 * (r - i) + k + 1) → ℂ}
@@ -114,7 +114,7 @@ theorem integrand_tr (μ : Measure (Mt k r)) (i j : Fin (r + 1)) (jl : Fin (r - 
   field_simp
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[← (shEqJ_mp i j jl hjl).integral_comp', ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun c'' => ?_)` and prove the remaining obligations. Conclude with `integrand_tr μ i j jl hjl c c' hc μi T κ hκ hT u v c''`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_tr (μ : Measure (Mt k r)) (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c c' : Fin r → ℂ)
     (hc : ∀ p : Fin r, p.val < i.val → c' p = c p) {zi zi' : Fin (2 * (r - i) + k + 1) → ℂ}
@@ -131,7 +131,7 @@ theorem form_tr (μ : Measure (Mt k r)) (i j : Fin (r + 1)) (jl : Fin (r - i + 1
 end Tr
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.star_apply, Matrix.star_apply] exact Formalism.FourierDecayAlt.P.PBH.rel_star (h b a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem arel_star {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] {S : Type}
     [Fintype S] [DecidableEq S] {T : V →ₗ[ℂ] V'} {M : SlopeTestRemainingChoices S (Pr V)} {M' : SlopeTestRemainingChoices S (Pr V')}

@@ -168,13 +168,13 @@ def PointsOfGtCoordSt : Prop :=
             res (X := Spec (CommRingCat.of F)) h₃ (pullU x.left _ (d.u j k))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => by cases H; assumption, GtPt.IsNsmul.zero h⟩`.
+Supply the required witnesses or components.
 -/
 example (g h : GtPt D F) : g.IsNsmul 0 h ↔ h.IsZero :=
   ⟨fun H => by cases H; assumption, GtPt.IsNsmul.zero h⟩
 
 /- English proof (translation)
-Proceed by induction on `H with`. Consider the case `zero h hz => rw [hz.1, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ k h h' _ ha ih => rw [ha.1, ih, pow_succ]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
 -/
 example (k : ℕ) (g h : GtPt D F) (H : g.IsNsmul k h) : h.base = g.base ^ k := by
   induction H with
@@ -182,7 +182,7 @@ example (k : ℕ) (g h : GtPt D F) (H : g.IsNsmul k h) : h.base = g.base ^ k := 
   | succ k h h' _ ha ih => rw [ha.1, ih, pow_succ]; rfl
 
 /- English proof (translation)
-Introduce `E β ξ hi G _ d` and use `by obtain ⟨e, -, he, -⟩ := h E β ξ hi G d exact ⟨e, he⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : PointsOfGtCoordSt D F) : PointsOfGtSt D F := fun E β ξ hi G _ d => by
   obtain ⟨e, -, he, -⟩ := h E β ξ hi G d

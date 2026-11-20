@@ -18,7 +18,7 @@ variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 abbrev locS : Submonoid (𝓞 E) := Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl
 
 /- English proof (translation)
-The claim follows from `algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors`.
+A detailed English derivation is pending.
 -/
 theorem locS_le : locS F E v ≤ nonZeroDivisors (𝓞 E) :=
   algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors
@@ -33,7 +33,7 @@ instance : IsPrincipalIdealRing (locR F E v) :=
 
 omit [NumberField F] in
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : E) (x y : Fin n → E) :
     form σ J (a • x) y = a * form σ J x y := by
@@ -41,7 +41,7 @@ theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
 
 omit [NumberField F] in
 /- English proof (translation)
-Establish `: (fun i => σ ((a • y) i)) = σ a • (fun i => σ (y i))` using `by ext i; simp`. Simplify using `only [form, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : E) (x y : Fin n → E) :
     form σ J x (a • y) = σ a * form σ J x y := by
@@ -50,7 +50,7 @@ theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
 
 omit [NumberField F] in
 /- English proof (translation)
-Establish `: (fun i => σ ((∑ l, c l • b l) i)) = ∑ l, σ (c l) • (fun i => σ (b l i))`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, map_sum]`. Simplify using `only [form, this, Matrix.mulVec_sum, dotProduct_sum, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem form_sum_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (y : Fin n → E)
     (c : Fin n → E) (b : Fin n → Fin n → E) :
@@ -61,7 +61,7 @@ theorem form_sum_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
 
 omit [NumberField F] in
 /- English proof (translation)
-Simplify using `only [form, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_rows (σ : E →ₐ[F] E) {n : ℕ} (J P Q : Matrix (Fin n) (Fin n) E) (k l : Fin n) :
     form σ J (P k) (Q l) = (P * J * (Q.map σ)ᵀ) k l := by
@@ -71,7 +71,7 @@ theorem form_rows (σ : E →ₐ[F] E) {n : ℕ} (J P Q : Matrix (Fin n) (Fin n)
   simp [mul_assoc]
 
 /- English proof (translation)
-Take `⟨s, b, hb, hbL, hs⟩` from `GlobalTheory.PlaceInt.LocBasis.exists_basis_up_to (A := locR F E v) (locS F E v) L hL.fg hL.span_eq_top`. Take `⟨t, ht, hst⟩` from `s.2`. Conclude with `⟨t, ht, b, hb, hbL, fun w hw => by rw [hst]; exact hs w hw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_basis (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L) :
     ∃ (t : 𝓞 F), t ∉ v.asIdeal ∧ ∃ b : Fin n → Fin n → E, LinearIndependent E b ∧ (∀ i, b i ∈ L) ∧
@@ -86,19 +86,17 @@ end GlobalTheory.HermLocDualBasis
 open GlobalTheory.HermLocDualBasis in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n r s X hX v`. Take `⟨t, ht, b, hb, hbL, hspan⟩` from `exists_basis F E v n X.L hX.lat`. Set `Bm : Matrix (Fin n) (Fin n) E` to `Matrix.of b`. Establish `hBm : IsUnit Bm` using `Matrix.linearIndependent_rows_iff_isUnit.1 hb`. Set `G : Matrix (Fin n) (Fin n) E` to `Bm * X.J * (Bm.map σ)ᵀ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hG : IsUnit G.det`. Rewrite using `[isUnit_iff_ne_zero]`. Establish `h1 : (Bm.map σ).det = σ Bm.det` using `((σ : E →+* E).map_det Bm).symm`. Establish `h2 : Bm.det ≠ 0` using `(Matrix.isUnit_iff_isUnit_det Bm).1 hBm |>.ne_zero`. Simplify using `only [G, Matrix.det_mul, Matrix.det_transpose, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero (mul_ne_zero h2 (GlobalTheory.HermSelfDualLoc.det_ne_zero_of_isHerm σ B hX)) ((map_ne_zero σ).2 h2)`. Set `P : Matrix (Fin n) (Fin n) E` to `G⁻¹ * Bm`. Establish `hdual : ∀ k l, form σ X.J (P k) (b l) = if k = l then 1 else 0`. Introduce `k l`. Use `(form_rows F E σ X.J P Bm k l).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: P * X.J * (Bm.map σ)ᵀ = 1`. Establish `e : P * X.J * (Bm.map σ)ᵀ = G⁻¹ * G` using `by simp only [P, G, Matrix.mul_assoc]`. Rewrite using `[e]`. Conclude with `Matrix.nonsing_inv_mul G hG`. Rewrite using `[this, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b, fun k => P k, fun k => ⟨1, fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hbL k⟩, fun k => ⟨t, ht, ?_⟩, hdual⟩` and prove the remaining obligations. Rewrite using `[hX.dual]`. Introduce `x hx`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 (hspan x hx)`. Establish `hc' : ∑ l, (c l : E) • b l = algebraMap F E (t : F) • x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((algebraMap (𝓞 F) (𝓞 E) t : 𝓞 E) : E) = algebraMap F E (t : F)` using `rfl`. Rewrite using `[← e1]`. Conclude with `hc`. Rewrite using `[form_smul_left, ← AlgHom.commutes σ, ← form_smul_right, ← hc', form_sum_right]`. Simplify using `only [hdual, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
-
-Conclude with `(c k).2.map (σ.toRingHom.toIntAlgHom)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HermLocDualBasis.exists_locDualBasis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E)

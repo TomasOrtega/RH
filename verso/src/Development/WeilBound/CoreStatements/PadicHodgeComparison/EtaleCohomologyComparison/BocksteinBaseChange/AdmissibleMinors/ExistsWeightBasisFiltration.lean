@@ -5,21 +5,21 @@ namespace CrystallineSemistableComparison.Inj
 open Submodule
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Use `⟨∅, fun _ => 0, linearIndepOn_empty K id, by simp, ?_⟩` and prove the remaining obligations. Introduce `j hj x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hN j (by omega) x hx]`. Conclude with `zero_mem _`. Consider the case `succ i ih`. Take `⟨s, w, hli, hs, hspan⟩` from `ih`. Distinguish the cases in `hi : N - (i + 1) = N - i`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨s, w, hli, fun v hv => by rw [hi]; exact hs v hv, fun j hj => hspan j (hi ▸ hj)⟩`. Take `⟨b, hbt, hsb, htb, hlib⟩` from `exists_linearIndepOn_extension hli (Set.subset_union_left : s ⊆ s ∪ F (N - (i + 1)))`. Use `⟨b, fun v => if v ∈ s then w v else N - (i + 1), hlib, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Distinguish the cases in `h : v ∈ s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_true]`. Conclude with `⟨(hs v h).1, by have := (hs v h).2; omega⟩`. Simplify using `only [h, if_false]`. Use `⟨?_, le_rfl⟩` and prove the remaining obligations. Break down `hbt hv with h' | h'` into its components or cases.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h' h`. Conclude with `h'`. Introduce `j hj`. Break down `Nat.eq_or_lt_of_le hj with hjk | hlt` into its components or cases. Substitute `hjk` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Establish `hx' : x ∈ span K (id '' b)` using `htb ⟨x, Or.inr hx, rfl⟩`. Rewrite `hx'` using `[Set.image_id]`. Use `span_mono ?_ hx'` and prove the remaining obligations. Introduce `v hv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `⟨hv, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : v ∈ s`. Simplify using `only [h, if_true]`. Use `(hs v h).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h]`. Establish `hj' : N - i ≤ j` using `by omega`. Use `(hspan j hj').trans (span_mono ?_)` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hw⟩`. Conclude with `⟨hsb hv, by simp [hv, hw]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_weight_basis_filtration {K H : Type*} [Field K] [AddCommGroup H] [Module K H]
     (F : ℕ → Set H) (N : ℕ) (hN : ∀ j, N ≤ j → ∀ x ∈ F j, x = 0) :
@@ -70,17 +70,17 @@ theorem exists_weight_basis_filtration {K H : Type*} [Field K] [AddCommGroup H] 
         exact ⟨hsb hv, by simp [hv, hw]⟩
 
 /- English proof (translation)
-Take `⟨s, w, hli, hs, hspan⟩` from `exists_weight_basis_filtration (K := K) F N (fun j hj x hx => hN x (hF hj hx)) N`. Establish `hli' : LinearIndependent K ((↑) : s → H)` using `hli`. Establish `htop : ⊤ ≤ span K (Set.range ((↑) : s → H))`. Rewrite using `[Subtype.range_coe]`. Introduce `x _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hspan 0 (by omega) (h0 ▸ Set.mem_univ x)` as an intermediate fact. Conclude with `span_mono (fun v hv => hv.1) this`. Set `b0` to `Module.Basis.mk hli' htop`. Establish `hb0 : ∀ v, b0 v = (v : H)` using `fun v => Module.Basis.mk_apply hli' htop v`. Establish `: Finite s` using `Module.Finite.finite_basis b0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Fintype s := Fintype.ofFinite s`. Set `e` to `Fintype.equivFin s`. Use `⟨Fintype.card s, b0.reindex e, fun t => w (e.symm t), fun t => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, hb0]`. Conclude with `(hs _ (e.symm t).2).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[Module.Basis.coord_apply, Module.Basis.repr_reindex_apply]`. Establish `hx'` using `hspan (w (e.symm t) + 1) (by omega) hx`. Establish `himg : {v | v ∈ s ∧ w (e.symm t) + 1 ≤ w v} = b0 '' {u : s | w (e.symm t) + 1 ≤ w u}`. Use extensionality with `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hw⟩`. Conclude with `⟨⟨v, hv⟩, hw, hb0 _⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite using `[hb0]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `⟨u.2, hu⟩`. Rewrite `hx'` using `[himg, SetLike.mem_coe, Module.Basis.mem_span_image]`. Assume the negation of the conclusion as `hne`. Use `hx' (Finsupp.mem_support_iff.mpr hne)` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wt_basis {K H : Type*} [Field K] [AddCommGroup H] [Module K H] [FiniteDimensional K H]
     (F : ℕ → Set H) (hF : Antitone F) (h0 : F 0 = Set.univ) (N : ℕ) (hN : ∀ x ∈ F N, x = 0) :

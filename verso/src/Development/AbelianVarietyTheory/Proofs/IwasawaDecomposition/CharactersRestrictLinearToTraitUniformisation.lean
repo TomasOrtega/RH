@@ -36,11 +36,9 @@ namespace GlobalTheory.TauForm
 open GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ X`. Establish `key : ∀ i, ∃ c : ℤ, b.repr (v - u) i = k * c` using `fun i => by`. Set `τ : Multiplicative X →* Fˣ` to `(zpowersHom Fˣ ζ).comp (AddMonoidHom.toMultiplicative (b.coord i).toAddMonoidHom)`. Establish `e : ζ ^ (b.repr u i) = ζ ^ (b.repr v i)` using `h τ (MonoidHom.ext fun x => by show (ζ ^ (b.coord i x.toAdd)) ^ k = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζ.pow_eq_one, one_zpow])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hζ.zpow_eq_one_iff_dvd _).1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, Finsupp.sub_apply, zpow_sub, e, mul_inv_cancel]`. Use `choose c hc using key`. Use `⟨∑ i, c i • b i, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add', ← b.sum_repr (v - u), Finset.smul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hc, mul_smul, natCast_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_add_nsmul {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {F : Type} [Field F]
     {k : ℕ} {ζ : Fˣ} (hζ : IsPrimitiveRoot ζ k) {u v : X}
@@ -64,7 +62,7 @@ section Ord
 variable {W : Type} [CommRing W] [IsDomain W] {Γ : Type} [AddCommGroup Γ] (v : LatticeVal W Γ)
 
 /- English proof (translation)
-Use `v.map_mul 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_one : v.toFun 1 = 0 := by
   have := v.map_mul 1 1
@@ -72,7 +70,7 @@ theorem val_one : v.toFun 1 = 0 := by
   exact left_eq_add.1 this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, val_one, zero_nsmul]`. Consider the case `succ k ih => rw [pow_succ, v.map_mul, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem val_pow (x : (FractionRing W)ˣ) (k : ℕ) : v.toFun (x ^ k) = k • v.toFun x := by
   induction k with
@@ -80,19 +78,19 @@ theorem val_pow (x : (FractionRing W)ˣ) (k : ℕ) : v.toFun (x ^ k) = k • v.t
   | succ k ih => rw [pow_succ, v.map_mul, ih, succ_nsmul]
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← v.map_mul, div_mul_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_div (x y : (FractionRing W)ˣ) : v.toFun (x / y) = v.toFun x - v.toFun y := by
   rw [eq_sub_iff_add_eq, ← v.map_mul, div_mul_cancel]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible hϖ (x / y).ne_zero`. Establish `h1` using `ord_vw_uniformiser hϖ.ne_zero hϖ.maximalIdeal_eq`. Establish `e : x / y = Units.map (algebraMap W (FractionRing W)).toMonoidHom u * toUnitK ϖ hϖ.ne_zero ^ n` using `Units.ext (by rw [hu, Units.smul_def, Algebra.smul_def, Units.val_mul, Units.val_zpow_eq_zpow_val]; rfl)`. Establish `hz : (ord_vw W).toFun (toUnitK ϖ hϖ.ne_zero ^ n) = n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`. Rewrite using `[zpow_natCast, val_pow, h1]`. Simplify using the standard rewrite rules. Rewrite using `[zpow_neg, zpow_natCast, ← one_div, val_div, val_one, val_pow, h1]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0 : n = 0`. Use `congrArg (ord_vw W).toFun e` as an intermediate fact. Rewrite `this` using `[val_div, h, sub_self, (ord_vw W).map_mul, (ord_vw W).map_unit, hz, zero_add]`. Conclude with `this.symm`. Rewrite `e` using `[h0, zpow_zero, _root_.mul_one, div_eq_iff_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨u, congrArg Units.val e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_of_ord_eq [IsDiscreteValuationRing W] {x y : (FractionRing W)ˣ}
     (h : (ord_vw W).toFun x = (ord_vw W).toFun y) :
@@ -116,7 +114,7 @@ theorem exists_unit_of_ord_eq [IsDiscreteValuationRing W] {x y : (FractionRing W
 end Ord
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Take `rfl : x₁ = toBase m.cart.1.w x` from `Over.OverMorphism.ext hx`. Take `rfl : y₁ = toBase m.cart.1.w y` from `Over.OverMorphism.ext hy`. Conclude with `GlobalTheory.UU.cubWeil_of_isPullCubical _ _ f t.G t'.G m.cm m.cart.1.w (fun T a b => Over.OverMorphism.ext (m.cart.2 T a b _ _ rfl rfl).symm) _ _ _ _ m.lin k T x y z h`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cubWeil_push {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}} {t : SAB H S}
     {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f) {k : ℕ} (T : Over S') (s : T.left ⟶ S) (hs : s = T.hom ≫ f)
@@ -129,25 +127,23 @@ theorem cubWeil_push {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
     (fun T a b => Over.OverMorphism.ext (m.cart.2 T a b _ _ rfl rfl).symm) _ _ _ _ m.lin k T x y z h
 
 /- English proof (translation)
-Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk`. Establish `hk1 : 1 ≤ k` using `Nat.one_le_iff_ne_zero.2 hk0`. Establish `hkO : IsUnit (k : O)` using `by simpa using hk.map (φ.comp g)`. Establish `hB` using `P.D.tau_bimult`. Establish `hB'` using `P'.D.tau_bimult`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, i₁, p₁, s₁, a₁, w₁, c₁⟩` from `GlobalTheory.T.exists_torsionMap_uniformisation_generic E H R t P hR F k hk1`. Take `⟨f', i₂, p₂, s₂, a₂, w₂, c₂⟩` from `GlobalTheory.T.exists_torsionMap_uniformisation_generic E H W t' P' hW F k hk1`. Establish `hs : jFK (R` using `R) F ≫ jK R = (TF (R := W) F).hom ≫ spMap g := by show spMap _ ≫ spMap _ = (spMap _ ≫ spMap _) ≫ spMap g`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun r => (hF _).trans (congrArg _ (hgK r))))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩ : ∃ e : (TF (R` from `W) F ⟶ t'.G) ≃* (TF (R := R) F ⟶ t.G), ∀ u, (e u).left = u.left ≫ m.φ := GlobalTheory.LiePull.exists_pushEquiv m.cart (TF (R := W) F) _ hs`. Establish `tor : ∀ (τ' : Multiplicative P'.D.toPre.X →* Fˣ) (q' : QkPt P'.D.toPre F k), τ' ^ k = 1 → q'.y = 0 → GlobalTheory.UT.IsTor τ' q'.g → ∀ p : QkPt P.D.toPre F k, GlobalTheory.UU.CubWeil t.cub k (e (f' q')) (f p) (unitOn (τ' (Multiplicative.ofAdd (ρ p.y))))`. Introduce `τ' q' h₁ h₂ h₃ p`. Take `⟨q, h₄, h₅⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor hB (k := k) (τ'.comp (AddMonoidHom.toMultiplicative ρ)) (MonoidHom.ext fun χ => DFunLike.congr_fun h₁ _)`. Establish `: f q = e (f' q')` using `Over.OverMorphism.ext ((hT _ τ' q q' _ _ h₁ (fun _ => rfl) h₄ h₅ h₂ h₃ ((i₁ _ _).2 rfl) ((i₂ _ _).2 rfl)).trans (he _).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this ▸ w₁ q p _ h₄ h₅`. Take `⟨p, rfl⟩` from `GlobalTheory.TorusExt.exists_qkPt (F := F) GlobalTheory.firstFiveLaws.1.mulN (Or.inl hR.1) hB hk0 a`. Take `⟨pb, rfl⟩` from `GlobalTheory.TorusExt.exists_qkPt (F := F) GlobalTheory.firstFiveLaws.1.mulN (Or.inl hR.1) hB hk0 b`. Take `⟨p', hp'⟩` from `s₂ (e.symm (f p)) (by rw [← map_pow, p₁, map_one])`. Establish `hp : f p = e (f' p')` using `by rw [hp', e.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `π0 : π ≠ 0` using `fun h => by`. Rewrite `hπ` using `[h, zero_pow hk0, eq_comm, map_eq_zero, map_eq_zero_iff _ (IsFractionRing.injective W _)]`. Conclude with `hϖ.ne_zero hπ`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, p'.y = ρ p.y + k • z := by`. Use `exists_eq_add_nsmul (ζ := (hζ.isUnit hk0).unit) (IsPrimitiveRoot.coe_units_iff.1 hζ) fun τ' h₁ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨q', h₂, h₃⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor hB' (k := k) τ' h₁`. Conclude with `GlobalTheory.ZH.TorusPerp.unitOn_injective ((tor τ' q' h₁ h₂ h₃ p).unique (cubWeil_push m (TF (R := W) F) _ hs (he _) (by rw [hp, he]) (w₂ q' p' τ' h₂ h₃)))`. Set `σR : F →ₐ[FractionRing R] F` to `{ σ.toRingHom with commutes' := fun y => by rw [hF]; exact σ.commutes _ }`. Establish `eφR : ∀ r, ((φ.comp g) r : F) = algebraMap (FractionRing R) F (algebraMap R (FractionRing R) r)` using `fun r => by`. Rewrite using `[hF, hgK]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `eφ _`. Take `⟨r, hr, -⟩` from `GlobalTheory.TorusExt.existsUnique_qkExt hB σR.toRingHom (RingHom.ext σR.commutes) p`. Take `⟨r', hr', -⟩` from `GlobalTheory.TorusExt.existsUnique_qkExt hB' σ.toRingHom (RingHom.ext σ.commutes) p'`. Take `⟨τ₁, q₁, -, y₁, t₁, d₁, v₁⟩` from `GlobalTheory.T.conj_eq_add_kummer_torusTorsionPoint R _ hB F O (φ.comp g) eφR k σR p r hr (GlobalTheory.T.inertia_fixes_abelianPart_of_torsionPoint R _ hB F O (φ.comp g) eφR k hkO σR hσ p)`. Take `⟨τ₂, q₂, k₂, y₂, t₂, d₂, v₂⟩` from `GlobalTheory.T.conj_eq_add_kummer_torusTorsionPoint W _ hB' F O φ eφ k σ p' r' hr' (GlobalTheory.T.inertia_fixes_abelianPart_of_torsionPoint W _ hB' F O φ eφ k hkO σ hσ p')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : f q₁ = e (f' q₂)`. Establish `h₁ : f r = e (f' r')` using `Over.OverMorphism.ext (by`. Rewrite using `[c₁ σR p r hr, he, c₂ σ p' r' hr', hp, he, Category.assoc])`. Rewrite `h₁` using `[a₁ _ _ _ d₁, a₂ _ _ _ d₂, map_mul, ← hp]`. Conclude with `mul_left_cancel h₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hτ : τ₁ (Multiplicative.ofAdd pb.y) = τ₂ (Multiplicative.ofAdd (ρ pb.y))` using `GlobalTheory.ZH.TorusPerp.unitOn_injective ((w₁ q₁ pb τ₁ y₁ t₁).unique (hq ▸ tor τ₂ q₂ k₂ y₂ t₂ pb))`. Take `⟨x'', hx''⟩` from `GlobalTheory.PsiFromTau.exists_isTauCoord W P'.D.toPre p'.y (ρ pb.y)`. Take `⟨xz, hxz⟩` from `GlobalTheory.PsiFromTau.exists_isTauCoord W P'.D.toPre z (ρ pb.y)`. Take `⟨s, s0, sv, sσ⟩` from `v₁ _ x hx`. Take `⟨s', s0', sv', sσ'⟩` from `v₂ _ x'' hx''`.
-
-Establish `sσ : σ s = _` using `sσ`. Establish `dv` using `GlobalTheory.T.tameInertia_fixed_dvd_valuation_order W F ϖ hϖ k O φ σ π hkO hφ eφ hσ hπ hζ (s / s') (Units.map gK.toMonoidHom x / x'') (by rw [map_div₀, sσ, sσ', hτ, mul_div_mul_left _ _ (Units.ne_zero _)]) (by rw [map_div₀, div_pow, sv, sv', Units.val_div_eq_div_val, map_div₀, m …`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_unit_tauCoordinate_add_nsmul_first_variable W _ hB' _ z _ k x' xz x'' hx' hxz (hz ▸ hx'')`. Rewrite `dv` using `[val_div, hu, (ord_vw W).map_mul, (ord_vw W).map_unit, (ord_vw W).map_mul, val_pow, zero_add, nsmul_eq_mul, ← sub_sub]`. Conclude with `(dvd_sub_left (dvd_mul_right _ _)).1 dv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_ord_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R] [IsDomain R]
     [IsLocalRing R] [CharZero R] {t : SAB H (Sp R)} (P : PELUnif (maximalIdeal R) t) (hR : AdmBase R (maximalIdeal R))
@@ -236,25 +232,23 @@ theorem dvd_ord_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   exact (dvd_sub_left (dvd_mul_right _ _)).1 dv
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ t P hR _ W _ _ _ hW g hg hnl t' m P'`. Take `⟨hn, hi, hc, hz⟩` from `hR`. Take `⟨hd, hc', hz'⟩` from `hW`. Establish `hR : AdmBase R (maximalIdeal R)` using `⟨hn, inferInstance, hi, hc⟩`. Establish `hW : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hc'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sc : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (u : A →+* B) (v : B →+* C), spMap v ≫ spMap u = spMap (v.comp u)` using `fun u v => (Spec.map_comp _ _).symm`. Establish `pull : ∀ {S S' : Scheme.{0}} (f : S' ⟶ S) (u : SAB H S), ∃ u' : SAB H S', Nonempty (SABMap u' u f)` using `fun f u => by`. Take `⟨_, _, _, _, _, n, -⟩` from `sabPull proved_CubePullSt f u`. Conclude with `⟨_, ⟨n⟩⟩`. Establish `comp : ∀ {S S' S'' : Scheme.{0}} {u : SAB H S} {u' : SAB H S'} {u'' : SAB H S''} {f : S' ⟶ S} {f' : S'' ⟶ S'} {f'' : S'' ⟶ S} (n : SABMap u' u f) (n' : SABMap u'' u' f'), f' ≫ f = f'' → ∃ n'' : SABMap u'' u f'', n''.φ = n'.φ ≫ n.φ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ _ _ _ _ _ _ _ _ n n' rfl`. Conclude with `GlobalTheory.ObjMaps.exists_sab_comp n n'`. Establish `cancel : ∀ {S S' S'' : Scheme.{0}} {u : SAB H S} {u' : SAB H S'} {u'' : SAB H S''} {f : S' ⟶ S} {f' : S'' ⟶ S'} {f'' : S'' ⟶ S} (n : SABMap u' u f) (n'' : SABMap u'' u f''), f' ≫ f = f'' → ∃ n' : SABMap u'' u' f', n''.φ = n'.φ ≫ n.φ`. Introduce and unpack `_ _ _ _ _ _ _ _ _ n n' rfl`. Conclude with `GlobalTheory.ObjMaps.exists_sab_cancel n n'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, _, _, _, ψ, Ω, _, α, β, hψ, hβ, eα, hT⟩` from `GlobalTheory.T.exists_trait_nonlocal_torusExtension' R t.G t.semi W g hnl`. Take `⟨tV, ⟨mV⟩⟩` from `pull (spMap ψ) t`. Take `⟨_, _, _, _, _, mL, -⟩` from `sabPull proved_CubePullSt (spMap ((algebraMap V (FractionRing V)).comp ψ)) t`. Take `⟨mL', -⟩` from `cancel mV mL (sc ψ (algebraMap V (FractionRing V)))`. Take `⟨tΩ, ⟨n'⟩⟩` from `pull (spMap β) t'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n'', en⟩` from `comp m n' ((sc g β).trans (congrArg spMap eα.symm))`. Take `⟨n, en'⟩` from `cancel mV n'' (sc ψ (α.comp (algebraMap V (FractionRing V))))`. Take `⟨j, hj, ej⟩` from `GlobalTheory.T.extend_splitTorus_hom_over_dvr V tV.G tV.semi _ _ mL'.cart hT Ω α tΩ.G n.φ n.cart _ (GlobalTheory.TorusPart.PELUnif.torus P' hβ n') inferInstance`. Take `⟨t₀, ⟨m₀⟩⟩` from `pull (spMap (residue V)) tV`. Take `⟨m₀', e₀⟩` from `comp mV m₀ (sc ψ (residue V))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h₀ : ∀ x ∈ maximalIdeal R, (residue V).comp ψ x = 0` using `GlobalTheory.TorusPart.map_eq_zero_of_isLocalHom _`. Take `⟨ρ, hρ⟩` from `(GlobalTheory.T.uniformisationTorus_mono_and_factor E H R _ t P (ResidueField V) _ 0 (GlobalTheory.TorusPart.map_pow_one_eq_zero h₀) t₀.G _ m₀'.cart).2 _ (GlobalTheory.TorusPart.pullTorus m₀.cart j) inferInstance`. Establish `hα : Function.Injective (α.comp (algebraMap V (FractionRing V)))` using `α.injective.comp (IsFractionRing.injective V _)`. Use `⟨{ ρ with map_smul' := GlobalTheory.T.torusCharacterRestriction_commutes_ringAction E H R t P W t' P' V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ }, GlobalTheory.T.torusCharacterRestriction_trait_surjective E H R t P W t' P' V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ …` and prove the remaining obligations. Set `gK : FractionRing R →+* FractionRing W` to `IsFractionRing.lift (A := R) (K := FractionRing R) (g := (algebraMap W (FractionRing W)).comp g) ((IsFractionRing.injective W (FractionRing W)).comp hg)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgK : ∀ r, gK (algebraMap R _ r) = algebraMap W _ (g r)` using `IsFractionRing.lift_algebraMap _`. Use `exists_unit_of_ord_eq (x := Units.map gK.toMonoidHom x) ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨l, hl2, hl⟩ : ∃ l : ℕ, 2 ≤ l ∧ IsUnit (l : R) := by`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := (3 : R)) (b := -2) (by norm_num) with h | h` into its components or cases. Conclude with `⟨3, by norm_num, by simpa using h⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨2, le_rfl, by simpa using h.neg⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Set `F` to `AlgebraicClosure (FractionRing W)`. Use `letI : Algebra (FractionRing R) F := ((algebraMap (FractionRing W) F).comp gK).toAlgebra`. Establish `key : ∀ k : ℕ, IsUnit (k : R) → (k : ℤ) ∣ (ord_vw W).toFun (Units.map gK.toMonoidHom x) - (ord_vw W).toFun x'` using `fun k hk => by`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨O, φ, σ, π, h₁, h₂, h₃, h₄, h₅⟩` from `GlobalTheory.T.exists_inertia_moves_tame_root W F ϖ hϖ k (by simpa using hk.map g)`. Conclude with `dvd_ord_sub P hR P' hW m ρ gK hgK (fun _ => rfl) hk hϖ O φ σ π h₁ h₂ h₃ h₄ h₅ (GlobalTheory.T.toricTorsion_uniformisation_eq_restrictCharacters E H R t P W t' P' hR hW g m V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ eα (en'.symm.trans en) F O φ h₁ h₂ (fun r => congrAr …`. Rewrite using `[← sub_eq_zero]`. Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (key (l ^ Int.natAbs ((ord_vw W).toFun (Units.map gK.toMonoidHom x) - (ord_vw W).toFun x')) (by simpa using hl.pow _)) ?_` and prove the remaining obligations. Rewrite using `[Int.natAbs_natCast]`.
-
-Conclude with `Nat.lt_pow_self (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R]
     [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t), GlobalTheory.TorRef.IsCN R → P.TorsionIso →

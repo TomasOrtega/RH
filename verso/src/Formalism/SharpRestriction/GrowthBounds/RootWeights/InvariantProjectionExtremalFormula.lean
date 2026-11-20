@@ -12,15 +12,13 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Establish `hs` using `gl_rep_shifts_weights hE`. Establish `htop` using `sum_isotypic_top_of_weight_data D h2 E hE hs (findim_weights_bounded E) (weight_projections_integral_findim E)`. Establish `hinv` using `trivial_isotypic_invariant_holds hE`. Establish `hkill` using `nontrivial_isotypic_weight_zero_killed hE hs`. Take `⟨_, h5b, h5c⟩` from `h5 K V n E hE 0 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `a b hab`. Establish `: (a : ℕ) < (b : ℕ)` using `hab`. Simplify using `only [Pi.zero_apply]`. Use the proof step `omega) ord hord T hT`. Establish `hle : ∀ mu, isoSub E mu ≤ LinearMap.eqLocus Inv (pp E 0 ord T * π)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `mu x hx`. Rewrite using `[LinearMap.mem_eqLocus, Module.End.mul_apply]`. Distinguish the cases in `hmu : mu = 0`. Substitute `hmu` using the available equality. Take `⟨hx0, hxr⟩` from `hinv x hx`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hInv.1 x hx, hπ.1 x hx0, h5c x hx0 hxr]`. Rewrite using `[hInv.2 mu hmu x hx, hkill _ π hπ h5b mu hmu x hx]`. Establish `: (⊤ : Submodule K V) ≤ LinearMap.eqLocus Inv (pp E 0 ord T * π)`. Rewrite using `[← htop]`. Conclude with `iSup_le hle`.
-
-Conclude with `LinearMap.ext fun x => this (Submodule.mem_top (x := x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_projection_extremal_formula (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h5 : adm5 D) {K V : Type} [Field K] [CharZero K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] {n : ℕ} (E : GLOps n K V) (hE : IsGLRep E)
@@ -50,11 +48,11 @@ theorem invariant_projection_extremal_formula (D : Formalism.BasicNotions.D7) (h
   exact LinearMap.ext fun x => this (Submodule.mem_top (x := x))
 
 /- English proof (translation)
-Establish `hcz` using `dvr_fraction_field_charZero_prime S hG.prime`. Take `⟨Θ, hΘ1, hΘ2⟩` from `weight_projections_integral_findim E`. Take `⟨ord, hord⟩` from `exists_normalOrder n`. Establish `hπ : IsWtProj E 0 (Θ 0)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y hy`. Rewrite using `[hΘ2 0 0 y hy, if_pos rfl]`. Introduce `nu hnu y hy`. Rewrite using `[hΘ2 0 nu y hy, if_neg hnu]`. Rewrite using `[invariant_projection_extremal_formula D h2 h5 E hE Inv hInv (Θ 0) hπ ord hord _ le_rfl, Module.End.mul_apply, ← normal_order_length_eq hord]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(extremal_projector_lattice_scaled_mem S hG.prime (gl_rep_shifts_weights hE) hM.1 L hL ord hord.2.1 _ _ (binomial_subring_preserves_lattice hM.1 _ (hΘ1 0) x hx) (weight_projection_mem_weightSpace E hE Θ hΘ2 0 x)).1`.
+A detailed English derivation is pending.
 -/
 theorem invariant_projection_denominator (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h5 : adm5 D) (p n' : ℕ) (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (S : UniformizedDVR p O) (hG : AdmissibleDVR p n' O) (n : ℕ) (V : Type) [AddCommGroup V]
@@ -77,19 +75,19 @@ theorem invariant_projection_denominator (D : Formalism.BasicNotions.D7) (h2 : a
     (binomial_subring_preserves_lattice hM.1 _ (hΘ1 0) x hx) (weight_projection_mem_weightSpace E hE Θ hΘ2 0 x)).1
 
 /- English proof (translation)
-Simplify using `[rootW, Pi.single_apply, hab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem root_multiple_apply_first {n : ℕ} (a b : Fin n) (hab : a ≠ b) (k : ℕ) : ((k : ℤ) • rootW a b) a = k := by
   simp [rootW, Pi.single_apply, hab]
 
 /- English proof (translation)
-Establish `hfin : (wtsOf E (⊤ : Submodule K V)).Finite`. Establish `hA : ∀ a : Fin n, {m : ℤ | (E a a).HasEigenvalue (m : K)}.Finite` using `fun a => (Module.End.finite_hasEigenvalue (E a a)).preimage Int.cast_injective.injOn`. Use `(Set.Finite.pi (t := fun a => {m : ℤ | (E a a).HasEigenvalue (m : K)}) hA).subset ?_` and prove the remaining obligations. Introduce `mu hmu`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a`. Establish `hmu' : weightSp E mu ⊓ ⊤ ≠ ⊥` using `hmu`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hmu'`. Establish `hxw` using `(Submodule.mem_inf.1 hx).1`. Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker] at hxw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `hxw a`. Rewrite `h3` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 h3, hx0⟩`. Establish `hfin2 : ((fun p : (Fin n → ℤ) × Fin n => (p.1 p.2).toNat) '' (wtsOf E (⊤ : Submodule K V) ×ˢ (Set.univ : Set (Fin n)))).Finite` using `(hfin.prod Set.finite_univ).image _`. Use `hfin2.bddAbove.mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `k ⟨a, b, hab, h⟩`. Use `⟨((k : ℤ) • rootW a b, a), ⟨h, Set.mem_univ _⟩, ?_⟩` and prove the remaining obligations. Use `show (((k : ℤ) • rootW a b) a).toNat = k`. Rewrite using `[root_multiple_apply_first a b hab k]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bddAbove_root_multiples_in_weights {n : ℕ} {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (E : GLOps n K V) :
@@ -120,9 +118,9 @@ private theorem bddAbove_root_multiples_in_weights {n : ℕ} {K V : Type} [Field
   simp
 
 /- English proof (translation)
-Unfold `InvariantDenominatorEllPBound`. Introduce `p n' O _ _ _ S hG n V _ _ _ _ _ E hE M hM hMQ Inv hInv x hx`. Use `haveI := dvr_fraction_field_charZero_prime S hG.prime`. Use `invariant_projection_denominator D h2 h5 p n' O S hG n V E hE M hM Inv hInv _ ?_ x hx` and prove the remaining obligations. Introduce `k a b hab h0 hk`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMQ]`. Unfold `ellP`. Use `le_csSup (bddAbove_root_multiples_in_weights E) ⟨a, b, hab, ?_⟩` and prove the remaining obligations. Use `show weightSp E _ ⊓ ⊤ ≠ ⊥`. Rewrite using `[inf_top_eq]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem invariant_denominator_sharp_of (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h5 : adm5 D) : InvariantDenominatorEllPBound := by
   unfold InvariantDenominatorEllPBound
@@ -137,15 +135,13 @@ theorem invariant_denominator_sharp_of (D : Formalism.BasicNotions.D7) (h2 : adm
   rwa [inf_top_eq]
 
 /- English proof (translation)
-Establish `hfin : (wtsOf E (⊤ : Submodule K V)).Finite`. Establish `hA : ∀ a : Fin n, {m : ℤ | (E a a).HasEigenvalue (m : K)}.Finite` using `fun a => (Module.End.finite_hasEigenvalue (E a a)).preimage Int.cast_injective.injOn`. Use `(Set.Finite.pi (t := fun a => {m : ℤ | (E a a).HasEigenvalue (m : K)}) hA).subset ?_` and prove the remaining obligations. Introduce `mu hmu`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a`. Establish `hmu' : weightSp E mu ⊓ ⊤ ≠ ⊥` using `hmu`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hmu'`. Establish `hxw` using `(Submodule.mem_inf.1 hx).1`. Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker] at hxw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `hxw a`. Rewrite `h3` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 h3, hx0⟩`. Establish `hfin2 : ((fun p : (Fin n → ℤ) × (Fin n → ℤ) × Fin n => (p.1 p.2.2 - p.2.1 p.2.2).toNat) '' (wtsOf E (⊤ : Submodule K V) ×ˢ (wtsOf E (⊤ : Submodule K V) ×ˢ (Set.univ : Set (Fin n))))).Finite` using `(hfin.prod (hfin.prod Set.finite_univ)).image _`. Use `hfin2.bddAbove.mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `k ⟨mu, hmu, nu, hnu, a, b, hab, h⟩`. Use `⟨(mu, nu, a), ⟨hmu, hnu, Set.mem_univ _⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun h a`. Simplify using `[rootW, Pi.single_apply, hab] at h1`. Use `show (mu a - nu a).toNat = k`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem bddAbove_root_multiples_in_weight_differences {n : ℕ} {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (E : GLOps n K V) :
@@ -178,11 +174,11 @@ private theorem bddAbove_root_multiples_in_weight_differences {n : ℕ} {K V : T
   omega
 
 /- English proof (translation)
-Unfold `InvariantProjectionField`. Introduce `p n' O _ _ _ S hG n V _ _ _ _ _ E hE M hM hMQ Inv hInv`. Use `haveI := dvr_fraction_field_charZero_prime S hG.prime`. Use `⟨fun π hπ ord hord T hT => invariant_projection_extremal_formula D h2 h5 E hE Inv hInv π hπ ord hord T hT, fun x hx => ?_⟩` and prove the remaining obligations. Use `invariant_projection_denominator D h2 h5 p n' O S hG n V E hE M hM Inv hInv _ ?_ x hx` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k a b hab h0 hk`. Rewrite using `[hMQ]`. Unfold `ellOf`. Use `le_csSup (bddAbove_root_multiples_in_weight_differences E) ⟨(k : ℤ) • rootW a b, ?_, 0, ?_, a, b, hab, sub_zero _⟩` and prove the remaining obligations. Use `show weightSp E _ ⊓ ⊤ ≠ ⊥`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[inf_top_eq]` and apply the resulting hypothesis. Use `show weightSp E 0 ⊓ ⊤ ≠ ⊥`. Rewrite using `[inf_top_eq]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem invariant_projection_lemma_of (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h5 : adm5 D) : InvariantProjectionField D := by
   unfold InvariantProjectionField

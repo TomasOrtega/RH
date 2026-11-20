@@ -5,29 +5,23 @@ open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField G
 namespace GlobalTheory.AlgWtHW
 
 /- English proof (translation)
-Introduce `n ι _ _ Φ hΦ S v B F hF hS`. Use `choose Q hQ using hΦ.poly`. Set `M : ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun s => B.val + s • (1 : Matrix (Fin n) (Fin n) ℂ)`. Set `x : ℂ → ((Fin n × Fin n) ⊕ (Fin n × Fin n)) → ℂ` to `fun s => Sum.elim (fun p => M s p.1 p.2) (fun p => (M s)⁻¹ p.1 p.2)`. Set `g : ℂ → ι → ℂ` to `fun s i => ∑ j, MvPolynomial.eval (x s) (Q i j) * v j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hMc : Continuous M` using `by fun_prop`. Establish `hdetB : IsUnit (B.val).det` using `(Matrix.isUnit_iff_isUnit_det _).1 B.isUnit`. Establish `hM0 : M 0 = B.val` using `by simp [M]`. Establish `hinvc : ContinuousAt (fun s => (M s)⁻¹) 0`. Establish `h1 : ContinuousAt Inv.inv (M 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Rewrite using `[hM0]`. Conclude with `NormedRing.inverse_continuousAt hdetB.unit`. Conclude with `h1.comp hMc.continuousAt`. Establish `hxc : ContinuousAt x 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[continuousAt_pi]`. Introduce and unpack `(p | p)`. Conclude with `((continuous_apply p.2).comp ((continuous_apply p.1).comp hMc)).continuousAt`. Conclude with `((continuous_apply p.2).comp (continuous_apply p.1)).continuousAt.comp hinvc`. Establish `hgc : ContinuousAt g 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[continuousAt_pi]`. Introduce `i`. Apply `tendsto_finset_sum` to reduce the goal to its premises. Introduce `j _`. Conclude with `(((MvPolynomial.continuous_eval (Q i j)).continuousAt).comp hxc).mul continuousAt_const`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hgC : ∀ s, ∀ C : GL (Fin n) ℂ, C.val = M s → g s = Φ C *ᵥ v`. Introduce `s C hC`. Use function extensionality and compare the values at `i`. Simplify using `only [g, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hQ i j C]`. Establish `hx : x s = Sum.elim (fun p => C.val p.1 p.2) (fun p => (C⁻¹).val p.1 p.2)`. Use function extensionality and compare the values at `q`. Break down `q with p | p` into its components or cases. Simplify using `[x, hC]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[x, Matrix.coe_units_inv, hC]`. Rewrite using `[hx]`. Establish `hg0 : g 0 = Φ B *ᵥ v` using `hgC 0 B hM0.symm`. Establish `hdetev : ∀ᶠ s in nhds (0:ℂ), IsUnit (M s).det`. Establish `hc : ContinuousAt (fun s => (M s).det) 0` using `hMc.matrix_det.continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: IsOpen {z : ℂ | z ≠ 0}` using `isOpen_ne`. Establish `hne : (M 0).det ≠ 0` using `by rw [hM0]; exact hdetB.ne_zero`. Use `filter_upwards [hc.eventually (this.mem_nhds hne)] with s hs`. Conclude with `isUnit_iff_ne_zero.2 hs`. Establish `hFev : ∀ᶠ s in nhdsWithin (0:ℂ) {0}ᶜ, s ∉ F`.
-
-Establish `hcl : IsClosed (F \ {0})` using `(hF.diff).isClosed`. Establish `hmem : (F \ {0})ᶜ ∈ nhds (0:ℂ)` using `hcl.isOpen_compl.mem_nhds (by simp)`. Use `filter_upwards [nhdsWithin_le_nhds hmem, self_mem_nhdsWithin] with s hs1 hs2`. Introduce `hsF`. Conclude with `hs1 ⟨hsF, hs2⟩`.
-
-Establish `hev : ∀ᶠ s in nhdsWithin (0:ℂ) {0}ᶜ, g s ∈ S` using `by filter_upwards [hFev, nhdsWithin_le_nhds hdetev] with s hs hdet`. Rewrite using `[hgC s (Matrix.nonsingInvUnit (M s) hdet) rfl]`. Conclude with `hS s hs _ rfl`. Establish `ht : Filter.Tendsto g (nhdsWithin (0:ℂ) {0}ᶜ) (nhds (Φ B *ᵥ v))`. Rewrite using `[← hg0]`.
-
-Conclude with `hgc.tendsto.mono_left nhdsWithin_le_nhds`. Conclude with `(Submodule.closed_of_finiteDimensional S).mem_of_tendsto ht hev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_cofinite_shift : ∀ {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
     (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ), IsPolyRep Φ → ∀ (S : Submodule ℂ (ι → ℂ)) (v : ι → ℂ)

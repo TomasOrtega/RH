@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Topology
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `h1 : IsOpen {z : v.adicCompletion F | Valued.v z < 1}`. Use `Valued.isOpen_ball (v.adicCompletion F) 1` as an intermediate fact. Simplify `this` using `only [Valuation.restrict_lt_one_iff]`. Conclude with `h1.preimage (continuous_id.sub continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOpen_lt_one (x : v.adicCompletion F) :
     IsOpen {y : v.adicCompletion F | Valued.v (y - x) < 1} := by
@@ -18,7 +18,7 @@ theorem isOpen_lt_one (x : v.adicCompletion F) :
   exact h1.preimage (continuous_id.sub continuous_const)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact valuedAdicCompletion_eq_valuation' v k`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem valued_algebraMap (k : F) :
     Valued.v (algebraMap F (v.adicCompletion F) k) = v.valuation F k := by
@@ -27,35 +27,31 @@ theorem valued_algebraMap (k : F) :
   | rfl
 
 /- English proof (translation)
-Conclude with `denseRange_algebraMap F v`.
+A detailed English derivation is pending.
 -/
 theorem denseRange : DenseRange (algebraMap F (v.adicCompletion F)) := by
   exact denseRange_algebraMap F v
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : F, algebraMap F (v.adicCompletion F) k ∈ {y : v.adicCompletion F | Valued.v (y - x) < 1}` from `(denseRange v).exists_mem_open (isOpen_lt_one v x) ⟨x, by simp⟩`. Simplify using `only [Set.mem_setOf_eq] at hk`. Establish `hk1 : v.valuation F k ≤ 1`. Rewrite using `[← valued_algebraMap]`. Establish `e : algebraMap F (v.adicCompletion F) k = (algebraMap F (v.adicCompletion F) k - x) + x` using `by ring`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ hk.le hx`. Choose the witnesses or unpack the hypotheses as in `⟨r, s, hs, hrs⟩ : ∃ r s : 𝓞 F, s ∉ v.asIdeal ∧ algebraMap (𝓞 F) F s * k = algebraMap (𝓞 F) F r := by`. Establish `hmem : k ∈ valuationSubringAtPrime F v`. Rewrite using `[valuationSubringAtPrime_eq_valuationSubring]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Valuation.mem_valuationSubring_iff _ _).mpr hk1`. Take `⟨⟨r, s⟩, h⟩` from `IsLocalization.surj v.asIdeal.primeCompl (⟨k, hmem⟩ : valuationSubringAtPrime F v)`. Use `⟨r, s, s.2, ?_⟩` and prove the remaining obligations. Establish `e : ∀ y : 𝓞 F, ((algebraMap (𝓞 F) (valuationSubringAtPrime F v) y : valuationSubringAtPrime F v) : F) = algebraMap (𝓞 F) F y`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `rfl`. Consider the case `simp`. Consider the case `exact (IsScalarTower.algebraMap_apply (𝓞 F) (valuationSubringAtPrime F v) F y).symm`. Establish `h'` using `congrArg Subtype.val h`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'' : k * ((algebraMap (𝓞 F) (valuationSubringAtPrime F v) s : valuationSubringAtPrime F v) : F) = ((algebraMap (𝓞 F) (valuationSubringAtPrime F v) r : valuationSubringAtPrime F v) : F)`. Simplify using `using h'`. Rewrite `h''` using `[e, e]`. Rewrite using `[mul_comm]`. Conclude with `h''`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩ : ∃ t : 𝓞 F, s * t - 1 ∈ v.asIdeal` from `by haveI := v.isMaximal`. Establish `hs0 : (Ideal.Quotient.mk v.asIdeal s) ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv hs0`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hb, map_one, sub_self]`. Use `⟨r * t, ?_⟩` and prove the remaining obligations. Establish `hkrt : v.valuation F (k - algebraMap (𝓞 F) F (r * t)) < 1`. Establish `e : k - algebraMap (𝓞 F) F (r * t) = k * (1 - algebraMap (𝓞 F) F (s * t))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, ← hrs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul]`. Establish `h1 : v.valuation F (1 - algebraMap (𝓞 F) F (s * t)) < 1`. Establish `e1 : (1 : F) - algebraMap (𝓞 F) F (s * t) = algebraMap (𝓞 F) F (-(s * t - 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_neg, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, valuation_lt_one_iff_mem]`. Conclude with `v.asIdeal.neg_mem_iff.mpr ht`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `exact mul_le_mul_of_nonneg_right hk1 zero_le'`. Consider the case `gcongr`. Use `_ < 1 := by rw [one_mul]; exact h1`. Establish `e2 : x - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F (r * t)) = (x - algebraMap F (v.adicCompletion F) k) + algebraMap F (v.adicCompletion F) (k - algebraMap (𝓞 F) F (r * t))`. Rewrite using `[map_sub]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Apply `Valuation.map_add_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hk`.
-
-Rewrite using `[valued_algebraMap]`. Conclude with `hkrt`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_close (x : v.adicCompletion F) (hx : Valued.v x ≤ 1) :
     ∃ a : 𝓞 F, Valued.v (x - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a)) < 1 := by
@@ -124,7 +120,7 @@ theorem exists_close (x : v.adicCompletion F) (hx : Valued.v x ≤ 1) :
   · rw [valued_algebraMap]; exact hkrt
 
 /- English proof (translation)
-Use `show ¬IsUnit x ↔ _`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one`.
+A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_iff (x : Valued.integer (v.adicCompletion F)) :
     x ∈ IsLocalRing.maximalIdeal (Valued.integer (v.adicCompletion F)) ↔
@@ -144,9 +140,9 @@ noncomputable def resHom :
   (IsLocalRing.residue _).comp (toInt v)
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨a, ha⟩` from `exists_close v x x.2`. Use `⟨a, ?_⟩` and prove the remaining obligations. Unfold `resHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[RingHom.comp_apply, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, mem_maximalIdeal_iff]`. Establish `e : ((toInt v a - x : Valued.integer (v.adicCompletion F)) : v.adicCompletion F) = algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a) - x` using `rfl`. Rewrite using `[e, Valuation.map_sub_swap]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resHom_surjective : Function.Surjective (resHom v) := by
   intro y
@@ -161,7 +157,7 @@ theorem resHom_surjective : Function.Surjective (resHom v) := by
   exact ha
 
 /- English proof (translation)
-Unfold `resHom`. Rewrite using `[RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, mem_maximalIdeal_iff]`. Use `show Valued.v (algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a)) < 1`. Rewrite using `[valued_algebraMap]`. Conclude with `(valuation_lt_one_iff_mem v a).mpr ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resHom_eq_zero (a : 𝓞 F) (ha : a ∈ v.asIdeal) : resHom v a = 0 := by
   unfold resHom
@@ -171,9 +167,9 @@ theorem resHom_eq_zero (a : 𝓞 F) (ha : a ∈ v.asIdeal) : resHom v a = 0 := b
   exact (valuation_lt_one_iff_mem v a).mpr ha
 
 /- English proof (translation)
-Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot`. Set `g` to `Ideal.Quotient.lift v.asIdeal (resHom v) (fun a ha => resHom_eq_zero v a ha)`. Establish `hg : Function.Surjective g`. Introduce `y`. Take `⟨a, rfl⟩` from `resHom_surjective v y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Ideal.Quotient.mk _ a, rfl⟩`. Conclude with `Finite.of_surjective g hg`.
+A detailed English derivation is pending.
 -/
 theorem finite_residueField : Finite (Valued.ResidueField (v.adicCompletion F)) := by
   haveI : Finite (𝓞 F ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot
@@ -185,7 +181,7 @@ theorem finite_residueField : Finite (Valued.ResidueField (v.adicCompletion F)) 
   exact Finite.of_surjective g hg
 
 /- English proof (translation)
-Rewrite using `[Valued.integer.compactSpace_iff_completeSpace_and_isDiscreteValuationRing_and_finite_residueField]`. Use `⟨?_, ?_, finite_residueField v⟩` and prove the remaining obligations. Conclude with `((Valued.v.integer.toAddSubgroup).isClosed_of_isOpen (Valued.isOpen_integer _)).completeSpace_coe`. Conclude with `(inferInstance : IsDiscreteValuationRing (v.adicCompletionIntegers F))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem compactSpace_integer : CompactSpace (Valued.integer (v.adicCompletion F)) := by
   rw [Valued.integer.compactSpace_iff_completeSpace_and_isDiscreteValuationRing_and_finite_residueField]
@@ -194,7 +190,7 @@ theorem compactSpace_integer : CompactSpace (Valued.integer (v.adicCompletion F)
   · exact (inferInstance : IsDiscreteValuationRing (v.adicCompletionIntegers F))
 
 /- English proof (translation)
-Use `haveI := compactSpace_integer v`. Conclude with `isCompact_iff_compactSpace.mpr this`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_adicCompletionIntegers :
     IsCompact ((v.adicCompletionIntegers F : Set (v.adicCompletion F))) := by
@@ -208,9 +204,9 @@ instance compactSpace_sub : CompactSpace (v.adicCompletionIntegers F) :=
   isCompact_iff_compactSpace.mp (isCompact_adicCompletionIntegers v)
 
 /- English proof (translation)
-Introduce `F _ _`. Establish `hO : ∀ w : HeightOneSpectrum (𝓞 F), IsOpen ((w.adicCompletionIntegers F : Set (w.adicCompletion F)))` using `fun w => Valued.isOpen_valuationSubring _`. Use `⟨RestrictedProduct.isOpen_forall_mem hO, ?_⟩` and prove the remaining obligations. Establish `h` using `isCompact_range (RestrictedProduct.isOpenEmbedding_structureMap hO).continuous`. Rewrite `h` using `[RestrictedProduct.range_structureMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem main : Formalism.L2.Props.IntAdelesCompactOpen := by
   intro F _ _

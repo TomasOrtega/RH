@@ -36,7 +36,7 @@ def levCh (L : Formalism.IndefR.Links.LevCh D T) (f : T' → T) : Formalism.Inde
   βW := L.βW
 
 /- English proof (translation)
-The claim follows from `h.mu0 eta := h.eta xi t := h.xi (f t) xi_inj := h.xi_inj.comp hf xi_base := h.xi_base xi_fin t := h.xi_fin (f t) xi_triv t := h.xi_triv (f t) xi_tame t := h.xi_tame (f t) Pg := h.Pg Q_pl t := h.Q_pl (f t) Q_off t := h.Q_off (f t) Q_de p hp := (h.Q_de p hp).imp fun _ h' t => h' (f …`.
+A detailed English derivation is pending.
 -/
 theorem levCh_is {L : Formalism.IndefR.Links.LevCh D T} {f : T' → T} (hf : Function.Injective f) {μ : T'} (h : L.Is (f μ)) :
     (levCh L f).Is μ where
@@ -143,7 +143,7 @@ variable {f μ} {R : RealDat D (A.comap id (f μ)) Ks} (mu : HeightOneSpectrum (
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t => h.red_R (f t), fun i t => h.red_L i (f t), h.levels, h.record, h.chiW⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGrp (h : R.IsGrp (bare2 _ P0 ψ0 P1 ψ1)) : (dat2 f μ R mu tw).IsGrp (bare2 _ P0 ψ0 P1 ψ1) :=
   ⟨fun t => h.red_R (f t), fun i t => h.red_L i (f t), h.levels, h.record, h.chiW⟩
@@ -151,7 +151,7 @@ theorem isGrp (h : R.IsGrp (bare2 _ P0 ψ0 P1 ψ1)) : (dat2 f μ R mu tw).IsGrp 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨g, c, l, ht⟩` from `h.tie`. Conclude with `⟨⟨g, c, l, ht.ranks, ht.v0, ht.tauL_ok, ht.pl_inj, ht.q, ht.S_fin, fun t => ht.ok (f t), ht.gramR_eq, ht.mapR, ht.mapL, fun t => ht.coefR (f t), fun i t => ht.coefL i (f t)⟩, h.Sb, fun t => h.roots (f t), h.pl_onto, fun t => h.degR (f t), fun i t => h.degL i (f t), fun i t => h.m …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFam (h : R.IsFam) : (dat2 f μ R mu tw).IsFam := by
   obtain ⟨g, c, l, ht⟩ := h.tie
@@ -162,7 +162,7 @@ theorem isFam (h : R.IsFam) : (dat2 f μ R mu tw).IsFam := by
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.inf, h.vpos, h.cX, h.cV, h.prX, fun t => h.HX (f t), fun i t => h.HV i (f t), h.HE, h.HW, h.gE, h.gW, fun t => h.jX (f t), fun i t => h.jV i (f t), fun t => h.νY (f t), fun t => h.νY' (f t), h.ν0, fun t => h.νX (f t), fun i t => h.νV i (f t), h.νW, h.BV, h.order⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModels (h : R.IsModels) : (dat2 f μ R mu tw).IsModels :=
   ⟨h.inf, h.vpos, h.cX, h.cV, h.prX, fun t => h.HX (f t), fun i t => h.HV i (f t), h.HE, h.HW, h.gE, h.gW, fun t => h.jX (f t),
@@ -172,14 +172,14 @@ theorem isModels (h : R.IsModels) : (dat2 f μ R mu tw).IsModels :=
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k hk => (e.ItY k hk).imp fun _ h t => h (f t), e.ItX.imp fun _ h t => h (f t), fun t => e.ioY (f t), fun t => e.ioX (f t), fun t => e.Th (f t), fun i => (e.ioP i).imp fun _ h t => h (f t), fun i t => e.thF i (f t), fun i t => e.thG i (f t)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exAt (e : R.ExAt) : (dat2 f μ R mu tw).ExAt :=
   ⟨fun k hk => (e.ItY k hk).imp fun _ h t => h (f t), e.ItX.imp fun _ h t => h (f t), fun t => e.ioY (f t), fun t => e.ioX (f t),
     fun t => e.Th (f t), fun i => (e.ioP i).imp fun _ h t => h (f t), fun i t => e.thF i (f t), fun i t => e.thG i (f t)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => h, fun hn => absurd ⟨x, h⟩ hn⟩`.
+Supply the required witnesses or components.
 -/
 theorem orZero_of {X : Type} [Zero X] {p : X → Prop} {x : X} (h : p x) : OrZero p x :=
   ⟨fun _ => h, fun hn => absurd ⟨x, h⟩ hn⟩
@@ -187,7 +187,7 @@ theorem orZero_of {X : Type} [Zero X] {p : X → Prop} {x : X} (h : p x) : OrZer
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t => h.ωY (f t), fun t => h.ωX (f t), fun t => h.vY (f t), fun t => h.vX (f t), fun t => h.ptY (f t), fun t => h.ptX (f t), fun k hk => orZero_of fun t => (h.ItY k hk).1 (e.ItY k hk) (f t), orZero_of fun t => h.ItX.1 e.ItX (f t), fun t => h.ioY (f t), fun t => h.ioX (f t), f …`.
+Supply the required witnesses or components.
 -/
 theorem isChainW (h : R.IsChainW) (e : R.ExAt) : (dat2 f μ R mu tw).IsChainW :=
   ⟨fun t => h.ωY (f t), fun t => h.ωX (f t), fun t => h.vY (f t), fun t => h.vX (f t), fun t => h.ptY (f t), fun t => h.ptX (f t),
@@ -197,14 +197,14 @@ theorem isChainW (h : R.IsChainW) (e : R.ExAt) : (dat2 f μ R mu tw).IsChainW :=
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i t => h.ωP i (f t), fun i t => h.vP i (f t), fun i t => h.pt_theta i (f t), fun i => orZero_of fun t => (h.ioP i).1 (e.ioP i) (f t), fun i t => h.thF i (f t), fun i t => h.thG i (f t)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isThPW (h : R.IsThPW) (e : R.ExAt) : (dat2 f μ R mu tw).IsThPW :=
   ⟨fun i t => h.ωP i (f t), fun i t => h.vP i (f t), fun i t => h.pt_theta i (f t),
     fun i => orZero_of fun t => (h.ioP i).1 (e.ioP i) (f t), fun i t => h.thF i (f t), fun i t => h.thG i (f t)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨levCh_is hf h.lev, isGrp mu tw h.grp, isFam mu tw h.fam, isModels mu tw h.models, isChainW mu tw h.chain e, isThPW mu tw h.thP e⟩`.
+Supply the required witnesses or components.
 -/
 theorem baseW (hf : Function.Injective f) (h : R.BaseW (bare2 _ P0 ψ0 P1 ψ1)) (e : R.ExAt) :
     (dat2 f μ R mu tw).BaseW (bare2 _ P0 ψ0 P1 ψ1) :=

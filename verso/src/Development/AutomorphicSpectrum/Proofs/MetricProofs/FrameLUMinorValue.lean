@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WMan.LowRead
 
 /- English proof (translation)
-Establish `ha` using `a'.2`. Establish `hb` using `b'.2`. Establish `hba' : (b' : ℕ) < a'` using `hba`. Simplify using `only [IsProperStep, stepOf]`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> omega`. Apply the tactic sequence `constructor <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isProperStep_stepOf {N j : ℕ} (hj : j ≤ N) {a' b' : Fin N} (hba : b' < a')
     (hs : (a' : ℕ) < N - j ↔ (b' : ℕ) < N - j) : IsProperStep N j (stepOf N j b') := by
@@ -28,13 +28,13 @@ theorem isProperStep_stepOf {N j : ℕ} (hj : j ≤ N) {a' b' : Fin N} (hba : b'
   · constructor <;> omega
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M F zb hh τ' a' b' z A L U hF hzb hG hA hLU hLb hLu hUb hUt hUd hba hs hz`. Establish `hj` using `M.j_le`. Establish `hP : IsProperStep N j (stepOf N j b')` using `isProperStep_stepOf hj hba hs`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, M.blk (τ', stepOf N j b') = some k := by`. Consider the cases of `h : M.blk (τ', stepOf N j b') with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => exact absurd hP ((M.blk_none _).1 h)`. Consider the case `some k => exact ⟨k, rfl⟩`. Take `⟨α, hα, hzα⟩` from `hz k hk`. Establish `hT : ∀ J, twMinor M F zb (stepOf N j b') k (hh τ')⁻¹ z J = α * (minorIJ L J (stepCols N j (stepOf N j b')) * minorIJ U (stepCols N j (stepOf N j b')) (stepCols N j (stepOf N j b')))`. Introduce `J`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.T.frame_minor_value_formula K ι Φ y Ψ N j M F zb (τ', stepOf N j b') k A (hh τ')⁻¹ z α J hF hzb hG hk hA hzα, hLU, MinorCalc.minorIJ_mul_of_support L U J (stepCols N j (stepOf N j b')) (MinorCalc.support_stepCols (i := stepOf N j b') hj U hUb hUt)]`. Take `⟨h1, h2⟩` from `GlobalTheory.T.lower_unipotent_minor_formula N j L a' b' hj hLb hLu hba hs`. Establish `hUne : minorIJ U (stepCols N j (stepOf N j b')) (stepCols N j (stepOf N j b')) ≠ 0`. Rewrite using `[MinorCalc.minorIJ_self_of_triangular U hUt]`. Conclude with `Finset.prod_ne_zero_iff.2 hUd`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `lowRead`. Simplify using `only [hk, Option.elim_some]`. Rewrite using `[hT, hT, h1, h2, one_mul, mul_div_mul_left _ _ hα, mul_div_assoc, div_self hUne, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (zb : (Σ k, baseIdx ι M.blk k) → ℂ) (hh : Ψ → Matrix (Fin N) (Fin N) ℂ) (τ' : Ψ) (a' b' : Fin N) (z : (Σ k, ι k) → ℂ) (A L U : Matrix (Fin N) (Fin N) ℂ), M.IsFrame F → zb ∈ mcPts (mCoordIdeal M.x) → M.GoodAt F (mCoordIdeal zb) → IsBlockDiag j A → (hh τ')⁻¹ * A = L * U → IsBlockDiag j L → IsLowerUni L → IsBlockDiag j U → U.BlockTriangular id → (∀ c ∈ stepCols N j (stepOf N j b'), U c c ≠ 0) → b' < a' → ((a' : ℕ) < N - j ↔ (b' : ℕ) < N - j) → (∀ k, M.blk (τ', stepOf N j b') = some k → ∃ α : ℂ, α ≠ 0 ∧ ∀ m : ι k, z ⟨k, m⟩ = α * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) zb * minorIJ A I (stepCols N j (stepOf N j b'))) → lowRead M F zb hh z τ' a' b' = L a' b' := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M F zb hh τ' a' b' z A L U hF hzb hG hA hLU hLb hLu hUb hUt hUd

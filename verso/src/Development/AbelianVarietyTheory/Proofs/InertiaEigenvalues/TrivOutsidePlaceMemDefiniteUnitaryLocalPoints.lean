@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.LocMemTransfer
 
 /- English proof (translation)
-Introduce `L _ _ _ n F v w hw y hy`. Take `rfl : w.under (𝓞 (maximalRealSubfield L)) = v` from `HeightOneSpectrum.ext hw`. Use `Subgroup.mem_inf.2 ⟨F.fin y, Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => MonoidHom.mem_ker.2 ?_⟩` and prove the remaining obligations. Use extensionality with `s t`. Rewrite using `[F.loc y u s t]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hy (u.under (𝓞 (maximalRealSubfield L))) (by simpa using hu)`. Establish `h0 : compAt L (u.under (𝓞 (maximalRealSubfield L))) ((y.1 : Matrix (Fin n) (Fin n) (AL L)) s t - (1 : Matrix (Fin n) (Fin n) (AL L)) s t) = 0`. Establish `hst` using `congrFun (congrFun h s) t`. Rewrite `hst` using `[Matrix.map_apply]`. Rewrite using `[map_sub, hst]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h1` using `(GlobalTheory.AdeleBaseChange.prV_eq_zero_iff (ι := F.κ.toRingHom) (GlobalTheory.UnramDict.kappa_tmul F) (u.under (𝓞 (maximalRealSubfield L))) _).1 h0 u rfl`. Rewrite `h1` using `[map_sub]`. Express the relevant statement in the definitionally equal form `F.κ _ u - F.κ _ u = 0 at h1`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[sub_eq_zero]`. Rewrite using `[h1]`. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_locU : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → ∀ y : GAf L n, TrivOutside {v} y → F.j y ∈ locU n w := by
   intro L _ _ _ n F v w hw y hy

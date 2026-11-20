@@ -7,7 +7,7 @@ namespace LateralTheory.E.NeighbourhoodSystemGluing
 open LateralTheory.E.LeafSHSysPf
 
 /- English proof (translation)
-Establish `h1` using `c.w (IsFiltered.leftToMax j j')`. Establish `h2` using `c.w (IsFiltered.rightToMax j j')`. Rewrite using `[← h1, ← h2, ← Category.assoc, ← Category.assoc, hu, hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cocone_u_eq {R : CommRingCat.{0}} {J : Type} [SmallCategory J] [IsFiltered J]
     (D : J ⥤ CommRingCat.{0}) (u : ∀ j, R ⟶ D.obj j) (hu : ∀ {j j' : J} (g : j ⟶ j'), u j ≫ D.map g = u j')
@@ -17,19 +17,15 @@ theorem cocone_u_eq {R : CommRingCat.{0}} {J : Type} [SmallCategory J] [IsFilter
   rw [← h1, ← h2, ← Category.assoc, ← Category.assoc, hu, hu]
 
 /- English proof (translation)
-Introduce `_ B U x`. Set `𝒰` to `U.left.affineOpenCover`. Set `R` to `𝒰.X (𝒰.idx x)`. Set `ι : Spec R ⟶ U.left` to `𝒰.f (𝒰.idx x)`. Take `⟨y, hy⟩` from `𝒰.covers x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨J, _, _, D, u, hu, het, hq, c, ⟨hc⟩, hcof⟩` from `hR R y`. Establish `hE : ∀ j, Etale (Spec.map (u j) ≫ ι ≫ U.hom)` using `fun j => by`. Establish `: Etale (Spec.map (u j))` using `HasRingHomProperty.Spec_iff.2 (het j)`. Establish `: Etale U.hom` using `U.prop`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `V : J → B.Etale` to `fun j => MorphismProperty.Over.mk ⊤ (Spec.map (u j) ≫ ι ≫ U.hom) (hE j)`. Set `a : ∀ j, V j ⟶ U` to `fun j => MorphismProperty.Over.homMk (Spec.map (u j) ≫ ι) (by show (Spec.map (u j) ≫ ι) ≫ U.hom = Spec.map (u j) ≫ ι ≫ U.hom; rw [Category.assoc]) trivial`. Set `tr : ∀ {j j' : J} (_ : j ⟶ j'), V j' ⟶ V j` to `fun {j j'} g => MorphismProperty.Over.homMk (Spec.map (D.map g)) (by show Spec.map (D.map g) ≫ Spec.map (u j) ≫ ι ≫ U.hom = Spec.map (u j') ≫ ι ≫ U.hom; rw [← Spec.map_comp_assoc, hu]) trivial`. Set `j0 : J` to `(IsFiltered.nonempty (C := J)).some`. Conclude with `⟨{ J := J D := D V := V a := a e := fun j => Iso.refl _ tr := tr tr_a := fun g => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MorphismProperty.Over.Hom.ext` to reduce the goal to its premises. Use `show Spec.map (D.map g) ≫ Spec.map _ ≫ ι = Spec.map _ ≫ ι`. Rewrite using `[← Spec.map_comp_assoc, hu]`. Use `tr_spec := fun g => by show 𝟙 _ ≫ Spec.map (D.map g) ≫ 𝟙 _ = _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hx := fun j => by`. Take `⟨q, hq⟩` from `hq j`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Use `show ι (Spec.map (u j) q) = ι y`.
-
-Use `congr 1`. Use `c := c`. Use `hc := hc`. Use `cof := hcof`. Use `t := Spec.map (c.ι.app j0) ≫ Spec.map (u j0) ≫ ι`.
-
-Use `ht := fun j => by show _ = Spec.map (c.ι.app j) ≫ 𝟙 _ ≫ Spec.map (u j) ≫ ι`. Rewrite using `[Category.id_comp, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, cocone_u_eq D u hu c j0 j] }⟩`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafNSysGlue_of (hR : LeafRingSys) : LeafNSysGlue := by
   intro _ B U x

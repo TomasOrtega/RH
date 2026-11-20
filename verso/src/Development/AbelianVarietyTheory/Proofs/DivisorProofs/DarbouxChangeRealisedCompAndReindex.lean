@@ -12,7 +12,7 @@ namespace GlobalTheory.TowU.RealComp
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `ht.pres _ (hs.pres φ h) pres' φ h := hs.pres' _ (ht.pres' φ h) left φ h := by simp only [LinearMap.comp_apply]; rw [ht.left _ (hs.pres φ h), hs.left φ h] right φ h := by simp only [LinearMap.comp_apply]; rw [hs.right _ (ht.pres' φ h), ht.right φ h] adm l hl := by rw [← LinearMap. …`.
+A detailed English derivation is pending.
 -/
 theorem isOp_comp {ψ : AddChar (AF F) ℂ} {κ κ' κ'' : Type} [Fintype κ] [Fintype κ'] [Fintype κ'']
     {s : (κ → AF F) × (κ → AF F) → (κ' → AF F) × (κ' → AF F)}
@@ -44,7 +44,7 @@ theorem isOp_comp {ψ : AddChar (AF F) ℂ} {κ κ' κ'' : Type} [Fintype κ] [F
       simp only [LinearMap.comp_apply]; rw [e₂ _ (hs.pres φ h), e₁ φ h, mul_assoc]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext a <;> rcases a with a | a <;> simp [dblAct]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dblAct_comp {κ κ' κ'' : Type} (s : (κ → AF F) × (κ → AF F) → (κ' → AF F) × (κ' → AF F))
     (t : (κ' → AF F) × (κ' → AF F) → (κ'' → AF F) × (κ'' → AF F)) :
@@ -61,9 +61,9 @@ open IsDedekindDomain
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨hs1, Sd, Sd', hsd, hsb⟩` from `hs`. Take `⟨ht1, Td, Td', htd, htb⟩` from `ht`. Establish `hc : ∀ {ι : Type} [Fintype ι], ∀ φ ∈ schA F ι, star φ ∈ schA F ι` using `fun φ h => GlobalTheory.ConjSch.conj_mem_schA φ h`. Use `⟨isOp_comp hs1 ht1, Td ∘ₗ Sd, Sd' ∘ₗ Td', ?_, fun φ₁ h₁ φ₂ h₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[dblAct_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOp_comp hsd htd`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hsb φ₁ h₁ φ₂ h₂, htb _ (hs1.pres _ h₁) _ (hc _ (hs1.pres _ (hc _ h₂))), star_star]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOp2_comp {ψ : AddChar (AF F) ℂ} {κ κ' κ'' : Type} [Fintype κ] [Fintype κ'] [Fintype κ'']
     {s : (κ → AF F) × (κ → AF F) → (κ' → AF F) × (κ' → AF F)}
@@ -99,7 +99,7 @@ Both sides reduce to the same expression.
 theorem reix_apply {R : Type} (e : κ' ≃ κ) (φ : (κ → R) → ℂ) (x : κ' → R) : reix e φ x = φ (x ∘ e.symm) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [reix_apply, Equiv.symm_symm]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem reix_symm_reix {R : Type} (e : κ' ≃ κ) (φ : (κ → R) → ℂ) : reix e.symm (reix e φ) = φ := by
   funext x; simp only [reix_apply, Equiv.symm_symm]; congr 1; funext i; simp
@@ -108,14 +108,14 @@ def linRe (e : κ' ≃ κ) : (κ' → mixedEmbedding.mixedSpace F) ≃L[ℝ] (κ
   (LinearEquiv.funCongrLeft ℝ (mixedEmbedding.mixedSpace F) e.symm).toContinuousLinearEquiv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.1.comp_continuous (addRe e).continuous, hg.2.comp_homeomorph (addRe e).toHomeomorph⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_reix (e : κ' ≃ κ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     (fun y : κ' → FiniteAdeleRing (𝓞 F) F => g (y ∘ e.symm)) ∈ SB (κ' → FiniteAdeleRing (𝓞 F) F) :=
   ⟨hg.1.comp_continuous (addRe e).continuous, hg.2.comp_homeomorph (addRe e).toHomeomorph⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem reix_pureA (e : κ' ≃ κ) (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
@@ -125,7 +125,7 @@ theorem reix_pureA (e : κ' ≃ κ) (f : SchwartzMap (κ → mixedEmbedding.mixe
   rfl
 
 /- English proof (translation)
-Establish `hle : schA F κ ≤ (schA F κ').comap (reix e)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, _, sb_reix e hg, reix_pureA e f g⟩`. Conclude with `hle h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem reix_mem_schA (e : κ' ≃ κ) {φ : (κ → AF F) → ℂ} (h : φ ∈ schA F κ) : reix e φ ∈ schA F κ' := by
   have hle : schA F κ ≤ (schA F κ').comap (reix e) := by
@@ -135,7 +135,7 @@ theorem reix_mem_schA (e : κ' ≃ κ) {φ : (κ → AF F) → ℂ} (h : φ ∈ 
   exact hle h
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨T, hT⟩` from `hl _ (sb_reix e hg)`. Conclude with `⟨T.comp (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (linRe e)), fun f => by`. Rewrite using `[LinearMap.comp_apply, reix_pureA]`. Conclude with `hT _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reix_adm (e : κ' ≃ κ) {l : ((κ' → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : l ∈ (adeleClass F).adm κ') :
     l ∘ₗ reix e ∈ (adeleClass F).adm κ := by
@@ -145,17 +145,17 @@ theorem reix_adm (e : κ' ≃ κ) {l : ((κ' → AF F) → ℂ) →ₗ[ℂ] ℂ}
     rw [LinearMap.comp_apply, reix_pureA]; exact hT _⟩
 
 /- English proof (translation)
-The claim follows from `(Equiv.arrowCongr e (Equiv.refl F)).tsum_eq (fun ξ : κ → F => φ (fun i => algebraMap F (AF F) (ξ i)))`.
+A detailed English derivation is pending.
 -/
 theorem reix_theta (e : κ' ≃ κ) (φ : (κ → AF F) → ℂ) : thetaSum F (reix e φ) = thetaSum F φ :=
   (Equiv.arrowCongr e (Equiv.refl F)).tsum_eq (fun ξ : κ → F => φ (fun i => algebraMap F (AF F) (ξ i)))
 
 /- English proof (translation)
-Establish `hd : ∀ u v : κ → AF F, (u ∘ e) ⬝ᵥ (v ∘ e) = u ⬝ᵥ v` using `fun u v => by`. Simplify using `only [dotProduct, Function.comp_apply]`. Conclude with `Equiv.sum_comp e (fun i => u i * v i)`. Use function extensionality and compare the values at `x`. Simplify using `only [reix_apply, schr]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (x ∘ e.symm) ⬝ᵥ w.2 = x ⬝ᵥ (w.2 ∘ e)`. Rewrite using `[← hd]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : x ∘ e.symm + w.1 = (x + w.1 ∘ e) ∘ e.symm` using `by funext i; simp`. Rewrite using `[h1, h2, hd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reix_heis (ψ : AddChar (AF F) ℂ) (e : κ' ≃ κ) (w : (κ → AF F) × (κ → AF F)) (φ : (κ → AF F) → ℂ) :
     reix e (schr ψ w φ) = schr ψ (w.1 ∘ e, w.2 ∘ e) (reix e φ) := by
@@ -169,13 +169,9 @@ theorem reix_heis (ψ : AddChar (AF F) ℂ) (e : κ' ≃ κ) (w : (κ → AF F) 
   rw [h1, h2, hd]
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `letI : MeasurableSpace (κ' → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `haveI : BorelSpace (κ' → AF F) := ⟨rfl⟩`. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := hμ`. Use `haveI := hμ'`. Set `L : (κ' → AF F) ≃ₜ+ (κ → AF F)` to `addRe e`. Use `haveI : (μ'.map L).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map μ' L`.
-
-Establish `heq` using `Measure.isAddLeftInvariant_eq_smul (μ'.map L) μ`. Use `⟨(Measure.addHaarScalarFactor (μ'.map L) μ : ℝ≥0∞), ENNReal.coe_ne_zero.mpr (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', ENNReal.coe_ne_top, fun φ => ?_⟩` and prove the remaining obligations. Establish `hm` using `lintegral_map_equiv (fun y => ‖φ y‖ₑ ^ 2) L.toHomeomorph.toMeasurableEquiv (μ := μ')`. Establish `hL : (⇑L.toHomeomorph.toMeasurableEquiv : (κ' → AF F) → (κ → AF F)) = ⇑L` using `rfl`. Rewrite `hm` using `[hL, heq, lintegral_smul_measure]`.
-
-Rewrite `hm` using `[ENNReal.smul_def, smul_eq_mul]`. Conclude with `hm.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reix_norm (e : κ' ≃ κ) (μ : @Measure (κ → AF F) (borel _)) (μ' : @Measure (κ' → AF F) (borel _))
     (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) (hμ' : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ') :
@@ -208,7 +204,7 @@ namespace GlobalTheory.TowU.RealComp
 variable {F : Type} [Field F] [NumberField F] {κ κ' : Type} [Fintype κ] [Fintype κ']
 
 /- English proof (translation)
-The claim follows from `reix_mem_schA e h pres' _ h := reix_mem_schA e.symm h left φ _ := reix_symm_reix e φ right φ _ := by simpa using reix_symm_reix e.symm φ adm _ hl := reix_adm e hl adm' _ hl := reix_adm e.symm hl Heisenberg₂ w φ _ := reix_heis ψ e w φ theta := ⟨1, one_ne_zero, fun φ _ => by rw [re …`.
+A detailed English derivation is pending.
 -/
 theorem isOp_reix (ψ : AddChar (AF F) ℂ) (e : κ' ≃ κ) :
     IsOp ψ (fun w : (κ → AF F) × (κ → AF F) => (w.1 ∘ e, w.2 ∘ e)) (reix e) (reix e.symm) where
@@ -225,7 +221,7 @@ theorem isOp_reix (ψ : AddChar (AF F) ℂ) (e : κ' ≃ κ) :
     exact ⟨c, h0, h1, fun φ _ => h φ⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext a <;> rcases a with a | a <;> simp [dblAct]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dblAct_reix (e : κ' ≃ κ) :
     dblAct (fun w : (κ → AF F) × (κ → AF F) => (w.1 ∘ e, w.2 ∘ e)) =
@@ -234,9 +230,9 @@ theorem dblAct_reix (e : κ' ≃ κ) :
   refine Prod.ext ?_ ?_ <;> funext a <;> rcases a with a | a <;> simp [dblAct]
 
 /- English proof (translation)
-Use `⟨isOp_reix ψ e, reix (Equiv.sumCongr e e), reix (Equiv.sumCongr e e).symm, ?_, fun φ₁ _ φ₂ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[dblAct_reix]`. Conclude with `isOp_reix ψ _`. Use function extensionality and compare the values at `x`. Simplify using `only [reix_apply, boxFun, Pi.star_apply, star_star]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 2 <;> funext i <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem isOp2_reix (ψ : AddChar (AF F) ℂ) (e : κ' ≃ κ) :
     IsOp2 ψ (fun w : (κ → AF F) × (κ → AF F) => (w.1 ∘ e, w.2 ∘ e)) (reix e) (reix e.symm) := by
@@ -247,7 +243,7 @@ theorem isOp2_reix (ψ : AddChar (AF F) ℂ) (e : κ' ≃ κ) :
     congr 2 <;> funext i <;> simp
 
 /- English proof (translation)
-Introduce `_ _ _ ψ _` and use `⟨fun _ _ _ _ _ _ _ _ _ _ _ _ hs ht => isOp2_comp hs ht, fun _ _ _ _ e => ⟨_, _, isOp2_reix ψ e⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem realised_comp_reix : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → (∀ (κ κ' κ'' : Type) [Fintype κ] [Fintype κ'] [Fintype κ''] (s : (κ → AF F) × (κ → AF F) → (κ' → AF F) × (κ' → AF F)) (t : (κ' → AF F) × (κ' → AF F) → (κ'' → AF F) × (κ'' → AF F)) (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)) (S' : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (T : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ'' → AF F) → ℂ)) (T' : ((κ'' → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)), IsOp2 ψ s S S' → IsOp2 ψ t T T' → IsOp2 ψ (t ∘ s) (T ∘ₗ S) (S' ∘ₗ T')) ∧ ∀ (κ κ' : Type) [Fintype κ] [Fintype κ'] (e : κ' ≃ κ), ∃ (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)) (S' : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)), IsOp2 ψ (fun w => (w.1 ∘ e, w.2 ∘ e)) S S' :=
   fun _ _ _ ψ _ => ⟨fun _ _ _ _ _ _ _ _ _ _ _ _ hs ht => isOp2_comp hs ht, fun _ _ _ _ e => ⟨_, _, isOp2_reix ψ e⟩⟩

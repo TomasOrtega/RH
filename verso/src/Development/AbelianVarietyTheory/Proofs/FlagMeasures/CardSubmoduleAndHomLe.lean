@@ -18,29 +18,27 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {R : Type*} [CommRing R] {D : Type*} [AddCommGroup D] [Module R D] in
 /- English proof (translation)
-Introduce `g`. Proceed by induction on `g with`. Consider the case `zero`. Introduce `M _ _ x hx N`. Use `⟨Fin.elim0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbot : (⊤ : Submodule R M) = ⊥`. Rewrite using `[← hx, Set.range_eq_empty, Submodule.span_empty]`. Rewrite using `[Set.range_eq_empty, Submodule.span_empty, eq_bot_iff, ← hbot]`. Conclude with `le_top`. Consider the case `succ g ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M _ _ x hx N`. Use `set P := Submodule.span R (Set.range (fun i : Fin g => x i.succ)) with hPdef`. Set `x' : Fin g → P` to `fun i => ⟨x i.succ, Submodule.subset_span ⟨i, rfl⟩⟩`. Establish `hx' : Submodule.span R (Set.range x') = ⊤`. Apply `Submodule.map_injective_of_injective (f := P.subtype) Subtype.val_injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Both sides reduce to the same expression. Take `⟨w, hw⟩` from `ih P x' hx' (N.comap P.subtype)`. Use `set I : Ideal R := (N ⊔ P).comap (LinearMap.toSpanSingleton R M (x 0)) with hIdef`. Use `set a := Submodule.IsPrincipal.generator I`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha : a ∈ I` using `Submodule.IsPrincipal.generator_mem I`. Rewrite `ha` using `[hIdef, Submodule.mem_comap, LinearMap.toSpanSingleton_apply, Submodule.mem_sup]`. Take `⟨n, hn, p, hp, hnp⟩` from `ha`. Use `⟨Fin.cons n (fun i => (w i : M)), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmtop : m ∈ Submodule.span R (Set.range x)` using `hx ▸ Submodule.mem_top`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hmtop`. Rewrite `hm`, the goal using `[Fin.sum_univ_succ]`. Use `set q := ∑ i : Fin g, c i.succ • x i.succ with hqdef`. Establish `hq : q ∈ P` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : c 0 ∈ I`. Rewrite using `[hIdef, Submodule.mem_comap, LinearMap.toSpanSingleton_apply]`. Use `sub_mem (Submodule.mem_sup_left hm : _ ∈ N ⊔ P) (Submodule.mem_sup_right hq : _ ∈ N ⊔ P)` as an intermediate fact. Simplify using `using this`. Rewrite `hc0` using `[← Submodule.IsPrincipal.span_singleton_generator I, Submodule.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hc0`. Establish `hdiff : c 0 • x 0 + q - t • n = q + t • p`. Rewrite using `[← ht, smul_assoc, ← hnp, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hdP : c 0 • x 0 + q - t • n ∈ P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiff]`. Conclude with `add_mem hq (Submodule.smul_mem _ _ hp)`. Establish `hdN : c 0 • x 0 + q - t • n ∈ N` using `sub_mem hm (Submodule.smul_mem _ _ hn)`. Establish `hmem : (⟨_, hdP⟩ : P) ∈ Submodule.span R (Set.range w)` using `hw ▸ hdN`. Establish `hle : Submodule.span R (Set.range w) ≤ (Submodule.span R (Set.range (Fin.cons n (fun i => (w i : M)) : Fin (g + 1) → M))).comap P.subtype`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨i.succ, by simp⟩`. Establish `h1` using `hle hmem`. Rewrite `h1` using `[Submodule.mem_comap, Submodule.coe_subtype]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : t • n ∈ Submodule.span R (Set.range (Fin.cons n (fun i => (w i : M)) : Fin (g + 1) → M))` using `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, by simp⟩)`. Simplify using `using add_mem h1 h2`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
-
-Simplify using `using hn`. Establish `: w i ∈ N.comap P.subtype` using `hw ▸ Submodule.subset_span ⟨i, rfl⟩`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_finite_generators_of_isPrincipalIdealRing [IsPrincipalIdealRing R] :
     ∀ (g : ℕ) (M : Type) [AddCommGroup M] [Module R M] (x : Fin g → M),
@@ -108,11 +106,11 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L D _ _ _ g x hx`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (ValuativeRel.valuation F).integer`. Use `haveI : IsPrincipalIdealRing L.O := (_root_.GlobalTheory.UnramOrder.order_facts L ϖ hϖ).2.2.2.1`. Use `⟨?_, fun D' _ _ _ => ?_⟩` and prove the remaining obligations. Establish `hsurj : Function.Surjective (fun v : Fin g → D => Submodule.span L.O (Set.range v))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N`. Take `⟨v, hv⟩` from `exists_finite_generators_of_isPrincipalIdealRing g D x hx N`. Conclude with `⟨v, hv.symm⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `hinj : Function.Injective (fun f : D →ₗ[L.O] D' => fun i => f (x i))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f f' h`. Conclude with `LinearMap.ext_on_range hx (fun i => congrFun h i)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SubmoduleCount.card_submodule_and_hom_le : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E), ∀ (D : Type) [AddCommGroup D] [Module L.O D] [Finite D] (g : ℕ) (x : Fin g → D), Submodule.span L.O (Set.range x) = ⊤ → Nat.card (Submodule L.O D) ≤ Nat.card D ^ g ∧ ∀ (D' : Type) [AddCommGroup D'] [Module L.O D'] [Finite D'], Nat.card (D →ₗ[L.O] D') ≤ Nat.card D' ^ g := by
   intro F _ _ _ _ _ E _ _ _ L D _ _ _ g x hx

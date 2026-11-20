@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ex
 
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions GlobalTheory.WeilDeligne in
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ w A h`. Establish `hσ` using `isFrob_frob (h := h)`. Establish `h1` using `GlobalTheory.TameQuot.closure_frob_sup_Ine F Ω A w h ⟨_, hσ.1⟩ hσ`. Establish `h2 : (Subgroup.zpowers (⟨_, hσ.1⟩ : Dec (F` using `F) A) ⊔ (Ine (F := F) A).subgroupOf (Dec (F := F) A)) ≤ (Subgroup.inclusion (Weil_le_Dec h)).range := by`. Use `sup_le ?_ fun x hx => ⟨⟨x, Ine_le_Weil h hx⟩, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Subgroup.zpowers_le).2 ⟨frob h, rfl⟩`. Establish `h3` using `Subgroup.topologicalClosure_mono h2`. Rewrite `h3` using `[h1]`. Introduce `g`. Conclude with `h3 (Subgroup.mem_top g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.weil_group_dense_in_galois_group :
     UpperTheory.V.Af.Wd.WeilDense := by

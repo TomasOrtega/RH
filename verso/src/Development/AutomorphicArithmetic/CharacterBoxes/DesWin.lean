@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions
 /- English proof (authored)
 Combine the nine closed link conditions into one. Let ε₁ be its positive cutoff and ε₃ the positive cutoff for design existence. For 0 < ε < min(ε₁, ε₃), choose the threshold K given by the combined closed condition. Design existence above K produces a family in 𝒞′, together with its chosen data and size bounds. Map its class membership to 𝒞 to apply the closed conditions and to ℰ for the conclusion.
 
-The ℰ membership gives HypV. Use it with the N-link and the small-level rank equality to obtain divisibility in N. The closed divisibility condition, together with the eta and size inputs, then gives LinkDIVt. Combine this with the rank conditions and the two size estimates to obtain the μ-link. The global link now applies to the G, S, irreducibility, divisibility, and μ-links, producing the tied family required for connectedness.
+The ℰ membership gives the eventual volume bound. Use it with the N-link and the small-level rank equality to obtain divisibility in N. The closed divisibility condition, together with the eta and size inputs, then gives the required divisibility link. Combine this with the rank conditions and the two size estimates to obtain the μ-link. The global link now applies to the G, S, irreducibility, divisibility, and μ-links, producing the tied family required for connectedness.
 -/
 theorem topDesWin (𝒞 𝒞' ℰ : FamClass) (Cabs C0 eD eL : ℝ) (hEx : DesignExists (WithTw (WithSm 𝒞')) C0)
     (h1 : ∀ {eps : ℝ} (Fm : FamP eps), 𝒞' Fm → 𝒞 Fm) (h2 : ∀ {eps : ℝ} (Fm : FamP eps), 𝒞' Fm → ℰ Fm)

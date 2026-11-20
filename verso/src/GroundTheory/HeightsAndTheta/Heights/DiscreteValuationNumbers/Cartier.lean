@@ -13,7 +13,7 @@ section Local
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Establish `hWp : W.IsPrime` using `hW.1.1`. Use `⟨⟨hWp, fun x hx => ?_⟩, fun Q hQ hQW => hW.2 ⟨hQ.1, fun x hx => ?_⟩ hQW⟩` and prove the remaining obligations. Conclude with `(hWp.mem_or_mem (hW.1.2 (htJ x hx))).resolve_left ht`. Conclude with `(hQ.1.mem_or_mem (hQ.2 (hsJ x hx))).resolve_left (fun h => hs (hQW h))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_of_mul_mem {J J' W : Ideal A} {s t : A} (hs : s ∉ W) (ht : t ∉ W)
     (hsJ : ∀ x ∈ J, s * x ∈ J') (htJ : ∀ x ∈ J', t * x ∈ J) (hW : W ∈ J.minimalPrimes) :
@@ -24,13 +24,13 @@ theorem mem_minimalPrimes_of_mul_mem {J J' W : Ideal A} {s t : A} (hs : s ∉ W)
   · exact (hQ.1.mem_or_mem (hQ.2 (hsJ x hx))).resolve_left (fun h => hs (hQW h))
 
 /- English proof (translation)
-Set `q : (A ⧸ J) →ₗ[A] (A ⧸ J'')` to `Submodule.factor hle`. Set `f` to `LocalizedModule.mkLinearMap W.primeCompl (A ⧸ J)`. Set `g` to `LocalizedModule.mkLinearMap W.primeCompl (A ⧸ J'')`. Set `m` to `IsLocalizedModule.map W.primeCompl f g q`. Establish `hinj : Function.Injective m`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `IsLocalizedModule.injective_of_map_zero W.primeCompl f` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[IsLocalizedModule.map_apply]`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective J x`. Take `⟨s, hs⟩` from `(IsLocalizedModule.eq_zero_iff W.primeCompl g).mp hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsy : (s : A) * y ∈ J''`. Establish `: (s : A) • (Submodule.mkQ J'' y) = 0` using `hs`. Rewrite `this` using `[← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Then use the resulting hypothesis. Take `⟨t, ht, hty⟩` from `h _ hsy`. Use `(IsLocalizedModule.eq_zero_iff W.primeCompl f).mpr ⟨⟨t * s, W.primeCompl.mul_mem ht s.2⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((t * s : A)) • (Submodule.mkQ J y) = 0`. Rewrite using `[← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul, mul_assoc]`. Conclude with `hty`. Establish `hsurj : Function.Surjective m` using `IsLocalizedModule.map_surjective W.primeCompl f g q (Submodule.factor_surjective hle)`. Conclude with `((LinearEquiv.ofBijective m ⟨hinj, hsurj⟩).extendScalarsOfIsLocalization W.primeCompl (Localization.AtPrime W)).length_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_localized_eq_of_le {J J'' W : Ideal A} [W.IsPrime] (hle : J ≤ J'')
     (h : ∀ x ∈ J'', ∃ t ∉ W, t * x ∈ J) :
@@ -62,7 +62,7 @@ theorem length_localized_eq_of_le {J J'' W : Ideal A} [W.IsPrime] (hle : J ≤ J
     (Localization.AtPrime W)).length_eq
 
 /- English proof (translation)
-Establish `key : ∀ {J J' : Ideal A} {t : A}, t ∉ W → (∀ x ∈ J', t * x ∈ J) → ∀ x ∈ J ⊔ J', ∃ t ∉ W, t * x ∈ J`. Introduce `J J' t ht htJ x hx`. Take `⟨a, ha, a', ha', rfl⟩` from `Submodule.mem_sup.mp hx`. Conclude with `⟨t, ht, by rw [mul_add]; exact J.add_mem (J.mul_mem_left t ha) (htJ a' ha')⟩`. Rewrite using `[length_localized_eq_of_le le_sup_left (key ht htJ), length_localized_eq_of_le le_sup_left (key hs hsJ), sup_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_localized_eq_of_mul_mem {J J' W : Ideal A} [W.IsPrime] {s t : A} (hs : s ∉ W)
     (ht : t ∉ W) (hsJ : ∀ x ∈ J, s * x ∈ J') (htJ : ∀ x ∈ J', t * x ∈ J) :
@@ -83,15 +83,15 @@ section Divisors
 variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ P ⊔ Ideal.span {f}, u * x ∈ P ⊔ Ideal.span {g}`. Introduce `x hx`. Take `⟨p, hp, r, hr, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Establish `e : u * (p + c * f) = (u * p + c * (u * f - v * g)) + (c * v) * g` using `by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (P.add_mem (P.mul_mem_left _ hp) (P.mul_mem_left _ h)) (Ideal.mem_span_singleton'.mpr ⟨c * v, rfl⟩)`. Establish `h2 : ∀ x ∈ P ⊔ Ideal.span {g}, v * x ∈ P ⊔ Ideal.span {f}`. Introduce `x hx`. Take `⟨p, hp, r, hr, rfl⟩` from `Submodule.mem_sup.mp hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Establish `e : v * (p + c * g) = (v * p - c * (u * f - v * g)) + (c * u) * f` using `by ring`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (P.sub_mem (P.mul_mem_left _ hp) (P.mul_mem_left _ h)) (Ideal.mem_span_singleton'.mpr ⟨c * u, rfl⟩)`. Unfold `divCycle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hf : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes ∧ IsRelevant W`. Establish `hg : W ∈ (P ⊔ Ideal.span {g}).minimalPrimes ∧ IsRelevant W` using `⟨mem_minimalPrimes_of_mul_mem hu hv h1 h2 hf.1, hf.2⟩`. Rewrite using `[dif_pos hf, dif_pos hg]`. Establish `: W.IsPrime` using `hf.1.1.1`. Unfold `multAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[length_localized_eq_of_mul_mem hu hv h1 h2]`. Establish `hg : ¬ (W ∈ (P ⊔ Ideal.span {g}).minimalPrimes ∧ IsRelevant W)` using `fun hg => hf ⟨mem_minimalPrimes_of_mul_mem hv hu h2 h1 hg.1, hg.2⟩`. Rewrite using `[dif_neg hf, dif_neg hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCycle_eq_of_mul_sub_mem {P : Ideal (MRing ι R)} {f g u v : MRing ι R}
     {W : Ideal (MRing ι R)} (hu : u ∉ W) (hv : v ∉ W) (h : u * f - v * g ∈ P) :
@@ -125,7 +125,7 @@ theorem divCycle_eq_of_mul_sub_mem {P : Ideal (MRing ι R)} {f g u v : MRing ι 
     rw [dif_neg hf, dif_neg hg]
 
 /- English proof (translation)
-Unfold `divCycle at h`. Use `split_ifs at h with hW`. Conclude with `⟨hW.1.1.1, le_sup_left.trans hW.1.1.2, hW.2⟩`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem le_and_isRelevant_of_divCycle_ne_zero {P : Ideal (MRing ι R)} {f : MRing ι R}
     {W : Ideal (MRing ι R)} (h : divCycle P f W ≠ 0) : W.IsPrime ∧ P ≤ W ∧ IsRelevant W := by
@@ -144,7 +144,7 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 
 /- English proof (translation)
-The claim follows from `degrees num_not_mem := hf den_not_mem := hg unit_off_special := hunit vertical := by intro W hW by_contra hϖ have hsupp : W.IsPrime ∧ P ≤ W ∧ IsRelevant W := by by_cases h1 : divCycle P f W = 0 · have h2 : divCycle P g W ≠ 0 := by intro h2; apply hW; unfold ratDiv; rw [h1, h2, su …`.
+A detailed English derivation is pending.
 -/
 theorem IsVerticalDivisor.of_unit_off_special {P : Ideal (MRing ι O)} {ϖ : O} {b : K → ℤ}
     {f g : MRing ι O}

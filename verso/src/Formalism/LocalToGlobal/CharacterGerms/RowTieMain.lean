@@ -51,7 +51,7 @@ structure GeoIn : Prop where
   ch : UpFBr.CharacterHypothesisUnramified Xo c
 
 /- English proof (translation)
-The claim follows from `descent_of (nabMapSt_holds Xo c) descent_span nvalEqSt_holds`.
+A detailed English derivation is pending.
 -/
 theorem descent_holds : DescentSt Xo c := descent_of (nabMapSt_holds Xo c) descent_span nvalEqSt_holds
 

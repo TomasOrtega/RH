@@ -13,17 +13,15 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hQ : ∀ ε : Fin 8 → ℤ, ∑ u, ∑ v, W u v * ε u * ε v = ε ⬝ᵥ (W *ᵥ ε)`. Introduce `ε`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => by ring` and prove the remaining obligations. Establish `hA : ∀ i j, (p : ℤ) ∣ (W + W.transpose) i j`. Introduce `i j`. Establish `h1` using `h (Pi.single i 1 + Pi.single j 1)`. Establish `h2` using `h (Pi.single i 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h (Pi.single j 1)`. Rewrite `h1`, `h2`, `h3` using `[hQ]`. Establish `e : (Pi.single i 1 + Pi.single j 1 : Fin 8 → ℤ) ⬝ᵥ (W *ᵥ (Pi.single i 1 + Pi.single j 1)) - (Pi.single i 1 : Fin 8 → ℤ) ⬝ᵥ (W *ᵥ Pi.single i 1) - (Pi.single j 1 : Fin 8 → ℤ) ⬝ᵥ (W *ᵥ Pi.single j 1) = (W + W.transpose) i j`. Simplify using `[Matrix.mulVec_add, add_dotProduct, dotProduct_add, Matrix.mulVec_single_one, single_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `dvd_sub (dvd_sub h1 h2) h3`. Use `set A := W + W.transpose`. Establish `hB : A = (p : ℤ) • Matrix.of (fun i j => A i j / p)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Int.mul_ediv_cancel' (hA i j)]`. Establish `hdet : A.det = 1` using `hW.2`. Rewrite `hdet` using `[hB, Matrix.det_smul]`. Establish `: (p : ℤ) ∣ 1`. Rewrite using `[← hdet]`.
-
-Conclude with `Dvd.dvd.mul_right (dvd_pow_self _ (by simp)) _`. Use `Int.eq_one_of_dvd_one (by positivity) this` as an intermediate fact. Conclude with `hp.one_lt.ne' (by exact_mod_cast this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_e8Form_value_not_dvd_prime (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W) (p : ℕ) (hp : p.Prime) :
     ∃ ε : Fin 8 → ℤ, ¬ (p : ℤ) ∣ ∑ u, ∑ v, W u v * ε u * ε v := by
@@ -60,11 +58,11 @@ theorem exists_e8Form_value_not_dvd_prime (W : Matrix (Fin 8) (Fin 8) ℤ) (hW :
   exact hp.one_lt.ne' (by exact_mod_cast this)
 
 /- English proof (translation)
-Introduce `W hW p k hp hp2`. Take `⟨ε, hε⟩` from `exists_e8Form_value_not_dvd_prime W hW p hp`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Apply `Nat.Coprime.pow_left` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.Coprime.mul_right` to reduce the goal to its premises. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hd`. Break down `(Nat.dvd_prime Nat.prime_two).1 hd with h | h` into its components or cases. Conclude with `hp.one_lt.ne' h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp2 h`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hd`. Conclude with `hε (Int.natCast_dvd.2 hd)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_e8Form_value_coprime_oddPrimePow' : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (p k : ℕ), p.Prime → p ≠ 2 →
     ∃ ε : Fin 8 → ℤ, Nat.Coprime ((p ^ k) ^ 2) (2 * (∑ u, ∑ v, W u v * ε u * ε v).natAbs) := by

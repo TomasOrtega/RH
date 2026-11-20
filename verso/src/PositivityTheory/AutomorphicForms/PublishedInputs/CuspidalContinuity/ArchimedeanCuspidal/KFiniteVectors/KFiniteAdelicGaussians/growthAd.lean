@@ -25,9 +25,9 @@ def xq (γ : GL (Fin 2) K) : Fin 3 → K :=
   ![(γ : Matrix (Fin 2) (Fin 2) K) 1 1, -(γ : Matrix (Fin 2) (Fin 2) K) 1 0, 0]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `le_of_mul_le_mul_right ?_ hβ2` and prove the remaining obligations. Rewrite using `[mul_assoc, hb]`. Conclude with `h1`. Use `le_of_mul_le_mul_right ?_ hβ1` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ha]`. Conclude with `h2`. Use `le_of_mul_le_mul_right ?_ hβ2` and prove the remaining obligations. Rewrite using `[mul_assoc, hab]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv {X d β0 β1 β2 na nb nab H c : ℝ} (hβ1 : 0 < β1) (hβ2 : 0 < β2)
     (ha : na * β1 = β0) (hb : nb * β2 = β1) (hab : nab * β2 = β0)

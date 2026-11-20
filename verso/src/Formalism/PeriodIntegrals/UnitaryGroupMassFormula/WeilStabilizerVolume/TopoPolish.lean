@@ -7,21 +7,17 @@ namespace PI.VolStabW.TopoPolish
 open Topology TopologicalSpace Set
 
 /- English proof (translation)
-Use `haveI hS : SecondCountableTopology (OnePoint Y) := by`. Set `K` to `CompactExhaustion.choice Y`. Set `B : Set (Set (OnePoint Y))` to `((fun U => ((↑) : Y → OnePoint Y) '' U) '' countableBasis Y) ∪ Set.range (fun n => (((↑) : Y → OnePoint Y) '' K n)ᶜ)`. Establish `hB : IsTopologicalBasis B`. Use `isTopologicalBasis_of_isOpen_of_nhds ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `u (⟨U, hU, rfl⟩ | ⟨n, rfl⟩)`. Conclude with `OnePoint.isOpen_image_coe.2 ((isBasis_countableBasis Y).isOpen hU)`. Conclude with `OnePoint.isOpen_compl_image_coe.2 ⟨(K.isCompact n).isClosed, K.isCompact n⟩`. Introduce `a u ha hu`. Proceed by induction on `a using OnePoint.rec with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `infty`. Rewrite `hu` using `[OnePoint.isOpen_iff_of_mem ha]`. Take `⟨n, hn⟩` from `K.exists_superset_of_isCompact hu.2`. Use `⟨_, Or.inr ⟨n, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `z hz`. Proceed by induction on `z using OnePoint.rec with`. Consider the case `infty => exact ha`. Consider the case `coe y`. Assume the negation of the conclusion as `hyu`.
+Treat this case separately. Assume the negation of the conclusion and derive a contradiction. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hz ⟨y, hn hyu, rfl⟩`. Consider the case `coe y`. Establish `hpre : IsOpen (((↑) : Y → OnePoint Y) ⁻¹' u)` using `hu.preimage OnePoint.continuous_coe`. Take `⟨U, hU, hyU, hUu⟩` from `(isBasis_countableBasis Y).exists_subset_of_mem_open (show y ∈ _ from ha) hpre`. Conclude with `⟨_, Or.inl ⟨U, hU, rfl⟩, ⟨y, hyU, rfl⟩, by rintro _ ⟨z, hz, rfl⟩; exact hUu hz⟩`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `hB.secondCountableTopology (((countable_countableBasis Y).image _).union (Set.countable_range _))`. Use `haveI hM : MetrizableSpace (OnePoint Y) := by first`. Consider the case `infer_instance`. Consider the case `exact TopologicalSpace.metrizableSpace_of_t3_secondCountable _`. Use `haveI hP : PolishSpace (OnePoint Y) := by first`.
-
-Consider the case `infer_instance`. Consider the case `(letI := TopologicalSpace.metrizableSpaceMetric (OnePoint Y) haveI : CompleteSpace (OnePoint Y) := complete_of_compact infer_instance)`. Establish `hO : IsOpen (Set.range ((↑) : Y → OnePoint Y))` using `OnePoint.isOpen_range_coe`. Use `haveI := hO.polishSpace`. Use `first`.
-
-Consider the case `exact (OnePoint.isOpenEmbedding_coe.toIsEmbedding.toHomeomorph).isClosedEmbedding.polishSpace`. Consider the case `exact (OnePoint.isOpenEmbedding_coe.isEmbedding.toHomeomorph).isClosedEmbedding.polishSpace`. Consider the case `exact (OnePoint.isOpenEmbedding_coe.toHomeomorph).isClosedEmbedding.polishSpace`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem polish_of_lcsc (Y : Type) [TopologicalSpace Y] [LocallyCompactSpace Y] [T2Space Y]
     [SecondCountableTopology Y] : PolishSpace Y := by

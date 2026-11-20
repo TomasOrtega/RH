@@ -5,15 +5,11 @@ namespace GlobalTheory.NormExtensionBound
 open scoped Pointwise
 
 /- English proof (translation)
-Use `haveI hP : (RingHom.ker ev).IsPrime := RingHom.ker_isPrime ev`. Take `⟨Q, -, hQ, hQP⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := B) (RingHom.ker ev) ⊥ (by`. Introduce `a ha`. Establish `: a = 0` using `hinj (by simpa using ha)`. Simplify using `[this])`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Use `haveI : Q.LiesOver (RingHom.ker ev) := ⟨hQP.symm⟩`. Use `letI : Algebra (A ⧸ RingHom.ker ev) K := (RingHom.kerLift ev).toAlgebra`. Use `haveI : FaithfulSMul (A ⧸ RingHom.ker ev) K := (faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective ev)`. Use `haveI : Algebra.IsIntegral (A ⧸ RingHom.ker ev) (B ⧸ Q) := inferInstance`. Use `haveI : FaithfulSMul (A ⧸ RingHom.ker ev) (B ⧸ Q) := inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : Module.IsTorsionFree (A ⧸ RingHom.ker ev) (B ⧸ Q) := Module.IsTorsionFree.of_smul_eq_zero fun r x h => by`. Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Conclude with `h.imp_left fun h => FaithfulSMul.algebraMap_injective _ (B ⧸ Q) (by rw [h, map_zero])`. Use `haveI : Module.IsTorsionFree (A ⧸ RingHom.ker ev) K := Module.IsTorsionFree.of_smul_eq_zero fun r x h => by`. Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`.
-
-Conclude with `h.imp_left fun h => FaithfulSMul.algebraMap_injective _ K (by rw [h, map_zero])`. Use `haveI : Algebra.IsAlgebraic (A ⧸ RingHom.ker ev) (B ⧸ Q) := ⟨fun x => (Algebra.IsIntegral.isIntegral x).isAlgebraic⟩`. Set `f : (B ⧸ Q) →ₐ[A ⧸ RingHom.ker ev] K` to `IsAlgClosed.lift`. Use `⟨f.toRingHom.comp (Ideal.Quotient.mk Q), fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `f.commutes (Ideal.Quotient.mk _ a)`.
-
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_extension {A B K : Type} [CommRing A] [CommRing B] [Field K] [IsAlgClosed K]
     [Algebra A B] [Algebra.IsIntegral A B] (hinj : Function.Injective (algebraMap A B))
@@ -46,15 +42,15 @@ theorem exists_extension {A B K : Type} [CommRing A] [CommRing B] [Field K] [IsA
   exact h
 
 /- English proof (translation)
-Use `haveI : IsUltrametricDist (PadicAlgCl p) := IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm (PadicAlgCl.isNonarchimedean p)`. Take `⟨q, hqm, hq⟩` from `Algebra.IsIntegral.isIntegral (R := A) b`. Establish `hcomp : ev'.comp (algebraMap A B) = ev` using `RingHom.ext hev`. Establish `hq'` using `congrArg ev' hq`. Rewrite `hq'` using `[map_zero, Polynomial.hom_eval₂, hcomp, hqm.as_sum, Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow] at hq'`. Use `set y := ev' b`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`. Establish `hxn : y ^ q.natDegree = -∑ i ∈ Finset.range q.natDegree, ev (q.coeff i) * y ^ i` using `eq_neg_of_add_eq_zero_left hq'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos q.natDegree with h0 | hn` into its components or cases. Rewrite `hxn` using `[h0]`. Simplify using `at hxn`. Establish `hy1 : 1 ≤ ‖y‖` using `hy.le`. Establish `hle : ‖∑ i ∈ Finset.range q.natDegree, ev (q.coeff i) * y ^ i‖ ≤ ‖y‖ ^ (q.natDegree - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg (norm_nonneg _) _)` to reduce the goal to its premises. Introduce `i hi`. Rewrite using `[norm_mul, norm_pow]`. Establish `hi'` using `Finset.mem_range.mp hi`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ‖y‖ ^ q.natDegree ≤ ‖y‖ ^ (q.natDegree - 1)`. Rewrite using `[← norm_pow, hxn, norm_neg]`. Conclude with `hle`. Establish `h2 : ‖y‖ ^ (q.natDegree - 1) < ‖y‖ ^ q.natDegree` using `pow_lt_pow_right₀ hy (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_extension {p : ℕ} [Fact p.Prime] {A B : Type} [CommRing A] [CommRing B]
     [Algebra A B] [Algebra.IsIntegral A B] (ev : A →+* PadicAlgCl p) (h : ∀ a, ‖ev a‖ ≤ 1)
@@ -92,19 +88,15 @@ theorem norm_le_one_of_extension {p : ℕ} [Fact p.Prime] {A B : Type} [CommRing
   linarith
 
 /- English proof (translation)
-Introduce `p _ A B _ _ _ _ _ _ _ 𝔷 hinj hfix hmax ev h1 h2`. Take `⟨e, he⟩` from `exists_extension hinj ev`. Establish `hle` using `norm_le_one_of_extension ev h1 e he`. Set `m : Ideal B` to `{ carrier := {b | ‖e b‖ < 1} add_mem' := fun {a b} ha hb => by show ‖e (a + b)‖ < 1`. Rewrite using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ha hb)`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c b hb => by show ‖e (c * b)‖ < 1`. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hle c) (norm_nonneg _) hb }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm : ∀ b, b ∈ m ↔ ‖e b‖ < 1` using `fun _ => Iff.rfl`. Establish `hmne : m ≠ ⊤`. Rewrite using `[Ideal.ne_top_iff_one, hm]`. Simplify using the standard rewrite rules. Establish `hmu : m.under A = IsLocalRing.maximalIdeal A`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `(IsLocalRing.maximalIdeal.isMaximal A).eq_of_le (Ideal.comap_ne_top _ hmne)` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, hm, he]`. Conclude with `h2 a ha`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI hmm : m.IsPrime := ⟨hmne, fun {a b} hab => by`. Rewrite `hab` using `[hm, map_mul, norm_mul]`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or, hm, hm, not_lt, not_lt]`. Conclude with `absurd hab (not_lt.2 (one_le_mul_of_one_le_of_one_le hc.1 hc.2))⟩`.
-
-Establish `hzu : 𝔷.under A = IsLocalRing.maximalIdeal A` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := A) 𝔷)`. Use `haveI : Algebra.IsInvariant A B (B ≃ₐ[A] B) := ⟨fun b hb => hfix b hb⟩`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq A B (B ≃ₐ[A] B) 𝔷 m (hzu.trans hmu.symm)`. Use `⟨e.comp (g : B →+* B), fun a => ?_, fun b => hle _, fun b hb => ?_⟩` and prove the remaining obligations. Simplify using `[he]`.
-
-Establish `: g • b ∈ m`. Rewrite using `[hg]`. Conclude with `Ideal.smul_mem_pointwise_smul g b 𝔷 hb`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact (Nat.Prime p)] (A B : Type) [CommRing A] [IsLocalRing A]
     [CommRing B] [IsDomain B] [Algebra A B] [Module.Finite A B] [Finite (B ≃ₐ[A] B)]

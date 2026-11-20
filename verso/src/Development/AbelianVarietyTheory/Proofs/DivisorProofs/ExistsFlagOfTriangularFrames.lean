@@ -14,9 +14,9 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM germ_resM)
 namespace GlobalTheory.TriFrame.FlagOf
 
 /- English proof (translation)
-Use `Module.Finite.of_basis b` as an intermediate fact. Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Rewrite using `[SetLike.mem_coe, Module.Basis.mem_span_image]`. Introduce `l hl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_setOf_eq] at hi hn`. Conclude with `Finsupp.mem_support_iff.1 hl (h i l (Fin.lt_def.2 (by omega)))`. Rewrite using `[Set.image_eq_range, Set.image_eq_range]`. Conclude with `(finrank_span_eq_card (c.linearIndependent.comp _ Subtype.val_injective)).trans (finrank_span_eq_card (b.linearIndependent.comp _ Subtype.val_injective)).symm`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_image_eq {K M : Type*} [Field K] [AddCommGroup M] [Module K M] {r : ℕ}
     (b c : Module.Basis (Fin r) K M) (h : ∀ i l, i < l → b.repr (c i) l = 0) (n : ℕ) :
@@ -37,7 +37,7 @@ theorem span_image_eq {K M : Type*} [Field K] [AddCommGroup M] [Module K M] {r :
 variable {X : Scheme.{0}} {F : X.Modules} {r : ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (he.basis h).sum_repr t]`. Simplify using `only [map_sum, QCoh.germ_smul, IsFrame.basis_apply, germ_resM]`. Simplify using `only [← he.stalkBasis_apply x (h hx)]`. Rewrite using `[← map_sum, Module.Basis.repr_sum_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkBasis_repr_germ {U V : X.Opens} {e : Fin r → Γ(F, U)} (he : IsFrame e) (h : V ≤ U)
     (x : X) (hx : x ∈ V) (t : Γ(F, V)) (i : Fin r) :
@@ -49,15 +49,15 @@ theorem stalkBasis_repr_germ {U V : X.Opens} {e : Fin r → Γ(F, U)} (he : IsFr
   rw [← map_sum, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Establish `hmem (j : Fin l) : c (Fin.castLE hl j) ∈ P.sec U`. Use `(hP U le_rfl (Pi.single (Fin.castLE hl j) 1)).2 fun j' hj' => by` as an intermediate fact. Rewrite using `[Pi.single_apply, if_neg (fun e => by subst e; have := j.2; simp at hj'; omega)]`. Simplify `this` using `[Pi.single_apply, resM_self]`. Use `⟨fun j => P.mkSec _ (hmem j), isFrame_iff.2 fun V h => ⟨?_, fun t _ => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearIndependent.of_comp (QCoh.appLinear P.incl V) ?_` and prove the remaining obligations. Use `(hc.basis h).linearIndependent.comp _ (Fin.castLE_injective hl)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, IsFrame.basis_apply, QCoh.appLinear_apply, app_resM, Sub.incl_app_mkSec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1` using `P.incl_app_mem t`. Rewrite `h1` using `[← (hc.basis h).sum_repr (P.incl.app V t)]`. Simplify using `only [IsFrame.basis_apply] at h1`. Establish `h2` using `(hP V h _).1 h1`. Establish `h3 : t = ∑ j : Fin l, (hc.basis h).repr (P.incl.app V t) (Fin.castLE hl j) • resM P.toMod h (P.mkSec _ (hmem j))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `P.incl_app_injective V` to reduce the goal to its premises. Use `conv_lhs => rw [← (hc.basis h).sum_repr (P.incl.app V t)]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, app_resM, Sub.incl_app_mkSec, IsFrame.basis_apply]`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE hl) (Fin.castLE_injective hl).injOn (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) (fun j _ hj => ?_) (fun _ _ => rfl)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 j (Nat.le_of_not_lt fun hlt => hj ⟨⟨j, hlt⟩, by simp, rfl⟩), zero_smul]`. Rewrite using `[h3]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isFrame_sub {U : X.Opens} (P : Sub F) (c : Fin r → Γ(F, U)) (hc : IsFrame c) (l : ℕ) (hl : l ≤ r)
     (hP : ∀ (V : X.Opens) (h : V ≤ U) (a : Fin r → Γ(X, V)),
@@ -99,21 +99,19 @@ def stepSub (hs : IsFrame s) (hA : genericPoint X ∈ A) (n : ℕ) : Sub F :=
     ((show Module.Basis (Fin r) X.functionField (genStalk F) from hs.stalkBasis _ hA) '' {j | (j : ℕ) < n}))
 
 /- English proof (translation)
-Rewrite using `[stepSub, Sub.mem_ofGeneric]`. Distinguish the cases in `hV : genericPoint X ∈ V`. Use `swap`. Use `⟨fun _ j _ => ?_, fun _ h => (hV h).elim⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : V = ⊥ := by`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`. Conclude with `hV (genericPoint_mem hx)`. Conclude with `Subsingleton.elim _ _`. Establish `hsp` using `span_image_eq (K := X.functionField) (M := genStalk F) (hs.stalkBasis _ hA) (he.stalkBasis _ (h hV)) (fun i l hil => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hUA : genericPoint X ∈ U ⊓ A` using `⟨h hV, hA⟩`. Use `stalkBasis_repr_germ hs (inf_le_right : U ⊓ A ≤ A) _ hUA (resM F inf_le_left (e i)) l` as an intermediate fact. Rewrite `this` using `[germ_resM]`. Rewrite using `[IsFrame.stalkBasis_apply]`. Use `this.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(congrArg _ (ht i l hil)).trans (map_zero _)) n`. Establish `hco (j : Fin r) : (he.stalkBasis _ (h hV)).repr (F.presheaf.germ V _ hV (∑ j, a j • resM F h (e j))) j = X.presheaf.germ V _ hV (a j)`. Rewrite using `[stalkBasis_repr_germ he h]`. Simplify using `only [← he.basis_apply h]`. Rewrite using `[Module.Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : F.presheaf.germ V _ hV (∑ j, a j • resM F h (e j)) ∈ Submodule.span X.functionField ((show Module.Basis (Fin r) X.functionField (genStalk F) from he.stalkBasis _ (h hV)) '' {j | (j : ℕ) < n}) ↔ ∀ j : Fin r, n ≤ (j : ℕ) → a j = 0`. Rewrite using `[Module.Basis.mem_span_image]`. Prove the components needed by the constructor for the conclusion. Introduce `H j hj`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h0 : X.presheaf.germ V _ hV (a j) ≠ 0` using `fun h0 => hne (germ_injective_of_isIntegral X _ hV (h0.trans (map_zero _).symm))`. Use `H (Finsupp.mem_support_iff.2 (fun h1 => h0 ((hco j).symm.trans h1)))` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq] at this`. Use linear arithmetic over natural numbers and integers. Introduce `H j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_setOf_eq] at hn`. Use `Finsupp.mem_support_iff.1 hj ((hco j).trans ?_)` and prove the remaining obligations. Rewrite using `[H j (by omega), map_zero]`. Rewrite using `[← key]`.
-
-Conclude with `⟨fun H => hsp.ge (H hV), fun H _ => hsp.le H⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_stepSub_iff (hs : IsFrame s) (hA : genericPoint X ∈ A) (n : ℕ) {U : X.Opens}
     {e : Fin r → Γ(F, U)} (he : IsFrame e) (ht : IsTri hs e) (V : X.Opens) (h : V ≤ U)
@@ -163,7 +161,7 @@ theorem mem_stepSub_iff (hs : IsFrame s) (hA : genericPoint X ∈ A) (n : ℕ) {
   exact ⟨fun H => hsp.ge (H hV), fun H _ => hsp.le H⟩
 
 /- English proof (translation)
-Introduce `_ ht hV` and use `Submodule.span_mono (Set.image_mono fun _ hj => lt_of_lt_of_le hj hmn) (ht hV)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stepSub_mono (hs : IsFrame s) (hA : genericPoint X ∈ A) {m n : ℕ} (hmn : m ≤ n) (V : X.Opens) :
     (stepSub hs hA m).sec V ≤ (stepSub hs hA n).sec V := fun _ ht hV =>
@@ -174,11 +172,11 @@ end GlobalTheory.TriFrame.FlagOf
 open GlobalTheory.TriFrame.FlagOf in
 
 /- English proof (translation)
-Introduce `X _ A F r s hs hA H`. Establish `fr {V : X.Opens} {e : Fin r → Γ(F, V)} (he : IsFrame e) (ht : IsTri hs e) (l : ℕ) (hl : l ≤ r)` using `exists_isFrame_sub (stepSub hs hA l) e he l hl (mem_stepSub_iff hs hA l he ht)`. Use `⟨{ F i := (stepSub hs hA i).toMod ι i := (stepSub hs hA i).incl isSubbundle i := ⟨inferInstance, r - i, fun x => ?_⟩ isVB i x := ?_ step i := (stepSub hs hA i.succ).lift (stepSub hs hA i.castSucc).incl fun V t => stepSub_mono hs hA (by simp) V ((stepSub hs hA i.castSucc).incl_app …` and prove the remaining obligations. Take `⟨V, e, hx, he, ht⟩` from `H x`. Take `⟨e', he'⟩` from `exists_isFrame_cokernel_of_frame (stepSub hs hA i) e he i i.is_le (mem_stepSub_iff hs hA i he ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨V, e', hx, he'⟩`. Take `⟨V, e, hx, he, ht⟩` from `H x`. Take `⟨t, h1, -⟩` from `fr he ht i i.is_le`. Conclude with `⟨V, t, hx, h1⟩`. Take `⟨V, e, hx, he, ht⟩` from `H x`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨t, h1, h2⟩` from `fr he ht r le_rfl`. Use `⟨V, t, hx, h1, ?_⟩` and prove the remaining obligations. Establish `h3 : (fun j => (stepSub hs hA r).incl.app V (t j)) = e` using `funext h2`. Rewrite `he` using `[← h3]`. Conclude with `he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TriFrame.exists_flag_spans :
     ∀ (X : Scheme.{0}) [IsIntegral X] (A : X.Opens) (F : X.Modules) (r : ℕ) (s : Fin r → Γ(F, A)) (hs : IsFrame s),

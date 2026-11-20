@@ -11,11 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.IdemUnder
 
 /- English proof (translation)
-Introduce `D e PP v ε he hv hsum`. Take `⟨hee, hec, -⟩` from `he.1`. Establish `hfix : e * algebraMap (AF D.host.F) (AE D) ε = e`. Rewrite using `[← hsum, mul_add, hee, hec, add_zero]`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hone : Φ e PP = 1` using `(GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ he).2.1`. Assume the negation of the conclusion as `hne`. Establish `hzero` using `(GlobalTheory.IdemSupport.place_comp hΦ hv).2.2 PP hne`. Establish `hcomp` using `GlobalTheory.IdemSupport.ev_mul (Φ := Φ) e (algebraMap (AF D.host.F) (AE D) ε) PP`. Rewrite `hcomp` using `[hfix, hzero, mul_zero, hone]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero hcomp`.
+A detailed English derivation is pending.
 -/
 theorem under_eq_of_isIdemAt : ∀ (D : D7) (e : AE D) (PP : Pl D.host.E) (v : HeightOneSpectrum (𝓞 D.host.F)) (ε : AF D.host.F), Formalism.L2.NTheta.IsIdemAt e PP → IsPlaceIdem D v ε → e + cA D e = algebraMap (AF D.host.F) (AE D) ε → PP.under (𝓞 D.host.F) = v := by
   intro D e PP v ε he hv hsum

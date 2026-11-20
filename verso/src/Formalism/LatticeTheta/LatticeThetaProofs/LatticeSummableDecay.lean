@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.H
 
 /- English proof (translation)
-Introduce `L _ _ g b hb hg`. Take `⟨C, hC⟩` from `hg.bound`. Establish `hrank : Module.finrank ℤ L = Module.finrank ℝ V` using `ZLattice.rank ℝ L`. Establish `hsum : Summable fun z : L => ‖z‖ ^ (-b)` using `ZLattice.summable_norm_rpow L (-b) (by rw [hrank]; linarith)`. Establish `ht : Tendsto (Subtype.val : L → V) cofinite (cocompact V)` using `(AddSubgroup.isClosed_of_discrete (H := L.toAddSubgroup)).tendsto_coe_cofinite_of_isDiscrete (isDiscrete_iff_discreteTopology.mpr inferInstance)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Summable.of_norm_bounded_eventually (hsum.mul_left C) ?_` and prove the remaining obligations. Use `filter_upwards [ht.eventually hC] with z hz`. Rewrite `hz` using `[Real.norm_of_nonneg (Real.rpow_nonneg (norm_nonneg _) _)]`. Conclude with `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_summable_decay (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] : LatticeSummableDecay V := by

@@ -23,19 +23,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 end GlobalTheory.TwistVal
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `hP hD hS hF`. Establish `A` using `_root_.GlobalTheory.T.distinguished_section_boundary_valuation_vanishes hP hD hS hF`. Establish `B` using `_root_.GlobalTheory.T.integral_frame_point_stalk_compat' hP hD hS hF`. Unfold `Covers Lifts at *`. Use `(A.and B).imp fun Fm CH _ h => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩⟩` from `h`. Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and e2`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY Z TF la w m _ f hf y T io y' g hg hpt hf0 => ?_⟩` and prove the remaining obligations. Take `⟨hA, hB⟩` from `hx0 x hx hle ι p hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hfi : GlobalTheory.FlatLine.idem Z * f = f` using `GlobalTheory.FlatLine.idem_mul_eq (e := exZ _ (AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m)) ⟨AllWt.cuspW_le_secZ _ hf.1, hf.2⟩`. Establish `hid : evI y' (GlobalTheory.FlatLine.idem Z) ≠ 0` using `fun h0 => hf0 (by rw [← hfi, evI_mul, h0, zero_mul])`. Establish `he` using `GlobalTheory.TwistVal.evI_idem_eq_one y' hid`. Take `⟨t1, ht1⟩` from `hA i hi Y hY Z TF y T io y' g hg hpt hid`. Take `⟨t2, ht2⟩` from `hB i hi Y hY Z TF y T io y' g hg hpt hid (-w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨tk, htk⟩` from `GlobalTheory.TwistVal.exists_zpow y' t1 he ht1 (-m)`. Set `z` to `t2.mul tk`. Establish `hz` using `GlobalTheory.TwistVal.val_mul y' t2 tk he ht2 htk`. Establish `hw : AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m + (AllWt.wtOf (dat p i) (GlobalTheory.FlatLine.parWt (dat p i) (-w)) 0 + AllWt.wtOf (dat p i) 0 (-m)) = AllWt.wtOf (dat p i) la 0`. Rewrite using `[← AllWt.wtOf_add, ← AllWt.wtOf_add]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ j`. Simplify using `[GlobalTheory.FlatLine.parWt]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem` using `z.cusp_sig _ (AllWt.even_wtOf _ _) f hf`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hw]`. Use `⟨⟨f * z.sig, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show evI y' (f * z.sig) ≠ 0`. Rewrite using `[evI_mul]`. Conclude with `mul_ne_zero hf0 (GlobalTheory.TwistVal.val_inv y' z he).1`.
-
-Use `show vV T.V (evI y' (f * z.sig)) = vV T.V (evI y' f)`. Rewrite using `[evI_mul, vV_mul hf0 (GlobalTheory.TwistVal.val_inv y' z he).1, hz, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwistVal.twist_preserves_boundary_valuation : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (dat p i)) (w : AllWt.Psi p.T.Q.H → ℤ) (m : ℤ), 4 ∣ m → ∀ f ∈ AllWt.cuspOn Y.U Z (AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m), ∀ (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' f ≠ 0 → ∃ f' : Cusp Z Y.U la, evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂)) ≠ 0 ∧ vV T.V (evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂))) = vV T.V (evI y' f) := by
   intro hP hD hS hF
@@ -87,7 +85,7 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TwistVal.twist_preserves_boundary_valuation | exact _root_.GlobalTheory.TwistVal.twist_preserves_boundary_valuation | (intros; apply _root_.GlobalTheory.TwistVal.twist_preserves_boundary_valuation <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.boundary_valuation_twist_invariant : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (dat p i)) (w : AllWt.Psi p.T.Q.H → ℤ) (m : ℤ), 4 ∣ m → ∀ f ∈ AllWt.cuspOn Y.U Z (AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m), ∀ (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' f ≠ 0 → ∃ f' : Cusp Z Y.U la, evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂)) ≠ 0 ∧ vV T.V (evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂))) = vV T.V (evI y' f) := by
   first | exact @_root_.GlobalTheory.TwistVal.twist_preserves_boundary_valuation | exact _root_.GlobalTheory.TwistVal.twist_preserves_boundary_valuation | (intros; apply _root_.GlobalTheory.TwistVal.twist_preserves_boundary_valuation <;> assumption)

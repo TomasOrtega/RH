@@ -13,17 +13,15 @@ namespace GlobalTheory.FlagZ
 open GlobalTheory.ProjSpace GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `ι _ N τ l Z i _ _ _ hc hd`. Establish `hX : GlobalTheory.IsArithVar (i ≫ flStr ι N) 0` using `⟨inferInstance, inferInstance, inferInstance, isProjOver_comp_of_isClosedImmersion i (isProjOver_str _ _), (flat_int_iff_charZero _).2 hc, by simpa using hd⟩`. Choose the witnesses or unpack the hypotheses as in `⟨I, hI⟩ : ∃ I, i (genericPoint Z) ∈ nonzeroLocus (plSec (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (τ, l) I) := by`. Establish `hm : i (genericPoint Z) ∈ (⊤ : (Fl ι N).Opens)` using `trivial`. Rewrite `hm` using `[← iSup_nonzeroLocus_plSec (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (τ, l)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.1 hm`. Establish `hu : genericPoint Z ∈ nonzeroLocus (secPull (plSec (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (τ, l) I) i)`. Rewrite using `[nonzeroLocus_secPull]`. Conclude with `hI`. Establish `h0 : ∀ σ (y : CxPts (i ≫ flStr ι N) σ), y ∈ ptsIn _ σ (nonzeroLocus (secPull (plSec (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (τ, l) I) i))` using `fun σ y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_ptsIn]`. Establish `e` using `hX.under_eq_genericPoint y`. Simplify using `only [under] at e`. Rewrite using `[e]`. Conclude with `hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, isRatSec_ratOfSec _ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[HermLB.curveDeg_sec (L := (flDet τ l : GlobalTheory.HermLB (flStr ι N))) i _ hu h0]`. Use `sub_nonneg.2 (le_trans ?_ (finsum_nonneg fun z => mul_nonneg (by exact_mod_cast mult_divOfSec_nonneg z) (Real.log_natCast_nonneg _)))` and prove the remaining obligations. Rewrite using `[← neg_nonneg, ← finsum_neg_distrib]`. Use `finsum_nonneg fun σ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← finsum_neg_distrib]`. Use `finsum_nonneg fun y => ?_` and prove the remaining obligations. Establish `h1` using `plSec_mem_smallSec (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (τ, l) I σ (PtsOver.map i rfl _ y)`. Establish `h2` using `Weight.nsq_nonneg (((flDet τ l : GlobalTheory.HermLB (flStr ι N))).φ σ) (secVal _ σ (plSec (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (τ, l) I)) (PtsOver.map i rfl _ y)`. Establish `h3` using `Real.log_nonpos h2 h1`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem curveDeg_restr_flDet_nonneg : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (l : Fin (N + 1)) (Z : Scheme.{0})
     (i : Z ⟶ Fl ι N) [IsClosedImmersion i] [IsIntegral Z] [IsLocallyNoetherian Z], CharZero Γ(Z, ⊤) →

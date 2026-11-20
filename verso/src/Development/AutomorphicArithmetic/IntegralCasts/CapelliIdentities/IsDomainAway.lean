@@ -3,11 +3,11 @@ import Mathlib
 open AlgebraicGeometry
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(IsNoetherian.noetherian I : I.FG)`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨1, M.one_mem, by simp⟩`. Consider the case `insert x t _ ih`. Take `⟨s, hs, hs'⟩` from `ih fun a ha => h a (Ideal.span_mono (by simp) ha)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hm'⟩` from `h x (Ideal.subset_span (by simp))`. Use `⟨m * s, M.mul_mem hm hs, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[Finset.coe_insert, Submodule.mem_span_insert]`. Take `⟨c, z, hz, rfl⟩` from `ha`. Establish `h2` using `hs' z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul]`. Take the linear combination `(s * c) * hm' + m * h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma exists_kill {A : Type*} [CommRing A] [IsNoetherianRing A] (M : Submonoid A)
     (I : Ideal A) (h : ∀ a ∈ I, ∃ m ∈ M, m * a = 0) :
@@ -27,13 +27,13 @@ private lemma exists_kill {A : Type*} [CommRing A] [IsNoetherianRing A] (M : Sub
     linear_combination (s * c) * hm' + m * h2
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap A L s)` using `IsLocalization.map_units L (⟨s, hs⟩ : M)`. Set `φ : B →+* L` to `IsLocalization.Away.lift s hu`. Establish `hφ : ∀ a, φ (algebraMap A B a) = algebraMap A L a` using `fun a => IsLocalization.Away.lift_eq s hu a`. Establish `hinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Take `⟨⟨a, m⟩, hm⟩` from `IsLocalization.surj (Submonoid.powers s) b`. Establish `h0 : algebraMap A L a = 0`. Rewrite using `[← hφ, ← hm, map_mul, hb, zero_mul]`. Establish `h1 : algebraMap A B s * algebraMap A B a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hk a h0, map_zero]`. Establish `hsu : IsUnit (algebraMap A B s)` using `IsLocalization.Away.algebraMap_isUnit s`. Establish `h2 : algebraMap A B a = 0` using `(hsu.mul_right_eq_zero).mp h1`. Establish `hmu : IsUnit (algebraMap A B (m : A))` using `IsLocalization.map_units B m`. Simplify using `only at hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hm` using `[h2]`. Conclude with `(hmu.mul_left_eq_zero).mp hm`. Conclude with `hinj.isDomain φ`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isDomain_away {A L B : Type*} [CommRing A] [CommRing L] [IsDomain L]
     [CommRing B] [Algebra A L] [Algebra A B] (M : Submonoid A) [IsLocalization M L]
@@ -61,11 +61,11 @@ private lemma isDomain_away {A L B : Type*} [CommRing A] [CommRing L] [IsDomain 
   exact hinj.isDomain φ
 
 /- English proof (translation)
-Introduce `X V hV _ ξ hξ _`. Use `letI alg : Algebra Γ(X, V) (X.presheaf.stalk ξ) := X.presheaf.algebra_section_stalk (⟨ξ, hξ⟩ : V)`. Set `P` to `(hV.primeIdealOf ⟨ξ, hξ⟩).asIdeal`. Establish `hloc : IsLocalization P.primeCompl (X.presheaf.stalk ξ)` using `hV.isLocalization_stalk ⟨ξ, hξ⟩`. Take `⟨s, hs, hk⟩` from `exists_kill P.primeCompl (RingHom.ker (algebraMap Γ(X, V) (X.presheaf.stalk ξ))) (fun a ha => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(IsLocalization.map_eq_zero_iff P.primeCompl (X.presheaf.stalk ξ) a).mp ha`. Conclude with `⟨m, m.2, hm⟩)`. Use `⟨s, ?_, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap Γ(X, V) (X.presheaf.stalk ξ) s)` using `IsLocalization.map_units (X.presheaf.stalk ξ) (⟨s, hs⟩ : P.primeCompl)`. Conclude with `(X.mem_basicOpen s ξ hξ).mpr hu`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hV.isLocalization_basicOpen s` as an intermediate fact. Conclude with `isDomain_away (L := X.presheaf.stalk ξ) P.primeCompl s hs (fun a ha => hk a ha)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYde8.main :
     ∀ {X : AlgebraicGeometry.Scheme} {V : X.Opens},

@@ -57,7 +57,7 @@ variable {k : Type} [Field k] (B : Type) [CommRing B] [Algebra k B] (p : ℕ)
 def dQ : Jet B Unit p := Ideal.Quotient.mk _ (MvPolynomial.X ())
 
 /- English proof (translation)
-Rewrite using `[dQ, ← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow (X_mem_orig _) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dQ_pow : dQ B p ^ (p + 1) = 0 := by
   rw [dQ, ← map_pow]
@@ -109,34 +109,34 @@ variable {X0 : Scheme.{0}} (G : Over X0) {k : Type} [Field k] (x : Sp k ⟶ X0)
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem prZ_fst (m : ℕ) : prZ G x m ≫ pullback.fst G.hom x = pb G x m := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem prZ_snd (m : ℕ) : prZ G x m ≫ pullback.snd G.hom x =
     (fst (Tm x m) G).left ≫ spMap (algebraMap k (Jet k Unit m)) := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Rewrite using `[secZ, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secZ_snd (m : ℕ) : secZ G x m ≫ (snd (Tm x m) G).left = pullback.fst G.hom x := by
   rw [secZ, ← Over.comp_left, lift_snd]; rfl
 
 /- English proof (translation)
-Rewrite using `[secZ, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secZ_fst (m : ℕ) : secZ G x m ≫ (fst (Tm x m) G).left =
     pullback.snd G.hom x ≫ spMap ((jetAug : Jet k Unit m →ₐ[k] k) : Jet k Unit m →+* k) := by
   rw [secZ, ← Over.comp_left, lift_fst]; rfl
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, prZ_fst, Category.id_comp]`. Conclude with `secZ_snd G x m`. Rewrite using `[Category.assoc, prZ_snd, Category.id_comp, ← Category.assoc, secZ_fst, Category.assoc]`. Use `spMap_comp_alg (S := k) (A := Jet k Unit m) (B := k) jetAug` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `erw [this]`. Simplify using `[spMap]`.
+A detailed English derivation is pending.
 -/
 theorem secZ_prZ (m : ℕ) : secZ G x m ≫ prZ G x m = 𝟙 _ := by
   apply pullback.hom_ext
@@ -147,7 +147,7 @@ theorem secZ_prZ (m : ℕ) : secZ G x m ≫ prZ G x m = 𝟙 _ := by
     simp [spMap]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, prZ_fst, prZ_fst, trY, pb, pb, ← Over.comp_left, whiskerRight_snd]`. Rewrite using `[Category.assoc, prZ_snd, prZ_snd, trY, ← Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, Category.assoc]`. Use `congr 1`. Conclude with `spMap_comp_alg (S := k) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem trY_prZ (p : ℕ) (hp : 1 ≤ p) : trY G x p hp ≫ prZ G x p = prZ G x 1 := by
   apply pullback.hom_ext
@@ -164,7 +164,7 @@ end GlobalTheory.CompanionTheory.Ar.Coc
 namespace GlobalTheory.CompanionTheory.Ar.Coc
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_toΓ {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (a : A) :
     ((spMap f).appTop).hom (toΓ A a) = toΓ B (f a) :=
@@ -174,7 +174,7 @@ section
 variable {X0 : Scheme.{0}} (G : Over X0) {k : Type} [Field k] (x : Sp k ⟶ X0)
 
 /- English proof (translation)
-Rewrite using `[dlt, ← map_pow, ← map_pow, ← map_pow]`. Establish `: (Ideal.Quotient.mk (orig k Unit ^ (m + 1))) (MvPolynomial.X () ) ^ (m + 1) = 0`. Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow (X_mem_orig _) _)`. Rewrite using `[map_pow, this, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dlt_pow (m : ℕ) : dlt G x m ^ (m + 1) = 0 := by
   rw [dlt, ← map_pow, ← map_pow, ← map_pow]
@@ -184,9 +184,9 @@ theorem dlt_pow (m : ℕ) : dlt G x m ^ (m + 1) = 0 := by
   rw [map_pow, this, map_zero, map_zero]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => (q.appTop).hom (toΓ (Jet k Unit m) (Ideal.Quotient.mk _ (MvPolynomial.X ())))) (secZ_fst G x m)`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite using `[dlt, e, spMap_toΓ]`. Establish `: ((jetAug : Jet k Unit m →ₐ[k] k) : Jet k Unit m →+* k) (Ideal.Quotient.mk _ (MvPolynomial.X ())) = 0`. Simplify using `[jetAug, liftJet]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secZ_dlt (m : ℕ) : ((secZ G x m).appTop).hom (dlt G x m) = 0 := by
   have e := congrArg (fun q => (q.appTop).hom (toΓ (Jet k Unit m) (Ideal.Quotient.mk _ (MvPolynomial.X ())))) (secZ_fst G x m)
@@ -197,9 +197,9 @@ theorem secZ_dlt (m : ℕ) : ((secZ G x m).appTop).hom (dlt G x m) = 0 := by
   rw [this, map_zero, map_zero]
 
 /- English proof (translation)
-Establish `e : trY G x p hp ≫ (fst (Tm x p) G).left = (fst (Tm x 1) G).left ≫ (homAt x (toFirst k p hp)).left`. Rewrite using `[trY, ← Over.comp_left, whiskerRight_fst, Over.comp_left]`. Establish `e'` using `congrArg (fun q => (q.appTop).hom (toΓ (Jet k Unit p) (Ideal.Quotient.mk _ (MvPolynomial.X ())))) e`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at e'`. Rewrite using `[dlt, e', dlt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `spMap_toΓ _ _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem trY_dlt (p : ℕ) (hp : 1 ≤ p) : ((trY G x p hp).appTop).hom (dlt G x p) = dlt G x 1 := by
   have e : trY G x p hp ≫ (fst (Tm x p) G).left = (fst (Tm x 1) G).left ≫ (homAt x (toFirst k p hp)).left := by
@@ -211,7 +211,7 @@ theorem trY_dlt (p : ℕ) (hp : 1 ≤ p) : ((trY G x p hp).appTop).hom (dlt G x 
   exact spMap_toΓ _ _
 
 /- English proof (translation)
-Rewrite using `[trY, pb, pb, ← Over.comp_left, whiskerRight_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trY_pb (p : ℕ) (hp : 1 ≤ p) : trY G x p hp ≫ pb G x p = pb G x 1 := by
   rw [trY, pb, pb, ← Over.comp_left, whiskerRight_snd]
@@ -219,18 +219,18 @@ theorem trY_pb (p : ℕ) (hp : 1 ≤ p) : trY G x p hp ≫ pb G x p = pb G x 1 :
 variable [GrpObj G]
 
 /- English proof (translation)
-Rewrite using `[trY, pa, pa, ← Over.comp_left, comp_lift_assoc, whiskerRight_snd, whiskerRight_fst_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trY_pa (p : ℕ) (hp : 1 ≤ p) (y : Tm x p ⟶ G) :
     trY G x p hp ≫ pa G x y = pa G x (homAt x (toFirst k p hp) ≫ y) := by
   rw [trY, pa, pa, ← Over.comp_left, comp_lift_assoc, whiskerRight_snd, whiskerRight_fst_assoc]
 
 /- English proof (translation)
-Establish `hf : (Over.homMk (pullback.snd G.hom x ≫ spMap ((jetAug : Jet k Unit m →ₐ[k] k) : Jet k Unit m →+* k)) (by dsimp`. Rewrite using `[Category.assoc, ← Category.assoc (spMap _), spMap_comp_alg]`. Simplify using `[spMap]) : FinalForm G x ⟶ Tm x m) ≫ y = 1 := by`. Establish `e : (Over.homMk (pullback.snd G.hom x ≫ spMap ((jetAug : Jet k Unit m →ₐ[k] k) : Jet k Unit m →+* k)) (by dsimp`. Rewrite using `[Category.assoc, ← Category.assoc (spMap _), spMap_comp_alg]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[spMap]) : FinalForm G x ⟶ Tm x m) =`. Use the proof step `(Over.homMk (pullback.snd G.hom x) (by simp [spMap]) : FinalForm G x ⟶ overAt x k) ≫ homAt x (jetAug : Jet k Unit m →ₐ[k] k) := by`. Use `ext1`. Both sides reduce to the same expression. Rewrite using `[e, Category.assoc, hy]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Hom.one_def]`. Rewrite using `[secZ, pa, ← Over.comp_left, comp_lift_assoc, lift_fst_assoc, lift_snd, hf]`. Conclude with `congrArg (fun q => q.left) (_root_.one_mul (Over.homMk (pullback.fst G.hom x) pullback.condition : FinalForm G x ⟶ G))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secZ_pa {m : ℕ} (y : Tm x m ⟶ G) (hy : homAt x (jetAug : Jet k Unit m →ₐ[k] k) ≫ y = 1) :
     secZ G x m ≫ pa G x y = pullback.fst G.hom x := by
@@ -256,17 +256,15 @@ end GlobalTheory.CompanionTheory.Ar.Coc
 namespace GlobalTheory.CompanionTheory.Ar.Coc
 
 /- English proof (translation)
-Establish `hs : Function.Surjective ((jetAug : Jet k κ m →ₐ[k] k) : Jet k κ m →+* k)` using `fun c => ⟨algebraMap k _ c, (jetAug : Jet k κ m →ₐ[k] k).commutes c⟩`. Establish `hm : (RingHom.ker ((jetAug : Jet k κ m →ₐ[k] k) : Jet k κ m →+* k)).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ hs`. Establish `hq : (q : PrimeSpectrum (Jet k κ m)).asIdeal.IsPrime` using `(q : PrimeSpectrum (Jet k κ m)).isPrime`. Establish `hle : RingHom.ker ((jetAug : Jet k κ m →ₐ[k] k) : Jet k κ m →+* k) ≤ (q : PrimeSpectrum (Jet k κ m)).asIdeal`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `hc : MvPolynomial.constantCoeff P = 0`. Establish `: ((jetAug : Jet k κ m →ₐ[k] k) : Jet k κ m →+* k) (Ideal.Quotient.mk _ P) = MvPolynomial.constantCoeff P`. Simplify using `only [jetAug, liftJet]`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `C c => simp`. Consider the case `add a b ha hb => simp_all`. Consider the case `mul_X a i ha => simp_all`. Rewrite using `[← this]`. Conclude with `ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : P ∈ orig k κ` using `by simpa [hc] using sub_const_mem_orig P`. Use `hq.mem_of_pow_mem (m + 1) ?_` and prove the remaining obligations. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow hP _)]`. Conclude with `Ideal.zero_mem _`. Establish `heq` using `hm.eq_of_le hq.ne_top hle`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb : ((s : PrimeSpectrum k).asIdeal) = ⊥` using `haveI : (s : PrimeSpectrum k).asIdeal.IsPrime := (s : PrimeSpectrum k).isPrime Ideal.eq_bot_of_prime _`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `Eq.trans ?_ heq` and prove the remaining obligations. Use `show Ideal.comap _ (s : PrimeSpectrum k).asIdeal = _`. Rewrite using `[hb]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jet_pt {k : Type} [Field k] {κ : Type} (m : ℕ) (q : Sp (Jet k κ m)) (s : Sp k) :
     (spMap ((jetAug : Jet k κ m →ₐ[k] k) : Jet k κ m →+* k)) s = q := by
@@ -305,34 +303,34 @@ variable {X0 : Scheme.{0}} (G : Over X0) [GrpObj G] {k : Type} [Field k] (x : Sp
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem xkZ_fst {B : Type} [CommRing B] [Algebra k B] (z : overAt x B ⟶ G) :
     xkZ G x z ≫ pullback.fst G.hom x = z.left := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem xkZ_snd {B : Type} [CommRing B] [Algebra k B] (z : overAt x B ⟶ G) :
     xkZ G x z ≫ pullback.snd G.hom x = spMap (algebraMap k B) := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Rewrite using `[rQ, pb, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rQ_pb {B : Type} [CommRing B] [Algebra k B] (p : ℕ) (z : overAt x B ⟶ G) :
     rQ G x p z ≫ pb G x p = spMap ((inR (k := k) B p : B →ₐ[k] Jet B Unit p) : B →+* Jet B Unit p) ≫ z.left := by
   rw [rQ, pb, ← Over.comp_left, lift_snd]; rfl
 
 /- English proof (translation)
-Rewrite using `[rQ, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rQ_fst {B : Type} [CommRing B] [Algebra k B] (p : ℕ) (z : overAt x B ⟶ G) :
     rQ G x p z ≫ (fst (Tm x p) G).left = spMap ((inL (k := k) B p : Jet k Unit p →ₐ[k] Jet B Unit p) : Jet k Unit p →+* Jet B Unit p) := by
   rw [rQ, ← Over.comp_left, lift_fst]; rfl
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, prZ_fst, xkZ_fst, rQ_pb]`. Rewrite using `[Category.assoc, Category.assoc, prZ_snd, xkZ_snd, ← Category.assoc, rQ_fst]`. Conclude with `(spMap_comp_alg (S := k) _).trans (spMap_comp_alg (S := k) _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rQ_prZ {B : Type} [CommRing B] [Algebra k B] (p : ℕ) (z : overAt x B ⟶ G) :
     rQ G x p z ≫ prZ G x p =
@@ -352,14 +350,14 @@ section
 variable {k : Type} [Field k] {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, dQ_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dQ_span_pow (B : Type) [CommRing B] (p : ℕ) : Ideal.span {dQ B p} ^ (p + 1) = ⊥ := by
   rw [Ideal.span_singleton_pow, dQ_pow]
   simp
 
 /- English proof (translation)
-Use `map_orig_pow (R := k) (Ideal.Quotient.mk (orig k (Fin 1 × Fin d) ^ (m + 1))) (m + 1)` as an intermediate fact. Rewrite using `[← this, Ideal.map_quotient_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mkX_span_pow (m : ℕ) :
     Ideal.span (Set.range fun q : Fin 1 × Fin d => (Ideal.Quotient.mk (orig k (Fin 1 × Fin d) ^ (m + 1)) (MvPolynomial.X q))) ^ (m + 1) = ⊥ := by
@@ -402,7 +400,7 @@ end GlobalTheory.CompanionTheory.Ar.Coc
 namespace GlobalTheory.CompanionTheory.Ar.Coc
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).1`.
+A detailed English derivation is pending.
 -/
 theorem toΓ_inj (A : Type) [CommRing A] : Function.Injective (toΓ A) :=
   (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).1

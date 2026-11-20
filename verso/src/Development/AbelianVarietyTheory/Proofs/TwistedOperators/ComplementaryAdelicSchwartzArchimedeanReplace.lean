@@ -21,27 +21,25 @@ namespace GlobalTheory.TwistRest
 
 open scoped Classical in
 /- English proof (translation)
-Introduce `F _ _ κ _ f f₁ r hr hf`. Take `⟨hinv, hsch⟩` from `hr`. Use `set g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ := fun y => r (fun i => ((0 : InfiniteAdeleRing F), y i)) with hgdef`. Establish `hrg : ∀ x : κ → AF F, r x = g (fun i => (x i).2)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `z : κ → AF F` to `fun i => ((x i).1, (0 : FiniteAdeleRing (𝓞 F) F))`. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) z`. Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(u * z i : AF F) = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * (x i).1 = 0`. Rewrite using `[hu1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Conclude with `mul_zero _`. Set `x' : κ → AF F` to `fun i => ((0 : InfiniteAdeleRing F), (x i).2)`. Use `hinv x' z hz` as an intermediate fact. Establish `hx : x = x' + z`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x i).1 = (0 : InfiniteAdeleRing F) + (x i).1`. Rewrite using `[zero_add]`. Express the relevant statement in the definitionally equal form `(x i).2 = (x i).2 + (0 : FiniteAdeleRing (𝓞 F) F)`. Rewrite using `[add_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(congrArg r hx).trans this`. Establish `htens : ∀ f' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (⇑f') r = GlobalTheory.WeilM.pureA F (⇑f') g`. Introduce `f'`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, GlobalTheory.WeilM.pureA, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hrg x]`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x₀, f x₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf (SchwartzMap.ext h)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `a : κ → InfiniteAdeleRing F` to `fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x₀ i)`. Set `Λ : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → FiniteAdeleRing (𝓞 F) F) → ℂ)` to `{ toFun := fun Φ y => Φ (fun i => (a i, y i)) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hΛ : ∀ (f' : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g' : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), Λ (GlobalTheory.WeilM.pureA F f' g') = f' x₀ • g'`. Introduce `f' g'`. Use function extensionality and compare the values at `y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Λ, GlobalTheory.WeilM.pureA, a]`. Establish `hle : GlobalTheory.WeilM.schA F κ ≤ (GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)).comap Λ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f', g', hg', rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, hΛ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Submodule.smul_mem _ _ hg'`. Establish `hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)`. Establish `h1` using `hle (htens f ▸ hsch)`. Rewrite `h1` using `[Submodule.mem_comap, hΛ]`. Use `Submodule.smul_mem _ (f x₀)⁻¹ h1` as an intermediate fact.
-
-Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hx₀, one_smul]`. Then use the resulting hypothesis. Use `⟨hinv, ?_⟩` and prove the remaining obligations. Rewrite using `[htens f₁]`. Conclude with `Submodule.subset_span ⟨f₁, g, hg, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restTr : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (r : (κ → AF F) → ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) f r → f ≠ 0 → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) f₁ r := by

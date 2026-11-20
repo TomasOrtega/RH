@@ -6,7 +6,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.RamifiedCoefficientChains
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.h1f_generators_of_record` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FH1fGeneratorsAll.lean&line=10#L10)
 -/

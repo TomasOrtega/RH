@@ -18,7 +18,7 @@ namespace GlobalTheory.BKLim.CrLimit
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l}
 
 /- English proof (translation)
-Use `choose M' hM' using h`. Conclude with `⟨Matrix.of M', by ext i j; simp [hM']⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_of_dvd {R : Type} [CommRing R] {m n : Type} (c : R) (M : Matrix m n R)
     (h : ∀ i j, c ∣ M i j) : ∃ M' : Matrix m n R, M = c • M' := by
@@ -26,7 +26,7 @@ theorem exists_smul_of_dvd {R : Type} [CommRing R] {m n : Type} (c : R) (M : Mat
   exact ⟨Matrix.of M', by ext i j; simp [hM']⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(GlobalTheory.BSP.galois_discMap l K bk).1 (g : GQ l)`. Take `⟨t, w, e⟩ : ∃ (t : bk.S) (w : Wq l bk.a), s = X * t + C w` from `⟨_, _, eq_X_mul_shift_add_const s⟩`. Substitute `e` using the available equality. Rewrite using `[map_add, map_mul, map_add, map_mul, bk.ev_C, bk.gal_w, hc]`. Conclude with `⟨c * Per.σA (g : GQ l) (bk.ev t) - bk.ev t, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ev_X_dvd_gal (bk : BK K) (g : ↥(GK K)) (s : bk.S) :
     bk.ev X ∣ Per.σA (g : GQ l) (bk.ev s) - bk.ev s := by
@@ -37,7 +37,7 @@ theorem ev_X_dvd_gal (bk : BK K) (g : ↥(GK K)) (s : bk.S) :
   exact ⟨c * Per.σA (g : GQ l) (bk.ev t) - bk.ev t, by ring⟩
 
 /- English proof (translation)
-Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Rewrite using `[bk.ev_X, inclW, WittVector.map_teichmuller, WittVector.teichmuller_coeff_zero]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (OCb l) (Cb l))).2 (GlobalTheory.BSP.FlatDisc.flat_ne_zero bk)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_inclW_ev_X (bk : BK K) : IsUnit (inclW l (bk.ev X)) := by
   apply WittVector.isUnit_of_coeff_zero_ne_zero
@@ -49,27 +49,25 @@ end GlobalTheory.BKLim.CrLimit
 namespace GlobalTheory.BKLim.CrLimit
 
 /- English proof (translation)
-Introduce `l _ K bk d N ρ tw F F₀ r hlink hcr g i j`. It suffices to establish `hx : ∀ n : ℕ, ∃ a : Ainf l, (l : WCb l) ^ n ∣ (l : WCb l) ^ r * inclW l ((F₀.ε g - 1) i j) - inclW l (bk.ev X * a) by`. Take `⟨a, ha⟩` from `GlobalTheory.T.ainf_principal_ideal_saturated_closed l (bk.ev X) (isUnit_inclW_ev_X bk) r (inclW l ((F₀.ε g - 1) i j)) hx`. Conclude with `⟨a, inclW_injective ha⟩`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hnm, R, G, hT, hRG⟩` from `hlink n`. Establish `hk` using `GlobalTheory.T.breuilKisinLatticeFrame_cocycles_linked l K bk N N d (tw.d' m) n (fun g => (ρ g).val) (fun g => (tw.ρ' m g).val) F₀ (F m) (tw.Pi m) R (fun g i j => (pow_dvd_pow _ hnm).trans ((tw.onto m).equi g i j)) hT`. Use `set σ := Per.σA (g : GQ l) with hσ`. Use `set A := R.map bk.ev with hA`. Use `set B := G.map bk.ev with hB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set ε₀ := F₀.ε g with hε₀`. Use `set ε' := (F m).ε g with hε'`. Take `⟨D, hD⟩` from `exists_smul_of_dvd ((l : Ainf l) ^ n) (ε₀ * A.map σ - A * ε') (hk g)`. Take `⟨P, hP⟩` from `exists_smul_of_dvd ((l : Ainf l) ^ n) (A * B - (l : Ainf l) ^ r • (1 : Matrix (Fin d) (Fin d) (Ainf l))) (fun i j => by`. Establish `h` using `map_dvd bk.ev (hRG i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (A * B - (l : Ainf l) ^ r • (1 : Matrix (Fin d) (Fin d) (Ainf l))) i j = bk.ev ((R * G - (l : bk.S) ^ r • (1 : Matrix (Fin d) (Fin d) bk.S)) i j)`. Rewrite using `[hA, hB, ← Matrix.map_mul]`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_sub, map_mul, map_pow, map_natCast]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h)` using `only [map_pow, map_natCast]`. Take `⟨Z1, hZ1⟩` from `exists_smul_of_dvd (bk.ev X) (ε' - 1) (hcr m g)`. Take `⟨Z2, hZ2⟩` from `exists_smul_of_dvd (bk.ev X) (B.map σ - B) (fun i j => by`. Simplify `ev_X_dvd_gal bk g (G i j))` using `only [hB, Matrix.sub_apply, Matrix.map_apply]`. Establish `h1 : ε₀ * A.map σ = A * ε' + (l : Ainf l) ^ n • D` using `(sub_eq_iff_eq_add').1 hD`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2 : A * B = (l : Ainf l) ^ r • (1 : Matrix (Fin d) (Fin d) (Ainf l)) + (l : Ainf l) ^ n • P` using `(sub_eq_iff_eq_add').1 hP`. Establish `h3 : A.map σ * B.map σ = (l : Ainf l) ^ r • (1 : Matrix (Fin d) (Fin d) (Ainf l)) + (l : Ainf l) ^ n • P.map σ`. Rewrite using `[← Matrix.map_mul, h2]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_add, map_mul, map_pow, map_natCast]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `h4 : ε' = 1 + bk.ev X • Z1` using `(sub_eq_iff_eq_add').1 hZ1`. Establish `h5 : B.map σ = B + bk.ev X • Z2` using `(sub_eq_iff_eq_add').1 hZ2`. Establish `e1 : ε₀ * (A.map σ * B.map σ) = (l : Ainf l) ^ r • ε₀ + (l : Ainf l) ^ n • (ε₀ * P.map σ)`. Rewrite using `[h3, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ε₀ * (A.map σ * B.map σ) = A * ε' * B.map σ + (l : Ainf l) ^ n • (D * B.map σ)`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.add_mul, Matrix.smul_mul]`. Establish `e3 : A * ε' * B.map σ = A * B.map σ + bk.ev X • (A * Z1 * B.map σ)`. Rewrite using `[h4, Matrix.mul_add, Matrix.mul_one, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `e4 : A * B.map σ = (l : Ainf l) ^ r • (1 : Matrix (Fin d) (Fin d) (Ainf l)) + (l : Ainf l) ^ n • P + bk.ev X • (A * Z2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h5, Matrix.mul_add, h2, Matrix.mul_smul]`. Establish `key : (l : Ainf l) ^ r • (ε₀ - 1) = (l : Ainf l) ^ n • (P + D * B.map σ - ε₀ * P.map σ) + bk.ev X • (A * Z1 * B.map σ + A * Z2)`. Establish `h` using `e1.symm.trans e2`. Rewrite `h` using `[e3, e4]`. Use `eq_of_sub_eq_zero ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero.2 h, smul_sub, smul_sub, smul_add, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hij` using `congrFun (congrFun key i) j`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul] at hij`. Use `⟨(A * Z1 * B.map σ + A * Z2) i j, ?_⟩` and prove the remaining obligations.
-
-Establish `hd : (l : Ainf l) ^ n ∣ (l : Ainf l) ^ r * (ε₀ - 1) i j - bk.ev X * (A * Z1 * B.map σ + A * Z2) i j` using `⟨(P + D * B.map σ - ε₀ * P.map σ) i j, by`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply] at hij ⊢`. Take the linear combination `hij⟩`. Simplify `map_dvd (inclW l) hd` using `only [map_sub, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCr_of_link : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d N : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (tw : Tower ρ) (F : ∀ n, Frame bk N (tw.d' n) fun g => (tw.ρ' n g).val) (F₀ : Frame bk N d fun g => (ρ g).val) (r : ℕ), (∀ n, ∃ m, n ≤ m ∧ Link bk F₀.T (F m).T (tw.Pi m) n r) → (∀ n, (F n).IsCr) → F₀.IsCr := by
   intro l _ K bk d N ρ tw F F₀ r hlink hcr g i j

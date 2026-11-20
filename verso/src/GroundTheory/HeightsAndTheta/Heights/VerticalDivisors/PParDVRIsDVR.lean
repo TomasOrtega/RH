@@ -9,19 +9,17 @@ open MvPolynomial NumberField IsDedekindDomain IsLocalRing
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ e n v`. Set `A` to `MvPolynomial (Par e n) (𝓞 K)`. Set `R` to `ParDVR e n v`. Set `Rv` to `Localization.AtPrime v.asIdeal`. Establish `: IsDiscreteValuationRing Rv` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) v.ne_bot Rv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing R` using `IsLocalization.isNoetherianRing (parPrime e n v).primeCompl R inferInstance`. Establish `hC : ∀ s : 𝓞 K, s ∉ v.asIdeal → (C s : A) ∉ parPrime e n v`. Introduce `s hs h`. Rewrite `h` using `[parPrime, MvPolynomial.mem_map_C_iff]`. Conclude with `hs (by simpa using h 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hOR : algebraMap (𝓞 K) R = (algebraMap A R).comp C`. Rewrite using `[IsScalarTower.algebraMap_eq (𝓞 K) A R, MvPolynomial.algebraMap_eq]`. Set `φ : Rv →+* R` to `IsLocalization.lift (M := v.asIdeal.primeCompl) (g := algebraMap (𝓞 K) R) fun s => by`. Rewrite using `[hOR, RingHom.comp_apply]`. Conclude with `IsLocalization.map_units R (⟨C (s : 𝓞 K), hC s s.2⟩ : (parPrime e n v).primeCompl)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : φ.comp (algebraMap (𝓞 K) Rv) = algebraMap (𝓞 K) R` using `IsLocalization.lift_comp _`. Establish `hmax : maximalIdeal R = (maximalIdeal Rv).map φ`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal (parPrime e n v) R, ← IsLocalization.AtPrime.map_eq_maximalIdeal v.asIdeal Rv, Ideal.map_map, hφ, hOR, ← Ideal.map_map]`. Both sides reduce to the same expression. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible Rv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : maximalIdeal R = Ideal.span {φ ϖ}`. Rewrite using `[hmax, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.map_span, Set.image_singleton]`. Establish `hne : maximalIdeal R ≠ ⊥`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Introduce `hbot`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : algebraMap (𝓞 K) R x ∈ maximalIdeal R`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal (parPrime e n v) R, hOR, RingHom.comp_apply]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem C hx)`. Rewrite `hmem` using `[hbot, Ideal.mem_bot, hOR, RingHom.comp_apply]`. Establish `hinj : Function.Injective (algebraMap A R)` using `IsLocalization.injective R (Ideal.primeCompl_le_nonZeroDivisors (parPrime e n v))`.
-
-Conclude with `hx0 (MvPolynomial.C_injective _ _ (hinj (by rw [hmem, map_zero, map_zero])))`. Establish `hnf : ¬IsField R` using `fun h => hne (isField_iff_maximalIdeal_eq.mp h)`. Conclude with `((IsDiscreteValuationRing.TFAE R hnf).out 4 0).mp (show (maximalIdeal R).IsPrincipal from ⟨⟨φ ϖ, hspan⟩⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ParDVRIsDVR.proof : ParDVRIsDVR.Statement := by
   intro K _ _ e n v

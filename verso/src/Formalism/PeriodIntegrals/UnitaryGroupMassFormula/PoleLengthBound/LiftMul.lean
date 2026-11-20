@@ -20,9 +20,9 @@ def IntD (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) 
 variable {Q}
 
 /- English proof (translation)
-Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, ord_zero ζ hU]`. Conclude with `le_top`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `le_trans (le_min (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))) (ord_add ζ hU _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_sum_nonneg (hC : Q.InCurve) (ζ : PtsG G la) {ι : Type*} (s : Finset ι) (f : ι → OsK X la G.w)
     (h : ∀ i ∈ s, 0 ≤ ord (unifO X la G.N) ζ (f i)) : 0 ≤ ord (unifO X la G.N) ζ (∑ i ∈ s, f i) := by
@@ -37,7 +37,7 @@ theorem ord_sum_nonneg (hC : Q.InCurve) (ζ : PtsG G la) {ι : Type*} (s : Finse
       (ord_add ζ hU _ _)
 
 /- English proof (translation)
-Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Rewrite using `[ord_mul ζ hU]`. Conclude with `add_nonneg hx hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_mul_nonneg (hC : Q.InCurve) (ζ : PtsG G la) {x y : OsK X la G.w} (hx : 0 ≤ ord (unifO X la G.N) ζ x)
     (hy : 0 ≤ ord (unifO X la G.N) ζ y) : 0 ≤ ord (unifO X la G.N) ζ (x * y) := by
@@ -47,7 +47,7 @@ theorem ord_mul_nonneg (hC : Q.InCurve) (ζ : PtsG G la) {x y : OsK X la G.w} (h
   exact add_nonneg hx hy
 
 /- English proof (translation)
-Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Use `Finset.prod_induction f (fun x => 0 ≤ ord (unifO X la G.N) ζ x) (fun x y hx hy => ord_mul_nonneg hC ζ hx hy) ?_ h` and prove the remaining obligations. Rewrite using `[ord_one ζ hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_prod_nonneg (hC : Q.InCurve) (ζ : PtsG G la) {ι : Type*} (s : Finset ι) (f : ι → OsK X la G.w)
     (h : ∀ i ∈ s, 0 ≤ ord (unifO X la G.N) ζ (f i)) : 0 ≤ ord (unifO X la G.N) ζ (∏ i ∈ s, f i) := by
@@ -58,7 +58,7 @@ theorem ord_prod_nonneg (hC : Q.InCurve) (ζ : PtsG G la) {ι : Type*} (s : Fins
   rw [ord_one ζ hU]
 
 /- English proof (translation)
-Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Rewrite using `[ord_pow ζ hU]`. Conclude with `nsmul_nonneg hx n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_pow_nonneg (hC : Q.InCurve) (ζ : PtsG G la) {x : OsK X la G.w} (hx : 0 ≤ ord (unifO X la G.N) ζ x)
     (n : ℕ) : 0 ≤ ord (unifO X la G.N) ζ (x ^ n) := by
@@ -68,11 +68,11 @@ theorem ord_pow_nonneg (hC : Q.InCurve) (ζ : PtsG G la) {x : OsK X la G.w} (hx 
   exact nsmul_nonneg hx n
 
 /- English proof (translation)
-Introduce `γ`. Use `choose g1 hg1 ho1 using h1`. Use `choose g2 hg2 ho2 using h2`. Use `⟨∑ q ∈ antidiagonal γ, g1 q.1 * g2 q.2, ?_, fun ζ => ?_⟩` and prove the remaining obligations. Use `show _ = PI.HJP.H X la G.w γ (f1 * f2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[PI.HJP.H_mul]`. Use `push_cast`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hg1, hg2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `ord_sum_nonneg hC ζ _ _ fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `ord_mul_nonneg hC ζ (ho1 _ ζ) (ho2 _ ζ)`.
+A detailed English derivation is pending.
 -/
 theorem intD_mul (hC : Q.InCurve) {f1 f2 : Lw X la G.w} (h1 : IntD G la f1) (h2 : IntD G la f2) :
     IntD G la (f1 * f2) := by
@@ -92,9 +92,9 @@ theorem intD_mul (hC : Q.InCurve) {f1 f2 : Lw X la G.w} (h1 : IntD G la f1) (h2 
     exact ord_mul_nonneg hC ζ (ho1 _ ζ) (ho2 _ ζ)
 
 /- English proof (translation)
-Establish `hU` using `isUnif_of_curve Q hC`. Introduce `γ`. Use `⟨if γ = 0 then 1 else 0, ?_, fun ζ => ?_⟩` and prove the remaining obligations. Use `show _ = MvPowerSeries.coeff γ (tayLc X la G.w 1)`. Rewrite using `[map_one, MvPowerSeries.coeff_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Use `isDVRAt_of_curve Q hC ζ split_ifs` as an intermediate fact. Rewrite using `[map_one, ord_one ζ hU]`. Rewrite using `[map_zero, ord_zero ζ hU]`. Conclude with `le_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intD_one (hC : Q.InCurve) : IntD G la (1 : Lw X la G.w) := by
   classical
@@ -110,14 +110,14 @@ theorem intD_one (hC : Q.InCurve) : IntD G la (1 : Lw X la G.w) := by
     · rw [map_zero, ord_zero ζ hU]; exact le_top
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (fun x => IntD G la x) (fun _ _ hx hy => intD_mul hC hx hy) (intD_one hC) h`.
+A detailed English derivation is pending.
 -/
 theorem intD_prod (hC : Q.InCurve) {ι : Type*} (s : Finset ι) (f : ι → Lw X la G.w) (h : ∀ i ∈ s, IntD G la (f i)) :
     IntD G la (∏ i ∈ s, f i) :=
   Finset.prod_induction f (fun x => IntD G la x) (fun _ _ hx hy => intD_mul hC hx hy) (intD_one hC) h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `intD_one hC`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `intD_mul hC ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intD_pow (hC : Q.InCurve) {f : Lw X la G.w} (hf : IntD G la f) (n : ℕ) : IntD G la (f ^ n) := by
   induction n with
@@ -125,21 +125,19 @@ theorem intD_pow (hC : Q.InCurve) {f : Lw X la G.w} (hf : IntD G la f) (n : ℕ)
   | succ n ih => rw [pow_succ]; exact intD_mul hC ih hf
 
 /- English proof (translation)
-Establish `hU` using `isUnif_of_curve Q hC`. Use `choose fk hfk1 hfk2 using hu`. Use `choose mq hmq hfq using fun q : Idx D j G.N →₀ ℕ => PI.HasseOrdBdW.compositionalInverseSymm X la G.w 1 q`. Introduce `γ`. Use `set c : (Idx D j G.N →₀ ℕ) → Fin G.N → Kp X la G.N := fun q k => algebraMap (Op X la G.N) (Kp X la G.N) (hasseOp X la G.N q (Tv X la G.N (i, k))) with hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ q ∈ antidiagonal γ, (mq q.2 : ↥(Frac0 X la G.w)) * ((∑ k, c q.1 k • fk k) * ∏ k, fk k ^ q.2 ((0 : Fin (WeightFamilies.dimY D j + 1)), k)), ?_, fun ζ => ?_⟩` and prove the remaining obligations. Establish `e0 : (sfr X la G.w i : Lw X la G.w) = algebraMap (Rp X la G.N) (Lw X la G.w) (sec X la G.w i) * w0inv X la G.w ^ 1`. Rewrite using `[coe_sfr, frac_apply]`. Use `show _ = PI.HJP.H X la G.w γ (sfr X la G.w i : Lw X la G.w)`. Rewrite using `[e0, PI.HJP.H_mul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hA : PI.HJP.H X la G.w q.1 (algebraMap (Rp X la G.N) (Lw X la G.w) (sec X la G.w i)) = algebraMap (Rp X la G.N) (Lw X la G.w) (∑ k, c q.1 k • emb X la G.N (X.inc wL (G.w k)))`. Conclude with `(hasse_algebraMap X la G.w q.1 (sec X la G.w i)).trans (congrArg (algebraMap (Rp X la G.N) (Lw X la G.w)) (by rw [hasseRp_sec]))`. Establish `hB : PI.HJP.H X la G.w q.2 (w0inv X la G.w ^ 1) = (mq q.2 : Lw X la G.w) * algebraMap (Rp X la G.N) (Lw X la G.w) (∏ k, emb X la G.N (X.inc wL (G.w k)) ^ q.2 (0, k)) * w0inv X la G.w ^ (1 + q.2.sum fun _ n => n)` using `hfq q.2`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hA, hB]`. Distinguish the cases in `hm : mq q.2 = 0`. Simplify using `[hm]`. Establish `hn` using `hmq q.2 hm`. Simplify using `only [hfk1, map_sum, map_prod, map_pow, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply (Kp X la G.N) (Rp X la G.N) (Lw X la G.w)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn, pow_add, ← Finset.prod_pow_eq_pow_sum]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Establish `e1 : ∀ (A E : Fin G.N → Lw X la G.w) (y : Lw X la G.w), ∑ k, A k * (E k * y) = (∑ k, A k * E k) * y` using `fun A E y => by`. Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[e1]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sum]`. Use `ord_sum_nonneg hC ζ _ _ fun q _ => ?_` and prove the remaining obligations. Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Rewrite using `[map_mul, map_mul, map_intCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ord_mul_nonneg hC ζ (ord_nonneg ζ hU (intCast_mem _ _)) (ord_mul_nonneg hC ζ ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `ord_sum_nonneg hC ζ _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hfk2, hc, algebraMap_smul, Algebra.smul_def]`. Conclude with `ord_mul_nonneg hC ζ (ord_nonneg ζ hU (Subalgebra.algebraMap_mem _ _)) (ho ζ k)`.
-
-Rewrite using `[map_prod]`. Use `ord_prod_nonneg hC ζ _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, hfk2]`. Conclude with `ord_pow_nonneg hC ζ (ho ζ k) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intD_sfr (hC : Q.InCurve) (u : Fin G.N → OsK X la G.w) (hu : uSpec G la u)
     (ho : ∀ (ζ : PtsG G la) col, 0 ≤ ord (unifO X la G.N) ζ (u col)) (i : Fin (WeightFamilies.dimY D j + 1)) :
@@ -195,9 +193,9 @@ theorem intD_sfr (hC : Q.InCurve) (u : Fin G.N → OsK X la G.w) (hu : uSpec G l
       exact ord_pow_nonneg hC ζ (ho ζ k) _
 
 /- English proof (translation)
-Establish `e : (yPow X la G.w α : Lw X la G.w) = ∏ i, (sfr X la G.w i.succ : Lw X la G.w) ^ α i`. Unfold `yPow`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intD_prod hC _ _ fun i _ => intD_pow hC (intD_sfr hC u hu ho i.succ) _`.
+A detailed English derivation is pending.
 -/
 theorem intD_yPow (hC : Q.InCurve) (u : Fin G.N → OsK X la G.w) (hu : uSpec G la u)
     (ho : ∀ (ζ : PtsG G la) col, 0 ≤ ord (unifO X la G.N) ζ (u col)) (α : Fin (WeightFamilies.dimY D j) → ℕ) :
@@ -210,15 +208,15 @@ theorem intD_yPow (hC : Q.InCurve) (u : Fin G.N → OsK X la G.w) (hu : uSpec G 
   exact intD_prod hC _ _ fun i _ => intD_pow hC (intD_sfr hC u hu ho i.succ) _
 
 /- English proof (translation)
-Use `choose g hg ho using hf`. Establish `hP` using `hasse_preserves_kernel G la`. Introduce `β hβ ζ`. Rewrite using `[rD_eq G la β _ (hP β _ (f • x).2)]`. Establish `e : (⟨_, hP β _ (f • x).2⟩ : ↥(HK X la G.w wF)) = ∑ q ∈ antidiagonal β, g q.1 • (⟨_, hP q.2 _ x.2⟩ : ↥(HK X la G.w wF))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Use `show PI.HJP.H X la G.w β ((f : Lw X la G.w) * (x : Lw X la G.w)) = _`. Rewrite using `[PI.HJP.H_mul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_smul]`. Conclude with `(congrArg (· * hasse X la G.w q.2 (x : Lw X la G.w)) (hg q.1)).symm`. Rewrite using `[e, map_sum]`. Use `le_ordA_sum Q hC ζ _ _ _ fun q hq => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, ← algebraMap_smul (OsK X la G.w) (g q.1)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_ordA_smul_OsK Q hC ζ _ (ho q.1 ζ) _ _ ?_` and prove the remaining obligations. Establish `hq2 : (q.2.sum fun _ n => n) ≤ a0 D j T - 1`. Rewrite `hq` using `[mem_antidiagonal]`. Rewrite `hβ`, the goal using `[PI.HJP.sum_eq_degree]`. Establish `: Finsupp.degree β = Finsupp.degree q.1 + Finsupp.degree q.2` using `by rw [← hq, map_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use linear arithmetic over natural numbers and integers. Use `hx q.2 hq2 ζ` as an intermediate fact. Rewrite `this` using `[rD_eq G la q.2 x (hP q.2 _ x.2)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem good_mul (hC : Q.InCurve) {T : ℕ} {f : ↥(Frac0 X la G.w)} (hf : IntD G la (f : Lw X la G.w))
     {x : ↥(HK X la G.w wF)} (hx : GoodP Q T (fun _ => 0) x) : GoodP Q T (fun _ => 0) (f • x) := by
@@ -250,11 +248,11 @@ theorem good_mul (hC : Q.InCurve) {T : ℕ} {f : ↥(Frac0 X la G.w)} (hf : IntD
 end
 
 /- English proof (translation)
-Take `⟨u, hu, -, ho⟩` from `h3`. Introduce `x α hx`. Distinguish the cases in `ha : 0 < a0 D j T`. Establish `hg` using `good_of_mem_AAp hC ha hx x rfl`. Establish `hg'` using `good_mul hC (intD_yPow (Q := Q) hC u hu ho α) hg`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `hasse_preserves_kernel G la`. Use `Submodule.subset_span ⟨yPow X la G.w α • x, ⟨fun β _ => hP β _ (yPow X la G.w α • x).2, fun β hβ ζ => ?_⟩, rfl⟩` and prove the remaining obligations. Use `hg' β hβ ζ` as an intermediate fact. Rewrite `this` using `[rD_eq G la β _ (hP β _ (yPow X la G.w α • x).2)]`. Then use the resulting hypothesis. Establish `h0 : ∀ y : ↥(HK X la G.w wF), toWK X la G.w wF (a0 D j T) y = 0` using `fun y => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[toWK_eq_zero_iff, show a0 D j T = 0 by omega, pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Conclude with `Submodule.mem_top`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftMul_of {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (T : ℕ) (hC : Q.InCurve)
     (h3 : UnitCols G la) : LiftMul G la Q T := by

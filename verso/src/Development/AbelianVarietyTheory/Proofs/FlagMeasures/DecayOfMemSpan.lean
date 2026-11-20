@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.DecayOfMemSpan
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact ⟨0, fun g => by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨A, hA⟩` from `hx`. Take `⟨B, hB⟩` from `hy`. Use `⟨A + B, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[inner_add_left, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hA g) (hB g))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul a x _ hx`. Take `⟨A, hA⟩` from `hx`. Use `⟨‖a‖ * A, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[inner_smul_left, norm_mul, RCLike.norm_conj, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hA g) (norm_nonneg a)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay_of_mem_span {G H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ρ : G → H →L[ℂ] H} {D : G → ℝ} {c : ℝ} {S : Set H} {u : H}

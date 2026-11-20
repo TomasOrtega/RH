@@ -42,14 +42,14 @@ def strictTransformMapOfLE {a b : ℕ} (h : a ≤ b) : S.strictTransform b ⟶ S
     (𝟙 (S.strictTransform a)) (fun n _ f => S.strictTransformMap n ≫ f) h
 
 /- English proof (translation)
-Conclude with `Nat.leRec_self ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem strictTransformMapOfLE_self (a : ℕ) :
     S.strictTransformMapOfLE (le_refl a) = 𝟙 (S.strictTransform a) := by
   exact Nat.leRec_self ..
 
 /- English proof (translation)
-Conclude with `Nat.leRec_succ ..`.
+A detailed English derivation is pending.
 -/
 private theorem strictTransformMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k Y pY) {a b : ℕ} (h : a ≤ b)
     {h' : a ≤ b + 1} :
@@ -57,11 +57,11 @@ private theorem strictTransformMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k 
   exact Nat.leRec_succ ..
 
 /- English proof (translation)
-Proceed by induction on `b, h using Nat.le_induction with`. Consider the case `base`. Establish `e1 : S.strictTransformMapOfLE (Nat.le_refl a) = 𝟙 (S.strictTransform a)`. Simplify using `[EmbeddedBlowupSequence.strictTransformMapOfLE, Nat.leRec_self]`. Establish `e2 : S.ambientSeq.transitionMap (Nat.le_refl a) = 𝟙 (S.ambientSeq.schemeAt a)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[SequenceOfBlowups.transitionMap_def]`. Simplify using `only [e1, e2, Category.id_comp, Category.comp_id]`. Consider the case `succ b hb ih`. Establish `e1 : S.strictTransformMapOfLE (Nat.le_succ_of_le hb) = S.strictTransformMap b ≫ S.strictTransformMapOfLE hb` using `strictTransformMapOfLE_succ_of_le S hb`. Establish `e2 : S.ambientSeq.transitionMap (Nat.le_succ_of_le hb) = S.ambientSeq.transitionMapSucc b ≫ S.ambientSeq.transitionMap hb`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `(SequenceOfBlowups.transitionMap_trans S.ambientSeq hb (Nat.le_succ b)).symm`. Establish `e3 : S.strictTransformMap b ≫ S.strictTransformι b = S.strictTransformι (b + 1) ≫ S.ambientSeq.transitionMapSucc b` using `S.strictTransformMap_comp_strictTransformι b`. Rewrite using `[e1, e2, Category.assoc, ih, ← Category.assoc, e3]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem strictTransformMapOfLE_strictTransformι {a b : ℕ} (h : a ≤ b) :
     S.strictTransformMapOfLE h ≫ S.strictTransformι a = S.strictTransformι b ≫ S.ambientSeq.transitionMap h := by
@@ -85,7 +85,7 @@ theorem strictTransformMapOfLE_strictTransformι {a b : ℕ} (h : a ≤ b) :
       simp only [Category.assoc]
 
 /- English proof (translation)
-Use `⟨⟨(coprod.inl : A ⟶ A ⨿ B), coprod.desc (𝟙 A) (hB.to A), coprod.inl_desc (𝟙 A) (hB.to A), ?_⟩, rfl⟩` and prove the remaining obligations. Use `coprod.hom_ext ?_ (hB.hom_ext _ _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem exists_iso_coprod_of_isInitial {A B : Scheme.{u}} (hB : IsInitial B) :
     ∃ u : A ≅ A ⨿ B, u.hom = (coprod.inl : A ⟶ A ⨿ B) := by
@@ -101,7 +101,7 @@ private theorem exists_iso_coprod_of_isInitial {A B : Scheme.{u}} (hB : IsInitia
     _ = (coprod.inl : A ⟶ A ⨿ B) ≫ 𝟙 (A ⨿ B) := (Category.comp_id _).symm
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_iso_coprod_of_isInitial (A := A) (B := B) hB`. Use `⟨u ≪≫ w, ?_⟩` and prove the remaining obligations. Use `show u.hom ≫ w.hom = (coprod.inl : A ⟶ A ⨿ B) ≫ w.hom`. Conclude with `congrArg (fun t => t ≫ w.hom) hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_iso_of_coprodIso_of_isInitial {A B Z : Scheme.{u}} (hB : IsInitial B)
     (w : A ⨿ B ≅ Z) :
@@ -112,7 +112,7 @@ private theorem exists_iso_of_coprodIso_of_isInitial {A B Z : Scheme.{u}} (hB : 
   exact congrArg (fun t => t ≫ w.hom) hu
 
 /- English proof (translation)
-Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem comp_inv_comp_hom_cancel {A B C D E : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (h : C ⟶ E) (i : D ≅ E) :
@@ -120,7 +120,7 @@ private theorem comp_inv_comp_hom_cancel {A B C D E : Scheme.{u}} (f : A ⟶ B) 
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_iso_of_coprodIso_of_isInitial (A := S.strictTransform 0) (B := S.detachedCoprod 0) (Z := Y) initialIsInitial S.totalSpaceZeroIso`. Use `⟨e, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_strictTransformZeroIso :
     ∃ e : S.strictTransform 0 ≅ Y, e.hom ≫ S.emb = S.strictTransformι 0 ≫ S.ambientSeq.isoZero.hom := by
@@ -140,16 +140,16 @@ theorem exists_strictTransformZeroIso :
 def strictTransformZeroIso : S.strictTransform 0 ≅ Y := S.exists_strictTransformZeroIso.choose
 
 /- English proof (translation)
-The claim follows from `S.exists_strictTransformZeroIso.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem strictTransformZeroIso_hom_emb :
     S.strictTransformZeroIso.hom ≫ S.emb = S.strictTransformι 0 ≫ S.ambientSeq.isoZero.hom :=
   S.exists_strictTransformZeroIso.choose_spec
 
 /- English proof (translation)
-Establish `h2 : S.strictTransformZeroIso.hom ≫ (S.emb ≫ S.ambientSeq.isoZero.inv) = S.strictTransformι 0`. Rewrite using `[← Category.assoc, S.strictTransformZeroIso_hom_emb, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `h3 : (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom = S.strictTransformZeroIso.hom`. Use `(cancel_mono (S.emb ≫ S.ambientSeq.isoZero.inv)).mp ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, S.totalSpaceZeroIso_spec, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(cancel_mono S.totalSpaceZeroIso.hom).mp ?_` and prove the remaining obligations. Rewrite using `[Iso.inv_hom_id, Category.assoc, h3, Iso.inv_hom_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem totalSpaceZeroIso_inv_eq :
     S.totalSpaceZeroIso.inv =
@@ -165,7 +165,7 @@ theorem totalSpaceZeroIso_inv_eq :
   rw [Iso.inv_hom_id, Category.assoc, h3, Iso.inv_hom_id]
 
 /- English proof (translation)
-Establish `h : S.strictTransformZeroIso.hom ≫ S.totalSpaceZeroIso.inv = (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0)`. Rewrite using `[S.totalSpaceZeroIso_inv_eq, ← Category.assoc, Iso.hom_inv_id, Category.id_comp]`. Rewrite using `[← h, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inl_totalSpaceZeroIso_hom :
     (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom =
@@ -179,7 +179,7 @@ def strictTransformToBase (i : ℕ) : S.strictTransform i ⟶ Y :=
   S.strictTransformMapOfLE (Nat.zero_le i) ≫ S.strictTransformZeroIso.hom
 
 /- English proof (translation)
-Establish `h1 : S.strictTransformToBase i = S.strictTransformMapOfLE (Nat.zero_le i) ≫ S.strictTransformZeroIso.hom` using `rfl`. Establish `h2 : S.ambientSeq.projectionToBase i = S.ambientSeq.transitionMap (Nat.zero_le i) ≫ S.ambientSeq.isoZero.hom` using `SequenceOfBlowups.projectionToBase_def S.ambientSeq i`. Rewrite using `[h1, Category.assoc, S.strictTransformZeroIso_hom_emb, ← Category.assoc, S.strictTransformMapOfLE_strictTransformι (Nat.zero_le i), Category.assoc, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem strictTransformToBase_emb (i : ℕ) :
     S.strictTransformToBase i ≫ S.emb = S.strictTransformι i ≫ S.ambientSeq.projectionToBase i := by
@@ -201,7 +201,7 @@ theorem detachedCoprodInl_eq (i : ℕ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `S.inl_inr_totalTransition i`.
+A detailed English derivation is pending.
 -/
 theorem detachedCoprodInl_inr_totalTransition (i : ℕ) :
     S.detachedCoprodInl i ≫ (coprod.inr : S.detachedCoprod (i + 1) ⟶ S.totalSpace (i + 1)) ≫
@@ -210,7 +210,7 @@ theorem detachedCoprodInl_inr_totalTransition (i : ℕ) :
   S.inl_inr_totalTransition i
 
 /- English proof (translation)
-Establish `h : S.detachedCoprodInl i ≫ (coprod.inr : S.detachedCoprod (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.totalTransition i = (coprod.inr : S.detachedCoprod i ⟶ S.totalSpace i)` using `S.detachedCoprodInl_inr_totalTransition i`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem detachedCoprodInl_inr_totalTransition_assoc (i : ℕ) {T : Scheme.{u}}
     (g : S.totalSpace i ⟶ T) :
@@ -237,7 +237,7 @@ theorem detachedCoprodInr_eq (i : ℕ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `S.inr_inr_totalTransition i`.
+A detailed English derivation is pending.
 -/
 theorem detachedCoprodInr_inr_totalTransition (i : ℕ) :
     S.detachedCoprodInr i ≫ (coprod.inr : S.detachedCoprod (i + 1) ⟶ S.totalSpace (i + 1)) ≫
@@ -246,7 +246,7 @@ theorem detachedCoprodInr_inr_totalTransition (i : ℕ) :
   S.inr_inr_totalTransition i
 
 /- English proof (translation)
-Establish `h : S.detachedCoprodInr i ≫ (coprod.inr : S.detachedCoprod (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.totalTransition i = S.detachedι i ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i)` using `S.detachedCoprodInr_inr_totalTransition i`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem detachedCoprodInr_inr_totalTransition_assoc (i : ℕ) {T : Scheme.{u}}
     (g : S.totalSpace i ⟶ T) :
@@ -265,7 +265,7 @@ theorem detachedCoprodInr_inr_totalTransition_assoc (i : ℕ) {T : Scheme.{u}}
         Category.assoc _ _ _
 
 /- English proof (translation)
-Use `coprod.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `hl`. Conclude with `hr`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem detachedCoprod_succ_hom_ext (i : ℕ) {T : Scheme.{u}}
     {f g : S.detachedCoprod (i + 1) ⟶ T}
@@ -276,7 +276,7 @@ theorem detachedCoprod_succ_hom_ext (i : ℕ) {T : Scheme.{u}}
   · exact hr
 
 /- English proof (translation)
-Establish `hne : ¬ (s = i)` using `by omega`. Conclude with `dif_neg hne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem detachedToCoprod_succ_of_lt (s i : ℕ) (h : s < i) :
     S.detachedToCoprod s (i + 1) (Nat.lt_succ_of_lt h) = S.detachedToCoprod s i h ≫ S.detachedCoprodInl i := by
@@ -284,7 +284,7 @@ theorem detachedToCoprod_succ_of_lt (s i : ℕ) (h : s < i) :
   exact dif_neg hne
 
 /- English proof (translation)
-Rewrite using `[detachedToCoprod]`. Simplify using `[detachedCoprodInr_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detachedToCoprod_self (i : ℕ) :
     S.detachedToCoprod i (i + 1) (Nat.lt_succ_self i) = S.detachedCoprodInr i := by
@@ -292,13 +292,13 @@ theorem detachedToCoprod_self (i : ℕ) :
   simp [detachedCoprodInr_eq]
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `Z f g _`. Establish `hI : IsInitial (W.detachedCoprod 0)` using `initialIsInitial`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hI.hom_ext f g`. Consider the case `succ i ih`. Introduce `Z f g hf`. Use `W.detachedCoprod_succ_hom_ext i ?_ ?_` and prove the remaining obligations. Use `ih Z (W.detachedCoprodInl i ≫ f) (W.detachedCoprodInl i ≫ g) ?_` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Establish `h` using `hf s (Nat.lt_succ_of_lt hs)`. Rewrite `h` using `[W.detachedToCoprod_succ_of_lt s i hs]`. Simplify using `only [Category.assoc] at h`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hf i (Nat.lt_succ_self i)`. Rewrite `h` using `[W.detachedToCoprod_self i]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem detachedCoprod_hom_ext_forall (W : EmbeddedBlowupSequence k Y pY) :
     ∀ (i : ℕ) (Z : Scheme.{u}) (f g : W.detachedCoprod i ⟶ Z),
@@ -323,14 +323,14 @@ private theorem detachedCoprod_hom_ext_forall (W : EmbeddedBlowupSequence k Y pY
         exact h
 
 /- English proof (translation)
-The claim follows from `detachedCoprod_hom_ext_forall S i T f g hf`.
+A detailed English derivation is pending.
 -/
 theorem detachedCoprod_hom_ext (i : ℕ) {T : Scheme.{u}} {f g : S.detachedCoprod i ⟶ T}
     (hf : ∀ s (hs : s < i), S.detachedToCoprod s i hs ≫ f = S.detachedToCoprod s i hs ≫ g) : f = g :=
   detachedCoprod_hom_ext_forall S i T f g hf
 
 /- English proof (translation)
-The claim follows from `S.inl_totalTransition_eq_strictTransformMap_inl i`.
+A detailed English derivation is pending.
 -/
 theorem inl_totalTransition (i : ℕ) :
     (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.totalTransition i =
@@ -338,7 +338,7 @@ theorem inl_totalTransition (i : ℕ) :
   S.inl_totalTransition_eq_strictTransformMap_inl i
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, S.inl_totalTransition_eq_strictTransformMap_inl i, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inl_totalTransition_assoc (i : ℕ) {T : Scheme.{u}} (g : S.totalSpace i ⟶ T) :
     (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.totalTransition i ≫ g =
@@ -350,21 +350,21 @@ def totalMapOfLE {a b : ℕ} (h : a ≤ b) : S.totalSpace b ⟶ S.totalSpace a :
     (𝟙 (S.totalSpace a)) (fun n _ f => S.totalTransition n ≫ f) h
 
 /- English proof (translation)
-Conclude with `Nat.leRec_self ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem totalMapOfLE_self (a : ℕ) :
     S.totalMapOfLE (le_refl a) = 𝟙 (S.totalSpace a) := by
   exact Nat.leRec_self ..
 
 /- English proof (translation)
-Simplify using `[totalMapOfLE, Nat.leRec_succ, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem totalMapOfLE_succ {a b : ℕ} (h : a ≤ b) :
     S.totalMapOfLE (h.trans (Nat.le_succ b)) = S.totalTransition b ≫ S.totalMapOfLE h := by
   simp [totalMapOfLE, Nat.leRec_succ, h]
 
 /- English proof (translation)
-Conclude with `Nat.leRec_succ ..`.
+A detailed English derivation is pending.
 -/
 private theorem totalMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k Y pY) {a b : ℕ} (h : a ≤ b)
     {h' : a ≤ b + 1} :
@@ -372,9 +372,9 @@ private theorem totalMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k Y pY) {a b
   exact Nat.leRec_succ ..
 
 /- English proof (translation)
-Proceed by induction on `b, h using Nat.le_induction with`. Consider the case `base`. Rewrite using `[S.totalMapOfLE_self a, S.strictTransformMapOfLE_self a, Category.comp_id, Category.id_comp]`. Consider the case `succ b hb ih`. Rewrite using `[totalMapOfLE_succ_of_le S hb, strictTransformMapOfLE_succ_of_le S hb, ← Category.assoc, S.inl_totalTransition b, Category.assoc, ih]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inl_totalMapOfLE {a b : ℕ} (h : a ≤ b) :
     (coprod.inl : S.strictTransform b ⟶ S.totalSpace b) ≫ S.totalMapOfLE h =
@@ -388,13 +388,13 @@ theorem inl_totalMapOfLE {a b : ℕ} (h : a ≤ b) :
       simp only [Category.assoc]
 
 /- English proof (translation)
-Introduce `b`. Proceed by induction on `b with`. Consider the case `zero => exact fun a s _ _ hsb => absurd hsb (Nat.not_lt_zero s)`. Consider the case `succ b ih`. Introduce `a s hab has hsb`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : s = b`. Substitute `h` using the available equality. Establish `hd : W.totalMapOfLE hab = W.totalTransition s ≫ W.totalMapOfLE has` using `W.totalMapOfLE_succ has`. Establish `hfs : W.detachedToCoprod s (s + 1) hsb = W.detachedCoprodInr s` using `W.detachedToCoprod_self s`. Rewrite using `[hfs, hd, W.detachedCoprodInr_inr_totalTransition_assoc s (W.totalMapOfLE has), W.inl_totalMapOfLE has]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsb' : s < b` using `lt_of_le_of_ne (Nat.lt_succ_iff.mp hsb) h`. Establish `hab' : a ≤ b` using `has.trans hsb'.le`. Establish `hd : W.totalMapOfLE hab = W.totalTransition b ≫ W.totalMapOfLE hab'` using `W.totalMapOfLE_succ hab'`. Establish `hf : W.detachedToCoprod s (b + 1) hsb = W.detachedToCoprod s b hsb' ≫ W.detachedCoprodInl b` using `W.detachedToCoprod_succ_of_lt s b hsb'`. Rewrite using `[hf, hd, Category.assoc, W.detachedCoprodInl_inr_totalTransition_assoc b (W.totalMapOfLE hab')]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih a s hab' has hsb'`.
+A detailed English derivation is pending.
 -/
 private theorem detachedToCoprod_inr_totalMapOfLE_forall (W : EmbeddedBlowupSequence k Y pY) :
     ∀ (b a s : ℕ) (hab : a ≤ b) (has : a ≤ s) (hsb : s < b),
@@ -421,7 +421,7 @@ private theorem detachedToCoprod_inr_totalMapOfLE_forall (W : EmbeddedBlowupSequ
         exact ih a s hab' has hsb'
 
 /- English proof (translation)
-The claim follows from `detachedToCoprod_inr_totalMapOfLE_forall S b a s hab has hsb`.
+A detailed English derivation is pending.
 -/
 theorem detachedToCoprod_inr_totalMapOfLE {a b s : ℕ} (hab : a ≤ b) (has : a ≤ s) (hsb : s < b) :
     S.detachedToCoprod s b hsb ≫ (coprod.inr : S.detachedCoprod b ⟶ S.totalSpace b) ≫ S.totalMapOfLE hab =
@@ -433,21 +433,21 @@ def detachedCoprodMapOfLE {a b : ℕ} (h : a ≤ b) : S.detachedCoprod a ⟶ S.d
     (𝟙 (S.detachedCoprod a)) (fun n _ f => f ≫ S.detachedCoprodInl n) h
 
 /- English proof (translation)
-Conclude with `Nat.leRec_self ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem detachedCoprodMapOfLE_self (a : ℕ) :
     S.detachedCoprodMapOfLE (le_refl a) = 𝟙 (S.detachedCoprod a) := by
   exact Nat.leRec_self ..
 
 /- English proof (translation)
-Conclude with `Nat.leRec_succ ..`.
+A detailed English derivation is pending.
 -/
 theorem detachedCoprodMapOfLE_succ {a b : ℕ} (h : a ≤ b) :
     S.detachedCoprodMapOfLE (h.trans (Nat.le_succ b)) = S.detachedCoprodMapOfLE h ≫ S.detachedCoprodInl b := by
   exact Nat.leRec_succ ..
 
 /- English proof (translation)
-Conclude with `Nat.leRec_succ ..`.
+A detailed English derivation is pending.
 -/
 private theorem detachedCoprodMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k Y pY) {a b : ℕ} (h : a ≤ b)
     {h' : a ≤ b + 1} :
@@ -455,9 +455,9 @@ private theorem detachedCoprodMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k Y
   exact Nat.leRec_succ ..
 
 /- English proof (translation)
-Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base`. Conclude with `Eq.trans (congrArg (fun t : S.detachedCoprod a ⟶ S.detachedCoprod a => S.detachedToCoprod s a hsa ≫ t) (S.detachedCoprodMapOfLE_self a)) (Category.comp_id _)`. Consider the case `succ b hb ih`. Establish `h1 : S.detachedCoprodMapOfLE (Nat.le_succ_of_le hb) = S.detachedCoprodMapOfLE hb ≫ S.detachedCoprodInl b` using `detachedCoprodMapOfLE_succ_of_le S hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem detachedToCoprod_detachedCoprodMapOfLE {s a b : ℕ} (hsa : s < a) (hab : a ≤ b) :
     S.detachedToCoprod s a hsa ≫ S.detachedCoprodMapOfLE hab = S.detachedToCoprod s b (lt_of_lt_of_le hsa hab) := by
@@ -482,7 +482,7 @@ theorem detachedToCoprod_detachedCoprodMapOfLE {s a b : ℕ} (hsa : s < a) (hab 
             (S.detachedToCoprod_succ_of_lt s b (lt_of_lt_of_le hsa hb)).symm
 
 /- English proof (translation)
-Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base`. Rewrite using `[S.detachedCoprodMapOfLE_self a, S.totalMapOfLE_self a, Category.id_comp, Category.comp_id]`. Consider the case `succ b hb ih`. Rewrite using `[detachedCoprodMapOfLE_succ_of_le S hb, totalMapOfLE_succ_of_le S hb, Category.assoc, S.detachedCoprodInl_inr_totalTransition_assoc b (S.totalMapOfLE hb), ih]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem detachedCoprodMapOfLE_inr_totalMapOfLE {a b : ℕ} (hab : a ≤ b) :
     S.detachedCoprodMapOfLE hab ≫ (coprod.inr : S.detachedCoprod b ⟶ S.totalSpace b) ≫ S.totalMapOfLE hab =
@@ -495,7 +495,7 @@ theorem detachedCoprodMapOfLE_inr_totalMapOfLE {a b : ℕ} (hab : a ≤ b) :
         S.detachedCoprodInl_inr_totalTransition_assoc b (S.totalMapOfLE hb), ih]
 
 /- English proof (translation)
-Establish `h : S.centerOffDetached i = ((S.comapAmbientCenter i).comap (S.detachedClosureCompl i).ι).map (S.detachedClosureCompl i).ι` using `rfl`. Rewrite using `[h]`. Conclude with `Scheme.IdealSheafData.le_map_iff_comap_le.mpr le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comapAmbientCenter_le_centerOffDetached (i : ℕ) :
     S.comapAmbientCenter i ≤ S.centerOffDetached i := by
@@ -511,11 +511,11 @@ private theorem hom_comp_base_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B �
     (x : ↥A) : ⇑(f ≫ g).base x = ⇑g.base (⇑f.base x) := rfl
 
 /- English proof (translation)
-Establish `h1 : (S.ambientCenter i).comap (S.strictTransformι i) ≤ S.centerOffDetached i` using `S.comapAmbientCenter_le_centerOffDetached i`. Establish `h2 : S.ambientCenter i ≤ (S.centerOffDetached i).map (S.strictTransformι i)` using `Scheme.IdealSheafData.le_map_iff_comap_le.mpr h1`. Establish `hu : (S.centerOffDetached i).subschemeMap (S.ambientCenter i) (S.strictTransformι i) h2 ≫ (S.ambientCenter i).subschemeι = (S.centerOffDetached i).subschemeι ≫ S.strictTransformι i` using `Scheme.IdealSheafData.subschemeMap_subschemeι ..`. Introduce `x hx`. Rewrite `hx` using `[← Scheme.IdealSheafData.range_subschemeι]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, rfl⟩` from `hx`. Establish `key : ⇑((S.centerOffDetached i).subschemeMap (S.ambientCenter i) (S.strictTransformι i) h2 ≫ (S.ambientCenter i).subschemeι).base z = ⇑((S.centerOffDetached i).subschemeι ≫ S.strictTransformι i).base z`. Rewrite using `[hu]`. Rewrite `key` using `[hom_comp_base_apply, hom_comp_base_apply]`. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, key⟩`.
+Supply the required witnesses or components.
 -/
 theorem support_centerOffDetached_subset_preimage (i : ℕ) :
     ((S.centerOffDetached i).support : Set ↥(S.strictTransform i)) ⊆
@@ -545,7 +545,7 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY : Y ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType pY]
 
 /- English proof (translation)
-Establish `h1 : (S.inducedBlowups h).transitionMapSucc i = (S.inducedBlowups h).transitionMap (Nat.le_succ i)` using `SequenceOfBlowups.blowupMorphism_eq_transitionMap (S.inducedBlowups h) i`. Establish `h2 : (S.inducedBlowups h).transitionMap (Nat.le_succ i) = (S.inducedBlowups h).tower.map (homOfLE (Nat.le_succ i)).op` using `SequenceOfBlowups.transitionMap_def (S.inducedBlowups h) (Nat.le_succ i)`. Rewrite using `[h1, h2]`. Conclude with `S.totalTower_map_succ i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inducedBlowups_blowupMorphism (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) (i : ℕ) :
     (S.inducedBlowups h).transitionMapSucc i = S.totalTransition i := by
@@ -558,11 +558,11 @@ theorem inducedBlowups_blowupMorphism (S : EmbeddedBlowupSequence k Y pY) (h : S
   exact S.totalTower_map_succ i
 
 /- English proof (translation)
-Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base`. Establish `h1 : (S.inducedBlowups h).transitionMap (Nat.le_refl a) = 𝟙 ((S.inducedBlowups h).tower.obj (op a))` using `(SequenceOfBlowups.transitionMap_def (S.inducedBlowups h) (Nat.le_refl a)).trans ((S.inducedBlowups h).tower.map_id (op a))`. Conclude with `h1.trans (S.totalMapOfLE_self a).symm`. Consider the case `succ b hb ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Establish `e1 : (S.inducedBlowups h).transitionMap (hb.trans (Nat.le_succ b)) = (S.inducedBlowups h).transitionMap (Nat.le_succ b) ≫ (S.inducedBlowups h).transitionMap hb` using `(SequenceOfBlowups.transitionMap_trans (S.inducedBlowups h) hb (Nat.le_succ b)).symm`. Establish `e2 : (S.inducedBlowups h).transitionMap (Nat.le_succ b) = S.totalTransition b` using `(SequenceOfBlowups.blowupMorphism_eq_transitionMap (S.inducedBlowups h) b).symm.trans (inducedBlowups_blowupMorphism S h b)`. Establish `e3 : S.totalMapOfLE (hb.trans (Nat.le_succ b)) = S.totalTransition b ≫ S.totalMapOfLE hb` using `S.totalMapOfLE_succ hb`. Establish `e4 : (S.inducedBlowups h).transitionMap (Nat.le_succ b) ≫ (S.inducedBlowups h).transitionMap hb = S.totalTransition b ≫ S.totalMapOfLE hb`. Rewrite using `[e2, ih]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `rfl`. Conclude with `(e1.trans e4).trans e3.symm`.
+A detailed English derivation is pending.
 -/
 theorem inducedBlowups_transitionMap (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) {a b : ℕ}
     (hab : a ≤ b) : (S.inducedBlowups h).transitionMap hab = S.totalMapOfLE hab := by
@@ -587,11 +587,9 @@ theorem inducedBlowups_transitionMap (S : EmbeddedBlowupSequence k Y pY) (h : S.
       exact (e1.trans e4).trans e3.symm
 
 /- English proof (translation)
-Establish `hdown : (S.inducedBlowups h).transitionMap (Nat.zero_le i) = S.totalMapOfLE (Nat.zero_le i)` using `inducedBlowups_transitionMap S h (Nat.zero_le i)`. Establish `hstruct : (S.inducedBlowups h).projectionToBase i = S.totalMapOfLE (Nat.zero_le i) ≫ S.totalSpaceZeroIso.hom` using `Eq.trans (SequenceOfBlowups.projectionToBase_def (S.inducedBlowups h) i) (congrArg (fun t : S.totalSpace i ⟶ S.totalSpace 0 => t ≫ S.totalSpaceZeroIso.hom) hdown)`. Establish `hkey` using `S.detachedToCoprod_inr_totalMapOfLE (Nat.zero_le i) (Nat.zero_le s) hs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hstruct]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Use `_ = (S.detachedι s ≫ S.strictTransformMapOfLE (Nat.zero_le s) ≫ (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0)) ≫ S.totalSpaceZeroIso.hom := by`. Rewrite using `[hkey]`. Use `_ = S.detachedι s ≫ S.strictTransformMapOfLE (Nat.zero_le s) ≫ ((coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom) := by`. Simplify using `only [Category.assoc]`.
-
-Use `_ = S.detachedι s ≫ S.strictTransformMapOfLE (Nat.zero_le s) ≫ S.strictTransformZeroIso.hom := by`. Rewrite using `[S.inl_totalSpaceZeroIso_hom]`. Use `_ = S.detachedι s ≫ S.strictTransformToBase s := rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detachedToCoprod_inr_inducedBlowups_projectionToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups)
     (s i : ℕ) (hs : s < i) :
@@ -621,11 +619,9 @@ theorem detachedToCoprod_inr_inducedBlowups_projectionToBase (S : EmbeddedBlowup
     _ = S.detachedι s ≫ S.strictTransformToBase s := rfl
 
 /- English proof (translation)
-Establish `hdown : (S.inducedBlowups h).transitionMap (Nat.zero_le i) = S.totalMapOfLE (Nat.zero_le i)` using `inducedBlowups_transitionMap S h (Nat.zero_le i)`. Establish `hstruct : (S.inducedBlowups h).projectionToBase i = S.totalMapOfLE (Nat.zero_le i) ≫ S.totalSpaceZeroIso.hom` using `Eq.trans (SequenceOfBlowups.projectionToBase_def (S.inducedBlowups h) i) (congrArg (fun t : S.totalSpace i ⟶ S.totalSpace 0 => t ≫ S.totalSpaceZeroIso.hom) hdown)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hstruct]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (S.strictTransformMapOfLE (Nat.zero_le i) ≫ (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0)) ≫ S.totalSpaceZeroIso.hom := by`. Rewrite using `[S.inl_totalMapOfLE (Nat.zero_le i)]`. Use `_ = S.strictTransformMapOfLE (Nat.zero_le i) ≫ ((coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom) := Category.assoc _ _ _`. Use `_ = S.strictTransformMapOfLE (Nat.zero_le i) ≫ S.strictTransformZeroIso.hom := by`. Rewrite using `[S.inl_totalSpaceZeroIso_hom]`.
-
-Use `_ = S.strictTransformToBase i := rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inl_inducedBlowups_projectionToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) (i : ℕ) :
     (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) ≫ (S.inducedBlowups h).projectionToBase i =

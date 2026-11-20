@@ -8,13 +8,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.FreeCofan
 
 /- English proof (translation)
-Set `e : ∐ V ≅ U` to `(colimit.isColimit (Discrete.functor V)).coconePointUniqueUpToIso hc`. Establish `he : ∀ i, Sigma.ι V i ≫ e.hom = j i` using `fun i => (colimit.isColimit (Discrete.functor V)).comp_coconePointUniqueUpToIso_hom hc ⟨i⟩`. Establish `hinv : ∀ u : U, e.hom (e.inv u) = u` using `fun u => by`. Rewrite using `[← Scheme.Hom.comp_apply, e.inv_hom_id]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hinv' : ∀ z : (∐ V : Scheme.{0}), e.inv (e.hom z) = z` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, e.hom_inv_id]`. Both sides reduce to the same expression. Use `⟨fun i => ?_, fun u => ?_, fun i k v w h => ?_⟩` and prove the remaining obligations. Rewrite using `[← he i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Take `⟨⟨i, v⟩, hv⟩` from `(sigmaMk V).surjective (e.inv u)`. Use `⟨i, v, ?_⟩` and prove the remaining obligations. Rewrite using `[← he i, Scheme.Hom.comp_apply, ← sigmaMk_mk, hv, hinv]`. Rewrite `h` using `[← he i, ← he k, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg e.inv h`. Rewrite `h2` using `[hinv', hinv']`. Conclude with `congrArg Sigma.fst ((sigmaι_eq_iff V i k v w).1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pieces {U : Scheme.{0}} {ι : Type} {V : ι → Scheme.{0}} (j : ∀ i, V i ⟶ U)
     (hc : IsColimit (Cofan.mk U j)) :
@@ -38,11 +38,11 @@ theorem pieces {U : Scheme.{0}} {ι : Type} {V : ι → Scheme.{0}} (j : ∀ i, 
     exact congrArg Sigma.fst ((sigmaι_eq_iff V i k v w).1 h2)
 
 /- English proof (translation)
-Take `⟨ho, hcov, hdis⟩` from `pieces j hc`. Use `nonempty_isColimit_cofanMk_of _ ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Take `⟨i, v, hv⟩` from `hcov (y z)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := y) (g := j i) z v hv.symm`. Conclude with `(TopologicalSpace.Opens.mem_iSup (s := fun i => (pullback.fst y (j i)).opensRange)).2 ⟨i, w, hw⟩`. Introduce `i k hik`. Rewrite using `[Function.onFun, disjoint_iff, eq_bot_iff]`. Introduce and unpack `z ⟨⟨p, hp⟩, ⟨q, hq⟩⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hik` to reduce the goal to its premises. Use `hdis i k (pullback.snd y (j i) p) (pullback.snd y (j k) q) ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← pullback.condition, ← pullback.condition, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `y ((pullback.fst y (j i)) p) = y ((pullback.fst y (j k)) q)`. Rewrite using `[hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullback_isColimit {U : Scheme.{0}} {ι : Type} {V : ι → Scheme.{0}} (j : ∀ i, V i ⟶ U)
     (hc : IsColimit (Cofan.mk U j)) {T : Scheme.{0}} (y : T ⟶ U) :
@@ -65,7 +65,7 @@ theorem pullback_isColimit {U : Scheme.{0}} {ι : Type} {V : ι → Scheme.{0}} 
     rw [hp, hq]
 
 /- English proof (translation)
-Use `haveI : ∀ e : PEmpty.{1}, IsOpenImmersion (PEmpty.elim e : (PEmpty.elim e : Scheme.{0}) ⟶ W) := fun e => e.elim`. Take `⟨hc⟩` from `nonempty_isColimit_cofanMk_of (X := fun e : PEmpty.{1} => (PEmpty.elim e : Scheme.{0})) (S := W) (fun e => PEmpty.elim e) (by rw [eq_top_iff]; rintro z -; exact isEmptyElim z) (fun e => PEmpty.elim e)`. Establish `hb` using `GlobalTheory.T.etaleModuleSheaf_sections_coprod_bijective R G W PEmpty.{1} _ _ hc`. Conclude with `⟨fun x y => hb.1 (funext fun e => PEmpty.elim e)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sec_subsingleton_of_isEmpty {R : Type} [CommRing R] (G : Shv R) (W : Scheme.{0}) [IsEmpty W] :
     Subsingleton (Sec G W) := by
@@ -81,40 +81,40 @@ end GlobalTheory.EtC.FreeCofan
 namespace GlobalTheory.EtC.FreeCofan
 
 /- English proof (translation)
-Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_res {R : Type} [CommRing R] {G : Shv R} {W W' T : Scheme.{0}} (g : W ⟶ W') (f : W' ⟶ T)
     (z : Sec G T) : Sec.res g (Sec.res f z) = Sec.res (g ≫ f) z := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-Introduce `R _ U ι V j hc P t Q a b hpb`. Take `⟨ho, -, hdis⟩` from `pieces j hc`. Establish `FH` using `fun (P' : PSh) (G : Shv R) => GlobalTheory.T.freeEtaleModuleSheaf_hom_equiv_natural_sections R P' G`. Set `y : ∀ T : Scheme.{0}, P.obj (op T) → (T ⟶ U)` to `fun T x => t.app (op T) x`. Establish `hy : ∀ (T T' : Scheme.{0}) (g : T' ⟶ T) (x : P.obj (op T)), y T' (P.map g.op x) = g ≫ y T x` using `fun T T' g x => FunctorToTypes.naturality t g.op x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : ∀ i (W : Scheme.{0}) (q0 : (Q i).obj (op W)), y W ((a i).app _ q0) = ((b i).app _ q0 : W ⟶ V i) ≫ j i` using `fun i W q0 => ConcreteCategory.congr_hom (congr_app (hpb i).w (op W)) q0`. Establish `hcol : ∀ (T : Scheme.{0}) (x : P.obj (op T)), IsColimit (Cofan.mk T (fun i => pullback.fst (y T x) (j i)))` using `fun T x => (pullback_isColimit j hc (y T x)).some`. Establish `SC` using `fun (G : Shv R) (T : Scheme.{0}) (x : P.obj (op T)) => GlobalTheory.T.etaleModuleSheaf_sections_coprod_bijective R G T ι _ _ (hcol T x)`. Establish `hex : ∀ i (W : Scheme.{0}) (x : P.obj (op W)) (σ : W ⟶ V i), y W x = σ ≫ j i → ∃ q : (Q i).obj (op W), (a i).app _ q = x ∧ (b i).app _ q = σ` using `fun i W x σ h => Types.exists_of_isPullback ((hpb i).map ((evaluation _ _).obj (op W))) x σ h`. Establish `huq : ∀ i (W : Scheme.{0}) (q q' : (Q i).obj (op W)), (a i).app _ q = (a i).app _ q' → (b i).app _ q = (b i).app _ q' → q = q'` using `fun i W q q' h1 h2 => Types.ext_of_isPullback ((hpb i).map ((evaluation _ _).obj (op W))) h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ∀ (T : Scheme.{0}) (x : P.obj (op T)) i, ∃ q : (Q i).obj (op (pullback (y T x) (j i))), (a i).app _ q = P.map (pullback.fst (y T x) (j i)).op x ∧ (b i).app _ q = pullback.snd (y T x) (j i)` using `fun T x i => hex i _ _ _ (by rw [hy]; exact pullback.condition)`. Use `choose q hqa hqb using hq`. Establish `key : ∀ (G : Shv R) (m : (free R).obj P ⟶ G) T x i, Sec.res (pullback.fst (y T x) (j i)) (val m T x) = val ((free R).map (a i) ≫ m) _ (q T x i)`. Introduce `G m T x i`. Rewrite using `[(FH P G).2.2.2.1 (Q i) (a i) m, hqa, (FH P G).2.2.1 m]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : ∀ (G : Shv R) (c : ∀ i, (free R).obj (Q i) ⟶ G) (T : Scheme.{0}), P.obj (op T) → Sec G T` to `fun G c T x => Function.surjInv (SC G T x).2 (fun i => val (c i) _ (q T x i))`. Establish `hφ : ∀ G c T x i, Sec.res (pullback.fst (y T x) (j i)) (φ G c T x) = val (c i) _ (q T x i)` using `fun G c T x i => congrFun (Function.surjInv_eq (SC G T x).2 _) i`. Establish `nat : ∀ G c (T' T : Scheme.{0}) (g : T' ⟶ T) (x : P.obj (op T)), φ G c T' (P.map g.op x) = Sec.res g (φ G c T x)`. Introduce `G c T' T g x`. Apply `(SC G T' (P.map g.op x)).1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `funext fun i => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hφ, res_res]`. Establish `hw2 : (pullback.fst (y T' (P.map g.op x)) (j i) ≫ g) ≫ y T x = pullback.snd _ (j i) ≫ j i`. Rewrite using `[Category.assoc, ← hy, pullback.condition]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : pullback.lift _ _ hw2 ≫ pullback.fst (y T x) (j i) = pullback.fst (y T' (P.map g.op x)) (j i) ≫ g` using `pullback.lift_fst _ _ _`. Establish `h2 : pullback.lift _ _ hw2 ≫ pullback.snd (y T x) (j i) = pullback.snd (y T' (P.map g.op x)) (j i)` using `pullback.lift_snd _ _ _`. Rewrite using `[← h1, ← res_res, hφ, ← (FH (Q i) G).2.2.1 (c i)]`. Use `congr 1`. Apply `huq` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hqa, FunctorToTypes.naturality, hqa, ← FunctorToTypes.map_comp_apply, ← FunctorToTypes.map_comp_apply, ← op_comp, ← op_comp, h1]`. Rewrite using `[hqb, FunctorToTypes.naturality, hqb]`. Conclude with `h2.symm`. Set `d : ∀ s : Cofan (fun i => (free R).obj (Q i)), (free R).obj P ⟶ s.pt` to `fun s => ((FH P s.pt).2.1 (φ s.pt s.inj) (fun T' T g x => nat s.pt s.inj T' T g x)).choose`. Establish `hd : ∀ s T x, val (d s) T x = φ s.pt s.inj T x` using `fun s => ((FH P s.pt).2.1 (φ s.pt s.inj) (fun T' T g x => nat s.pt s.inj T' T g x)).choose_spec`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨mkCofanColimit _ d ?_ ?_⟩` and prove the remaining obligations. Introduce `s i`. Express the relevant statement in the definitionally equal form `(free R).map (a i) ≫ d s = s.inj i`. Apply `(FH (Q i) s.pt).1` to reduce the goal to its premises. Introduce `W q0`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(FH P s.pt).2.2.2.1 (Q i) (a i), hd]`. Take `⟨x, hx⟩ : ∃ x, x = (a i).app (op W) q0` from `⟨_, rfl⟩`. Establish `hwx : y W x = ((b i).app _ q0 : W ⟶ V i) ≫ j i` using `hx ▸ hw i W q0`. Rewrite using `[← hx]`. Apply `(SC s.pt W x).1` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `funext fun k => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hφ, ← (FH (Q i) s.pt).2.2.1]`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `huq` to reduce the goal to its premises. Rewrite using `[hqa, FunctorToTypes.naturality, ← hx]`. Rewrite using `[hqb, FunctorToTypes.naturality]`. Express the relevant statement in the definitionally equal form `_ = pullback.fst (y W x) (j k) ≫ ((b k).app _ q0 : W ⟶ V k)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := ho k`. Rewrite using `[← cancel_mono (j k), Category.assoc, ← pullback.condition, hwx]`. Use `haveI : IsEmpty ((pullback (y W x) (j k) : Scheme.{0}) : Type) := by`. Use `⟨fun z => hki (hdis k i (pullback.snd (y W x) (j k) z) ((pullback.fst (y W x) (j k) ≫ ((b i).app _ q0 : W ⟶ V i)) z) ?_)⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← pullback.condition, Category.assoc, ← hwx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(sec_subsingleton_of_isEmpty s.pt _).elim _ _`. Introduce `s m hm`. Establish `hm' : ∀ i, (free R).map (a i) ≫ m = s.inj i` using `hm`. Apply `(FH P s.pt).1` to reduce the goal to its premises. Introduce `T x`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Apply `(SC s.pt T x).1` to reduce the goal to its premises. Use `funext fun i => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hφ, key, hm']`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] (U : Scheme.{0}) (ι : Type) (V : ι → Scheme.{0}) (j : ∀ i, V i ⟶ U), IsColimit (Cofan.mk U j) → ∀ (P : PSh) (t : P ⟶ yoneda.obj U) (Q : ι → PSh) (a : ∀ i, Q i ⟶ P) (b : ∀ i, Q i ⟶ yoneda.obj (V i)), (∀ i, IsPullback (a i) (b i) t (yoneda.map (j i))) → Nonempty (IsColimit (Cofan.mk ((free R).obj P) (fun i ↦ (free R).map (a i)))) := by
   intro R _ U ι V j hc P t Q a b hpb

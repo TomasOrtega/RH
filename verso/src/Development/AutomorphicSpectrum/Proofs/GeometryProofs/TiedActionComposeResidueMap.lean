@@ -12,23 +12,23 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint.TiedMap
 
 /- English proof (translation)
-Introduce `E _ _ Ω Vs K C _ _ _ _ _ ρ R' g ℓ ψ j ρK ρC hρ hK hC a x`. Establish `hex : ∀ i, ∃ c : Fin g → R', ρ a (ℓ i) = comb ℓ c`. Introduce `i`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R').1 (hρ a i)`. Conclude with `⟨c, by rw [← hc]; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose c hc using hex`. Establish `hs : ∀ i, comb ℓ (Pi.single i (1 : R') : Fin g → R') = ℓ i`. Introduce `i`. Unfold `comb`. Rewrite using `[Finset.sum_eq_single i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Establish `h1 : ∀ i, ρK a (Pi.single i (1 : K)) = fun k => ψ (c i k)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `hK a (Pi.single i 1) (c i) (by rw [hs, hc])` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use extensionality with `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Establish `h2 : ∀ i, ρC a (Pi.single i (1 : C)) = fun k => j (ψ (c i k))`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `hC a (Pi.single i 1) (c i) (by rw [hs, hc])` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[← this]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hxK : x = ∑ i, x i • (Pi.single i (1 : K) : Fin g → K)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hxC : (fun i => j (x i)) = ∑ i, j (x i) • (Pi.single i (1 : C) : Fin g → C)`. Use extensionality with `k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hxC, map_sum]`. Use `conv_rhs => rw [hxK, map_sum]`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, h1, h2]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tied_map_comp : ∀ (E : Type) [Field E] [NumberField E] (Ω Vs K C : Type) [Field Ω] [AddCommGroup Vs] [Module Ω Vs] [Field K] [Field C]
     (ρ : 𝓞 E →+* Module.End Ω Vs) (R' : Subring Ω) (g : ℕ) (ℓ : Fin g → Vs) (ψ : R' →+* K) (j : K →+* C)

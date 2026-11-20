@@ -14,9 +14,9 @@ import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.GrothendieckRingPo
 namespace CompanionTheory.Groth
 
 /- English proof (translation)
-Use `groth_of_steps (fun k _ _ _ _ => ?_) triAut uniTri` and prove the remaining obligations. Establish `hm : MulCls k` using `by apply mulCls`. Establish `ha : Assoc k` using `by apply assoc; exact hm`. Establish `hc : Comm k` using `comm k`. Establish `h1 : One k` using `by apply one`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ProdList k` using `by apply prodList; exact hm`. Use `⟨H k, hm, ha, hc, h1, hl, tri k (H k), ?_, by apply jCls, by apply jSeg, altSum k⟩` and prove the remaining obligations. Apply the tactic sequence `apply multOne <;> first | exact H k | assumption`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem groth_of_cls (H : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], Cls k) :
     GlobalTheory.Published.GrothendieckRingPolynomial := by

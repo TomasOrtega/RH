@@ -9,17 +9,15 @@ open scoped Formalism.Per
 namespace GlobalTheory.BKReal.SESExact
 
 /- English proof (translation)
-Introduce `l _ a _ e _ O K _ _ _ _ _ _ _ _ _ t ϖ G _ _ ι κ μ _ _ _ _ _ _ P₀ P₁ P₂ T₀ T₁ T₂ I₀ I₁ I₂ f g F H hS hF hH v hv`. Take `⟨-, -, hOnto, hker, hsat⟩` from `hS`. Use `set f₁ := (f.f.restrictScalars O).restrict f.T_le with hf₁`. Use `set g₁ := (g.f.restrictScalars O).restrict g.T_le with hg₁`. Establish `hgs : Function.Surjective g₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨y, hy⟩`. Take `⟨x, hx, hxy⟩` from `hOnto y hy`. Conclude with `⟨⟨x, hx⟩, Subtype.ext hxy⟩`. Establish `hex : Function.Exact f₁ g₁`. Introduce and unpack `⟨y, hy⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `h0' : g.f y = 0` using `congrArg Subtype.val h0`. Take `⟨z, hz⟩` from `(hker y).1 h0'`. Establish `hzT : z ∈ T₀.L.T` using `hsat z (hz ▸ hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨z, hzT⟩, Subtype.ext hz⟩`. Introduce and unpack `⟨⟨z, hzT⟩, hz⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hz' : f.f z = y` using `congrArg Subtype.val hz`. Conclude with `(hker y).2 ⟨z, hz'⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT` using `lTensor_exact (OW l O) hex hgs`. Establish `h1 : latW g (I₁.j v) = 0`. Rewrite using `[← hH v, hv, map_zero]`. Take `⟨z, hz⟩` from `(hT (I₁.j v)).1 h1`. Use `⟨I₀.j.symm z, I₁.j.injective ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hF, LinearEquiv.apply_symm_apply]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homW_exact_middle : ∀ {l : ℕ} [Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) {G : Type} [Group G] [TopologicalSpace G] {ι κ μ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] [Fintype μ] [DecidableEq μ] {P₀ : PhiMod O K l e a ι} {P₁ : PhiMod O K l e a κ} {P₂ : PhiMod O K l e a μ} {T₀ T₁ T₂ : LocLat G ℚ_[l] K O} {I₀ : Ident t ϖ P₀ T₀} {I₁ : Ident t ϖ P₁ T₁} {I₂ : Ident t ϖ P₂ T₂} {f : LatHom T₀.L T₁.L} {g : LatHom T₁.L T₂.L} {F : GlobalTheory.BK.Hom P₀ P₁} {H : GlobalTheory.BK.Hom P₁ P₂} (hS : IsSESLat (Qp := ℚ_[l]) f g) (hF : IsMapOf I₀ I₁ f F) (hH : IsMapOf I₁ I₂ g H), ∀ v : κ → OW l O, homW t ϖ H v = 0 → ∃ w, homW t ϖ F w = v := by
   intro l _ a _ e _ O K _ _ _ _ _ _ _ _ _ t ϖ G _ _ ι κ μ _ _ _ _ _ _ P₀ P₁ P₂ T₀ T₁ T₂ I₀ I₁ I₂ f g F H hS hF hH v hv

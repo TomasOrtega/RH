@@ -45,7 +45,7 @@ def gsRootsOmegaMor (v : S) :
         (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) : maxUnramifiedOutside K.1 ℚ̄ S))))⟩
 
 /- English proof (translation)
-Rewrite using `[Preadditive.comp_nsmul, Preadditive.nsmul_comp, Category.comp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_nsmul_id_eq {C : Type*} [Category C] [Preadditive C] {X Y : C} (f : X ⟶ Y) (m : ℕ) :
     f ≫ (m • 𝟙 Y) = (m • 𝟙 X) ≫ f := by
@@ -82,14 +82,14 @@ def gsRootsComparison (m : ℕ) :
     (fun _ => Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun _ => rfl))) m
 
 /- English proof (translation)
-The claim follows from `sUnitsKummerSequence_shortExact S n hnS`.
+A detailed English derivation is pending.
 -/
 theorem gsKummer_shortExact (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     (sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) n).ShortExact :=
   sUnitsKummerSequence_shortExact S n hnS
 
 /- English proof (translation)
-The claim follows from `kummerSequence_shortExact n (by exact_mod_cast NeZero.ne n)`.
+A detailed English derivation is pending.
 -/
 theorem localKummer_shortExact (v : S) :
     (kummerSequence ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)

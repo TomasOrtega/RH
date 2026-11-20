@@ -10,31 +10,29 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.GeneralLinearGroups
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
 /- English proof (translation)
-Introduce `H HA k _ _ _ _ _ Δ δ h hu`. Establish `hpos : 0 < δ.1`. Take `⟨hd, -⟩` from `h`. Rewrite using `[← hd]`. Establish `h1 : ∀ a, (Δ.term a).1 = Δ.first.1` using `fun a => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [h1, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Conclude with `Nat.mul_pos Δ.len_pos Δ.isCusp_first.1`. Take `⟨χ, hχ, hsq⟩` from `(H k δ hpos).2 ⟨Δ, h⟩`. Set `e` to `δ.twEquiv χ hχ`. Set `τ` to `(δ.tw χ hχ).rep`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : ∀ g w, e.toLinearEquiv.symm (τ g w) = ((detChar (Fin δ.1) χ g : ℂˣ) : ℂ) • δ.rep g (e.toLinearEquiv.symm w)` using `fun g w => by`. Take `⟨u, rfl⟩` from `e.toLinearEquiv.surjective w`. Use `e.toIntertwiningMap.isIntertwining _ _ g u` as an intermediate fact. Rewrite using `[LinearEquiv.symm_apply_apply]`. Use `e.toLinearEquiv.injective ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`. Establish `hτ : UnitaryCentral τ` using `UpperTheory.Lit.Cas.unitcent k _ _ τ 2 (δ.tw χ hχ).2.rep.smooth (δ.tw χ hχ).2.rep.irr hsq`. Establish `hχ1 : ∀ a : kˣ, ‖((χ a : ℂˣ) : ℂ)‖ = 1`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `z` to `Matrix.GeneralLinearGroup.scalar (Fin δ.1) a`. Take `⟨c, hc⟩` from `(UpperTheory.Lit.Cas.schur HA k δ a).1`. Establish `hc1` using `hu a c hc`. Establish `hz1 : ‖((detChar (Fin δ.1) χ z : ℂˣ) : ℂ) * c‖ = 1`. Use `hτ a _ fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `e.toLinearEquiv.symm.injective ?_` and prove the remaining obligations. Use `(he z w).trans ?_` and prove the remaining obligations. Rewrite using `[map_smul, mul_smul]`. Conclude with `congrArg _ (hc _)`. Rewrite `hz1` using `[norm_mul, hc1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdz : ((detChar (Fin δ.1) χ z : ℂˣ) : ℂ) = ((χ a : ℂˣ) : ℂ) ^ δ.1`. Establish `hdet : Matrix.GeneralLinearGroup.det z = a ^ δ.1` using `Units.ext (by`. Simplify using `[z, Matrix.GeneralLinearGroup.scalar, Matrix.algebraMap_eq_diagonal, Matrix.det_diagonal])`. Rewrite using `[detChar_apply, hdet, map_pow, Units.val_pow_eq_pow_val]`. Rewrite `hz1` using `[hdz, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hpos.ne').1 hz1`. Introduce `m bm μ hμ v ℓ hℓ'`. Set `l' : Module.Dual ℂ _` to `ℓ ∘ₗ e.toLinearEquiv.symm.toLinearMap`. Establish `hc : ∀ g, ‖l' (τ g (e.toLinearEquiv v))‖ = ‖((detChar (Fin δ.1) χ g : ℂˣ) : ℂ)‖ * ‖ℓ (δ.rep g v)‖` using `fun g => by`. Simplify using `only [l', LinearMap.comp_apply, LinearEquiv.coe_coe, he, LinearEquiv.symm_apply_apply, map_smul, smul_eq_mul, norm_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFc0 : ∀ g : GL (Fin δ.1) k, ‖l' (τ g (e.toLinearEquiv v))‖ = ‖((detChar (Fin δ.1) χ g : ℂˣ) : ℂ)‖ * ‖ℓ (δ.rep g v)‖` using `fun g => hc g`. Establish `hopen : IsOpen {g : GL (Fin δ.1) k | l' ∘ₗ τ g = l'}`. Establish `hk : IsOpen ((detChar (Fin δ.1) χ).ker : Set (GL (Fin δ.1) k))` using `hχ.detChar`. Use `isOpen_iff_mem_nhds.2 fun g hg => ?_` and prove the remaining obligations. Establish `hg' : l' ∘ₗ τ g = l'` using `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hU : {x | ℓ ∘ₗ δ.rep x = ℓ} ∩ ((detChar (Fin δ.1) χ).ker : Set (GL (Fin δ.1) k)) ∈ nhds (g⁻¹ * g)`. Rewrite using `[inv_mul_cancel]; exact Filter.inter_mem (hℓ'.mem_nhds (by show ℓ ∘ₗ δ.rep 1 = ℓ; rw [map_one, Module.End.one_eq_id, LinearMap.comp_id])) (hk.mem_nhds (one_mem _))`. Use `Filter.mem_of_superset ((continuous_const_mul g⁻¹).continuousAt.preimage_mem_nhds hU) fun x hx => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hx`. Establish `h1' : ℓ ∘ₗ δ.rep (g⁻¹ * x) = ℓ` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h2' : detChar (Fin δ.1) χ (g⁻¹ * x) = 1` using `h2`. Use `show l' ∘ₗ τ x = l'`. Establish `hx' : τ x = τ g * τ (g⁻¹ * x)` using `(congrArg τ (mul_inv_cancel_left g x)).symm.trans (map_mul τ g (g⁻¹ * x))`. Rewrite using `[hx', Module.End.mul_eq_comp, ← LinearMap.comp_assoc, hg']`. Use extensionality with `w`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [l', LinearMap.comp_apply, LinearEquiv.coe_coe]`. Use `(congrArg ℓ (he (g⁻¹ * x) w)).trans ?_` and prove the remaining obligations. Rewrite using `[map_smul, h2', Units.val_one, one_smul]`. Conclude with `LinearMap.congr_fun h1' _`. Take `⟨F, hF, hL⟩` from `@hsq m bm μ hμ (e.toLinearEquiv v) l' hopen`.
-
-Use `⟨F, fun g => ?_, hL⟩` and prove the remaining obligations. Use `((hF g).trans (hFc0 g)).trans ?_` and prove the remaining obligations. Rewrite using `[detChar_apply, hχ1, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cas.centred :
     GlobalTheory.Published.EssSquareIntegrableSegments → GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (Δ : Segment k) (y : IrrGL k), IsLSeg Δ y.rep → (∀ (t : kˣ) (c : ℂ), ScalarBy y t c → ‖c‖ = 1) → IsSqIntCoeff y.rep := by

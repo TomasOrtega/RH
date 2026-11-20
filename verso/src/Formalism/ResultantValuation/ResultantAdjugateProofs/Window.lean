@@ -12,14 +12,14 @@ section Padic
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Simplify `PadicInt.mem_span_pow_iff_le_valuation x hx n` using `[Ideal.mem_span_singleton]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pow_dvd_iff_le_valuation_lemma {x : ℤ_[l]} (hx : x ≠ 0) (n : ℕ) :
     (l : ℤ_[l]) ^ n ∣ x ↔ n ≤ x.valuation := by
   simpa [Ideal.mem_span_singleton] using PadicInt.mem_span_pow_iff_le_valuation x hx n
 
 /- English proof (translation)
-Rewrite using `[emultiplicity_eq_coe]`. Use `⟨(pow_dvd_iff_le_valuation_lemma hx _).2 le_rfl, fun h => ?_⟩` and prove the remaining obligations. Establish `h1` using `(pow_dvd_iff_le_valuation_lemma hx _).1 h`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma emultiplicity_eq_valuation {x : ℤ_[l]} (hx : x ≠ 0) :
     emultiplicity (l : ℤ_[l]) x = (x.valuation : ℕ∞) := by
@@ -29,7 +29,7 @@ lemma emultiplicity_eq_valuation {x : ℤ_[l]} (hx : x ≠ 0) :
   omega
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(pow_dvd_iff_le_valuation_lemma (one_ne_zero : (1 : ℤ_[l]) ≠ 0) 1).1 (by rwa [pow_one])`. Rewrite `h1` using `[PadicInt.valuation_one]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem not_dvd_one'_lemma_2 : ¬ (l : ℤ_[l]) ∣ 1 := by
   intro h
@@ -38,15 +38,11 @@ private theorem not_dvd_one'_lemma_2 : ¬ (l : ℤ_[l]) ∣ 1 := by
   omega
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Introduce `h`. Conclude with `not_dvd_one'_lemma_2 (isUnit_iff_dvd_one.mp h)`. Introduce `a b hab`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a = 0`. Use `left`. Rewrite using `[ha]`. Conclude with `dvd_zero _`. Distinguish the cases in `hb : b = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `right`. Rewrite using `[hb]`. Conclude with `dvd_zero _`. Establish `h1` using `(pow_dvd_iff_le_valuation_lemma (mul_ne_zero ha hb) 1).1 (by rwa [pow_one])`. Rewrite `h1` using `[PadicInt.valuation_mul ha hb]`.
-
-Break down `Nat.eq_zero_or_pos a.valuation with h0 | h0` into its components or cases. Use `right`. Establish `h2` using `(pow_dvd_iff_le_valuation_lemma hb 1).2 (by omega)`. Rewrite `h2` using `[pow_one]`. Then use the resulting hypothesis. Use `left`.
-
-Establish `h2` using `(pow_dvd_iff_le_valuation_lemma ha 1).2 (by omega)`. Rewrite `h2` using `[pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem prime_l_lemma_3 : Prime (l : ℤ_[l]) := by
   refine ⟨?_, ?_, ?_⟩
@@ -71,25 +67,23 @@ private theorem prime_l_lemma_3 : Prime (l : ℤ_[l]) := by
 end Padic
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hprime` using `prime_l_lemma_3 (l := l)`. Establish `hu0 : u - 1 ≠ 0`. Introduce `h`. Rewrite `hu` using `[h, PadicInt.valuation_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdvd : (l : ℤ_[l]) ∣ u - 1`. Establish `h1` using `(pow_dvd_iff_le_valuation_lemma hu0 1).2 (by omega)`. Rewrite `h1` using `[pow_one]`. Then use the resulting hypothesis. Establish `hndvd : ¬ (l : ℤ_[l]) ∣ u`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `h`. Apply `not_dvd_one'_lemma_2 (l := l)` to reduce the goal to its premises. Establish `h1` using `dvd_sub h hdvd`. Rewrite `h1` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (by omega : i ≠ 0) l hp.one_lt.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (dvd_zero l)`. Establish `hv : padicValNat l (l ^ a * m) = a`. Rewrite using `[padicValNat.mul (pow_ne_zero _ hp.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `emultiplicity_pow_prime_pow_sub_pow_prime_pow hprime (hp.odd_of_ne_two hl2) hdvd hndvd a`. Rewrite `h1` using `[one_pow]`. Establish `hdvd2 : (l : ℤ_[l]) ∣ u ^ l ^ a - 1`. Use `hdvd.trans ?_` and prove the remaining obligations. Simplify using `using sub_dvd_pow_sub_pow u 1 (l ^ a)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hndvd2 : ¬ (l : ℤ_[l]) ∣ u ^ l ^ a` using `fun h => hndvd (hprime.dvd_of_dvd_pow h)`. Establish `hm' : ¬ (l : ℤ_[l]) ∣ (m : ℤ_[l])`. Introduce `h`. Establish `hc : Nat.Coprime m l` using `((Nat.Prime.coprime_iff_not_dvd hp).2 hm).symm`. Take `⟨s, t, hst⟩` from `Nat.isCoprime_iff_coprime.2 hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hst' : (s : ℤ_[l]) * (m : ℤ_[l]) + (t : ℤ_[l]) * (l : ℤ_[l]) = 1`. Establish `h3` using `congrArg (Int.cast : ℤ → ℤ_[l]) hst`. Move the coercions through the operations in `at h3`. Conclude with `h3`. Apply `not_dvd_one'_lemma_2 (l := l)` to reduce the goal to its premises.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hst']`. Conclude with `dvd_add (dvd_mul_of_dvd_right h _) (dvd_mul_left _ _)`. Establish `h2` using `emultiplicity_pow_sub_pow_of_prime hprime hdvd2 hndvd2 hm'`. Rewrite `h2` using `[one_pow, ← pow_mul]`. Establish `hE : emultiplicity (l : ℤ_[l]) (u ^ (l ^ a * m) - 1) = ((1 + a : ℕ) : ℕ∞)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Rewrite using `[h2, h1, emultiplicity_eq_valuation hu0, hu]`. Use `norm_cast`. Establish `hne : u ^ (l ^ a * m) - 1 ≠ 0`. Introduce `h`. Rewrite `hE` using `[h, emultiplicity_zero]`.
-
-Conclude with `(ENat.natCast_ne_top (1 + a)) hE.symm`. Rewrite using `[hv]`. Conclude with `(emultiplicity_eq_valuation hne).symm.trans hE` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lte_unit (l : ℕ) [Fact l.Prime] (hl2 : l ≠ 2) (u : ℤ_[l]) (hu : (u - 1).valuation = 1)
     (i : ℕ) (hi : 1 ≤ i) : ((u ^ i - 1).valuation : ℕ) = 1 + padicValNat l i := by
@@ -145,7 +139,7 @@ lemma lte_unit (l : ℕ) [Fact l.Prime] (hl2 : l ≠ 2) (u : ℤ_[l]) (hu : (u -
   exact_mod_cast (emultiplicity_eq_valuation hne).symm.trans hE
 
 /- English proof (translation)
-Introduce `l _ hl2 u hu i hi`. Conclude with `lte_unit l hl2 u hu i hi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem powSubOneValuation : LTEUnit := by
   intro l _ hl2 u hu i hi

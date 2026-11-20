@@ -22,7 +22,7 @@ def ZSubHasBlocks (n : ℕ) (q : Pl → ℕ) (t : ℕ) (bl : List (Pl → L)) (s
   ∀ x ∈ Z, HasBlocks n q t bl (sys x)
 
 /- English proof (translation)
-Introduce `x hx` and use `h x (hZ hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ZSubHasBlocks.mono {n : ℕ} {q : Pl → ℕ} {t : ℕ} {bl : List (Pl → L)} {sys : Pt → Pl × ℕ → L} {Z Z' : Set Pt}
     (h : ZSubHasBlocks n q t bl sys Z) (hZ : Z' ⊆ Z) : ZSubHasBlocks n q t bl sys Z' :=

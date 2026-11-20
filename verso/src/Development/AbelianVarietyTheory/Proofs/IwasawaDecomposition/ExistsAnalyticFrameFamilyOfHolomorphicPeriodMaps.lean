@@ -16,23 +16,19 @@ namespace GlobalTheory.PeriodFamFrame
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Introduce `v`. Use `set H : (E →+* ℂ) → La → ℂ := fun χ w => ∑ j ∈ Finset.univ.filter (fun j => ty j = χ), c j * G j w with hH`. Establish `hHs : ∀ χ (b : 𝓞 E) w, H χ (b • w) = χ (b : E) * H χ w`. Introduce `χ b w`. Simplify using `only [hH, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[hG, (Finset.mem_filter.1 hj).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hFH : ∀ w, F w = ∑ χ ∈ Finset.univ.image ty, H χ w`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum w]`. Conclude with `(Finset.sum_fiberwise_of_maps_to (fun j _ => Finset.mem_image_of_mem ty (Finset.mem_univ j)) _).symm`. Establish `hres : ∀ χ χ' : E →+* ℂ, (∀ a : 𝓞 E, χ (a : E) = χ' (a : E)) → χ = χ'` using `fun χ χ' h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)`. Establish `hli : LinearIndependent ℂ (fun χ : E →+* ℂ => fun a : 𝓞 E => χ (a : E))` using `(linearIndependent_monoidHom (𝓞 E) ℂ).comp (fun χ : E →+* ℂ => (χ.comp (algebraMap (𝓞 E) E)).toMonoidHom) (fun χ χ' e => hres χ χ' fun a => by simpa using DFunLike.congr_fun e a)`. Establish `hzero : ∀ χ ∈ Finset.univ.image ty, χ ≠ τ → H χ v = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `χ hχ hne`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : 𝓞 E, χ (a : E) ≠ τ (a : E) := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (hres _ _ hc)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∑ χ' ∈ Finset.univ.image ty, ((χ' (a : E) - τ (a : E)) * H χ' v) • (fun b : 𝓞 E => χ' (b : E)) = 0`. Use function extensionality and compare the values at `b`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Establish `e1` using `hF a (b • v)`. Rewrite `e1` using `[hFH, hFH, smul_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [hHs] at e1`. Rewrite `e1` using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `linearIndependent_iff'.1 hli _ _ key χ hχ` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 ha)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hFH v, Finset.sum_eq_single τ]`. Simplify using `only [hH]`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
-
-Introduce `χ hχ hne`. Conclude with `hzero χ hχ hne`. Introduce `hτ`. Simplify using `only [hH]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations.
-
-Conclude with `absurd ((Finset.mem_filter.1 hj).2 ▸ Finset.mem_image_of_mem ty (Finset.mem_univ j)) hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sep_types {E : Type} [Field E] [NumberField E] {La : Type} [AddCommGroup La] [Module (𝓞 E) La]
     {g : ℕ} (ty : Fin g → (E →+* ℂ)) (G : Fin g → La → ℂ) (τ : E →+* ℂ) (c : Fin g → ℂ) (F : La → ℂ)
@@ -85,23 +81,23 @@ theorem sep_types {E : Type} [Field E] [NumberField E] {La : Type} [AddCommGroup
     exact absurd ((Finset.mem_filter.1 hj).2 ▸ Finset.mem_image_of_mem ty (Finset.mem_univ j)) hτ
 
 /- English proof (translation)
-Take `⟨n, s, hs⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 X.Λ_fg`. Establish `hsm : ∀ k, s k ∈ X.Λ` using `fun k => hs ▸ Submodule.subset_span (Set.mem_range_self k)`. Use `⟨n, fun k => φ.symm ⟨s k, hsm k⟩, fun ρ => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.apply_symm_apply]`. Set `Φ : (Fin r → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `{ toFun := fun u k => hermC ρ X.Gm u (Data.emb ρ (s k)) map_add' := fun u u' => funext fun k => hermC_add_left ρ X.Gm u u' _ map_smul' := fun c u => funext fun k => hermC_smul_left ρ X.Gm c u _ }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hΦ : LinearMap.ker Φ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `u hu`. Establish `h0 : ∀ k, hermC ρ X.Gm u (Data.emb ρ (s k)) = 0` using `fun k => congrFun hu k`. Establish `hE : ∀ w : Fin r → E, hermC ρ X.Gm u (Data.emb ρ w) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Establish `hw : w ∈ Submodule.span E (Set.range s)`. Establish `h1 : X.Λ ≤ (Submodule.span E (Set.range s)).restrictScalars (𝓞 E)`. Rewrite using `[← hs]`. Conclude with `Submodule.span_le_restrictScalars (𝓞 E) E (Set.range s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Submodule.span E (X.Λ : Set (Fin r → E)) ≤ Submodule.span E (Set.range s)` using `Submodule.span_le.2 h1`. Rewrite `h2` using `[X.Λ_span]`. Conclude with `h2 trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `h0 k`. Consider the case `zero => simp [Data.emb, hermC]`. Consider the case `add x y _ _ hx hy`. Rewrite using `[show Data.emb ρ (x + y) = Data.emb ρ x + Data.emb ρ y from funext fun _ => by simp [Data.emb], hermC_add_right, hx, hy, add_zero]`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Data.emb ρ (c • x) = ρ c • Data.emb ρ x from funext fun _ => by simp [Data.emb], hermC_smul_right, hx, mul_zero]`. Establish `hdet : (X.Gm.map ρ).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Simplify using `using X.Gm_det`. Apply `Matrix.eq_zero_of_vecMul_eq_zero hdet` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Use `hE (Pi.single b 1)` as an intermediate fact. Simplify using `only [hermC, Data.emb] at this`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.map_apply, Pi.zero_apply]`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `b' _ hb'`. Simplify using `[Pi.single_apply, hb']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using the standard rewrite rules. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective Φ hΦ`. Conclude with `⟨L, fun u => LinearMap.congr_fun hL u⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_fam {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     {La : Type} [AddCommGroup La] [Module (𝓞 E) La] (φ : La ≃ₗ[𝓞 E] X.Λ) :
@@ -156,11 +152,11 @@ theorem exists_fam {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hemb : ∀ ρ : E →+* ℂ, Data.emb ρ (a • v) = ρ a • Data.emb ρ v` using `fun ρ => by`. Use function extensionality and compare the values at `k`. Simplify using `[Data.emb]`. Unfold `Formalism.L2.PjFree.perFr`. Use `split_ifs`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hemb, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[hemb, hermC_smul_right]`. Simplify using `[conjEmb]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perFr_smul_int (X : Data E r) (x : Frame X.Ψ r) (a : E) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     Formalism.L2.PjFree.perFr X x (a • v) τ i = τ a * Formalism.L2.PjFree.perFr X x v τ i := by
@@ -175,14 +171,14 @@ theorem perFr_smul_int (X : Data E r) (x : Frame X.Ψ r) (a : E) (v : Fin r → 
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coe_smul_lat (X : Data E r) (a : 𝓞 E) (w : X.Λ) :
     ((a • w : X.Λ) : Fin r → E) = (a : E) • (w : Fin r → E) := by
   funext k; simp [Algebra.smul_def]
 
 /- English proof (translation)
-Simplify using `only [hermC, Matrix.mulVec, dotProduct, col, Finset.sum_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hermC_mulVec_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M : Matrix (Fin r) (Fin r) ℂ)
     (w e : Fin r → ℂ) : hermC τ G (M *ᵥ w) e = ∑ k, w k * hermC τ G (col M k) e := by
@@ -193,11 +189,9 @@ theorem hermC_mulVec_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M :
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨n, h⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Conclude with `hb (Fin.ext e)`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
-
-Introduce `e`. Conclude with `h (e ▸ k.2)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_fin_ite (n : ℕ) (f : Fin r → ℂ) :
     ∑ k : Fin r, (if (k : ℕ) = n then f k else 0) = if h : n < r then f ⟨n, h⟩ else 0 := by
@@ -210,9 +204,9 @@ theorem sum_fin_ite (n : ℕ) (f : Fin r → ℂ) :
     rw [if_neg]; intro e; exact h (e ▸ k.2)
 
 /- English proof (translation)
-Rewrite using `[sum_fin_ite]`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_neg (ReciprocityTheory.ChartRestriction.G.PullbackSections.UH.conjEmb_not_mem X ρ)]`. Establish `h' : conjEmb (conjEmb ρ.1) ∈ X.Ψ` using `by rw [ReciprocityTheory.ChartRestriction.G.PullbackSections.UH.conjEmb_conjEmb]; exact ρ.2`. Rewrite using `[dif_pos h']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-It suffices to establish `∀ τ' (h' : τ' ∈ X.Ψ), τ' = ρ.1 → (if hj : X.p0 - 1 - i < r then hermC τ' X.Gm (col (mat x ⟨τ', h'⟩) ⟨X.p0 - 1 - i, hj⟩) (Data.emb τ' w) else 0) = (if hj : X.p0 - 1 - i < r then hermC ρ.1 X.Gm (col (mat x ρ) ⟨X.p0 - 1 - i, hj⟩) (Data.emb ρ.1 w) else 0) from this _ h' (ReciprocityT …`. Introduce and unpack `τ' h' rfl`. Both sides reduce to the same expression.
+Reduce the argument to an intermediate assertion. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 theorem perFr_conj_type (X : Data E r) (x : Frame X.Ψ r) (ρ : X.Ψ) (w : Fin r → E) (i : ℕ) :
     Formalism.L2.PjFree.perFr X x w (conjEmb ρ.1) i =
@@ -230,17 +224,17 @@ theorem perFr_conj_type (X : Data E r) (x : Frame X.Ψ r) (ρ : X.Ψ) (w : Fin r
   rfl
 
 /- English proof (translation)
-Use `set c : Fin g → ℂ := fun j' => h (fun k => if j' = k then 1 else 0) j with hc`. Establish `hsum : ∀ v, Q v j = ∑ j', c j' * Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j') (idx j')`. Introduce `v`. Rewrite using `[hh v, show (h : (Fin g → ℂ) → (Fin g → ℂ)) _ = h.toLinearMap _ from rfl, LinearMap.pi_apply_eq_sum_univ]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hc, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `hG : ∀ j' (a : 𝓞 E) v, Formalism.L2.PjFree.perFr X x' (φ (a • v) : Fin r → E) (ty j') (idx j') = ty j' (a : E) * Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j') (idx j')`. Introduce `j' a v`. Rewrite using `[map_smul, coe_smul_lat, perFr_smul_int]`. Establish `hsep` using `sep_types ty (fun j' v => Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j') (idx j')) (conjEmb ρ.1) c (fun v => Q v j) hG (fun a v => by rw [hQ, hj]) hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun k => ∑ j', if ty j' = conjEmb ρ.1 ∧ (k : ℕ) = X.p0 - 1 - idx j' then c j' else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Use `Finset.sum_eq_zero fun j' _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hidx j' (h1 ▸ ReciprocityTheory.ChartRestriction.G.PullbackSections.UH.conjEmb_not_mem X ρ)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `v`. Rewrite using `[hsep v, hermC_mulVec_left]`. Simplify using `only [Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj' : ty j' = conjEmb ρ.1`. Rewrite using `[if_pos hj', hj', perFr_conj_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [true_and]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[if_neg hj', zero_mul]`. Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg (fun hh => hj' hh.1), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_fwd (X : Data E r) {La : Type} [AddCommGroup La] [Module (𝓞 E) La] (φ : La ≃ₗ[𝓞 E] X.Λ) {g : ℕ}
     (ty : Fin g → (E →+* ℂ)) (idx : Fin g → ℕ) (hidx : ∀ j, ty j ∉ X.Ψ → idx j < X.p0) (x' : Frame X.Ψ r)
@@ -284,11 +278,9 @@ theorem rep_fwd (X : Data E r) {La : Type} [AddCommGroup La] [Module (𝓞 E) La
       rw [if_neg (fun hh => hj' hh.1), zero_mul]
 
 /- English proof (translation)
-Use `set c : Fin g → ℂ := fun j => h.symm (fun k => if j = k then 1 else 0) j0 with hc`. Establish `hsum : ∀ v, Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j0) (idx j0) = ∑ j, c j * Q v j`. Introduce `v`. Establish `e : (fun j => Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j) (idx j)) = h.symm (Q v)`. Rewrite using `[hh v, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j0) (idx j0) = h.symm (Q v) j0 from congrFun e j0, show (h.symm : (Fin g → ℂ) → (Fin g → ℂ)) _ = h.symm.toLinearMap _ from rfl, LinearMap.pi_apply_eq_sum_univ]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hc, LinearEquiv.coe_coe]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Use `⟨c, sep_types ty (fun j v => Q v j) (conjEmb ρ.1) c (fun v => Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j0) (idx j0)) (fun j a v => hQ a v j) ?_ hsum⟩` and prove the remaining obligations. Introduce `a v`.
-
-Use `show Formalism.L2.PjFree.perFr X x' (φ (a • v) : Fin r → E) (ty j0) (idx j0) = _`. Rewrite using `[map_smul, coe_smul_lat, perFr_smul_int, hj0]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_bwd (X : Data E r) {La : Type} [AddCommGroup La] [Module (𝓞 E) La] (φ : La ≃ₗ[𝓞 E] X.Λ) {g : ℕ}
     (ty : Fin g → (E →+* ℂ)) (idx : Fin g → ℕ) (x' : Frame X.Ψ r)
@@ -314,51 +306,45 @@ theorem rep_bwd (X : Data E r) {La : Type} [AddCommGroup La] [Module (𝓞 E) La
   rw [map_smul, coe_smul_lat, perFr_smul_int, hj0]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X La _ _ φ g ty idx d B P b₀ hBo hb₀ hsl hdiff hcov hinj hidx hper`. Take `⟨n, a, hL⟩` from `exists_fam X φ`. Use `choose L hL using hL`. Use `set yv : ReciprocityTheory.L2DbarEstimates.V d → X.Ψ → Fin g → Fin r → ℂ := fun b ρ j => L ρ.1 (fun k => P b (a k) j) with hyv`. Establish `hrep : ∀ b ∈ B, ∀ x' : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r, ∀ h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), (∀ v, P b v = h (fun j => Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j) (idx j))) → ∀ (ρ : X.Ψ) (j : Fin g), ty j = conjEmb ρ.1 → ∃ w : Fin r → ℂ, (∀ k : Fin …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b hb x' h hh ρ j hj`. Take `⟨w, hw, hv⟩` from `rep_fwd X φ ty idx hidx x' h (fun v => P b v) (fun a v j => hsl b hb a v j) hh ρ j hj`. Establish `hy : yv b ρ j = ReciprocityTheory.ChartRestriction.G.FD.mat x' ρ *ᵥ w`. Rewrite using `[hyv]`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show (fun k => P b (a k) j) = fun k => ReciprocityTheory.ChartRestriction.G.FD.hermC ρ.1 X.Gm (ReciprocityTheory.ChartRestriction.G.FD.mat x' ρ *ᵥ w) (ReciprocityTheory.ChartRestriction.G.FD.Data.emb ρ.1 (φ (a k) : Fin r → E)) from`. Use function extensionality and compare the values at `fun k => hv (a k)]`. Conclude with `hL ρ.1 _`. Conclude with `⟨w, hw, hy, fun v => by rw [hy]; exact hv v⟩`. Take `⟨x₀, hx₀, h₀, hh₀⟩` from `hper b₀ hb₀`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcol : ∀ (ρ : X.Ψ) (m : Fin r), (m : ℕ) < X.p0 → ∃ c : Fin g → ℂ, (∀ j, ty j ≠ conjEmb ρ.1 → c j = 0) ∧ ReciprocityTheory.ChartRestriction.G.FD.col (ReciprocityTheory.ChartRestriction.G.FD.mat x₀ ρ) m = ∑ j, c j • yv b₀ ρ j`. Introduce `ρ m hm`. Take `⟨j0, hj0, hi0⟩` from `hcov ρ.1 ρ.2 (X.p0 - 1 - m) (by omega)`. Take `⟨c, hc⟩` from `rep_bwd X φ ty idx x₀ h₀ (fun v => P b₀ v) (fun a v j => hsl b₀ hb₀ a v j) hh₀ ρ j0 hj0`. Use `⟨fun j => if ty j = conjEmb ρ.1 then c j else 0, fun j hj => if_neg hj, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ v, ReciprocityTheory.ChartRestriction.G.FD.hermC ρ.1 X.Gm (ReciprocityTheory.ChartRestriction.G.FD.col (ReciprocityTheory.ChartRestriction.G.FD.mat x₀ ρ) m) (ReciprocityTheory.ChartRestriction.G.FD.Data.emb ρ.1 (φ v : Fin r → E)) = ReciprocityTheory.ChartRestriction.G.FD. …`. Introduce `v`. Establish `e1` using `hc v`. Rewrite `e1` using `[hj0, hi0, perFr_conj_type]`. Establish `e2 : (∑ k : Fin r, if (k : ℕ) = X.p0 - 1 - (X.p0 - 1 - (m : ℕ)) then ReciprocityTheory.ChartRestriction.G.FD.hermC ρ.1 X.Gm (ReciprocityTheory.ChartRestriction.G.FD.col (ReciprocityTheory.ChartRestriction.G.FD.mat x₀ ρ) k) (ReciprocityTheory.ChartRestriction.G.FD.Data.emb ρ.1 (φ …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single m]`. Rewrite using `[if_pos (by omega)]`. Introduce `k _ hk; rw [if_neg]; intro e; exact hk (Fin.ext (by omega))`. Simplify using the standard rewrite rules. Rewrite using `[← e2, e1, ReciprocityTheory.ChartRestriction.G.FD.hermC_sum_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : ty j = conjEmb ρ.1`. Rewrite using `[if_pos hj, ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left]`. Take `⟨w, -, -, hPv⟩` from `hrep b₀ hb₀ x₀ h₀ hh₀ ρ j hj`. Rewrite using `[hPv v]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[if_neg hj, zero_mul, zero_smul, ReciprocityTheory.ChartRestriction.G.FD.hermC_zero_left]`. Use `congrArg (L ρ.1) (funext fun k => key (a k))` as an intermediate fact. Simplify `this` using `only [hL]`. Use `choose! cc hcc0 hcc using hcol`. Set `s : ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r` to `fun b ρ k m => if (m : ℕ) < X.p0 then ∑ j, cc ρ m j * yv b ρ j k else x₀ ρ k m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs0 : s b₀ = x₀`. Use function extensionality and compare the values at `ρ k m`. Simplify using `only [s]`. Use `split_ifs with hm`. Use `congrFun (hcc ρ m hm) k` as an intermediate fact.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.col, ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `this.symm`. Both sides reduce to the same expression. Establish `hsd : DifferentiableOn ℂ s B`. Establish `hv : ∀ (ρ : X.Ψ) j, DifferentiableOn ℂ (fun b => yv b ρ j) B`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `ρ j`. Establish `h1 : DifferentiableOn ℂ (fun b => fun k => P b (a k) j) B` using `differentiableOn_pi.2 fun k => differentiableOn_pi.1 (hdiff (a k)) j`. Conclude with `(LinearMap.toContinuousLinearMap (L ρ.1)).differentiable.comp_differentiableOn h1`. Use `differentiableOn_pi.2 fun ρ => differentiableOn_pi.2 fun k => differentiableOn_pi.2 fun m => ?_` and prove the remaining obligations. Distinguish the cases in `hm : (m : ℕ) < X.p0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [s, if_pos hm]`. Conclude with `DifferentiableOn.fun_sum fun j _ => (differentiableOn_const _).mul (differentiableOn_pi.1 (hv ρ j) k)`. Simplify using `only [s, if_neg hm]`. Conclude with `differentiableOn_const _`. Use `⟨s, GlobalTheory.SCV.analyticAt_of_differentiableOn hsd (hBo.mem_nhds hb₀), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ b in 𝓝 b₀, s b ∈ X.dom` using `(hsd.continuousOn.continuousAt (hBo.mem_nhds hb₀)).preimage_mem_nhds ((ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom X).mem_nhds (hs0 ▸ hx₀))`. Use `filter_upwards [hev, hBo.mem_nhds hb₀] with b hsb hb`. Use `⟨hsb, fun x' hx' hex => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `hex`. Establish `R2 : ∀ (τ : X.Ψ) (a' b' : Fin r), X.p0 ≤ (a' : ℕ) → (b' : ℕ) < X.p0 → ((ReciprocityTheory.ChartRestriction.G.FD.mat x' τ)⁻¹ * ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ) a' b' = 0`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `τ a' b' ha hb'`. Establish `hr : ∀ j, ty j = conjEmb τ.1 → ∃ w : Fin r → ℂ, (∀ k : Fin r, X.p0 ≤ (k : ℕ) → w k = 0) ∧ yv b τ j = ReciprocityTheory.ChartRestriction.G.FD.mat x' τ *ᵥ w` using `fun j hj => by`. Take `⟨w, hw, hy, -⟩` from `hrep b hb x' h hh τ j hj`. Conclude with `⟨w, hw, hy⟩`. Use `choose! w hw hyw using hr`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set W : Fin r → ℂ := ∑ j, cc τ b' j • w j with hW`. Establish `hcolW : ReciprocityTheory.ChartRestriction.G.FD.col (ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ) b' = ReciprocityTheory.ChartRestriction.G.FD.mat x' τ *ᵥ W`. Rewrite using `[hW, Matrix.mulVec_sum]`. Use function extensionality and compare the values at `k`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.col, ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.of_apply, s, if_pos hb', Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : ty j = conjEmb τ.1`. Establish `e` using `hyw j hj`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.mat] at e`. Simplify using `only [Matrix.mulVec_smul, ← e, Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcc0 τ b' hb' j hj]`. Simplify using the standard rewrite rules. Establish `hdet : IsUnit (ReciprocityTheory.ChartRestriction.G.FD.mat x' τ).det` using `((hx' τ).1).isUnit`. Establish `e : ((ReciprocityTheory.ChartRestriction.G.FD.mat x' τ)⁻¹ * ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ) a' b' = ((ReciprocityTheory.ChartRestriction.G.FD.mat x' τ)⁻¹ *ᵥ ReciprocityTheory.ChartRestriction.G.FD.col (ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ) b') …`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, ReciprocityTheory.ChartRestriction.G.FD.col]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Rewrite using `[e, hcolW, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec, hW]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : ty j = conjEmb τ.1`. Rewrite using `[hw j hj a' ha, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hcc0 τ b' hb' j hj, zero_mul]`. Use `⟨fun τ a' b' ha hb' => ?_, R2⟩` and prove the remaining obligations. Use `set M := (ReciprocityTheory.ChartRestriction.G.FD.mat x' τ)⁻¹ * ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ with hM`. Establish `hdx : IsUnit (ReciprocityTheory.ChartRestriction.G.FD.mat x' τ).det` using `((hx' τ).1).isUnit`. Establish `hds : IsUnit (ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ).det` using `((hsb τ).1).isUnit`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdM : IsUnit M.det`. Rewrite using `[hM, Matrix.det_mul]`. Conclude with `(Matrix.isUnit_nonsing_inv_det _ hdx).mul hds`. Use `letI := M.invertibleOfIsUnitDet hdM`. Establish `hbt : M.BlockTriangular (fun i : Fin r => if (i : ℕ) < X.p0 then 0 else 1)`.
-
-Introduce `i j hij`. Simplify using `only at hij`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Rewrite `hij` using `[if_pos hi]`. Conclude with `absurd hij (Nat.not_lt_zero _)`.
-
-Distinguish the cases in `hj : (j : ℕ) < X.p0`. Conclude with `R2 τ i j (by omega) hj`. Rewrite `hij` using `[if_neg hi, if_neg hj]`. Conclude with `absurd hij (lt_irrefl _)`. Establish `hinv` using `Matrix.blockTriangular_inv_of_blockTriangular hbt`.
-
-Establish `eM : M⁻¹ = (ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ)⁻¹ * ReciprocityTheory.ChartRestriction.G.FD.mat x' τ`. Rewrite using `[hM, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hdx]`. Rewrite using `[← eM]`. Conclude with `hinv (show (if (b' : ℕ) < X.p0 then 0 else 1) < (if (a' : ℕ) < X.p0 then 0 else 1) by`. Rewrite using `[if_pos hb', if_neg (by omega)]; exact Nat.zero_lt_one)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (La : Type) [AddCommGroup La] [Module (𝓞 E) La] (φ : La ≃ₗ[𝓞 E] X.Λ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (idx : Fin g → ℕ) (d : ℕ) (B : Set (ReciprocityTheory.L2DbarEstimates.V d)) (P : ReciprocityTheory.L2DbarEstimates.V d → (La →+ (Fin g → ℂ))) (b₀ : ReciprocityTheory.L2DbarEstimates.V d), IsOpen B → b₀ ∈ B → (∀ b ∈ B, ∀ (a : 𝓞 E) (v : La) (j : Fin g), P b (a • v) j = ty j (a : E) * P b v j) → (∀ v, DifferentiableOn ℂ (fun b => P b v) B) → (∀ ρ ∈ X.Ψ, ∀ m < X.p0, ∃ j, ty j = conjEmb ρ ∧ idx j = m) → (∀ j j', ty j = ty j' → idx j = idx j' → j = j') → (∀ j, ty j ∉ X.Ψ → idx j < X.p0) → (∀ b ∈ B, ∃ x' ∈ X.dom, ∃ h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ v, P b v = h (fun j => Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j) (idx j))) → ∃ s : ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r, AnalyticAt ℂ s b₀ ∧ ∀ᶠ b in 𝓝 b₀, s b ∈ X.dom ∧ ∀ x' ∈ X.dom, (∃ h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ v, P b v = h (fun j => Formalism.L2.PjFree.perFr X x' (φ v : Fin r → E) (ty j) (idx j))) → (∀ (τ : X.Ψ) (a b' : Fin r), X.p0 ≤ (a : ℕ) → (b' : ℕ) < X.p0 → ((ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ)⁻¹ * ReciprocityTheory.ChartRestriction.G.FD.mat x' τ) a b' = 0) ∧ (∀ (τ : X.Ψ) (a b' : Fin r), X.p0 ≤ (a : ℕ) → (b' : ℕ) < X.p0 → ((ReciprocityTheory.ChartRestriction.G.FD.mat x' τ)⁻¹ * ReciprocityTheory.ChartRestriction.G.FD.mat (s b) τ) a b' = 0) := by
   intro E _ _ _ r X La _ _ φ g ty idx d B P b₀ hBo hb₀ hsl hdiff hcov hinj hidx hper

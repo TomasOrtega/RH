@@ -19,9 +19,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Establish `h1` using `hasQ_vadd N f a (N : ℝ) h`. Establish `hc : (fun n : ℕ => a n * Complex.exp (2 * Real.pi * Complex.I * n * ((N : ℝ) : ℂ) / N)) = a`. Use function extensionality and compare the values at `n`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `: 2 * Real.pi * Complex.I * n * ((N : ℝ) : ℂ) / N = (n : ℂ) * (2 * Real.pi * Complex.I)` using `by push_cast; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Complex.exp_nat_mul_two_pi_mul_I, mul_one]`. Rewrite `h1` using `[hc]`. Conclude with `congrFun (GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique.2 N _ _ a h1 h) τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasQ_periodic {N : ℕ} {f : ℍ → ℂ} {a : ℕ → ℂ} (hN : 0 < N) (h : HasQ N f a) (τ : ℍ) :
     f ((N : ℝ) +ᵥ τ) = f τ := by
@@ -36,27 +36,23 @@ theorem hasQ_periodic {N : ℕ} {f : ℍ → ℂ} {a : ℕ → ℂ} (hN : 0 < N)
   exact congrFun (GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique.2 N _ _ a h1 h) τ
 
 /- English proof (translation)
-Introduce `N n A D s hN ⟨a, hA⟩ ⟨d, hD⟩ hs hD0 heq`. Use `choose c hc using hs`. Take `⟨hAm, -⟩` from `GlobalTheory.T.mdifferentiable_and_isBoundedAtImInfty_of_hasQ N A a hN hA`. Take `⟨hDm, -⟩` from `GlobalTheory.T.mdifferentiable_and_isBoundedAtImInfty_of_hasQ N D d hN hD`. Establish `hsm : ∀ j, MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (s j) ∧ UpperHalfPlane.IsBoundedAtImInfty (s j)` using `fun j => GlobalTheory.T.mdifferentiable_and_isBoundedAtImInfty_of_hasQ N (s j) (c j) hN (hc j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUo : IsOpen {z : ℂ | 0 < z.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hUc : IsPreconnected {z : ℂ | 0 < z.im}` using `(convex_halfSpace_im_gt 0).isPreconnected`. Choose the witnesses or unpack the hypotheses as in `⟨τ₀, hτ₀⟩ : ∃ τ, D τ ≠ 0 := by`. Assume the negation of the conclusion as `hc'`. Use `push_neg at hc'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD0 (funext hc')`. Establish `hofc : ∀ z : ℂ, 0 < z.im → ((UpperHalfPlane.ofComplex z : ℍ) : ℂ) = z` using `fun z hz => by`. Rewrite using `[UpperHalfPlane.ofComplex_apply_of_im_pos hz]`. Take `⟨h₀, hh₀d, hh₀A, hh₀p⟩` from `GlobalTheory.T.exists_differentiableOn_quotient_of_integral {z : ℂ | 0 < z.im} n (A ∘ UpperHalfPlane.ofComplex) (D ∘ UpperHalfPlane.ofComplex) (fun j => s j ∘ UpperHalfPlane.ofComplex) hUo hUc (UpperHalfPlane.mdifferentiable_iff.1 hAm) (UpperHalfPlane.mdifferentiable_iff.1 hDm) ( …`. Use `set h : ℍ → ℂ := fun τ => h₀ τ with hdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hAh : ∀ τ, A τ = h τ * D τ` using `fun τ => by`. Simplify `hh₀A (τ : ℂ) τ.im_pos` using `[Function.comp_apply, UpperHalfPlane.ofComplex_apply]`. Establish `hhp : ∀ τ, h τ ^ n + ∑ j, s j τ * h τ ^ (j : ℕ) = 0` using `fun τ => by`. Simplify `hh₀p (τ : ℂ) τ.im_pos` using `[Function.comp_apply, UpperHalfPlane.ofComplex_apply]`. Establish `hhm : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `UpperHalfPlane.mdifferentiable_iff.2 (hh₀d.congr fun z hz => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hdef, hofc z hz]`. Establish `hhNm : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (fun τ => h ((N : ℝ) +ᵥ τ))`. Establish `hd : DifferentiableOn ℂ (fun z : ℂ => h₀ (((N : ℝ) : ℂ) + z)) {z : ℂ | 0 < z.im}` using `hh₀d.comp ((differentiableOn_const _).add differentiableOn_id) fun z hz => by show 0 < (((N : ℝ) : ℂ) + z).im`. Simplify using `using hz`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `UpperHalfPlane.mdifferentiable_iff.2 (hd.congr fun z hz => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hdef, UpperHalfPlane.coe_vadd, hofc z hz]`. Establish `hper : ∀ τ : ℍ, h ((N : ℝ) +ᵥ τ) = h τ`. Establish `hz : ∀ τ, (fun τ => h ((N : ℝ) +ᵥ τ) - h τ) τ * D τ = 0` using `fun τ => by`. Establish `e1` using `hAh ((N : ℝ) +ᵥ τ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `e1` using `[hasQ_periodic hN hA, hasQ_periodic hN hD, hAh τ]`. Simplify using `only`. Take the linear combination `-e1`. Break down `GlobalTheory.T.upperHalfPlane_holomorphic_mul_eq_zero_iff _ D (hhNm.sub hhm) hDm hz with h0 | h0` into its components or cases. Conclude with `fun τ => sub_eq_zero.1 (congrFun h0 τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd h0 hD0`. Establish `hbd : UpperHalfPlane.IsBoundedAtImInfty h`. Establish `hS : (fun τ => ∑ j, ‖s j τ‖) =O[UpperHalfPlane.atImInfty] (1 : ℍ → ℝ)`. Establish `hb : ∀ j ∈ (Finset.univ : Finset (Fin n)), (fun τ => ‖s j τ‖) =O[UpperHalfPlane.atImInfty] (1 : ℍ → ℝ)` using `fun j _ => by`. Establish `: (s j) =O[UpperHalfPlane.atImInfty] (1 : ℍ → ℝ)` using `(hsm j).2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.norm_left`. Conclude with `(Asymptotics.IsBigO.sum hb).congr_left fun τ => Finset.sum_apply _ _ _`. Establish `h1 : (fun τ => 1 + ∑ j, ‖s j τ‖) =O[UpperHalfPlane.atImInfty] (1 : ℍ → ℝ)` using `((Asymptotics.isBigO_refl (1 : ℍ → ℝ) _).add hS).congr_left fun τ => rfl`. Establish `h2 : h =O[UpperHalfPlane.atImInfty] (fun τ => 1 + ∑ j, ‖s j τ‖)`. Use `Asymptotics.IsBigO.of_bound 1 (Filter.Eventually.of_forall fun τ => ?_)` and prove the remaining obligations.
-
-Establish `hb` using `GlobalTheory.T.norm_root_le_one_add_sum_norm_coeff n (fun j => s j τ) (h τ) (hhp τ)`. Establish `hnn : (0 : ℝ) ≤ 1 + ∑ j, ‖s j τ‖` using `by positivity`. Rewrite using `[Real.norm_of_nonneg hnn, one_mul]`. Conclude with `hb`. Conclude with `h2.trans h1`.
-
-Take `⟨b, hb⟩` from `GlobalTheory.T.hasQExpansion_of_periodic_bounded_holomorphic N h hN hhm hper hbd`. Conclude with `⟨h, b, hb, hAh⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasQ_of_integral_quot : ∀ (N n : ℕ) (A D : ℍ → ℂ) (s : Fin n → ℍ → ℂ), 0 < N →
     (∃ a, HasQ N A a) → (∃ d, HasQ N D d) → (∀ j, ∃ c, HasQ N (s j) c) → D ≠ 0 →

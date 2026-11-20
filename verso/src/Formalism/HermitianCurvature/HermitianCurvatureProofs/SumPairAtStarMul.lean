@@ -18,9 +18,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Establish `: IsEmpty {l : Fin r // (Fin.last r).val ≤ l.val}` using `⟨fun l => absurd l.2 (not_le.mpr l.1.isLt)⟩`. Establish `hg : ∀ c' : Cf r (Fin.last r), glue (Fin.last r) c c' = c` using `fun c' => funext fun l => dif_neg (not_le.mpr l.isLt)`. Establish `hp : ∀ c' : Cf r (Fin.last r), ((∏ l, ‖c' l‖ ^ (-2 : ℤ) : ℝ) : ℂ) = 1` using `fun c' => by`. Rewrite using `[Fintype.prod_empty, Complex.ofReal_one]`. Establish `h1 : (volume : Measure (Cf r (Fin.last r))) Set.univ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MeasureTheory.volume_pi, Measure.pi_univ, Fintype.prod_empty]`. Unfold `form`. Simplify using `only [hg, hp, one_mul]`. Rewrite using `[integral_const]`. Simplify using `[measureReal_def, h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_last (μ : Measure (Mt k r)) (x y : Ix S → RadSp k r z z' π π') (c : Fin r → ℂ) :
     form μ (Fin.last r) x y c = ∑ a, pairAt μ (x a) (y a) c := by
@@ -45,46 +45,46 @@ def AdjOn (μ : Measure (Mt k r)) (U : Submodule ℂ (RadSp k r z z' π π')) (a
     ∀ c ∈ OmX r, ∀ Φ ∈ U, ∀ Ψ ∈ U, pairAt μ (a.1 Φ) Ψ c = pairAt μ Φ (a.2.unop Ψ) c
 
 /- English proof (translation)
-Simplify using `only [B.hsInner]`. Rewrite using `[inner_conj_symm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hsInner_swap (A C : Wq →L[ℂ] Wp) : B.hsInner C A = conj (B.hsInner A C) := by
   simp only [B.hsInner]
   rw [inner_conj_symm]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[B.hsVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem hsVec_zero_hermitian_curvature : B.hsVec (0 : Wq →L[ℂ] Wp) = 0 := by
   ext i
   simp [B.hsVec]
 
 /- English proof (translation)
-Simplify using `only [B.hsInner, hsVec_zero_hermitian_curvature, inner_zero_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_zero_left (C : Wq →L[ℂ] Wp) : B.hsInner 0 C = 0 := by
   simp only [B.hsInner, hsVec_zero_hermitian_curvature, inner_zero_right]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[B.hsVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem hsVec_smul_hermitian_curvature' (a : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (a • A) = a • B.hsVec A := by
   ext i
   simp [B.hsVec]
 
 /- English proof (translation)
-Simplify using `only [B.hsInner, hsVec_smul_hermitian_curvature', inner_smul_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_smul_left' (A C : Wq →L[ℂ] Wp) (a : ℂ) : B.hsInner (a • A) C = a * B.hsInner A C := by
   simp only [B.hsInner, hsVec_smul_hermitian_curvature', inner_smul_right]
 
 /- English proof (translation)
-Simplify using `only [B.hsInner, hsVec_smul_hermitian_curvature', inner_smul_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_smul_right' (A C : Wq →L[ℂ] Wp) (a : ℂ) : B.hsInner A (a • C) = conj a * B.hsInner A C := by
   simp only [B.hsInner, hsVec_smul_hermitian_curvature', inner_smul_left]
 
 /- English proof (translation)
-Simplify using `only [pairAt]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Conclude with `hsInner_swap _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pairAt_swap (μ : Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) :
     pairAt μ Ψ Φ c = conj (pairAt μ Φ Ψ c) := by
@@ -95,7 +95,7 @@ theorem pairAt_swap (μ : Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π') (c :
   exact hsInner_swap _ _
 
 /- English proof (translation)
-Simplify using `only [pairAt, Submodule.coe_smul, Pi.smul_apply, hsInner_smul_left']`. Conclude with `integral_const_mul a _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairAt_smul_left (μ : Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) (a : ℂ) :
     pairAt μ (a • Φ) Ψ c = a * pairAt μ Φ Ψ c := by
@@ -103,7 +103,7 @@ theorem pairAt_smul_left (μ : Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π')
   exact integral_const_mul a _
 
 /- English proof (translation)
-Simplify using `only [pairAt, Submodule.coe_smul, Pi.smul_apply, hsInner_smul_right']`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairAt_smul_right (μ : Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) (a : ℂ) :
     pairAt μ Φ (a • Ψ) c = conj a * pairAt μ Φ Ψ c := by
@@ -113,7 +113,7 @@ theorem pairAt_smul_right (μ : Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π'
 variable {μ : Measure (Mt k r)} {U : Submodule ℂ (RadSp k r z z' π π')}
 
 /- English proof (translation)
-Establish `h : B.hsVec (A + A') = B.hsVec A + B.hsVec A'`. Use extensionality with `i`. Simplify using `[B.hsVec]`. Simplify using `only [B.hsInner, h, inner_add_right]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem hsInner_add_left' (A A' C : Wq →L[ℂ] Wp) :
     B.hsInner (A + A') C = B.hsInner A C + B.hsInner A' C := by
@@ -123,7 +123,7 @@ private theorem hsInner_add_left' (A A' C : Wq →L[ℂ] Wp) :
   simp only [B.hsInner, h, inner_add_right]
 
 /- English proof (translation)
-Simplify using `only [pairAt, Submodule.coe_add, Pi.add_apply, hsInner_add_left']`. Conclude with `integral_add (hU c hc Φ hΦ Ψ hΨ) (hU c hc Φ' hΦ' Ψ hΨ)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairAt_add_left (hU : IntOn μ U) {c : Fin r → ℂ} (hc : c ∈ OmX r) {Φ Φ' Ψ : RadSp k r z z' π π'}
     (hΦ : Φ ∈ U) (hΦ' : Φ' ∈ U) (hΨ : Ψ ∈ U) :
@@ -132,7 +132,7 @@ theorem pairAt_add_left (hU : IntOn μ U) {c : Fin r → ℂ} (hc : c ∈ OmX r)
   exact integral_add (hU c hc Φ hΦ Ψ hΨ) (hU c hc Φ' hΦ' Ψ hΨ)
 
 /- English proof (translation)
-Establish `h : B.hsVec (C + C') = B.hsVec C + B.hsVec C'`. Use extensionality with `i`. Simplify using `[B.hsVec]`. Simplify using `only [B.hsInner, h, inner_add_left]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem hsInner_add_right' (A C C' : Wq →L[ℂ] Wp) :
     B.hsInner A (C + C') = B.hsInner A C + B.hsInner A C' := by
@@ -142,7 +142,7 @@ private theorem hsInner_add_right' (A C C' : Wq →L[ℂ] Wp) :
   simp only [B.hsInner, h, inner_add_left]
 
 /- English proof (translation)
-Simplify using `only [pairAt, Submodule.coe_add, Pi.add_apply, hsInner_add_right']`. Conclude with `integral_add (hU c hc Φ hΦ Ψ hΨ) (hU c hc Φ hΦ Ψ' hΨ')`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairAt_add_right (hU : IntOn μ U) {c : Fin r → ℂ} (hc : c ∈ OmX r) {Φ Ψ Ψ' : RadSp k r z z' π π'}
     (hΦ : Φ ∈ U) (hΨ : Ψ ∈ U) (hΨ' : Ψ' ∈ U) :
@@ -151,13 +151,13 @@ theorem pairAt_add_right (hU : IntOn μ U) {c : Fin r → ℂ} (hc : c ∈ OmX r
   exact integral_add (hU c hc Φ hΦ Ψ hΨ) (hU c hc Φ hΦ Ψ' hΨ')
 
 /- English proof (translation)
-Simplify using `only [pairAt, Submodule.coe_zero, Pi.zero_apply, hsInner_zero_left, integral_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pairAt_zero_left' (Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) : pairAt μ 0 Ψ c = 0 := by
   simp only [pairAt, Submodule.coe_zero, Pi.zero_apply, hsInner_zero_left, integral_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, pairAt_zero_left']`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, pairAt_add_left hU hc (hΦ j) (U.sum_mem fun i _ => hΦ i) hΨ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairAt_sum_left (hU : IntOn μ U) {c : Fin r → ℂ} (hc : c ∈ OmX r) {ι : Type} (s : Finset ι)
     (Φ : ι → RadSp k r z z' π π') (hΦ : ∀ i, Φ i ∈ U) {Ψ : RadSp k r z z' π π'} (hΨ : Ψ ∈ U) :
@@ -170,13 +170,13 @@ theorem pairAt_sum_left (hU : IntOn μ U) {c : Fin r → ℂ} (hc : c ∈ OmX r)
       pairAt_add_left hU hc (hΦ j) (U.sum_mem fun i _ => hΦ i) hΨ, ih]
 
 /- English proof (translation)
-Rewrite using `[pairAt_swap, pairAt_zero_left', map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pairAt_zero_right' (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) : pairAt μ Φ 0 c = 0 := by
   rw [pairAt_swap, pairAt_zero_left', map_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, pairAt_zero_right']`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, pairAt_add_right hU hc hΦ (hΨ j) (U.sum_mem fun i _ => hΨ i), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairAt_sum_right (hU : IntOn μ U) {c : Fin r → ℂ} (hc : c ∈ OmX r) {ι : Type} (s : Finset ι)
     {Φ : RadSp k r z z' π π'} (hΦ : Φ ∈ U) (Ψ : ι → RadSp k r z z' π π') (hΨ : ∀ i, Ψ i ∈ U) :
@@ -227,13 +227,13 @@ def adjAlg (μ : Measure (Mt k r)) (U : Submodule ℂ (RadSp k r z z' π π')) (
     rw [pairAt_swap μ Ψ, ← ha c hc Ψ hΨ Φ hΦ, ← pairAt_swap]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_adjAlg {hU : IntOn μ U} {a : Pr (RadSp k r z z' π π')} : a ∈ adjAlg μ U hU ↔ AdjOn μ U a := by
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `h` using `(mem_adjAlg.mp ha).2.2 c hc Ψ hΨ Φ hΦ`. Rewrite using `[pairAt_swap μ Ψ (a.2.unop Φ) c, ← h]`. Conclude with `(pairAt_swap μ (a.1 Ψ) Φ c).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairAt_snd_left {hU : IntOn μ U} {a : Pr (RadSp k r z z' π π')} (ha : a ∈ adjAlg μ U hU) {c : Fin r → ℂ}
     (hc : c ∈ OmX r) {Φ Ψ : RadSp k r z z' π π'} (hΦ : Φ ∈ U) (hΨ : Ψ ∈ U) :
@@ -243,7 +243,7 @@ theorem pairAt_snd_left {hU : IntOn μ U} {a : Pr (RadSp k r z z' π π')} (ha :
   exact (pairAt_swap μ (a.1 Ψ) Φ c).symm
 
 /- English proof (translation)
-Use `show (∑ b, (M a b).1 (x b)) ∈ U`. Conclude with `U.sum_mem fun b _ => (mem_adjAlg.mp (hM a b)).1 _ (hx b)`.
+A detailed English derivation is pending.
 -/
 theorem act_mem {hU : IntOn μ U} (M : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (hM : ∀ a b, M a b ∈ adjAlg μ U hU)
     (x : Ix S → RadSp k r z z' π π') (hx : ∀ a, x a ∈ U) (a : Ix S) : act M x a ∈ U := by
@@ -251,7 +251,7 @@ theorem act_mem {hU : IntOn μ U} (M : SlopeTestRemainingChoices S (Pr (RadSp k 
   exact U.sum_mem fun b _ => (mem_adjAlg.mp (hM a b)).1 _ (hx b)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun e _ => mul_mem (hM a e) (hN e b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_entries {hU : IntOn μ U} (M N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (hM : ∀ a b, M a b ∈ adjAlg μ U hU)
     (hN : ∀ a b, N a b ∈ adjAlg μ U hU) (a b : Ix S) : (M * N) a b ∈ adjAlg μ U hU := by
@@ -259,11 +259,9 @@ theorem mul_mem_entries {hU : IntOn μ U} (M N : SlopeTestRemainingChoices S (Pr
   exact sum_mem fun e _ => mul_mem (hM a e) (hN e b)
 
 /- English proof (translation)
-Establish `hu : ∀ e, act N x e ∈ U` using `act_mem N hN x hx`. Establish `hL : ∀ a, act (star M * N) x a = ∑ e, (M e a).2.unop (act N x e)`. Introduce `a`. Rewrite using `[act_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hL a, pairAt_sum_left hU hc _ _ (fun e => (mem_adjAlg.mp (hM e a)).2.1 _ (hu e)) (hy a)]`. Conclude with `Finset.sum_congr rfl fun e _ => pairAt_snd_left (hM e a) hc (hu e) (hy a)`. Use `_ = ∑ e, ∑ a, pairAt μ (act N x e) ((M e a).1 (y a)) c := Finset.sum_comm`.
-
-Use `_ = ∑ e, pairAt μ (act N x e) (act M y e) c := by`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Conclude with `(pairAt_sum_right hU hc _ (hu e) _ (fun a => (mem_adjAlg.mp (hM e a)).1 _ (hy a))).symm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_pairAt_star_mul {hU : IntOn μ U} (M N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π')))
     (hM : ∀ a b, M a b ∈ adjAlg μ U hU) (hN : ∀ a b, N a b ∈ adjAlg μ U hU)
@@ -292,13 +290,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Introduce `w hw x y hx hy c hc`. Establish `hFF : ∀ e e', (Fr.ofWord L st w).F e e' ∈ adjAlg μ U hU` using `fun e e' => (hF w hw e e').1`. Establish `hFd : ∀ e e', (Fr.ofWord L st w).d L e e' ∈ adjAlg μ U hU` using `fun e e' => (hF w hw e e').2`. Establish `hxU : ∀ a, x a ∈ U` using `fun a => hK (hx a)`. Establish `hyU : ∀ a, y a ∈ U` using `fun a => hK (hy a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDF` using `mul_mem_entries _ _ hFd hFF`. Establish `hu` using `act_mem _ hDF x hxU`. Establish `hv` using `act_mem _ hFF y hyU`. Establish `hint` using `fun e => hU c hc _ (hu e) _ (hv e)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [topDens]`. Conclude with `integrable_finsetSum Finset.univ fun e _ => hint e`. Rewrite using `[form_last, mul_assoc, sum_pairAt_star_mul _ _ hFF hDF x y hxU hyU hc]`. Simplify using `only [topDens]`. Rewrite using `[integral_finsetSum Finset.univ fun e _ => hint e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem adjTop_of_adjAlg (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (μ : Measure (Mt P.k P.r))

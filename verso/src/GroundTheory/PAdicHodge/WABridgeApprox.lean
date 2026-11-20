@@ -16,7 +16,7 @@ local notation "𝓣" => teichLift ℂ_[p] p
 local notation "𝔸" => Localization.Away (p : AInf ℂ_[p] p)
 
 /- English proof (translation)
-Rewrite using `[rootRadius_coe]`. Establish `h` using `Real.rpow_lt_rpow_of_exponent_gt τ.2.1 τ.2.2 (inv_p_lt_one (p := p))`. Rewrite `h` using `[Real.rpow_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lt_rootRadius (τ : Set.Ioo (0 : ℝ) 1) : (τ : ℝ) < (frob ℂ_[p] p).rootRadius τ := by
   rw [rootRadius_coe]
@@ -32,13 +32,13 @@ variable (p) in
 def radC : Set.Ioo (0 : ℝ) 1 := (frob ℂ_[p] p).rootRadius (radTwo p)
 
 /- English proof (translation)
-The claim follows from `inv_p_lt_rhoMid.trans_le (le_rootRadius (rhoMid p))`.
+A detailed English derivation is pending.
 -/
 theorem inv_p_lt_radTwo : (p : ℝ)⁻¹ < radTwo p :=
   inv_p_lt_rhoMid.trans_le (le_rootRadius (rhoMid p))
 
 /- English proof (translation)
-Establish `h` using `pow_lt_pow_right_of_lt_one₀ (inv_p_pos (p := p)) inv_p_lt_one hp.out.one_lt`. Rewrite `h` using `[pow_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radA_lt_inv_p : radA p < (p : ℝ)⁻¹ := by
   have h := pow_lt_pow_right_of_lt_one₀ (inv_p_pos (p := p)) inv_p_lt_one hp.out.one_lt
@@ -46,17 +46,17 @@ theorem radA_lt_inv_p : radA p < (p : ℝ)⁻¹ := by
   exact h
 
 /- English proof (translation)
-The claim follows from `radA_lt_inv_p.trans inv_p_lt_radTwo`.
+A detailed English derivation is pending.
 -/
 theorem radA_lt_radTwo : radA p < radTwo p := radA_lt_inv_p.trans inv_p_lt_radTwo
 
 /- English proof (translation)
-The claim follows from `lt_rootRadius (radTwo p)`.
+A detailed English derivation is pending.
 -/
 theorem radTwo_lt_radC : (radTwo p : ℝ) < radC p := lt_rootRadius (radTwo p)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact le_rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply']`. Conclude with `ih.trans (le_rootRadius _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem radC_le_iterate (k : ℕ) :
     (radC p : ℝ) ≤ ((frob ℂ_[p] p).rootRadius^[k] (radC p) : Set.Ioo (0 : ℝ) 1) := by
@@ -65,62 +65,54 @@ theorem radC_le_iterate (k : ℕ) :
   | succ k ih => rw [Function.iterate_succ_apply']; exact ih.trans (le_rootRadius _)
 
 /- English proof (translation)
-Rewrite using `[← coe_iterate_powRadius, iterate_powRadius_rootRadius]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_iterate_rootRadius (c : Set.Ioo (0 : ℝ) 1) (k : ℕ) :
     (((frob ℂ_[p] p).rootRadius^[k] c : Set.Ioo (0 : ℝ) 1) : ℝ) ^ (p ^ k) = c := by
   rw [← coe_iterate_powRadius, iterate_powRadius_rootRadius]
 
 /- English proof (translation)
-Use `set c : ℝ := ((radC p : Set.Ioo (0 : ℝ) 1) : ℝ) with hc`. Establish `hc0 : 0 < c` using `(radC p).2.1`. Establish `hc1 : c < 1` using `(radC p).2.2`. Use `set q : ℝ := ((radTwo p : Set.Ioo (0 : ℝ) 1) : ℝ) / c with hq`. Establish `hq0 : 0 < q` using `div_pos (radTwo p).2.1 hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1 : q < 1` using `(div_lt_one hc0).2 radTwo_lt_radC`. Establish `hM0 : 0 < M` using `zero_lt_one.trans_le hM`. Take `⟨L, hL⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 hM0) hc1`. Take `⟨k₂, hk₂⟩` from `exists_pow_lt_of_lt_one (mul_pos hε (pow_pos hq0 L)) hq1`. Use `set k := max L k₂ with hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b : Set.Ioo (0 : ℝ) 1 := (frob ℂ_[p] p).rootRadius^[k] (radC p) with hb`. Establish `hb0 : (0 : ℝ) < b` using `b.2.1`. Establish `hb1 : (b : ℝ) < 1` using `b.2.2`. Establish `hcb : c ≤ b` using `radC_le_iterate k`. Establish `hbk : (b : ℝ) ^ (p ^ k) = c` using `pow_iterate_rootRadius _ k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hckM : c ^ k * M < 1`. Establish `h1 : c ^ k ≤ c ^ L` using `pow_le_pow_of_le_one hc0.le hc1.le (le_max_left _ _)`. Establish `h2 : c ^ k < M⁻¹` using `h1.trans_lt hL`. Combine the equalities or inequalities in the displayed calculation. Establish `hck1 : c ^ k ≤ 1` using `pow_le_one₀ hc0.le hc1.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set δ : ℝ := min ε (c ^ k) with hδ`. Establish `hδ0 : 0 < δ` using `lt_min hε (pow_pos hc0 k)`. Establish `hradA_b : radA p ≤ b` using `(radA_lt_radTwo.trans radTwo_lt_radC).le.trans hcb`. Take `⟨d, hd, hdapp⟩` from `(𝓣).exists_approx_convAll (rep hx b) ⟨radA p, radA_pos, hradA_b⟩ hδ0`. Establish `hdb : ConvergesAt ((𝓣).coeffB d) b` using `hd b hb0 hb1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set β : ℝ := gaussNorm ((𝓣).coeffB d) b with hβdef`. Establish `hβ0 : 0 ≤ β` using `gaussNorm_nonneg hb0`. Establish `hβ : β ≤ max (tn hx b) δ`. Establish `e1 : β = (𝓣).extNorm b (topRad b) ((𝓣).ofAll d hd b)` using `((𝓣).extNorm_ofAll hd (topRad b)).symm`. Establish `e2 : (𝓣).ofAll d hd b = rep hx b + -(rep hx b - (𝓣).ofAll d hd b)` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, e2]`. Use `((𝓣).extNorm_add_le _ _ _).trans (max_le_max le_rfl ?_)` and prove the remaining obligations. Rewrite using `[(𝓣).extNorm_neg]`. Conclude with `hdapp (topRad b) hradA_b`. Establish `hβk : β ^ (p ^ k) ≤ c ^ k * M`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpk : p ^ k ≠ 0` using `pow_ne_zero _ hp.out.ne_zero`. Use `(pow_le_pow_left₀ hβ0 hβ _).trans ?_` and prove the remaining obligations. Break down `le_total (tn hx b) δ with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[max_eq_left h]`. Conclude with `hdec k`. Establish `hβ1 : β < 1`. Assume the negation of the conclusion as `hcon`. Use `one_le_pow₀ (n := p ^ k) (not_lt.1 hcon)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set S := (𝓣).smallPart 1 d with hSdef`. Use `set G := (𝓣).bigPart 1 d with hGdef`. Establish `hSG : S + G = d` using `(𝓣).smallPart_add_bigPart 1 d`. Establish `hS : (𝓣).ConvAll S` using `fun ρ h0 h1 => (convergesAt_of_norm_le h0 ((𝓣).norm_coeffB_smallPart_le zero_lt_one d) (hd ρ h0 h1)).1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : (𝓣).ConvAll G` using `fun ρ h0 h1 => (convergesAt_of_norm_le h0 ((𝓣).norm_coeffB_bigPart_le 1 d) (hd ρ h0 h1)).1`. Establish `hGdig : ∀ n : ℤ, (𝓣).coeffB G n ≠ 0 → ‖(𝓣).coeffB G n‖ * (b : ℝ) ^ n ≤ β ∧ 0 ≤ n ∧ (k : ℤ) - L ≤ n`. Introduce `n hn`. Establish `h1 : 1 ≤ ‖(𝓣).coeffB G n‖` using `((𝓣).coeffB_bigPart_eq_zero_or 1 d n).resolve_left hn`. Establish `e : (𝓣).coeffB G n = (𝓣).coeffB d n`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hGdef, (𝓣).coeffB_bigPart]`. Use `split_ifs with h`. Conclude with `absurd (by rw [hGdef, (𝓣).coeffB_bigPart, if_pos h]) hn`. Both sides reduce to the same expression. Establish `h2 : ‖(𝓣).coeffB G n‖ * (b : ℝ) ^ n ≤ β` using `by rw [e]; exact hdb.le_gaussNorm n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (b : ℝ) ^ n ≤ β` using `(le_mul_of_one_le_left (zpow_nonneg hb0.le n) h1).trans h2`. Use `⟨h2, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hneg`. Use `one_le_zpow_of_nonpos₀ hb0 hb1.le (not_le.1 hneg).le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `h4 : ((b : ℝ) ^ n) ^ (p ^ k) ≤ c ^ k * M` using `(pow_le_pow_left₀ (zpow_nonneg hb0.le n) h3 _).trans hβk`. Establish `h5 : ((b : ℝ) ^ n) ^ (p ^ k) = c ^ n`. Rewrite using `[← hbk, ← zpow_natCast, ← zpow_natCast ((b : ℝ)) (p ^ k), ← zpow_mul, ← zpow_mul, mul_comm]`. Establish `h6 : M ≤ (c ^ L)⁻¹`. Rewrite using `[le_inv_comm₀ hM0 (pow_pos hc0 L)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hL.le`. Establish `h7 : c ^ n ≤ c ^ ((k : ℤ) - L)`. Rewrite using `[zpow_sub₀ hc0.ne', zpow_natCast, zpow_natCast, div_eq_mul_inv]`. Rewrite using `[← h5]`. Conclude with `h4.trans (mul_le_mul_of_nonneg_left h6 (pow_nonneg hc0.le _))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(zpow_le_zpow_iff_right_of_lt_one₀ hc0 hc1).1 h7`. Establish `hGnorm : ∀ r : ℝ, 0 < r → r ≤ radTwo p → gaussNorm ((𝓣).coeffB G) r ≤ ε`. Introduce `r hr0 hr`. Use `gaussNorm_le fun n => ?_` and prove the remaining obligations. Distinguish the cases in `hn : (𝓣).coeffB G n = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn, norm_zero, zero_mul]`. Conclude with `hε.le`. Take `⟨h2, hn0, hnk⟩` from `hGdig n hn`. Establish `hrb : r / b ≤ q`. Rewrite using `[hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `div_le_div₀ (radTwo p).2.1.le hr hc0 hcb`. Establish `e : ‖(𝓣).coeffB G n‖ * r ^ n = (‖(𝓣).coeffB G n‖ * (b : ℝ) ^ n) * (r / b) ^ n`. Rewrite using `[div_zpow, mul_assoc, mul_div_cancel₀ _ (zpow_ne_zero _ hb0.ne')]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub₀ hq0.ne', zpow_natCast, zpow_natCast, div_le_iff₀ (pow_pos hq0 L)]`. Conclude with `((pow_le_pow_of_le_one hq0.le hq1.le (le_max_right _ _)).trans hk₂.le)`. Establish `hSdig : ∀ n, ‖(𝓣).coeffB S n‖ ≤ 1` using `fun n => ((𝓣).norm_coeffB_smallPart_lt zero_lt_one d n).le`. Take `⟨s, hs⟩` from `exists_toB_eq_of_norm_coeffB_le_one hSdig`. Establish `hSd : (𝓣).ofAll d hd b = (𝓣).ofAll S hS b + (𝓣).ofAll G hG b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (𝓣).ofAll_add hS hG]`. Conclude with `(𝓣).ofAll_congr _ _ hSG.symm b`. Establish `hb2 : (radTwo p : ℝ) ≤ b` using `radTwo_lt_radC.le.trans hcb`. Use `⟨s, fun r hr => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : rep hx (radTwo p) - awayToExt p (radTwo p) s = (𝓣).res hb2 (rep hx b - (𝓣).ofAll S hS b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, res_rep, (𝓣).res_ofAll, awayToExt_eq_ofAll]`. Use `congr 1`. Conclude with `(𝓣).ofAll_congr _ _ hs _`. Rewrite using `[e1, (𝓣).extNorm_res]`. Establish `e2 : rep hx b - (𝓣).ofAll S hS b = (rep hx b - (𝓣).ofAll d hd b) + (𝓣).ofAll G hG b`.
-
-Rewrite using `[hSd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `((𝓣).extNorm_add_le _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `(hdapp _ hr).trans (min_le_left _ _)`.
-
-Rewrite using `[(𝓣).extNorm_ofAll]`. Conclude with `hGnorm r r.2.1 r.2.2`. Establish `hradA : (0 : ℝ) < radA p` using `radA_pos`. Establish `e1 : gn ℂ_[p] p (radA p) s = gaussNorm ((𝓣).coeffB S) (radA p)`. Rewrite using `[gn, hs]`.
-
-Rewrite using `[e1]`. Use `(convergesAt_of_norm_le hradA ((𝓣).norm_coeffB_smallPart_le zero_lt_one d) (hd _ hradA radA_lt_one)).2.trans ?_` and prove the remaining obligations. Establish `e2 : gaussNorm ((𝓣).coeffB d) (radA p) = (𝓣).extNorm b ⟨radA p, radA_pos, hradA_b⟩ ((𝓣).ofAll d hd b)` using `((𝓣).extNorm_ofAll hd (σ := b) ⟨radA p, radA_pos, hradA_b⟩).symm`. Rewrite using `[e2]`. Establish `e3 : (𝓣).ofAll d hd b = rep hx b + -(rep hx b - (𝓣).ofAll d hd b)` using `by ring`.
-
-Rewrite using `[e3]`. Use `((𝓣).extNorm_add_le _ _ _).trans (max_le_max ?_ ?_)` and prove the remaining obligations. Rewrite using `[extNorm_rep]`. Rewrite using `[(𝓣).extNorm_neg]`. Conclude with `(hdapp _ le_rfl).trans ((min_le_right _ _).trans hck1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) {M : ℝ} (hM : 1 ≤ M)
     (hdec : ∀ k : ℕ, tn hx ((frob ℂ_[p] p).rootRadius^[k] (radC p)) ^ (p ^ k) ≤

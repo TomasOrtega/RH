@@ -14,13 +14,11 @@ section Jets
 variable {T : Type} [CommRing T]
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq]`. Establish `hI : (Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ T))) = MvPolynomial.idealOfVars σ T` using `rfl`. Rewrite using `[hI, MvPolynomial.mem_pow_idealOfVars_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `hmem : x ∈ (P - Q).support`. Rewrite using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sub]`. Conclude with `sub_ne_zero.mpr hne`. Use `h x hmem` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h x hx`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Rewrite `hx` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sub, h x hlt, sub_self]`.
-
-Conclude with `hx rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limJ_mk_eq_iff {σ : Type} (k : ℕ) (P Q : MvPolynomial σ T) :
     (Ideal.Quotient.mk _ P : JetR T σ k) = Ideal.Quotient.mk _ Q ↔
@@ -44,7 +42,7 @@ theorem limJ_mk_eq_iff {σ : Type} (k : ℕ) (P Q : MvPolynomial σ T) :
     exact hx rfl
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.truncTotalAlgHom_apply, MvPowerSeries.truncTotalAlgHom_apply]`. Use `(limJ_mk_eq_iff k (truncTotal (k + 1) f) (truncTotal (k + 1) g)).trans ?_` and prove the remaining obligations. Use `forall_congr' fun x => imp_congr_right fun hx => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_truncTotal _ hx, MvPowerSeries.coeff_truncTotal _ hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem limJ_tt_eq_iff {σ : Type} [Finite σ] (k : ℕ) (f g : MvPowerSeries σ T) :
     truncTotalAlgHom σ T (k + 1) f = truncTotalAlgHom σ T (k + 1) g ↔
@@ -55,13 +53,11 @@ theorem limJ_tt_eq_iff {σ : Type} [Finite σ] (k : ℕ) (f g : MvPowerSeries σ
   rw [MvPowerSeries.coeff_truncTotal _ hx, MvPowerSeries.coeff_truncTotal _ hx]
 
 /- English proof (translation)
-Establish `hle : ∀ i, x i ≤ x.degree` using `fun i => by`. Distinguish the cases in `hi : i ∈ x.support`. Conclude with `Finset.single_le_sum (f := fun j => x j) (fun _ _ => Nat.zero_le _) hi`. Establish `h0 : x i = 0`. Assume the negation of the conclusion as `h'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi (Finsupp.mem_support_iff.mpr h')`. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`. Use `lt_of_le_of_ne (fun i => ?_) (fun h => ?_)` and prove the remaining obligations. Use `show x i ≤ k + 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hle i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2 : x i0 = k + 1`. Rewrite using `[h]`. Both sides reduce to the same expression.
-
-Use `hle i0` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem limJ_lt_box {σ : Type} [Finite σ] (i0 : σ) (k : ℕ) (x : σ →₀ ℕ) (hx : x.degree < k + 1) :
     x < Finsupp.equivFunOnFinite.symm (fun _ : σ => k + 1) := by
@@ -85,7 +81,7 @@ theorem limJ_lt_box {σ : Type} [Finite σ] (i0 : σ) (k : ℕ) (x : σ →₀ �
     omega
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.truncTotalAlgHom_apply]`. Use `(limJ_mk_eq_iff k _ _).mpr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_truncTotal _ hx, MvPowerSeries.coeff_trunc, if_pos (limJ_lt_box (⟨0, hn⟩, ⟨0, hd⟩) k x hx)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem limJ_psJet_eq {n d : ℕ} (hn : 0 < n) (hd : 0 < d) (k : ℕ) (f : PS T n d) :
     psJet k f = truncTotalAlgHom (Fin n × Fin d) T (k + 1) f := by
@@ -96,7 +92,7 @@ theorem limJ_psJet_eq {n d : ℕ} (hn : 0 < n) (hd : 0 < d) (k : ℕ) (f : PS T 
     if_pos (limJ_lt_box (⟨0, hn⟩, ⟨0, hd⟩) k x hx)]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Finsupp.degree_eq_zero_iff _).mp h`. Consider the case `exact Finsupp.degree_eq_zero_iff.mp h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem vzero_lemma {ρ : Type*} {e : ρ →₀ ℕ} (h : e.degree = 0) : e = 0 := by
   first
@@ -104,11 +100,11 @@ private theorem vzero_lemma {ρ : Type*} {e : ρ →₀ ℕ} (h : e.degree = 0) 
   | exact Finsupp.degree_eq_zero_iff.mp h
 
 /- English proof (translation)
-Introduce `e he`. Rewrite using `[coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x.1 + x.2 = e` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hx`. Establish `hdeg : (x.1 + x.2).degree = x.1.degree + x.2.degree` using `by first`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact Finsupp.degree_add _ _`. Consider the case `exact map_add _ _ _`. Rewrite `hdeg` using `[hx']`. Distinguish the cases in `h1 : x.1.degree < m`. Rewrite using `[hP _ h1, zero_mul]`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ _ (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem vmul_lemma_2 {ρ K : Type*} [CommRing K] {P Q : MvPowerSeries ρ K} {m n : ℕ}
     (hP : ∀ e : ρ →₀ ℕ, e.degree < m → coeff e P = 0)
@@ -129,9 +125,9 @@ private theorem vmul_lemma_2 {ρ K : Type*} [CommRing K] {P Q : MvPowerSeries ρ
   · rw [hQ _ (by omega), mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro e he`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `vmul_lemma_2 ih ?_` and prove the remaining obligations. Introduce `e he`. Establish `h0 : e = 0` using `vzero_lemma (by omega)`. Rewrite using `[h0, coeff_zero_eq_constantCoeff_apply, hA]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vpow_lemma_3 {ρ K : Type*} [CommRing K] {A : MvPowerSeries ρ K}
     (hA : constantCoeff A = 0) (k : ℕ) :
@@ -146,7 +142,7 @@ private theorem vpow_lemma_3 {ρ K : Type*} [CommRing K] {A : MvPowerSeries ρ K
     rw [h0, coeff_zero_eq_constantCoeff_apply, hA]
 
 /- English proof (translation)
-Use `Finset.induction_on S (fun e he => by simp at he) (fun a S ha ih => ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `vmul_lemma_2 (vpow_lemma_3 (hA a) (d a)) ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vprod_lemma_4 {ι ρ K : Type*} [CommRing K] {A : ι → MvPowerSeries ρ K}
     (hA : ∀ s, constantCoeff (A s) = 0) (d : ι →₀ ℕ) (S : Finset ι) :
@@ -157,7 +153,7 @@ private theorem vprod_lemma_4 {ι ρ K : Type*} [CommRing K] {A : ι → MvPower
   exact vmul_lemma_2 (vpow_lemma_3 (hA a) (d a)) ih
 
 /- English proof (translation)
-Use `first`. Consider the case `exact HasSubst.of_constantCoeff_zero ha`. Consider the case `exact hasSubst_of_constantCoeff_zero ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hs_lemma_5 {ρ τ K : Type*} [CommRing K] [Finite ρ] {a : ρ → MvPowerSeries τ K}
     (ha : ∀ s, constantCoeff (a s) = 0) : HasSubst a := by
@@ -166,9 +162,9 @@ private theorem hs_lemma_5 {ρ τ K : Type*} [CommRing K] [Finite ρ] {a : ρ �
   | exact hasSubst_of_constantCoeff_zero ha
 
 /- English proof (translation)
-Introduce `e he`. Rewrite using `[MvPowerSeries.coeff_subst (hs_lemma_5 ha0) N e]`. Use `(finsum_congr fun d => ?_).trans finsum_zero` and prove the remaining obligations. Distinguish the cases in `hd : d.degree < m`. Rewrite using `[hN d hd, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : coeff e (d.prod fun s n => a s ^ n) = 0` using `vprod_lemma_4 ha0 d d.support e (by show e.degree < d.degree; omega)`. Rewrite using `[hz, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem osub_lemma_6 {ρ τ K : Type*} [CommRing K] [Finite ρ] {a : ρ → MvPowerSeries τ K}
     (ha0 : ∀ s, constantCoeff (a s) = 0) {N : MvPowerSeries ρ K} {m : ℕ}
@@ -184,15 +180,13 @@ private theorem osub_lemma_6 {ρ τ K : Type*} [CommRing K] [Finite ρ] {a : ρ 
     rw [hz, smul_zero]
 
 /- English proof (translation)
-Establish `has : HasSubst a` using `hs_lemma_5 ha`. Establish `hpoly : ∀ P : MvPolynomial σ T, truncTotalAlgHom τ T (k + 1) (MvPowerSeries.subst (R` using `T) (S := T) a (P : MvPowerSeries σ T)) = MvPolynomial.aeval (fun i => truncTotalAlgHom τ T (k + 1) (a i)) P := by`. Introduce `P`. Proceed by induction on `P using MvPolynomial.induction_on`. Use `next c =>`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coe_C, ← MvPowerSeries.coe_substAlgHom has, MvPowerSeries.c_eq_algebraMap, AlgHom.commutes, MvPolynomial.aeval_C, MvPowerSeries.truncTotalAlgHom_apply, ← MvPowerSeries.c_eq_algebraMap, ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq]`. Use `(limJ_mk_eq_iff k _ _).mpr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_truncTotal _ hx, MvPolynomial.coeff_C, MvPowerSeries.coeff_C]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | (exfalso; exact h2 h1.symm) | (exfalso; exact h1 h2.symm)`. Use `next p q hp hq =>`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MvPolynomial.coe_add, ← MvPowerSeries.coe_substAlgHom has]`. Simplify using `only [map_add]`. Rewrite using `[MvPowerSeries.coe_substAlgHom has, hp, hq]`. Use `next p n hp =>`. Rewrite using `[MvPolynomial.coe_mul, MvPolynomial.coe_X, ← MvPowerSeries.coe_substAlgHom has]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, MvPowerSeries.substAlgHom_X, MvPolynomial.aeval_X]`. Rewrite using `[MvPowerSeries.coe_substAlgHom has, hp]`. Rewrite using `[← hpoly, limJ_tt_eq_iff]`. Introduce `x hx`. Rewrite using `[← sub_eq_zero, ← map_sub, ← MvPowerSeries.coe_substAlgHom has, ← map_sub, MvPowerSeries.coe_substAlgHom has]`.
-
-Use `osub_lemma_6 ha (fun d hd => ?_) x hx` and prove the remaining obligations. Rewrite using `[map_sub, MvPolynomial.coeff_coe, MvPowerSeries.coeff_truncTotal _ hd, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limJ_tt_subst {σ τ : Type} [Finite σ] [Finite τ] (k : ℕ) (a : σ → MvPowerSeries τ T)
     (ha : ∀ i, constantCoeff (a i) = 0) (f : MvPowerSeries σ T) :
@@ -238,9 +232,9 @@ theorem limJ_substJ_mk {n d : ℕ} (m : ℕ) (φ : Fin d → PS T n d) (hφ : �
   rfl
 
 /- English proof (translation)
-Rewrite using `[limJ_psJet_eq hn hd, limJ_tt_subst k b hb f]`. Establish `e1 : psJet k f = Ideal.Quotient.mk _ (truncTotal (k + 1) f)`. Rewrite using `[limJ_psJet_eq (n := 1) Nat.one_pos hd, MvPowerSeries.truncTotalAlgHom_apply]`. Rewrite using `[e1, limJ_substJ_mk]`. Establish `hfun : (fun i => truncTotalAlgHom (Fin n × Fin d) T (k + 1) (b i)) = fun q => psJet k (φ q.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Rewrite using `[hbφ q, limJ_psJet_eq hn hd]`. Rewrite using `[hfun]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem limJ_psJet_subst {n d : ℕ} (hn : 0 < n) (hd : 0 < d) (k : ℕ) (b : Fin 1 × Fin d → PS T n d)
     (hb : ∀ q, constantCoeff (b q) = 0) (φ : Fin d → PS T n d) (hφ : ∀ j, constantCoeff (φ j) = 0)
@@ -257,16 +251,16 @@ theorem limJ_psJet_subst {n d : ℕ} (hn : 0 < n) (hd : 0 < d) (k : ℕ) (b : Fi
   rw [hfun]
 
 /- English proof (translation)
-Rewrite using `[limJ_psJet_eq hn hd, limJ_psJet_eq hn hd, limJ_psJet_eq hn hd, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem limJ_psJet_mul {n d : ℕ} (hn : 0 < n) (hd : 0 < d) (k : ℕ) (f g : PS T n d) :
     psJet k (f * g) = psJet k f * psJet k g := by
   rw [limJ_psJet_eq hn hd, limJ_psJet_eq hn hd, limJ_psJet_eq hn hd, map_mul]
 
 /- English proof (translation)
-Establish `h2 : MvPowerSeries.subst (fun p : Fin 2 × Fin d => (X p : PS T 2 d)) g = g` using `by first`. Consider the case `exact congrFun MvPowerSeries.subst_self g`. Consider the case `simp [MvPowerSeries.subst_self]`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Unfold `ev`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨i, j⟩` from `p`. Apply the tactic sequence `fin_cases i <;> first | rfl | simp [pt]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem limJ_ev_pts {d : ℕ} (g : PS T 2 d) : ev (n := 2) ![pt T d 0, pt T d 1] g = g := by
   have h2 : MvPowerSeries.subst (fun p : Fin 2 × Fin d => (X p : PS T 2 d)) g = g := by
@@ -287,7 +281,7 @@ section Limits
 variable {O : Type} [CommRing O] (p : ℕ) [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem]`. Establish `h1 : a - b ∈ Ideal.span {(p : O) ^ (m + 1)}` using `Ideal.Quotient.eq.mp h`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ (Nat.le_succ m)) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limJ_mem_smul_top (m : ℕ) (a b : O)
     (h : Ideal.Quotient.mk (Ideal.span {(p : O) ^ (m + 1)}) a = Ideal.Quotient.mk _ b) :
@@ -298,7 +292,7 @@ theorem limJ_mem_smul_top (m : ℕ) (a b : O)
   exact Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ (Nat.le_succ m)) h1
 
 /- English proof (translation)
-Rewrite using `[IsHausdorff.eq_iff_smodEq (I := Ideal.span {(p : O)})]`. Introduce `n`. Conclude with `limJ_mem_smul_top p n a b (h n)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem limJ_unique (a b : O)
     (h : ∀ n, Ideal.Quotient.mk (Ideal.span {(p : O) ^ (n + 1)}) a = Ideal.Quotient.mk _ b) : a = b := by
@@ -307,11 +301,11 @@ theorem limJ_unique (a b : O)
   exact limJ_mem_smul_top p n a b (h n)
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `a ha`. Simplify using `using ha`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ j ih`. Introduce `a ha`. Apply `ih` to reduce the goal to its premises. Establish `ha' : Ideal.Quotient.mk (Ideal.span {(p : O) ^ (m + j + 1 + 1)}) a = x (m + j + 1)` using `ha`. Rewrite using `[← hx (m + j), ← ha']`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `rfl`. Consider the case `simp [redQ]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem limJ_back (x : ∀ n, O ⧸ Ideal.span {(p : O) ^ (n + 1)})
     (hx : ∀ n, redQ p n (x (n + 1)) = x n) (m : ℕ) :
@@ -332,11 +326,9 @@ theorem limJ_back (x : ∀ n, O ⧸ Ideal.span {(p : O) ^ (n + 1)})
     | simp [redQ]
 
 /- English proof (translation)
-Use `choose f hf using fun n => Ideal.Quotient.mk_surjective (x n)`. Establish `hdown : ∀ m j, Ideal.Quotient.mk (Ideal.span {(p : O) ^ (m + 1)}) (f (m + j)) = x m` using `fun m j => limJ_back p x hx m j (f (m + j)) (hf (m + j))`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(p : O)}) f (fun {m n} hmn => by`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Apply `limJ_mem_smul_top p m` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf m, hdown m j])`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `hL (n + 1)`. Rewrite `h1` using `[SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Rewrite using `[← hdown n 1]`.
-
-Conclude with `(Ideal.Quotient.eq.mpr h1).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limJ_exists (x : ∀ n, O ⧸ Ideal.span {(p : O) ^ (n + 1)})
     (hx : ∀ n, redQ p n (x (n + 1)) = x n) :
@@ -357,33 +349,31 @@ theorem limJ_exists (x : ∀ n, O ⧸ Ideal.span {(p : O) ^ (n + 1)})
 end Limits
 
 /- English proof (translation)
-Introduce `O _ p _ d F U hd hN hK hZ hM`. Use `set π : ∀ n : ℕ, O →+* O ⧸ Ideal.span {(p : O) ^ (n + 1)} := fun n => Ideal.Quotient.mk (Ideal.span {(p : O) ^ (n + 1)}) with hπ`. Use `choose P hP using fun n k => Ideal.Quotient.mk_surjective (U n k)`. Set `c : ∀ n : ℕ, (Fin 1 × Fin d →₀ ℕ) → O ⧸ Ideal.span {(p : O) ^ (n + 1)}` to `fun n μ => (P n μ.degree).coeff μ`. Establish `hck : ∀ n μ k, μ.degree ≤ k → (P n k).coeff μ = c n μ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n μ k hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ k hk ih`. Rewrite using `[← ih]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Ideal.Quotient.mk _ (P n k) : JetR _ (Fin 1 × Fin d) k) = Ideal.Quotient.mk _ (P n (k + 1))`. Rewrite using `[hP, ← hK n k, ← hP]`. Both sides reduce to the same expression. Conclude with `((limJ_mk_eq_iff k _ _).1 h1 μ (by omega)).symm`. Establish `hcn : ∀ n μ, redQ p n (c (n + 1) μ) = c n μ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n μ`. Establish `h1 : (Ideal.Quotient.mk _ (MvPolynomial.map (redQ p n) (P (n + 1) μ.degree)) : JetR _ (Fin 1 × Fin d) μ.degree) = Ideal.Quotient.mk _ (P n μ.degree)`. Rewrite using `[hP n, ← hN n, ← hP]`. Both sides reduce to the same expression. Establish `h2` using `(limJ_mk_eq_iff _ _ _).1 h1 μ (by omega)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h2` using `[MvPolynomial.coeff_map]`. Conclude with `h2`. Use `choose a ha using fun μ => limJ_exists p (fun n => c n μ) (fun n => hcn n μ)`. Set `u : PS O 1 d` to `fun μ => a μ`. Establish `hu : ∀ μ, coeff μ u = a μ` using `fun μ => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : ∀ n k, psJet k (MvPowerSeries.map (π n) u) = U n k`. Introduce `n k`. Rewrite using `[limJ_psJet_eq Nat.one_pos hd, ← hP n k, truncTotalAlgHom_apply, limJ_mk_eq_iff]`. Introduce `μ hμ`. Rewrite using `[coeff_truncTotal _ hμ, coeff_map, hu, ha μ n, hck n μ k (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, ⟨?_, ?_⟩, hJ⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hu]`. Apply `limJ_unique p` to reduce the goal to its premises. Introduce `n`. Rewrite using `[ha 0 n, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (Ideal.Quotient.mk _ (P n 0) : JetR _ (Fin 1 × Fin d) 0) = Ideal.Quotient.mk _ 1`. Rewrite using `[map_one, ← hZ n 0, ← hP n 0]`. Both sides reduce to the same expression. Establish `h2` using `(limJ_mk_eq_iff 0 _ _).1 h1 0 (by simp)`. Rewrite `h2` using `[MvPolynomial.coeff_zero_one]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `hadd : addOf F.F (pt O (n` using `2) d 0) (pt O d 1) = F.F :=`. Use function extensionality and compare the values at `fun i => limJ_ev_pts (F.F i)`. Establish `hbL : ∀ q : Fin 1 × Fin d, (![addOf F.F (pt O (n` using `2) d 0) (pt O d 1)] : Fin 1 → Pt O 2 d) q.1 q.2 = F.F q.2 := by`. Introduce `q`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.fin_one_eq_zero q.1, hadd]`. Both sides reduce to the same expression. Establish `hbLc : ∀ q : Fin 1 × Fin d, constantCoeff ((![addOf F.F (pt O (n` using `2) d 0) (pt O d 1)] : Fin 1 → Pt O 2 d) q.1 q.2) = 0 := by`. Introduce `q`. Rewrite using `[hbL]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `F.const _`. Establish `hbP : ∀ (i : Fin 2) (q : Fin 1 × Fin d), (![pt O (n` using `2) d i] : Fin 1 → Pt O 2 d) q.1 q.2 = X (i, q.2) := by`. Introduce `i q`. Rewrite using `[Fin.fin_one_eq_zero q.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbPc : ∀ (i : Fin 2) (q : Fin 1 × Fin d), constantCoeff ((![pt O (n` using `2) d i] : Fin 1 → Pt O 2 d) q.1 q.2) = 0 := by`. Introduce `i q`. Rewrite using `[hbP]`. Simplify using the standard rewrite rules. Use extensionality with `ν`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `limJ_unique p` to reduce the goal to its premises. Introduce `n`. Rewrite using `[← coeff_map, ← coeff_map]`. Use `(limJ_tt_eq_iff ν.degree _ _).1 ?_ ν (by omega)` and prove the remaining obligations. Rewrite using `[← limJ_psJet_eq (by omega) hd, ← limJ_psJet_eq (by omega) hd]`.
-
-Unfold `ev`. Rewrite using `[map_mul, map_subst (hasSubst_of_constantCoeff_zero hbLc), map_subst (hasSubst_of_constantCoeff_zero (hbPc 0)), map_subst (hasSubst_of_constantCoeff_zero (hbPc 1)), limJ_psJet_mul (by omega) hd]`. Rewrite using `[limJ_psJet_subst (by omega) hd _ _ (fun q => by rw [hbL]; exact Fmod_const p F n q.2) (Fmod p F n) (Fmod_const p F n) (fun q => by rw [hbL]; rfl), limJ_psJet_subst (by omega) hd _ _ (fun q => by rw [hbP, map_X]; simp) (fun j => (MvPowerSeries.X ((0 : Fin 2), j) : PS _ 2 d)) (fun …`. Conclude with `hM n ν.degree`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lim_holds : LimSt := by
   intro O _ p _ d F U hd hN hK hZ hM

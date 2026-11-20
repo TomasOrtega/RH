@@ -6,19 +6,17 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ A _ d N hd hN n z hz`. Use `set m := n + N + 1 with hm`. Establish `h2 : 2 * m = m + m` using `by ring`. Rewrite `hz` using `[h2]`. Establish `h1` using `Ideal.sup_pow_add_le_pow_sup_pow (I := Ideal.span {(l : A)}) (J := Ideal.span {d}) (m := m) (n := m) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Ideal.span_singleton_pow, Ideal.span_singleton_pow]`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 h1`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hu`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hv`. Establish `hdm : d ^ m = d * d ^ (n + N)` using `by rw [hm, pow_succ]; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hla : (l : A) ^ m * a ∈ Ideal.span {d}`. Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨z - b * d ^ (n + N), by rw [hdm] at huv; linear_combination -huv⟩`. Take `⟨a', ha'⟩` from `Ideal.mem_span_singleton'.1 (hN a m hla)`. Establish `hmN : m = (n + 1) + N` using `by rw [hm]; ring`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : d * (z - (l : A) ^ (n + 1) * a' - b * d ^ (n + N)) = 0`. Establish `: (l : A) ^ m * a = (l : A) ^ (n + 1) * (a' * d)`. Rewrite using `[ha', hmN, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `huv` using `[hdm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-1 : A) * huv + this`. Establish `hz' : z = (l : A) ^ (n + 1) * a' + b * d ^ (n + N)`. Use `(mem_nonZeroDivisors_iff.1 hd).1 _ key` as an intermediate fact. Take the linear combination `this`. Rewrite using `[hz']`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Establish `: (l : A) ^ (n + 1) ∈ (Ideal.span {(l : A)} ⊔ Ideal.span {d}) ^ (n + 1)` using `Ideal.pow_mem_pow (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) _`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) this`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations.
-
-Establish `: d ^ (n + N) ∈ (Ideal.span {(l : A)} ⊔ Ideal.span {d}) ^ (n + N)` using `Ideal.pow_mem_pow (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) _`. Conclude with `Ideal.pow_le_pow_right (Nat.le_add_right n N) this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem div_d_continuous_of_bdd_ltorsion :
     ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (d : A) (N : ℕ), d ∈ nonZeroDivisors A →

@@ -25,69 +25,55 @@ variable (u u' F0 what₂)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `γ Z F'₂ φ φ' Λ₂ hB`. Take `⟨hC, hCtx, hS, -, -, hTH, hPD, hGv⟩` from `hB`. Take `⟨hZd, hZ₁d', hx'⟩` from `starMinors_holds u u' F0 what₂ γ Z hCtx`. Establish `hZ : ZhatL (lf D F0) F'₂ = Z` using `hS.1`. Establish `hrow` using `hC.2.1.1 γ.lam γ.mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ : Submodule.IsLattice D.host.E γ.lam` using `hrow.2.1.1`. Establish `hLlf : IsLift γ.lam (lf D F0)` using `hrow.2.1.2.2.1`. Establish `hLrep : IsLift γ.lam (repF γ)` using `hPD.1`. Use `set f := frame (lf D F0) with hf`. Use `set g := frame (repF γ) with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F₂ := F'₂.fl with hF₂`. Use `set Z₁ := starZh f g with hZ₁`. Establish `hlm : ∀ l, leadMinorE Z₁ l = leadMinorE (starZh f (starFrame γ)) l` using `fun l => (star_frame_lead_minor γ l).symm`. Establish `hZ₁d : Z₁.det ≠ 0`. Rewrite using `[← FsLA.leadMinorE_full, hlm, FsLA.leadMinorE_full]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hZ₁d'`. Establish `hx : leadMinorE Z₁ D.R.rS * Z.det = leadMinorE Z D.R.rS * Z₁.det`. Rewrite using `[hlm, ← FsLA.leadMinorE_full Z₁, hlm, FsLA.leadMinorE_full]`. Conclude with `hx'`. Establish `hfF : f = F0.fvec` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZe : ∀ a b, (VS D).hT (f a) (F₂.fvec b) = Z a b` using `fun a b => by rw [← hZ]; rfl`. Establish `hg2 : FsLA.gram (VS D) f F₂.fvec = Zᴴ`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [FsLA.gram, Matrix.conjTranspose_apply]`. Rewrite using `[← hZe, ← (LinearMap.isSymm_def.1 (VS D).herm) (f j) (F₂.fvec i), starRingEnd_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1g : ∀ a b, (a ≠ Fin.last D.R.rS ∨ b ≠ Fin.last D.R.rS) → (VS D).hT (g a) (g b) = 0` using `fun a b h => FsLA.gram_fvec_zero (repF γ).fl a b h`. Establish `h2g : (VS D).hT (g (Fin.last D.R.rS)) (g (Fin.last D.R.rS)) = -((Tu D u' : ℕ) : D.host.E)` using `FsLA.gram_fvec_last (repF γ).fl`. Establish `h1f : ∀ a b, (a ≠ Fin.last D.R.rS ∨ b ≠ Fin.last D.R.rS) → (VS D).hT (f a) (f b) = 0` using `fun a b h => FsLA.gram_fvec_zero F0 a b h`. Establish `h2f : (VS D).hT (f (Fin.last D.R.rS)) (f (Fin.last D.R.rS)) = -CntLocal.Tn u` using `FsLA.gram_fvec_last F0`. Establish `hdZ1h : Z₁ᴴ.det ≠ 0` using `by rw [Matrix.det_conjTranspose]; exact star_ne_zero.2 hZ₁d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdg2 : (FsLA.gram (VS D) f F₂.fvec).det ≠ 0`. Rewrite using `[hg2, Matrix.det_conjTranspose]`. Conclude with `star_ne_zero.2 hZd`. Establish `hx2 : leadMinorE (FsLA.gram (VS D) f F₂.fvec) D.R.rS * Z₁ᴴ.det = leadMinorE Z₁ᴴ D.R.rS * (FsLA.gram (VS D) f F₂.fvec).det`. Rewrite using `[hg2, FsLA.lm_conjTranspose, FsLA.lm_conjTranspose, Matrix.det_conjTranspose, Matrix.det_conjTranspose, ← star_mul', ← star_mul', mul_comm (leadMinorE Z D.R.rS), hx, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨F₃, hZ3, hom3, hsp3⟩` from `FsLA.frame_la F₂ f h1f h2f Z₁ᴴ hdZ1h hdg2 hx2`. Use `set h := F₃.fvec with hh`. Use `set uu := Sum.elim f g with huu`. Use `set uu' := Sum.elim h F₂.fvec with huu'`. Use `set ww := Sum.elim f F₂.fvec with hww`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZ3e : ∀ a b, (VS D).hT (F₂.fvec a) (h b) = Z₁ᴴ a b` using `fun a b => congrFun (congrFun hZ3 a) b`. Establish `k1 : ∀ a b, (VS D).hT (h a) (h b) = (VS D).hT (f a) (f b)`. Introduce `a b`. Distinguish the cases in `hab : a ≠ Fin.last D.R.rS ∨ b ≠ Fin.last D.R.rS`. Conclude with `(FsLA.gram_fvec_zero F₃ a b hab).trans (FsLA.gram_fvec_zero F0 a b hab).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hab`. Rewrite using `[hab.1, hab.2]`. Conclude with `(FsLA.gram_fvec_last F₃).trans (FsLA.gram_fvec_last F0).symm`. Establish `k2 : ∀ a b, (VS D).hT (h a) (F₂.fvec b) = (VS D).hT (f a) (g b)`. Introduce `a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (LinearMap.isSymm_def.1 (VS D).herm) (F₂.fvec b) (h a), hZ3e, starRingEnd_apply, Matrix.conjTranspose_apply, star_star]`. Both sides reduce to the same expression. Establish `k3 : ∀ a b, (VS D).hT (F₂.fvec a) (h b) = (VS D).hT (g a) (f b)`. Introduce `a b`. Rewrite using `[hZ3e, Matrix.conjTranspose_apply, ← starRingEnd_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(LinearMap.isSymm_def.1 (VS D).herm) (f b) (g a)`. Establish `k4 : ∀ a b, (VS D).hT (F₂.fvec a) (F₂.fvec b) = (VS D).hT (g a) (g b)`. Introduce `a b`. Distinguish the cases in `hab : a ≠ Fin.last D.R.rS ∨ b ≠ Fin.last D.R.rS`. Conclude with `(FsLA.gram_fvec_zero F₂ a b hab).trans (h1g a b hab).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hab`. Rewrite using `[hab.1, hab.2]`. Conclude with `(FsLA.gram_fvec_last F₂).trans h2g.symm`. Establish `hGr : FsLA.gram (VS D) uu' uu' = FsLA.gram (VS D) uu uu`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Conclude with `k1 a b`. Conclude with `k2 a b`. Conclude with `k3 a b`. Conclude with `k4 a b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hGg : (FsLA.gram (VS D) g F0.fvec).det * star (FsLA.gram (VS D) g F0.fvec).det - CntLocal.Tn u * ((Tu D u' : ℕ) : D.host.E) * (leadMinorE (FsLA.gram (VS D) g F0.fvec) D.R.rS * star (leadMinorE (FsLA.gram (VS D) g F0.fvec) D.R.rS)) ≠ 0`. Rewrite using `[← FsLA.leadMinorE_full]`. Conclude with `hGv`. Establish `hdet : (FsLA.gram (VS D) uu uu).det ≠ 0` using `FsLA.gram_pair_det F0 g h1g h2g hZ₁d hGg`. Establish `hGZ : Gflag F0 F₂ ≠ 0` using `hTH.1.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hGg₂ : (FsLA.gram (VS D) F₂.fvec F0.fvec).det * star (FsLA.gram (VS D) F₂.fvec F0.fvec).det - CntLocal.Tn u * ((Tu D u' : ℕ) : D.host.E) * (leadMinorE (FsLA.gram (VS D) F₂.fvec F0.fvec) D.R.rS * star (leadMinorE (FsLA.gram (VS D) F₂.fvec F0.fvec) D.R.rS)) ≠ 0`. Rewrite using `[← FsLA.leadMinorE_full]`. Conclude with `hGZ`. Establish `hdetZ : (Zhat F0 F₂).det ≠ 0`. Establish `e : Zhat F0 F₂ = Z` using `hZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hZd`. Establish `hdetw : (FsLA.gram (VS D) ww ww).det ≠ 0` using `FsLA.gram_pair_det F0 F₂.fvec (fun a b hab => FsLA.gram_fvec_zero F₂ a b hab) (FsLA.gram_fvec_last F₂) hdetZ hGg₂`. Establish `hsp : ∀ i, uu' i ∈ Submodule.span D.host.E (Set.range ww)`. Establish `hsub : Set.range (Sum.elim F₂.fvec f) ⊆ Submodule.span D.host.E (Set.range ww)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Break down `k with b | a` into its components or cases. Conclude with `Submodule.subset_span ⟨Sum.inr b, rfl⟩`. Conclude with `Submodule.subset_span ⟨Sum.inl a, rfl⟩`. Introduce `i`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `i with a | b` into its components or cases. Conclude with `Submodule.span_le.2 hsub (hsp3 a)`. Conclude with `Submodule.subset_span ⟨Sum.inr b, rfl⟩`. Establish `hdetγ : (Zhat F0 (repF γ).fl).det ≠ 0` using `hZ₁d`. Take `⟨Ω₂, hΩ₂⟩` from `exists_om F0 F₂ hdetZ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Ωγ, hΩγ⟩` from `exists_om F0 (repF γ).fl hdetγ`. Establish `hΩd : Ω₂ - Ωγ ∈ Xsp (lf D F0)` using `omega_local_holds Zd u u' F0 what₂ hC.2.1 γ Z hCtx F'₂ φ φ' hS hdetγ hZd Ω₂ Ωγ hΩ₂ hΩγ`. Establish `hXq : ∀ y, (∀ k, (VS D).hT (uu k) y = 0) → FsLA.lin ww (FsLA.pc ww y) ∈ F0.X`. Introduce `y hy`. Establish `hrem` using `fun z hz => (FsLA.hT_span_rem ww hdetw y z hz).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hyU : ∀ z ∈ Submodule.span D.host.E (Set.range uu), (VS D).hT z y = 0` using `NMoveP.spanL (VS D) uu y hy`. Use `BRat.key_X F0 F₂ hdetZ hΩ₂ hGZ (FsLA.lin_sub ww _) (fun a => ?_) ?_` and prove the remaining obligations. Establish `e` using `hrem (f a) (Submodule.subset_span ⟨Sum.inl a, rfl⟩)`. Rewrite `e` using `[map_sub, sub_eq_zero]`. Rewrite using `[← e]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy (Sum.inl a)`. Establish `e` using `hrem Ω₂ (Submodule.span_mono (Set.range_comp_subset_range Sum.inr ww) hΩ₂.1)`. Rewrite `e` using `[map_sub, sub_eq_zero]`. Rewrite using `[← e]`. Establish `e2 : Ω₂ = Ωγ + (Ω₂ - Ωγ)` using `by abel`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2, map_add, LinearMap.add_apply]`. Establish `h1 : (VS D).hT Ωγ y = 0` using `hyU _ (Submodule.span_mono (Set.range_comp_subset_range Sum.inr uu) hΩγ.1)`. Establish `hXu : ∀ x ∈ Xsp (lf D F0), x ∈ Submodule.span D.host.E (Set.range uu)`. Introduce `x hx`. Use `Submodule.span_le.2 ?_ hx` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨Sum.inl i.castSucc, by simp [huu, hf, frame, FlagG.fvec]⟩`. Rewrite using `[h1, hyU _ (hXu _ hΩd), add_zero]`. Establish `hkey : ∀ y y', (∀ k, (VS D).hT (uu k) y = 0) → (∀ k, (VS D).hT (uu k) y' = 0) → (VS D).hT (FsLA.lin ww (FsLA.pc ww y)) (FsLA.lin ww (FsLA.pc ww y')) = 0` using `fun y y' hy hy' => NMoveP.hT_X_X F0 (hXq y hy) (hXq y' hy')`. Take `⟨β, hiso, hβu, hβy⟩` from `BRat.isometry_extension_two uu uu' ww hGr hdet hdetw hsp hkey`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨β, hiso, fun b => hβu (Sum.inr b), fun w0 hw0 => ?_, ?_⟩` and prove the remaining obligations. Establish `hw0u : ∀ k, (VS D).hT (uu k) w0 = 0` using `fun k => (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw0 _ (PI.PairCorankPos.W.frame_mem_UUE γ.lam hΛ (lf D F0) (repF γ) hLlf hLrep k)`. Use `⟨β w0, ?_, ?_, by rw [sub_self]; exact zero_mem _⟩` and prove the remaining obligations. Use `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => ?_` and prove the remaining obligations. Establish `hxw : x ∈ Submodule.span D.host.E (Set.range ww)` using `UUE_le_span Λ₂ (lf D F0) (liftF F'₂) rfl rfl hx`.
-
-Rewrite using `[hβy w0 hw0u]`. Conclude with `(FsLA.hT_span_rem ww hdetw w0 x hxw).1`. Rewrite using `[hβy w0 hw0u, sub_sub_cancel]`. Conclude with `hXq w0 hw0u`. Establish `homf : FsLA.om (VS D) F₂.fvec f = starOmL f (frame F'₂)`.
-
-Rewrite using `[FsLA.om, hg2, ← Matrix.adjugate_conjTranspose]`. Simplify using `only [starOmL, Matrix.conjTranspose_apply]`. Rewrite using `[← hZ]`. Both sides reduce to the same expression. Establish `homh : FsLA.om (VS D) F₂.fvec h = β (starOmL f g)`.
-
-Simplify using `only [FsLA.om, starOmL, map_sum, map_smul]`. Establish `e : FsLA.gram (VS D) h F₂.fvec = Z₁ᴴ` using `hZ3`. Rewrite using `[e]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.adjugate_conjTranspose, Matrix.conjTranspose_apply]`.
-
-Use `congr 1`. Conclude with `(hβu (Sum.inl a)).symm`. Establish `e1 : Z₁ᴴ.det = star Z₁.det` using `Matrix.det_conjTranspose _`. Establish `e2 : (FsLA.gram (VS D) f F₂.fvec).det = star Z.det` using `by rw [hg2, Matrix.det_conjTranspose]`. Rewrite `hom3` using `[e1, e2, homf, homh]`.
-
-Establish `hD1 : GDl (frame (lf D F0)) (frame (repF γ)) (D.R.rS + 1) = Z₁.det` using `by rw [GDl_top']; rfl`. Establish `hD2 : GDl (frame (lf D F0)) (frame (liftF F'₂)) (D.R.rS + 1) = Z.det`. Rewrite using `[GDl_top']`. Rewrite using `[← hZ]`. Both sides reduce to the same expression.
-
-Establish `hO1 : Gom (frame (lf D F0)) (frame (repF γ)) = starOmL f g` using `rfl`. Establish `hO2 : Gom (frame (lf D F0)) (frame (liftF F'₂)) = starOmL f (frame F'₂)` using `rfl`. Unfold `OmB`. Rewrite using `[hD1, hD2, hO1, hO2]`. Use `(Xsp (liftF F'₂)).neg_mem hom3` as an intermediate fact.
-
-Rewrite `this` using `[neg_sub]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaRat_holds : BetaRat Zd u u' F0 what₂ := by
   intro γ Z F'₂ φ φ' Λ₂ hB

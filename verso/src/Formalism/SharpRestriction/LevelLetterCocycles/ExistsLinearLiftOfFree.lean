@@ -19,9 +19,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Introduce `x`. Establish `hx : x ∈ Submodule.span R (Set.range b)` using `by rw [b.span_eq]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨k, rfl⟩ := hy`. Conclude with `hb k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact h0`. Consider the case `add y z _ _ hy hz => exact hadd y z hy hz`. Consider the case `smul a y _ hy => exact hsmul a y hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem basis_induction {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R M] (b : Module.Basis ι R M)
     (P : M → Prop) (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y))
@@ -37,23 +37,23 @@ theorem basis_induction {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Take `⟨Zex, Zpr, Zlin, -⟩` from `hZ hA hp 1 M η σ hTC T hc c`. Simplify using `only [pow_one, Nat.cast_one] at Zpr`. Set `bF` to `Module.Free.chooseBasis O FF`. Take `⟨r, b1⟩` from `Submodule.basisOfPid bF F₁`. Set `tch : FF → W.DD T` to `fun f => Classical.epsilon (fun t => IsTrZ W T c 1 M η σ (ζL f) t)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `htch : ∀ f, IsTrZ W T c 1 M η σ (ζL f) (tch f)` using `fun f => Classical.epsilon_spec (Zex _ (hζ f).1 (hζ f).2)`. Set `tL : ↥F₁ →ₗ[O] W.DD T` to `b1.constr O (fun k => tch (b1 k : FF))`. Use `⟨tL, ?_⟩` and prove the remaining obligations. Establish `hz0 : ∀ t, IsTrZ W T c 1 M η σ 0 t → ∃ p ∈ pullJ W T c 1, t = fMX W M η • p`. Introduce `t ht`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd0` using `invariantLetter_zero W T c`. Establish `hp0` using `uniformizerLattice_zero W T (k := 1)`. Take `⟨p, hp, e⟩` from `Zlin 0 0 0 0 t t t hd0 hp0 hd0 hp0 ht ht (by simpa using ht)`. Conclude with `⟨p, hp, by simpa using e⟩`. Use `basis_induction b1 _ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t0, ht0⟩` from `Zex 0 (invariantLetter_zero W T c) (uniformizerLattice_zero W T 1)`. Take `⟨p0, hp0, e0⟩` from `hz0 t0 (by simpa using ht0)`. Use `⟨by simp, by simpa using invariantLetter_zero W T (c + 1), ⟨0, Submodule.zero_mem _, by simp⟩, t0, by simpa using ht0, -p0, Submodule.neg_mem _ hp0, ?_⟩` and prove the remaining obligations. Simplify using `[e0]`. Introduce and unpack `x y ⟨hx1, hx2, ⟨px, hpx, ex⟩, tx, htx, qx, hqx, fx⟩ ⟨hy1, hy2, ⟨py, hpy, ey⟩, ty, hty, qy, hqy, fy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Establish `hsum : ζL (x : FF) + ζL (y : FF) = ζL ((x + y : ↥F₁) : FF)`. Rewrite using `[Submodule.coe_add, map_add]`. Take `⟨txy, htxy⟩` from `Zex (ζL ((x + y : ↥F₁) : FF)) (hζ _).1 (hζ _).2`. Take `⟨r1, hr1, e1⟩` from `Zlin 1 1 _ _ tx ty txy (hζ x).1 (hζ x).2 (hζ y).1 (hζ y).2 htx hty (by rw [one_smul, one_smul, hsum]; exact htxy)`. Use `⟨by rw [map_add]; exact Submodule.add_mem _ hx1 hy1, by rw [map_add]; exact Formalism.MainNotions.RamifiedCoefficientChains.S9.dl_add W T hx2 hy2, ⟨px + py, Submodule.add_mem _ hpx hpy, ?_⟩, txy, htxy, qx + qy - r1, Submodule.sub_mem _ (Submodule.add_mem _ hqx hqy) hr1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add, ← ex, ← ey, Submodule.coe_add, map_add ζL, map_add (W.φD T), smul_add, map_add tL, map_add (W.γ T)]`. Normalize the expressions using the abelian group laws. Rewrite using `[smul_sub, smul_add, ← fx, ← fy, ← e1, map_add tL, one_smul, one_smul]`. Normalize the expressions using the abelian group laws. Introduce and unpack `a x ⟨hx1, hx2, ⟨px, hpx, ex⟩, tx, htx, qx, hqx, fx⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Establish `hsm : a • ζL (x : FF) = ζL ((a • x : ↥F₁) : FF)`. Rewrite using `[Submodule.coe_smul, map_smul]`. Take `⟨tax, htax⟩` from `Zex (ζL ((a • x : ↥F₁) : FF)) (hζ _).1 (hζ _).2`. Take `⟨r1, hr1, e1⟩` from `Zlin a 0 _ _ tx tx tax (hζ x).1 (hζ x).2 (hζ x).1 (hζ x).2 htx htx (by rw [zero_smul, add_zero, hsm]; exact htax)`. Use `⟨by rw [map_smul]; exact Submodule.smul_of_tower_mem _ a hx1, by rw [map_smul]; exact Formalism.MainNotions.RamifiedCoefficientChains.S9.dl_smul W T a hx2, ⟨a • px, Submodule.smul_of_tower_mem _ a hpx, ?_⟩, tax, htax, a • qx - r1, Submodule.sub_mem _ (Submodule.smul_of_tower_mem …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_comm (fMX W M η) a px, ← ex]`. Simplify using `only [map_smul, Submodule.coe_smul, smul_sub]`. Rewrite using `[smul_comm]`. Rewrite using `[smul_sub, smul_comm (fMX W M η) a qx, ← fx, ← e1]`. Simplify using `only [map_smul, zero_smul, add_zero, smul_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Introduce `k`. Establish `hk : tL (b1 k) = tch (b1 k : FF)` using `by simp [tL]`. Take `⟨h1, h2, h3⟩` from `Zpr _ _ (hζ _).1 (hζ _).2 (htch (b1 k : FF))`. Use `⟨by rw [hk]; exact h2, by rw [hk]; exact h1, by rw [hk]; exact h3, tch (b1 k : FF), htch _, 0, Submodule.zero_mem _, by rw [hk, sub_self, smul_zero]⟩` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_linear_lift_of_free [NeZero n] [IsDomain O] [IsPrincipalIdealRing O] (hZ : TTool2Z W)
     (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hp : 11 ≤ PD.p) {M η σ : ℕ} (hTC : TCase PD.p 1 M η σ)

@@ -15,7 +15,7 @@ section Abstract
 variable {H J : Type} [Group H] {K : Subgroup H}
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons j w ih => exact Formalism.UG.Final.HeckeConvMem H K ℂ hK _ (hψ j) _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem word_mem (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : ∀ j, ψ j ∈ Hecke ℂ K) {f : H → ℂ}
     (hf : f ∈ Hecke ℂ K) (w : List J) : wordFn K ψ w f ∈ Hecke ℂ K := by
@@ -24,7 +24,7 @@ private theorem word_mem (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : 
   | cons j w ih => exact Formalism.UG.Final.HeckeConvMem H K ℂ hK _ (hψ j) _ ih
 
 /- English proof (translation)
-Unfold `UpperTheory.Gal.LocalSmoothExtension.polyFn`. Conclude with `Submodule.sum_mem _ fun w _ => Submodule.smul_mem _ _ (word_mem hK hψ hf w)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem poly_mem (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : ∀ j, ψ j ∈ Hecke ℂ K) {f : H → ℂ}
     (hf : f ∈ Hecke ℂ K) (s : List J →₀ ℂ) : polyFn K ψ s f ∈ Hecke ℂ K := by
@@ -32,7 +32,7 @@ private theorem poly_mem (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : 
   exact Submodule.sum_mem _ fun w _ => Submodule.smul_mem _ _ (word_mem hK hψ hf w)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact he`. Consider the case `succ n ih`. Rewrite using `[powFn, Function.iterate_succ_apply']`. Conclude with `Formalism.UG.Final.HeckeConvMem H K ℂ hK _ hu _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_mem (hK : IsCommensurated K) {u e : H → ℂ} (hu : u ∈ Hecke ℂ K) (he : e ∈ Hecke ℂ K) (n : ℕ) :
     powFn K u e n ∈ Hecke ℂ K := by
@@ -43,7 +43,7 @@ private theorem pow_mem (hK : IsCommensurated K) {u e : H → ℂ} (hu : u ∈ H
     exact Formalism.UG.Final.HeckeConvMem H K ℂ hK _ hu _ ih
 
 /- English proof (translation)
-Establish `A` using `Formalism.UG.Final.HeckeAssoc H K ℂ hK`. Establish `M` using `Formalism.UG.Final.HeckeConvMem H K ℂ hK`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem fix_step (hK : IsCommensurated K) {e t x : H → ℂ} (he : e ∈ Hecke ℂ K) (ht : t ∈ Hecke ℂ K)
     (hx : x ∈ Hecke ℂ K) (hte : conv K e (conv K t e) = conv K t e) (hex : conv K e x = x) :
@@ -58,7 +58,7 @@ private theorem fix_step (hK : IsCommensurated K) {e t x : H → ℂ} (he : e �
     _ = conv K t x := by rw [hex]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact hidem`. Consider the case `succ n ih`. Rewrite using `[powFn, Function.iterate_succ_apply']`. Conclude with `fix_step hK he hu (pow_mem hK hu he n) heu ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_fix (hK : IsCommensurated K) {u e : H → ℂ} (hu : u ∈ Hecke ℂ K) (he : e ∈ Hecke ℂ K)
     (hidem : conv K e e = e) (heu : conv K e (conv K u e) = conv K u e) (n : ℕ) :
@@ -70,7 +70,7 @@ private theorem pow_fix (hK : IsCommensurated K) {u e : H → ℂ} (hu : u ∈ H
     exact fix_step hK he hu (pow_mem hK hu he n) heu ih
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hef`. Consider the case `cons j w ih => exact fix_step hK he (hψ j) (word_mem hK hψ hf w) (heT j) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem word_fix (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : ∀ j, ψ j ∈ Hecke ℂ K) {e f : H → ℂ}
     (he : e ∈ Hecke ℂ K) (hf : f ∈ Hecke ℂ K) (heT : ∀ j, conv K e (conv K (ψ j) e) = conv K (ψ j) e)
@@ -80,7 +80,7 @@ private theorem word_fix (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : 
   | cons j w ih => exact fix_step hK he (hψ j) (word_mem hK hψ hf w) (heT j) ih
 
 /- English proof (translation)
-Establish `A` using `Formalism.UG.Final.HeckeAssoc H K ℂ hK`. Establish `M` using `Formalism.UG.Final.HeckeConvMem H K ℂ hK`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem comm_fix (hK : IsCommensurated K) {e a b x : H → ℂ} (he : e ∈ Hecke ℂ K) (ha : a ∈ Hecke ℂ K)
     (hb : b ∈ Hecke ℂ K) (hx : x ∈ Hecke ℂ K) (hab : conv K a (conv K b e) = conv K b (conv K a e))
@@ -96,9 +96,9 @@ private theorem comm_fix (hK : IsCommensurated K) {e a b x : H → ℂ} (he : e 
     _ = conv K b (conv K a x) := by rw [hex]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Unfold `Formalism.UG.conv`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Distinguish the cases in `ha : a (Quotient.out q) = 0`. Rewrite using `[ha, zero_mul]`. Rewrite using `[hc _ ha, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conv_supp {a f : H → ℂ} {g : H} (h : conv K a f g ≠ 0) : ∃ x : H, a x ≠ 0 ∧ f (x⁻¹ * g) ≠ 0 := by
   by_contra hc
@@ -112,9 +112,9 @@ private theorem conv_supp {a f : H → ℂ} {g : H} (h : conv K a f g ≠ 0) : �
   · rw [hc _ ha, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons j w ih`. Introduce `g hg`. Take `⟨x, hx1, hx2⟩` from `conv_supp (K := K) (a := ψ j) (f := wordFn K ψ w f) hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hx` using `hR j x hx1 _ (ih _ hx2)`. Simplify using `using hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem word_supp {ψ : J → H → ℂ} {f : H → ℂ} {R : Set H} (hR : ∀ j a, ψ j a ≠ 0 → ∀ g ∈ R, a * g ∈ R)
     (hf : ∀ g, f g ≠ 0 → g ∈ R) (w : List J) : ∀ g, wordFn K ψ w f g ≠ 0 → g ∈ R := by
@@ -127,11 +127,11 @@ private theorem word_supp {ψ : J → H → ℂ} {f : H → ℂ} {R : Set H} (hR
     simpa using hx
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hgR`. Apply `hg` to reduce the goal to its premises. Unfold `UpperTheory.Gal.LocalSmoothExtension.polyFn`. Rewrite using `[Finsupp.sum, Finset.sum_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w _`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Establish `hw : wordFn K ψ w f g = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hgR (word_supp (K := K) hR hf w g hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, mul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem poly_supp {ψ : J → H → ℂ} {f : H → ℂ} {R : Set H} (hR : ∀ j a, ψ j a ≠ 0 → ∀ g ∈ R, a * g ∈ R)
     (hf : ∀ g, f g ≠ 0 → g ∈ R) (s : List J →₀ ℂ) (g : H) (hg : polyFn K ψ s f g ≠ 0) : g ∈ R := by
@@ -150,9 +150,9 @@ private theorem poly_supp {ψ : J → H → ℂ} {f : H → ℂ} {R : Set H} (hR
 end Abstract
 
 /- English proof (translation)
-Introduce `p _ G Lv J ψ e u u' hψ he hu hrel n`. Establish `hK : IsCommensurated (Lv.K : Subgroup G.GAf)` using `PI.UnitaryGroupMassFormula.AdIndexEq.commensurated_of_isOpen_isCompact _ Lv.K.isOpen Lv.compact`. Establish `hP` using `pow_mem hK hu he n`. Establish `hfix` using `pow_fix hK hu he hrel.idem hrel.eu n`. Use `⟨hP, fun s => poly_mem hK hψ hP s, fun j j' w => ?_, fun R hR hf s g hg => poly_supp hR hf s g hg⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `comm_fix hK he (hψ j) (hψ j') (word_mem hK hψ hP w) (hrel.TT j j') (word_fix hK hψ he hP hrel.eT hfix w)`.
+A detailed English derivation is pending.
 -/
 theorem words : Words := by
   intro p _ G Lv J ψ e u u' hψ he hu hrel n

@@ -34,21 +34,21 @@ def resL₂ (a₁ a₂ : ℕ) : (Fin (a₁ + a₂) → V) →ₗ[O] (Fin a₂ �
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[resL₁]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem resL₁_append {a₁ a₂ : ℕ} (v₁ : Fin a₁ → V) (v₂ : Fin a₂ → V) :
     resL₁ (O := O) a₁ a₂ (Fin.append v₁ v₂) = v₁ := by
   funext j; simp [resL₁]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[resL₂]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem resL₂_append {a₁ a₂ : ℕ} (v₁ : Fin a₁ → V) (v₂ : Fin a₂ → V) :
     resL₂ (O := O) a₁ a₂ (Fin.append v₁ v₂) = v₂ := by
   funext j; simp [resL₂]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) j <;> simp [blk]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_append (act : ι → Γ → V → V) {a₁ a₂ : ℕ} (x₁ : Fin a₁ → ι) (x₂ : Fin a₂ → ι) (γ : Γ)
     (v₁ : Fin a₁ → V) (v₂ : Fin a₂ → V) :
@@ -57,7 +57,7 @@ theorem blk_append (act : ι → Γ → V → V) {a₁ a₂ : ℕ} (x₁ : Fin a
   refine Fin.addCases (fun j => ?_) (fun j => ?_) j <;> simp [blk]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) j <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem append_sub {a₁ a₂ : ℕ} (u₁ v₁ : Fin a₁ → V) (u₂ v₂ : Fin a₂ → V) :
     Fin.append u₁ u₂ - Fin.append v₁ v₂ = Fin.append (u₁ - v₁) (u₂ - v₂) := by
@@ -73,9 +73,9 @@ def HasPres (act : ι → Γ → V → V) (W : Γ → Q → Q) (gl : G → Γ) (
 variable (act : ι → Γ → V → V) (W : Γ → Q → Q) (gl : G → Γ) (out : Q → C)
 
 /- English proof (translation)
-Use `⟨0, Fin.elim0, 0, ⊥, Submodule.fg_bot, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ y _`. Rewrite using `[Subsingleton.elim (blk act Fin.elim0 γ y) 0]`. Conclude with `Submodule.zero_mem _`. Introduce `γ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim (blk act Fin.elim0 γ 0 - 0) 0]`. Conclude with `Submodule.zero_mem _`. Introduce `c hc`. Conclude with `absurd hc (Set.notMem_empty c)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasPres_empty : HasPres (O := O) act W gl out ∅ := by
   refine ⟨0, Fin.elim0, 0, ⊥, Submodule.fg_bot, ?_, ?_, ?_⟩
@@ -86,37 +86,33 @@ theorem hasPres_empty : HasPres (O := O) act W gl out ∅ := by
   · intro c hc; exact absurd hc (Set.notMem_empty c)
 
 /- English proof (translation)
-Take `⟨a₁, x₁, E₁, Y₁, hY₁, hst₁, hE₁, hφ₁⟩` from `hS`. Take `⟨a₂, x₂, E₂, Y₂, hY₂, hst₂, hE₂, hφ₂⟩` from `hT`. Use `set Y : Submodule O (Fin (a₁ + a₂) → V) := (Y₁.prod Y₂).map (appL a₁ a₂) with hYdef`. Establish `mem_of : ∀ y₁ ∈ Y₁, ∀ y₂ ∈ Y₂, Fin.append y₁ y₂ ∈ Y` using `fun y₁ h₁ y₂ h₂ => Submodule.mem_map_of_mem (f := appL a₁ a₂) (p := Y₁.prod Y₂) (r := (y₁, y₂)) (Submodule.mem_prod.2 ⟨h₁, h₂⟩)`. Establish `mem_iff : ∀ y ∈ Y, ∃ y₁ ∈ Y₁, ∃ y₂ ∈ Y₂, y = Fin.append y₁ y₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨⟨y₁, y₂⟩, ⟨h₁, h₂⟩, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `⟨y₁, h₁, y₂, h₂, rfl⟩`. Establish `r₁ : ∀ y ∈ Y, resL₁ (O` using `O) a₁ a₂ y ∈ Y₁ := by`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y₁, h₁, y₂, h₂, rfl⟩` from `mem_iff y hy`. Rewrite using `[resL₁_append]`. Conclude with `h₁`. Establish `r₂ : ∀ y ∈ Y, resL₂ (O` using `O) a₁ a₂ y ∈ Y₂ := by`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y₁, h₁, y₂, h₂, rfl⟩` from `mem_iff y hy`. Rewrite using `[resL₂_append]`. Conclude with `h₂`. Establish `hst : ∀ γ : Γ, ∀ y ∈ Y, blk act (Fin.append x₁ x₂) γ y ∈ Y`. Introduce `γ y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y₁, h₁, y₂, h₂, rfl⟩` from `mem_iff y hy`. Rewrite using `[blk_append]`. Conclude with `mem_of _ (hst₁ γ y₁ h₁) _ (hst₂ γ y₂ h₂)`. Establish `hEq : ∀ γ : Γ, blk act (Fin.append x₁ x₂) γ (Fin.append E₁ E₂) - Fin.append E₁ E₂ = Fin.append (blk act x₁ γ E₁ - E₁) (blk act x₂ γ E₂ - E₂)`. Introduce `γ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blk_append, append_sub]`. Establish `hE : ∀ γ : Γ, blk act (Fin.append x₁ x₂) γ (Fin.append E₁ E₂) - Fin.append E₁ E₂ ∈ Y`. Introduce `γ`. Rewrite using `[hEq]`. Conclude with `mem_of _ (hE₁ γ) _ (hE₂ γ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨a₁ + a₂, Fin.append x₁ x₂, Fin.append E₁ E₂, Y, ?_, hst, hE, ?_⟩` and prove the remaining obligations. Conclude with `(hY₁.prod hY₂).map _`. Introduce `c hc`. Break down `hc with hc | hc` into its components or cases. Take `⟨φ, hφ, rfl⟩` from `hφ₁ c hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `ρ : ↥Y →ₗ[O] ↥Y₁` to `((resL₁ (O := O) a₁ a₂).domRestrict Y).codRestrict Y₁ (fun y => r₁ y.1 y.2)`. Use `⟨φ ∘ₗ ρ, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ y`. Take `⟨y, hy⟩` from `y`. Take `⟨y₁, h₁, y₂, h₂, rfl⟩` from `mem_iff y hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (ρ ⟨_, hst γ _ hy⟩ : ↥Y₁) = ⟨_, hst₁ γ y₁ h₁⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show resL₁ (O := O) a₁ a₂ (blk act (Fin.append x₁ x₂) γ (Fin.append y₁ y₂)) = _`. Rewrite using `[blk_append, resL₁_append]`. Establish `e2 : (ρ ⟨_, hy⟩ : ↥Y₁) = ⟨y₁, h₁⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show resL₁ (O := O) a₁ a₂ (Fin.append y₁ y₂) = _`. Rewrite using `[resL₁_append]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[e1, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hφ γ ⟨y₁, h₁⟩`. Use function extensionality and compare the values at `g`. Simplify using `only [LinearMap.comp_apply]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show _ = resL₁ (O := O) a₁ a₂ (blk act (Fin.append x₁ x₂) (gl g) (Fin.append E₁ E₂) - Fin.append E₁ E₂)`. Rewrite using `[hEq, resL₁_append]`. Take `⟨φ, hφ, rfl⟩` from `hφ₂ c hc`. Set `ρ : ↥Y →ₗ[O] ↥Y₂` to `((resL₂ (O := O) a₁ a₂).domRestrict Y).codRestrict Y₂ (fun y => r₂ y.1 y.2)`. Use `⟨φ ∘ₗ ρ, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `γ y`. Take `⟨y, hy⟩` from `y`. Take `⟨y₁, h₁, y₂, h₂, rfl⟩` from `mem_iff y hy`. Establish `e1 : (ρ ⟨_, hst γ _ hy⟩ : ↥Y₂) = ⟨_, hst₂ γ y₂ h₂⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show resL₂ (O := O) a₁ a₂ (blk act (Fin.append x₁ x₂) γ (Fin.append y₁ y₂)) = _`. Rewrite using `[blk_append, resL₂_append]`. Establish `e2 : (ρ ⟨_, hy⟩ : ↥Y₂) = ⟨y₂, h₂⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show resL₂ (O := O) a₁ a₂ (Fin.append y₁ y₂) = _`.
-
-Rewrite using `[resL₂_append]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[e1, e2]`. Conclude with `hφ γ ⟨y₂, h₂⟩`. Use function extensionality and compare the values at `g`.
-
-Simplify using `only [LinearMap.comp_apply]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show _ = resL₂ (O := O) a₁ a₂ (blk act (Fin.append x₁ x₂) (gl g) (Fin.append E₁ E₂) - Fin.append E₁ E₂)`. Rewrite using `[hEq, resL₂_append]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasPres_union {S T : Set (G → C)} (hS : HasPres (O := O) act W gl out S)
     (hT : HasPres (O := O) act W gl out T) : HasPres (O := O) act W gl out (S ∪ T) := by
@@ -199,7 +195,7 @@ theorem hasPres_union {S T : Set (G → C)} (hS : HasPres (O := O) act W gl out 
         rw [hEq, resL₂_append]
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simpa using hasPres_empty (O := O) act W gl out`. Consider the case `insert c F hc ih`. Rewrite using `[Finset.coe_insert, Set.insert_eq]`. Conclude with `hasPres_union act W gl out (h c (Finset.mem_insert_self c F)) (ih fun c' hc' => h c' (Finset.mem_insert_of_mem hc'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasPres_finset (F : Finset (G → C)) (h : ∀ c ∈ F, HasPres (O := O) act W gl out {c}) :
     HasPres (O := O) act W gl out (F : Set (G → C)) := by
@@ -222,9 +218,9 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D i w hw r Xs k M F hF`. Establish `h` using `hasPres_finset (O := D.nd.O i) (fun (x : ↥Xs) (γ : GE D.nd) (v : Fin D.R.nV → KK D.nd i) => (mapM (toK D.nd i) (rTwO D.nd i r x) γ).mulVec v) (fun γ q => WKG M γ q) (gl i w hw) (Br.phi (D.nbr i w hw) k) F ?_`. Conclude with `h`. Introduce `c hc`. Take `⟨a, x, hx, E, Y, hY, hst, hE, φ, hφ, rfl⟩` from `hF (Finset.mem_coe.2 hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, fun j => ⟨x j, hx j⟩, E, Y, hY, hst, hE, ?_⟩` and prove the remaining obligations. Introduce `c' hc'`. Rewrite `hc'` using `[Set.mem_singleton_iff]`. Substitute `hc'` using the available equality. Conclude with `⟨φ, hφ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cutCoc_finset_common : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

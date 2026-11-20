@@ -6,35 +6,33 @@ open scoped Quaternion Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ h2 V hV`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hV`. Use `set c := ‖(2:K)⁻¹‖ with hc`. Establish `hc0 : 0 ≤ c` using `norm_nonneg _`. Use `set ρ := min (ε / 2) (1 / (4 * c + 1)) with hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ0 : 0 < ρ` using `lt_min (by linarith) (by positivity)`. Establish `hρε : ρ < ε` using `lt_of_le_of_lt (min_le_left _ _) (by linarith)`. Establish `hρc : 2 * ρ * c ≤ 1 / 2`. Establish `h1 : ρ ≤ 1 / (4 * c + 1)` using `min_le_right _ _`. Establish `h4 : 0 < 4 * c + 1` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h5 : ρ * (4 * c + 1) ≤ 1` using `by rwa [le_div_iff₀ h4] at h1`. Use the polynomial consequences of the given equalities and inequalities. Use `set δ := ρ / (2 * c + 1) with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hcδ : c * δ ≤ ρ / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h : 0 < 2 * c + 1` using `by positivity`. Establish `h' : δ * (2 * c + 1) = ρ` using `div_mul_cancel₀ _ (ne_of_gt h)`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨Metric.closedBall 1 δ, Metric.closedBall_mem_nhds _ hδ0, ?_⟩` and prove the remaining obligations. Introduce `r hr`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : ‖r - 1‖ ≤ δ` using `by simpa [dist_eq_norm] using hr`. Use `set f : K → K := fun μ => μ - (μ ^ 2 - r) * (2:K)⁻¹ with hfdef`. Establish `h22 : (2:K) * 2⁻¹ = 1` using `mul_inv_cancel₀ h2`. Establish `hdiff : ∀ μ₁ μ₂ : K, f μ₁ - f μ₂ = (μ₁ - μ₂) * ((1 - μ₁) + (1 - μ₂)) * (2:K)⁻¹`. Introduce `μ₁ μ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hfdef]`. Take the linear combination `(-(μ₁ - μ₂)) * h22`. Establish `hf1 : f 1 - 1 = (r - 1) * (2:K)⁻¹`. Simplify using `only [hfdef]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set s := Metric.closedBall (1:K) ρ with hs`. Establish `hlip : ∀ μ₁ ∈ s, ∀ μ₂ ∈ s, ‖f μ₁ - f μ₂‖ ≤ (1 / 2) * ‖μ₁ - μ₂‖`. Introduce `μ₁ h1 μ₂ h2'`. Rewrite using `[hdiff, norm_mul, norm_mul]`. Establish `a1 : ‖1 - μ₁‖ ≤ ρ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[norm_sub_rev]`. Simplify `h1` using `[hs, dist_eq_norm]`. Establish `a2 : ‖1 - μ₂‖ ≤ ρ`. Rewrite using `[norm_sub_rev]`. Simplify `h2'` using `[hs, dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `a3 : ‖(1 - μ₁) + (1 - μ₂)‖ ≤ 2 * ρ` using `(norm_add_le _ _).trans (by linarith)`. Establish `a4 : 0 ≤ ‖μ₁ - μ₂‖` using `norm_nonneg _`. Establish `a5 : 0 ≤ ‖(1 - μ₁) + (1 - μ₂)‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `h1s : (1:K) ∈ s` using `Metric.mem_closedBall_self hρ0.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmaps : Set.MapsTo f s s`. Introduce `μ hμ`. Establish `hl` using `hlip μ hμ 1 h1s`. Establish `hμ' : ‖μ - 1‖ ≤ ρ` using `by simpa [hs, dist_eq_norm] using hμ`. Establish `hf1' : ‖f 1 - 1‖ ≤ c * δ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hf1, norm_mul, mul_comm]`. Use `gcongr`. Establish `key : ‖f μ - 1‖ ≤ ρ`. Combine the equalities or inequalities in the displayed calculation. Simplify `key` using `[hs, dist_eq_norm]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Evaluate the numerical expressions.
 
-Establish `hcomplete : IsComplete s` using `Metric.isClosed_closedBall.isComplete`. Establish `hcon : ContractingWith (1 / 2 : NNReal) (hmaps.restrict f s s)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← NNReal.coe_lt_coe]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Evaluate the numerical expressions. Apply `LipschitzWith.of_dist_le_mul` to reduce the goal to its premises. Introduce `x y`. Simplify using `only [Set.MapsTo.val_restrict_apply, Subtype.dist_eq, dist_eq_norm]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `hlip _ x.2 _ y.2`. Take `⟨μ, hμs, hfix, -⟩` from `hcon.exists_fixedPoint' hcomplete hmaps h1s (edist_ne_top _ _)`. Use `⟨μ, hball (Metric.closedBall_subset_ball hρε hμs), ?_⟩` and prove the remaining obligations. Establish `hfix' : f μ = μ` using `hfix`. Establish `hz : (μ ^ 2 - r) * (2:K)⁻¹ = 0`.
-
-Simplify using `only [hfdef] at hfix'`. Take the linear combination `-hfix'`. Break down `mul_eq_zero.1 hz with h | h` into its components or cases. Take the linear combination `h`. Conclude with `absurd h (inv_ne_zero h2)`.
+Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sqOpen_of_two_ne_zero : ∀ (K : Type) [NormedField K] [CompleteSpace K], (2 : K) ≠ 0 → SqOpen K := by
   intro K _ _ h2 V hV

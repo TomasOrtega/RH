@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.NL.Exact
 
 /- English proof (translation)
-Establish `ha : a = (∑ i : ZMod n, ∑ k ∈ Finset.range c, PowerSeries.coeff k (a i) • ((letE i : LetA O n) * (letπ : LetA O n) ^ k)) + (letπ : LetA O n) ^ c * (fun j => PowerSeries.mk fun k => PowerSeries.coeff (k + c) (a j))`. Use function extensionality and compare the values at `j`. Use extensionality with `k`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, Pi.mul_apply, Pi.pow_apply, letπ, letE]`. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Pi.single_apply, Ne.symm hb]) (by simp)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.single_eq_same, one_mul, map_add, map_sum, PowerSeries.coeff_smul, PowerSeries.coeff_X_pow, PowerSeries.coeff_X_pow_mul', PowerSeries.coeff_mk, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_range]`. Distinguish the cases in `hk : k < c`. Simplify using `[hk, Nat.not_le.2 hk]`. Simplify using `[hk, Nat.le_of_not_lt hk, Nat.sub_add_cancel (Nat.le_of_not_lt hk)]`. Use `conv_lhs => rw [ha]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_smul, mul_smul, h, add_zero, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_sum {O : Type} [CommRing O] {n : ℕ} [NeZero n] {M : Type} [AddCommGroup M]
     [Module (LetA O n) M] [Module O M] [IsScalarTower O (LetA O n) M] (c : ℕ)
@@ -47,9 +47,9 @@ theorem smul_eq_sum {O : Type} [CommRing O] {n : ℕ} [NeZero n] {M : Type} [Add
   rw [smul_assoc]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := LetA O n) (M := M)`. Set `S : Finset M` to `(Finset.univ ×ˢ Finset.range c ×ˢ s).image fun p => ((letE p.1 : LetA O n) * (letπ : LetA O n) ^ p.2.1) • p.2.2`. Use `⟨⟨S, eq_top_iff.2 fun x _ => ?_⟩⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span (LetA O n) (s : Set M)` using `hs ▸ Submodule.mem_top`. Take `⟨f, -, rfl⟩` from `Submodule.mem_span_finset.1 hx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_sum c h]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun k hk => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image.2 ⟨(i, k, m), Finset.mem_product.2 ⟨Finset.mem_univ _, Finset.mem_product.2 ⟨hk, hm⟩⟩, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_of_pi_pow {O : Type} [CommRing O] {n : ℕ} [NeZero n] {M : Type} [AddCommGroup M]
     [Module (LetA O n) M] [Module O M] [IsScalarTower O (LetA O n) M] [Module.Finite (LetA O n) M]
@@ -68,9 +68,9 @@ theorem finite_of_pi_pow {O : Type} [CommRing O] {n : ℕ} [NeZero n] {M : Type}
     ⟨(i, k, m), Finset.mem_product.2 ⟨Finset.mem_univ _, Finset.mem_product.2 ⟨hk, hm⟩⟩, rfl⟩))
 
 /- English proof (translation)
-Establish `hfl` using `isFiniteLength_quotient_span_singleton O (mem_nonZeroDivisors_of_ne_zero hc)`. Rewrite `hfl`, the goal using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `ht : Module.IsTorsionBySet O M (Ideal.span {c})` using `(Module.isTorsionBySet_span_singleton_iff c).mpr (fun x => h x)`. Use `letI := ht.module`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower O (O ⧸ Ideal.span {c}) M := ht.isScalarTower`. Use `haveI : IsArtinianRing (O ⧸ Ideal.span {c}) := isArtinian_of_tower O hfl.2`. Use `haveI : Module.Finite (O ⧸ Ideal.span {c}) M := Module.Finite.of_restrictScalars_finite O _ _`. Conclude with `isArtinian_of_surjective_algebraMap (R := O ⧸ Ideal.span {c}) Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem finiteLength_of_killed {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {M : Type} [AddCommGroup M] [Module O M] [Module.Finite O M] {c : O}
@@ -97,13 +97,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : Module.Finite (LetA O n) ↥(W.N T₂) := Module.Finite.iff_fg.mpr (W.N_fg T₂)`. Establish `hπ' : ∀ m : cokN W π, ((letπ : LetA O n) ^ c) • m = 0`. Introduce `m`. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, e⟩` from `hπ z hz`. Conclude with `⟨y, hy, e⟩`. Use `haveI := finite_of_pi_pow (O := O) c hπ'`. Establish `hl' : ∀ m : cokN W π, ((p : ℕ) : O) ^ c • m = 0`. Introduce `m`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨y, hy, e⟩` from `hl z hz`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `W.map π y = ((p : ℕ) : O) ^ c • z`.
-
-Rewrite using `[e, ← algebraMap_smul (LetA O n) (((p : ℕ) : O) ^ c) z, map_pow, map_natCast]`. Conclude with `lt_top_iff_ne_top.2 (Module.length_ne_top_iff.2 (finiteLength_of_killed (pow_ne_zero c hp0) hl'))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_cokN_lt_top [NeZero n] [IsDomain O] [IsDiscreteValuationRing O]
     (W : LocWach PD LL O v n) {T₁ T₂ : LocLat G Qp LL O} (π : LatHom T₁.L T₂.L) (p c : ℕ)
@@ -134,13 +132,13 @@ end Generic
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h`. Take `⟨h1, h2⟩` from `GlobalTheory.NL.Isog.saturated_and_isogeny_invariant D HW F l K s LL h`. Use `⟨h1, h2, fun T₀ T₁ T₂ ι π c0 c1 c2 hses => ?_⟩` and prove the remaining obligations. Establish `hex : Function.Injective (((HW l).W K s LL h).map ι) ∧ Function.Exact (((HW l).W K s LL h).map ι) (((HW l).W K s LL h).map π) ∧ Function.Surjective (((HW l).W K s LL h).map π)` using `GlobalTheory.EtaleExact.DD_exact D HW F (GlobalTheory.Decompl.fontaine_and_decompletion D HW F) l K s LL h T₀ T₁ T₂ ι π hses`. Establish `h4` using `GlobalTheory.T.mem_wachN_of_map_mem_saturated D HW F l K s LL h T₀ T₁ T₂ ι π c0 c1 c2 hses`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.wachN_cokernel_killed_by_power D HW F Cm l K s LL h T₀ T₁ T₂ ι π c0 c1 c2 hses`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Use `⟨fun x _ hx => ?_, fun y hy hy0 => ?_, fun z hz => ?_, h4, ?_⟩` and prove the remaining obligations. Conclude with `hex.1 (hx.trans (map_zero _).symm)`. Take `⟨x, hx⟩` from `(hex.2.1 y).1 hy0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, x, h4 x (hx ▸ hy), by rw [hx, pow_zero, one_smul]⟩`. Take `⟨⟨y, hy, e⟩, -⟩` from `hc z hz`. Conclude with `⟨c, y, hy, by rw [e, hp]⟩`. Use `haveI := ((D.loc l).PD K).finK₀ haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Take `⟨_, -, -⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0`. Introduce `h0`. Use `congrArg (fun x : ↥(OL LL) => (x : ↥LL.1)) h0` as an intermediate fact. Simplify using `[(Fact.out : l.Prime).ne_zero] at this`. Conclude with `length_cokN_lt_top _ π l c hl0 (fun z hz => (hc z hz).1) (fun z hz => (hc z hz).2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exactness_of_N : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F), P6 D HW F := by

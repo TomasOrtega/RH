@@ -14,20 +14,20 @@ namespace GlobalTheory.ThetaTranslateLocal
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
 /- English proof (translation)
-Simplify using `[cov]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cov {U : Set E} {P : Pt E g} : P ∈ cov U g ↔ P.1 ∈ U := by
   simp [cov]
 
 /- English proof (translation)
-Rewrite `hP`, the goal using `[mem_cov]`. Conclude with `hP`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transl_mem_cov {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {x : Fl g} {P : Pt E g}
     (hP : P ∈ cov U g) : transl τ x P ∈ cov U g := by
   rw [mem_cov] at hP ⊢; exact hP
 
 /- English proof (translation)
-Use `⟨h.1.mul h'.1, fun P hP => mul_ne_zero (h.2.1 P hP) (h'.2.1 P hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `e1` using `h.2.2 l hl P hP`. Establish `e2` using `h'.2.2 l hl P hP`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem iso_comp {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
     {j j' j'' : Fl g → Pt E g → ℂ} {φ φ' : Pt E g → ℂ}
@@ -42,9 +42,9 @@ theorem iso_comp {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submod
     _ = j'' l P * (φ P * φ' P) := by rw [e2]; ring
 
 /- English proof (translation)
-Use `⟨h.1.inv h.2.1, fun P hP => inv_ne_zero (h.2.1 P hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `e` using `h.2.2 l hl P hP`. Establish `h1` using `h.2.1 _ (transl_mem_cov (x := l) (τ := τ) hP)`. Establish `h2` using `h.2.1 P hP`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `-e`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem iso_inv {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
     {j j' : Fl g → Pt E g → ℂ} {φ : Pt E g → ℂ}
@@ -57,7 +57,7 @@ theorem iso_inv {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodu
   linear_combination -e
 
 /- English proof (translation)
-Establish `hc : cov U g ⊆ cov B g` using `fun P hP => mem_cov.2 (hUB (mem_cov.1 hP))`. Conclude with `⟨h.1.mono hc, fun P hP => h.2.1 P (hc hP), fun l hl P hP => h.2.2 l hl P (hc hP)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem iso_mono {U B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
     {j j' : Fl g → Pt E g → ℂ} {φ : Pt E g → ℂ} (hUB : U ⊆ B)
@@ -66,7 +66,7 @@ theorem iso_mono {U B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Subm
   exact ⟨h.1.mono hc, fun P hP => h.2.1 P (hc hP), fun l hl P hP => h.2.2 l hl P (hc hP)⟩
 
 /- English proof (translation)
-Use `⟨h.1, h.2.1, fun l hl P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[← e l hl P hP, ← e' l hl P hP]`. Conclude with `h.2.2 l hl P hP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_congr {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
     {j₁ j₂ j₁' j₂' : Fl g → Pt E g → ℂ} {φ : Pt E g → ℂ}
@@ -77,7 +77,7 @@ theorem iso_congr {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submo
   exact h.2.2 l hl P hP
 
 /- English proof (translation)
-Use `⟨h.1, h.2.1, fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `e` using `h.2.2 l hl P hP`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem iso_mul {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
     {j j' : Fl g → Pt E g → ℂ} {φ : Pt E g → ℂ} (k : Fl g → Pt E g → ℂ)
@@ -89,7 +89,7 @@ theorem iso_mul {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodu
     _ = _ := by rw [e]; ring
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [per, Pi.neg_apply, Pi.add_apply, Matrix.vecMul, dotProduct, Complex.ofReal_neg, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem per_neg (τ : Matrix (Fin g) (Fin g) ℂ) (l : Fl g) : per τ (-l) = -per τ l := by
   ext i
@@ -98,16 +98,16 @@ theorem per_neg (τ : Matrix (Fin g) (Fin g) ℂ) (l : Fl g) : per τ (-l) = -pe
   ring
 
 /- English proof (translation)
-Simplify using `[mulN, transl, per_neg, neg_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulN_neg_one_transl (τ : E → Matrix (Fin g) (Fin g) ℂ) (l : Fl g) (P : Pt E g) :
     mulN (-1) (transl τ l P) = transl τ ((-1 : ℤ) • l) (mulN (-1) P) := by
   simp [mulN, transl, per_neg, neg_add]
 
 /- English proof (translation)
-Establish `hm : ∀ P ∈ cov U g, mulN (-1) P ∈ cov U g` using `fun P hP => mem_cov.2 (mem_cov.1 hP)`. Use `⟨?_, fun P hP => h.2.1 _ (hm P hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `hd : Differentiable ℂ (mulN (E` using `E) (g := g) (-1)) := by`. Unfold `mulN`. Use `fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `h.1.comp hd.differentiableOn hm`. Simplify using `only [mulPullFactor]`. Rewrite using `[mulN_neg_one_transl]`. Conclude with `h.2.2 _ (Submodule.smul_mem _ _ hl) _ (hm P hP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_negPull {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     {j j' : Fl g → Pt E g → ℂ} {φ : Pt E g → ℂ}
@@ -130,7 +130,7 @@ namespace GlobalTheory.ThetaTranslateLocal
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (fun i => (((-l) (Sum.inl i) : ℝ) : ℂ)) = -fun i => ((l (Sum.inl i) : ℝ) : ℂ)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[neg_one_smul, neg_one_smul]`. Simplify using `only [thetaExp, h1, Matrix.neg_vecMul, neg_dotProduct, dotProduct_neg, neg_neg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaExp_neg (τ : Matrix (Fin g) (Fin g) ℂ) (l : Fl g) (z : Fin g → ℂ) :
     thetaExp τ ((-1 : ℤ) • l) ((-1 : ℤ) • z) = thetaExp τ l z := by
@@ -140,15 +140,13 @@ theorem thetaExp_neg (τ : Matrix (Fin g) (Fin g) ℂ) (l : Fl g) (z : Fin g →
   simp only [thetaExp, h1, Matrix.neg_vecMul, neg_dotProduct, dotProduct_neg, neg_neg]
 
 /- English proof (translation)
-Introduce `g E _ _ U τ hτ x`. Use `⟨?_, fun _ _ => Complex.exp_ne_zero _, fun l hl P hP => ?_⟩` and prove the remaining obligations. Apply `Differentiable.differentiableOn` to reduce the goal to its premises. Unfold `dotProduct`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hsym` using `(hτ.2.2 P.1 (mem_cov.1 hP)).1`. Simplify using `only [translPullFactor, transl]`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [thetaExp, per, dotProduct_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set px : Fin g → ℂ := fun i => (x (Sum.inl i) : ℂ)`. Use `set qx : Fin g → ℂ := fun i => (x (Sum.inr i) : ℂ)`. Use `set pl : Fin g → ℂ := fun i => (l (Sum.inl i) : ℂ)`. Use `set ql : Fin g → ℂ := fun i => (l (Sum.inr i) : ℂ)`. Establish `key : (pl ᵥ* τ P.1) ⬝ᵥ px = (px ᵥ* τ P.1) ⬝ᵥ pl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, hsym.eq, dotProduct_comm]`. Establish `hr : (riem x l : ℂ) = qx ⬝ᵥ pl - px ⬝ᵥ ql`. Simplify using `[riem, dotProduct, Finset.sum_sub_distrib, qx, pl, px, ql]`. Establish `hpx : px ⬝ᵥ (pl ᵥ* τ P.1) = (pl ᵥ* τ P.1) ⬝ᵥ px` using `dotProduct_comm _ _`. Establish `hpl : pl ⬝ᵥ (px ᵥ* τ P.1) = (px ᵥ* τ P.1) ⬝ᵥ pl` using `dotProduct_comm _ _`.
-
-Establish `hqx : pl ⬝ᵥ qx = qx ⬝ᵥ pl` using `dotProduct_comm _ _`. Rewrite using `[hr]`. Take the linear combination `(2 * π * Complex.I) * (hpx - hpl + key - hqx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem theta_translate_iso_char : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap U τ → ∀ x : Fl g, IsBundleIso U τ (stdLat g) (translPullFactor τ x (fun l P => Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2))) (fun l P => Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2) * Complex.exp (2 * π * Complex.I * (-(riem x l : ℂ)))) (fun P => Complex.exp (2 * π * Complex.I * ((fun i => (x (Sum.inl i) : ℂ)) ⬝ᵥ P.2))) := by
   intro g E _ _ U τ hτ x
@@ -176,13 +174,13 @@ theorem theta_translate_iso_char : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup 
     linear_combination (2 * π * Complex.I) * (hpx - hpl + key - hqx)
 
 /- English proof (translation)
-Introduce `g E _ _ B τ hτ j hj hpol ι hι`. Take `⟨hθf, hθp⟩` from `theta_factor hτ`. Use `⟨⟨fun l hl => ⟨by simp only [div_eq_mul_inv]; exact (hj.1 l hl).1.mul ((hθf.1 l hl).1.inv (hθf.1 l hl).2), fun P hP => div_ne_zero ((hj.1 l hl).2 P hP) ((hθf.1 l hl).2 P hP)⟩, fun l hl l' hl' P hP => ?_⟩, fun b hb => ?_, ?_⟩` and prove the remaining obligations. Establish `e1` using `hj.2 l hl l' hl' P hP`. Establish `e2` using `hθf.2 l hl l' hl' P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at e2 ⊢`. Rewrite using `[e1, e2, mul_div_mul_comm]`. Take `⟨f, hf, hrel⟩` from `hpol b hb`. Take `⟨fθ, hfθ, hrelθ⟩` from `hθp b hb`. Use `⟨fun l z => f l z - fθ l z, fun l hl => ⟨(hf l hl).1.sub (hfθ l hl).1, fun z => ?_⟩, fun l hl l' hl' z => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `(hfθ l hl).2 z`. Simplify using `only at e`. Rewrite using `[(hf l hl).2 z, e, ← Complex.exp_sub]`. Put the polynomial expressions in normal form. Take the linear combination `hrel l hl l' hl' z - hrelθ l hl l' hl' z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h` using `iso_mul (fun l P => (Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2))⁻¹) hι`. Use `iso_congr (fun l _ P _ => ?_) (fun l _ P _ => ?_) h` and prove the remaining obligations. Simplify using `only [mulPullFactor]`. Rewrite using `[show (mulN (-1) P).1 = P.1 from rfl, show (mulN (-1) P).2 = (-1 : ℤ) • P.2 from rfl, thetaExp_neg, div_eq_mul_inv, mul_comm]`. Simplify using `only [div_eq_mul_inv, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem quotient_by_theta : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ (j : Fl g → Pt E g → ℂ), IsFactor B τ (stdLat g) j → InducesPolarisation B τ (stdLat g) j → ∀ ι : Pt E g → ℂ, IsBundleIso B τ (stdLat g) (mulPullFactor (-1) j) j ι → IsFactor B τ (stdLat g) (fun l P => j l P / Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2)) ∧ (∀ b ∈ B, ∃ f : Fl g → (Fin g → ℂ) → ℂ, (∀ l ∈ stdLat g, Differentiable ℂ (f l) ∧ ∀ z, j l (b, z) / Complex.exp (2 * π * Complex.I * thetaExp (τ b) l z) = Complex.exp (2 * π * Complex.I * f l z)) ∧ ∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ z, f l (z + per (τ b) l') + f l' z - f l' (z + per (τ b) l) - f l z = 0) ∧ IsBundleIso B τ (stdLat g) (mulPullFactor (-1) (fun l P => j l P / Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2))) (fun l P => j l P / Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2)) ι := by
   intro g E _ _ B τ hτ j hj hpol ι hι
@@ -217,9 +215,9 @@ namespace GlobalTheory.ThetaTranslateLocal
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
 /- English proof (translation)
-Introduce `l hl b hb`. Establish `h0 : s 0 b = 0`. Use `hs 0 M.zero_mem 0 M.zero_mem b hb` as an intermediate fact. Simplify using `only [add_zero] at this`. Take the linear combination `-this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `hs l hl ((-1 : ℤ) • l) (M.smul_mem _ hl) b hb` as an intermediate fact. Rewrite `this` using `[neg_one_smul, add_neg_cancel, h0]`. Rewrite using `[neg_one_smul]`. Take the linear combination `-this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem add_zero_of_add {M : Submodule ℤ (Fl g)} {U : Set E} {s : Fl g → E → ℂ}
     (hs : ∀ l ∈ M, ∀ l' ∈ M, ∀ b ∈ U, s (l + l') b = s l b + s l' b) :
@@ -235,19 +233,19 @@ theorem add_zero_of_add {M : Submodule ℤ (Fl g)} {U : Set E} {s : Fl g → E �
   linear_combination -this
 
 /- English proof (translation)
-Introduce `g E _ _ _ B τ hτ j hj ⟨ι, hι⟩ hpol b₀ hb₀`. Take `⟨hu, hdeg, hιu⟩` from `quotient_by_theta hτ j hj hpol ι hι`. Take `⟨U, hUo, hb₀U, hUB, hUc, s, hsc, hsadd, φ₁, hφ₁⟩` from `GlobalTheory.T.factor_of_automorphy_logarithm hτ _ hu hdeg b₀ hb₀`. Establish `hτU : IsPeriodMap U τ` using `⟨hUo, fun i k => (hτ.2.1 i k).mono hUB, fun b hb => hτ.2.2 b (hUB hb)⟩`. Establish `hneg` using `add_zero_of_add hsadd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `iso_congr (j₂ := fun l P => Complex.exp (2 * π * Complex.I * (-s l P.1))) (fun l hl P hP => by`. Simplify using `only [mulPullFactor, mulN]`. Rewrite using `[hneg l hl P.1 (mem_cov.1 hP)]) (fun _ _ _ _ => rfl) (iso_negPull hφ₁)`. Establish `hψ` using `iso_comp h1 (iso_comp (iso_mono hUB hιu) (iso_inv hφ₁))`. Use `set ψ := fun P => φ₁ (mulN (-1) P) * (ι P * (φ₁ P)⁻¹) with hψdef`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ∀ l ∈ stdLat g, ∀ P ∈ cov U g, ψ (transl τ l P) = Complex.exp (4 * π * Complex.I * s l P.1) * ψ P`. Introduce `l hl P hP`. Establish `e` using `hψ.2.2 l hl P hP`. Establish `e2 : Complex.exp (4 * π * Complex.I * s l P.1) = Complex.exp (2 * π * Complex.I * s l P.1) * Complex.exp (2 * π * Complex.I * s l P.1)`. Rewrite using `[← Complex.exp_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Establish `e3 : Complex.exp (2 * π * Complex.I * -s l P.1) * Complex.exp (2 * π * Complex.I * s l P.1) = 1`. Rewrite using `[← Complex.exp_add]`. Put the polynomial expressions in normal form. Conclude with `Complex.exp_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨a, ha, hψa⟩` from `GlobalTheory.T.theta_quasi_periodic_normal_form hτU (fun l b => Complex.exp (4 * π * Complex.I * s l b)) ψ hψ.1 hψ.2.1 hq`. Establish `hexp : ∀ l ∈ stdLat g, ∀ b ∈ U, Complex.exp (a b ⬝ᵥ per (τ b) l) = Complex.exp (4 * π * Complex.I * s l b)`. Introduce `l hl b hb`. Establish `hP : ((b, 0) : Pt E g) ∈ cov U g` using `mem_cov.2 hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hq l hl _ hP`. Establish `e2` using `hψa _ (transl_mem_cov (τ := τ) (x := l) hP)`. Establish `hne` using `hψ.2.1 _ hP`. Simplify using `only [transl, zero_add] at e1 e2`. Rewrite `e1` using `[e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_left_cancel₀ hne (by linear_combination e1)`. Take `⟨x, hx⟩` from `GlobalTheory.T.additive_period_exponent_linear hτU hUc s a hsc hsadd ha hexp`. Use `⟨U, hUo, hb₀U, hUB, x, _, iso_comp (theta_translate_iso_char hτU x) (iso_comp (iso_mul _ hx) (iso_congr (fun _ _ _ _ => rfl) ?_ (iso_mul (fun l P => Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2)) hφ₁)))⟩` and prove the remaining obligations. Introduce `l hl P hP`. Clear denominators, using `[Complex.exp_ne_zero]` for the nonvanishing conditions.
+Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_local_theta_translate_iso : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ (j : Fl g → Pt E g → ℂ), IsFactor B τ (stdLat g) j → (∃ ι, IsBundleIso B τ (stdLat g) (mulPullFactor (-1) j) j ι) → InducesPolarisation B τ (stdLat g) j → ∀ b₀ ∈ B, ∃ U : Set E, IsOpen U ∧ b₀ ∈ U ∧ U ⊆ B ∧ ∃ (x : Fl g) (φ : Pt E g → ℂ), IsBundleIso U τ (stdLat g) (translPullFactor τ x (fun l P => Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2))) j φ := by
   intro g E _ _ _ B τ hτ j hj ⟨ι, hι⟩ hpol b₀ hb₀

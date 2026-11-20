@@ -13,13 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CuspGeo
 
 /- English proof (translation)
-Introduce `D V φ hφ hcusp r C₀ hC g e he`. Use `set 𝔉 := GlobalTheory.Cusp.frameFlag hC with h𝔉`. Establish `hc : GlobalTheory.Cusp.Cocompact (GQ V) (GlobalTheory.Cusp.NA 𝔉)` using `GlobalTheory.Cusp.cocompact_single _`. Establish `hP` using `hc.isProbabilityMeasure`. Establish `h0 : GlobalTheory.Cusp.constTerm 𝔉 φ g = 0` using `congrFun ((GlobalTheory.Cusp.isCuspFun_iff hφ.left).1 hcusp _ _) g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `hc.integrable hφ.left hφ.cont g`. Establish `hmem : ∀ n : GlobalTheory.Cusp.NA 𝔉, (n : GA D V) ∈ NI V C₀` using `fun n => by`. Conclude with `(SetLike.ext_iff.1 (GlobalTheory.Cusp.NA_frameFlag hC) _).1 n.2`. Establish `key : φ g = ∫ q, (φ g - φ ((q.out : GlobalTheory.Cusp.NA 𝔉) * g)) ∂GlobalTheory.Cusp.probMeasure (GQ V) (GlobalTheory.Cusp.NA 𝔉)`. Rewrite using `[integral_sub (integrable_const _) hI]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0' : ∫ q, φ ((q.out : GlobalTheory.Cusp.NA 𝔉) * g) ∂GlobalTheory.Cusp.probMeasure (GQ V) (GlobalTheory.Cusp.NA 𝔉) = 0` using `h0`. Rewrite using `[h0', integral_const]`. Simplify using the standard rewrite rules. Rewrite using `[key]`. Establish `hb` using `norm_integral_le_of_norm_le_const (μ := GlobalTheory.Cusp.probMeasure (GQ V) (GlobalTheory.Cusp.NA 𝔉)) (f := fun q => φ g - φ ((q.out : GlobalTheory.Cusp.NA 𝔉) * g)) (C := e) (.of_forall fun q => by rw [norm_sub_rev]; exact he _ (hmem _))`.
-
-Simplify using `using hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_le_of_unipRad_variation : ∀ (D : D7) (V : HSp D) (φ : GA D V → ℂ), IsAutFun V φ → IsCuspFun V φ →
     ∀ (r : ℕ) (C₀ : Matrix (Fin V.rank) (Fin r) D.host.E), IsIsoFrame V C₀ → ∀ (g : GA D V) (e : ℝ),

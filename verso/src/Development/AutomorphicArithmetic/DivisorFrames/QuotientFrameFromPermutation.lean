@@ -5,13 +5,13 @@ open GlobalTheory.QCoh (pullbackSections)
 open GlobalTheory.Twist (resM)
 
 /- English proof (translation)
-Use `Module.Free.of_basis c` as an intermediate fact. Use `Module.Finite.of_basis c` as an intermediate fact. Establish `: Module.FinitePresentation R M` using `Module.finitePresentation_of_projective R M`. Take `⟨κ, a, b, hb⟩` from `Module.exists_basis_of_span_of_flat (R := R) v hv`. Set `ε` to `c.indexEquiv b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨fun k => a (ε k), fun i j h => ?_, ?_⟩` and prove the remaining obligations. Apply `ε.injective` to reduce the goal to its premises. Apply `b.injective` to reduce the goal to its premises. Rewrite using `[hb, hb]`. Conclude with `congrArg v h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.Bijective, ← linearIndependent_iff_injective_fintypeLinearCombination, ← LinearMap.range_eq_top, Fintype.range_linearCombination]`. Establish `e : (fun k => v (a (ε k))) = b.reindex ε.symm`. Use function extensionality and compare the values at `k`. Simplify using `[hb]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(b.reindex ε.symm).linearIndependent, (b.reindex ε.symm).span_eq⟩`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_basis_subfamily_local {R M ι : Type} [CommRing R] [IsLocalRing R] [AddCommGroup M]
     [Module R M] {r : ℕ} (c : Module.Basis (Fin r) R M) (v : ι → M)
@@ -37,13 +37,13 @@ private theorem UpperTheory.exists_basis_subfamily_local {R M ι : Type} [CommRi
     exact ⟨(b.reindex ε.symm).linearIndependent, (b.reindex ε.symm).span_eq⟩
 
 /- English proof (translation)
-Introduce `X E Q p m r U e x hp he hQ hx`. Take `⟨V, c, -, hxV, hle, hc⟩` from `hQ.exists_affine hx`. Establish `hspan : Submodule.span (X.presheaf.stalk x) (Set.range fun i => (Q.presheaf.germ U x hx (p.app U (e i)) : (Q.presheaf.stalk x :))) = ⊤`. Establish `h1` using `(he.stalkBasis x hx).span_eq`. Establish `h2` using `congrArg (Submodule.map (QCoh.stalkLinear p x)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Submodule.map_span, Submodule.map_top, LinearMap.range_eq_top.2 (QCoh.stalkLinear_surjective p x), ← Set.range_comp]`. Establish `h3 : (⇑(QCoh.stalkLinear p x) ∘ ⇑(he.stalkBasis x hx)) = fun i => (Q.presheaf.germ U x hx (p.app U (e i)) : (Q.presheaf.stalk x :))`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, he.stalkBasis_apply, QCoh.stalkLinear_germ]`. Rewrite `h2` using `[h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Take `⟨t, ht, hb⟩` from `UpperTheory.exists_basis_subfamily_local (hc.stalkBasis x hxV) _ hspan`. Take `⟨σ, hσ⟩` from `Equiv.Perm.exists_extending_pair (f := (Sum.inr : Fin r → Fin m ⊕ Fin r)) (g := t) Sum.inr_injective ht`. Take `⟨W, hW, hxW, hv⟩` from `Ker.exists_isFrame_of_bijective_stalk hc (fun k => resM Q hle (p.app U (e (t k)))) hxV (by`. Simplify using `only [Twist.germ_resM]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb)`. Use `⟨σ, W, hW.trans hle, hxW, ?_⟩` and prove the remaining obligations. Simplify using `only [Twist.resM_resM] at hv`. Simplify using `only [hσ]`. Conclude with `hv`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.quotient_frame_from_permutation :
     ∀ (X : Scheme.{0}) (E Q : X.Modules) (p : E ⟶ Q) (m r : ℕ) (U : X.Opens) (e : Fin m ⊕ Fin r → Γ(E, U)) (x : X),

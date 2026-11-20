@@ -12,7 +12,7 @@ noncomputable section
 namespace PointDegreeComplexPositive
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ E` using `inferInstance`. Establish `: Algebra.IsAlgebraic ℚ E` using `Algebra.IsAlgebraic.of_finite ℚ E`. Establish `: Nonempty (E →ₐ[ℚ] ℂ)` using `⟨IsAlgClosed.lift⟩`. Conclude with `Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_algHom_pos {K' : Type} [Field K'] [NumberField K'] (E : IntermediateField ℚ K') :
     0 < Nat.card (E →ₐ[ℚ] ℂ) := by
@@ -24,7 +24,7 @@ theorem card_algHom_pos {K' : Type} [Field K'] [NumberField K'] (E : Intermediat
 end PointDegreeComplexPositive
 
 /- English proof (translation)
-Introduce `T _ K' _ _ y hP`. Rewrite using `[IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.full Unit (fun _ => T) K' y hP]`. Conclude with `PointDegreeComplexPositive.card_algHom_pos _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PointDegCPos.proof : PointDegCPos.Statement := by
   intro T _ K' _ _ y hP

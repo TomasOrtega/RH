@@ -23,22 +23,22 @@ def coper (y : Frame X.Ψ r) (v : Fin r → E) : X.Ψ × Fin r → ℂ := fun p 
   else -(X.c p.1 * hermC p.1.1 X.Gm (FD.col (mat y p.1) p.2) (Data.emb p.1.1 v))
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem coper_of_lt (y : Frame X.Ψ r) (v : Fin r → E) (τ : X.Ψ) {a : Fin r} (h : (a : ℕ) < X.p0) :
     coper X y v (τ, a) = X.c τ * ((mat y τ)⁻¹ *ᵥ Data.emb τ.1 v) a := if_pos h
 
 /- English proof (translation)
-The claim follows from `if_neg (not_lt.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem coper_of_le (y : Frame X.Ψ r) (v : Fin r → E) (τ : X.Ψ) {a : Fin r} (h : X.p0 ≤ (a : ℕ)) :
     coper X y v (τ, a) = -(X.c τ * hermC τ.1 X.Gm (FD.col (mat y τ) a) (Data.emb τ.1 v)) :=
   if_neg (not_lt.2 h)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h : Data.emb p.1.1 (u + v) = Data.emb p.1.1 u + Data.emb p.1.1 v`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Simplify using `only [coper, Pi.add_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[mulVec_add, Pi.add_apply, mul_add]`. Simplify using `[hermC, mul_add, Finset.sum_add_distrib, add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coper_add (y : Frame X.Ψ r) (u v : Fin r → E) :
     coper X y (u + v) = coper X y u + coper X y v := by
@@ -51,9 +51,9 @@ theorem coper_add (y : Frame X.Ψ r) (u v : Fin r → E) :
   · simp [hermC, mul_add, Finset.sum_add_distrib, add_comm]
 
 /- English proof (translation)
-Establish `h : Data.emb p.1.1 (α • v) = p.1.1 α • Data.emb p.1.1 v`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Simplify using `only [coper, rowType, h]`. Use `split_ifs`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_smul, Pi.smul_apply, smul_eq_mul, ComplexEmbedding.conjugate_coe_eq, conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_neg, neg_inj]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coper_smul (y : Frame X.Ψ r) (α : E) (v : Fin r → E) (p : X.Ψ × Fin r) :
     coper X y (α • v) p = conj (rowType X p α) * coper X y v p := by
@@ -70,9 +70,9 @@ def coperHom (y : Frame X.Ψ r) : (Fin r → E) →+ (X.Ψ × Fin r → ℂ) :=
   AddMonoidHom.mk' (coper X y) (coper_add X y)
 
 /- English proof (translation)
-Establish `hu : u = A *ᵥ (A⁻¹ *ᵥ u)`. Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ hA.isUnit, one_mulVec]`. Generalize the expression as in `A⁻¹ *ᵥ u = w at hu`. Simplify using `only [hu, hermC, FD.col, mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_congr rfl fun _ _ => Finset.sum_comm, Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem hermC_eq_sum_col (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {A : Matrix (Fin r) (Fin r) ℂ}
     (hA : A.det ≠ 0) (u v : Fin r → ℂ) :
@@ -88,11 +88,11 @@ theorem hermC_eq_sum_col (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {A : 
 variable {X} in
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun t : ℝ => (t : ℂ)) (EF_eq_sum X u v)`. Simplify using `only [ofReal_ratCast, ofReal_sum] at h`. Rewrite using `[h, dotProduct, dotProduct, ← Finset.sum_sub_distrib, Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1 : ∑ a, (coper X y u (τ, a) * per X y v (τ, a) - per X y u (τ, a) * coper X y v (τ, a)) = X.c τ * (hermC τ.1 X.Gm (Data.emb τ.1 u) (Data.emb τ.1 v) - hermC τ.1 X.Gm (Data.emb τ.1 v) (Data.emb τ.1 u))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hermC_eq_sum_col _ _ (hy τ), hermC_eq_sum_col _ _ (hy τ) (Data.emb τ.1 v), ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [coper, per]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[h1, ← hermC_conj τ.1 X.Gm_herm (Data.emb τ.1 u), sub_conj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `(X.c τ * ((hermC τ.1 X.Gm (Data.emb τ.1 u) (Data.emb τ.1 v)).im : ℂ)) * -I_mul_I`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem EF_eq_coper {y : Frame X.Ψ r} (hy : ∀ τ, (mat y τ).det ≠ 0) (u v : Fin r → E) :
     ((EF X u v : ℚ) : ℂ) = I / 2 * (coper X y u ⬝ᵥ per X y v - per X y u ⬝ᵥ coper X y v) := by
@@ -124,9 +124,9 @@ def actMat (α : 𝓞 E) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℂ :=
   Matrix.of fun s t => (bas.symm (α • bas (Pi.single t 1)) s : ℂ)
 
 /- English proof (translation)
-Establish `hm : m = ∑ j, m j • Pi.single j (1 : ℤ)`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply]`. Use function extensionality and compare the values at `i`. Use `conv_rhs => rw [hm, map_sum, AddSubmonoidClass.coe_finset_sum, map_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zsmul, AddSubgroupClass.coe_zsmul]`. Simplify using `[cxMat, mulVec, dotProduct, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cxMat_mulVec_int (f : (Fin r → E) →+ (X.Ψ × Fin r → ℂ)) (m : Fin g ⊕ Fin g → ℤ) :
     cxMat X bas idx f *ᵥ (fun s => (m s : ℂ)) = f (bas m) ∘ idx := by
@@ -138,14 +138,14 @@ theorem cxMat_mulVec_int (f : (Fin r → E) →+ (X.Ψ × Fin r → ℂ)) (m : F
   simp [cxMat, mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[actMat, mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem actMat_mulVec_star (α : 𝓞 E) (u : Fin g ⊕ Fin g → ℂ) :
     actMat X bas α *ᵥ star u = star (actMat X bas α *ᵥ u) := by
   funext i; simp [actMat, mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `i t`. Establish `h` using `congrFun (cxMat_mulVec_int X bas idx f (bas.symm (α • bas (Pi.single t 1)))) i`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[diagonal_mul]`. Conclude with `h.trans (hf _ _)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cxMat_mul_actMat (f : (Fin r → E) →+ (X.Ψ × Fin r → ℂ)) (α : 𝓞 E) (χ : X.Ψ × Fin r → ℂ)
     (hf : ∀ v p, f ((α : E) • v) p = χ p * f v p) :
@@ -166,21 +166,21 @@ def coMat (s : Fin g → Fin g ⊕ Fin g) (y : Frame X.Ψ r) : Matrix (Fin g) (F
   Matrix.of fun i k => coper X y (bas (Pi.single (s k) 1)) (idx i)
 
 /- English proof (translation)
-The claim follows from `cxMat_mulVec_int X bas idx (perLin X y).toAddMonoidHom m`.
+A detailed English derivation is pending.
 -/
 theorem perCx_int (y : Frame X.Ψ r) (m : Fin g ⊕ Fin g → ℤ) :
     perCx X bas idx y (fun s => (m s : ℂ)) = per X y (bas m) ∘ idx :=
   cxMat_mulVec_int X bas idx (perLin X y).toAddMonoidHom m
 
 /- English proof (translation)
-The claim follows from `cxMat_mulVec_int X bas idx (coperHom X y) m`.
+A detailed English derivation is pending.
 -/
 theorem coperCx_int (y : Frame X.Ψ r) (m : Fin g ⊕ Fin g → ℤ) :
     coperCx X bas idx y (fun s => (m s : ℂ)) = coper X y (bas m) ∘ idx :=
   cxMat_mulVec_int X bas idx (coperHom X y) m
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[perCx, cxMat, mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem perCx_apply (y : Frame X.Ψ r) (u : Fin g ⊕ Fin g → ℂ) :
     perCx X bas idx y u = perMat X bas idx Sum.inl y *ᵥ (u ∘ Sum.inl) +
@@ -188,7 +188,7 @@ theorem perCx_apply (y : Frame X.Ψ r) (u : Fin g ⊕ Fin g → ℂ) :
   funext i; simp [perCx, cxMat, mulVec, dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[coperCx, cxMat, coMat, mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coperCx_apply (y : Frame X.Ψ r) (u : Fin g ⊕ Fin g → ℂ) :
     coperCx X bas idx y u = coMat X bas idx Sum.inl y *ᵥ (u ∘ Sum.inl) +
@@ -196,7 +196,7 @@ theorem coperCx_apply (y : Frame X.Ψ r) (u : Fin g ⊕ Fin g → ℂ) :
   funext i; simp [coperCx, cxMat, coMat, mulVec, dotProduct]
 
 /- English proof (translation)
-Simplify using `only [perCx, mulVecLin_apply, mulVec_mulVec]`. Conclude with `congrArg (· *ᵥ u) (cxMat_mul_actMat X bas idx (perLin X y).toAddMonoidHom α (fun p => rowType X p α) (per_smul X y α))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perCx_actMat (y : Frame X.Ψ r) (α : 𝓞 E) (u : Fin g ⊕ Fin g → ℂ) :
     perCx X bas idx y (actMat X bas α *ᵥ u) =
@@ -206,7 +206,7 @@ theorem perCx_actMat (y : Frame X.Ψ r) (α : 𝓞 E) (u : Fin g ⊕ Fin g → �
     (fun p => rowType X p α) (per_smul X y α))
 
 /- English proof (translation)
-Simplify using `only [coperCx, mulVecLin_apply, mulVec_mulVec]`. Conclude with `congrArg (· *ᵥ u) (cxMat_mul_actMat X bas idx (coperHom X y) α (fun p => conj (rowType X p α)) (coper_smul X y α))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coperCx_actMat (y : Frame X.Ψ r) (α : 𝓞 E) (u : Fin g ⊕ Fin g → ℂ) :
     coperCx X bas idx y (actMat X bas α *ᵥ u) =
@@ -225,7 +225,7 @@ def splitMat (y : Frame X.Ψ r) : Matrix (Fin g) (Fin g) ℂ :=
   coMat X bas idx Sum.inl y * hMat X bas idx y
 
 /- English proof (translation)
-Simplify using `[coperCx_apply, secLin, secL_apply, splitMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coperCx_secLin (y : Frame X.Ψ r) (w : Fin g → ℂ) :
     coperCx X bas idx y (secLin X bas idx y w) = splitMat X bas idx y *ᵥ w := by
@@ -235,9 +235,9 @@ variable {X bas} (hs : IsSympl X bas)
 include hs
 
 /- English proof (translation)
-Set `D : LinearMap.BilinForm ℂ (Fin g → ℂ)` to `dotProductBilin ℂ ℂ`. Establish `h` using `eq_omegaCx_of_intCast ((I / 2) • (D.compl₁₂ (perCx X bas idx y) (coperCx X bas idx y) - D.compl₁₂ (coperCx X bas idx y) (perCx X bas idx y))) fun a b => by`. Establish `h1` using `EF_eq_coper hy (bas a) (bas b)`. Rewrite `h1` using `[hs]`. Simplify using `only [LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.compl₁₂_apply, perCx_int, coperCx_int, D, dotProductBilin_apply_apply, smul_eq_mul, comp_equiv_dotProduct_comp_equiv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at h1`. Take the linear combination `h1`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem omegaCx_eq_coper {y : Frame X.Ψ r} (hy : ∀ τ, (mat y τ).det ≠ 0)
     (u v : Fin g ⊕ Fin g → ℂ) :
@@ -264,11 +264,9 @@ def IsBalanced (M : Matrix (Fin g) (Fin g) ℂ) : Prop :=
   ∀ i j, M i j ≠ 0 → (idx i).1 = (idx j).1 ∧ (((idx i).2 : ℕ) < X.p0 ↔ X.p0 ≤ ((idx j).2 : ℕ))
 
 /- English proof (translation)
-Establish `h1 : rowType X p = ComplexEmbedding.conjugate (rowType X q)` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)`. Establish `hp` using `(X.cmType _).1 p.1.2`. Establish `hq` using `(X.cmType _).1 q.1.2`. Establish `hinv` using `ComplexEmbedding.involutive_conjugate E`. Unfold `rowType at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs at h1 with a b b`. Rewrite `h1` using `[hinv]`. Conclude with `absurd (h1 ▸ q.1.2) hp`. Conclude with `⟨Subtype.ext (hinv.injective h1), by omega⟩`. Conclude with `⟨Subtype.ext (h1.trans (hinv _)), by omega⟩`.
-
-Conclude with `absurd (h1 ▸ p.1.2) hq`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_and_iff_of_rowType {p q : X.Ψ × Fin r}
     (h : ∀ α : 𝓞 E, rowType X p α = conj (rowType X q α)) :
@@ -289,9 +287,9 @@ theorem eq_and_iff_of_rowType {p q : X.Ψ × Fin r}
 variable {X} {q0 : ℕ} (hr : X.p0 + q0 = r)
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single (t, ρ, k)]`. Simplify using `[letterDir, -rowOf_apply]`. Introduce and unpack `⟨t', ρ', k'⟩ _ hne`. Distinguish the cases in `hk : k = k'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Establish `: (t, ρ) ≠ (t', ρ')` using `fun h => hne (by rw [Prod.mk.injEq] at h; rw [h.1, h.2])`. Simplify using `[letterDir, -rowOf_apply, -Prod.mk.injEq, this]`. Simplify using `[letterDir, hk]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_letterDir_apply {n : ℕ} (z : Harm.Var X.Ψ q0 X.p0 (Fin n) → ℂ) (t : X.Ψ)
     (ρ : Fin q0 ⊕ Fin X.p0) (k : Fin n) :
@@ -310,17 +308,17 @@ theorem sum_letterDir_apply {n : ℕ} (z : Harm.Var X.Ψ q0 X.p0 (Fin n) → ℂ
 variable {idx}
 
 /- English proof (translation)
-Set `e` to `(rowOf X hr).trans idx.symm`. Establish `h0 (t t' : X.Ψ) (ρ ρ' : Fin q0 ⊕ Fin X.p0) (h : M (e (t, ρ)) (e (t', ρ')) ≠ 0) : t = t' ∧ ((rowIdx hr ρ : ℕ) < X.p0 ↔ X.p0 ≤ (rowIdx hr ρ' : ℕ))`. Simplify `hM _ _ h` using `[e]`. Establish `h1 (t a b) : M (e (t, .inl a)) (e (t, .inl b)) = 0`. Assume the negation of the conclusion as `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(h0 _ _ _ _ h).2` as an intermediate fact. Simplify using `only [rowIdx_inl] at this`. Use linear arithmetic over natural numbers and integers. Establish `h2 (t a b) : M (e (t, .inr a)) (e (t, .inr b)) = 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(h0 _ _ _ _ h).2` as an intermediate fact. Establish `ha` using `a.isLt`. Simplify using `only [rowIdx_inr] at this`. Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `_ = ∑ t, ∑ a, ∑ b, (M (e (t, .inl a)) (e (t, .inr b)) + M (e (t, .inr b)) (e (t, .inl a))) * w (e (t, .inl a)) * w (e (t, .inr b))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [dotProduct, mulVec, Finset.mul_sum]`. Rewrite using `[← e.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h3 (ρ) : ∑ j, w (e (t, ρ)) * (M (e (t, ρ)) j * w j) = ∑ ρ', w (e (t, ρ)) * (M (e (t, ρ)) (e (t, ρ')) * w (e (t, ρ')))`. Rewrite using `[← e.sum_comp, Fintype.sum_prod_type, Finset.sum_eq_single t]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t' _ ht`. Use `Finset.sum_eq_zero fun ρ' _ => ?_` and prove the remaining obligations. Rewrite using `[not_not.1 (mt (h0 _ _ _ _) fun h => ht h.1.symm), zero_mul, mul_zero]`. Simplify using the standard rewrite rules. Simplify using `only [h3, Fintype.sum_sum_type, h1, h2, zero_mul, mul_zero, Finset.sum_const_zero, zero_add, add_zero, add_mul, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin X.p0))), add_comm]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsBalanced.dot_mulVec {M : Matrix (Fin g) (Fin g) ℂ} (hM : IsBalanced X idx M)
     (w : Fin g → ℂ) :
@@ -361,9 +359,9 @@ theorem IsBalanced.dot_mulVec {M : Matrix (Fin g) (Fin g) ℂ} (hM : IsBalanced 
   congr 1 <;> exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use `GaussGauge.polyDeriv_exp_balanced_mul_dir hP (fun t a b => c * (M (idx.symm (rowOf X hr (t, .inl a))) (idx.symm (rowOf X hr (t, .inr b))) + M (idx.symm (rowOf X hr (t, .inr b))) (idx.symm (rowOf X hr (t, .inl a))))) (letterDir X hr idx) (B := fun z : Fin n → Fin g → ℂ => ∑ k, c * …` and prove the remaining obligations. Use `SCV.analyticAt_of_differentiableOn (s := Set.univ) ?_ Filter.univ_mem` and prove the remaining obligations. Simplify using `only [dotProduct, mulVec]`. Use `fun_prop`. Simplify using `only [hM.dot_mulVec hr, sum_letterDir_apply, Finset.mul_sum, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsBalanced.polyDeriv_exp_mul {M : Matrix (Fin g) (Fin g) ℂ} (hM : IsBalanced X idx M)
     {n : ℕ} {P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)} (hP : Harm.IsHarmonic P) (c : ℂ)
@@ -393,7 +391,7 @@ variable {X} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃
 include hs hx
 
 /- English proof (translation)
-Rewrite using `[perCx_apply, mulVec_add, mulVec_mulVec, mulVec_mulVec, hMat_mul_perMat idx hs hx, one_mulVec, perProj_apply, tauMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hMat_mulVec_perCx (u : Fin g ⊕ Fin g → ℂ) :
     hMat X bas idx x *ᵥ perCx X bas idx x u = perProj (tauMat X bas idx x) u := by
@@ -401,7 +399,7 @@ theorem hMat_mulVec_perCx (u : Fin g ⊕ Fin g → ℂ) :
     perProj_apply, tauMat]
 
 /- English proof (translation)
-Rewrite using `[← hMat_mulVec_perCx idx hs hx, mulVec_mulVec, mul_eq_one_comm.1 (hMat_mul_perMat idx hs hx), one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem perCx_eq_perProj (u : Fin g ⊕ Fin g → ℂ) :
     perCx X bas idx x u = perMat X bas idx Sum.inl x *ᵥ perProj (tauMat X bas idx x) u := by
@@ -409,7 +407,7 @@ theorem perCx_eq_perProj (u : Fin g ⊕ Fin g → ℂ) :
     one_mulVec]
 
 /- English proof (translation)
-Use `⟨fun z => ?_, fun z w => (secL_isLagSection 0).2 _ _⟩` and prove the remaining obligations. Rewrite using `[perCx_eq_perProj idx hs hx, secLin, LinearMap.comp_apply, (secL_isLagSection _).1, mulVecLin_apply, mulVec_mulVec, mul_eq_one_comm.1 (hMat_mul_perMat idx hs hx), one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem secLin_isLagSection :
     IsLagSection (omegaCx g) (perCx X bas idx x) (secLin X bas idx x) := by
@@ -418,9 +416,9 @@ theorem secLin_isLagSection :
     mulVecLin_apply, mulVec_mulVec, mul_eq_one_comm.1 (hMat_mul_perMat idx hs hx), one_mulVec]
 
 /- English proof (translation)
-Establish `hL` using `secLin_isLagSection idx hs hx`. Use extensionality with `i j`. Establish `h` using `omegaCx_eq_coper idx hs (fun τ => (hx τ).1) (secLin X bas idx x (Pi.single i 1)) (secLin X bas idx x (Pi.single j 1))`. Rewrite `h` using `[hL.2, hL.1, hL.1, coperCx_secLin, coperCx_secLin]`. Establish `h' : splitMat X bas idx x i j = splitMat X bas idx x j i` using `by simpa [sub_eq_zero] using h.symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h'.symm`.
+A detailed English derivation is pending.
 -/
 theorem splitMat_isSymm : (splitMat X bas idx x).IsSymm := by
   have hL := secLin_isLagSection idx hs hx
@@ -432,7 +430,7 @@ theorem splitMat_isSymm : (splitMat X bas idx x).IsSymm := by
   exact h'.symm
 
 /- English proof (translation)
-Rewrite using `[← coperCx_secLin, ← coperCx_int, secLin, LinearMap.comp_apply, mulVecLin_apply, hMat_mulVec_per_bas idx hs hx, secL_apply]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with s | s <;> simp [mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem splitMat_mulVec_per (m : Fin g → ℤ) :
     splitMat X bas idx x *ᵥ (per X x (bas (Sum.elim m 0)) ∘ idx) =
@@ -444,9 +442,9 @@ theorem splitMat_mulVec_per (m : Fin g → ℤ) :
   rcases s with s | s <;> simp [mulVec]
 
 /- English proof (translation)
-Establish `hY` using `(tauMat_im_posDef idx hs hx).det_pos.ne'.isUnit`. Establish `h1` using `beta_secH_secL (tauMat_isSymm idx hs hx) hY (hMat X bas idx x *ᵥ z) (hMat X bas idx x *ᵥ w)`. Establish `h2` using `omegaCx_eq_coper idx hs (fun τ => (hx τ).1) (secH (tauMat X bas idx x) (hMat X bas idx x *ᵥ z)) (secLin X bas idx x w)`. Rewrite `h2` using `[(secLin_isLagSection idx hs hx).1, coperCx_secLin, perCx_eq_perProj idx hs hx, perProj_secH hY, mulVec_mulVec, mul_eq_one_comm.1 (hMat_mul_perMat idx hs hx), one_mulVec]`. Establish `h3` using `h1.symm.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : -(2 * I)⁻¹ = I / 2` using `by rw [mul_inv, inv_I]; ring`. Rewrite `h3` using `[h4]`. Establish `h5` using `mul_left_cancel₀ (show I / 2 ≠ 0 by simp) h3`. Rewrite using `[sub_mulVec, dotProduct_sub, Matrix.mul_assoc, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose, ← mulVec_mulVec, imInv, h5]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dot_imInv_sub_splitMat (z w : Fin g → ℂ) :
     z ⬝ᵥ ((hMat X bas idx x)ᵀ * imInv X bas idx x * hMat X bas idx x - splitMat X bas idx x) *ᵥ w =
@@ -467,11 +465,11 @@ theorem dot_imInv_sub_splitMat (z w : Fin g → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hY` using `(tauMat_im_posDef idx hs hx).det_pos.ne'.isUnit`. Establish `hA` using `mul_eq_one_comm.1 (hMat_mul_perMat idx hs hx)`. Introduce `i j hij`. Use `eq_and_iff_of_rowType X fun α => mul_right_cancel₀ hij ?_` and prove the remaining obligations. Use `set D : Matrix (Fin g) (Fin g) ℂ := diagonal fun i => rowType X (idx i) α with hD`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he (z : Fin g → ℂ)` using `secH_equivariant hY (actMat X bas α *ᵥ ·) (fun z => hMat X bas idx x *ᵥ (D *ᵥ (perMat X bas idx Sum.inl x *ᵥ z))) (by simp) (actMat_mulVec_star X bas α) (fun u => by rw [← perCx_eq_perProj idx hs hx, ← perCx_actMat, hMat_mulVec_perCx idx hs hx]) (hMat X bas idx x *ᵥ z)`. Establish `h1` using `dot_imInv_sub_splitMat idx hs hx (D *ᵥ Pi.single i 1) (Pi.single j 1)`. Establish `h2` using `dot_imInv_sub_splitMat idx hs hx (Pi.single i 1) (Pi.single j 1)`. Establish `h3` using `he (Pi.single i 1)`. Rewrite `h3` using `[mulVec_mulVec _ _ (hMat X bas idx x), hA, one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h3, coperCx_actMat, hD, diagonal_mulVec_single]`. Simplify using `only [single_dotProduct, dotProduct_single, mul_one, one_mul, mulVec_single_one, col_apply, mulVec_diagonal] at h1 h2`. Rewrite using `[h1, h2, mul_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBalanced_sub_splitMat : IsBalanced X idx
     ((hMat X bas idx x)ᵀ * imInv X bas idx x * hMat X bas idx x - splitMat X bas idx x) := by
@@ -495,11 +493,11 @@ theorem isBalanced_sub_splitMat : IsBalanced X idx
   rw [h1, h2, mul_neg]
 
 /- English proof (translation)
-Use `congrArg _ (Eq.trans ?_ ((isBalanced_sub_splitMat idx hs hx).polyDeriv_exp_mul hr hP (Real.pi / 2) ?_))` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[Complex.exp_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[canFn, ← mul_assoc, ← Complex.exp_add, sub_mulVec, dotProduct_sub, Matrix.mul_assoc, ← mulVec_mulVec, dotProduct_mulVec (z k) _ᵀ, vecMul_transpose, ← mulVec_mulVec]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `SCV.analyticAt_of_differentiableOn (s := Set.univ) ?_ Filter.univ_mem` and prove the remaining obligations. Use `CanTh.differentiableOn_prod_fun _ fun k _ => DifferentiableOn.mul ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [dotProduct, mulVec] fun_prop`. Use `(CanTh.differentiable_thetaChar (CanTh.mem_thetaDomain (tauMat_im_posDef idx hs hx)) _ _).comp_differentiableOn (differentiableOn_pi.2 fun i => ?_)` and prove the remaining obligations. Simplify using `only [dotProduct, mulVec]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thFr_eq_splitMat {q0 : ℕ} (hr : X.p0 + q0 = r) (n : ℕ) (a b : Fin n → Fin g → ℝ)
     {P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)} (hP : Harm.IsHarmonic P) :
@@ -532,11 +530,9 @@ end Split
 section Holo
 
 /- English proof (translation)
-Establish `hent : ∀ τ a c, Differentiable ℂ fun x : Frame X.Ψ r => mat x τ a c`. Introduce `τ a c`. Use `show Differentiable ℂ fun x : Frame X.Ψ r => x τ a c`. Use `fun_prop`. Simplify using `only [coper]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Use `DifferentiableOn.const_mul ?_ _` and prove the remaining obligations. Simplify using `only [mulVec, dotProduct]`. Conclude with `DifferentiableOn.fun_sum fun c _ => (RiemannRel.differentiableOn_left_inverse (fun y : Frame X.Ψ r => mat y p.1) _ (fun _ _ => (hent _ _ _).differentiableOn) (fun y hy => nonsing_inv_mul _ (hy p.1).isUnit) _ _).mul_const _`. Use `(Differentiable.differentiableOn (Differentiable.const_mul ?_ _)).neg` and prove the remaining obligations.
-
-Unfold `hermC FD.col`. Use `Differentiable.fun_sum fun a _ => Differentiable.fun_sum fun c _ => ?_` and prove the remaining obligations. Conclude with `((hent _ _ _).mul_const _).mul_const _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiableOn_coper (v : Fin r → E) (p : X.Ψ × Fin r) :
     DifferentiableOn ℂ (fun y => coper X y v p) {y | ∀ τ, (mat y τ).det ≠ 0} := by
@@ -561,7 +557,7 @@ variable {X} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃
 include hs
 
 /- English proof (translation)
-Simplify using `only [splitMat, mul_apply]`. Conclude with `DifferentiableOn.fun_sum fun l _ => ((differentiableOn_coper X _ _).mono fun x hx τ => (hx τ).1).mul (differentiableOn_hMat idx hs l j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_splitMat (i j : Fin g) :
     DifferentiableOn ℂ (fun x => splitMat X bas idx x i j) X.dom := by
@@ -570,9 +566,9 @@ theorem differentiableOn_splitMat (i j : Fin g) :
     ((differentiableOn_coper X _ _).mono fun x hx τ => (hx τ).1).mul (differentiableOn_hMat idx hs l j)
 
 /- English proof (translation)
-Use `DifferentiableOn.congr ?_ fun x hx => thFr_eq_splitMat idx hs hx hr n a b hP` and prove the remaining obligations. Use `((differentiableOn_det_hMat idx hs).pow _).mul ?_` and prove the remaining obligations. Establish `hl {f : Frame X.Ψ r → ℂ} (hf : DifferentiableOn ℂ f X.dom) : DifferentiableOn ℂ (fun p : Frame X.Ψ r × (Fin n → Fin g → ℂ) => f p.1) (X.dom ×ˢ Set.univ)` using `hf.comp differentiableOn_fst fun _ hp => hp.1`. Establish `hz (k i) : DifferentiableOn ℂ (fun p : Frame X.Ψ r × (Fin n → Fin g → ℂ) => p.2 k i) (X.dom ×ˢ Set.univ)` using `by fun_prop`. Use `CanTh.differentiableOn_polyDeriv_param (FourierCoefficientDomain.isOpen_dom X) (F := fun p : Frame X.Ψ r × (Fin n → Fin g → ℂ) => ∏ k, cexp (Real.pi / 2 * (p.2 k ⬝ᵥ splitMat X bas idx p.1 *ᵥ p.2 k)) * thetaChar (tauMat X bas idx p.1) (fun i => (a k i : ℂ)) (fun i => (b k i : ℂ)) …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `CanTh.differentiableOn_prod_fun _ fun k _ => DifferentiableOn.mul ?_ ?_` and prove the remaining obligations. Use `DifferentiableOn.cexp (DifferentiableOn.const_mul ?_ _)` and prove the remaining obligations. Simplify using `only [dotProduct, mulVec]`. Conclude with `DifferentiableOn.fun_sum fun i _ => (hz k i).fun_mul (DifferentiableOn.fun_sum fun j _ => (hl (differentiableOn_splitMat idx hs i j)).fun_mul (hz k j))`. Conclude with `CanTh.differentiableOn_thetaChar (fun i j => hl (differentiableOn_tauMat idx hs i j)) (differentiableOn_pi.2 fun i => DifferentiableOn.fun_sum fun j _ => (hl (differentiableOn_hMat idx hs i j)).mul (hz k j)) (fun p hp => CanTh.mem_thetaDomain (tauMat_im_posDef idx hs hp.1)) _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_thFr {q0 : ℕ} (hr : X.p0 + q0 = r) (n : ℕ) (a b : Fin n → Fin g → ℝ)
     {P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)} (hP : Harm.IsHarmonic P) :
@@ -630,14 +626,14 @@ def embCx (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (τ : E →+* ℂ) 
   (Matrix.of fun a s => Data.emb τ (bas (Pi.single s 1) : Fin r → E) a).mulVecLin
 
 /- English proof (translation)
-Rewrite using `[headProj, diagonal_mul_diagonal]`. Apply the tactic sequence `congr 1; funext a; split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem headProj_mul_self : headProj X * headProj X = headProj X := by
   rw [headProj, diagonal_mul_diagonal]
   congr 1; funext a; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [headProj, Matrix.mul_sub, Matrix.mul_one, Matrix.add_apply, Matrix.sub_apply, mul_diagonal, diagonal_mul, mat, of_apply, unip, one_apply, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mat_unip (K : Frame X.Ψ r) (τ : X.Ψ) :
     mat (unip X K) τ = 1 + headProj X * mat K τ * (1 - headProj X) := by
@@ -647,13 +643,13 @@ theorem mat_unip (K : Frame X.Ψ r) (τ : X.Ψ) :
   split_ifs <;> first | omega | simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i a`. Simplify using `[mix]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mix_self (x : Frame X.Ψ r) : mix X x x = x := by
   funext τ i a; simp [mix]
 
 /- English proof (translation)
-Establish `h : (1 - headProj X) * headProj X = 0`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, headProj_mul_self, sub_self]`. Establish `h1 : headProj X * mat K τ * (1 - headProj X) * (headProj X * mat K τ * (1 - headProj X)) = 0`. Rewrite using `[Matrix.mul_assoc (headProj X * _), Matrix.mul_assoc (headProj X) _ (1 - _), ← Matrix.mul_assoc (1 - _), h, Matrix.zero_mul, Matrix.mul_zero]`. Rewrite using `[mat_unip, mat_unip, show mat (-K) τ = -mat K τ from rfl, Matrix.mul_neg, Matrix.neg_mul, add_mul, mul_add, mul_add, neg_mul, neg_mul, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -670,7 +666,7 @@ theorem mat_unip_neg_mul (K : Frame X.Ψ r) (τ : X.Ψ) :
   simp
 
 /- English proof (translation)
-Introduce `τ` and use `⟨(isUnit_det_of_left_inverse (mat_unip_neg_mul X K τ)).ne_zero, fun a c h => by rw [Fin.lt_def] at h rw [unip, if_neg (by omega), if_neg (by rw [Fin.ext_iff]; omega)]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem unip_mem_Bor (K : Frame X.Ψ r) : unip X K ∈ Bor X.Ψ r := fun τ =>
   ⟨(isUnit_det_of_left_inverse (mat_unip_neg_mul X K τ)).ne_zero, fun a c h => by
@@ -678,11 +674,11 @@ theorem unip_mem_Bor (K : Frame X.Ψ r) : unip X K ∈ Bor X.Ψ r := fun τ =>
     rw [unip, if_neg (by omega), if_neg (by rw [Fin.ext_iff]; omega)]⟩
 
 /- English proof (translation)
-Establish `h : borMat X (unip X K) = 1`. Use extensionality with `⟨τ, a⟩ ⟨σ, c⟩`. Distinguish the cases in `hτ : σ = τ`. Substitute `hτ` using the available equality. Break down `lt_or_ge (a : ℕ) X.p0 with ha | ha` into its components or cases.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[borMat_of_lt X _ _ ha, unip, if_neg (by omega)]`. Simplify using `[one_apply, eq_comm]`. Rewrite using `[borMat_of_le X _ _ ha, inv_eq_left_inv (mat_unip_neg_mul X K σ), mat, of_apply, unip, if_neg (by omega)]`. Simplify using `[one_apply]`. Rewrite using `[borMat_of_ne X _ hτ, one_apply_ne fun h => hτ (congrArg Prod.fst h).symm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[per_rmul x (unip_mem_Bor X K), h, one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem per_rmul_unip (x K : Frame X.Ψ r) : per X (rmul x (unip X K)) = per X x := by
   classical
@@ -710,18 +706,18 @@ variable {x x' : Frame X.Ψ r} (h : per X x' = per X x)
 include h
 
 /- English proof (translation)
-Simplify using `only [hMat, perMat, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hMat_congr : hMat X bas idx x' = hMat X bas idx x := by simp only [hMat, perMat, h]
 
 /- English proof (translation)
-Simplify using `only [tauMat, hMat, perMat, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tauMat_congr : tauMat X bas idx x' = tauMat X bas idx x := by
   simp only [tauMat, hMat, perMat, h]
 
 /- English proof (translation)
-Simplify using `only [thFr, canFn, imInv, hMat_congr bas idx h, tauMat_congr bas idx h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thFr_congr {q0 : ℕ} (hr : X.p0 + q0 = r) (n : ℕ) (a b : Fin n → Fin g → ℝ)
     (P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) :
@@ -736,7 +732,7 @@ include hs
 end Compl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨differentiableOn_thFr _ Gauss.isSympl_bas _ n 0 0 (Harm.isHarmonic_C 1), Gauss.thFr_one_ne_zero n⟩`.
+Supply the required witnesses or components.
 -/
 example (n : ℕ) :
     DifferentiableOn ℂ (thFr HyperbolicCusp.flagData Gauss.hr Gauss.bas Gauss.idx n 0 0 1)

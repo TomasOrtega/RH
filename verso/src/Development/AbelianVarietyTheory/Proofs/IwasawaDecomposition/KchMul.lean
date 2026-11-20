@@ -25,19 +25,19 @@ def Tied {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {g : ℕ} (e : Fin g ≃ Σ
 def kch {S : Type} [CommRing S] (t : Ix Dw → Sˣ) : Sˣ := ∏ i, t i ^ keyEx Dw i
 
 /- English proof (translation)
-Simplify using `only [kch, Pi.mul_apply, mul_zpow, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kch_mul {S : Type} [CommRing S] (t t' : Ix Dw → Sˣ) : kch (t * t') = kch t * kch t' := by
   simp only [kch, Pi.mul_apply, mul_zpow, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Simplify using `only [kch, Pi.inv_apply, inv_zpow, Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kch_inv {S : Type} [CommRing S] (t : Ix Dw → Sˣ) : kch t⁻¹ = (kch t)⁻¹ := by
   simp only [kch, Pi.inv_apply, inv_zpow, Finset.prod_inv_distrib]
 
 /- English proof (translation)
-Rewrite using `[kch, Fintype.prod_option, mul_comm]`. Simplify using `only [keyEx, zpow_one, zpow_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem kch_eq {S : Type} [CommRing S] (t : Ix Dw → Sˣ) :
     kch t = (∏ x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), t (some x)) * (t none ^ 2)⁻¹ := by

@@ -9,7 +9,7 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-Simplify using `only [valAt, Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem valAt_app_pullback {B : Type} [CommRing B] {X Y : Scheme.{0}}
     (x : Spec (CommRingCat.of B) ⟶ X) (φ : X ⟶ Y) (U : Y.Opens)
@@ -19,7 +19,7 @@ theorem valAt_app_pullback {B : Type} [CommRing B] {X Y : Scheme.{0}}
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem valAt_congr_point {B : Type} [CommRing B] {X : Scheme.{0}}
     {x y : Spec (CommRingCat.of B) ⟶ X} (e : x = y) (U : X.Opens)
@@ -29,11 +29,11 @@ theorem valAt_congr_point {B : Type} [CommRing B] {X : Scheme.{0}}
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ σ t ht f g ⟨U, hgU, s, hs⟩`. Establish `key : ∀ h : T, Γ.pt h ≫ ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G) = Γ.pt (t * h)`. Introduce `h`. Rewrite using `[MonObj.comp_mul, map_mul, ← ht, Category.comp_id, ← Category.assoc, comp_toUnit]`. Use `⟨((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left ⁻¹ᵁ U, hgU, ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left.app U s, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h hh`. Establish `e : (Γ.pt h).left ≫ ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left = (Γ.pt (t * h)).left`. Rewrite using `[← key h]`. Both sides reduce to the same expression. Establish `h' : ⊤ ≤ ((Γ.pt h).left ≫ ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left) ⁻¹ᵁ U` using `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h'' : ⊤ ≤ (Γ.pt (t * h)).left ⁻¹ᵁ U` using `e ▸ h'`. Rewrite using `[valAt_app_pullback _ _ U hh h', valAt_congr_point e U h' h'' s]`. Conclude with `hs (t * h) h''`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QFGroup.regularAt_translate :
     ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T)

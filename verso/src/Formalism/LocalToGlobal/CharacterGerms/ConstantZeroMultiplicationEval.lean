@@ -27,7 +27,7 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
 def Lz : Pt C 2 d := comp1 (Y.nmul V.l) (pt C d 1)
 
 /- English proof (translation)
-The claim follows from `z0_1 _ fun i => z0_pt 1 i`.
+A detailed English derivation is pending.
 -/
 theorem hz1 : Z0 (![pt C d 1] : Fin 1 → Pt C 2 d) := z0_1 _ fun i => z0_pt 1 i
 

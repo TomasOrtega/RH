@@ -6,9 +6,9 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons p L ih`. Establish `h1 : p.1 = 1` using `hL p (by simp)`. Establish `hpos : 0 < q - 1` using `by omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[List.map_cons, List.sum_cons, ih (fun r hr => hL r (List.mem_cons_of_mem _ hr)), List.map_cons, h1]`. Simplify using `[Nat.div_self hpos]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem polTop_sum (q : ℕ) (hq : 2 ≤ q) (L : List (ℕ × ℕ)) (hL : ∀ p ∈ L, p.1 = 1) :
     (L.map fun p => (Multiset.range p.1).map fun j =>
@@ -24,11 +24,11 @@ private theorem polTop_sum (q : ℕ) (hq : 2 ≤ q) (L : List (ℕ × ℕ)) (hL 
     simp [Nat.div_self hpos]
 
 /- English proof (translation)
-Introduce `b x hq hL hx`. Establish `hpos : 0 < b.q - 1` using `by omega`. Establish `hb : b.blocks b.q = ((b.D ++ b.L).map fun p => (p.1, ((p.2 : ℕ) : ZMod (b.q - 1))) : List _)`. Unfold `Lbl.blocks`. Rewrite using `[polTop_sum b.q hq b.L hL, List.map_append, ← Multiset.coe_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Nat.div_self hpos]`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Unfold `Lbl.pol`. Rewrite using `[hb, Multiset.map_coe, Multiset.prod_coe, List.map_map]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `p _`. Simplify using `only [Function.comp]`. Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod p.2 hx]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.polTop :
     PolTop := by

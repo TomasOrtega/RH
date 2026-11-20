@@ -15,15 +15,13 @@ open GlobalTheory.Parabolic (mem_fixed)
 namespace GlobalTheory.DepthZeroPass
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Take `⟨w, hw, hw0⟩` from `(Submodule.ne_bot_iff _).1 hτ`. Take `⟨u, rfl⟩` from `hf w`. Establish `hS : IsSmooth S.toRepresentation` using `fun v => by`. Establish `: {g : G | S.toRepresentation g v = v} = {g : G | ρ g (v : V) = v}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Subtype.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hρ v`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hfv⟩` from `IwahoriOnto.exists_fixed_map_eq hS hH f.toLinearMap u fun g hg => by`. Establish `h1` using `mem_fixed.1 hw g hg`. Use `show f (S.toRepresentation g u) = f u`. Conclude with `(f.isIntertwining _ _ g u).trans h1`. Use `(Submodule.ne_bot_iff _).2 ⟨(v : V), mem_fixed.2 fun g hg => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `mem_fixed.1 hv g hg` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Introduce `h0`. Apply `hw0` to reduce the goal to its premises. Establish `hv0 : v = 0` using `Subtype.ext h0`.
-
-Establish `hfv' : f v = f u` using `hfv`. Rewrite using `[← hfv', hv0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_of_isSubquotient {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -53,9 +51,9 @@ theorem fixed_ne_bot_of_isSubquotient {G : Type} [Group G] [TopologicalSpace G] 
     rw [← hfv', hv0, map_zero]
 
 /- English proof (translation)
-Use `choose v hv hv0 using fun a => (Submodule.ne_bot_iff _).1 (h a)`. Use `choose l hl using fun a => Module.Projective.exists_dual_eq_one ℂ (hv0 a)`. Use `(Submodule.ne_bot_iff _).2 ⟨PiTensorProduct.tprod ℂ v, mem_fixed.2 fun g hg => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[piTensor_tprod]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Conclude with `mem_fixed.1 (hv a) (g a) (hg a trivial)`. Use `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ α ℂ).compLinearMap l)) h0` as an intermediate fact. Simplify using `[hl] at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fixed_piTensor_ne_bot {α : Type} [Fintype α] [DecidableEq α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a))
@@ -72,7 +70,7 @@ theorem fixed_piTensor_ne_bot {α : Type} [Fintype α] [DecidableEq α] {Γ X : 
     simp [hl] at this
 
 /- English proof (translation)
-Rewrite using `[leviKOne, Subgroup.coe_pi]`. Conclude with `isCompact_univ_pi fun a => levelPre_bot (k := k) (n := m a) ▸ isCompact_levelPre ⊥`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_leviKOne {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {α : Type} {m : α → Type} [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] :
@@ -81,11 +79,11 @@ theorem isCompact_leviKOne {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   exact isCompact_univ_pi fun a => levelPre_bot (k := k) (n := m a) ▸ isCompact_levelPre ⊥
 
 /- English proof (translation)
-Introduce `hG hBZ hZ k _ _ _ _ _ x s hs hfix`. Take `⟨r, u, e, hu, hsq⟩` from `GlobalTheory.T.exists_subquotient_jacquetModule_of_supercuspidalSupport hG hBZ hZ k x s hs`. Establish `hxs : IsSmooth x.rep` using `x.2.rep.smooth`. Establish `h1 : fixed (piTensor fun a => (u a).rep) (leviKOne k fun a => Fin (u a).1) ≠ ⊥` using `fixed_piTensor_ne_bot _ _ fun a => hfix _ (hu a)`. Establish `h2` using `fixed_ne_bot_of_isSubquotient (isSmooth_jac e hxs) hsq isCompact_leviKOne h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy1, hy0⟩` from `(Submodule.ne_bot_iff _).1 h2`. Establish `hy2 : y ∈ fixed (jacU e x.rep) (leviKOne k fun a => Fin (u a).1)` using `mem_fixed.2 fun g hg => by`. Establish `h3` using `mem_fixed.1 hy1 g hg`. Establish `h4 : deltaHalf k (fun a => Fin (u a).1) g = 1` using `deltaHalf_of_mem_leviK fun a _ => StepData.KOne_le_KO (hg a trivial)`. Simplify `h3` using `[jac, twist_apply, h4]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨v, hv, rfl⟩` from `GlobalTheory.T.jacquet_proUnipotentRadical_fixed_vectors_lift k e x.rep ((hBZ k).1 _ _ x.rep hxs x.2.rep.irr) y hy2`. Use `(Submodule.ne_bot_iff _).2 ⟨v, mem_fixed.2 fun g hg => mem_fixed.1 hv g (KOne_le_proRad e hg), ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hy0 rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem depthZeroInduction : GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness →
     GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.DepthZeroInduction := by

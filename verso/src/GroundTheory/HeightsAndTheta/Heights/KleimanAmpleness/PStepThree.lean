@@ -19,7 +19,7 @@ abbrev idealChart (J : Ideal (Poly k N)) (I : Chart x) : Ideal (chartRing k x I)
   (idealMod (x := x) J I).comap (Algebra.linearMap (chartRing k x I) Ω)
 
 /- English proof (translation)
-Rewrite using `[idealMod, Submodule.span_le]`. Introduce and unpack `_ ⟨f, s, e, -, hs, hf, hse, rfl⟩`. Conclude with `⟨⟨_, f, s, e, hs, hf, hse, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem idealMod_le_range (J : Ideal (Poly k N)) (I : Chart x) :
     idealMod (x := x) J I ≤ LinearMap.range (Algebra.linearMap (chartRing k x I) Ω) := by
@@ -28,7 +28,7 @@ theorem idealMod_le_range (J : Ideal (Poly k N)) (I : Chart x) :
   exact ⟨⟨_, f, s, e, hs, hf, hse, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hf, hs, hfe, hse, rfl⟩`. Conclude with `⟨f, s, e, h hf, hs, hfe, hse, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem idealMod_mono {J J' : Ideal (Poly k N)} (h : J ≤ J') (I : Chart x) :
     idealMod (x := x) J I ≤ idealMod (x := x) J' I := by
@@ -37,7 +37,7 @@ theorem idealMod_mono {J J' : Ideal (Poly k N)} (h : J ≤ J') (I : Chart x) :
   exact ⟨f, s, e, h hf, hs, hfe, hse, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[idealMod, idealMod, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨f, s, e, hf, hs, hfe, hse, rfl⟩, _, ⟨f', s', e', hf', hs', hfe', hse', rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨f * f', s * s', e + e', Ideal.mul_mem_mul hf hf', mul_mem hs hs', hfe.mul hfe', hse.mul hse', ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, div_mul_div_comm]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem idealMod_mul_le (J J' : Ideal (Poly k N)) (I : Chart x) :
     idealMod (x := x) J I * idealMod (x := x) J' I ≤ idealMod (x := x) (J * J') I := by
@@ -48,7 +48,7 @@ theorem idealMod_mul_le (J J' : Ideal (Poly k N)) (I : Chart x) :
   simp only [map_mul, div_mul_div_comm]
 
 /- English proof (translation)
-The claim follows from `Ideal.mul_le.mpr fun a ha b hb => by have := idealMod_mul_le (x := x) J J' I (Submodule.mul_mem_mul ha hb) simpa using this`.
+A detailed English derivation is pending.
 -/
 theorem idealChart_mul_le (J J' : Ideal (Poly k N)) (I : Chart x) :
     idealChart J I * idealChart J' I ≤ idealChart (x := x) (J * J') I :=
@@ -57,7 +57,7 @@ theorem idealChart_mul_le (J J' : Ideal (Poly k N)) (I : Chart x) :
     simpa using this
 
 /- English proof (translation)
-Use `(Ideal.eq_top_iff_one _).mpr ?_` and prove the remaining obligations. Use `Submodule.subset_span ⟨1, 1, 0, Submodule.mem_top, one_mem _, isHomogeneous_one _ _, isHomogeneous_one _ _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem idealChart_top (I : Chart x) : idealChart (x := x) (⊤ : Ideal (Poly k N)) I = ⊤ := by
   refine (Ideal.eq_top_iff_one _).mpr ?_
@@ -66,7 +66,7 @@ theorem idealChart_top (I : Chart x) : idealChart (x := x) (⊤ : Ideal (Poly k 
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty, Ideal.one_eq_top, idealChart_top, le_refl]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(Ideal.mul_mono_right ih).trans (idealChart_mul_le _ _ I)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealChart_prod_le {ι : Type*} (s : Finset ι) (P : ι → Ideal (Poly k N)) (I : Chart x) :
     ∏ i ∈ s, idealChart (P i) I ≤ idealChart (x := x) (∏ i ∈ s, P i) I := by
@@ -78,7 +78,7 @@ theorem idealChart_prod_le {ι : Type*} (s : Finset ι) (P : ι → Ideal (Poly 
     exact (Ideal.mul_mono_right ih).trans (idealChart_mul_le _ _ I)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero, Ideal.one_eq_top, idealChart_top, le_refl]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `(Ideal.mul_mono_left ih).trans (idealChart_mul_le _ _ I)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealChart_pow_le (P : Ideal (Poly k N)) (I : Chart x) (n : ℕ) :
     idealChart P I ^ n ≤ idealChart (x := x) (P ^ n) I := by
@@ -89,7 +89,7 @@ theorem idealChart_pow_le (P : Ideal (Poly k N)) (I : Chart x) (n : ℕ) :
     exact (Ideal.mul_mono_left ih).trans (idealChart_mul_le _ _ I)
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Take `⟨a, rfl⟩` from `idealMod_le_range pp I hq`. Conclude with `Submodule.smul_mem_smul (show a ∈ idealChart pp I from hq) hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem twist_idealSys_le (F : SubSystem k x Ω) (pp : Ideal (Poly k N)) (I : Chart x) :
     (F.twist (idealSys x pp)).sub I ≤ idealChart pp I • F.sub I := by
@@ -105,7 +105,7 @@ section Algebra
 variable {A M : Type*} [CommRing A] [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.smul_sup, Submodule.mul_smul, ← sup_assoc]`. Conclude with `sup_le_sup_right (sup_le le_rfl Submodule.smul_le_right) _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_sup_mul_smul {G F : Submodule A M} {P Q : Ideal A} (hP : F ≤ G ⊔ P • F)
     (hQ : F ≤ G ⊔ Q • F) : F ≤ G ⊔ (P * Q) • F := by
@@ -116,9 +116,7 @@ theorem le_sup_mul_smul {G F : Submodule A M} {P Q : Ideal A} (hP : F ≤ G ⊔ 
       exact sup_le_sup_right (sup_le le_rfl Submodule.smul_le_right) _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Ideal.one_eq_top, Submodule.top_smul]`. Conclude with `le_sup_right`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`.
-
-Conclude with `le_sup_mul_smul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_sup_prod_smul {ι : Type*} {G F : Submodule A M} (s : Finset ι) (P : ι → Ideal A)
     (h : ∀ i ∈ s, F ≤ G ⊔ P i • F) : F ≤ G ⊔ (∏ i ∈ s, P i) • F := by
@@ -131,7 +129,7 @@ theorem le_sup_prod_smul {ι : Type*} {G F : Submodule A M} (s : Finset ι) (P :
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Conclude with `le_sup_right`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `le_sup_mul_smul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem le_sup_pow_smul {G F : Submodule A M} {P : Ideal A} (h : F ≤ G ⊔ P • F) (n : ℕ) :
     F ≤ G ⊔ (P ^ n) • F := by
@@ -142,17 +140,13 @@ theorem le_sup_pow_smul {G F : Submodule A M} {P : Ideal A} (h : F ≤ G ⊔ P �
 end Algebra
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x T hK`. Establish `hfin` using `Ideal.finite_minimalPrimes_of_isNoetherianRing (Poly k N) T.J`. Use `choose! c₀ hc₀ using hOnW k Ω N x T hK`. Take `⟨n, hn⟩` from `Ideal.exists_radical_pow_le_of_fg T.J (IsNoetherian.noetherian _)`. Use `set s := hfin.toFinset`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ p ∈ s, |c₀ p|, fun b hb I => ?_⟩` and prove the remaining obligations. Establish `hc : 0 ≤ ∑ p ∈ s, |c₀ p|` using `Finset.sum_nonneg fun p _ => abs_nonneg _`. Use `set F := (T.L.pow b).twist (twistSys k x (∑ p ∈ s, |c₀ p|))`. Use `set G := Submodule.span (chartRing k x I) (F.secs : Set Ω)`. Use `le_antisymm (Submodule.span_le.mpr fun z hz => ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_iInf _).mp hz I`. Establish `h1 : ∀ p ∈ s, F.sub I ≤ G ⊔ idealChart p I • F.sub I` using `fun p hp => by`. Establish `hp'` using `hfin.mem_toFinset.mp hp`. Use `(hc₀ p hp' b _ hb ?_ I).trans (sup_le_sup_left (twist_idealSys_le F p I) _)` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (fun q _ => abs_nonneg (c₀ q)) hp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `le_sup_pow_smul (le_sup_prod_smul s _ h1) (n * b)`. Establish `hrad : ∏ p ∈ s, p ≤ T.J.radical`. Rewrite using `[← Ideal.sInf_minimalPrimes]`. Conclude with `le_sInf fun q hq => Ideal.prod_le_inf.trans (Finset.inf_le (hfin.mem_toFinset.mpr hq))`. Establish `h3 : (∏ p ∈ s, idealChart p I) ^ (n * b) ≤ idealChart T.J I ^ b`.
-
-Rewrite using `[pow_mul]`. Use `Ideal.pow_right_mono ?_ b` and prove the remaining obligations. Use `(Ideal.pow_right_mono (idealChart_prod_le s (fun p => p) I) n).trans ((idealChart_pow_le _ I n).trans ?_)` and prove the remaining obligations. Conclude with `Submodule.comap_mono (idealMod_mono ((Ideal.pow_right_mono hrad n).trans hn) I)`. Establish `h4` using `hAway k Ω N x T b _ hc I`.
-
-Conclude with `h2.trans (sup_le le_rfl ((Submodule.smul_mono_left h3).trans h4))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem StepThree.proof (hAway : StepThree.Away.Statement.{u, w})
     (hOnW : StepThree.OnW.Statement.{u, w}) : StepThree.Statement.{u, w} := by

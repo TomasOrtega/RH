@@ -9,12 +9,12 @@ section
 variable (k : Type) [Field k]
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.algebraMap_apply', ← HahnSeries.ofPowerSeries_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_eq (c : k) : algebraMap k k⸨X⸩ c = HahnSeries.C c := by rw [HahnSeries.algebraMap_apply', ← HahnSeries.ofPowerSeries_C]; rfl
 
 /- English proof (translation)
-Rewrite using `[algebraMap_eq, HahnSeries.C_mul_eq_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq (c : k) (x : k⸨X⸩) : c • x = algebraMap k k⸨X⸩ c * x := by rw [algebraMap_eq, HahnSeries.C_mul_eq_smul]
 
@@ -26,42 +26,42 @@ instance towerB : IsScalarTower k k⟦X⟧ k⸨X⸩ := ⟨fun c a y => by
   rfl⟩
 
 /- English proof (translation)
-Unfold `vv`. Conclude with `(HahnSeries.ofPowerSeries_X).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vv_eq : vv k = ((PowerSeries.X : k⟦X⟧) : k⸨X⸩) := by unfold vv; exact (HahnSeries.ofPowerSeries_X).symm
 
 /- English proof (translation)
-Unfold `vv`. Conclude with `HahnSeries.single_ne_zero one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vv_ne : vv k ≠ 0 := by unfold vv; exact HahnSeries.single_ne_zero one_ne_zero
 
 def inv1 (c : k) : k⟦X⟧ := PowerSeries.invOfUnit (1 + PowerSeries.C c * PowerSeries.X) 1
 
 /- English proof (translation)
-Unfold `inv1; exact PowerSeries.mul_invOfUnit _ _ (by simp)`.
+Replace the relevant objects with their definitions.
 -/
 theorem powerSeries_oneAddConstMulX_mul_inv (c : k) : (1 + PowerSeries.C c * PowerSeries.X) * inv1 k c = 1 := by unfold inv1; exact PowerSeries.mul_invOfUnit _ _ (by simp)
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem hs (c : k) : PowerSeries.HasSubst (PowerSeries.X * inv1 k c : k⟦X⟧) := PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)
 
 def sb (c : k) : k⟦X⟧ →ₐ[k] k⟦X⟧ := PowerSeries.substAlgHom (hs k c)
 
 /- English proof (translation)
-The claim follows from `PowerSeries.substAlgHom_X _`.
+A detailed English derivation is pending.
 -/
 theorem sb_X (c : k) : sb k c PowerSeries.X = PowerSeries.X * inv1 k c := PowerSeries.substAlgHom_X _
 
 /- English proof (translation)
-Rewrite using `[← mul_one (PowerSeries.C d), ← PowerSeries.smul_eq_C_mul, map_smul, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sb_C (c d : k) : sb k c (PowerSeries.C d) = PowerSeries.C d := by
   rw [← mul_one (PowerSeries.C d), ← PowerSeries.smul_eq_C_mul, map_smul, map_one]
 
 /- English proof (translation)
-Establish `hv` using `powerSeries_oneAddConstMulX_mul_inv k c`. Establish `hs0` using `congrArg (sb k c) (powerSeries_oneAddConstMulX_mul_inv k (-c))`. Simplify using `only [map_mul, map_add, map_one, sb_C, sb_X, map_neg] at hs0`. Rewrite using `[map_mul, sb_X]`. Take the linear combination `(PowerSeries.X * inv1 k c * PowerSeries.C c * PowerSeries.X * sb k c (inv1 k (-c)) + PowerSeries.X) * hv + PowerSeries.X * inv1 k c * (1 + PowerSeries.C c * PowerSeries.X) * hs0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sb_key (c : k) : sb k c (PowerSeries.X * inv1 k (-c)) = PowerSeries.X := by
   have hv := powerSeries_oneAddConstMulX_mul_inv k c
@@ -72,7 +72,7 @@ theorem sb_key (c : k) : sb k c (PowerSeries.X * inv1 k (-c)) = PowerSeries.X :=
       + PowerSeries.X) * hv + PowerSeries.X * inv1 k c * (1 + PowerSeries.C c * PowerSeries.X) * hs0
 
 /- English proof (translation)
-Establish `h` using `sb_key k c`. Simplify using `only [sb, PowerSeries.coe_substAlgHom] at h ⊢`. Rewrite using `[PowerSeries.subst_comp_subst_apply (hs k (-c)) (hs k c), h, PowerSeries.X_subst]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sb_sb (c : k) (f : k⟦X⟧) : sb k c (sb k (-c) f) = f := by
   have h := sb_key k c
@@ -87,7 +87,7 @@ def sbE : k⟦X⟧ ≃+* k⟦X⟧ :=
 def gE : k⸨X⸩ ≃+* k⸨X⸩ := IsFractionRing.ringEquivOfRingEquiv (A := k⟦X⟧) (B := k⟦X⟧) (sbE k)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap (K := k⸨X⸩) (L := k⸨X⸩) (sbE k) a`.
+A detailed English derivation is pending.
 -/
 theorem gE_coe (a : k⟦X⟧) : gE k (a : k⸨X⸩) = ((sb k 1 a : k⟦X⟧) : k⸨X⸩) := IsFractionRing.ringEquivOfRingEquiv_algebraMap (K := k⸨X⸩) (L := k⸨X⸩) (sbE k) a
 
@@ -139,7 +139,7 @@ def unitMod {l : ℕ} (R : RingPG k l) (hγ : Function.Bijective R.γ) (n : ℕ)
 def lat (k : Type) [Field k] (a : ℤ) : Submodule k⟦X⟧ k⸨X⸩ := Submodule.span k⟦X⟧ {vv k ^ a}
 
 /- English proof (translation)
-Unfold `lat`. Rewrite using `[Submodule.mem_span_singleton]`. Simplify using `only [Algebra.smul_def, LaurentSeries.coe_algebraMap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_lat {a : ℤ} {y : k⸨X⸩} : y ∈ lat k a ↔ ∃ b : k⟦X⟧, (b : k⸨X⸩) * vv k ^ a = y := by
   unfold lat
@@ -147,7 +147,7 @@ theorem mem_lat {a : ℤ} {y : k⸨X⸩} : y ∈ lat k a ↔ ∃ b : k⟦X⟧, (
   simp only [Algebra.smul_def, LaurentSeries.coe_algebraMap]
 
 /- English proof (translation)
-Unfold `sh lat`. Rewrite using `[Submodule.map_span, Set.image_singleton, zpow_add₀ (vv_ne k)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem sh_lat (a b : ℤ) : sh a (lat k b) = lat k (a + b) := by
   unfold sh lat
@@ -155,9 +155,9 @@ theorem sh_lat (a b : ℤ) : sh a (lat k b) = lat k (a + b) := by
   congr 1
 
 /- English proof (translation)
-Unfold `IsLat`. Use `⟨Submodule.fg_span_singleton _, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hmem : vv k ^ a ∈ Submodule.span k⸨X⸩ ((lat k a : Submodule k⟦X⟧ k⸨X⸩) : Set k⸨X⸩)` using `Submodule.subset_span (by unfold lat; exact Submodule.mem_span_singleton_self _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : y = (y * (vv k ^ a)⁻¹) • vv k ^ a`. Rewrite using `[smul_eq_mul, mul_assoc, inv_mul_cancel₀ (zpow_ne_zero _ (vv_ne k)), mul_one]`. Rewrite using `[hy]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_lat (a : ℤ) : IsLat (lat k a) := by
   unfold IsLat
@@ -177,7 +177,7 @@ Both sides reduce to the same expression.
 theorem nab_apply (g : k⸨X⸩ →ₗ[k] k⸨X⸩) (y : k⸨X⸩) : nab g y = (vv k)⁻¹ * (g y - y) := rfl
 
 /- English proof (translation)
-Use `⟨inv1 k 1 * sb k 1 (PowerSeries.mk fun p => PowerSeries.coeff (p + 1) a) - PowerSeries.mk fun p => PowerSeries.coeff (p + 1) a, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const a]`. Rewrite using `[map_add, map_mul, sb_X, sb_C]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sb_sub (a : k⟦X⟧) : ∃ b : k⟦X⟧, sb k 1 a - a = PowerSeries.X * b := by
   refine ⟨inv1 k 1 * sb k 1 (PowerSeries.mk fun p => PowerSeries.coeff (p + 1) a)
@@ -187,7 +187,7 @@ theorem sb_sub (a : k⟦X⟧) : ∃ b : k⟦X⟧, sb k 1 a - a = PowerSeries.X *
   ring
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `sb_sub a`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[nab_apply]`. Express the relevant statement in the definitionally equal form `(vv k)⁻¹ * (gE k (a : k⸨X⸩) - (a : k⸨X⸩)) = _`. Rewrite using `[gE_coe, show ((sb k 1 a : k⟦X⟧) : k⸨X⸩) - (a : k⸨X⸩) = ((sb k 1 a - a : k⟦X⟧) : k⸨X⸩) from (map_sub _ _ _).symm, hb, map_mul, ← vv_eq, inv_mul_cancel_left₀ (vv_ne k)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem nab_coe (a : k⟦X⟧) : ∃ b : k⟦X⟧, nab (lin (gA k)) (a : k⸨X⸩) = b := by
   obtain ⟨b, hb⟩ := sb_sub a
@@ -198,9 +198,9 @@ theorem nab_coe (a : k⟦X⟧) : ∃ b : k⟦X⟧, nab (lin (gA k)) (a : k⸨X�
     (map_sub _ _ _).symm, hb, map_mul, ← vv_eq, inv_mul_cancel_left₀ (vv_ne k)]
 
 /- English proof (translation)
-Establish `h1 : gE k (vv k) = vv k * ((inv1 k 1 : k⟦X⟧) : k⸨X⸩)`. Rewrite using `[vv_eq, gE_coe, sb_X, map_mul]`. Establish `h2 : ((1 + PowerSeries.X : k⟦X⟧) : k⸨X⸩) * ((inv1 k 1 : k⟦X⟧) : k⸨X⸩) = 1`. Rewrite using `[← map_mul, ← map_one (HahnSeries.ofPowerSeries ℤ k)]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `using powerSeries_oneAddConstMulX_mul_inv k 1`. Establish `h3 : ((1 + PowerSeries.X : k⟦X⟧) : k⸨X⸩) = 1 + vv k` using `by rw [map_add, map_one, vv_eq]`. Rewrite `h2` using `[h3]`. Rewrite using `[map_inv₀, h1, mul_inv, ← eq_inv_of_mul_eq_one_left h2, mul_add, mul_one, inv_mul_cancel₀ (vv_ne k)]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem g_vinv : gE k (vv k)⁻¹ = (vv k)⁻¹ + 1 := by
   have h1 : gE k (vv k) = vv k * ((inv1 k 1 : k⟦X⟧) : k⸨X⸩) := by
@@ -215,7 +215,7 @@ theorem g_vinv : gE k (vv k)⁻¹ = (vv k)⁻¹ + 1 := by
     inv_mul_cancel₀ (vv_ne k)]
 
 /- English proof (translation)
-Rewrite using `[nab_apply]`. Express the relevant statement in the definitionally equal form `(vv k)⁻¹ * (gE k (vv k)⁻¹ - (vv k)⁻¹) = _`. Rewrite using `[g_vinv, add_sub_cancel_left, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem nab_vinv : nab (lin (gA k)) (vv k)⁻¹ = (vv k)⁻¹ := by
   rw [nab_apply]
@@ -223,7 +223,7 @@ theorem nab_vinv : nab (lin (gA k)) (vv k)⁻¹ = (vv k)⁻¹ := by
   rw [g_vinv, add_sub_cancel_left, mul_one]
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `mem_lat.mp hy`. Use `⟨PowerSeries.constantCoeff b, PowerSeries.mk fun p => PowerSeries.coeff (p + 1) b, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const b]`. Rewrite using `[map_add, map_mul, ← vv_eq, HahnSeries.ofPowerSeries_C, smul_eq, algebraMap_eq, zpow_neg_one]`. Take the linear combination `((PowerSeries.mk fun p => PowerSeries.coeff (p + 1) b : k⟦X⟧) : k⸨X⸩) * mul_inv_cancel₀ (vv_ne k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem decomp {y : k⸨X⸩} (hy : y ∈ lat k (-1)) :
     ∃ (c : k) (b : k⟦X⟧), y = c • (vv k)⁻¹ + b := by
@@ -235,23 +235,23 @@ theorem decomp {y : k⸨X⸩} (hy : y ∈ lat k (-1)) :
     mul_inv_cancel₀ (vv_ne k)
 
 /- English proof (translation)
-Rewrite using `[mem_lat]`. Simplify using `only [zpow_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem heckeAlgebra_mapsTo_localisationLatticeSpan {y : k⸨X⸩} : y ∈ lat k 0 ↔ ∃ b : k⟦X⟧, (b : k⸨X⸩) = y := by rw [mem_lat]; simp only [zpow_zero, mul_one]
 
 /- English proof (translation)
-The claim follows from `mem_lat.mpr ⟨1, by rw [map_one, one_mul, zpow_neg_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem vinv_mem : (vv k)⁻¹ ∈ lat k (-1) := mem_lat.mpr ⟨1, by rw [map_one, one_mul, zpow_neg_one]⟩
 
 /- English proof (translation)
-The claim follows from `mem_lat.mpr ⟨PowerSeries.X * b, by rw [map_mul, ← vv_eq, zpow_neg_one, mul_comm (vv k), mul_inv_cancel_right₀ (vv_ne k)]⟩`.
+A detailed English derivation is pending.
 -/
 theorem coe_mem (b : k⟦X⟧) : (b : k⸨X⸩) ∈ lat k (-1) := mem_lat.mpr ⟨PowerSeries.X * b, by
   rw [map_mul, ← vv_eq, zpow_neg_one, mul_comm (vv k), mul_inv_cancel_right₀ (vv_ne k)]⟩
 
 /- English proof (translation)
-Unfold `vv`. Conclude with `inv_eq_of_mul_eq_one_right (by rw [HahnSeries.single_mul_single, add_neg_cancel, mul_one, HahnSeries.single_zero_one])`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vinv_eq : (vv k)⁻¹ = HahnSeries.single (-1) 1 := by
   unfold vv
@@ -259,14 +259,14 @@ theorem vinv_eq : (vv k)⁻¹ = HahnSeries.single (-1) 1 := by
     HahnSeries.single_zero_one])
 
 /- English proof (translation)
-Rewrite using `[vinv_eq, HahnSeries.coeff_add, HahnSeries.coeff_smul, PowerSeries.coeff_coe]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_decomp (c : k) (b : k⟦X⟧) : (c • (vv k)⁻¹ + (b : k⸨X⸩)).coeff (-1) = c := by
   rw [vinv_eq, HahnSeries.coeff_add, HahnSeries.coeff_smul, PowerSeries.coeff_coe]
   simp
 
 /- English proof (translation)
-Take `⟨b₁, hb₁⟩` from `nab_coe (k := k) b`. Use `⟨b₁ - PowerSeries.C x * b, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, Module.algebraMap_end_apply, map_add, map_smul, nab_vinv, hb₁]`. Simplify using `only [smul_eq k, algebraMap_eq, map_sub, map_mul, map_one, HahnSeries.ofPowerSeries_C]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem step (x c : k) (b : k⟦X⟧) : ∃ b' : k⟦X⟧,
     (nab (lin (gA k)) - algebraMap k (Module.End k k⸨X⸩) x) (c • (vv k)⁻¹ + b)
@@ -278,9 +278,9 @@ theorem step (x c : k) (b : k⟦X⟧) : ∃ b' : k⟦X⟧,
   ring
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro c b; exact ⟨b, by simp⟩`. Consider the case `succ m ih`. Introduce `c b`. Take `⟨b₁, hb₁⟩` from `step x c b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b₂, hb₂⟩` from `ih ((1 - x) * c) b₁`. Use `⟨b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, Module.End.mul_apply, hb₁, hb₂, pow_succ, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem steps (x : k) (m : ℕ) : ∀ (c : k) (b : k⟦X⟧), ∃ b' : k⟦X⟧,
     ((nab (lin (gA k)) - algebraMap k (Module.End k k⸨X⸩) x) ^ m) (c • (vv k)⁻¹ + b)
@@ -295,9 +295,9 @@ theorem steps (x : k) (m : ℕ) : ∀ (c : k) (b : k⟦X⟧), ∃ b' : k⟦X⟧,
     rw [pow_succ, Module.End.mul_apply, hb₁, hb₂, pow_succ, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[condC_iff_nab_mem]`. Introduce `y hy`. Take `⟨c, b, rfl⟩` from `decomp hy`. Take `⟨b₁, hb₁⟩` from `nab_coe (k := k) b`. Rewrite using `[map_add, map_smul, nab_vinv, hb₁]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.smul_of_tower_mem _ c vinv_mem) (coe_mem b₁)`.
+A detailed English derivation is pending.
 -/
 theorem condC : CondC (lin (gA k)) (lat k (-1)) := by
   rw [condC_iff_nab_mem]
@@ -308,21 +308,19 @@ theorem condC : CondC (lin (gA k)) (lat k (-1)) := by
   exact Submodule.add_mem _ (Submodule.smul_of_tower_mem _ c vinv_mem) (coe_mem b₁)
 
 /- English proof (translation)
-Establish `key : ∀ S : Submodule k k⸨X⸩, (∀ c : k, c • (vv k)⁻¹ ∈ S) → (∀ y ∈ S, y ∈ lat k (-1)) → Module.finrank k (↥S ⧸ ((lat k 0).restrictScalars k).submoduleOf S) = 1`. Introduce `S h1 h2`. Set `φ : S →ₗ[k] k` to `{ toFun := fun y => (y : k⸨X⸩).coeff (-1) map_add' := fun y z => by simp [HahnSeries.coeff_add] map_smul' := fun c y => by simp [HahnSeries.coeff_smul] }`. Establish `hφ : Function.Surjective φ` using `fun c => ⟨⟨_, h1 c⟩, by show (c • (vv k)⁻¹ : k⸨X⸩).coeff (-1) = c`. Simplify using `using coeff_decomp (k := k) c 0⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hker : LinearMap.ker φ = ((lat k 0).restrictScalars k).submoduleOf S`. Use extensionality with `⟨y, hy⟩`. Rewrite using `[LinearMap.mem_ker, Submodule.submoduleOf, Submodule.mem_comap, Submodule.coe_subtype, Submodule.restrictScalars_mem]`. Express the relevant statement in the definitionally equal form `y.coeff (-1) = 0 ↔ y ∈ lat k 0`. Take `⟨c, b, rfl⟩` from `decomp (h2 _ hy)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Rewrite using `[coeff_decomp]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Rewrite using `[hc, zero_smul, zero_add]`. Conclude with `heckeAlgebra_mapsTo_localisationLatticeSpan.mpr ⟨b, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨a, ha⟩` from `heckeAlgebra_mapsTo_localisationLatticeSpan.mp h`. Establish `h3` using `congrArg (fun z : k⸨X⸩ => z.coeff (-1)) ha`. Simplify using `only [coeff_decomp] at h3`. Rewrite using `[← h3, PowerSeries.coeff_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[← hker, (φ.quotKerEquivOfSurjective hφ).finrank_eq, Module.finrank_self]`. Establish `hQ : sh 1 (lat k (-1)) = lat k 0` using `by rw [sh_lat]; norm_num`. Unfold `sen qmult gmult`. Rewrite using `[hQ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `key` to reduce the goal to its premises. Introduce `c`. Use `Submodule.mem_inf.mpr ⟨Submodule.smul_of_tower_mem _ c vinv_mem, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem 1 ?_` and prove the remaining obligations. Take `⟨b', hb'⟩` from `steps (k := k) 1 1 c 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, Submodule.restrictScalars_mem]`. Establish `e : c • (vv k)⁻¹ = c • (vv k)⁻¹ + ((0 : k⟦X⟧) : k⸨X⸩)` using `by simp`. Rewrite using `[e, hb', sub_self, zero_pow one_ne_zero, zero_mul, zero_smul, zero_add]`. Conclude with `heckeAlgebra_mapsTo_localisationLatticeSpan.mpr ⟨b', rfl⟩`. Introduce `y hy`.
-
-Conclude with `(Submodule.mem_inf.mp hy).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sen_one : sen (lin (gA k)) (lat k (-1)) 1 = 1 := by
   have key : ∀ S : Submodule k k⸨X⸩, (∀ c : k, c • (vv k)⁻¹ ∈ S) → (∀ y ∈ S, y ∈ lat k (-1)) →
@@ -369,21 +367,19 @@ theorem sen_one : sen (lin (gA k)) (lat k (-1)) 1 = 1 := by
     exact (Submodule.mem_inf.mp hy).1
 
 /- English proof (translation)
-Establish `key0 : ∀ (S : Submodule k k⸨X⸩) (P : Submodule k S), P = ⊤ → Module.finrank k (↥S ⧸ P) = 0`. Introduce and unpack `S P rfl`. Establish `: Subsingleton (↥S ⧸ (⊤ : Submodule k S))` using `Submodule.Quotient.subsingleton_iff.mpr rfl`. Conclude with `Module.finrank_zero_of_subsingleton`. Establish `hQ : sh 1 (lat k (-1)) = lat k 0` using `by rw [sh_lat]; norm_num`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `sen qmult gmult`. Rewrite using `[hQ]`. Establish `hst : ∀ z ∈ lat k 0, (nab (lin (gA k)) - algebraMap k (Module.End k k⸨X⸩) x) z ∈ lat k 0`. Introduce `z hz`. Take `⟨a, rfl⟩` from `heckeAlgebra_mapsTo_localisationLatticeSpan.mp hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₁, hb₁⟩` from `nab_coe (k := k) a`. Rewrite using `[LinearMap.sub_apply, Module.algebraMap_end_apply, hb₁]`. Conclude with `Submodule.sub_mem _ (heckeAlgebra_mapsTo_localisationLatticeSpan.mpr ⟨b₁, rfl⟩) (Submodule.smul_of_tower_mem _ x hz)`. Establish `hmono : Monotone fun m : ℕ => ((lat k 0).restrictScalars k).comap ((nab (lin (gA k)) - algebraMap k (Module.End k k⸨X⸩) x) ^ m)`. Use `monotone_nat_of_le_succ fun m y hy => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy`, the goal using `[Submodule.mem_comap, Submodule.restrictScalars_mem]`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hst _ hy`. Apply `key0` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨y, hy⟩ -`. Rewrite using `[Submodule.submoduleOf, Submodule.mem_comap, Submodule.coe_subtype, Submodule.restrictScalars_mem]`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.mp hy`. Take `⟨m, hm⟩` from `(Submodule.mem_iSup_of_directed _ hmono.directed_le).mp hy2`. Rewrite `hm` using `[Submodule.mem_comap, Submodule.restrictScalars_mem]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, b, rfl⟩` from `decomp hy1`. Take `⟨b', hb'⟩` from `steps (k := k) x m c b`. Rewrite `hm` using `[hb']`. Take `⟨a, ha⟩` from `heckeAlgebra_mapsTo_localisationLatticeSpan.mp hm`. Establish `h3` using `congrArg (fun z : k⸨X⸩ => z.coeff (-1)) ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [coeff_decomp] at h3`. Establish `h4 : (1 - x) ^ m * c = 0` using `by rw [← h3, PowerSeries.coeff_coe]; simp`. Establish `hc : c = 0` using `(mul_eq_zero.mp h4).resolve_left (pow_ne_zero m (sub_ne_zero.mpr (Ne.symm hx)))`. Express the relevant statement in the definitionally equal form `c • (vv k)⁻¹ + (b : k⸨X⸩) ∈ lat k 0`. Rewrite using `[hc, zero_smul, zero_add]`.
-
-Conclude with `heckeAlgebra_mapsTo_localisationLatticeSpan.mpr ⟨b, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sen_ne {x : k} (hx : x ≠ 1) : sen (lin (gA k)) (lat k (-1)) x = 0 := by
   have key0 : ∀ (S : Submodule k k⸨X⸩) (P : Submodule k S), P = ⊤ → Module.finrank k (↥S ⧸ P) = 0 := by
@@ -431,13 +427,13 @@ def modModel (p : ℕ) [Fact p.Prime] (n : ℕ) : ModPG (ringModel p) n (ZMod p)
   unitMod _ (gE (ZMod p)).bijective n
 
 /- English proof (translation)
-Establish `hφ : ∀ y : (ZMod p)⸨X⸩, lin (ringModel p).φ y = y ^ p` using `fun y => by`. Express the relevant statement in the definitionally equal form `FiniteField.frobeniusAlgHom (ZMod p) _ y = y ^ p`. Rewrite using `[FiniteField.coe_frobeniusAlgHom, ZMod.card]`. Establish `hpow : (vv (ZMod p) ^ a) ^ p = vv (ZMod p) ^ ((p : ℤ) * a)`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `pull`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨b, rfl⟩` from `mem_lat.mp hy`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[SetLike.mem_coe, hφ, mul_pow, hpow, ← map_pow]`. Conclude with `mem_lat.mpr ⟨b ^ p, rfl⟩`. Unfold `lat pull`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Use `Submodule.subset_span ⟨vv (ZMod p) ^ a, Submodule.mem_span_singleton_self _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, hpow]`.
+A detailed English derivation is pending.
 -/
 theorem pull_lat (p : ℕ) [Fact p.Prime] (a : ℤ) :
     pull (lin (ringModel p).φ) (lat (ZMod p) a) = lat (ZMod p) (p * a) := by
@@ -459,11 +455,11 @@ theorem pull_lat (p : ℕ) [Fact p.Prime] (a : ℤ) :
     rw [hφ, hpow]
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only`. Establish `h1 : pull ((modModel p n).φ i) (lat (ZMod p) a) = lat (ZMod p) (p * a)` using `pull_lat p a`. Prove the components needed by the constructor for the conclusion. Rewrite using `[h1, sh_lat]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, sh_lat]`. Apply `le_of_eq` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem condAB (p : ℕ) [Fact p.Prime] (n : ℕ) (a : ℤ) :
     CondAB (modModel p n).φ (fun _ => (1 - p) * a) (fun _ => (p - 1) * a) (fun _ => lat (ZMod p) a) := by
@@ -481,13 +477,13 @@ theorem condAB (p : ℕ) [Fact p.Prime] (n : ℕ) (a : ℤ) :
     ring
 
 /- English proof (translation)
-The claim follows from `condC (k := ZMod p)`.
+A detailed English derivation is pending.
 -/
 theorem condC_model (p : ℕ) [Fact p.Prime] (n : ℕ) (i : ZMod n) :
     CondC ((modModel p n).γ i) (lat (ZMod p) (-1)) := condC (k := ZMod p)
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `sen_one (k := ZMod p)`. Conclude with `sen_ne (k := ZMod p) h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sen_model (p : ℕ) [Fact p.Prime] (n : ℕ) (i : ZMod n) (x : ZMod p) :
     sen ((modModel p n).γ i) (lat (ZMod p) (-1)) x = if x = 1 then 1 else 0 := by
@@ -497,9 +493,9 @@ theorem sen_model (p : ℕ) [Fact p.Prime] (n : ℕ) (i : ZMod n) (x : ZMod p) :
   · exact sen_ne (k := ZMod p) h
 
 /- English proof (translation)
-Unfold `sg`. Simplify using `only [Nat.cast_ofNat]`. Establish `h : (∑' j : ℕ, (9 : ℝ) / 5 ^ (j + 1)) = 9 / 4`. Establish `e : ∀ j : ℕ, (9 : ℝ) / 5 ^ (j + 1) = 9 / 5 * (5⁻¹ : ℝ) ^ j` using `fun j => by`. Rewrite using `[pow_succ, mul_comm ((5 : ℝ) ^ j) 5, ← div_div, div_eq_mul_inv _ ((5 : ℝ) ^ j), ← inv_pow]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Rewrite using `[tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]`. Evaluate the numerical expressions. Rewrite using `[h]`. Conclude with `(Nat.floor_eq_iff (by norm_num)).mpr ⟨by norm_num, by norm_num⟩`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_test : sg 5 (fun _ : ZMod 1 => 9) 0 = 2 := by
   unfold sg
@@ -517,13 +513,11 @@ section
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `hS : (⨆ m : ℕ, (⊥ : Submodule k U).comap ((T - algebraMap k (Module.End k U) x) ^ m)) = T.maxGenEigenspace x`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun m y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[Submodule.mem_comap, Submodule.mem_bot, Algebra.algebraMap_eq_smul_one]`. Conclude with `(Module.End.mem_maxGenEigenspace T x y).mpr ⟨m, hy⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace T x y).mp hy`. Use `Submodule.mem_iSup_of_mem m ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, Submodule.mem_bot, Algebra.algebraMap_eq_smul_one]`. Conclude with `hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `gmult`. Rewrite using `[top_inf_eq, hS]`. Establish `hb : (⊥ : Submodule k U).submoduleOf (T.maxGenEigenspace x) = ⊥`. Use extensionality with `y`. Simplify using `[Submodule.submoduleOf]`.
-
-Rewrite using `[hb]`. Conclude with `(Submodule.quotEquivOfEqBot _ rfl).finrank_eq`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmult_top_bot {U : Type} [AddCommGroup U] [Module k U] (T : Module.End k U) (x : k) :
     gmult T ⊤ ⊥ x = Module.finrank k (T.maxGenEigenspace x) := by
@@ -547,13 +541,13 @@ theorem gmult_top_bot {U : Type} [AddCommGroup U] [Module k U] (T : Module.End k
   exact (Submodule.quotEquivOfEqBot _ rfl).finrank_eq
 
 /- English proof (translation)
-Use `⟨fun R => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `R.φ_v`. Rewrite `hu` using `[pow_zero, mul_one]`. Establish `hc0 : PowerSeries.constantCoeff (u : k⟦X⟧) ≠ 0` using `(PowerSeries.isUnit_iff_constantCoeff.mp u.isUnit).ne_zero`. Establish `ha : IsUnit (PowerSeries.X - PowerSeries.C (PowerSeries.constantCoeff (u : k⟦X⟧)) : k⟦X⟧)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`. Simplify using `using hc0`. Take `⟨w, hw⟩` from `ha`. Take `⟨b, hb⟩` from `R.φ_int ((w⁻¹ : (k⟦X⟧)ˣ) : k⟦X⟧)`. Establish `h1 : R.φ ((PowerSeries.X - PowerSeries.C (PowerSeries.constantCoeff (u : k⟦X⟧)) : k⟦X⟧) : k⸨X⸩) = (((u : k⟦X⟧) - PowerSeries.C (PowerSeries.constantCoeff (u : k⟦X⟧)) : k⟦X⟧) : k⸨X⸩)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_sub, ← vv_eq, hu, HahnSeries.ofPowerSeries_C, ← algebraMap_eq, AlgHom.commutes]`. Establish `h2 : R.φ ((PowerSeries.X - PowerSeries.C (PowerSeries.constantCoeff (u : k⟦X⟧)) : k⟦X⟧) : k⸨X⸩) * R.φ ((((w⁻¹ : (k⟦X⟧)ˣ) : k⟦X⟧)) : k⸨X⸩) = 1`. Rewrite using `[← map_mul, ← map_mul, ← hw, Units.mul_inv, map_one, map_one]`. Rewrite `h2` using `[h1, hb, ← map_mul, ← map_one (HahnSeries.ofPowerSeries ℤ k)]`. Establish `h3` using `congrArg PowerSeries.constantCoeff (HahnSeries.ofPowerSeries_injective h2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at h3`.
+Simplify using the standard rewrite rules.
 -/
 theorem isEmpty_ringPG_zero : IsEmpty (RingPG k 0) := by
   refine ⟨fun R => ?_⟩
@@ -601,11 +595,11 @@ def twistMod {l : ℕ} (R : RingPG k l) (hγ : Function.Bijective R.γ) (n : ℕ
 end
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only`. Establish `h1 : pull ((modModel p n).φ i) (lat (ZMod p) (a (i - 1))) = lat (ZMod p) (p * a (i - 1))` using `pull_lat p (a (i - 1))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[h1, sh_lat]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, sh_lat]`. Apply `le_of_eq` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem condAB_var (p : ℕ) [Fact p.Prime] (n : ℕ) (a : ZMod n → ℤ) :
     CondAB (modModel p n).φ (fun i => a i - p * a (i - 1)) (fun i => p * a (i - 1) - a i)
@@ -625,9 +619,9 @@ theorem condAB_var (p : ℕ) [Fact p.Prime] (n : ℕ) (a : ZMod n → ℤ) :
     ring
 
 /- English proof (translation)
-Unfold `sg`. Simplify using `only [Nat.cast_ofNat]`. Establish `h : (∑' j : ℕ, (4 : ℝ) / 5 ^ (j + 1)) = 1`. Establish `e : ∀ j : ℕ, (4 : ℝ) / 5 ^ (j + 1) = 4 / 5 * (5⁻¹ : ℝ) ^ j` using `fun j => by`. Rewrite using `[pow_succ, mul_comm ((5 : ℝ) ^ j) 5, ← div_div, div_eq_mul_inv _ ((5 : ℝ) ^ j), ← inv_pow]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Rewrite using `[tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]`. Evaluate the numerical expressions. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sg_sharp : sg 5 (fun _ : ZMod 3 => 4) 0 = 1 := by
   unfold sg

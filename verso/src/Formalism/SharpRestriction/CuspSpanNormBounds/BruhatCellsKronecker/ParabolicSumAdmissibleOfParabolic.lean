@@ -17,7 +17,7 @@ variable {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Nor
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem hsNormSq_eq_sum (A : Wq →L[ℂ] Wp) :
     hsNormSq A = ∑ i, ‖A (stdOrthonormalBasis ℂ Wq i)‖ ^ 2 := by
@@ -28,7 +28,7 @@ theorem hsNormSq_eq_sum (A : Wq →L[ℂ] Wp) :
   norm_cast
 
 /- English proof (translation)
-Rewrite using `[hsNormSq_eq_sum]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem hsNormSq_nonneg (A : Wq →L[ℂ] Wp) : 0 ≤ hsNormSq A := by
   rw [hsNormSq_eq_sum]; positivity
@@ -37,14 +37,14 @@ def hsVec (A : Wq →L[ℂ] Wp) : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) =>
   WithLp.toLp 2 (fun i => A (stdOrthonormalBasis ℂ Wq i))
 
 /- English proof (translation)
-Rewrite using `[hsNormSq_eq_sum, PiLp.norm_sq_eq_of_L2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hsVec_norm_sq (A : Wq →L[ℂ] Wp) : ‖hsVec A‖ ^ 2 = hsNormSq A := by
   rw [hsNormSq_eq_sum, PiLp.norm_sq_eq_of_L2]
   rfl
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[hsVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hsVec_sum_smul {ι : Type} [Fintype ι] (a : ι → ℂ) (X : ι → (Wq →L[ℂ] Wp)) :
     hsVec (∑ i, a i • X i) = ∑ i, a i • hsVec (X i) := by
@@ -52,9 +52,9 @@ theorem hsVec_sum_smul {ι : Type} [Fintype ι] (a : ι → ℂ) (X : ι → (Wq
   simp [hsVec]
 
 /- English proof (translation)
-Establish `h1 : ‖hsVec (∑ i, a i • X i)‖ ≤ (∑ i, ‖a i‖) * Real.sqrt K`. Rewrite using `[hsVec_sum_smul, Finset.sum_mul]`. Use `le_trans (norm_sum_le _ _) (Finset.sum_le_sum (fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[norm_smul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Rewrite using `[hsVec_norm_sq]`. Conclude with `h i`. Rewrite using `[← hsVec_norm_sq]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hsNormSq_sum_le {ι : Type} [Fintype ι] (a : ι → ℂ) (X : ι → (Wq →L[ℂ] Wp)) (K : ℝ) (hK : 0 ≤ K)
     (h : ∀ i, hsNormSq (X i) ≤ K) : hsNormSq (∑ i, a i • X i) ≤ K * (∑ i, ‖a i‖) ^ 2 := by
@@ -71,7 +71,7 @@ theorem hsNormSq_sum_le {ι : Type} [Fintype ι] (a : ι → ℂ) (X : ι → (W
     _ = K * (∑ i, ‖a i‖) ^ 2 := by rw [mul_pow, Real.sq_sqrt hK]; ring
 
 /- English proof (translation)
-Rewrite using `[hsNormSq_eq_sum, hsNormSq_eq_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[_root_.smul_apply, norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hsNormSq_real_smul (c : ℝ) (A : Wq →L[ℂ] Wp) : hsNormSq (((c : ℝ) : ℂ) • A) = c ^ 2 * hsNormSq A := by
   rw [hsNormSq_eq_sum, hsNormSq_eq_sum, Finset.mul_sum]
@@ -85,11 +85,11 @@ section Rec
 variable (D : D7) (large₂ : SizeData₂ D)
 
 /- English proof (translation)
-Unfold `jhUnit`. Rewrite using `[hsNormSq_real_smul]`. Distinguish the cases in `hM : (MMv D w w' A μsec).toReal = 0`. Rewrite using `[hM, Real.zero_rpow (by norm_num)]`. Simplify using `using hB`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hpos : 0 < (MMv D w w' A μsec).toReal` using `lt_of_le_of_ne ENNReal.toReal_nonneg (Ne.symm hM)`. Establish `htop : MMv D w w' A μsec ≠ ⊤` using `fun e => hM (by rw [e]; rfl)`. Rewrite `h` using `[← ENNReal.ofReal_toReal htop, ← ENNReal.ofReal_mul hB]`. Establish `h2 : wt * hsNormSq (A.J νR γ) ≤ B * (MMv D w w' A μsec).toReal` using `(ENNReal.ofReal_le_ofReal_iff (mul_nonneg hB hpos.le)).1 h`. Establish `h3 : ((MMv D w w' A μsec).toReal ^ (-(1 / 2 : ℝ))) ^ 2 = ((MMv D w w' A μsec).toReal)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hpos.le, ← Real.rpow_neg_one]`. Evaluate the numerical expressions. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem jhUnit_le {W : LocW D.R.k D.R.rS} (w w' : D.what₂.Word) (A : LocS W)
     (μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ) (νR : Measure (Mt D.R.k D.R.rS))
@@ -117,11 +117,11 @@ theorem jhUnit_le {W : LocW D.R.k D.R.rS} (w w' : D.what₂.Word) (A : LocS W)
       _ = B := by field_simp
 
 /- English proof (translation)
-Introduce `h0 τ w w' hTT θ hθ W hW ι _ lams As a hl μsec hsec γ p hrel θ' hθ' νR hν`. Establish `hb : 0 < large₂.sc.b` using `Real.exp_pos _`. Use `set B : ℝ := large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 4) * (max 1 (Gf D.R.k D.R.rS W.z W.z' γ)⁻¹) ^ (C * (D.R.m : ℝ) ^ 2) with hBdef`. Establish `hB : 0 ≤ B`. Establish `: (0 : ℝ) < max 1 (Gf D.R.k D.R.rS W.z W.z' γ)⁻¹` using `lt_of_lt_of_le one_pos (le_max_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Use `set wt : ℝ := ptWeight D.R.k D.R.rS (Tr D w) (Tr D w') p with hwt`. Establish `hi : ∀ i, wt * hsNormSq (jhUnit D w w' (As i) μsec νR γ) ≤ B` using `fun i => jhUnit_le D w w' (As i) μsec νR γ wt B hB (h h0 τ w w' hTT θ hθ W hW (lams i) (hl i).1 (As i) (hl i).2 μsec hsec γ p hrel θ' hθ' νR hν)`. Break down `le_or_gt wt 0 with hw | hw` into its components or cases. Conclude with `le_trans (mul_nonpos_of_nonpos_of_nonneg hw (hsNormSq_nonneg _)) (by positivity)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi' : ∀ i, hsNormSq (jhUnit D w w' (As i) μsec νR γ) ≤ B / wt` using `fun i => by`. Rewrite using `[le_div_iff₀ hw, mul_comm]`. Conclude with `hi i`. Use `hsNormSq_sum_le a (fun i => jhUnit D w w' (As i) μsec νR γ) (B / wt) (by positivity) hi'` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem stPTsum_of_stPT (C' Cl Cg cb Cu cT CT C0 Cn C1 C : ℝ)
     (h : stPT D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 C) : stPTsum D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 C := by
@@ -152,7 +152,7 @@ section Fam
 variable {eps : ℝ} (Fm : FamP eps)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h`. Conclude with `⟨C, fun Cn => (hC Cn).mono (fun C' Cl x i => stPTsum_of_stPT _ _ C' Cl Cg cb Cu cT CT C0 Cn C1 C)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ptsumF_of_ptF (Cg cb Cu cT CT C0 C1 : ℝ)
     (h : ∃ C, ∀ Cn, OwnEv Fm fun C' Cl x i => stPT (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 Cn C1 C) :
@@ -161,26 +161,26 @@ theorem ptsumF_of_ptF (Cg cb Cu cT CT C0 C1 : ℝ)
   exact ⟨C, fun Cn => (hC Cn).mono (fun C' Cl x i => stPTsum_of_stPT _ _ C' Cl Cg cb Cu cT CT C0 Cn C1 C)⟩
 
 /- English proof (translation)
-The claim follows from `ptsumF_of_ptF Fm Cg cb Cu cT CT C0 C1 h`.
+A detailed English derivation is pending.
 -/
 theorem PTsum_of_PT (Cg cb Cu cT CT C0 C1 : ℝ) (h : AuxiliaryNormPrimes.FamilyPlancherelOneParameter Fm Cg cb Cu cT CT C0 C1) :
     PX.PTsum Fm Cg cb Cu cT CT C0 C1 := ptsumF_of_ptF Fm Cg cb Cu cT CT C0 C1 h
 
 /- English proof (translation)
-The claim follows from `ptsumF_of_ptF Fm Cg cb Cu cT CT C0 C1 h`.
+A detailed English derivation is pending.
 -/
 theorem parabolic_sum_of_parabolic_family (Cg cb Cu cT CT C0 C1 : ℝ) (h : VanishingOnXAndXPlusBranching.admF1 Fm Cg cb Cu cT CT C0 C1) :
     PX.PTsum Fm Cg cb Cu cT CT C0 C1 := ptsumF_of_ptF Fm Cg cb Cu cT CT C0 C1 h
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0 C1` and use `PTsum_of_PT Fm Cg cb Cu cT CT C0 C1 (h Cg cb Cu cT CT C0 C1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PTsum_all (h : ∀ Cg cb Cu cT CT C0 C1, AuxiliaryNormPrimes.FamilyPlancherelOneParameter Fm Cg cb Cu cT CT C0 C1) :
     ∀ Cg cb Cu cT CT C0 C1, PX.PTsum Fm Cg cb Cu cT CT C0 C1 :=
   fun Cg cb Cu cT CT C0 C1 => PTsum_of_PT Fm Cg cb Cu cT CT C0 C1 (h Cg cb Cu cT CT C0 C1)
 
 /- English proof (translation)
-The claim follows from `ptsumF_of_ptF Fm Cg cb Cu cT CT C0 C1 h`.
+A detailed English derivation is pending.
 -/
 theorem parabolic_sum_admissible_of_parabolic (Cg cb Cu cT CT C0 C1 : ℝ) (h : AuxiliaryNormPrimes.FamilyPlancherelOneParameter Fm Cg cb Cu cT CT C0 C1) :
     AuxiliaryNormPrimes.FamilyPlancherelFiniteSums Fm Cg cb Cu cT CT C0 C1 := ptsumF_of_ptF Fm Cg cb Cu cT CT C0 C1 h

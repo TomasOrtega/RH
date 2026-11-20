@@ -12,7 +12,7 @@ import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.MapmapSu
 namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨minimal_exponent_attained, ceil, rVal, binom, filtPow, valNN, ll3, betaCount, iBound, aCount, cTBTable, reindex, genM, kappa⟩`.
+Supply the required witnesses or components.
 -/
 theorem torsion_bound_arithmetic_lemmas : MinimalExponentAttained ∧ StatCeil ∧ StatRVal ∧ StatBinom ∧ StatFiltPow ∧ StatValNN ∧ StatLL3 ∧
     StatBetaCount ∧ StatIBound ∧ StatACount ∧ StatCTBTable ∧ StatReindex ∧ StatGenM ∧ StatKappa :=
@@ -20,7 +20,7 @@ theorem torsion_bound_arithmetic_lemmas : MinimalExponentAttained ∧ StatCeil �
     kappa⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨t2, inverse_operator_from_injectivity, injectivity_passes_to_completion, onePlus, t3, unit_congruence_gives_perturbation, lemmaA, eigen, htpoly, eigenInj, devSum, killSum, cores, twistKill, kill3, free3, bkSubspace, bkb, bkc, tbcB, h2_killed_by_tate_duality, freeAlg, freePiece, …`.
+Supply the required witnesses or components.
 -/
 theorem torsion_bound_intermediate_lemmas : InjectivityOnLayerOfPower ∧ InverseOperatorFromInjectivity ∧ InjectivityPassesToCompletion ∧ StatOnePlus ∧ PerturbationOperatorIntegral ∧ AdicPerturbationFixedFreeAndCoboundary ∧
     StatLemmaA ∧ StatEigen ∧ StatHTpoly ∧ StatEigenInj ∧ StatDevSum ∧ StatKillSum ∧ StatCores ∧
@@ -32,30 +32,30 @@ theorem torsion_bound_intermediate_lemmas : InjectivityOnLayerOfPower ∧ Invers
     halving, freeK, idealStep, filtStep, frobenius_power_congruence_holds, nilDiv, charSum, rValues⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨lemmaAMat, sandwichAA, sandwichOC, wSandwich, w3Um, twistUm, unitCongruenceGivesPerturbation_statement⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypothesis_W_sandwich_consequences : StatLemmaAMat ∧ StatSandwichAA ∧ StatSandwichOC ∧ StatWSandwich ∧ GammaIterateMatrixCongruence ∧
     StatTwistUm ∧ UnitCongruenceGivesPerturbation :=
   ⟨lemmaAMat, sandwichAA, sandwichOC, wSandwich, w3Um, twistUm, unitCongruenceGivesPerturbation_statement⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hypWComm, wSandwich', wFix, wCocycle, wGam, wUm, wEnd⟩`.
+Supply the required witnesses or components.
 -/
 theorem corrected_hypothesis_W_consequences : StatHypWComm ∧ StatWSandwich' ∧ StatWFix ∧ StatWCocycle ∧ StatWGam ∧ StatWUm ∧ StatWEnd :=
   ⟨hypWComm, wSandwich', wFix, wCocycle, wGam, wUm, wEnd⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨wActU, wAct, xNzd, wChain, wD⟩`.
+Supply the required witnesses or components.
 -/
 theorem galois_action_on_module_D : StatWActU ∧ StatWAct ∧ StatXNzd ∧ StatWChain ∧ StatWD := ⟨wActU, wAct, xNzd, wChain, wD⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨freeGm', freeKTop⟩`.
+Supply the required witnesses or components.
 -/
 theorem free_part_over_cyclotomic_group : StatFreeGm' ∧ StatFreeKTop := ⟨freeGm', freeKTop⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨piece, ll, freeGm, h0, H0_length_bound_holds, tb, tbFull, tbLen, topsAtM⟩`.
+Supply the required witnesses or components.
 -/
 theorem free_part_H0_and_TB_theorems : StatPiece ∧ StatLL ∧ StatFreeGm ∧ InvariantsKilledByPower ∧ InvariantsLengthBound ∧ StatTB ∧ StatTBFull ∧
     StatTBLen ∧ StatTopsAtM :=

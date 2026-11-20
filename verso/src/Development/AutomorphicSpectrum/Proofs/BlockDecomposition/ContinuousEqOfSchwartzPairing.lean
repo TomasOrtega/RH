@@ -8,25 +8,25 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SBSep
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨z₀, hz₀⟩` from `Function.ne_iff.1 hne`. Use `set D : K → ℂ := fun z => P z - Q z with hDdef`. Establish `hDc : Continuous D` using `hP.sub hQ`. Establish `hD0 : D z₀ ≠ 0` using `sub_ne_zero.2 hz₀`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : 0 < ‖D z₀‖` using `norm_pos_iff.2 hD0`. Establish `hW : {x : K | ‖D (z₀ + x) - D z₀‖ < ‖D z₀‖ / 2} ∩ (valBall K 0 : Set K) ∈ 𝓝 (0 : K)`. Use `Filter.inter_mem ?_ (valBall_mem_nhds 0)` and prove the remaining obligations. Establish `hc : Continuous fun x : K => ‖D (z₀ + x) - D z₀‖` using `by fun_prop`. Use `(isOpen_lt hc continuous_const).mem_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using half_pos hn`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ hW`. Set `B : Set K` to `(fun z => z - z₀) ⁻¹' (V : Set K)`. Establish `hBo : IsOpen B` using `V.isOpen.preimage (by fun_prop)`. Establish `hBcl : IsClosed B` using `V.isClosed.preimage (by fun_prop)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVc : IsCompact (V : Set K)` using `(isCompact_valBall 0).of_isClosed_subset V.isClosed (fun x hx => (hV hx).2)`. Establish `hBc : IsCompact B` using `(Homeomorph.subRight z₀).isCompact_preimage.2 hVc`. Establish `hB0 : z₀ ∈ B`. Express the relevant statement in the definitionally equal form `z₀ - z₀ ∈ (V : Set K)`. Rewrite using `[sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem V`. Establish `hBm : MeasurableSet B` using `hBo.measurableSet`. Establish `hμ : 0 < μ B` using `hBo.measure_pos μ ⟨z₀, hB0⟩`. Establish `hμt : μ B < ⊤` using `hBc.measure_lt_top`. Set `Φ : K → ℂ` to `B.indicator fun _ => 1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : Φ ∈ SBE K` using `⟨(LocallyConstant.indicator (LocallyConstant.const K (1 : ℂ)) ⟨hBcl, hBo⟩).isLocallyConstant, HasCompactSupport.intro hBc fun x hx => Set.indicator_of_notMem hx _⟩`. Establish `hI : ∀ R : K → ℂ, ∫ z, Φ z * R z ∂μ = ∫ z in B, R z ∂μ`. Introduce `R`. Rewrite using `[← integral_indicator hBm]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `z`. Apply the tactic sequence `by_cases hz : z ∈ B <;> simp [Φ, hz]`. Establish `hPB : IntegrableOn P B μ` using `hP.continuousOn.integrableOn_compact hBc`. Establish `hQB : IntegrableOn Q B μ` using `hQ.continuousOn.integrableOn_compact hBc`. Establish `hDB : IntegrableOn D B μ` using `hDc.continuousOn.integrableOn_compact hBc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∫ z in B, D z ∂μ = 0`. Establish `h1` using `h Φ hΦ`. Rewrite `h1` using `[hI, hI]`. Rewrite using `[hDdef, integral_sub hPB hQB, h1, sub_self]`. Establish `hconst : ∫ z in B, (D z - D z₀) ∂μ = -(μ.real B • D z₀)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_sub hDB (integrableOn_const hμt.ne), h0, setIntegral_const, zero_sub]`. Establish `hle : ‖∫ z in B, (D z - D z₀) ∂μ‖ ≤ (‖D z₀‖ / 2) * μ.real B`. Use `norm_setIntegral_le_of_norm_le_const hμt fun z hz => ?_` and prove the remaining obligations. Establish `h2` using `(hV (show z - z₀ ∈ (V : Set K) from hz)).1`. Establish `h3 : ‖D (z₀ + (z - z₀)) - D z₀‖ < ‖D z₀‖ / 2` using `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[add_sub_cancel]`. Conclude with `h3.le`. Establish `hpos : 0 < μ.real B` using `ENNReal.toReal_pos hμ.ne' hμt.ne`. Rewrite `hle` using `[hconst, norm_neg, norm_smul, Real.norm_of_nonneg hpos.le]`. Use polynomial arithmetic with `[mul_pos hpos hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eq_of_integral_SBE_eq (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K)

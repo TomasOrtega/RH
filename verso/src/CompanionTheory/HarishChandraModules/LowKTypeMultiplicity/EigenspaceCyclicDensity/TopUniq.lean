@@ -6,7 +6,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.Ord
 namespace CompanionTheory.D.LK
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSUniq.ds_unique hMultAlg hKModExists hOrthCyc`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_unique_of : DSUniqP := GlobalTheory.CompanionTheory.DSUniq.ds_unique hMultAlg hKModExists hOrthCyc
 

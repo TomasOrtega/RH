@@ -12,9 +12,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
   GlobalTheory.ExpTie
 namespace GlobalTheory.ExpTie
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps heps _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `Formalism.CohomologicalDescent.LargeParameterEstimates.eventually_large_parameter_bound eps (2 * |Fm.Ct| + 2) heps`. Use `⟨max x0 2, fun x hx hle i _ _ _ j => ?_⟩` and prove the remaining obligations. Establish `hCt` using `Fm.Ct_eq x i`. Use `⟨(Fm.L x i).sc.X', x ^ (2 * |Fm.Ct| + 2), rows_big_of_largeParameter (Fm.L x i) (Fm.params x hx i) j eps _ x (Fm.L_x x i hx) (Fm.L_eps x i) ?_ ?_ ((le_max_right _ _).trans hle) (hx0 x ((le_max_left _ _).trans hle))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hCt]`. Combine the linear relations using `[le_abs_self Fm.Ct]`. Rewrite using `[hCt]`. Combine the linear relations using `[le_abs_self Fm.Ct, abs_nonneg Fm.Ct]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rows_big_alt : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ j : Fin (Fm.D x i).R.m, ∃ X' A : ℝ,
     Formalism.CohomologicalDescent.LargeParameterEstimates.Rows (GlobalTheory.ExpTie.parOf (Fm.L x i) j) X' A ∧

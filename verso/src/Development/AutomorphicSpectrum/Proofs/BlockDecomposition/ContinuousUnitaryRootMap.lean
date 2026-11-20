@@ -13,7 +13,7 @@ section Cont
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero σ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero L _).tendsto_iff (Valued.hasBasis_nhds_zero L _)]`. Use `fun γ _ => ⟨γ, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Rewrite using `[show Valued.v.restrict (σ x) = Valued.v.restrict x from (Valuation.restrict_inj _).2 (hv x)]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_of_v_eq (σ : L →+* L) (hv : ∀ x, Valued.v (σ x) = Valued.v x) : Continuous σ := by
   refine continuous_of_continuousAt_zero σ ?_
@@ -23,14 +23,14 @@ theorem continuous_of_v_eq (σ : L →+* L) (hv : ∀ x, Valued.v (σ x) = Value
   rwa [show Valued.v.restrict (σ x) = Valued.v.restrict x from (Valuation.restrict_inj _).2 (hv x)]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU] <;> first | exact continuous_id | exact continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_nU_val : Continuous fun x : L => ((nU x : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) := by
   refine continuous_matrix fun i j => ?_
   fin_cases i <;> fin_cases j <;> simp [nU] <;> first | exact continuous_id | exact continuous_const
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU, Units.inv_mk] <;> first | exact continuous_id | exact continuous_const | exact continuous_neg`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_nU_inv_val :
     Continuous fun x : L => (((nU x)⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) := by
@@ -39,7 +39,7 @@ theorem continuous_nU_inv_val :
     first | exact continuous_id | exact continuous_const | exact continuous_neg
 
 /- English proof (translation)
-Unfold `partner cT`. Conclude with `(continuous_const.matrix_mul (continuous_nU_inv_val.matrix_map hc).matrix_transpose).matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_partner_nU (σ : L →+* L) (hc : Continuous σ) :
     Continuous fun x : L => partner σ (nU x) := by
@@ -48,7 +48,7 @@ theorem continuous_partner_nU (σ : L →+* L) (hc : Continuous σ) :
     (continuous_nU_inv_val.matrix_map hc).matrix_transpose).matrix_mul continuous_const
 
 /- English proof (translation)
-Simplify using `only [uR, rootHom_val, blockM]`. Conclude with `(continuous_const.add (((continuous_const.matrix_mul (continuous_nU_val.sub continuous_const))).matrix_mul continuous_const)).add ((continuous_const.matrix_mul ((continuous_partner_nU σ hc).sub continuous_const)).matrix_mul continuous_const)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_uR_val (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (hc : Continuous σ) (a : ℕ)
     (h : 2 * (a + 2) ≤ n) :
@@ -60,9 +60,9 @@ theorem continuous_uR_val (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (hc : Co
     ((continuous_partner_nU σ hc).sub continuous_const)).matrix_mul continuous_const)
 
 /- English proof (translation)
-Establish `h0 : uR σ hσ a h (0 : L) = 1`. Establish `e : nU (0 : L) = 1`. Apply the tactic sequence `ext p r; fin_cases p <;> fin_cases r <;> simp [nU]`. Simplify using `only [uR, e, map_one]`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← uR_add, add_neg_cancel, h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uR_neg (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (x : L) :
     (uR σ hσ a h x)⁻¹ = uR σ hσ a h (-x) := by
@@ -74,9 +74,9 @@ theorem uR_neg (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * 
   rw [← uR_add, add_neg_cancel, h0]
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q n hU a h`. Establish `hc : Continuous σ` using `continuous_of_v_eq σ hU.2.1`. Use `Continuous.subtype_mk (f := fun x => ((uR σ hU.1 a h x : GU σ n) : GL (Fin n) L)) ?_ _` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨continuous_uR_val σ hU.1 hc a h, ?_⟩` and prove the remaining obligations. Establish `e : ∀ x : L, ((((uR σ hU.1 a h x : GU σ n) : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = (((uR σ hU.1 a h (-x) : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← uR_neg, Subgroup.coe_inv]`. Simplify using `only [e]`. Conclude with `(continuous_uR_val σ hU.1 hc a h).comp continuous_neg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_uR : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L)
     (q n : ℕ) (hU : IsUnramInv ϖ σ q) (a : ℕ) (h : 2 * (a + 2) ≤ n),

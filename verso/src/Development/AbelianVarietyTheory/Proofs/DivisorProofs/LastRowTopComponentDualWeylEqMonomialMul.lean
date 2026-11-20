@@ -8,7 +8,7 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BranchingDeterminan
 namespace GlobalTheory.BrCompare
 
 /- English proof (translation)
-Use `⟨C c * ∏ a : Fin n, ∏ s : Fin n, X (a, s) ^ μ (a.castSucc, s), ?_⟩` and prove the remaining obligations. Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_prod_type, Fin.prod_univ_castSucc]`. Simplify using `only [hμ, zmon, emb, map_mul, map_prod, map_pow, rename_X, rename_C]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem monomial_eq_zmon_mul_emb {K : Type} [Field K] {n : ℕ} (b : Fin n → ℕ) (μ : Fin (n + 1) × Fin n →₀ ℕ)
     (hμ : ∀ s, μ (Fin.last n, s) = b s) (c : K) :
@@ -19,9 +19,9 @@ theorem monomial_eq_zmon_mul_emb {K : Type} [Field K] {n : ℕ} (b : Fin n → �
   ring
 
 /- English proof (translation)
-Establish `h : ∀ μ ∈ H.support, ∃ f, (monomial μ (coeff μ H) : BP K n) = zmon K n b * emb K n f`. Introduce `μ hμ`. Use `monomial_eq_zmon_mul_emb b μ (fun s => ?_) _` and prove the remaining obligations. Establish `h1` using `congrFun (hH (mem_support_iff.1 hμ)) s`. Rewrite `h1` using `[bm_weight_zW]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1` after adjusting the coercions. Use `choose! g hg using h`. Use `⟨∑ μ ∈ H.support, g μ, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.mul_sum, ← Finset.sum_congr rfl hg]`. Conclude with `H.as_sum`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zmon_mul_emb_of_homogeneous {K : Type} [Field K] {n : ℕ} (b : Fin n → ℕ) (H : BP K n)
     (hH : IsWeightedHomogeneous (zW n) H (fun s => (b s : ℤ))) : ∃ f, H = zmon K n b * emb K n f := by
@@ -37,7 +37,7 @@ theorem eq_zmon_mul_emb_of_homogeneous {K : Type} [Field K] {n : ℕ} (b : Fin n
   exact H.as_sum
 
 /- English proof (translation)
-Establish `hz : zmon K n b ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => pow_ne_zero _ (X_ne_zero _)`. Use `rename_injective (fun v : Fin n × Fin n => ((v.1.castSucc, v.2) : Fin (n + 1) × Fin n)) ?_ (mul_left_cancel₀ hz h)` and prove the remaining obligations. Conclude with `(Fin.castSucc_injective n).prodMap Function.injective_id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem zmon_mul_emb_injective {K : Type} [Field K] {n : ℕ} (b : Fin n → ℕ) {f g : MvPolynomial (Fin n × Fin n) K}
     (h : zmon K n b * emb K n f = zmon K n b * emb K n g) : f = g := by
@@ -47,11 +47,11 @@ theorem zmon_mul_emb_injective {K : Type} [Field K] {n : ℕ} (b : Fin n → ℕ
   exact (Fin.castSucc_injective n).prodMap Function.injective_id
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `eq_zmon_mul_emb_of_homogeneous b _ (bmD_zcomp_isWH (fun s => (b s : ℤ)) G)`. Use `⟨f, bm_mem_dualWeyl_iff.2 ⟨fun s => ?_, fun l j hlj => ?_⟩, hf⟩` and prove the remaining obligations. Establish `h` using `bmD_weight lam G hG (fun s => (b s : ℤ)) s`. Rewrite `h` using `[hf, bmE_lead, bm_ndE_self]`. Apply `zmon_mul_emb_injective b` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, map_smul, mul_smul_comm, Nat.cast_sub (hb s)]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h` using `bmD_raise lam G hG (fun s => (b s : ℤ)) hmax l j hlj`. Rewrite `h` using `[hf, bmE_lead]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `zmon_mul_emb_injective b` to reduce the goal to its premises. Rewrite using `[h, map_zero, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem zcomp_top_eq_zmon_mul_emb (K : Type) [Field K] [CharZero K] (n : ℕ) (lam : Fin n → ℕ) (G : BP K n)
     (hG : G ∈ dualWeyl K (n + 1) n lam) (b : Fin n → ℕ) (hb : ∀ s, b s ≤ lam s)

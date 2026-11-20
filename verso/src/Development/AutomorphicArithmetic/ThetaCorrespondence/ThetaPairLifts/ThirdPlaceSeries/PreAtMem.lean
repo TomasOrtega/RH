@@ -52,11 +52,11 @@ structure Core0Alt (D : D7) : Prop where
   bc : SphericalInertData.Conclusion1 D
   lam : GlobalTheory.NRows.LamUsed D
 /- English proof (translation)
-Introduce `hP hc hd hs hF hT hE hL D I hJ`. Establish `R : _root_.GlobalTheory.NRows.PointConditions' D` using `_root_.GlobalTheory.T.theta_conditions_of_inputs_of_jumpsCard hP hc hd hL D I hJ`. Establish `at' : _root_.Formalism.MainNotions.SumRepresentations.AdmAtAlt D` using `I.admAt R.a R.b`. Establish `p1 : _root_.Formalism.MainNotions.SumRepresentations.provisionFirst D` using `I.Conclusion1 (_root_.UpperTheory.GalS.Parts.main_alt_alt D) R.a R.b`. Establish `g3 : _root_.UpperTheory.GalS.AdmissibleResidualTameEigenvalues D` using `_root_.GlobalTheory.AdmTame.main_alt_alt_alt D R.a.tie0 R.a.a2 R.a.a5 (_root_.GlobalTheory.TieLabAt.main_alt_alt hL D I.P).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rb : ResidualIrreducibleRankR D` using `_root_.Formalism.MainNotions.AdmissibleThreePrime.residual_irreducible_of_theorem_three_prime_alt D ⟨R.a.tieLab, g3⟩ R.a.a5 (GlobalTheory.BrauerNesbittIrr.litBNIrr _) R.c.rho R.c.dz`. Establish `adm : _root_.Formalism.MainNotions.SumRepresentations.AdmissibleDatum D` using `⟨at', (residualIrreducibility_forms_equivalent D).2 rb, I.isot⟩`. Establish `z : SumRepresentations.ConclusionZ D` using `(SumRepresentations.multiplicity_statement_iff_reduced D I.isot p1.2.2).2 (_root_.GlobalTheory.T.reducedMultiplicity_of_inputs hL D I R)`. Establish `wt : GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.WeightParam D` using `_root_.GlobalTheory.T.weight_param_of_character_choice hL D I.P`. Establish `bl : GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.BlockCharParam D` using `GlobalTheory.BlockCharInf.main D I.P.cf I.P.C I.P.tp I.P.chr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rm : ∀ i : D.nd.Loc, Nonempty (RowMod D I.P.rep (D.nd.j i))` using `fun i => by`. Establish `hj` using `D.nd.j_range i`. Take `⟨Y, -⟩` from `_root_.GlobalTheory.RowModCanon.main_alt_alt hc hd hL D I.P I.X I.agree ⟨D.nd.j i - 1, by omega⟩ (D.nd.j i) (by simp only; omega)`. Conclude with `⟨Y⟩`. Conclude with `{ what₂ := R adm := adm Conclusion1 := p1 z := z rhoBar := rb g3p := g3 weight := wt block := bl muUnr := _root_.GlobalTheory.MuUnrTie.main_alt_alt hP.fin hL D I.P depthG := _root_.GlobalTheory.T.depthZeroG_of_rowMod hP hs hL D I.P rm bc := I.bc lam := I.lam }`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core0_of_local_duality_inputs : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DepthZeroSupport → LocalFiniteness → LocalTateDuality → LocalEulerChar →
     ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7), _root_.GlobalTheory.NRows.LinkedInputs hL D → JumpsCard D.nd D.naut → _root_.UpperTheory.GalS.Core0Alt D := by
@@ -91,9 +91,9 @@ theorem core0_of_local_duality_inputs : _root_.GlobalTheory.NRows.ThetaLocalInpu
       bc := I.bc
       lam := I.lam }
 /- English proof (translation)
-Introduce `prn prx ser dzs lf ltd lec hL`. Establish `hA` using `_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.NRows.AtLayer.exists_inputs_pinAt_jumpsCard_at_mem prn prx hL) (_root_.GlobalTheory.HeightCounting.Up.TripFin.finiteTriples_satisfy_condition_alt …`. Use `EvG.imp hA fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp w Z Wt p0 t nch n xd c hne hrx cp => ?_` and prove the remaining obligations. Take `⟨⟨⟨I, -, jumps⟩, trip⟩, good⟩` from `H kp w Z Wt p0 t nch n xd c hne hrx cp`. Take `⟨ne⟩` from `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `core : _root_.UpperTheory.GalS.Core0Alt (w.D Z)` using `_root_.UpperTheory.GalS.core0_of_local_duality_inputs prn.what₂ prn.hc prn.decay dzs lf ltd lec hL (w.D Z) I jumps`. Establish `large : GlobalTheory.CoefDuty.Large (w.D Z)` using `ne.large`. Conclude with `{ core with c2 := _root_.GlobalTheory.LocCoincide.main_alt_alt hL (w.D Z) I.P.M c.a.nt.toNBuilt I.P.H.hecke large := large nct := n.tie trip := trip same := _root_.GlobalTheory.HeightCounting.SameTw.sameTwist_at_alt hL (w.D Z) _ nch _ c.a (_root_.GlobalTheory.NFacts.AtMemFacts.on …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem galois_preconditions_at_mem : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → SerN → GlobalTheory.Published.DepthZeroSupport → LocalFiniteness →
     LocalTateDuality → LocalEulerChar → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists,

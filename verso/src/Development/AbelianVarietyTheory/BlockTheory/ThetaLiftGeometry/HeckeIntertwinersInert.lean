@@ -39,7 +39,7 @@ def IsInertOp (R : RealDat D A Ks) (t : T) (i : InertIx R t) (U : Module.End ℂ
   ∀ f, (R.HX t).e (U f) = Bridge.dcOp i.1.2.2 ((R.HX t).e f)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun f => (hC.models.HX t).1 ((h f).trans (h' f).symm)`.
+A detailed English derivation is pending.
 -/
 theorem IsInertOp.unique {R : RealDat D A Ks} {F : Face D A} (hC : R.Char F) {t : T} {i : InertIx R t}
     {U U' : Module.End ℂ (R.HX t).H} (h : IsInertOp R t i U) (h' : IsInertOp R t i U') : U = U' :=
@@ -77,7 +77,7 @@ def HeckeRows (R : RealDat D A Ks) : Prop := RowsAt R (I := InertIx R) fun _ i =
 def HeckeRowsSplit (R : RealDat D A Ks) : Prop := RowsAt R (I := fun _ => Empty) fun _ i => i.elim
 
 /- English proof (translation)
-Establish `hle : ∀ C' : (J → ℂ) → Prop, Col.eigSum op (fun x => C' fun j => x (φ j)) ≤ Col.eigSum (fun j => op (φ j)) C'` using `fun C' => iSup₂_le fun x hx => le_trans (le_iInf fun j => Col.eigAt_le op x (φ j)) (Col.eigAt_le_eigSum (op := fun j => op (φ j)) (C := C') (x := fun j => x (φ j)) hx)`. Establish `hs : Col.SplitOver op` using `fun i => Module.End.iSup_maxGenEigenspace_eq_top (op i)`. Establish `h1` using `Col.isCompl_eigSum hc hs fun x => C fun j => x (φ j)`. Establish `h2 : Disjoint (Col.eigSum (fun j => op (φ j)) C) (Col.eigSum (fun j => op (φ j)) fun y => ¬ C y)` using `Col.disjoint_eigSum (fun j j' => hc (φ j) (φ j')) fun _ h h' => h' h`. Conclude with `eq_of_le_of_inf_le_of_le_sup (hle C) (le_of_eq_of_le (h2.mono_right (hle fun y => ¬ C y)).eq_bot bot_le) (le_of_le_of_eq le_top h1.sup_eq_top.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eigSum_comp {V I J : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] {op : I → Module.End ℂ V}
     (hc : Col.PairComm op) (φ : J → I) (C : (J → ℂ) → Prop) :
@@ -95,7 +95,7 @@ theorem eigSum_comp {V I J : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimens
     (le_of_le_of_eq le_top h1.sup_eq_top.symm)
 
 /- English proof (translation)
-Take `⟨hE, h1, h2, h3, h4⟩` from `h`. Use `⟨fun t i => hE t (Sum.map id (lab t) i), h1, fun t i U hU => h2 t (lab t i) U hU, fun i j => h3 _ _, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[h4 p]`. Conclude with `eigSum_comp h3 (Sum.map id (lab A.μ0)) fun x => HasResC A p.1 fun i => x (Sum.inl i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HeckeRows.rowsAt {R : RealDat D A Ks} (h : HeckeRows R) {I : T → Type} (lab : ∀ t, I t → InertIx R t) :
     RowsAt R lab := by
@@ -105,7 +105,7 @@ theorem HeckeRows.rowsAt {R : RealDat D A Ks} (h : HeckeRows R) {I : T → Type}
   exact eigSum_comp h3 (Sum.map id (lab A.μ0)) fun x => HasResC A p.1 fun i => x (Sum.inl i)
 
 /- English proof (translation)
-The claim follows from `h.rowsAt _`.
+A detailed English derivation is pending.
 -/
 theorem HeckeRows.split {R : RealDat D A Ks} (h : HeckeRows R) : HeckeRowsSplit R := h.rowsAt _
 

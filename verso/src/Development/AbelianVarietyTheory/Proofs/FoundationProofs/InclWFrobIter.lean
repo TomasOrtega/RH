@@ -25,7 +25,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (E : EtTie W RA RW inclR φR gR πA)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TWact, TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem TWact_smul (f : RW →ₐ[O] RW) (T : LocLat G Qp LL O) (g : G) (r : RW) (y : TW RW T) :
     TWact f T g (r • y) = f r • TWact f T g y := by
@@ -35,7 +35,7 @@ theorem TWact_smul (f : RW →ₐ[O] RW) (T : LocLat G Qp LL O) (g : G) (r : RW)
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TWmap, TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem TWmap_smul (f : RW →ₐ[O] RW) (T : LocLat G Qp LL O) (r : RW) (y : TW RW T) :
     TWmap f T (r • y) = f r • TWmap f T y := by
@@ -45,15 +45,15 @@ theorem TWmap_smul (f : RW →ₐ[O] RW) (T : LocLat G Qp LL O) (r : RW) (y : TW
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Take `⟨e, e₀, h1, h2, -⟩` from `E.one_e`. Take `⟨x, hx, hT⟩` from `W.one_line`. Establish `h0 : (e₀ : W.one.V) ≠ 0`. Introduce `h`. Establish `hm : (⟨x, by rw [hT]; exact Submodule.mem_span_singleton_self x⟩ : ↥W.one.L.T) ∈ Submodule.span O {e₀}` using `by rw [h1]; trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp hm`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `only [SetLike.val_smul, h, smul_zero] at this`. Conclude with `hx this.symm`. Establish `hb : Function.Bijective (LinearMap.toSpanSingleton O _ e₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(injective_iff_map_eq_zero _).mpr fun c hc => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `only [LinearMap.toSpanSingleton_apply, SetLike.val_smul, ZeroMemClass.coe_zero] at this`. Rewrite `this` using `[← algebraMap_smul LL, smul_eq_zero]`. Conclude with `hO (by rw [this.resolve_right h0, map_zero])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← LinearMap.range_eq_top, ← LinearMap.span_singleton_eq_range, h1]`. Set `lam` to `(LinearEquiv.ofBijective _ hb).symm`. Establish `hl : lam e₀ = 1`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨e, e₀, h2, fun r r' h => ?_⟩` and prove the remaining obligations. Use `congrArg (fun y => TensorProduct.rid O RW (LinearMap.lTensor RW lam.toLinearMap y)) h` as an intermediate fact. Simplify `this` using `[TensorProduct.smul_tmul', hl]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unit_cancel (hO : Function.Injective (algebraMap O LL)) :
     ∃ (e : W.DD W.one) (e₀ : ↥W.one.L.T), E.jD W.one e = (1 : RW) ⊗ₜ[O] e₀ ∧
@@ -83,7 +83,7 @@ theorem unit_cancel (hO : Function.Injective (algebraMap O LL)) :
   simpa [TensorProduct.smul_tmul', hl] using this
 
 /- English proof (translation)
-Take `⟨e, e₀, h1, h2⟩` from `unit_cancel E hO`. Establish `h3 : TWmap φR W.one ((1 : RW) ⊗ₜ[O] e₀) = (1 : RW) ⊗ₜ[O] e₀` using `by simp [TWmap]`. Use `E.jD_φ W.one (a • e)` as an intermediate fact. Rewrite `this` using `[W.φD_smul, E.jD_smul, E.jD_smul, E.jD_φ, TWmap_smul, h1, h3]`. Conclude with `h2 _ _ this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ioE_φ (hO : Function.Injective (algebraMap O LL)) (a : W.EE) :
     E.ioE (W.φE a) = φR (E.ioE a) := by
@@ -94,9 +94,9 @@ theorem ioE_φ (hO : Function.Injective (algebraMap O LL)) (a : W.EE) :
   exact h2 _ _ this
 
 /- English proof (translation)
-Take `⟨e, e₀, h1, h2⟩` from `unit_cancel E hO`. Establish `h4 : W.one.actT g e₀ = e₀` using `Subtype.ext (W.one_triv g _)`. Establish `h3 : TWact (gR g) W.one g ((1 : RW) ⊗ₜ[O] e₀) = (1 : RW) ⊗ₜ[O] e₀` using `by simp [TWact, h4]`. Use `E.jD_act W.one g (a • e)` as an intermediate fact. Rewrite `this` using `[W.γD_smul, E.jD_smul, E.jD_smul, E.jD_act, TWact_smul, h1, h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 _ _ this`.
+A detailed English derivation is pending.
 -/
 theorem ioE_γ (hO : Function.Injective (algebraMap O LL)) (g : G) (a : W.EE) :
     E.ioE (W.γE (W.resΓ g) a) = gR g (E.ioE a) := by
@@ -110,7 +110,7 @@ theorem ioE_γ (hO : Function.Injective (algebraMap O LL)) (g : G) (a : W.EE) :
 def sc : LetA O n →ₐ[O] RW := inclR.comp E.io
 
 /- English proof (translation)
-Use `ioE_φ E hO (algebraMap _ _ a)` as an intermediate fact. Rewrite `this` using `[W.φE_ext, E.ioE_ext, E.ioE_ext]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sc_φ (hO : Function.Injective (algebraMap O LL)) (a : LetA O n) :
     sc E (W.φA a) = φR (sc E a) := by
@@ -118,7 +118,7 @@ theorem sc_φ (hO : Function.Injective (algebraMap O LL)) (a : LetA O n) :
   rwa [W.φE_ext, E.ioE_ext, E.ioE_ext] at this
 
 /- English proof (translation)
-Use `ioE_γ E hO g (algebraMap _ _ a)` as an intermediate fact. Rewrite `this` using `[W.γE_ext, E.ioE_ext, E.ioE_ext]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sc_γ (hO : Function.Injective (algebraMap O LL)) (g : G) (a : LetA O n) :
     sc E (W.γA (W.resΓ g) a) = gR g (sc E a) := by
@@ -126,14 +126,14 @@ theorem sc_γ (hO : Function.Injective (algebraMap O LL)) (g : G) (a : LetA O n)
   rwa [W.γE_ext, E.ioE_ext, E.ioE_ext] at this
 
 /- English proof (translation)
-The claim follows from `map_pow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sc_pow (a : LetA O n) (k : ℕ) : sc E (a ^ k) = sc E a ^ k := map_pow _ _ _
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `PowerSeries.X_dvd_iff.mpr (W.γ₀_X (W.resΓ g)).1`. Establish `h1 : W.γA (W.resΓ g) letπ = letπ * fun _ => u` using `funext fun _ => hu`. Establish `h2` using `sc_γ E hO g letπ`. Establish `h3 : sc E letπ = inclR πA` using `congrArg inclR E.io_π`. Rewrite `h2` using `[h1, map_mul, h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem act_π (hO : Function.Injective (algebraMap O LL)) (g : G) :
     ∃ u, inclR πA * sc E u = gR g (inclR πA) := by
@@ -145,14 +145,14 @@ theorem act_π (hO : Function.Injective (algebraMap O LL)) (g : G) :
   exact ⟨_, h2⟩
 
 /- English proof (translation)
-Rewrite using `[← hx, ← sc_φ E hO, W.φA_X, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_X_Q (hO : Function.Injective (algebraMap O LL)) {x : RW} (hx : sc E W.X = x) :
     x * sc E W.Q = φR x := by
   rw [← hx, ← sc_φ E hO, W.φA_X, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, E.jD_smul, E.ioE_ext]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jD_sc {T : LocLat G Qp LL O} (a : LetA O n) (x : W.DD T) :
     E.jD T (a • x) = sc E a • E.jD T x := by
@@ -160,7 +160,7 @@ theorem jD_sc {T : LocLat G Qp LL O} (a : LetA O n) (x : W.DD T) :
   rfl
 
 /- English proof (translation)
-Use `W.φD_smul T (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem φD_smulA {T : LocLat G Qp LL O} (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
@@ -170,23 +170,23 @@ theorem φD_smulA {T : LocLat G Qp LL O} (a : LetA O n) (x : W.DD T) :
 def cst (c : ZMod n → O) : LetA O n := fun i => PowerSeries.C (c i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `W.φ₀.commutes (c (i - 1))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem φA_cst (c : ZMod n → O) : W.φA (cst c) = cst fun i => c (i - 1) := by
   funext i
   exact W.φ₀.commutes (c (i - 1))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(W.γ₀ g).commutes (c i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem γA_cst (g : W.Gam) (c : ZMod n → O) : W.γA g (cst c) = cst c := by
   funext i
   exact (W.γ₀ g).commutes (c i)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih, ← sc_φ E hO, φA_cst]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iter_sc_cst (hO : Function.Injective (algebraMap O LL)) (c : ZMod n → O) (k : ℕ) :
     φR^[k] (sc E (cst c)) = sc E (cst fun i => c (i - k)) := by
@@ -211,12 +211,12 @@ def cf (lam : O →ₗ[Z] Z) : O ⊗[Z] R →ₗ[Z] R :=
   (TensorProduct.lid Z R).toLinearMap ∘ₗ lam.rTensor R
 
 /- English proof (translation)
-Simplify using `[cf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_tmul (lam : O →ₗ[Z] Z) (c : O) (w : R) : cf lam (c ⊗ₜ[Z] w) = lam c • w := by simp [cf]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [cf_tmul]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cf_map (lam : O →ₗ[Z] Z) (f : R →ₐ[Z] R') (x : O ⊗[Z] R) :
     cf lam (Algebra.TensorProduct.map (AlgHom.id O O) f x) = f (cf lam x) := by
@@ -226,9 +226,9 @@ theorem cf_map (lam : O →ₗ[Z] Z) (f : R →ₐ[Z] R') (x : O ⊗[Z] R) :
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Simplify using `only [cf_tmul, ← TensorProduct.smul_tmul, ← TensorProduct.sum_tmul, Module.Basis.coord_apply, o.sum_repr]`. Consider the case `add a b ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, ← ha, ← hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_sum {J : Type} [Fintype J] (o : Module.Basis J Z O) (x : O ⊗[Z] R) :
     x = ∑ j, o j ⊗ₜ[Z] cf (o.coord j) x := by
@@ -241,7 +241,7 @@ theorem cf_sum {J : Type} [Fintype J] (o : Module.Basis J Z O) (x : O ⊗[Z] R) 
     simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, ← ha, ← hb]
 
 /- English proof (translation)
-Simplify using `[map_sum, cf_tmul, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_basis {J : Type} [Fintype J] (o : Module.Basis J Z O) (w : J → R) (j : J) :
     cf (o.coord j) (∑ k, o k ⊗ₜ[Z] w k) = w j := by
@@ -257,7 +257,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SelmerFiniteUnramified
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `haveI := LL.2 haveI : Module.IsTorsionFree ℤ_[l] ↥LL.1 := Module.isTorsionFree_iff_algebraMap_injective.mpr (by rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥LL.1] exact (algebraMap ℚ_[l] ↥LL.1).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])) IsIntegralClosure.module_free ℤ …`.
+A detailed English derivation is pending.
 -/
 theorem freeOL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
   haveI := LL.2
@@ -267,18 +267,16 @@ theorem freeOL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
   IsIntegralClosure.module_free ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
 /- English proof (translation)
-The claim follows from `haveI := LL.2 IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+A detailed English derivation is pending.
 -/
 theorem finOL (LL : FinExt l) : Module.Finite ℤ_[l] ↥(OL LL) :=
   haveI := LL.2
   IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
 /- English proof (translation)
-Establish `h : ∀ n, ∃ a : ZMod l, ZMod.castHom (dvd_refl l) (Cb l) a = b.coeff n`. Introduce `n`. Establish `h1 : (b.coeff n) ^ l = b.coeff n` using `congrArg (fun w => WittVector.coeff w n) hb`. Establish `h2` using `(Subfield.mem_bot_iff_pow_eq_self (Cb l) l).2 h1`. Establish `h3 : (⊥ : Subfield (Cb l)) ≤ (ZMod.castHom (dvd_refl l) (Cb l)).fieldRange` using `bot_le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3 h2`. Use `choose a ha using h`. Use `⟨WittVector.equiv l (WittVector.mk l a), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b = zlW l (Cb l) _`. Use extensionality with `n`.
-
-Simplify using `[zlW, WittVector.map_coeff, ← ha]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fixed_frob (b : WCb l) (hb : frobW l b = b) : ∃ z : ℤ_[l], b = algebraMap ℤ_[l] (WCb l) z := by
   have h : ∀ n, ∃ a : ZMod l, ZMod.castHom (dvd_refl l) (Cb l) a = b.coeff n := by
@@ -294,9 +292,9 @@ theorem fixed_frob (b : WCb l) (hb : frobW l b = b) : ∃ z : ℤ_[l], b = algeb
   simp [zlW, WittVector.map_coeff, ← ha]
 
 /- English proof (translation)
-Use `haveI := freeOL LL`. Use `haveI := finOL LL`. Set `o` to `Module.Free.chooseBasis ℤ_[l] ↥(OL LL)`. Establish `h1 : ∀ j, ∃ z : ℤ_[l], cf (o.coord j) x = algebraMap ℤ_[l] (WCb l) z` using `fun j => fixed_frob _ (by rw [← cf_map]; exact congrArg _ hx)`. Use `choose z hz using h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ j, z j • o j, ?_⟩` and prove the remaining obligations. Rewrite using `[cf_sum o x, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hz, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_φRW (LL : FinExt l) (x : RW LL) (hx : φRW LL x = x) :
     ∃ c : ↥(OL LL), x = algebraMap ↥(OL LL) (RW LL) c := by
@@ -313,7 +311,7 @@ theorem fixed_φRW (LL : FinExt l) (x : RW LL) (hx : φRW LL x = x) :
   rw [hz, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Use extensionality with `n`. Express the relevant statement in the definitionally equal form `((WittVector.map _ _ : WCb l)).coeff n = (WittVector.map (frobenius (Cb l) l) (inclW l a)).coeff n`. Simplify using `[inclW, WittVector.map_coeff, frobenius_def]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem inclW_frob (a : Ainf l) : inclW l (WittVector.frobenius a) = frobW l (inclW l a) := by
   ext n
@@ -321,7 +319,7 @@ theorem inclW_frob (a : Ainf l) : inclW l (WittVector.frobenius a) = frobW l (in
   simp [inclW, WittVector.map_coeff, frobenius_def]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem tmul_iter (LL : FinExt l) (k : ℕ) (x : WCb l) :
     (φRW LL)^[k] ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] x) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (frobW l)^[k] x := by
@@ -335,7 +333,7 @@ variable {P : LocPrime l} {AI : LocAinf l P} {K : FinExt l} {s : ℕ} {LL : FinE
     ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] piS AI s))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `inclR LL (E.io letπ) = _`. Rewrite using `[E.io_π]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sc_π : sc E letπ = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piS AI s) := by
   change inclR LL (E.io letπ) = _
@@ -343,14 +341,14 @@ theorem sc_π : sc E letπ = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piS AI s)
   rfl
 
 /- English proof (translation)
-Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_teich (x : OCb l) :
     WittVector.frobenius (WittVector.teichmuller l x) = WittVector.teichmuller l (x ^ l) := by
   rw [WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def]
 
 /- English proof (translation)
-Rewrite using `[piS, piS, map_sub, map_one, frob_teich, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frob_piS (j : ℕ) : WittVector.frobenius (piS AI (j + 1)) = piS AI j := by
   rw [piS, piS, map_sub, map_one, frob_teich, LocAinf.εroot, Function.iterate_succ_apply',
@@ -358,7 +356,7 @@ theorem frob_piS (j : ℕ) : WittVector.frobenius (piS AI (j + 1)) = piS AI j :=
   rfl
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact sc_π E`. Consider the case `succ j ih`. Rewrite using `[pow_succ', AlgHom.mul_apply, sc_φ E Subtype.val_injective, ih (by omega), show s - j = (s - (j + 1)) + 1 by omega, ← frob_piS (s - (j + 1)), inclW_frob]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sc_iter_π (j : ℕ) (hj : j ≤ s) :
     sc E ((W.φA ^ j) letπ) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piS AI (s - j)) := by
@@ -370,11 +368,11 @@ theorem sc_iter_π (j : ℕ) (hj : j ≤ s) :
     rfl
 
 /- English proof (translation)
-Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Rewrite using `[inclW, WittVector.map_coeff]`. Establish `h0 : (piS AI 1).coeff 0 = AI.ε1 - 1`. Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (piS AI 1) = _`. Rewrite using `[piS, map_sub, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h0]`. Introduce `hz`. Establish `hz' : AI.ε1 - 1 = 0` using `(IsFractionRing.injective (OCb l) (Cb l)) (by rw [hz, map_zero])`. Apply `AI.ε_ne_one` to reduce the goal to its premises.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← frobeniusEquiv_symm_pow_p (OCb l) l AI.ε]`. Express the relevant statement in the definitionally equal form `AI.ε1 ^ l = 1`. Rewrite using `[sub_eq_zero.mp hz', one_pow]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_piS_one : IsUnit (inclW l (piS AI 1)) := by
   apply WittVector.isUnit_of_coeff_zero_ne_zero
@@ -392,9 +390,9 @@ theorem isUnit_piS_one : IsUnit (inclW l (piS AI 1)) := by
   rw [sub_eq_zero.mp hz', one_pow]
 
 /- English proof (translation)
-Establish `h1` using `W.s_pos`. Establish `hX : sc E W.X = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piS AI 1)`. Rewrite using `[LocWach.X, sc_iter_π E _ (by omega), show s - (W.s - 1) = 1 by omega]`. Establish `h2` using `sc_X_Q E Subtype.val_injective hX`. Establish `hu : IsUnit ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piS AI 1) : RW LL)` using `isUnit_piS_one.map (Algebra.TensorProduct.includeRight : WCb l →ₐ[ℤ_[l]] RW LL)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piS AI 1) : RW LL) * sc E W.Q = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] frobW l (inclW l (piS AI 1))` using `h2`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[h3, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← map_mul (inclW l), ← inclW_frob, frob_piS]`. Conclude with `congrArg (fun x => ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l x : RW LL)) AI.μ_eq`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_Q (hs : W.s = s) : sc E W.Q = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l AI.ξ := by
   have h1 := W.s_pos

@@ -15,11 +15,11 @@ namespace HermitianBundle
 variable (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) (hF : M.Saturated F)
 
 /- English proof (translation)
-Use `quot_projective hF` as an intermediate fact. Use `set V := subFibre M.metric σ F`. Use `set z := fibreMap σ (quotSection M F hF) (fibreMap σ F.mkQ x) - x with hzdef`. Establish `hex` using `lTensor_exact (ComplexAt σ) (LinearMap.exact_subtype_mkQ F) F.mkQ_surjective`. Establish `h0 : F.mkQ.lTensor (ComplexAt σ) z = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `fibreMap σ F.mkQ z = 0`. Rewrite using `[hzdef, map_sub, fibreMap_fibreMap, fibreMap_fibreMap, mkQ_comp_quotSection, LinearMap.id_comp, sub_self]`. Take `⟨y, hy⟩` from `(hex z).mp h0`. Establish `hz : FibreSpace.equiv M.metric σ z ∈ V` using `⟨y, congrArg (FibreSpace.equiv M.metric σ) hy⟩`. Establish `hsplit : FibreSpace.equiv M.metric σ (fibreMap σ (quotSection M F hF) (fibreMap σ F.mkQ x)) = FibreSpace.equiv M.metric σ x + FibreSpace.equiv M.metric σ z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hzdef, map_sub]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `Vᗮ.starProjection (FibreSpace.equiv M.metric σ (fibreMap σ (quotSection M F hF) (fibreMap σ F.mkQ x))) = _`. Rewrite using `[hsplit, map_add, Submodule.starProjection_orthogonal_apply_eq_zero hz, add_zero, Submodule.starProjection_eq_self_iff.mpr hx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotFibreMap_mkQ_of_orthogonal (σ : K →+* ℂ) (x : Fibre σ M.carrier)
     (hx : FibreSpace.equiv M.metric σ x ∈ (subFibre M.metric σ F)ᗮ) :
@@ -69,7 +69,7 @@ end HermitianBundle
 namespace LatticeLemmas
 
 /- English proof (translation)
-Introduce `K _ _ M F hF`. Simplify using `only [HermitianBundle.deg]`. Rewrite using `[(HermitianBundle.subQuotExtension M F hF).arithDegree_eq_add, add_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ExactSequence.proof : ExactSequence.Statement := by
   intro K _ _ M F hF

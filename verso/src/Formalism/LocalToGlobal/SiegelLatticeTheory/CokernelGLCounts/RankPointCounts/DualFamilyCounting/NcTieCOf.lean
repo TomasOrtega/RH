@@ -34,13 +34,11 @@ def NcValueC : Prop :=
         (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).μH' * ngFac D
 
 /- English proof (translation)
-Unfold `NcTieC`. Use `set B := bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq with hB`. Rewrite using `[Formalism.L2.SG.Pf.NcCut.nc_iff B hP hM hMs hL hO hT ⟨hV.2.1, hV.2.2⟩ _ (ngFac D) (Formalism.L2.SG.MassDataConc.kapN D) hkap]`. Establish `hG : 0 < B.volG` using `hP.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hHa : 0 < B.volHa` using `hP.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBH : B.volB / B.volHa = 1`. Establish `h1` using `hV.1`. Rewrite `h1` using `[hVG]`. Establish `: B.volB = B.volHa`. Use `mul_right_cancel₀ hG.ne' h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[this, div_self hHa.ne']`. Rewrite using `[hBH, hCoo]`. Unfold `NcValueC at hval`. Rewrite `hval` using `[← hB]`.
-
-Take the linear combination `(Formalism.L2.SG.MassDataConc.kapN D) * hval`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ncTieC_of
     (hP : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).Pos)
@@ -75,9 +73,9 @@ theorem ncTieC_of
   linear_combination (Formalism.L2.SG.MassDataConc.kapN D) * hval
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.MassDataConc.kapN`. Establish `h1` using `(Formalism.BasicNotions.rdE_pos_le D).1`. Establish `hg : (0 : ℝ) < (Formalism.MainNotions.S.Lat.gS D : ℝ)`. Establish `h0` using `(D.host.g_prime 0).pos`. Establish `h1'` using `(D.host.g_prime 1).pos`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.S.Lat.gS`. Conclude with `Nat.mul_pos h0 h1'` after adjusting the coercions. Conclude with `mul_ne_zero (pow_ne_zero _ h1.ne') (inv_ne_zero (pow_ne_zero _ hg.ne'))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kapN_ne (D : D7) : Formalism.L2.SG.MassDataConc.kapN D ≠ 0 := by
   unfold Formalism.L2.SG.MassDataConc.kapN
@@ -96,7 +94,7 @@ theorem coo_bCF : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' ν
     Formalism.L2.SG.MassDataConc.kapN D * Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1 := rfl
 
 /- English proof (translation)
-The claim follows from `ncTieC_of X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq hP hM hMs hL hO hT hV hVG (coo_bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq) (kapN_ne D) hval`.
+A detailed English derivation is pending.
 -/
 theorem ncTieC_of'
     (hP : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).Pos)

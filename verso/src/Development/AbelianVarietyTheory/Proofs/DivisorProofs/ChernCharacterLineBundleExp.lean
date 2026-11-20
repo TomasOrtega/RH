@@ -14,7 +14,7 @@ open GlobalTheory
 namespace GlobalTheory.CxForm
 
 /- English proof (translation)
-Unfold `chPart`. Use `congr 1`. Conclude with `Subtype.ext (by simp [MvPolynomial.psum, esymm_one])`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chPart_rank_one (j : ℕ) : chPart 1 j =
     ((j.factorial : ℚ)⁻¹) • (⟨esymm (Fin 1) ℚ 1, esymm_isSymmetric _ _ 1⟩ : symmetricSubalgebra (Fin 1) ℚ) ^ j := by
@@ -23,7 +23,7 @@ theorem chPart_rank_one (j : ℕ) : chPart 1 j =
   exact Subtype.ext (by simp [MvPolynomial.psum, esymm_one])
 
 /- English proof (translation)
-Establish `e : R.cl (.ofLB L) 1 = R.c1 L`. Rewrite using `[R.cl_one]`. Conclude with `(R.firstChernCongr _ _ (ChTwoModel.isometric_det_ofLB L)).symm`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[chPart_rank_one, map_smul, map_pow, R.char_esymm, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ArRing.ch_ofLB (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ)
     (h : IsRegVar p D) (R : ArRing B h) (L : HermLB p) :

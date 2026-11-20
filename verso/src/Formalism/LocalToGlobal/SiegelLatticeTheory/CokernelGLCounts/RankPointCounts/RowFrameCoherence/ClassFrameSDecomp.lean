@@ -15,7 +15,7 @@ namespace LocalFrameDecomposition
 variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.SG.RealObj.InfCut.PtRepPf.frU X w v).ee ef := (Formalism.L2.SG.RealObj.InfCut.PtRepPf.frU X w v).ef ff := (Formalism.L2.SG.RealObj.InfCut.PtRepPf.frU X w v).ff ez := (Formalism.L2.SG.RealObj.InfCut.PtRepPf.frU X w v).ez fz := (Formalism.L2.SG.RealObj.InfCut.PtRepPf. …`.
+A detailed English derivation is pending.
 -/
 theorem frameLoc (w : D.what₂.Word) (v : NumberField.InfinitePlace X.B.I.F) :
     PI.SchurPlaces.LeviLA.Frame (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a))
@@ -41,15 +41,13 @@ end LocalFrameDecomposition
 variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hgi : g⁻¹ ∈ X.SinfU w` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X w hg`. Establish `hS : ∀ v, InS (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR w)) (uMat (g⁻¹ v))` using `hgi`. Use `choose V hVu hVe hVf hVz _ hVN using fun v => PI.SchurPlaces.LeviLA.levi_place (LocalFrameDecomposition.frameLoc X w v) ((g⁻¹ v : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) (g⁻¹ v).2 (hS v)`. Set `s0 : X.B.I.Ginf` to `fun v => ⟨V v, hVu v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs0 : ∀ v, uMat (s0 v) = (V v : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)` using `fun v => rfl`. Establish `hs0H : s0 ∈ HsetU X w`. Introduce `v p hp`. Rewrite using `[hs0]`. Break down `hp with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hp` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hVe v a`. Conclude with `hVf v a`. Rewrite `hp` using `[Set.mem_singleton_iff]`. Substitute `hp` using the available equality. Conclude with `hVz v`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : s0⁻¹ * g⁻¹ ∈ X.NinfU w` using `fun v => by`. Establish `e : uMat ((s0⁻¹ * g⁻¹) v) = (((V v)⁻¹ : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) * uMat (g⁻¹ v)` using `rfl`. Rewrite using `[e]`. Conclude with `hVN v`. Establish `hN'` using `Formalism.L2.SG.RealObj.SpanPreservation.ninfU_inv X w hN`.
-
-Rewrite `hN'` using `[_root_.mul_inv_rev, inv_inv, inv_inv]`. Conclude with `⟨g * s0, hN', s0⁻¹, Formalism.L2.SG.RealObj.InfCut.hsetU_inv X w hs0H, by group⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sDecompC_holds (w : D.what₂.Word) : SDecompC X w := by
   intro g hg

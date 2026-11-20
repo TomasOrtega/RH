@@ -24,7 +24,7 @@ namespace GlobalTheory.ModifSections
 open Opposite
 
 /- English proof (translation)
-Establish `e : f = inv i ≫ (i ≫ f ≫ m) ≫ inv m` using `by simp`. Rewrite using `[e, CommRingCat.hom_comp, CommRingCat.hom_comp]`. Use `RingHom.IsIntegral.trans _ _ ?_ (RingHom.IsIntegral.trans _ _ h ?_)` and prove the remaining obligations. Conclude with `RingHom.isIntegral_of_surjective _ (ConcreteCategory.bijective_of_isIso (inv i)).2`. Conclude with `RingHom.isIntegral_of_surjective _ (ConcreteCategory.bijective_of_isIso (inv m)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_iso_comp {A B C E : CommRingCat.{0}} (i : A ⟶ B) (f : B ⟶ C) (m : C ⟶ E) [IsIso i]
     [IsIso m] (h : (i ≫ f ≫ m).hom.IsIntegral) : f.hom.IsIntegral := by
@@ -35,11 +35,9 @@ theorem isIntegral_of_iso_comp {A B C E : CommRingCat.{0}} (i : A ⟶ B) (f : B 
   · exact RingHom.isIntegral_of_surjective _ (ConcreteCategory.bijective_of_isIso (inv m)).2
 
 /- English proof (translation)
-Establish `: IsAffine V.toScheme` using `hV`. Establish `h` using `isIntegral_appTop_of_universallyClosed (ρ ∣_ V)`. Rewrite `h` using `[morphismRestrict_appTop]`. Establish `e : V.ι ''ᵁ ⊤ = V` using `by simp`. Rewrite `h` using `[ρ.app_eq e, Category.assoc, Category.assoc, ← Functor.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [eqToHom_op, eqToHom_map, eqToHom_trans] at h`. Establish `hi : ∀ {A B : CommRingCat.{0}} (q : A = B), IsIso (eqToHom q)` using `fun q => by`. Substitute `q` using the available equality. Rewrite using `[eqToHom_refl]`. Use `infer_instance`.
-
-Conclude with `@isIntegral_of_iso_comp _ _ _ _ _ _ _ (hi _) (hi _) h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_app {Z₁ Z₂ : Scheme.{0}} (ρ : Z₁ ⟶ Z₂) [UniversallyClosed ρ]
     (V : Z₂.Opens) (hV : IsAffineOpen V) : (ρ.app V).hom.IsIntegral := by
@@ -54,7 +52,7 @@ theorem isIntegral_app {Z₁ Z₂ : Scheme.{0}} (ρ : Z₁ ⟶ Z₂) [Universall
   exact @isIntegral_of_iso_comp _ _ _ _ _ _ _ (hi _) (hi _) h
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.isNormalScheme_iff Y).2 (GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth p ((GlobalTheory.isNormalScheme_iff _).1 inferInstance))`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_of_smooth {k : Type} [Field k] {Y : Scheme.{0}} (p : Y ⟶ Sp k) [Smooth p] :
     GlobalTheory.IsNormalScheme Y :=
@@ -62,9 +60,9 @@ theorem isNormalScheme_of_smooth {k : Type} [Field k] {Y : Scheme.{0}} (p : Y �
     ((GlobalTheory.isNormalScheme_iff _).1 inferInstance))
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Establish `: Nonempty V` using `⟨⟨_, hyV⟩⟩`. Use `GlobalTheory.IsNormalScheme.exists_germToFunctionField_eq_of_locally V t fun x hx => ?_` and prove the remaining obligations. Take `⟨W, hW, hxW, hWV, hi⟩` from `h x hx`. Establish `hne : Nonempty W` using `⟨⟨_, hW⟩⟩`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.IsNormalScheme.isIntegrallyClosedIn_functionField (X := Y) W` as an intermediate fact. Take `⟨s, hs⟩` from `(IsIntegrallyClosedIn.isIntegral_iff (R := Γ(Y, W)) (A := Y.functionField)).1 hi`. Conclude with `⟨W, hne, s, hxW, hWV, hs⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_germ_eq {Y : Scheme.{0}} [IsIntegral Y] [GlobalTheory.IsNormalScheme Y] (y : Y) (hy : y = genericPoint Y)
     (V : Y.Opens) (hyV : y ∈ V) (t : Y.presheaf.stalk y)
@@ -81,23 +79,21 @@ theorem exists_germ_eq {Y : Scheme.{0}} [IsIntegral Y] [GlobalTheory.IsNormalSch
   exact ⟨W, hne, s, hxW, hWV, hs⟩
 
 /- English proof (translation)
-Introduce `V _`. Establish `hηU : genericPoint X ∈ σ ⁻¹ᵁ U` using `((genericPoint_spec X).mem_open_set_iff (σ ⁻¹ᵁ U).isOpen).2 (by simpa using hU)`. Establish `hmem : ∀ V : Y.Opens, (V : Set Y).Nonempty → σ (genericPoint X) ∈ V`. Introduce `V hV`. Take `⟨y, hyV, hyU⟩` from `nonempty_preirreducible_inter V.isOpen U.isOpen hV ⟨_, hηU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `(σ ∣_ U).surjective ⟨y, hyU⟩`. Establish `hx' : σ x.1 = y` using `(morphismRestrict_base_coe σ U x).symm.trans (congrArg Subtype.val hx)`. Establish `hne : ((σ ⁻¹ᵁ V : X.Opens) : Set X).Nonempty` using `⟨x.1, show σ x.1 ∈ V from hx' ▸ hyV⟩`. Conclude with `((genericPoint_spec X).mem_open_set_iff (σ ⁻¹ᵁ V).isOpen).2 (by simpa using hne)`. Establish `hgen : σ (genericPoint X) = genericPoint Y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : σ (genericPoint X) ⤳ genericPoint Y` using `specializes_iff_forall_open.2 fun s hs hg => hmem ⟨s, hs⟩ ⟨_, hg⟩`. Conclude with `(h1.antisymm ((genericPoint_spec Y).specializes (Set.mem_univ _))).eq`. Establish `hS : IsIso (σ.stalkMap (genericPoint X))` using `((MorphismProperty.isomorphisms _).arrow_mk_iso_iff (morphismRestrictStalkMap σ U ⟨_, hηU⟩)).1 (((isIso_iff_isIso_stalkMap (σ ∣_ U)).1 inferInstance).2 ⟨_, hηU⟩)`. Establish `hSb` using `ConcreteCategory.bijective_of_isIso (σ.stalkMap (genericPoint X))`. Distinguish the cases in `hV : (V : Set Y).Nonempty`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `swap`. Conclude with `isoOver_of_isIso σ (O := U) V fun y hy => (hV ⟨y, hy⟩).elim`. Establish `hyV` using `hmem V hV`. Use `(ConcreteCategory.isIso_iff_bijective _).2 ⟨fun a a' e => ?_, fun b => ?_⟩` and prove the remaining obligations. Apply `germ_injective_of_isIntegral Y (σ (genericPoint X)) hyV` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `hSb.1` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.germ_stalkMap_apply, e]`. Take `⟨t, ht⟩` from `hSb.2 (X.presheaf.germ (σ ⁻¹ᵁ V) (genericPoint X) hyV b)`. Take `⟨a, ha⟩` from `exists_germ_eq (σ (genericPoint X)) hgen V hyV t fun y hy => by`. Take `⟨_, ⟨W, hW, rfl⟩, hyW, hWV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hy V.isOpen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hWV' : W ≤ V` using `hWV`. Establish `hηW : σ (genericPoint X) ∈ W` using `hmem W ⟨y, hyW⟩`. Use `⟨W, hηW, hyW, hWV', ?_⟩` and prove the remaining obligations. Establish `hi` using `isIntegral_app σ W hW (X.presheaf.map (homOfLE (σ.preimage_mono hWV')).op b)`. Establish `h2` using `RingHom.IsIntegralElem.map hi (X.presheaf.germ (σ ⁻¹ᵁ W) (genericPoint X) hηW).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (X.presheaf.germ (σ ⁻¹ᵁ W) (genericPoint X) hηW).hom.comp (σ.app W).hom = (σ.stalkMap (genericPoint X)).hom.comp (Y.presheaf.germ W (σ (genericPoint X)) hηW).hom` using `RingHom.ext fun a => (Scheme.Hom.germ_stalkMap_apply σ W _ hηW a).symm`. Establish `e2 : X.presheaf.germ (σ ⁻¹ᵁ W) (genericPoint X) hηW (X.presheaf.map (homOfLE (σ.preimage_mono hWV')).op b) = σ.stalkMap (genericPoint X) t`. Conclude with `(X.presheaf.germ_res_apply (homOfLE (σ.preimage_mono hWV')) _ hηW b).trans ht.symm`. Rewrite `h2` using `[e1, e2]`. Establish `h3` using `RingHom.IsIntegralElem.map h2 (inv (σ.stalkMap (genericPoint X))).hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3 : (inv (σ.stalkMap (genericPoint X))).hom.comp (σ.stalkMap (genericPoint X)).hom = RingHom.id _`. Rewrite using `[← CommRingCat.hom_comp, IsIso.hom_inv_id]`. Both sides reduce to the same expression. Rewrite `h3` using `[← RingHom.comp_assoc, e3, RingHom.id_comp, ← RingHom.comp_apply, e3, RingHom.id_apply]`. Then use the resulting hypothesis. Use `⟨a, germ_injective_of_isIntegral X (genericPoint X) hyV ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Scheme.Hom.germ_stalkMap_apply, ha, ht]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoOver_top {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [GlobalTheory.IsNormalScheme Y]
     (σ : X ⟶ Y) [UniversallyClosed σ] (U : Y.Opens) [IsIso (σ ∣_ U)]
@@ -152,11 +148,9 @@ theorem isoOver_top {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [GlobalTheo
   rw [← Scheme.Hom.germ_stalkMap_apply, ha, ht]
 
 /- English proof (translation)
-Introduce `k _ Y _ p U D hs hp M _ B hB`. Use `haveI := hs`. Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth D p`. Use `haveI : GlobalTheory.IsNormalScheme Y := isNormalScheme_of_smooth p`. Use `haveI : IsProper (M.σ ≫ p) := GlobalTheory.CommonModel.isProper_of_isProjOver M.proj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsProper p := GlobalTheory.CommonModel.isProper_of_isProjOver hp`. Use `haveI : IsProper M.σ := IsProper.of_comp M.σ p`. Use `haveI := M.iso`. Establish `hb` using `(isoOver_top M.σ U M.dense.nonempty).bijective_pull (p := p) hB (W := ⊤) le_top le_top`. Use `letI := algebraΓOfHom p`.
-
-Use `letI := algebraΓOfHom M.str`. Rewrite using `[← H0.finrank_top M.str (B.pull M.σ), ← H0.finrank_top p B]`. Conclude with `(LinearEquiv.ofBijective _ hb).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem modification_lineBundleGlobalSectionsDim_pull_eq : ∀ (k : Type) [Field k] (Y : Scheme.{0}) [IsIntegral Y] (p : Y ⟶ Sp k) (U : Y.Opens) (D : ℕ),
     SmoothOfRelativeDimension D p → IsProjOver p → ∀ (M : Modif p U D) [IsIntegral M.X] (B : LB Y), B.IsLB →

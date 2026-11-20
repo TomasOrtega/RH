@@ -12,7 +12,7 @@ def bcLift {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R'' : Subalgebra
   pullback.lift v (g ≫ toR R'') (by rw [Category.assoc, toR_eq, w])
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.fst q (incl h)) (v₁₃ := q) (h₂₂ := incl h) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback q (incl h))` and prove the remaining obligations. Simplify using `only [bcLift]`. Rewrite using `[pullback.lift_fst, toR_eq]`. Conclude with `hp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcLift_isPullback {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R'' : Subalgebra k Ω} (h : R ≤ R'')
     {Y D : Scheme.{0}} {g : Y ⟶ Sp Ω} {q : D ⟶ Sp R} {v : Y ⟶ D} (hp : IsPullback v g q (toR R)) :
@@ -33,9 +33,9 @@ def LeafInclPiece : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [Alg
         bcLift h hW.w ≫ φ = X.homOfLE hWU ≫ bcLift h hU.w
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ X f hf U V R hR ⟨DU, qU, vU, hqU, pU⟩ ⟨DV, qV, vV, hqV, pV⟩ ⟨DW, qW, vW, hqW, pW⟩`. Take `⟨R1, h1, hR1, H1⟩` from `hP k Ω f hf U (U ⊓ V) inf_le_left R hR DU DW qU qW vU vW hqU hqW pU pW`. Take `⟨R2, h2, hR2, H2⟩` from `hP k Ω f hf V (U ⊓ V) inf_le_right R hR DV DW qV qW vV vW hqV hqW pV pW`. Establish `hle : R ≤ R1 ⊔ R2` using `h1.trans le_sup_left`. Take `⟨φU, oU, sU, cU⟩` from `H1 (R1 ⊔ R2) hle le_sup_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φV, oV, sV, cV⟩` from `H2 (R1 ⊔ R2) hle le_sup_right`. Conclude with `⟨R1 ⊔ R2, hle, hR1.sup hR2, _, _, _, pullback.snd qU (incl hle), pullback.snd qV (incl hle), pullback.snd qW (incl hle), bcLift hle pU.w, bcLift hle pV.w, bcLift hle pW.w, φU, φV, fp_snd _ _ hqU, fp_snd _ _ hqV, fp_snd _ _ hqW, oU, oV, sU, sV, bcLift_isPullback hle pU, bcLift_isP …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafInclDescend_of (hP : LeafInclPiece) : LeafInclDescend := by
   intro k _ Ω _ _ X f hf U V R hR ⟨DU, qU, vU, hqU, pU⟩ ⟨DV, qV, vV, hqV, pV⟩ ⟨DW, qW, vW, hqW, pW⟩

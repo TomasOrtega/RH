@@ -5,19 +5,19 @@ namespace GlobalTheory.CommonDenominatorLemma
 open NumberField
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hL`. Use `choose z hz using fun p : (Fin N → E) × Fin N => IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) (p.1 p.2)`. Set `b : NumberField.RingOfIntegers E` to `∏ p ∈ s ×ˢ (Finset.univ : Finset (Fin N)), ((z p).2 : NumberField.RingOfIntegers E)`. Use `⟨b, Finset.prod_ne_zero_iff.mpr fun p _ => nonZeroDivisors.ne_zero (z p).2.2, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `i`. Take `⟨e, he⟩` from `Finset.dvd_prod_of_mem (fun p => ((z p).2 : NumberField.RingOfIntegers E)) (show (g, i) ∈ s ×ˢ (Finset.univ : Finset (Fin N)) from Finset.mem_product.mpr ⟨hg, Finset.mem_univ i⟩)`. Use `⟨e * (z (g, i)).1, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hz (g, i)`. Simplify using `only [← NumberField.RingOfIntegers.coe_eq_algebraMap] at h`. Rewrite using `[show b = ((z (g, i)).2 : NumberField.RingOfIntegers E) * e from he]`. Use `push_cast`. Take the linear combination `(-(e : E)) * h`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Consider the case `zero`. Introduce `i`. Conclude with `⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, h1⟩` from `hx i`. Take `⟨c2, h2⟩` from `hy i`. Use `⟨c1 + c2, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, mul_add, ← h1, ← h2]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `smul t x _ hx`. Introduce `i`. Take `⟨c1, h1⟩` from `hx i`. Use `⟨t * c1, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def, ← NumberField.RingOfIntegers.coe_eq_algebraMap]`. Use `push_cast`. Take the linear combination `(t : E) * h1`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_common_denominator {E : Type} [inst : Field E] [NumberField E] [StarRing E] {N : ℕ}
     (L : Submodule (NumberField.RingOfIntegers E) (Fin N → E)) (hL : Submodule.FG L) :

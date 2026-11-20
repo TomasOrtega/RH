@@ -11,37 +11,33 @@ noncomputable section
 namespace GlobalTheory.FibreHadamard
 
 /- English proof (translation)
-Introduce `E _ _ _ g m B r hB hr b hb h0 z`. Take `⟨ε, hε, hεB⟩` from `Metric.isOpen_iff.1 hB b hb`. Set `ρ : ContDiffBump b` to `⟨ε / 4, ε / 2, by positivity, by linarith⟩`. Set `rt : Pt E g → Ext m` to `fun Q => ρ Q.1 • r Q`. Establish `hρsupp : tsupport (fun Q : Pt E g => ρ Q.1) ⊆ cov B g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(tsupport_comp_subset_preimage (ρ : E → ℝ) continuous_fst).trans ?_` and prove the remaining obligations. Introduce `Q hQ`. Use `⟨hεB ?_, mem_univ _⟩` and prove the remaining obligations. Establish `hQ' : Q.1 ∈ tsupport (ρ : E → ℝ)` using `hQ`. Rewrite `hQ'` using `[ρ.tsupport_eq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Metric.closedBall_subset_ball (show ε / 2 < ε by linarith) hQ'`. Establish `hrt_smooth : ContDiff ℝ ∞ rt`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `Q`. Distinguish the cases in `hQ : Q ∈ cov B g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `(ρ.contDiff.comp contDiff_fst).contDiffAt.smul (hr.contDiffAt ((hB.prod isOpen_univ).mem_nhds hQ))`. Establish `hQ' : Q ∉ tsupport (fun Q : Pt E g => ρ Q.1)` using `fun h => hQ (hρsupp h)`. Establish `h1 : rt =ᶠ[𝓝 Q] fun _ => 0` using `by filter_upwards [(isClosed_tsupport _).isOpen_compl.mem_nhds hQ'] with y hy`. Establish `: ρ y.1 = 0` using `image_eq_zero_of_notMem_tsupport (f := fun Q : Pt E g => ρ Q.1) hy`. Simplify using `[rt, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `contDiffAt_const.congr_of_eventuallyEq h1`. Establish `hrt0 : ∀ w, rt (b, w) = 0` using `fun w => by simp [rt, h0]`. Establish `hd : ContDiff ℝ ∞ (fderiv ℝ rt)` using `hrt_smooth.fderiv_right (m := ∞) (by simp)`. Establish `hdiff : Differentiable ℝ rt` using `hrt_smooth.differentiable (by simp)`. Set `e` to `Module.finBasis ℝ E`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `γ : Pt E g → ℝ → Pt E g` to `fun Q t => (b + t • (Q.1 - b), Q.2)`. Establish `hcont : ∀ (Q : Pt E g) (v : Pt E g) (S : Finset (Fin m)), Continuous fun t => fderiv ℝ rt (γ Q t) v S`. Introduce `Q v S`. Establish `hγc : Continuous (γ Q)` using `by simp only [γ]; fun_prop`. Conclude with `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Finset (Fin m) => ℂ) S).continuous.comp ((hd.continuous.comp hγc).clm_apply continuous_const)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨Module.finrank ℝ E, fun k b' => ((e.repr (b' - b) k : ℝ) : ℂ), fun k Q S => ∫ t in (0:ℝ)..1, fderiv ℝ rt (γ Q t) (e k, 0) S, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Establish `h1 : (fun b' : E => ((e.repr (b' - b) k : ℝ) : ℂ)) = fun b' => Complex.ofRealCLM (LinearMap.toContinuousLinearMap (e.coord k) (b' - b))`. Use function extensionality and compare the values at `b'`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ (fun b' : E => ((e.repr (b' - b) k : ℝ) : ℂ))`. Rewrite using `[h1]`. Conclude with `Complex.ofRealCLM.contDiff.comp ((LinearMap.toContinuousLinearMap (e.coord k)).contDiff.comp (contDiff_id.sub contDiff_const))`. Introduce `k`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `k`. Rewrite using `[contDiff_pi]`. Introduce `S`. Establish `hγ : ContDiff ℝ ∞ fun p : Pt E g × ℝ => γ p.1 p.2`. Simplify using `only [γ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fun_prop`. Conclude with `GlobalTheory.Chamber.contDiff_intervalIntegral_unit (Φ := fun p : Pt E g × ℝ => fderiv ℝ rt (γ p.1 p.2) (e k, 0) S) ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Finset (Fin m) => ℂ) S).contDiff.comp ((hd.comp hγ).clm_apply contDiff_const))`. Establish `hnhds : {Q : Pt E g | Q.1 ∈ Metric.ball b (ε / 4)} ∈ 𝓝 (b, z)` using `(Metric.isOpen_ball.preimage continuous_fst).mem_nhds (by simp; positivity) filter_upwards [hnhds] with Q hQ`. Establish `hρ1 : ρ Q.1 = 1` using `ρ.one_of_mem_closedBall (Metric.ball_subset_closedBall hQ)`. Establish `hrQ : r Q = rt Q` using `by simp [rt, hρ1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hrQ]`. Use function extensionality and compare the values at `S`. Establish `hderiv : ∀ t, HasDerivAt (fun t => rt (γ Q t) S) (fderiv ℝ rt (γ Q t) (Q.1 - b, 0) S) t`. Introduce `t`. Establish `hγd : HasDerivAt (γ Q) (Q.1 - b, (0 : Fin g → ℂ)) t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : HasDerivAt (fun t : ℝ => b + t • (Q.1 - b)) (Q.1 - b) t`. Simplify using `using ((hasDerivAt_id t).smul_const (Q.1 - b)).const_add b`. Conclude with `h1.prodMk (hasDerivAt_const t Q.2)`. Establish `h2` using `(hdiff (γ Q t)).hasFDerivAt.comp_hasDerivAt t hγd`. Conclude with `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Finset (Fin m) => ℂ) S).hasFDerivAt.comp_hasDerivAt t h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hftc` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ => hderiv t) ((hcont Q (Q.1 - b, 0) S).intervalIntegrable 0 1)`. Establish `hγ1 : γ Q 1 = Q` using `by simp [γ]`. Establish `hγ0 : γ Q 0 = (b, Q.2)` using `by simp [γ]`. Simplify using `only [hγ1, hγ0, hrt0, Pi.zero_apply, sub_zero] at hftc`. Rewrite using `[← hftc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : ∀ t, fderiv ℝ rt (γ Q t) (Q.1 - b, 0) S = ∑ k, ((e.repr (Q.1 - b) k : ℝ) : ℂ) * fderiv ℝ rt (γ Q t) (e k, 0) S`. Introduce `t`. Establish `hv : ((Q.1 - b, (0 : Fin g → ℂ)) : Pt E g) = ∑ k, (e.repr (Q.1 - b) k) • ((e k, 0) : Pt E g)` using `by conv_lhs => rw [← e.sum_repr (Q.1 - b)]`. Apply the tactic sequence `ext <;> simp [Prod.fst_sum, Prod.snd_sum]`. Rewrite using `[hv, map_sum, Finset.sum_apply]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, Complex.real_smul]`. Repeatedly rewrite using `[hexp]`. Rewrite using `[intervalIntegral.integral_finsetSum]`. Rewrite using `[Finset.sum_apply]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[intervalIntegral.integral_const_mul, Pi.smul_apply, smul_eq_mul]`. Introduce `k _`. Conclude with `((hcont Q (e k, 0) S).const_mul _).intervalIntegrable 0 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fibre_hadamard : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g m : ℕ} (B : Set E) (r : Pt E g → Ext m), IsOpen B → ContDiffOn ℝ ∞ r (cov B g) → ∀ b ∈ B, (∀ z, r (b, z) = 0) → ∀ z : Fin g → ℂ, ∃ (N : ℕ) (ψ : Fin N → E → ℂ) (q : Fin N → Pt E g → Ext m), (∀ k, ContDiff ℝ ∞ (ψ k)) ∧ (∀ k, ψ k b = 0) ∧ (∀ k, ContDiff ℝ ∞ (q k)) ∧ r =ᶠ[𝓝 (b, z)] fun Q => ∑ k, ψ k Q.1 • q k Q := by
   intro E _ _ _ g m B r hB hr b hb h0 z

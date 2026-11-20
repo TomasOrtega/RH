@@ -12,7 +12,7 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj, ComplexEmbedding.conjugate_coe_eq]`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjugate_coe_eq_bar (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (τ : E →+* ℂ) (a : 𝓞 E) :

@@ -16,13 +16,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ExpUniqCh0.SqZeroFactor
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit Z) (toUnit Y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_one_over {X : Scheme.{0}} {Y Z M : Over X} [GrpObj M] (f : Y ⟶ Z) : f ≫ (1 : Z ⟶ M) = 1 := by
   rw [Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit Z) (toUnit Y)]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem specMap_stalkCongr_fromSpecStalk {Y : Scheme.{0}} {x y : Y} (h : x = y) :
     Spec.map (Y.presheaf.stalkCongr (Inseparable.of_eq h)).hom ≫ Y.fromSpecStalk x = Y.fromSpecStalk y := by
@@ -30,9 +30,9 @@ theorem specMap_stalkCongr_fromSpecStalk {Y : Scheme.{0}} {x y : Y} (h : x = y) 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Distinguish the cases in `h : a = 0`. Substitute `h` using the available equality. Rewrite `ha` using `[map_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd ha not_isUnit_zero`. Conclude with `Ne.isUnit h`.
+A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_field {S R : Type} [Field S] [CommRing R] [Nontrivial R] (f : S →+* R) : IsLocalHom f := by
   constructor
@@ -50,11 +50,11 @@ variable {S A B : Type} [Field S] [CommRing A] [Algebra S A] [IsLocalRing A] [Co
   (hJ : RingHom.ker q ^ 2 = ⊥)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Rewrite `hx` using `[incl_apply]`. Establish `h1 : x.fst = 0`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu : IsUnit (algebraMap S A x.fst)` using `(Ne.isUnit h).map _`. Establish `hj : ((x.snd : A)) = -(algebraMap S A x.fst)` using `eq_neg_of_add_eq_zero_right hx`. Establish `hmem : ((x.snd : A)) ∈ RingHom.ker q` using `x.snd.2`. Rewrite `hmem` using `[hj]`. Conclude with `RingHom.ker_ne_top q (Ideal.eq_top_of_isUnit_mem _ hmem hu.neg)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (x.snd : A) = 0` using `by rw [h1, map_zero, zero_add] at hx; exact hx`. Conclude with `TrivSqZeroExt.ext (by simpa using h1) (by simpa using Subtype.ext h2)`.
+A detailed English derivation is pending.
 -/
 theorem incl_injective : Function.Injective (incl (S := S) (RingHom.ker q) hJ) := by
   rw [injective_iff_map_eq_zero]
@@ -76,7 +76,7 @@ def liftFun (f : R) : TrivSqZeroExt S (RingHom.ker q) :=
   (ψ f, ⟨φ f - algebraMap S A (ψ f), RingHom.mem_ker.2 (by rw [map_sub, h, AlgHom.commutes, sub_self])⟩)
 
 /- English proof (translation)
-Rewrite using `[incl_apply]`. Use `show algebraMap S A (ψ f) + (φ f - algebraMap S A (ψ f)) = φ f`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem incl_liftFun (f : R) : incl (S := S) (RingHom.ker q) hJ (liftFun q φ ψ h f) = φ f := by
   rw [incl_apply]
@@ -91,13 +91,13 @@ def lift (hJ : RingHom.ker q ^ 2 = ⊥) : R →+* TrivSqZeroExt S (RingHom.ker q
   map_add' x y := incl_injective q hJ (by rw [map_add, incl_liftFun q hJ, incl_liftFun q hJ, incl_liftFun q hJ, map_add])
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun f => incl_liftFun q hJ φ ψ h f`.
+A detailed English derivation is pending.
 -/
 theorem incl_comp_lift : (incl (S := S) (RingHom.ker q) hJ : TrivSqZeroExt S (RingHom.ker q) →+* A).comp (lift q φ ψ h hJ) = φ :=
   RingHom.ext fun f => incl_liftFun q hJ φ ψ h f
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem fst_comp_lift : (TrivSqZeroExt.fstHom S S (RingHom.ker q) : TrivSqZeroExt S (RingHom.ker q) →+* S).comp (lift q φ ψ h hJ) = ψ :=
   RingHom.ext fun _ => rfl
@@ -109,37 +109,29 @@ end GlobalTheory.ExpUniqCh0.SqZeroFactor
 open GlobalTheory.ExpUniqCh0.SqZeroFactor in
 
 /- English proof (translation)
-Introduce `X G _ S _ x0 A B _ _ _ _ _ _ q hq _ _ hJ δ hδ`. Set `u : Sp S ⟶ G.left` to `(1 : overAt x0 S ⟶ G).left`. Establish `hδ' : spMap (q : A →+* B) ≫ δ.left = spMap (algebraMap S B) ≫ u`. Establish `h1 : (1 : overAt x0 B ⟶ G) = homAt x0 (Algebra.ofId S B) ≫ 1` using `(comp_one_over _).symm`. Establish `h2` using `congrArg (fun f => f.left) (hδ.trans h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Use `haveI : IsLocalHom (q : A →+* B) := IsLocalHom.of_surjective _ hq`. Use `haveI : IsLocalHom (algebraMap S B) := isLocalHom_of_field _`. Use `haveI : IsLocalHom (algebraMap S A) := isLocalHom_of_field _`. Set `φ` to `Scheme.stalkClosedPointTo δ.left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδl : Spec.map φ ≫ G.left.fromSpecStalk _ = δ.left` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk δ.left`. Set `φ₁` to `Scheme.stalkClosedPointTo u`. Establish `hu : Spec.map φ₁ ≫ G.left.fromSpecStalk _ = u` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk u`. Establish `l1 : IsLocalHom (φ ≫ CommRingCat.ofHom (q : A →+* B)).hom`. Rewrite using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `l2 : IsLocalHom (φ₁ ≫ CommRingCat.ofHom (algebraMap S B)).hom`. Rewrite using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Use `infer_instance`. Establish `e1 : (SpecToEquivOfLocalRing G.left (CommRingCat.of B)).symm ⟨_, φ ≫ CommRingCat.ofHom (q : A →+* B), l1⟩ = (SpecToEquivOfLocalRing G.left (CommRingCat.of B)).symm ⟨_, φ₁ ≫ CommRingCat.ofHom (algebraMap S B), l2⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SpecToEquivOfLocalRing_symm_apply, SpecToEquivOfLocalRing_symm_apply, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, hδl, hu]`. Conclude with `hδ'`. Take `⟨hp, hφ⟩` from `SpecToEquivOfLocalRing_eq_iff.mp ((SpecToEquivOfLocalRing _ _).symm.injective e1)`. Set `ψc` to `(G.left.presheaf.stalkCongr (Inseparable.of_eq hp)).hom ≫ φ₁`. Establish `hψu : Spec.map ψc ≫ G.left.fromSpecStalk _ = u`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Spec.map_comp, Category.assoc, specMap_stalkCongr_fromSpecStalk hp, hu]`. Establish `hψ : ∀ f, q (φ.hom f) = algebraMap S B (ψc.hom f)` using `fun f => by`. Use `congrArg (fun g => g.hom f) hφ` as an intermediate fact. Simplify `this` using `[ψc]`. Set `φε` to `lift q φ.hom ψc.hom hψ hJ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `εl : Sp (TrivSqZeroExt S (RingHom.ker q)) ⟶ G.left` to `Spec.map (CommRingCat.ofHom φε) ≫ G.left.fromSpecStalk _`. Set `m` to `G.hom.stalkMap (δ.left (IsLocalRing.closedPoint A))`. Establish `key : ∀ {R : CommRingCat} (g : G.left.presheaf.stalk (δ.left (IsLocalRing.closedPoint A)) ⟶ R), Spec.map g ≫ G.left.fromSpecStalk _ ≫ G.hom = Spec.map (m ≫ g) ≫ X.fromSpecStalk _`. Introduce `R g`. Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, Spec.map_comp, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx0 : Spec.map (m ≫ ψc) ≫ X.fromSpecStalk _ = x0`. Rewrite using `[← key, ← Category.assoc, hψu]`. Establish `hw` using `Over.w (1 : overAt x0 S ⟶ G)`. Use `hw.trans ?_` and prove the remaining obligations. Use `show spMap (algebraMap S S) ≫ x0 = x0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMap_self]`. Simplify using `[spMap]`. Establish `hδx : Spec.map (m ≫ φ) ≫ X.fromSpecStalk _ = Spec.map (m ≫ ψc ≫ CommRingCat.ofHom (algebraMap S A)) ≫ X.fromSpecStalk _`. Rewrite using `[← key, ← Category.assoc, hδl, Over.w δ]`. Use `show spMap (algebraMap S A) ≫ x0 = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← hx0]`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Simplify using `[spMap]`. Use `haveI : IsLocalHom (G.left.presheaf.stalkCongr (Inseparable.of_eq hp)).hom.hom := isLocalHom_of_isIso _`. Use `haveI : IsLocalHom m.hom := inferInstanceAs (IsLocalHom (G.hom.stalkMap (δ.left (IsLocalRing.closedPoint A))).hom)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsLocalHom φ.hom := Scheme.isLocalHom_stalkClosedPointTo _`. Use `haveI : IsLocalHom φ₁.hom := Scheme.isLocalHom_stalkClosedPointTo _`. Establish `l3 : IsLocalHom (m ≫ φ).hom` using `CommRingCat.isLocalHom_comp _ _`. Establish `l4 : IsLocalHom (m ≫ ψc ≫ CommRingCat.ofHom (algebraMap S A)).hom` using `by haveI : IsLocalHom ψc.hom := CommRingCat.isLocalHom_comp _ _ haveI : IsLocalHom (CommRingCat.ofHom (algebraMap S A)).hom := by rw [CommRingCat.hom_ofHom]; infer_instance haveI : IsLocalHom (ψc ≫ CommRingCat.ofHom (algebraMap S A)).hom := CommRingCat.isLocalHom_comp _ _`. Conclude with `CommRingCat.isLocalHom_comp _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2 : (SpecToEquivOfLocalRing X (CommRingCat.of A)).symm ⟨_, m ≫ φ, l3⟩ = (SpecToEquivOfLocalRing X (CommRingCat.of A)).symm ⟨_, m ≫ ψc ≫ CommRingCat.ofHom (algebraMap S A), l4⟩`. Rewrite using `[SpecToEquivOfLocalRing_symm_apply, SpecToEquivOfLocalRing_symm_apply]`. Conclude with `hδx`. Take `⟨hxx, hmφ⟩` from `SpecToEquivOfLocalRing_eq_iff.mp ((SpecToEquivOfLocalRing _ _).symm.injective e2)`. Simplify using `only [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp] at hmφ`.
-
-Establish `hmε : m ≫ CommRingCat.ofHom φε = m ≫ ψc ≫ CommRingCat.ofHom (algebraMap S (TrivSqZeroExt S (RingHom.ker q)))`. Use `CommRingCat.hom_ext (RingHom.ext fun g => ?_)` and prove the remaining obligations. Apply `incl_injective q hJ` to reduce the goal to its premises. Use `congrArg (fun k => k.hom g) hmφ` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at this ⊢`.
-
-Rewrite using `[AlgHom.commutes]`. Conclude with `(incl_liftFun q hJ φ.hom ψc.hom hψ _).trans this`. Establish `hover : εl ≫ G.hom = (overAt x0 (TrivSqZeroExt S (RingHom.ker q))).hom` using `by show Spec.map (CommRingCat.ofHom φε) ≫ G.left.fromSpecStalk _ ≫ G.hom = spMap _ ≫ x0`. Rewrite using `[key]`. Use `erw [hmε]`.
-
-Use `conv_rhs => rw [← hx0]`. Simplify using `only [spMap, Spec.map_comp, Category.assoc]`. Use `⟨Over.homMk εl hover, ?_, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext show spMap _ ≫ Spec.map (CommRingCat.ofHom φε) ≫ G.left.fromSpecStalk _ = u` to reduce the goal to its premises. Rewrite using `[← hψu, ← Category.assoc, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, fst_comp_lift q hJ φ.hom ψc.hom hψ, CommRingCat.ofHom_hom]`.
-
-Apply `Over.OverMorphism.ext show spMap _ ≫ Spec.map (CommRingCat.ofHom φε) ≫ G.left.fromSpecStalk _ = δ.left` to reduce the goal to its premises. Rewrite using `[← Category.assoc, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, incl_comp_lift q hJ φ.hom ψc.hom hψ, CommRingCat.ofHom_hom, hδl]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ExpUniqCh0.exists_factor_trivSqZeroExt : ∀ {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [Field S] (x0 : Sp S ⟶ X)
     {A B : Type} [CommRing A] [Algebra S A] [IsLocalRing A] [CommRing B] [Algebra S B] [IsLocalRing B]

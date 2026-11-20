@@ -6,11 +6,9 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Use `((HeightOneSpectrum.Support.finite (𝓞 F) (x : F)).union (HeightOneSpectrum.Support.finite (𝓞 F) ((x : F)⁻¹))).subset ?_` and prove the remaining obligations. Introduce `v hv`. Establish `hv' : v.valuation F (x : F) ≠ 1` using `hv`. Establish `h0 : v.valuation F (x : F) ≠ 0`. Rewrite using `[Ne, map_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `x.ne_zero`. Break down `lt_or_gt_of_ne hv' with h | h` into its components or cases. Use `right show 1 < v.valuation F ((x : F)⁻¹)`. Rewrite using `[map_inv₀]`. Conclude with `one_lt_inv₀ (zero_lt_iff.mpr h0) |>.mpr h`.
-
-Use `left`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_valuation_ne_one (F : Type) [Field F] [NumberField F] (x : Fˣ) :
     {v : HeightOneSpectrum (𝓞 F) | v.valuation F (x : F) ≠ 1}.Finite := by
@@ -30,11 +28,11 @@ theorem finite_valuation_ne_one (F : Type) [Field F] [NumberField F] (x : Fˣ) :
     exact h
 
 /- English proof (translation)
-Introduce `F _ _ X S₀`. Establish `hT : (⋃ x ∈ X, {v : HeightOneSpectrum (𝓞 F) | v.valuation F (x : F) ≠ 1}).Finite` using `X.finite_toSet.biUnion fun x _ => finite_valuation_ne_one F x`. Use `⟨S₀ ∪ hT.toFinset, Finset.subset_union_left, ?_⟩` and prove the remaining obligations. Introduce `S' hS' x hx`. Rewrite using `[mem_sUnits]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Assume the negation of the conclusion as `h`. Apply `hv` to reduce the goal to its premises. Apply `hS'` to reduce the goal to its premises. Apply `Finset.mem_union_right` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Set.mem_biUnion hx h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_superset_mem_sUnits :
     ∀ (F : Type) [Field F] [NumberField F] (X : Finset Fˣ)

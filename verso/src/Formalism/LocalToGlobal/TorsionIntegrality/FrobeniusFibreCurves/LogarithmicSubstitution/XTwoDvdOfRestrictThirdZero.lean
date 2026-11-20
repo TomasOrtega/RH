@@ -11,20 +11,20 @@ open MvPowerSeries
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Conclude with `hasSubst_of_constantCoeff_zero ha`.
+A detailed English derivation is pending.
 -/
 private theorem hasSubst_fin_three_of_constantCoeff_eq_zero {a : Fin 3 → MvPowerSeries (Fin 3) K}
     (ha : ∀ s, constantCoeff (a s) = 0) : HasSubst a := by
   exact hasSubst_of_constantCoeff_zero ha
 
 /- English proof (translation)
-The claim follows from `hasSubst_fin_three_of_constantCoeff_eq_zero (fun s => by fin_cases s <;> simp)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_restrictThirdZero : HasSubst ![(X 0 : MvPowerSeries (Fin 3) K), X 1, 0] :=
   hasSubst_fin_three_of_constantCoeff_eq_zero (fun s => by fin_cases s <;> simp)
 
 /- English proof (translation)
-Rewrite using `[rescale_eq_subst]`. Unfold `Formalism.L2.Th1.B.ev3`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem restrictThirdZero_eq_rescale (h : MvPowerSeries (Fin 3) K) : ev3 h = rescale ![1, 1, 0] h := by
   rw [rescale_eq_subst]
@@ -34,7 +34,7 @@ theorem restrictThirdZero_eq_rescale (h : MvPowerSeries (Fin 3) K) : ev3 h = res
   fin_cases s <;> simp
 
 /- English proof (translation)
-Rewrite using `[restrictThirdZero_eq_rescale]`. Rewrite using `[coeff_rescale, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_three]`. Simplify using `[hn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_restrictThirdZero (h : MvPowerSeries (Fin 3) K) (n : Fin 3 →₀ ℕ) (hn : n 2 = 0) :
     coeff n (ev3 h) = coeff n h := by
@@ -43,31 +43,31 @@ theorem coeff_restrictThirdZero (h : MvPowerSeries (Fin 3) K) (n : Fin 3 →₀ 
   simp [hn]
 
 /- English proof (translation)
-Simplify using `only [restrictThirdZero_eq_rescale, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem restrictThirdZero_mul (f g : MvPowerSeries (Fin 3) K) : ev3 (f * g) = ev3 f * ev3 g := by
   simp only [restrictThirdZero_eq_rescale, map_mul]
 
 /- English proof (translation)
-Simplify using `only [restrictThirdZero_eq_rescale, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem restrictThirdZero_add (f g : MvPowerSeries (Fin 3) K) : ev3 (f + g) = ev3 f + ev3 g := by
   simp only [restrictThirdZero_eq_rescale, map_add]
 
 /- English proof (translation)
-Simplify using `only [restrictThirdZero_eq_rescale, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem restrictThirdZero_sub (f g : MvPowerSeries (Fin 3) K) : ev3 (f - g) = ev3 f - ev3 g := by
   simp only [restrictThirdZero_eq_rescale, map_sub]
 
 /- English proof (translation)
-Simplify using `only [restrictThirdZero_eq_rescale, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem restrictThirdZero_natCast (k : ℕ) : ev3 (k : MvPowerSeries (Fin 3) K) = k := by
   simp only [restrictThirdZero_eq_rescale, map_natCast]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.B.ev3`. Rewrite using `[subst_X hasSubst_restrictThirdZero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem restrictThirdZero_X_two : ev3 (X 2 : MvPowerSeries (Fin 3) K) = 0 := by
   unfold Formalism.L2.Th1.B.ev3
@@ -75,7 +75,7 @@ theorem restrictThirdZero_X_two : ev3 (X 2 : MvPowerSeries (Fin 3) K) = 0 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[X_dvd_iff]`. Introduce `m hm`. Rewrite using `[← coeff_restrictThirdZero h m hm, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem X_two_dvd_of_restrictThirdZero {h : MvPowerSeries (Fin 3) K} (h0 : ev3 h = 0) : X 2 ∣ h := by
   rw [X_dvd_iff]
@@ -84,7 +84,7 @@ theorem X_two_dvd_of_restrictThirdZero {h : MvPowerSeries (Fin 3) K} (h0 : ev3 h
   simp
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (coeff (Finsupp.single (2 : Fin 3) 1)) h` as an intermediate fact. Simplify using `[coeff_X] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem X_two_fin_three_ne_zero : (X 2 : MvPowerSeries (Fin 3) K) ≠ 0 := by
   intro h
@@ -99,9 +99,9 @@ private theorem pderiv_X_fin_three_self (i : Fin 3) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ (X 2 : MvPowerSeries (Fin 3) K) (m + 1), Derivation.leibniz, ih, pderiv_X_fin_three_self]`. Simplify using `only [smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem pderiv_two_X_two_pow_succ (m : ℕ) :
     MvPowerSeries.pderiv K 2 ((X 2 : MvPowerSeries (Fin 3) K) ^ (m + 1)) =
@@ -115,7 +115,7 @@ private theorem pderiv_two_X_two_pow_succ (m : ℕ) :
     ring
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.B.pd`. Rewrite using `[Derivation.leibniz, pderiv_two_X_two_pow_succ]`. Simplify using `only [smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pd_two_X_two_pow_succ_mul (m : ℕ) (R : MvPowerSeries (Fin 3) K) :
     Formalism.L2.Th1.B.pd 2 (X 2 ^ (m + 1) * R) =
@@ -125,23 +125,21 @@ private theorem pd_two_X_two_pow_succ_mul (m : ℕ) (R : MvPowerSeries (Fin 3) K
   simp only [smul_eq_mul]
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, ∃ R : MvPowerSeries (Fin 3) K, Q = X 2 ^ (m + 1) * R`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Take `⟨R, hR⟩` from `X_two_dvd_of_restrictThirdZero hQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨R, by rw [hR]; ring⟩`. Consider the case `succ m ih`. Take `⟨R, rfl⟩` from `ih`. Rewrite `hw` using `[pd_two_X_two_pow_succ_mul]`. Establish `h1 : X 2 ^ m * (X 2 * R * Formalism.L2.Th1.B.pd 2 B) = X 2 ^ m * (B * (((m + 1 : ℕ) : MvPowerSeries (Fin 3) K) * R + X 2 * Formalism.L2.Th1.B.pd 2 R))`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `hw`. Establish `h2` using `mul_left_cancel₀ (pow_ne_zero m X_two_fin_three_ne_zero) h1`. Establish `h3` using `congrArg Formalism.L2.Th1.B.ev3 h2`. Simplify using `only [restrictThirdZero_mul, restrictThirdZero_add, restrictThirdZero_X_two, restrictThirdZero_natCast, zero_mul, add_zero] at h3`. Establish `hc : ((m + 1 : ℕ) : MvPowerSeries (Fin 3) K) ≠ 0`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `hc`. Use `congrArg (coeff (0 : Fin 3 →₀ ℕ)) hc` as an intermediate fact. Simplify using `at this`. Conclude with `Nat.cast_add_one_ne_zero m this`. Establish `hR : Formalism.L2.Th1.B.ev3 R = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.mp h3.symm with h | h` into its components or cases. Conclude with `absurd h hB`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `absurd h hc`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `X_two_dvd_of_restrictThirdZero hR`. Conclude with `⟨S, by rw [hS]; ring⟩`. Use extensionality with `n`. Take `⟨R, hR⟩` from `key (n 2)`. It suffices to establish `hz : coeff n ((X 2 : MvPowerSeries (Fin 3) K) ^ (n 2 + 1) * R) = 0 by`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hR, hz]`. Simplify using the standard rewrite rules. Rewrite using `[coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨p, q⟩ hpq`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Substitute using the available equality.
 
-Establish `hpq' : p + q = n` using `by simpa using hpq`. Rewrite using `[coeff_X_pow]`. Use `split_ifs with hp`. It suffices to derive a contradiction. Substitute `hp` using the available equality.
-
-Use `DFunLike.congr_fun hpq' 2` as an intermediate fact. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same] at this`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_wronsk {Q B : MvPowerSeries (Fin 3) K} (hw : Q * pd 2 B = B * pd 2 Q)
     (hQ : ev3 Q = 0) (hB : ev3 B ≠ 0) : Q = 0 := by
@@ -192,9 +190,9 @@ theorem eq_zero_of_wronsk {Q B : MvPowerSeries (Fin 3) K} (hw : Q * pd 2 B = B *
   · simp
 
 /- English proof (translation)
-Introduce `L _ _ A Bs hw hr hB`. Establish `hQ : Formalism.L2.Th1.B.ev3 (A - Bs) = 0` using `by rw [restrictThirdZero_sub, hr, sub_self]`. Establish `hd : Formalism.L2.Th1.B.pd 2 (A - Bs) = Formalism.L2.Th1.B.pd 2 A - Formalism.L2.Th1.B.pd 2 Bs`. Simplify using `only [Formalism.L2.Th1.B.pd, map_sub]`. Establish `hw' : (A - Bs) * Formalism.L2.Th1.B.pd 2 Bs = Bs * Formalism.L2.Th1.B.pd 2 (A - Bs)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hd]`. Take the linear combination `hw`. Conclude with `sub_eq_zero.mp (eq_zero_of_wronsk hw' hQ hB)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wronskianUniqueness : WronskLemma := by
   intro L _ _ A Bs hw hr hB
@@ -213,61 +211,61 @@ def shI (h : MvPowerSeries (Fin 3) K) : MvPowerSeries (Fin 3) K :=
   subst ![(X 0 : MvPowerSeries (Fin 3) K), X 1 + X 2, X 2] h
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases s <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_sh (s : Fin 3) :
     constantCoeff (![(X 0 : MvPowerSeries (Fin 3) K), X 1 - X 2, X 2] s) = 0 := by
   fin_cases s <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases s <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_shI (s : Fin 3) :
     constantCoeff (![(X 0 : MvPowerSeries (Fin 3) K), X 1 + X 2, X 2] s) = 0 := by
   fin_cases s <;> simp
 
 /- English proof (translation)
-The claim follows from `hasSubst_fin_three_of_constantCoeff_eq_zero cc_sh`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_sh : HasSubst ![(X 0 : MvPowerSeries (Fin 3) K), X 1 - X 2, X 2] :=
   hasSubst_fin_three_of_constantCoeff_eq_zero cc_sh
 
 /- English proof (translation)
-The claim follows from `hasSubst_fin_three_of_constantCoeff_eq_zero cc_shI`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_shI : HasSubst ![(X 0 : MvPowerSeries (Fin 3) K), X 1 + X 2, X 2] :=
   hasSubst_fin_three_of_constantCoeff_eq_zero cc_shI
 
 /- English proof (translation)
-Conclude with `subst_mul ha f g`.
+A detailed English derivation is pending.
 -/
 private theorem subst_fin_three_mul {a : Fin 3 → MvPowerSeries (Fin 3) K} (ha : HasSubst a)
     (f g : MvPowerSeries (Fin 3) K) : subst a (f * g) = subst a f * subst a g := by
   exact subst_mul ha f g
 
 /- English proof (translation)
-Unfold `sh`. Conclude with `subst_fin_three_mul hasSubst_sh f g`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sh_mul (f g : MvPowerSeries (Fin 3) K) : sh (f * g) = sh f * sh g := by
   unfold sh
   exact subst_fin_three_mul hasSubst_sh f g
 
 /- English proof (translation)
-Conclude with `subst_sub ha f g`.
+A detailed English derivation is pending.
 -/
 private theorem subst_fin_three_sub {a : Fin 3 → MvPowerSeries (Fin 3) K} (ha : HasSubst a)
     (f g : MvPowerSeries (Fin 3) K) : subst a (f - g) = subst a f - subst a g := by
   exact subst_sub ha f g
 
 /- English proof (translation)
-Unfold `sh`. Conclude with `subst_fin_three_sub hasSubst_sh f g`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sh_sub (f g : MvPowerSeries (Fin 3) K) : sh (f - g) = sh f - sh g := by
   unfold sh
   exact subst_fin_three_sub hasSubst_sh f g
 
 /- English proof (translation)
-Rewrite using `[← map_algebraMap_eq_subst_X]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem subst_X_fin_three_eq_self (h : MvPowerSeries (Fin 3) K) :
     subst (X : Fin 3 → MvPowerSeries (Fin 3) K) h = h := by
@@ -275,9 +273,9 @@ private theorem subst_X_fin_three_eq_self (h : MvPowerSeries (Fin 3) K) :
   simp
 
 /- English proof (translation)
-Unfold `shI sh`. Rewrite using `[subst_comp_subst_apply hasSubst_sh hasSubst_shI]`. Use `trans subst (X : Fin 3 → MvPowerSeries (Fin 3) K) h`. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases s <;> simp [subst_X hasSubst_shI, subst_fin_three_sub hasSubst_shI]`. Conclude with `subst_X_fin_three_eq_self h`.
+A detailed English derivation is pending.
 -/
 theorem shI_sh (h : MvPowerSeries (Fin 3) K) : shI (sh h) = h := by
   unfold shI sh
@@ -289,7 +287,7 @@ theorem shI_sh (h : MvPowerSeries (Fin 3) K) : shI (sh h) = h := by
   · exact subst_X_fin_three_eq_self h
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.B.ev3 sh`. Rewrite using `[subst_comp_subst_apply hasSubst_sh hasSubst_restrictThirdZero]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> simp [subst_X hasSubst_restrictThirdZero, subst_fin_three_sub hasSubst_restrictThirdZero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem restrictThirdZero_shear (h : MvPowerSeries (Fin 3) K) : ev3 (sh h) = ev3 h := by
   unfold Formalism.L2.Th1.B.ev3 sh
@@ -299,14 +297,14 @@ theorem restrictThirdZero_shear (h : MvPowerSeries (Fin 3) K) : ev3 (sh h) = ev3
   fin_cases s <;> simp [subst_X hasSubst_restrictThirdZero, subst_fin_three_sub hasSubst_restrictThirdZero]
 
 /- English proof (translation)
-Simplify using `[hij]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pderiv_X_fin_three_of_ne {i j : Fin 3} (hij : j ≠ i) :
     MvPowerSeries.pderiv K i (X j : MvPowerSeries (Fin 3) K) = 0 := by
   simp [hij]
 
 /- English proof (translation)
-Unfold `sh Formalism.L2.Th1.B.pd`. Rewrite using `[Formalism.G.LogCR.pderiv_subst cc_sh, Fin.sum_univ_three]`. Simplify using `[pderiv_X_fin_three_self, pderiv_X_fin_three_of_ne]`. Apply the tactic sequence `try ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem partialDeriv_two_shear (h : MvPowerSeries (Fin 3) K) : pd 2 (sh h) = sh (pd 2 h) - sh (pd 1 h) := by
   unfold sh Formalism.L2.Th1.B.pd
@@ -315,11 +313,11 @@ theorem partialDeriv_two_shear (h : MvPowerSeries (Fin 3) K) : pd 2 (sh h) = sh 
   try ring
 
 /- English proof (translation)
-Introduce `L _ _ A Bs hw hr hB`. Establish `h1 : sh A * Formalism.L2.Th1.B.pd 2 (sh Bs) = sh Bs * Formalism.L2.Th1.B.pd 2 (sh A)`. Rewrite using `[partialDeriv_two_shear, partialDeriv_two_shear]`. Establish `e` using `congrArg sh hw`. Rewrite `e` using `[sh_mul, sh_mul, sh_sub, sh_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `-e`. Establish `h2 : Formalism.L2.Th1.B.ev3 (sh A) = Formalism.L2.Th1.B.ev3 (sh Bs)`. Rewrite using `[restrictThirdZero_shear, restrictThirdZero_shear, hr]`. Establish `h3 : Formalism.L2.Th1.B.ev3 (sh Bs) ≠ 0`. Rewrite using `[restrictThirdZero_shear]` and apply the resulting hypothesis.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `h4` using `wronskianUniqueness L (sh A) (sh Bs) h1 h2 h3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem shearedWronskianUniqueness : ShearLemma := by
   intro L _ _ A Bs hw hr hB

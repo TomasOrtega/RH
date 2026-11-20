@@ -15,7 +15,7 @@ open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed I
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.descentLocInj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalizationAwayPolynomialSubringLiftInjective.lean&line=15#L15)
 -/

@@ -7,13 +7,11 @@ open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `M _ K _ _ _ c a b`. Use `set S : Set (HeightOneSpectrum (𝓞 K)) := {v | v.asIdeal ∣ Ideal.span {((M : ℕ) : 𝓞 K)}}`. Establish `hM0 : Ideal.span {((M : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `NeZero.ne M` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : S.Finite` using `Ideal.finite_factors hM0`. Take `⟨v, hvS, hprime, hvc⟩` from `degOne K S hS c`. Use `haveI : Fact (Ideal.absNorm v.asIdeal).Prime := ⟨hprime⟩`. Take `⟨π, hπ⟩` from `(red K (Ideal.absNorm v.asIdeal) v.asIdeal).1 rfl`. Establish `hpv` using `((red K (Ideal.absNorm v.asIdeal) v.asIdeal).2 π hπ).2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hcop : (Ideal.absNorm v.asIdeal).Coprime M`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hprime]`. Introduce and unpack `⟨k, hk⟩`. Apply `hvS` to reduce the goal to its premises. Use `show v.asIdeal ∣ _`.
-
-Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem, hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hpv`. Rewrite using `[← hvc]`. Conclude with `carryPrime M K _ π hcop v hπ a b`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Stick.carryAll :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (c : ClassGroup (𝓞 K)) (a b : ZMod M),

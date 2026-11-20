@@ -21,7 +21,7 @@ variable {X : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X)
 abbrev overAt (A : Type) [CommRing A] [Algebra S A] : Over X := Over.mk (spMap (algebraMap S A) ≫ x0)
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [← spMap_comp, AlgHom.comp_algebraMap]`. Consider the case `(unfold spMap; rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, AlgHom.comp_algebraMap])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem spMap_comp_alg {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B]
     (f : A →ₐ[S] B) : spMap (f : A →+* B) ≫ spMap (algebraMap S A) = spMap (algebraMap S B) := by

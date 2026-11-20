@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
 theorem smul_def' (u : W) (x : A f ξ l M) : u • x = ofW f ξ l M u * x := rfl
 
 /- English proof (translation)
-Rewrite using `[smul_def', map_mul, ι_ofW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_smul (u : W) (x : A f ξ l M) : ι f ξ l M (u • x) = f u * ι f ξ l M x := by
   rw [smul_def', map_mul, ι_ofW]

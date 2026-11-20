@@ -115,7 +115,7 @@ theorem ptF_ofModel {V W : HSp D} {S S' : D.what₂.Tau → SPar} (ψ : AddChar 
     ptF ψ θ (Fr.ofModel M) (Fr.ofModel M') f = ptOf ψ θ M M' f := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.theta, h.vac⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVacF_of_isVacVec {V W : HSp D} {S S' : D.what₂.Tau → SPar} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {M : DSModel V S} {M' : DSModel W S'} {f : WO V W → ℂ} (h : IsVacVec ψ θ M M' f) :

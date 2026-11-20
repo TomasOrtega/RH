@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons x L ih`. Rewrite using `[List.map_cons, List.prod_cons, ih, AddMonoidAlgebra.single_mul_single, List.map_cons, List.map_cons, List.sum_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_single {K α : Type} [CommRing K] (d : α → ℤ) (a : α → K) (L : List α) :
     (L.map fun s => AddMonoidAlgebra.single (d s) (a s)).prod =
@@ -24,7 +24,7 @@ private theorem alg_val {C K : Type} [CommRing C] [CommRing K] [Algebra C K] (P 
   rfl
 
 /- English proof (translation)
-Introduce `h`. Apply `hij` to reduce the goal to its premises. Unfold `w at h`. Apply the tactic sequence `split_ifs at h <;> exact Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem w_ne_w_of_ne (n : ℕ) {i j : Fin n} (hij : i ≠ j) : w n i ≠ w n j := by
   intro h
@@ -33,19 +33,19 @@ private theorem w_ne_w_of_ne (n : ℕ) {i j : Fin n} (hij : i ≠ j) : w n i ≠
   split_ifs at h <;> exact Fin.ext (by omega)
 
 /- English proof (translation)
-Introduce `l _ O _ _ F n C _ _ _ K _ _ ρ hc h ρD hr hψ`. Establish `key : ∀ (c : C) (y : K), algebraMap C K c = y → ∀ p : lauSub (ρ.part C), p.1 = AddMonoidAlgebra.single 0 y → algebraMap C (lauSub (ρ.part C)) c = p`. Introduce `c y hcy p hp`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[alg_val, hp, hcy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨alg_cont C ρ hc h ρD hr hψ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g i j hij`. Rewrite using `[mem_vertex]`. Use `⟨0, Ideal.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (0 : ℤ) ≠ w n i - w n j`. Introduce `h0`. Conclude with `w_ne_w_of_ne n hij (by omega)`. Conclude with `(Finsupp.single_eq_of_ne hne).symm`. Introduce `g i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc1, hc2⟩` from `hc.dg g i`. Use `⟨c, key c _ hc1 _ ?_, hc2⟩` and prove the remaining obligations. Rewrite using `[hr, sub_self]`. Introduce `v i g`. Take `⟨χ, hχ, hχψ⟩` from `hc.psi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨χ v i g, key _ _ (hχψ v i g) _ (hψ v i g), (hχ v i).2 g⟩`. Introduce `x hx`. Take `⟨L, hL, rfl⟩` from `hx`. Establish `hmem : (L.map fun s => ρ.r s.1 s.2.1 s.2.2).prod ∈ ρ.part C 0` using `Submodule.subset_span ⟨L, hL, rfl⟩`. Take `⟨c, hc'⟩` from `h.zero _ hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c, key c _ hc' _ ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ L' : List (F.G0 × Fin n × Fin n), ((L'.map fun s => ρD.r s.1 s.2.1 s.2.2).prod : lauSub (ρ.part C)).1 = (L'.map fun s => AddMonoidAlgebra.single (w n s.2.1 - w n s.2.2) (ρ.r s.1 s.2.1 s.2.2)).prod`. Introduce `L'`. Proceed by induction on `L' with`. Consider the case `nil => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons s L' ih`. Rewrite using `[List.map_cons, List.prod_cons, Subalgebra.coe_mul, ih, hr, List.map_cons, List.prod_cons]`. Rewrite using `[e1, prod_single (fun s : F.G0 × Fin n × Fin n => w n s.2.1 - w n s.2.2) (fun s => ρ.r s.1 s.2.1 s.2.2) L, hL]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_model :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)} {n : ℕ} (C : Type) [CommRing C] [Algebra O C] [IsCO O C] {K : Type} [CommRing K] [Algebra C K] (ρ : NRep F n K), Cone O C ρ → ∀ (h : HasVertex (ρ.part C)) (ρD : NRep F n (lauSub (ρ.part C))), (∀ g i j, (ρD.r g i j).1 = AddMonoidAlgebra.single (w n i - w n j) (ρ.r g i j)) → (∀ v i g, (ρD.ψ v i g : lauSub (ρ.part C)).1 = AddMonoidAlgebra.single 0 (ρ.ψ v i g : K)) → IsModel O C (vertex h) ρD := by

@@ -30,19 +30,19 @@ def selS {S : Set (Pl E)} (φ₁ φ₂ : ∀ w : Pl E, LF a b w) : ∀ i : Slot 
   | .inr w => φ₂ w.1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_thF (n : ℕ) : Continuous (thF E n) :=
   GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EulerTw.continuous_locGL_spl E n w`.
+A detailed English derivation is pending.
 -/
 theorem continuous_loc (n : ℕ) (w : Pl E) : Continuous (locGL E n w) :=
   GlobalTheory.EulerTw.continuous_locGL_spl E n w
 
 /- English proof (translation)
-Break down `i with w | w` into its components or cases. Conclude with `(continuous_loc a w.1).prodMap (continuous_loc b w.1)`. Conclude with `((continuous_thF a).comp (continuous_loc a w.1)).prodMap ((continuous_thF b).comp (continuous_loc b w.1))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_epsS {S : Set (Pl E)} (i : Slot S) : Continuous (epsS a b i) := by
   rcases i with w | w
@@ -50,7 +50,7 @@ theorem continuous_epsS {S : Set (Pl E)} (i : Slot S) : Continuous (epsS a b i) 
   · exact ((continuous_thF a).comp (continuous_loc a w.1)).prodMap ((continuous_thF b).comp (continuous_loc b w.1))
 
 /- English proof (translation)
-Use `MonoidHom.ext fun m => Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.ThetaPull.thetaA_finGL _`. Conclude with `GlobalTheory.ThetaPull.thetaA_finGL _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem embT_prod (w : Pl E) : (embT a w).prodMap (embT b w) =
     (fHm E a b).comp (((thF E a).comp (locGL E a w)).prodMap ((thF E b).comp (locGL E b w))) := by
@@ -59,7 +59,7 @@ theorem embT_prod (w : Pl E) : (embT a w).prodMap (embT b w) =
   · exact GlobalTheory.ThetaPull.thetaA_finGL _
 
 /- English proof (translation)
-Break down `i with w | w` into its components or cases. Both sides reduce to the same expression. Use `show act ((embT a w.1).prodMap (embT b w.1)) (K2 a b w.1) (φ₂ w.1) G = _`. Rewrite using `[embT_prod]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem actS_eq {S : Set (Pl E)} (φ₁ φ₂ : ∀ w : Pl E, LF a b w) (i : Slot S) (G : H E a b → ℂ) :
     actS φ₁ φ₂ i G = act ((fHm E a b).comp (epsS a b i)) (K2 a b i.pl) (selS φ₁ φ₂ i) G := by
@@ -70,14 +70,14 @@ theorem actS_eq {S : Set (Pl E)} (φ₁ φ₂ : ∀ w : Pl E, LF a b w) (i : Slo
     rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2, (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).1.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem pair_maximal_compact_open_compact (w : Pl E) : IsCompact (K2 a b w : Set (GLw a w × GLw b w)) ∧ IsOpen (K2 a b w : Set (GLw a w × GLw b w)) :=
   ⟨(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2,
     (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).1.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).1⟩
 
 /- English proof (translation)
-Take `⟨K₁, K₂, h₁, h₂, h₃⟩` from `h`. Conclude with `⟨(K₁ w).prod (K₂ w), (h₁.1 w).1.prod (h₂.1 w).1, h₃.1 w⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hecke_of_test {φ : ∀ w : Pl E, LF a b w} (h : IsTestP φ) (w : Pl E) :
     ∃ A : Subgroup (GLw a w × GLw b w), IsOpen (A : Set (GLw a w × GLw b w)) ∧ IsHecke A (φ w) := by
@@ -85,7 +85,7 @@ theorem hecke_of_test {φ : ∀ w : Pl E, LF a b w} (h : IsTestP φ) (w : Pl E) 
   exact ⟨(K₁ w).prod (K₂ w), (h₁.1 w).1.prod (h₂.1 w).1, h₃.1 w⟩
 
 /- English proof (translation)
-Break down `i with w | w` into its components or cases. Conclude with `hecke_of_test h₁ w.1`. Conclude with `hecke_of_test h₂ w.1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem hecke_sel {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E, LF a b w} (h₁ : IsTestP φ₁) (h₂ : IsTestP φ₂) (i : Slot S) :
     ∃ A : Subgroup (GLw a i.pl × GLw b i.pl), IsOpen (A : Set (GLw a i.pl × GLw b i.pl)) ∧ IsHecke A (selS φ₁ φ₂ i) := by
@@ -94,9 +94,9 @@ theorem hecke_sel {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E, LF a b w} (h₁ 
   · exact hecke_of_test h₂ w.1
 
 /- English proof (translation)
-Establish `key : ∀ v, GeneralLinearGroup.map (pLoc E v) (locGL E n w g * locGL E n w' g') = GeneralLinearGroup.map (pLoc E v) (locGL E n w' g' * locGL E n w g)` using `fun v => by`. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[pLoc_locGL_of_ne h g', mul_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_locGL_of_ne hv g, mul_one, one_mul]`. Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun u : GL (Fin n) (v.adicCompletion E) => u.val i j) (key v)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locGL_comm {n : ℕ} {w w' : Pl E} (h : w ≠ w') (g : GLw n w) (g' : GLw n w') :
     locGL E n w g * locGL E n w' g' = locGL E n w' g' * locGL E n w g := by
@@ -111,7 +111,7 @@ theorem locGL_comm {n : ℕ} {w w' : Pl E} (h : w ≠ w') (g : GLw n w) (g' : GL
   exact congrArg (fun u : GL (Fin n) (v.adicCompletion E) => u.val i j) (key v)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨_, GlobalTheory.ThetaSatake.theta_locGL u g⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem thF_loc {n : ℕ} {w u : Pl E} (h : w = GlobalTheory.ThetaSatake.cw u) (g : GLw n w) :
     ∃ g₀ : GLw n u, thF E n (locGL E n w g) = locGL E n u g₀ := by
@@ -119,13 +119,13 @@ theorem thF_loc {n : ℕ} {w u : Pl E} (h : w = GlobalTheory.ThetaSatake.cw u) (
   exact ⟨_, GlobalTheory.ThetaSatake.theta_locGL u g⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.ThetaPull.conjSrc_conjSrc w).symm`.
+A detailed English derivation is pending.
 -/
 theorem cw_cw (w : Pl E) : w = GlobalTheory.ThetaSatake.cw (GlobalTheory.ThetaSatake.cw w) :=
   (GlobalTheory.ThetaPull.conjSrc_conjSrc w).symm
 
 /- English proof (translation)
-Take `⟨g₀, e⟩` from `thF_loc (cw_cw w') g'`. Rewrite using `[e]`. Conclude with `locGL_comm h g g₀`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_WT {n : ℕ} {w w' : Pl E} (h : w ≠ GlobalTheory.ThetaSatake.cw w') (g : GLw n w) (g' : GLw n w') :
     locGL E n w g * thF E n (locGL E n w' g') = thF E n (locGL E n w' g') * locGL E n w g := by
@@ -134,7 +134,7 @@ theorem comm_WT {n : ℕ} {w w' : Pl E} (h : w ≠ GlobalTheory.ThetaSatake.cw w
   exact locGL_comm h g g₀
 
 /- English proof (translation)
-Take `⟨g₀, e⟩` from `thF_loc (cw_cw w) g`. Take `⟨g₁, e'⟩` from `thF_loc (cw_cw w') g'`. Rewrite using `[e, e']`. Conclude with `locGL_comm h g₀ g₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_TT {n : ℕ} {w w' : Pl E} (h : GlobalTheory.ThetaSatake.cw w ≠ GlobalTheory.ThetaSatake.cw w') (g : GLw n w) (g' : GLw n w') :
     thF E n (locGL E n w g) * thF E n (locGL E n w' g') = thF E n (locGL E n w' g') * thF E n (locGL E n w g) := by
@@ -144,9 +144,9 @@ theorem comm_TT {n : ℕ} {w w' : Pl E} (h : GlobalTheory.ThetaSatake.cw w ≠ G
   exact locGL_comm h g₀ g₁
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with w | w <;> rcases j with w' | w'`. Establish `hne : w.1 ≠ w'.1` using `fun e => hij (congrArg Sum.inl (Subtype.ext e))`. Conclude with `Prod.ext (locGL_comm hne _ _) (locGL_comm hne _ _)`. Establish `hne : w.1 ≠ GlobalTheory.ThetaSatake.cw w'.1` using `fun e => GlobalTheory.CompanionTheory.SuppFinTw.conj_not_mem hS w'.2.1 w'.2.2 (show GlobalTheory.ThetaSatake.cw w'.1 ∈ S from e ▸ w.2)`. Conclude with `Prod.ext (comm_WT hne _ _) (comm_WT hne _ _)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : w'.1 ≠ GlobalTheory.ThetaSatake.cw w.1` using `fun e => GlobalTheory.CompanionTheory.SuppFinTw.conj_not_mem hS w.2.1 w.2.2 (show GlobalTheory.ThetaSatake.cw w.1 ∈ S from e ▸ w'.2)`. Conclude with `Prod.ext (comm_WT hne _ _).symm (comm_WT hne _ _).symm`. Establish `hne : GlobalTheory.ThetaSatake.cw w.1 ≠ GlobalTheory.ThetaSatake.cw w'.1` using `fun e => hij (congrArg Sum.inr (Subtype.ext ((cw_cw w.1).trans ((congrArg GlobalTheory.ThetaSatake.cw e).trans (cw_cw w'.1).symm))))`. Conclude with `Prod.ext (comm_TT hne _ _) (comm_TT hne _ _)`.
+A detailed English derivation is pending.
 -/
 theorem epsS_comm {S : Set (Pl E)} (hS : IsSection S) {i j : Slot S} (hij : i ≠ j)
     (x : GLw a i.pl × GLw b i.pl) (y : GLw a j.pl × GLw b j.pl) :
@@ -165,7 +165,7 @@ theorem epsS_comm {S : Set (Pl E)} (hS : IsSection S) {i j : Slot S} (hij : i �
     exact Prod.ext (comm_TT hne _ _) (comm_TT hne _ _)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with w | w <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem selS_conv {S : Set (Pl E)} (φ₁ φ₂ ψ₁ ψ₂ : ∀ w : Pl E, LF a b w) (i : Slot S) :
     selS (fun w => PositivityTheory.Rg.BcN.F2.mconv (φ₁ w) (ψ₁ w)) (fun w => PositivityTheory.Rg.BcN.F2.mconv (φ₂ w) (ψ₂ w)) i =
@@ -173,15 +173,13 @@ theorem selS_conv {S : Set (Pl E)} (φ₁ φ₂ ψ₁ ψ₂ : ∀ w : Pl E, LF a
   rcases i with w | w <;> rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a b S hS φ₁ φ₂ ψ₁ ψ₂ hφ₁ hφ₂ hψ₁ hψ₂ G G' hG hG' i j`. Establish `hGl : Lev (fHm E a b) G` using `hG`. Establish `hGl' : Lev (fHm E a b) G'` using `hG'`. Take `⟨hK, hKo⟩` from `pair_maximal_compact_open_compact (a := a) (b := b) i.pl`. Take `⟨hKj, hKoj⟩` from `pair_maximal_compact_open_compact (a := a) (b := b) j.pl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA, hf⟩` from `hecke_sel (S := S) hφ₁ hφ₂ i`. Take `⟨B, hB, hg⟩` from `hecke_sel (S := S) hψ₁ hψ₂ i`. Take `⟨B', hB', hg'⟩` from `hecke_sel (S := S) hψ₁ hψ₂ j`. Establish `ci` using `continuous_epsS (a := a) (b := b) i`. Establish `cj` using `continuous_epsS (a := a) (b := b) j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, fun c => ?_, fun hij => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[actS_eq]`. Conclude with `act_lev ci hK hKo hA hf hGl`. Simplify using `only [actS_eq]`. Conclude with `act_add hK hKo hA hf (sm_of_lev ci hGl) (sm_of_lev ci hGl') c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [actS_eq]`. Use `act_comm hK hKo hA hKj hKoj hB' hf hg' (sm_of_lev ci hGl) (sm_of_lev cj hGl) fun x y => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[← map_mul, ← map_mul, epsS_comm hS hij]`. Simplify using `only [actS_eq]`.
-
-Rewrite using `[selS_conv]`. Conclude with `act_conv hK hKo hA hB hf hg (sm_of_lev ci hGl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actAlg : ActAlg := by
   intro E _ _ _ a b S hS φ₁ φ₂ ψ₁ ψ₂ hφ₁ hφ₂ hψ₁ hψ₂ G G' hG hG' i j

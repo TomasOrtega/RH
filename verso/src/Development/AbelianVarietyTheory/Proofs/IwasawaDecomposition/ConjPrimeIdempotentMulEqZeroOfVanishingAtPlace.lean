@@ -26,9 +26,9 @@ def singleL (v : HeightOneSpectrum (𝓞 D.host.F)) : Fv D.host.F v →ₗ[D.hos
     rw [RingHom.id_apply, Algebra.smul_def, Algebra.smul_def, GlobalTheory.IdemModTwo.singleV_mul (D := D), AlgHom.commutes]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((1 : D.host.E) ⊗ₜ[D.host.F] singleV D.host.F v 1) * z = _`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [mul_zero, map_zero, map_zero]`. Consider the case `tmul x a`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = x ⊗ₜ[D.host.F] singleV D.host.F v (evalV D.host.F v a)`. Rewrite using `[mul_comm, GlobalTheory.IdemModTwo.singleV_mul (D := D), mul_one]`. Consider the case `add x y hx hy => simp only [mul_add, hx, hy, map_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem pl_mul_eq (v : HeightOneSpectrum (𝓞 D.host.F)) (z : Formalism.IndefR.Lev.EAf D) :
     swapAE D (finPart D (GlobalTheory.IdemModTwo.pl D v)) * z =
@@ -43,9 +43,9 @@ theorem pl_mul_eq (v : HeightOneSpectrum (𝓞 D.host.F)) (z : Formalism.IndefR.
   | add x y hx hy => simp only [mul_add, hx, hy, map_add]
 
 /- English proof (translation)
-Introduce `D v Pb e hov he z hz`. Establish `hov'` using `Formalism.L2.Col.IsOver.conj D.sp.cm hov`. Establish `hsp` using `GlobalTheory.GridIdem.splitAt_under he`. Establish `hu : (Formalism.L2.Col.conjPrime₂ Pb).under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hov'.symm`. Rewrite `hsp` using `[hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hsp.pl_mul, map_mul, map_mul, mul_comm (swapAE D _), mul_assoc, pl_mul_eq, hz, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_eq_zero : ∀ {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (Pb : Formalism.L2.DIV.Pl D.host.E) (e : Formalism.L2.Theta.AE D), Formalism.L2.Col.IsOver v Pb → Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) → ∀ z : Formalism.IndefR.Lev.EAf D, Formalism.UG.prV v z = 0 → swapAE D (finPart D e) * z = 0 := by
   intro D v Pb e hov he z hz

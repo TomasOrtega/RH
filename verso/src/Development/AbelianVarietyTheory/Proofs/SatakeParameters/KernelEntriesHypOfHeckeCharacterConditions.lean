@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl K Y cX ex t hTop hInt u μ i hi c c' hnp`. Establish `hsd` using `(GlobalTheory.TieLat.tie_AA_fg_and_sd D L hT Gi Gl K Y cX ex t).2 u μ`. Use `⟨hsd i c, hsd (i + 1) c', ?_⟩` and prove the remaining obligations. Establish `hm : D.R.m = t.m2 + 2` using `(t.idx_ok μ).hm`. Take `⟨-, -, pt, ix, yb, pT, -, -, -, -, -, hpin, -⟩` from `hTop u μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hi' : i = t.m2 + 1`. Assume the negation of the conclusion as `hne`. Conclude with `hnp (hpin (i + 1) (by omega) c')`. Substitute `hi'` using the available equality. Conclude with `hInt u μ c c' hnp`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem hypFree_of_top_int : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), t.TopPinned → t.TopInt → t.HypFree := by
   intro D L hT Gi Gl K Y cX ex t hTop hInt u μ i hi c c' hnp
@@ -27,7 +27,7 @@ theorem hypFree_of_top_int : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (
   exact hInt u μ c c' hnp
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl K Y cX ex t h1 h2 hQ hTop`. Establish `h0 : t.Hyp0` using `by first`. Consider the case `exact GlobalTheory.T.kernelDatum_periodLatticeIdeal_fg_of_heckeCharacters D L hT Gi Gl K Y cX ex t h1 h2 hQ`. Consider the case `exact GlobalTheory.T.kernelDatum_periodLatticeIdeal_fg_of_heckeCharacters D L hT Gi Gl K Y cX ex t h1 h2`. Conclude with `hypotheses_of_base_hypotheses D L hT Gi Gl K Y cX ex t h0 (hypFree_of_top_int D L hT Gi Gl K Y cX ex t hTop (GlobalTheory.T.lastStepKernelData_integral_awayFromLevels D L hT Gi Gl K Y cX ex t hTop))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kerEntTied_hyp : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), (∀ j, ∃ e, Formalism.L2.Col.IsMu0 t.Ch t.seam.σ₀ e j (t.glob.mu0 j)) → (∀ (j : Fin D.R.m) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 t.X.E)), (∀ i, ((t.Pr.g i : ℕ) : 𝓞 t.X.E) ∉ v.asIdeal) → t.seam.σ₀ (t.Ch.muVal j v : t.X.K) = (((t.glob.mu0 j).val v : ℂˣ) : ℂ)) → (∀ μ k, D.host.g k ∉ Y.Qp μ) → t.TopPinned → t.Hyp := by
   intro D L hT Gi Gl K Y cX ex t h1 h2 hQ hTop

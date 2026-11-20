@@ -22,27 +22,23 @@ def StabLF (Tf : FormsTiedSym D u Ch chOf) : Prop :=
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hC` using `crdFacts_of Tf`. Establish `hdeg` using `finrank_host_lt_T_sub_one D u`. Take `⟨v⟩` from `vT_nonempty D u`. Establish `hTp : ((D.mem u).A.T : ℕ).Prime` using `(D.mem u).A.T_prime`. Use `set σ : D.host.E →+* D.host.E := (sigD D : D.host.E →+* D.host.E) with hσdef`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set J := gramN D D.R.m le_rfl with hJ`. Use `set z0 := Tf.til.z0 with hz0`. Introduce `c γ hγ`. Take `⟨hL, hLd, hf⟩` from `hLF c γ hγ`. Use `set g1 := (Tf.til.ga c).1.1 with hg1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set gi := ((Tf.til.ga c)⁻¹).1.1 with hgi`. Use `set gs := γ.1.1 with hgs`. Establish `hgi1 : gi * g1 = 1` using `by simp [hgi, hg1]`. Establish `hg1i : g1 * gi = 1` using `by simp [hgi, hg1]`. Take `⟨a, ha⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `ha` using `[← hz0]`. Establish `hzz : hform σ J z0 z0 = (((D.mem u).A.T : ℕ) : D.host.E)` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Establish `horth : ∀ x, hform σ J (iXc D x) z0 = 0 ∧ hform σ J z0 (iXc D x) = 0` using `fun x => by`. Rewrite using `[ha, hform_smul_right, hform_smul_left, (hC.orth x).1, (hC.orth x).2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUgi : cT σ gi * J * gi = J` using `((Tf.til.ga c)⁻¹).2`. Establish `hUgs : cT σ gs * J * gs = J` using `γ.2`. Establish `hγf : ∀ x y, hform σ J ((g1 * gs * gi) *ᵥ x) ((g1 * gs * gi) *ᵥ y) = hform σ J x y` using `fun x y => by`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ga_herm Tf c, hform_UJ σ J gs hUgs, hform_UJ σ J gi hUgi]`. Establish `hlat : mulLat (g1 * gs * gi) ((Tf.clsP.lat c).map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {z0}) = (Tf.clsP.lat c).map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {z0}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Tf.til.til_lat c, mulLat_mulLat, Matrix.mul_assoc, hgi1, Matrix.mul_one, ← mulLat_mulLat, hL]`. Establish `hres : ∀ y : Fin (D.R.N D.R.m) → D.host.E, (∀ w ∈ (Tf.clsP.lat c).map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {z0}, hform σ J w y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) → ∀ r r' : 𝓞 D.host.E, (r : D.host.E) = hform σ J z0 y → (r' : D.host.E) = hf …`. Introduce `y hy r r' hr hr'`. Establish `hxy : g1 *ᵥ (gi *ᵥ y) = y` using `by rw [mulVec_mulVec, hg1i, one_mulVec]`. Establish `hxa : gi *ᵥ y ∈ Ld D u D.R.m le_rfl ((D.fm u).til c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `l hl`. Establish `hl' : g1 *ᵥ l ∈ (Tf.clsP.lat c).map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {z0}`. Rewrite using `[← Tf.til.til_lat c]`. Conclude with `Submodule.mem_map.2 ⟨l, hl, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hy _ hl'` as an intermediate fact. Rewrite `this` using `[← hxy, ga_herm Tf c]`. Conclude with `this`. Establish `hxb` using `hLd _ hxa`. Establish `e1` using `Tf.til.til_fv v c ⟨gi *ᵥ y, hxa⟩ r (by rw [hr]; show _ = hform σ J z0 (g1 *ᵥ (gi *ᵥ y)); rw [hxy])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `Tf.til.til_fv v c ⟨gs *ᵥ (gi *ᵥ y), hxb⟩ r' (by`. Rewrite using `[hr']`. Use `show _ = hform σ J z0 (g1 *ᵥ (gs *ᵥ (gi *ᵥ y)))`. Rewrite using `[mulVec_mulVec, mulVec_mulVec])`. Rewrite `e2` using `[hf v ⟨gi *ᵥ y, hxa⟩ hxb, e1]`.
-
-Use `show Tf.atT.res v (r - r') = 0`. Rewrite using `[map_sub, e2, sub_self]`. Conclude with `fix_orthogonal_vector σ hC.conj J (gramP D) hC.defN (iXc D) z0 hC.iso horth (span_with_orthogonal_vector Tf) _ hTp hdeg hzz (Tf.clsP.lat c) (Tf.clsP.lat c) ⟨fun y hy => by`. Establish `: y ∈ dualSet σ (gramP D) (Tf.clsP.lat c)` using `fun x hx => hy x hx`. Rewrite `this` using `[hSD c]`.
-
-Conclude with `this,`. Use `fun x hx y hy => by`. Establish `: y ∈ dualSet σ (gramP D) (Tf.clsP.lat c)` using `by rw [hSD c]; exact hy`. Conclude with `this x hx⟩`. Use the proof step `(g1 * gs * gi) hγf hlat (Tf.atT.Pv v) inferInstance (T_mem_Pv Tf v) hres`.
+A detailed English derivation is pending.
 -/
 theorem stabFix_of (Tf : FormsTiedSym D u Ch chOf)
     (hSD : ∀ c, dualSet (sigD D : D.host.E →+* D.host.E) (gramP D) (Tf.clsP.lat c) = (Tf.clsP.lat c : Set (Fin (D.R.N D.R.m - 1) → D.host.E)))
@@ -107,7 +103,7 @@ theorem stabFix_of (Tf : FormsTiedSym D u Ch chOf)
     (g1 * gs * gi) hγf hlat (Tf.atT.Pv v) inferInstance (T_mem_Pv Tf v) hres
 
 /- English proof (translation)
-The claim follows from `stabiliser_bijective_of_fixed (fun D u Ch chOf Tf => stabFix_of Tf (hSD D u Ch chOf Tf) (hLF D u Ch chOf Tf))`.
+A detailed English derivation is pending.
 -/
 theorem stabiliser_bijective_of_finite
     (hSD : ∀ (D : D7) (u : D.what₂.Word) (Ch : ℕ → Type) (chOf : ∀ i, (D.mem u).C.cls i → Ch i) (Tf : FormsTiedSym D u Ch chOf),

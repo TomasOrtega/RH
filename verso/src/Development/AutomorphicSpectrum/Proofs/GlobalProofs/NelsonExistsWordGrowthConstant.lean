@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Nelson
 variable {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {d : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨‖LinearMap.toContinuousLinearMap (((l.map X).prod).comp V.subtype)‖, ContinuousLinearMap.opNorm_nonneg _, fun u hu => (LinearMap.toContinuousLinearMap (((l.map X).prod).comp V.subtype)).le_opNorm ⟨u, hu⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem list_bound_lemma (X : Fin d → Module.End ℂ M) (V : Submodule ℂ M)
     [FiniteDimensional ℂ V] (l : List (Fin d)) :
@@ -19,7 +19,7 @@ private theorem list_bound_lemma (X : Fin d → Module.End ℂ M) (V : Submodule
     fun u hu => (LinearMap.toContinuousLinearMap (((l.map X).prod).comp V.subtype)).le_opNorm ⟨u, hu⟩⟩
 
 /- English proof (translation)
-Use `choose C hC0 hC using fun l : List (Fin d) => list_bound_lemma X V l`. Establish `hfin : {l : List (Fin d) | l.length = k}.Finite` using `(Set.finite_range (fun v : List.Vector (Fin d) k => v.1)).subset fun l hl => ⟨⟨l, hl⟩, rfl⟩`. Use `⟨∑ l ∈ hfin.toFinset, C l, Finset.sum_nonneg fun l _ => hC0 l, fun l hl u hu => ?_⟩` and prove the remaining obligations. Use `(hC l u hu).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg u))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (fun l _ => hC0 l) (hfin.mem_toFinset.2 hl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_word_bound (X : Fin d → Module.End ℂ M) (V : Submodule ℂ M)
     [FiniteDimensional ℂ V] (k : ℕ) :
@@ -33,9 +33,9 @@ theorem exists_word_bound (X : Fin d → Module.End ℂ M) (V : Submodule ℂ M)
   exact Finset.single_le_sum (fun l _ => hC0 l) (hfin.mem_toFinset.2 hl)
 
 /- English proof (translation)
-Take `⟨B₀, hB₀0, hB₀⟩` from `exists_word_bound X V k`. Set `S : Set ℝ` to `{B' | 0 ≤ B' ∧ ∀ l : List (Fin d), l.length = k → ∀ u ∈ V, ‖(l.map X).prod u‖ ≤ B' * ‖u‖}`. Establish `hne : S.Nonempty` using `⟨B₀, hB₀0, hB₀⟩`. Establish `hbdd : BddBelow S` using `⟨0, fun B' hB' => hB'.1⟩`. Use `⟨sInf S, le_csInf hne fun B' hB' => hB'.1, fun l hl u hu => ?_, fun B' hB'0 hB' => csInf_le hbdd ⟨hB'0, hB'⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `(norm_nonneg u).eq_or_lt with h0 | hpos` into its components or cases. Establish `hu0 : u = 0` using `norm_eq_zero.1 h0.symm`. Simplify using `[hu0]`. Rewrite using `[← div_le_iff₀ hpos]`. Conclude with `le_csInf hne fun B' hB' => (div_le_iff₀ hpos).2 (hB'.2 l hl u hu)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_least_word_bound (X : Fin d → Module.End ℂ M) (V : Submodule ℂ M)
     [FiniteDimensional ℂ V] (k : ℕ) :
@@ -57,9 +57,9 @@ theorem exists_least_word_bound (X : Fin d → Module.End ℂ M) (V : Submodule 
     exact le_csInf hne fun B' hB' => (div_le_iff₀ hpos).2 (hB'.2 l hl u hu)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `h : X i * X i * X j - X j * (X i * X i) = X i * (X i * X j - X j * X i) + (X i * X j - X j * X i) * X i` using `by noncomm_ring`. Rewrite using `[h, hc i j, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul_comm, smul_mul_assoc, smul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_sumSq (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d → Fin d → ℂ)
     (hc : ∀ i j, X i * X j - X j * X i = ∑ l, c i j l • X l) (j : Fin d) :
@@ -74,23 +74,21 @@ theorem comm_sumSq (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d → Fin
   rw [mul_smul_comm, smul_mul_assoc, smul_add]
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `p _ u _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `cons j l ih`. Introduce `p hpl u hu`. Establish `hlen : (p ++ [j]).length + l.length = k`. Simplify using `only [List.length_append, List.length_cons, List.length_nil] at hpl ⊢`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hw : ∀ i m, ‖((p.map X).prod * (X i * X m) * (l.map X).prod) u‖ ≤ B * ‖u‖`. Introduce `i m`. Establish `h` using `hB (p ++ i :: m :: l) (by`. Simplify using `only [List.length_append, List.length_cons] at hpl ⊢`. Use the proof step `omega) u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[List.map_append, List.prod_append, mul_assoc]`. Establish `hexp : ((p.map X).prod * ((∑ i, X i * X i) * X j - X j * (∑ i, X i * X i)) * (l.map X).prod) u = ∑ i, ∑ m, c i j m • (((p.map X).prod * (X i * X m) * (l.map X).prod) u + ((p.map X).prod * (X m * X i) * (l.map X).prod) u)`. Rewrite using `[comm_sumSq X c hc j]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, mul_add, add_mul, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply]`. Establish `h1 : ‖((p.map X).prod * ((∑ i, X i * X i) * X j - X j * (∑ i, X i * X i)) * (l.map X).prod) u‖ ≤ γ * B * ‖u‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left ((norm_add_le _ _).trans (add_le_add (hw i m) (hw m i))) (norm_nonneg _)`. Use `_ = (∑ i, ∑ m, 2 * ‖c i j m‖) * (B * ‖u‖) := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ γ * (B * ‖u‖) := mul_le_mul_of_nonneg_right (hγ j) (mul_nonneg hB0 (norm_nonneg u))`. Use `_ = γ * B * ‖u‖ := by ring`. Establish `h2` using `ih (p ++ [j]) hlen u hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `key : (p.map X).prod * ((∑ i, X i * X i) * ((j :: l).map X).prod - ((j :: l).map X).prod * (∑ i, X i * X i)) = (p.map X).prod * ((∑ i, X i * X i) * X j - X j * (∑ i, X i * X i)) * (l.map X).prod + ((p ++ [j]).map X).prod * ((∑ i, X i * X i) * (l.map X).prod - (l.map X).prod * (∑ …`. Simplify using `only [List.map_cons, List.prod_cons, List.map_append, List.prod_append, List.map_nil, List.prod_nil, mul_one]`. Use `noncomm_ring`. Rewrite using `[key, LinearMap.add_apply]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [List.length_cons, Nat.cast_add, Nat.cast_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem comm_word_bound (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d → Fin d → ℂ)
     (hc : ∀ i j, X i * X j - X j * X i = ∑ l, c i j l • X l) (V : Submodule ℂ M)
@@ -156,13 +154,13 @@ theorem comm_word_bound (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d �
         ring
 
 /- English proof (translation)
-Establish `hi : ∀ i, ‖X i x‖ ^ 2 ≤ -(⟪x, (X i * X i) x⟫_ℂ).re + a * ‖X i x‖ * ‖x‖`. Introduce `i`. Establish `h` using `le_trans (le_abs_self _) (hs i x (X i x))`. Establish `h1 : (⟪X i x, X i x⟫_ℂ).re = ‖X i x‖ ^ 2`. Rewrite using `[← RCLike.re_to_complex, inner_self_eq_norm_sq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Complex.add_re, h1]`. Rewrite using `[Module.End.mul_apply]`. Use polynomial arithmetic with `[h]`. Establish `hsum : -(⟪x, (∑ i, X i * X i) x⟫_ℂ).re = ∑ i, -(⟪x, (X i * X i) x⟫_ℂ).re`. Rewrite using `[LinearMap.sum_apply, inner_sum, Complex.re_sum, ← Finset.sum_neg_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hre : -(⟪x, (∑ i, X i * X i) x⟫_ℂ).re ≤ ‖(∑ i, X i * X i) x‖ * ‖x‖`. Establish `h` using `re_inner_le_norm (𝕜 := ℂ) (-x) ((∑ i, X i * X i) x)`. Rewrite `h` using `[inner_neg_left, map_neg, norm_neg, RCLike.re_to_complex]`. Combine the linear relations using `[mul_comm ‖x‖ ‖(∑ i, X i * X i) x‖]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_add_distrib, hsum, Finset.mul_sum, Finset.sum_mul]`. Use `_ ≤ _ := by linarith [hre]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem energy_le (X : Fin d → Module.End ℂ M) (a : ℝ)
     (hs : ∀ i u v, |(⟪X i u, v⟫_ℂ + ⟪u, X i v⟫_ℂ).re| ≤ a * ‖u‖ * ‖v‖) (x : M) :
@@ -188,15 +186,15 @@ theorem energy_le (X : Fin d → Module.End ℂ M) (a : ℝ)
     _ ≤ _ := by linarith [hre]
 
 /- English proof (translation)
-Establish `hu0` using `norm_nonneg u`. Establish `hx : ‖(l.map X).prod u‖ ≤ A * ‖u‖` using `hA l hl u hu`. Establish `hXi : ∀ j, ‖X j ((l.map X).prod u)‖ ≤ B * ‖u‖`. Introduce `j`. Establish `h` using `hB (j :: l) (by simp [hl]) u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hcomm : ‖((∑ i, X i * X i) * (l.map X).prod - (l.map X).prod * (∑ i, X i * X i)) u‖ ≤ k * γ * B * ‖u‖`. Establish `h` using `comm_word_bound X c hc V k B γ hB0 hγ hB l [] (by simp [hl]) u hu`. Simplify `h` using `[hl]`. Establish `hΔx : ‖(∑ i, X i * X i) ((l.map X).prod u)‖ ≤ (s ^ 2 * A + k * γ * B) * ‖u‖`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e : (∑ i, X i * X i) ((l.map X).prod u) = (l.map X).prod ((∑ i, X i * X i) u) + ((∑ i, X i * X i) * (l.map X).prod - (l.map X).prod * (∑ i, X i * X i)) u`. Rewrite using `[LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Establish `h1 : ‖(l.map X).prod ((∑ i, X i * X i) u)‖ ≤ A * (s ^ 2 * ‖u‖)` using `(hA l hl _ (hV u hu)).trans (mul_le_mul_of_nonneg_left (hΔ u hu) hA0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hE` using `energy_le X a hs ((l.map X).prod u)`. Establish `hsumX : ∑ j, ‖X j ((l.map X).prod u)‖ ≤ d * (B * ‖u‖)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsingle : ‖X i ((l.map X).prod u)‖ ^ 2 ≤ ∑ j, ‖X j ((l.map X).prod u)‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖X j ((l.map X).prod u)‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hLu0` using `norm_nonneg ((l.map X).prod u)`. Establish `hc1 : 0 ≤ (s ^ 2 * A + k * γ * B) * ‖u‖` using `mul_nonneg (add_nonneg (mul_nonneg (sq_nonneg s) hA0) (mul_nonneg (mul_nonneg (Nat.cast_nonneg k) hγ0) hB0)) hu0`. Establish `t1` using `mul_le_mul hΔx hx hLu0 hc1`. Establish `t2 : a * (∑ j, ‖X j ((l.map X).prod u)‖) * ‖(l.map X).prod u‖ ≤ a * (d * (B * ‖u‖)) * (A * ‖u‖)` using `mul_le_mul (mul_le_mul_of_nonneg_left hsumX ha) hx hLu0 (mul_nonneg ha (mul_nonneg (Nat.cast_nonneg d) (mul_nonneg hB0 hu0)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem step_sq (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d → Fin d → ℂ)
     (hc : ∀ i j, X i * X j - X j * X i = ∑ l, c i j l • X l) (a : ℝ) (ha : 0 ≤ a)
@@ -254,9 +252,9 @@ theorem step_sq (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d → Fin d 
     _ = (s ^ 2 * A ^ 2 + (k * γ + a * d) * A * B) * ‖u‖ ^ 2 := by ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Establish `hsA : s * A ≤ B` using `by nlinarith [mul_nonneg hE0 hA0]`. Establish `hB : 0 < B` using `lt_of_le_of_lt (mul_nonneg (add_nonneg hs0 hE0) hA0) hc`. Establish `h1 : (s + E) * A * B < B * B` using `mul_lt_mul_of_pos_right hc hB`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : s * A * (s * A) ≤ s * A * B` using `mul_le_mul_of_nonneg_left hsA (mul_nonneg hs0 hA0)`. Use polynomial arithmetic with `[h1, h2, h]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem le_of_sq_le_quad (A B s E : ℝ) (hA0 : 0 ≤ A) (hB0 : 0 ≤ B) (hs0 : 0 ≤ s) (hE0 : 0 ≤ E)
     (h : B ^ 2 ≤ s ^ 2 * A ^ 2 + E * A * B) : B ≤ (s + E) * A := by
@@ -269,15 +267,15 @@ theorem le_of_sq_le_quad (A B s E : ℝ) (hA0 : 0 ≤ A) (hB0 : 0 ≤ B) (hs0 : 
   nlinarith [h1, h2, h]
 
 /- English proof (translation)
-Establish `hE0 : 0 ≤ (k : ℝ) * γ + a * d` using `add_nonneg (mul_nonneg (Nat.cast_nonneg k) hγ0) (mul_nonneg ha (Nat.cast_nonneg d))`. Take `⟨B, hB0, hBb, hBl⟩` from `exists_least_word_bound X V (k + 1)`. Establish `hQ0 : 0 ≤ s ^ 2 * A ^ 2 + ((k : ℝ) * γ + a * d) * A * B` using `add_nonneg (mul_nonneg (sq_nonneg s) (sq_nonneg A)) (mul_nonneg (mul_nonneg hE0 hA0) hB0)`. Establish `hsq : ∀ l : List (Fin d), l.length = k + 1 → ∀ u ∈ V, ‖(l.map X).prod u‖ ≤ Real.sqrt (s ^ 2 * A ^ 2 + ((k : ℝ) * γ + a * d) * A * B) * ‖u‖`. Introduce `l hl u hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `l with`. Consider the case `nil => simp at hl`. Consider the case `cons i l`. Establish `hl' : l.length = k` using `by simpa using hl`. Establish `h` using `step_sq X c hc a ha hs V hV k A B γ s hA0 hB0 hγ0 hγ hΔ hA hBb l hl' i u hu`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Real.sqrt_le_sqrt h`. Rewrite `h2` using `[Real.sqrt_sq (norm_nonneg _), Real.sqrt_mul hQ0, Real.sqrt_sq (norm_nonneg _)]`. Simplify using `using h2`. Establish `hle : B ≤ Real.sqrt (s ^ 2 * A ^ 2 + ((k : ℝ) * γ + a * d) * A * B)` using `hBl _ (Real.sqrt_nonneg _) hsq`. Establish `hB2 : B ^ 2 ≤ s ^ 2 * A ^ 2 + ((k : ℝ) * γ + a * d) * A * B`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `mul_self_le_mul_self hB0 hle`. Rewrite `h` using `[Real.mul_self_sqrt hQ0]`. Use polynomial arithmetic with `[h]`. Establish `hfin` using `le_of_sq_le_quad A B s _ hA0 hB0 hs0 hE0 hB2`. Introduce `l hl u hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hBb l hl u hu).trans (mul_le_mul_of_nonneg_right hfin (norm_nonneg u))`.
+A detailed English derivation is pending.
 -/
 theorem next_word_bound (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d → Fin d → ℂ)
     (hc : ∀ i j, X i * X j - X j * X i = ∑ l, c i j l • X l) (a : ℝ) (ha : 0 ≤ a)
@@ -316,13 +314,13 @@ theorem next_word_bound (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d �
   exact (hBb l hl u hu).trans (mul_le_mul_of_nonneg_right hfin (norm_nonneg u))
 
 /- English proof (translation)
-Establish `hd0 : (0 : ℝ) ≤ a * d` using `mul_nonneg ha (Nat.cast_nonneg d)`. Establish `hC0 : (0 : ℝ) ≤ s + γ + a * d + 1` using `by linarith`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `l hl u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `l with`. Consider the case `nil => simp`. Consider the case `cons _ _ => simp at hl`. Consider the case `succ k ih`. Introduce `l hl u hu`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA0 : 0 ≤ (s + γ + a * d + 1) ^ k * (k.factorial : ℝ)` using `mul_nonneg (pow_nonneg hC0 k) (Nat.cast_nonneg _)`. Establish `h` using `next_word_bound X c hc a ha hs V hV k _ γ s hA0 hs0 hγ0 hγ hΔ ih l hl u hu`. Use `h.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg u))` and prove the remaining obligations. Establish `hk : s + ((k : ℝ) * γ + a * d) ≤ ((k : ℝ) + 1) * (s + γ + a * d + 1)`. Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg k) hs0, mul_nonneg (Nat.cast_nonneg k) hd0, (Nat.cast_nonneg k : (0 : ℝ) ≤ k)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Move the coercions through the operations in `[Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nelson_word_growth_estimate (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d → Fin d → ℂ)
     (hc : ∀ i j, X i * X j - X j * X i = ∑ l, c i j l • X l) (a : ℝ) (ha : 0 ≤ a)
@@ -358,7 +356,7 @@ theorem nelson_word_growth_estimate (X : Fin d → Module.End ℂ M) (c : Fin d 
           ring
 
 /- English proof (translation)
-Use `⟨Real.sqrt ‖LinearMap.toContinuousLinearMap (T.comp V.subtype)‖, Real.sqrt_nonneg _, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.sq_sqrt (ContinuousLinearMap.opNorm_nonneg _)]`. Conclude with `(LinearMap.toContinuousLinearMap (T.comp V.subtype)).le_opNorm ⟨u, hu⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sq_bound (T : Module.End ℂ M) (V : Submodule ℂ M) [FiniteDimensional ℂ V] :
     ∃ s : ℝ, 0 ≤ s ∧ ∀ u ∈ V, ‖T u‖ ≤ s ^ 2 * ‖u‖ := by
@@ -368,9 +366,9 @@ theorem exists_sq_bound (T : Module.End ℂ M) (V : Submodule ℂ M) [FiniteDime
   exact (LinearMap.toContinuousLinearMap (T.comp V.subtype)).le_opNorm ⟨u, hu⟩
 
 /- English proof (translation)
-Introduce `M _ _ d X c hc a ha hs V _ hV`. Take `⟨s, hs0, hΔ⟩` from `exists_sq_bound (∑ i, X i * X i) V`. Take `⟨γ, hγ0, hγ⟩ : ∃ γ : ℝ, 0 ≤ γ ∧ ∀ j, ∑ i, ∑ m, 2 * ‖c i j m‖ ≤ γ` from `⟨∑ j, ∑ i, ∑ m, 2 * ‖c i j m‖, Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => mul_nonneg zero_le_two (norm_nonneg _), fun j => Finset.single_le_sum (f := fun j => ∑ i, ∑ m, 2 * ‖c i j m‖) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_ …`. Establish `hd0 : (0 : ℝ) ≤ a * d` using `mul_nonneg ha (Nat.cast_nonneg d)`. Use `⟨s + γ + a * d + 1, by linarith, fun l u hu => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `nelson_word_growth_estimate X c hc a ha hs V hV γ s hs0 hγ0 hγ hΔ l.length l rfl u hu`. Use `h.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg u))` and prove the remaining obligations. Establish `hC1 : 1 ≤ s + γ + a * d + 1` using `by linarith`. Rewrite using `[pow_succ]`. Conclude with `mul_le_mul_of_nonneg_right (le_mul_of_one_le_right (pow_nonneg (by linarith) _) hC1) (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_growth : ∀ {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {d : ℕ} (X : Fin d → Module.End ℂ M) (c : Fin d → Fin d → Fin d → ℂ) (hc : ∀ i j, X i * X j - X j * X i = ∑ l, c i j l • X l) (a : ℝ) (ha : 0 ≤ a) (hs : ∀ i u v, |(⟪X i u, v⟫_ℂ + ⟪u, X i v⟫_ℂ).re| ≤ a * ‖u‖ * ‖v‖) (V : Submodule ℂ M) [FiniteDimensional ℂ V] (hV : ∀ u ∈ V, (∑ i, X i * X i) u ∈ V), ∃ C : ℝ, 0 < C ∧ ∀ (l : List (Fin d)), ∀ u ∈ V, ‖(l.map X).prod u‖ ≤ C ^ (l.length + 1) * l.length.factorial * ‖u‖ := by
   intro M _ _ d X c hc a ha hs V _ hV

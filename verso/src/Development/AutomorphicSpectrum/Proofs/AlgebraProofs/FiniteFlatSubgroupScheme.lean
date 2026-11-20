@@ -56,11 +56,11 @@ def ptRep {A X : C} [GrpObj A] (h : X ⟶ A) [Mono h] (m : X ⊗ X ⟶ X) (e : �
   homEquiv_comp f g := Subtype.ext (Category.assoc _ _ _)
 
 /- English proof (translation)
-Set `α` to `ptRep h m e i hm he hi`. Use `letI G : GrpObj X := GrpObj.ofRepresentableBy X _ α`. Establish `key : ∀ {T : C} (a b : T ⟶ X), (a * b) ≫ h = (a ≫ h) * (b ≫ h)` using `fun {T} a b => congrArg Subtype.val (((yonedaGrpObjIsoOfRepresentableBy X _ α).hom.app (op T)).hom.map_mul a b)`. Establish `key1 : ∀ {T : C}, (1 : T ⟶ X) ≫ h = 1` using `fun {T} => congrArg Subtype.val (((yonedaGrpObjIsoOfRepresentableBy X _ α).hom.app (op T)).hom.map_one)`. Use `⟨G, ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `key1 (T := 𝟙_ C)` as an intermediate fact. Simplify `this` using `[Hom.one_def, toUnit_unique (toUnit (𝟙_ C)) (𝟙 _)]`. Use `key (fst X X) (snd X X)` as an intermediate fact. Rewrite `this` using `[Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[this, Hom.mul_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_grpObj_of_mono {A X : C} [GrpObj A] (h : X ⟶ A) [Mono h] (m : X ⊗ X ⟶ X)
     (e : 𝟙_ C ⟶ X) (i : X ⟶ X)
@@ -90,7 +90,7 @@ section Scheme
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Spec.map_surjective x.left`. Establish `h : Spec.map g ≫ Spec.map (CommRingCat.ofHom (algebraMap R B)) = Spec.map (CommRingCat.ofHom (algebraMap R S))` using `hg ▸ Over.w x`. Rewrite `h` using `[← Spec.map_comp]`. Conclude with `⟨⟨g.hom, RingHom.congr_fun (congrArg (·.hom) (Spec.map_injective h))⟩, Over.OverMorphism.ext hg.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_eq_spMap {S B : Type} [CommRing S] [Algebra R S] [CommRing B] [Algebra R B]
     (x : sp (R₀ := R) S ⟶ sp (R₀ := R) B) : ∃ g : B →ₐ[R] S, x = spMap g := by
@@ -102,9 +102,9 @@ theorem exists_eq_spMap {S B : Type} [CommRing S] [Algebra R S] [CommRing B] [Al
     Over.OverMorphism.ext hg.symm⟩
 
 /- English proof (translation)
-Establish `hU` using `isAffineOpen_top T.left`. Take `⟨ρ, hρ⟩` from `Spec.map_surjective (hU.fromSpec ≫ T.hom)`. Use `letI : Algebra R Γ(T.left, ⊤) := ρ.hom.toAlgebra`. Set `j : sp (R₀` to `R) Γ(T.left, ⊤) ⟶ T := Over.homMk hU.fromSpec hρ.symm`. Establish `: IsIso j.left`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `IsIso hU.fromSpec`. Rewrite using `[IsAffineOpen.fromSpec_top]`. Use `infer_instance`. Establish `hj : IsIso ((Over.forget _).map j)` using `‹IsIso j.left›`. Conclude with `⟨Γ(T.left, ⊤), inferInstance, inferInstance, j, isIso_of_reflects_iso j (Over.forget _)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sp_iso (T : Over (Spec (CommRingCat.of R))) [IsAffine T.left] :
     ∃ (S : Type) (_ : CommRing S) (_ : Algebra R S) (j : sp (R₀ := R) S ⟶ T), IsIso j := by
@@ -123,7 +123,7 @@ variable {A : Over (Spec (CommRingCat.of R))} [GrpObj A] {B : Type} [CommRing B]
   {h : sp (R₀ := R) B ⟶ A}
 
 /- English proof (translation)
-Take `⟨S, _, _, j, _⟩` from `exists_sp_iso T`. Take `⟨φ, hφ⟩` from `exists_eq_spMap (j ≫ a)`. Take `⟨φ', hφ'⟩` from `exists_eq_spMap (j ≫ b)`. Use `H.mono S φ φ' (by rw [← hφ, ← hφ', Category.assoc, Category.assoc, hab])` as an intermediate fact. Rewrite using `[← cancel_epi j, hφ, hφ', this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem affine_mono (H : IsFinFlatSub A B h) {T : Over (Spec (CommRingCat.of R))} [IsAffine T.left]
     (a b : T ⟶ sp (R₀ := R) B) (hab : a ≫ h = b ≫ h) : a = b := by
@@ -134,9 +134,9 @@ theorem affine_mono (H : IsFinFlatSub A B h) {T : Over (Spec (CommRingCat.of R))
   rw [← cancel_epi j, hφ, hφ', this]
 
 /- English proof (translation)
-Take `⟨S, _, _, j, _⟩` from `exists_sp_iso T`. Take `⟨φ, hφ⟩` from `exists_eq_spMap (j ≫ a)`. Take `⟨φ', hφ'⟩` from `exists_eq_spMap (j ≫ b)`. Take `⟨χ, hχ⟩` from `H.mul S φ φ'`. Use `⟨inv j ≫ spMap χ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hχ, ← hφ, ← hφ', MonObj.comp_mul, Category.assoc, Category.assoc, IsIso.inv_hom_id_assoc, IsIso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem affine_mul (H : IsFinFlatSub A B h) {T : Over (Spec (CommRingCat.of R))} [IsAffine T.left]
     (a b : T ⟶ sp (R₀ := R) B) : ∃ c : T ⟶ sp (R₀ := R) B, c ≫ h = (a ≫ h) * (b ≫ h) := by
@@ -149,7 +149,7 @@ theorem affine_mul (H : IsFinFlatSub A B h) {T : Over (Spec (CommRingCat.of R))}
     IsIso.inv_hom_id_assoc, IsIso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Take `⟨S, _, _, j, _⟩` from `exists_sp_iso T`. Take `⟨χ, hχ⟩` from `H.one S`. Conclude with `⟨inv j ≫ spMap χ, by rw [Category.assoc, hχ, MonObj.comp_one]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem affine_one (H : IsFinFlatSub A B h) {T : Over (Spec (CommRingCat.of R))} [IsAffine T.left] :
     ∃ c : T ⟶ sp (R₀ := R) B, c ≫ h = 1 := by
@@ -158,9 +158,9 @@ theorem affine_one (H : IsFinFlatSub A B h) {T : Over (Spec (CommRingCat.of R))}
   exact ⟨inv j ≫ spMap χ, by rw [Category.assoc, hχ, MonObj.comp_one]⟩
 
 /- English proof (translation)
-Take `⟨S, _, _, j, _⟩` from `exists_sp_iso T`. Take `⟨φ, hφ⟩` from `exists_eq_spMap (j ≫ a)`. Take `⟨χ, hχ⟩` from `H.inv S φ`. Use `⟨inv j ≫ spMap χ, ?_⟩` and prove the remaining obligations. Rewrite `hχ` using `[← hφ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (inv j ≫ ·) hχ` as an intermediate fact. Simplify using `only [MonObj.comp_mul, MonObj.comp_one, Category.assoc, IsIso.inv_hom_id_assoc] at this`. Simplify `this` using `[Category.assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem affine_inv (H : IsFinFlatSub A B h) {T : Over (Spec (CommRingCat.of R))} [IsAffine T.left]
     (a : T ⟶ sp (R₀ := R) B) : ∃ c : T ⟶ sp (R₀ := R) B, (c ≫ h) * (a ≫ h) = 1 := by
@@ -174,9 +174,9 @@ theorem affine_inv (H : IsFinFlatSub A B h) {T : Over (Spec (CommRingCat.of R))}
   simpa [Category.assoc] using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `T a b hab`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `Scheme.Cover.hom_ext T.left.affineCover _ _ fun i => ?_` and prove the remaining obligations. Set `T' : Over (Spec (CommRingCat.of R))` to `Over.mk (T.left.affineCover.f i ≫ T.hom)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `j : T' ⟶ T` to `Over.homMk (T.left.affineCover.f i) rfl`. Use `haveI : IsAffine T'.left := inferInstanceAs (IsAffine (T.left.affineCover.X i))`. Use `affine_mono H (j ≫ a) (j ≫ b) (by rw [Category.assoc, Category.assoc, hab])` as an intermediate fact. Conclude with `congrArg (·.left) this`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_of_isFinFlatSub (H : IsFinFlatSub A B h) : Mono h := by
   constructor
@@ -190,9 +190,9 @@ theorem mono_of_isFinFlatSub (H : IsFinFlatSub A B h) : Mono h := by
   exact congrArg (·.left) this
 
 /- English proof (translation)
-Establish `hmono` using `mono_of_isFinFlatSub H`. Use `haveI : IsAffine (sp (R₀ := R) B).left := inferInstanceAs (IsAffine (Spec _))`. Use `haveI : IsAffine (𝟙_ (Over (Spec (CommRingCat.of R)))).left := inferInstanceAs (IsAffine (Spec _))`. Use `haveI : IsAffine (sp (R₀ := R) B ⊗ sp (R₀ := R) B).left := inferInstanceAs (IsAffine (pullback (sp (R₀ := R) B).hom (sp (R₀ := R) B).hom))`. Take `⟨m, hm⟩` from `affine_mul H (fst _ _) (snd _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he⟩` from `affine_one H (T := 𝟙_ _)`. Take `⟨i, hi⟩` from `affine_inv H (𝟙 _)`. Rewrite `hi` using `[Category.id_comp]`. Take `⟨G, hG⟩` from `exists_grpObj_of_mono h m e i hm he hi`. Conclude with `⟨G, hG, hmono⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem grpObj_of_isFinFlatSub (R : Type) [CommRing R] (A : Over (Spec (CommRingCat.of R))) [GrpObj A] (B : Type)
     [CommRing B] [Algebra R B] (h : sp (R₀ := R) B ⟶ A) (H : IsFinFlatSub A B h) :

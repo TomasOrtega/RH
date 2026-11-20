@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicChar
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Sd
 
 /- English proof (translation)
-Set `R : Subring Ω` to `(Int.castRingHom Ω).range`. Establish `hI : Ideal.span {((p : ℕ) : R)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top, isUnit_iff_exists_inv]`. Introduce and unpack `⟨⟨_, k, rfl⟩, hk⟩`. Establish `h1 : ((p : ℕ) : Ω) * ((k : ℤ) : Ω) = 1` using `congrArg Subtype.val hk`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : ((p : ℕ) : ℤ) * k = 1` using `by exact_mod_cast h1`. Establish `h3 : ((p : ℕ) : ℤ) = 1` using `Int.eq_one_of_mul_eq_one_right (by positivity) h2`. Conclude with `hp.one_lt.ne' (by exact_mod_cast h3)`. Take `⟨A, -, hA⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI`. Conclude with `⟨A, A.mem_nonunits_iff.1 (hA ⟨((p : ℕ) : R), Ideal.mem_span_singleton_self _, by simp⟩)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem eisReg_place {Ω : Type} [Field Ω] [CharZero Ω] (p : ℕ) (hp : p.Prime) :
     ∃ A : ValuationSubring Ω, A.valuation (p : Ω) < 1 := by
@@ -23,7 +23,7 @@ private theorem eisReg_place {Ω : Type} [Field Ω] [CharZero Ω] (p : ℕ) (hp 
   exact ⟨A, A.mem_nonunits_iff.1 (hA ⟨((p : ℕ) : R), Ideal.mem_span_singleton_self _, by simp⟩)⟩
 
 /- English proof (translation)
-Establish `e : ((g * r * g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K).charpoly = (r : Matrix (Fin 2) (Fin 2) K).charpoly`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`. Conclude with `Matrix.charpoly_units_conj g _`. Rewrite using `[← e, Matrix.charpoly_of_isUpperTriangular _ (fun i j hij => h i j hij), Fin.prod_univ_two, ← ha, ← hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eisReg_charpoly {K : Type} [Field K] (g r : GL (Fin 2) K) (a b : K)
     (h : ∀ i j, j < i → (g * r * g⁻¹ : GL (Fin 2) K) i j = 0)
@@ -36,15 +36,15 @@ private theorem eisReg_charpoly {K : Type} [Field K] (g r : GL (Fin 2) K) (a b :
   rw [← e, Matrix.charpoly_of_isUpperTriangular _ (fun i j hij => h i j hij), Fin.prod_univ_two, ← ha, ← hb]
 
 /- English proof (translation)
-Introduce `l hl Ω _ _ _ ι φ θ k hk ρ hρ H hH`. Take `⟨A, hA⟩` from `eisReg_place (Ω := Ω) l hl.out`. Take `⟨κ, ⟨g, hg⟩, hκ, -⟩` from `hρ.above A hA`. Take `⟨u, hu⟩` from `GlobalTheory.CycDec.exists_unit_infinite_order l`. Take `⟨σ, hσ, hσu⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsGalois ℚ Ω := {}`. Use `haveI : Finite (G ℚ Ω ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Use `haveI : H.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Take `⟨n, hn, -, hnH⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (H := H) Subgroup.FiniteIndex.index_ne_zero σ`. Establish `hs : σ ^ n ∈ Ine (F` using `ℚ) A := pow_mem hσ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `s : ↥(Dec (F` to `ℚ) A) := ⟨σ ^ n, Ine_le_Dec A hs⟩`. Use `⟨σ ^ n, hnH, cycBar ℚ Ω l (σ ^ n) ^ ((k : ℤ) - 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isOfFinOrder_iff_pow_eq_one]`. Introduce and unpack `⟨m, hm, h⟩`. Establish `hinj : Function.Injective (Units.map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom)` using `Units.map_injective ((algebraMap ℚ_[l] (Qbar l)).injective.comp Subtype.val_injective)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `hu ((n : ℤ) * ((k : ℤ) - 1) * m) ?_ (hinj ?_)` and prove the remaining obligations. Establish `: (0 : ℤ) < (k : ℤ) - 1` using `by omega`. Check the signs of the components of the expression. Rewrite using `[map_one, ← h, cycBar, MonoidHom.comp_apply, map_pow, hσu, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, map_pow, map_zpow]`. Use `eisReg_charpoly g (ρ (σ ^ n)) _ _ (hg s).1 ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ρ (σ ^ n) = ρ s from rfl, (hg s).2 0, hκ 0 s hs]`. Both sides reduce to the same expression. Rewrite using `[show ρ (σ ^ n) = ρ s from rfl, (hg s).2 1, hκ 1 s hs]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.eisReg :
     UpperTheory.V.Sd.EisReg := by

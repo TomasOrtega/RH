@@ -17,7 +17,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
 omit [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `⟨⟨N.map (U : Subgroup G).subtype, ?_⟩, Subgroup.map_subtype_le N, ?_⟩` and prove the remaining obligations. Conclude with `U.isOpen.isOpenMap_subtype_val _ hN`. Conclude with `Subgroup.comap_map_eq_self_of_injective (U : Subgroup G).subtype_injective N`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_openSubgroup_subgroupOf_eq (U : OpenSubgroup G) (N : Subgroup (U : Subgroup G))
     (hN : IsOpen (N : Set (U : Subgroup G))) :
@@ -31,7 +31,7 @@ variable {C : Rep.{0} (ULift.{0} ℤ) G} [IsDiscreteRep C] (F : ClassFormation C
 include F in
 
 /- English proof (translation)
-Take `⟨V, hVU, rfl⟩` from `exists_openSubgroup_subgroupOf_eq U N hN`. Establish `: ((V : Subgroup G).subgroupOf U).FiniteIndex` using `finiteIndex_openSubgroup (⟨_, hN⟩ : OpenSubgroup (U : Subgroup G))`. Establish `: Finite ((U : Subgroup G) ⧸ (V : Subgroup G).subgroupOf U)` using `Subgroup.finite_quotient_of_finiteIndex`. Set `: Fintype ((U : Subgroup G) ⧸ (V : Subgroup G).subgroupOf U)` to `Fintype.ofFinite _`. Conclude with `subsingleton_groupCohomology_three_of_tate _ (F.groupFundamentalClass U V) (fun S => (F.tate_hypotheses hVU S).1) (fun S => (F.tate_hypotheses hVU S).2.1) (fun S => (F.tate_hypotheses hVU S).2.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ClassFormation.subsingleton_groupCohomology_three_quot (U : OpenSubgroup G)
     (N : Subgroup (U : Subgroup G)) [N.Normal] (hN : IsOpen (N : Set (U : Subgroup G))) :
@@ -50,7 +50,7 @@ theorem ClassFormation.subsingleton_groupCohomology_three_quot (U : OpenSubgroup
 include F in
 
 /- English proof (translation)
-Establish `h0 : ∀ z : cohomology (Rep.res (U : Subgroup G).subtype C) 3, z = 0` using `fun z => by`. Take `⟨W, w, rfl⟩` from `exists_inflation_eq (Rep.res (U : Subgroup G).subtype C) 3 z`. Use `F.subsingleton_groupCohomology_three_quot U (W : Subgroup (U : Subgroup G)) W.isOpen` as an intermediate fact. Rewrite using `[Subsingleton.elim w 0, map_zero]`. Conclude with `⟨fun x y => by rw [h0 x, h0 y]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ClassFormation.subsingleton_cohomology_three (U : OpenSubgroup G) :
     Subsingleton (cohomology (Rep.res (U : Subgroup G).subtype C) 3) := by

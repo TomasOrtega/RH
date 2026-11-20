@@ -6,37 +6,31 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hfl hsurj hker V' _ _ e₁ β he₁ hβ`. Use `set q : Ideal B := (maximalIdeal A₂).comap f with hq`. Use `set c : Ideal B := (maximalIdeal V').comap β with hc`. Use `haveI : q.IsPrime := Ideal.comap_isPrime f (maximalIdeal A₂)`. Use `haveI : c.IsPrime := Ideal.comap_isPrime β (maximalIdeal V')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hqA : Ideal.under A q = maximalIdeal A`. Use extensionality with `a`. Simplify using `only [Ideal.under, Ideal.mem_comap, hq, mem_maximalIdeal, mem_nonunits_iff]`. Rewrite using `[← RingHom.comp_apply, isUnit_map_iff (f.comp (algebraMap A B))]`. Establish `hcA : Ideal.under A c = maximalIdeal A`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use extensionality with `a`. Simplify using `only [Ideal.under, Ideal.mem_comap, hc, mem_maximalIdeal, mem_nonunits_iff]`. Rewrite using `[← RingHom.comp_apply, hβ, isUnit_map_iff e₁]`. Take `⟨σ, hσ⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq A B G c q (hcA.trans hqA.symm)`. Use `set β' : B →+* V' := β.comp (MulSemiringAction.toRingHom G B σ⁻¹) with hβ'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hβ'q : ∀ b : B, b ∈ q ↔ ¬ IsUnit (β' b)`. Introduce `b`. Rewrite using `[hσ, Ideal.mem_pointwise_smul_iff_inv_smul_mem, hc, Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Both sides reduce to the same expression. Establish `hfq : ∀ b : B, b ∈ q ↔ ¬ IsUnit (f b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `b`. Rewrite using `[hq, Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Establish `hβ'A : β'.comp (algebraMap A B) = e₁`. Rewrite using `[← hβ]`. Use extensionality with `a`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [hβ', RingHom.comp_apply, MulSemiringAction.toRingHom_apply, smul_algebraMap]`. Use `letI : Algebra B A₂ := f.toAlgebra`. Use `haveI hloc : IsLocalization q.primeCompl A₂ := by`. Rewrite using `[isLocalization_iff]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨s, hs⟩`. Establish `: s ∉ q` using `hs`. Rewrite `this` using `[hfq, not_not]`. Conclude with `this`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, s, hs, h⟩` from `hsurj z`. Establish `hs' : s ∈ q.primeCompl` using `by show s ∉ q`. Rewrite using `[hfq, not_not]`. Conclude with `hs`. Conclude with `⟨(b, ⟨s, hs'⟩), h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x y hxy`. Establish `h0 : f (x - y) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr hxy`. Take `⟨s, hs, h⟩` from `hker _ h0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs' : s ∈ q.primeCompl` using `by show s ∉ q`. Rewrite using `[hfq, not_not]`. Conclude with `hs`. Use `⟨⟨s, hs'⟩, ?_⟩` and prove the remaining obligations. Use `show s * x = s * y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_sub]`. Conclude with `sub_eq_zero.mp h`. Establish `hunits : ∀ y : q.primeCompl, IsUnit (β' y)`. Introduce and unpack `⟨s, hs⟩`. Establish `: s ∉ q` using `hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hβ'q, not_not]`. Conclude with `this`. Establish `hcomp : (IsLocalization.lift hunits).comp f = β'` using `IsLocalization.lift_comp (M := q.primeCompl) (S := A₂) hunits`. Use `⟨IsLocalization.lift hunits, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, s, hs, h⟩` from `hsurj x`. Establish `hsq : IsUnit (β' s)`. Establish `: s ∉ q` using `by rw [hfq, not_not]; exact hs`. Rewrite `this` using `[hβ'q, not_not]`. Conclude with `this`.
-
-Establish `hb : IsUnit (β' b)`. Establish `h2` using `congrArg (IsLocalization.lift hunits) h`. Rewrite `h2` using `[map_mul, ← RingHom.comp_apply, ← RingHom.comp_apply, hcomp]`. Rewrite using `[← h2]`. Conclude with `hx.mul hsq`.
-
-Establish `hfb : IsUnit (f b)`. Establish `: b ∉ q` using `by rw [hβ'q, not_not]; exact hb`. Rewrite `this` using `[hfq, not_not]`. Conclude with `this`. Rewrite `hfb` using `[← h]`.
-
-Conclude with `isUnit_of_mul_isUnit_left hfb`. Rewrite using `[← RingHom.comp_assoc, hcomp, hβ'A]`.
+A detailed English derivation is pending.
 -/
 theorem twisted_lift_to_localisation (A B A₂ : Type) [CommRing A] [IsLocalRing A] [CommRing B] [Algebra A B]
     [CommRing A₂] [IsLocalRing A₂] (G : Type) [Group G] [Finite G] [MulSemiringAction G B]

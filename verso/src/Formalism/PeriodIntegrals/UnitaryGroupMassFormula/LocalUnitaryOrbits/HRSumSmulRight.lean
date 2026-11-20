@@ -12,17 +12,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Unfold `OEv at *`. Rewrite `*` using `[SetLike.mem_coe]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨e, -, rfl⟩` from `ha`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨f, -, rfl⟩` from `hb`. Rewrite using `[← map_mul]`. Conclude with `Submodule.subset_span ⟨e * f, Set.mem_univ _, by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Rewrite using `[mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add b c _ _ hb hc`. Rewrite using `[mul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hb hc`. Consider the case `smul r b _ hb`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ r hb`. Consider the case `zero`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[zero_mul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a c _ _ ha hc`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ ha hc`.
-
-Consider the case `smul r a _ ha`. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oEv_mul {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x * y ∈ OEv (E := E) v := by
@@ -56,7 +54,7 @@ theorem oEv_mul {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ 
     exact Submodule.smul_mem _ r ha
 
 /- English proof (translation)
-Unfold `OEv at *`. Conclude with `Submodule.sum_mem _ h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem oEv_sum {ι : Type} (s : Finset ι) (f : ι → Fv F v ⊗[F] E) (h : ∀ i ∈ s, f i ∈ OEv (E := E) v) :
     ∑ i ∈ s, f i ∈ OEv (E := E) v := by
@@ -64,7 +62,7 @@ theorem oEv_sum {ι : Type} (s : Finset ι) (f : ι → Fv F v ⊗[F] E) (h : �
   exact Submodule.sum_mem _ h
 
 /- English proof (translation)
-Use `map_sum (PI.VolStabSW.hLin (Fv F v) σ J x) (fun k => c k • y k) Finset.univ` as an intermediate fact. Simplify using `only [map_smul, smul_eq_mul] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hR_sum_smul_right {a : ℕ} (x : Fin n → Fv F v ⊗[F] E) (c : Fin a → Fv F v ⊗[F] E)
     (y : Fin a → Fin n → Fv F v ⊗[F] E) :
@@ -74,7 +72,7 @@ theorem hR_sum_smul_right {a : ℕ} (x : Fin n → Fv F v ⊗[F] E) (c : Fin a �
   exact this
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hR_smul_left' (c : Fv F v ⊗[F] E) (x y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (c • x) y = sigR (Fv F v) σ c * hR (Fv F v) σ J x y := by
@@ -83,7 +81,7 @@ theorem hR_smul_left' (c : Fv F v ⊗[F] E) (x y : Fin n → Fv F v ⊗[F] E) :
   ring
 
 /- English proof (translation)
-Use `map_sum (AddMonoidHom.mk' (fun z => hR (Fv F v) σ J z y) (fun z z' => hR_add_left σ J z z' y)) (fun k => c k • x k) Finset.univ` as an intermediate fact. Simplify using `only [AddMonoidHom.mk'_apply] at this`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun k _ => hR_smul_left' σ J v (c k) (x k) y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hR_sum_smul_left {a : ℕ} (y : Fin n → Fv F v ⊗[F] E) (c : Fin a → Fv F v ⊗[F] E)
     (x : Fin a → Fin n → Fv F v ⊗[F] E) :
@@ -109,25 +107,21 @@ def TrOnto : Prop :=
     ∃ x ∈ OEv (E := E) v, x + sigR (Fv F v) σ x = s
 
 /- English proof (translation)
-Introduce `hGood ϖ hϖ y hy hyT S hS`. Take `⟨Ginv, hGi, hGG⟩` from `hGI hGood ϖ hϖ y hy hyT`. Take `⟨L, -, hLΛ⟩` from `hGood.2.1`. Establish `hσ : ∀ x, σ (σ x) = x` using `PI.VolStabSW.sigma_invol σ hGood.1.1.2.2.2`. Establish `hJ : ∀ i j, σ (J j i) = J i j` using `hGood.1.2.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiag : ∀ i, ∃ x ∈ OEv (E` using `E) v, x + sigR (Fv F v) σ x = (S : Matrix (Fin a) (Fin a) _) i i := fun i => hTr hGood.2.2.2.1 _ (hS i i) (S.2 i i)`. Use `choose x hx hxs using hdiag`. Use `set A : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := fun i j => if i < j then (S : Matrix (Fin a) (Fin a) _) i j else if i = j then x i else 0 with hAdef`. Establish `hA : ∀ i j, A i j ∈ OEv (E` using `E) v := by`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hAdef]`. Use `split_ifs`. Conclude with `hS i j`. Conclude with `hx i`. Conclude with `oEv_zero v`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hAS : ∀ i j, A i j + sigR (Fv F v) σ (A j i) = (S : Matrix (Fin a) (Fin a) _) i j`. Introduce `i j`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[hAdef, h, not_lt.2 h.le, h.ne']`. Simplify using `[hAdef, hxs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hAdef, h, not_lt.2 h.le, h.ne, h.ne', if_false, if_true, zero_add]`. Conclude with `S.2 i j`. Use `set C := Ginv * A with hCdef`. Establish `hC : ∀ i j, C i j ∈ OEv (E` using `E) v := fun i j => by`. Rewrite using `[hCdef, Matrix.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `oEv_sum v _ _ fun k _ => oEv_mul v (hGi i k) (hA k j)`. Establish `hGm` using `PI.VolStabSW.gramR_mem (Fv F v) σ hσ J hJ y`. Substitute `hLΛ` using the available equality. Use `⟨fun j => ∑ k, C k j • y k, fun j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun k _ => oEv_smul_mem v L (hC k j) (hy k)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i j`. Simplify using `only [crossM]`. Rewrite using `[hR_sum_smul_right, hR_sum_smul_left]`. Establish `e1 : ∑ k, C k j * hR (Fv F v) σ J (y i) (y k) = A i j`. Establish `: (gramR (Fv F v) σ J y * C) i j = A i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hCdef, ← Matrix.mul_assoc, hGG, Matrix.one_mul]`. Rewrite using `[← this, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `e2 : ∑ k, sigR (Fv F v) σ (C k i) * hR (Fv F v) σ J (y k) (y j) = sigR (Fv F v) σ (A j i)`. Establish `: (gramR (Fv F v) σ J y * C) j i = A j i`.
-
-Rewrite using `[hCdef, ← Matrix.mul_assoc, hGG, Matrix.one_mul]`. Rewrite using `[← this, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_comm]`. Use `congr 1`.
-
-Conclude with `(hGm k j).symm`. Rewrite using `[e1, e2, hAS]`.
+A detailed English derivation is pending.
 -/
 theorem hensOnto_of (a : ℕ) (Y : TupV (E := E) v n a) (hGI : GramInvO σ J v Λ ψ a Y) (hTr : TrOnto σ v) :
     HensOnto σ J v Λ ψ a Y := by

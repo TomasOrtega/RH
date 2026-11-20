@@ -7,31 +7,27 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨Wq, hWq⟩ : ∃ Wq : Submodule ℚ (ι → ℚ), ∀ q, q ∈ Wq ↔ (fun i => algebraMap ℚ ℂ (q i)) ∈ W := by`. Use `⟨{ carrier := {q | (fun i => algebraMap ℚ ℂ (q i)) ∈ W} add_mem' := ?_, zero_mem' := ?_, smul_mem' := ?_ }, fun q => Iff.rfl⟩` and prove the remaining obligations. Introduce `a b ha hb`. Establish `h : (fun i => algebraMap ℚ ℂ ((a + b) i)) = (fun i => algebraMap ℚ ℂ (a i)) + (fun i => algebraMap ℚ ℂ (b i))`. Use extensionality with `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `show (fun i => algebraMap ℚ ℂ ((a + b) i)) ∈ W`. Rewrite using `[h]`. Conclude with `W.add_mem ha hb`. Use `show (fun i => algebraMap ℚ ℂ ((0 : ι → ℚ) i)) ∈ W`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : (fun i => algebraMap ℚ ℂ ((0 : ι → ℚ) i)) = 0` using `by ext i; simp`. Rewrite using `[h]`. Conclude with `W.zero_mem`. Introduce `c q hq`. Establish `h : (fun i => algebraMap ℚ ℂ ((c • q) i)) = algebraMap ℚ ℂ c • (fun i => algebraMap ℚ ℂ (q i))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Use `show (fun i => algebraMap ℚ ℂ ((c • q) i)) ∈ W`. Rewrite using `[h]`. Conclude with `W.smul_mem _ hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC⟩` from `Submodule.exists_isCompl Wq`. Take `⟨f, hf1, hf2⟩ : ∃ f : (ι → ℚ) →ₗ[ℚ] (ι → ℚ), (∀ q, f q ∈ Wq) ∧ (∀ q ∈ Wq, f q = q)` from `⟨Wq.subtype ∘ₗ Wq.projectionOnto C hC, fun q => (Wq.projectionOnto C hC q).2, fun q hq => congrArg Subtype.val (Submodule.projectionOnto_apply_left hC ⟨q, hq⟩)⟩`. Establish `hff : f ∘ₗ f = f` using `LinearMap.ext fun q => hf2 _ (hf1 q)`. Establish `hstable` using `GlobalTheory.T.galoisStable_submodule_le_span_rational (ι → ℂ) ι (Pi.basisFun ℂ ι) W (fun σ w hw => ⟨fun i => σ (w i), hW σ w hw, fun k => by simp⟩)`. Use `⟨LinearMap.toMatrix' f, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← LinearMap.toMatrix'_comp, hff]`. Establish `hA : ∀ q : ι → ℚ, (LinearMap.toMatrix' f).map (algebraMap ℚ ℂ) *ᵥ (fun i => algebraMap ℚ ℂ (q i)) = fun i => algebraMap ℚ ℂ (f q i)`. Introduce `q`. Use extensionality with `i`. Rewrite using `[← LinearMap.toMatrix'_mulVec f q]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Establish `hB : ∀ v : ι → ℂ, (LinearMap.toMatrix' f).map (algebraMap ℚ ℂ) *ᵥ v ∈ W`. Introduce `v`. Establish `hcol : ∀ j, (fun i => algebraMap ℚ ℂ (LinearMap.toMatrix' f i j)) ∈ W`. Introduce `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.toMatrix'_apply]`. Conclude with `(hWq _).1 (hf1 _)`. Establish `h : (LinearMap.toMatrix' f).map (algebraMap ℚ ℂ) *ᵥ v = ∑ j, v j • (fun i => algebraMap ℚ ℂ (LinearMap.toMatrix' f i j))`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[h]`. Conclude with `W.sum_mem fun j _ => W.smul_mem _ (hcol j)`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan` using `hstable hv`. Use `clear hv`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨hwW, hq⟩` from `hw`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose q hq using hq`. Establish `hw : w = fun i => algebraMap ℚ ℂ (q i)`. Use extensionality with `k`. Rewrite using `[← Pi.basisFun_repr ℂ ι w k, hq k]`. Conclude with `(eq_ratCast (algebraMap ℚ ℂ) (q k)).symm`.
-
-Establish `hqW : q ∈ Wq` using `(hWq q).2 (by rw [← hw]; exact hwW)`. Rewrite using `[hw, hA, hf2 q hqW]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, hx, hy]`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul, hx]`.
-
-Introduce `hv`. Rewrite using `[← hv]`. Conclude with `hB v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_idempotent_of_stable (ι : Type) [Fintype ι] [DecidableEq ι]
     (W : Submodule ℂ (ι → ℂ))

@@ -19,27 +19,27 @@ noncomputable section
 namespace GlobalTheory.MixedLagr
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁`. Establish `hD : ∀ p q, symp (cA σ) (-1) (incM F X.J) (incM F W.J) p q = (M.co.e p).1 ⬝ᵥ (M.co.e q).2 - (M.co.e q).1 ⬝ᵥ (M.co.e p).2` using `M.co.form`. Establish `hcross` using `GlobalTheory.T.symplectic_isotropic_embedded_vanishes_adelic F E σ n d d₁ X.J W.J H' (fun u => (hH.orth u).1)`. Establish `hiso : ∀ a ∈ lagr M M₁ H', ∀ b ∈ lagr M M₁ H', a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2`. Introduce `a ha b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, z, hz, hea⟩` from `ha`. Take `⟨u', hu', z', hz', heb⟩` from `hb`. Establish `ea : hat a = M.co.e (u + incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)`. Rewrite using `[← hea, LinearEquiv.apply_symm_apply]`. Establish `eb : hat b = M.co.e (u' + incM F (1 : Matrix (Fin n) (Fin n) E) * z' * (incM F H'.ι)ᵀ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← heb, LinearEquiv.apply_symm_apply]`. Establish `h1` using `GlobalTheory.T.symplectic_isotropic_plane_vanishes_adelic F E σ n d d₁ X.J W.J H' hH.xx u hu u' hu'`. Establish `h2` using `hcross u' hu' z`. Establish `h3` using `hcross u hu z'`. Establish `h4` using `GlobalTheory.T.symplectic_form_restricted_plane F E σ n d d₁ X.J W.J W₁.J H'.ι hH.gram z z'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[M₁.co.form, hz, hz', zero_dotProduct, zero_dotProduct, sub_zero]`. Rewrite `h1`, `h2`, `h3`, `h4` using `[hD]`. Apply `(AdeleRing.algebraMap_injective (𝓞 F) F)` to reduce the goal to its premises. Establish `ha1 : (fun i => algebraMap F (AF F) (a.1 i)) = (hat a).1` using `rfl`. Establish `ha2 : (fun i => algebraMap F (AF F) (a.2 i)) = (hat a).2` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : (fun i => algebraMap F (AF F) (b.1 i)) = (hat b).1` using `rfl`. Establish `hb2 : (fun i => algebraMap F (AF F) (b.2 i)) = (hat b).2` using `rfl`. Rewrite using `[RingHom.map_dotProduct, RingHom.map_dotProduct]`. Simplify using `only [Function.comp_def]`. Rewrite using `[ha1, ha2, hb1, hb2, ea, eb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Take the linear combination `h1 + h2 - h3 + h4`. Use `⟨lagr M M₁ H', hiso, ?_, ?_⟩` and prove the remaining obligations. Establish `hrat` using `GlobalTheory.T.rational_model_coordinates F E σ n d X W M hP.good.rat`. Establish `hrat₁` using `GlobalTheory.T.rational_model_coordinates F E σ n d₁ X W₁ M₁ hP₁.good.rat`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, hf, hfe⟩` from `hrat`. Take `⟨f₁, hf₁, hfe₁⟩` from `hrat₁`. Establish `h2 : Module.finrank F E = 2` using `hP.base.cm.2.2.1`. Take `⟨K, hK, hKz⟩` from `GlobalTheory.T.rational_lagrangian_subspace_exists F E σ n d₁ X W₁ M₁ h2 f₁ hf₁ hfe₁`. Establish `hinj` using `mul_transpose_injective F E σ n d d₁ W.J W₁.J H'.ι hH.gram (GlobalTheory.T.skew_determinant_ne_zero_first_space F E σ B d₁ W₁ r₁ s₁ hP₁.skew)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.lagrangian_dimension_bound F _ _ hiso`. Rewrite using `[Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Conclude with `GlobalTheory.T.quadratic_injective_plane_coordinates F E σ n d d₁ X W W₁ M M₁ H' h2 hH.rank hH.xy (fun u => (hH.orth u).2) hinj f hf hfe K hK hKz`. Introduce `t w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, ⟨y, rfl⟩, z, hz, he⟩` from `hw`. Establish `ew : hat w = M.co.e (Matrix.vecMulVec y (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)`. Rewrite using `[← he, LinearEquiv.apply_symm_apply]`. Use `⟨Matrix.vecMulVec (t • y) (incV F H'.x), ⟨t • y, rfl⟩, t • z, by simp [hz], fun φ => ?_⟩` and prove the remaining obligations. Establish `h0` using `hcross _ ⟨t • y, rfl⟩ (t • z)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[hD]`. Rewrite using `[Darboux.rho, Darboux.rho, schr_comp, ← map_add]`. Establish `hs : (M.co.e (Matrix.vecMulVec (t • y) (incV F H'.x))).1 ⬝ᵥ (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * (t • z) * (incM F H'.ι)ᵀ)).2 - (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * (t • z) * (incM F H'.ι)ᵀ)).1 ⬝ᵥ (M.co.e (Matrix.vecMulVec (t • y) (incV F H'.x))).2 = 0` using `by linear_combination -h0`. Rewrite using `[hs, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Establish `hm : Matrix.vecMulVec (t • y) (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n) E) * (t • z) * (incM F H'.ι)ᵀ = t • (Matrix.vecMulVec y (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, Matrix.smul_vecMulVec, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hm, LinearEquiv.map_smul, ← ew]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ratLagr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

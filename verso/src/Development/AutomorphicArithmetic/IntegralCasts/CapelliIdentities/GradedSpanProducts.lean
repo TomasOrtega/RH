@@ -12,15 +12,13 @@ noncomputable def UpperTheory.Reformulated.B.GradedSpanProducts.gradedSpan.{u_1}
       UpperTheory.Reformulated.B.GradedSpanProducts.gradedSpan w (fun (x : Fin (1 : ℕ)) ↦ (0 : ℕ)) (fun (x : Fin (1 : ℕ)) ↦ (1 : Ω)) n
 
 /- English proof (translation)
-Introduce `Ω _ q w a b x z hx hz`. Unfold `UpperTheory.Reformulated.B.GradedSpanProducts.pc UpperTheory.Reformulated.B.GradedSpanProducts.gradedSpan at *`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨l, μ, hμ, rfl⟩` from `hx`. Take `⟨_, ν, hν, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨l, fun j => μ j + ν j, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [zero_add] at hμ hν ⊢`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_add_distrib, hμ, hν]`. Simplify using `only [one_mul, pow_add, Finset.prod_mul_distrib]`. Consider the case `zero => rw [mul_zero]`. Conclude with `AddSubgroup.zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [mul_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `AddSubgroup.add_mem _ h1 h2`. Consider the case `neg z _ h => rw [mul_neg]`. Conclude with `AddSubgroup.neg_mem _ h`. Consider the case `zero => rw [zero_mul]`. Conclude with `AddSubgroup.zero_mem _`.
-
-Consider the case `add x y _ _ h1 h2 => rw [add_mul]`. Conclude with `AddSubgroup.add_mem _ h1 h2`. Consider the case `neg x _ h => rw [neg_mul]`. Conclude with `AddSubgroup.neg_mem _ h`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.GradedSpanProducts.pc_mul :
     ∀ {Ω : Type} [inst : Field Ω] {q : ℕ} (w : Fin q → Ω) {a b : ℕ} {x z : Ω},

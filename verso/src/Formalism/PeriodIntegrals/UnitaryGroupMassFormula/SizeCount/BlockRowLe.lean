@@ -8,7 +8,7 @@ open scoped BigOperators
 namespace PI.SzCt.W
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Ranks.N`. Establish `: (j - 1) * (D.R.t + 1) ≤ j * (D.R.t + 1)` using `Nat.mul_le_mul_right _ (Nat.sub_le j 1)`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem N_le_N (D : D7) (j : ℕ) : D.R.N (j - 1) ≤ D.R.N j := by
   unfold Formalism.BasicNotions.Ranks.N
@@ -16,7 +16,7 @@ theorem N_le_N (D : D7) (j : ℕ) : D.R.N (j - 1) ≤ D.R.N j := by
   omega
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Ranks.N`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem N_succ (D : D7) (j : ℕ) (hj : 1 ≤ j) : D.R.N j = D.R.N (j - 1) + (D.R.t + 1) := by
   unfold Formalism.BasicNotions.Ranks.N
@@ -25,7 +25,7 @@ theorem N_succ (D : D7) (j : ℕ) (hj : 1 ≤ j) : D.R.N j = D.R.N (j - 1) + (D.
   ring
 
 /- English proof (translation)
-Establish `h1 : (D.R.N (j - 1) : ℝ) ≤ D.R.N j` using `by exact_mod_cast N_le_N D j`. Establish `h2 : (i : ℝ) + 1 ≤ D.R.N (j - 1)` using `by exact_mod_cast hi`. Apply `div_pos _ two_pos` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem shift_pos (D : D7) (j i : ℕ) (hi : i < D.R.N (j - 1)) :
     0 < (((D.R.N (j - 1) : ℝ) + D.R.N j - 1 - 2 * (i : ℝ)) / 2) := by
@@ -35,7 +35,7 @@ theorem shift_pos (D : D7) (j i : ℕ) (hi : i < D.R.N (j - 1)) :
   linarith
 
 /- English proof (translation)
-Use `shift_pos D j i hi` as an intermediate fact. Unfold `DV.nuRow`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nuRow_le (D : D7) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ)
     (hi : i < D.R.N (j - 1)) :
@@ -45,7 +45,7 @@ theorem nuRow_le (D : D7) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (i
   linarith
 
 /- English proof (translation)
-Unfold `DV.srcPar`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem srcPar_lt (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) (h : i < D.R.k) :
     DV.srcPar D u τ i = (D.hcW u τ).u ⟨i, h⟩ := by
@@ -53,7 +53,7 @@ theorem srcPar_lt (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) (
   rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `DV.wSz`. Rewrite using `[dif_pos ⟨hj, hm⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wSz_eq (D : D7) (j : ℕ) (τ : D.what₂.Tau) (hj : 1 ≤ j) (hm : j ≤ D.R.m) :
     DV.wSz D j τ = (((D.hc τ).e ⟨j - 1, by omega⟩ : ℚ) : ℝ) := by
@@ -61,7 +61,7 @@ theorem wSz_eq (D : D7) (j : ℕ) (τ : D.what₂.Tau) (hj : 1 ≤ j) (hm : j �
   rw [dif_pos ⟨hj, hm⟩]
 
 /- English proof (translation)
-Rewrite using `[wSz_eq D j τ hj hm]`. Unfold `wj`. Rewrite using `[dif_pos (by omega)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wSz_eq_wj (D : D7) (j : ℕ) (τ : D.what₂.Tau) (hj : 1 ≤ j) (hm : j ≤ D.R.m) :
     DV.wSz D j τ = wj D j τ := by
@@ -70,7 +70,7 @@ theorem wSz_eq_wj (D : D7) (j : ℕ) (τ : D.what₂.Tau) (hj : 1 ≤ j) (hm : j
   rw [dif_pos (by omega)]
 
 /- English proof (translation)
-Establish `hk : i < D.R.N (j - 1)`. Unfold `Formalism.BasicNotions.Ranks.N`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← srcPar_lt D u τ i h]`. Conclude with `nuRow_le D u j τ i hk`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cloudRow_le (D : D7) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) (h : i < D.R.k) :
     DV.nuRow D u j τ i ≤ (((D.hcW u τ).u ⟨i, h⟩ : ℚ) : ℝ) + DV.wSz D j τ := by
@@ -81,33 +81,31 @@ theorem cloudRow_le (D : D7) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau)
   exact nuRow_le D u j τ i hk
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨lo, hlo⟩ : ∃ lo : ℝ, ∀ j', 1 ≤ j' → j' ≤ D.R.m → lo ≤ wj D j' τ ∧ wj D j' τ ≤ lo + L.etaSz + 1 := by`. Distinguish the cases in `hth : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Conclude with `⟨L.sc.b, fun j' h1 h2 => L.win_thick j' h1 h2 τ hth⟩`. Distinguish the cases in `htop : ∃ t0 : D.host.TT, (D.eTau τ : D.R.GG) = D.R.tau1 t0`. Take `⟨t0, ht0⟩` from `htop`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `⟨(L.bT t0 : ℝ) + L.sc.b' / L.sc.x, fun j' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hw` using `L.win_top j' h1 h2 τ t0 ht0`. Conclude with `⟨hw.1, by linarith [hw.2]⟩`. Establish `hthin : D.host.IsThin (D.eTau τ : D.R.GG)`. Use `⟨(D.eTau τ).2, ?_, hth⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hmem`. Rewrite `hmem` using `[Formalism.BasicNotions.Host.topPlaces, Finset.mem_image]`. Take `⟨t0, ht0m, ht0⟩` from `hmem`. Conclude with `htop ⟨⟨t0, ht0m⟩, ht0.symm⟩`. Use `⟨L.sc.w'' D.R.n, fun j' h1 h2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw` using `L.win_thin j' h1 h2 τ hthin`. Conclude with `⟨hw.1, by linarith [hw.2]⟩`. Establish `ht1 : (1 : ℝ) ≤ D.R.t`. Use `D.R.rank_add_five_le` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.t)` after adjusting the coercions.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hbdef⟩ : ∃ b, b = (i - D.R.k) / (D.R.t + 1)` from `⟨_, rfl⟩`. Take `⟨r, hrdef⟩ : ∃ r, r = (i - D.R.k) % (D.R.t + 1)` from `⟨_, rfl⟩`. Establish `hN1 : D.R.N (j - 1) = D.R.k + (j - 1) * (D.R.t + 1)` using `rfl`. Establish `hN2 : D.R.N j = D.R.k + j * (D.R.t + 1)` using `rfl`. Establish `hdec : i - D.R.k = b * (D.R.t + 1) + r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hbdef, hrdef]`. Conclude with `(Nat.div_add_mod' (i - D.R.k) (D.R.t + 1)).symm`. Establish `hbj : b < j - 1`. Rewrite using `[hbdef, Nat.div_lt_iff_lt_mul (by omega)]`. Rewrite `hi` using `[hN1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hbm : (i - D.R.k) / (D.R.t + 1) < D.R.m`. Rewrite using `[← hbdef]`. Use linear arithmetic over natural numbers and integers. Establish `hwb : wj D (b + 1) τ = (((D.hc τ).e ⟨b, by omega⟩ : ℚ) : ℝ)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `wj`. Rewrite using `[dif_pos (by omega)]`. Both sides reduce to the same expression. Establish `hEb : (((D.hc τ).e ⟨(i - D.R.k) / (D.R.t + 1), hbm⟩ : ℚ) : ℝ) = wj D (b + 1) τ`. Rewrite using `[hwb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun x => (((D.hc τ).e x : ℚ) : ℝ)) (Fin.ext hbdef.symm)`. Establish `hA` using `hlo j hj hm`. Establish `hB` using `(hlo (b + 1) (by omega) (by omega)).1`. Establish `hi' : i = D.R.k + b * (D.R.t + 1) + r` using `by omega`. Establish `hir : (i : ℝ) = D.R.k + b * (D.R.t + 1) + r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hi']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hN1r : ((D.R.N (j - 1) : ℕ) : ℝ) = D.R.k + ((j : ℝ) - 1) * (D.R.t + 1)`. Rewrite using `[hN1, Nat.cast_add, Nat.cast_mul, Nat.cast_sub hj]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hN2r : ((D.R.N j : ℕ) : ℝ) = D.R.k + (j : ℝ) * (D.R.t + 1)`. Rewrite using `[hN2]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hbjr : (b : ℝ) + 1 ≤ (j : ℝ) - 1`. Establish `h2 : b + 2 ≤ j` using `by omega`. Establish `h2' : ((b + 2 : ℕ) : ℝ) ≤ j` using `by exact_mod_cast h2`. Move the coercions through the operations in `at h2'`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod : ((D.R.t : ℝ) + 1) * 1 ≤ ((D.R.t : ℝ) + 1) * ((j : ℝ) - 1 - b)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Unfold `DV.nuRow DV.srcPar`. Rewrite using `[dif_neg (by omega), dif_pos hbm, wSz_eq_wj D j τ hj hm, D.hcW_e]`. Use `push_cast`.
-
-Rewrite using `[hEb, ← hrdef, hN1r, hN2r, hir]`. Use polynomial arithmetic with `[hA.1, hA.2, hB]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem blockRow_le (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ)
     (hj : 1 ≤ j) (hm : j ≤ D.R.m) (hk : D.R.k ≤ i) (hi : i < D.R.N (j - 1)) :

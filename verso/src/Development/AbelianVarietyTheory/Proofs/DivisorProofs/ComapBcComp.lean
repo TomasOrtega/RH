@@ -21,7 +21,7 @@ abbrev bc {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T)
   pullback.map _ _ _ _ (𝟙 _) a (𝟙 _) (by simp) (by simp)
 
 /- English proof (translation)
-Establish `h : bc A B g a ≫ pullback.fst (str A B) g = pullback.fst _ _` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `IsPullback.of_hasPullback (str A B) (a ≫ g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_bc {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T) :
     IsPullback (bc A B g a) (pullback.snd _ (a ≫ g)) (pullback.snd _ g) a :=
@@ -33,11 +33,11 @@ theorem isPullback_bc {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a
     exact IsPullback.of_hasPullback (str A B) (a ≫ g)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hI`. Establish `H : IsPullback (pullback.snd (bc A B g a) I.subschemeι) (pullback.fst (bc A B g a) I.subschemeι ≫ pullback.snd _ (a ≫ g)) (I.subschemeι ≫ pullback.snd _ g) a` using `(IsPullback.of_hasPullback (bc A B g a) I.subschemeι).flip.paste_vert (isPullback_bc A B g a)`. Establish `e : (I.comap (bc A B g a)).subschemeι ≫ pullback.snd _ (a ≫ g) = (I.comapIso (bc A B g a)).hom ≫ (pullback.fst (bc A B g a) I.subschemeι ≫ pullback.snd _ (a ≫ g))`. Rewrite using `[← Category.assoc, Scheme.IdealSheafData.comapIso_hom_fst]`. Establish `f1 : IsFinite (pullback.fst (bc A B g a) I.subschemeι ≫ pullback.snd _ (a ≫ g))` using `MorphismProperty.of_isPullback (P := @IsFinite) H h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `f2 : Flat (pullback.fst (bc A B g a) I.subschemeι ≫ pullback.snd _ (a ≫ g))` using `MorphismProperty.of_isPullback (P := @Flat) H h2`. Use `⟨?_, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `infer_instance`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Rewrite using `[e, Scheme.Hom.finrank_comp_left_of_isIso, Scheme.Hom.finrank_of_isPullback _ _ _ _ H y, h3]`.
+A detailed English derivation is pending.
 -/
 theorem good_comap (r : ℕ) {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T)
     (I : (pullback (str A B) g).IdealSheafData) (hI : Good A B r g I) :
@@ -61,7 +61,7 @@ theorem good_comap (r : ℕ) {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of
   · rw [e, Scheme.Hom.finrank_comp_left_of_isIso, Scheme.Hom.finrank_of_isPullback _ _ _ _ H y, h3]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: pullback.map (str A B) g₀ (str A B) g₀ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp) = 𝟙 _`. Apply the tactic sequence `ext <;> simp`. Rewrite `hI` using `[this, Scheme.IdealSheafData.comap_id]`. Substitute `hI` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -79,7 +79,7 @@ theorem sigma_eq (r : ℕ) {T : Scheme.{0}} {g₀ g : T ⟶ Spec (CommRingCat.of
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp]`. Use `congr 1`. Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem comap_bc_comp {T T' T'' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T)
     (b : T'' ⟶ T') (I : (pullback (str A B) g).IdealSheafData) :

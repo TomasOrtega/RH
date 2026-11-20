@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BoxSection
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) {U : X.Opens} {V W : Y.Opens} (e : V ≤ f ⁻¹ᵁ U)
     (h : W ≤ V) (a : Γ(X, U)) :
@@ -19,7 +19,7 @@ theorem res_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) {U : X.Opens} {V W : Y.Opens}
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_res {X Y : Scheme.{0}} (f : Y ⟶ X) {U U' : X.Opens} {W : Y.Opens} (h : U' ≤ U)
     (e : W ≤ f ⁻¹ᵁ U') (e' : W ≤ f ⁻¹ᵁ U) (a : Γ(X, U)) :
@@ -54,7 +54,7 @@ noncomputable def prodSec {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (
     exact (appLE_res _ _ _ _ _).trans (res_appLE _ _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[Scheme.mem_basicOpen _ _ y hy, map_prod]`. Conclude with `IsUnit.prod_univ_iff.2 fun i => (Scheme.mem_basicOpen _ _ y hy).1 (h i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_prod {Y : Scheme.{0}} {K : Type} [Fintype K] {W : Y.Opens} (a : K → Γ(Y, W))
     {y : Y} (hy : y ∈ W) (h : ∀ i, y ∈ Y.basicOpen (a i)) : y ∈ Y.basicOpen (∏ i, a i) := by
@@ -62,7 +62,7 @@ theorem mem_basicOpen_prod {Y : Scheme.{0}} {K : Type} [Fintype K] {W : Y.Opens}
   exact IsUnit.prod_univ_iff.2 fun i => (Scheme.mem_basicOpen _ _ y hy).1 (h i)
 
 /- English proof (translation)
-Use `choose k hk using fun i => TopologicalSpace.Opens.mem_iSup.1 (h i)`. Establish `hy : y ∈ LB.wchart L φ k` using `Set.mem_iInter.2 fun i => X.basicOpen_le _ (hk i)`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨k, mem_basicOpen_prod _ hy fun i => ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.basicOpen_appLE (φ i) _ _ (LB.wchart_le L φ k i) _).ge ⟨hy, hk i⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_prodSec {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (t : K → L.Sec) (y : Y) (h : ∀ i, φ i y ∈ Out.nonzeroLocus (t i)) :
@@ -73,7 +73,7 @@ theorem mem_nonzeroLocus_prodSec {X Y : Scheme.{0}} (L : LB X) {K : Type} [Finty
   exact (Scheme.basicOpen_appLE (φ i) _ _ (LB.wchart_le L φ k i) _).ge ⟨hy, hk i⟩
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => ⟨s, rfl, fun i => i.elim0⟩ | n + 1, x, hx => by obtain ⟨z, hz, hz'⟩ := exists_point_powObj G s n (fun i => x i.succ) (fun i => hx _) obtain ⟨y, h1, h2⟩ := Scheme.Pullback.exists_preimage_pullback (f := G.hom) (g := (Out.powObj G n).hom) (x 0) z ((hx 0).trans hz.symm) …`.
+A detailed English derivation is pending.
 -/
 theorem exists_point_powObj {S : Scheme.{0}} (G : Over S) (s : S) :
     ∀ (n : ℕ) (x : Fin n → G.left), (∀ i, G.hom (x i) = s) →
@@ -92,9 +92,9 @@ theorem exists_point_powObj {S : Scheme.{0}} (G : Over S) (s : S) :
       rw [h2, hz']
 
 /- English proof (translation)
-Take `⟨z, hz, hz'⟩` from `exists_point_powObj G s n x hx`. Set `m : Out.powObj G n ⟶ G'` to `lim.lift (Fan.mk (Out.powObj G n) (Out.powPr G (n := n)))`. Establish `hm : ∀ i, m ≫ pr i = Out.powPr G i` using `fun i => lim.fac _ ⟨i⟩`. Use `⟨m.left z, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Over.w m, hz]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hm, hz']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_point {S : Scheme.{0}} {G' G : Over S} {n : ℕ} (pr : Fin n → (G' ⟶ G))
     (lim : IsLimit (Fan.mk G' pr)) (s : S) (x : Fin n → G.left) (hx : ∀ i, G.hom (x i) = s) :
@@ -107,7 +107,7 @@ theorem exists_point {S : Scheme.{0}} {G' G : Over S} {n : ℕ} (pr : Fin n → 
   · rw [← Scheme.Hom.comp_apply, ← Over.comp_left, hm, hz']
 
 /- English proof (translation)
-Introduce `S G' G _ _ j p L t _`. Use `⟨prodSec L (fun i => (p.pr i).left) t, fun _ _ => rfl, fun s hs => ?_⟩` and prove the remaining obligations. Use `choose x hx hx' using hs`. Take `⟨y, hy, hy'⟩` from `exists_point p.pr p.lim s x hx`. Conclude with `⟨y, hy, mem_nonzeroLocus_prodSec L _ t y fun i => (hy' i).symm ▸ hx' i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_boxSec : ∀ (S : Scheme.{0}) (G' G : Over S) [GrpObj G'] [GrpObj G] (j : ℕ) (p : Out.IsPowGrp G' G j) (L : LB G.left) (t : Fin j → L.Sec), L.IsLB → ∃ t' : (Out.boxLB L p.pr).Sec, (∀ (jj : Fin j → L.ι) (h : ∀ i, (Out.boxLB L p.pr).U jj ≤ (p.pr i).left ⁻¹ᵁ L.U (jj i)), t'.f jj = ∏ i, ((p.pr i).left.appLE _ _ (h i)).hom ((t i).f (jj i))) ∧ ∀ s : S, (∀ i, ∃ x : G.left, G.hom x = s ∧ x ∈ Out.nonzeroLocus (t i)) → ∃ y : G'.left, G'.hom y = s ∧ y ∈ Out.nonzeroLocus t' := by
   intro S G' G _ _ j p L t _

@@ -7,7 +7,7 @@ open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 namespace GlobalTheory.QFam
 
 /- English proof (translation)
-Rewrite using `[hasQ_iff]`. Simplify using `only [GlobalTheory.HasQExpansion, Function.Periodic.qParam, PowerSeries.coeff_mk, Complex.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hasQ_iff_hasQExpansion_mk (N : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ) :
     HasQ N f a ↔ GlobalTheory.HasQExpansion (N : ℝ) f (PowerSeries.mk a) := by
@@ -18,7 +18,7 @@ theorem hasQ_iff_hasQExpansion_mk (N : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ) 
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.QFam.hasQ_iff]`. Unfold `_root_.GlobalTheory.HasQExpansion`. Simplify using `only [Function.Periodic.qParam, Complex.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.QFam.hasQ_coeff_iff_hasQExpansion (N : ℕ) (f : ℍ → ℂ) (φ : PowerSeries ℂ) :
     _root_.GlobalTheory.QFam.HasQ N f (fun n => PowerSeries.coeff n φ) ↔
@@ -28,7 +28,7 @@ theorem _root_.GlobalTheory.QFam.hasQ_coeff_iff_hasQExpansion (N : ℕ) (f : ℍ
   simp only [Function.Periodic.qParam, Complex.ofReal_natCast]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hasQ_iff_hasQExpansion_mk, hasQ_coeff_iff_hasQExpansion⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasQ_powerSeries_bridge :
     (∀ (N : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ),

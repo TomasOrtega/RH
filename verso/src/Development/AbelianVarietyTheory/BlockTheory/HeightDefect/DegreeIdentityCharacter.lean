@@ -21,7 +21,7 @@ def logOmega (H : Host E) : ℝ :=
   (logOm E (hostChar H)).re
 
 /- English proof (translation)
-Use `haveI : Fact H.d.Prime := ⟨H.d_prime⟩`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hostChar_apply (H : Host E) (n : ℤ) : hostChar H (n : ZMod H.d) = (jacobiSym n H.d : ℂ) := by
   haveI : Fact H.d.Prime := ⟨H.d_prime⟩
@@ -29,9 +29,7 @@ theorem hostChar_apply (H : Host E) (n : ℤ) : hostChar H (n : ZMod H.d) = (jac
   rfl
 
 /- English proof (translation)
-Use `haveI : Fact H.d.Prime := ⟨H.d_prime⟩`. Establish `h2 : ringChar (ZMod H.d) ≠ 2`. Rewrite using `[ZMod.ringChar_zmod_n]`. Use `H.d_mod` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `(MulChar.ringHomComp_ne_one_iff (f := Int.castRingHom ℂ) Int.cast_injective).2 (quadraticChar_ne_one h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem hostChar_ne_one (H : Host E) : hostChar H ≠ 1 := by
   haveI : Fact H.d.Prime := ⟨H.d_prime⟩
@@ -42,7 +40,7 @@ theorem hostChar_ne_one (H : Host E) : hostChar H ≠ 1 := by
   exact (MulChar.ringHomComp_ne_one_iff (f := Int.castRingHom ℂ) Int.cast_injective).2 (quadraticChar_ne_one h2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.d_prime.ne_zero⟩ (hostChar H).LFunction 1 ≠ 0 := haveI : NeZero H.d := ⟨H.d_prime.ne_zero⟩ DirichletCharacter.LFunction_apply_one_ne_zero (hostChar_ne_one H)`.
+Supply the required witnesses or components.
 -/
 theorem lFunction_one_ne_zero (H : Host E) :
     haveI : NeZero H.d := ⟨H.d_prime.ne_zero⟩

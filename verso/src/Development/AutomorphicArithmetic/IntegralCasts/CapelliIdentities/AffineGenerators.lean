@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLattice
 
 open GlobalTheory.CompanionTheory.Ar.Num in
 /- English proof (translation)
-Take `⟨m, a, g, rfl⟩` from `Submodule.mem_span_set'.1 hv`. Use `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Conclude with `⟨(a i : Ω), (a i).2, (g i : E), (g i).2, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 private theorem mem_spanOver_of_mem_span {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
     {E : Type} [AddCommGroup E] [Module Ω E] (R : Subalgebra o Ω) (S : Set E) {v : E}
@@ -15,23 +15,21 @@ private theorem mem_spanOver_of_mem_span {o Ω : Type} [CommRing o] [Field Ω] [
 
 open GlobalTheory.CompanionTheory.Ar.Num in
 /- English proof (translation)
-Take `⟨-, k, f, c, hf, hc, hsum, hb⟩` from `h`. Use `choose b _ _ hb using hb`. Establish `hgen : ∀ l q, ∃ m : ℕ, f l ^ m • b l q ∈ L`. Introduce `l q`. Use `(hb l (b l q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hq : q' = q`. Substitute `hq` using the available equality. Simplify using `using R.one_mem`. Simplify `R.zero_mem` using `[Pi.single_eq_of_ne hq]`. Simplify using `[Pi.single_apply]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose m hm using hgen`. Use `⟨Finset.univ.image fun x : Fin k × Fin N => f x.1 ^ m x.1 x.2 • b x.1 x.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 ht`. Conclude with `hm x.1 x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e he`. Set `f' : Fin k → R` to `fun l => ⟨f l, hf l⟩`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem _ (Set.range f') ?_ e ?_` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : R) = ∑ l, (⟨c l, hc l⟩ : R) * f' l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hsum.symm` using `[f']`. Rewrite using `[h1]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨l, rfl⟩)`. Introduce and unpack `⟨_, l, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hea⟩` from `(hb l e).1 ⟨0, by simpa using he⟩`. Use `choose j hj using ha`. Use `⟨∑ q, (j q + m l q), ?_⟩` and prove the remaining obligations. Rewrite using `[hea, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hle : j q + m l q ≤ ∑ q, (j q + m l q)` using `Finset.single_le_sum (f := fun q => j q + m l q) (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hle`. Establish `heq : (f' l ^ (∑ q, (j q + m l q))) • a q • b l q = (f' l ^ d * (⟨f l ^ j q * a q, hj q⟩ : R)) • (f l ^ m l q • b l q)`. Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `(f l ^ (j q + m l q + d)) • a q • b l q = (f l ^ d * (f l ^ j q * a q)) • (f l ^ m l q • b l q)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(f' l ^ (∑ q, (j q + m l q))) • a q • b l q ∈ _`. Rewrite using `[heq]`.
-
-Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨(l, q), Finset.mem_univ _, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_finset_span_of_locFree {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
     {E : Type} [AddCommGroup E] [Module Ω E] (R : Subalgebra o Ω) (N : ℕ) (L : AddSubgroup E)
@@ -87,11 +85,11 @@ private theorem exists_finset_span_of_locFree {o Ω : Type} [CommRing o] [Field 
 
 open GlobalTheory.CompanionTheory.Ar.Num in
 /- English proof (translation)
-Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `l hl`. Use function extensionality and compare the values at `i`. Establish `h` using `congrFun hl (Pi.single i 1)`. Simplify using `only [linMap, Fintype.linearCombination_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Finset.sum_eq_single i]`. Simplify `h` using `[h1]`. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj, h0]`. Introduce `hi`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) hi`.
+A detailed English derivation is pending.
 -/
 private theorem linMap_injective {Ω : Type} [Field Ω] {F : Type} [Zero F] [One F] (n : ℕ)
     (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1) : LinearMap.ker (linMap n χ) = ⊥ := by
@@ -110,15 +108,15 @@ private theorem linMap_injective {Ω : Type} [Field Ω] {F : Type} [Zero F] [One
     exact absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ F _ _ n Sg r s D R p N χ h0 h1 hfree hsum`. Take `⟨T, hT, hspan⟩` from `exists_finset_span_of_locFree R N _ hfree`. Take `⟨ρ, hρU, hρid, hρL⟩` from `hsum`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ (linMap_injective n χ h0 h1)`. Establish `hg' : ∀ l, g (GlobalTheory.CompanionTheory.Ar.Num.linMap n χ l) = l` using `fun l => LinearMap.congr_fun hg l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨T.image fun t => g (ρ t), ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hv)`. Take `⟨l, hl⟩` from `hρU t`. Express the relevant statement in the definitionally equal form `GlobalTheory.CompanionTheory.Ar.Num.linMap n χ (g (ρ t)) ∈ D.l1 R p`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hl, hg', hl]`. Conclude with `hρL t (hT t ht)`. Introduce `l hl`. Establish `hl' : GlobalTheory.CompanionTheory.Ar.Num.linMap n χ l ∈ D.l1 R p` using `hl`. Establish `hmem` using `Submodule.apply_mem_span_image_of_mem_span ((g ∘ₗ ρ).restrictScalars R) (hspan _ hl')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mem_spanOver_of_mem_span` to reduce the goal to its premises. Rewrite using `[Finset.coe_image]`. Establish `heq : ((g ∘ₗ ρ).restrictScalars R) (GlobalTheory.CompanionTheory.Ar.Num.linMap n χ l) = l`. Express the relevant statement in the definitionally equal form `g (ρ (GlobalTheory.CompanionTheory.Ar.Num.linMap n χ l)) = l`. Rewrite using `[hρid _ ⟨l, rfl⟩, hg']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[heq]`. Conclude with `hmem`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.AffineGenerators.af_gens :
     ∀ {o Ω : Type} [inst : CommRing o] [inst_1 : Field Ω] [inst_2 : Algebra o Ω] {F : Type} [inst_3 : Zero F]

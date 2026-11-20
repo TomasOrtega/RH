@@ -16,17 +16,17 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E}
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hne) inferInstance`. Use `set c : Fin m → E := fun a => φ (fun j => if a = j then 1 else 0) with hc`. Establish `hφx : ∀ x : Fin m → E, φ x = ∑ a, x a * c a`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `conv_lhs => rw [pi_eq_sum_univ x]`. Simplify using `[map_sum, map_smul, hc]`. Establish `hv : ∀ v : S.V, S.hT (∑ a, star (c a) • f a) v = 0`. Introduce `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : φ ((LinearMap.pi (fun a => S.hT (f a)) : S.V →ₗ[E] (Fin m → E)) v) = 0`. Establish `: (LinearMap.pi (fun a => S.hT (f a)) : S.V →ₗ[E] (Fin m → E)) v ∈ LinearMap.range (LinearMap.pi (fun a => S.hT (f a)) : S.V →ₗ[E] (Fin m → E))` using `⟨v, rfl⟩`. Establish `h2` using `Submodule.mem_map_of_mem (f := φ) this`. Conclude with `(Submodule.eq_bot_iff _).1 hφ _ h2`. Rewrite `h1` using `[hφx]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [LinearMap.map_smulₛₗ, starRingEnd_apply, star_star, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[LinearMap.pi_apply, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∑ a, star (c a) • f a = 0` using `S.nondeg.1 _ hv`. Establish `hc0 : ∀ a, c a = 0`. Introduce `a`. Use `Fintype.linearIndependent_iff.1 hf _ h0 a` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hφ0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[hφx]`. Simplify using `[hc0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem surj_pairing {m : ℕ} (f : Fin m → S.V) (hf : LinearIndependent E f) :
     Function.Surjective (LinearMap.pi (fun a => S.hT (f a)) : S.V →ₗ[E] (Fin m → E)) := by
@@ -65,29 +65,29 @@ theorem surj_pairing {m : ℕ} (f : Fin m → S.V) (hf : LinearIndependent E f) 
 variable {r : ℕ}
 
 /- English proof (translation)
-Set `f : Fin (r + 1) → S.V` to `Fin.snoc (α := fun _ => S.V) e z`. Establish `hze : ∀ a, S.hT z (e a) = 0` using `fun a => hsw0 S (hez a)`. Establish `hzz0 : S.hT z z ≠ 0` using `by rw [hzz, neg_ne_zero]; exact_mod_cast hN.ne'`. Establish `hf : LinearIndependent E f`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Rewrite `hc` using `[Fin.sum_univ_castSucc]`. Simplify using `only [f, Fin.snoc_castSucc, Fin.snoc_last] at hc`. Establish `hl : c (Fin.last r) = 0`. Establish `h1` using `congrArg (S.hT z) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_add, map_sum, map_zero]`. Simplify using `only [map_smul, smul_eq_mul, hze, mul_zero, Finset.sum_const_zero, zero_add] at h1`. Conclude with `(mul_eq_zero.1 h1).resolve_right hzz0`. Rewrite `hc` using `[hl, zero_smul, add_zero]`. Establish `hcs` using `Fintype.linearIndependent_iff.1 hind _ hc`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact hl`. Consider the case `cast a => exact hcs a`. Establish `hs` using `surj_pairing f hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose y0 hy0 using fun a : Fin r => hs (fun j => if j = Fin.castSucc a then (1 : E) else 0)`. Establish `hey0 : ∀ b a, S.hT (e b) (y0 a) = if b = a then 1 else 0`. Introduce `b a`. Use `congrFun (hy0 a) (Fin.castSucc b)` as an intermediate fact. Simplify using `only [LinearMap.pi_apply, f, Fin.snoc_castSucc, Fin.castSucc_inj] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hzy0 : ∀ a, S.hT z (y0 a) = 0`. Introduce `a`. Use `congrFun (hy0 a) (Fin.last r)` as an intermediate fact. Simplify using `only [LinearMap.pi_apply, f, Fin.snoc_last] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, if_neg (Fin.castSucc_lt_last a).ne']`. Establish `hy0e : ∀ a d, S.hT (y0 a) (e d) = if d = a then 1 else 0`. Apply the tactic sequence `intro a d; rw [hsw, hey0]; split_ifs <;> simp`. Establish `hL : ∀ (c : Fin r → E) (v : S.V), S.hT (∑ d, c d • e d) v = ∑ d, star (c d) * S.hT (e d) v`. Introduce `c v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Establish `hR : ∀ (c : Fin r → E) (v : S.V), S.hT v (∑ d, c d • e d) = ∑ d, c d * S.hT v (e d)`. Introduce `c v`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set c : Fin r → Fin r → E := fun a d => S.hT (y0 d) (y0 a) / 2 with hc`. Use `set y : Fin r → S.V := fun a => y0 a - ∑ d, c a d • e d with hy`. Establish `hst : ∀ a b, star (S.hT (y0 b) (y0 a)) = S.hT (y0 a) (y0 b)` using `fun a b => (hsw S _ _).symm`. Use `⟨y, ⟨he, fun a b => ?_, fun a b => ?_, hez, fun a => ?_, hzz⟩⟩` and prove the remaining obligations. Establish `h1 : S.hT (y0 a) (∑ d, c b d • e d) = c b a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hR]`. Simplify using `[hy0e]`. Establish `h2 : S.hT (∑ d, c a d • e d) (y0 b) = star (c a b)`. Rewrite using `[hL]`. Simplify using `[hey0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h3 : S.hT (∑ d, c a d • e d) (∑ d, c b d • e d) = 0`. Rewrite using `[hL]`. Simplify using `[hR, he]`. Simplify using `only [hy, map_sub, LinearMap.sub_apply, h1, h2, h3]`. Simplify using `only [hc]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_div₀, hst, star_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hy, map_sub, hR, hey0, he, mul_zero, Finset.sum_const_zero, sub_zero]`. Simplify using `only [hy, map_sub, LinearMap.sub_apply, hL, hez, mul_zero, Finset.sum_const_zero, sub_zero]`. Rewrite using `[hsw, hzy0, star_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual_gen (e : Fin r → S.V) (z : S.V) (N : ℕ) (hN : 0 < N) (hind : LinearIndependent E e)
     (he : ∀ a b, S.hT (e a) (e b) = 0) (hez : ∀ a, S.hT (e a) z = 0) (hzz : S.hT z z = -(N : E)) :
@@ -155,7 +155,7 @@ def Wsp (e y : Fin r → S.V) (z : S.V) : Submodule E S.V :=
     (fun _ : Unit => S.hT z)) : S.V →ₗ[E] ((Fin r ⊕ Fin r) ⊕ Unit → E))
 
 /- English proof (translation)
-Simplify using `only [Wsp, LinearMap.mem_ker, funext_iff, LinearMap.pi_apply, Pi.zero_apply, Sum.forall, Sum.elim_inl, Sum.elim_inr, forall_const, IsW]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem mem_Wsp {e y : Fin r → S.V} {z w : S.V} : w ∈ Wsp e y z ↔ IsW e y z w := by
   simp only [Wsp, LinearMap.mem_ker, funext_iff, LinearMap.pi_apply, Pi.zero_apply, Sum.forall,
@@ -163,7 +163,7 @@ theorem mem_Wsp {e y : Fin r → S.V} {z w : S.V} : w ∈ Wsp e y z ↔ IsW e y 
   tauto
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_range_add_finrank_ker (LinearMap.pi (Sum.elim (Sum.elim (fun a => S.hT (e a)) (fun a => S.hT (y a))) (fun _ : Unit => S.hT z)) : S.V →ₗ[E] ((Fin r ⊕ Fin r) ⊕ Unit → E))`. Establish `h2` using `Submodule.finrank_le (LinearMap.range (LinearMap.pi (Sum.elim (Sum.elim (fun a => S.hT (e a)) (fun a => S.hT (y a))) (fun _ : Unit => S.hT z)) : S.V →ₗ[E] ((Fin r ⊕ Fin r) ⊕ Unit → E)))`. Simplify using `only [Module.finrank_fintype_fun_eq_card, Fintype.card_sum, Fintype.card_fin, Fintype.card_unit] at h2`. Rewrite using `[Wsp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_Wsp (e y : Fin r → S.V) (z : S.V) :
     finrank E S.V ≤ finrank E (Wsp e y z) + (2 * r + 1) := by
@@ -182,16 +182,16 @@ section D7
 variable (D : Formalism.BasicNotions.D7)
 
 /- English proof (translation)
-The claim follows from `exists_dual_gen F0.e F0.z N hN F0.e_indep F0.e_iso F0.z_orth F0.z_norm`.
+A detailed English derivation is pending.
 -/
 theorem dual_of_flag {N : ℕ} (hN : 0 < N) (F0 : FlagG (VS D) D.R.rS (N : D.host.E)) :
     ∃ y, Dual F0.e y F0.z N :=
   exists_dual_gen F0.e F0.z N hN F0.e_indep F0.e_iso F0.z_orth F0.z_norm
 
 /- English proof (translation)
-Establish `hτ : ∀ τ : D.host.E →+* ℂ, ∀ a, τ (star a) = starRingEnd ℂ (τ a)` using `fun τ => D.sp.cm.cmUnram.2.1 τ`. Establish `hsemi : ∀ τ : D.host.E →+* ℂ, ∀ v, IsW e y z v → 0 ≤ (τ ((VS D).hT v v)).re`. Introduce `τ v hv`. Establish `hs` using `D.sp.Y_sig 0 τ`. Rewrite `hs` using `[D.sp.baseSpace_signature_eq τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `semidefG h hN τ (hτ τ) hs v hv`. Use `lt_of_le_of_ne (hsemi φ w hw) fun h0 => hw0 ?_` and prove the remaining obligations. Use `isoZeroG h hN φ (hτ φ) (hsemi φ) w hw ?_` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[real_of φ (hτ φ) w, ← h0, Complex.ofReal_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posW {N : ℕ} (hN : 0 < N) {e y : Fin D.R.rS → (VS D).V} {z : (VS D).V} (h : Dual e y z N)
     (w : (VS D).V) (hw : IsW e y z w) (hw0 : w ≠ 0) (φ : D.host.E →+* ℂ) : 0 < (φ ((VS D).hT w w)).re := by
@@ -207,11 +207,11 @@ theorem posW {N : ℕ} (hN : 0 < N) {e y : Fin D.R.rS → (VS D).V} {z : (VS D).
   rw [real_of φ (hτ φ) w, ← h0, Complex.ofReal_zero, map_zero]
 
 /- English proof (translation)
-Establish `hV : finrank D.host.E (VS D).V = D.R.k + D.R.m - 1`. Rewrite using `[(VS D).rank_eq, D.sp.Y_rank 0 (Nat.zero_le _)]`. Simplify using `[Formalism.BasicNotions.Ranks.rankY, Formalism.BasicNotions.Ranks.r]`. Establish `hm2` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrS : 2 * D.R.rS + 1 = D.R.m - 1`. Unfold `Formalism.BasicNotions.Ranks.rS`. Rewrite using `[hj]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `finrank_Wsp e y z`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h1` using `[hV, hrS]`. Establish `hk` using `D.R.f_le_k`. Establish `he : 0 < D.R.ord` using `D.R.ord_pos`. Generalize the expression as in `finrank D.host.E (Wsp e y z) = w at h1 ⊢`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_le_Wsp (e y : Fin D.R.rS → (VS D).V) (z : (VS D).V) : 2 ≤ finrank D.host.E (Wsp e y z) := by
   have hV : finrank D.host.E (VS D).V = D.R.k + D.R.m - 1 := by
@@ -233,9 +233,9 @@ theorem two_le_Wsp (e y : Fin D.R.rS → (VS D).V) (z : (VS D).V) : 2 ≤ finran
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-Set `hW : Wsp e y z →ₗ⋆[D.host.E] Wsp e y z →ₗ[D.host.E] D.host.E` to `((VS D).hT.comp (Wsp e y z).subtype).compl₂ (Wsp e y z).subtype`. Establish `hs : hW.IsSymm` using `⟨fun x x' => (VS D).herm.eq x x'⟩`. Establish `hd : Formalism.HermitianLattices.Ext.L3.IsTotPosDef hW`. Introduce `x hx φ`. Establish `hx' : (x : (VS D).V) ≠ 0` using `fun h0 => hx (Subtype.ext h0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `posW D hN h x (mem_Wsp.1 x.2) hx' φ`. Take `⟨x, hx⟩` from `Formalism.HermitianLattices.Ext.L3.exists_vec_of_hermRep Formalism.HermitianLattices.Ext.L3.hermRepUnram D.sp.cm.cmUnram hs hd (two_le_Wsp D e y z) t ht htp`. Conclude with `⟨x, mem_Wsp.1 x.2, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_W_vec {N : ℕ} (hN : 0 < N) {e y : Fin D.R.rS → (VS D).V} {z : (VS D).V} (h : Dual e y z N)
     (t : D.host.E) (ht : star t = t) (htp : Formalism.HermitianLattices.Ext.L3.TotPos t) :

@@ -11,15 +11,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.IdCompOpen
 
 /- English proof (translation)
-Establish `hfe : ∀ t : S, f (e t) = t` using `fun t => by`. Rewrite using `[← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression. Use `GlobalTheory.T.isOpen_of_stableUnderGeneralization_of_local_pieces X _ (GlobalTheory.T.stableUnderGeneralization_section_connectedComponentIn X S f e hf he) ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, V₀, V, I, hV, hs, hU, hI, hirr⟩` from `GlobalTheory.T.exists_open_nbhd_section_fiber_isPreirreducible X S f e hf he (f x)`. Use `⟨⟨O U, hO U⟩ ⊓ f ⁻¹ᵁ (V₀ ⊓ e ⁻¹ᵁ U), f ⁻¹ᵁ V, I.image (fun c => f.app V c), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Conclude with `hV hy.2.1`. Conclude with `⟨h1 U x hU hx, hs, hU⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Take `⟨d, hd, rfl⟩` from `Finset.mem_image.1 hc`. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hI d hd`. Introduce `y hy hJ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre` using `hirr (f y) hy.2.1 (fun c hc => by`. Use `hJ _ (Finset.mem_image_of_mem _ hc)` as an intermediate fact. Rewrite `this` using `[← Scheme.preimage_basicOpen]`. Conclude with `this)`. Use `h2 U y ?_ hy.1` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz hzy`. Establish `hsub` using `hpre.isPreconnected.subset_connectedComponentIn (x := e (f y)) (F := f ⁻¹' {f y}) ⟨hy.2.2, hfe _⟩ Set.inter_subset_right`. Use `show z ∈ connectedComponentIn (f ⁻¹' {f z}) (e (f z))`. Rewrite using `[hzy]`. Conclude with `hsub ⟨hz, hzy⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_sectionComponents_of_family (X S : Scheme.{0}) (f : X ⟶ S) (e : S ⟶ X)
     (hf : Smooth f) (he : e ≫ f = 𝟙 _) (O : X.Opens → Set X) (hO : ∀ U, IsOpen (O U))
@@ -57,7 +57,7 @@ theorem isOpen_sectionComponents_of_family (X S : Scheme.{0}) (f : X ⟶ S) (e :
     exact hsub ⟨hz, hzy⟩
 
 /- English proof (translation)
-Introduce `S G _ hG`. Conclude with `isOpen_sectionComponents_of_family G.left S G.hom (η[G]).left hG (Over.w (η[G])) (fun U => {y : G.left | ∃ w : (G ⊗ G).left, (fst G G).left w ∈ U ∧ (μ[G]).left w ∈ U ∧ (snd G G).left w = y}) (GlobalTheory.T.isOpen_snd_image_mul_mem_open_groupScheme S G hG) (GlobalTheory.T.mem_mul …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isOpen_identityComponent : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], Smooth G.hom → IsOpen {x : G.left | x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x))} := by
   intro S G _ hG

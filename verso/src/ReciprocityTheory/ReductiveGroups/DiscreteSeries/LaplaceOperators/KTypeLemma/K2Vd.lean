@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLe
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 
 /- English proof (translation)
-The claim follows from `TwistedDualLemmas.dualLowestKType_of_standard (k2V n)`.
+A detailed English derivation is pending.
 -/
 theorem k2Vd (n : ℕ) : EigenspaceWeightConeDual n :=
   TwistedDualLemmas.dualLowestKType_of_standard (k2V n)

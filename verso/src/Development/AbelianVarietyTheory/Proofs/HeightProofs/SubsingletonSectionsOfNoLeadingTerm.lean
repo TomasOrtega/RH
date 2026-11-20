@@ -28,7 +28,7 @@ section Abstract
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Use `haveI : IsEmpty (Fin G.del) := by rw [hd]; infer_instance`. Establish `h` using `hB.2`. Rewrite `h` using `[Set.range_eq_empty, Submodule.span_empty]`. Conclude with `(Submodule.subsingleton_iff (Kp X la G.N)).1 (subsingleton_of_bot_eq_top h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_sections_of_no_leadingTerm (G : GlobalFamilyData X ka wL wF) (hd : G.del = 0) (la : HeightOneSpectrum (𝓞 B.KO))
     (hB : InBasis G la) : Subsingleton (SectionSheafQuotient X la G.w wF) := by
@@ -38,9 +38,9 @@ theorem subsingleton_sections_of_no_leadingTerm (G : GlobalFamilyData X ka wL wF
   exact (Submodule.subsingleton_iff (Kp X la G.N)).1 (subsingleton_of_bot_eq_top h)
 
 /- English proof (translation)
-Use `haveI : IsEmpty (Fin G.del) := by rw [hd]; infer_instance`. Establish `hI : ∀ la, (Q la).Ila = 0` using `fun la => by haveI := subsingleton_sections_of_no_leadingTerm G hd la (hB la)`. Unfold `LocalPointData.Ila`. Conclude with `Module.length_eq_zero`. Establish `hN : ∀ la, (Q la).Net = 0` using `fun la => by haveI := subsingleton_sections_of_no_leadingTerm G hd la (hB la) haveI : Subsingleton (OsK X la G.w) := (hC la).2.2.1.subsingleton haveI : IsEmpty (PtsG G la) := ⟨fun ζ => ζ.isMaximal.ne_top (Subsingleton.elim _ _)⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `LocalPointData.Net`. Conclude with `finsum_of_isEmpty _`. Establish `hd' : (G.del : ℝ) = 0` using `by rw [hd]; exact Nat.cast_zero`. Use `⟨fun la => by simp [hI la], by simp [hI, summable_zero], by simp [hI, hd'], fun _ => ⟨by simp [hN, summable_zero], by simp [hN, hd']⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem heights_of_del_zero (G : GlobalFamilyData X ka wL wF) (Q : ∀ la, LocalPointData G la) (Gc PH Prw Pet : ℝ) (hd : G.del = 0)
     (hB : ∀ la, InBasis G la) (hC : ∀ la, (Q la).InCurve) : Heights Q Gc PH Prw Pet := by
@@ -60,13 +60,13 @@ theorem heights_of_del_zero (G : GlobalFamilyData X ka wL wF) (Q : ∀ la, Local
     fun _ => ⟨by simp [hN, summable_zero], by simp [hN, hd']⟩⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem inBasis_xplus (G : GlobalFamilyData X ka wL wF) (E : PtExt X) (hM : IntAtExt X E) (la : HeightOneSpectrum (𝓞 B.KO))
     (h : InBasis G la) : InBasis (gd2Xplus G E hM) la := h
 
 /- English proof (translation)
-The claim follows from `heights_of_del_zero (gd2Xplus G E hM) Q Gc PH Prw Pet hd (fun la => inBasis_xplus G E hM la (hB la)) hC`.
+A detailed English derivation is pending.
 -/
 theorem heights_xplus_of_del_zero (G : GlobalFamilyData X ka wL wF) (E : PtExt X) (hM : IntAtExt X E)
     (Q : ∀ la, LocalPointData (gd2Xplus G E hM) la) (Gc PH Prw Pet : ℝ) (hd : G.del = 0)
@@ -79,7 +79,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `_ _ h j hj _ _ _ _ _ _ _ _ _ _ _ _ _ G Q Gc PH Prw Pet hd hB hC` and use `heights_xplus_of_del_zero G (extAll h j hj) (intAtExt_extAll h j hj) Q Gc PH Prw Pet hd hB hC`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem heights_no_point : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (S : Scal (recB h.toLawsCore)) (G : GlobalFamilyData (recPJ h j hj) ka wL wF) (Q : ∀ la, LocalPointData (gd2Xplus G (extAll h j hj) (intAtExt_extAll h j hj)) la) (Gc PH Prw Pet : ℝ), G.del = 0 → (∀ la, InBasis G la) → (∀ la, (Q la).InCurve) → Heights Q Gc PH Prw Pet :=
   fun _ _ h j hj _ _ _ _ _ _ _ _ _ _ _ _ _ G Q Gc PH Prw Pet hd hB hC =>

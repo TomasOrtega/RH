@@ -8,39 +8,33 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.UJClassMass
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hnd hL hsig g`. Use `set L := crdOf b L0 with hLdef`. Take `⟨⟨c1, hc1, hup⟩, ⟨c2, hc2, hlow⟩⟩` from `crdBounds F E V M b L0 hL`. Take `⟨u, hu, hu'⟩` from `up_nat L ⟨c1, hc1, hup⟩`. Take `⟨k, hk, hk'⟩` from `low_nat L ⟨c2, hc2, hlow⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set P := finMat σ (gramOf h b) g⁻¹ with hP`. Use `set Q := finMat σ (gramOf h b) g with hQ`. Establish `hQP : Q * P = 1` using `by rw [hQ, hP, ← finMat_mul, mul_inv_cancel, finMat_one]`. Establish `hsm : ∀ e : E, IsIntegral ℤ e → ∀ x ∈ abelian₂ σ (gramOf h b) L g, e • x ∈ abelian₂ σ (gramOf h b) L g`. Introduce `e he x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `show P.mulVec (vinc (F := F) (e • x)) ∈ latHat F E L`. Rewrite using `[vinc_smul, Matrix.mulVec_smul]`. Conclude with `latHat_incl_smul b L0 he hx`. Set `C : Submodule (𝓞 E) (Fin M → E)` to `{ carrier := abelian₂ σ (gramOf h b) L g add_mem' := fun {x y} hx hy => (LamG σ (gramOf h b) L g).add_mem hx hy zero_mem' := (LamG σ (gramOf h b) L g).zero_mem smul_mem' := fun c x hx => by show (algebraMap (𝓞 E) E c) • x ∈ abelian₂ σ (gramOf h b) L g`. Conclude with `hsm _ c.isIntegral_coe x hx }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm, hmO⟩` from `den_mat (F := F) (E := E) Q`. Establish `hupC : ∀ y ∈ C, ∀ j, IsIntegral ℤ (((m * u : ℕ) : E) * y j)`. Introduce `y hy j`. Apply `oh_inter (F := F)` to reduce the goal to its premises. Establish `hw : P.mulVec (vinc (F` using `F) y) ∈ latHat F E L := hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ev : vinc (F` using `F) y = Q.mulVec (P.mulVec (vinc (F := F) y)) := by`. Rewrite using `[Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]`. Establish `e1 : inclR (F` using `F) (Af F) (((m * u : ℕ) : E) * y j) = ∑ l, (m • Q j l) * (u • P.mulVec (vinc (F := F) y) l) := by`. Establish `: inclR (F` using `F) (Af F) (((m * u : ℕ) : E) * y j) = (m * u) • vinc (F := F) y j := by`. Simplify using `[vinc, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `gen : ∀ w : Fin M → Af F ⊗[F] E, (m * u) • Q.mulVec w j = ∑ l, (m • Q j l) * (u • w l)`. Introduce `w`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.smul_sum, nsmul_eq_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← gen, ← ev]`. Rewrite using `[e1]`. Conclude with `AddSubgroup.sum_mem _ fun l _ => Oh_mul (hmO j l) (up_Oh L hu' hw l)`. Establish `hCfg : C.FG` using `fg_of_den C (m * u) (Nat.mul_pos hm hu) hupC`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Take `⟨m', hm', hmO'⟩` from `den_mat (F := F) (E := E) P`. Use `set c : E := ((k * m' : ℕ) : E) with hc`. Establish `hcne : c ≠ 0` using `by rw [hc]; exact_mod_cast (Nat.mul_pos hk hm').ne'`. Establish `hlowC : ∀ i, (Pi.single i c : Fin M → E) ∈ abelian₂ σ (gramOf h b) L g`. Introduce `i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show P.mulVec (vinc (F := F) (Pi.single i c)) ∈ latHat F E L`. Establish `e1 : vinc (F` using `F) (Pi.single i c) = Pi.single i (inclR (F := F) (Af F) c) := by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[vinc]`. Simplify using `[vinc, Pi.single_apply, hj]`. Establish `e2 : P.mulVec (Pi.single i (inclR (F` using `F) (Af F) c)) = k • fun l => m' • P l i := by`. Rewrite using `[mulVec_single']`. Use function extensionality and compare the values at `l`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Pi.smul_apply, hc, map_natCast, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Conclude with `low_vec L hk' fun l => hmO' l i`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : (Fin M → E) →ₗ[𝓞 E] V` to `(b.equivFun.symm : (Fin M → E) →ₗ[E] V).restrictScalars (𝓞 E)`. Set `N : Submodule (𝓞 E) V` to `C.map f`. Establish `hNset : (N : Set V) = latSet σ (gramOf h b) b L0 g`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx, rfl⟩ show b.equivFun (b.equivFun.symm x) ∈ abelian₂ σ (gramOf h b) L g`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hx`. Introduce `hv`. Conclude with `⟨b.equivFun v, hv, by simp [f]⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `⟨N, hNset, ⟨hCfg.map f, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hb : c • b i ∈ (N : Set V)`. Rewrite using `[hNset]`.
-
-Use `show b.equivFun (c • b i) ∈ abelian₂ σ (gramOf h b) L g`. Establish `: b.equivFun (c • b i) = Pi.single i c`. Use function extensionality and compare the values at `j`. Rewrite using `[LinearEquiv.map_smul, Pi.smul_apply, b.equivFun_self]`. Distinguish the cases in `hj : j = i`.
-
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj, Ne.symm hj]`. Rewrite using `[this]`. Conclude with `hlowC i`.
-
-Establish `: b i = c⁻¹ • (c • b i)` using `by rw [smul_smul, inv_mul_cancel₀ hcne, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hb)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lsLat : LSLat := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hnd hL hsig g

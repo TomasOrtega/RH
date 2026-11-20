@@ -25,7 +25,7 @@ theorem archRealEquiv_apply (M : ArchMatrix ℚ 2) (i j : Fin 2) :
     archRealEquiv M i j = archLin M i j := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[archRealEquiv_apply, map_smul, Matrix.smul_apply, archRealEquiv_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem archRealEquiv_smul (r : ℝ) (M : ArchMatrix ℚ 2) :
     archRealEquiv (r • M) = r • archRealEquiv M := by
@@ -40,42 +40,42 @@ def lieOfRealMat (A : Matrix (Fin 2) (Fin 2) ℝ) : (isExpLieAlgebra ℚ 2).lieS
   ⟨archRealEquiv.symm A, (isExpLieAlgebra ℚ 2).mem_lieSubalgebra.2 Submodule.mem_top⟩
 
 /- English proof (translation)
-The claim follows from `archRealEquiv.apply_symm_apply A`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lieRealMat_lieOfRealMat (A : Matrix (Fin 2) (Fin 2) ℝ) :
     lieRealMat (lieOfRealMat A) = A :=
   archRealEquiv.apply_symm_apply A
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (archRealEquiv.symm_apply_apply _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lieOfRealMat_lieRealMat (X : (isExpLieAlgebra ℚ 2).lieSubalgebra) :
     lieOfRealMat (lieRealMat X) = X :=
   Subtype.ext (archRealEquiv.symm_apply_apply _)
 
 /- English proof (translation)
-The claim follows from `map_add archRealEquiv _ _`.
+A detailed English derivation is pending.
 -/
 theorem lieRealMat_add (X Y : (isExpLieAlgebra ℚ 2).lieSubalgebra) :
     lieRealMat (X + Y) = lieRealMat X + lieRealMat Y :=
   map_add archRealEquiv _ _
 
 /- English proof (translation)
-The claim follows from `archRealEquiv_smul r _`.
+A detailed English derivation is pending.
 -/
 theorem lieRealMat_smul (r : ℝ) (X : (isExpLieAlgebra ℚ 2).lieSubalgebra) :
     lieRealMat (r • X) = r • lieRealMat X :=
   archRealEquiv_smul r _
 
 /- English proof (translation)
-Simplify using `only [lieRealMat, LieSubalgebra.coe_bracket, Ring.lie_def, map_sub, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lieRealMat_lie (X Y : (isExpLieAlgebra ℚ 2).lieSubalgebra) :
     lieRealMat ⁅X, Y⁆ = lieRealMat X * lieRealMat Y - lieRealMat Y * lieRealMat X := by
   simp only [lieRealMat, LieSubalgebra.coe_bracket, Ring.lie_def, map_sub, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← lieOfRealMat_lieRealMat (lieOfRealMat A + lieOfRealMat B), lieRealMat_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lieOfRealMat_add (A B : Matrix (Fin 2) (Fin 2) ℝ) :
     lieOfRealMat (A + B) = lieOfRealMat A + lieOfRealMat B := by
@@ -83,7 +83,7 @@ theorem lieOfRealMat_add (A B : Matrix (Fin 2) (Fin 2) ℝ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← lieOfRealMat_lieRealMat (r • lieOfRealMat A), lieRealMat_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lieOfRealMat_smul (r : ℝ) (A : Matrix (Fin 2) (Fin 2) ℝ) :
     lieOfRealMat (r • A) = r • lieOfRealMat A := by
@@ -91,14 +91,14 @@ theorem lieOfRealMat_smul (r : ℝ) (A : Matrix (Fin 2) (Fin 2) ℝ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← lieOfRealMat_lieRealMat 0]`. Simplify using `[lieRealMat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lieOfRealMat_zero : lieOfRealMat 0 = 0 := by
   rw [← lieOfRealMat_lieRealMat 0]
   simp [lieRealMat]
 
 /- English proof (translation)
-Rewrite using `[← lieOfRealMat_lieRealMat ⁅lieOfRealMat A, lieOfRealMat B⁆, lieRealMat_lie]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lieOfRealMat_lie (A B : Matrix (Fin 2) (Fin 2) ℝ) :
     lieOfRealMat (A * B - B * A) = ⁅lieOfRealMat A, lieOfRealMat B⁆ := by
@@ -109,20 +109,20 @@ def realOpGL2 (A : Matrix (Fin 2) (Fin 2) ℝ) : Module.End ℂ (archSmooth ℚ 
   uAction (UniversalEnvelopingAlgebra.ι ℝ (lieOfRealMat A))
 
 /- English proof (translation)
-Simplify using `only [realOpGL2, lieOfRealMat_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem realOpGL2_add (A B : Matrix (Fin 2) (Fin 2) ℝ) :
     realOpGL2 (A + B) = realOpGL2 A + realOpGL2 B := by
   simp only [realOpGL2, lieOfRealMat_add, map_add]
 
 /- English proof (translation)
-Simplify using `[realOpGL2, lieOfRealMat_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem realOpGL2_zero : realOpGL2 0 = 0 := by
   simp [realOpGL2, lieOfRealMat_zero]
 
 /- English proof (translation)
-Simplify using `only [realOpGL2, lieOfRealMat_smul, map_smul]`. Use extensionality with `φ g`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem realOpGL2_smul (r : ℝ) (A : Matrix (Fin 2) (Fin 2) ℝ) :
     realOpGL2 (r • A) = (r : ℂ) • realOpGL2 A := by
@@ -131,7 +131,7 @@ theorem realOpGL2_smul (r : ℝ) (A : Matrix (Fin 2) (Fin 2) ℝ) :
   simp
 
 /- English proof (translation)
-Simplify using `only [realOpGL2, lieOfRealMat_lie, LieHom.map_lie, Ring.lie_def, map_sub, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem realOpGL2_lie (A B : Matrix (Fin 2) (Fin 2) ℝ) :
     realOpGL2 (A * B - B * A) = realOpGL2 A * realOpGL2 B - realOpGL2 B * realOpGL2 A := by
@@ -152,59 +152,59 @@ Both sides reduce to the same expression.
 @[simp] theorem imMat_apply (B : Matrix (Fin 2) (Fin 2) ℂ) (i j : Fin 2) : imMat B i j = (B i j).im := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reMat_add (B C : Matrix (Fin 2) (Fin 2) ℂ) : reMat (B + C) = reMat B + reMat C := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem imMat_add (B C : Matrix (Fin 2) (Fin 2) ℂ) : imMat (B + C) = imMat B + imMat C := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem reMat_smul (c : ℂ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
     reMat (c • B) = c.re • reMat B + (-c.im) • imMat B := by
   ext i j; simp; ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem imMat_smul (c : ℂ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
     imMat (c • B) = c.re • imMat B + c.im • reMat B := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem reMat_mul (B C : Matrix (Fin 2) (Fin 2) ℂ) :
     reMat (B * C) = reMat B * reMat C + (-1 : ℝ) • (imMat B * imMat C) := by
   ext i j; simp [Matrix.mul_apply, Fin.sum_univ_two]; ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem imMat_mul (B C : Matrix (Fin 2) (Fin 2) ℂ) :
     imMat (B * C) = reMat B * imMat C + imMat B * reMat C := by
   ext i j; simp [Matrix.mul_apply, Fin.sum_univ_two]; ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reMat_map_ofReal (A : Matrix (Fin 2) (Fin 2) ℝ) : reMat (A.map (↑)) = A := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem imMat_map_ofReal (A : Matrix (Fin 2) (Fin 2) ℝ) : imMat (A.map (↑)) = 0 := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, reMat_apply, imMat_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`. Conclude with `Complex.re_add_im _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ofReal_reMat_add_imMat (B : Matrix (Fin 2) (Fin 2) ℂ) :
     (reMat B).map (↑) + Complex.I • (imMat B).map (↑) = B := by
@@ -217,14 +217,14 @@ def complexOpGL2 (B : Matrix (Fin 2) (Fin 2) ℂ) : Module.End ℂ (archSmooth �
   realOpGL2 (reMat B) + Complex.I • realOpGL2 (imMat B)
 
 /- English proof (translation)
-Rewrite using `[complexOpGL2, reMat_map_ofReal, imMat_map_ofReal, realOpGL2_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem complexOpGL2_map_ofReal (A : Matrix (Fin 2) (Fin 2) ℝ) :
     complexOpGL2 (A.map (↑)) = realOpGL2 A := by
   rw [complexOpGL2, reMat_map_ofReal, imMat_map_ofReal, realOpGL2_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Simplify using `only [complexOpGL2, reMat_add, imMat_add, realOpGL2_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem complexOpGL2_add (B C : Matrix (Fin 2) (Fin 2) ℂ) :
     complexOpGL2 (B + C) = complexOpGL2 B + complexOpGL2 C := by
@@ -232,9 +232,7 @@ theorem complexOpGL2_add (B C : Matrix (Fin 2) (Fin 2) ℂ) :
   abel
 
 /- English proof (translation)
-Simplify using `only [complexOpGL2, reMat_smul, imMat_smul, realOpGL2_add, realOpGL2_smul, smul_add, smul_smul]`. Use `conv_rhs => rw [← Complex.re_add_im c]`. Simplify using `only [add_smul, Complex.ofReal_neg]`. Use `match_scalars`. Apply the tactic sequence `all_goals ring_nf`.
-
-Apply the tactic sequence `all_goals simp only [Complex.I_sq]`. Apply the tactic sequence `all_goals ring`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem complexOpGL2_smul (c : ℂ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
     complexOpGL2 (c • B) = c • complexOpGL2 B := by
@@ -247,11 +245,11 @@ theorem complexOpGL2_smul (c : ℂ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
   all_goals ring
 
 /- English proof (translation)
-Establish `hre : reMat (B * C - C * B) = (reMat B * reMat C - reMat C * reMat B) + (-1 : ℝ) • (imMat B * imMat C - imMat C * imMat B)`. Rewrite using `[sub_eq_add_neg, sub_eq_add_neg, sub_eq_add_neg, ← neg_one_smul ℂ (C * B), reMat_add, reMat_smul, reMat_mul, reMat_mul]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `him : imMat (B * C - C * B) = (reMat B * imMat C - imMat C * reMat B) + (imMat B * reMat C - reMat C * imMat B)`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ (C * B), imMat_add, imMat_smul, imMat_mul, imMat_mul]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [complexOpGL2, hre, him, realOpGL2_add, realOpGL2_smul, realOpGL2_lie]`. Simplify using `only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, Complex.I_mul_I]`. Use `push_cast`. Apply the tactic sequence `match_scalars <;> ring_nf`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem complexOpGL2_lie (B C : Matrix (Fin 2) (Fin 2) ℂ) :
     complexOpGL2 (B * C - C * B) = complexOpGL2 B * complexOpGL2 C - complexOpGL2 C * complexOpGL2 B := by
@@ -281,7 +279,7 @@ def gl2ArchRep : HarishChandra.U 2 →ₐ[ℂ] Module.End ℂ (archSmooth ℚ 2)
   UniversalEnvelopingAlgebra.lift ℂ complexOpGL2Lie
 
 /- English proof (translation)
-The claim follows from `UniversalEnvelopingAlgebra.lift_ι_apply ℂ complexOpGL2Lie B`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem gl2ArchRep_ι (B : HarishChandra.gl 2) :
     gl2ArchRep (UniversalEnvelopingAlgebra.ι ℂ B) = complexOpGL2 B :=
@@ -309,7 +307,7 @@ def gl2Complexify : UEnv ℚ 2 →ₐ[ℝ] HarishChandra.U 2 :=
   UniversalEnvelopingAlgebra.lift ℝ gl2ComplexifyLie
 
 /- English proof (translation)
-The claim follows from `UniversalEnvelopingAlgebra.lift_ι_apply ℝ gl2ComplexifyLie X`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem gl2Complexify_ι (X : (isExpLieAlgebra ℚ 2).lieSubalgebra) :
     gl2Complexify (UniversalEnvelopingAlgebra.ι ℝ X) =
@@ -317,9 +315,9 @@ The claim follows from `UniversalEnvelopingAlgebra.lift_ι_apply ℝ gl2Complexi
   UniversalEnvelopingAlgebra.lift_ι_apply ℝ gl2ComplexifyLie X
 
 /- English proof (translation)
-Proceed by induction on `u using UEnv.induction with`. Consider the case `halg r`. Rewrite using `[AlgHom.commutes, AlgHom.commutes, IsScalarTower.algebraMap_apply ℝ ℂ (HarishChandra.U 2), AlgHom.commutes]`. Use extensionality with `φ g`. Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `hι X`. Rewrite using `[gl2Complexify_ι, gl2ArchRep_ι, complexOpGL2_map_ofReal, realOpGL2, lieOfRealMat_lieRealMat]`. Consider the case `hmul a b ha hb => rw [map_mul, map_mul, ha, hb, map_mul]`. Consider the case `hadd a b ha hb => rw [map_add, map_add, ha, hb, map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem gl2ArchRep_gl2Complexify (u : UEnv ℚ 2) : gl2ArchRep (gl2Complexify u) = uAction u := by
   induction u using UEnv.induction with
@@ -334,7 +332,7 @@ theorem gl2ArchRep_gl2Complexify (u : UEnv ℚ 2) : gl2ArchRep (gl2Complexify u)
   | hadd a b ha hb => rw [map_add, map_add, ha, hb, map_add]
 
 /- English proof (translation)
-Rewrite using `[gl2Complexify_ι, gl2Complexify_ι, lieRealMat_lieOfRealMat, lieRealMat_lieOfRealMat, ← map_smul, ← map_add, map_ofReal_reMat_add_imMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_eq_gl2Complexify_add (B : HarishChandra.gl 2) :
     UniversalEnvelopingAlgebra.ι ℂ B =
@@ -344,7 +342,7 @@ theorem ι_eq_gl2Complexify_add (B : HarishChandra.gl 2) :
     ← map_add, map_ofReal_reMat_add_imMat]
 
 /- English proof (translation)
-Establish `hc : ∀ X : (isExpLieAlgebra ℚ 2).lieSubalgebra, gl2Complexify (UniversalEnvelopingAlgebra.ι ℝ X) * gl2Complexify z = gl2Complexify z * gl2Complexify (UniversalEnvelopingAlgebra.ι ℝ X)`. Introduce `X`. Rewrite using `[← map_mul, ← map_mul, (Subalgebra.mem_center_iff.1 hz) (UniversalEnvelopingAlgebra.ι ℝ X)]`. Use `HarishChandra.mem_center_of_commute_e fun a => ?_` and prove the remaining obligations. Rewrite using `[HarishChandra.e, ι_eq_gl2Complexify_add, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, hc, hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gl2Complexify_mem_center {z : UEnv ℚ 2} (hz : z ∈ (isExpLieAlgebra ℚ 2).centerU) :
     gl2Complexify z ∈ Subalgebra.center ℂ (HarishChandra.U 2) := by
@@ -357,7 +355,7 @@ theorem gl2Complexify_mem_center {z : UEnv ℚ 2} (hz : z ∈ (isExpLieAlgebra �
   rw [HarishChandra.e, ι_eq_gl2Complexify_add, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, hc, hc]
 
 /- English proof (translation)
-Rewrite using `[← gl2ArchRep_gl2Complexify]`. Conclude with `HarishChandra.rep_center_apply_mem_span_of_conj gl2ArchRep g lam hup hH (gl2Complexify_mem_center hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uAction_center_eq_smul_of_gl2ArchRep_conj {φ : archSmooth ℚ 2}
     (g : (HarishChandra.gl 2)ˣ) (lam : Fin 2 → ℂ)
@@ -369,9 +367,9 @@ theorem exists_uAction_center_eq_smul_of_gl2ArchRep_conj {φ : archSmooth ℚ 2}
   exact HarishChandra.rep_center_apply_mem_span_of_conj gl2ArchRep g lam hup hH (gl2Complexify_mem_center hz)
 
 /- English proof (translation)
-Unfold `IsZFinite`. Establish `hle : Submodule.span ℂ ((fun z => uAction z φ) '' ((isExpLieAlgebra ℚ 2).centerU : Set (UEnv ℚ 2))) ≤ ℂ ∙ φ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨c, hc⟩` from `exists_uAction_center_eq_smul_of_gl2ArchRep_conj g lam hup hH hz`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show uAction z φ ∈ ℂ ∙ φ`. Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self φ)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZFinite_of_gl2ArchRep_conj {φ : archSmooth ℚ 2} (g : (HarishChandra.gl 2)ˣ) (lam : Fin 2 → ℂ)
     (hup : ∀ a, HarishChandra.IsUpper a → gl2ArchRep (HarishChandra.conjU g (HarishChandra.e a)) φ = 0)

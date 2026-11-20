@@ -18,7 +18,7 @@ universe u
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Set `i : cohomology A q ≅ cohomology B q` to `{ hom := cohomologyMap e.hom q inv := cohomologyMap e.inv q hom_inv_id := by rw [← cohomologyMap_comp, e.hom_inv_id, cohomologyMap_id] inv_hom_id := by rw [← cohomologyMap_comp, e.inv_hom_id, cohomologyMap_id] }`. Conclude with `Nat.card_congr i.toLinearEquiv.toEquiv`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem card_cohomology_eq_of_iso {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     (e : A ≅ B) (q : ℕ) : Nat.card (cohomology A q) = Nat.card (cohomology B q) := by
@@ -32,13 +32,13 @@ theorem card_cohomology_eq_of_iso {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscr
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr ((forget (Rep.{u} k G)).mapIso e).toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem card_eq_of_iso {A B : Rep.{u} k G} (e : A ≅ B) : Nat.card A = Nat.card B :=
   Nat.card_congr ((forget (Rep.{u} k G)).mapIso e).toEquiv
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (H0Iso A).toLinearEquiv.toEquiv]`. Conclude with `Nat.card_unique`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_cohomology_zero_of_subsingleton (A : Rep.{u} k G) [IsDiscreteRep A] [Subsingleton A] :
     Nat.card (cohomology A 0) = 1 := by
@@ -46,7 +46,7 @@ theorem card_cohomology_zero_of_subsingleton (A : Rep.{u} k G) [IsDiscreteRep A]
   exact Nat.card_unique
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (H0Iso A).toLinearEquiv.toEquiv]`. Establish `hmem : ∀ x : A, x ∈ A.ρ.invariants` using `fun x g => by rw [h g]; rfl`. Conclude with `Nat.card_congr (Equiv.subtypeUnivEquiv hmem)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_cohomology_zero_of_forall_eq_one (A : Rep.{u} k G) [IsDiscreteRep A]
     (h : ∀ g, A.ρ g = 1) : Nat.card (cohomology A 0) = Nat.card A := by
@@ -66,7 +66,7 @@ open scoped Classical
 variable (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
 
 /- English proof (translation)
-Establish `: Finite (Rep.res (gsRealFamily S ιr v).toMonoidHom M)` using `inferInstanceAs (Finite M)`. Use `finite_cohomology_zero (Rep.res (gsRealFamily S ιr v).toMonoidHom M)` as an intermediate fact. Conclude with `Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsRealH0Card_pos [Finite M] (v : {v : InfinitePlace K.1 // v.IsReal}) :
     0 < gsRealH0Card S M ιr v := by
@@ -75,7 +75,7 @@ theorem gsRealH0Card_pos [Finite M] (v : {v : InfinitePlace K.1 // v.IsReal}) :
   exact Nat.card_pos
 
 /- English proof (translation)
-Establish `hv : ∀ v, gsRealH0Card S M ιr v = gsRealH0Card S N ιr v` using `fun v => card_cohomology_eq_of_iso ((Rep.resFunctor (gsRealFamily S ιr v).toMonoidHom).mapIso e) 0`. Simplify using `only [gsEulerRatio, eulerChar_eq_of_iso e, card_eq_of_iso e, hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gsEulerRatio_eq_of_iso {N : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)}
     [IsDiscreteRep N] (e : M ≅ N) : gsEulerRatio S M ιr = gsEulerRatio S N ιr := by
@@ -84,7 +84,7 @@ theorem gsEulerRatio_eq_of_iso {N : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutsid
   simp only [gsEulerRatio, eulerChar_eq_of_iso e, card_eq_of_iso e, hv]
 
 /- English proof (translation)
-Establish `hv : ∀ v, gsRealH0Card S M ιr v = 1` using `fun v => by`. Establish `: Subsingleton (Rep.res (gsRealFamily S ιr v).toMonoidHom M)` using `inferInstanceAs (Subsingleton M)`. Conclude with `card_cohomology_zero_of_subsingleton _`. Establish `hM : Nat.card M = 1` using `Nat.card_unique`. Simplify using `[gsEulerRatio, eulerChar_eq_one_of_subsingleton, hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gsEulerRatio_eq_one_of_subsingleton [Subsingleton M] : gsEulerRatio S M ιr = 1 := by
   have hv : ∀ v, gsRealH0Card S M ιr v = 1 := fun v => by
@@ -95,7 +95,7 @@ theorem gsEulerRatio_eq_one_of_subsingleton [Subsingleton M] : gsEulerRatio S M 
   simp [gsEulerRatio, eulerChar_eq_one_of_subsingleton, hv]
 
 /- English proof (translation)
-Use `Finset.prod_pos fun q hq => ?_` and prove the remaining obligations. Establish `: Finite (cohomology M q)` using `finite_cohomology_gs K S M hS q (Nat.lt_succ_iff.1 (Finset.mem_range.1 hq))`. Establish `: (0 : ℚ) < Nat.card (cohomology M q)` using `by exact_mod_cast Nat.card_pos`. Conclude with `zpow_pos this _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eulerChar_gs_pos [Finite S] [Finite M]
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card M : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S) :
@@ -107,7 +107,7 @@ theorem eulerChar_gs_pos [Finite S] [Finite M]
   exact zpow_pos this _
 
 /- English proof (translation)
-Establish `h1` using `eulerChar_gs_pos S M hS`. Establish `h2 : (0 : ℚ) < Nat.card M` using `by exact_mod_cast Nat.card_pos`. Establish `h3 : (0 : ℚ) < ∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S M ιr v : ℚ)` using `Finset.prod_pos fun v _ => by exact_mod_cast gsRealH0Card_pos S M ιr v`. Unfold `gsEulerRatio`. Use `div_pos (mul_pos h1 (pow_pos h2 (Fintype.card (InfinitePlace K.1)))) h3` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem gsEulerRatio_pos [Finite S] [Finite M]
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card M : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S) :
@@ -120,7 +120,7 @@ theorem gsEulerRatio_pos [Finite S] [Finite M]
   convert div_pos (mul_pos h1 (pow_pos h2 (Fintype.card (InfinitePlace K.1)))) h3
 
 /- English proof (translation)
-Establish `h2 : (0 : ℚ) < Nat.card M` using `by exact_mod_cast Nat.card_pos`. Establish `hn : (Nat.card M : ℚ) ^ Fintype.card (InfinitePlace K.1) ≠ 0` using `(pow_pos h2 _).ne'`. Establish `h3 : (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S M ιr v : ℚ)) ≠ 0` using `(Finset.prod_pos fun v _ => by exact_mod_cast gsRealH0Card_pos S M ιr v).ne'`. Unfold `gsEulerRatio`. Use `(div_eq_one_iff_eq h3).trans (eq_div_iff hn).symm` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem gsEulerRatio_eq_one_iff [Finite M] :
     gsEulerRatio S M ιr = 1 ↔
@@ -134,7 +134,7 @@ theorem gsEulerRatio_eq_one_iff [Finite M] :
   convert (div_eq_one_iff_eq h3).trans (eq_div_iff hn).symm
 
 /- English proof (translation)
-Use `forall_congr' fun M => ?_` and prove the remaining obligations. Use `⟨fun h _ _ hS => ?_, fun h _ _ hS => ?_⟩` and prove the remaining obligations. Conclude with `(gsEulerRatio_eq_one_iff S M ιr).2 (by convert h hS)`. Use `(gsEulerRatio_eq_one_iff S M ιr).1 (h hS)` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem globalEulerFormula_iff :
     GlobalEulerFormula S ιr ↔
@@ -155,7 +155,7 @@ open scoped Classical
 variable (ι : ∀ v : InfinitePlace K.1, ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
 
 /- English proof (translation)
-Unfold `gsInfH0Card`. Use `(card_cohomology_zero_of_forall_eq_one _ fun g => ?_).trans rfl` and prove the remaining obligations. Rewrite using `[eq_one_of_isComplex hv g, map_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_gsInfH0_of_isComplex {v : InfinitePlace K.1} (hv : v.IsComplex) :
     gsInfH0Card S M ι v = Nat.card M := by
@@ -171,13 +171,13 @@ theorem gsInfH0Card_real (v : {v : InfinitePlace K.1 // v.IsReal}) :
   rfl
 
 /- English proof (translation)
-Establish `h2 : (0 : ℚ) < Nat.card M` using `by exact_mod_cast Nat.card_pos`. Use `set n : ℚ := (Nat.card M : ℚ) with hn`. Establish `hcard : n ^ Fintype.card (InfinitePlace K.1) = n ^ Fintype.card {v : InfinitePlace K.1 // v.IsReal} * n ^ Fintype.card {v : InfinitePlace K.1 // v.IsComplex}`. Use `InfinitePlace.prod_eq_prod_mul_prod (K := K.1) (fun _ => n)` as an intermediate fact. Simplify `this` using `[Finset.prod_const, Finset.card_univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Unfold `gsEulerInfFactor`. Rewrite using `[InfinitePlace.prod_eq_prod_mul_prod, hcard]`. Establish `hr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, (gsInfH0Card S M ι v.1 : ℚ) / n ^ v.1.mult = (gsRealH0Card S M (fun w => ι w.1) v : ℚ) / n`. Introduce `v`. Rewrite using `[InfinitePlace.mult_isReal v, gsInfH0Card_real, pow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ v : {v : InfinitePlace K.1 // v.IsComplex}, (gsInfH0Card S M ι v.1 : ℚ) / n ^ v.1.mult = n⁻¹`. Introduce `v`. Rewrite using `[InfinitePlace.mult_isComplex v, card_gsInfH0_of_isComplex S M ι v.2, ← hn]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Fintype.prod_congr _ _ hr, Fintype.prod_congr _ _ hc, Finset.prod_const, Finset.card_univ, Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, inv_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem gsEulerInfFactor_eq [Finite M] :
     gsEulerInfFactor S M ι =
@@ -207,14 +207,14 @@ theorem gsEulerInfFactor_eq [Finite M] :
   field_simp
 
 /- English proof (translation)
-Rewrite using `[gsEulerRatio_eq_one_iff, gsEulerInfFactor_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eulerChar_eq_gsEulerInfFactor_iff [Finite M] :
     eulerChar M = gsEulerInfFactor S M ι ↔ gsEulerRatio S M (fun w => ι w.1) = 1 := by
   rw [gsEulerRatio_eq_one_iff, gsEulerInfFactor_eq]
 
 /- English proof (translation)
-Rewrite using `[globalEulerFormula_iff]`. Use `forall_congr' fun M => ⟨fun h _ _ hS => ?_, fun h _ _ hS => ?_⟩` and prove the remaining obligations. Conclude with `(eulerChar_eq_gsEulerInfFactor_iff S M ι).1 (h hS)`. Conclude with `(eulerChar_eq_gsEulerInfFactor_iff S M ι).2 (h hS)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem globalEulerFormulaInf_iff :
     GlobalEulerFormulaInf S ι ↔ GlobalEulerFormula S (fun w => ι w.1) := by

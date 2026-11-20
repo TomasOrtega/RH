@@ -7,7 +7,7 @@ open scoped nonZeroDivisors
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[complexConj_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj (x : 𝓞 E) :
     ringOfIntegersComplexConj E (ringOfIntegersComplexConj E x) = x := by
@@ -15,13 +15,13 @@ theorem conj_conj (x : 𝓞 E) :
   simp [complexConj_apply_apply]
 
 /- English proof (translation)
-Take `⟨x, hx, y, hy, hxy⟩` from `Ideal.isCoprime_iff_exists.mp hc`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Establish `hfix : ringOfIntegersComplexConj E (x * ringOfIntegersComplexConj E x) = x * ringOfIntegersComplexConj E x`. Rewrite using `[map_mul, conj_conj, mul_comm]`. Take `⟨a, ha⟩` from `(ringOfIntegersComplexConj_eq_self_iff E _).mp hfix`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfix2 : ringOfIntegersComplexConj E (w + ringOfIntegersComplexConj E w - (g : 𝓞 E) * (w * ringOfIntegersComplexConj E w)) = w + ringOfIntegersComplexConj E w - (g : 𝓞 E) * (w * ringOfIntegersComplexConj E w)`. Simplify using `only [map_sub, map_add, map_mul, conj_conj, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hb⟩` from `(ringOfIntegersComplexConj_eq_self_iff E _).mp hfix2`. Establish `hx' : x = 1 - w * (g : 𝓞 E)` using `by rw [← hxy]; ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hab : a + (g : 𝓞 (maximalRealSubfield E)) * b = 1`. Apply `FaithfulSMul.algebraMap_injective (𝓞 (maximalRealSubfield E)) (𝓞 E)` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, ha, hb, map_natCast, map_one, hx']`. Simplify using `only [map_sub, map_mul, map_one, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨a, fun haP => hP.ne_top ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `P.add_mem haP (P.mul_mem_right _ hgP)`. Rewrite using `[ha]`. Conclude with `Ideal.mul_mem_right _ _ hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_real_mem_different (g : ℕ) (hc : PrimeToDifferent E g)
     (P : Ideal (𝓞 (maximalRealSubfield E))) (hP : P.IsPrime)
@@ -52,7 +52,7 @@ theorem exists_real_mem_different (g : ℕ) (hc : PrimeToDifferent E g)
   · rw [ha]; exact Ideal.mul_mem_right _ _ hx
 
 /- English proof (translation)
-Unfold `dd`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Conclude with `differentIdeal_ne_bot`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dd_ne_zero : dd E ≠ 0 := by
   unfold dd
@@ -60,22 +60,20 @@ theorem dd_ne_zero : dd E ≠ 0 := by
   exact differentIdeal_ne_bot
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.coeIdeal_le_one`.
+A detailed English derivation is pending.
 -/
 theorem dd_le_one : dd E ≤ 1 := FractionalIdeal.coeIdeal_le_one
 
 /- English proof (translation)
-Take `⟨a, haP, ha⟩` from `exists_real_mem_different E g hc P hP hgP`. Take `⟨b, hb, h⟩` from `ht`. Take `⟨n, hn⟩ : ∃ n : ℕ, ν' ≤ ν + n` from `⟨(ν' - ν).toNat, by omega⟩`. Take `⟨m, hm⟩ : ∃ m : ℕ, (n : ℤ) + ν = m + ν'` from `⟨(ν + n - ν').toNat, by omega⟩`. Use `⟨a ^ n * b, fun hh => (hP.mem_or_mem hh).elim (fun h' => haP (hP.mem_of_pow_mem _ h')) hb, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ ∈ idl E g k ν at h`. Use `show _ ∈ idl E g k ν'`. Establish `ha' : algebraMap (𝓞 (maximalRealSubfield E)) E a ∈ dd E`. Unfold `dd`. Rewrite using `[FractionalIdeal.mem_coeIdeal]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, ha, rfl⟩`. Establish `hpow : ∀ j : ℕ, algebraMap (𝓞 (maximalRealSubfield E)) E a ^ j ∈ dd E ^ j`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j ih => rw [pow_succ, pow_succ]`. Conclude with `FractionalIdeal.mul_mem_mul ih ha'`. Establish `h1 : algebraMap (𝓞 (maximalRealSubfield E)) E a ^ n ∈ dd E ^ n` using `hpow n`. Establish `h2` using `FractionalIdeal.mul_mem_mul h1 h`. Establish `h3 : dd E ^ n * idl E g k ν = dd E ^ m * idl E g k ν'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `idl`. Rewrite using `[← mul_assoc, ← mul_assoc, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (dd_ne_zero E), ← zpow_add₀ (dd_ne_zero E), hm]`. Establish `h4 : dd E ^ m * idl E g k ν' ≤ idl E g k ν'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_pow, mul_assoc]`.
-
-Conclude with `h4 (h3 ▸ h2)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localisation_typed_independent_exponent (g : ℕ) (k ν ν' : ℤ) (hc : PrimeToDifferent E g)
     (P : Ideal (𝓞 (maximalRealSubfield E))) (hP : P.IsPrime)
@@ -116,9 +114,9 @@ section LG
 variable {E}
 
 /- English proof (translation)
-Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, fun h => (hP.mem_or_mem h).elim ha hb, ?_⟩` and prove the remaining obligations. Establish `h1` using `hL.1 b _ hax`. Establish `h2` using `hL.1 a _ hby`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : algebraMap (𝓞 (maximalRealSubfield E)) E (a * b) * (x + y) = algebraMap (𝓞 (maximalRealSubfield E)) E b * (algebraMap (𝓞 (maximalRealSubfield E)) E a * x) + algebraMap (𝓞 (maximalRealSubfield E)) E a * (algebraMap (𝓞 (maximalRealSubfield E)) E b * y)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `L.add_mem h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locAt_add {L : Submodule ℤ E} (hL : IsFLattice E L)
     {P : Ideal (𝓞 (maximalRealSubfield E))} (hP : P.IsPrime) {x y : E}
@@ -135,14 +133,14 @@ theorem locAt_add {L : Submodule ℤ E} (hL : IsFLattice E L)
   rw [h3]; exact L.add_mem h1 h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun h => hP.ne_top ((Ideal.eq_top_iff_one P).mpr h), by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem locAt_zero (L : Submodule ℤ E) {P : Ideal (𝓞 (maximalRealSubfield E))} (hP : P.IsPrime) :
     (0 : E) ∈ locAt E P L :=
   ⟨1, fun h => hP.ne_top ((Ideal.eq_top_iff_one P).mpr h), by simp⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (fun x => x ∈ locAt E P L) (fun _ _ hx hy => locAt_add hL hP hx hy) (locAt_zero L hP) h`.
+A detailed English derivation is pending.
 -/
 theorem locAt_sum {L : Submodule ℤ E} (hL : IsFLattice E L)
     {P : Ideal (𝓞 (maximalRealSubfield E))} (hP : P.IsPrime) {ι : Type*} (s : Finset ι) (f : ι → E)
@@ -161,16 +159,16 @@ def ann {L : Submodule ℤ E} (hL : IsFLattice E L) (t : E) : Ideal (𝓞 (maxim
     rw [smul_eq_mul, map_mul, mul_assoc]; exact hL.1 c _ ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ann {L : Submodule ℤ E} (hL : IsFLattice E L) (t : E)
     (a : 𝓞 (maximalRealSubfield E)) :
     a ∈ ann hL t ↔ algebraMap (𝓞 (maximalRealSubfield E)) E a * t ∈ L := Iff.rfl
 
 /- English proof (translation)
-Take `⟨n, hn, hnt⟩` from `hL.2 t`. Introduce `h`. Establish `h1 : (n : 𝓞 (maximalRealSubfield E)) ∈ ann hL t`. Rewrite using `[mem_ann, map_natCast]`. Conclude with `hnt`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h, Ideal.mem_bot]`. Establish `: n = 0` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ann_ne_bot {L : Submodule ℤ E} (hL : IsFLattice E L) (t : E) : ann hL t ≠ ⊥ := by
   obtain ⟨n, hn, hnt⟩ := hL.2 t
@@ -182,17 +180,17 @@ theorem ann_ne_bot {L : Submodule ℤ E} (hL : IsFLattice E L) (t : E) : ann hL 
   omega
 
 /- English proof (translation)
-Establish `hfin : FiniteMultiplicity P (ann hL τ)` using `FiniteMultiplicity.of_not_isUnit (fun h => hP.ne_top (Ideal.isUnit_iff.mp h)) (ann_ne_bot hL τ)`. Take `⟨J, hJ, hPJ⟩` from `hfin.exists_eq_pow_mul_and_not_dvd`. Generalize the expression as in `multiplicity P (ann hL τ) = k at hJ`. Rewrite `hPJ` using `[Ideal.dvd_iff_le]`. Take `⟨b, hbJ, hbP⟩` from `SetLike.not_le_iff_exists.mp hPJ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcop : IsCoprime P J`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h`. Establish `h1 : P = P ⊔ J` using `hP.eq_of_le h le_sup_left`. Conclude with `hPJ (h1 ▸ le_sup_right)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, e, he, hue⟩` from `Ideal.isCoprime_iff_exists.mp (hcop.pow_left (m := k))`. Use `⟨e, ⟨b, hbP, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : u * b ∈ ann hL τ` using `hJ ▸ Ideal.mul_mem_mul hu hbJ`. Rewrite `h1` using `[mem_ann]`. Establish `h2 : algebraMap (𝓞 (maximalRealSubfield E)) E b * (algebraMap (𝓞 (maximalRealSubfield E)) E e * τ - τ) = -(algebraMap (𝓞 (maximalRealSubfield E)) E (u * b) * τ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : algebraMap (𝓞 (maximalRealSubfield E)) E u + algebraMap (𝓞 (maximalRealSubfield E)) E e = 1`. Rewrite using `[← map_add, hue, map_one]`. Rewrite using `[map_mul]`. Take the linear combination `(algebraMap (𝓞 (maximalRealSubfield E)) E b * τ) * h3`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `L.neg_mem h1`. Introduce `Q hQ hQP`. Establish `hnle : ¬ P ≤ Q` using `fun h => hQP (hP.eq_of_le hQ.ne_top h).symm`. Take `⟨c, hcP, hcQ⟩` from `SetLike.not_le_iff_exists.mp hnle`. Use `⟨c ^ k, fun h => hcQ (hQ.isPrime.mem_of_pow_mem _ h), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : c ^ k * e ∈ ann hL τ` using `hJ ▸ Ideal.mul_mem_mul (Ideal.pow_mem_pow hcP k) he`. Rewrite `h1` using `[mem_ann, map_mul, mul_assoc]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_multiplier {L : Submodule ℤ E} (hL : IsFLattice E L)
     (P : Ideal (𝓞 (maximalRealSubfield E))) (hP : P.IsMaximal) (τ : E) :
@@ -233,13 +231,13 @@ theorem exists_multiplier {L : Submodule ℤ E} (hL : IsFLattice E L)
     exact h1
 
 /- English proof (translation)
-Take `⟨n, hn, hnt⟩` from `hL.2 t`. Establish `hn0 : (n : 𝓞 (maximalRealSubfield E)) ≠ 0`. Introduce `h`. Establish `: n = 0` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hI : Ideal.span {(n : 𝓞 (maximalRealSubfield E))} ≠ 0`. Simplify `hn0` using `[Ideal.span_singleton_eq_bot]`. Use `((Ideal.finite_factors hI).image (fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 (maximalRealSubfield E)) => v.asIdeal)).subset ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP, htP⟩`. Establish `hnP : (n : 𝓞 (maximalRealSubfield E)) ∈ P`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `htP ⟨n, h, by rw [map_natCast]; exact hnt⟩`. Establish `hPbot : P ≠ ⊥`. Introduce `h`. Rewrite `hnP` using `[h, Ideal.mem_bot]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hn0 hnP`. Conclude with `⟨⟨P, hP.isPrime, hPbot⟩, by show P ∣ _`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `hnP, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_bad {L : Submodule ℤ E} (hL : IsFLattice E L) (t : E) :
     {P : Ideal (𝓞 (maximalRealSubfield E)) | P.IsMaximal ∧ t ∉ locAt E P L}.Finite := by
@@ -265,9 +263,9 @@ theorem finite_bad {L : Submodule ℤ E} (hL : IsFLattice E L) (t : E) :
     rw [Ideal.dvd_span_singleton]; exact hnP, rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Establish `hI : ann hL t ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : 𝓞 (maximalRealSubfield E)) ∈ ann hL t` using `h ▸ Submodule.mem_top`. Rewrite `h1` using `[mem_ann]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hcon` to reduce the goal to its premises. Simplify using `using h1`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal _ hI`. Take `⟨a, ha, hat⟩` from `ht M hM`. Conclude with `ha (hIM hat)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_locAt {L : Submodule ℤ E} (hL : IsFLattice E L) (t : E)
     (ht : ∀ P : Ideal (𝓞 (maximalRealSubfield E)), P.IsMaximal → t ∈ locAt E P L) : t ∈ L := by
@@ -283,13 +281,11 @@ theorem mem_of_forall_locAt {L : Submodule ℤ E} (hL : IsFLattice E L) (t : E)
   exact ha (hIM hat)
 
 /- English proof (translation)
-Establish `hex : ∀ P : Ideal (𝓞 (maximalRealSubfield E)), ∃ e : 𝓞 (maximalRealSubfield E), P.IsMaximal → (algebraMap (𝓞 (maximalRealSubfield E)) E e * τ P - τ P ∈ locAt E P L ∧ ∀ Q : Ideal (𝓞 (maximalRealSubfield E)), Q.IsMaximal → Q ≠ P → algebraMap (𝓞 (maximalRealSubfield E)) E e * τ P ∈ …`. Introduce `P`. Distinguish the cases in `hP : P.IsMaximal`. Take `⟨e, he⟩` from `exists_multiplier hL P hP (τ P)`. Conclude with `⟨e, fun _ => he⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h => absurd h hP⟩`. Use `choose e he using hex`. Use `⟨∑ P ∈ S, algebraMap (𝓞 (maximalRealSubfield E)) E (e P) * τ P, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hPS`. Rewrite using `[← Finset.add_sum_erase S _ hPS, add_sub_right_comm]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `locAt_add hL (hS P hPS).isPrime (he P (hS P hPS)).1 ?_` and prove the remaining obligations. Use `locAt_sum hL (hS P hPS).isPrime _ _ fun Q hQ => ?_` and prove the remaining obligations. Rewrite `hQ` using `[Finset.mem_erase]`. Conclude with `(he Q (hS Q hQ.2)).2 P (hS P hPS) (Ne.symm hQ.1)`. Introduce `P hP hPS`.
-
-Use `locAt_sum hL hP.isPrime _ _ fun Q hQ => ?_` and prove the remaining obligations. Conclude with `(he Q (hS Q hQ)).2 P hP (fun h => hPS (h ▸ hQ))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem approx {L : Submodule ℤ E} (hL : IsFLattice E L)
     (S : Finset (Ideal (𝓞 (maximalRealSubfield E)))) (τ : Ideal (𝓞 (maximalRealSubfield E)) → E)
@@ -326,7 +322,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.S6
 
 /- English proof (translation)
-Introduce `E _ _ _ g k ν _ hc P hP hgP`. Use extensionality with `t`. Conclude with `⟨S6x6.localisation_typed_independent_exponent E g k ν 0 hc P hP hgP t, S6x6.localisation_typed_independent_exponent E g k 0 ν hc P hP hgP t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem localisation_typed_condition : Formalism.FourierDecayAlt.S6.LocTyped := by
   intro E _ _ _ g k ν _ hc P hP hgP
@@ -334,7 +330,7 @@ theorem localisation_typed_condition : Formalism.FourierDecayAlt.S6.LocTyped := 
   exact ⟨S6x6.localisation_typed_independent_exponent E g k ν 0 hc P hP hgP t, S6x6.localisation_typed_independent_exponent E g k 0 ν hc P hP hgP t⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ L hL`. Conclude with `⟨S6x6.finite_bad hL, S6x6.mem_of_forall_locAt hL, S6x6.approx hL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem local_global_principle : Formalism.FourierDecayAlt.S6.LocalGlobal := by
   intro E _ _ _ L hL

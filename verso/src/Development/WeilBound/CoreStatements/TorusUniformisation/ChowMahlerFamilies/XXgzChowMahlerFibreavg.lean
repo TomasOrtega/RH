@@ -7,21 +7,21 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `n m hm hmn`. Take `⟨hkm, -, -, hM0, hMtop⟩` from `TangentGaussMoment.full n m hm hmn`. Use `set μ := Measure.hausdorffMeasure (X := EuclideanSpace ℂ (Fin n)) ((2 * m : ℕ) : ℝ) with hμ`. Use `set k := tangentGaussProfile n m with hk`. Use `set M := ∫⁻ r in Set.Ioi (0 : ℝ), k r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) with hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hd : ((2 * m : ℕ) : ℝ) = (Module.finrank ℝ (EuclideanSpace ℂ (Fin m)) : ℝ)`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Take `⟨H, hHdef⟩ : ∃ H, Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1) = H` from `⟨_, rfl⟩`. Take `⟨V, hVdef⟩ : ∃ V, volume (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1) = V` from `⟨_, rfl⟩`. Establish `hH0 : H ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hHdef, hd]`. Conclude with `(Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `hHtop : H ≠ ⊤`. Rewrite using `[← hHdef, hd]`. Conclude with `measure_ball_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hV0 : V ≠ 0` using `hVdef ▸ (Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `hVtop : V ≠ ⊤` using `hVdef ▸ measure_ball_lt_top.ne`. Establish `hc0 : H⁻¹ * V ≠ 0` using `mul_ne_zero (ENNReal.inv_ne_zero.2 hHtop) hV0`. Establish `hctop : H⁻¹ * V ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 hH0) hVtop`. Use `⟨H⁻¹ * V * M, ENNReal.mul_pos hc0 hM0.ne', ENNReal.mul_lt_top hctop.lt_top hMtop, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h J hJ hfib A hA hAs hfin`. Establish `hin : ∀ π : Fin m → Fin n → ℂ, ∫⁻ w in Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1, cntOver (coneSet h J ∩ A) π w = H⁻¹ * V * ∫⁻ y in coneSet h J ∩ A, (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π y) * ENNReal.ofReal (coneJac h J π y) ∂μ`. Introduce `π`. Establish `harea` using `GlobalTheory.T.gaussian_projection_cone_coarea n m h J hJ hm hmn hfib π A hA ((Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1) (measurable_one.indicator Metric.isOpen_ball.measurableSet)`. Establish `hind : ∫⁻ w, cntOver (coneSet h J ∩ A) π w * (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 w = ∫⁻ w in Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1, cntOver (coneSet h J ∩ A) π w`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_indicator Metric.isOpen_ball.measurableSet]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w ∈ Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1`. Rewrite using `[Set.indicator_of_mem hw, Set.indicator_of_mem hw, Pi.one_apply, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hw, Set.indicator_of_notMem hw, mul_zero]`. Rewrite `harea` using `[hind, hVdef, hHdef]`. Rewrite using `[mul_assoc, harea, ← mul_assoc, ENNReal.inv_mul_cancel hH0 hHtop, one_mul]`. Establish `hlhs : ∫⁻ π : Fin m → Fin n → ℂ, matGauss π * ∫⁻ w in Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1, cntOver (coneSet h J ∩ A) π w = H⁻¹ * V * ∫⁻ y in coneSet h J ∩ A, k ‖y‖ ∂μ`. Rewrite using `[← GlobalTheory.T.gaussian_projection_ball_indicator n m h J hJ hm hmn hfib A hA, ← lintegral_const_mul' _ _ hctop]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `lintegral_congr fun π => ?_` and prove the remaining obligations. Rewrite using `[hin π]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlhs, ConeRadialIntegral.full n m hm (coneSet h J ∩ A) (fun y hy t ht => ⟨real_smul_mem_coneSet h hJ hy.1 t, hAs y hy.2 t ht⟩) hfin k hkm]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_xgz_chow_mahler_fibreavg : ∀ n m : ℕ, 0 < m → m ≤ n → ∃ K : ℝ≥0∞, 0 < K ∧ K < ⊤ ∧
   ∀ (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ)), IsProjPrime J → (∀ᵐ π : Fin m → Fin n → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin m), fibreCount h J π w ≠ ⊤) →

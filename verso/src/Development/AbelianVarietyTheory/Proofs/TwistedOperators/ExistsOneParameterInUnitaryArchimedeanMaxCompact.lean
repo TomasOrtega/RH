@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.CompactLine
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, inclR, compInf, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m : ℕ}
     (J : Matrix (Fin m) (Fin m) E) {w : InfinitePlace F} (τ : EmbOver E w) :
@@ -21,7 +21,7 @@ theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   simp [incM, piInf, inclR, compInf, infEmb_tmul]
 
 /- English proof (translation)
-Establish `h1 : Commute Y (Jm R S)` using `(GlobalTheory.CartanInt.UnitLog.isKC_iff_commute Y).1 hY`. Establish `h2 : Commute (NormedSpace.exp (t • Y)) (Jm R S)` using `(h1.smul_left t).exp_left`. Establish `h3 : g * θ * C = θ * g * C`. Rewrite using `[Matrix.mul_assoc, hθ, ← Matrix.mul_assoc, hg, Matrix.mul_assoc θ, hg, ← Matrix.mul_assoc θ, hθ, Matrix.mul_assoc, Matrix.mul_assoc, h2.eq]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem commute_of_gen {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} (C : Matrix β (Ix R S) ℂ)
     (A' : Matrix (Ix R S) β ℂ) (hCA : C * A' = 1) (g θ : Matrix β β ℂ) (Y : Mat R S) (hY : IsKC Y) (t : ℝ)
@@ -35,9 +35,9 @@ theorem commute_of_gen {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} (C 
     _ = θ * g := by rw [h3, Matrix.mul_assoc _ C, hCA, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hb hX k hk`. Use `choose A hA hAθ using fun w => GlobalTheory.RealLift.frameEx_holds n r s _ (X.θ w) (hX.sig w) (hX.cartan w)`. Establish `hA1 : ∀ w, GlobalTheory.RealLift.IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hA w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, Y, hgen, hKC, hγ1⟩` from `GlobalTheory.RealLift.kLine_of_lineEx GlobalTheory.RealLift.exists_line_of_upq F E σ (Fin n) r s B.emb (incM F X.J) 1 A X.θ hb.cm hA1 hAθ k hk.1 hk.2`. Use `⟨γ, hγ, hγ1, fun t => ⟨hγ.2 t, fun w => ?_⟩⟩` and prove the remaining obligations. Take `⟨A', hAA⟩` from `(hA w).2`. Conclude with `commute_of_gen (A w) A' hAA _ _ (Y w) (hKC w) t.toAdd (hAθ w) (hgen t.toAdd w)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_line_in_kInf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (r s : ℕ), B.IsGood σ → X.IsHerm σ B r s →

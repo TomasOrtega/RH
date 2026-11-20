@@ -21,25 +21,23 @@ namespace GlobalTheory.TypeAsm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D large₂ X Y u C hStd t N hAd μ K hμ hK`. Take `⟨hCM, hPl, hvI, hv1, -, hcard, -, -, -, hnorm, hrk, hg2, -⟩` from `GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hStd`. Establish `hTerm` using `GlobalTheory.T.rowLattice_term_adaptedNormalForm D large₂ X Y u hStd t N hAd`. Take `⟨β, n₁, g, n₂, hF⟩` from `GlobalTheory.T.adaptedNormalForm_gives_real_normal_form D large₂ X Y u C hStd t N hAd`. Establish `hι : Nonempty D.what₂.Tau`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace D.host.E)` from `inferInstance`. Conclude with `⟨(hPl.2 w).choose⟩`. Take `⟨τ0⟩` from `id hι`. Establish `hμeq : ∀ τ, μ τ = (GlobalTheory.Amp.lebR0 D.R.k D.R.rS N.j β).map (Formalism.QuantumDeterminants.conjM (n₂ τ)⁻¹) ∧ SigmaFinite (GlobalTheory.Amp.lebR0 D.R.k D.R.rS N.j β)` using `fun τ => by`. Take `⟨h1, h2, hinv, hFr⟩` from `hF τ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, ⟨c, hc⟩, -⟩` from `hFr`. Establish `hm` using `hμ τ`. Rewrite `hm` using `[hinv]`. Conclude with `GlobalTheory.Amp.StabHaar.normalFormStabilizerMeasure_eq_any_normalForm _ _ _ N.j_le _ _ _ _ _ β c _ h1 h2 hc hm`. Use `haveI : SigmaFinite (GlobalTheory.Amp.lebR0 D.R.k D.R.rS N.j β) := (hμeq τ0).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrat` using `GlobalTheory.TypeAsm.gam_iff_nLam D large₂ X Y u hStd t N hAd`. Establish `hGiso : ∀ n ∈ (N.Gam t.lam : Set ((VS D).V ≃ₗ[D.host.E] (VS D).V)), n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `fun n hn => ((hrat n).1 hn).1.1.1`. Establish `hpts : GlobalTheory.DegVol.realPts (phiV C) (N.Gam t.lam : Set ((VS D).V ≃ₗ[D.host.E] (VS D).V)) = trI C '' ROinf t`. Rewrite using `[GlobalTheory.TypeAsm.RatIsomReal.realPts_eq_image D X C _ hGiso]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, hx, rfl, hn⟩`. Take `⟨h1, h2⟩` from `(hrat n).1 hn`. Conclude with `⟨x, n, hx, rfl, h1, h2⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, n, hx, rfl, h1, h2⟩`. Conclude with `⟨x, n, hx, rfl, (hrat n).2 ⟨h1, h2⟩⟩`. Establish `hfund0` using `GlobalTheory.CovFund.isFund_image D X Y u C t K hK`. Rewrite `hfund0` using `[← hpts]`. Establish `hRP : GlobalTheory.DegVol.RP D.R.k D.R.rS (fun τ => (gamT C t τ)⁻¹) = GlobalTheory.DegVol.RP D.R.k D.R.rS (fun τ => n₁ τ * g τ * n₂ τ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(hF τ).2.2.1`. Rewrite `hfund0` using `[hRP]`. Establish `hunit : ∀ τ, n₁ τ ∈ Formalism.QuantumDeterminants.Nset D.R.k D.R.rS ∧ n₂ τ ∈ Formalism.QuantumDeterminants.Nset D.R.k D.R.rS ∧ IsUnit (g τ).det` using `fun τ => ⟨(hF τ).1, (hF τ).2.1, GlobalTheory.Amp.StabHaar.unit_of_GG (hF τ).2.2.2.2.2.2.2.1.choose_spec.1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hFund, hvol⟩` from `GlobalTheory.DegVol.UnipConj.isFund_conj_and_measure D.host.E (VS D).V D.R.k D.R.rS D.what₂.Tau (phiV C) (N.Gam t.lam : Set ((VS D).V ≃ₗ[D.host.E] (VS D).V)) n₁ g n₂ (trI C '' K) (GlobalTheory.Amp.lebR0 D.R.k D.R.rS N.j β) inferInstance hunit hfund0`. Establish `hF' : ∀ τ, GlobalTheory.DegVol.IsFrameOf N D.R.k (embS D τ) (2 * Formalism.HermitianLatticesTheory.vInv D.host.E) β (fun y => n₂ τ *ᵥ phiV C τ y) (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u τ) (g τ)` using `fun τ => by`. Rewrite using `[hvI]`. Conclude with `(hF τ).2.2.2`. Establish `hle` using `GlobalTheory.T.hermitian_stabiliser_covolume_le D.host.E (VS D).V (HV D) hCM D.R.rS N D.R.k D.what₂.Tau (embS D) β (fun τ y => n₂ τ *ᵥ phiV C τ y) (fun τ => zB X (C.Qi τ) u τ) (fun τ => zB X (C.Qi τ) u τ) g hPl hrk hF' (by rw [hAd.1, hnorm, hvI, hcard]) (by rw [hvI]; exact hv1) ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hμpi : Measure.pi μ = Measure.pi fun τ => (GlobalTheory.Amp.lebR0 D.R.k D.R.rS N.j β).map (Formalism.QuantumDeterminants.conjM (n₂ τ)⁻¹)`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(hμeq τ).1`. Rewrite using `[hμpi, hvol]`.
-
-Use `hle.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hvI, hcard]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem covTC_holds : CovTC := by
   intro D large₂ X Y u C hStd t N hAd μ K hμ hK

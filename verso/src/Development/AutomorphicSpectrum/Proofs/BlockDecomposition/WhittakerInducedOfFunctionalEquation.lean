@@ -20,49 +20,45 @@ open GlobalTheory.CompanionTheory.DualHol
 namespace GlobalTheory.CompanionTheory.WhittakerInducedSpan
 
 /- English proof (translation)
-Introduce `hFe F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂`. Establish `gen : ∀ φ ∈ GodementSectionLocal.schwartzBruhat2 F, W2 ψ μ₁ μ₂ φ ∈ V2 ψ μ₁ μ₂` using `fun φ hφ => Submodule.subset_span ⟨φ, hφ, rfl⟩`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, hne⟩` from `GlobalTheory.CompanionTheory.WhNe.sNe F ψ hψ μ₁ μ₂ h₁ h₂`. Conclude with `⟨_, gen φ hφ, hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `W hW h`. Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem W hW`. Take `⟨φ, hφ, rfl⟩` from `hW`. Take `⟨hrt, heq⟩` from `GlobalTheory.CompanionTheory.WhittakerTrans.sTrans F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (fun g => W2 ψ μ₁ μ₂ φ (g * h)) = (((μ₂ (Matrix.GeneralLinearGroup.det h) : ℂˣ) : ℂ) * mp (Matrix.GeneralLinearGroup.det h) (1 / 2)) • W2 ψ μ₁ μ₂ (SchwartzSpaceL2.rt φ h)`. Use function extensionality and compare the values at `g`. Simplify using `using heq g`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (gen _ hrt)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add W₁ W₂ _ _ i₁ i₂ => exact Submodule.add_mem _ i₁ i₂`. Consider the case `smul c W _ i => exact Submodule.smul_mem _ c i`. Introduce `W hW x g`. Proceed by induction on `hW using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem W hW`. Take `⟨φ, hφ, rfl⟩` from `hW`. Conclude with `GlobalTheory.CompanionTheory.WhittakerPsi.sPsi F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ x g`. Consider the case `zero => simp`. Consider the case `add W₁ W₂ _ _ i₁ i₂ => simp only [Pi.add_apply, i₁, i₂, mul_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `smul c W _ i => simp only [Pi.smul_apply, smul_eq_mul, i]`. Expand and normalize the polynomial expressions, which then agree. Introduce `W hW a g`. Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨φ, hφ, rfl⟩` from `hW`. Conclude with `GlobalTheory.CompanionTheory.WhittakerCentral.sCen F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ a g`. Consider the case `zero => simp`. Consider the case `add W₁ W₂ _ _ i₁ i₂ => simp only [Pi.add_apply, i₁, i₂, mul_add]`. Consider the case `smul c W _ i => simp only [Pi.smul_apply, smul_eq_mul, i]`.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `W hW`. Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem W hW`. Take `⟨φ, hφ, rfl⟩` from `hW`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.CompanionTheory.WhittakerSmooth.sSmooth F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ`. Consider the case `zero => exact ⟨⊤, fun _ _ _ => rfl⟩`. Consider the case `add W₁ W₂ _ _ i₁ i₂`. Take `⟨U₁, hU₁⟩` from `i₁`. Take `⟨U₂, hU₂⟩` from `i₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨U₁ ⊓ U₂, fun g u hu => ?_⟩` and prove the remaining obligations. Establish `hu' : u ∈ U₁ ∧ u ∈ U₂` using `by simpa using hu`. Simplify using `only [Pi.add_apply, hU₁ g u hu'.1, hU₂ g u hu'.2]`. Consider the case `smul c W _ i`. Take `⟨U, hU⟩` from `i`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨U, fun g u hu => by simp only [Pi.smul_apply, hU g u hu]⟩`. Introduce `W hW ε hε`. Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem W hW`. Take `⟨φ, hφ, rfl⟩` from `hW`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.CompanionTheory.DampedWhittakerGauge.whittaker_torus_gauge_estimate F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ ε hε`. Consider the case `zero => exact ⟨0, 0, fun a k _ => by simp⟩`. Consider the case `add W₁ W₂ _ _ i₁ i₂`. Take `⟨C₁, B₁, hb₁⟩` from `i₁`. Take `⟨C₂, B₂, hb₂⟩` from `i₂`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `⟨C₁ + C₂, max B₁ B₂, fun a k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h0 : W₁ (dg2 a 1 * k) = 0`. Establish `: W₂ (dg2 a 1 * k) ≠ 0` using `fun h => hne (by simp [h0, h])`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `le_max_of_le_right ((hb₂ a k hk).2 this)`. Conclude with `le_max_of_le_left ((hb₁ a k hk).2 h0)`. Consider the case `smul c W _ i`. Take `⟨C, B, hb⟩` from `i`. Use `⟨‖c‖ * C, B, fun a k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Simplify using `only [Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb a k hk).1 (norm_nonneg c)`. Conclude with `(hb a k hk).2 fun h => hne (by simp [h])`. Establish `key : ∀ W ∈ V2 ψ μ₁ μ₂, ∀ c : Fˣ →* ℂˣ, IsUnit1 c → ∀ s : ℂ, 0 < s.re → s.re < 1 → Integrable (fun a : Fˣ => W (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) (multHaar F) ∧ Integrable (fun a : Fˣ => W (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) (mult …`. Introduce `W hW c hc s hs0 hs1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem W hW`. Take `⟨φ, hφ, rfl⟩` from `hW`. Conclude with `hFe F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ c hc s hs0 hs1`. Consider the case `zero => simp [integrable_zero]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add W₁ W₂ _ _ i₁ i₂`. Take `⟨a₁, b₁, e₁⟩` from `i₁`. Take `⟨a₂, b₂, e₂⟩` from `i₂`. Establish `ha : (fun a : Fˣ => (W₁ + W₂) (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) = (fun a : Fˣ => W₁ (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) + (fun a : Fˣ => W₂ (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 …`. Use function extensionality and compare the values at `a`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : (fun a : Fˣ => (W₁ + W₂) (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) = (fun a : Fˣ => W₁ (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) + (fun a : Fˣ => W₂ (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2))`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha, hb]`. Use `⟨a₁.add a₂, b₁.add b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add' a₁ a₂, integral_add' b₁ b₂, e₁, e₂, mul_add]`. Consider the case `smul k W _ i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a₁, b₁, e₁⟩` from `i`. Establish `ha : (fun a : Fˣ => (k • W) (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) = fun a : Fˣ => k * (W (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s))`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hb : (fun a : Fˣ => (k • W) (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) = fun a : Fˣ => k * (W (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2))`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha, hb]`.
-
-Use `⟨a₁.const_mul k, b₁.const_mul k, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_const_mul, e₁]`. Expand and normalize the polynomial expressions, which then agree. Introduce `W hW c hc s hs0 hs1`. Conclude with `(key W hW c hc s hs0 hs1).2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem whittaker_induced_space : Ad3.SchwartzSpaceL2.FeGen → ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle),

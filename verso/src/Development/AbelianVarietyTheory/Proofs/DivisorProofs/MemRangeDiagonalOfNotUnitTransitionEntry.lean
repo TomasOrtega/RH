@@ -11,33 +11,29 @@ open Classical
 namespace GlobalTheory.FlagPush
 
 /- English proof (translation)
-Introduce `F _ X Y ι _ m E E' φ f hf W hα τ a b z`. Take `⟨k, _, w, rfl⟩ : ∃ (k : Type) (_ : Field k) (w : Sp k ⟶ W.Z), w (IsLocalRing.closedPoint k) = z` from `⟨W.Z.residueField z, inferInstance, W.Z.fromSpecResidueField z, Scheme.fromSpecResidueField_apply _ _⟩`. Introduce `A₁ hA₁ A₂ hA₂ hlow hnu`. Establish `hbase : W.p₁ ≫ f = W.p₂ ≫ f` using `GlobalTheory.T.maps_comp_eq_of_functionField_maps_agree F X Y φ f hf.hom W hα`. Take `⟨ev, hev, hq⟩` from `GlobalTheory.T.exists_eval_regular_functions_at_fieldPoint F Y W.Z k w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `W.diag k w ?_` and prove the remaining obligations. Take `⟨A, hA⟩` from `E.nonempty (f (W.p₁ (w (IsLocalRing.closedPoint k))))`. Establish `hff : f (W.p₂ (w (IsLocalRing.closedPoint k))) = f (W.p₁ (w (IsLocalRing.closedPoint k)))`. Rewrite using `[← Scheme.Hom.comp_apply W.p₂ f, ← hbase, Scheme.Hom.comp_apply]`. Establish `hM₁` using `hf.sub _ A₁ hA₁ A hA`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM₂` using `hf.sub _ A₂ hA₂ A ((congrArg (fun y => A ∈ E.S y) hff).mpr hA)`. Set `v : W.Z.functionField → k` to `fun x => if h : x ∈ (algebraMap (W.Z.presheaf.stalk (w (IsLocalRing.closedPoint k))) W.Z.functionField).range then ev ⟨x, h⟩ else 0`. Establish `hv : ∀ x : (algebraMap (W.Z.presheaf.stalk (w (IsLocalRing.closedPoint k))) W.Z.functionField).range, v x = ev x` using `fun x => dif_pos x.2`. Establish `hN₁` using `hM₁.map W.α₁ fun x hx => (hq W.p₁ x (mem_O_ratOf.1 hx)).1`. Establish `hN₂` using `hM₂.map W.α₂ fun x hx => (hq W.p₂ x (mem_O_ratOf.1 hx)).1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : ((A₁ * (A.map φ)⁻¹).map W.α₁).map v = (A₁ * (A.map φ)⁻¹).map ((ratOf Y).val (w ≫ W.p₁))`. Use function extensionality and compare the values at `σ`. Use extensionality with `i j`. Take `⟨h, e⟩` from `hq W.p₁ _ (mem_O_ratOf.1 ((hM₁ σ).1 i j))`. Conclude with `(hv ⟨_, h⟩).trans e`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₂ : ((A₂ * (A.map φ)⁻¹).map W.α₂).map v = (A₂ * (A.map φ)⁻¹).map ((ratOf Y).val (w ≫ W.p₂))`. Use function extensionality and compare the values at `σ`. Use extensionality with `i j`. Take `⟨h, e⟩` from `hq W.p₂ _ (mem_O_ratOf.1 ((hM₂ σ).1 i j))`. Conclude with `(hv ⟨_, h⟩).trans e`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hC : (A.map φ).map W.α₁ = (A.map φ).map W.α₂`. Use function extensionality and compare the values at `σ`. Use extensionality with `i j`. Conclude with `hα _`. Establish `hCd : ∀ σ, (((A.map φ).map W.α₂)⁻¹ σ).det ≠ 0` using `fun σ => by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hN₂.det_ne σ`. Rewrite `h` using `[Mat.map_mul, Mat.map_inv, Pi.mul_apply, Matrix.det_mul]`. Conclude with `right_ne_zero_of_mul h`. Establish `hg : A₁.map W.α₁ * (A₂.map W.α₂)⁻¹ = (A₁ * (A.map φ)⁻¹).map W.α₁ * ((A₂ * (A.map φ)⁻¹).map W.α₂)⁻¹`. Rewrite using `[Mat.map_mul, Mat.map_mul, Mat.map_inv, Mat.map_inv, hC, Mat.mul_inv_rev, mul_assoc, ← mul_assoc _ _ (A₂.map W.α₂)⁻¹, Mat.mul_inv hCd, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hG` using `hN₁.mul hN₂.inv`. Rewrite `hlow`, `hnu` using `[hg]`. Generalize the expression as in `hN1 : (A₁ * (A.map φ)⁻¹).map W.α₁ = N₁ at *`. Generalize the expression as in `hN2 : (A₂ * (A.map φ)⁻¹).map W.α₂ = N₂ at *`. Establish `hb₁` using `hN₁.map_of v ev hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb₂` using `hN₂.map_of v ev hv`. Establish `hbG` using `hG.map_of v ev hv`. Establish `hmul : (N₁ * N₂⁻¹).map v * N₂.map v = N₁.map v`. Rewrite using `[← hG.map_mul_of hN₂ v ev hv, mul_assoc, Mat.inv_mul hN₂.det_ne, mul_one]`. Establish `hv0 : v 0 = 0` using `(hv 0).trans (map_zero ev)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hlowv : Par m ⊤ ((N₁ * N₂⁻¹).map v)` using `fun σ => by`. Use `⟨(hbG σ).1, (hbG σ).2.1, (hbG σ).2.2.1, fun i j _ hij => ?_⟩` and prove the remaining obligations. Use `show v ((N₁ * N₂⁻¹) σ i j) = 0`. Distinguish the cases in `hc : (⟨σ, i⟩ : Root m) = ⟨τ, a⟩ ∧ (⟨σ, j⟩ : Root m) = ⟨τ, b⟩`. Take `⟨h1, h2⟩` from `hc`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `h1`. Establish `h3 : j = b` using `eq_of_heq (Sigma.mk.inj h2).2`. Substitute `h3` using the available equality. Assume the negation of the conclusion as `h0`. Conclude with `hnu ((hev ⟨_, (hG τ).1 a j⟩).1 fun h => h0 ((hv ⟨_, (hG τ).1 a j⟩).trans h))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlow.2.2 σ i j hij hc, hv0]`. Establish `hA' : A ∈ E.S ((w ≫ W.p₁ ≫ f) (IsLocalRing.closedPoint k))` using `(congrArg (fun y => A ∈ E.S y) ((Scheme.Hom.comp_apply w (W.p₁ ≫ f) _).trans (Scheme.Hom.comp_apply W.p₁ f _))).mpr hA`. Use `(hf.lifts k (w ≫ W.p₁ ≫ f) A hA' (N₁.map v) hb₁).unique ⟨Category.assoc _ _ _, A₁, ?_, ?_⟩ ⟨(Category.assoc _ _ _).trans (congrArg (w ≫ ·) hbase.symm), A₂, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun y => A₁ ∈ E'.S y) (Scheme.Hom.comp_apply w W.p₁ _)).mpr hA₁`. Establish `: Par m ⊤ (N₁.map v * (N₁.map v)⁻¹)` using `by rw [Mat.mul_inv hb₁.det_ne]; exact Par.one`.
-
-Conclude with `e₁ ▸ this`. Conclude with `(congrArg (fun y => A₂ ∈ E'.S y) (Scheme.Hom.comp_apply w W.p₂ _)).mpr hA₂`. Establish `: Par m ⊤ (N₁.map v * (N₂.map v)⁻¹)`. Rewrite using `[← hmul, mul_assoc, Mat.mul_inv hb₂.det_ne, mul_one]`. Conclude with `hlowv`.
-
-Conclude with `e₂ ▸ this`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_section_of_not_unitAt : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ W : Dbl Y, (∀ u : X.Fn, W.α₁ (φ u) = W.α₂ (φ u)) → ∀ (τ : ι) (a b : Fin (m τ)) (z : W.Z), ∀ A₁ ∈ E'.S (W.p₁ z), ∀ A₂ ∈ E'.S (W.p₂ z), AlmostLow τ a b (A₁.map W.α₁ * (A₂.map W.α₂)⁻¹) → ¬ UnitAt z ((A₁.map W.α₁ * (A₂.map W.α₂)⁻¹) τ a b) → z ∈ Set.range W.δ := by
   intro F _ X Y ι _ m E E' φ f hf W hα τ a b z

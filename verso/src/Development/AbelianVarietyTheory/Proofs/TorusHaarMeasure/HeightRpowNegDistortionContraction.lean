@@ -11,9 +11,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : (ω * p) ^ (-δ) ≤ q ^ (-δ)` using `Real.rpow_le_rpow_of_nonpos hq h (by linarith)`. Rewrite `h1` using `[Real.mul_rpow hω.le hp.le]`. Establish `h2 : ω ^ δ * ω ^ (-δ) = 1`. Rewrite using `[← Real.rpow_add hω]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : 0 < ω ^ δ` using `Real.rpow_pos_of_pos hω δ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem rpow_neg_le_of_le_mul {p q ω δ : ℝ} (hp : 0 < p) (hq : 0 < q) (hω : 0 < ω) (hδ : 0 ≤ δ)
     (h : q ≤ ω * p) : p ^ (-δ) ≤ ω ^ δ * q ^ (-δ) := by
@@ -27,23 +27,21 @@ theorem rpow_neg_le_of_le_mul {p q ω δ : ℝ} (hp : 0 < p) (hq : 0 < q) (hω :
     _ ≤ ω ^ δ * q ^ (-δ) := mul_le_mul_of_nonneg_left h1 h3.le
 
 /- English proof (translation)
-Introduce `r X d hd τ0 S hS hirr`. Take `⟨δ, c, ω, hδ, hc0, hc1, hω, H⟩` from `GlobalTheory.T.gramDet_inequalities_closed_forms.2.2.1 r S hS hirr`. Use `⟨δ, c, ω ^ δ, hδ, hc0, hc1, Real.one_le_rpow hω hδ.le, ?_⟩` and prove the remaining obligations. Introduce `x hx W`. Take `⟨m, hm, hmd⟩` from `GlobalTheory.T.exists_pos_le_latticeHeight_at_frame r X d hd x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hD : 0 < d x W` using `lt_of_lt_of_le hm (hmd W)`. Take `⟨M, hM, hstep⟩` from `GlobalTheory.T.latticeHeight_update_frameComponent r X d hd x hx τ0 W`. Take `⟨H1, H2⟩` from `H _ M hM`. Establish `hω0 : 0 < ω` using `by linarith`. Establish `hpos : ∀ a ∈ S, 0 < ((a * M)ᴴ * (a * M)).det.re`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha`. Use `lt_of_lt_of_le hM (H1 a ha).2` as an intermediate fact. Conclude with `(mul_pos_iff_of_pos_left hω0).mp this`. Use `⟨fun a ha => ?_, fun hb ht => ?_⟩` and prove the remaining obligations. Rewrite using `[hstep a (hS a ha).2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `H1 a ha`. Establish `hp` using `hpos a ha`. Generalize the expression as in `((a * M)ᴴ * (a * M)).det.re = A at h1 h2 hp`. Generalize the expression as in `(Mᴴ * M).det.re = B at h1 h2 hM`. Establish `hq : 0 < d x W * (A / B)` using `mul_pos hD (div_pos hp hM)`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rpow_neg_le_of_le_mul hq hD hω0 hδ.le ?_, rpow_neg_le_of_le_mul hD hq hω0 hδ.le ?_⟩` and prove the remaining obligations. Establish `: 1 ≤ ω * (A / B)`. Rewrite using `[← mul_div_assoc, le_div_iff₀ hM]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: A / B ≤ ω` using `by rw [div_le_iff₀ hM]; exact h1`. Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : 0 < Module.finrank E W`. Rewrite using `[Nat.pos_iff_ne_zero]`. Introduce `h`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hb (Submodule.finrank_eq_zero.mp h)`. Establish `hr : Module.finrank E W < r`. Use `Submodule.finrank_lt ht` as an intermediate fact. Simplify using `using this`. Establish `H3` using `H2 h0 hr`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hDp : 0 < d x W ^ (-δ)` using `Real.rpow_pos_of_pos hD _`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hstep a (hS a ha).2.1, Real.mul_rpow hD.le (div_pos (hpos a ha) hM).le]`. Use `_ = d x W ^ (-δ) * ∑ a ∈ S, (((a * M)ᴴ * (a * M)).det.re / (Mᴴ * M).det.re) ^ (-δ) := by rw [Finset.mul_sum]`.
-
-Use `_ ≤ d x W ^ (-δ) * (S.card * c) := mul_le_mul_of_nonneg_left H3 hDp.le`. Use `_ = _ := by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_rpow_neg_distortion_contraction : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ (τ0 : X.Ψ) (S : Finset (Matrix (Fin r) (Fin r) ℂ)), (∀ a ∈ S, a.IsHermitian ∧ a.det ≠ 0 ∧ a⁻¹ ∈ S) → (∀ W : Submodule ℂ (Fin r → ℂ), (∀ a ∈ S, ∀ v ∈ W, (a * a).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → ∃ δ c Ω : ℝ, 0 < δ ∧ 0 ≤ c ∧ c < 1 ∧ 1 ≤ Ω ∧ ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ W, (∀ a ∈ S, d (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ)) W ^ (-δ) ≤ Ω * d x W ^ (-δ) ∧ d x W ^ (-δ) ≤ Ω * d (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ)) W ^ (-δ)) ∧ (W ≠ ⊥ → W ≠ ⊤ → ∑ a ∈ S, d (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ)) W ^ (-δ) ≤ S.card * (c * d x W ^ (-δ)))) := by
   intro r X d hd τ0 S hS hirr

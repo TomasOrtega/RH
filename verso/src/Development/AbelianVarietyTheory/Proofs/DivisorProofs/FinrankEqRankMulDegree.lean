@@ -4,9 +4,9 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hmem` using `Ideal.absNorm_mem (Ideal.span {a})`. Rewrite `hmem` using `[Ideal.mem_span_singleton]`. Take `⟨b, hb⟩` from `hmem`. Establish `hn : Ideal.absNorm (Ideal.span {a}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Establish `h2 : (Ideal.absNorm (Ideal.span {a})) • m = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 F), hb, mul_comm, mul_smul, h, smul_zero]`. Conclude with `nsmul_right_injective hn (by simpa using h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_ringOfIntegers {F : Type} [Field F] [NumberField F] {M : Type}
     [AddCommGroup M] [Module (𝓞 F) M] [IsAddTorsionFree M] {a : 𝓞 F} (ha : a ≠ 0) {m : M}
@@ -21,17 +21,17 @@ theorem smul_eq_zero_of_ringOfIntegers {F : Type} [Field F] [NumberField F] {M :
   exact nsmul_right_injective hn (by simpa using h2)
 
 /- English proof (translation)
-Set `φ : (Fin r → 𝓞 F) →ₗ[ℤ] M` to `(Fintype.linearCombination (𝓞 F) x).restrictScalars ℤ`. Establish `hφ : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `g hg`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Fintype.linearIndependent_iff.mp hx g (by simpa [φ, Fintype.linearCombination_apply] using hg) i`. Establish `hdom : Module.finrank ℤ (Fin r → 𝓞 F) = r * Module.finrank ℚ F`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[RingOfIntegers.rank]`. Set `ψ : M →ₗ[ℤ] M` to `(LinearMap.lsmul (𝓞 F) M c).restrictScalars ℤ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : Function.Injective ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`. Conclude with `smul_eq_zero_of_ringOfIntegers hc (by simpa [ψ] using hm)`. Establish `hrange : ∀ m, ψ m ∈ LinearMap.range φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 F)).mp (hspan m)`. Conclude with `⟨g, by simpa [φ, ψ, Fintype.linearCombination_apply] using hg⟩`. Set `ψ' : M →ₗ[ℤ] LinearMap.range φ` to `ψ.codRestrict _ hrange`. Establish `hψ' : Function.Injective ψ'`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b hab`. Apply `hψ` to reduce the goal to its premises. Simplify `congrArg Subtype.val hab` using `[ψ']`. Establish `h1 : Module.finrank ℤ (Fin r → 𝓞 F) ≤ Module.finrank ℤ M` using `LinearMap.finrank_le_finrank_of_injective hφ`. Establish `hfin : Module.Finite ℤ (LinearMap.range φ)` using `inferInstance`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Module.finrank ℤ M ≤ Module.finrank ℤ (LinearMap.range φ)` using `LinearMap.finrank_le_finrank_of_injective hψ'`. Rewrite `h2` using `[LinearMap.finrank_range_of_inj hφ]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_int_eq_of_span_smul (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M]
     [Module (𝓞 F) M] [Module.Finite ℤ M] [IsAddTorsionFree M] (r : ℕ) (x : Fin r → M)

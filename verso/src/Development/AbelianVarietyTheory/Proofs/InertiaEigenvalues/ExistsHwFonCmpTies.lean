@@ -11,7 +11,7 @@ namespace GlobalTheory.HWL
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.HWL
 
 /- English proof (translation)
-Introduce `hBS L A hT`. Take `⟨H, F, hC⟩` from `GlobalTheory.T.exists_hwOf_fonOf_cmpOf' L A hT (fun l _ => GlobalTheory.T.wachLatticesExistAllLayers_of_bhattScholze hBS l (L l) (A l) (hT l))`. Conclude with `⟨H, F, hC, ⟨⟨fun l _ => Classical.choice (GlobalTheory.T.nonempty_theta_deRhamFil_zero_concretePeriod l (L l) (A l) (hT l))⟩⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hw_fon_cmp_ties : GlobalTheory.Published.BhattScholzeCrystallineLattices →
     ∀ (L : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (L l)),

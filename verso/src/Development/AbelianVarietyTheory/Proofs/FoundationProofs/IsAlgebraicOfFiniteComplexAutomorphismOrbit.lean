@@ -11,15 +11,15 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FinOrbit
 
 /- English proof (translation)
-Establish `hind : AlgebraicIndepOn E id ({z} : Set ℂ)`. Rewrite using `[AlgebraicIndepOn, algebraicIndependent_unique_type_iff]`. Simplify using `using hz`. Take `⟨B, hzB, hB⟩` from `exists_isTranscendenceBasis_superset hind`. Establish `hzB' : z ∈ B` using `hzB rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `` to `IsAlgClosed.isAlgClosure_of_transcendence_basis _ hB`. Set `b0 : B` to `⟨z, hzB'⟩`. Set `f : B → MvPolynomial B E` to `fun i => if i = b0 then MvPolynomial.X i + (k : MvPolynomial B E) else MvPolynomial.X i`. Set `f' : B → MvPolynomial B E` to `fun i => if i = b0 then MvPolynomial.X i - (k : MvPolynomial B E) else MvPolynomial.X i`. Apply the tactic sequence `let n : MvPolynomial B E ≃ₐ[E] MvPolynomial B E := AlgEquiv.ofAlgHom (MvPolynomial.aeval f) (MvPolynomial.aeval f') (by ext i; by_cases h : i = b0 <;> simp [f, f', h]) (by ext i; by_cases h : i = b0 <;> simp [f, f', h])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `e` to `(hB.1.aevalEquiv.symm.trans (n.trans hB.1.aevalEquiv))`. Set `g0` to `IsAlgClosure.equivOfEquiv ℂ ℂ e.toRingEquiv`. Establish `hcomm : ∀ c : E, g0 (algebraMap E ℂ c) = algebraMap E ℂ c`. Introduce `c`. Rewrite using `[IsScalarTower.algebraMap_apply E (Algebra.adjoin E (Set.range ((↑) : B → ℂ))) ℂ, IsAlgClosure.equivOfEquiv_algebraMap]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨AlgEquiv.ofRingEquiv (f := g0) hcomm, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap _ ℂ (hB.1.aevalEquiv (MvPolynomial.X b0)) = z`. Rewrite using `[hB.1.algebraMap_aevalEquiv, MvPolynomial.aeval_X]`. Use `show g0 z = z + k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← h1]`. Rewrite using `[IsAlgClosure.equivOfEquiv_algebraMap]`. Establish `: e.toRingEquiv (hB.1.aevalEquiv (MvPolynomial.X b0)) = hB.1.aevalEquiv (MvPolynomial.X b0 + (k : MvPolynomial B E))`. Simplify using `[e, n, f]`. Rewrite using `[this, map_add, map_natCast, map_add, map_natCast, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algEquiv_shift (E : Subfield ℂ) (z : ℂ) (hz : Transcendental E z) (k : ℕ) :
     ∃ g : ℂ ≃ₐ[E] ℂ, g z = z + k := by
@@ -58,9 +58,9 @@ theorem exists_algEquiv_shift (E : Subfield ℂ) (z : ℂ) (hz : Transcendental 
   rw [this, map_add, map_natCast, map_add, map_natCast, h1]
 
 /- English proof (translation)
-Introduce `E x hfin`. Assume the negation of the conclusion as `hx`. Apply `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => x + (k : ℂ)) _ _ hfin` to reduce the goal to its premises. Introduce `a b hab`. Simplify using `using hab`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `k`. Take `⟨g, hg⟩` from `exists_algEquiv_shift E x hx k`. Conclude with `⟨g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAlgebraic_of_finite_orbit :
     ∀ (E : Subfield ℂ) (x : ℂ), (Set.range fun g : ℂ ≃ₐ[E] ℂ => g x).Finite → IsAlgebraic E x := by

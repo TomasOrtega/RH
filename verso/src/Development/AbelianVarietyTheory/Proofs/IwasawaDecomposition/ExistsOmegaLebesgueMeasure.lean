@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.OmegaLebExists
 
 /- English proof (translation)
-Unfold `Formalism.UG.Jpq`. Rewrite using `[fromBlocks_conjTranspose]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem J_conjTranspose (P Q : ℕ) : (Formalism.UG.Jpq P Q)ᴴ = Formalism.UG.Jpq P Q := by
   unfold Formalism.UG.Jpq

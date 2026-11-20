@@ -29,24 +29,22 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-Simplify using `[Hom.one_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_comp_monHom {S : Scheme.{0}} {T G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H)
     [IsMonHom f] : (1 : T ⟶ G) ≫ f = 1 := by
   simp [Hom.one_def]
 
 /- English proof (translation)
-Introduce `hQ hZ hD p _ C _ _ _ v R _ _ hint hp hc A _ L hA hL hamp T N _ _ _ pt hpt K`. Use `haveI : IsCommMonObj A := hA.comm`. Establish `hsub` using `GlobalTheory.T.torsion_points_finite_flat_subgroup p C v R hint hp A T N pt hpt K`. Take `⟨A', _, L', q, hA', hL', hamp', hq, -, -, -, hker⟩` from `hQ R A L hA hL hamp _ _ hsub`. Take `⟨P, i, r, hi, hr, hir⟩` from `hZ C v R hint A' L' hA' hL' hamp'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsCommMonObj P.A := P.isAb.comm`. Use `haveI := hq`. Use `haveI := hi`. Use `haveI := hr`. Establish `hj : ∀ (S : Type) [CommRing S] [Algebra R S] (z : sp (R₀` using `R) S ⟶ A), z ≫ (q ≫ i) = 1 ↔ ∃ φ : (T.A ⧸ vanIdeal T pt K) →ₐ[R] S, spMap φ ≫ (spMap (Ideal.Quotient.mkₐ R (vanIdeal T pt K)) ≫ T.y) = z := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `S _ _ z`. Rewrite using `[← hker S z]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : (z ≫ q ≫ i) ≫ r = z ≫ q` using `by simp [hir]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h1, h, one_comp_monHom]`. Introduce `h`. Rewrite using `[← Category.assoc, h, one_comp_monHom]`. Use `letI : Algebra ℤ_[p] R := (Av.zpLift p R hc).toAlgebra`. Take `⟨⟨T'⟩, cp, -, -, pt', hpt', -⟩` from `hD p C v R hint hp hc P`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hjm : IsMonHom (q ≫ i)` using `inferInstance`. Take `⟨jN, -, hjN, -, hpull⟩` from `GlobalTheory.T.torsion_points_isogeny_hopf_order p C v R hint hp A P.A T N pt hpt T' _ pt' hpt' (q ≫ i) hjm`. Take `⟨hK, hid⟩` from `GlobalTheory.T.torsion_points_homomorphism_compatible p C v R hint hp A P.A T N pt hpt T' _ pt' hpt' (q ≫ i) hjm K hj jN hjN`. Take `⟨⟨AA, hAA⟩, -⟩` from `GlobalTheory.T.torsion_points_hopf_order p C v R hint hp A T N pt hpt`. Take `⟨⟨AP, hAP⟩, -⟩` from `GlobalTheory.T.torsion_points_hopf_order p C v R hint hp P.A T' _ pt' hpt'`.
-
-Establish `hinv` using `GlobalTheory.T.hopf_order_pullback_along_hom p C v R hint hp N AA _ AP jN (by rw [hAA, hAP]; exact hpull) (by rw [hAA, hAP]; exact hid)`. Rewrite `hinv` using `[hAA, hAP, hK]`. Conclude with `GlobalTheory.T.generation_along_invariants p C R N _ _ _ jN K hinv (gp_polAV hD p C v R hint hp hc P T' _ pt' hpt').1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_abelianScheme : QuotientByFiniteFlatStatement → ZarhinStatement →
     HodgeTateDatumStatement → ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]

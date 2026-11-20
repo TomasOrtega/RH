@@ -11,7 +11,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Unfold `P5.fsv`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fsv_mul_fsv (a b t : ℂ) : P5.fsv a t * P5.fsv b t = P5.fsv (a + b) t := by
   unfold P5.fsv
@@ -37,7 +37,7 @@ theorem uInv_cons_apply (s : ℂ) (l : C.Letter) (w : List C.Letter)
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `e'`. Rewrite using `[uInv_cons_apply, if_pos (by simp)]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uInv_cons0 (s : ℂ) (l : C.Letter) (w : List C.Letter)
     (x : Wd.Ix (Fin (w.length + 1)) → B.Mat k ρ → (Wq →L[ℂ] Wp)) :
@@ -47,7 +47,7 @@ theorem uInv_cons0 (s : ℂ) (l : C.Letter) (w : List C.Letter)
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `e'`. Rewrite using `[uInv_cons_apply, if_neg (by simp)]`. Simplify using `only [Fin.cons_succ, Pi.add_apply, Pi.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uInv_cons1 (s : ℂ) (l : C.Letter) (w : List C.Letter)
     (x : Wd.Ix (Fin (w.length + 1)) → B.Mat k ρ → (Wq →L[ℂ] Wp)) :
@@ -58,7 +58,7 @@ theorem uInv_cons1 (s : ℂ) (l : C.Letter) (w : List C.Letter)
   simp only [Fin.cons_succ, Pi.add_apply, Pi.smul_apply]
 
 /- English proof (translation)
-The claim follows from `| [], x => rfl | l :: w, x => by funext e rw [uInv_cons_apply, uInv_cons0, uInv_cons1, uInv_cons_apply (s + σ), Formalism.FourierDecayAlt.P.PBG.uInv_add_smul, uInv_comp s σ w, uInv_comp s σ w] split_ifs with h0 hl · rfl · simp only [Pi.add_apply, Pi.smul_apply] rw [add_assoc, ← a …`.
+A detailed English derivation is pending.
 -/
 theorem uInv_comp (s σ : ℂ) : ∀ (w : List C.Letter) (x : Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq →L[ℂ] Wp)),
     KB.uInv s w (KB.uInv σ w x) = KB.uInv (s + σ) w x
@@ -75,7 +75,7 @@ theorem uInv_comp (s σ : ℂ) : ∀ (w : List C.Letter) (x : Wd.Ix (Fin w.lengt
       rw [add_assoc, ← add_smul, add_comm (conj σ) (conj s)]
 
 /- English proof (translation)
-The claim follows from `| [], x => rfl | l :: w, x => by funext e g rw [uInv_cons_apply, uInv_cons_apply] have h0 : (fun e' => (fun e g => φ g • x e g) (Fin.cons (0 : Fin 2) e')) = fun e' g => φ g • (fun e' => x (Fin.cons (0 : Fin 2) e')) e' g := rfl have h1 : (fun e' => (fun e g => φ g • x e g) (Fin.co …`.
+A detailed English derivation is pending.
 -/
 theorem uInv_smulFun (s : ℂ) (φ : B.Mat k ρ → ℂ) : ∀ (w : List C.Letter)
     (x : Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq →L[ℂ] Wp)),
@@ -97,7 +97,7 @@ theorem uInv_smulFun (s : ℂ) (φ : B.Mat k ρ → ℂ) : ∀ (w : List C.Lette
       rw [smul_comm]
 
 /- English proof (translation)
-Establish `e : KB.waveG Bs σ w x = fun e g => P5.fsv σ (Dmin k ρ Bs.z Bs.z' g ⟨1, by omega⟩) • KB.uInv σ w x e g` using `rfl`. Use function extensionality and compare the values at `e' g`. Rewrite using `[e]`. Use `show P5.fsv s (Dmin k ρ Bs.z Bs.z' g ⟨1, by omega⟩) • KB.uInv s w (fun e g => P5.fsv σ (Dmin k ρ Bs.z Bs.z' g ⟨1, by omega⟩) • KB.uInv σ w x e g) e' g = P5.fsv (s + σ) (Dmin k ρ Bs.z Bs.z' g ⟨1, by omega⟩) • KB.uInv (s + σ) w x e' g`. Rewrite using `[uInv_smulFun, uInv_comp, smul_smul, fsv_mul_fsv]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem waveG_comp (Bs : B.RealPlaceData k ρ Wp Wq) (s σ : ℂ) (w : List C.Letter)
     (x : Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq →L[ℂ] Wp)) :
@@ -111,7 +111,7 @@ theorem waveG_comp (Bs : B.RealPlaceData k ρ Wp Wq) (s σ : ℂ) (w : List C.Le
   rw [uInv_smulFun, uInv_comp, smul_smul, fsv_mul_fsv]
 
 /- English proof (translation)
-The claim follows from `| [], x => hM x | _ :: ys, x => by funext e show KB.onOld M ys (fun e' => x (Fin.cons (e (0 : Fin ((KB.plusW ys w).length + 1))) e')) (fun a => e a.succ) = x e rw [onOld_eq_self M hM ys] exact congrArg x (Fin.cons_self_tail e)`.
+A detailed English derivation is pending.
 -/
 theorem onOld_eq_self {w : List C.Letter}
     (M : (Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq →L[ℂ] Wp)) → Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq →L[ℂ] Wp))
@@ -125,11 +125,11 @@ theorem onOld_eq_self {w : List C.Letter}
     exact congrArg x (Fin.cons_self_tail e)
 
 /- English proof (translation)
-Establish `hV : ∀ y, waveL Bs σ w y = KB.waveG Bs σ w y` using `fun _ => rfl`. Establish `e2 : KB.waveG Bs σ w (KB.waveG Bs σ w x) = KB.waveG Bs (2 * σ) w x`. Rewrite using `[waveG_comp]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e3 : KB.waveG Bs σ w (KB.waveG Bs (2 * σ) w x) = KB.waveG Bs (3 * σ) w x`. Rewrite using `[waveG_comp]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [mDiff, pow_succ, pow_zero, one_mul, Module.End.mul_apply, LinearMap.sub_apply, Module.End.one_apply, map_sub, hV]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, e3]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mDiff_eq (Bs : B.RealPlaceData k ρ Wp Wq) (σ : ℂ) (w : List C.Letter)
     (x : Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq →L[ℂ] Wp)) :
@@ -153,7 +153,7 @@ variable {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Rewrite using `[mDiff_eq]`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mDiff_apply_eq (Bs : B.RealPlaceData k ρ Wp Wq) (σ : ℂ) (w : List C.Letter)
     (x : Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq →L[ℂ] Wp)) (e : Wd.Ix (Fin w.length)) :
@@ -164,7 +164,7 @@ theorem mDiff_apply_eq (Bs : B.RealPlaceData k ρ Wp Wq) (σ : ℂ) (w : List C.
   module
 
 /- English proof (translation)
-Introduce `e`. Rewrite using `[mDiff_apply_eq]`. Establish `hw : ∀ t, JC.NiceCoef Bs ε (KB.waveG Bs t w x e)` using `fun t => Formalism.FourierDecayAlt.P.PBFV.waveG_nice Bs ε t w x hx e`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_add (Formalism.FourierDecayAlt.P.JCx2.mn_nice_add (Formalism.FourierDecayAlt.P.JCx2.mn_nice_add (hw _) (Formalism.FourierDecayAlt.P.JCx2.mn_nice_smul _ (hw _))) (Formalism.FourierDecayAlt.P.JCx2.mn_nice_smul _ (hw _))) (Formalism.FourierDe …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mDiff_nice (Bs : B.RealPlaceData k ρ Wp Wq) (σ : ℂ) (w : List C.Letter) (ε : ℝ)
     (x : Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq →L[ℂ] Wp)) (hx : ∀ e, JC.NiceCoef Bs ε (x e)) :
@@ -184,7 +184,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hc : ∀ t e, KB.CptCoef (p.T.bs j) (KB.waveG (p.T.bs j) t w x e)` using `fun t => (Formalism.FourierDecayAlt.P.vector_isomorphism_compact_support hP Wp Wq P p j hj w hw t x x hx hx).1`. Introduce `e`. Rewrite using `[mDiff_apply_eq]`. Conclude with `Formalism.FourierDecayAlt.P.PBG.cpt_add_smul _ _ (Formalism.FourierDecayAlt.P.PBG.cpt_add_smul _ _ (Formalism.FourierDecayAlt.P.PBG.cpt_add_smul _ _ (hc _ e) (hc _ e)) (hc _ e)) (hx e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mDiff_cpt (hP : P5.ThmPActualCpt) (P : M.Par) (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r)
     (w : List C.Letter) (hw : KB.CutWord P p.l0 w) (σ : ℂ)
@@ -198,15 +198,13 @@ theorem mDiff_cpt (hP : P5.ThmPActualCpt) (P : M.Par) (p : KB.Pl P Wp Wq) (j : �
     (Formalism.FourierDecayAlt.P.PBG.cpt_add_smul _ _ (hc _ e) (hc _ e)) (hc _ e)) (hx e)
 
 /- English proof (translation)
-Take `⟨ε, hε, hxn⟩` from `nice_common (p.T.bs j) hx`. Take `⟨ε', hε', hyn⟩` from `nice_common (p.T.bs j) hy`. Establish `hd : ∀ t, Formalism.FourierDecayAlt.P.PBG.DecV (KB.waveG (p.T.bs j) t w x)` using `fun t => Formalism.FourierDecayAlt.P.PBG.decV_of_nice (Formalism.FourierDecayAlt.P.PBFV.waveG_nice (p.T.bs j) ε t w x hxn)`. Establish `hdy : Formalism.FourierDecayAlt.P.PBG.DecV y` using `Formalism.FourierDecayAlt.P.PBG.decV_of_nice hyn`. Establish `hV : ∀ z, waveL (p.T.bs j) s w z = KB.waveG (p.T.bs j) s w z` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : KB.waveG (p.T.bs j) s w (mDiff (p.T.bs j) σ w x) = KB.waveG (p.T.bs j) (s + 3 * σ) w x + (-3 : ℂ) • KB.waveG (p.T.bs j) (s + 2 * σ) w x + (3 : ℂ) • KB.waveG (p.T.bs j) (s + σ) w x + (-1 : ℂ) • KB.waveG (p.T.bs j) s w x`. Rewrite using `[mDiff_eq]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sub, map_add, map_smul]`. Use `_ = _ := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hV, waveG_comp]`. Use `module`. Rewrite using `[hW]`. Unfold `KB.Pl.form`. Use `set A3 := KB.waveG (p.T.bs j) (s + 3 * σ) w x`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set A2 := KB.waveG (p.T.bs j) (s + 2 * σ) w x`. Use `set A1 := KB.waveG (p.T.bs j) (s + σ) w x`. Use `set A0 := KB.waveG (p.T.bs j) s w x`. Establish `d32` using `Formalism.FourierDecayAlt.P.PBG.decV_add (hd (s + 3 * σ)) (Formalism.FourierDecayAlt.P.PBG.decV_smul (-3 : ℂ) (hd (s + 2 * σ)))`. Establish `d321` using `Formalism.FourierDecayAlt.P.PBG.decV_add d32 (Formalism.FourierDecayAlt.P.PBG.decV_smul (3 : ℂ) (hd (s + σ)))`.
-
-Rewrite using `[Formalism.FourierDecayAlt.P.PBG.form_sesq_left P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w (A3 + (-3 : ℂ) • A2 + (3 : ℂ) • A1) A0 y (-1) d321 (hd s) hdy, Formalism.FourierDecayAlt.P.PBG.form_sesq_left P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w (A3 + (-3 : ℂ) • A2) A1 y 3 d32 (hd (s + σ)) hdy …`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem form_wave_mDiff (P : M.Par) (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter)
     (x y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))

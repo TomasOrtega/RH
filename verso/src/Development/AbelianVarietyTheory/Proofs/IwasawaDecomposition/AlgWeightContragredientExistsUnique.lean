@@ -13,7 +13,7 @@ variable (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
 local notation3 "L⁺" => NumberField.maximalRealSubfield L
 
 /- English proof (translation)
-Take `⟨I, hbot, htop⟩` from `Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top.mp (NumberField.RingOfIntegers.not_isField L⁺)`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I htop.ne`. Conclude with `⟨⟨M, hM.isPrime, fun h => by`. Rewrite `hIM` using `[h]`. Conclude with `hbot.ne' (le_bot_iff.mp hIM)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_place : Nonempty (IsDedekindDomain.HeightOneSpectrum (𝓞 L⁺)) := by
   obtain ⟨I, hbot, htop⟩ := Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top.mp
@@ -24,7 +24,7 @@ theorem exists_finite_place : Nonempty (IsDedekindDomain.HeightOneSpectrum (𝓞
     exact hbot.ne' (le_bot_iff.mp hIM)⟩⟩
 
 /- English proof (translation)
-Take `⟨v⟩` from `exists_finite_place L`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Use `congrArg (evalAt L v) h` as an intermediate fact. Rewrite `this` using `[map_zero, map_one]`. Conclude with `zero_ne_one this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_finiteAdeles : Nontrivial (AFplus L) := by
   obtain ⟨v⟩ := exists_finite_place L
@@ -34,7 +34,7 @@ theorem nontrivial_finiteAdeles : Nontrivial (AFplus L) := by
   exact zero_ne_one this
 
 /- English proof (translation)
-Use `haveI := nontrivial_finiteAdeles L`. Conclude with `Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_flat_left _ _ _ (algebraMap (L⁺) (AFplus L)).injective`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_adeles : Nontrivial (AL L) := by
   haveI := nontrivial_finiteAdeles L
@@ -42,7 +42,7 @@ theorem nontrivial_adeles : Nontrivial (AL L) := by
     (algebraMap (L⁺) (AFplus L)).injective
 
 /- English proof (translation)
-Use `haveI := nontrivial_adeles L`. Conclude with `(Algebra.TensorProduct.includeLeftRingHom : L →+* AL L).injective`.
+A detailed English derivation is pending.
 -/
 theorem includeLeft_injective :
     Function.Injective (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L) := by
@@ -52,11 +52,11 @@ theorem includeLeft_injective :
 variable {L n}
 
 /- English proof (translation)
-Establish `hγ : ((γ : GAf L n) : GL (Fin n) (AL L)) ∈ (GQ0 L n).map (Matrix.GeneralLinearGroup.map (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L))` using `γ.2`. Take `⟨γ₁, h₁, he⟩` from `hγ`. Establish `hmat : (γ₀ : Matrix (Fin n) (Fin n) L) = (γ₁ : Matrix (Fin n) (Fin n) L)`. Use extensionality with `i j`. Apply `includeLeft_injective L` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1` using `congrFun (congrFun hm i) j`. Establish `e2` using `congrArg (fun g : GL (Fin n) (AL L) => (g : Matrix (Fin n) (Fin n) (AL L)) i j) he`. Simplify using `only [Matrix.map_apply] at e1 e2`. Rewrite using `[← e1, ← e2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[show γ₀ = γ₁ from Units.ext hmat]`. Conclude with `h₁`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_rationalUnitaryGroup_of_matrix_match (γ : GQ L n) (γ₀ : GL (Fin n) L)
     (hm : (((γ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) =
@@ -76,7 +76,7 @@ theorem mem_rationalUnitaryGroup_of_matrix_match (γ : GQ L n) (γ₀ : GL (Fin 
   exact h₁
 
 /- English proof (translation)
-Establish `hm : ((γ : GAf L n) : GL (Fin n) (AL L)) = Matrix.GeneralLinearGroup.map (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L) γ₀` using `Units.ext h`. Establish `: (((γ⁻¹ : GQ L n) : GAf L n) : GL (Fin n) (AL L)) = Matrix.GeneralLinearGroup.map (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L) γ₀⁻¹`. Rewrite using `[map_inv, ← hm]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -96,7 +96,7 @@ theorem match_inv (γ : GQ L n) (γ₀ : GL (Fin n) L)
   rfl
 
 /- English proof (translation)
-Establish `h1 : ((γ₀⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = conjT (IsCMField.complexConj L : L →+* L) (γ₀ : Matrix (Fin n) (Fin n) L)` using `Units.inv_eq_of_mul_eq_one_right hγ`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inv_entry (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n) (k l : Fin n) :
     ((γ₀⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) k l =
@@ -108,11 +108,11 @@ theorem inv_entry (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n) (k l : Fin n)
   rfl
 
 /- English proof (translation)
-Take `⟨hfd, ι, _, _, b, P, hP⟩` from `a.alg`. Use `⟨inferInstance, ι, inferInstance, inferInstance, b.dualBasis, fun i j => MvPolynomial.rename (fun p : (L →+* ℂ) × Fin n × Fin n => (ComplexEmbedding.conjugate p.1, p.2.2, p.2.1)) (P j i), ?_⟩` and prove the remaining obligations. Introduce `γ γ₀ h`. Establish `hinv` using `hP γ⁻¹ γ₀⁻¹ (match_inv γ γ₀ h)`. Establish `hγ` using `mem_rationalUnitaryGroup_of_matrix_match γ γ₀ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : LinearMap.toMatrix b.dualBasis b.dualBasis (a.ρ.dual γ) = Matrix.transpose (LinearMap.toMatrix b b (a.ρ γ⁻¹))`. Rewrite using `[Representation.dual_apply, LinearMap.toMatrix_transpose]`. Rewrite using `[e, hinv]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `MvPolynomial.eval (fun p : (L →+* ℂ) × Fin n × Fin n => p.1 (((γ₀⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) p.2.1 p.2.2)) (P j i) = MvPolynomial.eval (fun p : (L →+* ℂ) × Fin n × Fin n => p.1 ((γ₀ : Matrix (Fin n) (Fin n) L) p.2.1 p.2.2)) (MvPolynomial.rename (fun p : (L →+* …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MvPolynomial.eval_rename]`. Use `congrArg (fun f => MvPolynomial.eval f (P j i)) (funext fun p => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Apply the tactic sequence `rw [inv_entry γ₀ hγ, ComplexEmbedding.conjugate_coe_eq]`. Conclude with `IsCMField.complexEmbedding_complexConj L p.1 _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgWeight_dual (a : Formalism.L2.NG.AlgWt L n) : IsAlgWeight L n a.ρ.dual := by
   obtain ⟨hfd, ι, _, _, b, P, hP⟩ := a.alg
@@ -150,19 +150,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.WtDual
 
 /- English proof (translation)
-Establish `hnt : Nontrivial V`. Assume the negation of the conclusion as `hs`. Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Take `⟨S, T, hST⟩` from `(hρ : IsSimpleOrder _).toNontrivial.exists_pair_ne`. Conclude with `hST (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hntD : Nontrivial (Module.Dual ℂ V)` using `inferInstance`. Use `{ toNontrivial := ⟨⟨⊥, ⊤, fun h => ?_⟩⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Establish `h1` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `(bot_ne_top : (⊥ : Submodule ℂ (Module.Dual ℂ V)) ≠ ⊤) h1`. Set `C : Subrepresentation ρ` to `{ toSubmodule := U.toSubmodule.dualCoannihilator apply_mem_toSubmodule := fun g v hv => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv`, the goal using `[Submodule.mem_dualCoannihilator]`. Introduce `φ hφ`. Establish `h2` using `hv _ (U.apply_mem_toSubmodule g⁻¹ hφ)`. Simplify using `[Representation.dual_apply] at h2`. Conclude with `h2 }`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Break down `hρ.eq_bot_or_eq_top C with hC | hC` into its components or cases. Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Establish `hC' : U.toSubmodule.dualCoannihilator = ⊥` using `congrArg Subrepresentation.toSubmodule hC`. Use `show U.toSubmodule = ⊤`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := U.toSubmodule), hC', Submodule.dualAnnihilator_bot]`. Use `left`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Establish `hC' : U.toSubmodule.dualCoannihilator = ⊤` using `congrArg Subrepresentation.toSubmodule hC`. Use `show U.toSubmodule = ⊥`.
-
-Rewrite using `[eq_bot_iff]`. Introduce `φ hφ`. Rewrite using `[Submodule.mem_bot]`. Use extensionality with `v`. Establish `hv : v ∈ U.toSubmodule.dualCoannihilator` using `by rw [hC']; exact Submodule.mem_top`.
-
-Conclude with `(Submodule.mem_dualCoannihilator _).1 hv φ hφ`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dual_isIrreducible {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ G V) (hρ : ρ.IsIrreducible) : ρ.dual.IsIrreducible := by
@@ -211,13 +207,11 @@ def dualWt (a : NG.AlgWt L n) : NG.AlgWt L n where
     exact dual_isIrreducible a.ρ a.irr
 
 /- English proof (translation)
-Use `⟨Module.Dual.eval ℂ a.W, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hnt : Nontrivial a.W`. Assume the negation of the conclusion as `hs`. Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨S, T, hST⟩` from `(a.irr : IsSimpleOrder _).toNontrivial.exists_pair_ne`. Conclude with `hST (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`. Take `⟨x, hx⟩` from `exists_ne (0 : a.W)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ a.W, f x ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `hx ((Module.forall_dual_apply_eq_zero_iff ℂ x).mp hc)`. Establish `h1` using `LinearMap.congr_fun (LinearMap.congr_fun h0 x) f`. Simplify using `only [Module.Dual.eval_apply, LinearMap.zero_apply] at h1`. Conclude with `hf h1`.
-
-Introduce `γ x (y : Module.Dual ℂ a.W) show y (a.ρ γ⁻¹ (a.ρ γ x)) = y x`. Rewrite using `[Representation.inv_self_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDual_dualWt (a : NG.AlgWt L n) : a.IsDual (dualWt a) := by
   refine ⟨Module.Dual.eval ℂ a.W, ?_, ?_⟩
@@ -240,15 +234,13 @@ theorem isDual_dualWt (a : NG.AlgWt L n) : a.IsDual (dualWt a) := by
     rw [Representation.inv_self_apply]
 
 /- English proof (translation)
-Use `haveI := a.alg.1`. Use `haveI := b.alg.1`. Use `haveI := b'.alg.1`. Use `haveI := a.irr`. Use `haveI := b.irr`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `haveI := b'.irr`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC0, hC⟩`. Take `⟨B, hB0, hB⟩` from `hab`. Conclude with `PI.UnitaryGroupMassFormula.AlgWtDualUniq.dual_unique (ρa := a.ρ) B hB hB0 C hC hC0`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `⟨T, hT⟩`. Take `⟨B, hB0, hB⟩` from `hab`. Use `⟨B.compl₂ T.symm.toLinearMap, fun h => hB0 ?_, fun γ x y => ?_⟩` and prove the remaining obligations. Use extensionality with `x y`. Use `LinearMap.congr_fun (LinearMap.congr_fun h x) (T y)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Establish `e : T.symm (b'.ρ γ y) = b.ρ γ (T.symm y)`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[hT]`. Simplify using the standard rewrite rules.
-
-Simplify using `only [LinearMap.compl₂_apply, LinearEquiv.coe_coe]`. Rewrite using `[e, hB]`.
+A detailed English derivation is pending.
 -/
 theorem isDual_iff_iso (a b b' : NG.AlgWt L n) (hab : a.IsDual b) : a.IsDual b' ↔ b.Iso b' := by
   haveI := a.alg.1; haveI := b.alg.1; haveI := b'.alg.1
@@ -271,11 +263,11 @@ theorem isDual_iff_iso (a b b' : NG.AlgWt L n) (hab : a.IsDual b) : a.IsDual b' 
       rw [e, hB]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Take `⟨B, hB0, hB⟩` from `hab`. Use `⟨B.comp T.symm.toLinearMap, fun h => hB0 ?_, fun γ x y => ?_⟩` and prove the remaining obligations. Use extensionality with `x y`. Use `LinearMap.congr_fun (LinearMap.congr_fun h (T x)) y` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `e : T.symm (a'.ρ γ x) = a.ρ γ (T.symm x)`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[hT]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[e, hB]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDual_of_iso {a a' b : NG.AlgWt L n} (h : a.Iso a') (hab : a.IsDual b) : a'.IsDual b := by
   obtain ⟨T, hT⟩ := h
@@ -292,9 +284,9 @@ theorem isDual_of_iso {a a' b : NG.AlgWt L n} (h : a.Iso a') (hab : a.IsDual b) 
     rw [e, hB]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Take `⟨ι, hfin, hdec, b, P, hP, v, hv0, hv⟩` from `hw`. Use `⟨ι, hfin, hdec, b.map T, P, fun γ γ₀ hm => ?_, v, hv0, hv⟩` and prove the remaining obligations. Rewrite using `[← hP γ γ₀ hm]`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, Module.Basis.map_apply, Module.Basis.map_repr, LinearEquiv.trans_apply, ← hT, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hwAt_of_iso {a a' : NG.AlgWt L n} (h : a.Iso a') {τ : L →+* ℂ} {lam : Fin n → ℤ} (hw : a.HWAt τ lam) :
     a'.HWAt τ lam := by
@@ -309,7 +301,7 @@ theorem hwAt_of_iso {a a' : NG.AlgWt L n} (h : a.Iso a') {τ : L →+* ℂ} {lam
 end GlobalTheory.WtDual
 
 /- English proof (translation)
-Introduce `L _ _ _ n a`. Establish `hd` using `GlobalTheory.WtDual.isDual_dualWt a`. Conclude with `⟨GlobalTheory.WtDual.dualWt a, hd, fun b' => GlobalTheory.WtDual.isDual_iff_iso a _ b' hd, fun a' h => ⟨GlobalTheory.WtDual.isDual_of_iso h hd, fun τ lam hw => GlobalTheory.WtDual.hwAt_of_iso h hw⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.algWt_contragredient : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n),
     ∃ b : NG.AlgWt L n, a.IsDual b ∧ (∀ b', a.IsDual b' ↔ b.Iso b') ∧

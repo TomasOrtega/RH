@@ -16,14 +16,14 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.fin_orb, h.fin_stab, h.unit, h.root, h.lsh_smul, h.lsh_lat, h.stab_inj⟩`.
+Supply the required witnesses or components.
 -/
 theorem GStep.Ok.reRep {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ} {S : GStep E K n} (h : S.Ok)
     (pref : ∀ b, S.D b → Prop) : (S.reRep pref).Ok :=
   ⟨h.fin_orb, h.fin_stab, h.unit, h.root, h.lsh_smul, h.lsh_lat, h.stab_inj⟩
 
 /- English proof (translation)
-Introduce `b g d hd` and use `h b g d hd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GStep.Free.reRep {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S : GStep E K n} (h : S.Free)
     (pref : ∀ b, S.D b → Prop) : (S.reRep pref).Free := fun b g d hd => h b g d hd
@@ -33,7 +33,7 @@ namespace TC
 variable {B : Base} {X : PreX B.toPre} {I : TC B X}
 
 /- English proof (translation)
-Establish `ht : IsOfFinOrder (I.tup a : Chr B.fields.F B.fields.E B.fields.K)` using `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (I.tup a).2).1).1).1).2`. Take `⟨n, hn, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.1 ht`. Conclude with `HChar.isUnitary_of_order hn ((h.xi_reads a).orderDvd hpow)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.xi_unitary (h : I.Ok) (a : I.ι) : (I.xi a).IsUnitary := by
   have ht : IsOfFinOrder (I.tup a : Chr B.fields.F B.fields.E B.fields.K) :=
@@ -42,11 +42,9 @@ theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.xi_unitary (h : I.Ok) (a : I.ι) :
   exact HChar.isUnitary_of_order hn ((h.xi_reads a).orderDvd hpow)
 
 /- English proof (translation)
-Establish `hX : B.fields.Ok` using `(base_fields_primes_ok B X).1`. Establish `hPr : (B.primes X).Ok` using `(base_fields_primes_ok B X).2.1`. Use `StepOk.stepY_ok _ _ _ _ hX _ _ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨_ | b, hb⟩ P`. Conclude with `topLev_finiteIndex I.Ch I.sel (I.tup a) (I.cst a) I.Ps i P`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `(LevFin.levQ_finiteIndex_and_root I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) I.glob (B.R.m - 2) hX hPr (h.idx_ok a) i (hb.1 rfl) b P).1`. Introduce and unpack `⟨_ | b, hb⟩ P g`. Take `⟨m, hm, hk⟩` from `topLev_root I.Ch I.sel (I.tup a) (I.cst a) I.Ps i P`. Conclude with `⟨m, hm, hk g⟩`. Conclude with `(LevFin.levQ_finiteIndex_and_root I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) I.glob (B.R.m - 2) hX hPr (h.idx_ok a) i (hb.1 rfl) b P).2 g`.
-
-Conclude with `fun N hN => (CosetFin.ysAt_finite_nonempty B.R I.sel (I.tup a) (I.cst a) i N hN).1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.unrepresented_step_conditions (h : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) : (I.stp0 u a i).Ok := by
   have hX : B.fields.Ok := (base_fields_primes_ok B X).1
@@ -64,19 +62,19 @@ theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.unrepresented_step_conditions (h :
   · exact fun N hN => (CosetFin.ysAt_finite_nonempty B.R I.sel (I.tup a) (I.cst a) i N hN).1
 
 /- English proof (translation)
-The claim follows from `(h.unrepresented_step_conditions u a i).reRep _`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.stp_ok (h : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) : (I.stp u a i).Ok := (h.unrepresented_step_conditions u a i).reRep _
 
 /- English proof (translation)
-The claim follows from `GStep.Free.reRep (stepAt_zero_free I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (I.Tp a) u (base_fields_primes_ok B X).1 (base_fields_primes_ok B X).2.1 (base_fields_primes_ok B X).2.2.2.2 (h.idx_ok a).zero_G) _`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.stp_zero_free (h : I.Ok) (u : B.Word) (a : I.ι) : (I.stp u a 0).Free :=
   GStep.Free.reRep (stepAt_zero_free I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (I.Tp a) u (base_fields_primes_ok B X).1
     (base_fields_primes_ok B X).2.1 (base_fields_primes_ok B X).2.2.2.2 (h.idx_ok a).zero_G) _
 
 /- English proof (translation)
-The claim follows from `h.stp_ok u a i rho_norm i _ c := by show ‖((rhoAt I.SQ I.C (I.xi a) i _ : ℂˣ) : ℂ)‖ = 1 exact norm_rhoAt I.SQ I.C (h.xi_unitary a) i _ rho'_norm i _ c := by show ‖((rhoAt' I.SQ I.C (I.xi a) i _ : ℂˣ) : ℂ)‖ = 1 exact norm_rhoAt' I.SQ I.C (h.xi_unitary a) i _ DG_pos := DGam_pos (po …`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.chIn_ok (h : I.Ok) (u : B.Word) (a : I.ι) : (I.chIn u a).Ok where
   step i := h.stp_ok u a i
@@ -97,21 +95,21 @@ theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.chIn_ok (h : I.Ok) (u : B.Word) (a
     · exact stepY_dvd _ _ _ _ ((I.Tp a).pref u i) (base_fields_primes_ok B X).1 B.R (N_mem_gamRanks B.R hpos hi) c.1 ((I.stp u a i).rep c)
 
 /- English proof (translation)
-Take `⟨b, -⟩` from `(h.idx_ok a).zero_uniq`. Conclude with `⟨⟨some b, by simp only [Option.isSome_some, true_iff]; exact lt_of_lt_of_le (by norm_num) B.R.two_le_m⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.idx0 (h : I.Ok) (a : I.ι) : Nonempty (Idx I.sel (I.tup a) (I.idx a) 0) := by
   obtain ⟨b, -⟩ := (h.idx_ok a).zero_uniq
   exact ⟨⟨some b, by simp only [Option.isSome_some, true_iff]; exact lt_of_lt_of_le (by norm_num) B.R.two_le_m⟩⟩
 
 /- English proof (translation)
-The claim follows from `((I.stp u a i).rep c).1.1.deco.2.L_lattice`.
+A detailed English derivation is pending.
 -/
 theorem rep_L_lattice (u : B.Word) (a : I.ι) (i : ℕ) (c : (I.stp u a i).Cl) :
     Submodule.IsLattice B.fields.E ((I.stp u a i).rep c).1.1.deco.1.L :=
   ((I.stp u a i).rep c).1.1.deco.2.L_lattice
 
 /- English proof (translation)
-Introduce `_ h u a` and use `⟨h.chIn_ok u a, h.idx0 a, fun i c => rep_L_lattice u a i c⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ok_chains : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ u a, (I.chIn u a).Ok ∧ Nonempty (Idx I.sel (I.tup a) (I.idx a) 0) ∧ ∀ i c, Submodule.IsLattice B.fields.E ((I.stp u a i).rep c).1.1.deco.1.L :=
   fun _ h u a => ⟨h.chIn_ok u a, h.idx0 a, fun i c => rep_L_lattice u a i c⟩

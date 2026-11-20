@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Module UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.X
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite k`. Introduce `hd`. Rewrite `hd` using `[Subgroup.index_ker]`. Establish `h1 : Nat.card φ.range ∣ Nat.card (ι → kˣ)` using `Subgroup.card_subgroup_dvd_card _`. Establish `h2 : Nat.card (ι → kˣ) = (Fintype.card k - 1) ^ Fintype.card ι`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_fun, Fintype.card_units]`. Establish `hc : ringChar k = l`. Break down `(Nat.dvd_prime hl.out).1 (ringChar.dvd h0) with h | h` into its components or cases. Conclude with `absurd h CharP.ringChar_ne_one`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : CharP k l := by`. Rewrite using `[← hc]`. Conclude with `ringChar.charP k`. Take `⟨n, -, hn⟩` from `FiniteField.card k l`. Establish `hq : l ∣ Fintype.card k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hn]`. Conclude with `dvd_pow_self _ (PNat.ne_zero n)`. Establish `hpos : 0 < Fintype.card k` using `Fintype.card_pos`. Establish `h3 : l ∣ Fintype.card k - 1` using `hl.out.dvd_of_dvd_pow (h2 ▸ dvd_trans hd h1)`. Establish `h6 : Fintype.card k - 1 + 1 = Fintype.card k` using `by omega`.
-
-Rewrite `hq` using `[← h6]`. Establish `h4 : l ∣ 1` using `(Nat.dvd_add_right h3).1 hq`. Conclude with `hl.out.one_lt.ne' (Nat.dvd_one.1 h4)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem not_dvd_index_ker {H k ι : Type} [Group H] [Field k] [Finite k] [Fintype ι] {l : ℕ} [hl : Fact l.Prime]
     (h0 : (l : k) = 0) (φ : H →* (ι → kˣ)) : ¬ l ∣ φ.ker.index := by
@@ -43,21 +41,21 @@ private theorem not_dvd_index_ker {H k ι : Type} [Group H] [Field k] [Finite k]
   exact hl.out.one_lt.ne' (Nat.dvd_one.1 h4)
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D`. Use `haveI := c.dvr`. Use `haveI := c.fin`. Take `⟨-, hfin, hl, -⟩` from `abelian₂.dvr_finite l c.O`. Establish `key : ∀ g, D.rbar g = 1 ↔ ∀ i, residue c.O ↑(D.ps i g) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g`. Establish `e : D.rbar g = Matrix.diagonal fun i => residue c.O ↑(D.ps i g)`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Raw.rbar, Raw.r0, mapRep, diagRep]`. Simplify using `[Raw.rbar, Raw.r0, mapRep, diagRep, Matrix.diagonal_apply, h]`. Rewrite using `[e, ← Matrix.diagonal_one, Matrix.diagonal_eq_diagonal_iff]`. Set `φ : G ℚ Ω →* (Fin 4 → (ResidueField c.O)ˣ)` to `Pi.monoidHom fun i => (Units.map (residue c.O : c.O →* ResidueField c.O)).comp (D.ps i)`. Establish `hφ : ∀ g, φ g = 1 ↔ ∀ i, residue c.O ↑(D.ps i g) = 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[Pi.one_apply, Units.ext_iff]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hker : D.rbar.ker = φ.ker`. Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, key, hφ]`. Establish `h0 : ((l : ℕ) : ResidueField c.O) = 0`. Establish `h` using `(IsLocalRing.residue_eq_zero_iff _).2 hl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h`. Use `⟨by rw [hker]; infer_instance, by rw [hker]; exact not_dvd_index_ker h0 φ, ?_⟩` and prove the remaining obligations. Introduce `j g hg`. Establish `hk` using `(key g).1 hg`. Establish `a1 : Units.map (residue c.O : c.O →* ResidueField c.O) (D.Psi g) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Use `ext`. Simplify `hk 1` using `[Raw.ps]`. Establish `a2 : Units.map (residue c.O : c.O →* ResidueField c.O) (D.al g) = 1`. Use `ext`. Simplify `hk 2` using `[Raw.ps]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu : Units.map (residue c.O : c.O →* ResidueField c.O) ((D.al ^ j.1 * D.Psi ^ j.2) g) = 1`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.zpow_apply, map_mul, map_zpow, a1, a2, one_zpow, mul_one]`. Conclude with `congrArg Units.val hu`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.spKer :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.rbar.ker.Normal ∧ ¬ l ∣ D.rbar.ker.index ∧ ∀ (j : ℤ × ℤ), ∀ g ∈ D.rbar.ker, Raw.bar (D.al ^ j.1 * D.Psi ^ j.2) g = 1 := by

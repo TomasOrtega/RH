@@ -16,7 +16,7 @@ namespace LimitVolumeRatio
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Simplify using `only [linRoot, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, sub_mul, Finset.sum_sub_distrib, Finset.mul_sum, mul_neg, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem linRoot_sub_smul (lam nu : Wt Ψ N) (s : ℝ) :
     linRoot (lam - s • nu) = linRoot lam - C s * linRoot nu := by
@@ -25,7 +25,7 @@ theorem linRoot_sub_smul (lam nu : Wt Ψ N) (s : ℝ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [linA, RootTower.lamS, linRoot_sub_smul, toA, map_sub, map_mul, rename_C]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem linA_lamS (T : RootTower Ψ N) (u : Wt Ψ N) (s : ℝ) :
     linA (T.lamS u s) s = toA (linRoot u) + C s * (X none - toA (linRoot T.nu)) := by
@@ -33,9 +33,9 @@ theorem linA_lamS (T : RootTower Ψ N) (u : Wt Ψ N) (s : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `h : ∀ s : ℝ, Φ ((P0 + C s * P1) ^ d) = ∑ m ∈ Finset.range (d + 1), s ^ (d - m) * Φ (P0 ^ m * P1 ^ (d - m) * (d.choose m : RPA Ψ N))`. Introduce `s`. Rewrite using `[add_pow, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[show s ^ (d - m) * Φ (P0 ^ m * P1 ^ (d - m) * (d.choose m : RPA Ψ N)) = Φ (s ^ (d - m) • (P0 ^ m * P1 ^ (d - m) * (d.choose m : RPA Ψ N))) by rw [map_smul, smul_eq_mul]]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_pow, ← map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (fun s : ℝ => Φ ((P0 + C s * P1) ^ d)) = fun s : ℝ => ∑ m ∈ Finset.range (d + 1), s ^ (d - m) * Φ (P0 ^ m * P1 ^ (d - m) * (d.choose m : RPA Ψ N)) from funext h]`. Conclude with `continuous_finset_sum _ fun m _ => (continuous_pow _).mul continuous_const`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_pow (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (P0 P1 : RPA Ψ N) (d : ℕ) :
     Continuous fun s : ℝ => Φ ((P0 + C s * P1) ^ d) := by
@@ -54,7 +54,7 @@ theorem cont_pow (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (P0 P1 : RPA Ψ N) (d : ℕ) :
   exact continuous_finset_sum _ fun m _ => (continuous_pow _).mul continuous_const
 
 /- English proof (translation)
-Establish `hc` using `(cont_pow Φ (toA (linRoot u)) (X none - toA (linRoot T.nu)) d).tendsto 0`. Simplify using `only [map_zero, zero_mul, add_zero] at hc`. Rewrite using `[show toA (linRoot u ^ d) = toA (linRoot u) ^ d by simp [toA, map_pow]]`. Conclude with `(hc.mono_left nhdsWithin_le_nhds).congr fun s => by rw [linA_lamS]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_lin (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (T : RootTower Ψ N) (u : Wt Ψ N) (d : ℕ) :
     Tendsto (fun s => Φ (linA (T.lamS u s) s ^ d)) (𝓝[>] 0) (𝓝 (Φ (toA (linRoot u ^ d)))) := by
@@ -64,7 +64,7 @@ theorem tendsto_lin (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (T : RootTower Ψ N) (u : Wt
   exact (hc.mono_left nhdsWithin_le_nhds).congr fun s => by rw [linA_lamS]
 
 /- English proof (translation)
-Simplify using `only [gap, ent]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gap_sub_smul (j : ℕ) (lam nu : Wt Ψ N) (s : ℝ) (τ : Ψ) :
     gap j (lam - s • nu) τ = gap j lam τ - s * gap j nu τ := by
@@ -84,11 +84,9 @@ namespace LimitVolumeRatio
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ τ (a b : Fin N), ∀ᶠ s in 𝓝 (0 : ℝ), a ≤ b → (T.lamS u s) τ b ≤ (T.lamS u s) τ a`. Introduce `τ a b`. Distinguish the cases in `hab : a < b`. Establish `h1 : Tendsto (fun s : ℝ => u τ b - s * T.nu τ b) (𝓝 0) (𝓝 (u τ b - 0 * T.nu τ b))` using `(continuous_const.sub (continuous_id.mul continuous_const)).tendsto 0`. Establish `h2 : Tendsto (fun s : ℝ => u τ a - s * T.nu τ a) (𝓝 0) (𝓝 (u τ a - 0 * T.nu τ a))` using `(continuous_const.sub (continuous_id.mul continuous_const)).tendsto 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h1.eventually_lt h2 (by simpa using hu τ a b hab)] with s hs _`. Simplify `hs.le` using `[RootTower.lamS]`. Conclude with `Eventually.of_forall fun s h => by`. Establish `: a = b` using `le_antisymm h (not_lt.mp hab)`. Substitute `this` using the available equality.
-
-Conclude with `le_rfl`. Conclude with `eventually_all.2 fun τ => eventually_all.2 fun a => eventually_all.2 fun b => key τ a b`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eventually_dominant (T : RootTower Ψ N) (u : Wt Ψ N) (hu : RegDominant u) :
     ∀ᶠ s in 𝓝 (0 : ℝ), Dominant (T.lamS u s) := by
@@ -108,23 +106,21 @@ theorem eventually_dominant (T : RootTower Ψ N) (u : Wt Ψ N) (hu : RegDominant
   exact eventually_all.2 fun τ => eventually_all.2 fun a => eventually_all.2 fun b => key τ a b
 
 /- English proof (translation)
-Establish `hF : (1 : ℝ) ≤ Fintype.card Ψ` using `by exact_mod_cast Fintype.card_pos`. Establish `hN : (2 : ℝ) ≤ N` using `by exact_mod_cast (show 2 ≤ N by have := T.j_pos; have := T.j_lt; omega)`. Establish `hg : 0 < g` using `hw.1`. Establish `hx : 0 ≤ ‖u‖` using `norm_nonneg _`. Use `set F : ℝ := (Fintype.card Ψ : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x : ℝ := ‖u‖`. Establish `hn2 : (4 : ℝ) ≤ (N : ℝ) ^ 2` using `by nlinarith`. Establish `hB' : 4 * F * (N : ℝ) ^ 2 + 4 * F * (N : ℝ) ^ 2 * (x / g) - 3 < (B : ℝ) - 2`. Simplify using `only [bigB0] at hB`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxg : x / g * g = x` using `div_mul_cancel₀ x hg.ne'`. Establish `hFN : (4 : ℝ) ≤ F * (N : ℝ) ^ 2`. Use `mul_le_mul hF hn2 (by norm_num) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < 4 * F * (N : ℝ) ^ 2 + 4 * F * (N : ℝ) ^ 2 * (x / g) - 3`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ x / g` using `div_nonneg hx hg.le`. Establish `h' : 0 ≤ 4 * F * (N : ℝ) ^ 2 * (x / g)` using `mul_nonneg (by positivity) this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB2 : 0 ≤ (B : ℝ) - 2` using `by linarith`. Establish `at0 : ∀ τ, 4 * F * x < ((B : ℝ) - 2) * gap T.j u τ`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ`. Establish `h1 : ((B : ℝ) - 2) * g ≤ ((B : ℝ) - 2) * gap T.j u τ` using `mul_le_mul_of_nonneg_left (hw.2.2.1 τ) hB2`. Establish `h2` using `mul_lt_mul_of_pos_right hB' hg`. Establish `h3 : (4 * F * (N : ℝ) ^ 2 + 4 * F * (N : ℝ) ^ 2 * (x / g) - 3) * g = 4 * F * (N : ℝ) ^ 2 * g + 4 * F * (N : ℝ) ^ 2 * x - 3 * g`. Rewrite using `[sub_mul, add_mul, mul_assoc (4 * F * (N : ℝ) ^ 2), hxg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 4 * F * x ≤ 4 * F * (N : ℝ) ^ 2 * x`. Establish `e : 4 * F * (N : ℝ) ^ 2 * x - 4 * F * x = (4 * F * x) * ((N : ℝ) ^ 2 - 1)` using `by ring`. Use `mul_nonneg (mul_nonneg (by positivity : (0 : ℝ) ≤ 4 * F) hx) (by linarith : (0 : ℝ) ≤ (N : ℝ) ^ 2 - 1)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : 0 < 4 * F * (N : ℝ) ^ 2 * g - 3 * g`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : 4 * F * (N : ℝ) ^ 2 * g - 3 * g = g * (4 * (F * (N : ℝ) ^ 2) - 3)` using `by ring`. Rewrite using `[e]`. Conclude with `mul_pos hg (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ τ, ∀ᶠ s in 𝓝 (0 : ℝ), 4 * F * ‖T.lamS u s‖ ≤ ((B : ℝ) - 2) * gap T.j (T.lamS u s) τ`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Establish `h1 : Tendsto (fun s : ℝ => 4 * F * ‖T.lamS u s‖) (𝓝 0) (𝓝 (4 * F * ‖T.lamS u 0‖))` using `((continuous_const.mul (continuous_const.sub (continuous_id.smul continuous_const)).norm)).tendsto 0`. Establish `h2 : Tendsto (fun s : ℝ => ((B : ℝ) - 2) * (gap T.j u τ - s * gap T.j T.nu τ)) (𝓝 0) (𝓝 (((B : ℝ) - 2) * (gap T.j u τ - 0 * gap T.j T.nu τ)))` using `(continuous_const.mul (continuous_const.sub (continuous_id.mul continuous_const))).tendsto 0`. Establish `h0 : 4 * F * ‖T.lamS u 0‖ < ((B : ℝ) - 2) * (gap T.j u τ - 0 * gap T.j T.nu τ)`. Simplify `at0 τ` using `[RootTower.lamS]`.
-
-Use `filter_upwards [h1.eventually_lt h2 h0] with s hs`. Rewrite using `[RootTower.lamS, gap_sub_smul]`. Conclude with `hs.le`. Conclude with `eventually_all.2 key`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_threshold [Nonempty Ψ] (T : RootTower Ψ N) (u : Wt Ψ N) (g : ℝ) (hw : WeightHyp T.j u g)
     (B : ℕ) (hB : bigB0 u g < B + 1) :
@@ -180,21 +176,19 @@ theorem eventually_threshold [Nonempty Ψ] (T : RootTower Ψ N) (u : Wt Ψ N) (g
   exact eventually_all.2 key
 
 /- English proof (translation)
-Introduce `II Ψ _ _ N _ T hProp hI2 hI3 u g hw B hB c`. Establish `hF : (1 : ℝ) ≤ Fintype.card Ψ` using `by exact_mod_cast Fintype.card_pos`. Establish `hN : (2 : ℝ) ≤ N` using `by exact_mod_cast (show 2 ≤ N by have := T.j_pos; have := T.j_lt; omega)`. Establish `hB2 : 2 ≤ B`. Establish `hq : 0 ≤ ‖u‖ / g` using `div_nonneg (norm_nonneg _) hw.1.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (16 : ℝ) ≤ bigB0 u g`. Simplify using `only [bigB0]`. Establish `hn2 : (4 : ℝ) ≤ (N : ℝ) ^ 2` using `by nlinarith`. Establish `hFN : (4 : ℝ) ≤ (Fintype.card Ψ : ℝ) * (N : ℝ) ^ 2` using `by nlinarith`. Establish `h1q : (1 : ℝ) ≤ 1 + ‖u‖ / g` using `by linarith`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul hFN h1q zero_le_one (by positivity)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `: (15 : ℝ) < B` using `by linarith`. Conclude with `(show (2 : ℝ) ≤ B by linarith)` after adjusting the coercions. Establish `hdom` using `eventually_dominant T u hw.2.1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hthr` using `eventually_threshold T u g hw B hB`. Establish `hpos : ∀ᶠ s in 𝓝[>] (0 : ℝ), 0 < s` using `eventually_mem_nhdsWithin`. Take `⟨s₁, hs₁, C₂, hag⟩` from `hI2 (l1 u)`. Establish `hdiff : Tendsto (fun s => T.mbarTop II B c u s - T.PBs II B c (T.lamS u s) s) (𝓝[>] 0) (𝓝 0)`. Establish `hlin : Tendsto (fun s : ℝ => C₂ * s) (𝓝[>] 0) (𝓝 0)` using `((continuous_const.mul continuous_id).tendsto' 0 0 (by simp)).mono_left nhdsWithin_le_nhds`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `squeeze_zero_norm' ?_ hlin` and prove the remaining obligations. Use `filter_upwards [hpos, (eventually_le_nhds hs₁).filter_mono nhdsWithin_le_nhds, hdom.filter_mono nhdsWithin_le_nhds] with s h0 h1 h2`. Conclude with `hag B hB2 c u s le_rfl h0 h1 h2`. Establish `hPB : Tendsto (fun s => T.PBs II B c (T.lamS u s) s) (𝓝[>] 0) (𝓝 (T.PPc II B c (linRoot u ^ (dimFl Ψ N + 1))))` using `LimitVolumeRatio.tendsto_lin ((T.M B c).PP II) T u (dimFl Ψ N + 1)`. Establish `hbar : Tendsto (fun s => T.mbarTop II B c u s) (𝓝[>] 0) (𝓝 (T.PPc II B c (linRoot u ^ (dimFl Ψ N + 1))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hPB.add hdiff`. Rewrite `h` using `[add_zero]`. Conclude with `h.congr fun s => by ring`. Establish `hdeg : Tendsto (fun s => T.mDeg B c u s) (𝓝[>] 0) (𝓝 (T.vol c * flagDeg u))`. Establish `h` using `LimitVolumeRatio.tendsto_lin (T.M B c).geoFun T u (dimFl Ψ N)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[hProp.2.1 B c]`. Then use the resulting hypothesis. Establish `hvpos : 0 < T.vol c * flagDeg u` using `mul_pos (hProp.1 c) ((flagDeg_eq_weyl Ψ N u).2.1 hw.2.1)`. Use `⟨?_, hbar, hdeg, hvpos, ?_⟩` and prove the remaining obligations. Take `⟨s₀, hs₀, h3⟩` from `hI3 (l1 u) filter_upwards [hpos, (eventually_le_nhds hs₀).filter_mono nhdsWithin_le_nhds, hdom.filter_mono nhdsWithin_le_nhds, hthr.filter_mono nhdsWithin_le_nhds] with s h0 h1 h2 h4`. Conclude with `h3 B hB2 c u s le_rfl h0 h1 h2 h4`.
-
-Establish `hne : ((dimFl Ψ N : ℝ) + 1) * (T.vol c * flagDeg u) ≠ 0` using `(mul_pos (by positivity) hvpos).ne'`. Conclude with `hbar.div (hdeg.const_mul _) hne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tower_T1_limit_of_inputs : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) [Nonempty Ψ]
     (T : RootTower Ψ N), T.Proportional → T.I2 II → T.I3 → T.T1 II := by

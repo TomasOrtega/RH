@@ -37,7 +37,7 @@ def DofNL (F : Fin d → PS k 2 d) (b : Fin n) (u : Fin d → k) : PS k n d →�
     simp only [DofN, Derivation.map_smul, RingHom.id_apply, Finset.smul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Unfold `DpolyN`. Use `Finset.sum_subset hS (fun e _ he => ?_)` and prove the remaining obligations. Establish `h0 : P.coeff e = 0` using `by simpa using he`. Rewrite using `[h0, map_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem DpolyN_sub {ι : Type} [Fintype ι] (F : Fin d → PS k 2 d) (cp : ι → Fin n) (u : ι → Fin d → k)
     (P : MvPolynomial ι k) (g : PS k n d) (S : Finset (ι →₀ ℕ)) (hS : P.support ⊆ S) :
@@ -48,7 +48,7 @@ theorem DpolyN_sub {ι : Type} [Fintype ι] (F : Fin d → PS k 2 d) (cp : ι �
   rw [h0, map_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[DpolyN_sub F cp u (P + Q) g (P.support ∪ Q.support) MvPolynomial.support_add, DpolyN_sub F cp u P g (P.support ∪ Q.support) Finset.subset_union_left, DpolyN_sub F cp u Q g (P.support ∪ Q.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, map_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem DpolyN_addP {ι : Type} [Fintype ι] (F : Fin d → PS k 2 d) (cp : ι → Fin n) (u : ι → Fin d → k)
     (P Q : MvPolynomial ι k) (g : PS k n d) :
@@ -61,7 +61,7 @@ theorem DpolyN_addP {ι : Type} [Fintype ι] (F : Fin d → PS k 2 d) (cp : ι �
   rw [MvPolynomial.coeff_add, map_add, add_mul]
 
 /- English proof (translation)
-Rewrite using `[DpolyN_sub F cp u (c • P) g P.support MvPolynomial.support_smul, DpolyN_sub F cp u P g P.support subset_rfl, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, map_mul, mul_assoc, ← MvPowerSeries.smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem DpolyN_smulP {ι : Type} [Fintype ι] (F : Fin d → PS k 2 d) (cp : ι → Fin n) (u : ι → Fin d → k)
     (c : k) (P : MvPolynomial ι k) (g : PS k n d) :
@@ -74,7 +74,7 @@ theorem DpolyN_smulP {ι : Type} [Fintype ι] (F : Fin d → PS k 2 d) (cp : ι 
 end Lin
 
 /- English proof (translation)
-Unfold `nabValN`. Rewrite using `[DpolyN_addP, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabValN_addP (B : FB R d O) (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (h : PS k 2 d) (w0 : O)
     (m : ℕ) {n : ℕ} {ι : Type} [Fintype ι] (cp : ι → Fin n) (u : ι → Fin d → k) (P Q : MvPolynomial ι k)
@@ -84,7 +84,7 @@ theorem nabValN_addP (B : FB R d O) (k : Type) [CommRing k] [Algebra ℚ k] [Alg
   rw [DpolyN_addP, map_add]
 
 /- English proof (translation)
-Unfold `nabValN`. Rewrite using `[DpolyN_smulP, MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabValN_smulP (B : FB R d O) (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (h : PS k 2 d) (w0 : O)
     (m : ℕ) {n : ℕ} {ι : Type} [Fintype ι] (cp : ι → Fin n) (u : ι → Fin d → k) (c : k) (P : MvPolynomial ι k)

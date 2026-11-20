@@ -19,12 +19,12 @@ section Conj
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter)
 
 /- English proof (translation)
-The claim follows from `(Subgroup.mem_inf.1 γ.2).1`.
+A detailed English derivation is pending.
 -/
 theorem gam_mem_GF (γ : Gam X u) : (γ : X.B.I.GA) ∈ X.B.I.GFset := (Subgroup.mem_inf.1 γ.2).1
 
 /- English proof (translation)
-The claim follows from `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).1`.
+A detailed English derivation is pending.
 -/
 theorem gam_fst_mem (γ : Gam X u) : (γ : X.B.I.GA).1 ∈ Hinf X u :=
   (Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).1
@@ -35,15 +35,13 @@ Both sides reduce to the same expression.
 theorem iotaF_coe (γ : Gam X u) : ((iotaF X u γ : Hfin X u) : X.B.I.Gf) = (γ : X.B.I.GA).2 := rfl
 
 /- English proof (translation)
-Rewrite `hs`, the goal using `[mem_gcS]`. Take `⟨ν, hG, rfl, hN, hF, hk⟩` from `hs`. Use `⟨(γ : X.B.I.GA) * ν * (γ : X.B.I.GA)⁻¹, ?_, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I).mul_mem ((Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I).mul_mem (gam_mem_GF X u γ) hG) ((Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I).inv_mem (gam_mem_GF X u γ))`. Establish `hH` using `gam_fst_mem X u γ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ v a, uMat ((γ : X.B.I.GA).1 v) *ᵥ rv X.B.I v (X.eR a) = rv X.B.I v (X.eR a)` using `fun v a => hH v _ (Or.inl (Or.inl ⟨a, rfl⟩))`. Establish `hz : ∀ v, uMat ((γ : X.B.I.GA).1 v) *ᵥ rv X.B.I v (X.zR u) = rv X.B.I v (X.zR u)` using `fun v => hH v _ (Or.inr rfl)`. Use `(Formalism.L2.SG.CovariantRepresentation.ninf_conj_iff X u (γ : X.B.I.GA).1 he hz _).2 ?_` and prove the remaining obligations. Establish `: (γ : X.B.I.GA).1⁻¹ * ((γ : X.B.I.GA) * ν * (γ : X.B.I.GA)⁻¹).1 * (γ : X.B.I.GA).1 = ν.1`. Simplify using `only [Prod.fst_mul, Prod.fst_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[this]`. Conclude with `hN`. Use `(nfinConj_holds X u (iotaF X u γ) ν.2 hF).1` as an intermediate fact. Rewrite `this` using `[iotaF_coe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [Prod.snd_mul, Prod.snd_inv]`. Establish `hκ : (X.xu u)⁻¹ * ((κ : Hfin X u) : X.B.I.Gf) * X.xu u ∈ X.K2` using `κ.2`. Establish `e : (((iotaF X u γ * h * (κ : Hfin X u) : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ * ((γ : X.B.I.GA) * ν * (γ : X.B.I.GA)⁻¹).2 * (((iotaF X u γ * h * (κ : Hfin X u) : Hfin X u) : X.B.I.Gf) * X.xu u) = ((X.xu u)⁻¹ * ((κ : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ * (((h : X.B.I.Gf) * X.xu u)⁻¹ * …`. Simplify using `only [Subgroup.coe_mul, iotaF_coe, Prod.snd_mul, Prod.snd_inv]`. Use `group`.
-
-Rewrite using `[e]`. Conclude with `hK.2.1 _ (hK.2.1 _ (hK.2.2.1 _ hκ) _ hk) _ hκ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gc_conj_sub (γ : Gam X u) (h : Hfin X u) (κ : Ku X u hK) (s : X.B.I.Ginf)
     (hs : s ∈ GcS X u hK ((h : X.B.I.Gf) * X.xu u)) :
@@ -81,11 +79,11 @@ theorem gc_conj_sub (γ : Gam X u) (h : Hfin X u) (κ : Ku X u hK) (s : X.B.I.Gi
 end Conj
 
 /- English proof (translation)
-Introduce `D X u hK γ h κ`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Establish `e : (iotaF X u γ⁻¹ * (iotaF X u γ * h * (κ : Hfin X u)) * ((κ⁻¹ : Ku X u hK) : Hfin X u) : Hfin X u) = h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_inv, InvMemClass.coe_inv]`. Use `group`. Use `gc_conj_sub X u hK γ⁻¹ (iotaF X u γ * h * (κ : Hfin X u)) κ⁻¹ s hs` as an intermediate fact. Rewrite `this` using `[e]`. Use `⟨_, this, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [InvMemClass.coe_inv, Prod.fst_inv]`. Use `group`. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `gc_conj_sub X u hK γ h κ t ht`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gcConjC_holds : GcConjC := by
   intro D X u hK γ h κ
@@ -103,15 +101,15 @@ theorem gcConjC_holds : GcConjC := by
     exact gc_conj_sub X u hK γ h κ t ht
 
 /- English proof (translation)
-Establish `hpre : (fun y => a * y) '' Ω = {x | a⁻¹ * x ∈ Ω}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx; exact ⟨a⁻¹ * x, hx, by group⟩`. Rewrite using `[hpre]`. Use `⟨(measurable_const_mul a⁻¹) hΩ.1, fun x => ?_, fun x hx s' hs' hsx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `hΩ.2.1 (a⁻¹ * x)`. Use `⟨a * s * a⁻¹, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show a⁻¹ * (a * s * a⁻¹ * x) ∈ Ω`. Establish `: a⁻¹ * (a * s * a⁻¹ * x) = s * (a⁻¹ * x)` using `by group`. Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨s, hs, rfl⟩` from `hs'`. Establish `h2 : s * (a⁻¹ * x) ∈ Ω`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a⁻¹ * (a * s * a⁻¹ * x) = s * (a⁻¹ * x)` using `by group`. Establish `h` using `hsx`. Simplify using `only [Set.mem_ofPred_eq] at h`. Rewrite `h` using `[this]`. Then use the resulting hypothesis. Use `hΩ.2.2 _ hx s hs h2` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem isSFund_conj {D : D7} (X : HidaSetting D) (S : Set X.B.I.Ginf) (Ω : Set X.B.I.Ginf)
     (hΩ : IsSFund X.B.I S Ω) (a : X.B.I.Ginf) :
@@ -135,11 +133,11 @@ theorem isSFund_conj {D : D7} (X : HidaSetting D) (S : Set X.B.I.Ginf) (Ω : Set
     rw [this]; group
 
 /- English proof (translation)
-Establish `hL` using `((Y.rowsOK u).1 _ ((Y.cs u).lam_mem ρ)).1.1`. Use `Formalism.L2.SG.Pf.ROsub_discrete X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) hL 1` as an intermediate fact. Take `⟨Ω, hΩ⟩` from `Formalism.L2.SG.Pf.isSFund_of_discrete X.B.I (Formalism.L2.SG.Pf.ROsub X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1)`. Use `⟨Ω, ?_⟩` and prove the remaining obligations. Establish `e : ((Formalism.L2.SG.Pf.ROsub X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1 : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) = Formalism.L2.SG.TermOp.KExpCut.NOcol (X.Fu u) (Y.cs u) ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `y`. Use `show y ∈ ROset X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, h1, h2, h3, -⟩`. Conclude with `⟨x, n, h1, h2, h3⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, n, h1, h2, h3⟩`. Conclude with `⟨x, n, h1, h2, h3, by simpa using h3⟩`. Rewrite `hΩ` using `[e]`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nocol_fund_exists {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word)
     (ρ : (Y.cs u).Cl) : ∃ Ω, IsSFund X.B.I (Formalism.L2.SG.TermOp.KExpCut.NOcol (X.Fu u) (Y.cs u) ρ) Ω := by
@@ -160,9 +158,9 @@ theorem nocol_fund_exists {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what�
   rwa [e] at hΩ
 
 /- English proof (translation)
-Introduce `D X Y u h`. Take `⟨ρ, ⟨γ, κ, rfl⟩, -⟩` from `Y.colReps u h`. Take `⟨Ω, hΩ⟩` from `nocol_fund_exists Y u ρ`. Rewrite `hΩ` using `[nocolEqC_holds D X Y u ρ]`. Rewrite using `[gcConjC_holds D X u Y.hK γ ((Y.cs u).h ρ) κ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, isSFund_conj X _ Ω hΩ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem gcFundC_holds : GcFundC := by
   intro D X Y u h

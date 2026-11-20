@@ -9,13 +9,13 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `x`. Rewrite using `[GlobalTheory.T.primitiveFunctionCharpolyGL_harishChandra_recursion F S n (gal (t : F →+* F) n x), GlobalTheory.T.primitiveFunctionCharpolyGL_harishChandra_recursion F _ n x]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [chG, gal]`. Use `congr 1`. Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.harishChandraInductionGL_fieldAutomorphism F t a (n - a) n]`. Establish `ha' : a < n` using `Finset.mem_range.1 ha`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `ih a ha' y`.
+A detailed English derivation is pending.
 -/
 theorem psiG_gal (F : Type) [Field F] [Finite F] (t : F ≃+* F) (S : F[X] → ℂ) :
     ∀ (n : ℕ) (x : GL (Fin n) F),
@@ -38,9 +38,9 @@ theorem psiG_gal (F : Type) [Field F] [Finite F] (t : F ≃+* F) (S : F[X] → �
       exact ih a ha' y
 
 /- English proof (translation)
-Introduce `F _ _ θ t j ht m k x`. Simplify using `only [cusp]`. Rewrite using `[psiG_gal F t]`. Use `congr 2`. Use function extensionality and compare the values at `P`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `GlobalTheory.T.rootSum_map_frobenius_pow_eq_rootSum_mul F θ (t : F →+* F) j (fun y => ht y) k P`.
+A detailed English derivation is pending.
 -/
 theorem cusp_gal : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (t : F ≃+* F) (j : ℕ),
     (∀ x, t x = x ^ (ringChar F ^ j)) → ∀ (m k : ℕ) (x : GL (Fin m) F),

@@ -4,9 +4,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 namespace GlobalTheory.FinrankComp
 
 /- English proof (translation)
-Establish `: IsArtinianRing S` using `IsArtinianRing.of_finite K S`. Take `⟨b⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq S T d (fun P => by`. Use `P.isMaximal` as an intermediate fact. Use `letI := Ideal.Quotient.field P.asIdeal`. Establish `h1` using `Module.rankAtStalk_baseChange (R := S) (M := T) (S := S ⧸ P.asIdeal) ⊥`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, h]`. Conclude with `h1)`. Rewrite using `[(b.equivFun.restrictScalars K).finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_eq_mul_of_rankAtStalk (K S T : Type*) [Field K] [CommRing S] [AddCommGroup T]
     [Algebra K S] [Module S T] [Module K T] [IsScalarTower K S T] [Module.Finite K S]
@@ -25,15 +25,13 @@ theorem finrank_eq_mul_of_rankAtStalk (K S T : Type*) [Field K] [CommRing S] [Ad
   simp
 
 /- English proof (translation)
-Use `wlog hY : ∃ S, Y = Spec S generalizing X Y`. Establish `_ : IsAffine Y` using `isAffine_of_isAffineHom ψ`. Use `this (φ ≫ Y.isoSpec.hom) (Y.isoSpec.inv ≫ ψ) (fun y => by` as an intermediate fact. Rewrite using `[← h (Y.isoSpec.inv y)]`. Conclude with `Scheme.Hom.finrank_of_isPullback (𝟙 X) _ φ Y.isoSpec.inv (IsPullback.of_horiz_isIso ⟨by simp⟩) y) ⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Take `⟨S, rfl⟩` from `hY`. Use `wlog hX : ∃ T, X = Spec T generalizing X`. Establish `_ : IsAffine X` using `isAffine_of_isAffineHom φ`. Use `this (X.isoSpec.inv ≫ φ) (fun y => by simpa using h y) ⟨_, rfl⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Take `⟨T, rfl⟩` from `hX`. Take `⟨f, rfl⟩` from `Spec.map_surjective ψ`. Take `⟨g, rfl⟩` from `Spec.map_surjective φ`. Simplify using `only [IsFinite.SpecMap_iff, Flat.SpecMap_iff] at *`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure.
 
-Name the introduced variables `hf1 hf2 hg1 hg2`. Rewrite using `[← Spec.map_comp, Scheme.Hom.finrank_SpecMap_eq_finrank (f := f ≫ g) (hg1.comp hf1) (hf2.comp hg2), Scheme.Hom.finrank_SpecMap_eq_finrank hf1 hf2]`. Rewrite `h` using `[Scheme.Hom.finrank_SpecMap_eq_finrank hg1 hg2]`. Use `letI := hK.toField`. Use `algebraize [f.hom, g.hom, (f ≫ g).hom]`.
-
-Rewrite `h` using `[← RingHom.algebraMap_toAlgebra g.hom, RingHom.finrank_algebraMap]`. Rewrite using `[← RingHom.algebraMap_toAlgebra f.hom, ← RingHom.algebraMap_toAlgebra (f ≫ g).hom, RingHom.finrank_algebraMap, RingHom.finrank_algebraMap]`. Establish `: IsScalarTower K S T` using `IsScalarTower.of_algebraMap_eq' rfl`. Rewrite using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `finrank_eq_mul_of_rankAtStalk K S T d h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_comp_field {X Y : Scheme.{0}} (K : CommRingCat.{0}) (hK : IsField K)
     (φ : X ⟶ Y) (ψ : Y ⟶ Spec K) [IsFinite φ] [Flat φ] [IsFinite ψ] [Flat ψ] (d : ℕ)
@@ -68,9 +66,9 @@ theorem finrank_comp_field {X Y : Scheme.{0}} (K : CommRingCat.{0}) (hK : IsFiel
   exact finrank_eq_mul_of_rankAtStalk K S T d h
 
 /- English proof (translation)
-Set `i` to `Z.fromSpecResidueField z`. Set `pt : Spec (Z.residueField z)` to `IsLocalRing.closedPoint (Z.residueField z)`. Establish `hz : i pt = z` using `Scheme.fromSpecResidueField_apply z pt`. Establish `hp` using `(IsPullback.of_hasPullback φ (pullback.fst ψ i)).paste_vert (IsPullback.of_hasPullback ψ i)`. Rewrite using `[← hz, ← Scheme.Hom.finrank_of_isPullback _ _ _ _ hp pt, ← Scheme.Hom.finrank_pullback_snd ψ i pt]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finrank_comp_field _ (Field.toIsField _) _ _ d (fun y => by rw [Scheme.Hom.finrank_pullback_snd, h]) pt`.
+A detailed English derivation is pending.
 -/
 theorem finrank_comp_of_const {X Y Z : Scheme.{0}} (φ : X ⟶ Y) (ψ : Y ⟶ Z) [IsFinite φ] [Flat φ]
     [IsFinite ψ] [Flat ψ] (d : ℕ) (h : ∀ y, φ.finrank y = d) (z : Z) :
@@ -86,7 +84,7 @@ theorem finrank_comp_of_const {X Y Z : Scheme.{0}} (φ : X ⟶ Y) (ψ : Y ⟶ Z)
     (fun y => by rw [Scheme.Hom.finrank_pullback_snd, h]) pt
 
 /- English proof (translation)
-Introduce `X Y Z _ _ φ ψ _ _ _ _ d e hd he z`. Rewrite using `[finrank_comp_of_const φ ψ d hd z, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_comp : ∀ {X Y Z : Scheme.{0}} [IsLocallyNoetherian Y] [IsLocallyNoetherian Z] (φ : X ⟶ Y) (ψ : Y ⟶ Z) [IsFinite φ] [Flat φ] [IsFinite ψ] [Flat ψ] (d e : ℕ), (∀ y, φ.finrank y = d) → (∀ z, ψ.finrank z = e) → ∀ z, (φ ≫ ψ).finrank z = d * e := by
   intro X Y Z _ _ φ ψ _ _ _ _ d e hd he z

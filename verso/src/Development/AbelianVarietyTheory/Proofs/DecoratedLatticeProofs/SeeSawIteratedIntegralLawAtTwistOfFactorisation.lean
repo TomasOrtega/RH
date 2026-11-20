@@ -24,9 +24,9 @@ def repS (j d : ℕ) (h : j + d = Q.s) : Finset (GL (Q.X j ⊕ Fin (d + 1)) Q.k)
   Finset.univ.map ⟨Q.rep j d h, Set.injOn_univ.1 (Q.rep_bij j d h).injOn⟩
 
 /- English proof (translation)
-Simplify using `only [repS, Finset.mem_map, Finset.mem_univ, true_and, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `(Q.rep_bij j d h).mapsTo (Set.mem_univ a)`. Introduce `hg`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, -, e⟩` from `(Q.rep_bij j d h).surjOn hg`. Conclude with `⟨a, e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_repS {j d : ℕ} {h : j + d = Q.s} {g} : g ∈ repS Q j d h ↔ g ∈ Q.A j d h := by
   simp only [repS, Finset.mem_map, Finset.mem_univ, true_and, Function.Embedding.coeFn_mk]
@@ -44,13 +44,13 @@ def repE (j d : ℕ) (h : j + d = Q.s) : Q.Ch j ≃ repS Q j d h :=
       exact ⟨a, Subtype.ext e⟩⟩
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val ((repE Q j d h).apply_symm_apply g)`.
+A detailed English derivation is pending.
 -/
 theorem rep_symm {j d : ℕ} {h : j + d = Q.s} (g : repS Q j d h) : Q.rep j d h ((repE Q j d h).symm g) = g.1 :=
   congrArg Subtype.val ((repE Q j d h).apply_symm_apply g)
 
 /- English proof (translation)
-Establish `H` using `Q.reps.bij j d h`. Use `⟨H.injOn.mono fun x hx => (mem_repS Q).1 hx, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `H.surjOn (Set.mem_biUnion hg ⟨x, rfl, hx⟩)`. Conclude with `⟨t, (mem_repS Q).2 ht, e.symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem covers (j d : ℕ) (h : j + 1 + d = Q.s) {g} (hg : g ∈ Q.A j (d + 1) (by omega)) :
     Covers 1 (Q.T.lev (j + 1) (d + 1) (by omega)).J (repS Q (j + 1) d h)
@@ -61,7 +61,7 @@ theorem covers (j d : ℕ) (h : j + 1 + d = Q.s) {g} (hg : g ∈ Q.A j (d + 1) (
   exact ⟨t, (mem_repS Q).2 ht, e.symm⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.StepData.Chain.entry`. Rewrite using `[Q.bas]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem entry_eq (j d : ℕ) (h : j + 1 + d = Q.s) (g g') : Q.T.entry Q.ψk Q.ν j d h g g' =
     xi Q.ψk Q.ν (Q.T.mu (j + 1)) (Q.T.Phi j (d + 1) (by omega)) (Q.T.lev (j + 1) (d + 1) (by omega)).J 1 g g' := by
@@ -72,7 +72,7 @@ def oneC (j ρ : ℕ) (hρ : j + 2 * ρ + 2 = D.R.m) (d : ℕ) (h : j + d = Q.s)
   (Q.εL_at j ρ hρ d h α).choose
 
 /- English proof (translation)
-The claim follows from `(Q.εL_at j ρ hρ d h α).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem oneC_spec (j ρ : ℕ) (hρ : j + 2 * ρ + 2 = D.R.m) (d : ℕ) (h : j + d = Q.s) (α : Q.Ch j) :
     IsOneComb Q.ψk Q.ν (ρ + 1) (Q.T.lev j (d + 1) (by omega)) (Q.rep j d h α) (oneC Q j ρ hρ d h α) ∧
@@ -113,7 +113,7 @@ variable {t : Tup c} {j σ : ℕ} {h : j + 2 * (σ + 1) + 2 = D.R.m} {χz : (AE 
   weilb := H.wb
 
 /- English proof (translation)
-Introduce `φ Ξ₁ Ξ₂ hφ h₁ h₂`. Take `⟨χA, χA', χz, omz, omz', e1, e2, w1, w2, w3, w4⟩` from `hW.mid j σ h`. Use function extensionality and compare the values at `g`. Conclude with `(GlobalTheory.Unf.Contr.contrLaw D c.ψ σ _ _ _ (t.sBF j (σ + 1) h) (t.sFB j σ h) (c.lnk j σ h) (c.vL j σ h) χA χA' χz (t.kom j) omz (t.kom (j + 1)) omz' e1 e2 w1 w2 w3 w4 φ Ξ₁ Ξ₂ hφ h₁ h₂).2.2 g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem handIsLift (H : Chars t χ j σ h χz) (hW : WeilOK (t := t) v) : HandIsLift (dblOf H) := by
   intro φ Ξ₁ Ξ₂ hφ h₁ h₂
@@ -123,15 +123,15 @@ theorem handIsLift (H : Chars t χ j σ h χz) (hW : WeilOK (t := t) v) : HandIs
     (t.kom (j + 1)) omz' e1 e2 w1 w2 w3 w4 φ Ξ₁ Ξ₂ hφ h₁ h₂).2.2 g
 
 /- English proof (translation)
-Use `Q.hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ix₀ (Q : QAt v χ) (h : j + 2 * (σ + 1) + 2 = D.R.m) : j + (2 * σ + 1 + 1) = Q.s := by have := Q.hs; omega
 /- English proof (translation)
-Use `Q.hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ix₁ (Q : QAt v χ) (h : j + 2 * (σ + 1) + 2 = D.R.m) : j + 1 + (2 * σ + 1) = Q.s := by have := Q.hs; omega
 /- English proof (translation)
-Use `Q.hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ix₂ (Q : QAt v χ) (h : j + 2 * (σ + 1) + 2 = D.R.m) : j + 1 + 1 + 2 * σ = Q.s := by have := Q.hs; omega
 
@@ -215,9 +215,9 @@ set_option maxHeartbeats 1000000 in
     vol₂ := (Q.haar _).2 }
 
 /- English proof (translation)
-Establish `key : ∀ i, IntAt (F.Q i).q.v ((F.Q i).gl n d (hd i)) x ↔ Moves (c.V n) x (v.N n) (v.N n) (· = (F.Q i).q.v)` using `fun i => by`. Take `⟨-, h1, h2, -, h3⟩` from `GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D _ (F.Q i).q (c.V n) _ ((F.Q i).FY n d (hd i)) ((F.Q i).gl n d (hd i)) ((F.Q i).gl_loc n d (hd i))`. Conclude with `intAt_iff_moves _ _ h1 h2 (h3 _ (hv.sd n hn) ((F.Q i).latY n d (hd i))) x`. Simplify using `only [key, InK, hx, true_and]`. Rewrite using `[moves_iff_forall (hv.sd n hn) (· ∈ w.Q)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H p hp`. Take `⟨i, rfl⟩` from `(hF.places p).1 hp`. Conclude with `H i`. Conclude with `fun H i => H _ ((hF.places _).2 ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem norm_eq (hv : v.Is) {w : VTup t} (F : QFam v t) (hF : F.Pins w) (n : ℕ) (hn : n < D.R.m) (d : ℕ)
     (hd : ∀ i, n + d = (F.Q i).s + 1) (x : GA D (c.V n)) (hx : x ∈ grpAt (c.V n) (· ∈ w.Q)) :
@@ -235,7 +235,7 @@ theorem norm_eq (hv : v.Is) {w : VTup t} (F : QFam v t) (hF : F.Pins w) (n : ℕ
   · exact fun H i => H _ ((hF.places _).2 ⟨i, rfl⟩)
 
 /- English proof (translation)
-Take `⟨T, hT, hO⟩` from `(GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D Q.k Q.q Q.unit _ _ _ _ (Q.FY n (d + 1) h₀) (Q.FY (n + 1) d h₁) c.ψ Q.ψk hc.std Q.char Q.cond _ _ (hv.sd n (by omega)) (hv.sd (n + 1) hn) (Q.latY _ _ _) (Q.latY _ _ _)).2 f (vac_single hc.std (hv.sd n (by omega)) (hv …`. Take `⟨O, h1⟩` from `GlobalTheory.BiComb.exists_isOne (k := Q.k) (Q.X (n + 1) ⊕ Fin d) (Q.X n ⊕ Fin (d + 1))`. Conclude with `⟨T, O, hT, h1, hO O h1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem model_of_vac (hc : c.Is) (hv : v.Is) (Q : QAt v χ) (n : ℕ) (hn : n + 1 < D.R.m) (d : ℕ) (h₀ : n + (d + 1) = Q.s + 1)
     (h₁ : n + 1 + d = Q.s + 1) {P : Pl D → Prop} (hP : P Q.q.v) {f : WO (c.V n) (c.V (n + 1)) → ℂ}
@@ -248,7 +248,7 @@ theorem model_of_vac (hc : c.Is) (hv : v.Is) (Q : QAt v χ) (n : ℕ) (hn : n + 
   exact ⟨T, O, hT, h1, hO O h1⟩
 
 /- English proof (translation)
-Rewrite using `[hF.eQ n hn]`. Use `isFinComb_aconv _ fun e he => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 he`. Use `(F.Q i).hs` as an intermediate fact. Conclude with `isFinComb_of_half (F.Q i).q ((F.Q i).eL_at n ((F.Q i).s - n) (by omega)).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_eQ {w : VTup t} (F : QFam v t) (hF : F.Pins w) (n : ℕ) (hn : n + 1 < D.R.m) : IsFinComb (w.eQ n) := by
   rw [hF.eQ n hn]
@@ -258,7 +258,7 @@ theorem fin_eQ {w : VTup t} (F : QFam v t) (hF : F.Pins w) (n : ℕ) (hn : n + 1
   exact isFinComb_of_half (F.Q i).q ((F.Q i).eL_at n ((F.Q i).s - n) (by omega)).1
 
 /- English proof (translation)
-Rewrite using `[hF.dQ n (by omega)]`. Use `fun u hu => isFinComb_aconv _ (fun e he => ?_) u (Finsupp.support_smul hu)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 he`. Use `(F.Q i).hs` as an intermediate fact. Conclude with `isFinComb_of_half (F.Q i).q ((F.Q i).dL_mid n ((F.Q i).s - (n + 1)) (by omega) _ _).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_dQ {w : VTup t} (F : QFam v t) (hF : F.Pins w) (n : ℕ) (hn : n + 3 ≤ D.R.m) (α γ) : IsFinComb (w.dQ n α γ) := by
   rw [hF.dQ n (by omega)]
@@ -270,25 +270,25 @@ theorem fin_dQ {w : VTup t} (F : QFam v t) (hF : F.Pins w) (n : ℕ) (hn : n + 3
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `n₁` using `norm_eq hv F hF (j + 1) (by omega) (2 * σ + 1 + 1) fun i => by have := (F.Q i).hs; omega`. Establish `n₂` using `norm_eq hv F hF (j + 1 + 1) (by omega) (2 * σ + 1) fun i => by have := (F.Q i).hs; omega`. Establish `hQ : ∀ i, (F.Q i).q.v ∈ w.Q` using `fun i => (hF.places _).2 ⟨i, rfl⟩`. Establish `away : ∀ {A T : HSp D} (e : AE D), ∀ u ∈ (Finsupp.single 0 1 : WO A T →₀ ℂ).support, IsHalf e u`. Introduce `A T e u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl : u = 0` from `Finset.mem_singleton.1 (Finsupp.support_single_subset hu)`. Introduce `a b`. Conclude with `mul_zero _`. Establish `V` using `GlobalTheory.T.doubleStep_adelicIntegral_finiteTwistPlaces D c.ψ hc.std σ (dblOf H) F.r (fun i => stepOf H (F.Q i) (F.eqv j α i)) hF.inj (· ∈ w.Q) hF.places μ₁ ρ₁ μ₂ ρ₂ hN₁.1 hN₁.2.1 hN₂.1 hN₂.2.1 ((congrArg μ₁ (Set.ext fun x => n₁ x.1 x.2)).trans hN₁.2.2.1) ((congrArg ρ₁ (Set.ex …`. Establish `V'` using `isIteratedQuotientIntegral_const_mul (∏ i, (F.Q i).wt j (F.eqv j α i)) V`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₁` using `GlobalTheory.AvgMid.theta_comb hc.std (fin_eQ F hF j (by omega)) hΨ₁.1`. Establish `t₂` using `GlobalTheory.AvgMid.theta_comb hc.std (fin_eQ F hF (j + 1) (by omega)) hΨ₂.1`. Establish `hε : ∀ n ρ (hn : n + 2 * ρ + 2 = D.R.m) d (hd : ∀ i, n + d = (F.Q i).s) β, w.ε n β = (∏ i, (F.Q i).wt n (F.eqv n β i)) • conv (List.ofFn fun i => (oneC (F.Q i) n ρ hn d (hd i) (F.eqv n β i)).mapDomain ((F.Q i).gl n (d + 1) (by have` using `hd i; omega))) := fun n ρ hn d hd β => by`. Rewrite using `[hF.ε n ρ hn β]`. Use `congr 3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `(oneC_spec (F.Q i) n ρ hn d (hd i) _).2`. Use `(congrArg₂ (Iter2 ρ₁ μ₁ ρ₂ μ₂) ?_ ?_).mp V'` and prove the remaining obligations. Use function extensionality and compare the values at `x y`. Rewrite using `[hε j (σ + 1) h _ (fun i => ix₀ (F.Q i) h) α]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (sum_support_smul _ _ _).symm` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← val_eq_hand (handIsLift H hW) t₁ t₂ hφ, hF.eQ j (by omega), hF.eQ (j + 1) (by omega)]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [one_mul]`. Establish `hvol : ∏ i, (stepOf H (F.Q i) (F.eqv j α i)).volJ = w.cQ j`. Rewrite using `[hF.cQ j (by omega)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(F.Q i).hs` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[(F.Q i).idx_mid (j + 1) (2 * σ + 1 + 1) (by omega), (F.Q i).idx_mid (j + 1 + 1) (2 * σ + 1) (by omega)]`. Both sides reduce to the same expression. Rewrite using `[hvol, mul_left_comm, Finset.mul_sum]`. Use `congr 1`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv ((F.eqv (j + 1)).trans (Equiv.piCongrRight fun i => repE (F.Q i) _ _ (ix₁ (F.Q i) h))) _ _ fun γ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv ((F.eqv (j + 1 + 1)).trans (Equiv.piCongrRight fun i => repE (F.Q i) _ _ (ix₂ (F.Q i) h))) _ _ fun β => ?_` and prove the remaining obligations. Establish `hw : ∏ i, (stepOf H (F.Q i) (F.eqv j α i)).w₁ (repE (F.Q i) _ _ (ix₁ (F.Q i) h) (F.eqv (j + 1) γ i)) * (stepOf H (F.Q i) (F.eqv j α i)).w₂ (repE (F.Q i) _ _ (ix₂ (F.Q i) h) (F.eqv (j + 1 + 1) β i)) = (∏ i, (F.Q i).wt (j + 1) (F.eqv (j + 1) γ i)) * ∏ i, (F.Q i).wt (j + 1 + 1) (F.e …`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(F.Q i).wt_mid (j + 1) _ (ix₁ (F.Q i) h), (F.Q i).wt_mid (j + 1 + 1) _ (ix₂ (F.Q i) h)]`. Both sides reduce to the same expression. Rewrite using `[val_one, aconv_single_cons, aconv_single_cons, hF.dQ j (by omega), hF.dQ (j + 1) (by omega), hε (j + 1 + 1) σ (idx_step h) _ (fun i => ix₂ (F.Q i) h) β, biComb_smul_left, trc_smul_left, Comm.bl, GlobalTheory.SeeSawRhs.biLift_smul, GlobalTheory.HandHom.per_smul]`. Simplify using `only [Equiv.trans_apply, Equiv.piCongrRight_apply, Pi.map_apply, Equiv.symm_apply_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hw]`. Simplify using `only [mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem oneChart (hc : c.Is) (hv : v.Is) (hW : WeilOK (t := t) v) {w : VTup t} (F : QFam v t) (hF : F.Pins w)
     (H : Chars t F.χ j σ h χz) {ρ₁ μ₁ ρ₂ μ₂}
@@ -372,11 +372,11 @@ theorem oneChart (hc : c.Is) (hv : v.Is) (hW : WeilOK (t := t) v) {w : VTup t} (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D c v t w hc _ hv hW ⟨F, hF⟩ j σ h ρ₁ μ₁ ρ₂ μ₂ hN₁ hN₂ Ψ₁ Ψ₂ hΨ₁ hΨ₂ φ hφ f hf hfY`. Take `⟨χz, e1, e2, e3, e4⟩` from `hF.mid j σ h`. Establish `H : Chars t F.χ j σ h χz` using `⟨e1, e2, e3, e4, hF.kom j (by omega), hF.kom (j + 1) (by omega)⟩`. Establish `hf' : IsContAut _ f` using `⟨hf.left, hf.cont⟩`. Establish `key` using `isIteratedQuotientIntegral_finset_sum Finset.univ _ _ fun α _ => oneChart hc hv hW F hF H hN₁ hN₂ hΨ₁ hΨ₂ α (hφ α).1 hf' hfY`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(congrArg (Iter2 ρ₁ μ₁ ρ₂ μ₂ _) ?_).mp key` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[← Fintype.sum_prod_type', Finset.sum_comm]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Fintype.sum_prod_type']`. Establish `hX : ∀ p : t.Ch j × t.Ch (j + 1), IsContAut (c.X (j + 1 + 1)) (c.bl j (t.kom j) (t.kom (j + 1)) (φ p.1) (biComb c.ψ _ _ _ (w.dQ j p.1 p.2) (w.dQ (j + 1) p.2 β) (c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂)))` using `fun p => contAut_lift (S := dblOf H) hc.std (handIsLift H hW) (fin_dQ F hF j (by omega) p.1 p.2) (fin_dQ F hF (j + 1) (by omega) p.2 β) hΨ₁.1 hΨ₂.1 (hφ p.1).1`. Conclude with `(per_sum hc.std (c.B (j + 1 + 1) σ (idx_step h)) (GlobalTheory.QValOuter.contAut_trc (w.ε (j + 1 + 1) β) hf') _ hX).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qLaw_of_pin : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t), c.Is → t.Is → v.Is → WeilOK (t := t) v → QPin v w → QLaw v w := by
   intro D c v t w hc _ hv hW ⟨F, hF⟩ j σ h ρ₁ μ₁ ρ₂ μ₂ hN₁ hN₂ Ψ₁ Ψ₂ hΨ₁ hΨ₂ φ hφ f hf hfY

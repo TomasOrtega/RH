@@ -17,7 +17,7 @@ open scoped TensorProduct in
 open NumberField IsDedekindDomain in
 variable (F : Type) [Field F] [NumberField F] in
 /- English proof (translation)
-Unfold `_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.psiV _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV`. Rewrite using `[RestrictedProduct.single_zero]`. Conclude with `AddChar.map_zero_eq_one ψ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.psiV_zero (ψ : AddChar (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) :
     _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.psiV F ψ v 0 = 1 := by
@@ -30,7 +30,7 @@ open scoped TensorProduct in
 open NumberField IsDedekindDomain in
 variable (F : Type) [Field F] [NumberField F] in
 /- English proof (translation)
-Unfold `_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.psiV _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV`. Use `Eq.trans ?_ (ψ.map_add_eq_mul _ _)` and prove the remaining obligations. Use `congr 1`. Use `Prod.ext (add_zero 0).symm ?_` and prove the remaining obligations. Conclude with `RestrictedProduct.single_add (fun w => HeightOneSpectrum.adicCompletionIntegers F w) v x y`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.psiV_add (ψ : AddChar (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ℂ) (v : HeightOneSpectrum (𝓞 F))
     (x y : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) :
@@ -153,7 +153,7 @@ open scoped TensorProduct in
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ x, hu.2.1 τ x]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.star_eq_sigma {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] [StarRing E] (σ : E →ₐ[F] E) (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ)

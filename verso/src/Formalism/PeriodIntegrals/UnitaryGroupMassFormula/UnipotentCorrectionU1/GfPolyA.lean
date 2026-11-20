@@ -12,7 +12,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 variable {N : ℕ}
 
 /- English proof (translation)
-Take `⟨q, hq, he⟩` from `hP`. Conclude with `⟨q, hq.trans h, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pd_mono {a b : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h : a ≤ b) (hP : IsPolyDeg a P) :
     IsPolyDeg b P := by
@@ -20,13 +20,13 @@ theorem pd_mono {a b : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h : a ≤ 
   exact ⟨q, hq.trans h, he⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.C c, by simp, fun g => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem pd_const (c : ℂ) : IsPolyDeg (N := N) 0 (fun _ => c) :=
   ⟨MvPolynomial.C c, by simp, fun g => by simp⟩
 
 /- English proof (translation)
-Take `⟨p, hp, hpe⟩` from `hP`. Take `⟨q, hq, hqe⟩` from `hQ`. Conclude with `⟨p + q, (MvPolynomial.totalDegree_add p q).trans (max_le hp hq), fun g => by simp [hpe, hqe]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pd_add {a : ℕ} {P Q : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : IsPolyDeg a P) (hQ : IsPolyDeg a Q) :
     IsPolyDeg a (fun g => P g + Q g) := by
@@ -35,7 +35,7 @@ theorem pd_add {a : ℕ} {P Q : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : IsPoly
   exact ⟨p + q, (MvPolynomial.totalDegree_add p q).trans (max_le hp hq), fun g => by simp [hpe, hqe]⟩
 
 /- English proof (translation)
-Take `⟨p, hp, hpe⟩` from `hP`. Take `⟨q, hq, hqe⟩` from `hQ`. Conclude with `⟨p - q, (MvPolynomial.totalDegree_sub p q).trans (max_le hp hq), fun g => by simp [hpe, hqe]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pd_sub {a : ℕ} {P Q : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : IsPolyDeg a P) (hQ : IsPolyDeg a Q) :
     IsPolyDeg a (fun g => P g - Q g) := by
@@ -44,7 +44,7 @@ theorem pd_sub {a : ℕ} {P Q : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : IsPoly
   exact ⟨p - q, (MvPolynomial.totalDegree_sub p q).trans (max_le hp hq), fun g => by simp [hpe, hqe]⟩
 
 /- English proof (translation)
-Take `⟨p, hp, hpe⟩` from `hP`. Take `⟨q, hq, hqe⟩` from `hQ`. Conclude with `⟨p * q, (MvPolynomial.totalDegree_mul p q).trans (add_le_add hp hq), fun g => by simp [hpe, hqe]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pd_mul {a b : ℕ} {P Q : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : IsPolyDeg a P) (hQ : IsPolyDeg b Q) :
     IsPolyDeg (a + b) (fun g => P g * Q g) := by
@@ -53,7 +53,7 @@ theorem pd_mul {a b : ℕ} {P Q : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : IsPo
   exact ⟨p * q, (MvPolynomial.totalDegree_mul p q).trans (add_le_add hp hq), fun g => by simp [hpe, hqe]⟩
 
 /- English proof (translation)
-Establish `h` using `pd_mul (pd_const c) hP`. Rewrite `h` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pd_cmul {a : ℕ} (c : ℂ) {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : IsPolyDeg a P) :
     IsPolyDeg a (fun g => c * P g) := by
@@ -61,7 +61,7 @@ theorem pd_cmul {a : ℕ} (c : ℂ) {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP
   rwa [zero_add] at h
 
 /- English proof (translation)
-Establish `h` using `pd_mul hP (pd_const c)`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pd_mulc {a : ℕ} (c : ℂ) {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP : IsPolyDeg a P) :
     IsPolyDeg a (fun g => P g * c) := by
@@ -69,9 +69,9 @@ theorem pd_mulc {a : ℕ} (c : ℂ) {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (hP
   rwa [add_zero] at h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `pd_mono (Nat.zero_le a) (pd_const 0)`. Consider the case `insert i s hi ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_insert hi]`. Conclude with `pd_add (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 theorem pd_sum {ι : Type*} (s : Finset ι) {a : ℕ} (P : ι → Matrix (Fin N) (Fin N) ℂ → ℂ)
     (h : ∀ i ∈ s, IsPolyDeg a (P i)) : IsPolyDeg a (fun g => ∑ i ∈ s, P i g) := by
@@ -85,9 +85,9 @@ theorem pd_sum {ι : Type*} (s : Finset ι) {a : ℕ} (P : ι → Matrix (Fin N)
     exact pd_add (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty, Finset.prod_empty]`. Conclude with `pd_const 1`. Consider the case `insert i s hi ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_insert hi, Finset.prod_insert hi]`. Conclude with `pd_mul (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 theorem pd_prod {ι : Type*} (s : Finset ι) (d : ι → ℕ) (P : ι → Matrix (Fin N) (Fin N) ℂ → ℂ)
     (h : ∀ i ∈ s, IsPolyDeg (d i) (P i)) : IsPolyDeg (∑ i ∈ s, d i) (fun g => ∏ i ∈ s, P i g) := by
@@ -101,19 +101,19 @@ theorem pd_prod {ι : Type*} (s : Finset ι) (d : ι → ℕ) (P : ι → Matrix
     exact pd_mul (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.X (Sum.inl (a, b)), by simp [MvPolynomial.totalDegree_X], fun g => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem pd_X (a b : Fin N) : IsPolyDeg 1 (fun g : Matrix (Fin N) (Fin N) ℂ => g a b) :=
   ⟨MvPolynomial.X (Sum.inl (a, b)), by simp [MvPolynomial.totalDegree_X], fun g => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.X (Sum.inr (a, b)), by simp [MvPolynomial.totalDegree_X], fun g => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem pd_Xs (a b : Fin N) : IsPolyDeg 1 (fun g : Matrix (Fin N) (Fin N) ℂ => star (g a b)) :=
   ⟨MvPolynomial.X (Sum.inr (a, b)), by simp [MvPolynomial.totalDegree_X], fun g => by simp⟩
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `pd_sum _ _ fun σ _ => pd_cmul _ ?_` and prove the remaining obligations. Establish `h2` using `pd_prod (Finset.univ : Finset (Fin n)) (fun _ => 1) (fun i g => M g (σ i) i) (fun i _ => h (σ i) i)`. Simplify using `using h2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pd_det (n : ℕ) (M : Matrix (Fin N) (Fin N) ℂ → Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ i j, IsPolyDeg 1 (fun g => M g i j)) : IsPolyDeg n (fun g => (M g).det) := by
@@ -124,7 +124,7 @@ theorem pd_det (n : ℕ) (M : Matrix (Fin N) (Fin N) ℂ → Matrix (Fin n) (Fin
   simpa using h2
 
 /- English proof (translation)
-Establish `e : (fun g => star (M g).det) = fun g => ((M g).map (starRingEnd ℂ)).det`. Use function extensionality and compare the values at `g`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, starRingEnd_apply]`. Rewrite using `[e]`. Conclude with `pd_det n _ fun i j => h i j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pd_det_star (n : ℕ) (M : Matrix (Fin N) (Fin N) ℂ → Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ i j, IsPolyDeg 1 (fun g => star (M g i j))) : IsPolyDeg n (fun g => star (M g).det) := by
@@ -135,7 +135,7 @@ theorem pd_det_star (n : ℕ) (M : Matrix (Fin N) (Fin N) ℂ → Matrix (Fin n)
   exact pd_det n _ fun i j => h i j
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, mulVec]`. Conclude with `pd_sum _ _ fun i _ => pd_cmul _ (pd_sum _ _ fun j _ => pd_cmul _ (pd_sum _ _ fun l _ => pd_mulc _ (pd_X j l)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pd_herm (H : Matrix (Fin N) (Fin N) ℂ) (v w : Fin N → ℂ) :
     IsPolyDeg 1 (fun g : Matrix (Fin N) (Fin N) ℂ => herm H (g *ᵥ v) w) := by
@@ -144,7 +144,7 @@ theorem pd_herm (H : Matrix (Fin N) (Fin N) ℂ) (v w : Fin N → ℂ) :
     (pd_sum _ _ fun l _ => pd_mulc _ (pd_X j l)))
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, mulVec, star_sum, star_mul']`. Conclude with `pd_sum _ _ fun i _ => pd_cmul _ (pd_sum _ _ fun j _ => pd_cmul _ (pd_sum _ _ fun l _ => isPolyDeg_one_conj_entry_mul j l))`. Use `where isPolyDeg_one_conj_entry_mul (j l : Fin N) : IsPolyDeg 1 (fun g : Matrix (Fin N) (Fin N) ℂ => star (g j l) * star (v l)) := pd_mulc _ (pd_Xs j l)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pd_herm_star (H : Matrix (Fin N) (Fin N) ℂ) (v w : Fin N → ℂ) :
     IsPolyDeg 1 (fun g : Matrix (Fin N) (Fin N) ℂ => star (herm H (g *ᵥ v) w)) := by

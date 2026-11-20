@@ -12,7 +12,7 @@ namespace GlobalTheory.DomCongr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `e : ∀ s : X.Ψ → ℝ, P (X.flow ξ (fun τ => (s τ : ℂ)) x) = Q (X.flow ξ (fun τ => (s τ : ℂ)) x)` using `fun s => h _ (TransvectionPeriodicity.flow_real_mem_dom X hξ.2.1 s x hx)`. Unfold `Data.fj`. Simplify using `only [e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fj_eq_of_eqOn (la : Wt X.Ψ r) {ξ : Fin r → E} (hξ : X.IsIso ξ) (ν : X.Ψ → ℝ)
     {P Q : Frame X.Ψ r → ℂ} (h : ∀ x ∈ X.dom, P x = Q x) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -25,7 +25,7 @@ theorem fj_eq_of_eqOn (la : Wt X.Ψ r) {ξ : Fin r → E} (hξ : X.IsIso ξ) (ν
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.IsSec at hP ⊢`. Take `⟨hd, hb, hg⟩` from `hP`. Use `⟨hd.congr fun x hx => (hPQ x hx).symm, fun x hx b hb' => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hPQ _ (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_rmul X hx hb'), ← hPQ x hx, hb x hx b hb']`. Rewrite using `[← hPQ _ (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_lact X hγ hx), ← hPQ x hx, hg γ hγ x hx]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma isSec_of_eqOn_dom {la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r} {P Q : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ}
     (hPQ : ∀ x ∈ X.dom, P x = Q x) (hP : X.IsSec la P) : X.IsSec la Q := by
@@ -38,7 +38,7 @@ private lemma isSec_of_eqOn_dom {la : _root_.ReciprocityTheory.ChartRestriction.
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 /- English proof (translation)
-Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.pnorm_eq, _root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.pnorm_eq, hPQ x hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma pnorm_eq_of_eqOn_dom (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) {P Q : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ}
     (hPQ : ∀ x ∈ X.dom, P x = Q x) {x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -48,7 +48,7 @@ private lemma pnorm_eq_of_eqOn_dom (la : _root_.ReciprocityTheory.ChartRestricti
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 /- English proof (translation)
-Establish `key : ∀ s : ↥X.Ψ → ℝ, P (X.flow ξ (fun τ ↦ ((s τ : ℝ) : ℂ)) x) = Q (X.flow ξ (fun τ ↦ ((s τ : ℝ) : ℂ)) x)` using `fun s => hPQ _ (_root_.ReciprocityTheory.ChartRestriction.G.FD.TransvectionPeriodicity.flow_real_mem_dom X hξ s x hx)`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.fj`. Simplify using `only [key]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma fj_eq_of_eqOn_dom (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) {P Q : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ}
     (hPQ : ∀ x ∈ X.dom, P x = Q x) {ξ : Fin r → E} (hξ : _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm ξ ξ = 0)
@@ -64,11 +64,11 @@ open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 
 /- English proof (translation)
-Introduce `E _ _ _ r X la P Q hPQ`. Establish `hB : X.IsBddSec la P → X.IsBddSec la Q`. Introduce `hP`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.IsBddSec at hP ⊢`. Take `⟨hs, C, hC⟩` from `hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨isSec_of_eqOn_dom X hPQ hs, C, fun x hx => (pnorm_eq_of_eqOn_dom X la hPQ hx) ▸ hC x hx⟩`. Use `⟨hB, fun hP => ?_⟩` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.SS at hP ⊢`. Take `⟨hb, hc⟩` from `hP`. Use `⟨hB hb, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← fj_eq_of_eqOn_dom X la hPQ (by unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.IsIso at hξ; exact hξ.2.1) 0 hx]`. Conclude with `hc ξ hξ x hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DomCongr.bddSec_cusp_congr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r), ∀ (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (P Q : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ),

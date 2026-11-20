@@ -5,21 +5,19 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Set `g : (Fin m → O) →ₗ[O] (Fin n → O)` to `Matrix.vecMulLinear N`. Establish `hg : Function.Injective g`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `b hb`. Conclude with `hinj b hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Module.IsTorsionFree O ((Fin n → O) ⧸ LinearMap.range g) := by`. Use `Module.IsTorsionFree.of_smul_eq_zero ?_` and prove the remaining obligations. Introduce `r x h`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `right`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Rewrite `h` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨b, hb⟩` from `h`. Take `⟨b', hb'⟩` from `hsat r x b hr hb.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨b', hb'.symm⟩`. Use `haveI : Module.Free O ((Fin n → O) ⧸ LinearMap.range g) := inferInstance`. Establish `hex : Function.Exact g (LinearMap.range g).mkQ` using `LinearMap.exact_map_mkQ_range g`. Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective (LinearMap.range g).mkQ (Submodule.range_mkQ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs' : ∃ s, (LinearMap.range g).mkQ ∘ₗ s = LinearMap.id` using `⟨s, hs⟩`. Establish `hl' : ∃ l, l ∘ₗ g = LinearMap.id` using `((hex.split_tfae hg (Submodule.mkQ_surjective _)).out 0 1).mp hs'`. Take `⟨l, hl⟩` from `hl'`. Use `⟨LinearMap.toMatrixRight' l, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `h1 : ∀ x, Matrix.vecMul x (LinearMap.toMatrixRight' l) = l x`. Introduce `x`. Use `LinearMap.toMatrixRight'.symm_apply_apply l` as an intermediate fact. Use `conv_rhs => rw [← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : Matrix.vecMul (Pi.single i 1) (N * LinearMap.toMatrixRight' l) = Pi.single i 1`. Rewrite using `[← Matrix.vecMul_vecMul, h1]`. Conclude with `LinearMap.congr_fun hl _`. Use `congrFun h2 j` as an intermediate fact. Rewrite `this` using `[Matrix.single_one_vecMul]`.
-
-Simplify `this` using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem matrix_exists_rightInverse_of_saturated_rows {O : Type} [CommRing O] [IsDomain O]
     [IsPrincipalIdealRing O] {m n : ℕ} (N : Matrix (Fin m) (Fin n) O)
@@ -67,47 +65,41 @@ theorem matrix_exists_rightInverse_of_saturated_rows {O : Type} [CommRing O] [Is
   simpa [Matrix.one_apply, Pi.single_apply, eq_comm] using this
 
 /- English proof (translation)
-Introduce `O k V K _ _ _ _ _ _ _ _ _ _ f em hf m n P M C hP hM hO hV`. Establish `iO : Function.Injective (algebraMap O k)` using `IsFractionRing.injective O k`. Establish `iV : Function.Injective (algebraMap V K)` using `IsFractionRing.injective V K`. Establish `hN : ∃ N : Matrix (Fin m) (Fin n) O, M * P = N.map (algebraMap O k)`. Establish `: ∀ i, ∃ a : Fin n → O, Matrix.vecMul (M i) P = fun j => algebraMap O k (a j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Use `(hO _).mpr ⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Establish `: (fun j => algebraMap O k ((Pi.single i 1 : Fin m → O) j)) = Pi.single i 1`. Apply the tactic sequence `ext j; by_cases h : j = i <;> simp [Pi.single_apply, h]`. Rewrite using `[this, Matrix.single_one_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `choose a ha using this`. Use `⟨Matrix.of a, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `congrFun (ha i) j`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `hN`. Establish `hmap : ∀ b : Fin m → O, Matrix.vecMul (Matrix.vecMul (fun i => algebraMap O k (b i)) M) P = fun j => algebraMap O k (Matrix.vecMul b N j)`. Introduce `b`. Rewrite using `[Matrix.vecMul_vecMul, hN]`. Use extensionality with `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[Matrix.vecMul, dotProduct]`. Take `⟨Q, hQ⟩` from `matrix_exists_rightInverse_of_saturated_rows N (by`. Introduce `b hb`. Establish `h1` using `hmap b`. Rewrite `h1` using `[hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hP _ (h1.trans (by ext j; simp))`. Establish `h3` using `Matrix.eq_zero_of_vecMul_eq_zero hM h2`. Use extensionality with `i`. Apply `iO` to reduce the goal to its premises. Simplify using `using congrFun h3 i) (by`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r x b hr hx`. Establish `hr' : algebraMap O k r ≠ 0` using `fun h => hr (iO (by simpa using h))`. Take `⟨b', hb'⟩` from `(hO ((algebraMap O k r)⁻¹ • Matrix.vecMul (fun i => algebraMap O k (b i)) M)).mp ⟨x, by`. Rewrite using `[Matrix.smul_vecMul, hmap, ← hx]`. Use extensionality with `j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Use the proof step `field_simp⟩`. Use `⟨b', ?_⟩` and prove the remaining obligations. Establish `h1` using `hmap b'`. Rewrite `h1` using `[← hb', Matrix.smul_vecMul, hmap, ← hx]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `j`. Apply `iO` to reduce the goal to its premises. Rewrite using `[← congrFun h1 j]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Use the proof step `field_simp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hcomp : (algebraMap V K).comp f = em.comp (algebraMap O k)` using `RingHom.ext hf`. Use `set M' := M.map em with hM'`. Use `set P' := P.map em with hP'`. Use `set Q' := (Q.map f).map (algebraMap V K) with hQ'`. Establish `hMP : M' * P' = (N.map f).map (algebraMap V K)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hM', hP', ← Matrix.map_mul, hN]`. Use extensionality with `i j`. Simplify using `[hf]`. Establish `h1 : M' * (P' * Q') = 1`. Rewrite using `[← Matrix.mul_assoc, hMP, hQ', ← Matrix.map_mul, ← Matrix.map_mul, hQ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2 : (P' * Q') * M' = 1` using `mul_eq_one_comm.mp h1`. Establish `hsingle : ∀ i : Fin m, (fun j => algebraMap V K ((Pi.single i 1 : Fin m → V) j)) = Pi.single i 1`. Introduce `i`. Apply the tactic sequence `ext j; by_cases h : j = i <;> simp [Pi.single_apply, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hU : ∃ U : Matrix (Fin m) (Fin m) V, C = U.map (algebraMap V K) * M'`. Establish `: ∀ i, ∃ a : Fin n → V, Matrix.vecMul (C i) P' = fun j => algebraMap V K (a j)`. Introduce `i`. Use `(hV _).mpr ⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hsingle, Matrix.single_one_vecMul]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `choose a ha using this`. Establish `hA : C * P' = (Matrix.of a).map (algebraMap V K)`. Use extensionality with `i j`. Conclude with `congrFun (ha i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨Matrix.of a * Q.map f, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, ← hA, ← hQ', Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc P', h2, Matrix.mul_one]`. Establish `hU' : ∃ U' : Matrix (Fin m) (Fin m) V, M' = U'.map (algebraMap V K) * C`. Establish `: ∀ i, ∃ b : Fin m → V, M' i = Matrix.vecMul (fun i => algebraMap V K (b i)) C`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hV _).mp ⟨(N.map f) i, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Conclude with `congrFun (congrFun hMP i) j`. Use `choose b hb using this`. Use `⟨Matrix.of b, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Conclude with `congrFun (hb i) j`. Take `⟨U, hU⟩` from `hU`. Take `⟨U', hU'⟩` from `hU'`. Establish `hd : M'.det = em M.det` using `by rw [hM', RingHom.map_det]; rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hd0 : em M.det ≠ 0` using `by simpa using hM`. Establish `e1 : C.det = algebraMap V K U.det * em M.det`. Rewrite using `[hU, Matrix.det_mul, hd, RingHom.map_det (algebraMap V K)]`. Both sides reduce to the same expression. Establish `e2 : em M.det = algebraMap V K U'.det * C.det`.
-
-Use `congrArg Matrix.det hU'` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, hd]`. Rewrite using `[this, RingHom.map_det (algebraMap V K)]`. Both sides reduce to the same expression. Establish `e3 : U.det * U'.det = 1`.
-
-Apply `iV` to reduce the goal to its premises. Rewrite using `[map_mul, map_one]`. Apply `mul_right_cancel₀ hd0` to reduce the goal to its premises. Rewrite using `[one_mul]`. Use `conv_rhs => rw [e2, e1]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨Units.mkOfMulEqOne _ _ e3, e1⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_saturated_lattice_baseChange : ∀ (O k V K : Type) [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field k] [Algebra O k] [IsFractionRing O k] [CommRing V] [Field K] [Algebra V K] [IsFractionRing V K] (f : O →+* V) (em : k →+* K), (∀ a, algebraMap V K (f a) = em (algebraMap O k a)) → ∀ (m n : ℕ) (P : Matrix (Fin m) (Fin n) k) (M : Matrix (Fin m) (Fin m) k) (C : Matrix (Fin m) (Fin m) K), (∀ c, Matrix.vecMul c P = 0 → c = 0) → M.det ≠ 0 → (∀ c : Fin m → k, (∃ a : Fin n → O, Matrix.vecMul c P = fun j => algebraMap O k (a j)) ↔ ∃ b : Fin m → O, c = Matrix.vecMul (fun i => algebraMap O k (b i)) M) → (∀ c : Fin m → K, (∃ a : Fin n → V, Matrix.vecMul c (P.map em) = fun j => algebraMap V K (a j)) ↔ ∃ b : Fin m → V, c = Matrix.vecMul (fun i => algebraMap V K (b i)) C) → ∃ u : Vˣ, C.det = algebraMap V K u * em M.det := by
   intro O k V K _ _ _ _ _ _ _ _ _ _ f em hf m n P M C hP hM hO hV

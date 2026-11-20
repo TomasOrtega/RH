@@ -12,17 +12,17 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.FockAlg
 
 /- English proof (translation)
-Introduce `X p q r s`. Use `⟨fun d μ P hP hw => (GlobalTheory.T.weightDegree_le_of_homogeneous_fockWeightVector p q r s).1 d μ P hP hw.1 hw.2.1, fun d μ P hP hw => (GlobalTheory.T.weightDegree_le_of_homogeneous_fockWeightVector p q r s).2 d μ P hP hw.1 hw.2.1, fun μ P h0 ht hh => (GlobalTheory.T.fockHarmoni …` and prove the remaining obligations. Introduce `u1 u2 hu d`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.fischerDecomposition_fockNoncompactParts p q r s d`. Apply the tactic sequence `cases u1 <;> cases u2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `at hu`. Establish `e1 : lowKer X (X.fock p q r s) false true = harm1 p q r s`. Use extensionality with `P`. Simplify using `[lowKer, harm1, FockData.act2]`. Establish `e2 : raised X (X.fock p q r s) false true d = {R | ∃ Q ∈ homog (Ix p q × Ix r s) d, ∃ Z : Mat r s, IsPC Z ∧ R = plusPart (fockAct2 p q r s Z) Q}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `P`. Simplify using `[raised, FockData.act2]`. Rewrite using `[e1, e2]`. Conclude with `h2`. Establish `e1 : lowKer X (X.fock p q r s) true false = harm2 p q r s`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `P`. Simplify using `[lowKer, harm2, FockData.act1]`. Establish `e2 : raised X (X.fock p q r s) true false d = {R | ∃ Q ∈ homog (Ix p q × Ix r s) d, ∃ Z : Mat p q, IsPC Z ∧ R = plusPart (fockAct1 p q r s Z) Q}`. Use extensionality with `P`. Simplify using `[raised, FockData.act1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `h1`. Establish `e1 : lowKer X (X.fock p q r s) true true = jointHarm p q r s`. Use extensionality with `P`. Simplify using `[lowKer, jointHarm, harm1, harm2, FockData.act1, FockData.act2]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : raised X (X.fock p q r s) true true d = {R | ∃ Q ∈ homog (Ix p q × Ix r s) d, (∃ Z : Mat p q, IsPC Z ∧ R = plusPart (fockAct1 p q r s Z) Q) ∨ ∃ Z : Mat r s, IsPC Z ∧ R = plusPart (fockAct2 p q r s Z) Q}`. Use extensionality with `P`. Simplify using `[raised, FockData.act1, FockData.act2]`. Rewrite using `[e1, e2]`. Conclude with `h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_structure : ∀ X : ProvA, admH2 X := by
   intro X p q r s

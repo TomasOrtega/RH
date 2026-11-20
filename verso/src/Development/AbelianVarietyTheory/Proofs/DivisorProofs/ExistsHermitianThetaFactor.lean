@@ -21,17 +21,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ _ hA L hL g u`. Establish `hval` using `@valAt'_rules`. Establish `hholprod` using `@holFamily_lift hval`. Establish `hcubet` using `@cube_trivialisation_on_uniformising_space hval hholprod`. Establish `hdbl` using `@exists_doubling_solution_pi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdblu` using `@eventually_eq_zero_of_isBigO_cube_of_doubling`. Establish `hlock` using `@LocalCube.exists_third_difference hdbl hdblu`. Establish `hface` using `@cube_section_faces_and_doubling`. Establish `hloc` using `@exists_localFrame_compatible_cube @hface hlock`. Establish `hglob` using `@CubeFrame.exists_global_frame`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac` using `@automorphyFactor_exp_linear_of_cube`. Establish `hnf` using `@appellHumbert_normal_form_of_linear_exponent`. Take `⟨t, ht⟩` from `exists_gen_theta_of_isAbelianScheme ℂ A hA L hL`. Take `⟨⟨h1, h2, h3, h4, h5, h6, h7⟩, T, hT1, hT2, hT3, hT4⟩` from `hcubet A L L g u hL t ht _ _ rfl rfl`. Take `⟨fr, κ, hfr, hκ⟩` from `hglob g _ _ h1 h2 h3 h4 h5 T hT1 hT2 hT3 (hloc g _ _ h1 h2 h3 h4 h5 T hT1 hT2 hT3 u.Λ u.discrete u.full h6 h7 hT4)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, B, ha, hab, hfa⟩` from `hfac g _ _ h1 h2 h3 h4 h5 T hT1 hT2 hT3 u.Λ u.discrete u.full h6 h7 hT4 fr κ hfr hκ`. Take `⟨Hm, χ, Ef, Q, hH, hχ, hE, hQ, hQ0, hQn⟩` from `hnf g u.Λ u.discrete u.full a B ha hab`. Take `⟨f1, f2, f3⟩` from `hfr`. Use `⟨{ ex := u.ex, ex_add := u.ex_add, ex_onto := u.ex_onto, Λ := u.Λ, ker := u.ker, discrete := u.discrete, full := u.full, hol := u.hol, fr := fun i z => fr i z * Complex.exp (Q z), fr_hol := fun i => ?_, fr_ne := fun i z hz => ?_, fr_compat := fun i j z hz => ?_ }, Hm, χ, rfl, hH, …` and prove the remaining obligations. Use `f1 i` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.inter_univ]`. Conclude with `this.mul hQ.cexp.differentiableOn`. Conclude with `mul_ne_zero (f2 i z hz trivial) (Complex.exp_ne_zero _)`. Use `f3 i j z (le_trans hz (fun _ h => h.1)) (le_trans hz (fun _ h => h.2)) trivial` as an intermediate fact. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `l i z hz show fr i z * Complex.exp (Q z) = _ * (fr i (z + l) * Complex.exp (Q (z + l)))`. Rewrite using `[← hQn l z, hfa l i z hz, Complex.exp_sub]`. Use `Complex.exp_ne_zero (Q (z + l))` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_appellHumbert_frame_of_isLB :
     ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB →

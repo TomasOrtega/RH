@@ -30,7 +30,7 @@ namespace GlobalTheory.KFinAvg
 open Matrix
 
 /- English proof (translation)
-Establish `hc : IsClosed (PI.UpqRep.UH (PI.UpqRep.Hpk k r))` using `by show IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | gᴴ * PI.UpqRep.Hpk k r * g = PI.UpqRep.Hpk k r}`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Conclude with `(GlobalTheory.isCompact_unitaryGroup (Fin (2 * r + k + 1)) ℂ).inter_left hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_KH (k r : ℕ) : IsCompact (GlobalTheory.ThA.KH k r) := by
   have hc : IsClosed (PI.UpqRep.UH (PI.UpqRep.Hpk k r)) := by

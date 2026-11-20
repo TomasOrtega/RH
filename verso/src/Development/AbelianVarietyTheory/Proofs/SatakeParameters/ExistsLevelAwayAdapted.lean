@@ -32,7 +32,7 @@ namespace GlobalTheory.Cong.AdaptLev
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
 /- English proof (translation)
-Unfold `Apart at *`. Introduce `h`. Conclude with `hw (h.symm.trans (not_not.1 hu))`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem apart_of_apart_not_apart {w w₀ u : HeightOneSpectrum (𝓞 E)} (hw : Apart w w₀) (hu : ¬ Apart u w₀) : Apart u w := by
   unfold Apart at *
@@ -40,11 +40,11 @@ theorem apart_of_apart_not_apart {w w₀ u : HeightOneSpectrum (𝓞 E)} (hw : A
   exact hw (h.symm.trans (not_not.1 hu))
 
 /- English proof (translation)
-Establish `hx'` using `(GlobalTheory.Cong.LevelExt.mem_locU_iff x).1 hx`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, hy, e⟩` from `(mem_levelOf.1 h).2.2 w hw`. Rewrite using `[← eq_of_cLoc_eq (hle w hy) hx e]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Introduce `h`. Use `mem_levelOf.2 ⟨hx'.1, fun u hu => hx'.2 u (apart_of_apart_not_apart hw hu), fun w' hw' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw'w : Apart w' w`. Conclude with `⟨1, one_mem _, by rw [map_one, hx'.2 w' hw'w]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨x, by rw [hfib w' w hw'w]; exact h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_levelOf_iff_of_locU {w₀ w : HeightOneSpectrum (𝓞 E)} {H : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a)}
     (hle : ∀ w, H w ≤ locU a w) (hfib : ∀ w u, ¬ Apart w u → H w = H u) (hw : Apart w w₀) {x : UA E a}
@@ -62,9 +62,9 @@ theorem mem_levelOf_iff_of_locU {w₀ w : HeightOneSpectrum (𝓞 E)} {H : Heigh
     · exact ⟨x, by rw [hfib w' w hw'w]; exact h, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x, hL hx⟩, Subgroup.mem_subgroupOf.2 hx, he _⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y.1, Subgroup.mem_subgroupOf.1 hy, (he y).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_eq_image {w : HeightOneSpectrum (𝓞 E)} {L : Subgroup (UA E a)} (hL : L ≤ locU a w)
     (e : locU a w ≃ₜ* GL (Fin a) (w.adicCompletion E)) (he : ∀ x : locU a w, e x = cLoc w (x : UA E a)) :
@@ -78,11 +78,11 @@ theorem map_eq_image {w : HeightOneSpectrum (𝓞 E)} {L : Subgroup (UA E a)} (h
     exact ⟨y.1, Subgroup.mem_subgroupOf.1 hy, (he y).symm⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Rewrite using `[← LinearMap.ker_eq_bot]`. Use `(((GlobalTheory.CuspRep.isIrreducible_iff σ).1 hirr).2 _ (fun g u hu => ?_)).resolve_right fun h => hf0 ?_` and prove the remaining obligations. Rewrite `hu`, the goal using `[LinearMap.mem_ker]`. Use `hf (e.symm g) u` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : ((cLoc w).comp (locU a w).subtype) (e.symm g) = g`. Rewrite using `[MonoidHom.comp_apply, Subgroup.coe_subtype, ← he, e.apply_symm_apply]`. Rewrite `this` using `[hg]`. Rewrite using `[this, hu, map_zero]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: v ∈ LinearMap.ker f` using `h ▸ Submodule.mem_top`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem injective_of_compAlong {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w)
     {W : Type} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ (GL (Fin a) (w.adicCompletion E)) W}
@@ -103,9 +103,9 @@ theorem injective_of_compAlong {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt 
     simpa using this
 
 /- English proof (translation)
-Take `⟨hirr, f, hf0, hfU, hf⟩` from `hc`. Establish `hinj` using `injective_of_compAlong hw hirr f hf0 hf`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hJ`. Use `⟨f v, hfU v, fun h => hv0 (hinj (by rw [h, map_zero])), fun x hx hxJ => ?_⟩` and prove the remaining obligations. Use `hf ⟨x, hx⟩ v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[MonoidHom.comp_apply, Subgroup.coe_subtype, GlobalTheory.LGrp.mem_fixed.1 hv _ hxJ]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_of_fixed {U : Submodule ℂ (UA E a → ℂ)} {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w)
     (σ : SmIrr (GL (Fin a) (w.adicCompletion E)))
@@ -121,11 +121,11 @@ theorem fix_of_fixed {U : Submodule ℂ (UA E a → ℂ)} {w : HeightOneSpectrum
   exact this.symm
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Establish `hp : (cLoc w).comp (locU a w).subtype = e.toMulEquiv.toMonoidHom` using `MonoidHom.ext fun x => (he x).symm`. Establish `hirr : Representation.IsIrreducible (σ.ρ.comp ((cLoc w).comp (locU a w).subtype))`. Rewrite using `[hp]`. Conclude with `GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv σ.ρ e.toMulEquiv σ.irred`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsup` using `GlobalTheory.T.autRepDefiniteUnitary_spanned_by_split_component E a U hU w hw σ hc φ hφU`. Set `ι` to `{f : σ.V →ₗ[ℂ] (UA E a → ℂ) // (∀ v, f v ∈ U) ∧ ∀ (x : locU a w) v, f (σ.ρ (cLoc w x) v) = RU E a x (f v)}`. Establish `hf' : ∀ (i : ι) (g : locU a w) (u : σ.V), i.1 ((σ.ρ.comp ((cLoc w).comp (locU a w).subtype)) g u) = ((RU E a).comp (locU a w).subtype) g (i.1 u)` using `fun i g u => i.2.2 g u`. Establish `hK : ∀ k ∈ {x : locU a w | (x : UA E a) ∈ L}, ((RU E a).comp (locU a w).subtype) k φ = (1 : ℂ) • φ` using `fun k hk => by rw [one_smul]; exact hφ k.1 hk`. Take `⟨v, hv0, hv⟩` from `GlobalTheory.SplitEigen.exists_eigen_of_mem_iSup (ι := ι) ((RU E a).comp (locU a w).subtype) (σ.ρ.comp ((cLoc w).comp (locU a w).subtype)) hirr (fun i => i.1) hf' {x : locU a w | (x : UA E a) ∈ L} (fun _ => 1) φ hφ0 hK hsup`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 ?_, hv0⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `hv ⟨x, hL hx⟩ hx` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_of_fix {U : Submodule ℂ (UA E a → ℂ)} (hU : IsAutRepU U) {w : HeightOneSpectrum (𝓞 E)}
     (hw : IsSplitAt w) (σ : SmIrr (GL (Fin a) (w.adicCompletion E)))
@@ -152,7 +152,7 @@ theorem fixed_ne_bot_of_fix {U : Submodule ℂ (UA E a → ℂ)} (hU : IsAutRepU
   exact this
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Introduce `g hg`. Establish `h1 : cLoc w ((e.symm g : locU a w) : UA E a) = g` using `by rw [← he, e.apply_symm_apply]`. Conclude with `⟨(e.symm g).1, mem_intU_of (e.symm g).2 (by rw [h1]; exact hg), h1⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem KGL_le_map {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) :
     GlobalTheory.LFun.KGL w a ≤ (intU a w).map (cLoc w) := by

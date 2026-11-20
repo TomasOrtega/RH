@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.O
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `K V S ι _ _ _ _ f`. Set `U : Finset S → Submodule K V` to `fun T => ⨅ s ∈ T, ⨅ i, LinearMap.ker (f s i)`. Take `⟨_, ⟨T, rfl⟩, hT⟩` from `(wellFounded_lt (α := Submodule K V)).has_min (Set.range U) ⟨U ∅, ∅, rfl⟩`. Use `⟨T, fun v hv s i => ?_⟩` and prove the remaining obligations. Establish `hle : U (insert s T) ≤ U T`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `w hw`. Simplify using `only [U, Submodule.mem_iInf, Finset.mem_insert] at hw ⊢`. Introduce `t ht j`. Conclude with `hw t (Or.inr ht) j`. Establish `heq : U (insert s T) = U T`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hT _ ⟨_, rfl⟩ (lt_of_le_of_ne hle hne)`. Establish `hvT : v ∈ U T`. Simplify using `only [U, Submodule.mem_iInf, LinearMap.mem_ker]`. Conclude with `hv`.
-
-Rewrite `hvT` using `[← heq]`. Simplify using `only [U, Submodule.mem_iInf, LinearMap.mem_ker, Finset.mem_insert] at hvT`. Conclude with `hvT s (Or.inl rfl) i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Det.finDet :
     ∀ {K V S ι : Type} [Field K] [AddCommGroup V] [Module K V] [Module.Finite K V] (f : S → ι → V →ₗ[K] K), ∃ T : Finset S, ∀ v : V, (∀ s ∈ T, ∀ i, f s i v = 0) → ∀ s i, f s i v = 0 := by

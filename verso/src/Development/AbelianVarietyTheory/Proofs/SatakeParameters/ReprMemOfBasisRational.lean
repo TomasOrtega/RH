@@ -15,11 +15,11 @@ open Formalism.DivisionValues Formalism.IndefR Formalism.IndefR.Bridge Formalism
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨φ, h1, h2⟩` from `FormsDescent.exists_retraction F`. Establish `e2 : FormsDescent.coordMap F b' φ v = v`. Apply `b'.repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Rewrite using `[FormsDescent.repr_coordMap, h2 _ (hv j)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `key : v = ∑ a, φ (b.repr v a) • b a`. Rewrite using `[← FormsDescent.coordMap_sum F b' φ _ _ h, b.sum_repr, e2]`. Establish `: b.repr v i = φ (b.repr v i)` using `by conv_lhs => rw [key]`. Rewrite using `[b.repr_sum_self]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 _`.
+A detailed English derivation is pending.
 -/
 theorem repr_mem_of_basis_rational {K V ι κ : Type} [Field K] [AddCommGroup V] [Module K V] [Fintype ι] [Fintype κ]
     (F : Subfield K) (b : Module.Basis ι K V) (b' : Module.Basis κ K V) (h : ∀ i j, b'.repr (b i) j ∈ F)
@@ -38,7 +38,7 @@ theorem repr_mem_of_basis_rational {K V ι κ : Type} [Field K] [AddCommGroup V]
   exact h1 _
 
 /- English proof (translation)
-Establish `h1 : g v = ∑ j, b.repr v j • g (b j)` using `by conv_lhs => rw [← b.sum_repr v]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[h1]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `F.sum_mem fun j _ => F.mul_mem (hv j) (hg i j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_map_mem {K V κ : Type} [Field K] [AddCommGroup V] [Module K V] [Fintype κ]
     (F : Subfield K) (b : Module.Basis κ K V) (g : V →ₗ[K] V) (hg : ∀ i j, b.repr (g (b j)) i ∈ F)
@@ -51,11 +51,9 @@ theorem repr_map_mem {K V κ : Type} [Field K] [AddCommGroup V] [Module K V] [Fi
   exact F.sum_mem fun j _ => F.mul_mem (hv j) (hg i j)
 
 /- English proof (translation)
-Establish `hfin : ∀ PP : Pl E, Finite (kP PP)` using `fun PP => Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot`. Establish `hone : IsOfFinOrder (1 : ℂˣ)` using `IsOfFinOrder.one`. Unfold `levFn`. Use `IsOfFinOrder.mul (IsOfFinOrder.mul ?_ ?_) ?_` and prove the remaining obligations. Unfold `ext1 split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)`. Conclude with `hone`. Use `Finset.prod_induction _ IsOfFinOrder (fun _ _ => IsOfFinOrder.mul) hone fun PP _ => ?_` and prove the remaining obligations. Use `Finset.prod_induction _ IsOfFinOrder (fun _ _ => IsOfFinOrder.mul) hone fun c _ => ?_` and prove the remaining obligations. Conclude with `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)`.
-
-Use `Finset.prod_induction _ IsOfFinOrder (fun _ _ => IsOfFinOrder.mul) hone fun PP _ => ?_` and prove the remaining obligations. Conclude with `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levFn_isOfFinOrder {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L : Formalism.L2.DIV.LevDat E ℂ n) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
@@ -77,14 +75,14 @@ theorem levFn_isOfFinOrder {F E : Type} [Field F] [NumberField F] [Field E] [Num
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `isOfFinOrder_iff_pow_eq_one.1 (levFn_isOfFinOrder β (Lev.flag1L L) _)`.
+A detailed English derivation is pending.
 -/
 theorem levEnv_chi_pow (V : TH.HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
     (k : (levEnv V β L).J) : ∃ n : ℕ, 0 < n ∧ (levEnv V β L).χ k ^ n = 1 :=
   isOfFinOrder_iff_pow_eq_one.1 (levFn_isOfFinOrder β (Lev.flag1L L) _)
 
 /- English proof (translation)
-Introduce `σ`. Rewrite using `[← D.embE_conj]`. Conclude with `D.host.conjE_apply (σ.comp D.embE) x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embE_mem_cmMax (x : D.host.E) : D.embE x ∈ cmMax D.what₂.LL := by
   intro σ
@@ -92,14 +90,14 @@ theorem embE_mem_cmMax (x : D.host.E) : D.embE x ∈ cmMax D.what₂.LL := by
   exact D.host.conjE_apply (σ.comp D.embE) x
 
 /- English proof (translation)
-The claim follows from `embE_mem_cmMax _`.
+A detailed English derivation is pending.
 -/
 theorem labLL_mem_cmMax (τ : D.what₂.Tau) (x : D.host.E) : labLL D τ x ∈ cmMax D.what₂.LL := embE_mem_cmMax _
 
 /- English proof (translation)
-Take `⟨e, hr, he, -⟩` from `hP`. Choose the witnesses or unpack the hypotheses as in `⟨γE, hγ⟩ : ∃ γE, IsRatMat V γ γE := by`. Take `⟨g, hg⟩` from `γ.2`. Conclude with `⟨g, hg.2.symm⟩`. Use `⟨fun i => (S.bV.map e).repr (rho γE (e (S.bV j))) i, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `repr_mem_of_basis_rational _ (S.bV.map e) (bVV D.what₂.LL lam) hr _ (repr_map_mem _ _ _ (hrho γE) _ (hr j)) i`. Rewrite using `[he, ← hM.1 γ γE hγ] conv_lhs => rw [← (S.bV.map e).sum_repr (rho γE (e (S.bV j)))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[he, LinearMap.map_smulₛₗ, Module.Basis.map_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem action_rational (V : TH.HSp D) (C : CoefDat D V) {S : CSD D.what₂.LL} {J : Subgroup (Gf V)} {χ : J →* ℂˣ}
     (P : ClassPres (ratF V) S D.what₂.embLL C.ρ J χ) {lam : D.what₂.Tau → DomWeight V.rank}
@@ -123,7 +121,7 @@ theorem action_rational (V : TH.HSp D) (C : CoefDat D V) {S : CSD D.what₂.LL} 
     rw [he, LinearMap.map_smulₛₗ, Module.Basis.map_apply]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.classPres_dcOp_rat (ratF V) S D.what₂.embLL C.ρ _ _ P B T D.starLL_cx (levEnv_chi_pow V β L) (action_rational V C P hP hM hrho) hT`.
+A detailed English derivation is pending.
 -/
 theorem dcOp_matrix_mem_cmMax (V : TH.HSp D) (C : CoefDat D V) (β : GL (Fin V.rank) (Lev.EAf D))
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {S : CSD D.what₂.LL}
@@ -139,7 +137,7 @@ theorem dcOp_matrix_mem_cmMax (V : TH.HSp D) (C : CoefDat D V) (β : GL (Fin V.r
     (action_rational V C P hP hM hrho) hT
 
 /- English proof (translation)
-Rewrite using `[LinearMap.toMatrix_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `F.one_mem`. Conclude with `F.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMatrix_one_mem {K M ι : Type} [Field K] [AddCommGroup M] [Module K M] [Fintype ι] [DecidableEq ι] (F : Subfield K)
     (b : Module.Basis ι K M) (i j : ι) : LinearMap.toMatrix b b (1 : Module.End K M) i j ∈ F := by
@@ -152,7 +150,7 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Take `⟨gramR, c0R, c0L, hT⟩` from `h`. Conclude with `(dcOp_matrix_mem_cmMax D.sp.X' R.cX.coef R.βX (R.datXt t) (R.B.R t).pres (hT.coefR t) hT.mapR (fun g i j => (coefAction_repr_mem_subfield (labLL D) _ _ labLL_mem_cmMax g i j).1) B U hU).2 a b`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rows_dcOp_mem_cmMax (R : RealDat D A Ks) (h : R.fam_tie) (t : T) (B : Finset (Gf D.sp.X'))
     (U : Module.End D.what₂.LL (A.MtildeCSD t).Forms)
@@ -163,7 +161,7 @@ theorem rows_dcOp_mem_cmMax (R : RealDat D A Ks) (h : R.fam_tie) (t : T) (B : Fi
     (fun g i j => (coefAction_repr_mem_subfield (labLL D) _ _ labLL_mem_cmMax g i j).1) B U hU).2 a b
 
 /- English proof (translation)
-Take `⟨gramR, c0R, c0L, hT⟩` from `h`. Conclude with `(dcOp_matrix_mem_cmMax (Vc D j) (R.cV j).coef (R.βV j) (R.datVt j t) (R.B.L j t).pres (hT.coefL j t) (hT.mapL j) (fun g i k => (coefAction_repr_mem_subfield (labLL D) _ _ labLL_mem_cmMax g i k).2) B U hU).2 a b`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lifts_dcOp_mem_cmMax (R : RealDat D A Ks) (h : R.fam_tie) (j : Fin D.R.m) (t : T) (B : Finset (Gf (Vc D j)))
     (U : Module.End D.what₂.LL (A.MtCSD j t).Forms)
@@ -174,13 +172,11 @@ theorem lifts_dcOp_mem_cmMax (R : RealDat D A Ks) (h : R.fam_tie) (j : Fin D.R.m
     (fun g i k => (coefAction_repr_mem_subfield (labLL D) _ _ labLL_mem_cmMax g i k).2) B U hU).2 a b
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC`. Use `⟨fun t i a b => ?_, fun j t i a b => ?_⟩` and prove the remaining obligations. Take `⟨P, k⟩` from `i show LinearMap.toMatrix (A.MtildeCSD t).basis (A.MtildeCSD t).basis (A.heckeR t (P, k)) a b ∈ _`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Rewrite using `[(hC.fam.degR t P).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `toMatrix_one_mem _ _ _ _`. Break down `le_or_gt k D.sp.X'.rank with hk' | hk'` into its components or cases. Conclude with `rows_dcOp_mem_cmMax R hC.fam.tie t _ _ ((R.B.R t).hecke.op_eq (P, k) ⟨hk, hk'⟩) a b`. Rewrite using `[(hC.fam.degR t P).2 k hk', map_zero]`. Conclude with `Subfield.zero_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, k⟩` from `i show LinearMap.toMatrix (A.MtCSD j t).basis (A.MtCSD j t).basis (A.heckeL j t (P, k)) a b ∈ _`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Rewrite using `[(hC.fam.degL j t P).1]`. Conclude with `toMatrix_one_mem _ _ _ _`. Break down `le_or_gt k (Vc D j).rank with hk' | hk'` into its components or cases.
-
-Conclude with `lifts_dcOp_mem_cmMax R hC.fam.tie j t _ _ ((R.B.L j t).hecke.op_eq (P, k) ⟨hk, hk'⟩) a b`. Rewrite using `[(hC.fam.degL j t P).2 k hk', map_zero]`. Conclude with `Subfield.zero_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_opMat_mem_cmMax : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → (∀ t i a b, (A.fam.R t).opMat i a b ∈ Formalism.DivisionValues.cmMax D.what₂.LL) ∧ ∀ j t i a b, (A.fam.L j t).opMat i a b ∈ Formalism.DivisionValues.cmMax D.what₂.LL := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC

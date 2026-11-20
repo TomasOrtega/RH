@@ -18,7 +18,7 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
   {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => absurd rfl h, fun _ => (GlobalTheory.T.truncated_envelope_torsion_free T.δ l s (trD T s) (trD_spec T s).1 hT.1 hT.2).2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem trAdm (T : Thick (nlFun γ 0 X q κ)) (l s : ℕ) (hT : TF l s T) :
     (0 ≠ 0 → IsNilpotent ((0 : ℕ) : trB T s)) ∧ (0 = 0 → IsNilpotent (trJ T s)) :=
@@ -35,7 +35,7 @@ def trDesc (T : Thick (nlFun γ 0 X q κ)) (s : ℕ)
   descOf φ G hG hGd hle
 
 /- English proof (translation)
-Rewrite using `[map_finsuppSum]`. Use `Finsupp.sum_congr fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, (trD_spec T s).1.2 _ (Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trSum (T : Thick (nlFun γ 0 X q κ)) (s : ℕ) (b : ℕ →₀ T.B) :
     (b.sum fun k c => trF T s c * (trD T s).dpow k (Ideal.Quotient.mk (trI T s) ((pq T.B).e 1))) =
@@ -46,7 +46,7 @@ theorem trSum (T : Thick (nlFun γ 0 X q κ)) (s : ℕ) (b : ℕ →₀ T.B) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.truncated_envelope_torsion_free T.obj.δ l s (trD T.obj s) (trD_spec T.obj s).1 T.property.1.1 T.property.1.2`. Use `⟨⟨h.1, h.2.1⟩, ?_⟩` and prove the remaining obligations. Take `⟨V, hV, hT⟩` from `T.property.2`. Conclude with `⟨V, hV, inU_hom (trH T.obj s _) hT⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem polyTr_mem (l s : ℕ) (𝒱 : Set X.Opens)
     (T : (St (γ := γ) (p := 0) (q := q) (κ := κ) (TF l s) 𝒱).FullSubcategory) :
@@ -97,13 +97,13 @@ def polyTf (l s : ℕ) (𝒱 : Set X.Opens) : Poly (sP (St (γ := γ) (p := 0) (
     exact ⟨b, (trSum T.obj s b).symm⟩
 
 /- English proof (translation)
-Introduce `O R _ _ I γ X q κ l s 𝒱`. Use `⟨polyTf l s 𝒱, fun r hr => ⟨?_, fun c => ?_⟩⟩` and prove the remaining obligations. Introduce `T b`. Establish `e` using `trSum T.obj s b`. Use `Iff.trans ?_ (Iff.trans ((GlobalTheory.T.truncated_envelope_filtration_quotient T.obj.δ s (trD T.obj s) (trD_spec T.obj s).1 b r.toNat (by omega) 0).1) (forall_congr' fun k => ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(b.sum fun k c => trF T.obj s c * (trD T.obj s).dpow k (Ideal.Quotient.mk (trI T.obj s) ((pq T.obj.B).e 1))) ∈ fil (trD T.obj s) r.toNat ↔ _`. Conclude with `Iff.of_eq (congrArg (fun z => z ∈ fil (trD T.obj s) r.toNat) e)`. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ fil T.obj.δ (r - k).toNat`. Rewrite using `[show (r - k).toNat = r.toNat - k by omega]`. Conclude with `Iff.rfl`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T b`. Establish `e` using `trSum T.obj s b`. Use `Iff.trans ?_ (Iff.trans ((GlobalTheory.T.truncated_envelope_filtration_quotient T.obj.δ s (trD T.obj s) (trD_spec T.obj s).1 b r.toNat (by omega) (T.obj.i c)).2) (forall_congr' fun k => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(b.sum fun k c => trF T.obj s c * (trD T.obj s).dpow k (Ideal.Quotient.mk (trI T.obj s) ((pq T.obj.B).e 1))) ∈ fil (trD T.obj s) r.toNat ⊔ Ideal.span {trF T.obj s (T.obj.i c)} ↔ _`. Conclude with `Iff.of_eq (congrArg (fun z => z ∈ fil (trD T.obj s) r.toNat ⊔ Ideal.span {trF T.obj s (T.obj.i c)}) e)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ fil T.obj.δ (r - k).toNat ⊔ Ideal.span {T.obj.i c}`. Rewrite using `[show (r - k).toNat = r.toNat - k by omega]`. Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem poly_tf' : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) (l s : ℕ) (𝒱 : Set X.Opens),

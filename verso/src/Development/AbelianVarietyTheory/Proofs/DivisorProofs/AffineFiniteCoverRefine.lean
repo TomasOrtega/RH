@@ -9,15 +9,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 namespace GlobalTheory.GoodOpenFree
 
 /- English proof (translation)
-Set `Mp` to `Localization (Algebra.algebraMapSubmonoid M p.primeCompl)`. Establish `hle : Algebra.algebraMapSubmonoid M p.primeCompl ≤ nonZeroDivisors M`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero fun h => ha ?_` and prove the remaining obligations. Establish `: a = 0` using `hinj (by simpa using h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[this]`. Use `haveI : IsDomain Mp := IsLocalization.isDomain_localization hle`. Establish `hinj' : Function.Injective (algebraMap (Localization.AtPrime p) Mp)` using `localizationAlgebra_injective _ _ hinj`. Use `haveI : IsLocalizedModule p.primeCompl (IsScalarTower.toAlgHom A M Mp).toLinearMap := isLocalizedModule_iff_isLocalization.2 inferInstance`. Use `haveI : Module.Finite (Localization.AtPrime p) Mp := Module.Finite.of_isLocalizedModule p.primeCompl (IsScalarTower.toAlgHom A M Mp).toLinearMap`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Module.FinitePresentation A M := Module.finitePresentation_of_finite A M`. Use `haveI : Module.Free (Localization.AtPrime p) Mp := by`. Distinguish the cases in `hf : IsField (Localization.AtPrime p)`. Use `letI := hf.toField infer_instance`. Use `haveI h1 : Ring.KrullDimLE 1 (Localization.AtPrime p) := Ring.krullDimLE_iff.mpr (by exact_mod_cast hd)`.
-
-Establish `hm` using `IsLocalRing.isField_iff_maximalIdeal_eq.not.mp hf`. Establish `h3 : IsIntegrallyClosed (Localization.AtPrime p) ∧ ∃! P : Ideal (Localization.AtPrime p), P ≠ ⊥ ∧ P.IsPrime` using `⟨hic, _, ⟨hm, inferInstance⟩, fun P hP ↦ IsLocalRing.eq_maximalIdeal (Ring.krullDimLE_one_iff_of_noZeroDivisors.mp h1 P hP.1 hP.2)⟩`. Use `haveI : IsDiscreteValuationRing (Localization.AtPrime p) := ((IsDiscreteValuationRing.TFAE (Localization.AtPrime p) hf).out 0 3).mpr h3`. Use `haveI : Module.IsTorsionFree (Localization.AtPrime p) Mp := by`. Conclude with `Module.isTorsionFree_iff_algebraMap_injective.mpr hinj'`.
-
-Conclude with `Module.free_of_finite_type_torsion_free'`. Take `⟨g, hg, hfree, -⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.primeCompl (IsScalarTower.toAlgHom A M Mp).toLinearMap (Localization.AtPrime p)`. Conclude with `⟨g, hg, hfree⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_free_away {A M : Type} [CommRing A] [CommRing M] [IsDomain A] [IsDomain M]
     [IsNoetherianRing A] [Algebra A M] [Module.Finite A M]
@@ -63,9 +59,9 @@ end GlobalTheory.GoodOpenFree
 namespace GlobalTheory.GoodOpenFree
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `s hs`. Rewrite using `[← basicOpen_eq_bot_iff]`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `f.surjective x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: z ∈ f ⁻¹ᵁ Y.basicOpen s` using `hx`. Rewrite `this` using `[Scheme.preimage_basicOpen, hs, Scheme.basicOpen_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_injective {X Y : Scheme.{0}} [IsIntegral Y] [IsReduced X] (f : X ⟶ Y) [Surjective f]
     (V : Y.Opens) : Function.Injective (f.app V) := by
@@ -79,27 +75,21 @@ theorem app_injective {X Y : Scheme.{0}} [IsIntegral Y] [IsReduced X] (f : X ⟶
   exact this
 
 /- English proof (translation)
-Introduce `O _ _ _ B B' f hN y hdim V hy hV hV' hfin`. Use `letI : Algebra Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) := (f.f.app V).hom.toAlgebra`. Use `haveI : Nonempty V := ⟨⟨y, hy⟩⟩`. Take `⟨z, hz⟩` from `f.f.surjective y`. Use `haveI : Nonempty (f.f ⁻¹ᵁ V) := ⟨⟨z, show f.f z ∈ V from hz ▸ hy⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsNoetherianRing Γ(B.X, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Establish `hinj : Function.Injective (algebraMap Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V))` using `app_injective f.f V`. Set `q` to `hV.primeIdealOf ⟨y, hy⟩`. Set `p : Ideal Γ(B.X, V)` to `q.asIdeal`. Use `haveI : p.IsPrime := q.isPrime`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : Algebra Γ(B.X, V) (B.X.presheaf.stalk y) := B.X.presheaf.algebra_section_stalk ⟨y, hy⟩`. Use `haveI := hV.isLocalization_stalk ⟨y, hy⟩`. Use `haveI := hN`. Set `e` to `IsLocalization.algEquiv p.primeCompl (B.X.presheaf.stalk y) (Localization.AtPrime p)`. Establish `hic : IsIntegrallyClosed (Localization.AtPrime p)` using `IsIntegrallyClosed.of_equiv e.toRingEquiv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ringKrullDim (Localization.AtPrime p) ≤ 1`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv e.toRingEquiv]`. Conclude with `hdim`. Take `⟨g, hg, hfree⟩` from `exists_free_away hinj p hic hd`. Establish `hyW : y ∈ B.X.basicOpen g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : q ∈ hV.fromSpec ⁻¹ᵁ B.X.basicOpen g`. Rewrite using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `hg`. Establish `h2 : hV.fromSpec q ∈ B.X.basicOpen g` using `h1`. Rewrite `h2` using `[hV.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `hpre : f.f ⁻¹ᵁ B.X.basicOpen g = B'.X.basicOpen (f.f.app V g)` using `Scheme.preimage_basicOpen _ _`. Establish `hW' : IsAffineOpen (f.f ⁻¹ᵁ B.X.basicOpen g)` using `hpre ▸ hV'.basicOpen (f.f.app V g)`. Use `⟨B.X.basicOpen g, hyW, hV.basicOpen g, hW', ?_⟩` and prove the remaining obligations. Set `A` to `Γ(B.X, V)`. Set `M` to `Γ(B'.X, f.f ⁻¹ᵁ V)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition.
 
-Set `R` to `Γ(B.X, B.X.basicOpen g)`. Set `N` to `Γ(B'.X, f.f ⁻¹ᵁ B.X.basicOpen g)`. Use `letI : Algebra A R := (B.X.presheaf.map (homOfLE (B.X.basicOpen_le g)).op).hom.toAlgebra`. Use `haveI : IsLocalization.Away g R := hV.isLocalization_basicOpen g`. Establish `hle : f.f ⁻¹ᵁ B.X.basicOpen g ≤ f.f ⁻¹ᵁ V` using `f.f.preimage_mono (B.X.basicOpen_le g)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `letI : Algebra M N := (B'.X.presheaf.map (homOfLE hle).op).hom.toAlgebra`. Use `haveI : IsLocalization.Away (algebraMap A M g) N := hV'.isLocalization_of_eq_basicOpen (f.f.app V g) (homOfLE hle) hpre`. Use `letI : Algebra R N := (f.f.app (B.X.basicOpen g)).hom.toAlgebra`. Use `letI : Algebra A N := ((algebraMap R N).comp (algebraMap A R)).toAlgebra`. Use `haveI : IsScalarTower A R N := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
-
-Use `haveI : IsScalarTower A M N := IsScalarTower.of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `(f.f.app _).hom ((B.X.presheaf.map (homOfLE (B.X.basicOpen_le g)).op).hom a) = (B'.X.presheaf.map (homOfLE hle).op).hom ((f.f.app V).hom a)`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid M (Submonoid.powers g)) N := by`.
-
-Rewrite using `[Algebra.algebraMapSubmonoid, Submonoid.map_powers]`. Use `infer_instance`. Use `haveI : IsLocalizedModule (Submonoid.powers g) (IsScalarTower.toAlgHom A M N).toLinearMap := isLocalizedModule_iff_isLocalization.2 inferInstance`. Use `⟨?_, Module.Finite.of_isLocalizedModule (Submonoid.powers g) (Rₚ := R) (IsScalarTower.toAlgHom A M N).toLinearMap⟩` and prove the remaining obligations. Set `l` to `IsLocalizedModule.linearEquiv (Submonoid.powers g) (LocalizedModule.mkLinearMap (Submonoid.powers g) M) (IsScalarTower.toAlgHom A M N).toLinearMap`.
-
-Set `b₀` to `Module.Free.chooseBasis (Localization.Away g) (LocalizedModule.Away g M)`. Set `τ` to `IsLocalization.algEquiv (Submonoid.powers g) (Localization.Away g) R`. Set `Ψ` to `l.symm ≪≫ₗ b₀.repr.restrictScalars A ≪≫ₗ Finsupp.mapRange.linearEquiv τ.toLinearEquiv`. Set `Ψ'` to `Ψ.extendScalarsOfIsLocalization (Submonoid.powers g) R`. Conclude with `Module.Free.of_basis (Module.Basis.ofRepr Ψ')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exists_free_nbhd : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B.X → ∀ y : B.X, ringKrullDim (B.X.presheaf.stalk y) ≤ 1 → ∀ V : B.X.Opens, y ∈ V → IsAffineOpen V → IsAffineOpen (f.f ⁻¹ᵁ V) → (letI := (f.f.app V).hom.toAlgebra; Module.Finite Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V)) → ∃ V' : B.X.Opens, y ∈ V' ∧ IsAffineOpen V' ∧ IsAffineOpen (f.f ⁻¹ᵁ V') ∧ (letI := (f.f.app V').hom.toAlgebra; Module.Free Γ(B.X, V') Γ(B'.X, f.f ⁻¹ᵁ V') ∧ Module.Finite Γ(B.X, V') Γ(B'.X, f.f ⁻¹ᵁ V')) := by
   intro O _ _ _ B B' f hN y hdim V hy hV hV' hfin

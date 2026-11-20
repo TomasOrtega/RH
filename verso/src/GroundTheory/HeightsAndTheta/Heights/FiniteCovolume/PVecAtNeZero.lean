@@ -8,9 +8,9 @@ open Module NumberField
 variable {E : Type*} [Field E] {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*}
 
 /- English proof (translation)
-Introduce `x hx w hw`. Apply `hx` to reduce the goal to its premises. Apply `v.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Establish `h` using `congrFun hw i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [vecAt, Pi.zero_apply] at h`. Simplify using `using (map_eq_zero_iff w.embedding w.embedding.injective).mp h`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem VecAtNeZero.proof (v : Basis ι E W) : VecAtNeZero.Statement v := by
   intro x hx w hw

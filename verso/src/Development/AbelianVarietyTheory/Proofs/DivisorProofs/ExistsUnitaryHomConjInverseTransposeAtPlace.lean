@@ -15,21 +15,21 @@ open GlobalTheory.InertLocFrame
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, ← hmul, one_mul, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_mul_eq_zero (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) (t : L) :
     (1 - ι 1) * ι t = 0 := by
   rw [sub_mul, one_mul, ← hmul, one_mul, sub_self]
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, one_sub_mul_eq_zero ι hmul, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) :
     (1 - ι 1) * (1 - ι 1) = 1 - ι 1 := by
   rw [mul_sub, mul_one, one_sub_mul_eq_zero ι hmul, sub_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, hmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mul_map (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) {n : ℕ}
     (X Y : Matrix (Fin n) (Fin n) L) : X.map ι * Y.map ι = (X * Y).map ι := by
@@ -37,7 +37,7 @@ theorem map_mul_map (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι
   simp [Matrix.mul_apply, map_sum, hmul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[smul_eq_mul, one_sub_mul_eq_zero ι hmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_map_eq_zero (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) {n : ℕ}
     (X : Matrix (Fin n) (Fin n) L) : (1 - ι 1) • X.map ι = 0 := by
@@ -52,9 +52,9 @@ def Mg (ι : L →+ AE F E) {n : ℕ} (P g : GL (Fin n) L) : Matrix (Fin n) (Fin
   (1 - ι 1) • (1 : Matrix (Fin n) (Fin n) (AE F E)) + (Am P g).map ι
 
 /- English proof (translation)
-Unfold `Am`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[Units.inv_mul, Matrix.mul_one, mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem Am_mul {n : ℕ} (P g g' : GL (Fin n) L) : Am P g * Am P g' = Am P (g * g') := by
   unfold Am
@@ -67,13 +67,13 @@ theorem Am_mul {n : ℕ} (P g g' : GL (Fin n) L) : Am P g * Am P g' = Am P (g * 
         simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[Am]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Am_one {n : ℕ} (P : GL (Fin n) L) : Am P 1 = 1 := by
   simp [Am]
 
 /- English proof (translation)
-Unfold `Mg`. Rewrite using `[add_mul, mul_add, mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.one_mul, smul_smul, idem ι hmul, smul_map_eq_zero ι hmul, Matrix.mul_smul, Matrix.mul_one, smul_map_eq_zero ι hmul, map_mul_map ι hmul, Am_mul, add_zero, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mg_mul (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) {n : ℕ} (P g g' : GL (Fin n) L) :
     Mg ι P g * Mg ι P g' = Mg ι P (g * g') := by
@@ -83,7 +83,7 @@ theorem Mg_mul (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) {
     map_mul_map ι hmul, Am_mul, add_zero, zero_add]
 
 /- English proof (translation)
-Unfold `Mg`. Rewrite using `[Am_one]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Mg_one (ι : L →+ AE F E) {n : ℕ} (P : GL (Fin n) L) : Mg ι P 1 = 1 := by
   unfold Mg
@@ -99,17 +99,15 @@ def Phi (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) {n : ℕ
   map_mul' g g' := Units.ext (Mg_mul ι hmul P g g').symm
 
 /- English proof (translation)
-Establish `hpp : ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (P : Matrix (Fin n) (Fin n) L) = 1` using `Units.inv_mul P`. Establish `hpp' : (P : Matrix (Fin n) (Fin n) L) * ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1` using `Units.mul_inv P`. Establish `hσp' : (P : Matrix (Fin n) (Fin n) L).map σL * ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map σL = 1`. Rewrite using `[← Matrix.map_mul, hpp', Matrix.map_one _ (map_zero σL) (map_one σL)]`. Establish `hKK : (JS : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1` using `Units.mul_inv JS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKK' : ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (JS : Matrix (Fin n) (Fin n) L) = 1` using `Units.inv_mul JS`. Establish `hgg : ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (g : Matrix (Fin n) (Fin n) L) = 1` using `Units.inv_mul g`. Establish `huu : (((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map σL)ᵀ * ((g : Matrix (Fin n) (Fin n) L).map σL)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero σL) (map_one σL), Matrix.transpose_one]`. Establish `hT : tJ ι J = ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)ᵀ * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map σL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hJ, gram]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.transpose_mul, hpp', Matrix.transpose_one, Matrix.one_mul, hσp', Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Establish `hKi : ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map σL)ᵀ = ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : ((g : Matrix (Fin n) (Fin n) L).map σL)ᵀ * (JS : Matrix (Fin n) (Fin n) L) * g = JS` using `hg`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hKK, Matrix.mul_one]`. Use `_ = ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map σL)ᵀ * (((g : Matrix (Fin n) (Fin n) L).map σL)ᵀ * (JS : Matrix (Fin n) (Fin n) L) * g * ((JS⁻¹ : GL (Fin n) L) : Ma …`. Use `_ = ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map σL)ᵀ * ((g : Matrix (Fin n) (Fin n) L).map σL)ᵀ) * (JS : Matrix (Fin n) (Fin n) L) * g * ((JS⁻¹ : GL (Fin n) L) : M …`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[huu, Matrix.mul_one, Matrix.mul_assoc ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L), hKK', Matrix.mul_one, hgg, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Am, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.transpose_map, Matrix.mul_assoc]`.
-
-Use `_ = tJ ι J := by rw [← gram, ← hJ, hKi, ← hT]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key (σL : L →+* L) (ι : L →+ AE F E) {n : ℕ} (P JS g : GL (Fin n) L) (J : Matrix (Fin n) (Fin n) E)
     (hJ : ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = gram σL ι P J)
@@ -161,17 +159,17 @@ theorem key (σL : L →+* L) (ι : L →+ AE F E) {n : ℕ} (P JS g : GL (Fin n
     _ = tJ ι J := by rw [← gram, ← hJ, hKi, ← hT]
 
 /- English proof (translation)
-Establish `hce : cA σ (ι 1) = ι 1` using `by rw [← hσ, map_one]`. Establish `hMT : (Mg ι P g)ᵀ = (1 - ι 1) • (1 : Matrix (Fin n) (Fin n) (AE F E)) + (Am P g)ᵀ.map ι`. Simplify using `[Mg, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_map]`. Establish `hMc : (Mg ι P g).map (cA σ) = (1 - ι 1) • (1 : Matrix (Fin n) (Fin n) (AE F E)) + ((Am P g).map σL).map ι`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [Mg, h, Matrix.one_apply, ← hσ, hce]`. Establish `hsplit : incM F J = (1 - ι 1) • incM F J + (tJ ι J).map ι`. Use extensionality with `i j`. Establish `hex : ∃ x, ι x = ι 1 * inclR (F` using `F) (AF F) (J i j) := (hsupp _).1 (fun u hu => by`. Rewrite using `[← smul_mul_assoc, (hsupp (ι 1)).2 ⟨1, rfl⟩ u hu, zero_mul])`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, incM, tJ]`. Rewrite using `[pre_spec ι hex]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (Am P g)ᵀ.map ι * incM F J = ((Am P g)ᵀ * tJ ι J).map ι`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hsplit]`. Use `_ = ((1 - ι 1) • (Am P g)ᵀ.map ι) * incM F J + (Am P g)ᵀ.map ι * (tJ ι J).map ι := by`. Rewrite using `[Matrix.mul_add, Matrix.mul_smul, ← Matrix.smul_mul]`. Use `_ = _ := by rw [smul_map_eq_zero ι hmul, Matrix.zero_mul, zero_add, map_mul_map ι hmul]`. Establish `hL : (Mg ι P g)ᵀ * incM F J = (1 - ι 1) • incM F J + ((Am P g)ᵀ * tJ ι J).map ι`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hMT, Matrix.add_mul, Matrix.smul_mul, Matrix.one_mul, h1]`. Establish `e1 : ((1 - ι 1) • incM F J) * ((1 - ι 1) • (1 : Matrix (Fin n) (Fin n) (AE F E))) = (1 - ι 1) • incM F J`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, idem ι hmul]`. Establish `e2 : ((1 - ι 1) • incM F J) * ((Am P g).map σL).map ι = 0`. Rewrite using `[Matrix.smul_mul, ← Matrix.mul_smul, smul_map_eq_zero ι hmul, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ((Am P g)ᵀ * tJ ι J).map ι * ((1 - ι 1) • (1 : Matrix (Fin n) (Fin n) (AE F E))) = 0`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, smul_map_eq_zero ι hmul]`. Rewrite using `[hL, hMc, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, e1, e2, e3, map_mul_map ι hmul, key σL ι P JS g J hJ hg, add_zero, zero_add, ← hsplit]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem (σ : E →ₐ[F] E) (v : Pl F) (σL : L →+* L) (ι : L →+ AE F E)
     (hsupp : ∀ z : AE F E, At (evFin F v) z ↔ ∃ x, ι x = z) (hmul : ∀ x y, ι (x * y) = ι x * ι y)
@@ -211,7 +209,7 @@ theorem mem (σ : E →ₐ[F] E) (v : Pl F) (σL : L →+* L) (ι : L →+ AE F 
     key σL ι P JS g J hJ hg, add_zero, zero_add, ← hsplit]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ v n X L _ σL ι hsupp hmul hσ P JS hJ`. Conclude with `⟨((Phi ι hmul P).comp (Formalism.UG.UJ σL (JS : Matrix (Fin n) (Fin n) L)).subtype).codRestrict (UG (cA σ) (incM F X.J)) (fun g => mem σ v σL ι hsupp hmul hσ P JS g.1 X.J hJ g.2), fun g => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_homV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (v : Pl F) (n : ℕ) (X : Spc F E n) (L : Type) [Field L] (σL : L →+* L)
     (ι : L →+ AE F E), (∀ z : AE F E, At (evFin F v) z ↔ ∃ x, ι x = z) → (∀ x y, ι (x * y) = ι x * ι y) → (∀ x, ι (σL x) = cA σ (ι x)) →

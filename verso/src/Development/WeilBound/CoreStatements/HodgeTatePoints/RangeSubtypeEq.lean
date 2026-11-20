@@ -17,9 +17,9 @@ variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 variable {X N Q : Type} [AddCommGroup X] [AddCommGroup N] [AddCommGroup Q]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `g`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show g (ι x) = g (e x)`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma map_res_eq (M : Submodule R (N → C)) (ι : X →+ N) (K : AddSubgroup N) (e : X ≃+ K)
     (he : ∀ x, (e x : N) = ι x) :
@@ -34,9 +34,9 @@ lemma map_res_eq (M : Submodule R (N → C)) (ι : X →+ N) (K : AddSubgroup N)
   rw [he]
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[Submodule.mem_map_equiv, Submodule.mem_comap, Submodule.mem_comap]`. Establish `: pullQ (R` using `R) K ((pbE (C := C) (R := R) e).symm g) = LinearMap.funLeft R C ψ g := by`. Use function extensionality and compare the values at `x`. Use `show (pbE (C := C) (R := R) e).symm g (x : N ⧸ K) = g (ψ x)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.funCongrLeft_symm]`. Use `show g (e.symm (x : N ⧸ K)) = g (ψ x)`. Rewrite using `[← he, AddEquiv.symm_apply_apply]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comap_quo_eq (M : Submodule R (N → C)) (ψ : N →+ Q) (K : AddSubgroup N) (e : Q ≃+ N ⧸ K)
     (he : ∀ x, e (ψ x) = (x : N ⧸ K)) :
@@ -53,7 +53,7 @@ lemma comap_quo_eq (M : Submodule R (N → C)) (ψ : N →+ Q) (K : AddSubgroup 
   rw [this]
 
 /- English proof (translation)
-Substitute `hK` using the available equality. Conclude with `⟨AddMonoidHom.ofInjective hι, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 lemma exists_subEquiv (ι : X →+ N) (hι : Function.Injective ι) (K : AddSubgroup N)
     (hK : ι.range = K) : ∃ e : X ≃+ K, ∀ x, (e x : N) = ι x := by
@@ -61,7 +61,7 @@ lemma exists_subEquiv (ι : X →+ N) (hι : Function.Injective ι) (K : AddSubg
   exact ⟨AddMonoidHom.ofInjective hι, fun _ => rfl⟩
 
 /- English proof (translation)
-Substitute `hK` using the available equality. Use `⟨(QuotientAddGroup.quotientKerEquivOfSurjective ψ hψ).symm, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[AddEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma exists_quoEquiv (ψ : N →+ Q) (hψ : Function.Surjective ψ) (K : AddSubgroup N)
     (hK : K = ψ.ker) : ∃ e : Q ≃+ N ⧸ K, ∀ x, e (ψ x) = (x : N ⧸ K) := by
@@ -71,11 +71,11 @@ lemma exists_quoEquiv (ψ : N →+ Q) (hψ : Function.Surjective ψ) (K : AddSub
   rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hinv⟩`. Establish `h : LinearMap.funLeft R C ψ (fun c => g (Function.surjInv hψ c)) = g`. Use function extensionality and compare the values at `x`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show g (Function.surjInv hψ (ψ x)) = g x`. Establish `hk : Function.surjInv hψ (ψ x) - x ∈ K`. Rewrite using `[hK, map_sub, Function.surjInv_eq hψ, sub_self]`. Use `hinv x _ hk` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Conclude with `⟨_, by show LinearMap.funLeft R C ψ _ ∈ M; rw [h]; exact hg, h⟩`. Introduce and unpack `⟨q, hq, rfl⟩`. Use `⟨hq, fun x k hk => ?_⟩` and prove the remaining obligations. Use `show q (ψ (x + k)) = q (ψ x)`. Rewrite using `[map_add, (hK k).1 hk, add_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma invFun_eq (M : Submodule R (N → C)) (ψ : N →+ Q) (hψ : Function.Surjective ψ)
     (K : AddSubgroup N) (hK : ∀ x, x ∈ K ↔ ψ x = 0) :
@@ -97,7 +97,7 @@ lemma invFun_eq (M : Submodule R (N → C)) (ψ : N →+ Q) (hψ : Function.Surj
     rw [map_add, (hK k).1 hk, add_zero]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_aug]`. Use `⟨h g hg.1, ?_⟩` and prove the remaining obligations. Use `show g (φ 0) = 0`. Rewrite using `[map_zero, hg.2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma aug_pull (φ : X →+ N) (M : Submodule R (N → C)) (M' : Submodule R (X → C))
     (h : ∀ g ∈ M, LinearMap.funLeft R C φ g ∈ M') {g : N → C} (hg : g ∈ augIdeal M) :
@@ -108,7 +108,7 @@ lemma aug_pull (φ : X →+ N) (M : Submodule R (N → C)) (M' : Submodule R (X 
   rw [map_zero, hg.2]
 
 /- English proof (translation)
-Establish `h' : (sqIdeal (augIdeal M)).map (LinearMap.funLeft R C φ) ≤ sqIdeal (augIdeal M')`. Rewrite using `[sqIdeal, Submodule.map_span_le]`. Introduce and unpack `s ⟨f, hf, f', hf', rfl⟩`. Conclude with `Submodule.subset_span ⟨_, aug_pull φ M M' h hf, _, aug_pull φ M M' h hf', rfl⟩`. Conclude with `h' (Submodule.mem_map_of_mem hg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma sq_pull (φ : X →+ N) (M : Submodule R (N → C)) (M' : Submodule R (X → C))
     (h : ∀ g ∈ M, LinearMap.funLeft R C φ g ∈ M') {g : N → C} (hg : g ∈ sqIdeal (augIdeal M)) :
@@ -122,9 +122,9 @@ lemma sq_pull (φ : X →+ N) (M : Submodule R (N → C)) (M' : Submodule R (X �
 variable {v : Valuation C NNReal}
 
 /- English proof (translation)
-Take `⟨K, hK⟩ : ∃ K, ι.range = K` from `⟨_, rfl⟩`. Take `⟨e, he⟩` from `exists_subEquiv ι hι K hK`. Establish `: Fintype (N ⧸ K)` using `Fintype.ofFinite _`. Take `⟨⟨AK, hAK⟩, -⟩` from `ReciprocityTheory.PGsh.L2.h2 C R v hv N K AA`. Use `⟨hopfPull e AK, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_res_eq _ ι _ e he, ← hAK]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_res (hv : v.Integers R) [Fintype N] [DecidableEq N] [Fintype X] [DecidableEq X]
     (AA : HopfOrder (C := C) R N) (ι : X →+ N) (hι : Function.Injective ι) :
@@ -139,7 +139,7 @@ theorem exists_res (hv : v.Integers R) [Fintype N] [DecidableEq N] [Fintype X] [
   rfl
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_quoEquiv ψ hψ ψ.ker rfl`. Establish `: Fintype (N ⧸ ψ.ker)` using `Fintype.ofFinite _`. Take `⟨-, ⟨AQ, hAQ⟩, -⟩` from `ReciprocityTheory.PGsh.L2.h2 C R v hv N ψ.ker AA`. Use `⟨hopfPull e AQ, ?_⟩` and prove the remaining obligations. Rewrite using `[comap_quo_eq _ ψ _ e he, ← hAQ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -155,11 +155,11 @@ theorem exists_quo (hv : v.Integers R) [Fintype N] [DecidableEq N] [Fintype Q] [
   rfl
 
 /- English proof (translation)
-Take `⟨K, hKd⟩ : ∃ K, ι.range = K` from `⟨_, rfl⟩`. Take `⟨e, he⟩` from `exists_subEquiv ι hι K hKd`. Take `⟨e', he'⟩` from `exists_quoEquiv ψ hψ K (hKd ▸ hex)`. Establish `: Fintype (N ⧸ K)` using `Fintype.ofFinite _`. Take `⟨-, -, h3iii, -⟩` from `ReciprocityTheory.PGsh.L2.h3 C R inferInstance inferInstance v hv N K AA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hK` using `[map_res_eq _ ι _ e he]`. Rewrite `hQ` using `[comap_quo_eq _ ψ _ e' he']`. Establish `hK'` using `hasColen_map v e.symm _ _ hK`. Establish `hQ'` using `hasColen_map v e'.symm _ _ hQ`. Rewrite `hK'`, `hQ'` using `[map_pbE_symm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Fintype.card_congr e.toEquiv, Fintype.card_congr e'.toEquiv]`. Conclude with `h3iii c cQ cK hc hQ' hK'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colen_ses [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype N] [DecidableEq N]
     [Fintype X] [DecidableEq X] [Fintype Q] [DecidableEq Q]
@@ -184,15 +184,15 @@ theorem colen_ses [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype N] [
   exact h3iii c cQ cK hc hQ' hK'
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_subEquiv ι hι _ rfl`. Take `⟨e', he'⟩` from `exists_quoEquiv ψ hψ ι.range hex`. Establish `: Fintype (N ⧸ ι.range)` using `Fintype.ofFinite _`. Take `⟨-, -, -, h3iv⟩` from `ReciprocityTheory.PGsh.L2.h3 C R inferInstance inferInstance v hv N ι.range AA`. Establish `hres : ∀ f : N → C, LinearMap.funLeft R C (e.symm : ι.range →+ X) (LinearMap.funLeft R C ι f) = resK (R` using `R) ι.range f := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `f`. Use function extensionality and compare the values at `k`. Use `show f (ι (e.symm k)) = f k`. Rewrite using `[← he, AddEquiv.apply_symm_apply]`. Establish `h1` using `sq_pull (e.symm : ι.range →+ X) _ (AA.carrier.map (resK (R := R) ι.range)) (by rintro _ ⟨f, hf, rfl⟩; rw [hres]; exact ⟨f, hf, rfl⟩) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hres, sq_eq_mul]`. Take `⟨u, hu, w, hw, huw⟩` from `Submodule.mem_sup.1 (h3iv g hg h1)`. Take `⟨b, hb, rfl⟩` from `hu`. Establish `hp : ∀ b : N ⧸ ι.range → C, LinearMap.funLeft R C ψ (LinearMap.funLeft R C (e' : Q →+ N ⧸ ι.range) b) = pullQ (R` using `R) ι.range b := by`. Introduce `b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Use `show b (e' (ψ x)) = b x`. Rewrite using `[he']`. Use `⟨LinearMap.funLeft R C (e' : Q →+ N ⧸ ι.range) b, aug_pull _ _ _ ?_ hb, ?_⟩` and prove the remaining obligations. Introduce `f hf show LinearMap.funLeft R C ψ _ ∈ AA.carrier`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Conclude with `hf`. Rewrite using `[hp, ← huw, add_sub_cancel_left, sq_eq_mul]`. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem om_exact [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype N] [DecidableEq N]
     (AA : HopfOrder (C := C) R N) (ι : X →+ N)
@@ -240,7 +240,7 @@ variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {F : Type} [
 variable {X N : Type} [AddCommGroup X] [AddCommGroup N] [Module F X] [Module F N]
 
 /- English proof (translation)
-Introduce and unpack `a _ ⟨g, hg, rfl⟩`. Use `⟨_, hM a g hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `show g (a • ι x) = g (ι (a • x))`. Rewrite using `[map_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fstable_map (M : Submodule R (N → C)) (hM : FStable F M) (ι : X →ₗ[F] N) :
     FStable F (M.map (LinearMap.funLeft R C ι)) := by
@@ -251,9 +251,9 @@ lemma fstable_map (M : Submodule R (N → C)) (hM : FStable F M) (ι : X →ₗ[
   rw [map_smul]
 
 /- English proof (translation)
-Introduce `a g hg`. Use `hM a _ hg` as an intermediate fact. Use `show LinearMap.funLeft R C ψ _ ∈ M`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show g (a • ψ x) = g (ψ (a • x))`. Rewrite using `[map_smul]`.
+A detailed English derivation is pending.
 -/
 lemma fstable_comap (M : Submodule R (N → C)) (hM : FStable F M) (ψ : N →ₗ[F] X) :
     FStable F (M.comap (LinearMap.funLeft R C ψ)) := by
@@ -266,7 +266,7 @@ lemma fstable_comap (M : Submodule R (N → C)) (hM : FStable F M) (ψ : N →�
   rw [map_smul]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[AddMonoidHom.mem_range, AddMonoidHom.mem_ker]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma range_subtype_eq (K : Submodule F N) :
     (K.subtype.toAddMonoidHom).range = (K.mkQ.toAddMonoidHom).ker := by
@@ -276,9 +276,9 @@ lemma range_subtype_eq (K : Submodule F N) :
 end Scalars
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv _ F _ _ _ _ f _ N _ _ _ _ AA hAA K _ _ _ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨AK, hAK⟩` from `exists_res hv AA K.subtype.toAddMonoidHom Subtype.val_injective`. Conclude with `⟨AK, hAK, hAK ▸ fstable_map _ hAA K.subtype⟩`. Take `⟨AQ, hAQ⟩` from `exists_quo hv AA K.mkQ.toAddMonoidHom K.mkQ_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨AQ, hAQ, hAQ ▸ fstable_comap _ hAA K.mkQ⟩`. Conclude with `invFun_eq _ K.mkQ.toAddMonoidHom K.mkQ_surjective _ (fun x => by simp)`. Introduce `c cQ cK hc hQ hK`. Conclude with `colen_ses hv AA K.subtype.toAddMonoidHom Subtype.val_injective K.mkQ.toAddMonoidHom K.mkQ_surjective (range_subtype_eq K) c cQ cK hc hQ hK`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subquo : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (K : Submodule F N) [Fintype K] [DecidableEq K] [Fintype (N ⧸ K)] [DecidableEq (N ⧸ K)], (∃ AK : HopfOrder (C := C) R K, AK.carrier = (AA.carrier.map (LinearMap.funLeft R C (Subtype.val : K → N))) ∧ FStable F AK.carrier) ∧ (∃ AQ : HopfOrder (C := C) R (N ⧸ K), AQ.carrier = (AA.carrier.comap (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K))) ∧ FStable F AQ.carrier) ∧ invFun AA.carrier K.toAddSubgroup = (AA.carrier.comap (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K))).map (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K)) ∧ ∀ c cQ cK, HasColen R v AA.carrier c → HasColen R v (AA.carrier.comap (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K))) cQ → HasColen R v (AA.carrier.map (LinearMap.funLeft R C (Subtype.val : K → N))) cK → c = cQ ^ Fintype.card K * cK ^ Fintype.card (N ⧸ K) := by
   intro p _ C _ _ _ v R _ _ hv _ F _ _ _ _ f _ N _ _ _ _ AA hAA K _ _ _ _

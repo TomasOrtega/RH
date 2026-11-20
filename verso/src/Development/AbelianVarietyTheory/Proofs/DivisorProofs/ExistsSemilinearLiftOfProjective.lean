@@ -9,25 +9,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LiftSys
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π hπ P _ _ hP M M' _ _ _ _ W hW q v hv hq`. Use `choose m hmW hmq using hq`. Use `choose σ hσ using hπ`. Establish `key : ∀ (r s : R) (x : M), x ∈ W → π r = π s → r • x = s • x`. Introduce `r s x hx h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hW (r - s) (by rw [map_sub, h, sub_self]) x hx` as an intermediate fact. Rewrite `this` using `[sub_smul, sub_eq_zero]`. Then use the resulting hypothesis. Set `f : P → R₀ →+ M` to `fun w => AddMonoidHom.mk' (fun c => σ c • m w) (by`. Introduce `a b`. Rewrite using `[← add_smul]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `key _ _ _ (hmW w) (by rw [map_add, hσ, hσ, hσ]))`. Establish `hf : ∀ w c, f w c = σ c • m w` using `fun _ _ => rfl`. Set `g : (P →₀ R₀) →+ M` to `Finsupp.liftAddHom f`. Establish `hg : ∀ w c, g (Finsupp.single w c) = σ c • m w`. Introduce `w c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [g, Finsupp.liftAddHom_apply_single, hf]`. Establish `g1 : ∀ r x, g (π r • x) = r • g x`. Introduce `r x`. Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => rw [smul_add, map_add, map_add, ha, hb, smul_add]`. Consider the case `single w c`. Rewrite using `[Finsupp.smul_single, hg, hg, smul_smul]`. Conclude with `key _ _ _ (hmW w) (by rw [map_mul, hσ, hσ, smul_eq_mul])`. Establish `g2 : ∀ x, g x ∈ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x`. Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `W.add_mem ha hb`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `single w c => rw [hg]`. Conclude with `W.smul_mem _ (hmW w)`. Establish `g3 : ∀ x, q (g x) = v (Finsupp.linearCombination R₀ id x)`. Introduce `x`. Proceed by induction on `x using Finsupp.induction_linear with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, map_add, ha, hb]`. Consider the case `single w c`. Rewrite using `[hg, Finsupp.linearCombination_single, map_smul, hmq, ← hv, hσ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `hP.out`. Use `⟨g.comp s.toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r w show g (s (π r • w)) = r • g (s w)`. Rewrite using `[map_smul, g1]`. Introduce `w`.
-
-Conclude with `g2 _`. Introduce `w show q (g (s w)) = v w`. Rewrite using `[g3, hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_semilinear_lift_of_projective : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → ∀ (P : Type) [AddCommGroup P] [Module R₀ P], Module.Projective R₀ P → ∀ (M M' : Type) [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M'] (W : Submodule R M), (∀ r, π r = 0 → ∀ m ∈ W, r • m = 0) → ∀ (q : M →ₗ[R] M') (v : P →+ M'), (∀ r w, v (π r • w) = r • v w) → (∀ w, ∃ m ∈ W, q m = v w) → ∃ u : P →+ M, (∀ r w, u (π r • w) = r • u w) ∧ (∀ w, u w ∈ W) ∧ ∀ w, q (u w) = v w := by
   intro R R₀ _ _ π hπ P _ _ hP M M' _ _ _ _ W hW q v hv hq

@@ -15,25 +15,25 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.CMVal.ObjModel
 namespace GlobalTheory.ToricSumValue
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hr.ne'), Complex.ofReal_log hr.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_pos_eq {r : ℝ} (hr : 0 < r) (z : ℂ) : (r : ℂ) ^ z = Complex.exp ((Real.log r : ℂ) * z) := by
   rw [Complex.cpow_def_of_ne_zero (by exact_mod_cast hr.ne'), Complex.ofReal_log hr.le]
 
 /- English proof (translation)
-Establish `hpos : ∀ i, 0 < ‖φ i (k : E)‖` using `fun i => by simp`. Establish `hN : 0 < ∏ i, ‖φ i (k : E)‖ ^ 2` using `Finset.prod_pos fun i _ => pow_pos (hpos i) 2`. Rewrite using `[modF_princ k, ← prod_normSq hφ k, Complex.cpow_add _ _ (by exact_mod_cast (inv_pos.2 hN).ne'), Complex.cpow_natCast]`. Establish `h1 : term φ (2 * s) κ σ k = term φ (2 * s) κ 0 k * ∏ i, ((‖φ i (k : E)‖ : ℝ) : ℂ) ^ (-2 * σ)`. Unfold `term`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules. Establish `h2 : ∏ i, ((‖φ i (k : E)‖ : ℝ) : ℂ) ^ (-2 * σ) = (((∏ i, ‖φ i (k : E)‖ ^ 2)⁻¹ : ℝ) : ℂ) ^ σ`. Rewrite using `[cpow_pos_eq (inv_pos.2 hN), Real.log_inv, Real.log_prod (fun i _ => (pow_pos (hpos i) 2).ne')]`. Simplify using `only [cpow_pos_eq (hpos _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Use `push_cast`. Rewrite using `[← Finset.sum_neg_distrib, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `term_mul_inf h k`. Establish `h4 : ∏ i, (φ i k * starRingEnd ℂ (φ i k)) ^ s = (((∏ i, ‖φ i (k : E)‖ ^ 2) : ℝ) : ℂ) ^ s`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_pow]`. Use `congr 1`. Use `push_cast`. Conclude with `Finset.prod_congr rfl fun i _ => Complex.mul_conj' _`. Establish `h5 : (finPart χ (Units.map (algebraMap E (Af E)).toMonoidHom k) : ℂ) * (χ.inf k : ℂ) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, finPart_mul_inf, Units.val_one]`. Rewrite `h3` using `[h4]`. Establish `hN' : (((∏ i, ‖φ i (k : E)‖ ^ 2) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Rewrite using `[h1, h2, ← mul_assoc]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_inv, inv_pow, eq_mul_inv_iff_mul_eq₀ (pow_ne_zero _ hN')]`. Take the linear combination `(finPart χ (Units.map (algebraMap E (Af E)).toMonoidHom k) : ℂ) * h3 - (term φ (2 * s) κ 0 k * (((∏ i, ‖φ i (k : E)‖ ^ 2) : ℝ) : ℂ) ^ s) * h5`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem term_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ}
     (hφ : IsCMType φ) {s : ℕ} {κ : I → ℕ} {χ : HChar E} (h : HasInf χ φ fun i => (κ i : ℤ) + s) (σ : ℂ) (k : Eˣ) :
@@ -91,11 +91,11 @@ theorem twistFin_apply {E : Type} [Field E] [NumberField E] (χ : HChar E) (S : 
     twistFin χ S y = (finPart χ y : ℂ) * ((modF y : ℝ) : ℂ) ^ S := rfl
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.T.exists_latticePoints_integralIdeles_equiv E 𝔣 c h𝔣 hd hc`. Rewrite `hT` using `[← e.hasSum_iff]`. Use `HasSum.sigma hT fun q => ?_` and prove the remaining obligations. Use `((hS q).mul_left (twistFin χ (s + σ) q.out)⁻¹).congr_fun fun x => ?_` and prove the remaining obligations. Set `k : Eˣ` to `Units.mk0 x.1.out (out_mem_lattice x).2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `h1` using `he ⟨q, x⟩ (Units.map (algebraMap E (Af E)).toMonoidHom k * (q.out)⁻¹) rfl`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul (hatOUnits c) (Units.map (algebraMap E (Af E)).toMonoidHom k * (q.out)⁻¹)`. Establish `h2 : twistFin χ (s + σ) u = 1`. Rewrite using `[twistFin_apply, hχ u u.2, modF_unit u.2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : term φ (2 * s) κ σ x.1.out = twistFin χ (s + σ) (Units.map (algebraMap E (Af E)).toMonoidHom k)` using `term_eq hφ h σ k`. Use `show twistFin χ (s + σ) (e ⟨q, x⟩).1.out = _`. Rewrite using `[h1, hu, map_mul, map_mul, h2, h3, mul_one, mul_comm, map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_classes {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ}
     (hφ : IsCMType φ) {s : ℕ} {κ : I → ℕ} {χ : HChar E} (h : HasInf χ φ fun i => (κ i : ℤ) + s)
@@ -121,17 +121,15 @@ theorem hasSum_classes {E : Type} [Field E] [NumberField E] [IsCMField E] {I : T
   rw [h1, hu, map_mul, map_mul, h2, h3, mul_one, mul_comm, map_inv]
 
 /- English proof (translation)
-Introduce `hH E _ _ _ I _ φ hφ s κ 𝔣 Q χ Pq Λ hU hs h𝔣 hQ hχ hP hΛ`. Establish `hc : condQ 𝔣 Q ≠ ⊥` using `mul_ne_zero h𝔣.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`. Establish `hd : 𝔣 ∣ condQ 𝔣 Q` using `dvd_mul_right _ _`. Establish `htriv` using `GlobalTheory.CMVal.OrderUnits.finPart_eq_one E I φ hφ s κ 𝔣 Q χ hU h𝔣 hQ hχ`. Establish `hfin` using `GlobalTheory.T.finite_ringClassGroup_of_conductor_ne_zero E _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose S hS using fun q : PicO (condQ 𝔣 Q) => GlobalTheory.T.exists_entire_latticeSum_of_heckeL_continuation hH E I φ hφ s κ 𝔣 _ χ hU hs h𝔣 hd hc hχ.1 hχ.2.2.1 htriv q.out`. Use `⟨hfin, S, hS, ?_⟩` and prove the remaining obligations. Use `Fintype.ofFinite (PicO (condQ 𝔣 Q))` as an intermediate fact. Establish `key : (fun σ : ℂ => ∑ q : PicO (condQ 𝔣 Q), (twistFin χ (s + σ) q.out)⁻¹ * S q σ) = fun σ : ℂ => Λ (s + σ) * ∏ q ∈ Q.filter (fun q => UnrAt χ (Pq q)), ((1 - (val χ (Pq q) : ℂ) * (Ideal.absNorm q.asIdeal : ℂ) ^ (-(s + σ))) * (1 - (val χ (Pq q) : ℂ)⁻¹ * (Ideal.absNorm q.asIdeal : ℂ …`. Use `entire_eq_of_halfPlane ?_ ?_ (1 - s) fun σ hσ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Differentiable.fun_sum fun q _ => Differentiable.mul ?_ (hS q).1` and prove the remaining obligations. Simplify using `only [twistFin_apply, mul_inv, ← Complex.cpow_neg]`. Use `Differentiable.const_mul ?_ _` and prove the remaining obligations. Conclude with `Differentiable.const_cpow (by fun_prop) (Or.inl (by exact_mod_cast (modF_pos _).ne'))`. Use `(hΛ.1.comp (by fun_prop)).mul (Differentiable.fun_finsetProd fun q _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : Differentiable ℂ fun σ : ℂ => (Ideal.absNorm q.asIdeal : ℂ) ^ (-(s + σ))`. Use `Differentiable.const_cpow (by fun_prop) (Or.inl ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `q.ne_bot`. Use `fun_prop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : 1 < ((s : ℂ) + σ).re` using `by simp; linarith`. Establish `h2` using `GlobalTheory.T.hasSum_integralIdeles_eulerProduct E I φ hφ s κ 𝔣 Q χ Pq (s + σ) _ hU h𝔣 hQ hχ hP h1 (hΛ.2 _ h1)`. Conclude with `(hasSum_fintype _).unique (hasSum_classes hφ hχ.2.2.1 h𝔣 hd hc htriv (fun q => (hS q).2 σ (by push_cast; linarith)) h2)`. Establish `h0` using `congrFun key 0`. Simplify using `only [add_zero, twistFin_apply, Complex.cpow_neg, Complex.cpow_natCast] at h0`.
-
-Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [Formalism.PairingDivisionLocalBalance.eq, Complex.ofReal_pow]`. Conclude with `h0.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toricSum_eq : (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (m : I → ℤ) (χ : HChar E), IsCMType φ → IsUnitary χ → HasInf χ φ m → (∃ i, m i ≠ 0) → ∃ Λ, IsHeckeL χ Λ) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ → ∀ (s : ℕ) (κ : I → ℕ) (𝔣 : Ideal (OF E)) (Q : Finset (HeightOneSpectrum (OF E))) (χ : HChar E) (Pq : HeightOneSpectrum (OF E) → HeightOneSpectrum (𝓞 E)) (Λ : ℂ → ℂ), UnramFin E → 1 ≤ s → IsBaseCond 𝔣 → IsFinSetSplitPlacesCoprimeConductor 𝔣 Q → IsValChar φ s κ 𝔣 Q χ → (∀ q ∈ Q, Over (Pq q) q) → IsHeckeL χ Λ → open Classical in IsToricSum φ s κ (condQ 𝔣 Q) χ (Λ s * ∏ q ∈ Q.filter (fun q => UnrAt χ (Pq q)), Formalism.PairingDivisionLocalBalance.eq (Ideal.absNorm q.asIdeal) s (val χ (Pq q) : ℂ)) := by
   intro hH E _ _ _ I _ φ hφ s κ 𝔣 Q χ Pq Λ hU hs h𝔣 hQ hχ hP hΛ

@@ -5,13 +5,13 @@ noncomputable def UpperTheory.Reformulated.B.BoxBounds.box :
     fun {K : Type} [Field K] {i : ℕ} (c : K) ↦ Submodule.pi Set.univ fun (x : Fin i) ↦ NumberField.RingOfIntegers K ∙ c
 
 /- English proof (translation)
-Introduce `K _ _ i L hL`. Establish `h : ∀ j : Fin i, ∃ t : nonZeroDivisors (NumberField.RingOfIntegers K), (t : NumberField.RingOfIntegers K) • (Pi.single j (1 : K) : Fin i → K) ∈ L`. Introduce `j`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (NumberField.RingOfIntegers K)) K (↑L : Set (Fin i → K)) (Pi.single j (1 : K)) (hL ▸ Submodule.mem_top)`. Rewrite `ht` using `[Submodule.span_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨t, ht⟩`. Use `choose t ht using h`. Use `⟨∏ j, (t j : NumberField.RingOfIntegers K), Finset.prod_ne_zero_iff.mpr fun j _ => nonZeroDivisors.coe_ne_zero (t j), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[← Finset.univ_sum_single x]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `L.sum_mem fun j _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.mp (Submodule.mem_pi.mp hx j (Set.mem_univ j))`. Take `⟨u, hu⟩ : (t j : NumberField.RingOfIntegers K) ∣ ∏ k, (t k : NumberField.RingOfIntegers K)` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ j)`. Establish `hj : (Pi.single j (x j) : Fin i → K) = (a * u) • (t j : NumberField.RingOfIntegers K) • (Pi.single j (1 : K) : Fin i → K)`. Rewrite using `[← ha, hu, smul_smul, ← Pi.single_smul, Algebra.algebraMap_eq_smul_one, smul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hj]`. Conclude with `L.smul_mem _ (ht j)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.BoxBounds.exists_box_le :
     ∀ {K : Type} [inst : Field K] [NumberField K] {i : ℕ} (L : Submodule (NumberField.RingOfIntegers K) (Fin i → K)),

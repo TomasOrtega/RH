@@ -16,9 +16,9 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
   {f : S' ⟶ S} {φ : G'.left ⟶ G.left} {R : Type} [CommRing R] {x : Sp R ⟶ S'}
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `e : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R`. Use extensionality with `r`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem fst_comp_alg : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫
     Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) = 𝟙 _ := by
@@ -29,7 +29,7 @@ theorem fst_comp_alg : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).
   exact Spec.map_id _
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `e : (epsMul c).comp (algebraMap R (DualNumber R)) = algebraMap R (DualNumber R)`. Apply the tactic sequence `ext r <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem epsMul_comp_alg (c : R) : Spec.map (CommRingCat.ofHom (epsMul c)) ≫
     Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) =
@@ -53,27 +53,27 @@ Both sides reduce to the same expression.
 theorem pushEps_left (h : IsGrpPullback G' G f φ) (p : epsAt x ⟶ G') : (pushEps h p).left = p.left ≫ φ := rfl
 
 /- English proof (translation)
-The claim follows from `h.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftEps_left (h : IsGrpPullback G' G f φ) (v : epsAt (x ≫ f) ⟶ G) : (liftEps h v).left ≫ φ = v.left :=
   h.1.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (liftEps_left h v)`.
+A detailed English derivation is pending.
 -/
 theorem push_lift (h : IsGrpPullback G' G f φ) (v : epsAt (x ≫ f) ⟶ G) : pushEps h (liftEps h v) = v :=
   Over.OverMorphism.ext (liftEps_left h v)
 
 /- English proof (translation)
-Introduce `p q e` and use `Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun z => z.left) e) ((Over.w p).trans (Over.w q).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pushEps_inj (h : IsGrpPullback G' G f φ) : Function.Injective (pushEps (x := x) h) := fun p q e =>
   Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun z => z.left) e) ((Over.w p).trans (Over.w q).symm))
 
 /- English proof (translation)
-Set `U : epsAt (x ≫ f) ⟶ Over.mk ((epsAt x).hom ≫ f)` to `Over.homMk (𝟙 _) (by simp)`. Set `V : Over.mk ((epsAt x).hom ≫ f) ⟶ epsAt (x ≫ f)` to `Over.homMk (𝟙 _) (by simp)`. Establish `UV : U ≫ V = 𝟙 _` using `Over.OverMorphism.ext (by simp [U, V])`. Establish `e` using `h.2 (epsAt x) p q (V ≫ pushEps h p) (V ≫ pushEps h q) (by simp [V, pushEps_left]) (by simp [V, pushEps_left])`. Establish `e' : U ≫ ((V ≫ pushEps h p) * (V ≫ pushEps h q)) = pushEps h p * pushEps h q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, UV, Category.id_comp, Category.id_comp]`. Rewrite using `[← e']`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[pushEps_left, ← e]`. Simplify using `[U]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pushEps_mul (h : IsGrpPullback G' G f φ) (p q : epsAt x ⟶ G') :
     pushEps h (p * q) = pushEps h p * pushEps h q := by
@@ -90,18 +90,18 @@ theorem pushEps_mul (h : IsGrpPullback G' G f φ) (p q : epsAt x ⟶ G') :
   simp [U]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => z.left) (map_one (pushHom h (Over.mk x)))`.
+A detailed English derivation is pending.
 -/
 theorem one_left (h : IsGrpPullback G' G f φ) :
     (1 : Over.mk x ⟶ G').left ≫ φ = (1 : Over.mk (x ≫ f) ⟶ G).left :=
   congrArg (fun z => z.left) (map_one (pushHom h (Over.mk x)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `t show _ ≫ p.left ≫ φ = _`. Rewrite using `[← Category.assoc, t, one_left h]`. Introduce `t`. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, one_left h]`. Conclude with `t`. Establish `w` using `Over.w p`. Establish `w₁` using `Over.w (1 : Over.mk x ⟶ G')`. Rewrite using `[Category.assoc, w, w₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ≫ Spec.map _ ≫ x = x`. Rewrite using `[← Category.assoc, fst_comp_alg, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem tan_iff (h : IsGrpPullback G' G f φ) (p : epsAt x ⟶ G') :
     IsTanAt G' x p ↔ IsTanAt G (x ≫ f) (pushEps h p) := by
@@ -150,7 +150,7 @@ def pushModel {L : Type} [AddCommGroup L] [Module R L] (h : IsGrpPullback G' G f
     rw [M.smul, Category.assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun M => ⟨pullModel h M, fun _ => liftEps_left h _⟩, fun M' => ⟨pushModel h M', fun _ => rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem models_correspond (h : IsGrpPullback G' G f φ) (L : Type) [AddCommGroup L] [Module R L] :
     (∀ M : LieModel G (x ≫ f) L, ∃ M' : LieModel G' x L, ∀ e, (M'.pt e).left ≫ φ = (M.pt e).left) ∧
@@ -160,7 +160,7 @@ theorem models_correspond (h : IsGrpPullback G' G f φ) (L : Type) [AddCommGroup
 end GlobalTheory.CompanionTheory.Ar.LieMove
 
 /- English proof (translation)
-Introduce `R _ X x G _ G₀ _ ψ L _ _ h`. Establish `key : ∀ y : Sp R ⟶ X, 𝟙 _ ≫ x = y → (∀ M : LieModel G y L, ∃ M₀ : LieModel G₀ (𝟙 _) L, ∀ e, (M₀.pt e).left ≫ ψ = (M.pt e).left) ∧ ∀ M₀ : LieModel G₀ (𝟙 _) L, ∃ M : LieModel G y L, ∀ e, (M₀.pt e).left ≫ ψ = (M.pt e).left`. Introduce and unpack `_ rfl`. Conclude with `GlobalTheory.CompanionTheory.Ar.LieMove.models_correspond h L`. Conclude with `key x (Category.id_comp x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.LieMove.main : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (x : Sp R ⟶ X) (G : Over X) [GrpObj G]
     (G₀ : Over (Sp R)) [GrpObj G₀] (ψ : G₀.left ⟶ G.left) (L : Type) [AddCommGroup L] [Module R L],

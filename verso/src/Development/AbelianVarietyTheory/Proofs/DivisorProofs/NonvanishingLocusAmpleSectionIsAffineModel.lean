@@ -14,23 +14,21 @@ noncomputable section
 namespace GlobalTheory.AffModel
 
 /- English proof (translation)
-Introduce `k _ X _ p D hV P hA e g he hg hg0`. Take `⟨u, hu⟩` from `(GlobalTheory.T.lineBundlePow_sections_rationalFunctions_loci k X p P e).2 g hg`. Establish `hN` using `GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P (e : ℤ) 0 g hg`. Establish `: IsProper p` using `GlobalTheory.ProperFamily.isProper_of_isProjOver hV.isProjOver`. Establish `hU : IsAffineOpen (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u)` using `IsAmpleLB.isAffineOpen_nonzeroLocus p hA he u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : genericPoint X ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u`. Use `hN.2.1.2 hg0` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`. Use `set U := ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u with hUdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty U` using `⟨⟨_, hgen⟩⟩`. Establish `hfr` using `functionField_isFractionRing_of_isAffineOpen X U hU`. Use `⟨U, hgen, hu.symm, hU, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `exists_fnOf_eq hgen h`. Conclude with `⟨a, ha⟩`. Introduce and unpack `⟨a, rfl⟩ z hz`. Conclude with `regAt_fnOf hz hgen a`. Establish `h1 : (algebraMap ℤ k).FiniteType`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hV.finite` as an intermediate fact. Conclude with `RingHom.finiteType_algebraMap.2 inferInstance`. Establish `h2 : (p.appLE ⊤ U le_top).hom.FiniteType` using `p.finiteType_appLE (isAffineOpen_top _) hU _`. Establish `h3 : (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (fun x => ⟨(Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom x, by`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id, CommRingCat.id_apply]⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h4 : (fnOf U hgen).rangeRestrict.FiniteType` using `RingHom.FiniteType.of_surjective _ (fnOf U hgen).rangeRestrict_surjective`. Establish `h5` using `h4.comp (h2.comp (h3.comp h1))`. Rewrite using `[← RingHom.finiteType_algebraMap]`. Use `h5` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := Γ(X, U)) w`. Use `⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h0 => nonZeroDivisors.ne_zero hb (fnOf_injective U hgen (h0.trans (map_zero _).symm))`. Conclude with `hab.symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `φ`. Set `ψ : Γ(X, U) →+* ℂ` to `φ.comp (fnOf U hgen).rangeRestrict`. Use `⟨ψ.comp (algX p U), CxPts.ofHom hU ψ (fun _ => rfl), mem_ptsIn.1 (CxPts.ofHom_mem hU ψ _), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, a, rfl⟩`. Rewrite using `[ratVal_fnOf (CxPts.ofHom_mem hU ψ _) hgen a, CxPts.ev_ofHom]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (g : X.functionField), 0 < e → g ∈ P.H e 0 → g ≠ 0 → ∃ (U : X.Opens) (h : genericPoint X ∈ U), (U : Set X) = NV P e 0 g ∧ IsAffineOpen U ∧ (∀ w : X.functionField, (∀ z ∈ U, RegAt z w) ↔ w ∈ (fnOf U h).range) ∧ Algebra.FiniteType ℤ (fnOf U h).range ∧ (∀ w : X.functionField, ∃ a ∈ (fnOf U h).range, ∃ b ∈ (fnOf U h).range, b ≠ 0 ∧ w = a / b) ∧ ∀ φ : (fnOf U h).range →+* ℂ, ∃ (σ : k →+* ℂ) (y : CxPts p σ), under y ∈ U ∧ ∀ w : (fnOf U h).range, ratVal (w : X.functionField) y = φ w := by
   intro k _ X _ p D hV P hA e g he hg hg0

@@ -24,11 +24,11 @@ Both sides reduce to the same expression.
 theorem goodEmb_val : GoodEmb c c.F.val.toRingHom := rfl
 
 /- English proof (translation)
-Introduce `a n hd`. Use `haveI := hF a n hd`. Establish `key : ∀ s : Finset (cusp Xo c U a n), LinearIndependent c.F (fun i : s => (i : cusp Xo c U a n)) → s.card ≤ Module.finrank ℂ (holSub (U σ).X (laU (U σ) a n))`. Introduce `s hs`. Set `e` to `s.equivFin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : LinearIndependent c.F (fun j : Fin s.card => ((e.symm j : s) : cusp Xo c U a n))` using `hs.comp (fun j => e.symm j) e.symm.injective`. Establish `hb : LinearIndependent c.F (fun j : Fin s.card => (((e.symm j : s) : cusp Xo c U a n) : Rul Xo c))` using `h0.map' (cusp Xo c U a n).subtype (Submodule.ker_subtype _)`. Establish `hc` using `hI a n hd s.card _ (fun j => cusp_le_sec Xo c U a n ((e.symm j : s) : cusp Xo c U a n).2) hb`. Establish `hmem : ∀ j : Fin s.card, rdU (U σ) (((e.symm j : s) : cusp Xo c U a n) : Rul Xo c) ∈ holSub (U σ).X (laU (U σ) a n)` using `fun j => ((mem_cusp Xo c U a n _).1 ((e.symm j : s) : cusp Xo c U a n).2).2 σ hσ`. Set `b' : Fin s.card → holSub (U σ).X (laU (U σ) a n)` to `fun j => ⟨_, hmem j⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc' : LinearIndependent ℂ b'` using `LinearIndependent.of_comp (holSub (U σ).X (laU (U σ) a n)).subtype hc`. Use `hc'.fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`. Use `haveI : Module.Free c.F ↥(cusp Xo c U a n) := Module.Free.of_divisionRing _ _`. Conclude with `Module.rank_lt_aleph0_iff.mp ((rank_le key).trans_lt (Cardinal.nat_lt_aleph0 _))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cuspFD_of (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (hI : RdIndep Xo c U σ) (hF : HolFD Xo c U σ) :
     CuspFD Xo c U := by
@@ -56,7 +56,7 @@ theorem cuspFD_of (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (hI : RdIndep Xo c U
   exact Module.rank_lt_aleph0_iff.mp ((rank_le key).trans_lt (Cardinal.nat_lt_aleph0 _))
 
 /- English proof (translation)
-The claim follows from `cuspFD_of Xo c U _ (goodEmb_val c) hI hF`.
+A detailed English derivation is pending.
 -/
 theorem cuspFD_of_val (hI : RdIndep Xo c U c.F.val.toRingHom) (hF : HolFD Xo c U c.F.val.toRingHom) :
     CuspFD Xo c U :=

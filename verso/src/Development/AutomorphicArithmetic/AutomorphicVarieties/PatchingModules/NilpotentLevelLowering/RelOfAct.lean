@@ -9,7 +9,7 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(MonoidAlgebra.lift ℂ (Module.End ℂ W) T ((Units.coeHom _).comp θ)).comp (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) 1), fun a => by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem relOf_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W]
     (θ : T →* (Module.End ℂ W)ˣ) (t : κ → T) :
@@ -18,9 +18,9 @@ private theorem relOf_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module
     (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) 1), fun a => by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on generalizing m with`. Consider the case `C r`. Rewrite using `[MvPolynomial.eval₂Hom_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, RingHom.comp_apply, AlgHom.commutes]`. Simplify using `[hg]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p a hp`. Rewrite using `[map_mul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, MvPolynomial.eval₂Hom_X', h, hp]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem relOf_int {R W W' κ S : Type} [CommRing R] [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module ℂ W']
     [CommRing S] [Algebra ℂ S] (c : R →+* ℂ) (v : κ → S)
@@ -37,9 +37,9 @@ private theorem relOf_int {R W W' κ S : Type} [CommRing R] [AddCommGroup W] [Mo
     rw [map_mul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, MvPolynomial.eval₂Hom_X', h, hp]
 
 /- English proof (translation)
-Establish `h1` using `relOf_int c (Sum.elim (fun i => ((N : ℂ) ^ e i) • MvPolynomial.X (.inl i)) fun i => MvPolynomial.X (.inr i) - 1) (act.comp ψ) act' g hg (fun a m => by`. Rewrite using `[AlgHom.comp_apply]`. Break down `a with i | i` into its components or cases. Rewrite using `[Sum.elim_inl, hu, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, hg, map_pow, map_natCast, h]`. Establish `e` using `hy i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[map_add, map_one]`. Rewrite using `[Sum.elim_inr, eq_sub_of_add_eq' e, map_sub, map_one, LinearMap.sub_apply, LinearMap.sub_apply, map_sub, h]`. Use the proof step `rfl) (F ^ k) m`. Rewrite `h1` using `[map_pow, h0, AlgHom.comp_apply, map_pow]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem relOf_uy {R W W' ι S : Type} [CommRing R] [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module ℂ W']
     [CommRing S] [Algebra R S] (c : R →+* ℂ) (act : S →ₐ[R] Module.End R W)

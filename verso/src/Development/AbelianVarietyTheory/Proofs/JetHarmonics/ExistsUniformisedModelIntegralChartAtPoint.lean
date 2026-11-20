@@ -26,19 +26,17 @@ open GlobalTheory.PtTie
 namespace GlobalTheory.UnifPoint
 
 /- English proof (translation)
-Introduce `D T h j hj la y`. Use `letI := T.Q.H.starRing`. Take `⟨q, S, io, e, ho, z, hz, eta, heta, rfl⟩` from `y`. Take `⟨S', io', z', r, hz', hr, hU, φ, hv, hm⟩` from `GlobalTheory.T.exists_extension_all_models_uniformized _ _ _ _ (T.Q.Xo j) T.Q.c S io z hz`. Use `letI := io.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Set `ψ : S.Fr →+* S'.Fr` to `letI := io'.toAlgebra`. Use the proof step `φ.toRingHom`. Establish `hio : io' = ψ.comp io`. Use `letI := io'.toAlgebra`. Conclude with `RingHom.ext fun a => (φ.commutes a).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hv' : ∀ a : S.Fr, vV S'.V (ψ a) = (r : ℤ) * vV S.V a` using `fun a => by`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha, vV]`. Conclude with `hv a ha`. Establish `hfin : ψ.Finite` using `IntegralFrameAllCompare.finite_of_scale ψ hr hv' hz'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hnab : IsNab (T.Q.Xo j) T.Q.c (T.nab j)`. Take `⟨inst, hn⟩` from `h.nabPin j hj`. Take `rfl` from `GlobalTheory.PowGerm.starSt _ T.Q.H inst hn.1`. Conclude with `hn`. Establish `hev : ∀ w : WeightFamilies.Wt D j, ∀ f ∈ T.th j w, ψ (evI z f) = evI z' f` using `fun w f hf => GlobalTheory.T.thetaRule_integralPoint_value_baseChange _ _ _ _ (T.Q.Xo j) T.Q.c (T.nab j) hnab S S' io io' z z' φ hm _ _ f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hx : letI` using `io'.toAlgebra`. Use the proof step `z'.1.x = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap ψ ≫ z.1.x := hm.1`. Establish `hu : letI` using `io'.toAlgebra ∀ τ i, z'.1.u τ i = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (Formalism.L2.Pj.dualMap ψ) ≫ z.1.u τ i := hm.2.1`. Use `clear_value ψ`. Use `clear hm hv φ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Substitute `hio` using the available equality. Take `⟨C, hCh⟩` from `GlobalTheory.IntChartTrunc.intChart_frTrunc_exists _ T.Q.H _ _ (T.Q.Xo j) T.Q.c (fun _ => rfl) S' _ z'`. Take `⟨P, hP⟩` from `hU C.I`. Use `⟨S', ψ.comp io, r * e, ho.bc ψ hr hv', z', hz', fun hjm => ?_, C, P, hCh, hP, fun w f hf => ?_⟩` and prove the remaining obligations. Take `⟨u, hu', hl⟩` from `heta hjm`.
-
-Conclude with `⟨u, hu', GlobalTheory.LiesBaseChange.baseChange_of_finite_extension la _ S S' io ψ z z' hfin hr hv' hx hu u hl⟩`. Rewrite using `[← hev w f hf, nval_bc ψ hr hv']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_uniformised_chart : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtA j la), letI := T.Q.H.starRing; ∃ (T' : CDVR) (io : T.Q.c.F →+* T'.Fr) (e : ℕ) (_ : OverLa la T'.V io e) (z : IntFr (T.Q.Xo j) T.Q.c T' io) (_ : z.IsAlg) (_ : T.G.lies j la T' io z (imgV y)) (C : IntegralChartA3 (T.Q.Xo j) T.Q.c T' io z) (P : PELUnif (maximalIdeal T'.V) C.I.G), FrTrunc C.I.G (𝟙 (Sp T'.V)) (chD C.ch) C.xT C.eT ∧ P.TorsionIso ∧ ∀ w : WeightFamilies.Wt D j, ∀ f ∈ T.th j w, vAtV y f = nval T'.V e (evI z f) := by
   intro D T h j hj la y

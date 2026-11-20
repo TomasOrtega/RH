@@ -11,7 +11,7 @@ namespace GlobalTheory.JSW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← chart_val (lieD _ φ.1), chart_lieD φ.2 _ g (val_mem_invSet y)]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Matrix.of W * y.val = y.val * ((y⁻¹).val * Matrix.of W * y.val)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fderiv_chart_rmul (φ : Sm E a) (g : GA E a) (y : GL (Fin a) (Cinf E)) (W : Lie E a) :
     fderiv ℝ (chart φ.1 g) (toL y.val) (rmul (toL y.val) W) =
@@ -22,7 +22,7 @@ theorem fderiv_chart_rmul (φ : Sm E a) (g : GA E a) (y : GL (Fin a) (Cinf E)) (
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_lieCoord V]`. Rewrite using `[lieD, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Complex.real_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lieD_eq_sum (V : Lie E a) (F : GA E a → ℂ) (h : GA E a) :
     lieD V F h = ∑ i, (lieCoord E a i V) * lieD (lieBasis E a i) F h := by
@@ -33,9 +33,9 @@ theorem lieD_eq_sum (V : Lie E a) (F : GA E a → ℂ) (h : GA E a) :
   rfl
 
 /- English proof (translation)
-Use `ContinuousLinearMap.coe_injective ((lieBasis E a).ext fun r => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coe_coe, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply, fderiv_chart_rmul, CuspRep.lie_apply]`. Rewrite using `[lieD_eq_sum, Fintype.sum_prod_type, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single r]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lieCoord, adCoef, ContinuousLinearMap.coe_comp', Function.comp_apply, LinearMap.coe_toContinuousLinearMap', Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_same, Complex.ofRealCLM_apply, Complex.ofReal_one, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hj`. Simplify using `[lieCoord, Module.Basis.repr_self, Finsupp.single_apply, hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem smul_fderiv_chart_comp (φ : Sm E a) (g : GA E a) (y : GL (Fin a) (Cinf E)) (c : ℂ) :
     c • (fderiv ℝ (chart φ.1 g) (toL y.val)).comp (rmul (toL y.val)) =
@@ -55,9 +55,9 @@ theorem smul_fderiv_chart_comp (φ : Sm E a) (g : GA E a) (y : GL (Fin a) (Cinf 
   · simp
 
 /- English proof (translation)
-Establish `hint : ∀ p, Integrable (fun x => (k x * adCoef (γ x) p) * (lie E a (lieBasis E a p.1) φ).1 (g * infGL E a (γ x))) ν`. Introduce `p`. Take `⟨C, hC⟩` from `hb p.1`. Conclude with `(hrc p).integrable (lie E a (lieBasis E a p.1) φ).2 ⟨C, 0, fun y => by simpa using hC _⟩`. Repeatedly rewrite using `[smul_fderiv_chart_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finset_sum _ fun p _ => (hint p).smul_const _]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[integral_smul_const]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_fderiv_chart_eq_of {X : Type} [MeasurableSpace X] (ν : Measure X) (k : X → ℂ)
     (γ : X → GL (Fin a) (Cinf E)) (hrc : ∀ p, IsRapidInf ν (fun x => k x * adCoef (γ x) p) γ) (φ : Sm E a)

@@ -10,9 +10,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.QFam
 
 /- English proof (translation)
-Introduce `i γ`. Use function extensionality and compare the values at `τ`. Establish `hne : UpperHalfPlane.denom γ τ ^ k ≠ 0` using `zpow_ne_zero _ (UpperHalfPlane.denom_ne_zero _ _)`. Rewrite using `[ModularForm.SL_slash_apply]`. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.smul_eq γ τ, zpow_neg, mul_right_comm, mul_inv_cancel₀ hne, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isFam_const_of_isMF (ι : Type) (act : ι → SL(2, ℤ) → ι) (k : ℤ) (F : ℍ → ℂ)
     (h : IsMF k F) : IsFam act k fun _ => F := by
@@ -24,25 +24,25 @@ theorem isFam_const_of_isMF (ι : Type) (act : ι → SL(2, ℤ) → ι) (k : �
   rw [h.smul_eq γ τ, zpow_neg, mul_right_comm, mul_inv_cancel₀ hne, one_mul]
 
 /- English proof (translation)
-The claim follows from `isFam_const_of_isMF ι act 4 _ ⟨E₄, fun _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFam_const_E4 (ι : Type) (act : ι → SL(2, ℤ) → ι) : IsFam act 4 (fun _ => ⇑E₄) :=
   isFam_const_of_isMF ι act 4 _ ⟨E₄, fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `isFam_const_of_isMF ι act 6 _ ⟨E₆, fun _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFam_const_E6 (ι : Type) (act : ι → SL(2, ℤ) → ι) : IsFam act 6 (fun _ => ⇑E₆) :=
   isFam_const_of_isMF ι act 6 _ ⟨E₆, fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `isFam_const_of_isMF ι act 12 _ ReciprocityTheory.ChartRestriction.L1.isMF_DD`.
+A detailed English derivation is pending.
 -/
 theorem isFam_const_DD (ι : Type) (act : ι → SL(2, ℤ) → ι) : IsFam act 12 fun _ => DD :=
   isFam_const_of_isMF ι act 12 _ ReciprocityTheory.ChartRestriction.L1.isMF_DD
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isFam_const_of_isMF ι act, isFam_const_E4 ι act, isFam_const_E6 ι act, isFam_const_DD ι act⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFam_const_level_one (ι : Type) (act : ι → SL(2, ℤ) → ι) :
     (∀ (k : ℤ) (F : ℍ → ℂ), IsMF k F → IsFam act k fun _ => F) ∧ IsFam act 4 (fun _ => ⇑E₄) ∧

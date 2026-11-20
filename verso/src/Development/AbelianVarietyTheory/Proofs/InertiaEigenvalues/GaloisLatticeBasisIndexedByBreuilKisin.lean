@@ -6,9 +6,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.BKGal.IdentRank
 
 /- English proof (translation)
-Establish `: Nontrivial O` using `(algebraMap O R).domain_nontrivial`. Set `b` to `Module.Free.chooseBasis O N`. Establish `h1` using `Module.finrank_eq_card_basis (Algebra.TensorProduct.basis R b)`. Establish `h2` using `j.finrank_eq`. Rewrite `h2` using `[Module.finrank_fintype_fun_eq_card, h1]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨b.reindex (Fintype.equivOfCardEq h2.symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem basis_of_baseChange {O R N ι : Type} [CommRing O] [CommRing R] [Algebra O R] [Nontrivial R]
     [AddCommGroup N] [Module O N] [Module.Free O N] [Module.Finite O N] [Fintype ι]
@@ -22,9 +22,9 @@ theorem basis_of_baseChange {O R N ι : Type} [CommRing O] [CommRing R] [Algebra
   exact ⟨b.reindex (Fintype.equivOfCardEq h2.symm)⟩
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ ι _ _ P T I`. Use `T.L.free` as an intermediate fact. Establish `: Module.Finite ↥(OL LL) ↥T.L.T` using `Module.Finite.iff_fg.2 T.L.fg`. Take `⟨hs, hk, -⟩` from `GlobalTheory.ArtinSchreierWitt.main l`. Take `⟨-, -, h3⟩` from `GlobalTheory.WittTensorFixed.baseChange_flat (O := ↥(OL LL)) (frobW l) hs hk (GlobalTheory.WittTensorFixed.algebraMap_WCb_injective l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: Nontrivial (OW l ↥(OL LL))` using `h3.nontrivial`. Conclude with `basis_of_baseChange I.j`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL), Ident (thetaW a LL) ϖ P T → Nonempty (Module.Basis ι ↥(OL LL) ↥T.L.T) := by
   intro l _ a e _ _ ϖ LL _ _ ι _ _ P T I

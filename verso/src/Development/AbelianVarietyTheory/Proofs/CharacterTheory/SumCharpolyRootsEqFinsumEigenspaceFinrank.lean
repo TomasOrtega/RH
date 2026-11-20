@@ -6,19 +6,17 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Establish `hsep : (X ^ N - C (1 : k) : k[X]).Separable` using `separable_X_pow_sub_C 1 hN one_ne_zero`. Establish `hss : g.IsSemisimple` using `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hsep.squarefree (by simp [hg])`. Establish `hdim : ∀ μ, Module.finrank k (Module.End.eigenspace g μ) = (LinearMap.charpoly g).roots.count μ`. Introduce `μ`. Rewrite using `[← hss.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace μ, LinearMap.finrank_maxGenEigenspace_eq, count_roots]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_multiset_map_count]`. Rewrite using `[finsum_mem_eq_sum_of_inter_support_eq _ (t := (LinearMap.charpoly g).roots.toFinset)]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[hdim, nsmul_eq_mul]`. Use extensionality with `μ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, Function.mem_support, Finset.mem_coe, Multiset.mem_toFinset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `h2` to reduce the goal to its premises. Rewrite using `[hdim, Multiset.count_eq_zero_of_notMem hc]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : g.HasEigenvalue μ`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Conclude with `isRoot_of_mem_roots h1`. Establish `h3` using `hev.pow N`. Rewrite `h3` using `[hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `h3.exists_hasEigenvector`. Establish `h4` using `hv.apply_eq_smul`. Establish `h5 : (μ ^ N - 1) • v = 0`. Rewrite using `[sub_smul, ← h4]`. Simplify using the standard rewrite rules.
-
-Conclude with `sub_eq_zero.mp ((smul_eq_zero.mp h5).resolve_right hv.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_roots_charpoly_eq_finsum_eigenspace (k : Type) [Field k] [IsAlgClosed k] (V : Type)
     [AddCommGroup V] [Module k V] [FiniteDimensional k V] (g : Module.End k V) (N : ℕ)

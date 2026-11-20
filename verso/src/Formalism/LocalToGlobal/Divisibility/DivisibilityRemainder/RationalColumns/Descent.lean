@@ -7,7 +7,7 @@ namespace Formalism.L2.DIV.PerDescent
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Simplify using `only [D.perCol_base_eq_PtilCol, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perCol_smul (D : D7) (u : D.what₂.Word) (φ : D.what₂.Mu u) (c : ℂ) (F : D.what₂.Amb D.what₂.mu0) :
     D.what₂.perCol u D.what₂.mu0 φ (c • F) = c * D.what₂.perCol u D.what₂.mu0 φ F := by
@@ -19,9 +19,9 @@ def perLin (D : D7) (u : D.what₂.Word) (φ : D.what₂.Mu u) : D.what₂.Amb D
   map_smul' c F := by simpa using perCol_smul D u φ c F
 
 /- English proof (translation)
-Set `B : Module.Basis D.div.RR.ι ℂ D.what₂.EE` to `Module.Basis.mk D.jEE_basis.1 (le_of_eq D.jEE_basis.2.symm)`. Use `⟨B.constr ℂ fun i => D.what₂.embLL (γ (D.div.RR.b i)), fun v => ?_⟩` and prove the remaining obligations. Establish `hB : ∀ i, B i = D.jEE (D.div.RR.b i)` using `fun i => Module.Basis.mk_apply _ _ i`. Use `conv_lhs => rw [← D.div.RR.b.linearCombination_repr v]`. Use `conv_rhs => rw [← D.div.RR.b.linearCombination_repr v]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, map_smul, ← hB, Module.Basis.constr_basis, map_smul, smul_eq_mul, smul_eq_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext (D : D7) (γ : D.div.RR.V →ₗ[D.what₂.LL] D.what₂.LL) :
     ∃ Λ : D.what₂.EE →ₗ[ℂ] ℂ, ∀ v, Λ (D.jEE v) = D.what₂.embLL (γ v) := by
@@ -35,15 +35,15 @@ theorem exists_ext (D : D7) (γ : D.div.RR.V →ₗ[D.what₂.LL] D.what₂.LL) 
   rw [LinearMap.map_smulₛₗ, map_smul, ← hB, Module.Basis.constr_basis, map_smul, smul_eq_mul, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Substitute `hμ` using the available equality. Take `⟨Λ, hΛ⟩` from `exists_ext D (β ∘ₗ e.symm.toLinearMap)`. Establish `hEq : ∀ F ∈ D.what₂.V0 D.what₂.mu0, perLin D u φ F = (Λ ∘ₗ D.what₂.iota D.what₂.mu0) F`. Introduce `F hF`. Rewrite `hF` using `[hV]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `LinearMap.eqOn_span (f := perLin D u φ) (g := Λ ∘ₗ D.what₂.iota D.what₂.mu0) ?_ hF` and prove the remaining obligations. Introduce and unpack `_ ⟨G, rfl⟩`. Use `show D.what₂.perCol u D.what₂.mu0 φ (a G) = Λ (D.what₂.iota D.what₂.mu0 (a G))`. Rewrite using `[hper, hι, hΛ]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨F, rfl⟩` from `hp y`. Establish `hF : a F ∈ D.what₂.V0 D.what₂.mu0`. Rewrite using `[hV]`. Conclude with `Submodule.subset_span ⟨F, rfl⟩`. Use `set nn : D.what₂.Amb D.what₂.mu0 := (D.what₂.Usp D.what₂.mu0).starProjection (a F) with hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnU : nn ∈ D.what₂.Usp D.what₂.mu0` using `Submodule.starProjection_apply_mem _ _`. Establish `hq : a F - nn ∈ D.what₂.Qsp D.what₂.mu0` using `⟨Submodule.sub_mem _ hF hnU.1, Submodule.sub_starProjection_mem_orthogonal (a F)⟩`. Establish `hιq : D.what₂.iota D.what₂.mu0 (a F - nn) = D.jEE (e (p F))`. Establish `: D.what₂.iota D.what₂.mu0 nn = 0` using `hnU.2`. Rewrite using `[map_sub, this, sub_zero, hι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hιq, D.what₂.sec_iota _ _ hq]`. Use `hEq _ hq.1` as an intermediate fact. Use `show perLin D u φ (a F - nn) = _`. Rewrite using `[this, LinearMap.comp_apply, hιq, hΛ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem per_sec (D : D7) (u : D.what₂.Word) (φ : D.what₂.Mu u) {n d : ℕ} (μ : D.what₂.Tup) (hμ : μ = D.what₂.mu0)
     (a : (Fin n → D.what₂.LL) → D.what₂.Amb μ)

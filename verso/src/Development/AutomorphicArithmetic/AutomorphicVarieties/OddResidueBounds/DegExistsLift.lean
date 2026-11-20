@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CMFieldExponential
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Establish `hc : Int.gcd ((a ^ n : ℕ) : ℤ) (p : ℤ) = 1`. Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `Nat.Coprime.pow_left n h`. Establish `he : ((a ^ (2 * n) : ℕ) : ℤ) = ((a ^ n : ℕ) : ℤ) ^ 2`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `jacobiSym.sq_one' hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem deg_jac {a p n : ℕ} (h : a.Coprime p) : jacobiSym ((a ^ (2 * n) : ℕ) : ℤ) p = 1 := by
   have hc : Int.gcd ((a ^ n : ℕ) : ℤ) (p : ℤ) = 1 := by
@@ -19,9 +19,9 @@ private theorem deg_jac {a p n : ℕ} (h : a.Coprime p) : jacobiSym ((a ^ (2 * n
   exact jacobiSym.sq_one' hc
 
 /- English proof (translation)
-Use `haveI : NeZero A.m := ⟨A.pos.ne'⟩`. Set `u : (ZMod A.m)ˣ` to `ZMod.unitOfCoprime a h`. Use `⟨u ^ (A.deg * n), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul]`. Conclude with `Subgroup.pow_mem _ (Subgroup.pow_index_mem A.H u) n`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Simplify using `[u, ZMod.coe_unitOfCoprime]`.
+A detailed English derivation is pending.
 -/
 private theorem deg_ker (A : AbF) {a : ℕ} (n : ℕ) (h : a.Coprime A.m) : A.ker (a ^ (A.deg * n)) := by
   haveI : NeZero A.m := ⟨A.pos.ne'⟩
@@ -33,7 +33,7 @@ private theorem deg_ker (A : AbF) {a : ℕ} (n : ℕ) (h : a.Coprime A.m) : A.ke
     simp [u, ZMod.coe_unitOfCoprime]
 
 /- English proof (translation)
-Establish `ht` using `Nat.ModEq.pow_totient h`. Rewrite `ht` using `[Nat.totient_prime_pow Nat.prime_two (by omega)]`. Simplify using `only [Nat.add_sub_cancel, show (2 : ℕ) - 1 = 1 from rfl, mul_one] at ht`. Rewrite using `[pow_mul]`. Simplify using `using ht.pow n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem deg_two {a e : ℕ} (n : ℕ) (h : a.Coprime (2 ^ (e + 2))) :
     a ^ (2 ^ (e + 1) * n) ≡ 1 [MOD 2 ^ (e + 2)] := by
@@ -44,31 +44,25 @@ private theorem deg_two {a e : ℕ} (n : ℕ) (h : a.Coprime (2 ^ (e + 2))) :
   simpa using ht.pow n
 
 /- English proof (translation)
-Introduce `M e q d _ E _ _ hE l hl hl2 hldvd`. Take `⟨N, hN, j, ζ, h1, h2, h3, h4, hζ, hfix⟩` from `hE`. Use `haveI : NeZero (N : ℚ) := ⟨by exact_mod_cast hN.ne⟩`. Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ`. Use `haveI : IsGalois ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.isGalois {N} ℚ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hpowζ : ∀ (τ : Gal(CyclotomicField N ℚ/ℚ)) (a n : ℕ), τ ζ = ζ ^ a → (τ ^ n) ζ = ζ ^ (a ^ n)`. Introduce `τ a n hτ`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ τ n, AlgEquiv.mul_apply, hτ, map_pow, ih, ← pow_mul, pow_succ a n]`. Establish `hmem : ∀ (τ : Gal(CyclotomicField N ℚ/ℚ)) (x : E), (τ ^ (2 ^ (e + 1) * M.deg)) (j x) = j x`. Introduce `τ`. Establish `hτ : τ ζ = ζ ^ ((hζ.autToPow ℚ τ : (ZMod N)ˣ) : ZMod N).val` using `(hζ.autToPow_spec ℚ τ).symm`. Establish `hcop : (((hζ.autToPow ℚ τ : (ZMod N)ˣ) : ZMod N).val).Coprime N` using `ZMod.val_coe_unit_coprime _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(hfix _ _ (hpowζ τ _ (2 ^ (e + 1) * M.deg) hτ)).mpr ⟨Or.inl ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `deg_two M.deg (hcop.coprime_dvd_right h1)`. Establish `hk` using `deg_ker M (2 ^ (e + 1)) (hcop.coprime_dvd_right h2)`. Rewrite `hk` using `[mul_comm M.deg]`. Then use the resulting hypothesis. Establish `hk` using `deg_jac (n := 2 ^ e * M.deg) (hcop.coprime_dvd_right h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `hk` using `[show 2 * (2 ^ e * M.deg) = 2 ^ (e + 1) * M.deg by ring]`. Then use the resulting hypothesis. Establish `hk` using `deg_jac (n := 2 ^ e * M.deg) (hcop.coprime_dvd_right h4)`. Rewrite `hk` using `[show 2 * (2 ^ e * M.deg) = 2 ^ (e + 1) * M.deg by ring]`. Then use the resulting hypothesis. Take `⟨F, hF⟩ : ∃ F : IntermediateField ℚ (CyclotomicField N ℚ), F = j.fieldRange` from `⟨_, rfl⟩`. Establish `hcomm : ∀ σ τ : Gal(CyclotomicField N ℚ/ℚ), σ * τ = τ * σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `σ τ`. Apply `IsPrimitiveRoot.autToPow_injective ℚ hζ` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, mul_comm]`. Use `haveI hKn : F.fixingSubgroup.Normal := ⟨fun n hn g => by rw [hcomm g n, mul_assoc, mul_inv_cancel, mul_one]; exact hn⟩`. Establish `hKmem : ∀ τ : Gal(CyclotomicField N ℚ/ℚ), τ ^ (2 ^ (e + 1) * M.deg) ∈ F.fixingSubgroup`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `τ`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Rewrite `hx` using `[hF]`. Take `⟨y, rfl⟩` from `AlgHom.mem_fieldRange.mp hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmem τ y`. Establish `hindex : F.fixingSubgroup.index = Module.finrank ℚ E`. Establish `e1 : Module.finrank ℚ E = Module.finrank ℚ F`. Rewrite using `[hF]`. Conclude with `(AlgEquiv.ofInjectiveField j).toLinearEquiv.finrank_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `Module.finrank_mul_finrank ℚ F (CyclotomicField N ℚ)`. Establish `e3` using `IsGalois.card_fixingSubgroup_eq_finrank F`. Establish `e4` using `IsGalois.card_aut_eq_finrank ℚ (CyclotomicField N ℚ)`. Establish `e5` using `F.fixingSubgroup.card_mul_index`. Establish `hpos : 0 < Module.finrank F (CyclotomicField N ℚ)` using `Module.finrank_pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Rewrite `e5` using `[e3, e4, ← e2, mul_comm (Module.finrank ℚ F)]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos e5`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hcard : l ∣ Nat.card (Gal(CyclotomicField N ℚ/ℚ) ⧸ F.fixingSubgroup)` using `by show l ∣ F.fixingSubgroup.index`.
-
-Rewrite using `[hindex]`. Conclude with `hldvd`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' l hcard`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Establish `hxk : ((g : Gal(CyclotomicField N ℚ/ℚ) ⧸ F.fixingSubgroup)) ^ (2 ^ (e + 1) * M.deg) = 1`.
-
-Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `hKmem g`. Establish `hdk` using `orderOf_dvd_of_pow_eq_one hxk`. Rewrite `hdk` using `[hx]`. Establish `hcop : l.Coprime (2 ^ (e + 1))` using `Nat.Coprime.pow_right _ ((Nat.coprime_primes hl Nat.prime_two).mpr hl2)`.
-
-Conclude with `hcop.dvd_of_dvd_mul_left hdk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.deg :
     ∀ (M : AbF) (e q d : ℕ), PrimePair M.m q d → ∀ (E : Type) [Field E] [NumberField E], IsCompField M e q d E → ∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ Module.finrank ℚ E → l ∣ M.deg := by

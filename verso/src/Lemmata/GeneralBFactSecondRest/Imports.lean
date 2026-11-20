@@ -5,7 +5,7 @@ universe u_1 u_2
 namespace Bl.general_b_fact_second_rest
 
 /- English proof (translation)
-Establish `ha : IsAlgebraic ℤ a` using `IsFractionRing.isAlgebraic_iff ℤ ℚ K |>.mpr (.of_finite ℚ a)`. Take `⟨d, hd, hint⟩` from `ha.exists_integral_multiple`. Conclude with `⟨d, hd, by simpa [zsmul_eq_mul] using hint⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma aux {K : Type u_1} [Field K] [NumberField K] (a : K) :
     ∃ d : ℤ, d ≠ 0 ∧ IsIntegral ℤ ((d : K) * a) := by
@@ -14,17 +14,15 @@ private lemma aux {K : Type u_1} [Field K] [NumberField K] (a : K) :
   exact ⟨d, hd, by simpa [zsmul_eq_mul] using hint⟩
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ L hL y`. Establish `hy : y ∈ Submodule.span K (L : Set V)` using `by rw [hL]; exact Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact L.zero_mem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x z _ _ h1 h2`. Take `⟨c1, hc1, m1⟩` from `h1`. Take `⟨c2, hc2, m2⟩` from `h2`. Use `⟨c1 * c2, mul_ne_zero hc1 hc2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.toAddSubgroup.zsmul_mem m1 c2`. Rewrite using `[mul_smul]`. Conclude with `L.toAddSubgroup.zsmul_mem m2 c1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul a x _ h`. Take `⟨c, hc, m⟩` from `h`. Take `⟨d, hd, hint⟩` from `aux a`. Use `⟨d * c, mul_ne_zero hd hc, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩ : ∃ r : NumberField.RingOfIntegers K, algebraMap (NumberField.RingOfIntegers K) K r = (d : K) * a` from `⟨⟨_, hint⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (d * c) • (a • x) = r • (c • x)`. Rewrite using `[← algebraMap_smul K r (c • x), hr, ← Int.cast_smul_eq_zsmul K, ← Int.cast_smul_eq_zsmul K, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[key]`. Conclude with `L.smul_mem _ m`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K : Type u_1} {V : Type u_2} [inst : Field.{u_1} K] [NumberField.{u_1} K] [NumberField.IsTotallyComplex.{u_1} K]

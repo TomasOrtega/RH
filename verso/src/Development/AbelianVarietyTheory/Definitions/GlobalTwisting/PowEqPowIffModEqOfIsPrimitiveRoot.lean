@@ -6,9 +6,9 @@ namespace GlobalTheory.NT.Model
 open NumberField IsDedekindDomain GlobalTheory.NT
 
 /- English proof (translation)
-Use `⟨p.asIdeal, p.isPrime, ⟨(Ideal.comap_id p.asIdeal).symm⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, ← Ideal.Quotient.eq, map_pow]`. Use `p.isMaximal` as an intermediate fact. Establish `: Finite (𝓞 K ⧸ p.asIdeal)` using `Ring.HasFiniteQuotients.finiteQuotient p.ne_bot`. Use `letI := Fintype.ofFinite (𝓞 K ⧸ p.asIdeal)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Field (𝓞 K ⧸ p.asIdeal) := Ideal.Quotient.field _`. Establish `hN : Ideal.absNorm p.asIdeal = Fintype.card (𝓞 K ⧸ p.asIdeal)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Rewrite using `[hN, FiniteField.pow_card]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFrob_one {K : Type} [Field K] [NumberField K] (p : HeightOneSpectrum (𝓞 K)) : IsFrob K p 1 := by
   refine ⟨p.asIdeal, p.isPrime, ⟨(Ideal.comap_id p.asIdeal).symm⟩, fun x => ?_⟩
@@ -22,7 +22,7 @@ theorem isFrob_one {K : Type} [Field K] [NumberField K] (p : HeightOneSpectrum (
   rw [hN, FiniteField.pow_card]
 
 /- English proof (translation)
-Unfold `heckeVal`. Rewrite using `[dif_pos ⟨fun _ _ => rfl, ⟨1, isFrob_one p⟩⟩]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem heckeVal_one {K : Type} [Field K] [NumberField K] (p : HeightOneSpectrum (𝓞 K)) :
     heckeVal K (1 : (K ≃ₐ[K] K) →* ℂˣ) p = 1 := by
@@ -31,9 +31,9 @@ theorem heckeVal_one {K : Type} [Field K] [NumberField K] (p : HeightOneSpectrum
   simp
 
 /- English proof (translation)
-Establish `h1 : p.asIdeal = Ideal.span {((Rat.HeightOneSpectrum.natGenerator p : ℕ) : 𝓞 ℚ)}`. Establish `h2` using `congrArg (Ideal.comap (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ))) (Rat.HeightOneSpectrum.span_natGenerator p)`. Rewrite `h2` using `[Ideal.comap_map_of_bijective _ (RingEquiv.bijective _)]`. Rewrite using `[← h2, ← Ideal.map_symm, Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, Ideal.absNorm_span_natCast, NumberField.RingOfIntegers.rank, Module.finrank_self, pow_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absNorm_eq (p : HeightOneSpectrum (𝓞 ℚ)) :
     Ideal.absNorm p.asIdeal = (Rat.HeightOneSpectrum.primesEquiv p : ℕ) := by
@@ -47,7 +47,7 @@ theorem absNorm_eq (p : HeightOneSpectrum (𝓞 ℚ)) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `riemannZeta_eulerProduct_hasProd hs`. Rewrite `h` using `[← (Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).hasProd_iff]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `𝔭`. Simplify using `only [Function.comp_apply, heckeVal_one, one_mul, absNorm_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem zeta_prod (s : ℂ) (hs : 1 < s.re) : HasProd (fun 𝔭 : HeightOneSpectrum (𝓞 ℚ) =>
       (1 - heckeVal ℚ (1 : (ℚ ≃ₐ[ℚ] ℚ) →* ℂˣ) 𝔭 * ((Ideal.absNorm 𝔭.asIdeal : ℕ) : ℂ) ^ (-s))⁻¹) (riemannZeta s) := by
@@ -58,13 +58,13 @@ theorem zeta_prod (s : ℂ) (hs : 1 < s.re) : HasProd (fun 𝔭 : HeightOneSpect
   simp only [Function.comp_apply, heckeVal_one, one_mul, absNorm_eq]
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun x => by simpa using σ.commutes x`.
+A detailed English derivation is pending.
 -/
 private theorem algEquiv_self_eq_one {K : Type} [Field K] (σ : K ≃ₐ[K] K) : σ = 1 :=
   AlgEquiv.ext fun x => by simpa using σ.commutes x
 
 /- English proof (translation)
-Establish `hχ : χ = 1` using `MonoidHom.ext fun σ => by rw [algEquiv_self_eq_one σ, map_one, MonoidHom.one_apply]`. Substitute `hχ` using the available equality. Conclude with `heckeVal_one p`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem heckeVal_self_eq_one {K : Type} [Field K] [NumberField K] (χ : (K ≃ₐ[K] K) →* ℂˣ)
     (p : HeightOneSpectrum (𝓞 K)) : heckeVal K χ p = 1 := by
@@ -73,7 +73,7 @@ private theorem heckeVal_self_eq_one {K : Type} [Field K] [NumberField K] (χ : 
   exact heckeVal_one p
 
 /- English proof (translation)
-Unfold `heckeIdeal`. Simplify using `[heckeVal_self_eq_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem heckeIdeal_self_eq_one {K : Type} [Field K] [NumberField K] (χ : (K ≃ₐ[K] K) →* ℂˣ)
     (I : Ideal (𝓞 K)) : heckeIdeal K χ I = 1 := by
@@ -81,11 +81,11 @@ private theorem heckeIdeal_self_eq_one {K : Type} [Field K] [NumberField K] (χ 
   simp [heckeVal_self_eq_one]
 
 /- English proof (translation)
-Establish `hmod : IsModulus K χ ⊤`. Unfold `IsModulus`. Use `⟨top_ne_bot, fun 𝔭 _ => ?_, fun α β _ => ?_⟩` and prove the remaining obligations. Rewrite using `[heckeVal_self_eq_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heckeIdeal_self_eq_one, heckeIdeal_self_eq_one]`. Unfold `condNorm`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Nat.sInf_le ⟨⊤, hmod, Ideal.absNorm_top⟩`. Use `le_csInf ⟨1, ⊤, hmod, Ideal.absNorm_top⟩ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Introduce and unpack `n ⟨𝔪, h𝔪, rfl⟩`. Unfold `IsModulus at h𝔪`. Conclude with `Nat.one_le_iff_ne_zero.mpr fun h0 => h𝔪.1 (Ideal.absNorm_eq_zero_iff.mp h0)`.
+A detailed English derivation is pending.
 -/
 theorem condNorm_one {K : Type} [Field K] [NumberField K] (χ : (K ≃ₐ[K] K) →* ℂˣ) : condNorm K χ = 1 := by
   have hmod : IsModulus K χ ⊤ := by
@@ -103,23 +103,23 @@ theorem condNorm_one {K : Type} [Field K] [NumberField K] (χ : (K ≃ₐ[K] K) 
     exact Nat.one_le_iff_ne_zero.mpr fun h0 => h𝔪.1 (Ideal.absNorm_eq_zero_iff.mp h0)
 
 /- English proof (translation)
-Unfold `bigQ`. Simplify using `[condNorm_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem bigQ_rat : bigQ ℚ ℚ = 1 := by
   unfold bigQ
   simp [condNorm_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨-1, 1, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : NormOne 7 1 2 := ⟨-1, 1, by norm_num⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨-1, 1, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : NormOne 7 2 7 := ⟨-1, 1, by norm_num⟩
 
 /- English proof (translation)
-Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.2 ⟨m, NeZero.pos m, h.pow_eq_one⟩`. Rewrite using `[h.eq_orderOf]`. Conclude with `hfin.pow_eq_pow_iff_modEq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_pow_iff_modEq_of_isPrimitiveRoot {R : Type} [CommRing R] [IsDomain R] {ζ : R} {m : ℕ} [NeZero m] (h : IsPrimitiveRoot ζ m)
     {a b : ℕ} : ζ ^ a = ζ ^ b ↔ a ≡ b [MOD m] := by
@@ -128,7 +128,7 @@ theorem pow_eq_pow_iff_modEq_of_isPrimitiveRoot {R : Type} [CommRing R] [IsDomai
   exact hfin.pow_eq_pow_iff_modEq
 
 /- English proof (translation)
-Use `(Ideal.finite_factors hI).subset fun 𝔭 h => ?_` and prove the remaining obligations. Simplify using `only [Function.mem_mulSupport] at h`. Establish `h0 : (Associates.mk 𝔭.asIdeal).count (Associates.mk I).factors ≠ 0` using `fun h0 => h (by rw [h0, pow_zero])`. Conclude with `(Associates.count_ne_zero_iff_dvd hI 𝔭.irreducible).mp h0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mulSupport_heckeVal_pow_count_finite {K : Type} (L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (χ : (L ≃ₐ[K] L) →* ℂˣ) {I : Ideal (𝓞 K)} (hI : I ≠ 0) :
@@ -145,7 +145,7 @@ open IsCyclotomicExtension.Rat
 variable {K : Type} (L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Unfold `heckeIdeal`. Rewrite using `[← finprod_mul_distrib (mulSupport_heckeVal_pow_count_finite L χ hI) (mulSupport_heckeVal_pow_count_finite L χ hJ)]`. Use `finprod_congr fun 𝔭 => ?_` and prove the remaining obligations. Rewrite using `[← Associates.mk_mul_mk, Associates.count_mul (Associates.mk_ne_zero.mpr hI) (Associates.mk_ne_zero.mpr hJ) (Associates.irreducible_mk.mpr 𝔭.irreducible), pow_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeIdeal_mul (χ : (L ≃ₐ[K] L) →* ℂˣ) {I J : Ideal (𝓞 K)} (hI : I ≠ 0) (hJ : J ≠ 0) :
     heckeIdeal L χ (I * J) = heckeIdeal L χ I * heckeIdeal L χ J := by
@@ -156,7 +156,7 @@ theorem heckeIdeal_mul (χ : (L ≃ₐ[K] L) →* ℂˣ) {I J : Ideal (𝓞 K)} 
     (Associates.mk_ne_zero.mpr hJ) (Associates.irreducible_mk.mpr 𝔭.irreducible), pow_add]
 
 /- English proof (translation)
-Unfold `heckeIdeal`. Rewrite using `[finprod_eq_single _ 𝔮 fun 𝔭 h => ?_]`. Rewrite using `[Associates.count_self (Associates.irreducible_mk.mpr 𝔮.irreducible), pow_one]`. Establish `hne : Associates.mk 𝔭.asIdeal ≠ Associates.mk 𝔮.asIdeal` using `fun heq => h (IsDedekindDomain.HeightOneSpectrum.ext (associated_iff_eq.mp (Associates.mk_eq_mk_iff_associated.mp heq)))`. Rewrite using `[Associates.count_eq_zero_of_ne (Associates.irreducible_mk.mpr 𝔭.irreducible) (Associates.irreducible_mk.mpr 𝔮.irreducible) hne, pow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeIdeal_prime (χ : (L ≃ₐ[K] L) →* ℂˣ) (𝔮 : HeightOneSpectrum (𝓞 K)) :
     heckeIdeal L χ 𝔮.asIdeal = heckeVal L χ 𝔮 := by
@@ -170,7 +170,7 @@ theorem heckeIdeal_prime (χ : (L ≃ₐ[K] L) →* ℂˣ) (𝔮 : HeightOneSpec
       (Associates.irreducible_mk.mpr 𝔮.irreducible) hne, pow_zero]
 
 /- English proof (translation)
-Unfold `heckeIdeal`. Rewrite using `[Associates.mk_one, Associates.factors_one]`. Use `finprod_eq_one_of_forall_eq_one fun 𝔭 => ?_` and prove the remaining obligations. Rewrite using `[Associates.count_zero (Associates.irreducible_mk.mpr 𝔭.irreducible), pow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeIdeal_top (χ : (L ≃ₐ[K] L) →* ℂˣ) : heckeIdeal L χ 1 = 1 := by
   unfold heckeIdeal
@@ -179,11 +179,11 @@ theorem heckeIdeal_top (χ : (L ≃ₐ[K] L) →* ℂˣ) : heckeIdeal L χ 1 = 1
   rw [Associates.count_zero (Associates.irreducible_mk.mpr 𝔭.irreducible), pow_zero]
 
 /- English proof (translation)
-Establish `hζ` using `(IsCyclotomicExtension.zeta_spec m ℚ F).toInteger_isPrimitiveRoot`. Establish `hpP : ((Ideal.absNorm 𝔭.asIdeal : ℕ) : 𝓞 F) ∈ P`. Establish `h1 : ((Ideal.absNorm 𝔭.asIdeal : ℕ) : 𝓞 ℚ) ∈ 𝔭.asIdeal` using `Ideal.absNorm_mem _`. Establish `h3 : algebraMap (𝓞 ℚ) (𝓞 F) ((Ideal.absNorm 𝔭.asIdeal : ℕ) : 𝓞 ℚ) ∈ P` using `(le_of_eq hLies.over : 𝔭.asIdeal ≤ P.under (𝓞 ℚ)) h1`. Rewrite `h3` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hcopP : (Ideal.absNorm P).Coprime m`. Establish `hd : Ideal.absNorm P ∣ Ideal.absNorm 𝔭.asIdeal ^ Module.finrank ℤ (𝓞 F)`. Rewrite using `[← Ideal.absNorm_span_natCast]`. Conclude with `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).mpr hpP)`. Conclude with `Nat.Coprime.coprime_dvd_left hd (Nat.Coprime.pow_left _ hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₀` using `hζ.idealQuotient_mk (fun h1 => hPp.ne_top (Ideal.absNorm_eq_one_iff.mp h1)) hcopP`. Rewrite `hmem` using `[IsCyclotomicExtension.Rat.galEquivZMod_smul_of_pow_eq m F σ hζ.pow_eq_one, ← Ideal.Quotient.eq, map_pow, map_pow]`. Establish `hmod` using `(pow_eq_pow_iff_modEq_of_isPrimitiveRoot h₀).mp hmem`. Rewrite `hmod` using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem galEquivZMod_eq_of_sub_zeta_pow_mem (m : ℕ) [NeZero m] (F : Type) [Field F] [NumberField F]
     [IsCyclotomicExtension {m} ℚ F] (𝔭 : HeightOneSpectrum (𝓞 ℚ))
@@ -214,7 +214,7 @@ private theorem galEquivZMod_eq_of_sub_zeta_pow_mem (m : ℕ) [NeZero m] (F : Ty
 variable (m : ℕ) [NeZero m] (F : Type) [Field F] [NumberField F] [IsCyclotomicExtension {m} ℚ F]
 
 /- English proof (translation)
-Unfold `IsFrob at h`. Take `⟨P, hPp, hLies, hP⟩` from `h`. Conclude with `galEquivZMod_eq_of_sub_zeta_pow_mem m F 𝔭 hp P hPp hLies σ _ (hP _)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gal_of_isFrob (𝔭 : HeightOneSpectrum (𝓞 ℚ)) (hp : (Ideal.absNorm 𝔭.asIdeal).Coprime m) {σ : F ≃ₐ[ℚ] F}
     (h : IsFrob F 𝔭 σ) : ((galEquivZMod m F σ : (ZMod m)ˣ) : ZMod m) = (Ideal.absNorm 𝔭.asIdeal : ℕ) := by
@@ -228,9 +228,9 @@ open IsCyclotomicExtension.Rat
 variable (m : ℕ) [NeZero m] (F : Type) [Field F] [NumberField F] [IsCyclotomicExtension {m} ℚ F]
 
 /- English proof (translation)
-Unfold `UnramIn`. Introduce `σ hσ`. Unfold `InInertia at hσ`. Take `⟨P, hPp, hLies, hP⟩` from `hσ`. Establish `h1` using `galEquivZMod_eq_of_sub_zeta_pow_mem m F 𝔭 hp P hPp hLies σ 1 (by rw [pow_one]; exact hP _)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : galEquivZMod m F σ = 1` using `Units.ext (by rw [h1]; simp)`. Conclude with `(MulEquiv.map_eq_one_iff _).mp h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unramIn_cyc (𝔭 : HeightOneSpectrum (𝓞 ℚ)) (hp : (Ideal.absNorm 𝔭.asIdeal).Coprime m) : UnramIn F 𝔭 := by
   unfold UnramIn
@@ -245,15 +245,15 @@ def galChar (ψ : DirichletCharacter ℂ m) : (F ≃ₐ[ℚ] F) →* ℂˣ :=
   (MulChar.toUnitHom ψ).comp (galEquivZMod m F).toMonoidHom
 
 /- English proof (translation)
-Establish `hex : ∃ σ, IsFrob F 𝔭 σ`. Use `𝔭.isMaximal` as an intermediate fact. Take `⟨Q, hQm, hQ⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 F) 𝔭.asIdeal`. Establish `: Finite (𝓞 F ⧸ Q)` using `Ring.HasFiniteQuotients.finiteQuotient (Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot Q)`. Use `IsCyclotomicExtension.isGalois {m} ℚ F` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hact : ∀ (τ : F ≃ₐ[ℚ] F) (y : 𝓞 F), galRestrict (𝓞 ℚ) ℚ F (𝓞 F) τ y = τ • y` using `fun τ y => NumberField.RingOfIntegers.ext (by exact algebraMap_galRestrict_apply (A := 𝓞 ℚ) (K := ℚ) (L := F) (B := 𝓞 F) τ y)`. Use `letI := IsIntegralClosure.MulSemiringAction (𝓞 ℚ) ℚ F (𝓞 F)`. Establish `: SMulCommClass (F ≃ₐ[ℚ] F) (𝓞 ℚ) (𝓞 F)` using `⟨fun σ a x => map_smul (galRestrict (𝓞 ℚ) ℚ F (𝓞 F) σ) a x⟩`. Establish `: Algebra.IsInvariant (𝓞 ℚ) (𝓞 F) (F ≃ₐ[ℚ] F)` using `Algebra.isInvariant_of_isGalois (𝓞 ℚ) ℚ F (𝓞 F)`. Take `⟨σ, hσ⟩` from `IsArithFrobAt.exists_of_isInvariant (𝓞 ℚ) (F ≃ₐ[ℚ] F) Q`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, Q, hQm.isPrime, hQ, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hσ x`. Rewrite `h1` using `[← hQ.over, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, MulSemiringAction.toAlgHom_apply]`. Establish `h2 : galRestrict (𝓞 ℚ) ℚ F (𝓞 F) σ x - x ^ Ideal.absNorm 𝔭.asIdeal ∈ Q` using `h1`. Rewrite `h2` using `[hact]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hin : ∀ σ, InInertia F 𝔭 σ → galChar m F ψ σ = 1` using `fun σ hσ => by`. Rewrite using `[unramIn_cyc m F 𝔭 hp σ hσ, map_one]`. Establish `hcond : (∀ σ, InInertia F 𝔭 σ → galChar m F ψ σ = 1) ∧ ∃ σ, IsFrob F 𝔭 σ` using `⟨hin, hex⟩`. Unfold `heckeVal`. Rewrite using `[dif_pos hcond]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `gal_of_isFrob m F 𝔭 hp hcond.2.choose_spec`. Simplify using `only [galChar, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulChar.coe_toUnitHom]`. Rewrite using `[hs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeVal_galChar (ψ : DirichletCharacter ℂ m) (𝔭 : HeightOneSpectrum (𝓞 ℚ))
     (hp : (Ideal.absNorm 𝔭.asIdeal).Coprime m) :
@@ -288,13 +288,13 @@ theorem heckeVal_galChar (ψ : DirichletCharacter ℂ m) (𝔭 : HeightOneSpectr
   rw [hs]
 
 /- English proof (translation)
-Set `g : Ideal (𝓞 ℚ) →* ℂ` to `ψ.toMonoidHom.comp ((Nat.castRingHom (ZMod m)).toMonoidHom.comp (Ideal.absNorm (S := 𝓞 ℚ)).toMonoidHom)`. Establish `hg : ∀ J, g J = ψ (Ideal.absNorm J : ℕ)` using `fun J => rfl`. Establish `hfin : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 ℚ) => v.maxPowDividing I).Finite`. Use `(Ideal.finite_factors hI).subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Function.mem_mulSupport] at hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h0 : (Associates.mk v.asIdeal).count (Associates.mk I).factors ≠ 0` using `fun h0 => hv (by rw [HeightOneSpectrum.maxPowDividing, h0, pow_zero])`. Conclude with `(Associates.count_ne_zero_iff_dvd hI v.irreducible).mp h0`. Establish `hterm : ∀ v : HeightOneSpectrum (𝓞 ℚ), heckeVal F (galChar m F ψ) v ^ (Associates.mk v.asIdeal).count (Associates.mk I).factors = g (v.maxPowDividing I)` using `fun v => by`. Rewrite using `[HeightOneSpectrum.maxPowDividing, map_pow, hg]`. Distinguish the cases in `hk : (Associates.mk v.asIdeal).count (Associates.mk I).factors = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, pow_zero, pow_zero]`. Establish `hdvd : v.asIdeal ∣ I` using `(Associates.count_ne_zero_iff_dvd hI v.irreducible).mp hk`. Establish `hcop : (Ideal.absNorm v.asIdeal).Coprime m` using `Nat.Coprime.coprime_dvd_left (Ideal.absNorm_dvd_absNorm_of_le (Ideal.le_of_dvd hdvd)) hp`. Rewrite using `[heckeVal_galChar m F ψ v hcop]`. Unfold `heckeIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finprod_congr hterm, ← g.map_finprod hfin, Ideal.finprod_heightOneSpectrum_factorization hI, hg]`.
+A detailed English derivation is pending.
 -/
 theorem heckeIdeal_galChar (ψ : DirichletCharacter ℂ m) (I : Ideal (𝓞 ℚ)) (hI : I ≠ 0)
     (hp : (Ideal.absNorm I).Coprime m) : heckeIdeal F (galChar m F ψ) I = ψ (Ideal.absNorm I : ℕ) := by
@@ -322,47 +322,45 @@ theorem heckeIdeal_galChar (ψ : DirichletCharacter ℂ m) (I : Ideal (𝓞 ℚ)
   rw [finprod_congr hterm, ← g.map_finprod hfin, Ideal.finprod_heightOneSpectrum_factorization hI, hg]
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_span_singleton, ← eq_intCast (algebraMap ℤ (𝓞 ℚ)), Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, Module.finrank_self, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_span_int (a : ℤ) : Ideal.absNorm (Ideal.span {(a : 𝓞 ℚ)}) = a.natAbs := by
   rw [Ideal.absNorm_span_singleton, ← eq_intCast (algebraMap ℤ (𝓞 ℚ)), Algebra.norm_algebraMap,
     NumberField.RingOfIntegers.rank, Module.finrank_self, pow_one]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Rat.int_algebraMap_surjective (𝓞 ℚ) α`. Conclude with `⟨a, by rw [← ha, eq_intCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int (α : 𝓞 ℚ) : ∃ a : ℤ, α = a := by
   obtain ⟨a, ha⟩ := Rat.int_algebraMap_surjective (𝓞 ℚ) α
   exact ⟨a, by rw [← ha, eq_intCast]⟩
 
 /- English proof (translation)
-Simplify using `using map_dvd (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem int_dvd_of {a b : ℤ} (h : (a : 𝓞 ℚ) ∣ b) : a ∣ b := by
   simpa using map_dvd (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) h
 
 /- English proof (translation)
-Establish `hm0 : ((m : ℤ) : 𝓞 ℚ) ≠ 0` using `by simpa using NeZero.ne m`. Unfold `IsModulus`. Use `⟨?_, fun 𝔭 h𝔭 => ?_, fun α β hab => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hm0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpr : (Ideal.absNorm 𝔭.asIdeal).Prime`. Rewrite using `[absNorm_eq]`. Conclude with `(Rat.HeightOneSpectrum.primesEquiv 𝔭).2`. Establish `hcop : (Ideal.absNorm 𝔭.asIdeal).Coprime m`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hpr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨k, hk⟩`. Apply `h𝔭` to reduce the goal to its premises. Rewrite using `[Ideal.dvd_span_singleton]`. Establish `hmk : ((m : ℤ) : 𝓞 ℚ) = ((Ideal.absNorm 𝔭.asIdeal : ℕ) : 𝓞 ℚ) * (k : 𝓞 ℚ)`. Rewrite using `[Int.cast_natCast, hk, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmk]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Rewrite using `[heckeVal_galChar m F ψ 𝔭 hcop]`. Establish `hu : IsUnit ((Ideal.absNorm 𝔭.asIdeal : ℕ) : ZMod m)`. Rewrite using `[← ZMod.coe_unitOfCoprime _ hcop]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Units.isUnit _`. Conclude with `(hu.map ψ).ne_zero`. Unfold `RayPair at hab`. Take `⟨hα, hβ, hcα, hcβ, hd, hpos⟩` from `hab`. Take `⟨a, rfl⟩` from `exists_int α`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `exists_int β`. Establish `hcopZ : ∀ c : ℤ, IsCoprime (Ideal.span {(c : 𝓞 ℚ)}) (Ideal.span {((m : ℤ) : 𝓞 ℚ)}) → (c.natAbs).Coprime m`. Introduce `c hc`. Rewrite `hc` using `[Ideal.isCoprime_span_singleton_iff]`. Take `⟨u, v, huv⟩` from `hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u', rfl⟩` from `exists_int u`. Take `⟨v', rfl⟩` from `exists_int v`. Establish `h1 : u' * c + v' * m = 1` using `by exact_mod_cast huv`. Conclude with `Int.isCoprime_iff_gcd_eq_one.mp ⟨u', v', h1⟩`. Establish `hne : ∀ c : ℤ, (c : 𝓞 ℚ) ≠ 0 → Ideal.span {(c : 𝓞 ℚ)} ≠ 0` using `fun c hc => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hc`. Rewrite using `[heckeIdeal_galChar m F ψ _ (hne a hα) (by rw [absNorm_span_int]; exact hcopZ a hcα), heckeIdeal_galChar m F ψ _ (hne b hβ) (by rw [absNorm_span_int]; exact hcopZ b hcβ), absNorm_span_int, absNorm_span_int]`. Establish `hdvd : (m : ℤ) ∣ a - b` using `int_dvd_of (by push_cast; exact Ideal.mem_span_singleton.mp hd)`. Establish `hab : 0 < a * b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h` using `hpos (Rat.castHom ℝ)`. Establish `e1 : (Rat.castHom ℝ) ((a : 𝓞 ℚ) : ℚ) = (a : ℝ)` using `by simp`. Establish `e2 : (Rat.castHom ℝ) ((b : 𝓞 ℚ) : ℚ) = (b : ℝ)` using `by simp`. Rewrite `h` using `[e1, e2]`. Conclude with `h` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ((a.natAbs : ℤ) : ZMod m) = ((b.natAbs : ℤ) : ZMod m)`. Rewrite using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Break down `mul_pos_iff.mp hab with ⟨ha, hb⟩ | ⟨ha, hb⟩` into its components or cases. Rewrite using `[Int.natAbs_of_nonneg ha.le, Int.natAbs_of_nonneg hb.le, ← neg_sub]`. Conclude with `dvd_neg.mpr hdvd`.
-
-Rewrite using `[Int.ofNat_natAbs_of_nonpos ha.le, Int.ofNat_natAbs_of_nonpos hb.le, neg_sub_neg]`. Conclude with `hdvd`. Establish `key' : ((a.natAbs : ℕ) : ZMod m) = ((b.natAbs : ℕ) : ZMod m)`. Rewrite `key` using `[Int.cast_natCast, Int.cast_natCast]`. Then use the resulting hypothesis. Rewrite using `[key']`.
+A detailed English derivation is pending.
 -/
 theorem isModulus_galChar (ψ : DirichletCharacter ℂ m) :
     IsModulus F (galChar m F ψ) (Ideal.span {((m : ℤ) : 𝓞 ℚ)}) := by
@@ -428,7 +426,7 @@ theorem isModulus_galChar (ψ : DirichletCharacter ℂ m) :
     rw [key']
 
 /- English proof (translation)
-Unfold `condNorm`. Establish `hmem : Ideal.absNorm (Ideal.span {((m : ℤ) : 𝓞 ℚ)}) ∈ {n | ∃ 𝔪, IsModulus F (galChar m F ψ) 𝔪 ∧ Ideal.absNorm 𝔪 = n}` using `⟨_, isModulus_galChar m F ψ, rfl⟩`. Use `(Nat.sInf_le hmem).trans ?_` and prove the remaining obligations. Rewrite using `[absNorm_span_int]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem condNorm_galChar_le (ψ : DirichletCharacter ℂ m) : condNorm F (galChar m F ψ) ≤ m := by
   unfold condNorm
@@ -440,19 +438,19 @@ theorem condNorm_galChar_le (ψ : DirichletCharacter ℂ m) : condNorm F (galCha
   simp
 
 /- English proof (translation)
-Take `⟨a, ha⟩ : ∃ a : ℕ, a = 1 + Ideal.absNorm 𝔪 * c` from `⟨_, rfl⟩`. Rewrite `hc`, the goal using `[← ha]`. Establish `hmem : ((Ideal.absNorm 𝔪 * c : ℕ) : 𝓞 ℚ) ∈ 𝔪`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem 𝔪)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hα0 : ((a : ℕ) : 𝓞 ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr (by rw [ha]; omega)`. Establish `hsub : ((a : ℕ) : 𝓞 ℚ) - 1 = ((Ideal.absNorm 𝔪 * c : ℕ) : 𝓞 ℚ)`. Rewrite using `[ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hcop : IsCoprime (Ideal.span {((a : ℕ) : 𝓞 ℚ)}) 𝔪`. Rewrite using `[Ideal.isCoprime_iff_exists]`. Use `⟨(a : 𝓞 ℚ), Ideal.mem_span_singleton_self _, -((Ideal.absNorm 𝔪 * c : ℕ) : 𝓞 ℚ), 𝔪.neg_mem hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hray : RayPair 𝔪 ((a : ℕ) : 𝓞 ℚ) 1`. Unfold `RayPair`. Use `⟨hα0, one_ne_zero, hcop, ?_, ?_, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_one, Ideal.isCoprime_iff_sup_eq, top_sup_eq]`. Rewrite using `[hsub]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmem`. Establish `hpos : 0 < a` using `by omega`. Simplify using `using hpos`. Unfold `IsModulus at h`. Establish `heq` using `h.2.2 _ _ hray`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : Ideal.absNorm (Ideal.span {((a : ℕ) : 𝓞 ℚ)}) = a`. Rewrite using `[Ideal.absNorm_span_natCast, NumberField.RingOfIntegers.rank, Module.finrank_self, pow_one]`. Establish `hI : Ideal.span {((a : ℕ) : 𝓞 ℚ)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hα0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `heckeIdeal_galChar m F ψ _ hI (by rw [hN]; exact hc)`. Rewrite `key` using `[hN]`. Rewrite using `[← key, heq, Ideal.span_singleton_one, ← Ideal.one_eq_top, heckeIdeal_top]`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_isModulus (ψ : DirichletCharacter ℂ m) {𝔪 : Ideal (𝓞 ℚ)} (h : IsModulus F (galChar m F ψ) 𝔪)
     (c : ℕ) (hc : (1 + Ideal.absNorm 𝔪 * c).Coprime m) : ψ ((1 + Ideal.absNorm 𝔪 * c : ℕ) : ZMod m) = 1 := by
@@ -495,13 +493,11 @@ theorem eq_one_of_isModulus (ψ : DirichletCharacter ℂ m) {𝔪 : Ideal (𝓞 
 end Cyc2
 
 /- English proof (translation)
-Apply `le_antisymm (condNorm_galChar_le 4 F ψ)` to reduce the goal to its premises. Unfold `condNorm`. Use `le_csInf ⟨_, _, isModulus_galChar 4 F ψ, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `n ⟨𝔪, h𝔪, rfl⟩`. Establish `hne : Ideal.absNorm 𝔪 ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h` using `h𝔪`. Unfold `IsModulus at h`. Conclude with `fun h0 => h.1 (Ideal.absNorm_eq_zero_iff.mp h0)`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `key : ∀ k : ℕ, (k : ZMod 4) = 3 → ψ (k : ZMod 4) = 1 → ψ 3 = 1` using `fun k hk h => hk ▸ h`. Apply `hψ` to reduce the goal to its premises. Establish `hcases : Ideal.absNorm 𝔪 = 1 ∨ Ideal.absNorm 𝔪 = 2 ∨ Ideal.absNorm 𝔪 = 3` using `by omega`. Break down `hcases with h | h | h` into its components or cases. Conclude with `key _ (by rw [h]; decide) (eq_one_of_isModulus 4 F ψ h𝔪 2 (by rw [h]; decide))`.
-
-Conclude with `key _ (by rw [h]; decide) (eq_one_of_isModulus 4 F ψ h𝔪 1 (by rw [h]; decide))`. Conclude with `key _ (by rw [h]; decide) (eq_one_of_isModulus 4 F ψ h𝔪 2 (by rw [h]; decide))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem condNorm_four (F : Type) [Field F] [NumberField F] [IsCyclotomicExtension {4} ℚ F] (ψ : DirichletCharacter ℂ 4)
     (hψ : ψ 3 ≠ 1) : condNorm F (galChar 4 F ψ) = 4 := by
@@ -525,13 +521,13 @@ theorem condNorm_four (F : Type) [Field F] [NumberField F] [IsCyclotomicExtensio
   · exact key _ (by rw [h]; decide) (eq_one_of_isModulus 4 F ψ h𝔪 2 (by rw [h]; decide))
 
 /- English proof (translation)
-Establish `hall : ∀ χ : (F ≃ₐ[ℚ] F) →* ℂˣ, condNorm F χ ≤ 4` using `fun χ => by`. Establish `hχ : galChar 4 F (MulChar.ofUnitHom (χ.comp (IsCyclotomicExtension.Rat.galEquivZMod 4 F).symm.toMonoidHom)) = χ`. Use `MonoidHom.ext fun σ => Units.ext ?_` and prove the remaining obligations. Simplify using `only [galChar, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulChar.coe_toUnitHom, MulChar.ofUnitHom_coe, MulEquiv.symm_apply_apply]`. Rewrite using `[← hχ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `condNorm_galChar_le 4 F _`. Set `ψ4 : DirichletCharacter ℂ 4` to `ZMod.χ₄.ringHomComp (Int.castRingHom ℂ)`. Establish `h3 : ψ4 3 ≠ 1`. Establish `e : ZMod.χ₄ 3 = -1` using `by decide`. Rewrite using `[MulChar.ringHomComp_apply, e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `hsup : (⨆ χ : (F ≃ₐ[ℚ] F) →* ℂˣ, condNorm F χ) = 4`. Apply `le_antisymm (ciSup_le hall)` to reduce the goal to its premises. Conclude with `(condNorm_four F ψ4 h3).symm.le.trans (le_ciSup ⟨4, by rintro _ ⟨χ, rfl⟩; exact hall χ⟩ (galChar 4 F ψ4))`. Unfold `bigQ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsup]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem bigQ_four (F : Type) [Field F] [NumberField F] [IsCyclotomicExtension {4} ℚ F] : bigQ ℚ F = 4 := by
 
@@ -557,31 +553,31 @@ theorem bigQ_four (F : Type) [Field F] [NumberField F] [IsCyclotomicExtension {4
   simp
 
 /- English proof (translation)
-The claim follows from `@bigQ_four _ _ _ (CyclotomicField.isCyclotomicExtension 4 ℚ)`.
+A detailed English derivation is pending.
 -/
 example : bigQ ℚ (CyclotomicField 4 ℚ) = 4 :=
   @bigQ_four _ _ _ (CyclotomicField.isCyclotomicExtension 4 ℚ)
 
 /- English proof (translation)
-Establish `hX1 : Formalism.MainNotions.GlobalTheoryTheory.X1 (Real.exp 1) 5 = Real.exp (Real.exp 1)`. Unfold `Formalism.MainNotions.GlobalTheoryTheory.X1`. Evaluate the numerical expressions. Establish `hX2 : Formalism.MainNotions.GlobalTheoryTheory.X2 (Real.exp 1) 5 = Real.exp (Real.exp 1)`. Unfold `Formalism.MainNotions.GlobalTheoryTheory.X2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Evaluate the numerical expressions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Evaluate the numerical expressions. Establish `he1` using `Real.exp_one_gt_d9`. Establish `he2` using `Real.exp_one_lt_d9`. Establish `hlo : (11 : ℝ) ≤ Real.exp (Real.exp 1)`. Establish `h2 : Real.exp (Real.exp 1) = Real.exp 1 * Real.exp 1 * Real.exp (Real.exp 1 - 2)`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `Real.add_one_le_exp (Real.exp 1 - 2)`. Establish `hA : (7.3 : ℝ) < Real.exp 1 * Real.exp 1` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (1.7 : ℝ) ≤ Real.exp (Real.exp 1 - 2)` using `by linarith`. Rewrite using `[h2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hhi : Real.exp (Real.exp 1) < 49`. Establish `h2 : Real.exp (Real.exp 1) < Real.exp 3` using `Real.exp_lt_exp.mpr (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Real.exp 3 = Real.exp 1 ^ 3`. Rewrite using `[← Real.exp_nat_mul]`. Evaluate the numerical expressions. Establish `h4` using `pow_lt_pow_left₀ he2 (Real.exp_pos 1).le (by norm_num : (3 : ℕ) ≠ 0)`. Evaluate the numerical expressions using `at h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `QNum DNum`. Rewrite using `[hX1, hX2]`. Use `⟨⟨by norm_num, by norm_num, ?_, ?_⟩, by norm_num, by norm_num, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.sqrt_lt' (by norm_num)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hlo` after adjusting the coercions. Rewrite using `[Real.sqrt_lt' (by norm_num)]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.kronSym, Nat.factorization_eq_zero_of_not_dvd (by norm_num : ¬ 2 ∣ 11)]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp hle`. Establish `hp2 : p = 2`. Evaluate the numerical expressions using `at hle`. Establish `h3 : (p : ℝ) < 3` using `by linarith`. Establish `h4 : p < 3` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `hp2` using the available equality. Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.kronSym, Formalism.MainNotions.GlobalTheoryTheory.kron2, Nat.prime_two.factorization_self]`. Evaluate the numerical expressions.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem nums_example : QNum (Real.exp 1) 5 11 ∧ DNum (Real.exp 1) 5 11 7 := by
   have hX1 : Formalism.MainNotions.GlobalTheoryTheory.X1 (Real.exp 1) 5 = Real.exp (Real.exp 1) := by
@@ -637,13 +633,13 @@ theorem nums_example : QNum (Real.exp 1) 5 11 ∧ DNum (Real.exp 1) 5 11 7 := by
     norm_num
 
 /- English proof (translation)
-Unfold `ntZeros at h`. Simplify using `only [Set.mem_ofPred_eq] at h`. Take `⟨_, h1, hL⟩` from `h`. Establish `hρ : ρ ≠ 1` using `fun e => by`. Rewrite `h1` using `[e]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Establish `han : AnalyticOnNhd ℂ (DirichletCharacter.LFunction χ) ({1}ᶜ : Set ℂ)` using `DifferentiableOn.analyticOnNhd (fun s hs => (DirichletCharacter.differentiableAt_LFunction χ s (Or.inl hs)).differentiableWithinAt) isOpen_compl_singleton`. Establish `hne0 : analyticOrderAt (DirichletCharacter.LFunction χ) ρ ≠ 0` using `(han ρ hρ).analyticOrderAt_ne_zero.mpr hL`. Establish `hnetop : analyticOrderAt (DirichletCharacter.LFunction χ) ρ ≠ ⊤`. Introduce `htop`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hconn : IsPreconnected ({1}ᶜ : Set ℂ)` using `(isConnected_compl_singleton_of_one_lt_rank (by rw [Complex.rank_real_complex]; norm_num) 1).isPreconnected`. Establish `hzero` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero hconn hρ (analyticOrderAt_eq_top.mp htop)`. Establish `h2 : (2 : ℂ) ∈ ({1}ᶜ : Set ℂ)` using `by norm_num`. Conclude with `DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inr (by norm_num : (2 : ℂ) ≠ 1)) (by norm_num) (hzero h2)`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hnetop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `mult analyticOrderNatAt`. Rewrite using `[← hn, ENat.toNat_natCast]`. Rewrite `hne0` using `[← hn]`. Conclude with `Nat.one_le_iff_ne_zero.mpr (by exact_mod_cast hne0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_mult {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) {ρ : ℂ} (h : ρ ∈ ntZeros χ) : 1 ≤ mult χ ρ := by
   unfold ntZeros at h

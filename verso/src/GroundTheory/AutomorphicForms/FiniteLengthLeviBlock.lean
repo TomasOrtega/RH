@@ -19,9 +19,9 @@ variable {G H : Type*} [Group G] [TopologicalSpace G] [Group H] [TopologicalSpac
   {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Introduce `v`. Establish `: (stabilizerOf (ρ.comp f) v : Set G) = f ⁻¹' (stabilizerOf ρ v : Set H)`. Use extensionality with `g`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hρ v).preimage hf`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_comp_of_continuous {ρ : Representation ℂ H V} (hρ : IsSmooth ρ) (f : G →* H)
     (hf : Continuous f) : IsSmooth (ρ.comp f) := by
@@ -40,9 +40,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 section Diagonal
 
 /- English proof (translation)
-Rewrite using `[Submonoid.mem_center_iff]`. Introduce `m`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `only [Subgroup.coe_mul, Units.val_mul, hx, mul_diagonal, diagonal_mul]`. Distinguish the cases in `h : γ i = γ j`. Rewrite using `[hd i j h, mul_comm]`. Rewrite using `[mem_levi.1 m.2 i j h, zero_mul, mul_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_center_levi_of_diagonal {γ : Fin n → ℕ} (x : levi F n γ) (d : Fin n → F)
     (hx : ((x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = diagonal d)
@@ -70,7 +70,7 @@ def blockEmb (a : Set.range δ) : GL (Fin (blockSize δ a)) F →* levi F n δ :
     (MonoidHom.mulSingle (fun b : Set.range δ => GL (Fin (blockSize δ b)) F) a)
 
 /- English proof (translation)
-Use `show leviEquivPi F δ ((leviEquivPi F δ).symm (Pi.mulSingle a y)) = _`. Conclude with `(leviEquivPi F δ).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem leviEquivPi_blockEmb (a : Set.range δ) (y : GL (Fin (blockSize δ a)) F) :
     leviEquivPi F δ (blockEmb F δ a y) = Pi.mulSingle a y := by
@@ -78,7 +78,7 @@ theorem leviEquivPi_blockEmb (a : Set.range δ) (y : GL (Fin (blockSize δ a)) F
   exact (leviEquivPi F δ).apply_symm_apply _
 
 /- English proof (translation)
-Establish `h : Continuous fun y : GL (Fin (blockSize δ a)) F => (Pi.mulSingle a y : ∀ b : Set.range δ, GL (Fin (blockSize δ b)) F)` using `continuous_mulSingle (A := fun b : Set.range δ => GL (Fin (blockSize δ b)) F) a`. Conclude with `(leviEquivPi F δ).symm.continuous.comp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_blockEmb (a : Set.range δ) : Continuous (blockEmb F δ a) := by
   have h : Continuous fun y : GL (Fin (blockSize δ a)) F =>
@@ -87,9 +87,9 @@ theorem continuous_blockEmb (a : Set.range δ) : Continuous (blockEmb F δ a) :=
   exact (leviEquivPi F δ).symm.continuous.comp h
 
 /- English proof (translation)
-Apply `(leviEquivPi F δ).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, leviEquivPi_blockEmb]`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hx]`. Simplify using `[Pi.mulSingle_eq_of_ne hb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blockEmb_commute (a : Set.range δ) (y : GL (Fin (blockSize δ a)) F) (x : levi F n δ)
     (hx : leviEquivPi F δ x a = 1) : blockEmb F δ a y * x = x * blockEmb F δ a y := by
@@ -107,16 +107,16 @@ def blockRest (a : Set.range δ) (x : levi F n δ) : levi F n δ :=
   (leviEquivPi F δ).symm (Function.update (leviEquivPi F δ x) a 1)
 
 /- English proof (translation)
-Simplify using `[blockRest]`.
+Simplify using the standard rewrite rules.
 -/
 theorem leviEquivPi_blockRest_self (a : Set.range δ) (x : levi F n δ) :
     leviEquivPi F δ (blockRest F δ a x) a = 1 := by
   simp [blockRest]
 
 /- English proof (translation)
-Apply `(leviEquivPi F δ).injective` to reduce the goal to its premises. Rewrite using `[map_mul, leviEquivPi_blockEmb]`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[blockRest]`. Simplify using `[blockRest, Pi.mulSingle_eq_of_ne hb, Function.update_of_ne hb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blockEmb_mul_blockRest (a : Set.range δ) (x : levi F n δ) :
     blockEmb F δ a (leviEquivPi F δ x a) * blockRest F δ a x = x := by
@@ -129,9 +129,9 @@ theorem blockEmb_mul_blockRest (a : Set.range δ) (x : levi F n δ) :
   · simp [blockRest, Pi.mulSingle_eq_of_ne hb, Function.update_of_ne hb]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_center_iff]`. Introduce `x`. Apply `(leviEquivPi F δ).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, leviEquivPi_blockEmb]`. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `only [Pi.mul_apply, Pi.mulSingle_eq_same]`. Conclude with `Subgroup.mem_center_iff.1 hz _`. Simplify using `[Pi.mulSingle_eq_of_ne hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockEmb_mem_center {a : Set.range δ} {z : GL (Fin (blockSize δ a)) F}
     (hz : z ∈ Subgroup.center (GL (Fin (blockSize δ a)) F)) :
@@ -148,7 +148,7 @@ theorem blockEmb_mem_center {a : Set.range δ} {z : GL (Fin (blockSize δ a)) F}
   · simp [Pi.mulSingle_eq_of_ne hb]
 
 /- English proof (translation)
-Rewrite using `[leviEquivPi_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_levi_apply_of_blockOf_eq (x : levi F n δ) {i j : Fin n}
     (hij : blockOf δ j = blockOf δ i) :
@@ -159,9 +159,9 @@ theorem coe_levi_apply_of_blockOf_eq (x : levi F n δ) {i j : Fin n}
   rw [leviEquivPi_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, hz, Matrix.scalar_apply, Matrix.diagonal_apply]`. Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne hb, Units.val_one, Matrix.one_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulSingle_scalar_apply {a : Set.range δ} {z : GL (Fin (blockSize δ a)) F} {s : F}
     (hz : ((z : GL (Fin (blockSize δ a)) F) : Matrix (Fin (blockSize δ a)) (Fin (blockSize δ a)) F) =
@@ -177,11 +177,11 @@ theorem mulSingle_scalar_apply {a : Set.range δ} {z : GL (Fin (blockSize δ a))
     simp [hb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : blockOf δ j = blockOf δ i`. Rewrite using `[coe_levi_apply_of_blockOf_eq _ hij, leviEquivPi_blockEmb, mulSingle_scalar_apply hz, diagonal_apply]`. Establish `: ((fiberFin δ (blockOf δ i)).symm ⟨i, rfl⟩ = (fiberFin δ (blockOf δ i)).symm ⟨j, hij⟩) ↔ i = j`. Rewrite using `[Equiv.apply_eq_iff_eq]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg Subtype.val h`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Establish `hne : i ≠ j` using `fun h => hij (h ▸ rfl)`. Rewrite using `[diagonal_apply_ne _ hne]`. Conclude with `mem_levi.1 (blockEmb F δ a z).2 i j fun h => hij (Subtype.ext h.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_blockEmb_apply_of_scalar {a : Set.range δ} {z : GL (Fin (blockSize δ a)) F} {s : F}
     (hz : ((z : GL (Fin (blockSize δ a)) F) : Matrix (Fin (blockSize δ a)) (Fin (blockSize δ a)) F) =
@@ -206,9 +206,9 @@ theorem coe_blockEmb_apply_of_scalar {a : Set.range δ} {z : GL (Fin (blockSize 
     exact mem_levi.1 (blockEmb F δ a z).2 i j fun h => hij (Subtype.ext h.symm)
 
 /- English proof (translation)
-Rewrite using `[mem_unipotentRadical_iff_leviEquivPi, leviEquivPi_blockEmb]`. Introduce `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `using hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne hb]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockEmb_mem_unipotentRadical {α' : Type*} [LinearOrder α'] (γ : Fin n → α')
     {a : Set.range δ} {y : GL (Fin (blockSize δ a)) F}
@@ -223,7 +223,7 @@ theorem blockEmb_mem_unipotentRadical {α' : Type*} [LinearOrder α'] (γ : Fin 
     exact one_mem _
 
 /- English proof (translation)
-Take `⟨-, h⟩` from `mem_unipotentRadical.1 hg`. Conclude with `Units.ext (Matrix.ext fun i j => h i j rfl)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_one_of_mem_unipotentRadical_const {m : ℕ} {c : ℕ} {g : GL (Fin m) F}
     (hg : g ∈ unipotentRadical F m (fun _ : Fin m => c)) : g = 1 := by
@@ -236,7 +236,7 @@ def blockExtend (a : Set.range δ) (ε : Fin (blockSize δ a) → ℕ) : Fin n �
   if h : blockOf δ i = a then ε ((fiberFin δ a).symm ⟨i, h⟩) else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [restrictFun, blockExtend, dif_pos (fiberFin δ a k).2]`. Use `congr 1`. Rewrite using `[Equiv.symm_apply_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictFun_blockExtend_self (a : Set.range δ) (ε : Fin (blockSize δ a) → ℕ) :
     restrictFun δ (blockExtend δ a ε) a = ε := by
@@ -246,7 +246,7 @@ theorem restrictFun_blockExtend_self (a : Set.range δ) (ε : Fin (blockSize δ 
   rw [Equiv.symm_apply_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [restrictFun, blockExtend]`. Rewrite using `[dif_neg]`. Introduce `h`. Conclude with `hb ((fiberFin δ b k).2.symm.trans h)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restrictFun_blockExtend_of_ne {a b : Set.range δ} (hb : b ≠ a)
     (ε : Fin (blockSize δ a) → ℕ) : restrictFun δ (blockExtend δ a ε) b = fun _ => 0 := by
@@ -257,9 +257,9 @@ theorem restrictFun_blockExtend_of_ne {a b : Set.range δ} (hb : b ≠ a)
   exact hb ((fiberFin δ b k).2.symm.trans h)
 
 /- English proof (translation)
-Take `⟨k, l, hkl⟩` from `hε`. Use `⟨(fiberFin δ a k).1, (fiberFin δ a l).1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((fiberFin δ a k).2.trans (fiberFin δ a l).2.symm)`. Establish `hk` using `congrFun (restrictFun_blockExtend_self a ε) k`. Establish `hl` using `congrFun (restrictFun_blockExtend_self a ε) l`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [restrictFun] at hk hl`. Rewrite using `[hk, hl]`. Conclude with `hkl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_blockExtend {a : Set.range δ} {ε : Fin (blockSize δ a) → ℕ}
     (hε : ∃ k l, ε k ≠ ε l) : ∃ i j, δ i = δ j ∧ blockExtend δ a ε i ≠ blockExtend δ a ε j := by
@@ -273,11 +273,11 @@ theorem exists_split_blockExtend {a : Set.range δ} {ε : Fin (blockSize δ a) �
     exact hkl
 
 /- English proof (translation)
-Rewrite `hu` using `[mem_unipotentRadical_iff_leviEquivPi]`. Establish `ha` using `hu a`. Rewrite `ha` using `[restrictFun_blockExtend_self]`. Use `⟨leviEquivPi F δ u a, ha, ?_⟩` and prove the remaining obligations. Apply `(leviEquivPi F δ).injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[leviEquivPi_blockEmb]`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne hb]`. Use `hu b` as an intermediate fact. Rewrite `this` using `[restrictFun_blockExtend_of_ne hb]`. Conclude with `(eq_one_of_mem_unipotentRadical_const this).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_blockEmb_of_mem_unipotentRadical {a : Set.range δ} {ε : Fin (blockSize δ a) → ℕ}
     (u : levi F n δ) (hu : (u : GL (Fin n) F) ∈ unipotentRadical F n (blockExtend δ a ε)) :

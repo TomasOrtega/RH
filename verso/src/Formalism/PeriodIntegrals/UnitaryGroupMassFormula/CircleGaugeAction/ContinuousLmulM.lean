@@ -18,16 +18,14 @@ def Gm (r : ℕ) (θ : AddCircle (2 * π)) : Mt 0 r :=
   fun i j => dgl r ((AddCircle.toCircle θ : Circle) : ℂ) i j
 
 /- English proof (translation)
-Rewrite using `[AddCircle.toCircle_apply_mk, div_self (ne_of_gt fact_two_pi.out), one_mul, Circle.coe_exp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma toCircle_coe (s : ℝ) :
     ((AddCircle.toCircle (s : AddCircle (2 * π)) : Circle) : ℂ) = Complex.exp (s * Complex.I) := by
   rw [AddCircle.toCircle_apply_mk, div_self (ne_of_gt fact_two_pi.out), one_mul, Circle.coe_exp]
 
 /- English proof (translation)
-Establish `hc : Continuous fun θ : AddCircle (2 * π) => ((AddCircle.toCircle θ : Circle) : ℂ)` using `continuous_subtype_val.comp AddCircle.continuous_toCircle`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Gm, dgl_apply]`. Use `split_ifs`. Conclude with `hc`.
-
-Conclude with `continuous_const`. Conclude with `continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_Gm : Continuous (Gm r) := by
   have hc : Continuous fun θ : AddCircle (2 * π) => ((AddCircle.toCircle θ : Circle) : ℂ) :=
@@ -40,7 +38,7 @@ lemma continuous_Gm : Continuous (Gm r) := by
   · exact continuous_const
 
 /- English proof (translation)
-Introduce `a b h`. Use `congrFun (congrFun h (cI r)) (cI r)` as an intermediate fact. Simplify using `only [Gm, dgl_apply] at this`. Conclude with `AddCircle.injective_toCircle (ne_of_gt fact_two_pi.out) (Circle.ext this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Gm_injective : Function.Injective (Gm r) := by
   intro a b h
@@ -49,20 +47,20 @@ lemma Gm_injective : Function.Injective (Gm r) := by
   exact AddCircle.injective_toCircle (ne_of_gt fact_two_pi.out) (Circle.ext this)
 
 /- English proof (translation)
-The claim follows from `(continuous_Gm.isClosedEmbedding Gm_injective).measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 lemma me_Gm : MeasurableEmbedding (Gm r) :=
   (continuous_Gm.isClosedEmbedding Gm_injective).measurableEmbedding
 
 /- English proof (translation)
-Use `show dgl r _ ∈ UWb 0 r`. Conclude with `dgl_mem ((conj_mul_iff _).2 (Circle.norm_coe _))`.
+A detailed English derivation is pending.
 -/
 lemma Gm_mem (θ : AddCircle (2 * π)) : Matrix.of (Gm r θ) ∈ UWb 0 r := by
   show dgl r _ ∈ UWb 0 r
   exact dgl_mem ((conj_mul_iff _).2 (Circle.norm_coe _))
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [lmulM, mul_apply, of_apply]`. Conclude with `continuous_finsetSum _ fun l _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply l))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_lmulM (a : Mat 0 r) : Continuous (lmulM (k := 0) (r := r) a) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -71,9 +69,9 @@ lemma continuous_lmulM (a : Mat 0 r) : Continuous (lmulM (k := 0) (r := r) a) :=
     continuous_const.mul ((continuous_apply j).comp (continuous_apply l))
 
 /- English proof (translation)
-Establish `: lmulM (dgl r ((AddCircle.toCircle a : Circle) : ℂ)) (Gm r b) = dgl r ((AddCircle.toCircle a : Circle) : ℂ) * dgl r ((AddCircle.toCircle b : Circle) : ℂ)` using `rfl`. Establish `h2 : ((AddCircle.toCircle (a + b) : Circle) : ℂ) = ((AddCircle.toCircle a : Circle) : ℂ) * ((AddCircle.toCircle b : Circle) : ℂ)`. Rewrite using `[AddCircle.toCircle_add, Circle.coe_mul]`. Rewrite using `[this, dgl_mul]`. Unfold `Gm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Gm_add (a b : AddCircle (2 * π)) :
     Gm r (a + b) = lmulM (dgl r ((AddCircle.toCircle a : Circle) : ℂ)) (Gm r b) := by
@@ -89,11 +87,11 @@ lemma Gm_add (a b : AddCircle (2 * π)) :
 def μG (r : ℕ) : Measure (Mt 0 r) := Measure.map (Gm r) volume
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `(mem_UWb_iff s).1 hs`. Rewrite `hu` using `[conj_mul_iff]`. Establish `hα : ((AddCircle.toCircle ((Complex.arg u : ℝ) : AddCircle (2 * π)) : Circle) : ℂ) = u`. Rewrite using `[toCircle_coe]`. Use `Complex.norm_mul_exp_arg_mul_I u` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hu]`. Simplify using `using this`. Unfold `μG`. Rewrite using `[Measure.map_map (continuous_lmulM _).measurable continuous_Gm.measurable]`. Establish `hcomp : lmulM (dgl r u) ∘ Gm r = Gm r ∘ (fun θ => ((Complex.arg u : ℝ) : AddCircle (2 * π)) + θ)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `θ`. Simplify using `only [Function.comp_apply]`. Rewrite using `[Gm_add, hα]`. Rewrite using `[hcomp, ← Measure.map_map continuous_Gm.measurable (measurable_const_add _), map_add_left_eq_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma map_lmul (s : Mat 0 r) (hs : s ∈ UWb 0 r) : (μG r).map (lmulM s) = μG r := by
   obtain ⟨u, hu, rfl⟩ := (mem_UWb_iff s).1 hs
@@ -114,13 +112,11 @@ lemma map_lmul (s : Mat 0 r) (hs : s ∈ UWb 0 r) : (μG r).map (lmulM s) = μG 
     map_add_left_eq_self]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, fun s hs => map_lmul s hs⟩` and prove the remaining obligations. Unfold `μG`. Use `infer_instance`. Unfold `μG`. Rewrite using `[Ne, Measure.map_eq_zero_iff continuous_Gm.measurable.aemeasurable]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `AddCircle.measure_univ (2 * π)`. Rewrite `h1` using `[h, Measure.coe_zero, Pi.zero_apply, eq_comm, ENNReal.ofReal_eq_zero]`. Combine the linear relations using `[Real.pi_pos]`. Unfold `μG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[me_Gm.map_apply]`. Establish `: Gm r ⁻¹' {x | Matrix.of x ∉ UWb 0 r} = ∅`. Use extensionality with `θ`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Conclude with `Gm_mem θ`.
-
-Rewrite using `[this, measure_empty]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isHaar : IsHaarOn (UWb 0 r) (μG r) := by
   refine ⟨?_, ?_, ?_, fun s hs => map_lmul s hs⟩
@@ -140,17 +136,15 @@ lemma isHaar : IsHaarOn (UWb 0 r) (μG r) := by
     rw [this, measure_empty]
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hx' : x.1 ∈ Submodule.span ℝ {v0 r}`. Rewrite using `[← lieE_eq]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `x.2`. Take `⟨s, hs⟩` from `Submodule.mem_span_singleton.1 hx'`. Establish `hn : ‖x.1‖ = |s|`. Rewrite using `[← hs, norm_smul, norm_v0_eq_one, mul_one, Real.norm_eq_abs]`. Establish `hlt : |s| < ρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn]`. Conclude with `mem_ball_zero_iff.1 hx`. Use `⟨(s : AddCircle (2 * π)), ⟨s, abs_lt.1 hlt, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Gm r s = fun i j => NormedSpace.exp (unrealify x.1) i j`. Rewrite using `[← hs, ofRealCoords_smul_centerCoord, exp_dz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Unfold `Gm`. Rewrite using `[toCircle_coe]`. Introduce and unpack `⟨_, ⟨s, hs, rfl⟩, rfl⟩`. Establish `hmem : s • v0 r ∈ lieE (UWb 0 r)`. Rewrite using `[lieE_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Use `⟨⟨s • v0 r, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff] show ‖s • v0 r‖ < ρ`. Rewrite using `[norm_smul, norm_v0_eq_one, mul_one, Real.norm_eq_abs, abs_lt]`. Conclude with `hs`.
-
-Use `show (fun i j => NormedSpace.exp (unrealify (s • v0 r)) i j) = Gm r s`. Rewrite using `[ofRealCoords_smul_centerCoord, exp_dz]`. Unfold `Gm`. Rewrite using `[toCircle_coe]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma expBall_eq (ρ : ℝ) :
     expBall (UWb 0 r) ρ = Gm r '' (((↑) : ℝ → AddCircle (2 * π)) '' Ioo (-ρ) ρ) := by
@@ -183,11 +177,11 @@ lemma expBall_eq (ρ : ℝ) :
       rw [toCircle_coe]
 
 /- English proof (translation)
-Establish `hopen : IsOpen (((↑) : ℝ → AddCircle (2 * π)) '' Ioo (-ρ) ρ)` using `QuotientAddGroup.isOpenMap_coe _ isOpen_Ioo`. Rewrite using `[AddCircle.add_projection_respects_measure (2 * π) (-π) hopen.measurableSet]`. Establish `hsub : Ioo (-ρ) ρ ⊆ Ioc (-π) (-π + 2 * π)`. Apply the tactic sequence `intro θ hθ; constructor <;> linarith [hθ.1, hθ.2]`. Establish `: ((↑) : ℝ → AddCircle (2 * π)) ⁻¹' (((↑) : ℝ → AddCircle (2 * π)) '' Ioo (-ρ) ρ) ∩ Ioc (-π) (-π + 2 * π) = Ioo (-ρ) ρ`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `θ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨θ', h1, he⟩, h3⟩`. Rewrite `he` using `[AddCircle.coe_eq_coe_iff_of_mem_Ioc (hsub h1) h3]`. Conclude with `he ▸ h1`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨⟨θ, h, rfl⟩, hsub h⟩`. Rewrite using `[this, Real.volume_Ioo]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma vol_arc {ρ : ℝ} (hρ : ρ ≤ π) :
     volume (((↑) : ℝ → AddCircle (2 * π)) '' Ioo (-ρ) ρ) = ENNReal.ofReal (2 * ρ) := by
@@ -209,15 +203,15 @@ lemma vol_arc {ρ : ℝ} (hρ : ρ ≤ π) :
   congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[lieE_eq]`. Conclude with `finrank_span_singleton v0_ne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finrank_lie : Module.finrank ℝ (lieE (UWb 0 r)) = 1 := by
   rw [lieE_eq]; exact finrank_span_singleton v0_ne
 
 /- English proof (translation)
-Establish `: Nontrivial (lieE (UWb 0 r))` using `Module.nontrivial_of_finrank_eq_succ finrank_lie`. Rewrite using `[InnerProductSpace.volume_ball, finrank_lie]`. Simplify using `only [pow_one, Nat.cast_one]`. Establish `hg : Real.Gamma (1 / 2 + 1) = √π / 2`. Rewrite using `[Real.Gamma_add_one (by norm_num), Real.Gamma_one_half_eq]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : √π / (√π / 2) = 2`. Establish `: √π ≠ 0` using `Real.sqrt_ne_zero'.2 Real.pi_pos`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hg, hs, ← ENNReal.ofReal_mul h0, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 lemma vol_ball {ρ : ℝ} (h0 : 0 ≤ ρ) :
     volume (Metric.ball (0 : lieE (UWb 0 r)) ρ) = ENNReal.ofReal (2 * ρ) := by
@@ -232,9 +226,9 @@ lemma vol_ball {ρ : ℝ} (h0 : 0 ≤ ρ) :
   rw [hg, hs, ← ENNReal.ofReal_mul h0, mul_comm]
 
 /- English proof (translation)
-Use `⟨isHaar, ?_⟩` and prove the remaining obligations. Use `Tendsto.congr' ?_ tendsto_const_nhds` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT Real.pi_pos] with ρ hρ`. Rewrite using `[μG, me_Gm.map_apply, expBall_eq, Gm_injective.preimage_image, vol_arc hρ.2.le, vol_ball hρ.1.le, div_self]`. Rewrite using `[ENNReal.toReal_ofReal (by linarith [hρ.1])]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[hρ.1]`.
+A detailed English derivation is pending.
 -/
 theorem gauge (r : ℕ) : IsGaugeOn (UWb 0 r) (μG r) := by
   refine ⟨isHaar, ?_⟩

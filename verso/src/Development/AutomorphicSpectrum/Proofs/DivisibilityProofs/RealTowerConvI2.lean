@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Top.ConvergenceI2
 
 /- English proof (translation)
-Set `F : ℕ → ℝ` to `fun i => if h : i < N then |l ⟨i, h⟩| else 0`. Establish `hF : ∀ i, 0 ≤ F i`. Introduce `i`. Simplify using `only [F]`. Use `split_ifs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `abs_nonneg _`. Conclude with `le_rfl`. Establish `e1 : ∑ i : Fin N, (if h : (i : ℕ) + 1 < N then |l ⟨(i : ℕ) + 1, h⟩| else 0) = ∑ i ∈ Finset.range N, F (i + 1)`. Rewrite using `[Finset.sum_range]`. Establish `e2 : ∑ i : Fin N, |l i| = ∑ i ∈ Finset.range N, F i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[F]`. Establish `e3 : ∑ i ∈ Finset.range (N + 1), F i = ∑ i ∈ Finset.range N, F (i + 1) + F 0` using `Finset.sum_range_succ' F N`. Establish `e4 : ∑ i ∈ Finset.range (N + 1), F i = ∑ i ∈ Finset.range N, F i + F N` using `Finset.sum_range_succ F N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e5 : F N = 0` using `by simp [F]`. Rewrite using `[e1, e2]`. Combine the linear relations using `[hF 0]`.
+A detailed English derivation is pending.
 -/
 theorem sum_shift_le {N : ℕ} (l : Fin N → ℝ) :
     ∑ i : Fin N, (if h : (i : ℕ) + 1 < N then |l ⟨(i : ℕ) + 1, h⟩| else 0) ≤ ∑ i, |l i| := by
@@ -46,7 +46,7 @@ theorem sum_shift_le {N : ℕ} (l : Fin N → ℝ) :
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `|PB.gap (fun x : Ψ × Fin N => lam x.1 x.2) (τ, i)| ≤ |lam τ i| + (if h : (i : ℕ) + 1 < N then |lam τ ⟨(i : ℕ) + 1, h⟩| else 0) := by by_cases h : (i : ℕ) + 1 < N · simp only [PB.gap, PB.gapX, dif_pos h, map_sub, eval_X] exact abs_sub _ _ · simp [PB.gap, PB.gapX, dif_neg h]`.
+A detailed English derivation is pending.
 -/
 theorem abs_gap_le (lam : Wt Ψ N) (τ : Ψ) (i : Fin N) :
     |PB.gap (fun x : Ψ × Fin N => lam x.1 x.2) (τ, i)| ≤
@@ -57,11 +57,11 @@ theorem abs_gap_le (lam : Wt Ψ N) (τ : Ψ) (i : Fin N) :
   · simp [PB.gap, PB.gapX, dif_neg h]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_option, Fintype.sum_prod_type]`. Establish `h1 : ∀ τ : Ψ, ∑ i : Fin N, |PB.gapS (fun x : Ψ × Fin N => lam x.1 x.2) u (some (τ, i))| ≤ 2 * ∑ i, |lam τ i|`. Introduce `τ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[sum_shift_le (lam τ)]`. Establish `h2` using `Finset.sum_le_sum fun τ (_ : τ ∈ (Finset.univ : Finset Ψ)) => h1 τ`. Rewrite `h2` using `[← Finset.mul_sum]`. Establish `h3 : PB.gapS (fun x : Ψ × Fin N => lam x.1 x.2) u none = u` using `rfl`. Rewrite using `[h3]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `l1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sum_abs_gapS_le (lam : Wt Ψ N) (u : ℝ) :
     ∑ o, |PB.gapS (fun x : Ψ × Fin N => lam x.1 x.2) u o| ≤ 2 * l1 lam + |u| := by
@@ -83,11 +83,11 @@ theorem sum_abs_gapS_le (lam : Wt Ψ N) (u : ℝ) :
   linarith
 
 /- English proof (translation)
-Unfold `l1`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (lam - s • nu) τ i = lam τ i - s * nu τ i` using `rfl`. Rewrite using `[e]`. Establish `h2 : |s * nu τ i| ≤ |nu τ i|`. Rewrite using `[abs_mul, abs_of_nonneg h0]`. Conclude with `mul_le_of_le_one_left (abs_nonneg _) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[abs_sub (lam τ i) (s * nu τ i)]`.
+A detailed English derivation is pending.
 -/
 theorem l1_sub_smul_le (lam nu : Wt Ψ N) (s : ℝ) (h0 : 0 ≤ s) (h1 : s ≤ 1) :
     l1 (lam - s • nu) ≤ l1 lam + l1 nu := by
@@ -110,21 +110,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Top
 open ConvergenceI2 in
 
 /- English proof (translation)
-Introduce `hAg hIn II hII Ψ _ _ N T R`. Establish `hpos : ∀ c, 0 < (R.Sys c).t₀` using `fun c => ((R.Sys c).reg none).1`. Use `⟨fun B c => ?_, fun abelian₂ => ?_⟩` and prove the remaining obligations. Take `⟨C₃, s₀, -, h⟩` from `hAg hIn (dimFl Ψ N) (Option (Ψ × Fin N)) (R.Sys c) 0 (hpos c)`. Establish `hc` using `(h II hII (T.M B c).K (T.M B c).ι (T.M B c).P (R.tie B c).Re).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((GlobalTheory.T.real_tower_arith_agreement hIn II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) 0 0).2.2 hc (hpos c)).1`. Establish `hex` using `fun c => hAg hIn (dimFl Ψ N) (Option (Ψ × Fin N)) (R.Sys c) (2 * (abelian₂ + l1 T.nu) + 1) (hpos c) choose C₃ s₀ hs₀ h using hex`. Establish `hne : (Finset.univ : Finset T.Comp).Nonempty` using `Finset.univ_nonempty`. Establish `hinf : 0 < Finset.univ.inf' hne s₀` using `(Finset.lt_inf'_iff hne).2 fun c _ => hs₀ c`. Use `⟨min 1 (Finset.univ.inf' hne s₀), lt_min one_pos hinf, ∑ c, |C₃ c|, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B _ c lam s hl hs hs1 _`. Establish `hs_one : s ≤ 1` using `hs1.trans (min_le_left _ _)`. Establish `hs_c : s ≤ s₀ c` using `(hs1.trans (min_le_right _ _)).trans (Finset.inf'_le _ (Finset.mem_univ c))`. Establish `hA` using `h c II hII (T.M B c).K (T.M B c).ι (T.M B c).P (R.tie B c).Re`. Take `⟨ht, hb⟩` from `hA.2 s hs hs_c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.real_tower_arith_agreement hIn II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) (T.lamS lam s) s`. Establish `e1` using `key.2.1 _ (Real.exp_pos _) ht`. Establish `e2` using `(key.2.2 hA.1 (hpos c)).2`. Establish `hk : (1 : ℝ) ≤ ((T.M B c).kA : ℝ)` using `by exact_mod_cast (T.M B c).kA_pos`. Establish `hu : |s / ((T.M B c).kA : ℝ)| ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_nonneg (div_nonneg hs.le (by linarith))]`. Conclude with `(div_le_one (by linarith)).2 (hs_one.trans hk)`. Establish `hsum : ∑ o, |PB.gapS (fun x : Ψ × Fin N => T.lamS lam s x.1 x.2) (s / ((T.M B c).kA : ℝ)) o| ≤ 2 * (abelian₂ + l1 T.nu) + 1`. Establish `h1` using `sum_abs_gapS_le (T.lamS lam s) (s / ((T.M B c).kA : ℝ))`. Establish `h2 : l1 (T.lamS lam s) ≤ l1 lam + l1 T.nu` using `l1_sub_smul_le lam T.nu s hs.le hs_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfin` using `hb _ hsum`. Rewrite `hfin` using `[← e1, ← e2]`. Establish `hn : (1 : ℝ) ≤ (R.n c : ℝ)` using `by exact_mod_cast key.1`. Establish `hC : C₃ c ≤ ∑ c, |C₃ c|` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun c => |C₃ c|) (fun _ _ => abs_nonneg _) (Finset.mem_univ c))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := (T.M B c).arFun II (Real.exp (-(s ^ 2)⁻¹)) (linA (T.lamS lam s) s ^ (dimFl Ψ N + 1)) with ha`. Use `set p := (T.M B c).PP II (linA (T.lamS lam s) s ^ (dimFl Ψ N + 1)) with hp`. Establish `h3 : |a - p| ≤ (R.n c : ℝ) * |a - p|` using `le_mul_of_one_le_left (abs_nonneg _) hn`. Establish `h4 : (R.n c : ℝ) * |a - p| = |(R.n c : ℝ) * a - (R.n c : ℝ) * p|`. Rewrite using `[← mul_sub, abs_mul, abs_of_nonneg (by linarith : (0 : ℝ) ≤ (R.n c : ℝ))]`.
-
-Establish `h5 : C₃ c * s ≤ (∑ c, |C₃ c|) * s` using `mul_le_mul_of_nonneg_right hC hs.le`. Use `show |a - p| ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem real_tower_convergence_I2 : PB.AgreementPos → PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (R : RealTower T), T.Conv II ∧ T.I2 II := by
   intro hAg hIn II hII Ψ _ _ N T R

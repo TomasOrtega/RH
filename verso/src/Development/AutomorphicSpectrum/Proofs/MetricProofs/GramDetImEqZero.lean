@@ -12,11 +12,11 @@ open GlobalTheory.CompanionTheory.Ar.RiemannLimit GlobalTheory.CompanionTheory.A
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.GramReal
 
 /- English proof (translation)
-Establish `hg : ∀ a b, R.gram u a b = u b ⬝ᵥ R.Hm *ᵥ star (u a)` using `fun _ _ => rfl`. Establish `hHm : ∀ i j, star (R.Hm i j) = R.Hm j i` using `fun i j => R.10.apply j i`. Establish `hH : (R.gram u)ᴴ = R.gram u`. Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply, hg, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, star_sum, star_mul', star_star, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hHm]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hd : star (R.gram u).det = (R.gram u).det`. Rewrite using `[← Matrix.det_conjTranspose, hH]`. Conclude with `Complex.conj_eq_iff_im.mp hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_im_zero (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type)
     [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : RiemLat E g Λ) (m : ℕ) (u : Fin m → Fin g → ℂ) :

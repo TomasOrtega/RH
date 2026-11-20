@@ -10,7 +10,7 @@ open ReciprocityTheory.AnForm GroundTheory.Heights₂.Heights GroundTheory.Heigh
 open scoped Matrix
 
 /- English proof (translation)
-Establish `h : (fun y : Fin N → ℂ => (1 / 2) * Real.log (1 + ∑ i, ‖y i‖ ^ 2)) = fun y => (1 / 2 : ℝ) * HilbertSamuel.ProjFS.logPot y` using `rfl`. Rewrite using `[h, ReciprocityTheory.AnForm.M.hessC_const_mul', HilbertSamuel.ProjFS.hessC_logPot_eq_chernCoeff 0, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hessC_halfLogPot_eq (N : ℕ) (z : Fin N → ℂ) :
     hessC (fun y : Fin N → ℂ => (1 / 2) * Real.log (1 + ∑ i, ‖y i‖ ^ 2)) z =
@@ -24,11 +24,11 @@ theorem hessC_halfLogPot_eq (N : ℕ) (z : Fin N → ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `N z w`. Prove the components needed by the constructor for the conclusion. Establish `h` using `ReciprocityTheory.AnForm.M.re_star_dot_hessC (fun y : Fin N → ℂ => (1 / 2) * Real.log (1 + ∑ i, ‖y i‖ ^ 2)) z (star w)`. Establish `h'` using `ReciprocityTheory.AnForm.M.re_star_dot_hessC (HilbertSamuel.ProjFS.logPot (N := N)) z (star w)`. Rewrite `h`, `h'` using `[star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl` using `HilbertSamuel.ProjFS.levi_logPot_nonneg z w`. Establish `hH : hessC (fun y : Fin N → ℂ => (1 / 2) * Real.log (1 + ∑ i, ‖y i‖ ^ 2)) z = ((1 / 2 : ℝ) : ℂ) • hessC (HilbertSamuel.ProjFS.logPot (N` using `N)) z := ReciprocityTheory.AnForm.M.hessC_const_mul' (1 / 2) HilbertSamuel.ProjFS.logPot z`. Rewrite using `[← h, hH, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul, h']`. Check the signs of the components of the expression. Unfold `maDens`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[ReciprocityTheory.AnForm.A.mdisc_const, hessC_halfLogPot_eq, Matrix.det_smul, Fintype.card_fin, det_chernCoeff, ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re]`. Establish `hS` using `one_add_normSqSum_pos z`. Establish `hpi` using `Real.pi_pos`. Express the relevant statement in the definitionally equal form `(N.factorial : ℝ) * (2 / Real.pi) ^ N * (Real.pi ^ N * ((1 / (2 * Real.pi)) ^ N / (1 + normSqSum z) ^ (N + 1))) = _`. Rewrite using `[div_pow, div_pow, one_pow, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
 -/

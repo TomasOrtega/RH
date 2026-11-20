@@ -14,7 +14,7 @@ section Linfty
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 lemma exp_flow_cont {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := by
@@ -34,11 +34,9 @@ lemma flow_zero (g : Matrix (Fin n) (Fin n) ℂ) :
   simp
 
 /- English proof (translation)
-Establish `h0` using `Formalism.REAL.hasDerivAt_matrix_exp_smul_at_zero X`. Establish `hc : HasDerivAt (fun u : ℝ => g * NormedSpace.exp ((u : ℂ) • X)) (g * X) 0`. Establish `hL` using `(LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ g)).hasFDerivAt (x := NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Conclude with `hL.comp_hasDerivAt (0 : ℝ) h0`. Establish `hFd : HasFDerivAt F (fderiv ℝ F g) g` using `((hF.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by simp)).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : HasDerivAt (fun u : ℝ => F (g * NormedSpace.exp ((u : ℂ) • X))) (fderiv ℝ F g (g * X)) 0` using `hFd.comp_hasDerivAt_of_eq (0 : ℝ) hc (flow_zero g).symm`. Establish `hU0 : U ∈ 𝓝 (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Rewrite using `[flow_zero]`. Conclude with `hU.mem_nhds hgU`. Establish `hev : (fun u : ℝ => f (g * NormedSpace.exp ((u : ℂ) • X))) =ᶠ[𝓝 0] (fun u : ℝ => F (g * NormedSpace.exp ((u : ℂ) • X)))` using `by filter_upwards [hc.continuousAt.preimage_mem_nhds hU0] with u hu`.
-
-Conclude with `hfF _ hu (hG g hg u)`. Conclude with `hcomp.congr_of_eventuallyEq hev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_local (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t : ℂ) • X) ∈ G)
     {f F : Matrix (Fin n) (Fin n) ℂ → ℂ} {U : Set (Matrix (Fin n) (Fin n) ℂ)} {g : Matrix (Fin n) (Fin n) ℂ}
@@ -62,7 +60,7 @@ lemma hasDerivAt_local (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t :
   exact hcomp.congr_of_eventuallyEq hev
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_local hG hU hgU hF hfF hg).deriv`.
+A detailed English derivation is pending.
 -/
 lemma rdV_local (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t : ℂ) • X) ∈ G)
     {f F : Matrix (Fin n) (Fin n) ℂ → ℂ} {U : Set (Matrix (Fin n) (Fin n) ℂ)} {g : Matrix (Fin n) (Fin n) ℂ}
@@ -70,7 +68,7 @@ lemma rdV_local (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t : ℂ) �
     RdV X f g = fderiv ℝ F g (g * X) := (hasDerivAt_local hG hU hgU hF hfF hg).deriv
 
 /- English proof (translation)
-Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Rewrite using `[rdV_local hG hU hgU hF hfF hg]`. Conclude with `hasDerivAt_local hG hU hgU hF hfF hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_zero (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t : ℂ) • X) ∈ G)
     {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnSet G f) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ G) :
@@ -80,11 +78,11 @@ lemma hasDerivAt_zero (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t : 
   exact hasDerivAt_local hG hU hgU hF hfF hg
 
 /- English proof (translation)
-Establish `hh : g * NormedSpace.exp ((t : ℂ) • X) ∈ G` using `hG g hg t`. Establish `h0` using `hasDerivAt_zero hG hf hh`. Establish `h0' : HasDerivAt (fun u : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp ((u : ℂ) • X))) (RdV X f (g * NormedSpace.exp ((t : ℂ) • X))) (t - t)`. Rewrite using `[sub_self]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h0'.comp_sub_const t t).congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show f (g * NormedSpace.exp ((s : ℂ) • X)) = f (g * NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp (((s - t : ℝ) : ℂ) • X))`. Establish `hcomm : Commute ((t : ℂ) • X) (((s - t : ℝ) : ℂ) • X)` using `((Commute.refl X).smul_left _).smul_right _`. Establish `e : (t : ℂ) • X + ((s - t : ℝ) : ℂ) • X = (s : ℂ) • X`. Rewrite using `[← add_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_assoc, ← Matrix.exp_add_of_commute _ _ hcomm, e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_shift (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t : ℂ) • X) ∈ G)
     {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnSet G f) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ G) (t : ℝ) :
@@ -105,9 +103,7 @@ lemma hasDerivAt_shift (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t :
   rw [mul_assoc, ← Matrix.exp_add_of_commute _ _ hcomm, e]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg₀U, hF, hfF⟩` from `hf g₀ hg₀`. Establish `hFc : ContinuousAt F g₀` using `hF.continuousOn.continuousAt (hU.mem_nhds hg₀U)`. Use `hFc.continuousWithinAt.congr_of_eventuallyEq ?_ (hfF g₀ hg₀U hg₀)` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds hg₀U), self_mem_nhdsWithin] with g hgU hgG`.
-
-Conclude with `hfF g hgU hgG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma contOn_of_smooth {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnSet G f) : ContinuousOn f G := by
   intro g₀ hg₀
@@ -118,9 +114,9 @@ lemma contOn_of_smooth {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnSe
   exact hfF g hgU hgG
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg₀U, hF, hfF⟩` from `hf g₀ hg₀`. Establish `hd : ContinuousOn (fderiv ℝ F) U` using `hF.continuousOn_fderiv_of_isOpen hU (by simp)`. Establish `hc : ContinuousAt (fun g => fderiv ℝ F g (g * X)) g₀` using `(hd.continuousAt (hU.mem_nhds hg₀U)).clm_apply ((continuous_id.matrix_mul continuous_const).continuousAt)`. Use `hc.continuousWithinAt.congr_of_eventuallyEq ?_ (rdV_local hG hU hg₀U hF hfF hg₀)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds hg₀U), self_mem_nhdsWithin] with g hgU hgG`. Conclude with `rdV_local hG hU hgU hF hfF hgG`.
+A detailed English derivation is pending.
 -/
 lemma contOn_rdV (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t : ℂ) • X) ∈ G)
     {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnSet G f) : ContinuousOn (RdV X f) G := by

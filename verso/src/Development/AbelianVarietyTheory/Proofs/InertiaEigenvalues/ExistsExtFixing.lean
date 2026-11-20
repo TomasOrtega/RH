@@ -13,9 +13,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.HodgeAt
 
 /- English proof (translation)
-Introduce `l _ P K L _ τ σ hσ`. Take `⟨n, a, c, h, h1⟩` from `GlobalTheory.DRFil.idem_repr P.R.BdR τ`. Rewrite using `[h, map_sum]`. Simplify using `only [phiS_tmul]`. Establish `hc : ∀ i, algebraMap ↥K.1 P.R.BdR (c i) = algebraMap (Om l) P.R.BdR ((c i : ↥K.1) : Om l)` using `fun i => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hc, ← map_mul, ← map_sum]`. Establish `: ∑ i, σ ((a i : ↥L.1) : Om l) * ((c i : ↥K.1) : Om l) = σ (((∑ i, a i * τ (c i) : ↥L.1)) : Om l)`. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_mul, map_sum, map_mul, hσ]`. Rewrite using `[this, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phiS_idem : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K L : FinExt l) [FiniteDimensional ℚ_[l] ↥K.1] (τ : ↥K.1 →ₐ[ℚ_[l]] ↥L.1) (σ : GQ l), (∀ x : ↥K.1, σ ((τ x : ↥L.1) : Om l) = (x : Om l)) → phiS P σ L (GlobalTheory.DRFil.idem P.R.BdR τ) = 1 := by
   intro l _ P K L _ τ σ hσ
@@ -30,11 +30,11 @@ theorem phiS_idem : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K L : FinExt 
   simp
 
 /- English proof (translation)
-Introduce `l _ P AI T K L σ n r hr`. Establish `h0 : ∀ x : Om l, algebraMap (Om l) P.R.BdR x ∈ (P.PD K).Fil 0`. Introduce `x`. Rewrite using `[T.fil]`. Take `⟨y, hy, -⟩` from `T.om x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hy]`. Conclude with `((GlobalTheory.MemLoc.filD_laws l).2.2.2.2.2.2 0 y).2 (GlobalTheory.MemLoc.FilSeed.mem_filtration_zero' y)`. Use `GlobalTheory.DRFil.FilV_induction (P.PD K) (p := fun r => phiS P σ L r ∈ (P.PD K).Fil n) ?_ ?_ ?_ hr` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `c b hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[phiS_tmul]`. Simplify using `using (P.PD K).Fil_mul 0 n _ _ (h0 _) hb`. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiS_mem_Fil : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K L : FinExt l) (σ : GQ l) (n : ℤ) (r : ↥L.1 ⊗[ℚ_[l]] P.R.BdR), r ∈ FilV (P.PD K) (LL := ↥L.1) (V := ↥L.1) n → phiS P σ L r ∈ (P.PD K).Fil n := by
   intro l _ P AI T K L σ n r hr
@@ -58,9 +58,7 @@ end GlobalTheory.HodgeAt
 namespace GlobalTheory.HodgeAt
 
 /- English proof (translation)
-Introduce `l _ K L σ`. Use `haveI := K.2`. Use `haveI := L.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥(L.1.map (σ : Om l →ₐ[ℚ_[l]] Om l)) := LinearEquiv.finiteDimensional (IntermediateField.equivMap L.1 (σ : Om l →ₐ[ℚ_[l]] Om l)).toLinearEquiv`. Use `⟨⟨K.1 ⊔ L.1.map (σ : Om l →ₐ[ℚ_[l]] Om l), IntermediateField.finiteDimensional_sup _ _⟩, le_sup_left, ?_⟩` and prove the remaining obligations.
-
-Introduce `g hg y`. Establish `hmem : σ (y : Om l) ∈ K.1 ⊔ L.1.map (σ : Om l →ₐ[ℚ_[l]] Om l)` using `le_sup_right (a := K.1) ((IntermediateField.mem_map _).2 ⟨y, y.2, rfl⟩)`. Conclude with `(mem_fixingSubgroup_iff _).1 hg _ hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ext_fixing : ∀ (l : ℕ) [Fact l.Prime] (K L : FinExt l) (σ : GQ l), ∃ K' : FinExt l, K.1 ≤ K'.1 ∧ ∀ g ∈ GK K', ∀ y : ↥L.1, g (σ (y : Om l)) = σ (y : Om l) := by
   intro l _ K L σ
@@ -79,11 +77,11 @@ end GlobalTheory.HodgeAt
 namespace GlobalTheory.HodgeAt
 
 /- English proof (translation)
-Introduce `l _ P AI T C ξ hξ K k q p hkp x hx`. Take `⟨hP, -, -, -, -, hshift, -⟩` from `GlobalTheory.MemLoc.seed_fil l C ξ hξ`. Rewrite `hx` using `[T.fil]`. Establish `hy` using `(hshift k q (T.eD x)).2 hx`. Rewrite `hy` using `[hkp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hye⟩` from `(GlobalTheory.MemLoc.mem_FilD_iff_xi_pow l C.ε (GlobalTheory.MemLoc.core_isEps l C) p _).1 hy`. Establish `h0 : (-(p : ℤ)).toNat = 0` using `by omega`. Rewrite `hye` using `[h0, pow_zero, mul_one, Int.toNat_natCast]`. Establish `hz : aDp l (xi C.ε) ^ p * y ∈ Per.FilP l p` using `((GlobalTheory.MemLoc.filtration_eq_xi_pow l C.ε (GlobalTheory.MemLoc.core_isEps l C)).1 p _).2 (dvd_mul_right _ _)`. Rewrite `hz` using `[hP, Ideal.mem_span_singleton']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z', hz'⟩` from `hz`. Use `⟨z', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm (aDp l ξ ^ p) z', hz', hye]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_xi_pow_mul : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l) (ξ : Ainf l), Ideal.span {ξ} = RingHom.ker (Per.θ l) → ∀ (K : FinExt l) (k : ℤ) (q p : ℕ), k + q = p → ∀ x ∈ (P.PD K).Fil k, ∃ z : Per.BdRp l, algebraMap (Per.BdRp l) (Per.BdR l) (aDp l ξ) ^ q * T.eD x = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l ξ ^ p * z) := by
   intro l _ P AI T C ξ hξ K k q p hkp x hx

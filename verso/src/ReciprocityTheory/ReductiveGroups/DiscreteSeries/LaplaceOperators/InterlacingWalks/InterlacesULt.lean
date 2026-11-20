@@ -11,11 +11,11 @@ noncomputable def lowPt (k r : ℕ) (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ
   fun a => if a.val = i then x else walkPar k r u v b (i + 1) a
 
 /- English proof (translation)
-Introduce `j d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `h1`. Establish `hj : j < k - 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hI.1 ⟨j, hj⟩`. Conclude with `lt_trans h2.2 h2.1`. Consider the case `succ d ih`. Introduce `h1`. Establish `hj : j + d + 1 < k - 1` using `by omega`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hI.1 ⟨j + d + 1, hj⟩`. Establish `h3` using `ih (by omega)`. Conclude with `lt_trans (lt_trans h2.2 h2.1) h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem interlaces_u_lt {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ}
     (hI : Interlaces k r u v b) :
@@ -35,7 +35,7 @@ theorem interlaces_u_lt {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ
     exact lt_trans (lt_trans h2.2 h2.1) h3
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `j`. Take `⟨l, hl⟩` from `l`. Establish `hjl' : j < l` using `hjl`. Take `⟨d, rfl⟩ : ∃ d, l = j + d + 1` from `⟨l - j - 1, by omega⟩`. Conclude with `interlaces_u_lt hI j d hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem u_lt {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ}
     (hI : Interlaces k r u v b) (j l : Fin k) (hjl : j.val < l.val) : u l < u j := by
@@ -46,9 +46,7 @@ theorem u_lt {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fin 
   exact interlaces_u_lt hI j d hl
 
 /- English proof (translation)
-Establish `h` using `(hI.1 ⟨i, hi⟩).2`. Break down `Nat.lt_or_ge (i + 1) j.val with h1 | h1` into its components or cases. Conclude with `lt_trans (u_lt hI ⟨i + 1, by omega⟩ j h1) h`. Establish `hj : j = ⟨i + 1, by omega⟩` using `Fin.ext (show j.val = i + 1 by omega)`. Rewrite using `[hj]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_lt_v {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ}
     (hI : Interlaces k r u v b) (i : ℕ) (hi : i < k - 1) (j : Fin k) (hij : i < j.val) :
@@ -61,14 +59,14 @@ theorem u_lt_v {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fi
     exact h
 
 /- English proof (translation)
-Simplify using `[parLam, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem parLam_of_lt {k r : ℕ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ} (a : ℕ)
     (ha : a < 2 * r + k + 1) (h : a < k - 1) : parLam k r v b ⟨a, ha⟩ = v ⟨a, h⟩ := by
   simp [parLam, h]
 
 /- English proof (translation)
-Establish `h' : ¬ a < k - 1` using `by omega`. Simplify using `[parLam, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem parLam_of_ge {k r : ℕ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ} (a : ℕ)
     (ha : a < 2 * r + k + 1) (h : k - 1 ≤ a) :
@@ -77,9 +75,9 @@ theorem parLam_of_ge {k r : ℕ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) 
   simp [parLam, h']
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge i (k - 1) with h | h` into its components or cases. Rewrite using `[parLam_of_lt i hin h]`. Conclude with `(hI.1 ⟨i, h⟩).1`. Take `rfl : i = k - 1` from `by omega`. Rewrite using `[parLam_of_ge (k - 1) hin h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hI.2 (by omega)`. Establish `e : b ⟨k - 1 - (k - 1), by omega⟩ = b ⟨0, by omega⟩` using `congrArg b (Fin.ext (show k - 1 - (k - 1) = 0 by omega))`. Rewrite using `[e]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_lt_u {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ}
     (hI : Interlaces k r u v b) (i : ℕ) (hi : i < k) (hin : i < 2 * r + k + 1) :
@@ -96,9 +94,9 @@ theorem lam_lt_u {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : 
     exact h2
 
 /- English proof (translation)
-Establish `haa` using `a.isLt`. Establish `hj : a.val - (k - 1) + 1 < 2 * r + 2` using `by omega`. Establish `h1 : parLam k r v b a = -b ⟨a.val - (k - 1), by omega⟩` using `parLam_of_ge a.val a.isLt hka`. Establish `hg : h ≤ b ⟨a.val - (k - 1) + 1, hj⟩ - b ⟨a.val - (k - 1), by omega⟩` using `hG ⟨a.val - (k - 1), by omega⟩ hj`. Establish `e : (⟨a.val - (k - 1) + 1, hj⟩ : Fin (2 * r + 2)) = ⟨a.val + 1 - (k - 1), by omega⟩` using `Fin.ext (show a.val - (k - 1) + 1 = a.val + 1 - (k - 1) by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hg` using `[e]`. Rewrite using `[h1, parLam_of_ge (a.val + 1) ha (by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lam_gap {k r : ℕ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ} {h : ℝ} (hk : 1 ≤ k)
     (hG : LowGaps r b h) (a : Fin (2 * r + k + 1)) (ha : a.val + 1 < 2 * r + k + 1)
@@ -116,9 +114,9 @@ theorem lam_gap {k r : ℕ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → �
   linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Establish `h1 : a.val < k - 1` using `by omega`. Establish `hl : parEps k r a = true` using `by show (if a.val < k - 1 then true else decide ((a.val - (k - 1)) % 2 = 0)) = true`. Rewrite using `[if_pos h1]`. Establish `hr : parEps k r ⟨a.val + 1, ha⟩ = true` using `by show (if a.val + 1 < k - 1 then true else decide ((a.val + 1 - (k - 1)) % 2 = 0)) = true split`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[show a.val + 1 - (k - 1) = 0 by omega]`. Both sides reduce to the same expression. Conclude with `hne (hl.trans hr.symm)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem parEps_adj {k r : ℕ} (a : Fin (2 * r + k + 1)) (ha : a.val + 1 < 2 * r + k + 1)
     (hne : parEps k r a ≠ parEps k r ⟨a.val + 1, ha⟩) : k - 1 ≤ a.val := by
@@ -136,7 +134,7 @@ theorem parEps_adj {k r : ℕ} (a : Fin (2 * r + k + 1)) (ha : a.val + 1 < 2 * r
   exact hne (hl.trans hr.symm)
 
 /- English proof (translation)
-Use `show (if i = i then x else walkPar k r u v b (i + 1) ⟨i, hin⟩) = x`. Rewrite using `[if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowPt_at {k r : ℕ} (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ)
     (i : ℕ) (x : ℝ) (hin : i < 2 * r + k + 1) : lowPt k r u v b i x ⟨i, hin⟩ = x := by
@@ -144,9 +142,7 @@ theorem lowPt_at {k r : ℕ} (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b : 
   rw [if_pos rfl]
 
 /- English proof (translation)
-Establish `h1 : a.val ≠ i` using `by omega`. Establish `h2 : a.val < i + 1 ∧ a.val < k` using `⟨by omega, by omega⟩`. Use `show (if a.val = i then x else walkPar k r u v b (i + 1) a) = _`. Rewrite using `[if_neg h1]`. Use `show (if h : a.val < i + 1 ∧ a.val < k then u ⟨a.val, h.2⟩ - 1 / 2 else parLam k r v b a) = _`.
-
-Rewrite using `[dif_pos h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowPt_lt {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ}
     (i : ℕ) (x : ℝ) (hi : i < k) (a : Fin (2 * r + k + 1)) (ha : a.val < i) :
@@ -159,9 +155,7 @@ theorem lowPt_lt {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : 
   rw [dif_pos h2]
 
 /- English proof (translation)
-Establish `h1 : a.val ≠ i` using `by omega`. Establish `h2 : ¬ (a.val < i + 1 ∧ a.val < k)` using `fun h' => absurd h'.1 (by omega)`. Use `show (if a.val = i then x else walkPar k r u v b (i + 1) a) = _`. Rewrite using `[if_neg h1]`. Use `show (if h : a.val < i + 1 ∧ a.val < k then u ⟨a.val, h.2⟩ - 1 / 2 else parLam k r v b a) = _`.
-
-Rewrite using `[dif_neg h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowPt_gt {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ}
     (i : ℕ) (x : ℝ) (a : Fin (2 * r + k + 1)) (ha : i < a.val) :
@@ -174,11 +168,11 @@ theorem lowPt_gt {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : 
   rw [dif_neg h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Rewrite using `[Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `ha : a.val = i`. Take `rfl : a = ⟨i, hin⟩` from `Fin.ext ha`. Rewrite using `[lowPt_at, Pi.single_eq_same, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : i < i + 1 ∧ i < k` using `⟨Nat.lt_succ_self i, hi⟩`. Use `show (if h : i < i + 1 ∧ i < k then u ⟨i, h.2⟩ - 1 / 2 else parLam k r v b ⟨i, hin⟩) + c = _`. Rewrite using `[dif_pos h2]`. Establish `hne : a ≠ ⟨i, hin⟩` using `fun h => ha (congrArg Fin.val h)`. Rewrite using `[Pi.single_apply, if_neg hne, mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (if a.val = i then _ else walkPar k r u v b (i + 1) a)`. Rewrite using `[if_neg ha]`.
+A detailed English derivation is pending.
 -/
 theorem walkPar_add {k r : ℕ} (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ)
     (i : ℕ) (hi : i < k) (hin : i < 2 * r + k + 1) (c : ℝ) :
@@ -198,9 +192,9 @@ theorem walkPar_add {k r : ℕ} (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b
     rw [if_neg ha]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Rewrite using `[Pi.sub_apply]`. Distinguish the cases in `ha : a.val = i`. Take `rfl : a = ⟨i, hin⟩` from `Fin.ext ha`. Rewrite using `[lowPt_at, lowPt_at, Pi.single_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : a ≠ ⟨i, hin⟩` using `fun h => ha (congrArg Fin.val h)`. Rewrite using `[Pi.single_apply, if_neg hne, sub_zero]`. Use `show (if a.val = i then y else walkPar k r u v b (i + 1) a) = (if a.val = i then y - 1 else walkPar k r u v b (i + 1) a)`. Rewrite using `[if_neg ha, if_neg ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowPt_sub {k r : ℕ} (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ)
     (i : ℕ) (hin : i < 2 * r + k + 1) (y : ℝ) :
@@ -218,11 +212,11 @@ theorem lowPt_sub {k r : ℕ} (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b :
     rw [if_neg ha, if_neg ha]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Break down `lt_trichotomy a.val i with h | h | h` into its components or cases. Rewrite using `[lowPt_lt (u := u) (v := v) (b := b) i (parLam k r v b ⟨i, hin⟩) hi a h]`. Establish `h2 : a.val < i ∧ a.val < k` using `⟨h, by omega⟩`. Use `show _ = (if h : a.val < i ∧ a.val < k then u ⟨a.val, h.2⟩ - 1 / 2 else parLam k r v b a)`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h2]`. Take `rfl : a = ⟨i, hin⟩` from `Fin.ext h`. Rewrite using `[lowPt_at]`. Establish `h2 : ¬ (i < i ∧ i < k)` using `fun h' => lt_irrefl i h'.1`. Use `show _ = (if h : i < i ∧ i < k then u ⟨i, h.2⟩ - 1 / 2 else parLam k r v b ⟨i, hin⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h2]`. Rewrite using `[lowPt_gt (u := u) (v := v) (b := b) i (parLam k r v b ⟨i, hin⟩) a h]`. Establish `h2 : ¬ (a.val < i ∧ a.val < k)` using `fun h' => absurd h'.1 (by omega)`. Use `show _ = (if h : a.val < i ∧ a.val < k then u ⟨a.val, h.2⟩ - 1 / 2 else parLam k r v b a)`. Rewrite using `[dif_neg h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowPt_bot {k r : ℕ} (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ)
     (i : ℕ) (hi : i < k) (hin : i < 2 * r + k + 1) :
@@ -244,17 +238,17 @@ theorem lowPt_bot {k r : ℕ} (u : Fin k → ℝ) (v : Fin (k - 1) → ℝ) (b :
     rw [dif_neg h2]
 
 /- English proof (translation)
-Establish `key : ∀ (d : ℕ) (a c : Fin n), c.val = a.val + d + 1 → ε a ≠ ε c → h ≤ L a - L c`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a c hac hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hadj a c (by omega) hne`. Consider the case `succ d ih`. Introduce `a c hac hne`. Establish `hm : a.val + 1 < n` using `by have := c.isLt; omega`. Take `⟨m, hmv⟩ : ∃ m : Fin n, m.val = a.val + 1` from `⟨⟨a.val + 1, hm⟩, rfl⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ham : a < m` using `Fin.lt_def.mpr (by omega)`. Establish `hmc : m < c` using `Fin.lt_def.mpr (by omega)`. Establish `h1 : L m < L a` using `hL ham`. Establish `h2 : L c < L m` using `hL hmc`. Distinguish the cases in `hε : ε a = ε m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h3` using `ih m c (by omega) (fun heq => hne (hε.trans heq))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `hadj a m hmv hε`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a c hne`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy a.val c.val with hac | hac | hac` into its components or cases. Establish `h1` using `key (c.val - a.val - 1) a c (by omega) hne`. Establish `h2 : L c < L a` using `hL (Fin.lt_def.mpr hac)`. Rewrite using `[abs_of_nonneg (show (0 : ℝ) ≤ L a - L c by linarith)]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (congrArg ε (Fin.ext hac)) hne`. Establish `h1` using `key (a.val - c.val - 1) c a (by omega) (Ne.symm hne)`. Establish `h2 : L a < L c` using `hL (Fin.lt_def.mpr hac)`. Rewrite using `[abs_of_neg (show L a - L c < 0 by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem gapAtLeast_of_adjacent_sign_change_ge {n : ℕ} (ε : Fin n → Bool) (L : Fin n → ℝ) (h : ℝ)
     (hL : StrictAnti L)
@@ -292,31 +286,29 @@ private theorem gapAtLeast_of_adjacent_sign_change_ge {n : ℕ} (ε : Fin n → 
     linarith
 
 /- English proof (translation)
-Take `⟨hanti0, hint0⟩` from `hHC`. Establish `hLlt : ∀ (a : Fin (2 * r + k + 1)) (ha : a.val < i), lowPt k r u v b i x a = u ⟨a.val, by omega⟩ - 1 / 2` using `fun a ha => lowPt_lt i x hi a ha`. Establish `hLgt : ∀ (a : Fin (2 * r + k + 1)), i < a.val → lowPt k r u v b i x a = parLam k r v b a` using `fun a ha => lowPt_gt i x a ha`. Establish `hLeq : ∀ (a : Fin (2 * r + k + 1)), a.val = i → lowPt k r u v b i x a = x`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl : a = ⟨i, hin⟩` from `Fin.ext ha`. Conclude with `lowPt_at u v b i x hin`. Establish `hu : ∀ (a : Fin (2 * r + k + 1)) (ha : a.val < i), u ⟨i, hi⟩ < u ⟨a.val, by omega⟩` using `fun a ha => u_lt hI ⟨a.val, by omega⟩ ⟨i, hi⟩ ha`. Establish `hP : ∀ c : Fin (2 * r + k + 1), i < c.val → parLam k r v b c < parLam k r v b ⟨i, hin⟩` using `fun c hc => hanti0 (show (⟨i, hin⟩ : Fin (2 * r + k + 1)) < c from Fin.lt_def.mpr hc)`. Establish `hanti : StrictAnti (lowPt k r u v b i x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a c hac`. Establish `hac' : a.val < c.val` using `Fin.lt_def.mp hac`. Break down `lt_trichotomy c.val i with hc | hc | hc` into its components or cases. Establish `ha : a.val < i` using `by omega`. Rewrite using `[hLlt a ha, hLlt c hc]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `u_lt hI ⟨a.val, by omega⟩ ⟨c.val, by omega⟩ hac'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha : a.val < i` using `by omega`. Rewrite using `[hLlt a ha, hLeq c hc]`. Establish `h1` using `hu a ha`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hLgt c hc]`. Establish `h1` using `hP c hc`. Break down `lt_trichotomy a.val i with ha | ha | ha` into its components or cases. Rewrite using `[hLlt a ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hu a ha`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hLeq a ha]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hLgt a ha]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hanti0 hac`. Establish `hint : ∀ a : Fin (2 * r + k + 1), ∃ m : ℤ, lowPt k r u v b i x a - (((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 = (m : ℝ)`. Introduce `a`. Take `⟨m0, hm0⟩` from `hint0 a`. Break down `lt_trichotomy a.val i with ha | ha | ha` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m1, hm1⟩` from `hH ⟨a.val, by omega⟩ a`. Use `⟨m0 + m1, ?_⟩` and prove the remaining obligations. Rewrite using `[hLlt a ha, Int.cast_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m1, hm1⟩` from `hint0 ⟨i, hin⟩`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m1 + m, ?_⟩` and prove the remaining obligations. Rewrite using `[hLeq a ha, hx, Int.cast_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hLgt a ha]`. Conclude with `⟨m0, hm0⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadj : ∀ a c : Fin (2 * r + k + 1), c.val = a.val + 1 → parEps k r a ≠ parEps k r c → h ≤ lowPt k r u v b i x a - lowPt k r u v b i x c`. Introduce `a c hcv hne`. Establish `hc : a.val + 1 < 2 * r + k + 1` using `by have := c.isLt; omega`. Establish `hcE : c = ⟨a.val + 1, hc⟩` using `Fin.ext hcv`. Rewrite `hne`, the goal using `[hcE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hka` using `parEps_adj a hc hne`. Establish `hg` using `lam_gap (v := v) hk hG a hc hka`. Rewrite using `[hLgt ⟨a.val + 1, hc⟩ (show i < a.val + 1 by omega)]`. Break down `lt_or_eq_of_le (show i ≤ a.val by omega) with ha | ha` into its components or cases. Rewrite using `[hLgt a ha]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hg`. Rewrite using `[hLeq a ha.symm]`. Establish `haE : a = ⟨i, hin⟩` using `Fin.ext ha.symm`. Establish `hPa : parLam k r v b a = parLam k r v b ⟨i, hin⟩` using `by rw [haE]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `⟨And.intro hanti hint, gapAtLeast_of_adjacent_sign_change_ge _ _ _ hanti hadj⟩`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lowPt_ok {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : Fin (2 * r + 2) → ℝ} {h : ℝ}
     (hk : 1 ≤ k) (hHC : IsHCPar (parLam k r v b)) (hI : Interlaces k r u v b)
@@ -394,9 +386,9 @@ theorem lowPt_ok {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : 
   exact ⟨And.intro hanti hint, gapAtLeast_of_adjacent_sign_change_ge _ _ _ hanti hadj⟩
 
 /- English proof (translation)
-Introduce `heq`. Break down `lt_trichotomy l.val i with hl | hl | hl` into its components or cases. Establish `h3` using `u_lt hI l ⟨i, hi⟩ hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl' : l = ⟨i, hi⟩` using `Fin.ext hl`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Substitute `hl'` using the available equality. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hik : i < k - 1` using `by have := l.isLt; omega`. Establish `h3` using `u_lt_v hI i hik l hl`. Rewrite `h1` using `[parLam_of_lt i hin hik]`.
+Substitute using the available equality. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -417,27 +409,25 @@ theorem no_cross {k r : ℕ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ} {b : 
     linarith
 
 /- English proof (translation)
-Unfold `LowerStepStatement`. Introduce `k r u v b h P hk hHC hI hH hG hSC i hi hP`. Establish `hin : i < 2 * r + k + 1` using `by omega`. Establish `e1 : walkPar k r u v b (i + 1) = lowPt k r u v b i (u ⟨i, hi⟩ - 1 / 2)`. Establish `h0` using `walkPar_add u v b i hi hin 0`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[zero_smul, add_zero, add_zero]`. Conclude with `h0`. Rewrite using `[← lowPt_bot u v b i hi hin]`. Take `⟨m, hm⟩` from `hH ⟨i, hi⟩ ⟨i, hin⟩`. Establish `hlt` using `lam_lt_u hI i hi hin`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : 0 ≤ m`. Assume the negation of the conclusion as `hneg`. Establish `h1 : m ≤ -1` using `by omega`. Establish `h2 : (m : ℝ) ≤ -1` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨N, rfl⟩ : ∃ N : ℕ, m = N` from `⟨m.toNat, (Int.toNat_of_nonneg hm0).symm⟩`. Establish `hm' : u ⟨i, hi⟩ - parLam k r v b ⟨i, hin⟩ = (N : ℝ) + 1 / 2` using `by exact_mod_cast hm`. Establish `ok : ∀ t : ℕ, t ≤ N → IsHCPar (lowPt k r u v b i (parLam k r v b ⟨i, hin⟩ + (t : ℝ))) ∧ GapAtLeast (parEps k r) (lowPt k r u v b i (parLam k r v b ⟨i, hin⟩ + (t : ℝ))) h`. Introduce `t ht`. Establish `htN : (t : ℝ) ≤ N` using `by exact_mod_cast ht`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : (0 : ℝ) ≤ t` using `Nat.cast_nonneg t`. Conclude with `lowPt_ok hk hHC hI hH hG i hi hin _ (t : ℤ) (by simp) (by linarith) (by linarith)`. Establish `key : ∀ t : ℕ, t ≤ N → P (lowPt k r u v b i (parLam k r v b ⟨i, hin⟩ + (t : ℝ))) → P (lowPt k r u v b i (parLam k r v b ⟨i, hin⟩))`. Introduce `t`. Proceed by induction on `t with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `_ hp`. Simplify using `using hp`. Consider the case `succ t ih`. Introduce `ht hp`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ih (by omega)` to reduce the goal to its premises. Establish `hy` using `ok (t + 1) ht`. Establish `hy'` using `ok t (by omega)`. Establish `hsub` using `lowPt_sub u v b i hin (parLam k r v b ⟨i, hin⟩ + ((t + 1 : ℕ) : ℝ))`. Establish `e : parLam k r v b ⟨i, hin⟩ + ((t + 1 : ℕ) : ℝ) - 1 = parLam k r v b ⟨i, hin⟩ + (t : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Nat.cast_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsub` using `[e]`. Establish `hnc : ∀ l, u l ≠ lowPt k r u v b i (parLam k r v b ⟨i, hin⟩ + ((t + 1 : ℕ) : ℝ)) ⟨i, hin⟩ - 1 / 2`. Introduce `l`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lowPt_at]`. Establish `htN : ((t + 1 : ℕ) : ℝ) ≤ N` using `by exact_mod_cast ht`. Establish `ht0 : (0 : ℝ) ≤ t` using `Nat.cast_nonneg t`. Establish `hc : ((t + 1 : ℕ) : ℝ) = t + 1` using `Nat.cast_succ t`. Conclude with `no_cross hI i hi hin _ (by linarith) (by linarith) l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hSC.1 _ ⟨i, hin⟩ hy.1 hy.2 (by rw [hsub]; exact hy'.1) (by rw [hsub]; exact hy'.2) hnc hp`. Rewrite `h3` using `[hsub]`. Conclude with `h3`. Establish `e2 : parLam k r v b ⟨i, hin⟩ + ((N : ℕ) : ℝ) = u ⟨i, hi⟩ - 1 / 2` using `by linarith`. Apply `key N le_rfl` to reduce the goal to its premises.
-
-Rewrite using `[e2, ← e1]`. Conclude with `hP`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerStep : LowerStepStatement := by
   unfold LowerStepStatement

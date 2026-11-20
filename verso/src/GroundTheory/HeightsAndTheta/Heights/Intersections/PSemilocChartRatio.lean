@@ -11,17 +11,15 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 IndefiniteRowSideFullHecke.Inter
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W i' hv hP' hZ hs hsn hW hi' q`. Establish `hSf : (insert P' (fibreOver v P' W)).Finite` using `(hF K ι K' ι' κ v P' n s α W hv hP' hZ hs hsn hW).insert P'`. Establish `hSp : ∀ V ∈ insert P' (fibreOver v P' W), IsMultiProjPrime V`. Introduce and unpack `V (rfl | hV)`. Conclude with `hP'.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hV.1`. Take `⟨d₀, hd₀⟩` from `AvoidRing.exists_form_avoid _ hSf hSp`. Take `⟨w, hwd, hwS⟩` from `hd₀ (Pi.single q.1 1 + d₀) le_add_self`. Establish `hPp : P'.IsPrime` using `hP'.2.1.1`. Establish `hwP' : w ∉ P'` using `hwS P' (Set.mem_insert _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwnz : Ideal.Quotient.mk P' w ∈ nonZeroDivisors (MRing ι' ⧸ P')` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Use `set N : MRing ι' := ∏ k, (X ⟨k, i' k⟩ : MRing ι') ^ d₀ k with hN`. Establish `hNd : IsMultiHomog N d₀` using `AvoidRing.isMultiHomog_coordProd i' d₀`. Establish `hNP : N ∉ P'` using `AvoidRing.coordProd_not_mem hPp i' hi' d₀`. Establish `hwW : ∀ W' ∈ fibreOver v P' W, w ∉ W'` using `fun W' hW' => hwS W' (Set.mem_insert_of_mem _ hW')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gen : ∀ u : MRing ι', IsMultiHomog u (Pi.single q.1 1 + d₀) → IsLocalization.mk' (FractionRing (MRing ι' ⧸ P')) (Ideal.Quotient.mk P' u) ⟨_, hwnz⟩ ∈ semiLocRing P' (fibreOver v P' W)` using `fun u hu => Subring.subset_closure ⟨u, w, _, hwnz, hwW, hu, hwd, rfl⟩`. Establish `hq : IsMultiHomog (X q * N) (Pi.single q.1 1 + d₀)` using `AvoidRing.isMultiHomog_mul (AvoidRing.isMultiHomog_X q.1 q.2) hNd`. Establish `hc : IsMultiHomog (X ⟨q.1, i' q.1⟩ * N) (Pi.single q.1 1 + d₀)` using `AvoidRing.isMultiHomog_mul (AvoidRing.isMultiHomog_X q.1 (i' q.1)) hNd`. Use `⟨⟨_, gen _ hq⟩, ⟨_, gen _ hc⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show IsLocalization.mk' _ _ _ ≠ (0 : FractionRing (MRing ι' ⧸ P'))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, IsFractionRing.mk'_eq_zero_iff_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `h`. Break down `hPp.mem_or_mem h with h | h` into its components or cases. Conclude with `hi' q.1 h`. Conclude with `hNP h`.
-
-Use `show IsLocalization.mk' _ _ _ * _ = IsLocalization.mk' _ _ _ * _`. Rewrite using `[mul_comm, IsLocalization.mul_mk'_eq_mk'_of_mul, mul_comm (IsLocalization.mk' _ _ _), IsLocalization.mul_mk'_eq_mk'_of_mul]`. Use `congr 1`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SemilocChartRatio.proof (hF : FibreOverFinite.Statement) : SemilocChartRatio.Statement := by
   classical

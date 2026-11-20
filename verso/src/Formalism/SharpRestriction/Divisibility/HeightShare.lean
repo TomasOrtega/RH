@@ -402,7 +402,7 @@ def adm9 : Prop := GloballyGeneratedNef X.geo
 def admitted : Prop := AdmG X.geo
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem hilbert_samuel_of_hypotheses (h : admitted D X) : adm7 D X := h.2.2.2.2.1
 

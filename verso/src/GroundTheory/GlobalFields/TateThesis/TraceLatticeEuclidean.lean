@@ -20,14 +20,14 @@ abbrev euclideanConjIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
   ZLattice.comap ℝ (idealLattice K I) (mixedToEuclideanConj K).symm.toLinearMap
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (u : euclidean.mixedSpace K) :
     u ∈ euclideanIdealLattice K I ↔ (mixedToEuclidean K).symm u ∈ idealLattice K I := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_euclideanConjIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (u : euclidean.mixedSpace K) :
@@ -35,7 +35,7 @@ theorem mem_euclideanConjIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
   Iff.rfl
 
 /- English proof (translation)
-Establish `: MeasurePreserving (mixedToEuclidean K).toHomeomorph.toMeasurableEquiv (selfDualMeasure K) volume` using `measurePreserving_mixedToEuclidean K`. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurePreserving_mixedToEuclidean_symm :
     MeasurePreserving (mixedToEuclidean K).symm volume (selfDualMeasure K) := by
@@ -44,7 +44,7 @@ theorem measurePreserving_mixedToEuclidean_symm :
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[ZLattice.covolume_comap (idealLattice K I) (selfDualMeasure K) volume (measurePreserving_mixedToEuclidean_symm K), covolume_idealLattice_selfDualMeasure]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem covolume_euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ZLattice.covolume (euclideanIdealLattice K I) =
@@ -53,11 +53,11 @@ theorem covolume_euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     (measurePreserving_mixedToEuclidean_symm K), covolume_idealLattice_selfDualMeasure]
 
 /- English proof (translation)
-Use extensionality with `μ`. Rewrite using `[mem_dualLattice, mem_euclideanConjIdealLattice, mem_idealLattice_traceDualIdeal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Take `⟨k, hk⟩` from `h (mixedToEuclidean K x) (by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mem_euclideanIdealLattice, ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `hx)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[mixedTraceForm_comm, mixedTraceForm_eq_inner, ContinuousLinearEquiv.apply_symm_apply, real_inner_comm]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h ℓ hℓ`. Take `⟨k, hk⟩` from `h ((mixedToEuclidean K).symm ℓ) hℓ`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, mixedTraceForm_comm, mixedTraceForm_eq_inner, ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.apply_symm_apply, real_inner_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLattice_euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     dualLattice (euclideanIdealLattice K I) =
@@ -80,7 +80,7 @@ theorem dualLattice_euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ
       ContinuousLinearEquiv.apply_symm_apply, real_inner_comm]
 
 /- English proof (translation)
-Rewrite using `[real_inner_comm, ← mixedTraceForm_eq_inner, mixedTraceForm_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_mixedToEuclideanConj_mixedToEuclidean (β a : mixedSpace K) :
     ⟪mixedToEuclideanConj K β, mixedToEuclidean K a⟫ = mixedTraceForm K β a := by

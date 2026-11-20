@@ -12,7 +12,7 @@ open scoped ContDiff
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-The claim follows from `((hP.1 x j).of_le two_le_top).contDiffAt (((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds ⟨hy, hx⟩)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_two_of_isPotential {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential A P) (x : X) (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (hx : (A.chart j).symm y ∈ P.U x) :
@@ -21,9 +21,9 @@ theorem contDiffAt_two_of_isPotential {A : FinHolAtlas e X} {P : LocPot X} (hP :
     (((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds ⟨hy, hx⟩)
 
 /- English proof (translation)
-Use `⟨fun x j => contDiffOn_const.mul (hP.1 x j), fun x x' y hy => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hyW, G, hG, hGeq⟩` from `hP.2 x x' y hy`. Use `⟨W, hW, hyW, fun z => (c : ℂ) * G z, fun j => analyticOnNhd_const.mul (hG j), fun z hz => ?_⟩` and prove the remaining obligations. Use `hGeq z hz` as an intermediate fact. Simplify using `only [LocPot.rsmul, Complex.re_ofReal_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isPotential_rsmul_real {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential A P) (c : ℝ) :
     IsPotential A (P.rsmul c) := by
@@ -35,15 +35,15 @@ theorem isPotential_rsmul_real {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPote
   rw [← this]; ring
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `exists_pos_sub_isPsh A P (L.rsmul (-1)) hP hpos (isPotential_rsmul_real hL (-1))`. Use `⟨k⁻¹, fun K hK x j y hy w => ?_⟩` and prove the remaining obligations. Establish `hPy` using `contDiffAt_two_of_isPotential hP x j hy.1 hy.2.1`. Establish `hLy` using `contDiffAt_two_of_isPotential hL x j hy.1 hy.2.2`. Establish `h1` using `h x j y hy w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (P + (L.rsmul (-1)).rsmul (-k)).φ x ∘ (A.chart j).symm = fun v => (P.φ x ∘ (A.chart j).symm) v + k * (L.φ x ∘ (A.chart j).symm) v`. Use function extensionality and compare the values at `v`. Express the relevant statement in the definitionally equal form `P.φ x _ + -k * (-1 * L.φ x _) = P.φ x _ + k * L.φ x _`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (P.rsmul K + L).φ x ∘ (A.chart j).symm = fun v => (L.φ x ∘ (A.chart j).symm) v + K * (P.φ x ∘ (A.chart j).symm) v`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Conclude with `add_comm _ _`. Rewrite `h1` using `[e1, levi_add_smul k hPy hLy]`. Rewrite using `[e2, levi_add_smul K hLy hPy]`. Establish `h0 : 0 ≤ levi (P.φ x ∘ (A.chart j).symm) y w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne w 0 with h0 | h0` into its components or cases. Rewrite using `[h0, levi_zero]`. Conclude with `(hpos x j y ⟨hy.1, hy.2.1⟩ w h0).le`. Establish `h2` using `mul_nonneg (inv_pos.2 hk).le h1`. Rewrite `h2` using `[mul_add, inv_mul_cancel_left₀ hk.ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3` using `mul_le_mul_of_nonneg_right hK h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_forall_isPsh_rsmul_add [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (P L : LocPot X)
     (hP : IsPotential A P) (hpos : IsPosPot A P) (hL : IsPotential A L) :
@@ -74,7 +74,7 @@ theorem exists_forall_isPsh_rsmul_add [CompactSpace X] [T2Space X] (A : FinHolAt
   linarith
 
 /- English proof (translation)
-Use `choose a ha using fun i => exists_forall_isPsh_rsmul_add At α (Λ i) hα hpos (hΛ i)`. Use `choose b hb using fun i => exists_forall_isPsh_rsmul_add At α ((Λ i).rsmul (-1)) hα hpos (isPotential_rsmul_real (hΛ i) (-1))`. Conclude with `⟨fun i => max 0 (max (a i) (b i)), fun i => ⟨le_max_left _ _, ha i _ ((le_max_left _ _).trans (le_max_right _ _)), hb i _ ((le_max_right _ _).trans (le_max_right _ _))⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_formBoundedBy (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (At : FinHolAtlas e X) (α : LocPot X) (m : ℕ) (Λ : Fin m → LocPot X) (hα : IsPotential At α)

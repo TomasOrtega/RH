@@ -25,7 +25,7 @@ def SquareTriple (W : G.Weil) (t : T) (i j : ℕ) : Prop :=
     ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ≠ Bs.v₁
 
 /- English proof (translation)
-The claim follows from `h M hM`.
+A detailed English derivation is pending.
 -/
 theorem SquareTriple.of_forall {W : G.Weil} {t : T} {i j : ℕ} (h : SquareTriple W t i j) {M : Vol G} (hM : M.Is t) :
     ∃ (e : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Num G i j) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)

@@ -21,15 +21,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ZH.GeoHalf
 
 /- English proof (translation)
-Take `⟨e, he1, he2, he3⟩` from `he`. Introduce `z a ha`. Take `⟨W, h, hz, hh, hx⟩` from `hs z a ha`. Use `⟨W, h ≫ e.inv, hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← he1, Category.assoc, e.inv_hom_id_assoc]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hh`. Take `⟨u₀, hu, G, semi, dim, qproj, φ, cart, L, cub, sym, w, w_gen, w_rig, split⟩` from `Z dsimp only at e he1 he2 he3 ⊢`. Substitute `he2` using the available equality. Establish `he4 : φ ≫ e.hom = ex.a` using `eq_of_heq he3`. Introduce `x x' h1 h2 h3`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha0 : φ ≫ e.hom ≫ Q.G.ι = Q.a₀` using `by rw [← Category.assoc, he4, ex.a_eq]`. Establish `h4 : x' ≫ pullback.snd _ _ ≫ U₀.ι = M.pt`. Rewrite using `[← Q.cart.w, ← ha0, ← h2, ← he1]`. Simplify using `only [Category.assoc]`. Establish `h5 : (x' ≫ pullback.snd _ _) ≫ Q.u₀ = spMap S.R.val.toRingHom` using `Q.u₀_pt _ (by rw [Category.assoc]; exact h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h6` using `hx Ω x x' (h1.trans h4.symm) (by`. Rewrite using `[h3, ← h5]`. Simplify using `only [Category.assoc])`. Rewrite using `[← cancel_mono (e.hom ≫ Q.G.ι)]`. Simplify using `only [Category.assoc, e.inv_hom_id_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h6, ha0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_of_iso {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
     {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} (Q : Clos ρ M U₀ EE) (ex : Q.Ext) (Z : ZHPre ρ M U₀)
@@ -61,9 +61,9 @@ theorem sec_of_iso {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : The
     rw [h6, ha0]
 
 /- English proof (translation)
-Introduce `hx hN hU l1 l2 l3 l4 l5 hT o Ω _ _ _ _ S ρ hB M U₀ EE hov hee _`. Establish `ll : GlobalTheory.UT.LL` using `⟨l1, l2, l3, l4, l5⟩`. Establish `hasU : ρ.HasU` using `fun p _ y₀ hy Fs => (hhastests hN hU l1 l2 hT o Ω S ρ).2 p y₀ Fs hy`. Take `⟨bf, hg, Q, ex, ht, hi, hf, hc⟩` from `htop ll hT o Ω S ρ M U₀ EE hB hasU hov hee`. Take `⟨Z, he, hth, hlaw⟩` from `hprex l1 l2 hU o Ω S ρ M U₀ EE Q ex hB ht hi hc (htorssec ll o Ω S ρ M U₀ EE bf Q ex hB hg hf) (htheta ll o Ω S ρ M U₀ EE bf Q ex hB hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z1, z2, z3⟩` from `hzab ll o Ω S ρ M U₀ EE bf Q ex hB hg hf`. Establish `hab : Z.Ab` using `hab o Ω S ρ M U₀ EE Q ex Z he hlaw ht hc z1 z2 z3`. Establish `hso : Z.SecO EE` using `hseco o Ω S ρ M U₀ EE Q ex Z he bf hab (hindepfib ll o Ω S ρ M U₀ EE bf Q hB hg)`. Conclude with `hout hx (hunifr l1 l2 l3 l4 l5) hN hU l1 l2 hT o Ω S ρ M U₀ EE Z Q ex he hB hov hee (sec_of_iso Q ex Z he (hhsec ll o Ω S ρ M U₀ EE bf Q)) hth hso hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem zhGeo_of
     (hhastests : GlobalTheory.Published.SemistableReductionSt → ThmUSt → Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real), S.HasTests ∧ ∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (Fs : Finset (PadicAlgCl p)), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → ∃ (u : ρ.UTest p y₀) (l : u.Lab) (τ : S.Test p y₀), l.Match τ ∧ ∀ x ∈ Fs, x ∈ Set.range (algebraMap (FractionRing u.V) (PadicAlgCl p)))

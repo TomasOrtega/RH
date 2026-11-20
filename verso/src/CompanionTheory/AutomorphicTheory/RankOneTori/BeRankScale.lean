@@ -13,13 +13,13 @@ namespace Formalism.MainStatements.RankOne
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.ThreeDimData.be`. Rewrite using `[Measure.map_prod_map _ _ measurable_cjT measurable_cjT]`. Establish `e : Prod.map (cjT k r κ τ) (cjT k r κ τ) = ⇑((cjE (k` using `k) (r := r) hκ hτ).prodCongr (cjE hκ hτ)) := rfl`. Rewrite using `[e, integral_map_equiv]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a1 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae h1`. Establish `a2 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae h2`. Use `filter_upwards [a1, a2] with p hp1 hp2`. Use `show Formalism.FourierDecayAlt.ThreeDimData.beInt _ _ _ σ u v (cjT k r κ τ p.1, cjT k r κ τ p.2) = _`. Establish `hd` using `dM_mem_UH (k := k) (r := r) hκ hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdi` using `dMi_mem_UH (k := k) (r := r) hκ hτ`. Establish `hx : Matrix.of p.1 * Matrix.of p.2 ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_mul hp1.1 hp2.1`. Simplify using `only [Formalism.FourierDecayAlt.ThreeDimData.beInt, of_cjT]`. Rewrite using `[psi_cj hκ hτ hz, ← cj_inv hκ hτ, cjI_cj hκ hτ, ← cj_mul hκ hτ]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `cj`. Rewrite using `[TranslationBesselVanishing.sigma_mul hσ (WeylGroupFacts.uh_mul hdi hx) hd, TranslationBesselVanishing.sigma_mul hσ hdi hx]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[MatrixMultiplicationContinuity.sigma_inner hσ hdi, dMi_inv hκ hτ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_scale {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
@@ -52,15 +52,15 @@ theorem be_scale {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) 
   rw [MatrixMultiplicationContinuity.sigma_inner hσ hdi, dMi_inv hκ hτ]
 
 /- English proof (translation)
-Establish `hκ : 0 < κ₀⁻¹` using `inv_pos.2 hκ₀`. Establish `hτ : (0 : ℝ) < 1` using `one_pos`. Establish `: SigmaFinite μW` using `hW.1`. Establish `: SFinite (haarLie (Nset k r) κN)` using `sFinite_haarLie _ _`. Establish `hc : ((κ₀⁻¹ : ℝ) : ℂ) * cOfDpsi (κ₀ : ℂ) = cStd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (κ₀ : ℂ) ≠ 0` using `by exact_mod_cast hκ₀.ne'`. Unfold `cOfDpsi cStd`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hN : IsHaarOn (Nset k r) ((haarLie (Nset k r) κN).map (cjT k r κ₀⁻¹ 1))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[map_haarLie_N hκ hτ]`. Conclude with `Formalism.MainNotions.BridgeCSB.haarLieN k r _ (mul_ne_zero h0 (ENNReal.ofReal_pos.2 (deltaN_pos hκ hτ)).ne') (ENNReal.mul_ne_top h1 ENNReal.ofReal_ne_top)`. Take `⟨L, hL⟩` from `CompanionTheory.FamilyDerivativeExpansion.M1.be_rank_one (z := ((1 : ℝ) : ℂ) • z) (π := fun x => π (cjI k r κ₀⁻¹ 1 x)) hk hl hσ hg hh (inWb_smul hz _) (by rw [Tz_smul]; simpa using hT) (isHCTypeW_cjI hκ hτ hz hπ) (isHaarOn_map_cjT hκ hτ hz hW) hN`. Establish `hd` using `dM_mem_UH (k := k) (r := r) hκ hτ`. Establish `hdi` using `dMi_mem_UH (k := k) (r := r) hκ hτ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcan : ∀ x : H, σ (dM k r κ₀⁻¹ 1) (σ (dMi k r κ₀⁻¹ 1) x) = x` using `fun x => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← TranslationBesselVanishing.sigma_mul hσ hd hdi, dM_mul_dMi hκ hτ, (MatrixMultiplicationContinuity.sigma_facts hσ).1]`. Both sides reduce to the same expression. Use `⟨fun x => L (σ (dMi k r κ₀⁻¹ 1) x), fun w hw v hv => ?_⟩` and prove the remaining obligations. Establish `e` using `be_scale (π := π) hσ hz (Formalism.MainNotions.S.Pv.AmpDDPf.ae_mem_sk hW) (Formalism.MainNotions.S.Pv.AmpDDPf.ae_mem_haarLieN κN) hκ hτ (cOfDpsi (κ₀ : ℂ)) (σ (dMi k r κ₀⁻¹ 1) w) (σ (dMi k r κ₀⁻¹ 1) v)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hcan, hcan, hc]`. Rewrite using `[← e]`. Conclude with `(hL _ (TranslationBesselVanishing.smooth_translate hσ hw hdi) _ (TranslationBesselVanishing.smooth_translate hσ hv hdi)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_rank_scale (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}

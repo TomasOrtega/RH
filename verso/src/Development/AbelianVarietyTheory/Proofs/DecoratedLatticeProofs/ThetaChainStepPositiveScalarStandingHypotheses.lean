@@ -27,7 +27,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Rk.ScalarsRow
 
 /- English proof (translation)
-Introduce `hDS hHCF hHCM hCW hCusp hHowe hUD hHk D G _ _ Pl0 T A Ks _ _ _ R F hG`. Take `⟨L, ⟨P⟩⟩` from `hG.params`. Conclude with `GlobalTheory.T.thetaChain_steps_positive_multiple_of_LValue hHCF hCusp hDS hHCM hCW hHowe hUD R F hG (GlobalTheory.Core.Rk.GapOfNodes.harishChandraNodesFarApart_of_cubic_node_gap D (by simpa using P.nodeGap_ge_cubic_rank)) (hHk D)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem scalars_of_heckeFormNS : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraFinite →
     GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram →
@@ -40,7 +40,7 @@ theorem scalars_of_heckeFormNS : GlobalTheory.Published.DiscreteSeriesCover → 
     (GlobalTheory.Core.Rk.GapOfNodes.harishChandraNodesFarApart_of_cubic_node_gap D (by simpa using P.nodeGap_ge_cubic_rank)) (hHk D)
 
 /- English proof (translation)
-Introduce `hDS hHCF hHCM hCW hCusp hHowe _ hHk _ hUD D G _ _ Pl0 T A Ks _ _ _ R F hG _`. Conclude with `scalars_of_heckeFormNS hDS hHCF hHCM hCW hCusp hHowe hUD hHk R F hG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem scalars : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilSiegelFormulaUnitary → (∀ D' : Formalism.BasicNotions.D7, GlobalTheory.Core.Rk.SW.HeckeFormNS D') → GlobalTheory.Published.SiegelEisensteinContinuation → GlobalTheory.Published.UnramifiedDoublingGL → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → D.host.ccK = ⊤ → GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.Scalars R := by
   intro hDS hHCF hHCM hCW hCusp hHowe _ hHk _ hUD D G _ _ Pl0 T A Ks _ _ _ R F hG _

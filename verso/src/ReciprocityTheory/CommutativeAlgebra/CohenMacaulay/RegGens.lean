@@ -9,31 +9,27 @@ namespace ReciprocityTheory.CA.RegGens
 
 open Pointwise in
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `P _ _ hd`. Establish `hsf : (maximalIdeal P).spanFinrank = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `IsRegularLocalRing.spanFinrank_maximalIdeal (R := P)`. Rewrite `h` using `[hd]`. Conclude with `h` after adjusting the coercions. Establish `hbot : maximalIdeal P = ⊥` using `(Submodule.spanFinrank_eq_zero_iff_eq_bot (IsNoetherian.noetherian _)).mp hsf`. Conclude with `⟨[], rfl, IsRegular.nil P P, by rw [Ideal.ofList_nil, hbot]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `succ d IH`. Introduce `P _ _ hd`. Establish `hsq : ¬ maximalIdeal P ≤ maximalIdeal P ^ 2`. Introduce `hle`. Establish `hbot` using `RegA.IsRegularLocalRing.maximalIdeal_eq_bot_of_le_sq P hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `IsRegularLocalRing.spanFinrank_maximalIdeal (R := P)`. Rewrite `h` using `[hd, hbot, Submodule.spanFinrank_bot]`. Establish `: (0 : ℕ) = d + 1` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hx2⟩ : ∃ x, x ∈ maximalIdeal P ∧ x ∉ maximalIdeal P ^ 2 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hsq fun y hy => hc y hy`. Use `set I : Ideal P := Ideal.span ({x} : Set P) with hI`. Establish `hreg : IsRegularLocalRing (P ⧸ I)` using `RegA.IsRegularLocalRing.quotient_span_singleton hx hx2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hdim : ringKrullDim (P ⧸ I) = d`. Establish `h1` using `RegA.IsRegularLocalRing.ringKrullDim_quotient_span_singleton_add_one hx hx2`. Establish `h2` using `IsRegularLocalRing.spanFinrank_maximalIdeal (R := P ⧸ I)`. Rewrite `h1`, the goal using `[← h2]`. Rewrite `h1` using `[hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h3 : (maximalIdeal (P ⧸ I)).spanFinrank + 1 = d + 1` using `by exact_mod_cast h1`. Conclude with `(by omega : (maximalIdeal (P ⧸ I)).spanFinrank = d)` after adjusting the coercions. Take `⟨rs', hlen, hrs', hgen⟩` from `IH (P ⧸ I) hdim`. Set `lift : P ⧸ I → P` to `fun y => Quotient.out y`. Establish `hlift : ∀ y, Ideal.Quotient.mk I (lift y) = y` using `fun y => Ideal.Quotient.mk_out y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmap : (rs'.map lift).map (Ideal.Quotient.mk I) = rs'`. Rewrite using `[List.map_map]`. Use `conv_rhs => rw [← List.map_id rs']`. Conclude with `List.map_congr_left fun y _ => hlift y`. Use `⟨x :: rs'.map lift, by simp [hlen], ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[isRegular_cons_iff', hmap]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx2 (zero_mem _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Conclude with `(IsRegular.of_ne_zero hx0).left`. Establish `hsm : (x • ⊤ : Submodule P P) = I`. Rewrite using `[hI, ← Submodule.ideal_span_singleton_smul, smul_eq_mul, Ideal.mul_top]`. Set `e : QuotSMulTop x P ≃ₗ[P] P ⧸ I` to `Submodule.quotEquivOfEq _ _ hsm`. Use `(e.toAddEquiv.isRegular_congr (as := rs') (bs := rs') ?_).mpr hrs'` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `List.forall₂_same.mpr fun r _ y => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Both sides reduce to the same expression. Rewrite using `[Ideal.ofList_cons]`.
-
-Establish `h1 : Ideal.comap (Ideal.Quotient.mk I) (Ideal.map (Ideal.Quotient.mk I) (Ideal.ofList (rs'.map lift))) = Ideal.ofList (rs'.map lift) ⊔ I`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Rewrite `h1` using `[Ideal.map_ofList, hmap, hgen]`. Establish `h2 : Ideal.comap (Ideal.Quotient.mk I) (maximalIdeal (P ⧸ I)) = maximalIdeal P`. Establish `: (Ideal.comap (Ideal.Quotient.mk I) (maximalIdeal (P ⧸ I))).IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective`.
-
-Conclude with `IsLocalRing.eq_maximalIdeal this`. Rewrite using `[← h2, h1, sup_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_regular_generators_maxIdeal : ∀ (d : ℕ) (P : Type u) [CommRing P] [IsRegularLocalRing P],
     ringKrullDim P = d →
@@ -107,7 +103,7 @@ theorem exists_regular_generators_maxIdeal : ∀ (d : ℕ) (P : Type u) [CommRin
       rw [← h2, h1, sup_comm]
 
 /- English proof (translation)
-The claim follows from `exists_regular_generators_maxIdeal d P hd`.
+A detailed English derivation is pending.
 -/
 theorem exists_regular_gens (P : Type u) [CommRing P] [IsRegularLocalRing P] (d : ℕ)
     (hd : ringKrullDim P = d) :

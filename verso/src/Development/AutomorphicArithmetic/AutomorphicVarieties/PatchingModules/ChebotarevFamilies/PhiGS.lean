@@ -17,9 +17,9 @@ private theorem permR_apply (R : Type) [CommRing R] {Γ : Type} [Group Γ] (H : 
     (x : Γ ⧸ H) : permR R H g f x = f (g⁻¹ • x) := rfl
 
 /- English proof (translation)
-Establish `e : ((g⁻¹ * x.out : Γ) : Γ ⧸ H) = ((g⁻¹ • x).out : Γ ⧸ H)`. Rewrite using `[QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' x]`. Both sides reduce to the same expression. Establish `hm` using `QuotientGroup.eq.mp e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hm` using `[mul_inv_rev, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 private theorem sec_mem {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (x : Γ ⧸ H) :
     (x.out)⁻¹ * g * (g⁻¹ • x).out ∈ H := by
@@ -31,9 +31,9 @@ private theorem sec_mem {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (x : �
   simpa [mul_inv_rev, mul_assoc] using hm
 
 /- English proof (translation)
-Use `⟨⋂ y : Γ ⧸ H, (fun k => (y.out)⁻¹ * k * y.out) ⁻¹' (K : Set Γ), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isOpen_iInter_of_finite fun y => hK.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Simplify using the standard rewrite rules. Introduce `k hk y`. Establish `hy : (y.out)⁻¹ * k * y.out ∈ K` using `Set.mem_iInter.mp hk y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' y, MulAction.Quotient.smul_mk, QuotientGroup.eq]`. Establish `hi` using `H.inv_mem (hKH hy)`. Simplify `hi` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem core_lemma {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (H K : Subgroup Γ)
     [Finite (Γ ⧸ H)] (hK : IsOpen (K : Set Γ)) (hKH : K ≤ H) :
@@ -50,7 +50,7 @@ private theorem core_lemma {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopol
     simpa [mul_assoc] using hi
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_smul]`. Use `congr 1`. Use `group`. Use `_ = g⁻¹ • x := by rw [inv_smul_eq_iff, h]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem mult_map_mul_right_eq_of_chi_eq_one {Γ : Type} [Group Γ] (H : Subgroup Γ) (g g' : Γ) (x : Γ ⧸ H)
     (h : (g⁻¹ * g') • (g⁻¹ • x) = g⁻¹ • x) : g'⁻¹ • x = g⁻¹ • x := by
@@ -61,35 +61,29 @@ private theorem mult_map_mul_right_eq_of_chi_eq_one {Γ : Type} [Group Γ] (H : 
     _ = g⁻¹ • x := by rw [inv_smul_eq_iff, h]
 
 /- English proof (translation)
-Introduce `H hH`. Use `haveI : Finite (Γ ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Take `⟨U₀, hU₀o, hU₀1, hU₀⟩` from `core_lemma H H hH le_rfl`. Establish `hρ : ContAction (permR (ZMod n) H)` using `by show Continuous fun p : Γ × (Γ ⧸ H → ZMod n) => permR (ZMod n) H p.1 p.2`. Apply `IsLocallyConstant.continuous` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce and unpack `⟨g, m⟩`. Establish `hmem : {p : Γ × (Γ ⧸ H → ZMod n) | g⁻¹ * p.1 ∈ U₀ ∧ p.2 = m} ∈ nhds (g, m)`. Apply `IsOpen.mem_nhds` to reduce the goal to its premises. Conclude with `(hU₀o.preimage (continuous_const.mul continuous_fst)).inter ((isOpen_discrete {m}).preimage continuous_snd)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[hU₀1]`. Use `filter_upwards [hmem] with p hp`. Take `⟨hk, hp2⟩` from `hp`. Use `show permR (ZMod n) H p.1 p.2 = permR (ZMod n) H g m`. Rewrite using `[hp2]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[permR_apply, permR_apply, mult_map_mul_right_eq_of_chi_eq_one H g p.1 y (hU₀ _ hk (g⁻¹ • y)).2]`. Establish `hcoc : ∀ φ : H →* Multiplicative (ZMod n), IsOpen (φ.ker : Set H) → (fun (g : Γ) (x : Γ ⧸ H) => Multiplicative.toAdd (φ ⟨(x.out)⁻¹ * g * (g⁻¹ • x).out, sec_mem H g x⟩)) ∈ Z1 (permR (ZMod n) H)`. Introduce `φ hφ`. Use `show Continuous _ ∧ _`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Prove the components needed by the constructor for the conclusion. Establish `hKo : IsOpen ((φ.ker.map H.subtype : Subgroup Γ) : Set Γ)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hH.isOpenMap_subtype_val _ hφ`. Take `⟨U, hUo, hU1, hU⟩` from `core_lemma H (φ.ker.map H.subtype) hKo (Subgroup.map_subtype_le _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Apply `IsLocallyConstant.continuous` to reduce the goal to its premises. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Establish `hmem : {g' : Γ | g⁻¹ * g' ∈ U} ∈ nhds g` using `(hUo.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [hU1])`. Use `filter_upwards [hmem] with g' hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Take `⟨hK, hfix⟩` from `hU _ hk (g⁻¹ • x)`. Take `⟨b, hb, hbv⟩` from `Subgroup.mem_map.mp hK`. Establish `e1` using `mult_map_mul_right_eq_of_chi_eq_one H g g' x hfix`. Establish `e2 : (⟨(x.out)⁻¹ * g' * (g'⁻¹ • x).out, sec_mem H g' x⟩ : H) = ⟨(x.out)⁻¹ * g * (g⁻¹ • x).out, sec_mem H g x⟩ * b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x.out)⁻¹ * g' * (g'⁻¹ • x).out = (x.out)⁻¹ * g * (g⁻¹ • x).out * (b : Γ)`. Rewrite using `[show (b : Γ) = _ from hbv, e1]`. Use `group`. Use `show Multiplicative.toAdd (φ _) = Multiplicative.toAdd (φ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e2, map_mul, (MonoidHom.mem_ker).mp hb, mul_one]`. Introduce `g h`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, permR_apply]`. Rewrite using `[← toAdd_mul, ← map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun y : H => Multiplicative.toAdd (φ y)) (Subtype.ext ?_)` and prove the remaining obligations. Use `show (x.out)⁻¹ * (g * h) * ((g * h)⁻¹ • x).out = (x.out)⁻¹ * g * (g⁻¹ • x).out * (((g⁻¹ • x).out)⁻¹ * h * (h⁻¹ • (g⁻¹ • x)).out)`. Rewrite using `[mul_inv_rev, mul_smul]`. Use `group`. Use `haveI := h (Γ ⧸ H → ZMod n) (permR (ZMod n) H) hρ`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finite.of_injective (fun χ : {φ : H →* Multiplicative (ZMod n) // IsOpen (φ.ker : Set H)} => (Submodule.Quotient.mk ⟨_, hcoc χ.1 χ.2⟩ : H1 (permR (ZMod n) H))) ?_` and prove the remaining obligations. Introduce and unpack `⟨φ, hφ⟩ ⟨ψ, hψ⟩ hEq`. Take `⟨m, hm⟩` from `LinearMap.mem_range.mp (Submodule.mem_comap.mp ((Submodule.Quotient.eq _).mp hEq))`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x0, hx0⟩ : ∃ x0 : Γ ⧸ H, x0 = ((1 : Γ) : Γ ⧸ H)` from `⟨_, rfl⟩`. Establish `ha : x0.out ∈ H`. Establish `e : ((x0.out : Γ) : Γ ⧸ H) = ((1 : Γ) : Γ ⧸ H)` using `by rw [QuotientGroup.out_eq', hx0]`. Simplify using `using H.inv_mem (QuotientGroup.eq.mp e)`. Take `⟨g, hg⟩ : ∃ g : Γ, g = x0.out * h0 * (x0.out)⁻¹` from `⟨_, rfl⟩`.
-
-Establish `hgH : g ∈ H` using `hg ▸ H.mul_mem (H.mul_mem ha h0.2) (H.inv_mem ha)`. Establish `hgx0 : g⁻¹ • x0 = x0`. Rewrite using `[hx0, MulAction.Quotient.smul_mk, QuotientGroup.eq]`. Simplify using `using hgH`. Establish `hel : ∀ (y : Γ ⧸ H) (hy : y = g⁻¹ • x0) (pr : (x0.out)⁻¹ * g * y.out ∈ H), (⟨(x0.out)⁻¹ * g * y.out, pr⟩ : H) = h0`.
-
-Introduce `y hy pr`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x0.out)⁻¹ * g * y.out = (h0 : Γ)`. Rewrite using `[hy, hgx0, hg]`. Use `group`.
-
-Establish `hx : m (g⁻¹ • x0) - m x0 = Multiplicative.toAdd (φ ⟨(x0.out)⁻¹ * g * (g⁻¹ • x0).out, sec_mem H g x0⟩) - Multiplicative.toAdd (ψ ⟨(x0.out)⁻¹ * g * (g⁻¹ • x0).out, sec_mem H g x0⟩)` using `congrFun (congrFun hm g) x0`. Rewrite `hx` using `[hel _ rfl, hgx0, sub_self]`. Establish `hx' : (0 : ZMod n) = Multiplicative.toAdd (φ h0) - Multiplicative.toAdd (ψ h0)` using `hx`. Establish `h2 : Multiplicative.toAdd (φ h0) = Multiplicative.toAdd (ψ h0)` using `(sub_eq_zero (G := ZMod n)).mp hx'.symm`. Conclude with `Multiplicative.toAdd.injective h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem phi_condition_of_finite_cohomology {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (n : ℕ)
     [NeZero n]
@@ -187,13 +181,11 @@ private theorem phi_condition_of_finite_cohomology {Γ : Type} [Group Γ] [Topol
 end UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `hGF l _ L Ω _ _ _ _ _ _ s V`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Take `⟨S, hS⟩ : ∃ S : Finset (Plc (Lp L)), (S : Set (Plc (Lp L))) = V.S'` from `⟨V.fin.toFinset, V.fin.coe_toFinset⟩`. Use `show PhiCond (ReciprocityTheory.Gal.GS Ω V.S') l`. Rewrite using `[← hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : PhiCond (ReciprocityTheory.Gal.GS Ω (S : Set (Plc (Lp L)))) (l ^ 1)`. Apply `phi_condition_of_finite_cohomology` to reduce the goal to its premises. Introduce `M _ _ _ _ _ ρ hρ`. Establish `habove : ReciprocityTheory.Gal.ContainsAbove S l`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv' : v ∈ V.S'` using `V.sub (Or.inl hv)`. Rewrite `hv'` using `[← hS]`. Conclude with `hv'` after adjusting the coercions. Conclude with `(hGF (Lp L) Ω l 1 M S ρ one_pos habove hρ).2.1`. Rewrite `key` using `[pow_one]`.
-
-Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.phiGS :
     GlobalFiniteness → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V : s.Lev), PhiCond V.frame.Γ l := by

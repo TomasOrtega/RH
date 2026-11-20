@@ -9,9 +9,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CongIndex
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (bc (n` using `Fin n) ι) := by`. Introduce `g h e`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Apply `hι` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun x : GL (Fin n) K => (x : Matrix (Fin n) (Fin n) K) a b) e`. Establish `hs : Function.Surjective (redGL (n` using `Fin n) (IsLocalRing.maximalIdeal O)) := GlobalTheory.MeasTupleEq.map_residue_surjective O n`. Unfold `congPre`. Rewrite using `[MonoidHom.range_eq_map, Subgroup.relIndex_map_map_of_injective _ _ hinj, Subgroup.relIndex_top_right, Subgroup.index_comap_of_surjective _ hs]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_congPre (O K : Type) [CommRing O] [IsLocalRing O] [CommRing K] (ι : O →+* K)
     (hι : Function.Injective ι) (n : ℕ) (H : Subgroup (GL (Fin n) (O ⧸ IsLocalRing.maximalIdeal O))) :

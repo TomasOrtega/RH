@@ -13,13 +13,13 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K]
 
 /- English proof (translation)
-Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Take `⟨w, rfl⟩` from `P.xiExt.surjective v`. Rewrite `h` using `[PhiMod.conn_xiExt]`. Establish `hN : ∀ τ i, N K (w τ i) = 0` using `fun τ i => by`. Use `congrFun (congrFun (P.xiExt.injective (h.trans (map_zero _).symm)) τ) i` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hw : w = cst (red w)`. Use function extensionality and compare the values at `τ i`. Use extensionality with `n`. Break down `n with _ | n` into its components or cases.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `congrArg (coeff (n + 1)) (hN τ i)` as an intermediate fact. Rewrite `this` using `[coeff_N, map_zero]`. Establish `hn : ((n + 1 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.succ_ne_zero n)`. Rewrite using `[cst_apply, coeff_C, if_neg (Nat.succ_ne_zero n)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left (by exact_mod_cast hn)`. Rewrite using `[PhiMod.xi_apply, PhiMod.red_xiExt, ← hw]`.
+A detailed English derivation is pending.
 -/
 theorem PhiMod.eq_xi_red_of_conn_eq_zero (P : PhiMod O K l e a ι) {v : Vec K a ι}
     (h : P.conn v = 0) : v = P.xi (red v) := by
@@ -42,9 +42,9 @@ theorem PhiMod.eq_xi_red_of_conn_eq_zero (P : PhiMod O K l e a ι) {v : Vec K a 
   rw [PhiMod.xi_apply, PhiMod.red_xiExt, ← hw]
 
 /- English proof (translation)
-Rewrite `h` using `[PhiMod.plusInl_app]`. Use `mem_tot.2 fun τ => ?_` and prove the remaining obligations. Take `⟨m, hm, hmv⟩` from `(P.plus hy).mem_extc.1 (mem_tot.1 h τ)`. Use `P.mem_extc.2 ⟨fun i => m (Sum.inl i), fun i => hm (Sum.inl i), ?_⟩` and prove the remaining obligations. Establish `h0 : m (Sum.inr ()) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrFun hmv (Sum.inr ())` as an intermediate fact. Simplify `this.symm` using `[join, PhiMod.plus, Matrix.mulVec, dotProduct, Fintype.sum_sum_type]`. Use function extensionality and compare the values at `i`. Use `congrFun hmv (Sum.inl i)` as an intermediate fact. Simplify `this` using `[join, PhiMod.plus, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PhiMod.mem_ext_of_plusInl (P : PhiMod O K l e a ι) {y : Vec K a ι}
     (hy : y ∈ P.Mext (invE l e (A O K))) {B : Subalgebra O K⟦X⟧} {v : Vec K a ι}
@@ -71,25 +71,19 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
 namespace BKDat
 
 /- English proof (translation)
-Establish `hy'` using `mem_invE_of_mem_Y hy`. Use `set P := D.toPhiMod.plus hy'`. Use `set F := D.toPhiMod.plusInl hy'`. Use `set G := D.toPhiMod.plusProj hy'`. Use `set t := P.phi xVec - P.xi (red (P.phi xVec)) with ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `inj : ∀ v w, F.app v = F.app w → v = w` using `fun v w h => by`. Rewrite `h` using `[PhiMod.plusInl_app, PhiMod.plusInl_app]`. Use function extensionality and compare the values at `τ i`. Conclude with `congrFun (congrFun h τ) (Sum.inl i)`. Establish `hct : P.conn t = F.app (D.zeta y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ht, map_sub, PhiMod.conn_xi, sub_zero]`. Conclude with `D.conn_phi_extension_generator_eq_zeta hy'`. Establish `hrt : red t = 0`. Rewrite using `[ht, map_sub, PhiMod.red_xi, sub_self]`. Establish `hx : G.app t = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (rankOne O K l e fun _ : ZMod a => 0).conn (G.app t) = 0`. Rewrite using `[← Hom.app_conn, hct, PhiMod.plusInl_app, PhiMod.plusProj_app]`. Both sides reduce to the same expression. Rewrite using `[PhiMod.eq_xi_red_of_conn_eq_zero _ h1, Hom.red_app, hrt, map_zero, map_zero]`. Establish `key : ∀ τ, t τ (Sum.inr ()) = 0` using `fun τ => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congrFun (congrFun hx τ) ()` as an intermediate fact. Rewrite `this` using `[← join_eta t, PhiMod.plusProj_app]`. Simplify using `using this`. Use `set s : Vec K a ι := fun τ i => t τ (Sum.inl i)`. Establish `hts : t = F.app s`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[PhiMod.plusInl_app]`. Use `conv_lhs => rw [← join_eta t]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `key τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxM : (xVec : Vec K a (ι ⊕ Unit)) ∈ P.M`. Rewrite using `[← PhiMod.bas_inr]`. Conclude with `P.bas_mem_M _`. Establish `htM : t ∈ P.MMl`. Use `sub_mem (P.ext_mono ((A_le_S l e).trans (le_away _ _)) (P.phi_mem_L hxM)) ?_` and prove the remaining obligations.
-
-Rewrite using `[PhiMod.xi_apply]`. Use `((GlobalTheory.T.breuilKisin_section_trivialises_invertPrime_tensor O K l e a (ι ⊕ Unit) P).2 _).2 (mem_tot.2 fun τ i => ?_)` and prove the remaining obligations. Rewrite using `[cst_apply]`. Conclude with `HasK.C_mem _`. Use `⟨s, D.toPhiMod.mem_ext_of_plusInl hy' (hts ▸ htM), fun g => ?_, inj _ _ ?_⟩` and prove the remaining obligations.
-
-Establish `hΔ : (D.desc.plus hy' hy.2).act g t = t`. Rewrite using `[ht, map_sub, Descent.act_phi, Descent.tameDescent_extended_action_extraVector D.desc hy' hy.2 g, Descent.act_xi, ← Descent.red_act, Descent.act_phi, Descent.tameDescent_extended_action_extraVector D.desc hy' hy.2 g]`. Apply `inj` to reduce the goal to its premises. Establish `h2 : (D.desc.plus hy' hy.2).act g (F.app s) = F.app s` using `by rw [← hts]; exact hΔ`. Conclude with `((Descent.plusInl D.desc hy' hy.2).app_act g s).trans h2`.
-
-Rewrite using `[Hom.app_conn, ← hts, hct]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conn_eq_zeta_of_mem_Y (D : BKDat O K l e a ι η H) {y : Vec K a ι} (hy : y ∈ D.Y) :
     ∃ s ∈ D.MMl, s ∈ D.desc.inv ∧ D.conn s = D.zeta y := by
@@ -154,9 +148,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] {η H : ℕ}
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `D.desc.mem_Yl_iff.1 hy`. Take `⟨s, hsM, hsi, hsc⟩` from `D.exists_conn_eq_zeta_of_mem_Y hn`. Establish `hl : ((l : K) ^ n) ≠ 0` using `pow_ne_zero _ (l_ne_zero l)`. Use `⟨((l : K) ^ n)⁻¹ • s, ?_, D.desc.inv.smul_mem _ hsi, ?_⟩` and prove the remaining obligations. Establish `: ((l : K) ^ n)⁻¹ • s = (fun _ : ZMod a => C ((l : K) ^ n)⁻¹) • s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ i`. Simplify using `[smul_eq_C_mul]`. Rewrite using `[this]`. Conclude with `D.smul_tot_mem_ext (fun _ => HasK.C_mem _) hsM`. Rewrite using `[map_smul, hsc, map_smul, smul_smul, inv_mul_cancel₀ hl, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conn_eq_zeta (D : BKDat O K l e a ι η H) {y : Vec K a ι} (hy : y ∈ D.Yl) :
     ∃ s ∈ D.MMl, s ∈ D.desc.inv ∧ D.conn s = D.zeta y := by
@@ -172,13 +166,13 @@ theorem exists_conn_eq_zeta (D : BKDat O K l e a ι η H) {y : Vec K a ι} (hy :
   · rw [map_smul, hsc, map_smul, smul_smul, inv_mul_cancel₀ hl, one_smul]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D y hy`. Take `⟨s, hsM, hsi, hsc⟩` from `D.exists_conn_eq_zeta hy`. Establish `hyi : ∀ g, D.desc.act g y = y` using `hy.2`. Establish `hsi' : ∀ g, D.desc.act g s = s` using `hsi`. Use `⟨⟨s, hsM, hsi, hsc, ?_⟩, D.cls (y - s), ⟨⟨y - s, ?_, rfl⟩, fun g => ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set v := D.phi s - s - D.phi y with hv`. Establish `hcv : D.conn v = 0`. Establish `hz` using `D.zeta_eq y`. Rewrite `hz` using `[PhiMod.lphi_apply, map_sub, smul_sub]`. Rewrite using `[hv, map_sub, map_sub, PhiMod.conn_phi, PhiMod.conn_phi, hsc, sub_right_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_eq_zero.2 hz.symm`. Use `⟨red v, fun g => ?_, D.eq_xi_red_of_conn_eq_zero hcv⟩` and prove the remaining obligations. Rewrite using `[← Descent.red_act, hv]`. Use `congr 1`. Rewrite using `[(D.desc.act g).map_sub, (D.desc.act g).map_sub, Descent.act_phi, Descent.act_phi, hsi' g, hyi g]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SetLike.mem_coe, mem_divE, smul_sub]`. Use `sub_mem ((PhiMod.mem_Man _).2 (D.Mext_mono (invL_A_le_Rpi l e) (mem_divE.1 hy.1))) ((PhiMod.mem_Man _).2 (D.Mext_mono (invL_S_le_Rpi l e) (D.smul_mem_Mext ((A_le_S l e).trans (le_away _ _)) hsM)))` and prove the remaining obligations. Rewrite using `[Descent.actPol_cls, map_sub, hyi g, hsi' g]`. Rewrite using `[Lc_cls, PhiMod.Mon_apply, map_sub, PhiMod.EN_apply D.toPhiMod s, hsc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mon_mem_range_Lc : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι]

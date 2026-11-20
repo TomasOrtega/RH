@@ -12,9 +12,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX}
 
 /- English proof (translation)
-Introduce `NuC I hT hI'`. Take `⟨dg, hdg, hdvd, hA⟩` from `hdgA`. Establish `hN` using `inEta3_num (G := P.Gp) L P.A3 (P0 := P.P0) (ψ0 := P.ψ0) (Zs := (pkOf Q hOk hsep Cl CHl hP hI).Zs) (S0 := (pkOf Q hOk hsep Cl CHl hP hI).core.base.toIndefData) (tup := I.tup) Ce hDIV rfl hT.num hTw hD`. Establish `hr` using `what₂ NuC I hT hI'`. Use `choose ch T hF hrest using hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose X0 hX0 hn hnP cb hrest2 using hrest`. Use `⟨fun u => ((DivisionInputsWithoutNorm.ofRows (hrest2 u).2.2.2 (Formalism.L2.DIV.Cons.sgRec_fin L u) (hrest2 u).2.1 (hrest2 u).2.2.1 (X0 u) (hX0 u) (ch u) (hn u) (hnP u) (cb u) (hrest2 u).1 h11 dg hdg hdvd (hA u)).toDef hN).toDivInputs0R hOk hsep, fun u => T u, fun u => hF u⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem inpAt_of [IsTotallyComplex D.what₂.LL] {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {X : Formalism.L2.Col.Fields}
     {e : X.Tau → (X.E →+* D.what₂.LL)} {c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs}

@@ -12,7 +12,7 @@ open UpperTheory.V.W (Plc)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[GlobalTheory.TripleGal.rk1, Matrix.det_unique]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem det_rank_one_rep {Γ k : Type} [Group Γ] [Field k] (μ : Γ →* kˣ) :
     Matrix.GeneralLinearGroup.det.comp (GlobalTheory.TripleGal.rk1 μ) = μ := by
@@ -20,7 +20,7 @@ private theorem det_rank_one_rep {Γ k : Type} [Group Γ] [Field k] (μ : Γ →
   simp [GlobalTheory.TripleGal.rk1, Matrix.det_unique]
 
 /- English proof (translation)
-Rewrite using `[det_rank_one_rep]`. Use extensionality with `g i j`. Simplify using `[Formalism.MainNotions.SumRepresentations.At.twGL, Af.tw_val, Algebra.algebraMap_eq_smul_one, Matrix.smul_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem tw_eq {Γ : Type} [Group Γ] {l : ℕ} [Fact l.Prime] {n : ℕ} (R : Γ →* GL (Fin n) (Qbar l)) (μ : Γ →* (Qbar l)ˣ) :
     Af.tw R μ = Formalism.MainNotions.SumRepresentations.At.twGL R (Matrix.GeneralLinearGroup.det.comp (GlobalTheory.TripleGal.rk1 μ)) := by
@@ -29,7 +29,7 @@ private theorem tw_eq {Γ : Type} [Group Γ] {l : ℕ} [Fact l.Prime] {n : ℕ} 
   simp [Formalism.MainNotions.SumRepresentations.At.twGL, Af.tw_val, Algebra.algebraMap_eq_smul_one, Matrix.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[tw_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tw_comp {Γ Γ' : Type} [Group Γ] [Group Γ'] {l : ℕ} [Fact l.Prime] {n : ℕ} (R : Γ →* GL (Fin n) (Qbar l))
     (μ : Γ →* (Qbar l)ˣ) (f : Γ' →* Γ) :
@@ -37,7 +37,7 @@ private theorem tw_comp {Γ Γ' : Type} [Group Γ] [Group Γ'] {l : ℕ} [Fact l
   rw [tw_eq]; rfl
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `fin_cases j`. Use `Units.continuous_val.comp hμ` as an intermediate fact. Simplify `this` using `[GlobalTheory.TripleGal.rk1, Function.comp_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem continuous_rank_one_rep {Γ : Type} [Group Γ] [TopologicalSpace Γ] {l : ℕ} [Fact l.Prime] {μ : Γ →* (Qbar l)ˣ}
     (hμ : Continuous μ) :
@@ -48,25 +48,23 @@ private theorem continuous_rank_one_rep {Γ : Type} [Group Γ] [TopologicalSpace
   simpa [GlobalTheory.TripleGal.rk1, Function.comp_def] using this
 
 /- English proof (translation)
-Introduce `P K Ω _ _ _ _ _ _ l _ ι n R hR hHT art κ m μ hart hκ hμ hL`. Take `⟨HT, hHT⟩` from `hHT`. Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Establish `H1 : Af.HasHT (Af.tw R μ) fun τ => (HT τ).map (· + -m (ι.toRingHom.comp τ))`. Introduce `w A h O _ _ _ Bw hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d1, j1⟩` from `hHT w A h O Bw hj`. Take `⟨d2, -, -, j2⟩` from `GlobalTheory.Published.heckeLAdicCharacterAbove_iff.1 P.aut.chA K Ω l _ _ ⟨T⟩ ι art hart κ m μ hκ hμ hL w A h O Bw hj`. Establish `t` using `GlobalTheory.TwistAbove.twist_above l _ _ ⟨T⟩ K Ω _ O Bw n (R.comp (Dec (F := K) A).subtype) ((Af.tw R μ).comp (Dec (F := K) A).subtype) (μ.comp (Dec (F := K) A).subtype) fun g => Af.tw_val R μ g.1`. Conclude with `⟨t.1 d1 d2, fun τ L' τ' hτ => t.2.2.2 τ _ _ (j1 τ L' τ' hτ) (j2 τ L' τ' hτ)⟩`. Use `⟨⟨_, H1⟩, fun w τ τ' hτ he A h rc hrc => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hτ A h rc hrc`. Establish `hc` using `GlobalTheory.Published.ParamAboveModel.isComp_loc (w := w) κ`. Establish `e : rc (algNorm τ') = (rc (algNorm τ)).lpChar (rc (.ofChar (κ.loc w) hc.1))`. Rewrite using `[rec_algNorm hrc, rec_algNorm hrc, GlobalTheory.NuShift.lpChar_lpTw]`. Take `⟨a, ha, ε, -, HL⟩` from `hrc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← HL.twist, GlobalTheory.LocGL.IrrGL.tw_of]`. Conclude with `congrArg (fun x => (rc x).lpTw _) (IrrGL.of_eq_of.2 he)`. Rewrite using `[e]`. Take `⟨a, ha, ε, -, HL⟩` from `hrc`. Rewrite using `[HL.one _ hc.1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcR` using `Units.continuous_val.comp hR`. Establish `hct : Continuous fun g => ((Af.tw R μ g : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))`. Simplify using `only [Af.tw_val]`. Conclude with `(Units.continuous_val.comp hμ).smul hcR`. Use `⟨fun hw => ?_, fun O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ g, (GlobalTheory.TripleGal.rk1 μ g : Matrix (Fin 1) (Fin 1) (Qbar l)) = Matrix.scalar (Fin 1) (μ g : Qbar l)` using `fun g => rfl`. Establish `h3` using `isWDOf_wdOf (h := h) (r := Af.tw R μ) hw ι hct`. Establish `h4` using `wdOf_twGL_det K Ω A w h l hw ι n R _ hcR (continuous_rank_one_rep hμ)`. Rewrite using `[← tw_eq, (h1 hw).wdOf_eq hw, wdOf_eq_mk hw (WDRep.ofChars h (fun _ : Fin 1 => (κ.loc w).comp a) fun _ => ha.smooth hc.1) rfl fun g => by`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[toEndC_apply, Matrix.mulVec, dotProduct, hval, hL.loc_away (Or.inl hw) _ _ (ha.glob art hart g)]] at h4`. Rewrite `h3` using `[h4]`. Conclude with `h3`. Take `⟨p1, w1⟩` from `h2 O Bw hj`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3` using `P.aut.berger.isPstAt T Bw _ (hct.comp continuous_subtype_val) (H1 w A h O Bw hj).1`. Establish `c2` using `(continuous_rank_one_rep hμ).comp (continuous_subtype_val (p := fun x => x ∈ Dec (F := K) A))`. Establish `p2` using `P.aut.berger.isPstAt T Bw ((GlobalTheory.TripleGal.rk1 μ).comp (Dec (F := K) A).subtype) c2 (GlobalTheory.Published.heckeLAdicCharacterAbove_iff.1 P.aut.chA K Ω l _ _ ⟨T⟩ ι art hart κ m μ hκ hμ hL w A h O Bw hj).1`. Use `⟨p3, ?_⟩` and prove the remaining obligations. Establish `htw : (Af.tw R μ).comp (Dec (F` using `K) A).subtype = Formalism.MainNotions.SumRepresentations.At.twGL (R.comp (Dec (F := K) A).subtype) (Matrix.GeneralLinearGroup.det.comp ((GlobalTheory.TripleGal.rk1 μ).comp (Dec (F := K) A).subtype)) := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `tw_comp R μ _`. Rewrite `p3`, the goal using `[htw]`. Rewrite using `[GlobalTheory.T.fontaineParameter_twist_potentiallySemistable l _ _ ⟨T⟩ ι K Ω A w h O Bw hj n _ _ (hcR.comp continuous_subtype_val) c2 p1 p2 p3, P.aut.chW K Ω l _ _ ⟨T⟩ ι art hart κ m μ hκ hμ hL w A h O Bw hj _ hc a ha]`. Use `((UpperTheory.V.Lev.ssCalc K Ω A w h).2.2 _ _ _ ?_).2 w1` and prove the remaining obligations. Rewrite using `[← HL.one _ hc.1]`.
-
-Conclude with `HL.dim _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galois_character_of_algebraic_hecke :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (K Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (R : G K Ω →* GL (Fin n) (Qbar l)), Continuous R → (∃ HT, Af.HasHT R HT) → ∀ (art : Ideles K →* Gab K Ω) (κ : HChar K) (m : (K →+* ℂ) → ℤ) (μ : G K Ω →* (Qbar l)ˣ), IsGlobalArtin art → IsAlgPos κ m → Continuous μ → IsLAdicOf art ι κ m μ → (∃ HT, Af.HasHT (Af.tw R μ) HT) ∧ ∀ (w : Plc K) (τ τ' : SmIrr (GL (Fin n) (w.adicCompletion K))), Af.LocGlob ι R w τ → Nonempty (τ'.ρ.Equiv (twRep τ.ρ (CuspSub.locDet n κ w))) → Af.LocGlob ι (Af.tw R μ) w τ' := by

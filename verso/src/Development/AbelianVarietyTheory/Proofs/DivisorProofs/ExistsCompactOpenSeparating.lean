@@ -10,18 +10,18 @@ namespace GlobalTheory.FinSepChar
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `Prod.ext rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem pairA_zero_zero : pairA F 0 (0 : Af F) = 0 := Prod.ext rfl rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext (neg_zero (G := Ainf F)).symm rfl`.
+A detailed English derivation is pending.
 -/
 theorem pairA_zero_neg (b : Af F) : pairA F 0 (-b) = -pairA F 0 b :=
   Prod.ext (neg_zero (G := Ainf F)).symm rfl
 
 /- English proof (translation)
-Rewrite using `[← map_mul, mul_inv_cancel₀ ha, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_mul_inv {a : F} (ha : a ≠ 0) :
     algebraMap F (FiniteAdeleRing (𝓞 F) F) a * algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹ = 1 := by
@@ -41,7 +41,7 @@ def ann (ψ : AddChar (AF F) ℂ) (κ : Type) [Fintype κ] (L : AddSubgroup (κ 
     rw [neg_dotProduct, pairA_zero_neg, AddChar.map_neg_eq_inv, ha y hy, inv_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ann {ψ : AddChar (AF F) ℂ} {κ : Type} [Fintype κ] {L : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)}
     {x : κ → FiniteAdeleRing (𝓞 F) F} : x ∈ ann ψ κ L ↔ ∀ y ∈ L, ψ (pairA F 0 (x ⬝ᵥ y)) = 1 := Iff.rfl
@@ -59,9 +59,9 @@ def scaledInt (κ : Type) (a : FiniteAdeleRing (𝓞 F) F) : AddSubgroup (κ →
     rw [mul_neg]; exact Subring.neg_mem _ (hu i)
 
 /- English proof (translation)
-Establish `h : (scaledInt κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)) = ⋂ i, (fun y : κ → FiniteAdeleRing (𝓞 F) F => a * y i) ⁻¹' (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))`. Use extensionality with `y`. Simplify using `only [Set.mem_iInter, Set.mem_preimage]`. Conclude with `Iff.rfl`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_iInter_of_finite fun i => GroundTheory.Global.isOpen_integralFiniteAdeles.preimage (continuous_const.mul (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_scaledInt (κ : Type) [Fintype κ] (a : FiniteAdeleRing (𝓞 F) F) :
     IsOpen (scaledInt κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)) := by
@@ -80,31 +80,25 @@ namespace GlobalTheory.FinSepChar
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite `hN` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hsub⟩` from `hN`. Establish `hW : (⋂ i, t i) ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)` using `Filter.iInter_mem.mpr ht`. Take `⟨d, hd0, hd⟩` from `GroundTheory.Global.exists_forall_mul_mem_of_mem_nhds hW`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.AnnCompactStd.exists_mul_mem_of_forall hψ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he0, he⟩` from `GlobalTheory.AnnCompactStd.exists_psi_fin_trivial hψ`. Establish `hinj : ∀ a : 𝓞 F, a ≠ 0 → algebraMap (𝓞 F) F a ≠ 0` using `fun a ha => (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mpr ha`. Use `set cc := algebraMap (𝓞 F) F c with hcc`. Use `set dd := algebraMap (𝓞 F) F d with hdd`. Use `set ee := algebraMap (𝓞 F) F e with hee`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `algebraMap_mul_inv (F := F) (hinj c hc0)`. Establish `hD` using `algebraMap_mul_inv (F := F) (hinj d hd0)`. Establish `hE` using `algebraMap_mul_inv (F := F) (hinj e he0)`. Use `set ι := algebraMap F (FiniteAdeleRing (𝓞 F) F) with hι`. Use `set O := GroundTheory.Global.integralFiniteAdeles (𝓞 F) F with hO`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set L := scaledInt (F := F) κ (ι cc * ι dd) with hL`. Establish `hLo : IsOpen (L : Set (κ → FiniteAdeleRing (𝓞 F) F))` using `isOpen_scaledInt κ _`. Use `⟨ann ψ κ L, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `set δ := ι ee⁻¹ * (ι cc⁻¹ * ι dd⁻¹) with hδ`. Establish `hVo : IsOpen (scaledInt (F` using `F) κ δ : Set (κ → FiniteAdeleRing (𝓞 F) F)) := isOpen_scaledInt κ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hVU : (scaledInt (F` using `F) κ δ : Set (κ → FiniteAdeleRing (𝓞 F) F)) ⊆ ann ψ κ L := by`. Introduce `x hx y hy`. Establish `hsum : x ⬝ᵥ y = ι ee * ∑ i, (δ * x i) * ((ι cc * ι dd) * y i)`. Rewrite using `[dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hδ]`. Take the linear combination `(-(x i * y i * (ι cc * ι dd) * (ι cc⁻¹ * ι dd⁻¹))) * hE + (-(x i * y i * ι dd * ι dd⁻¹)) * hC + (-(x i * y i)) * hD`. Rewrite using `[hsum]`. Conclude with `he _ (Subring.sum_mem _ fun i _ => Subring.mul_mem _ (hx i) (hy i))`. Conclude with `AddSubgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hVo.mem_nhds (scaledInt (F := F) κ δ).zero_mem) hVU)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `GlobalTheory.AnnCompactStd.isCompact_annihilator F ψ hψ κ L hLo`. Introduce `x hx`. Apply `hsub` to reduce the goal to its premises. Introduce `i _`. Establish `hz : ∀ s ∈ O, ψ (pairA F 0 ((ι cc⁻¹ * ι dd⁻¹ * x i) * s)) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Establish `hy : (Pi.single i (ι cc⁻¹ * ι dd⁻¹ * s) : κ → FiniteAdeleRing (𝓞 F) F) ∈ L`. Introduce `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_eq_same]`. Establish `: ι cc * ι dd * (ι cc⁻¹ * ι dd⁻¹ * s) = s`. Take the linear combination `(ι dd * ι dd⁻¹ * s) * hC + s * hD`. Rewrite using `[this]`. Conclude with `hs`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hk, mul_zero]`. Conclude with `Subring.zero_mem _`. Establish `h1` using `hx _ hy`. Rewrite `h1` using `[dotProduct_single]`. Rewrite using `[show ι cc⁻¹ * ι dd⁻¹ * x i * s = x i * (ι cc⁻¹ * ι dd⁻¹ * s) by ring]`.
-
-Conclude with `h1`. Establish `h2` using `hc _ hz`. Establish `h3` using `hd _ h2`. Establish `h4 : ι dd * (ι cc * (ι cc⁻¹ * ι dd⁻¹ * x i)) = x i`. Take the linear combination `(ι dd * ι dd⁻¹ * x i) * hC + x i * hD`.
-
-Rewrite `h3` using `[h4]`. Conclude with `Set.mem_iInter.mp h3 i`. Introduce `x₀ hx₀`. Rewrite `hx₀` using `[mem_ann]`. Use `push_neg at hx₀`.
-
-Take `⟨y, hy, hne⟩` from `hx₀`. Conclude with `⟨y, fun u hu => hu y hy, hne⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compact_open_separating {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (κ : Type) [Fintype κ]
     {N : Set (κ → Af F)} (hN : N ∈ 𝓝 (0 : κ → Af F)) : ∃ U : AddSubgroup (κ → Af F),
@@ -180,7 +174,7 @@ theorem exists_compact_open_separating {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ
 end GlobalTheory.FinSepChar
 
 /- English proof (translation)
-Introduce `_ _ _ _ hψ κ _ _ hN` and use `GlobalTheory.FinSepChar.exists_compact_open_separating hψ κ hN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinSepChar.finite_chars_separate : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ (κ : Type) [Fintype κ], ∀ N ∈ nhds (0 : κ → Af F), ∃ U : AddSubgroup (κ → Af F),

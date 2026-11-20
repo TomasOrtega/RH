@@ -22,11 +22,11 @@ section equiv
 variable {R R' : Rep k r}
 
 /- English proof (translation)
-Unfold `PI.UpqRep.dsig`. Set `L : R.H ≃L[ℝ] R'.H` to `ContinuousLinearEquiv.equivOfInverse ((U.toContinuousLinearEquiv : R.H →L[ℂ] R'.H).restrictScalars ℝ) ((U.symm.toContinuousLinearEquiv : R'.H →L[ℂ] R.H).restrictScalars ℝ) (fun x => U.symm_apply_apply x) (fun x => U.apply_symm_apply x)`. Establish `e : (fun t : ℝ => R'.σ (NormedSpace.exp ((t : ℂ) • X)) (U v)) = L ∘ (fun t : ℝ => R.σ (NormedSpace.exp ((t : ℂ) • X)) v)`. Use function extensionality and compare the values at `t`. Establish `hm : NormedSpace.exp ((t : ℂ) • X) ∈ GG k r` using `CCRuleCW.exp_mem_UH _ _ (CCRuleCW.lie_smul _ X hX t)`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show _ = U (R.σ (NormedSpace.exp ((t : ℂ) • X)) v)`. Rewrite using `[hU _ hm]`. Rewrite using `[e]`. Unfold `deriv`. Rewrite using `[ContinuousLinearEquiv.comp_fderiv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem dsig_equiv (U : R.H ≃ₗᵢ[ℂ] R'.H) (hU : ∀ g ∈ GG k r, ∀ x, U (R.σ g x) = R'.σ g (U x))
     {X : Mx k r} (hX : PI.UpqRep.InLieHpk k r X) (v : R.H) :
@@ -49,9 +49,9 @@ theorem dsig_equiv (U : R.H ≃ₗᵢ[ℂ] R'.H) (hU : ∀ g ∈ GG k r, ∀ x, 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons X W ih`. Establish `hW' : ∀ Y ∈ W, PI.UpqRep.InLieHpk k r Y` using `fun Y hY => hW Y (List.mem_cons_of_mem _ hY)`. Use `show PI.UpqRep.dsig R'.σ X (PI.UpqRep.dsigW R'.σ W (U v)) = U (PI.UpqRep.dsig R.σ X _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih hW', dsig_equiv U hU (hW X List.mem_cons_self)]`.
+A detailed English derivation is pending.
 -/
 theorem dsigW_equiv (U : R.H ≃ₗᵢ[ℂ] R'.H) (hU : ∀ g ∈ GG k r, ∀ x, U (R.σ g x) = R'.σ g (U x))
     (W : List (Mx k r)) (hW : ∀ X ∈ W, PI.UpqRep.InLieHpk k r X) (v : R.H) :
@@ -64,13 +64,11 @@ theorem dsigW_equiv (U : R.H ≃ₗᵢ[ℂ] R'.H) (hU : ∀ g ∈ GG k r, ∀ x,
     rw [ih hW', dsig_equiv U hU (hW X List.mem_cons_self)]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨O, Fn, hO, hgO, hF, hag⟩` from `hv g₀ hg₀`. Set `L : R.H →L[ℝ] R'.H` to `(U.toContinuousLinearEquiv.toContinuousLinearMap).restrictScalars ℝ`. Use `⟨O, fun x => L (Fn x), hO, hgO, L.contDiff.comp_contDiffOn hF, fun x hx hxH => ?_⟩` and prove the remaining obligations. Use `show R'.σ x (U v) = U (Fn x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hU x hxH]`. Conclude with `congrArg U (hag x hx hxH)`. Use `add v _ w _ := map_add _ _ _`. Use `smul a v _ := map_smul _ _ _`. Use `cont W hW := by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, [W], ?_, fun v _ => ?_⟩` and prove the remaining obligations. Introduce `w hw Y hY`. Rewrite `hY` using `[List.mem_singleton.mp hw]`. Conclude with `hW Y hY`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, one_mul]`.
-
-Rewrite using `[dsigW_equiv U hU W hW v, LinearIsometryEquiv.norm_map]`.
+A detailed English derivation is pending.
 -/
 theorem smMap_of_equiv (U : R.H ≃ₗᵢ[ℂ] R'.H) (hU : ∀ g ∈ GG k r, ∀ x, U (R.σ g x) = R'.σ g (U x)) :
     SmMap R R' (fun v => U v) where
@@ -93,7 +91,7 @@ theorem smMap_of_equiv (U : R.H ≃ₗᵢ[ℂ] R'.H) (hU : ∀ g ∈ GG k r, ∀
       rw [dsigW_equiv U hU W hW v, LinearIsometryEquiv.norm_map]
 
 /- English proof (translation)
-Introduce `g hg y`. Apply `U.injective` to reduce the goal to its premises. Rewrite using `[hU g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_intertwines (U : R.H ≃ₗᵢ[ℂ] R'.H) (hU : ∀ g ∈ GG k r, ∀ x, U (R.σ g x) = R'.σ g (U x)) :
     ∀ g ∈ GG k r, ∀ y, U.symm (R'.σ g y) = R.σ g (U.symm y) := by
@@ -107,14 +105,14 @@ instance subZero_subsingleton (n : ℕ) : Subsingleton (Sub n 0) :=
   ⟨fun I J => Subtype.ext (by rw [Finset.card_eq_zero.mp I.2, Finset.card_eq_zero.mp J.2])⟩
 
 /- English proof (translation)
-Unfold `BranchingSupport.cmp`. Conclude with `Matrix.det_isEmpty`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cmp_zero_apply {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (I J : Sub n 0) : cmp 0 g I J = 1 := by
   unfold BranchingSupport.cmp
   exact Matrix.det_isEmpty
 
 /- English proof (translation)
-Rewrite using `[Finset.card_eq_zero.mp I.2]`. Use function extensionality and compare the values at `i`. Simplify using `[eZ]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eZ_sub_zero {n : ℕ} (I : Sub n 0) : eZ I.1 = 0 := by
   rw [Finset.card_eq_zero.mp I.2]
@@ -130,7 +128,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons X W ih => show PI.UpqRep.dsig R.σ X (PI.UpqRep.dsigW R.σ W 0) = 0`. Rewrite using `[ih]`. Simplify using `[PI.UpqRep.dsig]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dsigW_zero (R : Rep k r) (W : List (Mx k r)) : PI.UpqRep.dsigW (k := k) (r := r) R.σ W 0 = 0 := by
   induction W with
@@ -141,7 +139,7 @@ theorem dsigW_zero (R : Rep k r) (W : List (Mx k r)) : PI.UpqRep.dsigW (k := k) 
     simp [PI.UpqRep.dsig]
 
 /- English proof (translation)
-The claim follows from `R'.smSub.zero_mem add _ _ _ _ := (add_zero 0).symm smul a _ _ := (smul_zero a).symm cont W _ := ⟨0, [], by simp, fun v _ => by simp [dsigW_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem smMap_zero (R R' : Rep k r) : SmMap R R' (fun _ => 0) where
   mem _ _ := R'.smSub.zero_mem
@@ -150,15 +148,13 @@ theorem smMap_zero (R R' : Rep k r) : SmMap R R' (fun _ => 0) where
   cont W _ := ⟨0, [], by simp, fun v _ => by simp [dsigW_zero]⟩
 
 /- English proof (translation)
-Establish `hu` using `(Gp91.GlobalTheory.T.discreteSeries_unitary_smooth_basic hK k r ε m' R' hR').2.2.1`. Take `⟨C, Ws, hWs, hb⟩` from `hT.cont [] (by simp)`. Use `⟨fun x hx x' hx' y _ => ?_, fun a x hx y _ => ?_, fun x _ y _ y' _ => ?_, fun a x _ y _ => ?_, fun g hg x hx y _ => ?_, C, Ws, [[]], ?_, fun x hx y _ => ?_⟩` and prove the remaining obligations. Use `show ⟪y, T (x + x')⟫_ℂ = ⟪y, T x⟫_ℂ + ⟪y, T x'⟫_ℂ`. Rewrite using `[hT.add x hx x' hx', inner_add_right]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ⟪y, T (a • x)⟫_ℂ = a * ⟪y, T x⟫_ℂ`. Rewrite using `[hT.smul a x hx, inner_smul_right]`. Use `show ⟪y + y', T x⟫_ℂ = ⟪y, T x⟫_ℂ + ⟪y', T x⟫_ℂ`. Rewrite using `[inner_add_left]`. Use `show ⟪a • y, T x⟫_ℂ = star a * ⟪y, T x⟫_ℂ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inner_smul_left]`. Both sides reduce to the same expression. Use `show ⟪R'.σ g y, T (R.σ g x)⟫_ℂ = ⟪y, T x⟫_ℂ`. Rewrite using `[hTg g hg x hx, hu g hg]`. Introduce `W hW X hX`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `List.mem_append.mp hW with h | h` into its components or cases. Conclude with `hWs W h X hX`. Rewrite `hX` using `[List.mem_singleton.mp h]`. Simplify using `at hX`. Establish `hb' : ‖T x‖ ≤ C * (Ws.map fun W => ‖PI.UpqRep.dsigW (k` using `k) (r := r) R.σ W x‖).sum := hb x hx`.
-
-Establish `e : (([[]] : List (List (Mx k r))).map fun W => ‖PI.UpqRep.dsigW (k` using `k) (r := r) R'.σ W y‖).sum = ‖y‖ := by`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Both sides reduce to the same expression. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isInvForm_of_smMap (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bool} {m' : Fin (2 * r + k + 1) → ℝ}
     {R R' : Rep k r} (hR' : R'.IsDG ε m') {T : R.H → R'.H} (hT : SmMap R R' T)
@@ -195,23 +191,21 @@ theorem isInvForm_of_smMap (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bo
       _ = _ := by ring
 
 /- English proof (translation)
-Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Establish `hP : PoulsenG` using `hH.2.2.2.2.2.1`. Establish `hTs : ∀ s, SmMap (RI1 a) (RI2 s) (fun y => ∑ c, pr2 s c (io1 a c y))`. Introduce `s`. Establish `hc : ∀ c, SmMap (RI1 a) (RI2 s) (fun y => pr2 s c (io1 a c y))` using `fun c => (Gp91.GlobalTheory.T.smooth_maps_closure hK k r ε (m1 a) mS (m2 s) (RI1 a) S (RI2 s) (hd1 a) hS (hd2 s)).2.1 _ _ (h1.io_sm a c) (h2.pr_sm s c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ t : Finset ι, SmMap (RI1 a) (RI2 s) (fun y => ∑ c ∈ t, pr2 s c (io1 a c y))`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using smMap_zero (RI1 a) (RI2 s)`. Consider the case `insert c t hc' ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `(Gp91.GlobalTheory.T.smooth_maps_closure hK k r ε (m1 a) (m2 s) (m2 s) (RI1 a) (RI2 s) (RI2 s) (hd1 a) (hd2 s) (hd2 s)).2.2.1 _ _ 1 (hc c) ih` as an intermediate fact. Simplify `this` using `[Finset.sum_insert hc']`. Conclude with `key univ`. Establish `hTg : ∀ s, ∀ g ∈ GG k r, ∀ y ∈ (RI1 a).sm, ∑ c, pr2 s c (io1 a c ((RI1 a).σ g y)) = (RI2 s).σ g (∑ c, pr2 s c (io1 a c y))`. Introduce `s g hg y hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `h1.io_eq a g hg y hy`. Establish `e' : ∀ c, io1 a c ((RI1 a).σ g y) = act ρ S g (fun c => io1 a c y) c` using `fun c => congrFun e c`. Repeatedly rewrite using `[e']`. Conclude with `h2.pr_eq s g hg _ fun c => (h1.io_sm a c).mem y hy`. Assume the negation of the conclusion as `hno`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzero : ∀ s, ∀ y ∈ (RI1 a).sm, ∑ c, pr2 s c (io1 a c y) = 0`. Introduce `s y hy`. Establish `hB` using `isInvForm_of_smMap hK (hd2 s) (hTs s) (hTg s)`. Break down `(hP k r ε (m1 a) (m2 s) (RI1 a) (RI2 s) (hd1 a) (hd2 s)).2 _ hB with h0 | ⟨U, hU⟩` into its components or cases. Conclude with `inner_self_eq_zero.mp (h0 y hy _ ((hTs s).mem y hy))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hs : s = a`. Substitute `hs` using the available equality. Conclude with `absurd ⟨U, hU⟩ hno`. Conclude with `absurd (Gp91.GlobalTheory.T.discrete_series_parameter_unique hH k r ε _ _ _ _ (hd1 a) (hd2 s) U hU) (hne s hs)`. Take `⟨-, -, -, -, h5, -, h7, ⟨w, hw, hwK, -⟩, -⟩` from `Gp91.GlobalTheory.T.discreteSeries_unitary_smooth_basic hK k r ε _ _ (hd1 a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hwsm : w ∈ (RI1 a).sm` using `h5 w (h7 w hwK)`. Establish `hx : ∀ c, io1 a c w ∈ S.sm` using `fun c => (h1.io_sm a c).mem w hwsm`. Establish `hio : ∀ c, io1 a c w = 0`. Introduce `c`. Rewrite using `[← h2.sum_io_pr _ hx c]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hzero s w hwsm]`. Conclude with `Gp91.GlobalTheory.TensOrth.SmMap_zero (h2.io_sm s c)`. Establish `h3` using `h1.pr_io a w hwsm`. Simplify using `only [hio, Gp91.GlobalTheory.TensOrth.SmMap_zero (h1.pr_sm a _), Finset.sum_const_zero] at h3`.
-
-Rewrite `hw` using `[← h3, norm_zero]`. Conclude with `zero_ne_one hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv (hH : HypsG) {ε : Fin (2 * r + k + 1) → Bool} {κ ι : Type} [Fintype ι] [DecidableEq ι]
     [Fintype κ] [DecidableEq κ] {ρ : Mx k r → Matrix ι ι ℂ} {S : Rep k r} {mS : Fin (2 * r + k + 1) → ℝ}
@@ -273,13 +267,13 @@ instance subZero_unique (n : ℕ) : Unique (Sub n 0) where
   uniq _ := Subsingleton.elim _ _
 
 /- English proof (translation)
-Use `⟨fun I _ y => (U I).symm y, fun I _ x => U I x, fun _ => 1, ⟨⟨fun I _ => smMap_of_equiv (U I).symm (symm_intertwines (U I) (hU I)), fun I _ => smMap_of_equiv (U I) (hU I), ?_, ?_, ?_, ?_, ?_⟩, fun _ => Or.inl rfl, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `I g hg y _`. Use function extensionality and compare the values at `c`. Simplify using `only [act, cmp_zero_apply, one_smul, Fintype.sum_unique]`. Conclude with `symm_intertwines (U I) (hU I) g hg y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I g hg x _`. Simplify using `only [act, cmp_zero_apply, one_smul, Fintype.sum_unique]`. Conclude with `hU I g hg _`. Introduce `x _ c`. Simplify using `only [Fintype.sum_unique, LinearIsometryEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subsingleton.elim c default]`. Introduce `I y _`. Simplify using `only [Fintype.sum_unique, LinearIsometryEquiv.apply_symm_apply]`. Introduce `I J h`. Conclude with `absurd (Subsingleton.elim I J) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `I y _ y' _`. Simplify using `only [hh, cmp_zero_apply, one_mul, Fintype.sum_unique, LinearIsometryEquiv.inner_map_map]`. Simplify using the standard rewrite rules. Introduce `I J h`. Conclude with `absurd (Subsingleton.elim I J) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tensH_of_equiv (R : Rep k r) (RI : Sub (2 * r + k + 1) 0 → Rep k r)
     (U : ∀ I, R.H ≃ₗᵢ[ℂ] (RI I).H) (hU : ∀ I, ∀ g ∈ GG k r, ∀ x, U I (R.σ g x) = (RI I).σ g (U I x)) :
@@ -308,9 +302,9 @@ theorem tensH_of_equiv (R : Rep k r) (RI : Sub (2 * r + k + 1) 0 → Rep k r)
     exact absurd (Subsingleton.elim I J) h
 
 /- English proof (translation)
-Unfold `n1`. Establish `h1 : ∀ i, ((x + (Pi.single a z : Fin n → ℤ)) i).natAbs ≤ (x i).natAbs + ((Pi.single a z : Fin n → ℤ) i).natAbs` using `fun i => Int.natAbs_add_le _ _`. Establish `h2 : ∑ i, ((Pi.single a z : Fin n → ℤ) i).natAbs = 1`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[hz]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem lOneNorm_add_single_unit_le {n : ℕ} (x : Fin n → ℤ) (a : Fin n) (z : ℤ) (hz : z.natAbs = 1) :
     n1 (x + Pi.single a z) ≤ n1 x + 1 := by
@@ -328,7 +322,7 @@ theorem lOneNorm_add_single_unit_le {n : ℕ} (x : Fin n → ℤ) (a : Fin n) (z
     _ = ∑ i, (x i).natAbs + 1 := by rw [Finset.sum_add_distrib, h2]
 
 /- English proof (translation)
-Establish `e : x - Pi.single a 1 = x + Pi.single a (-1)`. Rewrite using `[sub_eq_add_neg, Pi.single_neg]`. Rewrite using `[e]`. Conclude with `lOneNorm_add_single_unit_le x a (-1) rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lOneNorm_sub_single_one_le {n : ℕ} (x : Fin n → ℤ) (a : Fin n) : n1 (x - Pi.single a 1) ≤ n1 x + 1 := by
   have e : x - Pi.single a 1 = x + Pi.single a (-1) := by
@@ -341,21 +335,19 @@ end GlobalTheory.TrivWedge
 namespace GlobalTheory.TrivWedge
 
 /- English proof (translation)
-Introduce `hH k r lam u b bv ga h q0 F F' ν _ hF hF' hq`. Establish `hZ : ZuckG` using `hH.2.2.2.2.1`. Set `a : Fin (2 * r + k + 1)` to `⟨0, by omega⟩`. Establish `hμ : n1 (ν + Pi.single a 1) + 1 ≤ q0`. Use `lOneNorm_add_single_unit_le ν a 1 rfl` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hμs : ∀ s, n1 (ν + Pi.single a 1 - Pi.single s 1) ≤ q0` using `fun s => by`. Use `lOneNorm_sub_single_one_le (ν + Pi.single a 1) s` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hG2 : IsFamG lam q0 (Function.update F ν (F' ν))`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `x hx`. Distinguish the cases in `hx' : x = ν`. Substitute `hx'` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hF' x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hx']`. Conclude with `hF x hx`. Establish `hμne : ν + Pi.single a 1 ≠ ν`. Introduce `he`. Use `congrFun he a` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `at this`. Take `⟨io1, pr1, h1⟩` from `(hZ k r (PI.BesselPeriodGGP.eps48 k r) lam q0 F (fun x hx => hF x hx) (ν + Pi.single a 1)).2 hμ`. Establish `h2'` using `(hZ k r (PI.BesselPeriodGGP.eps48 k r) lam q0 (Function.update F ν (F' ν)) (fun x hx => hG2 x hx) (ν + Pi.single a 1)).2 hμ`. Rewrite `h2'` using `[Function.update_of_ne hμne]`. Take `⟨io2, pr2, h2⟩` from `h2'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU` using `exists_equiv hH (hF _ (show n1 (ν + Pi.single a 1) ≤ q0 by omega)) h1 h2 (m1 := fun s i => lam i + (((ν + Pi.single a 1 - Pi.single s 1 : Fin (2 * r + k + 1) → ℤ) i : ℤ) : ℝ)) (m2 := fun s i => lam i + (((ν + Pi.single a 1 - Pi.single s 1 : Fin (2 * r + k + 1) → ℤ) i : ℤ) : ℝ)) ( …`. Introduce `s hs he`. Use `congrFun he s` as an intermediate fact. Simplify using `[Pi.single_apply, hs] at this`. Use the proof step `linarith)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hU` using `[add_sub_cancel_right, Function.update_self]`. Establish `hUI : ∀ I : Sub (2 * r + k + 1) 0, ∃ U : (F ν).H ≃ₗᵢ[ℂ] (F' (ν + eZ I.1)).H, ∀ g ∈ GG k r, ∀ x, U ((F ν).σ g x) = (F' (ν + eZ I.1)).σ g (U x)`. Introduce `I`. Rewrite using `[eZ_sub_zero I, add_zero]`. Conclude with `hU`.
-
-Use `choose U hU' using hUI`. Conclude with `tensH_of_equiv (F ν) _ U hU'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensH_trivial : BranchingSupport.HypsG → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (F F' : (Fin (2 * r + k + 1) → ℤ) → BranchingSupport.Rep k r) (ν : Fin (2 * r + k + 1) → ℤ), BranchingSupport.Num k r lam u b bv ga h q0 → BranchingSupport.IsFamG lam q0 F → BranchingSupport.IsFamG lam q0 F' → BranchingSupport.n1 ν + 2 ≤ q0 → ∃ io pr ep, BranchingSupport.TensH (BranchingSupport.cmp 0) (BranchingSupport.cmp 0 (Formalism.QuantumDeterminants.Hpk k r)) (F ν) (fun I : BranchingSupport.Sub (2 * r + k + 1) 0 => F' (ν + BranchingSupport.eZ I.1)) io pr ep := by
   intro hH k r lam u b bv ga h q0 F F' ν _ hF hF' hq

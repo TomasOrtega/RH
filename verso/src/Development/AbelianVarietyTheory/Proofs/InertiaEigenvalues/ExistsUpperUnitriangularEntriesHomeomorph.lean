@@ -13,9 +13,9 @@ def strictUpper (x : {p : Fin n × Fin n // p.1 < p.2} → R) : Matrix (Fin n) (
   Matrix.of fun i j => if h : i < j then x ⟨(i, j), h⟩ else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[strictUpper]`. Introduce `i j hij`. Establish `h1 : ¬ i < j` using `not_lt.2 (le_of_lt hij)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : i ≠ j` using `ne_of_gt hij`. Simplify using `[strictUpper, h1, h2, Matrix.one_apply_ne h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem det_one_add_strictUpper (x : {p : Fin n × Fin n // p.1 < p.2} → R) :
     (1 + strictUpper R n x).det = 1 := by
@@ -34,7 +34,7 @@ def unitOf (x : {p : Fin n × Fin n // p.1 < p.2} → R) : GL (Fin n) R where
   inv_val := by rw [Matrix.adjugate_mul, det_one_add_strictUpper, one_smul]
 
 /- English proof (translation)
-Use `(GlobalTheory.SmGL.mem_unipB R).2 ⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : ¬ i < j` using `not_lt.2 (le_of_lt hji)`. Establish `h2 : i ≠ j` using `ne_of_gt hji`. Simplify using `[unitOf, strictUpper, h1, Matrix.one_apply_ne h2]`. Simplify using `[unitOf, strictUpper]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem unitOf_mem (x : {p : Fin n × Fin n // p.1 < p.2} → R) :
     unitOf R n x ∈ GlobalTheory.SmGL.unipB R (Fin n) := by
@@ -48,19 +48,17 @@ end GlobalTheory.UnipCoords
 
 open GlobalTheory.UnipCoords in
 /- English proof (translation)
-Introduce `R _ _ _ n`. Establish `hX : Continuous (fun x : {p : Fin n × Fin n // p.1 < p.2} → R => strictUpper R n x)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i < j`. Simplify using `only [strictUpper, Matrix.of_apply, h, dite_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_apply _`. Simplify using `only [strictUpper, Matrix.of_apply, h, dite_false]`. Conclude with `continuous_const`. Set `e : (GlobalTheory.SmGL.unipB R (Fin n)) ≃ ({p : Fin n × Fin n // p.1 < p.2} → R)` to `{ toFun := fun u p => ((u : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) p.1.1 p.1.2 invFun := fun x => ⟨unitOf R n x, unitOf_mem R n x⟩ left_inv := by`. Introduce and unpack `⟨u, hu⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB R).1 hu`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 + strictUpper R n _) i j = _`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `[strictUpper, h, Matrix.one_apply_ne (ne_of_lt h)]`. Substitute `h` using the available equality. Simplify using `[strictUpper, h2]`. Establish `h' : ¬ i < j` using `not_lt.2 (le_of_lt h)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[strictUpper, h', Matrix.one_apply_ne (ne_of_gt h), h1 i j h]`. Use `right_inv := by`. Introduce `x`. Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `(1 + strictUpper R n x) p.1.1 p.1.2 = x p`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[strictUpper, p.2, Matrix.one_apply_ne (ne_of_lt p.2)] }`. Use `⟨{ toEquiv := e, continuous_toFun := ?_, continuous_invFun := ?_ }, fun u => rfl⟩` and prove the remaining obligations. Use `continuous_pi fun p => ?_` and prove the remaining obligations. Establish `hv : Continuous (fun u : GlobalTheory.SmGL.unipB R (Fin n) => ((u : GL (Fin n) R) : Matrix (Fin n) (Fin n) R))` using `(Units.continuous_val (M := Matrix (Fin n) (Fin n) R)).comp continuous_subtype_val`. Conclude with `(continuous_apply_apply p.1.1 p.1.2).comp hv`.
-
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.add hX`. Conclude with `(continuous_const.add hX).matrix_adjugate`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnipCoords.unipCoordsHomeomorph : ∀ (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] (n : ℕ),
     ∃ e : (GlobalTheory.SmGL.unipB R (Fin n)) ≃ₜ ({p : Fin n × Fin n // p.1 < p.2} → R),

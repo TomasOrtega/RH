@@ -29,14 +29,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FrameOf
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ w hw` and use `Formalism.BasicNotions.Examples₂.LB.exists_embAt w hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_padicEmbedding_detecting_prime_of_lPlace : ∀ (K : Type) [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] (w : HeightOneSpectrum (𝓞 K)),
     ((l : ℕ) : 𝓞 K) ∈ w.asIdeal → ∃ e0 : K →+* PadicAlgCl l, ∀ x : 𝓞 K, x ∈ w.asIdeal ↔ ‖e0 (x : K)‖ < 1 :=
   fun _ _ _ _ _ w hw => Formalism.BasicNotions.Examples₂.LB.exists_embAt w hw
 
 /- English proof (translation)
-Introduce `K _ _ l _ e0 σ`. Establish `hR : Cardinal.mk K ≤ Cardinal.aleph0` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ K).trans (max_le Cardinal.mk_le_aleph0 le_rfl)`. Establish `hc` using `GlobalTheory.cardinalMk_padicAlgCl_eq_continuum l`. Conclude with `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.extEmb_equiv_comp e0 σ hR (by rw [hc]; exact Cardinal.aleph0_lt_continuum) (by rw [hc, Cardinal.mk_complex])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem g_io : ∀ (K : Type) [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] (e0 : K →+* PadicAlgCl l) (σ : K →+* ℂ),
     ∃ io : PadicAlgCl l ≃+* ℂ, ∀ x, io (e0 x) = σ x := by
@@ -48,11 +48,11 @@ theorem g_io : ∀ (K : Type) [Field K] [NumberField K] (l : ℕ) [Fact l.Prime]
     (by rw [hc, Cardinal.mk_complex])
 
 /- English proof (translation)
-Introduce `l _ Lf`. Use `⟨fun a b h => Subtype.ext (Subtype.ext h), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨(a : Lf).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Formalism.BasicNotions.Examples₂.LB.isIntegral_iff_norm_le]`. Establish `ha : IsIntegral ℤ_[l] (a : Lf)` using `a.2`. Conclude with `ha.map (Lf.val.restrictScalars ℤ_[l])`. Introduce and unpack `⟨hx, hn⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[← Formalism.BasicNotions.Examples₂.LB.isIntegral_iff_norm_le]`. Establish `hi : IsIntegral ℤ_[l] (⟨x, hx⟩ : Lf)` using `(isIntegral_algHom_iff (Lf.val.restrictScalars ℤ_[l]) Subtype.val_injective).1 hn`. Conclude with `⟨⟨⟨x, hx⟩, hi⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem g_ring : ∀ (l : ℕ) [Fact l.Prime] (Lf : IntermediateField ℚ_[l] (PadicAlgCl l)),
     Function.Injective (intEmb Lf) ∧ Set.range (intEmb Lf) = {x | x ∈ Lf ∧ ‖x‖ ≤ 1} := by
@@ -72,11 +72,11 @@ theorem g_ring : ∀ (l : ℕ) [Fact l.Prime] (Lf : IntermediateField ℚ_[l] (P
     exact ⟨⟨⟨x, hx⟩, hi⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `l _ Lf M z hM hz hzM`. Establish `hn : ‖z‖ = 1`. Establish `h1 : ‖z‖ ^ M = 1` using `by rw [← norm_pow, hzM, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg z) hM.ne').1 h1`. Establish `hr` using `(g_ring l Lf).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : z ∈ Set.range (intEmb Lf)` using `by rw [hr]; exact ⟨hz, hn.le⟩`. Establish `hzi : z⁻¹ ∈ Set.range (intEmb Lf)`. Rewrite using `[hr]; exact ⟨inv_mem hz, by rw [norm_inv, hn, inv_one]⟩`. Take `⟨a, ha⟩` from `hz'`. Take `⟨b, hb⟩` from `hzi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz0 : z ≠ 0` using `by rintro rfl; simp at hn`. Establish `hab : a * b = 1` using `(g_ring l Lf).1 (by rw [map_mul, ha, hb, mul_inv_cancel₀ hz0, map_one])`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem g_root : ∀ (l : ℕ) [Fact l.Prime] (Lf : IntermediateField ℚ_[l] (PadicAlgCl l)) (M : ℕ) (z : PadicAlgCl l), 0 < M →
     z ∈ Lf → z ^ M = 1 → ∃ u : (intR Lf)ˣ, intEmb Lf u = z := by
@@ -95,13 +95,11 @@ theorem g_root : ∀ (l : ℕ) [Fact l.Prime] (Lf : IntermediateField ℚ_[l] (P
   exact ⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha⟩
 
 /- English proof (translation)
-Introduce `l _ ι N O _ emb K _ f hinj h1 hmul hr`. Use `choose g hg using hr`. Establish `hmap : ∀ κ τ, (Matrix.of fun a c => g κ τ a c).map emb = f κ τ` using `fun κ τ => by`. Use extensionality with `a c`. Simplify using `[hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinjM : ∀ A B : Matrix (Fin N) (Fin N) O, A.map emb = B.map emb → A = B` using `fun A B h => by`. Use extensionality with `a c`. Conclude with `hinj (congrFun (congrFun h a) c)`. Set `m : K → ι → Matrix (Fin N) (Fin N) O` to `fun κ τ => Matrix.of fun a c => g κ τ a c`. Establish `hm1 : ∀ τ, m 1 τ = 1` using `fun τ => hinjM _ _ (by rw [hmap, h1, Matrix.map_one _ (map_zero _) (map_one _)])`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmm : ∀ κ κ' τ, m (κ * κ') τ = m κ τ * m κ' τ` using `fun κ κ' τ => hinjM _ _ (by rw [hmap, Matrix.map_mul, hmap, hmap, hmul])`. Set `u : K → ι → GL (Fin N) O` to `fun κ τ => ⟨m κ τ, m κ⁻¹ τ, by rw [← hmm, mul_inv_cancel, hm1], by rw [← hmm, inv_mul_cancel, hm1]⟩`. Use `⟨{ toFun := u, map_one' := ?_, map_mul' := ?_ }, fun κ τ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Conclude with `Units.ext (hm1 τ)`.
-
-Introduce `κ κ'`. Use function extensionality and compare the values at `τ`. Conclude with `Units.ext (hmm κ κ' τ)`. Conclude with `hmap κ τ`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem g_lift : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) (N : ℕ) (O : Type) [CommRing O] (emb : O →+* PadicAlgCl l) (K : Type) [Group K]
     (f : K → ι → Matrix (Fin N) (Fin N) (PadicAlgCl l)), Function.Injective emb → (∀ τ, f 1 τ = 1) →
@@ -125,13 +123,13 @@ theorem g_lift : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) (N : ℕ) (O : Type) [
   · exact hmap κ τ
 
 /- English proof (translation)
-Introduce `l _ ι _ N O _ emb K _ kap ψ io sh hinj hu`. Use `choose u hu using hu`. Establish `hU : ∀ κ κ', u (κ * κ') = u κ * u κ'` using `fun κ κ' => Units.ext (hinj (by`. Simplify using `only [hu, map_mul, Units.val_mul]))`. Establish `hU1 : u 1 = 1` using `Units.ext (hinj (by simp only [hu, map_one, Units.val_one]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `U : K →* Oˣ` to `{ toFun := u, map_one' := hU1, map_mul' := hU }`. Set `dτ : ι → (K →* Oˣ)` to `fun τ => Matrix.GeneralLinearGroup.det.comp ((Pi.evalMonoidHom _ τ).comp kap)`. Use `⟨U⁻¹ * ∏ τ, dτ τ ^ (-sh τ), fun κ => ?_⟩` and prove the remaining obligations. Set `m : Oˣ →* (PadicAlgCl l)ˣ` to `Units.map (emb : O →* PadicAlgCl l)`. Establish `key : m ((U⁻¹ * ∏ τ, dτ τ ^ (-sh τ)) κ) * ∏ τ, m (dτ τ κ) ^ sh τ = (m (U κ))⁻¹`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.finsetProd_apply, MonoidHom.zpow_apply, map_mul, map_inv, map_prod, map_zpow, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[mul_assoc, inv_mul_cancel, mul_one]`. Establish `key'` using `congrArg Units.val key`. Simplify using `only [Units.val_mul, Units.coe_prod, Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val, m, Units.coe_map, MonoidHom.coe_coe] at key'`. Establish `e2 : ∀ τ, emb (kap κ τ).val.det = emb ((dτ τ κ : Oˣ) : O)` using `fun τ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[dτ, Matrix.GeneralLinearGroup.val_det_apply]`. Simplify using `only [e2]`. Rewrite using `[key']`. Establish `hUk : emb ((U κ : Oˣ) : O) = io.symm (ψ κ : ℂ)` using `hu κ`. Rewrite using `[hUk, map_inv₀, RingEquiv.apply_symm_apply, inv_mul_cancel₀ (Units.ne_zero _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_chi : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] (N : ℕ) (O : Type) [CommRing O] (emb : O →+* PadicAlgCl l) (K : Type)
     [Group K] (kap : K →* (ι → GL (Fin N) O)) (ψ : K →* ℂˣ) (io : PadicAlgCl l ≃+* ℂ) (sh : ι → ℤ), Function.Injective emb →
@@ -161,13 +159,11 @@ theorem g_chi : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] (N : ℕ) 
   rw [hUk, map_inv₀, RingEquiv.apply_symm_apply, inv_mul_cancel₀ (Units.ne_zero _)]
 
 /- English proof (translation)
-Introduce `K _ _ l _ e0 M hM`. Set `b` to `Module.finBasis ℚ K`. Set `T : Set (PadicAlgCl l)` to `Set.range (fun i => e0 (b i)) ∪ ((Polynomial.nthRootsFinset M (1 : PadicAlgCl l) : Finset _) : Set _)`. Establish `hT : T.Finite` using `(Set.finite_range _).union (Finset.finite_toSet _)`. Use `haveI : Finite T := hT.to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] T) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `hle : IntermediateField.adjoin ℚ_[l] (Set.range e0 ∪ {z : PadicAlgCl l | z ^ M = 1}) ≤ IntermediateField.adjoin ℚ_[l] T`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `z (⟨y, rfl⟩ | hz)`. Rewrite using `[← b.sum_repr y, map_sum]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IntermediateField.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, eq_ratCast, map_ratCast]`. Conclude with `IntermediateField.mul_mem _ (SubfieldClass.ratCast_mem _ _) (IntermediateField.subset_adjoin _ _ (Or.inl ⟨i, rfl⟩))`. Conclude with `IntermediateField.subset_adjoin _ _ (Or.inr (by`. Simplify `hz))` using `[Polynomial.mem_nthRootsFinset hM]`.
-
-Conclude with `FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion hle).injective`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem g_fin : ∀ (K : Type) [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] (e0 : K →+* PadicAlgCl l) (M : ℕ), 0 < M →
     FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] (Set.range e0 ∪ {z : PadicAlgCl l | z ^ M = 1})) := by
@@ -195,7 +191,7 @@ end GlobalTheory.FrameOf
 namespace GlobalTheory.FrameOf
 
 /- English proof (translation)
-Unfold `InRange GlobalTheory.BigOn.AtPts at h1 h2 ⊢`. Use `Closed.imp (Closed.and h1 h2) fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `EvPt.and h.1 h.2`. Conclude with `⟨x0, fun x hx hle i p hp hM j P W hD hN w hw hR => ⟨(hx0 x hx hle i p hp).1 hM j P W hD hN w hw hR, (hx0 x hx hle i p hp).2 hM j P W hD hN w hw hR⟩⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inRange_and {Q1 Q2 : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (_ : Pt Fm x hx i)
       (_ : Fin (Fm.D x i).R.m) (_ : Par) (_ : Wts (Fm.D x i).what₂.Tau), HeightOneSpectrum (𝓞 (Fm.D x i).what₂.LL) → Prop}
@@ -208,7 +204,7 @@ theorem inRange_and {Q1 Q2 : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.
     ⟨(hx0 x hx hle i p hp).1 hM j P W hD hN w hw hR, (hx0 x hx hle i p hp).2 hM j P W hD hN w hw hR⟩⟩
 
 /- English proof (translation)
-Unfold `InRange GlobalTheory.BigOn.AtPts at h1 ⊢`. Use `Closed.imp h1 fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx hle i p hp hM j P W hD hN w hw hR => f Fm x hx i p j P W w hD (hx0 x hx hle i p hp hM j P W hD hN w hw hR)⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inRange_imp {Q1 Q2 : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (_ : Pt Fm x hx i)
       (_ : Fin (Fm.D x i).R.m) (_ : Par) (_ : Wts (Fm.D x i).what₂.Tau), HeightOneSpectrum (𝓞 (Fm.D x i).what₂.LL) → Prop}
@@ -221,7 +217,7 @@ theorem inRange_imp {Q1 Q2 : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.
   exact ⟨x0, fun x hx hle i p hp hM j P W hD hN w hw hR => f Fm x hx i p j P W w hD (hx0 x hx hle i p hp hM j P W hD hN w hw hR)⟩
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plc_mem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
     ((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : 𝓞 K) ∈ w.asIdeal := by
@@ -229,9 +225,9 @@ theorem plc_mem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (�
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Establish `h2 : ((X * Y).map f).submatrix rk rk = (X.map f).submatrix rk rk * (Y.map f).submatrix rk rk`. Rewrite using `[Matrix.map_mul]`. Conclude with `(Matrix.submatrix_mul_equiv _ _ rk rk.toEquiv rk).symm`. Establish `hb : bs.val * (bs⁻¹).val = 1` using `Units.mul_inv bs`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc bs.val (bs⁻¹).val, hb, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_submatrix_map_mul_eq_mul_conj_submatrix {A B : Type} [CommRing A] [CommRing B] {n N : ℕ} (f : A →+* B) (bs : GL (Fin N) B) (rk : Fin N ≃o Fin n)
     (X Y : Matrix (Fin n) (Fin n) A) :
@@ -245,7 +241,7 @@ theorem conj_submatrix_map_mul_eq_mul_conj_submatrix {A B : Type} [CommRing A] [
   rw [← Matrix.mul_assoc bs.val (bs⁻¹).val, hb, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h2 : (1 : Matrix (Fin n) (Fin n) B).submatrix rk rk = 1` using `Matrix.submatrix_one_equiv rk.toEquiv`. Rewrite using `[Matrix.map_one f (map_zero f) (map_one f), h2, Matrix.mul_one]`. Conclude with `Units.inv_mul bs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_submatrix_map_one_eq_one {A B : Type} [CommRing A] [CommRing B] {n N : ℕ} (f : A →+* B) (bs : GL (Fin N) B) (rk : Fin N ≃o Fin n) :
     (bs⁻¹).val * ((1 : Matrix (Fin n) (Fin n) A).map f).submatrix rk rk * bs.val = 1 := by
@@ -259,7 +255,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-The claim follows from `conj_submatrix_map_one_eq_one (ev τ) (bs τ) rk`.
+A detailed English derivation is pending.
 -/
 theorem kapMat_one (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) {l N : ℕ} [Fact l.Prime]
     (ev : D.what₂.Tau → ((FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗[D.host.F] D.host.E →+* PadicAlgCl l))
@@ -268,7 +264,7 @@ theorem kapMat_one (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) {l N : ℕ} [Fa
   conj_submatrix_map_one_eq_one (ev τ) (bs τ) rk
 
 /- English proof (translation)
-The claim follows from `conj_submatrix_map_mul_eq_mul_conj_submatrix (ev τ) (bs τ) rk (matOf j (κ : Bridge.Gf (Vc D j))) (matOf j (κ' : Bridge.Gf (Vc D j)))`.
+A detailed English derivation is pending.
 -/
 theorem kapMat_mul (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) {l N : ℕ} [Fact l.Prime]
     (ev : D.what₂.Tau → ((FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗[D.host.F] D.host.E →+* PadicAlgCl l))
@@ -277,15 +273,15 @@ theorem kapMat_mul (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) {l N : ℕ} [Fa
   conj_submatrix_map_mul_eq_mul_conj_submatrix (ev τ) (bs τ) rk (matOf j (κ : Bridge.Gf (Vc D j))) (matOf j (κ' : Bridge.Gf (Vc D j)))
 
 /- English proof (translation)
-Introduce `inst`. Take `⟨e0, he0⟩` from `exists_padicEmbedding_detecting_prime_of_lPlace D.what₂.LL (Formalism.EigenvalueLevelCeiling.plc w) w (plc_mem w)`. Take `⟨io, hio⟩` from `g_io D.what₂.LL (Formalism.EigenvalueLevelCeiling.plc w) e0 D.what₂.embLL`. Take `⟨b, sh, hR⟩` from `hr`. Establish `hev0 : ∀ τ, ∃ ev : (FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗[D.host.F] D.host.E →+* PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w), EvOk (incOf D e0 b τ) ev` using `fun τ => GlobalTheory.T.exists_finiteAdeleEmbeddingExtension D.host.F D.host.E (Formalism.EigenvalueLevelCeiling.plc w) (incOf D e0 b τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose ev hev using hev0`. Set `rk : Fin P.Nr ≃o Fin (Vc D j).rank` to `Fin.castOrderIso hD`. Take `⟨bs, hb1, hbs⟩` from `hk e0 b ev rk he0 hev`. Take `⟨M, hM, hMχ⟩` from `hc`. Set `Lf : IntermediateField ℚ_[Formalism.EigenvalueLevelCeiling.plc w] (PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w))` to `IntermediateField.adjoin ℚ_[Formalism.EigenvalueLevelCeiling.plc w] (Set.range e0 ∪ {z : PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w) | z ^ M = 1})`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℚ_[Formalism.EigenvalueLevelCeiling.plc w] Lf := g_fin D.what₂.LL (Formalism.EigenvalueLevelCeiling.plc w) e0 M hM`. Establish `hLf : IntermediateField.adjoin ℚ_[Formalism.EigenvalueLevelCeiling.plc w] (Set.range e0) ≤ Lf` using `IntermediateField.adjoin.mono _ _ _ Set.subset_union_left`. Establish `hring` using `g_ring (Formalism.EigenvalueLevelCeiling.plc w) Lf`. Take `⟨kap, hkap⟩` from `g_lift (Formalism.EigenvalueLevelCeiling.plc w) D.what₂.Tau P.Nr (intR Lf) (intEmb Lf) (levJ p j (p.R.mu w)) (kapMat p j (p.R.mu w) ev bs rk) hring.1 (kapMat_one p j _ ev bs rk) (kapMat_mul p j _ ev bs rk) (fun κ τ a c => by`. Rewrite using `[hring.2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hLf (hbs κ τ a c).1, (hbs κ τ a c).2⟩)`. Establish `hroot : ∀ κ, (io.symm ((levChi p j (p.R.mu w) κ : ℂˣ) : ℂ)) ^ M = 1` using `fun κ => by`. Rewrite using `[← map_pow, hMχ κ, map_one]`. Take `⟨chi, hchi⟩` from `g_chi (Formalism.EigenvalueLevelCeiling.plc w) D.what₂.Tau P.Nr (intR Lf) (intEmb Lf) (levJ p j (p.R.mu w)) kap (levChi p j (p.R.mu w)) io sh hring.1 (fun κ => g_root (Formalism.EigenvalueLevelCeiling.plc w) Lf M _ hM (IntermediateField.subset_adjoin _ _ (Or.inr (hroot κ))) (hroo …`. Establish `hC : ChoiceOk p j w e0 b io ev bs rk sh kap chi` using `⟨he0, fun x => hLf (IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩), hio, hev, hkap, hchi⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨R, hRe, hRix⟩` from `hR e0 io ev bs rk Lf kap chi hC hb1`. Use `⟨frameOf p j (p.R.mu w) (Formalism.EigenvalueLevelCeiling.plc w) P.Nr Lf kap chi, R, incOf D e0 b, ⟨⟨hring.1, Lf, inferInstance, hring.2⟩, GlobalTheory.T.finiteDoubleClasses_rational_liftFormsLevel p j (p.R.mu w), ht, hp e0 b io ev bs rk sh Lf kap chi hC, hcm e0 b io ev bs rk sh …` and prove the remaining obligations. Rewrite using `[hRe, hRix]`. Apply the tactic sequence `exact { rk := rk e := MulEquiv.refl _ io := io ev := ev bs := bs sh := sh liftFrame_embedding_base := hio half := hh e0 b lab := fun τ => by cases b <;> simp [incOf] ev_rat := fun τ => (hev τ).1 ev_int := fun τ => (hev τ).2.1 rat := fun _ => Iff.rfl lev := fun _ => Iff.rfl kap := …`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem frameAt_of (p : PtAt ex Csz) (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau) (w : HeightOneSpectrum (𝓞 D.what₂.LL))
     (hD : P.Nr = (Vc D j).rank) (hh : HalfAt D (Formalism.EigenvalueLevelCeiling.plc w)) (hk : KapAt p j P w) (hc : ChiAt p j w)
@@ -346,7 +342,7 @@ theorem frameAt_of (p : PtAt ex Csz) (j : Fin D.R.m) (P : Par) (W : Wts D.what�
 end Point
 
 /- English proof (translation)
-Introduce `hS`. Establish `h` using `inRange_and hS (inRange_and GlobalTheory.T.half_at_small_place (inRange_and GlobalTheory.T.kappa_at_small_place (inRange_and GlobalTheory.T.character_at_small_place (inRange_and GlobalTheory.T.tame_at_small_place (inRange_and GlobalTheory.T.permutation_at_small_place (inRange_and …`. Use `inRange_imp h fun Fm x hx i p j P W w hD hq => ?_` and prove the remaining obligations. Take `⟨hs, hh, hk, hc, ht, hp, hcm, hr⟩` from `hq`. Conclude with `frameAt_of p j P W w hD.Nr (hh hs) (hk hs) (hc hs) (ht hs) (hp hs) (hcm hs) (hr hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frameSt_of_smallSt : SmallSt → FrameSt := by
   intro hS

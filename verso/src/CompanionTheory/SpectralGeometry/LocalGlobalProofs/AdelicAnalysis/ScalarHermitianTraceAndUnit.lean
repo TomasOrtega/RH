@@ -9,7 +9,7 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalT
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermScal_entry {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (R : Type) [CommRing R] [Algebra F R] (s : R) :
@@ -18,13 +18,13 @@ theorem hermScal_entry {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E �
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ h2 hf σ R _ _ β`. Establish `hfin : Module.Finite F E` using `Module.finite_of_finrank_pos (by omega)`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hf`. Apply the tactic sequence `have hent := hermScal_entry σ R (algebraMap F R β)`. Use `⟨?_, fun hβ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hent, Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis R b) (algebraMap F R β)]`. Establish `h20 : (2 : F) ≠ 0`. Introduce `h`. Apply `h2` to reduce the goal to its premises. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hhalf : algebraMap F R (1 / 2) * algebraMap F R 2 = 1`. Rewrite using `[← map_mul, one_div, inv_mul_cancel₀ h20, map_one]`. Rewrite using `[Fintype.card_fin, nsmul_eq_mul]`. Establish `h2R : ((2 : ℕ) : R) = algebraMap F R 2`. Rewrite using `[map_ofNat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[h2R, ← mul_assoc, hhalf, one_mul]`. Rewrite using `[Matrix.det_fin_one, hent]`. Conclude with `((isUnit_iff_ne_zero.2 hβ).map (algebraMap F R)).map (algebraMap R (R ⊗[F] E))`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_det : ∀ (F E : Type) [Field F] [Field E] [Algebra F E], (1 / 2 : F) ≠ 0 → Module.finrank F E = 2 → ∀ (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] (β : F), algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) ((hermScal R σ (algebraMap F R β) : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0) = algebraMap F R β ∧ (β ≠ 0 → IsUnit ((hermScal R σ (algebraMap F R β) : Matrix (Fin 1) (Fin 1) (R ⊗[F] E))).det) := by
   intro F E _ _ _ h2 hf σ R _ _ β

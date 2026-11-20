@@ -19,7 +19,7 @@ open MvPowerSeries
 variable {k : Type} [CommRing k] {d n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = a` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `hd : p.1.degree + p.2.degree = a.degree` using `by rw [← hp', map_add]`. Rewrite using `[h p.1 (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_mul_congr (N : ℕ) (f g E : PS k n d)
     (h : ∀ a : Fin n × Fin d →₀ ℕ, a.degree ≤ N → coeff a f = coeff a g)
@@ -32,9 +32,9 @@ theorem coeff_mul_congr (N : ℕ) (f g E : PS k n d)
   rw [h p.1 (by omega)]
 
 /- English proof (translation)
-Unfold `DofN`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp' : p.1 + p.2 = mo` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `hd : p.1.degree + p.2.degree = mo.degree` using `by rw [← hp', map_add]`. Rewrite using `[coeff_pderiv, coeff_pderiv, h]`. Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coeff_DofN_congr (F : Fin d → PS k 2 d) (b : Fin n) (v : Fin d → k) (N : ℕ) (f g : PS k n d)
     (h : ∀ mo : Fin n × Fin d →₀ ℕ, mo.degree ≤ N + 1 → coeff mo f = coeff mo g)
@@ -53,9 +53,9 @@ theorem coeff_DofN_congr (F : Fin d → PS k 2 d) (b : Fin n) (v : Fin d → k) 
   omega
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => intro N f g h mo hmo`. Conclude with `h mo hmo`. Consider the case `succ r ih`. Introduce `N f g h mo hmo`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply]`. Conclude with `ih N _ _ (coeff_DofN_congr F b v (N + r) f g h) mo hmo`.
+A detailed English derivation is pending.
 -/
 theorem coeff_iterate_DofN_congr (F : Fin d → PS k 2 d) (b : Fin n) (v : Fin d → k) (r : ℕ) :
     ∀ (N : ℕ) (f g : PS k n d),
@@ -70,9 +70,9 @@ theorem coeff_iterate_DofN_congr (F : Fin d → PS k 2 d) (b : Fin n) (v : Fin d
     exact ih N _ _ (coeff_DofN_congr F b v (N + r) f g h) mo hmo
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => intro N h mo hmo`. Conclude with `h mo hmo`. Consider the case `cons l L ih`. Introduce `N h mo hmo`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.foldr_cons, List.foldr_cons]`. Use `coeff_iterate_DofN_congr F (cp l) (u l) (m l) N _ _ (ih (N + m l) fun mo' h' => h mo' ?_) mo hmo` and prove the remaining obligations. Rewrite using `[List.map_cons, List.sum_cons]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem coeff_foldr_DofN_congr (F : Fin d → PS k 2 d) {Ix : Type} (cp : Ix → Fin n) (u : Ix → Fin d → k) (m : Ix → ℕ)
     (f g : PS k n d) (L : List Ix) :
@@ -91,7 +91,7 @@ theorem coeff_foldr_DofN_congr (F : Fin d → PS k 2 d) {Ix : Type} (cp : Ix →
     omega
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply]`. Unfold `DmonN`. Use `coeff_foldr_DofN_congr F cp u m f g _ 0 (fun mo' h' => h mo' ?_) 0 (by simp)` and prove the remaining obligations. Rewrite `h'` using `[Finset.sum_map_toList, ← Finsupp.degree_eq_sum, zero_add]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem constantCoeff_DmonN_congr (F : Fin d → PS k 2 d) {Ix : Type} [Fintype Ix] (cp : Ix → Fin n) (u : Ix → Fin d → k)
     (m : Ix →₀ ℕ) (f g : PS k n d)
@@ -103,9 +103,9 @@ theorem constantCoeff_DmonN_congr (F : Fin d → PS k 2 d) {Ix : Type} [Fintype 
   rwa [Finset.sum_map_toList, ← Finsupp.degree_eq_sum, zero_add] at h'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f g`. Unfold `DofN`. Simplify using `only [map_add, mul_add, Finset.sum_add_distrib]`. Introduce `c f`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `DofN`. Simplify using `only [Derivation.map_smul, mul_smul_comm, Finset.smul_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem isLinearMap_DofN (F : Fin d → PS k 2 d) (b : Fin n) (v : Fin d → k) :
     IsLinearMap k (DofN F b v : PS k n d → PS k n d) := by
@@ -118,9 +118,9 @@ theorem isLinearMap_DofN (F : Fin d → PS k 2 d) (b : Fin n) (v : Fin d → k) 
     simp only [Derivation.map_smul, mul_smul_comm, Finset.smul_sum]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact ⟨fun _ _ => rfl, fun _ _ => rfl⟩`. Consider the case `succ r ih`. Prove the components needed by the constructor for the conclusion. Introduce `f g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.iterate_succ_apply, hφ.map_add, ih.map_add]`. Introduce `c f`. Simplify using `only [Function.iterate_succ_apply, hφ.map_smul, ih.map_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isLinearMap_iterate {M : Type} [AddCommGroup M] [Module k M] (φ : M → M) (hφ : IsLinearMap k φ) (r : ℕ) :
     IsLinearMap k φ^[r] := by
@@ -134,11 +134,11 @@ theorem isLinearMap_iterate {M : Type} [AddCommGroup M] [Module k M] (φ : M →
       simp only [Function.iterate_succ_apply, hφ.map_smul, ih.map_smul]
 
 /- English proof (translation)
-Unfold `DmonN`. Proceed by induction on `(Finset.univ : Finset Ix).toList with`. Consider the case `nil => exact ⟨fun _ _ => rfl, fun _ _ => rfl⟩`. Consider the case `cons l L ih`. Establish `hl` using `isLinearMap_iterate _ (isLinearMap_DofN F (cp l) (u l)) (m l)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `f g`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih.map_add, hl.map_add]`. Introduce `c f`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[ih.map_smul, hl.map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLinearMap_DmonN (F : Fin d → PS k 2 d) {Ix : Type} [Fintype Ix] (cp : Ix → Fin n) (u : Ix → Fin d → k)
     (m : Ix →₀ ℕ) : IsLinearMap k (DmonN F cp u m : PS k n d → PS k n d) := by
@@ -156,7 +156,7 @@ theorem isLinearMap_DmonN (F : Fin d → PS k 2 d) {Ix : Type} [Fintype Ix] (cp 
       rw [ih.map_smul, hl.map_smul]
 
 /- English proof (translation)
-Unfold `DpolyN`. Rewrite using `[map_sum]`. Simplify using `only [map_mul, constantCoeff_C]`. Use `Finset.sum_subset hS fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm, zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_DpolyN_eq (F : Fin d → PS k 2 d) {Ix : Type} [Fintype Ix] (cp : Ix → Fin n) (u : Ix → Fin d → k)
     (P : MvPolynomial Ix k) (f : PS k n d) (S : Finset (Ix →₀ ℕ)) (hS : P.support ⊆ S) :
@@ -173,17 +173,17 @@ namespace GlobalTheory.PowGerm
 open MvPowerSeries
 
 /- English proof (translation)
-Introduce `R _ d O _ _ B k _ _ _ h w0 q n Ix _ cp u`. Use `⟨fun P f g hfg => ?_, fun P J _ c f => ?_, fun f J _ c P => ?_⟩` and prove the remaining obligations. Unfold `nabValN`. Rewrite using `[NabJet.constantCoeff_DpolyN_eq _ cp u P _ _ subset_rfl, NabJet.constantCoeff_DpolyN_eq _ cp u P _ _ subset_rfl]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `NabJet.constantCoeff_DmonN_congr _ cp u m _ _ fun mo hmo => ?_` and prove the remaining obligations. Use `NabJet.coeff_mul_congr P.totalDegree f g _ hfg mo (hmo.trans ?_)` and prove the remaining obligations. Use `MvPolynomial.le_totalDegree hm` as an intermediate fact. Rewrite using `[Finsupp.degree_apply]` and apply the resulting hypothesis.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Unfold `nabValN`. Simplify using `only [NabJet.constantCoeff_DpolyN_eq _ cp u P _ _ subset_rfl, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hl` using `NabJet.isLinearMap_DmonN (B.FK k) cp u m`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul, ← IsLinearMap.mk'_apply hl, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, IsLinearMap.mk'_apply, smul_eq_C_mul, map_mul, constantCoeff_C]`. Expand and normalize the polynomial expressions, which then agree. Unfold `nabValN set S : Finset (Ix →₀ ℕ) := (∑ j, c j • P j).support ∪ Finset.univ.biUnion fun j => (P j).support with hS`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Rewrite using `[NabJet.constantCoeff_DpolyN_eq _ cp u _ _ S Finset.subset_union_left]`. Establish `hj : ∀ j, (P j).support ⊆ S` using `fun j => (Finset.subset_biUnion_of_mem (fun j => (P j).support) (Finset.mem_univ j)).trans Finset.subset_union_right`. Simplify using `only [fun j => NabJet.constantCoeff_DpolyN_eq (B.FK k) cp u (P j) (f * FB.expS k ((q : k) • ∑ b, ev ![pt k d b] (B.hL k h w0))) S (hj j), Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.coeff_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabJet : NabJetSt := by
   intro R _ d O _ _ B k _ _ _ h w0 q n Ix _ cp u

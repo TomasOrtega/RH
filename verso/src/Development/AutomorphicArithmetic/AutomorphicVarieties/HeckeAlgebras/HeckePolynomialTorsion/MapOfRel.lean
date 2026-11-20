@@ -3,15 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W
 
 /- English proof (translation)
-Set `p : Pair r T` to `⟨D, ψ, hc, hred, fun v i => (hpsi v i).1, hrel.1, hrel.2.1, hrel.2.2⟩`. Take `⟨f, hf, -⟩` from `B.univ T p`. Use `⟨f, hf.1, hf.2, ?_⟩` and prove the remaining obligations. Set `κ' : ∀ v, Fin n → F.Iv v →* Tˣ` to `fun v i => (ψ v i).comp (F.Iv v).subtype`. Establish `hin : IsInert r κ'` using `fun v i => ⟨ψ v i, (hpsi v i).1, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨g, -, hu⟩` from `Λ.univ T κ' hin`. Establish `h1 : ∀ v i, pushCh ((f.comp (Λ.toPair B.u) : Λ.Λ →ₐ[O] T) : Λ.Λ →+* T) (Λ.κ v i) = κ' v i`. Introduce `v i`. Establish `e1` using `LamObj.toPair_spec r Λ B.u v i`. Establish `e2` using `hf.2 v i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use extensionality with `s`. Both sides reduce to the same expression. Use `_ = pushCh (f : B.B →+* T) ((B.u.ψ v i).comp (F.Iv v).subtype) := by rw [e1]`. Use `_ = (pushCh (f : B.B →+* T) (B.u.ψ v i)).comp (F.Iv v).subtype := by`.
+Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components. Both sides reduce to the same expression. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `s`. Both sides reduce to the same expression. Use `_ = κ' v i := by rw [e2]`. Establish `h2 : ∀ v i, pushCh (φ : Λ.Λ →+* T) (Λ.κ v i) = κ' v i` using `fun v i => (hpsi v i).2`. Establish `heq` using `(hu _ h1).trans (hu _ h2).symm`.
-
-Introduce `b`. Conclude with `DFunLike.congr_fun heq b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.JEx.map_of_rel {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O]
     [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r) {T : Type} [CommRing T] [Algebra O T]

@@ -18,9 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorsCharExt
 
 /- English proof (translation)
-Set `T : Subgroup G` to `(powMonoidHom q : G →* G).ker`. Set `f : T →* A` to `MonoidHom.mk' (fun g => χ g) fun g g' => hχ g g' g.2 g'.2`. Use `letI : DivisibleBy (Additive A) ℕ := divisibleByOfSMulRightSurj (Additive A) ℕ fun {n} hn a => by`. Take `⟨b, hb⟩` from `hA n hn a.toMul`. Conclude with `⟨Additive.ofMul b, congrArg Additive.ofMul hb⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `letI : DivisibleBy (Additive A) ℤ := AddGroup.divisibleByIntOfDivisibleByNat _`. Take `⟨k, hk⟩` from `(Module.Baer.of_divisible (Additive A)).extension_property_addMonoidHom (MonoidHom.toAdditive T.subtype) (fun a b h => Subtype.ext h) (MonoidHom.toAdditive f)`. Use `⟨MonoidHom.toAdditive.symm k, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hk (Additive.ofMul (⟨g, hg⟩ : T))`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_hom_extend {G A : Type} [CommGroup G] [CommGroup A]
     (hA : ∀ n : ℕ, n ≠ 0 → ∀ a : A, ∃ b : A, b ^ n = a) (q : ℕ) (χ : G → A)
@@ -52,19 +52,19 @@ def intV : ValuationSubring C where
       exact inv_le_one_of_one_le₀ h
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (ValuationRing ↥(intV C))`.
+A detailed English derivation is pending.
 -/
 theorem intO_valuationRing : ValuationRing ↥(intO C) := inferInstanceAs (ValuationRing ↥(intV C))
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsFractionRing ↥(intV C) C)`.
+A detailed English derivation is pending.
 -/
 theorem intO_isFractionRing : IsFractionRing ↥(intO C) C := inferInstanceAs (IsFractionRing ↥(intV C) C)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq ((a : ↥(intO C)) : C) (Nat.pos_of_ne_zero hn)`. Establish `h1 : ‖z‖ ≤ 1`. Establish `h : ‖((a : ↥(intO C)) : C)‖ ≤ 1` using `(a : ↥(intO C)).2`. Rewrite `h` using `[← hz, norm_pow]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hn).1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (⟨z, h1⟩ : ↥(intO C)) ^ n = a` using `Subtype.ext hz`. Establish `h3 : IsUnit (⟨z, h1⟩ : ↥(intO C))` using `(isUnit_pow_iff hn).1 (h2 ▸ a.isUnit)`. Conclude with `⟨h3.unit, Units.ext h2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intO_units_root [IsAlgClosed C] (n : ℕ) (hn : n ≠ 0) (a : (↥(intO C))ˣ) : ∃ b : (↥(intO C))ˣ, b ^ n = a := by
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq ((a : ↥(intO C)) : C) (Nat.pos_of_ne_zero hn)
@@ -79,14 +79,14 @@ theorem intO_units_root [IsAlgClosed C] (n : ℕ) (hn : n ≠ 0) (a : (↥(intO 
 end Ring
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem sp_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := Spec.map_id _
 
@@ -106,29 +106,29 @@ theorem pull_left {S S' : Scheme.{0}} {a : S ⟶ X} {a' : S' ⟶ X} (g : S' ⟶ 
     (w : Over.mk a ⟶ t.G) : (pull t g h w).left = g ≫ w.left := rfl
 
 /- English proof (translation)
-Establish `he : ∀ (S : Type) [CommRing S] (φ : R →+* S), spMap (φ.comp (e.symm : R' →+* R)) ≫ spMap (e : R →+* R') ≫ x = spMap φ ≫ x` using `fun S _ φ => by`. Rewrite using `[← Category.assoc, ← sp_comp]`. Use `congr 2`. Use extensionality with `r`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `pt : (B →ₐ[R'] R') → (Over.mk (spMap (algebraMap R R) ≫ x) ⟶ t.G)` to `fun σ => pull t (spMap ((e.symm : R' →+* R).comp σ.toRingHom)) (by`. Rewrite using `[← he R, ← Category.assoc, ← sp_comp]`. Use `congr 2`. Use extensionality with `r`. Use the proof step `simp) u`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hP : spMap (e.symm : R' →+* R) ≫ spMap (RingHom.id R') ≫ spMap (e : R →+* R') ≫ x = spMap (algebraMap R R) ≫ x`. Rewrite using `[← he R, ← Category.assoc, ← sp_comp]`. Establish `hpt : ∀ (σ : B →ₐ[R'] R') (w : Over.mk (spMap (RingHom.id R') ≫ spMap (e : R →+* R') ≫ x) ⟶ t.G), spMap σ.toRingHom ≫ u.left = w.left → pt σ = pull t _ hP w` using `fun σ w h => by ext1`. Rewrite using `[pull_left, pull_left, ← h, sp_comp, Category.assoc]`. Take `⟨b, hb₁, hb₂⟩` from `GlobalTheory.T.torsion_character_cocycle_descent E H X t R' (spMap (e : R →+* R') ≫ x) q B u hu (fun σ => Units.map (e : R →* R') (κ (pt σ))) (fun σ σ' σ'' w w' h h' h'' => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpt _ _ h, hpt _ _ h', hpt _ _ h'', map_mul, map_mul, map_mul])`. Set `χ : ∀ (S : Type) [CommRing S] [Algebra R S] [Module.Finite R S], (Over.mk (spMap (algebraMap R S) ≫ x) ⟶ t.G) → Sˣ` to `fun S _ _ _ w => if h : Thru t u.left ((algebraMap R S).comp (e.symm : R' →+* R)) w.left then Units.map (h.choose : B →* S) b else 1`. Establish `hχ : ∀ (S : Type) [CommRing S] [Algebra R S] [Module.Finite R S] (w : Over.mk (spMap (algebraMap R S) ≫ x) ⟶ t.G) (β : B →+* S), β.comp (algebraMap R' B) = (algebraMap R S).comp (e.symm : R' →+* R) → spMap β ≫ u.left = w.left → (χ S w : S) = β b` using `fun S _ _ _ w β h₁ h₂ => by`. Establish `h : Thru t u.left ((algebraMap R S).comp (e.symm : R' →+* R)) w.left` using `⟨β, h₁, h₂⟩`. Establish `h₃ : h.choose = β` using `hu.mono S _ _ (h.choose_spec.1.trans h₁.symm) (h.choose_spec.2.trans h₂.symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [χ, dif_pos h, h₃]`. Both sides reduce to the same expression. Use `⟨⟨χ, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `S _ _ _ w w' hw hw'`. Take `⟨β, h₁, h₂⟩` from `hall S w hw`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β', h₁', h₂'⟩` from `hall S w' hw'`. Take `⟨β'', h₁'', h₂''⟩` from `hall S (w * w') (by rw [mul_pow, hw, hw', _root_.one_mul])`. Establish `hc : 𝟙 _ ≫ spMap (algebraMap R S) ≫ x = spMap ((algebraMap R S).comp (e.symm : R' →+* R)) ≫ spMap (e : R →+* R') ≫ x`. Rewrite using `[he, Category.id_comp]`. Use `ext`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, hχ S _ β h₁ h₂, hχ S _ β' h₁' h₂', hχ S _ β'' h₁'' h₂'']`. Use `hb₂ S _ (pull t _ hc w) (pull t _ hc w') β β' β'' h₁ h₁' h₁'' ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[pull_left, Category.id_comp, h₂]`. Rewrite using `[pull_left, Category.id_comp, h₂']`. Rewrite using `[← map_mul, pull_left, Category.id_comp, h₂'']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S S' _ _ _ _ _ _ φ w w' hw h`. Take `⟨β, h₁, h₂⟩` from `hall S w hw`. Rewrite using `[hχ S _ β h₁ h₂, hχ S' w' (φ.toRingHom.comp β) ?_ ?_]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_assoc, h₁]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Simplify using the standard rewrite rules. Rewrite using `[sp_comp, Category.assoc, h₂, h]`. Introduce `w hw`. Take `⟨β, h₁, h₂⟩` from `hall R w hw`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `σ : B →ₐ[R'] R'` to `{ (e : R →+* R').comp β with commutes' := fun r => by`. Use `RingHom.congr_fun h₁ r` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Simplify using `[this] }`. Establish `h₃ : pt σ = w` using `by ext1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pull_left, ← h₂]`. Use `congr 2`. Use extensionality with `r`. Simplify using `[σ]`. Use `ext`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Use `(congrArg e (hχ R w β h₁ h₂)).trans ((hb₁ σ).trans ?_)` and prove the remaining obligations. Rewrite using `[h₃]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_char_of_finPart {R R' : Type} [CommRing R] [CommRing R'] [IsDomain R'] [IsIntegrallyClosed R']
     (e : R ≃+* R') (x : Sp R ⟶ X) (q : ℕ) {B : Type} [CommRing B] [Algebra R' B]
@@ -212,15 +212,15 @@ theorem exists_char_of_finPart {R R' : Type} [CommRing R] [CommRing R'] [IsDomai
     rw [h₃]; rfl
 
 /- English proof (translation)
-Take `⟨f, B, _, _, u, hf, hu, hfib⟩` from `GlobalTheory.T.exists_local_finite_torsion_splitting E H X t R x q hq (GlobalTheory.T.splitTors_algClosed_fraction_field E H X t R x q hq) (IsLocalRing.maximalIdeal R) inferInstance`. Establish `hf' : IsUnit f` using `by simpa using hf`. Set `e : R ≃+* Localization.Away f` to `(IsLocalization.atUnits R (Submonoid.powers f) (S := Localization.Away f) (Submonoid.powers_le.2 hf')).toRingEquiv`. Establish `hee : (e : R →+* Localization.Away f) = algebraMap R _` using `rfl`. Use `haveI : IsDomain (Localization.Away f) := e.symm.toMulEquiv.isDomain`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsIntegrallyClosed (Localization.Away f) := IsIntegrallyClosed.of_equiv e`. Use `exists_char_of_finPart t e x q u hu ?_ κ` and prove the remaining obligations. Introduce `S _ _ _ w hw`. Establish `hc : 𝟙 _ ≫ spMap (algebraMap R S) ≫ x = spMap ((algebraMap R S).comp (e.symm : Localization.Away f →+* R)) ≫ spMap (algebraMap R (Localization.Away f)) ≫ x`. Rewrite using `[Category.id_comp, ← Category.assoc, ← sp_comp, ← hee]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 2`. Use extensionality with `r`. Simplify using the standard rewrite rules. Establish `h` using `hu.isOpen S _ (pull t _ hc w) (by rw [← map_pow, hw, map_one]) fun 𝔪 h𝔪 => by`. Use `letI := Ideal.Quotient.field 𝔪`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : spMap (Ideal.Quotient.mk 𝔪) ≫ spMap ((algebraMap R S).comp (e.symm : Localization.Away f →+* R)) ≫ spMap (algebraMap R (Localization.Away f)) ≫ x = spMap ((Ideal.Quotient.mk 𝔪).comp ((algebraMap R S).comp (e.symm : Localization.Away f →+* R))) ≫ spMap (algebraMap R (Localiza …`. Rewrite using `[sp_comp _ (Ideal.Quotient.mk 𝔪), Category.assoc]`. Use `hfib (S ⧸ 𝔪) _ ?_ (pull t _ hd (pull t _ hc w)) (by rw [← map_pow, ← map_pow, hw, map_one, map_one])` and prove the remaining obligations. Rewrite using `[← IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := R) 𝔪), ← hee]`. Use extensionality with `r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.mem_ker, Ideal.mem_comap, ← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, RingEquiv.symm_apply_apply]`. Rewrite `h` using `[pull_left, Category.id_comp]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_char [IsLocallyNoetherian X] {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [CharZero R]
     [IsLocalRing R] [IsAlgClosed (FractionRing R)] (x : Sp R ⟶ X) (q : ℕ) (hq : q ≠ 0)
@@ -258,11 +258,9 @@ theorem exists_char [IsLocallyNoetherian X] {R : Type} [CommRing R] [IsDomain R]
   rwa [pull_left, Category.id_comp] at h
 
 /- English proof (translation)
-Introduce `E _ _ _ H X _ t C _ _ _ _ x q q' hq' hd c`. Use `haveI := intO_valuationRing C`. Use `haveI := intO_isFractionRing C`. Use `haveI : IsIntegrallyClosed ↥(intO C) := inferInstanceAs (IsIntegrallyClosed ↥(intV C))`. Use `haveI : IsAlgClosed (FractionRing ↥(intO C)) := IsAlgClosed.of_ringEquiv C _ (FractionRing.algEquiv ↥(intO C) C).symm.toRingEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, hκ⟩` from `exists_hom_extend (intO_units_root C) q (c.χ ↥(intO C)) (c.mul ↥(intO C))`. Take `⟨c', hc'⟩` from `exists_char t x q' hq' κ`. Take `⟨m, rfl⟩` from `hd`. Establish `up : ∀ {M : Type} [Monoid M] (g : M), g ^ q = 1 → g ^ (q * m) = 1` using `fun g h => by`. Rewrite using `[pow_mul, h, one_pow]`.
-
-Set `c'' : TorsChar t x q` to `⟨c'.χ, fun B _ _ _ g g' h h' => c'.mul B g g' (up g h) (up g' h'), fun B B' _ _ _ _ _ _ φ g g' h h' => c'.nat B B' φ g g' (up g h) h'⟩`. Conclude with `⟨c', GlobalTheory.T.torsionChar_eq_of_eq_on_torsion E H X t C x q (left_ne_zero_of_mul hq') c'' c fun w hw => (hc' w (up w hw)).trans (hκ w hw)⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] (x : Sp ↥(intO C) ⟶ X) (q q' : ℕ), q' ≠ 0 → q ∣ q' → ∀ c : TorsChar t x q, ∃ c' : TorsChar t x q', ∀ (B : Type) [CommRing B] [Algebra ↥(intO C) B] [Module.Finite ↥(intO C) B] (w : Over.mk (spMap (algebraMap ↥(intO C) B) ≫ x) ⟶ t.G), w ^ q = 1 → c'.χ B w = c.χ B w := by
   intro E _ _ _ H X _ t C _ _ _ _ x q q' hq' hd c

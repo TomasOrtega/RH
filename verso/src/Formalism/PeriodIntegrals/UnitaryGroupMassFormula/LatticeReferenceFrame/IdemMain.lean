@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeReferenceFrame.I
 namespace PI.ScRefExists.Id
 
 /- English proof (translation)
-The claim follows from `idemLift_of_steps locIdem adOfLoc fixInt tenStep`.
+A detailed English derivation is pending.
 -/
 theorem idemLift : PI.ScRefExists.Sk.IdemLift :=
   idemLift_of_steps locIdem adOfLoc fixInt tenStep

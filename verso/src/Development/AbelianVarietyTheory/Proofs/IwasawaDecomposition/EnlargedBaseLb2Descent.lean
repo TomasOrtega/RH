@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeightCounting.Up.HkCopy
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Consider the cases of `hO`. Consider the cases of `hc`. Substitute `hQ` using the available equality. Conclude with `⟨f, fun i i' b P P' hi hP => by cases hi; cases hP; rfl⟩`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_units_copy {T T' Q Q' : Type} {O : T → Type} {O' : T' → Type} [c : ∀ i, CommRing (O i)]
     [c' : ∀ i, CommRing (O' i)] (hT : T = T') (hO : HEq O O') (hc : HEq c c') (hQ : Q = Q')
@@ -21,13 +21,13 @@ theorem exists_units_copy {T T' Q Q' : Type} {O : T → Type} {O' : T' → Type}
   exact ⟨f, fun i i' b P P' hi hP => by cases hi; cases hP; rfl⟩
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Consider the cases of `hH`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem plE_eq {R R' : Ranks} (hR : R = R') {H : Host R} {H' : Host R'} (hH : HEq H H') : PlE H = PlE H' := by
   subst hR; cases hH; rfl
 
 /- English proof (translation)
-The claim follows from `exists_units_copy (eq_of_heq h.set.Tw) h.set.O h.set.crO (plE_eq h.gal.R h.gal.host) f`.
+A detailed English derivation is pending.
 -/
 theorem exists_cHk_copy {D D' : D7} (h : GlobalTheory.TwistChoice.SameExport D D')
     (f : ∀ (i : D.ntw.Tw) (_b : Bool) (_P : PlE D.host), (D.ntw.O i)ˣ) :
@@ -39,9 +39,9 @@ theorem exists_cHk_copy {D D' : D7} (h : GlobalTheory.TwistChoice.SameExport D D
 end GlobalTheory.HeightCounting.Up.HkCopy
 
 /- English proof (translation)
-Introduce `_ _ hL K B' f' T' w' _ _ _ B f T w _ _ _ _ _ _ _ P x lb P' _ x' l' _ N ι e hN x'' l'' ho _ _ _ _ _ _ _ _`. Establish `hD : Dof x'' = N.toD7` using `by show (w'.st x''.o.Z).toD7 = N.toD7`. Rewrite using `[ho]`. Both sides reduce to the same expression. Establish `hS : GlobalTheory.TwistChoice.SameExport (Dof x) (Dof x'')` using `hD ▸ hN.cp.toSameExport`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.HeightCounting.Up.HkCopy.exists_cHk_copy hS lb.b.Bs.cHk`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeightCounting.Up.hkCopyRestaged : PrN → SerN → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B' : Base} {f' : Top.Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'}, KPx B' f' → Forced K B' T' → Start K B' f' T' w' → ∀ (B : Base) (f : Top.Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl B B' → HEq f' f → Start K B f T w → HEq w'.px w.px → HEq w'.I.sel w.I.sel → HEq w'.I.J w.I.J → HEq w'.δ w.δ → ∀ (P : Pre2 K w) (x : St P) (lb : StrictHenselianAcyclic hL x) (P' : Pre2 K w'), Ext P.z P'.z → ∀ (x' : St P') (l' : LI hL x'), SameGal (Dof x) (Dof x') → ∀ (N : TwNew (Dof x')) (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0), CopyN (Dof x) N ι e → ∀ (x'' : St P') (l'' : LI hL x''), x''.o = oTw x' N → HEq x''.m.z.R.toRealDat.toLevCh (GlobalTheory.Mem.R3.Tr.levCh (a := x'.o.Z) (oTw x' N).Z x'.m.z.R.toRealDat.toLevCh) → HEq l''.a.A.row (N.row l'.a.A.row) → HEq l''.Pq l'.Pq → HEq l''.rat.S (N.rat l'.rat.S) → HEq l''.rat.In.Sb l'.rat.In.Sb → HEq l''.rat.In.hL l'.rat.In.hL → HEq l''.rat.In.eig l'.rat.In.eig → HEq l''.rat.In.θ l'.rat.In.θ → ∃ (cHk : ∀ (i : (Dof x'').ntw.Tw) (_b : Bool) (_P : PlE (Dof x'').host), ((Dof x'').ntw.O i)ˣ), (∀ (i : (Dof x).ntw.Tw) (i' : (Dof x'').ntw.Tw) (b : Bool) (P : PlE (Dof x).host) (P' : PlE (Dof x'').host), HEq i i' → HEq P P' → HEq (cHk i' b P') (lb.b.Bs.cHk i b P)) := by
   intro _ _ hL K B' f' T' w' _ _ _ B f T w _ _ _ _ _ _ _ P x lb P' _ x' l' _ N ι e hN x'' l'' ho _ _ _ _ _ _ _ _

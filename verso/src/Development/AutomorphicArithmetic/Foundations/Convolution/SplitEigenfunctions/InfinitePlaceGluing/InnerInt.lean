@@ -16,7 +16,7 @@ namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hM : Continuous ((AdeleBaseChange.adeleMap ℚ E).mapMatrix.toMonoidHom : Matrix (Fin 2) (Fin 2) (A ℚ) → Matrix (Fin 2) (Fin 2) (A E))` using `continuous_id.matrix_map AdeleBaseChange.continuous_adeleMap`. Conclude with `Continuous.units_map _ hM`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_em : Continuous (em E) := by
   have hM : Continuous ((AdeleBaseChange.adeleMap ℚ E).mapMatrix.toMonoidHom :
@@ -25,7 +25,7 @@ private theorem cont_em : Continuous (em E) := by
   exact Continuous.units_map _ hM
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (A ℚ) := GroundTheory.Automorphic.secondCountableTopology_adeleRing ℚ`. Use `haveI : SecondCountableTopology (A ℚ)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Conclude with `Units.isEmbedding_embedProduct.secondCountableTopology`.
+A detailed English derivation is pending.
 -/
 private theorem sc_idele : SecondCountableTopology (IdeleGroup ℚ) := by
   haveI : SecondCountableTopology (A ℚ) := GroundTheory.Automorphic.secondCountableTopology_adeleRing ℚ
@@ -33,14 +33,14 @@ private theorem sc_idele : SecondCountableTopology (IdeleGroup ℚ) := by
   exact Units.isEmbedding_embedProduct.secondCountableTopology
 
 /- English proof (translation)
-The claim follows from `hc.comp (cont_em.comp (Matrix.SpecialLinearGroup.continuous_toGL.mul continuous_const))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_in {φ : GL (Fin 2) (A E) → ℂ} (hc : Continuous φ) (t : (A ℚ)ˣ) :
     Continuous fun g : G1 ℚ => φ (em E (gl g * dM t)) :=
   hc.comp (cont_em.comp (Matrix.SpecialLinearGroup.continuous_toGL.mul continuous_const))
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using UpperTheory.ConvolutionTheory.R2.M.volD ℚ M⟩`. Conclude with `Integrable.of_bound (cont_in hc t).aestronglyMeasurable B (ae_of_all _ fun g => hB _)`.
+A detailed English derivation is pending.
 -/
 private theorem inner_int (M : Meas ℚ) {φ : GL (Fin 2) (A E) → ℂ} (hc : Continuous φ) {B : ℝ}
     (hB : ∀ g, ‖φ g‖ ≤ B) (t : (A ℚ)ˣ) :
@@ -49,11 +49,9 @@ private theorem inner_int (M : Meas ℚ) {φ : GL (Fin 2) (A E) → ℂ} (hc : C
   exact Integrable.of_bound (cont_in hc t).aestronglyMeasurable B (ae_of_all _ fun g => hB _)
 
 /- English proof (translation)
-Use `haveI := U.prob`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using UpperTheory.ConvolutionTheory.R2.M.volD ℚ M⟩`. Use `haveI := sc_idele`. Establish `hF : Continuous fun t : IdeleGroup ℚ => ∫ g in M.D, φ (em E (gl g * dM t)) ∂M.μ`. Use `continuous_of_dominated (bound := fun _ => B) ?_ ?_ (integrable_const B) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun t => (cont_in hc t).aestronglyMeasurable`. Conclude with `fun t => ae_of_all _ fun g => hB _`. Conclude with `ae_of_all _ fun g => hc.comp (cont_em.comp (continuous_const.mul UpperTheory.ConvolutionTheory.R2.continuous_dM))`. Establish `hχc : Continuous fun t : IdeleGroup ℚ => ((χ.1 t : ℂˣ) : ℂ)` using `Units.continuous_val.comp χ.2.1`. Use `Integrable.of_bound (hχc.mul hF).aestronglyMeasurable (B * (M.μ.restrict M.D).real Set.univ) (ae_of_all _ fun t => ?_)` and prove the remaining obligations.
-
-Rewrite using `[norm_mul, hχ, one_mul]`. Conclude with `norm_integral_le_of_norm_le_const (ae_of_all _ fun g => hB _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem outer_int (M : Meas ℚ) (U : UMeas) (χ : HChar ℚ) (hχ : ∀ a, ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1)
     {φ : GL (Fin 2) (A E) → ℂ} (hc : Continuous φ) {B : ℝ} (hB : ∀ g, ‖φ g‖ ≤ B) :
@@ -75,7 +73,7 @@ private theorem outer_int (M : Meas ℚ) (U : UMeas) (χ : HChar ℚ) (hχ : ∀
   exact norm_integral_le_of_norm_le_const (ae_of_all _ fun g => hB _)
 
 /- English proof (translation)
-Unfold `Per`. Rewrite using `[← integral_add (outer_int M U χ hχ h₁ b₁) (outer_int M U χ hχ h₂ b₂)]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Rewrite using `[integral_add (inner_int M h₁ b₁ t) (inner_int M h₂ b₂ t), mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem per_add (M : Meas ℚ) (U : UMeas) (χ : HChar ℚ) (hχ : ∀ a, ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1)
     {φ₁ φ₂ : GL (Fin 2) (A E) → ℂ} (h₁ : Continuous φ₁) (h₂ : Continuous φ₂) {B₁ B₂ : ℝ}
@@ -88,7 +86,7 @@ private theorem per_add (M : Meas ℚ) (U : UMeas) (χ : HChar ℚ) (hχ : ∀ a
   rw [integral_add (inner_int M h₁ b₁ t) (inner_int M h₂ b₂ t), mul_add]
 
 /- English proof (translation)
-Unfold `Per`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -102,7 +100,7 @@ private theorem per_smul (M : Meas ℚ) (U : UMeas) (χ : HChar ℚ) (c : ℂ) (
   ring
 
 /- English proof (translation)
-Simplify using `[Per]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem per_zero (M : Meas ℚ) (U : UMeas) (χ : HChar ℚ) :
     Per M U χ (0 : GL (Fin 2) (A E) → ℂ) = 0 := by
@@ -113,13 +111,13 @@ end UpperTheory.ConvolutionTheory.RankTwoDescent
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Introduce `E _ _ _ D P ω χ _ hω hχω hAdm M U hNo φ hφ`. Establish `hχ : ∀ a, ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1`. Introduce `a`. Establish `h` using `congrArg (fun u : ℂˣ => ‖(u : ℂ)‖) (hχω a)`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul, norm_pow, norm_mul, hω a, mul_one, Units.val_one, norm_one] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, h, rfl⟩` from `hx`. Conclude with `hNo f hf h`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact per_zero M U χ`. Consider the case `add x y hx hy ihx ihy`. Take `⟨B₁, b₁⟩` from `(hAdm x hx).bdd`. Take `⟨B₂, b₂⟩` from `(hAdm y hy).bdd`. Rewrite using `[per_add M U χ hχ (hAdm x hx).cont (hAdm y hy).cont b₁ b₂, ihx, ihy, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x hx ih`. Rewrite using `[per_smul, ih, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.perTr_of :
     PerTr := by

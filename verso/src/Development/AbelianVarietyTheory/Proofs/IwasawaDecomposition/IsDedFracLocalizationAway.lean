@@ -5,11 +5,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Model
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Introduce `O F _ _ β x hx hβ ω hω`. Take `⟨⟨hD, hDD⟩, hc, hfr⟩` from `hβ`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hx (map_zero β)`. Establish `hM : Submonoid.powers x ≤ nonZeroDivisors O` using `powers_le_nonZeroDivisors_of_noZeroDivisors hx0`. Use `haveI hdom : IsDomain (Localization.Away x) := IsLocalization.isDomain_localization hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hdom, IsLocalization.isDedekindDomain O hM _⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `charZero_of_injective_algebraMap (IsLocalization.injective (Localization.Away x) hM)`. Use `letI : Algebra O F := β.toAlgebra`. Use `letI : Algebra (Localization.Away x) F := ω.toAlgebra`. Use `haveI : IsScalarTower O (Localization.Away x) F := IsScalarTower.of_algebraMap_eq' hω.symm`.
-
-Conclude with `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Submonoid.powers x) _ F`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isDedFrac_away : ∀ (O F : Type) [CommRing O] [Field F] (β : O →+* F) (x : O), β x ≠ 0 → IsDedFrac β →
     ∀ (ω : Localization.Away x →+* F), ω.comp (algebraMap O (Localization.Away x)) = β → IsDedFrac ω := by

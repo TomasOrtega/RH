@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 open NumberField Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ScalarPoin.exists_cusp_ne_some` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNonzeroCuspSectionLargeEvenScalarWeight.lean&line=7#L7)
 -/

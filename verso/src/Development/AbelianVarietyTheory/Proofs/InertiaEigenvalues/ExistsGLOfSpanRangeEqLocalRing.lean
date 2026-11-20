@@ -6,19 +6,19 @@ open scoped InnerProductSpace BigOperators Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set LA := Matrix.toLin' A with hLA`. Use `set K := LinearMap.ker LA`. Take `⟨U, hU⟩` from `Submodule.exists_isCompl (LinearMap.range LA)`. Take `⟨K', hK'⟩` from `Submodule.exists_isCompl K`. Establish `h1 : Module.finrank k (LinearMap.range LA) + Module.finrank k K = Module.finrank k (Fin n → k)` using `LinearMap.finrank_range_add_finrank_ker LA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hU`. Establish `hdim : Module.finrank k K = Module.finrank k U` using `by omega`. Set `e : K ≃ₗ[k] U` to `LinearEquiv.ofFinrankEq K U hdim`. Set `f : (Fin n → k) →ₗ[k] (Fin n → k)` to `U.subtype ∘ₗ (e : K →ₗ[k] U) ∘ₗ Submodule.linearProjOfIsCompl K K' hK'`. Use `⟨LinearMap.toMatrix' f, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hv0` to reduce the goal to its premises. Establish `hfw : ∀ w, LinearMap.toMatrix' f *ᵥ w = f w`. Introduce `w`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Establish `hfU : ∀ w, f w ∈ U` using `fun w => (e _).2`. Rewrite `hv` using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec, hfw]`. Establish `hAv : A *ᵥ v = 0`. Establish `hr : A *ᵥ v ∈ LinearMap.range LA` using `⟨v, by rw [hLA, Matrix.toLin'_apply]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : A *ᵥ v ∈ U`. Rewrite using `[eq_neg_of_add_eq_zero_left hv]`. Conclude with `U.neg_mem (hfU _)`. Conclude with `(Submodule.disjoint_def.mp hU.disjoint) _ hr hu`. Rewrite `hv` using `[hAv, zero_add, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hAv, Matrix.mulVec_zero, sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvK : v ∈ K` using `by show LA v = 0`. Rewrite using `[hLA, Matrix.toLin'_apply, hAv]`. Establish `hp : Submodule.linearProjOfIsCompl K K' hK' v = ⟨v, hvK⟩` using `Submodule.linearProjOfIsCompl_apply_left hK' ⟨v, hvK⟩`. Establish `he : e ⟨v, hvK⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: f v = 0` using `hv`. Simplify `this` using `[f, hp]`. Establish `: (⟨v, hvK⟩ : K) = 0` using `by simpa using he`. Simplify using `using congrArg Subtype.val this`.
+A detailed English derivation is pending.
 -/
 theorem exists_det_add_mul_one_sub_mul_ne_zero {k : Type*} [Field k] {n : ℕ}
     (A B : Matrix (Fin n) (Fin n) k) :
@@ -65,17 +65,17 @@ theorem exists_det_add_mul_one_sub_mul_ne_zero {k : Type*} [Field k] {n : ℕ}
   simpa using congrArg Subtype.val this
 
 /- English proof (translation)
-Introduce `O M _ _ _ _ n x y hspan`. Establish `hA : ∀ i, ∃ c : Fin n → O, ∑ j, c j • x j = y i` using `fun i => (Submodule.mem_span_range_iff_exists_fun O).mp (hspan ▸ Submodule.subset_span ⟨i, rfl⟩)`. Establish `hB : ∀ i, ∃ c : Fin n → O, ∑ j, c j • y j = x i` using `fun i => (Submodule.mem_span_range_iff_exists_fun O).mp (hspan.symm ▸ Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨A, hA⟩ : ∃ A : Matrix (Fin n) (Fin n) O, ∀ i, ∑ j, A i j • x j = y i` from `⟨fun i => (hA i).choose, fun i => (hA i).choose_spec⟩`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin n) (Fin n) O, ∀ i, ∑ j, B i j • y j = x i` from `⟨fun i => (hB i).choose, fun i => (hB i).choose_spec⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmul : ∀ (P Q : Matrix (Fin n) (Fin n) O) (z : Fin n → M) i, ∑ j, (P * Q) i j • z j = ∑ l, P i l • ∑ j, Q l j • z j`. Introduce `P Q z i`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`. Establish `hC : ∀ l, ∑ j, ((1 : Matrix (Fin n) (Fin n) O) - B * A) l j • x j = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Simplify using `only [Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, hmul, hA, hB]`. Simplify using `[Matrix.one_apply]`. Set `r` to `IsLocalRing.residue O`. Take `⟨Tb, hTb⟩` from `exists_det_add_mul_one_sub_mul_ne_zero (r.mapMatrix A) (r.mapMatrix B)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩ : ∃ s : IsLocalRing.ResidueField O → O, ∀ a, r (s a) = a` from `⟨Function.surjInv IsLocalRing.residue_surjective, Function.surjInv_eq _⟩`. Set `T : Matrix (Fin n) (Fin n) O` to `Tb.map s`. Establish `hT : r.mapMatrix T = Tb` using `by ext i j; simp [T, hs]`. Set `H : Matrix (Fin n) (Fin n) O` to `A + T * (1 - B * A)`. Establish `hdet : IsUnit H.det`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : r H.det ≠ 0`. Rewrite using `[RingHom.map_det]`. Simplify using `only [H, map_add, map_mul, map_sub, map_one, hT]`. Conclude with `hTb`. Assume the negation of the conclusion as `hnu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hne ((IsLocalRing.residue_eq_zero_iff _).mpr ((IsLocalRing.mem_maximalIdeal _).mpr hnu))`. Establish `hHu : IsUnit H` using `(Matrix.isUnit_iff_isUnit_det H).mpr hdet`. Use `⟨hHu.unit, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`. Simplify using `only [H, Matrix.add_apply, add_smul, Finset.sum_add_distrib, hA, hmul, hC, smul_zero, Finset.sum_const_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_GL_of_span_range_eq : ∀ (O M : Type) [CommRing O] [IsLocalRing O] [AddCommGroup M]
     [Module O M] (n : ℕ) (x y : Fin n → M),

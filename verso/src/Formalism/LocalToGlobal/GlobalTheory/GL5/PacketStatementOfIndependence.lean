@@ -8,46 +8,46 @@ namespace Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.StandardLattice Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-The claim follows from `_root_.unitary_class_mass_hermitian`.
+A detailed English derivation is pending.
 -/
 theorem genus_class_mass : PI.UJClassMass2.UJClassMass := _root_.unitary_class_mass_hermitian
 
 /- English proof (translation)
-The claim follows from `class_mass_of_genus_classes genus_class_mass D`.
+A detailed English derivation is pending.
 -/
 theorem classMass_of_D7 (D : D7) : ClassMass D := class_mass_of_genus_classes genus_class_mass D
 
 /- English proof (translation)
-The claim follows from `defClassDecomp_of_UJ genus_class_mass D`.
+A detailed English derivation is pending.
 -/
 theorem definite_class_decomposition (D : D7) : DefClassDecomp D := defClassDecomp_of_UJ genus_class_mass D
 
 /- English proof (translation)
-The claim follows from `volume_mass_of_genus_classes D hT hG genus_class_mass`.
+A detailed English derivation is pending.
 -/
 theorem definite_volume_mass (D : D7) (hT : VolTie D) (hG : GenusMassStd D) : DefiniteVolumeEqMass D :=
   volume_mass_of_genus_classes D hT hG genus_class_mass
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.RT.genus_mass_of_class_decomposition D hG (definite_class_decomposition D)`.
+A detailed English derivation is pending.
 -/
 theorem definite_volume_mass_of_tie (D : D7) (hG : GenusMassStd D) : Formalism.MainNotions.RT.GenusMassUnderVolume D :=
   Formalism.MainNotions.RT.genus_mass_of_class_decomposition D hG (definite_class_decomposition D)
 
 /- English proof (translation)
-The claim follows from `volume_mass_of_class_data D n hT hG (class_number_finite_rank D n) (classMassAt_of D (classMass_of_D7 D) n)`.
+A detailed English derivation is pending.
 -/
 theorem volume_mass_of_genus_rank (D : D7) (n : ℕ) (hT : VolTie D) (hG : GenusMassAt D n) : volumeAtLevelZero D n :=
   volume_mass_of_class_data D n hT hG (class_number_finite_rank D n) (classMassAt_of D (classMass_of_D7 D) n)
 
 /- English proof (translation)
-The claim follows from `volume_mass_of_genus_rank D n hT (genusMassAt_of D hG n)`.
+A detailed English derivation is pending.
 -/
 theorem volume_mass_all_ranks (D : D7) (hT : VolTie D) (hG : GenusMassStd D) (n : ℕ) : volumeAtLevelZero D n :=
   volume_mass_of_genus_rank D n hT (genusMassAt_of D hG n)
 
 /- English proof (translation)
-The claim follows from `Link2_of_UJ genus_class_mass`.
+A detailed English derivation is pending.
 -/
 theorem link_theorem_two : Link2 := Link2_of_UJ genus_class_mass
 
@@ -60,7 +60,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Standard
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `packet_statement_of_named 𝒞 C3 hC3 hR hW hV (rowRec_of_all Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.classMass_of_D7 hR) hHC hL hG hN`.
+A detailed English derivation is pending.
 -/
 theorem packet_statement_of_independence (𝒞 : FamClass) (C3 : ℝ) (hC3 : 1 ≤ C3)
     (hR : RowReal 𝒞)
@@ -75,7 +75,7 @@ theorem packet_statement_of_independence (𝒞 : FamClass) (C3 : ℝ) (hC3 : 1 �
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `packet_statement_of_independence 𝒞 C3 hC3 hR hW hV hHC hL hG (rowCount_of_clsTie hX)`.
+A detailed English derivation is pending.
 -/
 theorem packet_statement_of_class_count (𝒞 : FamClass) (C3 : ℝ) (hC3 : 1 ≤ C3)
     (hR : RowReal 𝒞) (hW : WeilSiegelCM) (hV : RowRec 𝒞 VolSigIndep)

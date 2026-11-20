@@ -17,11 +17,11 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAndFinran
 namespace MainStatements.Hodge.Free
 
 /- English proof (translation)
-Establish `hCx` using `GlobalTheory.CompanionTheory.HodgeCx.cxSt`. Establish `hDict` using `GlobalTheory.CompanionTheory.Dict.dictSt`. Establish `hLow` using `GlobalTheory.CompanionTheory.HodgeLow.lowSt_of_dictSt hDict`. Establish `hHtpy` using `GlobalTheory.CompanionTheory.Hodge.htpySt_of_cxSt hCx`. Establish `hQ` using `GlobalTheory.CompanionTheory.QCalc.qCalcSt hCx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFub` using `GlobalTheory.CompanionTheory.NerveCoh.fubiniSt hCx`. Establish `hAff` using `GlobalTheory.CompanionTheory.AffAcyc.main hCx hHtpy`. Establish `hDesc` using `GlobalTheory.CompanionTheory.Descent.descentSt hCx hHtpy hQ hFub hAff`. Establish `hBC` using `GlobalTheory.CompanionTheory.SysBC.sysBCSt hDesc hLow`. Establish `hStein` using `GlobalTheory.CompanionTheory.Hodge.stein_holds`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAx` using `GlobalTheory.CompanionTheory.Axis.axOSt hDesc hLow hBC hStein`. Establish `hVan` using `GlobalTheory.CompanionTheory.Hodge.vanSt hCx (GlobalTheory.CompanionTheory.Hodge.Nerve.cmpSt_of_cxSt hCx)`. Establish `hHopf` using `GlobalTheory.CompanionTheory.HopfSys.hopfSt hHtpy hQ hFub hAff hDesc hLow hAx`. Establish `hHopfLe` using `GlobalTheory.CompanionTheory.HopfLe.hopfLeSt hCx hDict hLow`. Conclude with `GlobalTheory.CompanionTheory.Hodge.FirstCohomologyUpperBounds.h1Le hDesc hLow hStein hVan hHopf hHopfLe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem h1Le : CompanionTheory.ObstructionTrivialLocus.H1StructureDimLe := by
   have hCx := GlobalTheory.CompanionTheory.HodgeCx.cxSt

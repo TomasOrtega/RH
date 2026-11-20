@@ -6,9 +6,9 @@ open LateralTheory.E.PartDiagCut
 namespace LateralTheory.E.DiagCompPf
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hne' : a.1 ≠ b.1` using `fun h => hne (Subtype.ext h)`. Establish `h0 : a.1 * b.1 = 0` using `P.orth a.1 a.2 b.1 b.2 hne'`. Establish `: e = 0`. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(R.idem e he).2 this`.
+A detailed English derivation is pending.
 -/
 theorem block_unique {A : Type} [CommRing A] (P R : PartDiagCut.Part A) (e : A) (he : e ∈ R.1) (a b : P.1)
     (ha : e * a.1 = e) (hb : e * b.1 = e) : a = b := by
@@ -22,7 +22,7 @@ theorem block_unique {A : Type} [CommRing A] (P R : PartDiagCut.Part A) (e : A) 
   exact (R.idem e he).2 this
 
 /- English proof (translation)
-Apply `block_unique P R e.1 e.2` to reduce the goal to its premises. Conclude with `par_spec _ e`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem par_trans {B : Type} [CommRing B] (I : Ideal B) {P Q R : PartDiagCut.Part (B ⧸ I)} (h1 : P ≤ Q) (h2 : Q ≤ R) (e : R.1) :
     par (h1.trans h2) e = par h1 (par h2 e) := by
@@ -33,9 +33,9 @@ theorem par_trans {B : Type} [CommRing B] (I : Ideal B) {P Q R : PartDiagCut.Par
       _ = e.1 := by rw [par_spec h1 (par h2 e), par_spec h2 e]
 
 /- English proof (translation)
-Introduce `B _ I P Q R h1 h2`. Use extensionality with `x e`. Establish `key : ∀ (g g' : B →+* B), g = g' → ∀ (a b : P.1), a = b → ∀ (hA : S I a.1 ≤ (S I e.1).comap g) (hD : S I b.1 ≤ (S I e.1).comap g'), IsLocalization.map (M` using `S I a.1) (T := S I e.1) (Localization (S I e.1)) g hA (x a) = IsLocalization.map (M := S I b.1) (T := S I e.1) (Localization (S I e.1)) g' hD (x b) := by`. Introduce and unpack `g _ rfl a _ rfl hA hD`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Simplify using `only [stageMap, RingHom.comp_apply, RingHom.pi_apply, Pi.evalRingHom_apply]`. Use `erw [IsLocalization.map_map]`. Conclude with `key _ _ (RingHom.id_comp _).symm _ _ (par_trans I h1 h2 e) _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem DiagComp_of : DiagComp := by
   intro B _ I P Q R h1 h2

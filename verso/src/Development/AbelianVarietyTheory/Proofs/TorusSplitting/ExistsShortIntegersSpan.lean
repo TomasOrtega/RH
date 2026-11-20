@@ -10,23 +10,21 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.FD in
 
 /- English proof (translation)
-Introduce `E _ _ _`. Set `Λ : Submodule (𝓞 E) (Fin 1 → E)` to `Submodule.span (𝓞 E) {fun _ => 1}`. Establish `hΛ : ∀ x, x ∈ Λ ↔ IsIntegral ℤ (x 0)`. Introduce `x`. Rewrite using `[Submodule.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Establish `: (a • (fun _ => 1 : Fin 1 → E)) 0 = (a : E)`. Simplify using `[Algebra.smul_def]`. Rewrite using `[this]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.isIntegral_coe`. Introduce `h`. Use `⟨⟨x 0, h⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Rewrite using `[Subsingleton.elim k 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_one (x 0)`. Establish `hh : ∀ x y : Fin 1 → E, herm 1 x y = x 0 * cc (y 0)`. Introduce `x y`. Simplify using `[herm]`. Establish `hc : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (cc x)` using `fun x hx => hx.map (IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, -, hsp, hle⟩` from `exists_short_vectors Λ (Submodule.fg_span_singleton _) (fun x hx y hy => by`. Rewrite using `[hh]`. Conclude with `((hΛ x).1 hx).mul (hc _ ((hΛ y).1 hy)))`. Use the proof step `(fun x hx => by`. Use `hx (fun _ => 1) (Submodule.mem_span_singleton_self _)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hh]`. Rewrite using `[hΛ]`. Simplify `this)` using `[cc]`. Use `⟨_, fun j => ⟨v j 0, (hΛ _).1 (hv j)⟩, fun j σ => ?_, fun α => ?_⟩` and prove the remaining obligations. Establish `h` using `hle j σ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `he : 2 * (fdeg E : ℝ) ^ ((3 : ℝ) / 2) * ((1 : ℕ) : ℝ) ^ 2 * rdE E = omStar (E` using `E) := by`. Simplify using `only [omStar, Nat.cast_one, one_pow, mul_one]`. Both sides reduce to the same expression. Establish `h0 : 0 ≤ omStar (E` using `E) := by`. Unfold `omStar PT.rd`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Rewrite `h` using `[he, Fin.sum_univ_one]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) h0 two_ne_zero).1 h`. Establish `h : (fun _ => (α : E) : Fin 1 → E) ∈ Submodule.span ℚ (Set.range v)` using `hsp ▸ Submodule.mem_top`. Establish `h2` using `Submodule.mem_map_of_mem (f := LinearMap.proj (R := ℚ) (φ := fun _ : Fin 1 => E) 0) h`.
-
-Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_short_integers_span :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∃ (n : ℕ) (ω : Fin n → 𝓞 E),

@@ -17,15 +17,13 @@ open scoped nonZeroDivisors ComplexConjugate
 namespace GlobalTheory.RSResidue
 
 /- English proof (translation)
-Establish `hI : (fun x => ∫ y, F x y ∂ν) = fun x => ∫ y in K, F x y ∂ν`. Use function extensionality and compare the values at `fun x => (setIntegral_eq_integral_of_forall_compl_eq_zero (h0 x)).symm`. Rewrite using `[hI]`. Establish `hc : ∀ x, Continuous (F x)` using `fun x => hF.comp (continuous_const.prodMk continuous_id)`. Establish `hint : ∀ x, IntegrableOn (F x) K ν` using `fun x => (hc x).continuousOn.integrableOn_compact hK`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : ℝ := ν.real K with hm`. Establish `hm0 : 0 ≤ m` using `measureReal_nonneg`. Use `continuous_iff_continuousAt.2 fun x₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hδ : 0 < ε / (m + 1)` using `by positivity`. Establish `hev : ∀ᶠ x in 𝓝 x₀, ∀ y ∈ K, dist (F x y) (F x₀ y) < ε / (m + 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hK.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `h1` using `Metric.tendsto_nhds.1 (hF.continuousAt (x := (x₀, y))) (ε / (m + 1) / 2) (by positivity)`. Establish `h2` using `Metric.tendsto_nhds.1 ((hc x₀).comp continuous_snd |>.continuousAt (x := (x₀, y))) (ε / (m + 1) / 2) (by positivity)`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hev] with x hx`. Rewrite using `[dist_eq_norm, ← integral_sub (hint x) (hint x₀)]`. Establish `h3 : ‖∫ y in K, (F x y - F x₀ y) ∂ν‖ ≤ ε / (m + 1) * m` using `norm_setIntegral_le_of_norm_le_const hK.measure_lt_top fun y hy => by`. Rewrite using `[← dist_eq_norm]`. Conclude with `(hx y hy).le`.
-
-Use `h3.trans_lt ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem continuous_integral_of_compact {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space Y] [MeasurableSpace Y]
     [OpensMeasurableSpace Y] (ν : Measure Y) [IsFiniteMeasureOnCompacts ν] {K : Set Y} (hK : IsCompact K)
@@ -62,9 +60,9 @@ theorem continuous_integral_of_compact {X Y : Type} [TopologicalSpace X] [Topolo
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `⟨(finiteAdelicChar E (∑ i, η i * pFin E ((0 : Fin a → Ad E) i)) : ℂ) * (latt a (traceDualIdeal E J)).indicator 1 (fun i => pFin E ((0 : Fin a → Ad E) i)) * ((finiteMeasurePi E (latt a J)).toReal : ℂ), fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `rsHat_eq (ℓ := ℓ) J η F F' hΦ g 0`. Establish `e : (fun i => pInf E ((0 : Fin a → Ad E) i)) = 0` using `funext fun _ => map_zero _`. Establish `hF : infFourier (rsInf ℓ F.1 F'.1 Φ g) (fun i => pInf E ((0 : Fin a → Ad E) i)) = ∫ u, rsInf ℓ F.1 F'.1 Φ g u ∂infMeasure E a`. Rewrite using `[e, infFourier]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `rsHat ℓ F.1 F'.1 Φ J η g 0 = _`. Rewrite using `[h, hF]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rsHat_zero_eq {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E)
     (F F' : Sm E a) (hΦ : IsTest (rowSet E ℓ) Φ) : ∃ c : ℂ, ∀ g : GA E a,
@@ -85,15 +83,15 @@ theorem rsHat_zero_eq {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (J : (Frac
 variable {ω : HChar E}
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `rsHat_zero_eq J η φ φ' hΦ`. Establish `hj : Continuous fun p : GA E a × (Fin a → Cinf E) => rsInf ℓ φ.1 φ'.1 Φ p.1 p.2` using `continuous_rsInf h.1 h'.1 hΦ.1.continuous hΦ.2.2`. Establish `h0 : ∀ g, ∀ u ∉ tsupport Φ, rsInf ℓ φ.1 φ'.1 Φ g u = 0` using `fun g u hu => by`. Rewrite using `[rsInf, image_eq_zero_of_notMem_tsupport hu, mul_zero]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hc]`. Conclude with `(continuous_integral_of_compact (infMeasure E a) hΦ.2.1 hj h0).mul continuous_const`. Take `⟨C, hC⟩` from `h.2.2.2`. Take `⟨C', hC'⟩` from `h'.2.2.2`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 1)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Integrable (fun u => C * C' * ‖Φ u‖) (infMeasure E a)` using `(integrable_infMeasure hΦ.1.continuous hΦ.2.1).norm.const_mul _`. Use `⟨(∫ u, C * C' * ‖Φ u‖ ∂infMeasure E a) * ‖c‖, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, norm_mul]`. Use `mul_le_mul_of_nonneg_right (norm_integral_le_of_norm_le hi (.of_forall fun u => ?_)) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[rsInf, norm_mul, norm_mul, Complex.norm_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul (hC _) (hC' _) (norm_nonneg _) hC0) (norm_nonneg _)`. Introduce `γ hγ g`. Establish `hL : ∀ x, φ.1 (γ * x) * conj (φ'.1 (γ * x)) = φ.1 x * conj (φ'.1 x)` using `fun x => leftInv_mul_conj hω h h' γ hγ x`. Establish `e : rsInf ℓ φ.1 φ'.1 Φ (γ * g) = rsInf ℓ φ.1 φ'.1 Φ g` using `funext fun u => by`. Rewrite using `[rsInf, rsInf, mul_assoc γ g, hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : rsPsi ℓ φ.1 φ'.1 Φ J η (γ * g) = rsPsi ℓ φ.1 φ'.1 Φ J η g` using `funext fun y => by`. Rewrite using `[rsPsi, rsPsi, e]`. Rewrite using `[e']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rsHat_zero_props (hω : ω.IsUnitary) {φ φ' : Sm E a} (h : φ.1 ∈ bddForms E a ω) (h' : φ'.1 ∈ bddForms E a ω)
     {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (hΦ : IsTest (rowSet E ℓ) Φ) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ)

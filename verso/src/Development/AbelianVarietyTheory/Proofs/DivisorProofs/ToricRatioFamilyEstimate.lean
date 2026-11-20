@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.ThmAUpper
 
 /- English proof (translation)
-Introduce `hG hS hdl hF hT`. Use `Lf.mono (Lf.and (GlobalTheory.T.fitted_ties_bound_eventual _ hS hdl hF) (GlobalTheory.T.fitted_ties_bound_eventual _ hS hdl hT)) ?_` and prove the remaining obligations. Introduce `D L hT Gi Gl Kc Y cX ex Csz p CF d C CH hp hd`. Use `⟨hd, fun ⟨hf, ht⟩ w hw => ⟨GlobalTheory.T.norm_not_mem_prime_away_from_mu p CF d hp hd w hw, fun l hl hlw i j s Λ Λd z hs1 hs2 hΛ hΛd hz => ?_⟩⟩` and prove the remaining obligations. Establish `hw' : D.plEq (D.plEq.symm w) = w` using `D.plEq.apply_symm_apply w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl' : D.what₂.places.resChar (D.plEq.symm w) = l` using `resChar_eq _ hl (by rw [hw']; exact hlw)`. Establish `key` using `GlobalTheory.T.cm_abelian_field_data_of_toric_ratio p CF d hp hd hG hf ht (D.plEq.symm w) (xiH_twisted p w hw).1 i j s Λ Λd z hs1 hs2 (by rw [← nuH_twisted p d.G w hw]; exact hΛ) (by rw [hl']; exact hΛd) hz`. Rewrite `key` using `[hw', hl']`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thmA_upper : GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.ToricRatioConjugates → SetAt →
     (Closed FamHyp fun Fm _ => EvPt Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → FieldDat → TorEx →

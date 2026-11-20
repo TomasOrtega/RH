@@ -9,9 +9,9 @@ open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCur
 namespace GlobalTheory.SqZeroLine
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Fintype.card_eq_one_iff.mp hm`. Take `⟨b, hb⟩` from `Fintype.card_eq_one_iff.mp hl`. Use `⟨a, b, fun A B => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply]`. Rewrite using `[Fintype.sum_eq_single b (fun i hi => (hi (hb i)).elim)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_eq_single a (fun i hi => (hi (ha i)).elim)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_mul_eq_of_card_one {m l : Type} [Fintype m] [Fintype l]
     (hm : Fintype.card m = 1) (hl : Fintype.card l = 1) :
@@ -24,7 +24,7 @@ theorem trace_mul_eq_of_card_one {m l : Type} [Fintype m] [Fintype l]
   rw [Fintype.sum_eq_single a (fun i hi => (hi (ha i)).elim)]
 
 /- English proof (translation)
-Simplify using `only [wedge, hα]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wedge_self_of_product {V : Type} (α : V → V → ℂ) (g f : V → ℂ) (c : ℂ)
     (hα : ∀ ξ η, α ξ η = c * g ξ * f η) (ξ₁ η₁ ξ₂ η₂ : V) :
@@ -34,7 +34,7 @@ theorem wedge_self_of_product {V : Type} (α : V → V → ℂ) (g f : V → ℂ
 end GlobalTheory.SqZeroLine
 
 /- English proof (translation)
-Introduce `V _ _ _ _ m l _ _ _ _ U H z _ _ hm hl ξ₁ η₁ ξ₂ η₂`. Take `⟨a, b, hab⟩` from `GlobalTheory.SqZeroLine.trace_mul_eq_of_card_one hm hl`. Conclude with `GlobalTheory.SqZeroLine.wedge_self_of_product (extTrace H z) (fun ξ => extFormAdj H z ξ b a) (fun η => extForm H z η a b) kappa (fun ξ η => by simp only [extTrace, hab]; ring) ξ₁ η₁ ξ₂ η₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.extTrace_wedge_self_eq_zero_of_line : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsPosFrame U H) (hz : z ∈ U) (hm : Fintype.card m = 1) (hl : Fintype.card l = 1) (ξ₁ η₁ ξ₂ η₂ : V), wedge (extTrace H z) (extTrace H z) ξ₁ η₁ ξ₂ η₂ = 0 := by
   intro V _ _ _ _ m l _ _ _ _ U H z _ _ hm hl ξ₁ η₁ ξ₂ η₂

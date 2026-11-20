@@ -15,7 +15,7 @@ def Ev (P : ∀ x, Fm.x1 < x → Fm.Ix x → Prop) : Prop := ∃ x0 : ℝ, ∀ x
 variable {Fm}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hP`. Take `⟨b, hb⟩` from `hQ`. Unfold `Ev`. Conclude with `⟨max a b, fun x hx h1 i => ⟨ha x (le_trans (le_max_left _ _) hx) h1 i, hb x (le_trans (le_max_right _ _) hx) h1 i⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem Ev.and {P Q : ∀ x, Fm.x1 < x → Fm.Ix x → Prop} (hP : Ev Fm P) (hQ : Ev Fm Q) :
     Ev Fm fun x hx i => P x hx i ∧ Q x hx i := by
@@ -26,7 +26,7 @@ theorem Ev.and {P Q : ∀ x, Fm.x1 < x → Fm.Ix x → Prop} (hP : Ev Fm P) (hQ 
     ⟨ha x (le_trans (le_max_left _ _) hx) h1 i, hb x (le_trans (le_max_right _ _) hx) h1 i⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hP`. Unfold `Ev`. Conclude with `⟨a, fun x hx h1 i => h x h1 i (ha x hx h1 i)⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem Ev.imp {P Q : ∀ x, Fm.x1 < x → Fm.Ix x → Prop} (hP : Ev Fm P) (h : ∀ x hx i, P x hx i → Q x hx i) : Ev Fm Q := by
   obtain ⟨a, ha⟩ := hP
@@ -34,21 +34,21 @@ theorem Ev.imp {P Q : ∀ x, Fm.x1 < x → Fm.Ix x → Prop} (hP : Ev Fm P) (h :
   exact ⟨a, fun x hx h1 i => h x h1 i (ha x hx h1 i)⟩
 
 /- English proof (translation)
-Unfold `Ev`. Conclude with `⟨0, fun x _ hx i => h x hx i⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem Ev.admissible_family_of_threshold {P : ∀ x, Fm.x1 < x → Fm.Ix x → Prop} (h : ∀ x hx i, P x hx i) : Ev Fm P := by
   unfold Ev
   exact ⟨0, fun x _ hx i => h x hx i⟩
 
 /- English proof (translation)
-Unfold `Ev`. Conclude with `⟨0, fun x _ _ i => h x i⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem Ev.of_all {P : ∀ x, Fm.Ix x → Prop} (h : ∀ x i, P x i) : Ev Fm fun x _ i => P x i := by
   unfold Ev
   exact ⟨0, fun x _ _ i => h x i⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Unfold `Ev`. Conclude with `⟨a, fun x hx _ i => ha x hx i⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem Ev.of_ge {P : ∀ x, Fm.Ix x → Prop} (h : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i, P x i) : Ev Fm fun x _ i => P x i := by
   obtain ⟨a, ha⟩ := h
@@ -56,7 +56,7 @@ theorem Ev.of_ge {P : ∀ x, Fm.Ix x → Prop} (h : ∃ x0 : ℝ, ∀ x ≥ x0, 
   exact ⟨a, fun x hx _ i => ha x hx i⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Unfold `Ev`. Conclude with `⟨a, fun x hx _ i => ha x hx i⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem Ev.of_le {P : ∀ x, Fm.Ix x → Prop} (h : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ i, P x i) : Ev Fm fun x _ i => P x i := by
   obtain ⟨a, ha⟩ := h
@@ -64,7 +64,7 @@ theorem Ev.of_le {P : ∀ x, Fm.Ix x → Prop} (h : ∃ x0 : ℝ, ∀ x, x0 ≤ 
   exact ⟨a, fun x hx _ i => ha x hx i⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Conclude with `⟨max a (Fm.x1 + 1), fun x hx i => ha x (le_trans (le_max_left _ _) hx) (by linarith [le_max_right a (Fm.x1 + 1)]) i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Ev.ge {P : ∀ x, Fm.Ix x → Prop} (h : Ev Fm fun x _ i => P x i) : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i, P x i := by
   obtain ⟨a, ha⟩ := h
@@ -72,7 +72,7 @@ theorem Ev.ge {P : ∀ x, Fm.Ix x → Prop} (h : Ev Fm fun x _ i => P x i) : ∃
     ha x (le_trans (le_max_left _ _) hx) (by linarith [le_max_right a (Fm.x1 + 1)]) i⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Conclude with `⟨max a (Fm.x1 + 1), fun x hx i => ha x (le_trans (le_max_left _ _) hx) (by linarith [le_max_right a (Fm.x1 + 1)]) i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Ev.le {P : ∀ x, Fm.Ix x → Prop} (h : Ev Fm fun x _ i => P x i) : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ i, P x i := by
   obtain ⟨a, ha⟩ := h
@@ -80,7 +80,7 @@ theorem Ev.le {P : ∀ x, Fm.Ix x → Prop} (h : Ev Fm fun x _ i => P x i) : ∃
     ha x (le_trans (le_max_left _ _) hx) (by linarith [le_max_right a (Fm.x1 + 1)]) i⟩
 
 /- English proof (translation)
-Unfold `Ev`. Conclude with `⟨c, fun x hx h1 i => by show c ≤ (Fm.L x i).sc.x`. Rewrite using `[Fm.L_x x i h1]`. Conclude with `hx⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ev.scale (c : ℝ) : Ev Fm fun x _ i => c ≤ (Fm.L x i).sc.x := by
   unfold Ev
@@ -92,7 +92,7 @@ theorem Ev.scale (c : ℝ) : Ev Fm fun x _ i => c ≤ (Fm.L x i).sc.x := by
 end Ev
 
 /- English proof (translation)
-Unfold `Closed`. Conclude with `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => c, fun _ => 0⟩, fun Fm CH _ hL => hL.2.2.1 CH (by simp [FamP.cMid])⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem closed_CH_ge (𝒞 : FamClass) (c : ℝ) : Closed 𝒞 fun _ CH => c ≤ CH := by
   unfold Closed
@@ -100,7 +100,7 @@ theorem closed_CH_ge (𝒞 : FamClass) (c : ℝ) : Closed 𝒞 fun _ CH => c ≤
     fun Fm CH _ hL => hL.2.2.1 CH (by simp [FamP.cMid])⟩⟩
 
 /- English proof (translation)
-Unfold `Closed`. Conclude with `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => c, fun _ => 0⟩, fun Fm CH _ hL => hL.2.2.1 Fm.Csz (by simp [FamP.cMid])⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem closed_Csz_ge (𝒞 : FamClass) (c : ℝ) : Closed 𝒞 fun Fm _ => c ≤ Fm.Csz := by
   unfold Closed
@@ -108,7 +108,7 @@ theorem closed_Csz_ge (𝒞 : FamClass) (c : ℝ) : Closed 𝒞 fun Fm _ => c �
     fun Fm CH _ hL => hL.2.2.1 Fm.Csz (by simp [FamP.cMid])⟩⟩
 
 /- English proof (translation)
-Unfold `Closed`. Conclude with `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, c, fun _ => 0⟩, fun Fm CH _ hL => hL.2.2.1 Fm.Csz (by simp [FamP.cMid])⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem closed_Csz_ge_fn (𝒞 : FamClass) (c : List ℝ → ℝ) : Closed 𝒞 fun Fm _ => c Fm.cOut ≤ Fm.Csz := by
   unfold Closed

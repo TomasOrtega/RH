@@ -12,15 +12,13 @@ namespace GlobalTheory.StdMove
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨Λ, hΛ, -, -, -⟩` from `GlobalTheory.AdLat.exists_lattice_latOf D.host.F D.host.E V.rank (GlobalTheory.SplitMove.intSub D V.rank) (finHom V g) (GlobalTheory.SplitMove.intSub_fg _) (GlobalTheory.SplitMove.intSub_span _)`. Establish `inv : ∀ y, (finHom V g⁻¹).1 *ᵥ ((finHom V g).1 *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec]`. Establish `inv' : ∀ y, (finHom V g).1 *ᵥ ((finHom V g⁻¹).1 *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, map_inv, Units.mul_inv, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ent : ∀ (x : Fin V.rank → D.host.E) i, Algebra.TensorProduct.comm D.host.F (Formalism.L2.Herm.Af D.host.F) D.host.E (((finHom V g⁻¹).1 *ᵥ GlobalTheory.AdLat.fv D.host.F x) i) = (finM V rfl g⁻¹ *ᵥ fun j => eToEAf D (x j)) i`. Introduce `x i`. Simplify using `only [GlobalTheory.AdForm.finM, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.reindex_apply, finCongr_refl, Equiv.refl_symm, Equiv.coe_refl, Matrix.submatrix_id_id]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨Λ, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, hΛ, GlobalTheory.SplitMove.coe_intSub]`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdLat.fv D.host.F x ∈ (finHom V g).1.mulVec '' _ ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩ i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← ent, ← hxy, inv]`. Conclude with `(GlobalTheory.SplitMove.hat_intVec_iff D V.rank y).1 hy i`. Introduce `hx`. Use `⟨(finHom V g⁻¹).1 *ᵥ GlobalTheory.AdLat.fv D.host.F x, (GlobalTheory.SplitMove.hat_intVec_iff D V.rank _).2 fun i => ?_, inv' _⟩` and prove the remaining obligations. Rewrite using `[ent]`.
-
-Conclude with `hx i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_exists (V : HSp D) (g : GA D V) : ∃ N, Moves V rfl g N := by
   obtain ⟨Λ, hΛ, -, -, -⟩ := GlobalTheory.AdLat.exists_lattice_latOf D.host.F D.host.E V.rank (GlobalTheory.SplitMove.intSub D V.rank)
@@ -50,9 +48,9 @@ theorem moves_exists (V : HSp D) (g : GA D V) : ∃ N, Moves V rfl g N := by
     rw [ent]; exact hx i
 
 /- English proof (translation)
-Use `⟨h.1, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[h.2 x]`. Simplify using `only [Formalism.HermitianLatticesTheory.IsUnimodular, Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Use `forall_congr' fun y => imp_congr_right fun _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : Formalism.L2.Col.hStd D.host.E V.rank y x = ∑ i, ∑ j, star (y i) * V.gram i j * x j`. Rewrite using `[hV]`. Simplify using `[Formalism.L2.Col.hStd, Matrix.one_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSdLat_of (V : HSp D) (hV : V.gram = 1) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (h : IsSelfDualC V N) : Formalism.L2.Col.IsSdLat N := by
@@ -68,9 +66,9 @@ theorem isSdLat_of (V : HSp D) (hV : V.gram = 1) (N : Submodule (𝓞 D.host.E) 
   rw [e]
 
 /- English proof (translation)
-Introduce `D V n hn hV`. Substitute `hn` using the available equality. Use `⟨fun g => moves_exists V g, fun g N hN => ?_⟩` and prove the remaining obligations. Establish `hsd` using `GlobalTheory.SplitMove.selfDual_move V hV g N hN`. Use `⟨isSdLat_of V hV N hsd, N, ?_, hsd⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Apply the tactic sequence `first | exact Iff.rfl | simp [GlobalTheory.AdForm.latFr]`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem std_moved_lattice : ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n), V.gram = 1 → (∀ g : GA D V, ∃ N, Moves V hn g N) ∧ ∀ (g : GA D V) N, Moves V hn g N → Formalism.L2.Col.IsSdLat N ∧ ∃ Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E), (Λ : Set (Fin V.rank → D.host.E)) = latFr V hn N ∧ IsSelfDualC V Λ := by
   intro D V n hn hV

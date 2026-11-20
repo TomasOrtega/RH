@@ -4,23 +4,23 @@ open MeasureTheory
 namespace GlobalTheory.CompanionTheory.AePoly
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `Q hQ`. Establish `hex : ∃ x : Fin 0 → ℂ, MvPolynomial.eval x Q ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hQ (MvPolynomial.funext fun x => by simpa using h x)`. Take `⟨x, hx⟩` from `hex`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Rewrite using `[Subsingleton.elim y x]` and apply the resulting hypothesis. Consider the case `succ d ih`. Introduce `Q hQ`. Establish `hP0 : MvPolynomial.finSuccEquiv ℂ d Q ≠ 0` using `(map_ne_zero_iff _ (MvPolynomial.finSuccEquiv ℂ d).injective).2 hQ`. Establish `hlc` using `ih _ (Polynomial.leadingCoeff_ne_zero.2 hP0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : Continuous fun z : ℂ × (Fin d → ℂ) => (Fin.cons z.1 z.2 : Fin (d + 1) → ℂ)`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using continuous_fst`. Simplify using `using (by fun_prop : Continuous fun a : ℂ × (Fin d → ℂ) => a.2 j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : MeasurableSet {z : ℂ × (Fin d → ℂ) | MvPolynomial.eval (Fin.cons z.1 z.2 : Fin (d + 1) → ℂ) Q = 0}` using `(isClosed_eq ((MvPolynomial.continuous_eval Q).comp hF) continuous_const).measurableSet`. Establish `hprod : ∀ᵐ z ∂((volume : Measure ℂ).prod (volume : Measure (Fin d → ℂ))), MvPolynomial.eval (Fin.cons z.1 z.2 : Fin (d + 1) → ℂ) Q ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `only [ne_eq, not_not]`. Rewrite using `[Measure.prod_apply_symm hS]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : (fun s : Fin d → ℂ => (volume : Measure ℂ) ((fun y => (y, s)) ⁻¹' {z : ℂ × (Fin d → ℂ) | MvPolynomial.eval (Fin.cons z.1 z.2 : Fin (d + 1) → ℂ) Q = 0})) =ᵐ[volume] 0`. Use `hlc.mono fun s hs => ?_` and prove the remaining obligations. Establish `hR : (MvPolynomial.finSuccEquiv ℂ d Q).map (MvPolynomial.eval s) ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun p => Polynomial.coeff p (MvPolynomial.finSuccEquiv ℂ d Q).natDegree) h0` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`. Use `measure_mono_null ?_ ((Polynomial.finite_setOf_isRoot hR).measure_zero volume)` and prove the remaining obligations. Introduce `y hy`. Simplify `hy` using `[Polynomial.IsRoot, MvPolynomial.eval_eq_eval_mv_eval']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lintegral_congr_ae hz]`. Simplify using the standard rewrite rules. Establish `h` using `(volume_preserving_piFinSuccAbove (fun _ : Fin (d + 1) => ℂ) 0).quasiMeasurePreserving.ae hprod`. Use `filter_upwards [h] with x hx`. Establish `hc : (Fin.cons (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (d + 1) => ℂ) 0 x).1 (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (d + 1) => ℂ) 0 x).2 : Fin (d + 1) → ℂ) = x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use extensionality with `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [MeasurableEquiv.piFinSuccAbove, Fin.tail]`. Rewrite `hx` using `[hc]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem ae_eval_ne_zero_fin : ∀ (d : ℕ) (Q : MvPolynomial (Fin d) ℂ), Q ≠ 0 →
     ∀ᵐ x ∂(volume : Measure (Fin d → ℂ)), MvPolynomial.eval x Q ≠ 0 := by
@@ -77,9 +77,9 @@ theorem ae_eval_ne_zero_fin : ∀ (d : ℕ) (Q : MvPolynomial (Fin d) ℂ), Q �
     rwa [hc] at hx
 
 /- English proof (translation)
-Use `⟨(MeasurableEquiv.curry (Fin M) (Fin n) ℂ).symm.measurable, ?_⟩` and prove the remaining obligations. Use `(Measure.pi_eq (μ := fun _ : Fin M × Fin n => (volume : Measure ℂ)) fun s hs => ?_).symm` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`. Establish `h : (MeasurableEquiv.curry (Fin M) (Fin n) ℂ).symm ⁻¹' Set.univ.pi s = Set.univ.pi fun a => Set.univ.pi fun k => s (a, k)`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Prod.forall]`. Both sides reduce to the same expression. Rewrite using `[h, volume_pi, Measure.pi_pi]`. Repeatedly rewrite using `[volume_pi, Measure.pi_pi]`. Rewrite using `[← Fintype.prod_prod_type']`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem measurePreserving_uncurry (M n : ℕ) :
     MeasurePreserving (MeasurableEquiv.curry (Fin M) (Fin n) ℂ).symm
@@ -97,11 +97,11 @@ theorem measurePreserving_uncurry (M n : ℕ) :
   rw [← Fintype.prod_prod_type']
 
 /- English proof (translation)
-Introduce `M n Q hQ`. Establish `hQ' : MvPolynomial.rename (finProdFinEquiv : Fin M × Fin n ≃ Fin (M * n)) Q ≠ 0` using `(map_ne_zero_iff _ (MvPolynomial.rename_injective _ finProdFinEquiv.injective)).2 hQ`. Establish `h1` using `ae_eval_ne_zero_fin _ _ hQ'`. Establish `h2` using `(volume_measurePreserving_piCongrLeft (fun _ : Fin (M * n) => ℂ) (finProdFinEquiv : Fin M × Fin n ≃ Fin (M * n))).quasiMeasurePreserving.ae h1`. Establish `h3` using `(measurePreserving_uncurry M n).quasiMeasurePreserving.ae h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h3] with C hC`. Rewrite `hC` using `[MvPolynomial.eval_rename]`. Establish `hfun : (MeasurableEquiv.piCongrLeft (fun _ : Fin (M * n) => ℂ) (finProdFinEquiv : Fin M × Fin n ≃ Fin (M * n)) ((MeasurableEquiv.curry (Fin M) (Fin n) ℂ).symm C)) ∘ finProdFinEquiv = fun p => C p.1 p.2`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_apply]`. Both sides reduce to the same expression. Rewrite `hC` using `[hfun]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ae_eval_matrix_ne_zero : ∀ (M n : ℕ) (Q : MvPolynomial (Fin M × Fin n) ℂ), Q ≠ 0 →
     ∀ᵐ C ∂(volume : Measure (Fin M → Fin n → ℂ)), MvPolynomial.eval (fun p => C p.1 p.2) Q ≠ 0 := by

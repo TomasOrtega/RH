@@ -4,7 +4,7 @@ import Mathlib
 open IsLocalRing
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.abhyankar_ramificationIdx_eq_one) | (exact GlobalTheory.abhyankar_ramificationIdx_eq_one) | (intros; apply GlobalTheory.abhyankar_ramificationIdx_eq_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.abhyankar_ramificationIdx_eq_one_alt : ∀ (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]

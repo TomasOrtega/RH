@@ -21,7 +21,7 @@ def PushLocalStatement : Prop :=
       mInt A Φ g = ∫ y in q '' V, ∑ᶠ x ∈ q ⁻¹' {y} ∩ V, g x * pushDens A Φ q x
 
 /- English proof (translation)
-The claim follows from `pushB_forward`.
+A detailed English derivation is pending.
 -/
 theorem pushForward : PushForwardStatement := pushB_forward
 

@@ -16,9 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SerStdTwist
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hL hIs hG hFam hMod hThP hTie i hV hFP hstd gramR c0R c0L hFT u hu`. Take `⟨ph, hph, hU'⟩` from `hU D G Pl0 T0 A T R F κ v₀ hL hIs hG hFam hMod hThP hTie i hV hFP hstd gramR c0R c0L hFT u hu`. Use `⟨ph, hph, fun C hC s hs f hf w hw => ⟨hU' C hC s hs f hf w hw, fun δ δc hδ => ⟨fun dd hdd => ?_, fun om hom => ?_⟩⟩⟩` and prove the remaining obligations. Use `GlobalTheory.T.rationalForms_detTwist_mul_rational hRF D G Pl0 T0 A T R F κ v₀ hL hIs hG hFam hMod hThP hTie i hV hFP gramR c0R c0L hFT u hu C hC δ δc hδ dd (Or.inl hdd) _ (hU' C hC s hs f hf w hw)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨c, hc, dd, hdd, heq⟩` from `GlobalTheory.WeilTwistSeries.theta_weil_twist D G Pl0 T0 A T R F κ v₀ hL hIs hG hFam hMod hThP hTie i hV hFP gramR c0R c0L hFT u hu C hC δ δc hδ om hom s hs f hf w hw`. Establish `h1` using `GlobalTheory.T.rationalForms_detTwist_mul_rational hRF D G Pl0 T0 A T R F κ v₀ hL hIs hG hFam hMod hThP hTie i hV hFP gramR c0R c0L hFT u hu C hC δ δc hδ dd hdd _ (hU' C hC s hs f hf w hw)`. Establish `h2` using `isRat_const_mul T i hV C (κ i) _ c h1 hc`. Use `h2 using 2 with g` and compare the differences between its conclusion and the goal. Rewrite using `[heq g]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -18,7 +18,7 @@ abbrev sPow (X : GenModel gb N) (r : ℕ) : (GlobalTheory.KS.pow X.univ.A r).lef
   (GlobalTheory.KS.pow X.univ.A r).hom ≫ X.s
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, Over.w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftMap_w {X : GenModel gb N} {X' : GenModel gb M} {f : X'.X ⟶ X.X} {o : GObj gb N X'.s}
     (ψ : X'.univ.A ⟶ o.A) (m : GObjMap o X.univ f) :

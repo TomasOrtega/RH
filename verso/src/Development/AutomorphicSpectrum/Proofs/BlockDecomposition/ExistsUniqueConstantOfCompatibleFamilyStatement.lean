@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Axis.existsUnique_const_of_trivSqZeroExt | exact GlobalTheory.CompanionTheory.Axis.existsUnique_const_of_trivSqZeroExt | (intros; apply GlobalTheory.CompanionTheory.Axis.existsUnique_const_of_trivSqZeroExt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_unique_constant_of_compatible_family : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) (M : Type) [AddCommGroup M]
     [Module R M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M] (F' : C ⥤ CommAlgCat.{0} (TrivSqZeroExt R M)) (_ : BC F F'),

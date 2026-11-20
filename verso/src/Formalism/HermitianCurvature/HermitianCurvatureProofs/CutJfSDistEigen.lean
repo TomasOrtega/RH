@@ -24,13 +24,13 @@ def ClassEigenC : Prop :=
           Q.CV S.G.k S.G.r (Y : ℂ) (B.JF (T v).base (f v)) g = ((S.P v Y : ℝ) : ℂ) • B.JF (T v).base (f v) g
 
 /- English proof (translation)
-Introduce `Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hCc hB v`. Take `⟨_, _, _, hbuilt, _, _, _, _, _, hCk, hk2, hA, _⟩` from `hB`. Take `⟨_, hv⟩` from `hbuilt`. Take `⟨_, _, _, _, hCC, heig⟩` from `hv v`. Establish `hpos : 0 ≤ ((S.G.r : ℝ) + 1) ^ 4 * ((S.Ntop : ℝ) * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 2 + (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 3)` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA' : 100 * ((S.G.r : ℝ) + 1) ^ 4 * ((S.Ntop : ℝ) * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 2 + (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 3) ≤ A₀`. Combine the equalities or inequalities in the displayed calculation. Establish `hThr : JF.TransportedAlt S.G.k S.G.r A₀ (2 * S.G.r + S.G.k + 1)` using `Formalism.FourierDecayAlt.P.CutMP.thr_of_budget S.G.k S.G.r (S.Ntop : ℝ) A₀ hk2 (Nat.cast_nonneg _) hA'`. Establish `hW` using `Formalism.FourierDecayAlt.P.jacquet_derivative_formula S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base A₀ (2 * S.G.r + S.G.k + 1) (f v) hThr (hCC _)`. Use `⟨hW.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Y g hg`. Establish `hgG : g ∈ B.GV S.G.k S.G.r` using `hg.1`. Establish `hCkn : B.CkOn ((2 * S.G.r + S.G.k + 1 : ℕ) : ℕ∞) (B.GV S.G.k S.G.r) (f v)` using `Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top (hCk v)`. Rewrite using `[Formalism.FourierDecayAlt.P.casimir_under_jacquet_integral S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base A₀ (2 * S.G.r + S.G.k + 1) (f v) (Y : ℂ) le_rfl hThr (hCC _) _ hg]`. Establish `hint : ∀ᵐ p ∂(T v).base.μSS, JF.xiP (T v).base p • Q.CV S.G.k S.G.r (Y : ℂ) (B.rho (T v).base p (f v)) g = ((S.P v Y : ℝ) : ℂ) • (JF.xiP (T v).base p • B.rho (T v).base p (f v) g)` using `by filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_inSS (T v).base] with p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.capelli_rho_commute S.G.k S.G.r _ _ (T v).base (Y : ℂ) (f v) p hp hCkn _ hgG]`. Establish `hs` using `Formalism.FourierDecayAlt.P.B7.sgs_mem (T v).base hp hgG`. Simplify using `only [B.rho]`. Rewrite using `[heig Y _ hs, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]`. Rewrite using `[integral_congr_ae hint, integral_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -76,11 +76,11 @@ theorem class_eigenvalue_constant : ClassEigenC := by
   rfl
 
 /- English proof (translation)
-Use `⟨hgG, ?_, hg.1⟩` and prove the remaining obligations. Introduce `l hl`. Break down `Nat.eq_zero_or_pos l.val with h0 | hpos` into its components or cases. Establish `hl0 : l = 0` using `Fin.ext h0`. Substitute `hl0` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Unfold `Dmin`. Establish `: IsEmpty (Fin ((0 : Fin (S.G.r + 2)) : ℕ))` using `⟨fun i => absurd i.isLt (by simp)⟩`. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `one_ne_zero`. Use `hg.2 ⟨l.val - 1, by omega⟩` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨(l.val - 1) + 1, by omega⟩ : Fin (S.G.r + 2)) = l` using `Fin.ext (by simp; omega)`. Simplify `this` using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_om_of_mem_omP {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : NumberField.InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]

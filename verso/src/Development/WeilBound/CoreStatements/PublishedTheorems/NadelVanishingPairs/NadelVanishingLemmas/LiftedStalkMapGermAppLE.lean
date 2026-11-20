@@ -19,7 +19,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Establish `h1` using `Scheme.Hom.germ_stalkMap_apply f W z (h hz) s`. Establish `h2` using `TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE h) z hz ((f.app W).hom s)`. Conclude with `h1.trans h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lifted_stalkMap_germ_appLE {Y Z : Scheme.{0}} (f : Z ⟶ Y) (W : Y.Opens) (W' : Z.Opens)
     (h : W' ≤ f ⁻¹ᵁ W) (z : Z) (hz : z ∈ W') (s : Γ(Y, W)) :
@@ -30,35 +30,31 @@ theorem lifted_stalkMap_germ_appLE {Y Z : Scheme.{0}} (f : Z ⟶ Y) (W : Y.Opens
   exact h1.trans h2.symm
 
 /- English proof (translation)
-Introduce `p _ Y X _ q f π hpb n s L σ hL ι _ C Z U hU hgen x J hx hJ hchart`. Take `⟨i₁⟩` from `‹Nonempty ι›`. Establish `hη : ∀ i, π (genericPoint X) ∈ (C i).U` using `fun i => hU i (hgen i)`. Set `πK : Y.presheaf.stalk (π (genericPoint X)) →+* X.functionField` to `(π.stalkMap (genericPoint X)).hom`. Establish `hflat : IsFlatLift p πK` using `GlobalTheory.T.etale_coordinates_flat_lift p Y X q f π hpb (C i₁).U (C i₁).t (C i₁).affine (C i₁).etale (genericPoint X) (hη i₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpK : (p : X.functionField) = 0`. Establish `h0` using `(hflat.ker (p : Y.presheaf.stalk (π (genericPoint X)))).2 ⟨1, by ring⟩`. Simplify using `using h0`. Use `haveI : CharP X.functionField p := (CharP.charP_iff_prime_eq_zero Fact.out).2 hpK`. Establish `hpp` using `logLift_pp_zero p πK hflat`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose F hF1 hF2 hF3 using fun i => GlobalTheory.T.exists_frobenius_lift_stalk p q (C i).U (C i).t (C i).affine (C i).etale (π (genericPoint X)) (hη i)`. Establish `hlift : ∀ i l, πK ((Y.presheaf.germ (C i).U (π (genericPoint X)) (hη i)).hom ((C i).t l)) = (x i l : X.functionField)`. Introduce `i l`. Rewrite using `[hx i l]`. Conclude with `lifted_stalkMap_germ_appLE π (C i).U (U i) (hU i) (genericPoint X) (hgen i) ((C i).t l)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Y.presheaf.stalk (π (genericPoint X)), inferInstance, πK, F, hflat, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i z`. Take `⟨w, hw⟩` from `hF1 i z`. Rewrite using `[hw, map_add, map_pow, map_mul, map_natCast, hpK, zero_mul, add_zero]`. Introduce `i l`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨_, hlift i l, hF2 i l⟩`. Introduce `y t hyt a ha`. Break down `t.eq_empty_or_nonempty with rfl | ⟨i₀, hi₀⟩` into its components or cases. Take `⟨z, hz⟩` from `hflat.surj (a : X.functionField)`. Conclude with `⟨z, hz, fun i hi => absurd hi (Finset.notMem_empty i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp : π (genericPoint X) ⤳ π y` using `((genericPoint_spec X).specializes (Set.mem_univ y)).map π.continuous`. Establish `hsurj` using `(GlobalTheory.T.mod_p_squared_stalk_surjective p Y X q f π hpb y).1`. Establish `hloc` using `GlobalTheory.T.local_ring_image_stalk_map π y hsp hsurj`. Use `set At := stalkIm hsp with hAt`. Establish `hmap : (locRing y : Set X.functionField) = (At.map πK : Set X.functionField)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use extensionality with `c`. Rewrite using `[SetLike.mem_coe, hloc, SetLike.mem_coe, Subring.mem_map]`. Establish `hstab : ∀ i ∈ t, ∀ z ∈ At, ∃ w ∈ At, F i z = z ^ p + p * w` using `fun i hi z hz => hF3 i (π y) (hU i (hyt i hi)) hsp z hz`. Take `⟨u, m, hu, rfl⟩` from `((hchart i₀).logUnit y (hyt i₀ hi₀) a).1 ha`. Rewrite using `[hmap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu0 : (u : X.functionField) ≠ 0` using `u.ne_zero`. Establish `hU1 : LogLift p πK F t (At.map πK : Set X.functionField) (u : X.functionField)`. Establish `h2` using `(unitAt_iff hu0).1 hu`. Use `logLift_of_unit_mem_map p πK F t At hflat hstab _ hu0 ?_ ?_` and prove the remaining obligations. Conclude with `Subring.mem_map.2 ((hloc _).1 h2.1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Subring.mem_map.2 ((hloc _).1 h2.2)`. Establish `hcoord : ∀ j ∈ J i₀, LogLift p πK F t (At.map πK : Set X.functionField) (x i₀ j : X.functionField)`. Introduce `j hj`. Take `⟨c, hc⟩` from `hJ i₀ j hj`. Use `⟨_, hlift i₀ j, fun i hi => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv⟩` from `GlobalTheory.T.snc_chart_equations_differ_unit q L σ hL (C i₀) (C i) (π y) (hU i₀ (hyt i₀ hi₀)) (hU i (hyt i hi)) c`. Rewrite `hv` using `[hc]`. Express the relevant statement in the definitionally equal form `(Y.presheaf.germ (C i₀).U (π y) (hU i₀ (hyt i₀ hi₀))).hom ((C i₀).t j) = _ at hv`. Establish `hv'` using `congrArg (Y.presheaf.stalkSpecializes hsp).hom hv`. Establish `e1 : ∀ (V : Y.Opens) (hV : π y ∈ V) (r : Γ(Y, V)), (Y.presheaf.stalkSpecializes hsp).hom ((Y.presheaf.germ V (π y) hV).hom r) = (Y.presheaf.germ V (π (genericPoint X)) (hsp.mem_open V.isOpen hV)).hom r` using `fun V hV r => TopCat.Presheaf.germ_stalkSpecializes_apply Y.presheaf hV hsp r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv'` using `[map_mul]`. Establish `hv2 : (Y.presheaf.germ (C i₀).U (π (genericPoint X)) (hη i₀)).hom ((C i₀).t j) = (Y.presheaf.stalkSpecializes hsp).hom (v : Y.presheaf.stalk (π y)) * (Y.presheaf.germ (C i).U (π (genericPoint X)) (hη i)).hom (((C i).e c).elim 1 (C i).t)`. Use `(e1 _ _ _).symm.trans (hv'.trans ?_)` and prove the remaining obligations. Use `congr 1`. Conclude with `e1 _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `set sv := (Y.presheaf.stalkSpecializes hsp).hom (v : Y.presheaf.stalk (π y)) with hsv`. Use `set sv' := (Y.presheaf.stalkSpecializes hsp).hom ((v⁻¹ : (Y.presheaf.stalk (π y))ˣ) : Y.presheaf.stalk (π y)) with hsv'`. Establish `hsvA : sv ∈ At` using `⟨_, rfl⟩`. Establish `hsv'A : sv' ∈ At` using `⟨_, rfl⟩`. Establish `hvv : sv * sv' = 1` using `by rw [hsv, hsv', ← map_mul, Units.mul_inv, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hkey : ∀ o : Option (Fin n), F i ((Y.presheaf.germ (C i).U (π (genericPoint X)) (hη i)).hom (o.elim 1 (C i).t)) = ((Y.presheaf.germ (C i).U (π (genericPoint X)) (hη i)).hom (o.elim 1 (C i).t)) ^ p`. Introduce and unpack `(_ | l)`. Use `show F i ((Y.presheaf.germ (C i).U (π (genericPoint X)) (hη i)).hom 1) = _`. Simplify using the standard rewrite rules. Conclude with `hF2 i l`.
-
-Take `⟨w, hwA, hw⟩` from `GlobalTheory.T.frobenius_lift_unit_times_coord p At (F i) sv sv' _ hpp hsv'A hvv (hstab i hi sv hsvA) (hkey ((C i).e c))`. Use `⟨w, Subring.mem_map.2 ⟨w, hwA, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hv2]`. Conclude with `hw`. Rewrite using `[Units.val_mul, Units.coe_prod]`.
-
-Use `logLift_mul p πK F t _ hflat hU1 ?_` and prove the remaining obligations. Use `Finset.prod_induction _ (LogLift p πK F t (At.map πK : Set X.functionField)) (fun _ _ => logLift_mul p πK F t _ hflat) (logLift_one p πK F t _) (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Conclude with `logLift_zpow p πK F t _ hflat (x i₀ j).ne_zero (hcoord j hj) (m j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLifted_of_sncCharts : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) [IsIntegral X] (g : Y ⟶ Sp (ZMod (p ^ 2))) (f : X ⟶ Sp (ZMod p)) (π : X ⟶ Y), IsPullback π f g (spMap (ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p))) → ∀ {n s : ℕ} (L : Fin s → LB Y) (σ : ∀ i, (L i).Sec), (∀ i, (L i).IsLB) → ∀ {ι : Type} [Nonempty ι] (C : ι → SncChart g n L σ) (Z : Set X) (U : ι → X.Opens) (hU : ∀ i, U i ≤ π ⁻¹ᵁ (C i).U) (hgen : ∀ i, genericPoint X ∈ U i) (x : ι → Fin n → X.functionFieldˣ) (J : ι → Finset (Fin n)), (∀ i l, (x i l : X.functionField) = fnOf (U i) (hgen i) ((π.appLE (C i).U (U i) (hU i)).hom ((C i).t l))) → (∀ i l, l ∈ J i → ∃ c, (C i).e c = some l) → (∀ i, IsLogChart Z (U i) (x i) (J i)) → IsLifted p Z U x := by
   intro p _ Y X _ q f π hpb n s L σ hL ι _ C Z U hU hgen x J hx hJ hchart

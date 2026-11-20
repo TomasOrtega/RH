@@ -26,7 +26,7 @@ def IsTheta (D : DegPre V) (θ : D.SecB 1 0) : Prop :=
       ThetaOne.OneBasisAt D f θ'
 
 /- English proof (translation)
-The claim follows from `ThetaOne.exists_theta hV D`.
+A detailed English derivation is pending.
 -/
 theorem exists_isTheta [IsLocalRing V] (hV : IsCN V) (D : DegPre V) : ∃ θ, IsTheta D θ :=
   ThetaOne.exists_theta hV D

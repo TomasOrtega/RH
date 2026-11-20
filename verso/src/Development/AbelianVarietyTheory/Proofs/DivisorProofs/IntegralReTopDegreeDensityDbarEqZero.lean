@@ -14,9 +14,9 @@ open GlobalTheory.GoodMetric (coordVec)
 namespace GlobalTheory.CxForm
 
 /- English proof (translation)
-Establish `hint : ∀ w : V n, Integrable (fun y => fderiv ℝ G y w)` using `fun w => ((hG.continuous_fderiv (by norm_num)).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) w)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [dbar_apply, smul_eq_mul]`. Conclude with `((hint _).add ((hint _).const_mul _)).const_mul _`. Simplify using `only [dbar_apply, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul, integral_add (hint _) ((hint _).const_mul _), integral_const_mul, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n G hG hc, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n G hG hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_dbar_integral_eq_zero {n : ℕ} {G : V n → ℂ} (hG : ContDiff ℝ 1 G)
     (hc : HasCompactSupport G) (u : V n) :
@@ -34,7 +34,7 @@ theorem integrable_dbar_integral_eq_zero {n : ℕ} {G : V n → ℂ} (hG : ContD
     simp
 
 /- English proof (translation)
-Simplify using `only [dens, dbarAt, coefwise, Finset.mul_sum, mul_smul_comm, map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, Finset.sum_div, mul_div_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dens_dbarAt_eq_sum {n : ℕ} (F : V n → Alt n) (v : V n) :
     dens (dbarAt F v) = ∑ a, ∑ S, dbar (fun x => (bas n).repr (F x) S) v (coordVec a) * dens (dzb a * bas n S) := by
@@ -42,11 +42,11 @@ theorem dens_dbarAt_eq_sum {n : ℕ} (F : V n → Alt n) (v : V n) :
     Finsupp.smul_apply, smul_eq_mul, Finset.sum_div, mul_div_assoc]
 
 /- English proof (translation)
-Establish `h (a : Fin n) (S : Finset (Fin (n + n)))` using `integrable_dbar_integral_eq_zero (hF S) (hc.comp_left (g := fun α : Alt n => (bas n).repr α S) (by simp)) (coordVec a)`. Establish `hi (a : Fin n) (S : Finset (Fin (n + n))) : Integrable fun v => dbar (fun x => (bas n).repr (F x) S) v (coordVec a) * dens (dzb a * bas n S)` using `(h a S).1.mul_const _`. Establish `hD : Integrable fun v => dens (dbarAt F v)`. Simplify using `only [dens_dbarAt_eq_sum]`. Conclude with `integrable_finset_sum _ fun a _ => integrable_finset_sum _ fun S _ => hi a S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : ∫ v, dens (dbarAt F v) = 0`. Simplify using `only [dens_dbarAt_eq_sum]`. Rewrite using `[integral_finset_sum _ fun a _ => integrable_finset_sum _ fun S _ => hi a S]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun S _ => hi a S]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun S _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, (h a S).2, zero_mul]`. Use `Complex.reCLM.integral_comp_comm hD` as an intermediate fact. Simplify using `only [Complex.reCLM_apply] at this`. Rewrite using `[this, h0, Complex.zero_re]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_re_dens_dbarAt_eq_zero {n : ℕ} (F : V n → Alt n)
     (hF : ∀ S, ContDiff ℝ 1 (fun v => (bas n).repr (F v) S)) (hc : HasCompactSupport F) :

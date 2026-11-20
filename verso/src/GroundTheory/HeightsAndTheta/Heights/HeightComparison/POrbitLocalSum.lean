@@ -15,13 +15,13 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G
 
 /- English proof (translation)
-Introduce `ι _ _ _ n A x s hx hs V hV`. Take `⟨hVmin, hVrel⟩` from `id hV`. Use `choose c hc using hVrel`. Establish `hWV : orbitIdeal x ≤ V` using `le_sup_left.trans hVmin.1.2`. Establish `hxc : ∀ k, x k (c k) ≠ 0` using `fun k h ↦ hc k (hWV (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, Geo.mConeMap, aeval_X]`. Simplify using `[flatCone, h]))`. Take `⟨hft, hfr⟩` from `hR ι n x c hxc`. Use `hM ι n A x s hx hs V hV c hc` as an intermediate fact. Take `⟨hf0, hterm⟩` from `hT ι n A x s hs c hxc`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `_ : Algebra (ratioField x) (coordField x)` to `(IntermediateField.inclusion (ratioField_le_coordField x)).toRingHom.toAlgebra`. Establish `hset : {v : FinitePlace (coordField x) | orbitCenter x v = V} = {v : FinitePlace (coordField x) | AbsCentredAt (chartRing x c) (chartPoint x c V) fun u ↦ v (algebraMap (ratioField x) (coordField x) u)}` using `Set.ext fun v ↦ hC ι n A x s hx hs V hV c hc v`. Establish `hsum : ∑ᶠ v ∈ {v : FinitePlace (coordField x) | orbitCenter x v = V}, (finiteTerm A v (coordVec x) - Real.log (v (evalCone (coordVec x) s))) = ∑ᶠ v ∈ {v : FinitePlace (coordField x) | orbitCenter x v = V}, -Real.log (v (algebraMap (ratioField x) (coordField x) (chartEval x c s)))` using `finsum_mem_congr rfl fun v hv ↦ hterm v fun k hk ↦ hc k (by`. Rewrite using `[← (show orbitCenter x v = V from hv)]`. Conclude with `hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg` using `Module.finrank_mul_finrank ℚ (ratioField x) (coordField x)`. Rewrite using `[hsum, hset, hS (ratioField x) (coordField x) (chartRing x c) (chartPoint x c V), hU ι n A x s hx hs V hV c hc, hF ι n A x s hx hs V hV c hc, ← hP (ratioField x) (chartRing x c) hft hfr (chartPoint x c V) (chartEval x c s) hf0, ← hdeg]`. Use `push_cast`. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem OrbitLocalSum.proof (hR : OrbitChartRing.Statement) (hM : OrbitChartMax.Statement)
     (hF : OrbitChartResidue.Statement) (hU : OrbitChartMult.Statement)

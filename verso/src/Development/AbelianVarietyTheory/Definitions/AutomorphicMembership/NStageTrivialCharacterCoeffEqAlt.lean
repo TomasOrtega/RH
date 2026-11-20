@@ -80,7 +80,7 @@ def NLay0.eta (L : NLay0 R H what₂ LL0) (j : ℕ) (w : what₂.places.Pl) : �
   if 1 ≤ j ∧ j ≤ R.m then ∑ i ∈ L.nd.locs j w, L.nd.etaLoc i else what₂.etaJ j w
 
 /- English proof (translation)
-Unfold `NLay0.eta`. Use `split_ifs`. Conclude with `Finset.sum_nonneg fun i _ => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Conclude with `what₂.etaJ_nonneg j w`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem NLay0.eta_nonneg (L : NLay0 R H what₂ LL0) (j : ℕ) (w : what₂.places.Pl) : 0 ≤ L.eta j w := by
   unfold NLay0.eta
@@ -89,7 +89,7 @@ theorem NLay0.eta_nonneg (L : NLay0 R H what₂ LL0) (j : ℕ) (w : what₂.plac
   · exact what₂.etaJ_nonneg j w
 
 /- English proof (translation)
-Use `⟨fun i x => ?_, fun i x => ?_⟩` and prove the remaining obligations. Conclude with `((@Finset.mem_filter _ _ (fun _ => Classical.propDecidable _) _ _).trans (and_iff_right (Finset.mem_univ _)))`. Conclude with `((@Finset.mem_filter _ _ (fun _ => Classical.propDecidable _) _ _).trans (and_iff_right (Finset.mem_univ _)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem NLay0.zOk_fixZ (L : NLay0 R H what₂ LL0) : L.fixZ.ZOk := by
   classical
@@ -99,7 +99,7 @@ theorem NLay0.zOk_fixZ (L : NLay0 R H what₂ LL0) : L.fixZ.ZOk := by
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem NLay0.ZOk.reEta {L : NLay0 R H what₂ LL0} (h : L.ZOk) (η : ℕ → what₂.places.Pl → ℚ) (hη : ∀ j w, 0 ≤ η j w) :
     @NLay0.ZOk R H (rowsEta what₂ η hη) ‹NumberField what₂.LL› ‹StarRing what₂.LL› LL0 (L.reEta η hη) := h
@@ -109,7 +109,7 @@ def NLay0.EtaOk (L : NLay0 R H what₂ LL0) : Prop :=
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `_ _ h1 h2` and use `if_pos ⟨h1, h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NLay0.etaOk_reEta (L : NLay0 R H what₂ LL0) :
     @NLay0.EtaOk R H (rowsEta what₂ L.eta L.eta_nonneg) ‹NumberField what₂.LL› ‹StarRing what₂.LL› LL0

@@ -10,37 +10,33 @@ namespace Formalism.L2.SG.Pf.FrameGlobalPatching.FStar.BwdNA
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 
 /- English proof (translation)
-Establish `hXo` using `X_le_orth S X hXiso`. Take `⟨A, hAX, hA0, hAz, hAΛ⟩` from `stepB S X hXiso z hzX Λ Λ₂ hΛ₂ hSD₂ (fun x hx h => (hX x hx).1 h) hz hz₂ hL hy`. Take `⟨g, hg, hgA⟩` from `stepW S X hXiso A hAX hA0`. Establish `hgX : ∀ x ∈ X, g x = x` using `fun x hx => by`. Establish `e : g x = x + A ⟨x, hXo hx⟩` using `hgA ⟨x, hXo hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hA0 ⟨x, hXo hx⟩ hx, add_zero]`. Set `Λ₃ : Submodule (𝓞 E) S.V` to `Λ₂.map ((g : S.V →ₗ[E] S.V).restrictScalars (𝓞 E))`. Establish `hmem₃ : ∀ x, x ∈ Λ₃ ↔ g.symm x ∈ Λ₂` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `using hy`. Introduce `h`. Conclude with `⟨g.symm x, h, by simp⟩`. Establish `hfg₃ : Λ₃.FG` using `hΛ₂.fg.map _`. Establish `hfull₃ : ∀ u : S.V, ∃ d : 𝓞 E, d ≠ 0 ∧ d • u ∈ Λ₃` using `fun u => by`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd, hdu⟩` from `PI.UnitaryGroupMassFormula.BetaLUniq.exists_smul_mem S Λ₂ hΛ₂ (g.symm u)`. Use `⟨d, hd, (hmem₃ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[oSmul, map_smul, ← oSmul]`. Conclude with `hdu`. Establish `hSD₃ : SD S Λ₃` using `fun x => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmem₃, hSD₂]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `h (g.symm y) ((hmem₃ y).1 hy)` as an intermediate fact. Rewrite `this` using `[← hg (g.symm y) (g.symm x), g.apply_symm_apply, g.apply_symm_apply]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h y hy`. Rewrite using `[← hg y (g.symm x), g.apply_symm_apply]`. Conclude with `h (g y) ((hmem₃ _).2 (by simpa using hy))`. Establish `hM : ∀ x ∈ orth S X, x ∈ Λ₃ ↔ x ∈ Λ` using `fun x hx => by`. Rewrite using `[hmem₃]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨l, rfl⟩ : ∃ l, g l = x` from `⟨g.symm x, g.apply_symm_apply x⟩`. Rewrite `h` using `[g.symm_apply_apply]`. Establish `hlo : l ∈ orth S X` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun x' hx' => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hg x' l, hgX x' hx']`. Conclude with `orth_X S hx hx'`. Establish `e : g l = l + A ⟨l, hlo⟩` using `hgA ⟨l, hlo⟩`. Rewrite using `[e]`. Conclude with `hAΛ l hlo h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨x₂, hx₂, hx₂o, hxx₂⟩` from `hL' x h hx`. Establish `hAx₂` using `hAΛ x₂ hx₂o hx₂`. Take `⟨ξ, hξ⟩ : ∃ ξ, ξ = x - (x₂ + A ⟨x₂, hx₂o⟩)` from `⟨_, rfl⟩`. Establish `hξX : ξ ∈ X`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ξ = (x - x₂) - A ⟨x₂, hx₂o⟩` using `by rw [hξ]; abel`. Rewrite using `[e]`. Conclude with `X.sub_mem hxx₂ (hAX _)`. Establish `hξΛ : ξ ∈ Λ` using `by rw [hξ]; exact Λ.sub_mem h hAx₂`. Establish `hξΛ₂ : ξ ∈ Λ₂` using `(hX ξ hξX).2 hξΛ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlo : x₂ + ξ ∈ orth S X` using `(orth S X).add_mem hx₂o (hXo hξX)`. Establish `e : g (x₂ + ξ) = x`. Establish `h1 : g (x₂ + ξ) = (x₂ + ξ) + A ⟨x₂ + ξ, hlo⟩` using `hgA ⟨x₂ + ξ, hlo⟩`. Establish `h2 : A ⟨x₂ + ξ, hlo⟩ = A ⟨x₂, hx₂o⟩ + A ⟨ξ, hXo hξX⟩`. Rewrite using `[← map_add]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[h1, h2, hA0 ⟨ξ, hXo hξX⟩ hξX, add_zero, hξ]`. Normalize the expressions using the abelian group laws. Rewrite using `[← e, g.symm_apply_apply]`. Conclude with `Λ₂.add_mem hx₂ hξΛ₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n₂, hn₂, hn₂o, hn₂img⟩` from `stepD S X hXiso Λ Λ₃ hΛ hSD hfg₃ hfull₃ hSD₃ hM htr`. Use `⟨g.trans n₂, fun a b => ?_, fun x hx => ?_, ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Use `show S.hT (n₂ (g a)) (n₂ (g b)) = S.hT a b`. Rewrite using `[hn₂, hg]`. Use `show n₂ (g x) = x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgX x hx, hn₂o x (hXo hx)]`. Establish `e : g z = z + A ⟨z, hzX⟩` using `hgA ⟨z, hzX⟩ show n₂ (g z) = z`. Rewrite using `[e, hAz, add_zero, hn₂o z hzX]`. Establish `e : g x = x + A ⟨x, hx⟩` using `hgA ⟨x, hx⟩`. Establish `ho : g x ∈ orth S X` using `by rw [e]; exact (orth S X).add_mem hx (hXo (hAX _))`.
-
-Use `show n₂ (g x) - x ∈ X`. Rewrite using `[hn₂o _ ho, e, add_sub_cancel_left]`. Conclude with `hAX _`. Establish `h3 : (g : S.V → S.V) '' (Λ₂ : Set S.V) = (Λ₃ : Set S.V)`. Rewrite using `[Submodule.map_coe]`.
-
-Both sides reduce to the same expression. Establish `e : ((g.trans n₂ : S.V ≃ₗ[E] S.V) : S.V → S.V) = n₂ ∘ g` using `rfl`. Rewrite using `[e, Set.image_comp, h3, hn₂img]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (X : Submodule E S.V) (hXiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0) (z : S.V) (hzX : z ∈ orth S X)
     (Λ Λ₂ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) (hΛ₂ : Submodule.IsLattice E Λ₂)

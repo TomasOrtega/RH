@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Matrix ComplexSets
 
 /- English proof (translation)
-Introduce `n d J W u p m γ ord hJ hdim hu hW hp hcov hsl hdisj hord`. Take `⟨U, hUo, hUd, hU⟩` from `hL n d J W u hJ hdim hu hW`. Take `⟨q, _, L, ⟨hrad, hlen⟩, c, hccov, hcdisj, hcord⟩` from `hS n d J W u p m γ ord hJ hdim hu hW hp hcov hsl hdisj hord U (fun q => {L | IsRadicalAt (sliceIdeal J L q) q ∧ localMult (J ⊔ Ideal.span {linForm u}) W = localMult (sliceIdeal J L q ⊔ Ideal.span {linForm u}) (RingHom.ker (eval q))}) hUo hUd hU`. Rewrite using `[hlen]`. Conclude with `hC n (sliceIdeal J L q) u q m c ord hrad hccov hcdisj hcord`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalOrder.proof (hL : SliceLength.Statement) (hS : SliceBranches.Statement)
     (hC : CurveBranchLength.Statement) : LocalOrder.Statement := by

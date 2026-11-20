@@ -16,11 +16,11 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 namespace GlobalTheory.CompanionTheory.GL2Factorization
 
 /- English proof (translation)
-Introduce `F C p q N hF hp hq hpN hqN hb`. Establish `h1` using `GlobalTheory.CompanionTheory.RealTateConv.integrable_mulR_abs_rpow_mul_one_add_rpow_neg p N hp hpN`. Establish `h2` using `GlobalTheory.CompanionTheory.RealTateConv.integrable_mulR_abs_rpow_mul_one_add_rpow_neg q N hq hqN`. Establish `h3 : Integrable (fun _ : ℝ => (1 : ℝ)) (volume.restrict (Set.Ioc 0 (2 * Real.pi)))` using `integrable_const _`. Establish `h4` using `h2.mul_prod h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `h1.mul_prod h4`. Establish `h6` using `h5.const_mul C`. Use `Integrable.mono' (g := _) h6 hF ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b, θ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(hb a b θ).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integrable_mIwR_of_product_bound :
     ∀ (F : ℝˣ × ℝˣ × ℝ → ℂ) (C p q N : ℝ), AEStronglyMeasurable F GL2LocalData.mIwR → 0 < p → 0 < q → p < N → q < N → (∀ (a b : ℝˣ) (θ : ℝ), ‖F (a, b, θ)‖ ≤ C * (|(a : ℝ)| ^ p * (1 + |(a : ℝ)|) ^ (-N)) * (|(b : ℝ)| ^ q * (1 + |(b : ℝ)|) ^ (-N))) → Integrable F GL2LocalData.mIwR := by

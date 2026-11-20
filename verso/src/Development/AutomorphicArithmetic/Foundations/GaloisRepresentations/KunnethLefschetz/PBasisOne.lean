@@ -5,23 +5,21 @@ noncomputable section
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Introduce `F M _ _ _ _ lam hlam`. Distinguish the cases in `h0 : lam = 0`. Use `haveI := hlam h0`. Conclude with `⟨0, Module.Basis.empty M, fun t => t.elim0⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, lam x ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h0 (LinearMap.ext hc)`. Use `set v : M := (lam x)⁻¹ • x with hvdef`. Establish `hv : lam v = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hvdef, map_smul, smul_eq_mul, inv_mul_cancel₀ hx]`. Use `set N := LinearMap.ker lam`. Set `e` to `Module.finBasis F N`. Set `f : Fin (Module.finrank F N + 1) → M` to `Fin.cons v (fun i => v + (e i : M))`. Establish `hrange : LinearMap.range lam = ⊤`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `c _`. Conclude with `⟨c • v, by rw [map_smul, hv, smul_eq_mul, mul_one]⟩`. Establish `hcard : Fintype.card (Fin (Module.finrank F N + 1)) = Module.finrank F M`. Rewrite using `[Fintype.card_fin, ← LinearMap.finrank_range_add_finrank_ker lam, hrange, finrank_top, Module.finrank_self, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvmem : v ∈ Submodule.span F (Set.range f)` using `Submodule.subset_span ⟨0, by simp [f]⟩`. Establish `hemem : ∀ i, (e i : M) ∈ Submodule.span F (Set.range f)`. Introduce `i`. Establish `h1 : v + (e i : M) ∈ Submodule.span F (Set.range f)` using `Submodule.subset_span ⟨i.succ, by simp [f]⟩`. Use `Submodule.sub_mem _ h1 hvmem` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using this`. Establish `hNmem : ∀ y : N, (y : M) ∈ Submodule.span F (Set.range f)`. Introduce `y`. Rewrite using `[← e.sum_repr y]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (hemem i))`. Establish `hspan : ⊤ ≤ Submodule.span F (Set.range f)`. Introduce `z _`. Establish `hz : z - lam z • v ∈ N`. Rewrite using `[LinearMap.mem_ker, map_sub, map_smul, hv, smul_eq_mul, mul_one, sub_self]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hNmem ⟨_, hz⟩`. Establish `h3` using `Submodule.add_mem _ h2 (Submodule.smul_mem _ (lam z) hvmem)`. Simplify using `using h3`. Use `⟨_, basisOfTopLeSpanOfCardEqFinrank f hspan hcard, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_basisOfTopLeSpanOfCardEqFinrank]`.
-
-Use `Fin.cases ?_ (fun i => ?_) t` and prove the remaining obligations. Simplify `hv` using `[f]`. Establish `hk : lam (e i : M) = 0` using `(e i).2`. Simplify using `[f, hv, hk]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem basisOne_holds : BasisOne := by
   intro F M _ _ _ _ lam hlam

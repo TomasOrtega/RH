@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 namespace UpperTheory.Lit.Car
 
 /- English proof (translation)
-The claim follows from `have hG := (bridge' hGK).2 hP ⟨lg_of (LocalGlobalAboveLAlt.local_global_compatibility_holds hW hG hB hL hJ) (LocalGlobalAboveLAlt.temperedness_transfer_holds hW hG hB hL hJ), csdSs_of hF hGK hG hB (LocalGlobalAboveLAlt.local_global_compatibility_holds hW hG hB hL hJ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem dualR_of_wbc (hW : PositivityTheory.Pf1.CLGD.K.WBC) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hGK : GlobalTheory.Published.GelfandKazhdanDual)
     (hP : GlobalTheory.Published.GaloisRepOfPolarizedPair) (hB : GlobalTheory.Published.DeRhamPotSemistable) (hL : GlobalTheory.Published.LocalLanglandsGL)
@@ -14,7 +14,7 @@ theorem dualR_of_wbc (hW : PositivityTheory.Pf1.CLGD.K.WBC) (hF : GlobalTheory.P
     csdSs_of hF hGK hG hB (LocalGlobalAboveLAlt.local_global_compatibility_holds hW hG hB hL hJ)⟩
 
 /- English proof (translation)
-The claim follows from `dualR_of_wbc (UpperTheory.V.Z.Bc.wbc_of_cbcc hC) hF hGK hP hB hL hJ`.
+A detailed English derivation is pending.
 -/
 theorem dualR_of_cbcc (hC : UpperTheory.V.Z.Bc.CBCc) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hGK : GlobalTheory.Published.GelfandKazhdanDual)
     (hP : GlobalTheory.Published.GaloisRepOfPolarizedPair) (hB : GlobalTheory.Published.DeRhamPotSemistable) (hL : GlobalTheory.Published.LocalLanglandsGL)

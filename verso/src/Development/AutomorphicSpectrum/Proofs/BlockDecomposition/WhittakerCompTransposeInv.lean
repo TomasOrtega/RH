@@ -22,13 +22,13 @@ abbrev pb : Pos 3 := ⟨(0, 2), by decide⟩
 abbrev pc : Pos 3 := ⟨(1, 2), by decide⟩
 
 /- English proof (translation)
-Establish `hD` using `isAddFundamentalDomain_vecDomain (K := ℚ) (ι := ι)`. Set `T : (ι → 𝔸[ℚ]) ≃+ (ι → 𝔸[ℚ])` to `AddEquiv.neg _`. Establish `hcn : Continuous fun x : ι → 𝔸[ℚ] => -x` using `continuous_neg`. Establish `h1` using `setIntegral_comp_addEquiv T hcn hcn (isAddFundamentalDomain_image_of_map_vecLattice T hcn (fun x => by`. Express the relevant statement in the definitionally equal form `x ∈ vecLattice ℚ ι ↔ -x ∈ vecLattice ℚ ι`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(neg_mem_iff).symm))`. Use the proof step `(f := fun u => F (c + u)) (fun ξ hξ x => by`. Rewrite using `[show c + (ξ + x) = ξ + (c + x) by abel]`. Conclude with `hF ξ hξ _)`. Establish `h2 : ∫ y in vecDomain ℚ ι, F (c + y) ∂vecMeasure ℚ ι = ∫ y in vecDomain ℚ ι, F y ∂vecMeasure ℚ ι`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∫ y in vecDomain ℚ ι, F (c + y) ∂vecMeasure ℚ ι = ∫ y in (fun y => c + y) '' vecDomain ℚ ι, F y ∂vecMeasure ℚ ι` using `((measurePreserving_add_left (vecMeasure ℚ ι) c).setIntegral_image_emb (measurableEmbedding_addLeft c) F _).symm`. Establish `e2 : (fun y => c + y) '' vecDomain ℚ ι = c +ᵥ vecDomain ℚ ι` using `rfl`. Rewrite using `[e1, e2]`. Use `(hD.vadd_of_comm c).setIntegral_eq hD fun l x => ?_` and prove the remaining obligations. Conclude with `hF l l.2 x`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `setIntegral_congr_fun measurableSet_vecDomain fun y _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F (c - y) = F (c + -y)`. Rewrite using `[sub_eq_add_neg]`. Use `_ = _ := h1.trans h2`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_sub_of_periodic {ι : Type*} [Fintype ι] (F : (ι → 𝔸[ℚ]) → ℂ)
     (hF : ∀ ξ ∈ vecLattice ℚ ι, ∀ x, F (ξ + x) = F x) (c : ι → 𝔸[ℚ]) :
@@ -75,9 +75,9 @@ def sw : Pos 3 ≃ Pos 3 where
 def fl (X : Pos 3 → 𝔸[ℚ]) : Pos 3 → 𝔸[ℚ] := fun p => if p = pb then X pa * X pc - X pb else X p
 
 /- English proof (translation)
-Use `continuous_pi fun p => ?_` and prove the remaining obligations. Simplify using `only [fl]`. Use `split_ifs`. Establish `ha : Continuous fun X : Pos 3 → 𝔸[ℚ] => X pa` using `continuous_apply pa`. Establish `hb : Continuous fun X : Pos 3 → 𝔸[ℚ] => X pb` using `continuous_apply pb`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun X : Pos 3 → 𝔸[ℚ] => X pc` using `continuous_apply pc`. Conclude with `(ha.mul hc).sub hb`. Conclude with `continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fl : Continuous fl := by
   refine continuous_pi fun p => ?_
@@ -90,13 +90,13 @@ theorem continuous_fl : Continuous fl := by
   · exact continuous_apply _
 
 /- English proof (translation)
-Set `E` to `MeasurableEquiv.piCongrLeft (fun _ : Pos 3 => 𝔸[ℚ]) sw`. Establish `hE : MeasurePreserving E (vecMeasure ℚ (Pos 3)) (vecMeasure ℚ (Pos 3))` using `measurePreserving_piCongrLeft (fun _ : Pos 3 => GroundTheory.Global.adeleMeasure ℚ) sw`. Establish `hsw : ∀ p, sw.symm p = sw p` using `fun p => rfl`. Establish `hEX : ∀ X : Pos 3 → 𝔸[ℚ], E X = fun p => X (sw p)`. Introduce `X`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `p`. Simplify using `[E, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft, hsw]`. Establish `hpre : E ⁻¹' vecDomain ℚ (Pos 3) = vecDomain ℚ (Pos 3)`. Use extensionality with `X`. Simplify using `only [Set.mem_preimage, hEX, vecDomain, Set.mem_pi, Set.mem_univ, true_implies]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hX p`. Use `hX (sw p)` as an intermediate fact. Simplify `this` using `[hsw, show sw (sw p) = p from sw.left_inv p]`. Introduce `hX p`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hX _`. Use `hE.setIntegral_preimage_emb E.measurableEmbedding h (vecDomain ℚ (Pos 3))` as an intermediate fact. Rewrite `this` using `[hpre]`. Simplify `this` using `only [hEX]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem setIntegral_comp_sw (h : (Pos 3 → 𝔸[ℚ]) → ℂ) :
     ∫ X in vecDomain ℚ (Pos 3), h (fun p => X (sw p)) ∂vecMeasure ℚ (Pos 3) =
@@ -123,21 +123,21 @@ theorem setIntegral_comp_sw (h : (Pos 3 → 𝔸[ℚ]) → ℂ) :
   simpa only [hEX] using this
 
 /- English proof (translation)
-Rewrite using `[setIntegral_vecDomain_sum (h := fun X => h (fl X)) sp (hc.comp continuous_fl), setIntegral_vecDomain_sum sp hc]`. Use `setIntegral_congr_fun measurableSet_vecDomain fun w _ => ?_` and prove the remaining obligations. Establish `key` using `setIntegral_sub_of_periodic (ι := Fin 1) (fun y => h (fun i => Sum.elim w y (sp i))) ?_ (fun _ => w 0 * w 1)`. Rewrite using `[← key]`. Use `setIntegral_congr_fun measurableSet_vecDomain fun y _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `p`. Establish `h1 : sp pa = Sum.inl 0` using `by decide`. Establish `h2 : sp pc = Sum.inl 1` using `by decide`. Establish `h3 : sp pb = Sum.inr 0` using `by decide`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hb : p = pb`. Substitute `hb` using the available equality. Simplify using `[fl, h1, h2, h3]`. Simplify using `only [fl, if_neg hb]`. Break down `hs : sp p with a | b` into its components or cases.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. It suffices to derive a contradiction. Apply `hb` to reduce the goal to its premises. Establish `: b = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality.
+Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `sp.injective (hs.trans h3.symm)`. Introduce and unpack `_ ⟨ξ, rfl⟩ y`. Rewrite using `[← hp (ξ 0) (fun i => Sum.elim w y (sp i))]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h3 : sp pb = Sum.inr 0` using `by decide`. Distinguish the cases in `hb : p = pb`. Substitute `hb` using the available equality. Simplify using `[h3]`. Simplify using `only [if_neg hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hs : sp p with a | b` into its components or cases. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Apply `hb` to reduce the goal to its premises. Establish `: b = 0` using `Subsingleton.elim _ _`.
+Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `this` using the available equality. Conclude with `sp.injective (hs.trans h3.symm)`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_comp_fl {h : (Pos 3 → 𝔸[ℚ]) → ℂ} (hc : Continuous h)
     (hp : ∀ (r : ℚ) (X : Pos 3 → 𝔸[ℚ]),
@@ -185,7 +185,7 @@ theorem setIntegral_comp_fl {h : (Pos 3 → 𝔸[ℚ]) → ℂ} (hc : Continuous
         exact sp.injective (hs.trans h3.symm)
 
 /- English proof (translation)
-Establish `h : Finset.univ.filter (fun p : Pos 3 => p.1.2.val = p.1.1.val + 1 ∧ 0 ≤ p.1.2.val) = {pa, pc}` using `by decide`. Rewrite using `[supSum, h, Finset.sum_pair (by decide)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem supSum_three (X : Pos 3 → 𝔸[ℚ]) : supSum 0 X = X pa + X pc := by
   have h : Finset.univ.filter (fun p : Pos 3 => p.1.2.val = p.1.1.val + 1 ∧ 0 ≤ p.1.2.val) =
@@ -193,7 +193,7 @@ theorem supSum_three (X : Pos 3 → 𝔸[ℚ]) : supSum 0 X = X pa + X pc := by
   rw [supSum, h, Finset.sum_pair (by decide)]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni, uMat_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uGL_eq_uni {R : Type*} [CommRing R] (X : Pos 3 → R) : uGL X = uni (X pa) (X pb) (X pc) := by
   apply Units.ext
@@ -201,7 +201,7 @@ theorem uGL_eq_uni {R : Type*} [CommRing R] (X : Pos 3 → R) : uGL X = uni (X p
   fin_cases i <;> fin_cases j <;> simp [uni, uMat_apply]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(b.inv * a.inv).transpose = a.inv.transpose * b.inv.transpose`. Rewrite using `[Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ti_mul {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] (a b : GL n R) :
     ti (a * b) = ti a * ti b := by
@@ -212,7 +212,7 @@ theorem ti_mul {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] 
 def cq : GL (Fin 3) ℚ := w3 * ti dl3
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ti, dl3, dg]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transposeInv_sign_diag : ti dl3 = dl3 := by
   apply Units.ext
@@ -220,7 +220,7 @@ theorem transposeInv_sign_diag : ti dl3 = dl3 := by
   fin_cases i <;> fin_cases j <;> simp [ti, dl3, dg]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[dia, ti, AdelicGLn.diagonal]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ti_dia (γ : GL (Fin 3) ℚ) : ti (dia γ) = dia (ti γ) := by
   apply Units.ext
@@ -228,7 +228,7 @@ theorem ti_dia (γ : GL (Fin 3) ℚ) : ti (dia γ) = dia (ti γ) := by
   simp [dia, ti, AdelicGLn.diagonal]
 
 /- English proof (translation)
-Rewrite using `[show cq = w3 * dl3 by rw [cq, transposeInv_sign_diag]]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[dl3, dg, w3, AdelicGLn.diagonal, Matrix.mul_apply, Fin.sum_univ_three]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem coe_dia_cq :
     ((dia cq : G3) : Matrix (Fin 3) (Fin 3) 𝔸[ℚ]) = !![0, 0, 1; 0, -1, 0; 1, 0, 0] := by
@@ -238,9 +238,9 @@ theorem coe_dia_cq :
     simp [dl3, dg, w3, AdelicGLn.diagonal, Matrix.mul_apply, Fin.sum_univ_three]
 
 /- English proof (translation)
-Rewrite using `[ti_dia, transposeInv_sign_diag]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_dia_cq]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[dl3, dg, w3, AdelicGLn.diagonal, Matrix.mul_apply, Fin.sum_univ_three]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dia_cq : dia cq = w3 * ti (dia dl3) := by
   rw [ti_dia, transposeInv_sign_diag]
@@ -251,9 +251,9 @@ theorem dia_cq : dia cq = w3 * ti (dia dl3) := by
     simp [dl3, dg, w3, AdelicGLn.diagonal, Matrix.mul_apply, Fin.sum_univ_three]
 
 /- English proof (translation)
-Rewrite using `[← dia_cq]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, coe_dia_cq]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [ti, uni, Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_uni (x y z : 𝔸[ℚ]) :
     w3 * ti (dia dl3) * ti (uni x y z) = uni z (z * x - y) x * (w3 * ti (dia dl3)) := by
@@ -265,7 +265,7 @@ theorem conj_uni (x y z : 𝔸[ℚ]) :
     simp [ti, uni, Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [uni, AdelicGLn.diagonal, Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dia_uni_mul (r : ℚ) (x y z : 𝔸[ℚ]) :
     dia (uni (0 : ℚ) r 0) * uni x y z = uni x (algebraMap ℚ 𝔸[ℚ] r + y) z := by
@@ -275,15 +275,15 @@ theorem dia_uni_mul (r : ℚ) (x y z : 𝔸[ℚ]) :
     simp [uni, AdelicGLn.diagonal, Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
 /- English proof (translation)
-Introduce `φ hL hc g`. Take `⟨g', hg'⟩ : ∃ g' : G3, g' = w3 * ti (dia dl3) * ti g` from `⟨_, rfl⟩`. Establish `htr : tr (FourierWhittaker.whittaker φ) g = FourierWhittaker.whittaker φ g'`. Simplify using `only [tr, dualWhittakerAdelicGL3]`. Rewrite using `[ti_mul, hg', mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htr]`. Establish `hcont` using `continuous_wInt 0 hc g'`. Establish `hpt : ∀ X : Pos 3 → 𝔸[ℚ], φ (ti (uGL X * g)) * (adelicChar ℚ (-supSum 0 X) : ℂ) = (fun Y => wInt 0 φ g' (fl Y)) (fun p => X (sw p))`. Introduce `X`. Establish `h1 : sw pa = pc` using `by decide`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : sw pc = pa` using `by decide`. Establish `h3 : sw pb = pb` using `by decide`. Establish `ea : fl (fun p => X (sw p)) pa = X pc` using `by simp [fl, h1]`. Establish `eb : fl (fun p => X (sw p)) pb = X pc * X pa - X pb` using `by simp [fl, h1, h2, h3]`. Establish `ec : fl (fun p => X (sw p)) pc = X pa` using `by simp [fl, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [wInt]`. Rewrite using `[uGL_eq_uni (fl _), supSum_three (fl _), ea, eb, ec, supSum_three X, add_comm (X pc), ← hL cq, show AdelicGLn.diagonal ℚ 3 cq = w3 * ti (dia dl3) from dia_cq, ti_mul, ← mul_assoc, uGL_eq_uni X, conj_uni, hg', mul_assoc]`. Establish `hper : ∀ (r : ℚ) (X : Pos 3 → 𝔸[ℚ]), wInt 0 φ g' (fun p => if p = pb then algebraMap ℚ 𝔸[ℚ] r + X p else X p) = wInt 0 φ g' X`. Introduce `r X`. Simplify using `only [wInt]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[uGL_eq_uni (fun p => _), supSum_three (fun p => _), uGL_eq_uni X, supSum_three X]`. Simplify using `only [if_neg (show pa ≠ pb by decide), if_neg (show pc ≠ pb by decide), if_true]`. Rewrite using `[← dia_uni_mul, mul_assoc, hL]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem whittaker_ti : ∀ φ : G3 → ℂ, IsLeftInvariant φ → Continuous φ → ∀ g : G3,
     FourierWhittaker.whittaker (fun g : G3 => φ (ti g)) g = tr (FourierWhittaker.whittaker φ) g := by

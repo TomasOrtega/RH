@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SpanIma
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.SpanImageDenominators.exists_ne_zero_smul_mem_span_image φ T y hy`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.Det.exists_ne_zero_smul_mem_span_image {A F M N : Type} [CommRing A] [IsDomain A] [Field F] [Algebra A F]
     [IsFractionRing A F] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N] [Module F N]
@@ -13,15 +13,15 @@ private theorem UpperTheory.V.Pa.Det.exists_ne_zero_smul_mem_span_image {A F M N
   _root_.UpperTheory.Reformulated.B.SpanImageDenominators.exists_ne_zero_smul_mem_span_image φ T y hy
 
 /- English proof (translation)
-Introduce `K ι _ n a r S h Z hZ`. Set `φ : Matrix (Fin n) (Fin n) (PowerSeries K) →ₗ[PowerSeries K] Matrix (Fin n) (Fin n) (FractionRing (PowerSeries K))` to `(Algebra.linearMap (PowerSeries K) (FractionRing (PowerSeries K))).mapMatrix`. Establish `hφ : ∀ Y, φ Y = Y.map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))` using `fun _ => rfl`. Establish `hinj : Function.Injective φ` using `Matrix.map_injective (IsFractionRing.injective (PowerSeries K) (FractionRing (PowerSeries K)))`. Establish `hmem : φ Z ∈ Submodule.span (FractionRing (PowerSeries K)) (φ '' (r '' S))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.image_image]`. Simplify using `only [hφ]`. Rewrite using `[h]`. Introduce `i j`. Use `⟨fun _ => Submodule.mem_top, fun hij => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Z i j = 0` using `(Submodule.mem_bot _).1 ((hZ i j).2 hij)`. Simplify using `[this]`. Take `⟨d, hd, w, hw, e⟩` from `UpperTheory.V.Pa.Det.exists_ne_zero_smul_mem_span_image φ _ _ hmem`. Rewrite `e` using `[← map_smul]`. Establish `e'` using `hinj e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd (PowerSeries.X_irreducible (R := K))`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `: (PowerSeries.X : PowerSeries K) ^ s • Z = (↑u⁻¹ : PowerSeries K) • w`. Rewrite using `[← e', smul_smul, Units.inv_mul_cancel_left]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hw`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.spanInt :
     ∀ {K ι : Type} [Field K] {n a : ℕ} (r : ι → Matrix (Fin n) (Fin n) (PowerSeries K)) (S : Set ι), Submodule.span (FractionRing (PowerSeries K)) ((fun i => (r i).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))) '' S) = Ev (FractionRing (PowerSeries K)) (FractionRing (PowerSeries K)) n a → ∀ Z ∈ Ev (PowerSeries K) (PowerSeries K) n a, ∃ s : ℕ, (PowerSeries.X : PowerSeries K) ^ s • Z ∈ Submodule.span (PowerSeries K) (r '' S) := by

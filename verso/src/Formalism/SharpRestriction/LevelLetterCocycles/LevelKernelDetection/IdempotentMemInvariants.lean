@@ -21,28 +21,28 @@ variable (W) in
 def k17e (i : ZMod n) : W.EE := algebraMap (LetA O n) W.EE (letE i)
 
 /- English proof (translation)
-Rewrite using `[k17e, ← map_mul, letE_mul_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idempotent_mul_self_bis (i : ZMod n) : k17e W i * k17e W i = k17e W i := by
   rw [k17e, ← map_mul, letE_mul_self]
 
 /- English proof (translation)
-Rewrite using `[k17e, W.γE_ext]`. Conclude with `congrArg (algebraMap (LetA O n) W.EE) (γA_letE W g i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_gamma_invariant (i : ZMod n) (g : W.Gam) : W.γE g (k17e W i) = k17e W i := by
   rw [k17e, W.γE_ext]
   exact congrArg (algebraMap (LetA O n) W.EE) (γA_letE W g i)
 
 /- English proof (translation)
-The claim follows from `Algebra.smul_def _ _`.
+A detailed English derivation is pending.
 -/
 theorem idempotent_smul_eq_mul (i : ZMod n) (ε : W.EE) : (letE i : LetA O n) • ε = k17e W i * ε :=
   Algebra.smul_def _ _
 
 /- English proof (translation)
-Establish `hc` using `W.EE_complete`. Take `⟨u, hu⟩` from `h`. Take `⟨w, hw⟩` from `Ideal.Quotient.mk_surjective (↑u⁻¹ : W.EE ⧸ Ideal.span {((PD.p : ℕ) : W.EE)})`. Establish `h1 : x * w - 1 ∈ Ideal.span {((PD.p : ℕ) : W.EE)}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hw, ← hu, Units.mul_inv, map_one, sub_self]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `Ideal.isUnit_of_sub_one_mem_jacobson_bot _ (IsAdicComplete.le_jacobson_bot (I := Ideal.span {((PD.p : ℕ) : W.EE)}) h1)`. Conclude with `isUnit_of_mul_isUnit_left h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_mod_l (x : W.EE)
     (h : IsUnit (Ideal.Quotient.mk (Ideal.span {((PD.p : ℕ) : W.EE)}) x)) : IsUnit x := by
@@ -57,39 +57,35 @@ theorem isUnit_of_isUnit_mod_l (x : W.EE)
   exact isUnit_of_mul_isUnit_left h2
 
 /- English proof (translation)
-Use `set k₀ := Nat.find hk with hk₀`. Establish `hu₀ : IsUnit (PowerSeries.coeff k₀ (a i))` using `Nat.find_spec hk`. Establish `hlow : ∀ j < k₀, PowerSeries.coeff j (a i) ∈ IsLocalRing.maximalIdeal O` using `fun j hj => (IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 (Nat.find_min hk hj))`. Take `⟨Lp, hLp⟩ : ∃ Lp : PowerSeries O, Lp = ∑ j ∈ Finset.range k₀, PowerSeries.C (PowerSeries.coeff j (a i)) * PowerSeries.X ^ j` from `⟨_, rfl⟩`. Establish `hcL : ∀ d, PowerSeries.coeff d Lp = if d < k₀ then PowerSeries.coeff d (a i) else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d`. Simplify using `only [hLp, map_sum, PowerSeries.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_range]`. Establish `hdvd : (PowerSeries.X : PowerSeries O) ^ k₀ ∣ a i - Lp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `d hd`. Rewrite using `[map_sub, hcL, if_pos hd, sub_self]`. Take `⟨U, hU⟩` from `hdvd`. Establish `hUu : IsUnit U`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, ← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Establish `h1` using `congrArg (PowerSeries.coeff k₀) hU`. Rewrite `h1` using `[PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, map_sub, hcL, if_neg (lt_irrefl _), sub_zero]`. Rewrite using `[← h1]`. Conclude with `hu₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `δf : LetA O n` to `fun j => if j = i then 1 else PowerSeries.X ^ k₀`. Set `uf : LetA O n` to `fun j => if j = i then U else 1`. Set `γf : LetA O n` to `fun j => if j = i then PowerSeries.X ^ k₀ * U else 1`. Establish `hγδ : γf * δf = letπ ^ k₀ * uf`. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : j = i`. Simplify using `[γf, δf, uf, letπ, h, mul_comm]`. Simplify using `[γf, δf, uf, letπ, h]`. Establish `huf : IsUnit uf` using `Pi.isUnit_iff.2 fun j => by`. Distinguish the cases in `h : j = i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[uf, h, hUu]`. Simplify using `[uf, h]`. Establish `hγ : IsUnit (algebraMap (LetA O n) W.EE γf)`. Establish `h1 : IsUnit (algebraMap (LetA O n) W.EE (γf * δf))`. Rewrite using `[hγδ, map_mul, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(W.EE_π.pow _).mul (huf.map _)`. Rewrite `h1` using `[map_mul]`. Conclude with `isUnit_of_mul_isUnit_left h1`. Set `t : ℕ → LetA O n` to `fun j => Pi.single i (PowerSeries.C (PowerSeries.coeff j (a i)) * PowerSeries.X ^ j)`. Establish `hdec : (letE i : LetA O n) * a + (1 - letE i) = ∑ j ∈ Finset.range k₀, t j + γf`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j'`. Distinguish the cases in `h : j' = i`. Rewrite using `[h]`. Establish `hsum : (∑ j ∈ Finset.range k₀, t j) i = Lp`. Rewrite using `[hLp, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[t]`. Establish `hai : a i = Lp + PowerSeries.X ^ k₀ * U` using `by rw [← hU]; ring`. Rewrite using `[show (∑ j ∈ Finset.range k₀, t j + γf) i = (∑ j ∈ Finset.range k₀, t j) i + γf i from rfl, hsum]`. Simplify using `[letE, γf, hai]`. Simplify using `[t, γf, letE, Finset.sum_apply, h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set I := Ideal.span {((PD.p : ℕ) : W.EE)} with hI`. Establish `hnil : ∀ j ∈ Finset.range k₀, IsNilpotent (Ideal.Quotient.mk I (algebraMap (LetA O n) W.EE (t j)))`. Introduce `j hj`. Take `⟨N, d, hNd⟩` from `hOnil _ (hlow j (Finset.mem_range.1 hj))`. Use `⟨N + 1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hpow : t j ^ (N + 1) = ((PD.p : ℕ) : LetA O n) * Pi.single i (PowerSeries.C (PowerSeries.coeff j (a i) * d) * PowerSeries.X ^ (j * (N + 1)))`. Use function extensionality and compare the values at `j'`. Distinguish the cases in `h : j' = i`. Substitute `h` using the available equality. Simplify using `only [t, Pi.pow_apply, Pi.mul_apply, Pi.single_eq_same, Pi.natCast_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, ← map_pow, pow_succ, hNd, ← pow_mul]`. Simplify using `only [map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[t, h]`. Rewrite using `[← map_pow, ← map_pow, Ideal.Quotient.eq_zero_iff_mem, hpow, map_mul, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Establish `hq : Ideal.Quotient.mk I (x * algebraMap (LetA O n) W.EE (letπ ^ m) + (1 - k17e W i)) = Ideal.Quotient.mk I (algebraMap (LetA O n) W.EE ((letE i : LetA O n) * a + (1 - letE i)))`. Rewrite using `[Ideal.Quotient.eq]`. Establish `h1 : x * algebraMap (LetA O n) W.EE (letπ ^ m) + (1 - k17e W i) - algebraMap (LetA O n) W.EE ((letE i : LetA O n) * a + (1 - letE i)) = k17e W i * (x * algebraMap (LetA O n) W.EE (letπ ^ m) - algebraMap (LetA O n) W.EE a)`. Rewrite using `[map_add, map_mul, map_sub, map_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [k17e] at hx ⊢`. Take the linear combination `(-(algebraMap (LetA O n) W.EE (letπ ^ m))) * hx`. Rewrite using `[h1, hI, ← pow_one ((PD.p : ℕ) : W.EE)]`. Conclude with `Ideal.mul_mem_left _ _ ha`. Establish `hunit : IsUnit (x * algebraMap (LetA O n) W.EE (letπ ^ m) + (1 - k17e W i))`.
-
-Apply `isUnit_of_isUnit_mod_l` to reduce the goal to its premises. Rewrite using `[hq, hdec, map_add, map_add, map_sum, map_sum]`. Conclude with `(isNilpotent_sum hnil).isUnit_add_right_of_commute (hγ.map _) (Commute.all _ _)`. Establish `hprod : (x + (1 - k17e W i)) * (k17e W i * algebraMap (LetA O n) W.EE (letπ ^ m) + (1 - k17e W i)) = x * algebraMap (LetA O n) W.EE (letπ ^ m) + (1 - k17e W i)`. Establish `he` using `idempotent_mul_self_bis (W := W) i`.
-
-Take the linear combination `(algebraMap (LetA O n) W.EE (letπ ^ m) - 1) * hx - (algebraMap (LetA O n) W.EE (letπ ^ m) - 1) * he`. Rewrite `hunit` using `[← hprod]`. Conclude with `isUnit_of_mul_isUnit_left hunit`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_unit_coefficient (hOloc : IsLocalRing O)
     (hOnil : ∀ c ∈ IsLocalRing.maximalIdeal O, ∃ (N : ℕ) (d : O), c ^ N = ((PD.p : ℕ) : O) * d)
@@ -195,13 +191,11 @@ theorem isUnit_of_unit_coefficient (hOloc : IsLocalRing O)
   exact isUnit_of_mul_isUnit_left hunit
 
 /- English proof (translation)
-Take `⟨a, m, ha⟩` from `W.EE_dense x 1`. Distinguish the cases in `hk : ∃ k, IsUnit (PowerSeries.coeff k (a i))`. Conclude with `Or.inl (isUnit_of_unit_coefficient hOloc hOnil i x hx m a (by simpa using ha) hk)`. Use `right push Not at hk`. Establish `he` using `idempotent_mul_self_bis (W := W) i`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isUnit_of_unit_coefficient hOloc hOnil i _ (by linear_combination he - hx) m ((letE i : LetA O n) * letπ ^ m - a : LetA O n) ?_ ⟨m, ?_⟩` and prove the remaining obligations. Establish `h1 : (k17e W i - x) * algebraMap (LetA O n) W.EE (letπ ^ m) - algebraMap (LetA O n) W.EE ((letE i : LetA O n) * letπ ^ m - a) = -(x * algebraMap (LetA O n) W.EE (letπ ^ m) - algebraMap (LetA O n) W.EE a)`. Rewrite using `[map_sub, map_mul]`. Simplify using `only [k17e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `neg_mem (by simpa using ha)`. Establish `h1 : ((letE i : LetA O n) * letπ ^ m - a : LetA O n) i = PowerSeries.X ^ m - a i`. Simplify using `[letE, letπ]`. Rewrite using `[h1, map_sub, PowerSeries.coeff_X_pow_self]`.
-
-Use `hOloc` as an intermediate fact. Conclude with `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ (mem_nonunits_iff.2 (hk m))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem local_corner_unit_dichotomy (hOloc : IsLocalRing O)
     (hOnil : ∀ c ∈ IsLocalRing.maximalIdeal O, ∃ (N : ℕ) (d : O), c ^ N = ((PD.p : ℕ) : O) * d)
@@ -240,7 +234,7 @@ def k17S : Subring W.EE where
   neg_mem' {a} ha δ hδ := by rw [map_neg, ha δ hδ]
 
 /- English proof (translation)
-Introduce `δ _` and use `idempotent_gamma_invariant i δ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem k17e_mem_k17S (i : ZMod n) : k17e W i ∈ k17S W := fun δ _ => idempotent_gamma_invariant i δ
 
@@ -253,7 +247,7 @@ variable (W) in
 abbrev k17R (i : ZMod n) : Type := k17S W ⧸ Ideal.span {1 - idempotentInvariant W i}
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h)`. Establish `h1` using `congrArg (fun z : k17S W => k17e W i * (z : W.EE)) hc`. Simplify using `only [idempotentInvariant, AddSubgroupClass.coe_sub, MulMemClass.coe_mul, OneMemClass.coe_one] at h1`. Establish `he` using `idempotent_mul_self_bis (W := W) i`. Take the linear combination `-h1 - (c : W.EE) * he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem letterRing_mk_eq (i : ZMod n) {s s' : k17S W}
     (h : Ideal.Quotient.mk (Ideal.span {1 - idempotentInvariant W i}) s = Ideal.Quotient.mk _ s') :
@@ -265,7 +259,7 @@ theorem letterRing_mk_eq (i : ZMod n) {s s' : k17S W}
   linear_combination -h1 - (c : W.EE) * he
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Use `⟨s - s', Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [idempotentInvariant, AddSubgroupClass.coe_sub, MulMemClass.coe_mul, OneMemClass.coe_one]`. Take the linear combination `-h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem letterRing_mk_of_eq (i : ZMod n) {s s' : k17S W}
     (h : k17e W i * (s : W.EE) = k17e W i * s') :
@@ -276,13 +270,13 @@ theorem letterRing_mk_of_eq (i : ZMod n) {s s' : k17S W}
   linear_combination -h
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Establish `hz : ∀ δ ∈ W.DelF, W.γE δ (u : W.EE) = u`. Introduce `δ hδ`. Rewrite using `[hu, map_add, map_mul, map_sub, map_one, idempotent_gamma_invariant, t.2 δ hδ]`. Establish `hw : ∀ δ ∈ W.DelF, W.γE δ (↑u⁻¹ : W.EE) = ↑u⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `δ hδ`. Establish `h1 : W.γE δ (↑u⁻¹ : W.EE) * u = 1` using `by conv_lhs => rw [← hz δ hδ]`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation. Set `w : k17S W` to `⟨↑u⁻¹, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Use `isUnit_iff_exists_inv.2 ⟨Ideal.Quotient.mk _ w, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk (Ideal.span {1 - idempotentInvariant W i}))]`. Apply `letterRing_mk_of_eq` to reduce the goal to its premises. Establish `h1 : (u : W.EE) * ↑u⁻¹ = 1` using `Units.mul_inv u`. Rewrite `h1` using `[hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he` using `idempotent_mul_self_bis (W := W) i`. Simplify using `only [w, MulMemClass.coe_mul, OneMemClass.coe_one]`. Take the linear combination `(k17e W i) * h1 + ((↑u⁻¹ : W.EE) - (t : W.EE) * ↑u⁻¹) * he`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem letterRing_isUnit_of (i : ZMod n) (t : k17S W)
     (h : IsUnit (k17e W i * (t : W.EE) + (1 - k17e W i))) :
@@ -309,15 +303,15 @@ theorem letterRing_isUnit_of (i : ZMod n) (t : k17S W)
   linear_combination (k17e W i) * h1 + ((↑u⁻¹ : W.EE) - (t : W.EE) * ↑u⁻¹) * he
 
 /- English proof (translation)
-Establish `: Nontrivial (k17R W i)`. Rewrite using `[Ideal.Quotient.nontrivial_iff]`. Introduce `htop`. Establish `h1 : (1 : k17S W) ∈ Ideal.span {1 - idempotentInvariant W i}` using `htop ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `congrArg (fun z : k17S W => (z : W.EE) * k17e W i) hc`. Simplify using `only [idempotentInvariant, AddSubgroupClass.coe_sub, MulMemClass.coe_mul, OneMemClass.coe_one, one_mul] at h2`. Establish `he` using `idempotent_mul_self_bis (W := W) i`. Establish `h3 : k17e W i = 0` using `by linear_combination -h2 - (c : W.EE) * he`. Establish `h4 : (letE i : LetA O n) = 0` using `W.EE_inj (by rw [map_zero]; exact h3)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `congrFun h4 i`. Simplify using `[letE] at h5`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun r => ?_` and prove the remaining obligations. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Establish `he` using `idempotent_mul_self_bis (W := W) i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `local_corner_unit_dichotomy hOloc hOnil i (k17e W i * (s : W.EE)) (by rw [← mul_assoc, he]) with h | h` into its components or cases. Conclude with `Or.inl (letterRing_isUnit_of i s h)`. Use `right`. Rewrite using `[← map_one (Ideal.Quotient.mk (Ideal.span {1 - idempotentInvariant W i})), ← map_sub]`. Apply `letterRing_isUnit_of i (1 - s)` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `only [AddSubgroupClass.coe_sub, OneMemClass.coe_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem letterRing_isLocalRing (hOloc : IsLocalRing O)
     (hOnil : ∀ c ∈ IsLocalRing.maximalIdeal O, ∃ (N : ℕ) (d : O), c ^ N = ((PD.p : ℕ) : O) * d)
@@ -350,7 +344,7 @@ def letterRingValueFun (i : ZMod n) (r : k17R W i) : W.EE :=
   k17e W i * ((Ideal.Quotient.mk_surjective r).choose : W.EE)
 
 /- English proof (translation)
-The claim follows from `letterRing_mk_eq i (Ideal.Quotient.mk_surjective _).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem letterRingValueFun_mk (i : ZMod n) (s : k17S W) :
     letterRingValueFun i (Ideal.Quotient.mk (Ideal.span {1 - idempotentInvariant W i}) s) = k17e W i * s :=
@@ -369,14 +363,14 @@ def letterRingVal (i : ZMod n) : k17R W i →+ W.EE where
     rw [← map_add, letterRingValueFun_mk, letterRingValueFun_mk, letterRingValueFun_mk, AddMemClass.coe_add, mul_add]
 
 /- English proof (translation)
-The claim follows from `letterRingValueFun_mk i s`.
+A detailed English derivation is pending.
 -/
 theorem letterRing_val_mk (i : ZMod n) (s : k17S W) :
     letterRingVal W i (Ideal.Quotient.mk (Ideal.span {1 - idempotentInvariant W i}) s) = k17e W i * s :=
   letterRingValueFun_mk i s
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Take `⟨s', rfl⟩` from `Ideal.Quotient.mk_surjective r'`. Rewrite using `[← map_mul, letterRing_val_mk, letterRing_val_mk, letterRing_val_mk, MulMemClass.coe_mul]`. Establish `he` using `idempotent_mul_self_bis (W := W) i`. Take the linear combination `(-(s : W.EE) * s') * he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem letterRing_val_mul (i : ZMod n) (r r' : k17R W i) :
     letterRingVal W i (r * r') = letterRingVal W i r * letterRingVal W i r' := by
@@ -387,13 +381,13 @@ theorem letterRing_val_mul (i : ZMod n) (r r' : k17R W i) :
   linear_combination (-(s : W.EE) * s') * he
 
 /- English proof (translation)
-Rewrite using `[← map_one (Ideal.Quotient.mk (Ideal.span {1 - idempotentInvariant W i})), letterRing_val_mk, OneMemClass.coe_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem letterRing_val_one (i : ZMod n) : letterRingVal W i 1 = k17e W i := by
   rw [← map_one (Ideal.Quotient.mk (Ideal.span {1 - idempotentInvariant W i})), letterRing_val_mk, OneMemClass.coe_one, mul_one]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Rewrite using `[letterRing_val_mk]`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[idempotent_smul_eq_mul, ← mul_assoc, idempotent_mul_self_bis]`. Rewrite using `[map_mul, idempotent_gamma_invariant, s.2 δ hδ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem letterRing_val_mem (i : ZMod n) (r : k17R W i) : letterRingVal W i r ∈ EEl W i := by
   obtain ⟨s, rfl⟩ := Ideal.Quotient.mk_surjective r
@@ -403,7 +397,7 @@ theorem letterRing_val_mem (i : ZMod n) (r : k17R W i) : letterRingVal W i r ∈
   · rw [map_mul, idempotent_gamma_invariant, s.2 δ hδ]
 
 /- English proof (translation)
-Introduce `r r' h`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Take `⟨s', rfl⟩` from `Ideal.Quotient.mk_surjective r'`. Rewrite `h` using `[letterRing_val_mk, letterRing_val_mk]`. Conclude with `letterRing_mk_of_eq i h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem letterRing_val_injective (i : ZMod n) : Function.Injective (letterRingVal W i) := by
   intro r r' h
@@ -413,7 +407,7 @@ theorem letterRing_val_injective (i : ZMod n) : Function.Injective (letterRingVa
   exact letterRing_mk_of_eq i h
 
 /- English proof (translation)
-Use `⟨Ideal.Quotient.mk _ ⟨ε, hε.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[letterRing_val_mk]`. Establish `h1` using `hε.1`. Rewrite `h1` using `[idempotent_smul_eq_mul]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem letterRing_val_surjective (i : ZMod n) (ε : W.EE) (hε : ε ∈ EEl W i) : ∃ r, letterRingVal W i r = ε := by
   refine ⟨Ideal.Quotient.mk _ ⟨ε, hε.2⟩, ?_⟩

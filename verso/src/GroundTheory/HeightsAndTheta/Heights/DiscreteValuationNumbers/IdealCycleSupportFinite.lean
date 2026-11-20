@@ -12,9 +12,9 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Apply `Set.Finite.subset (Ideal.finite_minimalPrimes_of_isNoetherianRing _ J)` to reduce the goal to its premises. Introduce `W hW`. Assume the negation of the conclusion as `hmin`. Apply `hW` to reduce the goal to its premises. Unfold `idealCycle`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg]`. Conclude with `fun h => hmin h.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idealCycle_support_finite {R : Type*} [CommRing R] {K : Type*} {ι : K → Type*}
     [IsNoetherianRing (MRing ι R)] (J : Ideal (MRing ι R)) :
@@ -28,17 +28,15 @@ theorem idealCycle_support_finite {R : Type*} [CommRing R] {K : Type*} {ι : K �
   exact fun h => hmin h.1
 
 /- English proof (translation)
-Use `set S := ha.toFinset`. Use `set T := S.biUnion (fun W => (hc W).toFinset)`. Establish `hcT : ∀ W ∈ S, Function.support (c W) ⊆ ↑T`. Introduce `W hW U hU`. Rewrite using `[Finset.mem_coe, Finset.mem_biUnion]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨W, hW, (hc W).mem_toFinset.mpr hU⟩`. Establish `hin : ∀ U, ∑ᶠ W, a W * c W U = ∑ W ∈ S, a W * c W U`. Introduce `U`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.mem_coe, ha.mem_toFinset]`. Conclude with `left_ne_zero_of_mul hW`. Repeatedly rewrite using `[hin]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S), finsum_eq_sum_of_support_subset (s := T)]`. Rewrite using `[Finset.sum_congr rfl (g := fun W => a W * ∑ U ∈ T, c W U * n U)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`. Introduce `W hW`. Use `congr 1`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U hU`. Conclude with `hcT W hW (left_ne_zero_of_mul hU)`. Introduce `U hU`. Take `⟨W, hW, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (left_ne_zero_of_mul hU)`. Conclude with `hcT W hW (right_ne_zero_of_mul hne)`.
-
-Introduce `W hW`. Rewrite using `[Finset.mem_coe, ha.mem_toFinset]`. Conclude with `left_ne_zero_of_mul hW`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_mul_finsum_comm {α β : Type*} (a : α → ℤ) (c : α → β → ℤ) (n : β → ℤ)
     (ha : (Function.support a).Finite) (hc : ∀ W, (Function.support (c W)).Finite) :
@@ -74,13 +72,11 @@ theorem finsum_mul_finsum_comm {α β : Type*} (a : α → ℤ) (c : α → β �
     exact left_ne_zero_of_mul hW
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hmodel b f g heff c s hs hsP hhor hnc L`. Establish `hPmh : IsMultiHomogIdeal (P ⊔ Ideal.span {s})` using `SupSpanMultiHomog.proof O K ι P s c hmodel.multiProj.multiHomog hs`. Establish `key : ∀ W : Ideal (MRing ι O), divCycle P s W * (if (C ϖ : MRing ι O) ∈ W then vNum W (Matrix.vecCons b L) else cycEval (fun G => vNum G L) (ratDiv W f g)) = divCycle P s W * cycEval (fun U => vNum U L) (idealCycle (W ⊔ divisorIdeal P f g))`. Introduce `W`. Distinguish the cases in `hW : divCycle P s W = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hW, zero_mul, zero_mul]`. Use `congr 1`. Take `⟨hWp, hPW, hWrel⟩` from `le_and_isRelevant_of_divCycle_ne_zero hW`. Establish `hWmin : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes`. Unfold `divCycle at hW`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs at hW with h`. Conclude with `h.1`. Conclude with `absurd rfl hW`. Use `split_ifs with hϖW`. Conclude with `hV O ϖ hϖ K ι P d hmodel b f g heff W s hsP hWmin hWrel (MinimalPrimeMultiHomog.proof O K ι _ W hPmh hWmin) hϖW (hnc W hϖW hW) L`.
-
-Establish `hv` using `hhor W hW hϖW`. Establish `hP : P.IsPrime` using `hmodel.multiProj.isPrime`. Rewrite using `[hD O K ι P W f g g f hP hWp hPW heff.1.den_not_mem (fun U hU hWU hUrel => heff.2 U hU (hPW.trans hWU) hUrel) hv.den_not_mem hv.num_not_mem (by rw [mul_comm, sub_self]; exact P.zero_mem)]`. Conclude with `(finsum_congr key).trans <| finsum_mul_finsum_comm _ (fun W U => idealCycle (W ⊔ divisorIdeal P f g) U) _ (DivCycleFiniteSupport.proof O K ι P s) (fun W => idealCycle_support_finite _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RightExpansion.proof (hV : VertCutEff.Statement.{u})
     (hD : DivisorIdealCycle.Statement.{u}) : RightExpansion.Statement.{u} := by

@@ -5,19 +5,17 @@ open Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hS : (Finset.range (2 * a + 1)).filter (fun p => i < p ∧ i + p ≤ 2 * a) = Finset.Ioo i a ∪ insert a (Finset.Ioo a (2 * a - i) ∪ {2 * a - i})`. Use extensionality with `p`. Simplify using `only [mem_filter, mem_range, mem_union, mem_insert, mem_Ioo, mem_singleton]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hS, prod_union, prod_insert, prod_union, prod_singleton]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ∏ p ∈ Finset.Ioo a (2 * a - i), f p = ∏ k ∈ Finset.Ioo i a, f (2 * a - k)`. Use `Finset.prod_nbij' (fun p => 2 * a - p) (fun k => 2 * a - k) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [mem_Ioo] at hx ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `x hx`. Simplify using `only [mem_Ioo] at hx ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `x hx`. Simplify using `only [mem_Ioo] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `x hx`. Simplify using `only [mem_Ioo] at hx`. Use linear arithmetic over natural numbers and integers. Introduce `x hx`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mem_Ioo] at hx`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hm, prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Apply the tactic sequence `all_goals first`. Consider the case `(rw [Finset.disjoint_left]`. Introduce `x hx hx'`. Simplify using `only [mem_union, mem_insert, mem_Ioo, mem_singleton] at hx hx'`. Use the proof step `omega)`.
-
-Consider the case `(simp only [mem_union, mem_Ioo, mem_singleton] omega)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prod_interval_mirror_split (a i : ℕ) (hi : i < a) (f : ℕ → ℝ) :
     ∏ p ∈ (Finset.range (2 * a + 1)).filter (fun p => i < p ∧ i + p ≤ 2 * a), f p
@@ -57,11 +55,11 @@ theorem prod_interval_mirror_split (a i : ℕ) (hi : i < a) (f : ℕ → ℝ) :
        omega)
 
 /- English proof (translation)
-Use `Finset.prod_nbij (fun k => (k : ℕ)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk`. Simplify using `only [mem_filter, mem_univ, true_and] at hk`. Simplify using `only [mem_Ioo]`. Conclude with `⟨hk, k.isLt⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `x _ y _ hxy`. Conclude with `Fin.ext hxy`. Introduce `k hk`. Simplify using `only [Finset.mem_coe, mem_Ioo] at hk`. Conclude with `⟨⟨k, hk.2⟩, Finset.mem_coe.2 (mem_filter.2 ⟨mem_univ _, Fin.lt_def.2 hk.1⟩), rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem prod_filter_gt_eq_prod_Ioo (a : ℕ) (i : Fin a) (h : ℕ → ℝ) :
     ∏ k ∈ Finset.univ.filter (fun k : Fin a => i < k), h k = ∏ k ∈ Finset.Ioo (i : ℕ) a, h k := by
@@ -79,11 +77,9 @@ private theorem prod_filter_gt_eq_prod_Ioo (a : ℕ) (i : Fin a) (h : ℕ → �
     rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_filter, Finset.prod_product]`. Establish `step : ∀ i ∈ Finset.range a, (∏ p ∈ Finset.range (2 * a + 1), if i < p ∧ i + p ≤ 2 * a then g i p else 1) = (∏ k ∈ Finset.Ioo i a, g i k * g i (2 * a - k)) * (g i a * g i (2 * a - i))`. Introduce `i hi`. Rewrite using `[← Finset.prod_filter]`. Conclude with `prod_interval_mirror_split a i (mem_range.1 hi) (g i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.prod_congr rfl step).trans ?_` and prove the remaining obligations. Rewrite using `[prod_mul_distrib]`. Use `congr 1`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun i => ∏ k ∈ Finset.Ioo i a, g i k * g i (2 * a - k)) a]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
-
-Conclude with `(prod_filter_gt_eq_prod_Ioo a i (fun k => g i k * g i (2 * a - k))).symm`. Conclude with `(Fin.prod_univ_eq_prod_range (fun i => g i a * g i (2 * a - i)) a).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_first_blocks_by_layers (a : ℕ) (g : ℕ → ℕ → ℝ) :
     ∏ b ∈ ((Finset.range a) ×ˢ (Finset.range (2 * a + 1))).filter

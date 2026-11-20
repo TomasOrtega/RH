@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UObjDim
 
 /- English proof (translation)
-Introduce `_ _ _ _ o` and use `GlobalTheory.ObjDim.smoothOfRelativeDimension o`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_obj : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) (l : Geo.Tor.Level H) {S : Scheme.{0}} (s : S ⟶ Sp (KA l)) (o : Obj D l (baseKA l) s), SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) o.t.G.hom :=
   fun _ _ _ _ o => GlobalTheory.ObjDim.smoothOfRelativeDimension o

@@ -20,7 +20,7 @@ def rAct {n : ℕ} (β : Matrix (Fin n) (Fin n) E) (f : Fin n → S.V) : Fin n �
   fun a => ∑ c, β a c • f c
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[rAct, map_sum, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rAct_map {n : ℕ} (β : Matrix (Fin n) (Fin n) E) (f : Fin n → S.V) (k : S.V ≃ₗ[E] S.V) :
     rAct β (fun c => k (f c)) = fun a => k (rAct β f a) := by
@@ -28,7 +28,7 @@ theorem rAct_map {n : ℕ} (β : Matrix (Fin n) (Fin n) E) (f : Fin n → S.V) (
   simp [rAct, map_sum, map_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [rAct, Matrix.mul_apply, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rAct_mul {n : ℕ} (α β : Matrix (Fin n) (Fin n) E) (f : Fin n → S.V) :
     rAct α (rAct β f) = rAct (α * β) f := by
@@ -37,14 +37,14 @@ theorem rAct_mul {n : ℕ} (α β : Matrix (Fin n) (Fin n) E) (f : Fin n → S.V
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[rAct, Matrix.one_apply, ite_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rAct_one {n : ℕ} (f : Fin n → S.V) : rAct (1 : Matrix (Fin n) (Fin n) E) f = f := by
   funext a
   simp [rAct, Matrix.one_apply, ite_smul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular β (fun i j hij => h0 i j (by simpa using hij))]`. Simplify using `[h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_uni {n : ℕ} (β : Matrix (Fin n) (Fin n) E) (h0 : ∀ a c, a < c → β a c = 0) (h1 : ∀ a, β a a = 1) :
     β.det = 1 := by
@@ -52,7 +52,7 @@ theorem det_uni {n : ℕ} (β : Matrix (Fin n) (Fin n) E) (h0 : ∀ a c, a < c �
   simp [h1]
 
 /- English proof (translation)
-Establish `hd : IsUnit β.det` using `by rw [det_uni β h0 h1]; exact isUnit_one`. Establish `h'` using `congrArg (rAct β⁻¹) h`. Rewrite `h'` using `[rAct_mul, rAct_mul, Matrix.nonsing_inv_mul _ hd, rAct_one, rAct_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rAct_inj {n : ℕ} {β : Matrix (Fin n) (Fin n) E} (h0 : ∀ a c, a < c → β a c = 0) (h1 : ∀ a, β a a = 1)
     {f f' : Fin n → S.V} (h : rAct β f = rAct β f') : f = f' := by
@@ -61,32 +61,28 @@ theorem rAct_inj {n : ℕ} {β : Matrix (Fin n) (Fin n) E} (h0 : ∀ a c, a < c 
   rwa [rAct_mul, rAct_mul, Matrix.nonsing_inv_mul _ hd, rAct_one, rAct_one] at h'
 
 /- English proof (translation)
-Simplify using `[frameAct, Matrix.one_apply, apply_ite]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameAct_one' {n : ℕ} (f : Fin n → S.V) (b : Fin n) :
     frameAct f (1 : Matrix (Fin n) (Fin n) (𝓞 E)) b = f b := by
   simp [frameAct, Matrix.one_apply, apply_ite]
 
 /- English proof (translation)
-Introduce `P hg`. Use `P.isPrime` as an intermediate fact. Establish `hi : ∀ c, k (frame F₁ c) - frame F₁ c ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ)` using `fun c => by`. Rewrite using `[hk c]`. Use `Submodule.sub_mem _ (h'' c P hg) (h1 c P hg)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hii : ∀ v ∈ Submodule.span (𝓞 E) (Set.range (frame F₁)), k v - v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ)`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨c, rfl⟩` from `hx`. Conclude with `hi c`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `Submodule.add_mem _ hx hy` as an intermediate fact.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_add, add_sub_add_comm]` and apply the resulting hypothesis. Consider the case `smul o x _ hx`. Rewrite using `[Formalism.L2.SG.Pf.smul_O, map_smul, ← smul_sub, ← Formalism.L2.SG.Pf.smul_O]`. Conclude with `Submodule.smul_mem _ o hx`. Establish `hA : Formalism.L2.SG.Pf.Apart Λ F₁ ≤ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 E) (Set.range (frame F₁)))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Conclude with `Formalism.L2.SG.Pf.Act.xlam_le_locP Λ g hC P hg (fun a => Formalism.L2.SG.Pf.le_locP' _ _ (Submodule.subset_span ⟨a.castSucc, Formalism.L2.SG.Pf.frame_castSucc_td F₁ a⟩))`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Formalism.L2.SG.Pf.le_locP' _ _ (Submodule.subset_span ⟨Fin.last _, (Formalism.L2.SG.Pf.frame_last_td F₁).trans hL.2.symm⟩)`. Establish `hy : m (frame F₁ b) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 E) (Set.range (frame F₁)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `Formalism.L2.SG.Pf.frame_mem_locP_Apart hL hC P hg b`. Establish `h1' : m (frame F₁ b) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.L2.SG.Pf.Apart Λ F₁)`. Rewrite using `[← Formalism.L2.SG.Pf.NLam_Apart hm hL, Formalism.L2.SG.Pf.gmap_locP]`. Conclude with `(Formalism.L2.SG.Pf.gmap_apply_mem m _ _).2 h0`. Conclude with `Formalism.L2.SG.Pf.locP_le_locP' hA h1'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hiv : k (m (frame F₁ b)) - m (frame F₁ b) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ)`. Take `⟨s, hs, hsy⟩` from `hy`. Use `hii _ hsy` as an intermediate fact. Rewrite `this` using `[Formalism.L2.SG.Pf.smul_O, map_smul, ← smul_sub, ← Formalism.L2.SG.Pf.smul_O]`. Take `⟨t, ht, htx⟩` from `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨t * s, P.asIdeal.primeCompl.mul_mem ht hs, by rw [mul_smul]; exact htx⟩`. Establish `hv : n (k (m (frame F₁ b)) - m (frame F₁ b)) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ)`. Establish `e : Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ) = Formalism.HermitianLatticesTheory.gmap n (Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ))`. Rewrite using `[← Formalism.L2.SG.Pf.gmap_locP, Formalism.L2.SG.Pf.gmap_ideal_smul, hn.2]`. Rewrite using `[e]`.
-
-Conclude with `(Formalism.L2.SG.Pf.gmap_apply_mem n _ _).2 hiv`. Establish `e : n (k (m (frame F₁ b))) - frame F b = n (k (m (frame F₁ b)) - m (frame F₁ b)) + (frame F₂ b - frame F b)`. Rewrite using `[hfr b, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Conclude with `Submodule.add_mem _ hv (h2 b P hg)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modG_move {g : ℕ} {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S r T} {F₁ F'' F₂ : LFlag S r T'}
     (hL : IsLift Λ F₁) (hC : IsFixedConv Λ g F₁)
@@ -152,19 +148,17 @@ theorem modG_move {g : ℕ} {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag 
   exact Submodule.add_mem _ hv (h2 b P hg)
 
 /- English proof (translation)
-Establish `hni : n⁻¹ ∈ NLam Λ F` using `Pf.nlamPf_inv hn`. Establish `hspan : ∀ x ∈ Xsp F, ∀ d, S.hT x (f d) = S.hT x (f' d)`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span E (Set.range F.fl.e)` using `hx`. Use `clear hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Introduce `d`. Simplify `h i.castSucc d` using `[frame, Formalism.MainNotions.S.FlagG.fvec]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `zero => intro d`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro d`. Simplify using `[hx d, hy d]`. Consider the case `smul c x _ hx => intro d`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[hx d]`. Establish `hw : ∀ a', n.symm (frame F a') - frame F a' ∈ Xsp F`. Introduce `a'`. Use `Fin.lastCases ?_ (fun i => ?_) a'` and prove the remaining obligations. Use `hni.2.2 _ (Pf.isotropicSpan_orthogonal_anisotropicVector F)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[frame, Formalism.MainNotions.S.FlagG.fvec]`. Establish `h1 : F.fl.e i ∈ Xflag F (i.1 + 1)` using `Submodule.subset_span ⟨i, by simp, rfl⟩`. Use `Submodule.span_mono (Set.image_subset_range _ _) (hni.2.1 i.1 _ h1)` as an intermediate fact. Simplify using `only [frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ c, S.hT (n.symm (frame F a)) (f c) = S.hT (n.symm (frame F a)) (f' c)`. Introduce `c`. Establish `e1 : n.symm (frame F a) = frame F a + (n.symm (frame F a) - frame F a)` using `by abel`. Rewrite using `[e1, map_add, LinearMap.add_apply, LinearMap.add_apply, h a c, hspan _ (hw a) c]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [rAct, map_sum, map_smul]`. Conclude with `Finset.sum_congr rfl (fun c _ => by rw [key c])`. Use `_ = S.hT (n (n.symm (frame F a))) (n (rAct β f' b)) := (Saturated.isom_apply hn.1.1 _ _).symm`. Use `_ = S.hT (frame F a) (n (rAct β f' b)) := by rw [n.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zhat_move {Λ : Submodule (𝓞 E) S.V} {T : E} (F : LFlag S r T) {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F)
     (β : Matrix (Fin (r + 1)) (Fin (r + 1)) E) {f f' : Fin (r + 1) → S.V}
@@ -214,9 +208,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨hN, he, hz⟩` from `h`. Use `⟨Pf.nlamPf_inv hN, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show n.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `(he a).symm`.
-
-Use `show n.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `hz.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagStabilizer_inv_mem {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : n ∈ CntLocal.N0 F0 Λ) : n⁻¹ ∈ CntLocal.N0 F0 Λ := by
@@ -230,9 +222,9 @@ theorem flagStabilizer_inv_mem {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ :
     exact hz.symm
 
 /- English proof (translation)
-Take `⟨hN, he, hz⟩` from `h`. Take `⟨hN', he', hz'⟩` from `h'`. Use `⟨PI.DCRelEquiv.UnitaryGroupMassFormula.nlam_mul hN hN', fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show n (k _) = _`. Rewrite using `[he', he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show n (k _) = _`. Rewrite using `[hz', hz]`.
+A detailed English derivation is pending.
 -/
 theorem flagStabilizer_mul_mem {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {n k : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : n ∈ CntLocal.N0 F0 Λ) (h' : k ∈ CntLocal.N0 F0 Λ) :
@@ -246,7 +238,7 @@ theorem flagStabilizer_mul_mem {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ :
     rw [hz', hz]
 
 /- English proof (translation)
-Take `⟨_, he, hz⟩` from `h`. Use `Fin.lastCases ?_ (fun i => ?_) c` and prove the remaining obligations. Simplify `hz` using `[frame, Formalism.MainNotions.S.FlagG.fvec, lf]`. Simplify `he i` using `[frame, Formalism.MainNotions.S.FlagG.fvec, lf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem flagStabilizer_fixes_frame {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {k : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : k ∈ CntLocal.N0 F0 Λ) (c : Fin (D.R.rS + 1)) :
@@ -257,9 +249,9 @@ theorem flagStabilizer_fixes_frame {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {
   · simpa [frame, Formalism.MainNotions.S.FlagG.fvec, lf] using he i
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, he, hz⟩`. Use `⟨n, hn, fun c => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun i => ?_) c` and prove the remaining obligations. Simplify `hz` using `[frame, Formalism.MainNotions.S.FlagG.fvec]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `he i` using `[frame, Formalism.MainNotions.S.FlagG.fvec]`. Introduce and unpack `⟨n, hn, h⟩`. Conclude with `⟨n, hn, fun a => by simpa [frame, Formalism.MainNotions.S.FlagG.fvec] using h a.castSucc, by simpa [frame, Formalism.MainNotions.S.FlagG.fvec] using h (Fin.last _)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem n0rel_iff {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {F' F'' : LFlag (VS D) D.R.rS T'} :
@@ -275,9 +267,7 @@ theorem n0rel_iff {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule
       by simpa [frame, Formalism.MainNotions.S.FlagG.fvec] using h (Fin.last _)⟩
 
 /- English proof (translation)
-Take `⟨n, hn, he, hz⟩` from `h`. Use `⟨n⁻¹, flagStabilizer_inv_mem hn, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show n.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `(he a).symm`.
-
-Use `show n.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `hz.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem n0rel_symm {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {F' F'' : LFlag (VS D) D.R.rS T'} (h : CntLocal.NilradicalFlagMoved F0 Λ F' F'') : CntLocal.NilradicalFlagMoved F0 Λ F'' F' := by
@@ -291,9 +281,9 @@ theorem n0rel_symm {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodul
     exact hz.symm
 
 /- English proof (translation)
-Take `⟨n, hn, he, hz⟩` from `h`. Take `⟨k, hk, he', hz'⟩` from `h'`. Use `⟨k * n, flagStabilizer_mul_mem hk hn, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show k (n _) = _`. Rewrite using `[he, he']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show k (n _) = _`. Rewrite using `[hz, hz']`.
+A detailed English derivation is pending.
 -/
 theorem n0rel_trans {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {F₁ F₂ F₃ : LFlag (VS D) D.R.rS T'} (h : CntLocal.NilradicalFlagMoved F0 Λ F₁ F₂) (h' : CntLocal.NilradicalFlagMoved F0 Λ F₂ F₃) :
@@ -307,13 +297,11 @@ theorem n0rel_trans {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodu
     rw [hz, hz']
 
 /- English proof (translation)
-Take `⟨hN, he, hz⟩` from `hk`. Establish `hfix : ∀ x ∈ Xsp (lf D F0), k x = x`. Introduce `x hx`. Establish `h` using `LinearMap.eqOn_span' (f := k.toLinearMap) (g := LinearMap.id) (s := Set.range F0.e) (by rintro _ ⟨a, rfl⟩; simpa using he a)`. Conclude with `h hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ x, k x = x → n x - x ∈ Xsp (lf D F0) → (n⁻¹ * k * n) x = x`. Introduce `x hx hw`. Establish `hnx : k (n x) = n x`. Establish `e1 : n x = x + (n x - x)` using `by abel`. Rewrite using `[e1, map_add, hx, hfix _ hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show n.symm (k (n x)) = x`. Rewrite using `[hnx]`. Conclude with `n.symm_apply_apply x`. Use `⟨PI.DCRelEquiv.UnitaryGroupMassFormula.nlam_mul (PI.DCRelEquiv.UnitaryGroupMassFormula.nlam_mul (Pf.nlamPf_inv hn) hN) hn, fun a => key _ (he a) ?_, key _ hz ?_⟩` and prove the remaining obligations. Establish `h1 : F0.e a ∈ Xflag (lf D F0) (a.1 + 1)` using `Submodule.subset_span ⟨a, by simp, rfl⟩`.
-
-Conclude with `Submodule.span_mono (Set.image_subset_range _ _) (hn.2.1 a.1 _ h1)`. Conclude with `hn.2.2 _ (Pf.isotropicSpan_orthogonal_anisotropicVector (lf D F0))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flagStabilizer_conj_mem {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {n k : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NLam Λ (lf D F0)) (hk : k ∈ CntLocal.N0 F0 Λ) :
@@ -340,11 +328,9 @@ theorem flagStabilizer_conj_mem {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ 
   · exact hn.2.2 _ (Pf.isotropicSpan_orthogonal_anisotropicVector (lf D F0))
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[n0rel_iff]`. Take `⟨k, hk, hkc⟩` from `h`. Use `⟨n⁻¹ * k * n, flagStabilizer_conj_mem hn hk, ?_⟩` and prove the remaining obligations. Establish `h2 : rAct β (fun c => (n⁻¹ * k * n) (frame a c)) = rAct β (frame b)`. Rewrite using `[rAct_map]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `c`. Use `show n.symm (k (n (rAct β (frame a) c))) = rAct β (frame b) c`. Rewrite using `[← ha c, hkc c, hb c]`. Conclude with `n.symm_apply_apply _`. Introduce `c`.
-
-Conclude with `congrFun (rAct_inj h0 h1 h2) c`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem n0rel_pull {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NLam Λ (lf D F0))
@@ -365,7 +351,7 @@ theorem n0rel_pull {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodul
   exact congrFun (rAct_inj h0 h1 h2) c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, ⟨TermDef.one_mem_NLam (Λ := Λ) _, fun _ => rfl, rfl⟩, fun _ => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem n0rel_refl' {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (F' : LFlag (VS D) D.R.rS T') : CntLocal.NilradicalFlagMoved F0 Λ F' F' :=
@@ -385,27 +371,25 @@ def orbS (t : TermsOf D u' F0 Λ) (Z : PairVal.MatR D) :
 variable {u u' F0 Λ}
 
 /- English proof (translation)
-Take `⟨p₁, e₁⟩` from `r₁`. Take `⟨p'', e''⟩` from `r''`. Take `⟨n'', hn'', m'', hm'', hfr'', -⟩` from `(Formalism.L2.SG.Closed.TermEqIff_holds D u u' F0 Λ hΛ ⟨F₁, p₁⟩ ⟨F'', p''⟩).1 (e₁.trans e''.symm)`. Establish `hgA : IsAutLam (VS D) Λ (n * n'' * (m'' * m))` using `Formalism.L2.SG.Pf.isAutLam_mul (Formalism.L2.SG.Pf.isAutLam_mul hn.1 hn''.1) (Formalism.L2.SG.Pf.isAutLam_mul hm''.1 hm.1)`. Set `F3` to `Formalism.L2.SG.Saturated.mapL (n * n'' * (m'' * m)) hgA.1 F₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf3 : ∀ a, frame F3 a = n (n'' (m'' (m (frame F₁ a))))` using `fun a => by`. Rewrite using `[Formalism.L2.SG.Saturated.frame_mapL]`. Both sides reduce to the same expression. Establish `hdc : DCRel Λ (lf D F0) F₁ F3` using `⟨n * n'', Formalism.L2.SG.Pf.nlamPf_mul hn hn'', m'' * m, Formalism.L2.SG.Pf.nlamPf_mul hm'' hm, fun a => by rw [hf3 a]; rfl, rfl⟩`. Establish `hframe : ∀ a, frame F3 a = n (rAct β (frame F'') a)` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hf3 a, hβ a]`. Simplify using `only [rAct, map_sum, map_smul, hfr'']`. Establish `pd3 : PD D Λ (lf D F0) u' F3` using `Formalism.L2.SG.Closed.TermStable_holds D u u' F0 Λ hΛ ⟨F₁, p₁⟩ F3 hdc`. Establish `hrep : TermDef.Rep Λ (lf D F0) (PD D Λ (lf D F0) u') t F3` using `⟨pd3, (Quot.sound (show TermDef.Rel Λ (lf D F0) (PD D Λ (lf D F0) u') ⟨F₁, p₁⟩ ⟨F3, pd3⟩ from hdc)).symm.trans e₁⟩`. Establish `hF₂ : ∀ a, frame F₂ a = n (rAct β (frame F₁) a)` using `fun a => by rw [hfr a, hβ a]; rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hent : ∀ a b, (VS D).hT (frame (lf D F0) a) (frame F3 b) = (VS D).hT (frame (lf D F0) a) (frame F₂ b)`. Introduce `a b`. Establish `hZ : ∀ e d, (VS D).hT (frame (lf D F0) e) (frame F'' d) = (VS D).hT (frame (lf D F0) e) (frame F₁ d)`. Introduce `e d`. Use `congrArg (fun M : PairVal.MatR D => M e d) (h''.2.2.2.2.trans h₁.2.2.2.2.symm)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[ZhatL, Zhat, brS]`. Rewrite using `[hframe b, hF₂ b]`. Conclude with `zhat_move (lf D F0) hn β hZ a b`. Establish `hent : ∀ a b, (VS D).hT (frame (lf D F0) a) (frame F3 b) = (VS D).hT (frame (lf D F0) a) (frame F₂ b)`. Introduce `a b`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hZ : ∀ e d, (VS D).hT (frame (lf D F0) e) (frame F'' d) = (VS D).hT (frame (lf D F0) e) (frame F₁ d)`. Introduce `e d`. Use `congrArg (fun M : PairVal.MatR D => M e d) (h''.2.2.2.2.trans h₁.2.2.2.2.symm)` as an intermediate fact. Simplify `this` using `[ZhatL, Zhat, brS]`. Rewrite using `[hframe b, hF₂ b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zhat_move (lf D F0) hn β hZ a b`. Use `⟨F3, ⟨⟨pd3.1, pd3.2.1, ?_⟩, ?_, ?_, pd3.2.2, ?_⟩, hrep, hframe⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.gval_rel (lf D F0) hdc]`. Conclude with `h₁.1.2.2`. Use `⟨fun a b hab => Matrix.one_apply_ne (ne_of_lt hab).symm, fun a => Matrix.one_apply_eq a, fun b => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frameAct_one']`. Establish `hk : ∀ c, (n'' * m'') (frame F₁ c) = frame F'' c` using `fun c => by`. Rewrite using `[hfr'' c]`. Both sides reduce to the same expression. Establish `e3 : frame F3 b = n ((n'' * m'') (m (frame F₁ b)))` using `by rw [hf3 b]; rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e3]`. Use `modG_move h₁.1.1 h₁.2.2.2.1.1 hn.1 hm hk (fun c => ?_) (fun c => ?_) (fun c => ?_) hfr b` and prove the remaining obligations. Use `h₁.2.1.2.2 c` as an intermediate fact. Rewrite `this` using `[frameAct_one']`. Then use the resulting hypothesis. Use `h''.2.1.2.2 c` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[frameAct_one']`. Then use the resulting hypothesis. Use `h₂.2.1.2.2 c` as an intermediate fact. Rewrite `this` using `[frameAct_one']`. Then use the resulting hypothesis. Conclude with `((Formalism.L2.SG.Closed.TermFun_holds D u u' F0 Λ hΛ).2.2.2.1 ⟨F₁, p₁⟩ ⟨F3, pd3⟩ hdc).1 h₁.2.2.1`. Establish `hZZ : ZhatL (lf D F0) F3 = ZhatL (lf D F0) F₂`.
-
-Use function extensionality and compare the values at `a b`. Conclude with `hent a b`. Rewrite using `[← h₂.2.2.2.2]`. Conclude with `hZZ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem move_exists (hΛ : IsRowLat D F0 Λ) {t : TermsOf D u' F0 Λ} {Z₁ Z₂ : PairVal.MatR D}
     {F₁ F₂ F'' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
@@ -480,17 +464,17 @@ theorem move_exists (hΛ : IsRowLat D F0 Λ) {t : TermsOf D u' F0 Λ} {Z₁ Z₂
     exact hZZ
 
 /- English proof (translation)
-Take `⟨p₁, e₁⟩` from `r₁`. Take `⟨p₂, e₂⟩` from `r₂`. Take `⟨n, hn, m, hm, hfr, -⟩` from `(Formalism.L2.SG.Closed.TermEqIff_holds D u u' F0 Λ hΛ ⟨F₁, p₁⟩ ⟨F₂, p₂⟩).1 (e₁.trans e₂.symm)`. Take `⟨β, hβ0, hβ1, hβ⟩` from `Formalism.L2.SG.Pf.nlam_coef hm`. Establish `mv : ∀ F'' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E), F'' ∈ CntLocal.EZ (D` using `D) ((Tu D u' : ℕ) : D.host.E) F0 Λ Z₁ ∧ TermDef.Rep Λ (lf D F0) (PD D Λ (lf D F0) u') t F'' → ∃ F3, F3 ∈ CntLocal.EZ (D := D) ((Tu D u' : ℕ) : D.host.E) F0 Λ Z₂ ∧ TermDef.Rep Λ (lf D F0) (PD D Λ (lf D F0) u') t F3 ∧ ∀ a, frame F3 a = n (rAct β (frame F'') a) := fun F'' h => move_ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose G hG using mv`. Establish `rp : ∀ O, O ∈ orbS u u' F0 Λ t Z₁ → ∃ F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E), F' ∈ CntLocal.EZ (D` using `D) ((Tu D u' : ℕ) : D.host.E) F0 Λ Z₁ ∧ TermDef.Rep Λ (lf D F0) (PD D Λ (lf D F0) u') t F' ∧ O = {F'' | F'' ∈ CntLocal.EZ (D := D) ((Tu D u' : ℕ) : D.host.E) F0 Λ Z₁ ∧ CntLocal.NilradicalFlagMoved F0 Λ F' F''} := fun O hO => hO`. Use `choose R hR using rp`. Use `Set.encard_le_encard_of_injOn (f := fun O => if hO : O ∈ orbS u u' F0 Λ t Z₁ then {F'' | F'' ∈ CntLocal.EZ (D := D) ((Tu D u' : ℕ) : D.host.E) F0 Λ Z₂ ∧ CntLocal.NilradicalFlagMoved F0 Λ (G (R O hO) ⟨(hR O hO).1, (hR O hO).2.1⟩) F''} else ∅) ?_ ?_` and prove the remaining obligations. Introduce `O hO dsimp only`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hO]`. Establish `hs` using `hG (R O hO) ⟨(hR O hO).1, (hR O hO).2.1⟩`. Conclude with `⟨_, hs.1, hs.2.1, rfl⟩`. Introduce `O₁ hO₁ O₂ hO₂ he dsimp only at he`. Rewrite `he` using `[dif_pos hO₁, dif_pos hO₂]`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha` using `hG (R O₁ hO₁) ⟨(hR O₁ hO₁).1, (hR O₁ hO₁).2.1⟩`. Establish `hb` using `hG (R O₂ hO₂) ⟨(hR O₂ hO₂).1, (hR O₂ hO₂).2.1⟩`. Establish `hmem` using `(Set.ext_iff.1 he (G (R O₂ hO₂) ⟨(hR O₂ hO₂).1, (hR O₂ hO₂).2.1⟩)).2 ⟨hb.1, n0rel_refl' Λ _⟩`. Establish `hab` using `n0rel_pull hn hβ0 hβ1 ha.2.2 hb.2.2 hmem.2`. Rewrite using `[(hR O₁ hO₁).2.2, (hR O₂ hO₂).2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hax⟩`. Conclude with `⟨hx, n0rel_trans (n0rel_symm hab) hax⟩`. Introduce and unpack `⟨hx, hbx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hx, n0rel_trans hab hbx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orb_le (hΛ : IsRowLat D F0 Λ) {t : TermsOf D u' F0 Λ} {Z₁ Z₂ : PairVal.MatR D}
     {F₁ F₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
@@ -541,7 +525,7 @@ theorem orb_le (hΛ : IsRowLat D F0 Λ) {t : TermsOf D u' F0 Λ} {Z₁ Z₂ : Pa
       exact ⟨hx, n0rel_trans hab hbx⟩
 
 /- English proof (translation)
-The claim follows from `le_antisymm (orb_le hΛ h₁ h₂ r₁ r₂) (orb_le hΛ h₂ h₁ r₂ r₁)`.
+A detailed English derivation is pending.
 -/
 theorem orb_eq (hΛ : IsRowLat D F0 Λ) {t : TermsOf D u' F0 Λ} {Z₁ Z₂ : PairVal.MatR D}
     {F₁ F₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
@@ -555,11 +539,11 @@ theorem orb_eq (hΛ : IsRowLat D F0 Λ) {t : TermsOf D u' F0 Λ} {Z₁ Z₂ : Pa
 end Move
 
 /- English proof (translation)
-Introduce `hpre γ w Z _ hAt hR`. Take `⟨F₁, h₁, r₁⟩` from `hR`. Establish `hΛ : IsRowLat D F0 γ.lam` using `hpre.2.2.2.2.1.1 γ.lam γ.mem`. Take `⟨L, U, hL, hU, he⟩` from `hAt`. Establish `hex : ∃ x : Point D.host.E (D.R.rS + 1) × LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × PairVal.MatR D × PairVal.MatR D, PairVal.NormRep γ x.1 x.2.1 x.2.2.1 x.2.2.2` using `⟨(w, F₁, L, U), r₁, h₁.2.1, hL, hU, (congrArg ZhatOM h₁.2.2.2.2).trans he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : LsDatumB.zT γ = ZhatL (lf D F0) hex.choose.2.1`. Simplify using `only [LsDatumB.zT, LsDatumB.nrep, dif_pos hex]`. Take `⟨r₂, hadm, -⟩` from `hex.choose_spec`. Take `⟨p₁, e₁⟩` from `r₁`. Take `⟨p₂, e₂⟩` from `r₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdc` using `(Formalism.L2.SG.Closed.TermEqIff_holds D u u' F0 γ.lam hΛ ⟨F₁, p₁⟩ ⟨_, p₂⟩).1 (e₁.trans e₂.symm)`. Establish `h₂ : hex.choose.2.1 ∈ CntLocal.EZ (D` using `D) ((Tu D u' : ℕ) : D.host.E) F0 γ.lam (ZhatL (lf D F0) hex.choose.2.1) := ⟨⟨p₂.1, p₂.2.1, by rw [Formalism.L2.SG.Pf.gval_rel (lf D F0) hdc]; exact h₁.1.2.2⟩, hadm, ((Formalism.L2.SG.Closed.TermFun_holds D u u' F0 γ.lam hΛ).2.2.2.1 ⟨F₁, p₁⟩ ⟨_, p₂⟩ hdc).1 h₁.2.2.1, p₂.2.2, rfl⟩`. Rewrite using `[hz]`. Conclude with `orb_eq hΛ h₂ h₁ ⟨p₂, e₂⟩ ⟨p₁, e₁⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbZT_holds (M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word)

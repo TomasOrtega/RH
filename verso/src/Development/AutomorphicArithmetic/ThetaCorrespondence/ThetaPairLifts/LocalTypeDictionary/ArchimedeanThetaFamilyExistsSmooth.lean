@@ -10,15 +10,15 @@ open GlobalTheory.ArchUniq MeasureTheory
 open scoped SchwartzMap Classical
 namespace GlobalTheory.ArchFamily
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n d X W M ψ χX χW om hcm hstd hW γ hγ`. Take `⟨r₀, hR, hinj⟩` from `GlobalTheory.T.exists_admissible_finiteFactor_archimedeanSchwartz (F := F) (Fin n × Fin d)`. Establish `hex : ∀ (t : ℝ) (f : SInf F (Fin n × Fin d)), ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (1, γ (Multiplicative.ofAdd t))) ⇑f ⇑f₁` using `fun t f => _root_.GlobalTheory.T.theta_action_archimedean_locality hP M ψ χX χW om hcm hstd hW _ (hγ.2 _) f`. Use `choose S hS using hex`. Establish `key : ∀ t (f : SInf F (Fin n × Fin d)), om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) ⇑f r₀) = tens (evI F) ⇑(S t f) r₀` using `fun t f => hS t f r₀ (hR f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tadd : ∀ f g : SInf F (Fin n × Fin d), tens (evI F) ⇑(f + g) r₀ = tens (evI F) ⇑f r₀ + tens (evI F) ⇑g r₀`. Introduce `f g`. Use function extensionality and compare the values at `x`. Simplify using `[tens, add_mul]`. Establish `tsmul : ∀ (c : ℂ) (f : SInf F (Fin n × Fin d)), tens (evI F) ⇑(c • f) r₀ = c • tens (evI F) ⇑f r₀`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c f`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`. Set `T : ℝ → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)` to `fun t => { toFun := S t map_add' := fun f g => hinj _ _ (by rw [← key, tadd, map_add, key, key, tadd]) map_smul' := fun c f => hinj _ _ (by rw [← key, tsmul, map_smul, key, RingHom.id_apply, tsmul]) }`. Use `⟨T, fun t f => hS t f, fun s t f => hinj _ _ ?_, fun f => hinj _ _ ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show tens (evI F) ⇑(S (s + t) f) r₀ = tens (evI F) ⇑(S s (S t f)) r₀`. Establish `hmul : ((1 : UA σ X.J), γ (Multiplicative.ofAdd (s + t))) = ((1 : UA σ X.J), γ (Multiplicative.ofAdd s)) * ((1 : UA σ X.J), γ (Multiplicative.ofAdd t))`. Rewrite using `[ofAdd_add, map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[← key, hmul, map_mul, Module.End.mul_apply, key, key]`. Use `show tens (evI F) ⇑(S 0 f) r₀ = tens (evI F) ⇑f r₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : ((1 : UA σ X.J), γ (Multiplicative.ofAdd (0 : ℝ))) = 1`. Rewrite using `[ofAdd_zero, map_one]`. Both sides reduce to the same expression. Rewrite using `[← key, h1, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_archimedean_theta_family : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
@@ -64,7 +64,7 @@ open GlobalTheory.ArchUniq MeasureTheory
 open scoped SchwartzMap Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ArchFamily.exists_archimedean_theta_family | exact _root_.GlobalTheory.ArchFamily.exists_archimedean_theta_family | (intros; apply _root_.GlobalTheory.ArchFamily.exists_archimedean_theta_family <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.archimedean_theta_family_exists_smooth : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

@@ -11,15 +11,15 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt.Vac
 
 /- English proof (translation)
-Establish `hb : ∀ g : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ, Matrix.conjTranspose g * g = 1 → ∀ i j, ‖g i j‖ ≤ 1`. Introduce `g hg i j`. Conclude with `entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.mpr hg) i j`. Establish `hS : IsCompact {g : M2 n | InG g ∧ Matrix.conjTranspose g * g = 1}`. Establish `hbox : IsCompact (Set.pi univ fun _ : Fin n ⊕ Fin n => Set.pi univ fun _ : Fin n ⊕ Fin n => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hbox.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Use `IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Conclude with `isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const`. Introduce `g hg i _ j _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `using hb g hg.2 i j`. Establish `hcl : IsClosed (range fun k : KR n => mR (k : GR n))`. Use `hS.isClosed using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨k.1.2, k.2.2⟩`. Introduce and unpack `⟨hG, hg⟩`. Set `u : GL (Fin n ⊕ Fin n) ℂ` to `⟨g, Matrix.conjTranspose g, mul_eq_one_comm.mp hg, hg⟩`. Conclude with `⟨⟨⟨u, hG⟩, ⟨hG, hg⟩⟩, rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[(kr_inducing n).isCompact_iff, Set.image_univ]`. Use `hS.of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨k.1.2, k.2.2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem vacOut_of'_lemma (n : ℕ) : CompactSpace (KR n) := by
   have hb : ∀ g : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ, Matrix.conjTranspose g * g = 1 → ∀ i j, ‖g i j‖ ≤ 1 := by
@@ -50,31 +50,25 @@ private theorem vacOut_of'_lemma (n : ℕ) : CompactSpace (KR n) := by
   exact ⟨k.1.2, k.2.2⟩
 
 /- English proof (translation)
-Introduce `m n ε c t p q e sL ρ hL hGS G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I Λ hG`. Use `haveI := vacOut_of'_lemma n`. Use `letI : MeasurableSpace (KR n) := borel _`. Use `haveI : BorelSpace (KR n) := ⟨rfl⟩`. Set `μ : Measure (KR n)` to `Measure.haarMeasure ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : μ.IsHaarMeasure := by infer_instance`. Use `haveI : IsProbabilityMeasure μ := ⟨by simpa using Measure.haarMeasure_self (G := KR n) (K₀ := ⊤)⟩`. Take `⟨ψ, a, b, nb, cz, hψ, hnb, hnbc, hcz, hcz0, hid⟩` from `hLO n p q e hGS μ`. Take `⟨U, d, E, σ, hU, hR, hs, hd, hEd, hEc, hEi, hEs⟩` from `hG.eis`. Establish `hψc` using `hψ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψs` using `hψ.2.1`. Take `⟨d1, hdd, hnd⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd d hd s₀`. Establish `hd1 : Polynomial.eval s₀ d1 ≠ 0` using `fun h => hnd (Polynomial.dvd_iff_isRoot.mpr h)`. Use `set k₀ := d.rootMultiplicity s₀`. Establish `hdeval : ∀ z, Polynomial.eval z d = (z - s₀) ^ k₀ * Polynomial.eval z d1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Use `conv_lhs => rw [hdd]`. Simplify using `[Polynomial.eval_mul, Polynomial.eval_pow]`. Establish `hTE : ∀ z ∈ U, ∀ g, Vac.Top μ ι p q e a b nb ψ (E z) g = cz (z - s₀) * E z g` using `top_E μ hL hG hD hHP hnbc hψc hψs hcz hid hU hR hd hEd hEc hEs`. Establish `hTI : ∀ g, Vac.Top μ ι p q e a b nb ψ (I 1) g = cz 0 * I 1 g` using `top_theta μ hD hG.ιcont hnbc hψc hψs hid (I 1) hG.Icont (fun g y => hTS m n ε c t p q e sL ρ hL G Pp Γ ι s₀ Ht sec I Λ hG μ g y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc` using `lam_local banachHol factorL hG hU hR hs hd hEd hEc hEi (fun z hz g => (hEs z hz).2 g)`. Establish `hloc' : ∀ l ∈ Λ, ∃ H : ℂ → ℂ, ContinuousAt H s₀ ∧ H s₀ = l (I 1) ∧ ∀ᶠ z in 𝓝[≠] s₀, l (E z) = (z - s₀) ^ k₀ * Polynomial.eval z d1 * H z`. Introduce `l hl`. Take `⟨H, hHa, hH0, hHe⟩` from `hloc l hl`. Use `⟨H, hHa.continuousAt, hH0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hHe] with z hz`. Rewrite using `[hz, hdeval]`. Take `⟨Ek, hEkc, hEkd, hEk, hEk0⟩` from `core Γ Λ (Vac.Top μ ι p q e a b nb ψ) (I 1) s₀ U hU hs E cz k₀ (fun z => Polynomial.eval z d1) dslopeFam hcz.continuous hcz0 (Polynomial.continuous d1).continuousAt hG.Λadd (fun l hl F hFc hFd hFi => lam_cont banachHol factorL hG l hl hU hs F hFc hFd hFi) hloc' (fun F hF hFi hΛ g …`. Establish `hnear : ∀ᶠ z in 𝓝 s₀, z ∈ U ∧ Polynomial.eval z d1 ≠ 0` using `(show ∀ᶠ z in 𝓝 s₀, z ∈ U from hU.mem_nhds hs).and ((Polynomial.continuous d1).continuousAt.eventually_ne hd1)`. Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.mp hnear`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : Metric.ball s₀ r ⊆ U` using `fun z hz => (hball hz).1`. Establish `hFd : ∀ g, DifferentiableOn ℂ (fun z => Ek z g / Polynomial.eval z d1) (Metric.ball s₀ r)` using `fun g => ((hEkd g).mono hsub).div (Polynomial.differentiable d1).differentiableOn (fun z hz => (hball hz).2)`. Take `⟨σ2, hσ2⟩` from `roots_bound d hd`. Establish `hmain : ∀ g, ∀ z ∈ Metric.ball s₀ r, GlobalTheory.Cont.HolValueAt (fun w => GlobalTheory.Eis.cosetSum Pp Γ (fun x => ((Ht x : ℝ) : ℂ) ^ (w - s₀) * sec 1 x) g) z (Ek z g / Polynomial.eval z d1)`. Introduce `g z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hext : GlobalTheory.Cont.IsExtAt (fun w => GlobalTheory.Eis.cosetSum Pp Γ (fun x => ((Ht x : ℝ) : ℂ) ^ (w - s₀) * sec 1 x) g) z (fun w => E w g / Polynomial.eval w d)`. Use `⟨U, hsub hz, hR, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Conclude with `(((hEd g).analyticAt (hU.mem_nhds hw)).meromorphicAt).div ((Polynomial.differentiable d).analyticAt w).meromorphicAt`. Use `⟨max σ σ2, fun w hw => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hw1 : σ < w.re` using `lt_of_le_of_lt (le_max_left _ _) hw`. Establish `hw2 : σ2 < w.re` using `lt_of_le_of_lt (le_max_right _ _) hw`. Use `show E w g / Polynomial.eval w d = _`. Rewrite using `[(hEs w hw1).2 g, mul_div_cancel_left₀ _ (hσ2 w hw2)]`. Rewrite using `[hext.holValueAt_iff]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFc : ContinuousAt (fun w => Ek w g / Polynomial.eval w d1) z` using `(hFd g).continuousOn.continuousAt (Metric.isOpen_ball.mem_nhds hz)`. Use `(hFc.tendsto.mono_left nhdsWithin_le_nhds).congr' ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ w in 𝓝[≠] z, w ∈ Metric.ball s₀ r ∧ w ≠ s₀`. Distinguish the cases in `hzs : z = s₀`. Substitute `hzs` using the available equality.
-
-Conclude with `eventually_mem_ne z _ Metric.isOpen_ball hz`. Conclude with `nhdsWithin_le_nhds ((Metric.isOpen_ball.inter isOpen_ne).mem_nhds ⟨hz, hzs⟩)`. Use `filter_upwards [hev] with w hw`. Establish `hpow : (w - s₀) ^ k₀ ≠ 0` using `pow_ne_zero _ (sub_ne_zero.mpr hw.2)`. Use `show Ek w g / Polynomial.eval w d1 = E w g / Polynomial.eval w d`.
-
-Rewrite using `[hEk w (hsub hw.1) g, hdeval w, mul_div_mul_left _ _ hpow]`. Establish `hval : ∀ g, Ek s₀ g / Polynomial.eval s₀ d1 = I 1 g` using `fun g => by`. Rewrite using `[hEk0 g, mul_div_cancel_left₀ _ hd1]`. Use `⟨r, 0, fun z g => Ek z g / Polynomial.eval z d1, hr, subset_union_right, ?_, hFd, hval, ?_, hmain⟩` and prove the remaining obligations. Conclude with `(hEkc.mono (prod_mono hsub subset_rfl)).div ((Polynomial.continuous d1).comp continuous_fst).continuousOn (fun y hy => (hball hy.1).2)`.
-
-Introduce `g`. Establish `h0` using `hmain g s₀ (Metric.mem_ball_self hr)`. Rewrite `h0` using `[hval g]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem vacOut_of' (hD : CayleyBlocksInvertible) (hLO : LocOp) (hHP : HolParam) (hTS : ThSph) : VacOut := by
   intro m n ε c t p q e sL ρ hL hGS G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I Λ hG

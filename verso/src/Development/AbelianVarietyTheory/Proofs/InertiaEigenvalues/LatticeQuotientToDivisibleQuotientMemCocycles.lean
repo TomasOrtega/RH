@@ -11,7 +11,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.BKFinLevelCocycle
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H y`. Simplify using `only [actQ, Submodule.mapQ_apply, GlobalTheory.BKFinLevel.ioL_mk, actD, actT]`. Use `congr 1`. Simplify using `only [LinearMap.coe_restrictScalars, map_smul]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -29,7 +29,7 @@ theorem ioL_actQ {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRin
     rfl
 
 /- English proof (translation)
-Introduce `l _ P K LL _ _ _ O _ _ hO A LA ϖ r hI c hc`. Use `⟨hc.1.comp _, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [hc.2 g h, map_add, ioL_actQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ioL_mem_Z1D : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O) (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) (c : ↥(GK K) → ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)), c ∈ quotientCocycles LA _ hI → (fun g => GlobalTheory.BKFinLevel.ioL LA ϖ r (c g)) ∈ divisibleCocycles LA := by
   intro l _ P K LL _ _ _ O _ _ hO A LA ϖ r hI c hc

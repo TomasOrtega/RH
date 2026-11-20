@@ -9,11 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LoopC.FrameDiff
 
 /- English proof (translation)
-Establish `ha` using `a.2`. Distinguish the cases in `h0 : ddS D = 0`. Rewrite using `[h0, _root_.zero_zpow _ (by omega)]`. Conclude with `FractionalIdeal.zero_le _`. Establish `h1 : (-((D.R.rS : ℤ) - (a : ℕ))) = -(D.R.rS : ℤ) + ((a : ℕ) : ℤ)` using `by ring`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, zpow_add₀ h0, zpow_natCast]`. Establish `h2 : ddS D ^ (a : ℕ) ≤ 1`. Unfold `ddS`. Rewrite using `[← FractionalIdeal.coeIdeal_pow]`. Conclude with `FractionalIdeal.coeIdeal_le_one`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dd_zpow_le (D : D7) (a : Fin D.R.rS) :
     (ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≤
@@ -32,17 +30,15 @@ theorem dd_zpow_le (D : D7) (a : Fin D.R.rS) :
       _ = _ := mul_one _
 
 /- English proof (translation)
-Unfold `XS at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, x, hx, rfl⟩` from `hy`. Use `⟨Pi.single a x, fun a' => ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : a' = a`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `dd_zpow_le D a' hx`. Rewrite using `[Pi.single_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FractionalIdeal.zero_mem _`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, fun _ => FractionalIdeal.zero_mem _, by simp⟩`. Consider the case `add y y' _ _ h h'`. Take `⟨c, hc, rfl⟩` from `h`. Take `⟨c', hc', rfl⟩` from `h'`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `⟨c + c', fun a => ?_, by simp [add_smul, Finset.sum_add_distrib]⟩` and prove the remaining obligations. Conclude with `Submodule.add_mem (FractionalIdeal.coeToSubmodule _) (hc a) (hc' a)`. Consider the case `smul o y _ h`. Take `⟨c, hc, rfl⟩` from `h`. Use `⟨o • c, fun a => ?_, by simp [Finset.smul_sum, smul_assoc]⟩` and prove the remaining obligations.
-
-Conclude with `Submodule.smul_mem (FractionalIdeal.coeToSubmodule _) o (hc a)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coords_of_mem_XS (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (y : (VS D).V)
     (hy : y ∈ XS D F0) :
@@ -81,12 +77,12 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
 /- English proof (translation)
-The claim follows from `S.herm.eq x y`.
+A detailed English derivation is pending.
 -/
 theorem star_hT (x y : S.V) : star (S.hT x y) = S.hT y x := S.herm.eq x y
 
 /- English proof (translation)
-Establish `hz : ∀ (G : FlagG S r T) a, S.hT G.z (G.e a) = 0` using `fun G a => by`. Rewrite using `[← star_hT, G.z_orth, star_zero]`. Apply the tactic sequence `induction b using Fin.lastCases <;> induction b' using Fin.lastCases <;>`. Simplify using `[FlagG.fvec, F.e_iso, F'.e_iso, F.z_orth, F'.z_orth, F.z_norm, F'.z_norm, hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem gram_eq (F F' : FlagG S r T) (b b' : Fin (r + 1)) :
     S.hT (F.fvec b) (F.fvec b') = S.hT (F'.fvec b) (F'.fvec b') := by
@@ -96,15 +92,15 @@ theorem gram_eq (F F' : FlagG S r T) (b b' : Fin (r + 1)) :
     simp [FlagG.fvec, F.e_iso, F'.e_iso, F.z_orth, F'.z_orth, F.z_norm, F'.z_norm, hz]
 
 /- English proof (translation)
-Simplify using `[orth, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orth_iff (U : Submodule E S.V) (v : S.V) : v ∈ orth S U ↔ ∀ x ∈ U, S.hT x v = 0 := by
   simp [orth, Submodule.mem_iInf]
 
 /- English proof (translation)
-Unfold `FlagG.X at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨a, rfl⟩ := hy`. Conclude with `hv a`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ h h' => simp [h, h']`. Consider the case `smul c y _ h => simp [h]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hT_X_eq_zero (F : FlagG S r T) (v : S.V) (hv : ∀ a, S.hT (F.e a) v = 0) (x : S.V) (hx : x ∈ F.X) :
     S.hT x v = 0 := by
@@ -116,7 +112,7 @@ theorem hT_X_eq_zero (F : FlagG S r T) (v : S.V) (hv : ∀ a, S.hT (F.e a) v = 0
   | smul c y _ h => simp [h]
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simpa [FlagG.fvec] using h.1`. Consider the case `cast a => simpa [FlagG.fvec] using he a`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem frame_mem (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (h : IsLift Λ F) (he : ∀ a, F.fl.e a ∈ Λ)
     (b : Fin (r + 1)) : frame F b ∈ Λ := by
@@ -127,38 +123,38 @@ theorem frame_mem (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (h : IsLift Λ
 end Gen
 
 /- English proof (translation)
-Simplify using `[perpE, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_perpE_iff (D : D7) (P : LatW D) (w : (D.sp.X 0).V) :
     w ∈ perpE D P ↔ ∀ p ∈ P, (D.sp.X 0).hT p w = 0 := by
   simp [perpE, Submodule.mem_iInf]
 
 /- English proof (translation)
-Introduce `D u u' F0 Λ hst hb hrow P φ Z hφ F₁ h₁ F₂ h₂ hw`. Take `⟨hW, -, hpos, -⟩` from `GlobalTheory.T.standardBaseFlag_complement_integralLattice D u u' F0 Λ hst hb hrow`. Take `⟨l₁, e₁, z₁, o₁⟩` from `h₁`. Take `⟨l₂, e₂, z₂, o₂⟩` from `h₂`. Establish `hiso : ∀ x y, (hS D).hT (D.sp.iXY 0 x) (D.sp.iXY 0 y) = (D.sp.X 0).hT x y` using `D.sp.iXY_isom 0 (by have := D.R.two_le_m; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZ₁ : ∀ a b, (hS D).hT (F0.fvec a) (frame F₁ b) = Z a b` using `fun a b => by rw [← z₁]; rfl`. Establish `hZ₂ : ∀ a b, (hS D).hT (F0.fvec a) (frame F₂ b) = Z a b` using `fun a b => by rw [← z₂]; rfl`. Establish `hWX : ∀ (w : (D.sp.X 0).V), ∀ x ∈ F0.X, (hS D).hT (D.sp.iXY 0 w) x = 0`. Introduce `w x hx`. Rewrite using `[← star_hT, hT_X_eq_zero F0 (D.sp.iXY 0 w) (fun a => ?_) x hx, star_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← star_hT, hb.1, (D.sp.hyp_orthX a w).1, star_zero]`. Establish `hd : ∀ b, frame F₂ b - frame F₁ b ∈ XS D F0`. Introduce `b`. Rewrite using `[← hrow.2.2]`. Use `⟨Λ.sub_mem (frame_mem Λ F₂ l₂ e₂ b) (frame_mem Λ F₁ l₁ e₁ b), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set d := frame F₂ b - frame F₁ b with hdd`. Establish `hf : ∀ a, (hS D).hT (F0.fvec a) d = 0` using `fun a => by rw [hdd, map_sub, hZ₁, hZ₂, sub_self]`. Establish `hX : ∀ x ∈ F0.X, (hS D).hT x d = 0` using `hT_X_eq_zero F0 d (fun a => by simpa [FlagG.fvec] using hf a.castSucc)`. Establish `hz : (hS D).hT F0.z d = 0` using `by simpa [FlagG.fvec] using hf (Fin.last _)`. Establish `hmem : d ∈ Wsp D ⊔ Xsp (lf D F0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW.1, mem_orth_iff]`. Introduce `y hy`. Take `⟨x, hx, y', hy', rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy'`. Simplify using `[hX x hx, hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨w, rfl⟩, x, hx, hwx⟩` from `Submodule.mem_sup.1 hmem`. Establish `hwd : ∀ σ, (hS D).hT (D.sp.iXY 0 σ) d = (D.sp.X 0).hT σ w` using `fun σ => by`. Rewrite using `[← hwx, map_add, hiso, hWX σ x hx, add_zero]`. Establish `hwP : w ∈ perpE D P`. Rewrite using `[mem_perpE_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Establish `h1 : (hS D).hT (D.sp.iXY 0 p + φ ⟨p, hp⟩) d = 0`. Rewrite using `[hdd, map_sub, o₁ ⟨p, hp⟩ b, o₂ ⟨p, hp⟩ b, sub_self]`. Rewrite `h1` using `[map_add, LinearMap.add_apply, hX _ (hφ ⟨p, hp⟩).2, add_zero, hwd]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w', c₁, c₂⟩` from `hw b`. Establish `hww : (D.sp.X 0).hT w w = 0`. Rewrite using `[← hwd, hdd, map_sub, c₁.2 w hwP, c₂.2 w hwP, sub_self]`. Establish `hw0 : w = 0`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Use `hpos τ w hne` as an intermediate fact. Rewrite `this` using `[hww]`. Simplify using `at this`. Rewrite `hwx` using `[hw0, map_zero, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hwx]`. Conclude with `hx`. Use `choose c hc hcd using fun b => coords_of_mem_XS D F0 _ (hd b)`. Establish `hfr : ∀ b, frame F₂ b = frame F₁ b + ∑ a, c b a • F0.e a` using `fun b => by`. Rewrite using `[← hcd]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Use `⟨Matrix.of fun a b => c b a, hfr, fun a b => hc b a, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun b b' => ?_` and prove the remaining obligations. Establish `hg : (hS D).hT (frame F₂ b) (frame F₂ b') = (hS D).hT (frame F₁ b) (frame F₁ b')` using `gram_eq F₂.fl F₁.fl b b'`. Establish `hY : ∀ a b, (hS D).hT (F0.e a) (frame F₁ b) = Z a.castSucc b` using `fun a b => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `hZ₁ a.castSucc b` using `[FlagG.fvec]`. Establish `hY' : ∀ a b, (hS D).hT (frame F₁ b) (F0.e a) = star (Z a.castSucc b)` using `fun a b => by`. Rewrite using `[← hY, star_hT]`. Rewrite `hg` using `[hfr b, hfr b']`. Simplify using `only [map_add, map_sum, LinearMap.add_apply, LinearMap.sum_apply, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hY, hY', F0.e_iso, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, starRingEnd_apply] at hg`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.submatrix_apply, id, Matrix.zero_apply]`. Establish `: ∑ a, star (Z a.castSucc b) * c b' a = ∑ a, c b' a * star (Z a.castSucc b)` using `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Rewrite using `[this]`. Take the linear combination `hg`.
+A detailed English derivation is pending.
 -/
 theorem frame_diff : ∀ (D : D7) (u u' : D.what₂.Word) (F0 : Fb D u) (Λ : LatV D), Stand D u u' → IsBase D u F0 → IsRowLat D F0 Λ → ∀ (P : LatW D) (φ : P →ₗ[𝓞 D.host.E] (hS D).V) (Z : GramM D), (∀ p, φ p ∈ XLam Λ (lf D F0)) → ∀ F₁ ∈ FixSet D Λ (lf D F0) ((Tu D u' : ℕ) : D.host.E) Z P φ, ∀ F₂ ∈ FixSet D Λ (lf D F0) ((Tu D u' : ℕ) : D.host.E) Z P φ, (∀ b, ∃ w, IsWcomp D P (frame F₁ b) w ∧ IsWcomp D P (frame F₂ b) w) → ∃ x : Matrix (Fin D.R.rS) (Fin (D.R.rS + 1)) D.host.E, (∀ b, frame F₂ b = frame F₁ b + ∑ a, x a b • F0.e a) ∧ (∀ a b, x a b ∈ (ddS D ^ (-(D.R.rS : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) ∧ xᴴ * Z.submatrix Fin.castSucc id + (Z.submatrix Fin.castSucc id)ᴴ * x = 0 := by
   intro D u u' F0 Λ hst hb hrow P φ Z hφ F₁ h₁ F₂ h₂ hw

@@ -21,13 +21,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩ i j hij`. Rewrite using `[val_diagT, diagonal_apply_ne _ hij]`. Introduce `h`. Establish `hd : (g : Matrix (Fin n) (Fin n) k) = diagonal fun i => (g : Matrix (Fin n) (Fin n) k) i i`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[diagonal_apply_ne _ hij, h i j hij]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : (g : Matrix (Fin n) (Fin n) k).det ≠ 0` using `g.isUnit.map Matrix.detMonoidHom |>.ne_zero`. Establish `hne : ∀ i, (g : Matrix (Fin n) (Fin n) k) i i ≠ 0`. Introduce `i`. Rewrite `hdet` using `[hd, det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => Units.mk0 _ (hne i), ?_⟩` and prove the remaining obligations. Use extensionality with `: 1`. Rewrite using `[val_diagT]`. Simplify using `only [Units.val_mk0]`. Conclude with `hd.symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_diag (g : GL (Fin n) k) :
     g ∈ (diagT k (Fin n)).range ↔ ∀ i j, i ≠ j → (g : Matrix (Fin n) (Fin n) k) i j = 0 := by
@@ -53,9 +53,9 @@ private theorem mem_diag (g : GL (Fin n) k) :
     exact hd.symm
 
 /- English proof (translation)
-Use `haveI := GroundTheory.LocalField.t2Space_of_isNonarchimedeanLocalField k`. Establish `he : ((diagT k (Fin n)).range : Set (GL (Fin n) k)) = Units.val ⁻¹' {M : Matrix (Fin n) (Fin n) k | ∀ i j, i ≠ j → M i j = 0}`. Use extensionality with `g`. Conclude with `mem_diag g`. Rewrite using `[he]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `IsClosed.preimage Units.continuous_val ?_` and prove the remaining obligations. Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Conclude with `(continuous_apply j).comp (continuous_apply i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isClosed_diag : IsClosed ((diagT k (Fin n)).range : Set (GL (Fin n) k)) := by
   haveI := GroundTheory.LocalField.t2Space_of_isNonarchimedeanLocalField k
@@ -71,16 +71,16 @@ private theorem isClosed_diag : IsClosed ((diagT k (Fin n)).range : Set (GL (Fin
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[sg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem sg_refl (g : GL (Fin n) k) : sg (RingEquiv.refl k) g = g := by
   ext i j
   simp [sg]
 
 /- English proof (translation)
-Establish `hc : γ * t = t * γ` using `Subgroup.mem_centralizer_iff.1 ht γ (Set.mem_singleton γ)`. Establish `hcyc : Cyc (RingEquiv.refl k) 1` using `⟨fun _ => rfl, one_pos, fun _ => rfl⟩`. Establish `hz : (y⁻¹ * t * y)⁻¹ * diagT k (Fin n) x * sg (RingEquiv.refl k) (y⁻¹ * t * y) = diagT k (Fin n) x`. Rewrite using `[sg_refl, ← hy]`. Simplify using `only [_root_.mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc γ t y, hc, mul_assoc t, inv_mul_cancel_left]`. Take `⟨s, hs⟩` from `strictNormal k n (RingEquiv.refl k) 1 hcyc x x hx hx _ hz`. Conclude with `⟨s, hs.symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cent_diag {γ y : GL (Fin n) k} {x : Fin n → kˣ} (hx : Strict x)
     (hy : y⁻¹ * γ * y = diagT k (Fin n) x) {t : GL (Fin n) k} (ht : t ∈ Subgroup.centralizer {γ}) :
@@ -98,41 +98,33 @@ private theorem cent_diag {γ y : GL (Fin n) k} {x : Fin n → kˣ} (hx : Strict
 end
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n _ _ r r' hr0 hr1 hr0' hr1' hrr'`. Use `haveI : T2Space k := GroundTheory.LocalField.t2Space_of_isNonarchimedeanLocalField k`. Establish `hemb : Topology.IsClosedEmbedding (incl : GL (Fin n) k →* GL (Fin n) E)` using `((bridge k E σ).2.2 n).2.2.2.1`. Take `⟨KE, hKE, -, -⟩` from `ballSub E n r hr0 hr1`. Take `⟨Kk, hKk, hKko, -⟩` from `ballSub k n r' hr0' hr1'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set D : Subgroup (GL (Fin n) k) := (diagT k (Fin n)).range with hD`. Use `set Cr : Subgroup (GL (Fin n) k) := D ⊓ KE.comap (incl : GL (Fin n) k →* GL (Fin n) E) with hCr`. Use `set Hr : Subgroup (GL (Fin n) k) := D ⊓ Kk with hHr`. Establish `hincl : ∀ (g : GL (Fin n) k) (i j : Fin n), ((incl g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j = algebraMap k E ((g : Matrix (Fin n) (Fin n) k) i j)`. Introduce `g i j`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hHC : Hr ≤ Cr`. Introduce and unpack `d ⟨⟨s, rfl⟩, hd⟩`. Use `⟨⟨s, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hd' : diagT k (Fin n) s ∈ ball n r'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hKk]`. Conclude with `hd`. Use `show incl (diagT k (Fin n) s) ∈ KE`. Rewrite using `[← SetLike.mem_coe, hKE]`. Introduce `i j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hincl, val_diagT]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `h1` using `hd' i i`. Rewrite `h1` using `[val_diagT]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h1)` using `using hrr' (s i) (by simpa`. Simplify using `[diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`. Establish `hCrc : IsCompact (Cr : Set (GL (Fin n) k))`. Establish `h1 : IsCompact ((incl : GL (Fin n) k →* GL (Fin n) E) ⁻¹' (KE : Set (GL (Fin n) E)))` using `hemb.isCompact_preimage (by rw [hKE]; exact BallG.isCompact_ball hr1)`. Conclude with `h1.inter_left isClosed_diag`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hidx : Hr.relIndex Cr ≠ 0` using `by haveI : CompactSpace Cr := isCompact_iff_compactSpace.mp hCrc`. Establish `hopen : IsOpen ((Hr.subgroupOf Cr : Subgroup Cr) : Set Cr)`. Establish `he : ((Hr.subgroupOf Cr : Subgroup Cr) : Set Cr) = Subtype.val ⁻¹' (Kk : Set (GL (Fin n) k))`. Use extensionality with `g`. Simplify using `only [Subgroup.coe_subgroupOf, Set.mem_preimage, SetLike.mem_coe]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨g.2.1, h⟩⟩`. Rewrite using `[he]`. Conclude with `continuous_subtype_val.isOpen_preimage _ hKko`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ hopen`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Hr.relIndex Cr : ℝ), Nat.cast_pos.2 (Nat.pos_of_ne_zero hidx), ?_⟩` and prove the remaining obligations. Introduce `γ y x hx hy ν hν`. Set `c : GL (Fin n) k →* GL (Fin n) k` to `{ toFun := fun g => y⁻¹ * g * y map_one' := by simp map_mul' := by`. Introduce `a b`. Use `group }`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcs : Function.Surjective c` using `fun g => ⟨y * g * y⁻¹, by simp [c, mul_assoc]⟩`. Use `set C : Subgroup (GL (Fin n) k) := Cr.comap c with hC`. Use `set H : Subgroup (GL (Fin n) k) := Hr.comap c with hH`. Establish `hTc : IsClosed ((Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k))` using `Set.isClosed_centralizer _`. Establish `hCT : C ≤ Subgroup.centralizer {γ}`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Take `⟨s, hs⟩` from `hg.1`. Rewrite using `[Subgroup.mem_centralizer_iff]`. Introduce and unpack `h rfl`. Establish `hγ : h = y * diagT k (Fin n) x * y⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← hy]`. Use `group`. Establish `hg' : g = y * diagT k (Fin n) s * y⁻¹`. Rewrite using `[hs]`. Simplify using `only [c, MonoidHom.coe_mk, OneHom.coe_mk]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[hγ, hg']`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Use `congr 1`. Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hCc : IsCompact (C : Set (GL (Fin n) k))` using `((Homeomorph.mulLeft y⁻¹).trans (Homeomorph.mulRight y)).isCompact_preimage.2 hCrc`. Establish `hcD : ∀ t : Subgroup.centralizer {γ}, c t ∈ D` using `fun t => cent_diag hx hy t.2`. Establish `hHo : IsOpen {t : Subgroup.centralizer {γ} | (t : GL (Fin n) k) ∈ H}`. Establish `he : {t : Subgroup.centralizer {γ} | (t : GL (Fin n) k) ∈ H} = (fun t : Subgroup.centralizer {γ} => y⁻¹ * (t : GL (Fin n) k) * y) ⁻¹' (Kk : Set (GL (Fin n) k))`. Use extensionality with `t`.
-
-Conclude with `⟨fun h => h.2, fun h => ⟨hcD t, h⟩⟩`. Rewrite using `[he]`. Conclude with `((continuous_const.mul continuous_subtype_val).mul continuous_const).isOpen_preimage _ hKko`. Establish `hv` using `(volIdx (GL (Fin n) k) (Subgroup.centralizer {γ}) C H hTc ν hν hCT hCc (Subgroup.comap_mono hHC) hHo).2`. Establish `hri : H.relIndex C = Hr.relIndex Cr`.
-
-Rewrite using `[hH, hC, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective hcs]`. Establish `e1 : {t : Subgroup.centralizer {γ} | incl (y⁻¹ * (t : GL (Fin n) k) * y) ∈ ball n r} = {t : Subgroup.centralizer {γ} | (t : GL (Fin n) k) ∈ C}`. Use extensionality with `t`. Use `show _ ↔ c t ∈ D ∧ incl (c t) ∈ KE`. Rewrite using `[← SetLike.mem_coe (p := KE), hKE]`.
-
-Conclude with `⟨fun h => ⟨hcD t, h⟩, fun h => h.2⟩`. Establish `e2 : {t : Subgroup.centralizer {γ} | y⁻¹ * (t : GL (Fin n) k) * y ∈ ball n r'} = {t : Subgroup.centralizer {γ} | (t : GL (Fin n) k) ∈ H}`. Use extensionality with `t`. Use `show _ ↔ c t ∈ D ∧ c t ∈ Kk`. Rewrite using `[← SetLike.mem_coe (p := Kk), hKk]`.
-
-Conclude with `⟨fun h => ⟨hcD t, h⟩, fun h => h.2⟩`. Rewrite using `[e1, e2, hv, hri]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.volRatio :
     UpperTheory.Gal.InertialTypesAlt.L.VolRatio := by

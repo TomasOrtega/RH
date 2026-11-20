@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ProjNormal
 
 /- English proof (translation)
-Introduce `R _ _ _ _ A _ hA V hV hV'`. Take `⟨M, hM, s, hs⟩` from `GlobalTheory.T.exists_section_nonzeroLocus_eq_affineOpen R A hA V hV hV'`. Conclude with `⟨M, hM, GlobalTheory.T.relAmple_of_affine_nonzeroLocus_abelianScheme_noetherian R A hA M hM s (hs ▸ hV) (hs ▸ hV')⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_relAmple_of_affine : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsDomain R] [IsIntegrallyClosed R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ V : A.left.Opens, IsAffineOpen V → (∀ s : Sp R, ∃ x ∈ V, A.hom x = s) → ∃ L : LB A.left, L.IsLB ∧ Out.RelAmple A L := by
   intro R _ _ _ _ A _ hA V hV hV'

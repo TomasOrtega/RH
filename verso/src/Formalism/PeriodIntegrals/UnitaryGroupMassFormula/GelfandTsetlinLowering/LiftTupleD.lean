@@ -7,11 +7,11 @@ namespace PI.WGL.LTD
 open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial PI.WGL.LTA PI.WGL.LTM PI.WGL.LTC
 
 /- English proof (translation)
-Use `split_ifs with hj`. Rewrite using `[Finset.sum_eq_single ⟨j, hj⟩]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h'`. Conclude with `hi (Fin.ext h')`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Rewrite using `[if_neg]`. Introduce `h'`. Conclude with `hj (h' ▸ i.2)`.
+A detailed English derivation is pending.
 -/
 theorem sum_ite_val {n : ℕ} (f : Fin n → ℕ) (j : ℕ) :
     (∑ i : Fin n, if i.1 = j then f i else 0) = if h : j < n then f ⟨j, h⟩ else 0 := by
@@ -23,7 +23,7 @@ theorem sum_ite_val {n : ℕ} (f : Fin n → ℕ) (j : ℕ) :
   · apply Finset.sum_eq_zero; intro i _; rw [if_neg]; intro h'; exact hj (h' ▸ i.2)
 
 /- English proof (translation)
-Establish `hle : i ≤ ⟨n - 1, by have` using `i.2; omega⟩ := by rw [Fin.le_def]; simp; have := i.2; omega`. Use `sg.anti hle` as an intermediate fact. Simplify using `only [DomWeight.natW, DomWeight.detShift, dif_pos (show 0 < n by have := i.2; omega)]`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem natW_sg_val {n : ℕ} (sg : DomWeight n) (i : Fin n) :
     ((sg.natW i : ℕ) : ℤ) = sg.w i - sg.w ⟨n - 1, by have := i.2; omega⟩ := by
@@ -33,18 +33,18 @@ theorem natW_sg_val {n : ℕ} (sg : DomWeight n) (i : Fin n) :
   rw [Int.toNat_of_nonneg (by omega)]
 
 /- English proof (translation)
-Rewrite using `[← hshape]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_lt_sz {n K : ℕ} (sg : DomWeight n) (sz : Fin K → ℕ) (hshape : shapeDeg sz = sg.natW)
     (t : Fin n) : (Finset.univ.filter fun k => t.1 < sz k).card = sg.natW t := by
   rw [← hshape]; rfl
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Use `right`. Use `hsz k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `left`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `card_lt_sz sg sz hshape ⟨n - 1, by omega⟩`. Establish `h0 : sg.natW ⟨n - 1, by omega⟩ = 0`. Simplify using `[DomWeight.natW, DomWeight.detShift, dif_pos hn]`. Rewrite `h1` using `[h0, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `hk` using `h1 (Finset.mem_univ k)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [not_lt] at hk`. Use `hsz k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sz_lt {n K : ℕ} (sg : DomWeight n) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n)
     (hshape : shapeDeg sz = sg.natW) (k : Fin K) : sz k < n ∨ sz k = 0 := by
@@ -61,11 +61,11 @@ theorem sz_lt {n K : ℕ} (sg : DomWeight n) (sz : Fin K → ℕ) (hsz : ∀ k, 
     omega
 
 /- English proof (translation)
-Establish `h1` using `card_lt_sz sg sz hshape ⟨i, by omega⟩`. Establish `h2` using `card_lt_sz sg sz hshape ⟨i + 1, hi⟩`. Simplify using `only at h1 h2`. Rewrite using `[← h1, ← h2]`. Establish `: (Finset.univ.filter fun k => i < sz k) = (Finset.univ.filter fun k => i + 1 < sz k) ∪ (Finset.univ.filter fun k => sz k = i + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Finset.card_union_of_disjoint]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.disjoint_filter]`. Introduce `k _ h1 h2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_eq_sz {n K : ℕ} (sg : DomWeight n) (sz : Fin K → ℕ) (hshape : shapeDeg sz = sg.natW)
     (i : ℕ) (hi : i + 1 < n) :
@@ -82,23 +82,21 @@ theorem card_eq_sz {n K : ℕ} (sg : DomWeight n) (sz : Fin K → ℕ) (hshape :
   · rw [Finset.disjoint_filter]; intro k _ h1 h2; omega
 
 /- English proof (translation)
-Establish `hB : ∀ i : Fin n, (if i.1 = 0 then 0 else (bb h lam sg i).toNat) ≤ (Finset.univ.filter fun k => sz k = i.1).card`. Introduce `i`. Use `split_ifs with hi0`. Conclude with `Nat.zero_le _`. Take `⟨iv, hiv⟩` from `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, rfl⟩ : ∃ j, iv = j + 1` from `⟨iv - 1, by simp at hi0; omega⟩`. Establish `hc` using `card_eq_sz sg sz hshape j hiv`. Simplify using `only at hc ⊢`. Rewrite using `[hc]`. Establish `e1` using `natW_sg_val sg ⟨j, by omega⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `natW_sg_val sg ⟨j + 1, hiv⟩`. Establish `hb` using `(hI ⟨j + 1, hiv⟩).1`. Establish `ha` using `(hI ⟨j, by omega⟩).2`. Unfold `bb`. Simplify using `only at hb ha e1 e2 ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Use `choose T hT using fun i : Fin n => Finset.exists_subset_card_eq (hB i)`. Use `⟨Finset.univ.biUnion T, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Take `⟨i, _, hki⟩` from `Finset.mem_biUnion.mp hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `hs` using `(hT i).1 hki`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hs`. Distinguish the cases in `hi0 : i.1 = 0`. Establish `hc` using `(hT i).2`. Rewrite `hc` using `[if_pos hi0, Finset.card_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hki` using `[hc]`. Conclude with `absurd hki (Finset.notMem_empty k)`. Use linear arithmetic over natural numbers and integers. Introduce `i`. Rewrite using `[← (hT i).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `congr 1`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_biUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨j, hkj⟩, hsk⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hs` using `(hT j).1 hkj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hs`. Establish `: j = i` using `Fin.ext (by omega)`. Substitute `this` using the available equality. Conclude with `hkj`.
-
-Introduce `hki`. Establish `hs` using `(hT i).1 hki`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hs`. Conclude with `⟨⟨i, hki⟩, hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goodL_exists {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (hI : Interlace h lam sg)
     {K : ℕ} (sz : Fin K → ℕ) (hshape : shapeDeg sz = sg.natW) :

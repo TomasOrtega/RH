@@ -26,7 +26,7 @@ local notation "cst[" f ", " R ", " c "]" =>
 variable (K) in
 
 /- English proof (translation)
-Use `(IsLocalization.iff_of_le_of_exists_dvd (Submonoid.powers ϖ) (nonZeroDivisors V) (powers_le_nonZeroDivisors_of_noZeroDivisors hϖ.ne_zero) fun a ha ↦ ?_).2 inferInstance` and prove the remaining obligations. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (nonZeroDivisors.ne_zero ha) hϖ`. Conclude with `⟨ϖ ^ n, ⟨n, rfl⟩, hn.dvd⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLocalization_away (hϖ : Irreducible ϖ) : IsLocalization.Away ϖ K := by
   refine (IsLocalization.iff_of_le_of_exists_dvd (Submonoid.powers ϖ) (nonZeroDivisors V)
@@ -38,9 +38,9 @@ theorem isLocalization_away (hϖ : Irreducible ϖ) : IsLocalization.Away ϖ K :=
 variable (f) in
 
 /- English proof (translation)
-Rewrite using `[← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Express the relevant statement in the definitionally equal form `¬ ϖ ∉ (f x).asIdeal ↔ _`. Rewrite using `[not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `PrimeSpectrum.ext ((maximalIdeal.isMaximal V).eq_of_le (f x).2.ne_top ?_).symm` and prove the remaining obligations. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_le_iff_mem]` and apply the resulting hypothesis. Introduce `h`. Rewrite using `[h]`. Conclude with `hϖ.not_isUnit`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_basicOpen_iff (hϖ : Irreducible ϖ) (x : H) :
     x ∉ H.basicOpen cst[f, V, ϖ] ↔ f x = closedPoint V := by
@@ -56,7 +56,7 @@ theorem notMem_basicOpen_iff (hϖ : Irreducible ϖ) (x : H) :
     exact hϖ.not_isUnit
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `isLocalization_away K hϖ` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hK.flip (IsOpenImmersion.of_isLocalization ϖ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_generic
     (hK : IsPullback j fK f (Spec.map (CommRingCat.ofHom (algebraMap V K)))) :
@@ -67,11 +67,11 @@ theorem isOpenImmersion_generic
     (IsOpenImmersion.of_isLocalization ϖ)
 
 /- English proof (translation)
-Use `isLocalization_away K hϖ` as an intermediate fact. Establish `hr` using `PrimeSpectrum.localization_away_comap_range K ϖ`. Rewrite using `[← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Use `le_antisymm ?_ fun x hx ↦ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `f (j y) ∈ (PrimeSpectrum.basicOpen ϖ : Set (PrimeSpectrum V))`. Rewrite using `[← hr, ← Scheme.Hom.comp_apply, hK.w]`. Conclude with `⟨fK y, rfl⟩`. Take `⟨z, hz⟩ : f x ∈ Set.range (PrimeSpectrum.comap (algebraMap V K))` from `hr.ge hx`. Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback hK x z hz.symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem opensRange_generic (hϖ : Irreducible ϖ) [IsOpenImmersion j]
     (hK : IsPullback j fK f (Spec.map (CommRingCat.ofHom (algebraMap V K)))) :
@@ -89,9 +89,9 @@ theorem opensRange_generic (hϖ : Irreducible ϖ) [IsOpenImmersion j]
     exact ⟨y, hy⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[← Scheme.Hom.comp_apply, hs.w]`. Conclude with `PrimeSpectrum.comap_residue V (fs y)`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback hs x (closedPoint _) (h.trans (PrimeSpectrum.comap_residue V _).symm)`. Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_special
     (hs : IsPullback i fs f (Spec.map (CommRingCat.ofHom (residue V)))) (x : H) :
@@ -109,9 +109,9 @@ variable (f) in
 omit [IsDiscreteValuationRing V] in
 
 /- English proof (translation)
-Establish `hf` using `f.flat_appLE (isAffineOpen_top _) hU le_top`. Set `` to `(f.appLE ⊤ U le_top).hom.toAlgebra`. Establish `hc' : (Scheme.ΓSpecIso (.of V)).inv c ≠ 0` using `(map_ne_zero_iff _ (ConcreteCategory.bijective_of_isIso _).1).2 hc`. Establish `: Module.Flat Γ(Spec (.of V), ⊤) Γ(H, U)` using `hf`. Use `IsSMulRegular.of_flat (S := Γ(H, U)) (IsSMulRegular.of_ne_zero hc')` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mem_nonZeroDivisors_iff_left.2 fun z hz ↦ this (hz.trans (smul_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem res_mem_nonZeroDivisors [Flat f] {c : V} (hc : c ≠ 0) {U : H.Opens}
     (hU : IsAffineOpen U) :
@@ -125,7 +125,7 @@ theorem res_mem_nonZeroDivisors [Flat f] {c : V} (hc : c ≠ 0) {U : H.Opens}
   exact mem_nonZeroDivisors_iff_left.2 fun z hz ↦ this (hz.trans (smul_zero _).symm)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `isOpenImmersion_generic hK` as an intermediate fact. Conclude with `isIntegral_of_basicOpen (fun U hU ↦ res_mem_nonZeroDivisors f hϖ.ne_zero hU) j (opensRange_generic hϖ hK)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral [Flat f] [IsIntegral HK]
     (hK : IsPullback j fK f (Spec.map (CommRingCat.ofHom (algebraMap V K)))) : IsIntegral H := by
@@ -135,9 +135,7 @@ theorem isIntegral [Flat f] [IsIntegral HK]
     (opensRange_generic hϖ hK)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, rfl⟩` from `(mem_range_special hs x).2 ((notMem_basicOpen_iff f hϖ x).1 h)`. Conclude with `((genericPoint_spec Hs).specializes trivial).map i.continuous`. Introduce `h hx`.
-
-Conclude with `(notMem_basicOpen_iff f hϖ _).2 ((mem_range_special hs _).1 ⟨_, rfl⟩) (h.mem_open (H.basicOpen _).isOpen hx)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem notMem_basicOpen_iff_specializes (hϖ : Irreducible ϖ) [IsIntegral Hs]
     (hs : IsPullback i fs f (Spec.map (CommRingCat.ofHom (residue V)))) (x : H) :
@@ -151,7 +149,7 @@ theorem notMem_basicOpen_iff_specializes (hϖ : Irreducible ϖ) [IsIntegral Hs]
       (h.mem_open (H.basicOpen _).isOpen hx)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(mem_range_special hs x).2 hfx`. Establish `: Nonempty (i ⁻¹ᵁ U)` using `⟨⟨y, hx⟩⟩`. Establish `: Nonempty U` using `⟨⟨_, hx⟩⟩`. Rewrite using `[← Ideal.span_singleton_prime (nonZeroDivisors.ne_zero (res_mem_nonZeroDivisors f hϖ.ne_zero hU)), ← ker_app_eq_span (β := CommRingCat.ofHom (residue V)) residue_surjective (ker_residue.trans hϖ.maximalIdeal_eq) hs hU]`. Conclude with `RingHom.ker_isPrime _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_res (hϖ : Irreducible ϖ) [Flat f] [IsIntegral Hs]
     (hs : IsPullback i fs f (Spec.map (CommRingCat.ofHom (residue V)))) {U : H.Opens}
@@ -167,7 +165,7 @@ theorem prime_res (hϖ : Irreducible ϖ) [Flat f] [IsIntegral Hs]
   exact RingHom.ker_isPrime _
 
 /- English proof (translation)
-The claim follows from `prime_res hϖ hs hU h ((mem_range_special hs _).1 ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem prime_res_generic (hϖ : Irreducible ϖ) [Flat f] [IsIntegral Hs]
     (hs : IsPullback i fs f (Spec.map (CommRingCat.ofHom (residue V)))) (U : H.Opens)
@@ -177,13 +175,13 @@ theorem prime_res_generic (hϖ : Irreducible ϖ) [Flat f] [IsIntegral Hs]
 
 variable (f) in
 /- English proof (translation)
-The claim follows from `LocallyOfFiniteType.isLocallyNoetherian f`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian [LocallyOfFiniteType f] : IsLocallyNoetherian H :=
   LocallyOfFiniteType.isLocallyNoetherian f
 
 /- English proof (translation)
-The claim follows from `haveI := isLocallyNoetherian f isDiscreteValuationRing_stalk (notMem_basicOpen_iff_specializes hϖ hs) (prime_res_generic hϖ hs)`.
+A detailed English derivation is pending.
 -/
 theorem isDiscreteValuationRing_stalk_generic (hϖ : Irreducible ϖ) [Flat f]
     [LocallyOfFiniteType f] [IsIntegral H] [IsIntegral Hs]
@@ -196,7 +194,7 @@ theorem isDiscreteValuationRing_stalk_generic (hϖ : Irreducible ϖ) [Flat f]
 omit [IsDomain V] [IsDiscreteValuationRing V] [IsFractionRing V K] in
 
 /- English proof (translation)
-Establish `h₁` using `congrArg (fun φ : HK ⟶ Spec (.of V) ↦ φ.appTop ((Scheme.ΓSpecIso (.of V)).inv c)) hw`. Establish `h₂` using `congrArg (fun φ : CommRingCat.of V ⟶ Γ(Spec (.of K), ⊤) ↦ φ c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap V K)))`. Conclude with `h₁.trans (congrArg fK.appTop h₂.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem appTop_cst (hw : j ≫ f = fK ≫ Spec.map (CommRingCat.ofHom (algebraMap V K))) (c : V) :
     j.appTop cst[f, V, c] = cst[fK, K, algebraMap V K c] := by
@@ -206,14 +204,14 @@ theorem appTop_cst (hw : j ≫ f = fK ≫ Spec.map (CommRingCat.ofHom (algebraMa
   exact h₁.trans (congrArg fK.appTop h₂.symm)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (LB.wchart_le L (fun _ ↦ φ) a ⟨⟩) fun _ hy ↦ Set.mem_iInter.2 fun _ ↦ hy`.
+A detailed English derivation is pending.
 -/
 theorem pull_U {X Y : Scheme.{u}} (L : LB X) (φ : Y ⟶ X) (a : PUnit → L.ι) :
     (L.pull φ).U a = φ ⁻¹ᵁ L.U (a ⟨⟩) :=
   le_antisymm (LB.wchart_le L (fun _ ↦ φ) a ⟨⟩) fun _ hy ↦ Set.mem_iInter.2 fun _ ↦ hy
 
 /- English proof (translation)
-The claim follows from `le_antisymm (LB.wchart_comp_le L h φ a) fun _ hy ↦ Set.mem_iInter.2 fun k ↦ Set.mem_iInter.1 hy k`.
+A detailed English derivation is pending.
 -/
 theorem wchart_comp {X Y Z : Scheme.{u}} (L : LB X) {κ : Type u} [Fintype κ] (h : Z ⟶ Y)
     (φ : κ → (Y ⟶ X)) (a : κ → L.ι) :
@@ -222,7 +220,7 @@ theorem wchart_comp {X Y Z : Scheme.{u}} (L : LB X) {κ : Type u} [Fintype κ] (
     Set.mem_iInter.2 fun k ↦ Set.mem_iInter.1 hy k
 
 /- English proof (translation)
-The claim follows from `congrArg Units.val (LB.lcg_pull L φ a b)`.
+A detailed English derivation is pending.
 -/
 theorem coe_pull_g {X Y : Scheme.{u}} (L : LB X) (φ : Y ⟶ X) (a b : PUnit → L.ι) :
     ((L.pull φ).g a b : Γ(Y, (L.pull φ).U a ⊓ (L.pull φ).U b)) =
@@ -231,7 +229,7 @@ theorem coe_pull_g {X Y : Scheme.{u}} (L : LB X) (φ : Y ⟶ X) (a b : PUnit →
   congrArg Units.val (LB.lcg_pull L φ a b)
 
 /- English proof (translation)
-The claim follows from `res_appLE h (LB.wchart_comp_le L h φ a) hA _`.
+A detailed English derivation is pending.
 -/
 theorem coe_res_pullGen {X Y Z : Scheme.{u}} (L : LB X) {κ : Type u} [Fintype κ]
     (φ : κ → (Y ⟶ X)) (ε : κ → ℤ) (c : LB.Gen (LB.LinComb L φ ε)) (h : Z ⟶ Y) (a : κ → L.ι)
@@ -250,9 +248,9 @@ variable [Flat f] [LocallyOfFiniteType f] [IsIntegral HK] [IsIntegral Hs]
 include hK hs
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `isOpenImmersion_generic hK` as an intermediate fact. Use `isIntegral hK` as an intermediate fact. Use `isLocallyNoetherian f` as an intermediate fact. Use `isLocalization_away K hϖ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsOpenImmersion.of_isLocalization (S := K) ϖ` as an intermediate fact. Use `existsUnique_of_exists_of_unique (exists_isUnit_appLE_eq (notMem_basicOpen_iff_specializes hϖ hs) (prime_res_generic hϖ hs) (opensRange_generic hϖ hK) hW hU hg hr hru e _ eK heK ?_ hyA hA hA' hA'' hu hur) fun s s' h h' ↦ funext fun a ↦ appLE_injective j (hW a) ((h.2.2 a).trans (h …` and prove the remaining obligations. Rewrite using `[notMem_basicOpen_iff f hϖ, ← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem existsUnique_isUnit_appLE_eq {ι : Type v} {U : ι → H.Opens}
     {g : ∀ a b, Γ(H, U a ⊓ U b)} {W : ι → HK.Opens} (hW : ∀ a, W a = j ⁻¹ᵁ U a)
@@ -285,13 +283,9 @@ theorem existsUnique_isUnit_appLE_eq {ι : Type v} {U : ι → H.Opens}
   rfl
 
 /- English proof (translation)
-Take `⟨a₀, h₀⟩` from `LB.mem_of_cover hL (e (closedPoint V))`. Establish `hc` using `congrArg Units.val (hρ (fun _ ↦ a₀) (fun _ ↦ a₀) (fun _ _ _ ↦ rfl) (fun _ _ _ ↦ rfl) fun _ _ _ ↦ rfl)`. Take `⟨s, ⟨hsu, hsc, hsr⟩, huniq⟩` from `existsUnique_isUnit_appLE_eq hK hs (U := L.U) (g := fun a b ↦ L.g a b) (W := fun a ↦ (L.pull j).U fun _ ↦ a) (fun a ↦ pull_U L j _) (LB.mem_of_cover hL) (fun a b ↦ Units.isUnit _) (r := fun a ↦ r.s fun _ ↦ a) (fun a b ↦ by`. Rewrite using `[← coe_pull_g L j (fun _ ↦ a) (fun _ ↦ b)]`. Conclude with `congrArg Units.val (hr _ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun a ↦ Units.isUnit _) he heK (a₀ := a₀) (A := (L.pull e).U fun _ ↦ a₀)`. Use the proof step `((pull_U L e _).ge h₀) (pull_U L e _).le`. Use the proof step `(A' := LB.wchart L (fun _ : PUnit ↦ eK ≫ j) (fun _ ↦ a₀) ⊓ LB.wchart L (fun _ : PUnit ↦ Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ e) fun _ ↦ a₀)`. Use the proof step `(by rw [heK, inf_idem]; exact wchart_comp L _ (fun _ ↦ e) _)`. Use the proof step `(inf_le_left.trans (wchart_comp L eK (fun _ ↦ j) _).le) (ρ.s _).isUnit`.
-
-Use the proof step `((coe_res_pullGen L (fun _ ↦ e) _ ρ _ (fun _ ↦ a₀) inf_le_right).symm.trans (hc.symm.trans (coe_res_pullGen L (fun _ ↦ j) _ r eK (fun _ ↦ a₀) inf_le_left)))`. Use `⟨⟨fun a ↦ (hsu a).unit⟩, ⟨fun a b ↦ Units.ext (hsc a b), ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg LB.Gen.mk (funext fun a ↦ Units.ext (hsr (a ⟨⟩)))`. Introduce and unpack `⟨r'⟩ ⟨h₁, h₂⟩`. Use `huniq (fun a ↦ r' a) ⟨fun a ↦ Units.isUnit _, fun a b ↦ congrArg Units.val (h₁ a b), fun a ↦ congrArg (fun c : LB.Gen (L.pull j) ↦ (c.s fun _ ↦ a).val) h₂⟩` as an intermediate fact.
-
-Conclude with `congrArg LB.Gen.mk (funext fun a ↦ Units.ext (congrFun this a))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_gen {e : Spec (.of V) ⟶ H} (he : e ≫ f = 𝟙 _)
     {eK : Spec (.of K) ⟶ HK} (heK : eK ≫ j = Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ e)
@@ -325,11 +319,9 @@ theorem existsUnique_gen {e : Spec (.of V) ⟶ H} (he : e ≫ f = 𝟙 _)
     exact congrArg LB.Gen.mk (funext fun a ↦ Units.ext (congrFun this a))
 
 /- English proof (translation)
-Take `⟨s, ⟨hsu, hsc, hsr⟩, huniq⟩` from `existsUnique_isUnit_appLE_eq hK hs (U := LB.wchart L φ) (g := fun a b ↦ LB.lcg L φ ε a b) (W := LB.wchart L fun k ↦ j ≫ φ k) (wchart_comp L j φ) (LB.mem_of_cover (LB.isLB_linComb hL φ ε)) (fun a b ↦ Units.isUnit _) (r := fun a ↦ LB.ts r a) (fun a b ↦ by`. Use `congrArg Units.val ((LB.isGen_iff L r).1 hr a b)` as an intermediate fact. Rewrite `this` using `[LB.lcg_comp]`. Conclude with `this)`. Use the proof step `(fun a ↦ Units.isUnit _) he heK (a₀ := a₀) (A := ⊤) trivial h₀ (A' := ⊤) rfl h₀'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(u.isUnit.map (Scheme.ΓSpecIso (.of V)).inv.hom) (by`. Rewrite using `[hu]`. Conclude with `(congrArg (fun ψ : CommRingCat.of V ⟶ Γ(Spec (.of K), ⊤) ↦ ψ u) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap V K)))).symm)`. Use `⟨⟨fun a ↦ (hsu a).unit⟩, ⟨fun a b ↦ Units.ext (hsc a b), ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg LB.Gen.mk (funext fun a ↦ Units.ext (hsr a))`.
-
-Introduce and unpack `⟨r'⟩ ⟨h₁, h₂⟩`. Use `huniq (fun a ↦ (r' a).val) ⟨fun a ↦ Units.isUnit _, fun a b ↦ congrArg Units.val (h₁ a b), fun a ↦ congrArg (fun c ↦ (LB.ts c a).val) h₂⟩` as an intermediate fact. Conclude with `congrArg LB.Gen.mk (funext fun a ↦ Units.ext (congrFun this a))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_gen_linComb {e : Spec (.of V) ⟶ H} (he : e ≫ f = 𝟙 _)
     {eK : Spec (.of K) ⟶ HK} (heK : eK ≫ j = Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ e)
@@ -360,9 +352,9 @@ theorem existsUnique_gen_linComb {e : Spec (.of V) ⟶ H} (he : e ≫ f = 𝟙 _
     exact congrArg LB.Gen.mk (funext fun a ↦ Units.ext (congrFun this a))
 
 /- English proof (translation)
-Use `isIntegral hK` as an intermediate fact. Use `isLocallyNoetherian f` as an intermediate fact. Take `⟨b, hb⟩` from `LB.mem_of_cover hL (i (genericPoint Hs))`. Use `eq_zero_of_forall_pow_dvd_germ (fun a b ↦ L.g a b) s.f s.compat hb ((notMem_basicOpen_iff_specializes hϖ hs _).2 specializes_rfl) (fun n ↦ ?_) a` and prove the remaining obligations. Use `h b n` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Use `map_dvd (H.presheaf.germ _ _ hb).hom this` as an intermediate fact. Rewrite `this` using `[map_pow, germ_res]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sec_eq_zero_of_mem_span_pow (hϖ : Irreducible ϖ) {L : LB H} (hL : L.IsLB) (s : L.Sec)
     (h : ∀ a (n : ℕ), s.f a ∈
@@ -379,11 +371,11 @@ theorem sec_eq_zero_of_mem_span_pow (hϖ : Irreducible ϖ) {L : LB H} (hL : L.Is
   rwa [map_pow, germ_res] at this
 
 /- English proof (translation)
-Use `isIntegral hK` as an intermediate fact. Use `isLocallyNoetherian f` as an intermediate fact. Take `⟨b, hb⟩` from `LB.mem_of_cover hL (i (genericPoint Hs))`. Use `eq_zero_of_forall_pow_dvd_germ (fun a b ↦ L.g a b) s.f s.compat hb ((notMem_basicOpen_iff_specializes hϖ hs _).2 specializes_rfl) (fun n ↦ ?_) a` and prove the remaining obligations. Take `⟨A, hA, hxA, hAU⟩` from `exists_isAffineOpen_mem_and_subset hb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hAU : A ≤ L.U b` using `hAU`. Establish `hm : H.presheaf.map (homOfLE hAU).op (s.f b) ∈ RingHom.ker ((k n).app A).hom`. Express the relevant statement in the definitionally equal form `(k n).app A _ = 0`. Rewrite using `[← ConcreteCategory.comp_apply, (k n).naturality, ConcreteCategory.comp_apply, h, map_zero]`. Rewrite `hm` using `[ker_app_eq_span (β := CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {ϖ ^ n}))) Ideal.Quotient.mk_surjective Ideal.mk_ker (hZ n) hA, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `map_dvd (H.presheaf.germ _ _ hxA).hom hm` as an intermediate fact. Rewrite `this` using `[germ_res, germ_res, map_pow, map_pow, map_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sec_eq_zero_of_app_eq_zero (hϖ : Irreducible ϖ) {L : LB H} (hL : L.IsLB) (s : L.Sec)
     {Z : ℕ → Scheme.{u}} {k : ∀ n, Z n ⟶ H}
@@ -407,9 +399,9 @@ theorem sec_eq_zero_of_app_eq_zero (hϖ : Irreducible ϖ) {L : LB H} (hL : L.IsL
   rwa [germ_res, germ_res, map_pow, map_pow, map_pow] at this
 
 /- English proof (translation)
-Use `isOpenImmersion_generic hK` as an intermediate fact. Use `isIntegral hK` as an intermediate fact. Use `isLocallyNoetherian f` as an intermediate fact. Establish `h0 : algebraMap V K ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V K)).2 hϖ.ne_zero`. Set `φ : K →+* Γ(HK, ⊤)` to `fK.appTop.hom.comp (Scheme.ΓSpecIso (.of K)).inv.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hτ : ∀ n : ℤ, ((Units.map φ.toMonoidHom (Units.mk0 _ h0) ^ n : Γ(HK, ⊤)ˣ) : Γ(HK, ⊤)) = cst[fK, K, algebraMap V K ϖ ^ n]` using `fun n ↦ by`. Rewrite using `[← map_zpow, Units.coe_map, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Use `existsUnique_zpow_mul_appLE (notMem_basicOpen_iff_specializes hϖ hs) (prime_res_generic hϖ hs) (opensRange_generic hϖ hK) hW hU hg (Units.map φ.toMonoidHom (Units.mk0 _ h0)) (appTop_cst hK.w ϖ).symm hr hr0` as an intermediate fact. Simplify `this` using `only [hτ, notMem_basicOpen_iff f hϖ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem existsUnique_zpow_mul_chart (hϖ : Irreducible ϖ) {ι : Type v} {U : ι → H.Opens}
     {g : ∀ a b, Γ(H, U a ⊓ U b)} {W : ι → HK.Opens} (hW : ∀ a, W a = j ⁻¹ᵁ U a)
@@ -439,9 +431,7 @@ theorem existsUnique_zpow_mul_chart (hϖ : Irreducible ϖ) {ι : Type v} {U : ι
   simpa only [hτ, notMem_basicOpen_iff f hϖ] using this
 
 /- English proof (translation)
-Take `⟨n, ⟨s, hc, hsr, hx⟩, huniq⟩` from `existsUnique_zpow_mul_chart hK hs hϖ (U := L.U) (g := fun a b ↦ L.g a b) (W := fun a ↦ (L.pull j).U fun _ ↦ a) (fun a ↦ pull_U L j _) (LB.mem_of_cover hL) (fun a b ↦ Units.isUnit _) (r := fun a ↦ r.f fun _ ↦ a) (fun a b ↦ by`. Rewrite using `[← coe_pull_g L j (fun _ ↦ a) (fun _ ↦ b)]`. Conclude with `r.compat _ _)`. Use the proof step `(hr0.elim fun a ha ↦ ⟨a ⟨⟩, ha⟩)`. Use `⟨n, ⟨⟨s, hc⟩, fun a ↦ hsr (a ⟨⟩), hx⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `m ⟨s', hsr', hx'⟩`. Conclude with `huniq m ⟨s'.f, s'.compat, fun a ↦ hsr' fun _ ↦ a, hx'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem existsUnique_zpow_mul_sec (hϖ : Irreducible ϖ) {L : LB H} (hL : L.IsLB)
     (r : (L.pull j).Sec) (hr0 : ∃ a, r.f a ≠ 0) :
@@ -464,7 +454,7 @@ theorem existsUnique_zpow_mul_sec (hϖ : Irreducible ϖ) {L : LB H} (hL : L.IsLB
 end Main
 
 /- English proof (translation)
-The claim follows from `GeometricallyIntegral.geometrically_isIntegral _ _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_geometricallyIntegral {X S Z : Scheme.{u}} {q : X ⟶ S}
     [GeometricallyIntegral q] {F : Type u} [Field F] {y : Spec (.of F) ⟶ S} {k : Z ⟶ X}
@@ -472,7 +462,7 @@ theorem isIntegral_of_geometricallyIntegral {X S Z : Scheme.{u}} {q : X ⟶ S}
   GeometricallyIntegral.geometrically_isIntegral _ _ _ h
 
 /- English proof (translation)
-Use `⟨?_, inferInstance, isIntegral_of_geometricallyIntegral (.of_hasPullback _ _), isIntegral_of_geometricallyIntegral (.of_hasPullback _ _), AffineSpace.homOfVector (𝟙 _) 0, AffineSpace.homOfVector_over _ _⟩` and prove the remaining obligations. Rewrite using `[(Iso.inv_comp_eq _).1 (AffineSpace.SpecIso_inv_over (n := n) (.of V))]`. Establish `: Flat (Spec.map (CommRingCat.ofHom (MvPolynomial.C (σ` using `n) (R := V)))) := Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 (inferInstanceAs (Module.Flat V (MvPolynomial n V))))`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example (n : Type u) [Finite n] :
     let q := 𝔸(n; Spec (.of V)) ↘ Spec (.of V)
@@ -494,7 +484,7 @@ end GlobalTheory.DvrModel
 namespace GlobalTheory.PrimeElement
 
 /- English proof (translation)
-Use `eq_bot_iff.2 fun x hx ↦ ?_` and prove the remaining obligations. Conclude with `(range_inf_range (π := π) (Localization.subalgebra.ofField K (Submonoid.powers π) (powers_le_nonZeroDivisors_of_noZeroDivisors hπ)) (Localization.subalgebra.ofField K (Ideal.span {π}).primeCompl (Ideal.span {π}).primeCompl_le_nonZeroDivisors) K hπ).le ⟨⟨⟨x, hx.1⟩, rfl⟩, ⟨⟨x, hx.2 …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subalgebra_inf_subalgebra {R : Type*} [CommRing R] [IsDomain R] {π : R}
     [(Ideal.span {π}).IsPrime] (hπ : π ≠ 0) (K : Type*) [Field K] [Algebra R K]
@@ -515,7 +505,7 @@ end GlobalTheory.PrimeElement
 namespace GlobalTheory.DvrModel
 
 /- English proof (translation)
-Use `⟨fun R _ _ _ π _ hπ A _ _ _ S _ _ _ F _ _ _ _ _ _ _ ↦ ?_, fun V _ _ _ K _ _ _ ϖ hϖ H HK Hs f _ _ j fK _ i fs _ hK hs L hL ↦ ⟨fun e eK he heK r ρ hr hρ ↦ existsUnique_gen hK hs he heK hL r hr ρ hρ, fun s h ↦ sec_eq_zero_of_app_eq_zero hK hs hϖ hL s (fun _ ↦ .of_hasPullback _ _) h, …` and prove the remaining obligations. Establish `h₁` using `PrimeElement.isDomain_atPrime (π := π) S`. Establish `h₂` using `PrimeElement.isDiscreteValuationRing (π := π) S hπ`. Establish `h₃ : IsFractionRing S F` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Ideal.span {π}).primeCompl S F`. Conclude with `⟨h₁, h₂, h₃, PrimeElement.irreducible_algebraMap S hπ, PrimeElement.range_inf_range A S F hπ, fun y hy h ↦ PrimeElement.exists_unit_algebraMap_eq_of_valuation_eq_one S F hπ hy h, fun x ↦ PrimeElement.eq_zero_of_forall_pow_dvd ((Ideal.span_singleton_prime hπ).1 inferInstance).not_ …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem prime_element_and_extension :
     (∀ (R : Type u) [CommRing R] [IsDomain R] [IsNoetherianRing R] (π : R)

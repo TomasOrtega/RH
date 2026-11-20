@@ -26,13 +26,13 @@ section Module
 open EigenSplit
 
 /- English proof (translation)
-Set `_` to `f.toAlgebra`. Set `F : (Fin n → R) →ₗ[R] (Fin n → k)` to `(Algebra.linearMap R k).compLeft (Fin n)`. Establish `hb : IsBaseChange k F` using `IsBaseChange.finitePow (Fin n) (IsBaseChange.linearMap R k)`. Establish `hs : ∀ τ, eigenSub ρk (f.comp (σ τ)) = Submodule.span k (F '' eigenSub ρ (σ τ))` using `fun τ => eigenSub_eq_span_of_factor (σ := σ) (ρ := ρ) (ρ' := ρk) (f := F) R hσ hf hb τ`. Establish `key : ∀ τ, ∃ c : Module.Basis {i // ty i = τ} k (eigenSub ρk (f.comp (σ τ))), ∀ i, (c i : Fin n → k) ∈ F '' eigenSub ρ (σ τ)` using `fun τ => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs1, hs2, hs3⟩` from `exists_linearIndependent k (F '' eigenSub ρ (σ τ))`. Set `c` to `(Module.Basis.span hs3).map (LinearEquiv.ofEq _ _ (by rw [Subtype.range_coe, hs2, hs]) : _ ≃ₗ[k] eigenSub ρk (f.comp (σ τ)))`. Establish `: Finite s` using `Module.Finite.finite_basis c`. Establish `hc : Nat.card s = Nat.card {i // ty i = τ}`. Rewrite using `[← hm, Module.finrank_eq_nat_card_basis c]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e⟩` from `Finite.card_eq.1 hc`. Use `⟨c.reindex e, fun i => hs1 ?_⟩` and prove the remaining obligations. Simplify using `[c, Module.Basis.span_apply]`. Use `choose c hc using key`. Use `choose x hx hx' using hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => x (ty i) ⟨i, rfl⟩, fun i => hx _ _, ((isInternal_eigenSub (hσ.map f) ρk).collectedBasis c).reindex (Equiv.sigmaFiberEquiv ty), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, DirectSum.IsInternal.collectedBasis_coe]`. Conclude with `(hx' _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigenvectors {O R k I κ : Type} [CommRing O] [Module.Finite ℤ O] [CommRing R] [Field k]
     [Finite I] [Fintype κ] {σ : I → O →+* R} (hσ : IsSplitting σ) {n : ℕ}
@@ -67,9 +67,9 @@ theorem exists_eigenvectors {O R k I κ : Type} [CommRing O] [Module.Finite ℤ 
   exact (hx' _ _).symm
 
 /- English proof (translation)
-Take `rfl : n = g` from `by simpa using Module.finrank_eq_card_basis b`. Establish `h : ∀ (R' : Type) [CommRing R'] (f' : R →+* R'), (Pi.basisFun R' (Fin n)).det (fun i => f' ∘ x i) = f' (Matrix.of x).det` using `fun R' _ f' => by`. Rewrite using `[Pi.basisFun_det_apply, RingHom.map_det]`. Both sides reduce to the same expression. Use `⟨(Matrix.of x).det, ?_, fun R' _ f' hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h, ← funext hb]`. Conclude with `((Pi.basisFun k (Fin n)).isUnit_det b).ne_zero`. Rewrite `hu` using `[← h]`. Take `⟨h1, h2⟩` from `(Module.Basis.is_basis_iff_det _).2 hu`. Conclude with `⟨Module.Basis.mk h1 h2.ge, fun i => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis_of_isUnit {R k : Type} [CommRing R] [Field k] {n g : ℕ} (f : R →+* k)
     (x : Fin g → Fin n → R) (b : Module.Basis (Fin g) k (Fin n → k)) (hb : ∀ i, b i = f ∘ x i) :
@@ -98,7 +98,7 @@ variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {
   {v : Fin n → (epsR R ⟶ G)}
 
 /- English proof (translation)
-Rewrite using `[prodPts_eq_lieExp, prodPts_eq_lieExp, prodPts_eq_lieExp, ← lieExp_add hv _ _ _ _ (fun _ => TrivSqZeroExt.inr_mul_inr _ _ _) (fun _ => by rw [← TrivSqZeroExt.inr_add]; exact TrivSqZeroExt.inr_mul_inr _ _ _)]`. Conclude with `lieExp_congr _ (fun _ => TrivSqZeroExt.inr_add _ _ _) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodPts_add (hv : ∀ i, IsTangent (v i)) (c c' : Fin n → R) :
     prodPts (c + c') v = prodPts c v * prodPts c' v := by
@@ -108,7 +108,7 @@ theorem prodPts_add (hv : ∀ i, IsTangent (v i)) (c c' : Fin n → R) :
   exact lieExp_congr _ (fun _ => TrivSqZeroExt.inr_add _ _ _) _ _
 
 /- English proof (translation)
-Rewrite using `[prodPts_eq_lieExp, prodPts_eq_lieExp, comp_lieExp]`. Conclude with `lieExp_congr _ (fun _ => by rw [TrivSqZeroExt.map_inr]; rfl) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodPts_smul (a : R) (c : Fin n → R) :
     prodPts (a • c) v = Chart.spMap (scaleD a) ≫ prodPts c v := by
@@ -116,7 +116,7 @@ theorem prodPts_smul (a : R) (c : Fin n → R) :
   exact lieExp_congr _ (fun _ => by rw [TrivSqZeroExt.map_inr]; rfl) _ _
 
 /- English proof (translation)
-Rewrite using `[prodPts_eq_lieExp, ← Chart.isTan_iff]`. Conclude with `SqZero.comp_eq_one_of_mem_redKer (J := RingHom.ker (Chart.fstD R)) (SqZero.lieExp_mem_redKer hv _ (fun _ => rfl) _) _ fun a ha => ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTangent_prodPts (hv : ∀ i, IsTangent (v i)) (c : Fin n → R) : IsTangent (prodPts c v) := by
   rw [prodPts_eq_lieExp, ← Chart.isTan_iff]
@@ -125,14 +125,14 @@ theorem isTangent_prodPts (hv : ∀ i, IsTangent (v i)) (c : Fin n → R) : IsTa
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-The claim follows from `(hv.2 w hw).exists.imp fun _ h => ((Chart.isLieComb_iff _ _ _).1 h).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_prodPts (hv : IsLieBasis v) {w : epsR R ⟶ G} (hw : IsTangent w) :
     ∃ c, prodPts c v = w :=
   (hv.2 w hw).exists.imp fun _ h => ((Chart.isLieComb_iff _ _ _).1 h).symm
 
 /- English proof (translation)
-Introduce `c _ h` and use `(hv.2 _ (isTangent_prodPts hv.1 c)).unique ((Chart.isLieComb_iff _ _ _).2 rfl) ((Chart.isLieComb_iff _ _ _).2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prodPts_injective (hv : IsLieBasis v) : Function.Injective fun c => prodPts c v :=
   fun c _ h => (hv.2 _ (isTangent_prodPts hv.1 c)).unique ((Chart.isLieComb_iff _ _ _).2 rfl)
@@ -142,7 +142,7 @@ def tanHom (hv : ∀ i, IsTangent (v i)) : Multiplicative (Fin n → R) →* (ep
   MonoidHom.mk' (fun c => prodPts c.toAdd v) fun c c' => prodPts_add hv _ _
 
 /- English proof (translation)
-Establish `h` using `map_prod (tanHom hv) (fun i => Multiplicative.ofAdd (d i • b i)) Finset.univ`. Rewrite `h` using `[← ofAdd_sum]`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Rewrite using `[prodPts, List.prod_ofFn]`. Conclude with `Finset.prod_congr rfl fun i _ => (prodPts_smul _ _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodPts_prodPts (hv : ∀ i, IsTangent (v i)) {m : ℕ} (d : Fin m → R) (b : Fin m → Fin n → R) :
     prodPts d (fun i => prodPts (b i) v) = prodPts (∑ i, d i • b i) v := by
@@ -153,9 +153,9 @@ theorem prodPts_prodPts (hv : ∀ i, IsTangent (v i)) {m : ℕ} (d : Fin m → R
   exact Finset.prod_congr rfl fun i _ => (prodPts_smul _ _).symm
 
 /- English proof (translation)
-Use `⟨fun i => isTangent_prodPts hv.1 _, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `exists_prodPts hv hw`. Use `⟨b.equivFun c, (Chart.isLieComb_iff _ _ _).2 ?_, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[prodPts_prodPts hv.1, b.sum_equivFun]`. Use `replace hd := (Chart.isLieComb_iff _ _ _).1 hd`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[prodPts_prodPts hv.1]`. Rewrite using `[prodPts_injective hv hd, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLieBasis_prodPts (hv : IsLieBasis v) {m : ℕ} (b : Module.Basis (Fin m) R (Fin n → R)) :
     IsLieBasis fun i => prodPts (b i) v := by
@@ -168,11 +168,11 @@ theorem isLieBasis_prodPts (hv : IsLieBasis v) {m : ℕ} (b : Module.Basis (Fin 
     rw [prodPts_injective hv hd, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `act.hom` as an intermediate fact. Use `choose T hT using fun a c => exists_prodPts hv (SqZero.isTangent_comp (act.act a) (isTangent_prodPts hv.1 c))`. Establish `inj : ∀ {c c'}, prodPts c v = prodPts c' v → c = c'` using `fun h => prodPts_injective hv h`. Set `L : O → Module.End R (Fin n → R)` to `fun a => { toFun := T a map_add' := fun c c' => inj (by`. Rewrite using `[prodPts_add hv.1, hT, hT, hT, prodPts_add hv.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul (IsMonHom.monoidHom (act.act a) _) _ _)`. Use the proof step `map_smul' := fun r c => inj (by`. Rewrite using `[RingHom.id_apply, prodPts_smul, hT, hT, prodPts_smul, Category.assoc]) }`. Establish `hL : ∀ a c, prodPts (L a c) v = prodPts c v ≫ act.act a` using `hT`. Use `⟨RingHom.mk' { toFun := L map_one' := LinearMap.ext fun c => inj (by rw [hL, act.one, Category.comp_id]; rfl) map_mul' := fun a b => LinearMap.ext fun c => inj (by` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, hL, hL, hL, mul_comm, act.mul, Category.assoc]) }`. Use `fun a b => LinearMap.ext fun c => inj ?_, hL⟩`. Express the relevant statement in the definitionally equal form `prodPts (L (a + b) c) v = prodPts (L a c + L b c) v`. Rewrite using `[prodPts_add hv.1, hL, hL, hL, act.add, MonObj.comp_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_action (hv : IsLieBasis v) {O : Type} [CommRing O] (act : OAct O G) :
     ∃ ρ : O →+* Module.End R (Fin n → R), ∀ a c, prodPts (ρ a c) v = prodPts c v ≫ act.act a := by
@@ -203,11 +203,11 @@ variable {R' : Type} [CommRing R'] {G' : Over (Sp R')} [GrpObj G'] [IsCommMonObj
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 
 /- English proof (translation)
-Set `U : Over.mk ((epsR R').hom ≫ spMap f) ⟶ epsR R` to `Over.homMk (spMap (dualMapR f)) (by`. Use `(Spec.map_comp _ _).symm.trans (Eq.trans (congrArg Spec.map ?_) (Spec.map_comp _ _))` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl])`. Establish `e : pushHom h (epsR R') (prodPts (f ∘ c) v') = preHom U (prodPts c v)`. Rewrite using `[prodPts, prodPts, map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(spMap (epsScaleR (f (c i))) ≫ (v' i).left) ≫ φ = spMap (dualMapR f) ≫ spMap (epsScaleR (c i)) ≫ (v i).left`. Rewrite using `[Category.assoc, hv', ← Category.assoc, ← Category.assoc]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `(Spec.map_comp _ _).symm.trans (Eq.trans (congrArg Spec.map ?_) (Spec.map_comp _ _))` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [dualMapR, epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Conclude with `congrArg (fun z => z.left) e`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prodPts_left (h : IsGrpPullback G' G (spMap f) φ)
     (hv' : ∀ i, (v' i).left ≫ φ = spMap (dualMapR f) ≫ (v i).left) (c : Fin n → R) :
@@ -229,7 +229,7 @@ theorem prodPts_left (h : IsGrpPullback G' G (spMap f) φ)
   exact congrArg (fun z => z.left) e
 
 /- English proof (translation)
-Use `prodPts_injective hb (Over.OverMorphism.ext (h.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm)))` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hρ', prodPts_left h hv', hρ, Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, ← Category.assoc, prodPts_left h hv']`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem action_baseChange (h : IsGrpPullback G' G (spMap f) φ) (hb : IsLieBasis v')
     (hv' : ∀ i, (v' i).left ≫ φ = spMap (dualMapR f) ≫ (v i).left)
@@ -251,15 +251,13 @@ section Field
 open ReciprocityTheory.ChartRestriction.G.Chart (prodPts scaleD)
 
 /- English proof (translation)
-Establish `hN' : LieMult act' (𝟙 _) τ N` using `(LiePull.lieMult_pull O _ _ G G' x φ act act' h ha k (𝟙 _) τ N).2 (by rwa [Category.id_comp])`. Set `j : epsPt (𝟙 (Sp k)) ≅ epsR k` to `Over.isoMk (Iso.refl _) (by simp)`. Set `e : (epsPt (𝟙 (Sp k)) ⟶ G') ≃* (epsR k ⟶ G')` to `MulEquiv.ofBijective (preHom j.inv) (j.symm.homCongr (Iso.refl G')).symm.bijective`. Establish `he : ∀ w, (e w).left = w.left` using `fun w => Category.id_comp _`. Establish `one : (1 : Over.mk (𝟙 (Sp k)) ⟶ G').left = η[G'].left` using `Category.id_comp _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, H⟩` from `LiePull.basis_transport e (P := IsLieEigen act' (𝟙 _) τ) (R := fun c u v => u.left = spMap (epsScale c) ≫ v.left) (R' := fun c u v => u.left = spMap (epsScaleR c) ≫ v.left) (Q := fun w => IsTangent w ∧ ∀ a, w ≫ act'.act a = Chart.spMap (scaleD (τ a)) ≫ w) (fun w => and_congr (by …`. Rewrite using `[Over.OverMorphism.ext_iff, Over.comp_left, Over.comp_left, Over.comp_left, he]`. Use the proof step `rfl))`. Use the proof step `(fun c u v => by rw [he, he]; rfl) N hN'`. Establish `mem : ∀ c, c ∈ EigenSplit.eigenSub ρ τ ↔ ∀ a, prodPts c v ≫ act'.act a = Chart.spMap (scaleD (τ a)) ≫ prodPts c v` using `fun c => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[EigenSplit.mem_eigenSub]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← hρ, ← prodPts_smul]`. Conclude with `(prodPts_injective hv).eq_iff.symm`. Use `choose b hb using fun i => exists_prodPts hv (hw i).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : w = fun i => prodPts (b i) v` from `(funext hb).symm`. Set `b' : Fin N → EigenSplit.eigenSub ρ τ` to `fun i => ⟨b i, (mem _).2 (hw i).2⟩`. Establish `key : ∀ c : EigenSplit.eigenSub ρ τ, ∃! d, Fintype.linearCombination k b' d = c` using `fun c => by`. Use `(existsUnique_congr fun d => ?_).1 (H _ ⟨isTangent_prodPts hv.1 c, (mem _).1 c.2⟩)` and prove the remaining obligations. Use `(Chart.isLieComb_iff d _ _).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[prodPts_prodPts hv.1, Subtype.ext_iff, Fintype.linearCombination_apply, eq_comm]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul]`. Conclude with `(prodPts_injective hv).eq_iff`. Rewrite using `[← (LinearEquiv.ofBijective _ ((Function.bijective_iff_existsUnique _).2 key)).finrank_eq, Module.finrank_fin_fun]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_of_lieMult {S : Scheme.{0}} {G : Over S} [GrpObj G] {k : Type} [Field k]
     {G' : Over (Sp k)} [GrpObj G'] [IsCommMonObj G'] {x : Sp k ⟶ S} {φ : G'.left ⟶ G.left}
@@ -311,19 +309,19 @@ namespace GlobalTheory
 open LieEigen in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l c g ty hty R _ j o n v₀ hv₀ p`. Set `σ₀ : (E →+* ℂ) → 𝓞 E →+* c.F` to `fun τ => (τ.codRestrict c.F.toSubfield (c.conj τ)).comp (algebraMap (𝓞 E) E)`. Establish `hσ₀ : Function.Injective σ₀` using `fun τ τ' h => (EigenSplit.isSplitting_complex E).injective (RingHom.ext fun a => congrArg Subtype.val (RingHom.congr_fun h a))`. Establish `hσ : EigenSplit.IsSplitting fun τ => j.comp (σ₀ τ)` using `EigenSplit.isSplitting_of_isDomain hσ₀ (NumberField.Embeddings.card E ℂ) j (by`. Simplify using `using (EigenSplit.isUnit_discr_of_charZero (E := E) c.F).map j)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨ρ, hρ⟩` from `exists_action hv₀ o.t.act`. Set `k` to `AlgebraicClosure p.asIdeal.ResidueField`. Set `f : R →+* k` to `(algebraMap p.asIdeal.ResidueField k).comp (algebraMap R _)`. Use `(IsSemiAbelian.pullback (spMap f) o.t.G o.t.semi).comm` as an intermediate fact. Establish `hk` using `isGrpPullback_pullback o.t.G (spMap f)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨vk, hvk, hvk'⟩` from `exists_isLieBasis_baseChange R k f _ _ _ hk o.t.semi.smooth n v₀ hv₀`. Set `actk` to `OAct.pullback (spMap f) o.t.G o.t.act`. Establish `hak : ∀ a, (actk.act a).left ≫ pullback.fst _ _ = pullback.fst _ _ ≫ (o.t.act.act a).left` using `fun a => pullback.lift_fst _ _ _`. Take `⟨ρk, hρk⟩` from `exists_action hvk actk`. Take `⟨hdet, -⟩` from `o.geom k (spMap f) ((f.comp j).comp (IntermediateField.inclusion c.le).toRingHom) (((congrArg (spMap f ≫ ·) (Spec.map_comp _ _).symm).trans (Spec.map_comp _ _).symm))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrt : ∀ τ : E →+* ℂ, f.comp (j.comp (σ₀ τ)) H.rt = (f.comp j).comp (IntermediateField.inclusion c.le).toRingHom (baseKA l).ρ ↔ τ (H.rt : E) = H.rt0` using `fun τ => (f.comp j).injective.eq_iff.trans Subtype.ext_iff`. Take `⟨x, hx, b, hb⟩` from `exists_eigenvectors hσ ρ f ρk (action_baseChange hk hvk hvk' hak hρ hρk) ty fun τ => by`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Rewrite using `[(hty τ).1 h]`. Conclude with `finrank_of_lieMult hk hvk hak hρk ((hdet _).1 ((hrt τ).2 h))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hty τ).2 h]`. Conclude with `finrank_of_lieMult hk hvk hak hρk ((hdet _).2 (mt (hrt τ).1 h))`. Take `⟨r, hr, H⟩` from `exists_basis_of_isUnit f x b hb`. Use `⟨r, fun h => hr ?_, fun t' ⟨m⟩ => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, Ideal.algebraMap_residueField_eq_zero.2 h, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb'⟩` from `H _ (algebraMap R (Localization.Away r)) (IsLocalization.Away.algebraMap_isUnit r)`. Take `⟨v', hv', e'⟩` from `exists_isLieBasis_baseChange R _ _ _ _ _ m.cart o.t.semi.smooth n v₀ hv₀`. Take `⟨ρ', hρ'⟩` from `exists_action hv' t'.act`. Use `⟨_, isLieBasis_prodPts hv' b', fun i a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ', hb', ← action_baseChange m.cart hv' e' m.act hρ hρ', EigenSplit.mem_eigenSub.1 (hx i) a]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `Eq.trans ?_ (congrArg (fun z => z.left) (prodPts_smul (v := v') _ _))` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `s`. Conclude with `map_mul _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_isLieBasis_eigen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty → ∀ (R : Type) [CommRing R] (j : c.F →+* R) (o : Obj D l (baseKA l) (spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom)) (n : ℕ) (v₀ : Fin n → (epsR R ⟶ o.t.G)), IsLieBasis v₀ → ∀ p : PrimeSpectrum R, ∃ r ∉ p.asIdeal, ∀ (t' : SAB H (Sp (Localization.Away r))), Nonempty (SABMap t' o.t (spMap (algebraMap R (Localization.Away r)))) → ∃ v : Fin g → (epsR (Localization.Away r) ⟶ t'.G), (IsLieBasis v ∧ ∀ i a, (v i ≫ t'.act.act a).left = spMap (epsScaleR (algebraMap R (Localization.Away r) (j ⟨ty i (a : E), c.conj (ty i) a⟩))) ≫ (v i).left) := by
   intro E _ _ _ H D l c g ty hty R _ j o n v₀ hv₀ p

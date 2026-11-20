@@ -23,11 +23,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BlockForms
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ _ σ hσ n J hJ r Xf Yf hW K hK S l d h ι hι hd h1 h2 h3 ψ hψ g₀ hg₀`. Set `f : GlobalTheory.CuspRep.Sm E d` to `⟨fun x => ψ (ι x * g₀), GlobalTheory.T.isCuspOn_translate_mem_sm F E σ hσ n J hJ r Xf Yf hW K hK S l d h ι hι hd h1 h2 h3 ψ hψ g₀ hg₀⟩`. Use `⟨f, fun _ => rfl, ⟨⟨GlobalTheory.CuspBlockLeft.cuspForm_blockEmb_left_invariant F E σ hσ n J hJ r Xf Yf hW K hK S l d h ι hι hd h1 h2 h3 ψ hψ g₀ hg₀, ?_, ?_, GlobalTheory.CuspBlockZfin.zfin_of_classicalTheorems hP F E σ hσ n J hJ r Xf Yf hW K hK S l d h ι hι hd h1 h2 h3 ψ hψ g₀ h …` and prove the remaining obligations. Establish `e : {k | GlobalTheory.CuspRep.finRep E d k f = f} = {k : GL (Fin d) (GlobalTheory.CuspRep.Af E) | ∀ g, ψ (ι (g * GlobalTheory.CuspRep.finGL E d k) * g₀) = ψ (ι g * g₀)}` using `Set.ext fun k => ⟨fun e g => congrFun (congrArg Subtype.val e) g, fun e => Subtype.ext (funext e)⟩`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.BlockLevel.isOpen_rightInv_finGL F E σ hσ n J hJ r Xf Yf hW K hK S l d h ι hι hd h1 h2 h3 ψ hψ g₀ hg₀`. Establish `e : (Submodule.span ℂ (Set.range fun k => GlobalTheory.CuspRep.cptRep E d k f)).map (GlobalTheory.CuspRep.Sm E d).subtype = Submodule.span ℂ (Set.range fun k : GlobalTheory.CuspRep.Kinf E d => fun g : GlobalTheory.CuspRep.GA E d => ψ (ι (g * GlobalTheory.CuspRep.infGL E d (Unitar …`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Use `GlobalTheory.CuspKinfFin.kinf_finite F E σ hσ n J hJ r Xf Yf hW K hK S l d h ι hι hd h1 h2 h3 ψ hψ g₀ hg₀` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← e]`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective (GlobalTheory.CuspRep.Sm E d).subtype Subtype.val_injective (Submodule.span ℂ (Set.range fun k => GlobalTheory.CuspRep.cptRep E d k f))).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCuspForm_comp_blockEmb : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

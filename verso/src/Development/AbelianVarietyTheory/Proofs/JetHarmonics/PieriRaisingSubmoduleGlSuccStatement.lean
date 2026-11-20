@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Jets.Imports
 open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.WigSh.pieri_step_raise` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FPieriRaisingSubmoduleGlSucc.lean&line=23#L23)
 -/

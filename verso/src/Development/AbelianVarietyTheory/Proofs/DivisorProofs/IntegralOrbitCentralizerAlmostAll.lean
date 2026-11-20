@@ -30,17 +30,17 @@ Both sides reduce to the same expression.
 theorem shU_inv_val (σ : A →+* Aᵐᵒᵖ) (u : Aˣ) : (((shU σ u)⁻¹ : Aˣ) : A) = (σ ((u⁻¹ : Aˣ) : A)).unop := rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul, MulOpposite.unop_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sh_mul (σ : A →+* Aᵐᵒᵖ) (a b : A) : (σ (a * b)).unop = (σ b).unop * (σ a).unop := by
   rw [map_mul, MulOpposite.unop_mul]
 
 /- English proof (translation)
-Establish `hsy : (σ y).unop = ((y⁻¹ : Aˣ) : A) * algebraMap K A cy`. Rewrite using `[← hy, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `h` using `congrArg (fun z => (σ z).unop) ha`. Simplify using `only [sh_mul] at h`. Rewrite `h` using `[hsy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : (((y⁻¹ : Aˣ) : A) * (σ a).unop) * algebraMap K A cy = ((σ a).unop * ((y⁻¹ : Aˣ) : A)) * algebraMap K A cy`. Rewrite using `[mul_assoc, ← Algebra.commutes, ← mul_assoc, h]`. Simplify using `only [mul_assoc]`. Establish `hk : IsUnit (algebraMap K A cy)` using `cy.isUnit.map (algebraMap K A)`. Establish `h''` using `hk.mul_right_cancel h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`. Use `_ = y * ((σ a).unop * ((y⁻¹ : Aˣ) : A)) * y := by rw [h'']`. Use `_ = y * (σ a).unop := by rw [mul_assoc, mul_assoc, Units.inv_mul, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_sh (σ : A →+* Aᵐᵒᵖ) (a : A) (y : Aˣ) (cy : Kˣ)
     (hy : (y : A) * (σ y).unop = algebraMap K A cy) (ha : a * y = y * a) :
@@ -71,35 +71,29 @@ section Step
 variable {K A : Type} [CommRing K] [Ring A] [Algebra K A]
 
 /- English proof (translation)
-Take `⟨⟨g1, cg⟩, hgm⟩` from `g`. Take `⟨⟨y, cy⟩, hym⟩` from `γ`. Establish `hgm' : (g1 : A) * (σ g1).unop = algebraMap K A cg` using `hgm`. Establish `hym' : (y : A) * (σ y).unop = algebraMap K A cy` using `hym`. Establish `hg1 : I ((g1⁻¹ * y * g1 : Aˣ) : A)` using `hg.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2 : I ((g1⁻¹ * y⁻¹ * g1 : Aˣ) : A)`. Establish `e : (g1⁻¹ * y * g1 : Aˣ)⁻¹ = g1⁻¹ * y⁻¹ * g1` using `by group`. Rewrite using `[← e]`. Conclude with `hg.2`. Take `⟨e, he, hu1, hu2⟩` from `h3 g1 hg1 hg2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩ : ∃ u : Aˣ, u = e⁻¹ * g1` from `⟨_, rfl⟩`. Rewrite `hu1` using `[← hu]`. Establish `hu2' : I ((u⁻¹ : Aˣ) : A)`. Establish `: u⁻¹ = g1⁻¹ * e` using `by rw [hu]; group`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hu2`. Take `⟨s, hs⟩ : ∃ s : Aˣ, s = u * shU σ u` from `⟨_, rfl⟩`. Establish `hsv : (s : A) = (u : A) * (σ u).unop` using `by rw [hs]; rfl`. Establish `hsI : I (s : A)` using `by rw [hsv]; exact h1 _ _ hu1 (h2 _ hu1)`. Establish `hsI' : I ((s⁻¹ : Aˣ) : A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs, _root_.mul_inv_rev, Units.val_mul, shU_inv_val]`. Conclude with `h1 _ _ (h2 _ hu2') hu2'`. Establish `hss : (σ s).unop = s`. Rewrite using `[hsv, sh_mul, hinv]`. Establish `hsval : (s : A) = ((e⁻¹ : Aˣ) : A) * algebraMap K A cg * (σ ((e⁻¹ : Aˣ) : A)).unop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hsv, hu, Units.val_mul, sh_mul, ← hgm']`. Simplify using `only [mul_assoc]`. Establish `hey : ((e⁻¹ : Aˣ) : A) * y = y * ((e⁻¹ : Aˣ) : A)`. Establish `: e⁻¹ * y = y * e⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, he, mul_inv_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg Units.val this`. Establish `hby` using `comm_sh σ ((e⁻¹ : Aˣ) : A) y cy hym' hey`. Establish `hsy : s * y = y * s`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hsval]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc ((e⁻¹ : Aˣ) : A), ← mul_assoc (algebraMap K A cg), Algebra.commutes]`. Simplify using `only [mul_assoc]`. Use `_ = (y : A) * (((e⁻¹ : Aˣ) : A) * algebraMap K A cg * (σ ((e⁻¹ : Aˣ) : A)).unop) := by`. Rewrite using `[← mul_assoc ((e⁻¹ : Aˣ) : A) (y : A), hey]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [mul_assoc]`. Take `⟨t, ht, htI, htI', hts⟩` from `h4 s hsy hsI hsI' hss`. Establish `hcm : ((e * t : Aˣ) : A) * (σ ((e * t : Aˣ) : A)).unop = algebraMap K A cg`. Rewrite using `[Units.val_mul, sh_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Use `_ = e * (((e⁻¹ : Aˣ) : A) * algebraMap K A cg * (σ ((e⁻¹ : Aˣ) : A)).unop) * (σ e).unop := by`. Rewrite using `[hts, hsval]`. Use `_ = algebraMap K A cg * ((σ ((e⁻¹ : Aˣ) : A)).unop * (σ e).unop) := by`. Simplify using `only [← mul_assoc, Units.mul_inv, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ = _ := by rw [← sh_mul, Units.mul_inv, map_one, MulOpposite.unop_one, mul_one]`. Establish `hdm : ((t⁻¹ * u : Aˣ) : A) * (σ ((t⁻¹ * u : Aˣ) : A)).unop = algebraMap K A ((1 : Kˣ) : K)`. Rewrite using `[Units.val_mul, sh_mul, Units.val_one, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hts, hsv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ = 1 := by`. Rewrite using `[← mul_assoc, Units.inv_mul, one_mul, ← sh_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Use `⟨⟨(e * t, cg), hcm⟩, ?_, ⟨(t⁻¹ * u, 1), hdm⟩, ⟨h1 _ _ htI' hu1, ?_, hJ1, by rw [inv_one]; exact hJ1⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises.
-
-Use `show e * t * y = y * (e * t)`. Rewrite using `[mul_assoc, ht, ← mul_assoc, he, mul_assoc]`. Use `show cg * cy = cy * cg`. Conclude with `mul_comm _ _`. Use `show I (((t⁻¹ * u)⁻¹ : Aˣ) : A)`.
-
-Rewrite using `[_root_.mul_inv_rev, inv_inv, Units.val_mul]`. Conclude with `h1 _ _ hu2' htI`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use `show g1 = e * t * (t⁻¹ * u)`.
-
-Rewrite using `[hu]`. Use `group`. Use `show cg = cg * 1`. Rewrite using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (σ : A →+* Aᵐᵒᵖ) (hinv : ∀ a, (σ (σ a).unop).unop = a)
     (I : A → Prop) (J : K → Prop) (hJ1 : J 1)
@@ -195,7 +189,7 @@ end GlobalTheory.OrbFinAf.KottAlmost
 namespace GlobalTheory.OrbFinAf.KottAlmost
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y => rw [starT_tmul, starT_tmul, G.star_star]`. Consider the case `add a b ha hb => rw [map_add, MulOpposite.unop_add, map_add, MulOpposite.unop_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem starT_starT {p : ℕ} [Fact p.Prime] (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (a : R ⊗[ℚ] G.C) :
     (starT G.star R (starT G.star R a).unop).unop = a := by

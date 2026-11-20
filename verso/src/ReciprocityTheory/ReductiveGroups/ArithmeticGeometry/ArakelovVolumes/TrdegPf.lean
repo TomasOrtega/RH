@@ -4,11 +4,11 @@ namespace ReciprocityTheory.ChartRestriction.G.AR
 
 open MvPolynomial in
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `[Derivation.map_algebraMap]`. Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq, add_smul, Finset.sum_add_distrib]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `next p j hp =>`. Establish `h1 : ∀ i, aeval x (pderiv i (p * X j)) = x j * aeval x (pderiv i p) + (if j = i then aeval x p else 0)`. Introduce `i`. Rewrite using `[Derivation.leibniz, pderiv_X, Pi.single_apply, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp only [map_one, map_zero, mul_one, mul_zero, zero_add, add_zero]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, aeval_X, Derivation.leibniz, hp]`. Simplify using `only [h1, add_smul, Finset.sum_add_distrib, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, mul_smul, ← Finset.smul_sum]`. Conclude with `add_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem kaehlerD_aeval_eq_sum {K : Type*} {Ω : Type*} [Field K] [Field Ω] [Algebra K Ω] {D : ℕ}
     (x : Fin D → Ω) (P : MvPolynomial (Fin D) K) :
@@ -34,27 +34,25 @@ theorem kaehlerD_aeval_eq_sum {K : Type*} {Ω : Type*} [Field K] [Field Ω] [Alg
 
 open MvPolynomial in
 /- English proof (translation)
-Establish `coeff_pderiv_eq_coeff_add_single_lemma {K : Type _} [Field K] {D : ℕ} (i : Fin D) (n : Fin D →₀ ℕ) (P : MvPolynomial (Fin D) K) : MvPolynomial.coeff n (MvPolynomial.pderiv i P) = MvPolynomial.coeff (n + Finsupp.single i 1) P * ((n i : K) + 1)`. Use `MvPolynomial.induction_on' P ?_ ?_` and prove the remaining obligations. Introduce `s a`. Rewrite using `[MvPolynomial.pderiv_monomial, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Distinguish the cases in `h : s = n + Finsupp.single i 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, zero_mul] split_ifs with h'`. Establish `hs : s i = 0`. Assume the negation of the conclusion as `hs`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[← h', tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hs))]`. Simplify using `[hs]`. Both sides reduce to the same expression. Introduce `p q hp hq`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, MvPolynomial.coeff_add, hp, hq, add_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hmdeg⟩ : ∃ m ∈ P.support, 0 < m.sum (fun _ e => e) := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h2 : P.totalDegree ≤ 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `MvPolynomial.totalDegree`. Conclude with `Finset.sup_le h`. Use linear arithmetic over natural numbers and integers. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `at hmdeg`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hm0`. Establish `hi' : m i ≠ 0` using `by simpa using hi`. Establish `hle : Finsupp.single i 1 ≤ m` using `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hi')`. Establish `hnm : m - Finsupp.single i 1 + Finsupp.single i 1 = m` using `tsub_add_cancel_of_le hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨i, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h3` using `congrArg (MvPolynomial.coeff (m - Finsupp.single i 1)) h0`. Rewrite `h3` using `[coeff_pderiv_eq_coeff_add_single_lemma, hnm, MvPolynomial.coeff_zero]`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(MvPolynomial.mem_support_iff.mp hm) h`. Conclude with `(Nat.cast_add_one_ne_zero _) h`. Establish `key : ∀ n ∈ (pderiv i P).support, (n.sum fun _ e => e) + 1 ≤ P.totalDegree`. Introduce `n hn`. Establish `hc : MvPolynomial.coeff (n + Finsupp.single i 1) P ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Apply `MvPolynomial.mem_support_iff.mp hn` to reduce the goal to its premises. Rewrite using `[coeff_pderiv_eq_coeff_add_single_lemma, h, zero_mul]`. Establish `hdeg : ((n + Finsupp.single i 1).sum fun _ e => e) = (n.sum fun _ e => e) + 1`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h4` using `MvPolynomial.le_totalDegree (MvPolynomial.mem_support_iff.mpr hc)`. Rewrite `h4` using `[hdeg]`. Conclude with `h4`. Take `⟨N, hN⟩ : ∃ N, P.totalDegree = N` from `⟨_, rfl⟩`. Rewrite `key`, `hP`, the goal using `[hN]`.
-
-Establish `hb : (pderiv i P).totalDegree ≤ N - 1`. Unfold `MvPolynomial.totalDegree`. Conclude with `Finset.sup_le fun n hn => by have := key n hn; omega`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_pderiv_ne_zero_lt {K : Type*} [Field K] [CharZero K] {D : ℕ}
     (P : MvPolynomial (Fin D) K) (hP : 0 < P.totalDegree) :
@@ -120,13 +118,13 @@ theorem exists_pderiv_ne_zero_lt {K : Type*} [Field K] [CharZero K] {D : ℕ}
     omega
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ D x hli`. Rewrite using `[algebraicIndependent_iff]`. Establish `hsum` using `Fintype.linearIndependent_iff.mp hli`. It suffices to establish `h : ∀ N (P : MvPolynomial (Fin D) K), P.totalDegree = N → MvPolynomial.aeval x P = 0 → P = 0 from fun P hP => h _ P rfl hP`. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `P hN hP`. Break down `Nat.eq_zero_or_pos N with h0 | hpos` into its components or cases. Rewrite `hN` using `[h0, MvPolynomial.totalDegree_eq_zero_iff_eq_C]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP` using `[hN, MvPolynomial.aeval_C]`. Establish `hc : MvPolynomial.coeff 0 P = 0` using `(algebraMap K Ω).injective (by rw [hP, map_zero])`. Rewrite using `[hN, hc, map_zero]`. Take `⟨i, hi, hlt⟩` from `exists_pderiv_ne_zero_lt P (by omega)`. Establish `hD` using `kaehlerD_aeval_eq_sum x P`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hD` using `[hP, map_zero]`. Conclude with `absurd (ih (MvPolynomial.pderiv i P).totalDegree (by omega) _ rfl (hsum _ hD.symm i)) hi`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentialIndependence.{u, v} : DiffIndepStatement.{u, v} := by
   intro K Ω _ _ _ _ D x hli

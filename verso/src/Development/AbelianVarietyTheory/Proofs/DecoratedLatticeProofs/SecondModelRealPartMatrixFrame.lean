@@ -14,7 +14,7 @@ namespace GlobalTheory.Core.Mi.RealMat
 variable {D : D7}
 
 /- English proof (translation)
-Use `show Formalism.IndefR.Eqv.thetaC D τ ((fstA D.host.F 1) ⊗ₜ[D.host.F] x) = _`. Rewrite using `[Formalism.IndefR.Eqv.thetaC_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiT_incA (τ : D.what₂.Tau) (x : D.host.E) : Formalism.IndefR.Eqv.psiT D τ (incA D x) = tauE D τ x := by
   show Formalism.IndefR.Eqv.thetaC D τ ((fstA D.host.F 1) ⊗ₜ[D.host.F] x) = _
@@ -22,7 +22,7 @@ theorem psiT_incA (τ : D.what₂.Tau) (x : D.host.E) : Formalism.IndefR.Eqv.psi
   simp
 
 /- English proof (translation)
-Establish `e : (rat (d.i₀ * o.iA) : Mx D S.rank A.rank) = HMul.hMul d.j0 o.jA` using `rat_mul _ _`. Rewrite using `[e, embA_apply, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_assoc, o.emb_jA, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem embA_cols {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (a : GA D A) :
     HMul.hMul (Formalism.L2.Theta.mt S (embA d o a)) (rat (d.i₀ * o.iA) : Matrix (Fin S.rank) (Fin A.rank) (AE D)) =
@@ -31,7 +31,7 @@ theorem embA_cols {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : Or
   rw [e, embA_apply, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_assoc, o.emb_jA, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e : (d.i₀ * o.iA).map (tauE D τ) = (rat (d.i₀ * o.iA) : Mx D S.rank A.rank).map (Formalism.IndefR.Eqv.psiT D τ)`. Use extensionality with `i j`. Conclude with `(psiT_incA τ _).symm`. Rewrite using `[e, ← Matrix.map_mul, ← Matrix.map_mul, embA_cols]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embA_cols_at {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (a : GA D A) (τ : D.what₂.Tau) :
     (Formalism.L2.Theta.mt S (embA d o a)).map (Formalism.IndefR.Eqv.psiT D τ) * (d.i₀ * o.iA).map (tauE D τ) =
@@ -43,19 +43,19 @@ theorem embA_cols_at {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o :
   rw [e, ← Matrix.map_mul, ← Matrix.map_mul, embA_cols]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hι : ∀ x, ιE x = x` using `fun x => eq_of_heq (hιE x)`. Establish `key : ∀ τ τ' : D.what₂.Tau, embS D τ = embS D τ' → τ = τ'` using `fun τ τ' e => D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 e))`. Establish `hpl : pl = (Formalism.L2.Host.tauPl D).symm` using `Equiv.ext fun v => key _ _ (RingHom.ext fun x => by`. Establish `e` using `hφ v x`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : embS D (pl v) (ιE x) = embS D (pl v) x` using `congrArg _ (hι x)`. Conclude with `(e2.symm.trans e.symm).trans (SeeReal.phi_inst v x))`. Establish `hcol : ∀ j, (fun i => (Formalism.L2.SG.InstExistsPf.instOf D).φ (pl.symm τ) (x j i)) = fun i : Fin (D.sp.Y 0).rank => (C.map (tauE D τ)) i j`. Introduce `j`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, Equiv.apply_symm_apply]`. Conclude with `(congrArg (tauE D τ) (hx i j)).symm`. Substitute `hpl` using the available equality. Establish `hT : ((Formalism.IndefR.RationalEmbedding.iota D).trans (castGA (rfl : Formalism.L2.SG.InstExistsPf.instOf D = _).symm)) k = Formalism.IndefR.RationalEmbedding.iota D k` using `rfl`. Establish `hP` using `Formalism.L2.SG.EvalTIota.P_isUnit_det' (D := D) (Formalism.L2.Host.tauPl D τ)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbr` using `Formalism.L2.SG.EvalTIota.infMat_brg_i (Formalism.IndefR.RationalEmbedding.iota D k) τ`. Rewrite `hbr` using `[ContinuousMulEquiv.symm_apply_apply, Formalism.IndefR.Eqv.infMat_thetaC]`. Establish `hu` using `SeeReal.eq_of_conj hP hbr.symm`. Establish `hrv : ∀ j, rv (Formalism.L2.SG.InstExistsPf.instOf D) ((Formalism.L2.Host.tauPl D).symm.symm τ) (x j) = (Formalism.L2.SG.EvalTIota.Pi (D` using `D) (Formalism.L2.Host.tauPl D τ))⁻¹ *ᵥ fun i : Fin (D.sp.Y 0).rank => (C.map (tauE D τ)) i j := by`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hcol j]`. Both sides reduce to the same expression. Establish `main : Formalism.L2.SG.EvalTIota.uM' (Formalism.IndefR.RationalEmbedding.iota D k) (Formalism.L2.Host.tauPl D τ) *ᵥ ((Formalism.L2.SG.EvalTIota.Pi (D` using `D) (Formalism.L2.Host.tauPl D τ))⁻¹ *ᵥ fun i : Fin (D.sp.Y 0).rank => (C.map (tauE D τ)) i b) = ∑ j, M j b • ((Formalism.L2.SG.EvalTIota.Pi (D := D) (Formalism.L2.Host.tauPl D τ))⁻¹ *ᵥ fun i : Fin (D.sp.Y 0).rank => (C.map (tauE D τ)) i j) := by`. Rewrite using `[hu, Matrix.mulVec_mulVec, Matrix.mul_assoc _ (Formalism.L2.SG.EvalTIota.Pi _), Matrix.mul_nonsing_inv _ hP, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Repeatedly rewrite using `[← Matrix.mulVec_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Matrix.mulVec_sum]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `e` using `congrFun (congrFun hC i) b`. Simplify using `only [Matrix.mul_apply] at e`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct]`. Conclude with `e.trans (Finset.sum_congr rfl fun j _ => mul_comm _ _)`. Use `(congrArg (fun w => Formalism.L2.SG.EvalTIota.uM' (Formalism.IndefR.RationalEmbedding.iota D k) (Formalism.L2.Host.tauPl D τ) *ᵥ w) (hrv b)).trans ?_` and prove the remaining obligations. Conclude with `main.trans (Finset.sum_congr rfl fun j _ => congrArg (fun w => M j b • w) (hrv j).symm)`.
+A detailed English derivation is pending.
 -/
 theorem act_gen {I : Formalism.MainNotions.S.AutInst} (h : I = Formalism.L2.SG.InstExistsPf.instOf D)
     (ιE : I.E ≃+* D.host.E) (hιE : ∀ x : I.E, HEq (ιE x) x) (pl : InfinitePlace I.F ≃ D.what₂.Tau)
@@ -111,17 +111,15 @@ theorem act_gen {I : Formalism.MainNotions.S.AutInst} (h : I = Formalism.L2.SG.I
   exact main.trans (Finset.sum_congr rfl fun j _ => congrArg (fun w => M j b • w) (hrv j).symm)
 
 /- English proof (translation)
-Take `⟨Q, Qi, G', hQQi, hQiQ, hQq, -, -, -, hG', hblk⟩` from `GlobalTheory.St.qFrame_basis_gram D X u wt hW`. Use `set φ := X.B.I.φ v with hφ`. Use `set G := (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm with hGdef`. Establish `hgram : Formalism.L2.SG.ColDict.gramQ X wt v = G.map φ`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrFun (congrFun hblk (Sum.inl a)) (Sum.inl b)`. Rewrite `h1` using `[Matrix.fromBlocks_apply₁₁]`. Rewrite using `[Matrix.map_apply, ← h1]`. Simplify using `only [Formalism.L2.SG.ColDict.gramQ, Matrix.of_apply, Formalism.L2.SG.ColDict.rvV]`. Use `PI.ScPiFrameW.hJ_rv X.B.I v (X.crd (Formalism.L2.SG.ColDict.qFr wt a)) (X.crd (Formalism.L2.SG.ColDict.qFr wt b))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Formalism.UG.hform, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hQq, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hdetG : G.det ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJu : IsUnit X.B.I.J.det` using `isUnit_iff_ne_zero.mpr X.B.I.J_det`. Establish `hJinv : X.B.I.J * X.B.I.J⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hJu`. Establish `hR : Matrix.fromBlocks G 0 0 G' * (Qi * X.B.I.J⁻¹ * (Qi.map (starRingEnd X.B.I.E))ᵀ) = 1`. Rewrite using `[← hblk]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc Q Qi, hQQi, Matrix.one_mul, ← Matrix.mul_assoc X.B.I.J, hJinv, Matrix.one_mul, ← Matrix.transpose_mul, ← Matrix.map_mul, hQiQ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hd` using `congrArg Matrix.det hR`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_one, Matrix.det_fromBlocks_zero₂₁]`. Conclude with `left_ne_zero_of_mul (left_ne_zero_of_mul_eq_one hd)`. Establish `hm : (G.map φ).det = φ G.det` using `(RingHom.map_det φ G).symm`.
-
-Rewrite using `[hgram, hm, isUnit_iff_ne_zero, map_ne_zero]`. Conclude with `hdetG`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramQ_isUnit (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hW : (∀ x y, (VS D).hT (wt x) (wt y) = (VS D).hT x y) ∧ (∀ a, wt (X.eX a) = D.sp.hypE a) ∧
@@ -163,13 +161,11 @@ end GlobalTheory.Core.Mi.RealMat
 open GlobalTheory.Core.Mi.RealMat in
 
 /- English proof (translation)
-Introduce `D X h u ψ B F tr θ hθ hE hA a τ`. Take `rfl` from `Formalism.IndefR.Eqv.eq_thetaC D hθ`. Establish `hdetQ` using `gramQ_isUnit X u tr.wt ⟨tr.wt_isom, tr.wt_e, tr.wt_f, tr.weight_z⟩ (X.pl.symm τ)`. Establish `hn` using `Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)`. Establish `hact` using `act_gen h X.ιE hE X.pl X.φ_eq (rank_eq X h) (embA B.d B.o a) τ (B.d.i₀ * B.o.iA) _ (fun j => X.crd (Formalism.L2.SG.ColDict.qFr tr.wt (Fin.cast hn j))) hA (embA_cols_at B.d B.o a τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin : ∀ b, uMat (((B.toH a).1 : X.B.I.Ginf) (X.pl.symm τ)) *ᵥ Formalism.L2.SG.ColDict.rvV X (X.pl.symm τ) (Formalism.L2.SG.ColDict.qFr tr.wt b) = ∑ i, GlobalTheory.AdForm.infM (Formalism.IndefR.Eqv.thetaC D) (D.sp.X 0) hn a τ i b • Formalism.L2.SG.ColDict.rvV X (X.pl.symm τ) (Fo …`. Introduce `b`. Use `(hact (Fin.cast hn.symm b)).trans ?_` and prove the remaining obligations. Conclude with `Fintype.sum_equiv (finCongr hn) _ _ fun i => rfl`. Establish `hM : (Matrix.of fun a' b => hJ (X.B.I.ε (X.pl.symm τ)) (Formalism.L2.SG.ColDict.rvV X (X.pl.symm τ) (Formalism.L2.SG.ColDict.qFr tr.wt a')) (uMat (((B.toH a).1 : X.B.I.Ginf) (X.pl.symm τ)) *ᵥ Formalism.L2.SG.ColDict.rvV X (X.pl.symm τ) (Formalism.L2.SG.ColDict.qFr tr.wt b))) = Fo …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a' b`. Rewrite using `[Matrix.of_apply, hlin, Matrix.mul_apply]`. Simplify using `only [hJ, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, Formalism.L2.SG.ColDict.gramQ, Matrix.of_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use `show (Formalism.L2.SG.ColDict.gramQ X tr.wt (X.pl.symm τ))⁻¹ * _ = _`.
-
-Rewrite using `[hM, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdetQ, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Mi.sTil_toH_eq_infM : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (B : SBes X h u ψ (D.sp.X 0)) (F : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F) (θ : InfFam D), IsInfFam θ → IdE X → B.Adapted tr.wt → ∀ (a : GA D (D.sp.X 0)) (τ : D.what₂.Tau), Formalism.L2.SG.ColDict.sTil X tr.wt ((B.toH a).1 : X.B.I.Ginf) τ = GlobalTheory.AdForm.infM θ (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a τ := by
   intro D X h u ψ B F tr θ hθ hE hA a τ

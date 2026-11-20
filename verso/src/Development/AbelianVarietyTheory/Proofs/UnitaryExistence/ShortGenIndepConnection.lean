@@ -16,11 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ShortConnIndep
 
 /- English proof (translation)
-Consider the cases of `s with | @mk s1 _ =>`. Consider the cases of `t with | @mk t1 _ =>`. Consider the cases of `s1 with | @mk s2 _ =>`. Consider the cases of `t1 with | @mk t2 _ =>`. Consider the cases of `s2 with | @mk s3 _ =>`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `t2 with | @mk t3 _ =>`. Establish `: s3 = t3`. Consider the cases of `s3`. Consider the cases of `t3`. Reduce the equality to equality of the corresponding arguments.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `funext h`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem starRing_eq {R : Type} [CommRing R] (s t : StarRing R)
     (h : ∀ a : R, @star R s.toStarMul.toInvolutiveStar.toStar a = @star R t.toStarMul.toInvolutiveStar.toStar a) :
@@ -40,11 +40,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `letI : Algebra ℚ S := ((algebraMap c.F S).comp (algebraMap ℚ c.F)).toAlgebra`. Establish `hU` using `thExprUniq_of_chartIndep2 hC`. Take `⟨M, hM, hMP, hsupp⟩` from `GlobalTheory.exists_natCast_smul_mem_harmA E H Dw l c a n P hP`. Establish `key0 : ∀ (K : ℤ) (k : ℕ), K = (k : ℤ) → ∀ G : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L K (ptO Xo y.x)), ∑ m ∈ ((M : c.F) • P).support, algebraMap c.F S (((M : c.F) • P).coeff m) * ∏ b, nab y K (G b) (colOf m b) = ∑ m ∈ ((M : c.F) • P).support, algebraMap c.F S (((M : c.F) …`. Introduce and unpack `K k rfl G`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hU E H Dw l Xo c nab nab' h h' S y k n G a _ hMP`. Establish `key` using `key0 _ (N ^ 2) (Nat.cast_pow N 2).symm F`. Rewrite `key` using `[hsupp]`. Simplify using `only [MvPolynomial.coeff_smul, smul_eq_mul, map_mul (algebraMap c.F S), _root_.mul_assoc, ← Finset.mul_sum] at key`. Establish `hu : IsUnit (algebraMap c.F S (M : c.F))` using `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 hM.ne')).map _`.
-
-Conclude with `hu.mul_left_cancel key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_eq (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab nab' : NabV Xo c) (h : IsNab Xo c nab)
     (h' : IsNab Xo c nab') {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) {n : ℕ}
@@ -73,9 +71,9 @@ theorem sum_eq (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab nab' : NabV Xo c) (
   exact hu.mul_left_cancel key
 
 /- English proof (translation)
-Take `⟨S', i1, i2, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, h7⟩` from `hv`. Use `⟨S', i1, i2, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, h7.trans ?_⟩` and prove the remaining obligations. Use `congr 1`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun i _ => sum_eq hC nab nab' h h' y' a P hP N (F q i)`.
+A detailed English derivation is pending.
 -/
 theorem shortValAt_of (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab nab' : NabV Xo c) (h : IsNab Xo c nab)
     (h' : IsNab Xo c nab') {n : ℕ} (w : (Fin n → LevQ Dw l) → c.F) (Λ : GenLat E n) (β : c.F) (N : ℕ)
@@ -95,11 +93,11 @@ end GlobalTheory.ShortConnIndep
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hC E _ _ _ H Dw l Xo c n d nab bad nV ⟨s, hs⟩ t nab' ht a`. Establish `hst : s = t` using `ShortConnIndep.starRing_eq s t fun x => (hs.1 x).trans (ht.1 x).symm`. Substitute `hst` using the available equality. Establish `hmap` using `(admissible_columns_le_and_harmonic_map_cover E H Dw l Xo c n d).2 a`. Use `Set.ext fun f => ⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hf, Λ, N, x0, P, h1, h2, h3, h4, h5, hP, hr⟩`. Use `⟨hf, Λ, N, x0, P, h1, h2, h3, h4, h5, hP, ?_⟩` and prove the remaining obligations. Introduce `k i1 i2 i3 i4 hk y y₂ hy`. Take `⟨v, hv, he⟩` from `@hr k i1 i2 i3 i4 hk y y₂ hy`. Conclude with `⟨v, ShortConnIndep.shortValAt_of hC nab' d.nab₂ ht hs _ Λ _ N a _ (hmap P hP.1) y₂ v hv, he⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hf, Λ, N, x0, P, h1, h2, h3, h4, h5, hP, hr⟩`. Use `⟨hf, Λ, N, x0, P, h1, h2, h3, h4, h5, hP, ?_⟩` and prove the remaining obligations. Introduce `k i1 i2 i3 i4 hk y y₂ hy`. Take `⟨v, hv, he⟩` from `@hr k i1 i2 i3 i4 hk y y₂ hy`. Conclude with `⟨v, ShortConnIndep.shortValAt_of hC d.nab₂ nab' hs ht _ Λ _ N a _ (hmap P hP.1) y₂ v hv, he⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem shortGen_indep_connection : ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (nab : NabV Xo c) (bad nV : ℕ), (∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂) → ∀ (_ : StarRing (𝓞 E)) (nab' : NabV d.Xo₂ d.c₂), IsNab d.Xo₂ d.c₂ nab' → ∀ a, shortGen Xo c nab bad nV a n { d with nab₂ := nab' } = shortGen Xo c nab bad nV a n d := by
   intro hC E _ _ _ H Dw l Xo c n d nab bad nV ⟨s, hs⟩ t nab' ht a

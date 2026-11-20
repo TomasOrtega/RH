@@ -29,7 +29,7 @@ namespace GlobalTheory.TameIwahori
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h1 : IsUnram (ψ * θ⁻¹)` using `fun u hu => by simp [h u hu]`. Establish `h2 : ψ = (ψ * θ⁻¹) * θ` using `by ext u; simp`. Rewrite using `[h2]`. Conclude with `(isSmoothChar_of_isUnram h1).mul hθ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothChar_of_eq_on_units {ψ θ : kˣ →* ℂˣ} (hθ : IsSmoothChar θ)
     (h : ∀ u : kˣ, valuation k (u : k) = 1 → ψ u = θ u) : IsSmoothChar ψ := by
@@ -39,9 +39,9 @@ theorem isSmoothChar_of_eq_on_units {ψ θ : kˣ →* ℂˣ} (hθ : IsSmoothChar
   exact (isSmoothChar_of_isUnram h1).mul hθ
 
 /- English proof (translation)
-Establish `hl : HasFiniteLength (jacB π.π)` using `(hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).surjective).2 ((hBZ k).2.1 _ _ _ (points (Fin n)) _ π.π π.smooth (hasFiniteLength_of_isIrreducible π.irr))`. Take `⟨ψ, l, hl0, hψ, hu⟩` from `GlobalTheory.T.exists_torusEigenform_of_compactTorus_eigenvector k n _ (jacB π.π) (Submodule.Quotient.mk v) θ (isSmooth_jacB π.smooth) hl hθ (GlobalTheory.T.tameIwahoriEigenvector_jacquetQuotient_ne_zero hD k n π v θ hv h) fun t ht => by`. Rewrite using `[UnramFixed.jacB_apply, jacBU_mk, h.2 t ht]`. Establish `: ((deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom) t = 1` using `UnramFixed.deltaHalf_torusO k ht`. Rewrite using `[this]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `⟨ψ, hu, GlobalTheory.T.mem_supercuspidalSupport_of_torus_jacquet_eigenform k n _ π.π ψ l hl0 hψ, SatakeExists.isSubquotient_of_eigenform π.smooth π.irr _ l hl0 hψ⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_prinSeries (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     (hD : GlobalTheory.Published.DepthZeroJacquetInjective) {n : ℕ} (π : Irr k n) {v : π.V} {θ : Fin n → kˣ →* ℂˣ}
@@ -62,9 +62,9 @@ theorem exists_prinSeries (hBZ : GlobalTheory.Published.BernsteinZelevinskyFinit
     SatakeExists.isSubquotient_of_eigenform π.smooth π.irr _ l hl0 hψ⟩
 
 /- English proof (translation)
-Establish `hs : IsSmoothChar (torusChar ψ)`. Unfold `torusChar`. Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) isSmoothChar_one fun a _ => ?_` and prove the remaining obligations. Conclude with `(hψ a).comp _ (continuous_apply a)`. Use `(hBZ k).2.2.1 _ _ _ (points (Fin n)) _ _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `isSmooth_comp ((isSmooth_ofChar_iff _).2 hs) _ (continuous_pi fun i => ?_)` and prove the remaining obligations. Conclude with `continuous_glDet.comp (continuous_apply i)`. Conclude with `(hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).symm.surjective).2 (hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _))`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_prinSeries (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {n : ℕ}
     {ψ : Fin n → kˣ →* ℂˣ} (hψ : ∀ i, IsSmoothChar (ψ i)) : HasFiniteLength (prinSeries ψ) := by
@@ -79,7 +79,7 @@ theorem hasFiniteLength_prinSeries (hBZ : GlobalTheory.Published.BernsteinZelevi
       (hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, _, prinSeries ψ, ⟨.refl _⟩, isSmooth_parInd _ _, hasFiniteLength_prinSeries hBZ hψ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_model (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {n : ℕ}
     {ψ : Fin n → kˣ →* ℂˣ} (hψ : ∀ i, IsSmoothChar (ψ i)) :
@@ -88,7 +88,7 @@ theorem exists_model (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness
   ⟨_, _, _, prinSeries ψ, ⟨.refl _⟩, isSmooth_parInd _ _, hasFiniteLength_prinSeries hBZ hψ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨σ.irr, fun a => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one (hψ a)⟩, _, h.trans (PrinProd.isSubquotient_prinSeries_multiProd k n ψ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCuspSupport_of_prinSeries {n : ℕ} (σ : Irr k n) {ψ : Fin n → kˣ →* ℂˣ}
     (hψ : ∀ i, IsSmoothChar (ψ i)) (h : IsSubquotient σ.π (prinSeries ψ)) :
@@ -97,7 +97,7 @@ theorem isCuspSupport_of_prinSeries {n : ℕ} (σ : Irr k n) {ψ : Fin n → kˣ
     h.trans (PrinProd.isSubquotient_prinSeries_multiProd k n ψ)⟩
 
 /- English proof (translation)
-Establish `h1` using `JacquetExact.inSupport_of_isSubquotient k _ _ _ _ _ μ (isSmooth_parInd _ _) (h.trans (PrinProd.isSubquotient_prinSeries_multiProd k n ψ)) hμ`. Take `⟨a, ha⟩` from `ProdSupport.exists_inSupport_of_multiProd hG k _ _ _ _ _ _ μ (fun a => (Irr.ofDet 1 (ψ a) (hψ a)).smooth) (fun a => isIrreducible_ofChar _) h1`. Conclude with `⟨a, (Model.inSupport_one_iff _ _).1 ha⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_of_inSupport (hG : GlobalTheory.Published.GeometricLemma) {n : ℕ} (σ : Irr k n) {ψ : Fin n → kˣ →* ℂˣ}
     (hψ : ∀ i, IsSmoothChar (ψ i)) (h : IsSubquotient σ.π (prinSeries ψ)) {μ : kˣ →* ℂˣ}
@@ -125,37 +125,35 @@ def twistIrr {n : ℕ} (σ : Irr k n) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar 
     exact φ.isSimpleOrder_iff.2 σ.irr
 
 /- English proof (translation)
-Introduce `hBZ hG hU hD k _ _ _ _ r t χ π v hχ htame hram hv hpar`. Set `θ : Fin (r + t) → kˣ →* ℂˣ` to `Fin.append (fun _ : Fin r => 1) fun _ : Fin t => χ`. Establish `hθ : ∀ i, IsSmoothChar (θ i)` using `fun i => by`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => simpa [θ] using isSmoothChar_one`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `right i => simpa [θ] using hχ`. Take `⟨ψ, hψθ, -, hsub⟩` from `exists_prinSeries hBZ hD π hθ hv (GlobalTheory.T.tameIwahoriTorusCharVector_of_parahoricDetCharVector k r t χ _ π.π v htame hpar)`. Establish `hψ : ∀ i, IsSmoothChar (ψ i)` using `fun i => isSmoothChar_of_eq_on_units (hθ i) (hψθ i)`. Set `ψ₁ : Fin r → kˣ →* ℂˣ` to `fun i => ψ (Fin.castAdd t i)`. Set `ψ₂ : Fin t → kˣ →* ℂˣ` to `fun i => ψ (Fin.natAdd r i)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hψ₁ : ∀ i (u : kˣ), valuation k (u : k) = 1 → ψ₁ i u = 1` using `fun i u hu => by`. Simplify `hψθ (Fin.castAdd t i) u hu` using `[θ]`. Establish `hψ₂ : ∀ i (u : kˣ), valuation k (u : k) = 1 → ψ₂ i u = χ u` using `fun i u hu => by`. Simplify `hψθ (Fin.natAdd r i) u hu` using `[θ]`. Establish `happ : Fin.append ψ₁ ψ₂ = ψ` using `Fin.append_castAdd_natAdd`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hsub` using `[← happ]`. Choose the witnesses or unpack the hypotheses as in `⟨σ₁, σ₂, h₁, h₂, hπ⟩ : ∃ (σ₁ : Irr k r) (σ₂ : Irr k t), IsSubquotient σ₁.π (prinSeries ψ₁) ∧ IsSubquotient σ₂.π (prinSeries ψ₂) ∧ IsSubquotient π.π (prod₂ σ₁.π σ₂.π) := by`. Take `⟨V, _, _, A, ⟨φA⟩, sA, lA⟩` from `exists_model hBZ (ψ := ψ₁) fun i => hψ _`. Take `⟨W, _, _, B, ⟨φB⟩, sB, lB⟩` from `exists_model hBZ (ψ := ψ₂) fun i => hψ _`. Take `⟨σ₁, σ₂, h₁, h₂, hπ⟩` from `GlobalTheory.T.exists_irreducible_subquotient_twoBlockConstituents k r t _ _ _ π.π A B π.irr sA sB lA lB (hsub.trans (GlobalTheory.T.prinSeries_append_isSubquotient_prod₂ k r t ψ₁ ψ₂ V W A B ⟨φA⟩ ⟨φB⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨σ₁, σ₂, h₁.trans (.of_injective φA.toIntertwiningMap φA.injective), h₂.trans (.of_injective φB.toIntertwiningMap φB.injective), hπ⟩`. Establish `hirr : (prod₂ σ₁.π σ₂.π).IsIrreducible`. Use `hU k r t r t σ₁ σ₂ _ _ _ _ (isCuspSupport_of_prinSeries σ₁ (fun i => hψ _) h₁) (isCuspSupport_of_prinSeries σ₂ (fun i => hψ _) h₂) ?_` and prove the remaining obligations. Introduce and unpack `a b h α ⟨φ⟩`. Use `hram fun u hu => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Set `g : GL (Fin 1) k` to `Matrix.GeneralLinearGroup.scalar (Fin 1) u`. Establish `hg : Matrix.GeneralLinearGroup.det g = u` using `ProdSupport.det_scalar_one rfl u`. Take `⟨c, hc⟩ : ∃ c : ℂ, φ (1 : ℂ) = c` from `⟨_, rfl⟩`. Establish `h0 : c ≠ 0` using `fun h => one_ne_zero (α := ℂ) (φ.injective ((hc.trans h).trans (map_zero φ).symm))`. Establish `h1 : φ (detRep (Fin 1) (ψ₁ a) g (1 : ℂ)) = (detChar (Fin 1) (unrChar k α) g : ℂ) • detRep (Fin 1) (ψ₂ b) g c` using `hc ▸ φ.toIntertwiningMap.isIntertwining _ _ g (1 : ℂ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [detRep, ofChar_apply, detChar_apply, hg, hψ₁ a u hu, hψ₂ b u hu, isUnram_unrChar k α u hu, Units.val_one, one_mul, one_smul] at h1`. Conclude with `Units.ext ((mul_eq_right₀ h0).1 (h1.symm.trans hc))`. Take `⟨φ⟩` from `hπ.nonempty_equiv π.irr hirr`. Set `f` to `φ.symm v`. Establish `hf0 : f ≠ 0` using `fun h => hv (φ.symm.injective (h.trans (map_zero φ.symm).symm))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : IsParahoricVec χ (prod₂ σ₁.π σ₂.π) f` using `fun h hh hl u hu => by`. Use `φ.symm.toIntertwiningMap.isIntertwining _ _ h v` as an intermediate fact. Rewrite `this` using `[hpar h hh hl u hu, map_smul]`. Conclude with `this.symm`. Take `⟨w, hw⟩` from `GlobalTheory.T.parahoricVector_twoBlockProduct_exists_perm_ne_zero k r t χ _ _ σ₁.π σ₂.π f hf0 hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, y, hy0, hy⟩` from `GlobalTheory.T.tameIwahoriVector_twoBlockProduct_perm_value_first k r t θ _ _ σ₁.π σ₂.π f w (GlobalTheory.T.tameIwahoriTorusCharVector_of_parahoricDetCharVector k r t χ _ _ f htame hf) hw`. Take `⟨μ, hμ, hμs, -⟩` from `exists_prinSeries hBZ hD σ₁ (fun i => hθ _) hy0 hy`. Establish `hwP : GlobalTheory.Parabolic.permGL k w ∈ parab k (two (stdSum (rfl : r + t = r + t)))`. Establish `key : ∀ (i : Fin r) (j : Fin t), Fin.castAdd t i ≠ w (Fin.natAdd r j)` using `fun i j hij => by`. Take `⟨i, rfl⟩` from `s.surjective i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `exists_eq_of_inSupport hG σ₁ (fun i => hψ _) h₁ (hμs i)`. Use `hram fun u hu => ?_` and prove the remaining obligations. Establish `h1` using `hμ i u hu`. Rewrite `h1` using `[ha, hij, Equiv.symm_apply_apply]`. Simplify `h1.symm.trans (hψ₁ a u hu)` using `[θ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(mem_parab_two k).2 fun j i => (GlobalTheory.Parabolic.permGL_apply w _ _).trans (if_neg fun hji => ?_)` and prove the remaining obligations. Establish `hF : ∀ b, ∃ c, w (Fin.natAdd r b) = Fin.natAdd r c` using `fun b => by`. Generalize the expression as in `hx : w (Fin.natAdd r b) = x`. Proceed by induction on `x using Fin.addCases with`. Consider the case `left a => exact absurd hx.symm (key a b)`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `right c => exact ⟨c, rfl⟩`. Use `choose c hc using hF`. Establish `hinj : Function.Injective c` using `fun b b' h => Fin.natAdd_injective _ _ (w.injective (by rw [hc, hc, h]))`. Take `⟨b, hb⟩` from `Finite.surjective_of_injective hinj j`. Establish `h2 : w (Fin.natAdd r b) = w (Fin.castAdd t i)` using `by rw [hc, hb]; exact hji`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrArg Fin.val (w.injective h2)`. Use `i.2` as an intermediate fact. Simplify using `at h3`. Use linear arithmetic over natural numbers and integers. Establish `hf1 : f.1.1 1 ≠ 0` using `fun h => hw (by`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `f.1.2 ⟨_, hwP⟩ 1` as an intermediate fact. Rewrite `this` using `[mul_one, h, map_zero]`. Conclude with `this)`. Take `⟨s₁, s₂⟩` from `GlobalTheory.T.spherical_factors_of_parahoricVector_twoBlockProduct k r t χ _ _ σ₁.π σ₂.π f hf hf1`. Use `⟨σ₁, twistIrr σ₂ χ⁻¹ hχ.inv, s₁, s₂, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : twist (twist σ₂.π (detChar (Fin t) χ⁻¹)) (detChar (Fin t) χ) = σ₂.π`. Use extensionality with `g x`. Simplify using `[smul_smul]`. Use `show Nonempty (π.π.Equiv (prod₂ σ₁.π (twist (twist σ₂.π (detChar (Fin t) χ⁻¹)) (detChar (Fin t) χ))))`. Rewrite using `[e]`.
-
-Conclude with `⟨φ.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tameSplit : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma →
     GlobalTheory.Published.UnlinkedProductIrreducible → GlobalTheory.Published.DepthZeroJacquetInjective →

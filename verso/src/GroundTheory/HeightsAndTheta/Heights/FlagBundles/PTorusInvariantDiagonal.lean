@@ -7,13 +7,11 @@ namespace GroundTheory.Heights₂.Heights.FlagBundles
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Introduce `ι T V _ _ _ _ _ _ ρ L χ _ _ hχ hρ h _ hinv i j hij x hx y hy`. Assume the negation of the conclusion as `hne`. Apply `hij` to reduce the goal to its premises. Apply `hχ` to reduce the goal to its premises. Use extensionality with `t`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `key` using `hinv t x y`. Rewrite `key` using `[hρ i x hx t, hρ j y hy t]`. Simplify using `only [LinearMap.map_smulₛₗ₂, LinearMap.map_smul, smul_eq_mul] at key`. Establish `h1 : conj ((χ i t : Circle) : ℂ) * ((χ j t : Circle) : ℂ) = 1`. Establish `: (conj ((χ i t : Circle) : ℂ) * ((χ j t : Circle) : ℂ) - 1) * h x y = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `key`. Break down `mul_eq_zero.1 this with h2 | h2` into its components or cases. Take the linear combination `h2`. Conclude with `absurd h2 hne`. Rewrite `h1` using `[← Circle.coe_inv_eq_conj, ← Circle.coe_mul, Circle.coe_eq_one, inv_mul_eq_one]`.
-
-Conclude with `congrArg (fun z : Circle => (z : ℂ)) h1`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TorusInvariantDiagonal.proof : TorusInvariantDiagonal.Statement := by
   intro ι T V _ _ _ _ _ _ ρ L χ _ _ hχ hρ h _ hinv i j hij x hx y hy

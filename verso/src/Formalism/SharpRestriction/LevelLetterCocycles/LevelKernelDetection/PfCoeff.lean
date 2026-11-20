@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.N.Ln03.Pf
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.MainNotions.WachCoordinates Formalism.MainNotions.WachCoordinates.Br Formalism.ExponentWindows Formalism.ExponentWindows.G Formalism.MainNotions.N.Ln03
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `hu`. Use `J.mul_mem_left (↑w⁻¹ : R) h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pfCoeff_cancel {R : Type} [CommRing R] {J : Ideal R} {u z : R} (hu : IsUnit u)
     (h : u * z ∈ J) : z ∈ J := by
@@ -29,7 +29,7 @@ variable (W) in
 abbrev pfCoeff_J (k : ℕ) : Ideal W.EE := Ideal.span {((PD.p : ℕ) : W.EE) ^ k}
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pfCoeff_smod (x y : W.EE) (k : ℕ) :
     x ≡ y [SMOD ((Ideal.span {((PD.p : ℕ) : W.EE)}) ^ k • ⊤ : Submodule W.EE W.EE)] ↔
@@ -37,13 +37,13 @@ theorem pfCoeff_smod (x y : W.EE) (k : ℕ) :
   rw [SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]
 
 /- English proof (translation)
-The claim follows from `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ h)`.
+A detailed English derivation is pending.
 -/
 theorem pfCoeff_J_anti {k k' : ℕ} (h : k ≤ k') : pfCoeff_J W k' ≤ pfCoeff_J W k :=
   Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ h)
 
 /- English proof (translation)
-Use `W.EE_complete` as an intermediate fact. Conclude with `IsHausdorff.haus' (I := Ideal.span {((PD.p : ℕ) : W.EE)}) x fun k => (pfCoeff_smod x 0 k).2 (by rw [sub_zero]; exact h k)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pfCoeff_haus (x : W.EE) (h : ∀ k, x ∈ pfCoeff_J W k) : x = 0 := by
   have := W.EE_complete
@@ -51,7 +51,7 @@ theorem pfCoeff_haus (x : W.EE) (h : ∀ k, x ∈ pfCoeff_J W k) : x = 0 := by
     fun k => (pfCoeff_smod x 0 k).2 (by rw [sub_zero]; exact h k)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_map_J (F : W.EE →+* W.EE) {k : ℕ} {z : W.EE} (hz : z ∈ pfCoeff_J W k) :
     F z ∈ pfCoeff_J W k := by
@@ -60,7 +60,7 @@ theorem pfCoeff_map_J (F : W.EE →+* W.EE) {k : ℕ} {z : W.EE} (hz : z ∈ pfC
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `W.EE_sat a k h`. Simplify using `only [map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pfCoeff_sat (f : LetA O n →+* LetA O n) {a : LetA O n} {k : ℕ}
     (h : algebraMap (LetA O n) W.EE a ∈ pfCoeff_J W k) :
@@ -70,13 +70,13 @@ theorem pfCoeff_sat (f : LetA O n →+* LetA O n) {a : LetA O n} {k : ℕ}
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[← sub_eq_zero]`. Apply `pfCoeff_haus` to reduce the goal to its premises. Introduce `k`. Take `⟨a, m, hm⟩` from `W.EE_dense x k`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (F' (algebraMap (LetA O n) W.EE (letπ ^ m)))`. Rewrite using `[map_pow, map_pow]`. Conclude with `(W.EE_π.map F').pow m`. Establish `h1` using `pfCoeff_map_J F hm`. Establish `h2` using `pfCoeff_map_J F' hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(pfCoeff_J W k).sub_mem h1 h2`. Simplify using `only [map_sub, map_mul, h] at h3`. Apply `pfCoeff_cancel hu` to reduce the goal to its premises. Establish `e : F' (algebraMap (LetA O n) W.EE (letπ ^ m)) * (F x - F' x) = F x * F' (algebraMap (LetA O n) W.EE (letπ ^ m)) - F' (algebraMap (LetA O n) W.EE a) - (F' x * F' (algebraMap (LetA O n) W.EE (letπ ^ m)) - F' (algebraMap (LetA O n) W.EE a))`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem pfCoeff_uniq (F F' : W.EE →+* W.EE)
     (h : ∀ a : LetA O n, F (algebraMap (LetA O n) W.EE a) = F' (algebraMap (LetA O n) W.EE a)) :
@@ -112,18 +112,18 @@ def pfCoeff_Good (x y : W.EE) : Prop :=
 
 include hf in
 /- English proof (translation)
-Rewrite using `[map_pow, map_pow]`. Conclude with `hf.pow m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_unitf (m : ℕ) : IsUnit (algebraMap (LetA O n) W.EE (f (letπ ^ m))) := by
   rw [map_pow, map_pow]; exact hf.pow m
 
 include hf in
 /- English proof (translation)
-Take `⟨a', m', hx', hy'⟩` from `h k`. Establish `h1 : algebraMap (LetA O n) W.EE (letπ ^ m * a' - letπ ^ m' * a) ∈ pfCoeff_J W k`. Establish `e : algebraMap (LetA O n) W.EE (letπ ^ m * a' - letπ ^ m' * a) = algebraMap (LetA O n) W.EE (letπ ^ m') * (x * algebraMap (LetA O n) W.EE (letπ ^ m) - algebraMap (LetA O n) W.EE a) - algebraMap (LetA O n) W.EE (letπ ^ m) * (x * algebraMap (LetA O n) W.EE (letπ ^ m') - algebraMap …`. Rewrite using `[map_sub, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `(pfCoeff_J W k).sub_mem ((pfCoeff_J W k).mul_mem_left _ hx) ((pfCoeff_J W k).mul_mem_left _ hx')`. Establish `h2` using `pfCoeff_sat f h1`. Apply `pfCoeff_cancel (pfCoeff_unitf f hf m')` to reduce the goal to its premises. Establish `e2 : algebraMap (LetA O n) W.EE (f (letπ ^ m')) * (y * algebraMap (LetA O n) W.EE (f (letπ ^ m)) - algebraMap (LetA O n) W.EE (f a)) = algebraMap (LetA O n) W.EE (f (letπ ^ m)) * (y * algebraMap (LetA O n) W.EE (f (letπ ^ m')) - algebraMap (LetA O n) W.EE (f a')) + algebraMap (Le …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub f, map_mul f, map_mul f, map_sub, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `(pfCoeff_J W k).add_mem ((pfCoeff_J W k).mul_mem_left _ hy') h2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_strong {x y : W.EE} (h : pfCoeff_Good W f x y) {k : ℕ} {a : LetA O n} {m : ℕ}
     (hx : x * algebraMap (LetA O n) W.EE (letπ ^ m) - algebraMap (LetA O n) W.EE a ∈ pfCoeff_J W k) :
@@ -152,9 +152,9 @@ theorem pfCoeff_strong {x y : W.EE} (h : pfCoeff_Good W f x y) {k : ℕ} {a : Le
 
 include hf in
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `pfCoeff_haus` to reduce the goal to its premises. Introduce `k`. Take `⟨a, m, hx, hy⟩` from `h k`. Establish `hy'` using `pfCoeff_strong f hf h' hx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `pfCoeff_cancel (pfCoeff_unitf f hf m)` to reduce the goal to its premises. Establish `e : algebraMap (LetA O n) W.EE (f (letπ ^ m)) * (y - y') = (y * algebraMap (LetA O n) W.EE (f (letπ ^ m)) - algebraMap (LetA O n) W.EE (f a)) - (y' * algebraMap (LetA O n) W.EE (f (letπ ^ m)) - algebraMap (LetA O n) W.EE (f a))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(pfCoeff_J W k).sub_mem hy hy'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_good_uniq {x y y' : W.EE} (h : pfCoeff_Good W f x y) (h' : pfCoeff_Good W f x y') :
     y = y' := by
@@ -172,17 +172,15 @@ theorem pfCoeff_good_uniq {x y y' : W.EE} (h : pfCoeff_Good W f x y) (h' : pfCoe
 
 include hf in
 /- English proof (translation)
-Use `choose a m hm using fun k => W.EE_dense x k`. Use `choose w hw using fun k => (pfCoeff_unitf f hf (m k))`. Use `set y : ℕ → W.EE := fun k => (↑(w k)⁻¹ : W.EE) * algebraMap (LetA O n) W.EE (f (a k)) with hy`. Establish `hv : ∀ k, (↑(w k)⁻¹ : W.EE) * algebraMap (LetA O n) W.EE (f (letπ ^ m k)) = 1` using `fun k => by`. Rewrite using `[← hw k, Units.inv_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : ∀ {k k' : ℕ}, k ≤ k' → y k - y k' ∈ pfCoeff_J W k`. Introduce `k k' hkk`. Establish `h1 : algebraMap (LetA O n) W.EE (letπ ^ m k' * a k - letπ ^ m k * a k') ∈ pfCoeff_J W k`. Establish `e : algebraMap (LetA O n) W.EE (letπ ^ m k' * a k - letπ ^ m k * a k') = algebraMap (LetA O n) W.EE (letπ ^ m k) * (x * algebraMap (LetA O n) W.EE (letπ ^ m k') - algebraMap (LetA O n) W.EE (a k')) - algebraMap (LetA O n) W.EE (letπ ^ m k') * (x * algebraMap (LetA O n) W.EE (letπ …`. Rewrite using `[map_sub, map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(pfCoeff_J W k).sub_mem ((pfCoeff_J W k).mul_mem_left _ (pfCoeff_J_anti hkk (hm k'))) ((pfCoeff_J W k).mul_mem_left _ (hm k))`. Establish `h2` using `pfCoeff_sat f h1`. Apply `pfCoeff_cancel ((pfCoeff_unitf f hf (m k)).mul (pfCoeff_unitf f hf (m k')))` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `e : algebraMap (LetA O n) W.EE (f (letπ ^ m k)) * algebraMap (LetA O n) W.EE (f (letπ ^ m k')) * (y k - y k') = algebraMap (LetA O n) W.EE (f (letπ ^ m k' * a k - letπ ^ m k * a k'))`. Rewrite using `[map_sub f, map_mul f, map_mul f, map_sub, map_mul, map_mul, hy]`. Take the linear combination `(algebraMap (LetA O n) W.EE (f (letπ ^ m k')) * algebraMap (LetA O n) W.EE (f (a k))) * hv k - (algebraMap (LetA O n) W.EE (f (letπ ^ m k)) * algebraMap (LetA O n) W.EE (f (a k'))) * hv k'`. Rewrite using `[e]`. Conclude with `h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `W.EE_complete` as an intermediate fact. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {((PD.p : ℕ) : W.EE)}) y (fun {k k'} hkk => (pfCoeff_smod _ _ k).2 (hc hkk))`. Use `⟨L, fun k => ⟨a k, m k, hm k, ?_⟩⟩` and prove the remaining obligations. Establish `hk` using `(pfCoeff_smod _ _ k).1 (hL k)`. Establish `e : L * algebraMap (LetA O n) W.EE (f (letπ ^ m k)) - algebraMap (LetA O n) W.EE (f (a k)) = -(algebraMap (LetA O n) W.EE (f (letπ ^ m k)) * (y k - L))`.
-
-Rewrite using `[hy]`. Take the linear combination `(algebraMap (LetA O n) W.EE (f (a k))) * hv k`. Rewrite using `[e]`. Conclude with `(pfCoeff_J W k).neg_mem ((pfCoeff_J W k).mul_mem_left _ hk)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_good_exists (x : W.EE) : ∃ y, pfCoeff_Good W f x y := by
   choose a m hm using fun k => W.EE_dense x k
@@ -225,7 +223,7 @@ theorem pfCoeff_good_exists (x : W.EE) : ∃ y, pfCoeff_Good W f x y := by
   exact (pfCoeff_J W k).neg_mem ((pfCoeff_J W k).mul_mem_left _ hk)
 
 /- English proof (translation)
-Introduce `k`. Apply the tactic sequence `refine ⟨a, 0, ?_, ?_⟩ <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pfCoeff_good_alg (a : LetA O n) :
     pfCoeff_Good W f (algebraMap (LetA O n) W.EE a) (algebraMap (LetA O n) W.EE (f a)) := by
@@ -233,11 +231,11 @@ theorem pfCoeff_good_alg (a : LetA O n) :
   refine ⟨a, 0, ?_, ?_⟩ <;> simp
 
 /- English proof (translation)
-Introduce `k`. Take `⟨a₁, m₁, hx₁, hy₁⟩` from `h k`. Take `⟨a₂, m₂, hx₂, hy₂⟩` from `h' k`. Use `⟨a₁ * letπ ^ m₂ + a₂ * letπ ^ m₁, m₁ + m₂, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (x + x') * algebraMap (LetA O n) W.EE (letπ ^ (m₁ + m₂)) - algebraMap (LetA O n) W.EE (a₁ * letπ ^ m₂ + a₂ * letπ ^ m₁) = algebraMap (LetA O n) W.EE (letπ ^ m₂) * (x * algebraMap (LetA O n) W.EE (letπ ^ m₁) - algebraMap (LetA O n) W.EE a₁) + algebraMap (LetA O n) W.EE (letπ ^ …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pow_add, map_add, map_mul, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(pfCoeff_J W k).add_mem ((pfCoeff_J W k).mul_mem_left _ hx₁) ((pfCoeff_J W k).mul_mem_left _ hx₂)`. Establish `e : (y + y') * algebraMap (LetA O n) W.EE (f (letπ ^ (m₁ + m₂))) - algebraMap (LetA O n) W.EE (f (a₁ * letπ ^ m₂ + a₂ * letπ ^ m₁)) = algebraMap (LetA O n) W.EE (f (letπ ^ m₂)) * (y * algebraMap (LetA O n) W.EE (f (letπ ^ m₁)) - algebraMap (LetA O n) W.EE (f a₁)) + algebraMap (Le …`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, map_add f, map_mul f, map_mul f, map_mul f, map_add, map_mul, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(pfCoeff_J W k).add_mem ((pfCoeff_J W k).mul_mem_left _ hy₁) ((pfCoeff_J W k).mul_mem_left _ hy₂)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_good_add {x x' y y' : W.EE} (h : pfCoeff_Good W f x y) (h' : pfCoeff_Good W f x' y') :
     pfCoeff_Good W f (x + x') (y + y') := by
@@ -265,11 +263,11 @@ theorem pfCoeff_good_add {x x' y y' : W.EE} (h : pfCoeff_Good W f x y) (h' : pfC
     exact (pfCoeff_J W k).add_mem ((pfCoeff_J W k).mul_mem_left _ hy₁) ((pfCoeff_J W k).mul_mem_left _ hy₂)
 
 /- English proof (translation)
-Introduce `k`. Take `⟨a₁, m₁, hx₁, hy₁⟩` from `h k`. Take `⟨a₂, m₂, hx₂, hy₂⟩` from `h' k`. Use `⟨a₁ * a₂, m₁ + m₂, ?_, ?_⟩` and prove the remaining obligations. Establish `e : x * x' * algebraMap (LetA O n) W.EE (letπ ^ (m₁ + m₂)) - algebraMap (LetA O n) W.EE (a₁ * a₂) = (x * algebraMap (LetA O n) W.EE (letπ ^ m₁) - algebraMap (LetA O n) W.EE a₁) * (x' * algebraMap (LetA O n) W.EE (letπ ^ m₂)) + algebraMap (LetA O n) W.EE a₁ * (x' * algebraMap (Let …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pow_add, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(pfCoeff_J W k).add_mem ((pfCoeff_J W k).mul_mem_right _ hx₁) ((pfCoeff_J W k).mul_mem_left _ hx₂)`. Establish `e : y * y' * algebraMap (LetA O n) W.EE (f (letπ ^ (m₁ + m₂))) - algebraMap (LetA O n) W.EE (f (a₁ * a₂)) = (y * algebraMap (LetA O n) W.EE (f (letπ ^ m₁)) - algebraMap (LetA O n) W.EE (f a₁)) * (y' * algebraMap (LetA O n) W.EE (f (letπ ^ m₂))) + algebraMap (LetA O n) W.EE (f a₁) …`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, map_mul f, map_mul f, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(pfCoeff_J W k).add_mem ((pfCoeff_J W k).mul_mem_right _ hy₁) ((pfCoeff_J W k).mul_mem_left _ hy₂)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_good_mul {x x' y y' : W.EE} (h : pfCoeff_Good W f x y) (h' : pfCoeff_Good W f x' y') :
     pfCoeff_Good W f (x * x') (y * y') := by
@@ -314,7 +312,7 @@ def pfCoeff_ext : W.EE →+* W.EE where
       (Classical.choose_spec (pfCoeff_good_exists f hf x')))
 
 /- English proof (translation)
-The claim follows from `pfCoeff_good_uniq f hf (Classical.choose_spec (pfCoeff_good_exists f hf _)) (pfCoeff_good_alg f a)`.
+A detailed English derivation is pending.
 -/
 theorem pfCoeff_ext_alg (a : LetA O n) :
     pfCoeff_ext f hf (algebraMap (LetA O n) W.EE a) = algebraMap (LetA O n) W.EE (f a) :=
@@ -337,14 +335,14 @@ Both sides reduce to the same expression.
 theorem pfCoeff_sw_π (i : ZMod n) : pfCoeff_sw i (letπ : LetA O n) = letπ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [pfCoeff_sw_apply, Equiv.swap_apply_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pfCoeff_sw_sw (i : ZMod n) (a : LetA O n) : pfCoeff_sw i (pfCoeff_sw i a) = a := by
   funext j
   simp only [pfCoeff_sw_apply, Equiv.swap_apply_self]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [pfCoeff_sw_apply, letE, Pi.single_apply, Equiv.swap_apply_eq_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pfCoeff_sw_letE (i j : ZMod n) :
     pfCoeff_sw i (letE j : LetA O n) = letE (Equiv.swap 0 i j) := by
@@ -369,14 +367,14 @@ def pfCoeff_σ (i : ZMod n) : W.EE →+* W.EE :=
   pfCoeff_ext (pfCoeff_sw i) (by rw [pfCoeff_sw_π]; exact W.EE_π)
 
 /- English proof (translation)
-The claim follows from `pfCoeff_ext_alg _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem pfCoeff_σ_alg (i : ZMod n) (a : LetA O n) :
     pfCoeff_σ W i (algebraMap (LetA O n) W.EE a) = algebraMap (LetA O n) W.EE (pfCoeff_sw i a) :=
   pfCoeff_ext_alg _ _ a
 
 /- English proof (translation)
-Establish `h` using `pfCoeff_uniq ((pfCoeff_σ W i).comp (pfCoeff_σ W i)) (RingHom.id W.EE) fun a => by`. Express the relevant statement in the definitionally equal form `pfCoeff_σ W i (pfCoeff_σ W i (algebraMap (LetA O n) W.EE a)) = algebraMap (LetA O n) W.EE a`. Rewrite using `[pfCoeff_σ_alg, pfCoeff_σ_alg, pfCoeff_sw_sw]`. Conclude with `DFunLike.congr_fun h x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_σ_σ (i : ZMod n) (x : W.EE) : pfCoeff_σ W i (pfCoeff_σ W i x) = x := by
   have h := pfCoeff_uniq ((pfCoeff_σ W i).comp (pfCoeff_σ W i)) (RingHom.id W.EE) fun a => by
@@ -385,7 +383,7 @@ theorem pfCoeff_σ_σ (i : ZMod n) (x : W.EE) : pfCoeff_σ W i (pfCoeff_σ W i x
   exact DFunLike.congr_fun h x
 
 /- English proof (translation)
-Establish `h` using `pfCoeff_uniq ((W.γE δ).toRingHom.comp (pfCoeff_σ W i)) ((pfCoeff_σ W i).comp (W.γE δ).toRingHom) fun a => by`. Express the relevant statement in the definitionally equal form `W.γE δ (pfCoeff_σ W i (algebraMap (LetA O n) W.EE a)) = pfCoeff_σ W i (W.γE δ (algebraMap (LetA O n) W.EE a))`. Rewrite using `[pfCoeff_σ_alg, W.γE_ext, W.γE_ext, pfCoeff_σ_alg, pfCoeff_sw_γ]`. Conclude with `DFunLike.congr_fun h x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_σ_γ (i : ZMod n) (δ : W.Gam) (x : W.EE) :
     W.γE δ (pfCoeff_σ W i x) = pfCoeff_σ W i (W.γE δ x) := by
@@ -397,14 +395,14 @@ theorem pfCoeff_σ_γ (i : ZMod n) (δ : W.Gam) (x : W.EE) :
   exact DFunLike.congr_fun h x
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem pfCoeff_mem_iff (j : ZMod n) (ε : W.EE) : ε ∈ EEl W j ↔
     (algebraMap (LetA O n) W.EE (letE j) * ε = ε ∧ ∀ δ ∈ W.DelF, W.γE δ ε = ε) := by
   rw [← Algebra.smul_def]; exact Iff.rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[pfCoeff_mem_iff]`. Take `⟨h1, h2⟩` from `h`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← pfCoeff_sw_letE, ← pfCoeff_σ_alg, ← map_mul, h1]`. Rewrite using `[pfCoeff_σ_γ, h2 δ hδ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pfCoeff_σ_mem (i j : ZMod n) {ε : W.EE} (h : ε ∈ EEl W j) :
     pfCoeff_σ W i ε ∈ EEl W (Equiv.swap 0 i j) := by
@@ -415,7 +413,7 @@ theorem pfCoeff_σ_mem (i j : ZMod n) {ε : W.EE} (h : ε ∈ EEl W j) :
   · rw [pfCoeff_σ_γ, h2 δ hδ]
 
 /- English proof (translation)
-Rewrite using `[pfCoeff_mem_iff]`. Use `⟨by rw [← map_mul, letE_mul_self], fun δ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[W.γE_ext]`. Conclude with `congrArg _ (γA_letE W δ j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_letE_mem (j : ZMod n) : algebraMap (LetA O n) W.EE (letE j) ∈ EEl W j := by
   rw [pfCoeff_mem_iff]
@@ -429,7 +427,7 @@ abbrev pfCoeff_mod (hR : Ring9 W) : Module (PowerSeries O) W.EE :=
   Module.compHom W.EE ((algebraMap (LetA O n) W.EE).comp (baseIdOf hR).d.toRingHom)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[pfCoeff_mem_iff]`. Take `⟨h1, h2⟩` from `h`. Use `⟨by rw [mul_left_comm, h1], fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h2 δ hδ, W.γE_ext]`. Conclude with `congrArg (· * ε) (congrArg _ ((baseIdOf hR).γA_Δ δ hδ a))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfCoeff_d_mem (hR : Ring9 W) (a : PowerSeries O) {ε : W.EE} (h : ε ∈ EEl W 0) :
     algebraMap (LetA O n) W.EE ((baseIdOf hR).d a) * ε ∈ EEl W 0 := by
@@ -449,13 +447,13 @@ def pfCoeff_M (hR : Ring9 W) : @Submodule (PowerSeries O) W.EE _ _ (pfCoeff_mod 
 variable [Fintype (K →ₐ[Qp] LL)]
 
 /- English proof (translation)
-Set `_` to `pfCoeff_mod W hR`. Conclude with `⟨{ M := ↥(pfCoeff_M hR) κ := fun i => (pfCoeff_σ W i).toAddMonoidHom.comp (pfCoeff_M hR).subtype.toAddMonoidHom m₁ := ⟨algebraMap (LetA O n) W.EE (letE 0), pfCoeff_letE_mem 0⟩ mem := fun i m => by`. Establish `h` using `pfCoeff_σ_mem (W := W) i 0 m.2`. Rewrite `h` using `[Equiv.swap_apply_left]`. Then use the resulting hypothesis. Use `surj := fun i ε hε => by`.
+Introduce a local definition for the expression. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h` using `pfCoeff_σ_mem (W := W) i i hε`. Rewrite `h` using `[Equiv.swap_apply_right]`. Conclude with `⟨⟨pfCoeff_σ W i ε, h⟩, pfCoeff_σ_σ i ε⟩`. Use `inj := fun i m m' hmm => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrArg (pfCoeff_σ W i) hmm`. Simplify `h` using `only [AddMonoidHom.comp_apply, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, LinearMap.toAddMonoidHom_coe, Submodule.coe_subtype, pfCoeff_σ_σ]`. Use `semi := fun i a m => by`. Express the relevant statement in the definitionally equal form `pfCoeff_σ W i (algebraMap (LetA O n) W.EE ((baseIdOf hR).d a) * (m : W.EE)) = _`. Rewrite using `[map_mul, pfCoeff_σ_alg, pfCoeff_sw_d]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `unit := fun i => by`. Express the relevant statement in the definitionally equal form `pfCoeff_σ W i (algebraMap (LetA O n) W.EE (letE 0)) = _`. Rewrite using `[pfCoeff_σ_alg, pfCoeff_sw_letE, Equiv.swap_apply_left] }⟩`.
+A detailed English derivation is pending.
 -/
 theorem coeffStep_holds (hR : Ring9 W) : CoeffStep hR := by
   let _ := pfCoeff_mod W hR

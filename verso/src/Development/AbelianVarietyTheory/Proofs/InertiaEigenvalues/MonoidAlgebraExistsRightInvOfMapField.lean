@@ -5,9 +5,9 @@ namespace GlobalTheory
 open MonoidAlgebra
 
 /- English proof (translation)
-Establish `hs : ∀ (f : G →₀ R) (g : G → R → R), (∀ i, g i 0 = 0) → f.sum g = ∑ i, g i (f i)` using `fun f g h => Finsupp.sum_fintype f g h`. Rewrite using `[MonoidAlgebra.coeff_mul, hs _ _ (fun i => by simp)]`. Rewrite using `[Finset.sum_congr rfl fun b _ => hs _ _ (fun i => by simp)]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∀ m : G, (m * c = a) ↔ (m = a * c⁻¹)` using `fun m => eq_mul_inv_iff_mul_eq.symm`. Repeatedly rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem groupAlgebra_coeff_mul_fintype {R G : Type} [CommRing R] [Group G] [Fintype G]
     (x y : MonoidAlgebra R G) (a : G) :
@@ -24,17 +24,17 @@ theorem groupAlgebra_coeff_mul_fintype {R G : Type} [CommRing R] [Group G] [Fint
   simp
 
 /- English proof (translation)
-Introduce and unpack `⟨vL, hvL⟩`. Set `M : Matrix G G E` to `fun a c => x.coeff (a * c⁻¹)`. Establish `hsurj : Function.Surjective (M.map j).mulVec`. Introduce `w`. Set `y : MonoidAlgebra L G` to `ofCoeff (Finsupp.equivFunOnFinite.symm w)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `⟨fun c => (vL * y).coeff c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Establish `h1 : (MonoidAlgebra.mapRingHom G j x * (vL * y)).coeff a = w a`. Rewrite using `[← mul_assoc, hvL, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[groupAlgebra_coeff_mul_fintype]`. Simplify using `only [MonoidAlgebra.coeff_mapRingHom] at h1`. Conclude with `h1`. Establish `hU : IsUnit (M.map j)` using `Matrix.mulVec_surjective_iff_isUnit.1 hsurj`. Establish `hdetL : IsUnit (j M.det)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 hU`. Establish `hdet : M.det ≠ 0`. Introduce `h`. Rewrite `hdetL` using `[h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `not_isUnit_zero hdetL`. Establish `hM : IsUnit M` using `(Matrix.isUnit_iff_isUnit_det M).2 (isUnit_iff_ne_zero.2 hdet)`. Take `⟨u, hu⟩` from `Matrix.mulVec_surjective_iff_isUnit.2 hM (fun a => (1 : MonoidAlgebra E G).coeff a)`. Use `⟨ofCoeff (Finsupp.equivFunOnFinite.symm u), ?_⟩` and prove the remaining obligations. Apply `MonoidAlgebra.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a`. Rewrite using `[groupAlgebra_coeff_mul_fintype]`. Use `congrFun hu a` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, M]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem groupAlgebra_exists_right_inv_of_map {E L G : Type} [Field E] [Field L] [Group G]
     [Fintype G] (j : E →+* L) (x : MonoidAlgebra E G) :

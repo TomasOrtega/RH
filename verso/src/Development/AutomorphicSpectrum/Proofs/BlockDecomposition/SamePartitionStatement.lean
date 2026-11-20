@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.TyFinSamePart
 
 /- English proof (translation)
-Use `set N : ℕ := (Finset.univ.filter fun g => f g = 1).card with hN`. Establish `hfib : ∀ q, (Finset.univ.filter fun g => f g = q).card = N` using `fun q => MonoidHom.card_fiber_eq_of_mem_range f (hf q) (hf 1)`. Establish `hsum : ∀ F' : Q → ℂ, ∑ g, F' (f g) = N * ∑ q, F' q`. Introduce `F'`. Rewrite using `[← Finset.sum_fiberwise Finset.univ f (fun g => F' (f g)), Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => F' q) (by intro g hg; rw [(Finset.mem_filter.mp hg).2])]`. Simplify using `[hfib q]`. Establish `hcard : (Fintype.card G : ℂ) = N * Fintype.card Q`. Simplify using `using hsum fun _ => 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hG : (Fintype.card G : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hN0 : (N : ℂ) ≠ 0` using `fun h => hG (by rw [hcard, h, zero_mul])`. Establish `hQ : (Fintype.card Q : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Rewrite using `[hsum, hcard]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem avg_of_surjective {G Q : Type} [Group G] [Group Q] [Fintype G] [Fintype Q]
     (f : G →* Q) (hf : Function.Surjective f) (F : Q → ℂ) :
@@ -38,9 +38,9 @@ theorem avg_of_surjective {G Q : Type} [Group G] [Group Q] [Fintype G] [Fintype 
   field_simp
 
 /- English proof (translation)
-Unfold `ip`. Establish `h1 : (H : Set Γ).ncard = Fintype.card H`. Rewrite using `[← Nat.card_coe_set_eq]`. Conclude with `Nat.card_eq_fintype_card`. Rewrite using `[h1, ← Finset.sum_filter]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.sum_subtype _ (by simp) (fun g => a g⁻¹ * c g)`.
+A detailed English derivation is pending.
 -/
 theorem ip_coe {Γ : Type} [Group Γ] [Fintype Γ] (H : Subgroup Γ) [Fintype H] (a c : Γ → ℂ) :
     ip (H : Set Γ) a c = (Fintype.card H : ℂ)⁻¹ * ∑ h : H, a (h : Γ)⁻¹ * c h := by
@@ -54,7 +54,7 @@ theorem ip_coe {Γ : Type} [Group Γ] [Fintype Γ] (H : Subgroup Γ) [Fintype H]
   exact Finset.sum_subtype _ (by simp) (fun g => a g⁻¹ * c g)
 
 /- English proof (translation)
-Simplify using `[ip, Set.ncard_univ, Nat.card_eq_fintype_card]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_univ {Γ : Type} [Group Γ] [Fintype Γ] (a c : Γ → ℂ) :
     ip Set.univ a c = (Fintype.card Γ : ℂ)⁻¹ * ∑ g, a g⁻¹ * c g := by
@@ -67,7 +67,7 @@ def bd (b : ι → Fin s) (L : ∀ c, Matrix {i // b i = c} {i // b i = c} K) : 
   fun i j => if h : b j = b i then L (b i) ⟨i, rfl⟩ ⟨j, h⟩ else 0
 
 /- English proof (translation)
-Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Substitute `hi` using the available equality. Simplify using `[blk, bd, hj]`.
+By extensionality, compare the relevant components. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem bd_blk (b : ι → Fin s) (L : ∀ c, Matrix {i // b i = c} {i // b i = c} K) (c : Fin s) :
     blk K b c (bd b L) = L c := by
@@ -76,13 +76,13 @@ theorem bd_blk (b : ι → Fin s) (L : ∀ c, Matrix {i // b i = c} {i // b i = 
   simp [blk, bd, hj]
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem bd_off (b : ι → Fin s) (L : ∀ c, Matrix {i // b i = c} {i // b i = c} K) {i j : ι}
     (h : b j ≠ b i) : bd b L i j = 0 := dif_neg h
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : b j = b i`. Use `congrFun (congrFun (h1 (b i)) ⟨i, rfl⟩) ⟨j, h⟩` as an intermediate fact. Simplify `this` using `[bd, h, blk]`. Rewrite using `[bd_off b L h, h2 i j h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_bd (b : ι → Fin s) (L : ∀ c, Matrix {i // b i = c} {i // b i = c} K) {M : Matrix ι ι K}
     (h1 : ∀ c, blk K b c M = L c) (h2 : ∀ i j, b j ≠ b i → M i j = 0) : M = bd b L := by
@@ -93,16 +93,14 @@ theorem eq_bd (b : ι → Fin s) (L : ∀ c, Matrix {i // b i = c} {i // b i = c
   · rw [bd_off b L h, h2 i j h]
 
 /- English proof (translation)
-Introduce `i j h` and use `bd_off b L (hb i j h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isBlockUT_bd {s' : ℕ} (b : ι → Fin s) (b' : ι → Fin s')
     (hb : ∀ i j, b' j < b' i → b j ≠ b i) (L : ∀ c, Matrix {i // b i = c} {i // b i = c} K) :
     IsBlockUT K b' (bd b L) := fun i j h => bd_off b L (hb i j h)
 
 /- English proof (translation)
-Use `symm`. Apply `eq_bd` to reduce the goal to its premises. Introduce `c`. Conclude with `Matrix.submatrix_one _ Subtype.val_injective`. Introduce `i j h`.
-
-Conclude with `Matrix.one_apply_ne fun e => h (by rw [e])`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_one (b : ι → Fin s) : bd b (fun c => (1 : Matrix {i // b i = c} {i // b i = c} K)) = 1 := by
   symm
@@ -113,11 +111,11 @@ theorem bd_one (b : ι → Fin s) : bd b (fun c => (1 : Matrix {i // b i = c} {i
     exact Matrix.one_apply_ne fun e => h (by rw [e])
 
 /- English proof (translation)
-Establish `hut : ∀ M : ∀ c, Matrix {i // b i = c} {i // b i = c} K, IsBlockUT K b (bd b M)` using `fun M => isBlockUT_bd b b (fun i j h e => by rw [e] at h; exact lt_irrefl _ h) M`. Use `symm`. Apply `eq_bd` to reduce the goal to its premises. Introduce `c`. Rewrite using `[blk_mul b c (hut L) (hut L'), bd_blk, bd_blk]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : b k = b i`. Rewrite using `[bd_off b L' (i := k) (j := j) (by rw [hk]; exact h), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bd_off b L hk, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bd_mul (b : ι → Fin s) (L L' : ∀ c, Matrix {i // b i = c} {i // b i = c} K) :
     bd b (fun c => L c * L' c) = bd b L * bd b L' := by
@@ -147,7 +145,7 @@ def dGL (b : ι → Fin s) (L : ∀ c, GL {i // b i = c} K) : GL ι K where
     exact bd_one b
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨show IsBlockUT K b' (bd b fun c => (L c).1) from isBlockUT_bd b b' hb _, show IsBlockUT K b' (bd b fun c => ((L c)⁻¹ : GL _ K).1) from isBlockUT_bd b b' hb _⟩`.
+Supply the required witnesses or components.
 -/
 theorem dGL_mem {s' : ℕ} (b : ι → Fin s) (b' : ι → Fin s')
     (hb : ∀ i j, b' j < b' i → b j ≠ b i) (L : ∀ c, GL {i // b i = c} K) : dGL b L ∈ parab K b' :=
@@ -166,13 +164,13 @@ def leviHom (b : ι → Fin s) : parab K b →* ∀ c, GL {i // b i = c} K where
     exact blk_mul b c p.2.1 q.2.1
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem blkGL_of_mem (b : ι → Fin s) (c : Fin s) {g : GL ι K} (h : g ∈ parab K b) :
     blkGL b c g = leviHom b ⟨g, h⟩ c := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[blkGL_of_mem b c (inv_mem h), ← Pi.inv_apply, ← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blkGL_inv (b : ι → Fin s) (c : Fin s) {g : GL ι K} (h : g ∈ parab K b) :
     blkGL b c g⁻¹ = (leviHom b ⟨g, h⟩ c)⁻¹ := by
@@ -185,7 +183,7 @@ abbrev ren {s' : ℕ} (b : ι → Fin s) (π : Fin s ≃ Fin s') (c : Fin s) :
     fun _ => π.injective.eq_iff.symm
 
 /- English proof (translation)
-Rewrite using `[blkGL_of_mem _ _ h']`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem blkGL_ren {s' : ℕ} (b : ι → Fin s) (π : Fin s ≃ Fin s') (c : Fin s) {g : GL ι K}
     (h : g ∈ parab K b) (h' : g ∈ parab K (π ∘ b)) :
@@ -200,9 +198,9 @@ def ell {s' : ℕ} (b : ι → Fin s) (π : Fin s ≃ Fin s') :
   (leviHom b).comp (Subgroup.inclusion inf_le_left)
 
 /- English proof (translation)
-Introduce `L`. Establish `h1 : dGL b L ∈ parab K b` using `dGL_mem b b (fun i j h e => by rw [e] at h; exact lt_irrefl _ h) L`. Establish `h2 : dGL b L ∈ parab K (π ∘ b)` using `dGL_mem b (π ∘ b) (fun i j h e => by simp only [Function.comp, e] at h; exact lt_irrefl _ h) L`. Use `⟨⟨dGL b L, h1, h2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `bd_blk b (fun c => (L c).1) c`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ell_surjective {s' : ℕ} (b : ι → Fin s) (π : Fin s ≃ Fin s') :
     Function.Surjective (ell (K := K) b π) := by
@@ -216,11 +214,11 @@ theorem ell_surjective {s' : ℕ} (b : ι → Fin s) (π : Fin s ≃ Fin s') :
   exact bd_blk b (fun c => (L c).1) c
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ _ s s' b π χ ψ`. Set `F : (∀ c, GL {i // b i = c} K) → ℂ` to `fun q => ∏ c, (χ c (q c)⁻¹ * ψ (π c) (glEquiv K (ren b π c) (q c)))`. Establish `key : ∀ h : (parab K b ⊓ parab K (π ∘ b) : Subgroup (GL ι K)), hcFun b χ (h : GL ι K)⁻¹ * hcFun (π ∘ b) ψ h = F (ell b π h)`. Introduce and unpack `⟨g, h1, h2⟩`. Simplify using `only [F, Finset.prod_mul_distrib, hcFun]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun c _ => by rw [blkGL_inv b c h1]; rfl`. Rewrite using `[← Equiv.prod_comp π]`. Conclude with `Finset.prod_congr rfl fun c _ => by rw [blkGL_ren b π c h1 h2]; rfl`. Rewrite using `[ip_coe, Finset.sum_congr rfl (fun h _ => key h), avg_of_surjective (ell (K := K) b π) (ell_surjective b π) F]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ip_univ, F]`. Rewrite using `[Finset.prod_mul_distrib, Fintype.prod_sum, Fintype.card_pi, Nat.cast_prod, Finset.prod_inv_distrib]`.
+A detailed English derivation is pending.
 -/
 theorem samePart : ReciprocityTheory.Ty.Fin.St.SamePart := by
   intro K _ _ _ ι _ _ s s' b π χ ψ

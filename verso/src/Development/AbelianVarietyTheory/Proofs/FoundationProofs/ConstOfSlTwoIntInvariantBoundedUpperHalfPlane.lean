@@ -12,17 +12,15 @@ noncomputable section
 namespace GlobalTheory.KZ.LevelOne
 
 /- English proof (translation)
-Introduce `φ hd hinv hb`. Set `f : ℍ → ℂ` to `fun τ => φ τ`. Establish `hfinv : ∀ (γ : SL(2, ℤ)) (τ : ℍ), f (γ • τ) = f τ` using `fun γ τ => by`. Simplify using `only [f]`. Rewrite using `[← GlobalTheory.KZ.SiegelModel.mob_ofSL]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hinv γ τ τ.2`. Establish `hs (γ : SL(2, ℤ)) : f ∣[(0 : ℤ)] γ = f`. Use extensionality with `τ`. Simplify `hfinv γ τ` using `[SL_slash_apply]`. Establish `hholo : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UpperHalfPlane.mdifferentiable_iff]`. Use `hd.congr fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, f]`. Rewrite using `[UpperHalfPlane.ofComplex_apply_of_im_pos hz]`. Establish `hbdd : IsBoundedAtImInfty f`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, t, h⟩` from `hb`. Use `isBoundedAtImInfty_iff.2 ⟨M, t + 1, fun τ hτ => ?_⟩` and prove the remaining obligations. Conclude with `h τ τ.2 (by rw [UpperHalfPlane.coe_im]; linarith [hτ])`. Set `F : ModularForm 𝒮ℒ 0` to `{ toFun := f slash_action_eq' := fun _ ⟨γ, hγ⟩ ↦ hγ ▸ hs γ holo' := hholo bdd_at_cusps' := fun {c} hc ↦ by`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[OnePoint.isBoundedAt_iff_forall_SL2Z hc]`. Introduce `γ _`. Rewrite using `[hs γ]`. Conclude with `hbdd }`. Take `⟨c, hc⟩` from `ModularFormClass.levelOne_weight_zero_const F`.
-
-Use `⟨c, fun z hz => ?_⟩` and prove the remaining obligations. Use `congrFun hc ⟨z, hz⟩` as an intermediate fact. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem const_of_invariant_bounded :
     ∀ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs → (∀ γ : SL(2, ℤ), ∀ z ∈ Hs, φ (mob (ofSL γ) z) = φ z) →

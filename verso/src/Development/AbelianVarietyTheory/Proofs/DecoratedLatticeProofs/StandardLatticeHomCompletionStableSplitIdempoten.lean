@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem coe_intVecSub (D : D7) (n : ℕ) : ((intVecSub D n : Submodule _ _) : Set (Fin n → D.host.E)) = intVec D n := rfl
 
 /- English proof (translation)
-Introduce `D S T a ha u hu`. Establish `h` using `Formalism.IndefR.Fin.latO_map_splitIdem S T (intVecSub D S.rank) (intVecSub D T.rank) ha (u := u) (by rw [coe_intVecSub, coe_intVecSub]; exact hu)`. Rewrite `h` using `[coe_intVecSub, coe_intVecSub]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdHom_map_splitIdem : ∀ (D : D7) (S T : HSp D) (a : AE D), IsSplitIdem D a → ∀ u ∈ stdHom S T, u.map (fun x => a * x) ∈ stdHom S T := by
   intro D S T a ha u hu

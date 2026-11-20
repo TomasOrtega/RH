@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep Formalism.L
 open scoped ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.ZEul.unfolded_bump_eq) | (exact GlobalTheory.ZEul.unfolded_bump_eq) | (intros; apply GlobalTheory.ZEul.unfolded_bump_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.unfolded_polarised_integral_bumped_forms : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))),
   (∀ w ∈ S, ∀ w' : HeightOneSpectrum (𝓞 E), Ideal.comap (algebraMap ℤ (𝓞 E)) w'.asIdeal = Ideal.comap (algebraMap ℤ (𝓞 E)) w.asIdeal → w' ∈ S) →

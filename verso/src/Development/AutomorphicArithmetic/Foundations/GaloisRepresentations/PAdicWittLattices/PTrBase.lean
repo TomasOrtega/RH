@@ -5,11 +5,11 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `hF hS hC B R _ T hT P Y Z' Z p q p' q' v s' s g d hv hg hq' hpb hs tr tr' htr htr' x`. Use `haveI : IsFinite s := hs.1`. Use `haveI : Etale s := hs.2.1`. Take `⟨W, c, G, _, _, a, σ, hgal, hspl⟩` from `hC s' d (hF.1 v s' s g d hpb hs)`. Establish `hσs : ∀ j, σ j ≫ s' = c` using `hspl.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσ' : ∀ j, σ j ≫ q' = c ≫ p'` using `fun j => by`. Rewrite using `[← hq', ← Category.assoc, hσs j]`. Establish `hσv : ∀ j, (σ j ≫ v) ≫ q = c ≫ p'` using `fun j => by`. Rewrite using `[Category.assoc, hv, hσ' j]`. Establish `hcg : (c ≫ g) ≫ p = c ≫ p'` using `by rw [Category.assoc, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hspl2 : Splits s (c ≫ g) (fun j => σ j ≫ v)` using `(hS.2 v s' s g hpb c (Fin d) σ hσs).1 hspl`. Apply `hT.inj p' (c ≫ p') c rfl G a hgal` to reduce the goal to its premises. Rewrite using `[← T.pull_comp c g rfl hg hcg, htr W (c ≫ p') (c ≫ g) hcg (Fin d) (fun j => σ j ≫ v) hσv hspl2 x, htr' W (c ≫ p') c rfl (Fin d) σ hσ' hspl]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `T.pull_comp (σ j) v (hσ' j) hv (hσv j) x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pTrBase :
     FEtBasic → SplitsBasic → GalClosD → TrBase.{u} := by

@@ -19,7 +19,7 @@ section Gen
 variable {R : Type*} [CommRing R] (c : R →+* R) {n m : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem hO_tr (I : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) R) (x y : Matrix (Fin m) (Fin n) R) :
     ∑ a, ∑ b, ∑ c', ∑ d, I a b * c (y c' b) * K c' d * x d a = (I * (y.map c)ᵀ * K * x).trace := by
@@ -33,9 +33,9 @@ theorem hO_tr (I : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) R) (x y
     _ = _ := Finset.sum_congr rfl fun _ _ => Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[sum_eq_trace, hO_tr, ← Matrix.trace_transpose]`. Establish `e : ((y * I)ᵀ).map c = I * (y.map c)ᵀ`. Rewrite using `[Matrix.transpose_map, Matrix.map_mul, Matrix.transpose_mul, hI]`. Rewrite using `[e]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem small_gen (G I : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) R) (hIG : I * G = 1)
     (hI : (I.map c)ᵀ = I) (x y : Matrix (Fin m) (Fin n) R) :
@@ -51,7 +51,7 @@ theorem small_gen (G I : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) R
     _ = _ := by rw [Matrix.trace_mul_comm]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_gen (G I g g' : Matrix (Fin n) (Fin n) R) (hIG : I * G = 1) (hGI : G * I = 1) (hg : g * g' = 1)
     (h : (g.map c)ᵀ * G * g = G) : g' * I = I * (g.map c)ᵀ := by
@@ -61,7 +61,7 @@ theorem inv_gen (G I g g' : Matrix (Fin n) (Fin n) R) (hIG : I * G = 1) (hGI : G
     _ = _ := by rw [hg, Matrix.mul_one, hGI, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc (k * x), h]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem small_act (I g g' : Matrix (Fin n) (Fin n) R) (k : Matrix (Fin m) (Fin m) R) (h : g' * I = I * (g.map c)ᵀ)
     (x : Matrix (Fin m) (Fin n) R) : (k * x * g' * I)ᵀ = g.map c * (x * I)ᵀ * kᵀ := by
@@ -69,11 +69,11 @@ theorem small_act (I g g' : Matrix (Fin n) (Fin n) R) (k : Matrix (Fin m) (Fin m
   simp only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e0 : (y.map c).map c = y` using `by ext i j; simp [hc]`. Establish `t : ∀ M : Matrix (Fin n) (Fin n) R, c M.trace = ((M.map c)ᵀ).trace`. Introduce `M`. Simplify using `[Matrix.trace, map_sum]`. Establish `e : ((I * (y.map c)ᵀ)ᵀ).map c = y * I`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, e0, Matrix.transpose_map, hI]`. Establish `e2 : ((I * (y.map c)ᵀ * K * x).map c)ᵀ = (x.map c)ᵀ * K * y * I`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_mul, hI, hK, Matrix.transpose_map, e0, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[sum_eq_trace, hO_tr, t, e2, ← Matrix.trace_transpose, e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem large_gen (hc : ∀ a, c (c a) = a) (G I : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) R)
     (hGI : G * I = 1) (hI : (I.map c)ᵀ = I) (hK : (K.map c)ᵀ = K) (x y : Matrix (Fin m) (Fin n) R) :
@@ -94,7 +94,7 @@ theorem large_gen (hc : ∀ a, c (c a) = a) (G I : Matrix (Fin n) (Fin n) R) (K 
     _ = _ := by rw [hGI, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `k' : g'.map c * Iᵀ = Iᵀ * gᵀ`. Use `congrArg Matrix.transpose h` as an intermediate fact. Simplify `this.symm` using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.mul_assoc]`. Rewrite using `[k']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem large_act (I g g' : Matrix (Fin n) (Fin n) R) (k : Matrix (Fin m) (Fin m) R) (h : g * I = I * (g'.map c)ᵀ)
     (x : Matrix (Fin m) (Fin n) R) :
@@ -115,33 +115,33 @@ abbrev GG (S : HSp D) : Matrix (Fin S.rank) (Fin S.rank) (AE D) := S.gram.map (i
 abbrev GI (S : HSp D) : Matrix (Fin S.rank) (Fin S.rank) (AE D) := (S.gram⁻¹).map (incA D)
 
 /- English proof (translation)
-Simplify using `[cA, sigR, CMData.sig, inclR]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cA_inc (a : D.host.E) : cA D (incA D a) = incA D (star a) := by
   simp [cA, sigR, CMData.sig, inclR]; rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => S.herm.eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem gram_herm (S : HSp D) : S.gramᴴ = S.gram :=
   Matrix.ext fun i j => S.herm.eq _ _
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne S))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GG_GI (S : HSp D) : GG S * GI S = 1 := by
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne S))]
   simp
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne S))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GI_GG (S : HSp D) : GI S * GG S = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne S))]
   simp
 
 /- English proof (translation)
-Establish `h : (S.gram⁻¹)ᴴ = S.gram⁻¹` using `by rw [Matrix.conjTranspose_nonsing_inv, gram_herm]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `(cA_inc _).trans (congrArg (incA D) (congrFun (congrFun h i) j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GI_herm (S : HSp D) : ((GI S).map (cA D))ᵀ = GI S := by
   have h : (S.gram⁻¹)ᴴ = S.gram⁻¹ := by rw [Matrix.conjTranspose_nonsing_inv, gram_herm]
@@ -149,32 +149,30 @@ theorem GI_herm (S : HSp D) : ((GI S).map (cA D))ᵀ = GI S := by
   exact (cA_inc _).trans (congrArg (incA D) (congrFun (congrFun h i) j))
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `(cA_inc _).trans (congrArg (incA D) (congrFun (congrFun (gram_herm S) i) j))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GG_herm (S : HSp D) : ((GG S).map (cA D))ᵀ = GG S := by
   refine Matrix.ext fun i j => ?_
   exact (cA_inc _).trans (congrArg (incA D) (congrFun (congrFun (gram_herm S) i) j))
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_mul_inv (S : HSp D) (g : GA D S) : Formalism.L2.Theta.mt S g * Formalism.L2.Theta.mt S g⁻¹ = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `inv_gen (cA D) (GG S) (GI S) _ _ (GI_GG S) (GG_GI S) (mt_mul_inv S g) (mt_rel S g)`.
+A detailed English derivation is pending.
 -/
 theorem inv_GI (S : HSp D) (g : GA D S) :
     Formalism.L2.Theta.mt S g⁻¹ * GI S = GI S * ((Formalism.L2.Theta.mt S g).map (cA D))ᵀ :=
   inv_gen (cA D) (GG S) (GI S) _ _ (GI_GG S) (GG_GI S) (mt_mul_inv S g) (mt_rel S g)
 
 /- English proof (translation)
-Introduce `S T hr`. Use `⟨fun x y => ?_, fun g h x => ?_⟩` and prove the remaining obligations. Establish `: hHom S T (toTWsmall S T y) (toTWsmall S T x) = hO S T x y`. Unfold `hHom`. Rewrite using `[if_pos hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `small_gen (cA D) (GG S) (GI S) (GG T) (GI_GG S) (GI_herm S) x y`. Unfold `symplO sympl`. Rewrite using `[this]`. Unfold `actHom`. Rewrite using `[if_pos hr]`.
-
-Conclude with `small_act (cA D) (GI S) _ _ _ (inv_GI S g) x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bridgeSmall : BridgeSmall D := by
   intro S T hr
@@ -187,11 +185,11 @@ theorem bridgeSmall : BridgeSmall D := by
     exact small_act (cA D) (GI S) _ _ _ (inv_GI S g) x
 
 /- English proof (translation)
-Set `f : AE D →ₐ[AF D.host.F] AE D` to `Algebra.TensorProduct.map (AlgHom.id _ _) D.sp.cm.sig`. Establish `hf : ∀ a, f a = cA D a`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r e => simp [f, cA, sigR]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Establish `hff : f.comp f = AlgHom.id _ _` using `AlgHom.ext fun a => by`. Rewrite using `[AlgHom.comp_apply, hf, hf, cA_cA]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `g : AE D ≃ₐ[AF D.host.F] AE D` to `AlgEquiv.ofAlgHom f f hff hff`. Rewrite using `[← hf]`. Conclude with `Algebra.trace_eq_of_algEquiv g a`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_cA (a : AE D) :
     Algebra.trace (AF D.host.F) (AE D) (cA D a) = Algebra.trace (AF D.host.F) (AE D) a := by
@@ -209,11 +207,11 @@ theorem trace_cA (a : AE D) :
   exact Algebra.trace_eq_of_algEquiv g a
 
 /- English proof (translation)
-Introduce `S T hr`. Use `⟨fun x y => ?_, fun g h x => ?_⟩` and prove the remaining obligations. Establish `: hHom T S (toTWlarge S T y) (toTWlarge S T x) = cA D (hO S T x y)`. Unfold `hHom`. Rewrite using `[if_pos hr.le]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `large_gen (cA D) cA_cA (GG S) (GI S) (GG T) (GG_GI S) (GI_herm S) (GG_herm T) x y`. Unfold `symplO sympl`. Rewrite using `[this, ← trace_cA (incA D D.host.xi0 * hO S T x y), map_mul, cA_inc, hxi, map_neg, neg_mul, map_neg]`. Unfold `actHom`. Rewrite using `[if_pos hr.le]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k` using `inv_GI S g⁻¹`. Rewrite `k` using `[inv_inv]`. Conclude with `large_act (cA D) (GI S) _ _ _ k x`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bridgeLarge (hxi : star D.host.xi0 = -D.host.xi0) : BridgeLarge D := by
   intro S T hr
@@ -229,9 +227,9 @@ theorem bridgeLarge (hxi : star D.host.xi0 = -D.host.xi0) : BridgeLarge D := by
     exact large_act (cA D) (GI S) _ _ _ k x
 
 /- English proof (translation)
-Establish `hs : ∀ x : D.host.E, D.host.φ₀ (star x) = starRingEnd ℂ (D.host.φ₀ x)` using `fun x => by haveI := D.host.isCMField_hostE`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀ x`. Establish `hd : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[hs, map_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Host.xi0`. Rewrite using `[map_div₀, map_neg, map_one, map_mul, map_natCast, hd]`. Simplify using `[div_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem star_purely_imaginary_eq_neg : star D.host.xi0 = -D.host.xi0 := by
   have hs : ∀ x : D.host.E, D.host.φ₀ (star x) = starRingEnd ℂ (D.host.φ₀ x) := fun x => by
@@ -245,7 +243,7 @@ theorem star_purely_imaginary_eq_neg : star D.host.xi0 = -D.host.xi0 := by
   simp [div_neg]
 
 /- English proof (translation)
-The claim follows from `bridgeLarge star_purely_imaginary_eq_neg`.
+A detailed English derivation is pending.
 -/
 theorem bridgeLarge' : BridgeLarge D := bridgeLarge star_purely_imaginary_eq_neg
 

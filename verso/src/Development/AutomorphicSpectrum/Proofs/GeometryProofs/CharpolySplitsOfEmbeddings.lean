@@ -7,13 +7,11 @@ open Polynomial NumberField
 namespace GlobalTheory.CompanionTheory.Ar.Flat.DegZ
 
 /- English proof (translation)
-Set `e` to `NumberField.RingOfIntegers.basis E`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) = Fintype.card (E →+* Ω)`. Rewrite using `[← Module.finrank_eq_card_basis e, NumberField.RingOfIntegers.rank, ← hc, Nat.card_eq_fintype_card]`. Set `eqv` to `Fintype.equivOfCardEq hcard`. Set `P : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → 𝓞 E →ₐ[ℤ] Ω` to `fun j => ((eqv j).comp (algebraMap (𝓞 E) E)).toIntAlgHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hP : Function.Injective P`. Introduce `i j hij`. Apply `eqv.injective` to reduce the goal to its premises. Apply `IsFractionRing.injective_comp_algebraMap (A := 𝓞 E) (K := E) (L := Ω)` to reduce the goal to its premises. Use `show (eqv i).comp (algebraMap (𝓞 E) E) = (eqv j).comp (algebraMap (𝓞 E) E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `DFunLike.congr_fun hij x`. Establish `h` using `GlobalTheory.map_charpoly_leftMulMatrix_eq_prod_algHom e hP a`. Rewrite `h` using `[Algebra.leftMulMatrix_apply, LinearMap.charpoly_toMatrix, algebraMap_int_eq]`. Use `h.trans ?_` and prove the remaining obligations.
-
-Conclude with `Fintype.prod_equiv eqv _ _ fun j => rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_charpoly_lmul_eq_prod_embeddings (E : Type) [Field E] [NumberField E]
     (Ω : Type) [Field Ω] [Fintype (E →+* Ω)]
@@ -41,13 +39,11 @@ theorem map_charpoly_lmul_eq_prod_embeddings (E : Type) [Field E] [NumberField E
   exact Fintype.prod_equiv eqv _ _ fun j => rfl
 
 /- English proof (translation)
-Use `haveI : Finite (E →+* Ω) := Nat.finite_of_card_ne_zero (by rw [hc]; exact Module.finrank_pos.ne')`. Use `letI : Fintype (E →+* Ω) := Fintype.ofFinite _`. Establish `hO' : ∀ (s' : E →+* Ω) (a : 𝓞 E), ∃ y, algebraMap O Ω y = s' (a : E)` using `fun s' a => RingHom.mem_range.mp (hO s' a)`. Use `choose o ho using hO'`. Establish `hΩ` using `GlobalTheory.CompanionTheory.Ar.Flat.DegZ.map_charpoly_lmul_eq_prod_embeddings E Ω hc a`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hO2 : (Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)).charpoly.map (Int.castRingHom O) = ∏ s : E →+* Ω, (X - C (o s a))`. Apply `Polynomial.map_injective (algebraMap O Ω) hinj` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, RingHom.ext_int ((algebraMap O Ω).comp (Int.castRingHom O)) (Int.castRingHom Ω), hΩ, Polynomial.map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, ho]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : (Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)).charpoly.map (Int.castRingHom K) = ∏ s : E →+* Ω, (X - C (g (o s a)))`. Rewrite using `[RingHom.ext_int (Int.castRingHom K) (g.comp (Int.castRingHom O)), ← Polynomial.map_map, hO2, Polynomial.map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Rewrite using `[hK]`.
-
-Conclude with `Polynomial.Splits.prod fun s _ => Polynomial.Splits.X_sub_C _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_lmul_splits_of_conjugates (E : Type) [Field E] [NumberField E]
     (Ω : Type) [Field Ω] [CharZero Ω] (O : Type) [CommRing O] [Algebra O Ω]

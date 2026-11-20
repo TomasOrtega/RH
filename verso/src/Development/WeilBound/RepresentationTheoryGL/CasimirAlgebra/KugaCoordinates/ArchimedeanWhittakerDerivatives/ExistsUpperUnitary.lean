@@ -7,7 +7,7 @@ namespace PositivityTheory.Rg.Cz
 open Matrix
 
 /- English proof (translation)
-Conclude with `GlobalTheory.CompanionTheory.Iwasawa.exists_upper_mul_unitary y`.
+A detailed English derivation is pending.
 -/
 theorem exists_upper_unitary {ι : Type} {n : ℕ} (y : GL (Fin n) (ι → ℂ)) :
     ∃ (b : GL (Fin n) (ι → ℂ)) (k : Matrix.unitaryGroup (Fin n) (ι → ℂ)),

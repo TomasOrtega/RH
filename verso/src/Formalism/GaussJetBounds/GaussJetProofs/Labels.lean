@@ -9,9 +9,9 @@ namespace Formalism.DworkPowerSeriesWeights
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Establish `hfin : (Set.range fun n : σ →₀ ℕ => ‖MvPolynomial.coeff n Q‖).Finite`. Use `Set.Finite.subset ((Q.support.image fun n => ‖MvPolynomial.coeff n Q‖).finite_toSet.insert 0) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Distinguish the cases in `hn : n ∈ Q.support`. Use `right`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.mem_coe.2 (Finset.mem_image_of_mem _ hn)`. Use `left`. Simplify using `only [MvPolynomial.notMem_support_iff.1 hn, norm_zero]`. Conclude with `hfin.bddAbove`.
+A detailed English derivation is pending.
 -/
 theorem bddAbove_norm_coeff {R : Type} [NormedField R] {σ : Type} (Q : MvPolynomial σ R) :
     BddAbove (Set.range fun n : σ →₀ ℕ => ‖MvPolynomial.coeff n Q‖) := by
@@ -28,17 +28,15 @@ theorem bddAbove_norm_coeff {R : Type} [NormedField R] {σ : Type} (Q : MvPolyno
   exact hfin.bddAbove
 
 /- English proof (translation)
-Introduce `F K _ _ φ σ Y h k hk Q n`. Set `E : (σ →₀ ℕ) → (σ →₀ ℕ)` to `fun n => Finsupp.onFinset n.support (fun y => k y * n y) (fun y hy => by`. Rewrite using `[Finsupp.mem_support_iff]`. Conclude with `fun h0 => hy (by rw [h0, Nat.mul_zero]))`. Establish `hEa : ∀ n y, E n y = k y * n y` using `fun n y => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hE : Function.Injective E`. Introduce `n n' hnn`. Use extensionality with `y`. Use `congrArg (fun f => f y) hnn` as an intermediate fact. Simplify using `only [hEa] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero (hk y)) this`. Set `Q' : MvPolynomial σ F` to `∑ n ∈ Q.support, MvPolynomial.monomial (E n) (MvPolynomial.coeff n Q)`. Establish `h1 : MvPolynomial.eval₂ φ Y Q' = MvPolynomial.eval₂ φ (fun y => Y y ^ k y) Q`. Rewrite using `[MvPolynomial.eval₂_sum, MvPolynomial.eval₂_eq]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.eval₂_monomial, Finsupp.onFinset_prod _ (fun _ => pow_zero _)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`. Establish `hc : ∀ n, MvPolynomial.coeff (E n) Q' = MvPolynomial.coeff n Q`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Simplify using `only [Q', MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, hE.eq_iff]`. Rewrite using `[Finset.sum_ite_eq' Q.support n]`. Use `split_ifs with hn`. Both sides reduce to the same expression.
-
-Conclude with `(MvPolynomial.notMem_support_iff.1 hn).symm`. Rewrite using `[← h1, h, ← hc]`. Conclude with `le_ciSup (bddAbove_norm_coeff Q') (E n)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_sum_powers : GaussPow := by
   classical
@@ -73,31 +71,27 @@ theorem gauss_sum_powers : GaussPow := by
   exact le_ciSup (bddAbove_norm_coeff Q') (E n)
 
 /- English proof (translation)
-Introduce `l d N0 _ hl TT nu1 size a ha hnu hsize hN`. Set `S : ZMod d → Finset ℤ` to `fun s => (Finset.Icc (-(a : ℤ)) a).filter (fun j => Odd j ∧ s - (j : ZMod d) ∈ TT ∧ (0 < j → l ^ j.toNat ≤ nu1 (s - (j : ZMod d))) ∧ (j < 0 → l ^ (-j).toNat ≤ size s))`. Establish `hpow : ∀ (s : ZMod d) (j : ℤ), Odd j → (0 < j → l ^ j.toNat ≤ nu1 (s - (j : ZMod d))) → (j < 0 → l ^ (-j).toNat ≤ size s) → l ^ j.natAbs ≤ a`. Introduce `s j hj h1 h2`. Break down `lt_trichotomy j 0 with h | h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: (-j).toNat = j.natAbs` using `by omega`. Rewrite using `[← this]`. Conclude with `(h2 h).trans (hsize s)`. Substitute `h` using the available equality. Conclude with `absurd hj (by decide)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: j.toNat = j.natAbs` using `by omega`. Rewrite using `[← this]`. Conclude with `(h1 h).trans (hnu _)`. Establish `hIcc : ∀ j : ℤ, l ^ j.natAbs ≤ a → j ∈ Finset.Icc (-(a : ℤ)) a`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : j.natAbs < l ^ j.natAbs` using `Nat.lt_pow_self hl`. Rewrite using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `hcard : ∀ s, ((S s).card : ℝ) ≤ 2 * Real.logb l a + 1`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `le_trans ?_ (oddExponentCount l a hl ha)` and prove the remaining obligations. Conclude with `Finset.card_le_card (by` after adjusting the coercions. Introduce `j hj`. Simplify using `only [S, Finset.mem_filter] at hj`. Rewrite using `[Finset.mem_filter]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨hj.1, hj.2.1, hpow s j hj.2.1 hj.2.2.2.1 hj.2.2.2.2⟩)`. Use `⟨fun s => (S s).card, fun s i => (s - ((((S s).equivFin.symm i : S s) : ℤ) : ZMod d), (((S s).equivFin.symm i : S s) : ℤ)), a, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s i i' hii`. Establish `h2` using `congrArg Prod.snd hii`. Simplify using `only at h2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(S s).equivFin.symm.injective (Subtype.ext h2)`. Introduce `s s0 j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi⟩`. Establish `hm` using `((S s).equivFin.symm i).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg Prod.fst hi`. Establish `h2` using `congrArg Prod.snd hi`. Simplify using `only at h1 h2`. Rewrite `h1`, `hm` using `[h2]`. Simplify using `only [S, Finset.mem_filter] at hm`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[h1]`. Conclude with `⟨hm.2.2.1, hm.2.1, by rw [← h1]; ring, hm.2.2.2.1, hm.2.2.2.2⟩`. Introduce and unpack `⟨hT, hodd, hs, hp, hn⟩`. Establish `hs0 : s - (j : ZMod d) = s0` using `by rw [hs]; ring`. Establish `hm : j ∈ S s`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Finset.mem_filter]`. Rewrite using `[hs0]`. Conclude with `⟨hIcc j (hpow s j hodd (by rw [hs0]; exact hp) hn), hodd, hT, hp, hn⟩`. Use `⟨(S s).equivFin ⟨j, hm⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, hs0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `s`. Establish `h1` using `hcard s`. Establish `h2 : ((S s).card : ℝ) + 1 ≤ (N0 : ℝ)` using `by linarith`. Establish `h3 : (S s).card + 1 ≤ N0` using `by exact_mod_cast h2`. Use `show (S s).card + _ ≤ N0`.
-
-Apply the tactic sequence `split_ifs <;> omega`. Introduce `s i show (-(((S s).equivFin.symm i : S s) : ℤ)).toNat ≤ a`. Take `⟨j, hm⟩` from `(S s).equivFin.symm i`. Establish `hm'` using `(Finset.mem_Icc.1 (Finset.mem_filter.1 hm).1).1`. Use `show (-j).toNat ≤ a`.
-
-Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem labelsExist_statement : LabelsExist := by
   classical

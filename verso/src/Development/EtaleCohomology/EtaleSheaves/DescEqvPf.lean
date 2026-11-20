@@ -10,9 +10,9 @@ namespace LateralTheory.E.DescEqvPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `n`. Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `T`. Rewrite using `[mono_iff_injective]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b h`. Conclude with `(cancel_mono j).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mono_sch {X Y : Scheme.{0}} (j : X ⟶ Y) [Mono j] : Mono (sch.map j) := by
   rw [NatTrans.mono_iff_mono_app]; intro n
@@ -21,7 +21,7 @@ theorem mono_sch {X Y : Scheme.{0}} (j : X ⟶ Y) [Mono j] : Mono (sch.map j) :=
   exact (cancel_mono j).1 h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Establish `hx : x = pull R i.hom F n (pull R i.inv F n x)` using `by rw [← pull_comp, i.hom_inv_id, pull_id]`. Establish `hy : y = pull R i.hom F n (pull R i.inv F n y)` using `by rw [← pull_comp, i.hom_inv_id, pull_id]`. Rewrite using `[hx, hy, Subsingleton.elim (pull R i.inv F n x) (pull R i.inv F n y)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_of_iso {E E' : Spc} (i : E ≅ E') (F : Shv R) (n : ℤ) [Subsingleton (H R E' F n)] :
     Subsingleton (H R E F n) := by
@@ -31,9 +31,9 @@ theorem sub_of_iso {E E' : Spc} (i : E ≅ E') (F : Shv R) (n : ℤ) [Subsinglet
   rw [hx, hy, Subsingleton.elim (pull R i.inv F n x) (pull R i.inv F n y)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Take `⟨a, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨b, rfl⟩` from `CohomologyClass.mk_surjective y`. Use `congr 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Cocycle.ext` to reduce the goal to its premises. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`. Conclude with `(h p).eq_of_src _ _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sub_of_zero (E : Spc) (h : ∀ p, IsZero (((chains R).obj E).X p)) (F : Shv R) (n : ℤ) :
     Subsingleton (H R E F n) := by
@@ -47,7 +47,7 @@ theorem sub_of_zero (E : Spc) (h : ∀ p, IsZero (((chains R).obj E).X p)) (F : 
   exact (h p).eq_of_src _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem bij_of_sub {E E' : Spc} (f : E ⟶ E') (F : Shv R) (n : ℤ) [Subsingleton (H R E F n)]
     [Subsingleton (H R E' F n)] : Function.Bijective (pull R f F n) :=
@@ -60,9 +60,9 @@ instance freeModPresE : PreservesColimitsOfShape (Discrete PEmpty.{1}) (ModuleCa
 instance freePresE : PreservesColimitsOfShape (Discrete PEmpty.{1}) (free R) := by unfold free freeP; infer_instance
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ j : ℕ, ComplexShape.embeddingDownNat.f j = p`. Take `⟨j, hj⟩` from `h`. Establish `h1 : IsInitial (E.obj (op (SimplexCategory.mk j)))` using `IsInitial.isInitialObj ((evaluation _ _).obj (op (SimplexCategory.mk j))) _ hE`. Establish `h2 : IsInitial ((free R).obj (E.obj (op (SimplexCategory.mk j))))` using `IsInitial.isInitialObj (free R) _ h1`. Establish `hz : IsZero (((chainsN R).obj E).X j)` using `h2.isZero`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hz.of_iso (HomologicalComplex.extendXIso ((chainsN R).obj E) ComplexShape.embeddingDownNat hj)`. Use `push Not at h`. Conclude with `HomologicalComplex.isZero_extend_X ((chainsN R).obj E) ComplexShape.embeddingDownNat p h`.
+A detailed English derivation is pending.
 -/
 theorem chains_zero_of_initial (E : Spc) (hE : IsInitial E) (p : ℤ) : IsZero (((chains R).obj E).X p) := by
   by_cases h : ∃ j : ℕ, ComplexShape.embeddingDownNat.f j = p
@@ -90,13 +90,13 @@ instance : IsIso (psi e) := by
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[psi, coprodSpec_inl_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inl_psi : coprod.inl ≫ psi e = Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom)) := by
   rw [psi, coprodSpec_inl_assoc, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Rewrite using `[psi, coprodSpec_inr_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inr_psi : coprod.inr ≫ psi e = Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom)) := by
   rw [psi, coprodSpec_inr_assoc, ← Spec.map_comp]; rfl
@@ -108,11 +108,11 @@ instance oi1 : IsOpenImmersion (Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1)
   rw [← inr_psi]; infer_instance
 
 /- English proof (translation)
-Use `⟨fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `pullback.condition (f := Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom))) (g := Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom)))`. Establish `k0 : Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom)) ≫ inv (psi e) = coprod.inl`. Rewrite using `[← inl_psi]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `k1 : Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom)) ≫ inv (psi e) = coprod.inr`. Rewrite using `[← inr_psi]`. Simplify using the standard rewrite rules. Establish `h2` using `congrArg (fun f => (f ≫ inv (psi e)).base z) h`. Simplify using `only [Category.assoc] at h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[k0, k1, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Conclude with `Set.disjoint_left.mp (isCompl_range_inl_inr (Spec (.of R0)) (Spec (.of R1))).disjoint ⟨_, rfl⟩ ⟨_, h2.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem empty_pb : IsEmpty ↥(Limits.pullback (C := Scheme.{0}) (Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom)))
     (Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom)))) := by
@@ -137,17 +137,17 @@ variable {R : Type} [CommRing R]
 instance schPresPb : PreservesLimitsOfShape WalkingCospan sch := by unfold sch; infer_instance
 
 /- English proof (translation)
-Introduce `n` and use `⟨fun a b h => by rwa [pull_id, pull_id] at h, fun y => ⟨y, pull_id R E F n y⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem eqv_id (E : Spc) (F : Shv R) : Eqv R (𝟙 E) F := fun n =>
   ⟨fun a b h => by rwa [pull_id, pull_id] at h, fun y => ⟨y, pull_id R E F n y⟩⟩
 
 /- English proof (translation)
-Introduce `n X x`. Use `⟨⊤, GrothendieckTopology.top_mem _ _, ?_⟩` and prove the remaining obligations. Introduce `Y k _`. Set `G : Spc ⥤ Type` to `(evaluation _ _).obj (op (SimplexCategory.mk n)) ⋙ (evaluation _ _).obj (op X)`. Take `⟨j, y, hy⟩` from `Types.jointly_surjective_of_isColimit (isColimitOfPreserves G (coprodIsCoprod U V)) x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Break down `j with ⟨(_ | _)⟩` into its components or cases. Use `left`. Use `⟨(U.obj _).map k.op y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `NatTrans.naturality_apply ((coprod.inl : U ⟶ U ⨿ V).app (op (SimplexCategory.mk n))) k.op y`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Use `⟨(V.obj _).map k.op y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `NatTrans.naturality_apply ((coprod.inr : V ⟶ U ⨿ V).app (op (SimplexCategory.mk n))) k.op y`.
+A detailed English derivation is pending.
 -/
 theorem loc_coprod (U V : Spc) : LateralTheory.E.D2.LocCover (coprod.inl : U ⟶ U ⨿ V) coprod.inr := by
   intro n X x
@@ -166,13 +166,13 @@ theorem loc_coprod (U V : Spc) : LateralTheory.E.D2.LocCover (coprod.inl : U ⟶
     exact NatTrans.naturality_apply ((coprod.inr : V ⟶ U ⨿ V).app (op (SimplexCategory.mk n))) k.op y
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LeafCover2Pf.LeafCover2_of R _ _ inferInstance inferInstance (loc_coprod U V)`.
+A detailed English derivation is pending.
 -/
 theorem cover_coprod (U V : Spc) : Cover2 R (coprod.inl : U ⟶ U ⨿ V) coprod.inr :=
   LateralTheory.E.LeafCover2Pf.LeafCover2_of R _ _ inferInstance inferInstance (loc_coprod U V)
 
 /- English proof (translation)
-Establish `hP` using `FinitaryExtensive.isPullback_initial_to_binaryCofan (coprodIsCoprod U V)`. Establish `hI : IsInitial (pullback (coprod.inl : U ⟶ U ⨿ V) coprod.inr)` using `IsInitial.ofIso initialIsInitial hP.isoPullback`. Conclude with `sub_of_zero _ (chains_zero_of_initial _ hI) F n`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_pb_coprod (U V : Spc) (F : Shv R) (n : ℤ) :
     Subsingleton (H R (pullback (coprod.inl : U ⟶ U ⨿ V) coprod.inr) F n) := by
@@ -184,15 +184,15 @@ theorem sub_pb_coprod (U V : Spc) (F : Shv R) (n : ℤ) :
 variable {A R0 R1 : Type} [CommRing A] [CommRing R0] [CommRing R1] (e : A ≃+* R0 × R1)
 
 /- English proof (translation)
-Introduce `n X x`. Set `x' : X ⟶ Spec (.of A)` to `x`. Set `C : Scheme.OpenCover.{0} X` to `(coprodOpenCover.{0} (Spec (.of R0)) (Spec (.of R1))).pullback₁ (x' ≫ inv (psi e))`. Use `⟨Sieve.ofArrows C.X C.f, Scheme.zariskiTopology_le_etaleTopology _ (Scheme.Cover.mem_grothendieckTopology C), ?_⟩` and prove the remaining obligations. Introduce `Y k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hk` using `[Sieve.mem_ofArrows_iff]`. Take `⟨i, h, rfl⟩` from `hk`. Break down `i with (_ | _)` into its components or cases. Use `left`. Use `⟨h ≫ pullback.snd _ _, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `c` using `pullback.condition (f := x' ≫ inv (psi e)) (g := (coprod.inl : Spec (.of R0) ⟶ _))`. Establish `c' : pullback.fst (x' ≫ inv (psi e)) (coprod.inl : Spec (.of R0) ⟶ _) ≫ x' = pullback.snd (x' ≫ inv (psi e)) (coprod.inl : Spec (.of R0) ⟶ _) ≫ Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom))`. Rewrite using `[← inl_psi, ← Category.assoc, ← c]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(h ≫ pullback.snd (x' ≫ inv (psi e)) (coprod.inl : Spec (.of R0) ⟶ _)) ≫ Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom)) = (h ≫ pullback.fst (x' ≫ inv (psi e)) (coprod.inl : Spec (.of R0) ⟶ _)) ≫ x'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (h ≫ ·) c'.symm).trans (Category.assoc _ _ _).symm)`. Use `right`. Use `⟨h ≫ pullback.snd _ _, ?_⟩` and prove the remaining obligations. Establish `c` using `pullback.condition (f := x' ≫ inv (psi e)) (g := (coprod.inr : Spec (.of R1) ⟶ _))`. Establish `c' : pullback.fst (x' ≫ inv (psi e)) (coprod.inr : Spec (.of R1) ⟶ _) ≫ x' = pullback.snd (x' ≫ inv (psi e)) (coprod.inr : Spec (.of R1) ⟶ _) ≫ Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← inr_psi, ← Category.assoc, ← c]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(h ≫ pullback.snd (x' ≫ inv (psi e)) (coprod.inr : Spec (.of R1) ⟶ _)) ≫ Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom)) = (h ≫ pullback.fst (x' ≫ inv (psi e)) (coprod.inr : Spec (.of R1) ⟶ _)) ≫ x'`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (h ≫ ·) c'.symm).trans (Category.assoc _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem loc_sch : LateralTheory.E.D2.LocCover (sch.map (Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom))))
     (sch.map (Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom)))) := by
@@ -228,14 +228,14 @@ theorem loc_sch : LateralTheory.E.D2.LocCover (sch.map (Spec.map (CommRingCat.of
     exact (Category.assoc _ _ _).trans ((congrArg (h ≫ ·) c'.symm).trans (Category.assoc _ _ _).symm)
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LeafCover2Pf.LeafCover2_of R _ _ (mono_sch _) (mono_sch _) (loc_sch e)`.
+A detailed English derivation is pending.
 -/
 theorem cover_sch : Cover2 R (sch.map (Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom))))
     (sch.map (Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom)))) :=
   LateralTheory.E.LeafCover2Pf.LeafCover2_of R _ _ (mono_sch _) (mono_sch _) (loc_sch e)
 
 /- English proof (translation)
-Use `empty_pb e` as an intermediate fact. Use `LateralTheory.E.LeafKunEmptyPf.H_sub (R := R) (Limits.pullback (C := Scheme.{0}) (Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom))) (Spec.map (CommRingCat.ofHom ((RingHom.snd R0 R1).comp e.toRingHom)))) F n` as an intermediate fact. Conclude with `sub_of_iso (PreservesPullback.iso sch _ _).symm F n`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_pb_sch (F : Shv R) (n : ℤ) :
     Subsingleton (H R (pullback (sch.map (Spec.map (CommRingCat.ofHom ((RingHom.fst R0 R1).comp e.toRingHom))))
@@ -249,9 +249,7 @@ theorem sub_pb_sch (F : Shv R) (n : ℤ) :
 end LateralTheory.E.DescEqvPf
 
 /- English proof (translation)
-Introduce `H q A R0 R1 _ _ _ e i`. Use `open LateralTheory.E.DescEqvPf in`. Conclude with `H.a4 (ZMod q) (coprod.inl : sp R0 ⟶ sp R0 ⨿ sp R1) coprod.inr (spMap ((RingHom.fst R0 R1).comp e.toRingHom)) (spMap ((RingHom.snd R0 R1).comp e.toRingHom)) _ (𝟙 _) (𝟙 _) (by rw [Category.id_comp]; exact coprod.inl_desc _ _) (by rw [Category.id_comp]; exact coprod.inr_desc _ _) (t …`. Use `sub_pb_coprod (R := ZMod q) (sp R0) (sp R1) (tw q i) n` as an intermediate fact. Use `sub_pb_sch (R := ZMod q) e (tw q i) n` as an intermediate fact.
-
-Conclude with `bij_of_sub _ _ n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.BinPf.DescEqv_of : LateralTheory.E.BinPf.DescEqv := by
   intro H q A R0 R1 _ _ _ e i

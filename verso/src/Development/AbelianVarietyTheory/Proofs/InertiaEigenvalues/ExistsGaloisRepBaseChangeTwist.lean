@@ -20,7 +20,7 @@ def AllRep (m : ℕ) (L : ∀ w, A.LP w) : Prop :=
     ∀ w, WDok N A i r w ∧ A.wdOf i r w = L w
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Take `⟨r, c, s, f⟩` from `h`. Conclude with `⟨r, c, s, fun w => ⟨(f w).1, (f w).2.trans (hL w)⟩⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem AllRep.congr {m m' : ℕ} {L L' : ∀ w, A.LP w} (h : AllRep N A i m L) (hm : m = m')
     (hL : ∀ w, L w = L' w) : AllRep N A i m' L' := by
@@ -29,9 +29,9 @@ theorem AllRep.congr {m m' : ℕ} {L L' : ∀ w, A.LP w} (h : AllRep N A i m L) 
   exact ⟨r, c, s, fun w => ⟨(f w).1, (f w).2.trans (hL w)⟩⟩
 
 /- English proof (translation)
-Take `⟨r, c, s, f⟩` from `h`. Take `⟨r', c', s', f'⟩` from `h'`. Take `⟨-, -, hsum, -⟩` from `hGal.2.2.2 i`. Use `⟨sumRep r r', cont_sumRep r r' c c', ss_sumRep r r' s s', fun w => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ placesOver H.E (N.l i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr (((hsum m m' r r' c c').1 w hw).2 ⟨(f w).1.resolve_left (not_not.2 hw), (f' w).1.resolve_left (not_not.2 hw)⟩)`. Conclude with `Or.inl hw`. Rewrite using `[(hsum m m' r r' c c').2.1 w (f w).1 (f' w).1, (f w).2, (f' w).2]`.
+Prove the second alternative. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 -/
 theorem AllRep.sum (hGal : TieGal N A) {m m' : ℕ} {L L' : ∀ w, A.LP w} (h : AllRep N A i m L)
     (h' : AllRep N A i m' L') : AllRep N A i (m + m') fun w => A.lpSum (L w) (L' w) := by
@@ -46,7 +46,7 @@ theorem AllRep.sum (hGal : TieGal N A) {m m' : ℕ} {L L' : ∀ w, A.LP w} (h : 
   · rw [(hsum m m' r r' c c').2.1 w (f w).1 (f' w).1, (f w).2, (f' w).2]
 
 /- English proof (translation)
-Introduce `w`. Distinguish the cases in `hw : w ∈ placesOver H.E (N.l i)`. Conclude with `⟨Or.inr (h2 w hw).1, (h2 w hw).2⟩`. Conclude with `⟨Or.inl hw, h1 w hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem allw {a : ℕ} (ρ : Formalism.ConjugateSelfDual.G H.E N.Om →* GL (Fin a) (Qbar (N.l i))) (L : ∀ w, A.LP w)
     (h1 : ∀ w, w ∉ placesOver H.E (N.l i) → A.wdOf i ρ w = L w)
@@ -58,9 +58,9 @@ theorem allw {a : ℕ} (ρ : Formalism.ConjugateSelfDual.G H.E N.Om →* GL (Fin
   · exact ⟨Or.inl hw, h1 w hw⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, htw⟩` from `hGal.2.2.2 i`. Establish `ht` using `htw a ρ χ cρ cχ`. Introduce `w`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ placesOver H.E (N.l i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr ((ht.1 w hw ((hχ w).1.resolve_left (not_not.2 hw))).2 ((hρ w).1.resolve_left (not_not.2 hw)))`. Conclude with `Or.inl hw`. Rewrite using `[ht.2.1 w (hρ w).1 (hχ w).1, (hρ w).2, (hχ w).2]`.
+Prove the second alternative. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 -/
 theorem allTw (hGal : TieGal N A) {a : ℕ} (ρ : Formalism.ConjugateSelfDual.G H.E N.Om →* GL (Fin a) (Qbar (N.l i)))
     (χ : Formalism.ConjugateSelfDual.G H.E N.Om →* GL (Fin 1) (Qbar (N.l i))) (cρ : ContQ N i ρ) (cχ : ContQ N i χ)
@@ -79,7 +79,7 @@ theorem allTw (hGal : TieGal N A) {a : ℕ} (ρ : Formalism.ConjugateSelfDual.G 
   · rw [ht.2.1 w (hρ w).1 (hχ w).1, (hρ w).2, (hχ w).2]
 
 /- English proof (translation)
-The claim follows from `| [], h, _ => absurd rfl h | [x], _, h => (h x (by simp)).congr N A i (by simp) fun w => by simp [A.lpSum_zero] | x :: y :: ys, _, h => ((h x (by simp)).sum N A i hGal (allRep_foldr hGal m L (y :: ys) (by simp) fun z hz => h z (List.mem_cons_of_mem _ hz))).congr N A i (by simp) f …`.
+A detailed English derivation is pending.
 -/
 theorem allRep_foldr (hGal : TieGal N A) {α : Type} (m : α → ℕ) (L : α → ∀ w, A.LP w) :
     ∀ xs : List α, xs ≠ [] → (∀ x ∈ xs, AllRep N A i (m x) (L x)) →
@@ -91,7 +91,7 @@ theorem allRep_foldr (hGal : TieGal N A) {α : Type} (m : α → ℕ) (L : α �
         fun z hz => h z (List.mem_cons_of_mem _ hz))).congr N A i (by simp) fun w => rfl
 
 /- English proof (translation)
-Proceed by induction on `xs with`. Consider the case `nil => exact lpTw_lpZero N A w c`. Consider the case `cons x xs ih => rw [List.foldr_cons, List.foldr_cons, A.lpTw_sum, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lpTw_foldr {α : Type} (L : α → ∀ w, A.LP w) (w : PlE H) (c : ℝ) (xs : List α) :
     A.lpTw (xs.foldr (fun x acc => A.lpSum (L x w) acc) (A.lpZero w)) c =
@@ -101,15 +101,15 @@ theorem lpTw_foldr {α : Type} (L : α → ∀ w, A.LP w) (w : PlE H) (c : ℝ) 
   | cons x xs ih => rw [List.foldr_cons, List.foldr_cons, A.lpTw_sum, ih]
 
 /- English proof (translation)
-Establish `hp : ∀ p ∈ Pa, AllRep N A i (p.a * p.d) fun w => A.lpTw (spehLoc N A p w) c`. Introduce `p hpm`. Establish `hmem : ∀ k ∈ ((List.range p.d : List ℕ) : List ℝ), ∃ n : ℕ, n < p.d ∧ (n : ℝ) = k`. Introduce `k hk`. Simplify using `[Lean.Internal.coeM] at hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨n, hn, rfl⟩` from `hk`. Conclude with `⟨n, hn, rfl⟩`. Establish `hr : ((List.range p.d : List ℕ) : List ℝ) ≠ []`. Establish `h1 : 0 < p.d` using `hd p hpm`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ((0 : ℕ) : ℝ) ∈ ((List.range p.d : List ℕ) : List ℝ)`. Simplify using `[Lean.Internal.coeM]`. Conclude with `⟨0, h1, by simp⟩`. Rewrite `this` using `[h0]`. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(allRep_foldr N A i hGal (fun _ => p.a) (fun (k : ℝ) w => A.lpTw (A.locG p.π w) (((p.d : ℝ) - 1) / 2 - k + c)) _ hr fun k hk => ?_).congr N A i ?_ fun w => ?_` and prove the remaining obligations. Take `⟨n, hn, rfl⟩` from `hmem k hk`. Conclude with `h p hpm n hn`. Simplify using `[Lean.Internal.coeM, mul_comm]`. Rewrite using `[spehLoc, lpTw_foldr N A (fun (k : ℝ) w => A.lpTw (A.locG p.π w) (((p.d : ℝ) - 1) / 2 - k)) w c]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [A.lpTw_add]`. Conclude with `(allRep_foldr N A i hGal (fun p => p.a * p.d) (fun p w => A.lpTw (spehLoc N A p w) c) Pa hne hp).congr N A i rfl fun w => (lpTw_foldr N A (fun p w => spehLoc N A p w) w c Pa).symm`.
+A detailed English derivation is pending.
 -/
 theorem allRep_isoLoc (hGal : TieGal N A) (c : ℝ) (Pa : List (Part A.CG)) (hne : Pa ≠ [])
     (hd : ∀ p ∈ Pa, 1 ≤ p.d)
@@ -149,23 +149,23 @@ section Piece
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.even_or_odd' m with ⟨k, hk | hk⟩ <;> subst hk`. Establish `hralg : A.ralg π` using `(A.ralg_def π).2 fun τ => ⟨(hinf τ).1, fun z hz => by`. Take `⟨n, hn⟩` from `(hinf τ).2 z hz`. Conclude with `⟨n - k, by push_cast at hn ⊢; linear_combination hn⟩⟩`. Take `⟨ρ1, c1, ss1, away1, over1⟩` from `(hG i).1 a ha π hc hralg`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨χA, cA, awayA, overA⟩` from `(hG i).2.2 A.etaT (1 / 2) fun τ z hz => by`. Take `⟨n, hn⟩` from `(eta_alg N A hAut 0 τ).1 z hz`. Conclude with `⟨n, by push_cast at hn ⊢; linear_combination hn⟩`. Take `⟨χB, cB, awayB, overB⟩` from `(hG i).2.2 A.etaTinv ((k : ℝ) - 1 / 2) fun τ z hz => by`. Take `⟨n, hn⟩` from `(eta_alg N A hAut (k - 1) τ).2 z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by push_cast at hn ⊢; linear_combination hn⟩`. Establish `f1` using `allw N A i ρ1 _ (fun w hw => (away1 w hw).1) fun w hw => ⟨(over1 w hw).1, (over1 w hw).2.2⟩`. Establish `fA` using `allw N A i χA _ awayA fun w hw => ⟨(overA w hw).1, (overA w hw).2.1⟩`. Establish `fB` using `allw N A i χB _ awayB fun w hw => ⟨(overB w hw).1, (overB w hw).2.1⟩`. Set `ρ2` to `twGL ρ1 (Matrix.GeneralLinearGroup.det.comp χA)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `c2 : ContQ N i ρ2` using `cont_twGL ρ1 χA c1 cA`. Establish `f2` using `allTw N A i hGal ρ1 χA c1 cA f1 fA`. Establish `f3` using `allTw N A i hGal ρ2 χB c2 cB f2 fB`. Use `⟨twGL ρ2 (Matrix.GeneralLinearGroup.det.comp χB), cont_twGL ρ2 χB c2 cB, isSSRep_twGL _ _ (isSSRep_twGL _ _ ss1), fun w => ⟨(f3 w).1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(f3 w).2, param_int N A hLP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcsd : A.csd (A.tw π A.etaT)` using `A.csd_tw π A.etaT hAut.1.1 hc`. Establish `hralg : A.ralg (A.tw π A.etaT)` using `(A.ralg_def _).2 fun τ => by`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `Multiset.card_eq_one.mp (A.infG_card A.etaT τ)`. Rewrite using `[A.infG_tw π A.etaT τ e he]`. Use `⟨(hinf τ).1.map (add_left_injective e), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨n, hn⟩` from `(hinf τ).2 z hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `(eta_alg N A hAut 0 τ).1 e (by rw [he]; exact Multiset.mem_singleton_self e)`. Conclude with `⟨n + j - k - 1, by push_cast at hn hj ⊢; linear_combination hn + hj⟩`. Take `⟨ρ1, c1, ss1, away1, over1⟩` from `(hG i).1 a ha _ hcsd hralg`. Take `⟨χ1, cχ, awayχ, overχ⟩` from `(hG i).2.2 A.etaTinv ((k : ℝ) + 1 / 2) (eta_alg N A hAut k · |>.2)`. Establish `f1` using `allw N A i ρ1 _ (fun w hw => (away1 w hw).1) fun w hw => ⟨(over1 w hw).1, (over1 w hw).2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `fχ` using `allw N A i χ1 _ awayχ fun w hw => ⟨(overχ w hw).1, (overχ w hw).2.1⟩`. Establish `f2` using `allTw N A i hGal ρ1 χ1 c1 cχ f1 fχ`. Use `⟨twGL ρ1 (Matrix.GeneralLinearGroup.det.comp χ1), cont_twGL ρ1 χ1 c1 cχ, isSSRep_twGL _ _ ss1, fun w => ⟨(f2 w).1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(f2 w).2, param_twist N A hLP]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem allRep_piece (hLP : TieLP N A) (hAut : TieAut N A) (hGal : TieGal N A) (hG : exists_galois_rep_local_global_compatible N A)
     {a : ℕ} (ha : 1 ≤ a) (π : A.CG a) (hc : A.csd π) (m : ℤ)
@@ -222,17 +222,17 @@ theorem allRep_piece (hLP : TieLP N A) (hAut : TieAut N A) (hGal : TieGal N A) (
 end Piece
 
 /- English proof (translation)
-Introduce `D hT hG i P Pa hB`. Take `⟨hLP, hAut, hGal⟩` from `hT`. Establish `hne : Pa ≠ []`. Introduce and unpack `rfl`. Establish `h0` using `hB.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [rankIso, List.map_nil, List.sum_nil] at h0`. Establish `: 1 ≤ D.R.nV`. Use `D.R.t_odd.pos` as an intermediate fact. Unfold `Ranks.nV`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hreal` using `allRep_isoLoc D.nd D.naut i hGal ((1 - (D.R.nV : ℝ)) / 2) Pa hne (fun p hp => (hB.1 p hp).2.1) fun p hp k hk => by`. Take `⟨ha, -, hc⟩` from `hB.1 p hp`. Use `(allRep_piece D.nd D.naut i hLP hAut hGal hG ha p.π hc ((p.d : ℤ) - 1 - 2 * k + p.a - D.R.nV) fun τ => ?_).congr D.nd D.naut i rfl fun w => ?_` and prove the remaining obligations. Establish `hW : (D.naut.infWt i τ).Nodup ∧ ∀ z ∈ D.naut.infWt i τ, ∃ k : ℤ, z = (k : ℂ) + ((D.R.nV : ℂ) - 1) / 2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[D.nbc.embAV_inf i P]`. Conclude with `D.nbc.infW_alg _ _ τ`. Establish `hle : (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - k)) ≤ D.naut.infWt i τ`. Rewrite using `[← hB.2.2.2.2.2 τ]`. Use `le_trans (List.single_le_sum (fun _ _ => Multiset.zero_le _) _ ?_) (List.single_le_sum (fun _ _ => Multiset.zero_le _) _ (List.mem_map_of_mem hp))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `List.mem_map.2 ⟨k, by simpa using hk, rfl⟩`. Use `⟨(Multiset.nodup_of_le hle hW.1).of_map _, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hW.2 _ (Multiset.mem_of_le hle (Multiset.mem_map_of_mem _ hz))`. Conclude with `⟨n, by push_cast at hn ⊢; linear_combination hn⟩`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, c, s, f⟩` from `hreal.congr D.nd D.naut i hB.2.2.1 fun _ => rfl`. Conclude with `⟨r, c, s, f⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm2 D → ∀ (i : D.nd.Loc) (PI : D.naut.AV i)
     (Pa : List (Part D.naut.CG)), IsBCV D.nd D.naut i PI Pa →

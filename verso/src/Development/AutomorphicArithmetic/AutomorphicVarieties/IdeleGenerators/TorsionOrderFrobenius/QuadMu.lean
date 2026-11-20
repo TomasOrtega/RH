@@ -11,7 +11,7 @@ section
 variable {Ω : Type} [Field Ω] {s : Ω →+* Ω}
 
 /- English proof (translation)
-Introduce `δ hδ`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (hδ.trans hx.symm) with h | h` into its components or cases. Rewrite using `[h, hs]`. Rewrite using `[h, map_neg, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fx_of {a : ℤ} {x : Ω} (hx : x ^ 2 = (a : Ω)) (hs : s x = x) : Fx s a := by
   intro δ hδ
@@ -20,9 +20,9 @@ private theorem fx_of {a : ℤ} {x : Ω} (hx : x ^ 2 = (a : Ω)) (hs : s x = x) 
   · rw [h, map_neg, hs]
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `IsAlgClosed.exists_pow_nat_eq (a : Ω) two_pos`. Take `⟨β, hβ⟩` from `IsAlgClosed.exists_pow_nat_eq (b : Ω) two_pos`. Use `fx_of (x := α * β) ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_pow, hα, hβ]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, ha α hα, hb β hβ]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fx_mul [IsAlgClosed Ω] {a b : ℤ} (ha : Fx s a) (hb : Fx s b) : Fx s (a * b) := by
   obtain ⟨α, hα⟩ := IsAlgClosed.exists_pow_nat_eq (a : Ω) two_pos
@@ -34,14 +34,14 @@ private theorem fx_mul [IsAlgClosed Ω] {a b : ℤ} (ha : Fx s a) (hb : Fx s b) 
   · rw [map_mul, ha α hα, hb β hβ]
 
 /- English proof (translation)
-The claim follows from `fx_of (x := 1) (by simp) (map_one s)`.
+A detailed English derivation is pending.
 -/
 private theorem fx_one : Fx s 1 := fx_of (x := 1) (by simp) (map_one s)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `fx_one`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `fx_mul ih ha`.
+A detailed English derivation is pending.
 -/
 private theorem fx_pow [IsAlgClosed Ω] {a : ℤ} (ha : Fx s a) (k : ℕ) : Fx s (a ^ k) := by
   induction k with
@@ -53,7 +53,7 @@ private theorem fx_pow [IsAlgClosed Ω] {a : ℤ} (ha : Fx s a) (k : ℕ) : Fx s
     exact fx_mul ih ha
 
 /- English proof (translation)
-Use `fx_of (x := 2) ?_ (map_ofNat s 2)` and prove the remaining obligations. Use `push_cast`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Evaluate the numerical expressions.
 -/
 private theorem fx_four : Fx s 4 := by
   refine fx_of (x := 2) ?_ (map_ofNat s 2)
@@ -63,7 +63,7 @@ private theorem fx_four : Fx s 4 := by
 variable {M : ℕ}
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hn`. Conclude with `h ζ (by rw [pow_mul, hζ, one_pow])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem fix_dvd (h : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ) {n : ℕ} (hn : n ∣ M) {ζ : Ω} (hζ : ζ ^ n = 1) :
     s ζ = ζ := by
@@ -71,7 +71,7 @@ private theorem fix_dvd (h : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ) {n : ℕ} (h
   exact h ζ (by rw [pow_mul, hζ, one_pow])
 
 /- English proof (translation)
-Introduce `δ hδ`. Apply `fix_dvd h h4` to reduce the goal to its premises. Rewrite using `[show δ ^ 4 = (δ ^ 2) ^ 2 by ring, hδ]`. Use `push_cast`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Evaluate the numerical expressions.
 -/
 private theorem fx_neg_one (h : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ) (h4 : 4 ∣ M) : Fx s (-1) := by
   intro δ hδ
@@ -81,17 +81,17 @@ private theorem fx_neg_one (h : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ) (h4 : 4 �
   norm_num
 
 /- English proof (translation)
-Introduce `δ hδ`. Establish `hδ' : δ ^ 2 = 2`. Rewrite using `[hδ]`. Use `push_cast`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Distinguish the cases in `h2 : (2 : Ω) = 0`. Establish `: δ = 0`. Rewrite `hδ'` using `[h2]`. Conclude with `pow_eq_zero_iff (two_ne_zero) |>.1 hδ'`. Rewrite using `[this, map_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `IsAlgClosed.exists_pow_nat_eq (-1 : Ω) two_pos`. Take `⟨t, ht⟩ : ∃ t : Ω, 2 * t = 1` from `⟨2⁻¹, mul_inv_cancel₀ h2⟩`. Take `⟨η, hη⟩ : ∃ η : Ω, η = (1 + i) * δ * t` from `⟨_, rfl⟩`. Establish `hη2 : η ^ 2 = i`. Rewrite using `[hη]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(1 + i) ^ 2 * t ^ 2 * hδ' + 2 * t ^ 2 * hi + i * (2 * t + 1) * ht`. Establish `hsi : s i = i`. Apply `fix_dvd h h8` to reduce the goal to its premises. Rewrite using `[show i ^ 8 = (i ^ 2) ^ 4 by ring, hi]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hsη : s η = η`. Apply `fix_dvd h h8` to reduce the goal to its premises. Rewrite using `[show η ^ 8 = ((η ^ 2) ^ 2) ^ 2 by ring, hη2, hi]`. Evaluate the numerical expressions. Establish `hδη : δ = η * (1 - i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hη]`. Take the linear combination `(-δ) * ht + δ * t * hi`. Rewrite using `[hδη, map_mul, map_sub, map_one, hsη, hsi]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fx_two [IsAlgClosed Ω] (h : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ) (h8 : 8 ∣ M) : Fx s 2 := by
   intro δ hδ
@@ -124,21 +124,21 @@ private theorem fx_two [IsAlgClosed Ω] (h : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = 
   rw [hδη, map_mul, map_sub, map_one, hsη, hsi]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero`. Introduce `h0`. Simplify using `at h0`. Consider the case `one`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `_ _`. Conclude with `⟨1, rfl, rfl, fx_one⟩`. Consider the case `prime p hp`. Introduce `hodd hpM`. Use `haveI := Fact.mk hp`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp2 : p ≠ 2`. Introduce and unpack `rfl`. Simplify using `at hodd`. Use `haveI : NeZero ((p : ℕ) : Ω) := ⟨by exact_mod_cast hp.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω p`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨x, hx⟩, hσ⟩` from `UpperTheory.V.CF.gauss Ω p ζ hp2 hζ`. Establish `hsζ : s ζ = ζ` using `fix_dvd h hpM hζ.pow_eq_one`. Establish `hsx : s x = x`. Use `(hσ x hx).2 s 1 (by rw [pow_one]; exact hsζ)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨UpperTheory.V.CF.pStar p, ?_, ?_, fx_of hx hsx⟩` and prove the remaining obligations. Unfold `UpperTheory.V.CF.pStar`. Break down `Nat.even_or_odd (p / 2) with he | ho` into its components or cases. Rewrite using `[he.neg_one_pow, one_mul]`. Take `⟨j, hj⟩` from `he`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[ho.neg_one_pow, neg_one_mul]`. Take `⟨j, hj⟩` from `ho`. Use linear arithmetic over natural numbers and integers. Simplify using `[UpperTheory.V.CF.pStar, Int.natAbs_mul, Int.natAbs_pow]`.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mul a b iha ihb`. Introduce `hodd hab`. Establish `ho` using `Nat.odd_mul.1 (Nat.odd_iff.2 hodd)`. Take `⟨x, hx1, hx2, hx3⟩` from `iha (Nat.odd_iff.1 ho.1) (dvd_trans (dvd_mul_right a b) hab)`. Take `⟨y, hy1, hy2, hy3⟩` from `ihb (Nat.odd_iff.1 ho.2) (dvd_trans (dvd_mul_left b a) hab)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x * y, ?_, ?_, fx_mul hx3 hy3⟩` and prove the remaining obligations. Rewrite using `[Int.mul_emod, hx1, hy1]`. Evaluate the numerical expressions. Rewrite using `[Int.natAbs_mul, hx2, hy2]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fx_odd [IsAlgClosed Ω] [CharZero Ω] (h : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ) (n : ℕ) :
     n % 2 = 1 → n ∣ M → ∃ a : ℤ, a % 4 = 1 ∧ a.natAbs = n ∧ Fx s a := by
@@ -183,19 +183,17 @@ private theorem fx_odd [IsAlgClosed Ω] [CharZero Ω] (h : ∀ ζ : Ω, ζ ^ M =
     · rw [Int.natAbs_mul, hx2, hy2]
 
 /- English proof (translation)
-Take `⟨k, m, hm, hdk⟩` from `Nat.exists_eq_two_pow_mul_odd (Int.natAbs_ne_zero.2 hd0)`. Take `⟨a, ha4, ham, hfa⟩` from `fx_odd h m (Nat.odd_iff.1 hm) (by rw [hdk]; exact dvd_mul_left m _)`. Establish `hda : d = 2 ^ k * a ∨ d = -(2 ^ k * a)`. Apply `Int.natAbs_eq_natAbs_iff.1` to reduce the goal to its premises. Rewrite using `[Int.natAbs_mul, ham, hdk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h4 : 2 ≤ k → 4 ∣ d.natAbs` using `fun hk => by`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Rewrite using `[hdk, pow_add]`. Conclude with `dvd_mul_of_dvd_left (dvd_mul_of_dvd_left (by norm_num) _) _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpk : 2 ≤ k → Fx s (2 ^ k)` using `fun hk => by`. Break down `Nat.eq_or_lt_of_le hk with hk2 | hk3` into its components or cases. Rewrite using `[← hk2]`. Establish `e : (2 : ℤ) ^ 2 = 4` using `by norm_num`. Rewrite using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `fx_four`. Apply `fx_pow (fx_two h ?_)` to reduce the goal to its premises. Establish `h3 : 3 ≤ k` using `hk3`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le h3`. Rewrite using `[hdk, pow_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `dvd_mul_of_dvd_left (dvd_mul_of_dvd_left (by norm_num) _) _`. Break down `Nat.lt_or_ge k 2 with hk | hk` into its components or cases. Use `interval_cases k`. Simplify using `at hda`. Break down `hda with rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hfa`. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Simplify using `at hda`. Use linear arithmetic over natural numbers and integers.
-
-Break down `hda with rfl | rfl` into its components or cases. Conclude with `fx_mul (hpk hk) hfa`. Rewrite using `[neg_eq_neg_one_mul]`. Conclude with `fx_mul (fx_neg_one h (h4 hk)) (fx_mul (hpk hk) hfa)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fx_disc [IsAlgClosed Ω] [CharZero Ω] {d : ℤ} (hd0 : d ≠ 0) (hd : d % 4 = 0 ∨ d % 4 = 1)
     (h : ∀ ζ : Ω, ζ ^ d.natAbs = 1 → s ζ = ζ) : Fx s d := by
@@ -238,13 +236,13 @@ private theorem fx_disc [IsAlgClosed Ω] [CharZero Ω] {d : ℤ} (hd0 : d ≠ 0)
 end
 
 /- English proof (translation)
-Set `b` to `Module.finBasisOfFinrankEq ℚ K hK`. Use `set M := Algebra.leftMulMatrix b x with hM`. Establish `hnd : M.charpoly.natDegree = 2`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `h2 : M.charpoly.coeff 2 = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Matrix.charpoly_monic M).leadingCoeff` as an intermediate fact. Rewrite `this` using `[Polynomial.leadingCoeff, hnd]`. Then use the resulting hypothesis. Establish `htr : Algebra.trace ℚ K x = -M.charpoly.coeff 1`. Rewrite using `[Algebra.trace_eq_matrix_trace b, Matrix.trace_eq_neg_charpoly_coeff]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hzero : Polynomial.aeval x M.charpoly = 0`. Apply `Algebra.leftMulMatrix_injective b` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algHom_apply, map_zero]`. Conclude with `Matrix.aeval_self_charpoly M`. Rewrite `hzero` using `[Polynomial.aeval_eq_sum_range, hnd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, pow_zero, pow_one, h2, one_smul, Algebra.smul_def, mul_one, map_one, one_mul] at hzero`. Use `⟨-M.charpoly.coeff 0, ?_⟩` and prove the remaining obligations. Rewrite using `[htr, map_neg, map_neg]`. Take the linear combination `hzero`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_sq_sub_trace_mul_eq_rat_of_finrank_two {K : Type} [Field K] [NumberField K] (hK : Module.finrank ℚ K = 2)
     (x : K) : ∃ r : ℚ, x ^ 2 - algebraMap ℚ K (Algebra.trace ℚ K x) * x = algebraMap ℚ K r := by
@@ -271,11 +269,11 @@ private theorem exists_sq_sub_trace_mul_eq_rat_of_finrank_two {K : Type} [Field 
   linear_combination hzero
 
 /- English proof (translation)
-Take `⟨r1, h1⟩` from `exists_sq_sub_trace_mul_eq_rat_of_finrank_two hK (x + y)`. Take `⟨r2, h2⟩` from `exists_sq_sub_trace_mul_eq_rat_of_finrank_two hK x`. Take `⟨r3, h3⟩` from `exists_sq_sub_trace_mul_eq_rat_of_finrank_two hK y`. Simplify using `only [map_add] at h1`. Establish `hE : 2 * x * y - algebraMap ℚ K (Algebra.trace ℚ K x) * y - algebraMap ℚ K (Algebra.trace ℚ K y) * x = algebraMap ℚ K (r1 - r2 - r3)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_sub, ← h1, ← h2, ← h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 2 * x * y - algebraMap ℚ K (Algebra.trace ℚ K x) * y - algebraMap ℚ K (Algebra.trace ℚ K y) * x = (2 : ℚ) • (x * y) - Algebra.trace ℚ K x • y - Algebra.trace ℚ K y • x`. Simplify using `only [Algebra.smul_def, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hT` using `congrArg (Algebra.trace ℚ K) hE`. Rewrite `hT` using `[e2, Algebra.trace_algebraMap, hK, map_sub, map_sub, map_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[hE]`. Use `congr 1`. Move the coercions through the operations in `at hT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -305,51 +303,47 @@ private theorem two_mul_mul_sub_trace_eq_rat_of_finrank_two {K : Type} [Field K]
   linarith
 
 /- English proof (translation)
-Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) = 2`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, NumberField.RingOfIntegers.rank, hK]`. Use `set bb := (integralBasis K).reindex (Fintype.equivFinOfCardEq hcard) with hbb`. Establish `hint : ∀ i, IsIntegral ℤ (bb i)` using `fun i => by`. Rewrite using `[hbb, Module.Basis.reindex_apply, integralBasis_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `RingOfIntegers.isIntegral_coe _`. Establish `hD : ((discr K : ℤ) : ℚ) = Algebra.discr ℚ bb`. Rewrite using `[coe_discr, hbb, Module.Basis.coe_reindex, Algebra.discr_reindex]`. Rewrite `hD` using `[Algebra.discr_def, Matrix.det_fin_two]`. Simplify using `only [Algebra.traceMatrix_apply, Algebra.traceForm_apply] at hD`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : (bb.repr 1 0) • bb 0 + (bb.repr 1 1) • bb 1 = 1`. Use `bb.sum_repr 1` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`. Then use the resulting hypothesis. Establish `hi0` using `hint 0`. Establish `hi1` using `hint 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `bb.repr 1 0 = c0 at hone`. Generalize the expression as in `bb.repr 1 1 = c1 at hone`. Generalize the expression as in `bb 0 = x0 at hone hD hi0`. Generalize the expression as in `bb 1 = x1 at hone hD hi1`. Rewrite `hD` using `[mul_comm x1 x0]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `tr1 : Algebra.trace ℚ K 1 = 2`. Rewrite using `[← map_one (algebraMap ℚ K), Algebra.trace_algebraMap, hK]`. Evaluate the numerical expressions. Establish `R0 : Algebra.trace ℚ K x0 = c0 * Algebra.trace ℚ K (x0 * x0) + c1 * Algebra.trace ℚ K (x0 * x1)`. Establish `h : x0 = c0 • (x0 * x0) + c1 • (x0 * x1)`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `conv_lhs => rw [h]`. Rewrite using `[map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Establish `R1 : Algebra.trace ℚ K x1 = c0 * Algebra.trace ℚ K (x0 * x1) + c1 * Algebra.trace ℚ K (x1 * x1)`. Establish `h : x1 = c0 • (x0 * x1) + c1 • (x1 * x1)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `conv_lhs => rw [h]`. Rewrite using `[map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Establish `R2 : 2 = c0 * Algebra.trace ℚ K x0 + c1 * Algebra.trace ℚ K x1`. Use `congrArg (Algebra.trace ℚ K) hone` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul, tr1]`. Conclude with `this.symm`. Establish `errorNonneg` using `two_mul_mul_sub_trace_eq_rat_of_finrank_two hK x0 x0`. Establish `E11` using `two_mul_mul_sub_trace_eq_rat_of_finrank_two hK x1 x1`. Establish `bivariateExponentMonomial` using `two_mul_mul_sub_trace_eq_rat_of_finrank_two hK x0 x1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_sub, map_mul] at errorNonneg E11 bivariateExponentMonomial`. Establish `hZ : ∀ y : K, IsIntegral ℤ y → ∃ n : ℤ, (n : ℚ) = Algebra.trace ℚ K y` using `fun y hy => by`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (Algebra.isIntegral_trace (L := ℚ) hy)`. Conclude with `⟨n, by rw [← hn]; simp⟩`. Take `⟨n0, hn0⟩` from `hZ x0 hi0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n1, hn1⟩` from `hZ x1 hi1`. Take `⟨m01, hm01⟩` from `hZ (x0 * x1) (hi0.mul hi1)`. Take `⟨δ, hδd⟩ : ∃ δ : K, δ = algebraMap ℚ K (Algebra.trace ℚ K x1) * x0 - algebraMap ℚ K (Algebra.trace ℚ K x0) * x1` from `⟨_, rfl⟩`. Establish `htd : Algebra.trace ℚ K δ = 0`. Rewrite using `[hδd, map_sub, ← Algebra.smul_def, ← Algebra.smul_def, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsecond : ∀ x : K, ∃ a b : ℚ, 2 * x * δ = (a : K) * δ + (b : K)`. Introduce `x`. Establish `E` using `two_mul_mul_sub_trace_eq_rat_of_finrank_two hK x δ`. Rewrite `E` using `[htd, map_zero, zero_mul, sub_zero, mul_zero, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨Algebra.trace ℚ K x, Algebra.trace ℚ K (x * δ), ?_⟩` and prove the remaining obligations. Establish `hc : ∀ r : ℚ, (r : K) = algebraMap ℚ K r` using `fun r => by simp`. Rewrite using `[hc, hc]`. Take the linear combination `E`. Generalize the expression as in `Algebra.trace ℚ K (x0 * x0) = T00 at R0 errorNonneg hD`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `Algebra.trace ℚ K (x1 * x1) = T11 at R1 E11 hD`. Generalize the expression as in `Algebra.trace ℚ K (x0 * x1) = T01 at R0 R1 bivariateExponentMonomial hD hm01`. Generalize the expression as in `Algebra.trace ℚ K x0 = t0 at R0 R2 errorNonneg bivariateExponentMonomial hn0 hδd`. Generalize the expression as in `Algebra.trace ℚ K x1 = t1 at R1 R2 E11 bivariateExponentMonomial hn1 hδd`. Establish `hQ : t1 ^ 2 * T00 - 2 * t0 * t1 * T01 + t0 ^ 2 * T11 = 2 * ((discr K : ℤ) : ℚ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hD, R0, R1]`. Rewrite `R2` using `[R0, R1]`. Take the linear combination `(-(T00 * T11 - T01 * T01)) * R2`. Establish `hsq : δ ^ 2 = ((discr K : ℤ) : K)`. Establish `hQ'` using `congrArg (algebraMap ℚ K) hQ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_sub, map_mul, map_pow, map_ofNat, map_intCast] at hQ'`. Rewrite using `[hδd]`. Take the linear combination `(algebraMap ℚ K t1 ^ 2 / 2) * errorNonneg - (algebraMap ℚ K t0 * algebraMap ℚ K t1) * bivariateExponentMonomial + (algebraMap ℚ K t0 ^ 2 / 2) * E11 + (1 / 2 : K) * hQ'`. Take `⟨ν, hνd⟩ : ∃ ν : K, ν = x0 * (algebraMap ℚ K t1 - x1) * ((algebraMap ℚ K t0 - x0) * x1)` from `⟨_, rfl⟩`. Establish `hν : δ ^ 2 = (algebraMap ℚ K t0 * algebraMap ℚ K t1 - algebraMap ℚ K T01) ^ 2 - 4 * ν`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hδd, hνd]`. Take the linear combination `(-((algebraMap ℚ K t1 * x0 + algebraMap ℚ K t0 * x1 - 2 * x0 * x1) + algebraMap ℚ K t0 * algebraMap ℚ K t1 - algebraMap ℚ K T01)) * bivariateExponentMonomial`. Establish `hIc : ∀ n : ℤ, IsIntegral ℤ (algebraMap ℚ K (n : ℚ))` using `fun n => by`. Use `isIntegral_algebraMap (R := ℤ) (A := K) (x := n)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hνint : IsIntegral ℤ ν`. Establish `ha0` using `hIc n0`. Establish `ha1` using `hIc n1`. Rewrite `ha0` using `[hn0]`. Rewrite `ha1` using `[hn1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hνd]`. Conclude with `(hi0.mul (ha1.sub hi1)).mul ((ha0.sub hi0).mul hi1)`. Establish `hνq : ν = algebraMap ℚ K (((t0 * t1 - T01) ^ 2 - ((discr K : ℤ) : ℚ)) / 4)`. Simplify using `only [map_div₀, map_sub, map_pow, map_mul, map_intCast, map_ofNat]`. Take the linear combination `(1 / 4 : K) * hν - (1 / 4 : K) * hsq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ n : ℤ, (n : ℚ) = ((t0 * t1 - T01) ^ 2 - ((discr K : ℤ) : ℚ)) / 4 := by`. Establish `h1 : IsIntegral ℤ (((t0 * t1 - T01) ^ 2 - ((discr K : ℤ) : ℚ)) / 4)` using `(isIntegral_algebraMap_iff (algebraMap ℚ K).injective).1 (hνq ▸ hνint)`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h1`. Conclude with `⟨n, by rw [← hn]; simp⟩`. Rewrite `hq` using `[← hn0, ← hn1, ← hm01]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hDZ : discr K = (n0 * n1 - m01) ^ 2 - 4 * q`. Establish `: ((discr K : ℤ) : ℚ) = (((n0 * n1 - m01) ^ 2 - 4 * q : ℤ) : ℚ)`. Use `push_cast`. Take the linear combination `4 * hq`. Conclude with `this` after adjusting the coercions.
+Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, δ, hsq, hsecond⟩` and prove the remaining obligations. Rewrite using `[hDZ]`. Generalize the expression as in `n0 * n1 - m01 = σ`. Break down `Int.even_or_odd σ with ⟨k, rfl⟩ | ⟨k, rfl⟩` into its components or cases. Use `left`.
-
-Establish `e : (k + k) ^ 2 - 4 * q = 4 * (k * k - q)` using `by ring`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Use `right`. Establish `e : (2 * k + 1) ^ 2 - 4 * q = 4 * (k * k + k - q) + 1` using `by ring`.
-
-Rewrite using `[e]`. Generalize the expression as in `k * k + k - q = X`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sub_smul_mul_sub_smul_eq_zero_of_quadratic {K : Type} [Field K] [NumberField K] (hK : Module.finrank ℚ K = 2) :
     (discr K % 4 = 0 ∨ discr K % 4 = 1) ∧ ∃ δ : K, δ ^ 2 = (discr K : K) ∧
@@ -483,15 +477,15 @@ private theorem sub_smul_mul_sub_smul_eq_zero_of_quadratic {K : Type} [Field K] 
     omega
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨hd4, δ, hδ, hx⟩` from `sub_smul_mul_sub_smul_eq_zero_of_quadratic hK`. Establish `hD : discr K ≠ 0` using `NumberField.discr_ne_zero K`. Take `⟨δ', hδ'⟩ : ∃ δ' : Ω, δ' = algebraMap K Ω δ` from `⟨_, rfl⟩`. Establish `hδ'2 : δ' ^ 2 = ((discr K : ℤ) : Ω)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδ', ← map_pow, hδ, map_intCast]`. Establish `hsδ : s δ' = δ'` using `fx_disc (s := (s : Ω →+* Ω)) hD hd4 (fun ζ hζ => hs ζ hζ) δ' hδ'2`. Establish `hδ0 : δ' ≠ 0`. Introduce `h0`. Rewrite `hδ'2` using `[h0, zero_pow two_ne_zero, eq_comm, Int.cast_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD hδ'2`. Rewrite using `[mem_galOf]`. Introduce `x`. Take `⟨a, b, hab⟩` from `hx x`. Establish `hab' : 2 * algebraMap K Ω x * δ' = (a : Ω) * δ' + (b : Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (algebraMap K Ω) hab` as an intermediate fact. Simplify `this` using `[map_mul, map_add, map_ratCast, map_ofNat, hδ']`. Establish `hs2` using `congrArg s hab'`. Rewrite `hs2` using `[map_mul, map_mul, map_add, map_mul, map_ratCast, map_ratCast, hsδ, map_ofNat]`. Establish `h0 : (2 * δ') * (s (algebraMap K Ω x) - algebraMap K Ω x) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Take the linear combination `hs2 - hab'`. Break down `mul_eq_zero.1 h0 with h0 | h0` into its components or cases. Conclude with `absurd h0 (mul_ne_zero two_ne_zero hδ0)`. Conclude with `sub_eq_zero.1 h0`.
+A detailed English derivation is pending.
 -/
 theorem quadMu (K Ω : Type) [Field K] [NumberField K] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω]
     (hK : Module.finrank ℚ K = 2) (s : G ℚ Ω) (hs : ∀ ζ : Ω, ζ ^ (discr K).natAbs = 1 → s ζ = ζ) : s ∈ galOf ℚ K Ω := by

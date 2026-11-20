@@ -14,9 +14,9 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.HeckeTwo
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟 σ hσ z hz`. Take `⟨C, hC⟩` from `GlobalTheory.T.hilbertEisensteinLatticeSummand_weightTwo_bound F σ hσ z hz`. Establish `hS` using `(GlobalTheory.T.summable_gaussianExtension_norm_rpow F 𝔞 𝔟 (1 + σ.re) (by linarith) (GlobalTheory.T.finite_gaussianExtension_units_quot_units F)).mul_left C`. Use `Summable.of_norm_bounded hS fun c => ?_` and prove the remaining obligations. Establish `hp : c.out.1 ≠ 0` using `c.out.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : |((Algebra.norm ℚ (GlobalTheory.GaussExt.gEmb F c.out.1) : ℚ) : ℝ)| = ∏ τ : F →+* ℝ, ((τ c.out.1.1) ^ 2 + (τ c.out.1.2) ^ 2)`. Rewrite using `[GlobalTheory.T.algebraNorm_rat_gaussianExtensionOfPair F c.out.1.1 c.out.1.2]`. Conclude with `abs_of_nonneg (Finset.prod_nonneg fun τ _ => by positivity)`. Rewrite using `[e]`. Conclude with `hC _ hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeTwo.summable_eisClass_two : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F]
     (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (σ : ℂ), 0 < σ.re → ∀ z ∈ GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.upperHalf F,

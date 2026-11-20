@@ -22,11 +22,11 @@ namespace GlobalTheory.NondegSpread
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP r₁ r₂ hs ha`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Use `⟨fun T x x' y => ?_, fun T x y => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD ha P hP r₁ r₂ T x x' y).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e` using `(cls_eq_iff hP (pull_isLB hP _)).2 hs`. Rewrite `e` using `[cls_pull hP]`. Use `conv_lhs => rw [e]`. Rewrite using `[← pull_comp, ← Over.comp_left, comp_lift, lift_fst, lift_snd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_add_and_symm : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A →
     ∀ (P : LB (A ⊗ A).left) (hP : P.IsLB),
@@ -53,7 +53,7 @@ theorem pairing_add_and_symm : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsC
     rw [← pull_comp, ← Over.comp_left, comp_lift, lift_fst, lift_snd]
 
 /- English proof (translation)
-Introduce `S T X a b h`. Use `choose V hV e using h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `Scheme.hom_ext_of_forall _ _ fun p => ⟨V p, hV p, congrArg (fun q => q.left) (e p)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem over_hom_ext_of_local : ∀ (S : Scheme.{0}) (T X : Over S) (a b : T ⟶ X),
     (∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ Out.overResι V ≫ a = Out.overResι V ≫ b) → a = b := by
@@ -63,9 +63,9 @@ theorem over_hom_ext_of_local : ∀ (S : Scheme.{0}) (T X : Over S) (a b : T ⟶
   exact Scheme.hom_ext_of_forall _ _ fun p => ⟨V p, hV p, congrArg (fun q => q.left) (e p)⟩
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ H X _ a b hfin hflat h`. Use `GlobalTheory.schemeTheoreticallyDominant_fractionField O K` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (pullback.fst H.hom (spMap (algebraMap O K)))` using `.of_isPullback (IsPullback.of_hasPullback H.hom (spMap (algebraMap O K))).flip`. Set `T : Over (Sp O)` to `Over.mk (pullback.fst H.hom (spMap (algebraMap O K)) ≫ H.hom)`. Set `z : T ⟶ H` to `Over.homMk (pullback.fst _ _) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `GlobalTheory.over_ext_of_schemeTheoreticallyDominant (pullback.fst H.hom (spMap (algebraMap O K))) ?_` and prove the remaining obligations. Conclude with `congrArg (fun q => q.left) (h T (pullback.snd _ _) pullback.condition z)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_generic_points : ∀ (O K : Type) [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K] (H X : Over (Sp O))
     [IsSeparated X.hom] (a b : H ⟶ X), IsFinite H.hom → Flat H.hom →
@@ -80,9 +80,9 @@ theorem hom_ext_of_generic_points : ∀ (O K : Type) [CommRing O] [IsDomain O] [
   exact congrArg (fun q => q.left) (h T (pullback.snd _ _) pullback.condition z)
 
 /- English proof (translation)
-Introduce `S A _ P hP hB hS T x h`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `dg : ∀ g : T ⊗ A ⟶ A, CechPic.pull g.left (CechPic.cls _ hD) = CechPic.pull (lift g g).left (CechPic.cls P hP)` using `fun g => by`. Rewrite using `[cls_pull hP, ← pull_comp, ← Over.comp_left, comp_lift, Category.comp_id]`. Establish `hm : lift (fst T A ≫ x) (snd T A) ≫ μ[A] = (fst T A ≫ x) * snd T A` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(cls_linComb hD (![(lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left, (snd T A).left] : Fin 2 → _) ![1, -1] h).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_smul, neg_smul]`. Rewrite using `[hm, dg, dg, hB, hS _ (fst T A ≫ x) (_ * _), hS _ (snd T A) (_ * _), hB, hB, ← pull_comp, ← Over.comp_left, comp_lift, MonObj.comp_pow, pow_two, hB, hS _ (snd T A) (fst T A ≫ x)]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cls_translDiff : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) (hP : P.IsLB),
     (∀ (T : Over S) (x x' y : T ⟶ A), CechPic.pull (lift (x * x') y).left (CechPic.cls P hP) = CechPic.pull (lift x y).left (CechPic.cls P hP) + CechPic.pull (lift x' y).left (CechPic.cls P hP)) →
@@ -103,9 +103,9 @@ theorem cls_translDiff : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (P : LB (A
   abel
 
 /- English proof (translation)
-Introduce `S A _ P hP hB hS T x h0 p`. Establish `hD` using `pull_isLB hP (lift (𝟙 A) (𝟙 A)).left`. Establish `hM : (Out.translDiff A (P.pull (lift (𝟙 A) (𝟙 A)).left) x).IsLB` using `LB.isLB_linComb hD _ _`. Establish `e` using `cls_translDiff S A P hP hB hS T x hM`. Rewrite `e` using `[h0, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨N, hN, hc⟩` from `cls_surj (CechPic.pull (lift x x).left (CechPic.cls P hP))`. Establish `e' : cls (N.pull (fst T A).left) (pull_isLB hN _) = cls _ hM` using `by rw [cls_pull hN, hc, e]`. Take `⟨u, hu⟩` from `(cls_eq_iff _ _).1 e'`. Conclude with `GlobalTheory.CubeLawCompare.locally_trivial_of_iso_pull (fst T A).left _ hN u hu p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem memKL_of_pairing_sq : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) (hP : P.IsLB),
     (∀ (T : Over S) (x x' y : T ⟶ A), CechPic.pull (lift (x * x') y).left (CechPic.cls P hP) = CechPic.pull (lift x y).left (CechPic.cls P hP) + CechPic.pull (lift x' y).left (CechPic.cls P hP)) →
@@ -123,23 +123,21 @@ theorem memKL_of_pairing_sq : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (P : 
   exact GlobalTheory.CubeLawCompare.locally_trivial_of_iso_pull (fst T A).left _ hN u hu p
 
 /- English proof (translation)
-Introduce `S A _ P hP hB hS r₂ T x hx p`. Take `⟨V, hV, c, hc⟩` from `hx p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Establish `hD` using `pull_isLB hP (lift (𝟙 A) (𝟙 A)).left`. Establish `hM : (Out.translDiff A (P.pull (lift (𝟙 A) (𝟙 A)).left) x).IsLB` using `LB.isLB_linComb hD _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nat : ∀ {Y Z : Over S} (g : Y ⟶ Z) (a b : Z ⟶ A), CechPic.pull g.left (CechPic.pull (lift a b).left (CechPic.cls P hP)) = CechPic.pull (lift (g ≫ a) (g ≫ b)).left (CechPic.cls P hP)` using `fun g a b => by rw [← pull_comp, ← Over.comp_left, comp_lift]`. Establish `ax : ∀ {Y : Over S} (a : Y ⟶ A), CechPic.pull (lift a (1 : Y ⟶ A)).left (CechPic.cls P hP) = 0` using `fun a => by`. Establish `e` using `(cls_eq_zero_iff (pull_isLB hP _)).2 r₂`. Rewrite `e` using `[cls_pull hP]`. Establish `e'` using `congrArg (CechPic.pull a.left) e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e'` using `[map_zero, ← pull_comp, ← Over.comp_left, comp_lift, MonObj.comp_one, Category.comp_id]`. Then use the resulting hypothesis. Set `Vo` to `Out.overRes V`. Set `u : Vo ⟶ T` to `Out.overResι V`. Set `W` to `(fst T A).left ⁻¹ᵁ V`. Set `U : Vo ⊗ A ⟶ T ⊗ A` to `lift (fst Vo A ≫ u) (snd Vo A)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `k₁ : U ≫ fst T A = fst Vo A ≫ u` using `lift_fst _ _`. Establish `k₂ : U ≫ snd T A = snd Vo A` using `lift_snd _ _`. Take `⟨n, hn⟩ : ∃ n : (Vo ⊗ A).left ⟶ W.toScheme, n ≫ W.ι = U.left` from `⟨IsOpenImmersion.lift _ U.left (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show (U ≫ fst T A).left y ∈ V`. Rewrite using `[k₁]`. Use `show V.ι ((fst Vo A).left y) ∈ V`. Establish `hy` using `Set.mem_range_self (f := V.ι) ((fst Vo A).left y)`. Rewrite using `[Scheme.Opens.range_ι] at hy), IsOpenImmersion.lift_fac _ _ _⟩` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0` using `(cls_eq_zero_iff (pull_isLB hM _)).2 ⟨c, hc⟩`. Rewrite `e0` using `[cls_pull hM, cls_translDiff S A P hP hB hS T x hM]`. Establish `e1` using `congrArg (CechPic.pull n) e0`. Rewrite `e1` using `[map_zero, ← pull_comp, hn, map_add, ← pull_comp, ← Over.comp_left, nat, nat]`. Simplify using `only [← Category.assoc, k₁, k₂] at e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc] at e1`. Establish `e2` using `congrArg (CechPic.pull (lift (𝟙 Vo) (1 : Vo ⟶ A)).left) e1`. Rewrite `e2` using `[map_zero, map_add, nat, nat, lift_fst_assoc, lift_snd, Category.id_comp, ax, add_zero]`. Establish `e3 : CechPic.pull (fst Vo A).left (CechPic.pull (lift (u ≫ x) (u ≫ x)).left (CechPic.cls P hP)) = 0` using `by rw [e2, map_zero]`. Rewrite `e3` using `[nat]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[e3, zero_add]`. Establish `e4` using `congrArg (CechPic.pull (lift (snd A Vo) (fst A Vo)).left) e1`. Rewrite `e4` using `[map_zero, nat, lift_fst_assoc, lift_snd]`. Use `(cls_eq_zero_iff (pull_isLB hP _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hP]`.
-
-Conclude with `e4`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_triv_sq_of_memKL : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) (hP : P.IsLB),
     (∀ (T : Over S) (x x' y : T ⟶ A), CechPic.pull (lift (x * x') y).left (CechPic.cls P hP) = CechPic.pull (lift x y).left (CechPic.cls P hP) + CechPic.pull (lift x' y).left (CechPic.cls P hP)) →
@@ -192,17 +190,15 @@ theorem exists_local_triv_sq_of_memKL : ∀ (S : Scheme.{0}) (A : Over S) [GrpOb
   exact e4
 
 /- English proof (translation)
-Introduce `O K _ _ _ A _ A' _ φ φ₂ h sq P P' hP hP' H gen T t ht x hx`. Take `⟨T, ⟨⟨⟩⟩, hT⟩` from `T`. Express the relevant statement in the definitionally equal form `T ⟶ Sp K at t`. Express the relevant statement in the definitionally equal form `T ⟶ Sp O at hT`. Express the relevant statement in the definitionally equal form `hT = t ≫ _ at ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `ht` using the available equality. Set `T' : Over (Sp K)` to `Over.mk t`. Take `⟨x', rfl⟩` from `GlobalTheory.SiegelPull.push_surjective h T' x`. Rewrite using `[← map_one (pushHom h T')]`. Use `congr 1`.
+Substitute using the available equality. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `gen T' x'` to reduce the goal to its premises. Take `⟨u, hu⟩` from `H`. Take `⟨c, hc⟩` from `hx`. Set `f` to `spMap (algebraMap O K)`. Set `B : Over (Sp O)` to `Over.mk ((A' ⊗ T').hom ≫ f)`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a : B ⟶ A` to `Over.homMk ((fst A' T').left ≫ φ) (by show (fst A' T').left ≫ φ ≫ A.hom = (A' ⊗ T').hom ≫ f`. Rewrite using `[h.1.w, ← Category.assoc, Over.w (fst A' T')])`. Set `b : B ⟶ Over.mk (t ≫ f)` to `Over.homMk (snd A' T').left (by show (snd A' T').left ≫ t ≫ f = (A' ⊗ T').hom ≫ f`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ f) (Over.w (snd A' T')))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `χ : (A' ⊗ T').left ⟶ (A ⊗ Over.mk (t ≫ f)).left` to `(lift a b).left`. Establish `c₁ : χ ≫ (fst A (Over.mk (t ≫ f))).left = (fst A' T').left ≫ φ` using `congrArg (fun q => q.left) (lift_fst a b)`. Establish `c₂ : χ ≫ (snd A (Over.mk (t ≫ f))).left = (snd A' T').left` using `congrArg (fun q => q.left) (lift_snd a b)`. Establish `sqr : (lift (snd A' T' ≫ x') (fst A' T')).left ≫ φ₂ = χ ≫ (lift (snd A (Over.mk (t ≫ f)) ≫ pushHom h T' x') (fst A (Over.mk (t ≫ f)))).left` using `(Category.id_comp _).symm.trans (GlobalTheory.SiegelPull.lift_sq sq (T := B) (𝟙 _) _ _ χ _ _ (by rw [Category.id_comp, Over.comp_left, Over.comp_left, ← Category.assoc χ, c₂, Category.assoc]; rfl) (by rw [Category.id_comp, c₁]))`. Take `⟨c₂', h₂⟩` from `gen_chartPull (chartPullSame P (fun _ : PUnit => (lift (snd A' T' ≫ x') (fst A' T')).left ≫ φ₂) _ _ χ fun _ => sqr) c hc`.
-
-Conclude with `exists_down ((isGen_iff u).1 hu) hP hP' c₂' h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_one_of_generic_nondeg : ∀ (O K : Type) [CommRing O] [Field K] [Algebra O K] (A : Over (Sp O)) [GrpObj A] (A' : Over (Sp K)) [GrpObj A']
     (φ : A'.left ⟶ A.left) (φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left),
@@ -247,9 +243,9 @@ theorem eq_one_of_generic_nondeg : ∀ (O K : Type) [CommRing O] [Field K] [Alge
   exact exists_down ((isGen_iff u).1 hu) hP hP' c₂' h₂
 
 /- English proof (translation)
-Introduce `O K _ _ _ A _ A' _ φ φ₂ h sq P P' hP hP' H hB hS r₂ gen T t ht x hx`. Use `over_hom_ext_of_local _ T A (x ^ 2) 1 fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, hg⟩` from `exists_local_triv_sq_of_memKL _ A P hP hB hS r₂ T x hx p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_one_of_generic_nondeg O K A A' φ φ₂ h sq P P' hP hP' H gen (Out.overRes V) (V.ι ≫ t) (by simp only [Out.overRes, Over.mk_hom, ht, Category.assoc]) _ hg`.
+A detailed English derivation is pending.
 -/
 theorem sq_eq_one_of_memKL_generic : ∀ (O K : Type) [CommRing O] [Field K] [Algebra O K] (A : Over (Sp O)) [GrpObj A] (A' : Over (Sp K)) [GrpObj A']
     (φ : A'.left ⟶ A.left) (φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left),
@@ -269,15 +265,15 @@ theorem sq_eq_one_of_memKL_generic : ∀ (O K : Type) [CommRing O] [Field K] [Al
     (by simp only [Out.overRes, Over.mk_hom, ht, Category.assoc]) _ hg
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ A _ A' _ φ φ₂ hA h sq P P' hP hP' H r₁ r₂ hs ha gen T y hy`. Use `haveI := hA.comm`. Use `haveI := hA.proper`. Establish `hL : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Take `⟨hB, hS⟩` from `pairing_add_and_symm _ A hA P hP r₁ r₂ hs ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨H₀, _, i, -, -, hfin, hflat, hZ⟩` from `GlobalTheory.kernel_finiteFlat_subgroup O A hA _ hL ha`. Establish `hi : i ^ 2 = 1`. Use `hom_ext_of_generic_points O K H₀ A (i ^ 2) 1 hfin hflat fun T t ht z => ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_pow, MonObj.comp_one]`. Conclude with `sq_eq_one_of_memKL_generic O K A A' φ φ₂ h sq P P' hP hP' H hB hS r₂ gen T t ht (z ≫ i) ((hZ T _).2 ⟨z, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hfl, hsu⟩` from `GlobalTheory.MulAmple.finite_flat_surjective_pow GlobalTheory.abelianSchemeLaws_all.1 O A hA _ hL ha 2 (by norm_num)`. Take `⟨T', e, x, he, he', hx⟩` from `GlobalTheory.DivisibleHom.exists_lift_point ((𝟙 A) ^ 2) y`. Establish `hx2 : x ^ 2 = e ≫ y` using `by rw [← hx, MonObj.comp_pow, Category.comp_id]`. Establish `hmem : MemKL A _ x` using `memKL_of_pairing_sq _ A P hP hB hS T' x (by`. Take `⟨t, ht⟩` from `hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e0` using `(cls_eq_zero_iff (pull_isLB hP _)).2 ⟨t, ht⟩`. Rewrite `e0` using `[cls_pull hP]`. Establish `e1` using `congrArg (CechPic.pull (lift (snd T' A) (fst T' A ≫ e)).left) e0`. Rewrite `e1` using `[map_zero, ← pull_comp, ← Over.comp_left, comp_lift, lift_snd_assoc, lift_fst]`. Rewrite using `[hx2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e1)`. Take `⟨w, hw⟩` from `(hZ T' x).1 hmem`. Apply `GlobalTheory.DivisibleHom.cancel_of_flat_surjective e` to reduce the goal to its premises. Rewrite using `[← hx2, ← hw, ← MonObj.comp_pow, hi, MonObj.comp_one, MonObj.comp_one]`.
+A detailed English derivation is pending.
 -/
 theorem nondeg_of_generic : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] [Field K] [Algebra O K] [IsFractionRing O K] (A : Over (Sp O)) [GrpObj A] (A' : Over (Sp K)) [GrpObj A'] (φ : A'.left ⟶ A.left) (φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left), IsAbelianScheme A → IsGrpPullback A' A (spMap (algebraMap O K)) φ → IsSquare φ φ₂ → ∀ (P : LB (A ⊗ A).left) (P' : LB (A' ⊗ A').left), P.IsLB → P'.IsLB → LBIso P' (P.pull φ₂) → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → (∀ (T : Over (Sp K)) (x : T ⟶ A'), (∃ t : (P'.pull (lift (snd A' T ≫ x) (fst A' T)).left).Gen, t.IsGen) → x = 1) → ∀ (T : Over (Sp O)) (x : T ⟶ A), (∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x = 1 := by
   intro O K _ _ _ _ _ _ A _ A' _ φ φ₂ hA h sq P P' hP hP' H r₁ r₂ hs ha gen T y hy

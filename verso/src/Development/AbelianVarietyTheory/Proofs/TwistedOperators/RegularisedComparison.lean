@@ -29,28 +29,28 @@ section Lin
 variable {M X : HSp D} (ω : WRep M X) (ν : Measure (GA D M)) (𝓕 : Set (GA D M))
 
 /- English proof (translation)
-Simplify using `[thetaKO, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_add (g : GA D M) (h : GA D X) (Φ Ψ : WO M X → ℂ) :
     thetaKO ω g h (Φ + Ψ) = thetaKO ω g h Φ + thetaKO ω g h Ψ := by
   simp [thetaKO, map_add]
 
 /- English proof (translation)
-Simplify using `[thetaKO, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_smul (g : GA D M) (h : GA D X) (c : ℂ) (Φ : WO M X → ℂ) :
     thetaKO ω g h (c • Φ) = c * thetaKO ω g h Φ := by
   simp [thetaKO, map_smul]
 
 /- English proof (translation)
-Simplify using `[thetaKO, map_sum, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_sum {ι : Type} (s : Finset ι) (g : GA D M) (h : GA D X) (Φ : ι → WO M X → ℂ) :
     thetaKO ω g h (∑ i ∈ s, Φ i) = ∑ i ∈ s, thetaKO ω g h (Φ i) := by
   simp [thetaKO, map_sum, Finset.sum_apply]
 
 /- English proof (translation)
-Unfold `thetaKO`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_right (g k : GA D M) (h : GA D X) (Φ : WO M X → ℂ) :
     thetaKO ω g h (ω (k, 1) Φ) = thetaKO ω (g * k) h Φ := by
@@ -63,25 +63,25 @@ def Intg (Φ : WO M X → ℂ) : Prop := ∀ h : GA D X, IntegrableOn (fun g => 
 variable {ω ν 𝓕}
 
 /- English proof (translation)
-Introduce `h` and use `by simp only [thetaKO_add]; exact Integrable.add (hΦ h) (hΨ h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Intg.add {Φ Ψ : WO M X → ℂ} (hΦ : Intg ω ν 𝓕 Φ) (hΨ : Intg ω ν 𝓕 Ψ) : Intg ω ν 𝓕 (Φ + Ψ) := fun h => by
   simp only [thetaKO_add]; exact Integrable.add (hΦ h) (hΨ h)
 
 /- English proof (translation)
-Introduce `h` and use `by simp only [thetaKO_smul]; exact Integrable.const_mul (hΦ h) c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Intg.smul {Φ : WO M X → ℂ} (c : ℂ) (hΦ : Intg ω ν 𝓕 Φ) : Intg ω ν 𝓕 (c • Φ) := fun h => by
   simp only [thetaKO_smul]; exact Integrable.const_mul (hΦ h) c
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ Ψ]`. Conclude with `hΦ.add (hΨ.smul _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Intg.sub {Φ Ψ : WO M X → ℂ} (hΦ : Intg ω ν 𝓕 Φ) (hΨ : Intg ω ν 𝓕 Ψ) : Intg ω ν 𝓕 (Φ - Ψ) := by
   rw [sub_eq_add_neg, ← neg_one_smul ℂ Ψ]; exact hΦ.add (hΨ.smul _)
 
 /- English proof (translation)
-Introduce `h` and use `by simp only [thetaKO_sum] exact integrable_finset_sum s fun i hi => hΦ i hi h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Intg.sum {ι : Type} (s : Finset ι) {Φ : ι → WO M X → ℂ} (hΦ : ∀ i ∈ s, Intg ω ν 𝓕 (Φ i)) :
     Intg ω ν 𝓕 (∑ i ∈ s, Φ i) := fun h => by
@@ -89,7 +89,7 @@ theorem Intg.sum {ι : Type} (s : Finset ι) {Φ : ι → WO M X → ℂ} (hΦ :
   exact integrable_finset_sum s fun i hi => hΦ i hi h
 
 /- English proof (translation)
-Take `⟨N, C, hC⟩` from `hΦ`. Conclude with `fun h => (hC h).1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intg_of_modInt {θ : InfFam D} {Φ : WO M X → ℂ} (hΦ : ModInt θ ω ν 𝓕 Φ) : Intg ω ν 𝓕 Φ := by
   obtain ⟨N, C, hC⟩ := hΦ
@@ -98,7 +98,7 @@ theorem intg_of_modInt {θ : InfFam D} {Φ : WO M X → ℂ} (hΦ : ModInt θ ω
 variable (ω ν 𝓕)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, thetaKO_smul, integral_const_mul, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thetaInt_smul (c : ℂ) (Φ : WO M X → ℂ) : thetaInt ω ν 𝓕 (c • Φ) = c • thetaInt ω ν 𝓕 Φ := by
   funext h
@@ -107,7 +107,7 @@ theorem thetaInt_smul (c : ℂ) (Φ : WO M X → ℂ) : thetaInt ω ν 𝓕 (c �
 variable {ω ν 𝓕}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, thetaKO_add, Pi.add_apply]`. Conclude with `integral_add (hΦ h) (hΨ h)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaInt_add {Φ Ψ : WO M X → ℂ} (hΦ : Intg ω ν 𝓕 Φ) (hΨ : Intg ω ν 𝓕 Ψ) :
     thetaInt ω ν 𝓕 (Φ + Ψ) = thetaInt ω ν 𝓕 Φ + thetaInt ω ν 𝓕 Ψ := by
@@ -116,14 +116,14 @@ theorem thetaInt_add {Φ Ψ : WO M X → ℂ} (hΦ : Intg ω ν 𝓕 Φ) (hΨ : 
   exact integral_add (hΦ h) (hΨ h)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ Ψ, thetaInt_add hΦ (hΨ.smul _), thetaInt_smul, neg_one_smul, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaInt_sub {Φ Ψ : WO M X → ℂ} (hΦ : Intg ω ν 𝓕 Φ) (hΨ : Intg ω ν 𝓕 Ψ) :
     thetaInt ω ν 𝓕 (Φ - Ψ) = thetaInt ω ν 𝓕 Φ - thetaInt ω ν 𝓕 Ψ := by
   rw [sub_eq_add_neg, ← neg_one_smul ℂ Ψ, thetaInt_add hΦ (hΨ.smul _), thetaInt_smul, neg_one_smul, sub_eq_add_neg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, thetaKO_sum, Finset.sum_apply]`. Conclude with `integral_finset_sum s fun i hi => hΦ i hi h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaInt_sum {ι : Type} (s : Finset ι) {Φ : ι → WO M X → ℂ} (hΦ : ∀ i ∈ s, Intg ω ν 𝓕 (Φ i)) :
     thetaInt ω ν 𝓕 (∑ i ∈ s, Φ i) = ∑ i ∈ s, thetaInt ω ν 𝓕 (Φ i) := by
@@ -134,13 +134,13 @@ theorem thetaInt_sum {ι : Type} (s : Finset ι) {Φ : ι → WO M X → ℂ} (h
 end Lin
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V ν hH`. Establish `hmp : MeasurePreserving (fun x : GA D V => x * k⁻¹) ν ν` using `measurePreserving_mul_right ν k⁻¹`. Establish `ht : IsFundamentalDomain (GQ V) ((fun x : GA D V => x * k⁻¹) ⁻¹' fd) ν` using `hfd.preimage_of_equiv hmp.quasiMeasurePreserving (e := id) Function.bijective_id (fun g x => by simp [Subgroup.smul_def, mul_assoc])`. Establish `hinv : ∀ (g : GQ V) (x : GA D V), F (g • x) = F x` using `fun g x => hF g g.2 x`. Establish `hmp2 : MeasurePreserving (fun x : GA D V => x * k) ν ν` using `measurePreserving_mul_right ν k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : (fun x : GA D V => x * k) ⁻¹' ((fun x : GA D V => x * k⁻¹) ⁻¹' fd) = fd`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hemb : MeasurableEmbedding (fun x : GA D V => x * k)` using `(MeasurableEquiv.mulRight k).measurableEmbedding`. Establish `h1 : IntegrableOn F ((fun x : GA D V => x * k⁻¹) ⁻¹' fd) ν` using `(hfd.integrableOn_iff ht hinv).1 hint`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∫ u in fd, F (u * k) ∂ν = ∫ u in (fun x : GA D V => x * k⁻¹) ⁻¹' fd, F u ∂ν`. Use `hmp2.setIntegral_preimage_emb hemb F ((fun x : GA D V => x * k⁻¹) ⁻¹' fd)` as an intermediate fact. Rewrite `this` using `[hpre]`. Conclude with `this`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpre]`. Conclude with `(hmp2.integrableOn_comp_preimage hemb).2 h1`. Rewrite using `[e1]`. Conclude with `(hfd.setIntegral_eq ht hinv).symm`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_mul_right' (V : HSp D) (ν : Measure (GA D V)) [hH : ν.IsHaarMeasure] (fd : Set (GA D V))
     (hfd : IsFundamentalDomain (GQ V) fd ν) (F : GA D V → ℂ) (hF : ∀ γ ∈ GQ V, ∀ u, F (γ * u) = F u)
@@ -167,11 +167,11 @@ theorem setIntegral_mul_right' (V : HSp D) (ν : Measure (GA D V)) [hH : ν.IsHa
   · rw [e1]; exact (hfd.setIntegral_eq ht hinv).symm
 
 /- English proof (translation)
-Use `haveI := hν.1`. Take `⟨N, C, hC⟩` from `hΦ`. Establish `key` using `fun h => setIntegral_mul_right' M ν 𝓕 hν.2 (fun g => thetaKO ω g h Φ) (fun γ hγ u => hL γ hγ u h) (hC h).1 k`. Establish `keyn` using `fun h => setIntegral_mul_right' M ν 𝓕 hν.2 (fun g => ((‖thetaKO ω g h Φ‖ : ℝ) : ℂ)) (fun γ hγ u => by simp only [hL γ hγ u h]) (hC h).1.norm.ofReal k`. Use `⟨⟨N, C, fun h => ⟨?_, ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(key h).1` using `only [thetaKO_right]`. Establish `e : ∫ g in 𝓕, ‖thetaKO ω g h (ω (k, 1) Φ)‖ ∂ν = ∫ g in 𝓕, ‖thetaKO ω g h Φ‖ ∂ν`. Use `(keyn h).2` as an intermediate fact. Simplify using `only [integral_complex_ofReal] at this`. Simplify `Complex.ofReal_injective this` using `only [thetaKO_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hC h).2`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, thetaKO_right]`. Conclude with `(key h).2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modInt_right {θ : InfFam D} {M X : HSp D} {ω : WRep M X} {ν : Measure (GA D M)} {𝓕 : Set (GA D M)}
     (hν : IsHaarFD M ν 𝓕) {Φ : WO M X → ℂ} (hL : ∀ γ ∈ GQ M, ∀ g h, thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ)
@@ -195,14 +195,14 @@ theorem modInt_right {θ : InfFam D} {M X : HSp D} {ω : WRep M X} {ν : Measure
     exact (key h).2
 
 /- English proof (translation)
-Simplify using `[wop, Finsupp.sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wop_apply {M X : HSp D} (ω : WRep M X) (z : GA D M →₀ ℂ) (Φ : WO M X → ℂ) :
     wop ω z Φ = ∑ k ∈ z.support, z k • ω (k, 1) Φ := by
   simp [wop, Finsupp.sum, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[wop_apply]`. Conclude with `S.sum_mem fun k hk => S.smul_mem _ (hS k (hz k hk) Φ hΦ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wop_mem {M X : HSp D} {ω : WRep M X} {S : Submodule ℂ (WO M X → ℂ)} (hS : ∀ g ∈ GfC M, ∀ Φ ∈ S, ω (g, 1) Φ ∈ S)
     {z : GA D M →₀ ℂ} (hz : ∀ k ∈ z.support, k ∈ GfC M) {Φ : WO M X → ℂ} (hΦ : Φ ∈ S) : wop ω z Φ ∈ S := by
@@ -210,7 +210,7 @@ theorem wop_mem {M X : HSp D} {ω : WRep M X} {S : Submodule ℂ (WO M X → ℂ
   exact S.sum_mem fun k hk => S.smul_mem _ (hS k (hz k hk) Φ hΦ)
 
 /- English proof (translation)
-Establish `hk` using `fun k => modInt_right hν hL hΦ k`. Rewrite using `[wop_apply]`. Use `⟨Intg.sum _ fun k _ => (intg_of_modInt (hk k).1).smul _, ?_⟩` and prove the remaining obligations. Rewrite using `[thetaInt_sum _ fun k _ => (intg_of_modInt (hk k).1).smul _]`. Simplify using `only [thetaInt_smul, (hk _).2, GlobalTheory.FunObj.zdeg, Finsupp.sum, Finset.sum_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaInt_wop {θ : InfFam D} {M X : HSp D} {ω : WRep M X} {ν : Measure (GA D M)} {𝓕 : Set (GA D M)}
     (hν : IsHaarFD M ν 𝓕) {Φ : WO M X → ℂ} (hL : ∀ γ ∈ GQ M, ∀ g h, thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ)
@@ -223,23 +223,21 @@ theorem thetaInt_wop {θ : InfFam D} {M X : HSp D} {ω : WRep M X} {ν : Measure
   simp only [thetaInt_smul, (hk _).2, GlobalTheory.FunObj.zdeg, Finsupp.sum, Finset.sum_smul]
 
 /- English proof (translation)
-Introduce `hP hK D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm c₀ H ΦB hΦB`. Use `set S := algF ψ θ false A₁ B with hSdef`. Establish `hstab : ∀ g ∈ GfC W₁, ∀ Φ ∈ S, ωB (g, 1) Φ ∈ S` using `hm.mapB.stabM.1`. Establish `hL : ∀ Φ ∈ S, ∀ γ ∈ GQ W₁, ∀ g h, thetaKO ωB (γ * g) h Φ = thetaKO ωB g h Φ` using `GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary D ψ θ hθ W₁ X A₁ B α (α / β) ωB hm.weilB`. Take `⟨Φ₀, h0S, hrel, hmod0, hI⟩` from `H ΦB hΦB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : p' ΦB = p' Φ₀`. Establish `h1 : finRel ωB S ≤ LinearMap.ker p'`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, Ψ, hΨ, rfl⟩`. Use `show p' _ = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hm.mapB.invf u hu Ψ hΨ, sub_self]`. Use `h1 hrel` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite `hrel` using `[finRel, Submodule.mem_span_set']`. Take `⟨n, c, g, hsum⟩` from `hrel`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose u hu Ψ hΨ hg using fun i => (g i).2`. Take `⟨z, hzG, hz0, hz⟩` from `GlobalTheory.T.seesaw_identity_weil_triple hP hK D ψ θ hθ W W₁ X A₁ B α β hT ν₁ 𝓕₁ hν₁ ωB hm.weilB (n + 1) (Fin.cons ΦB Ψ) (Fin.cons 1 u) (Fin.cases hΦB hΨ) (Fin.cases (one_mem _) hu)`. Establish `hB : ModInt θ ωB ν₁ 𝓕₁ (wop ωB z ΦB)` using `(hz 0).1`. Establish `hX : ∀ i, ModInt θ ωB ν₁ 𝓕₁ (wop ωB z (Ψ i)) ∧ ∃ u' ∈ GfC W₁, wop ωB z (ωB (u i, 1) (Ψ i)) = ωB (u', 1) (wop ωB z (Ψ i))` using `fun i => hz i.succ`. Use `choose u' hu' hcomm using fun i => (hX i).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXS : ∀ i, wop ωB z (Ψ i) ∈ S` using `fun i => wop_mem hstab hzG (hΨ i)`. Establish `hXr` using `fun i => modInt_right hν₁ (hL _ (hXS i)) (hX i).1 (u' i)`. Establish `h0` using `thetaInt_wop hν₁ (hL _ h0S) hmod0 z`. Establish `eB : ΦB = Φ₀ + ∑ i, c i • (ωB (u i, 1) (Ψ i) - Ψ i)`. Establish `e : ∑ i, c i • (g i : WO W₁ X → ℂ) = ∑ i, c i • (ωB (u i, 1) (Ψ i) - Ψ i)` using `by simp only [hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, hsum]`. Normalize the expressions using the abelian group laws. Establish `eW : wop ωB z ΦB = wop ωB z Φ₀ + ∑ i, c i • (ωB (u' i, 1) (wop ωB z (Ψ i)) - wop ωB z (Ψ i))`. Rewrite using `[eB, map_add, map_sum]`. Simplify using `only [map_smul, map_sub, hcomm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hJ : thetaInt ωB ν₁ 𝓕₁ (wop ωB z ΦB) = GlobalTheory.FunObj.zdeg z • thetaInt ωB ν₁ 𝓕₁ Φ₀`. Establish `hi : ∀ i ∈ (Finset.univ : Finset (Fin n)), Intg ωB ν₁ 𝓕₁ (c i • (ωB (u' i, 1) (wop ωB z (Ψ i)) - wop ωB z (Ψ i)))` using `fun i _ => ((intg_of_modInt (hXr i).1).sub (intg_of_modInt (hX i).1)).smul _`. Rewrite using `[eW, thetaInt_add h0.1 (Intg.sum _ hi), thetaInt_sum _ hi, h0.2]`. Simplify using `only [thetaInt_smul, thetaInt_sub (intg_of_modInt (hXr _).1) (intg_of_modInt (hX _).1), (hXr _).2, sub_self, smul_zero, Finset.sum_const_zero, add_zero]`. Use `⟨z, hzG, hz0, wop_mem hstab hzG hΦB, hB, fun Φ hΦ hpΦ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦ₁ : (GlobalTheory.FunObj.zdeg z)⁻¹ • Φ ∈ algF ψ θ true A B` using `Submodule.smul_mem _ _ hΦ`. Establish `hp₁ : p ((GlobalTheory.FunObj.zdeg z)⁻¹ • Φ) = p' Φ₀`. Rewrite using `[map_smul, hpΦ, smul_smul, inv_mul_cancel₀ hz0, one_smul, hp]`. Establish `e1` using `hI _ hΦ₁ hp₁`. Establish `e2 : Φ = GlobalTheory.FunObj.zdeg z • ((GlobalTheory.FunObj.zdeg z)⁻¹ • Φ)` using `by rw [smul_smul, mul_inv_cancel₀ hz0, one_smul]`.
-
-Rewrite using `[e2, thetaInt_smul, e1, hJ, smul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_of_const : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
@@ -302,7 +300,7 @@ theorem reg_of_const : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Indefin
   rw [e2, thetaInt_smul, e1, hJ, smul_comm]
 
 /- English proof (translation)
-Introduce `hP hK hS D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm`. Take `⟨c, hc, H⟩` from `hS D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm`. Conclude with `⟨c, hc, reg_of_const hP hK D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm c H⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem regularised_comparison : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.ThetaIntegralsAgree →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →

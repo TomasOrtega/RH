@@ -23,7 +23,7 @@ namespace GlobalTheory.LamOfDouble
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `: IsRegularEpi (y ≫ j)` using `inferInstance`. Establish `: StrongEpi (y ≫ j)` using `inferInstance`. Establish `: StrongEpi j` using `strongEpi_of_strongEpi y j`. Conclude with `isIso_of_mono_of_strongEpi j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_of_factor {X Y Z : Scheme.{0}} (y : X ⟶ Z) (j : Z ⟶ Y) [Mono j] [Flat (y ≫ j)]
     [Surjective (y ≫ j)] [QuasiCompact (y ≫ j)] : IsIso j := by
@@ -33,13 +33,11 @@ theorem isIso_of_factor {X Y Z : Scheme.{0}} (y : X ⟶ Z) (j : Z ⟶ Y) [Mono j
   exact isIso_of_mono_of_strongEpi j
 
 /- English proof (translation)
-Establish `hproj : IsProjBy A.hom` using `(GlobalTheory.AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral _ A M hA hM ha R (𝟙 _) A.left (𝟙 _) A.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)).1`. Take `⟨H, j, hj, hH⟩` from `GlobalTheory.TrivSubscheme.exists_closed_locTriv hL.globalFns R A A hA hproj N hN`. Take `⟨t, ht⟩` from `h1`. Take `⟨y, hy⟩` from `(hH A ((𝟙 A) ^ n)).1 fun p => ⟨⊤, trivial, GlobalTheory.TorsionFixedAut.exists_gen_pull _ t ht _⟩`. Take `⟨f₁, f₂, f₃⟩` from `GlobalTheory.MulAmple.finite_flat_surjective_pow hL R A hA M hM ha n hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : y.left ≫ j.left = ((𝟙 A) ^ n : A ⟶ A).left` using `congrArg (·.left) hy`. Rewrite `f₁`, `f₂`, `f₃` using `[← e]`. Establish `: IsIso j.left` using `isIso_of_factor y.left j.left`. Establish `hw : inv j.left ≫ H.hom = A.hom` using `by rw [← Over.w j, IsIso.inv_hom_id_assoc]`. Establish `hloc` using `(hH A (𝟙 A)).2 ⟨Over.homMk (inv j.left) hw, Over.OverMorphism.ext (IsIso.inv_hom_id j.left)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∃ t : (N.pull (𝟙 A ▷ A).left).Gen, t.IsGen`. Use `GlobalTheory.exists_gen_of_local_of_section (A ⊗ A).left A.left (fst A A).left (lift (𝟙 A) (1 : A ⟶ A)).left _ (pull_isLB hN _) (congrArg (·.left) (lift_fst (𝟙 A) (1 : A ⟶ A))) (GlobalTheory.BaseChangeFns.app_surjective hL.globalFns _ A hA _ _ A.hom _ _ (GlobalTheory.SeesawGlobal …` and prove the remaining obligations. Rewrite using `[← cls_eq_zero_iff (pull_isLB (pull_isLB hN _) _), cls_pull (pull_isLB hN _), cls_pull hN, ← pull_comp, ← Over.comp_left, id_whiskerRight, Category.comp_id]`. Conclude with `(cls_eq_zero_iff (pull_isLB hN _)).2 h0`. Rewrite `key` using `[← cls_eq_zero_iff (pull_isLB hN _), cls_pull hN, id_whiskerRight, Over.id_left, pull_id]`.
-
-Conclude with `(cls_eq_zero_iff hN).1 key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_of_pull_pow (hL : Out.Laws) {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) (M : LB A.left) (hM : M.IsLB) (ha : Out.RelAmple A M) (n : ℕ) (hn : 1 ≤ n)
@@ -78,7 +76,7 @@ variable {S : Scheme.{0}} {A T : Over S}
 def ev (c : Pic (A ⊗ A).left) (x y : T ⟶ A) : Pic T.left := pull (lift x y).left c
 
 /- English proof (translation)
-Rewrite using `[ev, ev, ← pull_comp, ← Over.comp_left, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_ev {T' : Over S} (h : T' ⟶ T) (c : Pic (A ⊗ A).left) (x y : T ⟶ A) :
     pull h.left (ev c x y) = ev c (h ≫ x) (h ≫ y) := by
@@ -90,9 +88,9 @@ def Biadd (c : Pic (A ⊗ A).left) : Prop :=
   ∀ (T : Over S) (x x' y : T ⟶ A), ev c (x * x') y = ev c x y + ev c x' y ∧ ev c y (x * x') = ev c y x + ev c y x'
 
 /- English proof (translation)
-Introduce `T x x' y`. Take `⟨a, b⟩` from `GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A M hA hM ha N hN h₁ h₂ T x x' y`. Rewrite `a`, `b` using `[← cls_eq_zero_iff (LB.isLB_linComb hN _ _), cls_linComb hN]`. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at a b`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Unfold `ev`. Rewrite using `[← sub_eq_zero, ← a]`. Normalize the expressions using the abelian group laws. Unfold `ev`. Rewrite using `[← sub_eq_zero, ← b]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -116,29 +114,27 @@ theorem biadd_of_axes (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) (M : LB A.
 end Pair
 
 /- English proof (translation)
-Introduce `hL h k o _ ζ R _ _ _ β c L hc hLB hiso`. Establish `hM : c.diag.IsLB` using `pull_isLB c.isLB _`. Establish `hΛ : (abelian₂ c.A L).IsLB` using `LB.isLB_linComb hLB _ _`. Establish `hN : (LB.div (abelian₂ c.A L) c.P).IsLB` using `LB.isLB_div hΛ c.isLB`. Establish `hPow : (lbPow c.diag 2).IsLB` using `LB.isLB_linComb hM _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set l := cls L hLB with hl`. Use `set p := cls c.P c.isLB with hp`. Establish `eΛ : cls _ hΛ = lam l (fst c.A c.A) (snd c.A c.A)` using `cls_cube_two hLB _ _ hΛ`. Establish `eN : ∀ (T : Over (Sp R)) (x y : T ⟶ c.A), ev (cls _ hN) x y = lam l x y - ev p x y`. Introduce `T x y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[cls_div hΛ c.isLB, eΛ, ev, map_sub, pull_lam, lift_fst, lift_snd]`. Both sides reduce to the same expression. Establish `r₁ : ev p (1 : c.A ⟶ c.A) (𝟙 c.A) = 0` using `(cls_eq_zero_iff (pull_isLB c.isLB _)).2 c.rig₁`. Establish `r₂ : ev p (𝟙 c.A) (1 : c.A ⟶ c.A) = 0` using `(cls_eq_zero_iff (pull_isLB c.isLB _)).2 c.rig₂`. Establish `n₁ : ∃ t : ((LB.div (abelian₂ c.A L) c.P).pull (lift (1 : c.A ⟶ c.A) (𝟙 c.A)).left).Gen, t.IsGen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(cls_eq_zero_iff (pull_isLB hN _)).1 ((eN _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[r₁, lam_one_left, sub_zero]`. Establish `n₂ : ∃ t : ((LB.div (abelian₂ c.A L) c.P).pull (lift (𝟙 c.A) (1 : c.A ⟶ c.A)).left).Gen, t.IsGen`. Use `(cls_eq_zero_iff (pull_isLB hN _)).1 ((eN _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[r₂, lam_one_right, sub_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bN` using `biadd_of_axes hL.globalFns c.ab _ hM hc.1 _ hN n₁ n₂`. Establish `bP : Biadd p` using `biadd_of_axes hL.globalFns c.ab _ hM hc.1 _ c.isLB c.rig₁ c.rig₂`. Establish `sy : ∀ (T : Over (Sp R)) (x y : T ⟶ c.A), ev p x y = ev p y x`. Introduce `T x y`. Establish `e : p = ev p (snd c.A c.A) (fst c.A c.A)` using `(cls_eq_iff c.isLB (pull_isLB c.isLB _)).2 c.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `dbl : ∀ (T : Over (Sp R)) (x : T ⟶ c.A), pull (x * x).left l = ev p x x + ev p x x`. Introduce `T x`. Establish `e : 2 • ev p (𝟙 c.A) (𝟙 c.A) = pull ((𝟙 c.A) ^ 2 : c.A ⟶ c.A).left l` using `(cls_lbPow hM 2 hPow).symm.trans ((cls_eq_iff hPow (pull_isLB hLB _)).2 hiso)`. Establish `e'` using `congrArg (pull x.left) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e'` using `[map_nsmul, pull_ev, ← pull_comp, ← Over.comp_left, pow_two, MonObj.comp_mul, Category.comp_id, two_smul]`. Conclude with `e'.symm`. Establish `z : ∀ (T : Over (Sp R)) (x y : T ⟶ c.A), ev (cls _ hN) (x ^ 4) y = 0`. Introduce `T x y`. Establish `a : ev (cls _ hN) (x * x) (y * y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `o₁ : ev p (1 : T ⟶ c.A) (1 : T ⟶ c.A) = 0`. Use `(bP T 1 1 1).1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_add.1 this`. Establish `o₂` using `dbl T 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite `o₂` using `[_root_.mul_one, o₁]`. Rewrite using `[eN, lam, _root_.mul_mul_mul_comm, dbl, dbl, dbl, o₂]`. Simplify using `only [(bP T _ _ _).1, (bP T _ _ _).2, sy T y x]`. Normalize the expressions using the abelian group laws. Rewrite using `[show x ^ 4 = x * x * (x * x) by rw [← pow_two, ← pow_two, ← pow_mul]]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [(bN T _ _ _).1, (bN T _ _ _).2] at a ⊢`. Conclude with `a`. Establish `fin` using `triv_of_pull_pow hL c.A c.ab _ hM hc.1 4 (by norm_num) _ hN n₂ (by`. Use `(cls_eq_zero_iff (pull_isLB hN _)).1 (Eq.trans ?_ (z _ (fst c.A c.A) (snd c.A c.A)))` and prove the remaining obligations. Establish `e : ((𝟙 c.A) ^ 4 : c.A ⟶ c.A) ▷ c.A = lift (fst c.A c.A ^ 4) (snd c.A c.A)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ext`. Rewrite using `[whiskerRight_fst, lift_fst, MonObj.comp_pow, Category.comp_id]`. Rewrite using `[whiskerRight_snd, lift_snd]`. Rewrite using `[e]`. Use the proof step `rfl)`.
-
-Rewrite `fin` using `[← cls_eq_zero_iff hN, cls_div hΛ c.isLB, sub_eq_zero]`. Conclude with `(cls_eq_iff hΛ c.isLB).1 fin`.
+A detailed English derivation is pending.
 -/
 theorem lam_iso_of_pull_two : Out.Laws → ∀ (h k : ℕ) (o : Type) [CommRing o] (ζ : o) (R : Type) [CommRing R] [Algebra ℚ R] [IsNoetherianRing R] (β : o →+* R) (c : SiegPre h k ζ (spMap β)) (L : LB c.A.left), c.Principal → L.IsLB → LBIso (lbPow c.diag 2) (L.pull ((𝟙 c.A) ^ 2 : c.A ⟶ c.A).left) → LBIso (abelian₂ c.A L) c.P := by
   intro hL h k o _ ζ R _ _ _ β c L hc hLB hiso

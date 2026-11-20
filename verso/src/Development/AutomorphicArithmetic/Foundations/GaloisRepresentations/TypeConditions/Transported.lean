@@ -12,27 +12,25 @@ def thr {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n
   if ∃ p : ℕ, p.Prime ∧ w ∈ placesOver E p ∧ (placesOver E p).ncard = Module.finrank ℚ E ∧ (n = 1 ∨ 16 * n ^ 2 < p) then 2 else 1
 
 /- English proof (translation)
-Unfold `thr`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem thr_pos {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {n : ℕ} : 0 < thr w n := by
   unfold thr
   split_ifs <;> norm_num
 
 /- English proof (translation)
-The claim follows from `if_pos ⟨p, hp, hw, hs, Or.inr hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem thr_split {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {p : ℕ} (hp : p.Prime)
     (hw : w ∈ placesOver E p) (hs : (placesOver E p).ncard = Module.finrank ℚ E) {n : ℕ} (hn : 16 * n ^ 2 < p) :
     thr w n = 2 := if_pos ⟨p, hp, hw, hs, Or.inr hn⟩
 
 /- English proof (translation)
-Unfold `thr`. Distinguish the cases in `hm : ∃ p : ℕ, p.Prime ∧ w ∈ placesOver E p ∧ (placesOver E p).ncard = Module.finrank ℚ E ∧ (m = 1 ∨ 16 * m ^ 2 < p)`. Apply the tactic sequence `rw [if_pos hm] split_ifs <;> norm_num`. Rewrite using `[if_neg hm]`. Establish `hn : ¬ ∃ p : ℕ, p.Prime ∧ w ∈ placesOver E p ∧ (placesOver E p).ncard = Module.finrank ℚ E ∧ (n = 1 ∨ 16 * n ^ 2 < p)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨p, hp, hw, hs, hc⟩`. Apply `hm` to reduce the goal to its premises. Use `⟨p, hp, hw, hs, ?_⟩` and prove the remaining obligations. Break down `hc with rfl | hc` into its components or cases. Use `interval_cases m`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Use `right`. Simplify using `using hp.pos`. Use `left`. Both sides reduce to the same expression. Use `right`.
-
-Establish `: m ^ 2 ≤ n ^ 2` using `Nat.pow_le_pow_left h 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hn]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thr_anti {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {m n : ℕ} (h : m ≤ n) : thr w n ≤ thr w m := by
   unfold thr

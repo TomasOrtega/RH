@@ -8,31 +8,27 @@ noncomputable section
 namespace MainStatements.WeightKernel
 
 /- English proof (translation)
-Introduce `H _ _ _ _ _ _ _ _ n ι hc s B hB μ _ _ dt _ _ φ hφc hφs hO h`. Establish `: μ.IsInvInvariant` using `GlobalTheory.SqIntRep.isInvInvariant_of_unimodular μ`. Use `set f : H → ℂ := fun z => φ (z⁻¹ * s * z) * (B (matCoord ι (z⁻¹ * s * z), matCoord ι (z⁻¹ * h)) : ℂ) with hfdef`. Use `set F : H → ℂ := fun k => φ (k * (h⁻¹ * s * h) * k⁻¹) * (B (matCoord ι (k * (h⁻¹ * s * h) * k⁻¹), matCoord ι k) : ℂ) with hFdef`. Establish `hsub : ∫ k, F k ∂μ = ∫ z, f z ∂μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `integral_mul_right_eq_self (μ := μ) (fun k => F k) h`. Establish `h2` using `integral_inv_eq_self (fun k => F (k * h)) μ`. Rewrite using `[← h1, ← h2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Establish `e : z⁻¹ * h * (h⁻¹ * s * h) * (z⁻¹ * h)⁻¹ = z⁻¹ * s * z` using `by group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hFdef, hfdef, e]`. Establish `hBc : Continuous B` using `hB.smooth.continuous`. Establish `hfc : Continuous f`. Establish `h1 : Continuous fun z : H => z⁻¹ * s * z` using `by fun_prop`. Establish `h2 : Continuous fun z : H => z⁻¹ * h` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hφc.comp h1).mul (Complex.continuous_ofReal.comp (hBc.comp ((hc.comp h1).prodMk (hc.comp h2))))`. Take `⟨K, hK, hKp⟩` from `hB.proper (tsupport φ) {h⁻¹ * s * h} hφs isCompact_singleton`. Establish `hfs : HasCompactSupport f`. Use `HasCompactSupport.intro (hK.image (f := fun k => h * k⁻¹) (by fun_prop)) fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hz` to reduce the goal to its premises. Establish `hne' : φ (z⁻¹ * s * z) * (B (matCoord ι (z⁻¹ * s * z), matCoord ι (z⁻¹ * h)) : ℂ) ≠ 0` using `hne`. Establish `m1 : z⁻¹ * s * z ∈ tsupport φ` using `subset_tsupport _ (left_ne_zero_of_mul hne')`. Establish `m2 : B (matCoord ι (z⁻¹ * s * z), matCoord ι (z⁻¹ * h)) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `hne'` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `m3 : (z * (z⁻¹ * h))⁻¹ * s * (z * (z⁻¹ * h)) ∈ ({h⁻¹ * s * h} : Set H)`. Rewrite using `[mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.mem_singleton _`. Conclude with `⟨z⁻¹ * h, hKp z (z⁻¹ * h) m1 m3 m2, by group⟩`. Establish `hfi : Integrable f μ` using `hfc.integrable_of_hasCompactSupport hfs`. Establish `hW` using `(weil_integral (T := cent s) (dt := dt) (dh := μ) (isClosed_cent s) hfi).2.2`. Use `set κ : ℂ := ∫ t : cent s, (B (matCoord ι s, matCoord ι ((t : H)⁻¹)) : ℂ) ∂dt with hκ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfib : ∀ x, ∫ t : cent s, f (t * x) ∂dt = φ (x⁻¹ * s * x) * κ`. Introduce `x`. Take `⟨t₀, ht₀, hsh⟩` from `hB.shift x h 1 1`. Establish `e1 : ∀ t : cent s, ((t : H) * x)⁻¹ * s * ((t : H) * x) = x⁻¹ * s * x`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hts` using `mem_cent.1 t.2`. Establish `: (t : H)⁻¹ * s * t = s` using `by rw [mul_assoc, ← hts, inv_mul_cancel_left]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ∀ t : cent s, f (t * x) = φ (x⁻¹ * s * x) * (B (matCoord ι s, matCoord ι ((((⟨t₀, ht₀⟩ : cent s)⁻¹ * t : cent s) : H)⁻¹)) : ℂ)`. Introduce `t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hs'` using `hsh (t : H)⁻¹ (inv_mem t.2)`. Simplify using `only [inv_one, one_mul, mul_one] at hs'`. Establish `hco : (t : H)⁻¹ * t₀ = ((((⟨t₀, ht₀⟩ : cent s)⁻¹ * t : cent s) : H))⁻¹`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, _root_.mul_inv_rev, inv_inv]`. Simplify using `only [hfdef, e1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[show ((t : H) * x)⁻¹ * h = x⁻¹ * (t : H)⁻¹ * h by group, hs', hco]`. Repeatedly rewrite using `[e2]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `integral_mul_left_eq_self (fun t : cent s => (B (matCoord ι s, matCoord ι ((t : H))⁻¹) : ℂ)) _`.
-
-Establish `hfun : (fun x => ∫ t : cent s, f (t * x) ∂dt) = fun x => conjFn s φ x * κ` using `funext fun x => hfib x`. Use `show ∫ k, F k ∂μ = 0`. Rewrite using `[hsub, ← hW, hfun]`. Establish `h0` using `hO.2`. Unfold `quotInt descend at h0 ⊢`.
-
-Use `show ∫ q, conjFn s φ q.out * κ ∂quotMeas (cent s) dt μ = 0`. Rewrite using `[integral_mul_const, h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem identTwo : IdentTwo := by
   intro H _ _ _ _ _ _ _ _ n ι hc s B hB μ _ _ dt _ _ φ hφc hφs hO h

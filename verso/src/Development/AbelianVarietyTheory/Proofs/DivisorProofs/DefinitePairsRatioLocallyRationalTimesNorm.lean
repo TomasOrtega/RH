@@ -16,65 +16,57 @@ namespace GlobalTheory.LocTriv
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `p _ G Ω hΩ P₁ L _ _ ι c hinj hcent hc`. Take `⟨x₁, t₁, hx₁⟩` from `P₁.trivAf`. Establish `hβ₁inv` using `sh_inv_unit G P₁.β P₁.sym`. Establish `hcc : ∀ x, c (c x) = x` using `fun x => hinj (by`. Rewrite using `[hc, hc, sh_mul', sh_mul', sh_sh, hβ₁inv, P₁.sym]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc, Units.mul_inv_cancel_left, Units.mul_inv, mul_one])`. Establish `hcne : ∃ x, c x ≠ x`. Take `⟨τ⟩ : Nonempty (G.F →+* ℂ)` from `inferInstance`. Take `⟨f, -, hf⟩` from `G.hKq.2 τ`. Establish `hconj : IsCMField.complexConj G.F f ≠ f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Apply `hf` to reduce the goal to its premises. Establish `e` using `IsCMField.complexEmbedding_complexConj G.F τ f`. Rewrite `e` using `[h]`. Conclude with `Complex.conj_eq_iff_im.1 e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(hcent (algebraMap G.F G.C f)).1 (Algebra.commutes f _)`. Use `⟨w, fun h => hconj ?_⟩` and prove the remaining obligations. Establish `e2 : ι (c w) = algebraMap G.F G.C (IsCMField.complexConj G.F f)`. Rewrite using `[hc, hw, sh_algebraMap, ← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one]`. Rewrite `e2` using `[h, hw]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `((algebraMap G.F G.C).injective e2).symm`. Take `⟨S1, hS1⟩` from `exists_finset_of_eventually (GlobalTheory.OrbFinAf.cptInt p G Ω hΩ)`. Take `⟨S2, hS2⟩` from `exists_finset_of_eventually (GlobalTheory.OrbFinAf.cptInt p G {P₁.toAf x₁ t₁ hx₁ P₁.self} isCompact_singleton)`. Take `⟨S3, hS3⟩` from `GlobalTheory.T.eventually_adic_integral_span_closed_mul_star G.C G.star _ (Module.finBasis ℚ G.C)`. Take `⟨S4, hS4⟩` from `GlobalTheory.T.eventually_integral_conjugators_differ_by_centralizer p G P₁.γ P₁.reg.1 P₁.reg.2 L ι hinj hcent _ (Module.finBasis ℚ G.C)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S5, hS5⟩` from `GlobalTheory.T.almost_all_places_twisted_unit_integral G.C L ι hinj _ (Module.finBasis ℚ G.C) _ (Module.finBasis ℚ L)`. Take `⟨S6, hS6⟩` from `GlobalTheory.T.fixed_unit_eq_norm_almost_all_places L c hcc hcne _ (Module.finBasis ℚ L)`. Use `⟨S1 ∪ S2 ∪ S3 ∪ S4 ∪ S5 ∪ S6 ∪ (finite_above p).toFinset, ?_⟩` and prove the remaining obligations. Introduce `P hγ hcP hex a ha v hv`. Take `⟨x, t, hx, hxΩ⟩` from `hex`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.mem_union, not_or] at hv`. Take `⟨⟨⟨⟨⟨⟨hv1, hv2⟩, hv3⟩, hv4⟩, hv5⟩, hv6⟩, hvp⟩` from `hv`. Establish `hvp' : v.asIdeal ≠ Ideal.span {(p : ℤ)}` using `fun h => hvp ((Set.Finite.mem_toFinset _).2 h)`. Set `w : AwayP p` to `⟨v, hvp'⟩`. Set `K` to `v.adicCompletion ℚ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : AfP p ⊗[ℚ] G.C →ₐ[ℚ] K ⊗[ℚ] G.C` to `Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C)`. Set `ιv : K ⊗[ℚ] L →ₐ[ℚ] K ⊗[ℚ] G.C` to `Algebra.TensorProduct.map (AlgHom.id ℚ K) ι`. Set `cv : K ⊗[ℚ] L →ₐ[ℚ] K ⊗[ℚ] L` to `Algebra.TensorProduct.map (AlgHom.id ℚ K) c`. Set `X : (K ⊗[ℚ] G.C)ˣ` to `Units.map (φ : AfP p ⊗[ℚ] G.C →* K ⊗[ℚ] G.C) x`. Set `X₁ : (K ⊗[ℚ] G.C)ˣ` to `Units.map (φ : AfP p ⊗[ℚ] G.C →* K ⊗[ℚ] G.C) x₁`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (Q : GlobalTheory.LKDef.DPair G) (y : (AfP p ⊗[ℚ] G.C)ˣ) (s : (AfP p)ˣ) (hy : Triv G (AfP p) Q.β y s), ((((GlobalTheory.OrbFinAf.piV G w (Q.toAf y s hy Q.self) : GlobalTheory.OrbFinAf.Gv G w) : (K ⊗[ℚ] G.C)ˣ × Kˣ).1 : (K ⊗[ℚ] G.C)ˣ) : K ⊗[ℚ] G.C) = ↑(Units.map (φ : AfP p …`. Introduce `Q y s hy`. Use `show φ (↑y * ((1 : AfP p) ⊗ₜ[ℚ] (Q.γ : G.C)) * ↑y⁻¹) = _`. Rewrite using `[map_mul, map_mul, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hXg : IsIntB v (Module.finBasis ℚ G.C) (↑X * ((1 : K) ⊗ₜ[ℚ] (P₁.γ : G.C)) * ↑X⁻¹)`. Establish `h` using `(hS1 w hv1 ⟨_, hxΩ, rfl⟩).1`. Rewrite `h` using `[key P x t hx, hγ]`. Conclude with `h`. Establish `hX₁g : IsIntB v (Module.finBasis ℚ G.C) (↑X₁ * ((1 : K) ⊗ₜ[ℚ] (P₁.γ : G.C)) * ↑X₁⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(hS2 w hv2 ⟨_, rfl, rfl⟩).1`. Rewrite `h` using `[key P₁ x₁ t₁ hx₁]`. Conclude with `h`. Take `⟨m, hm1, hm2⟩` from `hS4 v hv4 X X₁ hXg hX₁g`. Take `⟨hmul, hstar⟩` from `hS3 v hv3`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `T : Kˣ` to `Units.map (AfP.eval w : AfP p →* K) t`. Set `T₁ : Kˣ` to `Units.map (AfP.eval w : AfP p →* K) t₁`. Set `β₁v : (K ⊗[ℚ] G.C)ˣ` to `Units.map ((Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] K ⊗[ℚ] G.C) : G.C →* K ⊗[ℚ] G.C) P₁.β`. Establish `hiota_a : ιv ((1 : K) ⊗ₜ[ℚ] a) * (β₁v : K ⊗[ℚ] G.C) = (1 : K) ⊗ₜ[ℚ] (P.β : G.C)` using `by show (1 : K) ⊗ₜ[ℚ] ι a * (1 : K) ⊗ₜ[ℚ] (P₁.β : G.C) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, ha, Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htriv : ∀ (Q : GlobalTheory.LKDef.DPair G) (y : (AfP p ⊗[ℚ] G.C)ˣ) (s : (AfP p)ˣ), Triv G (AfP p) Q.β y s → (↑(Units.map (φ : AfP p ⊗[ℚ] G.C →* K ⊗[ℚ] G.C) y) : K ⊗[ℚ] G.C) * ((1 : K) ⊗ₜ[ℚ] (Q.β : G.C)) * (starT G.star K ↑(Units.map (φ : AfP p ⊗[ℚ] G.C →* K ⊗[ℚ] G.C) y)).unop = a …`. Introduce `Q y s hy`. Establish `hy' : (y : AfP p ⊗[ℚ] G.C) * inC G (AfP p) Q.β * (starT G.star (AfP p) y).unop = algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) s` using `hy`. Establish `h` using `congrArg (Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C)) hy'`. Rewrite `h` using `[map_mul, map_mul, map_starT]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C) (inC G (AfP p) Q.β) = (1 : K) ⊗ₜ[ℚ] (Q.β : G.C)`. Simplify using `[inC, Algebra.TensorProduct.map_tmul]`. Establish `e2 : Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C) (algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) s) = algebraMap K (K ⊗[ℚ] G.C) (AfP.eval w (s : AfP p))`. Simplify using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul]`. Rewrite `h` using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Establish `h1 : (X : K ⊗[ℚ] G.C) * (ιv ((1 : K) ⊗ₜ[ℚ] a) * β₁v) * (starT G.star K X).unop = algebraMap K (K ⊗[ℚ] G.C) (T : K)`. Rewrite using `[hiota_a]`. Conclude with `htriv P x t hx`. Establish `h2 : (X₁ : K ⊗[ℚ] G.C) * β₁v * (starT G.star K X₁).unop = algebraMap K (K ⊗[ℚ] G.C) (T₁ : K)` using `htriv P₁ x₁ t₁ hx₁`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hιR : ∀ r : K, ιv (algebraMap K (K ⊗[ℚ] L) r) = algebraMap K (K ⊗[ℚ] G.C) r`. Introduce `r`. Simplify using `[ιv, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul]`. Establish `hcm : ιv (cv ↑m) = ↑β₁v * (starT G.star K (ιv ↑m)).unop * ↑β₁v⁻¹` using `map_conj_ext G K ι c P₁.β hc ↑m`. Establish `hcore` using `selfDual_conj_eq_one (R := K) (ιv : K ⊗[ℚ] L →+* K ⊗[ℚ] G.C) hιR (starT G.star K) (cv : K ⊗[ℚ] L →+* K ⊗[ℚ] L) β₁v X X₁ T T₁ ((1 : K) ⊗ₜ[ℚ] a) m hcm h1 h2`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [RingHom.coe_coe] at hcore`. Establish `hu'u : ((X₁ : K ⊗[ℚ] G.C) * ιv ↑m⁻¹ * ↑X⁻¹) * ((X : K ⊗[ℚ] G.C) * ιv ↑m * ↑X₁⁻¹) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [Units.inv_mul, mul_one, ← map_mul, Units.inv_mul, map_one, mul_one, Units.mul_inv]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hshu : (starT G.star K ((X : K ⊗[ℚ] G.C) * ιv ↑m * ↑X₁⁻¹)).unop * (starT G.star K ((X₁ : K ⊗[ℚ] G.C) * ιv ↑m⁻¹ * ↑X⁻¹)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, hu'u, map_one, MulOpposite.unop_one]`. Use `set u := (X : K ⊗[ℚ] G.C) * ιv ↑m * ↑X₁⁻¹ with hu`. Use `set u' := (X₁ : K ⊗[ℚ] G.C) * ιv ↑m⁻¹ * ↑X⁻¹ with hu'`. Use `set E := algebraMap K (K ⊗[ℚ] L) (↑T⁻¹ * ↑T₁) * ((1 : K) ⊗ₜ[ℚ] a) * (↑m⁻¹ * cv ↑m⁻¹) with hE`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set wv := (X₁ : K ⊗[ℚ] G.C) * ιv E * ↑X₁⁻¹ with hwvdef`. Establish `hwv : wv = u' * (starT G.star K u').unop`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu'u, hshu, one_mul, mul_one]`. Use `_ = u' * (u * wv * (starT G.star K u).unop) * (starT G.star K u').unop := by simp only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [hcore, mul_one]`. Establish `hwvI : IsIntB v (Module.finBasis ℚ G.C) wv` using `hwv ▸ hmul _ _ hm2 (hstar _ hm2)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Units.ne_zero _) ha.symm`. Take `⟨Eu, hEu⟩ : ∃ Eu : (K ⊗[ℚ] L)ˣ, (Eu : K ⊗[ℚ] L) = E` from `⟨Units.map (algebraMap K (K ⊗[ℚ] L) : K →* K ⊗[ℚ] L) (T⁻¹ * T₁) * Units.map ((Algebra.TensorProduct.includeRight : L →ₐ[ℚ] K ⊗[ℚ] L) : L →* K ⊗[ℚ] L) (Units.mk0 a ha0) * (m⁻¹ * Units.map (cv : K ⊗[ℚ] L →* K ⊗[ℚ] L) m⁻¹), by`. Simplify using `only [Units.val_mul, Units.coe_map, Units.val_mk0, hE, map_mul]`. Use the proof step `rfl⟩`. Establish `h_a : ((X₁ : K ⊗[ℚ] G.C) * ιv ↑Eu⁻¹ * ↑X₁⁻¹) * wv = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hwvdef, ← hEu]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [Units.inv_mul X₁, mul_one, ← map_mul ιv, Units.inv_mul Eu, map_one, mul_one, Units.mul_inv X₁]`. Establish `h_b : wv * ((starT G.star K u).unop * u) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu'u, one_mul]`. Simplify using `only [mul_assoc]`. Use `_ = u' * (u * wv * (starT G.star K u).unop) * u := by simp only [mul_assoc]`. Use `_ = 1 := by rw [hcore, mul_one, hu'u]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `hwv' : (X₁ : K ⊗[ℚ] G.C) * ιv ↑Eu⁻¹ * ↑X₁⁻¹ = (starT G.star K u).unop * u`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc]`. Use `_ = _ := by rw [h_a, one_mul]`. Establish `hE1 : IsIntB v (Module.finBasis ℚ L) (Eu : K ⊗[ℚ] L)` using `hS5 v hv5 X₁ _ (by rw [hEu]; exact hwvI)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE2 : IsIntB v (Module.finBasis ℚ L) ((Eu⁻¹ : (K ⊗[ℚ] L)ˣ) : K ⊗[ℚ] L)` using `hS5 v hv5 X₁ _ (by rw [hwv']; exact hmul _ _ (hstar _ hm1) hm1)`. Establish `hca : c a = a` using `hinj (by`. Rewrite using `[hc, ha, Units.val_mul, sh_mul', hβ₁inv, P.sym]`. Simplify using `only [mul_assoc, Units.mul_inv_cancel_left])`. Establish `hcalg : ∀ r : K, cv (algebraMap K (K ⊗[ℚ] L) r) = algebraMap K (K ⊗[ℚ] L) r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `r`. Simplify using `[cv, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul]`. Establish `hcinv : cv (cv ↑m⁻¹) = ↑m⁻¹` using `map_invol c hcc _`. Establish `hfix : cv ↑Eu = ↑Eu`. Establish `: cv ((1 : K) ⊗ₜ[ℚ] a) = (1 : K) ⊗ₜ[ℚ] a` using `by show (1 : K) ⊗ₜ[ℚ] c a = _`.
-
-Rewrite using `[hca]`. Rewrite using `[hEu, hE]`. Simplify using `only [map_mul, hcalg, hcinv, this]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨y₀, hy₀⟩` from `hS6 v hv6 Eu hfix hE1 hE2`.
-
-Use `⟨T * T₁⁻¹, m * y₀, ?_⟩` and prove the remaining obligations. Rewrite `hy₀` using `[hEu, hE, map_mul]`. Establish `hm' : (m : K ⊗[ℚ] L) * ↑m⁻¹ = 1` using `Units.mul_inv m`. Establish `hcm' : cv ↑m * cv ↑m⁻¹ = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `hT : algebraMap K (K ⊗[ℚ] L) ↑T * algebraMap K (K ⊗[ℚ] L) ↑T⁻¹ = 1`.
-
-Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hT₁ : algebraMap K (K ⊗[ℚ] L) ↑T₁ * algebraMap K (K ⊗[ℚ] L) ↑T₁⁻¹ = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `show (1 : K) ⊗ₜ[ℚ] a = algebraMap K (K ⊗[ℚ] L) ↑(T * T₁⁻¹) * (↑(m * y₀) * cv ↑(m * y₀))`. Rewrite using `[Units.val_mul, Units.val_mul, map_mul, map_mul]`.
-
-Take the linear combination `(algebraMap K (K ⊗[ℚ] L) ↑T * algebraMap K (K ⊗[ℚ] L) ↑T₁⁻¹ * ↑m * cv ↑m) * hy₀ - ((1 : K) ⊗ₜ[ℚ] a) * hT - ((1 : K) ⊗ₜ[ℚ] a) * algebraMap K (K ⊗[ℚ] L) ↑T * algebraMap K (K ⊗[ℚ] L) ↑T⁻¹ * hT₁ - ((1 : K) ⊗ₜ[ℚ] a) * algebraMap K (K ⊗[ℚ] L) ↑T * algebraMap K (K ⊗[ℚ] L) ↑T⁻¹ * algebra …`.
+A detailed English derivation is pending.
 -/
 theorem ratio_local_norm_dpair : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (Ω : Set G.GAf), IsCompact Ω →
     ∀ (P₁ : GlobalTheory.LKDef.DPair G) (L : Type) [Field L] [NumberField L] (ι : L →ₐ[ℚ] G.C) (c : L →ₐ[ℚ] L),

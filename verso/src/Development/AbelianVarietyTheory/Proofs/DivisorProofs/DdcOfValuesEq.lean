@@ -15,9 +15,9 @@ namespace GlobalTheory.SecForm.DdcValues
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h (S) : del (fun x => (bas n).repr (β x) S) v ξ = ∑ i, del (g i) v ξ * (bas n).repr (w i) S`. Establish `e : (fun x => (bas n).repr (β x) S) =ᶠ[𝓝 v] fun x => ∑ i, (bas n).repr (w i) S • g i x` using `hβ.mono fun x hx => by simp [hx, Finsupp.finsetSum_apply, mul_comm]`. Rewrite using `[del_congr e, del_sum (A := fun i x => (bas n).repr (w i) S • g i x) (fun i _ => (hg i).const_smul ((bas n).repr (w i) S)), ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[del_const_smul _ (hg i)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`. Simplify using `only [coefwise, h, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [mul_smul, ← Finset.smul_sum, Module.Basis.sum_repr]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coefwise_del_sum {ι : Type} [Fintype ι] {g : ι → V n → ℂ} (w : ι → Alt n) {β : V n → Alt n} {v : V n}
     (hg : ∀ i, DifferentiableAt ℝ (g i) v) (hβ : ∀ᶠ x in 𝓝 v, β x = ∑ i, g i x • w i) (ξ : V n) :
@@ -35,11 +35,11 @@ theorem coefwise_del_sum {ι : Type} [Fintype ι] {g : ι → V n → ℂ} (w : 
   simp only [mul_smul, ← Finset.smul_sum, Module.Basis.sum_repr]
 
 /- English proof (translation)
-Establish `h (S) : dbar (fun x => (bas n).repr (∑ i, g i x • w i) S) v ξ = ∑ i, dbar (g i) v ξ * (bas n).repr (w i) S`. Establish `e : (fun x => (bas n).repr (∑ i, g i x • w i) S) = fun x => ∑ i, (bas n).repr (w i) S • g i x`. Use function extensionality and compare the values at `fun x => by simp [Finsupp.finsetSum_apply, mul_comm]`. Rewrite using `[e, dbar_sum (A := fun i x => (bas n).repr (w i) S • g i x) (fun i _ => (hg i).const_smul ((bas n).repr (w i) S)), ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dbar_const_smul _ (hg i)]`. Simplify using `[mul_comm]`. Simplify using `only [coefwise, h, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_smul, ← Finset.smul_sum, Module.Basis.sum_repr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefwise_dbar_sum {ι : Type} [Fintype ι] {g : ι → V n → ℂ} (w : ι → Alt n) {v : V n}
     (hg : ∀ i, DifferentiableAt ℝ (g i) v) (ξ : V n) :
@@ -58,9 +58,9 @@ theorem coefwise_dbar_sum {ι : Type} [Fintype ι] {g : ι → V n → ℂ} (w :
   simp only [mul_smul, ← Finset.smul_sum, Module.Basis.sum_repr]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `dz a * dzb b * (dz c * dzb d) = -(dz a * dzb d * (dz c * dzb b))`. Establish `h₁ : dzb b * (dz c * dzb d) = dz c * dzb d * dzb b` using `Subalgebra.mem_center_iff.1 (sym (c, d)).2 _`. Establish `h₂ : dzb d * (dz c * dzb b) = dz c * dzb b * dzb d` using `Subalgebra.mem_center_iff.1 (sym (c, b)).2 _`. Establish `h₃ : dzb d * dzb b = -(dzb b * dzb d)` using `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, mul_assoc, h₁, h₂, mul_assoc, mul_assoc, h₃]`. Simplify using `only [mul_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sym_mul_sym_swap (a b c d : Fin n) : sym (a, b) * sym (c, d) = -(sym (a, d) * sym (c, b)) := by
   apply Subtype.ext
@@ -75,11 +75,11 @@ theorem sym_mul_sym_swap (a b c d : Fin n) : sym (a, b) * sym (c, d) = -(sym (a,
   simp only [mul_neg]
 
 /- English proof (translation)
-Establish `P (F : Fin n → Fin n → Fin n → Fin n → Ev n) : ∑ a, ∑ b, ∑ c, ∑ d, F a b c d = ∑ p : Fin n × Fin n × Fin n × Fin n, F p.1 p.2.1 p.2.2.1 p.2.2.2`. Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[P, P]`. Simplify using `only [sub_smul, add_smul, Finset.sum_sub_distrib, Finset.sum_add_distrib]`. Use `set T := ∑ p : Fin n × Fin n × Fin n × Fin n, D p.1 p.2.1 p.2.2.1 p.2.2.2 • (sym (p.1, p.2.1) * sym (p.2.2.1, p.2.2.2)) with hT`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h₂ : ∑ p : Fin n × Fin n × Fin n × Fin n, D p.2.2.1 p.2.2.2 p.1 p.2.1 • (sym (p.1, p.2.1) * sym (p.2.2.1, p.2.2.2)) = T` using `Fintype.sum_equiv ⟨fun p => (p.2.2.1, p.2.2.2, p.1, p.2.1), fun p => (p.2.2.1, p.2.2.2, p.1, p.2.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun p => by simp [mul_comm]`. Establish `h₃ : ∑ p : Fin n × Fin n × Fin n × Fin n, D p.1 p.2.2.2 p.2.2.1 p.2.1 • (sym (p.1, p.2.1) * sym (p.2.2.1, p.2.2.2)) = -T`. Rewrite using `[hT, ← Finset.sum_neg_distrib]`. Conclude with `Fintype.sum_equiv ⟨fun p => (p.1, p.2.2.2, p.2.2.1, p.2.1), fun p => (p.1, p.2.2.2, p.2.2.1, p.2.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun p => by rw [sym_mul_sym_swap, smul_neg]; rfl`. Establish `h₄ : ∑ p : Fin n × Fin n × Fin n × Fin n, D p.2.2.1 p.2.1 p.1 p.2.2.2 • (sym (p.1, p.2.1) * sym (p.2.2.1, p.2.2.2)) = -T`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, ← Finset.sum_neg_distrib]`. Conclude with `Fintype.sum_equiv ⟨fun p => (p.2.2.1, p.2.1, p.1, p.2.2.2), fun p => (p.2.2.1, p.2.1, p.1, p.2.2.2), fun _ => rfl, fun _ => rfl⟩ _ _ fun p => by rw [sym_mul_sym_swap, smul_neg, mul_comm]; rfl`. Rewrite using `[h₂, h₃, h₄]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem sum_four (D : Fin n → Fin n → Fin n → Fin n → ℂ) :
     ∑ a, ∑ b, ∑ c, ∑ d, (D a b c d + D c d a b - D a d c b - D c b a d) • (sym (a, b) * sym (c, d)) =
@@ -115,15 +115,15 @@ namespace GlobalTheory.SecForm
 open DdcValues
 
 /- English proof (translation)
-Use `set f : Fin n × Fin n → V n → ℂ := fun p x => α x (coordVec p.1) (coordVec p.2) with hf`. Establish `e₀ : (fun x => (ofValues (α x) : Alt n)) = fun x => ∑ p, f p x • (sym p : Alt n)`. Use function extensionality and compare the values at `x`. Simplify using `only [ofValues, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_smul, Fintype.sum_prod_type, hf]`. Establish `hev : ∀ᶠ x in 𝓝 v, ∀ p, DifferentiableAt ℝ (f p) x` using `eventually_all.2 fun p => ((h p.1 p.2).eventually (by simp)).mono fun x hx => hx.differentiableAt (by simp)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : ∀ᶠ x in 𝓝 v, dbarAt (fun x => (ofValues (α x) : Alt n)) x = ∑ q : Fin n × Fin n × Fin n, dbar (f q.2) x (coordVec q.1) • (dzb q.1 * sym q.2)` using `by filter_upwards [hev] with x hx`. Rewrite using `[e₀, dbarAt, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_dbar_sum _ hx, Finset.mul_sum]`. Simplify using `only [mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd (q : Fin n × Fin n × Fin n) : DifferentiableAt ℝ (fun x => dbar (f q.2) x (coordVec q.1)) v`. Establish `h1` using `(h q.2.1 q.2.2).fderiv_right (m := 1) (by norm_num)`. Simplify using `only [dbar_apply]`. Conclude with `(((h1.clm_apply contDiffAt_const).add ((h1.clm_apply contDiffAt_const).const_smul Complex.I)).const_smul (1 / 2 : ℂ)).differentiableAt one_ne_zero`. Establish `e₂ : delAt (dbarAt fun x => (ofValues (α x) : Alt n)) v = ((∑ a, ∑ b, ∑ c, ∑ d, ddbar (f (c, d)) v (coordVec a) (coordVec b) • (sym (a, b) * sym (c, d)) : Ev n) : Alt n)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [delAt, coefwise_del_sum _ hd e₁, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_smul, Subalgebra.coe_mul, Fintype.sum_prod_type, Finset.mul_sum, mul_smul_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[ddbar_eq_del_dbar (h c d), ← mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e₂, ← Subalgebra.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `sum_four fun a b c d => ddbar (f (c, d)) v (coordVec a) (coordVec b)` as an intermediate fact. Simplify using `only [ofValuesTwo, ddcForm, mul_smul, ← Finset.smul_sum]`. Use `erw [this]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ddc_ofValues {n : ℕ} (α : V n → V n → V n → ℂ) (v : V n)
     (h : ∀ a b, ContDiffAt ℝ 2 (fun x => α x (coordVec a) (coordVec b)) v) :

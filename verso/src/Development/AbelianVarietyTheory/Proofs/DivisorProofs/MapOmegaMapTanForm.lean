@@ -20,9 +20,9 @@ open GlobalTheory.Twist (resM resM_resM resM_self app_resM resM_smul)
 namespace GlobalTheory.ChainPts.DualAct
 
 /- English proof (translation)
-Use `dual_ext fun W hW s => ?_` and prove the remaining obligations. Rewrite using `[dualApp_dualMap, dualApp_smul, LinearMap.smul_apply, IsFrame.dualApp_coord, IsFrame.dualApp_coord]`. Establish `k : u.app W s = ∑ j, ((he.basis hW).repr s j * resG X hW (c j)) • he.basis hW j` using `by conv_lhs => rw [← (he.basis hW).sum_repr s]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Modules.Hom.app_smul, IsFrame.basis_apply, app_resM, hu, resM_smul, smul_smul]`. Rewrite using `[k, (he.basis hW).repr_sum_self, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualMap_coord {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {r : ℕ} {e : Fin r → Γ(F, U)} (he : VB.IsFrame e)
     (u : F ⟶ F) (c : Fin r → Γ(X, U)) (hu : ∀ i, u.app U (e i) = c i • e i) (i : Fin r) :
@@ -37,9 +37,9 @@ theorem dualMap_coord {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {r : ℕ} {
   rw [k, (he.basis hW).repr_sum_self, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use `dual_ext fun W hW s => ?_` and prove the remaining obligations. Establish `hi : Function.Injective (j.appLE W (j ⁻¹ᵁ W) le_rfl)`. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Use `haveI := j.isIso_app W (by`. Use `(hW.trans hU).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.image_top_eq_opensRange])`. Conclude with `(ConcreteCategory.bijective_of_isIso (j.app W)).1`. Use `hi ?_` and prove the remaining obligations. Rewrite using `[dualApp_dualMap, dualApp_smul, LinearMap.smul_apply, dualApp_res, smul_eq_mul, map_mul, Glue.appLE_dualApp_secOf j M hM, Glue.appLE_dualApp_secOf j M hM, ← pullback_map_app_pullbackSections, H, appLE_resG, resG_appLE]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dualMap_secOf {X Y : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmersion j] (M : X.Modules) (hM : IsIso (theta j M))
     (ψ : (Scheme.Modules.pullback j).obj M ⟶ structureModule Y) (u : M ⟶ M) {U : X.Opens} (hU : U ≤ j ''ᵁ ⊤)
@@ -62,7 +62,7 @@ theorem dualMap_secOf {X Y : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmersion j] (M : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(X, U)).presheaf.map_id _`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem fromSpec_appLE {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U) :
     hU.fromSpec.appLE U ⊤ h = (Scheme.ΓSpecIso Γ(X, U)).inv := by
@@ -76,11 +76,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] {x : Sp R ⟶ X} {v : Sp (DualNumber R) ⟶ t.G.left}
 
 /- English proof (translation)
-Use `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ (epsIso R).hom) ?_)` and prove the remaining obligations. Use `pullback_hom_ext (sec_hom (MonObj.one (X := t.G))) fun W b => ?_` and prove the remaining obligations. Establish `e₁ : unitSec t.G ≫ φ.left = unitSec t.G` using `congrArg (·.left) (IsMonHom.one_hom φ)`. Establish `k₁` using `(le_preimage_of_comp e₁).2 (le_refl (unitSec t.G ⁻¹ᵁ W))`. Establish `k₂` using `le_of_sq (epsZero_comp_of_isTanAtG t hv) k₁ le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `(QCoh.pullback_map_app_pullbackSections x (omegaMap φ) le_rfl (dUnit t.G le_rfl b)).trans (congrArg (pullbackSections x _ le_rfl) (omegaMap_dUnit φ le_rfl k₁ le_rfl b))`. Use `(congrArg ((baseMap (sec_hom (epsZero R)) hv.1 (epsZero_comp_of_isTanAtG t hv)).app _) e₂).trans ?_` and prove the remaining obligations. Establish `k₃ : v ⁻¹ᵁ φ.left ⁻¹ᵁ W ≤ (v ≫ φ.left) ⁻¹ᵁ W` using `le_rfl`. Establish `e₃` using `baseMap_d (sec_hom (MonObj.one (X := t.G))) (sec_hom (epsZero R)) hv.1 (epsZero_comp_of_isTanAtG t hv) k₁ le_rfl k₂ le_rfl (φ.left.appLE W _ le_rfl b)`. Establish `e₄` using `baseMap_d (sec_hom (MonObj.one (X := t.G))) (sec_hom (epsZero R)) hv'.1 (epsZero_comp_of_isTanAtG t hv') le_rfl le_rfl k₂ k₃ b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₅` using `appLE_appLE (f := v) (g := φ.left) rfl le_rfl le_rfl k₃ b`. Conclude with `e₃.trans ((congrArg (d (sec_hom (epsZero R)) k₂) e₅).trans e₄.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_omegaMap_tanForm (φ : t.G ⟶ t.G) [IsMonHom φ] (hv : IsTanAtG t x v) (hv' : IsTanAtG t x (v ≫ φ.left)) :
     (Scheme.Modules.pullback x).map (omegaMap φ) ≫ tanForm t hv = tanForm t hv' := by
@@ -105,7 +105,7 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-The claim follows from `t.act.hom a (tanForm t hv).app T (((Scheme.Modules.pullback x).map (omegaMap (t.act.act a))).app T s) = resG (Sp R) (le_top : T ≤ ⊤) (cst R c) • (tanForm t hv).app T s := by haveI := t.act.hom a have hv' : IsTanAtG t x (v ≫ (t.act.act a).left) := isTan_tv (actR t.act a (tanOf hv) …`.
+A detailed English derivation is pending.
 -/
 theorem tanForm_eig (a : 𝓞 E) (c : R) (hv : IsTanAtG t x v)
     (h : v ≫ (t.act.act a).left = spMap (epsMul c) ≫ v) (T : (Sp R).Opens)
@@ -123,9 +123,9 @@ theorem tanForm_eig (a : 𝓞 E) (c : R) (hv : IsTanAtG t x v)
   exact (congr(($(map_omegaMap_tanForm t (t.act.act a) hv hv')).app T s)).trans k'
 
 /- English proof (translation)
-Use `dualMap_secOf j _ hM _ _ hU hU' c' fun T s => ?_` and prove the remaining obligations. Establish `k` using `tanForm_eig t a c hv h T (((Scheme.Modules.pullbackComp j π).hom.app _).app T s)`. Establish `n` using `(Scheme.Modules.pullbackComp j π).hom.naturality (omegaMap (t.act.act a))`. Establish `n'` using `congr(($n).app T s)`. Rewrite using `[hc, Frame.tanMor_eq hv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg ((tanForm t hv).app T) n').trans k`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_secOf_tanMor {Z : Scheme.{0}} (j : Sp R ⟶ Z) [IsOpenImmersion j] (π : Z ⟶ X)
     (hM : IsIso (theta j ((Scheme.Modules.pullback π).obj (omega t.G)))) (hv : IsTanAtG t (j ≫ π) v) (a : 𝓞 E)
@@ -156,7 +156,7 @@ def omAct : 𝓞 E →+* End (om Z) :=
 def lieXAct {X : Scheme.{0}} (h : X ⟶ Z.X) : 𝓞 E →+* End (lieX Z h) := pullAct (dualAct (omAct Z)) h
 
 /- English proof (translation)
-Establish `hU' : ⊤ ≤ Z.chart a ⁻¹ᵁ (Z.U a).1` using `(Z.U a).2.fromSpec_preimage_self.ge`. Use `haveI := (Y Z.i).t.act.hom c`. Conclude with `dualMap_secOf_tanMor (Y Z.i).t (Z.chart a) Z.π (Glue.isIso_theta_om Z _) ((Z.frame a).1 q.1 q.2).1 c (((Z.frame a).1 q.1 q.2).2 c) (chart_image_top Z a).ge hU' congr($(fromSpec_appLE (Z.U a).2 hU') (Z.alg a (embK Z.i.c q.1 c)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dualMap_sec (a : Fin Z.m) (q : Letter Dw) (c : 𝓞 E) :
     (VB.dualMap (VB.act (omAct Z) c)).app _ (TanSec.sec Z a (Z.fr a q.1 q.2)) =
@@ -168,7 +168,7 @@ theorem dualMap_sec (a : Fin Z.m) (q : Letter Dw) (c : 𝓞 E) :
     congr($(fromSpec_appLE (Z.U a).2 hU') (Z.alg a (embK Z.i.c q.1 c)))
 
 /- English proof (translation)
-Use `(pullback_map_app_pullbackSections h _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg _ (dualMap_sec Z a (x i) c)).trans ?_` and prove the remaining obligations. Rewrite using `[pullbackSections_smul, Scheme.Hom.appLE_eq_app]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lieXAct_secX {X : Scheme.{0}} (h : X ⟶ Z.X) {r : ℕ} (x : Fin r → Letter Dw) (a : Fin Z.m) (i : Fin r) (c : 𝓞 E) :
     (VB.act (lieXAct Z h) c).app _ (secX Z h x a i) =
@@ -181,11 +181,9 @@ theorem lieXAct_secX {X : Scheme.{0}} (h : X ⟶ Z.X) {r : ℕ} (x : Fin r → L
 end Mdl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z O _ _ _ B h r x hx hfr`. Establish `hvbX : IsVB (lieX Z h) r` using `(GlobalTheory.T.tangent_sheaf_local_model_bundle E H Dw Xo p W Y i₀ Z r x hx).dual.pullback h`. Set `ρ : 𝓞 E →+* End (dual (lieX Z h))` to `(dualAct (lieXAct Z h)).comp H.bar.toRingHom`. Use `⟨ρ.toMonoidHom, fun a b => ρ.map_add a b, hvbX.dual, ⟨fun a => (hfr a).dual, ?_, ?_⟩, fun a i c => ?_⟩` and prove the remaining obligations. Introduce `k _ w a a' φ φ' h1 h2 j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [GlobalTheory.T.dual_frame_transition_coefficients]`. Conclude with `GlobalTheory.T.tangent_frame_at_field_point E H Dw Xo p W Y i₀ Z _ h r x hx hfr k w a a' φ φ' h1 h2 j`. Introduce `y w hw a φ hφ V e he hV cf v hv`. Take `⟨e', he', hc⟩` from `GlobalTheory.T.exists_dual_frame_coefficients _ (lieX Z h) r r hvbX V e he`. Simplify using `only [hc]`.
-
-Conclude with `GlobalTheory.T.tangent_frame_at_integral_point E H Dw Xo p W Y i₀ Z _ h r x hx hfr y w hw a φ hφ V e' he' hV cf v hv`. Conclude with `dualMap_coord (hfr a) (VB.act (lieXAct Z h) (H.bar c)) _ (fun i => lieXAct_secX Z h x a i (H.bar c)) i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actSt : SysB.ActSt := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z O _ _ _ B h r x hx hfr

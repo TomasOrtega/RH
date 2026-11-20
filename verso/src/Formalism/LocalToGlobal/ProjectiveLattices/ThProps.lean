@@ -42,7 +42,7 @@ def NabZero (nab : NabV Xo c) : Prop :=
       (toΓ S (nab y k F 0))
 
 /- English proof (translation)
-Use `⟨fun p y => (h p.R y a n x P hP).exists.choose, fun p y => (h p.R y a n x P hP).exists.choose_spec, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Use function extensionality and compare the values at `p y`. Conclude with `(h p.R y a n x P hP).unique (hg p y) (h p.R y a n x P hP).exists.choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem existsUnique_thRule (nab : NabV Xo c) (h : ThValTot Xo c nab) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     (x : Fin n → Dw.La) {P : MvPolynomial (LtN Dw n) c.F} (hP : P ∈ harmA c a n) :

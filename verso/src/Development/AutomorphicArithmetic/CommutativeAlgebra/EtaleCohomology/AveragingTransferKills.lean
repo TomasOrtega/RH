@@ -19,9 +19,9 @@ private abbrev coefT (l : ℕ) [Fact l.Prime] (n : ℕ) : Test l ⥤ ModuleCat.{
   CH.modF (testι l ⋙ AcrA l n)
 
 /- English proof (translation)
-Introduce `A S hS`. Establish `e : (fun (x : F'.obj A) (i : S.ι) => (F'.map (S.f i)).hom x) = (fun (v : ∀ i, F.obj (S.B i)) (i : S.ι) => c (S.B i) (v i)) ∘ (fun (x : F.obj A) (i : S.ι) => (F.map (S.f i)).hom x) ∘ (c A).symm`. Use function extensionality and compare the values at `x i`. Use `hc (S.f i) ((c A).symm x)` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `(Equiv.piCongrRight fun i => (c (S.B i)).toEquiv).bijective.comp ((hF A S hS).comp (c A).symm.bijective)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma add_gen {C : Type 1} [Category.{0} C] (Pa : Parts C) {R : Type} [CommRing R]
     (F : C ⥤ ModuleCat.{0} R)
@@ -43,7 +43,7 @@ private lemma add_gen {C : Type 1} [Category.{0} C] (Pa : Parts C) {R : Type} [C
     ((hF A S hS).comp (c A).symm.bijective)
 
 /- English proof (translation)
-The claim follows from `hA l n A S ((hPa A S).1 hS)`.
+A detailed English derivation is pending.
 -/
 private lemma coefT_add (hA : AcrAdd) (Pa : Parts (Test l))
     (hPa : ∀ (A : Test l) (S : Fam A), Pa.Cov S ↔ IsDec S) (n : ℕ) (A : Test l) (S : Fam A)
@@ -52,7 +52,7 @@ private lemma coefT_add (hA : AcrAdd) (Pa : Parts (Test l))
   hA l n A S ((hPa A S).1 hS)
 
 /- English proof (translation)
-Establish `h0 : T.pull p F' j (e P j x) = 0` using `by rw [← hm, hx, map_zero]`. Apply `(e P j).injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, hLA C Pa T F' hF Q P p I g hL j _ h0, map_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma avg_gen (hLA : LocAvg) {C : Type 1} [Category.{0} C] (Pa : Parts C) (T : Theory C)
     {R : Type} [CommRing R] (F : C ⥤ ModuleCat.{0} R) (F' : Coef C) (hF : Pa.Add F')
@@ -70,7 +70,7 @@ private def pullT {Q P : PAlg l ⥤ Type} (p : Q ⟶ P) (n : ℕ) :
       (CategoryOfElements.π (testι l ⋙ Q) ⋙ coefT l n) (RingHom.id _) := pullMor p n
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun A => h.2.1 A, fun A y y' hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Functor.whiskerLeft_comp, h.1 i]`. Take `⟨S, hS, hm⟩` from `h.2.2 A y y' hy`. Conclude with `⟨S, (hPa A S).2 hS, hm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma locTrans_of {Q P : PAlg l ⥤ Type} {p : Q ⟶ P} {I : Type} [Fintype I]
     {g : I → (Q ⟶ Q)} (h : TTrans p g) (Pa : Parts (Test l))
@@ -83,9 +83,9 @@ private lemma locTrans_of {Q P : PAlg l ⥤ Type} {p : Q ⟶ P} {I : Type} [Fint
     exact ⟨S, (hPa A S).2 hS, hm⟩
 
 /- English proof (translation)
-Use `Exists.elim (hP l) fun Pa hPa => Exists.elim (hT (Test l)) fun T hT => ?_` and prove the remaining obligations. Use `Exists.elim (hT (Acris l) (coefT l n)) fun F' h1 => Exists.elim h1 fun c h2 => Exists.elim h2 fun e h3 => ?_` and prove the remaining obligations. Establish `hF : Pa.Add F'` using `add_gen Pa (coefT l n) (coefT_add hA Pa hPa n) F' c h3.1`. Establish `hG : (pullT p n).G = CategoryOfElements.map (Functor.whiskerLeft (testι l) p)` using `rfl`. Establish `hτ : ∀ (T : (testι l ⋙ Q).Elements) (y : ((CategoryOfElements.π (testι l ⋙ P) ⋙ coefT l n).obj ((pullT p n).G.obj T))), HEq ((pullT p n).τ T y) y` using `fun _ _ => HEq.rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `h3.2 (Functor.whiskerLeft (testι l) p) (pullT p n) hG hτ j`. Establish `hL` using `locTrans_of h Pa hPa`. Conclude with `avg_gen hLA Pa T (coefT l n) F' hF e (Functor.whiskerLeft (testι l) p) hL (pullT p n) j hm x hx`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma averaging_transfer_kills (hLA : LocAvg) (hP : PartsEx) (hA : AcrAdd) (hT : TheoryEx)
     {Q P : PAlg l ⥤ Type} (p : Q ⟶ P) {I : Type} [Fintype I] {g : I → (Q ⟶ Q)} (h : TTrans p g)
@@ -106,7 +106,7 @@ end UpperTheory.Ru.crystallineComparison
 
 open CategoryTheory CategoryTheory.Limits GroundTheory.PAdicHodge CrystallineSemistableComparison UpperTheory.Ru.crystallineComparison in
 /- English proof (translation)
-Introduce `l _ Q P p I _ g h n j x hx`. Conclude with `averaging_transfer_kills locAvg partsEx acrAdd theoryEx p h n j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.avgMH :
     UpperTheory.Ru.crystallineComparison.AvgMH := by

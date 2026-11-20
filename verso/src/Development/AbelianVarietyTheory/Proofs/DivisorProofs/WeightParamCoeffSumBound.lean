@@ -32,7 +32,7 @@ namespace GlobalTheory.CovTop.WtSz
 open GlobalTheory.CompHS
 
 /- English proof (translation)
-The claim follows from `|((ofGaps a g j : ℤ) : ℝ)| ≤ 2 * ∑ k ∈ Finset.range N, |(g k : ℝ)| := by have key : ∀ b, b ≤ N ∨ True → ∑ k ∈ Finset.range b, |(g k : ℝ)| ≤ ∑ k ∈ Finset.range N, |(g k : ℝ)| := by intro b _ rcases le_total b N with h | h · exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.range …`.
+A detailed English derivation is pending.
 -/
 theorem abs_ofGaps_le {N : ℕ} (a : ℕ) (g : ℕ → ℤ) (hg : ∀ k, N ≤ k → g k = 0) (j : Fin N) :
     |((ofGaps a g j : ℤ) : ℝ)| ≤ 2 * ∑ k ∈ Finset.range N, |(g k : ℝ)| := by
@@ -55,15 +55,15 @@ theorem abs_ofGaps_le {N : ℕ} (a : ℕ) (g : ℕ → ℤ) (hg : ∀ k, N ≤ k
     _ ≤ _ := by linarith
 
 /- English proof (translation)
-Set `e : ℕ → ℝ` to `fun k => if h : k < N then |(w ⟨k, h⟩ : ℝ)| else 0`. Establish `he : ∑ j, |(w j : ℝ)| = ∑ k ∈ Finset.range N, e k`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Simplify using `[e]`. Establish `hb : ∀ k, |(gap w k : ℝ)| ≤ e k + e (k + 1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k`. Unfold `gap`. Distinguish the cases in `h : k + 1 < N`. Simplify using `only [dif_pos h, e, dif_pos (show k < N by omega)]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Conclude with `abs_sub _ _`. Simplify using `only [dif_neg h]`. Apply the tactic sequence `have : 0 ≤ e k := by simp only [e]; split_ifs <;> simp`. Apply the tactic sequence `have : 0 ≤ e (k+1) := by simp only [e]; split_ifs <;> simp`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ∑ k ∈ Finset.range N, e (k + 1) ≤ ∑ k ∈ Finset.range N, e k`. Use `Finset.sum_range_succ' e N` as an intermediate fact. Establish `h2` using `Finset.sum_range_succ e N`. Establish `hN : e N = 0` using `by simp [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have h0 : 0 ≤ e 0 := by simp only [e]; split_ifs <;> simp`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_abs_gap_le {N : ℕ} (w : Fin N → ℤ) :
     ∑ k ∈ Finset.range N, |(gap w k : ℝ)| ≤ 2 * ∑ j, |(w j : ℝ)| := by
@@ -91,15 +91,15 @@ theorem sum_abs_gap_le {N : ℕ} (w : Fin N → ℤ) :
     _ ≤ _ := by rw [Finset.sum_add_distrib, he]; linarith
 
 /- English proof (translation)
-Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `h1 : ((x / n : ℤ) : ℝ) * n ≤ x`. Use `Int.ediv_mul_le x hn.ne'` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h2 : (x : ℝ) < ((x / n : ℤ) : ℝ) * n + n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Int.lt_ediv_add_one_mul_self x hn` as an intermediate fact. Establish `h3 : (x : ℝ) < ((x / n + 1 : ℤ) : ℝ) * n` using `by exact_mod_cast this`. Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_le]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Establish `: -|(x:ℝ)| ≤ x` using `neg_abs_le _`. Establish `: ((x / n : ℤ) : ℝ) > (x : ℝ) / n - 1`. Rewrite using `[gt_iff_lt, sub_lt_iff_lt_add, div_lt_iff₀ hn']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: (x:ℝ)/n ≥ -|(x:ℝ)|/n`. Apply `div_le_div_of_nonneg_right _ hn'.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: -|(x:ℝ)|/n = -(|(x:ℝ)|/n)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: ((x / n : ℤ) : ℝ) ≤ (x : ℝ) / n` using `by rw [le_div_iff₀ hn']; exact h1`. Establish `: (x:ℝ)/n ≤ |(x:ℝ)|/n` using `div_le_div_of_nonneg_right (le_abs_self _) hn'.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem abs_ediv_le (x n : ℤ) (hn : 0 < n) : |((x / n : ℤ) : ℝ)| ≤ |(x : ℝ)| / n + 1 := by
   have hn' : (0 : ℝ) < n := by exact_mod_cast hn
@@ -129,23 +129,23 @@ namespace GlobalTheory.CovTop.WtSz
 open GlobalTheory.CompHS
 
 /- English proof (translation)
-Apply the tactic sequence `unfold gap; split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gap_sub_const {N : ℕ} (w : Fin N → ℤ) (c : ℤ) (k : ℕ) : gap (fun j => w j - c) k = gap w k := by
   unfold gap; split_ifs <;> ring
 
 /- English proof (translation)
-Unfold `gap; rw [dif_neg (by omega)]`.
+Replace the relevant objects with their definitions.
 -/
 theorem gap_eq_zero {N : ℕ} (w : Fin N → ℤ) {k : ℕ} (hk : N ≤ k) : gap w k = 0 := by
   unfold gap; rw [dif_neg (by omega)]
 
 /- English proof (translation)
-Establish `hT' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hsum : ∑ k ∈ Finset.range N, |(gap v k : ℝ)| ≤ 2 * ∑ j, |(w j : ℝ)| + N * B`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `_ ≤ _ := by linarith [sum_abs_gap_le w]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG : ∑ k ∈ Finset.range N, |((gap v k / n : ℤ) : ℝ)| ≤ (2 * ∑ j, |(w j : ℝ)| + N * B) / n + N`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_div, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Use `_ ≤ _ := by gcongr`. Establish `hent : ∀ j, |(floorGaps a n v j : ℝ)| ≤ 2 * ((2 * ∑ j, |(w j : ℝ)| + N * B) / n + N)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Use `(abs_ofGaps_le a (fun k => gap v k / n) (fun k hk => ?_) j).trans ?_` and prove the remaining obligations. Simplify using `[gap_eq_zero v hk]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_abs_floorGaps_le {N : ℕ} (v w : Fin N → ℤ) (n : ℤ) (hn : 0 < n) (B : ℝ) (a : ℕ)
     (hgv : ∀ k, |(gap v k : ℝ)| ≤ |(gap w k : ℝ)| + B) :
@@ -173,11 +173,11 @@ theorem sum_abs_floorGaps_le {N : ℕ} (v w : Fin N → ℤ) (n : ℤ) (hn : 0 <
     _ = _ := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
 
 /- English proof (translation)
-Establish `hg : ∀ k, |((gap v k - n * (gap v k / n) : ℤ) : ℝ)| ≤ n - 1`. Introduce `k`. Rewrite using `[← Int.emod_def]`. Establish `h0` using `Int.emod_nonneg (gap v k) hn.ne'`. Establish `h1` using `Int.emod_lt_of_pos (gap v k) hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[abs_of_nonneg (by exact_mod_cast h0)]`. Establish `: gap v k % n ≤ n - 1` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hent : ∀ j, |(remGaps a n v j : ℝ)| ≤ 2 * (N * ((n : ℝ) - 1))`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(abs_ofGaps_le a (fun k => gap v k - n * (gap v k / n)) (fun k hk => ?_) j).trans ?_` and prove the remaining obligations. Simplify using `[gap_eq_zero v hk]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_abs_remGaps_le {N : ℕ} (v : Fin N → ℤ) (n : ℤ) (hn : 0 < n) (a : ℕ) :
     ∑ j, |(remGaps a n v j : ℝ)| ≤ 2 * N * N * (n - 1) := by
@@ -204,20 +204,20 @@ theorem sum_abs_remGaps_le {N : ℕ} (v : Fin N → ℤ) (n : ℤ) (hn : 0 < n) 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Unfold `WtPar.T₁`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem T₁_pos (P : WtPar Dw) : 0 < P.T₁ := by unfold WtPar.T₁; positivity
 
 /- English proof (translation)
-Use `sum_abs_floorGaps_le _ w _ (T₁_pos P) _ _ fun k => ?_` and prove the remaining obligations. Distinguish the cases in `h : k + 1 < Dw.p + Dw.q`. Rewrite using `[P.gap_uMinus_sub_kap τ h]`. Establish `hu' : P.u τ = fun j => w j - c` using `funext hu`. Rewrite using `[hu', gap_sub_const]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `(abs_add_le _ _).trans (add_le_add le_rfl ?_)` and prove the remaining obligations. Establish `hN : (0:ℝ) ≤ ((Dw.p + Dw.q : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Move the coercions through the operations in `at hN ⊢`. Use `split_ifs`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show -(P.c₀ : ℝ) - (2 * ((Dw.p : ℝ) + Dw.q) - 2) = -((P.c₀ : ℝ) + (2 * ((Dw.p : ℝ) + Dw.q) - 2)) by ring, abs_neg]`. Conclude with `abs_add_le _ _`. Use `_ ≤ _ := by`. Establish `: |2 * ((Dw.p : ℝ) + Dw.q) - 2| ≤ 2 * ((Dw.p : ℝ) + Dw.q) + 2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions.
 
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Combine the linear relations using `[abs_nonneg (P.c₀ : ℝ)]`. Establish `: gap ((P.uMinus - FlagTan.kap Dw) τ) k = 0` using `by unfold gap; rw [dif_neg h]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using `only [Int.cast_zero, abs_zero]`. Establish `: (0:ℝ) ≤ ((Dw.p + Dw.q : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem sum_abs_u₁_le (P : WtPar Dw) (τ : Psi H) (w : Fin (Dw.p + Dw.q) → ℤ) (c : ℤ)
     (hu : ∀ j, P.u τ j = w j - c) :
@@ -248,7 +248,7 @@ theorem sum_abs_u₁_le (P : WtPar Dw) (τ : Psi H) (w : Fin (Dw.p + Dw.q) → �
     positivity
 
 /- English proof (translation)
-Establish `h` using `sum_abs_remGaps_le ((P.uMinus - FlagTan.kap Dw) τ) P.T₁ (T₁_pos P) P.a`. Establish `hT : (P.T₁ : ℝ) - 1 = (P.T + FlagTan.dimFlag Dw : ℕ)` using `by unfold WtPar.T₁; push_cast; ring`. Rewrite `h` using `[hT]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_abs_rem_le (P : WtPar Dw) (τ : Psi H) :
     ∑ j, |(P.rem τ j : ℝ)| ≤ 2 * (Dw.p + Dw.q : ℕ) * (Dw.p + Dw.q : ℕ) * (P.T + FlagTan.dimFlag Dw : ℕ) := by
@@ -264,45 +264,43 @@ namespace GlobalTheory.CovTop.WtSz
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨Z, hZ⟩ : ∃ Z, Z = f * r * L` from `⟨_, rfl⟩`. Rewrite `hPP`, the goal using `[← hZ]`. Establish `hfr : 8 ≤ f * r` using `by nlinarith`. Establish `hZ80 : 80 ≤ Z` using `by rw [hZ]; nlinarith`. Establish `hZ1 : 1 ≤ Z` using `by linarith`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfZ : f ≤ Z` using `by rw [hZ]; nlinarith`. Establish `hrZ : r ≤ Z` using `by rw [hZ]; nlinarith`. Establish `hfrZ : f * r ≤ Z` using `by rw [hZ]; nlinarith`. Establish `hZpow : ∀ n m : ℕ, n ≤ m → Z ^ n ≤ Z ^ m` using `fun n m h => pow_le_pow_right₀ hZ1 h`. Establish `hPP1 : 1 ≤ PP` using `le_trans (one_le_pow₀ hZ1) hPP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPPZ : Z ^ 12 ≤ PP` using `hPP`. Establish `hb0 : 0 < b` using `lt_of_lt_of_le (by positivity) hb`. Establish `hkap9 : PP ^ 9 ≤ kap`. Establish `: PP * PP ^ 9 ≤ PP * kap` using `by nlinarith [pow_succ' PP 9]`. Conclude with `le_of_mul_le_mul_left this (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPPpow : ∀ n m : ℕ, n ≤ m → PP ^ n ≤ PP ^ m` using `fun n m h => pow_le_pow_right₀ hPP1 h`. Establish `hB : f * r * (c + 2 * r + 2) ≤ kap`. Establish `h1 : f * r * (c + 2 * r + 2) ≤ f * r * (26 * f ^ 2 * r ^ 4)`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Establish `: 2 * r + 2 ≤ 4 * f ^ 2 * r ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: r ≤ r ^ 4` using `by nlinarith [pow_le_pow_right₀ hr (show 1 ≤ 4 by norm_num), pow_one r]`. Establish `: 1 ≤ f ^ 2` using `by nlinarith`. Establish `: r ^ 4 ≤ f ^ 2 * r ^ 4` using `by nlinarith [pow_pos (by linarith : (0:ℝ) < r) 4]`. Use polynomial arithmetic with `[pow_pos (by linarith : (0:ℝ) < r) 4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2 : f * r * (26 * f ^ 2 * r ^ 4) ≤ 26 * Z ^ 5`. Establish `: f * r * (f ^ 2 * r ^ 4) ≤ Z ^ 5`. Establish `e : f * r * (f ^ 2 * r ^ 4) = (f * r) ^ 3 * r ^ 2` using `by ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 26 * Z ^ 5 ≤ Z ^ 12`. Establish `: 26 ≤ Z ^ 7` using `by nlinarith [hZpow 1 7 (by norm_num), pow_one Z]`. Establish `e : Z ^ 12 = Z ^ 7 * Z ^ 5` using `by ring`. Rewrite using `[e]; nlinarith [pow_pos (by linarith : (0:ℝ) < Z) 5]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hPPpow 1 9 (by norm_num), pow_one PP]`. Establish `hT3 : T ≤ 2 * PP ^ 3`. Establish `h1 : (f * r ^ 2) ^ 2 * r ≤ Z ^ 5`. Establish `e : (f * r ^ 2) ^ 2 * r = (f * r) ^ 2 * r ^ 3` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Z ^ 5 ≤ PP` using `(hZpow 5 12 (by norm_num)).trans hPPZ`. Establish `h3 : PP ^ 2 * ((f * r ^ 2) ^ 2 * r) ≤ PP ^ 2 * PP` using `by gcongr; linarith`. Establish `h4 : 1 ≤ PP ^ 3` using `one_le_pow₀ hPP1`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hT0 : 0 < T` using `by linarith`. Establish `hT₁ : T ≤ T + D + 1` using `by linarith`. Establish `hU1 : 2 * r * ((2 * kap + f * r * (c + 2 * r + 2)) / (T + D + 1) + f * r) ≤ 6 * r * (kap / T) + 2 * f * r ^ 2`. Establish `hkap0 : 0 ≤ kap` using `le_trans (by positivity) hkap9`. Establish `: (2 * kap + f * r * (c + 2 * r + 2)) / (T + D + 1) ≤ 3 * kap / T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_div_iff₀ (by linarith) hT0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e : 3 * kap / T = 3 * (kap / T)` using `by ring`. Use the polynomial consequences of the given equalities and inequalities. Establish `hq0 : 0 ≤ kap / T` using `div_nonneg (le_trans (by positivity) hkap9) hT0.le`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfL : 12 ≤ f * L ^ 2` using `by nlinarith`. Establish `hfr2 : 0 ≤ f * r ^ 2` using `by positivity`. Establish `hZsq : Z ^ 2 = (f * L ^ 2) * (f * r ^ 2)` using `by rw [hZ]; ring`. Establish `hmul : 12 * (f * r ^ 2) ≤ (f * L ^ 2) * (f * r ^ 2)` using `mul_le_mul_of_nonneg_right hfL hfr2`. Establish `hZ2 : 2 * f * r ^ 2 ≤ Z ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZsq]`. Establish `: 0 ≤ f * r ^ 2` using `hfr2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6r : 6 * r ≤ Z ^ 2 / 2`. Establish `: r ≤ f * r ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZsq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : f * (2 * r * r * (T + D)) ≤ Z ^ 2 / 2 * (kap / T)`. Establish `h1 : f * (2 * r * r * (T + D)) ≤ 4 * f * r ^ 2 * T` using `by nlinarith [mul_pos (by linarith : (0:ℝ) < f) (by linarith : (0:ℝ) < r)]`. Establish `h2 : 4 * f * r ^ 2 * T ≤ kap / T`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ hT0]`. Establish `hT2 : T * T ≤ 4 * PP ^ 6` using `by nlinarith`. Establish `h16 : 16 * f * r ^ 2 ≤ PP`. Establish `: 16 * f * r ^ 2 ≤ Z ^ 12`. Establish `: f * r ^ 2 ≤ Z ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: 16 ≤ Z ^ 9` using `by nlinarith [hZpow 1 9 (by norm_num), pow_one Z]`. Establish `e : Z ^ 12 = Z ^ 9 * Z ^ 3` using `by ring`. Rewrite using `[e]; nlinarith [pow_pos (by linarith : (0:ℝ) < Z) 3, mul_pos (by linarith : (0:ℝ) < f) (by positivity : (0:ℝ) < r ^ 2)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 4 * f * r ^ 2 * T * T ≤ 4 * f * r ^ 2 * (4 * PP ^ 6)`. Establish `: 0 ≤ 4 * f * r ^ 2` using `by positivity`. Rewrite using `[mul_assoc (4 * f * r ^ 2)]`. Conclude with `mul_le_mul_of_nonneg_left hT2 this`. Establish `: 4 * f * r ^ 2 * (4 * PP ^ 6) ≤ PP * PP ^ 6` using `by nlinarith [pow_pos (by linarith : (0:ℝ) < PP) 6]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: PP * PP ^ 6 ≤ PP ^ 9` using `by rw [← pow_succ']; exact hPPpow 7 9 (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : kap / T ≤ Z ^ 2 / 2 * (kap / T)`. Establish `: 1 ≤ Z ^ 2 / 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1 : 6 * r * (kap / T) ≤ Z ^ 2 / 2 * (kap / T)` using `mul_le_mul_of_nonneg_right h6r hq0`. Establish `a2 : Z ^ 2 / 2 * (kap / T) ≤ Z ^ 2 * (kap / T)` using `mul_le_mul_of_nonneg_right (by nlinarith) hq0`. Establish `e : Z ^ 2 * (kap / T + 1) = Z ^ 2 * (kap / T) + Z ^ 2` using `by ring`. Rewrite using `[e]`.
-
-Use `⟨by linarith, by linarith⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem arith (f r L PP b kap T D c : ℝ) (hf : 8 ≤ f) (hr : 1 ≤ r) (hL : 10 ≤ L)
     (hPP : (f * r * L) ^ 12 ≤ PP) (hb : PP ^ 10 ≤ b) (hk : b ≤ PP * kap) (hT1 : 1 ≤ T) (hD0 : 0 ≤ D) (hDT : D ≤ T)
@@ -421,35 +419,33 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `set P : WtPar (dat p i) := ⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩ with hP`. Establish `hN : (((dat p i).p + (dat p i).q : ℕ) : ℝ) = D.R.r` using `by rw [hW.sig.2.2]`. Establish `hcard : (Fintype.card (Psi p.T.Q.H) : ℝ) = D.R.f` using `by rw [← Nat.card_eq_fintype_card, hW.card]`. Establish `hRk : D.R.k ≤ D.R.r ∧ 1 ≤ D.R.m ∧ 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hDim : CompHt.dimFlag (dat p i) = FlagTan.dimFlag (dat p i)` using `GlobalTheory.CompHS.dimFlag_eq _`. Take `⟨⟨u1, hu1⟩, hq⟩` from `hS.2.2.2.2.2.2 hi`. Establish `hT3` using `(hq u1 hu1).1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hT3` using `[hDim]`. Establish `hc` using `cZero_spec D ((i : ℕ) + 1)`. Establish `hc0 : (0 : ℝ) ≤ (cZero D ((i : ℕ) + 1) : ℝ)` using `by exact_mod_cast hc.2.1`. Establish `hc1 : (cZero D ((i : ℕ) + 1) : ℝ) ≤ 22 * (D.R.f : ℝ) ^ 2 * (D.R.r : ℝ) ^ 4` using `by exact_mod_cast hc.2.2`. Establish `hPPx` using `hH.poly.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroom` using `hH.room`. Establish `hZ12` using `hH.ppLow`. Establish `hPP0 : 0 ≤ PP` using `le_trans (by unfold zBase; positivity) hZ12`. Establish `hroom' : (L.sc.x ^ A') ^ (10 : ℕ) ≤ L.sc.b`. Use `Real.rpow_natCast (L.sc.x ^ A') 10` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at this`. Rewrite `hroom` using `[this]`. Then use the resulting hypothesis. Establish `hb10 : PP ^ 10 ≤ L.sc.b` using `(pow_le_pow_left₀ hPP0 hPPx 10).trans hroom'`. Establish `hTup : (lenT p i PP : ℝ) ≤ PP ^ 2 * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2) ^ 2 * D.R.r + 1`. Establish `hd : (CompHt.dimFlag (dat p i) : ℝ) ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW.dim]`. Establish `: D.R.r.choose 2 ≤ D.R.r ^ 2`. Rewrite using `[Nat.choose_two_right, sq]`. Conclude with `(Nat.div_le_self _ _).trans (Nat.mul_le_mul_left _ (Nat.sub_le _ _))`. Conclude with `Nat.mul_le_mul_left _ this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast hRk.2.1`. Establish `hk : (D.R.k : ℝ) ≤ D.R.r` using `by exact_mod_cast hRk.1`. Establish `hx : 0 ≤ PP ^ 2 * (CompHt.dimFlag (dat p i) : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)` using `by positivity`. Establish `h1` using `Nat.ceil_lt_add_one hx`. Establish `h2 : PP ^ 2 * (CompHt.dimFlag (dat p i) : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ) ≤ PP ^ 2 * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2) ^ 2 * D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `a : (CompHt.dimFlag (dat p i) : ℝ) ^ 2 ≤ ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2) ^ 2` using `pow_le_pow_left₀ (by positivity) hd 2`. Establish `b : PP ^ 2 * (CompHt.dimFlag (dat p i) : ℝ) ^ 2 * (D.R.k : ℝ) ≤ PP ^ 2 * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2) ^ 2 * D.R.r` using `by gcongr`. Establish `c : 0 ≤ PP ^ 2 * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2) ^ 2 * D.R.r` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `lenT`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA` using `arith (D.R.f : ℝ) (D.R.r : ℝ) L.sc.L PP L.sc.b (kap p i) (lenT p i PP : ℝ) (FlagTan.dimFlag (dat p i) : ℝ) (cZero D ((i : ℕ) + 1) : ℝ) (by exact_mod_cast hH.f8) (by exact_mod_cast hRk.2.2) hH.big.2.1 (by unfold zBase at hZ12; exact hZ12) hb10 hS.2.2.2.2.2.1 (by exact_mod_cast (sh …`. Establish `hZ : zBase L = (D.R.f : ℝ) * D.R.r * L.sc.L` using `rfl`. Rewrite using `[hZ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hT₁ : (P.T₁ : ℝ) = (lenT p i PP : ℝ) + (FlagTan.dimFlag (dat p i) : ℝ) + 1`. Simplify using `[WtPar.T₁, hP]`. Establish `hS1 : ∑ τ, ∑ j, |(P.u₁ τ j : ℝ)| ≤ 2 * (D.R.r : ℝ) * ((2 * kap p i + D.R.f * D.R.r * ((cZero D ((i : ℕ) + 1) : ℝ) + 2 * D.R.r + 2)) / ((lenT p i PP : ℝ) + (FlagTan.dimFlag (dat p i) : ℝ) + 1) + D.R.f * D.R.r)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hN, hT₁, show P.c₀ = cZero D ((i : ℕ) + 1) from rfl, abs_of_nonneg hc0]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [mul_add, add_div, mul_div_assoc, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.sum_div, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`. Rewrite using `[show kap p i = ∑ τ : Psi p.T.Q.H, ∑ k, |(laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ k : ℝ)| from rfl]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS2 : ∑ τ, ∑ j, |(P.rem τ j : ℝ)| ≤ D.R.f * (2 * D.R.r * D.R.r * ((lenT p i PP : ℝ) + FlagTan.dimFlag (dat p i)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard, hN]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hS3 : ∑ τ, ∑ j, |(P.u₂ τ j : ℝ)| ≤ ∑ τ, ∑ j, |(P.u₁ τ j : ℝ)| + ∑ τ, ∑ j, |(P.rem τ j : ℝ)|`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `: (P.u₂ τ j : ℝ) = (P.u₁ τ j : ℝ) + (P.rem τ j : ℝ)`. Simplify using `[WtPar.u₂]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[this]`. Conclude with `abs_add_le _ _`. Introduce `la hla`. Break down `hla with rfl | rfl` into its components or cases. Conclude with `hS1.trans hA.1`.
-
-Conclude with `hS3.trans (by linarith [hA.2])`.
+A detailed English derivation is pending.
 -/
 theorem at_pt (PP A A' : ℝ) (hi : (i : ℕ) + 1 < D.R.m) (hS : SizeAt p i PP A) (hH : HostNum D L PP A' 10)
     (hW : WtNum p i PP) :
@@ -550,9 +546,9 @@ namespace GlobalTheory.CovTop.WtSz
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hS`. Establish `hL : Lifts fun Fm x _ ι p i PP _ => (∃ A, SizeAt p i PP A) ∧ (∃ A, HostNum (Fm.D x ι) (Fm.L x ι) PP A 10) ∧ WtNum p i PP`. Use `Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and hS (Formalism.MainNotions.Closed.and (GlobalTheory.CovTop.Sizes.hostN 10) GlobalTheory.CovTop.WtShape.wtN)) fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨C1, _, a1, ha1⟩, ⟨C2, _, a2, ha2⟩, ⟨C3, _, a3, ha3⟩⟩` from `h`. Conclude with `⟨0, le_rfl, max a1 (max a2 a3), fun x hx hle ι p hp i => ⟨⟨C1, ha1 x hx ((le_max_left _ _).trans hle) ι p hp i⟩, ⟨C2, ha2 x hx (((le_max_left _ _).trans (le_max_right _ _)).trans hle) ι p hp i⟩, ha3 x hx (((le_max_right _ _).trans (le_max_right _ _)).trans hle) ι p hp i⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `CovSz.covers_of_lifts hL fun Fm x hx ι p i _ _ h hi _ _ => at_pt p i _ h.1.choose h.2.1.choose hi h.1.choose_spec h.2.1.choose_spec h.2.2`.
+A detailed English derivation is pending.
 -/
 theorem wts_le : Size → Covers fun Fm x _ ι p i Y PP _ => ∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₂} : Set (AllWt.Weight (dat p i))), ∑ τ, ∑ k, |(la τ k : ℝ)| ≤ zBase (Fm.L x ι) ^ 2 * (kap p i / lenT p i PP + 1) := by
   intro hS

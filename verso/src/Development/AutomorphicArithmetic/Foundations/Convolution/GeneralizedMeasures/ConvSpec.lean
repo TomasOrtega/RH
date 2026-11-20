@@ -8,11 +8,11 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 
 /- English proof (translation)
-Introduce `K _ _ n _ ν _ β γ`. Take `⟨g, hg, -, hop⟩` from `UpperTheory.ConvolutionTheory.Tf.homConv (archGroup K n) (archGroup K n) (MonoidHom.id _) continuous_id ν ν β γ`. Establish `hex : ∃ δ : TI K n, ∀ x, δ x = ∫ y, β y * γ (y⁻¹ * x) ∂ν` using `⟨g, hg⟩`. Establish `h1 : ∀ x, GM.conv ν β γ x = ∫ y, β y * γ (y⁻¹ * x) ∂ν`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GM.conv`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec x`. Use `⟨h1, fun μ _ => ?_⟩` and prove the remaining obligations. Establish `h2 : GM.conv ν β γ = g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `(h1 x).trans (hg x).symm`. Rewrite using `[h2]`. Conclude with `hop (LL μ) ((rightRegularRep (rationalGLOne K n) μ).compHom (archP K n) continuous_archP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.GM.convSpec :
     ConvSpec := by

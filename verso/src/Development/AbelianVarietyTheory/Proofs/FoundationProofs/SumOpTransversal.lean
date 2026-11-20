@@ -12,7 +12,7 @@ section
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `: ((-x + y : B.toAddSubgroup) : X) = (y : X) - x` using `by push_cast; abel`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quot_mk_eq_iff (A B : Submodule R X) (x y : B.toAddSubgroup) :
     (QuotientAddGroup.mk x : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup) = QuotientAddGroup.mk y ↔
@@ -26,7 +26,7 @@ open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify using `[neg_add_eq_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma quotient_mk_eq_mk_iff_sub_mem (A B : Submodule R X) (x y : B.toAddSubgroup) :
     ((x : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup) = y) ↔
@@ -38,7 +38,7 @@ open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
 /- English proof (translation)
-Establish `hyx : y - x ∈ B` using `B.sub_mem hy hx`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma heis_apply_eq_of_sub_mem_of_fixes {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}
     (h : _root_.GlobalTheory.FinWeil.IsHeis σ w γ W) {A B : Submodule R X}
@@ -53,7 +53,7 @@ open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
 /- English proof (translation)
-Rewrite using `[← quotient_mk_eq_mk_iff_sub_mem, hq]`. Conclude with `(QuotientAddGroup.out_eq' q).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma quotient_out_sub_mem (A B : Submodule R X)
     (q : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup) (x : B.toAddSubgroup)
@@ -66,13 +66,13 @@ open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
 /- English proof (translation)
-Set `φ : ι → B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup` to `fun i => ((⟨f i, hf i⟩ : B.toAddSubgroup) : B.toAddSubgroup ⧸ _)`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Establish `hji : f j - f i ∈ A` using `(quotient_mk_eq_mk_iff_sub_mem A B _ _).1 hij`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨k, -, hk⟩` from `ht (f j) (hf j)`. Rewrite using `[hk i hji, hk j (by simp)]`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H b`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨i, hi, -⟩` from `ht b b.2`. Conclude with `⟨i, (quotient_mk_eq_mk_iff_sub_mem A B _ _).2 hi⟩`. Set `e` to `Equiv.ofBijective φ hφ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.FinWeil.sumOp`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← finsum_comp_equiv e, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `heis_apply_eq_of_sub_mem_of_fixes h hB hv (hf i) (Quotient.out (e i)).2 (quotient_out_sub_mem A B (e i) ⟨f i, hf i⟩ rfl)`. Unfold `_root_.GlobalTheory.FinWeil.idx`. Rewrite using `[AddSubgroup.relIndex, AddSubgroup.index, ← Nat.card_congr e, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FinWeil.sumOp_eq_sum_transversal {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}
     (h : _root_.GlobalTheory.FinWeil.IsHeis σ w γ W)
@@ -108,11 +108,11 @@ open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.FinWeil.idx at hi`. Rewrite `hi` using `[AddSubgroup.relIndex, AddSubgroup.index]`. Use `haveI := Nat.finite_of_card_ne_zero hi`. Set `e` to `Finite.equivFin (B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup)`. Use `⟨_, fun i => ((Quotient.out (e.symm i) : B.toAddSubgroup) : X), fun i => (Quotient.out (e.symm i) : B.toAddSubgroup).2, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Use `⟨e (⟨b, hb⟩ : B.toAddSubgroup), ?_, fun j hj => ?_⟩` and prove the remaining obligations. Use `quotient_out_sub_mem A B (e.symm (e (⟨b, hb⟩ : B.toAddSubgroup))) ⟨b, hb⟩ (by simp)` as an intermediate fact. Simplify using `using A.neg_mem this`. Establish `h1 : ((⟨b, hb⟩ : B.toAddSubgroup) : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup) = e.symm j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientAddGroup.out_eq' (e.symm j), quotient_mk_eq_mk_iff_sub_mem]`. Simplify using `using A.neg_mem hj`. Rewrite using `[h1, Equiv.apply_symm_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FinWeil.exists_transversal_of_idx_ne_zero (A B : Submodule R X)
     (hi : _root_.GlobalTheory.FinWeil.idx A B ≠ 0) :
@@ -139,15 +139,15 @@ open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
 /- English proof (translation)
-Introduce `b hb`. Unfold `_root_.GlobalTheory.FinWeil.sumOp`. Use `set g : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup → M := fun q => W ((Quotient.out q : B.toAddSubgroup) : X) v with hg`. Establish `hinj : ∀ u : M, W b u = 0 → u = 0`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `h.neg_comp b u`. Rewrite `h1` using `[hu, map_zero]`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left (h.ne_zero _ _)`. Establish `hmap : W b (∑ᶠ q, g q) = ∑ᶠ q, W b (g q)`. Distinguish the cases in `hs : (Function.support g).Finite`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `map_finsum (W b) hs`. Establish `hs' : ¬ (Function.support fun q => W b (g q)).Finite`. Use `fun hfin => hs (hfin.subset fun q hq => ?_)` and prove the remaining obligations. Conclude with `fun h0 => hq (hinj _ h0)`. Rewrite using `[finsum_of_infinite_support hs, map_zero, finsum_of_infinite_support hs']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hmap]`. Set `c : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup` to `((⟨b, hb⟩ : B.toAddSubgroup) : B.toAddSubgroup ⧸ _)`. Establish `hterm : ∀ q, W b (g q) = g (c + q)`. Introduce `q`. Establish `hq : ((Quotient.out q : B.toAddSubgroup) : X) ∈ B` using `(Quotient.out q).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, h.comp_of_mem hB hb hq v]`. Use `(heis_apply_eq_of_sub_mem_of_fixes h hB hv (B.add_mem hb hq) (Quotient.out (c + q)).2 (quotient_out_sub_mem A B (c + q) (⟨b, hb⟩ + Quotient.out q) ?_)).symm` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.mk_add, QuotientAddGroup.out_eq']`. Repeatedly rewrite using `[hterm]`. Conclude with `finsum_comp_equiv (Equiv.addLeft c)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma fixes_sumOp_of_selfDual {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}
     (h : _root_.GlobalTheory.FinWeil.IsHeis σ w γ W) {A B : Submodule R X}
@@ -185,9 +185,9 @@ private lemma fixes_sumOp_of_selfDual {σ : R →+* R} {w : R} {γ : X → X →
 open Classical in
 open scoped BigOperators in
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W h A B hB`. Establish `hunit : ∀ v, _root_.GlobalTheory.FinWeil.Fixes W A v → B ≤ A → _root_.GlobalTheory.FinWeil.sumOp W A B v = ∑ _i : Unit, W 0 v ∧ _root_.GlobalTheory.FinWeil.idx A B = Fintype.card Unit` using `fun v hv hBA => _root_.GlobalTheory.FinWeil.sumOp_eq_sum_transversal h A B hB v hv Unit (fun _ => 0) (fun _ => B.zero_mem) (fun b hb => ⟨(), by simpa using hBA hb, fun _ _ => rfl⟩)`. Use `⟨fun v hv ι _ f hf ht => _root_.GlobalTheory.FinWeil.sumOp_eq_sum_transversal h A B hB v hv ι f hf ht, fun hi => ⟨_root_.GlobalTheory.FinWeil.exists_transversal_of_idx_ne_zero A B hi, fun v hv => fixes_sumOp_of_selfDual h hB hv, fun c v => ?_⟩, fun hBA => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.FinWeil.sumOp`. Repeatedly rewrite using `[map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `(smul_finsum c _).symm`. Use `⟨(hunit 0 (fun a _ => map_zero _) hBA).2.trans (by simp), fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[(hunit v hv hBA).1]`. Simplify using `using hv 0 A.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FinWeil.sumOp_transversal : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X]
     [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M},

@@ -27,7 +27,7 @@ open GlobalTheory.VB GlobalTheory.ChainPts
 namespace GlobalTheory.TanSec
 
 /- English proof (translation)
-Establish `hg : Function.Bijective (letters S.Dw).get` using `⟨List.nodup_iff_injective_get.1 (GlobalTheory.Proof.LetterConjugation.nodup_letters _), fun x => List.get_of_mem (GlobalTheory.Proof.LetterConjugation.mem_letters _ x)⟩`. Conclude with `hg.comp (finCongr (length_letters S).symm).bijective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_xAll {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j) : Function.Bijective (xAll S) := by
   have hg : Function.Bijective (letters S.Dw).get :=
@@ -36,7 +36,7 @@ theorem bijective_xAll {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j) : Functi
   exact hg.comp (finCongr (length_letters S).symm).bijective
 
 /- English proof (translation)
-The claim follows from `Fin.pos_iff_nonempty.2 ((bijective_xAll S).2 h.some).nonempty`.
+A detailed English derivation is pending.
 -/
 example {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j) (h : Nonempty (Letter S.Dw)) : 0 < D.R.f * N :=
   Fin.pos_iff_nonempty.2 ((bijective_xAll S).2 h.some).nonempty

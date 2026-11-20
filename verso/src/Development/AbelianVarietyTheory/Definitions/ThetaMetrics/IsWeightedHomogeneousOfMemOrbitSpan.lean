@@ -23,7 +23,7 @@ noncomputable def laplacian (t : T) (a : Fin p) (b : Fin q) : Module.End R (Poly
   ∑ k : κ, (pderiv (xVar t a k)).toLinearMap ∘ₗ (pderiv (yVar t b k)).toLinearMap
 
 /- English proof (translation)
-Simplify using `[laplacian, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laplacian_apply (t : T) (a : Fin p) (b : Fin q) (P : Poly R T p q κ) :
     laplacian t a b P = ∑ k : κ, pderiv (xVar t a k) (pderiv (yVar t b k) P) := by
@@ -40,33 +40,33 @@ def harmonicSubmodule : Submodule R (Poly R T p q κ) where
   smul_mem' r P hP t a b := by rw [map_smul, hP, smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_harmonicSubmodule {P : Poly R T p q κ} :
     P ∈ harmonicSubmodule R T p q κ ↔ IsHarmonic P := Iff.rfl
 
 /- English proof (translation)
-Introduce `t a b` and use `by simp [laplacian_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHarmonic_C (r : R) : IsHarmonic (C r : Poly R T p q κ) := fun t a b => by
   simp [laplacian_apply]
 
 /- English proof (translation)
-Simplify using `[laplacian_apply, pderiv_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_laplacian (f : R →+* S) (t : T) (a : Fin p) (b : Fin q) (P : Poly R T p q κ) :
     MvPolynomial.map f (laplacian t a b P) = laplacian t a b (MvPolynomial.map f P) := by
   simp [laplacian_apply, pderiv_map]
 
 /- English proof (translation)
-Introduce `t a b` and use `by rw [← map_laplacian, hP, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsHarmonic.map (f : R →+* S) {P : Poly R T p q κ} (hP : IsHarmonic P) :
     IsHarmonic (MvPolynomial.map f P) := fun t a b => by
   rw [← map_laplacian, hP, map_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h t a b => MvPolynomial.map_injective f hf (by rw [map_laplacian, h, map_zero]), fun h => h.map f⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHarmonic_map_iff {f : R →+* S} (hf : Function.Injective f) {P : Poly R T p q κ} :
     IsHarmonic (MvPolynomial.map f P) ↔ IsHarmonic P :=
@@ -109,33 +109,33 @@ theorem yForm_apply (t : T) (b : Fin q) (φ : κ → R) :
     (yForm t b φ : Poly R T p q κ) = ∑ k : κ, C (φ k) * X (yVar t b k) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rw [rowForm_apply, Finset.sum_eq_single k] <;> simp +contextual [Pi.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowForm_single [DecidableEq κ] (t : T) (r : Fin p ⊕ Fin q) (k : κ) :
     (rowForm t r (Pi.single k 1) : Poly R T p q κ) = X (t, r, k) := by
   rw [rowForm_apply, Finset.sum_eq_single k] <;> simp +contextual [Pi.single_apply]
 
 /- English proof (translation)
-The claim follows from `rowForm_single _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem xForm_single [DecidableEq κ] (t : T) (a : Fin p) (k : κ) :
     (xForm t a (Pi.single k 1) : Poly R T p q κ) = X (xVar t a k) := rowForm_single _ _ _
 
 /- English proof (translation)
-The claim follows from `rowForm_single _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem yForm_single [DecidableEq κ] (t : T) (b : Fin q) (k : κ) :
     (yForm t b (Pi.single k 1) : Poly R T p q κ) = X (yVar t b k) := rowForm_single _ _ _
 
 /- English proof (translation)
-Simplify using `[xForm_apply, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_xForm (z : Var T p q κ → R) (t : T) (a : Fin p) (ε : κ → R) :
     eval z (xForm t a ε) = ε ⬝ᵥ fun k => z (xVar t a k) := by
   simp [xForm_apply, dotProduct]
 
 /- English proof (translation)
-Simplify using `[yForm_apply, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_yForm (z : Var T p q κ → R) (t : T) (b : Fin q) (φ : κ → R) :
     eval z (yForm t b φ) = φ ⬝ᵥ fun k => z (yVar t b k) := by
@@ -157,9 +157,9 @@ def IsPerp (ε : T → Fin p → κ → R) (φ : T → Fin q → κ → R) : Pro
   ∀ t a b, ε t a ⬝ᵥ φ t b = 0
 
 /- English proof (translation)
-Establish `h1 (k : κ) : pderiv (yVar t b k) (xForm t a ε : Poly R T p q κ) = 0`. Simplify using `[xForm_apply, pderiv_X, Pi.single_apply]`. Establish `h2 (k : κ) : pderiv (yVar t b k) (yForm t b φ : Poly R T p q κ) = C (φ k)`. Simplify using `[yForm_apply, pderiv_X, Pi.single_apply]`. Establish `h3 (k : κ) : pderiv (xVar t a k) (xForm t a ε : Poly R T p q κ) = C (ε k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[xForm_apply, pderiv_X, Pi.single_apply]`. Simplify using `[laplacian_apply, h1, h2, h3, dotProduct, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem laplacian_xForm_mul_yForm (t : T) (a : Fin p) (b : Fin q) (ε φ : κ → R) :
     laplacian t a b (xForm t a ε * yForm t b φ : Poly R T p q κ) = C (ε ⬝ᵥ φ) := by
@@ -173,26 +173,26 @@ theorem laplacian_xForm_mul_yForm (t : T) (a : Fin p) (b : Fin q) (ε φ : κ �
   simp [laplacian_apply, h1, h2, h3, dotProduct, mul_comm]
 
 /- English proof (translation)
-Simplify using `[rowForm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_rowForm (f : R →+* S) (t : T) (r : Fin p ⊕ Fin q) (v : κ → R) :
     MvPolynomial.map f (rowForm t r v) = rowForm t r (f ∘ v) := by
   simp [rowForm_apply]
 
 /- English proof (translation)
-The claim follows from `map_rowForm _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_xForm (f : R →+* S) (t : T) (a : Fin p) (ε : κ → R) :
     MvPolynomial.map f (xForm t a ε : Poly R T p q κ) = xForm t a (f ∘ ε) := map_rowForm _ _ _ _
 
 /- English proof (translation)
-The claim follows from `map_rowForm _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_yForm (f : R →+* S) (t : T) (b : Fin q) (φ : κ → R) :
     MvPolynomial.map f (yForm t b φ : Poly R T p q κ) = yForm t b (f ∘ φ) := map_rowForm _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[xMinor, RingHom.map_det]`. Use `congr 1`. Use `ext1 a b`. Conclude with `h _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ringHom_xMinor [Fintype κ'] (F : Poly R T p q κ →+* Poly S T p q κ') (t : T) (i : Fin p)
     (ε : Fin p → κ → R) (ε' : Fin p → κ' → S)
@@ -200,7 +200,7 @@ theorem ringHom_xMinor [Fintype κ'] (F : Poly R T p q κ →+* Poly S T p q κ'
   rw [xMinor, RingHom.map_det]; congr 1; ext1 a b; exact h _ _
 
 /- English proof (translation)
-Rewrite using `[yMinor, RingHom.map_det]`. Use `congr 1`. Use `ext1 a b`. Conclude with `h _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ringHom_yMinor [Fintype κ'] (F : Poly R T p q κ →+* Poly S T p q κ') (t : T) (i : Fin q)
     (φ : Fin q → κ → R) (φ' : Fin q → κ' → S)
@@ -208,9 +208,9 @@ theorem ringHom_yMinor [Fintype κ'] (F : Poly R T p q κ →+* Poly S T p q κ'
   rw [yMinor, RingHom.map_det]; congr 1; ext1 a b; exact h _ _
 
 /- English proof (translation)
-Simplify using `only [minorProd, map_prod, map_mul, map_pow]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => by`. Rewrite using `[ringHom_xMinor _ t i (ε t) (fun a => f ∘ ε t a) fun a b => map_xForm _ _ _ _]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => by`. Rewrite using `[ringHom_yMinor _ t i (φ t) (fun a => f ∘ φ t a) fun a b => map_yForm _ _ _ _]`.
+A detailed English derivation is pending.
 -/
 theorem map_minorProd [Fintype T] (f : R →+* S) (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
     (ε : T → Fin p → κ → R) (φ : T → Fin q → κ → R) :
@@ -225,7 +225,7 @@ theorem map_minorProd [Fintype T] (f : R →+* S) (c : T → Fin p → ℕ) (c' 
       rw [ringHom_yMinor _ t i (φ t) (fun a => f ∘ φ t a) fun a b => map_yForm _ _ _ _]
 
 /- English proof (translation)
-Introduce `t a b` and use `by have := congrArg f (h t a b) simpa [dotProduct] using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsPerp.map (f : R →+* S) {ε : T → Fin p → κ → R} {φ : T → Fin q → κ → R}
     (h : IsPerp ε φ) : IsPerp (fun t a => f ∘ ε t a) (fun t b => f ∘ φ t b) := fun t a b => by
@@ -244,17 +244,17 @@ def typeDegree [Fintype T] (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ) 
   ∑ t : T, (partSize (c t) + partSize (c' t))
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Finset.sum_le_sum_of_subset (Finset.Ici_subset_Ici.mpr h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem partOf_antitone {m : ℕ} (c : Fin m → ℕ) : Antitone (partOf c) := fun _ _ h =>
   Finset.sum_le_sum_of_subset (Finset.Ici_subset_Ici.mpr h)
 
 /- English proof (translation)
-Establish `h (i : Fin m) : ∑ a : Fin (i.val + 1), w (lead i a) = ∑ a ∈ Finset.Iic i, w a`. Use `Finset.sum_bij (fun a _ => lead i a) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _`. Simplify `Nat.lt_succ_iff.mp a.isLt` using `[Fin.le_def]`. Introduce `a _ b _ h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.castLE_injective _ h`. Introduce `b hb`. Conclude with `⟨⟨b.val, Nat.lt_succ_iff.mpr (Fin.le_def.mp (Finset.mem_Iic.mp hb))⟩, Finset.mem_univ _, rfl⟩`. Use `intros`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume the hypotheses. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, partOf, Finset.smul_sum, Finset.sum_smul]`. Conclude with `Finset.sum_comm' (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem sum_smul_sum_lead {M : Type*} [AddCommMonoid M] {m : ℕ} (c : Fin m → ℕ) (w : Fin m → M) :
     ∑ i : Fin m, c i • ∑ a : Fin (i.val + 1), w (lead i a) = ∑ a : Fin m, partOf c a • w a := by
@@ -269,7 +269,7 @@ theorem sum_smul_sum_lead {M : Type*} [AddCommMonoid M] {m : ℕ} (c : Fin m →
   exact Finset.sum_comm' (by simp)
 
 /- English proof (translation)
-Use `sum_smul_sum_lead c (fun _ => (1 : ℕ))` as an intermediate fact. Simplify using `only [smul_eq_mul, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin] at this`. Rewrite using `[← this, partSize]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_partOf {m : ℕ} (c : Fin m → ℕ) : ∑ a, partOf c a = partSize c := by
   have := sum_smul_sum_lead c (fun _ => (1 : ℕ))
@@ -280,11 +280,11 @@ def diffOf {m : ℕ} (l : Fin m → ℕ) (i : Fin m) : ℕ :=
   l i - if h : i.val + 1 < m then l ⟨i.val + 1, h⟩ else 0
 
 /- English proof (translation)
-Rewrite using `[partOf, ← Finset.Ioi_insert, Finset.sum_insert (by simp)]`. Use `congr 1`. Use `split_ifs with h`. Rewrite using `[partOf]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Rewrite using `[Finset.mem_Ioi, Finset.mem_Ici, Fin.lt_def, Fin.le_def]`. Conclude with `Iff.rfl`. Rewrite using `[Finset.sum_eq_zero]`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `j.isLt` as an intermediate fact. Rewrite `hj` using `[Finset.mem_Ioi, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem partOf_eq_add {m : ℕ} (c : Fin m → ℕ) (i : Fin m) :
     partOf c i = c i + if h : i.val + 1 < m then partOf c ⟨i.val + 1, h⟩ else 0 := by
@@ -297,9 +297,9 @@ theorem partOf_eq_add {m : ℕ} (c : Fin m → ℕ) (i : Fin m) :
     have := j.isLt; rw [Finset.mem_Ioi, Fin.lt_def] at hj; omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `⟨i, hi⟩` from `i`. Use the proof step `induction' hd : m - i with d ih generalizing i`. Use linear arithmetic over natural numbers and integers. Rewrite using `[partOf_eq_add, diffOf] split_ifs with h`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih (i + 1) h (by omega)]`. Conclude with `Nat.sub_add_cancel (hl (by simp [Fin.le_def]))`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem partOf_diffOf {m : ℕ} {l : Fin m → ℕ} (hl : Antitone l) : partOf (diffOf l) = l := by
   funext i
@@ -317,7 +317,7 @@ variable [Fintype κ] {M : Type*} [AddCommMonoid M]
 def rowWeight (w : T → Fin p ⊕ Fin q → M) : Var T p q κ → M := fun v => w v.1 v.2.1
 
 /- English proof (translation)
-The claim follows from `IsWeightedHomogeneous.sum _ _ _ fun k _ => (isWeightedHomogeneous_X R (rowWeight w) (t, r, k)).C_mul _`.
+A detailed English derivation is pending.
 -/
 theorem rowForm_isWeightedHomogeneous (w : T → Fin p ⊕ Fin q → M) (t : T) (r : Fin p ⊕ Fin q)
     (v : κ → R) : IsWeightedHomogeneous (rowWeight w) (rowForm t r v) (w t r) :=
@@ -325,9 +325,9 @@ theorem rowForm_isWeightedHomogeneous (w : T → Fin p ⊕ Fin q → M) (t : T) 
     (isWeightedHomogeneous_X R (rowWeight w) (t, r, k)).C_mul _
 
 /- English proof (translation)
-Rewrite using `[det_apply]`. Use `IsWeightedHomogeneous.sum _ _ _ fun s _ => ?_` and prove the remaining obligations. Establish `h1` using `IsWeightedHomogeneous.prod Finset.univ (fun i => A (s i) i) (fun i => u (s i)) fun i _ => h _ _`. Rewrite `h1` using `[Equiv.sum_comp s u]`. Break down `Int.units_eq_one_or (Equiv.Perm.sign s) with e | e` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify `h1` using `[e]`. Simplify `h1.neg` using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_isWeightedHomogeneous {σ ι : Type*} [Fintype ι] [DecidableEq ι] (w : σ → M)
     (A : Matrix ι ι (MvPolynomial σ R)) (u : ι → M)
@@ -343,9 +343,9 @@ theorem det_isWeightedHomogeneous {σ ι : Type*} [Fintype ι] [DecidableEq ι] 
   · simpa [e] using h1.neg
 
 /- English proof (translation)
-Use `IsWeightedHomogeneous.prod _ _ _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_smul_sum_lead, ← sum_smul_sum_lead]`. Use `IsWeightedHomogeneous.mul ?_ ?_` and prove the remaining obligations. Use `IsWeightedHomogeneous.prod _ _ _ fun i _ => IsWeightedHomogeneous.pow ?_ _` and prove the remaining obligations. Conclude with `det_isWeightedHomogeneous _ _ _ fun a b => rowForm_isWeightedHomogeneous w t _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsWeightedHomogeneous.prod _ _ _ fun i _ => IsWeightedHomogeneous.pow ?_ _` and prove the remaining obligations. Conclude with `det_isWeightedHomogeneous _ _ _ fun a b => rowForm_isWeightedHomogeneous w t _ _`.
+A detailed English derivation is pending.
 -/
 theorem minorProd_isWeightedHomogeneous [Fintype T] (w : T → Fin p ⊕ Fin q → M)
     (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ) (ε : T → Fin p → κ → R) (φ : T → Fin q → κ → R) :
@@ -360,7 +360,7 @@ theorem minorProd_isWeightedHomogeneous [Fintype T] (w : T → Fin p ⊕ Fin q �
     exact det_isWeightedHomogeneous _ _ _ fun a b => rowForm_isWeightedHomogeneous w t _ _
 
 /- English proof (translation)
-Use `minorProd_isWeightedHomogeneous (fun _ _ => (1 : ℕ)) c c' ε φ` as an intermediate fact. Simplify using `only [smul_eq_mul, mul_one, sum_partOf] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem minorProd_isHomogeneous [Fintype T] (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
     (ε : T → Fin p → κ → R) (φ : T → Fin q → κ → R) :
@@ -384,7 +384,7 @@ noncomputable def colSubst (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ 
 omit [Fintype κ] in
 
 /- English proof (translation)
-Simplify using `[colSubst]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem colSubst_X_xVar (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (t : T) (a : Fin p)
     (k : κ) : colSubst A B (X (xVar t a k) : Poly R T p q κ) = xForm t a (A t k) := by
@@ -393,14 +393,14 @@ Simplify using `[colSubst]`.
 omit [Fintype κ] in
 
 /- English proof (translation)
-Simplify using `[colSubst]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem colSubst_X_yVar (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (t : T) (b : Fin q)
     (k : κ) : colSubst A B (X (yVar t b k) : Poly R T p q κ) = yForm t b fun l => B t l k := by
   simp [colSubst]
 
 /- English proof (translation)
-Establish `: ε ᵥ* A t = ∑ k, ε k • A t k` using `by ext l; simp [vecMul, dotProduct]`. Rewrite using `[this, map_sum, xForm_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, map_smul, map_smul, colSubst_X_xVar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem colSubst_xForm (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (t : T) (a : Fin p)
     (ε : κ → R) : colSubst A B (xForm t a ε : Poly R T p q κ) = xForm t a (ε ᵥ* A t) := by
@@ -410,7 +410,7 @@ theorem colSubst_xForm (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (
   rw [← smul_eq_C_mul, map_smul, map_smul, colSubst_X_xVar]
 
 /- English proof (translation)
-Establish `: B t *ᵥ φ = ∑ k, φ k • fun l => B t l k` using `by ext l; simp [mulVec, dotProduct, mul_comm]`. Rewrite using `[this, map_sum, yForm_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, map_smul, map_smul, colSubst_X_yVar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem colSubst_yForm (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (t : T) (b : Fin q)
     (φ : κ → R) : colSubst A B (yForm t b φ : Poly R T p q κ) = yForm t b (B t *ᵥ φ) := by
@@ -420,7 +420,7 @@ theorem colSubst_yForm (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (
   rw [← smul_eq_C_mul, map_smul, map_smul, colSubst_X_yVar]
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun ⟨t, r, k⟩ => ?_` and prove the remaining obligations. Break down `r with a | b` into its components or cases. Rewrite using `[AlgHom.comp_apply, colSubst_X_xVar, colSubst_X_xVar, colSubst_xForm]`. Both sides reduce to the same expression. Rewrite using `[AlgHom.comp_apply, colSubst_X_yVar, colSubst_X_yVar, colSubst_yForm]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -434,9 +434,9 @@ theorem colSubst_comp (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (A
   · rw [AlgHom.comp_apply, colSubst_X_yVar, colSubst_X_yVar, colSubst_yForm]; rfl
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun ⟨t, r, k⟩ => ?_` and prove the remaining obligations. Break down `r with a | b` into its components or cases. Rewrite using `[colSubst_X_xVar, AlgHom.id_apply, ← xForm_single]`. Use `congr 1`. Use extensionality with `l`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[colSubst_X_yVar, AlgHom.id_apply, ← yForm_single]`. Use `congr 1`. Use extensionality with `l`. Simplify using `[Matrix.one_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colSubst_one [DecidableEq κ] :
     colSubst (p := p) (q := q) (fun _ : T => (1 : Matrix κ κ R)) (fun _ => 1) = AlgHom.id R _ := by
@@ -448,7 +448,7 @@ theorem colSubst_one [DecidableEq κ] :
     congr 1; ext l; simp [Matrix.one_apply, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [minorProd, map_prod, map_mul, map_pow]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => congrArg (· ^ c t i) (ringHom_xMinor (colSubst A B).toRingHom t i (ε t) (fun a => ε t a ᵥ* A t) fun a b => colSubst_xForm _ _ _ _ _)`. Conclude with `Finset.prod_congr rfl fun i _ => congrArg (· ^ c' t i) (ringHom_yMinor (colSubst A B).toRingHom t i (φ t) (fun a => B t *ᵥ φ t a) fun a b => colSubst_yForm _ _ _ _ _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem colSubst_minorProd [Fintype T] (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R)
     (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ) (ε : T → Fin p → κ → R) (φ : T → Fin q → κ → R) :
@@ -467,9 +467,9 @@ theorem colSubst_minorProd [Fintype T] (A : T → Matrix κ κ' R) (B : T → Ma
 omit [Fintype κ] in
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r => simp [algHom_C]`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`. Consider the case `mul_X P v hP`. Take `⟨t, a | b, k⟩` from `v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_mul, map_mul, hP, eval_X, colSubst_X_xVar, eval_xForm]`. Both sides reduce to the same expression. Rewrite using `[map_mul, map_mul, map_mul, hP, eval_X, colSubst_X_yVar, eval_yForm, dotProduct_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_colSubst (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (z : Var T p q κ' → R)
     (P : Poly R T p q κ) :
@@ -487,9 +487,9 @@ theorem eval_colSubst (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) (z
 omit [Fintype κ] in
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[← hP (mem_support_iff.mp hd), colSubst, aeval_monomial, Finsupp.weight_apply, Finsupp.sum, Finsupp.prod]`. Use `IsWeightedHomogeneous.C_mul ?_ _` and prove the remaining obligations. Use `IsWeightedHomogeneous.prod _ _ _ fun v _ => IsWeightedHomogeneous.pow ?_ _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, a | b, k⟩` from `v`. Conclude with `rowForm_isWeightedHomogeneous w t _ _`. Conclude with `rowForm_isWeightedHomogeneous w t _ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem colSubst_isWeightedHomogeneous {M : Type*} [AddCommMonoid M] (w : T → Fin p ⊕ Fin q → M)
     (A : T → Matrix κ κ' R) (B : T → Matrix κ' κ R) {P : Poly R T p q κ} {m : M}
@@ -516,14 +516,14 @@ def vecAct (g : GL κ R) (φ : κ → R) : κ → R := (g : Matrix κ κ R) *ᵥ
 def covecAct (g : GL κ R) (ε : κ → R) : κ → R := ε ᵥ* ((g⁻¹ : GL κ R) : Matrix κ κ R)
 
 /- English proof (translation)
-Rewrite using `[covecAct, vecAct, dotProduct_mulVec, vecMul_vecMul, Units.inv_mul, vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem covecAct_dotProduct_vecAct (g : GL κ R) (ε φ : κ → R) :
     covecAct g ε ⬝ᵥ vecAct g φ = ε ⬝ᵥ φ := by
   rw [covecAct, vecAct, dotProduct_mulVec, vecMul_vecMul, Units.inv_mul, vecMul_one]
 
 /- English proof (translation)
-Introduce `t a b` and use `by rw [covecAct_dotProduct_vecAct, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsPerp.act {ε : T → Fin p → κ → R} {φ : T → Fin q → κ → R} (h : IsPerp ε φ)
     (g : T → GL κ R) :
@@ -534,13 +534,13 @@ noncomputable def colActHom (g : T → GL κ R) : Poly R T p q κ →ₐ[R] Poly
   colSubst (fun t => ((g t)⁻¹ : GL κ R)) (fun t => g t)
 
 /- English proof (translation)
-Rewrite using `[← colSubst_one, colActHom]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colActHom_one : colActHom (p := p) (q := q) (1 : T → GL κ R) = AlgHom.id R _ := by
   rw [← colSubst_one, colActHom]; simp
 
 /- English proof (translation)
-Rewrite using `[colActHom, colActHom, colActHom, colSubst_comp]`. Simplify using `only [Pi.mul_apply, _root_.mul_inv_rev, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colActHom_mul (g h : T → GL κ R) :
     colActHom (p := p) (q := q) (g * h) = (colActHom g).comp (colActHom h) := by
@@ -576,19 +576,19 @@ Both sides reduce to the same expression.
     colRep R T p q κ g P = colAct R T p q κ g P := rfl
 
 /- English proof (translation)
-The claim follows from `colSubst_xForm _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem colAct_xForm (g : T → GL κ R) (t : T) (a : Fin p) (ε : κ → R) :
     colAct R T p q κ g (xForm t a ε) = xForm t a (covecAct (g t) ε) := colSubst_xForm _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `colSubst_yForm _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem colAct_yForm (g : T → GL κ R) (t : T) (b : Fin q) (φ : κ → R) :
     colAct R T p q κ g (yForm t b φ) = yForm t b (vecAct (g t) φ) := colSubst_yForm _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `colSubst_minorProd _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem colAct_minorProd [Fintype T] (g : T → GL κ R) (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
     (ε : T → Fin p → κ → R) (φ : T → Fin q → κ → R) :
@@ -613,7 +613,7 @@ def baseVec (h : p + q ≤ n) (b : Fin q) : Fin n → R :=
 variable (R T) in
 
 /- English proof (translation)
-Introduce `t a b` and use `by have : Fin.castLE (by omega : p ≤ n) a ≠ Fin.rev (Fin.castLE (by omega : q ≤ n) b) := by intro e have := congrArg Fin.val e have := a.isLt; have := b.isLt simp only [Fin.val_castLE, Fin.val_rev] at *; omega simp [baseCovec, baseVec, Pi.single_apply, this]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPerp_base (h : p + q ≤ n) :
     IsPerp (fun _ : T => baseCovec R h) (fun _ => baseVec R h) := fun t a b => by
@@ -625,7 +625,7 @@ theorem isPerp_base (h : p + q ≤ n) :
   simp [baseCovec, baseVec, Pi.single_apply, this]
 
 /- English proof (translation)
-Use `(Pi.basisFun R (Fin n)).linearIndependent.comp _ (Fin.castLE_injective (by omega : p ≤ n))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `ext1 a`. Simplify using `[baseCovec]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearIndependent_baseCovec (h : p + q ≤ n) : LinearIndependent R (baseCovec R h) := by
   have := (Pi.basisFun R (Fin n)).linearIndependent.comp _
@@ -633,7 +633,7 @@ theorem linearIndependent_baseCovec (h : p + q ≤ n) : LinearIndependent R (bas
   convert this using 1; ext1 a; simp [baseCovec]
 
 /- English proof (translation)
-Use `(Pi.basisFun R (Fin n)).linearIndependent.comp _ (Fin.rev_injective.comp (Fin.castLE_injective (by omega : q ≤ n)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `ext1 a`. Simplify using `[baseVec]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearIndependent_baseVec (h : p + q ≤ n) : LinearIndependent R (baseVec R h) := by
   have := (Pi.basisFun R (Fin n)).linearIndependent.comp _
@@ -658,22 +658,22 @@ noncomputable def orbitSpan (h : p + q ≤ n) (c : T → Fin p → ℕ) (c' : T 
 variable (h : p + q ≤ n) (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem colAct_basePoly_mem (g : T → GL (Fin n) R) :
     colAct R T p q (Fin n) g (basePoly R h c c') ∈ orbitSpan R h c c' :=
   Submodule.subset_span ⟨g, rfl⟩
 
 /- English proof (translation)
-Simplify using `using colAct_basePoly_mem h c c' (1 : T → GL (Fin n) R)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem basePoly_mem : basePoly R h c c' ∈ orbitSpan R h c c' := by
   simpa using colAct_basePoly_mem h c c' (1 : T → GL (Fin n) R)
 
 /- English proof (translation)
-Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨g', rfl⟩` from `hP`. Use `colAct_basePoly_mem h c c' (g * g')` as an intermediate fact. Rewrite `this` using `[map_mul]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `zero => simp`. Consider the case `add P Q _ _ hP hQ => rw [map_add]`. Conclude with `add_mem hP hQ`. Consider the case `smul r P _ hP => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hP`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem colAct_mem_orbitSpan (g : T → GL (Fin n) R) {P : Poly R T p q (Fin n)}
     (hP : P ∈ orbitSpan R h c c') : colAct R T p q (Fin n) g P ∈ orbitSpan R h c c' := by
@@ -693,9 +693,9 @@ noncomputable def orbitSubrep : Subrepresentation (colRep R T p q (Fin n)) where
   apply_mem_toSubmodule g _ hP := colAct_mem_orbitSpan h c c' g hP
 
 /- English proof (translation)
-Rewrite using `[basePoly, map_minorProd, basePoly]`. Use `congr 1`. Use extensionality with `t a k`. Simplify using `[baseCovec, Pi.single_apply, apply_ite f]`. Use extensionality with `t a k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[baseVec, Pi.single_apply, apply_ite f]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_basePoly (f : R →+* S) : MvPolynomial.map f (basePoly R h c c') = basePoly S h c c' := by
   rw [basePoly, map_minorProd, basePoly]
@@ -704,11 +704,11 @@ theorem map_basePoly (f : R →+* S) : MvPolynomial.map f (basePoly R h c c') = 
   · ext t a k; simp [baseVec, Pi.single_apply, apply_ite f]
 
 /- English proof (translation)
-Simplify using `only [basePoly, minorProd, map_prod, map_mul, map_pow]`. Use `Finset.prod_eq_one fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_one, Finset.prod_eq_one, mul_one]`. Introduce `i _`. Rewrite using `[yMinor, RingHom.map_det]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (fun A => det A ^ c' t i) (?_ : _ = (1 : Matrix _ _ R))).trans (by simp)` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[eval_yForm, baseVec, Pi.single_apply, Matrix.one_apply, eq_comm]`. Introduce `i _`. Rewrite using `[xMinor, RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (fun A => det A ^ c t i) (?_ : _ = (1 : Matrix _ _ R))).trans (by simp)` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[eval_xForm, baseCovec, Pi.single_apply, Matrix.one_apply, eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eval_basePoly :
     eval (fun v : Var T p q (Fin n) =>
@@ -728,7 +728,7 @@ theorem eval_basePoly :
     simp [eval_xForm, baseCovec, Pi.single_apply, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Introduce `e` and use `by have := eval_basePoly (R := R) h c c' rw [e, map_zero] at this exact zero_ne_one this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem basePoly_ne_zero [Nontrivial R] : basePoly R h c c' ≠ 0 := fun e => by
   have := eval_basePoly (R := R) h c c'
@@ -736,7 +736,7 @@ theorem basePoly_ne_zero [Nontrivial R] : basePoly R h c c' ≠ 0 := fun e => by
   exact zero_ne_one this
 
 /- English proof (translation)
-The claim follows from `(minorProd_isHomogeneous c c' _ _).totalDegree (basePoly_ne_zero h c c')`.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_basePoly [Nontrivial R] :
     (basePoly R h c c').totalDegree = typeDegree c c' :=
@@ -745,7 +745,7 @@ theorem totalDegree_basePoly [Nontrivial R] :
 end Base
 
 /- English proof (translation)
-Introduce and unpack `⟨⟩ a b`. Take `rfl` from `Subsingleton.elim a 0`. Take `rfl` from `Subsingleton.elim b 0`. Simplify using `only [← xForm_single, ← yForm_single, map_sub, laplacian_xForm_mul_yForm]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example : IsHarmonic (X (xVar () 0 0) * X (yVar () 0 0) - X (xVar () 0 1) * X (yVar () 0 1) :
     Poly ℤ Unit 1 1 (Fin 2)) := by
@@ -756,21 +756,21 @@ example : IsHarmonic (X (xVar () 0 0) * X (yVar () 0 0) - X (xVar () 0 1) * X (y
   simp
 
 /- English proof (translation)
-Simplify using `only [← xForm_single, ← yForm_single, laplacian_xForm_mul_yForm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example : laplacian () 0 0 (X (xVar () 0 0) * X (yVar () 0 0) : Poly ℤ Unit 1 1 (Fin 2)) = 1 := by
   simp only [← xForm_single, ← yForm_single, laplacian_xForm_mul_yForm]
   simp
 
 /- English proof (translation)
-Simplify using `[basePoly, minorProd, xMinor, yMinor, baseCovec, baseVec]`.
+Simplify using the standard rewrite rules.
 -/
 example : basePoly ℤ (show 1 + 1 ≤ 2 from le_rfl) (fun (_ : Unit) _ => 2) (fun _ _ => 1) =
     X (xVar () 0 0) ^ 2 * X (yVar () 0 1) := by
   simp [basePoly, minorProd, xMinor, yMinor, baseCovec, baseVec]
 
 /- English proof (translation)
-Establish `: (xMinor () 1 (baseCovec ℤ (show 2 + 0 ≤ 2 from le_rfl)) : Poly ℤ Unit 2 0 (Fin 2)) = X (xVar () 0 0) * X (xVar () 1 1) - X (xVar () 0 1) * X (xVar () 1 0)`. Use `(det_fin_two _).trans ?_` and prove the remaining obligations. Simplify using `only [baseCovec, of_apply, xForm_single]`. Both sides reduce to the same expression. Simplify using `[basePoly, minorProd, this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 example : basePoly ℤ (show 2 + 0 ≤ 2 from le_rfl) (fun (_ : Unit) => ![0, 1]) (fun _ _ => 0) =
     X (xVar () 0 0) * X (xVar () 1 1) - X (xVar () 0 1) * X (xVar () 1 0) := by
@@ -787,9 +787,9 @@ example : typeDegree (fun _ : Unit => ![2, 1]) (fun _ => ![2]) = 6 ∧ partOf ![
   decide
 
 /- English proof (translation)
-Simplify using `only [← xForm_single, ← yForm_single, colAct_xForm, colAct_yForm, ← map_smul]`. Prove the components needed by the constructor for the conclusion. Use `congr 1`. Rewrite using `[covecAct, ← map_inv]`. Use extensionality with `l`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.GeneralLinearGroup.scalar, Pi.single_apply, diagonal_apply, eq_comm]`. Use `congr 1`. Use extensionality with `l`. Simplify using `[vecAct, Matrix.GeneralLinearGroup.scalar, Pi.single_apply, diagonal_apply, eq_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 example (u : Rˣ) (k : Fin n) :
     colAct R Unit 1 1 (Fin n) (fun _ => Matrix.GeneralLinearGroup.scalar (Fin n) u)

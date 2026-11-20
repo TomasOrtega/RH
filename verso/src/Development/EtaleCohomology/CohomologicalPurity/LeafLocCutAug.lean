@@ -21,14 +21,14 @@ def LeafAugLocal : Prop := ∀ (J : Type) [Preorder J] (D : J ⥤ Scheme.{0}) (X
     Presheaf.IsLocallySurjective Scheme.etaleTopology.{0} (HomologicalComplex.homologyMap ((chainsP R).map (aug _ hc)) n)
 
 /- English proof (translation)
-Introduce `J _ D X c ho hcov hdir hc R _`. Conclude with `hq R _ _ (aug _ hc) (fun n => (hl J D X c ho hcov hdir hc R n).1) (fun n => (hl J D X c ho hcov hdir hc R n).2)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafLocCutAug.goal_of (hq : LeafQisLocal) (hl : LeafAugLocal) : EtaleLocAug := by
   intro J _ D X c ho hcov hdir hc R _
   exact hq R _ _ (aug _ hc) (fun n => (hl J D X c ho hcov hdir hc R n).1) (fun n => (hl J D X c ho hcov hdir hc R n).2)
 
 /- English proof (translation)
-The claim follows from `LeafLocCut.goal_of hb (LeafLocCutAug.goal_of hq hl)`.
+A detailed English derivation is pending.
 -/
 theorem LeafLocCutAll.goal_of (hb : EtaleLocBase) (hq : LeafQisLocal) (hl : LeafAugLocal) : LeafLoc :=
   LeafLocCut.goal_of hb (LeafLocCutAug.goal_of hq hl)

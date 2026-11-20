@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Unfold `SplitDict.intInd`. Use `congr 1`. Use extensionality with `Z`. Conclude with `forall₂_congr fun i j => (GlobalTheory.WeylFour.IndOSelf.mem_int_iff _).symm`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem intInd_eq (v : Pl F) {a b : ℕ} : (SplitDict.intInd v : Matrix (Fin a) (Fin b) (Fv F v) → ℂ) =
     Set.indicator {Z : Matrix (Fin a) (Fin b) (Fv F v) | ∀ i j, Z i j ∈ 𝒪[Fv F v]} (fun _ => (1 : ℂ)) := by
@@ -24,15 +24,13 @@ theorem intInd_eq (v : Pl F) {a b : ℕ} : (SplitDict.intInd v : Matrix (Fin a) 
   exact forall₂_congr fun i j => (GlobalTheory.WeylFour.IndOSelf.mem_int_iff _).symm
 
 /- English proof (translation)
-Introduce and unpack `N ⟨hAN, hNS, hst⟩`. Break down `hI _ n d ν α hnd hν hα (N.map ι) ((aug_le_map hb hD).trans (Submodule.map_mono hAN)) (by` into its components or cases. Introduce and unpack `h₀ _ ⟨ψ, hψ, rfl⟩ -`. Take `⟨h, hh, hr⟩` from `hD.rightOnto h₀`. Take `⟨ψ₁, h₁, ha, e⟩` from `hr ψ (hNS hψ)`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ψ₁, hst h hh ψ hψ ψ₁ h₁ ha, e⟩) with h | h`. Use `right`. Use `le_antisymm hNS fun φ hφ => ?_` and prove the remaining obligations. Take `⟨φ₀, h₀, hf, ha⟩` from `exists_full hS hb hD hν h1 hφ`. Take `⟨χ, hχ, e⟩` from `h _ hf`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : χ = φ₀` using `hb.2.1 (hNS hχ) h₀ e`. Use `add_mem (hAN ha) (e' ▸ hχ)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `left`. Use `le_antisymm (fun φ hφ => ?_) hAN` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ₀, h₀, hf, ha⟩` from `exists_full hS hb hD hν h1 (hNS hφ)`. Establish `hN0 : φ₀ ∈ N`. Use `sub_mem hφ (hAN ha)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use `add_mem ha (mem_augAt hb hD h₀ (h _ ⟨φ₀, hN0, rfl⟩ hf))` as an intermediate fact.
-
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem irrAt_of (hS : SurjSt) (hI : IrrSt) {om : Rep σ X W} {v : Pl F}
     {ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) (Fv F v) → ℂ)} {ν α : (Fv F v)ˣ →* ℂˣ} (hnd : n ≤ d)
@@ -61,47 +59,45 @@ theorem irrAt_of (hS : SurjSt) (hI : IrrSt) {om : Rep σ X W} {v : Pl F}
     rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Introduce `ω ρ L`. Establish `rg : ∀ g₀ : GL (Fin n) (Fv F v), ∃ g ∈ UAt σ X (evFin F v), ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ω (g, 1) φ ∈ SB _ ∧ ι (ω (g, 1) φ) = omB 1 α g₀ 1 (ι φ)` using `fun g₀ => by`. Take `⟨g, hg', r⟩` from `hg g₀`. Use `⟨g, hg', fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨φ₁, h₁, ha, e⟩` from `r φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `h₁`, `e` using `[(L.acts g hg' 1 (one_mem_UAt W v) φ hφ φ₁).1 ha]`. Conclude with `⟨h₁, e⟩`. Establish `rh : ∀ h₀ : GL (Fin d) (Fv F v), ∃ h ∈ UAt σ W (evFin F v), ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ω (1, h) φ ∈ SB _ ∧ ι (ω (1, h) φ) = omB 1 α 1 h₀ (ι φ)` using `fun h₀ => by`. Take `⟨h, hh', r⟩` from `hh h₀`. Use `⟨h, hh', fun φ hφ => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨φ₁, h₁, ha, e⟩` from `r φ hφ`. Rewrite `h₁`, `e` using `[(L.acts 1 (one_mem_UAt X v) h hh' φ hφ φ₁).1 ha]`. Conclude with `⟨h₁, e⟩`. Establish `liftR : ∀ f ∈ Submodule.span ℂ {f | ∃ h : GL (Fin d) (Fv F v), f = fun Y => Set.indicator {Z : Matrix (Fin n) (Fin d) (Fv F v) | ∀ i j, Z i j ∈ 𝒪[Fv F v]} (fun _ => (1 : ℂ)) (Y * h.1)}, ∃ z ∈ Submodule.span ℂ {z | ∃ h ∈ UAt σ W (evFin F v), z = ω (1, h) (M.vac v)}, z ∈ SB (Fin n …`. Introduce `f hf`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h₀, rfl⟩` from `hx`. Take `⟨h, hh', r⟩` from `rh h₀`. Take `⟨hS, e⟩` from `r _ hs`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : (α (gdet h₀) : ℂ) * apow (gdet h₀) ((n : ℂ) / 2) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)`. Use `⟨((α (gdet h₀) : ℂ) * apow (gdet h₀) ((n : ℂ) / 2))⁻¹ • ω (1, h) (M.vac v), Submodule.smul_mem _ _ (Submodule.subset_span ⟨h, hh', rfl⟩), Submodule.smul_mem _ _ hS, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, e, hvac, split_weil_rep_right_action, intInd_eq]`. Use function extensionality and compare the values at `Y`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Consider the case `zero => exact ⟨0, zero_mem _, zero_mem _, map_zero ι⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨z, hz, hzS, e⟩` from `hx`. Take `⟨z', hz', hzS', e'⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z + z', add_mem hz hz', add_mem hzS hzS', by rw [map_add, e, e']⟩`. Consider the case `smul a x _ hx`. Take `⟨z, hz, hzS, e⟩` from `hx`. Conclude with `⟨a • z, Submodule.smul_mem _ a hz, Submodule.smul_mem _ a hzS, by rw [map_smul, e]⟩`. Establish `liftL : ∀ f ∈ Submodule.span ℂ {f | ∃ g : GL (Fin n) (Fv F v), f = fun Y => Set.indicator {Z : Matrix (Fin n) (Fin d) (Fv F v) | ∀ i j, Z i j ∈ 𝒪[Fv F v]} (fun _ => (1 : ℂ)) (g.1 * Y)}, ∃ z ∈ Submodule.span ℂ {z | ∃ g ∈ UAt σ X (evFin F v), z = ω (g, 1) (M.vac v)}, z ∈ SB (Fin n …`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g₀, rfl⟩` from `hx`. Take `⟨g, hg', r⟩` from `rg (invT g₀)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hS, e⟩` from `r _ hs`. Establish `hc : apow (gdet (invT g₀)⁻¹) ((d : ℂ) / 2) ≠ 0` using `apow_ne_zero _ _`. Use `⟨(apow (gdet (invT g₀)⁻¹) ((d : ℂ) / 2))⁻¹ • ω (g, 1) (M.vac v), Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, hg', rfl⟩), Submodule.smul_mem _ _ hS, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, e, hvac, split_weil_rep_left_action, intInd_eq, invT_inv_val, Matrix.transpose_transpose]`. Use function extensionality and compare the values at `Y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Consider the case `zero => exact ⟨0, zero_mem _, zero_mem _, map_zero ι⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨z, hz, hzS, e⟩` from `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hz', hzS', e'⟩` from `hy`. Conclude with `⟨z + z', add_mem hz hz', add_mem hzS hzS', by rw [map_add, e, e']⟩`. Consider the case `smul a x _ hx`. Take `⟨z, hz, hzS, e⟩` from `hx`. Conclude with `⟨a • z, Submodule.smul_mem _ a hz, Submodule.smul_mem _ a hzS, by rw [map_smul, e]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨M.vac v, hs, fun φ hφ => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨m, g, hgK, hinv⟩` from `avgL (hb.1 hφ) choose x hx hxr using fun i => rg (invT (g i))`. Establish `hterm : ∀ i, ι (ω (x i, 1) φ) = fun Y => ι φ (((g i)⁻¹).val * Y)` using `fun i => by`. Rewrite using `[(hxr i φ hφ).2, split_weil_rep_left_action, apow_KO (invT_mem_KO (hgK i))]`. Use function extensionality and compare the values at `Y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[one_mul, invT_val, Matrix.transpose_transpose]`. Use `set φ' := ∑ i, ω (x i, 1) φ with hφ'`. Establish `hφ'S : φ' ∈ SB _` using `sum_mem fun i _ => (hxr i φ hφ).1`. Establish `hφ'ι : ι φ' = fun Y => ∑ i, ι φ (((g i)⁻¹).val * Y)`. Rewrite using `[hφ', map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => congrFun (hterm i) Y`. Establish `hf : (fun Y => ∑ i, ι φ (((g i)⁻¹).val * Y)) ∈ SB (Matrix (Fin n) (Fin d) (Fv F v))` using `hφ'ι ▸ hb.1 hφ'S`. Take `⟨z, hz, hzS, hzι⟩` from `liftR _ (hL (Fv F v) n d _ hf fun h hh Y => hinv h hh Y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : z = φ'` using `hb.2.1 hzS hφ'S (hzι.trans hφ'ι.symm)`. Establish `haug : ((m + 1 : ℕ) : ℂ) • φ - φ' ∈ augAt om v`. Establish `e : ((m + 1 : ℕ) : ℂ) • φ - φ' = ∑ i : Fin (m + 1), -(ω (x i, 1) φ - φ)`. Rewrite using `[hφ', Finset.sum_neg_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, neg_sub]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sum_mem fun i _ => neg_mem (PositivityTheory.Sph.IsLocRep.sub_mem_aug L (hx i) hφ)`. Establish `hc : ((m + 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.succ_ne_zero m)`. Use `Submodule.mem_sup.2 ⟨_, Submodule.smul_mem _ (((m + 1 : ℕ) : ℂ)⁻¹) haug, _, Submodule.smul_mem _ (((m + 1 : ℕ) : ℂ)⁻¹) (hz' ▸ hz), ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_add, sub_add_cancel, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Take `⟨m, h, hhK, hinv⟩` from `avgR (hb.1 hφ) choose y hy hyr using fun i => rh (h i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hterm : ∀ i, ∀ ψ' ∈ SB (Fin n × Fin d → Fv F v), ι (((α (gdet (h i)) : ℂ))⁻¹ • ω (1, y i) ψ') = fun Y => ι ψ' (Y * (h i).val)` using `fun i ψ' hψ' => by`. Rewrite using `[map_smul, (hyr i ψ' hψ').2, split_weil_rep_right_action, apow_KO (hhK i)]`. Use function extensionality and compare the values at `Y`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_one]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (Units.ne_zero _), one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfix : ∀ i, ((α (gdet (h i)) : ℂ))⁻¹ • ω (1, y i) (M.vac v) = M.vac v` using `fun i => hb.2.1 (Submodule.smul_mem _ _ (hyr i _ hs).1) hs (by`. Rewrite using `[hterm i _ hs, hvac, intInd_eq]`. Use function extensionality and compare the values at `Y`. Conclude with `ind_mulKO Y (hhK i))`. Use `set φ' := ∑ i, ((α (gdet (h i)) : ℂ))⁻¹ • ω (1, y i) φ with hφ'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ'S : φ' ∈ SB _` using `sum_mem fun i _ => Submodule.smul_mem _ _ (hyr i φ hφ).1`. Establish `hφ'ι : ι φ' = fun Y => ∑ i, ι φ (Y * (h i).val)`. Rewrite using `[hφ', map_sum]`. Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => congrFun (hterm i φ hφ) Y`. Establish `hf : (fun Y => ∑ i, ι φ (Y * (h i).val)) ∈ SB (Matrix (Fin n) (Fin d) (Fv F v))` using `hφ'ι ▸ hb.1 hφ'S`. Take `⟨z, hz, hzS, hzι⟩` from `liftL _ (latT hL hf fun k hk Y => hinv k hk Y)`. Establish `hz' : z = φ'` using `hb.2.1 hzS hφ'S (hzι.trans hφ'ι.symm)`. Take `⟨c, hc⟩` from `PositivityTheory.Sph.IsLocRep.span_vac L hs hz`.
-
-Rewrite `hc` using `[hz', hφ']`. Conclude with `⟨m, y, fun i => ((α (gdet (h i)) : ℂ))⁻¹, c, fun i => ⟨hy i, hfix i⟩, hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sphAt_of (hL : LatSt) {M : Model σ X W} {ψ : AddChar (AF F) ℂ} {om : Rep σ X W} {v : Pl F}
     {ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) (Fv F v) → ℂ)} {α : (Fv F v)ˣ →* ℂˣ}
@@ -230,17 +226,17 @@ theorem sphAt_of (hL : LatSt) {M : Model σ X W} {ψ : AddChar (AF F) ℂ} {om :
     exact ⟨m, y, fun i => ((α (gdet (h i)) : ℂ))⁻¹, c, fun i => ⟨hy i, hfix i⟩, hc⟩
 
 /- English proof (translation)
-Take `⟨⟨ι₀, hι₀⟩, s1, s2, k⟩` from `dictionary_extended F E σ n d B X W M om χX χW hBg ⟨_, _, hX⟩ ⟨_, _, hW⟩ hom v t`. Establish `hu` using `(section_statement F E σ hBg.cm v t).2`. Distinguish the cases in `h1 : chrW χW t = 1`. Use `left`. Use `hX.lat` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hW.lat` as an intermediate fact. Take `⟨b, hb⟩` from `exists_isSplitBasis t X.L hBg.cm`. Take `⟨c, hc⟩` from `exists_isSplitBasis t W.L hBg.cm`. Take `⟨δ, hδ⟩` from `SplitDict.exists_cond hBg.std v`. Take `⟨ι, hι, hv, hg, hh⟩` from `SplitDict.model_Bar hBg hX hW (hM.vac v) hom hb hc hδ (b' := δ • b) rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg`, `hh` using `[h1]`. Use `sphAt_of (α := chrW χX t) hL hι.bij (hM.vac v).1 hv (fun g₀ => ?_) (fun h₀ => ?_)` and prove the remaining obligations. Take `⟨g, hg', e⟩` from `s1 ((δ • b) * g₀ * (δ • b)⁻¹)`. Use `⟨g, hg', ?_⟩` and prove the remaining obligations. Use `hg g hg'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[show SplitDict.inB t (δ • b) g = g₀ by` and apply the resulting hypothesis. Rewrite using `[SplitDict.inB, show Matrix.GeneralLinearGroup.map (piW t) g.1 = (δ • b) * g₀ * (δ • b)⁻¹ from Units.ext e]`. Use the proof step `group] at this`. Take `⟨h, hh', e⟩` from `s2 (c * h₀ * c⁻¹)`. Use `⟨h, hh', ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `hh h hh'` as an intermediate fact. Rewrite using `[show SplitDict.inB t c h = h₀ by` and apply the resulting hypothesis. Rewrite using `[SplitDict.inB, show Matrix.GeneralLinearGroup.map (piW t) h.1 = c * h₀ * c⁻¹ from Units.ext e]`. Use the proof step `group] at this`. Use `right`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `irrAt_of surjectivity_statement (irrSt_of hB) hnd hι₀.bij ⟨fun g hg => ⟨_, (k ι₀ hι₀).1 g hg (Matrix.GeneralLinearGroup.map (piW t) g.1) rfl⟩, fun g₀ => ?_, fun g hg => ⟨_, (k ι₀ hι₀).2 g hg (Matrix.GeneralLinearGroup.map (piW t) g.1) rfl⟩, fun g₀ => ?_⟩ (hu χW hHW) (hu χX hHX) h …` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `s1 g₀`. Conclude with `⟨g, hg, (k ι₀ hι₀).1 g hg g₀ e⟩`. Take `⟨g, hg, e⟩` from `s2 g₀`. Conclude with `⟨g, hg, (k ι₀ hι₀).2 g hg g₀ e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pair_case (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (hL : LatSt) {B : Base F E} (hBg : B.IsGood σ)
     {r s r' s' : ℕ} (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') {M : Model σ X W} (hM : M.IsGood B.ψ)
@@ -286,7 +282,7 @@ namespace PositivityTheory.Sph
 open NumberField IsDedekindDomain Topology GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PositivityTheory.ThK
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v ⟨t⟩`. Conclude with `⟨SplitPl.pair_case hB hL hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil hT.chars.heckeβ (PositivityTheory.KCo.isHecke_div hT.chars.heckeβ hT.chars.heckeα) (Nat.le_add_right a a') v t, SplitPl.pair_case hB hL hT.base hT.geo.hV' hT.geo.hW hT.geo.hM' hT.weil' hT.chars.heckeα (Positiv …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sphSplit_of (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (hL : LatSt) : SphSplit := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT v ⟨t⟩

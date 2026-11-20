@@ -25,21 +25,21 @@ end GlobalTheory.TypeLeaf.ConjPlace
 namespace GlobalTheory.AdmTame
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
 /- English proof (translation)
-Introduce `D h0 hG hA hL`. Take `⟨hLP, hAut, -⟩` from `h0`. Establish `hW : GlobalTheory.TypeLeaf.WildOne D` using `hL.1`. Establish `hGal : _root_.UpperTheory.GalS.GalAwayN D` using `_root_.GlobalTheory.AdmTame.galAwayOfS' hG`. Establish `hF : GlobalTheory.TypeLeaf.FrobDense D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T hT`. Rewrite using `[dense_iff_closure_eq]`. Conclude with `hA.2.2.1 T hT`. Establish `hCL : GlobalTheory.TypeLeaf.CharLaws D`. Introduce `w a χ χ' hχ hχ'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, h4, h5, -⟩` from `hLP w a a χ χ' 0 hχ hχ'`. Conclude with `⟨h4, h5⟩`. Establish `hM : GlobalTheory.TypeLeaf.MultOne D`. Introduce `a π π' ha h`. Establish `hp` using `hA.1 [⟨a, π, 1⟩] [⟨a, π', 1⟩] (by simp [ha]) (by simp [ha]) (Filter.Eventually.of_forall fun w => by simp [isoLoc, spehLoc, h w])`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[List.singleton_perm_singleton]`. Simplify using `only [Formalism.BasicNotions.Part.mk.injEq, heq_eq_eq, true_and] at hp`. Conclude with `hp.1`. Establish `hT : GlobalTheory.TypeLeaf.TwistInv D` using `GlobalTheory.TypeLeaf.twistInv_of_charLaws_multOne D hCL hM`. Establish `hz : ∀ τ : D.host.E →+* ℂ, ∀ z ∈ D.naut.infG D.naut.etaTinv τ, ∃ k : ℤ, z + ((-(D.R.t : ℝ) / 2 : ℝ) : ℂ) = (k : ℂ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `τ z hz`. Take `⟨m, hm⟩` from `D.R.t_odd`. Take `⟨h1, h2⟩` from `hAut.2.1 τ`. Rewrite `hz` using `[h2]`. Apply the tactic sequence `rcases h1 with h1 | h1 <;> rw [h1] at hz <;> simp at hz <;> subst hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-(m : ℤ) - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨-(m : ℤ), ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hP : GlobalTheory.TypeLeaf.PointPar D` using `GlobalTheory.TypeLeaf.pointPar_of_twist D hT hAut.1.1 hz`. Introduce `i Sig hx hf hsq hc ρ hρ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `_root_.GlobalTheory.TypeLeaf.tameSum_of_inputs_alt D hW (GlobalTheory.T.firstCharacter_trivial_wildInertia_typePrime D) hGal hF hP i Sig hx (_root_.UpperTheory.GalS.fullLabS_of_fullLabS_trivial ⟨hf, fun k v => hL.2 k v _ (hf k v) (hsq k v) (DiscreteGroups.sglob.DzType.big_of_le_n …`. Take `⟨π, rfl⟩` from `hc`. Rewrite using `[GlobalTheory.InertialTypesCmp.lpDim_isoLoc]`. Simplify using `[rankIso, Ranks.nV]))⟩) hc ρ hρ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main_alt_alt_alt : ∀ D : D7, SumRepresentations.tie0 D → _root_.Formalism.MainNotions.SumRepresentations.adm2_alt D → SumRepresentations.adm5 D → UpperTheory.GalS.LabTameS D.nd D.naut → UpperTheory.GalS.AdmissibleResidualTameEigenvalues D := by
   intro D h0 hG hA hL

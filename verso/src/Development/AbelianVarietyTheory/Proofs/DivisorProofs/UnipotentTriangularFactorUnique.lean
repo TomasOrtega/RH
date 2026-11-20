@@ -17,7 +17,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagCell
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Simplify using `only [uniR_apply]`. Rewrite using `[dif_neg (not_lt.mpr hij'.le), if_neg (ne_of_lt hij')]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem uniR_lowerTri {R : Type} [CommRing R] {m : ℕ} (n : Low m → R) :
     (uniR n).BlockTriangular OrderDual.toDual := by
@@ -27,35 +27,31 @@ theorem uniR_lowerTri {R : Type} [CommRing R] {m : ℕ} (n : Low m → R) :
   rw [dif_neg (not_lt.mpr hij'.le), if_neg (ne_of_lt hij')]
 
 /- English proof (translation)
-Simplify using `[uniR_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uniR_diag {R : Type} [CommRing R] {m : ℕ} (n : Low m → R) (i : Fin m) :
     uniR n i i = 1 := by
   simp [uniR_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isLowerTriangular _ (uniR_lowerTri n)]`. Simplify using `[uniR_diag]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uniR_det {R : Type} [CommRing R] {m : ℕ} (n : Low m → R) : (uniR n).det = 1 := by
   rw [Matrix.det_of_isLowerTriangular _ (uniR_lowerTri n)]
   simp [uniR_diag]
 
 /- English proof (translation)
-Use `set L := uniR n`. Use `set L' := uniR n'`. Establish `hL' : IsUnit L'.det` using `by rw [uniR_det]; exact isUnit_one`. Use `letI : Invertible M := Matrix.invertibleOfIsUnitDet M hdet`. Use `letI : Invertible L' := Matrix.invertibleOfIsUnitDet L' hL'`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hP : L'⁻¹ * L = M' * M⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]`. Use `_ = L'⁻¹ * (L' * M') * M⁻¹ := by rw [h]`. Use `_ = M' * M⁻¹ := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hL', Matrix.one_mul]`. Establish `hlow : (L'⁻¹ * L).BlockTriangular OrderDual.toDual` using `(Matrix.blockTriangular_inv_of_blockTriangular (uniR_lowerTri n')).mul (uniR_lowerTri n)`. Establish `hup : (M' * M⁻¹).BlockTriangular id` using `hM'.mul (Matrix.blockTriangular_inv_of_blockTriangular hM)`. Use `set P := L'⁻¹ * L with hPdef`. Establish `hdiag : P = Matrix.diagonal (fun j => P j j)`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Rewrite using `[Matrix.diagonal_apply_ne _ (ne_of_lt hij)]`. Conclude with `hlow hij`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ (ne_of_gt hij), hP]`. Conclude with `hup hij`. Establish `hLP : L = L' * P`. Rewrite using `[hPdef, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hL', Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP1 : ∀ j, P j j = 1`. Introduce `j`. Use `congrFun (congrFun hLP j) j` as an intermediate fact. Rewrite `this` using `[hdiag, Matrix.mul_diagonal]`. Simplify `this.symm` using `[L, L', uniR_diag]`.
-
-Establish `hLL : L = L'`. Rewrite using `[hLP, hdiag]`. Simplify using `[hP1]`. Use function extensionality and compare the values at `s`. Use `congrFun (congrFun hLL s.1.1) s.1.2` as an intermediate fact.
-
-Simplify `this` using `[L, L', uniR_apply, s.2]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem uniR_unique_of_mul_eq (R : Type) [CommRing R] (m : ℕ) (n n' : Low m → R)
     (M M' : Matrix (Fin m) (Fin m) R) (hM : M.BlockTriangular id) (hM' : M'.BlockTriangular id)

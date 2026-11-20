@@ -22,14 +22,14 @@ noncomputable def subrepInclusion {i j : ι} (h : i ≤ j) :
   Rep.ofHom ⟨Submodule.inclusion (hW h), fun _ => LinearMap.ext fun _ => rfl⟩
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem subrepInclusion_refl {i : ι} (h : i ≤ i) : subrepInclusion A W hW hstable h = 𝟙 _ := by
   ext
   rfl
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem subrepInclusion_trans {i j l : ι} (h₁ : i ≤ j) (h₂ : j ≤ l) :
     subrepInclusion A W hW hstable (h₁.trans h₂) =
@@ -38,7 +38,7 @@ theorem subrepInclusion_trans {i j l : ι} (h₁ : i ≤ j) (h₂ : j ≤ l) :
   rfl
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem subrepInclusion_comp_subtype {i j : ι} (h : i ≤ j) :
     subrepInclusion A W hW hstable h ≫ Rep.subtype A (W j) (hstable j) =
@@ -89,7 +89,7 @@ theorem subrepCohomologyCocone_ι_app (n : ℕ) (i : ι) :
   rfl
 
 /- English proof (translation)
-Use `⟨i, 𝟙 i, ?_⟩` and prove the remaining obligations. Establish `: Mono (Rep.subtype A (W i) (hstable i))` using `(Rep.mono_iff_injective _).2 fun _ _ h => Subtype.ext h`. Establish `hinj : Function.Injective ((cochainsMap (Rep.subtype A (W i) (hstable i))).f n).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Simplify using `only [CategoryTheory.Functor.map_id, HomologicalComplex.id_f, ModuleCat.hom_id, LinearMap.id_apply]`. Conclude with `hinj (hy.trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subrepCochainsCocone_inj (n : ℕ) (i : ι)
     (y : ((subrepCochains A W hW hstable).obj i).X n)
@@ -110,7 +110,7 @@ omit [IsTopologicalGroup G] [IsDiscreteRep A] in
 include hW in
 
 /- English proof (translation)
-Use `choose idx hidx using hunion`. Take `⟨j, hj⟩` from `Finset.exists_le (hf.range_finite.toFinset.image idx)`. Conclude with `⟨j, fun g => hW (hj _ (Finset.mem_image_of_mem _ (by simp))) (hidx (f g))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_forall_mem_of_isLocallyConstant [Nonempty ι] [IsDirectedOrder ι]
     (hunion : ∀ a : A, ∃ i, a ∈ W i) {n : ℕ} {f : (Fin n → G) → A} (hf : IsLocallyConstant f) :
@@ -121,11 +121,11 @@ theorem exists_forall_mem_of_isLocallyConstant [Nonempty ι] [IsDirectedOrder ι
   exact ⟨j, fun g => hW (hj _ (Finset.mem_image_of_mem _ (by simp))) (hidx (f g))⟩
 
 /- English proof (translation)
-Establish `hx : IsLocallyConstant (((cochainsComplexι A).f n).hom x : (Fin n → G) → A)` using `(show locallyConstantCochains A n from x).2`. Take `⟨j, hj⟩` from `exists_forall_mem_of_isLocallyConstant A W hW hunion hx`. Establish `hy : IsLocallyConstant fun g : Fin n → G => (⟨((cochainsComplexι A).f n).hom x g, hj g⟩ : W j)`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (fun g : Fin n → G => (⟨((cochainsComplexι A).f n).hom x g, hj g⟩ : W j)) ⁻¹' {b} = (((cochainsComplexι A).f n).hom x : (Fin n → G) → A) ⁻¹' {(b : A)}`. Use extensionality with `g`. Simplify using `[Subtype.ext_iff]`. Rewrite using `[this]`. Conclude with `hx.isOpen_fiber _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j, ⟨_, hy⟩, ?_⟩` and prove the remaining obligations. Apply `(ModuleCat.mono_iff_injective ((cochainsComplexι A).f n)).1 inferInstance` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem subrepCochainsCocone_surj [Nonempty ι] [IsDirectedOrder ι]
     (hunion : ∀ a : A, ∃ i, a ∈ W i) (n : ℕ) (x : (subrepCochainsCocone A W hW hstable).pt.X n) :
@@ -151,7 +151,7 @@ theorem subrepCochainsCocone_surj [Nonempty ι] [IsDirectedOrder ι]
 include hW in
 
 /- English proof (translation)
-The claim follows from `exists_homologyMap_eq_of_cocone (subrepCochainsCocone A W hW hstable) n (subrepCochainsCocone_surj A W hW hstable hunion n) (subrepCochainsCocone_inj A W hW hstable _) x`.
+A detailed English derivation is pending.
 -/
 theorem exists_cohomologyMap_subtype_eq [Nonempty ι] [IsDirectedOrder ι]
     (hunion : ∀ a : A, ∃ i, a ∈ W i) (n : ℕ) (x : cohomology A n) :
@@ -162,7 +162,7 @@ theorem exists_cohomologyMap_subtype_eq [Nonempty ι] [IsDirectedOrder ι]
     (subrepCochainsCocone_inj A W hW hstable _) x
 
 /- English proof (translation)
-Take `⟨j, f, hf⟩` from `exists_homologyMap_map_eq_zero_of_cocone (subrepCochainsCocone A W hW hstable) n (subrepCochainsCocone_surj A W hW hstable hunion _) (subrepCochainsCocone_inj A W hW hstable n) i y hy`. Conclude with `⟨j, leOfHom f, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cohomologyMap_subrepInclusion_eq_zero [Nonempty ι] [IsDirectedOrder ι]
     (hunion : ∀ a : A, ∃ i, a ∈ W i) (n : ℕ) (i : ι)

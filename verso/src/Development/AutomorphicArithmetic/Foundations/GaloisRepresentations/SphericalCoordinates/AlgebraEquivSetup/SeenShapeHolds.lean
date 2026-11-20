@@ -64,102 +64,102 @@ open UpperTheory.Gal.Int.Geo.Pl (dict_holds sides_holds levBasic_holds)
 open UpperTheory.Gal.CertificateRingHomMap (pLocComm_of pThLoc_of)
 
 /- English proof (translation)
-The claim follows from `pTfCen pAvgK pTfAdm`.
+A detailed English derivation is pending.
 -/
 theorem tfCen_holds : TfCen := pTfCen pAvgK pTfAdm
 /- English proof (translation)
-The claim follows from `pTfAct pAvgK pDosetCosets pTfAdm`.
+A detailed English derivation is pending.
 -/
 theorem tfAct_holds : TfAct := pTfAct pAvgK pDosetCosets pTfAdm
 /- English proof (translation)
-The claim follows from `pTfIdem pTfAdm tfCen_holds`.
+A detailed English derivation is pending.
 -/
 theorem tfIdem_holds : TfIdem := pTfIdem pTfAdm tfCen_holds
 /- English proof (translation)
-The claim follows from `pTfMulL pTfAdm tfAct_holds pDosetIff`.
+A detailed English derivation is pending.
 -/
 theorem tfMulL_holds : TfMulL := pTfMulL pTfAdm tfAct_holds pDosetIff
 /- English proof (translation)
-The claim follows from `pTfMulR pAvgK pTfAdm pDosetIff`.
+A detailed English derivation is pending.
 -/
 theorem tfMulR_holds : TfMulR := pTfMulR pAvgK pTfAdm pDosetIff
 /- English proof (translation)
-The claim follows from `pTfLoc pTfAdm tfAct_holds pDosetIff`.
+A detailed English derivation is pending.
 -/
 theorem tfLoc_holds : TfLoc := pTfLoc pTfAdm tfAct_holds pDosetIff
 /- English proof (translation)
-The claim follows from `pKNIff latCoord_holds`.
+A detailed English derivation is pending.
 -/
 theorem knIff_holds : KNIff := pKNIff latCoord_holds
 /- English proof (translation)
-The claim follows from `pAtApart pJEq`.
+A detailed English derivation is pending.
 -/
 theorem atApart_holds : AtApart := pAtApart pJEq
 /- English proof (translation)
-The claim follows from `pLevFact atApart_holds pIntConj`.
+A detailed English derivation is pending.
 -/
 theorem levFact_holds : LevFact := pLevFact atApart_holds pIntConj
 /- English proof (translation)
-The claim follows from `pKNIdx (pKNOpen knIff_holds)`.
+A detailed English derivation is pending.
 -/
 theorem knIdx_holds : KNIdx := pKNIdx (pKNOpen knIff_holds)
 /- English proof (translation)
-The claim follows from `pPPart pJEq`.
+A detailed English derivation is pending.
 -/
 theorem pPart_holds : PPart := pPPart pJEq
 /- English proof (translation)
-The claim follows from `pMemAct pMemSum pSumDoset tfAct_holds pDosetCosets`.
+A detailed English derivation is pending.
 -/
 theorem memAct_holds : MemAct := pMemAct pMemSum pSumDoset tfAct_holds pDosetCosets
 /- English proof (translation)
-The claim follows from `pMemDeck pMemSum tfCen_holds`.
+A detailed English derivation is pending.
 -/
 theorem memDeck_holds : MemDeck := pMemDeck pMemSum tfCen_holds
 /- English proof (translation)
-The claim follows from `pLevSec pIntConj`.
+A detailed English derivation is pending.
 -/
 theorem levSec_holds : LevSec := pLevSec pIntConj
 /- English proof (translation)
-The claim follows from `pKNFact knIff_holds pFacEq atApart_holds pCongGrpEx (pCongConj pLocComm_of) pLocComm pLocComm_of`.
+A detailed English derivation is pending.
 -/
 theorem knFact_holds : KNFact :=
   pKNFact knIff_holds pFacEq atApart_holds pCongGrpEx (pCongConj pLocComm_of) pLocComm pLocComm_of
 /- English proof (translation)
-The claim follows from `pSiteFact dict_holds sides_holds pIntConj pLocComm_of`.
+A detailed English derivation is pending.
 -/
 theorem siteFact_holds : SiteFact := pSiteFact dict_holds sides_holds pIntConj pLocComm_of
 /- English proof (translation)
-The claim follows from `pStabKer pFacEq knFact_holds pCongGrpEx`.
+A detailed English derivation is pending.
 -/
 theorem stabKer_holds : StabKer := pStabKer pFacEq knFact_holds pCongGrpEx
 /- English proof (translation)
-The claim follows from `pSeenShape stabKer_holds siteFact_holds (pCenFacts sides_holds) levBasic_holds pLocComm_of`.
+A detailed English derivation is pending.
 -/
 theorem seenShape_holds : SeenShape := pSeenShape stabKer_holds siteFact_holds (pCenFacts sides_holds) levBasic_holds pLocComm_of
 /- English proof (translation)
-The claim follows from `pSeenActs pMemSum memAct_holds memDeck_holds seenShape_holds levBasic_holds knIdx_holds`.
+A detailed English derivation is pending.
 -/
 theorem seenActs_holds : SeenActs := pSeenActs pMemSum memAct_holds memDeck_holds seenShape_holds levBasic_holds knIdx_holds
 /- English proof (translation)
-The claim follows from `pActsConv pTfAdm tfIdem_holds`.
+A detailed English derivation is pending.
 -/
 theorem actsConv_holds : ActsConv := pActsConv pTfAdm tfIdem_holds
 /- English proof (translation)
-The claim follows from `pPhiTy pPart_holds levSec_holds pFacEq pLocComm`.
+A detailed English derivation is pending.
 -/
 theorem phiTy_holds : PhiTy := pPhiTy pPart_holds levSec_holds pFacEq pLocComm
 
 /- English proof (translation)
-The claim follows from `pTyFact pFacEq levSec_holds levFact_holds atApart_holds pCongGrpEx pDenom pLocComm pLocComm_of`.
+A detailed English derivation is pending.
 -/
 theorem tyFact_holds : Spc.TyFact :=
   pTyFact pFacEq levSec_holds levFact_holds atApart_holds pCongGrpEx pDenom pLocComm pLocComm_of
 /- English proof (translation)
-The claim follows from `pMemFn seenShape_holds seenActs_holds actsConv_holds tyFact_holds`.
+A detailed English derivation is pending.
 -/
 theorem memFn_holds : Spc.MemFn := pMemFn seenShape_holds seenActs_holds actsConv_holds tyFact_holds
 /- English proof (translation)
-The claim follows from `pPhiEx phiTy_holds seenShape_holds seenActs_holds tyFact_holds tfAct_holds tfCen_holds (tEig_of_thLoc (pThLoc_of pLocComm_of CertificateRingHomMap.pOfUBij_of)) atApart_holds pFacEq pJEq pLocComm`.
+A detailed English derivation is pending.
 -/
 theorem phiEx_holds : Spc.PhiEx :=
   pPhiEx phiTy_holds seenShape_holds seenActs_holds tyFact_holds tfAct_holds tfCen_holds (tEig_of_thLoc (pThLoc_of pLocComm_of CertificateRingHomMap.pOfUBij_of)) atApart_holds pFacEq pJEq

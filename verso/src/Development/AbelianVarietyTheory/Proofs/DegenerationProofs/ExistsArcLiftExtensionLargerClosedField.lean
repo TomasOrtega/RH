@@ -18,7 +18,7 @@ namespace GlobalTheory.LiftExt
 open GlobalTheory.TorusExt GlobalTheory.ArcExt
 
 /- English proof (translation)
-Establish `e : spMap (f'.comp f) = spMap f' ≫ spMap f` using `spMap_comp' f f'`. Use `⟨h'.1.trans h.1, by rw [h'.2.1, h.2.1, e, Category.assoc], fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(val_corr hJ (h'.2.2 χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (h.2.2 χ) _).trans ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))))` and prove the remaining obligations. Rewrite using `[e, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qkExt_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' F'' : Type} [Field F] [Field F']
     [Field F''] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F'] [Algebra (FractionRing R) F'']
@@ -31,7 +31,7 @@ theorem qkExt_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' F'
   rw [e, Category.assoc]
 
 /- English proof (translation)
-Take `⟨p, hp, -⟩` from `existsUnique_qkExt hB (algebraMap (FractionRing R) F) (RingHom.ext fun _ => rfl) p₀`. Establish `h₁` using `qkExt_trans hp ((qkExt_iff hB f hf p _).2 rfl)`. Rewrite `h₁` using `[hf]`. Rewrite using `[(existsUnique_qkExt hB (algebraMap (FractionRing R) F') (RingHom.ext fun _ => rfl) p₀).unique hp' h₁]`. Conclude with `qkExt_congr hB f hf (h p hp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_of_base {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (hB : D.TauBimult) {F F' : Type} [Field F]
     [Field F'] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F'] (f : F →+* F')
@@ -46,23 +46,17 @@ theorem equiv_of_base {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (hB : 
   exact qkExt_congr hB f hf (h p hp)
 
 /- English proof (translation)
-Introduce `hL hGt hWp E _ _ _ H D l Xo c W₀ Y R _ _ _ b ϖ a _ F F' _ _ _ _ _ _ f hf S hS A`. Establish `hf₀ : ∀ x, f (algebraMap (FractionRing R) F x) = algebraMap (FractionRing R) F' x` using `fun x => DFunLike.congr_fun hf x`. Establish `: CharZero F` using `charZero_of_isPrimitiveRoot A.I.ζ_prim`. Take `⟨J', hg, hJ⟩` from `GlobalTheory.ValuesExist.exists_gauge F' S a.D₀.P.isLB`. Take `⟨N', ν', rfl, hth⟩` from `GlobalTheory.GaugeValues.exists_numOf hL R a.D₀ a.even a.bimult F' J' hg A.ν.th A.ν.th_gen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `G` using `(hGt R a.D₀ a.even a.bimult F A.N A.ν).2.2.2.2`. Establish `G'` using `(hGt R a.D₀ a.even a.bimult F' N' ν').2.2.2.2`. Take `⟨I, hlam, heX, hI⟩` from `GlobalTheory.T.exists_numDHom_degenerationValues_fieldExtension R a.D₀ F F' f hf A.N N' A.ν ν' hth`. Establish `hw : ∀ k, 1 ≤ k → ∀ (p p' : QkPt a.D₀ F k) (z : F), WeilQkIs a.D₀ F k p p' z → WeilQkIs a.D₀ F' k (qkExt a.bimult f hf p) (qkExt a.bimult f hf p') (f z)` using `fun k hk p p' z h => by`. Take `⟨q, hq, -⟩` from `(G k).1 p`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q', hq', -⟩` from `(G k).1 p'`. Take `⟨r, hr, -⟩` from `(G' k).1 (qkExt a.bimult f hf p)`. Take `⟨r', hr', -⟩` from `(G' k).1 (qkExt a.bimult f hf p')`. Establish `e` using `hI k _ _ _ _ ((qkExt_iff a.bimult f hf _ _).2 rfl) hq hr`. Establish `e'` using `hI k _ _ _ _ ((qkExt_iff a.bimult f hf _ _).2 rfl) hq' hr'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hWp R a.D₀ a.even a.bimult F' N' ν' k hk _ _ _ _ _ hr hr', (GlobalTheory.T.hom_transport_alt F F' f A.N N' I).2.2.2.1 k q q' r r' e.1 e.2 e'.1 e'.2, (hWp R a.D₀ a.even a.bimult F A.N A.ν k hk _ _ _ _ _ hq hq').1 h]`. Both sides reduce to the same expression. Use `choose q' hq' using fun (n : ℕ) (v : D.La) => ((G' n).1 (qkExt a.bimult f hf (A.I.ev n v))).exists`. Use `⟨{ ρ := f A.ρ ρ_sq := by rw [← map_pow, A.ρ_sq, map_neg]; simp det := fun σ => ?_ I := tateExt f hf a.bimult hL A.I hw, N := N', ν := ν', q := q', hq := hq' be := { be := a.be.compl₁₂ ν'.eX.toAddMonoidHom.toIntLinearMap ν'.eX.toAddMonoidHom.toIntLinearMap` and prove the remaining obligations. Use symmetry as in `:= fun y z => a.be_symm _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Extract witnesses or component facts from the available result.
 
-Use `pos := fun y hy => a.be_pos _ fun h => hy (ν'.eX.map_eq_zero_iff.1 h)`. Use `dvd := fun y z => a.be_dvd _ _ }`. Use `be_eq := fun _ _ => rfl`. Use `ρ_eq := fun r hr => (congrArg f (A.ρ_eq r hr)).trans (hf₀ _)`. Use `ζ_eq := fun z hz => (congrArg f (A.ζ_eq z hz)).trans (hf₀ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `levA := fun v => equiv_of_base a.bimult f hf (A.levA v)`. Use `levM := fun v hv => equiv_of_base a.bimult f hf (A.levM v hv)`. Use `closed := inferInstance },`. Use `fun x => hJ _ (GlobalTheory.ValuesExist.exists_ext a.D₀ F' S hS x), I, hlam, rfl, fun _ _ => rfl, heX,`. Use `fun n v => hI n _ _ _ _ ((qkExt_iff a.bimult f hf _ _).2 rfl) (A.hq n v) (hq' n v)⟩`.
-
-Take `⟨τ, rfl⟩` from `DetExtend.exists_factor f σ`. Take `⟨n, h₁, h₂⟩` from `A.det τ`. Use `a.D₀.P.isAb.smooth` as an intermediate fact. Use `⟨n, ?_, h₂.trans (by` and prove the remaining obligations. Distinguish the cases in `h : τ H.rt = A.ρ`.
-
-Rewrite using `[if_pos h, if_pos (show f.comp τ H.rt = f A.ρ from congrArg f h)]`. Rewrite using `[if_neg h, if_neg (show ¬ f.comp τ H.rt = f A.ρ from fun e => h (f.injective e))])⟩`. Establish `e : spMap ((algebraMap (FractionRing R) F').comp (algebraMap R _)) = spMap f ≫ spMap ((algebraMap (FractionRing R) F).comp (algebraMap R _))`. Rewrite using `[← spMap_comp', ← RingHom.comp_assoc, hf]`. Rewrite using `[e]`.
-
-Conclude with `(DetExtend.lieMult_extend f _ _ τ n).2 h₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_ext : Laws → BrGtSt → BrWpSt → AllA fun {_} _ _ _ {_} {_} {_} {_} {_} {_} _ {O'} _ _ {_} a => ∀ (F F' : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing O') F] [Field F'] [IsAlgClosed F'] [Algebra (FractionRing O') F'] (f : F →+* F'), f.comp (algebraMap (FractionRing O') F) = algebraMap (FractionRing O') F' → ∀ S : ValuationSubring F', (∀ r : O', algebraMap (FractionRing O') F' (algebraMap O' _ r) ∈ S) → ∀ A : Lift a F, ∃ A' : Lift a F', A'.ν.Integral S ∧ ∃ I : NumD.Hom f A.N A'.N, I.lam = 1 ∧ f A.ρ = A'.ρ ∧ (∀ n, 0 < n → f (A.I.ζ n) = A'.I.ζ n) ∧ (∀ y, A'.ν.eX (I.e y) = A.ν.eX y) ∧ ∀ n v, (A'.q n v).1.1.toAdd = I.e (A.q n v).1.1.toAdd ∧ I.Rel (A.q n v).1.2 (A'.q n v).1.2 := by
   intro hL hGt hWp E _ _ _ H D l Xo c W₀ Y R _ _ _ b ϖ a _ F F' _ _ _ _ _ _ f hf S hS A

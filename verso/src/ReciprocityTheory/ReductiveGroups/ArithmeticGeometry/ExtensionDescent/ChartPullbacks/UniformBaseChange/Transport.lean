@@ -14,14 +14,14 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison (gU unit_ext g
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `gU_res hle x hx s`.
+A detailed English derivation is pending.
 -/
 private theorem gUres_lemma {O O' : X.Opens} (hle : O' ≤ O) (x : X) (hx : x ∈ O')
     (s : Γ(X, O)ˣ) : gU x hx (res hle s) = gU x (hle hx) s :=
   gU_res hle x hx s
 
 /- English proof (translation)
-Introduce `i j`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[map_mul, gUres_lemma, gUres_lemma]`. Conclude with `h i j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isGenOfGerm_lemma {L : LB X} (t : LB.Gen L)
     (h : ∀ i j (x : X) (hx : x ∈ L.U i ⊓ L.U j),
@@ -33,7 +33,7 @@ private theorem isGenOfGerm_lemma {L : LB X} (t : LB.Gen L)
   exact h i j x hx
 
 /- English proof (translation)
-Introduce and unpack `⟨p, q⟩`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[map_mul, gUres_lemma, gUres_lemma]`. Conclude with `h p q x hx`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mapsOfGerm_lemma {A B : LB X} (w : LB.Iso A B) (a : LB.Gen A) (b : LB.Gen B)
     (h : ∀ p q (x : X) (hx : x ∈ B.U p ⊓ A.U q),
@@ -45,7 +45,7 @@ private theorem mapsOfGerm_lemma {A B : LB X} (w : LB.Iso A B) (a : LB.Gen A) (b
   exact h p q x hx
 
 /- English proof (translation)
-The claim follows from `(gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hx) (hab (p, q))).trans ((map_mul _ _ _).trans (congrArg (_ * ·) (gUres_lemma _ _ _ _))))`.
+A detailed English derivation is pending.
 -/
 private theorem germOfMaps_lemma {A B : LB X} (w : LB.Iso A B) (a : LB.Gen A) (b : LB.Gen B)
     (hab : LB.Gen.Maps w a b) (p : B.ι) (q : A.ι) (x : X) (hx : x ∈ B.U p ⊓ A.U q) :
@@ -54,13 +54,13 @@ private theorem germOfMaps_lemma {A B : LB X} (w : LB.Iso A B) (a : LB.Gen A) (b
     ((map_mul _ _ _).trans (congrArg (_ * ·) (gUres_lemma _ _ _ _))))
 
 /- English proof (translation)
-Establish `hcomp : ∀ i j, res (inf_le_left : W i ⊓ W j ≤ W i) (u i) = res (inf_le_right : W i ⊓ W j ≤ W j) (u j)`. Introduce `i j`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [gUres_lemma]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `h i j x hx`. Establish `hcomp' : ∀ i j, res (inf_le_left : W i ⊓ W j ≤ W i) (u i)⁻¹ = res (inf_le_right : W i ⊓ W j ≤ W j) (u j)⁻¹`. Introduce `i j`. Rewrite using `[map_inv, map_inv, hcomp i j]`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' W V (fun i => homOfLE (hW i)) hc (fun i => ((u i : Γ(X, W i)ˣ) : Γ(X, W i))) (fun i j => congrArg Units.val (hcomp i j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, -⟩` from `X.sheaf.existsUnique_gluing' W V (fun i => homOfLE (hW i)) hc (fun i => (((u i)⁻¹ : Γ(X, W i)ˣ) : Γ(X, W i))) (fun i j => congrArg Units.val (hcomp' i j))`. Establish `hst : s * t = 1`. Apply `X.sheaf.eq_of_locally_eq' W V (fun i => homOfLE (hW i)) hc` to reduce the goal to its premises. Introduce `i`. Simplify using `only [map_mul, map_one, hs, ht]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(u i).mul_inv`. Use `⟨Units.mkOfMulEqOne (s : Γ(X, V)) t hst, fun i => Units.ext ?_⟩` and prove the remaining obligations. Conclude with `hs i`.
+A detailed English derivation is pending.
 -/
 theorem glueU {J : Type} (V : X.Opens) (W : J → X.Opens) (hW : ∀ i, W i ≤ V) (hc : V ≤ iSup W)
     (u : ∀ i, Γ(X, W i)ˣ)
@@ -90,7 +90,7 @@ theorem glueU {J : Type} (V : X.Opens) (W : J → X.Opens) (hW : ∀ i, W i ≤ 
   exact hs i
 
 /- English proof (translation)
-Establish `e` using `congrArg (gU x (⟨⟨hi, hj⟩, hk⟩ : x ∈ L.U i ⊓ L.U j ⊓ L.U k)) (hL.cocycle i j k)`. Conclude with `(congrArg₂ (· * ·) (gUres_lemma _ _ _ _) (gUres_lemma _ _ _ _)).symm.trans ((map_mul _ _ _).symm.trans (e.trans (gUres_lemma _ _ _ _)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gU_cocycle {L : LB X} (hL : L.IsLB) {i j k : L.ι} (x : X) (hi : x ∈ L.U i) (hj : x ∈ L.U j)
     (hk : x ∈ L.U k) :
@@ -101,14 +101,14 @@ theorem gU_cocycle {L : LB X} (hL : L.IsLB) {i j k : L.ι} (x : X) (hi : x ∈ L
     ((map_mul _ _ _).symm.trans (e.trans (gUres_lemma _ _ _ _)))
 
 /- English proof (translation)
-Conclude with `(gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hi) (hL.g_self i)).trans (map_one _))`.
+A detailed English derivation is pending.
 -/
 theorem gU_self {L : LB X} (hL : L.IsLB) {i : L.ι} (x : X) (hi : x ∈ L.U i) :
     gU x (⟨hi, hi⟩ : x ∈ L.U i ⊓ L.U i) (L.g i i) = 1 := by
   exact (gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hi) (hL.g_self i)).trans (map_one _))
 
 /- English proof (translation)
-Conclude with `(gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x (⟨hi, hj⟩ : x ∈ L.U i ⊓ L.U j)) (ht i j)).trans ((map_mul _ _ _).trans (congrArg (_ * ·) (gUres_lemma _ _ _ _))))`.
+A detailed English derivation is pending.
 -/
 theorem gU_isGen {L : LB X} {t : LB.Gen L} (ht : t.IsGen) {i j : L.ι} (x : X) (hi : x ∈ L.U i)
     (hj : x ∈ L.U j) :
@@ -117,7 +117,7 @@ theorem gU_isGen {L : LB X} {t : LB.Gen L} (ht : t.IsGen) {i j : L.ι} (x : X) (
     ((map_mul _ _ _).trans (congrArg (_ * ·) (gUres_lemma _ _ _ _))))
 
 /- English proof (translation)
-Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gUres_lemma _ _ _ _) ((map_inv _ _).trans (congrArg (·⁻¹) (gUres_lemma _ _ _ _))))`.
+A detailed English derivation is pending.
 -/
 theorem gU_div (B A : LB X) (p q : (LB.div B A).ι) (x : X) (hp : x ∈ (LB.div B A).U p)
     (hq : x ∈ (LB.div B A).U q) :
@@ -134,7 +134,7 @@ variable {A B : LB X}
 abbrev pq (p : B.ι) (q : A.ι) : (LB.div B A).ι := (p, q)
 
 /- English proof (translation)
-The claim follows from `le_inf inf_le_right inf_le_left`.
+A detailed English derivation is pending.
 -/
 lemma le_divU (p : B.ι) (q : A.ι) : A.U q ⊓ B.U p ≤ (LB.div B A).U (pq p q) :=
   le_inf inf_le_right inf_le_left
@@ -143,7 +143,7 @@ def cand (w : LB.Iso A B) (b : LB.Gen B) (q : A.ι) (p : B.ι) : Γ(X, A.U q ⊓
   (res (le_divU p q) (w.s (pq p q)))⁻¹ * res inf_le_right (b.s p)
 
 /- English proof (translation)
-Substitute `h1 hd h3 h2` using the available equality. Simplify using `only [inv_one, mul_one, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem cand_lemma {G : Type*} [CommGroup G] (g a d w w' b b' : G) (h1 : w = d * w')
     (hd : d = g * a⁻¹) (h3 : a = 1) (h2 : b = g * b') : w⁻¹ * b = w'⁻¹ * b' := by
@@ -151,7 +151,7 @@ private theorem cand_lemma {G : Type*} [CommGroup G] (g a d w w' b b' : G) (h1 :
   simp only [inv_one, mul_one, mul_inv_rev, mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_inv _ _).trans (congrArg (·⁻¹) (gUres_lemma _ _ _ _))) (gUres_lemma _ _ _ _))`.
+A detailed English derivation is pending.
 -/
 private theorem gUcand_lemma (w : LB.Iso A B) (b : LB.Gen B) (q : A.ι) (p : B.ι) (x : X)
     (hx : x ∈ A.U q ⊓ B.U p) :
@@ -160,7 +160,7 @@ private theorem gUcand_lemma (w : LB.Iso A B) (b : LB.Gen B) (q : A.ι) (p : B.�
     (gUres_lemma _ _ _ _))
 
 /- English proof (translation)
-Establish `h1` using `gU_isGen hw x (le_divU p q hx) (le_divU p' q hx')`. Establish `hd` using `gU_div B A (pq p q) (pq p' q) x (le_divU p q hx) (le_divU p' q hx')`. Establish `h3` using `gU_self hA x hx.1`. Establish `h2` using `gU_isGen hb x hx.2 hx'.2`. Conclude with `(gUcand_lemma w b q p x hx).trans ((cand_lemma _ _ _ _ _ _ _ h1 hd h3 h2).trans (gUcand_lemma w b q p' x hx').symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma gU_cand (hA : A.IsLB) (w : LB.Iso A B) (hw : w.IsGen) (b : LB.Gen B) (hb : b.IsGen)
     (q : A.ι) (p p' : B.ι) (x : X) (hx : x ∈ A.U q ⊓ B.U p) (hx' : x ∈ A.U q ⊓ B.U p') :
@@ -173,7 +173,7 @@ lemma gU_cand (hA : A.IsLB) (w : LB.Iso A B) (hw : w.IsGen) (b : LB.Gen B) (hb :
     (gUcand_lemma w b q p' x hx').symm)
 
 /- English proof (translation)
-Substitute `e1 e2 h1 hd h3` using the available equality. Simplify using `only [one_mul, mul_inv_rev, inv_inv, mul_assoc]`. Conclude with `mul_left_comm _ _ _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tr_lemma {G : Type*} [CommGroup G] (si sj wi wj d c a bb : G) (e1 : si = wi⁻¹ * bb)
     (e2 : sj = wj⁻¹ * bb) (h1 : wi = d * wj) (hd : d = c * a⁻¹) (h3 : c = 1) : si = a * sj := by
@@ -182,14 +182,14 @@ private theorem tr_lemma {G : Type*} [CommGroup G] (si sj wi wj d c a bb : G) (e
   exact mul_left_comm _ _ _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `(mul_inv_cancel_left w bb).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem tr_lemma_2 {G : Type*} [CommGroup G] (s w bb : G) (e : s = w⁻¹ * bb) : bb = w * s := by
   subst e
   exact (mul_inv_cancel_left w bb).symm
 
 /- English proof (translation)
-The claim follows from `(gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hx) hsq).trans (gUcand_lemma w b q p x hx))`.
+A detailed English derivation is pending.
 -/
 private theorem trgerm_lemma (w : LB.Iso A B) (b : LB.Gen B) (q : A.ι) (p : B.ι) (sq : Γ(X, A.U q)ˣ)
     (hsq : res (inf_le_left : A.U q ⊓ B.U p ≤ A.U q) sq = cand w b q p) (x : X)
@@ -198,11 +198,11 @@ private theorem trgerm_lemma (w : LB.Iso A B) (b : LB.Gen B) (q : A.ι) (p : B.�
   (gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hx) hsq).trans (gUcand_lemma w b q p x hx))
 
 /- English proof (translation)
-Establish `hxB : ∀ x : X, ∃ p, x ∈ B.U p` using `fun x => TopologicalSpace.Opens.mem_iSup.mp (by rw [hB.cover]; simp)`. Establish `hc : ∀ q, A.U q ≤ ⨆ p, A.U q ⊓ B.U p` using `fun q => le_of_eq (by rw [← inf_iSup_eq, hB.cover, inf_top_eq])`. Use `choose s hs using fun q => glueU (A.U q) (fun p => A.U q ⊓ B.U p) (fun _ => inf_le_left) (hc q) (fun p => cand w b q p) (fun p p' x hx => gU_cand hA w hw b hb q p p' x hx.1 hx.2)`. Use `⟨⟨s⟩, isGenOfGerm_lemma _ (fun i j x hx => ?_), mapsOfGerm_lemma w _ b (fun p q x hx => ?_)⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `hxB x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `trgerm_lemma w b i p (s i) (hs i p) x ⟨hx.1, hp⟩`. Establish `e2` using `trgerm_lemma w b j p (s j) (hs j p) x ⟨hx.2, hp⟩`. Establish `h1` using `gU_isGen hw x (le_divU p i ⟨hx.1, hp⟩) (le_divU p j ⟨hx.2, hp⟩)`. Establish `hd` using `gU_div B A (pq p i) (pq p j) x (le_divU p i ⟨hx.1, hp⟩) (le_divU p j ⟨hx.2, hp⟩)`. Establish `h3` using `gU_self hB x hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `tr_lemma _ _ _ _ _ _ _ _ e1 e2 h1 hd h3`. Establish `e` using `trgerm_lemma w b q p (s q) (hs q p) x ⟨hx.2, hx.1⟩`. Conclude with `tr_lemma_2 _ _ _ e`.
+A detailed English derivation is pending.
 -/
 theorem exists_transport (hA : A.IsLB) (hB : B.IsLB) (w : LB.Iso A B) (hw : w.IsGen) (b : LB.Gen B)
     (hb : b.IsGen) : ∃ a : LB.Gen A, a.IsGen ∧ LB.Gen.Maps w a b := by
@@ -230,7 +230,7 @@ section InvComp
 variable {A B C : LB X}
 
 /- English proof (translation)
-Establish `h1` using `gU_isGen hw x (le_divU p q h) (le_divU p' q' h')`. Establish `hd` using `gU_div B A (pq p q) (pq p' q') x (le_divU p q h) (le_divU p' q' h')`. Conclude with `h1.trans (congrArg (· * _) hd)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma gU_iso (w : LB.Iso A B) (hw : w.IsGen) (p p' : B.ι) (q q' : A.ι) (x : X)
     (h : x ∈ A.U q ⊓ B.U p) (h' : x ∈ A.U q' ⊓ B.U p') :
@@ -242,13 +242,13 @@ lemma gU_iso (w : LB.Iso A B) (hw : w.IsGen) (p p' : B.ι) (q q' : A.ι) (x : X)
   exact h1.trans (congrArg (· * _) hd)
 
 /- English proof (translation)
-Rewrite using `[mul_inv, mul_inv, inv_inv, mul_comm b⁻¹ a]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cg {G : Type*} [CommGroup G] (a b w : G) : (b * a⁻¹ * w)⁻¹ = a * b⁻¹ * w⁻¹ := by
   rw [mul_inv, mul_inv, inv_inv, mul_comm b⁻¹ a]
 
 /- English proof (translation)
-The claim follows from `le_inf inf_le_right inf_le_left`.
+A detailed English derivation is pending.
 -/
 lemma swapLe (qp : (LB.div A B).ι) : (LB.div A B).U qp ≤ (LB.div B A).U (pq qp.2 qp.1) :=
   le_inf inf_le_right inf_le_left
@@ -256,7 +256,7 @@ lemma swapLe (qp : (LB.div A B).ι) : (LB.div A B).U qp ≤ (LB.div B A).U (pq q
 def invIso (w : LB.Iso A B) : LB.Iso B A := ⟨fun qp => (res (swapLe qp) (w.s (pq qp.2 qp.1)))⁻¹⟩
 
 /- English proof (translation)
-The claim follows from `(map_inv _ _).trans (congrArg (·⁻¹) (gUres_lemma _ _ _ _))`.
+A detailed English derivation is pending.
 -/
 private theorem invgerm_lemma (w : LB.Iso A B) (q : A.ι) (p : B.ι) (x : X)
     (hx : x ∈ A.U q ⊓ B.U p) :
@@ -264,7 +264,7 @@ private theorem invgerm_lemma (w : LB.Iso A B) (q : A.ι) (p : B.ι) (x : X)
   (map_inv _ _).trans (congrArg (·⁻¹) (gUres_lemma _ _ _ _))
 
 /- English proof (translation)
-Substitute `hg hd` using the available equality. Conclude with `cg a bg w'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem inv_lemma' {G : Type*} [CommGroup G] (w w' bg a d : G) (hg : w = bg * a⁻¹ * w')
     (hd : d = a * bg⁻¹) : w⁻¹ = d * w'⁻¹ := by
@@ -272,7 +272,7 @@ private theorem inv_lemma' {G : Type*} [CommGroup G] (w w' bg a d : G) (hg : w =
   exact cg a bg w'
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `(inv_mul_cancel_left w aa).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem inv_lemma_2 {G : Type*} [CommGroup G] (aa w bb : G) (e : bb = w * aa) :
     aa = w⁻¹ * bb := by
@@ -280,11 +280,9 @@ private theorem inv_lemma_2 {G : Type*} [CommGroup G] (aa w bb : G) (e : bb = w 
   exact (inv_mul_cancel_left w aa).symm
 
 /- English proof (translation)
-Use `⟨isGenOfGerm_lemma _ ?_, fun a b hab => mapsOfGerm_lemma _ _ _ ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨q, p⟩ ⟨q', p'⟩ x hx`. Establish `hg` using `gU_iso w hw p p' q q' x hx.1 hx.2`. Establish `hd` using `gU_div A B (q, p) (q', p') x hx.1 hx.2`. Establish `i1` using `invgerm_lemma w q p x hx.1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2` using `invgerm_lemma w q' p' x hx.2`. Conclude with `i1.trans ((inv_lemma' _ _ _ _ _ hg hd).trans (congrArg (_ * ·) i2.symm))`. Introduce `q p x hx`. Establish `e` using `germOfMaps_lemma w a b hab p q x ⟨hx.2, hx.1⟩`. Establish `i1` using `invgerm_lemma w q p x hx`.
-
-Conclude with `(inv_lemma_2 _ _ _ e).trans (congrArg (· * _) i1.symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem invIso_spec (hA : A.IsLB) (hB : B.IsLB) (w : LB.Iso A B) (hw : w.IsGen) :
     (invIso w).IsGen ∧ ∀ (a : LB.Gen A) (b : LB.Gen B), LB.Gen.Maps w a b →
@@ -302,19 +300,19 @@ theorem invIso_spec (hA : A.IsLB) (hB : B.IsLB) (w : LB.Iso A B) (hw : w.IsGen) 
     exact (inv_lemma_2 _ _ _ e).trans (congrArg (· * _) i1.symm)
 
 /- English proof (translation)
-Rewrite using `[mul_mul_mul_comm, inv_mul_cancel, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cg4 {G : Type*} [CommGroup G] (b w v : G) : (b⁻¹ * w) * (b * v) = w * v := by
   rw [mul_mul_mul_comm, inv_mul_cancel, one_mul]
 
 /- English proof (translation)
-The claim follows from `mul_mul_mul_comm c w a⁻¹ v`.
+A detailed English derivation is pending.
 -/
 lemma cg5 {G : Type*} [CommGroup G] (c a w v : G) : (c * w) * (a⁻¹ * v) = c * a⁻¹ * (w * v) :=
   mul_mul_mul_comm c w a⁻¹ v
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gUres_lemma _ _ _ _) (gUres_lemma _ _ _ _))`.
+A detailed English derivation is pending.
 -/
 private theorem comploc_lemma (w1 : LB.Iso A B) (w2 : LB.Iso B C) (r : C.ι) (q : A.ι) (p : B.ι)
     (x : X) (hx : x ∈ C.U r ⊓ A.U q ⊓ B.U p) :
@@ -327,7 +325,7 @@ private theorem comploc_lemma (w1 : LB.Iso A B) (w2 : LB.Iso B C) (r : C.ι) (q 
   (map_mul _ _ _).trans (congrArg₂ (· * ·) (gUres_lemma _ _ _ _) (gUres_lemma _ _ _ _))
 
 /- English proof (translation)
-The claim follows from `(gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hx) hs).trans (comploc_lemma w1 w2 r q p x hx))`.
+A detailed English derivation is pending.
 -/
 private theorem compgerm_lemma (w1 : LB.Iso A B) (w2 : LB.Iso B C) (r : C.ι) (q : A.ι) (p : B.ι)
     (srq : Γ(X, C.U r ⊓ A.U q)ˣ)
@@ -342,7 +340,7 @@ private theorem compgerm_lemma (w1 : LB.Iso A B) (w2 : LB.Iso B C) (r : C.ι) (q
   (gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hx) hs).trans (comploc_lemma w1 w2 r q p x hx))
 
 /- English proof (translation)
-Substitute `h1 hd1 ha h2 hd2 hc` using the available equality. Simplify using `only [inv_one, mul_one, one_mul]`. Conclude with `cg4 bg w2' w1'`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem comp_lemma {G : Type*} [CommGroup G] (w1 w1' d1 w2 w2' d2 bg a c : G)
     (h1 : w1 = d1 * w1') (hd1 : d1 = bg * a⁻¹) (ha : a = 1) (h2 : w2 = d2 * w2')
@@ -352,7 +350,7 @@ private theorem comp_lemma {G : Type*} [CommGroup G] (w1 w1' d1 w2 w2' d2 bg a c
   exact cg4 bg w2' w1'
 
 /- English proof (translation)
-Substitute `e1 e2 h2 hd2 h1 hd1 hbb hd3` using the available equality. Simplify using `only [inv_one, mul_one, one_mul]`. Conclude with `cg5 c a w2' w1'`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem comp_lemma_2 {G : Type*} [CommGroup G] (s s' w2 w2' w1 w1' d2 d1 d3 c bb a : G)
     (e1 : s = w2 * w1) (e2 : s' = w2' * w1') (h2 : w2 = d2 * w2') (hd2 : d2 = c * bb⁻¹)
@@ -363,7 +361,7 @@ private theorem comp_lemma_2 {G : Type*} [CommGroup G] (s s' w2 w2' w1 w1' d2 d1
   exact cg5 c a w2' w1'
 
 /- English proof (translation)
-Substitute `e eb ec` using the available equality. Conclude with `(mul_assoc w2 w1 aa).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem comp_lemma_3 {G : Type*} [CommGroup G] (s w2 w1 aa bb cc : G) (e : s = w2 * w1)
     (eb : bb = w1 * aa) (ec : cc = w2 * bb) : cc = s * aa := by
@@ -371,17 +369,15 @@ private theorem comp_lemma_3 {G : Type*} [CommGroup G] (s w2 w1 aa bb cc : G) (e
   exact (mul_assoc w2 w1 aa).symm
 
 /- English proof (translation)
-Establish `hxB : ∀ x : X, ∃ p, x ∈ B.U p` using `fun x => TopologicalSpace.Opens.mem_iSup.mp (by rw [hB.cover]; simp)`. Establish `hcv : ∀ rq : C.ι × A.ι, C.U rq.1 ⊓ A.U rq.2 ≤ ⨆ p, C.U rq.1 ⊓ A.U rq.2 ⊓ B.U p` using `fun rq => le_of_eq (by rw [← inf_iSup_eq, hB.cover, inf_top_eq])`. Use `choose s hs using fun rq : C.ι × A.ι => glueU (C.U rq.1 ⊓ A.U rq.2) (fun p => C.U rq.1 ⊓ A.U rq.2 ⊓ B.U p) (fun _ => inf_le_left) (hcv rq) (fun p => res (show C.U rq.1 ⊓ A.U rq.2 ⊓ B.U p ≤ C.U rq.1 ⊓ B.U p from le_inf (inf_le_left.trans inf_le_left) inf_le_right) (w2.s (rq.1, p)) …`. Establish `h1` using `gU_isGen (i := (p, rq.2)) (j := (p', rq.2)) hw1 x (⟨hx.1.2, hx.1.1.2⟩ : x ∈ B.U p ⊓ A.U rq.2) (⟨hx.2.2, hx.1.1.2⟩ : x ∈ B.U p' ⊓ A.U rq.2)`. Establish `hd1` using `gU_div B A (p, rq.2) (p', rq.2) x (⟨hx.1.2, hx.1.1.2⟩ : x ∈ B.U p ⊓ A.U rq.2) (⟨hx.2.2, hx.1.1.2⟩ : x ∈ B.U p' ⊓ A.U rq.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `gU_self hA x hx.1.1.2`. Establish `h2` using `gU_isGen (i := (rq.1, p)) (j := (rq.1, p')) hw2 x (⟨hx.1.1.1, hx.1.2⟩ : x ∈ C.U rq.1 ⊓ B.U p) (⟨hx.1.1.1, hx.2.2⟩ : x ∈ C.U rq.1 ⊓ B.U p')`. Establish `hd2` using `gU_div C B (rq.1, p) (rq.1, p') x (⟨hx.1.1.1, hx.1.2⟩ : x ∈ C.U rq.1 ⊓ B.U p) (⟨hx.1.1.1, hx.2.2⟩ : x ∈ C.U rq.1 ⊓ B.U p')`. Establish `hc1` using `gU_self hC x hx.1.1.1`. Conclude with `(comploc_lemma w1 w2 rq.1 rq.2 p x hx.1).trans ((comp_lemma _ _ _ _ _ _ _ _ _ h1 hd1 ha h2 hd2 hc1).trans (comploc_lemma w1 w2 rq.1 rq.2 p' x hx.2).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨s⟩, isGenOfGerm_lemma _ ?_, fun a b c hab hbc => mapsOfGerm_lemma _ _ _ ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨r, q⟩ ⟨r', q'⟩ x hx`. Take `⟨p, hp⟩` from `hxB x`. Establish `e1` using `compgerm_lemma w1 w2 r q p (s (r, q)) (hs (r, q) p) x ⟨hx.1, hp⟩`. Establish `e2` using `compgerm_lemma w1 w2 r' q' p (s (r', q')) (hs (r', q') p) x ⟨hx.2, hp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `gU_isGen (i := (r, p)) (j := (r', p)) hw2 x (⟨hx.1.1, hp⟩ : x ∈ C.U r ⊓ B.U p) (⟨hx.2.1, hp⟩ : x ∈ C.U r' ⊓ B.U p)`. Establish `hd2` using `gU_div C B (r, p) (r', p) x (⟨hx.1.1, hp⟩ : x ∈ C.U r ⊓ B.U p) (⟨hx.2.1, hp⟩ : x ∈ C.U r' ⊓ B.U p)`. Establish `h1` using `gU_isGen (i := (p, q)) (j := (p, q')) hw1 x (⟨hp, hx.1.2⟩ : x ∈ B.U p ⊓ A.U q) (⟨hp, hx.2.2⟩ : x ∈ B.U p ⊓ A.U q')`. Establish `hd1` using `gU_div B A (p, q) (p, q') x (⟨hp, hx.1.2⟩ : x ∈ B.U p ⊓ A.U q) (⟨hp, hx.2.2⟩ : x ∈ B.U p ⊓ A.U q')`. Establish `hbb` using `gU_self hB x hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd3` using `gU_div C A (r, q) (r', q') x hx.1 hx.2`. Conclude with `comp_lemma_2 _ _ _ _ _ _ _ _ _ _ _ _ e1 e2 h2 hd2 h1 hd1 hbb hd3`. Introduce `r q x hx`. Take `⟨p, hp⟩` from `hxB x`. Establish `e` using `compgerm_lemma w1 w2 r q p (s (r, q)) (hs (r, q) p) x ⟨hx, hp⟩`.
-
-Establish `eb` using `germOfMaps_lemma w1 a b hab p q x ⟨hp, hx.2⟩`. Establish `ec` using `germOfMaps_lemma w2 b c hbc r p x ⟨hx.1, hp⟩`. Conclude with `comp_lemma_3 _ _ _ _ _ _ e eb ec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_comp (hA : A.IsLB) (hB : B.IsLB) (hC : C.IsLB) (w1 : LB.Iso A B) (hw1 : w1.IsGen)
     (w2 : LB.Iso B C) (hw2 : w2.IsGen) :

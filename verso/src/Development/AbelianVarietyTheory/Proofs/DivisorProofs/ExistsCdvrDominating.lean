@@ -13,13 +13,13 @@ open Classical
 namespace GlobalTheory.DvrDom
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _`. Distinguish the cases in `hR : IsField R`. Use `letI : Field R := hR.toField`. Establish `hC : Function.Injective (PowerSeries.C (R` using `R)) := PowerSeries.C_injective`. Establish `: CharZero (PowerSeries R)` using `charZero_of_injective_ringHom hC`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsAdicComplete (IsLocalRing.maximalIdeal (PowerSeries R)) (PowerSeries R)` using `by first`. Consider the case `infer_instance`. Consider the case `(rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance)`. Establish `hl : IsLocalHom (PowerSeries.C (R` using `R)) := by`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `a ha`. Distinguish the cases in `h0 : a = 0`. Substitute `h0` using the available equality. Simplify using `at ha`. Conclude with `isUnit_iff_ne_zero.mpr h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨PowerSeries R, inferInstance, inferInstance, inferInstance, PowerSeries.C (R := R), (GlobalTheory.LN.cDvr_iff _).2 ⟨inferInstance, hc, this⟩, hC, hl⟩`. Take `⟨O, _, hO, hO', hO'', φ, h1, h2⟩` from `GlobalTheory.exists_complete_discreteValuationRing_dominating (R := R) hR`. Establish `: CharZero O` using `charZero_of_injective_ringHom h1`. Conclude with `⟨O, inferInstance, hO, inferInstance, φ, (GlobalTheory.LN.cDvr_iff _).2 ⟨hO', hO'', this⟩, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cdvr_dominating : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [CharZero R], ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (φ : R →+* V), GlobalTheory.LN.CDvr V ∧ Function.Injective φ ∧ IsLocalHom φ := by
   intro R _ _ _ _ _

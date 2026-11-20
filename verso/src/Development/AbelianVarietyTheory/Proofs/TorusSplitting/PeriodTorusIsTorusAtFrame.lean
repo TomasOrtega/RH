@@ -17,11 +17,11 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (x : Frame X.Ψ r)
 
 /- English proof (translation)
-Establish `h : ∀ ρ : E →+* ℂ, Data.emb ρ (v + w) = Data.emb ρ v + Data.emb ρ w` using `fun ρ => by`. Use extensionality with `a`. Simplify using `[Data.emb]`. Unfold `Formalism.L2.PjFree.perFr`. Simplify using `only [h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Simplify using `[Matrix.mulVec_add]`. Simplify using the standard rewrite rules. Simplify using `[hermC, mul_add, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem perFr_add (v w : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     Formalism.L2.PjFree.perFr X x (v + w) τ i = Formalism.L2.PjFree.perFr X x v τ i + Formalism.L2.PjFree.perFr X x w τ i := by
@@ -37,11 +37,11 @@ theorem perFr_add (v w : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
   · simp
 
 /- English proof (translation)
-Establish `h : ∀ ρ : E →+* ℂ, Data.emb ρ (α • v) = ρ α • Data.emb ρ v` using `fun ρ => by`. Use extensionality with `a`. Simplify using `[Data.emb]`. Unfold `Formalism.L2.PjFree.perFr`. Simplify using `only [h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Simplify using `[Matrix.mulVec_smul]`. Simplify using the standard rewrite rules. Simplify using `only [hermC, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: starRingEnd ℂ (conjEmb τ α) = τ α` using `by simp [conjEmb]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perFr_smul (α : E) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     Formalism.L2.PjFree.perFr X x (α • v) τ i = τ α * Formalism.L2.PjFree.perFr X x v τ i := by
@@ -60,7 +60,7 @@ theorem perFr_smul (α : E) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, I2.Hf, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_eq_Hf {J : Type} [Fintype J] (v : EuclideanSpace ℂ J) : ‖v‖ ^ 2 = (I2.Hf v v).re := by
   rw [EuclideanSpace.norm_sq_eq, I2.Hf, Complex.re_sum]
@@ -70,23 +70,23 @@ theorem norm_sq_eq_Hf {J : Type} [Fintype J] (v : EuclideanSpace ℂ J) : ‖v�
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hG hU Uw k x Hm T ψ hR hT`. Take `⟨hr, hdim, hH, hL, hact, -⟩` from `hT`. Take `⟨hmaj, -, -⟩` from `GlobalTheory.RiemMaj.riemann_eq_majorant E H Dw l Xo c σ r U Uw k x Hm hG hU hR`. Set `P : (Fin r → E) →+ (Fin Uw.g → ℂ)` to `AddMonoidHom.mk' (fun v j => perFr (U.X k) x.1 v (relab c σ (Uw.e j).1) (Uw.e j).2) (fun v w => funext fun j => perFr_add _ _ _ _ _ _)`. Establish `hP : ∀ a, P (Uw.φ k a : Fin r → E) = Uw.Pm k x a` using `fun a => funext fun j => (Uw.Pm_eq k x a j).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΛ : ∀ v ∈ (U.X k).Λ, ∃ a, (Uw.φ k a : Fin r → E) = v` using `fun v hv => ⟨(Uw.φ k).symm ⟨v, hv⟩, by simp⟩`. Establish `hAt : I2.IsTorusAt (U.X k) x.1 T`. Use `⟨ψ.toLinearMap.toAddMonoidHom.comp P, -1, Or.inr rfl, fun y => ?_, fun α v => ?_, fun v hv => ?_, fun u hu v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, (Uw.φ k a).2, congrArg ψ (hP a)⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Take `⟨a, rfl⟩` from `hΛ v hv`. Conclude with `⟨a, congrArg ψ (hP a).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `ψ (P ((α : E) • v)) = I2.act α (ψ (P v))`. Rewrite using `[← hact]`. Conclude with `congrArg ψ (funext fun j => perFr_smul _ _ _ _ _ _)`. Take `⟨a, rfl⟩` from `hΛ v hv`. Express the relevant statement in the definitionally equal form `‖ψ (P _)‖ ^ 2 = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, norm_sq_eq_Hf, hH, hmaj]`. Take `⟨a, rfl⟩` from `hΛ u hu`. Take `⟨b, rfl⟩` from `hΛ v hv`. Express the relevant statement in the definitionally equal form `(I2.Hf (ψ (P _)) (ψ (P _))).im = _`. Establish `h` using `congrArg (fun t : ℚ => (t : ℝ)) (Uw.iso k a b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [neg_mul, map_neg, Rat.cast_neg, Rat.cast_intCast] at h`. Rewrite using `[hP, hP, hH, hR.2.2, h]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hp, hq⟩` from `Uw.F.sig (Uw.ik k)`. Use `⟨hAt, by rw [hr, hp, hq, hU.1], (I2.TorusAtPf.torusAtLa1_holds E r _ x.1 x.2 T hAt).2, fun m hm => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hty⟩` from `hU.2.1 k`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ (U.X k).Ψ := by`. Take `⟨τ0⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h0 : τ0 ∈ (U.X k).Ψ`. Conclude with `⟨_, h0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Conclude with `h0 (((U.X k).cmType τ0).2 fun h' => hn ⟨_, h'⟩)`. Establish `h1 : T.dim τ = Dw.p`. Rewrite using `[hdim]`. Unfold `Datum.mult`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos ((hty τ).1 hτ), hp]`. Establish `h2` using `T.dim_conj τ`. Break down `hm with hm | hm` into its components or cases. Conclude with `⟨τ, by omega⟩`. Conclude with `⟨ComplexEmbedding.conjugate τ, by omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTorusAt_of_isTorusOf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → ∀ (Uw : UnfWit U) (k : U.Comp) (x : (U.X k).dom) (Hm : Matrix (Fin Uw.g) (Fin Uw.g) ℂ) (T : I2.PT E) (ψ : (Fin Uw.g → ℂ) ≃ₗ[ℂ] I2.Vsp T.dim), IsRiem Uw.F (Uw.ik k) (Uw.Pm k x) Hm → IsTorusOf (Uw.F.Di (Uw.ik k)) (fun j => relab c σ (Uw.e j).1) (Uw.Pm k x) Hm T ψ → I2.IsTorusAt (U.X k) x.1 T ∧ T.r = r ∧ (∀ th, T.ph th = I2.phiFD (U.X k) th x.1) ∧ ∀ m, (Dw.p ≤ m ∨ Dw.q ≤ m) → ∃ τ, T.dim τ ≤ m := by
   intro E _ _ _ H Dw l Xo c σ r U hG hU Uw k x Hm T ψ hR hT

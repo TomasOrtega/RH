@@ -5,13 +5,13 @@ open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual Recipro
 namespace GlobalTheory.WeilDeligne
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A M hM`. Take `⟨U, hU, hUM⟩` from `isOpen_induced_iff.mp hM`. Establish `h1 : (1 : G E Ω) ∈ U`. Establish `: (1 : Ine (F` using `E) A) ∈ (Subtype.val ⁻¹' U) := by rw [hUM]; exact M.one_mem`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨L, hL, hLU⟩` from `(krullTopology_mem_nhds_one_iff E Ω U).mp (hU.mem_nhds h1)`. Establish `hfg : L.toSubalgebra.FG`. Apply `Subalgebra.fg_of_fg_toSubmodule` to reduce the goal to its premises. Conclude with `Module.Finite.iff_fg.mp hL`. Take `⟨t, ht⟩` from `hfg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hmem : (σ : G E Ω) ∈ L.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `hx' : x ∈ Algebra.adjoin E (t : Set Ω)` using `by rw [ht]; exact hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : Set.EqOn ((σ : G E Ω) : Ω →ₐ[E] Ω) (AlgHom.id E Ω) (Algebra.adjoin E (t : Set Ω))` using `AlgHom.eqOn_adjoin_iff.mpr (fun y hy => hσ y hy)`. Conclude with `key hx'`. Establish `: σ ∈ (Subtype.val ⁻¹' U : Set (Ine (F` using `E) A)) := hLU hmem`. Rewrite `this` using `[hUM]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_fix_subset_of_isOpen : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) (M : Subgroup (Ine (F := E) A)),

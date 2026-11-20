@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 noncomputable section
 namespace GlobalTheory.HeightCounting.Up.OPinAt
 /- English proof (translation)
-Establish `key : ∀ (D' : D7), D' = withLoc a.nt.L → ∀ M' : MtFam D', HEq (mtL a.nt.L a.nt.M) M' → ∃ tup Q, MtInput D' M' tup Q`. Introduce and unpack `_ rfl M' hM`. Take `rfl` from `eq_of_heq hM`. Conclude with `⟨_, _, mtInput_mtL a.nt.L a.nt.M _ _ a.nt.mt⟩`. Conclude with `key D a.nt.eq _ a.mt_eq`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mtInput_at_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (a : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL D cf nch tp) : ∃ tup Q, MtInput D a.all.gal.mt tup Q := by
@@ -28,7 +28,7 @@ theorem mtInput_at_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {c
     exact ⟨_, _, mtInput_mtL a.nt.L a.nt.M _ _ a.nt.mt⟩
   exact key D a.nt.eq _ a.mt_eq
 /- English proof (translation)
-Establish `key : ∀ (D' : D7), D' = withLoc a.nt.L → (GlobalTheory.SerSys.LabTie D' fun k => @GlobalTheory.Mem.TypePl.labDat (D'.host.g k) ⟨D'.host.g_prime k⟩) → GlobalTheory.SerSys.LabTie a.nt.D fun k => @GlobalTheory.Mem.TypePl.labDat (a.nt.D.host.g k) ⟨a.nt.D.host.g_prime k⟩`. Introduce and unpack `_ rfl h'`. Conclude with `fun k => ⟨(h' k).1, (h' k).2⟩`. Conclude with `key D a.nt.eq h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem labTie_nt_of_labTie {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (a : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL D cf nch tp)
@@ -43,9 +43,9 @@ theorem labTie_nt_of_labTie {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D
 end GlobalTheory.HeightCounting.Up.OPinAt
 open GlobalTheory.HeightCounting.Up.OPinAt in
 /- English proof (translation)
-Introduce `hL`. Use `EvG.imp GlobalTheory.T.twistedPlace_innerProduct_classSum_rows fun K _ _ _ _ hK => large₂.imp hK fun B f T _ H kp w Z Wt p0 t nch n xd c hne _ hcp => ?_` and prove the remaining obligations. Take `⟨m⟩` from `hne`. Establish `hs` using `H kp w hcp Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt`. Take `⟨tup, Q, hin⟩` from `_root_.GlobalTheory.HeightCounting.Up.OPinAt.mtInput_at_alt c.a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsum` using `hs c.a.all.gal.mt tup Q m.ad hin`. Establish `hlab : GlobalTheory.SerSys.LabTie (w.D Z) fun k => @GlobalTheory.Mem.TypePl.labDat ((w.D Z).host.g k) ⟨(w.D Z).host.g_prime k⟩` using `fun k => ⟨(t.grp.teich k).symm, t.grp.ser k⟩`. Conclude with `{ large := m.large inner := classSum_loc_of_sumTw hsum lab := _root_.GlobalTheory.HeightCounting.Up.OPinAt.labTie_nt_of_labTie c.a hlab gen := fun k => m.zeta k }`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeightCounting.Up.oPin_at_mem : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => _root_.GlobalTheory.CoefDuty.OPinAlt c.a := by
   intro hL

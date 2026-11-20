@@ -9,9 +9,9 @@ open scoped MatrixGroups TensorProduct
 namespace GlobalTheory.KZ.H3
 
 /- English proof (translation)
-Use `haveI : NeZero m := ⟨hm.ne'⟩`. Rewrite using `[ZMod.val_natCast]`. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hk : 2 * Real.pi * Complex.I * (k : ℂ) / (m : ℂ) = 2 * Real.pi * Complex.I * ((k % m : ℕ) : ℂ) / (m : ℂ) + ((k / m : ℕ) : ℂ) * (2 * Real.pi * Complex.I)` using `by conv_lhs => rw [← Nat.mod_add_div k m]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hk, Complex.exp_add, Complex.exp_nat_mul_two_pi_mul_I, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_val_natCast (m k : ℕ) (hm : 0 < m) :
     Complex.exp (2 * Real.pi * Complex.I * (((k : ZMod m).val : ℕ) : ℂ) / (m : ℂ)) =
@@ -27,19 +27,17 @@ theorem exp_val_natCast (m k : ℕ) (hm : 0 < m) :
   rw [hk, Complex.exp_add, Complex.exp_nat_mul_two_pi_mul_I, mul_one]
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X l _ n x f a b hx hr`. Take `⟨G1, -, G3, -, G5⟩` from `GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties`. Take `⟨M1, -, -, M4, -, -⟩` from `GlobalTheory.T.glTwoPosRatMobius_basic_laws`. Take `⟨ha, hb, hb0, hab0⟩` from `hr`. Establish `hm : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM, hlev⟩` from `X.level (f : X.K)`. Take `⟨φ, hφ⟩ : ∃ φ : ℂ → ℂ, X.an (f : X.K) = (φ : Mero)` from `Filter.Germ.inductionOn (X.an (f : X.K)) (fun φ => ⟨φ, rfl⟩)`. Establish `hab : (φ : Mero) * (b : Mero) ^ (l ^ n) = (a : Mero) ^ (l ^ n)` using `by rw [← hφ]; exact hab0`. Establish `key : ∀ δ ∈ CongruenceSubgroup.Gamma M, ∃ k : ℕ, ∀ z ∈ Hs, a (mob (ofSL δ) z) * b z = Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) / ((l ^ n : ℕ) : ℂ)) * (a z * b (mob (ofSL δ) z))`. Introduce `δ hδ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφg : ((fun z => φ (mob (ofSL δ) z) : ℂ → ℂ) : Mero) = (φ : Mero)`. Rewrite using `[← X.an_sl (ofSL δ) (f : X.K) φ hφ, hlev δ hδ, hφ]`. Establish `dag : DifferentiableOn ℂ (fun z => a (mob (ofSL δ) z)) Hs` using `ha.comp (M4 _) (fun z hz => M1 _ z hz)`. Establish `dbg : DifferentiableOn ℂ (fun z => b (mob (ofSL δ) z)) Hs` using `hb.comp (M4 _) (fun z hz => M1 _ z hz)`. Establish `h1 : ((φ * b ^ (l ^ n) : ℂ → ℂ) : Mero) = ((a ^ (l ^ n) : ℂ → ℂ) : Mero)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Filter.Germ.coe_mul, Filter.Germ.coe_pow, Filter.Germ.coe_pow]`. Conclude with `hab`. Establish `h2 : (((fun z => φ (mob (ofSL δ) z)) * (fun z => b (mob (ofSL δ) z)) ^ (l ^ n) : ℂ → ℂ) : Mero) = (((fun z => a (mob (ofSL δ) z)) ^ (l ^ n) : ℂ → ℂ) : Mero)` using `G3 (ofSL δ) _ _ h1`. Rewrite `h2` using `[Filter.Germ.coe_mul, Filter.Germ.coe_pow, Filter.Germ.coe_pow, hφg]`. Establish `h3 : ((((fun z => a (mob (ofSL δ) z)) * b) ^ (l ^ n) : ℂ → ℂ) : Mero) = (((a * fun z => b (mob (ofSL δ) z)) ^ (l ^ n) : ℂ → ℂ) : Mero)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.Germ.coe_pow, Filter.Germ.coe_pow, Filter.Germ.coe_mul, Filter.Germ.coe_mul]`. Take the linear combination `(-(b : Mero) ^ (l ^ n)) * h2 + ((fun z => b (mob (ofSL δ) z) : ℂ → ℂ) : Mero) ^ (l ^ n) * hab`. Establish `h4` using `(G1 _ _ ((dag.mul hb).pow _) ((ha.mul dbg).pow _)).1 h3`. Take `⟨k, hk⟩` from `G5 (l ^ n) ((fun z => a (mob (ofSL δ) z)) * b) (a * fun z => b (mob (ofSL δ) z)) hm (dag.mul hb) (ha.mul dbg) h4`. Conclude with `⟨k, hk⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `χ : SL(2, ℤ) → ZMod (l ^ n)` to `fun δ => if h : δ ∈ CongruenceSubgroup.Gamma M then ((key δ h).choose : ZMod (l ^ n)) else 0`. Use `⟨χ, f, a, b, M, hM, hx, ⟨ha, hb, hb0, hab0⟩, fun δ hδ z hz => ?_⟩` and prove the remaining obligations. Establish `hc : ((l : ℂ) ^ n) = ((l ^ n : ℕ) : ℂ)` using `by push_cast; rfl`. Simplify using `only [χ, dif_pos hδ]`. Rewrite using `[hc, exp_val_natCast (l ^ n) _ hm]`.
-
-Conclude with `(key δ hδ).choose_spec z hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kum_of_isRoot : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime],
     ∀ n : ℕ, ∀ (x : X.Khat l) (f : X.Kˣ) (a b : ℂ → ℂ), AdicCompletion.eval (idl l) (X.Kl l) n x = X.cls l n f →

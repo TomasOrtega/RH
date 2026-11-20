@@ -6,7 +6,7 @@ import Formalism.PolynomialDimension.MultinomialDepth.IntervalRoomBound
 namespace Formalism.CountingSumsFrames.Top
 
 /- English proof (translation)
-The claim follows from `Formalism.CountingSumsFrames.share_product_bound`.
+A detailed English derivation is pending.
 -/
 theorem shareProd : Formalism.CountingSumsFrames.ShareProd := Formalism.CountingSumsFrames.share_product_bound
 

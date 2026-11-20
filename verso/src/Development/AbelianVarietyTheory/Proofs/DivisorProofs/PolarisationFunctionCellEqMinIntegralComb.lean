@@ -8,19 +8,17 @@ open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Glo
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g φ hφ W hW N _ hN3 hε r hr μ hμ b₀ hsym hpos hmin`. Take `⟨p, m, γ, hcone, hcov⟩` from `GlobalTheory.T.exists_finite_cones_siegel_level_structure g φ hφ W hW N hN3 r hr μ hμ b₀ hsym hpos hmin`. Take `⟨Nℓ, ℓ, hNℓ, hℓ⟩` from `polFn_eq_min_linear g φ hφ r hr p m γ hcone`. Use `choose D ν hD hν using fun i : Fin p => GlobalTheory.T.linForm_bilinForms_eq_sum_minimiser_values W hW N hN3 hε r μ hμ (ℓ i)`. Take `⟨E, hDE⟩ : ∃ E : Fin p → ℕ, ∀ i, D i * E i = ∏ j, D j` from `⟨fun i => ∏ j ∈ Finset.univ.erase i, D j, fun i => Finset.mul_prod_erase _ _ (Finset.mem_univ i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDp : 0 < ∏ j, D j` using `Finset.prod_pos (fun j _ => hD j)`. Use `⟨Nℓ * ∏ j, D j, Finset.univ.image (fun i c => (N : ℤ) * (E i : ℤ) * ν i c), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero hNℓ.ne' hDp.ne')`. Introduce `b' hs hp hm`. Take `⟨i0, k, cf, hk, hkb⟩` from `hcov b' hs hp hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hle, i1, heq⟩` from `hℓ b' hs hp ⟨i0, k, cf, hk, hkb⟩`. Establish `key : ∀ i, ∑ c, ((((N : ℤ) * (E i : ℤ) * ν i c : ℤ)) : ℝ) * ((qW W b' (μ c) : ℤ) : ℝ) = ((N : ℝ) * (E i : ℝ) * (D i : ℝ)) * ((ℓ i b' : ℤ) : ℝ)`. Introduce `i`. Establish `h' : (((∑ c, ν i c * qW W b' (μ c) : ℤ)) : ℝ) = (((D i : ℤ) * ℓ i b' : ℤ) : ℝ)`. Rewrite using `[hν i b' hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Move the coercions through the operations in `at h' ⊢`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = _ := by rw [h']; ring`. Establish `hι : ∀ i, ((Nℓ * ∏ j, D j : ℕ) : ℝ) * (N : ℝ) = ((N : ℝ) * (E i : ℝ) * (D i : ℝ)) * (Nℓ : ℝ)`. Introduce `i`. Rewrite using `[← hDE i]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨fun ν' hν' => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hν'`. Establish `hc : (0 : ℝ) ≤ (N : ℝ) * (E i : ℝ) * (D i : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `⟨_, Finset.mem_image.mpr ⟨i1, Finset.mem_univ _, rfl⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem polFn_cell_eq_min_integral : ∀ (g : ℕ) (φ : InvFun ℤ), IsPolFan id g φ → ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), PosW W → ∀ (N : ℕ) [NeZero N], 3 ≤ N → (∃ ε : Fin 8 → ℤ, Nat.Coprime N (2 * (∑ u, ∑ v, W u v * ε u * ε v).natAbs)) → ∀ r : ℕ, r ≤ g → ∀ μ : ((Fin 8 → Fin r → ZMod N) → (Fin 8 → Fin r → ℤ)), (∀ c u i, ((μ c u i : ℤ) : ZMod N) = c u i) → ∀ b₀ : LinearMap.BilinForm ℤ (Fin r → ℤ), (∀ x y, b₀ x y = b₀ y x) → (∀ x, x ≠ 0 → 0 < b₀ x x) → (∀ c (α : Fin 8 → Fin r → ℤ), (∀ u i, ((α u i : ℤ) : ZMod N) = c u i) → qW W b₀ (μ c) ≤ qW W b₀ α) → ∃ (ι : ℕ) (L : Finset ((Fin 8 → Fin r → ZMod N) → ℤ)), 1 ≤ ι ∧ ∀ (b' : LinearMap.BilinForm ℤ (Fin r → ℤ)), (∀ x y, b' x y = b' y x) → (∀ x, 0 ≤ b' x x) → (∀ c (α : Fin 8 → Fin r → ℤ), (∀ u i, ((α u i : ℤ) : ZMod N) = c u i) → qW W b' (μ c) ≤ qW W b' α) → (∀ ν ∈ L, (ι * N : ℝ) * φ.evalZ b' ≤ ∑ c, (ν c : ℝ) * qW W b' (μ c)) ∧ ∃ ν ∈ L, (ι * N : ℝ) * φ.evalZ b' = ∑ c, (ν c : ℝ) * qW W b' (μ c) := by
   classical

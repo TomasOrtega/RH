@@ -21,16 +21,14 @@ set_option linter.unusedSectionVars false
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {w : Pl E}
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_maximal_pair_place : IsCompact (K2 a b w : Set (GLw a w × GLw b w)) := by
   rw [Subgroup.coe_prod]
   exact (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2
 
 /- English proof (translation)
-Establish `: CompactSpace (K2 a b w)` using `isCompact_iff_compactSpace.mp isCompact_maximal_pair_place`. Establish `ho : IsOpen ((L.subgroupOf (K2 a b w)) : Set (K2 a b w))`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hL.preimage continuous_subtype_val`. Use `Subgroup.quotient_finite_of_isOpen _ ho` as an intermediate fact.
-
-Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero {L : Subgroup (GLw a w × GLw b w)} (hL : IsOpen (L : Set (GLw a w × GLw b w)))
     : L.relIndex (K2 a b w) ≠ 0 := by
@@ -42,7 +40,7 @@ theorem relIndex_ne_zero {L : Subgroup (GLw a w × GLw b w)} (hL : IsOpen (L : S
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Unfold `idem`. Rewrite using `[Set.indicator_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem idem_apply (L : Subgroup (GLw a w × GLw b w)) (y : GLw a w × GLw b w) :
     idem L y = if y ∈ L then ((L.relIndex (K2 a b w) : ℕ) : ℂ) else 0 := by
@@ -51,16 +49,16 @@ theorem idem_apply (L : Subgroup (GLw a w × GLw b w)) (y : GLw a w × GLw b w) 
   rfl
 
 /- English proof (translation)
-Introduce `x y g`. Rewrite using `[(hf.2 y y.2 _).2, (hf.2 x x.2 g).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem biInv {K : Subgroup (GLw a w × GLw b w)} {f : LF a b w} (hf : IsHecke K f) : IsBiInv K f := by
   intro x y g
   rw [(hf.2 y y.2 _).2, (hf.2 x x.2 g).1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Unfold `mconv`. Establish `hst : K2 a b w ≤ rStab (fun m' => f m' * f' (m'⁻¹ * m))`. Introduce `k hk x`. Use `show f (x * k) * f' ((x * k)⁻¹ * m) = f x * f' (x⁻¹ * m)`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hf.2 k hk x).2, _root_.mul_inv_rev, mul_assoc, (hf'.2 k⁻¹ ((K2 a b w).inv_mem hk) _).1]`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ (K2 a b w) (K2 a b w) _ le_rfl hst (by simp [Subgroup.relIndex_self]), Subgroup.relIndex_self, Nat.cast_one, inv_one, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mconv_eq_conv {f f' : LF a b w} (hf : IsHecke (K2 a b w) f) (hf' : IsHecke (K2 a b w) f') :
     mconv f f' = Formalism.UG.conv (K2 a b w) f f' := by
@@ -78,9 +76,9 @@ end Idem
 
 open Idem in
 /- English proof (translation)
-Introduce `E _ _ _ a b w f f' hf hf'`. Set `θ : GLw a w × GLw b w → GLw a w × GLw b w` to `fun x => (Formalism.UG.P.heckecomm_tr x.1, Formalism.UG.P.heckecomm_tr x.2)`. Rewrite using `[mconv_eq_conv hf hf', mconv_eq_conv hf' hf]`. Use `Formalism.UG.P.heckecomm_gelfand (K2 a b w) θ (fun x y => Prod.ext (Formalism.UG.P.heckecomm_tr_mul _ _) (Formalism.UG.P.heckecomm_tr_mul _ _)) (fun x => Prod.ext (Formalism.UG.P.heckecomm_tr_tr _) (Formalism.UG.P.heckecomm_tr_tr _)) (fun x hx => ⟨Formalism.UG.P.heckecomm_tr_mem …` and prove the remaining obligations. Take `⟨a₁, b₁, e₁⟩` from `Formalism.UG.P.heckecomm_tr_dc Formalism.UG.Final.CartanDecomp E w a g.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a₂, b₂, e₂⟩` from `Formalism.UG.P.heckecomm_tr_dc Formalism.UG.Final.CartanDecomp E w b g.2`. Conclude with `⟨⟨((a₁ : GLw a w), (a₂ : GLw b w)), ⟨a₁.2, a₂.2⟩⟩, ⟨((b₁ : GLw a w), (b₂ : GLw b w)), ⟨b₁.2, b₂.2⟩⟩, Prod.ext e₁ e₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sphComm : SphComm := by
   intro E _ _ _ a b w f f' hf hf'
@@ -96,23 +94,23 @@ theorem sphComm : SphComm := by
 
 open Idem in
 /- English proof (translation)
-Introduce `E _ _ _ a b w L hL hLK`. Establish `hne : L.relIndex (K2 a b w) ≠ 0` using `relIndex_ne_zero hL`. Establish `hc : ((L.relIndex (K2 a b w) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hne`. Establish `hLc : IsClosed (L : Set (GLw a w × GLw b w))` using `L.isClosed_of_isOpen hL`. Establish `hLcpt : IsCompact (L : Set (GLw a w × GLw b w))` using `isCompact_maximal_pair_place.of_isClosed_subset hLc hLK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Quotient.out (((1 : GLw a w × GLw b w)) : (GLw a w × GLw b w) ⧸ L) ∈ L`. Take `⟨l, hl⟩` from `QuotientGroup.mk_out_eq_mul L (1 : GLw a w × GLw b w)`. Rewrite using `[hl, one_mul]`. Conclude with `l.2`. Use `⟨⟨HasCompactSupport.intro' hLcpt hLc fun x hx => by rw [idem_apply, if_neg (fun h => hx (SetLike.mem_coe.2 h))], fun k hk x => ⟨by rw [idem_apply, idem_apply, L.mul_mem_cancel_left hk], by rw [idem_apply, idem_apply, L.mul_mem_cancel_right hk]⟩⟩, ?_, fun f hf => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [lfStar, idem_apply, inv_mem_iff]`. Apply the tactic sequence `split_ifs <;> simp`. Use function extensionality and compare the values at `m`. Unfold `mconv`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hst : L ≤ rStab (fun m' => idem L m' * f (m'⁻¹ * m))`. Introduce `k hk x`. Use `show idem L (x * k) * f ((x * k)⁻¹ * m) = idem L x * f (x⁻¹ * m)`. Rewrite using `[idem_apply, idem_apply, L.mul_mem_cancel_right hk, _root_.mul_inv_rev, mul_assoc, (hf.2 k⁻¹ (L.inv_mem hk) _).1]`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ (K2 a b w) L _ hLK hst hne, finsum_eq_single _ (((1 : GLw a w × GLw b w)) : _ ⧸ L)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[idem_apply, if_pos h1, (hf.2 _ (L.inv_mem h1) m).1, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Introduce `q hq`. Establish `: Quotient.out q ∉ L` using `fun h => hq (by`. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 (by rw [mul_one]; exact L.inv_mem h))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[idem_apply, if_neg this, zero_mul]`. Use function extensionality and compare the values at `m`. Unfold `mconv`. Establish `hst : L ≤ rStab (fun m' => f m' * idem L (m'⁻¹ * m))`. Introduce `k hk x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show f (x * k) * idem L ((x * k)⁻¹ * m) = f x * idem L (x⁻¹ * m)`. Rewrite using `[idem_apply, idem_apply, (hf.2 k hk x).2, _root_.mul_inv_rev, mul_assoc, L.mul_mem_cancel_left (L.inv_mem hk)]`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ (K2 a b w) L _ hLK hst hne, finsum_eq_single _ (QuotientGroup.mk m : _ ⧸ L)]`. Take `⟨l, hl⟩` from `QuotientGroup.mk_out_eq_mul L m`. Establish `hl' : (m * (l : GLw a w × GLw b w))⁻¹ * m ∈ L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Conclude with `L.inv_mem l.2`. Rewrite using `[hl, (hf.2 l l.2 m).2, idem_apply, if_pos hl']`. Clear the denominators using the available nonvanishing facts. Introduce `q hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `: (Quotient.out q)⁻¹ * m ∉ L` using `fun h => hq (by rw [← QuotientGroup.out_eq' q]; exact QuotientGroup.eq.2 h)`. Rewrite using `[idem_apply, if_neg this, mul_zero]`. Use `⟨(hf.1.comp_homeomorph (Homeomorph.inv _)).comp_left (map_zero (starRingEnd ℂ)), fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [lfStar, _root_.mul_inv_rev, (hf.2 _ (L.inv_mem hk) _).2]`. Simplify using `only [lfStar, _root_.mul_inv_rev, (hf.2 _ (L.inv_mem hk) _).1]`.
+A detailed English derivation is pending.
 -/
 theorem idemAlg : IdemAlg := by
   intro E _ _ _ a b w L hL hLK

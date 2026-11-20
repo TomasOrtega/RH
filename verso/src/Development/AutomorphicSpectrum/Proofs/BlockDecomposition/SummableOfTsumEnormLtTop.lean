@@ -21,7 +21,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Seco
   {X ι : Type*} {κ : ι → Type*} [Countable X] [Countable ι] [∀ i, Countable (κ i)]
 
 /- English proof (translation)
-Establish `h' : Summable (fun y => ‖f y‖₊)` using `ENNReal.tsum_coe_ne_top_iff_summable.1 (by simpa only [enorm_eq_nnnorm] using h.ne)`. Conclude with `Summable.of_norm ((NNReal.summable_coe.2 h').congr fun y => coe_nnnorm _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem summable_of_tsum_enorm_lt_top {Y : Type*} {f : Y → ℂ} (h : ∑' y, ‖f y‖ₑ < ⊤) : Summable f := by
   have h' : Summable (fun y => ‖f y‖₊) :=
@@ -29,23 +29,19 @@ theorem summable_of_tsum_enorm_lt_top {Y : Type*} {f : Y → ℂ} (h : ∑' y, �
   exact Summable.of_norm ((NNReal.summable_coe.2 h').congr fun y => coe_nnnorm _)
 
 /- English proof (translation)
-Establish `hsec : Measurable (sec Γ)` using `measurableEmbedding_sec.measurable`. Establish `hdescC : ∀ φ : G → ℂ, LeftInv Γ φ → descend Γ φ = φ ∘ sec Γ`. Introduce `φ hφ`. Use function extensionality and compare the values at `q`. Use `show φ q.out = φ (sec Γ q)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hφ.eq_of_mk_eq` to reduce the goal to its premises. Rewrite using `[mk_sec]`. Conclude with `Quotient.out_eq q`. Establish `hdescE : ∀ φ : G → ℝ≥0∞, LeftInv Γ φ → descend Γ φ = φ ∘ sec Γ`. Introduce `φ hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `q`. Use `show φ q.out = φ (sec Γ q)`. Apply `hφ.eq_of_mk_eq` to reduce the goal to its premises. Rewrite using `[mk_sec]`. Conclude with `Quotient.out_eq q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNm : Measurable (descend Γ fun g => ∑' x, ‖a g x‖ₑ)`. Rewrite using `[hdescE _ hA]`. Conclude with `(Measurable.tsum fun x => (ha x).enorm).comp hsec`. Establish `hFm : ∀ i, AEStronglyMeasurable (descend Γ fun g => ∑' k : κ i, a g (e ⟨i, k⟩)) (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hdescC _ (hL i)]`. Conclude with `((Measurable.tsum fun k => ha _).comp hsec).aestronglyMeasurable`. Establish `hbound : ∀ g, ∑' i, ‖∑' k : κ i, a g (e ⟨i, k⟩)‖ₑ ≤ ∑' x, ‖a g x‖ₑ`. Introduce `g`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ g, ∑' x, ‖a g x‖ₑ < ⊤ → HasSum (fun i => ∑' k : κ i, a g (e ⟨i, k⟩)) (∑' x, a g x)`. Introduce `g hg`. Establish `hs : Summable (a g)` using `summable_of_tsum_enorm_lt_top hg`. Establish `hse : Summable (a g ∘ e)` using `e.summable_iff.2 hs`. Conclude with `(e.hasSum_iff.2 hs.hasSum).sigma fun i => (hse.sigma_factor i).hasSum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlin : ∑' i, ∫⁻ q, ‖descend Γ (fun g => ∑' k : κ i, a g (e ⟨i, k⟩)) q‖ₑ ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ < ⊤`. Rewrite using `[← lintegral_tsum fun i => (hFm i).enorm]`. Conclude with `lt_of_le_of_lt (lintegral_mono fun q => hbound q.out) hfin`. Establish `hsI : Summable fun i => ∫ q, descend Γ (fun g => ∑' k : κ i, a g (e ⟨i, k⟩)) q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ` using `summable_of_tsum_enorm_lt_top (lt_of_le_of_lt (ENNReal.tsum_le_tsum fun i => enorm_integral_le_lintegral_enorm _) hlin)`. Establish `hae : ∀ᵐ q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ, descend Γ (fun g => ∑' x, ‖a g x‖ₑ) q < ⊤` using `ae_lt_top hNm hfin.ne`.
-
-Establish `hint : ∫ q, descend Γ (fun g => ∑' x, a g x) q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ = ∑' i, ∫ q, descend Γ (fun g => ∑' k : κ i, a g (e ⟨i, k⟩)) q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ`. Rewrite using `[← integral_tsum hFm hlin.ne]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with q hq`. Conclude with `(hpt q.out hq).tsum_eq.symm`.
-
-Simplify using `only [average_eq]`. Rewrite using `[hint]`. Conclude with `hsI.hasSum.const_smul _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_average_descend (e : (Σ i, κ i) ≃ X) (a : G → X → ℂ) (ha : ∀ x, Measurable fun g => a g x)
     (hA : LeftInv Γ fun g => ∑' x, ‖a g x‖ₑ)
@@ -118,21 +114,19 @@ variable {K : Type} [Field K]
 open GlobalTheory.CompanionTheory.MatrixRowSpace in
 
 /- English proof (translation)
-Establish `hinj : ∀ U, Function.Injective (c U).vecMulLinear` using `fun U => Matrix.vecMul_injective_iff.2 (hc U).1`. Establish `hrange : ∀ U, LinearMap.range (c U).vecMulLinear = U` using `fun U => by`. Rewrite using `[range_vecMulLinear_eq, (hc U).2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨U, x, hx⟩ ⟨U', x', hx'⟩ h dsimp only at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hU : U = U'`. Establish `h1` using `span_rows_mul_of_rank x (c U) hx`. Establish `h2` using `span_rows_mul_of_rank x' (c U') hx'`. Combine the equalities or inequalities in the displayed calculation. Substitute `hU` using the available equality.
+Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hxx : x = x'`. Use extensionality with `i j`. Establish `hi : (x * c U) i = (x' * c U) i` using `by rw [h]`. Rewrite `hi` using `[row_mul, row_mul]`. Conclude with `congrFun (hinj U hi) j`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hxx` using the available equality. Both sides reduce to the same expression. Introduce `y`. Take `⟨U, hU⟩ : ∃ U : Submodule K (Fin n → K), U = Submodule.span K (Set.range y)` from `⟨_, rfl⟩`. Establish `hrow : ∀ i, ∃ v : Fin (Module.finrank K U) → K, (c U).vecMulLinear v = y i`.
+Substitute using the available equality. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Establish `hmem : y i ∈ LinearMap.range (c U).vecMulLinear`. Rewrite using `[hrange U, hU]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `LinearMap.mem_range.1 hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `choose v hv using hrow`. Establish `hxc : Matrix.of v * c U = y`. Use extensionality with `i j`. Establish `hi : (Matrix.of v * c U) i = y i`. Rewrite using `[row_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv i`. Conclude with `congrFun hi j`. Establish `hS : Submodule.span K (Set.range (Matrix.of v)) = ⊤`. Apply `Submodule.map_injective_of_injective (hinj U)` to reduce the goal to its premises. Rewrite using `[Submodule.map_top, hrange U, ← span_rows_mul, hxc, hU]`.
-
-Conclude with `⟨⟨U, Matrix.of v, (span_rows_eq_top_iff _).2 hS⟩, hxc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_mul_rowBasis (m n : ℕ)
     (c : ∀ U : Submodule K (Fin n → K), Matrix (Fin (Module.finrank K U)) (Fin n) K)
@@ -183,7 +177,7 @@ theorem bijective_mul_rowBasis (m n : ℕ)
     exact ⟨⟨U, Matrix.of v, (span_rows_eq_top_iff _).2 hS⟩, hxc⟩
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (fun s : Finset (Fin n → K) => Submodule.span K (s : Set (Fin n → K)))` using `fun U => IsNoetherian.noetherian U`. Conclude with `hs.countable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_submodule [Countable K] (n : ℕ) : Countable (Submodule K (Fin n → K)) := by
   have hs : Function.Surjective
@@ -196,9 +190,9 @@ end Rows
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [GQ, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HFinIn, Subgroup.mem_subgroupOf, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HFin, Subgroup.mem_map] at hγ`. Take `⟨g0, -, hg0⟩` from `hγ`. Use `⟨g0⁻¹, fun g a ξ => ?_⟩` and prove the remaining obligations. Establish `key : ((Formalism.L2.Theta.matHom V γ⁻¹ : GL _ _) : Matrix _ _ _) = ((g0⁻¹ : GL _ _) : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (incA D)`. Establish `hγ' : Formalism.L2.Theta.matHom V γ = _` using `hg0.symm`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_inv, hγ', ← map_inv]`. Both sides reduce to the same expression. Simplify using `only [GlobalTheory.SiegelFormula.invPt, Formalism.L2.Theta.mt, mul_inv_rev, map_mul, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc, key]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 private theorem exists_invPt_mul_eq_invPt_mul_of_mem_GQ (V : HSp D) {γ : GA D V} (hγ : γ ∈ GQ V) :
     ∃ A : GL (Fin V.rank) D.host.E, ∀ (g : GA D V) {a : ℕ} (ξ : Matrix (Fin V.rank) (Fin a) D.host.E),
@@ -217,9 +211,9 @@ private theorem exists_invPt_mul_eq_invPt_mul_of_mem_GQ (V : HSp D) {γ : GA D V
     Matrix.map_mul, Matrix.mul_assoc, key]
 
 /- English proof (translation)
-Introduce `γ hγ g`. Take `⟨A, hA⟩` from `exists_invPt_mul_eq_invPt_mul_of_mem_GQ V hγ`. Establish `hrank : ∀ (B : GL (Fin V.rank) D.host.E) (x : Matrix (Fin V.rank) (Fin r) D.host.E), ((B : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * x).rank = x.rank` using `fun B x => Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 B.isUnit)`. Set `eqv : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = s} ≃ {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = s}` to `{ toFun := fun x => ⟨(A : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * x.1, (hrank A x.1).trans x.2⟩ invFun := fun x => ⟨((A⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * x.1, (hrank A⁻¹ x.1).trans x.2⟩ left_inv := fun x => Subtype.ext (by simp [← M …`. Use `show ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = s}, φ (GlobalTheory.SiegelFormula.invPt V (γ * g) (x.1 * c)) = ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = s}, φ (GlobalTheory.SiegelFormula.invPt V g (x.1 * c))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [hA, ← Matrix.mul_assoc]`. Conclude with `eqv.tsum_eq fun x => φ (GlobalTheory.SiegelFormula.invPt V g (x.1 * c))`.
+A detailed English derivation is pending.
 -/
 theorem leftInv_rankSum (V : HSp D) {r n : ℕ} (φ : Mx D V.rank n → ℂ) (c : Matrix (Fin r) (Fin n) D.host.E) (s : ℕ) :
     LeftInv (GQ V) fun h => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = s},
@@ -243,7 +237,7 @@ theorem leftInv_rankSum (V : HSp D) {r n : ℕ} (φ : Mx D V.rank n → ℂ) (c 
   exact eqv.tsum_eq fun x => φ (GlobalTheory.SiegelFormula.invPt V g (x.1 * c))
 
 /- English proof (translation)
-Simplify using `only [pull, GlobalTheory.SiegelFormula.invPt, Matrix.map_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pull_mt (V : HSp D) {r n : ℕ} (φ : Mx D V.rank n → ℂ) (c : Matrix (Fin r) (Fin n) D.host.E) (h : GA D V)
     (x : Matrix (Fin V.rank) (Fin r) D.host.E) :
@@ -251,11 +245,9 @@ theorem pull_mt (V : HSp D) {r n : ℕ} (φ : Mx D V.rank n → ℂ) (c : Matrix
   simp only [pull, GlobalTheory.SiegelFormula.invPt, Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `D n V θ hθ ν hν Φ hfin c hc`. Use `haveI := hν`. Use `haveI : Countable D.host.E := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableE`. Use `haveI : Countable (Submodule D.host.E (Fin n → D.host.E)) := countable_submodule n`. Use `haveI : ∀ r : ℕ, Countable (Matrix (Fin V.rank) (Fin r) D.host.E) := fun r => inferInstanceAs (Countable (Fin V.rank → Fin r → D.host.E))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcont : Continuous Φ.1` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ V.rank n Φ.1 Φ.2).1`. Establish `key` using `hasSum_average_descend (G := GA D V) (Γ := GQ V) (μ := ν) (κ := fun U : Submodule D.host.E (Fin n → D.host.E) => {x : Matrix (Fin V.rank) (Fin (Module.finrank D.host.E U)) D.host.E // x.rank = Module.finrank D.host.E U}) (Equiv.ofBijective _ (bijective_mul_rowBasis V.rank n c hc) …`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `U`. Simplify using `only [Ifr, pull_mt]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaOrbits : ThetaOrbits := by
   intro D n V θ hθ ν hν Φ hfin c hc

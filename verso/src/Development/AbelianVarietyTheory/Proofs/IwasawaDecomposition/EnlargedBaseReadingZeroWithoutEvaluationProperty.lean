@@ -38,11 +38,11 @@ def NoEvAtOne {D : D7} (T : CoreJ D) (j : ℕ) (w : WeightFamilies.Wt D j) (s : 
       Hm.e (j' (c f)) v = phiC T hV (wtA w) (f : T.R j)) → Z
 
 /- English proof (translation)
-Use `⟨{ toFun := fun x' => ∑ k, σ' (x' k) • j (Pi.single k 1), map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]`. Introduce `a x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x x' h`. Express the relevant statement in the definitionally equal form `∑ k, σ' (x' k) • j (Pi.single k 1) = j x`. Use `conv_rhs => rw [pi_eq_sum_univ' x, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, h.2 k k rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_extend {L L' : Type} [Field L] [Field L'] (ι : L →+* L') (σ' : L' →+* ℂ) {n : ℕ}
     {A : Type} [AddCommGroup A] [Module ℂ A] (j : (Fin n → L) →ₛₗ[σ'.comp ι] A) :
@@ -60,23 +60,23 @@ theorem exists_extend {L L' : Type} [Field L] [Field L'] (ι : L →+* L') (σ' 
     rfl
 
 /- English proof (translation)
-Take `⟨⟨⟨H, l, cc, Dw, Xo, eO⟩, U, V, dict, mu, Kf, pb⟩, cE, chiW, x₀, iota⟩` from `T`. Take `⟨⟨⟨H', l', cc', Dw', Xo', eO'⟩, U', V', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` from `T'`. Simplify using `only at h1 h2 h3 h4 h5 h6 h7 h8 h9 h10`. Consider the cases of `h1`. Consider the cases of `h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h3`. Consider the cases of `h4`. Consider the cases of `h5`. Consider the cases of `h6`. Consider the cases of `h7`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h8`. Consider the cases of `h9`. Consider the cases of `h10`. Take `⟨aP, aM, _, _, m, _⟩` from `w`. Take `⟨aP', aM', _, _, m', _⟩` from `w'`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hP hM hn`. Consider the cases of `hP`. Consider the cases of `hM`. Consider the cases of `hn`. Establish `hs' : s' = s` using `RingHom.ext fun y => hs y y rfl`.
+Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Substitute `hs'` using the available equality. Take `⟨X, σ, lam, ε, fr, _, _, _, _⟩` from `M`. Take `⟨X', σ'', lam', ε', fr', _, _, _, _⟩` from `M'`. Take `⟨m1, m2, m3, m4, m5, m6, m7⟩` from `hMM`. Simplify using `only at m1 m2 m3 m4 m5 m6 m7`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Consider the cases of `m1`. Consider the cases of `m2`. Consider the cases of `m3`. Consider the cases of `m4`. Consider the cases of `m5`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `m6`. Consider the cases of `m7`. Establish `hH' : Hm' = Hm` using `eq_of_heq hH`. Substitute `hH'` using the available equality. Establish `hv' : v' = v` using `eq_of_heq hv`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hv'` using the available equality. Substitute `hnn` using the available equality. Introduce `h hg hV hno`. Use `hZ (h hg hV ?_)` and prove the remaining obligations. Introduce and unpack `⟨j₀, hj₀⟩`.
+Substitute using the available equality. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨j', hj'⟩` from `exists_extend ι σ' j₀`. Conclude with `hno ⟨j', fun f => by rw [hj' _ _ (hc f f HEq.rfl)]; exact hj₀ f⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem NoEvAtOne.congr {D : D7} (T T' : CoreJ D) (h1 : HEq T'.Q.H T.Q.H) (h2 : HEq T'.Q.l T.Q.l) (h3 : HEq T'.Q.c T.Q.c)
     (h4 : HEq T'.Q.Dw T.Q.Dw) (h5 : HEq T'.Q.Xo T.Q.Xo) (h6 : HEq T'.U T.U) (h7 : HEq T'.V T.V) (h8 : HEq T'.dict T.dict)
@@ -137,7 +137,7 @@ def intEquivOfEq {F F' : IntermediateField ℚ ℂ} (h : F' = F) : 𝓞 F ≃+* 
   exact RingEquiv.refl _
 
 /- English proof (translation)
-Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `h3`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem coeff_field_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H H' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {l' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H'}
@@ -149,23 +149,23 @@ theorem coeff_field_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H H' 
   rfl
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hc _ Xg tr R' hRS _ ι hι κ' hκ v₀' hv e' he i' σ'`. Use `letI := alg'`. Use `letI := z.alg`. Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `(by with_unfolding_all exact ((congrArg (fun P : Pre => P.R.m) hPre) :))`. Set `i : Fin (w.st Z).toD7.R.m` to `⟨i'.1, hm ▸ i'.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hi : (i : ℕ) = i'` using `rfl`. Establish `hb : NoEvAtOne z.core ((i : ℕ) + 1) (z.geo.κ i) (res z.core (σ'.comp ι)) (z.R.MW i (σ'.comp ι)) (z.R.HW i (σ'.comp ι)) (z.geo.v₀ i (σ'.comp ι)) (σ'.comp ι) (fun φ => (z.geo.fw.e i φ : (z.R.FW i).WK).1) ((z.R.FW i).j (σ'.comp ι) = 0)` using `z.geo.fw.ev0 i (σ'.comp ι)`. Establish `hnW` using `hRS.2.2.2.2.2.1`. Establish `hcl` using `((hRS.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hi).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 ι hι).1 σ'`. Establish `hMM : ModelSame (z.R.MW i (σ'.comp ι)) (R'.MW i' σ')` using `⟨hcl.1.1, hcl.1.2.1, hcl.1.2.2.1, hcl.1.2.2.2.1, hcl.1.2.2.2.2.1, hcl.1.2.2.2.2.2.1, hcl.1.2.2.2.2.2.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `hcl.2.1`. Establish `hjj` using `hcl.2.2.2`. Establish `hs : ∀ (y : z.core.Q.c.F) (y' : core'.Q.c.F), (y' : ℂ) = (y : ℂ) → res core' σ' y' = res z.core (σ'.comp ι) y` using `fun y y' hy => congrArg σ' ((w'.st Z').toD7.what₂.embLL.injective (((by with_unfolding_all exact ((halg y') :)) : (w'.st Z').toD7.what₂.embLL (algebraMap core'.Q.c.F (w'.st Z').toD7.what₂.LL y') = (y' : ℂ)).trans (hy.trans ((hι _).trans ((by with_unfolding_all exact ((z.alg_eq y) …`. Establish `hgen : ∀ {m m' : ℕ} (_ : m' = m) (a : Fin m → ℕ) (a' : Fin m' → ℕ), HEq a' a → ∀ (k : Fin m) (k' : Fin m'), (k : ℕ) = k' → a k = a' k'`. Introduce `m m' h a a' ha k k' hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Consider the cases of `ha`. Rewrite using `[Fin.ext hk]`. Establish `hn : z.R.nW i = R'.nW i'` using `hgen hm _ _ hnW i i' hi`. Establish `hZ : (z.R.FW i).j (σ'.comp ι) = 0 → (R'.FW i').j σ' = 0` using `reading_eq_zero ι σ' hn _ _ hjj`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1` using `hv i i' hi σ'`. Establish `he1` using `he i i' hi`. Take `⟨hP, hM, hnn⟩` from `hκ i i' hi`. Take `⟨c1, c2, c3, c4, c5, c6, c7, c8, c9, -, c10, -⟩` from `hc`. Break down `B' with ⟨P'⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`. Substitute `hPre` using the available equality. Set `H₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host (w'.st Z').toD7.host.E` to `(by with_unfolding_all exact (z.core.Q.H :))`. Set `l₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H₁` to `(by with_unfolding_all exact (z.core.Q.l :))`. Set `c₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l₁` to `(by with_unfolding_all exact (z.core.Q.c :))`.
+Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hF : core'.Q.c.F = c₁.F` using `coeff_field_eq (H := H₁) (l := l₁) (c := c₁) ((by with_unfolding_all exact (c1 :))) ((by with_unfolding_all exact (c2 :))) ((by with_unfolding_all exact (c3 :)))`. Set `Q₀ : Formalism.L2.Pj.Par (w'.st Z').toD7` to `{ H := H₁, l := l₁, c := c₁, Dw := (by with_unfolding_all exact (z.core.Q.Dw :)), Xo := (by with_unfolding_all exact (z.core.Q.Xo :)), eO := (intEquivOfEq hF).trans core'.Q.eO }`. Set `core₀ : Formalism.L2.Pj.CoreJ (w'.st Z').toD7` to `{ toCore := { Q := Q₀, U := (by with_unfolding_all exact (z.core.U :)), V := (by with_unfolding_all exact (z.core.V :)), dict := (by with_unfolding_all exact (z.core.dict :)), mu := (by with_unfolding_all exact (z.core.mu :)), Kf := (by with_unfolding_all exact (z.core.Kf :)), pb …`. Set `κ₀ : WeightFamilies.Wt (w'.st Z').toD7 ((i' : ℕ) + 1)` to `{ aP := (by with_unfolding_all exact ((z.geo.κ i).aP :)), aM := (by with_unfolding_all exact ((z.geo.κ i).aM :)), aPlus_antitone := (by with_unfolding_all exact ((z.geo.κ i).aPlus_antitone :)), aM_anti := (by with_unfolding_all exact ((z.geo.κ i).aM_anti :)), n := (z.geo.κ i).n, …`. Set `S₀ : (w'.st Z').toD7.what₂.Tau → SPar` to `(by with_unfolding_all exact ((parAt (Wc (w.st Z).toD7 i) (σ'.comp ι)) :))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M₀ : DSModel (Wc (w'.st Z').toD7 i') S₀` to `@DSModel.mk _ _ _ ((by with_unfolding_all exact ((z.R.MW i (σ'.comp ι)).H :))) ((by with_unfolding_all exact ((z.R.MW i (σ'.comp ι)).nacg :))) ((by with_unfolding_all exact ((z.R.MW i (σ'.comp ι)).ips :))) ((by with_unfolding_all exact ((z.R.MW i (σ'.comp ι)).σ :))) ((by with_unf …`. Set `H₀ : Links.HMod (MMap M₀)` to `(by with_unfolding_all exact ((z.R.HW i (σ'.comp ι)) :))`. Set `u₀ : M₀.Vec` to `(by with_unfolding_all exact ((z.geo.v₀ i (σ'.comp ι)) :))`. Set `s₀ : core₀.Q.c.F →+* ℂ` to `(by with_unfolding_all exact ((res z.core (σ'.comp ι)) :))`. Set `c₀ : core₀.cuspA ((i' : ℕ) + 1) (wtA κ₀) κ₀.n → Fin (z.R.nW i) → (w.st Z).toD7.what₂.LL` to `(by with_unfolding_all exact ((fun φ => (z.geo.fw.e i φ : (z.R.FW i).WK).1) :))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `(by with_unfolding_all exact ((NoEvAtOne.congr core₀ core' ((c1)) ((c2)) ((c3)) ((c4)) ((c5)) ((c6)) ((c7)) ((c8)) ((c9)) ((c10)) ((i' : ℕ) + 1) κ₀ (κ' i') ((hP)) ((hM)) ((hnn)) s₀ (res core' σ') ((hs)) M₀ (R'.MW i' σ') ((hMM)) H₀ (R'.HW i' σ') ((hH)) u₀ (v₀' i' σ') ((hv1)) ι σ' …`.
+A detailed English derivation is pending.
 -/
 theorem enlargedBase_reading_zero_without_evaluationProperty : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

@@ -18,13 +18,13 @@ open scoped TensorProduct ENNReal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Use `hB n M` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (AF F)`. Establish `ha : ∀ X, Measurable fun h : HA (AF F) σ J => actW (AF F) σ J h⁻¹ X` using `fun X => ((hact n).1.comp (continuous_inv.prodMk continuous_const)).measurable`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Countable E` using `Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.symm.toEquiv`. Establish `hsum : ∑' X : S, ∫⁻ h in 𝓕, ‖Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) X.1))‖ₑ ∂μ ≠ ⊤`. Rewrite using `[← lintegral_tsum (f := fun (X : S) h => ‖Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) X.1))‖ₑ) fun X => (hm.enorm.comp (ha _)).aemeasurable]`. Conclude with `hfin.ne`. Establish `hint : Integrable Φ (Measure.sum fun X : S => (μ.restrict 𝓕).map fun h => actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∫⁻ X, ‖Φ X‖ₑ ∂_ < ⊤`. Rewrite using `[lintegral_sum_measure]`. Simplify using `only [lintegral_map hm.enorm (ha _)]`. Conclude with `hsum.lt_top`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[thetaMeas, integral_smul_measure, integral_sum_measure hint, meanC, ENNReal.toReal_inv]`. Simplify using `only [integral_map (ha _).aemeasurable hm.aestronglyMeasurable]`. Conclude with `congrArg _ (integral_tsum (fun X => (hm.comp (ha _)).aestronglyMeasurable) hsum)`.
+A detailed English derivation is pending.
 -/
 theorem meanC_thetaS_of_lintegral (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (μ : Measure (HA (AF F) σ J))
@@ -76,7 +76,7 @@ def colsOf {m r : ℕ} (X : Fin r → Fin m → D.host.E) : Matrix (Fin m) (Fin 
   Matrix.of fun i a => X a i
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ i, D.sp.cm.sig (X a i) * ∑ j, V.gram i j * X b j = ∑ i, ∑ j, D.sp.cm.sig (X a i) * V.gram i j * X b j`. Simplify using `only [Finset.mul_sum, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem gramQ_colsOf (V : HSp D) {r : ℕ} (X : Fin r → Fin V.rank → D.host.E) :
     gramQ V (colsOf X) = HeckeCharacterZeroLocus.SiegelWeilU.gramE D.sp.cm.sig V.gram X := by
@@ -86,9 +86,9 @@ theorem gramQ_colsOf (V : HSp D) {r : ℕ} (X : Fin r → Fin V.rank → D.host.
   simp only [Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use `le_antisymm (Matrix.rank_le_width x) ?_` and prove the remaining obligations. Establish `h1 : (gramQ V x).rank = r`. Use `Matrix.rank_of_isUnit (gramQ V x) ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 h))` as an intermediate fact. Simplify using `using this`. Establish `h2 : gramQ V x = ((x.map (D.sp.cm.sig : D.host.E → D.host.E)).transpose * HSpace.gram V) * x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[gramQ, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Conclude with `Matrix.rank_mul_le_right _ _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_eq_of_gramQ (V : HSp D) {r : ℕ} (x : Matrix (Fin V.rank) (Fin r) D.host.E)
     (h : (gramQ V x).det ≠ 0) : x.rank = r := by
@@ -113,7 +113,7 @@ def fibEquiv (V : HSp D) {r : ℕ} (β : HermE D r) (hβ : β.1.det ≠ 0) :
   right_inv _ := rfl
 
 /- English proof (translation)
-Use extensionality with `i a`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem tupOf_actW (V : HSp D) {r : ℕ} (h : GA D V) (X : Fin r → Fin V.rank → D.host.E) :
     tupOf (GlobalTheory.CompanionTheory.SW.actW (AF D.host.F) D.sp.cm.sig V.gram h⁻¹ (HeckeCharacterZeroLocus.SiegelWeilU.ratTup (AF D.host.F) X)) =
@@ -122,17 +122,15 @@ theorem tupOf_actW (V : HSp D) {r : ℕ} (h : GA D V) (X : Fin r → Fin V.rank 
   rfl
 
 /- English proof (translation)
-Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V`. Take `⟨h0, h1, -⟩` from `GlobalTheory.Published.SiegelOneVector.normalise D.sp.cm.sig V.gram (GlobalTheory.DefiniteQuotient.cmExt D) (GlobalTheory.DefiniteQuotient.gram_hermND V) μH 𝓕 hμ h𝓕`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul μH ν`. Use `set c := Measure.haarScalarFactor μH ν`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : autMeasure V μH = (c : ENNReal) • autMeasure V ν`. Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_smul]`. Conclude with `congrArg _ e`. Establish `e2 : μH 𝓕 = c * autMeasure V ν Set.univ`. Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ h𝓕]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (fun m : Measure (AutQ V) => m Set.univ) e1`. Establish `hc0 : ((c : ℝ≥0∞)).toReal ≠ 0`. Introduce `h`. Establish `: (c : ℝ≥0∞) = 0`. Break down `(ENNReal.toReal_eq_zero_iff _).1 h with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Conclude with `absurd h ENNReal.coe_ne_top`. Rewrite `e2` using `[this, zero_mul]`. Conclude with `h0 e2`. Establish `e3 : ∫ g in 𝓕, f g ∂μH = (c : ℝ≥0∞).toReal • ∫ q, descend (GQ V) f q ∂autMeasure V ν`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure h𝓕 (descend (GQ V) f)`. Simplify using `only [hf.descend_mk] at h3`. Rewrite using `[← h3]`. Express the relevant statement in the definitionally equal form `∫ q, descend (GQ V) f q ∂autMeasure V μH = _`. Rewrite using `[e1, integral_smul_measure]`.
-
-Rewrite using `[average_eq, HeckeCharacterZeroLocus.SiegelWeilU.meanC, e3, e2, ENNReal.toReal_mul, smul_smul, Measure.real, mul_inv, mul_comm ((c : ℝ≥0∞).toReal)⁻¹, mul_assoc, inv_mul_cancel₀ hc0, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem average_eq_meanC (V : HSp D) (ν μH : Measure (GA D V)) (hν : ν.IsHaarMeasure) (hμ : μH.IsHaarMeasure)
     (𝓕 : Set (GA D V)) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μH) (f : GA D V → ℂ) (hf : LeftInv (GQ V) f) :
@@ -167,11 +165,11 @@ theorem average_eq_meanC (V : HSp D) (ν μH : Measure (GA D V)) (hν : ν.IsHaa
     mul_inv, mul_comm ((c : ℝ≥0∞).toReal)⁻¹, mul_assoc, inv_mul_cancel₀ hc0, mul_one]
 
 /- English proof (translation)
-Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul μH ν`. Use `set c := Measure.haarScalarFactor μH ν`. Establish `e1 : autMeasure V μH = (c : ENNReal) • autMeasure V ν`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_smul]`. Conclude with `congrArg _ e`. Establish `hL` using `GlobalTheory.SiegelFormula.leftInv_absTheta V φ`. Establish `h3` using `GlobalTheory.AutomorphicL2Unitary.lintegral_quotMeasure h𝓕 (descend (GQ V) (GlobalTheory.SiegelFormula.absTheta V φ))`. Simplify using `only [hL.descend_mk] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← h3]`. Express the relevant statement in the definitionally equal form `∫⁻ q, descend (GQ V) (GlobalTheory.SiegelFormula.absTheta V φ) q ∂autMeasure V μH < ⊤`. Rewrite using `[e1, lintegral_smul_measure]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top habs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_absTheta_lt_top (V : HSp D) (ν μH : Measure (GA D V)) (hν : ν.IsHaarMeasure)
     (hμ : μH.IsHaarMeasure) (𝓕 : Set (GA D V)) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μH) {r : ℕ}
@@ -195,17 +193,15 @@ theorem setLIntegral_absTheta_lt_top (V : HSp D) (ν μH : Measure (GA D V)) (h�
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D r V θ hθ ν hν φ hφ habs μH 𝓕 hμ h𝓕 β hβ`. Establish `hcm` using `GlobalTheory.DefiniteQuotient.cmExt D`. Establish `hJ` using `GlobalTheory.DefiniteQuotient.gram_hermND V`. Establish `hcont : Continuous φ` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ φ hφ).1`. Take `⟨⟨lcA, scA, t2A⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable D.host.F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := lcA`. Use `haveI := scA`. Use `haveI := t2A`. Take `⟨-, -, sc, -, -, -, -, borelK, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring D.host.F D.host.E D.sp.cm.sig hcm (AF D.host.F)`. Use `haveI := sc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := borelK r V.rank`. Establish `hrank : ∀ (δ : GL (Fin V.rank) D.host.E) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E), (δ.1 * ξ).rank = ξ.rank` using `fun δ ξ => Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 δ.isUnit)`. Establish `hL` using `GlobalTheory.CompanionTheory.SplitGram.leftInv_subtypeSum V φ (fun x : Matrix (Fin V.rank) (Fin r) D.host.E => x.rank = r ∧ gramQ V x = β.1) (fun δ hδ ξ h => ⟨(hrank δ ξ).trans h.1, (GlobalTheory.CompanionTheory.SplitGram.gramQ_mul V hδ ξ).trans h.2⟩)`. Establish `hI` using `average_eq_meanC V ν μH hν hμ 𝓕 h𝓕 _ hL`. Set `Φ : (Fin r → Fin V.rank → AE D) → ℂ` to `fun X => φ (tupOf X)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΦc : Continuous Φ` using `hcont.comp (continuous_matrix fun i a => (continuous_apply i).comp (continuous_apply a))`. Establish `hΦm : Measurable Φ` using `hΦc.measurable`. Set `S : Set (Fin r → Fin V.rank → D.host.E)` to `{X | HeckeCharacterZeroLocus.SiegelWeilU.gramE D.sp.cm.sig V.gram X = β.1}`. Establish `hfin : ∫⁻ h in 𝓕, ∑' x : S, ‖Φ (GlobalTheory.CompanionTheory.SW.actW (HeckeCharacterZeroLocus.SiegelWeilU.AF D.host.F) D.sp.cm.sig V.gram h⁻¹ (HeckeCharacterZeroLocus.SiegelWeilU.ratTup (HeckeCharacterZeroLocus.SiegelWeilU.AF D.host.F) (x : Fin r → Fin V.rank → D.host.E)))‖ₑ ∂μH …`. Use `lt_of_le_of_lt (lintegral_mono fun h => ?_) (setLIntegral_absTheta_lt_top V ν μH hν hμ 𝓕 h𝓕 φ habs)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective fun X : S => colsOf X.1` using `fun X Y e => Subtype.ext (funext fun a => funext fun i => congrFun (congrFun e i) a)`. Use `le_trans (le_of_eq (tsum_congr fun X => ?_)) (ENNReal.tsum_comp_le_tsum_of_injective hinj fun ξ => ‖φ (GlobalTheory.SiegelFormula.invPt V h ξ)‖ₑ)` and prove the remaining obligations. Conclude with `congrArg (fun y => ‖φ y‖ₑ) (tupOf_actW V h X.1)`. Establish `hS : HeckeCharacterZeroLocus.SiegelWeilU.thetaS D.host.F D.host.E D.sp.cm.sig V.rank V.gram Φ S = fun h => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}, φ (GlobalTheory.SiegelFormula.invPt V h x.1)`. Use function extensionality and compare the values at `h`.
-
-Use `(tsum_congr fun X => ?_).trans ((fibEquiv V β hβ).tsum_eq fun x => φ (GlobalTheory.SiegelFormula.invPt V h x.1))` and prove the remaining obligations. Conclude with `congrArg φ (tupOf_actW V h X.1)`. Establish `key` using `meanC_thetaS_of_lintegral D.sp.cm.sig hcm V.gram hJ μH 𝓕 S Φ hΦm hfin`. Rewrite `key` using `[hS]`. Conclude with `hI.trans key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ifrB_eq_thetaPartD : ∀ (D : D7) (r : ℕ) (V : HSp D) (θ : InfFam D), IsInfFam θ → ∀ ν : Measure (GA D V), ν.IsHaarMeasure →
     ∀ φ : Mx D V.rank r → ℂ, φ ∈ schwartzA θ V.rank r → GlobalTheory.SiegelFormula.absThetaInt V ν φ < ⊤ →

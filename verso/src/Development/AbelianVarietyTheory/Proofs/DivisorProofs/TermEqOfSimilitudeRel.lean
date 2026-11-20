@@ -15,9 +15,9 @@ section Generic
 variable {S A : Type*} [Ring S] [CommRing A] [Algebra A S]
 
 /- English proof (translation)
-Establish `h1 : (σ Y).unop * (σ ((Y⁻¹ : Sˣ) : S)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Use `_ = algebraMap A S (s * t) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.inv_mul, h1, one_mul, mul_one, hx, map_mul, Algebra.smul_def]`.
+A detailed English derivation is pending.
 -/
 theorem triv_move (σ : S →+* Sᵐᵒᵖ) (b : S) (x Y : Sˣ) (t s : A)
     (hx : (x : S) * b * (σ x).unop = algebraMap A S t) :
@@ -37,19 +37,19 @@ end Generic
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p}
 
 /- English proof (translation)
-Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_mul (a b : G.C) : sh G (a * b) = sh G b * sh G a := by
   simp only [sh, map_mul, MulOpposite.unop_mul]
 
 /- English proof (translation)
-Rewrite using `[← sh_mul, Units.inv_mul]`. Simplify using `[sh]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sh_units (y : G.Cˣ) : sh G (y : G.C) * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1 := by
   rw [← sh_mul, Units.inv_mul]; simp [sh]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, sh_mul, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Use `_ = _ := by`. Rewrite using `[Units.inv_mul, sh_units, mul_one, mul_one, Algebra.smul_def]`. Simplify using `only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key (y v : G.Cˣ) (β : G.C) (s : ℚ) :
     ((y * v * y⁻¹ : G.Cˣ) : G.C) * (algebraMap ℚ G.C s * (y * β * sh G y)) * sh G ((y * v * y⁻¹ : G.Cˣ) : G.C) =
@@ -62,7 +62,7 @@ theorem key (y v : G.Cˣ) (β : G.C) (s : ℚ) :
         rw [Units.inv_mul, sh_units, mul_one, mul_one, Algebra.smul_def]; simp only [mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul, mul_comm u s]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal (y : G.Cˣ) (β : G.C) (s u : ℚ) :
     algebraMap ℚ G.C u * (algebraMap ℚ G.C s * (y * β * sh G y)) =
@@ -70,9 +70,9 @@ theorem scal (y : G.Cˣ) (β : G.C) (s u : ℚ) :
   simp only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul, mul_comm u s]
 
 /- English proof (translation)
-Establish `h' : (y : G.C) * X * sh G y = y * Z * sh G y`. Use `congrArg (fun w => algebraMap ℚ G.C s⁻¹ * w) h` as an intermediate fact. Simplify `this` using `only [← mul_assoc, ← map_mul, inv_mul_cancel₀ hs, map_one, one_mul]`. Establish `e : ∀ W : G.C, W = ((y⁻¹ : G.Cˣ) : G.C) * (y * W * sh G y) * sh G ((y⁻¹ : G.Cˣ) : G.C)`. Introduce `W`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, mul_assoc, sh_units, mul_one, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e X, e Z, h']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cancel (y : G.Cˣ) (X Z : G.C) (s : ℚ) (hs : s ≠ 0)
     (h : algebraMap ℚ G.C s * (y * X * sh G y) = algebraMap ℚ G.C s * (y * Z * sh G y)) : X = Z := by
@@ -92,9 +92,9 @@ Both sides reduce to the same expression.
 theorem cj_apply (y : G.Cˣ) (v : G.Cˣ × ℚˣ) : cj y v = (y * v.1 * y⁻¹, v.2) := rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hv`. Express the relevant statement in the definitionally equal form `v.1 * P.γ = P.γ * v.1 at h1`. Express the relevant statement in the definitionally equal form `(v.1 : G.C) * P.β * sh G v.1 = algebraMap ℚ G.C v.2 * P.β at h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y * v.1 * y⁻¹ * Q.γ = Q.γ * (y * v.1 * y⁻¹)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hγ]`. Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `((y * v.1 * y⁻¹ : G.Cˣ) : G.C) * Q.β * sh G ((y * v.1 * y⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C v.2 * Q.β`. Rewrite using `[hβ, key, h2, scal]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_of (P Q : Pair G) (y : G.Cˣ) (s : ℚ) (hβ : (Q.β : G.C) = algebraMap ℚ G.C s * (y * P.β * sh G y))
     (hγ : Q.γ = y * P.γ * y⁻¹) (v : G.Cˣ × ℚˣ) (hv : v ∈ P.cent) : cj y v ∈ Q.cent := by
@@ -112,11 +112,11 @@ theorem mem_of (P Q : Pair G) (y : G.Cˣ) (s : ℚ) (hβ : (Q.β : G.C) = algebr
     rw [hβ, key, h2, scal]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hw`. Use `set v := (cj y).symm w with hv`. Establish `hw' : w = cj y v` using `by rw [hv, MulEquiv.apply_symm_apply]`. Rewrite `h1`, `h2` using `[hw', cj_apply]`. Express the relevant statement in the definitionally equal form `y * v.1 * y⁻¹ * Q.γ = Q.γ * (y * v.1 * y⁻¹) at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((y * v.1 * y⁻¹ : G.Cˣ) : G.C) * Q.β * sh G ((y * v.1 * y⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C v.2 * Q.β at h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v.1 * P.γ = P.γ * v.1`. Rewrite `h1` using `[hγ]`. Establish `: y * (v.1 * P.γ) * y⁻¹ = y * (P.γ * v.1) * y⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `using this`. Express the relevant statement in the definitionally equal form `(v.1 : G.C) * P.β * sh G v.1 = algebraMap ℚ G.C v.2 * P.β`. Rewrite `h2` using `[hβ, key, scal]`. Conclude with `cancel y _ _ s hs h2`.
+Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_back (P Q : Pair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
     (hβ : (Q.β : G.C) = algebraMap ℚ G.C s * (y * P.β * sh G y))
@@ -141,9 +141,9 @@ theorem mem_back (P Q : Pair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
     exact cancel y _ _ s hs h2
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `mem_of P Q y s hβ hγ v hv`. Introduce `hw`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨(cj y).symm w, mem_back P Q y s hs hβ hγ w hw, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem cent_map (P Q : Pair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
     (hβ : (Q.β : G.C) = algebraMap ℚ G.C s * (y * P.β * sh G y))
@@ -164,14 +164,14 @@ theorem toAf_val (P : Pair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx :
   rfl
 
 /- English proof (translation)
-Simplify using `[Pair.toQr, carry, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toQr_val (P : Pair G) (r : ℕ) (z : Gr G r) (v : P.cent) :
     P.toQr r z v = z⁻¹ * inclG G r (locC G v.1) * z := by
   simp [Pair.toQr, carry, MulAut.conj_apply]
 
 /- English proof (translation)
-Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem locC_conj (y : G.Cˣ) (v : G.Cˣ × ℚˣ) :
     locC G (y * v.1 * y⁻¹, v.2) = locC G (y, 1) * locC G v * (locC G (y, 1))⁻¹ := by
@@ -180,9 +180,9 @@ theorem locC_conj (y : G.Cˣ) (v : G.Cˣ × ℚˣ) :
   ext <;> simp
 
 /- English proof (translation)
-Establish `e1 : inC G (AfP p) (sh G y) = (starT G.star (AfP p) (inC G (AfP p) y)).unop` using `(starT_tmul G.star (AfP p) 1 _).symm`. Establish `e2 : inC G (AfP p) (algebraMap ℚ G.C s) = algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) (algebraMap ℚ (AfP p) s)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] AfP p ⊗[ℚ] G.C).commutes _`. Unfold `Triv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ, map_mul, map_mul, map_mul, e1, e2]`. Use `triv_move (starT G.star (AfP p)) (inC G (AfP p) P.β) x (Units.map (inC G (AfP p)).toMonoidHom y) (t : AfP p) (algebraMap ℚ (AfP p) s) hx` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem triv_rel (P Q : Pair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
     (hβ : (Q.β : G.C) = algebraMap ℚ G.C s * (y * P.β * sh G y))
@@ -208,25 +208,23 @@ namespace GlobalTheory.LKMid.Pair
 open GlobalTheory.LKMid.RelMove in
 
 /- English proof (translation)
-Introduce `p _ G P Q Kf f r K φ hr hf hφ hPQ`. Take `⟨y, s, hs, hβ, hγ⟩` from `hPQ`. Establish `hc : Q.c = P.c` using `(GlobalTheory.T.related_pairs_same_polarization p G P Q ⟨y, s, hs, hβ, hγ⟩).2`. Establish `hat : Q.atP = locC G (y, 1) * P.atP * (locC G (y, 1))⁻¹`. Use `locC_conj y (P.γ, P.c)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pair.atP, hγ, hc]`. Conclude with `this`. Establish `hnrm : ∀ δ z, IsNrm G r P.atP δ z → IsNrm G r Q.atP δ (inclG G r (locC G (y, 1)) * z)`. Introduce `δ z h`. Unfold `IsNrm at h ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, hat, map_mul, map_mul, map_inv]`. Use `group`. Distinguish the cases in `hP : ∃ dz : Gr G r × Gr G r, IsNrm G r P.atP dz.1 dz.2`. Take `⟨⟨δ, z⟩, hδ⟩` from `hP`. Take `⟨x, t, hx⟩` from `P.trivAf`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx'` using `triv_rel P Q y s hs.ne' hβ x t hx`. Rewrite using `[GlobalTheory.T.kottwitzPair_term_eq_pointSum_any_trivialisation p G P Kf f r K φ hr hf hφ x t hx δ z hδ, GlobalTheory.T.kottwitzPair_term_eq_pointSum_any_trivialisation p G Q Kf f r K φ hr hf hφ _ _ hx' δ _ (hnrm δ z hδ)]`. Set `e : P.cent ≃* Q.cent` to `((cj y).subgroupMap P.cent).trans (MulEquiv.subgroupCongr (cent_map P Q y s hs.ne' hβ hγ))`. Establish `he : ∀ v : P.cent, ((e v : Q.cent) : G.Cˣ × ℚˣ) = cj y v` using `fun v => rfl`. Establish `hA : (Q.toAf _ _ hx').comp e.toMonoidHom = P.toAf x t hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `v : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[MonoidHom.comp_apply, toAf_val, toAf_val]`. Simplify using `only [MulEquiv.coe_toMonoidHom, he, cj_apply]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_inv]`. Use `group`. Establish `hQr : (Q.toQr r (inclG G r (locC G (y, 1)) * z)).comp e.toMonoidHom = P.toQr r z`. Use extensionality with `v : 1`. Rewrite using `[MonoidHom.comp_apply, toQr_val, toQr_val]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, he, cj_apply]`. Rewrite using `[locC_conj, map_mul, map_mul, map_inv]`. Use `group`. Establish `hS : Q.self = e P.self`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, cj_apply]`. Conclude with `Prod.ext hγ hc`. Unfold `termAt`. Establish `hS' : Q.toAf _ _ hx' (e P.self) = P.toAf x t hx P.self` using `by rw [← hA]; rfl`. Rewrite using `[hS, ← GlobalTheory.T.kottwitzIsogenyClassPointSum_comp_mulEquiv e, hS', hA, hQr]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hQ : ¬ ∃ dz : Gr G r × Gr G r, IsNrm G r Q.atP dz.1 dz.2`. Introduce and unpack `⟨⟨δ, z⟩, h⟩`. Apply `hP` to reduce the goal to its premises. Use `⟨(δ, (inclG G r (locC G (y, 1)))⁻¹ * z), ?_⟩` and prove the remaining obligations. Unfold `IsNrm at h ⊢`.
-
-Rewrite using `[h, hat, map_mul, map_mul, map_inv]`. Use `group`. Unfold `term`. Rewrite using `[dif_neg hP, dif_neg hQ]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_eq_of_rel : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P Q : Pair G) (Kf : Subgroup G.GAf)
     (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r →

@@ -17,12 +17,12 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitGen
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.sphericalHecke_split_top_degree_recursion`.
+A detailed English derivation is pending.
 -/
 theorem top_step : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), conjPl P ≠ P → ∀ d : List ℤ, IsLab V P d → (∀ x ∈ d, 0 ≤ x) → (∃ x ∈ d, 0 < x) → ∃ m : ℕ, 0 < m ∧ ∃ c : List ℤ →₀ ℂ, (∀ d' ∈ c.support, (∀ x ∈ d', 0 ≤ x) ∧ d'.sum = d.sum ∧ (d'.map fun x => x ^ 2).sum < (d.map fun x => x ^ 2).sum) ∧ ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → opOf π P (Finsupp.single (d.map fun x => if 0 < x then x - 1 else x) 1) (opOf π P (Finsupp.single (dualLab (splitLab V.rank (d.filter fun x => 0 < x).length)) 1) u) = (m : ℂ) • opOf π P (Finsupp.single d 1) u + opOf π P c u := GlobalTheory.T.sphericalHecke_split_top_degree_recursion
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.sphericalHecke_scalarLabel_comp_eq_shiftDown_split`.
+A detailed English derivation is pending.
 -/
 theorem central_shift : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), conjPl P ≠ P → ∀ (d : List ℤ) (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → opOf π P (Finsupp.single (splitLab V.rank V.rank) 1) (opOf π P (Finsupp.single d 1) u) = opOf π P (Finsupp.single (d.map fun x => x - 1) 1) u := GlobalTheory.T.sphericalHecke_scalarLabel_comp_eq_shiftDown_split
 
@@ -40,7 +40,7 @@ def Good (c : List ℤ →₀ ℂ) : Prop :=
 variable {V P π}
 
 /- English proof (translation)
-Rewrite using `[opOf, Finsupp.sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, GlobalTheory.SphLabelOps.opOf_single, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem opOf_eq_sum (c : List ℤ →₀ ℂ) (u : M) :
     opOf π P c u = ∑ d ∈ c.support, c d • opOf π P (Finsupp.single d 1) u := by
@@ -49,7 +49,7 @@ theorem opOf_eq_sum (c : List ℤ →₀ ℂ) (u : M) :
   rw [LinearMap.smul_apply, GlobalTheory.SphLabelOps.opOf_single, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use `choose a ha he using h`. Use `⟨∑ d ∈ c.support.attach, c d • a d.1 d.2, Subalgebra.sum_mem _ fun d _ => Subalgebra.smul_mem _ (ha _ _) _, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[opOf_eq_sum, LinearMap.sum_apply, ← Finset.sum_attach c.support]`. Conclude with `Finset.sum_congr rfl fun d _ => by rw [LinearMap.smul_apply, he _ _ u hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_of_support {c : List ℤ →₀ ℂ} (h : ∀ d ∈ c.support, Good V P π (Finsupp.single d 1)) :
     Good V P π c := by
@@ -61,44 +61,42 @@ theorem good_of_support {c : List ℤ →₀ ℂ} (h : ∀ d ∈ c.support, Good
   exact Finset.sum_congr rfl fun d _ => by rw [LinearMap.smul_apply, he _ _ u hu]
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin hx`.
+A detailed English derivation is pending.
 -/
 theorem good_gen {x : Module.End ℂ M} (hx : x ∈ gens V P π) : x ∈ Algebra.adjoin ℂ (gens V P π) :=
   Algebra.subset_adjoin hx
 
 /- English proof (translation)
-Use `⟨0, Subalgebra.zero_mem _, fun u _ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SphLabelOps.opOf_single, Hk3.rep, dif_neg h, Finset.sum_empty, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_nonlab {d : List ℤ} (h : ¬ IsLab V P d) : Good V P π (Finsupp.single d 1) := by
   refine ⟨0, Subalgebra.zero_mem _, fun u _ => ?_⟩
   rw [GlobalTheory.SphLabelOps.opOf_single, Hk3.rep, dif_neg h, Finset.sum_empty, LinearMap.zero_apply]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SphLabelOps.label_operators V P).2.1 c M π u hu`.
+A detailed English derivation is pending.
 -/
 theorem fixed_opOf (c : List ℤ →₀ ℂ) {u : M} (hu : ∀ k ∈ hyp V P, π k u = u) : ∀ k ∈ hyp V P, π k (opOf π P c u) = opOf π P c u :=
   (GlobalTheory.SphLabelOps.label_operators V P).2.1 c M π u hu
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s using Nat.strong_induction_on with`. Consider the case `_ s ihs`. Introduce `q`. Proceed by induction on `q using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ q ihq`. Introduce `d hd hs hq`. Distinguish the cases in `hl : IsLab V P d`. Use `swap`. Conclude with `good_nonlab hl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hpos : ∃ x ∈ d, 0 < x`. Take `⟨m, hm, c, hc, hrel⟩` from `top_step V P hP d hl hd hpos set d1 := d.map fun x => if 0 < x then x - 1 else x with hd1`. Establish `hd1n : ∀ x ∈ d1, 0 ≤ x`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `hd y hy` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`. Establish `hlt : d1.sum < d.sum`. Apply the tactic sequence `have := List.sum_lt_sum (l := d) (fun x => if 0 < x then x - 1 else x) id (fun x _ => by simp only [id]; split_ifs <;> omega) (by obtain ⟨x, hx, hx0⟩ := hpos; exact ⟨x, hx, by simp only [id]; rw [if_pos hx0]; omega⟩)`. Simplify using `using this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : 0 ≤ d1.sum` using `List.sum_nonneg hd1n`. Establish `hq1 : 0 ≤ (d1.map fun x => x ^ 2).sum` using `List.sum_nonneg fun x hx => by`. Take `⟨y, -, rfl⟩` from `List.mem_map.1 hx`. Check the signs of the components of the expression. Establish `g1 : Good V P π (Finsupp.single d1 1)` using `ihs d1.sum.toNat (by omega) _ d1 hd1n (by omega) (Int.toNat_of_nonneg hq1).symm`.
+Extract witnesses or component facts from the available result. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `gc : Good V P π c` using `good_of_support fun d' hd' => by`. Take `⟨h1, h2, h3⟩` from `hc d' hd'`. Establish `h4 : 0 ≤ (d'.map fun x => x ^ 2).sum` using `List.sum_nonneg fun x hx => by`. Take `⟨y, -, rfl⟩` from `List.mem_map.1 hx`. Check the signs of the components of the expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `ihq _ (by omega) d' h1 (by omega) (Int.toNat_of_nonneg h4).symm`. Take `⟨a1, ha1, e1⟩` from `g1`. Take `⟨ac, hac, ec⟩` from `gc`. Use `set k := (d.filter fun x => 0 < x).length`. Establish `hk : k ≤ V.rank`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing V P d).1 hl).1` as an intermediate fact. Rewrite using `[← this]`. Conclude with `List.length_filter_le _ _`. Use `⟨(m : ℂ)⁻¹ • (a1 * opOf π P (Finsupp.single (dualLab (splitLab V.rank k)) 1) - ac), Subalgebra.smul_mem _ (Subalgebra.sub_mem _ (Subalgebra.mul_mem _ ha1 (good_gen ⟨k, hk, Or.inr rfl⟩)) hac) _, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.sub_apply, Module.End.mul_apply, e1 _ (fixed_opOf _ hu), hrel M π u hu, ec u hu, add_sub_cancel_right, smul_smul, inv_mul_cancel₀ hm', one_smul]`. Use `push_neg at hpos`. Establish `h0 : d = splitLab V.rank 0`. Establish `hlen` using `((GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing V P d).1 hl).1`. Rewrite using `[splitLab, Nat.sub_zero, List.replicate_zero, List.append_nil, ← hlen]`.
-
-Conclude with `List.eq_replicate_iff.2 ⟨rfl, fun x hx => le_antisymm (hpos x hx) (hd x hx)⟩`. Use `⟨_, good_gen ⟨0, Nat.zero_le _, Or.inl rfl⟩, fun u _ => by rw [h0]⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem good_nonneg (hP : conjPl P ≠ P) : ∀ s q : ℕ, ∀ d : List ℤ, (∀ x ∈ d, 0 ≤ x) → d.sum = (s : ℤ) →
     (d.map fun x => x ^ 2).sum = (q : ℤ) → Good V P π (Finsupp.single d 1) := by
@@ -158,9 +156,9 @@ theorem good_nonneg (hP : conjPl P ≠ P) : ∀ s q : ℕ, ∀ d : List ℤ, (�
     refine ⟨_, good_gen ⟨0, Nat.zero_le _, Or.inl rfl⟩, fun u _ => by rw [h0]⟩
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro d`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `d`. Rewrite using `[pow_succ, Module.End.mul_apply, central_shift V P hP _ M π u hu, List.map_map, ← ih d]`. Use `congr 4`. Use `List.map_congr_left fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Nat.cast_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -181,11 +179,11 @@ theorem shift (hP : conjPl P ≠ P) (u : M) (hu : ∀ k ∈ hyp V P, π k u = u)
 end Gen
 
 /- English proof (translation)
-Introduce `D V P hP M _ _ π d`. Use `set t : ℕ := (d.map fun x => (-x).toNat).sum`. Establish `ht : ∀ x ∈ d.map (fun x => x + (t : ℤ)), 0 ≤ x`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `List.le_sum_of_mem (List.mem_map_of_mem (f := fun x : ℤ => (-x).toNat) hx)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hs : 0 ≤ (d.map fun x => x + (t : ℤ)).sum` using `List.sum_nonneg ht`. Establish `hq : 0 ≤ ((d.map fun x => x + (t : ℤ)).map fun x => x ^ 2).sum` using `List.sum_nonneg fun x hx => by`. Take `⟨y, -, rfl⟩` from `List.mem_map.1 hx`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Take `⟨a, ha, he⟩` from `good_nonneg (V := V) (P := P) (π := π) hP _ _ _ ht (Int.toNat_of_nonneg hs).symm (Int.toNat_of_nonneg hq).symm`. Use `⟨(opOf π P (Finsupp.single (splitLab V.rank V.rank) 1)) ^ t * a, Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (good_gen ⟨V.rank, le_rfl, Or.inl rfl⟩) _) ha, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, he u hu, shift hP u hu]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_split : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), conjPl P ≠ P → ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (d : List ℤ), ∃ a ∈ Algebra.adjoin ℂ {x : Module.End ℂ M | ∃ k, k ≤ V.rank ∧ (x = opOf π P (Finsupp.single (splitLab V.rank k) 1) ∨ x = opOf π P (Finsupp.single (dualLab (splitLab V.rank k)) 1))}, ∀ u : M, (∀ k ∈ hyp V P, π k u = u) → a u = opOf π P (Finsupp.single d 1) u := by
   intro D V P hP M _ _ π d

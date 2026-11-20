@@ -20,7 +20,7 @@ def Triv (L : LB X) (Y : Scheme.{0}) (F : ∀ (U : Type) [CommGroup U], ((Y ⟶ 
     ∀ (U : Type) [CommGroup U] (h : (Y ⟶ X) → U), ∏ k, h (φ k) ^ ε k = F U h
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, e⟩` from `h`. Take `⟨K', _, φ', ε', t', ht', e'⟩` from `h'`. Conclude with `⟨K ⊕ K', inferInstance, _, _, LB.mulGen L φ ε φ' ε' t t', DVR.mulGen_isGen _ _ _ _ _ _ _ ht ht', fun U _ g => (Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (e U g) (e' U g))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Triv.mul {F F' : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U} (h : Triv L Y F) (h' : Triv L Y F') :
     Triv L Y (fun U _ g => F U g * F' U g) := by
@@ -30,7 +30,7 @@ theorem Triv.mul {F F' : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U} 
     fun U _ g => (Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (e U g) (e' U g))⟩
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, e⟩` from `h`. Use `⟨K, inferInstance, _, _, LB.invGen L φ ε t, DVR.invGen_isGen _ _ _ _ ht, fun U _ g => ?_⟩` and prove the remaining obligations. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, e U g]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Triv.inv {F : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U} (h : Triv L Y F) :
     Triv L Y (fun U _ g => (F U g)⁻¹) := by
@@ -39,7 +39,7 @@ theorem Triv.inv {F : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U} (h 
   simp only [zpow_neg, Finset.prod_inv_distrib, e U g]
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, e⟩` from `h`. Conclude with `⟨K, inferInstance, _, _, LB.pullGen L φ ε t r, DVR.pullGen_isGen _ _ _ _ ht _, fun U _ g => e U (fun ψ => g (r ≫ ψ))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Triv.pull {F : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U} (h : Triv L Y F) (r : Z ⟶ Y) :
     Triv L Z (fun U _ g => F U (fun ψ => g (r ≫ ψ))) := by
@@ -48,7 +48,7 @@ theorem Triv.pull {F : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U} (h
     fun U _ g => e U (fun ψ => g (r ≫ ψ))⟩
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, e⟩` from `h`. Take `⟨t', ht', -⟩` from `Geo.Tor.exists_gen hL (φ' := fun _ : PUnit => f) (ε' := fun _ => 1) (fun U _ g => by rw [e, hf]; simp) t ht`. Conclude with `⟨t', ht'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Triv.exists_gen (hL : L.IsLB) {F : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U} (h : Triv L Y F)
     (f : Y ⟶ X) (hf : ∀ (U : Type) [CommGroup U] (g : (Y ⟶ X) → U), F U g = g f) :
@@ -59,7 +59,7 @@ theorem Triv.exists_gen (hL : L.IsLB) {F : ∀ (U : Type) [CommGroup U], ((Y ⟶
   exact ⟨t', ht'⟩
 
 /- English proof (translation)
-Establish `hu : ∀ j, IsUnit ((SpecialFibreGenerator.secAlong θ f).f j)` using `fun j => Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hf y)`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (SpecialFibreGenerator.mem_nonzeroLocus_secAlong θ f hi)`. Conclude with `(Y.mem_basicOpen _ y hy).1 (SpecialFibreGenerator.mem_basicOpen_of_chart _ hy hk)`. Conclude with `⟨Fin 1, inferInstance, _, _, ⟨fun j => (hu j).unit⟩, fun i j => Units.ext ((SpecialFibreGenerator.secAlong θ f).compat i j), fun U _ g => by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem triv_of_sec (θ : L.Sec) (f : Y ⟶ X) (hf : ∀ y, f y ∈ secNz θ) : Triv L Y (fun _ _ g => g f) := by
   have hu : ∀ j, IsUnit ((SpecialFibreGenerator.secAlong θ f).f j) := fun j =>
@@ -75,7 +75,7 @@ end
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : RigLB G} {T : Over S}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨thK, inferInstance, _, _, LB.pullGen L.L (thφ G (x3 G)) thε c.t (lift x (lift x' y)).left, DVR.pullGen_isGen _ _ _ _ c.isGen _, fun _ _ h => prod_cub x x' y h⟩`.
+Supply the required witnesses or components.
 -/
 theorem triv_cub (c : CubicalStr G L) (x x' y : T ⟶ G) : Triv L.L T.left (fun _ _ h =>
     h (x * x' * y).left * (h (x * x').left)⁻¹ * (h (x * y).left)⁻¹ * (h (x' * y).left)⁻¹ * h x.left * h x'.left *
@@ -84,7 +84,7 @@ theorem triv_cub (c : CubicalStr G L) (x x' y : T ⟶ G) : Triv L.L T.left (fun 
     DVR.pullGen_isGen _ _ _ _ c.isGen _, fun _ _ h => prod_cub x x' y h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PUnit, inferInstance, _, _, LB.pullGen L.L (fun _ => eSec G) (fun _ => 1) L.rig T.hom, DVR.pullGen_isGen _ _ _ _ L.rigGen _, fun _ _ h => by rw [GlobalTheory.UU.one_left]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem triv_one (L : RigLB G) (T : Over S) : Triv L.L T.left (fun _ _ h => h (1 : T ⟶ G).left) :=
   ⟨PUnit, inferInstance, _, _, LB.pullGen L.L (fun _ => eSec G) (fun _ => 1) L.rig T.hom,
@@ -97,15 +97,15 @@ namespace GlobalTheory.Mum
 open CubeGen
 
 /- English proof (translation)
-Establish `s : ∀ f ∈ cubeTen x a b c, Triv P.L.L W (fun _ _ g => g (W.ι ≫ f.left))` using `fun f hf => triv_of_sec θ _ fun y => hW f hf y.2`. Establish `s₁` using `s (x * a) (by simp [cubeTen])`. Establish `s₂` using `s (x * a⁻¹) (by simp [cubeTen])`. Establish `s₃` using `s a (by simp [cubeTen])`. Establish `s₄` using `s a⁻¹ (by simp [cubeTen])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₅` using `s (x * b) (by simp [cubeTen])`. Establish `s₆` using `s (x * c) (by simp [cubeTen])`. Establish `s₇` using `s (x * (b * c)⁻¹) (by simp [cubeTen])`. Establish `s₈` using `s b (by simp [cubeTen])`. Establish `s₉` using `s c (by simp [cubeTen])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₀` using `s (b * c)⁻¹ (by simp [cubeTen])`. Establish `e` using `(triv_one P.L T).pull W.ι`. Establish `c₁` using `(triv_cub P.c x a a⁻¹).pull W.ι`. Establish `c₂` using `(triv_cub P.c x b c).pull W.ι`. Establish `c₃` using `(triv_cub P.c x (b * c) (b * c)⁻¹).pull W.ι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₂` using `((((c₁.mul s₁).mul s₂).mul s₃.inv).mul s₄.inv)`. Establish `t₃` using `(((((((c₂.mul c₃).mul s₅).mul s₆).mul s₇).mul s₈.inv).mul s₉.inv).mul s₀.inv)`. Use `((t₃.mul t₂.inv).mul e).exists_gen P.L.isLB _ fun U _ g => ?_` and prove the remaining obligations. Simplify using `only [mul_inv_cancel_right, mul_inv_cancel, _root_.mul_assoc x b c]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_gen_of_cubeTen (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : GlobalTheory.UU.CP G)
     (θ : P.L.L.Sec) (T : Over S) (x a b c : T ⟶ G) (W : T.left.Opens)

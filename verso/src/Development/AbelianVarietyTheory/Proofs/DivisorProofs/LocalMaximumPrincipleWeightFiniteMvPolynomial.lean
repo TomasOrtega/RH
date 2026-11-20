@@ -5,9 +5,9 @@ namespace GlobalTheory
 
 open Polynomial in
 /- English proof (translation)
-Establish `h` using `ht.norm_lt_cauchyBound hp.ne_zero`. Establish `hs : ((Finset.range p.natDegree).sup fun k => ‖p.coeff k‖₊) ≤ ∑ k ∈ Finset.range (p.natDegree + 1), ‖p.coeff k‖₊` using `Finset.sup_le fun k hk => Finset.single_le_sum (f := fun k => ‖p.coeff k‖₊) (fun _ _ => zero_le) (Finset.mem_range.2 (by have := Finset.mem_range.1 hk; omega))`. Establish `hb : p.cauchyBound ≤ 1 + ∑ k ∈ Finset.range (p.natDegree + 1), ‖p.coeff k‖₊`. Unfold `Polynomial.cauchyBound`. Rewrite using `[hp.leadingCoeff, nnnorm_one, div_one, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Establish `h2 : ‖t‖₊ ≤ 1 + ∑ k ∈ Finset.range (p.natDegree + 1), ‖p.coeff k‖₊` using `h.le.trans hb`. Establish `h3` using `NNReal.coe_le_coe.mpr h2`. Simplify `h3` using `[NNReal.coe_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma norm_le_one_add_sum_norm_coeff_of_isRoot_monic {p : Polynomial ℂ} (hp : p.Monic) {t : ℂ} (ht : p.IsRoot t) :
     ‖t‖ ≤ 1 + ∑ k ∈ Finset.range (p.natDegree + 1), ‖p.coeff k‖ := by
@@ -26,9 +26,7 @@ private lemma norm_le_one_add_sum_norm_coeff_of_isRoot_monic {p : Polynomial ℂ
 
 open Polynomial in
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_map]`. Use `MvPolynomial.ringHom_ext (f := x.comp (algebraMap (MvPolynomial (Fin d) ℚ) B)) (g := MvPolynomial.eval₂Hom (algebraMap ℚ ℂ) (fun i => x (algebraMap (MvPolynomial (Fin d) ℚ) B (MvPolynomial.X i)))) (fun r => by` as an intermediate fact. Establish `h` using `map_ratCast (x.comp ((algebraMap (MvPolynomial (Fin d) ℚ) B).comp MvPolynomial.C)) r`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C, eq_ratCast (algebraMap ℚ ℂ)]`. Conclude with `h) (fun i => by simp)`.
-
-Conclude with `congrArg (fun g => g a) this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma ringHom_algebraMap_eq_eval_map {d : ℕ} {B : Type} [CommRing B] [Algebra (MvPolynomial (Fin d) ℚ) B]
     (x : B →+* ℂ) (a : MvPolynomial (Fin d) ℚ) :
@@ -47,13 +45,11 @@ private lemma ringHom_algebraMap_eq_eval_map {d : ℕ} {B : Type} [CommRing B] [
 
 open Polynomial in
 /- English proof (translation)
-Take `⟨p, hpm, hp⟩` from `Algebra.IsIntegral.isIntegral (R := MvPolynomial (Fin d) ℚ) b`. Establish `hc : ∀ a : MvPolynomial (Fin d) ℚ, ∃ C : ℝ, ∀ z ∈ T, ‖MvPolynomial.eval z (MvPolynomial.map (algebraMap ℚ ℂ) a)‖ ≤ C`. Introduce `a`. Take `⟨C, hC⟩` from `(hT.image (MvPolynomial.continuous_eval (MvPolynomial.map (algebraMap ℚ ℂ) a))).isBounded.exists_norm_le`. Conclude with `⟨C, fun z hz => hC _ ⟨z, hz, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose C hC using hc`. Use `⟨1 + ∑ k ∈ Finset.range (p.natDegree + 1), C (p.coeff k), fun x hx => ?_⟩` and prove the remaining obligations. Use `set f := x.comp (algebraMap (MvPolynomial (Fin d) ℚ) B)`. Establish `hqm : (p.map f).Monic` using `hpm.map f`. Establish `hroot : (p.map f).IsRoot (x b)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.IsRoot, Polynomial.eval_map, ← Polynomial.hom_eval₂, hp, map_zero]`. Use `(norm_le_one_add_sum_norm_coeff_of_isRoot_monic hqm hroot).trans ?_` and prove the remaining obligations. Rewrite using `[hpm.natDegree_map]`. Use `gcongr with k hk`. Rewrite using `[Polynomial.coeff_map]`.
-
-Simplify using `only [f, RingHom.comp_apply]`. Rewrite using `[ringHom_algebraMap_eq_eval_map]`. Conclude with `hC _ _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_norm_le_of_isCompact_homs_over {d : ℕ} {B : Type} [CommRing B] [Algebra (MvPolynomial (Fin d) ℚ) B]
     [Module.Finite (MvPolynomial (Fin d) ℚ) B] {T : Set (Fin d → ℂ)} (hT : IsCompact T) (b : B) :
@@ -84,17 +80,15 @@ private lemma exists_norm_le_of_isCompact_homs_over {d : ℕ} {B : Type} [CommRi
 
 open Polynomial in
 /- English proof (translation)
-Use `choose M hM using fun b : B => exists_norm_le_of_isCompact_homs_over hT b`. Use `set S : Set (B → ℂ) := {g | g 1 = 1 ∧ (∀ a c, g (a + c) = g a + g c) ∧ (∀ a c, g (a * c) = g a * g c)} ∩ (fun g : B → ℂ => fun i => g (algebraMap (MvPolynomial (Fin d) ℚ) B (MvPolynomial.X i))) ⁻¹' T with hSdef`. Establish `hS : (fun x : B →+* ℂ => (x : B → ℂ)) '' {x : B →+* ℂ | (fun i => x (algebraMap (MvPolynomial (Fin d) ℚ) B (MvPolynomial.X i))) ∈ T} = S`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨map_one x, map_add x, map_mul x⟩, hx⟩`. Introduce and unpack `⟨⟨h1, hadd, hmul⟩, hT'⟩`. Set `x : B →+* ℂ` to `{ toFun := g, map_one' := h1, map_mul' := hmul, map_add' := hadd, map_zero' := by`. Use `hadd 0 0` as an intermediate fact.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [add_zero] at this`. Take the linear combination `-this }`. Conclude with `⟨x, hT', rfl⟩`. Rewrite using `[hS]`. Establish `hclosed : IsClosed S`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsClosed.inter ?_ (hT.isClosed.preimage (continuous_pi fun i => continuous_apply _))` and prove the remaining obligations. Use `IsClosed.inter (isClosed_eq (continuous_apply 1) continuous_const) (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Use `show IsClosed {g : B → ℂ | ∀ a c, g (a + c) = g a + g c}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun a : B => isClosed_iInter fun c : B => isClosed_eq (f := fun g : B → ℂ => g (a + c)) (g := fun g => g a + g c) (continuous_apply (a + c)) ((continuous_apply a).add (continuous_apply c))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `show IsClosed {g : B → ℂ | ∀ a c, g (a * c) = g a * g c}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun a : B => isClosed_iInter fun c : B => isClosed_eq (f := fun g : B → ℂ => g (a * c)) (g := fun g => g a * g c) (continuous_apply (a * c)) ((continuous_apply a).mul (continuous_apply c))`. Use `(isCompact_univ_pi fun b => isCompact_closedBall (0 : ℂ) (M b)).of_isClosed_subset hclosed ?_` and prove the remaining obligations. Rewrite using `[← hS]`.
-
-Introduce and unpack `_ ⟨x, hx, rfl⟩ b -`. Simplify using `using hM b x hx`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma isCompact_image_homs_over_isCompact {d : ℕ} {B : Type} [CommRing B]
     [Algebra (MvPolynomial (Fin d) ℚ) B] [Module.Finite (MvPolynomial (Fin d) ℚ) B]
@@ -139,19 +133,17 @@ private lemma isCompact_image_homs_over_isCompact {d : ℕ} {B : Type} [CommRing
 
 open Polynomial in
 /- English proof (translation)
-Take `⟨gens, hgens⟩` from `Module.Finite.fg_top (R := MvPolynomial (Fin d) ℚ) (M := B)`. Use `set φ : MvPolynomial (Fin d) ℚ →+* ℂ := MvPolynomial.eval₂Hom (algebraMap ℚ ℂ) z`. Establish `hcomp : ∀ x : B →+* ℂ, (fun i => x (algebraMap (MvPolynomial (Fin d) ℚ) B (MvPolynomial.X i))) = z → ∀ a, x (algebraMap (MvPolynomial (Fin d) ℚ) B a) = φ a`. Introduce `x hx a`. Rewrite using `[ringHom_algebraMap_eq_eval_map, hx, MvPolynomial.eval_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `choose p hpm hp using fun b : B => Algebra.IsIntegral.isIntegral (R := MvPolynomial (Fin d) ℚ) b`. Establish `hroot : ∀ x : B →+* ℂ, (fun i => x (algebraMap (MvPolynomial (Fin d) ℚ) B (MvPolynomial.X i))) = z → ∀ b, x b ∈ ((p b).map φ).roots.toFinset`. Introduce `x hx b`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots ((hpm b).map φ).ne_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : (p b).map φ = (p b).map (x.comp (algebraMap (MvPolynomial (Fin d) ℚ) B))`. Use `congr 1`. Use extensionality with `a`. Conclude with `(hcomp x hx (MvPolynomial.C a)).symm`. Conclude with `(hcomp x hx (MvPolynomial.X _)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1, Polynomial.IsRoot, Polynomial.eval_map, ← Polynomial.hom_eval₂, hp b, map_zero]`. Establish `hinj : Set.InjOn (fun x : B →+* ℂ => fun b : gens => x b) {x : B →+* ℂ | (fun i => x (algebraMap (MvPolynomial (Fin d) ℚ) B (MvPolynomial.X i))) = z}`. Introduce `x hx x' hx' hxx`. Establish `hspan : ∀ b ∈ Submodule.span (MvPolynomial (Fin d) ℚ) (gens : Set B), x b = x' b`. Introduce `b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem c hc => exact congrFun hxx ⟨c, hc⟩`. Consider the case `zero => simp`. Consider the case `add a c _ _ ha hc => simp [ha, hc]`. Consider the case `smul a c _ hc => rw [Algebra.smul_def, map_mul, map_mul, hc, hcomp x hx, hcomp x' hx']`.
+Treat this case separately. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use extensionality with `b`. Conclude with `hspan b (hgens ▸ Submodule.mem_top)`. Use `Set.Finite.of_finite_image ?_ hinj` and prove the remaining obligations. Use `(Set.Finite.pi (t := fun b : gens => (((p b).map φ).roots.toFinset : Set ℂ)) fun b => Finset.finite_toSet _).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ b -`.
-
-Conclude with `hroot x hx b`.
+A detailed English derivation is pending.
 -/
 private lemma finite_setOf_homs_over_point {d : ℕ} {B : Type} [CommRing B]
     [Algebra (MvPolynomial (Fin d) ℚ) B] [Module.Finite (MvPolynomial (Fin d) ℚ) B]
@@ -198,7 +190,7 @@ private lemma finite_setOf_homs_over_point {d : ℕ} {B : Type} [CommRing B]
 
 open Polynomial in
 /- English proof (translation)
-Establish `h` using `Ideal.comap_ne_bot_of_integral_mem (R := MvPolynomial (Fin d) ℚ) hs (Ideal.mem_span_singleton_self s) (Algebra.IsIntegral.isIntegral s)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Conclude with `⟨a, ha0, Ideal.mem_span_singleton.mp ha⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_ne_zero_dvd_algebraMap_of_ne_zero {d : ℕ} {B : Type} [CommRing B] [IsDomain B]
     [Algebra (MvPolynomial (Fin d) ℚ) B] [Module.Finite (MvPolynomial (Fin d) ℚ) B]
@@ -211,23 +203,21 @@ private lemma exists_ne_zero_dvd_algebraMap_of_ne_zero {d : ℕ} {B : Type} [Com
 
 open Polynomial in
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, MvPolynomial.eval u P ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hP (MvPolynomial.funext fun u => by simpa using h u)`. Use `set q : Polynomial ℂ := MvPolynomial.eval₂ Polynomial.C (fun i => Polynomial.C (z i) + Polynomial.X * Polynomial.C (u i - z i)) P with hq`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hqe : ∀ t : ℂ, q.eval t = MvPolynomial.eval (z + t • (u - z)) P`. Introduce `t`. Rewrite using `[hq, ← Polynomial.coe_evalRingHom, MvPolynomial.eval₂_comp_left]`. Rewrite using `[MvPolynomial.eval, MvPolynomial.coe_eval₂Hom]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `hq0 : q ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hu` to reduce the goal to its premises. Use `hqe 1` as an intermediate fact. Rewrite `this` using `[h0, Polynomial.eval_zero, one_smul]`. Simplify using `using this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set r₁ : ℝ := min 1 (ρ / (‖u - z‖ + 1))`. Establish `hr₁ : 0 < r₁` using `lt_min one_pos (div_pos hρ (by positivity))`. Take `⟨r, hr, hrS⟩` from `(Set.Ioo_infinite hr₁).exists_notMem_finset (q.roots.toFinset.image fun t => ‖t‖)`. Use `⟨r • (u - z), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_of_nonneg hr.1.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1 : r < ρ / (‖u - z‖ + 1)` using `hr.2.trans_le (min_le_right _ _)`. Rewrite `h1` using `[lt_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[norm_nonneg (u - z), hr.1]`. Establish `hcont : Continuous fun p : (Fin d → ℂ) × ℂ => MvPolynomial.eval (p.1 + p.2 • (r • (u - z))) P` using `(MvPolynomial.continuous_eval P).comp (continuous_fst.add (continuous_snd.smul continuous_const))`. Establish `hK : IsCompact (Metric.sphere (0 : ℂ) 1)` using `isCompact_sphere 0 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `hK.eventually_forall_of_forall_eventually (x₀ := z) (P := fun z' w => MvPolynomial.eval (z' + w • (r • (u - z))) P ≠ 0) ?_` as an intermediate fact. Use `filter_upwards [this] with z' hz' w hw`. Conclude with `hz' w (by simpa using hw)`. Introduce `w hw`. Use `hcont.continuousAt.eventually_ne ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[show w • r • (u - z) = (w * (r : ℂ)) • (u - z) by rw [mul_smul, Complex.coe_smul], ← hqe]`. Introduce `h0`. Apply `hrS` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨w * r, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hq0]`. Conclude with `h0`. Rewrite `hw` using `[mem_sphere_zero_iff_norm]`. Rewrite using `[norm_mul, hw, one_mul, Complex.norm_real, Real.norm_of_nonneg hr.1.le]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_small_direction_eval_circle_ne_zero {d : ℕ} {P : MvPolynomial (Fin d) ℂ} (hP : P ≠ 0)
     (z : Fin d → ℂ) {ρ : ℝ} (hρ : 0 < ρ) :
@@ -287,65 +277,53 @@ private lemma exists_small_direction_eval_circle_ne_zero {d : ℕ} {P : MvPolyno
 open Polynomial in
 
 /- English proof (translation)
-Introduce `d B _ _ _ _ hinj`. Use `letI : TopologicalSpace (B →+* ℂ) := TopologicalSpace.induced (fun x : B →+* ℂ => (x : B → ℂ)) inferInstance`. Introduce `ψ hψ s hs x₀ δ hδ`. Use `set π : (B →+* ℂ) → (Fin d → ℂ) := fun x i => x (algebraMap (MvPolynomial (Fin d) ℚ) B (MvPolynomial.X i)) with hπ`. Establish `hev : ∀ b : B, Continuous fun x : B →+* ℂ => x b` using `fun b => (continuous_apply b).comp continuous_induced_dom`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπc : Continuous π` using `continuous_pi fun i => hev _`. Establish `hind : Topology.IsInducing (fun x : B →+* ℂ => (x : B → ℂ))` using `Topology.IsInducing.induced _`. Establish `hcpt : ∀ T : Set (Fin d → ℂ), IsCompact T → IsCompact {x : B →+* ℂ | π x ∈ T}` using `fun T hT => hind.isCompact_iff.mpr (isCompact_image_homs_over_isCompact hT)`. Use `set z := π x₀`. Take `⟨k, e, he⟩` from `((finite_setOf_homs_over_point (B := B) z).diff (t := {x₀})).fin_embedding`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsep : ∀ j, ∃ b : B, e j b ≠ x₀ b`. Introduce `j`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hj : e j ∈ Set.range e` using `⟨j, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hj` using `[he]`. Conclude with `hj.2 (RingHom.ext h)`. Use `choose b hb using hsep`. Use `set t : Fin k → ℂ := fun j => e j (b j)`. Use `set K₀ := {x : B →+* ℂ | π x ∈ Metric.closedBall z 1}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK₀ : IsCompact K₀` using `hcpt _ (isCompact_closedBall z 1)`. Take `⟨C, hC⟩` from `hK₀.exists_bound_of_continuousOn hψ.continuousOn`. Use `set Φ : (B →+* ℂ) × (B →+* ℂ) → ℂ := fun p => ∏ j, (p.2 (b j) - t j) * (p.1 (b j) - t j)⁻¹`. Establish `hΦc : ∀ x, ContinuousAt Φ (x₀, x)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `tendsto_finset_prod _ fun j _ => ?_` and prove the remaining obligations. Use `(((hev (b j)).comp continuous_snd).sub continuous_const).continuousAt.mul ?_` and prove the remaining obligations. Use `((((hev (b j)).comp continuous_fst).sub continuous_const).continuousAt).inv₀ ?_` and prove the remaining obligations. Conclude with `sub_ne_zero.mpr (hb j).symm`. Establish `hΦ0 : Φ (x₀, x₀) = 1` using `Finset.prod_eq_one fun j _ => mul_inv_cancel₀ (sub_ne_zero.mpr (hb j).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hΦj : ∀ j, Φ (x₀, e j) = 0` using `fun j => Finset.prod_eq_zero (Finset.mem_univ j) (by simp [t])`. Establish `hnear : ∀ᶠ p in nhds (x₀, x₀), ‖Φ p‖ < Real.exp (δ / 3)`. Use `(hΦc x₀).norm.eventually (gt_mem_nhds ?_)` and prove the remaining obligations. Use `show ‖Φ (x₀, x₀)‖ < _`. Rewrite using `[hΦ0, norm_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Real.one_lt_exp_iff.mpr (by linarith)`. Establish `hfar : ∀ j, ∀ᶠ p in nhds (x₀, e j), ‖Φ p‖ < Real.exp (ψ x₀ - C)`. Introduce `j`. Use `(hΦc (e j)).norm.eventually (gt_mem_nhds ?_)` and prove the remaining obligations. Use `show ‖Φ (x₀, e j)‖ < _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Prove the first alternative.
 
-Rewrite using `[hΦj, norm_zero]`. Conclude with `Real.exp_pos _`. Rewrite `hnear` using `[nhds_prod_eq, Filter.eventually_prod_iff]`. Take `⟨pa, hpa, pb, hpb, hnear⟩` from `hnear`. Establish `hfar' : ∀ j, ∃ pa : (B →+* ℂ) → Prop, (∀ᶠ y in nhds x₀, pa y) ∧ ∃ pb : (B →+* ℂ) → Prop, (∀ᶠ x in nhds (e j), pb x) ∧ ∀ {y}, pa y → ∀ {x}, pb x → ‖Φ (y, x)‖ < Real.exp (ψ x₀ - C)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Establish `h` using `hfar j`. Rewrite `h` using `[nhds_prod_eq, Filter.eventually_prod_iff]`. Conclude with `h`. Use `choose qa hqa qb hqb hfar using hfar'`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `set Q : (B →+* ℂ) → Prop := fun x => (pb x ∧ ψ x < ψ x₀ + δ / 3) ∨ ∃ j, qb j x`. Establish `hQ : ∀ x, π x = z → {x | Q x} ∈ nhds x`. Introduce `x hx`. Distinguish the cases in `h : x = x₀`. Rewrite using `[h] filter_upwards [hpb, hψ.continuousAt.eventually (gt_mem_nhds (by linarith : ψ x₀ < ψ x₀ + δ / 3))] with y h1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inl ⟨h1, h2⟩`. Establish `hxr : x ∈ Set.range e` using `by rw [he]; exact ⟨hx, h⟩`. Take `⟨j, rfl⟩` from `hxr`. Use `filter_upwards [hqb j] with y hy`. Conclude with `Or.inr ⟨j, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hKc : IsCompact (π '' (K₀ \ interior {x | Q x}))` using `(hK₀.diff isOpen_interior).image hπc`. Establish `hzK : z ∉ π '' (K₀ \ interior {x | Q x})`. Introduce and unpack `⟨x, hx, hxz⟩`. Conclude with `hx.2 (mem_interior_iff_mem_nhds.mpr (hQ x hxz))`. Take `⟨ρ, hρ, hρz⟩` from `Metric.isOpen_iff.mp hKc.isClosed.isOpen_compl z hzK`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hcover : ∀ x, dist (π x) z < min ρ 1 → Q x`. Introduce `x hx`. Assume the negation of the conclusion as `hq`. Establish `hxK : x ∈ K₀ \ interior {x | Q x}` using `⟨Metric.mem_closedBall.mpr (hx.le.trans (min_le_right _ _)), fun hi => hq (show x ∈ {x | Q x} from interior_subset hi)⟩`. Conclude with `hρz (Metric.mem_ball.mpr (hx.trans_le (min_le_left _ _))) ⟨x, hxK, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨a, ha0, hadvd⟩` from `exists_ne_zero_dvd_algebraMap_of_ne_zero (d := d) (B := B) hs`. Use `set P := MvPolynomial.map (algebraMap ℚ ℂ) a`. Establish `hP : P ≠ 0` using `fun h => ha0 (MvPolynomial.map_injective _ (algebraMap ℚ ℂ).injective (by rw [map_zero]; exact h))`. Take `⟨v, hv, hvz⟩` from `exists_small_direction_eval_circle_ne_zero hP z (ρ := min ρ 1 / 2) (by positivity)`. Take `⟨ε, hε, hεz⟩` from `Metric.eventually_nhds_iff.mp hvz`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set r := min (ε / 2) (min ρ 1 / 4)`. Establish `hr : 0 < r` using `lt_min (by positivity) (by positivity)`. Use `set T := (fun p : (Fin d → ℂ) × ℂ => p.1 + p.2 • v) '' (Metric.closedBall z r ×ˢ Metric.sphere 0 1)`. Establish `hT : IsCompact T` using `((isCompact_closedBall z r).prod (isCompact_sphere 0 1)).image (continuous_fst.add (continuous_snd.smul continuous_const))`. Establish `hKQ : ∀ x, π x ∈ T → Q x ∧ x ∈ K₀`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Introduce and unpack `x ⟨⟨z', w⟩, ⟨hz', hw⟩, hxe⟩`. Establish `hd : dist (π x) z < min ρ 1`. Rewrite using `[← hxe, dist_eq_norm]`. Simplify using `only at hz' hw ⊢`. Rewrite `hz'` using `[Metric.mem_closedBall, dist_eq_norm]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hw` using `[mem_sphere_zero_iff_norm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw, one_mul]`. Establish `: r ≤ min ρ 1 / 4` using `min_le_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `⟨hcover x hd, Metric.mem_closedBall.mpr (hd.le.trans (min_le_right _ _))⟩`. Establish `hKs : ∀ x : B →+* ℂ, π x ∈ T → x s ≠ 0`. Introduce and unpack `x ⟨⟨z', w⟩, ⟨hz', hw⟩, hxe⟩ hxs`. Establish `h1` using `hεz (lt_of_le_of_lt (Metric.mem_closedBall.mp hz') ((min_le_left _ _).trans_lt (by linarith))) w (by simpa using hw)`. Apply `h1` to reduce the goal to its premises.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hadvd`. Establish `h2` using `ringHom_algebraMap_eq_eval_map x a`. Rewrite `h2` using `[hc, map_mul, hxs, zero_mul]`. Simplify using `only at hxe`. Rewrite using `[hxe]`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h2.symm`. Use `⟨{y | dist (π y) z < r ∧ pa y ∧ (∀ j, qa j y) ∧ (∀ j, y (b j) ≠ t j) ∧ ψ x₀ - δ / 3 < ψ y}, {x | π x ∈ T}, ?_, hcpt T hT, fun x hx => hKs x hx, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hπc.continuousAt.eventually (Metric.ball_mem_nhds z hr), hpa, Filter.eventually_all.2 hqa, Filter.eventually_all.2 fun j => (hev (b j)).continuousAt.eventually_ne (hb j).symm, hψ.continuousAt.eventually (lt_mem_nhds (by linarith : ψ x₀ - δ / 3 < ψ x₀))] with y h1 …`. Conclude with `⟨h1, h2, h3, h4, h5⟩`. Introduce and unpack `N f R hK y ⟨hy1, hy2, hy3, hy4, hy5⟩ set c : Fin (k + k) → ℂ := Fin.append t (fun j => (y (b j) - t j)⁻¹) set G : MvPolynomial (Fin (k + k)) B := MvPolynomial.C f * (∏ j, (MvPolynomial.C (b j) - MvPolynomial.X (Fin.castAdd k j)) * MvPolynomial.X (Fin.natAdd k j)) ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : ∀ x : B →+* ℂ, MvPolynomial.eval₂ x c G = x f * Φ (y, x) ^ N`. Introduce `x`. Simplify using `only [G, c, Φ, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_C, MvPolynomial.eval₂_pow, MvPolynomial.eval₂_prod, MvPolynomial.eval₂_sub, MvPolynomial.eval₂_X, Fin.append_left, Fin.append_right]`. Use `set R' := R * Real.exp (N * (ψ x₀ + 2 * δ / 3))`. Establish `key` using `_root_.GlobalTheory.maxPrinciple_line_eval₂ d B hinj (k + k) G c (π y) v R' ?_ y (fun i => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `key` using `[hG]`. Establish `hΦy : Φ (y, y) = 1` using `Finset.prod_eq_one fun j _ => mul_inv_cancel₀ (sub_ne_zero.mpr (hy4 j))`. Rewrite `key` using `[hΦy, one_pow, mul_one]`. Establish `hR : 0 ≤ R`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `push_neg at h`. Use `mul_neg_of_neg_of_pos h (Real.exp_pos (N * (ψ x₀ + 2 * δ / 3)))` as an intermediate fact. Combine the linear relations using `[norm_nonneg (y f)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.exp_add]`.
-
-Use `_ ≤ R * Real.exp (δ * N) := by gcongr`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = Real.exp (δ * N) * R := mul_comm _ _`. Introduce `x w hw hx`.
-
-Establish `hxT : π x ∈ T` using `⟨(π y, w), ⟨Metric.mem_closedBall.mpr hy1.le, by simpa using hw⟩, by funext i; exact (hx i).symm⟩`. Take `⟨hQx, hxK₀⟩` from `hKQ x hxT`. Establish `hf` using `hK x hxT`. Establish `hR : 0 ≤ R` using `le_trans (by positivity) hf`. Establish `hxf : ‖x f‖ ≤ R * Real.exp (N * ψ x)`.
-
-Establish `h1 : ‖x f‖ = ‖x f‖ * Real.exp (-(N * ψ x)) * Real.exp (N * ψ x)`. Rewrite using `[mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`. Rewrite using `[h1]`. Conclude with `mul_le_mul_of_nonneg_right hf (Real.exp_pos _).le`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`.
-
-Rewrite using `[hG, norm_mul, norm_pow]`. Break down `hQx with ⟨h1, h2⟩ | ⟨j, hj⟩` into its components or cases. Establish `hΦ` using `hnear hy2 h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul, mul_assoc, ← Real.exp_add]`.
-
-Use `_ ≤ R' := by show _ ≤ R * Real.exp (N * (ψ x₀ + 2 * δ / 3)) gcongr`. Use the polynomial consequences of the given equalities and inequalities. Establish `hΦ` using `hfar j (hy3 j) hj`. Establish `hψC : ψ x ≤ C` using `le_trans (le_abs_self _) (by simpa [Real.norm_eq_abs] using hC x hxK₀)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← Real.exp_nat_mul, mul_assoc, ← Real.exp_add]`. Use `_ ≤ R' := by show _ ≤ R * Real.exp (N * (ψ x₀ + 2 * δ / 3)) gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.local_maximum_principle_weight_finite_mvPolynomial_algebra :
     ∀ (d : ℕ) (B : Type) [CommRing B] [IsDomain B] [Algebra (MvPolynomial (Fin d) ℚ) B] [Module.Finite (MvPolynomial (Fin d) ℚ) B], Function.Injective (algebraMap (MvPolynomial (Fin d) ℚ) B) → (letI : TopologicalSpace (B →+* ℂ) := TopologicalSpace.induced (fun x : B →+* ℂ => (x : B → ℂ)) inferInstance; ∀ (ψ : (B →+* ℂ) → ℝ), Continuous ψ → ∀ s : B, s ≠ 0 → ∀ (x₀ : B →+* ℂ) (δ : ℝ), 0 < δ → ∃ (W K : Set (B →+* ℂ)), W ∈ nhds x₀ ∧ IsCompact K ∧ (∀ x ∈ K, x s ≠ 0) ∧ ∀ (N : ℕ) (f : B) (R : ℝ), (∀ x ∈ K, ‖x f‖ * Real.exp (-(N * ψ x)) ≤ R) → ∀ y ∈ W, ‖y f‖ * Real.exp (-(N * ψ y)) ≤ Real.exp (δ * N) * R) := by

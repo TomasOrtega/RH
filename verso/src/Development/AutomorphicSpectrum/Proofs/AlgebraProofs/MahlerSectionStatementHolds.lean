@@ -15,11 +15,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Short
 open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial
 
 /- English proof (translation)
-Take `⟨c, hc, g, hg, hf⟩` from `hd.chow`. Establish `hf0 : C c * ∏ W ∈ Z.support, g W ^ Z W ≠ 0` using `mul_ne_zero (C_ne_zero.mpr hc) (Finset.prod_ne_zero_iff.mpr fun W hW => pow_ne_zero _ (hg W hW).1)`. Establish `hhom : IsMultiHomog δ (C c * ∏ W ∈ Z.support, g W ^ Z W)` using `hf ▸ hd.homog`. Take `⟨d, hdW, -⟩` from `exists_degrees_of_chowFormCycle (Nat.succ_pos e) Z c g hg hhom hf0`. Use `⟨c, g, d, fun W hW => ⟨hg W hW, hdW W hW⟩, fun u hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspec : specFirst f u = C c * ∏ W ∈ Z.support, specFirst (g W) u ^ Z W`. Rewrite using `[hf]`. Simplify using `only [specFirst, map_mul, map_prod, map_pow, bind₁_C_right]`. Establish `hq : ∀ W ∈ Z.support, specFirst (g W) u ≠ 0 ∧ IsMultiHomog (d W) (specFirst (g W) u)` using `fun W hW => ⟨SpecFirstNe.full ℂ n e W (g W) u (hd.prime W hW) (hg W hW) (hu W hW), SpecFirstHomog.proof n e (d W) (g W) u (hdW W hW)⟩`. Rewrite using `[mahlerDefect, hspec, GlobalTheory.T.mahler_measure_of_product n e h Z.support (fun W => specFirst (g W) u) d (fun W => Z W) c hc hq, cycleIntegral]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mahlerDefect_eq_sum {n e δ : ℕ} (h : HermNorm n) {Z : ProjCycle ℂ n}
     {f : MvPolynomial (Fin (e + 1) × Fin n) ℂ} (hd : IsChowCycleData Z e δ f) :
@@ -48,9 +48,9 @@ theorem mahlerDefect_eq_sum {n e δ : ℕ} (h : HermNorm n) {Z : ProjCycle ℂ n
   ring
 
 /- English proof (translation)
-Introduce `n δ h Z f u u' hd hu hu'`. Take `⟨c, g, d, hg, hsum⟩` from `mahlerDefect_eq_sum h hd`. Establish `hW : ∀ W ∈ Z.support, (Z W : ℝ) * (mahler h e (specFirst (g W) u) - coneIntegral h W e (fsLog h u)) = (Z W : ℝ) * (mahler h e (specFirst (g W) u') - coneIntegral h W e (fsLog h u'))` using `fun W hW => by`. Use `GlobalTheory.T.mahler_minus_cone_integral_indep n e (d W) h W (g W) u u' (hd.prime W hW) (hg W hW).1 (hg W hW).2 (hu W hW) (hu' W hW)` as an intermediate fact. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum u hu, hsum u' hu', Finset.sum_congr rfl hW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem defectConstDim (e : ℕ) : DefectConstDim e := by
   intro n δ h Z f u u' hd hu hu'
@@ -63,7 +63,7 @@ theorem defectConstDim (e : ℕ) : DefectConstDim e := by
   rw [hsum u hu, hsum u' hu', Finset.sum_congr rfl hW]
 
 /- English proof (translation)
-Introduce `n e δ h Z f u hp hc hm ha`. Conclude with `GroundTheory.Heights₂.Heights.AutoClose.MahlerSectionOfConst e (defectConstDim e) n δ h Z f u ⟨hp, hc, hm⟩ ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mahlerSection : GroundTheory.Heights₂.Heights.MahlerSection.Statement := by
   intro n e δ h Z f u hp hc hm ha

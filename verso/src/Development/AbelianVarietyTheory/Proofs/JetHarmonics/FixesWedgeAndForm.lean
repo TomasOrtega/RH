@@ -13,9 +13,9 @@ namespace GlobalTheory.FlagFix
 open Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Establish `dU : U.det = 1`. Establish `ht : U.IsUpperTriangular` using `fun i j hij => hU0 i j hij`. Rewrite using `[det_of_isUpperTriangular ht]`. Conclude with `Finset.prod_eq_one (fun i _ => hU1 i)`. Use function extensionality and compare the values at `I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e : (Matrix.of fun a b : Fin l => f' b (I.1.orderEmbOfFin I.2 a)) = (Matrix.of fun a b : Fin l => f b (I.1.orderEmbOfFin I.2 a)) * U`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, h]`. Simplify using `only [wedge]`. Rewrite using `[e, det_mul, dU, mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedge_eq_of_mul {n l : ℕ} (f f' : Fin l → Fin n → ℂ) (U : Matrix (Fin l) (Fin l) ℂ)
     (hU0 : ∀ c a, a < c → U c a = 0) (hU1 : ∀ c, U c c = 1)
@@ -33,7 +33,7 @@ theorem wedge_eq_of_mul {n l : ℕ} (f f' : Fin l → Fin n → ℂ) (U : Matrix
   rw [e, det_mul, dU, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [flat, herm]`. Rewrite using `[dotProduct_mulVec, dotProduct_single, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_eq (k r : ℕ) (f : Fin (2 * r + k + 1) → ℂ) : flat k r f = star f ᵥ* Hpk k r := by
   funext c
@@ -41,7 +41,7 @@ theorem flat_eq (k r : ℕ) (f : Fin (2 * r + k + 1) → ℂ) : flat k r f = sta
   rw [dotProduct_mulVec, dotProduct_single, mul_one]
 
 /- English proof (translation)
-Establish `h2 : Hpk k r * Hpk k r = 1` using `(hermitian_pos_facts_hold k r).2.1`. Establish `hl : (Hpk k r * sᴴ * Hpk k r) * s = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc sᴴ, hs, h2]`. Rewrite using `[flat_eq, dualM, mulVec_transpose, Matrix.inv_eq_left_inv hl, vecMul_vecMul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul, ← vecMul_vecMul, ← star_mulVec, hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_fix (k r : ℕ) (f : Fin (2 * r + k + 1) → ℂ)
     (s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hs : sᴴ * Hpk k r * s = Hpk k r)
@@ -53,11 +53,11 @@ theorem dual_fix (k r : ℕ) (f : Fin (2 * r + k + 1) → ℂ)
     ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul, ← vecMul_vecMul, ← star_mulVec, hf]
 
 /- English proof (translation)
-Introduce `k r z hz s hs`. Take `⟨U, hU0, hU1, hF⟩` from `S_F hz hs`. Establish `key : ∀ i a, (s *ᵥ fvec k r z a) i = ∑ c, fvec k r z c i * U c a`. Introduce `i a`. Use `congrFun (congrFun hF i) a` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_apply, Fm, mulVec, dotProduct]`. Use `⟨?_, dual_fix k r _ s (Sset_UH hs) ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.compoundMatrix_cauchyBinet_properties _ (r + 1) s s).2.2.2]`. Conclude with `wedge_eq_of_mul _ _ U hU0 hU1 key`. Use function extensionality and compare the values at `i`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, Finset.sum_eq_single 0, hU1, mul_one]`. Introduce `c _ hc`. Rewrite using `[hU0 c 0 (Fin.pos_of_ne_zero hc), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixes_wedge_and_form : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), Formalism.QuantumDeterminants.inWb k r z →
     ∀ s ∈ Formalism.QuantumDeterminants.Sset k r z,

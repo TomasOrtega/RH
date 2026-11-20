@@ -25,11 +25,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Keep
 
 /- English proof (translation)
-Take `⟨a, ha, ε, H⟩` from `hrc`. Establish `hu : (rc (algNorm σ)).unr`. Take `⟨k, b, e⟩` from `WD.exists_rep (rc (algNorm σ))`. Rewrite `h0`, `hI`, the goal using `[← e]`. Rewrite using `[WD.unr_mk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(WD.monodromyZero_ofWeilDeligneRepClass_iff b).1 h0, fun s => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.aeval_self_charpoly (b.ρ (ineIncl h s))`. Establish `h2` using `hI s`. Rewrite `h2` using `[WD.charPol_mk]`. Rewrite `h1` using `[h2, map_pow, map_sub, aeval_X, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : Module.End.IsSemisimple (b.ρ (ineIncl h s) - algebraMap ℂ (Module.End ℂ (Fin k → ℂ)) 1)` using `Module.End.isSemisimple_sub_algebraMap_iff.2 (b.semisimple _)`. Rewrite `hs` using `[map_one]`. Conclude with `sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h1⟩ hs)`. Take `⟨v, hv0, hv⟩` from `UpperTheory.hasFixed_of_algNorm_fixed_ne_bot F w n σ _ le_rfl ((H.sph _).2 hu)`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, fun g => by simpa using hv g.1 g.2, hv0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sphV {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {n : ℕ}
     {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} {h : IsPlaceOver A w}
@@ -60,20 +60,20 @@ def OddA (l : ℕ) [Fact l.Prime] (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop :
   ∀ w : HeightOneSpectrum (𝓞 F), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → Unl1 r w ∨ PotUnl r w
 
 /- English proof (translation)
-The claim follows from `@OddA`.
+A detailed English derivation is pending.
 -/
 example : type_of% @OddU := @OddA
 
 variable [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {r : G F Ω →* GL (Fin n) (Qbar l)}
 
 /- English proof (translation)
-Introduce `w hw` and use `(h w hw).imp (((flagLaws F Ω l n r).2.1 μ).2.2 w).1.1 (((flagLaws F Ω l n r).2.1 μ).2.2 w).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem oddTw' (μ : G F Ω →* (Qbar l)ˣ) (h : OddA l r) : OddA l (tw r μ) := fun w hw =>
   (h w hw).imp (((flagLaws F Ω l n r).2.1 μ).2.2 w).1.1 (((flagLaws F Ω l n r).2.1 μ).2.2 w).2.1
 
 /- English proof (translation)
-Introduce `w hw` and use `by obtain ⟨A, hA, κ, ⟨χ, -, h2, -⟩, hu⟩ := h w hw exact Or.inl (A4.unlOfOne F Ω l n r w A hA κ h2 hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem oddA_of_unl {M : ℕ} {m : Fin n → ℤ} (h : Th.Unl l M m r) : OddA l r := fun w hw => by
   obtain ⟨A, hA, κ, ⟨χ, -, h2, -⟩, hu⟩ := h w hw

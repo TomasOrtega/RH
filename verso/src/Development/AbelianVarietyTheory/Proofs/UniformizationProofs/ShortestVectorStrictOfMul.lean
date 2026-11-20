@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ Q B hadd hdiag hpos n r _ hr z hmin m hm`. Establish `hnr : (n * r) • m = r • (n • m)` using `by rw [mul_comm, mul_smul]`. Rewrite `hm`, the goal using `[hnr]`. Establish `h1` using `hmin m`. Generalize the expression as in `n • m = a at hm h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (smul_zero _)`. Establish `hQa` using `hpos a ha`. Establish `h2 : 2 * Q (r • a) = (r : ℤ) * ((r : ℤ) * (2 * Q a))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiag, hdiag]`. Simplify using `only [map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul]`. Establish `h3 : B z (r • a) = (r : ℤ) * B z a`. Simplify using `only [map_nsmul, nsmul_eq_mul]`. Rewrite `h1`, the goal using `[hadd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Establish `hr' : (2 : ℤ) ≤ r` using `by exact_mod_cast hr`. Establish `h4 : 0 ≤ (r : ℤ) * (Q a + B z a)` using `mul_nonneg (by omega) (by omega)`. Establish `h5 : 0 < ((r : ℤ) * (r - 1)) * Q a` using `mul_pos (mul_pos (by omega) (by omega)) (by omega)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem shortest_vector_strict_of_mul :
     ∀ (X : Type) [AddCommGroup X] (Q : X → ℤ) (B : X →+ X →+ ℤ), (∀ a b, Q (a + b) = Q a + Q b + B a b) → (∀ a, 2 * Q a = B a a) → (∀ a, a ≠ 0 → 1 ≤ Q a) → ∀ (n r : ℕ), 1 ≤ n → 2 ≤ r → ∀ z : X, (∀ m, Q z ≤ Q (z + n • m)) → ∀ m : X, (n * r) • m ≠ 0 → Q z < Q (z + (n * r) • m) := by

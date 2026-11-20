@@ -14,15 +14,13 @@ variable {n : ℕ}
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Establish `hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) (NormedSpace.exp ((t : ℂ) • X) * X) t`. Introduce `t`. Establish `e : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) = fun u : ℝ => NormedSpace.exp (u • X)`. Use function extensionality and compare the values at `t`. Rewrite using `[Complex.coe_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Complex.coe_smul]`. Conclude with `hasDerivAt_exp_smul_const (𝕂 := ℝ) X t`. Use `set f := fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) with hf`. Establish `hdiff : Differentiable ℝ f` using `fun t => (hd t).differentiableAt`. Establish `hder : deriv f = fun t => f t * X` using `funext fun t => (hd t).deriv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcd : ∀ m : ℕ, ContDiff ℝ m f`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact (contDiff_zero.2 hdiff.continuous).of_le (by simp)`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ContDiff ℝ m (deriv f)` using `by rw [hder]; exact ih.mul contDiff_const`. Establish `h1 : ContDiff ℝ ((m : WithTop ℕ∞) + 1) f` using `by first`. Consider the case `exact contDiff_succ_iff_deriv.2 ⟨hdiff, by simp, h'⟩`. Consider the case `exact contDiff_succ_iff_deriv.2 ⟨hdiff, h'⟩`. Conclude with `h1.of_le (by norm_num)`.
-
-Establish `hcf : ContDiff ℝ ∞ f` using `contDiff_infty.2 hcd`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun M => M i j, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff.comp hcf`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exp_entry_contDiff (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     ContDiff ℝ ∞ (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)) i j) := by
@@ -53,7 +51,7 @@ theorem exp_entry_contDiff (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   exact (LinearMap.toContinuousLinearMap L).contDiff.comp hcf
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Conclude with `exp_entry_contDiff X i j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exp_contDiff (X : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := by

@@ -17,19 +17,19 @@ open Classical in
 def lift (s : S) : R := if s = 0 then 0 else if s = 1 then 1 else Function.surjInv hπ s
 
 /- English proof (translation)
-Simplify using `[lift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_zero : lift π hπ 0 = 0 := by
   simp [lift]
 
 /- English proof (translation)
-Simplify using `[lift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_one [Nontrivial S] : lift π hπ 1 = 1 := by
   simp [lift]
 
 /- English proof (translation)
-Unfold `lift`. Use `split_ifs with h0 h1`. Rewrite using `[h0, map_zero]`. Rewrite using `[h1, map_one]`. Conclude with `Function.surjInv_eq hπ s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem π_lift (s : S) : π (lift π hπ s) = s := by
   unfold lift
@@ -39,7 +39,7 @@ theorem π_lift (s : S) : π (lift π hπ s) = s := by
   · exact Function.surjInv_eq hπ s
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, π_lift]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_lift {m n : Type} (x : Matrix m n S) : (x.map (lift π hπ)).map π = x := by
   ext i j
@@ -52,7 +52,7 @@ section Par
 variable {A B : Type} [CommRing A] [CommRing B] {r k : ℕ}
 
 /- English proof (translation)
-Take `⟨hu, hd⟩` from `hh`. Use `⟨?_, fun a => by simp [Matrix.map_apply, hd a, h1]⟩` and prove the remaining obligations. Introduce `i j hij`. Simplify using `[Matrix.map_apply, hu hij, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isUpUni_map (f : A → B) (h0 : f 0 = 0) (h1 : f 1 = 1) {n : ℕ} {h : Matrix (Fin n) (Fin n) A}
     (hh : IsUpUni h) : IsUpUni (h.map f) := by
@@ -62,16 +62,16 @@ theorem isUpUni_map (f : A → B) (h0 : f 0 = 0) (h1 : f 1 = 1) {n : ℕ} {h : M
   simp [Matrix.map_apply, hu hij, h0]
 
 /- English proof (translation)
-Simplify using `only [midEmb, Matrix.fromBlocks_map, Matrix.map_zero f h0, Matrix.map_one f h0 h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem midEmb_map (f : A → B) (h0 : f 0 = 0) (h1 : f 1 = 1) (h : Matrix (Fin k) (Fin k) A) :
     (midEmb h).map f = midEmb (h.map f) := by
   simp only [midEmb, Matrix.fromBlocks_map, Matrix.map_zero f h0, Matrix.map_one f h0 h1]
 
 /- English proof (translation)
-Take `⟨h11, h33, h21, h31, h32, h, hP, h22⟩` from `hx`. Use `⟨isUpUni_map f h0 h1 h11, isUpUni_map f h0 h1 h33, ?_, ?_, ?_, h.map f, hPP h hP, ?_⟩` and prove the remaining obligations. Use `show (b21 x).map f = 0`. Rewrite using `[h21, Matrix.map_zero f h0]`. Use `show (b31 x).map f = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h31, Matrix.map_zero f h0]`. Use `show (b32 x).map f = 0`. Rewrite using `[h32, Matrix.map_zero f h0]`. Use `show (b22 x).map f = midEmb (h.map f)`. Rewrite using `[h22, midEmb_map f h0 h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_map (f : A → B) (h0 : f 0 = 0) (h1 : f 1 = 1) {P : Matrix (Fin k) (Fin k) A → Prop}
     {P' : Matrix (Fin k) (Fin k) B → Prop} (hPP : ∀ h, P h → P' (h.map f))
@@ -90,11 +90,11 @@ theorem par_map (f : A → B) (h0 : f 0 = 0) (h1 : f 1 = 1) {P : Matrix (Fin k) 
 variable [Nontrivial B] (π : A →+* B) (hπ : Function.Surjective π)
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `Par P' ((glRed π x : GL (Idx r k) B) : Matrix (Idx r k) (Idx r k) B)`. Rewrite using `[glRed_coe]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `par_map π (map_zero π) (map_one π) hPP hx`. Introduce `hy`. Establish `hy' : Par P' (y : Matrix (Idx r k) (Idx r k) B)` using `hy`. Establish `hx : Par P ((y : Matrix (Idx r k) (Idx r k) B).map (lift π hπ))` using `par_map _ (lift_zero π hπ) (lift_one π hπ) hlift hy'`. Use `⟨Matrix.GeneralLinearGroup.mk'' _ (par_det hP hx), hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[glRed_coe]`. Conclude with `map_lift π hπ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parG_map_glRed {P : Matrix (Fin k) (Fin k) A → Prop} {P' : Matrix (Fin k) (Fin k) B → Prop}
     (hP : GP P) (hP' : GP P') (hPP : ∀ h, P h → P' (h.map π))
@@ -118,7 +118,7 @@ theorem parG_map_glRed {P : Matrix (Fin k) (Fin k) A → Prop} {P' : Matrix (Fin
 include hπ in
 
 /- English proof (translation)
-The claim follows from `parG_map_glRed π hπ _ _ (fun _ hh => isUpUni_map π (map_zero π) (map_one π) hh) (fun _ hh => isUpUni_map _ (lift_zero π hπ) (lift_one π hπ) hh)`.
+A detailed English derivation is pending.
 -/
 theorem nuG_map_glRed : (nuG A r k).map (glRed π) = nuG B r k :=
   parG_map_glRed π hπ _ _ (fun _ hh => isUpUni_map π (map_zero π) (map_one π) hh)
@@ -127,9 +127,7 @@ theorem nuG_map_glRed : (nuG A r k).map (glRed π) = nuG B r k :=
 end Par
 
 /- English proof (translation)
-Use `parG_map_glRed π hπ _ _ (fun h hh => ?_) (fun h hh => ?_)` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hh.map π`. Use `isUnit_of_map π hπ _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, map_lift π hπ]`.
-
-Conclude with `hh`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sG_map_glRed {A B : Type} [CommRing A] [IsLocalRing A] [Field B] {r k : ℕ} (π : A →+* B)
     (hπ : Function.Surjective π) : (sG A r k).map (glRed π) = sG B r k := by
@@ -142,7 +140,7 @@ theorem sG_map_glRed {A B : Type} [CommRing A] [IsLocalRing A] [Field B] {r k : 
 section Grp
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_map, Subgroup.map_map]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[MulAut.conj_apply, map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj {G Q : Type} [Group G] [Group Q] (f : G →* Q) (H : Subgroup G) (c : G) :
     (H.map (MulAut.conj c).toMonoidHom).map f = (H.map f).map (MulAut.conj (f c)).toMonoidHom := by
@@ -154,13 +152,13 @@ theorem map_conj {G Q : Type} [Group G] [Group Q] (f : G →* Q) (H : Subgroup G
 variable {K Q : Type} [Group K] [Group Q] (ρ : K →* Q) (S' : Subgroup K)
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_sup, (Subgroup.map_eq_bot_iff ρ.ker).2 le_rfl, sup_bot_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sup_ker : (S' ⊔ ρ.ker).map ρ = S'.map ρ := by
   rw [Subgroup.map_sup, (Subgroup.map_eq_bot_iff ρ.ker).2 le_rfl, sup_bot_eq]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Subgroup.mem_sup_of_normal_right`. Consider the case `exact Subgroup.mem_sup_of_normal_right (s := S') (t := ρ.ker)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_sup_ker {x : K} : x ∈ S' ⊔ ρ.ker ↔ ∃ s ∈ S', ∃ κ ∈ ρ.ker, s * κ = x := by
   first
@@ -168,11 +166,11 @@ theorem mem_sup_ker {x : K} : x ∈ S' ⊔ ρ.ker ↔ ∃ s ∈ S', ∃ κ ∈ �
     | exact Subgroup.mem_sup_of_normal_right (s := S') (t := ρ.ker)
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨c⁻¹ * ψ x * c, (h x).1 hx, by group⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h', hh', rfl⟩`. Take `⟨x, hx⟩` from `hψ (c * h' * c⁻¹)`. Use `⟨x, (h x).2 ?_, hx⟩` and prove the remaining obligations. Establish `e : c⁻¹ * (c * h' * c⁻¹) * c = h'` using `by group`. Rewrite using `[hx, e]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hh'`.
+A detailed English derivation is pending.
 -/
 theorem map_eq_conj (ψ : K →* Q) (hψ : Function.Surjective ψ) (S' : Subgroup K) (H : Subgroup Q) (c : Q)
     (h : ∀ x, x ∈ S' ↔ c⁻¹ * ψ x * c ∈ H) : S'.map ψ = H.map (MulAut.conj c).toMonoidHom := by

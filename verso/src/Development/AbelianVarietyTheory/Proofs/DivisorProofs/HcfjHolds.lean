@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HilbertClassFieldJ
 namespace GlobalTheory.Laid
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Hypotheses₂.hilbertClassFieldJ`.
+A detailed English derivation is pending.
 -/
 theorem hcfj_holds : GlobalTheory.Published.HilbertClassFieldJ := GlobalTheory.CompanionTheory.Hypotheses₂.hilbertClassFieldJ
 

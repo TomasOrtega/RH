@@ -23,9 +23,9 @@ end GlobalTheory.CapelliLowest
 namespace GlobalTheory.CapelliLowest
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[Matrix.single_mul_single_same]`. Substitute `h1` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne (h := h2), h2]`. Substitute `h2` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne (h := h1), h1]`. Simplify using `[Matrix.single_mul_single_of_ne (h := h1), Matrix.single_mul_single_of_ne (h := h2), h1, h2]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_comm {N : ℕ} (a b c d : Fin N) :
     Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 =
@@ -37,13 +37,13 @@ theorem single_comm {N : ℕ} (a b c d : Fin N) :
   · simp [Matrix.single_mul_single_of_ne (h := h1), Matrix.single_mul_single_of_ne (h := h2), h1, h2]
 
 /- English proof (translation)
-Use `Matrix.induction_on' X ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `p q hp hq`. Establish `e : (p + q) * Y - Y * (p + q) = (p * Y - Y * p) + (q * Y - Y * q)` using `by noncomm_ring`. Rewrite using `[e, map_add, map_add, ← hp, ← hq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Introduce `i j x`. Use `Matrix.induction_on' Y ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `p q hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : Matrix.single i j x * (p + q) - (p + q) * Matrix.single i j x = (Matrix.single i j x * p - p * Matrix.single i j x) + (Matrix.single i j x * q - q * Matrix.single i j x)` using `by noncomm_ring`. Rewrite using `[e, map_add, map_add, ← hp, ← hq]`. Use `noncomm_ring`. Introduce `k l y`. Establish `hx : Matrix.single i j x = x • Matrix.single i j (1 : ℂ)` using `by rw [Matrix.smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : Matrix.single k l y = y • Matrix.single k l (1 : ℂ)` using `by rw [Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `e : x • Matrix.single i j (1 : ℂ) * (y • Matrix.single k l 1) - y • Matrix.single k l (1 : ℂ) * (x • Matrix.single i j 1) = (x * y) • (Matrix.single i j (1 : ℂ) * Matrix.single k l 1 - Matrix.single k l 1 * Matrix.single i j 1)`. Simplify using `only [smul_mul_smul_comm, mul_comm y x, smul_sub]`. Rewrite using `[hx, hy, e, single_comm, map_smul, map_smul, map_smul, smul_mul_smul_comm, smul_mul_smul_comm, mul_comm y x, ← smul_sub, h i j k l]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lie_of_glRel {A : Type} [Ring A] [Algebra ℂ A] {N : ℕ} (Q : Matrix (Fin N) (Fin N) ℂ →ₗ[ℂ] A)
     (h : Formalism.REAL.GlRel (fun i j => Q (Matrix.single i j 1))) (X Y : Matrix (Fin N) (Fin N) ℂ) :
@@ -74,9 +74,9 @@ theorem lie_of_glRel {A : Type} [Ring A] [Algebra ℂ A] {N : ℕ} (Q : Matrix (
       split_ifs <;> simp
 
 /- English proof (translation)
-Establish `HG : (g⁻¹).1 * g.1 = 1` using `g.inv_mul`. Establish `key : ∀ X Y : Matrix (Fin N) (Fin N) ℂ, (g.1 * X * (g⁻¹).1) * (g.1 * Y * (g⁻¹).1) = g.1 * (X * Y) * (g⁻¹).1`. Introduce `X Y`. Rewrite using `[show g.1 * X * (g⁻¹).1 * (g.1 * Y * (g⁻¹).1) = g.1 * X * ((g⁻¹).1 * g.1) * Y * (g⁻¹).1 by simp only [mul_assoc], HG, mul_one]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b c d`. Simplify using `only`. Rewrite using `[lie_of_glRel Q h, key, key, ← sub_mul, ← mul_sub, single_comm]`. Apply the tactic sequence `split_ifs <;> simp [mul_sub, sub_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_conj {A : Type} [Ring A] [Algebra ℂ A] (N : ℕ) (Q : Matrix (Fin N) (Fin N) ℂ →ₗ[ℂ] A)
     (g : GL (Fin N) ℂ) (h : Formalism.REAL.GlRel (fun i j => Q (Matrix.single i j 1))) :
@@ -93,11 +93,11 @@ theorem glRel_conj {A : Type} [Ring A] [Algebra ℂ A] (N : ℕ) (Q : Matrix (Fi
   split_ifs <;> simp [mul_sub, sub_mul]
 
 /- English proof (translation)
-Establish `hGH : g.1 * (g⁻¹).1 = 1` using `g.mul_inv`. Use function extensionality and compare the values at `k`. Rewrite using `[GlobalTheory.SmoothForms.gelfA_eq_sum_pow, GlobalTheory.SmoothForms.gelfA_eq_sum_pow]`. Establish `hE' : (fun a b => Q (g.1 * Matrix.single a b 1 * (g⁻¹).1)) = fun a b => ∑ c, ∑ d, ((g.1)ᵀ a c * ((g⁻¹).1)ᵀ d b) • Q (Matrix.single c d 1)`. Use function extensionality and compare the values at `a b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [← map_smul, ← map_sum]`. Use `congr 1`. Rewrite using `[Matrix.matrix_eq_sum_single (g.1 * _ * (g⁻¹).1)]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single, ite_and]`. Rewrite using `[hE', GlobalTheory.RegSch.GChart.trace_pow_conj _ (g.1)ᵀ ((g⁻¹).1)ᵀ (by rw [← Matrix.transpose_mul, hGH, Matrix.transpose_one])]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gelfA_conj {A : Type} [Ring A] [Algebra ℂ A] (N : ℕ) (Q : Matrix (Fin N) (Fin N) ℂ →ₗ[ℂ] A)
     (g : GL (Fin N) ℂ) :

@@ -9,7 +9,7 @@ namespace LocBasisPlaceWork
 variable {E : Type} [Field E] [NumberField E] {p : ℕ} [Fact p.Prime] (ρ : E →+* ℂ_[p])
 
 /- English proof (translation)
-Establish `hv` using `Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))`. Establish `h2 : IsIntegral (NormedField.valuation (K` using `ℂ_[p])).integer (ρ (a : E)) := IsIntegral.map_of_comp_eq (Int.castRingHom _) ρ (RingHom.ext_int _ _) (RingOfIntegers.isIntegral_coe a)`. Establish `h3` using `hv.mem_of_integral h2`. Establish `h4 : ‖ρ (a : E)‖₊ ≤ 1` using `h3`. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_one (a : 𝓞 E) : ‖ρ (a : E)‖ ≤ 1 := by
   have hv := Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))
@@ -35,7 +35,7 @@ def plc : Ideal (𝓞 E) where
     exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (norm_le_one ρ c)) ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_plc (a : 𝓞 E) : a ∈ plc ρ ↔ ‖ρ (a : E)‖ < 1 := Iff.rfl
 
@@ -55,9 +55,9 @@ instance plc_isPrime : (plc ρ).IsPrime where
     linarith
 
 /- English proof (translation)
-Establish `h1` using `PadicComplex.norm_extends' p (p : ℚ_[p])`. Simplify using `only [map_natCast, Padic.norm_p] at h1`. Establish `h2 : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Use `first`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `exact (map_natCast _ p).symm`. Consider the case `norm_cast`. Rewrite using `[h2]`. Conclude with `inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.mpr (Fact.out : p.Prime).one_lt)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   have h1 := PadicComplex.norm_extends' p (p : ℚ_[p])
@@ -72,9 +72,9 @@ theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   exact inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.mpr (Fact.out : p.Prime).one_lt)
 
 /- English proof (translation)
-Introduce `h`. Establish `hp : (p : 𝓞 E) ∈ plc ρ`. Rewrite using `[mem_plc]`. Simplify `norm_p_lt_one (p := p)` using `[map_natCast]`. Rewrite `hp` using `[h, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) hp`.
+A detailed English derivation is pending.
 -/
 theorem plc_ne_bot : plc ρ ≠ ⊥ := by
   intro h
@@ -85,7 +85,7 @@ theorem plc_ne_bot : plc ρ ≠ ⊥ := by
   exact (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) hp
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_primeCompl_iff, mem_plc, not_lt]`. Conclude with `⟨fun h => le_antisymm (norm_le_one ρ s) h, fun h => h.ge⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_primeCompl_iff (s : 𝓞 E) : s ∈ (plc ρ).primeCompl ↔ ‖ρ (s : E)‖ = 1 := by
   rw [Ideal.mem_primeCompl_iff, mem_plc, not_lt]

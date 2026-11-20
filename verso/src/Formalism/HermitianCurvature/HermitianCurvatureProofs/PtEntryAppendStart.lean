@@ -12,7 +12,7 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-The claim follows from `| [], a, b => by simp [D.ptSize] | (s, t) :: H', a, b => by have ih := ptEntry_append_start rest H' a (b - s) have hsz : D.ptSize ((s, t) :: H') = s + D.ptSize H' := by simp [D.ptSize] rw [hsz] show D.ptEntry ((s, t) :: (H' ++ rest)) (s + D.ptSize H' + a) b = _ simp only [D.ptEnt …`.
+A detailed English derivation is pending.
 -/
 theorem ptEntry_append_start (rest : C.LPt) : ∀ (H : C.LPt) (a b : ℕ),
     D.ptEntry (H ++ rest) (D.ptSize H + a) b = if D.ptSize H ≤ b then D.ptEntry rest a (b - D.ptSize H) else 0
@@ -32,9 +32,9 @@ theorem ptEntry_append_start (rest : C.LPt) : ∀ (H : C.LPt) (a b : ℕ),
     · rw [if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Apply `Matrix.det_eq_zero_of_row_eq_zero (⟨D.ptSize H, by omega⟩ : Fin r)` to reduce the goal to its premises. Introduce `j`. Apply the tactic sequence `show D.ptEntry (H ++ [(s, t)]) (D.ptSize H) j = 0`. Establish `h` using `ptEntry_append_start [(s, t)] H 0 j`. Rewrite `h` using `[add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `split_ifs with hj`. Simplify using `only [D.ptEntry]`. Rewrite using `[if_pos ⟨by omega, by omega⟩, if_neg (by omega)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_big (H : C.LPt) (s : ℕ) (t : ℂ) (r : ℕ) (hs : 2 ≤ s) (hr : D.ptSize H + s = r + 1) :
     (D.ptMatN (H ++ [(s, t)]) r).det = 0 := by
@@ -50,7 +50,7 @@ theorem det_big (H : C.LPt) (s : ℕ) (t : ℂ) (r : ℕ) (hs : 2 ≤ s) (hr : D
   · rfl
 
 /- English proof (translation)
-Unfold `D.ptG`. Rewrite using `[det_big H s t r hs hr]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ptG_big (TT : ℝ) (H : C.LPt) (s : ℕ) (t : ℂ) (r : ℕ) (hs : 2 ≤ s) (hr : D.ptSize H + s = r + 1) :
     D.ptG TT r (H ++ [(s, t)]) = Complex.normSq (D.ptMatN (H ++ [(s, t)]) (r + 1)).det := by
@@ -59,7 +59,7 @@ theorem ptG_big (TT : ℝ) (H : C.LPt) (s : ℕ) (t : ℂ) (r : ℕ) (hs : 2 ≤
   simp
 
 /- English proof (translation)
-Unfold `Top.wPt`. Rewrite `hG`, the goal using `[ptG_big TT H s t r hs hr]`. Conclude with `div_self hG.ne'`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wPt_big (TT : ℝ) (H : C.LPt) (s : ℕ) (t : ℂ) (r : ℕ) (hs : 2 ≤ s) (hr : D.ptSize H + s = r + 1)
     (hG : 0 < D.ptG TT r (H ++ [(s, t)])) : Top.wPt TT r (H ++ [(s, t)]) = 1 := by
@@ -73,7 +73,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
 
 /- English proof (translation)
-Unfold `B.hsInner B.hsVec`. Establish `: (WithLp.toLp 2 fun _ : Fin (Module.finrank ℂ Wq) => (0 : Wp)) = 0` using `rfl`. Simplify using `only [ContinuousLinearMap.zero_apply, this, inner_zero_left]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hsInner_zero_right' (A : Wq →L[ℂ] Wp) : B.hsInner A 0 = 0 := by
   unfold B.hsInner B.hsVec
@@ -81,7 +81,7 @@ theorem hsInner_zero_right' (A : Wq →L[ℂ] Wp) : B.hsInner A 0 = 0 := by
   simp only [ContinuousLinearMap.zero_apply, this, inner_zero_left]
 
 /- English proof (translation)
-Unfold `D.vecV`. Rewrite using `[dif_neg (fun h => hG h.2)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecV_of_G (Bs : B.RealPlaceData P.k P.r Wp Wq) (ν' : Fin (2 * P.r + P.k + 1) → ℂ) (m₀ : B.Mat P.k P.r)
     (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Q : C.LPt)
@@ -90,9 +90,9 @@ theorem vecV_of_G (Bs : B.RealPlaceData P.k P.r Wp Wq) (ν' : Fin (2 * P.r + P.k
   rw [dif_neg (fun h => hG h.2)]
 
 /- English proof (translation)
-Unfold `Top.topOf`. Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Use `set TT := Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' with hTT`. Distinguish the cases in `h1 : 0 < D.ptG TT P.r (H ++ [(s, t)])`. Distinguish the cases in `h2 : 0 < D.ptG TT P.r (H' ++ [(s, t')])`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions.
 
-Unfold `Top.dH`. Rewrite using `[wPt_big TT H s t P.r hs hH h1, wPt_big TT H' s t' P.r hs hH' h2, one_pow, one_mul]`. Rewrite using `[vecV_of_G _ _ _ _ _ h2, ContinuousLinearMap.comp_zero, hsInner_zero_right', mul_zero, mul_zero]`. Rewrite using `[vecV_of_G _ _ _ _ _ h1, ContinuousLinearMap.comp_zero, Formalism.FourierDecayAlt.P.PBD.hsInner_zero_left]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topOf_big (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter)
     (H H' : C.LPt) (s : ℕ) (t t' : ℂ) (hs : 2 ≤ s) (hH : D.ptSize H + s = P.r + 1) (hH' : D.ptSize H' + s = P.r + 1) :

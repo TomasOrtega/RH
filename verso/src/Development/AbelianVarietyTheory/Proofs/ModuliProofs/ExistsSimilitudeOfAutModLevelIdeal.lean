@@ -19,7 +19,7 @@ namespace GlobalTheory.SimMb
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) (l : Level H)
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h1` using `H.bar_eq (H.bar a)`. Establish `h2` using `H.bar_eq a`. Conclude with `h1.trans (by rw [h2, IsCMField.complexConj_apply_apply])`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
@@ -28,13 +28,13 @@ theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a := by
   exact h1.trans (by rw [h2, IsCMField.complexConj_apply_apply])
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) ha`.
+A detailed English derivation is pending.
 -/
 theorem bar_mem {a : 𝓞 E} (ha : a ∈ l.Mb) : H.bar a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) :=
   Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) ha
 
 /- English proof (translation)
-Establish `h : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.mem_inf.mp (Ideal.mul_le_inf h)).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem M_mem : (l.M : 𝓞 E) ∈ l.Mb := by
   have h : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
@@ -47,9 +47,9 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H)
   (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) in
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `hx`. Establish `hM : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb`. Establish `h1 : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb * Ideal.map (H.bar : 𝓞 E →+* 𝓞 E) l.Mb`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Ideal.mul_le.2 fun r hr s _ => Ideal.mul_mem_right s _ hr) h1`. Establish `hb : l.M • b = ((l.M : ℕ) : 𝓞 E) • b` using `(Nat.cast_smul_eq_nsmul (𝓞 E) l.M b).symm`. Rewrite using `[hb]`. Conclude with `Submodule.smul_mem_smul hM Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SimMb.mem_of_modN {x : D.La} (hx : D.ModN l.M x) :
     x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := by
@@ -68,7 +68,7 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H)
   (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) in
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `l.prod`. Rewrite `h1` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Establish `h2` using `l.three_le`. Normalize the coercions in `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Put the expressions in a common number system so they can be compared.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -86,17 +86,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
   (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) in
 
 /- English proof (translation)
-Use `haveI := D.fin`. Use `haveI := D.proj`. Use `set P := l.Mb • (⊤ : Submodule (𝓞 E) D.La) with hP`. Establish `hgP : P ≤ P.comap g`. Rewrite using `[hP, Submodule.smul_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `r hr n _`. Rewrite using `[Submodule.mem_comap, map_smul]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Use `set gbar := P.mapQ P g hgP with hgbar`. Establish `hinj : Function.Injective gbar`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective P y`. Rewrite `hy` using `[LinearMap.mem_ker, hgbar, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hg x hy`. Establish `: Finite (𝓞 E ⧸ l.Mb)` using `Ideal.finiteQuotientOfFreeOfNeBot _ (level_Mb_ne_bot l)`. Establish `: Module.Finite (𝓞 E ⧸ l.Mb) (D.La ⧸ P)` using `Module.Finite.of_restrictScalars_finite (𝓞 E) _ _`. Establish `: Finite (D.La ⧸ P)` using `Module.finite_of_finite (𝓞 E ⧸ l.Mb)`. Establish `hsurj : Function.Surjective gbar` using `Finite.injective_iff_surjective.1 hinj`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set e := LinearEquiv.ofBijective gbar ⟨hinj, hsurj⟩ with he`. Take `⟨h, hh⟩` from `Module.projective_lifting_property P.mkQ ((e.symm : _ →ₗ[𝓞 E] _) ∘ₗ P.mkQ) (Submodule.mkQ_surjective P)`. Use `⟨h, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hh (g x)`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, LinearEquiv.coe_coe] at h1`.
-
-Rewrite using `[← Submodule.Quotient.eq, h1]`. Establish `h2 : (Submodule.Quotient.mk (g x) : D.La ⧸ P) = e (Submodule.Quotient.mk x)`. Both sides reduce to the same expression. Rewrite using `[h2, LinearEquiv.symm_apply_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SimMb.exists_left_inv (g : D.La →ₗ[𝓞 E] D.La)
     (hg : ∀ x, g x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) → x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) :
@@ -145,7 +143,7 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H)
   (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) in
 /- English proof (translation)
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show ((H.bar (H.bar a) : 𝓞 E) : E) = (a : E)`. Rewrite using `[H.bar_eq, H.bar_eq]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conjO_conjO_unimodular_class_representatives (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.coe_injective
@@ -158,7 +156,7 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H)
   (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) in
 /- English proof (translation)
-Establish `h1 : α * β ∈ l.Mb * Ideal.map (H.bar : 𝓞 E →+* 𝓞 E) l.Mb` using `Ideal.mul_mem_mul hα hβ`. Rewrite `h1` using `[l.prod, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h1`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_mul_eq_level_mul_of_mem_Mb {α β : 𝓞 E} (hα : α ∈ l.Mb)
     (hβ : β ∈ Ideal.map (H.bar : 𝓞 E →+* 𝓞 E) l.Mb) : ∃ c : 𝓞 E, α * β = (l.M : 𝓞 E) * c := by
@@ -172,9 +170,9 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H)
   (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) in
 /- English proof (translation)
-Use `Submodule.smul_induction_on (p := fun y => ∃ z : D.La, β • y = ((l.M : ℕ) : 𝓞 E) • z) hy ?_ ?_` and prove the remaining obligations. Introduce `m hm n _`. Take `⟨c, hc⟩` from `exists_mul_eq_level_mul_of_mem_Mb l hm hβ`. Use `⟨c • n, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm β m, hc, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y₁ y₂ h₁ h₂`. Take `⟨z₁, hz₁⟩` from `h₁`. Take `⟨z₂, hz₂⟩` from `h₂`. Conclude with `⟨z₁ + z₂, by rw [smul_add, hz₁, hz₂, smul_add]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_smul_eq_level_smul_of_mem_map_bar_Mb {β : 𝓞 E} (hβ : β ∈ Ideal.map (H.bar : 𝓞 E →+* 𝓞 E) l.Mb)
     {y : D.La} (hy : y ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) :
@@ -195,7 +193,7 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H)
   (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) in
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul]`. Conclude with `Dvd.intro _ rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem level_dvd_EF_level_smul (x z : D.La) :
     (l.M : ℤ) ∣ D.EF x (((l.M : ℕ) : 𝓞 E) • z) := by
@@ -207,7 +205,7 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H)
   (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) in
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_mul_eq_level_mul_of_mem_Mb l hα hβ`. Rewrite using `[hc, mul_smul]`. Conclude with `level_dvd_EF_level_smul D l x _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem level_dvd_EF_mul_smul_of_mem_Mb {α β : 𝓞 E} (hα : α ∈ l.Mb)
     (hβ : β ∈ Ideal.map (H.bar : 𝓞 E →+* 𝓞 E) l.Mb) (x y : D.La) :
@@ -217,45 +215,39 @@ private theorem level_dvd_EF_mul_smul_of_mem_Mb {α β : 𝓞 E} (hα : α ∈ l
   exact level_dvd_EF_level_smul D l x _
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l A g hpq hA hcop hg`. Use `set P := l.Mb • (⊤ : Submodule (NumberField.RingOfIntegers E) D.La) with hP`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨h, hh⟩` from `_root_.GlobalTheory.SimMb.exists_left_inv D l g hg`. Take `⟨u, hu⟩` from `_root_.GlobalTheory.SimLift.exists_rep D (fun a b => D.EF a (h b)) (fun a a' b => by simp) (fun a b b' => by simp) (fun c a b => by simp [D.adj, map_smul])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (1 : NumberField.RingOfIntegers E) ∈ l.Mb ⊔ Ideal.map (H.bar : NumberField.RingOfIntegers E →+* NumberField.RingOfIntegers E) l.Mb`. Rewrite using `[l.coprime]`. Conclude with `Submodule.mem_top`. Take `⟨e, he, e', he', hee⟩` from `Submodule.mem_sup.1 h1`. Establish `hbe : H.bar e ∈ Ideal.map (H.bar : NumberField.RingOfIntegers E →+* NumberField.RingOfIntegers E) l.Mb` using `Ideal.mem_map_of_mem _ he`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbe' : H.bar e' ∈ l.Mb`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_of_equiv H.bar e').1 he'`. Rewrite using `[conjO_conjO_unimodular_class_representatives]`. Conclude with `hy`. Use `set f1 : D.La →ₗ[NumberField.RingOfIntegers E] D.La := e' • g + e • u with hf1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcross : ∀ a b, (l.M : ℤ) ∣ D.EF (e • u a) (e' • g b) - D.EF (e • a) (e' • b)`. Introduce `a b`. Rewrite using `[D.adj, D.adj, hu, smul_smul, smul_smul, map_smul]`. Take `⟨z, hz⟩` from `exists_smul_eq_level_smul_of_mem_map_bar_Mb D l hbe (hh b)`. Establish `: (H.bar e * e') • h (g b) = (H.bar e * e') • b + e' • (((l.M : ℕ) : NumberField.RingOfIntegers E) • z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hz, smul_smul, mul_comm e' (H.bar e), ← smul_add, add_sub_cancel]`. Rewrite using `[this, map_add, add_sub_cancel_left]`. Rewrite using `[smul_comm]`. Conclude with `level_dvd_EF_level_smul D l _ _`. Establish `hF : ∀ a b, (l.M : ℤ) ∣ D.EF (f1 a) (f1 b) - D.EF a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Establish `ha : a = e • a + e' • a` using `by rw [← add_smul, hee, one_smul]`. Establish `hb : b = e • b + e' • b` using `by rw [← add_smul, hee, one_smul]`. Establish `hgg : (l.M : ℤ) ∣ D.EF (e' • g a) (e' • g b)`. Rewrite using `[D.adj, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `level_dvd_EF_mul_smul_of_mem_Mb D l hbe' he' _ _`. Establish `huu : (l.M : ℤ) ∣ D.EF (e • u a) (e • u b)`. Rewrite using `[D.adj, smul_smul, mul_comm]`. Conclude with `level_dvd_EF_mul_smul_of_mem_Mb D l he hbe _ _`. Establish `hee1 : (l.M : ℤ) ∣ D.EF (e • a) (e • b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[D.adj, smul_smul, mul_comm]`. Conclude with `level_dvd_EF_mul_smul_of_mem_Mb D l he hbe _ _`. Establish `hee2 : (l.M : ℤ) ∣ D.EF (e' • a) (e' • b)`. Rewrite using `[D.adj, smul_smul]`. Conclude with `level_dvd_EF_mul_smul_of_mem_Mb D l hbe' he' _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hca` using `hcross a b`. Establish `hcb` using `hcross b a`. Rewrite `hcb` using `[_root_.GlobalTheory.SimLift.form_skew D (e • u b), _root_.GlobalTheory.SimLift.form_skew D (e • b)]`. Establish `hexp : D.EF (f1 a) (f1 b) - D.EF a b = D.EF (e' • g a) (e' • g b) + D.EF (e • u a) (e • u b) - D.EF (e • a) (e • b) - D.EF (e' • a) (e' • b) + (D.EF (e • u a) (e' • g b) - D.EF (e • a) (e' • b)) - (-D.EF (e' • g a) (e • u b) - -D.EF (e' • a) (e • b))`. Establish `hab : D.EF a b = D.EF (e • a + e' • a) (e • b + e' • b)` using `by rw [← ha, ← hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hab]`. Simplify using `only [hf1, LinearMap.add_apply, LinearMap.smul_apply, map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp]`. Conclude with `dvd_sub (dvd_add (dvd_sub (dvd_sub (dvd_add hgg huu) hee1) hee2) hca) hcb`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, s, hst⟩` from `(Nat.isCoprime_iff_coprime.2 hcop : IsCoprime (A : ℤ) (l.M : ℤ))`. Use `set f0 : D.La →ₗ[NumberField.RingOfIntegers E] D.La := (s * l.M) • LinearMap.id + (t * A) • f1 with hf0`. Establish `hform : ∀ a b, ((l.M * A : ℕ) : ℤ) ∣ D.EF (f0 a) (f0 b) - 1 * D.EF a b`. Introduce `a b`. Take `⟨k, hk⟩` from `hF a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s * t * (D.EF a (f1 b) + D.EF (f1 a) b - 2 * D.EF a b) + t ^ 2 * A * k, ?_⟩` and prove the remaining obligations. Simplify using `only [hf0, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply, map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `push_cast`. Take the linear combination `(t ^ 2 * (A : ℤ) ^ 2) * hk + D.EF a b * (t * A + s * l.M + 1) * hst`. Take `⟨ω, hω, hν⟩` from `_root_.GlobalTheory.exists_sim_lift E H D (l.M * A) f0 1 (Nat.mul_pos hM hA) isCoprime_one_left hform`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨ω, fun x => ?_, fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `k1 : D.ModN l.M (ω.f (l.M * A) x - ω.f l.M x)` using `ω.tower l.M A hM hA x`. Establish `k2 : D.ModN l.M (ω.f (l.M * A) x - f0 x)` using `_root_.GlobalTheory.SimAlg.modN_of_mul (hω x)`. Establish `k3 : D.ModN l.M (f0 x - f1 x)`. Use `⟨s • (x - f1 x), ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ]`. Simplify using `only [hf0, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Take the linear combination `(norm := module) hst • f1 x`. Establish `k4 : f1 x - g x ∈ P`. Establish `: f1 x - g x = e • (u x - g x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hf1, LinearMap.add_apply, LinearMap.smul_apply]`. Take the linear combination `(norm := module) hee • g x`. Rewrite using `[this, hP]`. Conclude with `Submodule.smul_mem_smul he Submodule.mem_top`. Establish `: ω.f l.M x - g x = (ω.f (l.M * A) x - f0 x) - (ω.f (l.M * A) x - ω.f l.M x) + (f0 x - f1 x) + (f1 x - g x)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `P.add_mem (P.add_mem (P.sub_mem (_root_.GlobalTheory.SimMb.mem_of_modN D l k2) (_root_.GlobalTheory.SimMb.mem_of_modN D l k1)) (_root_.GlobalTheory.SimMb.mem_of_modN D l k3)) k4`. Establish `k1 : D.ModN A (ω.f (A * l.M) x - ω.f A x)` using `ω.tower A l.M hA hM x`. Establish `k2 : D.ModN A (ω.f (A * l.M) x - f0 x)`. Establish `k` using `hω x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k` using `[mul_comm]`. Conclude with `_root_.GlobalTheory.SimAlg.modN_of_mul k`. Establish `k3 : D.ModN A (f0 x - x)`. Use `⟨t • (f1 x - x), ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ]`.
-
-Simplify using `only [hf0, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Take the linear combination `(norm := module) hst • x`. Establish `k1'` using `_root_.GlobalTheory.SimAlg.modN_neg k1`. Rewrite `k1'` using `[neg_sub]`. Conclude with `_root_.GlobalTheory.SimLift.modN_trans D k1' (_root_.GlobalTheory.SimLift.modN_trans D k2 k3)`.
-
-Take `⟨a0, b0, hab⟩` from `_root_.GlobalTheory.SimAlg.exists_form_eq_one hpq`. Establish `d1 : (A : ℤ) ∣ ω.ν (A * l.M) - ω.ν A` using `_root_.GlobalTheory.SimAlg.dvd_mult_tower ω hA hM hab`. Rewrite `d1` using `[mul_comm]`. Establish `d2 : (A : ℤ) ∣ ω.ν (l.M * A) - 1` using `Dvd.dvd.trans (by push_cast; exact Dvd.intro_left _ rfl) hν`. Establish `: ω.ν A - 1 = (ω.ν (l.M * A) - 1) - (ω.ν (l.M * A) - ω.ν A)` using `by ring`.
-
-Rewrite using `[this]`. Conclude with `dvd_sub d2 d1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_sim_of_aut_mod : ∀ (E : Type) [Field E] [NumberField E]
     [NumberField.IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (A : ℕ)

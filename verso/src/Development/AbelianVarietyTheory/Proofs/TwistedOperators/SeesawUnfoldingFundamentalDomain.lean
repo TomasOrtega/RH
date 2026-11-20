@@ -24,11 +24,11 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Use `⟨kerPD ψ θ A₁ B Bs Γ cB p', fun Φ₀D => mem_kerPD hstd θ A₁ B Bs Γ cB p' Φ₀D, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `exact { le := fun Φ hΦ => ((mem_kerPD hstd θ A₁ B Bs Γ cB p' Φ).1 hΦ).1 fin := GlobalTheory.T.seesaw_unfolding_absolute hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm lie := GlobalTheory.T.seesaw_unfolding_symmetry hP D ψ θ W W₁ X …`. Introduce `hEq haveI : Nontrivial Pi := hm.irred.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `exists_ne (0 : Pi)`. Establish `hxm : x ∈ (algF ψ θ false A₁ B).map p'` using `by rw [hm.mapB.onto]; trivial`. Take `⟨Φ₀, hΦ₀, rfl⟩` from `hxm`. Take `⟨ΦD, hD, hDat⟩` from `hO.algB Φ₀ hΦ₀`. Establish `hD' : ΦD ∈ kerPD ψ θ A₁ B Bs Γ cB p'` using `hEq ▸ hD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, Φ₁, -, hDat1, h0⟩` from `(mem_kerPD hstd θ A₁ B Bs Γ cB p' ΦD).1 hD'`. Establish `he : Φ₀ = Φ₁` using `IsDatum.fun_eq Γ.M' ψ (⇑cB) cB.surjective hDat hDat1`. Conclude with `hx (he ▸ h0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SquareAgree.exists_kerPD_thetaSub : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

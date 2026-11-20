@@ -1,13 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `S R M _ _ _ _ _ hfin f hf`. Take `⟨T, hT⟩` from `hfin.fg_top`. Use `⟨⟨T, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `m hm0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear hm0`. Establish `hm : m ∈ Submodule.span S (T : Set M)`. Rewrite using `[hT]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hm using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[hf]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh10.fin_of_hom :
     ∀ {S R M : Type} [inst : CommRing S] [inst_1 : CommRing R]

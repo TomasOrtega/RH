@@ -14,7 +14,7 @@ namespace GlobalTheory.HodgeUnif
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `have := GlobalTheory.isDiff_sum_smul_of_isLieComb A hA L g 2 u ![v, v'] ![w, w'] ![1, 1] (v * v') (fun i => by fin_cases i <;> assumption) (fun i => by fin_cases i <;> assumption) ⟨![v, v'], fun i => by fin_cases i <;> (rw [← GlobalTheory.GrpTangent.epsScale_left]; simp [GlobalTh …`. Simplify `this` using `[Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDiff_mul (hA : IsAbelianScheme A) (u : HolUnif A L g) {w w' : Fin g → ℂ} {v v' : epsR ℂ ⟶ A}
     (hv : IsTangent v) (hv' : IsTangent v') (h : u.IsDiff w v) (h' : u.IsDiff w' v') :
@@ -27,7 +27,7 @@ theorem isDiff_mul (hA : IsAbelianScheme A) (u : HolUnif A L g) {w w' : Fin g �
   simpa [Fin.sum_univ_two] using this
 
 /- English proof (translation)
-Use `GlobalTheory.isDiff_sum_smul_of_isLieComb A hA L g 1 u ![v] ![w] ![r] (GlobalTheory.GrpTangent.epsScale r ≫ v) (fun i => by fin_cases i; assumption) (fun i => by fin_cases i; assumption) ⟨![GlobalTheory.GrpTangent.epsScale r ≫ v], fun i => by fin_cases i; simp [Over.comp_left, Gl …` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDiff_smul (hA : IsAbelianScheme A) (u : HolUnif A L g) {w : Fin g → ℂ} {v : epsR ℂ ⟶ A}
     (hv : IsTangent v) (h : u.IsDiff w v) (r : ℂ) :
@@ -39,11 +39,11 @@ theorem isDiff_smul (hA : IsAbelianScheme A) (u : HolUnif A L g) {w : Fin g → 
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction with`. Consider the case `zero`. Use `⟨1, by simpa using isLieImage_one_iff.2 (zero_mem (Fil A)), ?_⟩` and prove the remaining obligations. Simplify `GlobalTheory.ArchMetricCompare.isDiff_zero u` using `[Hom.one_def]`. Consider the case `single_add a b f _ _ ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Take `⟨v, hv, hd⟩` from `ih`. Take `⟨v₀, hv₀, hd₀⟩` from `hP a`. Use `⟨(GlobalTheory.GrpTangent.epsScale b ≫ v₀) * v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_add_index' (h := fun x r ↦ r • P x) (fun _ ↦ zero_smul ℂ _) (fun _ _ _ ↦ add_smul _ _ _), Finsupp.sum_single_index (h := fun x r ↦ r • P x) (zero_smul ℂ _)]`. Conclude with `(hv₀.smul b).add hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.sum_add_index' (h := fun (x : u.Λ) (r : ℂ) ↦ r • (x : Fin g → ℂ)) (fun _ ↦ zero_smul ℂ _) (fun _ _ _ ↦ add_smul _ _ _), Finsupp.sum_single_index (h := fun (x : u.Λ) (r : ℂ) ↦ r • (x : Fin g → ℂ)) (zero_smul ℂ _)]`. Conclude with `isDiff_mul hA u (hv₀.smul b).1 hv.1 (isDiff_smul hA u hv₀.1 hd₀ b) hd`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLieImage_isDiff (hA : IsAbelianScheme A) (u : HolUnif A L g) (P : u.Λ →+ HdR A)
     (hP : ∀ x : u.Λ, ∃ v, IsLieImage (P x) v ∧ u.IsDiff x v) (c : u.Λ →₀ ℂ) :
@@ -65,7 +65,7 @@ theorem exists_isLieImage_isDiff (hA : IsAbelianScheme A) (u : HolUnif A L g) (P
       exact isDiff_mul hA u (hv₀.smul b).1 hv.1 (isDiff_smul hA u hv₀.1 hd₀ b) hd
 
 /- English proof (translation)
-Introduce `A _ hA L g u P hE hP c`. Take `⟨v, hv, hd⟩` from `exists_isLieImage_isDiff hA u P hP c`. Rewrite using `[← isLieImage_one_iff, GlobalTheory.ArchMetricCompare.isDiff_ne_iff u hv.1 hd, ← Hom.one_def]`. Conclude with `⟨fun h ↦ (hE.1 _).unique hv h, fun e ↦ e ▸ hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sum_smul_mem_fil_iff :
     ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (g : ℕ) (u : HolUnif A L g)

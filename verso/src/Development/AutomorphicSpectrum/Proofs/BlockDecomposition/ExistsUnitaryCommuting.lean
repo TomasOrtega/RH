@@ -21,7 +21,7 @@ theorem halfProj_apply (T : V →ₗ[ℂ] V) (s : ℂ) (x : V) :
     halfProj T s x = (1 / 2 : ℂ) • (x + s • T x) := rfl
 
 /- English proof (translation)
-Establish `e : (s * s) • T x = T x` using `by rw [hs2, one_smul]`. Simplify using `only [halfProj_apply, map_smul, map_add, hT2]`. Take the linear combination `(norm := module) (-1 / 2 : ℂ) • e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem map_halfProj {T : V →ₗ[ℂ] V} (hT2 : ∀ x, T (T x) = x) {s : ℂ} (hs2 : s * s = 1) (x : V) :
     T (halfProj T s x) = s • halfProj T s x := by
@@ -30,7 +30,7 @@ theorem map_halfProj {T : V →ₗ[ℂ] V} (hT2 : ∀ x, T (T x) = x) {s : ℂ} 
   linear_combination (norm := module) (-1 / 2 : ℂ) • e
 
 /- English proof (translation)
-Establish `e : (s * s) • T x = T x` using `by rw [hs2, one_smul]`. Simplify using `only [halfProj_apply, hT2]`. Take the linear combination `(norm := module) (-1 / 2 : ℂ) • e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem halfProj_map {T : V →ₗ[ℂ] V} (hT2 : ∀ x, T (T x) = x) {s : ℂ} (hs2 : s * s = 1) (x : V) :
     halfProj T s (T x) = s • halfProj T s x := by
@@ -39,7 +39,7 @@ theorem halfProj_map {T : V →ₗ[ℂ] V} (hT2 : ∀ x, T (T x) = x) {s : ℂ} 
   linear_combination (norm := module) (-1 / 2 : ℂ) • e
 
 /- English proof (translation)
-Establish `hs' : (starRingEnd ℂ) s = s` using `hs`. Simplify using `only [halfProj_apply, inner_smul_left, inner_smul_right, inner_add_left, inner_add_right, hs', hT x, hT2, map_div₀, map_one, map_ofNat]`. Take the linear combination `(1 / 4 : ℂ) * ⟪x, y⟫_ℂ * hs2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inner_halfProj {T : V →ₗ[ℂ] V} (hT : ∀ x y, ⟪T x, y⟫_ℂ = ⟪x, T y⟫_ℂ)
     (hT2 : ∀ x, T (T x) = x) {s : ℂ} (hs : star s = s) (hs2 : s * s = 1) (x y : V) :
@@ -52,15 +52,15 @@ theorem inner_halfProj {T : V →ₗ[ℂ] V} (hT : ∀ x y, ⟪T x, y⟫_ℂ = �
 variable [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Use `set W : Submodule ℂ V := LinearMap.ker (T - s • LinearMap.id) with hW`. Establish `hmem : ∀ x, halfProj T s x ∈ W` using `fun x => by`. Rewrite using `[hW, LinearMap.mem_ker, LinearMap.sub_apply, map_halfProj hT2 hs2]`. Simplify using the standard rewrite rules. Set `Q : V →ₗ[ℂ] W` to `LinearMap.codRestrict W (halfProj T s) hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQ : ∀ x, (Q x : V) = halfProj T s x` using `fun x => rfl`. Take `⟨w, hw⟩` from `Formalism.L2.SG.Pf.Carrier.EnergyPfLoc.exists_linearIsometryEquiv_of_inner_eq (fun a => Q (f a)) (fun a => Q (g a)) (fun a b => by`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, hQ, hQ, hQ, hQ, inner_halfProj hT hT2 hs hs2, inner_halfProj hT hT2 hs hs2, h1, h2])`. Use `⟨W.subtype ∘ₗ w.toLinearEquiv.toLinearMap ∘ₗ Q, fun x y => ?_, fun x => ?_, fun x => ?_, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⟪(w (Q x) : V), (w (Q y) : V)⟫_ℂ = _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.coe_inner, LinearIsometryEquiv.inner_map_map, Submodule.coe_inner, hQ, hQ]`. Express the relevant statement in the definitionally equal form `T (w (Q x) : V) = s • (w (Q x) : V)`. Use `LinearMap.mem_ker.1 (w (Q x)).2` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply]`. Simplify `this` using `[sub_eq_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: Q (T x) = s • Q x` using `Subtype.ext (by`. Rewrite using `[hQ, Submodule.coe_smul, hQ, halfProj_map hT2 hs2])`. Express the relevant statement in the definitionally equal form `(w (Q (T x)) : V) = s • (w (Q x) : V)`. Rewrite using `[this, map_smul, Submodule.coe_smul]`. Express the relevant statement in the definitionally equal form `(w (Q (f a)) : V) = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw a, hQ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_half {α : Type*} {T : V →ₗ[ℂ] V} (hT : ∀ x y, ⟪T x, y⟫_ℂ = ⟪x, T y⟫_ℂ)
     (hT2 : ∀ x, T (T x) = x) {s : ℂ} (hs : star s = s) (hs2 : s * s = 1) (f g : α → V)
@@ -95,11 +95,11 @@ theorem exists_half {α : Type*} {T : V →ₗ[ℂ] V} (hT : ∀ x y, ⟪T x, y�
     rw [hw a, hQ]
 
 /- English proof (translation)
-Take `⟨v, hv1, hv2, hv3, hv4⟩` from `exists_half hT hT2 (s := 1) (by simp) (by simp) f g h1 h2`. Take `⟨w, hw1, hw2, hw3, hw4⟩` from `exists_half hT hT2 (s := -1) (by simp) (by simp) f g h1 h2`. Establish `cross : ∀ x y, ⟪v x, w y⟫_ℂ = 0` using `fun x y => by`. Establish `e` using `hT (v x) (w y)`. Rewrite `e` using `[hv2, hw2, one_smul, inner_smul_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (2 : ℂ) * ⟪v x, w y⟫_ℂ = 0` using `by linear_combination e`. Simplify using `using this`. Establish `cross' : ∀ x y, ⟪w x, v y⟫_ℂ = 0` using `fun x y => by`. Rewrite using `[← inner_conj_symm, cross, map_zero]`. Use `⟨v + w, fun x y => ?_, fun x => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.add_apply, inner_add_left, inner_add_right, cross, cross', hv1, hw1]`. Rewrite using `[inner_halfProj hT hT2 (by simp) (by simp), inner_halfProj hT hT2 (by simp) (by simp)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.add_apply, map_add, hv2, hv3, hw2, hw3]`. Simplify using `only [LinearMap.add_apply, hv4, hw4, halfProj_apply] module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_commuting_of_gram {α : Type*} (T : V →ₗ[ℂ] V)
     (hT : ∀ x y, ⟪T x, y⟫_ℂ = ⟪x, T y⟫_ℂ) (hT2 : ∀ x, T (T x) = x) (f g : α → V)
@@ -134,14 +134,14 @@ noncomputable def col (A : Matrix (Fin n) κ ℂ) (a : κ) : EuclideanSpace ℂ 
   WithLp.toLp 2 (fun i => A i a)
 
 /- English proof (translation)
-Simplify using `[col, Matrix.mul_apply, PiLp.inner_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_col {κ' : Type*} (A : Matrix (Fin n) κ ℂ) (B : Matrix (Fin n) κ' ℂ) (a : κ) (b : κ') :
     (Aᴴ * B) a b = ⟪col A a, col B b⟫_ℂ := by
   simp [col, Matrix.mul_apply, PiLp.inner_apply, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[col, Matrix.toEuclideanLin_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toEuclideanLin_col (M : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin n) κ ℂ) (a : κ) :
     Matrix.toEuclideanLin M (col A a) = col (M * A) a := by
@@ -149,7 +149,7 @@ theorem toEuclideanLin_col (M : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin n) 
   simp [col, Matrix.toEuclideanLin_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `i a`. Simplify `congrArg (fun v : EuclideanSpace ℂ (Fin n) => v i) (h a)` using `[col]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem col_injective {A B : Matrix (Fin n) κ ℂ} (h : ∀ a, col A a = col B a) : A = B := by
   ext i a
@@ -158,11 +158,11 @@ theorem col_injective {A B : Matrix (Fin n) κ ℂ} (h : ∀ a, col A a = col B 
 end Columns
 
 /- English proof (translation)
-Establish `hinv : ∀ x, Matrix.toEuclideanLin T (Matrix.toEuclideanLin T x) = x` using `fun x => by`. Establish `e : ∀ y : EuclideanSpace ℂ (Fin n), y = col (Matrix.of fun i (_ : Unit) => y i) ()` using `fun y => by ext i; simp [col]`. Rewrite using `[e x, toEuclideanLin_col, toEuclideanLin_col, ← Matrix.mul_assoc, hT2, Matrix.one_mul]`. Take `⟨u, hu1, hu2, hu3⟩` from `exists_commuting_of_gram (Matrix.toEuclideanLin T) (fun x y => (Matrix.isHermitian_iff_isSymmetric.1 hT) x y) hinv (col A) (col A') (fun a b => by rw [← gram_col, ← gram_col, h1]) (fun a b => by rw [toEuclideanLin_col, toEuclideanLin_col, ← gram_col, ← gram_col, h2])`. Use `set U : Matrix (Fin n) (Fin n) ℂ := Matrix.toEuclideanLin.symm u with hUdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : ∀ x, u x = Matrix.toEuclideanLin U x` using `fun x => by simp [hUdef]`. Establish `hcol : ∀ a, col U a = u (col (1 : Matrix (Fin n) (Fin n) ℂ) a)` using `fun a => by`. Rewrite using `[hU, toEuclideanLin_col, Matrix.mul_one]`. Use `⟨U, ?_, col_injective fun a => ?_, col_injective fun a => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gram_col, hcol, hcol, hu1, ← gram_col]`. Simplify using the standard rewrite rules. Rewrite using `[← toEuclideanLin_col, ← toEuclideanLin_col, ← hU, hcol, ← hu2, toEuclideanLin_col, Matrix.mul_one]`. Rewrite using `[← toEuclideanLin_col, ← hU, hu3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_commuting {n r : ℕ} (T : Matrix (Fin n) (Fin n) ℂ) (hT : T.IsHermitian)
     (hT2 : T * T = 1) (A A' : Matrix (Fin n) (Fin r) ℂ) (h1 : Aᴴ * A = A'ᴴ * A')
@@ -189,25 +189,23 @@ theorem exists_unitary_commuting {n r : ℕ} (T : Matrix (Fin n) (Fin n) ℂ) (h
   · rw [← toEuclideanLin_col, ← hU, hu3]
 
 /- English proof (translation)
-Take `⟨R, -, hR⟩` from `GroundTheory.Automorphic.exists_isUpperTriangular_conjTranspose_mul_self hP`. Establish `hRu : IsUnit R.det`. Establish `hd : IsUnit (Rᴴ * R).det` using `by rw [hR]; exact (Matrix.isUnit_iff_isUnit_det _).1 hP.isUnit`. Rewrite `hd` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hRi : R⁻¹ * R = 1` using `Matrix.nonsing_inv_mul R hRu`. Establish `hRi' : R * R⁻¹ = 1` using `Matrix.mul_nonsing_inv R hRu`. Establish `hRiH : (R⁻¹)ᴴ * Rᴴ = 1` using `by rw [← conjTranspose_mul, hRi', conjTranspose_one]`. Establish `hJi : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv J hJu`. Establish `hJH : (J⁻¹)ᴴ = J⁻¹` using `(hJ.inv).eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T : Matrix (Fin n) (Fin n) ℂ := R * J⁻¹ * Rᴴ with hTdef`. Establish `hTH : T.IsHermitian`. Simplify using `only [IsHermitian, hTdef, conjTranspose_mul, conjTranspose_conjTranspose, hJH, Matrix.mul_assoc]`. Establish `hPW : Rᴴ * (R * (J⁻¹ * P * J⁻¹)) = 1`. Rewrite using `[← Matrix.mul_assoc, hR, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPJ, hJi]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT2 : T * T = 1`. Use `mul_eq_one_comm.1 hPW` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hJT : Rᴴ * T * R = J`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgram : ∀ Z : Matrix (Fin n) (Fin r) ℂ, (R * Z)ᴴ * (R * Z) = Zᴴ * P * Z` using `fun Z => by`. Rewrite using `[conjTranspose_mul, ← hR]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hgramT : ∀ Z : Matrix (Fin n) (Fin r) ℂ, (R * Z)ᴴ * (T * (R * Z)) = Zᴴ * J * Z` using `fun Z => by`. Rewrite using `[conjTranspose_mul, ← hJT]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Matrix.mul_assoc]`. Take `⟨U, hU1, hU2, hU3⟩` from `exists_unitary_commuting T hTH hT2 (R * X) (R * X') (by rw [hgram, hgram, h1]) (by rw [hgramT, hgramT, h2])`. Establish `hU1' : U * Uᴴ = 1` using `mul_eq_one_comm.1 hU1`. Establish `hUT : Uᴴ * T * U = T` using `by rw [Matrix.mul_assoc, ← hU2, ← Matrix.mul_assoc, hU1, Matrix.one_mul]`. Establish `hconj : ∀ M : Matrix (Fin n) (Fin n) ℂ, (R⁻¹ * U * R)ᴴ * (Rᴴ * M * R) * (R⁻¹ * U * R) = Rᴴ * (Uᴴ * M * U) * R` using `fun M => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨R⁻¹ * U * R, R⁻¹ * Uᴴ * R, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = R⁻¹ * (U * Uᴴ) * R := by rw [hRi']; simp only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hU1', Matrix.mul_one, hRi]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = R⁻¹ * (Uᴴ * U) * R := by rw [hRi']; simp only [Matrix.mul_one, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ = 1 := by rw [hU1, Matrix.mul_one, hRi]`. Use `hconj T` as an intermediate fact. Rewrite `this` using `[hJT, hUT, hJT]`. Then use the resulting hypothesis. Use `hconj 1` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one, hR, Matrix.mul_one, hU1, Matrix.mul_one, hR]`.
-
-Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_K {n r : ℕ} (J P : Matrix (Fin n) (Fin n) ℂ) (X X' : Matrix (Fin n) (Fin r) ℂ)
     (hJ : J.IsHermitian) (hJu : IsUnit J.det) (hP : P.PosDef) (hPJ : P * J⁻¹ * P = J)
@@ -270,27 +268,25 @@ theorem exists_mem_K {n r : ℕ} (J P : Matrix (Fin n) (Fin n) ℂ) (X X' : Matr
       _ = X' := by rw [hU3, ← Matrix.mul_assoc, hRi, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `n r J P X Y hJ hJu hXX _ hXY hP hPJ hPX g hg`. Establish `hJi : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J hJu`. Establish `hJH : Jᴴ = J` using `hJ.eq`. Use `set gi : Matrix (Fin n) (Fin n) ℂ := J⁻¹ * gᴴ * J with hgi`. Establish `hgig : gi * g = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hggi : g * gi = 1` using `mul_eq_one_comm.1 hgig`. Establish `hgiH : giᴴ * gᴴ = 1` using `by rw [← conjTranspose_mul, hggi, conjTranspose_one]`. Establish `hgiJ : giᴴ * J * gi = J`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `set Z : Matrix (Fin n) (Fin r) ℂ := gi * X with hZ`. Establish `hZJ : Zᴴ * J * Z = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hZ, conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hgiJ, hXX]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hYX : Yᴴ * J * X = 1`. Use `congrArg conjTranspose hXY` as an intermediate fact. Simplify `this` using `only [conjTranspose_mul, conjTranspose_conjTranspose, hJH, conjTranspose_one, Matrix.mul_assoc]`. Establish `hLZ : (Yᴴ * J * g) * Z = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hZinj : Function.Injective Z.mulVec` using `fun a b hab => by`. Use `congrArg (Matrix.mulVec (Yᴴ * J * g)) hab` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, hLZ, Matrix.one_mulVec]`. Establish `hG : (Zᴴ * P * Z).PosDef` using `hP.conjTranspose_mul_mul_same hZinj`. Take `⟨R, hRt, hR⟩` from `GroundTheory.Automorphic.exists_isUpperTriangular_conjTranspose_mul_self hG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hRu : IsUnit R.det`. Establish `hd : IsUnit (Rᴴ * R).det` using `by rw [hR]; exact (Matrix.isUnit_iff_isUnit_det _).1 hG.isUnit`. Rewrite `hd` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hd`. Use `letI := Matrix.invertibleOfIsUnitDet R hRu`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBt : (R⁻¹).BlockTriangular id` using `blockTriangular_inv_of_blockTriangular hRt`. Establish `hRi' : R * R⁻¹ = 1` using `Matrix.mul_nonsing_inv R hRu`. Establish `hRiH : (R⁻¹)ᴴ * Rᴴ = 1` using `by rw [← conjTranspose_mul, hRi', conjTranspose_one]`. Establish `hX'P : (Z * R⁻¹)ᴴ * P * (Z * R⁻¹) = 1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((R⁻¹)ᴴ * Rᴴ) * (R * R⁻¹) := by rw [← hR]; simp only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hRiH, hRi', Matrix.one_mul]`. Establish `hX'J : (Z * R⁻¹)ᴴ * J * (Z * R⁻¹) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hZJ, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hXP : Xᴴ * P * X = 1` using `by rw [Matrix.mul_assoc, hPX, ← Matrix.mul_assoc, hXY]`. Take `⟨m, mi, hm1, _, hmJ, hmP, hmX⟩` from `exists_mem_K J P X (Z * R⁻¹) hJ hJu hP hPJ (by rw [hXP, hX'P]) (by rw [hXX, hX'J])`. Establish `hmiH : miᴴ * mᴴ = 1` using `by rw [← conjTranspose_mul, hm1, conjTranspose_one]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hinv : ∀ M : Matrix (Fin n) (Fin n) ℂ, mᴴ * M * m = M → miᴴ * M * mi = M` using `fun M hM => by`. Combine the equalities or inequalities in the displayed calculation. Use `⟨g * m, mi, ?_, hinv J hmJ, hinv P hmP, ?_, R⁻¹, hBt, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = J := by rw [hg, hmJ]`. Rewrite using `[Matrix.mul_assoc, hm1, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem iwasawa_witt_flag : ∀ (n r : ℕ) (J P : Matrix (Fin n) (Fin n) ℂ)
     (X Y : Matrix (Fin n) (Fin r) ℂ), J.IsHermitian → IsUnit J.det → Xᴴ * J * X = 0 →

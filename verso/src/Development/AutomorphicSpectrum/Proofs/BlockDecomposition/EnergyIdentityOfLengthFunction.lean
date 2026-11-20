@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.WaveSpd.Vanish
 variable {n : ℕ} {W : Type} [NormedAddCommGroup W]
 
 /- English proof (translation)
-Unfold `dens`. Establish `: 0 ≤ ∑ p : Ix n, ‖Rt (hm p) u s y‖ ^ 2` using `Finset.sum_nonneg (fun _ _ => by positivity)`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem dens_nonneg [NormedSpace ℝ W] (u : ℝ → Mat n → W) (s : ℝ) (y : Mat n) : 0 ≤ dens u s y := by
   unfold dens
@@ -22,7 +22,7 @@ theorem dens_nonneg [NormedSpace ℝ W] (u : ℝ → Mat n → W) (s : ℝ) (y :
   positivity
 
 /- English proof (translation)
-Unfold `dens`. Establish `: 0 ≤ ∑ p : Ix n, ‖Rt (hm p) u s y‖ ^ 2` using `Finset.sum_nonneg (fun _ _ => by positivity)`. Use polynomial arithmetic with `[sq_nonneg ‖dt u s y‖]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_le_dens [NormedSpace ℝ W] (u : ℝ → Mat n → W) (s : ℝ) (y : Mat n) :
     ‖u s y‖ ^ 2 ≤ dens u s y := by
@@ -31,9 +31,9 @@ theorem sq_le_dens [NormedSpace ℝ W] (u : ℝ → Mat n → W) (s : ℝ) (y : 
   nlinarith [sq_nonneg ‖dt u s y‖]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -, -⟩` from `GlobalTheory.CompanionTheory.WaveSpd.sm_calculus u hu`. Establish `a : ContinuousOn (dt u s) (GLs n)` using `((GlobalTheory.CompanionTheory.WaveSpd.sm_calculus (dt u) h1).2.2.1 s).continuousOn`. Establish `b : ContinuousOn (u s) (GLs n)` using `(h3 s).continuousOn`. Establish `c : ∀ p : Ix n, ContinuousOn (Rt (hm p) u s) (GLs n)` using `fun p => ((GlobalTheory.CompanionTheory.WaveSpd.sm_calculus (Rt (hm p) u) (h2 (hm p))).2.2.1 s).continuousOn`. Unfold `dens`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `((a.norm.pow 2).add (continuousOn_const.mul ?_)).add (b.norm.pow 2)` and prove the remaining obligations. Conclude with `continuousOn_finsetSum _ (fun p _ => (c p).norm.pow 2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dens_continuousOn [NormedSpace ℝ W] (u : ℝ → Mat n → W) (hu : Sm u) (s : ℝ) :
     ContinuousOn (dens u s) (GLs n) := by
@@ -47,11 +47,11 @@ theorem dens_continuousOn [NormedSpace ℝ W] (u : ℝ → Mat n → W) (hu : Sm
   exact continuousOn_finsetSum _ (fun p _ => (c p).norm.pow 2)
 
 /- English proof (translation)
-Distinguish the cases in `hc : 1 ≤ ℓ y - r`. Rewrite using `[hχ _ hc, zero_mul]`. Establish `hlt : ℓ y < r + 1` using `by linarith`. Establish `hnh : GLs n ∈ nhds y` using `isOpen_GLs.mem_nhds hy`. Establish `hca : ContinuousAt ℓ y` using `hℓ.continuousAt hnh`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : u 0 =ᶠ[nhds y] fun _ => 0` using `by filter_upwards [hca.eventually_lt continuousAt_const hlt, hnh] with z hz hzG`. Conclude with `h0 z hzG hz`. Establish `hR : ∀ p : Ix n, Rt (hm p) u 0 y = 0` using `fun p => by`. Express the relevant statement in the definitionally equal form `fderiv ℝ (u 0) y (y * hm p) = 0`. Rewrite using `[hev.fderiv_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hd : dens u 0 y = 0`. Unfold `dens`. Simplify using `[hR, h1 y hy, h0 y hy hlt]`. Rewrite using `[hd, mul_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weighted_zero [NormedSpace ℝ W] (ℓ : Mat n → ℝ) (hℓ : ContinuousOn ℓ (GLs n))
     (χ : ℝ → ℝ) (hχ : ∀ x, 1 ≤ x → χ x = 0) (u : ℝ → Mat n → W) (r : ℝ)
@@ -75,19 +75,19 @@ theorem weighted_zero [NormedSpace ℝ W] (ℓ : Mat n → ℝ) (hℓ : Continuo
     rw [hd, mul_zero]
 
 /- English proof (translation)
-Introduce `n W _ _ _ _ μ _ ℓ hℓ hcpt C₁ hC₁ hb hdiv χ hχs hχd hχ0 hχ1 u hu A hwave C hC r hχ2 h0 h1 t ht y hy hyt`. Take `⟨K, hK⟩` from `GlobalTheory.T.energy_estimate_of_length_function μ ℓ hℓ hcpt C₁ hC₁ hb hdiv χ hχs hχd hχ0 hχ1 u hu A hwave C hC r`. Use `choose e' he' hle using hK`. Establish `hℓc : ContinuousOn ℓ (GLs n)` using `hℓ.continuousOn`. Establish `hnn : ∀ (s : ℝ) (z : G n), 0 ≤ χ (ℓ z.val + C * s - r) * dens u s z.val` using `fun s z => mul_nonneg (hχ0 _) (dens_nonneg u s _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : (∫ z : G n, χ (ℓ z.val + C * t - r) * dens u t z.val ∂μ) = 0`. Use `GlobalTheory.CompanionTheory.WaveSpd.GronwallZero.eq_zero_of_deriv_le_mul (fun s => ∫ z : G n, χ (ℓ z.val + C * s - r) * dens u s z.val ∂μ) e' K t ht he' hle (fun s => integral_nonneg (hnn s)) ?_` and prove the remaining obligations. Establish `: ∀ z : G n, χ (ℓ z.val + C * 0 - r) * dens u 0 z.val = 0` using `fun z => by`. Use `weighted_zero ℓ hℓc χ hχ1 u r h0 h1 z.val (val_mem_GLs z)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, integral_zero]`. Establish `hval : Continuous (fun z : G n => z.val)` using `Units.continuous_val`. Establish `hcont : Continuous (fun z : G n => χ (ℓ z.val + C * t - r) * dens u t z.val)`. Establish `c1 : Continuous (fun z : G n => ℓ z.val)` using `hℓc.comp_continuous hval val_mem_GLs`. Establish `c2 : Continuous (fun z : G n => dens u t z.val)` using `(dens_continuousOn u hu t).comp_continuous hval val_mem_GLs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hχs.continuous.comp ((c1.add continuous_const).sub continuous_const)).mul c2`. Establish `hsupp : HasCompactSupport (fun z : G n => χ (ℓ z.val + C * t - r) * dens u t z.val)`. Use `HasCompactSupport.intro (hcpt (1 + r - C * t)) ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hz' : 1 + r - C * t < ℓ z.val` using `not_le.1 hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: χ (ℓ z.val + C * t - r) = 0` using `hχ1 _ (by linarith)`. Simplify using `only [this, zero_mul]`. Set `yu : G n` to `Matrix.GeneralLinearGroup.mkOfDetNeZero y hy`. Establish `hyu : yu.val = y` using `rfl`. Establish `hat : χ (ℓ y + C * t - r) * dens u t y = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `hcont.integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := μ) (x := yu) hsupp (fun z => hnn t z) (by simpa [hyu] using hne)` as an intermediate fact. Conclude with `this.ne' hzero`. Rewrite `hat` using `[hχ2 _ (by linarith), one_mul]`. Establish `hsq` using `sq_le_dens u t y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hsq` using `[hat]`. Establish `: ‖u t y‖ ^ 2 = 0` using `le_antisymm hsq (by positivity)`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem energy_vanish : ∀ {n : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W]
     [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]

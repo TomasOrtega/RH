@@ -14,13 +14,13 @@ open GlobalTheory.AscFin
 namespace GlobalTheory.ModBarOff
 
 /- English proof (translation)
-Establish `ht0 : t ≠ 0` using `fun h => ht (h ▸ v.asIdeal.zero_mem)`. Establish `hF : (t : D.host.F) ≠ 0` using `by exact_mod_cast ht0`. Establish `hI0 : (I : GlobalTheory.SeeSaw.FI D) ≠ 0`. Introduce `h`. Rewrite `hI` using `[h, FractionalIdeal.mem_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hF ((map_eq_zero _).1 hI)`. Establish `e : 𝔞 * (I : GlobalTheory.SeeSaw.FI D)⁻¹ * (I : GlobalTheory.SeeSaw.FI D) = 𝔞`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hI0, mul_one]`. Prove the components needed by the constructor for the conclusion. Use `revert s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, h1, h2, a, ha, rfl⟩`. Take `⟨g1, g2⟩` from `GlobalTheory.IdVGen.smul_inv_mem ht h1 h2`. Use `AddSubgroup.subset_closure ⟨_, g1, g2, _, ?_, GlobalTheory.IdVGen.tmul_eq ht α a⟩` and prove the remaining obligations. Rewrite using `[← e, mul_comm (algebraMap D.host.F D.host.E (t : D.host.F)) a]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `FractionalIdeal.mul_mem_mul ha hI`. Use `fun h => GlobalTheory.SeeSaw.idV_mono ?_ v h` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `FractionalIdeal.coeIdeal_le_one`. Use `_ = _ := mul_one _`.
+A detailed English derivation is pending.
 -/
 theorem idV_mul_inv_iff {D : D7} {v : GlobalTheory.FinPl.Pl D} (I : Ideal (𝓞 D.host.E)) (t : 𝓞 D.host.F) (ht : t ∉ v.asIdeal)
     (hI : algebraMap D.host.F D.host.E (t : D.host.F) ∈ (I : GlobalTheory.SeeSaw.FI D))
@@ -50,13 +50,13 @@ theorem idV_mul_inv_iff {D : D7} {v : GlobalTheory.FinPl.Pl D} (I : Ideal (𝓞 
       _ = _ := mul_one _
 
 /- English proof (translation)
-Establish `h : ∀ u : HeightOneSpectrum (𝓞 D.host.F), ∃ t : 𝓞 D.host.F, t ∉ v.asIdeal ∧ (u ∈ P.S0 → t ∈ u.asIdeal)`. Introduce `u`. Distinguish the cases in `hu : u ∈ P.S0`. Establish `hne : ¬ u.asIdeal ≤ v.asIdeal` using `fun hle => hv ((HeightOneSpectrum.ext (u.isMaximal.eq_of_le v.isPrime.ne_top hle)) ▸ hu)`. Take `⟨t, h1, h2⟩` from `SetLike.not_le_iff_exists.1 hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, h2, fun _ => h1⟩`. Conclude with `⟨1, (Ideal.ne_top_iff_one _).1 v.isPrime.ne_top, fun h => absurd h hu⟩`. Use `choose t ht1 ht2 using h`. Use `⟨∏ u ∈ P.S0, t u ^ P.depth sc u, ?_, ?_⟩` and prove the remaining obligations. Use `v.isPrime` as an intermediate fact.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `prod_mem (S := v.asIdeal.primeCompl) fun u _ => pow_mem (show t u ∈ v.asIdeal.primeCompl from ht1 u) _`. Rewrite using `[map_prod]`. Use `Ideal.prod_mem_prod fun u hu => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Use `Ideal.pow_mem_pow ?_ _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ht2 u hu`. Establish `h2 : t u ∈ ((P.w u).under (𝓞 D.host.F)).asIdeal` using `by rw [P.under_w hu]; exact h1`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_modul {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) {v : GlobalTheory.FinPl.Pl D}
     (hv : v ∉ P.S0) : ∃ t : 𝓞 D.host.F, t ∉ v.asIdeal ∧
@@ -82,9 +82,9 @@ theorem exists_mem_modul {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (sc 
     exact h2
 
 /- English proof (translation)
-Introduce `D T L P sc v hv 𝔞 s`. Take `⟨t, ht, hm⟩` from `exists_mem_modul P sc hv`. Use `idV_mul_inv_iff _ t ht ?_ 𝔞 s` and prove the remaining obligations. Establish `h1 : algebraMap D.host.F D.host.E (t : D.host.F) ∈ ((P.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨_, hm, rfl⟩`. Establish `h2` using `(GlobalTheory.ChiGrid.StairConj.mem_coe_iff D _ _).1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : D.host.conj (algebraMap D.host.F D.host.E (t : D.host.F)) = algebraMap D.host.F D.host.E (t : D.host.F)` using `(D.host.conjE_mem_hostF_iff _).1 (t : D.host.F).2`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idV_mul_modulBar_inv : ∀ {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) {v : GlobalTheory.FinPl.Pl D}, v ∉ P.S0 → ∀ (𝔞 : GlobalTheory.SeeSaw.FI D) (s : AE D), s ∈ GlobalTheory.SeeSaw.idV (𝔞 * ((P.modulBar sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹) v ↔ s ∈ GlobalTheory.SeeSaw.idV 𝔞 v := by
   intro D T L P sc v hv 𝔞 s

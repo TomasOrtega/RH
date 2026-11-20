@@ -32,15 +32,15 @@ def FiniteGroupLifts : Prop :=
     IsBaseFrame V β Λ N → L.Q = ∅ → (∀ PP ∈ L.Pg, ∀ PP' ∈ L.Pg, ¬ IsConjPl PP PP') → LiftsExist V β L
 
 /- English proof (translation)
-Introduce `hc`. Establish `hov : ∀ {j : Fin 2} {u : Pl D.host.E}, P.Div j u → ((D.host.g j : ℕ) : 𝓞 D.host.E) ∈ u.asIdeal`. Introduce `j u hu`. Establish `h1` using `P.pb_over j`. Rewrite `h1` using `[← hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g j : ℕ) : 𝓞 D.host.K) ∈ u.asIdeal` using `h1`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hle : D.host.conj • w.asIdeal ≤ w'.asIdeal`. Introduce `y hy`. Rewrite `hy` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz, hzv⟩` from `hc _ hy`. Establish `e : z = y` using `RingOfIntegers.ext (hzv.trans ((bridge_star_holds D.R D.host _).trans (D.host.conj.apply_symm_apply (y : D.host.E))))`. Conclude with `e ▸ hz`. Establish `hmax : (D.host.conj • w.asIdeal).IsMaximal`. Use `w.isPrime` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => w.ne_bot ?_` and prove the remaining obligations. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h0` as an intermediate fact. Simplify using `using this`. Establish `heq : D.host.conj • w.asIdeal = w'.asIdeal` using `hmax.eq_of_le w'.isPrime.ne_top hle`. Establish `hm` using `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) w (hov hw)).2.2.2 (P.pb k) (P.pb_over k) w' ((GlobalTheory.Mem.Chr.conjPl_iff_smul D.host.conj w w').2 heq)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : D.host.g k = D.host.g k'` using `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) w' hm.1).1.symm.trans (GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k') (D.host.g_prime k') (D.nd.g_split k') w' (hov hw')).1`. Choose the witnesses or unpack the hypotheses as in `rfl : k = k' := by`. Use `D.host.g_ne` as an intermediate fact. Apply the tactic sequence `fin_cases k <;> fin_cases k' <;> first | rfl | exact absurd hg this | exact absurd hg.symm this`. Conclude with `hm.2.1 hw hw'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem not_isConjPl_of_div {D : D7} (P : Formalism.L2.Host.PiBar D.host) {k k' : Fin 2} {w w' : Pl D.host.E}
     (hw : P.Div k w) (hw' : P.Div k' w') : ¬ IsConjPl w w' := by
@@ -75,7 +75,7 @@ theorem not_isConjPl_of_div {D : D7} (P : Formalism.L2.Host.PiBar D.host) {k k' 
   exact hm.2.1 hw hw'
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Conclude with `Submodule.span_mono fun T h => ⟨h.aut, h.cusp, fun v k hk g => hχ k hk ▸ h.lev v k hk g, h.equiv, h.cont⟩`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mult_congr {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : Datum.InfFam D) (M : DSModel V S) {J J' : Set (GA D V)}
     {χ χ' : GA D V → ℂ} (hJ : J = J') (hχ : ∀ k ∈ J, χ k = χ' k) : Mult θ M J χ ≤ Mult θ M J' χ' := by
@@ -83,7 +83,7 @@ theorem mult_congr {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : Datum
   exact Submodule.span_mono fun T h => ⟨h.aut, h.cusp, fun v k hk g => hχ k hk ▸ h.lev v k hk g, h.equiv, h.cont⟩
 
 /- English proof (translation)
-Use `conv_rhs => rw [← he]`. Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype _ _ (by simp)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_coeff_of_idem {H : Type} [Group H] [Fintype H] {e : MonoidAlgebra ℂ H} (he : e * e = e) (g : H) :
     ∑ a, e.coeff a * e.coeff (a⁻¹ * g) = e.coeff g := by
@@ -91,9 +91,9 @@ theorem conv_coeff_of_idem {H : Type} [Group H] [Fintype H] {e : MonoidAlgebra �
   rw [MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype _ _ (by simp)]
 
 /- English proof (translation)
-Use `letI I : Fintype (G0 L.Pg L.r) := Fintype.ofEquiv G eG.toEquiv`. Establish `e : ∀ F', ∑ g, c g • actG0 V β L (eG g) F' = ∑ g ∈ @Finset.univ _ I, c (eG.symm g) • actG0 V β L g F'` using `fun F' => @Fintype.sum_equiv _ _ _ _ I _ eG.toEquiv _ _ fun g => by simp`. Rewrite using `[e, e]`. Use `@GlobalTheory.FlagAction.convIdempotent_act D V β L I hL (fun g => c (eG.symm g)) (fun g => ?_) F hF` and prove the remaining obligations. Rewrite using `[← hc (eG.symm g)]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `@Fintype.sum_equiv _ _ _ I _ _ eG.symm.toEquiv _ _ fun a => by simp`.
+A detailed English derivation is pending.
 -/
 theorem sum_act_idem {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (hL : LiftsExist V β L)
     {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ) (hc : ∀ g, ∑ a, c a * c (a⁻¹ * g) = c g)
@@ -113,9 +113,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Take `⟨eR, -, -, h, -⟩` from `h`. Use `letI : Fintype (G0g D.nd) := Fintype.ofEquiv G eR.toEquiv`. Unfold `RealDat.eC`. Simplify using `only [h, map_mul, map_inv]`. Rewrite using `[← conv_coeff_of_idem (GlobalTheory.GoodLatCompare.goodSeriesIdempotent_central_idempotent D).2 (eR g)]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.sum_equiv eR.toEquiv _ _ fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem eC_conv (h : R.grp_record) (g : G) :
     ∑ a, RealDat.eC (A := A) D.what₂.embLL a * RealDat.eC (A := A) D.what₂.embLL (a⁻¹ * g) = RealDat.eC (A := A) D.what₂.embLL g := by
@@ -127,7 +127,7 @@ theorem eC_conv (h : R.grp_record) (g : G) :
   exact Fintype.sum_equiv eR.toEquiv _ _ fun _ => rfl
 
 /- English proof (translation)
-Unfold `RealDat.thDn`. Rewrite using `[LinearMap.comp_apply]`. Conclude with `Submodule.coe_mem _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thDn_mem_CC (t : T) (x : (R.HX t).H) : R.thDn t x ∈ R.CC t 0 := by
   unfold RealDat.thDn
@@ -135,7 +135,7 @@ theorem thDn_mem_CC (t : T) (x : (R.HX t).H) : R.thDn t x ∈ R.CC t 0 := by
   exact Submodule.coe_mem _
 
 /- English proof (translation)
-Establish `hr : (Yc D 0).rank = D.R.r`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Simplify using `[Ranks.rankY]`. Take `⟨h2, h3⟩` from `GlobalTheory.levG_twist_trivial_of_rank_eq (Yc D 0) (R.βY 0) D.R.r D.R.t (r_le_Y 0) hr R.Pg (R.Q t) R.triv R.chi (R.xiR t)`. Conclude with `mult_congr R.θ (R.MY 0) (congrArg SetLike.coe h2) h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mult_datYt_le (t : T) :
     Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.datYt t 0 R.triv)) (levChi _ (R.βY 0) (R.datYt t 0 R.triv)) ≤
@@ -146,7 +146,7 @@ theorem mult_datYt_le (t : T) :
   exact mult_congr R.θ (R.MY 0) (congrArg SetLike.coe h2) h3
 
 /- English proof (translation)
-The claim follows from `mult_datYt_le R t ((mem_multT R.θ (R.MY 0) _ _ _).1 (thDn_mem_CC R t x))`.
+A detailed English derivation is pending.
 -/
 theorem thDn_mem (t : T) (x : (R.HX t).H) :
     (PiTensorProduct.lift.symm : (SmT (R.MY 0) →ₗ[ℂ] (GA D (Yc D 0) → ℂ)) ≃ₗ[ℂ] MMap (R.MY 0)) (R.thDn t x) ∈
@@ -154,7 +154,7 @@ theorem thDn_mem (t : T) (x : (R.HX t).H) :
   mult_datYt_le R t ((mem_multT R.θ (R.MY 0) _ _ _).1 (thDn_mem_CC R t x))
 
 /- English proof (translation)
-Unfold `RealDat.e0 gaL`. Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem goodRowsProjector_apply_eq_sum (F : GA D (Yc D 0) → ℂ) :
     R.e0 F = ∑ g, RealDat.eC (A := A) D.what₂.embLL g • actG0 (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG g) F := by
@@ -163,9 +163,9 @@ theorem goodRowsProjector_apply_eq_sum (F : GA D (Yc D 0) → ℂ) :
   rfl
 
 /- English proof (translation)
-Use `choose U' hU' hv using fun g => hA R.θ (R.MY 0) (R.βY 0) (R.dat0 R.triv) (R.eG g) U hU`. Establish `e : postOn (R.MY 0) R.e0 U = ∑ g, RealDat.eC (A` using `A) D.what₂.embLL g • U' g := by`. Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.sum_apply]`. Use `(goodRowsProjector_apply_eq_sum R (U v)).trans (Finset.sum_congr rfl fun g _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MultilinearMap.smul_apply, hv]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (hU' g)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodProjector_levelMultiplicitySpace_mem_goodRows (hA : ActPreservesMult) {U : MMap (R.MY 0)}
     (hU : U ∈ Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv))) :
@@ -180,7 +180,7 @@ theorem goodProjector_levelMultiplicitySpace_mem_goodRows (hA : ActPreservesMult
   exact Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (hU' g)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`. Use `hL _ _ _ _ _ hc rfl fun w hw w' hw' => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `(h.Pg w).1 hw`. Take `⟨k', hk'⟩` from `(h.Pg w').1 hw'`. Conclude with `not_isConjPl_of_div _ hk hk'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lifts_exist_at_base_level (hL : FiniteGroupLifts) (h : R.toLevCh.Is A.μ0) :
     LiftsExist (Yc D 0) (R.βY 0) (R.dat0 R.triv) := by
@@ -191,7 +191,7 @@ theorem lifts_exist_at_base_level (hL : FiniteGroupLifts) (h : R.toLevCh.Is A.μ
   exact not_isConjPl_of_div _ hk hk'
 
 /- English proof (translation)
-Rewrite using `[goodRowsProjector_apply_eq_sum, goodRowsProjector_apply_eq_sum]`. Conclude with `sum_act_idem _ _ _ (lifts_exist_at_base_level R hL h) R.eG _ (eC_conv R hr) hF`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeProjector_idempotent_compositeLift (hL : FiniteGroupLifts) (h : R.toLevCh.Is A.μ0) (hr : R.grp_record) {F : GA D (Yc D 0) → ℂ}
     (hF : HasType (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv)) F) : R.e0 (R.e0 F) = R.e0 F := by
@@ -201,9 +201,9 @@ theorem heckeProjector_idempotent_compositeLift (hL : FiniteGroupLifts) (h : R.t
 end
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R h hr hE t`. Use `(GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveLiftExistence.exists_represents_iff hE t).2 fun x => ?_` and prove the remaining obligations. Establish `h1` using `thDn_mem R t x`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveLiftExistence.projLift_apply]`. Use `(mem_goodPart _ _ _ _ _ _).2 ⟨goodProjector_levelMultiplicitySpace_mem_goodRows R hA h1, fun v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `heckeProjector_idempotent_compositeLift R hL h hr (GlobalTheory.hasType_of_mem_mult R.θ (R.MY 0) (R.βY 0) _ _ h1 v)`.
+A detailed English derivation is pending.
 -/
 theorem projLiftExists_of (hA : ActPreservesMult) (hL : FiniteGroupLifts) : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveLiftExistence.ProjLiftExists := by
   intro D G _ _ Pl0 T A Ks _ _ _ R h hr hE t
@@ -214,7 +214,7 @@ theorem projLiftExists_of (hA : ActPreservesMult) (hL : FiniteGroupLifts) : Glob
   exact heckeProjector_idempotent_compositeLift R hL h hr (GlobalTheory.hasType_of_mem_mult R.θ (R.MY 0) (R.βY 0) _ _ h1 v)
 
 /- English proof (translation)
-The claim follows from `projLiftExists_of GlobalTheory.T.levelMultiplicity_stable_under_action GlobalTheory.T.finite_group_lifts_to_parahoric_level`.
+A detailed English derivation is pending.
 -/
 theorem projLiftExists : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveLiftExistence.ProjLiftExists :=
   projLiftExists_of GlobalTheory.T.levelMultiplicity_stable_under_action GlobalTheory.T.finite_group_lifts_to_parahoric_level

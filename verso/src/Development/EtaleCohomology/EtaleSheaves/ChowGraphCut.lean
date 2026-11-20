@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry LateralTheory.E.t_E2Cut LateralTheo
 namespace LateralTheory.E.ChowGraphCut
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `iso e he => exact inferInstance`. Consider the case `comp l k hl _ ih`. Use `hl.1` as an intermediate fact. Conclude with `inferInstance`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iterLine_isProper {P S : Scheme.{0}} {q : P ⟶ S} (h : IterLine q) : IsProper q := by
   induction h with
@@ -42,9 +42,9 @@ def Core : Prop := ∀ {S X₁ : Scheme.{0}} (p₁ : X₁ ⟶ S) [IsProper p₁]
       s ≫ i ≫ pullback.fst p₁ q = V.ι
 
 /- English proof (translation)
-Introduce `A _ X₁ p₁ _ hX`. Use `hX` as an intermediate fact. Take `⟨n, U, hUa, hUn, hUc⟩` from `hC A p₁ inferInstance`. Use `choose Pj qj W e hq he hc using fun j => hE A p₁ (U j) (hUa j)`. Take `⟨P, q, π, hq', hπ, hUP⟩` from `hP n Pj qj hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsep : ∀ j, IsSeparated (qj j)` using `fun j => by`. Use `iterLine_isProper (hq j)` as an intermediate fact. Use `infer_instance`. Take `⟨X', i, V, s, h1, h2, h3, h4⟩` from `hK p₁ hX n U Pj qj W e P q π hUn hUc hsep he hc hπ hUP`. Conclude with `⟨P, q, X', i, V, s, hq', h1, h2, h3, h4⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal_of (hC : Cover) (hE : Embed) (hP : Prod) (hK : Core) : ChowGraph := by
   intro A _ X₁ p₁ _ hX

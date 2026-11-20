@@ -18,13 +18,13 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ConeSmall
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hc e' he' K μK μ hK hμK hμ`. Take `⟨C, hC, h3⟩` from `GlobalTheory.T.config_b_eigen_integral_measure hP (GlobalTheory.T.eisenstein_at_minus_rho hP) F E σ B a b G G₁ H H' hc e' he' K μK μ hK hμK hμ`. Use `⟨C, hC, fun X om om' om₁ om₁' hT hT₁ Φ' hΦ' fa fb hsp h₁ m hm h => ?_⟩` and prove the remaining obligations. Take `⟨fa', hla, hct⟩` from `h3 X om om' om₁ om₁' hT hT₁ Φ' hΦ'`. Establish `hlb` using `GlobalTheory.T.config_b_eigen_integral_haar hP F E σ B a b G G₁ H H' hc e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ'.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsp' : Split2 G₁.W H' X (G.M'.I om' Φ') fa' (fun h => C * coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' (((a - (b + 2)) / 2 + 1 : ℕ) : ℂ) h)`. Use `⟨hct, hla, fun t m' hm' h' => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hlb t m' hm' h']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨x, -, hx⟩` from `(GlobalTheory.T.split_existence hP F E σ B a (b + 2) G X om om' hT (a + b) G₁.W H' a (a + b + 1) hc.hH').2 Φ' hΦ'`. Establish `e1` using `hx (fa, fb) hsp`. Establish `e2` using `hx (fa', fun h => C * coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' (((a - (b + 2)) / 2 + 1 : ℕ) : ℂ) h) hsp'`. Establish `hfb : fb = _` using `congrArg Prod.snd (e1.trans e2.symm)`. Rewrite using `[hfb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[GlobalTheory.T.config_b_eigen_integral_stabilizer hP F E σ B a b G G₁ H H' hc e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h₁ m hm h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctSmallCone : GlobalTheory.ThK.KP → GlobalTheory.ThK.CTSmallCone := by
   intro hP F E _ _ _ _ _ σ B a b G G₁ H H' hc e' he' K μK μ hK hμK hμ

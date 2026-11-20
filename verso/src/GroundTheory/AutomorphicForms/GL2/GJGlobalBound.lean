@@ -15,15 +15,15 @@ open Reduction AutomorphicForm RightCosetSpace GJMatrix
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Establish `hsplit : Ioi (0 : ℝ) = Ioo 0 1 ∪ Ici 1`. Use extensionality with `t`. Simplify using `only [mem_Ioi, mem_union, mem_Ioo, mem_Ici]`. Prove the components needed by the constructor for the conclusion. Introduce `ht`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : t < 1`. Conclude with `Or.inl ⟨ht, h⟩`. Conclude with `Or.inr (not_lt.1 h)`. Introduce and unpack `(h | h)`. Conclude with `h.1`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hsplit]`. Use `IntegrableOn.union ?_ ?_` and prove the remaining obligations. Establish `h1 : IntegrableOn (fun t : ℝ => A * t ^ (σ - 1 + a)) (Ioo 0 1)` using `((intervalIntegral.integrableOn_Ioo_rpow_iff one_pos).2 (by linarith)).const_mul A`. Use `h1.congr_fun (fun t ht => ?_) measurableSet_Ioo` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos ht.2]`. Rewrite using `[Real.rpow_add ht.1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integrableOn_Ici_iff_integrableOn_Ioi]`. Establish `h1 : IntegrableOn (fun t : ℝ => B * t ^ (σ - 1 + b)) (Ioi 1)` using `((integrableOn_Ioi_rpow_iff one_pos).2 (by linarith)).const_mul B`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.congr_fun (fun t ht => ?_) measurableSet_Ioi` and prove the remaining obligations. Establish `ht' : ¬ t < 1` using `not_lt.2 (le_of_lt ht)`. Simplify using `only [if_neg ht']`. Rewrite using `[Real.rpow_add (lt_trans one_pos ht)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integrableOn_rpow_mul_ite {A B a b σ : ℝ} (ha : -σ < a) (hb : b < -σ) :
     IntegrableOn (fun t : ℝ => t ^ (σ - 1) * (if t < 1 then A * t ^ a else B * t ^ b)) (Ioi 0) := by
@@ -56,7 +56,7 @@ theorem integrableOn_rpow_mul_ite {A B a b σ : ℝ} (ha : -σ < a) (hb : b < -�
     ring
 
 /- English proof (translation)
-Establish `hs'` using `hs.comp_injective (Units.val_injective (α := Matrix (Fin n) (Fin n) K))`. Conclude with `⟨hs', Summable.tsum_le_tsum_of_inj _ Units.val_injective (fun _ _ => norm_nonneg _) (fun _ => le_rfl) hs' hs⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tsum_norm_GL_le {Ψ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ} (a b : Matrix (Fin n) (Fin n) 𝔸[K])
     (hs : Summable fun ξ : Matrix (Fin n) (Fin n) K => ‖Ψ (a * ratMat ξ * b)‖) :
@@ -68,9 +68,9 @@ theorem tsum_norm_GL_le {Ψ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ} (a b : Mat
     (fun _ => le_rfl) hs' hs⟩
 
 /- English proof (translation)
-Rewrite using `[← (Equiv.inv (GL (Fin n) K)).tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `congr 2`. Simplify using `only [Equiv.inv_apply]`. Establish `e : (centralSection K n t * x⁻¹ * AdelicGLn.diagonal K n γ⁻¹ * y)⁻¹ = centralSection K n t⁻¹ * y⁻¹ * AdelicGLn.diagonal K n γ * x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_inv (AdelicGLn.diagonal K n)]`. Establish `e1 : (centralSection K n t * x⁻¹ * (AdelicGLn.diagonal K n γ)⁻¹ * y)⁻¹ = (y⁻¹ * AdelicGLn.diagonal K n γ * x) * (centralSection K n t)⁻¹` using `by group`. Rewrite using `[e1, ← map_inv, ← centralSection_mul_comm t⁻¹ (y⁻¹ * AdelicGLn.diagonal K n γ * x)]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, Units.val_mul, Units.val_mul, coe_diagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tsum_norm_inv_eq (Ψ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ) (t : {r : ℝ // 0 < r})
     (x y : AdelicGLn.AdelicGL K n) :
@@ -93,7 +93,7 @@ theorem tsum_norm_inv_eq (Ψ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ) (t : {r :
   rw [e, Units.val_mul, Units.val_mul, coe_diagonal]
 
 /- English proof (translation)
-Rewrite using `[map_inv (AdelicGLn.diagonal K n)]`. Establish `e1 : (centralSection K n t * x⁻¹ * AdelicGLn.diagonal K n γ * y)⁻¹ = (y⁻¹ * (AdelicGLn.diagonal K n γ)⁻¹ * x) * (centralSection K n t)⁻¹` using `by group`. Rewrite using `[e1, ← map_inv (centralSection K n) t, ← centralSection_mul_comm t⁻¹ (y⁻¹ * (AdelicGLn.diagonal K n γ)⁻¹ * x)]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_centralSection_mul (t : {r : ℝ // 0 < r}) (x y : AdelicGLn.AdelicGL K n)
     (γ : GL (Fin n) K) :
@@ -107,19 +107,19 @@ theorem inv_centralSection_mul (t : {r : ℝ // 0 < r}) (x y : AdelicGLn.AdelicG
   simp only [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `Real.rpow_le_rpow_of_exponent_le hs (le_max_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem rpow_le_of_one_lt {s M : ℝ} (hs : 1 ≤ s) : s ^ M ≤ s ^ max M 0 :=
   Real.rpow_le_rpow_of_exponent_le hs (le_max_left _ _)
 
 /- English proof (translation)
-Take `⟨C₁, M₁, hC₁0, hC₁⟩` from `exists_bound_tsum hΦ h₁ h₂`. Take `⟨D, -, hD⟩` from `exists_decay_tsum hn0 hΦ h₁ h₂ N`. Use `⟨C₁, M₁, D, fun t x y => ?_⟩` and prove the remaining obligations. Take `⟨hs, hb⟩` from `hC₁ x x.2 y y.2 t`. Establish `hGL` using `tsum_norm_GL_le _ _ hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : ∀ γ : GL (Fin n) K, ‖Φ ((centralSection K n t * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])‖ = ‖Φ (((centralSection K n t * (x : AdelicGLn.AdelicGL K n)⁻¹ : AdelicGLn.AdelicG …` using `fun γ => by`. Rewrite using `[coe_mul_diagonal_mul]`. Repeatedly rewrite using `[e]`. Use `⟨hGL.1, ?_⟩` and prove the remaining obligations. Use `split_ifs with ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ht0 : (0 : ℝ) < t` using `t.2`. Establish `h1 : 1 ≤ (t : ℝ)⁻¹` using `(one_le_inv₀ ht0).2 ht.le`. Establish `hmax : max 1 (t : ℝ)⁻¹ = (t : ℝ)⁻¹` using `max_eq_right h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmax, Real.rpow_neg ht0.le, ← Real.inv_rpow ht0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (rpow_le_of_one_lt h1) hC₁0`. Use `(hD x x.2 y y.2 t (not_lt.1 ht)).2` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_GL (hn0 : 0 < n) {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) {φ₁ φ₂ : AdelicGLn.AdelicGL K n → ℂ}
@@ -166,19 +166,17 @@ theorem exists_bound_GL (hn0 : 0 < n) {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → �
     exact this
 
 /- English proof (translation)
-Establish `hΦh` using `adelicMatrixFourier_mem hΦ`. Take `⟨C₂, M₂, hC₂0, hC₂⟩` from `exists_bound_tsum hΦh h₂ h₁`. Take `⟨D, -, hD⟩` from `exists_decay_tsum hn0 hΦh h₂ h₁ N`. Use `⟨C₂, M₂, D, fun t x y => ?_⟩` and prove the remaining obligations. Use `set Φh := adelicMatrixFourier K Φ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hs, hb⟩` from `hC₂ y y.2 x x.2 t⁻¹`. Establish `hGL` using `tsum_norm_GL_le _ _ hs`. Establish `e : ∀ γ : GL (Fin n) K, ‖Φh (((centralSection K n t * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n))⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])‖ = (fun δ : GL (Fin n) K => ‖Φh (((centralSection K n t⁻¹ * (y : AdelicGLn.Ad …` using `fun γ => by`. Simplify using `only`. Rewrite using `[inv_centralSection_mul, coe_mul_diagonal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : Summable (fun γ : GL (Fin n) K => ‖Φh (((centralSection K n t * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n))⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])‖)`. Repeatedly rewrite using `[e]`. Conclude with `(Equiv.inv (GL (Fin n) K)).summable_iff.2 hGL.1`. Use `⟨hsum, ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_norm_inv_eq]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : (0 : ℝ) < t` using `t.2`. Establish `hti : ((t⁻¹ : {r : ℝ // 0 < r}) : ℝ) = (t : ℝ)⁻¹` using `Positive.coe_inv t`. Use `split_ifs with ht`. Establish `h1 : 1 ≤ ((t⁻¹ : {r : ℝ // 0 < r}) : ℝ)`. Rewrite using `[hti]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(one_le_inv₀ ht0).2 ht.le`. Use `(hD y y.2 x x.2 t⁻¹ h1).2` as an intermediate fact. Establish `e2 : ∀ γ : GL (Fin n) K, ‖Φh ((centralSection K n t⁻¹ * (y : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (x : AdelicGLn.AdelicGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])‖ = ‖Φh (((centralSection K n t⁻¹ * (y : AdelicGLn.AdelicGL K n)⁻¹ : AdelicGLn. …` using `fun γ => by`. Rewrite using `[coe_mul_diagonal_mul]`. Rewrite `this` using `[e2]`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm ‖φ₂ _‖]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hti, Real.inv_rpow ht0.le, Real.rpow_neg ht0.le, inv_inv]`. Establish `h1 : 1 ≤ (t : ℝ)` using `not_lt.1 ht`. Rewrite using `[mul_comm ‖φ₂ _‖]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hti, inv_inv, max_eq_right h1]`. Conclude with `mul_le_mul_of_nonneg_left (rpow_le_of_one_lt h1) hC₂0`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_GL_inv (hn0 : 0 < n) {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) {φ₁ φ₂ : AdelicGLn.AdelicGL K n → ℂ}
@@ -255,9 +253,9 @@ variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 local notation "Γ₁" => rationalGLOne K n
 
 /- English proof (translation)
-Establish `hF : μ (fundamentalDomain Γ₁) < ⊤` using `measure_fundamentalDomain_rationalGLOne_lt_top μ`. Establish `hT : ∀ x y : normOneGL K n, ‖conj (φ₂ (x : AdelicGLn.AdelicGL K n)) * φ₁ (y : AdelicGLn.AdelicGL K n) * ∑' γ : GL (Fin n) K, Ξ (centralSection K n t * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n))‖ ≤ b`. Introduce `x y`. Take `⟨hs, hle⟩` from `hb x y`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (mul_le_mul_of_nonneg_left (norm_tsum_le_tsum_norm hs) (mul_nonneg (norm_nonneg _) (norm_nonneg _))) hle`. Unfold `thetaPairing`. Establish `hin : ∀ x : normOneGL K n, ‖∫ y in fundamentalDomain Γ₁, conj (φ₂ (x : AdelicGLn.AdelicGL K n)) * φ₁ (y : AdelicGLn.AdelicGL K n) * ∑' γ : GL (Fin n) K, Ξ (centralSection K n t * (x : AdelicGLn.AdelicGL K n)⁻¹ * AdelicGLn.diagonal K n γ * (y : AdelicGLn.AdelicGL K n)) ∂μ‖ ≤ b * ( …` using `fun x => norm_setIntegral_le_of_norm_le_const hF fun y _ => hT x y`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_thetaPairing_le {φ₁ φ₂ Ξ : AdelicGLn.AdelicGL K n → ℂ} (t : {r : ℝ // 0 < r}) {b : ℝ}
     (hb : ∀ x y : normOneGL K n,

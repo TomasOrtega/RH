@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ hφ x hx`. Take `⟨s, hsub, hs⟩` from `GlobalTheory.T.config_a_theta_lift_recursion hKP F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Take `⟨y, hy, rfl⟩` from `hsub hx`. Establish `hT : KEqOn B G₁.M om₁ R₁.p (lowPartInf B G₁.M R₁.p) (φ ∘ₗ s)`. Introduce `k₁ hk₁ g hg g₁ hg₁ hgl h hh h₁ hh₁ hTe`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk, hL⟩` from `GlobalTheory.T.levi_lift_maximal_compact F E σ B _ _ G.W G₁.W H' 0 (b + 1) _ _ hM.triple.base.cm hM.triple.geo.hW hC.hH' k₁ hk₁`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hfe⟩ : ∃ f ∈ G.M.Pol B.ψ B.emb, R.p f = s (R₁.p g) := by`. Establish `hmem : s (R₁.p g) ∈ (G.M.Pol B.ψ B.emb).map R.p`. Rewrite using `[hM.real.quot.onto]`. Discharge the goal by the elementary cases of `trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Take `⟨f, hf, e⟩` from `hmem`. Conclude with `⟨f, hf, e⟩`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hM.triple.base hM.triple.geo.hM hM.triple.weil k hk`. Establish `h1` using `hs k₁ hk₁ k hk hL g hg g₁ hg₁ hgl f hf (A f) (hA f) hfe.symm`. Establish `h2` using `hφ.cpt k hk 1 k₁ hL hk₁ f hf (A f) (hA f) h hh h₁ hh₁ (by rw [hfe]; exact hTe)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.T.lowPart_preserved_by_equivariant hKP F E σ B b a' G₁ X om₁ om₁' R₁ Rf₁ hM₁ (φ ∘ₗ s) hT y hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frobInf_twPart_le_lowPartInf : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

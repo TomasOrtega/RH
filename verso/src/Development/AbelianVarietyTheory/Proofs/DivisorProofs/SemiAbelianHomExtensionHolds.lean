@@ -5,7 +5,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.GlobalTheory.ImportsAl
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension`.
+A detailed English derivation is pending.
 -/
 theorem semiAbelianHomExtension_holds : GlobalTheory.Published.SemiAbelianHomExtension :=
   GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension

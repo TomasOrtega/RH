@@ -20,7 +20,7 @@ def skipIx (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) : Ix R S → Ix (R + 1) (S 
   | .inr j => .inr (s₀.succAbove j)
 
 /- English proof (translation)
-Apply the tactic sequence `rintro (i | i) (j | j) h <;> simp_all [skipIx, Fin.succAbove_right_inj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skipIx_injective (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) : Function.Injective (skipIx r₀ s₀) := by
   rintro (i | i) (j | j) h <;> simp_all [skipIx, Fin.succAbove_right_inj]
@@ -92,11 +92,11 @@ namespace GlobalTheory.FockIncl
 variable (F : Type) [Field F] [NumberField F] (P Q : ℕ) {R S : ℕ}
 
 /- English proof (translation)
-Establish `hi : Function.Injective (Prod.map (id : Ix P Q → Ix P Q) (skipIx r₀ s₀))` using `Function.Injective.prodMap Function.injective_id (skipIx_injective r₀ s₀)`. Establish `hc : (PiTensorProduct.map fun _ : InfinitePlace F => (MvPolynomial.killCompl (R` using `ℂ) hi).toLinearMap) ∘ₗ tensIncl F P Q r₀ s₀ = LinearMap.id := by`. Rewrite using `[tensIncl, ← PiTensorProduct.map_comp]`. Establish `: ∀ _ : InfinitePlace F, (MvPolynomial.killCompl (R` using `ℂ) hi).toLinearMap ∘ₗ (polIncl P Q r₀ s₀).toLinearMap = LinearMap.id := fun _ => by`. Rewrite using `[← AlgHom.comp_toLinearMap, polIncl, MvPolynomial.killCompl_comp_rename]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[show (fun i : InfinitePlace F => (MvPolynomial.killCompl (R := ℂ) hi).toLinearMap ∘ₗ (polIncl P Q r₀ s₀).toLinearMap) = fun _ => LinearMap.id from funext this]`. Conclude with `PiTensorProduct.map_id`. Introduce `a b hab`. Use `congrArg (PiTensorProduct.map fun _ : InfinitePlace F => (MvPolynomial.killCompl (R := ℂ) hi).toLinearMap) hab` as an intermediate fact.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[← LinearMap.comp_apply, hc]`.
+A detailed English derivation is pending.
 -/
 theorem tensIncl_injective (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) : Function.Injective (tensIncl F P Q r₀ s₀) := by
   have hi : Function.Injective (Prod.map (id : Ix P Q → Ix P Q) (skipIx r₀ s₀)) :=

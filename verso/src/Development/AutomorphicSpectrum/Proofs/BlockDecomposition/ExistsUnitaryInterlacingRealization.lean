@@ -14,17 +14,17 @@ namespace GlobalTheory.CompanionTheory.RgHeFrame
 def sg (b : Bool) : ℝ := if b then 1 else -1
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sg_mul_self (b : Bool) : sg b * sg b = 1 := by cases b <;> simp [sg]
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sg_ne_zero (b : Bool) : sg b ≠ 0 := by cases b <;> simp [sg]
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sg_cast (b : Bool) : ((sg b : ℝ) : ℂ) = if b then 1 else -1 := by cases b <;> simp [sg]
 
@@ -45,7 +45,7 @@ def X0 (ε' : Fin n → Bool) (d : Fin (n + 1) → ℝ) (d' : Fin n → ℝ) (r 
     (fun _ => Sum.elim (fun b => sg (ε' b) * yy ε' d d' b) (fun _ => pfX d d') t) r
 
 /- English proof (translation)
-Unfold `yy`. Rewrite using `[Real.mul_self_sqrt h.le]`. Use `sg_mul_self (ε' j)` as an intermediate fact. Take the linear combination `(-pfR d d' j) * this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma yy_sq {ε' : Fin n → Bool} {d : Fin (n + 1) → ℝ} {d' : Fin n → ℝ} {j : Fin n}
     (h : 0 < -(sg (ε' j) * pfR d d' j)) :
@@ -56,13 +56,13 @@ lemma yy_sq {ε' : Fin n → Bool} {d : Fin (n + 1) → ℝ} {d' : Fin n → ℝ
   linear_combination (-pfR d d' j) * this
 
 /- English proof (translation)
-Establish `hcc : cc d d' i * cc d d' i = 1 / |pfD d d' i|`. Unfold `cc`. Rewrite using `[div_mul_div_comm, Real.mul_self_sqrt (abs_nonneg _), one_mul]`. Rewrite using `[hcc]`. Consider the cases of `b with`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `true`. Establish `hp : 0 < pfD d d' i` using `by simpa [sg] using h`. Rewrite using `[abs_of_pos hp]`. Simplify using `only [sg]`. Clear the denominators using the available nonvanishing facts.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using the standard rewrite rules. Consider the case `false`. Establish `hp : pfD d d' i < 0` using `by simpa [sg] using h`. Rewrite using `[abs_of_neg hp]`. Simplify using `only [sg]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hp.ne` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 -/
 lemma cc_sq {d : Fin (n + 1) → ℝ} {d' : Fin n → ℝ} {i : Fin (n + 1)} {b : Bool}
     (h : 0 < sg b * pfD d d' i) : cc d d' i * cc d d' i * pfD d d' i = sg b := by
@@ -86,7 +86,7 @@ lemma cc_sq {d : Fin (n + 1) → ℝ} {d' : Fin n → ℝ} {i : Fin (n + 1)} {b 
     simp
 
 /- English proof (translation)
-Introduce `h0`. Use `cc_sq h` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `sg_ne_zero b (by simpa using this.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cc_ne_zero {d : Fin (n + 1) → ℝ} {d' : Fin n → ℝ} {i : Fin (n + 1)} {b : Bool}
     (h : 0 < sg b * pfD d d' i) : cc d d' i ≠ 0 := by
@@ -96,9 +96,9 @@ lemma cc_ne_zero {d : Fin (n + 1) → ℝ} {d' : Fin n → ℝ} {i : Fin (n + 1)
   exact sg_ne_zero b (by simpa using this.symm)
 
 /- English proof (translation)
-Rewrite using `[mul_sum, ← sum_neg_distrib]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `yy_sq (hR j)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [div_eq_mul_inv, mul_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h]; ring`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma sum_terms {ε' : Fin n → Bool} {d : Fin (n + 1) → ℝ} {d' : Fin n → ℝ}
     (hR : ∀ j, 0 < -(sg (ε' j) * pfR d d' j)) (i k : Fin (n + 1)) :
@@ -116,13 +116,13 @@ lemma sum_terms {ε' : Fin n → Bool} {d : Fin (n + 1) → ℝ} {d' : Fin n →
     _ = _ := by rw [h]; ring
 
 /- English proof (translation)
-Rewrite using `[← Equiv.sum_comp e, Fintype.sum_sum_type]`. Simplify using `only [Equiv.symm_apply_apply, G0, Sum.elim_inl, Sum.elim_inr, hs, hz, univ_unique, sum_singleton]`. Rewrite using `[sum_terms hR]`. Establish `hz1 : sg true = 1` using `by simp [sg]`. Rewrite using `[hz1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Establish `h1` using `GlobalTheory.T.partial_fraction_square_identity d d' hinj i`. Establish `h2` using `cc_sq (hD i)`. Simplify using `only [if_true]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∑ j, pfR d d' j / ((d i - d' j) * (d i - d' j)) = ∑ j, pfR d d' j / (d i - d' j) ^ 2`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[sq]`. Rewrite using `[h3]`. Take the linear combination `(cc d d' i * cc d d' i) * h1 + h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h1` using `GlobalTheory.T.partial_fraction_off_diagonal_identity d d' hinj i k hik`. Simplify using `only [hik, if_false]`. Take the linear combination `(cc d d' i * cc d d' k) * h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma gram {ε : Fin (n + 1) → Bool} {d : Fin (n + 1) → ℝ} {ε' : Fin n → Bool} {d' : Fin n → ℝ}
     (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (hz : ε (e (Sum.inr ())) = true)
@@ -153,13 +153,13 @@ lemma gram {ε : Fin (n + 1) → Bool} {d : Fin (n + 1) → ℝ} {ε' : Fin n �
     linear_combination (cc d d' i * cc d d' k) * h1
 
 /- English proof (translation)
-Establish `hne : ∀ j, d i - d' j ≠ 0`. Introduce `j h`. Establish `: (Sum.inl i : Fin (n + 1) ⊕ Fin n) = Sum.inr j` using `hinj (by simpa using sub_eq_zero.mp h)`. Simplify using `at this`. Rewrite using `[Fintype.sum_sum_type]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `r with a | u` into its components or cases. Simplify using `only [X0, G0, Sum.elim_inl, Sum.elim_inr, univ_unique, sum_singleton, ite_mul, zero_mul, sum_ite_eq, mem_univ, if_true]`. Use `hne a` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [X0, G0, Sum.elim_inl, Sum.elim_inr, univ_unique, sum_singleton]`. Establish `h0` using `GlobalTheory.T.partial_fraction_diagonal_identity d d' hinj i`. Establish `h1 : ∑ j, sg (ε' j) * yy ε' d d' j * (cc d d' i * yy ε' d d' j / (d i - d' j)) = -(cc d d' i * ∑ j, pfR d d' j / (d i - d' j))`. Rewrite using `[mul_sum, ← sum_neg_distrib]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `yy_sq (hR j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Take the linear combination `(-cc d d' i) * h0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma inter {d : Fin (n + 1) → ℝ} {ε' : Fin n → Bool} {d' : Fin n → ℝ}
     (hinj : Function.Injective (Sum.elim d d'))
@@ -191,19 +191,19 @@ lemma inter {d : Fin (n + 1) → ℝ} {ε' : Fin n → Bool} {d' : Fin n → ℝ
     linear_combination (-cc d d' i) * h0
 
 /- English proof (translation)
-Introduce `n ε d ε' d' e hz hs hinj hD hR`. Establish `hD' : ∀ i, 0 < sg (ε i) * pfD d d' i` using `hD`. Establish `hR' : ∀ j, 0 < -(sg (ε' j) * pfR d d' j)` using `hR`. Take `⟨g, hg⟩ : ∃ g : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, ∀ r i, g r i = ((G0 ε' d d' (e.symm r) i : ℝ) : ℂ)` from `⟨Matrix.of _, fun _ _ => rfl⟩`. Take `⟨X, hX⟩ : ∃ X : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, ∀ r t, X r t = ((X0 ε' d d' (e.symm r) (e.symm t) : ℝ) : ℂ)` from `⟨Matrix.of _, fun _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨g, X, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.REAL.inUJ Formalism.REAL.Jm`. Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply, hg, RCLike.star_def, Complex.conj_ofReal]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `gram e hz hs hinj hD' hR' i k`. Establish `h2` using `congrArg (fun x : ℝ => (x : ℂ)) h`. Simplify using `only [Complex.ofReal_sum, Complex.ofReal_mul, sg_cast] at h2`. Rewrite using `[h2]`. Distinguish the cases in `hik : i = k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hik, sg_cast]`. Simplify using `[hik]`. Use extensionality with `r i`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply, ← Equiv.sum_comp e]`. Simplify using `only [hg, hX, Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `inter (ε' := ε') hinj hR' (e.symm r) i`. Conclude with `h` after adjusting the coercions. Introduce `a b`. Simplify using `only [hX, Equiv.symm_apply_apply, X0, Sum.elim_inl]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[Matrix.mulVec_single_one]`. Express the relevant statement in the definitionally equal form `(Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) i (e (Sum.inr ())) ≠ 0`. Unfold `Formalism.REAL.Jm`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, hg, Equiv.symm_apply_apply, G0, Sum.elim_inr, hz, RCLike.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc` using `cc_ne_zero (hD' i)`. Establish `: ((cc d d' i : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc`. Apply the tactic sequence `cases h : ε i <;> simpa using this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem build : ∀ (n : ℕ) (ε : Fin (n + 1) → Bool) (d : Fin (n + 1) → ℝ) (ε' : Fin n → Bool) (d' : Fin n → ℝ) (e : Fin n ⊕ Unit ≃ Fin (n + 1)), ε (e (Sum.inr ())) = true → (∀ a, ε (e (Sum.inl a)) = ε' a) → Function.Injective (Sum.elim d d') → (∀ i, 0 < (if ε i then (1 : ℝ) else -1) * pfD d d' i) → (∀ j, 0 < -((if ε' j then (1 : ℝ) else -1) * pfR d d' j)) → ∃ g X : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, Formalism.REAL.inUJ ε g ∧ X * g = g * diagonal (fun i => ((d i : ℝ) : ℂ)) ∧ (∀ a b, X (e (Sum.inl a)) (e (Sum.inl b)) = if a = b then ((d' a : ℝ) : ℂ) else 0) ∧ ∀ i, ((Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) *ᵥ (Pi.single (e (Sum.inr ())) (1 : ℂ) : Fin (n + 1) → ℂ)) i ≠ 0 := by
   intro n ε d ε' d' e hz hs hinj hD hR

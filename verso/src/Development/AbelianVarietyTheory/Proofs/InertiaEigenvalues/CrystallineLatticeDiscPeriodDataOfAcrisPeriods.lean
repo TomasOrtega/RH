@@ -27,7 +27,7 @@ namespace GlobalTheory.BSP.SeedAsm
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K)
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.CrisMaps.phiA_extends l).alg]`. Use `congr 1`. Use extensionality with `n`. Rewrite using `[GlobalTheory.RingIface.phiA_coeff, WittVector.coeff_frobenius_charP]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiA_alg (a : Ainf l) : phiA l (algebraMap (Ainf l) (Per.Acris l) a) =
     algebraMap (Ainf l) (Per.Acris l) (WittVector.frobenius a) := by
@@ -37,14 +37,14 @@ theorem phiA_alg (a : Ainf l) : phiA l (algebraMap (Ainf l) (Per.Acris l) a) =
   rw [GlobalTheory.RingIface.phiA_coeff, WittVector.coeff_frobenius_charP]
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.CrisMaps.sigA_extends g).alg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigA_alg (g : Per.Gq l) (a : Ainf l) : sigA g (algebraMap (Ainf l) (Per.Acris l) a) =
     algebraMap (Ainf l) (Per.Acris l) (Per.σA g a) := by
   rw [(GlobalTheory.CrisMaps.sigA_extends g).alg]
 
 /- English proof (translation)
-Take `⟨h0, h1, -, -⟩` from `GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk (Ainf l) bk.ev`. Take `⟨ι, ⟨tb⟩⟩` from `GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk`. Conclude with `(GlobalTheory.T.closedDisc_toDisc_injective_of_adicBasis l K bk (Ainf l) bk.ev ι tb bk.ρ₀ h0 h1).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iA_injective : Function.Injective bk.iA := by
   obtain ⟨h0, h1, -, -⟩ := GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk (Ainf l) bk.ev
@@ -52,7 +52,7 @@ theorem iA_injective : Function.Injective bk.iA := by
   exact (GlobalTheory.T.closedDisc_toDisc_injective_of_adicBasis l K bk (Ainf l) bk.ev ι tb bk.ρ₀ h0 h1).1
 
 /- English proof (translation)
-Take `⟨h0, h1, -, -⟩` from `GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk (Ainf l) bk.ev`. Conclude with `(discAinf_isDomain l K bk bk.ρ₀ h0 h1).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isDomain : IsDomain (bk.DA bk.ρ₀) := by
   obtain ⟨h0, h1, -, -⟩ := GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk (Ainf l) bk.ev
@@ -61,7 +61,7 @@ theorem isDomain : IsDomain (bk.DA bk.ρ₀) := by
 variable {bk}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.acris_disc_ringHom_ext_of_ainf l K bk (Φ.comp γ) (γ.comp (phiA l)) (fun a => by`. Simplify using `only [RingHom.comp_apply, hγ, phiA_alg]`. Conclude with `hΦ.ext a) (fun x => (hΦ.norm_le _).trans (hn x)) (fun x => hn _)`. Conclude with `RingHom.congr_fun h x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_phi (γ : Per.Acris l →+* bk.DA bk.ρ₀) (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a)
     (hn : ∀ x, ‖γ x‖ ≤ 1) (Φ : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (hΦ : IsDiscMap WittVector.frobenius Φ) (x : Per.Acris l) :
@@ -72,7 +72,7 @@ theorem comm_phi (γ : Per.Acris l →+* bk.DA bk.ρ₀) (hγ : ∀ a : Ainf l, 
   exact RingHom.congr_fun h x
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.acris_disc_ringHom_ext_of_ainf l K bk (G.comp γ) (γ.comp (sigA g)) (fun a => by`. Simplify using `only [RingHom.comp_apply, hγ, sigA_alg]`. Conclude with `hG.ext a) (fun x => (hG.norm_le _).trans (hn x)) (fun x => hn _)`. Conclude with `RingHom.congr_fun h x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_sig (γ : Per.Acris l →+* bk.DA bk.ρ₀) (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a)
     (hn : ∀ x, ‖γ x‖ ≤ 1) (g : Per.Gq l) (G : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (hG : IsDiscMap (Per.σA g) G)
@@ -83,11 +83,11 @@ theorem comm_sig (γ : Per.Acris l →+* bk.DA bk.ρ₀) (hγ : ∀ a : Ainf l, 
   exact RingHom.congr_fun h x
 
 /- English proof (translation)
-Take `⟨hE, ε, η, hε, hη⟩` from `hτ`. Take `⟨u, hu⟩` from `GlobalTheory.T.acris_log_teichmuller_associated_sub_one_on_disc l K bk C γ hγ hn`. Take `⟨v, hv⟩` from `GlobalTheory.T.teichmullerTiltMinusOne_associated l ε C.ε hε (core_isEps l C)`. Use `⟨u⁻¹ * Units.map bk.iA.toMonoidHom v * (Units.map bk.iA.toMonoidHom η)⁻¹, ?_⟩` and prove the remaining obligations. Establish `e1 : bk.ev bk.E * τ = η * mu ε` using `by rw [← hE, hη]; rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu' : γ C.t * u = bk.iA (mu ε) * bk.iA v` using `by rw [hu, ← hv, map_mul]`. Rewrite using `[e1, map_mul]`. Simplify using `only [Units.val_mul, Units.coe_map, Units.coe_map_inv, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Establish `hU : (u : bk.DA bk.ρ₀) * ((u⁻¹ : (bk.DA bk.ρ₀)ˣ) : bk.DA bk.ρ₀) = 1` using `Units.mul_inv u`. Establish `hH : bk.iA ((η⁻¹ : (Ainf l)ˣ) : Ainf l) * bk.iA η = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(-(γ C.t)) * hU + ((u⁻¹ : (bk.DA bk.ρ₀)ˣ) : bk.DA bk.ρ₀) * hu' - ((u⁻¹ : (bk.DA bk.ρ₀)ˣ) : bk.DA bk.ρ₀) * bk.iA v * bk.iA (mu ε) * hH`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem acrisToDisc_image_t_eq_unit_mul_period (C : Core l) {τ : Ainf l} (hτ : bk.IsPer τ) (γ : Per.Acris l →+* bk.DA bk.ρ₀)
     (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a) (hn : ∀ x, ‖γ x‖ ≤ 1) :
@@ -106,14 +106,14 @@ theorem acrisToDisc_image_t_eq_unit_mul_period (C : Core l) {τ : Ainf l} (hτ :
     ((u⁻¹ : (bk.DA bk.ρ₀)ˣ) : bk.DA bk.ρ₀) * bk.iA v * bk.iA (mu ε) * hH
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_hom {R S : Type} [CommRing R] [CommRing S] {m n : Type} (f : R →+* S) (c : R)
     (M : Matrix m n R) : (c • M).map f = f c • M.map f := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hc this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_cancel {R : Type} [CommRing R] [IsDomain R] {m n : Type} {c : R} (hc : c ≠ 0)
     {M M' : Matrix m n R} (h : c • M = c • M') : M = M' := by
@@ -123,9 +123,9 @@ theorem smul_cancel {R : Type} [CommRing R] [IsDomain R] {m n : Type} {c : R} (h
   exact mul_left_cancel₀ hc this
 
 /- English proof (translation)
-Take `⟨hE, ε, η, hε, hη⟩` from `hτ`. Rewrite using `[← hE, hη]`. Introduce `h0`. Establish `h1 : WittVector.teichmuller l ε - 1 = 0` using `(Units.mul_right_eq_zero η).1 h0`. Establish `h2 : ε = 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun w => WittVector.coeff w 0) (sub_eq_zero.1 h1)` as an intermediate fact. Simplify using `using this`. Substitute `h2` using the available equality. Conclude with `hε.2 (by simp)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem evE_mul_ne_zero {τ : Ainf l} (hτ : bk.IsPer τ) : bk.ev bk.E * τ ≠ 0 := by
   obtain ⟨hE, ε, η, hε, hη⟩ := hτ
@@ -143,49 +143,41 @@ end GlobalTheory.BSP.SeedAsm
 open GlobalTheory.BSP.SeedAsm in
 
 /- English proof (translation)
-Introduce `l _ K bk C τ hτ d ρ N c₁ c₂ c₃ F F' X X' hF hX hnp Z Z' hZ`. Take `⟨hZZ, hφ, hg, hf1, hf2⟩` from `hZ`. Use `haveI := isDomain bk`. Take `⟨γ, hγ, hn⟩` from `GlobalTheory.T.exists_acris_ring_hom_bounded l K bk`. Take `⟨ν, hν⟩` from `acrisToDisc_image_t_eq_unit_mul_period C hτ γ hγ hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set a := bk.iA (bk.ev bk.E * τ) with ha_def`. Establish `ha : a ≠ 0` using `fun h => evE_mul_ne_zero hτ (iA_injective bk (h.trans (map_zero _).symm))`. Use `set e := bk.iS bk.E with he_def`. Establish `hae : a = e * bk.iA τ` using `by rw [ha_def, map_mul]; rfl`. Establish `he : e ≠ 0` using `fun h => ha (by rw [hae, h, zero_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hγS : ∀ s : bk.S, γ (((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) s) = bk.iS s` using `fun s => hγ _`. Establish `hmapS : ∀ M : Matrix (Fin d) (Fin d) bk.S, (M.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)).map γ = M.map bk.iS` using `fun M => by`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `hγS _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose w hw using fun i j => GlobalTheory.T.acris_fil_dvd_eisenstein_pow_on_disc l K bk C γ hγ hn (2 * N) _ (hf1 i j)`. Use `choose w' hw' using fun i j => GlobalTheory.T.acris_fil_dvd_eisenstein_pow_on_disc l K bk C γ hγ hn (2 * N) _ (hf2 i j)`. Use `set G := Z.map γ`. Use `set G' := Z'.map γ`. Use `set Xs := X.map bk.iS`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set X's := X'.map bk.iS`. Establish `hW1 : G * Xs = e ^ (2 * N) • Matrix.of w`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, ← hw i j, ← Matrix.map_apply (f := γ), Matrix.map_mul, hmapS]`. Establish `hW1' : X's * G' = e ^ (2 * N) • Matrix.of w'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, ← hw' i j, ← Matrix.map_apply (f := γ), Matrix.map_mul, hmapS]`. Establish `hXX : Xs * X's = ((l : bk.DA bk.ρ₀) ^ c₂ * e ^ (2 * N)) • (1 : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀))`. Use `congrArg (Matrix.map · bk.iS) hX` as an intermediate fact. Simplify using `only [Matrix.map_mul, map_smul_hom, Matrix.map_one _ (map_zero _) (map_one _), map_mul, map_pow, map_natCast] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hGG : G * G' = (γ C.t) ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀))`. Use `congrArg (Matrix.map · γ) hZZ` as an intermediate fact. Simplify using `only [Matrix.map_mul, map_smul_hom, Matrix.map_one _ (map_zero _) (map_one _), map_pow] at this`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Lu, hLu⟩` from `isUnit_l_disc l (bk.ev PowerSeries.X) bk.ρ₀`. Use `set μ : bk.DA bk.ρ₀ := (ν : bk.DA bk.ρ₀)`. Use `set μi : bk.DA bk.ρ₀ := ((ν⁻¹ : (bk.DA bk.ρ₀)ˣ) : bk.DA bk.ρ₀)`. Use `set Li : bk.DA bk.ρ₀ := ((Lu⁻¹ : (bk.DA bk.ρ₀)ˣ) : bk.DA bk.ρ₀)`. Establish `hμ : μi * μ = 1` using `Units.inv_mul ν`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL : Li * (l : bk.DA bk.ρ₀) = 1` using `by rw [← hLu]; exact Units.inv_mul Lu`. Establish `c1 : Matrix.of w * X's = ((l : bk.DA bk.ρ₀) ^ c₂) • G`. Apply `smul_cancel (pow_ne_zero (2 * N) he)` to reduce the goal to its premises. Rewrite using `[← Matrix.smul_mul, ← hW1, Matrix.mul_assoc, hXX, Matrix.mul_smul, Matrix.mul_one, smul_smul, mul_comm]`. Establish `c2 : Matrix.of w * Matrix.of w' = ((l : bk.DA bk.ρ₀) ^ c₂ * μ ^ (2 * N) * bk.iA τ ^ (2 * N)) • (1 : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `smul_cancel (pow_ne_zero (2 * N) he)` to reduce the goal to its premises. Apply `smul_cancel (pow_ne_zero (2 * N) he)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hXX, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hGG, smul_smul]`. Use `_ = _ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, smul_smul, hν, hae]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hV : (μi ^ N • Matrix.of w) * X's = (μi ^ N * (l : bk.DA bk.ρ₀) ^ c₂) • G`. Rewrite using `[Matrix.smul_mul, c1, smul_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨Seed.mk N c₁ c₂ c₃ F F' hF X X' hX (fun f g => hnp _ f g) (μi ^ N • Matrix.of w) ((Li ^ c₂ * μi ^ N) • Matrix.of w') ?_ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, c2, smul_smul, smul_smul]`. Use `congr 1`. Establish `h1 : (μi * μ) ^ N = 1` using `by rw [hμ, one_pow]`. Establish `h2 : (Li * (l : bk.DA bk.ρ₀)) ^ c₂ = 1` using `by rw [hL, one_pow]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(bk.iA τ ^ (2 * N)) * ((μi * μ) ^ N * (μi * μ) ^ N * h2 + (μi * μ) ^ N * h1 + h1)`. Introduce `Φ hΦ`. Establish `hP : (Z.map γ).map Φ = (Z.map (phiA l)).map γ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `comm_phi γ hγ hn Φ hΦ _`. Establish `hFm : (F.map (((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev).comp PowerSeries.C)).map γ = F.map (bk.iS.comp PowerSeries.C)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, RingHom.comp_apply]`. Conclude with `hγ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htφ : γ (phiA l C.t) = Φ μ * (bk.iS (frobS l bk.a bk.E) * a)`. Rewrite using `[← comm_phi γ hγ hn Φ hΦ, hν, map_mul]`. Use `congr 1`. Rewrite using `[ha_def, hΦ.ext, map_mul WittVector.frobenius, ← bk.ev_frob, hτ.1, map_mul bk.iA]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hyp` using `congrArg (Matrix.map · γ) hφ`. Simplify using `only [Matrix.map_mul, map_smul_hom, map_mul, map_pow, map_natCast, hFm, hν, htφ] at hyp`. Rewrite using `[hV, map_smul_hom, hP]`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hyp i) j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.smul_mul, map_mul, map_pow, map_natCast] at hij ⊢`. Apply `mul_left_cancel₀ (pow_ne_zero N ha)` to reduce the goal to its premises. Establish `h1 : (μi * μ) ^ N = 1` using `by rw [hμ, one_pow]`. Establish `h3 : (Φ μi * Φ μ) ^ N = 1` using `by rw [← map_mul, hμ, map_one, one_pow]`. Rewrite `hij` using `[show Z.map γ = G from rfl]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(μi ^ N * Φ μi ^ N * (l : bk.DA bk.ρ₀) ^ c₂) * hij - (a ^ N * (l : bk.DA bk.ρ₀) ^ c₁ * Φ μi ^ N * (l : bk.DA bk.ρ₀) ^ c₂ * (Z.map (phiA l)).map γ i j) * h1 + (a ^ N * bk.iS (frobS l bk.a bk.E) ^ N * μi ^ N * (l : bk.DA bk.ρ₀) ^ c₂ * (G * F.map (bk.iS.comp PowerSeries.C)) i j) * h …`. Introduce `g Gm hG`. Establish `hP : (Z.map γ).map Gm = (Z.map (sigA (g : GQ l))).map γ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`.
-
-Conclude with `comm_sig γ hγ hn _ Gm hG _`. Establish `hR : ((ρ g).map ((algebraMap (Ainf l) (Per.Acris l)).comp (algebraMap ℤ_[l] (Ainf l)))).map γ = (ρ g).map (bk.iA.comp (algebraMap ℤ_[l] (Ainf l)))`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, RingHom.comp_apply]`. Conclude with `hγ _`.
-
-Establish `hb : Gm a = bk.iA (Per.σA (g : GQ l) (bk.ev bk.E * τ))` using `by rw [ha_def]; exact hG.ext _`. Establish `htσ : γ (sigA (g : GQ l) C.t) = Gm μ * bk.iA (Per.σA (g : GQ l) (bk.ev bk.E * τ))`. Rewrite using `[← comm_sig γ hγ hn _ Gm hG, hν, map_mul, hb]`. Establish `hyp` using `congrArg (Matrix.map · γ) (hg g)`. Simplify using `only [Matrix.map_mul, map_smul_hom, map_mul, map_pow, hR, hν, htσ] at hyp`.
-
-Rewrite using `[hV, map_smul_hom, hP]`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hyp i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.mul_smul, map_mul, map_pow, map_natCast] at hij ⊢`. Rewrite `hij` using `[show Z.map γ = G from rfl]`.
-
-Establish `h1 : (μi * μ) ^ N = 1` using `by rw [hμ, one_pow]`. Establish `h3 : (Gm μi * Gm μ) ^ N = 1` using `by rw [← map_mul, hμ, map_one, one_pow]`. Rewrite `hij` using `[ha_def, map_mul]`. Take the linear combination `(μi ^ N * Gm μi ^ N * (l : bk.DA bk.ρ₀) ^ c₂) * hij - ((bk.iA (bk.ev bk.E) * bk.iA τ) ^ N * Gm μi ^ N * (l : bk.DA bk.ρ₀) ^ c₂ * ((ρ g).map (bk.iA.comp (algebraMap ℤ_[l] (Ainf l))) * (Z.map (sigA (g : GQ l))).map γ) i j) * h1 + ((bk.iA (Per.σA (g : GQ l) (bk.ev bk.E)) * bk.iA (Pe …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BSP.seed_of_periods : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (τ : Ainf l), bk.IsPer τ → ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (N c₁ c₂ c₃ : ℕ) (F F' : Matrix (Fin d) (Fin d) (Wq l bk.a)) (X X' : Matrix (Fin d) (Fin d) (bk.S)), F * F' = (l : Wq l bk.a) ^ c₃ • (1 : Matrix (Fin d) (Fin d) (Wq l bk.a)) → X * X' = ((l : bk.S) ^ c₂ * bk.E ^ (2 * N)) • (1 : Matrix (Fin d) (Fin d) (bk.S)) → (∀ (B : Obj l ↥(OL K)) (f g : Hom bk.prism B), ∃ k : ℕ, ∀ i j, BK.hf f bk.E ^ (2 * N) ∣ (l : B.A) ^ k * (X'.map (BK.hf f) * X.map (BK.hf g)) i j) → ∀ Z Z' : Matrix (Fin d) (Fin d) (Per.Acris l), (Z * Z' = C.t ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) ∧ (C.t ^ N * (l : Per.Acris l) ^ c₁) • Z.map (phiA l) = phiA l C.t ^ N • (Z * F.map (((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev).comp PowerSeries.C)) ∧ (∀ g : ↥(GK K), C.t ^ N • ((ρ g).map ((algebraMap (Ainf l) (Per.Acris l)).comp (algebraMap ℤ_[l] (Ainf l))) * Z.map (sigA (g : GQ l))) = sigA (g : GQ l) C.t ^ N • Z) ∧ (∀ i j, C.j ((Z * X.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)) i j) ∈ Per.FilP l (2 * N)) ∧ (∀ i j, C.j ((X'.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) * Z') i j) ∈ Per.FilP l (2 * N))) → Nonempty (Seed bk d ρ τ) := by
   intro l _ K bk C τ hτ d ρ N c₁ c₂ c₃ F F' X X' hF hX hnp Z Z' hZ

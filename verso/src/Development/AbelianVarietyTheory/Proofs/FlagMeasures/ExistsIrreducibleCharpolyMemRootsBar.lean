@@ -6,13 +6,11 @@ open scoped Classical
 namespace GlobalTheory.GLm
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Establish `hi : IsIntegral (ZMod g) z` using `Algebra.IsIntegral.isIntegral z`. Set `pb` to `IntermediateField.adjoin.powerBasis hi`. Set `M : Mt g (minpoly (ZMod g) z).natDegree` to `Algebra.leftMulMatrix pb.basis pb.gen`. Establish `hM : M.charpoly = minpoly (ZMod g) z`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `charpoly_leftMulMatrix pb`. Rewrite `h` using `[IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen]`. Conclude with `h`. Establish `hdet : M.det ≠ 0`. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, hM]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)) (minpoly.coeff_zero_ne_zero hi hz)`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Irreducible M.charpoly`. Rewrite using `[hM]`. Conclude with `minpoly.irreducible hi`.
-
-Express the relevant statement in the definitionally equal form `z ∈ Formalism.CyclotomicNorms.rootsBar M.charpoly`. Rewrite using `[hM, Formalism.CyclotomicNorms.rootsBar, mem_roots_map (minpoly.ne_zero hi), ← aeval_def]`. Conclude with `minpoly.aeval _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_irreducible_charpoly_mem_rootsBar (g : ℕ) [Fact g.Prime] (d : ℕ)
     (z : Formalism.CyclotomicNorms.Fbar g) (hz : z ≠ 0) (hd : (minpoly (ZMod g) z).natDegree = d) :

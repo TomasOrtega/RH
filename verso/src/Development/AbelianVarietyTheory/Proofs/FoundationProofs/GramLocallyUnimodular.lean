@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.GramLoc
 
 /- English proof (translation)
-Take `⟨T, rfl⟩` from `hM`. Establish `h1 : ∀ y : T, ∃ s : R, s ∈ p.primeCompl ∧ s • (y : W) ∈ L` using `fun y => h (Submodule.subset_span y.2)`. Use `choose f hf hf' using h1`. Use `⟨∏ y, f y, Submonoid.prod_mem p.primeCompl (fun y _ => hf y), ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => classical`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨x, hx⟩ : T)), mul_smul]`. Conclude with `L.smul_mem _ (hf' ⟨x, hx⟩)`. Consider the case `zero => simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `L.add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `L.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_denom {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W]
     (p : Ideal R) [p.IsPrime] (L M : Submodule R W) (hM : M.FG) (h : M ≤ Formalism.HermitianLatticesTheory.localization₂ p L) :
@@ -64,7 +64,7 @@ def locRing (w : HeightOneSpectrum (𝓞 K)) : Subring K where
     rw [← hr]; ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.prod_mem fun i _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_subring (S : Subring K) (P : Matrix (Fin n) (Fin n) K) (h : ∀ a b, P a b ∈ S) :
     P.det ∈ S := by
@@ -72,20 +72,20 @@ theorem det_mem_subring (S : Subring K) (P : Matrix (Fin n) (Fin n) K) (h : ∀ 
   exact S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.prod_mem fun i _ => h _ _)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem col_mem_colLat (B : GL (Fin n) K) (j : Fin n) :
     (fun a => (B : Matrix (Fin n) (Fin n) K) a j) ∈ colLat B :=
   Submodule.subset_span ⟨j, rfl⟩
 
 /- English proof (translation)
-Unfold `colLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Establish `h : ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (B : Matrix (Fin n) (Fin n) K) = 1` using `Units.inv_mul B`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (congrFun h j) i`. Use `⟨if j = i then 1 else 0, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (B : Matrix (Fin n) (Fin n) K)) j i = _`. Rewrite using `[h2, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨r, hr⟩` from `hx`. Take `⟨u, hu⟩` from `hy`. Conclude with `⟨r + u, by rw [Matrix.mulVec_add, Pi.add_apply, hr, hu]; simp⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul a x _ hx`. Take `⟨r, hr⟩` from `hx`. Use `⟨a * r, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, hr, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_of_mem_colLat (B : GL (Fin n) K) (x : Fin n → K) (hx : x ∈ colLat B) (j : Fin n) :
     ∃ r : 𝓞 K, (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) j = r := by
@@ -114,11 +114,11 @@ theorem coord_of_mem_colLat (B : GL (Fin n) K) (x : Fin n → K) (hx : x ∈ col
 variable [StarRing K]
 
 /- English proof (translation)
-Take `⟨s, hs, r, hr⟩` from `ha`. Distinguish the cases in `h0 : a = 0`. Rewrite using `[h0, ValuationRepresentative.vw_zero]`. Establish `hs0 : (s : K) ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `by exact_mod_cast h`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `h1` using `ValuationRepresentative.vw_mul w _ _ hs0 h0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : vw w (s : K) = 0` using `idxChange_cnt_unit (K := K) w hs`. Establish `h3` using `ValuationRepresentative.vw_int_nonneg w r`. Rewrite `h1` using `[hr, h2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vw_nonneg_of_mem (w : HeightOneSpectrum (𝓞 K)) (a : K) (ha : a ∈ locRing w) :
     0 ≤ vw w a := by
@@ -137,7 +137,7 @@ theorem vw_nonneg_of_mem (w : HeightOneSpectrum (𝓞 K)) (a : K) (ha : a ∈ lo
   omega
 
 /- English proof (translation)
-Introduce `h`. Apply `ht` to reduce the goal to its premises. Use `Ideal.mem_map_of_mem (cO K) h` as an intermediate fact. Rewrite `this` using `[ValuationRepresentative.cO_cO]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cO_notMem (w : HeightOneSpectrum (𝓞 K)) (t : 𝓞 K) (ht : t ∉ (conjPl w).asIdeal) :
     cO K t ∉ w.asIdeal := by
@@ -147,20 +147,20 @@ theorem cO_notMem (w : HeightOneSpectrum (𝓞 K)) (t : 𝓞 K) (ht : t ∉ (con
   rwa [ValuationRepresentative.cO_cO] at this
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨1, one_mem _, by simpa using hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_localization_of_mem {w : HeightOneSpectrum (𝓞 K)} (M : Submodule (𝓞 K) (Fin n → K)) :
     M ≤ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M := fun x hx =>
   ⟨1, one_mem _, by simpa using hx⟩
 
 /- English proof (translation)
-Unfold `IsBasisAt at hB hB'`. Establish `h1` using `mem_localization_of_mem (w := conjPl w) _ (col_mem_colLat B a)`. Establish `h2` using `mem_localization_of_mem (w := w) _ (col_mem_colLat B' b)`. Rewrite `h1` using `[← hB]`. Rewrite `h2` using `[← hB']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht, h1⟩` from `h1`. Take `⟨u, hu, h2⟩` from `h2`. Rewrite `h2` using `[← hM]`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 (h2 _ h1)`. Use `⟨cO K t * u, fun h => (w.isPrime.mem_or_mem h).elim (cO_notMem w t ht) hu, r, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = algebraMap (𝓞 K) K r`. Rewrite using `[hr, Matrix.mul_assoc]`. Establish `hc : ((cO K t * u : 𝓞 K) : K) = star (t : K) * (u : K)`. Rewrite using `[← ValuationRepresentative.cO_apply]`. Conclude with `map_mul (algebraMap (𝓞 K) K) _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Simplify using `only [Matrix.mul_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Pi.smul_apply, Algebra.smul_def, Matrix.conjTranspose_apply, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (t : K) * (u : K) * _ = star (t : K) * _ * (_ * ((u : K) * _))`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gram_mem (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K))
     (hM : hdualFr G M = M) (w : HeightOneSpectrum (𝓞 K)) (B B' : GL (Fin n) K)
@@ -188,17 +188,15 @@ theorem gram_mem (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n �
   ring
 
 /- English proof (translation)
-Unfold `IsBasisAt at hB hB'`. Take `⟨t, ht, h1⟩` from `exists_common_denom (conjPl w).asIdeal (colLat B) M hfg (hB ▸ mem_localization_of_mem M)`. Use `set C : Matrix (Fin n) (Fin n) K := ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) with hC`. Use `set x : Fin n → K := fun i => (G⁻¹ * Cᴴ) i b with hx`. Establish `hGx : G *ᵥ x = fun i => star (C b i)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(G * (G⁻¹ * Cᴴ)) i b = _`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hG, Matrix.conjTranspose_apply]`. Establish `hxM : cO K t • x ∈ hdualFr G M`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `coord_of_mem_colLat B _ (h1 y hy) b`. Use `Submodule.mem_one.2 ⟨cO K r, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((cO K r : 𝓞 K) : K) = _`. Rewrite using `[ValuationRepresentative.cO_apply, ← hr, Matrix.mulVec_smul, Matrix.mulVec_smul, hGx]`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Pi.smul_apply, Algebra.smul_def, star_mul', Finset.mul_sum, star_sum, ← hC]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (t : K) * _ = _ * (star (t : K) * _)`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hxM` using `[hM]`. Establish `h3` using `mem_localization_of_mem (w := w) M hxM`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[hB']`. Take `⟨u, hu, h3⟩` from `h3`. Take `⟨r, hr⟩` from `coord_of_mem_colLat B' _ h3 a`. Use `⟨u * cO K t, fun h => (w.isPrime.mem_or_mem h).elim hu (cO_notMem w t ht), r, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, ← mul_smul, Matrix.mulVec_smul, Pi.smul_apply, Algebra.smul_def]`.
-
-Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gram_inv_mem (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K))
     (hG : IsUnit G.det) (hfg : M.FG)
@@ -236,11 +234,11 @@ theorem gram_inv_mem (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ _ n G M _ hG hM w B B' hB hB'`. Establish `hfg : M.FG` using `hM.1.fg`. Establish `h1` using `gram_mem G M hM.2 w B B' hB hB'`. Establish `h2` using `gram_inv_mem G M hG hfg hM.2 w B B' hB hB'`. Use `⟨fun a b => vw_nonneg_of_mem w _ (h1 a b), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `d1` using `vw_nonneg_of_mem w _ (det_mem_subring _ _ h1)`. Establish `d2` using `vw_nonneg_of_mem w _ (det_mem_subring _ _ h2)`. Establish `e : ((B : Matrix (Fin n) (Fin n) K)ᴴ * G * (B' : Matrix (Fin n) (Fin n) K)) * (((B'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (G⁻¹ * ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᴴ)) = 1`. Establish `e1 : (B' : Matrix (Fin n) (Fin n) K) * ((B'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1` using `Units.mul_inv B'`. Establish `e2 : ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (B : Matrix (Fin n) (Fin n) K) = 1` using `Units.inv_mul B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (B' : Matrix (Fin n) (Fin n) K), e1, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hG, ← Matrix.conjTranspose_mul, e2, Matrix.conjTranspose_one]`. Establish `e'` using `congrArg Matrix.det e`. Rewrite `e'` using `[Matrix.det_mul, Matrix.det_one]`. Establish `e3` using `ValuationRepresentative.vw_mul w _ _ (left_ne_zero_of_mul_eq_one e') (right_ne_zero_of_mul_eq_one e')`. Rewrite `e3` using `[e', ValuationRepresentative.vw_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/

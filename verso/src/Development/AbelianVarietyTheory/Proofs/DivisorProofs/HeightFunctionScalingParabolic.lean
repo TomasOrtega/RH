@@ -12,7 +12,7 @@ namespace GlobalTheory.ResLine
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `Scales at *`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e', Matrix.mul_smul, e, smul_smul, Units.val_mul, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Scales.mul_scales {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {x : Matrix (Fin n) (Fin 1) E}
     {a b : GAd σ J} {l l' : (AF F ⊗[F] E)ˣ} (e : Scales σ J x a l) (e' : Scales σ J x b l') :
@@ -21,11 +21,11 @@ theorem Scales.mul_scales {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fi
   rw [map_mul, Units.val_mul, Matrix.mul_assoc, e', Matrix.mul_smul, e, smul_smul, Units.val_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h D`. Establish `law : ∀ p l, Scales σ J (col X) p l → ∀ g, h (p * g) = absE F E l * h g`. Introduce `p l e g`. Take `⟨p', l', e', k, hk, rfl⟩` from `D.iwa g`. Rewrite using `[← mul_assoc, D.ht _ _ (e.mul_scales e') k hk, D.ht _ _ e' k hk, map_mul, NNReal.coe_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun g => ?_, (GlobalTheory.T.height_function_compact_level_continuous F E σ n J r X Y L a h D).2, fun k hk => ?_, fun g => ?_⟩, law⟩` and prove the remaining obligations. Take `⟨p, l, e, k, hk, rfl⟩` from `D.iwa g`. Rewrite using `[D.ht _ _ e k hk]`. Establish `h1 : absE F E l * absE F E l⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `NNReal.coe_pos.2 (pos_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one h1))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.ht 1 1 (by simp [Scales]) k hk` as an intermediate fact. Simplify using `using this`. Take `⟨p, l, e, k, hk, rfl⟩` from `D.iwa g`. Use `⟨k, hk, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, law p l e, D.ht _ _ e k hk]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawaHeight_isHt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ), Data σ J X Y L a h → IsHt (levelAll σ J L a) h ∧ ∀ p l, Scales σ J (col X) p l → ∀ g, h (p * g) = absE F E l * h g := by
   intro F E _ _ _ _ _ σ n J r X Y L a h D

@@ -16,13 +16,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
 
 /- English proof (translation)
-Take `⟨h1, -, -, h4, h5⟩` from `hs`. Take `⟨r, hr⟩` from `ι.f.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 h1)`. Establish `hr' : ∀ y, r (ι.f y) = y` using `fun y => LinearMap.congr_fun hr y`. Establish `hval : ∀ g, ι.f (r (Y.ρ g (x : Y.V) - (x : Y.V))) = Y.ρ g (x : Y.V) - (x : Y.V)`. Introduce `g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `(h4 (Y.ρ g (x : Y.V) - (x : Y.V))).1 (by rw [map_sub, π.equiv, hZ, sub_self])`. Rewrite using `[← hy, hr']`. Establish `: ContinuousSMul LL T.V` using `IsModuleTopology.toContinuousSMul LL T.V`. Establish `hrc : Continuous r` using `IsModuleTopology.continuous_of_linearMap r`. Establish `: IsTopologicalAddGroup Y.V` using `IsModuleTopology.topologicalAddGroup LL Y.V`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨fun g => r (Y.ρ g (x : Y.V) - (x : Y.V)), ⟨?_, fun g h => ?_⟩, fun g _ => ?_⟩, hval⟩` and prove the remaining obligations. Conclude with `hrc.comp ((Y.cont x).sub continuous_const)`. Apply `h1` to reduce the goal to its premises. Rewrite using `[map_add, ι.equiv, hval, hval, hval, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h5` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ι.f (r _) ∈ _`. Rewrite using `[hval]`. Conclude with `Y.L.T.sub_mem (Y.actT g x).2 x.2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_cocycle [IsTopologicalRing LL] {T Y Z : LocLat G Qp LL O}
     (ι : LatHom T.L Y.L) (π : LatHom Y.L Z.L) (hs : IsSESLat (Qp := Qp) ι π)
@@ -58,13 +58,13 @@ variable {K₀ K : Type} [Field K₀] [Field K]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
 /- English proof (translation)
-Take `⟨e₁, f₀, hf₀, hj, -⟩` from `E.one_e`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hf₀ ▸ Submodule.mem_top : u ∈ Submodule.span O {f₀})`. Establish `hje : E.jD W.one (c • e₁) = (1 : RW) ⊗ₜ[O] u`. Rewrite using `[map_smul, hj, ← hc, TensorProduct.tmul_smul]`. Establish `hφ : W.φD W.one (c • e₁) = c • e₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `E.jD_inj` to reduce the goal to its premises. Rewrite using `[E.jD_φ, hje]`. Simplify using `[TWmap]`. Establish `hγ : ∀ g, W.γD W.one g (c • e₁) = c • e₁`. Introduce `g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, rfl⟩` from `W.resΓ_onto g`. Apply `E.jD_inj` to reduce the goal to its premises. Establish `hact : W.one.actT g u = u` using `Subtype.ext (W.one_triv g u)`. Rewrite using `[E.jD_act, hje]`. Simplify using `[TWact, hact]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨c • e₁, ⟨⟨?_, ?_⟩, ?_⟩, hje⟩` and prove the remaining obligations. Conclude with `LinearMap.mem_ker.2 (sub_eq_zero.2 hφ)`. Conclude with `LinearMap.mem_ker.2 (sub_eq_zero.2 (hγ _))`. Conclude with `(Submodule.mem_iInf _).2 fun δ => (Submodule.mem_iInf _).2 fun _ => LinearMap.mem_ker.2 (sub_eq_zero.2 (hγ δ))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unit_fixed (E : EtTie W RA RW inclR φR gR πA) (u : ↥W.one.L.T) :
     ∃ e₀ ∈ tableLineDegreeTwo.fixDD W W.one, E.jD W.one e₀ = (1 : RW) ⊗ₜ[O] u := by
@@ -93,7 +93,7 @@ theorem exists_unit_fixed (E : EtTie W RA RW inclR φR gR πA) (u : ↥W.one.L.T
 end Generic
 
 /- English proof (translation)
-Use `⟨exists_unit_fixed E, fun T Tp ι π hs x u hu e hδ he p h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_ext_cocycle ι π hs S.W.one_triv x`. Conclude with `⟨c, (dict_of_dense S E hR hDel hdens T Tp _ ι π hs x u e hu he hδ p h1 h2 c hc).symm, hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem herrExt_of_dense (S : LocalSituation.Sit) (E : S.Comparison₂) [IsTopologicalRing S.LL] [T2Space S.LL]
     (hR : Function.Injective (algebraMap S.O S.RW))
@@ -105,9 +105,9 @@ theorem herrExt_of_dense (S : LocalSituation.Sit) (E : S.Comparison₂) [IsTopol
   exact ⟨c, (dict_of_dense S E hR hDel hdens T Tp _ ι π hs x u e hu he hδ p h1 h2 c hc).symm, hc⟩
 
 /- English proof (translation)
-Introduce `l _ K LL hA`. Set `S` to `LocalSituation.sit D.loc HW l (D.locA l) K 1 LL hA.2.2`. Set `E : S.Comparison₂` to `((F l).E K 1 LL hA.2.2).tie`. Establish `: IsTopologicalRing S.LL` using `inferInstanceAs (IsTopologicalRing ↥LL.1.toSubring)`. Establish `: T2Space S.LL` using `inferInstanceAs (T2Space ↥LL.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `herrExt_of_dense S E (algebraMap_RW_injective LL) (fun h2 => absurd (((D.loc l).PD_p K).symm.trans h2) hA.2.1) (dense_DelF_gamK (D.loc l) S.W (D.locA l) fun h2 => absurd h2 hA.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem extension_rule (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) :
     InvariantsGenerators.HerrExtensionEtale D HW F := by
@@ -121,7 +121,7 @@ theorem extension_rule (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) :
     (dense_DelF_gamK (D.loc l) S.W (D.locA l) fun h2 => absurd h2 hA.2.1)
 
 /- English proof (translation)
-Introduce `D HW F _` and use `extension_rule D HW F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extension_rule_stmt :
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), InvariantsGenerators.HerrExtensionEtaleTheorem D HW F :=

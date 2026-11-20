@@ -12,23 +12,23 @@ open scoped nonZeroDivisors IntermediateField
 namespace GlobalTheory.Mem.TorsionDegree
 
 /- English proof (translation)
-Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast NeZero.ne n`. Set `f : ℂ → ℤ →+ (latticeCurve L).toAffine.Point` to `fun ω => (latticePointHom L).comp (zmultiplesHom ℂ (ω / n))`. Establish `hf : ∀ ω (a : ℤ), f ω a = latticePoint L (a * (ω / n))` using `fun ω a => by`. Simplify using `[f]`. Establish `h0 : ∀ ω ∈ L.lattice, f ω n = 0` using `fun ω hω => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hf, latticePoint_eq_zero_iff]`. Use `hω using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Set `t : (Fin 2 → ZMod n) →+ (latticeCurve L).toAffine.Point` to `(ZMod.lift n ⟨f L.ω₁, h0 _ L.ω₁_mem_lattice⟩).comp (Pi.evalAddMonoidHom (fun _ => ZMod n) 0) + (ZMod.lift n ⟨f L.ω₂, h0 _ L.ω₂_mem_lattice⟩).comp (Pi.evalAddMonoidHom (fun _ => ZMod n) 1)`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression.
 
-Establish `ht : ∀ a b : ℤ, t ![(a : ZMod n), (b : ZMod n)] = latticePoint L ((a * L.ω₁ + b * L.ω₂) / n)`. Introduce `a b`. Simplify using `only [t, AddMonoidHom.add_apply, AddMonoidHom.comp_apply, Pi.evalAddMonoidHom_apply, Matrix.cons_val_zero, Matrix.cons_val_one, ZMod.lift_coe, hf]`. Rewrite using `[← latticePoint_add]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨t, (injective_iff_map_eq_zero t).2 fun v hv => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `ZMod.intCast_surjective (v 0)`. Take `⟨b, hb⟩` from `ZMod.intCast_surjective (v 1)`. Establish `e : v = ![(a : ZMod n), (b : ZMod n)]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i; fin_cases i <;> simp [ha, hb]`. Rewrite `hv` using `[e, ht, latticePoint_eq_zero_iff, PeriodPair.mem_lattice]`. Take `⟨c, d, hcd⟩` from `hv`. Establish `h1 : ((a - n * c : ℤ) : ℝ) • L.ω₁ + ((b - n * d : ℤ) : ℝ) • L.ω₂ = 0`. Rewrite `hcd` using `[eq_div_iff hn']`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Complex.real_smul]`. Use `push_cast`. Take the linear combination `-hcd`. Take `⟨h2, h3⟩` from `LinearIndependent.pair_iff.1 L.indep _ _ h1`. Establish `h2' : a = n * c`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: a - n * c = 0` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Establish `h3' : b = n * d`. Establish `: b - n * d = 0` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e, h2', h3']`. Apply the tactic sequence `ext i; fin_cases i <;> simp`. Take `⟨z, rfl⟩` from `latticePoint_surjective L P`. Establish `h1 : latticePoint L (n • z) = 0`. Rewrite using `[← latticePointHom_apply, map_nsmul, latticePointHom_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP`. Rewrite `h1` using `[latticePoint_eq_zero_iff]`. Take `⟨a, b, hab⟩` from `PeriodPair.mem_lattice.1 h1`. Use `⟨_, (ht a b).trans ?_⟩` and prove the remaining obligations. Rewrite using `[hab, nsmul_eq_mul, mul_div_cancel_left₀ _ hn']`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torsion_param_lattice (L : PeriodPair) (n : ℕ) [NeZero n] :
     ∃ t : (Fin 2 → ZMod n) →+ (latticeCurve L).toAffine.Point, Function.Injective t ∧
@@ -83,9 +83,9 @@ theorem exists_torsion_param_lattice (L : PeriodPair) (n : ℕ) [NeZero n] :
     rw [hab, nsmul_eq_mul, mul_div_cancel_left₀ _ hn']
 
 /- English proof (translation)
-Take `⟨L, C, hC⟩` from `exists_variableChange_eq_latticeCurve W`. Set `e` to `variableChangePointEquiv C hC`. Take `⟨t, hi, hs⟩` from `exists_torsion_param_lattice L n`. Use `⟨e.toAddMonoidHom.comp t, e.injective.comp hi, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hs (e.symm P) (by rw [← map_nsmul, hP, map_zero])`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, by simp [hv]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_torsion_param (W : WeierstrassCurve ℂ) [W.IsElliptic] (n : ℕ) [NeZero n] :
     ∃ t : (Fin 2 → ZMod n) →+ W.toAffine.Point, Function.Injective t ∧
@@ -98,13 +98,13 @@ theorem exists_torsion_param (W : WeierstrassCurve ℂ) [W.IsElliptic] (n : ℕ)
   exact ⟨v, by simp [hv]⟩
 
 /- English proof (translation)
-Establish `hv : ∀ v : Fin 2 → ZMod n, n • v = 0` using `fun v => by`. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `h1 : ∀ v, ∃ Q, ι Q = t v` using `fun v => hr _ (by rw [← map_nsmul, hv, map_zero])`. Use `choose s hs' using h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ v, ∃ w, t w = φ (s v)` using `fun v => hs _ (by`. Establish `: n • s v = 0` using `hι (by rw [map_nsmul, hs', ← map_nsmul, hv, map_zero, map_zero])`. Rewrite using `[← map_nsmul, this, map_zero])`. Use `choose u hu using h2`. Establish `hadd : ∀ v w, u (v + w) = u v + u w` using `fun v w => hi (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_add, hu, hu, hu, ← map_add]`. Use `congr 1`. Conclude with `hι (by rw [map_add, hs', hs', hs', map_add]))`. Set `U` to `(AddMonoidHom.mk' u hadd).toZModLinearMap n`. Establish `hU : Function.Injective U` using `fun v w h => hi (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : u v = u w` using `h`. Rewrite using `[← hs', ← hs', hφ ((hu v).symm.trans (h' ▸ hu w))])`. Use `⟨LinearEquiv.ofBijective U ⟨hU, Finite.surjective_of_injective hU⟩, fun v Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[hι (hQ.trans (hs' v).symm), ← hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_linearEquiv {G G' : Type} [AddCommGroup G] [AddCommGroup G'] (n : ℕ) [NeZero n]
     (t : (Fin 2 → ZMod n) →+ G') (hi : Function.Injective t) (hs : ∀ P, n • P = 0 → ∃ v, t v = P)
@@ -132,7 +132,7 @@ theorem exists_linearEquiv {G G' : Type} [AddCommGroup G] [AddCommGroup G'] (n :
   rfl
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (Matrix.GeneralLinearGroup.toLin.trans (LinearMap.GeneralLinearGroup.generalLinearEquiv _ _)).symm.toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem card_linearEquiv (n : ℕ) :
     Nat.card ((Fin 2 → ZMod n) ≃ₗ[ZMod n] (Fin 2 → ZMod n)) = Nat.card (GL (Fin 2) (ZMod n)) :=
@@ -140,17 +140,15 @@ theorem card_linearEquiv (n : ℕ) :
     (LinearMap.GeneralLinearGroup.generalLinearEquiv _ _)).symm.toEquiv
 
 /- English proof (translation)
-Use `set S := torsionCoords (A.baseChange ℂ) n with hS`. Use `set M := IntermediateField.adjoin k S with hM`. Establish `: (A.baseChange ℂ).IsElliptic` using `inferInstanceAs (A.map _).IsElliptic`. Take `⟨t, hi, hs⟩` from `exists_torsion_param (A.baseChange ℂ) n`. Set `m : (M →ₐ[k] ℂ) → (A.baseChange M).toAffine.Point →+ (A.baseChange ℂ).toAffine.Point` to `fun φ => WeierstrassCurve.Affine.Point.map (W' := A.toAffine) φ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ φ, Function.Injective (m φ)` using `fun φ => WeierstrassCurve.Affine.Point.map_injective φ`. Establish `hpt : ∀ (x y : ℂ) (h : (A.baseChange ℂ).toAffine.Nonsingular x y) (hx : x ∈ M) (hy : y ∈ M), (A.baseChange M).toAffine.Nonsingular ⟨x, hx⟩ ⟨y, hy⟩` using `fun x y h hx hy => (A.toAffine.baseChange_nonsingular (f := M.val) M.val.injective ⟨x, hx⟩ ⟨y, hy⟩).mp h`. Establish `hr : ∀ P, n • P = 0 → ∃ Q, m M.val Q = P`. Introduce and unpack `(_ | ⟨x, y, h⟩) hP`. Conclude with `⟨0, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨.some _ _ (hpt x y h (IntermediateField.subset_adjoin k S ⟨x, y, h, hP, Or.inl rfl⟩) (IntermediateField.subset_adjoin k S ⟨x, y, h, hP, Or.inr rfl⟩)), rfl⟩`. Use `choose g hg using fun φ => exists_linearEquiv n t hi hs (m M.val) (m φ) (hm _) (hm φ) hr`. Establish `hginj : Function.Injective g`. Introduce `φ ψ h`. Use `IntermediateField.algHom_ext_of_eq_adjoin k hM ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `z ⟨x, y, hxy, h0, hz⟩`. Take `⟨v, hv⟩` from `hs _ h0`. Establish `hx` using `IntermediateField.subset_adjoin k S ⟨x, y, hxy, h0, Or.inl rfl⟩`. Establish `hy` using `IntermediateField.subset_adjoin k S ⟨x, y, hxy, h0, Or.inr rfl⟩`. Establish `e : m φ (.some _ _ (hpt x y hxy hx hy)) = m ψ (.some _ _ (hpt x y hxy hx hy))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hg φ v _ hv.symm, hg ψ v _ hv.symm, h]`. Establish `e'` using `WeierstrassCurve.Affine.Point.some.inj e`. Break down `hz with rfl | rfl` into its components or cases. Conclude with `e'.1`. Conclude with `e'.2`.
-
-Rewrite using `[← card_linearEquiv, ← AlgHom.card k M ℂ, ← Nat.card_eq_fintype_card]`. Establish `: Finite ((Fin 2 → ZMod n) ≃ₗ[ZMod n] (Fin 2 → ZMod n))` using `Finite.of_injective _ (DFunLike.coe_injective (F := (Fin 2 → ZMod n) ≃ₗ[ZMod n] (Fin 2 → ZMod n)))`. Conclude with `Nat.card_le_card_of_injective g hginj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_adjoin_le {k : Type} [Field k] [CharZero k] [Algebra k ℂ] (A : WeierstrassCurve k) [A.IsElliptic]
     (n : ℕ) [NeZero n] [FiniteDimensional k (IntermediateField.adjoin k (torsionCoords (A.baseChange ℂ) n))] :
@@ -192,9 +190,9 @@ theorem finrank_adjoin_le {k : Type} [Field k] [CharZero k] [Algebra k ℂ] (A :
   exact Nat.card_le_card_of_injective g hginj
 
 /- English proof (translation)
-Rewrite using `[← IntermediateField.restrictScalars_adjoin_eq_sup]`. Establish `: IsScalarTower K H (IntermediateField.adjoin H S)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: Module.Free H (IntermediateField.adjoin H S)` using `Module.Free.of_divisionRing _ _`. Establish `: Module.Free K H` using `Module.Free.of_divisionRing _ _`. Establish `h : FiniteDimensional K (IntermediateField.adjoin H S)` using `Module.Finite.trans H _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h, (Module.finrank_mul_finrank K H (IntermediateField.adjoin H S)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem finrank_sup_adjoin {K L : Type} [Field K] [Field L] [Algebra K L] (H : IntermediateField K L) (S : Set L)
     [FiniteDimensional K H] [FiniteDimensional H (IntermediateField.adjoin H S)] :
@@ -210,17 +208,15 @@ theorem finrank_sup_adjoin {K L : Type} [Field K] [Field L] [Algebra K L] (H : I
     (Module.finrank_mul_finrank K H (IntermediateField.adjoin H S)).symm⟩
 
 /- English proof (translation)
-Introduce `d F _ A _`. Establish `hint : IsIntegral ℚ (sqrtNegNat d)` using `IsIntegral.of_pow (n := 2) (by norm_num) (by`. Rewrite using `[sqrtNegNat_sq]`. Conclude with `(isIntegral_natCast d).neg)`. Establish `: FiniteDimensional ℚ ℚ⟮sqrtNegNat d⟯` using `IntermediateField.adjoin.finiteDimensional hint`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : FiniteDimensional ℚ (hilbertField d F)`. Unfold `hilbertField`. Use `infer_instance`. Use `set H := hilbertField d F with hHdef`. Set `A' : WeierstrassCurve H` to `A.map (IntermediateField.inclusion (le_sup_right : F ≤ H)).toRingHom`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hA : A'.baseChange ℂ = A.baseChange ℂ`. Simplify using `only [A', WeierstrassCurve.baseChange, WeierstrassCurve.map_map]`. Both sides reduce to the same expression. Establish `: (A.baseChange ℂ).IsElliptic` using `inferInstanceAs (A.map _).IsElliptic`. Establish `: A'.IsElliptic`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [A']`. Conclude with `WeierstrassCurve.instIsEllipticMap _ _`. Establish `hfin` using `finite_torsionCoords (A.baseChange ℂ) 12 (by norm_num)`. Establish `halg` using `FieldsEx.isAlgebraic_of_torsionCoords_finite F A 12 hfin`. Establish `: Finite (torsionCoords (A'.baseChange ℂ) 12)` using `hA ▸ hfin.to_subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM : FiniteDimensional H (IntermediateField.adjoin H (torsionCoords (A'.baseChange ℂ) 12))` using `IntermediateField.finiteDimensional_adjoin fun z hz => (halg z (hA ▸ hz)).isIntegral.tower_top`. Establish `hle` using `finrank_adjoin_le A' 12`. Take `⟨h1, h2⟩` from `finrank_sup_adjoin H (torsionCoords (A'.baseChange ℂ) 12)`. Establish `e : torsionField d A = H ⊔ IntermediateField.adjoin ℚ (torsionCoords (A'.baseChange ℂ) 12)`. Rewrite using `[hA]`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `⟨h1, h2.le.trans (Nat.mul_le_mul_left _ hle)⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_torsionField_le : ∀ (d : ℕ) (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F] (A : WeierstrassCurve F) [A.IsElliptic], FiniteDimensional ℚ (torsionField d A) ∧ Module.finrank ℚ (torsionField d A) ≤ Module.finrank ℚ (hilbertField d F) * Nat.card (GL (Fin 2) (ZMod 12)) := by
   intro d F _ A _

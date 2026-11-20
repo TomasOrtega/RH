@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Establish `: RingHomSurjective (e : R →+* S)` using `⟨e.surjective⟩`. Set `f : R →ₛₗ[(e : R →+* S)] S` to `{ toFun := e, map_add' := e.map_add, map_smul' := fun a b => by simp [smul_eq_mul] }`. Rewrite using `[Module.length, Module.length, WithBot.unbot_inj, Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f e.bijective)]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem length_self_eq_of_ringEquiv {R S : Type*} [CommRing R] [CommRing S] (e : R ≃+* S) :
     Module.length R R = Module.length S S := by
@@ -15,7 +15,7 @@ private theorem length_self_eq_of_ringEquiv {R S : Type*} [CommRing R] [CommRing
     Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f e.bijective)]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: IsIso (f.stalkMap x)` using `inferInstance`. Conclude with `(length_self_eq_of_ringEquiv (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv).symm`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem length_stalk_eq_of_isIso {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (x : X) (y : Y) (h : f x = y) :
     Module.length (X.presheaf.stalk x) (X.presheaf.stalk x) = Module.length (Y.presheaf.stalk y) (Y.presheaf.stalk y) := by
@@ -24,7 +24,7 @@ private theorem length_stalk_eq_of_isIso {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso
   exact (length_self_eq_of_ringEquiv (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv).symm
 
 /- English proof (translation)
-Introduce `V Ω _ _ r z hz`. Use `haveI : IsIso (z ≫ r) := by rw [hz]; infer_instance`. Use `haveI : IsIso (pullback.fst r (z ≫ r)) := inferInstance`. Unfold `mult`. Rewrite using `[length_stalk_eq_of_isIso (pullback.fst r (z ≫ r)) _ (pt z) (by rw [← pt_comp, pullback.lift_fst])]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.multSec_of :
     MultSec := by

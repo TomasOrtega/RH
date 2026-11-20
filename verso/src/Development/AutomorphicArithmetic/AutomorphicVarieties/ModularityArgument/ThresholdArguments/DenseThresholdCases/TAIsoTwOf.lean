@@ -14,7 +14,7 @@ open UpperTheory.GalN.V GroundTheory.Global.SemiLocal UpperTheory.V.Published Up
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.V.Z.Win
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Use `GlobalTheory.LatticeComplement.isSSRep_of_intertwine r r' (g : Matrix (Fin n) (Fin n) k) ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) (Units.mul_inv g) (fun s => ?_) H` and prove the remaining obligations. Rewrite using `[hg s, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem semisimple_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k} (h : RepIso r r')
     (H : IsSSRep r) : IsSSRep r' := by
@@ -25,14 +25,14 @@ private theorem semisimple_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r 
   congr 1
   group
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨semisimple_conj h H.1, H.2.mono fun _ ⟨B, hB, hE⟩ => ⟨B, hB, hE.of_iso h⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem attC_conj {F Ω : Type} [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω] {l : ℕ}
     [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)} {π : CuspSub F n} (h : RepIso r r')
     (H : AttC ι r π) : AttC ι r' π :=
   ⟨semisimple_conj h H.1, H.2.mono fun _ ⟨B, hB, hE⟩ => ⟨B, hB, hE.of_iso h⟩⟩
 /- English proof (translation)
-Use `MonoidHom.ext fun s => Units.ext ?_` and prove the remaining obligations. Rewrite using `[tw_val, tw_val, smul_smul, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tw_tw_inv {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (μ : Γ →* kˣ) :
     tw (tw r μ) μ⁻¹ = r := by
@@ -40,7 +40,7 @@ private theorem tw_tw_inv {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ �
   rw [tw_val, tw_val, smul_smul, MonoidHom.inv_apply, Units.val_inv_eq_inv_val,
     inv_mul_cancel₀ (Units.ne_zero _), one_smul]
 /- English proof (translation)
-Introduce `k hk` and use `by have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem algPos_inv {K : Type} [Field K] [NumberField K] {χ : HChar K} {a : (K →+* ℂ) → ℤ} (h : IsAlgPos χ a) :
     IsAlgPos χ⁻¹ (-a) := fun k hk => by
@@ -48,9 +48,9 @@ private theorem algPos_inv {K : Type} [Field K] [NumberField K] {χ : HChar K} {
   rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm
 /- English proof (translation)
-Establish `halg : κ.IsAlg a` using `fun k => hκ k fun φ => absurd (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => Complex.conj_ofReal (φ x)))) (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk (Complex.ofRealHom.comp φ))))`. Use `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_` and prove the remaining obligations. Use `replace h := (GlobalTheory.CuspRep.CG.isRegAlg_iff _).1 h`. Establish `e` using `((ParLaws.hasInfChar_infChar (CG.mk P) τ).twist κ).infChar_eq`. Rewrite `e` using `[CG.twist_mk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, (InfType.expo_of_infType K κ).1 a halg τ]`. Use `⟨(h τ).1.map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨k, rfl⟩` from `(h τ).2 y hy`. Conclude with `⟨k + a τ, by push_cast; ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem regAlg_tw {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} {P : CuspSub K n}
     (h : (CG.mk P).IsRegAlg) {κ : HChar K} {a : (K →+* ℂ) → ℤ} (hκ : IsAlgPos κ a) : (CG.mk (P.twist κ)).IsRegAlg := by
@@ -67,15 +67,13 @@ private theorem regAlg_tw {K : Type} [Field K] [NumberField K] [IsTotallyComplex
   obtain ⟨k, rfl⟩ := (h τ).2 y hy
   exact ⟨k + a τ, by push_cast; ring⟩
 /- English proof (translation)
-Introduce `FL WT _ F Ω _ _ _ _ _ _ l _ ι n r hW`. Use `⟨fun r' hi => ⟨fun v hv h => ?_, fun π hreg ha => ?_⟩, fun μ hμ => ?_⟩` and prove the remaining obligations. Conclude with `(((FL F Ω l n r).1 r' hi).2.2 v).2 (hW.1 v hv ((((FL F Ω l n r').1 r hi.symm').2.2 v).1 h))`. Take `⟨t, ht⟩` from `hW.2 π hreg (attC_conj hi.symm' ha)`. Conclude with `⟨t, fun v hv => ht v (hv.imp id (((FL F Ω l n r').1 r hi.symm').2.2 v).2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, -, art, a, hart, hpos, hL⟩` from `hμ`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `e : tw r μ = r` using `MonoidHom.ext fun s => Units.ext (by ext i; exact i.elim0)`. Rewrite using `[e]`. Conclude with `hW`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ v, (Unl1 (tw r μ) v → Unl1 r v) ∧ (PotUnl r v → PotUnl (tw r μ) v) ∧ (PotUnl (tw r μ) v → PotUnl r v)` using `fun v =>`. Establish `h` using `((FL F Ω l n r).2.1 μ).2.2 v`. Use the proof step `⟨h.1.2, h.2.1, h.2.2⟩`. Use `⟨fun v hl h => (hv v).2.1 (hW.1 v hl ((hv v).1 h)), fun π' hreg ha => ?_⟩` and prove the remaining obligations. Establish `hatt : AttC ι r (π'.twist χ⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h` using `UpperTheory.V.Af.Cq.attTwist F Ω l ι n (tw r μ) π' ha art χ⁻¹ (-a) μ⁻¹ hart hL.inv`. Rewrite `h` using `[tw_tw_inv]`. Then use the resulting hypothesis. Take `⟨t, ht⟩` from `hW.2 _ (regAlg_tw hreg (algPos_inv hpos)) hatt`. Take `⟨b, hb⟩` from `WT F χ`. Use `⟨t + b, fun v h => ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `hb n hn _ t v (ht v (h.imp id (hv v).2.2))`. Rewrite `h1` using `[← CuspSub.twist_mul, inv_mul_cancel, CuspSub.twist_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem aIsoTwOf_alt : _root_.UpperTheory.V.Z.Win.AIsoTwOfAlt := by
   intro FL WT _ F Ω _ _ _ _ _ _ l _ ι n r hW

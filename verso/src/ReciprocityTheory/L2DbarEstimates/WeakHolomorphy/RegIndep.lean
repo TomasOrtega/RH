@@ -7,23 +7,23 @@ open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal
 
 /- English proof (translation)
-Conclude with `(moll_contDiff n t).continuous.integrable_of_hasCompactSupport (moll_hasCompactSupport n ht)`.
+A detailed English derivation is pending.
 -/
 theorem moll_integrable (n : ℕ) {t : ℝ} (ht : 0 < t) : Integrable (moll n t) := by
   exact (moll_contDiff n t).continuous.integrable_of_hasCompactSupport (moll_hasCompactSupport n ht)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(moll_contDiff n s).continuous.bounded_above_of_compact_support (moll_hasCompactSupport n hs)`. Establish `hg : Integrable (fun v : V n => (moll n t v : ℂ))` using `(moll_integrable n ht).ofReal`. Establish `hI` using `hu.convolution_integrand (ContinuousLinearMap.mul ℂ ℂ) hg`. Establish `hc : Continuous (fun p : V n × V n => (moll n s (x - p.1) : ℂ))` using `Complex.continuous_ofReal.comp ((moll_contDiff n s).continuous.comp (continuous_const.sub continuous_fst))`. Use `set F : V n × V n → ℂ := fun p => (moll n s (x - p.1) : ℂ) * (ContinuousLinearMap.mul ℂ ℂ) (u p.2) ((fun v : V n => (moll n t v : ℂ)) (p.1 - p.2)) with hFdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : Integrable F (volume.prod volume)`. Use `(hI.norm.const_mul C).mono' (hc.aestronglyMeasurable.mul hI.aestronglyMeasurable) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall (fun p => ?_)` and prove the remaining obligations. Rewrite using `[hFdef, norm_mul]`. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1` using `hC (x - p.1)`. Simplify using `using h1`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `w`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [hFdef, ContinuousLinearMap.mul_apply']`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `_ = ∫ y, ∫ w, F (w, y) := integral_integral_swap hF`. Use `_ = ∫ y, ((∫ w, moll n s (x - w) * moll n t (w - y) : ℝ) : ℂ) * u y := by`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[← integral_complex_ofReal, ← integral_mul_const]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [hFdef, ContinuousLinearMap.mul_apply', Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mollify_mollify_swap {n : ℕ} {u : V n → ℂ} (hu : Integrable u) {s t : ℝ} (hs : 0 < s)
     (ht : 0 < t) (x : V n) :
@@ -61,7 +61,7 @@ theorem mollify_mollify_swap {n : ℕ} {u : V n → ℂ} (hu : Integrable u) {s 
         ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[mul_comm]`. Apply the tactic sequence `congr 2 <;> abel`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem moll_conv_symm (n : ℕ) (s t : ℝ) (x y : V n) :
     ∫ w, moll n s (x - w) * moll n t (w - y) = ∫ w, moll n t (x - w) * moll n s (w - y) := by
@@ -75,19 +75,17 @@ theorem moll_conv_symm (n : ℕ) (s t : ℝ) (x y : V n) :
         congr 2 <;> abel
 
 /- English proof (translation)
-Establish `hd : DifferentiableOn ℂ (fun l : ℂ => h (x + l • z)) (closedBall (0 : ℂ) 1)`. Introduce `l hl`. Establish `hl1 : ‖l‖ ≤ 1` using `by simpa using hl`. Establish `hmem : x + l • z ∈ ball x a`. Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : DifferentiableAt ℂ h (x + l • z)` using `hh.differentiableAt (isOpen_ball.mem_nhds hmem)`. Establish `h2 : DifferentiableAt ℂ (fun l : ℂ => x + l • z) l` using `(differentiableAt_id.smul_const z).const_add x`. Conclude with `(h1.comp l h2).differentiableWithinAt`. Establish `hdc : DiffContOnCl ℂ (fun l : ℂ => h (x + l • z)) (ball (0 : ℂ) 1)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball (0 : ℂ) one_ne_zero]`. Conclude with `hd`. Establish `hC` using `hdc.circleIntegral_sub_inv_smul (mem_ball_self one_pos)`. Establish `e0 : h (x + (0 : ℂ) • z) = h x` using `by rw [zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `key : Complex.I * ∫ θ in (0 : ℝ)..2 * Real.pi, h (x + circleMap 0 1 θ • z) = 2 * Real.pi * Complex.I * h x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← intervalIntegral.integral_const_mul]`. Use `intervalIntegral.integral_congr fun θ _ => ?_` and prove the remaining obligations. Establish `hne : circleMap 0 1 θ ≠ 0` using `circleMap_ne_center one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [deriv_circleMap, sub_zero, smul_eq_mul]`. Use `first`. Consider the case `(rw [mul_comm (circleMap 0 1 θ) Complex.I, mul_assoc, mul_inv_cancel_left₀ hne])`. Consider the case `field_simp`. Consider the case `(field_simp; ring)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∮ l in C(0, 1), (l - 0)⁻¹ • h (x + l • z) := rfl`. Use `_ = (2 * Real.pi * Complex.I : ℂ) • h (x + (0 : ℂ) • z) := hC`. Use `_ = 2 * Real.pi * Complex.I * h x := by rw [e0, smul_eq_mul]`. Establish `hI : Complex.I ≠ 0` using `Complex.I_ne_zero`. Apply `mul_left_cancel₀ hI` to reduce the goal to its premises.
-
-Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem integral_circleMap_smul_eq_two_pi_mul {n : ℕ} {a : ℝ} {h : V n → ℂ} {x z : V n}
     (hh : DifferentiableOn ℂ h (ball x a)) (hz : ‖z‖ < a) :
@@ -131,9 +129,9 @@ private theorem integral_circleMap_smul_eq_two_pi_mul {n : ℕ} {a : ℝ} {h : V
   ring
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, norm_zero]`. Conclude with `zero_ne_one hc`. Set `e : V n ≃ₗᵢ[ℝ] V n` to `{ toLinearEquiv := (LinearEquiv.smulOfNeZero ℂ (V n) c hc0).restrictScalars ℝ norm_map' := fun z => by show ‖c • z‖ = ‖z‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, hc, one_mul] }`. Use `show ∫ z, f (e z) = ∫ z, f z`. Conclude with `e.measurePreserving.integral_comp e.toHomeomorph.measurableEmbedding f`.
+A detailed English derivation is pending.
 -/
 private theorem integral_comp_smul_of_norm_eq_one {n : ℕ} (c : ℂ) (hc : ‖c‖ = 1) (f : V n → ℂ) :
     ∫ z, f (c • z) = ∫ z, f z := by
@@ -150,9 +148,9 @@ private theorem integral_comp_smul_of_norm_eq_one {n : ℕ} (c : ℂ) (hc : ‖c
   exact e.measurePreserving.integral_comp e.toHomeomorph.measurableEmbedding f
 
 /- English proof (translation)
-Establish `h1 : 1 - 4 * (‖z‖ / t) ^ 2 ≤ 0`. Establish `h2 : 1 / 2 < ‖z‖ / t`. Rewrite using `[lt_div_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [moll, mollProf, bumpProf, Real.smoothTransition.zero_of_nonpos h1, mul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem moll_eq_zero_of_half_lt_norm {n : ℕ} {t : ℝ} (ht : 0 < t) {z : V n} (hz : t / 2 < ‖z‖) :
     moll n t z = 0 := by
@@ -163,35 +161,31 @@ private theorem moll_eq_zero_of_half_lt_norm {n : ℕ} {t : ℝ} (ht : 0 < t) {z
   simp only [moll, mollProf, bumpProf, Real.smoothTransition.zero_of_nonpos h1, mul_zero]
 
 /- English proof (translation)
-Establish `hA : ∫ w, (moll n a (x - w) : ℂ) * h w = ∫ z, (moll n a z : ℂ) * h (x + z)`. Establish `e1` using `integral_add_left_eq_self (μ := volume) (fun w => (moll n a (x - w) : ℂ) * h w) x`. Apply the tactic sequence `try beta_reduce at e1`. Rewrite using `[← e1]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [sub_add_cancel_left, moll, norm_neg]`. Rewrite using `[hA]`. Establish `hB : ∀ θ : ℝ, ∫ z, (moll n a z : ℂ) * h (x + circleMap 0 1 θ • z) = ∫ z, (moll n a z : ℂ) * h (x + z)`. Introduce `θ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : ‖circleMap 0 1 θ‖ = 1` using `by simp`. Establish `e2` using `integral_comp_smul_of_norm_eq_one (circleMap 0 1 θ) hc (fun z => (moll n a z : ℂ) * h (x + z))`. Apply the tactic sequence `try beta_reduce at e2`. Rewrite using `[← e2]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [moll, norm_smul, hc, one_mul]`. Take `⟨C, hC⟩` from `(isCompact_closedBall x (a / 2)).exists_bound_of_continuousOn (hh.continuousOn.mono (closedBall_subset_ball (by linarith)))`. Establish `hcont : Continuous (fun p : ℝ × V n => (moll n a p.2 : ℂ) * h (x + circleMap 0 1 p.1 • p.2))`. Rewrite using `[continuous_iff_continuousAt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `⟨θ0, z0⟩`. Distinguish the cases in `hz0 : ‖z0‖ < a`. Establish `hmc : Continuous fun p : ℝ × V n => (moll n a p.2 : ℂ)` using `Complex.continuous_ofReal.comp ((moll_contDiff n a).continuous.comp continuous_snd)`. Establish `hg : Continuous fun p : ℝ × V n => x + circleMap 0 1 p.1 • p.2` using `continuous_const.add (((continuous_circleMap 0 1).comp continuous_fst).smul continuous_snd)`. Establish `hmem : x + circleMap 0 1 θ0 • z0 ∈ ball x a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, norm_circleMap_zero, abs_one, one_mul]`. Conclude with `hz0`. Establish `hhc : ContinuousAt h (x + circleMap 0 1 θ0 • z0)` using `(hh.differentiableAt (isOpen_ball.mem_nhds hmem)).continuousAt`. Conclude with `hmc.continuousAt.mul (hhc.comp_of_eq hg.continuousAt rfl)`. Use `push_neg at hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hopen : IsOpen {p : ℝ × V n | a / 2 < ‖p.2‖}` using `isOpen_lt continuous_const (continuous_norm.comp continuous_snd)`. Establish `hmem : (θ0, z0) ∈ {p : ℝ × V n | a / 2 < ‖p.2‖}` using `by show a / 2 < ‖z0‖`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hev : (fun p : ℝ × V n => (moll n a p.2 : ℂ) * h (x + circleMap 0 1 p.1 • p.2)) =ᶠ[𝓝 (θ0, z0)] fun _ => 0` using `by filter_upwards [hopen.mem_nhds hmem] with p hp`. Rewrite using `[moll_eq_zero_of_half_lt_norm ha hp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Simplify using the standard rewrite rules. Conclude with `(continuousAt_congr hev).mpr continuousAt_const`. Establish `hInt : Integrable (Function.uncurry fun (θ : ℝ) (z : V n) => (moll n a z : ℂ) * h (x + circleMap 0 1 θ • z)) ((volume.restrict (Set.Ioc 0 (2 * Real.pi))).prod volume)`. Establish `hg1 : Integrable (fun _ : ℝ => C) (volume.restrict (Set.Ioc 0 (2 * Real.pi)))` using `integrable_const C`. Establish `hbd : Integrable (fun p : ℝ × V n => C * |moll n a p.2|) ((volume.restrict (Set.Ioc 0 (2 * Real.pi))).prod volume)` using `by first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `exact MeasureTheory.Integrable.prod_mul hg1 (moll_integrable n ha).abs`. Consider the case `exact MeasureTheory.Integrable.mul_prod hg1 (moll_integrable n ha).abs`. Consider the case `exact MeasureTheory.Integrable.prod_smul hg1 (moll_integrable n ha).abs`. Consider the case `exact MeasureTheory.Integrable.comp_snd ((moll_integrable n ha).abs.const_mul C) _`. Consider the case `exact ((moll_integrable n ha).abs.const_mul C).comp_snd`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Integrable.mono' hbd hcont.aestronglyMeasurable (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `show ‖(moll n a p.2 : ℂ) * h (x + circleMap 0 1 p.1 • p.2)‖ ≤ C * |moll n a p.2|`. Distinguish the cases in `hp : ‖p.2‖ ≤ a / 2`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_comm]`. Apply `mul_le_mul_of_nonneg_right _ (abs_nonneg _)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hC` to reduce the goal to its premises. Rewrite using `[mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul, norm_circleMap_zero, abs_one, one_mul]`. Conclude with `hp`. Use `push_neg at hp`. Rewrite using `[moll_eq_zero_of_half_lt_norm ha hp]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hswap` using `integral_integral_swap hInt`. Apply the tactic sequence `try beta_reduce at hswap`. Establish `hz : ∀ z : V n, ∫ θ in Set.Ioc 0 (2 * Real.pi), (moll n a z : ℂ) * h (x + circleMap 0 1 θ • z) = (moll n a z : ℂ) * (2 * Real.pi * h x)`. Introduce `z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[integral_const_mul]`. Distinguish the cases in `hz : ‖z‖ ≤ a / 2`. Rewrite using `[← intervalIntegral.integral_of_le Real.two_pi_pos.le, integral_circleMap_smul_eq_two_pi_mul hh (by linarith)]`. Use `push_neg at hz`. Rewrite using `[moll_eq_zero_of_half_lt_norm ha hz]`.
-
-Simplify using the standard rewrite rules. Rewrite `hswap` using `[← intervalIntegral.integral_of_le Real.two_pi_pos.le, show (fun θ : ℝ => ∫ z, (moll n a z : ℂ) * h (x + circleMap 0 1 θ • z)) = fun _ => ∫ z, (moll n a z : ℂ) * h (x + z) from funext hB, intervalIntegral.integral_const, show (fun z : V n => ∫ θ in Set.Ioc 0 (2 * Real.pi), (moll …`. Establish `h2pi : (2 * Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.two_pi_pos.ne'`. Apply `mul_left_cancel₀ h2pi` to reduce the goal to its premises. Move the coercions through the operations in `at hswap ⊢`.
-
-Take the linear combination `hswap`.
+A detailed English derivation is pending.
 -/
 theorem moll_mean {n : ℕ} {a : ℝ} (ha : 0 < a) {h : V n → ℂ} {x : V n}
     (hh : DifferentiableOn ℂ h (ball x a)) :
@@ -294,13 +288,11 @@ theorem moll_mean {n : ℕ} {a : ℝ} (ha : 0 < a) {h : V n → ℂ} {x : V n}
   linear_combination hswap
 
 /- English proof (translation)
-Establish `hA : DifferentiableOn ℂ (mollify n t u) (ball x s)`. Introduce `w hwb`. Rewrite `hwb` using `[Metric.mem_ball]`. Use `(mollify_differentiableAt hΩ hu hw ht ((Metric.closedBall_subset_closedBall' ?_).trans hx)).differentiableWithinAt` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hB : DifferentiableOn ℂ (mollify n s u) (ball x t)`. Introduce `w hwb`. Rewrite `hwb` using `[Metric.mem_ball]`. Use `(mollify_differentiableAt hΩ hu hw hs ((Metric.closedBall_subset_closedBall' ?_).trans hx)).differentiableWithinAt` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[moll_conv_symm n t s x y]`. Use `_ = ∫ w, (moll n s (x - w) : ℂ) * mollify n t u w := (mollify_mollify_swap hu hs ht x).symm`.
-
-Use `_ = mollify n t u x := moll_mean hs hA`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mollify_indep {n : ℕ} {Ω : Set (V n)} {u : V n → ℂ} {s t : ℝ} {x : V n}
     (hΩ : IsOpen Ω) (hu : Integrable u) (hw : WeakHolo Ω u) (hs : 0 < s) (ht : 0 < t)

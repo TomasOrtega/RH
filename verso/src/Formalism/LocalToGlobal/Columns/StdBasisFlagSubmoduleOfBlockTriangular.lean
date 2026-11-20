@@ -14,23 +14,23 @@ section Coord
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Unfold `LocE.fPos LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem frameIndex_framePos {k₀ c n l : ℕ} (_hk : k₀ ≤ n) (hl : l < n + c) : LocE.fIdx k₀ c n (LocE.fPos k₀ c n l) = l := by
   unfold LocE.fPos LocE.fIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.fPos`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem framePos_lt {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : LocE.fPos k₀ c n l < n + c := by
   unfold LocE.fPos
   split_ifs <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Unfold `Loc.eN`. Distinguish the cases in `h : l = ⟨i, hi⟩`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_eq_of_ne h, if_neg (fun h' => h (Fin.ext h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem basisVec_eq_single {N i : ℕ} (hi : i < N) : Loc.eN E N i = Pi.single (⟨i, hi⟩ : Fin N) (1 : E) := by
   funext l
@@ -41,9 +41,9 @@ theorem basisVec_eq_single {N i : ℕ} (hi : i < N) : Loc.eN E N i = Pi.single (
   · rw [Pi.single_eq_of_ne h, if_neg (fun h' => h (Fin.ext h'))]
 
 /- English proof (translation)
-Establish `hv : v = ∑ l' : Fin N, v l' • (Pi.single l' (1 : E) : Sp E N)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearEquiv_apply_eq_sum_columns {N : ℕ} (φ : Sp E N ≃ₗ[E] Sp E N) (v : Sp E N) (l : Fin N) :
     φ v l = ∑ l' : Fin N, φ (Pi.single l' 1) l * v l' := by
@@ -56,9 +56,9 @@ theorem linearEquiv_apply_eq_sum_columns {N : ℕ} (φ : Sp E N ≃ₗ[E] Sp E N
   rw [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `LocE.lamY`. Rewrite using `[ciMem_sclLat]`. Introduce `l`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : l = l'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, mul_one, inv_mul_cancel₀ (zpow_ne_zero _ hq0)]`. Conclude with `ciIntAt_one`. Rewrite using `[Pi.single_eq_of_ne h, mul_zero, mul_zero]`. Conclude with `ciIntAt_zero`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaledBasisVec_mem_referenceLattice (hq0 : (q : E) ≠ 0) {n c : ℕ} (l' : Fin (n + c)) :
     ((q : E) ^ LocE.scE n (fun i => i + 1) l'.1) • (Pi.single l' (1 : E) : Sp E (n + c)) ∈ LocE.lamY P q n c (fun i => i + 1) := by
@@ -74,9 +74,9 @@ theorem scaledBasisVec_mem_referenceLattice (hq0 : (q : E) ≠ 0) {n c : ℕ} (l
     exact ciIntAt_zero
 
 /- English proof (translation)
-Establish `h1` using `(hκ _).2 (scaledBasisVec_mem_referenceLattice (P := P) hq0 l')`. Unfold `LocE.lamY at h1`. Rewrite `h1` using `[ciMem_sclLat]`. Establish `h2` using `h1 l`. Rewrite `h2` using `[map_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ((q : E) ^ LocE.scE n (fun i => i + 1) l.1)⁻¹ * ((q : E) ^ LocE.scE n (fun i => i + 1) l'.1 * κ (Pi.single l' 1) l) = κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1)`. Rewrite using `[zpow_sub₀ hq0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem scaledCoord_integral_of_stabilizer (hq0 : (q : E) ≠ 0) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hκ : κ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)) (l l' : Fin (n + c)) :
@@ -93,9 +93,9 @@ theorem scaledCoord_integral_of_stabilizer (hq0 : (q : E) ≠ 0) {n c : ℕ} {κ
   rwa [e] at h2
 
 /- English proof (translation)
-Rewrite using `[show (κ * κ') (Pi.single l' 1) = κ (κ' (Pi.single l' 1)) from rfl, linearEquiv_apply_eq_sum_columns κ, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `e : (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1) = (q : E) ^ (LocE.scE n (fun i => i + 1) m.1 - LocE.scE n (fun i => i + 1) l.1) * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) m.1)`. Rewrite using `[← zpow_add₀ hq0]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scaledCoord_mul_eq_sum (hq0 : (q : E) ≠ 0) {n c : ℕ} (κ κ' : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) (l l' : Fin (n + c)) :
     (κ * κ') (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1) =
@@ -118,9 +118,9 @@ def ob2M {n c : ℕ} (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) : Matrix (Fin (n
   fun l l' => redP P (κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1))
 
 /- English proof (translation)
-Use extensionality with `l l'`. Rewrite using `[Matrix.mul_apply]`. Unfold `ob2M`. Rewrite using `[scaledCoord_mul_eq_sum hq0, redP_sum _ _ fun m _ => (scaledCoord_integral_of_stabilizer hq0 hκ l m).mul (scaledCoord_integral_of_stabilizer hq0 hκ' m l')]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[reduction_mul (scaledCoord_integral_of_stabilizer hq0 hκ l m) (scaledCoord_integral_of_stabilizer hq0 hκ' m l')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reducedMatrix_mul (hq0 : (q : E) ≠ 0) {n c : ℕ} {κ κ' : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hκ : κ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)) (hκ' : κ' ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)) :
@@ -133,9 +133,9 @@ theorem reducedMatrix_mul (hq0 : (q : E) ≠ 0) {n c : ℕ} {κ κ' : Sp E (n + 
   rw [reduction_mul (scaledCoord_integral_of_stabilizer hq0 hκ l m) (scaledCoord_integral_of_stabilizer hq0 hκ' m l')]
 
 /- English proof (translation)
-Use extensionality with `l l'`. Unfold `ob2M`. Rewrite using `[show (1 : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) (Pi.single l' 1) = Pi.single l' 1 from rfl, Matrix.one_apply]`. Distinguish the cases in `h : l = l'`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.single_eq_same, if_pos rfl, sub_self, zpow_zero, mul_one, redP_one]`. Rewrite using `[Pi.single_eq_of_ne h, if_neg h, zero_mul, redP_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem reducedMatrix_one {n c : ℕ} : ob2M P q (1 : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) = 1 := by
   ext l l'
@@ -147,7 +147,7 @@ theorem reducedMatrix_one {n c : ℕ} : ob2M P q (1 : Sp E (n + c) ≃ₗ[E] Sp 
   · rw [Pi.single_eq_of_ne h, if_neg h, zero_mul, redP_zero]
 
 /- English proof (translation)
-Unfold `LocE.entB`. Rewrite using `[basisVec_eq_single (symFIdx_lt hk hp')]`. Unfold `Loc.atN`. Rewrite using `[dif_pos (symFIdx_lt hk hp)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frameEntry_eq_scaled_coord {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) (hp' : p' < n + c) (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) :
     LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ.toLinearMap p p' =
@@ -160,7 +160,7 @@ theorem frameEntry_eq_scaled_coord {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (hp :
   rfl
 
 /- English proof (translation)
-Rewrite using `[frameEntry_eq_scaled_coord hk hp hp']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem reduction_frameEntry_eq_matrix {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) (hp' : p' < n + c) (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) :
     redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ.toLinearMap p p') =
@@ -169,7 +169,7 @@ theorem reduction_frameEntry_eq_matrix {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (
   rfl
 
 /- English proof (translation)
-Rewrite using `[frameEntry_eq_scaled_coord hk hp hp']`. Conclude with `scaledCoord_integral_of_stabilizer hq0 hκ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameEntry_integral_of_stabilizer (hq0 : (q : E) ≠ 0) {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) (hp' : p' < n + c)
     {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hκ : κ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)) :
@@ -178,7 +178,7 @@ theorem frameEntry_integral_of_stabilizer (hq0 : (q : E) ≠ 0) {k₀ n c p p' :
   exact scaledCoord_integral_of_stabilizer hq0 hκ _ _
 
 /- English proof (translation)
-Rewrite using `[reduction_frameEntry_eq_matrix hk (framePos_lt hk l.2) (framePos_lt hk l'.2)]`. Use `congr 1`. Conclude with `Fin.ext (frameIndex_framePos hk l.2).symm`. Conclude with `Fin.ext (frameIndex_framePos hk l'.2).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem reducedMatrix_eq_reduction_frameEntry {k₀ n c : ℕ} (hk : k₀ ≤ n) (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) (l l' : Fin (n + c)) :
     ob2M P q κ l l' = redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ.toLinearMap (LocE.fPos k₀ c n l.1) (LocE.fPos k₀ c n l'.1)) := by
@@ -194,37 +194,37 @@ section Beta
 def betaExponentOfRanks (k₀ rS r t p : ℕ) : ℕ := if p < r then symIdx k₀ rS p else r + (p - r) / t
 
 /- English proof (translation)
-Unfold `symIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symIndex_lt_iff {k₀ rS r p : ℕ} (hr : k₀ + rS ≤ r) : symIdx k₀ rS p < r ↔ p < r := by
   unfold symIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `symIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symIndex_of_le {k₀ rS r p : ℕ} (hr : k₀ + rS ≤ r) (hp : r ≤ p) : symIdx k₀ rS p = p := by
   unfold symIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `congrArg (symIdxInv k₀ rS) h` as an intermediate fact. Rewrite `this` using `[symIdxInv_symIdx, symIdxInv_symIdx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem symIndex_injective {k₀ rS p p' : ℕ} (h : symIdx k₀ rS p = symIdx k₀ rS p') : p = p' := by
   have := congrArg (symIdxInv k₀ rS) h
   rwa [symIdxInv_symIdx, symIdxInv_symIdx] at this
 
 /- English proof (translation)
-Unfold `symIdxInv`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symIndexInv_lt {k₀ rS r s : ℕ} (hr : k₀ + rS ≤ r) (hs : s < r) : symIdxInv k₀ rS s < r := by
   unfold symIdxInv
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks`. Rewrite using `[if_pos hp0]`. Distinguish the cases in `hp : p < r`. Rewrite using `[if_pos hp]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hp]`. Use `(symIndex_lt_iff hr).2 hp0` as an intermediate fact. Conclude with `Nat.lt_of_lt_of_le this (Nat.le_add_right r _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ob2Beta_lt_of_sym {k₀ rS r t p0 p : ℕ} (hr : k₀ + rS ≤ r) (hp0 : p0 < r) (h : symIdx k₀ rS p0 < symIdx k₀ rS p) :
     betaExponentOfRanks k₀ rS r t p0 < betaExponentOfRanks k₀ rS r t p := by
@@ -238,21 +238,19 @@ theorem ob2Beta_lt_of_sym {k₀ rS r t p0 p : ℕ} (hr : k₀ + rS ≤ r) (hp0 :
     exact Nat.lt_of_lt_of_le this (Nat.le_add_right r _)
 
 /- English proof (translation)
-Establish `hb` using `LocE.symmetric_level_bound_le k₀ rS s`. Break down `hs with hs | ⟨i, rfl⟩` into its components or cases. Establish `hp' : p' < r` using `(symIndex_lt_iff hr.le).1 (by omega)`. Unfold `betaExponentOfRanks`. Rewrite using `[if_pos hp']`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hp : p < r`. Rewrite using `[if_pos hp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hp]`. Conclude with `Nat.lt_of_lt_of_le (by omega) (Nat.le_add_right r _)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbd : LocE.bd5 k₀ rS (r + i * t) = r + i * t`. Unfold `LocE.bd5`. Rewrite using `[if_neg (show r + i * t ≠ rS + k₀ by omega)]`. Rewrite `h1`, `h2` using `[hbd]`. Establish `hp : r ≤ p`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hp`. Use `(symIndex_lt_iff hr.le).2 (by omega : p < r)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[symIndex_of_le hr.le hp]`. Unfold `betaExponentOfRanks`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ p < r by omega)]`. Distinguish the cases in `hp' : p' < r`. Rewrite using `[if_pos hp']`. Use `(symIndex_lt_iff hr.le).2 hp'` as an intermediate fact. Conclude with `Nat.lt_of_lt_of_le this (Nat.le_add_right r _)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_neg hp']`. Rewrite `h1` using `[symIndex_of_le hr.le (by omega)]`. Establish `ht : 0 < t`. Break down `Nat.eq_zero_or_pos t with h | h` into its components or cases. Substitute `h` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `at h1`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `e1 : (p' - r) / t < i` using `(Nat.div_lt_iff_lt_mul ht).2 (by omega)`. Establish `e2 : i ≤ (p - r) / t` using `(Nat.le_div_iff_mul_le ht).2 (by omega)`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ob2Beta_lt {k₀ rS r t s p p' : ℕ} (hr : k₀ + rS < r) (hs : s < r ∨ ∃ i, s = r + i * t)
     (h1 : symIdx k₀ rS p' < LocE.bd5 k₀ rS s) (h2 : LocE.bd5 k₀ rS s ≤ symIdx k₀ rS p) :
@@ -301,7 +299,7 @@ section Flag
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Rewrite using `[zpow_sub₀ hq0, zpow_sub₀ hq0, zpow_add₀ hq0, zpow_add₀ hq0]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zpow_inv_mul_rearrange (Z : E) (hq0 : Z ≠ 0) (a b d d' : ℤ) (K y : E) :
     (Z ^ (a + d))⁻¹ * (K * y) = (K * Z ^ (b - a)) * Z ^ (d' - d) * ((Z ^ (b + d'))⁻¹ * y) := by
@@ -309,15 +307,13 @@ theorem zpow_inv_mul_rearrange (Z : E) (hq0 : Z ≠ 0) (a b d d' : ℤ) (K y : E
   field_simp
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Unfold `LocE.flagS at hx ⊢`. Rewrite `hx`, the goal using `[ciMem_sclLat]`. Introduce `l`. Rewrite using `[linearEquiv_apply_eq_sum_columns κ x l, Finset.mul_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `ciIntAt_sum _ _ fun l' _ => ?_` and prove the remaining obligations. Establish `hx'` using `hx l'`. Establish `hA` using `scaledCoord_integral_of_stabilizer (P := P) hq0 hκ l l'`. Establish `hred : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n l'.1) < betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n l.1) → redP P (κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1)) = 0` using `fun h => hB h`. Rewrite using `[zpow_inv_mul_rearrange (q : E) hq0 _ (LocE.scE n (fun i => i + 1) l'.1) _ (if LocE.bd5 k₀ rS s ≤ symIdx k₀ rS (LocE.fPos k₀ c n l'.1) then 1 else 0)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IntAt.mul ?_ hx'` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : LocE.bd5 k₀ rS s ≤ symIdx k₀ rS (LocE.fPos k₀ c n l'.1) <;>`. Distinguish the cases in `h2 : LocE.bd5 k₀ rS s ≤ symIdx k₀ rS (LocE.fPos k₀ c n l.1)`. Rewrite using `[if_pos h1, if_pos h2, sub_self, zpow_zero, mul_one]`. Conclude with `hA`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h1, if_neg h2, sub_zero, zpow_one]`. Conclude with `hA.mul ciIntAt_q`. Rewrite using `[if_neg h1, if_pos h2, zero_sub, zpow_neg_one, ← div_eq_mul_inv]`. Conclude with `ciIntAt_div hq hu hA (hred (ob2Beta_lt hr hs (not_le.1 h1) h2))`. Rewrite using `[if_neg h1, if_neg h2, sub_self, zpow_zero, mul_one]`.
-
-Conclude with `hA`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockTriangular_maps_flag (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c s : ℕ}
     (hr : k₀ + rS < r) (hs : s < r ∨ ∃ i, s = r + i * t) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
@@ -350,44 +346,42 @@ theorem blockTriangular_maps_flag (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu 
     exact hA
 
 /- English proof (translation)
-Unfold `symIdx at h`. Apply the tactic sequence `split_ifs at h <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_of_symIndex_eq_add {k₀ rS p0 : ℕ} (h : symIdx k₀ rS p0 = rS + k₀) : p0 = k₀ + rS := by
   unfold symIdx at h
   split_ifs at h <;> omega
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Establish `hp0 : symIdxInv k₀ rS s < r` using `symIndexInv_lt hr.le hs`. Establish `hl0 : LocE.fIdx k₀ c n (symIdxInv k₀ rS s) < n + c` using `symFIdx_lt hk (by omega)`. Establish `hpos0 : LocE.fPos k₀ c n (LocE.fIdx k₀ c n (symIdxInv k₀ rS s)) = symIdxInv k₀ rS s` using `symFPos_fIdx hk (by omega)`. Establish `hsym0 : symIdx k₀ rS (symIdxInv k₀ rS s) = s` using `symIdx_symIdxInv k₀ rS s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : LocE.bvecS E q k₀ rS n c s = ((q : E) ^ LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n (symIdxInv k₀ rS s))) • (Pi.single (⟨LocE.fIdx k₀ c n (symIdxInv k₀ rS s), hl0⟩ : Fin (n + c)) (1 : E) : Sp E (n + c))`. Unfold `LocE.bvecS LocE.bvecG`. Rewrite using `[basisVec_eq_single hl0]`. Rewrite using `[hb, map_smul, ← smul_sub]`. Unfold `LocE.flagS`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ciMem_sclLat]`. Introduce `l`. Rewrite using `[Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Generalize the expression as in `hl0' : (⟨LocE.fIdx k₀ c n (symIdxInv k₀ rS s), hl0⟩ : Fin (n + c)) = l0 at *`. Establish `hpos : LocE.fPos k₀ c n l0.1 = symIdxInv k₀ rS s` using `by rw [← hl0']; exact hpos0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hA` using `scaledCoord_integral_of_stabilizer (P := P) hq0 hκ l l0`. Establish `hsc0 : LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n (symIdxInv k₀ rS s)) = LocE.scE n (fun i => i + 1) l0.1`. Rewrite using `[← hl0']`. Rewrite using `[hsc0]`. Distinguish the cases in `hll : l = l0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hll` using the available equality. Establish `hd : LocE.bd5 k₀ rS s ≤ symIdx k₀ rS (LocE.fPos k₀ c n l.1)`. Rewrite using `[hpos, hsym0]`. Conclude with `LocE.symmetric_level_bound_le k₀ rS s`. Rewrite using `[if_pos hd, Pi.single_eq_same]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((q : E) ^ (LocE.scE n (fun i => i + 1) l.1 + 1))⁻¹ * ((q : E) ^ LocE.scE n (fun i => i + 1) l.1 * (κ (Pi.single l 1) l - 1)) = (κ (Pi.single l 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l.1 - LocE.scE n (fun i => i + 1) l.1) - 1) / (q : E)`. Rewrite using `[sub_self, zpow_zero, mul_one, zpow_add₀ hq0, zpow_one]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Use `ciIntAt_div hq hu (ciIntAt_sub hA ciIntAt_one) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[redP_sub hA ciIntAt_one, redP_one, sub_eq_zero]`. Conclude with `hD l (by rw [hpos]; exact hp0)`. Rewrite using `[Pi.single_eq_of_ne hll, sub_zero]`. Establish `e : ∀ d : ℤ, ((q : E) ^ (LocE.scE n (fun i => i + 1) l.1 + d))⁻¹ * ((q : E) ^ LocE.scE n (fun i => i + 1) l0.1 * κ (Pi.single l0 1) l) = (κ (Pi.single l0 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l0.1 - LocE.scE n (fun i => i + 1) l.1)) * ((q : E) ^ d)⁻¹`. Introduce `d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[zpow_sub₀ hq0, zpow_add₀ hq0]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Distinguish the cases in `hd : LocE.bd5 k₀ rS s ≤ symIdx k₀ rS (LocE.fPos k₀ c n l.1)`. Rewrite using `[if_pos hd, zpow_one, ← div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ciIntAt_div hq hu hA ?_` and prove the remaining obligations. Establish `hne : LocE.fPos k₀ c n l.1 ≠ symIdxInv k₀ rS s`. Introduce `h`. Apply `hll` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← frameIndex_framePos hk l.2, ← frameIndex_framePos hk l0.2, h, hpos]`. Establish `hlt` using `framePos_lt hk l.2`. Use `show ob2M P q κ l l0 = 0`. Distinguish the cases in `hsp : s = rS + k₀`. Establish `hp0e : symIdxInv k₀ rS s = k₀ + rS` using `eq_of_symIndex_eq_add (by rw [hsym0, hsp])`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hbd : LocE.bd5 k₀ rS s = rS`. Unfold `LocE.bd5`. Rewrite using `[if_pos hsp]`. Rewrite `hd` using `[hbd]`. Distinguish the cases in `he : LocE.fPos k₀ c n l.1 < k₀`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC l l0 he (by rw [hpos, hp0e])`. Use `hB ?_ dsimp only` and prove the remaining obligations. Rewrite using `[hpos]`. Use `ob2Beta_lt_of_sym hr.le hp0 ?_` and prove the remaining obligations. Rewrite using `[hsym0, hsp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hne` using `[hp0e]`. Unfold `symIdx at hd ⊢`. Apply the tactic sequence `split_ifs at hd ⊢ <;> omega`. Establish `hbd : LocE.bd5 k₀ rS s = s`. Unfold `LocE.bd5`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg hsp]`. Rewrite `hd` using `[hbd]`. Use `hB ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hpos]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `ob2Beta_lt_of_sym hr.le hp0 ?_` and prove the remaining obligations. Rewrite using `[hsym0]`. Break down `Nat.eq_or_lt_of_le hd with h | h` into its components or cases. Conclude with `absurd (symIndex_injective (h.symm.trans hsym0.symm)) hne`. Conclude with `h`.
-
-Rewrite using `[if_neg hd, zpow_zero, inv_one, mul_one]`. Conclude with `hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdBasis_flag_submodule_of_blockTriangular (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c s : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) (hrN : r ≤ n + c) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
@@ -479,13 +473,13 @@ theorem stdBasis_flag_submodule_of_blockTriangular (hq : ((q : ℕ) : 𝓞 E) �
       exact hA
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Establish `hκi : κ⁻¹ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)` using `Subgroup.inv_mem _ hκ`. Establish `h1 : ob2M P q κ * ob2M P q κ⁻¹ = 1` using `by rw [← reducedMatrix_mul hq0 hκ hκi, mul_inv_cancel, reducedMatrix_one]`. Establish `h1' : ob2M P q κ⁻¹ * ob2M P q κ = 1` using `by rw [← reducedMatrix_mul hq0 hκi hκ, inv_mul_cancel, reducedMatrix_one]`. Set `_ : Invertible (ob2M P q κ)` to `⟨ob2M P q κ⁻¹, h1', h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hinv : (ob2M P q κ)⁻¹ = ob2M P q κ⁻¹`. Rewrite using `[← Matrix.invOf_eq_nonsing_inv]`. Both sides reduce to the same expression. Establish `hBi : (ob2M P q κ⁻¹).BlockTriangular fun l => betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n l.1)`. Rewrite using `[← hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hB`. Establish `stab : ∀ s, (s < r ∨ ∃ i, s = r + i * t) → κ ∈ stabL E (n + c) (LocE.flagS P q k₀ rS n c s)`. Introduce `s hs x`. Use `⟨fun hx => ?_, fun hx => blockTriangular_maps_flag hq hu hr hs hκ hB hx⟩` and prove the remaining obligations. Establish `h2` using `blockTriangular_maps_flag hq hu hr hs hκi hBi hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[show κ⁻¹ (κ x) = x from κ.symm_apply_apply x]`. Then use the resulting hypothesis. Conclude with `Subgroup.mem_inf.2 ⟨hκ, ChainCounts.mem_flagU_iff.2 ⟨fun s hs => stab s (Or.inr hs), fun s hs => ⟨stab s (Or.inl hs), stdBasis_flag_submodule_of_blockTriangular hq hu hk hr hrN hκ hB hD hC hs⟩⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_parahoric_of_blockTriangular (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) (hrN : r ≤ n + c) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
@@ -514,23 +508,21 @@ theorem mem_parahoric_of_blockTriangular (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdea
     fun s hs => ⟨stab s (Or.inl hs), stdBasis_flag_submodule_of_blockTriangular hq hu hk hr hrN hκ hB hD hC hs⟩⟩⟩
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Establish `ht : 0 < t`. Break down `Nat.eq_zero_or_pos t with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Establish `hrp : r ≤ p`. Assume the negation of the conclusion as `h`. Establish `h0 : p - r = 0` using `by omega`. Rewrite `hlt` using `[h0, Nat.zero_div]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.not_lt_zero _ hlt`. Establish `hit : (p - r) / t * t ≤ p - r` using `Nat.div_mul_le_self (p - r) t`. Establish `hp's : p' < r + (p - r) / t * t`. Use `(Nat.div_lt_iff_lt_mul ht).1 hlt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst` using `(hκ.2).1 (r + (p - r) / t * t) ⟨(p - r) / t, rfl⟩`. Establish `hbd : LocE.bd5 k₀ rS (r + (p - r) / t * t) = r + (p - r) / t * t`. Unfold `LocE.bd5`. Rewrite using `[if_neg (show r + (p - r) / t * t ≠ rS + k₀ by omega)]`. Establish `hb : ((q : E) ^ LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n p')) • (Pi.single (⟨LocE.fIdx k₀ c n p', symFIdx_lt hk hp'⟩ : Fin (n + c)) (1 : E) : Sp E (n + c)) ∈ LocE.flagS P q k₀ rS n c (r + (p - r) / t * t)`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `LocE.flagS`. Rewrite using `[ciMem_sclLat]`. Introduce `m`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : m = ⟨LocE.fIdx k₀ c n p', symFIdx_lt hk hp'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h, Pi.single_eq_same, mul_one]`. Rewrite using `[symFPos_fIdx hk hp', symIndex_of_le hr.le hrp', hbd, if_neg (show ¬ r + (p - r) / t * t ≤ p' by omega), add_zero, inv_mul_cancel₀ (zpow_ne_zero _ hq0)]`. Conclude with `ciIntAt_one`. Rewrite using `[Pi.single_eq_of_ne h, mul_zero, mul_zero]`. Conclude with `ciIntAt_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hκb` using `(hst _).2 hb`. Unfold `LocE.flagS at hκb`. Rewrite `hκb` using `[ciMem_sclLat]`. Establish `h3` using `hκb ⟨LocE.fIdx k₀ c n p, symFIdx_lt hk hp⟩`. Rewrite `h3` using `[symFPos_fIdx hk hp, symIndex_of_le hr.le hrp, hbd, if_pos (show r + (p - r) / t * t ≤ p by omega), map_smul, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frameEntry_eq_scaled_coord hk hp hp']`. Use `(ciRed_of_div hq hq0 ?_).2` and prove the remaining obligations. Establish `e : κ (Pi.single (⟨LocE.fIdx k₀ c n p', symFIdx_lt hk hp'⟩ : Fin (n + c)) 1) ⟨LocE.fIdx k₀ c n p, symFIdx_lt hk hp⟩ * (q : E) ^ (LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n p') - LocE.scE n (fun i => i + 1) (LocE.fIdx k₀ c n p)) / (q : E) = ((q : E) ^ (LocE.scE n (fun i => i + …`. Rewrite using `[zpow_sub₀ hq0, zpow_add₀ hq0, zpow_one]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e]`. Conclude with `h3`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_parahoric_later_block_zero (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hκ : κ ∈ LocE.JGsym P q k₀ rS r t n c)
@@ -586,15 +578,15 @@ theorem reduction_parahoric_later_block_zero (hq : ((q : ℕ) : 𝓞 E) ∈ P.as
   exact h3
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Introduce `l l' hlt`. Apply the tactic sequence `rw [reducedMatrix_eq_reduction_frameEntry hk]`. Establish `hp` using `framePos_lt hk l.2`. Establish `hp'` using `framePos_lt hk l'.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt' : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n l'.1) < betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n l.1)` using `hlt`. Use `clear hlt`. Generalize the expression as in `LocE.fPos k₀ c n l.1 = p at hp hlt' ⊢`. Generalize the expression as in `LocE.fPos k₀ c n l'.1 = p' at hp' hlt' ⊢`. Apply the tactic sequence `by_cases h' : p' < r <;> by_cases h : p < r`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [betaExponentOfRanks, if_pos h', if_pos h] at hlt'`. Use `JGsym_red hq hq0 hk hr.le hκ hp h' hp' ?_ (Or.inl hlt')` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hlt'`. Simplify using `only [betaExponentOfRanks, if_pos h', if_neg h] at hlt'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `JGsym_red hq hq0 hk hr.le hκ hp h' hp' (by rintro rfl; exact h h') (Or.inl ?_)` and prove the remaining obligations. Rewrite using `[symIndex_of_le (p := p) hr.le (by omega)]`. Use `(symIndex_lt_iff hr.le).2 h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [betaExponentOfRanks, if_neg h', if_pos h] at hlt'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(symIndex_lt_iff hr.le).2 h`. Establish `h2` using `Nat.le_add_right r ((p' - r) / t)`. Use linear arithmetic over natural numbers and integers. Simplify using `only [betaExponentOfRanks, if_neg h', if_neg h] at hlt'`. Conclude with `reduction_parahoric_later_block_zero hq hu hk hr hκ hp hp' (by omega) (Nat.lt_of_add_lt_add_left hlt')`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reducedMatrix_parahoric_blockTriangular (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hκ : κ ∈ LocE.JGsym P q k₀ rS r t n c) :
@@ -626,9 +618,9 @@ theorem reducedMatrix_parahoric_blockTriangular (hq : ((q : ℕ) : 𝓞 E) ∈ P
     exact reduction_parahoric_later_block_zero hq hu hk hr hκ hp hp' (by omega) (Nat.lt_of_add_lt_add_left hlt')
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Apply the tactic sequence `rw [reducedMatrix_eq_reduction_frameEntry hk]`. Establish `hp` using `framePos_lt hk l.2`. Generalize the expression as in `LocE.fPos k₀ c n l.1 = p at hp hl ⊢`. Apply the tactic sequence `have h := JGsym_entry hq0 hk hr.le hκ hp hl hp (Or.inl le_rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite `h` using `[if_pos rfl]`. Establish `h2` using `(ciRed_of_div hq hq0 h).2`. Rewrite `h2` using `[redP_sub (frameEntry_integral_of_stabilizer hq0 hk hp hp hκ.1) ciIntAt_one, redP_one, sub_eq_zero]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reducedMatrix_parahoric_diag_one (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hκ : κ ∈ LocE.JGsym P q k₀ rS r t n c)
@@ -644,7 +636,7 @@ theorem reducedMatrix_parahoric_diag_one (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdea
   exact h2
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Establish `hlt'` using `framePos_lt hk l'.2`. Rewrite `hlt'` using `[hl']`. Apply the tactic sequence `rw [reducedMatrix_eq_reduction_frameEntry hk, hl']`. Conclude with `JGsym_red hq hq0 hk hr.le hκ (framePos_lt hk l.2) (by omega) hlt' (by omega) (Or.inr ⟨rfl, hl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reducedMatrix_parahoric_corner_zero (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hκ : κ ∈ LocE.JGsym P q k₀ rS r t n c)
@@ -662,17 +654,15 @@ section Sym
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Use `mem_parahoric_of_blockTriangular hq hu hk hr hrN hκ ?_ ?_ ?_` and prove the remaining obligations. Introduce `l l' hlt`. Apply the tactic sequence `rw [reducedMatrix_eq_reduction_frameEntry hk]`. Establish `hp` using `framePos_lt hk l.2`. Establish `hp'` using `framePos_lt hk l'.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt' : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n l'.1) < betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n l.1)` using `hlt`. Use `clear hlt`. Generalize the expression as in `LocE.fPos k₀ c n l.1 = p at hp hlt' ⊢`. Generalize the expression as in `LocE.fPos k₀ c n l'.1 = p' at hp' hlt' ⊢`. Apply the tactic sequence `by_cases h' : p' < r <;> by_cases h : p < r`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [betaExponentOfRanks, if_pos h', if_pos h] at hlt'`. Use `hO p p' hp h' ?_ (Or.inr (Or.inl hlt'))` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hlt'`. Conclude with `hO p p' hp h' (by rintro rfl; exact h h') (Or.inl (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [betaExponentOfRanks, if_neg h', if_pos h] at hlt'`. Establish `h1` using `(symIndex_lt_iff hr.le).2 h`. Establish `h2` using `Nat.le_add_right r ((p' - r) / t)`. Use linear arithmetic over natural numbers and integers. Simplify using `only [betaExponentOfRanks, if_neg h', if_neg h] at hlt'`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hL p p' (by omega) hp' hp (Nat.lt_of_add_lt_add_left hlt')`. Introduce `l hl`. Apply the tactic sequence `rw [reducedMatrix_eq_reduction_frameEntry hk]`. Conclude with `hD _ hl`. Introduce `l l' hl hl'`.
-
-Apply the tactic sequence `rw [reducedMatrix_eq_reduction_frameEntry hk, hl']`. Conclude with `hO _ _ (framePos_lt hk l.2) (by omega) (by omega) (Or.inr (Or.inr ⟨rfl, hl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patternGroup_le_parahoric (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) (hrN : r ≤ n + c) {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
@@ -712,9 +702,9 @@ theorem patternGroup_le_parahoric (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu 
     exact hO _ _ (framePos_lt hk l.2) (by omega) (by omega) (Or.inr (Or.inr ⟨rfl, hl⟩))
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks at h1 h2`. Rewrite `h1` using `[if_pos (show p < r by omega)]`. Rewrite `h2` using `[if_pos hp1]`. Distinguish the cases in `hx : px < r`. Rewrite `h1`, `h2` using `[if_pos hx]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `symIdx at h1 h2 hcons`. Apply the tactic sequence `split_ifs at h1 h2 hcons <;> omega`. Rewrite `h2` using `[if_neg hx]`. Establish `h3` using `(symIndex_lt_iff hr.le).2 hp1`. Establish `h4` using `Nat.le_add_right r ((px - r) / t)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -735,17 +725,17 @@ theorem consecutive_beta_cases {k₀ rS r t p px : ℕ} (hr : k₀ + rS < r) (hp
     omega
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Establish `hp : p < n + c` using `by omega`. Establish `hp' : p + 1 < n + c` using `by omega`. Rewrite using `[reduction_frameEntry_eq_matrix hk hp hp', reduction_frameEntry_eq_matrix hk hp hp', reduction_frameEntry_eq_matrix hk hp hp', reducedMatrix_mul hq0 hκ.1 hκ'.1, Matrix.mul_apply]`. Establish `hpa : LocE.fPos k₀ c n (LocE.fIdx k₀ c n p) = p` using `symFPos_fIdx hk hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpb : LocE.fPos k₀ c n (LocE.fIdx k₀ c n (p + 1)) = p + 1` using `symFPos_fIdx hk hp'`. Generalize the expression as in `ha : (⟨LocE.fIdx k₀ c n p, symFIdx_lt hk hp⟩ : Fin (n + c)) = a`. Generalize the expression as in `hb : (⟨LocE.fIdx k₀ c n (p + 1), symFIdx_lt hk hp'⟩ : Fin (n + c)) = b`. Establish `hpa' : LocE.fPos k₀ c n a.1 = p` using `by rw [← ha]; exact hpa`. Establish `hpb' : LocE.fPos k₀ c n b.1 = p + 1` using `by rw [← hb]; exact hpb`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : a ≠ b`. Introduce `h`. Rewrite `hpa'` using `[h, hpb']`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fintype.sum_eq_add a b hab ?_]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reducedMatrix_parahoric_diag_one hq hu hk hr hκ a (by rw [hpa']; omega), reducedMatrix_parahoric_diag_one hq hu hk hr hκ' b (by rw [hpb']; omega), one_mul, mul_one, add_comm]`. Introduce `x ⟨hxa, hxb⟩`. Establish `hBk` using `reducedMatrix_parahoric_blockTriangular hq hu hk hr hκ`. Establish `hBk'` using `reducedMatrix_parahoric_blockTriangular hq hu hk hr hκ'`. Distinguish the cases in `h1 : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n x.1) < betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n a.1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hBk h1, zero_mul]`. Distinguish the cases in `h2 : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n b.1) < betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n x.1)`. Rewrite using `[hBk' h2, mul_zero]`. Rewrite `h1` using `[hpa']`. Rewrite `h2` using `[hpb']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `consecutive_beta_cases hr hp1 hcons (not_lt.1 h1) (not_lt.1 h2) with h | h | ⟨h3, h4⟩` into its components or cases. Conclude with `absurd (Fin.ext ((frameIndex_framePos hk x.2).symm.trans (by rw [h, ← hpa', frameIndex_framePos hk a.2]))) hxa`. Conclude with `absurd (Fin.ext ((frameIndex_framePos hk x.2).symm.trans (by rw [h, ← hpb', frameIndex_framePos hk b.2]))) hxb`. Rewrite using `[reducedMatrix_parahoric_corner_zero hq hu hk hr hκ' x b h3 (by rw [hpb', h4]), mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_consecutive_frameEntry_mul (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t n c : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) (hrN : r ≤ n + c) {κ κ' : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
@@ -786,7 +776,7 @@ theorem reduction_consecutive_frameEntry_mul (hq : ((q : ℕ) : 𝓞 E) ∈ P.as
     · rw [reducedMatrix_parahoric_corner_zero hq hu hk hr hκ' x b h3 (by rw [hpb', h4]), mul_zero]
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks`. Rewrite using `[if_neg (show ¬ r + i * t + s < r by omega)]`. Establish `e : r + i * t + s - r = i * t + s` using `by omega`. Rewrite using `[e, show i * t + s = s + i * t by ring, Nat.add_mul_div_right _ _ (by omega : 0 < t), Nat.div_eq_of_lt hs, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem ob2Beta_blk {k₀ rS r t i s : ℕ} (hs : s < t) : betaExponentOfRanks k₀ rS r t (r + i * t + s) = r + i := by
   unfold betaExponentOfRanks
@@ -795,27 +785,27 @@ theorem ob2Beta_blk {k₀ rS r t i s : ℕ} (hs : s < t) : betaExponentOfRanks k
   rw [e, show i * t + s = s + i * t by ring, Nat.add_mul_div_right _ _ (by omega : 0 < t), Nat.div_eq_of_lt hs, zero_add]
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Establish `hjt : (i + 1) * t ≤ j * t` using `Nat.mul_le_mul_right t hi`. Establish `hbd : ∀ u : Fin t, r + i * t + u.1 < n + c`. Introduce `u`. Use `u.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hjt` using `[Nat.succ_mul]`. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg⟩ : ∃ g : Fin t → Fin (n + c), ∀ u, g u = ⟨LocE.fIdx k₀ c n (r + i * t + u.1), symFIdx_lt hk (hbd u)⟩` from `⟨_, fun _ => rfl⟩`. Establish `hR : ∀ u : Fin t, redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ.toLinearMap (r + i * t + s.1) (r + i * t + u.1)) * redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ'.toLinearMap (r + i * t + u.1) (r + i * t + s'.1)) = ob2M P q κ (g s) (g u) * …` using `fun u => by`. Simplify using `only [hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[reduction_frameEntry_eq_matrix hk (hbd s) (hbd u), reduction_frameEntry_eq_matrix hk (hbd u) (hbd s')]`. Establish `hL : redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) (κ * κ').toLinearMap (r + i * t + s.1) (r + i * t + s'.1)) = ∑ x : Fin (n + c), ob2M P q κ (g s) x * ob2M P q κ' x (g s')`. Simplify using `only [hg]`. Rewrite using `[reduction_frameEntry_eq_matrix hk (hbd s) (hbd s'), reducedMatrix_mul hq0 hκ.1 hκ'.1, Matrix.mul_apply]`. Rewrite using `[hL, Finset.sum_congr rfl fun u _ => hR u]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgp : ∀ u, LocE.fPos k₀ c n (g u).1 = r + i * t + u.1` using `fun u => by rw [hg]; exact symFPos_fIdx hk (hbd u)`. Establish `hginj : Function.Injective g`. Introduce `u u' h`. Establish `h1` using `hgp u`. Rewrite `h1` using `[h, hgp u']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Fin.ext (by omega)`. Use `Eq.trans ?_ (Finset.sum_image (f := fun x => ob2M P q κ (g s) x * ob2M P q κ' x (g s')) (s := Finset.univ) fun u _ u' _ h => hginj h)` and prove the remaining obligations. Use `(Finset.sum_subset (Finset.subset_univ _) fun x _ hx => ?_).symm` and prove the remaining obligations. Establish `hBk` using `reducedMatrix_parahoric_blockTriangular hq hu hk hr hκ`. Establish `hBk'` using `reducedMatrix_parahoric_blockTriangular hq hu hk hr hκ'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbs : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n (g s).1) = r + i` using `by rw [hgp]; exact ob2Beta_blk s.2`. Establish `hbs' : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n (g s').1) = r + i` using `by rw [hgp]; exact ob2Beta_blk s'.2`. Distinguish the cases in `h1 : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n x.1) < betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n (g s).1)`. Rewrite using `[hBk h1, zero_mul]`. Distinguish the cases in `h2 : betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n (g s').1) < betaExponentOfRanks k₀ rS r t (LocE.fPos k₀ c n x.1)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBk' h2, mul_zero]`. It suffices to derive a contradiction. Rewrite `h1` using `[hbs]`. Rewrite `h2` using `[hbs']`. Establish `hpx` using `framePos_lt hk x.2`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hpxd : LocE.fPos k₀ c n x.1 = px at h1 h2 hpx`. Unfold `betaExponentOfRanks at h1 h2`. Distinguish the cases in `hxr : px < r`. Rewrite `h1` using `[if_pos hxr]`. Use `(symIndex_lt_iff hr.le).2 hxr` as an intermediate fact.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h1`, `h2` using `[if_neg hxr]`. Establish `hq1 : (px - r) / t = i` using `by omega`. Establish `hlo : i * t ≤ px - r` using `by rw [← hq1]; exact Nat.div_mul_le_self _ _`. Establish `hhi : px - r < (i + 1) * t` using `(Nat.div_lt_iff_lt_mul ht).1 (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hhi` using `[Nat.succ_mul]`. Apply `hx` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨⟨px - r - i * t, by omega⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show LocE.fIdx k₀ c n (r + i * t + (px - r - i * t)) = x.1`. Rewrite using `[show r + i * t + (px - r - i * t) = px by omega, ← hpxd, frameIndex_framePos hk x.2]`.
+A detailed English derivation is pending.
 -/
 theorem reduction_frameEntry_mul_block (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ rS r t j n c : ℕ}
     (hk : k₀ ≤ n) (hr : k₀ + rS < r) (hrN : r + j * t ≤ n + c) (ht : 0 < t) {κ κ' : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
@@ -883,7 +873,7 @@ theorem reduction_frameEntry_mul_block (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal)
     rw [show r + i * t + (px - r - i * t) = px by omega, ← hpxd, frameIndex_framePos hk x.2]
 
 /- English proof (translation)
-Rewrite using `[redP_det (Matrix.of F) fun s s' => h s s']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem reduction_det_eq_det_reduction {t : ℕ} (F : Fin t → Fin t → E) (h : ∀ s s', IntAt P (F s s')) :
     redP P (Matrix.of F).det = (Matrix.of fun s s' => redP P (F s s')).det := by
@@ -891,9 +881,9 @@ theorem reduction_det_eq_det_reduction {t : ℕ} (F : Fin t → Fin t → E) (h 
   rfl
 
 /- English proof (translation)
-Unfold `LocE.unitV`. Apply the tactic sequence `by_cases hb : IsUnit (redP P b) <;> by_cases hd : IsUnit (redP P d)`. Establish `ha : IsUnit (redP P a)` using `by rw [h]; exact hb.mul hd`. Rewrite using `[dif_pos ha, dif_pos hb, dif_pos hd, ← Units.val_mul, ← map_mul]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Units.ext (by rw [IsUnit.unit_spec, Units.val_mul, IsUnit.unit_spec, IsUnit.unit_spec, h])`. Rewrite using `[dif_neg hd, mul_zero, dif_neg (fun ha => hd (isUnit_of_mul_isUnit_right (by rw [h] at ha; exact ha)))]`. Rewrite using `[dif_neg hb, zero_mul, dif_neg (fun ha => hb (isUnit_of_mul_isUnit_left (by rw [h] at ha; exact ha)))]`. Rewrite using `[dif_neg hb, zero_mul, dif_neg (fun ha => hb (isUnit_of_mul_isUnit_left (by rw [h] at ha; exact ha)))]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitValue_mul_of_reduction_mul {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b d : E} (h : redP P a = redP P b * redP P d) :
     LocE.unitV χ a = LocE.unitV χ b * LocE.unitV χ d := by
@@ -908,7 +898,7 @@ theorem unitValue_mul_of_reduction_mul {K : Type} [Field K] (χ : (𝓞 E ⧸ P.
   · rw [dif_neg hb, zero_mul, dif_neg (fun ha => hb (isUnit_of_mul_isUnit_left (by rw [h] at ha; exact ha)))]
 
 /- English proof (translation)
-Establish `h1 : ∀ i ∈ Finset.range (k₀ - 1), IntAt P (M i (i + 1))` using `fun i hi => hM i (by have := Finset.mem_range.1 hi; omega)`. Establish `h2 : ∀ i ∈ Finset.range (r - k₀ - 1), IntAt P (M (k₀ + i) (k₀ + i + 1))` using `fun i hi => hM (k₀ + i) (by have := Finset.mem_range.1 hi; omega)`. Rewrite using `[reduction_add (ciIntAt_sum _ _ h1) (ciIntAt_sum _ _ h2), redP_sum _ _ h1, redP_sum _ _ h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem reduction_sum_superdiagonal {k₀ r : ℕ} (hkr : k₀ < r) (M : ℕ → ℕ → E) (hM : ∀ p, p + 1 < r → IntAt P (M p (p + 1))) :
     redP P (∑ i ∈ Finset.range (k₀ - 1), M i (i + 1) + ∑ i ∈ Finset.range (r - k₀ - 1), M (k₀ + i) (k₀ + i + 1)) =
@@ -919,15 +909,15 @@ theorem reduction_sum_superdiagonal {k₀ r : ℕ} (hkr : k₀ < r) (M : ℕ →
   rw [reduction_add (ciIntAt_sum _ _ h1) (ciIntAt_sum _ _ h2), redP_sum _ _ h1, redP_sum _ _ h2]
 
 /- English proof (translation)
-Introduce `κ hκ κ' hκ'`. Establish `hq0` using `ciQ_ne_zero hu`. Establish `hss : κ * κ' ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)` using `Subgroup.mul_mem _ hκ.1 hκ'.1`. Establish `hrN' : r ≤ n + c` using `le_trans (Nat.le_add_right r _) hrN`. Establish `hkr : k₀ < r` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `LocE.lamGBS LocE.lamGvS`. Establish `hint : ∀ {κ₁ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}, κ₁ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1) → ∀ p, p + 1 < r → IntAt P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ₁.toLinearMap p (p + 1))` using `fun h p hp => frameEntry_integral_of_stabilizer hq0 hk (by omega) (by omega) h`. Rewrite using `[reduction_sum_superdiagonal hkr _ (hint hss), reduction_sum_superdiagonal hkr _ (hint hκ.1), reduction_sum_superdiagonal hkr _ (hint hκ'.1)]`. Establish `hψ : ∑ i ∈ Finset.range (k₀ - 1), redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) (κ * κ').toLinearMap i (i + 1)) + ∑ i ∈ Finset.range (r - k₀ - 1), redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) (κ * κ').toLinearMap (k₀ + i) (k₀ + i + 1)) = (∑ …`. Apply the tactic sequence `rw [Finset.sum_congr rfl fun i hi => reduction_consecutive_frameEntry_mul hq hu hk hr hrN' hκ hκ' (p := i) (by have := Finset.mem_range.1 hi; omega) (Or.inl (by have := Finset.mem_range.1 hi; unfold symIdx; split_ifs <;> omega)), Finset.sum_congr rfl fun i hi => reduction_consecu …`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Normalize the expressions using the abelian group laws. Establish `hχ : ∀ i ∈ Finset.range j, LocE.unitV (χ i) (Matrix.det (Matrix.of fun s s' : Fin t => LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) (κ * κ').toLinearMap (r + i * t + s.1) (r + i * t + s'.1))) = LocE.unitV (χ i) (Matrix.det (Matrix.of fun s s' : Fin t => LocE.entB q k₀ …`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `hjt : (i + 1) * t ≤ j * t` using `Nat.mul_le_mul_right t hi'`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hjt` using `[Nat.succ_mul]`. Establish `hbd : ∀ u : Fin t, r + i * t + u.1 < n + c` using `fun u => by have := u.2; omega`. Apply `unitValue_mul_of_reduction_mul` to reduce the goal to its premises. Rewrite using `[reduction_det_eq_det_reduction _ fun s s' => frameEntry_integral_of_stabilizer hq0 hk (hbd s) (hbd s') hss, reduction_det_eq_det_reduction _ fun s s' => frameEntry_integral_of_stabilizer hq0 hk (hbd s) (hbd s') hκ.1, reduction_det_eq_det_reduction _ fun s s' => frameEntry_integr …`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `s s'`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply]`. Conclude with `reduction_frameEntry_mul_block hq hu hk hr hrN ht hκ hκ' hi' s s'`. Rewrite using `[hψ, AddChar.map_add_eq_mul, Finset.prod_congr rfl hχ, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lattice_generic_character_condition (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {K : Type} [Field K]
     (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ rS r t j n c : ℕ}
@@ -982,9 +972,9 @@ end Sym
 section GlobB2
 
 /- English proof (translation)
-Establish `h2` using `R.two_le_m`. Establish `e : j * (R.t + 1) = j * R.t + j` using `by ring`. Use `⟨?_, ?_, ?_, R.t_odd.pos⟩` and prove the remaining obligations. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Unfold `Ranks.rS Ranks.r`. Use linear arithmetic over natural numbers and integers. Unfold `Ranks.r Ranks.N cOf`. Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ranks_frame_inequalities (R : Ranks) {m2 j : ℕ} (hm : R.m = m2 + 2) (hj : j ≤ m2 + 1) :
     R.k ≤ R.N j ∧ R.k + R.rS < R.r ∧ R.r + j * R.t = R.N j + cOf R j ∧ 0 < R.t := by
@@ -1004,9 +994,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Introduce `hB j hj P hP κ hκ hD hO hL`. Take `⟨hk, hr, hrN, -⟩` from `ranks_frame_inequalities R hB.hm hj`. Establish `hκ' : κ ∈ stabL X.E _ (LocE.lamY P.1 (qOf P.1) (R.N j) (cOf R j) fun i => i + 1)`. Establish `h` using `hκ`. Unfold `lamYat at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[if_pos hP]`. Then use the resulting hypothesis. Unfold `Jat`. Rewrite using `[if_pos hP, if_pos rfl]`. Conclude with `patternGroup_le_parahoric (ciQ_mem P.1) (ciQ_notMem_sq hB.hX hB.hPr hP) hk hr (by omega) hκ' hD hO hL`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ocbPatSubJ_holds (m2 : ℕ) : OcbPatSubJ Ch sel mu cst m2 := by
   intro hB j hj P hP κ hκ hD hO hL
@@ -1020,7 +1010,7 @@ theorem ocbPatSubJ_holds (m2 : ℕ) : OcbPatSubJ Ch sel mu cst m2 := by
   exact patternGroup_le_parahoric (ciQ_mem P.1) (ciQ_notMem_sq hB.hX hB.hPr hP) hk hr (by omega) hκ' hD hO hL
 
 /- English proof (translation)
-Introduce `hB j hj P hP`. Take `⟨hk, hr, hrN, ht⟩` from `ranks_frame_inequalities R hB.hm hj`. Conclude with `lattice_generic_character_condition (ciQ_mem P.1) (ciQ_notMem_sq hB.hX hB.hPr hP) _ _ hk hr hrN.le ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ocbLamChar_holds (m2 : ℕ) : OcbLamChar Ch sel mu cst m2 := by
   intro hB j hj P hP

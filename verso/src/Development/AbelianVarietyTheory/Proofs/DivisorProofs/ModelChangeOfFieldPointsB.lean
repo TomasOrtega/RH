@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.TwoLat
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB d hq hn pb M M' r τ t t' hM hM' ht ht' hL hG`. Use `choose V f f' hf hf' hV hxV using fun x : X => GlobalTheory.T.exists_common_affine_frames' X M M' r hM hM' x`. Use `choose A hA using fun x : X => GlobalTheory.T.exists_isCoordMat_of_isLieLat_of_isGrLat Z e hq hn pb M M' r τ t t' ht ht' hL hG (V x) (hV x) (f x) (hf x) (f' x) (hf' x)`. Take `⟨g, hg⟩` from `GlobalTheory.T.glue_morphism_of_compatible_frames X M M' r X V (fun x => ⟨x, hxV x⟩) f hf (fun x a => ∑ b, A x b a • f' x b) (fun i j a => GlobalTheory.T.toroidal_model_fibre_product_normal Z e hq pb M M' r τ t t' ht ht' (V i) (V j) (f i) (hf i) (f' i) (hf' i) (f j) (hf j) (f' j) …`. Conclude with `⟨g, GlobalTheory.T.toroidal_model_generic_fibre_iso Z e M M' r τ t t' ht ht' X V (fun x => ⟨x, hxV x⟩) f hf f' hf' A hA g hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_incl_matches : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInert
 open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef NumberField IsDedekindDomain GlobalTheory.EtaJoin GlobalTheory.CoefDuty
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.etaJ_join_closed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCongruenceLengthTwistedPlacesOfHeckeIntegrality.lean&line=13#L13)
 -/

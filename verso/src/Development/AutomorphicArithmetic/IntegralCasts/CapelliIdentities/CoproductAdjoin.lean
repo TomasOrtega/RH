@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Use `⟨Fintype.card ι, fun j => a ((Fintype.equivFin ι).symm j), fun j => b ((Fintype.equivFin ι).symm j), fun j => h _, fun x k => ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `(Equiv.sum_comp (Fintype.equivFin ι).symm (fun i => a i x * b i k)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.CoproductAdjoin.reindex {G : Type} [Mul G] (A : Subalgebra ℂ (G → ℂ))
     (p : G → ℂ) {ι : Type} [Fintype ι] (a b : ι → G → ℂ) (h : ∀ i, a i ∈ A ∧ b i ∈ A)
@@ -14,17 +14,15 @@ private theorem UpperTheory.Reformulated.B.CoproductAdjoin.reindex {G : Type} [M
   exact (Equiv.sum_comp (Fintype.equivFin ι).symm (fun i => a i x * b i k)).symm
 
 /- English proof (translation)
-Introduce `G _ S hS p hp`. Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp => exact hS p hp`. Consider the case `algebraMap r`. Use `⟨1, fun _ => algebraMap ℂ (G → ℂ) r, fun _ => 1, fun _ => ⟨Subalgebra.algebraMap_mem _ r, one_mem _⟩, fun x k => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Consider the case `add p q _ _ ihp ihq`. Take `⟨m, a, b, hab, hp⟩` from `ihp`. Take `⟨n, c, d, hcd, hq⟩` from `ihq`. Use `UpperTheory.Reformulated.B.CoproductAdjoin.reindex _ _ (Sum.elim a c) (Sum.elim b d) ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(i | i)`. Conclude with `hab i`. Conclude with `hcd i`. Introduce `x k`. Simplify using `[Fintype.sum_sum_type, hp, hq]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mul p q _ _ ihp ihq`. Take `⟨m, a, b, hab, hp⟩` from `ihp`. Take `⟨n, c, d, hcd, hq⟩` from `ihq`. Use `UpperTheory.Reformulated.B.CoproductAdjoin.reindex _ _ (ι := Fin m × Fin n) (fun z => a z.1 * c z.2) (fun z => b z.1 * d z.2) ?_ ?_` and prove the remaining obligations. Introduce `z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨mul_mem (hab _).1 (hcd _).1, mul_mem (hab _).2 (hcd _).2⟩`. Introduce `x k`. Rewrite using `[Pi.mul_apply, hp, hq, Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CoproductAdjoin.coprod_adjoin :
     ∀ {G : Type} [inst : Mul G] (S : Set (G → ℂ)),

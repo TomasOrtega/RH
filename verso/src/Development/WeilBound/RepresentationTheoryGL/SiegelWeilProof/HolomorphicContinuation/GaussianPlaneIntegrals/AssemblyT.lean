@@ -18,7 +18,7 @@ abbrev NN : ℕ := Fintype.card ι + (Fintype.card A + Fintype.card B)
 def emb (i : ι) : Fin (NN ι A B) := Fin.castAdd _ (Fintype.equivFin ι i)
 
 /- English proof (translation)
-Introduce `i i' h` and use `by simpa [emb] using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem emb_injective : Function.Injective (emb (ι := ι) (A := A) (B := B)) := fun i i' h => by
   simpa [emb] using h
@@ -29,11 +29,11 @@ def invE (j : Fin (NN ι A B)) : Option ι :=
   if h : (j : ℕ) < Fintype.card ι then some ((Fintype.equivFin ι).symm ⟨j, h⟩) else none
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_add]`. Establish `h2 : ∑ j : Fin (Fintype.card A + Fintype.card B), f (Fin.natAdd _ j) * (invE A B (Fin.natAdd _ j)).elim 0 g = 0`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: invE A B (Fin.natAdd (Fintype.card ι) j) = none`. Simplify using `[invE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[h2, add_zero]`. Establish `h1 : ∀ j : Fin (Fintype.card ι), invE A B (Fin.castAdd _ j) = some ((Fintype.equivFin ι).symm j)`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[invE]`. Repeatedly rewrite using `[h1]`. Simplify using `only [Option.elim]`. Conclude with `(Equiv.sum_comp (Fintype.equivFin ι).symm (fun i => f (emb i) * g i)).symm.trans (Finset.sum_congr rfl fun j _ => by simp [emb]) |>.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_invE (f : Fin (NN ι A B) → ℂ) (g : ι → ℂ) :
     ∑ j, f j * (invE A B j).elim 0 g = ∑ i, f (emb i) * g i := by
@@ -66,7 +66,7 @@ def ren : (ι × A) ⊕ (ι × B) → (Fin (NN ι A B) × A) ⊕ (Fin (NN ι A B
 def blk (u : Matrix (Fin (NN ι A B)) (Fin (NN ι A B)) ℂ) : Matrix ι ι ℂ := fun i i' => u (emb i) (emb i')
 
 /- English proof (translation)
-Apply the tactic sequence `rcases v with ⟨j, a⟩ | ⟨j, b⟩ <;> cases h : invE A B j <;> simp [resφ, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_resφ (z : (ι × A) ⊕ (ι × B) → ℂ) (v : (Fin (NN ι A B) × A) ⊕ (Fin (NN ι A B) × B)) :
     eval z (resφ ι v) = Sum.elim (fun x : Fin (NN ι A B) × A => (invE A B x.1).elim 0 fun i => z (Sum.inl (i, x.2)))
@@ -74,9 +74,7 @@ theorem eval_resφ (z : (ι × A) ⊕ (ι × B) → ℂ) (v : (Fin (NN ι A B) �
   rcases v with ⟨j, a⟩ | ⟨j, b⟩ <;> cases h : invE A B j <;> simp [resφ, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Break down `v with ⟨i, a⟩ | ⟨i, b⟩` into its components or cases. Simplify using `only [Function.comp, ren, Sum.map_inl, Prod.map, act, Sum.elim_inl, id, eval_resφ]`. Conclude with `sum_invE (fun j => u (emb i) j) (fun i' => z (Sum.inl (i', a)))`. Simplify using `only [Function.comp, ren, Sum.map_inr, Prod.map, act, Sum.elim_inr, id, eval_resφ, Matrix.map_apply]`.
-
-Conclude with `sum_invE (fun j => star (u (emb i) j)) (fun i' => z (Sum.inr (i', b)))`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_ren (u : Matrix (Fin (NN ι A B)) (Fin (NN ι A B)) ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) :
     (act u (u.map star) (fun v => eval z (resφ ι v))) ∘ ren = act (blk u) ((blk u).map star) z := by
@@ -90,21 +88,21 @@ theorem act_ren (u : Matrix (Fin (NN ι A B)) (Fin (NN ι A B)) ℂ) (z : (ι ×
 def Tf (hA : Avg) (q : PV ι A B) : PV ι A B := res (Classical.choose (hA (NN ι A B) A B (rename ren q)))
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toMK (N : ℕ) :
     Continuous fun k : Formalism.REAL.KG (fun _ : Fin N => true) => Formalism.REAL.toMK k :=
   Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun i' => (continuous_toMK _).matrix_elem _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_blk : Continuous fun k : Formalism.REAL.KG (fun _ : Fin (NN ι A B) => true) =>
     blk (ι := ι) (A := A) (B := B) (Formalism.REAL.toMK k) :=
   continuous_pi fun i => continuous_pi fun i' => (continuous_toMK _).matrix_elem _ _
 
 /- English proof (translation)
-Establish `hs` using `Classical.choose_spec (hA (NN ι A B) A B (rename ren q))`. Rewrite using `[Tf, res, eval_aeval', hs.2.2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[AsmA.eval_sub, eval_rename, act_ren]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_Tf (hA : Avg) (q : PV ι A B) (z : (ι × A) ⊕ (ι × B) → ℂ) :
     eval z (Tf hA q) = ∫ k : Formalism.REAL.KG (fun _ : Fin (NN ι A B) => true),
@@ -117,11 +115,11 @@ theorem eval_Tf (hA : Avg) (q : PV ι A B) (z : (ι × A) ⊕ (ι × B) → ℂ)
   rw [AsmA.eval_sub, eval_rename, act_ren]
 
 /- English proof (translation)
-Establish `hs` using `Classical.choose_spec (hA (NN ι A B) A B (rename ren q))`. Establish `hP` using `hS (Fin (NN ι A B)) A B (by simp only [Fintype.card_fin, NN]; omega) (by simp only [Fintype.card_fin, NN]; omega) _ hs.1`. Establish `hle : Subalgebra.map (res (ι` using `ι) (A := A) (B := B)) (pairAlg (Fin (NN ι A B)) A B) ≤ pairAlg ι A B := by`. Rewrite using `[pairAlg, AlgHom.map_adjoin]`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨_, ⟨⟨a, b⟩, rfl⟩, rfl⟩`. Use `Algebra.subset_adjoin ⟨(a, b), ?_⟩` and prove the remaining obligations. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Simplify using `only [res, map_sum, map_mul, aeval_X, eval_resφ, Sum.elim_inl, Sum.elim_inr]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_invE (fun j => (invE A B j).elim 0 fun i => z (Sum.inl (i, a))) (fun i => z (Sum.inr (i, b)))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: invE A B (emb (A` using `A) (B := B) i) = some i := by simp [invE, emb]`. Simplify using `[this]`. Conclude with `hle ⟨_, hP, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Tf_mem (hS : Stable) (hA : Avg) (q : PV ι A B) : Tf hA q ∈ pairAlg ι A B := by
   have hs := Classical.choose_spec (hA (NN ι A B) A B (rename ren q))
@@ -141,9 +139,9 @@ theorem Tf_mem (hS : Stable) (hA : Avg) (q : PV ι A B) : Tf hA q ∈ pairAlg ι
   exact hle ⟨_, hP, rfl⟩
 
 /- English proof (translation)
-Establish `hs` using `Classical.choose_spec (hA (NN ι A B) A B (rename ren q))`. Use `(totalDegree_aeval_le _ (fun v => ?_) _).trans (hs.2.1.trans (totalDegree_rename_le _ _))` and prove the remaining obligations. Break down `v with ⟨j, a⟩ | ⟨j, b⟩` into its components or cases. Simplify using `only [resφ, Sum.elim_inl]`. Apply the tactic sequence `cases h : invE A B j <;> simp [Option.elim, totalDegree_X]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [resφ, Sum.elim_inr]`. Apply the tactic sequence `cases h : invE A B j <;> simp [Option.elim, totalDegree_X]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Tf_deg (hA : Avg) (q : PV ι A B) : (Tf hA q).totalDegree ≤ q.totalDegree := by
   have hs := Classical.choose_spec (hA (NN ι A B) A B (rename ren q))
@@ -155,7 +153,7 @@ theorem Tf_deg (hA : Avg) (q : PV ι A B) : (Tf hA q).totalDegree ≤ q.totalDeg
     cases h : invE A B j <;> simp [Option.elim, totalDegree_X]
 
 /- English proof (translation)
-The claim follows from `integrableOn_univ.mp ((continuous_act_eval hF hG z q).continuousOn.integrableOn_compact isCompact_univ)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_eval_act (hA : Avg) (F G : Formalism.REAL.KG (fun _ : Fin (NN ι A B) => true) → Matrix ι ι ℂ)
     (hF : Continuous F) (hG : Continuous G) (z : (ι × A) ⊕ (ι × B) → ℂ) (q : PV ι A B) :

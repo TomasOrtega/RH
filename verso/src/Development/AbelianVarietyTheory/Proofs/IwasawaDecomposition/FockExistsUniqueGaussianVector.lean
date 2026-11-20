@@ -14,11 +14,11 @@ section Mat
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Take `⟨B, rfl⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hM.nonneg`. Establish `: ∑ k, ∑ l, (star B * B) k l * inner ℂ (u k) (u l) = ∑ m, inner ℂ (∑ k, B m k • u k) (∑ l, B m l • u l)`. Simplify using `only [sum_inner, inner_sum, inner_smul_left, inner_smul_right, Matrix.mul_apply, Finset.sum_mul, Matrix.star_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[Finset.sum_comm (γ := n) (s := Finset.univ) (t := Finset.univ) (f := fun x m => star (B m x) * B m _ * inner ℂ (u x) (u _))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_nonneg fun m _ => inner_self_nonneg (𝕜 := ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem re_sum_inner_nonneg {n H : Type} [Fintype n] [DecidableEq n] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {M : Matrix n n ℂ} (hM : M.PosSemidef) (u : n → H) :
@@ -38,9 +38,9 @@ theorem re_sum_inner_nonneg {n H : Type} [Fintype n] [DecidableEq n] [NormedAddC
   exact Finset.sum_nonneg fun m _ => inner_self_nonneg (𝕜 := ℂ)
 
 /- English proof (translation)
-Establish `h` using `re_sum_inner_nonneg hM u`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, sub_mul, Finset.sum_sub_distrib, smul_eq_mul, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Complex.sub_re, sub_nonneg] at h`. Use `h.trans_eq ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.re_ofReal_mul, ← inner_self_eq_norm_sq (𝕜 := ℂ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem re_sum_inner_le {n H : Type} [Fintype n] [DecidableEq n] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {M : Matrix n n ℂ} {r : ℝ} (hM : ((r : ℂ) • (1 : Matrix n n ℂ) - M).PosSemidef) (u : n → H) :
@@ -57,15 +57,15 @@ theorem re_sum_inner_le {n H : Type} [Fintype n] [DecidableEq n] [NormedAddCommG
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, h1⟩ : ∃ δ : ℝ, 0 < δ ∧ (1 - Aᴴ * A - (δ : ℂ) • (1 : Matrix (Fin Q) (Fin Q) ℂ)).PosSemidef := by`. Break down `Nat.eq_zero_or_pos Q with rfl | hN` into its components or cases. Conclude with `⟨1, one_pos, by rw [Subsingleton.elim (_ - _) 0]; exact PosSemidef.zero⟩`. Use `haveI : Nonempty (Fin Q) := ⟨⟨0, hN⟩⟩`. Take `⟨r, hr, hle⟩` from `(CFC.exists_pos_algebraMap_le_iff (A := Matrix (Fin Q) (Fin Q) ℂ) h.isStrictlyPositive.isSelfAdjoint).2 fun x hx => h.isStrictlyPositive.spectrum_pos hx`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Use `Matrix.le_iff.mp hle` as an intermediate fact. Rewrite `this` using `[Algebra.algebraMap_eq_smul_one, ← Complex.coe_smul]`. Then use the resulting hypothesis. Use `set r : ℝ := max (1 - δ) (1 / 2) with hr`. Establish `hr0 : 0 < r` using `lt_max_of_lt_right (by norm_num)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0' : (0 : ℂ) < r` using `by exact_mod_cast hr0`. Establish `h2 : ((r : ℂ) • (1 : Matrix (Fin Q) (Fin Q) ℂ) - Aᴴ * A).PosSemidef`. Establish `h3 : (((r - (1 - δ) : ℝ) : ℂ) • (1 : Matrix (Fin Q) (Fin Q) ℂ)).PosSemidef` using `PosSemidef.one.smul (by exact_mod_cast sub_nonneg.2 (le_max_left _ _))`. Use `h1.add h3 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `module`. Use `⟨r, hr0, max_lt (by linarith) (by norm_num), h2, ?_⟩` and prove the remaining obligations. Establish `hD : ((r : ℂ) • (1 : Matrix (Fin Q) (Fin Q) ℂ)).PosDef` using `PosDef.one.smul hr0'`. Use `letI := hD.isUnit.invertible`. Use `letI : Invertible (1 : Matrix (Fin P) (Fin P) ℂ) := invertibleOne`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(PosDef.fromBlocks₁₁ A ((r : ℂ) • (1 : Matrix (Fin Q) (Fin Q) ℂ)) PosDef.one).2 (by simpa using h2)`. Establish `h5` using `((PosDef.fromBlocks₂₂ 1 A hD).1 h4).smul hr0'.le`. Establish `h6 : ((r : ℂ) • (1 : Matrix (Fin Q) (Fin Q) ℂ))⁻¹ = (r : ℂ)⁻¹ • 1` using `Matrix.inv_eq_right_inv (by rw [smul_mul_smul_comm, mul_one, mul_inv_cancel₀ hr0'.ne', one_smul])`. Rewrite `h5` using `[h6, smul_sub, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_smul, mul_inv_cancel₀ hr0'.ne', one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_bound {P Q : ℕ} {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef) :
     ∃ r : ℝ, 0 < r ∧ r < 1 ∧ ((r : ℂ) • (1 : Matrix (Fin Q) (Fin Q) ℂ) - Aᴴ * A).PosSemidef ∧
@@ -106,7 +106,7 @@ section General
 variable {σ : Type} [DecidableEq σ] (F : Fock σ)
 
 /- English proof (translation)
-Introduce `α β` and use `by convert F.fockIP α β`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFockIP : GlobalTheory.FockAlg.IsFockIP F.ι := fun α β => by convert F.fockIP α β
 
@@ -114,27 +114,27 @@ def DegLt (k : ℕ) (f : MvPolynomial σ ℂ) : Prop := ∀ α : σ →₀ ℕ, 
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Use extensionality with `α`. Simplify using `using h α (Nat.zero_le _)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem DegLt.eq_zero {f : MvPolynomial σ ℂ} (h : DegLt 0 f) : f = 0 := by
   ext α; simpa using h α (Nat.zero_le _)
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Introduce `α hα` and use `h α (hk.trans hα)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DegLt.mono {k k' : ℕ} {f : MvPolynomial σ ℂ} (h : DegLt k f) (hk : k ≤ k') : DegLt k' f :=
   fun α hα => h α (hk.trans hα)
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Introduce `α hα` and use `by rw [coeff_pderiv, h _ (by rw [map_add, Finsupp.degree_single]; omega), zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DegLt.pderiv {k : ℕ} {f : MvPolynomial σ ℂ} (h : DegLt (k + 1) f) (l : σ) : DegLt k (pderiv l f) :=
   fun α hα => by rw [coeff_pderiv, h _ (by rw [map_add, Finsupp.degree_single]; omega), zero_mul]
 
 /- English proof (translation)
-Introduce `α hα` and use `by rw [coeff_X_mul'] split_ifs with hl · refine h _ ?_ have e : α - Finsupp.single l 1 + Finsupp.single l 1 = α := tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.pos_of_ne_zero (Finsupp.mem_support_iff.1 hl))) have := congrArg Finsupp.degree e rw [map_add, Finsupp.degree_sin …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DegLt.X_mul {k : ℕ} {f : MvPolynomial σ ℂ} (h : DegLt k f) (l : σ) : DegLt (k + 1) (X l * f) :=
   fun α hα => by
@@ -150,28 +150,28 @@ theorem DegLt.X_mul {k : ℕ} {f : MvPolynomial σ ℂ} (h : DegLt k f) (l : σ)
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Introduce `α hα` and use `by rw [coeff_smul, h α hα, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DegLt.smul {k : ℕ} {f : MvPolynomial σ ℂ} (h : DegLt k f) (c : ℂ) : DegLt k (c • f) :=
   fun α hα => by rw [coeff_smul, h α hα, smul_zero]
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Introduce `α hα` and use `by rw [coeff_add, h α hα, h' α hα, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DegLt.add {k : ℕ} {f g : MvPolynomial σ ℂ} (h : DegLt k f) (h' : DegLt k g) : DegLt k (f + g) :=
   fun α hα => by rw [coeff_add, h α hα, h' α hα, add_zero]
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Introduce `α hα` and use `by rw [coeff_sum]; exact Finset.sum_eq_zero fun i _ => h i α hα`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DegLt.sum {k : ℕ} {I : Type} [Fintype I] {f : I → MvPolynomial σ ℂ} (h : ∀ i, DegLt k (f i)) :
     DegLt k (∑ i, f i) :=
   fun α hα => by rw [coeff_sum]; exact Finset.sum_eq_zero fun i _ => h i α hα
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum, sum_inner]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `e : (monomial α (coeff α f) : MvPolynomial σ ℂ) = coeff α f • monomial α 1` using `by simp [smul_monomial]`. Rewrite using `[e, map_smul, inner_smul_left, hasCoeff_coe F g α, GlobalTheory.FockSeq.mfact_cast, MvPolynomial.coeff_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_eq_sum (f g : MvPolynomial σ ℂ) :
     inner ℂ (F.ι f) (F.ι g) =
@@ -183,9 +183,9 @@ theorem inner_eq_sum (f g : MvPolynomial σ ℂ) :
   rw [e, map_smul, inner_smul_left, hasCoeff_coe F g α, GlobalTheory.FockSeq.mfact_cast, MvPolynomial.coeff_coe]
 
 /- English proof (translation)
-Rewrite using `[coeff_X_mul']`. Use `split_ifs with hl`. Establish `h0` using `Nat.pos_of_ne_zero (Finsupp.mem_support_iff.1 hl)`. Rewrite using `[coeff_pderiv, tsub_add_cancel_of_le (Finsupp.single_le_iff.2 h0), mul_comm]`. Simplify using `[Nat.cast_sub h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.notMem_support_iff.1 hl]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_X_mul_pderiv (l : σ) (f : MvPolynomial σ ℂ) (α : σ →₀ ℕ) :
     coeff α (X l * pderiv l f) = (α l : ℂ) * coeff α f := by
@@ -197,13 +197,13 @@ theorem coeff_X_mul_pderiv (l : σ) (f : MvPolynomial σ ℂ) (α : σ →₀ �
   · simp [Finsupp.notMem_support_iff.1 hl]
 
 /- English proof (translation)
-Establish `h1 : ∀ l, ‖F.ι (pderiv l f)‖ ^ 2 = ∑ α ∈ f.support, (α l : ℝ) * (GlobalTheory.FockSeq.mfact α * Complex.normSq (coeff α f))` using `fun l => by`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), GlobalTheory.Oscillator.inner_pderiv (isFockIP F), inner_eq_sum, map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_X_mul_pderiv]`. Simplify using `[Complex.normSq_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖F.ι f‖ ^ 2 = ∑ α ∈ f.support, (GlobalTheory.FockSeq.mfact α * Complex.normSq (coeff α f))`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), inner_eq_sum, map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `[Complex.normSq_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, h2]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_le_sum fun α hα => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ (mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _))` and prove the remaining obligations. Rewrite using `[← Nat.cast_sum, ← Finsupp.degree_eq_sum, Nat.cast_le]`. Conclude with `le_of_not_ge fun hk => mem_support_iff.1 hα (h α hk)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sq_pderiv_le [Fintype σ] {k : ℕ} {f : MvPolynomial σ ℂ} (h : DegLt k f) :
     ∑ l, ‖F.ι (pderiv l f)‖ ^ 2 ≤ k * ‖F.ι f‖ ^ 2 := by
@@ -226,7 +226,7 @@ theorem sum_sq_pderiv_le [Fintype σ] {k : ℕ} {f : MvPolynomial σ ℂ} (h : D
   exact le_of_not_ge fun hk => mem_support_iff.1 hα (h α hk)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Oscillator.inner_X_mul (isFockIP F), GlobalTheory.Oscillator.inner_pderiv (isFockIP F), Derivation.leibniz, map_add, inner_add_right, smul_eq_mul, smul_eq_mul, pderiv_X, Pi.single_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem inner_X_X (a b : σ) (f g : MvPolynomial σ ℂ) :
     inner ℂ (F.ι (X a * f)) (F.ι (X b * g)) =
@@ -238,7 +238,7 @@ theorem inner_X_X (a b : σ) (f g : MvPolynomial σ ℂ) :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `h1 : ‖F.ι (X l * f)‖ ^ 2 = ‖F.ι (pderiv l f)‖ ^ 2 + ‖F.ι f‖ ^ 2`. Simplify using `only [← inner_self_eq_norm_sq (𝕜 := ℂ), inner_X_X, if_true, map_add]`. Establish `h2 : ‖F.ι (pderiv l f)‖ ^ 2 ≤ k * ‖F.ι f‖ ^ 2` using `(Finset.single_le_sum (f := fun l => ‖F.ι (pderiv l f)‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ l)).trans (sum_sq_pderiv_le F h)`. Use `(abs_le_of_sq_le_sq' ?_ (by positivity)).2` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (by positivity)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -266,7 +266,7 @@ def quadDer (f : MvPolynomial (Ix P Q) ℂ) : MvPolynomial (Ix P Q) ℂ :=
   ∑ i, ∑ j, (starRingEnd ℂ) (A i j) • pderiv (Sum.inr j) (pderiv (Sum.inl i) f)
 
 /- English proof (translation)
-Simplify using `only [quadMul, quadDer, map_sum, map_smul, sum_inner, inner_sum, inner_smul_left, inner_smul_right, GlobalTheory.Oscillator.inner_X_mul (isFockIP F)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_quadMul (f g : MvPolynomial (Ix P Q) ℂ) :
     inner ℂ (F.ι (quadMul A f)) (F.ι g) = inner ℂ (F.ι f) (F.ι (quadDer A g)) := by
@@ -274,7 +274,7 @@ theorem inner_quadMul (f g : MvPolynomial (Ix P Q) ℂ) :
     GlobalTheory.Oscillator.inner_X_mul (isFockIP F)]
 
 /- English proof (translation)
-Establish `e : ∀ (a : Fin P) (b : Fin Q), pderiv (Sum.inl a : Ix P Q) ((X (Sum.inr b) : MvPolynomial (Ix P Q) ℂ) * f) = X (Sum.inr b) * pderiv (Sum.inl a) f` using `fun a b => by`. Rewrite using `[Derivation.leibniz, pderiv_X_of_ne (by simp)]; simp`. Rewrite using `[inner_X_X, e, e, inner_X_X, inner_X_X]`. Simplify using `only [Sum.inl.injEq, Sum.inr.injEq]`. Apply the tactic sequence `split_ifs <;> simp [add_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inner_XX_XX (i k : Fin P) (j l : Fin Q) (f : MvPolynomial (Ix P Q) ℂ) :
     inner ℂ (F.ι (X (Sum.inl i) * (X (Sum.inr j) * f))) (F.ι (X (Sum.inl k) * (X (Sum.inr l) * f))) =
@@ -290,11 +290,11 @@ theorem inner_XX_XX (i k : Fin P) (j l : Fin Q) (f : MvPolynomial (Ix P Q) ℂ) 
   split_ifs <;> simp [add_assoc]
 
 /- English proof (translation)
-Simplify using `only [quadMul, quadDer, map_sum, map_smul, sum_inner, inner_sum, inner_smul_left, inner_smul_right, inner_XX_XX, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_ite_irrel, Finset.sum_c …`. Use `congrArg₂ (· + ·) (congrArg₂ (· + ·) (congrArg₂ (· + ·) ?_ ?_) ?_) ?_` and prove the remaining obligations. Repeatedly rewrite using `[← Fintype.sum_prod_type']`. Conclude with `Fintype.sum_bijective (fun y => (y.2.2.1, y.2.2.2, y.1, y.2.1)) (Function.Involutive.bijective fun _ => rfl) _ _ fun _ => mul_left_comm _ _ _`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, Complex.mul_conj]`.
+A detailed English derivation is pending.
 -/
 theorem inner_quadMul_self (f : MvPolynomial (Ix P Q) ℂ) :
     inner ℂ (F.ι (quadMul A f)) (F.ι (quadMul A f)) = inner ℂ (F.ι (quadDer A f)) (F.ι (quadDer A f)) +
@@ -321,19 +321,19 @@ theorem inner_quadMul_self (f : MvPolynomial (Ix P Q) ℂ) :
     rw [← mul_assoc, Complex.mul_conj]
 
 /- English proof (translation)
-Use `set T : ℝ := ∑ i, ∑ j, Complex.normSq (A i j) with hT`. Establish `hT0 : 0 ≤ T` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`. Proceed by induction on `n with`. Consider the case `zero => intro f hf`. Simplify using `[hf.eq_zero, quadMul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `f hf`. Establish `hD : DegLt (2 * n) (quadDer A f)` using `DegLt.sum fun i => DegLt.sum fun j => ((DegLt.pderiv (k := 2 * n + 1) hf _).pderiv _).smul _`. Establish `hc : 0 ≤ n * T + r * (n * (n + 1))` using `by positivity`. Establish `e1 : ‖F.ι (quadDer A f)‖ ≤ √(n * T + r * (n * (n + 1))) * ‖F.ι f‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `h : ‖F.ι (quadDer A f)‖ * ‖F.ι (quadDer A f)‖ ≤ √(n * T + r * (n * (n + 1))) * ‖F.ι f‖ * ‖F.ι (quadDer A f)‖ by`. Break down `(norm_nonneg (F.ι (quadDer A f))).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Check the signs of the components of the expression. Conclude with `le_of_mul_le_mul_right h h0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← inner_self_eq_norm_mul_norm (𝕜 := ℂ), ← inner_quadMul]`. Use `(re_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ‖F.ι (quadDer A f)‖ ^ 2 ≤ (n * T + r * (n * (n + 1))) * ‖F.ι f‖ ^ 2`. Use `pow_le_pow_left₀ (norm_nonneg _) e1 2` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_pow, Real.sq_sqrt hc]`. Then use the resulting hypothesis. Establish `e3` using `re_sum_inner_le h2 fun k => F.ι (pderiv (Sum.inl k) f)`. Establish `e4` using `re_sum_inner_le (M := (Aᴴ * A)ᵀ) (r := r) (by simpa using h1.transpose) fun k => F.ι (pderiv (Sum.inr k) f)`. Establish `e5` using `mul_le_mul_of_nonneg_left (sum_sq_pderiv_le F hf) hr`. Rewrite `e5` using `[Fintype.sum_sum_type]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e6` using `congrArg Complex.re (inner_quadMul_self F A f)`. Establish `e7 : ∀ v : F.H, (inner ℂ v v).re = ‖v‖ ^ 2` using `fun v => inner_self_eq_norm_sq (𝕜 := ℂ) v`. Rewrite `e6` using `[Complex.add_re, Complex.add_re, Complex.add_re, Complex.re_ofReal_mul, e7, e7, e7, ← hT]`. Use `(abs_le_of_sq_le_sq' ?_ (by positivity)).2` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (by positivity), e6]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Move the coercions through the operations in `at e5 ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem norm_quadMul_le {r : ℝ} (hr : 0 ≤ r)
     (h1 : ((r : ℂ) • (1 : Matrix (Fin Q) (Fin Q) ℂ) - Aᴴ * A).PosSemidef)
@@ -379,16 +379,16 @@ theorem norm_quadMul_le {r : ℝ} (hr : 0 ≤ r)
 variable (x : Ix P Q → ℂ)
 
 /- English proof (translation)
-Simplify using `only [gaussPoly, quadMul, add_mul, Finset.sum_mul, smul_eq_C_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaussPoly_mul (f : MvPolynomial (Ix P Q) ℂ) :
     gaussPoly A x * f = quadMul A f + ∑ l, x l • (X l * f) := by
   simp only [gaussPoly, quadMul, add_mul, Finset.sum_mul, smul_eq_C_mul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `α hα`. Rewrite using `[pow_zero, coeff_one, if_neg]`. Introduce and unpack `rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `at hα`. Consider the case `succ n ih`. Rewrite using `[pow_succ', gaussPoly_mul]`. Conclude with `(DegLt.sum fun i => DegLt.sum fun j => ((ih.X_mul _).X_mul _).smul _).add (DegLt.sum fun l => ((ih.X_mul _).mono (by omega)).smul _)`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degLt_pow (n : ℕ) : DegLt (2 * n + 1) (gaussPoly A x ^ n) := by
   induction n with
@@ -403,19 +403,19 @@ theorem degLt_pow (n : ℕ) : DegLt (2 * n + 1) (gaussPoly A x ^ n) := by
       (DegLt.sum fun l => ((ih.X_mul _).mono (by omega)).smul _)
 
 /- English proof (translation)
-Take `⟨r, hr0, hr1, h1, h2⟩` from `exists_bound h`. Use `set T : ℝ := ∑ i, ∑ j, Complex.normSq (A i j) with hT`. Establish `hT0 : 0 ≤ T` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`. Use `set C : ℝ := ∑ l, ‖x l‖ with hC`. Set `g : ℝ → ℝ` to `fun u => √(u * T + r * (1 + u)) + C * √(2 * u + u ^ 2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Continuous g` using `by fun_prop`. Establish `hg0 : g 0 < 1` using `by simpa [g, Real.sqrt_lt' one_pos] using hr1`. Take `⟨s, hs0, hs1⟩` from `exists_between hg0`. Establish `hev` using `((hg.tendsto 0).comp tendsto_one_div_add_atTop_nhds_zero_nat).eventually_lt_const hs0`. Use `summable_of_ratio_norm_eventually_le hs1 (hev.mono fun n hn => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DegLt (2 * (n + 1)) (gaussPoly A x ^ n)` using `(degLt_pow A x n).mono (by omega)`. Establish `hm : (0 : ℝ) < n + 1` using `by positivity`. Establish `b1` using `norm_quadMul_le F A hr0.le h1 h2 (n + 1) _ hd`. Establish `b2 : ‖F.ι (∑ l, x l • (X l * gaussPoly A x ^ n))‖ ≤ C * (√(((2 * (n + 1) : ℕ) : ℝ) + 1) * ‖F.ι (gaussPoly A x ^ n)‖)`. Rewrite using `[map_sum, hC, Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_sum_le_of_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (norm_X_mul_le F hd l) (norm_nonneg _)`. Establish `s1 : √(((n + 1 : ℕ) : ℝ) * T + r * (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + 1))) = (n + 1) * √(1 / (n + 1) * T + r * (1 + 1 / (n + 1)))`. Rewrite using `[← Real.sqrt_sq hm.le, ← Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hm.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `s2 : √(((2 * (n + 1) : ℕ) : ℝ) + 1) = (n + 1) * √(2 * (1 / (n + 1)) + (1 / (n + 1)) ^ 2)`. Rewrite using `[← Real.sqrt_sq hm.le, ← Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hm.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `b3 : ‖F.ι (gaussPoly A x ^ (n + 1))‖ ≤ (n + 1) * (s * ‖F.ι (gaussPoly A x ^ n)‖)`. Rewrite using `[pow_succ', gaussPoly_mul, map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `(norm_add_le_of_le b1 b2).trans ?_` and prove the remaining obligations. Rewrite using `[← hT, s1, s2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, norm_smul, norm_inv, norm_inv, Complex.norm_natCast, Complex.norm_natCast, Nat.factorial_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem summable_pow (h : (1 - Aᴴ * A).PosDef) :
     Summable fun n : ℕ => (n.factorial : ℂ)⁻¹ • F.ι (gaussPoly A x ^ n) := by
@@ -458,11 +458,11 @@ theorem summable_pow (h : (1 - Aᴴ * A).PosDef) :
 end Quad
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro α hα`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `α hα`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `e` using `congrArg Finsupp.degree (Finset.HasAntidiagonal.mem_antidiagonal.1 hp)`. Rewrite `e` using `[map_add]`. Distinguish the cases in `h0 : p.2 = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0, hq, mul_zero]`. Establish `: p.2.degree ≠ 0` using `fun h => h0 ((Finsupp.degree_eq_zero_iff _).1 h)`. Rewrite using `[ih _ (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_pow_eq_zero {σ : Type} {q : MvPolynomial σ ℂ} (hq : coeff 0 q = 0) (n : ℕ) :
     ∀ α : σ →₀ ℕ, α.degree < n → coeff α (q ^ n) = 0 := by
@@ -481,9 +481,9 @@ theorem coeff_pow_eq_zero {σ : Type} {q : MvPolynomial σ ℂ} (hq : coeff 0 q 
       rw [ih _ (by omega), zero_mul]
 
 /- English proof (translation)
-Use `F.dense.eq_of_inner_right (𝕜 := ℂ) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `add f g hf hg => simp only [map_add, inner_add_left, hf, hg]`. Consider the case `monomial α a`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : (monomial α a : MvPolynomial σ ℂ) = a • monomial α 1` using `by simp [smul_monomial]`. Rewrite using `[e, map_smul, inner_smul_left, inner_smul_left, hv α, hw α]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasCoeff_unique {σ : Type} [DecidableEq σ] (F : Fock σ) {v w : F.H} {c : MvPowerSeries σ ℂ}
     (hv : HasCoeff F v c) (hw : HasCoeff F w c) : v = w := by
@@ -496,9 +496,9 @@ theorem hasCoeff_unique {σ : Type} [DecidableEq σ] (F : Fock σ) {v w : F.H} {
     rw [e, map_smul, inner_smul_left, inner_smul_left, hv α, hw α]
 
 /- English proof (translation)
-Introduce `P Q F A x h`. Use `existsUnique_of_exists_of_unique ⟨∑' n : ℕ, (n.factorial : ℂ)⁻¹ • F.ι (gaussPoly A x ^ n), fun α => ?_⟩ fun v w hv hw => hasCoeff_unique F hv hw` and prove the remaining obligations. Establish `e` using `(innerSL ℂ (F.ι (monomial α 1))).map_tsum (summable_pow F A x h)`. Simplify using `only [innerSL_apply_apply, inner_smul_right, hasCoeff_coe F _ α, MvPolynomial.coeff_coe] at e`. Rewrite using `[e, tsum_eq_sum (s := Finset.range (α.degree + 1)), MvPowerSeries.coeff_apply, expPS, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun n _ => by ring`. Introduce `n hn`. Rewrite using `[coeff_pow_eq_zero (coeff_zero_gaussPoly A x) n α (by simpa using hn), mul_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_gauss : ∀ (P Q : ℕ) (F : Fock (Ix P Q)) (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ),
     (1 - Aᴴ * A).PosDef → ∃! v : F.H, HasCoeff F v (expPS (gaussPoly A x)) := by

@@ -7,9 +7,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.StarFan
 
 /- English proof (translation)
-Introduce `O _ bar φ X _ _ _ hcov B hB t ht`. Take `⟨e, m, γ, c, hγ, hc, he⟩` from `hcov B hB`. Establish `key : ∀ (B₀ : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) (c₀ : Fin m → ℝ), (∀ i, 0 ≤ c₀ i) → (∀ a b, B₀ (e a) (e b) = ∑ i, c₀ i * (γ i a b : ℝ)) → evalR φ B₀ = ∑ i, c₀ i * φ.evalZ (γ i)` using `fun B₀ c₀ hc₀ hB₀ => hγ.linear.eval_eq_sum (r := e.toLinearMap) e.surjective hc₀ hB₀`. Establish `hv : ∀ a b, B (e a) (e b) = ∑ i, c i * (γ i a b : ℝ)` using `fun a b => by`. Use `LinearMap.congr_fun₂ he a b` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[LinearMap.sum_apply]`. Rewrite using `[key B c hc hv, key (t • B) (fun i => t * c i) (fun i => mul_nonneg ht (hc i)) fun a b => by`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, hv, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homog_of_cover : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X], (∀ B ∈ psdCone bar X, ∃ (e : X ≃ₗ[O] X) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (c : Fin m → ℝ), IsCell bar φ γ ∧ (∀ i, 0 ≤ c i) ∧ pullR e.toLinearMap B = ∑ i, c i • toReal (γ i)) → ∀ B ∈ psdCone bar X, ∀ t : ℝ, 0 ≤ t → evalR φ (t • B) = t * evalR φ B := by
   intro O _ bar φ X _ _ _ hcov B hB t ht
@@ -26,9 +26,9 @@ theorem homog_of_cover : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFu
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ w ψ' hψ hw hst hint hpos X _ _ _ _ hX`. Take `⟨S, hS, hcov⟩` from `GlobalTheory.T.starSubdivision_cells_finite_cover_up_to_aut E H q ψ w ψ' hψ hw hst X hX`. Establish `hcov' : ∀ B ∈ psdCone H.bar X, ∃ (e : X ≃ₗ[𝓞 E] X) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (c : Fin m → ℝ), IsCell H.bar ψ' γ ∧ (∀ i, 0 ≤ c i) ∧ pullR e.toLinearMap B = ∑ i, c i • toReal (γ i)` using `fun B hB => by`. Take `⟨e, m, γ, c, h1, -, h3, h4⟩` from `hcov B hB`. Conclude with `⟨e, m, γ, c, h1, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `{ homog := homog_of_cover (𝓞 E) H.bar ψ' X hcov' superadd := GlobalTheory.T.superadditive_of_cells_cover_cone (𝓞 E) H.bar ψ' X hcov' integral := hint X hX pos := hpos X hX finite := ⟨S, hS, hcov⟩ }`.
+A detailed English derivation is pending.
 -/
 theorem isPolyFan_star : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ w ψ' : InvFun (𝓞 E)), IsPolyFan H.bar q ψ → IsCentreSet H.bar q ψ w → IsStarOf H.bar q ψ w ψ' → (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → ∃ n : ℤ, ψ'.evalZ β = n) → (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → β ≠ 0 → 0 < ψ'.evalZ β) → IsPolyFan H.bar q ψ' := by
   intro E _ _ _ H q ψ w ψ' hψ hw hst hint hpos X _ _ _ _ hX

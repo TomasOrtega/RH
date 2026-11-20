@@ -21,7 +21,7 @@ namespace GlobalTheory.FlipMatch.SplitSymp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem piW_cA' {σ : E →ₐ[F] E} {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] Fv F v) (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) :
     piW τ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ w) = piW (τ.comp σ) w := by
@@ -31,7 +31,7 @@ theorem piW_cA' {σ : E →ₐ[F] E} {v : GlobalTheory.IndefiniteRowSideFullHeck
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.evFin F v 1 * τ e = τ e`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem piW_incl {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] Fv F v) (e : E) :
     piW τ (inclR (F := F) (AF F) e) = τ e := by
@@ -43,16 +43,16 @@ end GlobalTheory.FlipMatch.SplitSymp
 namespace GlobalTheory.FlipMatch.SplitSymp
 
 /- English proof (translation)
-Simplify using `only [pairM, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairM_comm {K : Type} [CommRing K] {n d : ℕ} (P Q : Matrix (Fin n) (Fin d) K) :
     pairM P Q = pairM Q P := by
   simp only [pairM, mul_comm]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TracePairingBasisChange.pair_change_basis`. Consider the case `exact _root_.GlobalTheory.TracePairingBasisChange.pair_change_basis`. Consider the case `(apply _root_.GlobalTheory.TracePairingBasisChange.pair_change_basis <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TracePairingBasisChange.pair_change_basis <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TracePairingBasisChange.pair_change_basis <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TracePairingBasisChange.pair_change_basis ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pairM_chart {K : Type} [Field K] {n d : ℕ} (A : Matrix (Fin n) (Fin n) K) (B : Matrix (Fin d) (Fin d) K)
     (b : GL (Fin n) K) (c : GL (Fin d) K) (P Q : Matrix (Fin n) (Fin d) K) :
@@ -67,9 +67,9 @@ theorem pairM_chart {K : Type} [Field K] {n d : ℕ} (A : Matrix (Fin n) (Fin n)
   | (intros; exact _root_.GlobalTheory.TracePairingBasisChange.pair_change_basis ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SumFourSwap.sum_four_swap`. Consider the case `exact _root_.GlobalTheory.SumFourSwap.sum_four_swap`. Consider the case `(apply _root_.GlobalTheory.SumFourSwap.sum_four_swap <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SumFourSwap.sum_four_swap <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SumFourSwap.sum_four_swap <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SumFourSwap.sum_four_swap ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sum_four_swap_pairs_alt {R α β : Type} [AddCommMonoid R] [Fintype α] [Fintype β] (f : α → β → α → β → R) :
     ∑ a, ∑ b, ∑ c, ∑ e, f a b c e = ∑ c, ∑ e, ∑ a, ∑ b, f a b c e := by
@@ -82,15 +82,15 @@ theorem sum_four_swap_pairs_alt {R α β : Type} [AddCommMonoid R] [Fintype α] 
   | (intros; exact _root_.GlobalTheory.SumFourSwap.sum_four_swap ..)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n d X Y hX hY ψ v t b c x u hx hu`. Establish `hss` using `GlobalTheory.AdelicU.comp_conj_conj hcm t`. Establish `hz : At (evFin F v) ((-1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) * GlobalTheory.WeilM.hTens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRow …`. Introduce `r hr`. Establish `h : ∀ i j, r • x i j = 0` using `fun i j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun (congrFun (hx r hr) i) j` as an intermediate fact. Simplify using `using this`. Rewrite using `[← mul_smul_comm]`. Unfold `GlobalTheory.WeilM.hTens`. Simplify using `only [Finset.smul_sum, ← smul_mul_assoc, h, zero_mul, Finset.sum_const_zero, mul_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `GlobalTheory.WeilM.symp`. Rewrite using `[GlobalTheory.T.adelicTrace_supportedAtSplitPlace hcm v t _ hz]`. Express the relevant statement in the definitionally equal form `psiLoc ψ v _ = psiLoc ψ v _`. Use `congr 1`. Rewrite using `[pairM_comm (coY σ X Y t b c x), coX, coX, coY, coY, pairM_chart, pairM_chart]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_neg, map_one, neg_one_mul, GlobalTheory.WeilM.hTens, map_sum, piW_cA', piW_incl, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.map_apply, hss, AlgHom.comp_apply, hX, hY]`. Rewrite using `[sub_eq_add_neg]`. Use `congr 1`. Rewrite using `[neg_neg]`. Use `Eq.trans ?_ (sum_four_swap_pairs_alt _).symm` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symp_at_split : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}, IsCMExt F E σ →
     ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d), (∀ r s, σ (X.J s r) = X.J r s) → (∀ r s, σ (Y.J s r) = -Y.J r s) → ∀ (ψ : AddChar (AF F) ℂ) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v)

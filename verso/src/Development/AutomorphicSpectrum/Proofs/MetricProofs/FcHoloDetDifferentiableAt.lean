@@ -5,9 +5,9 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `DifferentiableAt.fun_sum fun σ _ => DifferentiableAt.const_mul ?_ _` and prove the remaining obligations. Establish `key : ∀ s : Finset n, DifferentiableAt ℂ (fun b => ∏ i ∈ s, M b (σ i) i) x`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h _ _).fun_mul ih`. Conclude with `key _`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fcHolo_det_differentiableAt {E n : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [Fintype n] [DecidableEq n] (M : E → Matrix n n ℂ) (x : E)
@@ -25,15 +25,15 @@ theorem fcHolo_det_differentiableAt {E n : Type*} [NormedAddCommGroup E] [Normed
   exact key _
 
 /- English proof (translation)
-Introduce `m p q B hB A Φ hA hΦ hex b₀ hb₀`. Establish `hn : B ∈ nhds b₀` using `hB.mem_nhds hb₀`. Establish `hnum : DifferentiableAt ℂ (fun b => (fromRows (Φ b₀)ᴴ (A b)).det) b₀`. Apply `fcHolo_det_differentiableAt` to reduce the goal to its premises. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `i with i | i` into its components or cases. Simplify using the standard rewrite rules. Simplify using `using (hA i j).differentiableAt hn`. Establish `hden : DifferentiableAt ℂ (fun b => ((Φ b₀)ᴴ * Φ b).det) b₀`. Apply `fcHolo_det_differentiableAt` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `DifferentiableAt.fun_sum fun k _ => ((hΦ k j).differentiableAt hn).const_mul _`. Take `⟨e1, e2, e3⟩` from `hex b₀ hb₀`. Establish `h0 : ((Φ b₀)ᴴ * Φ b₀).det ≠ 0` using `(fcIndep p q _ _ e1 e2 e3).1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : DifferentiableAt ℂ (fun b => (fromRows (Φ b₀)ᴴ (A b)).det / ((Φ b₀)ᴴ * Φ b).det) b₀`. Simplify using `only [div_eq_mul_inv]`. Conclude with `hnum.fun_mul (hden.fun_inv h0)`. Use `(hq.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hn, hden.continuousAt.eventually_ne h0] with b hb hne`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f1, f2, f3⟩` from `hex b hb`. Take `⟨g1, -, g3⟩` from `fcIndep p q _ _ f1 f2 f3`. Rewrite using `[div_eq_div_iff g1 hne]`. Conclude with `(g3 _).symm`.
+A detailed English derivation is pending.
 -/
 theorem fcHolo : ∀ (m p q : ℕ) (B : Set (Fin m → ℂ)), IsOpen B → ∀ (A : (Fin m → ℂ) → Matrix (Fin p) (Fin q ⊕ Fin p) ℂ) (Φ : (Fin m → ℂ) → Matrix (Fin q ⊕ Fin p) (Fin q) ℂ), (∀ i j, DifferentiableOn ℂ (fun b => A b i j) B) → (∀ i j, DifferentiableOn ℂ (fun b => Φ b i j) B) → (∀ b ∈ B, A b * Φ b = 0 ∧ (A b).rank = p ∧ (Φ b).rank = q) → DifferentiableOn ℂ (fun b => (fromRows (Φ b)ᴴ (A b)).det / ((Φ b)ᴴ * Φ b).det) B := by
   intro m p q B hB A Φ hA hΦ hex b₀ hb₀

@@ -20,15 +20,15 @@ def epsZeroPt : Over.mk x ⟶ epsPtR x :=
     congr 1)
 
 /- English proof (translation)
-The claim follows from `rfl @[reassoc]`.
+A detailed English derivation is pending.
 -/
 @[simp] lemma epsZeroPt_left : (epsZeroPt x).left = spMap (TrivSqZeroExt.fstHom k k k).toRingHom := rfl
 
 @[reassoc]
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma epsZeroPt_epsScalePt (c : k) : epsZeroPt x ≫ epsScalePt x c = epsZeroPt x := by
   ext1
@@ -39,7 +39,7 @@ lemma epsZeroPt_epsScalePt (c : k) : epsZeroPt x ≫ epsScalePt x c = epsZeroPt 
   simp
 
 /- English proof (translation)
-Rewrite using `[sqZeroMapPt_comp]`. Use `congr 1`. Use `LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma epsScalePt_mul (a b : k) : epsScalePt x a ≫ epsScalePt x b = epsScalePt x (a * b) := by
   rw [sqZeroMapPt_comp]
@@ -60,7 +60,7 @@ def tanSub : Subgroup (epsPtR x ⟶ G) where
     rw [GrpObj.comp_inv, ha, _root_.inv_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `epsZeroPt x ≫ w = 1 ↔ _`. Conclude with `⟨fun h => congrArg Over.Hom.left h, fun h => Over.OverMorphism.ext h⟩`.
+Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 -/
 lemma mem_tanSub_iff (w : epsPtR x ⟶ G) :
     w ∈ tanSub x G ↔ spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ w.left = (1 : Over.mk x ⟶ G).left := by
@@ -81,12 +81,12 @@ Both sides reduce to the same expression.
 @[simp] lemma Tan.hom_mk (w : epsPtR x ⟶ G) (hw : w ∈ tanSub x G) : (Tan.mk w hw).hom = w := rfl
 
 /- English proof (translation)
-The claim follows from `(Additive.toMul v : tanSub x G).2`.
+A detailed English derivation is pending.
 -/
 lemma Tan.hom_mem (v : Tan x G) : v.hom ∈ tanSub x G := (Additive.toMul v : tanSub x G).2
 
 /- English proof (translation)
-The claim follows from `Additive.toMul.injective (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 @[ext] lemma Tan.ext {v w : Tan x G} (h : v.hom = w.hom) : v = w :=
   Additive.toMul.injective (Subtype.ext h)
@@ -103,7 +103,7 @@ Both sides reduce to the same expression.
 def Tan.homAdd : Tan x G →+ Additive (epsPtR x ⟶ G) := (tanSub x G).subtype.toAdditive
 
 /- English proof (translation)
-Use `map_sum (Tan.homAdd (x := x) (G := G)) v s` as an intermediate fact. Conclude with `congrArg Additive.toMul this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma Tan.hom_sum {I : Type} (s : Finset I) (v : I → Tan x G) : (∑ i ∈ s, v i).hom = ∏ i ∈ s, (v i).hom := by
   have := map_sum (Tan.homAdd (x := x) (G := G)) v s

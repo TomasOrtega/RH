@@ -12,7 +12,7 @@ namespace UpperTheory.HilbertEisensteinWeightOne.Fresh
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Unfold `ordI`. Rewrite using `[← Associates.mk_mul_mk]`. Conclude with `Associates.count_mul (Associates.mk_ne_zero.mpr hI) (Associates.mk_ne_zero.mpr hJ) v.associates_irreducible`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordI_mul_of_ne_bot (v : HeightOneSpectrum (𝓞 F)) {I J : Ideal (𝓞 F)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) :
     ordI v (I * J) = ordI v I + ordI v J := by
@@ -22,16 +22,16 @@ theorem ordI_mul_of_ne_bot (v : HeightOneSpectrum (𝓞 F)) {I J : Ideal (𝓞 F
     v.associates_irreducible
 
 /- English proof (translation)
-Unfold `ordI`. Conclude with `Associates.count_self w.associates_irreducible`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ordI_asIdeal_self (w : HeightOneSpectrum (𝓞 F)) : ordI w w.asIdeal = 1 := by
   unfold ordI
   exact Associates.count_self w.associates_irreducible
 
 /- English proof (translation)
-Unfold `UpperTheory.V.TR.lieD`. Establish `hf` using `hd.hasFDerivAt`. Establish `hpt : UpperTheory.V.TR.oneL F 2 = (fun t => UpperTheory.V.TR.toL (k t).val) 0`. Simplify using `only [h0, Units.val_one]`. Rewrite `hf` using `[hpt]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hf.comp_hasDerivAt 0 hk` as an intermediate fact. Rewrite `this` using `[← hpt]`. Use `this.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Conclude with `(UpperTheory.V.TR.chart_val f g (k t)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_chart_curve [IsTotallyReal F] (f : GA F 2 → ℂ) (g : GA F 2)
     (hd : DifferentiableAt ℝ (UpperTheory.V.TR.chart f g) (UpperTheory.V.TR.oneL F 2))

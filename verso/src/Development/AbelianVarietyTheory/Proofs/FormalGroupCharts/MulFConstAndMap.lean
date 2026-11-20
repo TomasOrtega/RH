@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.TB.WickVanishing
 namespace GlobalTheory.FormalMul
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro j`. Simplify using `[mulF]`. Consider the case `succ n ih => exact gp_addOf F hF _ _ ih (gp_pt 0)`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem constantCoeff_mulF {T : Type} [CommRing T] {d : ℕ} (F : Fin d → PS T 2 d)
     (hF : ∀ i, constantCoeff (F i) = 0) (N : ℕ) : ∀ j, constantCoeff (mulF F N j) = 0 := by
@@ -19,11 +19,11 @@ theorem constantCoeff_mulF {T : Type} [CommRing T] {d : ℕ} (F : Fin d → PS T
   | succ n ih => exact gp_addOf F hF _ _ ih (gp_pt 0)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro j`. Simplify using `[mulF]`. Consider the case `succ n ih`. Introduce `j`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `gt_hasSubst ![mulF F n, pt T (n := 1) d 0] (pair_points_zero_constant (constantCoeff_mulF F hF n) (gp_pt 0))`. Simplify using `only [mulF, addOf, ev]`. Rewrite using `[MvPowerSeries.map_subst hs]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `p with ⟨a, b⟩` into its components or cases. Use `fin_cases a`. Conclude with `ih b`. Simplify using `[pt]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulF_map {T O : Type} [CommRing T] [CommRing O] (io : T →+* O) {d : ℕ} (F : Fin d → PS T 2 d)
     (hF : ∀ i, constantCoeff (F i) = 0) (N : ℕ) :
@@ -44,7 +44,7 @@ theorem mulF_map {T O : Type} [CommRing T] [CommRing O] (io : T →+* O) {d : �
     · simp [pt]
 
 /- English proof (translation)
-Introduce `_ _ _ _ io _ F N j` and use `⟨constantCoeff_mulF F.F F.const N j, mulF_map io F.F F.const N j⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mulF_const_and_map : ∀ (T O : Type) [CommRing T] [CommRing O] (io : T →+* O) (d : ℕ) (F : FGLaw T d)
     (N : ℕ) (j : Fin d), MvPowerSeries.constantCoeff (mulF F.F N j) = 0 ∧

@@ -30,13 +30,13 @@ Both sides reduce to the same expression.
     (rt g Ψ).1 x = Ψ.1 (x * g.val) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rt_one (Ψ : SB (Matrix m n k)) : rt (1 : GL n k) Ψ = Ψ := by
   apply Subtype.ext; funext x; simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `[Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rt_rt (a b : GL n k) (Ψ : SB (Matrix m n k)) : rt a (rt b Ψ) = rt (a * b) Ψ := by
   apply Subtype.ext; funext x; simp [Matrix.mul_assoc]
@@ -55,7 +55,7 @@ def Mid (l'' : kˣ →* ℂˣ) (π : Representation ℂ (GL m' k) V) : Submodule
     rw [smul_comm, ha h Ψ Ψ' e]
 
 /- English proof (translation)
-Introduce `h Ψ Ψ' e`. Simplify using `only [LinearMap.comp_apply]`. Conclude with `hf h _ _ (fun x => by simp [e, Matrix.mul_assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rt_mem_Mid (l'' : kˣ →* ℂˣ) (π : Representation ℂ (GL m' k) V) (g : GL n k)
     (f : SB (Matrix m' n k) →ₗ[ℂ] V) (hf : f ∈ Mid l'' π) : f ∘ₗ rt g ∈ Mid l'' π := by

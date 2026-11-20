@@ -31,7 +31,7 @@ def GenSpecSt (hG : GenFrEx Xo c) : Prop :=
             Function.Injective (γ.comp β)
 
 /- English proof (translation)
-Establish `hT : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) w := ⟨p, φ, y, hy⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT]`. Conclude with `hW f hf S _ _ _ _ _ _ w hT.choose_spec.choose_spec.choose_spec hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_of_frMap (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
     {f : Rul Xo c} (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
@@ -43,13 +43,11 @@ theorem evR_of_frMap (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ 
   exact hW f hf S _ _ _ _ _ _ w hT.choose_spec.choose_spec.choose_spec hy
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y`. Use `show f p y = 0`. Apply `eq_of_locM (K := c.F)` to reduce the goal to its premises. Introduce `m hm`. Take `⟨Z, q, yq, ⟨p', lam, a, μ, y', h1, h2, h3⟩, hgen⟩` from `hS p y m`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : f q yq = 0`. Take `⟨p₀, φ₀, y₀, h₀⟩` from `hA (Om Z) (genFr hG Z)`. Take `⟨B, β, β₀, yB, y₀B, tB, Ω, _, _, κ, γ, hβ, hβ₀, hb, hc, hinj⟩` from `hgen p₀ φ₀ y₀ h₀`. Establish `hz : φ₀ (f p₀ y₀) = 0`. Rewrite using `[← evR_of_frMap hW hf h₀]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h0 Z`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, AlgHom.comp_apply, ← hf q B β yq yB hβ, hw B tB y₀B yB hb, map_mul, hf p₀ B β₀ y₀ y₀B hβ₀, ← AlgHom.comp_apply γ β₀, hc, AlgHom.comp_apply, hz, map_zero, mul_zero]`. Establish `e1 : locM c.F m (f p y) = μ (lam (f p y))`. Rewrite using `[← AlgHom.comp_apply μ lam, h3]`.
-
-Rewrite using `[e1, ← hf p p' lam y y' h1, hf q p' a yq y' h2, hq, map_zero, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rule_eq_zero_of_genSpec (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
     (hG : GenFrEx Xo c) (hA : AllTest Xo c) (hS : GenSpecSt Xo c hG) {e : Ix Dw → ℕ} {f : Rul Xo c}
@@ -81,7 +79,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAl
 variable {D : D7} {T : Top D}
 
 /- English proof (translation)
-Introduce `w g hg`. Establish `hC : (g : T.R j) ∈ T.C j w` using `cutR_le T.C j w g.2`. Establish `hsec` using `((mem_cusp _ _ _ _ _ _).1 hC).1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `rule_eq_zero_of_genSpec (h.evalWD j hj) hG (h.allTest j hj) hS hsec.1 hsec.2 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem genValInj (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (hS : GenSpecSt (T.Q.Xo j) T.Q.c hG) : GenValInjSt h j hG := by

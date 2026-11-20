@@ -8,11 +8,11 @@ namespace GlobalTheory.Honda.HeightTwo
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime u l` using `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp).mpr hu)`. Use `le_antisymm (IsUltrametricDist.norm_natCast_le_one K u) (not_lt.mp fun h => ?_)` and prove the remaining obligations. Establish `hb` using `Nat.gcd_eq_gcd_ab u l`. Rewrite `hb` using `[hcop.gcd_eq_one]`. Establish `hK` using `congrArg (fun z : ℤ => (z : K)) hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hK`. Establish `h1 : ‖(u : K) * (Nat.gcdA u l : K)‖ < 1`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖(l : K) * (Nat.gcdB u l : K)‖ < 1`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `IsUltrametricDist.norm_add_le_max ((u : K) * (Nat.gcdA u l : K)) ((l : K) * (Nat.gcdB u l : K))`. Rewrite `h3` using `[← hK, norm_one]`. Conclude with `absurd h3 (not_le.mpr (max_lt h1 h2))`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_coprime_eq_one (l u : ℕ) (hp : l.Prime) (hl1 : ‖(l : K)‖ < 1) (hu : ¬ l ∣ u) :
     ‖(u : K)‖ = 1 := by
@@ -37,11 +37,11 @@ theorem norm_natCast_coprime_eq_one (l u : ℕ) (hp : l.Prime) (hl1 : ‖(l : K)
   exact absurd h3 (not_le.mpr (max_lt h1 h2))
 
 /- English proof (translation)
-Take `⟨v, u, hu, hkv⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (by omega : k ≠ 0) l hp.one_lt.ne'`. Establish `hu0 : u ≠ 0` using `by rintro rfl; exact hu (dvd_zero l)`. Establish `hvk : v ≤ k - 1`. Establish `h1 : v < l ^ v` using `Nat.lt_pow_self hp.one_lt`. Establish `h2 : l ^ v ≤ k` using `by rw [hkv]; exact Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hu0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hn : ‖(k : K)‖ = ‖(l : K)‖ ^ v`. Rewrite using `[hkv]`. Use `push_cast`. Rewrite using `[norm_mul, norm_pow, norm_natCast_coprime_eq_one l u hp hl1 hu, mul_one]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn]`. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) hl1.le hvk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_norm_natCast (l : ℕ) (hp : l.Prime) (hl1 : ‖(l : K)‖ < 1) (k : ℕ) (hk : 1 ≤ k) :
     ‖(l : K)‖ ^ (k - 1) ≤ ‖(k : K)‖ := by
@@ -58,9 +58,9 @@ theorem pow_le_norm_natCast (l : ℕ) (hp : l.Prime) (hl1 : ‖(l : K)‖ < 1) (
   exact pow_le_pow_of_le_one (norm_nonneg _) hl1.le hvk
 
 /- English proof (translation)
-Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Establish `hd` using `hder k'`. Rewrite `hd` using `[coeff_derivative, norm_mul]`. Establish `hle` using `pow_le_norm_natCast l hp hl1 (k' + 1) hk`. Simplify using `only [Nat.add_sub_cancel, Nat.cast_add, Nat.cast_one] at hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_left hle (norm_nonneg _)).trans hd`. Use `_ = ‖(l : K)‖ := one_mul _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeff_mul_pow_le (l : ℕ) (hp : l.Prime) (hl1 : ‖(l : K)‖ < 1) (f : K⟦X⟧)
     (hder : CoefLe 1 (derivative K f)) (k : ℕ) (hk : 1 ≤ k) :
@@ -78,11 +78,11 @@ theorem coeff_mul_pow_le (l : ℕ) (hp : l.Prime) (hl1 : ‖(l : K)‖ < 1) (f :
     _ = ‖(l : K)‖ := one_mul _
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `j _`. Rewrite using `[pow_zero, pow_zero, coeff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ k ih`. Introduce `j hj`. Rewrite using `[pow_succ', coeff_mul, pow_succ']`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun p hp => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hg _ (by omega)) (ih _ (by omega)) (norm_nonneg _) hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_pow_le (g : K⟦X⟧) (r : ℝ) (m : ℕ) (hr : 0 ≤ r) (hg : ∀ j ≤ m, ‖coeff j g‖ ≤ r) :
     ∀ k j, j ≤ m → ‖coeff j (g ^ k)‖ ≤ r ^ k := by
@@ -101,11 +101,11 @@ theorem norm_coeff_pow_le (g : K⟦X⟧) (r : ℝ) (m : ℕ) (hr : 0 ≤ r) (hg 
     exact mul_le_mul (hg _ (by omega)) (ih _ (by omega)) (norm_nonneg _) hr
 
 /- English proof (translation)
-Rewrite using `[pow_succ' g (k + 1), coeff_mul, pow_succ' r (k + 1)]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Distinguish the cases in `ha : p.1 = 0`. Rewrite using `[ha, coeff_zero_eq_constantCoeff_apply, hg0, zero_mul, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Distinguish the cases in `hb : p.2 = 0`. Rewrite using `[hb, coeff_zero_eq_constantCoeff_apply, map_pow, hg0, zero_pow (by omega), mul_zero, norm_zero]`. Check the signs of the components of the expression. Rewrite using `[norm_mul]`.
+Check the signs of the components of the expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (hg _ (by omega)) (norm_coeff_pow_le g r m hr hg _ _ (by omega)) (norm_nonneg _) hr`.
+A detailed English derivation is pending.
 -/
 theorem norm_coeff_succ_pow_le (g : K⟦X⟧) (hg0 : constantCoeff g = 0) (r : ℝ) (m : ℕ) (hr : 0 ≤ r)
     (hg : ∀ j ≤ m, ‖coeff j g‖ ≤ r) (k : ℕ) :
@@ -122,9 +122,9 @@ theorem norm_coeff_succ_pow_le (g : K⟦X⟧) (hg0 : constantCoeff g = 0) (r : �
   exact mul_le_mul (hg _ (by omega)) (norm_coeff_pow_le g r m hr hg _ _ (by omega)) (norm_nonneg _) hr
 
 /- English proof (translation)
-Rewrite using `[coeff_subst' (HasSubst.of_constantCoeff_zero' hg0)]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (n + 1))]`. Simplify using `[smul_eq_mul]`. Introduce `d hd`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hdn`. Apply `hd` to reduce the goal to its premises. Take `⟨g', rfl⟩` from `X_dvd_iff.mpr hg0`. Simplify using `only [mul_pow, coeff_X_pow_mul', if_neg (by omega : ¬ d ≤ n), smul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem coeff_subst_eq_sum (f g : K⟦X⟧) (hg0 : constantCoeff g = 0) (n : ℕ) :
     coeff n (subst g f) = ∑ d ∈ Finset.range (n + 1), coeff d f * coeff n (g ^ d) := by
@@ -139,19 +139,17 @@ theorem coeff_subst_eq_sum (f g : K⟦X⟧) (hg0 : constantCoeff g = 0) (n : ℕ
     simp only [mul_pow, coeff_X_pow_mul', if_neg (by omega : ¬ d ≤ n), smul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ m, m ≤ N → ∀ j ≤ m, ‖coeff j g‖ ≤ ρ`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `_ j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Nat.le_zero.mp hj, coeff_zero_eq_constantCoeff_apply, hg0, norm_zero]`. Conclude with `hρ`. Consider the case `succ m ih`. Introduce `hm j hj`. Break down `Nat.lt_or_ge j (m + 1) with hj' | hj'` into its components or cases.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `ih (by omega) j (by omega)`. Take `rfl : j = m + 1` from `by omega`. Establish `ih'` using `ih (by omega)`. Establish `hs` using `coeff_subst_eq_sum f g hg0 (m + 1)`. Rewrite `hs` using `[← Finset.add_sum_erase _ _ (Finset.mem_range.mpr (by omega : 1 < m + 1 + 1)), hf1, pow_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrest : ‖∑ d ∈ (Finset.range (m + 1 + 1)).erase 1, coeff d f * coeff (m + 1) (g ^ d)‖ ≤ ρ`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hρ fun d hd => ?_` and prove the remaining obligations. Establish `hd1` using `Finset.ne_of_mem_erase hd`. Break down `Nat.lt_or_ge d 2 with hd2 | hd2` into its components or cases. Take `rfl : d = 0` from `by omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hf0, zero_mul, norm_zero]`. Conclude with `hρ`. Take `⟨k, rfl⟩ : ∃ k, d = k + 2` from `⟨d - 2, by omega⟩`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hgm : coeff (m + 1) g = coeff (m + 1) (subst g f) - ∑ d ∈ (Finset.range (m + 1 + 1)).erase 1, coeff d f * coeff (m + 1) (g ^ d)`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hgm, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hy _ hm) ?_)` and prove the remaining obligations.
-
-Rewrite using `[norm_neg]` and apply the resulting hypothesis. Conclude with `fun n hn => key n hn n le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem norm_coeff_le_of_subst (f g : K⟦X⟧) (ρ : ℝ) (hρ : 0 ≤ ρ) (hf0 : coeff 0 f = 0) (hf1 : coeff 1 f = 1)
     (hf : ∀ k, 1 ≤ k → ‖coeff k f‖ * ρ ^ k ≤ ρ) (hg0 : constantCoeff g = 0) (N : ℕ)
@@ -191,13 +189,13 @@ theorem norm_coeff_le_of_subst (f g : K⟦X⟧) (ρ : ℝ) (hρ : 0 ≤ ρ) (hf0
   exact fun n hn => key n hn n le_rfl
 
 /- English proof (translation)
-Unfold `hondaSum`. Rewrite using `[coeff_mk]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hρ fun j hj => ?_` and prove the remaining obligations. Establish `hjn` using `Finset.mem_range.mp hj`. Unfold `frobOp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[coeff_subst_X_pow (pow_ne_zero _ (by omega))]`. Use `split_ifs with hdvd`. Establish `hle` using `Nat.le_of_dvd (by omega) hdvd`. Establish `hqq : q < q ^ 2` using `by rw [sq]; nlinarith`. Establish `hj0 : j = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hj0`. Establish `: q ^ 2 ≤ q ^ (j + 1)` using `Nat.pow_le_pow_right (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Substitute `hj0` using the available equality. Establish `hnq : n = q` using `by rw [zero_add, pow_one] at hle; omega`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hnq` using the available equality. Simplify `hc0` using `[Nat.div_self (by omega : 0 < n), coeff_map, hf1]`. Rewrite using `[mul_zero, norm_zero]`. Conclude with `hρ`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_hondaSum_le (τ : K →+* K) (q : ℕ) (hq : 2 ≤ q) (c : ℕ → K) (f : K⟦X⟧) (ρ : ℝ)
     (hρ : 0 ≤ ρ) (hc0 : ‖c 0‖ ≤ ρ) (hf1 : coeff 1 f = 1) (n : ℕ) (hn : n ≤ q) :
@@ -222,17 +220,15 @@ theorem norm_coeff_hondaSum_le (τ : K →+* K) (q : ℕ) (hq : 2 ≤ q) (c : �
   · rw [mul_zero, norm_zero]; exact hρ
 
 /- English proof (translation)
-Introduce `K _ _ _ l σ hU f e hIL c hc hH hex`. Take `⟨hp, hl2, hl1, hmax, -, -⟩` from `hU`. Take `⟨⟨hf0, hf1, he0, -, hef⟩, hder, -⟩` from `hIL`. Establish `hρ : 0 ≤ ‖(l : K)‖` using `norm_nonneg _`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hc0 : ‖c 0‖ ≤ ‖(l : K)‖` using `hmax _ (lt_of_le_of_ne (hc 0) hne)`. Establish `hf0' : coeff 0 f = 0` using `by rw [coeff_zero_eq_constantCoeff_apply, hf0]`. Establish `hlf0 : constantCoeff (C (l : K) * f) = 0` using `by simp [hf0]`. Establish `hg0 : constantCoeff (Formalism.L2.Th1.C.mulBy f e (l : K)) = 0`. Unfold `Formalism.L2.Th1.C.mulBy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `constantCoeff_subst_eq_zero hlf0 e he0`. Establish `hfg : subst (Formalism.L2.Th1.C.mulBy f e (l : K)) f = C (l : K) * f`. Unfold `Formalism.L2.Th1.C.mulBy`. Rewrite using `[← subst_comp_subst_apply (HasSubst.of_constantCoeff_zero' he0) (HasSubst.of_constantCoeff_zero' hlf0), hef, subst_X (HasSubst.of_constantCoeff_zero' hlf0)]`. Establish `hy : ∀ n ≤ l ^ 2, ‖coeff n (subst (Formalism.L2.Th1.C.mulBy f e (l : K)) f)‖ ≤ ‖(l : K)‖`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Rewrite using `[hfg]`. Establish `h1` using `hH n`. Establish `h2` using `norm_coeff_hondaSum_le (σ ^ 2) (l ^ 2) (by nlinarith) c f _ hρ hc0 hf1 n hn`. Establish `: coeff n (C (l : K) * f) = coeff n (C (l : K) * f - hondaSum (σ ^ 2) (l ^ 2) c f) + coeff n (hondaSum (σ ^ 2) (l ^ 2) c f)` using `by rw [map_sub]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)`. Establish `hg` using `norm_coeff_le_of_subst f _ _ hρ hf0' hf1 (coeff_mul_pow_le l hp hl1 f hder) hg0 _ hy`. Take `⟨n, hn, hn1⟩` from `hex`. Use `hg n hn` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_first_coeff_eq_one : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l : ℕ)
     (σ : K →+* K), Unr K l σ → ∀ (f e : K⟦X⟧), IntLog f e → ∀ c : ℕ → K, (∀ j, ‖c j‖ ≤ 1) →

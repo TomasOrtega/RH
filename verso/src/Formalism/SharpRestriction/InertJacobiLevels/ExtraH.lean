@@ -36,7 +36,7 @@ def hVal (D : D7) (sc : Scale) (aT : D.host.TT → ℤ) (η Sc dl C : ℝ) (u : 
   SZbPV D sc aT η Sc C u + (∑ j ∈ SizeData₂.lifts D, SZbKV D sc dl C u j) - ∑ j ∈ SizeData₂.lifts D, InertJacobiLowerValue D sc C j
 
 /- English proof (translation)
-Establish `h2 : meanE D (fun e => Real.log (X.kapR e)) = 0`. Unfold `meanE`. Simplify using `[hk]`. Unfold `hExpl6`. Rewrite using `[h2, sub_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -50,7 +50,7 @@ theorem hExpl_eq (D : D7) (L : SizeData₂ D) (X : DivX D) (C : ℝ) (u : D.what
   rfl
 
 /- English proof (translation)
-Introduce `u` and use `(hh u).trans (hExpl_eq D L X C u h0 hk).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem h_eq_of (D : D7) (L : SizeData₂ D) (X : DivX D) (C : ℝ) (h0 : D.what₂.Drows = 0) (hk : ∀ e, X.kapR e = 1)
     (hh : ∀ u, D.div.h u = hVal D L.sc L.aT L.etaSz L.Sc L.logDerivativeAtOne C u) :

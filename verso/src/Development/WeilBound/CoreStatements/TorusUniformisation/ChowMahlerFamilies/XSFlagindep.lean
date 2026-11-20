@@ -31,7 +31,7 @@ namespace PositivityTheory.Xgn.A_s_flagindep
 open GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-The claim follows from `GenericProjClosureModel.proof TwistedDualGensExist.proof (GenericProjClosureDim.proof DvrConeDimTrdeg.proof (PairBundleTrdeg.proof AdjoinTrdegAdd.proof PairConeLinesIndep.proof PairConeAlg.proof)) (GenericProjClosureDivisor.proof TwistedDualGensExpress.proof)`.
+A detailed English derivation is pending.
 -/
 theorem closureModel : GenericProjClosureModel.Statement :=
   GenericProjClosureModel.proof TwistedDualGensExist.proof
@@ -40,13 +40,13 @@ theorem closureModel : GenericProjClosureModel.Statement :=
     (GenericProjClosureDivisor.proof TwistedDualGensExpress.proof)
 
 /- English proof (translation)
-The claim follows from `SegreFlagClosureModel.proof (SegreFlagClosureTrdeg.proof SegreFlagConeAlg.proof)`.
+A detailed English derivation is pending.
 -/
 theorem flagClosureModel : SegreFlagClosureModel.Statement :=
   SegreFlagClosureModel.proof (SegreFlagClosureTrdeg.proof SegreFlagConeAlg.proof)
 
 /- English proof (translation)
-Establish `hPE` using `PairNumberExpansionIndependence.proof hC2`. Establish `hSP` using `SegreFlagClosurePullback.proof hPull hPE flagClosureModel PairNumberRelabel.proof VerticalDivisorJoinPullback.proof SegreFlagClosureBirational.proof`. Establish `hSCN` using `SegreClosureNumber.proof hPE flagClosureModel hCut hSP`. Conclude with `FlagIndependence.proof hPE (HsymmPairFlagIndependence.proof hPE closureModel hSCN) SymmetricSpanHsymm.proof`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem of_items (hC2 : VerticalDivisorsCommute.Statement.{0}) (hPull : PairNumberPullback.Statement)
     (hCut : SegreFlagClosureCut.Statement) : FlagIndependence.Statement := by

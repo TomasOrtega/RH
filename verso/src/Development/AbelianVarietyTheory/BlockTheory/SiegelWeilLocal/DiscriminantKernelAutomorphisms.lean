@@ -113,9 +113,9 @@ def RowMassesFull : Prop :=
   KernelIsStabiliser ∧ DiamondQuotient ∧ RowRepsExist ∧ RowMasses
 
 /- English proof (translation)
-Establish `h0 : (VS D).hT F0.z (D.sp.iXY 0 w) = 0`. Establish `h1 : (VS D).hT (D.sp.iXY 0 w) F0.z = 0`. Rewrite using `[hz, D7.zmOf, map_smul, D.sp.zm_orth w, smul_zero]`. Establish `h2` using `(VS D).herm.eq (D.sp.iXY 0 w) F0.z`. Rewrite `h2` using `[h1, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`. Simplify using `[flagPairDefinitePartLattice, L0X, L0sub, latL, sumMap, h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_orthModIsotropicLatticePerpNegative_iff (D : D7) (u : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (hz : F0.z = D.zmOf u) (Λ : LatV D) (w : (D.sp.X 0).V) :
@@ -129,7 +129,7 @@ theorem mem_orthModIsotropicLatticePerpNegative_iff (D : D7) (u : D.what₂.Word
   simp [flagPairDefinitePartLattice, L0X, L0sub, latL, sumMap, h0]
 
 /- English proof (translation)
-Rewrite using `[← div_pow, geom_sum_eq hT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (T : ℝ) (hT : T ≠ 1) (k f : ℕ) :
     (T ^ k - 1) ^ f / (T - 1) ^ f = (∑ i ∈ Finset.range k, T ^ i) ^ f := by

@@ -5,31 +5,29 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.Rationality.UnitPoin
 namespace ReciprocityTheory.ChartRestriction.G.FreeQuotientRank
 
 /- English proof (translation)
-Unfold `FinCoreStatement`. Introduce `K _ _ _ K₀ hK₀ S hS hSr hSu ι _ δ hδ hδ1 P b hPb hconv`. Establish `step1 : ∀ x : ι → K, (∀ i, x i ∈ K₀ ∧ ‖x i‖ ≤ 1) → ‖MvPolynomial.eval x δ‖ = 1 → ∀ n, ‖MvPolynomial.eval x (P n)‖ ≤ 1 ∧ (n < 0 → MvPolynomial.eval x (P n) = 0)`. Introduce `x hx hxδ`. Establish `hd` using `disc_holds`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `DiscStatement at hd`. Use `hd K K₀ hK₀ S hS hSr (fun n => MvPolynomial.eval x (P n)) b ?_ ?_` and prove the remaining obligations. Introduce `n hn show MvPolynomial.eval x (P n) = 0`. Rewrite using `[hPb n hn, map_zero]`. Introduce `t ht`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(hconv t ht x hx hxδ).1, ?_⟩` and prove the remaining obligations. Introduce `τ hτ hτ1`. Conclude with `(hconv (t * τ) (hSu t ht τ hτ hτ1) x hx hxδ).2`. Establish `key : ∀ p : MvPolynomial ι K, p ≠ 0 → ∃ x : ι → K, (∀ i, x i ∈ K₀ ∧ ‖x i‖ ≤ 1) ∧ ‖MvPolynomial.eval x δ‖ = 1 ∧ ∃ μ, ‖MvPolynomial.eval x p‖ = ‖MvPolynomial.coeff μ p‖ ∧ MvPolynomial.coeff μ p ≠ 0 ∧ ∀ ν, ‖MvPolynomial.coeff ν p‖ ≤ ‖MvPolynomial.coeff μ p‖`. Introduce `p hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : p.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `h`. Conclude with `hp (MvPolynomial.support_eq_empty.mp h)`. Take `⟨μ, hμ, hmax⟩` from `Finset.exists_max_image p.support (fun ν => ‖MvPolynomial.coeff ν p‖) hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : MvPolynomial.coeff μ p ≠ 0` using `MvPolynomial.mem_support_iff.mp hμ`. Establish `hmax' : ∀ ν, ‖MvPolynomial.coeff ν p‖ ≤ ‖MvPolynomial.coeff μ p‖`. Introduce `ν`. Distinguish the cases in `hν : ν ∈ p.support`. Conclude with `hmax ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : MvPolynomial.coeff ν p = 0`. Simplify `hν` using `[MvPolynomial.mem_support_iff]`. Rewrite using `[h0, norm_zero]`. Conclude with `norm_nonneg _`. Establish `hcpos : 0 < ‖MvPolynomial.coeff μ p‖` using `norm_pos_iff.mpr hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hQ : ∀ ν, ‖MvPolynomial.coeff ν (MvPolynomial.C (MvPolynomial.coeff μ p)⁻¹ * p)‖ ≤ 1`. Introduce `ν`. Rewrite using `[MvPolynomial.coeff_C_mul, norm_mul, norm_inv]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hmax' ν`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = 1 := inv_mul_cancel₀ hcpos.ne'`. Establish `hQ1 : ∃ ν, ‖MvPolynomial.coeff ν (MvPolynomial.C (MvPolynomial.coeff μ p)⁻¹ * p)‖ = 1`. Use `⟨μ, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, inv_mul_cancel₀ hc, norm_one]`. Take `⟨x, hx, hxQ, hxδ⟩` from `UnitPointLiftBall.exists_unit_point K₀ hK₀ (MvPolynomial.C (MvPolynomial.coeff μ p)⁻¹ * p) δ hQ hQ1 hδ hδ1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨x, fun i => ⟨(hx i).1, (hx i).2.le⟩, hxδ, μ, ?_, hc, hmax'⟩` and prove the remaining obligations. Establish `he : MvPolynomial.eval x p = MvPolynomial.coeff μ p * MvPolynomial.eval x (MvPolynomial.C (MvPolynomial.coeff μ p)⁻¹ * p)`. Rewrite using `[MvPolynomial.eval_mul, MvPolynomial.eval_C, mul_inv_cancel_left₀ hc]`. Rewrite using `[he, norm_mul, hxQ, mul_one]`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `μ`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hp : P n ≠ 0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `h`. Rewrite `hlt` using `[h, MvPolynomial.coeff_zero, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨x, hx, hxδ, ν, hev, -, hmax⟩` from `key (P n) hp`. Establish `h1` using `(step1 x hx hxδ n).1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hev]`. Combine the linear relations using `[hmax μ]`. Introduce `hn`. Assume the negation of the conclusion as `hp`. Take `⟨x, hx, hxδ, ν, hev, hc, -⟩` from `key (P n) hp`.
-
-Establish `h0` using `(step1 x hx hxδ n).2 hn`. Rewrite `hev` using `[h0, norm_zero]`. Conclude with `hc (norm_eq_zero.mp hev.symm)`.
+A detailed English derivation is pending.
 -/
 theorem finCore_holds : FinCoreStatement := by
   unfold FinCoreStatement

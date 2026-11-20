@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.SchwartzDerivativeCompositionBound
 
 /- English proof (translation)
-Establish `hf : ContDiff ℝ (i : ℕ) (⇑f : F → ℂ)` using `f.smooth i`. Establish `h` using `L.iteratedFDeriv_comp_right hf y (i := i) le_rfl`. Establish `e : (fun (z : Y) ↦ (f : F → ℂ) ((L : Y → F) z)) = (⇑f : F → ℂ) ∘ L` using `rfl`. Rewrite using `[e, h]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules.
 -/

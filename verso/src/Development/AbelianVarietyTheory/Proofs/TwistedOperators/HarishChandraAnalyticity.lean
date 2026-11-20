@@ -19,7 +19,7 @@ open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `hadm han` and use `⟨fun n ε H _ _ _ π hπ v w hv _ => GlobalTheory.T.admissible_unitary_K_finite.2 han n ε H π hπ v w hv, GlobalTheory.T.levi_submodule_dense hadm han⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem harishChandraAnalyticity_of_admissible_of_analytic :
     GlobalTheory.Published.IrreducibleUnitaryAdmissible → GlobalTheory.Published.KFiniteCoefficientsAnalytic →

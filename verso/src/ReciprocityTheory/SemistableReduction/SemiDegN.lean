@@ -8,39 +8,35 @@ open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `set Sm := midForm S m g hfix with hSm`. Establish `hCfg : C.FG` using `Submodule.FG.of_le hGm hC`. Establish `hCint : IsIntegralOn Sm C` using `fun x hx y hy => hint x (hC hx) y (hC hy)`. Establish `hSmh : ∀ z : Fin r → K, (∀ a : Fin r, ((a : ℕ) < m ∨ r ≤ (a : ℕ) + m) → z a = 0) → Sm.h z z = ∑ a, S.c (z a) * g a * z a`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [HermForm.h, hSm, midForm, midG, Matrix.diagonal_apply, mul_ite, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[hz a (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hdet : (hGram Sm c).det ≠ 0`. Introduce `h0`. Take `⟨t, ht0, ht⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Use `set z := colMat c *ᵥ t with hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hzsupp : ∀ a : Fin r, ((a : ℕ) < m ∨ r ≤ (a : ℕ) + m) → z a = 0`. Introduce `a ha`. Rewrite using `[hz, colMat_mulVec, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hsupp _ (hC (hc.1 j)) a ha, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : Sm.h z z = 0`. Rewrite using `[hz, ← form_colMat, ht]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hSmh z hzsupp]`. Establish `h2` using `haniso z hzsupp h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hz, colMat_mulVec]`. Conclude with `ht0 (funext (Fintype.linearIndependent_iff.1 hc.2.1 t h2))`. Establish `hidx` using `hN K r k Sm C c hCfg hc hCint hdet`. Establish `hDpd : ∀ σ, (diagMet δ σ).PosDef` using `fun σ => Matrix.posDef_diagonal_iff.2 fun a => by exact_mod_cast hδ σ a`. Establish `hσ : ∀ σ : K →+* ℂ, ‖σ (hGram Sm c).det‖ ≤ (gramC (diagMet δ σ) σ c).det.re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `σ`. Use `set E := embMat σ c with hE`. Establish `hEc : ((colMat c).map S.c)ᵀ.map σ = Eᴴ`. Use extensionality with `a b`. Simplify using `[hE, embMat, colMat, Matrix.conjTranspose_apply, S.c_emb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hC' : (hGram Sm c).map σ = Eᴴ * (midG r m g).map σ * E`. Rewrite using `[hGram_eq, Matrix.map_mul, Matrix.map_mul]`. Simplify using `only [hSm, midForm]`. Rewrite using `[hEc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hGσ : (midG r m g).map σ = diagonal fun a : Fin r => σ (if m ≤ (a : ℕ) ∧ (a : ℕ) + m < r then g a else 0)`. Simplify using `only [midG]`. Rewrite using `[Matrix.diagonal_map (map_zero σ)]`. Establish `hherm : ((hGram Sm c).map σ).IsHermitian`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply, hGram, Matrix.of_apply]`. Rewrite using `[← hermForm_swap Sm (c j) (c i), Sm.c_emb]`. Both sides reduce to the same expression. Establish `hineq : ∀ v : Fin k → ℂ, ‖star v ⬝ᵥ (((hGram Sm c).map σ) *ᵥ v)‖ ≤ (star v ⬝ᵥ ((gramC (diagMet δ σ) σ c) *ᵥ v)).re`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hC', gramC_eq, quad_eq, quad_eq, hGσ]`. Simplify using `only [diagMet]`. Rewrite using `[quad_diag, quad_diag]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `gcongr`. Use `split_ifs with h`. Rewrite using `[hδmid σ a h.1 h.2]`. Simplify using `only [map_zero, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hδ σ a).le`. Use `_ = (∑ a : Fin r, ((δ σ a : ℝ) : ℂ) * ((‖(E *ᵥ v) a‖ ^ 2 : ℝ) : ℂ)).re := by`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_mul, Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h5` using `hA k (gramC (diagMet δ σ) σ c) ((hGram Sm c).map σ) (gramC_posDef S _ (hDpd σ) σ c hc.2.1) hherm hineq`. Rewrite `h5` using `[show ((hGram Sm c).map σ).det = σ (hGram Sm c).det from (RingHom.map_det σ _).symm]`. Then use the resulting hypothesis. Establish `hN0 : 0 < |((Algebra.norm ℚ (hGram Sm c).det : ℚ) : ℝ)|`. Apply `abs_pos.2` to reduce the goal to its premises. Conclude with `(Algebra.norm_ne_zero_iff).2 hdet` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Establish `hsum : Real.log |((Algebra.norm ℚ (hGram Sm c).det : ℚ) : ℝ)| ≤ ∑ σ : K →+* ℂ, Real.log (gramC (diagMet δ σ) σ c).det.re`. Rewrite using `[← sum_log_norm_emb]`. Use `Finset.sum_le_sum fun σ _ => Real.log_le_log ?_ (hσ σ)` and prove the remaining obligations. Apply `norm_pos_iff.2` to reduce the goal to its premises. Introduce `h0`.
-
-Conclude with `hdet (σ.injective (by rw [h0, map_zero]))`. Establish `hone : 1 ≤ (spanIdx C c : ℝ)` using `Nat.one_le_cast.2 (Nat.one_le_iff_ne_zero.2 (spanIdx_ne_zero C c hCfg hc))`. Establish `hidx' : 2 * Real.log (spanIdx C c : ℝ) ≤ Real.log |((Algebra.norm ℚ (hGram Sm c).det : ℚ) : ℝ)|`. Use `Real.log_le_log (by positivity) hidx` as an intermediate fact. Rewrite `this` using `[Real.log_pow]`. Then use the resulting hypothesis.
-
-Unfold `latDeg`. Unfold `spanIdx at hidx'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mid_le_zero (hN : IntegralIndexStatement) (hA : AbsDetStatement) {K : Type} [Field K]
     [NumberField K] {r : ℕ} (S : HermForm K r) (m : ℕ) (g : Fin r → K)

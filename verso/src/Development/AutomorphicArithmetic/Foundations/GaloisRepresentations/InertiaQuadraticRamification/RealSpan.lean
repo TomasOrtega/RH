@@ -5,21 +5,19 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Introduce `E M Ω F _ _ _ _ _ _ _ _ _ _ _ _ _ g hE hR`. Establish `hnot : ∃ e : E, algebraMap E M e ∉ maximalRealSubfield M`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨φ⟩ : Nonempty (M →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsTotallyComplex.complexEmbedding_not_isReal (φ.comp (algebraMap E M))` to reduce the goal to its premises. Use `show ComplexEmbedding.conjugate _ = _`. Use extensionality with `x`. Use `(mem_maximalRealSubfield_iff _).1 (h x) φ` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `hnot`. Use `set α := algebraMap E M e with hα`. Establish `h2 : Module.finrank (maximalRealSubfield M) M = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `htop : IntermediateField.adjoin (maximalRealSubfield M) {α} = ⊤`. Establish `hd` using `IntermediateField.finrank_dvd_of_le_right (le_top : IntermediateField.adjoin (maximalRealSubfield M) {α} ≤ ⊤)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[IntermediateField.finrank_top', h2, Nat.dvd_prime Nat.prime_two]`. Break down `hd with hd | hd` into its components or cases. Rewrite `hd` using `[IntermediateField.finrank_eq_one_iff]`. Establish `hmem` using `IntermediateField.mem_adjoin_simple_self (maximalRealSubfield M) α`. Rewrite `hmem` using `[hd, IntermediateField.mem_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hmem`. Conclude with `absurd (hy ▸ y.2) he`. Conclude with `IntermediateField.eq_of_le_of_finrank_eq le_top (by rw [hd, IntermediateField.finrank_top', h2])`. Introduce `x`. Establish `hx : x ∈ IntermediateField.adjoin (maximalRealSubfield M) {α}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htop]`. Conclude with `IntermediateField.mem_top`. Establish `hx' : x ∈ (IntermediateField.adjoin (maximalRealSubfield M) {α}).toSubfield` using `hx`. Rewrite `hx'` using `[IntermediateField.adjoin_toSubfield]`. Establish `hle : Subfield.closure (Set.range (algebraMap (maximalRealSubfield M) M) ∪ {α}) ≤ RingHom.eqLocusField ((g : Ω →+* Ω).comp (algebraMap M Ω)) (algebraMap M Ω)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Subfield.closure_le]`. Introduce and unpack `y (⟨z, rfl⟩ | hy)`. Conclude with `hR z`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality.
-
-Establish `h1` using `hE e`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply E M Ω]`. Conclude with `h1`. Conclude with `hle hx'`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.realSpan :
     RealSpan := by

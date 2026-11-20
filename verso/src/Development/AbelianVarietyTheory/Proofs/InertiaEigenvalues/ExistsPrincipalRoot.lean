@@ -15,17 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwistLeft
 
 /- English proof (translation)
-Take `⟨γ₀, -, h0⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)`. Establish `hdet : ((matHom V γ).1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).det = incA D γ₀.1.det`. Rewrite using `[← GlobalTheory.DetRootRows.det_bc, h0]`. Both sides reduce to the same expression. Generalize the expression as in `γ₀.1.det = d at hdet`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the chosen expression with an arbitrary variable.
 
-Establish `hc : ∀ e : D.host.E, cA D (incA D e) = incA D (star e)` using `fun e => rfl`. Use `haveI : Nontrivial (AF D.host.F) := (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F).nontrivial`. Establish `hn : star d * d = 1`. Use `det_conj_mul V γ` as an intermediate fact. Apply `GlobalTheory.DetRootRows.inclR_injective (F := D.host.F) (AF D.host.F)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_one, ← hc, ← hdet]`. Conclude with `this`. Choose the witnesses or unpack the hypotheses as in `⟨e, he0, he⟩ : ∃ e : D.host.E, e ≠ 0 ∧ e = d * star e := by`. Distinguish the cases in `hd : d = -1`. Take `⟨a, ha⟩` from `GlobalTheory.RecDict.cmData_sig_ne_id D.sp.cm`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a - star a, sub_ne_zero.2 (Ne.symm ha), ?_⟩` and prove the remaining obligations. Rewrite using `[hd, star_sub, star_star]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨1 + d, fun h => hd (by linear_combination h), ?_⟩` and prove the remaining obligations. Rewrite using `[star_add, star_one]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `-hn`. Use `⟨Units.mk0 e he0, ?_⟩` and prove the remaining obligations. Unfold `IsDetRoot`. Rewrite using `[hdet]`. Use `show incA D e = incA D d * cA D (incA D e)`.
-
-Rewrite using `[hc, ← map_mul, ← he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_principal_root {D : D7} (V : HSp D) (γ : GA D V) (hγ : γ ∈ GQ V) :
     ∃ e : D.host.Eˣ, IsDetRoot V γ (Units.map (incA D).toMonoidHom e) := by
@@ -55,7 +53,7 @@ theorem exists_principal_root {D : D7} (V : HSp D) (γ : GA D V) (hγ : γ ∈ G
   rw [hc, ← map_mul, ← he]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hmu.1 h`. Take `⟨e, he⟩` from `exists_principal_root V γ hγ`. Rewrite using `[hmu.2 _ _ (detRootMul_holds V γ h _ x he hx), hmu.2 h x hx, map_mul, hE e, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem muVal_left {D : D7} (V : HSp D) (χ : (AE D)ˣ →* Circle)
     (hE : ∀ x : D.host.Eˣ, χ (Units.map (incA D).toMonoidHom x) = 1) (mu : GA D V → ℂ) (hmu : MuVal V χ mu)
@@ -65,7 +63,7 @@ theorem muVal_left {D : D7} (V : HSp D) (χ : (AE D)ˣ →* Circle)
   rw [hmu.2 _ _ (detRootMul_holds V γ h _ x he hx), hmu.2 h x hx, map_mul, hE e, one_mul]
 
 /- English proof (translation)
-Introduce `D V pd k _ σ δ δc ht dd hdd γ hγ h`. Establish `hE : ∀ x : D.host.Eˣ, δc (Units.map (incA D).toMonoidHom x) = 1` using `ht.1.1.2`. Break down `hdd with hm | hm` into its components or cases. Conclude with `muVal_left V δc hE dd hm γ hγ h`. Conclude with `muVal_left V δc⁻¹ (fun x => by rw [MonoidHom.inv_apply, hE x, inv_one]) dd hm γ hγ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem twist_left : ∀ (D : D7) (V : HSp D) (pd : ℕ) (k : Type) [Field k] (σ : k →+* ℂ) (δ : Formalism.L2.Host.HChar D.host.E)
     (δc : (AE D)ˣ →* Circle), IsTwist pd σ δ δc → ∀ dd : GA D V → ℂ, (MuVal V δc dd ∨ MuVal V δc⁻¹ dd) →

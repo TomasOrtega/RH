@@ -38,14 +38,14 @@ def DRC (B : ℝ) : Set ℕ :=
 def DRh (B : ℝ) : Set ℕ := {p | H.Inert p ∧ (p : ℝ) ≤ B ∧ φ.hH (H.frobG p).2 = 1}
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem frobG_of_coprime {p : ℕ} (h : Nat.Coprime p H.condN) : H.frobG p = H.art (ZMod.unitOfCoprime p h) := dif_pos h
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `h1` using `h.2`. Establish `h8` using `H.d_mod_eight`. Establish `h2 : jacobiSym (-(H.d : ℤ)) 2 = jacobiSym 1 2`. Apply `jacobiSym.mod_left'` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[h2, jacobiSym.one_left]`. Conclude with `absurd h1 (by decide)`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Inert.ne_two {H : HostRaw φ} {p : ℕ} (h : H.Inert p) : p ≠ 2 := by
   rintro rfl
@@ -59,13 +59,13 @@ theorem Inert.ne_two {H : HostRaw φ} {p : ℕ} (h : H.Inert p) : p ≠ 2 := by
   exact absurd h1 (by decide)
 
 /- English proof (translation)
-The claim follows from `H.not_dvd_condN_of_inert h.1 h.ne_two h.2`.
+A detailed English derivation is pending.
 -/
 theorem Inert.not_dvd {H : HostRaw φ} {p : ℕ} (h : H.Inert p) : ¬ p ∣ H.condN :=
   H.not_dvd_condN_of_inert h.1 h.ne_two h.2
 
 /- English proof (translation)
-The claim follows from `h.1.coprime_iff_not_dvd.2 h.not_dvd`.
+A detailed English derivation is pending.
 -/
 theorem Inert.coprime {H : HostRaw φ} {p : ℕ} (h : H.Inert p) : Nat.Coprime p H.condN :=
   h.1.coprime_iff_not_dvd.2 h.not_dvd

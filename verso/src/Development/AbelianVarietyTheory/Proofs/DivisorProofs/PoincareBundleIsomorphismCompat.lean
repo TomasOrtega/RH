@@ -17,7 +17,7 @@ namespace GlobalTheory.KerShift
 open GlobalTheory.AbDual GlobalTheory.CechPic GlobalTheory.AbLaw
 
 /- English proof (translation)
-Unfold `evc`. Rewrite using `[(cls_eq_iff hM hN).2 e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_congr {S : Scheme.{0}} {A T Y : Over S} {M N : LB (A ⊗ T).left} (hM : M.IsLB) (hN : N.IsLB)
     (e : LBIso M N) (a : Y ⟶ A) (t : Y ⟶ T) : evc hM a t = evc hN a t := by
@@ -25,13 +25,13 @@ theorem evc_congr {S : Scheme.{0}} {A T Y : Over S} {M N : LB (A ⊗ T).left} (h
   rw [(cls_eq_iff hM hN).2 e]
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 S A _ rm P hP hsymm hsmul c d a b had T y hy`. Establish `sy : ∀ c (Y : Over S) (u v : Y ⟶ A), evc (hP c) u v = evc (hP c) v u`. Introduce `c Y u v`. Establish `hs : ((P c).pull (lift (snd A A) (fst A A)).left).IsLB` using `pull_isLB (hP c) _`. Rewrite using `[evc_congr (hP c) hs (hsymm c) u v]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(evc_ev (hP c) (snd A A) (fst A A) hs u v).trans (by rw [lift_snd, lift_fst])`. Establish `sm : ∀ (a : 𝓞 F) c (Y : Over S) (u v : Y ⟶ A), evc (hP (a • c)) u v = evc (hP c) u (v ≫ rm.act a)`. Introduce `a c Y u v`. Establish `hs : ((P c).pull (lift (fst A A) (snd A A ≫ rm.act a)).left).IsLB` using `pull_isLB (hP c) _`. Rewrite using `[evc_congr (hP (a • c)) hs (hsmul a c) u v]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(evc_ev (hP c) (fst A A) (snd A A ≫ rm.act a) hs u v).trans (by rw [lift_fst, lift_snd_assoc])`. Establish `h0 : evc (hP c) (fst A T) (snd A T ≫ y) = 0` using `(triv_ev_iff (hP c) _ _).1 hy`. Establish `h1` using `congrArg (CechPic.pull (lift (fst A T ≫ rm.act b) (snd A T)).left) h0`. Rewrite `h1` using `[pull_evc, map_zero, lift_fst, lift_snd_assoc]`. Establish `e1` using `sm a d (A ⊗ T) (fst A T) (snd A T ≫ y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[had]`. Use `show Triv _`. Rewrite using `[triv_ev_iff (hP d), ← Category.assoc, ← e1, sy, sm, sy]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem ker_shift : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (S : Scheme.{0}) (A : Over S) [GrpObj A]
     (rm : OAct (𝓞 F) A) (P : 𝔠.elt → LB (A ⊗ A).left), (∀ c, (P c).IsLB) →

@@ -21,9 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Degen.PolyStepLocal
 
 /- English proof (translation)
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hk : RingHom.ker (Ideal.Quotient.factor h) ≤ I.map (Ideal.Quotient.mk (I ^ n))`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem, zero_add, pow_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ hx`. Rewrite using `[Ideal.zero_eq_bot, eq_bot_iff]`. Use `(Ideal.pow_right_mono hk n).trans ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_quotient_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nilpotent_ker {R : Type} [CommRing R] (I : Ideal R) {n : ℕ} (h : I ^ n ≤ I ^ (0 + 1)) :
     IsNilpotent (RingHom.ker (Ideal.Quotient.factor h)) := by
@@ -38,7 +38,7 @@ theorem nilpotent_ker {R : Type} [CommRing R] (I : Ideal R) {n : ℕ} (h : I ^ n
   rw [← Ideal.map_pow, Ideal.map_quotient_self]
 
 /- English proof (translation)
-Take `⟨t₀, ht₀⟩` from `GlobalTheory.T.serre_vanishing_very_ample.1 R X f H m s hH hs H hH`. Use `⟨t₀.toNat + 1, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `GlobalTheory.Algebraise.lbIso_tw hH ((t : ℤ) - 1)`. Establish `h` using `H1Iso.firstCohomologyVanishes_of_iso_of_isGen (isLB_tw hH hH _).cover (isLB_pw hH _) w hw (ht₀ _ (by omega))`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_h1Zero_pw (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0})
     (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (hH : H.IsLB)
@@ -50,9 +50,9 @@ theorem exists_h1Zero_pw (R : Type) [CommRing R] [IsNoetherianRing R] (X : Schem
   rwa [sub_add_cancel] at h
 
 /- English proof (translation)
-Take `⟨G, rfl⟩` from `MvPolynomial.map_surjective g hg F`. Use `⟨MvPolynomial.homogeneousComponent t G, MvPolynomial.homogeneousComponent_isHomogeneous t G, ?_⟩` and prove the remaining obligations. Use extensionality with `d`. Rewrite using `[MvPolynomial.coeff_map, MvPolynomial.coeff_homogeneousComponent]`. Use `split_ifs with h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_map]`. Rewrite using `[map_zero, hF.coeff_eq_zero h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_lift {σ R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') (hg : Function.Surjective g)
     {F : MvPolynomial σ R'} {t : ℕ} (hF : F.IsHomogeneous t) :
@@ -66,7 +66,7 @@ theorem exists_form_lift {σ R R' : Type} [CommRing R] [CommRing R'] (g : R →+
   · rw [map_zero, hF.coeff_eq_zero h]
 
 /- English proof (translation)
-Use extensionality with `a`. Use `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Simplify using `only [AbLaw.cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cst_comp_spec {X : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
     (p : X ⟶ Spec (CommRingCat.of R')) (g : R →+* R') (U : X.Opens) :
@@ -78,9 +78,9 @@ theorem cst_comp_spec {X : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
   rw [this]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => exact ⟨β 0, hβ 0, hs 0⟩`. Consider the case `succ e ih`. Take `⟨j₀, hj, hr⟩` from `ih`. Use `⟨j₀ ≫ β (e + 1), ?_, GlobalTheory.MorAlg.IsPull.comp (hH _) (hH _) (hH _) (hs (e + 1)) hr⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hj.paste_horiz (hβ (e + 1)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pull_tower {σ R : Type} [CommRing R] (I : Ideal R)
     (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
@@ -104,23 +104,21 @@ end GlobalTheory.Degen.PolyStepLocal
 open GlobalTheory.Degen.PolyStepLocal in
 
 /- English proof (translation)
-Introduce `R _ _ _ I hI Y β hβ hflat H v hH n s hs hva`. Establish `hle : ∀ r ∈ I ^ (0 + 1), IsLocalRing.residue R r = 0` using `fun r hr => by`. Rewrite `hr` using `[zero_add, pow_one]`. Conclude with `(IsLocalRing.residue_eq_zero_iff r).2 (IsLocalRing.le_maximalIdeal hI hr)`. Set `φ : R ⧸ I ^ (0 + 1) →+* IsLocalRing.ResidueField R` to `Ideal.Quotient.lift _ (IsLocalRing.residue R) hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : Function.Surjective φ` using `Ideal.Quotient.lift_surjective_of_surjective _ hle IsLocalRing.residue_surjective`. Establish `hP` using `IsPullback.of_hasPullback (Y 0).hom (Spec.map (CommRingCat.ofHom φ))`. Use `set π := pullback.fst (Y 0).hom (Spec.map (CommRingCat.ofHom φ))`. Use `set f₀ := pullback.snd (Y 0).hom (Spec.map (CommRingCat.ofHom φ))`. Establish `hL` using `LB.isLB_pull (hH 0).1 π`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s₀, hs₀⟩` from `GlobalTheory.MorAlg.exists_isPull π (hH 0).1 (s 0)`. Establish `hva₀ : VeryAmpleBy f₀ ((H 0).pull π) s₀`. Take `⟨w, hw, c⟩` from `hs₀`. Use `GlobalTheory.AbLaw.VeryAmplePull.veryAmpleBy_pull _ _ (Y 0).hom (H 0) n (s 0) (hH 0).1 hva _ φ _ f₀ π hP.w ?_ _ w s₀ hL hw c` and prove the remaining obligations. Establish `: pullback.lift π f₀ hP.w = 𝟙 _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.id_comp]`. Rewrite using `[pullback.lift_snd, Category.id_comp]`. Rewrite using `[this]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨t₁, ht₁⟩` from `exists_h1Zero_pw _ _ f₀ _ n s₀ hL hva₀`. Take `⟨t₂, ht₂⟩` from `GlobalTheory.T.serre_vanishing_very_ample.2 _ _ f₀ _ n s₀ hL hva₀`. Use `⟨max t₁ t₂, fun t ht e F hF hF0 => ?_⟩` and prove the remaining obligations. Take `⟨j₀, hj, w, hw', hr⟩` from `exists_pull_tower _ Y β hβ H (fun e => (hH e).1) s (fun e => ⟨v e, (hH e).2, hs e⟩) e`. Establish `hvae : VeryAmpleBy (Y (e + 1)).hom (H (e + 1)) (s (e + 1))` using `GlobalTheory.AbLaw.veryAmpleBy_of_isNilpotent _ _ _ (Ideal.Quotient.factor_surjective _) (nilpotent_ker I _) _ _ _ _ j₀ hj _ _ w n _ _ (hH _).1 (hH _).1 hw' hr hva`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w₀, hw₀, c₀⟩` from `GlobalTheory.MorAlg.IsPull.comp (hH (e + 1)).1 (hH 0).1 hL ⟨w, hw', hr⟩ hs₀`. Establish `hP₀` using `hP.paste_horiz hj`. Rewrite `hP₀` using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hne : I ^ (e + 1 + 1) ≠ ⊤` using `fun h => hI (top_unique (h ▸ Ideal.pow_le_self (by omega)))`. Establish `: Nontrivial (R ⧸ I ^ (e + 1 + 1))` using `Ideal.Quotient.nontrivial_iff.2 hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: IsLocalRing (R ⧸ I ^ (e + 1 + 1))` using `IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `c₁ : β e ≫ (Y (e + 1)).hom ≫ thick R I (e + 1) = (Y e).hom ≫ thick R I e`. Rewrite using `[← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]`. Take `⟨G₀, hG₀, hc, hz⟩` from `GlobalTheory.T.exists_form_correction_of_vanishing_after_baseChange _ _ (Y (e + 1)).hom (hflat _) _ n _ (hH _).1 hvae _ _ (hφ.comp (Ideal.Quotient.factor_surjective _)) _ _ _ hP₀ _ w₀ s₀ hL hw₀ c₀ t (ht₁ t (le_of_max_le_left ht)) (ht₂ t (le_of_max_le_right ht)) _ _ _ (β e) (Y e). …`. Rewrite using `[MvPolynomial.eval₂Hom_map_hom, ← cst_comp_spec, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrArg (fun p => MvPolynomial.eval₂Hom (GlobalTheory.AbLaw.cst p ((H e).U k)) (fun j => (s e j).f k) F) c₁).trans (hF0 k))`. Take `⟨G, hG, rfl⟩` from `exists_form_lift _ Ideal.Quotient.mk_surjective hG₀`. Use `⟨G, hG, fun d => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `hc d`. Rewrite `h` using `[MvPolynomial.coeff_map, Ideal.Quotient.factor_mk]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h`. Establish `h` using `hz k`. Rewrite `h` using `[← map_sub, MvPolynomial.eval₂Hom_map_hom, ← cst_comp_spec]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Degen.exists_form_correction_local : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≠ ⊤ → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → (∀ e, Flat (Y e).hom) → ∀ (H : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (H e) ((H (e + 1)).pull (β e))), (∀ e, (H e).IsLB ∧ (v e).IsGen) → ∀ (n : ℕ) (s : ∀ e, Fin (n + 1) → LB.Sec (H e)), (∀ e j, (∀ z (k : (H (e + 1)).ι) (k' : (H e).ι), (β e) z ∈ (H (e + 1)).U k → z ∈ (H e).U k' → gs (β e) z _ ((s (e + 1) j).f k) = (Geo.Tor.gw (v e) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s e j).f k'))) → VeryAmpleBy (Y 0).hom (H 0) (s 0) → ∃ t₀ : ℕ, ∀ t, t₀ ≤ t → ∀ (e : ℕ) (F : MvPolynomial (Fin (n + 1)) R), F.IsHomogeneous t → (∀ k : (H e).ι, MvPolynomial.eval₂Hom (cst ((Y (e)).hom ≫ thick R I (e)) ((H e).U k)) (fun j => (s e j).f k) (F) = 0) → ∃ G : MvPolynomial (Fin (n + 1)) R, G.IsHomogeneous t ∧ (∀ d, MvPolynomial.coeff d G ∈ I ^ (e + 1)) ∧ (∀ k : (H (e + 1)).ι, MvPolynomial.eval₂Hom (cst ((Y (e + 1)).hom ≫ thick R I (e + 1)) ((H (e + 1)).U k)) (fun j => (s (e + 1) j).f k) (F - G) = 0) := by
   intro R _ _ _ I hI Y β hβ hflat H v hH n s hs hva

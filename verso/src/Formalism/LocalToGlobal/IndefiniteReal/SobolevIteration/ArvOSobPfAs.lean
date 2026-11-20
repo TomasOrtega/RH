@@ -8,19 +8,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 namespace Formalism.IndefR.Tow.SobPf
 
 /- English proof (translation)
-Simplify using `[oneProd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem oneProd_zero {n d : ℕ} (Y : Fin d → Matrix (Fin n) (Fin n) ℂ) : oneProd Y 0 = 1 := by
   simp [oneProd]
 
 /- English proof (translation)
-Introduce `n H _ _ G s π hs hπ w hw l hl ε hε`. Take `⟨d, Y, hY, hch⟩` from `h4 G s hs`. Establish `hc` using `h5 G π hπ w hw l hl d Y hY`. Establish `h0 : dL π l (π (oneProd Y 0) w) = dL π l w`. Rewrite using `[oneProd_zero, hπ.1, ContinuousLinearMap.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨η, hη, hηc⟩` from `Metric.continuous_iff.1 hc 0 ε hε`. Take `⟨δ, hδ, hδc⟩` from `hch η hη`. Use `⟨δ, hδ, fun g hg hgd => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, rfl⟩` from `hδc g hg hgd`. Establish `htn : dist t 0 < η`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[dist_zero_right]`. Conclude with `(pi_norm_lt_iff hη).2 fun i => by rw [Real.norm_eq_abs]; exact ht i`. Establish `h1` using `hηc t htn`. Use `beta_reduce at h1`. Rewrite `h1` using `[dist_eq_norm, h0]`.
-
-Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuity_of_sobolev_chart (h4 : SobChart) (h5 : FoldCont) : Cont1 := by
   intro n H _ _ G s π hs hπ w hw l hl ε hε
@@ -41,15 +39,15 @@ theorem continuity_of_sobolev_chart (h4 : SobChart) (h5 : FoldCont) : Cont1 := b
   exact h1
 
 /- English proof (translation)
-Simplify using `[KAt, Formalism.QuantumDeterminants.UH]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_mem_KAt {n : ℕ} (G s : Matrix (Fin n) (Fin n) ℂ) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ KAt G s := by
   simp [KAt, Formalism.QuantumDeterminants.UH]
 
 /- English proof (translation)
-Unfold `evP`. Use `(MvPolynomial.continuous_eval q).comp (continuous_pi fun s => ?_)` and prove the remaining obligations. Break down `s with ⟨i, j⟩ | ⟨i, j⟩` into its components or cases. Simplify using `only [Sum.elim_inl]`. Conclude with `(continuous_apply j).comp (continuous_apply i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr]`. Conclude with `Complex.continuous_conj.comp ((continuous_apply j).comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evP {n : ℕ} (q : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n × Fin n)) ℂ) :
     Continuous (evP q) := by
@@ -62,9 +60,9 @@ theorem continuous_evP {n : ℕ} (q : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n 
     exact Complex.continuous_conj.comp ((continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-Proceed by induction on `S with`. Consider the case `nil => exact ⟨1, one_pos, fun a ha => by simp at ha⟩`. Consider the case `cons a S ih`. Take `⟨δ1, h1, hδ1⟩` from `hP a (by simp)`. Take `⟨δ2, h2, hδ2⟩` from `ih fun b hb => hP b (by simp [hb])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨min δ1 δ2, lt_min h1 h2, fun b hb δ' hδ' hle => ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hb with rfl | hb` into its components or cases. Conclude with `hδ1 δ' hδ' (hle.trans (min_le_left _ _))`. Conclude with `hδ2 b hb δ' hδ' (hle.trans (min_le_right _ _))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_delta_list {α : Type*} (S : List α) (P : α → ℝ → Prop)
     (hP : ∀ a ∈ S, ∃ δ > (0 : ℝ), ∀ δ', 0 < δ' → δ' ≤ δ → P a δ') :
@@ -80,9 +78,9 @@ theorem exists_delta_list {α : Type*} (S : List α) (P : α → ℝ → Prop)
     · exact hδ2 b hb δ' hδ' (hle.trans (min_le_right _ _))
 
 /- English proof (translation)
-Proceed by induction on `S with`. Consider the case `nil => exact ⟨0, le_rfl, fun a ha => by simp at ha⟩`. Consider the case `cons a S ih`. Take `⟨B1, hB1⟩` from `h a (by simp)`. Take `⟨B2, _, hB2⟩` from `ih fun c hc => h c (by simp [hc])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max (max B1 B2) 0, le_max_right _ _, fun c hc b hb => ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hc with rfl | hc` into its components or cases. Conclude with `(hB1 b hb).trans ((le_max_left _ _).trans (le_max_left _ _))`. Conclude with `(hB2 c hc b hb).trans ((le_max_right _ _).trans (le_max_left _ _))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_bound_list {α β : Type*} (S : List α) (A : Set β) (f : α → β → ℝ)
     (h : ∀ a ∈ S, ∃ B : ℝ, ∀ b ∈ A, f a b ≤ B) : ∃ B : ℝ, 0 ≤ B ∧ ∀ a ∈ S, ∀ b ∈ A, f a b ≤ B := by
@@ -97,27 +95,25 @@ theorem exists_bound_list {α β : Type*} (S : List α) (A : Set β) (f : α →
     · exact (hB2 c hc b hb).trans ((le_max_right _ _).trans (le_max_left _ _))
 
 /- English proof (translation)
-Introduce `n H _ _ _ G s π hs hπ w hw S hS ε hε`. Take `⟨μ, hμ⟩` from `h8a G s hs`. Establish `hμ'` using `hμ`. Take `⟨-, hae, -, -⟩` from `hμ'`. Establish `hπ1 : π 1 = 1` using `hπ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hε2 : 0 < ε / 2` using `by linarith`. Take `⟨δ, hδ, hδS⟩` from `exists_delta_list S (fun l δ' => ∀ g ∈ Formalism.QuantumDeterminants.UH G, (∀ i j, ‖g i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖ < δ') → ‖dL π l (π g w) - dL π l w‖ < ε / 2) (fun l hl => by`. Take `⟨δ₀, hδ₀, h⟩` from `h6 G s π hs hπ w hw l (hS l hl) (ε / 2) hε2`. Conclude with `⟨δ₀, hδ₀, fun δ' _ hδ' g hg hgd => h g hg (fun i j => lt_of_lt_of_le (hgd i j) hδ')⟩)`. Take `⟨B, hB0, hB⟩` from `exists_bound_list S (KAt G s) (fun l k => ‖dL π l (π k w)‖) (fun l hl => h8e G s π hs hπ w hw l (hS l hl))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `set U : Set (Fin n → Fin n → ℂ) := {k | ∀ i j, ‖k i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖ < δ} with hU`. Establish `hUo : IsOpen U`. Rewrite using `[hU]`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_lt (by fun_prop) continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hU1 : U ∈ 𝓝 (Matrix.of.symm (1 : Matrix (Fin n) (Fin n) ℂ))`. Use `hUo.mem_nhds fun i j => ?_` and prove the remaining obligations. Simplify using `using hδ`. Use `set η : ℝ := ε / (4 * (B + 1)) with hη`. Establish `hη0 : 0 < η` using `by positivity`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hqi, hq1, hqn, hqU⟩` from `h8b G s hs μ hμ U hU1 η hη0`. Establish `hec : Continuous (evP q)` using `continuous_evP q`. Take `⟨hsm, hfold⟩` from `h8c G s π hs hπ μ hμ (evP q) hec w hw`. Use `⟨∫ k, evP q k • π (Matrix.of k) w ∂μ, hsm, h8d G s π hs hπ μ hμ q w, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨hint, hcomm⟩` from `hfold l (hS l hl)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hw1 : dL π l w = ∫ k, evP q k • dL π l w ∂μ`. Rewrite using `[integral_smul_const, hq1, one_smul]`. Rewrite using `[hcomm, hw1, ← integral_sub hint (hqi.smul_const _)]`. Establish `hD : ∀ᵐ k ∂μ, ‖evP q k • dL π l (π (Matrix.of k) w) - evP q k • dL π l w‖ ≤ ‖evP q k‖ * (ε / 2) + Uᶜ.indicator (fun k => ‖evP q k‖ * (2 * B)) k` using `by filter_upwards [hae] with k hk`. Rewrite using `[← smul_sub, norm_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hkU : k ∈ U`. Rewrite using `[Set.indicator_of_notMem (Set.notMem_compl_iff.2 hkU), add_zero]`. Establish `hlt : ‖dL π l (π (Matrix.of k) w) - dL π l w‖ < ε / 2` using `hδS l hl δ hδ le_rfl (Matrix.of k) hk.1 hkU`. Conclude with `mul_le_mul_of_nonneg_left hlt.le (norm_nonneg _)`. Rewrite using `[Set.indicator_of_mem hkU]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : ‖dL π l (π (Matrix.of k) w)‖ ≤ B` using `hB l hl (Matrix.of k) hk`. Establish `h2 : ‖dL π l w‖ ≤ B`. Establish `h` using `hB l hl 1 (one_mem_KAt G s)`. Simplify using `only [hπ1, one_apply_eq_self] at h`. Conclude with `h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : ‖dL π l (π (Matrix.of k) w) - dL π l w‖ ≤ 2 * B`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : 0 ≤ ‖evP q k‖ * (ε / 2)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hmeasU : MeasurableSet Uᶜ` using `hUo.measurableSet.compl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : Integrable (fun k => ‖evP q k‖ * (ε / 2)) μ` using `hqi.norm.mul_const _`. Establish `hC : Integrable (Uᶜ.indicator (fun k => ‖evP q k‖ * (2 * B))) μ` using `(hqi.norm.mul_const _).indicator hmeasU`. Establish `hsub : Integrable (fun k => evP q k • dL π l (π (Matrix.of k) w) - evP q k • dL π l w) μ` using `hint.sub (hqi.smul_const _)`. Establish `hηB : η * (2 * B) < ε / 2`. Rewrite using `[hη, div_mul_eq_mul_div, div_lt_div_iff₀ (by positivity) (by norm_num)]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_add hA hC, integral_indicator hmeasU, integral_mul_const, integral_mul_const]`. Use `_ ≤ 1 * (ε / 2) + η * (2 * B) := add_le_add (mul_le_mul_of_nonneg_right hqn hε2.le) (mul_le_mul_of_nonneg_right hqU.le (by linarith))`. Use `_ < ε := by linarith`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobApprox_of (h8a : HaarExists) (h8b : PolyKernel) (h8c : AvgSmooth) (h8d : AvgKFin) (h6 : Cont1)
     (h8e : FoldBddK) : SobApprox := by

@@ -13,7 +13,7 @@ open NumberField Complex ReciprocityTheory.ChartRestriction.G.I2
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ X DF P`. Distinguish the cases in `h : X.la1 < P.th`. Conclude with `greedy_splitting_thin exists_short_integers_span (exists_short_independent_isU transference_discrete_lattice principalTorus_im_perfect) E X DF P h`. Conclude with `⟨⊥, thickSplit_bot E X DF P h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem greedy_splitting_exists : SplitStatement := by
   intro E _ _ _ X DF P

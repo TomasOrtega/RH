@@ -34,7 +34,7 @@ theorem tensE_apply (X : GMod n) (a b : Fin n) (u : Fin n → X.V) (i : Fin n) :
     tensE X a b u i = X.E a b (u i) + if i = a then u b else 0 := rfl
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (X.gl a b c d) x`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> (try simp) <;> abel`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comm_apply (X : GMod n) (a b c d : Fin n) (x : X.V) :
     X.E a b (X.E c d x) = X.E c d (X.E a b x) + (if b = c then X.E a d x else 0) - (if d = a then X.E c b x else 0) := by
@@ -45,9 +45,9 @@ theorem comm_apply (X : GMod n) (a b c d : Fin n) (x : X.V) :
   split_ifs <;> (try simp) <;> abel
 
 /- English proof (translation)
-Introduce `a b c d`. Use `LinearMap.ext fun u => funext fun i => ?_` and prove the remaining obligations. Apply the tactic sequence `have e : ∀ (p : Prop) [Decidable p] (T : Module.End ℂ (Fin n → X.V)), (if p then T else 0) u i = if p then T u i else 0 := fun p _ T => by split_ifs <;> simp`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Pi.sub_apply, e, tensE_apply, map_add]`. Rewrite using `[comm_apply X a b c d (u i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : i = a <;> by_cases h2 : i = c <;> by_cases h3 : b = c <;> by_cases h4 : d = a <;>`. Apply the tactic sequence `simp_all <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_tensE (X : GMod n) : GlRel (tensE X) := by
   intro a b c d
@@ -72,7 +72,7 @@ Both sides reduce to the same expression.
 theorem om_apply (X : GMod n) (u : Fin n → X.V) (b : Fin n) : om X u b = ∑ a, X.E a b (u a) := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun u => funext fun b => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, tensE_apply, om_apply, map_sum, map_add, sum_add_distrib]`. Simplify using `only [comm_apply X c d _ b, sum_sub_distrib, sum_add_distrib, apply_ite (X.E _ b), map_zero]`. Apply the tactic sequence `by_cases h : b = c <;> simp [h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem commute_om (X : GMod n) (c d : Fin n) : Commute (tensE X c d) (om X) := by
   refine LinearMap.ext fun u => funext fun b => ?_
@@ -123,7 +123,7 @@ def Iso (X X' : GMod n) : Prop := ∃ e : X.V ≃ₗ[ℂ] X'.V, ∀ a b x, e (X.
 def triv (n : ℕ) : GMod n := ⟨ℂ, 0, fun a b c d => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstanceAs (Nontrivial ℂ), fun S _ => eq_bot_or_eq_top (α := Submodule ℂ ℂ) S⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSimple_triv : IsSimple (triv n) := ⟨inferInstanceAs (Nontrivial ℂ), fun S _ => eq_bot_or_eq_top (α := Submodule ℂ ℂ) S⟩
 

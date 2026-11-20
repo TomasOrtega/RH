@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsProperCurveThroughPoint
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `letI := (g.comp f).toAlgebra`. Establish `hC : Module.Finite P C` using `h`. Set `gl : B →ₗ[P] C` to `{ toFun := g map_add' := g.map_add map_smul' := fun r b => by`. Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra, map_mul, RingHom.comp_apply, RingHom.id_apply] }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Use `haveI : IsNoetherian P C := isNoetherian_of_isNoetherianRing_of_finite P C`. Use `haveI : IsNoetherian P B := isNoetherian_of_injective gl hg`. Conclude with `Module.IsNoetherian.finite P B`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.finite_of_finite_comp_injective_noetherian {P B C : Type*} [CommRing P] [CommRing B] [CommRing C]
     [IsNoetherianRing P] (f : P →+* B) (g : B →+* C) (hg : Function.Injective g)
@@ -23,11 +23,11 @@ private theorem UpperTheory.finite_of_finite_comp_injective_noetherian {P B C : 
   exact Module.IsNoetherian.finite P B
 
 /- English proof (translation)
-Rewrite using `[RingHom.finite_iff_isIntegral_and_finiteType]`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Use `⟨Polynomial.X ^ (p ^ e) - Polynomial.C x, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_sub_C _ (pow_ne_zero _ (expChar_pos k p).ne')`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Polynomial.eval₂_sub, iterateFrobenius_def]`. Apply `RingHom.FiniteType.of_comp_finiteType (f := MvPolynomial.C)` to reduce the goal to its premises. Establish `hc : (iterateFrobenius (MvPolynomial ι k) p e).comp MvPolynomial.C = MvPolynomial.C.comp (iterateFrobenius k p e)`. Use extensionality with `a`. Simplify using `[iterateFrobenius_def, map_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `(RingHom.finiteType_algebraMap.mpr inferInstance).comp (RingHom.FiniteType.of_surjective _ (bijective_iterateFrobenius k p e).2)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.finite_iterateFrobenius_mvPolynomial_perfect (k : Type*) [Field k] (p : ℕ) [ExpChar k p] [PerfectRing k p]
     (ι : Type*) [Finite ι] [ExpChar (MvPolynomial ι k) p] (e : ℕ) :
@@ -48,27 +48,21 @@ private theorem UpperTheory.finite_iterateFrobenius_mvPolynomial_perfect (k : Ty
       (RingHom.FiniteType.of_surjective _ (bijective_iterateFrobenius k p e).2)
 
 /- English proof (translation)
-Set `E` to `separableClosure L F`. Use `haveI : FiniteDimensional E F := FiniteDimensional.right L E F`. Use `haveI : IsPurelyInseparable E F := separableClosure.isPurelyInseparable L F`. Use `haveI : ExpChar E p := IntermediateField.expChar' E p`. Use `haveI : IsScalarTower P E F := IsScalarTower.of_algebraMap_eq (fun r => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply P L E r, ← IsScalarTower.algebraMap_apply L E F, IsScalarTower.algebraMap_apply P L F])`. Use `set e := IsPurelyInseparable.exponent E F`. Establish `hpow : ∀ x : F, x ^ p ^ e ∈ E` using `fun x => by`. Take `⟨y, hy⟩` from `IsPurelyInseparable.exponent_def' E p x`. Rewrite using `[← hy]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `y.2`. Use `haveI : Module.Finite P (integralClosure P E) := IsIntegralClosure.finite P L E (integralClosure P E)`. Establish `hq : p ^ e ≠ 0` using `pow_ne_zero _ (expChar_pos F p).ne'`. Set `fr : integralClosure P F →+* integralClosure P E` to `{ toFun := fun b => ⟨⟨b.1 ^ p ^ e, hpow b.1⟩, by`. Rewrite using `[mem_integralClosure_iff, ← isIntegral_algHom_iff (IsScalarTower.toAlgHom P E F) (algebraMap E F).injective]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `b.2.pow _⟩`. Use the proof step `map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `map_mul' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_pow]`. Use the proof step `map_zero' := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[zero_pow hq]`. Use the proof step `map_add' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[add_pow_expChar_pow] }`. Establish `hinj : Function.Injective fr`. Introduce `a b h`. Establish `h' : a.1 ^ p ^ e = b.1 ^ p ^ e` using `congrArg (fun y : integralClosure P E => ((y.1 : E) : F)) h`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `(iterateFrobenius F p e).injective` to reduce the goal to its premises. Simplify `h'` using `[iterateFrobenius_def]`. Establish `hcomp : fr.comp (algebraMap P (integralClosure P F)) = (algebraMap P (integralClosure P E)).comp (iterateFrobenius P p e)`. Apply `RingHom.ext` to reduce the goal to its premises.
-
-Introduce `r`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [fr, iterateFrobenius_def, map_pow, RingHom.coe_comp, Function.comp_apply, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk]`. Establish `h1 : ((algebraMap P (integralClosure P F) r : integralClosure P F) : F) = algebraMap P F r` using `rfl`.
-
-Establish `h2 : (((algebraMap P (integralClosure P E) r : integralClosure P E) : E) : F) = algebraMap P F r`. Rewrite using `[IsScalarTower.algebraMap_apply P E F]`. Both sides reduce to the same expression. Simplify using `only [SubmonoidClass.coe_pow, h1, h2]`. Establish `hf` using `UpperTheory.finite_of_finite_comp_injective_noetherian (algebraMap P (integralClosure P F)) fr hinj (by`.
-
-Rewrite using `[hcomp]`. Conclude with `(RingHom.finite_algebraMap.mpr inferInstance).comp (hσ e))`. Conclude with `RingHom.finite_algebraMap.mp hf`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.module_finite_integralClosure_of_frobenius_finite (P L F : Type*) [CommRing P] [IsDomain P] [IsNoetherianRing P]
     [IsIntegrallyClosed P] [Field L] [Algebra P L] [IsFractionRing P L] [Field F] [Algebra P F]
@@ -131,21 +125,15 @@ private theorem UpperTheory.module_finite_integralClosure_of_frobenius_finite (P
   exact RingHom.finite_algebraMap.mp hf
 
 /- English proof (translation)
-Introduce `k A K F`. Use `intros`. Take `⟨s, g, hginj, hgfin⟩` from `exists_finite_inj_algHom_of_fg k A`. Take `⟨p, hp⟩` from `ExpChar.exists k`. Use `letI : Algebra (MvPolynomial (Fin s) k) A := g.toRingHom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : Module.Finite (MvPolynomial (Fin s) k) A := hgfin`. Use `letI : Algebra (MvPolynomial (Fin s) k) F := ((algebraMap A F).comp g.toRingHom).toAlgebra`. Use `haveI : IsScalarTower (MvPolynomial (Fin s) k) A F := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hAF : Function.Injective (algebraMap A F)`. Rewrite using `[IsScalarTower.algebraMap_eq A K F]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `(algebraMap K F).injective.comp (IsFractionRing.injective A K)`. Use `haveI : FaithfulSMul A F := (faithfulSMul_iff_algebraMap_injective A F).mpr hAF`. Use `haveI : FaithfulSMul (MvPolynomial (Fin s) k) A := (faithfulSMul_iff_algebraMap_injective _ A).mpr hginj`. Use `haveI : FaithfulSMul (MvPolynomial (Fin s) k) F := (faithfulSMul_iff_algebraMap_injective _ F).mpr (hAF.comp hginj)`. Use `letI : Algebra (FractionRing (MvPolynomial (Fin s) k)) F := FractionRing.liftAlgebra _ F`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `letI : Algebra (FractionRing A) F := FractionRing.liftAlgebra A F`. Use `letI : Algebra (FractionRing (MvPolynomial (Fin s) k)) (FractionRing A) := FractionRing.liftAlgebra _ (FractionRing A)`. Use `haveI : FiniteDimensional (FractionRing (MvPolynomial (Fin s) k)) (FractionRing A) := inferInstance`. Use `haveI : FiniteDimensional (FractionRing A) F := by`. Use `Module.Finite.of_equiv_equiv (FractionRing.algEquiv A K).symm.toRingEquiv (RingEquiv.refl F) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors A)` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom, AlgEquiv.toRingEquiv_eq_coe, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes, RingEquiv.refl_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Use `haveI : IsScalarTower (FractionRing (MvPolynomial (Fin s) k)) (FractionRing A) F := by`.
-
-Apply `IsScalarTower.of_algebraMap_eq'` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (MvPolynomial (Fin s) k))` to reduce the goal to its premises. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply _ (FractionRing (MvPolynomial (Fin s) k)) F, ← IsScalarTower.algebraMap_apply _ (FractionRing (MvPolynomial (Fin s) k)) (FractionRing A), IsScalarTower.algebraMap_apply _ A (FractionRing A), ← IsScalarTower.algebraMap_apply A (FractionRing A) F, …`.
-
-Use `haveI : FiniteDimensional (FractionRing (MvPolynomial (Fin s) k)) F := Module.Finite.trans (FractionRing A) F`. Use `haveI : ExpChar A p := expChar_of_injective_algebraMap (algebraMap k A).injective p`. Use `haveI : ExpChar F p := expChar_of_injective_algebraMap hAF p`. Use `haveI : ExpChar (MvPolynomial (Fin s) k) p := expChar_of_injective_algebraMap (algebraMap k (MvPolynomial (Fin s) k)).injective p`. Establish `hP` using `UpperTheory.module_finite_integralClosure_of_frobenius_finite (MvPolynomial (Fin s) k) (FractionRing (MvPolynomial (Fin s) k)) F p (UpperTheory.finite_iterateFrobenius_mvPolynomial_perfect k p (Fin s))`.
-
-Use `haveI : Algebra.IsIntegral (MvPolynomial (Fin s) k) A := Algebra.IsIntegral.of_finite _ A`. Set `φ : integralClosure (MvPolynomial (Fin s) k) F →ₗ[MvPolynomial (Fin s) k] integralClosure A F` to `{ toFun := fun x => ⟨x.1, x.2.tower_top⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hφ : Function.Surjective φ` using `fun y => ⟨⟨y.1, isIntegral_trans (R := MvPolynomial (Fin s) k) y.1 y.2⟩, rfl⟩`. Use `haveI : Module.Finite (MvPolynomial (Fin s) k) (integralClosure A F) := Module.Finite.of_surjective φ hφ`. Conclude with `Module.Finite.of_restrictScalars_finite (MvPolynomial (Fin s) k) A (integralClosure A F)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.module_finite_integralClosure_finiteExt_perfect :
     ∀ (k A K F : Type) [Field k] [PerfectField k] [CommRing A] [IsDomain A] [Algebra k A] [Algebra.FiniteType k A]

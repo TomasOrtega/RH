@@ -15,9 +15,9 @@ namespace GlobalTheory.BCT.OrbUnit
 open DoubleCoset
 
 /- English proof (translation)
-Establish `h1 : rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[rStab]`. Unfold `avg`. Rewrite using `[h1, Subgroup.index_top]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Subsingleton (H ⧸ (⊤ : Subgroup H)) := QuotientGroup.subsingleton_quotient_top`. Use `haveI : Unique (H ⧸ (⊤ : Subgroup H)) := ⟨⟨QuotientGroup.mk 1⟩, fun a => Subsingleton.elim _ _⟩`. Rewrite using `[finsum_unique]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have h1 : rStab (fun _ : H => c) = ⊤ := by
@@ -30,29 +30,25 @@ theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := b
   simp
 
 /- English proof (translation)
-Use `set T := twCent (MonoidHom.id G) γ with hT`. Establish `hTle : cptPart T ≤ T`. Unfold `cptPart`. Rewrite using `[Subgroup.closure_le]`. Introduce `t ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ht.1`. Establish `hterm : ∀ q : DoubleCoset.Quotient (T : Set G) (K : Set G), ((((T ⊓ K.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex (cptPart T) : ℕ) : ℂ) * avg fun k : K => (K : Set G).indicator 1 ((Quotient.out q * k)⁻¹ * γ * (MonoidHom.id G) (Quotient.out q * k))) = if (Quotient.out …`. Introduce `q`. Establish `hconst : (fun k : K => (K : Set G).indicator (1 : G → ℂ) ((Quotient.out q * k)⁻¹ * γ * (MonoidHom.id G) (Quotient.out q * k))) = fun _ => if (Quotient.out q)⁻¹ * γ * Quotient.out q ∈ K then 1 else 0`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `he : (Quotient.out q * k)⁻¹ * γ * (MonoidHom.id G) (Quotient.out q * k) = (k : G)⁻¹ * ((Quotient.out q)⁻¹ * γ * Quotient.out q) * k`. Simplify using `only [MonoidHom.id_apply]`. Use `group`. Rewrite using `[he]`. Distinguish the cases in `hm : (Quotient.out q)⁻¹ * γ * Quotient.out q ∈ K`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (k : G)⁻¹ * ((Quotient.out q)⁻¹ * γ * Quotient.out q) * k ∈ K` using `K.mul_mem (K.mul_mem (K.inv_mem k.2) hm) k.2`. Simplify using `[Set.indicator_of_mem this, hm]`. Establish `: (k : G)⁻¹ * ((Quotient.out q)⁻¹ * γ * Quotient.out q) * k ∉ K`. Introduce `h`. Apply `hm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `K.mul_mem (K.mul_mem k.2 h) (K.inv_mem k.2)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `[Set.indicator_of_notMem this, hm]`. Rewrite using `[hconst, avg_const]`. Use `split_ifs with hm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Subgroup.relIndex_eq_one).2 (le_inf hTle (hcpt _ hm))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[twOrb, finsum_congr hterm]`. Use `split_ifs with hex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g₀, hg₀⟩` from `hex`. Establish `hgood : ∀ g : G, g ∈ doubleCoset g₀ (T : Set G) (K : Set G) → g⁻¹ * γ * g ∈ K`. Introduce `g hg`. Take `⟨t, ht, k, hk, rfl⟩` from `mem_doubleCoset.1 hg`. Establish `htc : t * γ = γ * t` using `by simpa [hT, twCent] using ht`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (t * g₀ * k)⁻¹ * γ * (t * g₀ * k) = k⁻¹ * (g₀⁻¹ * γ * g₀) * k`. Establish `: t⁻¹ * γ * t = γ` using `by rw [mul_assoc, ← htc, ← mul_assoc, inv_mul_cancel, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `K.mul_mem (K.mul_mem (K.inv_mem hk) hg₀) hk`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[finsum_eq_single _ (DoubleCoset.mk T K g₀)]`. Rewrite using `[if_pos]`. Take `⟨h, k, hh, hk, he⟩` from `DoubleCoset.mk_out_eq_mul T K g₀`. Apply `hgood` to reduce the goal to its premises. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_doubleCoset.2 ⟨h, hh, k, hk, rfl⟩`. Introduce `q hq`. Rewrite using `[if_neg]`. Introduce `hm`. Apply `hq` to reduce the goal to its premises.
-
-Take `⟨t, ht, k, hk, he⟩` from `horb g₀ (Quotient.out q) hg₀ hm`. Rewrite using `[← DoubleCoset.out_eq' T K q, DoubleCoset.eq]`. Conclude with `⟨t⁻¹, T.inv_mem ht, k⁻¹, K.inv_mem hk, by rw [he]; group⟩`. Use `push_neg at hex`. Rewrite using `[finsum_eq_zero_of_forall_eq_zero]`.
-
-Introduce `q`. Rewrite using `[if_neg (hex _)]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twOrb_unit {G : Type} [Group G] [TopologicalSpace G] (K : Subgroup G) (γ : G)
     (horb : ∀ g₁ g₂ : G, g₁⁻¹ * γ * g₁ ∈ K → g₂⁻¹ * γ * g₂ ∈ K →
@@ -125,13 +121,13 @@ end GlobalTheory.BCT.OrbUnit
 namespace GlobalTheory.BCT.OrbUnit
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n _ S _ P hP`. Use `filter_upwards [GlobalTheory.T.eventually_integral_lift_coprime_derivative E P hP.2.2.1] with w hw`. Take `⟨P₀, hmap, hcop⟩` from `hw`. Take `⟨hσσ, hv⟩` from `GlobalTheory.T.localConjugation_involutive_valuation_preserving E w`. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hγ' : γ.1.val.charpoly = P₀.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))`. Rewrite using `[hγ, hmap]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `twOrb_unit (KL n w) γ (GlobalTheory.T.integral_conj_set_localUnitary_eq_doubleCoset E n w hσσ hv P₀ hcop γ hγ') (GlobalTheory.T.compactPart_centralizer_le_conj_integralUnitary E n w P₀ hcop γ hγ')`. Rewrite using `[← hγ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.localSign_full_charpoly_eq_one E n w hv γ.1`. Introduce and unpack `Q₁ hQ ⟨g, hg⟩`. Rewrite using `[← GlobalTheory.T.localSign_kernel_charFactor_conj_invariant E n w hv Q₁ γ g]`. Use `GlobalTheory.T.unitaryLocalSign_eq_one_of_integral_separable_reduction E n w hσσ hv P₀ hcop (g⁻¹ * γ * g) ?_ hg Q₁ (by rw [hmap]; exact hQ)` and prove the remaining obligations. Rewrite using `[← hγ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((g⁻¹ * γ * g : UL n w) : GLw n w).val = ((g : GLw n w)⁻¹ : GLw n w).val * (γ : GLw n w).val * (g : GLw n w).val`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul]`. Rewrite using `[this, Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem orbUnit_ae : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ P ∈ Ell E n, ∀ᶠ w in cofinite, ∀ γ : UL n w, γ.1.val.charpoly = atPl w P → (twOrb (MonoidHom.id _) (KL n w) γ ((KL n w : Set (UL n w)).indicator 1) = if ∃ g : UL n w, g⁻¹ * γ * g ∈ KL n w then 1 else 0) ∧ kapSign n w (atPl w P) γ.1 = 1 ∧ ∀ Q₁ : (w.adicCompletion E)[X], Q₁ ∣ atPl w P → (∃ g : UL n w, g⁻¹ * γ * g ∈ KL n w) → kapSign n w Q₁ γ.1 = 1 := by
   intro E _ _ _ _ n _ S _ P hP

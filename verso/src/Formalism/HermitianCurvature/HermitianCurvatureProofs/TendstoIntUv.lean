@@ -17,9 +17,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `h : B.hsVec (A + A') = B.hsVec A + B.hsVec A'`. Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules. Unfold `B.hsInner`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, inner_add_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_add_left (A A' C : Wq →L[ℂ] Wp) : B.hsInner (A + A') C = B.hsInner A C + B.hsInner A' C := by
   have h : B.hsVec (A + A') = B.hsVec A + B.hsVec A' := by
@@ -28,9 +28,9 @@ theorem hs_add_left (A A' C : Wq →L[ℂ] Wp) : B.hsInner (A + A') C = B.hsInne
   rw [h, inner_add_right]
 
 /- English proof (translation)
-Establish `h : B.hsVec (C + C') = B.hsVec C + B.hsVec C'`. Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules. Unfold `B.hsInner`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, inner_add_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_add_right (A C C' : Wq →L[ℂ] Wp) : B.hsInner A (C + C') = B.hsInner A C + B.hsInner A C' := by
   have h : B.hsVec (C + C') = B.hsVec C + B.hsVec C' := by
@@ -39,9 +39,9 @@ theorem hs_add_right (A C C' : Wq →L[ℂ] Wp) : B.hsInner A (C + C') = B.hsInn
   rw [h, inner_add_left]
 
 /- English proof (translation)
-Establish `h : B.hsVec (a • A) = a • B.hsVec A`. Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules. Unfold `B.hsInner`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, inner_smul_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_smul_left (a : ℂ) (A C : Wq →L[ℂ] Wp) : B.hsInner (a • A) C = a * B.hsInner A C := by
   have h : B.hsVec (a • A) = a • B.hsVec A := by
@@ -50,9 +50,9 @@ theorem hs_smul_left (a : ℂ) (A C : Wq →L[ℂ] Wp) : B.hsInner (a • A) C =
   rw [h, inner_smul_right]
 
 /- English proof (translation)
-Establish `h : B.hsVec (a • C) = a • B.hsVec C`. Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules. Unfold `B.hsInner`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, inner_smul_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_smul_right (a : ℂ) (A C : Wq →L[ℂ] Wp) : B.hsInner A (a • C) = conj a * B.hsInner A C := by
   have h : B.hsVec (a • C) = a • B.hsVec C := by
@@ -67,11 +67,9 @@ section Lim
 variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
 /- English proof (translation)
-Use `tendsto_integral_of_dominated_convergence (fun x => ‖I x‖ + M * ‖J x‖) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `n`. Conclude with `((hum n).mul hI.aestronglyMeasurable).add ((hvm n).mul hJ.aestronglyMeasurable)`. Conclude with `hI.norm.add (hJ.norm.const_mul M)`. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `ae_of_all _ fun x => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `ae_of_all _ fun x => ?_` and prove the remaining obligations. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hl x] with n hn`.
-
-Rewrite using `[hn.1, hn.2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tendsto_int_uv (I J : α → ℂ) (hI : Integrable I μ) (hJ : Integrable J μ) (u v : ℕ → α → ℂ) (M : ℝ)
     (hum : ∀ n, AEStronglyMeasurable (u n) μ) (hvm : ∀ n, AEStronglyMeasurable (v n) μ)
@@ -99,19 +97,19 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hcF : ∀ n, AEStronglyMeasurable (fun x => conj (F n x)) μ` using `fun n => Complex.continuous_conj.comp_aestronglyMeasurable (hFm n)`. Establish `hcD' : ∀ n, AEStronglyMeasurable (fun x => conj (D' n x)) μ` using `fun n => Complex.continuous_conj.comp_aestronglyMeasurable (hD'm n)`. Establish `hL : Tendsto (fun n => ∫ x, B.hsInner (F n x • aφ x + D n x • bφ x) (F n x • ψ x) ∂μ) atTop (𝓝 (∫ x, B.hsInner (aφ x) (ψ x) ∂μ))`. Use `(tendsto_int_uv (fun x => B.hsInner (aφ x) (ψ x)) (fun x => B.hsInner (bφ x) (ψ x)) h1 h3 (fun n x => F n x * conj (F n x)) (fun n x => D n x * conj (F n x)) M (fun n => (hFm n).mul (hcF n)) (fun n => (hDm n).mul (hcF n)) ?_ ?_ ?_).congr fun n => ?_` and prove the remaining obligations. Introduce `n x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, Complex.norm_conj]`. Use polynomial arithmetic with `[hF n x, norm_nonneg (F n x)]`. Introduce `n x`. Rewrite using `[norm_mul, Complex.norm_conj]`. Use polynomial arithmetic with `[hF n x, hD n x, norm_nonneg (F n x), norm_nonneg (D n x)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `x filter_upwards [hl x] with n hn`. Rewrite using `[hn.1, hn.2.1]`. Simplify using the standard rewrite rules. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hs_smul_right, hs_add_left, hs_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : Tendsto (fun n => ∫ x, B.hsInner (F n x • φ x) (F n x • a'ψ x + D' n x • b'ψ x) ∂μ) atTop (𝓝 (∫ x, B.hsInner (φ x) (a'ψ x) ∂μ))`. Use `(tendsto_int_uv (fun x => B.hsInner (φ x) (a'ψ x)) (fun x => B.hsInner (φ x) (b'ψ x)) h2 h4 (fun n x => F n x * conj (F n x)) (fun n x => F n x * conj (D' n x)) M (fun n => (hFm n).mul (hcF n)) (fun n => (hFm n).mul (hcD' n)) ?_ ?_ ?_).congr fun n => ?_` and prove the remaining obligations. Introduce `n x`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, Complex.norm_conj]`. Use polynomial arithmetic with `[hF n x, norm_nonneg (F n x)]`. Introduce `n x`. Rewrite using `[norm_mul, Complex.norm_conj]`. Use polynomial arithmetic with `[hF n x, hD' n x, norm_nonneg (F n x), norm_nonneg (D' n x)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `x filter_upwards [hl x] with n hn`. Rewrite using `[hn.1, hn.2.2]`. Simplify using the standard rewrite rules. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hs_add_right, hs_smul_right, hs_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `tendsto_nhds_unique (hL.congr heq) hR`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pair_lim (φ ψ aφ bφ a'ψ b'ψ : α → (Wq →L[ℂ] Wp)) (F D D' : ℕ → α → ℂ) (M : ℝ)
     (hFm : ∀ n, AEStronglyMeasurable (F n) μ) (hDm : ∀ n, AEStronglyMeasurable (D n) μ)

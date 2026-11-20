@@ -21,13 +21,13 @@ def sIdeles (S : Set (HeightOneSpectrum (𝓞 K))) : Subgroup (IdeleGroup K) whe
 variable (S : Set (HeightOneSpectrum (𝓞 K)))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sIdeles {x : IdeleGroup K} : x ∈ sIdeles S ↔ ∀ v ∉ S, ord v x = 0 :=
   Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [mem_sIdeles, ord_eq_zero_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_sIdeles_iff {x : IdeleGroup K} :
     x ∈ sIdeles S ↔ ∀ v ∉ S, (x : 𝔸[K]).2 v ∈ v.adicCompletionIntegers K ∧
@@ -35,22 +35,22 @@ theorem mem_sIdeles_iff {x : IdeleGroup K} :
   simp only [mem_sIdeles, ord_eq_zero_iff]
 
 /- English proof (translation)
-The claim follows from `fun _ hx v _ ↦ mem_standardOpenSubgroup_iff_ord.1 hx v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem standardOpenSubgroup_le_sIdeles : standardOpenSubgroup K ≤ sIdeles S :=
   fun _ hx v _ ↦ mem_standardOpenSubgroup_iff_ord.1 hx v
 
 /- English proof (translation)
-The claim follows from `fun _ hx v hv ↦ hx v fun hvS ↦ hv (h hvS)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sIdeles_mono {S T : Set (HeightOneSpectrum (𝓞 K))} (h : S ⊆ T) :
     sIdeles S ≤ sIdeles T :=
   fun _ hx v hv ↦ hx v fun hvS ↦ hv (h hvS)
 
 /- English proof (translation)
-Rewrite using `[neg_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← exp_log hy, h, exp_zero]`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `log_one`.
+A detailed English derivation is pending.
 -/
 theorem neg_log_eq_zero_iff {y : ℤᵐ⁰} (hy : y ≠ 0) : -log y = 0 ↔ y = 1 := by
   rw [neg_eq_zero]
@@ -61,7 +61,7 @@ theorem neg_log_eq_zero_iff {y : ℤᵐ⁰} (hy : y ≠ 0) : -log y = 0 ↔ y = 
     exact log_one
 
 /- English proof (translation)
-Establish `ha : ∀ v : HeightOneSpectrum (𝓞 K), v.valuation K (a : K) ≠ 0` using `fun v ↦ (Valuation.ne_zero_iff _).2 a.ne_zero`. Simplify using `only [mem_sIdeles, ord_diagonal, neg_log_eq_zero_iff (ha _)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem diagonal_mem_sIdeles_iff (a : Kˣ) : diagonal K a ∈ sIdeles S ↔ a ∈ S.unit K := by
   have ha : ∀ v : HeightOneSpectrum (𝓞 K), v.valuation K (a : K) ≠ 0 := fun v ↦
@@ -70,7 +70,7 @@ theorem diagonal_mem_sIdeles_iff (a : Kˣ) : diagonal K a ∈ sIdeles S ↔ a �
   rfl
 
 /- English proof (translation)
-Establish `hx : x ∈ (diagonal K).range ⊔ sIdeles S` using `h ▸ Subgroup.mem_top x`. Take `⟨_, ⟨a, rfl⟩, s, hs, hx⟩` from `Subgroup.mem_sup.1 hx`. Conclude with `⟨a, s, hs, hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_diagonal_mul_of_sup_eq_top (h : (diagonal K).range ⊔ sIdeles S = ⊤)
     (x : IdeleGroup K) : ∃ a : Kˣ, ∃ s ∈ sIdeles S, diagonal K a * s = x := by
@@ -79,18 +79,18 @@ theorem exists_diagonal_mul_of_sup_eq_top (h : (diagonal K).range ⊔ sIdeles S 
   exact ⟨a, s, hs, hx⟩
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 (h.symm.le.trans (sup_le_sup_left (sIdeles_mono hST) _))`.
+A detailed English derivation is pending.
 -/
 theorem sup_sIdeles_eq_top_of_subset {S T : Set (HeightOneSpectrum (𝓞 K))} (hST : S ⊆ T)
     (h : (diagonal K).range ⊔ sIdeles S = ⊤) : (diagonal K).range ⊔ sIdeles T = ⊤ :=
   eq_top_iff.2 (h.symm.le.trans (sup_le_sup_left (sIdeles_mono hST) _))
 
 /- English proof (translation)
-Use `choose x hx using toClassGroup_surjective (K := K)`. Set `S : Finset (HeightOneSpectrum (𝓞 K))` to `Finset.univ.biUnion fun c ↦ (Filter.eventually_cofinite.1 (eventually_ord_eq_zero (x c))).toFinset`. Establish `hxS : ∀ c, x c ∈ sIdeles (S : Set (HeightOneSpectrum (𝓞 K)))`. Introduce `c v hv`. Assume the negation of the conclusion as `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hv (Finset.mem_biUnion.2 ⟨c, Finset.mem_univ c, Set.Finite.mem_toFinset _ |>.2 h⟩)`. Use `⟨S, eq_top_iff.2 fun y _ ↦ ?_⟩` and prove the remaining obligations. Establish `hker : y * (x (toClassGroup y))⁻¹ ∈ (toClassGroup (K` using `K)).ker := by`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hx, mul_inv_cancel]`. Rewrite `hker` using `[ker_toClassGroup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `mul_mem (sup_le_sup_left (standardOpenSubgroup_le_sIdeles _) _ hker) (Subgroup.mem_sup_right (hxS (toClassGroup y)))`. Rewrite `h` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_sup_sIdeles_eq_top :
     ∃ S : Finset (HeightOneSpectrum (𝓞 K)),
@@ -135,15 +135,15 @@ theorem sIdelesToIdeleClassGroup_apply (s : sIdeles S) :
   rfl
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ Subtype.ext (diagonal_injective K (congrArg Subtype.val h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sUnitsToSIdeles_injective : Function.Injective (sUnitsToSIdeles S) := fun _ _ h ↦
   Subtype.ext (diagonal_injective K (congrArg Subtype.val h))
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, sIdelesToIdeleClassGroup_apply, coe_sUnitsToSIdeles]`. Conclude with `IdeleClassGroup.mk_diagonal K a`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Rewrite `hy` using `[MonoidHom.mem_ker, sIdelesToIdeleClassGroup_apply, ← MonoidHom.mem_ker, IdeleClassGroup.ker_mk]`. Take `⟨a, ha⟩` from `hy`. Establish `haS : a ∈ S.unit K` using `(diagonal_mem_sIdeles_iff S a).1 (ha ▸ y.2)`. Conclude with `⟨⟨a, haS⟩, Subtype.ext ha⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_sUnitsToSIdeles :
     (sUnitsToSIdeles S).range = (sIdelesToIdeleClassGroup S).ker := by
@@ -160,11 +160,11 @@ theorem range_sUnitsToSIdeles :
     exact ⟨⟨a, haS⟩, Subtype.ext ha⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `eq_top_iff.2 fun y _ ↦ ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `h (IdeleClassGroup.mk K y)`. Rewrite `hs` using `[sIdelesToIdeleClassGroup_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr : (s : IdeleGroup K)⁻¹ * y ∈ (diagonal K).range`. Rewrite using `[← IdeleClassGroup.ker_mk, MonoidHom.mem_ker, map_mul, map_inv, hs, inv_mul_cancel]`. Establish `h'` using `mul_mem (Subgroup.mem_sup_right (S := (diagonal K).range) s.2) (Subgroup.mem_sup_left (T := sIdeles S) hr)`. Rewrite `h'` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Introduce `h c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Take `⟨a, s, hs, rfl⟩` from `exists_diagonal_mul_of_sup_eq_top S h y`. Use `⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[sIdelesToIdeleClassGroup_apply, map_mul, IdeleClassGroup.mk_diagonal]`. Conclude with `(one_mul (IdeleClassGroup.mk K s)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sIdelesToIdeleClassGroup_surjective_iff :
     Function.Surjective (sIdelesToIdeleClassGroup S) ↔ (diagonal K).range ⊔ sIdeles S = ⊤ := by
@@ -186,7 +186,7 @@ theorem sIdelesToIdeleClassGroup_surjective_iff :
     exact (one_mul (IdeleClassGroup.mk K s)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sUnitsToSIdeles_injective S, range_sUnitsToSIdeles S, (sIdelesToIdeleClassGroup_surjective_iff S).2 h⟩`.
+Supply the required witnesses or components.
 -/
 theorem sUnits_sIdeles_exact (h : (diagonal K).range ⊔ sIdeles S = ⊤) :
     Function.Injective (sUnitsToSIdeles S) ∧

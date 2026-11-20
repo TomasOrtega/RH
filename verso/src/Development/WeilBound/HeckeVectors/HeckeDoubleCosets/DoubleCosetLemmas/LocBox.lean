@@ -14,7 +14,7 @@ open Classical in
 def gR (y : Cv v) : ℝ := if Valued.v y ≤ 1 then 1 else (absV v y)⁻¹
 
 /- English proof (translation)
-Simplify using `[gR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gR_zero : gR (0 : Cv v) = 1 := by simp [gR]
 
@@ -24,7 +24,7 @@ def Mono {a b : ℕ} (y : Matrix (Fin a) (Fin b) (Cv v)) : Prop :=
   ∀ i j, y i j ≠ 0 → (∀ j', j' ≠ j → y i j' = 0) ∧ ∀ i', i' ≠ i → y i' j = 0
 
 /- English proof (translation)
-Use `Valued.isClopen_integer (Cv v)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clopen_le : IsClopen {x : Cv v | Valued.v x ≤ 1} := by
   have := Valued.isClopen_integer (Cv v)
@@ -33,15 +33,15 @@ theorem clopen_le : IsClopen {x : Cv v | Valued.v x ≤ 1} := by
 variable [MeasurableSpace (Cv v)] [BorelSpace (Cv v)] {μ : Measure (Cv v)}
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∀ j, y j = 0`. Simplify using `[h0, gR_zero, h.one]`. Use `push Not at h0`. Take `⟨j, hj⟩` from `h0`. Rewrite using `[Finset.prod_eq_single j (fun j' _ h' => by simp [hy j hj j' h', gR_zero]) (by simp)]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : {x : Cv v | Valued.v x ≤ 1 ∧ ∀ j, Valued.v (x * y j) ≤ 1} = {x | Valued.v x ≤ 1 ∧ Valued.v (x * y j) ≤ 1}`. Use extensionality with `x`. Use `and_congr_right fun _ => ⟨fun h => h j, fun h j' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h' : j' = j`. Rewrite using `[h']` and apply the resulting hypothesis.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Simplify using `[hy j hj j' h']`. Rewrite using `[e, gR]`. Use `split_ifs with h1`. Rewrite using `[ENNReal.ofReal_one, ← h.one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use extensionality with `x`. Conclude with `⟨fun h => h.1, fun h => ⟨h, by rw [map_mul]; exact mul_le_one' h h1⟩⟩`. Rewrite using `[← mul_one (ENNReal.ofReal _), ← h.one, ← h.scale _ hj _ clopen_le.1.measurableSet]`. Use `congr 1`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun h => h.2, fun h => ⟨?_, h⟩⟩` and prove the remaining obligations. Establish `h2 : Valued.v x * Valued.v (y j) ≤ 1` using `by simpa using h`. Conclude with `(le_mul_of_one_le_right' (not_le.1 h1).le).trans h2`.
+A detailed English derivation is pending.
 -/
 theorem Pack.line (h : Pack μ) {ι : Type} [Fintype ι] (y : ι → Cv v)
     (hy : ∀ j, y j ≠ 0 → ∀ j', j' ≠ j → y j' = 0) :

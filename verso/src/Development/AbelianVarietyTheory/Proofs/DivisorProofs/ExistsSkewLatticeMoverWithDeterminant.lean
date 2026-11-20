@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.SkewCentral
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `hN`. Distinguish the cases in `hc : Nat.Coprime N m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, N, by ring, one_dvd _, hc⟩`. Take `⟨p, hp, hpN, hpm⟩` from `Nat.Prime.not_coprime_iff_dvd.1 hc`. Take `⟨N1, rfl⟩` from `hpN`. Establish `hN1 : 0 < N1` using `Nat.pos_of_mul_pos_left hN`. Establish `hlt : N1 < p * N1` using `by nlinarith [hp.two_le]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, b, e, ha, hb⟩` from `ih N1 hlt hN1`. Use `⟨p * a, b, by rw [e]; ring, ?_, hb⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem nat_split (m : ℕ) : ∀ N : ℕ, 0 < N → ∃ a b : ℕ, N = a * b ∧ a ∣ m ^ N ∧ Nat.Coprime b m := by
   intro N
@@ -42,15 +42,15 @@ theorem nat_split (m : ℕ) : ∀ N : ℕ, 0 < N → ∃ a b : ℕ, N = a * b �
         _ ∣ m ^ (p * N1) := pow_dvd_pow m (by nlinarith [hp.two_le])
 
 /- English proof (translation)
-Take `⟨hsep, hcpl⟩` from `GlobalTheory.IntAdeleComplete.integral_separated_complete D`. Take `⟨f, hf, hff, ⟨w, hw, hfw⟩, h3⟩` from `GlobalTheory.IdealIdele.exists_idem (OhE D) hsep hcpl m hm`. Establish `h2 : ∀ k : ℕ, ∃ v ∈ OhE D, f = (m : AE D) ^ k * v`. Introduce `k`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact ⟨f, hf, by simp⟩`. Consider the case `succ k ih`. Take `⟨v, hv, h⟩` from `ih`. Use `⟨v * w, mul_mem hv hw, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hsf : sgA D f * sgA D f = sgA D f` using `by rw [← map_mul, hff]`. Use `⟨1 - f * sgA D f, sub_mem (one_mem _) (mul_mem hf (VacMove.sgA_mem D hf)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `(sgA D f * sgA D f) * hff + f * hsf - 0 * hff`. Rewrite using `[map_sub, map_one, map_mul, VacMove.sgA_sgA, mul_comm]`. Introduce `n hn hnm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, e⟩` from `h3 n hn hnm.symm`. Establish `e'` using `congrArg (sgA D) e`. Rewrite `e'` using `[map_sub, map_one, map_mul, map_natCast]`. Use `⟨v + f * sgA D v, add_mem hv (mul_mem hf (VacMove.sgA_mem D hv)), ?_⟩` and prove the remaining obligations. Take the linear combination `e + f * e'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `k`. Take `⟨v, hv, e⟩` from `h2 k`. Conclude with `⟨v * sgA D f, mul_mem hv (VacMove.sgA_mem D hf), by rw [e]; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sym_idem (D : D7) (m : ℕ) (hm : 0 < m) : ∃ e ∈ OhE D, e * e = e ∧ sgA D e = e ∧
     (∀ n : ℕ, 0 < n → Nat.Coprime n m → ∃ w ∈ OhE D, e = (n : AE D) * w) ∧
@@ -82,9 +82,9 @@ theorem exists_sym_idem (D : D7) (m : ℕ) (hm : 0 < m) : ∃ e ∈ OhE D, e * e
     exact ⟨v * sgA D f, mul_mem hv (VacMove.sgA_mem D hf), by rw [e]; ring⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host`. Consider the case `exact _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host`. Consider the case `(apply _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_max_over (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ ⊥) {p : ℕ} (hp : p.Prime)
     (hd : p ∣ Ideal.absNorm 𝔪) : ∃ P : Ideal (𝓞 D.host.E), P.IsMaximal ∧ 𝔪 ≤ P ∧ (p : 𝓞 D.host.E) ∈ P := by
@@ -97,11 +97,9 @@ theorem exists_max_over (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ �
   | (intros; exact _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host ..)
 
 /- English proof (translation)
-Rewrite using `[Nat.Prime.coprime_iff_not_dvd hq]`. Introduce `hd`. Take `⟨P, hP, hle, hqP⟩` from `exists_max_over D 𝔪 h0 hq hd`. Establish `hP0 : P ≠ ⊥`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hqP` using `[h, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hqP)`. Establish `hcP` using `hi P hP.isPrime hP0 hqP`. Establish `h2 : D.host.conj • 𝔪 ≤ P` using `hcP ▸ Ideal.pointwise_smul_le_pointwise_smul_iff.mpr hle`. Rewrite `hc` using `[Ideal.isCoprime_iff_sup_eq]`.
-
-Conclude with `hP.ne_top (eq_top_iff.2 (hc ▸ sup_le hle h2))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_of_inert (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ ⊥) (hc : IsCoprime 𝔪 (D.host.conj • 𝔪))
     {q : ℕ} (hq : q.Prime) (hi : InertQ D q) : Nat.Coprime q (Ideal.absNorm 𝔪) := by
@@ -118,9 +116,9 @@ theorem coprime_of_inert (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ 
   exact hP.ne_top (eq_top_iff.2 (hc ▸ sup_le hle h2))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨P, hP, hle, hpP⟩` from `exists_max_over D 𝔪 h0 hp hd`. Establish `hcop : IsCoprime (p : ℤ) (m : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hp).2 h)`. Take `⟨u, v, e⟩` from `hcop`. Establish `e'` using `congrArg (Int.cast : ℤ → 𝓞 D.host.E) e`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Move the coercions through the operations in `at e'`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← e']`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hpP) (Ideal.mul_mem_left _ _ (hle hm))`.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_mem (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ ⊥) {p : ℕ} (hp : p.Prime)
     (hd : p ∣ Ideal.absNorm 𝔪) {m : ℕ} (hm : (m : 𝓞 D.host.E) ∈ 𝔪) : p ∣ m := by
@@ -141,7 +139,7 @@ namespace GlobalTheory.SkewCentral
 def glue (D : D7) (e : AE D) (a : D.host.E) : AE D := e * inc D a + (1 - e)
 
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[map_mul]`. Take the linear combination `(inc D a * inc D b - inc D a - inc D b + 1) * he`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem glue_mul (D : D7) {e : AE D} (he : e * e = e) (a b : D.host.E) :
     glue D e a * glue D e b = glue D e (a * b) := by
@@ -149,13 +147,13 @@ theorem glue_mul (D : D7) {e : AE D} (he : e * e = e) (a b : D.host.E) :
   linear_combination (inc D a * inc D b - inc D a - inc D b + 1) * he
 
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem glue_one (D : D7) (e : AE D) : glue D e 1 = 1 := by
   unfold glue; rw [map_one]; ring
 
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[map_add, map_mul, map_sub, map_one, hs, PtsMem.sgA_inc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgA_glue (D : D7) {e : AE D} (hs : sgA D e = e) (a : D.host.E) :
     sgA D (glue D e a) = glue D e (D.host.conj a) := by
@@ -166,7 +164,7 @@ def glueU (D : D7) {e : AE D} (he : e * e = e) (a : D.host.E) (ha : a ≠ 0) : (
     by rw [glue_mul D he, inv_mul_cancel₀ ha, glue_one]⟩
 
 /- English proof (translation)
-Rewrite using `[← AlgEquiv.mul_apply, VacInt.conj_mul_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   rw [← AlgEquiv.mul_apply, VacInt.conj_mul_self]; rfl
@@ -176,7 +174,7 @@ end GlobalTheory.SkewCentral
 namespace GlobalTheory.SkewCentral
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `: D.host.conj⁻¹ • (M : 𝓞 D.host.E) = M` using `map_natCast (MulSemiringAction.toRingHom _ (𝓞 D.host.E) D.host.conj⁻¹) M`. Rewrite using `[this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem natCast_mem_conj (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) {M : ℕ} (h : (M : 𝓞 D.host.E) ∈ 𝔪) :
     (M : 𝓞 D.host.E) ∈ D.host.conj • 𝔪 := by
@@ -186,61 +184,57 @@ theorem natCast_mem_conj (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) {M : ℕ} (h : 
   rwa [this]
 
 /- English proof (translation)
-Use `set ι := algebraMap (𝓞 D.host.E) D.host.E with hι`. Use `set M := Ideal.absNorm 𝔪 with hMdef`. Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (by rwa [hMdef, Ne, Ideal.absNorm_eq_zero_iff])`. Establish `hMm : (M : 𝓞 D.host.E) ∈ 𝔪` using `Ideal.absNorm_mem 𝔪`. Establish `hMc` using `natCast_mem_conj D 𝔪 hMm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m0, n0, β, hm0, hn0, hmn, hm0B, hβB, hβ0, hdvd⟩` from `GlobalTheory.IdealIdele.exists_local_generator 𝔪 h0`. Establish `hn0M : Nat.Coprime n0 M`. Apply `Nat.coprime_of_dvd` to reduce the goal to its premises. Introduce `p hp hpn hpM`. Establish `h1` using `dvd_of_mem D 𝔪 h0 hp hpM hm0B`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hp.not_dvd_one (hmn.gcd_eq_one ▸ Nat.dvd_gcd h1 hpn)`. Take `⟨e, heO, hee, hse, hen, hem⟩` from `exists_sym_idem D M hM`. Establish `hβE : ι β ≠ 0`. Rewrite using `[hι, Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)]`. Conclude with `hβ0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set b' := D.host.conj (ι β) with hb'`. Establish `hb'0 : b' ≠ 0` using `by rw [hb', Ne, map_eq_zero_iff _ D.host.conj.injective]; exact hβE`. Establish `hzero : ∀ q : ℕ, q.Prime → InertQ D q → ZeroAt D q e`. Introduce `q hq hi k`. Establish `hcop` using `coprime_of_inert D 𝔪 h0 hc hq hi`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨w, hw, he'⟩` from `hen (q ^ k) (pow_pos hq.pos k) (Nat.Coprime.pow_left k hcop)`. Conclude with `⟨1, one_pos, Nat.coprime_one_left _, w, hw, by rw [he']; push_cast; ring⟩`. Use `⟨glueU D hee (ι β) hβE, glueU D hee (ι β / b') (div_ne_zero hβE hb'0), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `glue D e _ * sgA D (glue D e _) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: ι β / b' * D.host.conj (ι β / b') = 1`. Rewrite using `[map_div₀, ← hb', conj_conj]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[sgA_glue D hse, glue_mul D hee, this, glue_one]`. Apply `Units.ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `glue D e _ = glue D e _ * sgA D (glue D e _)`. Rewrite using `[sgA_glue D hse, glue_mul D hee, ← hb', div_mul_cancel₀ _ hb'0]`. Introduce `q hq hi`. Prove the components needed by the constructor for the conclusion. Use `VacMove.zeroAt_mul D hq (hzero q hq hi) (inc D (ι β) - 1)` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `glue D e _ - 1 = _`. Unfold `glue`. Expand and normalize the polynomial expressions, which then agree. Use `VacMove.zeroAt_mul D hq (hzero q hq hi) (inc D (ι β / b') - 1)` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `glue D e _ - 1 = _`. Unfold `glue`. Expand and normalize the polynomial expressions, which then agree. Introduce `t`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `_ ↔ glue D e (ι β / b')⁻¹ * inc D t ∈ OhE D`. Rewrite using `[inv_div]`. Establish `hc0 : ((D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Introduce `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hMc` using `[hb, Ideal.mem_bot]`. Conclude with `hM.ne' (by exact_mod_cast hMc)`. Rewrite using `[FractionalIdeal.mem_coe, FractionalIdeal.mem_div_iff_of_ne_zero hc0]`. Simplify using `only [FractionalIdeal.mem_coeIdeal]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `ht`. Take `⟨a1, ha1, e1⟩` from `ht _ ⟨D.host.conj • β, Ideal.smul_mem_pointwise_smul _ _ _ hβB, rfl⟩`. Take `⟨a2, ha2, e2⟩` from `ht _ ⟨(M : 𝓞 D.host.E), hMc, rfl⟩`. Rewrite `e1` using `[Formalism.L2.Pj.algebraMap_conj_smul, ← hι, ← hb']`. Rewrite `e2` using `[map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨c, hc⟩` from `hdvd a1 ha1`. Establish `hc' : ι c = (n0 : D.host.E) * (b' / ι β) * t`. Use `congrArg ι hc` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_natCast, e1]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take the linear combination `-this`. Take `⟨w, hw, ew⟩` from `hen n0 hn0 hn0M`. Take `⟨w', hw', ew'⟩` from `hem 1`. Establish `key : glue D e (b' / ι β) * inc D t = w * inc D (ι c) + w' * inc D (ι a2)`. Rewrite using `[hc', e2, map_mul, map_mul, map_mul, map_natCast, map_natCast]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Unfold `glue`. Take the linear combination `(inc D (b' / ι β) * inc D t) * ew + inc D t * ew'`. Rewrite using `[key]`. Conclude with `add_mem (mul_mem hw ((GlobalTheory.HeckeVal.inc_mem_iff D _).2 (RingOfIntegers.isIntegral_coe c))) (mul_mem hw' ((GlobalTheory.HeckeVal.inc_mem_iff D _).2 (RingOfIntegers.isIntegral_coe a2)))`. Introduce `hX y ⟨b0, hb0, hy⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Substitute `hy` using the available equality. Establish `hX1 : e * inc D (b' / ι β * t) ∈ OhE D`. Use `mul_mem heO hX` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Unfold `glue`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_mul]`. Take the linear combination `(inc D t - inc D (b' / ι β) * inc D t) * hee`. Establish `hX2 : (1 - e) * inc D t ∈ OhE D`. Use `mul_mem (sub_mem (one_mem _) heO) hX` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `glue`. Take the linear combination `(inc D (b' / ι β) * inc D t - inc D t) * hee`. Take `⟨N, hN, hNu⟩` from `VacMove.exists_nat_denom D (inc D (b' / ι β * t))`. Take `⟨a, b, hab, ha, hb⟩` from `nat_split M N hN`. Take `⟨wN, hwN, ewN⟩` from `hem N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', ha'⟩` from `ha`. Establish `ewN' : 1 - e = (a : AE D) * (a' : AE D) * wN`. Rewrite using `[ewN]`. Conclude with `(congrArg (fun n : ℕ => (n : AE D) * wN) ha')` after adjusting the coercions. Establish `hNab : (N : AE D) = (a : AE D) * (b : AE D)` using `by exact_mod_cast congrArg (Nat.cast : ℕ → AE D) hab`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbU : inc D ((b : D.host.E) * (b' / ι β * t)) ∈ OhE D`. Establish `e3 : inc D ((b : D.host.E) * (b' / ι β * t)) = (b : AE D) * (e * inc D (b' / ι β * t)) + (wN * a') * ((N : AE D) * inc D (b' / ι β * t))`. Rewrite using `[map_mul (inc D), map_natCast]`. Take the linear combination `((b : AE D) * inc D (b' / ι β * t)) * ewN' - (wN * a' * inc D (b' / ι β * t)) * hNab`. Rewrite using `[e3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `add_mem (mul_mem (natCast_mem _ _) hX1) (mul_mem (mul_mem hwN (natCast_mem _ _)) hNu)`. Take `⟨r, hr⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).1 ((GlobalTheory.HeckeVal.inc_mem_iff D _).1 hbU)`. Take `⟨N', hN', hNt⟩` from `VacMove.exists_nat_denom D (inc D t)`. Take `⟨a2, b2, hab2, ha2, hb2⟩` from `nat_split M N' hN'`. Establish `hb2pos : 0 < b2` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hab2; omega)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w2, hw2, ew2⟩` from `hen b2 hb2pos hb2`. Establish `hNab2 : (N' : AE D) = (a2 : AE D) * (b2 : AE D)`. Conclude with `congrArg (Nat.cast : ℕ → AE D) hab2` after adjusting the coercions. Establish `hat : inc D ((a2 : D.host.E) * t) ∈ OhE D`. Establish `e3 : inc D ((a2 : D.host.E) * t) = (a2 : AE D) * ((1 - e) * inc D t) + w2 * ((N' : AE D) * inc D t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_mul (inc D), map_natCast]`. Take the linear combination `((a2 : AE D) * inc D t) * ew2 - (w2 * inc D t) * hNab2`. Rewrite using `[e3]`. Conclude with `add_mem (mul_mem (natCast_mem _ _) hX2) (mul_mem hw2 hNt)`. Take `⟨r2, hr2⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).1 ((GlobalTheory.HeckeVal.inc_mem_iff D _).1 hat)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a2', ha2'⟩` from `ha2`. Establish `hbpos : 0 < b` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hab; omega)`. Establish `hinv : D.host.conj⁻¹ = D.host.conj` using `inv_eq_of_mul_eq_one_right (VacInt.conj_mul_self D)`. Establish `hc0 : D.host.conj • b0 ∈ 𝔪`. Use `Ideal.mem_pointwise_smul_iff_inv_smul_mem.1 hb0` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite `this` using `[hinv]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `hdvd _ hc0`. Establish `hE : (n0 : D.host.E) * ι b0 = b' * D.host.conj (ι c)`. Use `congrArg (fun x => D.host.conj (ι x)) hc` as an intermediate fact. Simplify using `only [hι, map_mul, map_natCast, Formalism.L2.Pj.algebraMap_conj_smul, conj_conj] at this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hb']`. Conclude with `this`. Establish `hcop : IsCoprime ((b * n0 : ℕ) : ℤ) ((M ^ (N' + 1) : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 (Nat.Coprime.pow_right _ (Nat.Coprime.mul hb hn0M))`. Take `⟨u', v', huv⟩` from `hcop`. Establish `huv'` using `congrArg (Int.cast : ℤ → D.host.E) huv`.
-
-Move the coercions through the operations in `at huv'`. Establish `hM' : (M : D.host.E) ^ N' = (a2 : D.host.E) * a2'` using `by exact_mod_cast ha2'`. Establish `hr' : ι r * ι β = b * b' * t` using `by rw [hr]; field_simp`. Use `⟨(u' : 𝓞 D.host.E) * ((r * (D.host.conj • c)) * β) + (v' : 𝓞 D.host.E) * (((a2' : 𝓞 D.host.E) * r2 * b0) * M), Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hβB)) (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hMm)), ?_⟩` and prove the remaining obligations. Establish `fin : (u' : D.host.E) * (ι r * D.host.conj (ι c) * ι β) + (v' : D.host.E) * ((a2' : D.host.E) * ι r2 * ι b0 * M) = t * ι b0`.
-
-Rewrite using `[hr2]`. Take the linear combination `(u' * D.host.conj (ι c)) * hr' - (u' * b * t) * hE - (v' * t * ι b0 * M) * hM' + (t * ι b0) * huv'`. Simplify using `only [map_add, map_mul, map_intCast, map_natCast, Formalism.L2.Pj.algebraMap_conj_smul]`. Conclude with `fin`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_skew_scalar (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ ⊥) (hc : IsCoprime 𝔪 (D.host.conj • 𝔪)) :
     ∃ y s : (AE D)ˣ, s * sgU D s = 1 ∧ y = s * sgU D y ∧
@@ -402,23 +396,23 @@ end GlobalTheory.SkewCentral
 namespace GlobalTheory.SkewCentral
 
 /- English proof (translation)
-Introduce `D 𝔪 h0 hc d`. Take `⟨y, s, hss, hys, hin, hmv⟩` from `exists_skew_scalar D 𝔪 h0 hc`. Set `g : GL (Fin d) (AE D)` to `Units.map (Matrix.scalar (Fin d) : AE D →+* Matrix (Fin d) (Fin d) (AE D)).toMonoidHom s`. Establish `hgv : (g : Matrix (Fin d) (Fin d) (AE D)) = Matrix.scalar (Fin d) (s : AE D)` using `rfl`. Establish `hgi : ((g⁻¹ : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) = Matrix.scalar (Fin d) ((s⁻¹ : (AE D)ˣ) : AE D)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsg : sgA D (s : AE D) * s = 1`. Use `congrArg Units.val hss` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_one, mul_comm]`. Conclude with `this`. Establish `hgA : g ∈ GA D d`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PtsMem.mem_GA, hgv]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Matrix.scalar_apply, Matrix.mul_apply, Matrix.diagonal_apply, hsg]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.scalar_apply, Matrix.mul_apply, Matrix.diagonal_apply, hij]`. Use `⟨⟨g, hgA⟩, y ^ d, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq hi i j`. Express the relevant statement in the definitionally equal form `ZeroAt D q ((Matrix.scalar (Fin d) (s : AE D)) i j - (1 : Matrix (Fin d) (Fin d) (AE D)) i j)`. Distinguish the cases in `hij : i = j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify `(hin q hq hi).2` using `[Matrix.scalar_apply]`. Rewrite using `[Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij, sub_zero]`. Introduce `k`. Conclude with `⟨1, one_pos, Nat.coprime_one_left _, 0, zero_mem _, by simp⟩`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Express the relevant statement in the definitionally equal form `_ ↔ ∀ i, (Matrix.scalar (Fin d) ((s⁻¹ : (AE D)ˣ) : AE D)).mulVec (fun j => inc D (x j)) i ∈ OhE D`. Simplify using `only [skewLat, Submodule.mem_pi, Set.mem_univ, true_implies, Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Conclude with `forall_congr' fun i => hmv (x i)`. Introduce `q hq hi`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc'⟩` from `sub_dvd_pow_sub_pow (y : AE D) 1 d`. Establish `e : (y : AE D) ^ d - 1 = ((y : AE D) - 1) * c` using `by rw [← hc', one_pow]`. Rewrite using `[Units.val_pow_eq_pow_val, e]`. Conclude with `VacMove.zeroAt_mul D hq (hin q hq hi).1 c`. Establish `hdet : Matrix.GeneralLinearGroup.det g = s ^ d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hgv, Units.val_pow_eq_pow_val, Matrix.scalar_apply, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Express the relevant statement in the definitionally equal form `y ^ d = Matrix.GeneralLinearGroup.det g * sgU D (y ^ d)`. Rewrite using `[hdet, map_pow, ← mul_pow, ← hys]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D))) * Matrix.scalar (Fin d) (s : AE D) = Matrix.scalar (Fin d) (s : AE D) * ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D))`. Conclude with `(Matrix.scalar_commute (s : AE D) (fun _ => Commute.all _ _) _).eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_central_skew_move : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → ∀ d : ℕ,
     ∃ (g' : GA D d) (x' : (AE D)ˣ), SuppSplit D (g' : GL (Fin d) (AE D)) ∧ Moves D (g' : GL (Fin d) (AE D)) (skewLat D 𝔪 d) ∧

@@ -10,25 +10,21 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover x`. Take `⟨k, hk⟩` from `B.cover (f x)`. Establish `hu_t : A.chart j x ∈ (A.chart j).target` using `(A.chart j).map_source hj`. Establish `hw_t : B.chart k (f x) ∈ (B.chart k).target` using `(B.chart k).map_source hk`. Establish `hsu : (A.chart j).symm (A.chart j x) = x` using `(A.chart j).left_inv hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsw : (B.chart k).symm (B.chart k (f x)) = f x` using `(B.chart k).left_inv hk`. Set `F : (Fin a → ℂ) → (Fin b → ℂ)` to `B.chart k ∘ f ∘ (A.chart j).symm`. Set `G : (Fin b → ℂ) → (Fin a → ℂ)` to `A.chart j ∘ g ∘ (B.chart k).symm`. Establish `hFu : F (A.chart j x) = B.chart k (f x)` using `by show B.chart k (f ((A.chart j).symm (A.chart j x))) = _`. Rewrite using `[hsu]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGw : G (B.chart k (f x)) = A.chart j x` using `by show A.chart j (g ((B.chart k).symm (B.chart k (f x)))) = _`. Rewrite using `[hsw, hgf]`. Establish `dF : DifferentiableAt ℂ F (A.chart j x)` using `(hf.2 j k _ ⟨hu_t, by show f ((A.chart j).symm (A.chart j x)) ∈ (B.chart k).source`. Rewrite using `[hsu]`. Conclude with `hk⟩).differentiableAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `dG : DifferentiableAt ℂ G (B.chart k (f x))` using `(hg.2 k j _ ⟨hw_t, by show g ((B.chart k).symm (B.chart k (f x))) ∈ (A.chart j).source`. Rewrite using `[hsw, hgf]`. Conclude with `hj⟩).differentiableAt`. Establish `e1 : G ∘ F =ᶠ[𝓝 (A.chart j x)] id`. Establish `c : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j x)` using `hf.1.continuousAt.comp ((A.chart j).continuousAt_symm hu_t)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ᶠ v in 𝓝 (A.chart j x), (f ∘ (A.chart j).symm) v ∈ (B.chart k).source` using `c.eventually ((B.chart k).open_source.mem_nhds (by show f ((A.chart j).symm (A.chart j x)) ∈ (B.chart k).source`. Rewrite using `[hsu]`. Conclude with `hk))`. Use `filter_upwards [hs, (A.chart j).open_target.mem_nhds hu_t] with v h1 h2`. Establish `h1' : f ((A.chart j).symm v) ∈ (B.chart k).source` using `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show A.chart j (g ((B.chart k).symm (B.chart k (f ((A.chart j).symm v))))) = v`. Rewrite using `[(B.chart k).left_inv h1', hgf, (A.chart j).right_inv h2]`. Establish `e2 : F ∘ G =ᶠ[𝓝 (B.chart k (f x))] id`. Establish `c : ContinuousAt (g ∘ (B.chart k).symm) (B.chart k (f x))` using `hg.1.continuousAt.comp ((B.chart k).continuousAt_symm hw_t)`. Establish `hs : ∀ᶠ v in 𝓝 (B.chart k (f x)), (g ∘ (B.chart k).symm) v ∈ (A.chart j).source` using `c.eventually ((A.chart j).open_source.mem_nhds (by show g ((B.chart k).symm (B.chart k (f x))) ∈ (A.chart j).source`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsw, hgf]`. Conclude with `hj))`. Use `filter_upwards [hs, (B.chart k).open_target.mem_nhds hw_t] with v h1 h2`. Establish `h1' : g ((B.chart k).symm v) ∈ (A.chart j).source` using `h1`. Use `show B.chart k (f ((A.chart j).symm (A.chart j (g ((B.chart k).symm v))))) = v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(A.chart j).left_inv h1', hfg, (B.chart k).right_inv h2]`. Establish `d1 : (fderiv ℂ G (B.chart k (f x))).comp (fderiv ℂ F (A.chart j x)) = ContinuousLinearMap.id ℂ _`. Establish `dG' : DifferentiableAt ℂ G (F (A.chart j x))` using `by rw [hFu]; exact dG`. Establish `h` using `fderiv_comp (A.chart j x) dG' dF`. Rewrite `h` using `[e1.fderiv_eq, fderiv_id, hFu]`.
-
-Conclude with `h.symm`. Establish `d2 : (fderiv ℂ F (A.chart j x)).comp (fderiv ℂ G (B.chart k (f x))) = ContinuousLinearMap.id ℂ _`. Establish `dF' : DifferentiableAt ℂ F (G (B.chart k (f x)))` using `by rw [hGw]; exact dF`. Establish `h` using `fderiv_comp (B.chart k (f x)) dF' dG`. Rewrite `h` using `[e2.fderiv_eq, fderiv_id, hGw]`.
-
-Conclude with `h.symm`. Set `E : (Fin a → ℂ) ≃ₗ[ℂ] (Fin b → ℂ)` to `LinearEquiv.ofLinearMap (fderiv ℂ F (A.chart j x) : (Fin a → ℂ) →ₗ[ℂ] (Fin b → ℂ)) (fderiv ℂ G (B.chart k (f x)) : (Fin b → ℂ) →ₗ[ℂ] (Fin a → ℂ)) (LinearMap.ext fun v => congrArg (fun L : (Fin b → ℂ) →L[ℂ] (Fin b → ℂ) => L v) d2) (LinearMap.ext fun v => congrArg (fun L : (Fin a → …`. Simplify using `using E.finrank_eq`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dim_eq_of_holo_inverse {a b : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (A : FinHolAtlas a X) (B : FinHolAtlas b Y) (f : X → Y) (g : Y → X)
@@ -96,11 +92,11 @@ theorem dim_eq_of_holo_inverse {a b : ℕ} {X Y : Type} [TopologicalSpace X] [To
   simpa using E.finrank_eq
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Establish `hP : P ≤ imageZ id P` using `fun f hf => by show rename id f ∈ P`. Rewrite using `[rename_id_apply]` and apply the resulting hypothesis. Take `⟨h, hh, ho⟩` from `GlobalTheory.CompanionTheory.Ar.PB.Proj.holoMap_of_blockProj K ι K ι id id P P ⊤ a b R R' isBlockMap_id hP`. Take `⟨g, hg, go⟩` from `GlobalTheory.CompanionTheory.Ar.PB.Proj.holoMap_of_blockProj K ι K ι id id P P ⊤ b a R' R isBlockMap_id hP`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hemp : ∀ z, z ∉ mcPts (⊤ : Ideal (MRing ι))` using `fun z hz => by`. Use `hz.2 1 trivial` as an intermediate fact. Simplify using `at this`. Establish `hgh : ∀ x, g (h x) = x` using `fun x => R'.inj _ _ (hemp _) (orbit_trans (go (h x)) (ho x))`. Establish `hhg : ∀ x, h (g x) = x` using `fun x => R.inj _ _ (hemp _) (orbit_trans (ho (g x)) (go x))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `dim_eq_of_holo_inverse R.A R'.A g h hg hh hhg hgh (h x)`.
+A detailed English derivation is pending.
 -/
 theorem dim_eq_of_res {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P J : Ideal (MRing ι)} {a b : ℕ}
     (R : AnLogRes P ⊤ a) (hJ : J = ⊤) (R' : AnLogRes P J b) (x : R'.X) : a = b := by
@@ -118,11 +114,11 @@ theorem dim_eq_of_res {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (
   exact dim_eq_of_holo_inverse R.A R'.A g h hg hh hhg hgh (h x)
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA`. Establish `hk : ∀ k, k ∈ Set.range (id : K → K) ↔ ((∀ p, M.blk p ≠ some k) ∨ ∃ p, (fun _ : Ψ × Fin N => True) p ∧ M.blk p = some k)` using `fun k => ⟨fun _ => by`. Distinguish the cases in `h : ∀ p, M.blk p ≠ some k`. Conclude with `Or.inl h`. Take `⟨p, hp⟩` from `not_forall.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr ⟨p, trivial, not_not.1 hp⟩, fun _ => ⟨k, rfl⟩⟩`. Take `⟨e, R, he, -⟩` from `GlobalTheory.T.flag_bundle_partial_block_map K ι Φ y Ψ N j M n _ BM.Rb rfl (fun _ => True) K ι id id isBlockMap_id hk`. Establish `R2 : AnLogRes (mCoordIdeal y) ⊤ e` using `R`. Take `⟨z, hz, hJ⟩` from `GroundTheory.Heights₂.Heights.HilbertSamuel.exists_mcPts_not_mem_mcPts FA.Re.arith FA.Re.R.nondeg`. Take `⟨x, -⟩` from `FA.Re.R.surj z hz hJ`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← he fun _ => trivial]`. Conclude with `(dim_eq_of_res R2 FA.J_top FA.Re.R x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagAn_dim : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d), d + 1 = n + Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA

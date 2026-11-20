@@ -11,14 +11,14 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cD]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cD_one' {F : Type} [Field F] [NumberField F] (g : G1 F) : cD (1 : (A F)ˣ) g = g := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [cD]
 
 /- English proof (translation)
-Establish `h2 : ((W.η.1 a : ℂˣ) : ℂ) ^ 2 = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, W.η_sq a, Units.val_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp (by rw [← norm_pow, h2, norm_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_eta {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {D : Dat ℚ E} (W : Weil D)
     (a : (A ℚ)ˣ) : ‖((W.η.1 a : ℂˣ) : ℂ)‖ = 1 := by
@@ -27,9 +27,9 @@ private theorem norm_eta {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp (by rw [← norm_pow, h2, norm_one])
 
 /- English proof (translation)
-Establish `hc : W.Om (nU b * mD a * k') (W.L x ph) = W.L x (W.Om (nU b * mD a * k') ph)`. Use `W.comm x (nU b * mD a * k')` as an intermediate fact. Rewrite `this` using `[hx, cD_one']`. Conclude with `(congrArg (fun T : Module.End ℂ (S4 ℚ) => T ph) this).symm`. Establish `hab : ab (1 : (A ℚ)ˣ) = 1` using `by simp [ab]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ∀ y : A ℚ, ‖ψ y‖ = 1` using `fun y => Circle.norm_coe _`. Rewrite using `[hc, W.L_apply, hx, hab, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, W.Om_n, W.Om_m]`. Simplify using `only [inv_one, Complex.ofReal_one, one_mul, norm_mul, hψ, norm_eta W, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[abs_of_nonneg (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem om_norm {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {D : Dat ℚ E} (W : Weil D)
     (ph : S4 ℚ) (b : A ℚ) (a : (A ℚ)ˣ) (k' : G1 ℚ) (x : GL (Fin 2) (A E)) (hx : nu ℚ x = 1) (v : V4 ℚ) :
@@ -46,7 +46,7 @@ private theorem om_norm {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   rw [abs_of_nonneg (by positivity)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ratS, ratGL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem rat_eq {E : Type} [Field E] [NumberField E] (γ : Matrix.SpecialLinearGroup (Fin 2) E) :
     gl (ratS E γ) = ratGL E 2 (Matrix.SpecialLinearGroup.toGL γ) := by
@@ -54,7 +54,7 @@ private theorem rat_eq {E : Type} [Field E] [NumberField E] (γ : Matrix.Special
   simp [ratS, ratGL]
 
 /- English proof (translation)
-Establish `hq : ∀ ζ : Fin 4 → ℚ, q4 D.δ (rp ζ) = rt (qr D.δ ζ)` using `fun ζ => by simp [q4, qr]`. Use `haveI : Nontrivial (A ℚ) := RingHom.domain_nontrivial (RingHom.fst (InfiniteAdeleRing ℚ) (FiniteAdeleRing (𝓞 ℚ) ℚ))`. Use `D.quadForm_act (gl g) (rp ξ)` as an intermediate fact. Rewrite `this` using `[h, nu_gl, hq, hq, Units.val_one, one_mul]`. Conclude with `(algebraMap ℚ (A ℚ)).injective this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qr_rho {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (g : G1 E) (ξ ξ' : Fin 4 → ℚ)
     (h : D.act (gl g) (rp ξ) = rp ξ') : qr D.δ ξ' = qr D.δ ξ := by
@@ -66,7 +66,7 @@ private theorem qr_rho {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (g :
   exact (algebraMap ℚ (A ℚ)).injective this
 
 /- English proof (translation)
-Establish `hs' : Summable fun y => T * w (σ y)` using `(σ.summable_iff.2 hs).mul_left T`. Establish `hf : Summable f` using `Summable.of_nonneg_of_le hf0 h hs'`. Use `⟨hf, (hf.tsum_le_tsum h hs').trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[tsum_mul_left, σ.tsum_eq w]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_tr {Y Y' : Type} (σ : Y ≃ Y') (f : Y → ℝ) (w : Y' → ℝ) (T : ℝ) (hf0 : ∀ y, 0 ≤ f y)
     (hs : Summable w) (h : ∀ y, f y ≤ T * w (σ y)) : Summable f ∧ ∑' y, f y ≤ T * ∑' y', w y' := by
@@ -76,7 +76,7 @@ private theorem sum_tr {Y Y' : Type} (σ : Y ≃ Y') (f : Y → ℝ) (w : Y' →
   rw [tsum_mul_left, σ.tsum_eq w]
 
 /- English proof (translation)
-Unfold `wt`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 private theorem wt_nonneg'' (S : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ)) (N : ℕ) (v : V4 ℚ) : 0 ≤ wt S N v := by
   unfold wt
@@ -85,31 +85,27 @@ private theorem wt_nonneg'' (S : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ))
   · exact le_rfl
 
 /- English proof (translation)
-Take `⟨K₀, hK₀, hdom⟩` from `omCpt ℚ E D W ph hph (KK ℚ) (iwa ℚ).1`. Use `set C' : Set (GL (Fin 2) (A E)) := (fun p : GL (Fin 2) (A E) × GL (Fin 2) (A E) => p.1 * p.2) '' (Ω ×ˢ C) with hC'`. Establish `hC'c : IsCompact C'` using `(hΩ.prod hC).image continuous_mul`. Establish `hC'1 : ∀ k ∈ C', nu ℚ k = 1`. Introduce and unpack `_ ⟨⟨x, y⟩, ⟨hx, hy⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `nu ℚ (x * y) = 1`. Rewrite using `[nu_mul, hΩ1 x hx, hC1 y hy, one_mul]`. Use `set c₁ : ℝ := min c c₀ with hc₁`. Establish `hc₁0 : 0 < c₁` using `lt_min hc hc₀`. Take `⟨n, r, Bl, hlat⟩` from `hL E D K₀ C' c₁ (s + 2) hK₀ hC'c hC'1 hc₁0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Bn, hBn⟩` from `hdom n`. Take `⟨hLf, -, hdec⟩` from `hDec E P φ hφP`. Take `⟨Bd, hBd⟩` from `hdec C' hC'c c₁ hc₁0 r`. Use `⟨|Bn| * (Bl * Bd), fun b a k' hk' hca h k hk => ?_⟩` and prove the remaining obligations. Take `⟨γ, u, β, k₁, hk₁, heq, hβ⟩` from `hred h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, hρ⟩` from `(hO E D).1 γ`. Use `set k₂ : GL (Fin 2) (A E) := k₁ * k with hk₂`. Establish `hk₂C : k₂ ∈ C'` using `⟨(k₁, k), ⟨hk₁, hk⟩, rfl⟩`. Use `set x₂ : GL (Fin 2) (A E) := gl (nU u * mD β) * k₂ with hx₂`. Establish `hxx : gl (ratS E γ) * (gl h * k) = x₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, heq, hx₂, hk₂, mul_assoc]`. Establish `hx1 : nu ℚ (gl h * k) = 1` using `by rw [nu_mul, nu_gl, hC1 k hk, one_mul]`. Establish `hinv : ∀ ξ, D.act (gl h * k)⁻¹ (rp ξ) = D.act x₂⁻¹ (rp (ρ ξ))` using `fun ξ => by`. Establish `hg : (gl h * k)⁻¹ = x₂⁻¹ * gl (ratS E γ)`. Rewrite using `[← hxx, _root_.mul_inv_rev (gl (ratS E γ)) (gl h * k), inv_mul_cancel_right]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg, D.act_mul, hρ]`. Establish `hφ : φ.1 (gl h * k) = φ.1 x₂`. Rewrite using `[← hxx, rat_eq]`. Conclude with `(hLf.2 _ _).symm`. Establish `ha0 : 0 < ab a` using `hc.trans_le hca`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ0 : 0 < ab β` using `hc₀.trans_le hβ`. Use `set w : (Fin 4 → ℚ) → ℝ := fun ξ => wt K₀ n fun i => (a : A ℚ) * D.act x₂⁻¹ (rp ξ) i with hw`. Establish `hlat'` using `hlat a u β k₂ hk₂C ((min_le_left _ _).trans hca) ((min_le_right _ _).trans hβ)`. Take `⟨hws, hw1, hw2⟩` from `hlat'`. Use `set f : (Fin 4 → ℚ) → ℝ := fun ξ => ‖(W.Om (nU b * mD a * k') (W.L (gl h * k) ph)).1 (rp ξ)‖ with hf`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set T : ℝ := ab a ^ 2 * |Bn| with hT`. Establish `hT0 : 0 ≤ T` using `by positivity`. Establish `hfw : ∀ ξ, f ξ ≤ T * w (ρ ξ)` using `fun ξ => by`. Simplify using `only [hf, hw]`. Rewrite using `[om_norm W ph b a k' _ hx1, hinv, hT, mul_assoc]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left (((hBn k' hk' _)).trans ?_) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (wt_nonneg'' _ _ _)`. Take `⟨hfs, hf1⟩` from `sum_tr ρ.toEquiv f w T (fun _ => norm_nonneg _) hws hfw`. Establish `hqρ : ∀ ξ, qr D.δ (ρ ξ) = qr D.δ ξ` using `fun ξ => qr_rho D _ ξ (ρ ξ) (hρ ξ)`. Set `σ : {ξ : Fin 4 → ℚ // qr D.δ ξ ≠ 0} ≃ {ξ : Fin 4 → ℚ // qr D.δ ξ ≠ 0}` to `ρ.toEquiv.subtypeEquiv fun ξ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `qr D.δ ξ ≠ 0 ↔ qr D.δ (ρ ξ) ≠ 0`. Rewrite using `[hqρ]`. Take `⟨-, hf2⟩` from `sum_tr σ (fun ξ => f ξ.1) (fun ξ => w ξ.1) T (fun _ => norm_nonneg _) (hws.subtype _) (fun ξ => hfw ξ.1)`. Establish `hw0 : ∀ ξ, 0 ≤ w ξ` using `fun ξ => wt_nonneg'' _ _ _`. Establish `hW0 : 0 ≤ ∑' ξ, w ξ` using `tsum_nonneg hw0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hW0' : 0 ≤ ∑' ξ : {ξ : Fin 4 → ℚ // qr D.δ ξ ≠ 0}, w ξ.1` using `tsum_nonneg fun ξ => hw0 ξ.1`. Establish `hφb` using `hBd u β k₂ hk₂C ((min_le_right _ _).trans hβ)`. Rewrite using `[hφ]`. Use `set Φ : ℝ := ‖φ.1 x₂‖ with hΦ`. Establish `hΦ0 : 0 ≤ Φ` using `norm_nonneg _`.
-
-Establish `hcancel : ab β ^ r * (ab β)⁻¹ ^ r = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hβ0.ne', one_pow]`. Use `⟨hfs, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (∑' ξ, w ξ) * Φ ≤ (Bl * ab β ^ r) * (Bd * (ab β)⁻¹ ^ r)` using `mul_le_mul hw1 hφb hΦ0 (hW0.trans hw1)`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `h1 : (∑' ξ : {ξ : Fin 4 → ℚ // qr D.δ ξ ≠ 0}, w ξ.1) * Φ ≤ (Bl * (ab a)⁻¹ ^ (s + 2) * ab β ^ r) * (Bd * (ab β)⁻¹ ^ r)` using `mul_le_mul hw2 hφb hΦ0 (hW0'.trans hw2)`. Establish `hca2 : ab a ^ 2 * (ab a)⁻¹ ^ (s + 2) = (ab a)⁻¹ ^ s`. Rewrite using `[pow_add, mul_comm ((ab a)⁻¹ ^ s), ← mul_assoc, ← mul_pow, mul_inv_cancel₀ ha0.ne', one_pow, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem maj_core (hL : LatSum) (hDec : DecE) (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (D : Dat ℚ E) (W : Weil D) (P : CuspSub E 2) (hO : Orb1) (Ω : Set (GL (Fin 2) (A E))) (hΩ : IsCompact Ω)
@@ -203,7 +199,7 @@ private theorem maj_core (hL : LatSum) (hDec : DecE) (E : Type) [Field E] [Numbe
       _ = |Bn| * (Bl * Bd) * (ab a)⁻¹ ^ s := by rw [hcancel, hca2, mul_one]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `h : Continuous fun g : G1 E => ((g⁻¹ : G1 E) : Matrix (Fin 2) (Fin 2) (A E))` using `continuous_subtype_val.comp continuous_inv`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_gl {E : Type} [Field E] [NumberField E] : Continuous (gl : G1 E → GL (Fin 2) (A E)) := by
   refine Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩
@@ -212,9 +208,9 @@ private theorem cont_gl {E : Type} [Field E] [NumberField E] : Continuous (gl : 
   exact h
 
 /- English proof (translation)
-Introduce `hL hDec E _ _ _ D W _ _ P ph hph φ hφ C hC hC1 c hc s`. Take `⟨c₀, K, hc₀, hK, hr⟩` from `redE E`. Use `maj_core hL hDec E D W P orb1 (gl '' K) (hK.image cont_gl) ?_ c₀ hc₀ ?_ ph hph φ hφ C hC hC1 c hc s` and prove the remaining obligations. Introduce and unpack `_ ⟨g, -, rfl⟩`. Conclude with `nu_gl g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨γ, u, b, k, hk, he, hb⟩` from `hr h`. Use `⟨γ, u, b, gl k, ⟨k, hk, rfl⟩, ?_, hb⟩` and prove the remaining obligations. Rewrite using `[← map_mul, he, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.maj :
     LatSum → DecE → Maj := by

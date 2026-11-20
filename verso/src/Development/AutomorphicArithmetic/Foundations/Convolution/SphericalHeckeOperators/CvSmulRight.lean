@@ -13,7 +13,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Meas
   [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] (μ : Measure G) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun x : HeckeAlgebra μ => (x : G → ℂ)) (mul_assoc (HeckeAlgebra.mk μ a ha) (HeckeAlgebra.mk μ b hb) (HeckeAlgebra.mk μ c hc))`.
+A detailed English derivation is pending.
 -/
 private theorem cv_assoc {a b c : G → ℂ} (ha : a ∈ locallyConstantCompactSupport G ℂ ℂ)
     (hb : b ∈ locallyConstantCompactSupport G ℂ ℂ) (hc : c ∈ locallyConstantCompactSupport G ℂ ℂ) :
@@ -22,21 +22,21 @@ private theorem cv_assoc {a b c : G → ℂ} (ha : a ∈ locallyConstantCompactS
     (mul_assoc (HeckeAlgebra.mk μ a ha) (HeckeAlgebra.mk μ b hb) (HeckeAlgebra.mk μ c hc))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [groupConv, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem cv_smul_left (c : ℂ) (a b : G → ℂ) : groupConv μ (c • a) b = c • groupConv μ a b := by
   funext x
   simp only [groupConv, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [groupConv, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem cv_smul_right (c : ℂ) (a b : G → ℂ) : groupConv μ a (c • b) = c • groupConv μ a b := by
   funext x
   simp only [groupConv, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [groupConv, Finset.sum_apply, Finset.mul_sum]`. Conclude with `integral_finsetSum _ fun i hi => integrable_mul_of_mem ha ((hb i hi).1.continuous.comp (continuous_inv.mul continuous_const))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cv_sum_right {ι : Type*} (S : Finset ι) {a : G → ℂ} {b : ι → G → ℂ}
     (ha : a ∈ locallyConstantCompactSupport G ℂ ℂ)
@@ -48,7 +48,7 @@ private theorem cv_sum_right {ι : Type*} (S : Finset ι) {a : G → ℂ} {b : �
     ((hb i hi).1.continuous.comp (continuous_inv.mul continuous_const))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [groupConv, Finset.sum_apply, Finset.sum_mul]`. Conclude with `integral_finsetSum _ fun i hi => integrable_mul_of_mem (hb i hi) (ha.1.continuous.comp (continuous_inv.mul continuous_const))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cv_sum_left {ι : Type*} (S : Finset ι) {a : G → ℂ} {b : ι → G → ℂ}
     (ha : a ∈ locallyConstantCompactSupport G ℂ ℂ)
@@ -66,7 +66,7 @@ section Aux2
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `indicator_mem_locallyConstantCompactSupport (isCompact_integralGL F n) (isOpen_integralGL F n) 1`.
+A detailed English derivation is pending.
 -/
 private theorem oneK_mem : oneK F n ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ :=
   indicator_mem_locallyConstantCompactSupport (isCompact_integralGL F n) (isOpen_integralGL F n) 1
@@ -74,14 +74,14 @@ private theorem oneK_mem : oneK F n ∈ locallyConstantCompactSupport (GL (Fin n
 variable [MeasurableSpace (GL (Fin n) F)] (μ : Measure (GL (Fin n) F))
 
 /- English proof (translation)
-Unfold `thP`. Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.sum_single_index (by exact zero_smul _ _), one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem thP_monomial (a : Fin n → ℤ) : thP μ (monomial a) = th μ a := by
   unfold thP
   rw [AddMonoidAlgebra.coeff_single, Finsupp.sum_single_index (by exact zero_smul _ _), one_smul]
 
 /- English proof (translation)
-Introduce `b hb`. Rewrite `hb` using `[AddMonoidAlgebra.coeff_single]`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hb)]`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dom_monomial {a : Fin n → ℤ} (ha : Antitone a) : Dom (monomial a) := by
   intro b hb
@@ -97,7 +97,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace (GL (Fin n) F)] (μ : Measure (GL (Fin n) F))
 
 /- English proof (translation)
-Establish `h : ∀ r : LaurentRing n, thP μ r = Finsupp.linearCombination ℂ (th μ) r.coeff` using `fun r => rfl`. Simplify using `only [h, AddMonoidAlgebra.coeff_sum, AddMonoidAlgebra.coeff_smul, map_sum, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem theta_sum₂ {ι : Type*} (S : Finset ι) (c : ι → ℂ) (y : ι → LaurentRing n) :
     thP μ (∑ i ∈ S, c i • y i) = ∑ i ∈ S, c i • thP μ (y i) := by
@@ -107,7 +107,7 @@ private theorem theta_sum₂ {ι : Type*} (S : Finset ι) (c : ι → ℂ) (y : 
 variable [BorelSpace (GL (Fin n) F)] [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[HeckeAlgebra.idem_apply, Measure.real, hK]`. Simplify using `[oneK, Set.indicator]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem oneK_eq (hK : μ (integralGL F n : Set (GL (Fin n) F)) = 1) :
     oneK F n = (HeckeAlgebra.idem μ (isCompact_integralGL F n) (isOpen_integralGL F n) : HeckeAlgebra μ) := by
@@ -116,7 +116,7 @@ private theorem oneK_eq (hK : μ (integralGL F n : Set (GL (Fin n) F)) = 1) :
   simp [oneK, Set.indicator]
 
 /- English proof (translation)
-Rewrite using `[oneK_eq μ hK]`. Conclude with `congrArg (fun x : HeckeAlgebra μ => (x : GL (Fin n) F → ℂ)) (HeckeAlgebra.isIdempotentElem_idem (μ := μ) (isCompact_integralGL F n) (isOpen_integralGL F n)).eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem oneK_mul (hK : μ (integralGL F n : Set (GL (Fin n) F)) = 1) :
     groupConv μ (oneK F n) (oneK F n) = oneK F n := by
@@ -127,31 +127,29 @@ private theorem oneK_mul (hK : μ (integralGL F n : Set (GL (Fin n) F)) = 1) :
 end Aux3
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n _ _ μ _ hK`. Use `set t : ℂ := ((qF F : ℂ))⁻¹`. Take `⟨ν₁, ν₂, h₁, h₂, hid⟩` from `sandId F n μ hK`. Use `⟨ν₁ + ν₂, fun r hr h hh => ?_⟩` and prove the remaining obligations. Establish `hν₁ : Antitone ν₁` using `fun i j hij => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hij.eq_or_lt with rfl | hij` into its components or cases. Conclude with `le_rfl`. Use `h₁ i j hij` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `g₁` using `gapDom n ν₁ h₁`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g₂` using `gapDom n ν₂ h₂`. Establish `g₃` using `gapDom n _ (g₂.2.2 ν₁ hν₁)`. Establish `hth : ∀ a : Fin n → ℤ, Antitone a → th μ a ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` using `fun a ha => by`. Use `thPMul F n μ _ _ (dom_monomial ha) (dom_monomial ha)` as an intermediate fact. Rewrite `this` using `[thP_monomial]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.2.1`. Establish `hr'` using `(thPMul F n μ _ _ hr hr).2.1`. Establish `hv : ∑ S ∈ (pairs n).powerset, sgS S • monomial (eL S + eR S) = dPol n 1` using `eq_of_forall_evalAt fun z => by`. Use `vandSum n z 1 1` as an intermediate fact. Simplify using `only [Equiv.Perm.coe_one, Function.comp_id, if_true] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, map_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, evalAt_single, one_mul, monomialChar_add, smul_eq_mul]`. Establish `hD1 : Dom (monomial (ν₁ + ν₂) * r * dPol n 1)`. Rewrite using `[mul_right_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(thPMul F n μ _ _ (g₃.2.1 1) hr).1`. Establish `hsat` using `satAvg F n μ hK (monomial (ν₁ + ν₂) * r) hD1 h (by rw [hh, mul_right_comm])`. Set `C : Finset (Fin n × Fin n) → LaurentRing n` to `fun S => monomial (ν₂ + eR S) * (r * monomial (ν₁ + eL S))`. Establish `hA : ∀ S ∈ (pairs n).powerset, Dom (r * monomial (ν₁ + eL S))` using `fun S hS => (thPMul F n μ _ _ hr (dom_monomial (g₁.1 S hS).1)).1`. Establish `hC : ∀ S ∈ (pairs n).powerset, thP μ (C S) ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` using `fun S hS =>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(thPMul F n μ _ _ (dom_monomial (g₂.1 S hS).2) (hA S hS)).1` as an intermediate fact. Use the proof step `(thPMul F n μ _ _ this this).2.1`. Establish `hCs : monomial (ν₁ + ν₂) * r * dPol n 1 = ∑ S ∈ (pairs n).powerset, sgS S • C S`. Rewrite using `[← hv, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [C, monomial_add, mul_smul_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : thP μ (monomial (ν₁ + ν₂) * dPol n t * r) = vPoly n t • ∑ S ∈ (pairs n).powerset, sgS S • groupConv μ (groupConv μ (thP μ (r * monomial (ν₁ + eL S))) (oneK F n)) (th μ (ν₂ + eR S))`. Rewrite using `[mul_comm _ r, ← (thPMul F n μ _ _ hr (g₃.2.1 t)).2.2.2, ← hid, cv_smul_right]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `sand`. Rewrite using `[cv_sum_right μ _ hr' fun S hS => Submodule.smul_mem _ _ (groupConv_mem μ (hth _ (g₁.1 S hS).1) (groupConv_mem μ oneK_mem (hth _ (g₂.1 S hS).2)))]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Rewrite using `[cv_smul_right, ← cv_assoc μ hr' (hth _ (g₁.1 S hS).1) (groupConv_mem μ oneK_mem (hth _ (g₂.1 S hS).2)), ← (thPMul F n μ _ _ hr (dom_monomial (g₁.1 S hS).1)).2.2.2, thP_monomial, cv_assoc μ (groupConv_mem μ hr' (hth _ (g₁.1 S hS).1)) oneK_mem (hth _ (g₂.1 S hS).2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e1, ← hsat, hCs, theta_sum₂, cv_sum_left μ _ oneK_mem fun S hS => Submodule.smul_mem _ _ (hC S hS), cv_sum_right μ _ oneK_mem fun S hS => groupConv_mem μ (Submodule.smul_mem _ _ (hC S hS)) oneK_mem, ← smul_sub, ← Finset.sum_sub_distrib]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun S hS => ?_)` and prove the remaining obligations. Rewrite using `[cv_smul_left, cv_smul_right, ← smul_sub]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hAm` using `(thPMul F n μ _ _ (hA S hS) (hA S hS)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAK` using `groupConv_mem μ hAm (oneK_mem (F := F) (n := n))`. Establish `hCK` using `groupConv_mem μ (hC S hS) (oneK_mem (F := F) (n := n))`. Establish `m1 : groupConv μ (th μ (ν₂ + eR S)) (groupConv μ (thP μ (r * monomial (ν₁ + eL S))) (oneK F n)) - groupConv μ (groupConv μ (thP μ (r * monomial (ν₁ + eL S))) (oneK F n)) (th μ (ν₂ + eR S)) ∈ comm μ`. Rewrite using `[th, cv_smul_left, cv_smul_right, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, _, Or.inr ⟨_, (g₂.1 S hS).2, rfl⟩, hAK, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `m2 : groupConv μ (oneK F n) (groupConv μ (thP μ (C S)) (oneK F n)) - groupConv μ (groupConv μ (thP μ (C S)) (oneK F n)) (oneK F n) ∈ comm μ` using `Submodule.subset_span ⟨_, _, Or.inl rfl, hCK, rfl⟩`. Rewrite `m2` using `[cv_assoc μ (hC S hS) oneK_mem oneK_mem, oneK_mul μ hK]`. Rewrite `m1` using `[← cv_assoc μ (hth _ (g₂.1 S hS).2) hAm oneK_mem, ← thP_monomial μ (ν₂ + eR S), (thPMul F n μ _ _ (dom_monomial (g₂.1 S hS).2) (hA S hS)).2.2.2, thP_monomial]`. Use `Submodule.neg_mem _ (Submodule.add_mem _ m1 m2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [C]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.core :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)

@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 open UpperTheory.V.Cj.A UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ d G P hd' hi ha q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `k u c h x hx`. Use `show P 0 (u x) = G.incl (c x)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h x hx, hi]`. Consider the case `succ q ih`. Introduce and unpack `k u c ⟨b, hb, hdb, hz⟩`. Use `⟨fun x => P q (b x), fun γ x hx => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Use `show P q (b (x.map (γ * ·))) = G.act q γ (P q (b x))`.
+Treat this case separately. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb γ x hx, ha]`. Use `show G.dOm q (P q (b x)) = P (q + 1) (u x)`. Rewrite using `[hd', hdb x hx]`. Establish `e : hd (fun x => P q (b x)) = fun x => P q (hd b x)`. Use function extensionality and compare the values at `fun x => hdFacts.2.2.2.1 Γ _ _ (P q).toAddMonoidHom b x`.
-
-Rewrite using `[e]`. Conclude with `ih (k + 1) (hd b) c hz`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.A.zigMap :
     ZigMap := by

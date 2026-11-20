@@ -18,7 +18,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.LocGrInd.loc_gr`.
+A detailed English derivation is pending.
 -/
 theorem loc_gr : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} (Q : Poly Φ) {Fil : ℤ → IdF Φ.A}
     (hF : IsFil Φ Fil) {d : ℕ} (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil) (r : ℤ)
@@ -31,7 +31,7 @@ theorem loc_gr : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ :
         Rep (Fil r) (Fil (r + 1)) (fun s => ∑ I : Idx j d, E.form σ I.1 (x I) s) 0 → ∀ I, x I ∈ (Fil ((q : ℤ) + 1)).S E.D := @GlobalTheory.CompanionTheory.LocGrInd.loc_gr
 
 /- English proof (translation)
-Introduce `R _ C _ Φ Q a b d E r hQ h`. Conclude with `vanishing_of_ladder d Q E r hQ h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_van : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} (Q : Poly Φ) {a b : ℤ → IdF Φ.A}
     {d : ℕ} (E : Frame Φ d) (r : ℤ) (hQ : Q.Ladder a b r),
@@ -39,7 +39,7 @@ theorem loc_van : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ 
   by intro R _ C _ Φ Q a b d E r hQ h; exact vanishing_of_ladder d Q E r hQ h
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.LocBC.local_base_change`.
+A detailed English derivation is pending.
 -/
 theorem loc_bc : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {Φ : PDF R C} {Φ' : PDF R' C'} (m : SMor Φ Φ' (algebraMap R R')) (Q : Poly Φ) (Q' : Poly Φ') {d : ℕ} (E : Frame Φ d)

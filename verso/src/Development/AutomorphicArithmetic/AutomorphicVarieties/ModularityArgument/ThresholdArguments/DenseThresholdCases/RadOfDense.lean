@@ -31,7 +31,7 @@ open UpperTheory.V.Z.J.D
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 /- English proof (translation)
-Take `⟨hc, hf, hlm, -, -, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `⟨hc, hf, (CharP.charP_iff_prime_eq_zero hl.out).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (IsLocalRing.residue c.O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hlm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : Pa.IsCoef l c.O := by
   obtain ⟨hc, hf, hlm, -, -, -⟩ := UpperTheory.V.abelian₂.dvr_finite l c.O
@@ -39,12 +39,12 @@ private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : Pa.IsCo
   rw [← map_natCast (IsLocalRing.residue c.O), IsLocalRing.residue_eq_zero_iff]
   exact hlm
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨P.loc.bz, P.loc.geo, GlobalTheory.Published.TameLocal_of_duality P.coh.lt⟩`.
+Supply the required witnesses or components.
 -/
 private theorem locP_of (P : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) : _root_.UpperTheory.V.Pa.LocPAlt :=
   ⟨P.loc.bz, P.loc.geo, GlobalTheory.Published.TameLocal_of_duality P.coh.lt⟩
 /- English proof (translation)
-Introduce and unpack `b ⟨k, hk⟩`. Use `h (fun _ j _ => ((j : ℕ) : ℤ)) (fun _ _ i j hij => Int.ofNat_lt.2 hij) b fun x hx _ => ?_` and prove the remaining obligations. Establish `h1 : x (b ^ k) = 0` using `hx hk`. Rewrite `h1` using `[map_pow]`. Conclude with `IsReduced.eq_zero _ ⟨k, h1⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rad_of_dense {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} {r : Resid V.frame c.O n} (B : UniversalOrdinaryDeterminantRing r)
@@ -55,16 +55,16 @@ private theorem rad_of_dense {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [N
   rw [map_pow] at h1
   exact IsReduced.eq_zero _ ⟨k, h1⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cohP_of (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) : Pa.CohP :=
   ⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩
 /- English proof (translation)
-Introduce `hN P hM hC l _ L Ω _ _ _ _ _ _ s V hS hμ c _ r hv B Λ ι`. Establish `hn : 1 ≤ 3` using `by norm_num`. Take `⟨R⟩` from `_root_.UpperTheory.V.Hi.nonempty_unitaryHeckeData P l L Ω s 3 hn V (QData.empty V hS) c r ι Λ`. Set `K : (hset (QData.empty V hS) R.τ₀).Lev` to `⟨fun q => Empty.elim q, fun q => Empty.elim q⟩`. Take `⟨J, hJ⟩` from `_root_.UpperTheory.V.Hi.exists_hecke_ideal P l L Ω s 3 hn V _ c r ι B Λ R K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hE` using `_root_.UpperTheory.Gal.projectedFormsSystemPart.decomposition_and_automorphicAway_of_isJ P l L Ω s 3 hn V _ c r ι B Λ R K hS J hJ`. Use `haveI := coef_isCoef l c`. Establish `hD` using `_root_.UpperTheory.V.Hi.dense_of_is_j_unitary_hecke_data P l L Ω s 3 hn V _ c r ι B Λ R K hS J hJ`. Establish `hA` using `_root_.UpperTheory.V.Pa.has_automorphy_of_statement (locP_of P.litN) l L Ω s V c.O 3 r B J hS (_root_.UpperTheory.V.Hi.level_of_is_j_unitary_hecke_data P l L Ω s 3 hn V _ c r ι B Λ R K hS J hJ)`. Take `⟨h1, h3⟩` from `Pa.pFromAut (cohP_of P.litN) l L Ω s V c.O 3 r B J hn hS (W.locCFT P.litN.aut.art (cohP_of P.litN) l L Ω s) ((W.muL l L Ω s V).1 hμ) hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨J, ⟨⟨_root_.UpperTheory.V.Hi.ring_props_of_is_j_unitary_hecke_data P l L Ω s 3 hn V _ c r ι B Λ R K hS J hJ, hD, _root_.UpperTheory.V.Hi.hecke_ideal_point_properties P l L Ω s 3 hn V _ c r ι B Λ R K hS J hJ, hE.1, hE.2, _root_.UpperTheory.V.Z.Desc.W.twistOk_of_isJ P l L Ω s 3 hn …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.modularity_n_of_num_j_printed_mult_comp :
     _root_.UpperTheory.V.Z.J.D.NumJAlt → _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Z.Mult.Mult → UpperTheory.V.Z.Mult.CompOf → _root_.UpperTheory.V.J.ModNAlt := by

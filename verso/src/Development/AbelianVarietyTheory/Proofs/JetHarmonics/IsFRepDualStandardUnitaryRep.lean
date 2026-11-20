@@ -9,9 +9,9 @@ namespace GlobalTheory
 namespace DualFRep
 
 /- English proof (translation)
-Establish `h` using `(Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r).1`. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun h i) j`. Rewrite `h1` using `[conjTranspose_apply]`. Rewrite using `[transpose_apply, ← h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.QuantumDeterminants.Hpk]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_transpose (k r : ℕ) : (Formalism.QuantumDeterminants.Hpk k r)ᵀ = Formalism.QuantumDeterminants.Hpk k r := by
   have h := (Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r).1
@@ -25,7 +25,7 @@ theorem gram_transpose (k r : ℕ) : (Formalism.QuantumDeterminants.Hpk k r)ᵀ 
 variable {n : ℕ}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem left_inv {H g : Matrix (Fin n) (Fin n) ℂ} (h2 : H * H = 1) (hg : gᴴ * H * g = H) :
     H * gᴴ * H * g = 1 := by
@@ -33,14 +33,14 @@ theorem left_inv {H g : Matrix (Fin n) (Fin n) ℂ} (h2 : H * H = 1) (hg : gᴴ 
     _ = 1 := by rw [hg, h2]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (left_inv h2 hg)`.
+A detailed English derivation is pending.
 -/
 theorem inv_eq {H g : Matrix (Fin n) (Fin n) ℂ} (h2 : H * H = 1) (hg : gᴴ * H * g = H) :
     g⁻¹ = H * gᴴ * H :=
   Matrix.inv_eq_left_inv (left_inv h2 hg)
 
 /- English proof (translation)
-Unfold `B.gN`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem entry_le {k r : ℕ} (g : Mx k r) (a b : Fin (2 * r + k + 1)) : ‖g a b‖ ≤ B.gN g := by
   unfold B.gN
@@ -58,29 +58,25 @@ end DualFRep
 open DualFRep in
 
 /- English proof (translation)
-Establish `h1` using `(Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r).1`. Establish `h2` using `(Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r).2.1`. Establish `h3` using `gram_transpose k r`. Establish `hmem : ∀ g ∈ GG k r, gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `fun g hg => hg`. Generalize the expression as in `Formalism.QuantumDeterminants.Hpk k r = H at h1 h2 h3 hmem ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨h1, h2, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[dualM]`. Introduce `g hg h hh`. Simplify using `only [dualM]`. Rewrite using `[Matrix.mul_inv_rev, Matrix.transpose_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Establish `key : g⁻¹ * H * (g⁻¹)ᴴ = H`. Rewrite using `[inv_eq h2 (hmem g hg)]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, h1]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [h2, Matrix.mul_one, hmem g hg, h2, Matrix.one_mul]`. Establish `e : ((g⁻¹)ᵀ)ᴴ = ((g⁻¹)ᴴ)ᵀ` using `rfl`. Use `congrArg Matrix.transpose key` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_mul, h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dualM]`. Rewrite using `[e, Matrix.mul_assoc, this]`. Introduce `i j`. Establish `hc : Continuous (fun g : Mx k r => (H * gᴴ * H) j i)`. Establish `: Continuous (fun g : Mx k r => H * gᴴ * H)` using `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.matrix_elem j i`. Use `hc.continuousOn.congr ?_` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [dualM, transpose_apply]`. Rewrite using `[inv_eq h2 (hmem g hg)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ p : Fin (2 * r + k + 1) × Fin (2 * r + k + 1), ∑ b, ∑ a, ‖H p.2 a‖ * ‖H b p.1‖, ?_⟩` and prove the remaining obligations. Introduce `g hg i j`. Simplify using `only [dualM, transpose_apply, pow_one]`. Rewrite using `[inv_eq h2 (hmem g hg)]`. Establish `hN : 0 ≤ B.gN g` using `Real.sqrt_nonneg _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, Finset.sum_mul]`. Use `_ ≤ ∑ b, ∑ a, ‖H j a * star (g b a) * H b i‖ := (norm_sum_le _ _).trans (Finset.sum_le_sum fun b _ => norm_sum_le _ _)`. Use `_ ≤ ∑ b, ∑ a, ‖H j a‖ * ‖H b i‖ * B.gN g := by`. Use `Finset.sum_le_sum fun b _ => Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, norm_star, mul_right_comm]`. Conclude with `mul_le_mul_of_nonneg_left (entry_le g b a) (by positivity)`. Use `_ = (∑ b, ∑ a, ‖H j a‖ * ‖H b i‖) * B.gN g := by simp only [Finset.sum_mul]`. Use `_ ≤ _ := by`. Use `mul_le_mul_of_nonneg_right ?_ hN` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.single_le_sum (f := fun p : Fin (2 * r + k + 1) × Fin (2 * r + k + 1) => ∑ b, ∑ a, ‖H p.2 a‖ * ‖H b p.1‖) (fun p _ => by positivity) (Finset.mem_univ (i, j))`. Introduce `g hg hu`. Establish `hl : star g * g = 1` using `(Matrix.mem_unitaryGroup_iff').1 hu`. Establish `hinv : g⁻¹ = star g` using `Matrix.inv_eq_left_inv hl`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`.
-
-Simplify using `only [dualM]`. Rewrite using `[hinv]`. Establish `e : star ((star g)ᵀ) = gᵀ`. Use extensionality with `a b`. Simplify using `[Matrix.star_apply]`.
-
-Rewrite using `[e, ← transpose_mul, (Matrix.mem_unitaryGroup_iff).1 hu, transpose_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFRep_dualM (k r : ℕ) : IsFRep (k := k) (r := r) dualM (Formalism.QuantumDeterminants.Hpk k r) 1 := by
   have h1 := (Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r).1

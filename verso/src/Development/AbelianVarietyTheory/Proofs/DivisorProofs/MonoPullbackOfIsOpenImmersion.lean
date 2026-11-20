@@ -21,19 +21,19 @@ variable {X Y S : Scheme.{0}} {A A' A'' E E' : X.Modules}
 def Same (u : A ⟶ E) (v : A' ⟶ E) : Prop := ∃ e : A ≅ A', e.hom ≫ v = u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iso.refl _, Category.id_comp _⟩`.
+Supply the required witnesses or components.
 -/
 theorem Same.refl (u : A ⟶ E) : Same u u := ⟨Iso.refl _, Category.id_comp _⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨e, he⟩ := h ⟨e.symm, by rw [← he]; simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem Same.symm {u : A ⟶ E} {v : A' ⟶ E} (h : Same u v) : Same v u :=
   have ⟨e, he⟩ := h
   ⟨e.symm, by rw [← he]; simp⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨e, he⟩ := h have ⟨e', he'⟩ := h' ⟨e ≪≫ e', by rw [← he, ← he']; simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem Same.trans {u : A ⟶ E} {v : A' ⟶ E} {w : A'' ⟶ E} (h : Same u v) (h' : Same v w) : Same u w :=
   have ⟨e, he⟩ := h
@@ -41,20 +41,20 @@ theorem Same.trans {u : A ⟶ E} {v : A' ⟶ E} {w : A'' ⟶ E} (h : Same u v) (
   ⟨e ≪≫ e', by rw [← he, ← he']; simp⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨e, he⟩ := h ⟨e, by rw [← he, Category.assoc]⟩`.
+A detailed English derivation is pending.
 -/
 theorem Same.comp {u : A ⟶ E} {v : A' ⟶ E} (h : Same u v) (φ : E ⟶ E') : Same (u ≫ φ) (v ≫ φ) :=
   have ⟨e, he⟩ := h
   ⟨e, by rw [← he, Category.assoc]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨e, he⟩ => ⟨e, by rw [← cancel_mono φ, Category.assoc, he]⟩, fun h => h.comp φ⟩`.
+Supply the required witnesses or components.
 -/
 theorem same_comp_iff {u : A ⟶ E} {v : A' ⟶ E} (φ : E ⟶ E') [Mono φ] : Same (u ≫ φ) (v ≫ φ) ↔ Same u v :=
   ⟨fun ⟨e, he⟩ => ⟨e, by rw [← cancel_mono φ, Category.assoc, he]⟩, fun h => h.comp φ⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨e, he⟩ := h ⟨(Scheme.Modules.pullback f).mapIso e, by rw [← he]; simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem Same.pull {u : A ⟶ E} {v : A' ⟶ E} (h : Same u v) (f : Y ⟶ X) :
     Same ((Scheme.Modules.pullback f).map u) ((Scheme.Modules.pullback f).map v) :=
@@ -62,7 +62,7 @@ theorem Same.pull {u : A ⟶ E} {v : A' ⟶ E} (h : Same u v) (f : Y ⟶ X) :
   ⟨(Scheme.Modules.pullback f).mapIso e, by rw [← he]; simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨f, g, by rw [← cancel_mono u, Category.assoc, hg, hf, Category.id_comp], by rw [← cancel_mono v, Category.assoc, hf, hg, Category.id_comp]⟩, hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem same_of_le_le {u : A ⟶ E} {v : A' ⟶ E} [Mono u] [Mono v] (f : A ⟶ A') (g : A' ⟶ A)
     (hf : f ≫ v = u) (hg : g ≫ u = v) : Same u v :=
@@ -70,14 +70,14 @@ theorem same_of_le_le {u : A ⟶ E} {v : A' ⟶ E} [Mono u] [Mono v] (f : A ⟶ 
     by rw [← cancel_mono v, Category.assoc, hf, hg, Category.id_comp]⟩, hf⟩
 
 /- English proof (translation)
-The claim follows from `QCoh.exact_app_of_exact_of_mono (ShortComplex.exact_cokernel v) V t`.
+A detailed English derivation is pending.
 -/
 theorem cokernel_app_eq_zero_iff (v : A ⟶ E) [Mono v] (V : X.Opens) (t : Γ(E, V)) :
     (cokernel.π v).app V t = 0 ↔ ∃ m, v.app V m = t :=
   QCoh.exact_app_of_exact_of_mono (ShortComplex.exact_cokernel v) V t
 
 /- English proof (translation)
-Establish `: u ≫ cokernel.π v = 0`. Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `s`. Conclude with `(cokernel_app_eq_zero_iff v V _).2 (h V s)`. Conclude with `⟨Abelian.monoLift v u this, Abelian.monoLift_comp _ _ _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fac_of_sections (u : A ⟶ E) (v : A' ⟶ E) [Mono v]
     (h : ∀ (V : X.Opens) (s : Γ(A, V)), ∃ m, v.app V m = u.app V s) : ∃ f : A ⟶ A', f ≫ v = u := by
@@ -88,7 +88,7 @@ theorem exists_fac_of_sections (u : A ⟶ E) (v : A' ⟶ E) [Mono v]
   exact ⟨Abelian.monoLift v u this, Abelian.monoLift_comp _ _ _⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_fac_of_sections u v fun V s => (h V).le ⟨s, rfl⟩`. Take `⟨g, hg⟩` from `exists_fac_of_sections v u fun V s => (h V).ge ⟨s, rfl⟩`. Conclude with `same_of_le_le f g hf hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem same_of_range {u : A ⟶ E} {v : A' ⟶ E} [Mono u] [Mono v]
     (h : ∀ V : X.Opens, Set.range (u.app V) = Set.range (v.app V)) : Same u v := by
@@ -97,9 +97,9 @@ theorem same_of_range {u : A ⟶ E} {v : A' ⟶ E} [Mono u] [Mono v]
   exact same_of_le_le f g hf hg
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Establish `e` using `Adjunction.unit_leftAdjointUniq_hom_app (Scheme.Modules.restrictAdjunction a) (Scheme.Modules.pullbackPushforwardAdjunction a) E`. Establish `h1 : Function.Bijective (E.presheaf.map (homOfLE (a.image_preimage_le V)).op)` using `QCoh.res_bijective_of_eq E _ (by`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf]`. Conclude with `inf_eq_right.2 hV)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `ConcreteCategory.bijective_of_isIso (((Scheme.Modules.restrictFunctorIsoPullback a).hom.app E).app (a ⁻¹ᵁ V))`. Use `h2.comp h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Conclude with `(resM_self _ _).trans congr(($e).app V s).symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem bijective_pullbackSections (a : Y ⟶ X) [IsOpenImmersion a] (E : X.Modules) {V : X.Opens}
     (hV : V ≤ a.opensRange) {W : Y.Opens} (hW : W = a ⁻¹ᵁ V) :
@@ -117,7 +117,7 @@ theorem bijective_pullbackSections (a : Y ⟶ X) [IsOpenImmersion a] (E : X.Modu
   exact (resM_self _ _).trans congr(($e).app V s).symm
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h`. Take `⟨m, rfl⟩` from `(bijective_pullbackSections a A hV hW).2 m`. Rewrite `hm` using `[pullback_map_app_pullbackSections]`. Conclude with `⟨m, (bijective_pullbackSections a E hV hW).1 hm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_range_of_pullback (a : Y ⟶ X) [IsOpenImmersion a] (v : A ⟶ E) {V : X.Opens}
     (hV : V ≤ a.opensRange) {W : Y.Opens} (hW : W = a ⁻¹ᵁ V) (t : Γ(E, V))
@@ -129,9 +129,9 @@ theorem mem_range_of_pullback (a : Y ⟶ X) [IsOpenImmersion a] (v : A ⟶ E) {V
   exact ⟨m, (bijective_pullbackSections a E hV hW).1 hm⟩
 
 /- English proof (translation)
-Use `QCoh.mono_of_locally_app_injective _ fun W _ hx => ⟨W, hx, le_rfl, fun s t h => ?_⟩` and prove the remaining obligations. Establish `hW` using `(a.preimage_image_eq W).symm`. Establish `hV` using `a.image_le_opensRange W`. Take `⟨s, rfl⟩` from `(bijective_pullbackSections a A hV hW).2 s`. Take `⟨t, rfl⟩` from `(bijective_pullbackSections a A hV hW).2 t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[pullback_map_app_pullbackSections, pullback_map_app_pullbackSections]`. Rewrite using `[QCoh.injective_app_of_mono v _ ((bijective_pullbackSections a E hV hW).1 h)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_pullback_of_isOpenImmersion (a : Y ⟶ X) [IsOpenImmersion a] (v : A ⟶ E) [Mono v] :
     Mono ((Scheme.Modules.pullback a).map v) := by
@@ -148,9 +148,9 @@ section Cover
 variable {J : Type*} {T : J → Scheme.{0}} (a : ∀ i, T i ⟶ X) [∀ i, IsOpenImmersion (a i)]
 
 /- English proof (translation)
-Use `exists_fac_of_sections u v fun V s => (cokernel_app_eq_zero_iff v V _).1 ?_` and prove the remaining obligations. Use `(Sub.ker (cokernel.π v)).mem_of_local (V := V) (s := u.app V s) fun x hx => ?_` and prove the remaining obligations. Take `⟨i, y, rfl⟩` from `hc x`. Take `⟨f, hf⟩` from `h i`. Use `⟨V ⊓ (a i).opensRange, inf_le_left, ⟨hx, y, rfl⟩, (cokernel_app_eq_zero_iff v _ _).2 ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_range_of_pullback (a i) v inf_le_right rfl _ ⟨f.app _ (pullbackSections (a i) A le_rfl (resM A inf_le_left s)), ?_⟩` and prove the remaining obligations. Rewrite using `[QCoh.app_app, hf, pullback_map_app_pullbackSections, app_resM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_fac_of_cover (hc : ∀ x : X, ∃ i y, a i y = x) (u : A ⟶ E) (v : A' ⟶ E) [Mono v]
     (h : ∀ i, ∃ f, f ≫ (Scheme.Modules.pullback (a i)).map v = (Scheme.Modules.pullback (a i)).map u) :
@@ -165,7 +165,7 @@ theorem exists_fac_of_cover (hc : ∀ x : X, ∃ i y, a i y = x) (u : A ⟶ E) (
   rw [QCoh.app_app, hf, pullback_map_app_pullbackSections, app_resM]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_fac_of_cover a hc u v fun i => have ⟨e, he⟩ := h i`. Use the proof step `⟨e.hom, he⟩`. Take `⟨g, hg⟩` from `exists_fac_of_cover a hc v u fun i => have ⟨e, he⟩ := (h i).symm`. Use the proof step `⟨e.hom, he⟩`. Conclude with `same_of_le_le f g hf hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem same_of_cover (hc : ∀ x : X, ∃ i y, a i y = x) {u : A ⟶ E} {v : A' ⟶ E} [Mono u] [Mono v]
     (h : ∀ i, Same ((Scheme.Modules.pullback (a i)).map u) ((Scheme.Modules.pullback (a i)).map v)) :
@@ -175,7 +175,7 @@ theorem same_of_cover (hc : ∀ x : X, ∃ i y, a i y = x) {u : A ⟶ E} {v : A'
   exact same_of_le_le f g hf hg
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨i, y, rfl⟩ := hc x obtain ⟨W, e, hy, he⟩ := (h i).of_iso ((Scheme.Modules.restrictFunctorIsoPullback (a i)).app A).symm y exact ⟨a i ''ᵁ W, e, ⟨y, hy, rfl⟩, (isFrame_restrict_iff (a i) e).1 he⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isVB_of_openImmersions (hc : ∀ x : X, ∃ i y, a i y = x) {r : ℕ}
     (h : ∀ i, IsVB ((Scheme.Modules.pullback (a i)).obj A) r) : IsVB A r := fun x => by
@@ -192,7 +192,7 @@ def glueSub : Sub E :=
 
 omit [∀ i, IsOpenImmersion (a i)] in
 /- English proof (translation)
-Use `(Submodule.mem_iInf _).trans (forall_congr' fun i => ?_)` and prove the remaining obligations. Rewrite using `[← cokernel_app_eq_zero_iff]`. Establish `: pullbackSections (a i) E le_rfl s = ((Scheme.Modules.pullbackPushforwardAdjunction (a i)).unit.app E).app V s` using `resM_self _ _`. Rewrite using `[this]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_glueSub_iff [∀ i, Mono (v i)] {V : X.Opens} {s : Γ(E, V)} :
     s ∈ (glueSub a v).sec V ↔ ∀ i, ∃ m, (v i).app _ m = pullbackSections (a i) E le_rfl s := by
@@ -209,13 +209,13 @@ def Compat : Prop := ∀ i j (S : Scheme.{0}) (b : S ⟶ T i) (c : S ⟶ T j) (w
     ((Scheme.Modules.pullback c).map (v j) ≫ (Scheme.Modules.pullbackComp c (a j)).hom.app E)
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Take `⟨m, hm⟩` from `hs`. Use `(mem_glueSub_iff a v).2 fun j => ?_` and prove the remaining obligations. Set `b` to `pullback.fst (a i) (a j)`. Set `c` to `pullback.snd (a i) (a j)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `w : b ≫ a i = c ≫ a j` using `pullback.condition`. Take `⟨e, he⟩` from `hv i j _ b c w`. Establish `hr : a j ⁻¹ᵁ V ≤ c.opensRange`. Introduce `y hy`. Take `⟨z, hz⟩` from `hV hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, -, hp⟩` from `Scheme.Pullback.exists_preimage_pullback z y hz`. Conclude with `⟨p, hp⟩`. Establish `hle : c ⁻¹ᵁ a j ⁻¹ᵁ V ≤ b ⁻¹ᵁ a i ⁻¹ᵁ V`. Rewrite using `[← Scheme.Hom.comp_preimage, ← w, Scheme.Hom.comp_preimage]`. Establish `key : e.hom ≫ (Scheme.Modules.pullback c).map (v j) = (Scheme.Modules.pullback b).map (v i) ≫ (Scheme.Modules.pullbackComp b (a i) ≪≫ Scheme.Modules.pullbackCongr w ≪≫ (Scheme.Modules.pullbackComp c (a j)).symm).hom.app E`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono ((Scheme.Modules.pullbackComp c (a j)).hom.app E), Category.assoc, he]`. Simplify using the standard rewrite rules. Use `mem_range_of_pullback c (v j) hr rfl _ ⟨e.hom.app _ (pullbackSections b _ hle m), ?_⟩` and prove the remaining obligations. Rewrite using `[← Vert.DivPull.pullbackSquare_app w E le_rfl hle le_rfl le_rfl, ← hm, ← pullback_map_app_pullbackSections, QCoh.app_app, key]`. Apply the tactic sequence `first | exact (QCoh.app_app _ _ _ _).symm | rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_glueSub_of_le [∀ i, Mono (v i)] (hv : Compat a v) (i : J) {V : X.Opens}
     (hV : V ≤ (a i).opensRange) {s : Γ(E, V)} {W : (T i).Opens} (hW : W = a i ⁻¹ᵁ V)
@@ -245,13 +245,13 @@ theorem mem_glueSub_of_le [∀ i, Mono (v i)] (hv : Compat a v) (i : J) {V : X.O
   first | exact (QCoh.app_app _ _ _ _).symm | rfl
 
 /- English proof (translation)
-Use `mono_pullback_of_isOpenImmersion (a i) (glueSub a v).incl` as an intermediate fact. Use `same_of_range fun W => ?_` and prove the remaining obligations. Establish `hW` using `((a i).preimage_image_eq W).symm`. Establish `hV` using `(a i).image_le_opensRange W`. Use extensionality with `t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Take `⟨s, rfl⟩` from `(bijective_pullbackSections (a i) _ hV hW).2 s`. Take `⟨m, hm⟩` from `(mem_glueSub_iff a v).1 ((glueSub a v).incl_app_mem s) i`. Use `⟨resM _ hW.le m, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[app_resM, hm, pullback_map_app_pullbackSections]`. Conclude with `res_pullbackSections _ _ _ _ _`. Introduce and unpack `⟨m, rfl⟩`. Take `⟨s, hs⟩` from `(bijective_pullbackSections (a i) _ hV hW).2 ((v i).app W m)`. Use `⟨pullbackSections (a i) _ hW.le ((glueSub a v).mkSec s (mem_glueSub_of_le a v hv i hV hW ⟨m, hs.symm⟩)), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback_map_app_pullbackSections, Sub.incl_app_mkSec, hs]`.
+A detailed English derivation is pending.
 -/
 theorem same_glueSub [∀ i, Mono (v i)] (hv : Compat a v) (i : J) :
     Same ((Scheme.Modules.pullback (a i)).map (glueSub a v).incl) (v i) := by
@@ -274,11 +274,9 @@ theorem same_glueSub [∀ i, Mono (v i)] (hv : Compat a v) (i : J) :
     rw [pullback_map_app_pullbackSections, Sub.incl_app_mkSec, hs]
 
 /- English proof (translation)
-Set `N : Fin (n + 1) → Sub E` to `fun k => glueSub a fun i => (fl i).ι k`. Establish `hN` using `fun k i => same_glueSub a (fun i => (fl i).ι k) (h k) i`. Establish `hstep : ∀ (k : Fin n) V s, (N k.castSucc).incl.app V s ∈ (N k.succ).sec V` using `fun k V s => (mem_glueSub_iff a _).2 fun i => by`. Take `⟨m, hm⟩` from `(mem_glueSub_iff a _).1 ((N k.castSucc).incl_app_mem s) i`. Conclude with `⟨((fl i).step k).app _ m, by rw [QCoh.app_app, (fl i).step_ι, hm]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨{ F := fun k => (N k).toMod ι := fun k => (N k).incl isSubbundle := fun k => ⟨inferInstance, n - k, isVB_of_openImmersions a hc fun i => ?_⟩ isVB := fun k => isVB_of_openImmersions a hc fun i => ?_ step := fun k => (N k.succ).lift _ (hstep k) step_ι := fun k => (N k.succ).lift_i …` and prove the remaining obligations. Take `⟨e, he⟩` from `hN k i`. Conclude with `((fl i).isVB_cokernel k).of_iso ((cokernelEpiComp e.hom _).symm ≪≫ cokernelIsoOfEq he ≪≫ (PreservesCokernel.iso (Scheme.Modules.pullback (a i)) (N k).incl).symm)`. Take `⟨e, -⟩` from `hN k i`. Conclude with `((fl i).isVB k).of_iso e.symm`.
-
-Use `Twist.isIso_of_bijective _ fun V => ⟨(N _).incl_app_injective V, fun s => ?_⟩` and prove the remaining obligations. Conclude with `(N _).mem_sec_iff.1 ((mem_glueSub_iff a _).2 fun i => (ConcreteCategory.bijective_of_isIso (((fl i).ι (Fin.last n)).app _)).2 _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_flag_of_cover (hc : ∀ x : X, ∃ i y, a i y = x) {n : ℕ}
     (fl : ∀ i, Vert.Flag ((Scheme.Modules.pullback (a i)).obj E) n)

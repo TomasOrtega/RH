@@ -14,11 +14,11 @@ open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac 
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Use `⟨(monic_multiset_prod_of_monic _ _ fun b _ => monic_X_sub_C b).map _, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_map, natDegree_multiset_prod_X_sub_C_eq_card]`. Rewrite using `[coeff_map, coeff_zero_eq_eval_zero, eval_multiset_prod, Multiset.map_map]`. Establish `: (s.map ((fun p : ℂ[X] => eval 0 p) ∘ fun b => X - C b)) = s.map Neg.neg`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, Multiset.prod_map_neg]`. Both sides reduce to the same expression. Rewrite using `[Polynomial.map_map]`. Establish `: ι.toRingHom.comp ι.symm.toRingHom = RingHom.id ℂ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[this, Polynomial.map_id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem satPol_facts {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (s : Multiset ℂ) :
     (((s.map fun b => X - C b).prod).map ι.symm.toRingHom).Monic ∧
@@ -40,19 +40,19 @@ private theorem satPol_facts {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (s
     rw [this, Polynomial.map_id]
 
 /- English proof (translation)
-Introduce `hDiv hDense hDet hIn hSep E Ω _ _ _ _ _ _ l _ ι a d hd U hU ψ hψ dd ρ hV`. Take `⟨hc, hs, ⟨X, hX⟩, hr⟩` from `hV`. Establish `hcard : ∀ (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ), SatU U w B → Multiset.card (algSat a (normV w) B) = a`. Introduce and unpack `w B ⟨σ, -, hB⟩`. Establish `h : Multiset.card (algSat a (normV w) B) = Multiset.card B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Unfold `algSat`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `GlobalTheory.LFun.HasSatGL.card hB`. Establish `hD` using `(hDense E Ω l a d hd U hU X).preimage (Homeomorph.inv (G E Ω)).isOpenMap`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hrc, hrs, hin, hco, hop, hde⟩` from `hDiv E Ω l a dd ρ hc hs hr ψ hψ.1 (hD.mono (by`. Introduce and unpack `g ⟨w, hw, hu, hl, ⟨B, hB⟩, A, hA, hf⟩`. Establish `hf' : IsFrob A (normV w) g⁻¹` using `hf`. Take `⟨q1, q2, q3, -⟩` from `satPol_facts ι (algSat a (normV w) B)`. Rewrite `q2`, `q3` using `[hcard w B hB]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, q1, q2, ?_, ?_⟩` and prove the remaining obligations. Use `(hX w hw hu hl B hB A hA).2 g⁻¹ hf'` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `h` using `(hDet E Ω l ι a U ψ hψ w hu.1 hl B hB A hA).2 g⁻¹ hf'`. Rewrite `h` using `[inv_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[q3]`. Apply `ι.injective` to reduce the goal to its premises. Establish `h1 : ((-1 : ℂ) ^ a) * (-1) ^ a = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow, map_neg, map_one, RingEquiv.apply_symm_apply]`. Rewrite using `[h, ← mul_assoc, h1, one_mul]))`. Use `⟨r, ⟨hrc, hrs, (fun g : G E Ω => g⁻¹) ⁻¹' {g | (r g : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.Separable}, X, hop.preimage continuous_inv, hde.preimage (Homeomorph.inv (G E Ω)).isOpenMap, ?_⟩, hin, hco⟩` and prove the remaining obligations. Introduce `w hw hu hl B hB A hA`. Establish `hE` using `hX w hw hu hl B hB A hA`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `hIn (G E Ω) (Qbar l) a dd r ρ hin`. Use `⟨fun s hs' => hF.2.1 s (hE.1 s hs'), fun s hf hsV => ?_⟩` and prove the remaining obligations. Take `⟨q1, q2, -, q4⟩` from `satPol_facts ι (algSat a (normV w) B)`. Rewrite `q2` using `[hcard w B hB]`. Rewrite using `[hSep (Qbar l) a _ _ q1 q2 (hF.2.2 s⁻¹ _ (hE.2 s hf)) hsV, q4]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.divOne_of :
     DivSet → DenseUs → DetFrob → InFacts → SepPin → DivOne := by

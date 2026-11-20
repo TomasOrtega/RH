@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hHl hBC hWt l _ n i Z' S' Z S v p' p g _ w hpb hw hl`. Use `haveI : IsFinite p' := MorphismProperty.of_isPullback (P := @IsFinite) hpb inferInstance`. Establish `hw' : IsWt p' (Wt.comap v w)` using `hWt v p' p g w hpb hw`. Establish `hl' : IsUnit ((l : ℕ) : Γ(S', ⊤))`. Use `hl.map g.appTop.hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `key : pullHl l (sch.map g) n i ∘ₗ trHl l p w n i = trHl l p' (Wt.comap v w) n i ∘ₗ pullHl l (sch.map v) n i`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Establish `hk : IsUnit ((↑(l ^ k) : ℕ) : Γ(S, ⊤))`. Rewrite using `[Nat.cast_pow]`. Conclude with `hl.pow k`. Use `show (pull (ZMod (l ^ k)) (sch.map g) (tw (l ^ k) i) n) ((trHl l p w n i x).1 k) = (trHl l p' (Wt.comap v w) n i (pullHl l (sch.map v) n i x)).1 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hHl l n i p w hw hl x k, hHl l n i p' (Wt.comap v w) hw' hl' _ k]`. Conclude with `hBC (l ^ k) n i v p' p g w hpb hw hk (x.1 k)`. Unfold `trHQ pullHQ`. Rewrite using `[← LinearMap.baseChange_comp, ← LinearMap.baseChange_comp, key]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.trBCQ_of :
     TrHl → TrBC → WtBC → TrBCQ := by

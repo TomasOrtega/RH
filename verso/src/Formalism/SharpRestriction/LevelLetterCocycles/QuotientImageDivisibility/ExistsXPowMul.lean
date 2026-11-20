@@ -16,11 +16,9 @@ section Div
 variable {LL : Type} [Field LL] {V : Type} [AddCommGroup V] [Module LL V]
 
 /- English proof (translation)
-Establish `hex : ∃ w, PowerSeries.coeff w f ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hf (PowerSeries.ext fun w => by simpa using h w)`. Take `⟨w, h1, hmin⟩ : ∃ w, PowerSeries.coeff w f ≠ 0 ∧ ∀ m < w, PowerSeries.coeff m f = 0` from `⟨Nat.find hex, Nat.find_spec hex, fun m hm => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.find_min hex hm` as an intermediate fact. Use `push Not at this`. Conclude with `this⟩`. Establish `hdvd : PowerSeries.X ^ w ∣ f` using `PowerSeries.X_pow_dvd_iff.2 hmin`. Take `⟨u, hu⟩` from `hdvd`.
-
-Use `⟨w, u, ?_, hu⟩` and prove the remaining obligations. Rewrite `h1` using `[hu, PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_X_pow_mul (f : PowerSeries LL) (hf : f ≠ 0) :
     ∃ (w : ℕ) (u : PowerSeries LL), PowerSeries.constantCoeff u ≠ 0 ∧ f = PowerSeries.X ^ w * u := by
@@ -41,9 +39,9 @@ theorem exists_X_pow_mul (f : PowerSeries LL) (hf : f ≠ 0) :
   exact h1
 
 /- English proof (translation)
-Take `⟨w, u, hu, rfl⟩` from `exists_X_pow_mul f hf`. Use `set e' : ℤ → V := fun k => e (k + w) with he'`. Establish `hLB' : LB (m - w) e'` using `fun k hk => he _ (by omega)`. Use `⟨m - w, smulS u⁻¹ e', LB_smulS hLB' _, ?_⟩` and prove the remaining obligations. Rewrite using `[smulS_mul (LB_smulS hLB' _), ← smulS_mul hLB', PowerSeries.mul_inv_cancel _ hu, smulS_one hLB', smulS_X_pow hLB']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `[he']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smulS_div {m : ℤ} {e : ℤ → V} (he : LB m e) (f : PowerSeries LL) (hf : f ≠ 0) :
     ∃ (m' : ℤ) (d : ℤ → V), LB m' d ∧ smulS f d = e := by
@@ -57,11 +55,11 @@ theorem smulS_div {m : ℤ} {e : ℤ → V} (he : LB m e) (f : PowerSeries LL) (
   simp [he']
 
 /- English proof (translation)
-Take `⟨w, u, hu, rfl⟩` from `exists_X_pow_mul f hf`. Establish `h0 : smulS (PowerSeries.X ^ w * u) (d - d') = 0`. Rewrite using `[smulS_sub hd hd', h, sub_self]`. Rewrite `h0` using `[smulS_mul (LB_sub hd hd'), smulS_X_pow (LB_smulS (LB_sub hd hd') _)]`. Establish `h1 : smulS u (d - d') = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Use `congrFun h0 (k + w)` as an intermediate fact. Simplify using `using this`. Establish `h2` using `smulS_inv (LB_sub hd hd') u hu`. Rewrite `h2` using `[h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : smulS u⁻¹ (0 : ℤ → V) = 0`. Use function extensionality and compare the values at `k`. Simplify using `[smulS]`. Rewrite `h2` using `[h3]`. Conclude with `sub_eq_zero.1 h2.symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulS_inj {m : ℤ} {d d' : ℤ → V} (hd : LB m d) (hd' : LB m d') (f : PowerSeries LL)
     (hf : f ≠ 0) (h : smulS f d = smulS f d') : d = d' := by
@@ -82,14 +80,14 @@ theorem smulS_inj {m : ℤ} {d d' : ℤ → V} (hd : LB m d) (hd' : LB m d') (f 
   exact sub_eq_zero.1 h2.symm
 
 /- English proof (translation)
-Rewrite using `[← smulS_mul hd, ← smulS_mul hd, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smulS_comm {m : ℤ} {d : ℤ → V} (hd : LB m d) (f g : PowerSeries LL) :
     smulS f (smulS g d) = smulS g (smulS f d) := by
   rw [← smulS_mul hd, ← smulS_mul hd, mul_comm]
 
 /- English proof (translation)
-Use `Dg_smulS (Fil := fun _ : ℤ => D) (fun _ _ _ => le_rfl) hd (s := 0) (fun k => hD k) f k` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smulS_mem {m : ℤ} {d : ℤ → V} (hd : LB m d) (D : Submodule LL V) (hD : ∀ k, d k ∈ D)
     (f : PowerSeries LL) (k : ℤ) : smulS f d k ∈ D := by
@@ -116,7 +114,7 @@ theorem conv_eq {M : Type} [AddCommGroup M] [Module LL M] (f : PowerSeries LL) (
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.conv f d = smulS f d := rfl
 
 /- English proof (translation)
-Introduce `h`. Use `W'.v_l` as an intermediate fact. Rewrite `this` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_ne_zero_LL (W' : LocWach PD LL O v n) : (PD.p : LL) ≠ 0 := by
   intro h
@@ -125,7 +123,7 @@ theorem p_ne_zero_LL (W' : LocWach PD LL O v n) : (PD.p : LL) ≠ 0 := by
   exact WithTop.top_ne_coe this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.LiftingTheory.qp, LocWach.π₀]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eat_qp :
     Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ : ZMod n => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ =
@@ -134,17 +132,17 @@ theorem eat_qp :
   simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.LiftingTheory.qp, LocWach.π₀]
 
 /- English proof (translation)
-Introduce `hA i ζ hζ`. Establish `hs : W.s = 1` using `hA.2.1`. Establish `hp` using `p_ne_zero_LL W`. Take `⟨u₀, hu₀, hq⟩` from `MC.lev_q_eq W i hζ hp`. Take `⟨w, hw⟩` from `hR.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[eat_qp]`. Establish `hqp : W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W) = (W.lev i ζ ((w⁻¹ : (LetA O n)ˣ) : LetA O n) * u₀) * PowerSeries.X`. Establish `e : Formalism.MainNotions.LiftingTheory.qp W = ((w⁻¹ : (LetA O n)ˣ) : LetA O n) * W.q`. Rewrite using `[hw, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e, map_mul, hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hunit : IsUnit (W.lev i ζ ((w⁻¹ : (LetA O n)ˣ) : LetA O n) * u₀)` using `((Units.isUnit _).map _).mul (PowerSeries.isUnit_iff_constantCoeff.2 (isUnit_iff_ne_zero.2 hu₀))`. Establish `hcq : PowerSeries.constantCoeff (W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W)) = 0`. Rewrite using `[hqp, map_mul, PowerSeries.constantCoeff_X, mul_zero]`. Establish `hcpi : PowerSeries.constantCoeff (W.lev i ζ W.π₀) = -(PD.p : LL)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Formalism.MainNotions.LiftingTheory.qp W = W.π₀ + ((PD.p : ℕ) : LetA O n)` using `rfl`. Rewrite `hcq` using `[e, map_add, map_natCast, map_add, map_natCast]`. Take the linear combination `hcq`. Use `⟨⟨_, hunit, hqp⟩, hcpi, ?_⟩` and prove the remaining obligations. Take `⟨w', hw'⟩` from `hR.2.2.2.2.2.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hw'` using `[eat_qp]`. Establish `hp1 : 1 ≤ PD.p - 1` using `by have := PD.hp.two_le; omega`. Establish `hcφ : PowerSeries.constantCoeff (W.lev i ζ (W.φA W.π₀)) = 0`. Rewrite using `[hw', map_mul, map_mul, map_pow, map_mul, map_mul, map_pow, hcq, zero_pow (by omega), mul_zero]`. Establish `e2 : Formalism.MainNotions.LiftingTheory.pk W 1 = W.φA W.π₀ + ((PD.p : ℕ) : LetA O n)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Formalism.MainNotions.LiftingTheory.pk, Formalism.MainNotions.LiftingTheory.qp, map_natCast]`. Rewrite using `[e2, PowerSeries.isUnit_iff_constantCoeff, map_add, map_natCast, map_add, hcφ, zero_add, map_natCast]`. Conclude with `isUnit_iff_ne_zero.2 hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expRing_of (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRing W := by
   intro hA i ζ hζ
@@ -193,9 +191,9 @@ def GamA : Prop :=
     W.lev i ζ (W.γA W.gam f) = PowerSeries.rescale (algebraMap O LL (W.χΓ W.gam : O)) (W.lev i ζ f)
 
 /- English proof (translation)
-Establish `hv : ((1 : ℕ) : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ W.gam : O) - ((1 : ℕ) : LL))`. Simplify using `only [Nat.cast_one]`. Rewrite using `[W.gam_gen, hs, Nat.cast_one]`. Use `⟨fun T hT i ζ hζ x hx k => ?_, fun i ζ hζ f => ?_⟩` and prove the remaining obligations. Rewrite using `[C.levN_eq, C.levN_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `C.levB_Γ T hT W.gam i ζ ζ 1 1 (by rwa [pow_one]) hv (by rw [pow_one]) x hx k`. Establish `e' : (⟨W.γ T x, hx⟩ : ↥(W.N T)) = ⟨W.γD T W.gam x, hx⟩` using `rfl`. Rewrite using `[e', e, map_smul]`. Conclude with `C.lev_Γ W.gam i ζ ζ 1 1 (by rwa [pow_one]) hv (by rw [pow_one]) f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gam_of_tie (hs : W.s = 1) {Zl Ai : Type} [CommRing Zl] [CommRing Ai] [Algebra Zl O]
     [Algebra Zl Ai] {RW : Type} [CommRing RW] [Algebra O RW] {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW}

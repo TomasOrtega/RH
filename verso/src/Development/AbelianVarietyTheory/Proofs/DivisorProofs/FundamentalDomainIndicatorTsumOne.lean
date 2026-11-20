@@ -5,21 +5,17 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ μG Q 𝓓 𝓓₀ hQ hL hμ h𝓓 _h0m h0s h0n`. Use `haveI : MeasurableConstSMul Q G := ⟨fun g => hL g.1⟩`. Use `haveI : SMulInvariantMeasure Q G μG := ⟨fun g s hs => by show μG ((fun x => (g : G) * x) ⁻¹' s) = μG s`. Rewrite using `[← Measure.map_apply (hL g.1) hs, map_mul_left_eq_self]⟩`. Establish `h1` using `h𝓓.ae_covers`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ᵐ y ∂μG, ∀ q : Q, q • y ∉ 𝓓 \ 𝓓₀`. Rewrite using `[ae_all_iff]`. Introduce `q`. Establish `: μG ((fun y => q • y) ⁻¹' (𝓓 \ 𝓓₀)) = 0`. Rewrite using `[measure_preimage_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0n`. Conclude with `measure_eq_zero_iff_ae_notMem.1 this`. Establish `h3 : ∀ᵐ y ∂μG, ∀ q q' : Q, q ≠ q' → ¬ (q • y ∈ 𝓓 ∧ q' • y ∈ 𝓓)`. Rewrite using `[ae_all_iff]`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[ae_all_iff]`. Introduce `q'`. Distinguish the cases in `hqq : q = q'`. Conclude with `Filter.Eventually.of_forall (fun y h => absurd hqq h)`. Establish `hne : q⁻¹ ≠ q'⁻¹` using `fun h => hqq (inv_injective h)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : μG (q⁻¹ • 𝓓 ∩ q'⁻¹ • 𝓓) = 0` using `h𝓓.aedisjoint hne`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 hd] with y hy _ hyy`. Apply `hy` to reduce the goal to its premises. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hyy.1`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `hyy.2`. Use `filter_upwards [h1, h2, h3] with y hy1 hy2 hy3`. Take `⟨q, hq⟩` from `hy1`.
-
-Establish `hq0 : q • y ∈ 𝓓₀`. Assume the negation of the conclusion as `h`. Conclude with `hy2 q ⟨hq, h⟩`. Rewrite using `[tsum_eq_single q]`. Conclude with `Set.indicator_of_mem hq0 _`.
-
-Introduce `b hb`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hb0`. Conclude with `hy3 b q hb ⟨h0s hb0, hq⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fundamentalDomain_count_ae_eq_one :
     ∀ {G : Type} [Group G] [MeasurableSpace G] (μG : Measure G) (Q : Subgroup G) (𝓓 𝓓₀ : Set G),

@@ -11,23 +11,23 @@ open scoped ENNReal
 namespace GlobalTheory.Unfold
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x0 x FF A m Φ ho0 ho hF hA hAO hΦ hΓ hB hm`. Use `FundSetPf.countable_GL (E := E) (r := r)` as an intermediate fact. Establish `hM` using `ReciprocityTheory.ChartRestriction.G.AR.Up.measInv_holds (E := E)`. Establish `hc : Measurable (cpt X x0)` using `(FundSetPf.cont_cpt X x0).measurable`. Set `ψ : Frame X.Ψ r → ℝ≥0∞` to `(satFrames X x A).indicator Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψ : Measurable ψ` using `hΦ.indicator (measurableSet_satFrames X ho hA hAO)`. Establish `hψB : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, ψ (rmul y b) = ψ y`. Introduce `y hy b hb`. Simplify using `only [ψ, Set.indicator, rmul_mem_satFrames_iff X x A _ hb, hB b hb y hy]`. Establish `h1 : ∫⁻ z in A, Φ (cpt X x z) ∂muF X x = ∫⁻ z, ψ (cpt X x z) ∂muF X x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_indicator hA]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Simplify using `only [ψ, Set.indicator, cpt_mem_satFrames_iff X ho]`. Rewrite using `[h1, ← hM r X x0 x ho0 ho ψ hψ hψB, lintegral_unfold hM r X x0 ho0 FF hF ψ hψ hψB, ← lintegral_const_mul m (f := fun z => Φ (cpt X x0 z)) (hΦ.comp hc)]`. Use `setLIntegral_mono ((hΦ.comp hc).const_mul m) fun z hz => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set y := cpt X x0 z with hy_def`. Establish `hy : y ∈ X.dom` using `hF.2.1 hz`. Set `S : Set (GL (Fin r) E)` to `{γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ z ∈ A, ∃ z' ∈ A, ∃ b ∈ Bor X.Ψ r, lact γ (cpt X x z) = rmul (cpt X x z') b}`. Set `T : Set X.Γ` to `{γ | lact γ.1 y ∈ satFrames X x A}`. Distinguish the cases in `hT : T.Nonempty`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `swap`. Establish `h0 : ∀ γ : X.Γ, ψ (lact γ.1 y) = 0` using `fun γ => Set.indicator_of_notMem (s := satFrames X x A) (fun h => hT ⟨γ, h⟩) Φ`. Simplify using `[h0]`. Take `⟨γ0, hγ0⟩` from `hT`. Take `⟨z0, hz0, b0, hb0, e0⟩` from `hγ0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ γ : X.Γ, ψ (lact γ.1 y) ≤ T.indicator (fun _ => Φ y) γ`. Introduce `γ`. Distinguish the cases in `hγ : γ ∈ T`. Rewrite using `[Set.indicator_of_mem hγ] show (satFrames X x A).indicator Φ _ ≤ _`. Rewrite using `[Set.indicator_of_mem (s := satFrames X x A) hγ Φ, hΓ γ.1 γ.2 y hy]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hγ]`. Conclude with `le_of_eq (Set.indicator_of_notMem (s := satFrames X x A) hγ Φ)`. Establish `hTS : T.encard ≤ S.encard`. Set `f : X.Γ → GL (Fin r) E` to `fun γ => γ.1 * γ0.1⁻¹`. Establish `hinj : Set.InjOn f T` using `fun a _ b _ h => Subtype.ext (mul_right_cancel h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hinj.encard_image]`. Use `Set.encard_le_encard ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, ⟨z1, hz1, b1, hb1, e1⟩, rfl⟩`. Use `⟨X.Γ.mul_mem γ.2 (X.Γ.inv_mem γ0.2), z0, hz0, z1, hz1, rmul b1 (ExtFPf.invF X b0), ExtFPf.mul_mem X hb1 (ExtFPf.invF_mem X hb0), ?_⟩` and prove the remaining obligations. Establish `e0' : cpt X x z0 = rmul (lact γ0.1 y) (ExtFPf.invF X b0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e0, ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb0, ExtFPf.rmul_oneF]`. Use `show lact (γ.1 * γ0.1⁻¹) (cpt X x z0) = _`. Rewrite using `[e0', FundSetPf.lact_rmul, FundSetPf.lact_mul, FundSetPf.lact_inv, e1, ExtFPf.rmul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_trans (by exact_mod_cast hTS) hm`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_chart_le_mul_fundSet : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x0 x : Frame X.Ψ r) (FF A : Set (V (nd X))) (m : ℝ≥0∞) (Φ : Frame X.Ψ r → ℝ≥0∞), IsOrth X x0 → IsOrth X x → IsFundSet X x0 FF → MeasurableSet A → A ⊆ OmF X x → Measurable Φ → (∀ γ ∈ X.Γ, ∀ x ∈ X.dom, Φ (lact γ x) = Φ x) → (∀ b ∈ Bor X.Ψ r, ∀ x ∈ X.dom, Φ (rmul x b) = Φ x) → (({γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ z ∈ A, ∃ z' ∈ A, ∃ b ∈ Bor X.Ψ r, lact γ (cpt X x z) = rmul (cpt X x z') b}.encard : ℝ≥0∞) ≤ m) → ∫⁻ z in A, Φ (cpt X x z) ∂(muF X x) ≤ m * ∫⁻ z in FF, Φ (cpt X x0 z) ∂(muF X x0) := by
   intro E _ _ _ r X x0 x FF A m Φ ho0 ho hF hA hAO hΦ hΓ hB hm

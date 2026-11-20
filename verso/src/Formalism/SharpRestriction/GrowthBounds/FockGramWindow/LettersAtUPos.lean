@@ -15,7 +15,7 @@ section Lat
 variable (p : ℕ) [hp : Fact p.Prime] {N r : ℕ} [NeZero r] (G : M.BlockData N)
 
 /- English proof (translation)
-Unfold `Ljj`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨y, hy, g, hg, rfl⟩`. Conclude with `h y hy g hg`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Ljj_le (S : Submodule ℤ_[p] (MvPolynomial (M.BVar N r G.T.t) ℚ_[p])) (j : Fin G.T.t → ℕ) (jp : ℕ)
     (h : ∀ y ∈ M.YZ p (r := r) (G.lettersAt j jp) G.T.J G.T.thr, ∀ g ∈ M.XiPolZ p N r G.T.t (G.B - jp),
@@ -26,7 +26,7 @@ theorem Ljj_le (S : Submodule ℤ_[p] (MvPolynomial (M.BVar N r G.T.t) ℚ_[p]))
   exact h y hy g hg
 
 /- English proof (translation)
-Establish `h` using `Ljj_le p G (M.IntPol p (M.BVar N r G.T.t)) j jp (fun y hy g hg => M.intPol_mul' (M.intPol_rename' _ hy.2.2) hg.2) hv`. Conclude with `(Formalism.InvariantFactorPaths.KP.LL.intPol_iff_bnd v).1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Ljj_int (j : Fin G.T.t → ℕ) (jp : ℕ) (v : MvPolynomial (M.BVar N r G.T.t) ℚ_[p])
     (hv : v ∈ Ljj p (r := r) G j jp) : Bnd 1 v := by
@@ -38,7 +38,7 @@ def dJ (j : Fin G.T.t → ℕ) (jp : ℕ) (a : Fin (N + 1)) : ℕ :=
   chDeg (G.lettersAt j jp) a + (if Fin.last N = a then G.B - jp else 0)
 
 /- English proof (translation)
-Establish `key : Ljj p (r` using `r) G j jp ≤ (weightedHomogeneousSubmodule ℚ_[p] (wL (r := r) G a) (dJ G j jp a)).restrictScalars ℤ_[p] := by`. Use `Ljj_le p G _ j jp ?_` and prove the remaining obligations. Introduce `y hy g hg`. Conclude with `(hom_chain p G a _ y hy.2.1).mul (hom_xi p G a _ g hg)`. Conclude with `key hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ljj_hom (a : Fin (N + 1)) (j : Fin G.T.t → ℕ) (jp : ℕ) (v : MvPolynomial (M.BVar N r G.T.t) ℚ_[p])
     (hv : v ∈ Ljj p (r := r) G j jp) : IsWeightedHomogeneous (wL (r := r) G a) v (dJ G j jp a) := by
@@ -50,9 +50,9 @@ theorem Ljj_hom (a : Fin (N + 1)) (j : Fin G.T.t → ℕ) (jp : ℕ) (v : MvPoly
   exact key hv
 
 /- English proof (translation)
-Unfold `dJ degFact chDeg`. Rewrite using `[Fin.prod_univ_castSucc]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `a0 _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Fin.castSucc_inj, (Fin.castSucc_lt_last a0).ne']`. Simplify using `[Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_dJ (j : Fin G.T.t → ℕ) (jp : ℕ) : ∏ a, (dJ G j jp a)! = degFact G j jp := by
   unfold dJ degFact chDeg
@@ -64,16 +64,16 @@ theorem prod_dJ (j : Fin G.T.t → ℕ) (jp : ℕ) : ∏ a, (dJ G j jp a)! = deg
   · simp [Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Unfold `M.BlockData.lettersAt`. Conclude with `le_trans (Nat.sub_le _ _) (Nat.sub_le _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lettersAt_le (j : Fin G.T.t → ℕ) (jp : ℕ) (a0 : Fin N) : (G.lettersAt j jp).deg a0 ≤ G.LL.deg a0 := by
   unfold M.BlockData.lettersAt
   exact le_trans (Nat.sub_le _ _) (Nat.sub_le _ _)
 
 /- English proof (translation)
-Unfold `dJ chDeg`. Distinguish the cases in `ha : Fin.last N = a`. Substitute `ha` using the available equality. Simplify using `[Fin.castSucc_ne_last]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_neg ha]`. Take `⟨a0, rfl⟩ : ∃ a0, Fin.castSucc a0 = a` from `Fin.exists_castSucc_eq.2 (Ne.symm ha)`. Establish `h1` using `lettersAt_le G j jp a0`. Establish `h2` using `hdeg a0`. Simplify using `[Fin.castSucc_inj]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -92,7 +92,7 @@ theorem dJ_le (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) (hBa : G.B ≤ 2 * 
     omega
 
 /- English proof (translation)
-Unfold `lgN`. Establish `h1` using `Nat.log_mono_right (b := p) hx`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem log_le_lgN (A x : ℕ) (hx : x ≤ 8 * A + r) : Nat.log p x + 1 ≤ lgN p A r := by
   unfold lgN
@@ -100,9 +100,9 @@ theorem log_le_lgN (A x : ℕ) (hx : x ≤ 8 * A + r) : Nat.log p x + 1 ≤ lgN 
   omega
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[← prod_dJ G j jp]`. Establish `hw : ∀ a, Finsupp.weight (wL (r` using `r) G a) m = dJ G j jp a := fun a => Ljj_hom p G a j jp v hv (mem_support_iff.mp hm)`. Use `val_letters_le p G m (dJ G j jp) hw (lgN p A r) (fun a => ?_)` and prove the remaining obligations. Establish `h1` using `dJ_le G A hdeg hBa j jp a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `log_le_lgN p (r := r) A (dJ G j jp a) (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Ljj_val (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) (hBa : G.B ≤ 2 * A) (j : Fin G.T.t → ℕ) (jp : ℕ)
     (v : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) (hv : v ∈ Ljj p (r := r) G j jp) :
@@ -118,7 +118,7 @@ theorem Ljj_val (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) (hBa : G.B ≤ 2 
   omega
 
 /- English proof (translation)
-Take `⟨-, hpos, -, -⟩` from `hB`. Establish `hz : (∑ i : Fin G.T.t, if (G.uPos : ℕ) = G.T.pos i ∨ (G.uPos : ℕ) = G.T.pos i + 1 then j i else 0) = 0` using `Finset.sum_eq_zero fun i _ => if_neg (by have := hpos i; omega)`. Unfold `M.BlockData.lettersAt`. Simplify using `[hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lettersAt_uPos (hB : G.BlockOK) (j : Fin G.T.t → ℕ) (jp : ℕ) :
     (G.lettersAt j jp).deg G.uPos = G.LL.deg G.uPos - jp := by
@@ -129,7 +129,7 @@ theorem lettersAt_uPos (hB : G.BlockOK) (j : Fin G.T.t → ℕ) (jp : ℕ) :
   simp [hz]
 
 /- English proof (translation)
-Establish `h1` using `Formalism.InvariantFactorPaths.KP.LL.biHom_plus (p := p) (r := r) (D := G) j jp v hv`. Rewrite `h1` using `[lettersAt_uPos G hB j jp]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ljj_biHom (hB : G.BlockOK) (j : Fin G.T.t → ℕ) (jp : ℕ) (v : MvPolynomial (M.BVar N r G.T.t) ℚ_[p])
     (hv : v ∈ Ljj p (r := r) G j jp) :

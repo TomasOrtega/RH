@@ -12,9 +12,9 @@ open scoped Pointwise in
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] in
 
 /- English proof (translation)
-Introduce `x`. Use `⟨Metric.closedBall x 1, Metric.closedBall_mem_nhds x one_pos, ?_⟩` and prove the remaining obligations. Establish `hclosed : IsClosed (Λ : Set E)` using `AddSubgroup.isClosed_of_discrete (H := Λ.toAddSubgroup)`. Establish `hfin : ((tsupport φ - Metric.closedBall x 1) ∩ (Λ : Set E)).Finite` using `Metric.finite_isBounded_inter_isClosed DiscreteTopology.isDiscrete (hφ.isBounded.sub Metric.isBounded_closedBall) hclosed`. Use `(hfin.preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `l ⟨z, hz, hzb⟩`. Use `⟨?_, l.2⟩` and prove the remaining obligations. Establish `hmem` using `Set.sub_mem_sub (subset_tsupport φ (show z + (l : E) ∈ Function.support φ from hz)) hzb`. Rewrite `hmem` using `[add_sub_cancel_left]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem _root_.GlobalTheory.PeriodicPartition.locallyFinite_support_translate (Λ : Submodule ℤ E) [DiscreteTopology Λ] (φ : E → ℝ)
     (hφ : HasCompactSupport φ) :
@@ -33,17 +33,15 @@ theorem _root_.GlobalTheory.PeriodicPartition.locallyFinite_support_translate (�
   rwa [add_sub_cancel_left] at hmem
 
 /- English proof (translation)
-Take `⟨φ, hφU, hφc, hφs, hφr, hφx⟩` from `exists_contDiff_tsupport_subset (n := ⊤) (hU.mem_nhds hx)`. Establish `h0 : ∀ z, 0 ≤ φ z` using `fun z => (hφr ⟨z, rfl⟩).1`. Establish `hlf` using `locallyFinite_support_translate Λ φ hφc`. Use `⟨fun z => ∑ᶠ l : Λ, φ (z + l), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← contMDiff_iff_contDiff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `contMDiff_finsum (f := fun (l : Λ) (z : E) => φ (z + l)) (fun l => ?_) hlf` and prove the remaining obligations. Rewrite using `[contMDiff_iff_contDiff]`. Conclude with `hφs.comp (contDiff_id.add contDiff_const)`. Introduce `l z show ∑ᶠ m : Λ, φ (z + l + m) = ∑ᶠ m : Λ, φ (z + m)`. Rewrite using `[← finsum_comp_equiv (Equiv.addLeft l) (f := fun m : Λ => φ (z + m))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[add_assoc]`. Establish `h1 : Function.support (fun z => ∑ᶠ l : Λ, φ (z + l)) ⊆ ⋃ l : Λ, Function.support fun z : E => φ (z + l)`. Introduce `z hz`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_iUnion, Function.mem_support, not_exists, not_not] at hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hz (by simp [hn])`. Use `(closure_mono h1).trans ?_` and prove the remaining obligations. Rewrite using `[hlf.closure_iUnion]`. Use `Set.iUnion_subset fun l => ?_` and prove the remaining obligations. Establish `h2 : closure (Function.support fun z : E => φ (z + l)) ⊆ (fun z : E => z + l) ⁻¹' tsupport φ` using `closure_minimal (fun z hz => subset_tsupport _ hz) ((isClosed_tsupport φ).preimage (by fun_prop))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Use `hper (-l) _ (hφU (h2 hz))` as an intermediate fact. Simplify using `using this`. Conclude with `fun z => finsum_nonneg fun l => h0 _`. Establish `h1` using `single_le_finsum (f := fun l : Λ => φ (x + l)) 0 (hlf.point_finite x) (fun l => h0 _)`.
-
-Simplify using `only [ZeroMemClass.coe_zero, add_zero, hφx] at h1`. Conclude with `lt_of_lt_of_le one_pos h1`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_periodic_bump (Λ : Submodule ℤ E) [DiscreteTopology Λ] {U : Set E}
     (hU : IsOpen U) (hper : ∀ (l : Λ) z, z ∈ U → z + l ∈ U) {x : E} (hx : x ∈ U) :
@@ -90,9 +88,9 @@ open scoped Pointwise in
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] in
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `b'` to `b.ofZLatticeBasis ℝ Λ`. Establish `hK : IsCompact (closure (ZSpan.fundamentalDomain b'))` using `(ZSpan.fundamentalDomain_isBounded b').isCompact_closure`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover V hV (fun z _ => Set.mem_iUnion.2 (hcov z))`. Use `⟨t, fun z => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk, hz⟩` from `Set.mem_iUnion₂.1 (ht (subset_closure (ZSpan.fract_mem_fundamentalDomain b' z)))`. Establish `hmem : (ZSpan.floor b' z : E) ∈ Λ`. Conclude with `(b.ofZLatticeBasis_span ℝ Λ).le (ZSpan.floor b' z).2`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Simplify `hper k ⟨_, hmem⟩ _ hz` using `[ZSpan.fract_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PeriodicPartition.exists_finite_subcover (Λ : Submodule ℤ E) [DiscreteTopology Λ] [IsZLattice ℝ Λ]
     {κ : Type} (V : κ → Set E) (hV : ∀ k, IsOpen (V k))
@@ -112,15 +110,13 @@ theorem _root_.GlobalTheory.PeriodicPartition.exists_finite_subcover (Λ : Submo
   simpa [ZSpan.fract_apply] using hper k ⟨_, hmem⟩ _ hz
 
 /- English proof (translation)
-Use `choose c hc using hcov`. Use `choose ψ hψs hψp hψU hψ0 hψx using fun x => exists_periodic_bump Λ (hU (c x)) (hper (c x)) (hc x)`. Take `⟨t, ht⟩` from `exists_finite_subcover Λ (fun x => {z | 0 < ψ x z}) (fun x => isOpen_lt continuous_const (hψs x).continuous) (fun x l z hz => by simpa [hψp] using hz) (fun z => ⟨z, hψx z⟩)`. Establish `hS : ∀ z, 0 < ∑ x ∈ t, ψ x z` using `fun z => by`. Take `⟨x, hx, hz⟩` from `ht z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_pos' (fun x _ => hψ0 x z) ⟨x, hx, hz⟩`. Use `⟨t.image c, fun i z => (∑ x ∈ t with c x = i, ψ x z) / ∑ x ∈ t, ψ x z, fun i => ⟨?_, ?_, ?_⟩, fun z => ?_⟩` and prove the remaining obligations. Conclude with `(ContDiff.sum fun x _ => hψs x).div (ContDiff.sum fun x _ => hψs x) fun z => (hS z).ne'`. Introduce `l z`. Simplify using `only [hψp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hcl : IsClosed (⋃ x ∈ t.filter (fun x => c x = i), tsupport (ψ x))` using `isClosed_biUnion_finset fun x _ => isClosed_tsupport _`. Use `(closure_minimal ?_ hcl).trans ?_` and prove the remaining obligations. Introduce `z hz`. Assume the negation of the conclusion as `hn`. Use `hz ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∑ x ∈ t with c x = i, ψ x z = 0` using `Finset.sum_eq_zero fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hn (Set.mem_iUnion₂.2 ⟨x, hx, subset_tsupport _ h⟩)`. Simplify using `only [this, zero_div]`. Use `Set.iUnion₂_subset fun x hx => ?_` and prove the remaining obligations.
-
-Rewrite using `[← (Finset.mem_filter.1 hx).2]`. Conclude with `hψU x`. Rewrite using `[← Finset.sum_div, Finset.sum_fiberwise_of_maps_to (fun x hx => Finset.mem_image_of_mem c hx), div_self (hS z).ne']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_partition (Λ : Submodule ℤ E) [DiscreteTopology Λ] [IsZLattice ℝ Λ]
     {ι : Type} (U : ι → Set E) (hU : ∀ i, IsOpen (U i))
@@ -167,7 +163,7 @@ open scoped ContDiff BigOperators Real Topology Manifold in
 open scoped Pointwise in
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.PeriodicPartition.locallyFinite_support_translate Λ φ hφ).point_finite z`.
+A detailed English derivation is pending.
 -/
 private theorem hasFiniteSupport_lattice_translate (Λ : Submodule ℤ E) [DiscreteTopology Λ] (φ : E → ℝ)
     (hφ : HasCompactSupport φ) (z : E) :
@@ -179,7 +175,7 @@ open scoped ContDiff BigOperators Real Topology Manifold in
 open scoped Pointwise in
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] in
 /- English proof (translation)
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Take `⟨s, hs⟩` from `finsum_eventually_eq_sum hlf x`. Conclude with `(ContDiff.sum fun i _ => hf i).contDiffAt.congr_of_eventuallyEq hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem contDiff_finsum_of_locallyFinite_support {ι : Type} {f : ι → E → ℝ}
     (hf : ∀ i, ContDiff ℝ ∞ (f i)) (hlf : LocallyFinite fun i => Function.support (f i)) :
@@ -194,7 +190,7 @@ open scoped ContDiff BigOperators Real Topology Manifold in
 open scoped Pointwise in
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] in
 /- English proof (translation)
-The claim follows from `contDiff_finsum_of_locallyFinite_support (fun l => hs.comp (contDiff_id.add contDiff_const)) (_root_.GlobalTheory.PeriodicPartition.locallyFinite_support_translate Λ φ hφ)`.
+A detailed English derivation is pending.
 -/
 private theorem contDiff_finsum_lattice_translate (Λ : Submodule ℤ E) [DiscreteTopology Λ] (φ : E → ℝ)
     (hφ : HasCompactSupport φ) (hs : ContDiff ℝ ∞ φ) :
@@ -207,7 +203,7 @@ open scoped ContDiff BigOperators Real Topology Manifold in
 open scoped Pointwise in
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] in
 /- English proof (translation)
-Rewrite using `[← finsum_comp_equiv (Equiv.addLeft l) (f := fun m : Λ => φ (z + m))]`. Simplify using `[add_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem finsum_lattice_translate_add (Λ : Submodule ℤ E) (φ : E → ℝ) (l : Λ) (z : E) :
     ∑ᶠ m : Λ, φ (z + l + m) = ∑ᶠ m : Λ, φ (z + m) := by
@@ -219,11 +215,11 @@ open scoped ContDiff BigOperators Real Topology Manifold in
 open scoped Pointwise in
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] in
 /- English proof (translation)
-Establish `hlf` using `_root_.GlobalTheory.PeriodicPartition.locallyFinite_support_translate Λ φ hφ`. Establish `h1 : Function.support (fun z => ∑ᶠ l : Λ, φ (z + l)) ⊆ ⋃ l : Λ, Function.support fun z => φ (z + l)`. Introduce `z hz`. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_iUnion, Function.mem_support, not_exists, not_not] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Conclude with `hz (by simp [h])`. Introduce `z hz`. Establish `hz'` using `closure_mono h1 hz`. Rewrite `hz'` using `[hlf.closure_iUnion]`. Take `⟨l, hl⟩` from `Set.mem_iUnion.1 hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl' : z + l ∈ tsupport φ` using `tsupport_comp_subset_preimage φ (continuous_add_right (l : E)) hl`. Simplify using `using hper (-l) _ (hU hl')`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem tsupport_finsum_lattice_translate_subset (Λ : Submodule ℤ E) [DiscreteTopology Λ]
     (φ : E → ℝ) (hφ : HasCompactSupport φ) (U : Set E) (hU : tsupport φ ⊆ U)
@@ -247,35 +243,29 @@ open Complex Matrix in
 open scoped ContDiff BigOperators Real Topology Manifold in
 
 /- English proof (translation)
-Introduce `g Λ hdisc hspan ι U hU hper hcov`. Use `haveI := hdisc`. Use `haveI : IsZLattice ℝ Λ := ⟨hspan⟩`. Take `⟨t, ht⟩` from `_root_.GlobalTheory.PeriodicPartition.exists_finite_subcover Λ (fun x : Fin g → ℂ => {z | ∃ l : Λ, z + (l : Fin g → ℂ) ∈ Metric.ball x 1}) (fun x => by`. Establish `hset : {z | ∃ l : Λ, z + (l : Fin g → ℂ) ∈ Metric.ball x 1} = ⋃ l : Λ, (· + (l : Fin g → ℂ)) ⁻¹' Metric.ball x 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[hset]`. Conclude with `isOpen_iUnion fun l => Metric.isOpen_ball.preimage (continuous_add_right _))`. Use the proof step `(fun x l z ⟨m, hm⟩ => ⟨m - l, by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hzm : z + (l : Fin g → ℂ) + ((m - l : Λ) : Fin g → ℂ) = z + m` using `by push_cast; abel`. Rewrite using `[hzm]`. Conclude with `hm⟩)`. Use the proof step `(fun z => ⟨z, 0, by simp⟩)`. Set `β : (Fin g → ℂ) → (Fin g → ℂ) → ℝ` to `fun x => ⇑(⟨1, 2, one_pos, one_lt_two⟩ : ContDiffBump x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Set `θ : (Fin g → ℂ) → ℝ` to `fun z => ∑ x ∈ t, β x z`. Establish `hθs : ContDiff ℝ ∞ θ` using `ContDiff.sum fun x _ => ContDiffBump.contDiff _`. Establish `hθc : HasCompactSupport θ`. Establish `hθeq : θ = ∑ x ∈ t, β x`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[θ, Finset.sum_apply]`. Rewrite using `[hθeq]`. Conclude with `HasCompactSupport.finset_sum fun x _ => ContDiffBump.hasCompactSupport _`. Establish `hθn : ∀ z, 0 ≤ θ z` using `fun z => Finset.sum_nonneg fun x _ => ContDiffBump.nonneg _`. Establish `hθ1 : ∀ x ∈ t, ∀ y ∈ Metric.ball x 1, 1 ≤ θ y`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx y hy`. Establish `h` using `Finset.single_le_sum (f := fun x => β x y) (fun x _ => ContDiffBump.nonneg _) hx`. Establish `h1 : β x y = 1` using `ContDiffBump.one_of_mem_closedBall _ (Metric.ball_subset_closedBall hy)`. Use `show 1 ≤ ∑ x ∈ t, β x y`. Combine the linear equalities and inequalities to obtain the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Take `⟨p, hp⟩` from `SmoothPartitionOfUnity.exists_isSubordinate 𝓘(ℝ, Fin g → ℂ) isClosed_univ U hU (fun z _ => Set.mem_iUnion.2 (hcov z))`. Establish `hps : ∀ i, ContDiff ℝ ∞ (p i)` using `fun i => contMDiff_iff_contDiff.1 (p i).contMDiff`. Establish `hsfin` using `p.locallyFinite.finite_nonempty_inter_compact hθc`. Set `s` to `hsfin.toFinset`. Establish `hkey : ∀ y, θ y * ∑ i ∈ s, p i y = θ y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `y`. Distinguish the cases in `hy : θ y = 0`. Simplify using `[hy]`. Establish `hsum : ∑ᶠ i, p i y = ∑ i ∈ s, p i y`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Simplify using `only [s, Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Conclude with `⟨y, hi, subset_tsupport _ hy⟩`. Rewrite using `[← hsum, p.sum_eq_one (Set.mem_univ y), mul_one]`. Set `a : ι → (Fin g → ℂ) → ℝ` to `fun i z => θ z * p i z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `has : ∀ i, ContDiff ℝ ∞ (a i)` using `fun i => hθs.mul (hps i)`. Establish `hac : ∀ i, HasCompactSupport (a i)` using `fun i => hθc.mul_right`. Establish `hat : ∀ i, tsupport (a i) ⊆ U i` using `fun i => tsupport_mul_subset_right.trans (hp i)`. Set `Θ : (Fin g → ℂ) → ℝ` to `fun z => ∑ᶠ l : Λ, θ (z + l)`. Establish `hΘpos : ∀ z, 0 < Θ z`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Take `⟨x, hx, l, hl⟩` from `ht z`. Conclude with `lt_of_lt_of_le one_pos ((hθ1 x hx _ hl).trans (single_le_finsum l (hasFiniteSupport_lattice_translate Λ θ hθc z) fun m => hθn _))`. Establish `hΘs : ContDiff ℝ ∞ Θ` using `contDiff_finsum_lattice_translate Λ θ hθc hθs`. Use `⟨s, fun i z => (∑ᶠ l : Λ, a i (z + l)) / Θ z, fun i => ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(contDiff_finsum_lattice_translate Λ (a i) (hac i) (has i)).div hΘs fun z => (hΘpos z).ne'`. Introduce `l z`. Simplify using `only [Θ]`. Rewrite using `[finsum_lattice_translate_add, finsum_lattice_translate_add]`. Use `show tsupport (fun z => (∑ᶠ l : Λ, a i (z + l)) / Θ z) ⊆ U i`.
-
-Establish `hfun : (fun z => (∑ᶠ l : Λ, a i (z + l)) / Θ z) = fun z => (∑ᶠ l : Λ, a i (z + l)) * (Θ z)⁻¹`. Use extensionality with `z`. Rewrite using `[div_eq_mul_inv]`. Rewrite using `[hfun]`. Conclude with `tsupport_mul_subset_left.trans (tsupport_finsum_lattice_translate_subset Λ (a i) (hac i) (U i) (hat i) (hper i))`.
-
-Introduce `z show ∑ i ∈ s, (∑ᶠ l : Λ, a i (z + l)) / Θ z = 1`. Rewrite using `[← Finset.sum_div, div_eq_one_iff_eq (hΘpos z).ne', ← finsum_sum_comm s (fun (l : Λ) i => a i (z + l)) (fun i _ => hasFiniteSupport_lattice_translate Λ (a i) (hac i) z)]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `l`. Simplify using `only [a]`.
-
-Rewrite using `[← Finset.mul_sum]`. Conclude with `hkey _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_smooth_periodic_partition_of_unity :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ (ι : Type) (U : ι → Set (Fin g → ℂ)), (∀ i, IsOpen (U i)) → (∀ i (l : Λ) z, z ∈ U i → z + l ∈ U i) → (∀ z, ∃ i, z ∈ U i) → ∃ (s : Finset ι) (ρ : ι → (Fin g → ℂ) → ℝ), (∀ i, ContDiff ℝ ∞ (ρ i) ∧ (∀ (l : Λ) z, ρ i (z + l) = ρ i z) ∧ tsupport (ρ i) ⊆ U i) ∧ ∀ z, ∑ i ∈ s, ρ i z = 1 := by

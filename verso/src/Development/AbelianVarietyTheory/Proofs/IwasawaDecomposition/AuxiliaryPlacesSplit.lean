@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.HeightCounting.Up
 
 /- English proof (translation)
-Take `⟨hpr, hm⟩` from `hc p hp`. Establish `h` using `(GlobalTheory.HostSplit.split_of_one_mod R H p hpr hm).1`. Take `⟨-, he, hf⟩` from `GlobalTheory.unramified_degree_one_of_ncard_placesOver H.E p hpr h v hv`. Conclude with `GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.isSplitPl_of_degree_one H v hf he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSplitPl_of_mem_levelPrimes {R : Ranks} (H : Host R)
     (hc : ∀ p ∈ H.levelPrimes, p.Prime ∧ p % (H.QS * H.q * H.d) = 1) {p : ℕ} (hp : p ∈ H.levelPrimes)
@@ -22,9 +22,7 @@ theorem isSplitPl_of_mem_levelPrimes {R : Ranks} (H : Host R)
   exact GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.isSplitPl_of_degree_one H v hf he
 
 /- English proof (translation)
-Introduce `_`. Use `StepW.of_all fun K B f T w _ _ _ P x v hv => ?_` and prove the remaining obligations. Establish `hc : ∀ p ∈ (Dof x).host.levelPrimes, p.Prime ∧ p % ((Dof x).host.QS * (Dof x).host.q * (Dof x).host.d) = 1` using `(w.st x.o.Z).B.level_cond`. Break down `hv with hv | hv` into its components or cases. Conclude with `isSplitPl_of_mem_levelPrimes _ hc (Dof x).host.pde_level.1 v hv`.
-
-Conclude with `isSplitPl_of_mem_levelPrimes _ hc (Dof x).host.pde_level.2 v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem split_allSt : PrN → AllSt fun _ _ _ _ _ _ x => ∀ v : HeightOneSpectrum (𝓞 (Dof x).host.E), v ∈ placesOver (Dof x).host.E (Dof x).host.pde ∨ v ∈ placesOver (Dof x).host.E (Dof x).host.pde' → IsSplitPl (Dof x).host v := by
   intro _

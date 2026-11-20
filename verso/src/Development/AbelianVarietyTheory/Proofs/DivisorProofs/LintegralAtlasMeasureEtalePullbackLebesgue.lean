@@ -22,7 +22,7 @@ def rho (A : WeightedAtlas n Y ι La) (U : Set Y) (z : Y → V n) (x : U) : ℝ�
   ENNReal.ofReal (A.nsq A.kap (jdet A z) x)⁻¹
 
 /- English proof (translation)
-Establish `hfr` using `GlobalTheory.T.jacobianDet_isFrameOn_canonicalWeight n Y ι La A U z hE`. Establish `hc : ContinuousOn (A.nsq A.kap (jdet A z)) U` using `api_nsq_contOn A hE.isOpen hfr.1`. Establish `hc' : Continuous (fun x : U => A.nsq A.kap (jdet A z) x)` using `hc.restrict`. Conclude with `ENNReal.measurable_ofReal.comp hc'.measurable.inv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_measurable (A : WeightedAtlas n Y ι La) {U : Set Y} {z : Y → V n}
     (hE : Etale A U z) : Measurable (rho A U z) := by
@@ -32,29 +32,27 @@ theorem rho_measurable (A : WeightedAtlas n Y ι La) {U : Set Y} {z : Y → V n}
   exact ENNReal.measurable_ofReal.comp hc'.measurable.inv
 
 /- English proof (translation)
-Establish `hUm : MeasurableSet U` using `hE.isOpen.measurableSet`. Establish `hemb` using `MeasurableEmbedding.subtype_coe hUm`. Establish `hz : IsLocalHomeomorph (fun y : U => z y)` using `GlobalTheory.T.etale_isLocalHomeomorph' n Y ι La A U z hE`. Establish `hfr` using `GlobalTheory.T.jacobianDet_isFrameOn_canonicalWeight n Y ι La A U z hE`. Establish `hρ : Measurable (rho A U z)` using `rho_measurable A hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hemb.comap_apply]`. Establish `hBY : MeasurableSet (Subtype.val '' B : Set Y)` using `hemb.measurableSet_image.2 hB`. Rewrite using `[A.mu_chart i _ hBY (by rintro _ ⟨m, hm, rfl⟩; exact hBi m hm)]`. Establish `hBimg : MeasurableSet (e '' B)`. Use `measurableSet_image_of_chart n (fun y : U => z y) e he B hB hBs` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.image_congr fun m hm => he (hBs hm)]`. Then use the resulting hypothesis. Establish `hR : ∫⁻ m in B, rho A U z m ∂vol n (fun y : U => z y) = ∫⁻ w in e '' B, rho A U z (e.symm w)`. Rewrite using `[← lintegral_indicator hB, lintegral_vol_chart n _ hz e he _ (hρ.indicator hB) (fun m hm => Set.indicator_of_notMem (fun h => hm (hBs h)) _)]`. Establish `hsub : e '' B ⊆ e.target` using `fun _ ⟨m, hm, hmw⟩ => hmw ▸ e.map_source (hBs hm)`. Rewrite using `[← Set.inter_eq_left.2 hsub, ← Measure.restrict_restrict hBimg, ← lintegral_indicator hBimg]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `setLIntegral_congr_fun e.open_target.measurableSet fun w hw => ?_` and prove the remaining obligations. Distinguish the cases in `h : e.symm w ∈ B`. Establish `hw' : w ∈ e '' B` using `⟨e.symm w, h, e.right_inv hw⟩`. Simplify using `only [Set.indicator_of_mem h, Set.indicator_of_mem hw']`. Establish `hw' : w ∉ e '' B`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `⟨m, hm, rfl⟩`. Conclude with `h (by rw [e.left_inv (hBs hm)]; exact hm)`. Simplify using `only [Set.indicator_of_notMem h, Set.indicator_of_notMem hw']`. Use `set F : V n → V n := z ∘ (A.chart i).symm with hFdef`. Use `set S := A.chart i '' (Subtype.val '' B)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : MeasurableSet S` using `measurableSet_image_of_chart n (A.chart i) (A.chart i) (fun _ _ => rfl) _ hBY (by rintro _ ⟨m, hm, rfl⟩; exact hBi m hm)`. Establish `hOo : IsOpen ((A.chart i).target ∩ (A.chart i).symm ⁻¹' U)` using `(A.chart i).isOpen_inter_preimage_symm hE.isOpen`. Establish `hSO : S ⊆ (A.chart i).target ∩ (A.chart i).symm ⁻¹' U`. Introduce and unpack `_ ⟨_, ⟨m, hm, rfl⟩, rfl⟩`. Use `⟨(A.chart i).map_source (hBi m hm), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show (A.chart i).symm (A.chart i m) ∈ U`. Rewrite using `[(A.chart i).left_inv (hBi m hm)]`. Conclude with `m.2`. Establish `hFm : ∀ m ∈ B, F (A.chart i m) = e m` using `fun m hm => by`. Simplify using `only [hFdef, Function.comp_apply, (A.chart i).left_inv (hBi m hm)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `he (hBs hm)`. Establish `himg : e '' B = F '' S`. Rewrite using `[Set.image_image, Set.image_image]`. Conclude with `(Set.image_congr fun m hm => hFm m hm).symm`. Establish `hinj : Set.InjOn F S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨m1, hm1, rfl⟩, rfl⟩ _ ⟨_, ⟨m2, hm2, rfl⟩, rfl⟩ h`. Rewrite `h` using `[hFm m1 hm1, hFm m2 hm2]`. Rewrite using `[e.injOn (hBs hm1) (hBs hm2) h]`. Establish `hder : ∀ v ∈ S, HasFDerivWithinAt F ((fderiv ℂ F v).restrictScalars ℝ) S v` using `fun v hv => ((((hE.holo i).differentiableAt (hOo.mem_nhds (hSO hv))).hasFDerivAt).restrictScalars ℝ).hasFDerivWithinAt`. Rewrite using `[hR, himg, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hS hder hinj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `setLIntegral_congr_fun hS ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨m, hm, rfl⟩, rfl⟩`. Establish `hmi` using `hBi m hm`. Establish `hne : jdet A z i m ≠ 0` using `hE.det_ne i m m.2 hmi`. Establish `hns` using `api_nsq_eq A hfr.1 hmi m.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hjd : (fderiv ℂ F (A.chart i m)).det = jdet A z i m` using `rfl`. Simplify using `only`. Rewrite using `[hFm m hm, e.left_inv (hBs hm), (A.chart i).left_inv hmi, rho, ← hns, ← ENNReal.ofReal_mul (abs_nonneg _), fc_det_real, hjd]`. Use `congr 1`. Establish `h2 : 0 < ‖jdet A z i m‖ ^ 2` using `by positivity`.
-
-Rewrite using `[mul_inv, Real.exp_neg, inv_inv]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem mu_piece (A : WeightedAtlas n Y ι La) {U : Set Y} {z : Y → V n}
     (hE : Etale A U z) (e : OpenPartialHomeomorph U (V n))
@@ -133,13 +131,13 @@ end GlobalTheory.EtaleMeasure
 namespace GlobalTheory.EtaleMeasure
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A U z hE φ hφ`. Establish `hUm : MeasurableSet U` using `hE.isOpen.measurableSet`. Establish `hz : IsLocalHomeomorph (fun y : U => z y)` using `GlobalTheory.T.etale_isLocalHomeomorph' n Y ι La A U z hE`. Establish `hρ : Measurable (rho A U z)` using `rho_measurable A hE`. Establish `hmeas : A.mu.comap Subtype.val = (vol n (fun y : U => z y)).withDensity (rho A U z)` using `by choose e he hxe using fun x : U => exists_chart n _ hz x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `W : U → Set U` to `fun x => (e x).source ∩ Subtype.val ⁻¹' (A.chart (A.pick x)).source`. Establish `hWo : ∀ x, IsOpen (W x)` using `fun x => (e x).open_source.inter ((A.chart _).open_source.preimage continuous_subtype_val)`. Take `⟨T, hTc, hTW⟩` from `TopologicalSpace.isOpen_iUnion_countable W hWo`. Establish `huniv : ⋃ t : T, W t = Set.univ`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : x ∈ ⋃ i ∈ T, W i` using `hTW ▸ Set.mem_iUnion.2 ⟨x, hxe x, A.mem_pick _⟩`. Take `⟨t, ht, hxt⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `Set.mem_iUnion.2 ⟨⟨t, ht⟩, hxt⟩`. Use `haveI := hTc.to_subtype`. Use `Measure.ext_of_iUnion_eq_univ huniv fun t => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `B hB`. Rewrite using `[Measure.restrict_apply hB, Measure.restrict_apply hB, withDensity_apply _ (hB.inter (hWo t).measurableSet)]`. Conclude with `mu_piece A hE (e t) (he t) (A.pick (t : Y)) (B ∩ W t) (hB.inter (hWo t).measurableSet) (fun m hm => hm.2.1) (fun m hm => hm.2.2)`. Rewrite using `[← lintegral_subtype_comap hUm, hmeas]`. Conclude with `(lintegral_withDensity_eq_lintegral_mul _ hρ (hφ.comp measurable_subtype_coe)).trans (lintegral_congr fun x => mul_comm _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_mu_etale : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (U : Set Y) (z : Y → V n), Etale A U z → ∀ φ : Y → ℝ≥0∞, Measurable φ → ∫⁻ y in U, φ y ∂A.mu = ∫⁻ x : U, φ x * ENNReal.ofReal (A.nsq A.kap (jdet A z) x)⁻¹ ∂vol n (fun y : U => z y) := by
   intro n Y _ _ _ _ _ ι La _ A U z hE φ hφ

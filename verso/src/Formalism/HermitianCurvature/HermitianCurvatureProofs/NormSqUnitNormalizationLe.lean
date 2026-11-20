@@ -16,7 +16,7 @@ def N1 {n : ℕ} (x : Fin n → ℤ) : ℕ := ∑ i, (x i).natAbs
 def Ninf {n : ℕ} (x : Fin n → ℤ) : ℕ := Finset.univ.sup fun i => (x i).natAbs
 
 /- English proof (translation)
-Unfold `N1`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Simplify `Int.natAbs_add_le (x i) (y i)` using `[Pi.add_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma n1_add_le {n : ℕ} (x y : Fin n → ℤ) : N1 (x + y) ≤ N1 x + N1 y := by
   unfold N1
@@ -25,9 +25,9 @@ lemma n1_add_le {n : ℕ} (x y : Fin n → ℤ) : N1 (x + y) ≤ N1 x + N1 y := 
   simpa [Pi.add_apply] using Int.natAbs_add_le (x i) (y i)
 
 /- English proof (translation)
-Unfold `Ninf`. Use `Finset.sup_le fun i hi => ?_` and prove the remaining obligations. Establish `h` using `Int.natAbs_add_le (x i) (y i)`. Establish `h1 : (x i).natAbs ≤ Finset.univ.sup fun i => (x i).natAbs` using `Finset.le_sup (f := fun i => (x i).natAbs) hi`. Establish `h2 : (y i).natAbs ≤ Finset.univ.sup fun i => (y i).natAbs` using `Finset.le_sup (f := fun i => (y i).natAbs) hi`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma Ninf_add {n : ℕ} (x y : Fin n → ℤ) : Ninf (x + y) ≤ Ninf x + Ninf y := by
   unfold Ninf
@@ -39,13 +39,13 @@ lemma Ninf_add {n : ℕ} (x y : Fin n → ℤ) : Ninf (x + y) ≤ Ninf x + Ninf 
   omega
 
 /- English proof (translation)
-Simplify using `[N1]`.
+Simplify using the standard rewrite rules.
 -/
 lemma n1_zero {n : ℕ} : N1 (0 : Fin n → ℤ) = 0 := by
   simp [N1]
 
 /- English proof (translation)
-Unfold `Ninf`. Apply `Nat.eq_zero_of_le_zero` to reduce the goal to its premises. Conclude with `Finset.sup_le fun i _ => by simp`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma Ninf_zero {n : ℕ} : Ninf (0 : Fin n → ℤ) = 0 := by
   unfold Ninf
@@ -53,7 +53,7 @@ lemma Ninf_zero {n : ℕ} : Ninf (0 : Fin n → ℤ) = 0 := by
   exact Finset.sup_le fun i _ => by simp
 
 /- English proof (translation)
-Unfold `N1 eI`. Apply the tactic sequence `have h : ∀ i, (if i ∈ I then (1 : ℤ) else 0).natAbs = if i ∈ I then 1 else 0 := fun i => by split_ifs <;> rfl`. Simplify using `only [h]`. Rewrite using `[Finset.sum_boole]`. Simplify using `[Finset.filter_mem_eq_inter]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma n1_eI_eq_card {n : ℕ} (I : Finset (Fin n)) : N1 (eI I) = I.card := by
   unfold N1 eI
@@ -64,7 +64,7 @@ lemma n1_eI_eq_card {n : ℕ} (I : Finset (Fin n)) : N1 (eI I) = I.card := by
   simp [Finset.filter_mem_eq_inter]
 
 /- English proof (translation)
-Unfold `Ninf`. Use `Finset.sup_le fun i _ => ?_` and prove the remaining obligations. Unfold `eI`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Ninf_eI {n : ℕ} (I : Finset (Fin n)) : Ninf (eI I) ≤ 1 := by
   unfold Ninf
@@ -73,7 +73,7 @@ lemma Ninf_eI {n : ℕ} (I : Finset (Fin n)) : Ninf (eI I) ≤ 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `I J h`. Use extensionality with `i`. Use `congrFun h i` as an intermediate fact. Unfold `eI at this`. Apply the tactic sequence `by_cases hI : i ∈ I <;> by_cases hJ : i ∈ J <;> simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma eI_inj {n : ℕ} : Function.Injective (eI (n := n)) := by
   intro I J h
@@ -89,7 +89,7 @@ def aF {n : ℕ} (S : Finset (Finset (Fin n))) (co : Finset (Fin n) → ℂ) : (
     (fun I hI => by by_contra h'; exact hI (if_neg h')))
 
 /- English proof (translation)
-Unfold `aF`. Rewrite using `[Finsupp.sum_mapDomain_index_inj eI_inj, Finsupp.onFinset_sum _ (fun a => h0 _)]`. Conclude with `Finset.sum_congr rfl fun I hI => by rw [if_pos hI]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma aF_sum {M : Type*} [AddCommMonoid M] {n : ℕ} (S : Finset (Finset (Fin n))) (co : Finset (Fin n) → ℂ)
     (h : (Fin n → ℤ) → ℂ → M) (h0 : ∀ ν, h ν 0 = 0) : (aF S co).sum h = ∑ I ∈ S, h (eI I) (co I) := by
@@ -98,7 +98,7 @@ lemma aF_sum {M : Type*} [AddCommMonoid M] {n : ℕ} (S : Finset (Finset (Fin n)
   exact Finset.sum_congr rfl fun I hI => by rw [if_pos hI]
 
 /- English proof (translation)
-Establish `h1` using `Finsupp.mapDomain_support hν`. Rewrite `h1` using `[Finset.mem_image]`. Take `⟨I, hI, rfl⟩` from `h1`. Conclude with `⟨I, Finsupp.support_onFinset_subset hI, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma mem_supp_aF {n : ℕ} (S : Finset (Finset (Fin n))) (co : Finset (Fin n) → ℂ) (ν : Fin n → ℤ)
     (hν : ν ∈ (aF S co).support) : ∃ I ∈ S, ν = eI I := by
@@ -121,9 +121,9 @@ def unitF (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) : B.Mat 
   fun g => ((scF p F : ℝ) : ℂ) • F g
 
 /- English proof (translation)
-Unfold `KB.Pl.V D.vecV`. Use `split_ifs with h1 h2`. Use `JCx1.needs.orbJ_smul_of_ae _ _ _ _ _ c (ae_of_all _ fun q => ?_)` and prove the remaining obligations. Simplify using `only [D.orbIntegrand, B.rho, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`. Rewrite using `[smul_comm]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma V_csmul (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c : ℂ) (γ : C.LPt) :
     p.V (fun g => c • F g) γ = c • p.V F γ := by
@@ -136,13 +136,13 @@ lemma V_csmul (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c :
   · simp
 
 /- English proof (translation)
-Establish `hv : ∀ A : Wq →L[ℂ] Wp, B.hsVec (c • A) = c • B.hsVec A` using `fun A => by`. Use extensionality with `i`. Simplify using `[B.hsVec]`. Establish `hV : D.vecV p.T.base p.ν' p.m₀ (fun g => c • F g) γ = c • D.vecV p.T.base p.ν' p.m₀ F γ` using `V_csmul p F c γ`. Establish `hr : ¬ (P.r + 1 ≤ P.r)` using `by omega`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRR : p.RR (fun g => c • F g) (P.r + 1) [] γ γ = ((‖c‖ ^ 2 : ℝ) : ℂ) * p.RR F (P.r + 1) [] γ γ`. Distinguish the cases in `h : D.IsLocPt γ (P.r + 1)`. Simplify using `only [KB.Pl.RR, D.RRplace, h, and_self, hr, dite_true, dite_false, if_true]`. Rewrite using `[hV]`. Unfold `B.hsInner`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hv, inner_smul_left, inner_smul_right, ← mul_assoc, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[KB.Pl.RR, D.RRplace, h]`. Unfold `TBB.Ew TBB.NP`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hRR, ← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma Ew_csmul (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c : ℂ) (γ : C.LPt) :
     TBB.Ew p (fun _ => 1) (fun g => c • F g) (P.r + 1) [] γ = ‖c‖ ^ 2 * TBB.Ew p (fun _ => 1) F (P.r + 1) [] γ := by
@@ -166,7 +166,7 @@ lemma Ew_csmul (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c 
   ring
 
 /- English proof (translation)
-Unfold `TBB.jN2`. Repeatedly rewrite using `[Ew_csmul, ENNReal.ofReal_mul (sq_nonneg ‖c‖)]`. Conclude with `MeasureTheory.lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_sq_const_smul (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c : ℂ) :
     TBB.jN2 p (fun g => c • F g) = ENNReal.ofReal (‖c‖ ^ 2) * TBB.jN2 p F := by
@@ -175,9 +175,9 @@ lemma norm_sq_const_smul (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ
   exact MeasureTheory.lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
 
 /- English proof (translation)
-Unfold `unitF`. Rewrite using `[norm_sq_const_smul]`. Establish `ht0 : 0 < (TBB.jN2 p F).toReal` using `ENNReal.toReal_pos h0.ne' ht.ne`. Establish `hs : ‖((scF p F : ℝ) : ℂ)‖ ^ 2 = ((TBB.jN2 p F).toReal)⁻¹`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, sq_abs, scF, inv_pow, Real.sq_sqrt ht0.le]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, ENNReal.ofReal_inv_of_pos ht0, ENNReal.ofReal_toReal ht.ne]`. Conclude with `ENNReal.inv_mul_cancel h0.ne' ht.ne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_sq_unit_normalization (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (h0 : 0 < TBB.jN2 p F)
     (ht : TBB.jN2 p F < ⊤) : TBB.jN2 p (unitF p F) = 1 := by
@@ -190,11 +190,9 @@ lemma norm_sq_unit_normalization (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq 
   exact ENNReal.inv_mul_cancel h0.ne' ht.ne
 
 /- English proof (translation)
-Break down `eq_or_ne (TBB.jN2 p F) 0 with h0 | h0` into its components or cases. Unfold `unitF`. Rewrite using `[norm_sq_const_smul, h0, mul_zero]`. Conclude with `zero_le_one`. Break down `eq_or_ne (TBB.jN2 p F) ⊤ with ht | ht` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions.
 
-Unfold `unitF`. Rewrite using `[norm_sq_const_smul]`. Establish `hs : scF p F = 0` using `by simp [scF, ht]`. Rewrite using `[hs]`. Simplify using the standard rewrite rules.
-
-Conclude with `(norm_sq_unit_normalization p F (pos_iff_ne_zero.mpr h0) (lt_top_iff_ne_top.mpr ht)).le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma norm_sq_unit_normalization_le (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) : TBB.jN2 p (unitF p F) ≤ 1 := by
   rcases eq_or_ne (TBB.jN2 p F) 0 with h0 | h0
@@ -210,7 +208,7 @@ lemma norm_sq_unit_normalization_le (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (
   · exact (norm_sq_unit_normalization p F (pos_iff_ne_zero.mpr h0) (lt_top_iff_ne_top.mpr ht)).le
 
 /- English proof (translation)
-Unfold `unitF`. Repeatedly rewrite using `[Ew_csmul, ENNReal.ofReal_mul (sq_nonneg ‖((scF p F : ℝ) : ℂ)‖)]`. Conclude with `hm.const_mul _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma meas_unitF (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (hm : AEMeasurable fun c : Fin (P.r + 1) → ℂ =>
@@ -259,47 +257,41 @@ def pieriExpansionUnitFamily (p : KB.Pl P Wp Wq) (d : PieriExpansionData P Wp Wq
   unitF p (d.J μ)
 
 /- English proof (translation)
-Establish `hn0 : (0 : ℝ) ≤ (d.n : ℝ)` using `Nat.cast_nonneg _`. Establish `hGam0 : 0 ≤ 2 * (d.n : ℝ) ^ (3 / 2 : ℝ) * d.H` using `mul_nonneg (mul_nonneg (by norm_num) (Real.rpow_nonneg hn0 _)) hH`. Establish `hV0 : ∀ (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c : Fin (P.r + 1) → ℂ), ¬ (D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) ∧ 0 < TBB.Gp p (TBB.bigPt P.r c)) → p.V F (TBB.bigPt P.r c) = 0`. Introduce `F c hc`. Unfold `KB.Pl.V D.vecV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs with h1 <;> first | rfl | exact absurd h1 hc`. Establish `hfamV : ∀ ν (c : Fin (P.r + 1) → ℂ), p.V (pieriExpansionUnitFamily p d ν) (TBB.bigPt P.r c) = ((scF p (d.J ν) : ℝ) : ℂ) • p.V (d.J ν) (TBB.bigPt P.r c)` using `fun ν c => V_csmul p (d.J ν) _ _`. Establish `hJV : ∀ ν (c : Fin (P.r + 1) → ℂ), LatticeNorms.N1 (ν - d.lam) ≤ d.q0 → D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) → 0 < TBB.Gp p (TBB.bigPt P.r c) → p.V (d.J ν) (TBB.bigPt P.r c) = ((Real.sqrt (TBB.jN2 p (d.J ν)).toReal : ℝ) : ℂ) • p.V (pieriExpansionUnitFamily p d ν) (TBB.bigPt P.r …`. Introduce `ν c hν hl hg`. Rewrite using `[hfamV, smul_smul, ← Complex.ofReal_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : TBB.jN2 p (d.J ν) = 0`. Rewrite using `[(hD.2.1 ν hν).2 h0 c hl hg, smul_zero]`. Establish `ht` using `(hD.2.1 ν hν).1`. Establish `hpos : 0 < Real.sqrt (TBB.jN2 p (d.J ν)).toReal` using `Real.sqrt_pos.mpr (ENNReal.toReal_pos h0 ht.ne)`. Rewrite using `[scF, mul_inv_cancel₀ hpos.ne', Complex.ofReal_one, one_smul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Fin d.n → ℤ, inferInstance, pieriExpansionUnitFamily p d, d.lam, LatticeNorms.N1, LatticeNorms.Ninf, d.c0, d.q0, 2 * (d.n : ℝ) ^ (3 / 2 : ℝ) * d.H, ?_, hGam0, LatticeNorms.n1_add_le, LatticeNorms.Ninf_add, LatticeNorms.n1_zero, LatticeNorms.Ninf_zero, ?_, hrange, hGb, ?_, fun μ …` and prove the remaining obligations. Rewrite using `[hf]`. Both sides reduce to the same expression. Use `rotate_left`. Introduce `μ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl : LatticeNorms.N1 (d.lam - d.lam) ≤ d.q0` using `by rw [sub_self, LatticeNorms.n1_zero]; exact Nat.zero_le _`. Rewrite using `[hf, norm_sq_unit_normalization p _ hD.1 (hD.2.1 d.lam hl).1]`. Conclude with `norm_sq_unit_normalization_le p _`. Introduce `μ hμ`. Use `set S := powersetCard (P.r + 1) (univ : Finset (Fin d.n)) with hS`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrngI : ∀ I ∈ S, LatticeNorms.N1 (μ + LatticeNorms.eI I - d.lam) ≤ d.q0`. Introduce `I hI`. Establish `hc` using `(Finset.mem_powersetCard.mp hI).2`. Combine the equalities or inequalities in the displayed calculation. Set `co : Finset (Fin d.n) → ℂ` to `fun I => ((scF p (d.J μ) : ℝ) : ℂ) * d.tau μ I * ((Real.sqrt (TBB.jN2 p (d.J (μ + LatticeNorms.eI I))).toReal : ℝ) : ℂ)`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨LatticeNorms.aF S co, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Rewrite using `[LatticeNorms.aF_sum S co (fun ν z => z • fun c => p.V (pieriExpansionUnitFamily p d (μ + ν)) (TBB.bigPt P.r c)) (fun ν => zero_smul _ _), Finset.sum_apply]`. Simplify using `only [Pi.smul_apply]`. Distinguish the cases in `hg : D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) ∧ 0 < TBB.Gp p (TBB.bigPt P.r c)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hl, hG⟩` from `hg`. Rewrite using `[hfamV, smul_comm, hP μ hμ c hl hG, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun I hI => ?_` and prove the remaining obligations. Rewrite using `[hJV _ c (hrngI I hI) hl hG, smul_smul, smul_smul]`. Rewrite using `[hV0 _ c hg, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(Finset.sum_eq_zero fun I _ => by rw [hV0 _ c hg, smul_zero]).symm`. Use `rotate_left`. Introduce `ν hν`. Take `⟨I, hI, rfl⟩` from `LatticeNorms.mem_supp_aF S co ν hν`. Conclude with `⟨by rw [LatticeNorms.n1_eI_eq_card, (Finset.mem_powersetCard.mp hI).2], LatticeNorms.Ninf_eI I⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[LatticeNorms.aF_sum S co (fun _ z => ‖z‖) (fun _ => norm_zero)]`. Establish `hE0 : 0 ≤ (Real.exp 1 * d.n) ^ (P.r + 1)` using `pow_nonneg (mul_nonneg (Real.exp_pos 1).le hn0) _`. Establish `hco : ∀ I ∈ S, ‖co I‖ ≤ d.H ^ (P.r + 1) * Real.sqrt ((Real.exp 1 * d.n) ^ (P.r + 1))`. Introduce `I hI`. Establish `hbd : 0 ≤ d.H ^ (P.r + 1) * Real.sqrt ((Real.exp 1 * d.n) ^ (P.r + 1))` using `mul_nonneg (pow_nonneg hH _) (Real.sqrt_nonneg _)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hτ` using `hT μ hμ I hI`. Distinguish the cases in `h0 : TBB.jN2 p (d.J μ) = 0`. Establish `hz : scF p (d.J μ) = 0` using `by simp [scF, h0]`. Simplify using `only [co, hz, Complex.ofReal_zero, zero_mul, norm_zero]`. Conclude with `hbd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ' : LatticeNorms.N1 (μ - d.lam) ≤ d.q0` using `by omega`. Establish `ht` using `(hD.2.1 μ hμ').1`. Establish `htpos : 0 < (TBB.jN2 p (d.J μ)).toReal` using `ENNReal.toReal_pos h0 ht.ne`. Establish `hsμ : 0 < Real.sqrt (TBB.jN2 p (d.J μ)).toReal` using `Real.sqrt_pos.mpr htpos`. Establish `hdeg` using `hD.2.2 μ hμ h0 I hI`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ENNReal.ofReal ((Real.exp 1 * d.n) ^ (P.r + 1)) * TBB.jN2 p (d.J μ) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top ht.ne`. Establish `htI : (TBB.jN2 p (d.J (μ + LatticeNorms.eI I))).toReal ≤ (Real.exp 1 * d.n) ^ (P.r + 1) * (TBB.jN2 p (d.J μ)).toReal`. Establish `h1` using `ENNReal.toReal_mono hfin hdeg`. Rewrite `h1` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hE0]`. Then use the resulting hypothesis. Establish `hsI : Real.sqrt (TBB.jN2 p (d.J (μ + LatticeNorms.eI I))).toReal ≤ Real.sqrt ((Real.exp 1 * d.n) ^ (P.r + 1)) * Real.sqrt (TBB.jN2 p (d.J μ)).toReal`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.sqrt_mul hE0]`. Conclude with `Real.sqrt_le_sqrt htI`. Establish `hnorm : ‖co I‖ = ‖d.tau μ I‖ * ((Real.sqrt (TBB.jN2 p (d.J μ)).toReal)⁻¹ * Real.sqrt (TBB.jN2 p (d.J (μ + LatticeNorms.eI I))).toReal)`. Simplify using `only [co, scF, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (inv_nonneg.mpr (Real.sqrt_nonneg (TBB.jN2 p (d.J μ)).toReal)), abs_of_nonneg (Real.sqrt_nonneg (TBB.jN2 p (d.J (μ + LatticeNorms.eI I))).toReal)]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hnorm]`. Establish `hratio : (Real.sqrt (TBB.jN2 p (d.J μ)).toReal)⁻¹ * Real.sqrt (TBB.jN2 p (d.J (μ + LatticeNorms.eI I))).toReal ≤ Real.sqrt ((Real.exp 1 * d.n) ^ (P.r + 1))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (Real.sqrt ((Real.exp 1 * d.n) ^ (P.r + 1))), inv_mul_cancel_left₀ hsμ.ne']`. Conclude with `mul_le_mul hτ hratio (mul_nonneg (inv_nonneg.mpr hsμ.le) (Real.sqrt_nonneg _)) (pow_nonneg hH _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : Real.sqrt ((Real.exp 1 * d.n) ^ (P.r + 1)) = (Real.sqrt (Real.exp 1) * Real.sqrt d.n) ^ (P.r + 1)`. Rewrite using `[← Real.sqrt_mul (Real.exp_pos 1).le, ← Real.sqrt_sq (pow_nonneg (Real.sqrt_nonneg (Real.exp 1 * d.n)) (P.r + 1))]`. Use `congr 1`. Rewrite using `[← pow_mul, mul_comm (P.r + 1) 2, pow_mul, Real.sq_sqrt (mul_nonneg (Real.exp_pos 1).le hn0)]`. Establish `hn32 : (d.n : ℝ) ^ (3 / 2 : ℝ) = d.n * Real.sqrt d.n`.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[show (3 / 2 : ℝ) = 1 + 1 / 2 by norm_num, Real.rpow_add' hn0 (by norm_num), Real.rpow_one, Real.sqrt_eq_rpow]`. Establish `hse : Real.sqrt (Real.exp 1) ≤ 2`. Establish `h4 : Real.exp 1 ≤ 2 ^ 2`. Use `Real.exp_one_lt_d9` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hcard : ((S.card : ℕ) : ℝ) ≤ (d.n : ℝ) ^ (P.r + 1)`. Rewrite using `[hS, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]`. Conclude with `(Nat.choose_le_descFactorial _ _).trans (Nat.descFactorial_le_pow _ _)` after adjusting the coercions.
-
-Establish `hbase : 0 ≤ (d.n : ℝ) * d.H * (Real.sqrt (Real.exp 1) * Real.sqrt d.n)` using `mul_nonneg (mul_nonneg hn0 hH) (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _))`. Establish `hb2 : (d.n : ℝ) * d.H * (Real.sqrt (Real.exp 1) * Real.sqrt d.n) ≤ 2 * (d.n * Real.sqrt d.n) * d.H`. Establish `h1` using `mul_le_mul_of_nonneg_left hse (mul_nonneg (mul_nonneg hn0 hH) (Real.sqrt_nonneg (d.n : ℝ)))`. Use polynomial arithmetic with `[h1]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (d.n : ℝ) ^ (P.r + 1) * (d.H ^ (P.r + 1) * Real.sqrt ((Real.exp 1 * d.n) ^ (P.r + 1))) := mul_le_mul_of_nonneg_right hcard (mul_nonneg (pow_nonneg hH _) (Real.sqrt_nonneg _))`. Use `_ = ((d.n : ℝ) * d.H * (Real.sqrt (Real.exp 1) * Real.sqrt d.n)) ^ (P.r + 1) := by rw [hsq]; ring`. Use `_ ≤ (2 * (d.n * Real.sqrt d.n) * d.H) ^ (P.r + 1) := by first`. Consider the case `exact pow_le_pow_left₀ hbase hb2 _`.
-
-Consider the case `exact pow_le_pow_left hbase hb2 _`. Use `_ = (2 * (d.n : ℝ) ^ (3 / 2 : ℝ) * d.H) ^ (P.r + 1) := by rw [hn32]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem family_expansion_of_parts (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b C₃ : ℝ) (a₁ : ℕ)
     (d : PieriExpansionData P Wp Wq) (hf : f = unitF p (d.J d.lam)) (hH : 0 ≤ d.H) (hc0 : P.r + 1 ≤ d.c0)
@@ -442,15 +434,15 @@ theorem family_expansion_of_parts (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq
     _ = (2 * (d.n : ℝ) ^ (3 / 2 : ℝ) * d.H) ^ (P.r + 1) := by rw [hn32]
 
 /- English proof (translation)
-Establish `hb1 : (1 : ℝ) ≤ b` using `by linarith`. Establish `hb0 : (0 : ℝ) < b` using `by linarith`. Establish `hm : ((2 * r + 2 : ℕ) : ℝ) = 2 * (r : ℝ) + 2` using `by push_cast; ring`. Rewrite `hHb`, the goal using `[hm]`. Establish `hr0 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn0 : (0 : ℝ) ≤ (n : ℝ)` using `Nat.cast_nonneg n`. Establish `h32 : (n : ℝ) ^ (3 / 2 : ℝ) ≤ b ^ (3 / 2 : ℝ)` using `Real.rpow_le_rpow hn0 hn (by norm_num)`. Establish `hn32 : (0 : ℝ) ≤ (n : ℝ) ^ (3 / 2 : ℝ)` using `Real.rpow_nonneg hn0 _`. Establish `hX0 : 0 ≤ 2 * (n : ℝ) ^ (3 / 2 : ℝ) * H` using `mul_nonneg (by positivity) hH`. Establish `hX : 2 * (n : ℝ) ^ (3 / 2 : ℝ) * H ≤ b ^ ((5 / 2 : ℝ) + CH * (2 * (r : ℝ) + 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : b ^ ((5 / 2 : ℝ) + CH * (2 * (r : ℝ) + 2)) = b * b ^ (3 / 2 : ℝ) * b ^ (CH * (2 * (r : ℝ) + 2))`. Rewrite using `[Real.rpow_add hb0, show (5 / 2 : ℝ) = 1 + 3 / 2 by norm_num, Real.rpow_add hb0, Real.rpow_one]`. Rewrite using `[e]`. Establish `h1 : 2 * (n : ℝ) ^ (3 / 2 : ℝ) ≤ b * b ^ (3 / 2 : ℝ)` using `mul_le_mul hb h32 hn32 hb0.le`. Conclude with `mul_le_mul h1 hHb hH (mul_pos hb0 (Real.rpow_pos_of_pos hb0 _)).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (2 * (n : ℝ) ^ (3 / 2 : ℝ) * H) ^ (r + 1) ≤ (b ^ ((5 / 2 : ℝ) + CH * (2 * (r : ℝ) + 2))) ^ (r + 1)` using `by first`. Consider the case `exact pow_le_pow_left₀ hX0 hX (r + 1)`. Consider the case `exact pow_le_pow_left hX0 hX (r + 1)`. Use `hpow.trans ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hb0.le]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises. Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hC (sq_nonneg (2 * (r : ℝ) + 2))]`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem coefficient_growth_le_power (n r : ℕ) (b H CH C₃ : ℝ) (hb : 2 ≤ b) (hn : (n : ℝ) ≤ b) (hH : 0 ≤ H)
     (hHb : H ≤ b ^ (CH * ((2 * r + 2 : ℕ) : ℝ))) (hC : CH / 2 + 5 / 8 ≤ C₃) :
@@ -481,7 +473,7 @@ theorem coefficient_growth_le_power (n r : ℕ) (b H CH C₃ : ℝ) (hb : 2 ≤ 
   nlinarith [mul_le_mul_of_nonneg_right hC (sq_nonneg (2 * (r : ℝ) + 2))]
 
 /- English proof (translation)
-The claim follows from `big_cell_expansion_of_family p f b C₃ a₁ (by linarith) (family_expansion_of_parts p f b C₃ a₁ d hf hH hc0 hrange (coefficient_growth_le_power d.n P.r b d.H CH C₃ hb hn hH hHb hC) hP hT hD hM)`.
+A detailed English derivation is pending.
 -/
 theorem big_cell_expansion_of_parts (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b C₃ CH : ℝ) (a₁ : ℕ)
     (d : PieriExpansionData P Wp Wq) (hf : f = unitF p (d.J d.lam)) (hb : 2 ≤ b) (hn : (d.n : ℝ) ≤ b) (hH : 0 ≤ d.H)

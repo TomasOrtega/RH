@@ -14,9 +14,9 @@ namespace GlobalTheory.CM
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `h : (2 * wK H - 1) ^ 2 = -(H.d : OK H)`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e : 2 * H.w0 - 1 = H.rt` using `by rw [H.two_weight_eq_one_add_root]; ring`. Use `H.rt_sq` as an intermediate fact. Rewrite `this` using `[← e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : ((2 : OK H) : 𝓞 E) = 2` using `rfl`. Simplify `this` using `[wK, e2]`. Use `congrArg τ h` as an intermediate fact. Simplify `this` using `[map_ofNat]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem two_mul_sub_one_sq_of_ringHom (τ : OK H →+* ℂ) : (2 * τ (wK H) - 1) ^ 2 = -(H.d : ℂ) := by
   have h : (2 * wK H - 1) ^ 2 = -(H.d : OK H) := by
@@ -30,11 +30,11 @@ theorem two_mul_sub_one_sq_of_ringHom (τ : OK H →+* ℂ) : (2 * τ (wK H) - 1
   simpa [map_ofNat] using this
 
 /- English proof (translation)
-Take `⟨Hm, hH, hpos, hEF⟩` from `hP.2.2.2.2`. Establish `hw0 : Pe (H.w0 • x) = ω • Pe x`. Establish `e : (2 : ℂ) • Pe (H.w0 • x) = (2 : ℂ) • ω • Pe x`. Rewrite using `[two_smul, ← map_add, ← add_smul, ← two_mul, H.two_weight_eq_one_add_root, add_smul, one_smul, map_add, PureType.period_rt_smul hP hx]`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `smul_right_injective _ two_ne_zero e`. Establish `hne : Pe x ≠ 0` using `fun h => h0 (hP.2.1 (by rw [h, map_zero]))`. Use `⟨_, hpos _ hne, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `PureTypeVector.hermForm_smul_smul Hm ω 1 (Pe x) (Pe x)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Rewrite using `[← hEF, hw0, this]`. Simplify using `[PureTypeVector.hermForm_self_im hH]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_hermitianPairing_eq_im_mul_pureType {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D ty Pe) {ω : ℂ} {x : D.La} (hx : x ∈ PureType.lat hP (2 * ω - 1)) (h0 : x ≠ 0) :
@@ -56,11 +56,9 @@ theorem exists_hermitianPairing_eq_im_mul_pureType {D : Datum H} {g : ℕ} {ty :
   simp [PureTypeVector.hermForm_self_im hH]
 
 /- English proof (translation)
-Introduce `hT hL E _ _ _ H D l Xo g ty FU i Pe hP ω C u₀ c T m ε h hu hc hΛ hε hh`. Take `⟨τ, hτ, -⟩` from `GlobalTheory.T.cmCurve_lie_character_of_adjoinGenerator E H ℂ ω C`. Establish `hρ : (2 * ω - 1) ^ 2 = -(H.d : ℂ)` using `hτ ▸ two_mul_sub_one_sq_of_ringHom τ`. Take `⟨φ, hφ, hφe⟩` from `PureType.exists_isHomFamily_complex hT hL.weil FU i hP m u₀ C.dim hu hc hΛ hρ`. Use `⟨φ, GlobalTheory.T.isCMPairingFamily_of_polarisationDiagonal_complex hT hL E H ω C _ ε h T _ φ hh (fun x hx h0 => ?_) (hφ _ (C.basis.1 0)), fun a z => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, e⟩` from `exists_hermitianPairing_eq_im_mul_pureType hP hx h0`. Establish `: (0 : ℝ) < ((ε : ℤ) : ℝ) * ((FU.Di i).EF (H.w0 • x) x : ℤ)`. Rewrite using `[e, ← _root_.mul_assoc]`. Conclude with `mul_pos hε hr`. Conclude with `this` after adjusting the coercions.
-
-Rewrite using `[Over.comp_left, Category.assoc]`. Conclude with `hφe a z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isFam_complex : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Pe : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty Pe) (ω : ℂ) (C : Ell H ℂ ω) (u₀ : HolUnif C.P.A C.P.L C.P.g) (c : ℂ) (T : PAT H (Sp ℂ)) (m : SABMap T.t Xo.univ.t (FU.u i Pe)) (ε : ℤˣ) (h : (FU.Di i).La → (FU.Di i).La → OK H), PureType.IsThetaUnif u₀ → c ≠ 0 → PureType.IsQuadLattice u₀.Λ H.d c → 0 < ((ε : ℤ) : ℝ) * ω.im → IsKForm (FU.Di i) ε h →
   ∃ ψ : PureType.lat hP (2 * ω - 1) → (C.P.A ⟶ T.t.G), IsFam C T h _ ψ ∧ ∀ a (z : ℂ), (u₀.ex (fun _ => c * z) ≫ ψ a).left ≫ m.φ = (FU.ex i Pe (z • Pe a)).left := by

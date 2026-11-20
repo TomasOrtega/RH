@@ -12,29 +12,25 @@ open GlobalTheory GlobalTheory.LBGerm GlobalTheory.AmpleOverBase
 namespace GlobalTheory.GenNearExtend
 
 /- English proof (translation)
-Introduce `Z X e _ _ _ M hM r O hO t ht`. Establish `hL : (M.pull e).IsLB` using `LB.isLB_pull hM e`. Set `f : (X.basicOpen r).toScheme ⟶ X` to `(X.basicOpen r).ι`. Establish `hrange : Set.range (f ≫ e).base ⊆ Set.range O.ι.base`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hO _ y.2`. Set `ψ : (X.basicOpen r).toScheme ⟶ O.toScheme` to `IsOpenImmersion.lift O.ι (f ≫ e) hrange`. Establish `hψ : ψ ≫ O.ι = f ≫ e` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hpt : ∀ y, O.ι (ψ y) = e (f y)` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hψ, Scheme.Hom.comp_apply]`. Set `a : ChartPull (lbPow ((M.pull e).pull f) 1) (M.pull O.ι) ψ` to `{ idx := fun J _ => J PUnit.unit PUnit.unit PUnit.unit le := fun J y hy => by`. Establish `h1` using `mem_pull.1 (mem_pull.1 (mem_powChart.1 hy))`. Use `show ψ y ∈ (M.pull O.ι).U _`. Rewrite using `[mem_pull, hpt]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1`. Use `g := fun y J J' hJ hJ' => by`. Establish `h1` using `mem_powChart.1 hJ`. Establish `h2` using `mem_powChart.1 hJ'`. Establish `h1' : (𝟙 _ ≫ f) y ∈ (M.pull e).U (J PUnit.unit PUnit.unit)` using `mem_pull.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2' : (𝟙 _ ≫ f) y ∈ (M.pull e).U (J' PUnit.unit PUnit.unit)` using `mem_pull.1 h2`. Establish `h3 : ψ y ∈ (M.pull O.ι).U (fun _ => J PUnit.unit PUnit.unit PUnit.unit)`. Rewrite using `[mem_pull, hpt]`. Conclude with `mem_pull.1 (mem_pull.1 h1)`. Establish `h4 : ψ y ∈ (M.pull O.ι).U (fun _ => J' PUnit.unit PUnit.unit PUnit.unit)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[mem_pull, hpt]`. Conclude with `mem_pull.1 (mem_pull.1 h2)`. Use `(gm_lbPow_g 1 (𝟙 _) y J J' hJ hJ').trans ?_` and prove the remaining obligations. Rewrite using `[pow_one, gm_pull_g ((M.pull e)) f (𝟙 _) y _ _ h1 h2, gm_pull_g M e (𝟙 _ ≫ f) y _ _ h1' h2', gm_pull_g M O.ι ψ y _ _ h3 h4, hψ, Category.id_comp] }`. Set `s0 : (M.pull O.ι).Sec` to `⟨fun i => (t.s i).val, fun i j => congrArg Units.val (ht i j)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `t'` to `chartSec a s0`. Establish `ht' : ∀ y, y ∈ nonzeroLocus t'` using `fun y => by`. Take `⟨i, hi⟩` from `exists_chart hM (e (f y))`. Establish `hJ : y ∈ (lbPow ((M.pull e).pull f) 1).U (fun _ _ _ => i)` using `mem_powChart.2 (mem_pull.2 (mem_pull.2 hi))`. Rewrite using `[mem_nonzeroLocus_iff_isUnit t' hJ, gs_chartSec a s0 (𝟙 _) y _ hJ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm : (𝟙 _ ≫ ψ) y ∈ (M.pull O.ι).U (a.idx (fun _ _ _ => i))` using `a.le _ hJ`. Rewrite using `[gs_unit _ y _ hm]`. Conclude with `Units.isUnit _`. Establish `hr : X.basicOpen r = f.opensRange` using `(Scheme.Opens.opensRange_ι _).symm`. Establish `hs₀ : nonzeroLocus (secOfFn (M.pull e) r) = f.opensRange` using `(nonzeroLocus_secOfFn hL r).trans hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hT, hTu⟩` from `exists_push f (nonzeroLocus (secOfFn (M.pull e) r)) hs₀ t'`. Take `⟨N, hN⟩` from `exists_sec_eq_pow_mul hL (secOfFn (M.pull e) r) T hT`. Take `⟨u, hu⟩` from `hN N le_rfl`. Establish `key : ∀ (y' : (X.basicOpen r).toScheme) (J : PUnit → (M.pull e).ι), f y' ∈ powChart (M.pull e) J → (f y' ∈ nonzeroLocus u ↔ y' ∈ nonzeroLocus t')` using `fun y' J hJ => by`. Establish `hs : f y' ∈ nonzeroLocus (secOfFn (M.pull e) r)` using `hs₀ ▸ ⟨y', rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : f y' ∈ nonzeroLocus (secOfFn (M.pull e) r) ⊓ powChart (M.pull e) J` using `⟨hs, hJ⟩`. Establish `e'` using `congrArg (gs (𝟙 X) (f y') _) (hu J)`. Rewrite `e'` using `[gs_res (𝟙 X) (f y') _ hy, gs_mul (𝟙 X) (f y') _ hy, gs_pow (𝟙 X) (f y') _ hy, gs_res (𝟙 X) (f y') _ hy]`. Rewrite using `[mem_nonzeroLocus_iff_powFn u hJ, e', IsUnit.mul_iff, hTu y' J hJ]`. Conclude with `and_iff_right (((mem_nonzeroLocus_iff_powFn _ hJ).1 hs).pow N)`.
-
-Use `⟨secOfPowOne (secCast (by omega) u), ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_secOfPowOne, nonzeroLocus_secCast]`. Introduce `x hx`. Take `⟨y, rfl⟩ : ∃ y, f y = x` from `⟨⟨x, hx⟩, rfl⟩`. Take `⟨i, hi⟩` from `exists_chart hL (f y)`.
-
-Conclude with `(key y (fun _ => i) (mem_powChart.2 hi)).2 (ht' y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_gen_near : ∀ (Z X : Scheme.{0}) (e : X ⟶ Z), IsOpenImmersion e → CompactSpace X →
     QuasiSeparatedSpace X → ∀ (M : LB Z), M.IsLB → ∀ (r : Γ(X, ⊤)) (O : Z.Opens),

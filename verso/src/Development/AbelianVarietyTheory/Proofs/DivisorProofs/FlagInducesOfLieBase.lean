@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.FlagCov
 
 /- English proof (translation)
-Introduce `p1 p2 p3 p4 D O hO B hB R hR c Bs _ q arq nBs E h H hLB Y₀ _ π₀ fl₀ hfb ar₀ n₀`. Take `⟨Bg, jB, πB, u, Gm, hL⟩` from `(lieBase_iff O B R c q E h).1 hLB`. Take `⟨G, _, j, πG, pb, _, _, φ, φs, jG, r, hc⟩` from `GlobalTheory.T.arith_base_hermitian_vector_bundles p1 p2 p3 p4 D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀`. Use `⟨G, inferInstance, j, πG, pb, inferInstance, inferInstance, φ, φs, fun a i => ⟨r a i, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.arith_base_hermitian_bundles_second p1 p2 p3 p4 D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀ G j πG pb φ φs jG r hc a i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(GlobalTheory.T.arith_base_hermitian_bundles_second p1 p2 p3 p4 D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀ G j πG pb φ φs jG r hc a i).2`. Introduce `σ z y y' ch e1 e2 hz`. Conclude with `GlobalTheory.T.arith_base_hermitian_bundles_third p1 p2 p3 p4 D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀ G j πG pb φ φs jG r hc a i σ z y y' ch e1 e2 hz`. Introduce `v e y z yt ch e1 e2 hy`. Conclude with `GlobalTheory.T.arith_base_hermitian_bundles_fourth p1 p2 p3 p4 D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀ G j πG pb φ φs jG r hc a i v e y z yt ch e1 e2 hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flagInduces_of_lieBase : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
   ∀ (D : D7) (O : Setup D), O.Core → ∀ B : ℝ, 2 ≤ B → ∀ R : ℝ, 2 ≤ R → ∀ c : O.s.Comp,

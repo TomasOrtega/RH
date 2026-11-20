@@ -11,55 +11,55 @@ set_option linter.unusedVariables false
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hK : 0 ≤ K` using `c1.trans c1'`. Establish `hy0 : 0 ≤ y` using `by linarith`. Establish `hh0 : 0 ≤ h` using `by linarith`. Establish `hg0 : 0 ≤ g` using `by linarith`. Establish `hnT0 : 0 ≤ nT` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : 0 ≤ a` using `by linarith`. Take `⟨r, hr⟩ : ∃ r, r = M ^ 2 / k` from `⟨_, rfl⟩`. Establish `hr0 : 0 ≤ r` using `by rw [hr]; positivity`. Take `⟨q, hq⟩ : ∃ q, q = M / k` from `⟨_, rfl⟩`. Establish `hq0 : 0 ≤ q` using `by rw [hq]; positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq1 : q ≤ 1` using `by rw [hq]; exact (div_le_one hk).2 hMk`. Take `⟨A1, hA1⟩ : ∃ A1, A1 = nT * a` from `⟨_, rfl⟩`. Establish `hA1a : a ≤ A1` using `by rw [hA1]; exact le_mul_of_one_le_left ha0 hnT`. Establish `hA10 : 0 ≤ A1` using `by linarith`. Take `⟨A3, hA3⟩ : ∃ A3, A3 = M * B0` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA30 : 0 ≤ A3` using `by rw [hA3]; positivity`. Take `⟨A4, hA4⟩ : ∃ A4, A4 = M * Nc` from `⟨_, rfl⟩`. Establish `hA40 : 0 ≤ A4` using `by rw [hA4]; positivity`. Take `⟨E, hE⟩ : ∃ E, E = A1 * (1 + r) + (A3 + A4)` from `⟨_, rfl⟩`. Establish `hA1r : 0 ≤ A1 * r` using `mul_nonneg hA10 hr0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `orbitMap_conj_smul_one : A1 ≤ E` using `by rw [hE]; linarith only [hA1r, hA30, hA40]`. Establish `eA1r : A1 * (1 + r) ≤ E` using `by rw [hE]; linarith only [hA30, hA40]`. Establish `orbitMap_conj_smul_two : A1 * r ≤ E` using `by rw [hE]; linarith only [hA10, hA30, hA40]`. Establish `selfLieBasisVector : A3 ≤ E` using `by rw [hE]; linarith only [hA10, hA1r, hA40]`. Establish `eA34 : A3 + A4 ≤ E` using `by rw [hE]; linarith only [hA10, hA1r]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE0 : 0 ≤ E` using `hA10.trans orbitMap_conj_smul_one`. Establish `e1 : 1 ≤ E` using `by linarith only [ha1, hA1a, orbitMap_conj_smul_one]`. Take `⟨Y, hY⟩ : ∃ Y, Y = yD * yL * y` from `⟨_, rfl⟩`. Establish `hDL : 1 ≤ yD * yL` using `one_le_mul_of_one_le_of_one_le hyD hyL`. Establish `yY : y ≤ Y` using `by rw [hY]; exact le_mul_of_one_le_left hy0 hDL`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `oneY : 1 ≤ Y` using `hy.trans yY`. Establish `yDY : yD ≤ Y`. Rewrite using `[hY, mul_assoc]`. Conclude with `le_mul_of_one_le_right (by linarith) (one_le_mul_of_one_le_of_one_le hyL hy)`. Establish `yLY : yL ≤ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: yL ≤ yD * yL` using `le_mul_of_one_le_left (by linarith) hyD`. Rewrite using `[hY]`. Conclude with `this.trans (le_mul_of_one_le_right (by linarith) hy)`. Establish `hY0 : 0 ≤ Y` using `by linarith`. Take `⟨P, hP⟩ : ∃ P, P = Y * E` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : 0 ≤ P` using `by rw [hP]; positivity`. Establish `EP : E ≤ P` using `by rw [hP]; exact le_mul_of_one_le_left hE0 oneY`. Establish `hLaY : La ≤ 2 * Y` using `by linarith only [hLa, yY]`. Establish `hLY : L ≤ 2 * Y` using `by linarith only [hL, yY]`. Establish `hlkY : lk ≤ g * Y` using `hlk.trans (by gcongr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `T1 : sA * (cCount * (La + M ^ 2 * La / k)) ≤ 4 * K * P`. Establish `e : sA * (cCount * (La + M ^ 2 * La / k)) = (sA * (1 + r)) * (cCount * La)`. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `s1 : sA * (1 + r) ≤ 2 * E`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: sA * (1 + r) ≤ 2 * A1 * (1 + r)` using `by rw [hA1]; gcongr`. Combine the linear relations using `only [this, eA1r]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `T2a : cDiv * nT * a * La ≤ 2 * K * P`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `T2b : cDiv * M * (B0 + Nc) * yD ≤ K * P`. Combine the equalities or inequalities in the displayed calculation. Establish `T3 : M * cE * B0 ≤ K * P`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `T4 : cSlope * nT * a * La * (1 + M / k) ≤ 4 * K * P`. Combine the equalities or inequalities in the displayed calculation. Establish `T5 : lW ≤ P` using `by linarith only [hlW, hA1a, orbitMap_conj_smul_one, EP]`. Establish `T60 : 0 ≤ cLoss * nT * M * b * yL` using `by positivity`. Establish `FreeQuotientRank : cLoss * nT * M * b * yL ≤ K * P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `Tmid : cSl1 * nT * M * (a / k + b') * (cCount * M * L) ≤ 4 * K ^ 2 * P`. Establish `hb'k : b' ≤ a / k` using `by rw [le_div_iff₀ hk]; linarith`. Establish `hQ : nT * M ^ 2 * (a / k + b') ≤ 2 * E`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hQ0 : 0 ≤ nT * M ^ 2 * (a / k + b')` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `T7 : cSl1 * (cLoss * nT * M * b * yL) + cSl1 * nT * M * (a / k + b') * (cCount * M * L) + cSl1 * Xpp + 1 ≤ (5 * K ^ 2 + K + 1) * P`. Establish `s1 : cSl1 * (cLoss * nT * M * b * yL) ≤ K * (K * P)` using `by gcongr`. Establish `s2 : cSl1 * Xpp ≤ K * P` using `by gcongr; linarith only [hX, hA1a, orbitMap_conj_smul_one, EP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `s3 : 1 ≤ P` using `e1.trans EP`. Combine the linear relations using `only [s1, s2, s3, Tmid]`. Establish `TU : cSlope * nT * a * La * (2 + M / k) + (2 * M * cE * B0 + cH * (nT * a * La + M * B0) + sA * (cCount * lk)) + cSl1 * M * B0 + (cSl1 * (cLoss * nT * M * b * yL) + cSl1 * nT * M * (a / k + b') * (cCount * M * L) + cSl1 * Xpp + 1) + b ≤ (5 * K ^ 2 + 13 * K + 2 * K * g + 2) * P`. Establish `s1 : cSlope * nT * a * La * (2 + M / k) ≤ 6 * K * P`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `s2 : cH * (nT * a * La + M * B0) ≤ 3 * K * P`. Combine the equalities or inequalities in the displayed calculation. Establish `s3 : sA * (cCount * lk) ≤ 2 * K * g * P`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hsA` using `[← hA1]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 2 * K * g * P := by rw [hP]; ring`. Establish `s4 : cSl1 * M * B0 ≤ K * P`. Combine the equalities or inequalities in the displayed calculation. Establish `s5 : b ≤ P` using `by linarith only [hba, hA1a, orbitMap_conj_smul_one, EP]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the linear relations using `only [s1, s2, s3, s4, s5, T3, T7]`. Establish `Tet : et ≤ K * P`. Combine the equalities or inequalities in the displayed calculation. Take `⟨u, hu⟩ : ∃ u, u = 5 * K ^ 2 + 13 * K + 2 * K * g + 2` from `⟨_, rfl⟩`. Establish `hu0 : 0 ≤ u` using `by rw [hu]; positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `TU` using `[← hu]`. Establish `T8 : dI * (4 * lH * ((cSlope * nT * a * La * (2 + M / k) + (2 * M * cE * B0 + cH * (nT * a * La + M * B0) + sA * (cCount * lk)) + cSl1 * M * B0 + (cSl1 * (cLoss * nT * M * b * yL) + cSl1 * nT * M * (a / k + b') * (cCount * M * L) + cSl1 * Xpp + 1)) + b) + et) ≤ 2 * (4 * (h * y) * …`. Establish `s1 : 4 * lH * ((cSlope * nT * a * La * (2 + M / k) + (2 * M * cE * B0 + cH * (nT * a * La + M * B0) + sA * (cCount * lk)) + cSl1 * M * B0 + (cSl1 * (cLoss * nT * M * b * yL) + cSl1 * nT * M * (a / k + b') * (cCount * M * L) + cSl1 * Xpp + 1)) + b) ≤ 4 * (h * y) * (u * P)`. Combine the equalities or inequalities in the displayed calculation. Establish `s2 : 0 ≤ 4 * (h * y) * (u * P) + K * P` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hyP : P ≤ y * P` using `le_mul_of_one_le_left hP0 hy`. Establish `hyP0 : 0 ≤ y * P` using `by positivity`. Establish `hsum : (5 * K ^ 2 + 16 * K + 2) + 8 * h * u ≤ 200 * (1 + K) ^ 2 * h * g`. Rewrite using `[hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhg : 1 ≤ h * g` using `one_le_mul_of_one_le_of_one_le hh hg`. Establish `a1 : (5 * K ^ 2 + 16 * K + 2) ≤ (5 * K ^ 2 + 16 * K + 2) * (h * g)` using `le_mul_of_one_le_right (by positivity) hhg`. Establish `a2 : 8 * h * (5 * K ^ 2 + 13 * K + 2 * K * g + 2) ≤ 8 * h * ((5 * K ^ 2 + 15 * K + 2) * g)` using `by gcongr`. Use `mul_nonneg (by positivity : 0 ≤ 5 * K ^ 2 + 13 * K + 2) (by linarith only [hg] : 0 ≤ g - 1)` as an intermediate fact. Combine the linear relations using `only [this]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a3 : (5 * K ^ 2 + 16 * K + 2) * (h * g) + 8 * h * ((5 * K ^ 2 + 15 * K + 2) * g) ≤ 200 * (1 + K) ^ 2 * h * g`. Establish `: 0 ≤ (155 * K ^ 2 + 264 * K + 182) * (h * g)` using `by positivity`. Combine the linear relations using `only [this]`. Combine the linear relations using `only [a1, a2, a3]`. Establish `hfin : (5 * K ^ 2 + 14 * K + 2) * P + 2 * (4 * (h * y) * (u * P) + K * P) ≤ y * (y * P)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `b1 : (5 * K ^ 2 + 16 * K + 2) * P ≤ (5 * K ^ 2 + 16 * K + 2) * (y * P)` using `by gcongr`. Establish `b2 : ((5 * K ^ 2 + 16 * K + 2) + 8 * h * u) * (y * P) ≤ y * (y * P)` using `by gcongr`. Conclude with `hsum.trans hbig`. Combine the linear relations using `only [b1, b2]`. Establish `hR : yD * yL * y * y * y * (nT * a * (1 + M ^ 2 / k) + M * (B0 + Nc)) = y * (y * P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hP, hY, hE, hA1, hA3, hA4, hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hR]`. Combine the linear relations using `only [T1, T2a, T2b, T3, T4, T5, FreeQuotientRank, T7, T8, hfin]`.
+A detailed English derivation is pending.
 -/
 theorem core_ineq {nT a b b' k L La B0 Nc M sA lW lk lH dI et Xpp y yD yL K h g
     cDiv cE cH cCount cSlope cSl1 cLoss : ℝ}
@@ -258,9 +258,9 @@ theorem core_ineq {nT a b b' k L La B0 Nc M sA lW lk lH dI et Xpp y yD yL K h g
   linarith only [T1, T2a, T2b, T3, T4, T5, FreeQuotientRank, T7, T8, hfin]
 
 /- English proof (translation)
-Unfold `umean`. Break down `Nat.eq_zero_or_pos (Fintype.card ι) with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using `using hB`. Establish `hc : (0 : ℝ) < (Fintype.card ι : ℝ)` using `by exact_mod_cast h0`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma umean_le_of_le {ι : Type} [Fintype ι] (X : ι → ℝ) (B : ℝ) (hB : 0 ≤ B) (h : ∀ i, X i ≤ B) :
     umean X ≤ B := by
@@ -274,9 +274,9 @@ lemma umean_le_of_le {ι : Type} [Fintype ι] (X : ι → ℝ) (B : ℝ) (hB : 0
         rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; ring
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Establish `hxH : 1 ≤ x ^ c` using `Real.one_le_rpow hx hc`. Establish `hl2 : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_rpow hx0]`. Use `_ ≤ 1 * y + c * y := by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (1 + c) * y := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma log_one_add_rpow_le {x c y : ℝ} (hx : 1 ≤ x) (hc : 0 ≤ c) (hlog : Real.log x ≤ y)
     (hy : 1 ≤ y) : Real.log (1 + x ^ c) ≤ (1 + c) * y := by
@@ -295,7 +295,7 @@ lemma log_one_add_rpow_le {x c y : ℝ} (hx : 1 ≤ x) (hc : 0 ≤ c) (hlog : Re
     _ = (1 + c) * y := by ring
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma log_le_of_le_rpow {x k e y : ℝ} (hx : 1 ≤ x) (he : 0 ≤ e) (hk : 0 < k) (hkx : k ≤ x ^ e)
     (hlog : Real.log x ≤ y) (hy : 1 ≤ y) : Real.log k ≤ (1 + e) * y := by
@@ -306,7 +306,7 @@ lemma log_le_of_le_rpow {x k e y : ℝ} (hx : 1 ≤ x) (he : 0 ≤ e) (hk : 0 < 
     _ ≤ (1 + e) * y := by linarith
 
 /- English proof (translation)
-Establish `hl2 : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl20 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Use `mul_nonneg hk (by linarith : 0 ≤ 1 - Real.log 2)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -319,7 +319,7 @@ lemma sub_three_mul_log_two_le {k : ℝ} (hk : 0 ≤ k) : (k - 3) * Real.log 2 �
   linarith
 
 /- English proof (translation)
-Establish `hd12 : (1 : ℝ) / 2 ≤ 1 - d` using `by linarith`. Use `⟨inv_nonneg.2 (by linarith), ?_⟩` and prove the remaining obligations. Use `inv_anti₀ (by norm_num : (0 : ℝ) < 1 / 2) hd12` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma inv_one_sub_le_two {d : ℝ} (hd : d ≤ 1 / 2) : 0 ≤ (1 - d)⁻¹ ∧ (1 - d)⁻¹ ≤ 2 := by
   have hd12 : (1 : ℝ) / 2 ≤ 1 - d := by linarith
@@ -329,23 +329,23 @@ lemma inv_one_sub_le_two {d : ℝ} (hd : d ≤ 1 / 2) : 0 ≤ (1 - d)⁻¹ ∧ (
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `U0 _ W _ _ Top _ m f D C Xpp eK K hW hX`. Take `⟨⟨hx, hε, hε1, hb, hxb, hnT, hm, hxm, heK, hk1, hkx, hka, hL0, hL, hLa0, hLa, hb', hkb', hX0, hXa, haT, hB0, hNc, hlW, hdel, -, -, hC⟩, het⟩` from `hW`. Take `⟨c1, c1', c2, c2', c3, c3', c4, c4', c5, c5', c6, c6', c7, c7', hD, hLs, hHH⟩` from `hC`. Take `⟨hlog, hbig⟩` from `hX`. Establish `hx0 : 0 < D.x` using `by linarith only [hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : 1 ≤ D.x ^ D.ε` using `Real.one_le_rpow hx hε.le`. Establish `hyD : 1 ≤ D.x ^ (C.eDiv * D.ε)` using `Real.one_le_rpow hx (mul_nonneg hD hε.le)`. Establish `hyL : 1 ≤ D.x ^ (C.eLoss * D.ε)` using `Real.one_le_rpow hx (mul_nonneg hLs hε.le)`. Establish `hb0 : 0 ≤ D.b` using `by linarith only [hb]`. Establish `hbxb : D.b ≤ D.x * D.b` using `le_mul_of_one_le_left hb0 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hba : D.b ≤ D.a` using `hbxb.trans hxb`. Establish `ha1 : 1 ≤ D.a` using `hb.trans hba`. Establish `hM : (0 : ℝ) ≤ (m : ℝ)` using `Nat.cast_nonneg m`. Establish `hk : 0 < D.k` using `by linarith only [hk1]`. Establish `hmx : (m : ℝ) ≤ D.x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hm.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hMk : (m : ℝ) ≤ D.k` using `(le_mul_of_one_le_left hM hx).trans hxm`. Establish `hMb : (m : ℝ) * D.b ≤ D.a` using `(mul_le_mul_of_nonneg_right hmx hb0).trans hxb`. Establish `hsA0 : 0 ≤ D.sumA` using `Finset.sum_nonneg (fun t _ => (haT t).1)`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsA : D.sumA ≤ 2 * (D.nT * D.a)`. Unfold `Data.sumA Data.nT`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlWk : umean (fun u0 => Real.log (Fintype.card (W u0) : ℝ)) ≤ D.a` using `(umean_le_of_le _ D.k hk.le (fun u0 => (hlW u0).trans (sub_three_mul_log_two_le hk.le))).trans hka`. Establish `hlk0 : 0 ≤ Real.log D.k` using `Real.log_nonneg hk1`. Establish `hlk : Real.log D.k ≤ (1 + eK) * D.x ^ D.ε` using `log_le_of_le_rpow hx heK hk hkx hlog hy`. Establish `hxH : 1 ≤ D.x ^ C.cHH` using `Real.one_le_rpow hx hHH`. Establish `hlH0 : 0 ≤ Real.log (1 + D.x ^ C.cHH)` using `Real.log_nonneg (by linarith only [hxH])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlH : Real.log (1 + D.x ^ C.cHH) ≤ (1 + C.cHH) * D.x ^ D.ε` using `log_one_add_rpow_le hx hHH hlog hy`. Take `⟨hdI0, hdI⟩` from `inv_one_sub_le_two hdel`. Establish `hpow : D.x ^ (CErr C * D.ε) = D.x ^ (C.eDiv * D.ε) * D.x ^ (C.eLoss * D.ε) * D.x ^ D.ε * D.x ^ D.ε * D.x ^ D.ε`. Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_add hx0, ← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Use `congr 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `CErr`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpow]`. Unfold `KBig at hbig`. Use `core_ineq (nT := D.nT) (a := D.a) (b := D.b) (b' := D.b') (k := D.k) (L := D.L) (La := D.La) (B0 := D.B0) (Nc := D.Nc) (M := (m : ℝ)) (sA := D.sumA) (lW := umean (fun u0 => Real.log (Fintype.card (W u0) : ℝ))) (lk := Real.log D.k) (lH := Real.log (1 + D.x ^ C.cHH)) (dI := (1 - D. …` as an intermediate fact.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `errorTermWith UBar5 MLo5 Data.Vvar Data.LoP ErrText`. Conclude with `this`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem error_sizes : ErrorFormsUnderWindows := by
   intro U0 _ W _ _ Top _ m f D C Xpp eK K hW hX
@@ -408,9 +408,9 @@ theorem error_sizes : ErrorFormsUnderWindows := by
   exact this
 
 /- English proof (translation)
-Introduce `ε K cHH eK hε`. Establish `h1 : ∀ᶠ x : ℝ in Filter.atTop, Real.log x ≤ x ^ ε`. Establish `hb` using `(isLittleO_log_rpow_atTop hε).bound (c := 1) one_pos`. Use `filter_upwards [hb, Filter.eventually_ge_atTop (1 : ℝ)] with x hx hx1`. Rewrite `hx` using `[one_mul, Real.norm_of_nonneg (Real.rpow_nonneg (by linarith) _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(le_abs_self _).trans hx`. Establish `h2 : ∀ᶠ x : ℝ in Filter.atTop, KBig K cHH eK ≤ x ^ ε` using `(tendsto_rpow_atTop hε).eventually_ge_atTop _`. Take `⟨x0, hx0⟩` from `Filter.eventually_atTop.1 (h1.and h2)`. Conclude with `⟨x0, fun x hx => hx0 x hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem large_x_eventually : LargeXEv := by
   intro ε K cHH eK hε
@@ -425,9 +425,9 @@ theorem large_x_eventually : LargeXEv := by
   exact ⟨x0, fun x hx => hx0 x hx⟩
 
 /- English proof (translation)
-Introduce `ε K cHH eK hε`. Take `⟨x0, hx0⟩` from `large_x_eventually ε K cHH eK hε`. Use `⟨x0, ?_⟩` and prove the remaining obligations. Introduce `U0 _ W _ _ Top _ m f D C Xpp h1 h2 hx hW`. Use `error_sizes D C Xpp eK K hW ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, h2]`. Conclude with `hx0 _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem error_sizes_eventually : ErrorFormsEventual := by
   intro ε K cHH eK hε
@@ -439,7 +439,7 @@ theorem error_sizes_eventually : ErrorFormsEventual := by
   exact hx0 _ hx
 
 /- English proof (translation)
-Establish `r1 : 0 ≤ sA * (cCount * (La + M ^ 2 * La / k)) + (cDiv * nT * a * La + cDiv * M * (B0 + Nc) * yD) + M * cE * B0 + cSlope * nT * a * La * (1 + M / k) + lW + cLoss * nT * M * b * yL + (cSl1 * (cLoss * nT * M * b * yL) + cSl1 * nT * M * (a / k + b') * (cCount * M * L) + cSl1 * Xpp + …` using `by positivity`. Establish `r2 : 0 ≤ 4 * lH * ((cSlope * nT * a * La * (2 + M / k) + (2 * M * cE * B0 + cH * (nT * a * La + M * B0) + sA * (cCount * lk)) + cSl1 * M * B0 + (cSl1 * (cLoss * nT * M * b * yL) + cSl1 * nT * M * (a / k + b') * (cCount * M * L) + cSl1 * Xpp + 1)) + b)` using `by positivity`. Establish `r3` using `le_mul_of_one_le_left (add_nonneg r2 het) hdI`. Combine the linear relations using `only [r1, r2, r3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem core_lower {nT a b b' k L La B0 Nc M sA lW lk lH dI et Xpp yD yL
     cDiv cE cH cCount cSlope cSl1 cLoss : ℝ}
@@ -480,11 +480,11 @@ theorem core_lower {nT a b b' k L La B0 Nc M sA lW lk lH dI et Xpp yD yL
   linarith only [r1, r2, r3]
 
 /- English proof (translation)
-Introduce `U0 _ W _ _ Top _ m f D C Xpp eK K hW hdel0`. Take `⟨hx, hε, hε1, hb, hxb, hnT, hm, hxm, heK, hk1, hkx, hka, hL0, hL, hLa0, hLa, hb', hkb', hX0, hXa, haT, hB0, hNc, hlW, hdel, heta, heB, hC⟩` from `hW`. Take `⟨c1, c1', c2, c2', c3, c3', c4, c4', c5, c5', c6, c6', c7, c7', hD, hLs, hHH⟩` from `hC`. Establish `hx0 : 0 < D.x` using `by linarith only [hx]`. Establish `hb0 : 0 ≤ D.b` using `by linarith only [hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : 0 ≤ D.a` using `(mul_nonneg hx0.le hb0).trans hxb`. Establish `hk : 0 < D.k` using `by linarith only [hk1]`. Establish `hxH : 1 ≤ D.x ^ C.cHH` using `Real.one_le_rpow hx hHH`. Establish `hdI : 1 ≤ (1 - D.delBar)⁻¹` using `(one_le_inv₀ (by linarith only [hdel])).2 (by linarith only [hdel0])`. Establish `hlW0 : 0 ≤ umean (fun u0 => Real.log (Fintype.card (W u0) : ℝ))` using `div_nonneg (Finset.sum_nonneg (fun u0 _ => Real.log_natCast_nonneg _)) (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `het : 0 ≤ (D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D.b)` using `by positivity`. Use `core_lower (nT := D.nT) (a := D.a) (b := D.b) (b' := D.b') (k := D.k) (L := D.L) (La := D.La) (B0 := D.B0) (Nc := D.Nc) (M := (m : ℝ)) (sA := D.sumA) (lW := umean (fun u0 => Real.log (Fintype.card (W u0) : ℝ))) (lk := Real.log D.k) (lH := Real.log (1 + D.x ^ C.cHH)) (dI := (1 - D …` as an intermediate fact. Unfold `errorTermWith UBar5 MLo5 Data.Vvar Data.LoP`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem error_lower_eta : TraceTermLeErrorTerm := by
   intro U0 _ W _ _ Top _ m f D C Xpp eK K hW hdel0
@@ -557,7 +557,7 @@ noncomputable def modelD (η : ℝ) : Data Unit (fun _ => Unit) Unit 1 1 where
 def modelC (cHH : ℝ) : Consts := ⟨1, 1, 1, 1, 1, 1, 1, 1, 1, cHH⟩
 
 /- English proof (translation)
-Establish `hl2 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Use `⟨by norm_num [modelD], by norm_num [modelD], by norm_num [modelD], by norm_num [modelD], by norm_num [modelD], by simp [Data.nT], by norm_num [modelD], by norm_num [modelD], by norm_num, by norm_num [modelD], by norm_num [modelD], by norm_num [modelD], by norm_num [modelD], by no …` and prove the remaining obligations. Simplify using `only [Fintype.card_unit, Nat.cast_one, Real.log_one]`. Conclude with `mul_nonneg (by norm_num [modelD]) hl2`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hc⟩ <;> norm_num [modelC]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma model_windows0 (η cHH : ℝ) (hη : 0 ≤ η) (hc : 0 ≤ cHH) :
     ErrWindows0 (modelD η) (modelC cHH) 3 1 1 := by
@@ -574,7 +574,7 @@ lemma model_windows0 (η cHH : ℝ) (hη : 0 ≤ η) (hc : 0 ≤ cHH) :
   · refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hc⟩ <;> norm_num [modelC]
 
 /- English proof (translation)
-Use `⟨modelD (1 / 100000), modelC 1, 3, 1, 1, ⟨model_windows0 _ _ (by norm_num) (by norm_num), ?_⟩, ⟨?_, ?_⟩, by norm_num [modelD], rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Evaluate the numerical expressions using `[modelD, modelC, Data.nT]`. Use `Real.log_le_self (by norm_num : (0 : ℝ) ≤ 100000)` as an intermediate fact. Simplify `this` using `[modelD]`. Evaluate the numerical expressions using `[modelD, modelC, KBig]`.
+Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Evaluate the numerical expressions.
 -/
 theorem error_windows_model : ErrWindowsModel := by
   refine ⟨modelD (1 / 100000), modelC 1, 3, 1, 1,
@@ -586,13 +586,13 @@ theorem error_windows_model : ErrWindowsModel := by
   · norm_num [modelD, modelC, KBig]
 
 /- English proof (translation)
-Introduce `h`. Establish `hw0` using `model_windows0 1 10 (by norm_num) (by norm_num)`. Establish `hL : LargeX (modelD 1).x (modelD 1).ε 1 (modelC 10).cHH 1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Real.log_le_self (by norm_num : (0 : ℝ) ≤ 100000)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[modelD]`. Evaluate the numerical expressions using `[modelD, modelC, KBig]`. Establish `h1` using `h (modelD 1) (modelC 10) 3 1 1 ⟨hw0, by norm_num [modelD], by norm_num [modelD]⟩ hL`. Establish `h2` using `error_lower_eta (modelD 1) (modelC 10) 3 1 1 hw0 (by norm_num [modelD])`. Establish `h3` using `h2.trans h1`.
+Simplify to obtain the desired conclusion from the available facts. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e10 : (100000 : ℝ) ^ (10 : ℝ) = 100000 ^ (10 : ℕ)`. Rewrite using `[← Real.rpow_natCast]`. Evaluate the numerical expressions. Establish `e5 : (100000 : ℝ) ^ (((1 : ℝ) + 1 + 3) * 1) = 100000 ^ (5 : ℕ)`. Rewrite using `[← Real.rpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Simplify using `only [modelD, modelC, CErr, ErrText, Data.nT, Real.sqrt_zero, Fintype.card_unit, e10, e5] at h3`. Evaluate the numerical expressions using `at h3`.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem error_sizes_weak_false : ¬ ErrorFormsWeakWindowsFalse := by
   intro h
@@ -614,29 +614,27 @@ theorem error_sizes_weak_false : ¬ ErrorFormsWeakWindowsFalse := by
   norm_num at h3
 
 /- English proof (translation)
-Introduce `ε e hε`. Establish `hε3 : 0 < ε / 3` using `by positivity`. Establish `h1 : ∀ᶠ x : ℝ in Filter.atTop, (|e| + 1) * Real.log x ≤ x ^ (ε / 3)`. Establish `hc : 0 < (|e| + 1)⁻¹` using `by positivity`. Establish `hb` using `(isLittleO_log_rpow_atTop hε3).bound hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hb, Filter.eventually_ge_atTop (1 : ℝ)] with x hx hx1`. Rewrite `hx` using `[Real.norm_of_nonneg (Real.rpow_nonneg (by linarith) _), Real.norm_of_nonneg (Real.log_nonneg hx1)]`. Establish `: (|e| + 1) * Real.log x ≤ (|e| + 1) * ((|e| + 1)⁻¹ * x ^ (ε / 3))` using `by gcongr`. Rewrite `this` using `[mul_inv_cancel_left₀ (by positivity)]`. Then use the resulting hypothesis. Establish `h2 : ∀ᶠ x : ℝ in Filter.atTop, (2 : ℝ) ≤ x ^ (2 * ε / 3)` using `(tendsto_rpow_atTop (by positivity)).eventually_ge_atTop _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, hx0⟩` from `Filter.eventually_atTop.1 ((h1.and h2).and (Filter.eventually_ge_atTop (1 : ℝ)))`. Use `⟨x0, ?_⟩` and prove the remaining obligations. Introduce `x k n lrd hx hk hkx hn hnx hlrd`. Take `⟨⟨hl, h2x⟩, hx1⟩` from `hx0 x hx`. Establish `hxpos : 0 < x` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog0 : 0 ≤ Real.log x` using `Real.log_nonneg hx1`. Take `⟨z, hz⟩ : ∃ z, z = x ^ (ε / 3)` from `⟨_, rfl⟩`. Rewrite `hl`, `hlrd` using `[← hz]`. Establish `hz0 : 0 ≤ z` using `by rw [hz]; exact Real.rpow_nonneg hxpos.le _`. Establish `hzz : 2 * z ≤ x ^ ε`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x ^ ε = x ^ (2 * ε / 3) * z`. Rewrite using `[hz, ← Real.rpow_add hxpos]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gcongr`. Establish `habs : 0 ≤ |e|` using `abs_nonneg e`. Establish `hxe : x ^ e ≤ Real.exp z`. Rewrite using `[Real.rpow_def_of_pos hxpos]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: Real.log x * e ≤ Real.log x * |e|` using `by gcongr; exact le_abs_self e`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlogx : Real.log x ≤ z` using `by nlinarith`. Take `⟨X, hX⟩ : ∃ X, X = Real.exp z` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B, B = Real.exp (x ^ ε)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXX : X * X ≤ B`. Rewrite using `[hX, hB, ← Real.exp_add]; exact Real.exp_le_exp.2 (by linarith)`. Establish `hX1 : 1 ≤ X` using `by rw [hX]; exact Real.one_le_exp hz0`. Establish `hX0 : 0 < X` using `by linarith`. Establish `hB1 : 1 ≤ B` using `by rw [hB]; exact Real.one_le_exp (Real.rpow_nonneg hxpos.le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : 0 < B` using `by linarith`. Establish `hkX : k ≤ X` using `by rw [hX]; exact hkx.trans hxe`. Establish `hnX : n ≤ X` using `by rw [hX]; exact hnx.trans hxe`. Establish `hXB : X ≤ B` using `(le_mul_of_one_le_left hX0.le hX1).trans hXX`. Establish `hBA : B ≤ x * B` using `le_mul_of_one_le_left hB0.le hx1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hA0 : 0 < x * B` using `by positivity`. Unfold `XppTx wppTx bpTx aTx bTx XpTx`. Rewrite using `[← hz, ← hX, ← hB]`. Use `⟨hx1, hB1, by rw [hB, Real.log_exp], ?_, hkX.trans (hXB.trans hBA), by positivity, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_mul hxpos.ne' hB0.ne', hB, Real.log_exp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← mul_div_assoc, div_le_iff₀ hX0, mul_comm] gcongr`. Check the signs of the components of the expression. Establish `: x * B / (x * B / X / (x * n)) = x * (n * X)`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[this]`. Use `gcongr`. Conclude with `(mul_le_mul_of_nonneg_right hnX hX0.le).trans hXX`.
+Check the signs of the components of the expression. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem text_sizes_windows : TextSizesWindows := by
   intro ε e hε
@@ -700,17 +698,15 @@ theorem text_sizes_windows : TextSizesWindows := by
     exact (mul_le_mul_of_nonneg_right hnX hX0.le).trans hXX
 
 /- English proof (translation)
-Introduce `ε K cHH eK hε`. Take `⟨x1, hx1⟩` from `error_sizes_eventually ε K cHH eK hε`. Take `⟨x2, hx2⟩` from `text_sizes_windows ε eK hε`. Use `⟨max x1 x2, ?_⟩` and prove the remaining obligations. Introduce `U0 _ W _ _ Top _ m f D C Xpp n lrd h1 h2 hx hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨tb, ta, tb', tX, tL, tLa, tl0, tl, tn0, tn, tε, tnT, tm, txm, teK, tk1, tkx, taT, tB0, tNc, tW, td, te, teB, tet, tC⟩` from `hT`. Establish `hk0 : 0 < D.k` using `by linarith only [tk1]`. Rewrite `tl` using `[h1]`. Take `⟨w1, w2, w3, w4, w5, w6, w7, w8, w9⟩` from `hx2 D.x D.k n lrd ((le_max_right _ _).trans hx) hk0 tkx tn0 tn tl`. Rewrite `w2`, `w3`, `w4`, `w5`, `w6`, `w7`, `w8`, `w9` using `[← h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `w2`, `w3` using `[← tb]`. Rewrite `w4`, `w5`, `w7`, `w9` using `[← ta]`. Rewrite `w6`, `w7` using `[← tb']`. Rewrite `w8`, `w9` using `[← tX]`. Establish `hxb : D.x * D.b ≤ D.a` using `by rw [ta, tb]; exact le_refl _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0 : 0 ≤ D.x ^ D.ε` using `Real.rpow_nonneg (by linarith only [w1]) _`. Establish `ha1 : 1 ≤ D.a`. Use `le_trans ?_ hxb` and prove the remaining obligations. Conclude with `one_le_mul_of_one_le_of_one_le w1 w2`. Use `hx1 D C Xpp h1 h2 ((le_max_left _ _).trans hx) ⟨⟨w1, by rw [h1]; exact hε, tε, w2, hxb, tnT, tm, txm, teK, tk1, tkx, w5, ?_, ?_, ?_, ?_, w6, w7, w8, w9, taT, tB0, tNc, tW, td, te, teB, tC⟩, tet⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tL, w3]`. Conclude with `hy0`. Rewrite using `[tL, w3]`. Combine the linear relations using `only [hy0]`. Rewrite using `[tLa]`.
-
-Conclude with `add_nonneg (Real.log_nonneg ha1) tl0`. Rewrite using `[tLa]`. Conclude with `w4`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem error_bound : ErrorFormsEventualUnderSizeParameters := by
   intro ε K cHH eK hε
@@ -745,7 +741,7 @@ section
 open Formalism Formalism.D5 Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds
 
 /- English proof (translation)
-Introduce `C ε x n nT nT2 m b k aE Err0 h`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, -, h16⟩` from `h`. Conclude with `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, le_refl _, h16⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem size_windows_of_bracket : SizeWindowsOfBracket := by
   intro C ε x n nT nT2 m b k aE Err0 h
@@ -753,11 +749,11 @@ theorem size_windows_of_bracket : SizeWindowsOfBracket := by
   exact ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, le_refl _, h16⟩
 
 /- English proof (translation)
-Introduce `hTop W _ _ Top _ m f Dd C Xpp eK K D N ell TT T2 a w eT eP hSt hS hDIV hE hH hCount hSl hSlN hLo hSI hHH hF hW hX hB0 hNc i1 i2 i3 i4 i5`. Establish `h103` using `hSt ⟨0⟩ hS hDIV hE hH hCount hSl hSlN hLo hSI hHH hF`. Establish `hErr` using `error_sizes Dd C Xpp eK K hW hX`. Establish `hx : 1 ≤ Dd.x` using `hW.1.1`. Establish `hnT : Dd.nT = (TT.card : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Data.nT`. Rewrite using `[Fintype.card_congr eT, Fintype.card_coe]`. Establish `hbr : ErrText Dd ≤ errorBracketSizeWindows Dd.x Dd.ε (Fintype.card H) TT.card T2.card m Dd.b Dd.k Dd.a`. Unfold `ErrText errorBracketSizeWindows`. Rewrite using `[hnT]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Use `hTop Dd D N ell TT a w eT eP _ i1 i2 i3 i4 i5 ?_` and prove the remaining obligations. Establish `hp : 0 ≤ Dd.x ^ (CErr C * Dd.ε)` using `Real.rpow_nonneg (by linarith) _`. Use `mul_le_mul_of_nonneg_left hbr hp` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem joint_error_bound {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] :
     LeadingTermGrowthJoint (H := H) := by

@@ -6,7 +6,7 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SplitLagrF.exists_finset_ann_le`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKW.exists_finite_lattice_cover_open : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

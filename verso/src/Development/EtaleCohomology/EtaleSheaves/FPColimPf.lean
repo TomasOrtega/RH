@@ -26,7 +26,7 @@ variable {R A}
 instance : Preorder (Idx R A) := Preorder.lift (fun i => (i.s, i.T))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Idx.le_iff {i j : Idx R A} : i ≤ j ↔ i.s ⊆ j.s ∧ i.T ⊆ j.T := Iff.rfl
 
@@ -49,7 +49,7 @@ instance : IsDirected (Idx R A) (· ≤ ·) :=
 instance : Nonempty (Idx R A) := ⟨⟨∅, ∅, by simp, by simp⟩⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsFiltered (Idx R A) := inferInstance
 
@@ -62,7 +62,7 @@ def retr (i : Idx R A) : MvPolynomial A R →ₐ[R] MvPolynomial i.s R :=
   aeval (fun a => if h : a ∈ i.s then X ⟨a, h⟩ else 0)
 
 /- English proof (translation)
-Rewrite using `[retr, aeval_rename]`. Use `conv_rhs => rw [← aeval_X_left_apply (R := R) p]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem retr_rename (i : Idx R A) (p : MvPolynomial i.s R) : retr i (rename Subtype.val p) = p := by
   rw [retr, aeval_rename]
@@ -72,7 +72,7 @@ theorem retr_rename (i : Idx R A) (p : MvPolynomial i.s R) : retr i (rename Subt
   simp
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `exists_rename_eq_of_vars_subset_range t (Subtype.val : i.s → A) Subtype.val_injective (fun x hx => ⟨⟨x, ht hx⟩, rfl⟩)`. Rewrite using `[retr_rename]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_retr (i : Idx R A) (t : MvPolynomial A R) (ht : t.vars ⊆ i.s) :
     rename Subtype.val (retr i t) = t := by
@@ -81,11 +81,9 @@ theorem rename_retr (i : Idx R A) (t : MvPolynomial A R) (ht : t.vars ⊆ i.s) :
   rw [retr_rename]
 
 /- English proof (translation)
-Establish `: rel i = Ideal.map (retr i) (Ideal.span (i.T : Set (MvPolynomial A R)))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Rewrite using `[← retr_rename i p]`. Conclude with `Ideal.mem_map_of_mem _ hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.span_le]`. Introduce `t ht`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, rel, Ideal.mem_comap, rename_retr i t (i.hv t ht)]`. Conclude with `Ideal.subset_span ht`. Rewrite using `[this]`.
-
-Conclude with `Ideal.FG.map ⟨i.T, rfl⟩ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_fg (i : Idx R A) : (rel i).FG := by
   have : rel i = Ideal.map (retr i) (Ideal.span (i.T : Set (MvPolynomial A R))) := by
@@ -131,7 +129,7 @@ Both sides reduce to the same expression.
     toA i (Ideal.Quotient.mk _ p) = aeval (fun x : i.s => (x : A)) p := rfl
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[Ideal.Quotient.mkₐ_eq_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem trans_id (i : Idx R A) : trans i i le_rfl = AlgHom.id R _ := by
   apply Ideal.Quotient.algHom_ext
@@ -139,7 +137,7 @@ theorem trans_id (i : Idx R A) : trans i i le_rfl = AlgHom.id R _ := by
   intro x; simp [Ideal.Quotient.mkₐ_eq_mk]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[Ideal.Quotient.mkₐ_eq_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem trans_comp (i j k : Idx R A) (h₁ : i ≤ j) (h₂ : j ≤ k) :
     trans i k (h₁.trans h₂) = (trans j k h₂).comp (trans i j h₁) := by
@@ -148,7 +146,7 @@ theorem trans_comp (i j k : Idx R A) (h₁ : i ≤ j) (h₂ : j ≤ k) :
   intro x; simp [Ideal.Quotient.mkₐ_eq_mk]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[Ideal.Quotient.mkₐ_eq_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem toA_trans (i j : Idx R A) (h : i ≤ j) : (toA j).comp (trans i j h) = toA i := by
   apply Ideal.Quotient.algHom_ext
@@ -169,13 +167,13 @@ def uHom {B C : Type} [CommRing B] [Algebra X B] [CommRing C] [Algebra X C] (φ 
   Under.homMk (CommRingCat.ofHom φ.toRingHom) (by ext x; simp)
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem uHom_id {B : Type} [CommRing B] [Algebra X B] : uHom (AlgHom.id X B) = 𝟙 _ := by
   ext; rfl
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem uHom_comp {B C E : Type} [CommRing B] [Algebra X B] [CommRing C] [Algebra X C] [CommRing E] [Algebra X E]
     (φ : B →ₐ[X] C) (ψ : C →ₐ[X] E) : uHom (ψ.comp φ) = uHom φ ≫ uHom ψ := by
@@ -244,13 +242,13 @@ def isColimitCocone : IsColimit (cocone (X := X) A) := by
     exact Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_singleton_self _))
 
 /- English proof (translation)
-The claim follows from `show (algebraMap X (D i)).FinitePresentation from RingHom.finitePresentation_algebraMap.2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem fp_diag (i : Idx X A) : FP X ((diag (X := X) A).obj i) :=
   show (algebraMap X (D i)).FinitePresentation from RingHom.finitePresentation_algebraMap.2 inferInstance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ diag := diag A, ι := (cocone A).ι, isColimit := isColimitCocone A, prop_diag_obj := fp_diag A }⟩`.
+Supply the required witnesses or components.
 -/
 theorem colim_mkU : (FP X).colimitsOfShape (Idx X A) (mkU X A) :=
   ⟨{ diag := diag A, ι := (cocone A).ι, isColimit := isColimitCocone A, prop_diag_obj := fp_diag A }⟩
@@ -258,7 +256,7 @@ theorem colim_mkU : (FP X).colimitsOfShape (Idx X A) (mkU X A) :=
 end Cat
 
 /- English proof (translation)
-Introduce `X S`. Set `_ : Algebra X S.right` to `S.hom.hom.toAlgebra`. Conclude with `⟨Idx X S.right, inferInstance, inferInstance, colim_mkU S.right⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem FPColim_of : FPColim := by
   intro X S

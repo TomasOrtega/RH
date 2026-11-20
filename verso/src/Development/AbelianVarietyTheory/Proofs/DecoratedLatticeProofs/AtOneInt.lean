@@ -132,7 +132,7 @@ def Same (Q Q' : QStep S) : Prop :=
       ∀ γ β, Q'.d₂ (a γ) (b β) = Q.d₂ γ β
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ => Iff.rfl, fun _ => Iff.rfl, rfl, rfl, rfl, rfl, fun _ _ h => h, fun _ h => h, Equiv.refl _, Equiv.refl _, fun _ => ⟨rfl, rfl⟩, fun _ => ⟨rfl, rfl⟩, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Same.refl (Q : QStep S) : Same Q Q :=
   ⟨rfl, fun _ => Iff.rfl, fun _ => Iff.rfl, rfl, rfl, rfl, rfl, fun _ _ h => h, fun _ h => h, Equiv.refl _, Equiv.refl _,

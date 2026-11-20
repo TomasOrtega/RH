@@ -20,15 +20,13 @@ namespace GlobalTheory.FlagZ.Loc
 variable {N : ℕ} {T : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `(isVB_freeModule_fin (Sp ℤ) N).isQuasicoherent`.
+A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_stdE_ovl : (Taut.stdE N).IsQuasicoherent :=
   (isVB_freeModule_fin (Sp ℤ) N).isQuasicoherent
 
 /- English proof (translation)
-Use `haveI := isQuasicoherent_stdE_ovl (N := N)`. Establish `h` using `((isFrame_freeFrame (Sp ℤ) (Fin N)).pullback g).res hU`. Establish `e : (fun i : Fin N => GlobalTheory.QCoh.pullbackSections g (Taut.stdE N) hU (freeFrame (Sp ℤ) (Fin N) i)) = fun i => resM _ hU (GlobalTheory.QCoh.pullbackSections g (Taut.stdE N) (le_refl (g ⁻¹ᵁ ⊤)) (freeFrame (Sp ℤ) (Fin N) i))`. Use function extensionality and compare the values at `fun i => (QCoh.res_pullbackSections g _ _ _ _).symm`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_stdSec_ovl (g : T ⟶ Sp ℤ) (U : T.Opens) (hU : U ≤ g ⁻¹ᵁ ⊤) :
     IsFrame fun i : Fin N =>
@@ -43,7 +41,7 @@ theorem isFrame_stdSec_ovl (g : T ⟶ Sp ℤ) (U : T.Opens) (hU : U ≤ g ⁻¹�
   exact h
 
 /- English proof (translation)
-Simplify using `only [colSecOn, map_sum, resM_smul, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => congrArg _ ?_` and prove the remaining obligations. Conclude with `QCoh.res_pullbackSections g _ _ _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resM_colSecOn_ovl (g : T ⟶ Sp ℤ) {U V : T.Opens} (h : U ≤ V) (M : Matrix (Fin N) (Fin N) Γ(T, V))
     (j : Fin N) :
@@ -53,7 +51,7 @@ theorem resM_colSecOn_ovl (g : T ⟶ Sp ℤ) {U V : T.Opens} (h : U ≤ V) (M : 
   exact QCoh.res_pullbackSections g _ _ _ _
 
 /- English proof (translation)
-Introduce `a l`. Take `⟨s, hs, hsι⟩` from `hG a l`. Use `⟨fun j => resM _ h (s j), hs.res h, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[app_resM, hsι j, resM_colSecOn_ovl]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Adapted.restr {ι : Type} {g : T ⟶ Sp ℤ}
     {fl' : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback g).obj (Taut.stdE N)) N} {U V : T.Opens}
@@ -66,13 +64,13 @@ theorem Adapted.restr {ι : Type} {g : T ⟶ Sp ℤ}
   rfl
 
 /- English proof (translation)
-Take `⟨s, hs, hsι⟩` from `hG a j.succ`. Take `⟨t, -, htι⟩` from `hH a j.succ`. Take `⟨c, hc⟩` from `(hs U le_rfl).2 (t (Fin.last j))`. Simplify using `only [resM_self, Fintype.linearCombination_apply] at hc`. Establish `e1` using `congrArg (((fl' a).ι j.succ).app U) hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, hsι, htι] at e1`. Establish `hj : Fin.castLE j.succ.is_le (Fin.last j) = j` using `Fin.ext rfl`. Rewrite `e1` using `[hj]`. Simplify using `only [colSecOn, Finset.smul_sum, smul_smul] at e1`. Rewrite `e1` using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [← Finset.sum_smul] at e1`. Establish `hE` using `(isFrame_stdSec_ovl (N := N) g U (fun _ _ => trivial) U le_rfl).1`. Simplify using `only [resM_self] at hE`. Use `⟨c, fun i => ?_⟩` and prove the remaining obligations. Use `congrFun (hE (a₁ := fun i => (∑ k, c k * (G a).1 i (Fin.castLE j.succ.is_le k))) (a₂ := fun i => (H a).1 i j) (by simp only [Fintype.linearCombination_apply]; exact e1)) i` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_col_comb_ovl {ι : Type} {g : T ⟶ Sp ℤ}
     {fl' : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback g).obj (Taut.stdE N)) N} {U : T.Opens}
@@ -99,11 +97,11 @@ theorem exists_col_comb_ovl {ι : Type} {g : T ⟶ Sp ℤ}
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Introduce `k j hjk`. Take `⟨c, hc⟩` from `exists_col_comb_ovl hG hH a j`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Simplify using `only [hc, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc, ← Finset.sum_mul]`. Rewrite using `[← Matrix.mul_apply, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply_ne, zero_mul]`. Introduce `h`. Establish `h1` using `congrArg Fin.val h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `m.isLt`. Simplify using `only [Fin.coe_castLE, Fin.val_succ] at h1 h2`. Establish `h3 : (j : ℕ) < k` using `hjk`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem blockTriangular_inv_mul_ovl {ι : Type} {g : T ⟶ Sp ℤ}
     {fl' : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback g).obj (Taut.stdE N)) N} {U : T.Opens}
@@ -125,7 +123,7 @@ theorem blockTriangular_inv_mul_ovl {ι : Type} {g : T ⟶ Sp ℤ}
   omega
 
 /- English proof (translation)
-The claim follows from `(flagPt_mul_upper G (G⁻¹ * H) fun a => blockTriangular_inv_mul_ovl hG hH a).symm.trans (congrArg _ (mul_inv_cancel_left G H))`.
+A detailed English derivation is pending.
 -/
 theorem flagPt_eq_of_adapted_ovl {ι : Type} [Fintype ι] {g : T ⟶ Sp ℤ}
     {fl' : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback g).obj (Taut.stdE N)) N} {U : T.Opens}
@@ -135,9 +133,9 @@ theorem flagPt_eq_of_adapted_ovl {ι : Type} [Fintype ι] {g : T ⟶ Sp ℤ}
     (congrArg _ (mul_inv_cancel_left G H))
 
 /- English proof (translation)
-Introduce `ι _ N T g fl' V W hV hW G H hG hH`. Rewrite using `[hV.isoSpec_hom, hW.isoSpec_hom, ← Scheme.Opens.toSpecΓ_SpecMap_presheaf_map_assoc, ← Scheme.Opens.toSpecΓ_SpecMap_presheaf_map_assoc]`. Use `congrArg ((V ⊓ W).toSpecΓ ≫ ·) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (resG T _) ≫ _ = spMap (resG T _) ≫ _`. Rewrite using `[spMap_flagPt, spMap_flagPt]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `flagPt_eq_of_adapted_ovl (hG.restr inf_le_left) (hH.restr inf_le_right)`.
+A detailed English derivation is pending.
 -/
 theorem flagPt_inf_eq : ∀ {ι : Type} [Fintype ι] {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ)
     (fl' : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback g).obj (Taut.stdE N)) N) (V W : T.Opens)

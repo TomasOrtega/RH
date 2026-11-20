@@ -24,11 +24,11 @@ variable {K L : Type} [Field K] [Field L] [CharZero K] [CharZero L] [Algebra K L
   [Algebra.IsQuadraticExtension K L]
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Rewrite `h` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `h'` using `congrArg c h`. Rewrite `h'` using `[map_add, map_mul, hcK, hcK, hθ, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : algebraMap K L (2 * s) = 0` using `by rw [map_mul, map_ofNat]; linear_combination h + h'`. Establish `hs : s = 0`. Use `(algebraMap K L).injective (h2.trans (map_zero _).symm)` as an intermediate fact. Simplify using `using this`. Substitute `hs` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Rewrite `h` using `[map_zero, zero_add]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `(algebraMap K L).injective (h.trans (map_zero _).symm)`. Conclude with `absurd h hθ0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem linearIndependent_one_theta (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x)
     (θ : L) (hθ : c θ = -θ) (hθ0 : θ ≠ 0) : LinearIndependent K ![(1 : L), θ] := by
@@ -110,7 +110,7 @@ def phiW (w : HeightOneSpectrum (𝓞 K)) [w.asIdeal.LiesOver (vP p).asIdeal] :
     (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[phiW]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem phiW_tmul (w : HeightOneSpectrum (𝓞 K)) [w.asIdeal.LiesOver (vP p).asIdeal]
     (s : ℚ_[p]) (x : K) : phiW p w (s ⊗ₜ x) = iotaW p w s * algebraMap K (w.adicCompletion K) x := by

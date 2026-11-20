@@ -17,13 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Classical
 
 /- English proof (translation)
-Rewrite `h` using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, Complex.exp_eq_exp_iff_exists_int]`. Take `⟨n, hn⟩` from `h`. Establish `him` using `congrArg Complex.im hn`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.natCast_re, Complex.natCast_im, Complex.intCast_re, Complex.intCast_im, Complex.ofReal_re, Complex.ofReal_im, Complex.re_ofNat, Complex.im_ofNat, Complex.mul_re] at him`. Establish `hre : ((a : ℝ) - b) = n * (2 * Real.pi)` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : n = 0`. Substitute `h0` using the available equality. Establish `: (a : ℝ) = b` using `by simpa [sub_eq_zero] using hre`. Conclude with `this` after adjusting the coercions. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hn0 : (n : ℝ) ≠ 0` using `by exact_mod_cast h0`. Establish `hpi : Real.pi = ((((a : ℚ) - b) / (2 * n) : ℚ) : ℝ)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `irrational_pi ⟨_, hpi.symm⟩`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem pow_exp_I_injective (a b : ℕ)
     (h : Complex.exp Complex.I ^ a = Complex.exp Complex.I ^ b) : a = b := by
@@ -48,7 +46,7 @@ private theorem pow_exp_I_injective (a b : ℕ)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `a b w hw hab`. Break down `hw with rfl | rfl` into its components or cases. Conclude with `pow_exp_I_injective a b hab`. Rewrite `hab` using `[inv_pow, inv_pow, _root_.inv_inj]`. Conclude with `pow_exp_I_injective a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.eq_of_pow_eq_pow_of_eq_exp_I_or_inv : ∀ (a b : ℕ) (w : ℂ), (w = Complex.exp Complex.I ∨ w = (Complex.exp Complex.I)⁻¹) → w ^ a = w ^ b → a = b := by
   intro a b w hw hab

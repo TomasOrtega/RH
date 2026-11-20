@@ -31,7 +31,7 @@ theorem whiskerLeft_tmul (ψ : B ⟶ B') (a : A) (b : B) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply, whiskerRight_tmul, cupCochain_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem whiskerRight_cupCochain (φ : A ⟶ A') (h : p + q = n) (f : (Fin p → G) → A)
     (g : (Fin q → G) → B) (x : Fin n → G) :
@@ -39,7 +39,7 @@ theorem whiskerRight_cupCochain (φ : A ⟶ A') (h : p + q = n) (f : (Fin p → 
   rw [cupCochain_apply, whiskerRight_tmul, cupCochain_apply]
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply, whiskerLeft_tmul, cupCochain_apply, Rep.hom_comm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem whiskerLeft_cupCochain (ψ : B ⟶ B') (h : p + q = n) (f : (Fin p → G) → A)
     (g : (Fin q → G) → B) (x : Fin n → G) :
@@ -53,7 +53,7 @@ section Connecting
 variable {X : ShortComplex (Rep k G)} (hX : X.ShortExact)
 
 /- English proof (translation)
-Simplify using `only [inhomogeneousCochains.d_hom_apply, map_add, map_sum, map_smul, Rep.hom_comm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_d_apply {A A' : Rep k G} (φ : A ⟶ A') (i : ℕ) (y : (Fin i → G) → A)
     (v : Fin (i + 1) → G) :
@@ -64,9 +64,9 @@ theorem comp_d_apply {A A' : Rep k G} (φ : A ⟶ A') (i : ℕ) (y : (Fin i → 
 include hX in
 
 /- English proof (translation)
-Establish `h1` using `δ_apply hX rfl (iCocycles X.X₃ p z) (by simpa using d_iCocycles z) y (funext hy) (iCocycles X.X₁ (p + 1) x) (funext fun v => by simpa using hx v)`. Establish `e1 : cocyclesMk (iCocycles X.X₃ p z) (d_iCocycles z) = z` using `cocycles_ext (iCocycles_mk _ _)`. Rewrite `h1` using `[e1]`. Rewrite using `[h1]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `cocycles_ext (iCocycles_mk _ _)`.
+A detailed English derivation is pending.
 -/
 theorem δ_π_eq {p : ℕ} (z : cocycles X.X₃ p) (y : (Fin p → G) → X.X₂)
     (hy : ∀ v, X.g.hom (y v) = iCocycles X.X₃ p z v) (x : cocycles X.X₁ (p + 1))
@@ -85,7 +85,7 @@ set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `: LinearMap.range X.f.hom.toLinearMap = LinearMap.ker X.g.hom.toLinearMap` using `(hX.exact.map (forget₂ (Rep k G) (ModuleCat k))).moduleCat_range_eq_ker`. Establish `hmem : e ∈ LinearMap.range X.f.hom.toLinearMap` using `this ▸ LinearMap.mem_ker.2 he`. Take `⟨a, ha⟩` from `hmem`. Conclude with `⟨a, ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_f_eq_of_g_eq_zero (e : X.X₂) (he : X.g.hom e = 0) : ∃ a : X.X₁, X.f.hom a = e := by
   have : LinearMap.range X.f.hom.toLinearMap = LinearMap.ker X.g.hom.toLinearMap :=
@@ -97,11 +97,11 @@ theorem exists_f_eq_of_g_eq_zero (e : X.X₂) (he : X.g.hom e = 0) : ∃ a : X.X
 include hX in
 
 /- English proof (translation)
-Establish `hg : Function.Surjective X.g.hom` using `(Rep.epi_iff_surjective X.g).1 hX.epi_g`. Establish `hf : Function.Injective X.f.hom` using `(Rep.mono_iff_injective X.f).1 hX.mono_f`. Use `choose y hy using fun v => hg (iCocycles X.X₃ p z v)`. Establish `hdy : ∀ v, X.g.hom ((inhomogeneousCochains.d X.X₂ p).hom y v) = 0` using `fun v => by`. Rewrite using `[comp_d_apply, show (fun u => X.g.hom (y u)) = iCocycles X.X₃ p z from funext hy, d_iCocycles]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `choose x hx using fun v => exists_f_eq_of_g_eq_zero hX _ (hdy v)`. Establish `hdx : (inhomogeneousCochains.d X.X₁ (p + 1)).hom x = 0`. Use function extensionality and compare the values at `v`. Apply `hf` to reduce the goal to its premises.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[comp_d_apply, show (fun u => X.f.hom (x u)) = (inhomogeneousCochains.d X.X₂ p).hom y from funext hx, Pi.zero_apply, map_zero]`. Conclude with `congr(($(inhomogeneousCochains.d_comp_d (n := p) (A := X.X₂))).hom y v)`. Conclude with `⟨y, cocyclesMk x hdx, hy, fun v => by rw [iCocycles_mk]; exact hx v⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_of_cocycle {p : ℕ} (z : cocycles X.X₃ p) :
     ∃ (y : (Fin p → G) → X.X₂) (x : cocycles X.X₁ (p + 1)),
@@ -127,11 +127,11 @@ theorem exists_lift_of_cocycle {p : ℕ} (z : cocycles X.X₃ p) :
 variable (B : Rep k G)
 
 /- English proof (translation)
-Use `groupCohomology_induction_on a fun z => ?_` and prove the remaining obligations. Use `groupCohomology_induction_on b fun w => ?_` and prove the remaining obligations. Take `⟨y, x, hy, hx⟩` from `exists_lift_of_cocycle hX z`. Rewrite using `[δ_π_eq hX z y hy x hx, cupH_π, cupH_π]`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `δ_π_eq hXB (cupCocycles rfl z w) (cupCochain rfl y (iCocycles B q w)) (fun v => ?_) (cupCocycles h' x w) (fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(X.g ▷ B).hom (cupCochain rfl y (iCocycles B q w) v) = iCocycles (X.X₃ ⊗ B) (p + q) (cupCocycles rfl z w) v`. Rewrite using `[iCocycles_cupCocycles, whiskerRight_cupCochain]`. Conclude with `congrArg (fun f => cupCochain rfl f (iCocycles B q w) v) (funext hy)`. Express the relevant statement in the definitionally equal form `(X.f ▷ B).hom (iCocycles (X.X₁ ⊗ B) (p + q + 1) (cupCocycles h' x w) v) = (inhomogeneousCochains.d (X.X₂ ⊗ B) (p + q)).hom (cupCochain rfl y (iCocycles B q w)) v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iCocycles_cupCocycles, whiskerRight_cupCochain, d_cupCochain, d_iCocycles, cupCochain_zero_right, smul_zero, add_zero]`. Conclude with `congrArg (fun f => cupCochain h' f (iCocycles B q w) v) (funext hx)`.
+A detailed English derivation is pending.
 -/
 theorem δ_cupH_left (hXB : (X.map (tensorRight B)).ShortExact) {p q n : ℕ} (h : p + q = n)
     (h' : p + 1 + q = n + 1) (a : groupCohomology X.X₃ p) (b : groupCohomology B q) :
@@ -154,11 +154,11 @@ theorem δ_cupH_left (hXB : (X.map (tensorRight B)).ShortExact) {p q n : ℕ} (h
     exact congrArg (fun f => cupCochain h' f (iCocycles B q w) v) (funext hx)
 
 /- English proof (translation)
-Use `groupCohomology_induction_on a fun z => ?_` and prove the remaining obligations. Use `groupCohomology_induction_on b fun w => ?_` and prove the remaining obligations. Take `⟨y, x, hy, hx⟩` from `exists_lift_of_cocycle hX z`. Rewrite using `[δ_π_eq hX z y hy x hx, cupH_π, cupH_π, ← map_smul]`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `δ_π_eq hBX (cupCocycles rfl w z) (cupCochain rfl (iCocycles B q w) y) (fun v => ?_) ((-1 : k) ^ q • cupCocycles h' w x) (fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(B ◁ X.g).hom (cupCochain rfl (iCocycles B q w) y v) = iCocycles (B ⊗ X.X₃) (q + p) (cupCocycles rfl w z) v`. Rewrite using `[iCocycles_cupCocycles, whiskerLeft_cupCochain]`. Conclude with `congrArg (fun f => cupCochain rfl (iCocycles B q w) f v) (funext hy)`. Express the relevant statement in the definitionally equal form `(B ◁ X.f).hom (iCocycles (B ⊗ X.X₁) (q + p + 1) ((-1 : k) ^ q • cupCocycles h' w x) v) = (inhomogeneousCochains.d (B ⊗ X.X₂) (q + p)).hom (cupCochain rfl (iCocycles B q w) y) v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Pi.smul_apply, map_smul, iCocycles_cupCocycles, whiskerLeft_cupCochain, d_cupCochain, d_iCocycles, cupCochain_zero_left, zero_add, Pi.smul_apply]`. Conclude with `congrArg (fun f => (-1 : k) ^ q • cupCochain h' (iCocycles B q w) f v) (funext hx)`.
+A detailed English derivation is pending.
 -/
 theorem δ_cupH_right (hBX : (X.map (tensorLeft B)).ShortExact) {p q n : ℕ} (h : q + p = n)
     (h' : q + (p + 1) = n + 1) (b : groupCohomology B q) (a : groupCohomology X.X₃ p) :
@@ -182,7 +182,7 @@ theorem δ_cupH_right (hBX : (X.map (tensorLeft B)).ShortExact) {p q n : ℕ} (h
     exact congrArg (fun f => (-1 : k) ^ q • cupCochain h' (iCocycles B q w) f v) (funext hx)
 
 /- English proof (translation)
-Substitute `hp hm` using the available equality. Conclude with `δ_cupH_left hX B hXB h h' a b`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem δ_cupH_left' (hXB : (X.map (tensorRight B)).ShortExact) {p q n p' m : ℕ}
     (hp : p + 1 = p') (hm : n + 1 = m) (h : p + q = n) (h' : p' + q = m)
@@ -192,7 +192,7 @@ theorem δ_cupH_left' (hXB : (X.map (tensorRight B)).ShortExact) {p q n p' m : �
   exact δ_cupH_left hX B hXB h h' a b
 
 /- English proof (translation)
-Substitute `hp hm` using the available equality. Conclude with `δ_cupH_right hX B hBX h h' b a`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem δ_cupH_right' (hBX : (X.map (tensorLeft B)).ShortExact) {p q n p' m : ℕ}
     (hp : p + 1 = p') (hm : n + 1 = m) (h : q + p = n) (h' : q + p' = m)

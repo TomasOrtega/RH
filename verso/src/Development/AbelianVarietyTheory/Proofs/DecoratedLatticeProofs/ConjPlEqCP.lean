@@ -14,7 +14,7 @@ open IsDedekindDomain NumberField GlobalTheory.IdemSupport
 variable {D : D7} {Φ : Formalism.L2.Theta.AE D →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, ev_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ev_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ev_sum {ι : Type} (s : Finset ι) (f : ι → Formalism.L2.Theta.AE D) (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     Φ (∑ i ∈ s, f i) Q = ∑ i ∈ s, Φ (f i) Q := by
@@ -24,23 +24,23 @@ theorem ev_sum {ι : Type} (s : Finset ι) (f : ι → Formalism.L2.Theta.AE D) 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ev_add, ih]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.IdemSupport.isConjPl_iff P _).1 (GlobalTheory.GoodPrimes.isConjPl_iff.2 rfl)`.
+A detailed English derivation is pending.
 -/
 theorem conjPl_eq_cP (P : HeightOneSpectrum (𝓞 D.host.E)) : Formalism.DivisionValues.conjPl P = cP P :=
   (GlobalTheory.IdemSupport.isConjPl_iff P _).1 (GlobalTheory.GoodPrimes.isConjPl_iff.2 rfl)
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, h0⟩` from `h`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Introduce `PP hPP PP' hPP' hu`. Assume the negation of the conclusion as `hne`. Establish `hd : ∀ Q ∈ P, IsDelta Φ Q (es Q)` using `fun Q hQ => delta_of_isIdemAt hΦ (hes Q hQ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hc' : PP' = cP PP`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq (D := D) hu.symm with h1 | h1` into its components or cases. Conclude with `absurd h1.symm hne`. Rewrite using `[h1, conjPl_eq_cP]`. Establish `hc : PP = cP PP'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq (D := D) hu with h1 | h1` into its components or cases. Conclude with `absurd h1 hne`. Rewrite using `[h1, conjPl_eq_cP]`. Establish `e1 : Φ (∑ Q ∈ P, es Q) PP = 1`. Rewrite using `[ev_sum, Finset.sum_eq_single PP (fun Q hQ hQP => (hd Q hQ).2.2 PP (Ne.symm hQP)) (fun h => absurd (Finset.mem_coe.1 hPP) h), (hd PP (Finset.mem_coe.1 hPP)).2.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Φ (cA D (∑ Q ∈ P, es Q)) PP = 1`. Rewrite using `[map_sum, ev_sum, Finset.sum_eq_single PP' ?_ (fun h => absurd (Finset.mem_coe.1 hPP') h)]`. Use `(delta_conj hΦ (hd PP' (Finset.mem_coe.1 hPP'))).2.1` as an intermediate fact. Rewrite `this` using `[← hc]`. Then use the resulting hypothesis. Introduce `Q hQ hQP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(delta_conj hΦ (hd Q hQ)).2.2 PP fun hQc => ?_` and prove the remaining obligations. Establish `hv : Q.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)` using `by rw [← under_cP Q, ← hQc]`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq (D := D) hv with h1 | h1` into its components or cases. Rewrite `hQc` using `[h1]`. Conclude with `hne (hc'.trans hQc.symm).symm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[conjPl_eq_cP, ← hc']`. Conclude with `hQP h1`. Establish `e3` using `ev_mul (Φ := Φ) (∑ Q ∈ P, es Q) (cA D (∑ Q ∈ P, es Q)) PP`. Rewrite `e3` using `[h0, ev_zero, e1, e2, one_mul]`. Conclude with `zero_ne_one e3`.
+A detailed English derivation is pending.
 -/
 theorem under_injOn {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} (h : Formalism.IndefR.Datum.IsIdemSum e P) :
     Set.InjOn (fun PP : Formalism.L2.DIV.Pl D.host.E => PP.under (𝓞 D.host.F)) (P : Set (Formalism.L2.DIV.Pl D.host.E)) := by
@@ -78,7 +78,7 @@ theorem under_injOn {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} (h : 
   exact zero_ne_one e3
 
 /- English proof (translation)
-Introduce `D c hc`. Take `⟨e, he⟩` from `hc.split`. Conclude with `under_injOn he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem injOn_under : ∀ (D : D7) (c : GlobalTheory.ChainOnto.Com D), c.Is → Set.InjOn (fun PP : Formalism.L2.DIV.Pl D.host.E => PP.under (NumberField.RingOfIntegers D.host.F)) (c.Pg : Set (Formalism.L2.DIV.Pl D.host.E)) := by
   intro D c hc

@@ -10,7 +10,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ArchInj
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ hCM τ z hz h0` and use `GlobalTheory.RealLift.KLineProof.eq_zero_of_piInf hCM τ z hz h0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_at_of_piInf :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →

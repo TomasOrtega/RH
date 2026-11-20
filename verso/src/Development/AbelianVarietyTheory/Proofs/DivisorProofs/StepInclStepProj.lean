@@ -22,42 +22,42 @@ def genVec {V : Z.Opens} (h : genericPoint Z ∈ V) (v : Fin N → Γ(Z, V)) :
   fun a => fnOf V h (v a)
 
 /- English proof (translation)
-The claim follows from `funext fun a => fnOf_resG e h (v a)`.
+A detailed English derivation is pending.
 -/
 theorem genVec_res {V W : Z.Opens} (e : W ≤ V) (h : genericPoint Z ∈ W) (v : Fin N → Γ(Z, V)) :
     genVec h (fun a => resG Z e (v a)) = genVec (e h) v :=
   funext fun a => fnOf_resG e h (v a)
 
 /- English proof (translation)
-The claim follows from `funext fun a => map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem genVec_add {V : Z.Opens} (h : genericPoint Z ∈ V) (v w : Fin N → Γ(Z, V)) :
     genVec h (v + w) = genVec h v + genVec h w :=
   funext fun a => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `funext fun _ => map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem genVec_zero {V : Z.Opens} (h : genericPoint Z ∈ V) :
     genVec h (0 : Fin N → Γ(Z, V)) = 0 :=
   funext fun _ => map_zero _
 
 /- English proof (translation)
-The claim follows from `funext fun a => by simp only [genVec, Pi.smul_apply, smul_eq_mul, map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem genVec_smul {V : Z.Opens} (h : genericPoint Z ∈ V) (c : Γ(Z, V)) (v : Fin N → Γ(Z, V)) :
     genVec h (c • v) = fnOf V h c • genVec h v :=
   funext fun a => by simp only [genVec, Pi.smul_apply, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Rewrite using `[genVec_smul, ← algebraMap_germ hx c, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem genVec_smul_germ {V : Z.Opens} (h : genericPoint Z ∈ V) {x : Z} (hx : x ∈ V) (c : Γ(Z, V))
     (v : Fin N → Γ(Z, V)) : genVec h (c • v) = Z.presheaf.germ V x hx c • genVec h v := by
   rw [genVec_smul, ← algebraMap_germ hx c, algebraMap_smul]
 
 /- English proof (translation)
-The claim follows from `funext fun a => fn_ext fun h => (congrFun (hv h) a).trans (map_zero _).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_genVec {V : Z.Opens} {v : Fin N → Γ(Z, V)}
     (hv : ∀ h : genericPoint Z ∈ V, genVec h v = 0) : v = 0 :=
@@ -75,7 +75,7 @@ def vsec (V : Z.Opens) : Submodule Γ(Z, V) (Fin N → Γ(Z, V)) where
     rw [genVec_smul_germ h hx]; exact (C x).smul_mem _ (hv h x hx)
 
 /- English proof (translation)
-Introduce `h x hx` and use `by rw [genVec_res e h]; exact hv (e h) x (e hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem res_mem_vsec {V W : Z.Opens} (e : W ≤ V) {v : Fin N → Γ(Z, V)} (hv : v ∈ vsec C V) :
     (fun a => resG Z e (v a)) ∈ vsec C W := fun h x hx => by
@@ -87,7 +87,7 @@ def vres {V W : Z.Opens} (e : W ≤ V) : vsec C V →+ vsec C W where
   map_add' _ _ := Subtype.ext (funext fun _ => map_add _ _ _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun _ => map_mul _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem vres_smul {V W : Z.Opens} (e : W ≤ V) (c : Γ(Z, V)) (m : vsec C V) :
     vres C e (c • m) = resG Z e c • vres C e m :=
@@ -104,11 +104,9 @@ def presheaf : TopCat.Presheaf Ab.{0} Z where
     exact (LB.resG_resG _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `κ W sf hsf`. Establish `H (a : Fin N) : ∃ b : Γ(Z, iSup W), ∀ k, resG Z (le_iSup W k) b = (sf k).1 a` using `LB.exists_fun_of_cover W (le_iSup W) le_rfl (fun k => (sf k).1 a) fun k l => congrFun (congrArg Subtype.val (hsf k l)) a`. Use `choose b hb using H`. Use `⟨⟨b, fun h x hx => ?_⟩, fun k => Subtype.ext (funext fun a => hb a k), fun t ht => Subtype.ext (funext fun a => LB.fun_ext_of_cover W (le_iSup W) le_rfl fun k => ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hx`. Establish `hg : genericPoint Z ∈ W k` using `gen_mem hk`. Establish `e : (sf k).1 = fun a => resG Z (le_iSup W k) (b a)` using `funext fun a => (hb a k).symm`. Use `(sf k).2 hg x hk` as an intermediate fact. Rewrite `this` using `[e, genVec_res]`. Then use the resulting hypothesis.
-
-Conclude with `(congrFun (congrArg Subtype.val (ht k)) a).trans (hb a k).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isSheaf_presheaf : (presheaf C).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
@@ -138,7 +136,7 @@ variable {C}
 def vec {V : Z.Opens} (s : Γ(vmod C, V)) : Fin N → Γ(Z, V) := (show vsec C V from s).1
 
 /- English proof (translation)
-The claim follows from `(show vsec C V from s).2`.
+A detailed English derivation is pending.
 -/
 theorem vec_mem {V : Z.Opens} (s : Γ(vmod C, V)) : vec s ∈ vsec C V := (show vsec C V from s).2
 
@@ -152,7 +150,7 @@ Both sides reduce to the same expression.
     vec (mk v hv) = v := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext {V : Z.Opens} {s t : Γ(vmod C, V)} (h : vec s = vec t) : s = t := Subtype.ext h
 
@@ -202,7 +200,7 @@ def ofRat (U : Z.Opens) (f : Z.functionField) (hf : ∀ x ∈ U, RegAt x f) : Γ
   if h : genericPoint Z ∈ U then (exists_fnOf_eq h hf).choose else 0
 
 /- English proof (translation)
-Rewrite using `[ofRat, dif_pos h]`. Conclude with `(exists_fnOf_eq h hf).choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnOf_ofRat {U : Z.Opens} {f : Z.functionField} (hf : ∀ x ∈ U, RegAt x f)
     (h : genericPoint Z ∈ U) : fnOf U h (ofRat U f hf) = f := by
@@ -215,7 +213,7 @@ def genVal {V : Z.Opens} (v : Fin N → Γ(Z, V)) : Fin N → Z.functionField :=
   if h : genericPoint Z ∈ V then genVec h v else 0
 
 /- English proof (translation)
-Conclude with `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem genVal_eq {V : Z.Opens} (h : genericPoint Z ∈ V) (v : Fin N → Γ(Z, V)) :
     genVal v = genVec h v := by
@@ -226,7 +224,7 @@ variable (L : LB Z) (r : L.ι → Z.functionFieldˣ)
   (φ : (Fin N → Z.functionField) →ₗ[Z.functionField] Z.functionField)
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [genVal_eq (gen_mem hx.1)] exact hC x _ (vec_mem s (gen_mem hx.1) x hx.1) c hx.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem regAt_proj (hC : ∀ x w, w ∈ C x → ∀ c, x ∈ L.U c → RegAt x (φ w * r c)) {V : Z.Opens}
     (s : Γ(vmod C, V)) (c : L.ι) : ∀ x ∈ V ⊓ L.U c, RegAt x (φ (genVal (vec s)) * r c) :=
@@ -239,7 +237,7 @@ def projCoord (hC : ∀ x w, w ∈ C x → ∀ c, x ∈ L.U c → RegAt x (φ w 
   ofRat _ _ (regAt_proj L r φ hC s c)
 
 /- English proof (translation)
-Rewrite using `[projCoord, fnOf_ofRat, genVal_eq h.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fnOf_projCoord (hC : ∀ x w, w ∈ C x → ∀ c, x ∈ L.U c → RegAt x (φ w * r c))
     {V : Z.Opens} (s : Γ(vmod C, V)) (c : L.ι) (h : genericPoint Z ∈ V ⊓ L.U c) :
@@ -247,7 +245,7 @@ theorem fnOf_projCoord (hC : ∀ x w, w ∈ C x → ∀ c, x ∈ L.U c → RegAt
   rw [projCoord, fnOf_ofRat, genVal_eq h.1]
 
 /- English proof (translation)
-Introduce `c c'`. Use `Cartier.fn_ext fun h => ?_` and prove the remaining obligations. Rewrite using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG, fnOf_projCoord, fnOf_projCoord, hr c c' ⟨h.1.2, h.2⟩]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem projCoord_mem (hr : IsRatSec L r)
     (hC : ∀ x w, w ∈ C x → ∀ c, x ∈ L.U c → RegAt x (φ w * r c)) {V : Z.Opens}
@@ -282,7 +280,7 @@ def vproj (hr : IsRatSec L r) (hC : ∀ x w, w ∈ C x → ∀ c, x ∈ L.U c �
       simp only [LB.coord_map, coord_projLin, fnOf_resG, fnOf_projCoord, vec_map, genVec_res]
 
 /- English proof (translation)
-The claim follows from `fnOf_projCoord L r φ hC s c h`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_coord_vproj (hr : IsRatSec L r)
     (hC : ∀ x w, w ∈ C x → ∀ c, x ∈ L.U c → RegAt x (φ w * r c)) {V : Z.Opens}
@@ -331,7 +329,7 @@ Both sides reduce to the same expression.
     (v : Fin N → Z.functionField) : coordFn M l v = (M *ᵥ v) l := rfl
 
 /- English proof (translation)
-Introduce `v hv` and use `⟨fun k hk => hv k (by omega), fun c _ => by rw [hv l le_rfl, zero_mul]; exact regAt_zero x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem stepC_le_quotC (M : Matrix (Fin N) (Fin N) Z.functionField) (l : Fin N) (L : LB Z)
     (r : L.ι → Z.functionFieldˣ) (x : Z) : stepC M l x ≤ quotC M l L r x := fun v hv =>
@@ -339,7 +337,7 @@ theorem stepC_le_quotC (M : Matrix (Fin N) (Fin N) Z.functionField) (l : Fin N) 
     rw [hv l le_rfl, zero_mul]; exact regAt_zero x⟩
 
 /- English proof (translation)
-Introduce `_ hv` and use `hv.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem quotC_le_stepC (M : Matrix (Fin N) (Fin N) Z.functionField) (l : Fin N) (L : LB Z)
     (r : L.ι → Z.functionFieldˣ) (x : Z) : quotC M l L r x ≤ stepC M ((l : ℕ) + 1) x :=
@@ -359,9 +357,9 @@ def stepProj (M : Matrix (Fin N) (Fin N) Z.functionField) (l : Fin N) {L : LB Z}
     (show RegAt x (coordFn M l w * r c) from hw.2 c hc)
 
 /- English proof (translation)
-Use extensionality with `V s : 3`. Use `LB.sec_ext fun c => Cartier.fn_ext fun h => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fnOf _ h (LB.coord ((stepProj M l hr).app V ((stepIncl M l L r).app V s)) c) = fnOf _ h (LB.coord (0 : Γ(LB.toMod L, V)) c)`. Rewrite using `[stepProj, fnOf_coord_vproj, LB.coord_zero, map_zero, coordFn_apply]`. Use `show (M *ᵥ genVec h.1 (vec s)) l * _ = 0`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(vec_mem s h.1 _ h.1 : genVec h.1 (vec s) ∈ stepSub M l) l le_rfl, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem stepIncl_stepProj (M : Matrix (Fin N) (Fin N) Z.functionField) (l : Fin N) {L : LB Z}
     {r : L.ι → Z.functionFieldˣ} (hr : IsRatSec L r) : stepIncl M l L r ≫ stepProj M l hr = 0 := by

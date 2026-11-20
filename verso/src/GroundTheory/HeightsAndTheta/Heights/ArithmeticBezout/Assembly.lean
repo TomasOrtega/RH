@@ -183,7 +183,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `(ChowFormBaseChange.proof RadicalBaseChange.proof (ChowFormExtend.proof RadicalBaseChange.proof) (ChowFormReduced.proof_of_prime_separate IncIdealPrime.full (IncIdealSeparate.proof IncidenceZeroLocus.proof (FormsThroughPoint.proof IncidenceZeroLocus.proof ThroughPointIncIdeal.pro …`.
+A detailed English derivation is pending.
 -/
 theorem ChowFormBaseChange.full : ChowFormBaseChange.Statement :=
   (ChowFormBaseChange.proof
@@ -202,25 +202,25 @@ theorem ChowFormBaseChange.full : ChowFormBaseChange.Statement :=
         (IncIdealNeBotDim.proof IncIdealDim.full))))
 
 /- English proof (translation)
-The claim follows from `BaseChangeAvoid.proof`.
+A detailed English derivation is pending.
 -/
 theorem BaseChangeAvoid.full : BaseChangeAvoid.Statement :=
   BaseChangeAvoid.proof
 
 /- English proof (translation)
-The claim follows from `ProjPrimeHasPoint.proof`.
+A detailed English derivation is pending.
 -/
 theorem ProjPrimeHasPoint.full : ProjPrimeHasPoint.Statement :=
   ProjPrimeHasPoint.proof
 
 /- English proof (translation)
-The claim follows from `Vertical.ChowFormSectionVertical.full`.
+A detailed English derivation is pending.
 -/
 theorem ChowFormSectionVertical.full : ChowFormSectionVertical.Statement :=
   Vertical.ChowFormSectionVertical.full
 
 /- English proof (translation)
-The claim follows from `(ConeMassOfFibre.of_open ConeFiniteFibreDim.proof (ConeGraphCover.proof ConeFiniteFibreDim.proof (ConeTangentDim.proof (ConeKrullDimLe.proof ConeFiniteFibreDim.proof) NullSmaller.full (FrameJacobianGeneric.proof JacobianRankGeneric.proof ConormalGenerationGeneric.proof)) (ConeSmo …`.
+A detailed English derivation is pending.
 -/
 theorem ConeMassOfFibre.full : ConeMassOfFibre.Statement :=
   (ConeMassOfFibre.of_open
@@ -244,25 +244,25 @@ theorem ConeMassOfFibre.full : ConeMassOfFibre.Statement :=
     TangentGaussInvariant.proof)
 
 /- English proof (translation)
-The claim follows from `(ConeIntegralMass.proof ConeFibreDegree.full ConeMassOfFibre.full)`.
+A detailed English derivation is pending.
 -/
 theorem ConeIntegralMass.full : ConeIntegralMass.Statement :=
   (ConeIntegralMass.proof ConeFibreDegree.full ConeMassOfFibre.full)
 
 /- English proof (translation)
-The claim follows from `(ConeBallFinite.proof ConeIntegralMass.full)`.
+A detailed English derivation is pending.
 -/
 theorem ConeBallFinite.full : ConeBallFinite.Statement :=
   (ConeBallFinite.proof ConeIntegralMass.full)
 
 /- English proof (translation)
-The claim follows from `(ConeFsLogIntegrable.proof ConeBallFinite.full ConeSlabBound.full)`.
+A detailed English derivation is pending.
 -/
 theorem ConeFsLogIntegrable.full : ConeFsLogIntegrable.Statement :=
   (ConeFsLogIntegrable.proof ConeBallFinite.full ConeSlabBound.full)
 
 /- English proof (translation)
-The claim follows from `(ConeLogBound.of_leaves ConeIntegralMass.full ConeBallFinite.full ConeFsLogIntegrable.full ConeHyperplaneNull.full)`.
+A detailed English derivation is pending.
 -/
 theorem ConeLogBound.full : ConeLogBound.Statement :=
   (ConeLogBound.of_leaves
@@ -272,7 +272,7 @@ theorem ConeLogBound.full : ConeLogBound.Statement :=
     ConeHyperplaneNull.full)
 
 /- English proof (translation)
-The claim follows from `(BaseChangeLogBound.of_leaves ChowFormBaseChange.full BaseChangeAvoid.full ConeIntegralMass.full ConeBallFinite.full ConeFsLogIntegrable.full ConeHyperplaneNull.full)`.
+A detailed English derivation is pending.
 -/
 theorem BaseChangeLogBound.full : BaseChangeLogBound.Statement :=
   (BaseChangeLogBound.of_leaves
@@ -284,59 +284,59 @@ theorem BaseChangeLogBound.full : BaseChangeLogBound.Statement :=
     ConeHyperplaneNull.full)
 
 /- English proof (translation)
-Establish `hComplexSetsLinearNoetherNormalization : ComplexSets.LinearNoetherNormalization.Statement` using `ComplexSets.LinearNoetherNormalization.proof`. Establish `hComplexSetsDiscriminantCover : ComplexSets.DiscriminantCover.Statement` using `HilbertSamuel.Closed.ComplexSets.DiscriminantCover`. Establish `hDiscriminantSheetCover : DiscriminantSheetCover.Statement` using `DiscriminantSheetCover.proof hComplexSetsDiscriminantCover`. Establish `hConeSliceSheetParam : ConeSliceSheetParam.Statement` using `ConeSliceSheetParam.proof hDiscriminantSheetCover`. Establish `hAreaFormulaLocal : AreaFormulaLocal.Statement` using `AreaFormulaLocal.proof`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAreaFormulaInjSet : AreaFormulaInjSet.Statement` using `AreaFormulaInjSet.proof hAreaFormulaLocal`. Establish `hAreaFormulaInj : AreaFormulaInj.Statement` using `AreaFormulaInj.proof hAreaFormulaInjSet`. Establish `hConeMapAreaOne : ConeMapAreaOne.Statement` using `ConeMapAreaOne.proof hAreaFormulaInj`. Establish `hConeMapArea : ConeMapArea.Statement` using `ConeMapArea.proof hConeMapAreaOne`. Establish `hConeSheetGramLintegral : ConeSheetGramLintegral.Statement` using `ConeSheetGramLintegral.proof hConeSliceSheetParam hConeMapArea`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSliceIdeal : SliceIdeal.Statement` using `SliceIdeal.full`. Establish `hSheetFormCompare : SheetFormCompare.Statement` using `SheetFormCompare.proof`. Establish `hSliceFormMass : SliceFormMass.Statement` using `SliceFormMass.proof hSliceIdeal hSliceMassFinite hSheetFormCompare`. Establish `hTwinComplexSetsFiniteMapOpen : IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full`. Establish `hTwinComplexSetsCriticalImageNull : IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hChartChangeSheetNull : ChartChangeSheetNull.Statement` using `ChartChangeSheetNull.proof hTwinComplexSetsFiniteMapOpen hTwinComplexSetsCriticalImageNull`. Establish `hVarIntChartChange : VarIntChartChange.Statement` using `VarIntChartChange.proof hComplexSetsLinearNoetherNormalization hChartChangeSheetNull hChartChangeLocal`. Establish `hFormIntSlice : FormIntSlice.Statement` using `FormIntSlice.proof hSliceIdeal hSliceFormMass hVarIntChartChange`. Establish `hSheetImageAreaSet : SheetImageAreaSet.Statement` using `HilbertSamuel.Closed.SheetImageAreaSet`. Establish `hLelongLimitOffZero : LelongLimitOffZero.Statement` using `LelongLimitOffZero.of_open hSheetImageAreaSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDivisorGeneralPointBranches : DivisorGeneralPointBranches.Statement` using `DivisorGeneralPointBranches.proof hDivisorOneComponent hDivisorBranches`. Establish `hTwinComplexSetsNormalModelExists : IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.proof`. Establish `hTwinComplexSetsNormalModelProper : IndefiniteRowSideFullHecke.ComplexSets.NormalModelProper.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalModelProper.proof`. Establish `hTwinComplexSetsRiemannExtensionAnalytic : IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionAnalytic.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionAnalytic.proof`. Establish `hTwinComplexSetsHolomorphicFibreInfinite : IndefiniteRowSideFullHecke.ComplexSets.HolomorphicFibreInfinite.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.HolomorphicFibreInfinite.proof`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsBranchOffHypersurface : IndefiniteRowSideFullHecke.ComplexSets.BranchOffHypersurface.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchOffHypersurface.proof hTwinComplexSetsHolomorphicFibreInfinite`. Establish `hTwinComplexSetsVanishNearPoint : IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full`. Establish `hJacobianRankGeneric : JacobianRankGeneric.Statement` using `JacobianRankGeneric.proof`. Establish `hConormalGenerationGeneric : ConormalGenerationGeneric.Statement` using `ConormalGenerationGeneric.proof`. Establish `hFrameJacobianGeneric : FrameJacobianGeneric.Statement` using `FrameJacobianGeneric.proof hJacobianRankGeneric hConormalGenerationGeneric`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFrameImplicitGraph : FrameImplicitGraph.Statement` using `FrameImplicitGraph.proof`. Establish `hFrameGraphGeneric : FrameGraphGeneric.Statement` using `FrameGraphGeneric.proof hFrameJacobianGeneric hFrameImplicitGraph`. Establish `hTwinComplexSetsRegularOffHypersurface : IndefiniteRowSideFullHecke.ComplexSets.RegularOffHypersurface.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.RegularOffHypersurface.proof hFrameGraphGeneric`. Establish `hTwinComplexSetsRegularLocusIdentity : IndefiniteRowSideFullHecke.ComplexSets.RegularLocusIdentity.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.RegularLocusIdentity.proof hTwinComplexSetsRegularOffHypersurface`. Establish `hTwinComplexSetsNormalGermIrreducible : IndefiniteRowSideFullHecke.ComplexSets.NormalGermIrreducible.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalGermIrreducible.proof hTwinComplexSetsRegularLocusIdentity hTwinComplexSetsNormalRiemannExtensionLocal hTwinComplexSetsVanishNearPoint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsAnalyticImplicitChart : IndefiniteRowSideFullHecke.ComplexSets.AnalyticImplicitChart.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.AnalyticImplicitChart.proof`. Establish `hTwinComplexSetsRegularLocusDense : IndefiniteRowSideFullHecke.ComplexSets.RegularLocusDense.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.RegularLocusDense.proof hTwinComplexSetsAnalyticImplicitChart`. Establish `hTwinComplexSetsGermFiniteProjection : IndefiniteRowSideFullHecke.ComplexSets.GermFiniteProjection.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.GermFiniteProjection.proof`. Establish `hTwinComplexSetsProperOpenProjectionCover : IndefiniteRowSideFullHecke.ComplexSets.ProperOpenProjectionCover.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.ProperOpenProjectionCover.proof hTwinComplexSetsProperOpenProjectionBranchLocus hTwinComplexSetsUnbranchedProperCountConstant`. Establish `hTwinComplexSetsFiniteGermProjectionCover : IndefiniteRowSideFullHecke.ComplexSets.FiniteGermProjectionCover.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.FiniteGermProjectionCover.proof hTwinComplexSetsIrreducibleGermProjectionOpenNear hTwinComplexSetsProperOpenProjectionCover`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsLocalParametrisation : IndefiniteRowSideFullHecke.ComplexSets.LocalParametrisation.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.LocalParametrisation.proof hTwinComplexSetsGermFiniteProjection hTwinComplexSetsFiniteGermProjectionCover`. Establish `hTwinComplexSetsSheetPieceProductAnalytic : IndefiniteRowSideFullHecke.ComplexSets.SheetPieceProductAnalytic.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.SheetPieceProductAnalytic.proof hTwinComplexSetsUnbranchedFibreSections`. Establish `hTwinComplexSetsSheetPieceReachesCentre : IndefiniteRowSideFullHecke.ComplexSets.SheetPieceReachesCentre.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.SheetPieceReachesCentre.proof`. Establish `hTwinComplexSetsParametrisationSheetsConnected : IndefiniteRowSideFullHecke.ComplexSets.ParametrisationSheetsConnected.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.ParametrisationSheetsConnected.proof hTwinComplexSetsSheetPieceProductAnalytic hTwinComplexSetsSheetPieceReachesCentre`. Establish `hTwinComplexSetsIrreducibleGermRegularConnected : IndefiniteRowSideFullHecke.ComplexSets.IrreducibleGermRegularConnected.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.IrreducibleGermRegularConnected.proof hTwinComplexSetsLocalParametrisation hTwinComplexSetsParametrisationSheetsConnected`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsManifoldZerosComplementConnected : IndefiniteRowSideFullHecke.ComplexSets.ManifoldZerosComplementConnected.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.ManifoldZerosComplementConnected.proof`. Establish `hTwinComplexSetsIrreducibleGermComplementConnected : IndefiniteRowSideFullHecke.ComplexSets.IrreducibleGermComplementConnected.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.IrreducibleGermComplementConnected.proof hTwinComplexSetsRegularLocusDense hTwinComplexSetsIrreducibleGermRegularConnected hTwinComplexSetsManifoldZerosComplementConnected`. Establish `hTwinComplexSetsNormalComplementConnected : IndefiniteRowSideFullHecke.ComplexSets.NormalComplementConnected.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalComplementConnected.proof hTwinComplexSetsVanishNearPoint hTwinComplexSetsNormalGermIrreducible hTwinComplexSetsIrreducibleGermComplementConnected`. Establish `hTwinComplexSetsNormalLocallyIrreducible : IndefiniteRowSideFullHecke.ComplexSets.NormalLocallyIrreducible.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalLocallyIrreducible.proof hTwinComplexSetsVanishNearPoint hTwinComplexSetsNormalComplementConnected`. Establish `hTwinComplexSetsBrouwerFixedPoint : IndefiniteRowSideFullHecke.ComplexSets.BrouwerFixedPoint.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BrouwerFixedPoint.proof hTwinComplexSetsChangeOfVariablesDegree`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsInvarianceOfDomain : IndefiniteRowSideFullHecke.ComplexSets.InvarianceOfDomain.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.InvarianceOfDomain.proof hTwinComplexSetsBrouwerFixedPoint`. Establish `hTwinComplexSetsInjectiveHolomorphicOpen : IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicOpen.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicOpen.proof hTwinComplexSetsInvarianceOfDomain`. Establish `hTwinComplexSetsNormalModelOpenMapping : IndefiniteRowSideFullHecke.ComplexSets.NormalModelOpenMapping.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalModelOpenMapping.proof hTwinComplexSetsNormalLocallyIrreducible hTwinComplexSetsBranchOffHypersurface hTwinComplexSetsInjectiveHolomorphicOpen`. Establish `hTwinComplexSetsBranchLift : IndefiniteRowSideFullHecke.ComplexSets.BranchLift.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchLift.proof hTwinComplexSetsRiemannExtensionAnalytic hTwinComplexSetsBranchOffHypersurface hTwinComplexSetsNormalModelOpenMapping hTwinComplexSetsNormalModelProper`. Establish `hTwinComplexSetsBranchFillDimension : IndefiniteRowSideFullHecke.ComplexSets.BranchFillDimension.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchFillDimension.proof hTwinComplexSetsHolomorphicFibreInfinite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hComplexSetsFibreBound : ComplexSets.FibreBound.Statement` using `ComplexSets.FibreBound.full`. Establish `hTwinComplexSetsHolomorphicIsolatedFibreOpen : IndefiniteRowSideFullHecke.ComplexSets.HolomorphicIsolatedFibreOpen.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.HolomorphicIsolatedFibreOpen.proof hTwinComplexSetsProperHolomorphicSurjective`. Establish `hTwinComplexSetsNormalOpenMapping : IndefiniteRowSideFullHecke.ComplexSets.NormalOpenMapping.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalOpenMapping.proof hTwinComplexSetsNormalLocallyIrreducible hComplexSetsLinearNoetherNormalization hComplexSetsFibreBound hComplexSetsDiscriminantCover hTwinComplexSetsHolomorphicIsolatedFibreOpen`. Establish `hTwinComplexSetsCriticalFlatNotInjective : IndefiniteRowSideFullHecke.ComplexSets.CriticalFlatNotInjective.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.CriticalFlatNotInjective.proof`. Establish `hTwinComplexSetsInjectiveHolomorphicJacobianNeZero : IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicJacobianNeZero.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicJacobianNeZero.proof hTwinComplexSetsHolomorphicKernelFibre hTwinComplexSetsCriticalFlatNotInjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsInjectiveHolomorphicInverse : IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicInverse.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicInverse.proof hTwinComplexSetsInjectiveHolomorphicJacobianNeZero`. Establish `hTwinComplexSetsProjectionInjectiveOffHypersurface : IndefiniteRowSideFullHecke.ComplexSets.ProjectionInjectiveOffHypersurface.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.ProjectionInjectiveOffHypersurface.proof_of_rank hJacobianRankGeneric hConormalGenerationGeneric`. Establish `hTwinComplexSetsBranchInverseOffHypersurface : IndefiniteRowSideFullHecke.ComplexSets.BranchInverseOffHypersurface.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchInverseOffHypersurface.proof hTwinComplexSetsInjectiveHolomorphicInverse hTwinComplexSetsProjectionInjectiveOffHypersurface`. Establish `hTwinComplexSetsNormalRiemannExtension : IndefiniteRowSideFullHecke.ComplexSets.NormalRiemannExtension.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalRiemannExtension.proof hTwinComplexSetsNormalRiemannExtensionLocal hTwinComplexSetsNormalLocallyIrreducible`. Establish `hTwinComplexSetsBranchInverseHolomorphic : IndefiniteRowSideFullHecke.ComplexSets.BranchInverseHolomorphic.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchInverseHolomorphic.proof hTwinComplexSetsBranchFillDimension hTwinComplexSetsNormalOpenMapping hTwinComplexSetsBranchInverseOffHypersurface hTwinComplexSetsNormalRiemannExtension hTwinComplexSetsNormalLocallyIrreducible`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsIsolatedFibreOpen : IndefiniteRowSideFullHecke.ComplexSets.IsolatedFibreOpen.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.IsolatedFibreOpenOfGeneric.proof hTwinComplexSetsGenericProjectionFinite hTwinComplexSetsFiniteMapOpen`. Establish `hTwinComplexSetsLocalBranchedCovering : IndefiniteRowSideFullHecke.ComplexSets.LocalBranchedCovering.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.LocalBranchedCovering.proof hDiscriminantSheetCover hTwinComplexSetsIsolatedFibreOpen`. Establish `hTwinComplexSetsLocalTrace : IndefiniteRowSideFullHecke.ComplexSets.LocalTrace.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.LocalTrace.proof hTwinComplexSetsLocalBranchedCovering`. Establish `hTwinComplexSetsNormalMaximumPrinciple : IndefiniteRowSideFullHecke.ComplexSets.NormalMaximumPrinciple.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.NormalMaximumPrinciple.proof hTwinComplexSetsLocalTrace`. Establish `hTwinComplexSetsBranchContainsNormalPoint : IndefiniteRowSideFullHecke.ComplexSets.BranchContainsNormalPoint.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchContainsNormalPoint.proof hTwinComplexSetsNormalLocallyIrreducible hTwinComplexSetsBranchInverseHolomorphic hTwinComplexSetsNormalRiemannExtension hTwinComplexSetsNormalMaximumPrinciple`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsBranchAwayFromRim : IndefiniteRowSideFullHecke.ComplexSets.BranchAwayFromRim.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchAwayFromRim.proof hTwinComplexSetsNormalModelExists hTwinComplexSetsNormalModelProper hTwinComplexSetsBranchLift hTwinComplexSetsNormalLocallyIrreducible hTwinComplexSetsBranchContainsNormalPoint`. Establish `hTwinComplexSetsBranchProperAtPoint : IndefiniteRowSideFullHecke.ComplexSets.BranchProperAtPoint.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchProperAtPoint.proof hTwinComplexSetsBranchAwayFromRim`. Establish `hLelongLimitAtBranches : LelongLimitAtBranches.Statement` using `LelongLimitAtBranches.proof hBranchIntDecompose hSliceBranchInt hPolydiscLelongLimit hTwinComplexSetsBranchProperAtPoint`. Establish `hTwinComplexSetsGeneralProjection : IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.full`. Establish `hTwinComplexSetsOneComponentGeneralPoint : IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.full`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTwinComplexSetsSliceImmersiveGeneral : IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.full`. Establish `hTwinComplexSetsBranchesGoodPoint : IndefiniteRowSideFullHecke.ComplexSets.BranchesGoodPoint.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchesGoodPoint.proof hTwinComplexSetsGeneralProjection hTwinComplexSetsOneComponentGeneralPoint hTwinComplexSetsSliceImmersiveGeneral hTwinComplexSetsBranchProperAtPoint`. Establish `hTwinComplexSetsPowerUnitCount : IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.full`. Establish `hTwinComplexSetsBranchesToGoodPosition : IndefiniteRowSideFullHecke.ComplexSets.BranchesToGoodPosition.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.BranchesToGoodPosition.proof hTwinComplexSetsBranchesGoodPoint hTwinComplexSetsPowerUnitCount`. Establish `hLocalOrder : LocalOrder.Statement` using `IndefiniteRowSideFullHecke.ComplexSets.LocalOrder.unfolding_form_of_matrix hTwinComplexSetsBranchesToGoodPosition hTwinComplexSetsLocalOrder`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLelongLimitGoodPoints : LelongLimitGoodPoints.Statement` using `LelongLimitGoodPoints.proof hDivisorGeneralPointBranches hLelongLimitAtBranches hLocalOrder`. Establish `hChartMassCompact : ChartMassCompact.Statement` using `HilbertSamuel.Closed.ChartMassCompact`. Establish `hVarMassNearSmall : VarMassNearSmall.Statement` using `VarMassNearSmall.proof hChartMassCompact`. Establish `hLelongMassNearSmall : LelongMassNearSmall.Statement` using `LelongMassNearSmall.proof hRegMassNearSmall hVarMassNearSmall`. Establish `hVarIntAdd : VarIntAdd.Statement` using `VarIntAdd.of_open hSheetImageAreaSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLelongLimitOnZero : LelongLimitOnZero.Statement` using `LelongLimitOnZero.proof hLelongLimitOffZero hLelongLimitGoodPoints hLelongMassNearSmall hVarIntAdd`. Establish `hSliceBoundaryBound : SliceBoundaryBound.Statement` using `SliceBoundaryBound.proof hChartMassCompact hSliceFormMass`. Establish `hMaDensChain : MaDensChain.Statement` using `MaDensChain.proof`. Establish `hTubeCollarMass : TubeCollarMass.Statement` using `HilbertSamuel.Closed.TubeCollarMass`. Establish `hTubeDeepRankOne : TubeDeepRankOne.Statement` using `TubeDeepRankOne.proof`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIsolatedFibreOpenPoly : IsolatedFibreOpenPoly.Statement` using `IsolatedFibreOpenPoly.full`. Establish `hComplexSetsGenericProjectionFinite : ComplexSets.GenericProjectionFinite.Statement` using `ComplexSets.GenericProjectionFinite.full`. Establish `hDominantFibreBound : DominantFibreBound.Statement` using `DominantFibreBound.proof hComplexSetsGenericProjectionFinite`. Establish `hImageDimLe : ImageDimLe.Statement` using `ImageDimLe.proof`. Establish `hIsolatedPointsCountPrime : IsolatedPointsCountPrime.Statement` using `IsolatedPointsCountPrime.proof hIsolatedFibreOpenPoly hDominantFibreBound hImageDimLe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIsolatedPointsCount : IsolatedPointsCount.Statement` using `IsolatedPointsCount.proof hIsolatedPointsCountPrime`. Establish `hTubeDeepAreaCount : TubeDeepAreaCount.Statement` using `TubeDeepAreaCount.proof hIsolatedPointsCount`. Establish `hTubeDeepWeightMass : TubeDeepWeightMass.Statement` using `HilbertSamuel.Closed.TubeDeepWeightMass`. Establish `hTubeDeepMass : TubeDeepMass.Statement` using `TubeDeepMass.proof hTubeDeepRankOne hTubeDeepAreaCount hTubeDeepWeightMass`. Establish `hTubeEuclMass : TubeEuclMass.Statement` using `TubeEuclMass.proof hTubeCollarMass hTubeDeepMass`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCutOffLimit : CutOffLimit.Statement` using `CutOffLimit.of_open hSheetImageAreaSet hTubeEuclMass`. Establish `hStokesOnChart : StokesOnChart.Statement` using `StokesOnChart.proof hComplexSetsDiscriminantCover hCutOffLimit`. Establish `hLogNormGradDensNonneg : LogNormGradDensNonneg.Statement` using `LogNormGradDensNonneg.proof`. Establish `hSliceLevelSetSmooth : SliceLevelSetSmooth.Statement` using `SliceLevelSetSmooth.proof hStokesOnChart hLogNormGradDensNonneg hMaDensChain hChartMassCompact hSliceMassFinite`. Establish `hSliceLevelSet : SliceLevelSet.Statement` using `SliceLevelSet.proof hSliceLevelSetSmooth`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSliceCutDecay : SliceCutDecay.Statement` using `SliceCutDecay.proof hMaDensChain hSliceLevelSet hSliceMassFinite`. Establish `hSliceComponents : SliceComponents.Statement` using `SliceComponents.full`. Establish `hSliceWeightMassFinite : SliceWeightMassFinite.Statement` using `SliceWeightMassFinite.proof hSliceMassFinite`. Establish `hStokesOnVariety : StokesOnVariety.Statement` using `StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass`. Establish `hLogIntegrable : LogIntegrable.Statement` using `LogIntegrable.of_open hSheetImageAreaSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLelongRegularise : LelongRegularise.Statement` using `LelongRegularise.of_open hSheetImageAreaSet`. Establish `hLelongLimit : LelongLimit.Statement` using `LelongLimit.of_open hLelongLimitOnZero hSheetImageAreaSet`. Establish `hPoincareLelong : PoincareLelong.Statement` using `PoincareLelong.proof hStokesOnVariety hLelongRegularise hLelongLimit`. Establish `hSliceFormLelongCompact : SliceFormLelongCompact.Statement` using `SliceFormLelongCompact.proof hStokesOnVariety hLogIntegrable hPoincareLelong hChartMassCompact hSliceIdeal hSliceComponents`. Establish `hSliceRegVarBound : SliceRegVarBound.Statement` using `SliceRegVarBound.proof hSliceFormMass`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSliceRegMassMono : SliceRegMassMono.Statement` using `SliceRegMassMono.proof hSliceFormMass`. Establish `hSliceRegMassContinuous : SliceRegMassContinuous.Statement` using `SliceRegMassContinuous.proof hSliceMassFinite hSheetFormCompare`. Establish `hSliceCutOffLimit : SliceCutOffLimit.Statement` using `SliceCutOffLimit.of_open hSheetFormCompare hSliceBoundaryBound hSliceCutDecay hSliceMassFinite`. Establish `hSliceCutChain : SliceCutChain.Statement` using `SliceCutChain.proof hChartMassCompact hLogIntegrable`. Establish `hSliceLogIntegrable : SliceLogIntegrable.Statement` using `SliceLogIntegrable.proof hSliceFsLogIntegrable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSliceWeightBound : SliceWeightBound.Statement` using `SliceWeightBound.proof hSliceLogIntegrable`. Establish `hLogNormEnergyDensNonneg : LogNormEnergyDensNonneg.Statement` using `LogNormEnergyDensNonneg.proof`. Establish `hSliceBandAbsEnergy : SliceBandAbsEnergy.Statement` using `SliceBandAbsEnergy.proof hLogIntegrable hLogNormEnergyDensNonneg hSliceTubeBandAbsEnergy`. Establish `hSliceBandEnergy : SliceBandEnergy.Statement` using `SliceBandEnergy.proof hLogIntegrable hLogNormEnergyDensNonneg hSliceBandAbsEnergy`. Establish `hSliceLelongError : SliceLelongError.Statement` using `SliceLelongError.proof hSliceCutChain hSliceWeightBound hSliceBandEnergy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSliceSectionMass : SliceSectionMass.Statement` using `SliceSectionMass.of_open hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass`. Establish `hSliceRegMassLimit : SliceRegMassLimit.Statement` using `SliceRegMassLimit.proof hSliceCutOffLimit hStokesOnVariety hSliceFormLelongCompact hSliceSectionMass hSliceFormMass hChartMassCompact`. Establish `hSliceSectionTailMass : SliceSectionTailMass.Statement` using `SliceSectionTailMass.proof hSliceMassFinite`. Establish `hSliceRegCutTail : SliceRegCutTail.Statement` using `SliceRegCutTail.proof hSliceFormMass`. Establish `hSliceCutTailMass : SliceCutTailMass.Statement` using `SliceCutTailMass.proof hSliceMassFinite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSliceRegTailMass : SliceRegTailMass.Statement` using `SliceRegTailMass.proof hSliceRegMassMono hSliceRegMassContinuous hSliceRegMassLimit hSliceSectionTailMass hSliceRegCutTail hSliceCutTailMass`. Establish `hSliceRegTail : SliceRegTail.Statement` using `SliceRegTail.proof hSliceRegVarBound hSliceRegTailMass hSliceCutTailMass`. Establish `hSliceFormLelong : SliceFormLelong.Statement` using `SliceFormLelong.proof hSliceIdeal hSliceComponents hSliceWeightMassFinite hSliceFormLelongCompact hSliceRegTail`. Apply the tactic sequence `have hGreenSymmetry : GreenSymmetry.Statement := GreenSymmetry.of_open hChowFormSectionAlgClosed hComplexSetsLinearNoetherNormalization hConeSheetGramLintegral hFormIntSlice hLelongLimitOnZero hSheetFormCompare hSheetImageAreaSet hSliceBoundaryBound hSliceCutDecay hSliceFormLelon …`. Conclude with `hGreenSymmetry`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GreenSymmetry.of_remaining
     (hChowFormSectionAlgClosed : ChowFormSectionAlgClosed.Statement)

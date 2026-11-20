@@ -8,25 +8,23 @@ namespace UpperTheory.V.Cj.H
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `I J L c cn hcn hlim`. Set `ψ : (J →₀ ℂ) →ₗ[ℂ] (I →₀ ℂ)` to `Finsupp.linearCombination ℂ L`. Set `φ : (J →₀ ℂ) →ₗ[ℂ] ℂ` to `Finsupp.linearCombination ℂ c`. Establish `hsum : ∀ (b : I → ℂ) (v : I →₀ ℂ), (v.sum fun i x => x * b i) = Finsupp.linearCombination ℂ b v`. Introduce `b v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.linearCombination_apply]`. Both sides reduce to the same expression. Establish `hcomp : ∀ (b : I → ℂ), (Finsupp.linearCombination ℂ b) ∘ₗ ψ = Finsupp.linearCombination ℂ (fun j => Finsupp.linearCombination ℂ b (L j))`. Introduce `b`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j x`. Simplify using `[ψ, Finsupp.linearCombination_single]`. Establish `hker : LinearMap.ker ψ ≤ LinearMap.ker φ`. Introduce `a ha`. Rewrite `ha`, the goal using `[LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h0 : ∀ k, Finsupp.linearCombination ℂ (cn k) a = 0`. Introduce `k`. Take `⟨b, hb⟩` from `hcn k`. Establish `h1` using `congrArg (fun m => m a) (hcomp b)`. Simplify using `only [LinearMap.comp_apply, ha, map_zero] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show cn k = fun j => Finsupp.linearCombination ℂ b (L j) from`. Use function extensionality and compare the values at `fun j => ((hsum b (L j)).symm.trans (hb j)).symm]`. Conclude with `h1.symm`. Establish `hT : Tendsto (fun k => Finsupp.linearCombination ℂ (cn k) a) atTop (𝓝 (φ a))`. Simplify using `only [φ, Finsupp.linearCombination_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `tendsto_finset_sum` to reduce the goal to its premises. Introduce `j _`. Conclude with `(hlim j).const_smul (a j)`. Simplify using `only [h0] at hT`. Conclude with `tendsto_nhds_unique hT tendsto_const_nhds`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `f0 : LinearMap.range ψ →ₗ[ℂ] ℂ` to `((LinearMap.ker ψ).liftQ φ hker) ∘ₗ (ψ.quotKerEquivRange.symm : LinearMap.range ψ →ₗ[ℂ] (J →₀ ℂ) ⧸ LinearMap.ker ψ)`. Take `⟨g, hg⟩` from `LinearMap.exists_extend f0`. Establish `hgψ : ∀ a, g (ψ a) = φ a`. Introduce `a`. Establish `h2` using `congrArg (fun m => m ⟨ψ a, LinearMap.mem_range_self ψ a⟩) hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h2`. Rewrite using `[h2]`. Simplify using `[f0, LinearMap.quotKerEquivRange_symm_apply_image]`. Establish `hgb : Finsupp.linearCombination ℂ (fun i => g (Finsupp.single i 1)) = g`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i x`. Rewrite using `[Finsupp.linearCombination_single, ← map_smul, Finsupp.smul_single_one]`. Use `⟨fun i => g (Finsupp.single i 1), fun j => ?_⟩` and prove the remaining obligations. Use `(hsum (fun i => g (Finsupp.single i 1)) (L j)).trans ?_` and prove the remaining obligations. Rewrite using `[hgb]`.
-
-Establish `h3` using `hgψ (Finsupp.single j 1)`. Simplify `h3` using `[ψ, φ, Finsupp.linearCombination_single]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem absSolve : AbsSolve := by
   intro I J L c cn hcn hlim

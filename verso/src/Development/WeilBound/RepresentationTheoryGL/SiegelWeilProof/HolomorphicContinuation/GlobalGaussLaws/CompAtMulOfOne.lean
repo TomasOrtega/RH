@@ -27,7 +27,7 @@ def AgreeAway {m k : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (x x' : Mx D m k)
   (∀ τ', τ' ≠ τ → compAt θ τ' x = compAt θ τ' x') ∧ x.map (finPart D) = x'.map (finPart D)
 
 /- English proof (translation)
-The claim follows from `closure_triv hG hDA hθ hι x hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_closure_AG (hG : GenA) (hDA : DecompAway) {θ : InfFam D} {τ : D.what₂.Tau} {ι : GR n →* G D n}
     (hθ : IsInfFam θ) (hι : IsPlaceEmb θ τ ι) (x : G D n) (hx : IsTrivAt θ τ x) :
@@ -35,9 +35,9 @@ theorem mem_closure_AG (hG : GenA) (hDA : DecompAway) {θ : InfFam D} {τ : D.wh
   closure_triv hG hDA hθ hι x hx
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.SiegelCells.exists_wPart (D := D) (n := n) n`. Use `⟨g, hg.trans ?_⟩` and prove the remaining obligations. Establish `hL : GlobalTheory.SiegelCells.lastDiag (AE D) n n = 1`. Unfold `GlobalTheory.SiegelCells.lastDiag`. Rewrite using `[← Matrix.diagonal_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.SiegelCells.wMat, hL, sub_self]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_w (D : D7) (n : ℕ) : ∃ w : G D n, mat w = blk4 0 1 (-1) 0 := by
   obtain ⟨g, hg⟩ := GlobalTheory.SiegelCells.exists_wPart (D := D) (n := n) n
@@ -49,7 +49,7 @@ theorem exists_w (D : D7) (n : ℕ) : ∃ w : G D n, mat w = blk4 0 1 (-1) 0 := 
   rw [GlobalTheory.SiegelCells.wMat, hL, sub_self]
 
 /- English proof (translation)
-Establish `h1 : compAt θ τ (mat x) = blk4 1 (compAt θ τ b) 0 1` using `by rw [h, component_block_matrix, compAt_one', compAt_zero']`. Establish `h2 : (blk4 1 0 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) ℂ) = blk4 1 (compAt θ τ b) 0 1`. Rewrite using `[GlobalTheory.StdUnn.Model.block_matrix_one, ← h1]`. Conclude with `hx.symm`. Conclude with `(GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective h2).2.1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_b_zero {θ : InfFam D} {τ : D.what₂.Tau} {x : G D n} {b : Mx D n n} (hx : IsTrivAt θ τ x)
     (h : mat x = blk4 1 b 0 1) : compAt θ τ b = 0 := by
@@ -59,7 +59,7 @@ theorem compAt_b_zero {θ : InfFam D} {τ : D.what₂.Tau} {x : G D n} {b : Mx D
   exact (GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective h2).2.1.symm
 
 /- English proof (translation)
-Establish `h1 : compAt θ τ (mat x) = blk4 (compAt θ τ a) 0 0 (compAt θ τ d)` using `by rw [h, component_block_matrix, compAt_zero']`. Establish `h2 : (blk4 1 0 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) ℂ) = blk4 (compAt θ τ a) 0 0 (compAt θ τ d)`. Rewrite using `[GlobalTheory.StdUnn.Model.block_matrix_one, ← h1]`. Conclude with `hx.symm`. Conclude with `(GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective h2).1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_a_one {θ : InfFam D} {τ : D.what₂.Tau} {x : G D n} {a d : Mx D n n} (hx : IsTrivAt θ τ x)
     (h : mat x = blk4 a 0 0 d) : compAt θ τ a = 1 := by
@@ -69,14 +69,14 @@ theorem compAt_a_one {θ : InfFam D} {τ : D.what₂.Tau} {x : G D n} {a d : Mx 
   exact (GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective h2).1.symm
 
 /- English proof (translation)
-Rewrite using `[compAt_mul', ha, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compAt_mul_of_one {θ : InfFam D} {τ : D.what₂.Tau} {m k : ℕ} (x : Mx D m k) (a : Mx D k k)
     (ha : compAt θ τ a = 1) : compAt θ τ (x ⬝ a : Mx D m k) = compAt θ τ x := by
   rw [compAt_mul', ha, Matrix.mul_one]
 
 /- English proof (translation)
-Use `⟨fun τ' hτ' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[compAt_mul', compAt_mul', h.1 τ' hτ']`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem agree_mul_right {θ : InfFam D} {τ : D.what₂.Tau} {m k : ℕ} {x x' : Mx D m k} (a : Mx D k k)
     (h : AgreeAway θ τ x x') : AgreeAway θ τ (x ⬝ a : Mx D m k) (x' ⬝ a : Mx D m k) := by
@@ -85,19 +85,19 @@ theorem agree_mul_right {θ : InfFam D} {τ : D.what₂.Tau} {m k : ℕ} {x x' :
   · rw [Matrix.map_mul, Matrix.map_mul, h.2]
 
 /- English proof (translation)
-Establish `htr : ∀ (R : Type) [CommRing R] (f : AE D →+* R) (M : Mx D n n), f (Matrix.trace M) = Matrix.trace (M.map f)`. Introduce `R _ f M`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply]`. Conclude with `map_sum f _ _`. Establish `hinner : ∀ τ'', τ'' ≠ τ → compAt θ τ'' (inner V x x) = compAt θ τ'' (inner V x' x')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ'' hτ''`. Establish `hx` using `h.1 τ'' hτ''`. Establish `hadj : compAt θ τ'' (adj x) = compAt θ τ'' (adj x')`. Use extensionality with `i j`. Use `congrFun (congrFun hx j) i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [compAt_eq, Matrix.map_apply] at this ⊢`. Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[cθ_cA hθ, cθ_cA hθ, this]`. Simplify using `only [GlobalTheory.StdUnn.inner]`. Rewrite using `[compAt_mul', compAt_mul', compAt_mul', compAt_mul', hadj, hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : (inner V x x).map (finPart D) = (inner V x' x').map (finPart D)`. Establish `hadj : (adj x).map (finPart D) = (adj x').map (finPart D)`. Use extensionality with `i j`. Use `congrFun (congrFun h.2 j) i` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this ⊢`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[finPart_cA, finPart_cA, this]`. Simplify using `only [GlobalTheory.StdUnn.inner]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, hadj, h.2]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ae_ext hθ` to reduce the goal to its premises. Introduce `τ''`. Rewrite using `[htr, htr, ← compAt_eq, ← compAt_eq, compAt_mul', compAt_mul']`. Distinguish the cases in `hτ : τ'' = τ`. Substitute `hτ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, Matrix.zero_mul, Matrix.zero_mul]`. Rewrite using `[hinner τ'' hτ]`. Rewrite using `[htr, htr, Matrix.map_mul, Matrix.map_mul, hfin]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipArg_away {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam θ) (V : HSp D) {b : Mx D n n}
     (hb : compAt θ τ b = 0) {x x' : Mx D V.rank n} (h : AgreeAway θ τ x x') :
@@ -136,9 +136,9 @@ theorem unipArg_away {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam θ) (V
   · rw [htr, htr, Matrix.map_mul, Matrix.map_mul, hfin]
 
 /- English proof (translation)
-Take `⟨-, hfin, hcomp⟩` from `GlobalTheory.WeilVacMove.isLineAt_lineAt (D := D) hθ τ (compAt θ τ x0 - compAt θ τ xs)`. Use `⟨xs + lineAt θ τ (compAt θ τ x0 - compAt θ τ xs) 1, ?_, fun τ' hτ' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[compAt_add', hcomp 1 τ, if_pos rfl]`. Simplify using the standard rewrite rules. Rewrite using `[compAt_add', hcomp 1 τ', if_neg hτ', add_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_add _ (map_add (finPart D)), hfin 1, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_change_tau {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam θ) {m k : ℕ} (xs x0 : Mx D m k) :
     ∃ x1 : Mx D m k, compAt θ τ x1 = compAt θ τ x0 ∧ AgreeAway θ τ x1 xs := by
@@ -149,9 +149,9 @@ theorem exists_change_tau {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam �
   · rw [Matrix.map_add _ (map_add (finPart D)), hfin 1, add_zero]
 
 /- English proof (translation)
-Take `⟨-, h2, -, -⟩` from `GlobalTheory.CompanionTheory.SwUnf.SmallCell.unitary_rel g h`. Simplify using `only [adj_zero, Matrix.zero_mul, neg_zero, zero_add] at h2`. Establish `h3 : adj d * a = 1`. Use `congrArg adj h2` as an intermediate fact. Rewrite `this` using `[adj_mul, adj_adj, adj_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h4 : a * adj d = 1` using `mul_eq_one_comm.mp h3`. Use `⟨⟨a, adj d, h4, h3⟩, rfl, ?_⟩` and prove the remaining obligations. Use `show d = adj (adj d)`. Rewrite using `[adj_adj]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_blocks (g : G D n) {a d : Mx D n n} (h : mat g = blk4 a 0 0 d) :
     ∃ a' : GL (Fin n) (AE D), a'.1 = a ∧ d = adj (a'⁻¹).1 := by
@@ -166,7 +166,7 @@ theorem levi_blocks (g : G D n) {a d : Mx D n n} (h : mat g = blk4 a 0 0 d) :
   rw [adj_adj]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_mul, GlobalTheory.StdUnn.LeftInvSect.mat_mul, GlobalTheory.CompanionTheory.SwUnf.SmallCell.mat_inv w hw, hx, hw]`. Simplify using `[adj_zero, adj_one, adj_neg, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mat_w_conj {w x : G D n} (hw : mat w = blk4 0 1 (-1) 0) {c : Mx D n n} (hx : mat x = blk4 1 0 c 1) :
     mat (w⁻¹ * x * w) = blk4 1 (-c) 0 1 := by
@@ -174,7 +174,7 @@ theorem mat_w_conj {w x : G D n} (hw : mat w = blk4 0 1 (-1) 0) {c : Mx D n n} (
   simp [adj_zero, adj_one, adj_neg, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]
 
 /- English proof (translation)
-Unfold `IsTrivAt at *`. Establish `hw : compAt θ τ (mat w⁻¹) * compAt θ τ (mat w) = 1`. Rewrite using `[← compAt_mul', ← GlobalTheory.StdUnn.LeftInvSect.mat_mul, inv_mul_cancel, GlobalTheory.StdUnn.LeftInvSect.mat_one, compAt_one']`. Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_mul, GlobalTheory.StdUnn.LeftInvSect.mat_mul, compAt_mul', compAt_mul', hx, Matrix.mul_one, hw]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trivAt_conj {θ : InfFam D} {τ : D.what₂.Tau} {x : G D n} (w : G D n) (hx : IsTrivAt θ τ x) :
     IsTrivAt θ τ (w⁻¹ * x * w) := by
@@ -184,7 +184,7 @@ theorem trivAt_conj {θ : InfFam D} {τ : D.what₂.Tau} {x : G D n} (w : G D n)
   rw [GlobalTheory.StdUnn.LeftInvSect.mat_mul, GlobalTheory.StdUnn.LeftInvSect.mat_mul, compAt_mul', compAt_mul', hx, Matrix.mul_one, hw]
 
 /- English proof (translation)
-Take `⟨-, -, hcomp⟩` from `GlobalTheory.WeilVacMove.isLineAt_lineAt (D := D) hθ τ M`. Conclude with `⟨lineAt θ τ M 1, by rw [hcomp 1 τ, if_pos rfl]; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_compAt {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam θ) {m k : ℕ} (M : Matrix (Fin m) (Fin k) ℂ) :
     ∃ x : Mx D m k, compAt θ τ x = M := by
@@ -192,9 +192,9 @@ theorem exists_compAt {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam θ) {
   exact ⟨lineAt θ τ M 1, by rw [hcomp 1 τ, if_pos rfl]; simp⟩
 
 /- English proof (translation)
-Set `b : ContDiffBump u0` to `⟨1, 2, one_pos, one_lt_two⟩`. Use `⟨fun u => ((b u : ℝ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Establish `hc : HasCompactSupport (fun u => ((b u : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `hs : ContDiff ℝ (⊤ : ℕ∞) (fun u => ((b u : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Conclude with `⟨hc.toSchwartzMap hs, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `: b u0 = 1` using `b.one_of_mem_closedBall (Metric.mem_closedBall_self b.rIn_pos.le)`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_sch_ne {m k : ℕ} (u0 : Fin m → Fin k → ℂ) : ∃ f : (Fin m → Fin k → ℂ) → ℂ, IsSch f ∧ f u0 ≠ 0 := by
   let b : ContDiffBump u0 := ⟨1, 2, one_pos, one_lt_two⟩

@@ -33,19 +33,17 @@ noncomputable section
 namespace GlobalTheory.BotSpan
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX`. Take `⟨K, hK⟩` from `GlobalTheory.T.bottom_triangle_monomial_support_finite hP hI hL hX`. Take `⟨M₁, hM₁, hr⟩` from `GlobalTheory.T.bottom_triangle_rational_coefficients hP hI hL hX`. Take `⟨J, M₂, hJ, hM₂, hl⟩` from `GlobalTheory.T.bottom_triangle_open_subgroup_field hP hI hL hX`. Take `⟨H, hH, hc⟩` from `GlobalTheory.T.bottom_triangle_finite_double_cosets hP hI hL hX J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨H, K, M₁ ⊔ M₂, IntermediateField.finiteDimensional_sup M₁ M₂, hH, ?_⟩` and prove the remaining obligations. Introduce `t h hh k`. Take `⟨γ, hγ, r, hrI, h₀, hh₀, κ, hκJ, hκf, rfl⟩` from `hc h hh`. Establish `hx : h₀ * κ ∈ GfC WW` using `mul_mem (hH h₀ hh₀) hκf`. Establish `hγr : γ * r ∈ GfC WW`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : γ * r = (γ * r * h₀ * κ) * (h₀ * κ)⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem hh (inv_mem hx)`. Take `⟨c, hcM, hcE⟩` from `hr t γ hγ r hrI hγr (h₀ * κ) k`. Take `⟨ℓ, hℓM, hℓ⟩` from `hl t κ hκJ hκf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : X.I W.ψ W.θ t (MvPolynomial.monomial k 1) (γ * r * h₀ * κ) = ∑ k' ∈ c.support, c k' * ℓ * X.I W.ψ W.θ t (MvPolynomial.monomial k' 1) h₀`. Establish `e0 : γ * r * h₀ * κ = γ * ((h₀ * κ) * r)`. Rewrite using `[← GlobalTheory.AdelicSplit.commute_GinfC_GfC WW hrI hx]`. Simplify using `only [mul_assoc]`. Rewrite using `[e0, GlobalTheory.T.bottom_triangle_integral_left_invariant hP hI hL hX t _ γ hγ, hcE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[hℓ, mul_assoc]`. Use `⟨fun h' k' => if h' = h₀ then c k' * ℓ else 0, fun a b => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `mul_mem ((le_sup_left : M₁ ≤ M₁ ⊔ M₂) (hcM b)) ((le_sup_right : M₂ ≤ M₁ ⊔ M₂) hℓM)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Rewrite using `[e1, Finset.sum_eq_single_of_mem h₀ hh₀ (fun b _ hb => by simp [hb])]`. Simplify using `only [if_true]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finsupp.notMem_support_iff.1 hk', zero_mul, zero_mul]`.
-
-Use `_ = ∑ k' ∈ K, c k' * ℓ * X.I W.ψ W.θ t (MvPolynomial.monomial k' 1) h₀ := (Finset.sum_subset Finset.subset_union_right fun k' _ hk' => by`. Rewrite using `[hK t h₀ (hH h₀ hh₀) k' hk', mul_zero]).symm`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_classSums : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

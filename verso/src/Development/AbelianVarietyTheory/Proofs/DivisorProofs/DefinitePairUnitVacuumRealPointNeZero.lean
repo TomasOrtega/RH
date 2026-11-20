@@ -18,13 +18,13 @@ namespace GlobalTheory.VacRealForm
 open GlobalTheory.FockCompare
 
 /- English proof (translation)
-Introduce `D T L sc G W U N σ h t j hj f hf`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hψ` using `hf.1`. Establish `hS : IsSelfDualC (G.pS (.top t j)) (N.latS (.top t j))` using `N.selfDual (X := .top j) (show j ≤ D.R.m by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsSelfDualC (G.pT (.top t j)) (N.latT (.top t j))` using `N.selfDual (X := .top (j + 1)) (show j + 1 ≤ D.R.m by omega)`. Take `⟨-, h2, h3⟩` from `GlobalTheory.T.self_dual_lattice_pairing_dual D W.ψ _ _ _ _ hψ hS hT`. Establish `hinf` using `fun u => GlobalTheory.VacUnique.latO_inf (u := u) (G.pS (.top t j)) (G.pT (.top t j)) ((N.latS (.top t j) : Set _)) ((N.latT (.top t j) : Set _)) fun _ => True`. Use `choose ε _ hε2 using h3 f hf.2.lat`. Establish `e : f = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `w`. Take `⟨γ, z, u, hu, rfl⟩` from `GlobalTheory.VacUnique.exists_decomp h h2 w`. Rewrite using `[hf.2.theta.quasi, GlobalTheory.VacUnique.apply_real_add h hψ (hinf u hu) (hε2 u hu f hf.2.lat), hcon z]`. Simplify using the standard rewrite rules. Take `⟨⟨p, hp⟩, hn⟩` from `hf.2.norm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `n1` using `hn p hp`. Rewrite `n1` using `[e]`. Simplify using `[nrm2] at n1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vacuum_real_ne_zero : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (W : G.Weil) {U : Set T} (N : GlobalTheory.FunObj.Std G U) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart W.θ σ → ∀ (t : T) (j : ℕ), j + 1 ≤ D.R.m → ∀ f, IsVacO W.ψ W.θ _ _ (G.cartS W.cart (.top t j)) (G.onT W.cart (.top t j)) (N.latS (.top t j) : Set _) (N.latT (.top t j) : Set _) f → ∃ z : GlobalTheory.FockCompare.RW (G.pT (.top t j)) (G.pS (.top t j)), f (GlobalTheory.FockCompare.iotaW σ (G.pT (.top t j)) (G.pS (.top t j)) z) ≠ 0 := by
   classical

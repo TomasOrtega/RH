@@ -18,17 +18,17 @@ namespace GlobalTheory.MixDens
 open GlobalTheory.CurveDens ComplexConjugate
 
 /- English proof (translation)
-Establish `hv : ξ = ∑ j, ξ j • EuclideanSpace.single j (1 : ℂ)`. Use extensionality with `i`. Simplify using `[EuclideanSpace.single_apply, Pi.single_apply]`. Establish `hl : ∀ (s : Finset (Fin D)) (f : Fin D → V D) (y : V D), T (∑ i ∈ s, f i) y = ∑ i ∈ s, T (f i) y`. Introduce `s f y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hT.add_left 0 0 y`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hT.add_left, ih]`. Establish `hr : ∀ (s : Finset (Fin D)) (f : Fin D → V D) (x : V D), T x (∑ i ∈ s, f i) = ∑ i ∈ s, T x (f i)`. Introduce `s f x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hT.add_right x 0 0`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hT.add_right, ih]`. Establish `e : T ξ ξ = ∑ j, ∑ l, ξ j * T (EuclideanSpace.single j 1) (EuclideanSpace.single l 1) * conj (ξ l)`. Establish `h1 : T ξ ξ = T (∑ j, ξ j • EuclideanSpace.single j (1 : ℂ)) (∑ l, ξ l • EuclideanSpace.single l (1 : ℂ))` using `by rw [← hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, hl]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hT.smul_left, hr, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hT.smul_right, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [formMat, of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_formMat_eq {D : ℕ} (T : V D → V D → ℂ) (hT : IsSesq T) (ξ : V D) :
     ∑ j, ∑ l, ξ j * formMat T j l * starRingEnd ℂ (ξ l) = T ξ ξ / kappa := by
@@ -61,9 +61,9 @@ theorem sum_formMat_eq {D : ℕ} (T : V D → V D → ℂ) (hT : IsSesq T) (ξ :
   ring
 
 /- English proof (translation)
-Establish `e : ∀ ξ η, extTrace K z ξ η = kappa * (secondForm K z ξ * secondFormAdj K z η).trace` using `extTrace_eq h hp`. Use `⟨fun x x' y => ?_, fun c x y => ?_, fun x y y' => ?_, fun c x y => ?_⟩` and prove the remaining obligations. Simplify using `only [e, secondForm_add_vec, Matrix.add_mul, trace_add, mul_add]`. Simplify using `only [e, secondForm_smul_vec, Matrix.smul_mul, trace_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e, secondFormAdj, adj, secondForm_add_vec, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, trace_add, mul_add]`. Simplify using `only [e, secondFormAdj, adj, secondForm_smul_vec, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, trace_smul, smul_eq_mul, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isSesq_extTrace {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
@@ -80,9 +80,9 @@ theorem isSesq_extTrace {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [N
       Matrix.smul_mul, trace_smul, smul_eq_mul, Complex.star_def]; ring
 
 /- English proof (translation)
-Establish `e (z : ℂ) : z / kappa = ((2 * Real.pi : ℝ) : ℂ) * (-Complex.I * z)`. Rewrite using `[kappa]`. Use `Complex.I_ne_zero` as an intermediate fact. Establish `: (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite using `[e, Complex.re_ofReal_mul, diagVal]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_div_kappa {W : Type} (α : W → W → ℂ) (ξ : W) :
     (α ξ ξ / kappa).re = Real.pi * (2 * diagVal α ξ) := by
@@ -97,17 +97,15 @@ theorem re_div_kappa {W : Type} (α : W → W → ℂ) (ξ : W) :
   ring
 
 /- English proof (translation)
-Introduce `k _ X p σ D S h hS h₁ h₃ H U t w ht c y hy hU ξ`. Take `⟨a', ha'⟩` from `Met.exists_adapted (p := p) (σ := σ) hS h₁ h₃ y`. Use `set a := adaptedOf a' t ht with a_def`. Establish `ha : y ∈ ptsIn p σ a.U` using `mem_ptsIn_inf.2 ⟨hU, ha'⟩`. Use `set G : V D → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ := fun v => h.gram a.frame (c.e.symm v) with G_def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : V D → Fin 1 ⊕ Fin 1 → ℂ := fun v i => (a.mid hS).crd p σ w (c.e.symm v) (finSumFinEquiv i) with s_def`. Establish `hs : ∀ i, DifferentiableAt ℂ (fun x => s x i) (c.e y)` using `fun i => c.differentiableAt_ev _ hy (mem_ptsIn_inf.2 ⟨hU, ha⟩)`. Establish `hG : MContDiffAt 1 G (c.e y)` using `((H.gram a.frame ha).mContDiffAt c hy).of_le (by norm_cast)`. Establish `hp` using `h.eventually_posDef hS a c hy ha`. Establish `hn : ∀ᶠ v in 𝓝 (c.e y), c.e.symm v ∈ ptsIn p σ (U ⊓ a'.U)` using `eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn (U ⊓ a'.U))).mem_nhds (ChartGlue.mem_over c.e hy ha)) fun _ hv => hv.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₀ : c.e.symm (c.e y) = y` using `c.e.left_inv hy`. Establish `key (v : V D) (hv : c.e.symm v ∈ ptsIn p σ (U ⊓ a'.U)) : h.form w (S.f.app U t) (c.e.symm v) = form (G v) (s v) (Pi.single (Sum.inl 0) 1) ∧ h.form (S.f.app U t) (S.f.app U t) (c.e.symm v) = G v (Sum.inl 0) (Sum.inl 0) ∧ h.form w w (c.e.symm v) = form (G v) (s v) (s v)`. Establish `hv' : c.e.symm v ∈ ptsIn p σ U` using `(mem_ptsIn_inf.1 hv).1`. Establish `hc` using `crd_adaptedOf hS a' t ht hv`. Use `⟨?_, ?_, form_eq_gram_frame h hS a w w hv hv'⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[form_eq_gram_frame h hS a w _ hv hv', hc]`. Rewrite using `[form_eq_gram_frame h hS a _ _ hv hv', hc, form_single]`. Establish `k₀` using `key _ (e₀.symm ▸ ha)`. Rewrite `k₀` using `[e₀]`. Establish `e₁ : dbar (fun v => h.form w (S.f.app U t) (c.e.symm v)) (c.e y) = dbar (fun v => form (G v) (s v) (Pi.single (Sum.inl 0) 1)) (c.e y)` using `dbar_congr (hn.mono fun v hv => (key v hv).1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : dbar (fun v => (Real.log (h.form (S.f.app U t) (S.f.app U t) (c.e.symm v)).re : ℂ)) (c.e y) = dbar (fun v => (Real.log (G v (Sum.inl 0) (Sum.inl 0)).re : ℂ)) (c.e y)` using `dbar_congr (hn.mono fun v hv => by simp only [(key v hv).2.1])`. Establish `main` using `norm_sq_dbar_proj_rank_two _ G s ξ (c.e y) hG hp hs`. Establish `hb : bcMat h hS h₁ h₃ c y = formMat (extTrace G (c.e y))`. Rewrite using `[bcMat, Met.bcForm_eq hS a _ c H hy ha (Met.exists_adapted hS h₁ h₃ y).choose_spec]`. Both sides reduce to the same expression.
-
-Rewrite using `[e₁, e₂, k₀.1, k₀.2.1, k₀.2.2, main, hb, sum_formMat_eq _ (isSesq_extTrace hG hp), re_div_kappa]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_dbar_projection_sq_bcMat : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ)
     (S : ShortComplex X.Modules) (h : Met p σ S.X₂ (1 + 1)) (hS : S.ShortExact) (h₁ : IsVB S.X₁ 1)

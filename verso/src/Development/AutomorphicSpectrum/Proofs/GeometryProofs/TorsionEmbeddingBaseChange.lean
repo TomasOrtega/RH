@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Semi
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.HtPt.Htat.torsion_bc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHodgeTatePoints%2FHtatBcTors.lean&line=49#L49)
 -/

@@ -11,13 +11,13 @@ namespace GlobalTheory.FixBound
 def enorm {R : Type} [NormedRing R] {n : ℕ} (A : Matrix (Fin n) (Fin n) R) : ℝ := ∑ i, ∑ j, ‖A i j‖
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem enorm_nonneg {R : Type} [NormedRing R] {n : ℕ} (A : Matrix (Fin n) (Fin n) R) : 0 ≤ enorm A :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-Unfold `enorm`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_enorm {R : Type} [NormedRing R] {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     ‖A i j‖ ≤ enorm A := by
@@ -29,7 +29,7 @@ theorem norm_le_enorm {R : Type} [NormedRing R] {n : ℕ} (A : Matrix (Fin n) (F
           (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Unfold `enorm`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem enorm_le_of {R : Type} [NormedRing R] {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (t : ℝ)
     (h : ∀ i j, ‖A i j‖ ≤ t) : enorm A ≤ n * n * t := by
@@ -39,11 +39,9 @@ theorem enorm_le_of {R : Type} [NormedRing R] {n : ℕ} (A : Matrix (Fin n) (Fin
     _ = n * n * t := by simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, mul_assoc]
 
 /- English proof (translation)
-Unfold `enorm`. Establish `hB : ∀ k, ∑ j, ‖B k j‖ ≤ ∑ k', ∑ j, ‖B k' j‖` using `fun k => Finset.single_le_sum (f := fun k' => ∑ j, ‖B k' j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ k)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => norm_mul_le _ _)`. Use `_ = ∑ i, ∑ k, ‖A i k‖ * ∑ j, ‖B k j‖ := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => (Finset.mul_sum _ _ _).symm`.
-
-Use `_ ≤ ∑ i, ∑ k, ‖A i k‖ * ∑ k', ∑ j, ‖B k' j‖ := Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left (hB k) (norm_nonneg _)`. Use `_ = _ := by`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => (Finset.sum_mul _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_mul_le {R : Type} [NormedRing R] {n : ℕ} (A B : Matrix (Fin n) (Fin n) R) :
     enorm (A * B) ≤ enorm A * enorm B := by
@@ -72,7 +70,7 @@ def mulMap (K : IntermediateField ℚ_[p] (PadicAlgCl p)) : KQ p K 1 →+* Padic
   (Algebra.TensorProduct.productMap K.val (Qr p 1).val : K ⊗[ℚ_[p]] Qr p 1 →ₐ[ℚ_[p]] PadicAlgCl p).toRingHom
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.productMap K.val (Qr p 1).val (a ⊗ₜ[ℚ_[p]] (1 : Qr p 1)) = _`. Simplify using `[Algebra.TensorProduct.productMap_apply_tmul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulMap_inclK (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (a : K) :
     mulMap K (inclK p K 1 a) = (a : PadicAlgCl p) := by
@@ -80,7 +78,7 @@ theorem mulMap_inclK (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (a : K) :
   simp [Algebra.TensorProduct.productMap_apply_tmul]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.productMap K.val (Qr p 1).val ((1 : K) ⊗ₜ[ℚ_[p]] b) = _`. Simplify using `[Algebra.TensorProduct.productMap_apply_tmul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulMap_inclQ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (b : Qr p 1) :
     mulMap K (inclQ p K 1 b) = (b : PadicAlgCl p) := by
@@ -88,9 +86,9 @@ theorem mulMap_inclQ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (b : Qr p 1)
   simp [Algebra.TensorProduct.productMap_apply_tmul]
 
 /- English proof (translation)
-Establish `h : intKQ p K 1 ≤ (Obar p).toSubring.comap (mulMap K)`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Use `show mulMap K (inclK p K 1 a) ∈ Obar p`. Rewrite using `[mulMap_inclK]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.2`. Use `show mulMap K (inclQ p K 1 b) ∈ Obar p`. Rewrite using `[mulMap_inclQ]`. Conclude with `b.2`. Conclude with `mem_Obar_iff.1 (h hx)`.
+A detailed English derivation is pending.
 -/
 theorem norm_mulMap_le_one (K : IntermediateField ℚ_[p] (PadicAlgCl p)) {x : KQ p K 1}
     (hx : x ∈ intKQ p K 1) : ‖mulMap K x‖ ≤ 1 := by
@@ -108,21 +106,19 @@ def E (G : HTGroup p) (g : Gr G 1) : ℝ :=
     ∑ w, enorm ((g.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)).map (mulMap (G.Fw w)))
 
 /- English proof (translation)
-The claim follows from `add_nonneg (enorm_nonneg _) (Finset.sum_nonneg fun _ _ => enorm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem E_nonneg (G : HTGroup p) (g : Gr G 1) : 0 ≤ E G g :=
   add_nonneg (enorm_nonneg _) (Finset.sum_nonneg fun _ _ => enorm_nonneg _)
 
 /- English proof (translation)
-Unfold `E`. Use `set a := enorm ((g.1 : Matrix (Fin 1) (Fin 1) (Qr p 1)).map (algebraMap (Qr p 1) (PadicAlgCl p)))`. Use `set a' := enorm ((h.1 : Matrix (Fin 1) (Fin 1) (Qr p 1)).map (algebraMap (Qr p 1) (PadicAlgCl p)))`. Use `set b := fun w => enorm ((g.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)).map (mulMap (G.Fw w)))`. Use `set b' := fun w => enorm ((h.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)).map (mulMap (G.Fw w)))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : enorm (((g * h).1 : Matrix (Fin 1) (Fin 1) (Qr p 1)).map (algebraMap (Qr p 1) (PadicAlgCl p))) ≤ a * a'`. Rewrite using `[Prod.fst_mul, Units.val_mul, Matrix.map_mul]`. Conclude with `enorm_mul_le _ _`. Establish `h2 : ∀ w, enorm (((g * h).2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)).map (mulMap (G.Fw w))) ≤ b w * b' w`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Prod.snd_mul, Pi.mul_apply, Units.val_mul, Matrix.map_mul]`. Conclude with `enorm_mul_le _ _`. Establish `ha : 0 ≤ a` using `enorm_nonneg _`. Establish `ha' : 0 ≤ a'` using `enorm_nonneg _`. Establish `hb : ∀ w, 0 ≤ b w` using `fun _ => enorm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb' : ∀ w, 0 ≤ b' w` using `fun _ => enorm_nonneg _`. Establish `hB : 0 ≤ ∑ w, b w` using `Finset.sum_nonneg fun w _ => hb w`. Establish `hB' : 0 ≤ ∑ w, b' w` using `Finset.sum_nonneg fun w _ => hb' w`. Establish `h3 : ∑ w, b w * b' w ≤ (∑ w, b w) * ∑ w, b' w`. Rewrite using `[Finset.sum_mul]`.
-
-Conclude with `Finset.sum_le_sum fun w _ => mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := b') (fun w _ => hb' w) (Finset.mem_univ w)) (hb w)`. Establish `h4 : ∑ w, enorm (((g * h).2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)).map (mulMap (G.Fw w))) ≤ ∑ w, b w * b' w` using `Finset.sum_le_sum fun w _ => h2 w`. Use polynomial arithmetic with `[mul_nonneg ha hB', mul_nonneg hB ha']`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem E_mul (G : HTGroup p) (g h : Gr G 1) : E G (g * h) ≤ E G g * E G h := by
   unfold E
@@ -151,18 +147,16 @@ theorem E_mul (G : HTGroup p) (g h : Gr G 1) : E G (g * h) ≤ E G g * E G h := 
   nlinarith [mul_nonneg ha hB', mul_nonneg hB ha']
 
 /- English proof (translation)
-The claim follows from `(E_mul G g h).trans (mul_le_mul hg hh (E_nonneg G h) ((E_nonneg G g).trans hg))`.
+A detailed English derivation is pending.
 -/
 theorem E_mul_le (G : HTGroup p) {g h : Gr G 1} {s t : ℝ} (hg : E G g ≤ s) (hh : E G h ≤ t) :
     E G (g * h) ≤ s * t :=
   (E_mul G g h).trans (mul_le_mul hg hh (E_nonneg G h) ((E_nonneg G g).trans hg))
 
 /- English proof (translation)
-Rewrite `hk` using `[KHT, Subgroup.mem_prod]`. Take `⟨h1, h2⟩` from `hk`. Use `add_le_add ?_ (Finset.sum_le_sum fun w _ => ?_)` and prove the remaining obligations. Use `enorm_le_of _ _ fun i j => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hx]`. Conclude with `mem_Obar_iff.1 (((x : Matrix (Fin 1) (Fin 1) (GlobalTheory.LKLoc.intR p (Q0 p) 1)) i j).2)`. Use `enorm_le_of _ _ fun i j => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `(Subgroup.mem_pi _).1 h2 w (Set.mem_univ w)`. Rewrite using `[← hx]`.
-
-Conclude with `norm_mulMap_le_one _ (((x : Matrix (Fin G.n) (Fin G.n) (intKQ p (G.Fw w) 1)) i j).2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_int (G : HTGroup p) {k : Gr G 1} (hk : k ∈ KHT p G.m G.n 1 G.Fw) :
     E G k ≤ ((1 : ℕ) : ℝ) * ((1 : ℕ) : ℝ) * 1 + ∑ _w : Fin G.m, (G.n : ℝ) * G.n * 1 := by
@@ -182,13 +176,13 @@ def Rw (G : HTGroup p) (w : Fin G.m) (c : G.C) : Matrix (Fin G.n) (Fin G.n) (Pad
   (G.rho w c).map (algebraMap (G.Fw w) (PadicAlgCl p))
 
 /- English proof (translation)
-Unfold `Rw`. Rewrite using `[map_mul, Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rw_mul (G : HTGroup p) (w : Fin G.m) (c d : G.C) : Rw G w (c * d) = Rw G w c * Rw G w d := by
   unfold Rw; rw [map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `show mulMap (G.Fw w) (inclK p (G.Fw w) 1 (G.rho w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) a b)) = _`. Rewrite using `[mulMap_inclK]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem formGroupToPadicPointsDegreeOne_snd_map_eq_rho (G : HTGroup p) (β : G.Cˣ) (y : grp G β) (w : Fin G.m) :
     (((toP1 G β y).2 w : GL (Fin G.n) (KQ p (G.Fw w) 1)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)).map
@@ -198,7 +192,7 @@ theorem formGroupToPadicPointsDegreeOne_snd_map_eq_rho (G : HTGroup p) (β : G.C
   rw [mulMap_inclK]; rfl
 
 /- English proof (translation)
-Use `show algebraMap (Qr p 1) (PadicAlgCl p) ((GeneralLinearGroup.scalar (Fin 1) (Units.map (algebraMap ℚ_[p] (Qr p 1)).toMonoidHom (Units.map (algebraMap ℚ ℚ_[p]).toMonoidHom (y : G.Cˣ × ℚˣ).2)) : Matrix (Fin 1) (Fin 1) (Qr p 1)) 0 0) = _`. Simplify using `[GeneralLinearGroup.scalar]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formGroupToPadicPointsDegreeOne_fst_entry_eq_factor (G : HTGroup p) (β : G.Cˣ) (y : grp G β) :
     ((((toP1 G β y).1 : GL (Fin 1) (Qr p 1)) : Matrix (Fin 1) (Fin 1) (Qr p 1)).map
@@ -209,17 +203,17 @@ theorem formGroupToPadicPointsDegreeOne_fst_entry_eq_factor (G : HTGroup p) (β 
   simp [GeneralLinearGroup.scalar]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ ℚ_[p] (PadicAlgCl p), norm_algebraMap', eq_ratCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_algebraMap_rat (q : ℚ) : ‖algebraMap ℚ (PadicAlgCl p) q‖ = ‖(q : ℚ_[p])‖ := by
   rw [IsScalarTower.algebraMap_apply ℚ ℚ_[p] (PadicAlgCl p), norm_algebraMap', eq_ratCast]
 
 /- English proof (translation)
-Introduce `hd`. Establish `hp` using `(Fact.out : p.Prime)`. Establish `hn : ¬ (p : ℤ) ∣ q.num` using `fun hn => by`. Establish `h1 : p ∣ q.num.natAbs` using `Int.ofNat_dvd_left.1 hn`. Establish `h2` using `Nat.dvd_gcd h1 hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[q.reduced.gcd_eq_one]`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 h2)`. Establish `h1 : padicNorm p (q.num : ℚ) = 1` using `(padicNorm.int_eq_one_iff _).2 hn`. Establish `h2 : padicNorm p ((q.den : ℤ) : ℚ) < 1` using `(padicNorm.int_lt_one_iff _).2 (Int.natCast_dvd_natCast.2 hd)`. Establish `h3 : (q.num : ℚ) = q * ((q.den : ℤ) : ℚ)` using `by push_cast; exact (Rat.mul_den_eq_num q).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h3, padicNorm.mul]`. Establish `h4` using `padicNorm.nonneg (p := p) ((q.den : ℤ) : ℚ)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem not_dvd_den_of_padicNorm_le_one (q : ℚ) (hq : padicNorm p q ≤ 1) : ¬ p ∣ q.den := by
   intro hd
@@ -237,7 +231,7 @@ theorem not_dvd_den_of_padicNorm_le_one (q : ℚ) (hq : padicNorm p q ≤ 1) : �
   nlinarith
 
 /- English proof (translation)
-Establish `h : (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * β * sh G (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = algebraMap ℚ G.C (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) * β` using `y.2.1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Use `_ = _ := by`. Rewrite using `[h, ← mul_assoc, ← Algebra.commutes, mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sh_eq (G : HTGroup p) (β : G.Cˣ) (y : grp G β) :
     sh G (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = algebraMap ℚ G.C (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) *
@@ -252,7 +246,7 @@ theorem sh_eq (G : HTGroup p) (β : G.Cˣ) (y : grp G β) :
         rw [h, ← mul_assoc, ← Algebra.commutes, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(Finset.single_le_sum (f := fun w => enorm ((g.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)).map (mulMap (G.Fw w)))) (fun _ _ => enorm_nonneg _) (Finset.mem_univ w)).trans (le_add_of_nonneg_left (enorm_nonneg _))`.
+A detailed English derivation is pending.
 -/
 theorem enorm_le_E_w (G : HTGroup p) (g : Gr G 1) (w : Fin G.m) :
     enorm ((g.2 w : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)).map (mulMap (G.Fw w))) ≤ E G g :=
@@ -261,14 +255,14 @@ theorem enorm_le_E_w (G : HTGroup p) (g : Gr G 1) (w : Fin G.m) :
     (le_add_of_nonneg_left (enorm_nonneg _))
 
 /- English proof (translation)
-The claim follows from `le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => enorm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem enorm_le_E_one (G : HTGroup p) (g : Gr G 1) :
     enorm ((g.1 : Matrix (Fin 1) (Fin 1) (Qr p 1)).map (algebraMap (Qr p 1) (PadicAlgCl p))) ≤ E G g :=
   le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => enorm_nonneg _)
 
 /- English proof (translation)
-Unfold `Rw`. Rewrite using `[Matrix.map_apply, RingHom.map_rat_algebraMap, Matrix.algebraMap_matrix_apply]`. Use `split_ifs`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_Rw_alg (G : HTGroup p) (w : Fin G.m) (q : ℚ) (i j : Fin G.n) :
     ‖Rw G w (algebraMap ℚ G.C q) i j‖ ≤ ‖algebraMap ℚ (PadicAlgCl p) q‖ := by
@@ -279,37 +273,33 @@ theorem norm_Rw_alg (G : HTGroup p) (w : Fin G.m) (q : ℚ) (i j : Fin G.n) :
   · simp
 
 /- English proof (translation)
-Introduce `p _ G K' f' hf β h₂`. Take `⟨-, -, -, S, hS⟩` from `hf`. Establish `hp` using `(Fact.out : p.Prime)`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = ((1 : ℕ) : ℝ) * ((1 : ℕ) : ℝ) * 1 + ∑ _w : Fin G.m, (G.n : ℝ) * G.n * 1` from `⟨_, rfl⟩`. Establish `hc0 : 0 ≤ c` using `by rw [hc]; positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEint : ∀ {k : Gr G 1}, k ∈ KHT p G.m G.n 1 G.Fw → E G k ≤ c` using `fun hk => hc ▸ E_int G hk`. Take `⟨Ms, hMs⟩ : ∃ Ms : ℝ, Ms = ∑ s ∈ S, (E G s + E G s⁻¹)` from `⟨_, rfl⟩`. Establish `hMs0 : 0 ≤ Ms` using `hMs ▸ Finset.sum_nonneg fun _ _ => add_nonneg (E_nonneg _ _) (E_nonneg _ _)`. Take `⟨B₀, hB₀⟩ : ∃ B₀ : ℝ, B₀ = E G h₂ * c * Ms * c * E G h₂⁻¹` from `⟨_, rfl⟩`. Establish `hB₀0 : 0 ≤ B₀` using `hB₀ ▸ mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (E_nonneg G h₂) hc0) hMs0) hc0) (E_nonneg G h₂⁻¹)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Cb, hCb⟩ : ∃ Cb : ℝ, Cb = ∑ w, (enorm (Rw G w ((β⁻¹ : G.Cˣ) : G.C)) + enorm (Rw G w (β : G.C)))` from `⟨_, rfl⟩`. Establish `hCb0 : 0 ≤ Cb` using `hCb ▸ Finset.sum_nonneg fun _ _ => add_nonneg (enorm_nonneg _) (enorm_nonneg _)`. Establish `hCb1 : ∀ w, enorm (Rw G w ((β⁻¹ : G.Cˣ) : G.C)) ≤ Cb` using `fun w => hCb ▸ (le_add_of_nonneg_right (enorm_nonneg _)).trans (Finset.single_le_sum (f := fun w => enorm (Rw G w ((β⁻¹ : G.Cˣ) : G.C)) + enorm (Rw G w (β : G.C))) (fun _ _ => add_nonneg (enorm_nonneg _) (enorm_nonneg _)) (Finset.mem_univ w))`. Establish `hCb2 : ∀ w, enorm (Rw G w (β : G.C)) ≤ Cb` using `fun w => hCb ▸ (le_add_of_nonneg_left (enorm_nonneg _)).trans (Finset.single_le_sum (f := fun w => enorm (Rw G w ((β⁻¹ : G.Cˣ) : G.C)) + enorm (Rw G w (β : G.C))) (fun _ _ => add_nonneg (enorm_nonneg _) (enorm_nonneg _)) (Finset.mem_univ w))`. Establish `key : ∀ y : grp G β, f' (h₂⁻¹ * toP1 G β y * h₂) ≠ 0 → E G (toP1 G β y) ≤ B₀ ∧ E G (toP1 G β y⁻¹) ≤ B₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨s, hs, k₁, hk₁, k₂, hk₂, he⟩` from `hS _ hy`. Establish `hX : toP1 G β y = h₂ * k₁ * s * k₂ * h₂⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hXi : toP1 G β y⁻¹ = h₂ * k₂⁻¹ * s⁻¹ * k₁⁻¹ * h₂⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[map_inv, hX]`. Use `group`. Establish `hsum : ∀ t ∈ S, 0 ≤ E G t + E G t⁻¹` using `fun _ _ => add_nonneg (E_nonneg _ _) (E_nonneg _ _)`. Establish `hsM : E G s ≤ Ms` using `hMs ▸ (le_add_of_nonneg_right (E_nonneg G s⁻¹)).trans (Finset.single_le_sum (f := fun t => E G t + E G t⁻¹) hsum hs)`. Establish `hsM' : E G s⁻¹ ≤ Ms` using `hMs ▸ (le_add_of_nonneg_left (E_nonneg G s)).trans (Finset.single_le_sum (f := fun t => E G t + E G t⁻¹) hsum hs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk₁'` using `(KHT p G.m G.n 1 G.Fw).inv_mem hk₁`. Establish `hk₂'` using `(KHT p G.m G.n 1 G.Fw).inv_mem hk₂`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hX, hB₀]`. Conclude with `E_mul_le G (E_mul_le G (E_mul_le G (E_mul_le G le_rfl (hEint hk₁)) hsM) (hEint hk₂)) le_rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hXi, hB₀]`. Conclude with `E_mul_le G (E_mul_le G (E_mul_le G (E_mul_le G le_rfl (hEint hk₂')) hsM') (hEint hk₁')) le_rfl`. Take `⟨e, he⟩` from `pow_unbounded_of_one_lt B₀ (by exact_mod_cast hp.one_lt : (1 : ℝ) < p)`. Use `⟨B₀ + (G.n * G.n * B₀) * ((Cb * B₀) * Cb), e, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨hE, hEi⟩` from `key y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hextra : 0 ≤ (G.n * G.n * B₀) * ((Cb * B₀) * Cb)` using `mul_nonneg (mul_nonneg (by positivity) hB₀0) (mul_nonneg (mul_nonneg hCb0 hB₀0) hCb0)`. Establish `hs1 : ‖algebraMap ℚ (PadicAlgCl p) (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)‖ ≤ B₀`. Rewrite using `[← formGroupToPadicPointsDegreeOne_fst_entry_eq_factor]`. Conclude with `((norm_le_enorm _ 0 0).trans (enorm_le_E_one G _)).trans hE`. Establish `hs2 : ‖algebraMap ℚ (PadicAlgCl p) ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)⁻¹)‖ ≤ B₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `formGroupToPadicPointsDegreeOne_fst_entry_eq_factor G β y⁻¹`. Establish `e1 : ((((y⁻¹ : grp G β) : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) = (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)⁻¹` using `Units.val_inv_eq_inv_val _`. Rewrite `h` using `[e1]`. Rewrite using `[← h]`. Conclude with `((norm_le_enorm _ 0 0).trans (enorm_le_E_one G _)).trans hEi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun w a b => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : ‖((G.rho w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) a b : G.Fw w) : PadicAlgCl p)‖ = ‖Rw G w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) a b‖` using `rfl`. Rewrite using `[h1, ← formGroupToPadicPointsDegreeOne_snd_map_eq_rho]`. Conclude with `(((norm_le_enorm _ a b).trans (enorm_le_E_w G _ w)).trans hE).trans (le_add_of_nonneg_right hextra)`. Establish `h1 : ‖((G.rho w (sh G (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) a b : G.Fw w) : PadicAlgCl p)‖ = ‖Rw G w (sh G (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) a b‖` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `(norm_le_enorm _ a b).trans ?_` and prove the remaining obligations. Rewrite using `[sh_eq, Rw_mul, Rw_mul, Rw_mul]`. Establish `hA : enorm (Rw G w (algebraMap ℚ G.C (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ))) ≤ G.n * G.n * B₀` using `enorm_le_of _ _ fun i j => (norm_Rw_alg G w _ i j).trans hs1`. Establish `hY : enorm (Rw G w (((y : G.Cˣ × ℚˣ).1⁻¹ : G.Cˣ) : G.C)) ≤ B₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `formGroupToPadicPointsDegreeOne_snd_map_eq_rho G β y⁻¹ w`. Establish `e1 : ((((y⁻¹ : grp G β) : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = (((y : G.Cˣ × ℚˣ).1⁻¹ : G.Cˣ) : G.C)` using `rfl`. Rewrite `h` using `[e1]`. Rewrite using `[← h]`. Conclude with `(enorm_le_E_w G _ w).trans hEi`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hYb : enorm (Rw G w ((β⁻¹ : G.Cˣ) : G.C) * Rw G w (((y : G.Cˣ × ℚˣ).1⁻¹ : G.Cˣ) : G.C)) ≤ Cb * B₀` using `(enorm_mul_le _ _).trans (mul_le_mul (hCb1 w) hY (enorm_nonneg _) hCb0)`. Establish `hYbb : enorm (Rw G w ((β⁻¹ : G.Cˣ) : G.C) * Rw G w (((y : G.Cˣ × ℚˣ).1⁻¹ : G.Cˣ) : G.C) * Rw G w (β : G.C)) ≤ Cb * B₀ * Cb` using `(enorm_mul_le _ _).trans (mul_le_mul hYb (hCb2 w) (enorm_nonneg _) (mul_nonneg hCb0 hB₀0))`. Use `((enorm_mul_le _ _).trans (mul_le_mul hA hYbb (enorm_nonneg _) (mul_nonneg (by positivity) hB₀0))).trans ?_` and prove the remaining obligations. Conclude with `le_add_of_nonneg_left hB₀0`. Take `⟨q, hq⟩ : ∃ q : ℚ, q = (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)⁻¹ * (p : ℚ) ^ e` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨q.num, q.den, ?_, hq ▸ (Rat.num_div_den q).symm⟩` and prove the remaining obligations. Use `not_dvd_den_of_padicNorm_le_one q ?_` and prove the remaining obligations. Establish `h2 : ‖(((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)⁻¹ : ℚ) : ℚ_[p])‖ ≤ B₀`. Rewrite using `[← norm_algebraMap_rat]`. Conclude with `hs2`.
-
-Establish `h3 : ‖((q : ℚ) : ℚ_[p])‖ ≤ 1`. Rewrite using `[hq, Rat.cast_mul, norm_mul, Rat.cast_pow, Rat.cast_natCast, Padic.norm_p_pow, _root_.zpow_neg, zpow_natCast]`. Establish `hpe : (0 : ℝ) < (p : ℝ) ^ e` using `pow_pos (by exact_mod_cast hp.pos) e`. Rewrite using `[← div_eq_mul_inv, div_le_one hpe]`. Conclude with `h2.trans he.le`.
-
-Rewrite `h3` using `[Padic.eq_padicNorm]`. Conclude with `h3` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_of_support : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ),
     IsTest (sigG G 1) (KHT p G.m G.n 1 G.Fw) K' f' → ∀ (β : G.Cˣ) (h₂ : Gr G 1), ∃ (B : ℝ) (e : ℕ),

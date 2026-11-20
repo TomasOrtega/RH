@@ -16,7 +16,7 @@ namespace PositivityTheory.HtPt.Ge.Fargues
 open GlobalTheory.CompanionTheory
 
 /- English proof (translation)
-Take `⟨n, ⟨b⟩⟩` from `GlobalTheory.T.lie_model_free_over_local_ring S G hG R x E M`. Conclude with `⟨Module.Free.of_basis b, Module.Finite.of_basis b⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lie_free_finite (S : Scheme.{0}) (G : Over S) [GrpObj G] (hG : Smooth G.hom) (R : Type) [CommRing R]
     [IsLocalRing R] (x : Spec (CommRingCat.of R) ⟶ S) (E : Type) [AddCommGroup E] [Module R E]
@@ -52,11 +52,9 @@ def ordTower (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [Char
     der_res := h6 }
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ hv hp hO E _ _ c hc S _ G _ _ hG y La _ _ EF N u hu X L _ _ M act ρL hmon hact hind hrank ζ hζ hζp hpair κ hκ`. Use `haveI : Module.Free ℤ La := hu.free`. Use `haveI : Module.Finite ℤ La := hu.finite`. Use `haveI : IsLocalRing O := (GlobalTheory.T.complete_integers_properties p C v O hv hp hO).2.1.toIsLocalRing`. Take `⟨hLf, hLfin⟩` from `lie_free_finite S G hG.smooth O y L M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T` to `ordTower p C v O hv hp hO S G hG y La X L M`. Establish `hacts : ∀ a : 𝓞 E, T.Acts (DistribMulAction.toAddMonoidHom La a) (ρL a)`. Introduce `a n f g hfg`. Use `haveI := hmon a`. Conclude with `(GlobalTheory.T.semiabelian_adic_torsion_four p C v O hv hp hO S G hG y La X L M).2 (act a) _ (ρL a) (hind a) (hact a) n f g hfg`.
-
-Establish `hpe : T.PairingExtends EF ζ` using `fun n => GlobalTheory.T.exists_prodSpan_torsion_pairing_eq_zeta_pow p C v O hv hp hO S G hG y La X EF ζ (fun n => (hζ n).pow_eq_one) hpair n`. Conclude with `GlobalTheory.T.polarised_divisible_group_exists hF p C v O hv hp hO E c hc La EF N u hu L T ρL ζ κ hacts hrank hζ hζp hpe hκ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pointHT (hF : FarguesHodgeTate) : PointHT := by
   intro p _ C _ _ _ v O _ _ _ hv hp hO E _ _ c hc S _ G _ _ hG y La _ _ EF N u hu X L _ _ M act ρL hmon hact hind
@@ -77,6 +75,6 @@ theorem pointHT (hF : FarguesHodgeTate) : PointHT := by
 end PositivityTheory.HtPt.Ge.Fargues
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.Ge.Fargues.pointHT`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Ge.pointHT_of_fargues : FarguesHodgeTate → PointHT := PositivityTheory.HtPt.Ge.Fargues.pointHT

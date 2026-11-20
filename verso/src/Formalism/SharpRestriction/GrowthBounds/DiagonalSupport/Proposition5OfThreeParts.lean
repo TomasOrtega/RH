@@ -14,7 +14,7 @@ variable {n' r K m : ℕ} [NeZero n'] (Fr : Frames n' r) (p : ℕ) (O : Type) [C
   [IsDiscreteValuationRing O] (hk : m + 1 = r + K) {J : ℕ} [NeZero J] (nL : ZMod J → ℕ)
 
 /- English proof (translation)
-Unfold `asm`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem asm_add (rho : TL J nL r × Fin (r + K) → ℕ) (A B : MvPolynomial (TL J nL r × Fin r) (KK O))
     (N : MvPolynomial (TL J nL r × Fin K) (KK O)) :
@@ -23,9 +23,9 @@ theorem asm_add (rho : TL J nL r × Fin (r + K) → ℕ) (A B : MvPolynomial (TL
   rw [map_add]; ring
 
 /- English proof (translation)
-Unfold `asm`. Establish `h1 : CoefGe p (monomial (labMon Fr hk nL rho) (1 : KK O)) 0` using `CoefGe.monomial _ geQ_one`. Establish `h2 : CoefGe p (upPl Fr p O hk nL A) t` using `CoefGe.aeval _ (fun v => CoefGe.X_pow _ _) hA`. Establish `h3 : CoefGe p (upNo Fr p O hk nL N) 0` using `CoefGe.aeval _ (fun v => CoefGe.X_pow _ _) hN`. Establish `h4` using `CoefGe.mul (CoefGe.mul h1 h2) h3`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h4`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem asm_coefGe (rho : TL J nL r × Fin (r + K) → ℕ) {A : MvPolynomial (TL J nL r × Fin r) (KK O)}
     {N : MvPolynomial (TL J nL r × Fin K) (KK O)} {t : ℝ} (hA : CoefGe p A t) (hN : CoefGe p N 0) :
@@ -44,9 +44,9 @@ section B
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {r J : ℕ}
 
 /- English proof (translation)
-Unfold `SignedChainData.ph`. Use `CoefGe.aeval _ (fun v => ?_) hR` and prove the remaining obligations. Take `⟨x, a⟩` from `v`. Consider the cases of `x with`. Consider the case `ll j l => simpa using CoefGe.X_pow (p := p) (O := O) _ 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `lab j m => simpa using CoefGe.X_pow (p := p) (O := O) _ 1`. Consider the case `wc j m => exact CoefGe.X_pow _ _`. Consider the case `tp j m h => simpa using CoefGe.X_pow (p := p) (O := O) _ 1`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ph_coefGe (Dt : SignedChainData p O r J) {R : MvPolynomial (ML J Dt.nL r × Fin r) (KK O)} {t : ℝ}
     (hR : CoefGe p R t) : CoefGe p (Dt.ph R) t := by
@@ -60,9 +60,9 @@ theorem ph_coefGe (Dt : SignedChainData p O r J) {R : MvPolynomial (ML J Dt.nL r
   | tp j m h => simpa using CoefGe.X_pow (p := p) (O := O) _ 1
 
 /- English proof (translation)
-Establish `hF : Dt.ph F = Dt.ph (∑ mo ∈ F.support, monomial mo (F.coeff mo))` using `by rw [← F.as_sum]`. Rewrite using `[hF, map_sum]`. Use `Submodule.sum_mem _ fun mo hmo => ?_` and prove the remaining obligations. Establish `: (monomial mo (F.coeff mo) : MvPolynomial (ML J Dt.nL r × Fin r) (KK O)) = F.coeff mo • monomial mo 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_smul]`. Conclude with `Submodule.smul_mem _ _ (h mo hmo)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ph_mem_pol (Dt : SignedChainData p O r J) (F : MvPolynomial (ML J Dt.nL r × Fin r) (KK O))
     (h : ∀ mo ∈ F.support, Dt.ph (monomial mo 1) ∈ Pol (KK O) r Dt.d) : Dt.ph F ∈ Pol (KK O) r Dt.d := by
@@ -77,21 +77,21 @@ theorem ph_mem_pol (Dt : SignedChainData p O r J) (F : MvPolynomial (ML J Dt.nL 
 end B
 
 /- English proof (translation)
-Establish `hEE : Dt.EE 2 ≤ Dt.Dm + Dt.Dl + 3 * Dt.kp` using `by unfold SignedChainData.EE; linarith`. Establish `hEE' : Dt.EE 2 = Dt.Dm + Dt.Dl + 2 * Dt.kp` using `rfl`. Establish `hRpos : 0 ≤ Dt.c - Dt.EE 2`. Use `Dt.one_le_c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hApol : Dt.ph (Gp + R) ∈ Pol (KK O) r dPl`. Rewrite using `[← hdd]`. Conclude with `ph_mem_pol Dt _ fun mo hmo => g4 mo (MvPolynomial.support_add hmo)`. Establish `hAint : CoefGe p (Dt.ph (Gp + R)) 0` using `ph_coefGe Dt (CoefGe.add g1 (CoefGe.mono hRpos g3))`. Establish `e1` using `hval _ hApol hAint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : geQ (vK p (fock G (asm F p O hk Dt.nL rho (Dt.ph R) N0))) (Dt.c - Dt.EE 2 + twiceValuationFactorialProduct p d - (kapFl p (m + 1) d : ℝ))` using `geQ_fock S d G _ hdeg hGint (asm_coefGe F p O hk Dt.nL rho (ph_coefGe Dt g3) hN0)`. Establish `hmain : leQ (vK p (k0 * Dt.Bform F2 (Dt.ph (Gp + R)))) (twiceValuationFactorialProduct p d + (CDn + CDm) * large₂)`. Use `leQ_mono ?_ (leQ_mul _ _ hk0 g6)` and prove the remaining obligations. Rewrite using `[hEE']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsplit : fock G (asm F p O hk Dt.nL rho (Dt.ph Gp) N0) = k0 * Dt.Bform F2 (Dt.ph (Gp + R)) + ((fock G (asm F p O hk Dt.nL rho (Dt.ph (Gp + R)) N0) - k0 * Dt.Bform F2 (Dt.ph (Gp + R))) - fock G (asm F p O hk Dt.nL rho (Dt.ph R) N0))`. Rewrite using `[map_add, asm_add, fock_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hκ0 : (0 : ℝ) ≤ (kapFl p (m + 1) d : ℝ)` using `Nat.cast_nonneg _`. Establish `herr : geQ (vK p ((fock G (asm F p O hk Dt.nL rho (Dt.ph (Gp + R)) N0) - k0 * Dt.Bform F2 (Dt.ph (Gp + R))) - fock G (asm F p O hk Dt.nL rho (Dt.ph R) N0))) ((cP : ℝ) - CDm * large₂ + twiceValuationFactorialProduct p d - (kapFl p (m + 1) d : ℝ))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `geQ_sub _ _ (geQ_mono ?_ e1) (geQ_mono ?_ e2)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : leQ (vK p (fock G (asm F p O hk Dt.nL rho (Dt.ph Gp) N0))) (twiceValuationFactorialProduct p d + (CDn + CDm) * large₂)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Use `leQ_add_of_lt _ _ hmain herr ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD0 : (∏ s, (d s).factorial) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => Nat.factorial_ne_zero _`. Establish `hx1` using `leQ_scale hpF.out S _ (kapFl p (m + 1) d) _ hD0 hx`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2` using `geQ_scale hpF.out S _ (kapFl p (m + 1) d) _ hD0 (geQ_fock S d G _ hdeg hGint (asm_coefGe F p O hk Dt.nL rho (ph_coefGe Dt g1) hN0))`. Take `⟨o', ho'⟩` from `exists_alg_of_geQ S _ (geQ_mono (by unfold twiceValuationFactorialProduct; linarith) hx2)`. Rewrite using `[ho']`. Apply `valLe_of_vK S` to reduce the goal to its premises. Rewrite using `[← ho']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `leQ_mono ?_ hx1` and prove the remaining obligations. Establish `h5` using `Nat.le_ceil ((CDn + 2 * CDm) * large₂)`. Unfold `twiceValuationFactorialProduct`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem value_core {p : ℕ} [hpF : Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (S : UniformizedDVR p O) {n' r K m : ℕ} [NeZero n'] [NeZero r] (hk : m + 1 = r + K) (F : Frames n' r) {J : ℕ} [NeZero J]
@@ -158,21 +158,21 @@ theorem value_core {p : ℕ} [hpF : Fact p.Prime] {O : Type} [CommRing O] [IsDom
   linarith
 
 /- English proof (translation)
-Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r hpF _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD`. Establish `S : UniformizedDVR p O` using `dvrOfStd hD.1`. Take `⟨hLg, hκ, hNum⟩` from `hN p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K hk F nb B hD`. Take `⟨_, _, _, _, _, _, _, _, _, hDp, hcS, _⟩` from `hD.2.1`. Establish `hcPge : 8 * C * ((TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a) < ((cPrime n' r TT.card c0 cpp cStar : ℕ) : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (cStar : ℝ) ≤ ((cPrime n' r TT.card c0 cpp cStar : ℕ) : ℝ)`. Establish `: cStar ≤ cPrime n' r TT.card c0 cpp cStar` using `by unfold cPrime; omega`. Conclude with `this` after adjusting the coercions. Establish `h2 : (8 : ℝ) * ((Dp : ℝ) + 1) ≤ (cStar : ℝ)` using `by exact_mod_cast hcS`. Establish `h3 : C * ((TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a) ≤ (Dp : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨large₂, hLgdef⟩ : ∃ large₂ : ℝ, large₂ = (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a` from `⟨_, rfl⟩`. Rewrite `hLg`, `hκ`, `hNum`, `hcPge` using `[← hLgdef]`. Establish `hnn : 0 ≤ (CDn + 2 * CDm) * large₂` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⌈(CDn + 2 * CDm) * large₂⌉₊, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Nat.ceil_lt_add_one hnn`. Establish `h2 : (CDn + 2 * CDm + 1) * (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a = (CDn + 2 * CDm + 1) * large₂`. Rewrite using `[hLgdef]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `G _ hdeg hG0 hG1 hMem`. Take `⟨J, hJ, Dt, dPl, dNo, ka, rho, F2, N0, k0, hT, hB, hXX, hv, hNT, hk0, hval⟩` from `hP p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K hk F nb B hD G hdeg hG0 hG1 hMem`. Rewrite `hk0` using `[← hLgdef]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n1, n2, n3, n4⟩` from `hNum J Dt dPl dNo ka rho hT hB`. Use `⟨J, hJ, Dt, F2, n1, n2, hXX, hv, ?_⟩` and prove the remaining obligations. Introduce `Gp R g1 g2 g3 g4 _ g6`. Take `⟨nq, o, sig, hs, hsum⟩` from `hM p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K hk F nb B hD J Dt dPl dNo ka rho N0 hT hB hNT Gp g1 g2 (fun mo hmo => g4 mo (Finset.mem_union_left _ hmo))`. Use `⟨nq, o, sig, hs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Establish `hGint : CoefGe p G 0`. Introduce `mo`. Take `⟨c, hc⟩` from `hG0 mo`. Rewrite using `[hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `geQ_alg S _`. Establish `hbig : (CDn + 3 * CDm) * large₂ < ((cPrime n' r TT.card c0 cpp cStar : ℕ) : ℝ)`. Establish `: (CDn + 3 * CDm) * large₂ ≤ 8 * C * large₂` using `mul_le_mul_of_nonneg_right hC (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `value_core S hk F Dt dPl rho F2 N0 k0 (dT TT lam0) _ CDn CDm large₂ G hdeg hGint hT.1.2.2.2.1 hT.2.1 n2 n3 n4 hκ hbig hNT.1 hk0 hval Gp R g1 g3 g4 g6`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem proposition5_at_of_three_parts (C CDn CDm CLa : ℝ) (h0n : 0 ≤ CDn) (h0m : 0 ≤ CDm) (hC : CDn + 3 * CDm ≤ 8 * C)
     (hP : PickStep C CDn CLa) (hM : MembStep C CLa) (hN : NumStep C CDm CLa) :
@@ -226,11 +226,11 @@ theorem proposition5_at_of_three_parts (C CDn CDm CLa : ℝ) (h0n : 0 ≤ CDn) (
     hNT.1 hk0 hval Gp R g1 g3 g4 g6
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨CDn, C₁, h1, h2, hP'⟩` from `hP hA`. Take `⟨C₂, h3, hM'⟩` from `hM hA`. Take `⟨CDm, C₃, h4, h5, hN'⟩` from `hN hA`. Use `⟨CDn + 2 * CDm + 1, max (max C₁ C₂) (max C₃ (CDn + 3 * CDm)), by positivity, lt_max_of_lt_left (lt_max_of_lt_left h2), fun C hC => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c1 : C₁ ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hC`. Establish `c2 : C₂ ≤ C` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hC`. Establish `c3 : C₃ ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC`. Establish `c4 : CDn + 3 * CDm ≤ C` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC`. Establish `c5 : 0 ≤ C` using `le_trans h2.le c1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `proposition5_at_of_three_parts C CDn CDm CLa h1.le h4.le (by linarith) (hP' C c1) (hM' C c2) (hN' C c3)`.
+A detailed English derivation is pending.
 -/
 theorem proposition5_of_three_parts (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (hP : RestPick D CLa Ck Crk Cdeg)
     (hM : RestMemb D CLa Ck Crk Cdeg) (hN : RestNum D CLa Ck Crk Cdeg) : Proposition5Gram D CLa Ck Crk Cdeg 26 2 24 60 := by

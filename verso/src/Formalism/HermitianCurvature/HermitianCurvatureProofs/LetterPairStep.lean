@@ -14,31 +14,29 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hgG : g ∈ GV k r` using `hg.1`. Establish `hXL : inLie k r X` using `hX.1`. Take `⟨ε, hε, hball⟩` from `curve_ball D hg b hXL`. Take `⟨K, hKc, hKO, hcvK⟩ : ∃ K : Set (Mat k r), IsCompact K ∧ K ⊆ Om k r D.z D.z' ∧ ∀ t ∈ Metric.closedBall (0 : ℝ) ε, cv b X t g ∈ K` from `⟨(fun t : ℝ => cv b X t g) '' Metric.closedBall (0 : ℝ) ε, (isCompact_closedBall (0 : ℝ) ε).image (cv_continuous b X g), by rintro _ ⟨t, ht, rfl⟩; exact hball t ht, fun t ht => ⟨t, ht, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgK : g ∈ K`. Establish `h0` using `hcvK 0 (Metric.mem_closedBall_self hε.le)`. Rewrite `h0` using `[cv_zero]`. Then use the resulting hypothesis. Establish `hKG : K ⊆ GV k r` using `fun x hx => (hKO hx).1`. Take `⟨bb, hbbi, hbb⟩` from `hDom2 K hKc hKO`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hWSc : ({(u, v), (u2, v2)} : Set (List (Mat k r) × List (Mat k r))).Countable` using `(Set.countable_singleton _).insert _`. Establish `hWSl : ∀ uv ∈ ({(u, v), (u2, v2)} : Set (List (Mat k r) × List (Mat k r))), (∀ X ∈ uv.1, unitLie k r X) ∧ (∀ X ∈ uv.2, unitLie k r X) ∧ uv.1.length + uv.2.length ≤ m`. Introduce `uv huv`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at huv`. Break down `huv with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨hu, hv, show u.length + v.length ≤ m by omega⟩`. Conclude with `⟨hu2, hv2, hl2⟩`. Establish `hgood` using `good_set D hFm hKc hKG hWSc hWSl bb (fun uv huv x hx => hbb uv.1 uv.2 (hWSl uv huv).1 (hWSl uv huv).2.1 (hWSl uv huv).2.2 x hx)`. Take `⟨S, hSae, hSprop⟩ : ∃ S : Set (SS k r), (∀ᵐ p ∂D.μSS, p ∈ S) ∧ ∀ p ∈ S, D.inSS p ∧ ∀ uv ∈ ({(u, v), (u2, v2)} : Set (List (Mat k r) × List (Mat k r))), ∀ x ∈ K, ‖dLR uv.1 uv.2 (rho D p F) x‖ ≤ bb p` from `⟨_, hgood, fun p hp => hp⟩`. Take `⟨G, hGin, hGout⟩ : ∃ G : SS k r → Mat k r → (Wq →L[ℂ] Wp), (∀ p ∈ S, G p = dLR u v (rho D p F)) ∧ (∀ p ∉ S, G p = 0)` from `⟨fun p => S.indicator (fun p => dLR u v (rho D p F)) p, fun p hp => by dsimp only; exact Set.indicator_of_mem hp _, fun p hp => by dsimp only; simp [hp]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hop0 : op b X (0 : Mat k r → (Wq →L[ℂ] Wp)) = 0`. Establish `h` using `hdl (fun _ => 0)`. Rewrite `h` using `[dLR_zero, dLR_zero]`. Conclude with `h.symm`. Establish `hG1 : ∀ p, CkOn ((1 : ℕ) : ℕ∞) (GV k r) (G p)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Distinguish the cases in `hp : p ∈ S`. Rewrite using `[hGin p hp]`. Conclude with `ckOn_dLR_rho D (hSprop p hp).1 hFm hu hv 1 (by omega)`. Rewrite using `[hGout p hp]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ckOn_zero _`. Establish `hGm : ∀ t ∈ Metric.ball (0 : ℝ) ε, AEStronglyMeasurable (fun p => G p (cv b X t g)) D.μSS`. Introduce `t ht`. Use `(hDom1 u v hu hv (by omega) _ (hball t (Metric.ball_subset_closedBall ht))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hSae] with p hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGin p hp, dLR_rho D (hSprop p hp).1]`. Establish `hG'm : AEStronglyMeasurable (fun p => op b X (G p) g) D.μSS`. Use `(hDom1 u2 v2 hu2 hv2 hl2 g hg).congr ?_` and prove the remaining obligations. Use `filter_upwards [hSae] with p hp`. Rewrite using `[hGin p hp, ← hdl, dLR_rho D (hSprop p hp).1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hb0 : ∀ p, ‖G p g‖ ≤ ‖bb p‖`. Introduce `p`. Distinguish the cases in `hp : p ∈ S`. Rewrite using `[hGin p hp]`. Conclude with `((hSprop p hp).2 (u, v) (by simp) g hgK).trans (Real.le_norm_self _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGout p hp]`. Simplify using the standard rewrite rules. Establish `hb1 : ∀ t ∈ Metric.ball (0 : ℝ) ε, ∀ p, ‖op b X (G p) (cv b X t g)‖ ≤ ‖bb p‖`. Introduce `t ht p`. Distinguish the cases in `hp : p ∈ S`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGin p hp, ← hdl]`. Conclude with `((hSprop p hp).2 (u2, v2) (by simp) _ (hcvK t (Metric.ball_subset_closedBall ht))).trans (Real.le_norm_self _)`. Rewrite using `[hGout p hp, hop0]`. Simplify using the standard rewrite rules. Establish `hΦ : ∀ t ∈ Metric.ball (0 : ℝ) ε, dLR u v (JF D F) (cv b X t g) = ∫ p, xiP D p • G p (cv b X t g) ∂D.μSS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t ht`. Rewrite using `[IH _ (hball t (Metric.ball_subset_closedBall ht))]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hSae] with p hp`. Rewrite using `[hGin p hp]`.
-
-Establish `key` using `step_loc hXL (xiP D) (norm_xiP D) (continuous_xiP D).aestronglyMeasurable G hG1 hgG hε hGm hG'm (fun p => ‖bb p‖) hbbi.norm hb0 hb1 (dLR u v (JF D F)) hΦ`. Rewrite using `[hdl, key]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hSae] with p hp`. Rewrite using `[hGin p hp, hdl]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma step_pair (D : RealPlaceData k r Wp Wq) {m : ℕ} {F : Mat k r → (Wq →L[ℂ] Wp)} (hFm : CkOn (m : ℕ∞) (GV k r) F)
     (hDom1 : ∀ u v : List (Mat k r), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ v, unitLie k r X) → u.length + v.length ≤ m →

@@ -13,9 +13,9 @@ namespace GradedSubquot
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Rewrite `hp`, the goal using `[iSupIndep_def]`. Introduce `i`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Establish `hle : (⨆ (j) (_ : j ≠ i), (p j).comap g) ≤ (⨆ (j) (_ : j ≠ i), p j).comap g` using `iSup₂_le fun j hj => Submodule.comap_mono (le_iSup₂ (f := fun j (_ : j ≠ i) => p j) j hj)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `(Submodule.disjoint_def.mp (hp i)) (g x) (Submodule.mem_comap.mp hx) (Submodule.mem_comap.mp (hle hx'))`. Conclude with `hg (by rw [h0, map_zero])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iSupIndep_comap {R N M : Type*} [Ring R] [AddCommGroup N] [AddCommGroup M] [Module R N] [Module R M]
     {κ : Type*} {p : κ → Submodule R M} (hp : iSupIndep p) (g : N →ₗ[R] M) (hg : Function.Injective g) :
@@ -30,15 +30,15 @@ theorem iSupIndep_comap {R N M : Type*} [Ring R] [AddCommGroup N] [AddCommGroup 
   exact hg (by rw [h0, map_zero])
 
 /- English proof (translation)
-Rewrite `hp`, the goal using `[iSupIndep_def]`. Introduce `i`. Rewrite using `[Submodule.disjoint_def]`. Introduce `y hy hy'`. Take `⟨x, hx, rfl⟩` from `hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hy2 : f x ∈ (⨆ (j) (_ : j ≠ i), p j).map f`. Simplify `hy'` using `only [Submodule.map_iSup]`. Take `⟨z, hz, hzx⟩` from `hy2`. Establish `hk : x - z ∈ LinearMap.ker f`. Rewrite using `[LinearMap.mem_ker, map_sub, hzx, sub_self]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk'` using `hL hk`. Rewrite `hk'` using `[iSup_split_single (fun c => LinearMap.ker f ⊓ p c) i, Submodule.mem_sup]`. Take `⟨l, hl, w, hw, hlw⟩` from `hk'`. Establish `hw1 : w ∈ ⨆ (j) (_ : j ≠ i), p j` using `(show (⨆ (j) (_ : j ≠ i), LinearMap.ker f ⊓ p j) ≤ ⨆ (j) (_ : j ≠ i), p j from iSup₂_mono fun j _ => inf_le_right) hw`. Establish `hxl : x - l ∈ p i` using `sub_mem hx (Submodule.mem_inf.mp hl).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxl' : x - l ∈ ⨆ (j) (_ : j ≠ i), p j`. Establish `e : x - l = z + w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ hz hw1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `(Submodule.disjoint_def.mp (hp i)) (x - l) hxl hxl'`. Rewrite using `[sub_eq_zero.mp h0]`. Conclude with `LinearMap.mem_ker.mp (Submodule.mem_inf.mp hl).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSupIndep_map_of_ker_le {R N Q : Type*} [Ring R] [AddCommGroup N] [AddCommGroup Q] [Module R N]
     [Module R Q] {κ : Type*} {p : κ → Submodule R N} (hp : iSupIndep p) (f : N →ₗ[R] Q)
@@ -75,7 +75,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k
   {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M] [IsScalarTower S (MRingOver S ι) M]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite using `[Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hm)]`. Conclude with `hd k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_monomial (d : (Σ k, ι k) →₀ ℕ) (r : S) (a : K → ℕ)
     (hd : ∀ k, ∑ i, d ⟨k, i⟩ = a k) : IsMultiHomog (monomial d r : MRingOver S ι) a := by
@@ -90,25 +90,23 @@ def monTimes (H : Set M) : Set M :=
   {y | ∃ (u : (Σ k, ι k) →₀ ℕ) (h : M), h ∈ H ∧ y = (monomial u (1 : S) : MRingOver S ι) • h}
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, h, hh, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hh)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem monTimes_subset_span (H : Set M) : monTimes S ι H ⊆ Submodule.span (MRingOver S ι) H := by
   rintro _ ⟨u, h, hh, rfl⟩
   exact Submodule.smul_mem _ _ (Submodule.subset_span hh)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.mpr (monTimes_subset_span H)`.
+A detailed English derivation is pending.
 -/
 theorem span_monTimes_le (H : Set M) :
     Submodule.span S (monTimes S ι H) ≤ (Submodule.span (MRingOver S ι) H).restrictScalars S :=
   Submodule.span_le.mpr (monTimes_subset_span H)
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, h, hh, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨u + v, h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, monomial_mul, one_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x z _ _ hx hz => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hz`. Consider the case `smul s x _ hx => rw [smul_comm]`.
-
-Conclude with `Submodule.smul_mem _ s hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem monomial_smul_mem (H : Set M) (u : (Σ k, ι k) →₀ ℕ) {y : M}
     (hy : y ∈ Submodule.span S (monTimes S ι H)) :
@@ -123,13 +121,11 @@ theorem monomial_smul_mem (H : Set M) (u : (Σ k, ι k) →₀ ℕ) {y : M}
   | smul s x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ s hx
 
 /- English proof (translation)
-Set `T : Submodule (MRingOver S ι) M` to `{ carrier := Submodule.span S (monTimes S ι H) add_mem' := fun ha hb => Submodule.add_mem _ ha hb zero_mem' := Submodule.zero_mem _ smul_mem' := by`. Introduce `p y hy`. Use `MvPolynomial.induction_on' p (fun u a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Establish `e : (monomial u a : MRingOver S ι) = a • monomial u (1 : S)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_assoc]`. Conclude with `Submodule.smul_mem _ a (monomial_smul_mem H u hy)`. Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ hp hq }`. Establish `hT : Submodule.span (MRingOver S ι) H ≤ T`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.span_le]`. Introduce `h hh`. Establish `e : h = (monomial 0 (1 : S) : MRingOver S ι) • h`. Rewrite using `[← MvPolynomial.C_apply, MvPolynomial.C_1, one_smul]`. Conclude with `Submodule.subset_span ⟨0, h, hh, e⟩`.
-
-Conclude with `fun x hx => hT hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem span_le_span_monTimes (H : Set M) :
     (Submodule.span (MRingOver S ι) H).restrictScalars S ≤ Submodule.span S (monTimes S ι H) := by
@@ -155,7 +151,7 @@ theorem span_le_span_monTimes (H : Set M) :
   exact fun x hx => hT hx
 
 /- English proof (translation)
-Take `⟨u, h, hh, rfl⟩` from `hy`. Take `⟨c, hc⟩` from `hH h hh`. Conclude with `⟨_, hM.2 (fun k => ∑ i, u ⟨k, i⟩) c _ h (isMultiHomog_monomial u 1 _ fun _ => rfl) hc⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem monTimes_homog {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded S ι 𝓜) {H : Set M}
     (hH : ∀ x ∈ H, ∃ c, x ∈ 𝓜 c) {y : M} (hy : y ∈ monTimes S ι H) : ∃ c, y ∈ 𝓜 c := by
@@ -164,13 +160,11 @@ theorem monTimes_homog {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded
   exact ⟨_, hM.2 (fun k => ∑ i, u ⟨k, i⟩) c _ h (isMultiHomog_monomial u 1 _ fun _ => rfl) hc⟩
 
 /- English proof (translation)
-Take `⟨x, hxN⟩` from `x`. Establish `hmem : ∀ y ∈ Submodule.span S (monTimes S ι H), ∀ hy : y ∈ N, (⟨y, hy⟩ : N) ∈ ⨆ c, ((Submodule.span (MRingOver S ι) H).comap N.subtype).restrictScalars S ⊓ subGrading 𝓜 N c`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Take `⟨c, hc⟩` from `monTimes_homog hM hH hy`. Conclude with `Submodule.mem_iSup_of_mem c (Submodule.mem_inf.mpr ⟨monTimes_subset_span H hy, hc⟩)`. Consider the case `zero => intro _`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add y z hy hz ihy ihz`. Introduce `_`. Conclude with `Submodule.add_mem _ (ihy (hHN (span_monTimes_le H hy))) (ihz (hHN (span_monTimes_le H hz)))`. Consider the case `smul s y hy ihy`. Introduce `_`.
-
-Conclude with `Submodule.smul_mem _ s (ihy (hHN (span_monTimes_le H hy)))`. Conclude with `hmem x (span_le_span_monTimes H hx) hxN`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_iSup_inf {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded S ι 𝓜) {H : Set M}
     (hH : ∀ x ∈ H, ∃ c, x ∈ 𝓜 c) {N : Submodule (MRingOver S ι) M}
@@ -199,15 +193,13 @@ end GradedSubquot
 open GradedSubquot in
 
 /- English proof (translation)
-Introduce `S _ K _ ι _ M _ _ _ _ 𝓜 G H hM hG hH hGH`. Establish `hind : iSupIndep (subGrading 𝓜 (Submodule.span (MRingOver S ι) H))` using `iSupIndep_comap hM.1.submodule_iSupIndep ((Submodule.span (MRingOver S ι) H).subtype.restrictScalars S) (fun a b h => Subtype.ext h)`. Establish `hsup : ⨆ c, subGrading 𝓜 (Submodule.span (MRingOver S ι) H) c = ⊤`. Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations. Conclude with `(show (⨆ c, ((Submodule.span (MRingOver S ι) H).comap (Submodule.span (MRingOver S ι) H).subtype).restrictScalars S ⊓ subGrading 𝓜 (Submodule.span (MRingOver S ι) H) c) ≤ ⨆ c, subGrading 𝓜 (Submodule.span (MRingOver S ι) H) c from iSup_mono fun c => inf_le_right) (mem_iSup_inf hM …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind hsup, fun a c p m hp hm => hM.2 a c p (m : M) hp hm⟩, ?_⟩` and prove the remaining obligations. Use `set L := (Submodule.span (MRingOver S ι) G).comap (Submodule.span (MRingOver S ι) H).subtype with hLdef`. Use `set f := L.mkQ.restrictScalars S with hfdef`. Establish `hker : LinearMap.ker f = L.restrictScalars S`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hfdef]`. Establish `hL : LinearMap.ker f ≤ ⨆ c, (LinearMap.ker f ⊓ subGrading 𝓜 (Submodule.span (MRingOver S ι) H) c)`. Rewrite using `[hker]`. Introduce `x hx`. Conclude with `mem_iSup_inf hM hG hGH x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hind2` using `iSupIndep_map_of_ker_le hind f hL`. Establish `hsup2 : ⨆ c, quotGrading (subGrading 𝓜 (Submodule.span (MRingOver S ι) H)) L c = ⊤`. Express the relevant statement in the definitionally equal form `⨆ c, (subGrading 𝓜 (Submodule.span (MRingOver S ι) H) c).map f = ⊤`. Rewrite using `[← Submodule.map_iSup, hsup, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `Submodule.mkQ_surjective L`.
-
-Use `⟨DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind2 hsup2, ?_⟩` and prove the remaining obligations. Introduce and unpack `a c p _ hp ⟨x, hx, rfl⟩`. Conclude with `⟨p • x, hM.2 a c p (x : M) hp hx, L.mkQ.map_smul p x⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GradedSubquot.proof : GradedSubquot.Statement := by
   intro S _ K _ ι _ M _ _ _ _ 𝓜 G H hM hG hH hGH

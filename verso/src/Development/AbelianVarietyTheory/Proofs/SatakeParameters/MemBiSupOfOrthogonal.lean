@@ -12,15 +12,13 @@ namespace GlobalTheory.DownMemRoad
 open Formalism.BasicNotions Formalism.MainNotions.N GlobalTheory.ThetaExh GlobalTheory.IndefiniteRowSideFullHecke.ThetaEigenspaceMapping GlobalTheory.IndefiniteRowSideFullHecke.ThetaLiftOfEachComponent GlobalTheory.IndefiniteRowSideFullHecke.InternalDirectSumCriteria
 
 /- English proof (translation)
-Establish `hsup : (⨆ k ∈ S, U k) ⊔ (⨆ k ∈ Sᶜ, U k) = ⊤`. Rewrite using `[← htop]`. Conclude with `(iSup_split U (· ∈ S)).symm`. Establish `ho : (⨆ k ∈ S, U k) ⟂ (⨆ k ∈ Sᶜ, U k)`. Simplify using `only [Submodule.isOrtho_iSup_left, Submodule.isOrtho_iSup_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk k' hk'`. Use `horth _ _ ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `absurd hk' hk`. Establish `hv' : v ∈ (⨆ k ∈ Sᶜ, U k)ᗮ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : (ℂ ∙ v) ⟂ (⨆ k ∈ Sᶜ, U k)`. Simplify using `only [Submodule.isOrtho_iSup_right]`. Introduce `k hk`. Conclude with `(Submodule.span_singleton_le_iff_mem _ _).2 (hv k hk)`. Conclude with `h1 (Submodule.mem_span_singleton_self v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hsup.ge (Submodule.mem_top (x := v)))`. Establish `hb' : b ∈ (⨆ k ∈ Sᶜ, U k)ᗮ`. Use `Submodule.sub_mem _ hv' (ho ha)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hb0 : b = 0` using `inner_self_eq_zero.1 ((Submodule.mem_orthogonal _ _).1 hb' b hb)`.
-
-Rewrite using `[hb0, add_zero]`. Conclude with `ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_biSup_of_orthogonal {V ι : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (U : ι → Submodule ℂ V) (S : Set ι) (htop : ⨆ k, U k = ⊤) (horth : ∀ k k', k ≠ k' → U k ⟂ U k')
@@ -51,11 +49,11 @@ theorem mem_biSup_of_orthogonal {V ι : Type*} [NormedAddCommGroup V] [InnerProd
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Take `⟨P', hP', h1, -, h3, h4, -⟩` from `hx`. Use `⟨fun p hp => ?_, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `h1 ⟨p.a, A.tw p.π A.etaTinv, p.d⟩ (List.mem_map.mpr ⟨p, List.mem_append_left _ hp, rfl⟩)` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`. Establish `e : rankIso N A Sig + R.t = R.nV`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← h3]`. Simplify using `[rankIso, twistIso, muPart, Function.comp_def]`. Establish `e' : R.nV = R.r + R.t` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `e` using `hloc P' P x hP' hP w hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `e` using `[← h4 w hw, ParUpRoad.isoLoc_lift N A hL, hS σ P hθ w hw]`. Conclude with `(hL w).2.2.2.2 _ _ _ ((hL w).2.2.2.1 _ _ _ (A.locG_dim _ w) e)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasParamW_of_thetaOf (hL : ParamLaws N A) {i : N.Loc} (hS : SplitLift N A i)
     (hloc : LocOfPt N A i) {x : N.X i} {Sig : List (Part A.CG)} (hx : HasParamX N A i x Sig)
@@ -76,9 +74,9 @@ theorem hasParamW_of_thetaOf (hL : ParamLaws N A) {i : N.Loc} (hS : SplitLift N 
     exact (hL w).2.2.2.2 _ _ _ ((hL w).2.2.2.1 _ _ _ (A.locG_dim _ w) e)
 
 /- English proof (translation)
-Unfold `eigC`. Simplify using `only [Submodule.isOrtho_iSup_right]`. Introduce `P' hP'`. Use `hT P P' ?_` and prove the remaining obligations. Introduce and unpack `rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hP hP'`.
+A detailed English derivation is pending.
 -/
 theorem typeV_isOrtho_eigC {i : N.Loc} (hT : TypeOrth N A i) {x : N.X i} {P : A.AV i}
     (hP : A.ptV i P ≠ some x) : A.typeV i P ⟂ eigC N A i x := by
@@ -90,9 +88,9 @@ theorem typeV_isOrtho_eigC {i : N.Loc} (hT : TypeOrth N A i) {x : N.X i} {P : A.
   exact hP hP'
 
 /- English proof (translation)
-Use `mem_biSup_of_orthogonal (what₂.isot (N.j i)) {σ | HasParamW N A i σ Sig} htop hO fun σ hσ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : what₂.isot (N.j i) σ = ⊥`. Rewrite using `[h0, Submodule.bot_orthogonal_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨P, hP⟩` from `hθ i σ h0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : A.ptV i P ≠ some x` using `fun h => hσ (hasParamW_of_thetaOf N A hL hS hloc hx hP h)`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `f hf`. Rewrite using `[← LinearMap.adjoint_inner_left]`. Conclude with `(typeV_isOrtho_eigC N A hT hne).inner_eq (hP.2 ⟨f, hf, rfl⟩) hF`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaP_mem (hθ : EachRowHasThetaLift N A) (hL : ParamLaws N A) {i : N.Loc}
     (htop : ⨆ σ, what₂.isot (N.j i) σ = ⊤) (hO : PartOrth N i) (hT : TypeOrth N A i)
@@ -112,7 +110,7 @@ theorem thetaP_mem (hθ : EachRowHasThetaLift N A) (hL : ParamLaws N A) {i : N.L
   exact (typeV_isOrtho_eigC N A hT hne).inner_eq (hP.2 ⟨f, hf, rfl⟩) hF
 
 /- English proof (translation)
-Introduce `_ _ _ N A hθ hsum hO hT hS hL hloc i _ _ _ hx _ hF` and use `thetaP_mem N A hθ hL (hsum _ (N.j_range i).1 (N.j_range i).2).2 (hO i) (hT i) (hS i) (hloc i) hx hF`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N),
     EachRowHasThetaLift N A → PartsSum R what₂.Mj what₂.isot → (∀ i, PartOrth N i) →
@@ -122,7 +120,7 @@ theorem main : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R
     thetaP_mem N A hθ hL (hsum _ (N.j_range i).1 (N.j_range i).2).2 (hO i) (hT i) (hS i) (hloc i) hx hF
 
 /- English proof (translation)
-Introduce and unpack `R H what₂ N A i hθ hI hO hT hL hS hloc x - Sig hx _ ⟨F, hF, rfl⟩`. Conclude with `thetaP_mem N A hθ hL (hI _ (N.j_range i).1 (N.j_range i).2).submodule_iSup_eq_top hO hT hS hloc hx hF`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem downMem : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N)
     (i : N.Loc), ThetaOne N A → Rows.IsotInternal what₂ → PartOrth N i → TypeOrth N A i → ParamLaws N A →

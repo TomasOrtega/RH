@@ -25,14 +25,14 @@ section Lat
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `transLat_mono lam (delStd_le_nabStd K lam) _ hx`.
+A detailed English derivation is pending.
 -/
 theorem del_le_nab (emb : ι → E →+* K) (lam : ι → DomWeight n) (M : Submodule (𝓞 E) (Fin n → E)) {x : VV K lam}
     (hx : x ∈ delAtr emb lam M) : x ∈ nabAtr emb lam M :=
   transLat_mono lam (delStd_le_nabStd K lam) _ hx
 
 /- English proof (translation)
-Unfold `nabAtr`. Repeatedly rewrite using `[tauLatG E K ι n emb, Formalism.L2.Col.dualFr_gLat]`. Conclude with `(Formalism.L2.Col.nabK_gLat lam _ (invTrK (embGL emb γ))).ge ⟨x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabAtr_map (emb : ι → E →+* K) (lam : ι → DomWeight n)
     (γ : GL (Fin n) E) (M : Submodule (𝓞 E) (Fin n → E)) (x : VV K lam) (hx : x ∈ nabAtr emb lam M) :
@@ -55,9 +55,9 @@ end Cast
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ (γ : UR D.sp.cm (Xp G).gram), ∃ k ∈ G.Kplus, g = ratIn G γ * (rp.x c : GLf G) * k`. Take `⟨γ, k, hk, rfl⟩` from `h`. Use `Or.inr ⟨γ, k, hk, rfl, ?_⟩` and prove the remaining obligations. Unfold `ClassReps.delta`. Rewrite using `[deltaForm_right _ _ _ _ _ _ hk, deltaForm_left, deltaForm_self _ _ _ _ _ (ClassReps.neat rp c)]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl (deltaForm_eq_zero _ _ _ _ _ _ fun γ u hu he => h ⟨γ, u, hu, he⟩)`.
+Prove the first alternative.
 -/
 theorem delta_cases (rp : ClassReps G) (c : G.ClPlus) (v : WtSp G) (g : GLf G) :
     rp.delta c v g = 0 ∨ ∃ (γ : UR D.sp.cm (Xp G).gram) (k : GLf G), k ∈ G.Kplus ∧ g = ratIn G γ * (rp.x c : GLf G) * k ∧
@@ -70,13 +70,11 @@ theorem delta_cases (rp : ClassReps G) (c : G.ClPlus) (v : WtSp G) (g : GLf G) :
   · exact Or.inl (deltaForm_eq_zero _ _ _ _ _ _ fun γ u hu he => h ⟨γ, u, hu, he⟩)
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : fr.1 *ᵥ y ∈ B` using `hy`. Use `⟨(γ⁻¹).1 *ᵥ (fr.1 *ᵥ y), (h _).1 ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hy'`. Use `show (fr⁻¹ * γ).1 *ᵥ ((γ⁻¹).1 *ᵥ (fr.1 *ᵥ y)) = y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨z, hz, rfl⟩ show fr.1 *ᵥ ((fr⁻¹ * γ).1 *ᵥ z) ∈ B`. Establish `e : fr.1 *ᵥ ((fr⁻¹ * γ).1 *ᵥ z) = γ.1 *ᵥ z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
-
-Conclude with `(h z).2 hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_eq_map {E : Type} [Field E] [NumberField E] {n : ℕ} (fr γ : GL (Fin n) E) (A B : Submodule (𝓞 E) (Fin n → E))
     (h : ∀ z, γ.1 *ᵥ z ∈ B ↔ z ∈ A) :
@@ -100,7 +98,7 @@ theorem comap_eq_map {E : Type} [Field E] [NumberField E] {n : ℕ} (fr γ : GL 
     exact (h z).2 hz
 
 /- English proof (translation)
-Establish `h0 : latOf G (finG (Xp G) x) = latOf G (ratIn G γ * (rp.x c : GLf G))`. Rewrite using `[hx]`. Conclude with `TestLatModel.latOf_mul _ hk`. Use `(congrArg (Submodule.comap _) h0).trans (comap_eq_map _ _ _ _ fun z => ?_)` and prove the remaining obligations. Conclude with `TestLatModel.mem_latOf_rat γ _ z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem latAt_eq {W : G.Weil} (S : GridChoice W Set.univ) (rp : ClassReps G) (c : G.ClPlus) (x : FinPt G (.top 0))
     (γ : UR D.sp.cm (Xp G).gram) {k : GLf G} (hk : k ∈ G.Kplus) (hx : finG (Xp G) x = ratIn G γ * (rp.x c : GLf G) * k) :
@@ -113,9 +111,9 @@ theorem latAt_eq {W : G.Weil} (S : GridChoice W Set.univ) (rp : ClassReps G) (c 
   exact TestLatModel.mem_latOf_rat γ _ z
 
 /- English proof (translation)
-Establish `hlab : ∀ τ x, D.what₂.embLL (labLL D τ x) = tauE D τ x` using `fun τ x => DFunLike.congr_fun (GlobalTheory.ThetaFiresProbe.labE_fixed τ) x`. Establish `e : (fun τ => Formalism.UG.bc D.what₂.embLL (invTrK (embGL (labLL D) h) τ)) = invTrK (embGL (tauE D) h)`. Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[bc_coe, invTrK_coe, invTrK_coe, embGL_inv, embGL_inv, embGL_coe, embGL_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Conclude with `hlab _ _`. Use `show rhoK lam _ _ = mapVV _ _ (rhoK lam (invTrK (embGL (labLL D) h)) _)`. Rewrite using `[mapVV_rhoK, e]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rhoVr_mapVV {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (h : GL (Fin n) D.host.E) (v : VV D.what₂.LL lam) :
     rhoVr (tauE D) lam h (mapVV D.what₂.embLL lam v) = mapVV D.what₂.embLL lam (rhoVr (labLL D) lam h v) := by
@@ -132,17 +130,15 @@ theorem rhoVr_mapVV {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (h : GL (Fin
   rfl
 
 /- English proof (translation)
-Use `set φ : D.host.E →+* ℂ := σ.comp (labLL D τ) with hφ`. Use `set A : Matrix (Fin V.rank) (Fin V.rank) ℂ := (h⁻¹).1.map φ with hA`. Establish `hc : ∀ x, φ ((D.sp.cm.sig : D.host.E →+* D.host.E) x) = starRingEnd ℂ (φ x)` using `fun x => D.sp.cm.cmUnram.2.1 φ x`. Establish `h1 : (h⁻¹).1 * (cT (D.sp.cm.sig : D.host.E →+* D.host.E) (h⁻¹).1 * V.gram) = 1`. Conclude with `mul_eq_one_comm.1 hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h2 : A * Aᴴ * V.gram.map φ = 1`. Establish `e : Aᴴ = (cT (D.sp.cm.sig : D.host.E →+* D.host.E) (h⁻¹).1).map φ`. Use extensionality with `i j`. Simplify using `only [hA, cT, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `(hc _).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun M => M.map φ) h1` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Rewrite using `[e, Matrix.mul_assoc, this, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hu : IsUnit (V.gram.map (labLL D τ)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Conclude with `((_root_.map_ne_zero _).2 (GlobalTheory.UnitaryGlue.gram_det_ne_zero V)).isUnit`. Establish `h3 : (V.gram.map (labLL D τ))⁻¹.map σ = A * Aᴴ`. Establish `e1 : (V.gram.map (labLL D τ)).map σ = V.gram.map φ`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `e2 : (V.gram.map (labLL D τ))⁻¹.map σ * V.gram.map φ = 1`. Rewrite using `[← e1, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(Matrix.inv_eq_left_inv e2).symm.trans (Matrix.inv_eq_left_inv h2)`. Establish `h4 : ((bc σ (invTrK (embGL (labLL D) h) τ) : GL _ ℂ) : Matrix _ _ ℂ) = Aᵀ`. Rewrite using `[bc_coe, invTrK_coe, embGL_inv, embGL_coe]`.
-
-Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[h4, gramKd, Matrix.transpose_map, h3, Matrix.mul_one, Matrix.transpose_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gram_transport (V : HSp D) (σ : D.what₂.LL →+* ℂ) (h : GL (Fin V.rank) D.host.E)
     (hh : cT (D.sp.cm.sig : D.host.E →+* D.host.E) (h⁻¹).1 * V.gram * (h⁻¹).1 = 1) (τ : D.what₂.Tau) :
@@ -179,7 +175,7 @@ theorem gram_transport (V : HSp D) (σ : D.what₂.LL →+* ℂ) (h : GL (Fin V.
   rfl
 
 /- English proof (translation)
-Establish `e : mapVV σ lam (rhoVr (labLL D) lam h u) = rhoK lam (fun τ => bc σ (invTrK (embGL (labLL D) h) τ)) (mapVV σ lam u)` using `mapVV_rhoK σ lam _ u`. Unfold `nrm`. Rewrite using `[e, pairK_apply, pairK_apply, rhoK_coe, pairTransport ℂ _ _ lam _ _ _]`. Simplify using `only [gram_transport V σ h hh]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nrm_transport (V : HSp D) (lam : D.what₂.Tau → DomWeight V.rank) (σ : D.what₂.LL →+* ℂ) (h : GL (Fin V.rank) D.host.E)
     (hh : cT (D.sp.cm.sig : D.host.E →+* D.host.E) (h⁻¹).1 * V.gram * (h⁻¹).1 = 1) (u : VV D.what₂.LL lam) :
@@ -193,7 +189,7 @@ theorem nrm_transport (V : HSp D) (lam : D.what₂.Tau → DomWeight V.rank) (σ
   simp only [gram_transport V σ h hh]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem castVV_rhoVr_mul {n : ℕ} {lam lam' : D.what₂.Tau → DomWeight n} (e : lam' = lam) (fr γ : GL (Fin n) D.host.E)
     (v : VV D.what₂.LL lam) :
@@ -203,7 +199,7 @@ theorem castVV_rhoVr_mul {n : ℕ} {lam lam' : D.what₂.Tau → DomWeight n} (e
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castVV_mem {n : ℕ} {lam lam' : D.what₂.Tau → DomWeight n} (e : lam' = lam) {M : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {v : VV D.what₂.LL lam} (hv : v ∈ nabAtr (labLL D) lam M) : castVV e v ∈ nabAtr (labLL D) lam' M := by
@@ -211,7 +207,7 @@ theorem castVV_mem {n : ℕ} {lam lam' : D.what₂.Tau → DomWeight n} (e : lam
   exact hv
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem nrm_castVV {n : ℕ} {lam lam' : D.what₂.Tau → DomWeight n} (e : lam' = lam) (H : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ)
     (σ : D.what₂.LL →+* ℂ) (v : VV D.what₂.LL lam) : nrm lam' H (mapVV σ lam' (castVV e v)) = nrm lam H (mapVV σ lam v) := by
@@ -219,7 +215,7 @@ theorem nrm_castVV {n : ℕ} {lam lam' : D.what₂.Tau → DomWeight n} (e : lam
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mapVV_castVV {K : Type} [Field K] {n : ℕ} {lam lam' : D.what₂.Tau → DomWeight n} (e : lam' = lam) (φ : K →+* ℂ) (v : VV K lam) :
     mapVV φ lam' (castVV e v) = ⟨(mapVV φ lam v).1, by rw [e]; exact Subtype.prop _⟩ := by
@@ -227,7 +223,7 @@ theorem mapVV_castVV {K : Type} [Field K] {n : ℕ} {lam lam' : D.what₂.Tau �
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castVV_zero {K : Type} [Field K] {n : ℕ} {lam lam' : D.what₂.Tau → DomWeight n} (e : lam' = lam) :
     castVV e (0 : VV K lam) = 0 := by
@@ -235,14 +231,14 @@ theorem castVV_zero {K : Type} [Field K] {n : ℕ} {lam lam' : D.what₂.Tau →
   rfl
 
 /- English proof (translation)
-Simplify using `[nrm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_zero {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (H : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) :
     nrm lam H 0 = 0 := by
   simp [nrm]
 
 /- English proof (translation)
-Establish `e : psiC Ψ x = mapVV D.what₂.embLL (wt G (.top 0)) (castVV (wt_top_eq G) (Ψ (finG (Xp G) x)))` using `(mapVV_castVV (wt_top_eq G) D.what₂.embLL _).symm`. Unfold `topVal`. Rewrite using `[e, rhoVr_mapVV]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem topVal_eq {W : G.Weil} (S : GridChoice W Set.univ) (Ψ : GLf G → WtSp G) (x : FinPt G (.top 0)) :
     topVal S Ψ x = mapVV D.what₂.embLL (wt G (.top 0))
@@ -253,18 +249,18 @@ theorem topVal_eq {W : G.Weil} (S : GridChoice W Set.univ) (Ψ : GLf G → WtSp 
   rw [e, rhoVr_mapVV]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨u, 1, rfl, one_ne_zero, by rw [Formalism.DivisionValues.vw, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]; simp, by rwa [one_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem inLat_of_mem {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (w : PlL D) {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {u : VV D.what₂.LL lam} (hu : u ∈ nabAtr (labLL D) lam Λ) : InLat lam w 0 Λ (mapVV D.what₂.embLL lam u) :=
   ⟨u, 1, rfl, one_ne_zero, by rw [Formalism.DivisionValues.vw, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]; simp, by rwa [one_smul]⟩
 
 /- English proof (translation)
-Establish `h1 : cT (D.sp.cm.sig : D.host.E →+* D.host.E) (S.N.fr (.top 0)).1 * (Xp G).gram * (S.N.fr (.top 0)).1 = 1` using `S.N.fr_on (.top 0) (Nat.zero_le _)`. Establish `h2 : cT (D.sp.cm.sig : D.host.E →+* D.host.E) (γ⁻¹).1.1 * (Xp G).gram * (γ⁻¹).1.1 = (Xp G).gram` using `(γ⁻¹).2`. Establish `e : (((S.N.fr (.top 0))⁻¹ * γ.1)⁻¹).1 = (γ⁻¹).1.1 * (S.N.fr (.top 0)).1`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : cT (D.sp.cm.sig : D.host.E →+* D.host.E) ((γ⁻¹).1.1 * (S.N.fr (.top 0)).1) = cT (D.sp.cm.sig : D.host.E →+* D.host.E) (S.N.fr (.top 0)).1 * cT (D.sp.cm.sig : D.host.E →+* D.host.E) (γ⁻¹).1.1`. Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`. Rewrite using `[e, e2]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = 1 := by rw [h2, h1]`.
+A detailed English derivation is pending.
 -/
 theorem orth_inv {W : G.Weil} (S : GridChoice W Set.univ) (γ : UR D.sp.cm (Xp G).gram) :
     cT (D.sp.cm.sig : D.host.E →+* D.host.E) (((S.N.fr (.top 0))⁻¹ * γ.1)⁻¹).1 * (Xp G).gram * (((S.N.fr (.top 0))⁻¹ * γ.1)⁻¹).1 = 1 := by
@@ -284,11 +280,11 @@ theorem orth_inv {W : G.Weil} (S : GridChoice W Set.univ) (γ : UR D.sp.cm (Xp G
     _ = 1 := by rw [h2, h1]
 
 /- English proof (translation)
-Establish `hG : ∀ τ, ((gramKd (emb D) (Xp G).gram τ).map σ).PosDef` using `fun τ => by`. Establish `hP` using `posDef_Xp G (σ.comp (emb D τ))`. Establish `hd : IsUnit ((Xp G).gram.map (emb D τ)).det`. Use `(Matrix.isUnit_iff_isUnit_det _).1 hP.isUnit` as an intermediate fact. Rewrite `this` using `[RingHom.coe_comp, ← Matrix.map_map, ← RingHom.mapMatrix_apply σ, ← RingHom.map_det, isUnit_iff_ne_zero, map_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_iff_ne_zero.2 this`. Establish `e : (((Xp G).gram.map (emb D τ))⁻¹).map σ = ((Xp G).gram.map (σ.comp (emb D τ)))⁻¹`. Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[RingHom.coe_comp, ← Matrix.map_map, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hd, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gramKd, Matrix.transpose_map, e]`. Conclude with `hP.inv.transpose`. Distinguish the cases in `hx : x = 0`. Simplify using `[nrm, hx]`. Conclude with `(Complex.le_def.1 (pairK_pos _ hG x hx).le).1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nrm_nonneg (σ : D.what₂.LL →+* ℂ) (x : VV ℂ (LaP G)) :
     0 ≤ nrm (LaP G) (fun τ => (gramKd (emb D) (Xp G).gram τ).map σ) x := by
@@ -311,9 +307,9 @@ theorem nrm_nonneg (σ : D.what₂.LL →+* ℂ) (x : VV ℂ (LaP G)) :
   · exact (Complex.le_def.1 (pairK_pos _ hG x hx).le).1
 
 /- English proof (translation)
-Rewrite using `[topVal_eq]`. Use `inLat_of_mem _ w ?_` and prove the remaining obligations. Break down `delta_cases rp c u (finG (Xp G) x) with h0 | ⟨γ, k, hk, hx, e⟩` into its components or cases. Rewrite using `[h0]`. Rewrite using `[castVV_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[e, show rhoW G γ u = rhoVr (labLL D) (LaP G) γ.1 u from rfl, castVV_rhoVr_mul, latAt_eq S rp c x γ hk hx]`. Conclude with `castVV_mem _ (nabAtr_map _ _ _ _ _ (del_le_nab _ _ _ hu))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullback_fin_relation {W : G.Weil} (S : GridChoice W Set.univ) (rp : ClassReps G) (w : PlL D) (c : G.ClPlus) (u : WtSp G)
     (hu : u ∈ wLat G (rp.lat c)) (x : FinPt G (.top 0)) :
@@ -328,9 +324,9 @@ theorem pullback_fin_relation {W : G.Weil} (S : GridChoice W Set.univ) (rp : Cla
     exact castVV_mem _ (nabAtr_map _ _ _ _ _ (del_le_nab _ _ _ hu))
 
 /- English proof (translation)
-Rewrite using `[topVal_eq]`. Use `⟨_, rfl, ?_⟩` and prove the remaining obligations. Break down `delta_cases rp c u (finG (Xp G) x) with h0 | ⟨γ, k, hk, hx, e⟩` into its components or cases. Rewrite using `[h0]`. Rewrite using `[castVV_zero, map_zero, map_zero, nrm_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nrm_nonneg σ _`. Rewrite using `[e, show rhoW G γ u = rhoVr (labLL D) (LaP G) γ.1 u from rfl, castVV_rhoVr_mul, nrm_castVV, nrm_transport (Xp G) _ σ _ (orth_inv S γ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_aux {W : G.Weil} (S : GridChoice W Set.univ) (rp : ClassReps G) (σ : D.what₂.LL →+* ℂ) (c : G.ClPlus) (u : WtSp G)
     (x : FinPt G (.top 0)) :
@@ -346,9 +342,9 @@ theorem inf_aux {W : G.Weil} (S : GridChoice W Set.univ) (rp : ClassReps G) (σ 
       nrm_transport (Xp G) _ σ _ (orth_inv S γ)]
 
 /- English proof (translation)
-Introduce `_`. Prove the components needed by the constructor for the conclusion. Use `⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ w c u hu x`. Conclude with `pullback_fin_relation _ _ w c u hu x`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ σ c u x`. Conclude with `inf_aux _ _ σ c u x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finPsi_infPsi : GlobalTheory.FunPr.Hypotheses₂ → FinPsiK ∧ InfPsiK := by
   intro _
@@ -370,7 +366,7 @@ end TestFunctionNorms
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 /- English proof (translation)
-Apply the tactic sequence `first | exact @TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi | exact TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi | (intros; apply TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.finite_infinite_psi_bounds : GlobalTheory.FunPr.Hypotheses₂ → FinPsiK ∧ InfPsiK := by
   first | exact @TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi | exact TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi | (intros; apply TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.finPsi_infPsi <;> assumption)

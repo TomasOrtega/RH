@@ -26,7 +26,7 @@ def pairCoordRing {B : Type*} [CommRing B] [Algebra Ω B] (y : (Σ k, ι k) → 
   | ⟨some o, j⟩ => projCoordRing y w φ u ⟨o, j⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases hj : (j : ℕ) < k <;> simp [flagCoordRing, hj, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flagCoordRing_map {B B' : Type*} [CommRing B] [Algebra Ω B] [CommRing B'] [Algebra Ω B']
     (g : B →ₐ[Ω] B') (w e : Module.Basis (Fin N) Ω E) (u : Fin N → B) (k : ℕ) :
@@ -35,7 +35,7 @@ theorem flagCoordRing_map {B B' : Type*} [CommRing B] [Algebra Ω B] [CommRing B
   by_cases hj : (j : ℕ) < k <;> simp [flagCoordRing, hj, map_sum]
 
 /- English proof (translation)
-Break down `p with ⟨_ | o, l⟩` into its components or cases. Simplify using `[pairCoordRing, map_sum]`. Simplify using `only [pairCoordRing]`. Conclude with `projCoordRing_map g y w φ u _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairCoordRing_map {B B' : Type*} [CommRing B] [Algebra Ω B] [CommRing B'] [Algebra Ω B']
     (g : B →ₐ[Ω] B') (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E) (φ : Fin M → Module.Dual Ω E)
@@ -53,7 +53,7 @@ theorem flagCoord_eq_flagCoordRing {Φ : Type*} [Field Φ] [Algebra Ω Φ] (w e 
     (t : Fin N → Φ) (k : ℕ) : flagCoord w e t k = flagCoordRing w e t k := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Break down `p with ⟨_ | o, l⟩` into its components or cases. Both sides reduce to the same expression. Simplify using `only [pairProjCoord, pairCoordRing]`. Rewrite using `[projCoord_eq_projCoordRing]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairProjCoord_eq_pairCoordRing {Φ : Type*} [Field Φ] [Algebra Ω Φ] (y : (Σ k, ι k) → Ω)
     (w : Module.Basis (Fin N) Ω E) (φ : Fin M → Module.Dual Ω E) (φ' : Fin M' → Module.Dual Ω E)
@@ -65,11 +65,11 @@ theorem pairProjCoord_eq_pairCoordRing {Φ : Type*} [Field Φ] [Algebra Ω Φ] (
     rw [projCoord_eq_projCoordRing]
 
 /- English proof (translation)
-Use `set S : MvPolynomial (Fin N) Ω := ∑ m, X m * C (w.repr (e m) k) with hS`. Establish `hsum : ∑ i, e.repr (w k) i * w.repr (e i) j = if k = j then 1 else 0`. Establish `h` using `congrArg (fun v => w.repr v j) (e.sum_repr (w k))`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply] at h`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : ∀ x, aeval (fun i => X i - S * C (e.repr (w k) i)) (X x * C (w.repr (e x) j)) = X x * C (w.repr (e x) j) - S * C (e.repr (w k) x * w.repr (e x) j)`. Introduce `x`. Rewrite using `[map_mul, aeval_X, aeval_C, MvPolynomial.algebraMap_eq, sub_mul, map_mul, mul_assoc]`. Rewrite using `[map_sum, Finset.sum_congr rfl (fun x _ => hx x), Finset.sum_sub_distrib, ← Finset.mul_sum, ← map_sum, hsum]`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[map_one, mul_one]`. Rewrite using `[map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_flagSub_sigma (w e : Module.Basis (Fin N) Ω E) (k j : Fin N) :
     aeval (fun i => X i - (∑ m, X m * C (w.repr (e m) k)) * C (e.repr (w k) i))
@@ -93,37 +93,37 @@ theorem aeval_flagSub_sigma (w e : Module.Basis (Fin N) Ω E) (k j : Fin N) :
 end Ring
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ _ Ω _ _ K _ _ ι _ y d _ N E _ _ B B' _ w w' x x' f g hF M M' a₀ a₀' φ φ' _ _ Φ _ _ _ _ e t ht k hk`. Set `ev : (MvPolynomial (Fin N) Ω) →ₐ[Ω] Φ` to `aeval t`. Establish `hev : Function.Injective ev` using `ht`. Set `kk : Fin N` to `⟨k, hk⟩`. Set `sub : (MvPolynomial (Fin N) Ω) →ₐ[Ω] (MvPolynomial (Fin N) Ω)` to `aeval fun i => X i - (∑ m, X m * C (w.repr (e m) kk)) * C (e.repr (w kk) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hevF : ∀ j : ℕ, ev ∘ flagCoordRing w e (X : Fin N → (MvPolynomial (Fin N) Ω)) j = flagCoordRing w e t j`. Introduce `j`. Rewrite using `[flagCoordRing_map]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[ev, aeval_X]`. Establish `hsubF : sub ∘ flagCoordRing w e (X : Fin N → (MvPolynomial (Fin N) Ω)) (k + 1) = flagCoordRing w e (X : Fin N → (MvPolynomial (Fin N) Ω)) k`. Use function extensionality and compare the values at `j`. Establish `hs` using `aeval_flagSub_sigma w e kk j`. Simplify using `only [Function.comp_apply, flagCoordRing]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Break down `lt_trichotomy (j : ℕ) k with h | h | h` into its components or cases. Establish `hkj : kk ≠ j` using `fun h' => by rw [← h'] at h; exact lt_irrefl _ h`. Rewrite using `[if_pos (by omega), if_pos h]`. Simplify using `only [MvPolynomial.algebraMap_eq]`. Use `hs.trans ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg hkj, sub_zero]`. Establish `hkj : kk = j` using `Fin.ext h.symm`. Rewrite using `[if_pos (by omega), if_neg (by omega)]`. Simplify using `only [MvPolynomial.algebraMap_eq]`. Use `hs.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos hkj, hkj, sub_self]`. Rewrite using `[if_neg (by omega), if_neg (by omega), map_zero]`. Set `cA : ℕ → (Σ o, bundleIdx (bundleIdx ι M) M' o) → (MvPolynomial (Fin N) Ω)` to `fun j => pairCoordRing y w φ φ' (flagCoordRing w e X j)`. Establish `hcoord : ∀ j : ℕ, flagClosurePt y w e φ φ' t j = fun p => ev (cA j p)`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `p`. Simplify using `only [cA, flagClosurePt, pairProjCoord_eq_pairCoordRing, flagCoord_eq_flagCoordRing, pairCoordRing_map, hevF]`. Establish `hsubc : ∀ p, sub (cA (k + 1) p) = cA k p`. Introduce `p`. Simplify using `only [cA]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[pairCoordRing_map, hsubF]`. Set `algA : O →+* (MvPolynomial (Fin N) Ω)` to `(algebraMap Ω (MvPolynomial (Fin N) Ω)).comp (algebraMap O Ω)`. Establish `hevA : (ev : (MvPolynomial (Fin N) Ω) →+* Φ).comp algA = algebraMap O Φ` using `RingHom.ext fun a => by simp [algA, ← IsScalarTower.algebraMap_apply]`. Establish `hsubA : (sub : (MvPolynomial (Fin N) Ω) →+* (MvPolynomial (Fin N) Ω)).comp algA = algA` using `RingHom.ext fun a => by simp [algA]`. Use `⟨fun s hs => ?_, fun s h hsh => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ j : ℕ, pointConeMap O (flagClosurePt y w e φ φ' t j) s = map (ev : (MvPolynomial (Fin N) Ω) →+* Φ) (eval₂ (C.comp algA) (fun p => C (cA j p) * X p.1) s)`. Introduce `j`. Rewrite using `[map_coneMap, hevA, hcoord]`. Simplify using `only [pointConeMap, aeval_def, MvPolynomial.algebraMap_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `ksub : map (sub : (MvPolynomial (Fin N) Ω) →+* (MvPolynomial (Fin N) Ω)) (eval₂ (C.comp algA) (fun p => C (cA (k + 1) p) * X p.1) s) = eval₂ (C.comp algA) (fun p => C (cA k p) * X p.1) s`. Rewrite using `[map_coneMap, hsubA]`. Simplify using `only [AlgHom.coe_toRingHom, hsubc]`. Simplify using `only [pointIdeal, RingHom.mem_ker] at hs ⊢`. Rewrite `hs`, the goal using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h0 : eval₂ (C.comp algA) (fun p => C (cA (k + 1) p) * X p.1) s = 0` using `map_injective _ hev (hs.trans (map_zero _).symm)`. Rewrite using `[← ksub, h0, map_zero, map_zero]`. Establish `val : ∀ (j : ℕ) (v : MRing (bundleIdx (bundleIdx ι M) M') O), aeval (flagClosurePt y w e φ φ' t j) v = ev (eval₂ algA (cA j) v)`. Introduce `j v`. Rewrite using `[aeval_def, ← AlgHom.coe_toRingHom, eval₂_comp_left, hevA, hcoord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `vsub : ∀ v : MRing (bundleIdx (bundleIdx ι M) M') O, sub (eval₂ algA (cA (k + 1)) v) = eval₂ algA (cA k) v`. Introduce `v`. Rewrite using `[← AlgHom.coe_toRingHom, eval₂_comp_left, hsubA]`. Use `congr 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Conclude with `hsubc p`. Set `τA : (MvPolynomial (Fin N) Ω)` to `∑ j, flagCoordRing w e (X : Fin N → (MvPolynomial (Fin N) Ω)) (k + 1) j * algebraMap Ω (MvPolynomial (Fin N) Ω) (w'.repr (w j) kk)`. Establish `hτ : flagLineCoord w' w e t (k + 1) kk = ev τA`. Simplify using `only [τA, flagLineCoord, map_sum, map_mul, AlgHom.commutes, flagCoord_eq_flagCoordRing, ← hevF, Function.comp_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsubτ : sub τA = 0`. Simplify using `only [τA, map_sum, map_mul, AlgHom.commutes]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `hj` using `congrFun hsubF j`. Simplify using `only [Function.comp_apply] at hj`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj]`. Distinguish the cases in `hjk : (j : ℕ) < k`. Rewrite using `[repr_flag_inv w w' hF.sameFlag j kk (Fin.lt_def.mpr hjk), map_zero, mul_zero]`. Simplify using `[flagCoordRing, hjk]`. Rewrite `hsh` using `[val, val, hτ]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs' : eval₂ algA (cA (k + 1)) s = τA * eval₂ algA (cA (k + 1)) h` using `hev (by rw [hsh, map_mul])`. Rewrite using `[val, ← vsub, hs', map_mul, hsubτ, zero_mul, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SegreFlagCutSpecialize.proof : SegreFlagCutSpecialize.Statement := by
   intro O _ _ _ ϖ _ Ω _ _ K _ _ ι _ y d _ N E _ _ B B' _ w w' x x' f g hF M M' a₀ a₀' φ φ' _ _ Φ _ _ _ _ e t ht

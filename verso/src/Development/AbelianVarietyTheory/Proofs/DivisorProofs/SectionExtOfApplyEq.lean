@@ -13,13 +13,13 @@ open GlobalTheory.IwLevel
 namespace GlobalTheory.IwLevel
 
 /- English proof (translation)
-Take `⟨⟨x, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField k X).symm.surjective f`. Take `⟨⟨y, ψ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField k X).symm.surjective g`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hf hg e ⊢`. Rewrite `e` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply, Scheme.fromSpecResidueField_apply]`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `set ρ := Spec.preimage (X.fromSpecResidueField x ≫ h) with hρ`. Establish `hr : X.fromSpecResidueField x ≫ h = Spec.map ρ` using `(Spec.map_preimage _).symm`. Rewrite `hf`, `hg` using `[Category.assoc, hr, ← Spec.map_comp, ← Spec.map_id]`. Establish `hφ` using `Spec.map_injective hf`. Establish `hψ` using `Spec.map_injective hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `hfg : φ = ψ by rw [hfg]`. Use extensionality with `u`. Establish `h1 : ∀ t : k, φ.hom (ρ.hom t) = t` using `fun t => by`. Use `congrArg (fun m => m.hom t) hφ` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : ∀ t : k, ψ.hom (ρ.hom t) = t` using `fun t => by`. Use `congrArg (fun m => m.hom t) hψ` as an intermediate fact. Simplify using `using this`. Establish `hu : ρ.hom (φ.hom u) = u` using `φ.hom.injective (h1 _)`. Rewrite using `[← hu, h2, h1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section_ext_of_apply_eq {k : Type} [Field k] {X : Scheme.{0}} (h : X ⟶ Sp k) {f g : Sp k ⟶ X}
     (hf : f ≫ h = 𝟙 _) (hg : g ≫ h = 𝟙 _)
@@ -47,9 +47,9 @@ theorem section_ext_of_apply_eq {k : Type} [Field k] {X : Scheme.{0}} (h : X ⟶
   rw [← hu, h2, h1]
 
 /- English proof (translation)
-Introduce `k _ A B _ π d hπ`. Use `hπ.fin` as an intermediate fact. Set `pt : Sp k` to `IsLocalRing.closedPoint k`. Establish `hF` using `π.left.finite_preimage_singleton ((1 : 𝟙_ (Over (Sp k)) ⟶ B).left pt)`. Use `Set.Finite.of_finite_image (f := fun a => a.left pt) (hF.subset ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩`. Express the relevant statement in the definitionally equal form `π.left (a.left pt) = _`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, show a ≫ π = 1 from ha]`. Introduce `a _ b _ hab`. Conclude with `Over.OverMorphism.ext (section_ext_of_apply_eq A.hom (Over.w a) (Over.w b) pt hab)`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_points_ker : ∀ (k : Type) [Field k] (A B : Over (Sp k)) [GrpObj B] (π : A ⟶ B) (d : ℕ),
     IsIsogDeg π d → Set.Finite {a : 𝟙_ (Over (Sp k)) ⟶ A | a ≫ π = 1} := by

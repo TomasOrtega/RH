@@ -15,18 +15,18 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Mat k r → (H →L[ℂ] H)}
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.LowestKTypeMultiplicity.UH_mul ha hb`.
+A detailed English derivation is pending.
 -/
 theorem gg_mul {a b : Mat k r} (ha : a ∈ GG k r) (hb : b ∈ GG k r) : a * b ∈ GG k r :=
   Formalism.MainNotions.LowestKTypeMultiplicity.UH_mul ha hb
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.LowestKTypeMultiplicity.UH_one k r`.
+A detailed English derivation is pending.
 -/
 theorem gg_one : (1 : Mat k r) ∈ GG k r := Formalism.MainNotions.LowestKTypeMultiplicity.UH_one k r
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hσ hv [] (by simp) hY`.
+A detailed English derivation is pending.
 -/
 theorem hasDeriv_dsig (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k := k) (r := r) σ v)
     {Y : Mat k r} (hY : InLieHpk k r Y) :
@@ -34,9 +34,9 @@ theorem hasDeriv_dsig (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k 
   Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hσ hv [] (by simp) hY
 
 /- English proof (translation)
-Establish `h2` using `Formalism.MainNotions.LowestKTypeMultiplicity.psiD_smooth hσ hv [Y] (by simpa using hY)`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hp, hF, hE⟩` from `h2 ((1 : Mat k r), g₀) (gg_one) hg₀`. Establish `hc : ContDiff ℝ ∞ (fun g : Mat k r => (((1 : Mat k r), g) : Mat k r × Mat k r))` using `contDiff_const.prodMk contDiff_id`. Use `⟨(fun g : Mat k r => (((1 : Mat k r), g) : Mat k r × Mat k r)) ⁻¹' U, fun g => F ((1 : Mat k r), g), hU.preimage hc.continuous, hp, hF.comp hc.contDiffOn (fun x hx => hx), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hgU hgH`. Use `hE ((1 : Mat k r), g) hgU gg_one hgH` as an intermediate fact. Simplify using `only [hσ.1.1, ContinuousLinearMap.one_apply] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smooth_dsig (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k := k) (r := r) σ v)
     {Y : Mat k r} (hY : InLieHpk k r Y) : IsSmoothVec (k := k) (r := r) σ (dsig σ Y v) := by
@@ -53,13 +53,11 @@ theorem smooth_dsig (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k :=
   exact this
 
 /- English proof (translation)
-Establish `hd : IsUnit g.det` using `Formalism.MainNotions.LowestKTypeMultiplicity.UH_det hg`. Establish `hM : g⁻¹ ∈ GG k r` using `Formalism.MainNotions.LowestKTypeMultiplicity.UH_inv hg`. Establish `hgM : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hd`. Establish `hMg : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hd`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r` using `hM`. Establish `e1 : gᴴ * Hpk k r = Hpk k r * g⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : Hpk k r * g = (g⁻¹)ᴴ * Hpk k r`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hY' : Yᴴ * Hpk k r + Hpk k r * Y = 0` using `hY`. Use `show (g * Y * g⁻¹)ᴴ * Hpk k r + Hpk k r * (g * Y * g⁻¹) = 0`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
-
-Use `_ = 0 := by rw [hY', Matrix.mul_zero, Matrix.zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_conj {g Y : Mat k r} (hg : g ∈ GG k r) (hY : InLieHpk k r Y) :
     InLieHpk k r (g * Y * g⁻¹) := by
@@ -88,13 +86,13 @@ theorem lie_conj {g Y : Mat k r} (hg : g ∈ GG k r) (hY : InLieHpk k r Y) :
     _ = 0 := by rw [hY', Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `hd : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det g).2 (Formalism.MainNotions.LowestKTypeMultiplicity.UH_det hg)`. Establish `hM : g⁻¹ ∈ GG k r` using `Formalism.MainNotions.LowestKTypeMultiplicity.UH_inv hg`. Establish `hMg : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g ((Matrix.isUnit_iff_isUnit_det g).1 hd)`. Establish `h1` using `hasDeriv_dsig hσ hv hY`. Establish `h2` using `((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • (g * Y * g⁻¹))) (σ g v)) = (⇑((σ g).restrictScalars ℝ) ∘ fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Y)) v)`. Use function extensionality and compare the values at `t`. Establish `hx` using `Formalism.MainNotions.LowestKTypeMultiplicity.exp_mem_UH hY t`. Establish `hs : (t : ℂ) • (g * Y * g⁻¹) = g * ((t : ℂ) • Y) * g⁻¹`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, Matrix.exp_conj _ _ hd]`. Simplify using `only [Function.comp, ContinuousLinearMap.coe_restrictScalars']`. Establish `hc : g * NormedSpace.exp ((t : ℂ) • Y) ∈ GG k r` using `gg_mul hg hx`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (gg_mul hc hM) g hg, ← ContinuousLinearMap.comp_apply, ← hσ.1.2 g hg _ hx]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mul_assoc, hMg, Matrix.mul_one]`. Use `show _ = deriv _ 0`. Rewrite using `[e, h2.deriv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dsig_conj (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k := k) (r := r) σ v)
     {Y : Mat k r} (hY : InLieHpk k r Y) {g : Mat k r} (hg : g ∈ GG k r) :
@@ -122,9 +120,9 @@ theorem dsig_conj (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k := k
   rfl
 
 /- English proof (translation)
-Introduce `Ys`. Proceed by induction on `Ys with`. Consider the case `nil => intro _`. Conclude with `hv`. Consider the case `cons Y Ys ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `smooth_dsig hσ (ih fun X hX => h X (List.mem_cons_of_mem _ hX)) (h Y List.mem_cons_self)`.
+A detailed English derivation is pending.
 -/
 theorem smooth_dsigW (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k := k) (r := r) σ v) :
     ∀ Ys : List (Mat k r), (∀ Y ∈ Ys, InLieHpk k r Y) → IsSmoothVec (k := k) (r := r) σ (dsigW σ Ys v) := by
@@ -136,9 +134,9 @@ theorem smooth_dsigW (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k :
     exact smooth_dsig hσ (ih fun X hX => h X (List.mem_cons_of_mem _ hX)) (h Y List.mem_cons_self)
 
 /- English proof (translation)
-Introduce `Ys`. Proceed by induction on `Ys with`. Consider the case `nil => intro _`. Both sides reduce to the same expression. Consider the case `cons Y Ys ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `h`. Establish `h' : ∀ X ∈ Ys, InLieHpk k r X` using `fun X hX => h X (List.mem_cons_of_mem _ hX)`. Use `show σ g (dsig σ Y (dsigW σ Ys v)) = dsig σ (g * Y * g⁻¹) (dsigW σ (Ys.map fun Y => g * Y * g⁻¹) (σ g v))`. Rewrite using `[dsig_conj hσ (smooth_dsigW hσ hv Ys h') (h Y List.mem_cons_self) hg, ih h']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsigW_conj (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k := k) (r := r) σ v)
     {g : Mat k r} (hg : g ∈ GG k r) :
@@ -154,13 +152,13 @@ theorem dsigW_conj (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec (k := 
     rw [dsig_conj hσ (smooth_dsigW hσ hv Ys h') (h Y List.mem_cons_self) hg, ih h']
 
 /- English proof (translation)
-Simplify using `[dsig]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dsig_zero (Y : Mat k r) : dsig σ Y (0 : H) = 0 := by
   simp [dsig]
 
 /- English proof (translation)
-Establish `h` using `(hasDeriv_dsig hσ ha hY).add (hasDeriv_dsig hσ hb hY)`. Use `show deriv _ 0 = _`. Simplify using `only [map_add]`. Conclude with `h.deriv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dsig_add (hσ : IsURepOn (GG k r) σ) {a b : H} (ha : IsSmoothVec (k := k) (r := r) σ a)
     (hb : IsSmoothVec (k := k) (r := r) σ b) {Y : Mat k r} (hY : InLieHpk k r Y) :
@@ -171,7 +169,7 @@ theorem dsig_add (hσ : IsURepOn (GG k r) σ) {a b : H} (ha : IsSmoothVec (k := 
   exact h.deriv
 
 /- English proof (translation)
-Establish `h` using `(hasDeriv_dsig hσ ha hY).const_smul c`. Use `show deriv _ 0 = _`. Simplify using `only [map_smul]`. Conclude with `h.deriv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dsig_smul (hσ : IsURepOn (GG k r) σ) {a : H} (ha : IsSmoothVec (k := k) (r := r) σ a)
     (c : ℂ) {Y : Mat k r} (hY : InLieHpk k r Y) :
@@ -182,7 +180,7 @@ theorem dsig_smul (hσ : IsURepOn (GG k r) σ) {a : H} (ha : IsSmoothVec (k := k
   exact h.deriv
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Use `show σ g (σ h w) ∈ DD σ w`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 g hg h hh]`. Conclude with `mem_DD σ w (gg_mul hg hh)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DD_stable (hσ : IsURepOn (GG k r) σ) (w : H) {g : Mat k r} (hg : g ∈ GG k r) :
     DD σ w ≤ (DD σ w).comap (σ g : H →ₗ[ℂ] H) := by
@@ -193,18 +191,16 @@ theorem DD_stable (hσ : IsURepOn (GG k r) σ) (w : H) {g : Mat k r} (hg : g ∈
   exact mem_DD σ w (gg_mul hg hh)
 
 /- English proof (translation)
-Use `mem_DD σ w (gg_one (k := k) (r := r))` as an intermediate fact. Rewrite `this` using `[hσ.1.1, ContinuousLinearMap.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_DD_self (hσ : IsURepOn (GG k r) σ) (w : H) : w ∈ DD σ w := by
   have := mem_DD σ w (gg_one (k := k) (r := r))
   rwa [hσ.1.1, ContinuousLinearMap.one_apply] at this
 
 /- English proof (translation)
-Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top]`. Establish `hst : ∀ g ∈ GG k r, ∀ v ∈ (DD σ w).topologicalClosure, σ g v ∈ (DD σ w).topologicalClosure`. Introduce `g hg v hv`. Establish `hle : (DD σ w).topologicalClosure ≤ ((DD σ w).topologicalClosure).comap (σ g : H →ₗ[ℂ] H)`. Use `Submodule.topologicalClosure_minimal _ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(DD_stable hσ w hg).trans (Submodule.comap_mono (DD σ w).le_topologicalClosure)`. Conclude with `(DD σ w).isClosed_topologicalClosure.preimage (σ g).continuous`. Conclude with `hle hv`. Break down `hirr (DD σ w).topologicalClosure (DD σ w).isClosed_topologicalClosure hst with h | h` into its components or cases. It suffices to derive a contradiction.
-
-Establish `h1 : w ∈ (DD σ w).topologicalClosure` using `(DD σ w).le_topologicalClosure (mem_DD_self hσ w)`. Rewrite `h1` using `[h, Submodule.mem_bot]`. Conclude with `hw h1`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DD_dense (hσ : IsURepOn (GG k r) σ) (hirr : IsIrredOn (GG k r) σ) {w : H} (hw : w ≠ 0) :
     Dense (DD σ w : Set H) := by
@@ -224,7 +220,7 @@ theorem DD_dense (hσ : IsURepOn (GG k r) σ) (hirr : IsIrredOn (GG k r) σ) {w 
   · exact h
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `Submodule.subset_span ⟨[], g, by simp, hg, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem DD_le_Vinf (w : H) : DD σ w ≤ Vinf σ w := by
   refine Submodule.span_le.2 ?_
@@ -232,9 +228,9 @@ theorem DD_le_Vinf (w : H) : DD σ w ≤ Vinf σ w := by
   exact Submodule.subset_span ⟨[], g, by simp, hg, rfl⟩
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨Ys, g, hYs, hg, rfl⟩` from `hx`. Conclude with `smooth_dsigW hσ (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hw hg) Ys hYs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact Formalism.MainNotions.LowestKTypeMultiplicity.smooth_zero`. Consider the case `add x y _ _ hx hy => exact Formalism.MainNotions.LowestKTypeMultiplicity.smooth_add hx hy`. Consider the case `smul a x _ hx => exact Formalism.MainNotions.LowestKTypeMultiplicity.smooth_smul a hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Vinf_smooth (hσ : IsURepOn (GG k r) σ) {w : H} (hw : IsSmoothVec (k := k) (r := r) σ w) :
     ∀ v ∈ Vinf σ w, IsSmoothVec (k := k) (r := r) σ v := by
@@ -248,9 +244,9 @@ theorem Vinf_smooth (hσ : IsURepOn (GG k r) σ) {w : H} (hw : IsSmoothVec (k :=
   | smul a x _ hx => exact Formalism.MainNotions.LowestKTypeMultiplicity.smooth_smul a hx
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Ys, h, hYs, hh, rfl⟩`. Use `show σ g (dsigW σ Ys (σ h w)) ∈ Vinf σ w`. Rewrite using `[dsigW_conj hσ (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hw hh) hg Ys hYs, ← ContinuousLinearMap.comp_apply, ← hσ.1.2 g hg h hh]`. Use `Submodule.subset_span ⟨Ys.map fun Y => g * Y * g⁻¹, g * h, ?_, gg_mul hg hh, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y hY`. Take `⟨X, hX, rfl⟩` from `List.mem_map.1 hY`. Conclude with `lie_conj hg (hYs X hX)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Vinf_stable (hσ : IsURepOn (GG k r) σ) {w : H} (hw : IsSmoothVec (k := k) (r := r) σ w)
     {g : Mat k r} (hg : g ∈ GG k r) : Vinf σ w ≤ (Vinf σ w).comap (σ g : H →ₗ[ℂ] H) := by
@@ -265,13 +261,11 @@ theorem Vinf_stable (hσ : IsURepOn (GG k r) σ) {w : H} (hw : IsSmoothVec (k :=
   exact lie_conj hg (hYs X hX)
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨Ys, g, hYs, hg, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨Y :: Ys, g, ?_, hg, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X hX`. Break down `List.mem_cons.1 hX with rfl | hX` into its components or cases. Conclude with `hY`. Conclude with `hYs X hX`. Consider the case `zero => rw [dsig_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Vinf σ w).zero_mem`. Consider the case `add x y hx hy ihx ihy`. Rewrite using `[dsig_add hσ (Vinf_smooth hσ hw x hx) (Vinf_smooth hσ hw y hy) hY]`. Conclude with `(Vinf σ w).add_mem ihx ihy`. Consider the case `smul a x hx ihx`.
-
-Rewrite using `[dsig_smul hσ (Vinf_smooth hσ hw x hx) a hY]`. Conclude with `(Vinf σ w).smul_mem a ihx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Vinf_dsig (hσ : IsURepOn (GG k r) σ) {w : H} (hw : IsSmoothVec (k := k) (r := r) σ w)
     {Y : Mat k r} (hY : InLieHpk k r Y) : ∀ v ∈ Vinf σ w, dsig σ Y v ∈ Vinf σ w := by
@@ -293,7 +287,7 @@ theorem Vinf_dsig (hσ : IsURepOn (GG k r) σ) {w : H} (hw : IsSmoothVec (k := k
     exact (Vinf σ w).smul_mem a ihx
 
 /- English proof (translation)
-Introduce `k r H _ _ _ σ w hσ`. Use `⟨fun g hg v hv => DD_stable hσ w hg hv, fun hirr hw => DD_dense hσ hirr hw, DD_le_Vinf w, fun v hv => ⟨fun g hg => Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hv hg, fun Y hY => ⟨smooth_dsig hσ hv hY, fun g hg => ⟨lie_conj hg hY, dsig_conj hσ hv hY hg⟩⟩⟩, fun hw …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem DD_stable_dense : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Mat k r → (H →L[ℂ] H)) (w : H), IsURepOn (GG k r) σ →

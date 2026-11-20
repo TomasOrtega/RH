@@ -15,7 +15,7 @@ def LateralTheory.EtaleFoundations.gen_conn_surj : Prop :=
 namespace LateralTheory.EtaleFoundations.GenConn
 
 /- English proof (translation)
-Use `show Submodule.Quotient.mk (Finsupp.mapDomain _ (Finsupp.single ζ 1)) = _`. Use `erw [Finsupp.mapDomain_single]`.
+A detailed English derivation is pending.
 -/
 theorem twF_map_mk {q : ℕ} (i : ℤ) {B C : CommRingCat.{0}} (f : B ⟶ C) (ζ : Prim q B) :
     ((twF q i).map f).hom (Submodule.Quotient.mk (Finsupp.single ζ 1)) =
@@ -24,13 +24,11 @@ theorem twF_map_mk {q : ℕ} (i : ℤ) {B C : CommRingCat.{0}} (f : B ⟶ C) (ζ
   erw [Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Introduce `c1 c2 hc`. Simplify using `only at hc`. Set `φ` to `((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op U)).hom`. Set `m : (Scheme.Γ ⋙ twF q i).obj (op U)` to `Submodule.Quotient.mk (Finsupp.single ζ 1)`. Establish `hsec : φ (c1.val • m - c2.val • m) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_nsmul, map_nsmul]`. Conclude with `sub_eq_zero.2 hc`. Take `⟨u⟩` from `(inferInstance : Nonempty U)`. Take `⟨V, j, v, -, -, -, hV⟩` from `LateralTheory.EtaleFoundations.OfRingsLoc.loc_inj (twF q i) (c1.val • m - c2.val • m) hsec u`. Set `ψ` to `((twF q i).map j.appTop).hom`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hV2 : ψ (c1.val • m) = ψ (c2.val • m)` using `sub_eq_zero.1 ((ψ.map_sub _ _).symm.trans hV)`. Use `erw [map_nsmul, map_nsmul] at hV2`. Establish `hm : ψ m = Submodule.Quotient.mk (Finsupp.single (ζ.map j.appTop.hom) 1)` using `twF_map_mk i j.appTop ζ`. Rewrite `hV2` using `[hm]`. Use `haveI : Nonempty (⊤ : V.Opens) := ⟨⟨v, trivial⟩⟩`.
-
-Use `haveI : Nontrivial Γ(V, ⊤) := AlgebraicGeometry.Scheme.component_nontrivial V ⊤`. Conclude with `h q Γ(V, ⊤) inferInstance i (ζ.map j.appTop.hom) hV2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_of (h : LateralTheory.EtaleFoundations.twF_gen_inj) (q : ℕ) [NeZero q] (U : Scheme.{0}) [Nonempty U] (i : ℤ)
     (ζ : Prim q Γ(U, ⊤)) : Function.Injective (fun c : ZMod q => c.val • twGen i ζ) := by

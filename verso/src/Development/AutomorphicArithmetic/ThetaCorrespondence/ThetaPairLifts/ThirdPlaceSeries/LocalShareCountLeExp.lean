@@ -29,15 +29,15 @@ open Formalism.MainNotions.ArithmeticCylinders (admLq TieAdmG eUk eJk locShare g
 open Formalism.L2.GlobalTheoryTheory.ConcN (Wg SizesRec SizesAt weight_numbers_bound)
 open Formalism.L2.GlobalTheoryTheory.ConcNWeight (RangeW rangeW_of_sizes)
 /- English proof (translation)
-Introduce `_hP hG`. Use `⟨1 / 52, by norm_num, fun eps he he1 => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, le_rfl, ?_⟩⟩⟩` and prove the remaining obligations. Establish `hez : 0 < Fm.ez` using `div_pos he (lt_of_lt_of_le one_pos Fm.toFamCore.one_le_J)`. Establish `hez1 : Fm.ez ≤ 1` using `le_trans (div_le_self he.le Fm.toFamCore.one_le_J) (by linarith)`. Take `⟨a, ha⟩` from `wg_sum_le Fm.ez hez hez1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨max (max a (Fm.x1 + 1)) (max 4 ((3 / 2 : ℝ) ^ (1 / Fm.ez))), fun x hx hle ι p hp _ => ?_⟩` and prove the remaining obligations. Establish `hx4 : 4 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hle`. Establish `hxa : a ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hle`. Establish `hx1 : (3 / 2 : ℝ) ^ (1 / Fm.ez) ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hle`. Establish `hxe : 3 / 2 ≤ x ^ Fm.ez`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 ≤ (3 / 2 : ℝ) ^ (1 / Fm.ez)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul (by norm_num), one_div_mul_cancel hez.ne', Real.rpow_one]`. Use `_ ≤ x ^ Fm.ez := Real.rpow_le_rpow hpos hx1 hez.le`. Establish `hS` using `sizesRec_at_point Fm hx hx4 ι (le_refl (6 : ℝ))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `rangeW_of_sizes hS hxe`. Establish `hL` using `GlobalTheory.GLq.lemmaL_series_weights_of_greenCuspidalParametrisation hG _ hp.2.2`. Simplify using `only`. Rewrite using `[Fm.L_x x ι hx, Fm.toFamCore.L_ez x ι]`. Establish `hψ` using `stdAddChar_ne_one (Fm.D x ι)`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => @ZMod.stdAddChar _ ⟨((Fm.D x ι).host.g_prime k).ne_zero⟩, hψ, fun S hS' => ?_⟩` and prove the remaining obligations. Establish `h0` using `locShare_eUk_le_Wg hL (tieAdmG_rec _) hR _ hψ 0 (S 0) (hS' 0)`. Establish `h1` using `locShare_eUk_le_Wg hL (tieAdmG_rec _) hR _ hψ 1 (S 1) (hS' 1)`. Establish `h2` using `ha x hxa _ hS`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem local_share_count_le_exp_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GreenCuspidal → _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι _ _ _ _ => ∃ ψ₀ : ∀ k : Fin 2, AddChar (ZMod ((Fm.D x ι).host.g k)) ℂ, (∀ k, ψ₀ k ≠ 1) ∧ ∀ S : ∀ k : Fin 2, Finset (Formalism.MainNotions.ArithmeticCylinders.Tup (Fm.D x ι) k), (∀ k, ∀ t ∈ S k, ¬ Formalism.MainNotions.ArithmeticCylinders.goodAt (Fm.D x ι) k t) → Formalism.MainNotions.ArithmeticCylinders.locShare (Fm.D x ι) (fun k _ => Formalism.MainNotions.ArithmeticCylinders.eUk (Fm.D x ι) k (ψ₀ k)) 0 (S 0) + Formalism.MainNotions.ArithmeticCylinders.locShare (Fm.D x ι) (fun k _ => Formalism.MainNotions.ArithmeticCylinders.eUk (Fm.D x ι) k (ψ₀ k)) 1 (S 1) ≤ Real.exp (-((Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 7))) := by
   intro _hP hG
@@ -80,7 +80,7 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.LocShareNum.local_share_count_le_exp_alt | exact _root_.GlobalTheory.CovTop.LocShareNum.local_share_count_le_exp_alt | (intros; apply _root_.GlobalTheory.CovTop.LocShareNum.local_share_count_le_exp_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.local_share_number_bound_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GreenCuspidal → _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι _ _ _ _ => ∃ ψ₀ : ∀ k : Fin 2, AddChar (ZMod ((Fm.D x ι).host.g k)) ℂ, (∀ k, ψ₀ k ≠ 1) ∧ ∀ S : ∀ k : Fin 2, Finset (Formalism.MainNotions.ArithmeticCylinders.Tup (Fm.D x ι) k), (∀ k, ∀ t ∈ S k, ¬ Formalism.MainNotions.ArithmeticCylinders.goodAt (Fm.D x ι) k t) → Formalism.MainNotions.ArithmeticCylinders.locShare (Fm.D x ι) (fun k _ => Formalism.MainNotions.ArithmeticCylinders.eUk (Fm.D x ι) k (ψ₀ k)) 0 (S 0) + Formalism.MainNotions.ArithmeticCylinders.locShare (Fm.D x ι) (fun k _ => Formalism.MainNotions.ArithmeticCylinders.eUk (Fm.D x ι) k (ψ₀ k)) 1 (S 1) ≤ Real.exp (-((Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 7))) := by
   first | exact @_root_.GlobalTheory.CovTop.LocShareNum.local_share_count_le_exp_alt | exact _root_.GlobalTheory.CovTop.LocShareNum.local_share_count_le_exp_alt | (intros; apply _root_.GlobalTheory.CovTop.LocShareNum.local_share_count_le_exp_alt <;> assumption)

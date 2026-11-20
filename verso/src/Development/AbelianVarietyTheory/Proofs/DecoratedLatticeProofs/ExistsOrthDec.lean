@@ -28,7 +28,7 @@ def orthDecHsum (D : D7) (A L : HSp D) : OrthDec (GlobalTheory.Doubling.hsum A L
   rank_add := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨GlobalTheory.Doubling.hsum A L, orthDecHsum D A L⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_orthDec (D : D7) (A L : HSp D) : Nonempty (Σ V₀ : HSp D, OrthDec V₀ A L) :=
   ⟨⟨GlobalTheory.Doubling.hsum A L, orthDecHsum D A L⟩⟩

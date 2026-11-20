@@ -7,7 +7,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZMir
 
 /- English proof (translation)
-Introduce `k _ _ _ _ H h N x hd`. Conclude with `H h N (fun a => (x a).1) hd (fun a => (x a).2.rep.V) (fun a => (x a).rep) (fun a => (x a).2.rep.smooth)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genericProdIrr_of_genericProdIff :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],

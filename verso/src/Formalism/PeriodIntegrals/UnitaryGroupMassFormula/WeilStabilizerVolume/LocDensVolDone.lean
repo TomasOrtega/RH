@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.Lo
 namespace PI.VolStabW
 
 /- English proof (translation)
-The claim follows from `volAA_of_lift chLift_holds`.
+A detailed English derivation is pending.
 -/
 theorem volAA_holds : VolAA := volAA_of_lift chLift_holds
 

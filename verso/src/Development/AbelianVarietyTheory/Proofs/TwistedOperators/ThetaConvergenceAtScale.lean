@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hP hL _ large₂ _ _ _ _ _ _ _ _ _ _ _ _ hS ch hch CF hsc a u` and use `GlobalTheory.T.theta_convergence_base_choice hP hL large₂ hS ch hch.toIsBase CF hsc a u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaConv_and_isAutFun_thetaChi_of_hidaSetting : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}

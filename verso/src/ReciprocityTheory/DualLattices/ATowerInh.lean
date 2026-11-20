@@ -13,35 +13,35 @@ variable (p : ℕ) [Fact p.Prime]
 abbrev TQ (m : ℕ) := (ZMod p)⟦X⟧ ⧸ Ideal.span {(X : (ZMod p)⟦X⟧) ^ m}
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_top, PowerSeries.isUnit_iff_constantCoeff]`. Simplify using `[zero_pow hm.ne']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma ne_top (m : ℕ) (hm : 0 < m) : Ideal.span {(X : (ZMod p)⟦X⟧) ^ m} ≠ ⊤ := by
   rw [Ne, Ideal.span_singleton_eq_top, PowerSeries.isUnit_iff_constantCoeff]
   simp [zero_pow hm.ne']
 
 /- English proof (translation)
-Rewrite using `[← not_subsingleton_iff_nontrivial, Ideal.Quotient.subsingleton_iff]`. Conclude with `ne_top p m hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nontriv (m : ℕ) (hm : 0 < m) : Nontrivial (TQ p m) := by
   rw [← not_subsingleton_iff_nontrivial, Ideal.Quotient.subsingleton_iff]
   exact ne_top p m hm
 
 /- English proof (translation)
-Use `haveI := nontriv p m hm`. Conclude with `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 lemma isLocal (m : ℕ) (hm : 0 < m) : IsLocalRing (TQ p m) := by
   haveI := nontriv p m hm
   exact IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-The claim follows from `charP_of_injective_algebraMap (algebraMap (ZMod p) A).injective p`.
+A detailed English derivation is pending.
 -/
 lemma charP_of_zmod (A : Type) [CommRing A] [Algebra (ZMod p) A] [Nontrivial A] : CharP A p := charP_of_injective_algebraMap (algebraMap (ZMod p) A).injective p
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Take `⟨c, hc⟩` from `hf (↑ha.unit⁻¹ : S)`. Establish `hker : RingHom.ker f ≤ IsLocalRing.maximalIdeal R` using `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top f)`. Establish `h1 : 1 - a * c ∈ RingHom.ker f`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_sub, map_one, map_mul, hc, IsUnit.mul_val_inv, sub_self]`. Establish `h2 : a * c ∈ IsLocalRing.maximalIdeal R` using `Ideal.mul_mem_right c _ ((IsLocalRing.mem_maximalIdeal a).2 hna)`. Establish `h3` using `Ideal.add_mem _ (hker h1) h2`. Rewrite `h3` using `[sub_add_cancel]`. Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal R).ne_top h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isLocalHom_of_surj {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [Nontrivial S]
     (f : R →+* S) (hf : Function.Surjective f) : IsLocalHom f := by
@@ -59,12 +59,12 @@ lemma isLocalHom_of_surj {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] 
   exact (Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal R).ne_top h3
 
 /- English proof (translation)
-The claim follows from `pow_pos (Fact.out : p.Prime).pos _`.
+A detailed English derivation is pending.
 -/
 lemma pos (n : ℕ) : 0 < p ^ (n + 1) := pow_pos (Fact.out : p.Prime).pos _
 
 /- English proof (translation)
-Use `pos p n` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma pos2 (n : ℕ) : 0 < 2 * p ^ (n + 1) := by
   have := pos p n
@@ -88,7 +88,7 @@ lemma red_mk (m : ℕ) (f : (ZMod p)⟦X⟧) :
     red p m (Ideal.Quotient.mk _ f) = Ideal.Quotient.mk _ f := rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Ideal.Quotient.mk _ f, red_mk p m f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma red_surj (m : ℕ) : Function.Surjective (red p m) := by
   intro y
@@ -96,11 +96,11 @@ lemma red_surj (m : ℕ) : Function.Surjective (red p m) := by
   exact ⟨Ideal.Quotient.mk _ f, red_mk p m f⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `red p m (Ideal.Quotient.mk _ f) = 0 ↔ _`. Rewrite using `[red_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨Ideal.Quotient.mk _ g, map_mul _ _ _⟩`. Introduce and unpack `⟨b, hb⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `hb` using `[← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h1 : X ^ m ∣ f - X ^ m * g` using `(pow_dvd_pow X (by omega : m ≤ 2 * m)).trans hb`. Establish `h2 : (X : (ZMod p)⟦X⟧) ^ m ∣ X ^ m * g` using `dvd_mul_right _ _`. Simplify using `using dvd_add h1 h2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma red_ker (m : ℕ) : RingHom.ker (red p m) =
     Ideal.span {(Ideal.Quotient.mk (Ideal.span {(X : (ZMod p)⟦X⟧) ^ (2 * m)}) (X ^ m))} := by
@@ -121,9 +121,9 @@ lemma red_ker (m : ℕ) : RingHom.ker (red p m) =
     simpa using dvd_add h1 h2
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Rewrite using `[Ideal.mem_span_singleton]`. Establish `h : (X : (ZMod p)⟦X⟧) ^ m ∣ f`. Rewrite `ha` using `[two_mul, pow_add]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_dvd_mul_iff_right (pow_ne_zero m PowerSeries.X_ne_zero)).1 ha`. Take `⟨g, rfl⟩` from `h`. Conclude with `⟨Ideal.Quotient.mk _ g, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma red_ann (m : ℕ) (a : TQ p (2 * m))
     (ha : a * Ideal.Quotient.mk (Ideal.span {(X : (ZMod p)⟦X⟧) ^ (2 * m)}) (X ^ m) = 0) :
@@ -138,9 +138,9 @@ lemma red_ann (m : ℕ) (a : TQ p (2 * m))
   exact ⟨Ideal.Quotient.mk _ g, map_mul _ _ _⟩
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[zero_add, pow_one]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Establish `h1 : p ^ (k + 1) * 2 ≤ p ^ (k + 1) * p` using `Nat.mul_le_mul_left _ hp`. Rewrite using `[pow_succ p (k + 1)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma lt_pow_succ (j : ℕ) (hp : 2 ≤ p) : j < p ^ (j + 1) := by
   induction j with
@@ -153,7 +153,7 @@ lemma lt_pow_succ (j : ℕ) (hp : 2 ≤ p) : j < p ^ (j + 1) := by
     omega
 
 /- English proof (translation)
-Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem, ← pow_add, ← two_mul]`. Conclude with `Ideal.subset_span (Set.mem_singleton _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma xi_sq (m : ℕ) : Ideal.Quotient.mk (Ideal.span {(X : (ZMod p)⟦X⟧) ^ (2 * m)}) (X ^ m) *
     Ideal.Quotient.mk (Ideal.span {(X : (ZMod p)⟦X⟧) ^ (2 * m)}) (X ^ m) = 0 := by
@@ -161,7 +161,7 @@ lemma xi_sq (m : ℕ) : Ideal.Quotient.mk (Ideal.span {(X : (ZMod p)⟦X⟧) ^ (
   exact Ideal.subset_span (Set.mem_singleton _)
 
 /- English proof (translation)
-Use `haveI := nontriv p m hm`. Use `haveI := charP_of_zmod p (TQ p m)`. Rewrite using `[Nat.cast_pow, CharP.cast_eq_zero, zero_pow hk.ne']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma char_lemma (m k : ℕ) (hm : 0 < m) (hk : 0 < k) : ((p ^ k : ℕ) : TQ p m) = 0 := by
   haveI := nontriv p m hm
@@ -169,7 +169,7 @@ lemma char_lemma (m k : ℕ) (hm : 0 < m) (hk : 0 < k) : ((p ^ k : ℕ) : TQ p m
   rw [Nat.cast_pow, CharP.cast_eq_zero, zero_pow hk.ne']
 
 /- English proof (translation)
-Use extensionality with `j`. Establish `h` using `ha j`. Rewrite `h` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`. Simplify using `using h j (lt_pow_succ p j (Fact.out : p.Prime).two_le)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma sep_lemma (a : (ZMod p)⟦X⟧)
     (ha : ∀ n : ℕ, Ideal.Quotient.mk (Ideal.span {(X : (ZMod p)⟦X⟧) ^ p ^ (n + 1)}) a = 0) :
@@ -180,7 +180,7 @@ lemma sep_lemma (a : (ZMod p)⟦X⟧)
   simpa using h j (lt_pow_succ p j (Fact.out : p.Prime).two_le)
 
 /- English proof (translation)
-Use `haveI := nontriv p m hm`. Use `haveI := charP_of_zmod p (TQ p m)`. Use `haveI : ExpChar (TQ p m) p := ExpChar.prime (Fact.out : p.Prime)`. Rewrite using `[map_add, map_one, add_pow_char_pow, one_pow, one_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma frob_lemma (m k : ℕ) (hm : 0 < m) :
     (Ideal.Quotient.mk (Ideal.span {(X : (ZMod p)⟦X⟧) ^ m}) (1 + X)) ^ p ^ k =
@@ -225,12 +225,12 @@ def toyTower (p : ℕ) [Fact p.Prime] : ATower (ZMod p) p where
   ζ_spec n := rfl
 
 /- English proof (translation)
-The claim follows from `(show (1 : (ZMod p)⟦X⟧) ≠ 0 from one_ne_zero)`.
+A detailed English derivation is pending.
 -/
 lemma toyTower_c_ne_zero (p : ℕ) [Fact p.Prime] : (toyTower p).c ≠ 0 := (show (1 : (ZMod p)⟦X⟧) ≠ 0 from one_ne_zero)
 
 /- English proof (translation)
-The claim follows from `(inferInstance : IsDomain (ZMod p)⟦X⟧)`.
+A detailed English derivation is pending.
 -/
 theorem toyTower_isDomain (p : ℕ) [Fact p.Prime] : IsDomain ((toyTower p).O : Type) := (inferInstance : IsDomain (ZMod p)⟦X⟧)
 

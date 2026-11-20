@@ -13,11 +13,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Establish `h1 : Filter.Tendsto (fun n : ℕ => (i k) ^ n) Filter.atTop (nhds 0)`. Use `(hi.tendsto 0).comp (tendsto_pow_atTop_nhds_zero_of_norm_lt_one hk)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `h2 : {y : w.adicCompletion E | Valued.v y < 1} ∈ nhds (0 : w.adicCompletion E)`. Establish `: IsOpen {y : w.adicCompletion E | Valued.v y < 1}`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Valued.isOpen_ball (w.adicCompletion E) 1`. Conclude with `this.mem_nhds (by simp)`. Take `⟨n, hn⟩` from `(h1.eventually h2).exists`. Simplify using `only [map_pow] at hn`. Assume the negation of the conclusion as `hc`.
-
-Conclude with `absurd hn (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem v_lt_one (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) {k : ℚ_[g]} (hk : ‖k‖ < 1) :
     Valued.v (i k) < 1 := by
@@ -34,35 +32,31 @@ theorem v_lt_one (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) {k :
   exact absurd hn (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))
 
 /- English proof (translation)
-Establish `h2 : rc (cls (GlobalTheory.SmGL.IrrRep.det (Fin 1) χ hχ)) = _` using `hl.one χ hχ`. Rewrite using `[h2]`. Use `⟨by rw [WD.lpOfChar, WD.monodromyZero_ofWeilDeligneRepClass_iff]; rfl, fun t x z hz hv => ?_⟩` and prove the remaining obligations. Establish `e0 : AlgEquiv.restrictScalars E (t : G E Ω) = (t : G E Ω)` using `rfl`. Rewrite using `[e0, WD.inePol_of_mem_Ine _ t.2, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-It suffices to establish `H : χ (a (ineIncl h t)) = θ z by simp [← H]`. Use `set u := a (ineIncl h t)`. Establish `hval : ∀ y : 𝓞 E, Valued.v (algebraMap E (w.adicCompletion E) (y : E)) < 1 ↔ red y = 0` using `fun y => by`. Rewrite using `[← RingHom.mem_ker, hker, ← w.valuation_lt_one_iff_mem (K := E) y]`. Rewrite using `[show Valued.v (algebraMap E (w.adicCompletion E) (y : E)) = w.valuation E (y : E) from HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _]`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set m : ℕ := (z : ZMod g).val with hm`. Establish `hmz : ((m : ℕ) : ZMod g) = z` using `by simp [hm]`. Establish `h3 : Valued.v ((u : w.adicCompletion E) - (m : w.adicCompletion E)) < 1`. Establish `h4` using `(hval (x - m)).2 (by simp [hz, hmz])`. Establish `: (u : w.adicCompletion E) - (m : w.adicCompletion E) = ((u : w.adicCompletion E) - algebraMap E (w.adicCompletion E) (x : E)) + algebraMap E (w.adicCompletion E) ((x - m : 𝓞 E) : E)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Valuation.map_add_lt _ hv h4`. Establish `h5 : ‖i.symm u - (m : ℚ_[g])‖ < 1`. Assume the negation of the conclusion as `hc`. Break down `(not_lt.1 hc).eq_or_lt with e | e` into its components or cases.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `k : ℤ_[g]` to `⟨_, e.ge⟩`. Take `⟨r, hr⟩ : ∃ r : ℕ, (r : ZMod g) = PadicInt.toZMod k` from `⟨_, ZMod.natCast_zmod_val _⟩`. Establish `hk : ‖((k - r : ℤ_[g]) : ℚ_[g])‖ < 1`. Establish `: k - r ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by simp [RingHom.mem_ker, hr]`. Rewrite `this` using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `h6` using `v_lt_one i hi hk`. Establish `h7 : i ((k - r : ℤ_[g]) : ℚ_[g]) = ((u : w.adicCompletion E) - m) - r`. Rewrite using `[PadicInt.coe_sub]`. Simplify using `[k]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h6` using `[h7]`. Establish `h8 : Valued.v (r : w.adicCompletion E) < 1`. Use `Valuation.map_sub_lt _ h3 h6` as an intermediate fact. Simplify using `using this`. Establish `h9` using `(hval r).1 (by simpa using h8)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : k ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by simpa [RingHom.mem_ker, hr] using h9`. Rewrite `h10` using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `absurd e.symm (ne_of_lt h10)`. Establish `h0 : i.symm u - (m : ℚ_[g]) ≠ 0` using `by intro e0; rw [e0] at e; norm_num at e`. Establish `h6` using `v_lt_one i hi (k := (i.symm u - (m : ℚ_[g]))⁻¹) (by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h7 : Valued.v (i (i.symm u - (m : ℚ_[g]))) < 1` using `by simpa using h3`. Establish `h8` using `mul_lt_one_of_nonneg_of_lt_one_left zero_le' h7 h6.le`. Rewrite `h8` using `[← map_mul, ← map_mul, mul_inv_cancel₀ h0]`. Simplify using `at h8`. Establish `hle : ‖i.symm u‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Padic.nonarchimedean (i.symm u - (m : ℚ_[g])) (m : ℚ_[g])` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le h5.le (by exact_mod_cast Padic.norm_int_le_one (p := g) (m : ℤ)))`. Set `k : ℤ_[g]` to `⟨_, hle⟩`. Establish `hk : PadicInt.toZMod k = z`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: k - m ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `h5`. Rewrite `this` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Simplify `this` using `[hmz]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hku : IsUnit k`. Assume the negation of the conclusion as `hc`. Establish `: k ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by rw [PadicInt.ker_toZMod]; exact hc`. Conclude with `z.ne_zero (hk ▸ this)`. Take `⟨φ, hφ, hφ'⟩` from `hI`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `κ : GL (Fin 1) ℤ_[g]` to `Matrix.GeneralLinearGroup.scalar (Fin 1) hku.unit`. Establish `e1 : Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.red g 1 κ) = z` using `by ext; simp [GlobalTheory.GLp.red, κ, Matrix.GeneralLinearGroup.scalar, hk]`. Establish `e2 : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 κ)) = u` using `by ext; simp [GlobalTheory.GLp.inc, κ, Matrix.GeneralLinearGroup.scalar]; exact congrArg _ (i.apply_symm_apply _)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv0⟩ : ∃ v, φ v ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
-
-Use `push_neg at hc`. Conclude with `hφ (LinearMap.ext hc)`. Establish `e3` using `hφ' κ v`. Express the relevant statement in the definitionally equal form `φ (((θ (Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.red g 1 κ)) : ℂˣ) : ℂ) • v) = ((χ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 κ))) : ℂˣ) : ℂ) • φ v at e3`. Rewrite `e3` using `[e1, e2, map_smul]`.
-
-Conclude with `Units.ext (smul_left_injective ℂ hv0 e3).symm`.
+A detailed English derivation is pending.
 -/
 theorem rank_one {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {ε : EpsFamily A} {rc : IrrGL (w.adicCompletion E) → WD h} (hl : Laws a ha ε rc)
@@ -151,11 +145,11 @@ theorem rank_one {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a
   exact Units.ext (smul_left_injective ℂ hv0 e3).symm
 
 /- English proof (translation)
-Use `⟨fun i j hi hj _ => by omega, ⟨one_pos, ?_, fun a h1 h2 => by omega⟩, fun y _ z hz => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.Published.GreenModel.isIrr_hom ((Units.coeHom ℂ).comp (θ.comp (Matrix.GeneralLinearGroup.det (n := Fin 1) (R := ZMod g))))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Conclude with `tauOne_character θ y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hcp : (y : Mt g 1).charpoly = X - C ((y : Mt g 1) 0 0)`. Simplify using `[Matrix.charpoly, Matrix.det_fin_one]`. Rewrite `hz` using `[hcp]`. Establish `: Matrix.GeneralLinearGroup.det y = z` using `Units.ext (by`. Simplify using `only [map_sub, aeval_X, aeval_C] at hz`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (sub_eq_zero.1 hz).symm)`. Rewrite using `[tauOne_character, this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tauOne_hyp (θ : (ZMod g)ˣ →* ℂˣ) : IsRegularChar g 1 θ ∧ IsCusp (tauOne θ).character ∧
     ∀ y : Gn g 1, Irreducible (y : Mt g 1).charpoly → ∀ z : (ZMod g)ˣ, aeval (z : ZMod g) (y : Mt g 1).charpoly = 0 →
@@ -175,7 +169,7 @@ theorem tauOne_hyp (θ : (ZMod g)ˣ →* ℂˣ) : IsRegularChar g 1 θ ∧ IsCus
     rw [tauOne_character, this]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨p.2⟩ ∃ (w : HeightOneSpectrum (𝓞 ℚ)) (A : ValuationSubring Ω) (h : IsPlaceOver (F := ℚ) A w) (rc : IrrGL (w.adicCompletion ℚ) → WD h) (i : ℚ_[p.1] ≃+* w.adicCompletion ℚ) (a : Weil h →* (w.adicCompletion ℚ)ˣ) (red : 𝓞 ℚ →+* ZMod p.1), IsRec h rc ∧ Continuous i ∧ ((p.1 : ℕ) : 𝓞 ℚ …`.
+Supply the required witnesses or components.
 -/
 theorem hyp_exist (hL : LocalLanglandsGL) (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (p : Nat.Primes) : haveI : Fact p.1.Prime := ⟨p.2⟩
     ∃ (w : HeightOneSpectrum (𝓞 ℚ)) (A : ValuationSubring Ω) (h : IsPlaceOver (F := ℚ) A w)
@@ -215,7 +209,7 @@ theorem hyp_exist (hL : LocalLanglandsGL) (Ω : Type) [Field Ω] [Algebra ℚ Ω
     exact ⟨_, inflates_one _ θ χ hχ hθ⟩
 
 /- English proof (translation)
-The claim follows from `H E E Ω g A w h w h rc hr i hi 1 one_pos h1 h2 a ha (ZMod g) red hs hker θ (tauOne_hyp θ).1 _ (tauOne_hyp θ).2.1 (tauOne_hyp θ).2.2 σ hI`.
+A detailed English derivation is pending.
 -/
 theorem apply_one (H : DepthZeroTypeInertia) {rc : IrrGL (w.adicCompletion E) → WD h} (hr : IsRec h rc)
     (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) (h1 : ((g : ℕ) : 𝓞 E) ∉ w.asIdeal ^ 2) (h2 : normV w = g ^ 1)
@@ -232,7 +226,7 @@ theorem apply_one (H : DepthZeroTypeInertia) {rc : IrrGL (w.adicCompletion E) �
     (tauOne_hyp θ).2.2 σ hI
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨t.2.1, t.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem restrict_mem {E' : Type} [Field E'] [NumberField E'] [Algebra E E'] [Algebra E' Ω] [IsScalarTower E E' Ω]
     (t : Ine (F := E') A) : AlgEquiv.restrictScalars E (t : G E' Ω) ∈ Ine (F := E) A := ⟨t.2.1, t.2.2⟩

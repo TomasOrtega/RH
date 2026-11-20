@@ -12,7 +12,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Unfold `locU at hx ⊢`. Rewrite using `[h]`. Conclude with `hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem locU_congr {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w u : Plc L}
     (h : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) {x : UA L n} (hx : x ∈ locU n w) : x ∈ locU n u := by
@@ -21,7 +21,7 @@ private theorem locU_congr {L : Type} [Field L] [NumberField L] [IsCMField L] {n
   exact hx
 
 /- English proof (translation)
-Distinguish the cases in `h : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Conclude with `Or.inl (GlobalTheory.DefU.LocRet.localProj_unitaryAdelicLocalRetractionEnd_of_under_eq h x)`. Conclude with `Or.inr (GlobalTheory.DefU.LocRet.localProj_unitaryAdelicLocalRetractionEnd_of_under_ne h x)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 private theorem local_retraction_component_cases {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (w u : Plc L) (x : UA L n) :
     cLoc u (GlobalTheory.DefU.LocRet.ret0 w n x) = cLoc u x ∨ cLoc u (GlobalTheory.DefU.LocRet.ret0 w n x) = 1 := by
@@ -30,7 +30,7 @@ private theorem local_retraction_component_cases {L : Type} [Field L] [NumberFie
   · exact Or.inr (GlobalTheory.DefU.LocRet.localProj_unitaryAdelicLocalRetractionEnd_of_under_ne h x)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases local_retraction_component_cases w u x with h | h <;> rw [h]`. Conclude with `hx`. Conclude with `one_mem _`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem local_retraction_mem_comap {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (w u : Plc L) (x : UA L n)
     {H : Subgroup (GL (Fin n) (u.adicCompletion L))} (hx : cLoc u x ∈ H) : cLoc u (GlobalTheory.DefU.LocRet.ret0 w n x) ∈ H := by
@@ -39,16 +39,16 @@ private theorem local_retraction_mem_comap {L : Type} [Field L] [NumberField L] 
   · exact one_mem _
 
 /- English proof (translation)
-The claim follows from `(local_retraction_component_cases w u x).elim (fun h => h.trans hx) id`.
+A detailed English derivation is pending.
 -/
 private theorem local_retraction_eq_one {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (w u : Plc L) (x : UA L n)
     (hx : cLoc u x = 1) : cLoc u (GlobalTheory.DefU.LocRet.ret0 w n x) = 1 :=
   (local_retraction_component_cases w u x).elim (fun h => h.trans hx) id
 
 /- English proof (translation)
-Introduce `h0`. Set `S : Subrepresentation ρ` to `⟨LinearMap.ker f, fun g y hy => by`. Take `⟨x, rfl⟩` from `hp g`. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[he, hy, map_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `hρ.eq_bot_or_eq_top S with h | h` into its components or cases. Establish `h1 : LinearMap.ker f = ⊥` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `hv (by simpa [h1] using (LinearMap.mem_ker.2 h0))`. Establish `h1 : LinearMap.ker f = ⊤` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `hf (LinearMap.ker_eq_top.1 h1)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ne_zero_of_irr {G H W M : Type} [Group G] [Group H] [AddCommGroup W] [Module ℂ W] [AddCommGroup M] [Module ℂ M]
     (p : G →* H) (hp : Function.Surjective p) (ρ : Representation ℂ H W) (hρ : ρ.IsIrreducible) (R : G → M →ₗ[ℂ] M)
@@ -65,21 +65,19 @@ private theorem ne_zero_of_irr {G H W M : Type} [Group G] [Group H] [AddCommGrou
     exact hf (LinearMap.ker_eq_top.1 h1)
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q σ hσ hun hτ`. Take `⟨hund, hspl⟩` from `UpperTheory.under_chosen_place_and_isSplitAt_of_decomp_le l L Ω s`. Establish `hsplit : ∀ w : Plc L, w.under (𝓞 (Lp L)) ∈ V.S' → IsSplitAt w` using `fun w hw => hspl w (V.split _ hw)`. Set `K : Subgroup (UA L n)` to `{ carrier := {k | k ∈ GlobalTheory.UnitaryBC.finU L n ∧ (∀ u : Plc L, u.under (𝓞 (Lp L)) ∉ V.S' → cLoc u k ∈ KO (u.adicCompletion L) (Fin n)) ∧ cLoc (s.w s.v0) k ∈ Kc _ n 1 ∧ (∀ v : V.frame.Vl, cLoc (s.w v.1) k = 1) ∧ (∀ u : s.St, cLoc (s.w u) k = 1) ∧ (∀ q : Q.Q, cLoc (Q.wq q) k …`. Establish `hKO : ∀ u : Plc L, KO (u.adicCompletion L) (Fin n) = GlobalTheory.LFun.KGL u n` using `fun u => GlobalTheory.SmGL.SphCompletion.KO_completion u n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : ((fun w : Plc L => w.under (𝓞 (Lp L))) ⁻¹' V.S').Finite`. Use `V.fin.preimage' fun v _ => ?_` and prove the remaining obligations. Use `v.isMaximal` as an intermediate fact. Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 L)).preimage (f := fun w : Plc L => w.asIdeal) (fun a _ b _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`. Establish `key` using `UpperTheory.exists_fixed_vector_of_local_fixed_vectors L n σ hσ K (fun k hk => hk.1) (fun w k hk => ⟨(Subgroup.mem_inf.1 (GlobalTheory.DefU.LocRet.unitaryAdelicLocalRetractionEnd_mem_localPoints k)).1, fun u hu => local_retraction_mem_comap w u k (hk.2.1 u hu), local_retraction_m …`. Take `⟨φ, h1, h2, h3⟩` from `key`. Conclude with `⟨φ, h1, h2, fun k a b c d e f => h3 k ⟨a, b, c, d, e, f⟩⟩`. Introduce `w`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htriv : ∀ u : Plc L, u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L)) → w.under (𝓞 (Lp L)) ∈ V.S' → (∀ k ∈ K, cLoc u k = 1) → ∃ φ ∈ σ, φ ≠ 0 ∧ ∀ k ∈ K, k ∈ locU n w → RU L n k φ = φ`. Introduce `u hu hw h1`. Take `⟨φ, hφ, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ.ne_bot`. Use `⟨φ, hφ, h0, fun k hk hl => ?_⟩` and prove the remaining obligations. Establish `h2 : k = 1` using `congrArg Subtype.val (GlobalTheory.SplitPts.eq_one_of_cLoc (hsplit u (hu ▸ hw)) ⟨k, locU_congr hu hl⟩ (h1 k hk))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h2, map_one]`. Both sides reduce to the same expression. Distinguish the cases in `hw : w.under (𝓞 (Lp L)) ∈ V.S'`. Establish `hw'` using `hw`. Rewrite `hw'` using `[Q.range]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hw' with (h | h | h) | ⟨q, h⟩` into its components or cases. Conclude with `htriv (s.w _) (hund _) hw fun k hk => hk.2.2.2.1 ⟨_, h⟩`. Conclude with `htriv (s.w _) (hund _) hw fun k hk => hk.2.2.2.2.1 ⟨_, h⟩`. Take `⟨τ, ⟨hirr, f, hf, hfσ, he⟩, hfix⟩` from `hτ`. Establish `hu : (s.w s.v0).under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))` using `(hund _).trans h.symm`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨j, hj1, hj2, -⟩, -⟩` from `UpperTheory.V.Hi.secU l L Ω s n hn (s.w s.v0) (hsplit _ (hu ▸ hw))`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hfix`. Use `⟨f v, hfσ v, ne_zero_of_irr _ (fun g => ⟨⟨j g, hj1 g⟩, hj2 g⟩) τ.ρ hirr (fun x => RU L n (x : locU n (s.w s.v0))) f hf he hv0, fun k hk hl => ?_⟩` and prove the remaining obligations. Rewrite using `[← he ⟨k, locU_congr hu hl⟩ v]`. Conclude with `congrArg f (hv _ hk.2.2.1)`.
-
-Conclude with `htriv (Q.wq q) h hw fun k hk => hk.2.2.2.2.2 q`. Take `⟨φ, h1, h2, h3⟩` from `hun w hw`. Conclude with `⟨φ, h1, h2, fun k hk hl => h3 k hl (hKO w ▸ hk.2.1 w hw)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_nonzero_form_fixed_by_level_of_unramified :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V : s.Lev) (Q : QData V) (σ : Submodule ℂ (UA L n → ℂ)), IsAutRepU σ → (∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ V.S' → IsUnramU σ w) → (∃ τ : SmIrr (GLw n (s.w s.v0)), IsCompAlong σ (locU n (s.w s.v0)) ((cLoc (s.w s.v0)).comp (locU n (s.w s.v0)).subtype) τ.ρ ∧ fixd τ.ρ (Kc _ n 1) ≠ ⊥) → ∃ φ ∈ σ, φ ≠ 0 ∧ ∀ k ∈ GlobalTheory.UnitaryBC.finU L n, (∀ u : Plc L, u.under (𝓞 (Lp L)) ∉ V.S' → cLoc u k ∈ KO (u.adicCompletion L) (Fin n)) → cLoc (s.w s.v0) k ∈ Kc _ n 1 → (∀ v : V.frame.Vl, cLoc (s.w v.1) k = 1) → (∀ u : s.St, cLoc (s.w u) k = 1) → (∀ q : Q.Q, cLoc (Q.wq q) k = 1) → RU L n k φ = φ := by

@@ -6,7 +6,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.WR.G
 
 /- English proof (translation)
-The claim follows from `gauss_of integP (wick_of integP) rot base`.
+A detailed English derivation is pending.
 -/
 theorem gauss : Gauss := gauss_of integP (wick_of integP) rot base
 

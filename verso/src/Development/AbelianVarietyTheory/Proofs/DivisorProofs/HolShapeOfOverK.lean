@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GalLift.ProjLift
 
 /- English proof (translation)
-Establish `h1 : ∀ y, L₂ y ∈ LinearMap.range L₁` using `fun y => (Submodule.span_le (p := (LinearMap.range L₁).comap L₂)).2 (by rintro _ ⟨x, rfl⟩; exact h x) (hj.ge Submodule.mem_top)`. Take `⟨φ, hφ⟩` from `Module.projective_lifting_property L₁.rangeRestrict (L₂.codRestrict _ h1) L₁.surjective_rangeRestrict`. Conclude with `⟨φ, fun y => congrArg Subtype.val (LinearMap.congr_fun hφ y)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_factor {A B X I : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B] [AddCommGroup X] [Module ℂ X]
     (L₁ : A →ₗ[ℂ] X) (L₂ : B →ₗ[ℂ] X) (j : I → B) (hj : Submodule.span ℂ (Set.range j) = ⊤) (h : ∀ x, ∃ t, L₁ t = L₂ (j x)) :
@@ -36,17 +36,17 @@ variable {D : D7}
 open Classical in
 
 /- English proof (translation)
-Establish `hT' : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ (v : M.Vec) (w : M.sm τ), (w : M.H τ) = M.rep τ g (v τ) → T (Function.update v τ w) = rTr V (atTau θ V τ g) (T v)`. Introduce `τ g hg v w hw`. Use `clear h`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact hT.equiv τ g hg v w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => exact (congrArg₂ (· + ·) hx hy).trans rfl`. Consider the case `smul a x _ hx => exact (congrArg (a • ·) hx).trans rfl`. Establish `key` using `mem_of_translates h1 h2 (T.compLinearMap (fun τ => (lowT M τ).subtype) - U) ⊥ e he (by simpa [sub_eq_zero] using h) (fun τ k hk v u hu hv => ?_) v`. Simplify `key` using `[sub_eq_zero]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hv' : T (fun τ => (v τ : M.sm τ)) = U v` using `by simpa [sub_eq_zero] using hv`. Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hg : (M.fr τ)⁻¹ * k * M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)`. Establish `hk' : kᴴ * Formalism.REAL.Jm (M.ε τ) * k = Formalism.REAL.Jm (M.ε τ)` using `kset_uj hk`. Establish `e1 : ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← conjTranspose_mul, mul_nonsing_inv _ hd, conjTranspose_one]`. Express the relevant statement in the definitionally equal form `((M.fr τ)⁻¹ * k * M.fr τ)ᴴ * gramAt D V τ * ((M.fr τ)⁻¹ * k * M.fr τ) = gramAt D V τ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← M.fr_gram τ]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = gramAt D V τ := by rw [e1, mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_one, hk', M.fr_gram]`. Establish `e2 : M.fr τ * ((M.fr τ)⁻¹ * k * M.fr τ) * (M.fr τ)⁻¹ = k`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.mul_one]`. Establish `e3` using `hT' τ _ hg (fun τ => (v τ : M.sm τ)) (u : M.sm τ) (by`. Rewrite using `[hu, DSModel.rep, e2])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e4 : (fun ρ => ((Function.update v τ u ρ : lowT M ρ) : M.sm ρ)) = Function.update (fun ρ => (v ρ : M.sm ρ)) τ (u : M.sm τ)`. Use function extensionality and compare the values at `fun ρ => Function.apply_update (fun ρ (y : lowT M ρ) => (y : M.sm ρ)) v τ u ρ`. Establish `e5 : T (fun ρ => ((Function.update v τ u ρ : lowT M ρ) : M.sm ρ)) = U (Function.update v τ u)`. Rewrite using `[e4, e3, hv', hU τ k hk v u hu]`. Simplify `e5` using `[sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_on_low {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} (h1 : LowSm M)
     (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M} (hT : T ∈ Mult θ M J χ)
@@ -89,9 +89,9 @@ theorem eq_on_low {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : 
     simpa [sub_eq_zero] using e5
 
 /- English proof (translation)
-Introduce `τ k hk v u hu`. Establish `hmul : ∀ h g k φ, thetaKO ω h (g * k) φ = thetaKO ω h g (ω (1, k) φ)` using `fun h g k φ => by`. Unfold `thetaKO`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, rTr, hth.eq, Lift.thetaPInt, hmul, hio.2.1 τ k hk v u hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kEquiv_thetaP {θ : InfFam D} {V W : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel W S} {c : CoefA V}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {pt : PolF D W.rank V.rank → (WO V W → ℂ)}
@@ -108,7 +108,7 @@ theorem kEquiv_thetaP {θ : InfFam D} {V W : HSp D} {S : D.what₂.Tau → SPar}
   simp only [LinearMap.compMultilinearMap_apply, rTr, hth.eq, Lift.thetaPInt, hmul, hio.2.1 τ k hk v u hu]
 
 /- English proof (translation)
-Set `L₁ : A →ₗ[ℂ] ((∀ τ, lowT M τ) → GA D W → ℂ)` to `{ toFun := fun t u => e t (fun τ => (u τ : M.sm τ)) map_add' := fun a b => by rw [map_add]; rfl map_smul' := fun a b => by rw [map_smul]; rfl }`. Set `L₂ : B →ₗ[ℂ] ((∀ τ, lowT M τ) → GA D W → ℂ)` to `{ toFun := fun y u => L y (PiTensorProduct.tprod ℂ u) map_add' := fun a b => by rw [map_add]; rfl map_smul' := fun a b => by rw [map_smul]; rfl }`. Take `⟨φ, hφ⟩` from `exists_factor L₁ L₂ j hj fun x => (h x).imp fun t ht =>`. Use function extensionality and compare the values at `fun u => eq_on_low h1 h2 (he t) (hL (j x)) v hv ht u`. Conclude with `⟨φ, fun y u => congrFun (hφ y) u⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components.
 -/
 theorem exists_lift {θ : InfFam D} {W : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel W S} (h1 : LowSm M)
     (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) {J : Set (GA D W)} {χ : GA D W → ℂ} {A B I : Type} [AddCommGroup A] [Module ℂ A]
@@ -136,15 +136,15 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hs : ∀ ρ, (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1)` using `fun ρ => D.sp.W_sigval _ (inR i).1 (inR i).2 _`. Establish `hr : (D.R.sigW ((i : ℕ) + 1)).1 + (D.R.sigW ((i : ℕ) + 1)).2 = (Wc D i).rank`. Use `D.R.m_add_three_le_k` as an intermediate fact. Establish `hi` using `i.2`. Rewrite using `[rank_Wc i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ ρ a, (R.MW i σ).lam ρ a = (Formalism.L2.NTheta.lamAt (D.hc (lab σ ρ)) a : ℝ) ∧ (R.MW i σ).ε ρ a = decide ((a : ℕ) < (D.R.sigW ((i : ℕ) + 1)).1)` using `fun ρ a => by`. Establish `he` using `(R.MW i σ).enum ρ`. Unfold `Links.parAt at he`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `he` using `[if_pos (((labels_overK σ).1 hσ).2 ρ)]`. Rewrite using `[← hs ρ]`. Conclude with `GlobalTheory.HolDict.isEnum_holPar_kapW _ (rank_Wc i) (by rw [hs ρ]; exact hr) he a`. Establish `hc : ∀ ρ, Formalism.QuantumDeterminants.IsHCParam ((R.MW i σ).lam ρ)` using `fun ρ => by`. Use `⟨((R.MW i σ).enum ρ).1, fun a => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `Formalism.L2.NTheta.lamAt_int (D.hc (lab σ ρ)) a`. Take `⟨s, hs'⟩` from `Formalism.L2.NTheta.odd_r D.R`. Use `⟨z - s, ?_⟩` and prove the remaining obligations. Establish `hn : (((Wc D i).rank : ℕ) : ℝ) = 2 * s + 1` using `by rw [rank_Wc i, hs']; push_cast; rfl`. Rewrite using `[(key ρ a).1, hz, hn]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun ρ => ⟨hc ρ, _, by omega, fun a => (key ρ a).2⟩`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem holShape_of_overK (R : RealDat D A Ks) (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ) :
     GlobalTheory.HolDict.HolShape (R.MW i σ) := by
@@ -174,7 +174,7 @@ theorem holShape_of_overK (R : RealDat D A Ks) (i : Fin D.R.m) {σ : D.what₂.L
   exact fun ρ => ⟨hc ρ, _, by omega, fun a => (key ρ a).2⟩
 
 /- English proof (translation)
-Simplify using `only [RealDat.eWf, gaL, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, MultilinearMap.sum_apply, MultilinearMap.smul_apply, hg i σ, postOn_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem proj_apply (R : RealDat D A Ks) (hg : R.models_gW) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (t : (R.HW i σ).H)
     (v : (R.MW i σ).Vec) :
@@ -186,9 +186,9 @@ theorem proj_apply (R : RealDat D A Ks) (hg : R.models_gW) (i : Fin D.R.m) (σ :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hj ω f₀ f B io thP hL v hv h`. Establish `hspan` using `GlobalTheory.ConjSpan.span_conjForms R hC.models.jV gramR c0R c0L hT i σ c c₁ H j hj`. Establish `hlow` using `GlobalTheory.HolLowOnce.lowSm_and_lowIrr D _ _ _ (holShape_of_overK R i hσ)`. Establish `he : ∀ τ, v τ ≠ 0` using `fun τ h0 => by`. Use `(hv τ).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h0] at this`. Establish `hex` using `exists_lift hlow.1 hlow.2 (R.HW i σ).e (fun t => (hC.models.HW i σ).2.1.le (LinearMap.mem_range_self _ t)) (thP ∘ₗ (c.ext ∘ₗ H.e).rangeRestrict) (fun y => kEquiv_thetaP hL.2.2.1 hL.2.2.2 _) j hspan v he h`. Take `⟨φ, hφ⟩` from `hex`. Conclude with `⟨(∑ g, RealDat.eC (A := A) σ g • R.gW i σ g) ∘ₗ φ, fun x u => (proj_apply R hC.models.gW i σ (φ x) _).trans (congrArg (R.eWf i σ) (hφ x u))⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isProjOf : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), ∀ gramR c0R c0L, Comparison₂ R gramR c0R c0L → ∀ (σ : D.what₂.LL →+* ℂ), OverK σ → ∀ (μ' η' : (AE D)ˣ →* Circle) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W) (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), IsConjForms R i σ (c0L i) c c₁ H j → ∀ (ω : GA D (Vc D i) × GA D (Wc D i) →* Module.End ℂ (WO (Vc D i) (Wc D i) → ℂ)) (f₀ f : WO (Vc D i) (Wc D i) → ℂ) (B : D.what₂.Tau → Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ) (io : LowT (R.MW i σ) →ₗ[ℂ] c.W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank) (thP : LinearMap.range (c.ext ∘ₗ H.e) →ₗ[ℂ] (LowT (R.MW i σ) →ₗ[ℂ] (GA D (Wc D i) → ℂ))), LiftData R i σ μ' η' c H ω f₀ f B io thP → ∀ v : ∀ ρ, lowT (R.MW i σ) ρ, IsExtVec (R.MW i σ) (fun ρ => v ρ) → (∀ x, ∃ t : (R.HW i σ).H, (R.HW i σ).e t (fun ρ => v ρ) = thP ((c.ext ∘ₗ H.e).rangeRestrict (j x)) (PiTensorProduct.tprod ℂ v)) → ∃ th, IsProjOf R i σ thP th := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hj ω f₀ f B io thP hL v hv h

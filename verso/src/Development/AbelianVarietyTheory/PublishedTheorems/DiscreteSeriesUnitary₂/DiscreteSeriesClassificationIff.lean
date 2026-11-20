@@ -36,7 +36,7 @@ def DiscreteSeriesClassification : Prop :=
           T (σ (g.submatrix s.symm s.symm) v) = π (ε ∘ s) mu g (T v)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem discreteSeriesClassification_iff : DiscreteSeriesClassification ↔ DSClass := Iff.rfl
 

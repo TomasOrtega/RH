@@ -23,9 +23,9 @@ namespace GlobalTheory.TransNZ
 open GlobalTheory.MBLow.TranslateSection GlobalTheory.MBLow.TrSec
 
 /- English proof (translation)
-Establish `key : ∀ j : Fin 1 → P.L.ι, th.f j = (thSec P s).f j`. Introduce `j`. Establish `hj : j = fun _ => j 0` using `funext fun k => by rw [Subsingleton.elim k 0]`. Rewrite using `[hj, h (j 0) (chart_le P _), projectionPullbackSectionBaseProduct_isInverseImage P s (j 0) (chart_le P _)]`. Consider the cases of `th`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hth : thSec P s`. Simplify using `only [hth] at key`. Reduce the equality to equality of the corresponding arguments. Conclude with `funext key`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eq_projectionPullbackSection_of_inverseImage {S : Scheme.{0}} (P : PolAV S) (s : P.L.Sec)
     (th : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) (baseOver S))) (h : IsPolAVSectionInverseImage P (baseOver S) s th) :
@@ -44,13 +44,13 @@ end GlobalTheory.TransNZ
 open GlobalTheory.MBLow.TranslateSection GlobalTheory.MBLow.TrSec in
 
 /- English proof (translation)
-Introduce `K _ _ _ x m hm hm3 I pt hpt th hth U t hUt`. Establish `hm1 : 1 ≤ m` using `by omega`. Take `⟨i₀, -⟩` from `hpt 1 (one_pow _)`. Take `⟨-, α, s₁, hα, -, hs₁, ht⟩` from `hUt i₀`. Take `⟨p₀⟩ : Nonempty (Sp K)` from `inferInstanceAs (Nonempty (PrimeSpectrum K))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, -, ha⟩` from `x.th_ne p₀`. Establish `e` using `GlobalTheory.TransNZ.eq_projectionPullbackSection_of_inverseImage x.P x.th th hth`. Establish `hp₁` using `nonzero_thSec x.P x.th a ha`. Rewrite `hp₁` using `[← e]`. Take `⟨q, hq⟩` from `mulT_surjective x.P m hm1 ((λ_ x.P.A).inv.left.base a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hq'` using `mem_nonzeroLocus_of_isTwistPull x.P.isLB _ _ _ _ _ α th s₁ hs₁ q (hq ▸ hp₁)`. Take `⟨r, hr⟩` from `translT_surjective x.P.A (U i₀).pt q`. Establish `hr'` using `mem_nonzeroLocus_of_isTwistPull x.P.isLB _ _ _ _ _ (U i₀).φ s₁ (t i₀) ht r (hr ▸ hq')`. Use `⟨i₀, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hr'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hz : (t i₀).f k = 0` using `(GlobalTheory.UU.SecMod.eq_zero_iff_coord _).1 h0 k`. Rewrite `hk` using `[hz, Scheme.basicOpen_zero]`. Conclude with `hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TransNZ.exists_ne : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x : KeyIn K) (m : ℕ), Odd m → 3 ≤ m →
     ∀ (I : Type) (pt : I → (baseOver (Sp K) ⟶ x.P.A)), (∀ z : baseOver (Sp K) ⟶ x.P.A, z ^ (m ^ 2) = 1 → ∃ i, pt i = z) →

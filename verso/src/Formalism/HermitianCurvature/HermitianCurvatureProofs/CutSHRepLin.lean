@@ -13,11 +13,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Take `⟨hG1, hG2⟩` from `hG`. Take `⟨C, hC, ε, hε, hCε⟩` from `hG2 {t} isCompact_singleton (fun s hs => by rw [Set.mem_singleton_iff.mp hs]; exact ht)`. Establish `hsupp : ∀ γ, G t γ ≠ 0 → γ ∈ C` using `fun γ h => (hCε t rfl γ h).1`. Establish `hck : B.CkOn ⊤ (B.GV P.k (P.r - (j + 1))) (G t)`. Introduce `γ₀ hγ₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, f, hU, hmem, hf, hfe⟩` from `hG1 t ht γ₀ hγ₀`. Establish `hcm : Continuous (fun γ : B.Mat P.k (P.r - (j + 1)) => (t, γ))` using `continuous_const.prodMk continuous_id`. Use `⟨(fun γ => (t, γ)) ⁻¹' U, fun γ => f (t, γ), hU.preimage hcm, hmem, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hf.comp (contDiff_const.prodMk contDiff_id).contDiffOn (fun γ hγ => hγ)`. Introduce `γ hγ hγG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `hfe (t, γ) hγ hγG`. Conclude with `⟨ε, hε, hck, fun A' m' => JFxG.cptInCC_G hck hC (fun γ _ hγC => by`. Assume the negation of the conclusion as `h`. Conclude with `hγC (hsupp γ h)) A' m', fun γ hγ hne => (hCε t rfl γ hne).2 hγ⟩`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem repLin_nice {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
@@ -40,11 +40,11 @@ theorem repLin_nice {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
       by_contra h; exact hγC (hsupp γ h)) A' m', fun γ hγ hne => (hCε t rfl γ hne).2 hγ⟩
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P T _ _ j _ _ G G' hG hG' t ht a x hx`. Take `⟨ε, hε, hN⟩` from `repLin_nice T j G hG t ht`. Take `⟨ε', hε', hN'⟩` from `repLin_nice T j G' hG' t ht`. Establish `hm : JC.NiceCoef (T.bs (j + 1)) (min ε ε') (G t)` using `⟨hN.1, hN.2.1, fun g hg hne => (min_le_left _ _).trans (hN.2.2 g hg hne)⟩`. Establish `hm' : JC.NiceCoef (T.bs (j + 1)) (min ε ε') (G' t)` using `⟨hN'.1, hN'.2.1, fun g hg hne => (min_le_right _ _).trans (hN'.2.2 g hg hne)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hom : wCell P.k (P.r - (j + 1)) (Fin.last (P.r - (j + 1))) x.1 * x.2 ∈ JF.Om P.k (P.r - (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z'` using `TLB.wCell_om (Pa := JC.parLev P (j + 1)) (T.bs (j + 1)) hx`. Establish `hs : B.JF (T.bs (j + 1)) (fun γ => a • G t γ) = a • B.JF (T.bs (j + 1)) (G t)`. Use function extensionality and compare the values at `fun h => JCx2.bc_JF_smul a (G t) h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [resG]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[JCx2.bc_JF_add hm hm' hom, smul_add]`. Rewrite using `[hs, JCx2.rma_resG_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem representation_linear : RepLin := by
   intro Wp Wq _ _ _ _ _ _ P T _ _ j _ _ G G' hG hG' t ht a x hx

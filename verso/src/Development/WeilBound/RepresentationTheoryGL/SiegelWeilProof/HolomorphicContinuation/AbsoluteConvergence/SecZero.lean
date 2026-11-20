@@ -12,19 +12,15 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set C := (mR y).toBlocks₂₁ with hC`. Use `set D := (mR y).toBlocks₂₂ with hD`. Establish `hyG : InG (mR y)` using `y.2`. Establish `hrel : C * Dᴴ = D * Cᴴ` using `lowerDiagonalBlockAsGL hyG`. Establish `hCu : IsUnit C.det` using `isUnit_iff_ne_zero.mpr hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hCHu : IsUnit (Cᴴ).det`. Rewrite using `[det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr hy)`. Use `set b := C⁻¹ * D with hb`. Establish `hbH : b.IsHermitian` using `by show bᴴ = b`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb, conjTranspose_mul, conjTranspose_nonsing_inv]`. Use `_ = C⁻¹ * (C * Dᴴ) * (Cᴴ)⁻¹ := by`. Rewrite using `[← Matrix.mul_assoc C⁻¹, nonsing_inv_mul _ hCu, Matrix.one_mul]`. Use `_ = C⁻¹ * (D * Cᴴ) * (Cᴴ)⁻¹ := by rw [hrel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `_ = b := by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hCHu, Matrix.mul_one, hb]`. Take `⟨g, hg⟩` from `exists_of_InG (InG_JJ_nU hbH)`. Use `set N : M2 n := fromBlocks (-b) (-1) 1 0 with hN`. Establish `h1 : mR g⁻¹ * mR g = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← SZ.mR_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h2 : mR g * N = 1`. Rewrite using `[hg, hN]`. Simplify using `only [JJ, nU, fromBlocks_multiply]`.
-
-Rewrite using `[← fromBlocks_one]`. Apply the tactic sequence `congr 1 <;> simp`. Establish `hM : mR g⁻¹ = N`. Combine the equalities or inequalities in the displayed calculation. Use `⟨y * g⁻¹, g, b, hbH, hg, ?_, (inv_mul_cancel_right y g).symm⟩` and prove the remaining obligations.
-
-Rewrite using `[SZ.mR_mul, hM, ← fromBlocks_toBlocks (mR y), hN, fromBlocks_multiply, toBlocks_fromBlocks₂₁]`. Rewrite using `[← hC, ← hD, Matrix.mul_neg, Matrix.mul_one, ← Matrix.mul_assoc, mul_nonsing_inv _ hCu, Matrix.one_mul, neg_add_cancel]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cell_decomp (y : GR n) (hy : ((mR y).toBlocks₂₁).det ≠ 0) :
     ∃ (p g : GR n) (b : Matrix (Fin n) (Fin n) ℂ), b.IsHermitian ∧ mR g = JJ n * nU b ∧
@@ -72,15 +68,13 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt.SZ
 
 /- English proof (translation)
-Introduce `hN m n ε c t p q e sL ρ hL P`. Establish `ht : t ≠ 0`. Break down `hL.sign with ⟨h, -, -⟩ | ⟨h, -, -⟩` into its components or cases. Rewrite using `[h]`. Conclude with `hL.cpos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `neg_ne_zero.2 hL.cpos.ne'`. Take `⟨C, hC, hcell⟩` from `hL.cell`. Rewrite using `[hN m n ε c t hL.cpos ht P]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h y`. Establish `hS : {z : GR n | ((mR z).toBlocks₂₁).det ≠ 0} ⊆ {z | sL P z = 0}`. Introduce `z hz`. Take `⟨p', g, b, hb, hg, hp, rfl⟩` from `cell_decomp z hz`. Use `show sL P (p' * g) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hL.law P p' g hp, hcell P g b hb hg, h b hb, mul_zero, mul_zero]`. Establish `hcl : IsClosed {z : GR n | sL P z = 0}` using `isClosed_eq (hL.cont P) continuous_const`. Conclude with `hcl.closure_subset_iff.2 hS (dense_cell y)`. Introduce `h b hb`. Take `⟨g, hg⟩` from `exists_of_InG (InG_JJ_nU hb)`.
-
-Establish `hh` using `hcell P g b hb hg`. Rewrite `hh` using `[h g]`. Conclude with `(mul_eq_zero.1 hh.symm).resolve_left hC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secZero : NullIff → SecZero := by
   intro hN m n ε c t p q e sL ρ hL P

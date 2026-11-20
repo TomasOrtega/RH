@@ -12,7 +12,7 @@ variable {D : D7}
 def cutJ (D : D7) (j : ℕ) : ℕ := max 1 (min j D.R.m)
 
 /- English proof (translation)
-Use `D.R.two_le_m` as an intermediate fact. Unfold `cutJ`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cutJ_mem (D : D7) (j : ℕ) : 1 ≤ cutJ D j ∧ cutJ D j ≤ D.R.m := by
   have := D.R.two_le_m
@@ -20,7 +20,7 @@ theorem cutJ_mem (D : D7) (j : ℕ) : 1 ≤ cutJ D j ∧ cutJ D j ≤ D.R.m := b
   omega
 
 /- English proof (translation)
-Use `Finset.mem_Icc.1 hj` as an intermediate fact. Unfold `cutJ`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cutJ_of_mem {j : ℕ} (hj : j ∈ SizeData₂.lifts D) : cutJ D j = j := by
   have := Finset.mem_Icc.1 hj
@@ -33,9 +33,9 @@ def offRec (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) : ℝ :=
   wj D (cutJ D j) (tauOf D z) - (if z.1 = false ∧ z.2 ∈ D.host.TT then (bL L z.2 : ℝ) else 0)
 
 /- English proof (translation)
-Establish `hz' : z.1 = false ∧ z.2 ∈ D.host.TT` using `hz`. Establish `h0 : (D.eTau (tauOf D z) : D.R.GG) = D.R.tau1 z.2`. Rewrite using `[eTau_tauOf, ← plGG_false]`. Use `congr 1`. Conclude with `Prod.ext hz'.1 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h1` using `L.win_top (cutJ D j) (cutJ_mem D j).1 (cutJ_mem D j).2 (tauOf D z) ⟨z.2, hz'.2⟩ h0`. Establish `h2 : bL L z.2 = L.bT ⟨z.2, hz'.2⟩` using `by unfold bL; rw [dif_pos hz'.2]`. Unfold `offRec`. Rewrite using `[if_pos hz', h2]`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem offRec_top (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (hz : IsTopPl D z) :
     L.sc.b' / L.sc.x ≤ offRec L j z ∧ offRec L j z ≤ L.sc.b' / L.sc.x + L.etaSz := by
@@ -51,9 +51,9 @@ theorem offRec_top (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (hz : IsTopP
   constructor <;> linarith [h1.1, h1.2]
 
 /- English proof (translation)
-Establish `hz' : ¬ (z.1 = false ∧ z.2 ∈ D.host.TT)` using `hz.1`. Establish `h1` using `L.win_thin (cutJ D j) (cutJ_mem D j).1 (cutJ_mem D j).2 (tauOf D z) (by`. Rewrite using `[eTau_tauOf]`. Conclude with `⟨Formalism.MainNotions.Inhab.plGG_mem_Psi D z, fun h => hz.1 ((plGG_top_iff D z).1 h), fun h => hz.2 ((plGG_thick_iff D z).1 h)⟩)`. Unfold `offRec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hz', sub_zero]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offRec_thin (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (hz : IsThinPl D z) :
     L.sc.w'' D.R.n ≤ offRec L j z ∧ offRec L j z ≤ L.sc.w'' D.R.n + L.etaSz := by
@@ -68,9 +68,9 @@ theorem offRec_thin (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (hz : IsThi
   exact h1
 
 /- English proof (translation)
-Establish `ht : ¬ (z.1 = false ∧ z.2 ∈ D.host.TT)` using `fun h => by`. Establish `h1` using `h.1`. Rewrite `h1` using `[hz.1]`. Conclude with `Bool.noConfusion h1`. Establish `h1` using `L.win_thick (cutJ D j) (cutJ_mem D j).1 (cutJ_mem D j).2 (tauOf D z) (by rw [eTau_tauOf]; exact (plGG_thick_iff D z).2 hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `offRec`. Rewrite using `[if_neg ht, sub_zero]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offRec_thick (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (hz : IsThickPl D z) :
     L.sc.b ≤ offRec L j z ∧ offRec L j z ≤ L.sc.b + L.etaSz + 1 := by
@@ -96,9 +96,9 @@ def instRec (L : SizeData₂ D) (K : Consts) (Ce : ℝ) : Inst D L where
   ep := fun p => ⌈Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a⌉₊
 
 /- English proof (translation)
-Introduce `j hj τ z h`. Rewrite using `[eq_tauOf D τ z h]`. Use `show _ + offRec L j z = _`. Unfold `offRec`. Rewrite using `[cutJ_of_mem hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem instRec_fill (L : SizeData₂ D) (K : Consts) (Ce : ℝ) :
     ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × HH D), (D.eTau τ : D.R.GG) = plGG D z →
@@ -111,7 +111,7 @@ theorem instRec_fill (L : SizeData₂ D) (K : Consts) (Ce : ℝ) :
   ring
 
 /- English proof (translation)
-Unfold `fillG`. Rewrite using `[instRec_fill L K Ce j hj (D.eTau.symm (tau1P D.R.toFrame t)) (false, t) (by rw [Equiv.apply_symm_apply, plGG_false]; rfl)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem instRec_fillG (L : SizeData₂ D) (K : Consts) (Ce : ℝ) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (t : HH D) :
     fillG (instRec L K Ce) (bL L) j (false, t) = wj D j (D.eTau.symm (tau1P D.R.toFrame t)) - kaJ D j := by
@@ -120,9 +120,9 @@ theorem instRec_fillG (L : SizeData₂ D) (K : Consts) (Ce : ℝ) (j : ℕ) (hj 
     (by rw [Equiv.apply_symm_apply, plGG_false]; rfl)]
 
 /- English proof (translation)
-Establish `hs : stepP D p = hP D p`. Unfold `stepP`. Rewrite using `[if_neg (fun h : D.host.cls p = PrimeClass.signal => by`. Establish `hc' : D.host.cls p = PrimeClass.inertClass` using `hc`. Rewrite `h` using `[hc']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `PrimeClass.noConfusion h)]`. Unfold `reps`. Rewrite using `[hs]`. Simplify using `[instRec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reps_instRec (L : SizeData₂ D) (K : Consts) (Ce : ℝ) {p : ℕ} (hc : IsResidueClassZero D p) :
     ((reps (instRec L K Ce) p : Finset (HH D)) : Set (HH D)) = Set.range (bsH D.R.toFrame (hP D p)) := by

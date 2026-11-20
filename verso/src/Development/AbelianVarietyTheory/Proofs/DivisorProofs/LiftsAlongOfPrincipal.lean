@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.DualCon.LiftInduct
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (h := (lift (fst A Y') (snd A Y' ≫ e)).left) (chartPullSame N _ _ _ _ fun _ => by rw [← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc, Category.assoc]) (chartPullSame M _ _ _ _ fun _ => by rw [← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc, Category.a …`.
+A detailed English derivation is pending.
 -/
 theorem same_comp {S : Scheme.{0}} (A : Over S) {T U Y Y' : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).left}
     (e : Y' ⟶ Y) {y : Y ⟶ T} {u : Y ⟶ U} (h : Same A N M y u) : Same A N M (e ≫ y) (e ≫ u) :=
@@ -34,9 +34,9 @@ def LiftsVia {B C : Type} [CommRing B] [CommRing C] (φ : B →+* C) : Prop :=
     ∃ u : Over.mk (y ≫ T.hom) ⟶ U, Same A N M (Over.homMk y rfl : Over.mk (y ≫ T.hom) ⟶ T) u
 
 /- English proof (translation)
-Introduce `T N _ y u₀ h`. Establish `hs : Spec.map (CommRingCat.ofHom ψ) ≫ Spec.map (CommRingCat.ofHom φ) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hψ, CommRingCat.ofHom_id, Spec.map_id]`. Set `e : Over.mk (y ≫ T.hom) ⟶ Over.mk (Spec.map (CommRingCat.ofHom φ) ≫ y ≫ T.hom)` to `Over.homMk (Spec.map (CommRingCat.ofHom ψ)) (by simp [reassoc_of% hs])`. Use `⟨e ≫ u₀, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h'` using `same_comp A e h`. Use `h' using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[e, reassoc_of% hs]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem liftsVia_of_leftInverse {B C : Type} [CommRing B] [CommRing C] (φ : B →+* C) (ψ : C →+* B)
     (hψ : ψ.comp φ = RingHom.id B) : LiftsVia A M φ := by
@@ -52,11 +52,11 @@ theorem liftsVia_of_leftInverse {B C : Type} [CommRing B] [CommRing C] (φ : B �
   simp [e, reassoc_of% hs]
 
 /- English proof (translation)
-Introduce `T N hN y u₀ h`. Establish `k : Spec.map (CommRingCat.ofHom (ψ.comp φ)) = Spec.map (CommRingCat.ofHom ψ) ≫ Spec.map (CommRingCat.ofHom φ)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Set `e : Over.mk (Spec.map (CommRingCat.ofHom ψ) ≫ (Spec.map (CommRingCat.ofHom φ) ≫ y) ≫ T.hom) ⟶ Over.mk (Spec.map (CommRingCat.ofHom (ψ.comp φ)) ≫ y ≫ T.hom)` to `Over.homMk (𝟙 _) (by simp [k])`. Take `⟨u₁, h₁⟩` from `hψ T N hN (Spec.map (CommRingCat.ofHom φ) ≫ y) (e ≫ u₀) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h'` using `same_comp A e h`. Use `h' using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[e, k])`. Set `e' : Over.mk (Spec.map (CommRingCat.ofHom φ) ≫ y ≫ T.hom) ⟶ Over.mk ((Spec.map (CommRingCat.ofHom φ) ≫ y) ≫ T.hom)` to `Over.homMk (𝟙 _) (by simp)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `hφ T N hN y (e' ≫ u₁) (by`. Establish `h'` using `same_comp A e' h₁`. Use `h' using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[e'])`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftsVia_comp {B C D : Type} [CommRing B] [CommRing C] [CommRing D] (φ : B →+* C) (ψ : C →+* D)
     (hφ : LiftsVia A M φ) (hψ : LiftsVia A M ψ) : LiftsVia A M (ψ.comp φ) := by
@@ -80,35 +80,33 @@ theorem liftsVia_comp {B C D : Type} [CommRing B] [CommRing C] [CommRing D] (φ 
     simp [e'])
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `B _ _ _ C _ φ l hl hs hk _ _`. Establish `hl0 : l = []` using `List.eq_nil_of_length_eq_zero hl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hl0` using the available equality. Establish `hinj : Function.Injective φ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot, hk]`. Simplify using the standard rewrite rules. Set `e` to `RingEquiv.ofBijective φ ⟨hinj, hs⟩`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `liftsVia_of_leftInverse A M φ e.symm.toRingHom ?_` and prove the remaining obligations. Use extensionality with `x`. Conclude with `e.symm_apply_apply x`. Consider the case `succ n ih`. Introduce `B _ _ _ C _ φ l hl hs hk hkm hmk`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, l', rfl⟩ : ∃ t l', l = t :: l' := by`. Consider the cases of `l with`. Consider the case `nil => simp at hl`. Consider the case `cons t l' => exact ⟨t, l', rfl⟩`. Establish `ht : t ∈ RingHom.ker φ` using `hk ▸ Ideal.subset_span (by simp)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : Ideal.span {t} ≤ RingHom.ker φ` using `(Ideal.span_singleton_le_iff_mem _).2 ht`. Set `ψ : B ⧸ Ideal.span {t} →+* C` to `Ideal.Quotient.lift _ φ (fun a ha => hJ ha)`. Establish `hcomp : ψ.comp (Ideal.Quotient.mk _) = φ`. Use extensionality with `x`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hprin : LiftsVia A M (Ideal.Quotient.mk (Ideal.span {t}))` using `hyp B t (hkm ht) (le_bot_iff.1 ((Ideal.mul_mono_right hJ).trans hmk.le))`. Establish `hne : Ideal.span {t} ≠ ⊤` using `fun h => (IsLocalRing.maximalIdeal.isMaximal B).ne_top (top_le_iff.1 (h ▸ hJ.trans hkm))`. Use `haveI : Nontrivial (B ⧸ Ideal.span {t}) := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsLocalRing (B ⧸ Ideal.span {t}) := IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `hψs : Function.Surjective ψ` using `Ideal.Quotient.lift_surjective_of_surjective _ _ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hC : Nontrivial C`. Break down `subsingleton_or_nontrivial C with hC | hC` into its components or cases. Conclude with `absurd (hkm (RingHom.mem_ker.2 (Subsingleton.elim _ _))) ((Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal B).ne_top)`. Conclude with `hC`. Establish `h0 : Ideal.Quotient.mk (Ideal.span {t}) t = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self t)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : RingHom.ker ψ = (RingHom.ker φ).map (Ideal.Quotient.mk (Ideal.span {t}))`. Use `le_antisymm (fun x hx => ?_) (Ideal.map_le_iff_le_comap.2 fun b hb => ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `Ideal.mem_map_of_mem _ (RingHom.mem_ker.2 (RingHom.mem_ker.1 hx))`. Conclude with `RingHom.mem_ker.2 (RingHom.mem_ker.1 hb)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hkerψ : RingHom.ker ψ = Ideal.span {x | x ∈ l'.map (Ideal.Quotient.mk (Ideal.span {t}))}`. Rewrite using `[hker, hk, Ideal.map_span]`. Establish `hset : (Ideal.Quotient.mk (Ideal.span {t})) '' {x | x ∈ t :: l'} = insert 0 {x | x ∈ l'.map (Ideal.Quotient.mk (Ideal.span {t}))}`. Use extensionality with `x`. Simplify using `only [List.mem_cons, Set.mem_image, Set.mem_setOf_eq, Set.mem_insert_iff, List.mem_map]`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl | ha, rfl⟩`. Conclude with `Or.inl h0`. Conclude with `Or.inr ⟨a, ha, rfl⟩`. Introduce and unpack `(rfl | ⟨a, ha, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨t, Or.inl rfl, h0⟩`. Conclude with `⟨a, Or.inr ha, rfl⟩`. Rewrite using `[hset, Ideal.span_insert_zero]`. Establish `hkm' : RingHom.ker ψ ≤ IsLocalRing.maximalIdeal (B ⧸ Ideal.span {t})` using `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top ψ)`. Establish `hmk' : IsLocalRing.maximalIdeal (B ⧸ Ideal.span {t}) * RingHom.ker ψ = ⊥`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `ha : a ∈ IsLocalRing.maximalIdeal B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hx`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun h => hx (h.map _)`. Establish `hb : b ∈ RingHom.ker φ` using `RingHom.mem_ker.2 (RingHom.mem_ker.1 hy)`. Establish `hab : a * b = 0`. Use `Ideal.mul_mem_mul ha hb` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hmk]`. Simplify using `using this`. Rewrite using `[Ideal.mem_bot, ← map_mul, hab, map_zero]`. Establish `hlen : (l'.map (Ideal.Quotient.mk (Ideal.span {t}))).length = n`. Simplify using `using hl`.
-
-Establish `hψ` using `ih (B ⧸ Ideal.span {t}) C ψ _ hlen hψs hkerψ hkm' hmk'`. Rewrite using `[← hcomp]`. Conclude with `liftsVia_comp A M _ _ hprin hψ`.
+A detailed English derivation is pending.
 -/
 theorem liftsVia_of_list
     (hyp : ∀ (B : Type) [CommRing B] [IsLocalRing B] [IsArtinianRing B] (t : B),
@@ -205,9 +203,9 @@ end GlobalTheory.DualCon.LiftInduct
 namespace GlobalTheory.DualCon
 
 /- English proof (translation)
-Introduce `R _ A _ U M hyp B _ _ _ I hI hmI`. Take `⟨s, hs⟩ : I.FG` from `IsNoetherian.noetherian I`. Use `LiftInduct.liftsVia_of_list A M hyp _ B (B ⧸ I) (Ideal.Quotient.mk I) s.toList rfl Ideal.Quotient.mk_surjective ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.mk_ker, ← hs]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[Ideal.mk_ker]` and apply the resulting hypothesis. Rewrite using `[Ideal.mk_ker]` and apply the resulting hypothesis.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem liftsAlong_of_principal : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (U : Over (Sp R)) (M : LB (A ⊗ U).left), (∀ (B : Type) [CommRing B] [IsLocalRing B] [IsArtinianRing B] (t : B), t ∈ IsLocalRing.maximalIdeal B → IsLocalRing.maximalIdeal B * Ideal.span {t} = ⊥ → LiftsAlong A M B (Ideal.span {t})) → ∀ (B : Type) [CommRing B] [IsLocalRing B] [IsArtinianRing B] (I : Ideal B), I ≤ IsLocalRing.maximalIdeal B → IsLocalRing.maximalIdeal B * I = ⊥ → LiftsAlong A M B I := by
   intro R _ A _ U M hyp B _ _ _ I hI hmI

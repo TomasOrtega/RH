@@ -15,9 +15,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 namespace GlobalTheory.MixHtCalc
 
 /- English proof (translation)
-Establish `hE` using `GlobalTheory.T.exists_mixedHeight_of_archimedean_integrals hI hR`. Use `⟨GlobalTheory.T.arithIntersectionNumber_exists_of_mixedHeights hI hE, GlobalTheory.T.arithMixedInterInductive_of_mixedHeights hI hE, ?_⟩` and prove the remaining obligations. Introduce `k _ X Y _ p q D e hX hY π hπ _ _ L h hh`. Take `⟨T, hT⟩` from `hE k Y q (isAmb_of_isArithVar hY) (e + 1)`. Take `⟨h', hh', -⟩` from `GlobalTheory.T.exists_arithHeight_eq_mixedHeight_diagonal hI k Y q e hY T hT (L.pull π hπ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h', hh', GlobalTheory.T.arithHeight_projectionFormula_every_point k X Y p q D e hX hY π hπ L h h' hh hh' (genericPoint Y)⟩`.
+Supply the required witnesses or components.
 -/
 theorem arFormExists_arMix_heightProjection (hI : ArchInteg) (hR : ArchRecip) :
     GlobalTheory.Published.ArFormExists ∧ GlobalTheory.Published.ArMix ∧ GlobalTheory.Published.HeightProjection := by

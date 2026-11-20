@@ -13,9 +13,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Use `(GridSum.proof D i hi).congr_left fun n => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj` using `Finset.mem_range.mp hj`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : n - 1 - (n - j - 1) = j` using `by omega`. Establish `e2 : n - 1 - j = n - j - 1` using `by omega`. Simplify using `only [e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem TwoBlockChainSum.gridSum_chain (D i : ℕ) (hi : i ≤ D) :
     (fun n : ℕ => (∑ j ∈ Finset.range n,
@@ -31,7 +31,7 @@ theorem TwoBlockChainSum.gridSum_chain (D i : ℕ) (hi : i ≤ D) :
   simp only [e1, e2]
 
 /- English proof (translation)
-Use `(IsBigO.fun_sum fun i hi => (TwoBlockChainSum.gridSum_chain D i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))).const_mul_left (c i)).congr_left fun n => ?_` and prove the remaining obligations. Unfold `gPoly`. Rewrite using `[Finset.sum_comm, Finset.sum_mul, Finset.sum_div, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sub, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,31 +48,29 @@ theorem TwoBlockChainSum.gPoly_chain (D : ℕ) (c : ℕ → ℝ) :
   ring
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ I x B m m' hI hX hx hBi hm hm' hsp`. Take `⟨a₀, C, hC⟩` from `hL D Ω κ I x B m m' hI hX hx hBi hm hm' hsp`. Take `⟨K, hK⟩` from `hB D Ω κ x B hX hx hBi hsp`. Rewrite using `[← sum_twoBlockCoeff]`. Generalize the expression as in `twoBlockCoeff I x (matAct B x) m m' D = c at hC ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `twoBlockStep x (matAct B x) = s at hC hK ⊢`. Take `⟨G, hG⟩ : ∃ G : ℝ, G = ∑ i ∈ Finset.range (D + 1), |c i|` from `⟨_, rfl⟩`. Establish `hG0 : 0 ≤ G` using `hG ▸ Finset.sum_nonneg fun i _ => abs_nonneg _`. Establish `hterm : ∀ n j : ℕ, j < n → |s (n - j - 1) j - gPoly D c (n - j - 1) j| ≤ if a₀ ≤ n - j - 1 ∧ a₀ ≤ j then |C| * ((n : ℝ) ^ D / n) else (|K| + G) * (n : ℝ) ^ D`. Introduce `n j hj`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : ((n - j - 1 : ℕ) : ℝ) + (j : ℝ) + 1 = n`. Establish `: n - j - 1 + j + 1 = n` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hpow : 0 ≤ (n : ℝ) ^ D` using `by positivity`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hC (n - j - 1) j h.1 h.2`. Rewrite `h1` using `[hn]`. Use `le_trans h1 ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg` using `abs_gPoly_le D c (n - j - 1) j`. Establish `hn' : ((n - j - 1 + j : ℕ) : ℝ) + 1 = n` using `by rw [Nat.cast_add]; exact hn`. Rewrite `hg` using `[hn', ← hG]`. Establish `hk` using `hK (n - j - 1) j`. Rewrite `hk` using `[hn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hk' : K * (n : ℝ) ^ D ≤ |K| * (n : ℝ) ^ D` using `mul_le_mul_of_nonneg_right (le_abs_self K) hpow`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (fun n : ℕ => ∑ j ∈ Finset.range n, (s (n - j - 1) j - gPoly D c (n - j - 1) j)) =O[atTop] fun n : ℕ => (n : ℝ) ^ D`. Use `IsBigO.of_bound (|C| + 2 * a₀ * (|K| + G)) (Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Establish `hpow : 0 ≤ (n : ℝ) ^ D` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hpow]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun j hj => hterm n j (Finset.mem_range.mp hj)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite, Finset.sum_const, Finset.sum_const, nsmul_eq_mul, nsmul_eq_mul]`. Establish `hgood : ((Finset.filter (fun j => a₀ ≤ n - j - 1 ∧ a₀ ≤ j) (Finset.range n)).card : ℝ) ≤ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Finset.card_filter_le _ _).trans (Finset.card_range n).le` after adjusting the coercions. Establish `hbad : ((Finset.filter (fun j => ¬(a₀ ≤ n - j - 1 ∧ a₀ ≤ j)) (Finset.range n)).card : ℝ) ≤ 2 * a₀`. Establish `hsub : Finset.filter (fun j => ¬(a₀ ≤ n - j - 1 ∧ a₀ ≤ j)) (Finset.range n) ⊆ Finset.range a₀ ∪ Finset.Ico (n - a₀) n`. Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hj`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.mem_union, Finset.mem_range, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Establish `hc` using `(Finset.card_le_card hsub).trans (Finset.card_union_le _ _)`. Rewrite `hc` using `[Finset.card_range, Nat.card_Ico]`. Establish `hc' : (Finset.filter (fun j => ¬(a₀ ≤ n - j - 1 ∧ a₀ ≤ j)) (Finset.range n)).card ≤ 2 * a₀`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `hc'` after adjusting the coercions. Establish `hcn : (n : ℝ) * ((n : ℝ) ^ D / n) ≤ (n : ℝ) ^ D`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `only [Nat.cast_zero, zero_mul]`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Rewrite using `[mul_div_cancel₀]`. Conclude with `hn.ne'` after adjusting the coercions. Establish `hq : 0 ≤ (n : ℝ) ^ D / n` using `by positivity`. Establish `hKG : 0 ≤ (|K| + G) * (n : ℝ) ^ D` using `mul_nonneg (add_nonneg (abs_nonneg K) hG0) hpow`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e1` using `mul_le_mul_of_nonneg_right hgood (mul_nonneg (abs_nonneg C) hq)`. Establish `e2` using `mul_le_mul_of_nonneg_right hbad hKG`. Establish `e3` using `mul_le_mul_of_nonneg_left hcn (abs_nonneg C)`. Use the polynomial consequences of the given equalities and inequalities. Use `(h1.add (TwoBlockChainSum.gPoly_chain D c)).congr_left fun n => ?_` and prove the remaining obligations.
-
-Simplify using `only [Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem TwoBlockChainSum.proof (hL : TwoBlockStepLocal.Statement) (hB : TwoBlockStepBound.Statement) :
     TwoBlockChainSum.Statement := by

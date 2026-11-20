@@ -14,9 +14,9 @@ def bcEnd (s : A →+* O) (e : (ι → A) →ₗ[A] (ι → A)) : (ι → O) →
   map_smul' c y := by simp [mul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Establish `hr : r = ∑ k, r k • (Pi.single k 1 : ι → A)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hr]`. Use extensionality with `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[bcEnd, Finset.sum_apply, map_sum]`.
+A detailed English derivation is pending.
 -/
 theorem bcEnd_comp (s : A →+* O) (e : (ι → A) →ₗ[A] (ι → A)) (r : ι → A) :
     bcEnd s e (s ∘ r) = s ∘ e r := by
@@ -27,15 +27,13 @@ theorem bcEnd_comp (s : A →+* O) (e : (ι → A) →ₗ[A] (ι → A)) (r : ι
   simp [bcEnd, Finset.sum_apply, map_sum]
 
 /- English proof (translation)
-Use `set P := Submodule.span O ((fun r => s ∘ r) '' (N : Set (ι → A))) with hPdef`. Establish `hfix : P ≤ LinearMap.ker (bcEnd s e - LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Simplify using `[bcEnd_comp, he2 r hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrange : ∀ y, bcEnd s e y ∈ P`. Introduce `y`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `⟨e (Pi.single k 1), he1 _, rfl⟩`. Use `haveI : Module.IsTorsionFree O ((ι → O) ⧸ P) := Module.IsTorsionFree.of_smul_eq_zero fun c q h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective P q`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Distinguish the cases in `hc : c = 0`. Conclude with `Or.inl hc`. Use `right`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `h1` using `hfix h`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, map_smul] at h1`. Establish `h2 : c • (bcEnd s e x - x) = 0` using `h1`. Break down `smul_eq_zero.1 h2 with h3 | h3` into its components or cases.
-
-Conclude with `absurd h3 hc`. Rewrite using `[← sub_eq_zero.1 h3]`. Conclude with `hrange x`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_quot [IsDomain O] [IsPrincipalIdealRing O] (s : A →+* O) (N : Submodule A (ι → A))
     (e : (ι → A) →ₗ[A] (ι → A)) (he1 : ∀ x, e x ∈ N) (he2 : ∀ x ∈ N, e x = x) :
@@ -71,13 +69,13 @@ namespace GlobalTheory.FreeDedekindQuotient
 open Formalism.BasicNotions NumberField
 
 /- English proof (translation)
-Establish `htor : Submodule.torsion A ((ι → A) ⧸ N) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `q hq`. Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff q).1 hq`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective N q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `ha` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Conclude with `htf a (nonZeroDivisors.coe_ne_zero a) x ha`. Use `haveI : Module.Flat A ((ι → A) ⧸ N) := IsDedekindDomain.flat_iff_torsion_eq_bot.2 htor`. Use `haveI := Module.finitePresentation_of_finite A ((ι → A) ⧸ N)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Projective A ((ι → A) ⧸ N) := Module.Flat.projective_of_finitePresentation`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id (Submodule.mkQ_surjective N)`. Use `⟨LinearMap.id - σ ∘ₗ N.mkQ, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Use `congrArg (fun f => f (N.mkQ x)) hσ` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, Submodule.Quotient.mk_sub]`. Rewrite using `[← Submodule.mkQ_apply N (σ (N.mkQ x)), this, Submodule.mkQ_apply, sub_self]`. Establish `h0 : N.mkQ x = 0` using `by simpa using hx`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_proj {A : Type} [CommRing A] [IsDedekindDomain A] {ι : Type} [Fintype ι]
     (N : Submodule A (ι → A)) (htf : ∀ a : A, a ≠ 0 → ∀ x, a • x ∈ N → x ∈ N) :
@@ -104,11 +102,9 @@ theorem exists_proj {A : Type} [CommRing A] [IsDedekindDomain A] {ι : Type} [Fi
     simp [h0]
 
 /- English proof (translation)
-Take `⟨hinj, F, hF⟩` from `h`. Establish `hc : Formalism.MainNotions.DIV.Inh.OsConcrete D`. Use `⟨hinj, F.toIntermediateField (fun x => by` and prove the remaining obligations. Rewrite using `[eq_ratCast (algebraMap ℚ D.what₂.LL) x]`. Conclude with `SubfieldClass.ratCast_mem F x), ?_⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `hF x` as an intermediate fact. Rewrite `this` using `[RingHom.mem_range]`. Conclude with `this`. Take `⟨K, _, _, ⟨e⟩⟩` from `Formalism.MainNotions.DIV.Inh.OsRingOfIntegers_of_concrete D hc`.
-
-Conclude with `{ e.symm.toMulEquiv.isDomain _, isNoetherianRing_of_ringEquiv _ e, Ring.DimensionLEOne.of_ringEquiv e.symm, IsIntegrallyClosed.of_equiv e with }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dedekind_of_concrete (D : D7) (h : Function.Injective D.what₂.OtoLL ∧
     ∃ F : Subfield D.what₂.LL, ∀ x, x ∈ D.what₂.OtoLL.range ↔ x ∈ F ∧ IsIntegral ℤ x) :
@@ -134,9 +130,7 @@ open Formalism.L2.Fam.NPC Formalism.L2.Fam.NPC.BaseC GlobalTheory.HeckeLocN
 namespace GlobalTheory.BjFree
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.mem_latRelSub, Formalism.L2.latRel, Set.mem_setOf_eq, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul] at hx ⊢`. Rewrite `hx` using `[← Finset.smul_sum]`. Establish `hne : (D.what₂.embLL.comp D.what₂.OtoLL) a ≠ 0`. Rewrite using `[RingHom.comp_apply]`. Conclude with `(_root_.map_ne_zero _).2 ((map_ne_zero_iff _ hinj).2 ha)`.
-
-Conclude with `(smul_eq_zero.1 hx).resolve_left hne`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latRel_torsionFree (D : D7) (hinj : Function.Injective D.what₂.OtoLL) (j : ℕ) (a : D.what₂.O) (ha : a ≠ 0)
     (x : (D.what₂.MjLat j).gen → D.what₂.O) (hx : a • x ∈ Formalism.L2.latRelSub (D.what₂.MjLat j)) :
@@ -153,9 +147,7 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D B hI hO i`. Use `haveI := GlobalTheory.FreeDedekindQuotient.dedekind_of_concrete D hO`. Take `⟨e, he1, he2⟩` from `GlobalTheory.FreeDedekindQuotient.exists_proj (Formalism.L2.latRelSub (D.what₂.MjLat (jOf B i))) (fun a ha x hx => latRel_torsionFree D hO.1 _ a ha x hx)`. Use `haveI : IsPrincipalIdealRing (OOf B i) := inferInstance`. Establish `hF` using `GlobalTheory.FreeDedekindQuotient.free_quot (sOfC B hI i) _ e he1 he2`.
-
-Conclude with `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bjC_free : ∀ (D : D7) (B : LocBase0 D.host D.what₂) (hI : OsInt B), (Function.Injective D.what₂.OtoLL ∧ ∃ F : Subfield D.what₂.LL, ∀ x, x ∈ D.what₂.OtoLL.range ↔ x ∈ F ∧ IsIntegral ℤ x) → ∀ i, Module.Free (OOf B i) (BjC B hI i) := by
   intro D B hI hO i

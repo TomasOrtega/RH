@@ -73,332 +73,332 @@ set_option backward.isDefEq.respectTransparency false
 namespace CrystallineSemistableComparison.E.Main
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.sch_cls_cocycle_sec`.
+A detailed English derivation is pending.
 -/
 theorem inSch : InSch := GlobalTheory.EtC.sch_cls_cocycle_sec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.StairAdd.stAdd`.
+A detailed English derivation is pending.
 -/
 theorem stAdd : StAdd := GlobalTheory.CompanionTheory.StairAdd.stAdd
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeStair.stCol`.
+A detailed English derivation is pending.
 -/
 theorem stCol : StCol := GlobalTheory.CompanionTheory.EdgeStair.stCol
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeStair.stEx_of_stCol stCol`.
+A detailed English derivation is pending.
 -/
 theorem stEx : StEx := GlobalTheory.CompanionTheory.EdgeStair.stEx_of_stCol stCol
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeStair.stUniq stCol`.
+A detailed English derivation is pending.
 -/
 theorem stUniq : StUniq := GlobalTheory.CompanionTheory.EdgeStair.stUniq stCol
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeMap.stTop_of_stCol stCol`.
+A detailed English derivation is pending.
 -/
 theorem stTop : StTop := GlobalTheory.CompanionTheory.EdgeMap.stTop_of_stCol stCol
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeClass.edgeUniq_of stCol stAdd stUniq`.
+A detailed English derivation is pending.
 -/
 theorem edgeUniq : EdgeUniq := GlobalTheory.CompanionTheory.EdgeClass.edgeUniq_of stCol stAdd stUniq
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeMapPull.edgeMap`.
+A detailed English derivation is pending.
 -/
 theorem edgeMap : EdgeMap := GlobalTheory.CompanionTheory.EdgeMapPull.edgeMap
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.StairCupFirst.stCupA cupLeib`.
+A detailed English derivation is pending.
 -/
 theorem stCupA : StCupA := GlobalTheory.CompanionTheory.StairCupFirst.stCupA cupLeib
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Staircase.stCupB cupLeib stCol`.
+A detailed English derivation is pending.
 -/
 theorem stCupB : StCupB := GlobalTheory.CompanionTheory.Staircase.stCupB cupLeib stCol
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeMap.edgeCup_of_steps cupCls stTop stCupA stCupB`.
+A detailed English derivation is pending.
 -/
 theorem edgeCup : EdgeCup := GlobalTheory.CompanionTheory.EdgeMap.edgeCup_of_steps cupCls stTop stCupA stCupB
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LcCoverProof.lcCover`.
+A detailed English derivation is pending.
 -/
 theorem lcCover : LcCover := GlobalTheory.CompanionTheory.LcCoverProof.lcCover
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LocSplitProof.locSplit`.
+A detailed English derivation is pending.
 -/
 theorem locSplit : LocSplit := GlobalTheory.CompanionTheory.LocSplitProof.locSplit
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.PrimAlgProof.primAlg`.
+A detailed English derivation is pending.
 -/
 theorem primAlg : PrimAlg := GlobalTheory.CompanionTheory.PrimAlgProof.primAlg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RootPowLC.rootPow primAlg`.
+A detailed English derivation is pending.
 -/
 theorem rootPow : RootPow := GlobalTheory.CompanionTheory.RootPowLC.rootPow primAlg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RootsC.rootsEx`.
+A detailed English derivation is pending.
 -/
 theorem rootsEx : RootsEx := GlobalTheory.CompanionTheory.RootsC.rootsEx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.TiltIdem.lcIdem`.
+A detailed English derivation is pending.
 -/
 theorem lcIdem : LcIdem := GlobalTheory.CompanionTheory.TiltIdem.lcIdem
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LcSp.lcSpec_of_lcIdem lcIdem`.
+A detailed English derivation is pending.
 -/
 theorem lcSpec : LcSpec := GlobalTheory.CompanionTheory.LcSp.lcSpec_of_lcIdem lcIdem
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LcNatProof.lcNat lcIdem lcSpec`.
+A detailed English derivation is pending.
 -/
 theorem lcNat : LcNat := GlobalTheory.CompanionTheory.LcNatProof.lcNat lcIdem lcSpec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CrisLog.logEx`.
+A detailed English derivation is pending.
 -/
 theorem logEx : LogEx := GlobalTheory.CompanionTheory.CrisLog.logEx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LogAlgPf.logAlg`.
+A detailed English derivation is pending.
 -/
 theorem logAlg : LogAlg := GlobalTheory.CompanionTheory.LogAlgPf.logAlg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LogMulPf.logMul logAlg logEx`.
+A detailed English derivation is pending.
 -/
 theorem logMul : LogMul := GlobalTheory.CompanionTheory.LogMulPf.logMul logAlg logEx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LogEpsP.logEps`.
+A detailed English derivation is pending.
 -/
 theorem logEps : LogEps := GlobalTheory.CompanionTheory.LogEpsP.logEps
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EpsRootProof.epsRoot`.
+A detailed English derivation is pending.
 -/
 theorem epsRoot : EpsRoot := GlobalTheory.CompanionTheory.EpsRootProof.epsRoot
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LcLogProof.lcLog lcIdem lcSpec lcCover logEx logMul logEps epsRoot`.
+A detailed English derivation is pending.
 -/
 theorem lcLog : LcLog := GlobalTheory.CompanionTheory.LcLogProof.lcLog lcIdem lcSpec lcCover logEx logMul logEps epsRoot
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LineBase.lineBC`.
+A detailed English derivation is pending.
 -/
 theorem lineBC : LineBC := GlobalTheory.CompanionTheory.LineBase.lineBC
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.TwUg.twUg_prop`.
+A detailed English derivation is pending.
 -/
 theorem twUg : TwUg := GlobalTheory.CompanionTheory.TwUg.twUg_prop
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.FrobLc.fPhi`.
+A detailed English derivation is pending.
 -/
 theorem fPhi : FPhi := GlobalTheory.CompanionTheory.FrobLc.fPhi
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.FKum.fKum rootPow lcLog`.
+A detailed English derivation is pending.
 -/
 theorem fKum : FKum := GlobalTheory.CompanionTheory.FKum.fKum rootPow lcLog
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LineLift.liftEx`.
+A detailed English derivation is pending.
 -/
 theorem liftEx : LiftEx := GlobalTheory.CompanionTheory.LineLift.liftEx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtChern.chern_class_unique_of_lift_and_log liftEx logEx`.
+A detailed English derivation is pending.
 -/
 theorem firstChern_unique : FirstChernUniqueEtale := GlobalTheory.CompanionTheory.EtChern.chern_class_unique_of_lift_and_log liftEx logEx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtEdge.repBasic evExt evNat inSch`.
+A detailed English derivation is pending.
 -/
 theorem repBasic : RepBasic := GlobalTheory.CompanionTheory.EtEdge.repBasic evExt evNat inSch
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeMap.repConc_of_inputs evExt inSch repBasic`.
+A detailed English derivation is pending.
 -/
 theorem repConc : RepConc := GlobalTheory.CompanionTheory.EdgeMap.repConc_of_inputs evExt inSch repBasic
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeRep.repCup evExt evNat repBasic repConc inSch`.
+A detailed English derivation is pending.
 -/
 theorem repCup : RepCup := GlobalTheory.CompanionTheory.EdgeRep.repCup evExt evNat repBasic repConc inSch
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeRep.repOp evNat repConc repBasic`.
+A detailed English derivation is pending.
 -/
 theorem repOp : RepOp := GlobalTheory.CompanionTheory.EdgeRep.repOp evNat repConc repBasic
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeMap.resLoc`.
+A detailed English derivation is pending.
 -/
 theorem resLoc : ResLoc := GlobalTheory.CompanionTheory.EdgeMap.resLoc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtRes.resZero`.
+A detailed English derivation is pending.
 -/
 theorem resZero : ResZero := GlobalTheory.CompanionTheory.EtRes.resZero
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CechPts.cechPt_spec`.
+A detailed English derivation is pending.
 -/
 theorem cechPt : CechPt := GlobalTheory.CompanionTheory.CechPts.cechPt_spec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CechLine.lineMap_exists cechPt`.
+A detailed English derivation is pending.
 -/
 theorem lineMap : LineMap := GlobalTheory.CompanionTheory.CechLine.lineMap_exists cechPt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ChernSys.chern_class_compatible_system cechPt`.
+A detailed English derivation is pending.
 -/
 theorem chern_class_compatible_system : FirstChernCompatibleSystem := GlobalTheory.CompanionTheory.ChernSys.chern_class_compatible_system cechPt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KummerPrimitive.main evExt evNat evDel repConc repBasic cechPt`.
+A detailed English derivation is pending.
 -/
 theorem firstChern_primitive_kummer : FirstChernCoboundary := GlobalTheory.CompanionTheory.KummerPrimitive.main evExt evNat evDel repConc repBasic cechPt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ResSplitProof.resSplit resLoc locSplit lcCover`.
+A detailed English derivation is pending.
 -/
 theorem resSplit : ResSplit := GlobalTheory.CompanionTheory.ResSplitProof.resSplit resLoc locSplit lcCover
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtRoot.repRoot repConc resZero`.
+A detailed English derivation is pending.
 -/
 theorem repRoot : RepRoot := GlobalTheory.CompanionTheory.EtRoot.repRoot repConc resZero
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeMap.redRoot_of_rep repRoot repOp repConc`.
+A detailed English derivation is pending.
 -/
 theorem redRoot : RedRoot := GlobalTheory.CompanionTheory.EdgeMap.redRoot_of_rep repRoot repOp repConc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.TwZeroGen.twZero rootPow lcCover repRoot`.
+A detailed English derivation is pending.
 -/
 theorem twZero : TwZero := GlobalTheory.CompanionTheory.TwZeroGen.twZero rootPow lcCover repRoot
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KapSpecProof.kapSpec lcCover repRoot`.
+A detailed English derivation is pending.
 -/
 theorem kapSpec : KapSpec := GlobalTheory.CompanionTheory.KapSpecProof.kapSpec lcCover repRoot
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KapBij.kapBij lcCover repRoot kapSpec`.
+A detailed English derivation is pending.
 -/
 theorem kapBij : KapBij := GlobalTheory.CompanionTheory.KapBij.kapBij lcCover repRoot kapSpec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KapMulE.kapMul_of lcCover repRoot kapSpec`.
+A detailed English derivation is pending.
 -/
 theorem kapMul : KapMul := GlobalTheory.CompanionTheory.KapMulE.kapMul_of lcCover repRoot kapSpec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CstE.KapRedP.kapRed lcCover repRoot kapSpec`.
+A detailed English derivation is pending.
 -/
 theorem kapRed : KapRed := GlobalTheory.CompanionTheory.CstE.KapRedP.kapRed lcCover repRoot kapSpec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KumPowProof.kumPow lcCover repRoot kapSpec primAlg`.
+A detailed English derivation is pending.
 -/
 theorem kumPow : KumPow := GlobalTheory.CompanionTheory.KumPowProof.kumPow lcCover repRoot kapSpec primAlg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeRes.resGood kapSpec kapBij resZero resSplit`.
+A detailed English derivation is pending.
 -/
 theorem resGood : ResGood := GlobalTheory.CompanionTheory.EdgeRes.resGood kapSpec kapBij resZero resSplit
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtSpecProof.etSpec resGood stEx edgeUniq repBasic resZero`.
+A detailed English derivation is pending.
 -/
 theorem etSpec : EtSpec := GlobalTheory.CompanionTheory.EtSpecProof.etSpec resGood stEx edgeUniq repBasic resZero
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtNatProof.etNat etSpec edgeMap repBasic kapSpec twZero`.
+A detailed English derivation is pending.
 -/
 theorem etNat : EtNat := GlobalTheory.CompanionTheory.EtNatProof.etNat etSpec edgeMap repBasic kapSpec twZero
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeRed.etRed etSpec edgeMap repBasic repOp kapSpec kapRed`.
+A detailed English derivation is pending.
 -/
 theorem etRed : EtRed := GlobalTheory.CompanionTheory.EdgeRed.etRed etSpec edgeMap repBasic repOp kapSpec kapRed
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeProduct.etCup etSpec resGood edgeCup repBasic repCup kapMul`.
+A detailed English derivation is pending.
 -/
 theorem etCup : EtCup := GlobalTheory.CompanionTheory.EdgeProduct.etCup etSpec resGood edgeCup repBasic repCup kapMul
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EdgeRoot.etRoot_of_spec etSpec repRoot kapSpec`.
+A detailed English derivation is pending.
 -/
 theorem etRoot : EtRoot := GlobalTheory.CompanionTheory.EdgeRoot.etRoot_of_spec etSpec repRoot kapSpec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtaleChernClass.etale_chern_class_eq_kummer_class etSpec resGood stCol firstChern_primitive_kummer kumPow`.
+A detailed English derivation is pending.
 -/
 theorem etale_chern_class_eq_kummer_class : EtaleFirstChernKummer := GlobalTheory.CompanionTheory.EtaleChernClass.etale_chern_class_eq_kummer_class etSpec resGood stCol firstChern_primitive_kummer kumPow
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtReduction.fred_of_etRed etRed`.
+A detailed English derivation is pending.
 -/
 theorem fRed : FRed := GlobalTheory.CompanionTheory.EtReduction.fred_of_etRed etRed
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.FEquiProof.fEqui etNat twUg`.
+A detailed English derivation is pending.
 -/
 theorem fEqui : FEqui := GlobalTheory.CompanionTheory.FEquiProof.fEqui etNat twUg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.FNatProof.fNat etNat`.
+A detailed English derivation is pending.
 -/
 theorem fNat : FNat := GlobalTheory.CompanionTheory.FNatProof.fNat etNat
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.FResProof.fRes etNat`.
+A detailed English derivation is pending.
 -/
 theorem fRes : FRes := GlobalTheory.CompanionTheory.FResProof.fRes etNat
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EtCupF.fCup etCup morCup lcSpec`.
+A detailed English derivation is pending.
 -/
 theorem fCup : FCup := GlobalTheory.CompanionTheory.EtCupF.fCup etCup morCup lcSpec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.FRootCls.froot etRoot redRoot morCup lcSpec`.
+A detailed English derivation is pending.
 -/
 theorem fRoot : FRoot := GlobalTheory.CompanionTheory.FRootCls.froot etRoot redRoot morCup lcSpec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.FUntwPf.main fCup fRoot cupOne`.
+A detailed English derivation is pending.
 -/
 theorem fUntw : FUntw := GlobalTheory.CompanionTheory.FUntwPf.main fCup fRoot cupOne
 
 /- English proof (translation)
-The claim follows from `firstChern_family_of_lifts lineBC lineMap chern_class_compatible_system etale_chern_class_eq_kummer_class fKum fRes fUntw`.
+A detailed English derivation is pending.
 -/
 theorem firstChern_family : FirstChernClassFamily := firstChern_family_of_lifts lineBC lineMap chern_class_compatible_system etale_chern_class_eq_kummer_class fKum fRes fUntw
 
 /- English proof (translation)
-The claim follows from `etale_comparison_map_of_facts rootsEx lcNat fRed fEqui fPhi fNat fCup fRoot firstChern_family`.
+A detailed English derivation is pending.
 -/
 theorem etale_comparison_map : EtaleComparisonMapExists := etale_comparison_map_of_facts rootsEx lcNat fRed fEqui fPhi fNat fCup fRoot firstChern_family
 

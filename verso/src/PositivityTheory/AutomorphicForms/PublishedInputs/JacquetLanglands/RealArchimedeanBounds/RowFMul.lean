@@ -10,14 +10,14 @@ open scoped Matrix NNReal
 namespace UpperTheory.Esk.HeightMultiplicativityAlt
 
 /- English proof (translation)
-Simplify using `only [rowF, Units.val_mul, Matrix.vecMul_vecMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowF_mul {F : Type} [Field F] [NumberField F] (s : Fin 2 → F) (x y : GF F) :
     rowF s (x * y) = rowF s x ᵥ* y.val := by
   simp only [rowF, Units.val_mul, Matrix.vecMul_vecMul]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.vecMul, dotProduct, Matrix.mul_apply, Fin.sum_univ_two, mul_add, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem row_mul {F : Type} [Field F] [NumberField F] (t : Af F) (k : GF F) (M : Matrix (Fin 2) (Fin 2) (Af F)) :
     (fun i => t * k.val 1 i) ᵥ* M = fun i => t * (k.val * M) 1 i := by
@@ -31,7 +31,7 @@ theorem zc_val {F : Type} [Field F] [NumberField F] (z : (Af F)ˣ) :
     (zc F z).val = Matrix.scalar (Fin 2) (z : Af F) := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, zc_val, pow_two]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem det_zc {F : Type} [Field F] [NumberField F] (z : (Af F)ˣ) :
     Matrix.GeneralLinearGroup.det (zc F z) = z * z := by
@@ -39,13 +39,13 @@ theorem det_zc {F : Type} [Field F] [NumberField F] (z : (Af F)ˣ) :
   simp [Matrix.GeneralLinearGroup.val_det_apply, zc_val, pow_two]
 
 /- English proof (translation)
-Take `⟨-, -, hKc, hH, hdet, -⟩` from `hM F`. Take `⟨hA1, hA2, hA3, -⟩` from `UpperTheory.V.Sd.Hm.absf F`. Take `⟨k', hk', z, rfl⟩` from `(hH c h).1 hh`. Take `⟨t, k, hk, ht⟩` from `(hR F s x).1 hs`. Establish `hk'0 : k' ∈ K0 F` using `hKc c hk'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : nF s x = absF t` using `(hR F s x).2 t k hk ht`. Establish `hx : rowF s x = fun i => (t : Af F) * k.val 1 i` using `funext ht`. Establish `e2 : nF s (x * (k' * zc F z)) = absF (t * z)`. Use `(hR F s _).2 (t * z) (k * k') (mul_mem hk hk'0) fun i => ?_` and prove the remaining obligations. Rewrite using `[rowF_mul, hx, row_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, zc_val, ← Matrix.mul_assoc, Matrix.scalar_apply, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : absF (Matrix.GeneralLinearGroup.det k') = 1` using `hA3 _ fun w => (hdet k' hk'0 w).1`. Rewrite using `[e1, e2, map_mul, map_mul, det_zc]`. Simplify using `only [hA2, e3]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(hA1 t).ne'` as an intermediate fact. Use `(hA1 z).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem part1 (hM : AMem) (hR : ARow) (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (c : Pl F → ℕ)
     (s : Fin 2 → F) (hs : s ≠ 0) (x h : GF F) (hh : h ∈ Hc c) :
@@ -71,23 +71,23 @@ theorem part1 (hM : AMem) (hR : ARow) (F : Type) [Field F] [NumberField F] [IsTo
   field_simp
 
 /- English proof (translation)
-Take `⟨hK, hO, -, -, hdet, -, hN, -⟩` from `hM F`. Take `⟨hA1, hA2, -, -⟩` from `UpperTheory.V.Sd.Hm.absf F`. Take `⟨N, hN0, hNa⟩` from `hN a⁻¹`. Establish `hNF : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN0`. Take `⟨n, hn⟩ : ∃ n : (Af F)ˣ, (n : Af F) = (N : Af F)` from `⟨ratU F (Units.mk0 (N : F) hNF), by simp [ratU]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨absF (Matrix.GeneralLinearGroup.det a) / absF n ^ 2, fun s hs x => ?_⟩` and prove the remaining obligations. Take `⟨t, k, hk, ht⟩` from `(hR F s x).1 hs`. Take `⟨t', k', hk', ht'⟩` from `(hR F s (x * a)).1 hs`. Rewrite using `[(hR F s x).2 t k hk ht, (hR F s (x * a)).2 t' k' hk' ht']`. Establish `key : absF (n * t) ≤ absF t'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hMo F _ _ fun w => ?_` and prove the remaining obligations. Establish `hrow : rowF s x = rowF s (x * a) ᵥ* (a⁻¹ : GF F).val`. Rewrite using `[← rowF_mul, mul_inv_cancel_right]`. Establish `hint : ∀ i j, Valued.v (pLoc F w (k'.val i j)) ≤ 1` using `fun i j => (hO _).1 (((hK k').1 hk').1 i j) w`. Establish `hint2 : ∀ i j, Valued.v (pLoc F w ((N : Af F) * (a⁻¹ : GF F).val i j)) ≤ 1` using `fun i j => (hO _).1 (hNa i j) w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : ∀ i, (n : Af F) * ((t : Af F) * k.val 1 i) = (t' : Af F) * (k'.val 1 0 * ((N : Af F) * (a⁻¹ : GF F).val 0 i) + k'.val 1 1 * ((N : Af F) * (a⁻¹ : GF F).val 1 i))`. Introduce `i`. Establish `h1` using `congrFun hrow i`. Rewrite using `[← ht i, hn, h1]`. Simplify using `only [Matrix.vecMul, dotProduct, Fin.sum_univ_two, ht']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hS : ∀ i, Valued.v (pLoc F w (k'.val 1 0 * ((N : Af F) * (a⁻¹ : GF F).val 0 i) + k'.val 1 1 * ((N : Af F) * (a⁻¹ : GF F).val 1 i))) ≤ 1`. Introduce `i`. Rewrite using `[map_add]`. Apply the tactic sequence `refine Valuation.map_add_le _ ?_ ?_ <;> rw [map_mul, map_mul] <;> exact mul_le_one' (hint _ _) (hint2 _ _)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hmax` using `(hdet k hk w).2`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, Valued.v (pLoc F w (k.val 1 i)) = 1 := by`. Break down `max_choice (Valued.v (pLoc F w (k.val 1 0))) (Valued.v (pLoc F w (k.val 1 1))) with h | h` into its components or cases. Conclude with `⟨0, h.symm.trans hmax⟩`. Conclude with `⟨1, h.symm.trans hmax⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, hi, mul_one]`. Use `_ = Valued.v (pLoc F w (t' : Af F)) * Valued.v (pLoc F w (k'.val 1 0 * ((N : Af F) * (a⁻¹ : GF F).val 0 i) + k'.val 1 1 * ((N : Af F) * (a⁻¹ : GF F).val 1 i))) := by`. Rewrite using `[heq i, map_mul (pLoc F w), map_mul Valued.v]`. Use `_ ≤ Valued.v (pLoc F w (t' : Af F)) * 1 := mul_le_mul' le_rfl (hS i)`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = _ := mul_one _`. Rewrite using `[map_mul, hA2]`. Establish `key2 : absF n * absF t ≤ absF t'` using `by rw [← hA2]; exact key`. Establish `p1` using `hA1 n`. Establish `p2` using `hA1 t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3` using `hA1 t'`. Establish `p4` using `hA1 (Matrix.GeneralLinearGroup.det x)`. Establish `p5` using `hA1 (Matrix.GeneralLinearGroup.det a)`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem part2 (hM : AMem) (hR : ARow) (hMo : AMono) (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (a : GF F) : ∃ C : ℝ, ∀ s : Fin 2 → F, s ≠ 0 → ∀ x : GF F,
@@ -153,7 +153,7 @@ theorem part2 (hM : AMem) (hR : ARow) (hMo : AMono) (F : Type) [Field F] [Number
 end UpperTheory.Esk.HeightMultiplicativityAlt
 
 /- English proof (translation)
-Introduce `hM _ hMo hR F _ _ _ c _ χ`. Conclude with `⟨fun s hs x h hh => UpperTheory.Esk.HeightMultiplicativityAlt.part1 hM hR F c s hs x h hh, fun a => UpperTheory.Esk.HeightMultiplicativityAlt.part2 hM hR hMo F a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Esk.dMul : UpperTheory.Esk.AMem → UpperTheory.Esk.AIw → UpperTheory.Esk.AMono → UpperTheory.Esk.ARow → UpperTheory.Esk.DMul := by
   intro hM _ hMo hR F _ _ _ c _ χ

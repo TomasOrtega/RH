@@ -15,7 +15,7 @@ section Abstract
 variable {Γ D M : Type} [Group Γ] [MulAction Γ D] [AddCommGroup M] [Module ℚ M]
 
 /- English proof (translation)
-Rewrite using `[MulAction.Quotient.smul_coe, smul_eq_mul, mul_one, QuotientGroup.eq, mul_one, inv_mem_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rf_smul_one_coset (N : Subgroup Γ) (γ : Γ) : γ • ((1 : Γ) : Γ ⧸ N) = ((1 : Γ) : Γ ⧸ N) ↔ γ ∈ N := by
   rw [MulAction.Quotient.smul_coe, smul_eq_mul, mul_one, QuotientGroup.eq, mul_one, inv_mem_iff]
@@ -28,23 +28,19 @@ def rf_stabEquiv (N : Subgroup Γ) (r : D) :
   right_inv _ := rfl
 
 /- English proof (translation)
-Use `Fintype.ofFinite (Γ ⧸ N)` as an intermediate fact. Establish `hinj : Function.Injective fun r : D => ((r, ((1 : Γ) : Γ ⧸ N)) : D × Γ ⧸ N)` using `fun a b h => congrArg Prod.fst h`. Establish `key` using `Formalism.HermitianLattices.RamifiedLatticeOperators.fubini_over_orbits Γ (D × Γ ⧸ N) D M Prod.fst (fun y => Finset.univ.image fun a : Γ ⧸ N => (y, a)) (fun p => F p.1) (RN.image fun r : D => ((r, ((1 : Γ) : Γ ⧸ N)) : D × Γ ⧸ N)) RΓ (fun _ _ => rfl) (by`. Introduce `p y`. Rewrite using `[Finset.mem_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, -, rfl⟩`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨p.2, Finset.mem_univ _, rfl⟩)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `(fun γ p => hF γ p.1) hfin`. Use the proof step `(by`. Introduce and unpack `⟨d, a⟩`. Proceed by induction on `a using QuotientGroup.induction_on with`. Consider the case `H g`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r0, ⟨hr0, n, hn⟩, huniq⟩` from `hN (g⁻¹ • d)`. Establish `hn' : (n : Γ) • g⁻¹ • d = r0` using `hn`. Use `⟨(r0, ((1 : Γ) : Γ ⧸ N)), ⟨Finset.mem_image_of_mem _ hr0, (n : Γ) * g⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ((n : Γ) * g⁻¹) • d = r0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[mul_smul, hn']`. Use `show ((n : Γ) * g⁻¹) • ((g : Γ) : Γ ⧸ N) = ((1 : Γ) : Γ ⧸ N)`. Rewrite using `[MulAction.Quotient.smul_coe, smul_eq_mul, inv_mul_cancel_right, eq_comm, QuotientGroup.eq, inv_one, one_mul]`. Conclude with `n.2`. Introduce and unpack `p ⟨hp, γ, hγ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr, rfl⟩` from `Finset.mem_image.mp hp`. Establish `h1 : γ • d = r` using `congrArg Prod.fst hγ`. Establish `h2 : γ • ((g : Γ) : Γ ⧸ N) = ((1 : Γ) : Γ ⧸ N)` using `congrArg Prod.snd hγ`. Establish `h3 : γ * g ∈ N`. Rewrite `h2` using `[MulAction.Quotient.smul_coe, smul_eq_mul, eq_comm, QuotientGroup.eq, inv_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `h4 : r = r0` using `huniq r ⟨hr, ⟨γ * g, h3⟩, by show (γ * g) • g⁻¹ • d = r`. Rewrite using `[smul_smul, mul_inv_cancel_right, h1]⟩`. Rewrite using `[h4])`. Use `hΓ`.
-
-Rewrite `key` using `[Finset.sum_image (fun a _ b _ h => hinj h)]`. Rewrite using `[Finset.smul_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun r _ => ?_) (key.trans (Finset.sum_congr rfl fun y _ => ?_))` and prove the remaining obligations. Rewrite using `[Nat.card_congr (rf_stabEquiv N r)]`. Rewrite using `[Finset.sum_image (fun a _ b _ h => congrArg Prod.snd h)] show _ • ∑ _a : Γ ⧸ N, F y = _`.
-
-Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, Nat.cast_smul_eq_nsmul, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_cs_subgroup (N : Subgroup Γ) [Finite (Γ ⧸ N)] (F : D → M) (hF : ∀ (γ : Γ) (d : D), F (γ • d) = F d)
     (hfin : ∀ d : D, Finite (MulAction.stabilizer Γ d)) (RΓ RN : Finset D)
@@ -135,19 +131,19 @@ def rf_cosetEquiv (H : LevFam.Split ι ΛP ΛK Λ0) (hinj : ∀ a : ↥Λ0.grp, 
       exact k.2)
 
 /- English proof (translation)
-Set `_` to `hP.fintypeCl`. Set `_` to `hK.fintypeCl`. Establish `: Finite ↥Λ0.grp` using `inferInstance`. Establish `: Finite (FormG ΛP ⧸ rf_subN ΛP ΛK)` using `Finite.of_equiv _ (rf_cosetEquiv H hinj)`. Establish `hinjP : Function.Injective sP.rep` using `fun c c' hc => by rw [← sP.spec c, hc, sP.spec]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinjK : Function.Injective sK.rep` using `fun c c' hc => by rw [← sK.spec c, hc, sK.spec]`. Set `up : FormG ΛK → ↥(rf_subN ΛP ΛK)` to `fun g => ⟨(g.1, ⟨g.2.1, (H.sub g.2).1⟩), g.2.2⟩`. Set `dn : ↥(rf_subN ΛP ΛK) → FormG ΛK` to `fun g => (g.1.1, ⟨g.1.2.1, g.2⟩)`. Establish `hstab : ∀ d : DecoSet X.E n ST SG, MulAction.stabilizer (FormG ΛK) d ≃ MulAction.stabilizer ↥(rf_subN ΛP ΛK) d` using `fun d => { toFun := fun g => ⟨up g.1, g.2⟩ invFun := fun g => ⟨dn g.1, g.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `key` using `rf_cs_subgroup (Γ := FormG ΛP) (D := DecoSet X.E n ST SG) (M := X.K) (rf_subN ΛP ΛK) F (fun g d => hF g.1 g.2 d) hP.fin_stab (Finset.univ.image sP.rep) (Finset.univ.image sK.rep) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Use `⟨sP.rep ((formGSD C ΛP).cls a), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `((formGSD C ΛP).cls_eq_iff _ _).mp (sP.spec _)`. Introduce and unpack `r ⟨hr, hr2⟩`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.mp hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (formGSD C ΛP).cls (sP.rep c) = (formGSD C ΛP).cls a` using `((formGSD C ΛP).cls_eq_iff _ _).mpr hr2`. Rewrite using `[← h1, sP.spec])`. Use the proof step `(by`. Introduce `a`. Use `⟨sK.rep ((formGSD C ΛK).cls a), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg⟩` from `((formGSD C ΛK).cls_eq_iff _ _).mp (sK.spec ((formGSD C ΛK).cls a))`. Conclude with `⟨up g, hg⟩`. Introduce and unpack `r ⟨hr, g, hg⟩`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.mp hr`. Establish `h1 : (formGSD C ΛK).cls (sK.rep c) = (formGSD C ΛK).cls a` using `((formGSD C ΛK).cls_eq_iff _ _).mpr ⟨dn g, hg⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1, sK.spec])`. Rewrite `key` using `[Finset.sum_image (fun c _ c' _ hc => hinjK hc), Finset.sum_image (fun c _ c' _ hc => hinjP hc)]`. Unfold `GSD.csOf`. Rewrite `key` using `[← Nat.card_congr (rf_cosetEquiv H hinj)]`. Rewrite `key` using `[Rat.smul_def, Rat.cast_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (Finset.sum_congr rfl fun c _ => ?_) (key.trans (congrArg _ (Finset.sum_congr rfl fun c _ => ?_)))` and prove the remaining obligations. Rewrite using `[(formGSD C ΛK).wt_eq, Rat.smul_def, Rat.cast_inv, Rat.cast_natCast, ← Nat.card_congr (hstab (sK.rep c)), smul_eq_mul]`. Rewrite using `[(formGSD C ΛP).wt_eq, Rat.smul_def, Rat.cast_inv, Rat.cast_natCast, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_cs_split (H : LevFam.Split ι ΛP ΛK Λ0) (hinj : ∀ a : ↥Λ0.grp, ι a.1 ∈ ΛK.grp → a = 1)
     (hP : (formGSD C ΛP).Ok) (hK : (formGSD C ΛK).Ok) (sP : (formGSD C ΛP).Sec) (sK : (formGSD C ΛK).Sec)
@@ -199,11 +195,9 @@ theorem rf_cs_split (H : LevFam.Split ι ΛP ΛK Λ0) (hinj : ∀ a : ↥Λ0.grp
   · rw [(formGSD C ΛP).wt_eq, Rat.smul_def, Rat.cast_inv, Rat.cast_natCast, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h0 : (Nat.card ↥Λ0.grp : X.K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `h1` using `rf_cs_split C H hinj hP hK (formGSD C ΛP).outSec (formGSD C ΛK).outSec (fun d => C.pair (φ d) (ψ d)) (fun γ h d => by`. Establish `e1` using `hφ ((γ, h) : FormG ΛP) d`. Establish `e2` using `hψ ((γ, h) : FormG ΛP) d`. Use `show C.pair (φ ((γ, (h.1 : GLG X.E n SG)) • d)) (ψ ((γ, (h.1 : GLG X.E n SG)) • d)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1' : φ ((γ, (h.1 : GLG X.E n SG)) • d) = (formGSD C ΛP).ρ ((γ, h) : FormG ΛP) (φ d)` using `e1`. Establish `e2' : ψ ((γ, (h.1 : GLG X.E n SG)) • d) = (formGSD C ΛP).ρ ((γ, h) : FormG ΛP) (ψ d)` using `e2`. Rewrite using `[e1', e2']`. Conclude with `hP.inv _ _ _)`. Use `show (formGSD C ΛP).csOf hP (formGSD C ΛP).outSec (fun d => C.pair (φ d) (ψ d)) = _ * (formGSD C ΛK).csOf hK (formGSD C ΛK).outSec (fun d => C.pair (φ d) (ψ d))`.
-
-Rewrite using `[h1, inv_mul_cancel_left₀ h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_ip_split (H : LevFam.Split ι ΛP ΛK Λ0) (hinj : ∀ a : ↥Λ0.grp, ι a.1 ∈ ΛK.grp → a = 1)
     (hP : (formGSD C ΛP).Ok) (hK : (formGSD C ΛK).Ok) (φ ψ : DecoSet X.E n ST SG → C.V)
@@ -228,7 +222,7 @@ end TwoLevels
 section Rows
 
 /- English proof (translation)
-Rewrite `hg` using `[HK_eq_HPar h bl, mem_HPar]`. Take `⟨hB, h0⟩` from `hg`. Use `Subgroup.mem_bot.mp h0` as an intermediate fact. Rewrite `this` using `[firstBlock_diagEmb_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rf_diagEmb_mem_HK {κ : Type} [CommRing κ] {n r : ℕ} (h : r ≤ n) (bl : List ℕ) (g : GL (Fin r) κ)
     (hg : diagEmb κ h g ∈ HK n κ r bl) : g = 1 := by
@@ -242,9 +236,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (P : LevFam X.E X.K R.r Pr.vGs)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h1 : unipotentGroupBlockEmbedding Pr sel mu (r_le_X' R) a (inlSG w) ∈ (((rowTyK Ch).glue (rowTyQ R (mu : Chr X.F X.E X.K) (QE sel (mu : Chr X.F X.E X.K)))) (inlSG w)).H` using `(rowTyKK Ch sel mu).mem_at ⟨_, ha⟩ (inlSG w)`. Rewrite `h1` using `[LevFam.glue_of_mem _ _ (inlSG w) w.2]`. Establish `h2 : unipotentGroupBlockEmbedding Pr sel mu (r_le_X' R) a (inlSG w) = diagEmb _ (r_le_X' R) (a w)` using `extGLG_of_mem _ (inlSG w) w.2`. Establish `h3 : diagEmb _ (r_le_X' R) (a w) ∈ HK (R.N R.m - 1) (𝓞 X.E ⧸ w.1.asIdeal) R.r (List.replicate R.m R.t)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Conclude with `h1`. Conclude with `rf_diagEmb_mem_HK _ _ _ h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_g0Hat_injX (a : G0 X.E Pr.vGs R.r) (ha : unipotentGroupBlockEmbedding Pr sel mu (r_le_X' R) a ∈ (rowTyKK Ch sel mu).grp) : a = 1 := by
   funext w
@@ -259,9 +253,9 @@ theorem rf_g0Hat_injX (a : G0 X.E Pr.vGs R.r) (ha : unipotentGroupBlockEmbedding
   exact rf_diagEmb_mem_HK _ _ _ h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h1 : unipotentGroupBlockEmbedding Pr sel mu (r_le_nV R) a (inlSG w) ∈ (((mtTyK Ch j).glue (mtTyQ R (mu : Chr X.F X.E X.K) (QE sel (mu : Chr X.F X.E X.K)))) (inlSG w)).H` using `(mtTyKK Ch sel mu j).mem_at ⟨_, ha⟩ (inlSG w)`. Rewrite `h1` using `[LevFam.glue_of_mem _ _ (inlSG w) w.2]`. Establish `h2 : unipotentGroupBlockEmbedding Pr sel mu (r_le_nV R) a (inlSG w) = diagEmb _ (r_le_nV R) (a w)` using `extGLG_of_mem _ (inlSG w) w.2`. Establish `h3 : diagEmb _ (r_le_nV R) (a w) ∈ HK R.nV (𝓞 X.E ⧸ w.1.asIdeal) R.r [R.t]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Conclude with `h1`. Conclude with `rf_diagEmb_mem_HK _ _ _ h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_g0Hat_injV (j : ℕ) (a : G0 X.E Pr.vGs R.r) (ha : unipotentGroupBlockEmbedding Pr sel mu (r_le_nV R) a ∈ (mtTyKK Ch sel mu j).grp) :
     a = 1 := by
@@ -277,7 +271,7 @@ theorem rf_g0Hat_injV (j : ℕ) (a : G0 X.E Pr.vGs R.r) (ha : unipotentGroupBloc
   exact rf_diagEmb_mem_HK _ _ _ h3
 
 /- English proof (translation)
-Conclude with `rf_ip_split (rowVal W (rowSG Pr sel mu)) (rowTy_split Ch sel mu P).inv (fun a ha => Subtype.ext (rf_g0Hat_injX Ch sel mu a.1 ha)) h h' φ ψ hφ hψ`.
+A detailed English derivation is pending.
 -/
 theorem levelSumX (h : (mtildeGSD W Ch sel mu P).Ok) (h' : (mtildeKGSD W Ch sel mu).Ok)
     (φ ψ : DecoSet X.E (R.N R.m - 1) ∅ (rowSG Pr sel mu) → VV X.K W.sgTrue)
@@ -287,7 +281,7 @@ theorem levelSumX (h : (mtildeGSD W Ch sel mu P).Ok) (h' : (mtildeKGSD W Ch sel 
     (fun a ha => Subtype.ext (rf_g0Hat_injX Ch sel mu a.1 ha)) h h' φ ψ hφ hψ
 
 /- English proof (translation)
-Conclude with `rf_ip_split (mtVal W j (rowSG Pr sel mu)) (mtTy_split Ch sel mu P j).inv (fun a ha => Subtype.ext (rf_g0Hat_injV Ch sel mu j a.1 ha)) h h' φ ψ hφ hψ`.
+A detailed English derivation is pending.
 -/
 theorem levelSumV (j : ℕ) (h : (mtGSD W Ch sel mu P j).Ok) (h' : (mtKGSD W Ch sel mu j).Ok)
     (φ ψ : DecoSet X.E R.nV ∅ (rowSG Pr sel mu) → VV X.K (W.lamV j))
@@ -297,7 +291,7 @@ theorem levelSumV (j : ℕ) (h : (mtGSD W Ch sel mu P j).Ok) (h' : (mtKGSD W Ch 
     (fun a ha => Subtype.ext (rf_g0Hat_injV Ch sel mu j a.1 ha)) h h' φ ψ hφ hψ
 
 /- English proof (translation)
-Conclude with `rf_cs_split (rowVal W (rowSG Pr sel mu)) (rowTy_split Ch sel mu P).inv (fun a ha => Subtype.ext (rf_g0Hat_injX Ch sel mu a.1 ha)) h h' _ _ F (fun γ k d => hF (γ, k) d)`.
+A detailed English derivation is pending.
 -/
 theorem levelCsX (h : (mtildeGSD W Ch sel mu P).Ok) (h' : (mtildeKGSD W Ch sel mu).Ok)
     (F : DecoSet X.E (R.N R.m - 1) ∅ (rowSG Pr sel mu) → X.K)

@@ -30,9 +30,7 @@ namespace GlobalTheory.CompanionTheory.WaveMult.KerAdj
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hf`. Use `⟨R, fun y hy hlt => ?_⟩` and prove the remaining obligations. Establish `hO : IsOpen (GLs n ∩ lg ⁻¹' Set.Ioi R)` using `(hL n).2.2.2.1.continuousOn.isOpen_inter_preimage (GlobalTheory.CompanionTheory.WaveKer.isOpen_GLs n) isOpen_Ioi`. Establish `h0 : f =ᶠ[𝓝 y] 0` using `by filter_upwards [hO.mem_nhds ⟨hy, hlt⟩] with x hx`. Conclude with `hR x hx.1 hx.2`.
-
-Conclude with `(GlobalTheory.CompanionTheory.WaveKer.zOp_germ w h0).self_of_nhds`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cpt_zOp (hL : LgFacts) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (w : List (Bool × ℕ)) {f : Mat n → V} (hf : Cpt f) : Cpt (zOp w f) := by
@@ -46,7 +44,7 @@ theorem cpt_zOp (hL : LgFacts) {V : Type} [NormedAddCommGroup V] [NormedSpace �
   exact (GlobalTheory.CompanionTheory.WaveKer.zOp_germ w h0).self_of_nhds
 
 /- English proof (translation)
-The claim follows from `hφ.comp_continuous Units.continuous_val PairAdj.val_mem_GLs`.
+A detailed English derivation is pending.
 -/
 theorem cont_val {W : Type} [TopologicalSpace W] {φ : Mat n → W} (hφ : ContinuousOn φ (GLs n)) :
     Continuous fun y : G n => φ y.val :=
@@ -57,7 +55,7 @@ section Pair
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `cb`. Use `Continuous.integrable_of_hasCompactSupport ((cont_val ha).inner (cont_val hb)) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro ((hL n).2.2.2.2.1 R) fun y hy => ?_` and prove the remaining obligations. Simplify using `[hR _ (PairAdj.val_mem_GLs y) (not_le.1 hy)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pair_integrable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (hL : LgFacts) {a b : Mat n → V} (ha : ContinuousOn a (GLs n))
@@ -69,19 +67,17 @@ theorem pair_integrable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ
   simp [hR _ (PairAdj.val_mem_GLs y) (not_le.1 hy)]
 
 /- English proof (translation)
-Establish `hc : ∀ R, IsCompact {y : G n | lg y.val ≤ R}` using `(hL n).2.2.2.2.1`. Use `haveI : SigmaFinite μ := ⟨⟨⟨fun m : ℕ => {y : G n | lg y.val ≤ m}, fun _ => trivial, fun m => (hc m).measure_lt_top, Set.eq_univ_of_forall fun y => Set.mem_iUnion.2 (exists_nat_ge (lg y.val))⟩⟩⟩`. Take `⟨R, hR⟩` from `ca`. Establish `hgc : Continuous fun t : ℝ => (g t : ℂ)` using `Complex.continuous_ofReal.comp hg.1.continuous`. Establish `hWc : Continuous fun p : G n × ℝ => W p.2 p.1.val`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun p : G n × ℝ => ((p.2, p.1.val) : ℝ × Mat n)` using `continuous_snd.prodMk (Units.continuous_val.comp continuous_fst)`. Conclude with `hW.comp_continuous h1 (fun p => ⟨Set.mem_univ _, PairAdj.val_mem_GLs _⟩)`. Establish `hgz : ∀ t, t ∉ Set.Icc (-T) T → (g t : ℂ) = 0`. Introduce `t ht`. Establish `h1 : T < |t|`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h`. Conclude with `ht (abs_le.1 (not_lt.1 h))`. Simplify using `[hg.2.2 t h1]`. Establish `i1 : ∀ y : G n, Integrable (fun t => (g t : ℂ) • W t y.val) volume`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Continuous.integrable_of_hasCompactSupport (hgc.smul (hWc.comp (Continuous.prodMk_right y))) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (isCompact_Icc (a := -T) (b := T)) fun t ht => ?_` and prove the remaining obligations. Simplify using `[hgz t ht]`. Establish `j : Integrable (Function.uncurry fun (y : G n) (t : ℝ) => ⟪a y.val, (g t : ℂ) • W t y.val⟫_ℂ) (μ.prod volume)`. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `((cont_val ha).comp continuous_fst).inner ((hgc.comp continuous_snd).smul hWc)`. Use `HasCompactSupport.intro ((hc R).prod (isCompact_Icc (a := -T) (b := T))) fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : lg p.1.val ≤ R`. Establish `h2 : p.2 ∉ Set.Icc (-T) T` using `fun h2 => hp ⟨h1, h2⟩`. Simplify using `[Function.uncurry, hgz _ h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Function.uncurry, hR _ (PairAdj.val_mem_GLs p.1) (not_le.1 h1)]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(integral_inner (i1 y) (a y.val)).symm`. Use `_ = ∫ t, ∫ y : G n, ⟪a y.val, (g t : ℂ) • W t y.val⟫_ℂ ∂μ ∂volume := integral_integral_swap j`.
-
-Use `_ = _ := by`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [inner_smul_right]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_avg {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
     (hL : LgFacts) {a : Mat n → V} {W : ℝ → Mat n → V} {g : ℝ → ℝ} {T : ℝ}
@@ -137,23 +133,21 @@ section Chain
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ E.V`. Establish `hui : IsWave E (fun t => zOp w' (u t))` using `GlobalTheory.T.center_operator_preserves_wave hR n E u w' hu`. Establish `cu0 : Cpt (u 0)`. Take `⟨R, hR'⟩` from `cf`. Conclude with `⟨R, fun y hy hl => by rw [hu0 y hy]; exact hR' y hy hl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `cv0 : Cpt (v 0)`. Take `⟨R, hR'⟩` from `ch`. Conclude with `⟨R, fun y hy hl => by rw [hv0 y hy]; exact hR' y hy hl⟩`. Establish `cui0 : Cpt ((fun t => zOp w' (u t)) 0)` using `cpt_zOp hL w' cu0`. Establish `c1 : ContinuousOn ((fun t => zOp w' (u t)) 0) (GLs n)` using `(hui.2.1 0).1.continuousOn`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : ContinuousOn (v 0) (GLs n)` using `(hv.2.1 0).1.continuousOn`. Establish `L : ∫ y : G n, ⟪zOp w' f y.val, ∫ t, (g t : ℂ) • v t y.val⟫_ℂ ∂μ = ∫ t, (g t : ℂ) * ∫ y : G n, ⟪zOp w' (u t) y.val, v 0 y.val⟫_ℂ ∂μ`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zOp_agree_GLs n w' (u 0) f hu0 _ (PairAdj.val_mem_GLs y)]`. Use `_ = ∫ t, (g t : ℂ) * ∫ y : G n, ⟪zOp w' (u 0) y.val, v t y.val⟫_ℂ ∂μ := pair_avg μ hL c1 cui0 hv.1.continuousOn hb`. Use `_ = _ := by`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [GlobalTheory.T.wave_pairing_time_symmetry hL hR hS n μ E _ v hui hv cui0 cv0 t]`. Establish `Rr : ∫ y : G n, ⟪act μ E K' f y.val, h y.val⟫_ℂ ∂μ = ∫ t, (g t : ℂ) * ∫ y : G n, ⟪zOp w' (u t) y.val, v 0 y.val⟫_ℂ ∂μ`. Establish `hF` using `pair_avg μ hL c2 cv0 hui.1.continuousOn hb`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hy` using `PairAdj.val_mem_GLs y`. Establish `e1 : act μ E K' f y.val = act μ E K' (u 0) y.val`. Simplify using `only [act]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu0 _ (GlobalTheory.CompanionTheory.WaveKer.mul_mem_GLs hy (PairAdj.val_mem_GLs z))]`. Simplify using `only`. Rewrite using `[e1, hK.2.2.2 u hu _ hy, GlobalTheory.T.center_operator_commutes_integral n u g T w' hu.1 hb _ hy, hv0 _ hy]`. Use `_ = conj (∫ y : G n, ⟪v 0 y.val, ∫ t, (g t : ℂ) • zOp w' (u t) y.val⟫_ℂ ∂μ) := by`. Rewrite using `[← integral_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [inner_conj_symm]`. Use `_ = conj (∫ t, (g t : ℂ) * ∫ y : G n, ⟪v 0 y.val, zOp w' (u t) y.val⟫_ℂ ∂μ) := by`. Rewrite using `[hF]`. Use `_ = _ := by`. Rewrite using `[← integral_conj]`.
-
-Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[map_mul, Complex.conj_ofReal, ← integral_conj]`. Simplify using `only [inner_conj_symm]`. Rewrite using `[L, Rr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_eq (hL : LgFacts) (hR : RCalc) (hS : WaveSpeed) {E : KMod n}
     {w' : List (Bool × ℕ)} {g : ℝ → ℝ} {T : ℝ} {K' : Mat n → (E.V →L[ℂ] E.V)}
@@ -212,21 +206,21 @@ theorem term_eq (hL : LgFacts) (hR : RCalc) (hS : WaveSpeed) {E : KMod n}
   rw [L, Rr]
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨u, hu, hu0⟩` from `hE n E f hf`. Take `⟨v, hv, hv0⟩` from `hE n E h hh`. Establish `hHs : ContDiffOn ℝ ∞ (fun x => ∫ t, (g t : ℂ) • v t x) (GLs n)`. Establish `h1` using `((GlobalTheory.T.wave_time_average_is_wave hS n E v g T hv hb).2.1 0).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `only [zero_add]`. Establish `cv0 : Cpt (v 0)`. Take `⟨R, hR'⟩` from `ch`. Conclude with `⟨R, fun y hy hl => by rw [hv0 y hy]; exact hR' y hy hl⟩`. Establish `cH : Cpt (fun x => ∫ t, (g t : ℂ) • v t x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hRv⟩` from `wave_cpt_bounded_time hL hS n E v hv cv0 T`. Use `⟨R, fun y hy hl => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ t, (g t : ℂ) • v t y = 0`. Introduce `t`. Distinguish the cases in `ht : |t| ≤ T`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hRv t ht y hy hl, smul_zero]`. Rewrite using `[hb.2.2 t (not_le.1 ht)]`. Simplify using the standard rewrite rules. Simplify using `[h0]`. Establish `e1` using `PairAdj.pairAdj hL hU n μ E k f h ⟨hk.1.continuousOn, hk.2.1⟩ hf.1.continuousOn hh.1.continuousOn cf ch`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∫ y : G n, ⟪f y.val, act μ E k h y.val⟫_ℂ ∂μ = ∫ y : G n, ⟪f y.val, zOp w (fun x => ∫ t, (g t : ℂ) • v t x) y.val⟫_ℂ ∂μ`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hy` using `PairAdj.val_mem_GLs y`. Establish `e : act μ E k h y.val = act μ E k (v 0) y.val`. Simplify using `only [act]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hv0 _ (GlobalTheory.CompanionTheory.WaveKer.mul_mem_GLs hy (PairAdj.val_mem_GLs z))]`. Simplify using `only`. Rewrite using `[e, hk.2.2.2 v hv _ hy]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∫ y : G n, ⟪f y.val, zOp w (fun x => ∫ t, (g t : ℂ) • v t x) y.val⟫_ℂ ∂μ = conj (∫ y : G n, ⟪zOp w (fun x => ∫ t, (g t : ℂ) • v t x) y.val, f y.val⟫_ℂ ∂μ)`. Rewrite using `[← integral_conj]`. Simplify using `only [inner_conj_symm]`. Rewrite using `[e1, e2, e3, hw _ f hHs hf.1 cH cf, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← term_eq μ hL hR hS hb (hK i) hu hv hu0 hv0 cf ch, ← integral_conj]`. Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [inner_conj_symm]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chain (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hS : WaveSpeed) (hE : WaveEx) {E : KMod n}
     {w : List (Bool × ℕ)} {g : ℝ → ℝ} {T : ℝ} {k : Mat n → (E.V →L[ℂ] E.V)}
@@ -285,25 +279,23 @@ theorem chain (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hS : WaveSpeed) (hE : W
 end Chain
 
 /- English proof (translation)
-Introduce `hL hU hR hS hE hQ hO n _ _ μ _ E w g T k hb hk`. Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨N, c, w₁, hval, hop⟩` from `GlobalTheory.T.gelfand_operator_pairing_adjoint n w`. Use `choose K hK using fun i => hO n μ E (w₁ i) g T hb`. Use `⟨N, c, w₁, K, hK, ?_, hval⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw` using `hop hL hR μ E.V`. Take `⟨regp, eqvp⟩` from `GlobalTheory.T.kernel_adjoint_regular hL n E k ⟨hk.1.continuousOn, hk.2.1⟩ hk.2.2.1`. Establish `regK : ∀ i, KReg (K i)` using `fun i => ⟨(hK i).1.continuousOn, (hK i).2.1⟩`. Establish `rp : ∀ y ∈ GLs n, ∀ k₂ : Matrix.unitaryGroup (Fin n) ℂ, ContinuousLinearMap.adjoint (k (y * k₂.1)⁻¹) = ContinuousLinearMap.adjoint (k y⁻¹) * E.ρ k₂`. Introduce `y hy k₂`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using eqvp y hy 1 k₂`. Establish `lp : ∀ y ∈ GLs n, ∀ k₁ : Matrix.unitaryGroup (Fin n) ℂ, ContinuousLinearMap.adjoint (k (k₁.1 * y)⁻¹) = E.ρ k₁ * ContinuousLinearMap.adjoint (k y⁻¹)`. Introduce `y hy k₁`. Simplify using `using eqvp y hy k₁ 1`. Establish `rK : ∀ i, ∀ y ∈ GLs n, ∀ k₂ : Matrix.unitaryGroup (Fin n) ℂ, K i (y * k₂.1) = K i y * E.ρ k₂`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i y hy k₂`. Simplify using `using (hK i).2.2.1 y hy 1 k₂`. Establish `lK : ∀ i, ∀ y ∈ GLs n, ∀ k₁ : Matrix.unitaryGroup (Fin n) ℂ, K i (k₁.1 * y) = E.ρ k₁ * K i y`. Introduce `i y hy k₁`. Simplify using `using (hK i).2.2.1 y hy k₁ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD : ∀ y ∈ GLs n, ContinuousLinearMap.adjoint (k y⁻¹) - ∑ i, c i • K i y = 0`. Use `hQ n μ E (fun y => ContinuousLinearMap.adjoint (k y⁻¹) - ∑ i, c i • K i y) (GLs n) (GlobalTheory.CompanionTheory.WaveKer.isOpen_GLs n) subset_rfl (fun y hy k₂ => GlobalTheory.CompanionTheory.WaveKer.mul_mem_GLs hy (GlobalTheory.CompanionTheory.WaveKer.unitary_mem_GLs k₂)) ?_ ?_ ? …` and prove the remaining obligations. Conclude with `regp.1.sub (continuousOn_finset_sum _ fun i _ => (regK i).1.const_smul (c i))`. Introduce `y hy k₂`. Simplify using `only [rp y hy k₂, rK _ y hy k₂, sub_mul, Finset.sum_mul, smul_mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f hf cf _`. Establish `hfc` using `hf.1.continuousOn`. Establish `ap` using `GlobalTheory.T.kernel_action_equivariant hL n μ E _ f regp hfc lp`. Establish `aK` using `fun i => GlobalTheory.T.kernel_action_equivariant hL n μ E (K i) f (regK i) hfc (lK i)`. Establish `hA0` using `section_orth_cpt_zero hQ n μ E (fun x => act μ E (fun y => ContinuousLinearMap.adjoint (k y⁻¹)) f x - ∑ i, c i • act μ E (K i) f x) (ap.1.sub (continuousOn_finset_sum _ fun i _ => (aK i).1.const_smul (c i))) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy k₂`. Simplify using `only [ap.2 y hy k₂, (aK _).2 y hy k₂, map_sub, map_sum, map_smul])`. Use the proof step `(by`. Introduce `h hh ch`. Establish `int1` using `pair_integrable μ hL ap.1 hh.1.continuousOn ch`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `int2` using `fun i => (pair_integrable μ hL (aK i).1 hh.1.continuousOn ch).const_mul (conj (c i))`. Establish `hpt : ∀ y : G n, ⟪act μ E (fun y => ContinuousLinearMap.adjoint (k y⁻¹)) f y.val - ∑ i, c i • act μ E (K i) f y.val, h y.val⟫_ℂ = ⟪act μ E (fun y => ContinuousLinearMap.adjoint (k y⁻¹)) f y.val, h y.val⟫_ℂ - ∑ i, conj (c i) * ⟪act μ E (K i) f y.val, h y.val⟫_ℂ`. Introduce `y`. Simplify using `only [inner_sub_left, sum_inner, inner_smul_left]`. Simplify using `only [hpt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_sub int1 (integrable_finset_sum _ fun i _ => int2 i), integral_finset_sum _ fun i _ => int2 i]`. Simplify using `only [integral_const_mul]`. Rewrite using `[chain μ hL hU hR hS hE hb hk hw hK hf cf hh ch, sub_self])`. Establish `h1` using `hA0 1 (GlobalTheory.CompanionTheory.WaveKer.one_mem_GLs n)`. Establish `h2` using `act_eq_sum_of_kernel hL n μ E (ι := Option (Fin N)) (fun o => o.elim 1 fun i => -c i) (fun o => o.elim (fun y => ContinuousLinearMap.adjoint (k y⁻¹)) K) (fun y => ContinuousLinearMap.adjoint (k y⁻¹) - ∑ i, c i • K i y) f (by rintro (_ | i); exacts [regp, regK i]) (by intro y _; s …`.
-
-Rewrite using `[h2]`. Simplify `h1` using `[Fintype.sum_option, sub_eq_add_neg]`. Introduce `y hy`. Conclude with `sub_eq_zero.1 (hD y hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kernel_adjoint : LgFacts → Unimod → RCalc → WaveSpeed → WaveEx → KerUniq → KerOne → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (w : List (Bool × ℕ)) (g : ℝ → ℝ) (T : ℝ) (k : Mat n → (E.V →L[ℂ] E.V)), IsBump g T → IsKer μ E w g k → ∃ (N : ℕ) (c : Fin N → ℂ) (w₁ : Fin N → List (Bool × ℕ)) (K : Fin N → Mat n → (E.V →L[ℂ] E.V)), (∀ i, IsKer μ E (w₁ i) g (K i)) ∧ (haveI := FiniteDimensional.complete ℂ E.V; ∀ y ∈ GLs n, ContinuousLinearMap.adjoint (k y⁻¹) = ∑ i, c i • K i y) ∧ ∀ χ : Inf n, IsHerm χ → conj (zVal w χ) = ∑ i, c i * zVal (w₁ i) χ := by
   intro hL hU hR hS hE hQ hO n _ _ μ _ E w g T k hb hk

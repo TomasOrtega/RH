@@ -16,7 +16,7 @@ Both sides reduce to the same expression.
 
 omit [Fintype P] in
 /- English proof (translation)
-Simplify using `only [eAt, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eAt_apply (p : P) (a b : Fin n) (f : TV n M P) (I : P → Fin n) :
     eAt p a b f I = if I p = a then f (Function.update I p b) else 0 := by
@@ -31,7 +31,7 @@ Both sides reduce to the same expression.
 
 omit [Fintype P] in
 /- English proof (translation)
-Simplify using `only [tE, LinearMap.add_apply, Pi.add_apply, lift_apply, LinearMap.sum_apply, Finset.sum_apply, eAt_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tE_apply (S : Finset P) (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : TV n M P) (I : P → Fin n) :
     tE S E a b f I = E a b (f I) + ∑ p ∈ S, if I p = a then f (Function.update I p b) else 0 := by
@@ -39,9 +39,9 @@ theorem tE_apply (S : Finset P) (E : Fin n → Fin n → Module.End ℂ M) (a b 
 
 omit [Fintype P] in
 /- English proof (translation)
-Simplify using `only [Om, LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, lift_apply, eAt_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (I p)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hb), map_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Om_apply (E : Fin n → Fin n → Module.End ℂ M) (p : P) (f : TV n M P) (I : P → Fin n) :
     Om E p f I = ∑ a, E a (I p) (f (Function.update I p a)) := by
@@ -87,7 +87,7 @@ def liftA (n : ℕ) (M P : Type) [AddCommGroup M] [Module ℂ M] : Module.End �
 
 omit [Fintype P] in
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, lift_apply, eAt_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_comm_eAt (B : Module.End ℂ M) (p : P) (a b : Fin n) : Commute (lift B) (eAt p a b) := by
   refine LinearMap.ext fun f => funext fun I => ?_
@@ -95,7 +95,7 @@ theorem lift_comm_eAt (B : Module.End ℂ M) (p : P) (a b : Fin n) : Commute (li
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [alt, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, pm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem alt_apply (G : Finset (Equiv.Perm P)) (f : TV n M P) (I : P → Fin n) :
     alt G f I = ∑ σ ∈ G, ((Equiv.Perm.sign σ : ℤ) : ℂ) • f (I ∘ σ) := by
@@ -108,7 +108,7 @@ theorem cA_apply {C : Type} [DecidableEq C] (col : P → C) (b : P → Fin n) (f
     cA col b f = alt (colG col) f b := rfl
 
 /- English proof (translation)
-Simplify using `only [actT, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actT_apply {ι Γ : Type} (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (ρ : Γ → Module.End ℂ M) (γ : Γ)
     (f : TV n M P) (I : P → Fin n) :

@@ -6,21 +6,21 @@ namespace GlobalTheory.CompanionTheory.FieldDeg
 open ReciprocityTheory.ChartRestriction.G.T0.VariableBasisExtension
 
 /- English proof (translation)
-Take `⟨b', -, -⟩` from `basis_extend (σ := I) (Module.finBasis Ω₀ Ω)`. Set `φ : FractionRing (MvPolynomial I Ω₀) →+* FractionRing (MvPolynomial I Ω)` to `liftY (L := Ω₀) (E := Ω) (σ := I)`. Use `letI : Algebra (FractionRing (MvPolynomial I Ω₀)) (FractionRing (MvPolynomial I Ω)) := φ.toAlgebra`. Establish `h1 : Module.finrank (FractionRing (MvPolynomial I Ω₀)) (FractionRing (MvPolynomial I Ω)) = Module.finrank Ω₀ Ω`. Rewrite using `[Module.finrank_eq_card_basis b']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `set K := IntermediateField.adjoin Ω₀ (Set.range fun q : I => algebraMap (MvPolynomial I Ω) (FractionRing (MvPolynomial I Ω)) (MvPolynomial.X q)) with hK`. Establish `hφ : ∀ a : MvPolynomial I Ω₀, φ (algebraMap _ _ a) = algebraMap (MvPolynomial I Ω) (FractionRing (MvPolynomial I Ω)) (MvPolynomial.map (algebraMap Ω₀ Ω) a)` using `fun a => by`. Simplify using `only [φ, liftY, IsFractionRing.lift_algebraMap, RingHom.comp_apply]`. Establish `hpoly : ∀ a : MvPolynomial I Ω₀, algebraMap (MvPolynomial I Ω) (FractionRing (MvPolynomial I Ω)) (MvPolynomial.map (algebraMap Ω₀ Ω) a) ∈ K` using `fun a => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C r`. Use `K.algebraMap_mem r` as an intermediate fact. Rewrite `this` using `[hF]`. Simplify `this` using `[MvPolynomial.algebraMap_eq, IsScalarTower.algebraMap_apply Ω (MvPolynomial I Ω) (FractionRing (MvPolynomial I Ω))]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add p q hp hq => simpa using K.add_mem hp hq`. Consider the case `mul_X p i hp`. Establish `hX : algebraMap (MvPolynomial I Ω) (FractionRing (MvPolynomial I Ω)) (MvPolynomial.X i) ∈ K` using `IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩`. Simplify using `using K.mul_mem hp hX`. Establish `hmem : ∀ x, φ x ∈ K` using `fun x => by`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, c, -, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial I Ω₀) x`. Rewrite using `[map_div₀, hφ, hφ]`. Conclude with `K.div_mem (hpoly a) (hpoly c)`. Establish `hle : K ≤ Subfield.toIntermediateField φ.fieldRange (fun r => by`. Use `⟨algebraMap (MvPolynomial I Ω₀) _ (MvPolynomial.C r), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hφ, hF]`. Simplify using `[MvPolynomial.map_C, MvPolynomial.algebraMap_eq, IsScalarTower.algebraMap_apply Ω (MvPolynomial I Ω) (FractionRing (MvPolynomial I Ω))]) := by`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Use `⟨algebraMap (MvPolynomial I Ω₀) _ (MvPolynomial.X q), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hφ]`. Simplify using the standard rewrite rules. Set `ψ : FractionRing (MvPolynomial I Ω₀) →+* K` to `φ.codRestrict K hmem`. Establish `hψ : Function.Bijective ψ`. Use `⟨fun x y h => φ.injective (congrArg Subtype.val h), fun y => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩` from `hle y.2`. Conclude with `⟨x, Subtype.ext hx⟩`. Rewrite using `[← h1]`. Conclude with `(Algebra.finrank_eq_of_equiv_equiv (RingEquiv.ofBijective ψ hψ) (RingEquiv.refl _) (by ext x; rfl)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_fraction_over_adjoin_X_eq (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω]
     [FiniteDimensional Ω₀ Ω] (I : Type)
@@ -79,7 +79,7 @@ theorem finrank_fraction_over_adjoin_X_eq (Ω₀ Ω : Type) [Field Ω₀] [Field
     (by ext x; rfl)).symm
 
 /- English proof (translation)
-Introduce `Ω₀ Ω _ _ fn I d hd hfin`. Use `letI : Algebra Ω₀ Ω := fn.toAlgebra`. Use `haveI : FiniteDimensional Ω₀ Ω := Module.finite_of_finrank_pos (hfin ▸ hd)`. Use `letI : Algebra Ω₀ (FractionRing (MvPolynomial I Ω)) := ((algebraMap Ω (FractionRing (MvPolynomial I Ω))).comp fn).toAlgebra`. Conclude with `(finrank_fraction_over_adjoin_X_eq Ω₀ Ω I rfl).trans hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finrank_adjoin_vars : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] (fn : Ω₀ →+* Ω) (I : Type) (d : ℕ), 0 < d → (letI := fn.toAlgebra; Module.finrank Ω₀ Ω = d) → letI := ((algebraMap Ω (FractionRing (MvPolynomial I Ω))).comp fn).toAlgebra; Module.finrank (IntermediateField.adjoin Ω₀ (Set.range fun q : I => algebraMap (MvPolynomial I Ω) (FractionRing (MvPolynomial I Ω)) (MvPolynomial.X q))) (FractionRing (MvPolynomial I Ω)) = d := by
   intro Ω₀ Ω _ _ fn I d hd hfin

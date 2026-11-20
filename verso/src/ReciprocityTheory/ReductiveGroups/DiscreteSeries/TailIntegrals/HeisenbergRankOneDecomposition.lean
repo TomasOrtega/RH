@@ -10,7 +10,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.Xi.StepA
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, hHM, -⟩` from `hB2`. Conclude with `ea_yx_ga hHM x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem yx_ga (hB2 : InductiveHeisenbergInputs) (hIW : IW) (k r' : ℕ) (hk : 1 ≤ k) (x : HPar k r') :
     0 < Ga k (1 + r') 0 (Yx k r' x) ∧ ∀ l, 0 ≤ Ga k (1 + r') l (Yx k r' x) := by
@@ -18,7 +18,7 @@ theorem yx_ga (hB2 : InductiveHeisenbergInputs) (hIW : IW) (k r' : ℕ) (hk : 1 
   exact ea_yx_ga hHM x
 
 /- English proof (translation)
-Conclude with `heisenberg_rankOne_decomposition_levi hB2 hIW k r' hk x c hc`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_rankOne_decomposition (hB2 : InductiveHeisenbergInputs) (hIW : IW) (k r' : ℕ) (hk : 1 ≤ k) (x : HPar k r') (c : ℂ) (hc : c ≠ 0) :
     ∃ κ ∈ Kset k (1 + r'), ∃ m ∈ GV k r', ∃ z : HPar k r',

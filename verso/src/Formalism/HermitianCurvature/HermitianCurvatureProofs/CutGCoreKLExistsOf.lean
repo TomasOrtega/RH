@@ -13,13 +13,13 @@ noncomputable section
 open Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KLExA
 
 /- English proof (translation)
-Take `⟨hnt, hrep, hcont, -, hirr, hcap⟩` from `hty`. Establish `hR : IsRepW (n + 1) r z π` using `⟨hrep, hcont⟩`. Establish `hB₁` using `FrameExtension.frame_snoc hB₀ he hez hee`. Use `set Bs₁ : Fin (n + 1) → Fin (2 * r + (n + 1) + 1) → ℂ := Fin.snoc (α := fun _ => Fin (2 * r + (n + 1) + 1) → ℂ) Bs₀ e with hBs₁`. Establish `hsub : subA (EB π Bs₁) = EB π Bs₀` using `FrameExtension.subA_EB π Bs₀ e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hgl, hq⟩` from `frame_general_linear W (n + 1) r (n + 1) z π Bs₁ hR hB₁`. Establish `hH : Hyp (EB π Bs₁) β L`. Use `⟨hgl, ⟨hnt, fun S hS => hirr S (lie_stabilizer W (n + 1) r z π Bs₁ hz hT hR hB₁ S hS)⟩, hL, ?_⟩` and prove the remaining obligations. Introduce `w v`. Rewrite using `[← hq w v, hcap Bs₁ hB₁ w v, FrameExtension.prod_Icc_fin]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `cpol shf`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← hu j]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨hint, hS⟩` from `branching_algebraic W n (EB π Bs₁) β L hH`. Rewrite `hint`, `hS` using `[hsub]`. Conclude with `⟨(frame_general_linear W (n + 1) r n z π Bs₀ hR (FrameExtension.frame_weaken hB₀)).1, hint, hS⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem side {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W] {n r : ℕ}
     {z e : Fin (2 * r + (n + 1) + 1) → ℂ} {π : Mx (n + 1) r → (W →L[ℂ] W)} {u : ℕ → ℝ} {β : ℂ}
@@ -53,29 +53,27 @@ theorem side {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimens
   exact ⟨(frame_general_linear W (n + 1) r n z π Bs₀ hR (FrameExtension.frame_weaken hB₀)).1, hint, hS⟩
 
 /- English proof (translation)
-Establish `hmem : ∀ j : Fin n, (j : ℕ) + 1 ∈ Finset.Icc 1 ((⟨n + 1, r, T, T', u, u'⟩ : M.Par).k - 1)` using `fun j => Finset.mem_Icc.2 ⟨by omega, by show (j : ℕ) + 1 ≤ n + 1 - 1; omega⟩`. Use `choose N hN using fun j : Fin n => Qx8.rho_int hOK ρ ((j : ℕ) + 1) (hmem j)`. Establish `hN' : ∀ j : Fin n, M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) = (N j : ℝ) + u 1 + 1 / 2` using `fun j => by`. Use `hN j` as an intermediate fact. Express the relevant statement in the definitionally equal form `M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) - u 1 - 1 / 2 = (N j : ℝ) at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hI` using `types_interlace _ hOK ρ`. Establish `hI' : ∀ j : Fin n, M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) + 1 / 2 ≤ u ((j : ℕ) + 1) ∧ M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) + 1 / 2 ≤ u' ((j : ℕ) + 1) ∧ u ((j : ℕ) + 1 + 1) + 1 / 2 ≤ M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) ∧ u' ((j : ℕ) + 1 + 1) + 1 / 2 ≤ …` using `fun j => hI _ (hmem j)`. Use `⟨fun j => N j + 1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hL j.succ`. Establish `h2` using `hL j.castSucc`. Simplify using `only [Fin.val_succ, Fin.val_castSucc] at h1 h2`. Establish `h3` using `hI' j`. Establish `h4` using `hN' j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Establish `: (L j.succ : ℝ) < ((N j + 1 : ℤ) : ℝ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Establish `: ((N j + 1 : ℤ) : ℝ) ≤ (L j.castSucc : ℝ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `hL' j.succ`. Establish `h2` using `hL' j.castSucc`. Simplify using `only [Fin.val_succ, Fin.val_castSucc] at h1 h2`. Establish `h3` using `hI' j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `h4` using `hN' j`. Prove the components needed by the constructor for the conclusion. Establish `: (L' j.succ : ℝ) < ((N j + 1 : ℤ) : ℝ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Establish `: ((N j + 1 : ℤ) : ℝ) ≤ (L' j.castSucc : ℝ)` using `by push_cast; linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Introduce `a b hab`. Establish `hlt` using `Qx8.rho_anti hOK ρ ((a : ℕ) + 1) ((b : ℕ) + 1) (by omega) (by simp only [Fin.lt_def] at hab; omega) (by show (b : ℕ) + 1 ≤ n + 1 - 1; omega)`. Establish `ha` using `hN' a`. Establish `hb` using `hN' b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNab : N b < N a`. Establish `: (N b : ℝ) < (N a : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Use `⟨(N a - N b - 1).toNat, ?_⟩` and prove the remaining obligations. Establish `h1 : (((N a - N b - 1).toNat : ℕ) : ℤ) = N a - N b - 1` using `Int.toNat_of_nonneg (by omega)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (((N a - N b - 1).toNat : ℕ) : ℂ) = ((N a - N b - 1 : ℤ) : ℂ)` using `by exact_mod_cast h1`. Simplify using `only [shf]`. Rewrite using `[h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y`. Unfold `M.xC cpol`. Rewrite using `[show (⟨n + 1, r, T, T', u, u'⟩ : M.Par).k - 1 = n from rfl, ProductIntervalFrames.prod_Icc_one]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h4 : (M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) : ℂ) = (N j : ℂ) + (u 1 : ℂ) + 1 / 2`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congrArg (fun x : ℝ => (x : ℂ)) (hN' j)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Simplify using `only [shf]`. Rewrite using `[h4]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem labels {n r : ℕ} {T T' : ℝ} {u u' : ℕ → ℝ} (hOK : (⟨n + 1, r, T, T', u, u'⟩ : M.Par).OK)
     (ρ : M.Ty ⟨n + 1, r, T, T', u, u'⟩) (L L' : Fin (n + 1) → ℤ)
@@ -148,45 +146,37 @@ theorem labels {n r : ℕ} {T T' : ℝ} {u u' : ℕ → ℝ} (hOK : (⟨n + 1, r
     ring
 
 /- English proof (translation)
-Introduce `hIso hLG Wp Wq _ _ _ _ _ _ P`. Take `⟨k, r, T, T', u, u'⟩` from `P`. Introduce `z z' π π' hPl hk`. Establish `hk' : 2 ≤ k` using `hk`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `g hg hGG Fr hFr ρ`. Take `⟨hOK, hz, hz', hTz, hTz', hπ, hπ'⟩` from `id hPl`. Establish `hT : 0 < Tz (n + 1) r z`. Establish `h2 : Tz (n + 1) r z = T` using `hTz`. Rewrite using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hOK.T_pos`. Establish `hT' : 0 < Tz (n + 1) r z'`. Establish `h2 : Tz (n + 1) r z' = T'` using `hTz'`. Rewrite using `[h2]`. Conclude with `hOK.T'_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hrep, hcont, -, -, -⟩` from `id hπ`. Take `⟨-, hrep', hcont', -, -, -⟩` from `id hπ'`. Take `⟨e', f, -, -, -, -, -, -, -, -, ⟨he'W, he'z, he'e⟩, ⟨hfW, hfz, hff⟩, hFr1, hFr2⟩` from `KLAM.geom_fr hz hz' hT hT' hg hGG hFr`. Establish `hIcc : ∀ j : Fin (n + 1), (j : ℕ) + 1 ∈ Finset.Icc 1 (n + 1)` using `fun j => Finset.mem_Icc.2 ⟨by omega, by omega⟩`. Use `choose L hL using fun j : Fin (n + 1) => hOK.int_u ((j : ℕ) + 1) (hIcc j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose L' hL' using fun j : Fin (n + 1) => hOK.int_u' ((j : ℕ) + 1) (hIcc j)`. Establish `hL2 : ∀ j : Fin (n + 1), u ((j : ℕ) + 1) - u 1 = (L j : ℝ)` using `hL`. Establish `hL2' : ∀ j : Fin (n + 1), u' ((j : ℕ) + 1) - u 1 = (L' j : ℝ)` using `hL'`. Establish `hgap : ∀ j : Fin n, max (u ((j : ℕ) + 1 + 1)) (u' ((j : ℕ) + 1 + 1)) + 1 / 2 ≤ min (u ((j : ℕ) + 1)) (u' ((j : ℕ) + 1)) - 1 / 2` using `fun j => hOK.gap ((j : ℕ) + 1) (Finset.mem_Icc.2 ⟨by omega, by show (j : ℕ) + 1 ≤ n + 1 - 1; omega⟩)`. Establish `hanti : StrictAnti L` using `Fin.strictAnti_iff_succ_lt.2 fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hL2 j.castSucc`. Establish `h2` using `hL2 j.succ`. Simplify using `only [Fin.val_castSucc, Fin.val_succ] at h1 h2`. Establish `h3` using `hgap j`. Establish `h5` using `le_max_left (u ((j : ℕ) + 1 + 1)) (u' ((j : ℕ) + 1 + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `min_le_left (u ((j : ℕ) + 1)) (u' ((j : ℕ) + 1))`. Establish `: (L j.succ : ℝ) < (L j.castSucc : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hanti' : StrictAnti L'` using `Fin.strictAnti_iff_succ_lt.2 fun j => by`. Establish `h1` using `hL2' j.castSucc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hL2' j.succ`. Simplify using `only [Fin.val_castSucc, Fin.val_succ] at h1 h2`. Establish `h3` using `hgap j`. Establish `h5` using `le_max_right (u ((j : ℕ) + 1 + 1)) (u' ((j : ℕ) + 1 + 1))`. Establish `h6` using `min_le_right (u ((j : ℕ) + 1)) (u' ((j : ℕ) + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: (L' j.succ : ℝ) < (L' j.castSucc : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Use `set β : ℂ := (u 1 : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 with hβ`. Establish `hrel : ∀ j : Fin (n + 1), (u ((j : ℕ) + 1) : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 = β + (L j : ℂ)` using `fun j => by`. Establish `h : (u ((j : ℕ) + 1) : ℂ) - (u 1 : ℂ) = (L j : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (fun x : ℝ => (x : ℂ)) (hL2 j)` after adjusting the coercions. Rewrite using `[hβ, ← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrel' : ∀ j : Fin (n + 1), (u' ((j : ℕ) + 1) : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 = β + (L' j : ℂ)` using `fun j => by`. Establish `h : (u' ((j : ℕ) + 1) : ℂ) - (u 1 : ℂ) = (L' j : ℂ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrArg (fun x : ℝ => (x : ℂ)) (hL2' j)` after adjusting the coercions. Rewrite using `[hβ, ← h]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨M, hbox, hbox', hsd, hcp⟩` from `labels hOK ρ L L' hL2 hL2'`. Establish `hfin : Finite {M : Fin n → ℤ // Box L' M}`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finite.of_injective (β := ∀ j : Fin n, Finset.Ioc (L' j.succ) (L' j.castSucc)) (fun M j => ⟨M.1 j, Finset.mem_Ioc.2 (M.2 j)⟩) ?_` and prove the remaining obligations. Introduce `M₁ M₂ h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Conclude with `congrArg Subtype.val (congrFun h j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Fintype {M : Fin n → ℤ // Box L' M} := Fintype.ofFinite _`. Take `⟨hgl', hint', hS'⟩` from `side hz' hT' hπ' hanti' hrel' he'W he'z he'e hFr1`. Take `⟨hgl, -, hS⟩` from `side hz hT hπ hanti hrel hfW hfz hff hFr2`. Use `set Mb : {M : Fin n → ℤ // Box L M} := ⟨M, hbox⟩ with hMb`. Use `set Mb' : {M : Fin n → ℤ // Box L' M} := ⟨M, hbox'⟩ with hMb'`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set E := EB π (fun a => g *ᵥ Fr a) with hE`. Use `set E' := EB π' Fr with hE'`. Establish `hstabs' : ∀ (j : {M : Fin n → ℤ // Box L' M}) (a b : Fin n), ∀ v ∈ CapSp E' (shf β j.1), E' a b v ∈ CapSp E' (shf β j.1)` using `fun j a b => (capelli_stabilizer Wq n E' (shf β j.1) hgl').1 a b`. Establish `hstab : Stab E (CapSp E (shf β M))` using `(capelli_stabilizer Wp n E (shf β M) hgl).1`. Establish `hstab' : Stab E' (CapSp E' (shf β M))` using `(capelli_stabilizer Wq n E' (shf β M) hgl').1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨A, hA0, hAi⟩` from `hIso (CapSp E (shf β M)) (CapSp E' (shf β M)) n (resE E _ hstab) (resE E' _ hstab') (shf β M) (glRel_resE hgl _ hstab) (glRel_resE hgl' _ hstab') (irr_resE _ hstab (hS Mb).1 (hS Mb).2) (irr_resE _ hstab' (hS' Mb').1 (hS' Mb').2) hsd (cap_resE (shf β M) hstab) (cap_resE (shf β M) …`. Use `set p : Wq →ₗ[ℂ] CapSp E' (shf β M) := projI hint' Mb' with hp`. Establish `hpE : ∀ a b v, p (E' a b v) = resE E' _ hstab' a b (p v)` using `fun a b v => projI_comm hint' (E' a b) (fun j => hstabs' j a b) Mb' v`. Use `set Xl : Wq →ₗ[ℂ] Wp := (CapSp E (shf β M)).subtype ∘ₗ (A ∘ₗ p) with hXl`. Use `set X : Wq →L[ℂ] Wp := LinearMap.toContinuousLinearMap Xl with hX`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hXv : ∀ v, X v = (A (p v) : Wp)` using `fun v => by`. Rewrite using `[hX, LinearMap.coe_toContinuousLinearMap']`. Both sides reduce to the same expression. Establish `hAv : ∀ a b x, A (resE E' _ hstab' a b x) = resE E _ hstab a b (A x)` using `fun a b x => LinearMap.congr_fun (hAi a b) x`. Establish `hXint : ∀ (a b : Fin n) (v : Wq), X (EB π' Fr a b v) = EB π (fun i => g *ᵥ Fr i) a b (X v)`.
-
-Introduce `a b v`. Rewrite using `[hXv, hXv]`. Express the relevant statement in the definitionally equal form `(A (p (E' a b v)) : Wp) = E a b (A (p v) : Wp)`. Rewrite using `[hpE, hAv, resE_apply]`. Use `⟨X, hLG Wp Wq (n + 1) r z z' π π' hz hz' hT hT' ⟨hrep, hcont⟩ ⟨hrep', hcont'⟩ g hg hGG Fr hFr X hXint, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `Y v`. Rewrite using `[hXv, hXv]`. Express the relevant statement in the definitionally equal form `(A (p (qdet E' (Y + (((n + 1 : ℕ) : ℂ) - 2) / 2) v)) : Wp) = Formalism.FourierDecayAlt.M.xC ⟨n + 1, r, T, T', u, u'⟩ ρ Y • (A (p v) : Wp)`. Rewrite using `[qdet_int p hpE, cap_resE (shf β M) hstab', map_smul, Submodule.coe_smul, hcp Y]`. Introduce `hX0`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, A x ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hA0 (LinearMap.ext hc)`. Apply `hx` to reduce the goal to its premises.
-
-Establish `h1 : X (x : Wq) = 0` using `by rw [hX0]; rfl`. Rewrite `h1` using `[hXv, hp, projI_self hint' (i := Mb') x]`. Conclude with `h1` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_existence_of_iso_group : KLExistsOf := by
   intro hIso hLG Wp Wq _ _ _ _ _ _ P
@@ -306,7 +296,7 @@ end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KLExOf
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 /- English proof (translation)
-The claim follows from `KLExOf.lie_existence_of_iso_group`.
+A detailed English derivation is pending.
 -/
 theorem lie_existence_of_iso_group : KLExistsOf := KLExOf.lie_existence_of_iso_group
 

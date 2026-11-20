@@ -20,9 +20,9 @@ def Splits (Q J L : Subgroup G) : Prop :=
 def RInv (J : Subgroup G) (F : G → ℂ) : Prop := ∀ k ∈ J, ∀ h, F (h * k) = F h
 
 /- English proof (translation)
-Introduce `k hk`. Take `⟨k₁, h₁, k₂, hL, e, hc⟩` from `h k (hJ hk)`. Use `⟨k₁, h₁, k₂, ?_, hL, e, hc⟩` and prove the remaining obligations. Establish `: k₂ = k₁⁻¹ * k` using `by rw [e]; group`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.mul_mem (J.inv_mem h₁) hk`.
+A detailed English derivation is pending.
 -/
 theorem Splits.self (h : Splits Q J L) (hJ : J ≤ Q) :
     ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ L ∧ k = k₁ * k₂ ∧ ∀ l ∈ L, Commute k₂ l := by
@@ -34,17 +34,17 @@ theorem Splits.self (h : Splits Q J L) (hJ : J ≤ Q) :
   exact J.mul_mem (J.inv_mem h₁) hk
 
 /- English proof (translation)
-Simplify using `[h k k.2 g]`.
+Simplify using the standard rewrite rules.
 -/
 theorem RInv.one {F : G → ℂ} (h : RInv J F) (k : J) (g : G) : F (g * k) = (((1 : J →* ℂˣ) k : ℂˣ) : ℂ) • F g := by
   simp [h k k.2 g]
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k₁, h₁, k₂, h₂, e⟩` from `h1 a ha`. Conclude with `⟨⟨k₁, ((hK _).1 h₁).1⟩, ⟨k₂, ((hK _).1 h₂).1⟩, e⟩`. Introduce and unpack `g ⟨k, k', rfl⟩`. Take `⟨k₁, h₁, k₂, h₂, hL, e, hc⟩` from `hs.self hJ k k.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ a : G, a⁻¹ * ((k : G) * x * k') = a⁻¹ * (k₁ * x * 1) * (k₂ * k')`. Introduce `a`. Rewrite using `[e, mul_assoc k₁ k₂ x, (hc x hx).eq]`. Use `group`. Establish `hm : k₂ * (k' : G) ∈ J` using `J.mul_mem h₂ k'.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(existsUnique_congr fun a => and_congr_right fun ha => ?_).1 (h2 _ ⟨k₁, (hK _).2 ⟨h₁, hL⟩, 1, (hK _).2 ⟨J.one_mem, L.one_mem⟩, rfl⟩)` and prove the remaining obligations. Rewrite using `[key, J.mul_mem_cancel_right hm, hK]`. Conclude with `and_iff_left (L.mul_mem (L.inv_mem (hA a ha)) (L.mul_mem (L.mul_mem hL hx) L.one_mem))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDC_of_splits (hs : Splits Q J L) (hJ : J ≤ Q) {x : G} (hx : x ∈ L) {A : Finset G} (hA : ∀ a ∈ A, a ∈ L)
     {K : Set G} (hK : ∀ g, g ∈ K ↔ g ∈ J ∧ g ∈ L) (h1 : ∀ γ ∈ A, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * x * k₂)
@@ -64,7 +64,7 @@ theorem isDC_of_splits (hs : Splits Q J L) (hJ : J ≤ Q) {x : G} (hx : x ∈ L)
     exact and_iff_left (L.mul_mem (L.inv_mem (hA a ha)) (L.mul_mem (L.mul_mem hL hx) L.one_mem))
 
 /- English proof (translation)
-Use `GlobalTheory.HkB.dcOp_eq_and_level J ⊤ 1 x x' A A' F (fun k hk => ⟨k, hk, 1, J.one_mem, trivial, (mul_one k).symm, fun l _ => Commute.one_left l⟩) (fun _ _ => rfl) (fun _ _ => trivial) (fun _ _ => trivial) hA hA' hx hF.one` as an intermediate fact. Conclude with `⟨this.1, fun k hk h => by simpa using this.2 ⟨k, hk⟩ h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem dcOp_eq_rInv {x x' : G} {A A' : Finset G} (hA : IsDC J x A) (hA' : IsDC J x' A')
     (hx : ∃ k₁ k₂ : J, x' = (k₁ : G) * x * k₂) {F : G → ℂ} (hF : RInv J F) :
@@ -75,13 +75,13 @@ theorem dcOp_eq_rInv {x x' : G} {A A' : Finset G} (hA : IsDC J x A) (hA' : IsDC 
   exact ⟨this.1, fun k hk h => by simpa using this.2 ⟨k, hk⟩ h⟩
 
 /- English proof (translation)
-The claim follows from `(dcOp_eq_rInv hA hA ⟨1, 1, by simp⟩ hF).2`.
+A detailed English derivation is pending.
 -/
 theorem dcOp_rInv {x : G} {A : Finset G} (hA : IsDC J x A) {F : G → ℂ} (hF : RInv J F) : RInv J (dcOp A F) :=
   (dcOp_eq_rInv hA hA ⟨1, 1, by simp⟩ hF).2
 
 /- English proof (translation)
-Take `⟨k₁, h₁, k₂, hl, rfl, hc⟩` from `hs κ hκ`. Rewrite using `[← (hc k₁ hl).eq, ← mul_assoc, dcOp_rInv hA hF k₁ h₁]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Use `show F (h * k₂ * a) = F (h * a * (k₂ * k₁))`. Rewrite using `[← mul_assoc, hF k₁ h₁, mul_assoc, (hc a (hL a ha)).eq, mul_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dcOp_translate (hs : Splits Q J L) {x : G} {A : Finset G} (hA : IsDC J x A) (hL : ∀ a ∈ A, a ∈ L)
     {F : G → ℂ} (hF : RInv J F) {κ : G} (hκ : κ ∈ Q) (h : G) :
@@ -93,7 +93,7 @@ theorem dcOp_translate (hs : Splits Q J L) {x : G} {A : Finset G} (hA : IsDC J x
   rw [← mul_assoc, hF k₁ h₁, mul_assoc, (hc a (hL a ha)).eq, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [dcOp]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b hb => Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, (h a ha b hb).eq, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dcOp_comm_of_commute {A B : Finset G} (h : ∀ a ∈ A, ∀ b ∈ B, Commute a b) (F : G → ℂ) :
     dcOp A (dcOp B F) = dcOp B (dcOp A F) := by
@@ -110,7 +110,7 @@ section Normal
 variable {E I : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
 
 /- English proof (translation)
-Use `choose f hf using hT`. Conclude with `⟨⟨⟨f, fun x y => he (by rw [map_add, hf, hf, hf, map_add, map_add])⟩, fun a x => he (by rw [RingHom.id_apply, map_smul, hf, hf, map_smul, map_smul])⟩, hf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {X : Type} [AddCommGroup X] [Module ℂ X] {e : E →ₗ[ℂ] X} (he : Function.Injective e)
     (T : X →ₗ[ℂ] X) (hT : ∀ x, T (e x) ∈ LinearMap.range e) : ∃ t : Module.End ℂ E, ∀ x, e (t x) = T (e x) := by

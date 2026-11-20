@@ -5,11 +5,11 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.Step
 
 /- English proof (translation)
-Establish `hs : star (embHom r E s.1) = embHom r E (star s.1)`. Simplify using `only [embHom, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.star_eq_conjTranspose, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_zero, Matrix.conjTranspose_one]`. Use `Prod.ext ?_ (Prod.ext ?_ rfl)` and prove the remaining obligations. Apply `Subtype.ext show embHom r E s.1 * full X.toGl * star (embHom r E s.1) = full (actU s X).toGl` to reduce the goal to its premises. Rewrite using `[hs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [embHom, full, Hn.toGl, actU, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 2`. Apply the tactic sequence `all_goals (ext i j; simp [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.vecMul, Finset.sum_apply, star_sum, mul_comm, Matrix.star_apply])`. Use `show embHom r E s.1 *ᵥ (ν • eL r E) = ν • eL r E`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[embHom, eL, Matrix.mulVec, dotProduct, Matrix.reindex_apply, Fin.sum_univ_castSucc]`. Simplify using `[embHom, eL, Matrix.mulVec, dotProduct, Matrix.reindex_apply, Fin.sum_univ_castSucc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actU_uEmb_liftH {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] {r : ℕ} (s : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) (ν : E) (l : F) :

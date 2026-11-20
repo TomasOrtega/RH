@@ -24,7 +24,7 @@ def LocZero (π : Y ⟶ B) (c : Pic Y) : Prop :=
   ∀ p : B, ∃ V : B.Opens, p ∈ V ∧ ∀ (Z : Scheme.{0}) (f : Z ⟶ Y), (∀ z, π (f z) ∈ V) → pull f c = 0
 
 /- English proof (translation)
-Introduce `p`. Take `⟨V, hV, H⟩` from `hc p`. Take `⟨V', hV', H'⟩` from `hd p`. Use `⟨V ⊓ V', ⟨hV, hV'⟩, fun Z f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, H Z f fun z => (hf z).1, H' Z f fun z => (hf z).2, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocZero.add {π : Y ⟶ B} {c d : Pic Y} (hc : LocZero π c) (hd : LocZero π d) : LocZero π (c + d) := by
   intro p
@@ -34,7 +34,7 @@ theorem LocZero.add {π : Y ⟶ B} {c d : Pic Y} (hc : LocZero π c) (hd : LocZe
   rw [map_add, H Z f fun z => (hf z).1, H' Z f fun z => (hf z).2, add_zero]
 
 /- English proof (translation)
-Introduce `p`. Take `⟨V, hV, H⟩` from `hc p`. Conclude with `⟨V, hV, fun Z f hf => (pull_comp f k c).symm.trans (H Z (f ≫ k) hf)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LocZero.pull {π : Y ⟶ B} {c : Pic Y} (hc : LocZero π c) (k : Y' ⟶ Y) :
     LocZero (k ≫ π) (pull k c) := by
@@ -43,7 +43,7 @@ theorem LocZero.pull {π : Y ⟶ B} {c : Pic Y} (hc : LocZero π c) (k : Y' ⟶ 
   exact ⟨V, hV, fun Z f hf => (pull_comp f k c).symm.trans (H Z (f ≫ k) hf)⟩
 
 /- English proof (translation)
-Take `⟨D, hD, rfl⟩` from `cls_surj d`. Introduce `p`. Take `⟨i, hi⟩` from `exists_chart hD p`. Use `⟨D.U i, hi, fun Z f hf => (pull_comp f π _).symm.trans ?_⟩` and prove the remaining obligations. Conclude with `(cls_eq_zero_iff (pull_isLB hD (f ≫ π))).2 (BoxKernel.gen_of_chart (pull_isLB hD _) (fun _ => i) fun z => mem_pull.2 (hf z))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locZero_base (π : Y ⟶ B) (d : Pic B) : LocZero π (pull π d) := by
   obtain ⟨D, hD, rfl⟩ := cls_surj d
@@ -54,9 +54,9 @@ theorem locZero_base (π : Y ⟶ B) (d : Pic B) : LocZero π (pull π d) := by
     (BoxKernel.gen_of_chart (pull_isLB hD _) (fun _ => i) fun z => mem_pull.2 (hf z))
 
 /- English proof (translation)
-Use `forall_congr' fun p => exists_congr fun V => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← cls_eq_zero_iff (pull_isLB hM _), cls_pull hM]`. Use `⟨fun H Z f hf => ?_, fun H => H _ _ fun z => z.2⟩` and prove the remaining obligations. Establish `hr : Set.range f ⊆ Set.range (π ⁻¹ᵁ V).ι`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hf z`. Rewrite using `[← IsOpenImmersion.lift_fac (π ⁻¹ᵁ V).ι f hr, pull_comp, H, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locZero_iff (π : Y ⟶ B) {M : LB Y} (hM : M.IsLB) :
     (∀ p : B, ∃ V : B.Opens, p ∈ V ∧ ∃ c : LB.Gen (M.pull (π ⁻¹ᵁ V).ι), c.IsGen) ↔ LocZero π (cls M hM) := by
@@ -76,11 +76,11 @@ section Group
 variable {S : Scheme.{0}} {A T : Over S} [GrpObj A]
 
 /- English proof (translation)
-Establish `hD : (Out.translDiff A L x).IsLB` using `LB.isLB_linComb hL _ _`. Rewrite using `[locZero_iff _ hD]`. Establish `e : lam (cls L hL) (fst T A ≫ x) (snd T A) = cls _ hD + pull (fst T A).left (pull (1 : T ⟶ A).left (cls L hL) - pull x.left (cls L hL))`. Establish `e₁ : cls _ hD = pull ((fst T A ≫ x) * snd T A).left (cls L hL) - pull (snd T A).left (cls L hL)`. Use `(cls_linComb hL _ _ hD).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, ← sub_eq_add_neg]`. Both sides reduce to the same expression. Rewrite using `[e₁, map_sub, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, MonObj.comp_one, lam]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `⟨fun H => e ▸ H.add (locZero_base _ _), fun H => ?_⟩` and prove the remaining obligations. Use `H.add (locZero_base _ (-(pull (1 : T ⟶ A).left (cls L hL) - pull x.left (cls L hL))))` as an intermediate fact. Rewrite `this` using `[e, map_neg, add_neg_cancel_right]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem translDiff_iff {L : LB A.left} (hL : L.IsLB) (x : T ⟶ A) :
     (∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧
@@ -102,7 +102,7 @@ theorem translDiff_iff {L : LB A.left} (hL : L.IsLB) (x : T ⟶ A) :
   rwa [e, map_neg, add_neg_cancel_right] at this
 
 /- English proof (translation)
-Simplify using `only [lam, _root_.mul_assoc] at H ⊢`. Rewrite `H`, the goal using `[← sub_eq_zero]`. Rewrite using `[← H]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_mul_of_right [IsCommMonObj A] (c : Pic A.left) (u v y : T ⟶ A)
     (H : lam c u (v * y) = lam c u v + lam c u y) : lam c (u * v) y = lam c u y + lam c v y := by
@@ -114,25 +114,25 @@ theorem lam_mul_of_right [IsCommMonObj A] (c : Pic A.left) (u v y : T ⟶ A)
 end Group
 
 /- English proof (translation)
-Introduce `S G _ _ L O _ bar M _ _ h _ _ A _ _ a b t N hL hN hΘ hiso ⟨_, hadd, hsmul, _⟩ huni hK R _ s x hx`. Establish `am` using `a.hom`. Set `l : M → (M →ₗ[O] O)` to `fun n => ⟨⟨fun m => h m n, fun m m' => hadd m m' n⟩, fun c m => hsmul c m n⟩`. Set `q : M → (A ⟶ G)` to `fun n => t.mapLeft (IsTensor.self a) (l n)`. Establish `qm : ∀ n, IsMonHom (q n)` using `fun n => IsTensor.isMonHom_mapLeft _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : ∀ m n, t.tmul m ≫ q n = a.act (h m n)` using `fun m n => by`. Simplify using `only [q, IsTensor.tmul_mapLeft, IsTensor.self_tmul]`. Both sides reduce to the same expression. Establish `basic : ∀ {T : Over S} (g y : T ⟶ G) (m n : M), lam (cls N hN) (g ≫ t.tmul m) (y ≫ t.tmul n) = lam (cls L hL) (g ≫ a.act (h m n)) y`. Introduce `T g y m n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h₀` using `(cls_eq_iff (LB.isLB_linComb hN _ _) (LB.isLB_linComb hL _ _)).2 (hiso m n)`. Establish `h'` using `congrArg (pull (lift g y).left) ((cls_cube_two hN _ _ _).symm.trans (h₀.trans (cls_cube_two hL _ _ _)))`. Simplify `h'` using `only [pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc]`. Establish `right : ∀ {T : Over S} (u v w : T ⟶ A), lam (cls N hN) u (v * w) = lam (cls N hN) u v + lam (cls N hN) u w` using `fun u v w => by`. Rewrite using `[lam_comm, lam_mul_left hN hΘ, lam_comm _ v, lam_comm _ w]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ {T : Over S} (n : M) (u : T ⟶ A) (y : T ⟶ G), lam (cls N hN) u (y ≫ t.tmul n) = lam (cls L hL) (u ≫ q n) y`. Introduce `T n u`. Use `t.induction_on (P := fun u => ∀ y : T ⟶ G, lam (cls N hN) u (y ≫ t.tmul n) = lam (cls L hL) (u ≫ q n) y) u (fun y => ?_) (fun m g y => ?_) fun u v hu hv y => ?_` and prove the remaining obligations. Rewrite using `[MonObj.one_comp, lam_one_left, lam_one_left]`. Rewrite using `[Category.assoc, hq, basic]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam_mul_left hN hΘ, hu, hv, MonObj.mul_comp, lam_mul_of_right]`. Rewrite using `[← hu, ← hu, ← hu, MonObj.mul_comp, right]`. Establish `H` using `(translDiff_iff hN x).1 hx`. Establish `z : ∀ n, x ≫ q n = 1` using `fun n => by`. Use `hK R s _ ((translDiff_iff hL (x ≫ q n)).2 ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `H'` using `H.pull (Over.mk s ◁ t.tmul n).left`. Rewrite `H'` using `[pull_lam, ← Over.comp_left, whiskerLeft_fst, whiskerLeft_fst_assoc, whiskerLeft_snd, key, Category.assoc]`. Then use the resulting hypothesis. Set `P` to `Summand.choose O M`. Set `p : Fin P.n → (A ⟶ G)` to `fun i => t.mapLeft (IsTensor.self a) (LinearMap.proj i ∘ₗ P.incl)`. Establish `pm : ∀ i, IsMonHom (p i)` using `fun i => IsTensor.isMonHom_mapLeft _ _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `zp : ∀ i, x ≫ p i = 1` using `fun i => by`. Take `⟨n, hn, -⟩` from `huni (LinearMap.proj i ∘ₗ P.incl)`. Establish `e : LinearMap.proj i ∘ₗ P.incl = l n` using `LinearMap.ext hn`. Simplify `z n` using `only [p, e]`. Establish `dec : ∀ u : Over.mk s ⟶ A, u = ∏ i, (u ≫ p i) ≫ t.tmul (P.proj (Pi.single i 1))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `u`. Use `t.induction_on (P := fun u => u = ∏ i, (u ≫ p i) ≫ t.tmul (P.proj (Pi.single i 1))) u ?_ (fun m g => ?_) fun u v hu hv => ?_` and prove the remaining obligations. Simplify using `only [MonObj.one_comp, Finset.prod_const_one]`. Establish `hx : m = ∑ i, P.incl m i • P.proj (Pi.single i 1)`. Establish `e : P.proj (P.incl m) = m` using `congr($(P.proj_incl) m)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← map_smul, ← map_sum]`. Rewrite using `[← pi_eq_sum_univ', e]`. Establish `hp : ∀ i, t.tmul m ≫ p i = a.act (P.incl m i)` using `fun i => by simp [p]`. Simplify using `only [Category.assoc, reassoc_of% hp, ← t.tmul_smul']`. Use `Eq.trans ?_ (map_prod (preHom g) _ _)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← t.tmul_sum, ← hx]`. Both sides reduce to the same expression. Simplify using `only [MonObj.mul_comp, Finset.prod_mul_distrib, ← hu, ← hv]`. Rewrite using `[dec x]`. Simplify using `only [zp, MonObj.one_comp, Finset.prod_const_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

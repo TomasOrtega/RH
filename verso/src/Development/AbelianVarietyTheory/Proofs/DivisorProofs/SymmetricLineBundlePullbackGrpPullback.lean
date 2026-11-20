@@ -10,11 +10,11 @@ open GlobalTheory.Desc
 namespace GlobalTheory.SymGrpPull
 
 /- English proof (translation)
-Establish `hw : α ≫ A.hom = B.hom ≫ y` using `h.1.w`. Set `f : (B ⟶ B) → (Over.mk (B.hom ≫ y) ⟶ A)` to `fun x => Over.homMk (x.left ≫ α) (by`. Express the relevant statement in the definitionally equal form `(x.left ≫ α) ≫ A.hom = B.hom ≫ y`. Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w x])`. Establish `hmul : ∀ x z : B ⟶ B, f (x * z) = f x * f z` using `fun x z => Over.OverMorphism.ext (h.2 B x z (f x) (f z) rfl rfl).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : f 1 = 1`. Establish `e : f 1 * f 1 = f 1 * 1` using `by rw [← hmul, _root_.mul_one, _root_.mul_one]`. Conclude with `mul_left_cancel e`. Establish `hinv : f (𝟙 B)⁻¹ = (f (𝟙 B))⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmul, _root_.inv_mul_cancel, h1]`. Establish `e` using `congrArg CommaMorphism.left hinv`. Establish `e' : ((𝟙 B ≫ GrpObj.inv : B ⟶ B)).left ≫ α = (f (𝟙 B) ≫ GrpObj.inv).left` using `e`. Simplify `e'` using `[f]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inv_left_comp {S T : Scheme.{0}} (A : Over S) [GrpObj A] (B : Over T) [GrpObj B] (y : T ⟶ S)
     (α : B.left ⟶ A.left) (h : IsGrpPullback B A y α) :
@@ -37,9 +37,9 @@ theorem inv_left_comp {S T : Scheme.{0}} (A : Over S) [GrpObj A] (B : Over T) [G
   simpa [f] using e'
 
 /- English proof (translation)
-Introduce `S T A _ B _ y α h L hL hs`. Establish `e` using `inv_left_comp A B y α h`. Establish `h1` using `GenSpread.lbIso_pull_pull hL (a := α) (GrpObj.inv : B ⟶ B).left rfl`. Establish `h2` using `GenSpread.lbIso_pull_pull hL (a := (GrpObj.inv : A ⟶ A).left) α e`. Establish `h3` using `GenSpread.lbIso_pullback hs α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LBIso.trans (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _) (pull_isLB hL _) (LBIso.symm h1) (LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _) h2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem symm_pull : ∀ (S T : Scheme.{0}) (A : Over S) [GrpObj A] (B : Over T) [GrpObj B] (y : T ⟶ S) (α : B.left ⟶ A.left), IsGrpPullback B A y α → ∀ L : LB A.left, L.IsLB → LBIso (L.pull (GrpObj.inv : A ⟶ A).left) L → LBIso ((L.pull α).pull (GrpObj.inv : B ⟶ B).left) (L.pull α) := by
   intro S T A _ B _ y α h L hL hs

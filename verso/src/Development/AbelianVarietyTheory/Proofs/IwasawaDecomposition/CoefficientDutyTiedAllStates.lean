@@ -25,11 +25,9 @@ namespace GlobalTheory.HeightCounting.Up.IntegralCoefficientPinning
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨Sp, ⟨Au⟩, ss⟩` from `hB`. Establish `hmt : MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q`. Establish `key : ∀ (xi : (Dof x).what₂.Tup → HChar (Dof x).host.E) (Q : (Dof x).what₂.places.Pl → Finset (PlE (Dof x).host)), MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * xi μ) Q → l.c.tp.xi = xi → l.c.ch.Q = Q → MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q`. Introduce `xi Q h hx hQ`. Substitute `hx hQ` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `h`. Conclude with `key _ _ l.mt.mt l.c.xi_eq l.c.Q_eq`. Set `nt : NTrue hL (withLoc L) (cfL L (cfOf x)) (chL L l.c.ch) (tpL L l.c.tp)` to `{ D := Dof x, cf := cfOf x, jE := l.a.jE, A := l.a.A, cg := l.a.cg, au := l.a.au, rep := repOf x.r.Y, row := l.a.row, low := lowAll (Dof x), Pq := l.Pq, S := l.rat.S, hL := l.rat.In.hL, eig := l.rat.In.eig, θ := l.rat.In.θ, Bs := l.b.Bs, M := l.mt.M, C := l.c.ch, tp := l.c.tp, ch …`. Establish `hval : ValLL0 (withLoc L) (cfL L (cfOf x))` using `⟨l.a.val.mu0, l.a.val.eta, l.a.val.chiPsi, l.a.val.del, l.a.val.del'⟩`. Take `⟨Q, h1, h2, h3, h4, h5⟩` from `GlobalTheory.NPin.pin_of_nTrue hL _ _ _ _ nt hval (fun σ σ' h => x.r.Y.eFT.injective (Formalism.IndefR.principalLevelFrame.rowRepR_inj _ _ _ h)) l.a.elem.star l.a.elem.int l.a.elem.split (GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _)`.
-
-Conclude with `⟨Q, h1, h2, h3, h4, h5⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pin_third (hL : GlobalTheory.Published.LocalLanglandsGL) (hP : PrN) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
     {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : LC hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ)
@@ -65,7 +63,7 @@ open GlobalTheory.HeightCounting.Fin3 GlobalTheory.HeightCounting.Up.RealOfReadi
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL _ _`. Conclude with `StepW.of_all fun K B f T w _ _ _ P x l big L hB hO m _ _ s r _ => m.z.lev.C`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cf_oL : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.NRows.HypothesesX → AllSt fun _ _ _ T w P x => ∀ (l : LC hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 (Dof x))), GlobalTheory.CoefDuty.Built l.a.A l.mt.M l.c.ch l.c.tp.tup big L → SumRepresentations.hypO (withLoc L) → ∀ (m : Moved (GlobalTheory.HeightCounting.Fin3.oL x L)), m.Copy → m.Coh → ∀ (s : Side0 (GlobalTheory.HeightCounting.Fin3.oL x L)) (r : ReadPk m s), r.Pin → m.z.R.C = cfL L (cfOf x) := by
   intro hL _ _
@@ -74,13 +72,13 @@ theorem cf_oL : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → Global
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL hP hX`. Establish `H` using `((GlobalTheory.HeightCounting.Up.ThirdFits.fits_oL hL hP hX).and (GlobalTheory.HeightCounting.Up.GapAllStates.gapR_allSt)).and (GlobalTheory.HeightCounting.Up.SizePar.exists_params.2.and ((cf_oL hL hP hX).and ((GlobalTheory.HeightCounting.Up.ThirdTied.xiH_tupT_third hL hP hX).and …`. Use `H.trans (StepW.of_all fun K B f T w _ _ h P x l => ?_)` and prove the remaining obligations. Take `⟨⟨hfits, hgap⟩, hpar, hcf, htp, hty, hidx, hag, he0⟩` from `h`. Use `⟨fun _ => ∅, fun L hB hO => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Q, h1, h2, h3, h4, h5⟩` from `pin_third hL hP x l _ L hB`. Take `⟨x', hx'⟩` from `GlobalTheory.T.fittingLaterStages_row_is_constructionState hX.weil hX.ds hP.hc hP.decay K B f T w P (oL x L) (hfits P x l _ L hB hO) x.G_eq x.etaF (bkL L)`. Take `⟨o, fits', G_eq', etaF', bk', m, cp, co, s, r, pn⟩` from `x'`. Simplify using `only at hx'`. Substitute `hx'` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Establish `hC` using `hcf P x l _ L hB hO m cp co s r pn`. Establish `ht` using `htp P x l _ L hB hO m cp co s r pn`. Establish `hT` using `hty P x l _ L hB hO m cp co s r pn`. Take `⟨Xd, E, ⟨labPi⟩⟩` from `hidx P x l _ L hB hO m cp co s r pn`. Establish `hg : GlobalTheory.LiftRows.Given m.z.R.toRealDat m.z.F.lv2` using `⟨(GlobalTheory.CoreOfWeak.core_of_weak m.z.R m.z.F m.z.pins.char m.exAt).1, (hpar P x).2 L, m.intersectionNumber_baseChange.ok.ok2.irr, GlobalTheory.HeightCounting.goodTypes_of_typesTrue_real _ _ _ _ _ _ _ m.z.pins.char.base.lev hT, m.z.pins.keep.guard, hgap P x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ag⟩` from `hag P x l _ L hB hO m cp co s r pn hC Xd E labPi m.z.pins.char.base ht hg m.z.pins.char.fullP Q.rep h4`. Establish `e0` using `he0 P x l _ L hB hO m cp co s r pn hC Xd E labPi m.z.pins.char.base ht hg m.z.pins.char.fullP`. Take `⟨T0, -, -⟩` from `exists_tied Q (realOfRead m.z.R.toRealDat m.z.F.lv2 r.Y (tpL L l.c.tp) hC Xd E labPi m.z.pins.char.base ht hg m.z.pins.char.fullP) h1 h2 h3 (eq_of_heq h5) HEq.rfl ag e0`. Conclude with `⟨T0⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tied_third : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.NRows.HypothesesX → AllSt fun _ _ _ _ _ _ x => ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → Nonempty (GlobalTheory.NRows.Tied hL D') := by
   intro hL hP hX

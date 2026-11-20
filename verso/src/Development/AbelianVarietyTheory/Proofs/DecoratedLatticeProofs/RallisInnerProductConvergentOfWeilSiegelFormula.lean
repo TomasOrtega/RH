@@ -21,9 +21,9 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Proof.Corev
 
 /- English proof (translation)
-Introduce `hR hW hE D ψ θ A B χA χB sA sB t cA o K₁ K₂ c m ν f₁ f₂ hS hρ ht hK hm hν hf₁ hf₂`. Consider the cases of `o with`. Consider the case `false => exact GlobalTheory.T.convergentInnerProduct_conjugateOrientation_weil hR hW hE D ψ θ A B χA χB sA sB t cA K₁ K₂ c m ν f₁ f₂ hS hρ ht hK hm hν hf₁ hf₂`. Consider the case `true`. Take `⟨_, _, _, hθ, _, _, hA, hB, _⟩` from `id hS`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.convergentInnerProduct_conjugateOrientation_weil hR hW hE D ψ θ A B χA χB sA sB t cA K₁ K₂ c m ν f₁ f₂ hS hρ ht (GlobalTheory.T.thetaKernelPair_flip_conjugate D ψ θ A B χA χB sA sB K₁ K₂ c hθ hA hB hK) hm hν hf₁ hf₂`.
+A detailed English derivation is pending.
 -/
 theorem convergent_both_orientations :
     GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelEisensteinContinuation →

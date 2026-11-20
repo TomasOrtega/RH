@@ -18,13 +18,13 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.DomModels
 
 /- English proof (translation)
-Establish `hFree : FreeSt` using `freeSt_of GlobalTheory.T.free_closed_holds GlobalTheory.T.independent_spread_holds GlobalTheory.T.free_trait_holds`. Introduce `E _ _ _ H D hD Xo`. Take `⟨s, M, hM1, hC⟩` from `GlobalTheory.T.exists_finite_ample_cover_levels E H D hD Xo`. Use `⟨s, insert 1 (M.image (· ^ 2)), ?_, ?_⟩` and prove the remaining obligations. Introduce `N hN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_insert.1 hN with rfl | hN` into its components or cases. Conclude with `one_pos`. Take `⟨m, hm, rfl⟩` from `Finset.mem_image.1 hN`. Conclude with `pow_pos (hM1 m hm) 2`. Introduce `l c hg Z hZ p W hp hW b₀ hb₀`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨I, _, R, _, a, b, ω, C, hcov, hamp, hdom⟩` from `hC l c hg`. Take `⟨i, b', hb'b, hb'ω, hD'⟩` from `hdom p W hp hW b₀ hb₀`. Take `⟨m, hmM, hm⟩` from `hamp i`. Establish `hZC : Dominates Z (C i) (b i)`. Use `GlobalTheory.T.ample_on_localized_model hFree extendSt GlobalTheory.ExtAtProof.extAtSt glueSt E H D l (Xo l) c Z (R i) (a i) (b i) (ω i) (C i) m (hcov.2.1 i).1 (hcov.2.1 i).2.1 (hcov.2.1 i).2.2 (hM1 m hmM) hm fun z => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨R', _, _, _, ξ, t, hmap, P, k, γ, hCN, hξ, hEt, -, hTor, hfine, hcone⟩` from `hZ z`. Conclude with `⟨R', _, _, _, ξ, t, hmap, P, hCN, hξ, hEt.1, GlobalTheory.T.fine_data_of_cone E H R' t P k 1 γ hCN hTor hcone (hfine 1 (Finset.mem_insert_self _ _)), GlobalTheory.T.fine_data_of_cone E H R' t P k (m ^ 2) γ hCN hTor hcone (hfine (m ^ 2) (Finset.mem_insert_of_mem (Finset.mem_image_ …`. Establish `h` using `domTrans E H D l (Xo l) c (𝓞 c.F) (R i) (c.V W) (algebraMap (𝓞 c.F) c.F) (ω i) (c.V W).subtype Z (C i) (s.Y p W hp hW ⟨l, c, hg p hp⟩) (b i) b' hb'ω (hcov.2.1 i).2.1 hZC hD'`. Rewrite `h` using `[hb'b]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem domSt_holds : DomSt := by
   have hFree : FreeSt := freeSt_of GlobalTheory.T.free_closed_holds GlobalTheory.T.independent_spread_holds GlobalTheory.T.free_trait_holds

@@ -8,23 +8,21 @@ section
 variable {O A : Type} [CommRing O] [IsDomain O] [CommRing A] [Algebra O A]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hfg`. Rewrite using `[Module.Finite.iff_fg]`. Use `⟨S.image (satSq x).mkQ, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`. Apply `le_antisymm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Establish `hsA : s ∈ 𝒜 j`. Establish `: s ∈ oz 𝒜 j` using `hS ▸ Submodule.subset_span hs`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨s, ⟨hsA, hx s hsA⟩, rfl⟩`. Introduce and unpack `_ ⟨f, ⟨hf, -⟩, rfl⟩`. Establish `hf' : f ∈ Submodule.span (𝒜 0) (S : Set A)`. Rewrite using `[hS]`. Conclude with `hf`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Use `clear hf`. Proceed by induction on `hf' using Submodule.span_induction with`. Consider the case `mem s hs => exact Submodule.subset_span ⟨s, hs, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul a b hb ih`. Establish `hbA : b ∈ 𝒜 j`. Establish `: b ∈ oz 𝒜 j` using `hS ▸ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Establish `hxb : x b = 0` using `hx b hbA`. Establish `e : (satSq x).mkQ (a • b) = (satSq x).mkQ (x (a : A) • b)`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[one_smul, pow_two]`. Establish `h1 : ((a : A) - algebraMap O A (x (a : A))) ∈ RingHom.ker x`. Rewrite using `[RingHom.mem_ker]`. Simplify using the standard rewrite rules. Establish `h2 : b ∈ RingHom.ker x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker]`. Conclude with `hxb`. Establish `e2 : a • b - x (a : A) • b = ((a : A) - algebraMap O A (x (a : A))) * b`. Rewrite using `[sub_mul, ← Algebra.smul_def]`. Both sides reduce to the same expression.
-
-Rewrite using `[e2]`. Conclude with `Ideal.mul_mem_mul h1 h2`. Rewrite using `[e, map_smul]`. Conclude with `Submodule.smul_mem _ _ ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rk_fin [IsNoetherianRing O] (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] (x : A →ₐ[O] O) (j : ℤ)
     (hx : ∀ f ∈ 𝒜 j, x f = 0) (hfg : (oz 𝒜 j).FG) : Module.Finite O (cotLat x 𝒜 j) := by
@@ -85,15 +83,15 @@ private theorem linPart_apply {τ : Type} (φ : A →ₐ[O] MvPowerSeries τ (Fr
     linPart φ i f = MvPowerSeries.coeff (Finsupp.single i 1) (φ f) := rfl
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨c, hc, hcf⟩` from `hf`. Establish `hker : ∀ g ∈ RingHom.ker x ^ 2, linPart φ i g = 0`. Introduce `g hg`. Rewrite `hg` using `[pow_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.mul_induction_on hg ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[linPart_apply, map_mul]`. Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Establish `ha0 : MvPowerSeries.constantCoeff (φ a) = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[h.const, RingHom.mem_ker.mp ha, map_zero]`. Establish `hb0 : MvPowerSeries.constantCoeff (φ b) = 0`. Rewrite using `[h.const, RingHom.mem_ker.mp hb, map_zero]`. Establish `hA` using `(MvPowerSeries.one_le_order_iff_constCoeff_eq_zero).mpr ha0`. Establish `hB` using `(MvPowerSeries.one_le_order_iff_constCoeff_eq_zero).mpr hb0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `a b ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`. Establish `h0` using `hker _ hcf`. Rewrite `h0` using `[map_smul, Algebra.smul_def, mul_eq_zero]`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `h0 with h0 | h0` into its components or cases. Conclude with `absurd ((IsFractionRing.injective O (FractionRing O)) (h0.trans (map_zero _).symm)) hc`. Conclude with `h0`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem linPart_sat {τ : Type} {𝒜 : ℤ → Submodule O A} {x : A →ₐ[O] O} {wt : τ → ℤ}
     {φ : A →ₐ[O] MvPowerSeries τ (FractionRing O)} (h : IsChart 𝒜 x wt φ) (i : τ) :
@@ -126,7 +124,7 @@ private theorem linPart_sat {τ : Type} {𝒜 : ℤ → Submodule O A} {x : A �
   · exact h0
 
 /- English proof (translation)
-Rewrite using `[linPart_apply]`. Apply `h.graded j f hf` to reduce the goal to its premises. Simplify `hij` using `[Finsupp.weight_apply, Finsupp.sum_single_index]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem linPart_wt {τ : Type} {𝒜 : ℤ → Submodule O A} {x : A →ₐ[O] O} {wt : τ → ℤ}
     {φ : A →ₐ[O] MvPowerSeries τ (FractionRing O)} (h : IsChart 𝒜 x wt φ) (i : τ) {j : ℤ} (hij : wt i ≠ j)
@@ -136,13 +134,11 @@ private theorem linPart_wt {τ : Type} {𝒜 : ℤ → Submodule O A} {x : A →
   simpa [Finsupp.weight_apply, Finsupp.sum_single_index] using hij
 
 /- English proof (translation)
-Use `conv_rhs => rw [← DirectSum.sum_support_decompose 𝒜 f]`. Rewrite using `[map_sum]`. Distinguish the cases in `hj : j ∈ (DirectSum.decompose 𝒜 f).support`. Rewrite using `[Finset.sum_eq_single j]`. Introduce `k _ hk`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `linPart_wt h i (by rw [hij]; exact fun e => hk e.symm) (DirectSum.decompose 𝒜 f k).2`. Introduce `hn`. Conclude with `absurd hj hn`. Rewrite `hj` using `[DFinsupp.notMem_support_iff]`. Rewrite using `[hj]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ZeroMemClass.coe_zero, map_zero]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k hk`. Establish `hk' : k ≠ j`.
-
-Introduce and unpack `rfl`. Conclude with `(DFinsupp.mem_support_iff.mp hk) hj`. Conclude with `linPart_wt h i (by rw [hij]; exact fun e => hk' e.symm) (DirectSum.decompose 𝒜 f k).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem linPart_proj {τ : Type} {𝒜 : ℤ → Submodule O A} [GradedAlgebra 𝒜] {x : A →ₐ[O] O} {wt : τ → ℤ}
     {φ : A →ₐ[O] MvPowerSeries τ (FractionRing O)} (h : IsChart 𝒜 x wt φ) (i : τ) {j : ℤ} (hij : wt i = j) (f : A) :
@@ -170,31 +166,25 @@ private theorem linPart_proj {τ : Type} {𝒜 : ℤ → Submodule O A} [GradedA
 end
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ A _ _ 𝒜 _ _ x hW n hS`. Take `⟨τ, _, wt, φ, hc, hn⟩` from `hS`. Establish `hfin : Module.Finite O (cotLat x 𝒜 (-1))` using `rk_fin 𝒜 x (-1) (hW.fixed (-1) (by norm_num)) (fg_holds O A 𝒜 x hW (-1))`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Set `Lq : (A ⧸ satSq x) →ₗ[O] ({i // wt i = -1} → FractionRing O)` to `(satSq x).liftQ (LinearMap.pi fun i : {i // wt i = -1} => linPart φ i.1) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Introduce `f hf`. Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i`. Conclude with `linPart_sat hc i.1 f hf)`. Set `L : cotLat x 𝒜 (-1) →ₗ[O] ({i // wt i = -1} → FractionRing O)` to `Lq ∘ₗ (cotLat x 𝒜 (-1)).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨q, hq⟩ hLq`. Take `⟨f, ⟨hf1, hf2⟩, rfl⟩` from `hq`. Establish `hx0 : x f = 0` using `RingHom.mem_ker.mp hf2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ i : τ, MvPowerSeries.coeff (Finsupp.single i 1) (φ f) = 0`. Introduce `i`. Rewrite using `[← linPart_apply]`. Distinguish the cases in `hi : wt i = -1`. Conclude with `congrFun hLq ⟨i, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `linPart_wt hc i hi hf1`. Establish `hs` using `hc.inj f hx0 hall`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (satSq x).mkQ f = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs`. Use `haveI : Module.IsTorsionFree O (FractionRing O) := Module.isTorsionFree_iff_algebraMap_injective.mpr (IsFractionRing.injective O _)`. Use `haveI : Module.IsTorsionFree O (cotLat x 𝒜 (-1)) := Function.Injective.moduleIsTorsionFree (⇑L) hinj (fun r m => L.map_smul r m)`. Establish `hup : Module.finrank O (cotLat x 𝒜 (-1)) ≤ Fintype.card {i // wt i = -1}`. Set `B` to `Module.Free.chooseBasis O (cotLat x 𝒜 (-1))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hli : LinearIndependent O (L ∘ B)` using `B.linearIndependent.map' L (LinearMap.ker_eq_bot.mpr hinj)`. Establish `hli'` using `(LinearIndependent.iff_fractionRing O (FractionRing O)).mp hli`. Establish `h1` using `hli'.fintype_card_le_finrank`. Rewrite `h1` using `[Module.finrank_fintype_fun_eq_card]`. Rewrite using `[Module.finrank_eq_card_chooseBasisIndex]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Use `choose F hF0 hF1 using fun i : {i // wt i = -1} => hc.onto i.1`. Establish `hmem : ∀ k : {i // wt i = -1}, (satSq x).mkQ (DirectSum.decompose 𝒜 (F k) (-1) : A) ∈ cotLat x 𝒜 (-1)` using `fun k => ⟨_, ⟨(DirectSum.decompose 𝒜 (F k) (-1)).2, RingHom.mem_ker.mpr (hW.fixed (-1) (by norm_num) _ (DirectSum.decompose 𝒜 (F k) (-1)).2)⟩, rfl⟩`. Set `g : {i // wt i = -1} → cotLat x 𝒜 (-1)` to `fun k => ⟨_, hmem k⟩`. Establish `hgv : ∀ k i : {i // wt i = -1}, L (g k) i = linPart φ i.1 (F k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k i`. Use `show linPart φ i.1 (DirectSum.decompose 𝒜 (F k) (-1) : A) = _`. Conclude with `linPart_proj hc i.1 i.2 (F k)`. Establish `hli : LinearIndependent O g`. Apply `LinearIndependent.of_comp L` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha i`. Establish `h1` using `congrFun ha i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, hgv, Pi.zero_apply] at h1`. Rewrite `h1` using `[Finset.sum_eq_single i]`.
-
-Rewrite `h1` using `[linPart_apply, Algebra.smul_def, mul_eq_zero]`. Break down `h1 with h2 | h2` into its components or cases. Conclude with `(IsFractionRing.injective O (FractionRing O)) (h2.trans (map_zero _).symm)`. Conclude with `absurd h2 (hF0 i)`. Introduce `k _ hk`.
-
-Rewrite using `[linPart_apply, hF1 k i.1 (fun e => hk (Subtype.ext e.symm)), smul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Establish `hlow : Fintype.card {i // wt i = -1} ≤ Module.finrank O (cotLat x 𝒜 (-1))` using `hli.fintype_card_le_finrank`. Rewrite using `[← hn (-1), Nat.card_eq_fintype_card]`.
-
-Conclude with `le_antisymm hup hlow`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.rk_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

@@ -21,7 +21,7 @@ theorem blockSym_apply {ι : Type} {p q n : ℕ} [Fintype ι] (h : Fintype.card 
       ∑ b : Fin q, X (Fintype.equivFinOfCardEq h (τ, i, b), Fintype.equivFinOfCardEq h (τ, j, b)) := rfl
 
 /- English proof (translation)
-Simplify using `[blockSym, Subsingleton.elim (Fintype.equivFinOfCardEq _ _) 0]`.
+Simplify using the standard rewrite rules.
 -/
 example : blockSym (ι := Unit) (p := 1) (q := 1) (n := 1) (by simp) () 0 0 = X (0, 0) := by
   simp [blockSym, Subsingleton.elim (Fintype.equivFinOfCardEq _ _) 0]

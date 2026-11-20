@@ -21,7 +21,7 @@ namespace GlobalTheory.PullSquare
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨r, fun _ => rfl, fun _ _ _ _ _ _ h => h⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_of_eq {θ θ' : R →+* R'} (e : θ = θ') {D : DegPre R} {D' : DegPre R'} (r : IsPullDeg θ D D') :
     ∃ r' : IsPullDeg θ' D D', (∀ x, r'.xe x = r.xe x) ∧
@@ -33,11 +33,11 @@ theorem exists_of_eq {θ θ' : R →+* R'} (e : θ = θ') {D : DegPre R} {D' : D
 end GlobalTheory.PullSquare
 
 /- English proof (translation)
-Introduce `R R₁ W W₁ _ _ _ _ _ _ _ _ I I₁ J J₁ _ _ _ _ ρ φ iw φ₁ hsq hφ₁ hρi hφi hiw D D₁ D' D'₁ hρ hD hX`. Take `⟨r, Tr⟩` from `GlobalTheory.LabTrans.exists_comp hφi hiw hD hX`. Take `⟨r', hx', hg'⟩` from `GlobalTheory.PullSquare.exists_of_eq hsq.symm r`. Take `⟨h, Th⟩` from `GlobalTheory.LabTrans.exists_cancel hρi hφ₁ hρ r'`. Use `⟨h, fun x => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Th.xe_eq, hx', ← Tr.xe_eq]`. Introduce `F _ _ _ _ _ cρ cφ ci c₁ g g₁ g' g'₁ Hρ HD HX`. Establish `cθ : GlobalTheory.ArcPull.Compat (iw.comp φ) F` using `fun a => (cφ a).trans (ci (φ a))`. Establish `cθ' : GlobalTheory.ArcPull.Compat (φ₁.comp ρ) F` using `fun a => (cρ a).trans (c₁ (ρ a))`. Establish `H : IsPullGtF (φ₁.comp ρ) r' F g g'₁` using `hg' F g g'₁ (Tr.isPullGtF cθ HD HX)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g'', H''⟩` from `GlobalTheory.ArcPull.exists_pullGt h GlobalTheory.ExpansionTotal.globalFns c₁ g₁`. Establish `H2` using `Th.isPullGtF cθ' Hρ H''`. Rewrite `H''` using `[GlobalTheory.ArcPull.pullGt_unique r' cθ' H2 H]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GlobalTheory.Mum.isPullDeg_square : ∀ (R R₁ W W₁ : Type) [CommRing R] [IsDomain R] [CommRing R₁] [IsDomain R₁] [CommRing W] [IsDomain W] [CommRing W₁] [IsDomain W₁] (I : Ideal R) (I₁ : Ideal R₁) (J : Ideal W) (J₁ : Ideal W₁), AdmBase R I → AdmBase R₁ I₁ → AdmBase W J → AdmBase W₁ J₁ → ∀ (ρ : R →+* R₁) (φ : R →+* W) (iw : W →+* W₁) (φ₁ : R₁ →+* W₁), φ₁.comp ρ = iw.comp φ → Function.Injective φ₁ → Function.Injective ρ → Function.Injective φ → Function.Injective iw → ∀ (D : DegData R I) (D₁ : DegData R₁ I₁) (D' : DegData W J) (D'₁ : DegData W₁ J₁) (hρ : IsPullDeg ρ D.toPre D₁.toPre) (hD : IsPullDeg φ D.toPre D'.toPre) (hX : IsPullDeg iw D'.toPre D'₁.toPre), ∃ h : IsPullDeg φ₁ D₁.toPre D'₁.toPre, (∀ x, hρ.xe (h.xe x) = hD.xe (hX.xe x)) ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing R₁) F] [Algebra (FractionRing W) F] [Algebra (FractionRing W₁) F], GlobalTheory.ArcPull.Compat ρ F → GlobalTheory.ArcPull.Compat φ F → GlobalTheory.ArcPull.Compat iw F → GlobalTheory.ArcPull.Compat φ₁ F → ∀ (g : GtPtF D.toPre F) (g₁ : GtPtF D₁.toPre F) (g' : GtPtF D'.toPre F) (g'₁ : GtPtF D'₁.toPre F), IsPullGtF ρ hρ F g g₁ → IsPullGtF φ hD F g g' → IsPullGtF iw hX F g' g'₁ → IsPullGtF φ₁ h F g₁ g'₁ := by
   intro R R₁ W W₁ _ _ _ _ _ _ _ _ I I₁ J J₁ _ _ _ _ ρ φ iw φ₁ hsq hφ₁ hρi hφi hiw D D₁ D' D'₁ hρ hD hX

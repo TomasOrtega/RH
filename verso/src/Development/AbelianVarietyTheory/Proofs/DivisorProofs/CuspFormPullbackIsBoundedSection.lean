@@ -12,21 +12,21 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hx`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castFrame_mem_GG {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') {G : Matrix (Fin r) (Fin r) E}
     {p0 : ℕ} {x : Frame Ψ r} (hx : x ∈ GG Ψ G p0) : castFrame h x ∈ GG Ψ' G p0 := by
   subst h; exact hx
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hb`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castFrame_mem_Bor {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') {b : Frame Ψ r}
     (hb : b ∈ Bor Ψ r) : castFrame h b ∈ Bor Ψ' r := by
   subst h; exact hb
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem bchar_castFrame {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (la : Wt Ψ' r) (b : Frame Ψ r) :
     bchar la (castFrame h b) = bchar (castWt h la) b := by
@@ -45,7 +45,7 @@ theorem castFrame_lact {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (β : GL (
     castFrame h (lact β x) = lact β (castFrame h x) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((β : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ) : Matrix (Fin r) (Fin r) ℂ) = (β : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ * mat b τ`. Rewrite using `[Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_rmul {Ψ : Finset (E →+* ℂ)} (β : GL (Fin r) E) (x b : Frame Ψ r) :
     lact β (rmul x b) = rmul (lact β x) b := by
@@ -55,7 +55,7 @@ theorem lact_rmul {Ψ : Finset (E →+* ℂ)} (β : GL (Fin r) E) (x b : Frame �
   rw [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((β : Matrix (Fin r) (Fin r) E).map τ.1 * ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) : Matrix (Fin r) (Fin r) ℂ) = ((↑(β * γ) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ : Matrix (Fin r) (Fin r) ℂ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_lact {Ψ : Finset (E →+* ℂ)} (β γ : GL (Fin r) E) (x : Frame Ψ r) :
     lact β (lact γ x) = lact (β * γ) x := by
@@ -66,9 +66,9 @@ theorem lact_lact {Ψ : Finset (E →+* ℂ)} (β γ : GL (Fin r) E) (x : Frame 
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e1 : mat (lact β x) τ = (β : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`. Establish `e2 : gram τ.1 G (mat (lact β x) τ) = gram τ.1 G (mat x τ)`. Use extensionality with `a b`. Simplify using `only [gram, Matrix.of_apply, e1, PerMove.col_mul, PerMove.hermC_unitary _ _ _ hβ]`. Unfold `dmin`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dmin_lact {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {β : GL (Fin r) E}
     (hβ : ∀ u v, herm G ((β : Matrix (Fin r) (Fin r) E) *ᵥ u) ((β : Matrix (Fin r) (Fin r) E) *ᵥ v) =
@@ -82,7 +82,7 @@ theorem dmin_lact {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {β
   rw [e2]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem nfac_cast {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (G : Matrix (Fin r) (Fin r) E)
     (la : Wt Ψ' r) (x : Frame Ψ r) :
@@ -93,17 +93,17 @@ theorem nfac_cast {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (G : Matrix (Fi
   subst h; rfl
 
 /- English proof (translation)
-Take `⟨⟨hQd, hQB, hQΓ⟩, C, hC⟩` from `hQ`. Establish `hmaps : ∀ x ∈ X.dom, lact β (castFrame hΨ x) ∈ Y.dom`. Introduce `x hx`. Establish `h1` using `castFrame_mem_GG hΨ hx`. Rewrite `h1` using `[hG, hp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.FrameFibre.lact_mem_GG hβ h1`. Use `⟨⟨?_, ?_, ?_⟩, C, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hd : Differentiable ℂ (fun x : Frame X.Ψ r => lact β (castFrame hΨ x))`. Rewrite using `[differentiable_pi]`. Introduce `τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[differentiable_pi]`. Introduce `a`. Rewrite using `[differentiable_pi]`. Introduce `b`. Simplify using `only [lact, castFrame, mat, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fun_prop`. Conclude with `hQd.comp hd.differentiableOn hmaps`. Introduce `x hx b hb`. Simplify using `only`. Rewrite using `[castFrame_rmul, lact_rmul, hQB _ (hmaps x hx) _ (castFrame_mem_Bor hΨ hb), bchar_castFrame]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `γ hγ x hx`. Simplify using `only`. Rewrite using `[hχX γ hγ, one_mul, castFrame_lact, lact_lact, show β * γ = (β * γ * β⁻¹) * β by group, ← lact_lact, hQΓ _ (hΓ γ hγ) _ (hmaps x hx), hχY _ (hΓ γ hγ), one_mul]`. Use `le_trans (le_of_eq ?_) (hC _ (hmaps x hx))` and prove the remaining obligations. Unfold `Data.pnorm`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [dmin_lact hβ]`. Rewrite using `[← hG]`. Conclude with `(nfac_cast hΨ X.Gm la x).symm`.
+A detailed English derivation is pending.
 -/
 theorem isBddSec_transport (X Y : Data E r) (hΨ : X.Ψ = Y.Ψ) (hG : X.Gm = Y.Gm) (hp : X.p0 = Y.p0)
     (β : GL (Fin r) E)
@@ -143,7 +143,7 @@ theorem isBddSec_transport (X Y : Data E r) (hΨ : X.Ψ = Y.Ψ) (hG : X.Gm = Y.G
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ M la F hF h c`. Establish `hY` using `(hF (h • c)).1`. Conclude with `isBddSec_transport (M.comp c).toData (M.comp (h • c)).toData ((M.comp_Ψ c).trans (M.comp_Ψ (h • c)).symm) (by rw [M.comp_Gm, M.comp_Gm]) (by rw [M.comp_basePoint, M.comp_basePoint]) (M.tr h c) (by rw [M.comp_Gm]; exact M.tr_herm h c) (fun γ hγ => (M.tr_conj h c γ).1 hγ) (castWt ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_isBddSec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type)
     [Group U] [MulAction U C] (M : TwoLevels E r U C) (la : Wt M.Ψ r) (F : C → Frame M.Ψ r → ℂ),

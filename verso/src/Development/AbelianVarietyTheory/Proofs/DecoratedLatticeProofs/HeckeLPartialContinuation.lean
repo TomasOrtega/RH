@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.He
 namespace GlobalTheory.Closed
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.HeckeLPartialContinuation_holds`.
+A detailed English derivation is pending.
 -/
 theorem heckeLPartialContinuation : GlobalTheory.Published.HeckeLPartialContinuation :=
   GlobalTheory.Published.HeckeLPartialContinuation_holds

@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter Topology GroundTheory.Automorphic GroundTheory.Automorphic.Reduction UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Ci PositivityTheory.Rg.Fx PositivityTheory.Rg.Tf.Core
 
 /- English proof (translation)
-Establish `: ∀ τ, ∃ f : Fin n → ℂ, Finset.univ.val.map f = Λ τ`. Introduce `τ`. Establish `h1` using `h τ`. Proceed by induction on `hm : Λ τ using Quotient.inductionOn with`. Consider the case `_ a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite `h1` using `[hm]`. Establish `h2 : a.length = n` using `by simpa using h1`. Substitute `h2` using the available equality. Conclude with `⟨a.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`. Use `choose f hf using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨fun x => f x.1 x.2, funext hf⟩`.
+A detailed English derivation is pending.
 -/
 private theorem msOf_ex {K : Type} [Field K] [NumberField K] {n : ℕ} (Λ : (K →+* ℂ) → Multiset ℂ) (h : ∀ τ, (Λ τ).card = n) :
     ∃ L : Ix K n → ℂ, msOf L = Λ := by
@@ -24,7 +24,7 @@ private theorem msOf_ex {K : Type} [Field K] [NumberField K] {n : ℕ} (Λ : (K 
   exact ⟨fun x => f x.1 x.2, funext hf⟩
 
 /- English proof (translation)
-The claim follows from `eval₂Hom_congr' rfl (fun i hi _ => by unfold hval; rw [h _ (hP i hi)]) rfl`.
+A detailed English derivation is pending.
 -/
 private theorem val_congr {K : Type} [Field K] [NumberField K] {n : ℕ} (S : Set (Pl K)) (x : ℝ) (Λ : (K →+* ℂ) → Multiset ℂ)
     (t t' : Pl K → Multiset ℂ) (h : ∀ w ∉ S, t w = t' w) (P : PR K n) (hP : ∀ y ∈ P.vars, y.1 ∉ S) :
@@ -32,9 +32,9 @@ private theorem val_congr {K : Type} [Field K] [NumberField K] {n : ℕ} (S : Se
   eval₂Hom_congr' rfl (fun i hi _ => by unfold hval; rw [h _ (hP i hi)]) rfl
 
 /- English proof (translation)
-Establish `g1' : 0 ≤ g1` using `zero_le_one.trans hg1`. Establish `g2' : 0 ≤ g2` using `zero_le_one.trans hg2`. Establish `h2' : w * zi ≤ g1 * E2` using `h2.trans (le_mul_of_one_le_left hE2 hg1)`. Establish `h3' : q ≤ g2 * (B * e)` using `h3.trans (le_mul_of_one_le_left (by positivity) hg2)`. Establish `hC` using `le_abs_self C`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem arith (C w zN zi q r kM e B E1 E2 kk f g1 g2 : ℝ) (hw : 0 ≤ w) (hzN : 0 ≤ zN) (hzi : 0 ≤ zi) (hq : 0 ≤ q)
     (hr : 0 ≤ r) (hkM : 0 ≤ kM) (he : 0 ≤ e) (hB : 0 ≤ B) (hE1 : 0 ≤ E1) (hE2 : 0 ≤ E2) (hkk : 0 ≤ kk) (hf : 0 < f)
@@ -53,43 +53,37 @@ private theorem arith (C w zN zi q r kM e B E1 E2 kk f g1 g2 : ℝ) (hw : 0 ≤ 
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `hOS hEV hTS K _ _ _ n l hn μ _ θ 𝔰 ev hev hin C₀`. Take `⟨N, hN⟩` from `hOS K n l hn μ θ 𝔰 ev hev hin`. Take `⟨C, hC0, hC1⟩ : ∃ C : ℝ, C₀ ≤ C ∧ 1 ≤ C` from `⟨max C₀ 1, le_max_left _ _, le_max_right _ _⟩`. Take `⟨lu, hlu0, hlu⟩ : ∃ lu : ℝ, 0 ≤ lu ∧ ‖𝔰.Uq 0‖ ≤ Real.exp lu` from `⟨‖𝔰.Uq 0‖, norm_nonneg _, by linarith [Real.add_one_le_exp ‖𝔰.Uq 0‖]⟩`. Use `⟨N * C + lu, fun η hη hη1 χ hχ hχ1 hχ2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs1, hs2, hs3⟩` from `hN η hη hη1 χ hχ hχ1 hχ2`. Use `⟨s, hs1, hs2, fun Φ G hΦ hG hb P hP => ?_⟩` and prove the remaining obligations. Take `⟨Cb, hCb⟩` from `hb`. Take `⟨⟨κ, D, hκ, hBd⟩, hu, hM⟩` from `(hTS K n 𝔰.S Φ hΦ).2 G hG`. Take `⟨Mt, hMt⟩` from `hM _ ev hev.const`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hE` using `fun y (hy : y ∈ s) => hEV K n hn μ 𝔰.toAmp y.2 y.1 (hη.trans ((hs1 y).1 hy).1) ((hs1 y).1 hy).2.1`. Establish `hex : ∀ y : ℝ × Submodule ℂ (LL μ), ∃ (L : Ix K n → ℂ) (t : Pl K → Multiset ℂ), y ∈ s → At μ 𝔰.S y.2 (msOf L) t`. Introduce `y`. Distinguish the cases in `hy : y ∈ s`. Take `⟨Λ, t, h⟩` from `(hE y hy).1 ((hs1 y).1 hy).2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨L, rfl⟩` from `msOf_ex Λ fun τ => (h.1 τ).1`. Conclude with `⟨L, t, fun _ => h⟩`. Conclude with `⟨0, 0, fun h => absurd h hy⟩`. Use `choose L t hLt using hex`. Use `choose u hu1 hu2 using hu`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : ∀ d, ∀ y ∈ (trunc d G).vars, y.1 ∉ 𝔰.S` using `fun d y hy => hκ _ ((hBd d).1 y hy)`. Use `⟨fun y d => y.1 * val y.1 (msOf (L y)) (t y) P * u (L y) (t y) d, fun y hy L' t' h' => ?_, fun p N₁ s₀ => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `(hE y hy).2.1 _ _ _ _ (hLt y hy) h'`. Establish `hy0 : (y.1 : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hη.trans ((hs1 y).1 hy).1).ne'`. Establish `e3 : u (L y) (t y) = u L' t'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `d`. Use `mul_left_cancel₀ (pow_ne_zero d hy0) ?_` and prove the remaining obligations. Rewrite using `[← hu2, ← hu2, e1]`. Conclude with `val_congr 𝔰.S _ _ _ _ e2 _ (hT d)`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e3, e1, val_congr 𝔰.S _ _ _ _ e2 P hP]`. Conclude with `(hu1 L' t').const_mul _`. Take `⟨N', hN'⟩` from `exists_nat_ge (max N₁ 0 + lu)`. Take `⟨C₁, hC₁⟩` from `hs3 N'`. Establish `hk : 1 ≤ 4 / η` using `by rw [le_div_iff₀ hη]; linarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc₁ : 0 ≤ N * C + lu` using `by positivity`. Take `⟨B, hB1, hB2, hB3⟩ : ∃ B : ℝ, 1 ≤ B ∧ |Mt| ≤ B ∧ |Cb| ≤ B` from `⟨max 1 (max |Mt| |Cb|), le_max_left _ _, (le_max_left _ _).trans (le_max_right _ _), (le_max_right _ _).trans (le_max_right _ _)⟩`. Establish `hB0 : 0 ≤ B` using `zero_le_one.trans hB1`. Take `⟨K0, hK0, hK1⟩ : ∃ K0 : ℝ, |C₁| * ‖ev P‖ * Real.exp ((N * C + lu) * s₀) * (4 / η) ^ s₀ ≤ K0 ∧ 1 ≤ K0` from `⟨max _ 1, le_max_left _ _, le_max_right _ _⟩`. Use `⟨K0 * B, by positivity, fun j d m hm m' hm' f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hJ0 : (0 : ℝ) ≤ ((j + m' : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hJ1 : (j : ℝ) ≤ ((j + m' : ℕ) : ℝ)` using `by exact_mod_cast Nat.le_add_right j m'`. Establish `hJ2 : ((j + m' : ℕ) : ℝ) ≤ j + s₀` using `by exact_mod_cast Nat.add_le_add_left hm' j`. Establish `hQv : ∀ y ∈ (trunc d G * P).vars, y.1 ∉ 𝔰.S` using `fun y hy => by`. Break down `Finset.mem_union.1 (vars_mul _ _ hy) with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `hT d y h`. Conclude with `hP y h`. Establish `key` using `hC₁ (trunc d G * P) (fun y => val y.1 (msOf (L y)) (t y) (trunc d G * P)) (fun y hy v hv => (hE y hy).2.2 ev hev _ _ (hLt y hy) _ hQv v hv) (j / p + m) (j + m') (Real.exp (C * ((j + m' : ℕ) : ℝ))) f (Real.one_le_exp (by positivity)) ⟨hf.1, fun x hx => hf.2 x (lt_of_le_of_lt (Real …`. Establish `es : ∑ y ∈ s, y.1 * val y.1 (msOf (L y)) (t y) P * u (L y) (t y) d * (y.1 : ℂ) ^ d * (cheb η (j / p + m) y.1 : ℂ) * trOn (eigIn y.2 𝔰.toAmp.A y.1) ((𝔰.Uq 0 ^ (j + m')) ∘L Rop μ 𝔰.g ∘L θ.U) = ∑ y ∈ s, (cheb η (j / p + m) y.1 : ℂ) * (y.1 * val y.1 (msOf (L y)) (t y) (trunc d G * P) …`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hu2]`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Rewrite using `[es]`. Use `key.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw : ‖𝔰.Uq 0‖ ^ (j + m') ≤ Real.exp (lu * ((j + m' : ℕ) : ℝ))`. Rewrite using `[mul_comm, Real.exp_nat_mul]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hlu _`. Establish `hdf : (0 : ℝ) < d.factorial` using `by exact_mod_cast d.factorial_pos`. Establish `a1 : ‖𝔰.Uq 0‖ ^ (j + m') * Real.exp (C * ((j + m' : ℕ) : ℝ)) ^ N ≤ Real.exp ((N * C + lu) * j) * Real.exp ((N * C + lu) * s₀)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_le_mul_of_nonneg_right hw (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left hJ2 hc₁` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a2 : ‖𝔰.Uq 0‖ ^ (j + m') * (Real.exp (C * ((j + m' : ℕ) : ℝ)) ^ N')⁻¹ ≤ Real.exp (-N₁ * j)`. Use `(mul_le_mul_of_nonneg_right hw (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_neg, ← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `b1 : (N' : ℝ) * ((j + m' : ℕ) : ℝ) ≤ N' * (C * ((j + m' : ℕ) : ℝ))` using `mul_le_mul_of_nonneg_left (le_mul_of_one_le_left hJ0 hC1) (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2` using `mul_le_mul_of_nonneg_right hN' hJ0`. Establish `b3` using `mul_le_mul_of_nonneg_left hJ1 (le_max_right N₁ 0)`. Establish `b4` using `mul_le_mul_of_nonneg_right (le_max_left N₁ 0) (Nat.cast_nonneg j : (0 : ℝ) ≤ j)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `pw : ∀ x : ℝ, |x| ≤ B → x ^ (d + 1) ≤ B ^ (d + 1)` using `fun x hx => (le_abs_self _).trans (by rw [abs_pow]; exact pow_le_pow_left₀ (abs_nonneg _) hx _)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a3 : ‖ev (trunc d G * P)‖ ≤ B ^ (d + 1) * ‖ev P‖`. Rewrite using `[map_mul]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right ((hMt d).trans (pw _ hB2)) (norm_nonneg _))`. Establish `a4 : ‖ev (trunc d G * P) ∘L fcalc χ 𝔰.toAmp.A ∘L (1 - Pc μ)‖ ≤ B ^ (d + 1) * ‖ev P‖ / d.factorial`. Establish `e : ev (trunc d G * P) ∘L fcalc χ 𝔰.toAmp.A ∘L (1 - Pc μ) = ev P ∘L (ev (trunc d G) ∘L fcalc χ 𝔰.toAmp.A ∘L (1 - Pc μ))`.
-
-Rewrite using `[mul_comm, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e, mul_comm (B ^ (d + 1)), mul_div_assoc]`. Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans (mul_le_mul_of_nonneg_left ((hCb d).trans ?_) (norm_nonneg _))` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (pw _ hB3) hdf.le`.
-
-Establish `a5 : (4 / η) ^ (j / p + m) ≤ (4 / η) ^ (j / p) * (4 / η) ^ s₀`. Rewrite using `[pow_add]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hk hm) (by positivity)`. Use `(arith C₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (by positivity) (by positivity) (by positivity) (norm_nonneg _) (norm_nonneg _) (by positivity) (norm_nonneg _) (by positivity) (by positivity) (by positivity) (by positivity) hdf (Real.one_le_exp (by positivity)) (one_le_pow₀ hk) a1 a2 a3 a4 …` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations.
-
-Rewrite using `[mul_pow]`. Conclude with `mul_le_mul_of_nonneg_right (hK0.trans (le_self_pow₀ hK1 (by omega))) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Ci.sideEst :
     OneSide → EvVal → TruncSpec → ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (n l : ℕ), 0 < n →

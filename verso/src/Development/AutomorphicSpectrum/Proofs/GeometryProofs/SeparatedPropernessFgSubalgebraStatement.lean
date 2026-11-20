@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj CategoryTheory.MonObj
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Approx.isProper_descends` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FSeparatedPropernessFgSubalgebra.lean&line=61#L61)
 -/

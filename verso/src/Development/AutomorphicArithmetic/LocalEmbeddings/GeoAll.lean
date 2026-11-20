@@ -33,7 +33,7 @@ def num {F : Type} [Field F] {X : Scheme.{0}} (s : X ⟶ Sp F) {d : ℕ} (c : Fi
   multiDiff c (chiPic F (structureModule X)) 0
 
 /- English proof (translation)
-The claim follows from `letI := algebraΓOfHom s (interNum_eq_multiDiff F _ hL).symm`.
+A detailed English derivation is pending.
 -/
 theorem num_eq {F : Type} [Field F] {X : Scheme.{0}} (s : X ⟶ Sp F) {d : ℕ} {L : Fin d → LB X} (hL : ∀ i, (L i).IsLB) :
     num s (fun i => cls (L i) (hL i)) = (letI := algebraΓOfHom s; interNum F (structureModule X) L) :=
@@ -41,7 +41,7 @@ theorem num_eq {F : Type} [Field F] {X : Scheme.{0}} (s : X ⟶ Sp F) {d : ℕ} 
   (interNum_eq_multiDiff F _ hL).symm
 
 /- English proof (translation)
-Use `choose L hL e using fun i => cls_surj (c i)`. Take `rfl : c = fun i => cls (L i) (hL i)` from `funext fun i => (e i).symm`. Rewrite using `[num_eq _ hL, num_eq _ hL]`. Conclude with `(UpperTheory.intersection_number_base_change F K b X s hb hs).2 d L hL`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem num_comp {F K : Type} [Field F] [Field K] (b : F →+* K) (hb : 0 < embDeg b) {X : Scheme.{0}} (s : X ⟶ Sp K)
     (hs : IsProjOver s) {d : ℕ} (c : Fin d → Pic X) : num (s ≫ spMap b) c = (embDeg b : ℤ) * num s c := by
@@ -51,7 +51,7 @@ theorem num_comp {F K : Type} [Field F] [Field K] (b : F →+* K) (hb : 0 < embD
   exact (UpperTheory.intersection_number_base_change F K b X s hb hs).2 d L hL
 
 /- English proof (translation)
-Use `letI := b.toAlgebra`. Use `letI := (ε.toRingHom.comp (b.comp e.toRingHom)).toAlgebra`. Conclude with `(Algebra.finrank_eq_of_equiv_equiv e.symm ε (RingHom.ext fun x => by`. Simplify using `[RingHom.algebraMap_toAlgebra])).symm`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embDeg_conj {F K L M : Type} [Field F] [Field K] [Field L] [Field M] (e : F ≃+* K) (b : K →+* L) (ε : L ≃+* M) :
     embDeg (ε.toRingHom.comp (b.comp e.toRingHom)) = embDeg b := by
@@ -66,7 +66,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-The claim follows from `dif_pos ℓ.2.2`.
+A detailed English derivation is pending.
 -/
 theorem letterOf_self (ℓ : Letter Dw) : letterOf Dw (.inl (ℓ.1, ℓ.2)) = some ℓ := dif_pos ℓ.2.2
 
@@ -74,9 +74,9 @@ variable {O : Type} [CommRing O] {β : O →+* i₀.c.F} {T : Model (Xo i₀.l) 
   {e : F ≃+* i₀.c.F}
 
 /- English proof (translation)
-Establish `e (x : Letter Dw) : expo Dw (Finsupp.single (a, R, .inl (ℓ.1, ℓ.2)) m) x = if letterOf Dw (.inl (ℓ.1, ℓ.2)) = some x then m else 0`. Rewrite using `[expo, Finsupp.sum_single_index (by simp)]`. Simplify using `only [divOf, e]`. Establish `h₁` using `letterOf_self ℓ`. Rewrite using `[Finset.sum_eq_single ℓ (fun b _ hb => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg fun h₂ => hb (Option.some.inj (h₂.symm.trans h₁)), zero_smul]) (by simp), if_pos h₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem divOf_single {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {β : O →+* c.F} {T : Model Xo c β} {e : F ≃+* c.F}
     (C : FlagCpt T e) (a : ℕ → Bool) (R : Option ℝ) (ℓ : Letter Dw) (m : ℤ) :
@@ -91,7 +91,7 @@ theorem divOf_single {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {β : O →+
       rw [if_neg fun h₂ => hb (Option.some.inj (h₂.symm.trans h₁)), zero_smul]) (by simp), if_pos h₁]
 
 /- English proof (translation)
-The claim follows from `isDiscreteValuationRing_V z.Z.i.c hp hW ∑ C, num ((nmodel z.Z).comp C).toBase.genFibreStr (fun t => pull (((nmodel z.Z).comp C).toBase.genFibreι ≫ (nmodel z.Z).compι C) (m t • (z.line false _ (x t) (letterOf_self (x t))).L.cls)) = cov z * ∑ c, num (Φ.C c).Y.str fun t => toPic (m …`.
+A detailed English derivation is pending.
 -/
 theorem sum_fibre (hE : GlobalTheory.Published.SemiAbelianHomExtension) (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits)
     (hpq : 1 ≤ Dw.p + Dw.q) (z : admitted Y i₀)
@@ -214,11 +214,11 @@ theorem sum_fibre (hE : GlobalTheory.Published.SemiAbelianHomExtension) (hp : p.
 end Free
 
 /- English proof (translation)
-Rewrite using `[P.as_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hl : m.toMultiset.toList.length = d`. Rewrite using `[Multiset.length_toList, Finsupp.card_toMultiset, ← hP (MvPolynomial.mem_support_iff.1 hm), Finsupp.weight_apply]`. Simplify using `only [smul_eq_mul, mul_one, Pi.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Substitute `hl` using the available equality. Establish `e : MvPolynomial.monomial m (P.coeff m) = P.coeff m • ∏ i, (MvPolynomial.X (m.toMultiset.toList.get i) : MvPolynomial σ ℚ)`. Rewrite using `[← List.prod_ofFn, ← Function.comp_def MvPolynomial.X, ← List.map_ofFn, List.ofFn_get, Multiset.prod_map_toList, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (by simp) (by simp [pow_add]), MvPolynomial.monomial_eq, MvPolynomial.smul_eq_C_mul]`. Rewrite using `[e]`.
+Both sides reduce to the same expression. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_prod {σ : Type} {d : ℕ} {P : MvPolynomial σ ℚ} (hP : P.IsHomogeneous d) :
     P ∈ Submodule.span ℚ (Set.range fun s : Fin d → σ => ∏ i, (MvPolynomial.X (s i) : MvPolynomial σ ℚ)) := by
@@ -239,9 +239,9 @@ theorem mem_span_prod {σ : Type} {d : ℕ} {P : MvPolynomial σ ℚ} (hP : P.Is
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Use `Submodule.span_induction (fun Q hQ => ?_) ?_ (fun Q Q' _ _ h₁ h₂ => ?_) (fun a Q _ h₁ => ?_) (mem_span_prod hP)` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hQ`. Simplify `h s` using `only [map_prod, MvPolynomial.aeval_X, MvPolynomial.map_X]`. Simplify using the standard rewrite rules. Simplify using `only [map_add, Finset.sum_add_distrib, Rat.cast_add, mul_add] at h₁ h₂ ⊢`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h₁, h₂]`. Establish `e : MvPolynomial.map (algebraMap ℚ ℝ) (a • Q) = (a : ℝ) • MvPolynomial.map (algebraMap ℚ ℝ) Q`. Simplify using `[MvPolynomial.smul_eq_C_mul]`. Simplify using `only [e, map_smul, smul_eq_mul, ← Finset.mul_sum, Rat.cast_mul] at h₁ ⊢`. Rewrite using `[h₁, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_ext_prod {σ I J A : Type} [Fintype I] [Fintype J] [CommRing A] [Algebra ℚ A] (f : σ → A)
     (Λ : I → A →ₗ[ℚ] ℚ) (Ψ : J → MvPolynomial σ ℝ →ₗ[ℝ] ℝ) (a : ℝ) {d : ℕ}
@@ -262,13 +262,13 @@ theorem sum_ext_prod {σ I J A : Type} [Fintype I] [Fintype J] [CommRing A] [Alg
 open MvPolynomial Formalism.BasicNotions.DV Formalism.DegreeFormula Formalism.MainNotions.LatticeTransfer Formalism.MainNotions.WeightThresholdDefs GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 /- English proof (translation)
-Establish `hM : GlobalTheory.Published.MumfordProportionality` using `(GlobalTheory.T.stronger_published_hypotheses_imply hP).p16`. Establish `one (c : O.s.Comp) : (O.var c).interPoly (fun x : Rt D.what₂.Tau O.N => divOf (O.Φ.C c) (O.ex x)) Q = (O.s.cx O.L O.B O.fl).volC c * degFlL D.what₂.Tau O.N Q`. Establish `he : (O.var c).dim = dimFl D.what₂.Tau O.N` using `O.dim_eq c`. Establish `key` using `GlobalTheory.T.polynomial_power_eq_of_integral_points (dimFl D.what₂.Tau O.N) ((O.var c).interPoly fun x : Rt D.what₂.Tau O.N => divOf (O.Φ.C c) (O.ex x)) ((O.s.cx O.L O.B O.fl).volC c • degFlL D.what₂.Tau O.N) (fun a => by`. Use `GlobalTheory.CompPropObj.interPoly_int hM O c fun τ i => -a (τ, i)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [neg_neg, he] at this`. Use `this.trans ?_` and prove the remaining obligations. Establish `hl : linRoot (fun τ i => ((-a (τ, i) : ℤ) : ℝ)) = ∑ x, C ((a x : ℤ) : ℝ) * X x`. Simplify using `[linRoot, Finset.sum_neg_distrib]`. Use `show _ * degFl _ _ (linRoot _ ^ dimFl _ _) = _ * (degFlL D.what₂.Tau O.N _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl]`. Use `erw [degFlL_apply]`. Apply the tactic sequence `try rfl)`. Establish `h` using `GlobalTheory.PowLinSpan.homog_kill (((O.var c).interPoly fun x : Rt D.what₂.Tau O.N => divOf (O.Φ.C c) (O.ex x)) - (O.s.cx O.L O.B O.fl).volC c • degFlL D.what₂.Tau O.N) (dimFl D.what₂.Tau O.N) (MvPolynomial.funext fun u => by`. Rewrite using `[GlobalTheory.PowLinSpan.eval_polOf, map_zero, LinearMap.sub_apply, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 
-Conclude with `key u) Q hQ`. Conclude with `sub_eq_zero.1 h`. Rewrite using `[Finset.sum_congr rfl fun c _ => one c, ← Finset.sum_mul]`. Express the relevant statement in the definitionally equal form `_ = O.Y.vol * degFlL D.what₂.Tau O.N Q`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sum_interPoly (hP : GlobalTheory.CovTop.Hypotheses2) (D : D7) (O : Setup D) (Q : MvPolynomial (Rt D.what₂.Tau O.N) ℝ)
     (hQ : Q.IsHomogeneous (dimFl D.what₂.Tau O.N)) :
@@ -301,11 +301,11 @@ theorem sum_interPoly (hP : GlobalTheory.CovTop.Hypotheses2) (D : D7) (O : Setup
   rfl
 
 /- English proof (translation)
-Establish `h₁ : O.S.Dw.mult (tauEmb D x.1) = O.S.Dw.p` using `if_pos (O.A.cm x.1)`. Establish `h₂` using `GlobalTheory.Proof.LetterConjugation.mult_add O.S.Dw (tauEmb D x.1)`. Establish `h₃` using `O.S.rank_eq`. Establish `h₄` using `x.2.2`. Distinguish the cases in `h : (x.2 : ℕ) < O.S.Dw.p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨⟨tauEmb D x.1, ⟨x.2, h₁ ▸ h⟩⟩, 1, .inl rfl, congrArg _ (if_pos h), fun p hp W hW z => ?_⟩` and prove the remaining obligations. Rewrite using `[admitted.rootLB, if_pos h, one_smul]`. Conclude with `congrArg FinLB.cls (z.stepLB_of_some false (letterOf_self ⟨tauEmb D x.1, ⟨x.2, h₁ ▸ h⟩⟩))`. Establish `h₅ : O.S.Dw.p + O.S.Dw.q - 1 - x.2 < O.S.Dw.mult (conjEmb (tauEmb D x.1))` using `by omega`. Use `⟨⟨conjEmb (tauEmb D x.1), ⟨_, h₅⟩⟩, -1, .inr rfl, congrArg _ (if_neg h), fun p hp W hW z => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[admitted.rootLB, if_neg h, neg_smul, one_smul, FinLB.cls_dual]`. Conclude with `congrArg (fun L : FinLB _ => -L.cls) (z.stepLB_of_some false (letterOf_self ⟨conjEmb (tauEmb D x.1), ⟨_, h₅⟩⟩))`.
+A detailed English derivation is pending.
 -/
 theorem exists_letter {D : D7} (O : Setup D) (x : Rt D.what₂.Tau O.N) : ∃ (ℓ : Letter O.S.Dw) (m : ℤ), (m = 1 ∨ m = -1) ∧
     O.ex x = expo O.S.Dw (Finsupp.single (fun _ => false, none, .inl (ℓ.1, ℓ.2)) m) ∧
@@ -327,7 +327,7 @@ theorem exists_letter {D : D7} (O : Setup D) (x : Rt D.what₂.Tau O.N) : ∃ (�
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW ((∑ C ∈ Finset.univ.filter (fun C : (nmodel z.Z).Comp => ((nmodel z.Z).comp C).relDim = dimFl D.what₂.Tau O.N), ((nmodel z.Z).comp C).toBase.fibreDeg (picSymPull ((nmodel z.Z).compι C) (aeval (fun x => (mdlOf z jc).Z.c1 (r …`.
+A detailed English derivation is pending.
 -/
 theorem geoAll (hP : GlobalTheory.CovTop.Hypotheses2) (D : D7) (O : Setup D) (p : ℕ) [Fact p.Prime] (W : ValuationSubring ℂ)
     (hW : (p : ℂ) ∈ W.nonunits) (jc : KW p →+* ℂ) (z : AdmAt O.S O.κ (Fact.out : p.Prime) hW)

@@ -11,13 +11,11 @@ open MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mIdealOver mConeMapOver chartRingOver)
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ _ _ K _ _ ι _ y k₀ hy Ω' _ _ y' hy' hle`. Set `_ : Algebra O Ω'` to `((algebraMap (IsLocalRing.ResidueField O) Ω').comp (IsLocalRing.residue O)).toAlgebra`. Establish `: IsScalarTower O (IsLocalRing.ResidueField O) Ω'` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hle' : mIdealOver O y ≤ mIdealOver O y'`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hle (Ideal.mem_map_of_mem (MvPolynomial.map (IsLocalRing.residue O)) hf)`. Rewrite `h1`, the goal using `[mIdealOver, RingHom.mem_ker]`. Rewrite using `[← h1, mConeMapOver, mConeMapOver]`. Conclude with `(MvPolynomial.aeval_map_algebraMap (IsLocalRing.ResidueField O) _ f).symm`. Establish `hb : BlockGen O y' k₀` using `htr O K ι Ω y k₀ (hgen O K ι Ω y k₀ hy) Ω' y' hy' hle'`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hmod _ K ι Ω' y' k₀ hy' ?_` and prove the remaining obligations. Introduce `j hj k`. Take `⟨w, hw, hsum⟩` from `hb j hj k`. Use `⟨w, fun a b => ?_, hsum⟩` and prove the remaining obligations. Establish `hsub : chartRingOver O (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y' k₀)) (fun _ => j) ≤ (chartRingOver (IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y' k₀) …` using `Algebra.adjoin_le Algebra.subset_adjoin`.
-
-Conclude with `hsub (hw a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SpecialModelPoint.proof (hgen : BlockGenOfModel.Statement) (htr : BlockGenTransfer.Statement)
     (hmod : ModelOfBlockGen.Statement) : SpecialModelPoint.Statement := by

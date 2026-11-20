@@ -16,9 +16,9 @@ namespace DiscreteGroups.sglob.LConvGenM
 variable {k : Type} [Field k] {n : ℕ}
 
 /- English proof (translation)
-Use `GlobalTheory.ThetaRad.mem_unipRad_iff_entries.1 hg i l ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ThetaRad.blk_stdBlocks_two, GlobalTheory.ThetaRad.blk_stdBlocks_two]`. Distinguish the cases in `hi : i.val < j`. Establish `hl : l.val < j` using `by omega`. Simplify using `[hi, hl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `simp only [hi, if_false] split_ifs <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem entries_of_mem_unipRad (j : ℕ) (h : ∑ i, ![j, n - j] i = n) {g : GL (Fin n) k}
     (hg : g ∈ unipRad k (stdBlocks ![j, n - j] h)) (i l : Fin n) (hil : ¬ (i.val < j ∧ j ≤ l.val)) :
@@ -32,17 +32,17 @@ theorem entries_of_mem_unipRad (j : ℕ) (h : ∑ i, ![j, n - j] i = n) {g : GL 
     split_ifs <;> decide
 
 /- English proof (translation)
-Establish `hent` using `entries_of_mem_unipRad j h hg`. Establish `key : ∀ i l : Fin n, ¬ (i.val < j ∧ j + 1 ≤ l.val) → ((colU j (-(fun i => (g : Matrix (Fin n) (Fin n) k) i ⟨j, hj⟩)) * g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i l = (1 : Matrix (Fin n) (Fin n) k) i l`. Introduce `i l hil`. Rewrite using `[peel_apply]`. Distinguish the cases in `hi : i.val < j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hi, hent ⟨j, hj⟩ l (by simp)]`. Distinguish the cases in `hlj : l.val = j`. Establish `hl' : l = ⟨j, hj⟩` using `Fin.ext hlj`. Substitute `hl'` using the available equality. Rewrite using `[one_apply_eq, mul_one, add_neg_cancel, one_apply_ne]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Rewrite `hi` using `[e]`. Simplify using `at hi`. Establish `hne : (⟨j, hj⟩ : Fin n) ≠ l` using `fun e => hlj (by rw [← e])`. Rewrite using `[one_apply_ne hne, mul_zero, add_zero, hent i l (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hi, add_zero, hent i l (by omega)]`. Use `⟨fun i l hil => key i l (by` and prove the remaining obligations. Break down `hil with hil | hil` into its components or cases. Rewrite `hil` using `[Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use the proof step `omega), ?_⟩`. Rewrite using `[sdS]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Use `split_ifs with hh`. Rewrite using `[key i l (by omega), one_apply_ne]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `e`. Rewrite `hh` using `[e]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem peel_rad (j : ℕ) (hj : j < n) (h : ∑ i, ![j, n - j] i = n) {g : GL (Fin n) k}
     (hg : g ∈ unipRad k (stdBlocks ![j, n - j] h)) :
@@ -80,7 +80,7 @@ def TopLeft (j : ℕ) (x : Matrix (Fin n) (Fin n) k) : Prop :=
   ∀ i l : Fin n, (j ≤ i.val ∨ j ≤ l.val) → x i l = (1 : Matrix (Fin n) (Fin n) k) i l
 
 /- English proof (translation)
-Introduce `i l h` and use `hx i l (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TopLeft.good {j : ℕ} {x : Matrix (Fin n) (Fin n) k} (hx : TopLeft j x) : Good j x :=
   fun i l h => hx i l (by omega)
@@ -94,13 +94,13 @@ def colMul (j : ℕ) (Y : Matrix (Fin n) (Fin n) k) (c : Fin n → k) : Fin n �
   fun i => ∑ a : Fin n, if a.val < j then Y i a * c a else 0
 
 /- English proof (translation)
-Set `F : Fin n → Fin n → k` to `fun i a => if i.val < j ∧ a.val < j then ξ i * Y i a * c a else 0`. Establish `hL : dotj j ξ (colMul j Y c) = ∑ i : Fin n, ∑ a : Fin n, F i a`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i.val < j`. Rewrite using `[if_pos hi, colMul, Finset.mul_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact Finset.sum_congr rfl fun a _ => by by_cases ha : a.val < j <;> simp [F, hi, ha, mul_assoc]`. Rewrite using `[if_neg hi]`. Simplify using `[F, hi]`. Establish `hR : dotj j (rowMul j ξ Y) c = ∑ a : Fin n, ∑ i : Fin n, F i a`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `ha : a.val < j`. Rewrite using `[if_pos ha, rowMul, Finset.sum_mul]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun i _ => by by_cases hi : i.val < j <;> simp [F, hi, ha]`. Rewrite using `[if_neg ha]`. Simplify using `[F, ha]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hL, hR, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dotj_colMul (j : ℕ) (ξ c : Fin n → k) (Y : Matrix (Fin n) (Fin n) k) :
     dotj j ξ (colMul j Y c) = dotj j (rowMul j ξ Y) c := by

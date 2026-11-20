@@ -8,9 +8,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ T _ _ Ψ hΨ U V g hg`. Take `⟨e, he, hc⟩` from `GlobalTheory.T.cechConerve_map_eq_cechNerve_of_preservesWidePushouts T Ψ hΨ U V g`. Establish `h2` using `GlobalTheory.T.quasiIso_chains_cech_of_isLocallySurjective' R _ _ (Ψ.map g).unop hg`. Set `h : ((Arrow.mk (Ψ.map g).unop).cechNerve : Spc) ⟶ disc.obj (Ψ.obj U).unop` to `(Arrow.mk (Ψ.map g).unop).augmentedCechNerve.hom`. Establish `key : lev Ψ (coAug g) = e ≫ h` using `hc.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2' : QuasiIso ((chains R).map h)` using `h2`. Rewrite using `[key, Functor.map_comp]`. Use `haveI : IsIso ((chains R).map e) := inferInstance`. Conclude with `quasiIso_comp _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chains_cech_conerve_quasiIso : ∀ (R : Type) [CommRing R] (T : Type 1) [Category.{0} T] [HasFiniteWidePushouts T] (Ψ : T ⥤ PShᵒᵖ), (∀ n : ℕ, PreservesColimitsOfShape (WidePushoutShape (Fin (n + 1))) Ψ) → ∀ (U V : T) (g : U ⟶ V), Presheaf.IsLocallySurjective Scheme.etaleTopology.{0} (Ψ.map g).unop → QuasiIso ((chains R).map (lev Ψ (coAug g))) := by
   intro R _ T _ _ Ψ hΨ U V g hg

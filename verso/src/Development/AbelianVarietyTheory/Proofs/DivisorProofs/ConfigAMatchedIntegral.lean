@@ -27,7 +27,7 @@ open scoped Classical
 namespace GlobalTheory.FockBridge.Bridge
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.configuration_a_global_identity`.
+A detailed English derivation is pending.
 -/
 theorem L_frames : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
@@ -38,7 +38,7 @@ theorem L_frames : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberFie
       ∃ (A : InfinitePlace F → Matrix (Fin (b + 2)) (Formalism.BasicNotions.TH.Ix (b + 2 - G.p) G.p) ℂ) (C : InfinitePlace F → Matrix (Fin (b + 2 + a')) (Formalism.BasicNotions.TH.Ix (b + 2 + a' - (G.p + G.q)) (G.p + G.q)) ℂ) (r₀ : Fin (b + 2 + a' - (G.p + G.q))) (s₀ : Fin (G.p + G.q)), IsFrames B G.V G.W A C ∧ IsAdaptedFrame B H' C r₀ s₀ := GlobalTheory.T.configuration_a_global_identity
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.configuration_a_global_integral`.
+A detailed English derivation is pending.
 -/
 theorem L_ker : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
@@ -50,7 +50,7 @@ theorem L_ker : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField 
       Keeps (R.p ∘ₗ Φ) (GlobalTheory.RealLift.atPl w (Formalism.BasicNotions.TH.fockAct2 (b + 2 - G.p) G.p (b + 2 + a' - (G.p + G.q)) (G.p + G.q) Y)) := GlobalTheory.T.configuration_a_global_integral
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.configuration_a_compact_integral`.
+A detailed English derivation is pending.
 -/
 theorem L_low : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
@@ -62,7 +62,7 @@ theorem L_low : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField 
       Formalism.BasicNotions.TH.IsKC Y → ∀ v ∈ lowPartInf B G.M R.p, fockOp (R.p ∘ₗ Φ) w Y v ∈ lowPartInf B G.M R.p := GlobalTheory.T.configuration_a_compact_integral
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.configuration_a_convergence`.
+A detailed English derivation is pending.
 -/
 theorem L_irr : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
@@ -75,7 +75,7 @@ theorem L_irr : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField 
       N = ⊥ ∨ N = lowPartInf B G.M R.p := GlobalTheory.T.configuration_a_convergence
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.configuration_a_unfolding`.
+A detailed English derivation is pending.
 -/
 theorem L_sub : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
@@ -89,7 +89,7 @@ theorem L_sub : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField 
         (∀ a, Y a (.inl r₀) = 0 ∧ Y (.inl r₀) a = 0 ∧ Y a (.inr s₀) = 0 ∧ Y (.inr s₀) a = 0) → ∀ v ∈ N, fockOp (R.p ∘ₗ Φ) w Y v ∈ N := GlobalTheory.T.configuration_a_unfolding
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.configuration_a_global_zeta_identity`.
+A detailed English derivation is pending.
 -/
 theorem L_eigtop : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
@@ -107,25 +107,25 @@ theorem L_eigtop : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberFie
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Take `⟨A, C, r₀, s₀, hfr, had⟩` from `L_frames hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.RealLift.Main.i_fockex GlobalTheory.RealLift.Main.i_derex F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hM.triple.base.cm hM.triple.base.std hfr.1`. Establish `hfd : IsFockData B G.M A C Φ` using `⟨hfr, hΦ⟩`. Establish `hrange` using `GlobalTheory.RealLift.Main.i_polrange GlobalTheory.RealLift.Main.i_actslaws GlobalTheory.RealLift.Main.i_derex (GlobalTheory.RealLift.Main.i_vacline GlobalTheory.RealLift.Main.i_derex) F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hM.triple.base.cm hM.triple.base.std hfr.1 hfr.2. …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Function.Surjective (R.p ∘ₗ Φ)`. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_comp, hrange]`. Conclude with `hM.real.quot.onto`. Establish `hK` using `L_ker hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ A C Φ hfd`. Establish `h3` using `L_low hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ A C Φ hfd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `L_irr hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ A C Φ hfd`. Take `⟨c, c', h5, h6⟩` from `L_eigtop hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ A C r₀ s₀ Φ hfd had`. Establish `h7` using `L_sub hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ A C r₀ s₀ Φ hfd had`. Establish `common : ∀ ε : Bool, (∀ w Y Z, Formalism.BasicNotions.TH.IsKC Y → Formalism.BasicNotions.TH.IsKC Z → twAct ε (R.p ∘ₗ Φ) w (Y * Z - Z * Y) = twAct ε (R.p ∘ₗ Φ) w Y * twAct ε (R.p ∘ₗ Φ) w Z - twAct ε (R.p ∘ₗ Φ) w Z * twAct ε (R.p ∘ₗ Φ) w Y) ∧ (∀ w w', w ≠ w' → ∀ Y Z, Formalism.Basi …`. Introduce `ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun w Y Z _ _ => twAct_lie hq (hK w) ε Y Z, fun w w' hw Y Z _ _ => twAct_comm hq hK ε hw Y Z, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w Y hY v hv`. Consider the cases of `ε`. Conclude with `h3 w _ (isKC_negT hY) v hv`. Conclude with `h3 w Y hY v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Introduce `N hN hs`. Use `h4 N hN fun w Y hY v hv => ?_` and prove the remaining obligations. Consider the cases of `ε`. Use `hs w (negT _ _ Y) (isKC_negT hY) v hv` as an intermediate fact. Simplify `this` using `[twAct, negT_negT]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Simplify `hs w Y hY v hv` using `[twAct]`. Introduce `N hN hK1 w Y hY hz v hv`. Consider the cases of `ε`. Use `h7 N hN hK1 w _ (isKC_negT hY) (fun a => ?_) v hv` and prove the remaining obligations. Take `⟨e1, e2, e3, e4⟩` from `hz a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Simplify using `[negT_apply, e1, e2, e3, e4]`. Conclude with `h7 N hN hK1 w Y hY hz v hv`. Break down `h6 with h6 | h6` into its components or cases. Take `⟨c1, c2, c3, c4, c7⟩` from `common true`. Use `⟨_, _, r₀, s₀, twAct true (R.p ∘ₗ Φ), c, c', c1, c2, c3, c4, ?_, ?_, c7⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `v`. Simplify `h5 v` using `[twAct]`. Introduce `v hv w`. Simplify `h6 v hv w` using `[twAct]`. Take `⟨c1, c2, c3, c4, c7⟩` from `common false`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨_, _, r₀, s₀, twAct false (R.p ∘ₗ Φ), fun w => -c w, fun w => -c' w, c1, c2, c3, c4, ?_, ?_, c7⟩` and prove the remaining obligations. Introduce `v`. Rewrite using `[h5 v]`. Simplify using `only [twAct, Bool.false_eq_true, if_false, LinearMap.comp_apply, negT_Eab, map_neg, LinearMap.neg_apply, Matrix.transpose_single, neg_smul, neg_inj]`. Introduce `v hv w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨a1, a2⟩` from `h6 v hv w`. Use `⟨fun i hi => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [twAct, Bool.false_eq_true, if_false, LinearMap.comp_apply, negT_Eab, map_neg, LinearMap.neg_apply, a1 i hi, neg_zero]`. Simplify using `only [twAct, Bool.false_eq_true, if_false, LinearMap.comp_apply, negT_Eab, map_neg, LinearMap.neg_apply, a2 j hj, neg_zero]`.
+A detailed English derivation is pending.
 -/
 theorem fock_bridge : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

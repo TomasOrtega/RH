@@ -10,7 +10,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Unfold `Ff.One nu at *`. Rewrite using `[map_mul, map_mul, map_mul, hy, hy', _root_.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem one_mul_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {y y' : GL (Fin 2) (Cinf E)} (hy : Ff.One F y) (hy' : Ff.One F y') :
@@ -19,13 +19,13 @@ private theorem one_mul_one {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [map_mul, map_mul, map_mul, hy, hy', _root_.one_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W π f hf φ hφ h C hC C' hC' hOne`. Take `⟨y₀, hy₀, φ₁, hφ₁, m, hred⟩` from `redH F E D W h φ hφ`. Take `⟨B, N, hB⟩` from `thBound F E D W π f hf φ₁ hφ₁ ((fun x => (gl m)⁻¹ * x) '' C) (hC.image (continuous_const.mul continuous_id))`. Take `⟨M, hM⟩` from `(hC'.image (htLe E).1).bddAbove`. Use `⟨|B| * (2 * Ht y₀ * |M|) ^ N, fun g x hx y hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : gl g * x = gl (g * m) * ((gl m)⁻¹ * x)`. Rewrite using `[gl_mul, _root_.mul_assoc, mul_inv_cancel_left]`. Rewrite using `[hred g y, e]`. Use `(hB _ (one_mul_one hy₀ (hOne y hy)) (g * m) _ ⟨x, hx, rfl⟩).trans ?_` and prove the remaining obligations. Establish `h1 : 1 ≤ Ht (y₀ * y)` using `((htLe E).2 _).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : Ht (y₀ * y) ≤ 2 * Ht y₀ * Ht y` using `((htLe E).2 y₀).2.2 y`. Establish `h3 : Ht y ≤ |M|` using `(hM ⟨y, hy, rfl⟩).trans (le_abs_self M)`. Establish `h4 : 1 ≤ Ht y₀` using `((htLe E).2 y₀).1`. Establish `h5 : Ht (y₀ * y) ≤ 2 * Ht y₀ * |M|` using `h2.trans (mul_le_mul_of_nonneg_left h3 (by linarith))`. Establish `h6 : Ht (y₀ * y) ^ N ≤ (2 * Ht y₀ * |M|) ^ N` using `pow_le_pow_left₀ (by linarith) h5 N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.thBoundH :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (π : TR.CuspSub F 2), ThBoundH W π := by

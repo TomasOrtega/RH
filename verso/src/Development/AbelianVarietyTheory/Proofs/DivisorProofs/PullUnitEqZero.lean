@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PicGlue
 
 /- English proof (translation)
-Establish `h1` using `h Z 1 1 t`. Rewrite `h1` using `[_root_.mul_one]`. Conclude with `left_eq_add.1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AddCls.pull_unit_eq_zero {S : Scheme.{0}} {A T Z : Over S} [GrpObj A] {c : Pic (A ⊗ T).left}
     (h : AddCls A c) (t : Z ⟶ T) : CechPic.pull (lift (1 : Z ⟶ A) t).left c = 0 := by
@@ -20,9 +20,9 @@ theorem AddCls.pull_unit_eq_zero {S : Scheme.{0}} {A T Z : Over S} [GrpObj A] {c
   exact left_eq_add.1 h1
 
 /- English proof (translation)
-Introduce `S A _ hA T y y' h`. Use `Subtype.ext (sub_eq_zero.1 (GlobalTheory.T.rigidified_picard_class_zero_of_locally_zero S A T hA (y.1 - y'.1) ?_ fun p ↦ ?_))` and prove the remaining obligations. Rewrite using `[map_sub, y.2.pull_unit_eq_zero, y'.2.pull_unit_eq_zero, sub_zero]`. Take `⟨Z, z, hz, hp, e⟩` from `h p`. Use `⟨Z, z, hz, hp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addF_separated : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → (∀ (T : Over S) (y y' : (addF A).obj (op T)), (∀ p : T.left, ∃ (Z : Over S) (z : Z ⟶ T), IsOpenImmersion z.left ∧ p ∈ Set.range z.left ∧ (addF A).map z.op y = (addF A).map z.op y') → y = y') := by
   intro S A _ hA T y y' h

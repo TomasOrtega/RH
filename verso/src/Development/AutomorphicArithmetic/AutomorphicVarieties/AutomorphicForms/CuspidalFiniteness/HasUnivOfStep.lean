@@ -21,7 +21,7 @@ def HasUniv (ι : Type) (n : ℕ) : Prop :=
   ∃ (T : Type) (_ : Ring T) (_ : Algebra ℂ T) (E : ι → Fin n → Fin n → T), IsUniv E
 
 /- English proof (translation)
-Use `⟨ℂ, inferInstance, inferInstance, fun v => v.elim, ⟨fun v => v.elim, fun v => v.elim⟩, ?_, fun A _ _ _ _ => ⟨Algebra.ofId ℂ A, fun v => v.elim⟩, fun z _ => Subalgebra.algebraMap_mem _ z⟩` and prove the remaining obligations. Conclude with `eq_top_iff.2 fun z _ => Subalgebra.algebraMap_mem _ z`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasUniv_empty (n : ℕ) : HasUniv PEmpty n := by
   refine ⟨ℂ, inferInstance, inferInstance, fun v => v.elim, ⟨fun v => v.elim, fun v => v.elim⟩, ?_,
@@ -29,9 +29,9 @@ theorem hasUniv_empty (n : ℕ) : HasUniv PEmpty n := by
   exact eq_top_iff.2 fun z _ => Subalgebra.algebraMap_mem _ z
 
 /- English proof (translation)
-Take `⟨T, _, _, E, h⟩` from `h`. Use `⟨T, inferInstance, inferInstance, fun v => E (e.symm v), ⟨fun v => h.rel.1 _, fun v v' hv => h.rel.2 _ _ fun h => hv (e.symm.injective h)⟩, ?_, fun A _ _ E' hE => ?_, ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 (h.gen.ge.trans (Algebra.adjoin_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨v, i, j, rfl⟩`. Conclude with `⟨e v, i, j, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨f, hf⟩` from `h.univ A (fun v => E' (e v)) ⟨fun v => hE.1 _, fun v v' hv => hE.2 _ _ fun h => hv (e.injective h)⟩`. Conclude with `⟨f, fun v i j => by simp [hf]⟩`. Use `h.centre.trans (Algebra.adjoin_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, u, rfl⟩`. Conclude with `⟨e v, u, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem HasUniv.of_equiv {ι κ : Type} {n : ℕ} (e : ι ≃ κ) (h : HasUniv ι n) : HasUniv κ n := by
   obtain ⟨T, _, _, E, h⟩ := h
@@ -47,7 +47,7 @@ theorem HasUniv.of_equiv {ι κ : Type} {n : ℕ} (e : ι ≃ κ) (h : HasUniv �
     exact ⟨e v, u, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Finite.induction_empty_option (P := fun ι => HasUniv ι n) (fun e h => h.of_equiv e) (hasUniv_empty n) (fun {ι} _ h => step ι h) ι`.
+A detailed English derivation is pending.
 -/
 theorem hasUniv_of_step {n : ℕ} (step : ∀ ι : Type, HasUniv ι n → HasUniv (Option ι) n) (ι : Type) [Finite ι] :
     HasUniv ι n :=
@@ -55,14 +55,14 @@ theorem hasUniv_of_step {n : ℕ} (step : ∀ ι : Type, HasUniv ι n → HasUni
     (fun {ι} _ h => step ι h) ι
 
 /- English proof (translation)
-The claim follows from `hasUniv_of_step (fun ι h => (sum ι Unit h one).of_equiv (Equiv.optionEquivSumPUnit ι).symm) ι`.
+A detailed English derivation is pending.
 -/
 theorem hasUniv_of_sum {n : ℕ} (one : HasUniv Unit n)
     (sum : ∀ ι κ : Type, HasUniv ι n → HasUniv κ n → HasUniv (ι ⊕ κ) n) (ι : Type) [Finite ι] : HasUniv ι n :=
   hasUniv_of_step (fun ι h => (sum ι Unit h one).of_equiv (Equiv.optionEquivSumPUnit ι).symm) ι
 
 /- English proof (translation)
-Establish `h : ∀ v a b, f (Formalism.REAL.Tm X v a b) = Formalism.REAL.Tm (fun a b => f (X a b)) v a b` using `fun v a b => by`. Unfold `Formalism.REAL.Tm`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem map_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     (X : Fin n → Fin n → A) (u : ℂ) : f (Formalism.REAL.qdet X u) = Formalism.REAL.qdet (fun a b => f (X a b)) u := by

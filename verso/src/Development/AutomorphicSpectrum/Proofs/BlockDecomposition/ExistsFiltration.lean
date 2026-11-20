@@ -19,7 +19,7 @@ def subMap (f : V →ₗ[ℂ] W) (hf : ∀ x v, f (ρ x v) = σ x (f v)) (S : Su
     exact ⟨ρ g v, S.apply_mem_toSubmodule g hv, hf g v⟩⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `⟨v, h hv, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem subMap_mono (f : V →ₗ[ℂ] W) (hf : ∀ x v, f (ρ x v) = σ x (f v))
     {S T : Subrepresentation ρ} (h : S ≤ T) : subMap f hf S ≤ subMap f hf T := by
@@ -27,20 +27,20 @@ theorem subMap_mono (f : V →ₗ[ℂ] W) (hf : ∀ x v, f (ρ x v) = σ x (f v)
   exact ⟨v, h hv, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Subrepresentation.toSubmodule_injective (Submodule.map_bot f)`.
+A detailed English derivation is pending.
 -/
 theorem subMap_bot (f : V →ₗ[ℂ] W) (hf : ∀ x v, f (ρ x v) = σ x (f v)) :
     subMap f hf (⊥ : Subrepresentation ρ) = ⊥ :=
   Subrepresentation.toSubmodule_injective (Submodule.map_bot f)
 
 /- English proof (translation)
-Set `e : S.toSubmodule ≃ₗ[ℂ] (subMap f hf S).toSubmodule` to `Submodule.equivMapOfInjective f hi S.toSubmodule`. Establish `he : (T.toSubmodule.comap S.toSubmodule.subtype).map e.toLinearMap = (subMap f hf T).toSubmodule.comap (subMap f hf S).toSubmodule.subtype`. Use extensionality with `⟨w, hw⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨v, hvS⟩, hvT, hv⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hv' : f v = w` using `congrArg Subtype.val hv`. Conclude with `⟨v, hvT, hv'⟩`. Introduce and unpack `⟨v, hvT, hv⟩`. Take `⟨u, hu, rfl⟩` from `hw`. Establish `huv : v = u` using `hi hv`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `huv` using the available equality. Conclude with `⟨⟨v, hu⟩, hvT, Subtype.ext rfl⟩`. Set `q` to `Submodule.Quotient.equiv _ _ e he`. Use `⟨Representation.Equiv.mk q fun g => ?_⟩` and prove the remaining obligations. Use `Submodule.linearMap_qext _ ?_` and prove the remaining obligations.
+Substitute using the available equality. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v`. Use `show Submodule.Quotient.mk (e ⟨ρ g v.1, S.apply_mem_toSubmodule g v.2⟩) = Submodule.Quotient.mk (⟨σ g (f v.1), (subMap f hf S).apply_mem_toSubmodule g ⟨v.1, v.2, rfl⟩⟩ : _)`. Use `congr 1`. Conclude with `Subtype.ext (hf g v.1)`.
+By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem subQuot_subMap_equiv (f : V →ₗ[ℂ] W) (hf : ∀ x v, f (ρ x v) = σ x (f v))
     (hi : Function.Injective f) (S T : Subrepresentation ρ) :
@@ -75,19 +75,19 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : ℕ} {R : ℕ → GRep k n → Prop} {Z : ℕ → Prop}
 
 /- English proof (translation)
-Apply the tactic sequence `induction h <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chain_le {a b : ℕ} {X : GRep k n} (h : Chain R Z a b X) : a ≤ b := by
   induction h <;> omega
 
 /- English proof (translation)
-Take `⟨F, hF1, hF2⟩ : ∃ F : ℕ → Subrepresentation X.ρ, (∀ i, i ≤ a → F i = ⊤) ∧ (∀ i, a < i → F i = subMap f hf (F' i))` from `⟨fun i => if i ≤ a then ⊤ else subMap f hf (F' i), fun i h => if_pos h, fun i h => if_neg (by omega)⟩`. Use `⟨F, ?_, hF1 a le_rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Distinguish the cases in `h2 : i ≤ a`. Rewrite using `[hF1 i h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_top`. Rewrite using `[hF2 i (by omega), hF2 j (by omega)]; exact subMap_mono f hf (hanti hij)`. Rewrite using `[hF2 b hab, hbot, subMap_bot]`. Introduce `i hai hib`. Break down `hai.eq_or_lt with rfl | hlt` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF1 a le_rfl, hF2 (a + 1) (by omega), htop]`. Conclude with `h0`. Rewrite using `[hF2 i hlt, hF2 (i + 1) (by omega)]`. Break down `hst i hlt hib with ⟨A, hR, ⟨e⟩⟩ | ⟨hZ, he⟩` into its components or cases. Take `⟨e'⟩` from `subQuot_subMap_equiv f hf hi (F' i) (F' (i + 1))`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl ⟨A, hR, ⟨e'.symm.trans e⟩⟩`. Conclude with `Or.inr ⟨hZ, by rw [he]⟩`.
+A detailed English derivation is pending.
 -/
 theorem filt_extend {a b : ℕ} {X Y : GRep k n} (f : Y.V →ₗ[ℂ] X.V)
     (hf : ∀ x v, f (Y.ρ x v) = X.ρ x (f v)) (hi : Function.Injective f) (hab : a < b)
@@ -120,17 +120,17 @@ theorem filt_extend {a b : ℕ} {X Y : GRep k n} (f : Y.V →ₗ[ℂ] X.V)
       · exact Or.inr ⟨hZ, by rw [he]⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n R Z a b X h`. Proceed by induction on `h with`. Consider the case `nil a X hs`. Use `⟨fun _ => ⊥, fun _ _ _ => le_rfl, ?_, rfl, fun i h1 h2 => by omega⟩` and prove the remaining obligations. Use `Subrepresentation.toSubmodule_injective ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v`. Establish `: v = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩`. Consider the case `@step a b X Y A hR hs hc ih`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨f, g, hf, hg, hi, hsur, he⟩` from `hs`. Take `⟨F', h1, h2, h3, h4⟩` from `ih`. Establish `hab` using `chain_le hc`. Use `filt_extend f hf hi (by omega) F' h1 h2 h3 h4 (Or.inl ⟨A, hR, ?_⟩)` and prove the remaining obligations. Take `⟨S, hS, e⟩` from `GlobalTheory.CompanionTheory.BZRes.KerQuot.exists_subQuot_top_ker_equiv X.ρ A.ρ ⟨g, fun x => LinearMap.ext (hg x)⟩ hsur`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hS' : S = subMap f hf ⊤`. Use `Subrepresentation.toSubmodule_injective ?_` and prove the remaining obligations. Use `hS.trans ?_` and prove the remaining obligations. Use `show LinearMap.ker g = Submodule.map f ⊤`. Rewrite using `[Submodule.map_top, he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hS' ▸ e`. Consider the case `@skip a b X Y hZ he hc ih`. Take `⟨e⟩` from `he`. Take `⟨F', h1, h2, h3, h4⟩` from `ih`. Establish `hab` using `chain_le hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `filt_extend e.toLinearEquiv.toLinearMap (eint e) e.toLinearEquiv.injective (by omega) F' h1 h2 h3 h4 (Or.inr ⟨hZ, ?_⟩)` and prove the remaining obligations. Use `Subrepresentation.toSubmodule_injective ?_` and prove the remaining obligations. Use `show ⊤ = Submodule.map e.toLinearEquiv.toLinearMap ⊤`. Rewrite using `[Submodule.map_top, LinearEquiv.range]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_filtration : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (R : ℕ → GRep k n → Prop) (Z : ℕ → Prop) (a b : ℕ)

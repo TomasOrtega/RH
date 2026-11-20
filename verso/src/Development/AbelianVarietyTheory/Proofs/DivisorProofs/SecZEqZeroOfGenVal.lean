@@ -14,11 +14,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨hL, -, hG, hA⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨C, ψ, z0, t', hψ, hb⟩` from `hA hG L z`. Rewrite using `[evR_frBor hg hb]`. Establish `hnat` using `(mem_secZ.mp hg).1`. Take `⟨p, φ0, u, hu⟩` from `hL.test C.R C.y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : evR Xo c g z0 = (ψ.comp φ0) (g p u)` using `evR_eq hnat (frMap_comp (χ := ψ.comp φ0) hu hψ (fun _ => rfl))`. Establish `e2 : evR Xo c g C.yg = (C.R.val.comp φ0) (g p u)` using `evR_eq hnat (frMap_comp (χ := C.R.val.comp φ0) hu C.gen (fun _ => rfl))`. Establish `e3` using `evR_frBor hg C.bor`. Establish `e4 : evR Xo c g (genFr hG C.Z) = 0`. Establish `h1` using `h0 C.Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[genVal_apply hG]`. Conclude with `h1`. Rewrite `e3` using `[e4, mul_zero, e2, AlgHom.comp_apply, Subalgebra.coe_val]`. Establish `e5 : φ0 (g p u) = 0` using `Subtype.ext e3`. Rewrite using `[e1, AlgHom.comp_apply, e5, map_zero, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem evR_eq_zero_of_genVal_eq_zero {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ secZ Xo c e)
     (h0 : ∀ Z : Comp Xo c, genVal Z g = 0) {L : Type} [Field L] [Algebra c.F L] (z : FrPt Xo c L) :
@@ -42,13 +42,13 @@ private theorem evR_eq_zero_of_genVal_eq_zero {e : Ix Dw → ℤ} {g : Rul Xo c}
   rw [e1, AlgHom.comp_apply, e5, map_zero, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p u`. Take `⟨a, ha⟩ : ∃ a, Ideal.Quotient.mk p.I a = g p u` from `Ideal.Quotient.mk_surjective _`. Use `show g p u = 0`. Rewrite using `[← ha, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hJ : p.I.jacobson = p.I` using `by first`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact IsJacobsonRing.out' _ p.rad`. Consider the case `exact IsJacobsonRing.out inferInstance p.rad`. Consider the case `exact Ideal.IsJacobson.out' _ p.rad`. Rewrite using `[← hJ, Ideal.jacobson, Submodule.mem_sInf]`. Introduce and unpack `m ⟨hIm, hm⟩`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Use `letI : Field (MvPolynomial _ c.F ⧸ m) := Ideal.Quotient.field m`. Set `φ : p.R →ₐ[c.F] MvPolynomial _ c.F ⧸ m` to `Ideal.Quotient.factorₐ c.F hIm`. Take `⟨z, hz⟩` from `exists_frMap φ u`. Establish `h1` using `evR_eq (mem_secZ.mp hg).1 hz`. Rewrite `h1` using `[evR_eq_zero_of_genVal_eq_zero hg h0 z, ← ha]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem secZ_eq_zero_of_genVal {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ secZ Xo c e)
     (h0 : ∀ Z : Comp Xo c, genVal Z g = 0) : g = 0 :=by
@@ -72,15 +72,13 @@ theorem secZ_eq_zero_of_genVal {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ se
   exact h1.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z e f hf`. Take `⟨-, -, hG, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Prove the components needed by the constructor for the conclusion. Introduce `h0 S _ _ y hy`. Distinguish the cases in `ht : Tested y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hz : idem Z * f = 0`. Use `secZ_eq_zero_of_genVal (mul_mem_secZ (idem_mem_secZ Z) hf) (fun Z' => ?_)` and prove the remaining obligations. Distinguish the cases in `hZ : Z' = Z`. Substitute `hZ` using the available equality. Rewrite using `[map_mul, h0, mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[genVal_apply hG]`. Conclude with `evC_eq_zero hG hZ (mul_comm f (idem Z) ▸ mul_mem_suppOn f (idem_mem_suppOn Z))`. Establish `h1 : evR Xo c (idem Z * f) y = evR Xo c (idem Z) y * evR Xo c f y` using `evalAt_mul _ _ _ _ y`. Rewrite `h1` using `[hz, evR_idem hy ht, one_mul]`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `evalAt_zero _ _ y`. Unfold `evR evalAt`. Rewrite using `[dif_neg ht]`. Introduce `hall`. Rewrite using `[genVal_apply hG]`.
-
-Conclude with `hall _ _ (liesOn_genFr hG Z)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genVal_eq_zero_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (Z : Comp Xo c) (e : Ix Dw → ℤ), ∀ f ∈ secZ Xo c e, genVal Z f = 0 ↔ ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y → evR Xo c f y = 0 :=by
   intro E _ _ _ H Dw l Xo c Z e f hf

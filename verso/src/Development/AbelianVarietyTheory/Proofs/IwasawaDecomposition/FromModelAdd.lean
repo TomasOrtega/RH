@@ -15,11 +15,11 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.LineNorm.Add
 
 /- English proof (translation)
-Establish `cA {i : ((CechPic.tens A B).pull j).ι} : ((CechPic.tens A B).pull j).U i ≤ (A.pull j).U fun _ => (i PUnit.unit).1` using `fun _ hx => Set.mem_iInter.2 fun _ => (Set.mem_iInter.1 hx PUnit.unit).1`. Establish `cB {i : ((CechPic.tens A B).pull j).ι} : ((CechPic.tens A B).pull j).U i ≤ (B.pull j).U fun _ => (i PUnit.unit).2` using `fun _ hx => Set.mem_iInter.2 fun _ => (Set.mem_iInter.1 hx PUnit.unit).2`. Use `⟨LB.isLB_pull (CechPic.isLB_tens hA hB) j, fun i i' h => ?_, fun i x hx => (hr.isEqn _ x (cA hx)).add (hs.isEqn _ x (cB hx))⟩` and prove the remaining obligations. Establish `lA` using `inf_le_inf (cA (i := i)) (cA (i := i'))`. Establish `lB` using `inf_le_inf (cB (i := i)) (cB (i := i'))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_mul, hr.isRatSec _ _ (lA h), hs.isRatSec _ _ (lB h), mul_mul_mul_comm, ← fnOf_resG lA h, ← fnOf_resG lB h, ← map_mul, InducedPull.val_pull_g _ j i i' (InducedPull.inf_le _ j i i')]`. Use `congr 2`. Use `Eq.trans ?_ (map_mul _ _ _).symm` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Use `(congrArg _ (InducedPull.val_pull_g A j _ _ (InducedPull.inf_le A j _ _))).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `(Scheme.Hom.appLE_map j (InducedPull.inf_le A j (fun _ => (i PUnit.unit).1) fun _ => (i' PUnit.unit).1) (homOfLE lA).op).trans (Scheme.Hom.map_appLE j (InducedPull.inf_le _ j i i') (homOfLE (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left))).op).symm`. Conclude with `RingHom.congr_fun (congrArg CommRingCat.Hom.hom e) (A.g (i PUnit.unit).1 (i' PUnit.unit).1).val`. Use `(congrArg _ (InducedPull.val_pull_g B j _ _ (InducedPull.inf_le B j _ _))).trans ?_` and prove the remaining obligations. Establish `e` using `(Scheme.Hom.appLE_map j (InducedPull.inf_le B j (fun _ => (i PUnit.unit).2) fun _ => (i' PUnit.unit).2) (homOfLE lB).op).trans (Scheme.Hom.map_appLE j (InducedPull.inf_le _ j i i') (homOfLE (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right))).op).symm`. Conclude with `RingHom.congr_fun (congrArg CommRingCat.Hom.hom e) (B.g (i PUnit.unit).2 (i' PUnit.unit).2).val`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem presents_tens {X Z : Scheme.{0}} [IsIntegral Z] {A B : LB X} (hA : A.IsLB) (hB : B.IsLB) (j : Z ⟶ X)
     {D E : CartierDiv Z} {r : (A.pull j).ι → Z.functionFieldˣ} {s : (B.pull j).ι → Z.functionFieldˣ}
@@ -66,9 +66,9 @@ def GivenBy (Δ : Y.Dv) (t : Y.X → Y.Fnˣ) (φ : PtFn Y) (M : GlobalTheory.Tru
 variable {Δ Δ' : Y.Dv} {t t' : Y.X → Y.Fnˣ} {φ φ' : PtFn Y}
 
 /- English proof (translation)
-Take `⟨MX, Mp, Mar, Mj, Mpb⟩` from `M`. Simplify using `only at π hj L`. Substitute `hj` using the available equality. Take `⟨r, hL, hr, h⟩` from `h`. Use `⟨fun i => r fun _ => i PUnit.unit PUnit.unit, LB.isLB_pull hL π, InducedPull.presents_pull_pull hL π N.j hr, fun v e y yt i hy hi => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h v e y (yt ≫ π) (fun _ => i PUnit.unit PUnit.unit) ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ π) hy).trans (Category.assoc _ _ _))) fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit`.
+A detailed English derivation is pending.
 -/
 theorem GivenBy.pull {M N : GlobalTheory.TrueGeo.Model Y} {L : LB M.X} {m : ℕ} (h : GivenBy Δ t φ M L m) (π : N.X ⟶ M.X)
     (hj : N.j ≫ π = M.j) : GivenBy Δ t φ N (L.pull π) m := by
@@ -83,7 +83,7 @@ theorem GivenBy.pull {M N : GlobalTheory.TrueGeo.Model Y} {L : LB M.X} {m : ℕ}
     fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit
 
 /- English proof (translation)
-Establish `h₂ : below y.1 ∈ (L.pull M.j).U i` using `OfModel.le_chart M L e y yt h hi trivial`. Use `((ht (below y.1)).nsmul m).iff_unitAt.1 (hr.isEqn _ _ h₂)` as an intermediate fact. Rewrite `this` using `[div_eq_inv_mul, ← Units.val_inv_eq_inv_val, ← Units.val_mul, ← inv_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unitAt_quot {M : GlobalTheory.TrueGeo.Model Y} {L : LB M.X} {m : ℕ} (ht : ∀ y, Δ.IsEqn y (t y))
     {r : (L.pull M.j).ι → Y.Fnˣ} (hr : Presents (m • Δ) (L.pull M.j) r)
@@ -95,11 +95,11 @@ theorem unitAt_quot {M : GlobalTheory.TrueGeo.Model Y} {L : LB M.X} {m : ℕ} (h
   rwa [div_eq_inv_mul, ← Units.val_inv_eq_inv_val, ← Units.val_mul, ← inv_pow] at this
 
 /- English proof (translation)
-Take `⟨r, hL, hr, h⟩` from `h`. Establish `hr'` using `InducedPow.presents_pow L M.j n hL hr`. Use `⟨fun i => r (fun _ => i PUnit.unit PUnit.unit) ^ n, LB.isLB_linComb hL _ _, ?_, fun v e y yt i hy hi => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_nsmul]`. Conclude with `hr'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi' : ⊤ ≤ yt ⁻¹ᵁ L.U (i PUnit.unit PUnit.unit)` using `fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit`. Establish `h₁` using `h v e y yt (fun _ => i PUnit.unit PUnit.unit) hy hi'`. Establish `hu` using `(unitAt_quot (i := fun _ => i PUnit.unit PUnit.unit) ht hr hy hi').regAt`. Rewrite using `[pow_mul, ← mul_pow, Units.val_pow_eq_pow_val, SmallSec.valAt_pow hu, map_pow, Real.log_pow, ← h₁]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem GivenBy.pow {M : GlobalTheory.TrueGeo.Model Y} {L : LB M.X} {m : ℕ} (ht : ∀ y, Δ.IsEqn y (t y))
     (h : GivenBy Δ t φ M L m) (n : ℕ) : GivenBy Δ t φ M (lbPow L n) (m * n) := by
@@ -116,11 +116,11 @@ theorem GivenBy.pow {M : GlobalTheory.TrueGeo.Model Y} {L : LB M.X} {m : ℕ} (h
   ring
 
 /- English proof (translation)
-Take `⟨r, hL, hr, h⟩` from `h`. Take `⟨r', hL', hr', h'⟩` from `h'`. Use `⟨fun i => r (fun _ => (i PUnit.unit).1) * r' fun _ => (i PUnit.unit).2, CechPic.isLB_tens hL hL', ?_, fun v e y yt i hy hi => ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_add]`. Conclude with `presents_tens hL hL' M.j hr hr'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi₁ : ⊤ ≤ yt ⁻¹ᵁ L.U (i PUnit.unit).1` using `fun x hx => (hi hx).1`. Establish `hi₂ : ⊤ ≤ yt ⁻¹ᵁ L'.U (i PUnit.unit).2` using `fun x hx => (hi hx).2`. Establish `h₁` using `h v e y yt (fun _ => (i PUnit.unit).1) hy hi₁`. Establish `h₂` using `h' v e y yt (fun _ => (i PUnit.unit).2) hy hi₂`. Establish `u₁` using `unitAt_quot (i := fun _ => (i PUnit.unit).1) ht hr hy hi₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u₂` using `unitAt_quot (i := fun _ => (i PUnit.unit).2) ht' hr' hy hi₂`. Rewrite using `[mul_inv, mul_pow, mul_mul_mul_comm, Units.val_mul, SmallSec.valAt_mul u₁.regAt u₂.regAt, map_mul, Real.log_mul (e.w.pos (SmallSec.valAt_ne_zero u₁)).ne' (e.w.pos (SmallSec.valAt_ne_zero u₂)).ne', ← h₁, ← h₂, mul_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GivenBy.tens {M : GlobalTheory.TrueGeo.Model Y} {L L' : LB M.X} {m : ℕ} (ht : ∀ y, Δ.IsEqn y (t y))
     (ht' : ∀ y, Δ'.IsEqn y (t' y)) (h : GivenBy Δ t φ M L m) (h' : GivenBy Δ' t' φ' M L' m) :
@@ -141,9 +141,9 @@ theorem GivenBy.tens {M : GlobalTheory.TrueGeo.Model Y} {L L' : LB M.X} {m : ℕ
     mul_add]
 
 /- English proof (translation)
-Take `⟨M, L, m, h⟩` from `h`. Take `⟨M', L', m', h'⟩` from `h'`. Take `⟨N, π, π', -, -, -, hj, hj', -⟩` from `ModelDom.exists_normal_dominating F Y M M'`. Establish `a` using `(GivenBy.pull (m := m) h π hj).pow ht m'`. Establish `b` using `(GivenBy.pull (m := m') h' π' hj').pow ht' m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b` using `[mul_comm]`. Conclude with `⟨N, _, m * m', a.tens ht ht' b⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fromModel_add (F : Type) [Field F] [NumberField F] (Y : Var F) (Δ Δ' : Y.Dv) (t t' : Y.X → Y.Fnˣ)
     (φ φ' : PtFn Y) (ht : ∀ y, Δ.IsEqn y (t y)) (ht' : ∀ y, Δ'.IsEqn y (t' y)) (h : FromModel Y Δ t φ)

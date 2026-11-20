@@ -6,17 +6,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.ES
 
 /- English proof (translation)
-Introduce `p _ D R _ b N r w j Y₀ Y i σ₀ σ o o' o₀ o₀' m m' ψ₀ ψ hψ hfac h k _ _ _ x`. Establish `hpu : IsUnit ((p : ℕ) : Γ(Sp k, ⊤))`. Establish `hk : IsUnit ((p : ℕ) : k)` using `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero).isUnit`. Use `hk.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨x₀, hx₀⟩` from `hfac (Sp k) x hpu`. Take `⟨e, he, -⟩` from `m.exists_ptEquiv (Over.mk x) x₀ hx₀`. Take `⟨e', he', -⟩` from `m'.exists_ptEquiv (Over.mk x) x₀ hx₀`. Establish `hcomp : ∀ g₀ : Over.mk x₀ ⟶ o₀.A, e g₀ ≫ ψ = e' (g₀ ≫ ψ₀)` using `fun g₀ => by`. Use `ext`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Over.comp_left, he, he', Over.comp_left, Category.assoc, hψ, Category.assoc]`. Establish `hker : ∀ g₀ : Over.mk x₀ ⟶ o₀.A, e g₀ ≫ ψ = 1 ↔ g₀ ≫ ψ₀ = 1` using `fun g₀ => by`. Rewrite using `[hcomp]`. Conclude with `map_eq_one_iff _ e'.injective`. Establish `hact : ∀ (g₀ : Over.mk x₀ ⟶ o₀.A) (c : D.O), e g₀ ≫ o.act.act c = e (g₀ ≫ o₀.act.act c)` using `fun g₀ c => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Rewrite using `[Over.comp_left, he, he, Over.comp_left, Category.assoc, Category.assoc, m.act]`. Establish `hkill : ∀ (v : Ideal (𝓞 D.F)) (g₀ : Over.mk x₀ ⟶ o₀.A), KilledBy o v (e g₀) ↔ KilledBy o₀ v g₀` using `fun v g₀ => forall₂_congr fun a _ => by rw [hact]; exact map_eq_one_iff _ e.injective`. Take `⟨h1, h2⟩` from `h k x₀`. Use `⟨fun g hg hu => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g₀, rfl⟩` from `e.surjective g`. Rewrite using `[hkill]`. Rewrite `hg` using `[hker]`. Take `⟨n, hn⟩` from `hu`. Conclude with `h1 g₀ hg ⟨n, (hkill _ g₀).1 hn⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← h2]`. Conclude with `Nat.card_congr ((Equiv.subtypeEquiv e.toEquiv fun g₀ => by`. Express the relevant statement in the definitionally equal form `_ ↔ e g₀ ≫ ψ = 1 ∧ KilledBy o w (e g₀)`. Rewrite using `[hker, hkill]).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTj_of_objMap_factor : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (r : ℤ) (w : Ideal (𝓞 D.F)) (j : ℕ) (Y₀ Y : Scheme.{0}) (i : Y₀ ⟶ Y) (σ₀ : Y₀ ⟶ Sp R) (σ : Y ⟶ Sp R) (o o' : Obj b N σ) (o₀ o₀' : Obj b N σ₀) (m : ObjMap o₀ o i) (m' : ObjMap o₀' o' i) (ψ₀ : o₀.A ⟶ o₀'.A) (ψ : o.A ⟶ o'.A), m.φ ≫ ψ.left = ψ₀.left ≫ m'.φ → (∀ (S : Scheme.{0}) (f : S ⟶ Y), IsUnit ((p : ℕ) : Γ(S, ⊤)) → ∃ f₀ : S ⟶ Y₀, f₀ ≫ i = f) → IsTj r w j o₀ o₀' ψ₀ → IsTj r w j o o' ψ := by
   intro p _ D R _ b N r w j Y₀ Y i σ₀ σ o o' o₀ o₀' m m' ψ₀ ψ hψ hfac h k _ _ _ x

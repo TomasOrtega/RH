@@ -14,21 +14,21 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.LocDual.Pair
 
 /- English proof (translation)
-Establish `hN : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Establish `hf : zmultiplesHom (AddCircle (1 : ℚ)) (((1 : ℚ) / N : ℚ) : AddCircle (1 : ℚ)) (N : ℤ) = 0`. Rewrite using `[zmultiplesHom_apply, ← AddCircle.coe_zsmul, AddCircle.coe_eq_zero_iff]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, zsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `⟨ZMod.lift N ⟨_, hf⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `k hk`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk' : ((k.val : ℤ) : ZMod N) = k` using `by simp`. Rewrite `hk` using `[← hk', ZMod.lift_coe, zmultiplesHom_apply, ← AddCircle.coe_zsmul, AddCircle.coe_eq_zero_iff]`. Take `⟨m, hm⟩` from `hk`. Rewrite `hm` using `[zsmul_eq_mul, zsmul_eq_mul, mul_one]`. Establish `hlt` using `ZMod.val_lt k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm' : (m : ℚ) * N = k.val` using `by rw [hm]; push_cast; field_simp`. Establish `hm'' : m * (N : ℤ) = (k.val : ℤ)` using `by exact_mod_cast hm'`. Establish `hNpos : 0 < (N : ℤ)` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hlt' : (k.val : ℤ) < N` using `by exact_mod_cast hlt`. Establish `hm0 : m = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `lt_trichotomy m 0 with h | h | h` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `hm''` using `[hm0, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : k.val = 0` using `by exact_mod_cast hm''.symm`. Conclude with `(ZMod.val_eq_zero k).1 hv`. Introduce `t ht`. Take `⟨r, rfl⟩` from `QuotientAddGroup.mk_surjective t`. Express the relevant statement in the definitionally equal form `N • ((r : ℚ) : AddCircle (1 : ℚ)) = 0 at ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `ht` using `[← AddCircle.coe_nsmul, AddCircle.coe_eq_zero_iff]`. Take `⟨m, hm⟩` from `ht`. Establish `hm' : (m : ℚ) = N * r` using `by simpa [zsmul_eq_mul, nsmul_eq_mul] using hm`. Use `⟨(m : ZMod N), ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.lift_coe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `m • (((1 : ℚ) / N : ℚ) : AddCircle (1 : ℚ)) = ((r : ℚ) : AddCircle (1 : ℚ))`. Rewrite using `[← AddCircle.coe_zsmul]`. Use `congr 1`. Rewrite using `[zsmul_eq_mul, mul_one_div, div_eq_iff hN, hm']`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem exists_injective_zmod_addCircle_torsion (N : ℕ) [NeZero N] :
     ∃ j : ZMod N →+ AddCircle (1 : ℚ), Function.Injective j ∧
@@ -76,25 +76,25 @@ private theorem exists_injective_zmod_addCircle_torsion (N : ℕ) [NeZero N] :
     ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Set `π : ReciprocityTheory.Gal.Z1 ((ReciprocityTheory.Gal.twDual ψ rho).comp (MonoidHom.id Γ)) →+ ReciprocityTheory.Gal.H1 ((ReciprocityTheory.Gal.twDual ψ rho).comp (MonoidHom.id Γ))` to `{ toFun := fun s => Submodule.Quotient.mk s map_zero' := Submodule.Quotient.mk_zero _ map_add' := fun s t => Submodule.Quotient.mk_add _ }`. Establish `hzA : π z ∉ A.map π`. Introduce and unpack `⟨s, hs', hsz⟩`. Apply `hz` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hq : (Submodule.Quotient.mk s : ReciprocityTheory.Gal.H1 ((ReciprocityTheory.Gal.twDual ψ rho).comp (MonoidHom.id Γ))) = Submodule.Quotient.mk z` using `hsz`. Rewrite `hq` using `[Submodule.Quotient.eq]`. Establish `hq'` using `Submodule.neg_mem _ hq`. Rewrite `hq'` using `[neg_sub]`. Establish `hmem : z - s ∈ A` using `hB (z - s) hq'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum` using `A.add_mem hmem hs'`. Rewrite `hsum` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hq0 : (QuotientAddGroup.mk (π z) : _ ⧸ A.map π) ≠ 0`. Rewrite using `[Ne, QuotientAddGroup.eq_zero_iff]`. Conclude with `hzA`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hq0`. Set `c' : ReciprocityTheory.Gal.H1 ((ReciprocityTheory.Gal.twDual ψ rho).comp (MonoidHom.id Γ)) →+ AddCircle (1 : ℚ)` to `c.comp (QuotientAddGroup.mk' (A.map π))`. Establish `htors : ∀ h, N • c' h = 0`. Introduce `h`. Rewrite using `[← map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod N), ZMod.natCast_self, zero_smul, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, hjr⟩` from `exists_injective_zmod_addCircle_torsion N`. Set `φ0 : ReciprocityTheory.Gal.H1 ((ReciprocityTheory.Gal.twDual ψ rho).comp (MonoidHom.id Γ)) →+ ZMod N` to `(AddMonoidHom.ofInjective hj).symm.toAddMonoidHom.comp (c'.codRestrict j.range (fun h => hjr _ (htors h)))`. Establish `key : ∀ h, j (φ0 h) = c' h`. Introduce `h`. Establish `hh` using `(AddMonoidHom.ofInjective hj).apply_symm_apply (c'.codRestrict j.range (fun h => hjr _ (htors h)) h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh` using `[Subtype.ext_iff, AddMonoidHom.ofInjective_apply]`. Conclude with `hh`. Set `Lm` to `e.symm.toLinearMap ∘ₗ φ0.toZModLinearMap N`. Take `⟨y, hy⟩` from `hs Lm`. Establish `hval : ∀ s, ReciprocityTheory.Gal.cupH1H1TwistedDual ψ rho (MonoidHom.id Γ) hrho (Submodule.Quotient.mk s) y = e.symm (φ0 (π s))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s`. Establish `hh` using `LinearMap.congr_fun hy (Submodule.Quotient.mk s)`. Rewrite `hh` using `[LinearMap.flip_apply]`. Rewrite using `[hh]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyA : ∀ s ∈ A, ReciprocityTheory.Gal.cupH1H1TwistedDual ψ rho (MonoidHom.id Γ) hrho (Submodule.Quotient.mk s) y = 0`. Introduce `s hs'`. Rewrite using `[hval]`. Establish `h0 : φ0 (π s) = 0`. Apply `hj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, map_zero]`. Use `show c (QuotientAddGroup.mk (π s)) = 0`. Rewrite using `[(QuotientAddGroup.eq_zero_iff _).2 (AddSubgroup.mem_map_of_mem π hs'), map_zero]`. Rewrite using `[h0, map_zero]`. Establish `hfin` using `h y hyA`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `hfin` using `[hval, LinearEquiv.map_eq_zero_iff]`. Apply `hc` to reduce the goal to its premises. Establish `hj0` using `congrArg j hfin`. Rewrite `hj0` using `[key, map_zero]`. Conclude with `hj0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_cup_flip {N : ℕ} [NeZero N] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     (ψ : Γ →* (ZMod N)ˣ) {M : Type} [AddCommGroup M] [Module (ZMod N) M] [TopologicalSpace M]
@@ -172,17 +172,15 @@ theorem mem_of_cup_flip {N : ℕ} [NeZero N] {Γ : Type} [Group Γ] [Topological
   exact hj0
 
 /- English proof (translation)
-Establish `hfin : ∀ (A : Type) [AddCommGroup A] [Module (ZMod n) A] [Finite A], Finite (Module.Dual (ZMod n) A)` using `fun A _ _ _ => (GlobalTheory.CocycleCount.card_linear_le n A).1`. Set `f : M' →+ Module.Dual (ZMod n) M` to `{ toFun := fun y => (P.flip y).toZModLinearMap n map_zero' := LinearMap.ext fun x => by show P x 0 = 0`. Conclude with `map_zero (P x)`. Use the proof step `map_add' := fun y y' => LinearMap.ext fun x => by show P x (y + y') = P x y + P x y'`. Conclude with `map_add (P x) y y' }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `g : M → Module.Dual (ZMod n) M'` to `fun x => (P x).toZModLinearMap n`. Establish `hf : Function.Injective f`. Introduce `y y' hyy`. Establish `hyx : ∀ x, P x (y - y') = 0`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hx` using `LinearMap.congr_fun hyy x`. Express the relevant statement in the definitionally equal form `P x y = P x y' at hx`. Rewrite using `[map_sub, hx, sub_self]`. Conclude with `sub_eq_zero.1 (h2 _ hyx)`. Establish `hg : Function.Injective g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x x' hxx`. Establish `hxy : ∀ y, P (x - x') y = 0`. Introduce `y`. Establish `hy` using `LinearMap.congr_fun hxx y`. Express the relevant statement in the definitionally equal form `P x y = P x' y at hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, AddMonoidHom.sub_apply, hy, sub_self]`. Conclude with `sub_eq_zero.1 (h1 _ hxy)`. Use `haveI := hfin M`. Use `haveI := hfin M'`. Establish `c1` using `Nat.card_le_card_of_injective f hf`.
-
-Establish `c2` using `Nat.card_le_card_of_injective g hg`. Rewrite `c1`, `c2` using `[GlobalTheory.ZModDual.card_dual_eq]`. Establish `hb : Function.Bijective f` using `hf.bijective_of_nat_card_le (by rw [GlobalTheory.ZModDual.card_dual_eq]; exact c2)`. Conclude with `⟨AddEquiv.ofBijective f hb, fun y x => rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_dual {n : ℕ} [NeZero n] {M : Type} [AddCommGroup M] [Module (ZMod n) M] [Finite M]
     {M' : Type} [AddCommGroup M'] [Module (ZMod n) M'] [Finite M'] (P : M →+ M' →+ ZMod n)
@@ -226,49 +224,47 @@ theorem exists_equiv_dual {n : ℕ} [NeZero n] {M : Type} [AddCommGroup M] [Modu
   exact ⟨AddEquiv.ofBijective f hb, fun y x => rfl⟩
 
 /- English proof (translation)
-Introduce `hT D l _ K n χ hn hχ W _ _ a h1 hmul hlc W' _ _ a' h1' hmul' hlc' P hP1 hP2 hP S hBS hS c hc H`. Establish `hne : NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `mW : Module (ZMod (l ^ n)) W` using `AddCommGroup.zmodModule fun x => hP1 _ fun y => by`. Rewrite using `[map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Establish `mW' : Module (ZMod (l ^ n)) W'` using `AddCommGroup.zmodModule fun y => hP2 _ fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Use `letI tW' : TopologicalSpace W' := ⊥`. Use `haveI dW' : DiscreteTopology W' := ⟨rfl⟩`. Use `haveI hK : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Set `φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1` to `IntermediateField.fixingSubgroupEquiv K.1`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : Continuous φ ∧ Continuous φ.symm` using `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) K.1`. Set `rho : Representation (ZMod (l ^ n)) (Formalism.GaloisCohomology.GK l K.1) W'` to `GlobalTheory.CocycleCount.repOfAction _ (fun g => a' (φ.symm g)) (fun m => by rw [map_one, h1']) (fun g h m => by rw [map_mul, hmul'])`. Establish `hrho_apply : ∀ (g : Formalism.GaloisCohomology.GK l K.1) (m : W'), rho g m = a' (φ.symm g) m` using `fun _ _ => rfl`. Establish `hrho : ReciprocityTheory.Gal.ContAction rho` using `continuous_prod_of_discrete_right.2 fun m => (hlc' m).continuous.comp hφ.2`. Take `⟨⟨e⟩, -, -, hb, -⟩` from `hT l K.1 K.2 n W' rho hn hrho`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ` to `Formalism.GaloisCohomology.cycK l K.1 n`. Establish `hψ : ∀ g : ↥(GK K), ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) = (χ g : ZMod (l ^ n))`. Introduce `g`. Take `⟨u, hu1, hu2⟩` from `hχ g`. Establish `hcyc : (D.loc l).χQ = GlobalTheory.Cyc.cycChar l` using `GlobalTheory.Cyc.TwistLift.isCyc_unique (D.loc l).χQ_cyc (GlobalTheory.Cyc.isCyc_cycChar l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu1` using `[(D.loc l).PD_χ K g, hcyc]`. Establish `hu : u = ((cyclotomicCharacter (PadicAlgCl l) l (MulSemiringAction.toRingAut (GQ l) (PadicAlgCl l) g.1) : ℤ_[l]ˣ) : ℤ_[l])` using `Subtype.ext hu1`. Rewrite using `[← hu2, hu]`. Both sides reduce to the same expression. Take `⟨E, hE⟩` from `exists_equiv_dual (n := l ^ n) P.flip hP2 hP1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hE' : ∀ x y, E x y = P x y` using `fun x y => hE x y`. Set `τ : Representation (ZMod (l ^ n)) (Formalism.GaloisCohomology.GK l K.1) (ReciprocityTheory.Gal.TDual (ZMod (l ^ n)) W')` to `(ReciprocityTheory.Gal.twDual ψ rho).comp (MonoidHom.id _)`. Establish `hEq : ∀ (g : ↥(GK K)) (x : W), E (a g x) = τ (φ g) (E x)`. Introduce `g x`. Apply `ReciprocityTheory.Gal.TDual.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `y`. Express the relevant statement in the definitionally equal form `E (a g x) y = ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * E x (rho (φ g)⁻¹ y)`. Establish `hy : a' g (a' g⁻¹ y) = y` using `by rw [← hmul', mul_inv_cancel, h1']`. Establish `hinv : rho (φ g)⁻¹ y = a' g⁻¹ y`. Rewrite using `[hrho_apply, map_inv, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE', hE', hψ, hinv, ← hP, hy]`. Establish `ev : ∀ (g : Formalism.GaloisCohomology.GK l K.1) (t : ReciprocityTheory.Gal.TDual (ZMod (l ^ n)) W') (y : W'), t y = P (E.symm t) y` using `fun g t y => by rw [← hE', E.apply_symm_apply]`. Set `toS : ReciprocityTheory.Gal.Z1 τ →+ (↥(GK K) → W)` to `AddMonoidHom.mk' (fun z g => E.symm (z.1 (φ g))) (fun z z' => by funext g; simp)`. Establish `toS_apply : ∀ z g, toS z g = E.symm (z.1 (φ g))` using `fun _ _ => rfl`. Set `A : AddSubgroup (ReciprocityTheory.Gal.Z1 τ)` to `S.comap toS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `lift : ∀ s : ↥(GK K) → W, (IsLocallyConstant s ∧ ∀ g h, s (g * h) = s g + a g (s h)) → ∃ z : ReciprocityTheory.Gal.Z1 τ, toS z = s`. Introduce `s hs`. Use `⟨⟨fun g => E (s (φ.symm g)), ((hs.1.comp E).continuous).comp hφ.2, fun g h => ?_⟩,` and prove the remaining obligations. Use function extensionality and compare the values at `fun g => ?_⟩`. Use `hEq (φ.symm g) (s (φ.symm h))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `E (s (φ.symm (g * h))) = E (s (φ.symm g)) + τ g (E (s (φ.symm h)))`. Rewrite using `[map_mul, hs.2, map_add, this]`. Rewrite using `[toS_apply, AddEquiv.symm_apply_eq]`. Express the relevant statement in the definitionally equal form `E (s (φ.symm (φ g))) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MulEquiv.symm_apply_apply]`. Take `⟨zc, hcz⟩` from `lift c hc`. Establish `hBA : ∀ z : ReciprocityTheory.Gal.Z1 τ, z.1 ∈ ReciprocityTheory.Gal.B1 τ → z ∈ A`. Introduce `z hz`. Take `⟨t, ht⟩` from `(ReciprocityTheory.Gal.mem_coboundaries1 _ _).1 hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `toS z ∈ S`. Establish `: toS z = fun g => a g (E.symm t) - E.symm t`. Use function extensionality and compare the values at `g`. Rewrite using `[toS_apply, ht, AddEquiv.symm_apply_eq, map_sub, hEq, AddEquiv.apply_symm_apply]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hBS _`. Establish `key : ∀ (x : ReciprocityTheory.Gal.Z1 τ) (y : ReciprocityTheory.Gal.Z1 (rho.comp (MonoidHom.id _))), ReciprocityTheory.Gal.cupH1H1TwistedDual ψ rho (MonoidHom.id _) (hrho.comp' continuous_id) (Submodule.Quotient.mk x) (Submodule.Quotient.mk y) = 0 ↔ ∃ f : ↥(GK K) → ZMod (l ^ n), …`. Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨f, hf, hd⟩` from `(ReciprocityTheory.Gal.separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 h0)`. Use `⟨fun g => f (φ g), (IsLocallyConstant.iff_continuous _).2 (hf.comp hφ.1), fun g h => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrFun hd (φ g, φ h)`. Establish `h3 : ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * f (φ h) - f (φ g * φ h) + f (φ g) = (x.1 (φ g)) (rho (φ g) (y.1 (φ h)))` using `h2`. Rewrite `h3` using `[hψ, ← map_mul, hrho_apply, MulEquiv.symm_apply_apply, ev (φ g)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h3`. Introduce and unpack `⟨f, hf, hd⟩`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((ReciprocityTheory.Gal.separated_dvr_second_cohomology_mem _ _).2 ⟨fun g => f (φ.symm g), hf.continuous.comp hφ.2, funext fun p => ?_⟩)` and prove the remaining obligations. Take `⟨g, h⟩` from `p`. Establish `h3` using `hd (φ.symm g) (φ.symm h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← hψ, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply, ← map_mul]`. Express the relevant statement in the definitionally equal form `((ψ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * f (φ.symm h) - f (φ.symm (g * h)) + f (φ.symm g) = (x.1 g) (rho g (y.1 h))`. Rewrite using `[ev g, hrho_apply]`. Use `toS_apply x (φ.symm g)` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Rewrite using `[← this]`. Conclude with `h3`. Establish `hmain : zc ∈ A`. Use `mem_of_cup_flip ψ rho (hrho.comp' continuous_id) e hb.2 A hBA zc fun y hy => ?_` and prove the remaining obligations. Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc' : IsLocallyConstant (fun g => y.1 (φ g)) ∧ ∀ g h, y.1 (φ (g * h)) = y.1 (φ g) + a' g (y.1 (φ h))`. Use `⟨(IsLocallyConstant.iff_continuous _).2 (y.2.1.comp hφ.1), fun g h => ?_⟩` and prove the remaining obligations. Use `y.2.2 (φ g) (φ h)` as an intermediate fact. Rewrite using `[map_mul]`. Use `this.trans ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ + rho (φ g) _ = _`. Rewrite using `[hrho_apply, MulEquiv.symm_apply_apply]`. Establish `hz` using `H (fun g => y.1 (φ g)) hc' (fun s hs => ?_)`. Use `(key zc y).2 ?_` and prove the remaining obligations. Rewrite using `[hcz]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨f, hf, hd⟩` from `hz`. Conclude with `⟨f, hf, hd⟩`. Take `⟨zs, hzs⟩` from `lift s (hS s hs)`. Establish `hA : zs ∈ A`. Express the relevant statement in the definitionally equal form `toS zs ∈ S`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hzs]`. Conclude with `hs`. Take `⟨f, hf, hd⟩` from `(key zs y).1 (hy zs hA)`. Rewrite `hd` using `[hzs]`. Conclude with `⟨f, hf, hd⟩`.
-
-Establish `hmem : toS zc ∈ S` using `hmain`. Rewrite `hmem` using `[hcz]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem double_annihilator : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (n : ℕ) (χ : ↥(GK K) →* (ZMod (l ^ n))ˣ), 0 < n → (∀ g, ∃ u : ℤ_[l], (u : ℚ_[l]) = ((((D.loc l).PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∧ PadicInt.toZModPow n u = (χ g : ZMod (l ^ n))) → ∀ (W : Type) [AddCommGroup W] [Finite W] (a : ↥(GK K) → W →+ W), (∀ m, a 1 m = m) → (∀ g h m, a (g * h) m = a g (a h m)) → (∀ m, IsLocallyConstant fun g => a g m) → ∀ (W' : Type) [AddCommGroup W'] [Finite W'] (a' : ↥(GK K) → W' →+ W'), (∀ m, a' 1 m = m) → (∀ g h m, a' (g * h) m = a' g (a' h m)) → (∀ m, IsLocallyConstant fun g => a' g m) → ∀ P : W →+ W' →+ ZMod (l ^ n), (∀ x, (∀ y, P x y = 0) → x = 0) → (∀ y, (∀ x, P x y = 0) → y = 0) → (∀ g x y, P (a g x) (a' g y) = (χ g : ZMod (l ^ n)) * P x y) → ∀ S : AddSubgroup (↥(GK K) → W), (∀ m : W, (fun g => a g m - m) ∈ S) → (∀ s ∈ S, (IsLocallyConstant s ∧ ∀ g h, s (g * h) = s g + a g (s h))) → ∀ c : ↥(GK K) → W, (IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)) → (∀ c' : ↥(GK K) → W', (IsLocallyConstant c' ∧ ∀ g h, c' (g * h) = c' g + a' g (c' h)) → (∀ s ∈ S, (∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (s g) (a' g (c' h)))) → (∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (c g) (a' g (c' h)))) → c ∈ S := by
   intro hT D l _ K n χ hn hχ W _ _ a h1 hmul hlc W' _ _ a' h1' hmul' hlc' P hP1 hP2 hP S hBS hS c hc H

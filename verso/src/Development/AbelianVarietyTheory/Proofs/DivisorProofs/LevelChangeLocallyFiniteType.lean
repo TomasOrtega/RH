@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Take `⟨N, i, hi, -, rfl⟩` from `h`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_of_isQProjOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsQProjOver f) : LocallyOfFiniteType f := by
@@ -15,9 +15,7 @@ theorem locallyOfFiniteType_of_isQProjOver {R : Type} [CommRing R] {X : Scheme.{
   infer_instance
 
 /- English proof (translation)
-Establish `h1 : ((IntermediateField.inclusion hle).toRingHom.comp (algebraMap ℚ F)).FiniteType`. Establish `: (IntermediateField.inclusion hle).toRingHom.comp (algebraMap ℚ F) = algebraMap ℚ F'` using `RingHom.ext fun _ => by simp`. Rewrite using `[this]`. Conclude with `(RingHom.Finite.finiteType (RingHom.finite_algebraMap.mpr inferInstance))`. Establish `h2` using `RingHom.FiniteType.of_comp_finiteType h1`.
-
-Conclude with `HasRingHomProperty.Spec_iff.mpr h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_spMap_inclusion {F F' : IntermediateField ℚ ℂ} [FiniteDimensional ℚ F']
     (hle : F ≤ F') : LocallyOfFiniteType (spMap (IntermediateField.inclusion hle).toRingHom) := by
@@ -30,9 +28,7 @@ theorem locallyOfFiniteType_spMap_inclusion {F F' : IntermediateField ℚ ℂ} [
   exact HasRingHomProperty.Spec_iff.mpr h2
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' r hle h`. Use `haveI : FiniteDimensional ℚ c'.F := c'.fin`. Use `haveI := locallyOfFiniteType_of_isQProjOver Xo'.qproj`. Use `haveI := locallyOfFiniteType_spMap_inclusion hle`. Use `haveI : LocallyOfFiniteType (r ≫ pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) := by`.
-
-Rewrite using `[h]`. Use `infer_instance`. Conclude with `locallyOfFiniteType_of_comp r (pullback.snd _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_of_overIncl : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l l' : Level H} {Xo : Moduli Dw l} {Xo' : Moduli Dw l'} {c : Coeff l} {c' : Coeff l'} (r : Xo'.XF c' ⟶ Xo.XF c) (hle : c.F ≤ c'.F), GlobalTheory.FlatModel.OverIncl r hle → LocallyOfFiniteType r := by
   intro E _ _ _ H Dw l l' Xo Xo' c c' r hle h

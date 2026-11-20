@@ -21,7 +21,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ m ih`. Rewrite using `[pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`. Conclude with `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem εroot_pow_eq (m : ℕ) : AI.εroot m ^ (l ^ m) = AI.ε := by
   induction m with
@@ -32,21 +32,21 @@ theorem εroot_pow_eq (m : ℕ) : AI.εroot m ^ (l ^ m) = AI.ε := by
     exact ih
 
 /- English proof (translation)
-Rewrite using `[epsT, ← map_pow, εroot_pow_eq, LocAinf.μ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem epsT_pow (s : ℕ) : epsT AI s ^ (l ^ s) = 1 + AI.μ := by
   rw [epsT, ← map_pow, εroot_pow_eq, LocAinf.μ]
   ring
 
 /- English proof (translation)
-Simplify using `using epsT_pow AI 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem epsT_zero : epsT AI 0 = 1 + AI.μ := by simpa using epsT_pow AI 0
 
 /- English proof (translation)
-Take `⟨θ, -, -, -, h, -⟩` from `GlobalTheory.Cyc.exists_isTheta l P AI`. Introduce `hu`. Establish `h0 : θ AI.μ = 0` using `(h _).mpr ⟨AI.π₁, by rw [AI.μ_eq, mul_comm]⟩`. Use `hu.map θ` as an intermediate fact. Rewrite `this` using `[h0]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_zero this`.
+A detailed English derivation is pending.
 -/
 theorem μ_not_unit : ¬ IsUnit AI.μ := by
   obtain ⟨θ, -, -, -, h, -⟩ := GlobalTheory.Cyc.exists_isTheta l P AI
@@ -57,7 +57,7 @@ theorem μ_not_unit : ¬ IsUnit AI.μ := by
   exact not_isUnit_zero this
 
 /- English proof (translation)
-Rewrite using `[epsT, LocAinf.actW, WittVector.map_teichmuller, ← map_pow, ← GlobalTheory.ExpImage.actT_εroot_eq_pow l P AI g u hu j]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actW_epsT (g : GQ l) (u : ℕ) (hu : (P.χQ g : ℚ_[l]) = (u : ℚ_[l])) (j : ℕ) :
     AI.actW g (epsT AI j) = epsT AI j ^ u := by
@@ -66,7 +66,7 @@ theorem actW_epsT (g : GQ l) (u : ℕ) (hu : (P.χQ g : ℚ_[l]) = (u : ℚ_[l])
   rfl
 
 /- English proof (translation)
-Establish `h` using `actW_epsT AI g u hu 0`. Rewrite `h` using `[epsT_zero, map_add, map_one]`. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem actW_μ (g : GQ l) (u : ℕ) (hu : (P.χQ g : ℚ_[l]) = (u : ℚ_[l])) :
     AI.actW g AI.μ = (1 + AI.μ) ^ u - 1 := by
@@ -75,27 +75,27 @@ theorem actW_μ (g : GQ l) (u : ℕ) (hu : (P.χQ g : ℚ_[l]) = (u : ℚ_[l])) 
   linear_combination h
 
 /- English proof (translation)
-Introduce `l _ P AI K s hs g hg U hU m hm`. Establish `hc` using `(GlobalTheory.Per.AinfComplete.main l AI.μ (μ_not_unit AI)).2`. Take `⟨⟨ev, hev⟩, huniq⟩` from `GlobalTheory.PowerSeriesAdicEval.exists_eval_and_unique ℤ_[l] (Ainf l) AI.μ hc`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : (PowerSeries.X : PowerSeries ℤ_[l]) ∣ (1 + PowerSeries.X) ^ (1 + l ^ s) - 1 := by`. Use `sub_dvd_pow_sub_pow (1 + PowerSeries.X : PowerSeries ℤ_[l]) 1 (1 + l ^ s)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hsub : PowerSeries.HasSubst (PowerSeries.X * v : PowerSeries ℤ_[l])` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)`. Set `γ : PowerSeries ℤ_[l] →ₐ[ℤ_[l]] PowerSeries ℤ_[l]` to `PowerSeries.substAlgHom hsub`. Establish `hγ : γ PowerSeries.X = PowerSeries.X * v` using `PowerSeries.substAlgHom_X hsub`. Establish `hgμ : AI.actW g AI.μ = AI.μ * ev v`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg ev hv` as an intermediate fact. Simplify using `only [map_sub, map_pow, map_add, map_one, map_mul, hev] at this`. Rewrite using `[actW_μ AI g _ hg, this]`. Establish `hgev : ∀ f, AI.actW g (ev f) = ev (γ f)`. Use `huniq (((AI.actWHom g : Ainf l ≃ₐ[ℤ_[l]] Ainf l) : Ainf l →ₐ[ℤ_[l]] Ainf l).comp ev) (ev.comp γ) (by` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `AI.actW g (ev PowerSeries.X) = ev (γ PowerSeries.X)`. Rewrite using `[hγ, map_mul, hev, hgμ]) (by`. Express the relevant statement in the definitionally equal form `AI.μ ∣ AI.actW g (ev PowerSeries.X)`. Rewrite using `[hev, hgμ]`. Conclude with `dvd_mul_right _ _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Conclude with `DFunLike.congr_fun this f`. Establish `hχ : ∀ h ∈ Hinf K, (P.χQ h : ℚ_[l]) = ((1 : ℕ) : ℚ_[l])`. Introduce `h hh`. Use `((GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc).2.2 K h (Hinf_le_fix hh)).2.mp hh` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hhev : ∀ h ∈ Hinf K, ∀ f, AI.actW h (ev f) = ev f`. Introduce `h hh`. Establish `hμ : AI.actW h AI.μ = AI.μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[actW_μ AI h 1 (hχ h hh)]`. Expand and normalize the polynomial expressions, which then agree. Use `huniq (((AI.actWHom h : Ainf l ≃ₐ[ℤ_[l]] Ainf l) : Ainf l →ₐ[ℤ_[l]] Ainf l).comp ev) ev (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `AI.actW h (ev PowerSeries.X) = ev PowerSeries.X`. Rewrite using `[hev, hμ]) (by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `AI.μ ∣ AI.actW h (ev PowerSeries.X)`. Rewrite using `[hev, hμ])`. Introduce `f`. Conclude with `DFunLike.congr_fun this f`. Establish `hgE : AI.actW g (epsT AI s) = epsT AI s * (1 + AI.μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[actW_epsT AI g _ hg, pow_add, pow_one, epsT_pow]`. Use `choose pp FF hpF using GlobalTheory.ExpImage.solve_mod_pow l s hs m hm U hU γ v hv.symm hγ`. Set `F : ℕ → PowerSeries ℤ_[l]` to `fun k => Nat.rec 1 (fun k f => FF (k + 1) f) k`. Establish `hF : ∀ k, F (k + 1) = FF (k + 1) (F k)` using `fun _ => rfl`. Use `⟨fun k => epsT AI s ^ m * ev (pp (k + 1) (F k)), fun k => epsT AI s ^ m * ev (F k), ?_, fun k h hh => ?_, fun k => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `epsT AI s ^ m * ev 1 = _`. Rewrite using `[map_one, mul_one]`. Rewrite using `[map_mul, map_pow, actW_epsT AI h 1 (hχ h hh), pow_one, hhev h hh]`. Establish `h1` using `congrArg ev (hpF (k + 1) (F k))`. Establish `hC : ev (PowerSeries.C U) = algebraMap ℤ_[l] (Ainf l) U` using `ev.commutes U`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [map_sub, map_pow, map_add, map_one, map_mul, hev, hC, map_natCast] at h1`. Unfold `Step`. Use `beta_reduce`. Rewrite using `[hF, map_mul, map_pow, hgE, hgev, hgμ, mul_pow, mul_pow]`. Take the linear combination `(epsT AI s ^ m * AI.μ ^ (k + 1)) * h1`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ),
     Lev l s → ∀ g : GQ l, (P.χQ g : ℚ_[l]) = ((1 + l ^ s : ℕ) : ℚ_[l]) → ∀ U : ℤ_[l],

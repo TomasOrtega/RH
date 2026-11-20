@@ -20,15 +20,15 @@ noncomputable section
 namespace GlobalTheory.VacTransOrth
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T eT hT Y hY hYd μ 𝓕 hμ`. Take `⟨-, -, -, -, hSV, hSW, -, -, hψ, hf⟩` from `hP`. Take `⟨hd, -, hsign⟩` from `GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ V W ΛV ΛW hψ hSV hSW`. Establish `hc0 : infPart D (cA D eT) = 0` using `Formalism.IndefR.Fin.LevelGroupLemmas.Lat.infPart_cA_idemSum hT`. Establish `hfin : ∀ y ∈ Y, y.map (infPart D) = 0` using `fun y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `show infPart D (y i j) = 0`. Rewrite using `[← hY y hy i j, RingHom.map_mul, hc0, zero_mul]`. Establish `h` using `GlobalTheory.HeisOrtho.thetaNormSq_sum_heisenbergTranslates_distinctChars D ψ V W hψ.1 μ 𝓕 hμ f₀ hf.theta (hf.norm.2 (μ, 𝓕) hμ) (WO V W) Y id (fun _ => 1) (fun _ _ => norm_one) ?_`. Simplify `h` using `only [one_smul, id]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy y' hy' hne`. Establish `hnot : y - y' ∉ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True)` using `fun hm => hne (hYd y hy y' hy' hm)`. Establish `hm0 : (y - y').map (infPart D) = 0`. Use extensionality with `i j`. Establish `h1 : infPart D (y i j) = 0` using `congrFun (congrFun (hfin y hy) i) j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : infPart D (y' i j) = 0` using `congrFun (congrFun (hfin y' hy') i) j`. Use `show infPart D (y i j - y' i j) = 0`. Rewrite using `[RingHom.map_sub, h1, h2, sub_zero]`. Rewrite `hnot` using `[hd _ hm0]`. Use `push_neg at hnot`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨l, hl, hne'⟩` from `hnot`. Take `⟨ε, hε, hεf⟩` from `hsign f₀ hf.lat l hl`. Apply the tactic sequence `exact ⟨l, ε, by rcases hε with rfl | rfl <;> simp, hεf f₀ hf.lat, hne'⟩`.
+A detailed English derivation is pending.
 -/
 theorem vacuumTranslates_conjHalf_sq_norm_eq_card_alt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (eT : AE D), IsIdemSum eT T → ∀ (Y : Finset (WO V W)), (∀ y ∈ Y, IsHalf (cA D eT) y) → (∀ y ∈ Y, ∀ y' ∈ Y, y - y' ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True) → y = y') → ∀ (μ : MeasureTheory.Measure (WO V W)) (𝓕 : Set (WO V W)), IsCovolOne (ratL W V) μ 𝓕 → nrm2 μ 𝓕 (∑ y ∈ Y, heisO ψ V W y f₀) = Y.card := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T eT hT Y hY hYd μ 𝓕 hμ

@@ -17,7 +17,7 @@ variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (
   (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
 
 /- English proof (translation)
-Introduce and unpack `Z ⟨l', ρ', hl', hρ', rfl⟩ l ρ hl hρ`. Use `⟨l * l', ρ' * ρ, Formalism.L2.SG.Pf.LocOrbCut.intLow_mul (M p) hl hl', Formalism.L2.SG.Pf.LocOrbCut.intUp_mul (M p) hρ' hρ, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem orbR_stable {p : PlF D} (Z0 : MP p) :
     ∀ Z ∈ Formalism.L2.SG.Pf.LocOrbSumPf.orbR (M p) Z0, ∀ l ρ, Formalism.MainNotions.S.TieN.IntLow (M p) l → Formalism.MainNotions.S.TieN.IntUp (M p) ρ →
@@ -27,17 +27,15 @@ theorem orbR_stable {p : PlF D} (Z0 : MP p) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hA` using `hE.1 p`. Establish `hL` using `hE.2.2.2.2.2.2.2.1`. Establish `hU` using `hE.2.2.2.2.2.2.2.2.1`. Establish `heq` using `hE.2.2.2.2.2.2.2.2.2`. Take `⟨a, ha⟩` from `Formalism.L2.SG.Pf.PCount.modPt_full (δ := δ) (D.mem u).A.T (D.mem u').A.T p hA.2.1 w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨πa, hD, hker⟩` from `blockRetr_holds M a`. Establish `hB` using `baseAt_holds M δ u u' w p hE.1 a ha`. Establish `hInt` using `int_zzp M δ u u' F0 what₂ γ w F' L U hE p`. Establish `hgW : ((gU M δ u u' w hA L U hL hU a hB : UP p) : GG p) • a.mat = Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) F') * Formalism.L2.SG.LsDatumB.sgnP p + Formalism.L2.SG.Pf.LocOrbSumPf.shM δ (D.mem u).A.T (D.mem u').A.T p w := by`. Rewrite using `[gU_smul, XP_eq_ZZP M δ u u' F0 hA w F' L U hL hU heq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨hfin, hwt⟩` from `Formalism.L2.SG.Pf.Coef.wtL_count M δ hA.1 ha hInt`. Establish `hcard` using `card_cellRel M a πa hker (gU M δ u u' w hA L U hL hU a hB)`. Rewrite `hcard` using `[hgW]`. Use `set Z0 : MP p := Formalism.L2.SG.CntLocal.ZZP (M := M) δ u u' p (ZhatL (lf D F0) F') * Formalism.L2.SG.LsDatumB.sgnP p + Formalism.L2.SG.Pf.LocOrbSumPf.shM δ (D.mem u).A.T (D.mem u').A.T p w with hZ0`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcos` using `Formalism.L2.SG.Pf.Coef.cellCos (M p) a (Formalism.L2.SG.Pf.LocOrbSumPf.orbR (M p) Z0) (orbR_stable M Z0)`. Use `countAt_of_parts M δ u u' w hA L U hL hU a hB πa hD _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hcard, ← hcos, hwt]`. Rewrite using `[Nat.card_ne_zero]`. Use `⟨⟨Quotient.mk _ (CountAb.toCell a.mat (MulAction.stabilizer (UP p) a.mat) πa.ker (KU M p) πa (gU M δ u u' w hA L U hL hU a hB) hD 1)⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcl` using `(Formalism.L2.SG.Pf.Coef.cellCos_finite_iff (M p) a (Formalism.L2.SG.Pf.LocOrbSumPf.orbR (M p) Z0) (orbR_stable M Z0)).1 hfin`. Establish `hrange` using `fC_range M a πa hker (gU M δ u u' w hA L U hL hU a hB)`. Rewrite `hrange` using `[hgW]`. Rewrite `hcl` using `[← hrange]`. Establish `hinj : Function.Injective (Set.rangeFactorization (fC M a πa hker (gU M δ u u' w hA L U hL hU a hB)))` using `fun x y h => fC_inj M a πa hker _ (congrArg Subtype.val h)`.
-
-Conclude with `@Finite.of_injective _ _ hcl.to_subtype _ hinj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countAt_holds (γ : Formalism.L2.SG.TermDef.Term D u u' F0 what₂) (w : Point D.host.E (D.R.rS + 1))
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (L U : Formalism.L2.SG.PairVal.MatR D)

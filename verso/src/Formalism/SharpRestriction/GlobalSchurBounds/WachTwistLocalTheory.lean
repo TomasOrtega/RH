@@ -161,23 +161,23 @@ Both sides reduce to the same expression.
 -/
 theorem gUprod_fm (i : ℕ) (w) : gUprod (D.fm u) (tops D) i w = Uprod D u i w := rfl
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem general_t3_of_forms_iff (Cc : ℝ) : gT3withWeights (D.fm u) (tops D) (Wt D u) Cc ↔ PointsLemma D u Cc := Iff.rfl
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem general_t4_of_forms_iff (Cc : ℝ) : gT4withWeights (D.fm u) (Wt D u) Cc ↔ Conclusion4 D u Cc := Iff.rfl
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem general_t4_exact_of_forms_iff : klinIntertwinesUop (D.fm u) ↔ LevelChainUOperatorCommutation D u := Iff.rfl
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem general_adm0_of_forms_iff : gadm0 (D.fm u) ↔ UpDownIncidenceInverse D u := Iff.rfl
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem gadmT_fm : gadmT (D.fm u) ↔ admT D u := Iff.rfl
 
@@ -192,7 +192,7 @@ def UnrT (Dx : DivX D) (u : D.what₂.Word) (μ : D.what₂.Tup) : Prop := (D.me
 def UnrAllT (Dx : DivX D) : Prop := ∀ u μ, UnrT D Dx u μ
 
 /- English proof (translation)
-Unfold `UnrT`. Rewrite using `[Dx.degreeZero_partial_set_empty]`. Conclude with `Finset.notMem_empty _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramified_at_reference_tuple (Dx : DivX D) (u : D.what₂.Word) : UnrT D Dx u D.what₂.mu0 := by
   unfold UnrT; rw [Dx.degreeZero_partial_set_empty]; exact Finset.notMem_empty _
@@ -200,9 +200,9 @@ theorem unramified_at_reference_tuple (Dx : DivX D) (u : D.what₂.Word) : UnrT 
 variable {D}
 
 /- English proof (translation)
-Establish `h : ((T.fm u μ).lam j τ).w = ((D.fm u).lam j τ).w`. Use function extensionality and compare the values at `i`. Establish `h1` using `(T.fm u μ).lam_eq j hj τ i`. Establish `h2` using `(D.fm u).lam_eq j hj τ i`. Conclude with `h1.trans h2.symm` after adjusting the coercions.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h1 : (T.fm u μ).lam j τ`. Consider the cases of `h2 : (D.fm u).lam j τ`. Simplify using `only [h1, h2] at h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lamTw_eq (T : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) :
     (T.fm u μ).lam j τ = (D.fm u).lam j τ := by
@@ -235,7 +235,7 @@ def BaseConventionGeneral (u : D.what₂.Word) (cl : ℕ → Type)
           (QuotientGroup.mk (det i c) : D.Dt ⧸ D.UO) = D.relDet (D.R.N i) L0 Ln
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem base_convention_general_of_forms_iff (u : D.what₂.Word) :
     BaseConventionGeneral D u (fun i => (D.mem u).C.cls i) (D.clsLat u) (D.detCls u) ↔ admB D u := Iff.rfl
@@ -318,14 +318,14 @@ def TupleChainSharpColumnValuation (Dx : DivX D) (T : TwForms D) (u : D.what₂.
       Formalism.MainNotions.WeilJacquetShalikaLaw.ColGeTw T u μ w x (-((D.R.m : ℝ) * EatT D u w))
 
 /- English proof (translation)
-Introduce `w hw μ hμ x hx` and use `h μ (by unfold UnrT; rw [← hw]; exact hμ) w hw x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sharp_t5_twist_of_each_tuple (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word)
     (h : ∀ μ, UnrT D Dx u μ → SharpT5TwistColumnAt T u μ) : TupleChainSharpColumnValuation Dx T u :=
   fun w hw μ hμ x hx => h μ (by unfold UnrT; rw [← hw]; exact hμ) w hw x hx
 
 /- English proof (translation)
-Introduce `w hw x hx` and use `h w hw μ (by rw [hw]; exact hμ) x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sharp_t5_twist_at_of_all (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) (h : TupleChainSharpColumnValuation Dx T u) (μ : D.what₂.Tup)
     (hμ : UnrT D Dx u μ) : SharpT5TwistColumnAt T u μ :=
@@ -338,7 +338,7 @@ def TwistedBounds (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) (C : ℝ) :
   TwistedT3KernelBoundAll Dx T u C ∧ TwistedT4Bound Dx T u C ∧ TwistedT5BoundAll Dx T u C ∧ TwistedT4ExactAll Dx T u ∧ TupleChainSharpColumnValuation Dx T u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun μ hμ => (h μ hμ).1, fun μ hμ => (h μ hμ).2.1, fun μ hμ => (h μ hμ).2.2.1, fun μ hμ => (h μ hμ).2.2.2.1, sharp_t5_twist_of_each_tuple Dx T u fun μ hμ => (h μ hμ).2.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem twistedBounds_of_twistedBoundsAt (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) (C : ℝ)
     (h : ∀ μ, UnrT D Dx u μ → TwistedBoundsAt T u μ C) : TwistedBounds Dx T u C :=
@@ -354,7 +354,7 @@ def AdmTwAll (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) : Prop :=
   AdmE D u ∧ ∀ μ, UnrT D Dx u μ → AdmETw T u μ
 
 /- English proof (translation)
-The claim follows from `twistedBounds_of_twistedBoundsAt Dx T u C fun μ hμ => h μ hS hA.1 hμ (hA.2 μ hμ)`.
+A detailed English derivation is pending.
 -/
 theorem twisted_conclusion_of_statement (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) (C : ℝ) (h : TwistStatementAllTuples Dx T u C)
     (hS : HidaSetting D u) (hA : AdmTwAll Dx T u) : TwistedBounds Dx T u C :=
@@ -364,7 +364,7 @@ def SharpT5TwistMember (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) : Prop
   HidaSetting D u → AdmTwAll Dx T u → TupleChainSharpColumnValuation Dx T u
 
 /- English proof (translation)
-Introduce `hS hA` and use `(twisted_conclusion_of_statement Dx T u C h hS hA).2.2.2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sharp_t5_member_of_twist_statement (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) (C : ℝ) (h : TwistStatementAllTuples Dx T u C) :
     SharpT5TwistMember Dx T u :=
@@ -395,7 +395,7 @@ def TwistPointwiseFamilyConst (C : ℝ) : Prop :=
 def TwistPointwiseFamilyExists : Prop := ∃ C : ℝ, TwistPointwiseFamilyConst Fm C
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Introduce and unpack `⟨x1, hA⟩`. Conclude with `⟨max x0 x1, fun x hx hx0 i u hS => twisted_conclusion_of_statement _ _ u C (h x hx (le_trans (le_max_left _ _) hx0) i u) hS (hA x hx (le_trans (le_max_right _ _) hx0) i u)⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem twist_family_statement_of_pointwise (C : ℝ) (h : TwistPointwiseFamilyConst Fm C) : TwistFamilyStatement Fm C := by
   obtain ⟨x0, h⟩ := h
@@ -405,7 +405,7 @@ theorem twist_family_statement_of_pointwise (C : ℝ) (h : TwistPointwiseFamilyC
       (hA x hx (le_trans (le_max_right _ _) hx0) i u)⟩
 
 /- English proof (translation)
-Take `⟨C, h⟩` from `h`. Conclude with `fun hA => ⟨C, twist_family_statement_of_pointwise Fm C h hA⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem twist_family_exists_of_pointwise (h : TwistPointwiseFamilyExists Fm) : TwistFamilyStatementExists Fm := by
   obtain ⟨C, h⟩ := h
@@ -416,7 +416,7 @@ def SharpT5AllTuplesFamily : Prop :=
     HidaSetting (Fm.D x i) u → TupleChainSharpColumnValuation (Fm.X x i) (Fm.ex x hx i).tw u
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i u hS => (h x hx hx0 i u hS).2.2.2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sharp_t5_family_of_twisted_family (C : ℝ) (h : TwistedBoundsAlongFamily Fm C) : SharpT5AllTuplesFamily Fm := by
   obtain ⟨x0, h⟩ := h
@@ -427,7 +427,7 @@ def SharpT5TwistFamily : Prop :=
     SharpT5TwistMember (Fm.X x i) (Fm.ex x hx i).tw u
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i u => sharp_t5_member_of_twist_statement _ _ u C (h x hx hx0 i u)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sharp_t5_twist_family_of_pointwise (C : ℝ) (h : TwistPointwiseFamilyConst Fm C) : SharpT5TwistFamily Fm := by
   obtain ⟨x0, h⟩ := h
@@ -445,13 +445,13 @@ open Formalism.BasicNotions.DV
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `w hw c n hc hn x hx`. Take `⟨y, hy, a, z, hz, rfl, ha⟩` from `h w hw x hx`. Establish `hca : (0 : WithTop ℤ) ≤ D.what₂.places.val w (c * a)`. Distinguish the cases in `h0 : a = 0`. Substitute `h0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `ha'` using `ha.resolve_left h0`. Rewrite using `[AddValuation.map_mul, hc, D.val_eq w a h0, ← WithTop.coe_add, ← WithTop.coe_zero, WithTop.coe_le_coe]`. Establish `h1 : ur D w (-((D.R.m : ℝ) * ET D u w)) = -((D.what₂.places.ramIdx w : ℝ) * ((D.R.m : ℝ) * ET D u w))` using `by unfold ur; ring`. Rewrite `ha'` using `[h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (0 : ℝ) ≤ (n : ℝ) + (vAdd (D.plEq w) a : ℝ)` using `by linarith`. Conclude with `h2` after adjusting the coercions. Use `⟨(⟨c * a, hca⟩ : intW D.what₂.places w) • z, Submodule.smul_mem _ _ hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def]`. Use `show (T.fm u μ).emb D.R.m ((c * a) • z) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[mul_smul, LinearMap.map_smulₛₗ, hy]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sharp_t5_packet_shape_of_twisted (T : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (h : SharpT5TwistColumnAt T u μ) :
     SharpT5PacketShapeAt T u μ := by
@@ -476,7 +476,7 @@ theorem sharp_t5_packet_shape_of_twisted (T : TwForms D) (u : D.what₂.Word) (�
 def ReferenceTupleIdentity (D : D7) (u : D.what₂.Word) : Prop := ∀ φ, HEq (D.e0Tw u D.what₂.mu0 φ) φ
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[eq_of_heq hφ]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem col_heq {R : Ranks} {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R} {C C' : ColumnChain R Tau hc} (h : C' = C)
     (a : ℂ) (φ' : C'.cls 0 → C'.Y 0 → ℂ) (φ : C.cls 0 → C.Y 0 → ℂ) (hφ : HEq φ' φ) :
@@ -484,11 +484,9 @@ theorem col_heq {R : Ranks} {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R} 
   subst h; rw [eq_of_heq hφ]
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Conclude with `(T.eMu0_lat u j hj _).2 (by rw [LinearEquiv.apply_symm_apply]; exact hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`.
-
-Rewrite using `[Subring.smul_def, map_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ r hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eMu0_symm_loc (T : TwForms D) (u : D.what₂.Word) (j : ℕ) (hj : j ≤ D.R.m) (w : D.what₂.places.Pl) :
     ∀ y ∈ (T.fm u D.what₂.mu0).S j w, (T.eMu0 u j hj).symm y ∈ (D.fm u).S j w := by
@@ -504,9 +502,9 @@ theorem eMu0_symm_loc (T : TwForms D) (u : D.what₂.Word) (j : ℕ) (hj : j ≤
     exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Introduce `w hw c n hc hn x hx`. Take `⟨y, hy, he⟩` from `sharp_t5_packet_shape_of_twisted T u D.what₂.mu0 (sharp_t5_twist_at_of_all Dx T u h _ (unramified_at_reference_tuple D Dx u)) w hw c n hc hn x hx`. Use `⟨(T.eMu0 u D.R.m le_rfl).symm y, eMu0_symm_loc T u D.R.m le_rfl w y hy, ?_⟩` and prove the remaining obligations. Establish `h1` using `T.eMu0_emb u D.R.m le_rfl ((T.eMu0 u D.R.m le_rfl).symm y)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_of_heq (h1.symm.trans (col_heq (D.memberColumns_twistedChain_base u) _ _ _ (hE _)))`.
+A detailed English derivation is pending.
 -/
 theorem sharp_t5_of_twisted_sharp (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) (hE : ReferenceTupleIdentity D u) (h : TupleChainSharpColumnValuation Dx T u) :
     Conclusion5Sharp D u := by
@@ -518,7 +516,7 @@ theorem sharp_t5_of_twisted_sharp (Dx : DivX D) (T : TwForms D) (u : D.what₂.W
   exact eq_of_heq (h1.symm.trans (col_heq (D.memberColumns_twistedChain_base u) _ _ _ (hE _)))
 
 /- English proof (translation)
-Introduce `x hx` and use `h w hw _ (Dx.Qp_muAt w) x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sharp_t5_twist_at_place_tuple (Dx : DivX D) (T : TwForms D) (u : D.what₂.Word) (h : TupleChainSharpColumnValuation Dx T u) (w : D.what₂.places.Pl)
     (hw : OverT D u w) : ∀ x ∈ Nlam D u w,

@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Substitute `T1 T2 A` using the available equality. Take `rfl : lI = l0⁻¹` from `eq_inv_of_mul_eq_one_right I`. Take `rfl : g2 = d1 * u * l0⁻¹` from `eq_mul_inv_of_mul_eq U1.symm`. Take `rfl : g4 = d2 * u * l2⁻¹` from `eq_mul_inv_of_mul_eq U2.symm`. Take `rfl : g1 = g3 * d2 * d1⁻¹` from `eq_mul_inv_of_mul_eq E`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem units_alg {G : Type} [CommGroup G] {g1 g2 g3 g4 g5 W1 W2 d1 d2 u l0 lI l2 : G} (T1 : W1 = g1 * d1)
     (T2 : W2 = g3 * d2) (E : W1 = W2) (U1 : d1 * u = g2 * l0) (U2 : d2 * u = g4 * l2) (A : g5 = l2 * lI)

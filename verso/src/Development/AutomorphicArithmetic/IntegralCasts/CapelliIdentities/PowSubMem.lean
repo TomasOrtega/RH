@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `E _ _ w x`. Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`. Use `letI : Field (NumberField.RingOfIntegers E ⧸ w.asIdeal) := Ideal.Quotient.field w.asIdeal`. Use `haveI : Finite (NumberField.RingOfIntegers E ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Use `letI : Fintype (NumberField.RingOfIntegers E ⧸ w.asIdeal) := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Ideal.absNorm w.asIdeal = Fintype.card (NumberField.RingOfIntegers E ⧸ w.asIdeal)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Rewrite using `[← Ideal.Quotient.eq, map_pow, hcard]`. Conclude with `FiniteField.pow_card _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk67.pow_sub_mem :
     ∀ {E : Type} [inst : Field E]

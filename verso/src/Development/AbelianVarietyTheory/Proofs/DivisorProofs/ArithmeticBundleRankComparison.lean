@@ -28,13 +28,11 @@ namespace GlobalTheory.FlagCovQF
 open CategoryTheory.Limits GlobalTheory.FlagCell GlobalTheory.FlagConnect GlobalTheory.FlagCovDivCore
 
 /- English proof (translation)
-Establish `hp : IsFinite (pullback.snd f y)` using `inferInstance`. Establish `: IsAffine (pullback f y)` using `isAffine_of_isAffineHom (pullback.snd f y)`. Take `⟨φ, hφ⟩` from `Spec.map_surjective ((pullback f y).isoSpec.inv ≫ pullback.snd f y)`. Establish `h4 : φ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Use `letI : Algebra K Γ(pullback f y, ⊤) := φ.hom.toAlgebra`. Use `haveI : Module.Finite K Γ(pullback f y, ⊤) := h4`. Use `(Set.finite_range fun σ : Γ(pullback f y, ⊤) →ₐ[K] K => Spec.map (CommRingCat.ofHom σ.toRingHom) ≫ (pullback f y).isoSpec.inv ≫ pullback.fst f y).subset fun x hx => ?_` and prove the remaining obligations. Set `s : Sp K ⟶ pullback f y` to `pullback.lift x (𝟙 _) (by rw [Category.id_comp]; exact hx)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `Spec.map_surjective (s ≫ (pullback f y).isoSpec.hom)`. Establish `e : φ ≫ σ = 𝟙 _` using `Spec.map_injective (by`. Rewrite using `[Spec.map_comp, hσ, hφ, Spec.map_id, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `pullback.lift_snd _ _ _)`. Use `⟨⟨σ.hom, fun a => congr($e a)⟩, ?_⟩` and prove the remaining obligations.
-
-Use `show Spec.map σ ≫ _ = _`. Rewrite using `[hσ, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_points {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (K : Type) [Field K] (y : Sp K ⟶ Y) :
     {x : Sp K ⟶ X | x ≫ f = y}.Finite := by
@@ -62,13 +60,13 @@ section Sheaves
 open GlobalTheory.Twist (resM resM_resM app_resM)
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l using Fin.induction with`. Consider the case `zero`. Establish `z` using `VB.isVB_zero_iff.1 (fl.isVB 0)`. Use `⟨_, (VB.isFrame_freeFrame X (Fin 0)).map_iso ((VB.isVB_zero_iff.1 (VB.isVB_freeModule_fin X 0)).iso z).hom |>.res le_top, fun j => j.elim0⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ i ih`. Take `⟨s, hs, es⟩` from `ih`. Establish `h` using `(VBExt.isFrame_sumElim (S := .mk (fl.step i) (Limits.cokernel.π _) (Limits.cokernel.condition _)) { exact := ShortComplex.exact_cokernel _ } (t := fun _ : Fin 1 => t i) hs (ht i)).comp_equiv finSumFinEquiv.symm`. Use `⟨_, h, fun j => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (m := i) (n := 1) (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply, finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl]`. Use `Eq.trans ?_ (es j)` and prove the remaining obligations. Rewrite using `[← fl.step_ι i]`. Both sides reduce to the same expression. Take `rfl : j = 0` from `Subsingleton.elim _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (fun z => (fl.ι i.succ).app W (Sum.elim (fun j => (fl.step i).app W (s j)) (fun _ => t i) z)) (finSumFinEquiv_symm_apply_natAdd (m := i) (n := 1) 0)`.
+A detailed English derivation is pending.
 -/
 theorem spans_of_lifts {X : Scheme.{0}} {M : X.Modules} {N : ℕ} (fl : Vert.Flag M N) {W : X.Opens}
     (t : ∀ k : Fin N, Γ(fl.F k.succ, W)) (ht : ∀ k, VB.IsFrame fun _ : Fin 1 => (fl.π k).app W (t k)) :

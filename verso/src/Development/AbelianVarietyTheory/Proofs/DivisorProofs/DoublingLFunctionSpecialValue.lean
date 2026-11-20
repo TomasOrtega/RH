@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.ThK.Bot.Asm
 
 /- English proof (translation)
-Set `K₀ : TopologicalSpace.PositiveCompacts G` to `⟨⟨S, hc⟩, by rw [ho.interior_eq]; exact ⟨1, h1⟩⟩`. Conclude with `⟨Measure.haarMeasure K₀, Measure.isHaarMeasure_haarMeasure K₀, Measure.haarMeasure_self (K₀ := K₀)⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_haar_eq_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (S : Set G) (hc : IsCompact S) (ho : IsOpen S) (h1 : (1 : G) ∈ S) : ∃ μ : Measure G, μ.IsHaarMeasure ∧ μ S = 1 := by
@@ -31,56 +31,48 @@ theorem exists_haar_eq_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologi
   exact ⟨Measure.haarMeasure K₀, Measure.isHaarMeasure_haarMeasure K₀, Measure.haarMeasure_self (K₀ := K₀)⟩
 
 /- English proof (translation)
-The claim follows from `hP.unique (HasProd.mul_compl (s := (T : Set ι)) (T.hasProd z) hQ)`.
+A detailed English derivation is pending.
 -/
 theorem eq_prod_mul {ι : Type} (T : Finset ι) (z : ι → ℂ) (P Q : ℂ) (hP : HasProd z P)
     (hQ : HasProd (fun v : {v : ι // v ∉ T} => z v.1) Q) : P = (∏ v ∈ T, z v) * Q :=
   hP.unique (HasProd.mul_compl (s := (T : Set ι)) (T.hasProd z) hQ)
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s' r₁ s₁ hp h0 h0' hn hnd hd k hk hkd T hTP hunr hram harch`. Take `⟨X₂, i, K₂, hD⟩` from `GlobalTheory.T.exists_doubling_of_hermitian_space hP F E σ B hp.base n r s' X hp.herm`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `letI : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `m : Measure (Fin n × Fin d → AF F)` to `Measure.addHaar`. Establish `hm : m.IsAddHaarMeasure` using `inferInstance`. Take `⟨hTG, hLC, hSC, hT2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n X.J`. Use `haveI := hTG`. Use `haveI := hLC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Take `⟨K, -, -, hK, hKc, -, -⟩` from `GlobalTheory.StabHaar.stabEx hP.base F E σ B n X r s' hp.base hp.herm`. Establish `hrs : r + s' = n` using `(hp.herm.sig (Classical.arbitrary _)).1`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdef : X.IsHerm σ B n 0 ∨ X.IsHerm σ B 0 n`. Establish `h` using `hp.herm`. Break down `(by omega : r = n ∧ s' = 0 ∨ r = 0 ∧ s' = n) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKo` using `GlobalTheory.DefiniteStab.isOpen_stab_of_definite hp.base.cm hdef hK`. Establish `hμv : ∀ v : Pl F, ∃ μ : Measure (UAtSub σ X (evFin F v)), μ.IsHaarMeasure ∧ μ {g | g.1 ∈ K} = 1` using `fun v => exists_haar_eq_one _ ((isClosed_UAtSub X (evFin F v)).isClosedEmbedding_subtypeVal.isCompact_preimage hKc) (hKo.preimage continuous_subtype_val) K.one_mem`. Use `choose μv hμv using hμv`. Use `haveI : LocallyCompactSpace (UAtSub σ X (evI F)) := (isClosed_UAtSub X (evI F)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (⊤ : Subgroup (UA σ X.J)) := (isClosed_univ : IsClosed ((⊤ : Subgroup (UA σ X.J)) : Set (UA σ X.J))).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `μi : Measure (UAtSub σ X (evI F))` to `Measure.haar`. Establish `hμi : μi.IsHaarMeasure` using `inferInstance`. Set `μ : Measure (⊤ : Subgroup (UA σ X.J))` to `Measure.haar`. Establish `hμ : μ.IsHaarMeasure` using `inferInstance`. Take `⟨f, hf, hf0, hfz⟩` from `harch X₂ i K₂ hD m hm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hR` using `GlobalTheory.T.doubling_integral_nonvanishing hP F E σ B n d X W M χX χW om r s' r₁ s₁ hp h0 h0' hn hnd hd X₂ i K₂ hD m hm`. Use `choose φr hφr hφr0 hφrz using hR`. Set `φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => if h : v ∈ T then φr v (hTP h) else M.vac v`. Establish `hφT : ∀ v (h : v ∈ T), φ v = φr v (hTP h)` using `fun v h => dif_pos h`. Establish `hφN : ∀ v, v ∉ T → φ v = M.vac v` using `fun v h => dif_neg h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSB : ∀ v, φ v ∈ SB _` using `fun v => by`. Distinguish the cases in `h : v ∈ T`. Rewrite using `[hφT v h]`. Conclude with `hφr v _`. Rewrite using `[hφN v h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hp.good.vac v).1`. Establish `hne : ∀ v, φ v ≠ 0` using `fun v => by`. Distinguish the cases in `h : v ∈ T`. Rewrite using `[hφT v h]`. Conclude with `hφr0 v _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hφN v h]`. Conclude with `(hp.good.vac v).2.1`. Establish `hcof : ∀ᶠ v in cofinite, φ v = M.vac v` using `T.eventually_cofinite_notMem.mono hφN`. Establish `hΦ0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ≠ 0` using `GlobalTheory.EvNonzero.pure_ne_zero f hf0 φ hne ((hcof.and hp.good.std).mono fun v h => h.1.trans h.2)`. Establish `hΦ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ PolData B M` using `Submodule.subset_span ⟨f, hf, φ, hSB, hcof, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨_, hΦ, fun hI => ?_⟩` and prove the remaining obligations. Establish `hzero` using `GlobalTheory.T.doubling_seesaw_identity hP F E σ B n d X W M χX χW om r s' r₁ s₁ hp h0 h0' hn hnd hd X₂ i K₂ hD m hm _ hΦ hΦ0 hI μ hμ`. Take `⟨zi, hzi0, hzi⟩` from `hfz φ hSB hcof hΦ0 μi hμi`. Establish `hzT : ∀ v : Pl F, ∃ z : ℂ, z ≠ 0 ∧ (v ∈ T → ∀ s : ℂ, zetaOn m om (pure f φ) i K₂ _ (μv v) s = z)` using `fun v => by`. Distinguish the cases in `h : v ∈ T`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take `⟨z, hz0, hz⟩` from `hφrz v (hTP h) f hf φ hSB hcof hΦ0 (hφT v h) (μv v) (hμv v).1`. Conclude with `⟨z, hz0, fun _ => hz⟩`. Conclude with `⟨1, one_ne_zero, fun h' => absurd h' h⟩`. Use `choose zv hzv0 hzv using hzT`. Take `⟨c, R, hc0, hE⟩` from `GlobalTheory.T.doubling_integral_unfolding hP F E σ B n d X W M χX χW om r s' r₁ s₁ hp h0 h0' hn hnd hd X₂ i K₂ hD m hm K hK f hf φ hSB hcof hΦ0 μ μi μv hμ hμi hμv`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨D, hDa, hDp⟩` from `GlobalTheory.T.exists_analytic_nonvanishing_denominator F E n T`. Take `⟨e, he⟩` from `hd`. Establish `hres : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χW 0` using `fun a => by`. Rewrite using `[hp.resW a, he, Even.neg_one_pow ⟨e, rfl⟩, pow_zero]`. Establish `hL : ∀ j : ℕ, ∃ c : ℂ, c ≠ 0 ∧ (j < n → GlobalTheory.Cont.HolValueAt (fun s => charL χW (T : Set (Pl F)) (s + ((n : ℂ) / 2 - (j : ℂ)))) (((d : ℂ) - (n : ℂ)) / 2) c)` using `fun j => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hj : j < n`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.T.hecke_character_unramified_exponent hP F E σ B hp.base χW hp.hW hres k d hk hkd T hunr hram ((e : ℤ) - j) (by omega)`. Use `⟨c, hc0, fun _ => GlobalTheory.Cont.HolValueAt.comp_add ?_⟩` and prove the remaining obligations. Use `hc using 1` and compare the differences between its conclusion and the goal. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨1, one_ne_zero, fun h => absurd h hj⟩`. Use `choose l hl0 hl using hL`. Establish `hs₀ : (0 : ℝ) < (((d : ℂ) - (n : ℂ)) / 2).re`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `: (n : ℝ) < d` using `by exact_mod_cast hnd`. Simplify using `only [Complex.div_ofNat_re, Complex.sub_re, Complex.natCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hval` using `(GlobalTheory.Cont.holValueAt_const (c * zi * ∏ v ∈ T, zv v) (((d : ℂ) - (n : ℂ)) / 2)).mul ((GlobalTheory.Cont.holValueAt_prod (Finset.range n) fun j hj => hl j (Finset.mem_range.1 hj)).mul (GlobalTheory.Cont.holValueAt_self (h := D) (σ := 0) hDa hs₀))`. Establish `hEq : GlobalTheory.Cont.EqRight (fun s => (c * zi * ∏ v ∈ T, zv v) * ((∏ j ∈ Finset.range n, charL χW (T : Set (Pl F)) (s + ((n : ℂ) / 2 - (j : ℂ)))) * D s)) (zetaOn m om (pure f φ) i K₂ ⊤ μ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max R ((n : ℝ) + 1), fun s hs => ?_⟩` and prove the remaining obligations. Establish `hsR : R < s.re` using `(le_max_left _ _).trans_lt hs`. Establish `hsn : (n : ℝ) + 1 < s.re` using `(le_max_right _ _).trans_lt hs`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Take `⟨P, hPp, hPz⟩` from `hE s hsR`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hloc : ∀ v : Pl F, v ∉ T → zetaOn m om (pure f φ) i K₂ _ (μv v) s = (∏ j ∈ Finset.range n, Lv (charFam χW) v (s + (n : ℂ) / 2 - (j : ℂ))) * denInv E n v s` using `fun v hv => by`. Establish `hu : ∀ w ∈ aboveF (L` using `E) F v, UnrAt χW w := fun w hw => by`. Use `hunr w fun h => hv ?_` and prove the remaining obligations. Establish `e1 : w.under (𝓞 F) = v`. Simplify `hw` using `[Formalism.L2.Host.aboveF]`.
-
-Rewrite using `[← e1]`. Conclude with `h`. Distinguish the cases in `hin : ∃ w, Formalism.UG.IsInertAt F E v w`. Conclude with `GlobalTheory.T.doubling_integral_orbit_decomposition hP F E σ B n d X W M χX χW om r s' r₁ s₁ hp h0 h0' hn hnd ⟨e, he⟩ X₂ i K₂ hD m hm K hK f hf φ hSB hcof hΦ0 v hin hu (hφN v hv) (μv v) (hμv v).1 (hμv v).2 s (by linarith)`. Conclude with `GlobalTheory.T.doubling_integral_local_factorization hP F E σ B n d X W M χX χW om r s' r₁ s₁ hp h0 h0' hn hnd ⟨e, he⟩ X₂ i K₂ hD m hm K hK f hf φ hSB hcof hΦ0 v hin hu (hφN v hv) (μv v) (hμv v).1 (hμv v).2 s (by linarith)`.
-
-Establish `hLp : HasProd (fun v : {v : Pl F // v ∉ T} => ∏ j ∈ Finset.range n, Lv (charFam χW) v.1 (s + (n : ℂ) / 2 - (j : ℂ))) (∏ j ∈ Finset.range n, charL χW (T : Set (Pl F)) (s + ((n : ℂ) / 2 - (j : ℂ))))`. Use `hasProd_prod fun j hj => ?_` and prove the remaining obligations. Establish `hj' : (j : ℝ) < n` using `by exact_mod_cast Finset.mem_range.1 hj`. Rewrite using `[← add_sub_assoc]`. Use `(GlobalTheory.UnrEuler.hasProd_Lv_charL_of_ramified χW (T : Set (Pl F)) (T : Set (Pl F)) subset_rfl (fun w h h' => absurd h h') _ ?_).2` and prove the remaining obligations.
-
-Simplify using `only [Complex.add_re, Complex.div_ofNat_re, Complex.sub_re, Complex.natCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ` using `hLp.mul (hDp s (by linarith)).2`. Establish `hPe` using `eq_prod_mul T _ P _ hPp (by`. Use `hQ using 2 with v` and compare the differences between its conclusion and the goal.
-
-Conclude with `hloc v.1 v.2)`. Rewrite using `[hPz, hzi, hPe, Finset.prod_congr rfl fun v hv => hzv v hv s]`. Simplify using `only [mul_assoc]`. Use `(hval.congr hEq).unique hzero` as an intermediate fact. Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero hc0 hzi0) (Finset.prod_ne_zero_iff.2 fun v _ => hzv0 v)) (mul_ne_zero (Finset.prod_ne_zero_iff.2 fun j _ => hl0 j) (hDp _ hs₀).1) this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_polData_I_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → min r s' = 0 → min r₁ s₁ = 0 → 1 ≤ n → n < d → Even d →

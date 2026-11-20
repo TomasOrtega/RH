@@ -10,23 +10,21 @@ open scoped ENNReal
 namespace GlobalTheory.SUVol
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x σ hx hσ0 hσc η hη`. Set `One : X.Ψ → Fin r → Fin r → ℂ` to `fun _ a b => (1 : Matrix (Fin r) (Fin r) ℂ) a b`. Set `F : (X.Ψ → Fin r → Fin r → ℂ) × (X.Ψ → Fin r → Fin r → ℂ) → (X.Ψ → Fin r → Fin r → ℂ)` to `fun PQ τ => (mat x τ)⁻¹ * (Matrix.of (PQ.1 τ) * Matrix.of (PQ.2 τ)) * mat x τ`. Establish `hFc : Continuous F`. Use `continuous_pi fun τ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Continuous fun PQ : (X.Ψ → Fin r → Fin r → ℂ) × (X.Ψ → Fin r → Fin r → ℂ) => Matrix.of (PQ.1 τ)` using `(continuous_apply τ).comp continuous_fst`. Establish `h2 : Continuous fun PQ : (X.Ψ → Fin r → Fin r → ℂ) × (X.Ψ → Fin r → Fin r → ℂ) => Matrix.of (PQ.2 τ)` using `(continuous_apply τ).comp continuous_snd`. Use `show Continuous fun PQ : (X.Ψ → Fin r → Fin r → ℂ) × (X.Ψ → Fin r → Fin r → ℂ) => (mat x τ)⁻¹ * (Matrix.of (PQ.1 τ) * Matrix.of (PQ.2 τ)) * mat x τ`. Conclude with `(continuous_const.matrix_mul (h1.matrix_mul h2)).matrix_mul continuous_const`. Establish `hF1 : F (One, One) = One`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Establish `hu : IsUnit (mat x τ).det` using `isUnit_iff_ne_zero.mpr (ReciprocityTheory.ChartRestriction.G.AR.Up.LUPf.orthogonalFrame_det_ne_zero X x hx τ)`. Establish `h1 : Matrix.of (One τ) = 1` using `rfl`. Use `show (mat x τ)⁻¹ * (Matrix.of (One τ) * Matrix.of (One τ)) * mat x τ = Matrix.of (One τ)`. Rewrite using `[h1, Matrix.mul_one, Matrix.mul_one, Matrix.nonsing_inv_mul _ hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨δ, hδ, hδF⟩` from `Metric.continuousAt_iff.1 hFc.continuousAt (ε := η) hη`. Rewrite `hδF` using `[hF1]`. Set `A : V (nd X) → (X.Ψ → Fin r → Fin r → ℂ)` to `fun z τ => ((((σ z)⁻¹ : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)`. Establish `hAc : ContinuousAt A 0`. Use `continuousAt_pi.2 fun τ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: ContinuousAt (fun z => (σ z)⁻¹) 0` using `ContinuousAt.comp (f := σ) continuous_inv.continuousAt hσc`. Conclude with `(Units.continuous_val.comp ((continuous_apply τ).comp continuous_subtype_val)).continuousAt.comp this`. Establish `hA0 : A 0 = One`. Use function extensionality and compare the values at `τ`. Simplify using `only [A, One, hσ0, inv_one]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Take `⟨κ, hκ, hκA⟩` from `Metric.continuousAt_iff.1 hAc (ε := δ) hδ`. Rewrite `hκA` using `[hA0]`. Use `⟨δ, hδ, κ, hκ, fun z hz g hg τ a b => ?_⟩` and prove the remaining obligations. Set `B : X.Ψ → Fin r → Fin r → ℂ` to `fun τ => ((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hzA : dist (A z) One < δ` using `hκA (by simpa [dist_zero_right] using hz)`. Establish `hgB : dist B One < δ`. Use `(dist_pi_lt_iff hδ).2 fun τ => (dist_pi_lt_iff hδ).2 fun a => (dist_pi_lt_iff hδ).2 fun b => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Conclude with `hg τ a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPQ : dist (A z, B) (One, One) < δ`. Rewrite using `[Prod.dist_eq]`. Conclude with `max_lt hzA hgB`. Establish `hout` using `hδF hPQ`. Establish `hent : dist (F (A z, B) τ a b) (One τ a b) < η` using `lt_of_le_of_lt ((dist_le_pi_dist _ _ b).trans ((dist_le_pi_dist _ _ a).trans (dist_le_pi_dist _ _ τ))) hout`.
-
-Rewrite `hent` using `[dist_eq_norm]`. Use `hent using 3` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem conj_inv_section_mul_entries_near_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x : Frame X.Ψ r) (σ : V (nd X) → realSU X.Ψ X.Gm), IsOrth X x → σ 0 = 1 → ContinuousAt σ 0 → ∀ η : ℝ, 0 < η → ∃ ε : ℝ, 0 < ε ∧ ∃ κ : ℝ, 0 < κ ∧ ∀ z : V (nd X), ‖z‖ < κ → ∀ g ∈ grpBall (realSU X.Ψ X.Gm) ε, ∀ τ a b, ‖((mat x τ)⁻¹ * (((((σ z)⁻¹ * g : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * mat x τ) a b - (1 : Matrix (Fin r) (Fin r) ℂ) a b‖ < η := by
   intro E _ _ _ r X x σ hx hσ0 hσc η hη

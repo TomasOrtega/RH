@@ -14,9 +14,9 @@ set_option autoImplicit false
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX M A hA S hS`. Use `hX.isLocallyNoetherian` as an intermediate fact. Take `⟨b, h₁, hb⟩` from `((tendsto_natCast_atTop_atTop.eventually (hA.eventually_exists_finite_subset_nonzeroLocus M.isLB hS)).and (eventually_gt_atTop 0)).exists`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Establish `eA : CechPic.cls _ (A.pow b).isLB = (b : ℤ) • CechPic.cls A.B hA.isLB` using `(CechPic.cls_lbPow hA.isLB b (A.pow b).isLB).trans (natCast_zsmul _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `h₁ _ (M.tens (A.pow b)).isLB ((CechPic.cls_tens M.isLB (A.pow b).isLB (M.tens (A.pow b)).isLB).trans (congrArg _ eA))`. Conclude with `⟨u, hu⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sec_finite_subset_nonzeroLocus : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (M A : HermLB p), IsAmpleLB A.B → ∀ S : Set X, S.Finite → ∃ b : ℕ, 0 < b ∧ ∃ u : (M.tens (A.pow b)).B.Sec, S ⊆ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u := by
   intro k _ X _ p D hX M A hA S hS

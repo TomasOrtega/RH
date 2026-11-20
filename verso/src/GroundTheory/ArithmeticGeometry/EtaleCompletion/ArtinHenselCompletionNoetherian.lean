@@ -7,35 +7,33 @@ namespace GroundTheory.Arith.Etale
 open IsLocalRing
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(isNoetherianRing_iff_ideal_fg R).1 inferInstance I`. Use `set k := s.card`. Set `a : Fin k → R` to `fun i ↦ (s.equivFin.symm i : R)`. Establish `ha : Set.range a = (s : Set R)`. Use extensionality with `r`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(s.equivFin.symm i).2`. Introduce `hr`. Conclude with `⟨s.equivFin ⟨r, hr⟩, by simp [a]⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `P` to `MvPolynomial (Fin k) R`. Set `σ : P →+* R` to `MvPolynomial.eval a`. Set `J` to `MvPolynomial.idealOfVars (Fin k) R`. Establish `hσX : ∀ i, σ (MvPolynomial.X i) = a i` using `fun i ↦ MvPolynomial.eval_X i`. Establish `hJ : J.map σ = I` using `by show Ideal.map σ (Ideal.span (Set.range MvPolynomial.X)) = I`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Ideal.map_span, ← hs, ← ha, ← Set.range_comp]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[hσX]`. Establish `hJn : ∀ n, (J ^ n).map σ = I ^ n` using `fun n ↦ by rw [Ideal.map_pow, hJ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσs : Function.Surjective σ` using `fun r ↦ ⟨MvPolynomial.C r, MvPolynomial.eval_C _⟩`. Establish `hle : ∀ n, J ^ n ≤ (I ^ n).comap σ` using `fun n ↦ by`. Rewrite using `[← Ideal.map_le_iff_le_comap, hJn]`. Set `g : (n : ℕ) → AdicCompletion J P →+* R ⧸ I ^ n` to `fun n ↦ (Ideal.quotientMap (I ^ n) σ (hle n)).comp (AdicCompletion.evalₐ J n).toRingHom`. Establish `hg : ∀ {m n : ℕ} (hmn : m ≤ n), (Ideal.Quotient.factorPow I hmn).comp (g n) = g m`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `m n hmn`. Use extensionality with `x`. Take `⟨q, hq⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ J n x)`. Establish `hq' : AdicCompletion.evalₐ J m x = Ideal.Quotient.mk _ q`. Take `⟨f, rfl⟩` from `AdicCompletion.mk_surjective J P x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hq`, the goal using `[AdicCompletion.evalₐ_mk]`. Establish `h1` using `f.property hmn`. Rewrite `h1` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h2 : f.val n - q ∈ J ^ m` using `Ideal.pow_le_pow_right hmn (Ideal.Quotient.eq.1 hq.symm)`. Rewrite using `[Ideal.Quotient.eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Ideal.add_mem _ h1 h2` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Simplify using `only [g, RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ← hq, hq', Ideal.quotientMap_mk, Ideal.Quotient.factor_mk]`. Set `ψ` to `AdicCompletion.liftRingHom I g hg`. Establish `hψ : Function.Surjective ψ`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨f, rfl⟩` from `AdicCompletion.mk_surjective I R x`. Establish `hd : ∀ j, f.val (j + 1) - f.val j ∈ (J ^ j).map σ`. Introduce `j`. Establish `h1` using `f.property (Nat.le_succ j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Rewrite using `[hJn, ← neg_mem_iff, neg_sub]`. Conclude with `h1`. Use `choose Pj hPj hσP using fun j ↦ (Ideal.mem_map_iff_of_surjective σ hσs).1 (hd j)`. Set `Q : ℕ → P` to `fun n ↦ MvPolynomial.C (f.val 0) + ∑ j ∈ Finset.range n, Pj j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : AdicCompletion.IsAdicCauchy J P Q`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← neg_mem_iff, neg_sub]`. Establish `: Q n - Q m = ∑ j ∈ Finset.Ico m n, Pj j`. Simplify using `only [Q, add_sub_add_left_eq_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_Ico_eq_sub _ hmn]`. Rewrite using `[this]`. Conclude with `Ideal.sum_mem _ fun j hj ↦ Ideal.pow_le_pow_right (Finset.mem_Ico.1 hj).1 (hPj j)`. Set `Qc : AdicCompletion.AdicCauchySequence J P` to `⟨Q, hQ⟩`. Use `⟨AdicCompletion.mk J P Qc, AdicCompletion.ext_evalₐ fun n ↦ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[AdicCompletion.evalₐ_liftRingHom, AdicCompletion.evalₐ_mk]`. Express the relevant statement in the definitionally equal form `Ideal.quotientMap (I ^ n) σ (hle n) (AdicCompletion.evalₐ J n (AdicCompletion.mk J P Qc)) = _`. Rewrite using `[AdicCompletion.evalₐ_mk, Ideal.quotientMap_mk]`. Use `congrArg _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (Q n) = f.val n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Q, map_add, map_sum, hσP]`. Rewrite using `[show σ (MvPolynomial.C (f.val 0)) = f.val 0 from MvPolynomial.eval_C _]`. Rewrite using `[Finset.sum_range_sub (fun j ↦ f.val j) n]`. Expand and normalize the polynomial expressions, which then agree. Establish `: IsNoetherianRing (AdicCompletion J P)` using `isNoetherianRing_of_ringEquiv _ (MvPowerSeries.toAdicCompletionAlgEquiv (Fin k) R).toRingEquiv`.
-
-Conclude with `isNoetherianRing_of_surjective _ _ ψ hψ`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_adicCompletion (R : Type*) [CommRing R] [IsNoetherianRing R]
     (I : Ideal R) : IsNoetherianRing (AdicCompletion I R) := by

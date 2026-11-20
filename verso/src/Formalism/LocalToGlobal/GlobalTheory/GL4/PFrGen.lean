@@ -9,7 +9,7 @@ namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Introduce `h`. Apply `hM` to reduce the goal to its premises. Use `congrArg (algebraMap (𝓞 E) E) h` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_ne_zero_int (M : ℕ) (hM : M ≠ 0) : ((M : ℕ) : 𝓞 E) ≠ 0 := by
   intro h
@@ -18,13 +18,13 @@ theorem natCast_ne_zero_int (M : ℕ) (hM : M ≠ 0) : ((M : ℕ) : 𝓞 E) ≠ 
   simpa using this
 
 /- English proof (translation)
-Distinguish the cases in `hJ : J = ⊥`. Use `⟨0, zero_mem _, fun j hj => ⟨0, 0, zero_mem _, ?_⟩⟩` and prove the remaining obligations. Rewrite `hj` using `[hJ, Ideal.mem_bot]`. Simplify using `[hj]`. Establish `hM'` using `natCast_ne_zero_int (E := E) M hM`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hle : Ideal.span {((M : ℕ) : 𝓞 E)} * J ≤ J` using `Ideal.mul_le.2 (fun r _ s hs => J.mul_mem_left r hs)`. Establish `hne : Ideal.span {((M : ℕ) : 𝓞 E)} * J ≠ 0`. Introduce `h`. Rewrite `h` using `[Ideal.zero_eq_bot, Ideal.mul_eq_bot]`. Break down `h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hM' (Ideal.span_singleton_eq_bot.1 h)`. Conclude with `hJ h`. Take `⟨a, ha⟩` from `IsDedekindDomain.exists_sup_span_eq hle hne`. Establish `haJ : a ∈ J` using `ha ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self a)`. Use `⟨a, haJ, fun j hj => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hj` using `[← ha, Submodule.mem_sup]`. Take `⟨i, hi, s, hs, rfl⟩` from `hj`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hs`. Take `⟨z, hz, rfl⟩` from `Ideal.mem_span_singleton_mul.1 hi`. Conclude with `⟨c, z, hz, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ideal_gen (M : ℕ) (hM : M ≠ 0) (J : Ideal (𝓞 E)) :
     ∃ a ∈ J, ∀ j ∈ J, ∃ c : 𝓞 E, ∃ j' ∈ J, j = c * a + (M : 𝓞 E) * j' := by
@@ -50,15 +50,15 @@ theorem ideal_gen (M : ℕ) (hM : M ≠ 0) (J : Ideal (𝓞 E)) :
     exact ⟨c, z, hz, by ring⟩
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hP`. Take `⟨⟨b, hb⟩, hbs⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 E)) s`. Use `⟨b, nonZeroDivisors.ne_zero hb, fun p hp => ?_⟩` and prove the remaining obligations. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Take `⟨q, hq⟩` from `hbs p hp`. Use `⟨q, ?_⟩` and prove the remaining obligations. Establish `hq' : (q : E) = (b : E) * p`. Use `hq` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Conclude with `hq'.symm`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add p p' _ _ h h'`. Take `⟨q, hq⟩` from `h`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨q', hq'⟩` from `h'`. Conclude with `⟨q + q', by push_cast; linear_combination hq + hq'⟩`. Consider the case `smul a p _ h`. Take `⟨q, hq⟩` from `h`. Use `⟨a * q, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `show (b : E) * ((a : E) * p) = ((a * q : 𝓞 E) : E)`. Use `push_cast`. Take the linear combination `(a : E) * hq`.
+A detailed English derivation is pending.
 -/
 theorem clear_fg (P : Submodule (𝓞 E) E) (hP : P.FG) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ ∀ p ∈ P, ∃ q : 𝓞 E, (d : E) * p = q := by
@@ -87,15 +87,15 @@ theorem clear_fg (P : Submodule (𝓞 E) E) (hP : P.FG) :
     linear_combination (a : E) * hq
 
 /- English proof (translation)
-Take `⟨d, hd, hdP⟩` from `clear_fg P hP`. Establish `hd' : (d : E) ≠ 0`. Introduce `h`. Apply `hd` to reduce the goal to its premises. Conclude with `h` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Set `J : Ideal (𝓞 E)` to `{ carrier := {q | ∃ p ∈ P, (q : E) = (d : E) * p} add_mem' := by`. Introduce and unpack `q q' ⟨p, hp, hq⟩ ⟨p', hp', hq'⟩`. Conclude with `⟨p + p', add_mem hp hp', by push_cast; linear_combination hq + hq'⟩`. Use the proof step `zero_mem' := ⟨0, zero_mem _, by simp⟩`. Use the proof step `smul_mem' := by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Introduce and unpack `c q ⟨p, hp, hq⟩`. Use `⟨c • p, Submodule.smul_mem _ c hp, ?_⟩` and prove the remaining obligations. Use `show ((c * q : 𝓞 E) : E) = (d : E) * ((c : E) * p)`. Use `push_cast`. Take the linear combination `(c : E) * hq }`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ⟨pa, hpa, ha'⟩, hgen⟩` from `ideal_gen M hM J`. Use `⟨pa, hpa, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `hdP p hp`. Take `⟨c, j', ⟨pj, hpj, hj'⟩, hcj⟩` from `hgen q ⟨p, hp, hq.symm⟩`. Use `⟨c, pj, hpj, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : (d : E) * p = (d : E) * ((c : E) * pa + (M : E) * pj)`. Establish `h3 : (q : E) = (c : E) * (a' : E) + (M : E) * (j' : E)` using `by rw [hcj]; push_cast; ring`. Take the linear combination `hq + h3 + (c : E) * ha' + (M : E) * hj'`. Establish `h2` using `mul_left_cancel₀ hd' h1`. Rewrite using `[h2, Algebra.smul_def, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_gen (M : ℕ) (hM : M ≠ 0) (P : Submodule (𝓞 E) E) (hP : P.FG) :
     ∃ a ∈ P, ∀ p ∈ P, ∃ c : 𝓞 E, ∃ p' ∈ P, p = c • a + (M : E) • p' := by
@@ -135,19 +135,19 @@ def snoc0 (r : ℕ) : (Fin r → E) →ₗ[E] (Fin (r + 1) → E) where
     by_cases h : (i : ℕ) < r <;> simp [h]
 
 /- English proof (translation)
-Simplify using `[snoc0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_zero_castSucc (r : ℕ) (y : Fin r → E) (j : Fin r) : snoc0 r y j.castSucc = y j := by
   simp [snoc0]
 
 /- English proof (translation)
-Simplify using `[snoc0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_zero_last (r : ℕ) (y : Fin r → E) : snoc0 r y (Fin.last r) = 0 := by
   simp [snoc0]
 
 /- English proof (translation)
-Introduce `y y' h`. Use function extensionality and compare the values at `j`. Use `congrFun h j.castSucc` as an intermediate fact. Rewrite `this` using `[snoc_zero_castSucc, snoc_zero_castSucc]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem snoc_zero_injective (r : ℕ) : Function.Injective (snoc0 (E := E) r) := by
   intro y y' h
@@ -156,31 +156,27 @@ theorem snoc_zero_injective (r : ℕ) : Function.Injective (snoc0 (E := E) r) :=
   rwa [snoc_zero_castSucc, snoc_zero_castSucc] at this
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `Λ _`. Use `⟨fun a => Fin.elim0 a, fun a => Fin.elim0 a, fun x _ => ⟨0, 0, zero_mem _, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subsingleton.elim _ _`. Consider the case `succ r ih`. Introduce `Λ hΛ`. Use `haveI : IsNoetherian (𝓞 E) Λ := isNoetherian_of_fg_of_noetherian _ hΛ`. Set `Λ0 : Submodule (𝓞 E) (Fin r → E)` to `Λ.comap ((snoc0 r).restrictScalars (𝓞 E))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `φ : Λ0 →ₗ[𝓞 E] Λ` to `{ toFun := fun x => ⟨snoc0 r (x : Fin r → E), x.2⟩ map_add' := fun x y => by ext1; simp map_smul' := fun a x => by ext1 show snoc0 r (a • (x : Fin r → E)) = a • snoc0 r (x : Fin r → E)`. Rewrite using `[← algebraMap_smul E a (x : Fin r → E), map_smul, algebraMap_smul] }`. Establish `hφ : Function.Injective φ`. Introduce `x y h`. Conclude with `Subtype.ext (snoc_zero_injective r (congrArg Subtype.val h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : IsNoetherian (𝓞 E) Λ0 := isNoetherian_of_injective φ hφ`. Establish `hΛ0 : Λ0.FG` using `(Submodule.fg_top _).1 (IsNoetherian.noetherian ⊤)`. Take `⟨b0, hb0, hgen0⟩` from `ih Λ0 hΛ0`. Set `P : Submodule (𝓞 E) E` to `Λ.map ((LinearMap.proj (Fin.last r) : (Fin (r + 1) → E) →ₗ[E] E).restrictScalars (𝓞 E))`. Take `⟨a, ⟨xa, hxa, hxae⟩, hgenP⟩` from `sub_gen M hM P (hΛ.map _)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.coe_restrictScalars, LinearMap.coe_proj, Function.eval] at hxae`. Use `⟨Fin.lastCases xa (fun j => snoc0 r (b0 j)), fun i => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.lastCases_last]`. Conclude with `hxa`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.lastCases_castSucc]`. Conclude with `hb0 j`. Take `⟨c, p', ⟨xj, hxj, hxje⟩, hce⟩` from `hgenP (x (Fin.last r)) ⟨x, hx, rfl⟩`. Simplify using `only [LinearMap.coe_restrictScalars, LinearMap.coe_proj, Function.eval] at hxje`. Use `set y : Fin (r + 1) → E := x - c • xa - (M : E) • xj with hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyΛ : y ∈ Λ`. Use `sub_mem (sub_mem hx (Submodule.smul_mem _ c hxa)) ?_` and prove the remaining obligations. Establish `: (M : E) • xj = ((M : ℕ) : 𝓞 E) • xj`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Submodule.smul_mem _ _ hxj`. Establish `hylast : y (Fin.last r) = 0`. Rewrite using `[hy]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hce, hxae, hxje, Algebra.smul_def, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `set y0 : Fin r → E := fun j => y j.castSucc with hy0`. Establish `hyy : snoc0 r y0 = y`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[snoc_zero_last, hylast]`. Rewrite using `[snoc_zero_castSucc]`. Establish `hy0Λ : y0 ∈ Λ0` using `by show snoc0 r y0 ∈ Λ`. Rewrite using `[hyy]`. Conclude with `hyΛ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c', z0, hz0, hz0e⟩` from `hgen0 y0 hy0Λ`. Use `⟨Fin.lastCases c c', xj + snoc0 r z0, add_mem hxj hz0, ?_⟩` and prove the remaining obligations. Establish `hx' : x = c • xa + (M : E) • xj + snoc0 r y0`. Rewrite using `[hyy, hy]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[hx', hz0e, Fin.sum_univ_castSucc]`. Simplify using `only [Fin.lastCases_castSucc, Fin.lastCases_last, map_add, map_sum, smul_add]`. Establish `hs : ∀ j, snoc0 r (c' j • b0 j) = c' j • snoc0 r (b0 j)`. Introduce `j`. Rewrite using `[← algebraMap_smul E (c' j) (b0 j), map_smul, algebraMap_smul]`.
-
-Simplify using `only [hs, map_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem genMod_fg (M : ℕ) (hM : M ≠ 0) : ∀ (r : ℕ) (Λ : Submodule (𝓞 E) (Fin r → E)), Λ.FG → GenMod Λ M := by
   intro r
@@ -251,7 +247,7 @@ theorem genMod_fg (M : ℕ) (hM : M ≠ 0) : ∀ (r : ℕ) (Λ : Submodule (𝓞
       abel
 
 /- English proof (translation)
-The claim follows from `genMod_fg M hM r Λ (Module.Finite.iff_fg.1 hΛ)`.
+A detailed English derivation is pending.
 -/
 theorem genMod (M : ℕ) (hM : M ≠ 0) {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : Module.Finite (𝓞 E) Λ) :
     GenMod Λ M :=

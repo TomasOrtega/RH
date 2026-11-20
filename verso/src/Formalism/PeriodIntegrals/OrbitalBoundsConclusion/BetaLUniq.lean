@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BetaUniqueness.BetaLUni
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BetaUniqueness.EigenvalueLastLineOne
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.BetaLUniq.betaLUniq_of_aniso_eigen PI.UnitaryGroupMassFormula.BetaLUniq.weight_space_anisotropic PI.UnitaryGroupMassFormula.BetaLUniq.eigenvalue_last_line_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem beta_l_unique : PI.BetaLUniq :=
   PI.UnitaryGroupMassFormula.BetaLUniq.betaLUniq_of_aniso_eigen PI.UnitaryGroupMassFormula.BetaLUniq.weight_space_anisotropic

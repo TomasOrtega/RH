@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.Katz
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun u : WithConv (G.A n →ₐ[k] G.A n) => u.ofConv a) (map_one (toPts (R := k) (A := G.A n) (C := G.A n)))`. Simplify using `only [toPts_ofConv] at h`. Conclude with `h.trans (AlgHom.convOne_apply _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Chart.zero_app_eq {p : ℕ} [Fact p.Prime] {k : Type} [CommRing k] (G : PDivGroup p k)
     (n : ℕ) (a : G.A n) :
@@ -22,13 +22,11 @@ theorem Chart.zero_app_eq {p : ℕ} [Fact p.Prime] {k : Type} [CommRing k] (G : 
   exact h.trans (AlgHom.convOne_apply _)
 
 /- English proof (translation)
-Introduce `p _ k _ d G c μ hμ j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `n i`. Rewrite using `[Nat.cast_zero, zero_smul, Chart.zero_app_eq, c.aug, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show c.ev n ((fun _ => (0 : MvPowerSeries (Fin d) k)) i) = 0`. Conclude with `map_zero _`. Consider the case `succ j ih`. Establish `hX : c.IsMapOf c (𝟙 G) (fun i => (X i : MvPowerSeries (Fin d) k))` using `fun n i => by`. Rewrite using `[Chart.ev_X, id_app]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e1 : ((j + 1 : ℕ) : ℤ_[p]) • 𝟙 G = (j : ℤ_[p]) • 𝟙 G + 𝟙 G`. Rewrite using `[Nat.cast_succ, add_smul, one_smul]`. Establish `e2 : nmul μ (j + 1) = op μ (nmul μ j) (fun i => X i)` using `Function.iterate_succ_apply' _ _ _`. Rewrite using `[e1, e2]`.
-
-Conclude with `Chart.isMapOf_add p k d d G G c c μ _ _ _ _ hμ ih hX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Chart.isMapOf_nmul : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [CommRing k] (d : ℕ)
     (G : PDivGroup p k) (c : Katz.Chart G d) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k),

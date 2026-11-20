@@ -18,9 +18,9 @@ variable {V : Type} {K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRin
   [Algebra V K] [IsFractionRing V K]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using `[vV]`. Establish `h1 : valV V (algebraMap V K b) ≤ 1`. Simplify `(IsDiscreteValuationRing.maximalIdeal V).valuation_le_one (K := K) b` using `[valV]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : valV V (algebraMap V K b) ≠ 0` using `valV_ne_zero (by simpa using hb)`. Use `(WithZero.log_le_log h0 one_ne_zero).2 h1` as an intermediate fact. Simplify using `only [vV]`. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma vV_nonneg_of_mem (b : V) : 0 ≤ vV V (algebraMap V K b) := by
   by_cases hb : b = 0
@@ -34,12 +34,12 @@ lemma vV_nonneg_of_mem (b : V) : 0 ≤ vV V (algebraMap V K b) := by
   omega
 
 /- English proof (translation)
-Simplify using `[vV]`.
+Simplify using the standard rewrite rules.
 -/
 lemma vV_one : vV V (1 : K) = 0 := by simp [vV]
 
 /- English proof (translation)
-Use `vV_mul (V := V) hx (inv_ne_zero hx)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hx, vV_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma vV_inv {x : K} (hx : x ≠ 0) : vV V x⁻¹ = - vV V x := by
   have := vV_mul (V := V) hx (inv_ne_zero hx)
@@ -47,9 +47,9 @@ lemma vV_inv {x : K} (hx : x ≠ 0) : vV V x⁻¹ = - vV V x := by
   omega
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Establish `ha : algebraMap V K a ≠ 0` using `left_ne_zero_of_mul_eq_one h`. Establish `hb : algebraMap V K b ≠ 0` using `right_ne_zero_of_mul_eq_one h`. Use `vV_mul (V := V) ha hb` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h, vV_one]`. Establish `h1` using `vV_nonneg_of_mem (K := K) a`. Establish `h2` using `vV_nonneg_of_mem (K := K) b`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma vV_eq_zero_of_mul {x y : K} (hx : x ∈ Set.range (algebraMap V K)) (hy : y ∈ Set.range (algebraMap V K))
     (h : x * y = 1) : vV V x = 0 := by
@@ -64,7 +64,7 @@ lemma vV_eq_zero_of_mul {x y : K} (hx : x ∈ Set.range (algebraMap V K)) (hy : 
   omega
 
 /- English proof (translation)
-Establish `hne : ϖ ≠ 0` using `hϖ.ne_zero`. Simplify using `only [vV, valV]`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_singleton _ hne ((IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma vV_irreducible {ϖ : V} (hϖ : Irreducible ϖ) : vV V (algebraMap V K ϖ) = 1 := by
   have hne : ϖ ≠ 0 := hϖ.ne_zero
@@ -83,19 +83,19 @@ variable {V : Type} {K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRin
   [Algebra V' K'] [IsFractionRing V' K']
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨b, hb⟩` from `hψ ϖ`. Establish `hr0 : 0 ≤ vV V' (ψ (algebraMap V K ϖ))` using `hb ▸ vV_nonneg_of_mem b`. Use `⟨(vV V' (ψ (algebraMap V K ϖ))).toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg hr0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ a : V, a ≠ 0 → vV V' (ψ (algebraMap V K a)) = vV V' (ψ (algebraMap V K ϖ)) * vV V (algebraMap V K a)`. Introduce `a ha`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `hu0 : algebraMap V K (u : V) ≠ 0`. Simplify using `using u.ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hϖ0 : algebraMap V K ϖ ≠ 0` using `by simpa using hϖ.ne_zero`. Establish `huK : vV V (algebraMap V K (u : V)) = 0` using `vV_eq_zero_of_mul ⟨_, rfl⟩ ⟨((u⁻¹ : Vˣ) : V), rfl⟩ (by rw [← map_mul]; simp)`. Establish `huK' : vV V' (ψ (algebraMap V K (u : V))) = 0` using `vV_eq_zero_of_mul (hψ _) (hψ ((u⁻¹ : Vˣ) : V)) (by rw [← map_mul, ← map_mul]; simp)`. Establish `hpow : ∀ (F : Type) [Field F] (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Algebra W F] [IsFractionRing W F] (y : F), y ≠ 0 → ∀ m : ℕ, vV W (y ^ m) = m * vV W y`. Introduce `F _ W _ _ _ _ _ y hy m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => simp [vV]`. Consider the case `succ m ih => rw [pow_succ, vV_mul (pow_ne_zero _ hy) hy, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, map_pow, map_mul, map_pow, vV_mul hu0 (pow_ne_zero _ hϖ0), vV_mul ((map_ne_zero ψ).2 hu0) (pow_ne_zero _ ((map_ne_zero ψ).2 hϖ0)), huK, huK', hpow K V _ hϖ0, hpow K' V' _ ((map_ne_zero ψ).2 hϖ0), vV_irreducible hϖ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[vV]`. Take `⟨a, b, hb0, rfl⟩` from `IsFractionRing.div_surjective (A := V) x`. Establish `hb' : b ≠ 0` using `nonZeroDivisors.ne_zero hb0`. Establish `ha' : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `haK : algebraMap V K a ≠ 0` using `by simpa using ha'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbK : algebraMap V K b ≠ 0` using `by simpa using hb'`. Rewrite using `[div_eq_mul_inv, map_mul, map_inv₀, vV_mul ((map_ne_zero ψ).2 haK) (inv_ne_zero ((map_ne_zero ψ).2 hbK)), vV_inv ((map_ne_zero ψ).2 hbK), vV_mul haK (inv_ne_zero hbK), vV_inv hbK, hint a ha', hint b hb']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma exists_vV_map (ψ : K →+* K') (hψ : ∀ a : V, ψ (algebraMap V K a) ∈ Set.range (algebraMap V' K')) :
     ∃ r : ℕ, ∀ x, vV V' (ψ x) = (r : ℤ) * vV V x := by
@@ -143,39 +143,33 @@ section Main
 open LocFldPf HeightOneSpectrum
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c p _ φ hIA L _ _ _ σ hσ y a n`. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Use `haveI : NumberField L := NumberField.of_module_finite c.F L`. Establish `hL : GlobalTheory.Reg.EvLaws Xo c` using `(GlobalTheory.Reg.evLaws_genFr_nonempty_comp E H Dw l Xo c).1`. Set `w : HeightOneSpectrum (𝓞 L)` to `placeAt σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Finite (𝓞 L ⧸ w.asIdeal) := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`. Use `haveI : CharZero (adicCompletionIntegers L w) := charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective (𝓞 L) (adicCompletionIntegers L w))`. Take `⟨e1, he1, h1⟩` from `exists_e (L := L) w`. Set `T : CDVR` to `{ V := adicCompletionIntegers L w, cpl := isAdicComplete w }`. Set `ι : L →+* T.Fr` to `kMap w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hOσ : OverLa (placeAt σ) T.V ι e1`. Use `⟨he1, fun x => ?_⟩` and prove the remaining obligations. Use `show vV (adicCompletionIntegers L w) (kMap w x) = _`. Simplify using `only [vV, vLa]`. Rewrite using `[h1, WithZero.log_pow]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hFin : T.FinRes` using `finite_res w`. Establish `hlies : w.asIdeal.LiesOver (placeAt φ).asIdeal` using `⟨by`. Use extensionality with `b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, mem_placeAt, mem_placeAt]`. Use `show _ ↔ ‖σ ((algebraMap (𝓞 c.F) (𝓞 L) b : 𝓞 L) : L)‖ < 1`. Rewrite using `[show ((algebraMap (𝓞 c.F) (𝓞 L) b : 𝓞 L) : L) = algebraMap c.F L (b : c.F) from rfl, hσ]⟩`. Set `io : c.F →+* T.Fr` to `ι.comp (algebraMap c.F L)`. Establish `he2 : (placeAt φ).asIdeal.ramificationIdx' w.asIdeal ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (placeAt φ).ne_bot`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `hO : OverLa (placeAt φ) T.V io ((placeAt φ).asIdeal.ramificationIdx' w.asIdeal * e1)`. Use `⟨Nat.mul_pos (Nat.pos_of_ne_zero he2) he1, fun b => ?_⟩` and prove the remaining obligations. Use `show vV (adicCompletionIntegers L w) (kMap w (algebraMap c.F L b)) = _`. Simplify using `only [vV, vLa]`. Rewrite using `[h1, ← valuation_liesOver L (placeAt φ) w b, ← pow_mul, WithZero.log_pow]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `push_cast`. Simplify using the standard rewrite rules. Use `letI : Algebra c.F T.Fr := io.toAlgebra`. Set `ιA : L →ₐ[c.F] T.Fr` to `{ ι with commutes' := fun _ => rfl }`. Take `⟨yT, hyT⟩` from `hL.bc L T.Fr ιA y`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T', io', e', y', hO', hy'alg, φ', zz, t, hint, hmap, hbor⟩` from `hIA (placeAt φ) T io _ hO hFin yT`. Use `letI : Algebra c.F T'.Fr := io'.toAlgebra`. Set `ψ : T.Fr →+* T'.Fr` to `(φ' : T.Fr →+* T'.Fr)`. Take `⟨r, hr⟩` from `exists_vV_map (V := T.V) (V' := T'.V) ψ hint`. Establish `hψio : ∀ b : c.F, ψ (io b) = io' b` using `fun b => φ'.commutes b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp0 : vLa (placeAt φ) (p : c.F) ≠ 0`. Establish `hlt : (placeAt φ).valuation c.F (p : c.F) < 1`. Rewrite using `[show (p : c.F) = algebraMap (𝓞 c.F) c.F ((p : ℕ) : 𝓞 c.F) by simp, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `natCast_mem_placeAt φ`. Establish `hne : (placeAt φ).valuation c.F (p : c.F) ≠ 0`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Introduce `h0`. Establish `: WithZero.log ((placeAt φ).valuation c.F (p : c.F)) = 0`. Simplify using `only [vLa] at h0`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2` using `WithZero.exp_log hne`. Rewrite `h2` using `[this, WithZero.exp_zero]`. Conclude with `hlt.ne h2.symm`. Establish `hrpos : 0 < r`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Nat.eq_zero_or_pos r with h0 | h0` into its components or cases. It suffices to derive a contradiction. Establish `h3` using `hO'.2 (p : c.F)`. Rewrite `h3` using `[← hψio, hr, h0]`. Simplify using `only [Nat.cast_zero, zero_mul] at h3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (e' : ℤ) ≠ 0` using `by exact_mod_cast hO'.1.ne'`. Conclude with `(mul_ne_zero this hp0) h3.symm`. Conclude with `h0`. Establish `hOσ' : OverLa (placeAt σ) T'.V (ψ.comp ι) (r * e1)` using `hOσ.bc ψ hrpos hr`. Take `⟨k', hk'⟩` from `GlobalTheory.T.exists_cdvrReadingInCp_of_finiteResidue p L σ T' (ψ.comp ι) (r * e1) hOσ' hy'alg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : IsReading φ T' io' k'`. Use `⟨fun b => ?_, hk'.int⟩` and prove the remaining obligations. Rewrite using `[← hψio, ← hσ b]`. Conclude with `hk'.comp (algebraMap c.F L b)`. Take `⟨z₀, hz₀⟩` from `PtC.exists_of_reading hk y' hy'alg`.
-
-Use `⟨z₀, k' (wchar (ex Dw a n) t), ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[map_ne_zero]`. Simplify using `[wchar, Finset.prod_ne_zero_iff]`. Rewrite using `[hz₀ a n f hf]`. Take `⟨q, χ, y₀, hy₀⟩` from `hL.test L y`.
-
-Establish `e1' : evR Xo c f y = χ (f q y₀)` using `GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q χ y₀ y hy₀`. Establish `e2 : evR Xo c f zz = (φ'.comp (ιA.comp χ)) (f q y₀)` using `GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q _ y₀ zz (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans _ φ' (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans χ ιA hy₀ hyT) hmap)`. Establish `e3 : evI y' f = wchar (ex Dw a n) t * evR Xo c f zz` using `hL.wt a n f hf T'.Fr t zz y'.1 (hL.test _ _) (hL.test _ _) hbor`. Rewrite using `[e3, map_mul, e2, e1']`. Use `congr 1`.
-
-Conclude with `hk'.comp (χ (f q y₀))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_ptC_of_finExt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (φ : c.F →+* ℂ_[p]), IntAll Xo c →

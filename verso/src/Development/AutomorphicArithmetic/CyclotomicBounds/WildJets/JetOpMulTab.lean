@@ -16,7 +16,7 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `e : Formalism.L2.Ker.jetLin (fun k => c * J k) = c • Formalism.L2.Ker.jetLin J`. Use `(MvPolynomial.basisMonomials ((ι × Fin b × Fin b) ⊕ Formalism.L2.Ker.DVar ι a b) K).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.Ker.jetLin, LinearMap.smul_apply, Module.Basis.constr_basis, MvPolynomial.smul_monomial, smul_eq_mul]`. Use `ext1 P`. Simplify using `only [Formalism.L2.Ker.jetOp, Formalism.L2.Ker.jetMap, e, LinearMap.comp_apply, LinearMap.smul_apply, map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem jetOp_mul_tab' {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ} (lam : ι → DomWeight a)
     (lam' : ι → DomWeight b) (c : K) (J : (Formalism.L2.Ker.DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) :
@@ -29,7 +29,7 @@ private theorem jetOp_mul_tab' {K : Type} [Field K] {ι : Type} [Fintype ι] {a 
   simp only [Formalism.L2.Ker.jetOp, Formalism.L2.Ker.jetMap, e, LinearMap.comp_apply, LinearMap.smul_apply, map_smul]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.prod, Finsupp.sum, ← Finset.prod_pow_eq_pow_sum]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[pow_ite]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem prod_pow_fiber {α ι : Type} [Fintype ι] [DecidableEq ι] (f : α → ι) (c : ι → ℂ) (m : α →₀ ℕ) :
     (m.prod fun v e => c (f v) ^ e) = ∏ τ, c τ ^ (m.sum fun v e => if f v = τ then e else 0) := by
@@ -39,7 +39,7 @@ private theorem prod_pow_fiber {α ι : Type} [Fintype ι] [DecidableEq ι] (f :
   simp [pow_ite]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.sum]`. Rewrite using `[Finset.sum_comm, Finsupp.degree_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem degree_fiber {α ι : Type} [Fintype ι] [DecidableEq ι] (f : α → ι) (m : α →₀ ℕ) :
     m.degree = ∑ τ, (m.sum fun v e => if f v = τ then e else 0) := by
@@ -49,7 +49,7 @@ private theorem degree_fiber {α ι : Type} [Fintype ι] [DecidableEq ι] (f : �
   simp
 
 /- English proof (translation)
-Use `div_ne_zero hδ (Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 ?_))` and prove the remaining obligations. Establish `: 0 < ‖tauE D τ D.host.xi0‖` using `norm_pos_iff.2 ((_root_.map_ne_zero _).2 GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero)`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 private theorem period_ne {D : D7} {δ : ℂ} (hδ : δ ≠ 0) (τ : D.what₂.Tau) : period δ τ ≠ 0 := by
   refine div_ne_zero hδ (Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 ?_))
@@ -57,9 +57,9 @@ private theorem period_ne {D : D7} {δ : ℂ} (hδ : δ ≠ 0) (τ : D.what₂.T
   positivity
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc`. Introduce and unpack `rfl`. Establish `h1` using `(hL L.ω₁).2 L.ω₁_mem_lattice`. Establish `h2 : Formalism.MainNotions.TaylorLogMetric.lamOf D cc 0 ≤ ⊥`. Rewrite using `[Formalism.MainNotions.TaylorLogMetric.lamOf, AddSubgroup.closure_le]`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `w ⟨c, -, rfl⟩`. Simplify using the standard rewrite rules. Conclude with `L.indep.ne_zero 0 (by simpa using h2 h1)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem delta_ne {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) : δ ≠ 0 := by
   obtain ⟨L, hL⟩ := GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc
@@ -72,13 +72,13 @@ private theorem delta_ne {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : 
   exact L.indep.ne_zero 0 (by simpa using h2 h1)
 
 /- English proof (translation)
-Introduce `D T L sc G W U N Z t p hp d x y Θ h`. Establish `hδ : Z.δ ≠ 0` using `delta_ne Z.crv`. Apply the tactic sequence `have hf : ∀ k, (fvar G p k).1 = k.1 := fun k => by cases p <;> rfl`. Rewrite using `[Normal.kkMap, fockComp, ← jetOp_mul_tab']`. Use `UpperTheory.WildA.jetDeg _ _ _ (wtOK_of_defPair G p hp).2 _ _ fun m hm => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm' : ∀ τ, (m.sum fun v e => if v.1 = τ then e else 0) = fockDeg G p τ` using `hm`. Establish `h1 : m.degree = ∑ τ, fockDeg G p τ`. Rewrite using `[degree_fiber Prod.fst m]`. Conclude with `Finset.sum_congr rfl fun τ _ => hm' τ`. Establish `h2 : ((m.mapDomain (fvar G p)).prod fun v e => period Z.δ v.1 ^ e) = ∏ τ, period Z.δ τ ^ fockDeg G p τ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.prod_mapDomain_index (by simp) (by simp [pow_add])]`. Simplify using `only [hf]`. Rewrite using `[prod_pow_fiber Prod.fst (period Z.δ) m]`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [hm' τ]`. Establish `h3 : (∏ τ, opp p ((1 : D.what₂.Tau → ℂ) τ / period Z.δ τ) ^ fockDeg G p τ) * opp p (∏ τ, period Z.δ τ ^ fockDeg G p τ) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← mul_pow, ← map_mul, Pi.one_apply, div_mul_cancel₀ _ (period_ne hδ τ), map_one, one_pow]`. Rewrite using `[if_pos h1, h, h2, Normal.scal, map_mul, mul_mul_mul_comm, Units.inv_mul, one_mul, ← mul_assoc, h3, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.kkTab :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil} {U : Set T} {N : Std G U} (Z : Normal W N) {t : T} {p : GlobalTheory.ChiGrid.Pair T}, DefPair D.R.m p →

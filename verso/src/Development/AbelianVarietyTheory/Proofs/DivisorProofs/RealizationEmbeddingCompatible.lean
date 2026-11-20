@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 theorem readExt_tmul (b : L) (f : M) : readExt rd eL hL (b ⊗ₜ f) = eL b • rd f := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero, map_zero, smul_zero]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`. Consider the case `tmul a f`. Rewrite using `[TensorProduct.smul_tmul', readExt_tmul, readExt_tmul, smul_eq_mul, map_mul, mul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem readExt_smul (b : L) (x : L ⊗[O] M) : readExt rd eL hL (b • x) = eL b • readExt rd eL hL x := by
   induction x using TensorProduct.induction_on with
@@ -55,21 +55,19 @@ theorem readExt_smul (b : L) (x : L ⊗[O] M) : readExt rd eL hL (b • x) = eL 
     rw [TensorProduct.smul_tmul', readExt_tmul, readExt_tmul, smul_eq_mul, map_mul, mul_smul]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Set `v` to `Module.finBasis (FractionRing O) M`. Establish `key : ∀ x : L ⊗[O] M, ∃ d : O, d ≠ 0 ∧ ∃ c : _ → L, d • x = ∑ a, c a ⊗ₜ v a` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_ne_zero, 0, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨d, hd, c, e⟩` from `hx`. Take `⟨d', hd', c', e'⟩` from `hy`. Use `⟨d * d', mul_ne_zero hd hd', d' • c + d • c', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul d d' y, mul_comm, mul_smul, e, e']`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.smul_sum, TensorProduct.add_tmul, Finset.sum_add_distrib, TensorProduct.smul_tmul']`. Consider the case `tmul a f`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) fun c => v.repr f c`. Use `choose y hy using hd`. Use `⟨d, nonZeroDivisors.coe_ne_zero d, fun c => y c • a, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.tmul_smul]`. Use `conv_lhs => rw [← v.sum_repr f]`. Rewrite using `[Finset.smul_sum, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, ← algebraMap_smul (FractionRing O) (y c), hy, smul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd, c, e⟩` from `key x`. Establish `h1 : ∑ a, eL (c a) • rd (v a) = 0`. Use `congrArg (readExt rd eL hL) e` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul L d x, readExt_smul, hx, smul_zero, map_sum]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ a, c a = 0` using `fun a => eL.injective ((Fintype.linearIndependent_iff.1 (hF _ v v.linearIndependent) _ h1 a).trans (map_zero _).symm)`. Establish `h3 : d • x = 0` using `by simp [e, h2]`. Establish `h4 : ∀ x : L ⊗[O] M, LinearMap.lTensor L (((algebraMap O (FractionRing O) d)⁻¹ • LinearMap.id : Module.End (FractionRing O) M).restrictScalars O) (d • x) = x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy]`. Consider the case `tmul a f`. Rewrite using `[← TensorProduct.tmul_smul, LinearMap.lTensor_tmul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(algebraMap O (FractionRing O) d)⁻¹ • d • f = f`.
-
-Rewrite using `[← algebraMap_smul (FractionRing O) d f, inv_smul_smul₀ (by simpa using hd)]`. Rewrite using `[← h4 x, h3, map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem readExt_injective
     (hF : ∀ (n : ℕ) (v : Fin n → M), LinearIndependent (FractionRing O) v → LinearIndependent ℂ fun c => rd (v c)) :
@@ -120,29 +118,27 @@ end Generic
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Unfold `AtFit AtTw AtPts`. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p hr hm w _ j ρ hρ ν rd hfit hcan => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `e he1 he2 z n a y hy hz`. Establish `hν : ν ≠ 0` using `hfit.2.1.1`. Take `⟨Z⟩` from `hm.2.2.series`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU : p.R.toRealDat.LUnif` using `hr.prim.unif`. Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`. Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Establish `hF : Faithful (rdAt p w j hρ ν)` using `GlobalTheory.SeriesTie.realRd_faithful _ _ _ _ _ _ _ p.R p.cG p.Sx p.nexp p.v₀ ρ hρ ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) ν hν hU hW (Z.vec j) hK`. Establish `hL : ∀ c : (Fm.D x i).ntw.O ((Fm.ex x hx i).nch.twI w), e (algebraMap _ (FractionRing ((Fm.ex x hx i).nch.Oe w)) c) = ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (algebraMap _ (FractionRing _) c)` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply _ ((Fm.ex x hx i).nch.Oe w) (FractionRing ((Fm.ex x hx i).nch.Oe w)), IsScalarTower.algebraMap_apply _ ((Fm.D x i).ntw.Ok ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.k' w)) ((Fm.ex x hx i).nch.Oe w), he2, hρ.ek_e]`. Both sides reduce to the same expression. Use `set R := readExt (rdAt p w j hρ ν) e hL with hRdef`. Establish `hRinj : Function.Injective R` using `readExt_injective _ e hL hF`. Establish `hinc : ∀ z, R (incl (Fm.D x i).nexp ((Fm.ex x hx i).nch.twI w) _ ((Fm.ex x hx i).nch.sd w) ((Fm.ex x hx i).nch.Oe w) ((Fm.ex x hx i).nch.k' w) z) = rdK (rdAt p w j hρ ν) hρ ((Fm.ex x hx i).nch.k' w) z` using `fun z => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `add u v hu hv => rw [map_add, map_add, map_add, hu, hv]`. Consider the case `tmul c f`. Rewrite using `[rdK_tmul, ← he2]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hgen : ∀ f : NX.FmK p.Sx ((j : ℕ) + 1), R (rd ((p.nexp.fi j).e (Subtype.val f))) = ν⁻¹ • adForm (R2 p) j ((p.nexp.fi j).e (Subtype.val f)) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun f => by`. Rewrite using `[hcan f, hRdef, readExt_tmul, map_one, one_smul]`. Use `erw [realRd_tmul]`. Use `erw [map_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Establish `hA0 : adForm (R2 p) j 0 (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = 0`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ 0) (p.v₀ j _) = 0`. Rewrite using `[map_zero, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hAadd : ∀ u v, adForm (R2 p) j (u + v) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) + adForm (R2 p) j v (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun u v => by`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ (u + v)) (p.v₀ j _) = _`. Rewrite using `[map_add, map_add]`. Both sides reduce to the same expression. Establish `hs : sg0 (Fm.D x i) p.P.A3.A = (Fm.D x i).what₂.embLL` using `sgAt_mk _ (R2 p).hv0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hAsmul : ∀ (c : (Fm.D x i).what₂.LL) u, adForm (R2 p) j (c • u) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = (Fm.D x i).what₂.embLL c • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun c u => by`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ (c • u)) (p.v₀ j _) = _`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul]`. Conclude with `congrArg (fun s : ℂ => s • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))) (DFunLike.congr_fun hs c)`. Establish `hrd : ∀ u ∈ Submodule.span (Fm.D x i).what₂.LL ((p.nexp.fi j).e '' ((p.Sx.A ((j : ℕ) + 1)).WK : Set _)), R (rd u) = ν⁻¹ • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun u hu => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨f, hf, rfl⟩` from `hu`. Conclude with `hgen ⟨f, hf⟩`. Consider the case `zero => erw [LinearMap.map_zero rd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidHom.map_zero R]`. Use `erw [hA0]`. Rewrite using `[smul_zero]`. Consider the case `add u v _ _ hu hv => erw [LinearMap.map_add rd]`. Rewrite using `[AddMonoidHom.map_add R, hu, hv]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `erw [hAadd]`. Rewrite using `[smul_add]`. Consider the case `smul c u _ hu => erw [LinearMap.map_smulₛₗ rd]`. Rewrite using `[hRdef, readExt_smul, ← hRdef, hu, he1]`. Use `erw [hAsmul]`.
-
-Rewrite using `[smul_comm]`. Apply `hRinj` to reduce the goal to its premises. Rewrite using `[hinc, hz, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (FractionRing ((Fm.ex x hx i).nch.Oe w)) (a k) (rd (y k)), hRdef, readExt_smul, ← hRdef, hrd _ (hy k), mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent_of_reading : AtFit fun Fm x hx i p w j ρ hρ ν rd => ∀ e : FractionRing ((Fm.ex x hx i).nch.Oe w) →+* ℂ, (∀ y, e ((Fm.ex x hx i).nch.embW w y) = (Fm.D x i).what₂.embLL y) → (∀ a : (Fm.D x i).ntw.Ok ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.k' w), e (algebraMap ((Fm.ex x hx i).nch.Oe w) _ (algebraMap _ ((Fm.ex x hx i).nch.Oe w) a)) = ρ.eOk ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) ((Fm.ex x hx i).nch.k' w) a) →
   ∀ (z : (Fm.D x i).ntw.Ok ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.k' w) ⊗[(Fm.D x i).ntw.O ((Fm.ex x hx i).nch.twI w)] (Fm.D x i).nexp.Fm ((Fm.ex x hx i).nch.twI w) ((j : ℕ) + 1) ((Fm.ex x hx i).nch.sd w))

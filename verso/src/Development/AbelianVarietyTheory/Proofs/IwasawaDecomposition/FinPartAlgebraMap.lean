@@ -19,19 +19,19 @@ section General
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v 1`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_same (v : HeightOneSpectrum (𝓞 F)) : evalV F v (singleV F v 1) = 1 :=
   RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v 1
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) 1 h`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_ne {u v : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) : evalV F u (singleV F v 1) = 0 :=
   RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) 1 h
 
 /- English proof (translation)
-The claim follows from `DFunLike.ext _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem af_ext {a b : Af F} (h : ∀ u, evalV F u a = evalV F u b) : a = b :=
   DFunLike.ext _ _ h
@@ -41,9 +41,9 @@ def eFin (v : HeightOneSpectrum (𝓞 F)) : AF F := pairA F 0 (singleV F v 1)
 def eInf (v : InfinitePlace F) : AF F := pairA F (Pi.single v 1) 0
 
 /- English proof (translation)
-Use `Prod.ext (mul_zero _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `singleV F u 1 * singleV F v 1 = 0`. Use `af_ext F fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hw : w = u`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[evalV_single_ne F h, mul_zero]`. Rewrite using `[evalV_single_ne F hw, zero_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eFin_mul_eFin {u v : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) : eFin F u * eFin F v = 0 := by
   refine Prod.ext (mul_zero _) ?_
@@ -56,15 +56,15 @@ theorem eFin_mul_eFin {u v : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) : eFin F 
   · rw [evalV_single_ne F hw, zero_mul]
 
 /- English proof (translation)
-The claim follows from `Prod.ext (zero_mul _) (mul_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem eFin_mul_eInf (u : HeightOneSpectrum (𝓞 F)) (v : InfinitePlace F) : eFin F u * eInf F v = 0 :=
   Prod.ext (zero_mul _) (mul_zero _)
 
 /- English proof (translation)
-Use `Prod.ext ?_ (mul_zero _)` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `(Pi.single u 1 : ∀ w : InfinitePlace F, w.Completion) w * (Pi.single v 1 : ∀ w : InfinitePlace F, w.Completion) w = 0`. Distinguish the cases in `hw : w = u`. Substitute `hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`. Rewrite using `[Pi.single_eq_of_ne hw, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eInf_mul_eInf {u v : InfinitePlace F} (h : u ≠ v) : eInf F u * eInf F v = 0 := by
   refine Prod.ext ?_ (mul_zero _)
@@ -77,9 +77,9 @@ theorem eInf_mul_eInf {u v : InfinitePlace F} (h : u ≠ v) : eInf F u * eInf F 
   · rw [Pi.single_eq_of_ne hw, zero_mul]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `h : (Pi.single w 1 : ∀ w : InfinitePlace F, w.Completion) w * a.1 w = 0` using `congrFun (congrArg Prod.fst (h2 w)) w`. Rewrite `h` using `[Pi.single_eq_same, one_mul]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `af_ext F fun w => ?_` and prove the remaining obligations. Establish `h : singleV F w 1 * sndA F a = 0` using `congrArg Prod.snd (h1 w)`. Establish `h'` using `congrArg (evalV F w) h`. Rewrite `h'` using `[map_mul, evalV_single_same, one_mul]`. Conclude with `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_idem (a : AF F) (h1 : ∀ v, eFin F v * a = 0) (h2 : ∀ v, eInf F v * a = 0) : a = 0 := by
   refine Prod.ext ?_ ?_
@@ -95,9 +95,9 @@ theorem eq_zero_of_idem (a : AF F) (h1 : ∀ v, eFin F v * a = 0) (h2 : ∀ v, e
     exact h'
 
 /- English proof (translation)
-Set `b` to `Algebra.TensorProduct.basis R (Module.Free.chooseBasis K E)`. Use `b.ext_elem fun j => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `he _ fun i => ?_` and prove the remaining obligations. Establish `h` using `hx i`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[← Algebra.smul_def]`. Establish `h'` using `congrArg (fun y => b.repr y j) h`. Simplify using `using h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tensor_eq_zero {K E R I : Type} [Field K] [Field E] [Algebra K E] [CommRing R] [Algebra K R] (e : I → R)
     (he : ∀ a : R, (∀ i, e i * a = 0) → a = 0) (x : R ⊗[K] E)
@@ -112,16 +112,16 @@ theorem tensor_eq_zero {K E R I : Type} [Field K] [Field E] [Algebra K E] [CommR
   simpa using h'
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∑ v : InfinitePlace F, (Pi.single v 1 : ∀ w : InfinitePlace F, w.Completion)) = fun _ => 1`. Conclude with `Finset.univ_sum_single (fun w : InfinitePlace F => (1 : w.Completion))`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem sum_single_one : (∑ v : InfinitePlace F, fstA F (eInf F v)) = 1 := by
   change (∑ v : InfinitePlace F, (Pi.single v 1 : ∀ w : InfinitePlace F, w.Completion)) = fun _ => 1
   exact Finset.univ_sum_single (fun w : InfinitePlace F => (1 : w.Completion))
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.InfAdeleCM.ext_apply]`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding (InfinitePlace.mk σ) ((Pi.single v 1 : ∀ w : InfinitePlace F, w.Completion) (InfinitePlace.mk σ)) = _`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, map_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ext_eInf (σ : F →+* ℂ) (v : InfinitePlace F) :
     GlobalTheory.InfAdeleCM.ext σ (fstA F (eInf F v)) = if InfinitePlace.mk σ = v then 1 else 0 := by
@@ -139,7 +139,7 @@ def plc (D : D7) (τ : D.what₂.Tau) : InfinitePlace D.host.F :=
   InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CMTypePlaces.places_bijective D`.
+A detailed English derivation is pending.
 -/
 theorem plc_bijective (D : D7) : Function.Bijective (plc D) := GlobalTheory.CMTypePlaces.places_bijective D
 
@@ -168,19 +168,17 @@ theorem finPart_algebraMap (D : D7) (a : AF D.host.F) :
     finPart D (algebraMap (AF D.host.F) (AE D) a) = sndA D.host.F a ⊗ₜ[D.host.F] (1 : D.host.E) := rfl
 
 /- English proof (translation)
-Introduce `D`. Establish `hb` using `plc_bijective D`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(v | τ) (v' | τ') h`. Rewrite using `[idem_inl, idem_inl, ← RingHom.map_mul, eFin_mul_eFin _ fun e => h (congrArg _ e), RingHom.map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[idem_inl, idem_inr, ← RingHom.map_mul, eFin_mul_eInf, RingHom.map_zero]`. Rewrite using `[idem_inr, idem_inl, ← RingHom.map_mul, mul_comm, eFin_mul_eInf, RingHom.map_zero]`. Rewrite using `[idem_inr, idem_inr, ← RingHom.map_mul, eInf_mul_eInf _ fun e => h (congrArg _ (hb.1 e)), RingHom.map_zero]`. Introduce `θ hθ τ τ' haveI := D.sp.cm.totReal`. Establish `h` using `GlobalTheory.InfAdeleCM.hom_tmul (tauE D τ') (θ τ') (hθ τ').1 (hθ τ').2 (fstA D.host.F (eInf D.host.F (plc D τ))) 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[RingHom.map_one, mul_one, ext_eInf]`. Rewrite using `[idem_inr, infPart_algebraMap]`. Use `h.trans ?_` and prove the remaining obligations. Conclude with `if_congr (hb.1.eq_iff (a := τ') (b := τ)) rfl rfl`. Introduce `τ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[idem_inr, finPart_algebraMap]`. Conclude with `TensorProduct.zero_tmul _ _`. Establish `h : (∑ τ, idem D (.inr τ)) = algebraMap (AF D.host.F) (AE D) (∑ v : InfinitePlace D.host.F, eInf D.host.F v)`. Rewrite using `[← hb.sum_comp, map_sum (algebraMap (AF D.host.F) (AE D))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h, infPart_algebraMap, map_sum (fstA D.host.F), sum_single_one]`. Both sides reduce to the same expression. Introduce `v`. Conclude with `⟨eFin D.host.F v, ⟨singleV D.host.F v 1, rfl, evalV_single_same _ v, fun v' h => evalV_single_ne _ h⟩, rfl⟩`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `tensor_eq_zero (Sum.elim (eFin D.host.F) fun τ => eInf D.host.F (plc D τ)) (fun a ha => ?_) x ?_` and prove the remaining obligations. Use `eq_zero_of_idem _ a (fun v => ha (.inl v)) fun w => ?_` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `hb.2 w`. Conclude with `ha (.inr τ)`. Introduce and unpack `(v | τ)`.
-
-Conclude with `hx (.inl v)`. Conclude with `hx (.inr τ)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem idem_props : ∀ D : D7, (∀ v v' : Pl D, v ≠ v' → idem D v * idem D v' = 0) ∧ (∀ θ : InfF D, IsInfFam θ → ∀ τ τ', θ τ' (infPart D (idem D (.inr τ))) = if τ' = τ then 1 else 0) ∧ (∀ τ, finPart D (idem D (.inr τ)) = 0) ∧ infPart D (∑ τ, idem D (.inr τ)) = 1 ∧ (∀ v : FinF D, ∃ a, IsPlaceIdem D v a ∧ idem D (.inl v) = algebraMap (AF D.host.F) (AE D) a) ∧ ∀ x : AE D, (∀ v, idem D v * x = 0) → x = 0 := by
   intro D

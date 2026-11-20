@@ -7,19 +7,19 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce `K _ _ n hn μ _ ν _ V a x P hV`. Take `⟨m, hm, -⟩` from `(UpperTheory.ConvolutionTheory.Tf.compatEx K n hn).2.1 μ ν`. Establish `hO : ∀ h, Commute (Oinf μ ν a) (rhoF μ h)` using `(UpperTheory.ConvolutionTheory.Tf.opAlg K n μ ν m).2.2.2.2.2.2.2.2 a`. Establish `hmul : ∀ (h h' : AdelicGLn.FiniteAdelicGL K n) (u : LL μ), rhoF μ h (rhoF μ h' u) = rhoF μ (h * h') u`. Introduce `h h' u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [rhoF, map_mul, UnitaryRep.map_mul_apply]`. Establish `hmem : ∀ u, u ∈ eigIn V (Oinf μ ν a) x ⊓ sphOff μ P ↔ (u ∈ V ∧ Oinf μ ν a u = (x : ℂ) • u) ∧ ∀ v ∉ P, ∀ k ∈ GLnLocal.integralGL (v.adicCompletion K) n, rhoL μ v k u = u`. Introduce `u`. Simplify using `only [eigIn, sphOff, fixL, fixF, rhoL, Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, LinearMap.mem_eqLocus, Subgroup.mem_map]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨fun u hu => ((hmem u).1 hu).1.1, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((eigIn V (Oinf μ ν a) x ⊓ sphOff μ P : Submodule ℂ (LL μ)) : Set (LL μ)) = ((V : Set (LL μ)) ∩ {u | Oinf μ ν a u = (x : ℂ) • u}) ∩ ⋂ v ∈ {v : Pl K | v ∉ P}, ⋂ k ∈ {k | k ∈ GLnLocal.integralGL (v.adicCompletion K) n}, {u | rhoL μ v k u = u}`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, hmem, Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_iInter]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(hV.closed.inter (isClosed_eq (Oinf μ ν a).continuous (continuous_const_smul _))).inter ?_` and prove the remaining obligations. Conclude with `isClosed_biInter fun v _ => isClosed_biInter fun k _ => isClosed_eq (rhoL μ v k).continuous continuous_id`. Introduce `w hw g u hu`. Take `⟨⟨huV, huA⟩, hus⟩` from `(hmem u).1 hu`. Use `(hmem _).2 ⟨⟨hV.inv _ _ huV, ?_⟩, fun v hv k hk => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun T : LL μ →L[ℂ] LL μ => T u) (hO (AdelicGLn.localEmbedding w g)).eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Express the relevant statement in the definitionally equal form `Oinf μ ν a (rhoF μ _ u) = _`. Rewrite using `[this, huA, map_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hne : w ≠ v` using `fun e => hv (e ▸ hw)`. Establish `hc` using `((UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.2.2.1 v hne.symm g k)`. Express the relevant statement in the definitionally equal form `rhoF μ _ (rhoF μ _ u) = rhoF μ _ u`. Rewrite using `[hmul, ← hc, ← hmul]`. Use `hus v hv k hk` as an intermediate fact.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[rhoL]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eigenspace_inf_spherical_le_closed_invariant :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]

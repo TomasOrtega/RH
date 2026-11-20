@@ -11,7 +11,7 @@ namespace GlobalTheory.EtC.DiscElt
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hkpull_comp {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ) (x : HK R M F n) :
     HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := by
@@ -20,7 +20,7 @@ theorem hkpull_comp {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : 
   simp [zcomp, Cochain.ofHom_comp]
 
 /- English proof (translation)
-Rewrite using `[Cocycle.fromSingleMk_precomp g t (zero_add n) (n + 1) rfl ht]`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cocycle.precomp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hkpull_single {X Y : Shv R} (g : X ⟶ Y) (F : Shv R) (n : ℤ) (t : Y ⟶ (res R F).X n)
     (ht : t ≫ (res R F).d n (n + 1) = 0) :
@@ -38,19 +38,19 @@ namespace GlobalTheory.EtC
 open GlobalTheory.EtC.DiscElt in
 
 /- English proof (translation)
-Introduce `R _ F`. Take `⟨e, -, hnat⟩` from `chains_disc_homotopyEquiv R`. Establish `hb : ∀ (P : PSh) (n : ℤ), Function.Bijective (HK.pull R (e P).hom F n)` using `fun P n => by haveI : QuasiIso (e P).hom := (e P).quasiIso_hom`. Conclude with `quasiIso_hypercohomology_bijective' R (e P).hom F n`. Set `E : ∀ (P : PSh) (n : ℤ), H R (disc.obj P) F n ≃ HK R (sgl ((free R).obj P)) F n` to `fun P n => Equiv.ofBijective _ (hb P n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : ∀ P n x, E P n x = HK.pull R (e P).hom F n x` using `fun _ _ _ => rfl`. Set `c : ∀ (P : PSh) (n : ℤ) (t : (free R).obj P ⟶ (res R F).X n), t ≫ (res R F).d n (n + 1) = 0 → HK R (sgl ((free R).obj P)) F n` to `fun P n t ht => CohomologyClass.mk (Cocycle.fromSingleMk t (zero_add n) (n + 1) rfl ht)`. Use `⟨fun P n t ht => (E P n).symm (c P n t ht), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P n x`. Take `⟨z, hz⟩` from `(E P n x).mk_surjective`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, rfl⟩` from `Cocycle.fromSingleMk_surjective z n (zero_add n) (n + 1) rfl`. Conclude with `⟨t, ht, by rw [Equiv.symm_apply_eq]; exact hz⟩`. Introduce `P n t ht t' ht'`. Rewrite using `[(E P n).symm.injective.eq_iff]`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = CohomologyClass.mk _ ↔ _`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, ← Cocycle.fromSingleMk_sub _ _ _ _ _ ht ht', CohomologyClass.mk_eq_zero_iff, Cocycle.fromSingleMk_mem_coboundaries_iff _ _ _ _ _ (n - 1) (by omega)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, by rw [hy]; abel⟩`. Introduce and unpack `⟨y, hy⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨y, by rw [hy]; abel⟩`. Introduce `P n`. Express the relevant statement in the definitionally equal form `(E P n).symm (CohomologyClass.mk _) = 0`. Rewrite using `[Equiv.symm_apply_eq, hE, map_zero, Cocycle.fromSingleMk_zero, CohomologyClass.mk_zero]`. Introduce `P P' f n t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by simp [ht], ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.eq_symm_apply, hE]`. Express the relevant statement in the definitionally equal form `HK.pull R (e P).hom F n (HK.pull R ((chains R).map (disc.map f)) F n _) = _`. Rewrite using `[← hkpull_comp, hnat f, hkpull_comp]`. Establish `h1 : HK.pull R (e P').hom F n ((E P' n).symm (c P' n t ht)) = c P' n t ht`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hE, Equiv.apply_symm_apply]`. Rewrite using `[h1]`. Conclude with `hkpull_single R ((free R).map f) F n t ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disc_elt_cls : ∀ (R : Type) [CommRing R] (F : Shv R), ∃ cl : ∀ (P : PSh) (n : ℤ) (t : (free R).obj P ⟶ (res R F).X n), t ≫ (res R F).d n (n + 1) = 0 → H R (disc.obj P) F n, (∀ P n x, ∃ t ht, cl P n t ht = x) ∧ (∀ P n t ht t' ht', cl P n t ht = cl P n t' ht' ↔ ∃ y : (free R).obj P ⟶ (res R F).X (n - 1), t = t' + y ≫ (res R F).d (n - 1) n) ∧ (∀ P n, cl P n 0 zero_comp = 0) ∧ ∀ (P P' : PSh) (f : P ⟶ P') n t ht, ∃ h, pull R (disc.map f) F n (cl P' n t ht) = cl P n ((free R).map f ≫ t) h := by
   intro R _ F

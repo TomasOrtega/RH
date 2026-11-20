@@ -7,13 +7,11 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 namespace GlobalTheory.CompanionTheory.EtaleLift
 
 /- English proof (translation)
-Use `letI : Algebra P E := ψ.toAlgebra`. Use `letI : Algebra P C := f.toAlgebra`. Use `letI : Algebra P D := (u.comp f).toAlgebra`. Use `haveI : Algebra.Etale P E := hψ`. Set `uA : C →ₐ[P] D` to `{ u with commutes' := fun _ => rfl }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `gA : E →ₐ[P] D` to `{ g with commutes' := fun r => congrArg (fun t : P →+* D => t r) h }`. Establish `hn₁ : IsNilpotent (RingHom.ker (uA : C →+* D))` using `hn`. Establish `hn₂ : IsNilpotent (RingHom.ker uA)` using `hn`. Set `lA : E →ₐ[P] C` to `Algebra.FormallySmooth.liftOfSurjective gA uA hu hn₁`. Establish `hl : ∀ x, u (lA x) = g x` using `fun x => Algebra.FormallySmooth.liftOfSurjective_apply gA uA hu hn₂ x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(lA : E →+* C), ⟨RingHom.ext fun r => lA.commutes r, RingHom.ext hl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `l' ⟨h1, h2⟩`. Set `lA' : E →ₐ[P] C` to `{ l' with commutes' := fun r => congrArg (fun t : P →+* C => t r) h1 }`. Establish `: lA' = lA` using `Algebra.FormallyUnramified.ext' u hn lA' lA fun x => by`. Rewrite using `[hl]`.
-
-Conclude with `congrArg (fun t : E →+* D => t x) h2`. Conclude with `congrArg (fun t : E →ₐ[P] C => (t : E →+* C)) this`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_lift_of_nilpotent {P E C D : Type} [CommRing P] [CommRing E] [CommRing C] [CommRing D]
     (ψ : P →+* E) (hψ : ψ.Etale) (u : C →+* D) (hu : Function.Surjective u)
@@ -48,7 +46,7 @@ Both sides reduce to the same expression.
 theorem toBase_mk (n : ℕ) (x : B) : toBase J n (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk J x := rfl
 
 /- English proof (translation)
-Use `⟨n + 1, ?_⟩` and prove the remaining obligations. Establish `hk : RingHom.ker (toBase J n) = J.map (Ideal.Quotient.mk (J ^ (n + 1)))`. Rewrite using `[Ideal.Quotient.factor_ker]`. Rewrite using `[hk, ← Ideal.map_pow]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isNilpotent_ker_toBase (n : ℕ) : IsNilpotent (RingHom.ker (toBase J n)) := by
   refine ⟨n + 1, ?_⟩
@@ -58,7 +56,7 @@ theorem isNilpotent_ker_toBase (n : ℕ) : IsNilpotent (RingHom.ker (toBase J n)
   simp
 
 /- English proof (translation)
-The claim follows from `existsUnique_lift_of_nilpotent ψ hψ (toBase J n) (Ideal.Quotient.factor_surjective _) (isNilpotent_ker_toBase J n) _ g h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_level {P E : Type} [CommRing P] [CommRing E] (ψ : P →+* E) (hψ : ψ.Etale)
     (f : P →+* B) (g : E →+* B ⧸ J) (h : g.comp ψ = (Ideal.Quotient.mk J).comp f) (n : ℕ) :
@@ -67,7 +65,7 @@ theorem existsUnique_level {P E : Type} [CommRing P] [CommRing E] (ψ : P →+* 
     (isNilpotent_ker_toBase J n) _ g h
 
 /- English proof (translation)
-Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Use `(Ideal.mem_bot).2 (IsHausdorff.haus hJ.toIsHausdorff x fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `(Ideal.mem_iInf.1 hx) n`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iInf_pow_eq_bot (hJ : IsAdicComplete J B) : ⨅ i : ℕ, J ^ i = ⊥ := by
   refine eq_bot_iff.2 fun x hx => ?_
@@ -80,23 +78,21 @@ end GlobalTheory.CompanionTheory.EtaleLift
 open GlobalTheory.CompanionTheory.EtaleLift in
 
 /- English proof (translation)
-Introduce `B _ J hJ P E _ _ ψ hψ f g h`. Use `haveI := hJ`. Use `choose l hl hu using existsUnique_level J ψ hψ f g h`. Establish `hcomp : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow J (Nat.succ_le_succ hle)).comp (l n) = l m`. Introduce `m n hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hu m _ ⟨?_, ?_⟩).symm ▸ rfl` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, (hl n).1]`. Both sides reduce to the same expression. Rewrite using `[← (hl n).2, ← RingHom.comp_assoc]`. Use `congr 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)`. Set `F : (n : ℕ) → E →+* B ⧸ J ^ n` to `fun n => (Ideal.Quotient.factorPow J (Nat.le_succ n)).comp (l n)`. Establish `hF : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow J hle).comp (F n) = F m`. Introduce `m n hle`. Simplify using `only [F]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Rewrite using `[← hcomp hle, ← RingHom.comp_assoc, ← RingHom.comp_assoc]`. Use `congr 1`. Conclude with `Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)`. Set `H : E →+* B` to `IsAdicComplete.liftRingHom J F hF`. Establish `hH : ∀ n x, Ideal.Quotient.mk (J ^ n) (H x) = F n x` using `fun n x => IsAdicComplete.mk_liftRingHom J F hF n x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : H.comp ψ = f`. Use extensionality with `p`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus hJ.toIsHausdorff _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, RingHom.comp_apply, hH, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrArg (fun t : P →+* B ⧸ J ^ (n + 1) => Ideal.Quotient.factorPow J (Nat.le_succ n) (t p)) (hl n).1` as an intermediate fact. Conclude with `this`. Establish `h2 : (Ideal.Quotient.mk J).comp H = g`. Use extensionality with `x`. Establish `e1 : (toBase J 0).comp (Ideal.Quotient.factorPow J (Nat.le_succ 1)) = toBase J 1` using `Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : Ideal.Quotient.mk J (H x) = toBase J 0 (F 1 x)`. Rewrite using `[← hH 1 x]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, e2, ← (hl 1).2, ← e1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `⟨H, ⟨h1, h2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `H' ⟨h1', h2'⟩`. Use `letI : Algebra P E := ψ.toAlgebra`. Use `letI : Algebra P B := f.toAlgebra`. Use `haveI : Algebra.Etale P E := hψ`.
-
-Set `A : E →ₐ[P] B` to `{ H with commutes' := fun r => congrArg (fun t : P →+* B => t r) h1 }`. Set `A' : E →ₐ[P] B` to `{ H' with commutes' := fun r => congrArg (fun t : P →+* B => t r) h1' }`. Establish `: A' = A` using `Algebra.FormallyUnramified.ext_of_iInf J (iInf_pow_eq_bot J hJ) fun x => by`. Conclude with `(congrArg (fun t : E →+* B ⧸ J => t x) h2').trans (congrArg (fun t : E →+* B ⧸ J => t x) h2).symm`. Conclude with `congrArg (fun t : E →ₐ[P] B => (t : E →+* B)) this`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.EtaleLift.etLift_of_isAdicComplete :
     ∀ {B : Type} [CommRing B] (J : Ideal B), IsAdicComplete J B → EtLift J := by

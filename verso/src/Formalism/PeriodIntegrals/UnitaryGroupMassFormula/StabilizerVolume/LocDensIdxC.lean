@@ -12,11 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNo
 namespace IdxHW
 
 /- English proof (translation)
-Take `⟨-, hC, -, hst⟩` from `hCM`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Establish `hw : w.IsReal`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `hst w.embedding x` as an intermediate fact. Rewrite `this` using `[h x]`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`.
-
-Conclude with `this.symm`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.mpr (hC.isComplex w)) hw`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigma_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
@@ -43,21 +41,21 @@ def Cmat : Matrix (Fin 2) (Fin 2) F := fun k l => b.repr (σ (b l)) k
 def cr (y : Fv F v ⊗[F] E) (k : Fin 2) : Fv F v := (Algebra.TensorProduct.basis (Fv F v) b).repr y k
 
 /- English proof (translation)
-The claim follows from `crd_sigR b v σ y k`.
+A detailed English derivation is pending.
 -/
 theorem cr_sig (y : Fv F v ⊗[F] E) (k : Fin 2) :
     cr b v (sigR (Fv F v) σ y) k = ∑ l, algebraMap F (Fv F v) (Cmat b σ k l) * cr b v y l :=
   crd_sigR b v σ y k
 
 /- English proof (translation)
-Simplify using `[cr, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', Algebra.TensorProduct.basis_repr_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cr_smul_one (t : Fv F v) (k : Fin 2) :
     cr b v (t • (1 : Fv F v ⊗[F] E)) k = t * algebraMap F (Fv F v) (b.repr 1 k) := by
   simp [cr, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Unfold `cr`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cr_symm (f : Fin 2 → Fv F v) (k : Fin 2) :
     cr b v ((Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm f) k = f k := by

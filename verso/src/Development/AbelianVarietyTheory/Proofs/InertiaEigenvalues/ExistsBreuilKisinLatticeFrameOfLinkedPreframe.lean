@@ -11,41 +11,37 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BKLim
 
 /- English proof (translation)
-Introduce `l _ K bk d N ρ tw F P r hL`. Take `⟨u, hu⟩` from `P.unit`. Take `⟨Ti, hT1, hT2⟩ : ∃ Ti : Matrix (Fin d) (Fin d) (WCb l), P.T * Ti = 1 ∧ Ti * P.T = 1` from `⟨↑u⁻¹, by rw [← hu]; exact u.mul_inv, by rw [← hu]; exact u.inv_mul⟩`. Establish `key : ∀ (g : ↥(GK K)) (i j : Fin d), ∃ a : Ainf l, (Ti * zW (ρ g).val * P.T.map (galW l (g : GQ l))) i j = inclW l (1 * a)`. Introduce `g i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.ainf_principal_ideal_saturated_closed l 1 (by simp) r _ ?_` and prove the remaining obligations. Introduce `n`. Take `⟨m, hnm, R, G, hc, hd⟩` from `hL n`. Take `⟨σ, hσ⟩ : ∃ σ : WCb l →+* WCb l, ∀ x, σ x = galW l (g : GQ l) x` from `⟨((galW l (g : GQ l)).toRingEquiv : WCb l →+* WCb l), fun _ => rfl⟩`. Establish `hσf : (⇑(galW l (g : GQ l)) : WCb l → WCb l) = ⇑σ` using `funext fun x => (hσ x).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set π := Ideal.Quotient.mk (Ideal.span {((l : WCb l) ^ n)}) with hπ`. Establish `hq : ∀ x y : WCb l, (l : WCb l) ^ n ∣ x - y → π x = π y` using `fun x y h => Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 h)`. Establish `hM : ∀ {a b : Type} (A B : Matrix a b (WCb l)), (∀ i j, (l : WCb l) ^ n ∣ (A - B) i j) → A.map π = B.map π` using `fun A B h => by`. Use extensionality with `i j; exact hq _ _ (by simpa using h i j)`. Establish `hσd : ∀ x : WCb l, (l : WCb l) ^ n ∣ x → (l : WCb l) ^ n ∣ σ x` using `fun x ⟨y, hy⟩ => ⟨σ y, by rw [hy, map_mul, map_pow, map_natCast]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσz : ∀ {a b : Type} (M : Matrix a b ℤ_[l]), (zW M).map σ = zW M` using `fun M => by`. Use extensionality with `i j`. Simplify using `[zW, hσ]`. Establish `hMM : ∀ {a b b' c : Type} [Fintype b] [Fintype b'] (A : Matrix a b (WCb l)) (B : Matrix b c (WCb l)) (C : Matrix a b' (WCb l)) (D : Matrix b' c (WCb l)), (∀ i j, (l : WCb l) ^ n ∣ (A * B - C * D) i j) → A.map π * B.map π = C.map π * D.map π`. Introduce `a b b' c _ _ A B C D h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `hM _ _ h`. Use `set T' := (F m).T`. Use `set ε' := (F m).ε g`. Use `set Pi := tw.Pi m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `Ga` using `(F m).gal g`. Rewrite `Ga` using `[hσf]`. Rewrite using `[hσf]`. Establish `E1 : (zW Pi).map π * T'.map π = P.T.map π * (R.map bk.evW).map π`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hM _ _ hc`. Establish `E1σ : (zW Pi).map π * (T'.map σ).map π = (P.T.map σ).map π * ((R.map bk.evW).map σ).map π`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul]`. Apply `hM` to reduce the goal to its premises. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : zW Pi * T'.map σ - P.T.map σ * (R.map bk.evW).map σ = (zW Pi * T' - P.T * R.map bk.evW).map σ`. Rewrite using `[Matrix.map_sub _ (map_sub σ), Matrix.map_mul, Matrix.map_mul, hσz]`. Rewrite using `[h1, Matrix.map_apply]`. Conclude with `hσd _ (hc i j)`. Establish `E2 : (zW Pi).map π * (zW (tw.ρ' m g).val).map π = (zW (ρ g).val).map π * (zW Pi).map π`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hMM` to reduce the goal to its premises. Introduce `i j`. Establish `h1 : zW Pi * zW (tw.ρ' m g).val - zW (ρ g).val * zW Pi = zW (Pi * (tw.ρ' m g).val - (ρ g).val * Pi)`. Simplify using `only [zW]`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1]`. Establish `h2` using `map_dvd (algebraMap ℤ_[l] (WCb l)) ((pow_dvd_pow (l : ℤ_[l]) hnm).trans ((tw.onto m).equi g i j))`. Simplify `h2` using `[zW]`. Establish `E3 : ((R.map bk.evW).map σ).map π * ((G.map bk.evW).map σ).map π = (((l : WCb l) ^ r) • (1 : Matrix (Fin d) (Fin d) (WCb l))).map π`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hM` to reduce the goal to its premises. Introduce `i j`. Establish `h1 : (((R * G).map bk.evW).map σ - ((l : WCb l) ^ r) • (1 : Matrix (Fin d) (Fin d) (WCb l))) i j = σ (bk.evW ((R * G - (l : bk.S) ^ r • (1 : Matrix (Fin d) (Fin d) bk.S)) i j))`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, map_sub]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h1]`. Conclude with `hσd _ (by simpa using map_dvd bk.evW (hd i j))`. Establish `He : P.T.map π * ((Ti * zW (ρ g).val * P.T.map σ).map π) = (zW (ρ g).val).map π * (P.T.map σ).map π`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hT1, Matrix.one_mul]`. Establish `GaP : (zW (tw.ρ' m g).val).map π * (T'.map σ).map π = T'.map π * (ε'.map (inclW l)).map π`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, Ga]`. Establish `C1 : P.T.map π * ((Ti * zW (ρ g).val * P.T.map σ).map π * ((R.map bk.evW).map σ).map π) = P.T.map π * ((R.map bk.evW).map π * (ε'.map (inclW l)).map π)`. Combine the equalities or inequalities in the displayed calculation. Establish `hTi : Ti.map π * P.T.map π = 1`. Rewrite using `[← Matrix.map_mul, hT2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C2 : (Ti * zW (ρ g).val * P.T.map σ).map π * ((R.map bk.evW).map σ).map π = (R.map bk.evW).map π * (ε'.map (inclW l)).map π`. Combine the equalities or inequalities in the displayed calculation. Establish `C3 : (Ti * zW (ρ g).val * P.T.map σ).map π * (((R.map bk.evW).map σ).map π * ((G.map bk.evW).map σ).map π) = (R.map bk.evW).map π * (ε'.map (inclW l)).map π * ((G.map bk.evW).map σ).map π`. Rewrite using `[← Matrix.mul_assoc, C2]`. Rewrite `C3` using `[E3]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : (R.map bk.ev).map (inclW l) = R.map bk.evW` using `by ext; rfl`. Establish `hG : (G.map fun x => Per.σA (g : GQ l) (bk.ev x)).map (inclW l) = (G.map bk.evW).map σ` using `by ext; simp [BK.evW, hσ, galW_inclW]`. Establish `hY : ((R.map bk.ev * ε' * G.map fun x => Per.σA (g : GQ l) (bk.ev x)).map (inclW l)).map π = (R.map bk.evW).map π * (ε'.map (inclW l)).map π * ((G.map bk.evW).map σ).map π`. Simplify using `only [Matrix.map_mul, hR, hG]`. Use `⟨(R.map bk.ev * ε' * G.map fun x => Per.σA (g : GQ l) (bk.ev x)) i j, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `C4 : (((l : WCb l) ^ r) • (Ti * zW (ρ g).val * P.T.map σ)).map π = ((R.map bk.ev * ε' * G.map fun x => Per.σA (g : GQ l) (bk.ev x)).map (inclW l)).map π`. Rewrite using `[hY, ← C3, ← Matrix.map_mul, Matrix.mul_smul, mul_one]`. Establish `C5` using `congrFun (congrFun C4 i) j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at C5`. Rewrite using `[one_mul]`.
-
-Conclude with `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 C5)`. Use `choose ε hε using key`. Use `⟨{ toPre := P, ε := fun g => Matrix.of (ε g), gal := fun g => ?_ }, rfl⟩` and prove the remaining obligations. Establish `h1 : (Matrix.of (ε g)).map (inclW l) = Ti * zW (ρ g).val * P.T.map (galW l (g : GQ l))`. Use extensionality with `i j`.
-
-Rewrite using `[Matrix.map_apply, Matrix.of_apply, hε g i j, one_mul]`. Use `show zW (ρ g).val * P.T.map (galW l (g : GQ l)) = P.T * (Matrix.of (ε g)).map (inclW l)`. Rewrite using `[h1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hT1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_of_links : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d N : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (tw : Tower ρ) (F : ∀ n, Frame bk N (tw.d' n) fun g => (tw.ρ' n g).val) (P : Pre bk N d fun g => (ρ g).val) (r : ℕ), (∀ n, ∃ m, n ≤ m ∧ Link bk P.T (F m).T (tw.Pi m) n r) → ∃ F₀ : Frame bk N d fun g => (ρ g).val, F₀.toPre = P := by
   intro l _ K bk d N ρ tw F P r hL

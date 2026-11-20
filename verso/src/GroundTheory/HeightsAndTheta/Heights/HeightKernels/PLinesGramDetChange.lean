@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 open Matrix
 
 /- English proof (translation)
-Introduce `K _ n h σ ι _ _ B u`. Establish `hu : u = fun a => ∑ b, B.toMatrix u b a • B b`. Use function extensionality and compare the values at `a`. Conclude with `(B.sum_toMatrix_smul_self u a).symm`. Establish `hg` using `h1 K n h σ ι (⇑B) (B.toMatrix u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[← hu]`. Rewrite using `[hg, det_mul, det_mul, det_conjTranspose, RingHom.map_det]`. Simplify using `only [RingHom.mapMatrix_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem LinesGramDetChange.proof (h1 : LinesGramChange.Statement) :
     LinesGramDetChange.Statement := by

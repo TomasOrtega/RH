@@ -20,7 +20,7 @@ section Pt
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G]
 
 /- English proof (translation)
-Establish `a` using `(cls_eq_zero_iff (pull_isLB L.isLB (eSec G))).2 ⟨L.rig, L.rigGen⟩`. Rewrite `a` using `[cls_pull L.isLB]`. Rewrite using `[Hom.one_def, Over.comp_left, pull_comp]`. Express the relevant statement in the definitionally equal form `pull _ (pull (eSec G) _) = 0`. Rewrite using `[a, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_one_eq_zero (L : RigLB G) {T : Over S} :
     pull (1 : T ⟶ G).left (cls L.L L.isLB) = 0 := by
@@ -31,9 +31,9 @@ theorem pull_one_eq_zero (L : RigLB G) {T : Over S} :
   rw [a, map_zero]
 
 /- English proof (translation)
-Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb L.isLB _ _)).2 ⟨s, hs⟩`. Rewrite `e` using `[cls_linComb L.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pull_id, one_smul, neg_smul] at e`. Establish `e' : pull (ι[G]).left (cls L.L L.isLB) = cls L.L L.isLB`. Rewrite using `[← sub_eq_zero, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Rewrite using `[Hom.inv_def, Over.comp_left, pull_comp, e']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_inv (L : RigLB G) (s : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1]))
     (hs : s.IsGen) {T : Over S} (x : T ⟶ G) :
@@ -46,9 +46,9 @@ theorem pull_inv (L : RigLB G) (s : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[G]
   rw [Hom.inv_def, Over.comp_left, pull_comp, e']
 
 /- English proof (translation)
-Establish `h` using `lam_mul_left L.isLB hΘ x⁻¹ x x`. Rewrite `h` using `[inv_mul_cancel, lam_one_left]`. Establish `h2 : lam (cls L.L L.isLB) x⁻¹ x = - pull x⁻¹.left (cls L.L L.isLB) - pull x.left (cls L.L L.isLB)`. Simplify using `only [lam, inv_mul_cancel, pull_one_eq_zero]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem lam_self [IsCommMonObj G] (L : RigLB G) (hΘ : ∃ t : LB.Gen (Theta G L.L), t.IsGen)
     (s : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1])) (hs : s.IsGen)
@@ -63,7 +63,7 @@ theorem lam_self [IsCommMonObj G] (L : RigLB G) (hΘ : ∃ t : LB.Gen (Theta G L
     _ = 2 • pull x.left (cls L.L L.isLB) := by rw [← h, h2, pull_inv L s hs]; abel
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback G f`. Establish `e1 : (x * y).left ≫ pullback.fst G.hom f = (pushPt h.1.w x * pushPt h.1.w y).left` using `congrArg (fun z => z.left) (map_mul (pushHom h T) x y)`. Establish `e0 : (1 : T ⟶ (Over.pullback f).obj G).left ≫ pullback.fst G.hom f = (1 : Over.mk (T.hom ≫ f) ⟶ G).left` using `congrArg (fun z => z.left) (map_one (pushHom h T))`. Simplify using `only [lam, ← pull_comp, e1, e0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem lam_pull_fst {S' : Scheme.{0}} (f : S' ⟶ S) (c : Pic G.left) {T : Over S'}
     (x y : T ⟶ (Over.pullback f).obj G) :
@@ -86,7 +86,7 @@ namespace GlobalTheory.SquareOfGeneric
 open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `e₁ : cls _ h = lam (cls L hL) (fst _ _) (snd _ _)` using `cls_cube_two hL _ _ h`. Establish `e₂ : cls L hL = CechPic.pull (pullback.fst G.hom (jK R)) (cls U.LG.L U.LG.isLB)` using `(cls_eq_iff hL (pull_isLB U.LG.isLB _)).2 eL`. Rewrite using `[e₁, pull_lam, lift_fst, lift_snd, e₂, lam_pull_fst, lam_self U.LG ⟨U.cubG.t, U.cubG.isGen⟩ U.symG U.symG_gen]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diag_lam_eq (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G] (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R)))
@@ -106,11 +106,11 @@ end GlobalTheory.SquareOfGeneric
 
 open GlobalTheory.CechPic MonoidalCategory CartesianMonoidalCategory MonObj in
 /- English proof (translation)
-Introduce `R _ _ _ hR G _ _ hG D D' A A' U U' L L' hL hL' eL eL' eΛ`. Establish `hΛ` using `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL' _ _)).2 eΛ`. Establish `key` using `congrArg (CechPic.pull (lift (𝟙 ((Over.pullback (jK R)).obj G)) (𝟙 ((Over.pullback (jK R)).obj G))).left) hΛ`. Establish `k₁` using `GlobalTheory.SquareOfGeneric.diag_lam_eq R G D A U L hL eL (LB.isLB_linComb hL _ _)`. Establish `k₂` using `GlobalTheory.SquareOfGeneric.diag_lam_eq R G D' A' U' L' hL' eL' (LB.isLB_linComb hL' _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `replace key := k₁.symm.trans (key.trans k₂)`. Use `GlobalTheory.T.lineBundleIso_of_generic_iso_normal_local_base R hR.1 hR.2.1 G.left G.hom (eSec G) hG.smooth hG.quasiCompact (forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hG.smooth hG.geomConnected) (Over.w η[G]) _ _ (LB.isLB_linComb U'.LG.isLB _ _) (LB.i …` and prove the remaining obligations. Use `(cls_eq_iff (pull_isLB (LB.isLB_linComb U'.LG.isLB _ _) _) (pull_isLB (LB.isLB_linComb U.LG.isLB _ _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (LB.isLB_linComb U'.LG.isLB _ _), cls_pull (LB.isLB_linComb U.LG.isLB _ _), cls_linComb U'.LG.isLB, cls_linComb U.LG.isLB]`. Simplify using `only [Fin.sum_univ_one, pull_id, map_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[two_zsmul, two_zsmul, ← two_nsmul, ← two_nsmul]`. Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.squares_iso_of_lam_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D D' : DegData R (maximalIdeal R)) (A A' : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (U' : Unif (maximalIdeal R) D' A' G) (L L' : LB ((Over.pullback (jK R)).obj G).left), L.IsLB → L'.IsLB → LBIso L (U.LG.L.pull (pullback.fst G.hom (jK R))) → LBIso L' (U'.LG.L.pull (pullback.fst G.hom (jK R))) → LBIso (abelian₂ ((Over.pullback (jK R)).obj G) L) (abelian₂ ((Over.pullback (jK R)).obj G) L') → LBIso (LB.LinComb U'.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)) (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)) := by
   intro R _ _ _ hR G _ _ hG D D' A A' U U' L L' hL hL' eL eL' eΛ

@@ -8,39 +8,37 @@ noncomputable section
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `h h' M B _ ζ O _ e jl n o κ S₁ S₂ s₁ s₂ y c₁ w₁ act₁ c₂ w₂ act₂ hA hZ₁ hZ₂`. Take `⟨ψ, ψ₂, hψ, sψ, lψ, vψ, aψ⟩` from `hA`. Take `⟨inc₁, pr₁, mi₁, mp₁, ip₁, pi₁, L₁, V₁, -⟩` from `hZ₁`. Take `⟨inc₂, pr₂, mi₂, mp₂, ip₂, pi₂, L₂, V₂, -⟩` from `hZ₂`. Establish `ip₁' : inc₁.left ≫ pr₁.left = 𝟙 _` using `by rw [← Over.comp_left, ip₁]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ip₂' : inc₂.left ≫ pr₂.left = 𝟙 _` using `by rw [← Over.comp_left, ip₂]; rfl`. Establish `pi₁' : pr₁.left ≫ inc₁.left = (act₁ e).left` using `by rw [← Over.comp_left, pi₁]`. Establish `pi₂' : pr₂.left ≫ inc₂.left = (act₂ e).left` using `by rw [← Over.comp_left, pi₂]`. Establish `K0 : inc₂.left ≫ (act₂ e).left = inc₂.left`. Rewrite using `[← pi₂', ← Category.assoc, ip₂', Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ, hφ⟩ : ∃ φ : c₂.A.left ⟶ c₁.A.left, φ = inc₂.left ≫ ψ ≫ pr₁.left` from `⟨_, rfl⟩`. Establish `K1 : φ ≫ inc₁.left = inc₂.left ≫ ψ`. Rewrite using `[hφ, Category.assoc, Category.assoc, pi₁', ← aψ e, ← Category.assoc, K0]`. Establish `K2 : pr₂.left ≫ φ = ψ ≫ pr₁.left`. Establish `: (act₁ e).left ≫ pr₁.left = pr₁.left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pi₁', Category.assoc, ip₁', Category.comp_id]`. Rewrite using `[hφ, ← Category.assoc, ← Category.assoc, pi₂', aψ e, Category.assoc, this]`. Establish `hw : φ ≫ c₁.A.hom = c₂.A.hom ≫ y`. Rewrite using `[hφ, Category.assoc, Category.assoc, Over.w pr₁, hψ.1.w, ← Category.assoc, Over.w inc₂]`. Establish `hpb : IsPullback φ c₂.A.hom c₁.A.hom y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `lft : ∀ s : PullbackCone c₁.A.hom y, s.pt ⟶ c₂.A.left` to `fun s => hψ.1.lift (s.fst ≫ inc₁.left) s.snd (by rw [Category.assoc, Over.w inc₁]; exact s.condition) ≫ pr₂.left`. Use `IsPullback.of_isLimit (c := PullbackCone.mk φ c₂.A.hom hw) (PullbackCone.IsLimit.mk hw lft (fun s => ?_) (fun s => ?_) (fun s m hm1 hm2 => ?_))` and prove the remaining obligations. Simplify using `only [lft]`. Rewrite using `[Category.assoc, K2, ← Category.assoc, hψ.1.lift_fst, Category.assoc, ip₁', Category.comp_id]`. Simplify using `only [lft]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, Over.w pr₂, hψ.1.lift_snd]`. Establish `e₁ : m ≫ inc₂.left = hψ.1.lift (s.fst ≫ inc₁.left) s.snd (by rw [Category.assoc, Over.w inc₁]; exact s.condition)`. Apply `hψ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hψ.1.lift_fst, Category.assoc, ← K1, ← Category.assoc, hm1]`. Rewrite using `[hψ.1.lift_snd, Category.assoc, Over.w inc₂, hm2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmul : ∀ (T : Over S₂) (x x' : T ⟶ c₂.A) (x₀ x₀' : Over.mk (T.hom ≫ y) ⟶ c₁.A), x₀.left = x.left ≫ φ → x₀'.left = x'.left ≫ φ → (x₀ * x₀').left = (x * x').left ≫ φ`. Introduce `T x x' x₀ x₀' hx hx'`. Use `haveI := mi₂`. Use `haveI := mp₁`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `wx : ∀ z : T ⟶ c₂.A, ((z ≫ inc₂).left ≫ ψ) ≫ w₁.A.hom = (Over.mk (T.hom ≫ y)).hom` using `fun z => by`. Rewrite using `[Category.assoc, hψ.1.w, ← Category.assoc, Over.w (z ≫ inc₂)]`. Both sides reduce to the same expression. Set `X₀ : Over.mk (T.hom ≫ y) ⟶ w₁.A` to `Over.homMk ((x ≫ inc₂).left ≫ ψ) (wx x)`. Set `X₀' : Over.mk (T.hom ≫ y) ⟶ w₁.A` to `Over.homMk ((x' ≫ inc₂).left ≫ ψ) (wx x')`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `m` using `hψ.2 T (x ≫ inc₂) (x' ≫ inc₂) X₀ X₀' rfl rfl`. Rewrite `m` using `[← mul_comp]`. Establish `e₀ : X₀ ≫ pr₁ = x₀` using `by ext1`. Rewrite using `[Over.comp_left, hx, hφ]`. Use `show ((x ≫ inc₂).left ≫ ψ) ≫ pr₁.left = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left]`. Simplify using `only [Category.assoc]`. Establish `e₀' : X₀' ≫ pr₁ = x₀'` using `by ext1`. Rewrite using `[Over.comp_left, hx', hφ]`. Use `show ((x' ≫ inc₂).left ≫ ψ) ≫ pr₁.left = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left]`. Simplify using `only [Category.assoc]`. Rewrite using `[← e₀, ← e₀', ← mul_comp, Over.comp_left, m, hφ, Over.comp_left, Category.assoc, Category.assoc]`. Establish `sq` using `ActUnr.sqMap_fst hw`. Establish `sq'` using `ActUnr.sqMap_snd hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨φ, ActUnr.sqMap hw, ⟨hpb, hmul⟩, ⟨sq, sq'⟩, ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `f₁ : (inc₁ ⊗ₘ inc₁).left ≫ (fst w₁.A w₁.A).left = (fst c₁.A c₁.A).left ≫ inc₁.left`. Rewrite using `[← Over.comp_left, tensorHom_fst, Over.comp_left]`. Establish `g₁ : (inc₁ ⊗ₘ inc₁).left ≫ (snd w₁.A w₁.A).left = (snd c₁.A c₁.A).left ≫ inc₁.left`. Rewrite using `[← Over.comp_left, tensorHom_snd, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f₂ : (inc₂ ⊗ₘ inc₂).left ≫ (fst w₂.A w₂.A).left = (fst c₂.A c₂.A).left ≫ inc₂.left`. Rewrite using `[← Over.comp_left, tensorHom_fst, Over.comp_left]`. Establish `g₂ : (inc₂ ⊗ₘ inc₂).left ≫ (snd w₂.A w₂.A).left = (snd c₂.A c₂.A).left ≫ inc₂.left`. Rewrite using `[← Over.comp_left, tensorHom_snd, Over.comp_left]`. Establish `E : (inc₂ ⊗ₘ inc₂).left ≫ ψ₂ = ActUnr.sqMap hw ≫ (inc₁ ⊗ₘ inc₁).left`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `ActUnr.left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, sψ.1, ← Category.assoc, f₂]`. Simplify using `only [Category.assoc]`. Rewrite using `[f₁]`. Rewrite using `[← Category.assoc (ActUnr.sqMap hw), sq, Category.assoc, K1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, sψ.2, ← Category.assoc, g₂]`. Simplify using `only [Category.assoc]`. Rewrite using `[g₁]`. Rewrite using `[← Category.assoc (ActUnr.sqMap hw), sq', Category.assoc, K1]`. Establish `l₂` using `GlobalTheory.TChart.AbLevel.lbIso_comp w₁.isLB w₂.isLB c₂.isLB lψ L₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hN` using `pull_isLB c₁.isLB (ActUnr.sqMap hw)`. Establish `l₁` using `GlobalTheory.TChart.AbLevel.lbIso_comp w₁.isLB c₁.isLB hN L₁ ((GlobalTheory.CechPic.cls_eq_iff hN hN).1 rfl)`. Rewrite `l₂` using `[E]`. Conclude with `LBIso.trans c₂.isLB (pull_isLB w₁.isLB _) hN l₂ (LBIso.symm l₁)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hφ, Over.comp_left, Category.assoc]`. Use `_ = (w₂.lev (jl a)).left ≫ ψ ≫ pr₁.left := by rw [V₂ a]`. Use `_ = y ≫ (w₁.lev (jl a)).left ≫ pr₁.left := by rw [← Category.assoc, vψ, Category.assoc]`. Use `_ = y ≫ (c₁.lev a).left := by rw [← V₁ a, Over.comp_left, Category.assoc, ip₁', Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegPB_of_zRel_actPB : ∀ (h h' M : ℕ) (B : Type) [CommRing B] (ζ : B) (O : Type) [Ring O] (e : O)
     (jl : (Fin h ⊕ Fin h → ℤ) →+ (Fin h' ⊕ Fin h' → ℤ)) (n : ℕ) (o : Fin n → O)

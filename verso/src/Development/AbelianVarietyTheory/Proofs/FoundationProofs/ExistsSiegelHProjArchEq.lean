@@ -12,11 +12,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, fun v _ => map_one _, fun w => map_one _⟩`. Consider the case `insert u S hu ih`. Take `⟨p, h1, h2, h3⟩` from `ih`. Use `⟨embP u (x u) * p, fun v hv => ?_, fun v hv => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, coe_embP]`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Rewrite using `[proj_emb_self, h2 _ hu, mul_one]`. Rewrite using `[proj_emb_ne σ Q (ne_of_mem_of_not_mem hv hu), h1 v hv, one_mul]`. Rewrite `hv` using `[Finset.mem_insert, not_or]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, coe_embP, proj_emb_ne σ Q hv.1, h2 v hv.2, mul_one]`. Rewrite using `[Subgroup.coe_mul, map_mul, coe_embP, projArch_emb, h3, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_siegelH_proj_eq (x : ∀ v : HeightOneSpectrum (𝓞 F), siegelH (Fv F v) σ Q)
     (S : Finset (HeightOneSpectrum (𝓞 F))) : ∃ p : siegelH (AF F) σ Q,
@@ -36,11 +36,11 @@ theorem exists_siegelH_proj_eq (x : ∀ v : HeightOneSpectrum (𝓞 F), siegelH 
     · rw [Subgroup.coe_mul, map_mul, coe_embP, projArch_emb, h3, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, fun v _ => map_one _, fun w => map_one _⟩`. Consider the case `insert u S hu ih`. Take `⟨p, h1, h2, h3⟩` from `ih`. Use `⟨embArchP u (x u) * p, fun v hv => ?_, fun v hv => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, coe_embArchP]`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Rewrite using `[projArch_embArch_self, h2 _ hu, mul_one]`. Rewrite using `[projArch_embArch_ne σ Q (ne_of_mem_of_not_mem hv hu), h1 v hv, one_mul]`. Rewrite `hv` using `[Finset.mem_insert, not_or]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, coe_embArchP, projArch_embArch_ne σ Q hv.1, h2 v hv.2, mul_one]`. Rewrite using `[Subgroup.coe_mul, map_mul, coe_embArchP, proj_embArch, h3, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_siegelH_projArch_eq (x : ∀ w : InfinitePlace F, siegelH w.Completion σ Q)
     (S : Finset (InfinitePlace F)) : ∃ p : siegelH (AF F) σ Q,
@@ -62,7 +62,7 @@ theorem exists_siegelH_projArch_eq (x : ∀ w : InfinitePlace F, siegelH w.Compl
 variable {L : Submodule (𝓞 E) (Fin n → E)} [Submodule.IsLattice E L] {a : GL (Fin n) (AF F ⊗[F] E)}
 
 /- English proof (translation)
-Introduce `g` and use `by choose x k hk hx using fun v => hf v (proj σ Q v g) choose y l hl hy using fun w => hi w (projArch σ Q w g) have hS := Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc σ Q (sumLat finSumFinEquiv L L) g) obtain ⟨p, h1, h2, h3⟩ := exists_siegelH_proj_eq x hS.toFinset ob …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasIwasawa.adelic (hf : ∀ v : HeightOneSpectrum (𝓞 F), HasIwasawa σ Q (KFin σ Q L v))
     (hi : ∀ w : InfinitePlace F, HasIwasawa σ Q (KArch σ Q w (bc (compInf F E w) a))) :

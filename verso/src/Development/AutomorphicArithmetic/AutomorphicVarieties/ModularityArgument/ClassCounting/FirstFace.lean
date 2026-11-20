@@ -8,7 +8,7 @@ private def gz (q e : ℕ) (j : Fin (e + 1) → ZMod q) : Fin (2 * e + 1 + 1) �
   fun i => if (i : ℕ) % 2 = 0 then Multiplicative.ofAdd (j ⟨i / 2, by omega⟩) else Multiplicative.ofAdd 1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[show 2 * (n + 1) = 2 * n + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, add_assoc, h n (by omega), ih fun t ht => h t (by omega), add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem sum_pair {M : Type} [AddCommGroup M] (f : ℕ → M) (n : ℕ)
     (h : ∀ t < n, f (2 * t) + f (2 * t + 1) = 0) : ∑ s ∈ Finset.range (2 * n), f s = 0 := by
@@ -19,11 +19,11 @@ private theorem sum_pair {M : Type} [AddCommGroup M] (f : ℕ → M) (n : ℕ)
       h n (by omega), ih fun t ht => h t (by omega), add_zero]
 
 /- English proof (translation)
-Rewrite using `[← (Fin.consEquiv fun _ : Fin (e + 1) => ZMod q).sum_comp, Fintype.sum_prod_type]`. Establish `h : ∀ (a : ZMod q) (j : Fin e → ZMod q), (fun i : Fin (2 * e + 1) => gz q e ((Fin.consEquiv fun _ : Fin (e + 1) => ZMod q) (a, j)) i.succ) = fun i : Fin (2 * e + 1) => gz q e (Fin.cons 0 j) i.succ`. Introduce `a j`. Use function extensionality and compare the values at `i`. Unfold `gz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hi`. Establish `hi' : ((i : ℕ) + 1) % 2 = 0` using `hi`. Establish `: (⟨(i.succ : ℕ) / 2, by omega⟩ : Fin (e + 1)) = Fin.succ ⟨(i : ℕ) / 2, by omega⟩` using `by ext; simp; omega`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [h]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ZMod.card, ← Nat.cast_smul_eq_nsmul (ZMod q), ZMod.natCast_self, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem first_face (q : ℕ) [NeZero q] (e : ℕ) :
     ∑ j : Fin (e + 1) → ZMod q,
@@ -45,15 +45,15 @@ private theorem first_face (q : ℕ) [NeZero q] (e : ℕ) :
   rw [Finset.sum_const, Finset.card_univ, ZMod.card, ← Nat.cast_smul_eq_nsmul (ZMod q), ZMod.natCast_self, zero_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Break down `lt_trichotomy (k : ℕ) (2 * t) with h | h | h` into its components or cases. Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ h, Fin.contractNth_apply_of_lt _ _ _ _ (by simp; omega)]`. Simplify using `only [gz, Fin.val_castSucc, Pi.add_apply]`. Rewrite using `[if_neg (show ¬ (k : ℕ) / 2 = t by omega), if_neg (show ¬ (k : ℕ) / 2 = t + 1 by omega), add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.contractNth_apply_of_eq _ _ _ _ h, Fin.contractNth_apply_of_lt _ _ _ _ (by simp; omega)]`. Simplify using `only [gz, Fin.val_castSucc, Fin.val_succ, Pi.add_apply]`. Rewrite using `[if_pos (show (k : ℕ) % 2 = 0 by omega), if_pos (show (k : ℕ) % 2 = 0 by omega), if_neg (show ¬ ((k : ℕ) + 1) % 2 = 0 by omega), if_pos (show (k : ℕ) / 2 = t by omega), ofAdd_add]`. Rewrite using `[Fin.contractNth_apply_of_gt _ _ _ _ h]`. Break down `eq_or_lt_of_le (Nat.succ_le_of_lt h) with h' | h'` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Fin.contractNth_apply_of_eq _ _ _ _ h'.symm]`. Simplify using `only [gz, Fin.val_castSucc, Fin.val_succ, Pi.add_apply]`. Rewrite using `[if_pos (show ((k : ℕ) + 1) % 2 = 0 by omega), if_pos (show ((k : ℕ) + 1) % 2 = 0 by omega), if_neg (show ¬ (k : ℕ) % 2 = 0 by omega), if_neg (show ¬ ((k : ℕ) + 1) / 2 = t by omega), if_pos (show ((k : ℕ) + 1) / 2 = t + 1 by omega), ← ofAdd_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Fin.contractNth_apply_of_gt _ _ _ _ h']`. Simplify using `only [gz, Fin.val_succ, Pi.add_apply]`. Establish `h'' : 2 * t + 1 < (k : ℕ)` using `h'`. Distinguish the cases in `h1 : ((k : ℕ) + 1) % 2 = 0`. Rewrite using `[if_neg (show ¬ ((k : ℕ) + 1) / 2 = t by omega), if_neg (show ¬ ((k : ℕ) + 1) / 2 = t + 1 by omega), add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem merge (q e t : ℕ) (ht : t < e + 1) (j : Fin (e + 1) → ZMod q) :
     Fin.contractNth (⟨2 * t, by omega⟩ : Fin (2 * e + 1 + 1)) (· * ·) (gz q e j) =
@@ -85,11 +85,11 @@ private theorem merge (q e t : ℕ) (ht : t < e + 1) (j : Fin (e + 1) → ZMod q
       · rw [if_neg h1, if_neg h1]
 
 /- English proof (translation)
-Introduce `q _ e`. Establish `hz : zc q e = ∑ j : Fin (e + 1) → ZMod q, Finsupp.single (gz q e j) 1` using `rfl`. Rewrite using `[Cyc, hz, map_sum]`. Simplify using `only [bd, Finsupp.linearCombination_single, one_smul]`. Rewrite using `[Finset.sum_add_distrib, first_face, zero_add, Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Finset.smul_sum]`. Rewrite using `[Finset.sum_fin_eq_sum_range]`. Use `sum_pair _ (e + 1) fun t ht => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (show 2 * t < 2 * e + 1 + 1 by omega), dif_pos (show 2 * t + 1 < 2 * e + 1 + 1 by omega)]`. Simplify using `only [merge q e t ht]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Equiv.sum_comp (Equiv.addRight (fun i : Fin (e + 1) => if (i : ℕ) = t then (1 : ZMod q) else if (i : ℕ) = t + 1 then -1 else 0)) fun j => (Finsupp.single (Fin.contractNth (⟨2 * t + 1, by omega⟩ : Fin (2 * e + 1 + 1)) (· * ·) (gz q e j)) 1 : Ch (ZMod q) (Cq q) (2 * e + 1))]`. Simplify using `only [Equiv.coe_addRight]`. Rewrite using `[← add_smul, pow_succ (-1 : ZMod q) (2 * t + 1), mul_neg_one, add_neg_cancel, zero_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sZc : SZc := by
   intro q _ e

@@ -14,7 +14,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Unfold `mp`. Rewrite using `[Units.val_mul, GroundTheory.LocalField.modulus_mul, NNReal.coe_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_mul (x y : Fˣ) (s : ℂ) : mp (x * y) s = mp x s * mp y s := by
   unfold mp
@@ -22,15 +22,15 @@ theorem mp_mul (x y : Fˣ) (s : ℂ) : mp (x * y) s = mp x s * mp y s := by
     Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]
 
 /- English proof (translation)
-Establish `ht : 0 < (modulus (a : F) : ℝ)`. Conclude with `GroundTheory.LocalField.modulus_pos a.ne_zero` after adjusting the coercions. Unfold `mp`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, GroundTheory.LocalField.modulus_mul, GroundTheory.LocalField.modulus_inv, NNReal.coe_mul, NNReal.coe_inv]`. Generalize the expression as in `(modulus (a : F) : ℝ) = t at ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `e : ((t⁻¹ * t⁻¹ : ℝ) : ℂ) ^ (3 / 2 : ℂ) = (((t⁻¹ * t⁻¹) ^ (3 / 2 : ℝ) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_cpow (by positivity)]`. Use `push_cast`. Both sides reduce to the same expression. Establish `e2 : (t⁻¹ * t⁻¹) ^ (3 / 2 : ℝ) * (t * t * t) = 1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: t⁻¹ * t⁻¹ = t ^ (-2 : ℝ)`. Rewrite using `[Real.rpow_neg ht.le, Real.rpow_two]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, ← Real.rpow_mul ht.le]`. Establish `: t * t * t = t ^ (3 : ℝ)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← Real.rpow_add ht]`. Evaluate the numerical expressions. Move the coercions through the operations in `at e ⊢`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.cpow_one, e]`. Use `congrArg (fun r : ℝ => (r : ℂ)) e2` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[mul_comm]`. Conclude with `this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_scale (a : Fˣ) : mp (a * a * a) 1 * mp (a⁻¹ * a⁻¹) (3 / 2) = 1 := by
   have ht : 0 < (modulus (a : F) : ℝ) := by
@@ -61,7 +61,7 @@ theorem mp_scale (a : Fˣ) : mp (a * a * a) 1 * mp (a⁻¹ * a⁻¹) (3 / 2) = 1
   exact this
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[blk, dg, dg2, Matrix.mul_apply, Fin.sum_univ_three, Fin.sum_univ_two, mul_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_scalar (a : Fˣ) (x : Fin 2 → F) :
     blk x * ((dg a a a : GL (Fin 3) F) : Matrix (Fin 3) (Fin 3) F) =
@@ -71,7 +71,7 @@ theorem blk_scalar (a : Fˣ) (x : Fin 2 → F) :
     simp [blk, dg, dg2, Matrix.mul_apply, Fin.sum_univ_three, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Unfold `inn`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `: (h : Matrix (Fin 2) (Fin 2) F) * blk x * ((dg a a a * g : GL (Fin 3) F) : Matrix (Fin 3) (Fin 3) F) = ((h * dg2 a a : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) * blk x * (g : Matrix (Fin 3) (Fin 3) F)`. Rewrite using `[Units.val_mul, Units.val_mul, ← Matrix.mul_assoc, Matrix.mul_assoc _ (blk x), blk_scalar, Matrix.mul_assoc _ _ (blk x)]`. Simplify using `only [this]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inn_scalar (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (h : GL (Fin 2) F)
     (g : GL (Fin 3) F) (a : Fˣ) : inn ψ Φ h (dg a a a * g) = inn ψ Φ (h * dg2 a a) g := by
@@ -84,29 +84,29 @@ theorem inn_scalar (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → �
   simp only [this]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[dg, Matrix.det_fin_three]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_dg (a : Fˣ) : GeneralLinearGroup.det (dg a a a) = a * a * a := by
   ext
   simp [dg, Matrix.det_fin_three]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[dg2, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_diagonal_two (a : Fˣ) : GeneralLinearGroup.det (dg2 a a) = a * a := by
   ext
   simp [dg2, Matrix.det_fin_two]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ ν W' Φ hyp a g`. Take `⟨-, -, ⟨V', hV, hW⟩, -⟩` from `hyp`. Establish `hc : ∀ g, W' (dg2 a a * g) = W' g` using `fun g => by`. Rewrite using `[hV.cen W' hW a g]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hI : ∫ h, W' h⁻¹ * mp (GeneralLinearGroup.det h) (3 / 2) * inn ψ Φ h (dg a a a * g) ∂hG ψ = mp (a⁻¹ * a⁻¹) (3 / 2) * ∫ h, W' h⁻¹ * mp (GeneralLinearGroup.det h) (3 / 2) * inn ψ Φ h g ∂hG ψ`. Rewrite using `[← integral_const_mul]`. Use `haveI : (hG ψ).IsMulRightInvariant := by`. Unfold `hG`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_mul_right_eq_self (μ := hG ψ) (fun h => mp (a⁻¹ * a⁻¹) (3 / 2) * (W' h⁻¹ * mp (GeneralLinearGroup.det h) (3 / 2) * inn ψ Φ h g)) (dg2 a a)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Establish `hw : W' (h * dg2 a a)⁻¹ = W' h⁻¹`. Rewrite using `[← hc (h * dg2 a a)⁻¹, _root_.mul_inv_rev, mul_inv_cancel_left]`. Establish `hm : mp (a⁻¹ * a⁻¹) (3 / 2) * mp (GeneralLinearGroup.det (h * dg2 a a)) (3 / 2) = mp (GeneralLinearGroup.det h) (3 / 2)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, det_diagonal_two, ← mp_mul]`. Use `congr 1`. Rewrite using `[mul_comm, mul_assoc, show a * a * (a⁻¹ * a⁻¹) = (1 : Fˣ) by group, mul_one]`. Simplify using `only`. Rewrite using `[inn_scalar, hw, ← hm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `Wp`. Rewrite using `[hI, map_mul, det_dg, mp_mul, ← mul_assoc, mul_right_comm (mp _ 1), mp_scale, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scenW : Ad3.LFS.SCenW := by
   intro F _ _ _ _ _ _ ψ ν W' Φ hyp a g

@@ -11,9 +11,9 @@ namespace GroundTheory.ProfCoh
 open CategoryTheory Limits
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hord : addOrderOf c = p` using `addOrderOf_eq_prime hpc hc`. Rewrite `hx` using `[← ZMod.intCast_zmod_cast x, ZMod.lift_coe, zmultiplesHom_apply]`. Establish `h` using `(addOrderOf_dvd_iff_zsmul_eq_zero).2 hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hord]`. Rewrite using `[← ZMod.intCast_zmod_cast x]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ p).2 h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zmod_lift_zmultiplesHom_injective {X : Type*} [AddCommGroup X] {p : ℕ} [Fact p.Prime] {c : X}
     (hc : c ≠ 0) (hpc : p • c = 0) :
@@ -45,7 +45,7 @@ def rootsOfUnityFixing : OpenSubgroup Gal(Ksep/K) where
 end Fixing
 
 /- English proof (translation)
-Establish `hu : IsUnit ζ` using `IsUnit.of_pow_eq_one hζ (NeZero.ne n)`. Set `x : galRootsOfUnity.{0} K Ksep n` to `Additive.ofMul ⟨hu.unit, (mem_rootsOfUnity n _).2 (Units.ext (by simpa using hζ))⟩`. Establish `h` using `Subgroup.mem_iInf.1 hσ x`. Conclude with `congrArg (fun y : galRootsOfUnity.{0} K Ksep n => (((Additive.toMul y : rootsOfUnity n Ksep) : Ksepˣ) : Ksep)) h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_mem_rootsOfUnityFixing {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep]
     [IsSepClosure K Ksep] {n : ℕ} [NeZero n] {σ : Gal(Ksep/K)} (hσ : σ ∈ rootsOfUnityFixing K Ksep n)
@@ -67,9 +67,7 @@ variable (K Ksep : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Establish `: NeZero (p : Ksep)` using `⟨by`. Rewrite using `[← map_natCast (algebraMap K Ksep)]`. Conclude with `(map_ne_zero_iff _ (algebraMap K Ksep).injective).2 hp⟩`. Establish `: NeZero p` using `.of_neZero_natCast Ksep`. Establish `: IsSepClosed Ksep` using `‹IsSepClosure K Ksep›.sep_closed`.
-
-Conclude with `HasEnoughRootsOfUnity.natCard_rootsOfUnity Ksep p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCard_rootsOfUnity_of_ne_zero {p : ℕ} (hp : (p : K) ≠ 0) :
     Nat.card (rootsOfUnity p Ksep) = p := by
@@ -85,43 +83,39 @@ variable {n : ℕ} (hn : (n : K) ≠ 0)
 include hn in
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `fun h0 => hn (by simp [h0])`. Introduce `A`. Proceed by induction on `hN : Nat.card A using Nat.strong_induction_on generalizing A with`. Consider the case `_ N ih`. Introduce `_ _ htriv hA r hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hsub : Subsingleton A`. Use `subsingleton_cohomology_of_subsingleton A r` as an intermediate fact. Conclude with `Finite.of_subsingleton`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : A, a ≠ 0 := by`. Rewrite `hsub` using `[not_subsingleton_iff_nontrivial]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `exists_ne 0`. Establish `hdn : addOrderOf a ∣ n` using `addOrderOf_dvd_of_nsmul_eq_zero (hA a)`. Establish `hd0 : addOrderOf a ≠ 0` using `fun h0 => hn0 (Nat.eq_zero_of_zero_dvd (h0 ▸ hdn))`. Establish `hd1 : addOrderOf a ≠ 1` using `fun h1 => ha (by rw [← one_nsmul a, ← h1, addOrderOf_nsmul_eq_zero])`. Use `set d := addOrderOf a with hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p := d.minFac`. Establish `hp : p.Prime` using `Nat.minFac_prime hd1`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hpd : p ∣ d` using `Nat.minFac_dvd d`. Use `set b := (d / p) • a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpb : p • b = 0`. Rewrite using `[smul_smul, Nat.mul_div_cancel' hpd, hd, addOrderOf_nsmul_eq_zero]`. Establish `hb : b ≠ 0`. Introduce `hb0`. Establish `h1` using `Nat.le_of_dvd (Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_ne_zero hd0) hpd) hp.pos) (addOrderOf_dvd_of_nsmul_eq_zero hb0)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd h1 (not_le.2 (Nat.div_lt_self (Nat.pos_of_ne_zero hd0) hp.one_lt))`. Establish `hpn : p ∣ n` using `hpd.trans hdn`. Establish `hpK : (p : K) ≠ 0` using `fun h0 => hn (by`. Take `⟨c, hc⟩` from `hpn`. Rewrite using `[hc, Nat.cast_mul, h0, zero_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard` using `natCard_rootsOfUnity_of_ne_zero K Ksep hpK`. Establish `: Finite (rootsOfUnity p Ksep)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact hp.ne_zero)`. Establish `: Nontrivial (rootsOfUnity p Ksep)` using `Finite.one_lt_card_iff_nontrivial.1 (by rw [hcard]; exact hp.one_lt)`. Take `⟨ζ, hζ⟩` from `exists_ne (1 : rootsOfUnity p Ksep)`. Establish `hζ0 : Additive.ofMul ζ ≠ 0` using `hζ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hζp : p • Additive.ofMul ζ = 0`. Establish `h` using `pow_card_eq_one' (G := rootsOfUnity p Ksep) (x := ζ)`. Rewrite `h` using `[hcard]`. Rewrite using `[← ofMul_pow, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : ZMod p →+ Additive (rootsOfUnity p Ksep)` to `ZMod.lift p ⟨zmultiplesHom _ (Additive.ofMul ζ), by simp [hζp]⟩`. Establish `hj : Function.Bijective j` using `(zmod_lift_zmultiplesHom_injective hζ0 hζp).bijective_of_nat_card_le (by`. Rewrite using `[Nat.card_zmod, Nat.card_congr Additive.ofMul.symm, hcard])`. Set `e : ZMod p ≃+ Additive (rootsOfUnity p Ksep)` to `AddEquiv.ofBijective j hj`. Set `i : ZMod p →+ A` to `ZMod.lift p ⟨zmultiplesHom A b, by simp [hpb]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hi : Function.Injective i` using `zmod_lift_zmultiplesHom_injective hb hpb`. Establish `hfix : ∀ (σ : (V : Subgroup Gal(Ksep/K))) (x : Additive (rootsOfUnity p Ksep)), (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep p)).ρ σ x = x`. Introduce `σ x`. Use `congrArg Additive.ofMul (Subtype.ext (Units.ext ?_))` and prove the remaining obligations. Use `hV σ σ.2 _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨c, hc⟩` from `hpn`. Establish `hxp : (((Additive.toMul x : rootsOfUnity p Ksep) : Ksepˣ) : Ksep) ^ p = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, (mem_rootsOfUnity p _).1 (Additive.toMul x).2, Units.val_one]`. Rewrite using `[hc, pow_mul, hxp, one_pow]`. Set `ι : Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep p) ⟶ A` to `Rep.ofHom ⟨(uliftIntLinearEquivAddHom (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep p)) A).symm (i.comp e.symm.toAddMonoidHom), fun σ => LinearMap.ext fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `i (e.symm ((Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep p)).ρ σ x)) = A.ρ σ (i (e.symm x))`. Rewrite using `[hfix, htriv]⟩`. Establish `hι : Function.Injective ι.hom` using `fun x y h => e.symm.injective (hi h)`. Set `S` to `cokerShortComplex ι`. Establish `hS : S.ShortExact` using `cokerShortComplex_shortExact ι hι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDiscreteRep S.X₁` using `inferInstanceAs (IsDiscreteRep (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep p)))`. Establish `: IsDiscreteRep S.X₂` using `(inferInstance : IsDiscreteRep A)`. Establish `: Finite S.X₂` using `(inferInstance : Finite A)`. Establish `: IsDiscreteRep S.X₃` using `isDiscreteRep_quotient _ _ _`. Establish `hsurj : Function.Surjective S.g.hom` using `Submodule.mkQ_surjective _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Finite S.X₃` using `Finite.of_surjective _ hsurj`. Establish `htrivQ : ∀ (g : (V : Subgroup Gal(Ksep/K))) (q : S.X₃), S.X₃.ρ g q = q`. Introduce `g q`. Take `⟨a', rfl⟩` from `hsurj q`. Conclude with `(Rep.hom_comm_apply S.g g a').symm.trans (congrArg S.g.hom (htriv g a'))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : ∀ q : S.X₃, n • q = 0`. Introduce `q`. Take `⟨a', rfl⟩` from `hsurj q`. Rewrite using `[← map_nsmul]`. Conclude with `(congrArg S.g.hom (hA a')).trans (map_zero _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : Nat.card S.X₃ < N`. Rewrite using `[← hN]`. Use `Fintype.ofFinite S.X₃` as an intermediate fact. Use `Fintype.ofFinite A` as an intermediate fact. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fintype.card_lt_of_surjective_not_injective _ hsurj fun hinj => hb ?_` and prove the remaining obligations. Establish `h0 : S.g.hom (ι.hom (e 1)) = 0` using `congrArg (fun φ => φ.hom (e 1)) S.zero`. Establish `h1 : ι.hom (e 1) = b`. Express the relevant statement in the definitionally equal form `i (e.symm (e 1)) = b`. Rewrite using `[AddEquiv.symm_apply_apply, show (1 : ZMod p) = ((1 : ℤ) : ZMod p) from Int.cast_one.symm, ZMod.lift_coe]`.
-
-Conclude with `one_zsmul b`. Rewrite using `[← h1]`. Conclude with `hinj (h0.trans (map_zero _).symm)`. Establish `h3 : Finite (cohomology S.X₃ r)` using `ih _ hlt S.X₃ rfl htrivQ hQ r hr`. Establish `h1 : Finite (cohomology S.X₁ r)` using `finite_cohomology_rootsOfUnity_open K Ksep hpK V r hr`.
-
-Conclude with `finite_of_exact (cohomologyMap S.f r).hom.toAddMonoidHom (cohomologyMap S.g r).hom.toAddMonoidHom ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (cohomology_exact₂ hS r))`.
+A detailed English derivation is pending.
 -/
 theorem finite_cohomology_of_trivial (V : OpenSubgroup Gal(Ksep/K))
     (hV : ∀ σ ∈ V, ∀ ζ : Ksep, ζ ^ n = 1 → σ ζ = ζ) :

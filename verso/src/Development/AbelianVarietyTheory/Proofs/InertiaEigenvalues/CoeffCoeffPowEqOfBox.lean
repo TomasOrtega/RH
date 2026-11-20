@@ -7,11 +7,11 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ m i n G H h`. Proceed by induction on `m generalizing i n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ, PowerSeries.coeff_mul, PowerSeries.coeff_mul, map_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨p, q⟩ hpq`. Rewrite `hpq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[PowerSeries.coeff_mul, PowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨s, t⟩ hst`. Rewrite `hst` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only at hpq hst ⊢`. Rewrite using `[ih p s (fun i' hi' n' hn' => h i' (by omega) n' (by omega)), h q (by omega) t (by omega)]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_coeff_pow_eq_of_box :
     ∀ (R : Type) [CommRing R] (m i n : ℕ) (G H : R⟦X⟧⟦X⟧),

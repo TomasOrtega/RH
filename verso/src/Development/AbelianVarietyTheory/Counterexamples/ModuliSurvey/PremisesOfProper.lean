@@ -15,11 +15,11 @@ namespace GlobalTheory.ModelUniqueChecks
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨_, _⟩ : QuasiCompact (spMap (algebraMap V K)) ∧ IsSchemeTheoreticallyDominant (spMap (algebraMap V K))` from `ExtUnique.spec_fractionRing V K`. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian t.G t.semi`. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian t'.G t'.semi`. Take `⟨F, hF, hφ⟩` from `TripleExt.exists_hom a.cart a'.cart (GlobalTheory.semiAbelian_hom_extends_uniquely_dvr V K t.G t'.G t.semi t'.semi)`. Take `⟨F', -, hφ'⟩` from `TripleExt.exists_hom a'.cart a.cart (GlobalTheory.semiAbelian_hom_extends_uniquely_dvr V K t'.G t.G t'.semi t.semi)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hiso : IsIso F` using `ExtUnique.isIso_of_isPullback a.cart.1 a'.cart.1 (Iso.refl _) F F' ((Category.id_comp _).trans hφ.symm) ((Category.id_comp _).trans hφ'.symm)`. Establish `hact : ∀ x, t.act.act x ≫ F = F ≫ t'.act.act x` using `fun x => ExtUnique.over_hom_ext_of_isPullback a.cart.1 (by`. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, ← a.act, Category.assoc, hφ, ← Category.assoc, hφ, a'.act])`. Take `⟨n, hn⟩` from `GlobalTheory.Exist.CubicalExtension.exists_sabMap_of_groupIso E H V K t t' tK a a' (asIso F) hF hφ hact`. Use `⟨n, (congrArg (a.φ ≫ ·) hn).trans hφ, fun n' hn' => SemiAbelianTripleChecks.sabMap_ext _ _ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `w : n'.φ ≫ t'.G.hom = t.G.hom` using `n'.cart.1.w.trans (Category.comp_id _)`. Establish `: Over.homMk n'.φ w = F` using `ExtUnique.over_hom_ext_of_isPullback a.cart.1 (hn'.trans hφ.symm)`. Rewrite using `[hn]`. Conclude with `congrArg (fun z => z.left) this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_map (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] (t t' : SAB H (Sp V)) (tK : SAB H (Sp K)) (a : SABMap tK t (spMap (algebraMap V K)))
@@ -48,7 +48,7 @@ theorem existsUnique_map (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValua
   exact congrArg (fun z => z.left) this
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ V _ _ _ _ t t' tK _ a a'` and use `(existsUnique_map V (FractionRing V) t t' tK a a').exists`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extV_holds : ExtVStatement := fun _ _ _ _ _ V _ _ _ _ t t' tK _ a a' =>
   (existsUnique_map V (FractionRing V) t t' tK a a').exists

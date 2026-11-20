@@ -14,7 +14,7 @@ open GlobalTheory.TateUnr
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TateUnr.chr_eq_prod_val_zpow | exact GlobalTheory.TateUnr.chr_eq_prod_val_zpow | (intros; apply GlobalTheory.TateUnr.chr_eq_prod_val_zpow <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.unramified_char_value_product : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ν : Chr F E) (v : Pl F),
     (∀ w ∈ aboveF (L := E) F v, UnrAt ν w) → ∀ l : idelesAt E (evFin F v),

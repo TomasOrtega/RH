@@ -24,7 +24,7 @@ open MeasureTheory
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [coord, toMK_mul, Matrix.mul_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[star_sum]; exact Finset.sum_congr rfl fun l _ => by rw [star_mul', mul_comm]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_mul_eq_sum (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) (a k : KG ε) :
     coord ε c (a * k) = ∑ l : Fin n, coord ε (c.1, l, c.2.2) a * coord ε (l, c.2.1, c.2.2) k := by
@@ -34,22 +34,20 @@ theorem coord_mul_eq_sum (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) (a k
   · rw [star_sum]; exact Finset.sum_congr rfl fun l _ => by rw [star_mul', mul_comm]
 
 /- English proof (translation)
-The claim follows from `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace F)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_muK_of_continuous {ε : Fin n → Bool} {F : KG ε → ℂ} (hF : Continuous F) :
     Integrable F (muK ε) :=
   hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace F)
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil`. Introduce `d _ h _`. Simplify `const_mem ε d (∫ k, h k ∂(muK ε))` using `[mono]`. Consider the case `cons c s ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `d hd h hh`. Establish `hd' : s.length + 1 ≤ d` using `by simpa using hd`. Establish `e : (fun k' : KG ε => ∫ k, mono ε (c :: s) (k'⁻¹ * k) * h k ∂(muK ε)) = ∑ l : Fin n, (fun k' : KG ε => coord ε (c.1, l, c.2.2) k'⁻¹) * (fun k' : KG ε => ∫ k, mono ε s (k'⁻¹ * k) * (coord ε (l, c.2.1, c.2.2) k * h k) ∂(muK ε))`. Use function extensionality and compare the values at `k'`. Simplify using `only [Finset.sum_apply, Pi.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [← integral_const_mul]`. Rewrite using `[← integral_finset_sum]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Establish `h1 : mono ε (c :: s) (k'⁻¹ * k) = coord ε c (k'⁻¹ * k) * mono ε s (k'⁻¹ * k)` using `by simp [mono]`. Simplify using `only [h1, coord_mul_eq_sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Introduce `l _`. Use `integrable_muK_of_continuous (continuous_const.mul ?_)` and prove the remaining obligations. Conclude with `((continuous_mono ε s).comp (continuous_const.mul continuous_id)).mul ((continuous_coord ε _).mul hh)`. Rewrite using `[e]`.
-
-Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Conclude with `polyV_mono ε (show 1 + (d - 1) ≤ d by omega) (mul_mem (coord_inv_mem ε _) (ih (d - 1) (by omega) _ ((continuous_coord ε _).mul hh)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conv_mono_mem (ε : Fin n → Bool) (s : List (Fin n × Fin n × Bool)) :
     ∀ (d : ℕ), s.length ≤ d → ∀ h : KG ε → ℂ, Continuous h →
@@ -82,13 +80,11 @@ theorem conv_mono_mem (ε : Fin n → Bool) (s : List (Fin n × Fin n × Bool)) 
       (mul_mem (coord_inv_mem ε _) (ih (d - 1) (by omega) _ ((continuous_coord ε _).mul hh)))
 
 /- English proof (translation)
-Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, hs, rfl⟩` from `hx`. Conclude with `conv_mono_mem ε s d hs h hh`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using const_mem ε d 0`. Consider the case `add x y hx hy ihx ihy`. Use `add_mem ihx ihy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Simplify using `only [Pi.add_apply, add_mul]`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_add (integrable_muK_of_continuous ?_) (integrable_muK_of_continuous ?_)` and prove the remaining obligations. Conclude with `((continuous_of_mem (d := d) hx).comp (continuous_const.mul continuous_id)).mul hh`. Conclude with `((continuous_of_mem (d := d) hy).comp (continuous_const.mul continuous_id)).mul hh`. Consider the case `smul a x _ ih`. Use `Submodule.smul_mem _ a ih using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `k'`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conv_mem {ε : Fin n → Bool} {d : ℕ} {e : KG ε → ℂ} (he : e ∈ polyV ε d) {h : KG ε → ℂ}
     (hh : Continuous h) : (fun k' : KG ε => ∫ k, e (k'⁻¹ * k) * h k ∂(muK ε)) ∈ polyV ε d := by
@@ -111,9 +107,9 @@ theorem conv_mem {ε : Fin n → Bool} {d : ℕ} {e : KG ε → ℂ} (he : e ∈
     simp only [Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
 /- English proof (translation)
-Introduce `n ε i e he f hf y hy`. Establish `hh : Continuous fun k : KG ε => f (y * toMK k)` using `hf.comp_continuous (continuous_const.mul (GlobalTheory.TypeSum.continuous_toMK ε)) fun k => GlobalTheory.TypeSum.mul_mem_UJ hy (GlobalTheory.TypeSum.K_le_UJ (GlobalTheory.TypeSum.toMK_mem_K k))`. Use `conv_mem he hh using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Rewrite using `[← integral_mul_left_eq_self (μ := muK ε) _ k']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [avgK, inv_mul_cancel_left, toMK_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem avgK_mem : ∀ {n : ℕ} (ε : Fin n → Bool) (i : ℕ) (e : KG ε → ℂ), e ∈ GlobalTheory.KFourier.polyV ε i →
     ∀ f : Mx n → ℂ, ContinuousOn f (UJset ε) → ∀ y ∈ UJset ε,

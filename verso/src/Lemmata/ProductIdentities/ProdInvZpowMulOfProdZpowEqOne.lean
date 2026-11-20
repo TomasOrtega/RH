@@ -3,11 +3,11 @@ import Mathlib
 namespace Bl.ProductIdentities
 
 /- English proof (translation)
-Establish `hex : ∃ j, j ≠ k ∧ σ j ≠ j`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_and, not_not] at h`. Apply `hσ` to reduce the goal to its premises. Use extensionality with `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `only [Equiv.Perm.coe_one, id_eq]`. Distinguish the cases in `hx : x = k`. Substitute `hx` using the available equality. Assume the negation of the conclusion as `hk`. Conclude with `hk (σ.injective (h (σ x) hk))`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `h x hx`. Take `⟨j, hjk, hj⟩` from `hex`. Apply `Finset.prod_eq_zero (i := j) (Finset.mem_erase.mpr ⟨hjk, Finset.mem_univ _⟩)` to reduce the goal to its premises. Simplify using `[hj]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma prod_erase_one_perm_apply_eq_zero {n : Type} [Fintype n] [DecidableEq n] (σ : Equiv.Perm n) (hσ : σ ≠ 1)
     (k : n) : ∏ j ∈ Finset.univ.erase k, (1 : Matrix n n ℂ) (σ j) j = 0 := by
@@ -27,13 +27,13 @@ private lemma prod_erase_one_perm_apply_eq_zero {n : Type} [Fintype n] [Decidabl
   simp [hj]
 
 /- English proof (translation)
-Introduce `n _ _ A A' h0 hd`. Establish `key : ∀ σ : Equiv.Perm n, HasDerivAt (fun t : ℝ => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, A t (σ i) i) (((Equiv.Perm.sign σ : ℤ) : ℂ) * ∑ k, (∏ j ∈ Finset.univ.erase k, A 0 (σ j) j) • A' (σ k) k) 0`. Introduce `σ`. Apply `HasDerivAt.const_mul` to reduce the goal to its premises. Conclude with `HasDerivAt.fun_finsetProd (u := Finset.univ) (f := fun i t => A t (σ i) i) (f' := fun i => A' (σ i) i) (fun k _ => hd (σ k) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hsum` using `HasDerivAt.fun_sum (u := Finset.univ) (fun σ _ => key σ)`. Establish `hfun : (fun t : ℝ => Matrix.det (A t)) = fun t => ∑ σ : Equiv.Perm n, ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, A t (σ i) i`. Use function extensionality and compare the values at `t`. Conclude with `Matrix.det_apply' _`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hsum.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (1 : Equiv.Perm n)]`. Rewrite using `[h0]`. Simplify using `[Matrix.trace, Matrix.one_apply]`. Introduce `σ _ hσ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0, Finset.sum_eq_zero (fun k _ => by rw [prod_erase_one_perm_apply_eq_zero σ hσ k, zero_smul]), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {n : Type} [inst : Fintype.{0} n] [inst_1 : DecidableEq.{1} n] (A : Real → Matrix.{0, 0, 0} n n Complex)

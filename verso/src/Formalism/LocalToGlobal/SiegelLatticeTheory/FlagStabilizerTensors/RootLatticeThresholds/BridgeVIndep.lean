@@ -12,7 +12,7 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.DataInst
 attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 /- English proof (translation)
-The claim follows from `| _, [] => rfl | b, (s, t) :: rest => by simp only [signAux, signFlip_involutive r (b + s) rest, List.cons.injEq, Prod.mk.injEq, true_and, and_true] rw [← mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem signFlip_involutive {K : Type} [Ring K] (r : ℕ) : ∀ (b : ℕ) (x : Formalism.FourierDecayAlt.TB.Pt K),
     signAux r b (signAux r b x) = x
@@ -24,11 +24,9 @@ theorem signFlip_involutive {K : Type} [Ring K] (r : ℕ) : ∀ (b : ℕ) (x : F
 variable {D : D7}
 
 /- English proof (translation)
-Use `set y := Formalism.L2.S.ptEquiv D.host.E (D.R.rS + 1) w with hy`. Establish `hinv : Formalism.L2.SG.DataInst.signPt D.R.rS (Formalism.L2.SG.DataInst.signPt D.R.rS y.1) = y.1` using `signFlip_involutive _ _ _`. Use `⟨Formalism.L2.SG.DataInst.signPt D.R.rS y.1, ?_⟩` and prove the remaining obligations. Establish `hcond : Formalism.L2.S.IsPtL (Formalism.L2.SG.DataInst.signPt D.R.rS (Formalism.L2.SG.DataInst.signPt D.R.rS y.1)) (D.R.rS + 1)`. Rewrite using `[hinv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `y.2`. Unfold `ptOfL Formalism.L2.SG.DataInst.ptOfList`. Rewrite using `[dif_pos hcond]`. Use `congr 1`. Apply `(Formalism.L2.S.ptEquiv D.host.E (D.R.rS + 1)).symm_apply_eq.mpr` to reduce the goal to its premises.
-
-Conclude with `Subtype.ext hinv`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_pt (w : Point D.host.E (D.R.rS + 1)) :
     ∃ p : Formalism.FourierDecayAlt.TB.Pt D.host.E, ptOfL (D := D) (D.R.rS + 1) p = some w := by
@@ -62,9 +60,9 @@ def VIndepAt (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (νq
           (X.piU u' h₂'))
 
 /- English proof (translation)
-Introduce `w hw hG h₁ h₁' h₂ h₂' hd₁ hd₂`. Take `⟨p, hp⟩` from `exists_pt (D := D) w`. Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises. Use `LinearMap.ext_on_range (X.tensU_span u') fun x => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hJT p w hp hw hG h₁ h₁' hd₁ x, hJT p w hp hw hG h₂ h₂' hd₂ x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vIndepAt_of {X} {u u'} (P : Parts X u u') (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (hJT : P.JointTensor sc i0 i0' νq) : VIndepAt X u u' sc i0 i0' νq := by

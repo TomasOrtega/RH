@@ -14,9 +14,9 @@ namespace GlobalTheory.IndLineGL.TorusPiece
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Fin.prod_univ_three, torusPt_zero, torusPt_one, torusPt_two, Matrix.GeneralLinearGroup.det_scalar, Matrix.GeneralLinearGroup.det_scalar, map_one, map_one, mul_one, CellTorus.modExp_three_zero, CellTorus.modExp_three_two, Fintype.card_fin, Fintype.card_fin]`. Establish `h0 : blk3 m 0 = 1` using `rfl`. Establish `h1 : blk3 m 1 = m` using `rfl`. Establish `h2 : blk3 m 2 = 1` using `rfl`. Rewrite using `[h0, h1, h2, pow_one, pow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 3 <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem delta_torus (m : ℕ) (t₁ t₂ : kˣ) :
     deltaHalf k (fun i : Fin 3 => Fin (blk3 m i)) (torusPt k m t₁ t₂) =
@@ -31,9 +31,9 @@ private theorem delta_torus (m : ℕ) (t₁ t₂ : kˣ) :
   congr 3 <;> push_cast <;> ring
 
 /- English proof (translation)
-Establish `h0 : (midIncl k m h) 0 = 1` using `by show Pi.mulSingle (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) 1 h 0 = 1`. Conclude with `Pi.mulSingle_eq_of_ne (by decide) _`. Establish `h2 : (midIncl k m h) 2 = 1` using `by show Pi.mulSingle (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) 1 h 2 = 1`. Conclude with `Pi.mulSingle_eq_of_ne (by decide) _`. Rewrite using `[deltaHalf_apply, Fin.prod_univ_three, h0, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : modExp (fun i : Fin 3 => Fin (blk3 m i)) 1 = 0`. Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_three]`. Rewrite using `[hm, map_one, map_one, map_one, map_one, mul_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem delta_mid (m : ℕ) (h : GL (Fin m) k) :
     deltaHalf k (fun i : Fin 3 => Fin (blk3 m i)) (midIncl k m h) = 1 := by
@@ -71,11 +71,11 @@ private def b₀ (x x' : ℕ) : SizeMatrix (Two (Fin (x + 2)) (Fin x')) fun j : 
       · rfl⟩
 
 /- English proof (translation)
-Rewrite using `[delta_torus, cellChar, Fintype.prod_bool]`. Establish `e1 : (x' : ℂ) / 2 = (((x + x' : ℕ) : ℂ) + 1) / 2 + (1 - ((x + 2 : ℕ) : ℂ)) / 2` using `by push_cast; ring`. Establish `e2 : -(x' : ℂ) / 2 = -(((x + x' : ℕ) : ℂ) + 1) / 2 + (((x + 2 : ℕ) : ℂ) - 1) / 2` using `by push_cast; ring`. Rewrite using `[e2, e1, absPow_add, absPow_add]`. Establish `a1 : (b₀ x x').1 true 0 = 0` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2 : (b₀ x x').1 true 2 = 0` using `rfl`. Establish `a3 : (b₀ x x').1 false 0 = 1` using `rfl`. Establish `a4 : (b₀ x x').1 false 2 = 1` using `rfl`. Rewrite using `[a1, a2, a3, a4]`. Simplify using `only [cond_true, cond_false, pow_zero, pow_one, MonoidHom.mul_apply, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ a b c d e f : ℂˣ, a * (b * c) * (d * (e * f)) = b * e * (a * c * (d * f))` using `by intros; ac_rfl`. Conclude with `key _ _ _ _ _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem delta_cell (x x' : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ) (t₁ t₂ : kˣ) :
     (χ₁ * absPow k ((x' : ℂ) / 2)) t₁ * (χ₁ * absPow k (-(x' : ℂ) / 2)) t₂ =
@@ -96,7 +96,7 @@ private theorem delta_cell (x x' : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ) (t₁ t�
   exact key _ _ _ _ _ _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `e : χ₁ * absPow k (r : ℂ) = χ₂ * absPow k (s : ℂ)` using `MonoidHom.ext hc`. Apply `h (s - r)` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_sub, sub_eq_add_neg, absPow_add, absPow_neg, mul_inv_eq_iff_eq_mul, mul_right_comm, eq_mul_inv_iff_mul_eq, e, mul_comm]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ne {χ₁ χ₂ : kˣ →* ℂˣ} (h : ∀ t : ℝ, χ₁ * χ₂⁻¹ ≠ absPow k (t : ℂ)) (r s : ℝ) :
     ∃ a, (χ₁ * absPow k (r : ℂ)) a ≠ (χ₂ * absPow k (s : ℂ)) a := by
@@ -108,27 +108,23 @@ private theorem exists_ne {χ₁ χ₂ : kˣ →* ℂˣ} (h : ∀ t : ℝ, χ₁
     eq_mul_inv_iff_mul_eq, e, mul_comm]
 
 /- English proof (translation)
-Establish `hc0 : b.1 true 0 + b.1 false 0 = 1`. Use `b.2.2 0` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool, Fintype.card_fin]`. Conclude with `this`. Establish `hc2 : b.1 true 2 + b.1 false 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `b.2.2 2` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool, Fintype.card_fin]`. Conclude with `this`. Establish `hrf : b.1 false 0 + b.1 false 1 + b.1 false 2 = x + 2`. Use `b.2.1 false` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Fin.sum_univ_three]`. Rewrite using `[this]`. Conclude with `Fintype.card_fin _`. Establish `hrt : b.1 true 0 + b.1 true 1 + b.1 true 2 = x'`. Use `b.2.1 true` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Fin.sum_univ_three]`. Rewrite using `[this]`. Conclude with `Fintype.card_fin _`. Establish `a1 : (b₀ x x').1 true 0 = 0` using `rfl`. Establish `a2 : (b₀ x x').1 true 2 = 0` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `a3 : (b₀ x x').1 false 0 = 1` using `rfl`. Establish `a4 : (b₀ x x').1 false 2 = 1` using `rfl`. Distinguish the cases in `h0 : b.1 true 0 = 1`. Take `⟨a, ha⟩` from `exists_ne h ((1 - ((x + 2 : ℕ) : ℝ)) / 2) ((1 - (x' : ℝ)) / 2)`. Use `⟨(a, 1), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails.
 
-Establish `h0' : b.1 false 0 = 0` using `by omega`. Simplify using `only [cellChar, Fintype.prod_bool, a1, a2, a3, a4, h0, h0', cond_true, cond_false, map_one, one_pow, pow_zero, pow_one, mul_one, one_mul]`. Move the coercions through the operations in `at ha ⊢`. Conclude with `ha`. Distinguish the cases in `h2 : b.1 true 2 = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take `⟨a, ha⟩` from `exists_ne h ((((x + 2 : ℕ) : ℝ) - 1) / 2) (((x' : ℝ) - 1) / 2)`. Use `⟨(1, a), ?_⟩` and prove the remaining obligations. Establish `h0' : b.1 false 2 = 0` using `by omega`. Simplify using `only [cellChar, Fintype.prod_bool, a1, a2, a3, a4, h2, h0', cond_true, cond_false, map_one, one_pow, pow_zero, pow_one, mul_one, one_mul]`. Move the coercions through the operations in `at ha ⊢`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `ha`. It suffices to derive a contradiction. Apply `hb` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `cases i <;> fin_cases j`. Use `show b.1 false 0 = 1`. Use linear arithmetic over natural numbers and integers. Use `show b.1 false 1 = x`. Use linear arithmetic over natural numbers and integers.
-
-Use `show b.1 false 2 = 1`. Use linear arithmetic over natural numbers and integers. Use `show b.1 true 0 = 0`. Use linear arithmetic over natural numbers and integers. Use `show b.1 true 1 = x'`.
-
-Use linear arithmetic over natural numbers and integers. Use `show b.1 true 2 = 0`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem exists_sep (x x' : ℕ) {χ₁ χ₂ : kˣ →* ℂˣ} (h : ∀ t : ℝ, χ₁ * χ₂⁻¹ ≠ absPow k (t : ℂ))
     (b : SizeMatrix (Two (Fin (x + 2)) (Fin x')) fun j : Fin 3 => Fin (blk3 (x + x') j)) (hb : b ≠ b₀ x x') :
@@ -188,7 +184,7 @@ private theorem exists_sep (x x' : ℕ) {χ₁ χ₂ : kˣ →* ℂˣ} (h : ∀ 
     omega
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons t l ih => simp only [List.map_cons, List.prod_cons, ih, h t, smul_mul_smul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem prod_rescale {ι J : Type} [AddCommGroup J] [Module ℂ J] (U V : ι → Module.End ℂ J) (d : ι → ℂ)
     (h : ∀ t, U t = d t • V t) (l : List ι) : (l.map U).prod = (l.map d).prod • (l.map V).prod := by
@@ -197,7 +193,7 @@ private theorem prod_rescale {ι J : Type} [AddCommGroup J] [Module ℂ J] (U V 
   | cons t l ih => simp only [List.map_cons, List.prod_cons, ih, h t, smul_mul_smul_comm]
 
 /- English proof (translation)
-Establish `key : ∀ α β : kˣ →* ℂˣ, α = χ₁ → β = χ₂ → Nonempty ((prod₂ (detRep (Fin (b false 1)) α) (detRep (Fin (b true 1)) β)).Equiv (prod₂ (detRep (Fin (b false 1)) χ₁) (detRep (Fin (b true 1)) χ₂)))`. Introduce and unpack `_ _ rfl rfl`. Conclude with `⟨Representation.Equiv.refl _⟩`. Conclude with `key _ _ (by rw [h1, sub_self, zero_div, absPow_zero, mul_one]) (by rw [h2, sub_self, zero_div, absPow_zero, mul_one])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cellMid_equiv (χ₁ χ₂ : kˣ →* ℂˣ) (b : Bool → Fin 3 → ℕ) (h1 : b false 0 = b false 2)
     (h2 : b true 0 = b true 2) :
@@ -212,7 +208,7 @@ private theorem cellMid_equiv (χ₁ χ₂ : kˣ →* ℂˣ) (b : Bool → Fin 3
     (by rw [h2, sub_self, zero_div, absPow_zero, mul_one])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.mk e.toLinearEquiv fun x => e.toIntertwiningMap.isIntertwining' (φ x)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem equiv_comp {G H V Y : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y]
     [Module ℂ Y] {ρ : Representation ℂ G V} {τ : Representation ℂ G Y} (e : ρ.Equiv τ) (φ : H →* G) :
@@ -220,7 +216,7 @@ private theorem equiv_comp {G H V Y : Type} [Group G] [Group H] [AddCommGroup V]
   ⟨.mk e.toLinearEquiv fun x => e.toIntertwiningMap.isIntertwining' (φ x)⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem equiv_of_eq {G H V Y : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y]
     [Module ℂ Y] {ρ : Representation ℂ G V} {τ : Representation ℂ H Y} {φ φ' : H →* G} (h : φ = φ')
@@ -228,7 +224,7 @@ private theorem equiv_of_eq {G H V Y : Type} [Group G] [Group H] [AddCommGroup V
   subst h; exact e
 
 /- English proof (translation)
-Substitute `hx hx'` using the available equality. Establish `e1` using `(GlobalTheory.T.cell_functor_determinant_pair_equiv k a a' m χ₁ χ₂ h1 h2 b f g).some`. Establish `e2` using `(GlobalTheory.T.parabolic_induction_column_equiv k a a' m χ₁ χ₂ b f g hm).some`. Establish `e : Representation.Equiv ((cellFunctor f g (detPair k a a' χ₁ χ₂)).comp ((midIncl k m).comp (glCast k hm))) (cellMid k χ₁ χ₂ b.1)` using `(equiv_comp e1 (glCast k hm)).some.trans e2`. Conclude with `⟨e.trans (cellMid_equiv χ₁ χ₂ b.1 h3 h4).some⟩`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem mid_equiv' (a a' m : ℕ) {χ₁ χ₂ : kˣ →* ℂˣ} (h1 : IsSmoothChar χ₁) (h2 : IsSmoothChar χ₂)
     (b : SizeMatrix (Two (Fin a) (Fin a')) fun j : Fin 3 => Fin (blk3 m j))
@@ -246,7 +242,7 @@ private theorem mid_equiv' (a a' m : ℕ) {χ₁ χ₂ : kˣ →* ℂˣ} (h1 : I
   exact ⟨e.trans (cellMid_equiv χ₁ χ₂ b.1 h3 h4).some⟩
 
 /- English proof (translation)
-Use `mid_equiv' (x + 2) x' (x + x') h1 h2 b f g (by rw [hb]; rfl) (by rw [hb]; rfl) x x' (by rw [hb]; rfl) (by rw [hb]; rfl) rfl` as an intermediate fact. Establish `hg : (midIncl k (x + x')).comp (glCast k (rfl : x + x' = x + x')) = midIncl k (x + x')`. Rewrite using `[glCast_rfl k (x + x'), MonoidHom.comp_id]`. Conclude with `equiv_of_eq hg this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mid_equiv (x x' : ℕ) {χ₁ χ₂ : kˣ →* ℂˣ} (h1 : IsSmoothChar χ₁) (h2 : IsSmoothChar χ₂)
     (b : SizeMatrix (Two (Fin (x + 2)) (Fin x')) fun j : Fin 3 => Fin (blk3 (x + x') j)) (hb : b = b₀ x x')
@@ -261,13 +257,13 @@ private theorem mid_equiv (x x' : ℕ) {χ₁ χ₂ : kˣ →* ℂˣ} (h1 : IsSm
   exact equiv_of_eq hg this
 
 /- English proof (translation)
-Use `⟨A.toLinearMap ∘ₗ E.symm.toIntertwiningMap.toLinearMap, fun h w => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ E.symm.toIntertwiningMap h w`. Establish `h2` using `Representation.IntertwiningMap.isIntertwining _ _ A (φ h) (E.symm.toIntertwiningMap w)`. Establish `h3 : twist ρ δ⁻¹ (φ h) (A (E.symm.toIntertwiningMap w)) = ρ (φ h) (A (E.symm.toIntertwiningMap w))`. Rewrite using `[twist_apply, MonoidHom.inv_apply, hδ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `show A (E.symm.toIntertwiningMap (π h w)) = ρ (φ h) (A (E.symm.toIntertwiningMap w))`. Rewrite using `[h1, ← h3, ← h2]`. Both sides reduce to the same expression. Rewrite using `[prod_rescale _ (fun t => twist ρ δ⁻¹ (z t) - c t • (1 : Module.End ℂ J)) (fun t => (δ (z t) : ℂ))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hl w`. Use `⟨E y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg A.toLinearMap (E.toLinearEquiv.symm_apply_apply y)`. Introduce `t`. Use extensionality with `v`. Simplify using `[twist_apply, smul_sub, smul_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem abstract_step {L H J P Q ι : Type} [Group L] [Group H] [AddCommGroup J] [Module ℂ J]
     [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q]
@@ -298,13 +294,13 @@ private theorem abstract_step {L H J P Q ι : Type} [Group L] [Group H] [AddComm
       simp [twist_apply, smul_sub, smul_smul]
 
 /- English proof (translation)
-Establish `hp : ∀ t : Fin N, ∃ p, t ≠ t₀ → ξ p ≠ δ (z p) * c t p`. Introduce `t`. Distinguish the cases in `ht : t = t₀`. Conclude with `⟨default, fun h => absurd ht h⟩`. Take `⟨p, hp⟩` from `hsep t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p, fun _ => hp⟩`. Use `choose p hp using hp`. Take `⟨l, A, hl, hA⟩` from `GlobalTheory.T.composition_series_intertwining_chain _ _ _ N S hmono h0 htop t₀ (fun t => z (p t)) (fun t => (c t (p t) : ℂ)) (fun t y => hz _ y) (fun t _ y => hc t _ y)`. Take `⟨E⟩` from `E`. Take `⟨A', hA1, hA2⟩` from `abstract_step ρ δ φ hδ _ _ E A l _ _ hA`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l.map fun t => (p t, (δ (z (p t)) : ℂ) * (c t (p t) : ℂ)), A', ?_, hA1, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Take `⟨t, ht, rfl⟩` from `List.mem_map.1 hq`. Rewrite using `[← Units.val_mul]`. Conclude with `fun h => hp t (hl t ht) (Units.val_injective h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[List.map_map]`. Conclude with `hA2 w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem abstract_filt {L H J P T : Type} [Group L] [Group H] [AddCommGroup J] [Module ℂ J]
     [AddCommGroup P] [Module ℂ P] [Inhabited T]
@@ -340,9 +336,9 @@ private theorem abstract_filt {L H J P T : Type} [Group L] [Group H] [AddCommGro
 end GlobalTheory.IndLineGL.TorusPiece
 
 /- English proof (translation)
-Introduce `hG k _ _ _ _ x x' χ₁ χ₂ h1 h2 hχ e`. Use `(hG k Bool (Fin 3) (Fin (x + 2 + x')) (Two (Fin (x + 2)) (Fin x')) (fun j : Fin 3 => Fin (blk3 (x + x') j)) (two (stdSum (rfl : x + 2 + x' = x + 2 + x'))) e).elim fun N hN => hN.elim fun bb hbb => ?_` and prove the remaining obligations. Use `(hbb (ℂ ⊗[ℂ] ℂ) (detPair k (x + 2) x' χ₁ χ₂) (isSmooth_detPair _ _ h1 h2)).elim fun S hS => ?_` and prove the remaining obligations. Establish `hE : ∀ t : Fin N, Nonempty ((subQuot (S t.succ) (S t.castSucc)).Equiv (cellFunctor (bb t).nonempty_rows.some (bb t).nonempty_cols.some (detPair k (x + 2) x' χ₁ χ₂)))` using `fun t => hS.2.2.2 t _ _`. Use `(bb.surjective (TorusPiece.b₀ x x')).elim fun t₀ ht₀ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsep : ∀ t, t ≠ t₀ → ∃ p : kˣ × kˣ, (χ₁ * absPow k ((x' : ℂ) / 2)) p.1 * (χ₁ * absPow k (-(x' : ℂ) / 2)) p.2 ≠ deltaHalf k (fun i : Fin 3 => Fin (blk3 (x + x') i)) (torusPt k (x + x') p.1 p.2) * cellChar k (x + 2) x' χ₁ χ₂ (bb t).1 p.1 p.2` using `fun t ht => (TorusPiece.exists_sep x x' hχ (bb t) (fun h => ht (bb.injective (h.trans ht₀.symm)))).imp fun p hp h => hp (mul_left_cancel ((TorusPiece.delta_cell x x' χ₁ χ₂ p.1 p.2).symm.trans h))`. Establish `hc : ∀ (t : Fin N) (p : kˣ × kˣ) y, subQuot (S t.succ) (S t.castSucc) (torusPt k (x + x') p.1 p.2) y = (cellChar k (x + 2) x' χ₁ χ₂ (bb t).1 p.1 p.2 : ℂ) • y` using `fun t p y => smul_of_equiv (hE t).some (CellTorus.cellFunctor_torusPt k (x + 2) x' (x + x') χ₁ χ₂ (bb t) (bb t).nonempty_rows.some (bb t).nonempty_cols.some _ _) y`. Establish `E : Nonempty (Representation.Equiv ((subQuot (S t₀.succ) (S t₀.castSucc)).comp (midIncl k (x + x'))) (prod₂ (detRep (Fin x) χ₁) (detRep (Fin x') χ₂)))` using `⟨(TorusPiece.equiv_comp (hE t₀).some (midIncl k (x + x'))).some.trans (TorusPiece.mid_equiv x x' h1 h2 (bb t₀) ht₀ (bb t₀).nonempty_rows.some (bb t₀).nonempty_cols.some).some⟩`. Establish `main` using `TorusPiece.abstract_filt (jacU e (parInd (two (stdSum (rfl : x + 2 + x' = x + 2 + x'))) (detPair k (x + 2) x' χ₁ χ₂))) (deltaHalf k fun i : Fin 3 => Fin (blk3 (x + x') i)) (midIncl k (x + x')) (TorusPiece.delta_mid (x + x')) (prod₂ (detRep (Fin x) χ₁) (detRep (Fin x') χ₂)) N S hS …`. Conclude with `main`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.induced_character_composition_series : GlobalTheory.Published.GeometricLemmaFiltration → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x x' : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → (∀ t : ℝ, χ₁ * χ₂⁻¹ ≠ absPow k (t : ℂ)) →

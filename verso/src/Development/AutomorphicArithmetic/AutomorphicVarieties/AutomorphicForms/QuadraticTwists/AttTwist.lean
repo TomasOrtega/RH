@@ -9,9 +9,7 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl.ne_zero` after adjusting the coercions. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors h0).subset fun v hv => ?_)` and prove the remaining obligations.
-
-Conclude with `Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal := by
@@ -23,14 +21,14 @@ private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l
   exact Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
 /- English proof (translation)
-Simplify using `[algSat, Multiset.bind_singleton, Multiset.map_map]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem algSat_eq (n q : ℕ) (B : Multiset ℂˣ) :
     algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [algSat, Multiset.bind_singleton, Multiset.map_map]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[CG.hasSat_mk]`. Conclude with `GlobalTheory.SphGal.hasSatGL_twist K n P κ w B hκ h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sat_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} (P : CuspSub K n)
     {w : HeightOneSpectrum (𝓞 K)} {B : Multiset ℂˣ} (h : (CG.mk P).HasSat w B) {κ : HChar K} (hκ : κ.UnrAt w) :
@@ -39,11 +37,11 @@ private theorem sat_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex
   exact GlobalTheory.SphGal.hasSatGL_twist K n P κ w B hκ h
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ _ l _ ι n R P hA art κ m μ ha h`. Use `⟨(UpperTheory.galoisRep_irreducibility_criterion.1 _ (G K Ω) _ n R).2.2 μ hA.1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hA.2, Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified κ), ev_notMem (K := K) l] with w ⟨B, hB, hE⟩ hu hl`. Use `⟨_, sat_twist P hB hu, ?_⟩` and prove the remaining obligations. Establish `hc : UpperTheory.V.Af.Bc.CharEig ι μ w (κ.val w : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun A hA => ⟨(h.unr_iff ha (Or.inl hl) hA).2 hu, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, h.frob_unr ha (Or.inl hl) hu hA hσ, inv_inv, RingEquiv.apply_symm_apply]`. Establish `h4` using `UpperTheory.frobenius_eigenvalues_twist K Ω l ι n R μ w _ _ hE hc`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [algSat_eq, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Cq.attTwist :
     ∀ (K Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ)

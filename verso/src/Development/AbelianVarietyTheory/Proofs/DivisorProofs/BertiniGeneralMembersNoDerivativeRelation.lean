@@ -6,19 +6,17 @@ namespace GlobalTheory.BertiniC
 open KaehlerDifferential in
 
 /- English proof (translation)
-Establish `r4 : algebraMap A κ (f p₀) ≠ 0`. Introduce `h`. Rewrite `r4s` using `[h, mul_zero, zero_sub, neg_eq_zero]`. Conclude with `one_ne_zero r4s`. Establish `hlin` using `GlobalTheory.T.linearIndependent_kaehlerD_of_algebraicIndependent k κ t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : Fin n → KaehlerDifferential k κ := fun l => KaehlerDifferential.map k k A κ (ω l) with hm`. Establish `hdψ : ∀ a : A, D k κ (algebraMap A κ a) = ∑ l, algebraMap A κ (δ l a) • m l`. Introduce `a`. Rewrite using `[← KaehlerDifferential.map_D k k A κ, hω a, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.map_smul, algebraMap_smul]`. Establish `e1 : ∀ i ∈ J, ∑ p, algebraMap A κ (f p) • D k κ (t (i, p)) = - ∑ p, t (i, p) • D k κ (algebraMap A κ (f p))`. Introduce `i hi`. Establish `h` using `congrArg (D k κ) (r1 i hi)`. Rewrite `h` using `[map_sum, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Derivation.leibniz, Finset.sum_add_distrib] at h`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `h`. Establish `e2 : ∑ i ∈ J, c i • ∑ p, t (i, p) • D k κ (algebraMap A κ (f p)) = 0`. Establish `: ∑ i ∈ J, c i • ∑ p, t (i, p) • D k κ (algebraMap A κ (f p)) = ∑ l, (∑ i ∈ J, c i * ∑ p, t (i, p) * algebraMap A κ (δ l (f p))) • m l`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hdψ, Finset.smul_sum, Finset.sum_smul, Finset.mul_sum, smul_smul, mul_assoc]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`. Rewrite using `[this]`. Simplify using `[r2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∑ x ∈ J ×ˢ (Finset.univ : Finset ι), (c x.1 * algebraMap A κ (f x.2)) • D k κ (t x) = 0`. Rewrite using `[Finset.sum_product]`. Simplify using `only [mul_smul, ← Finset.smul_sum]`. Rewrite using `[Finset.sum_congr rfl (fun i hi => by rw [e1 i hi]), ]`. Simplify using `only [smul_neg, Finset.sum_neg_distrib, e2, neg_zero]`.
-
-Use `linearIndependent_iff'.1 hlin _ _ key (i₀, p₀) (by simp [hi₀])` as an intermediate fact. Rewrite `this` using `[sub_eq_zero.1 r3, one_mul]`. Conclude with `r4 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem false_of_dependent_derivatives {k A κ : Type} [Field k] [CharZero k] [CommRing A] [Algebra k A]
     [Field κ] [Algebra k κ] [Algebra A κ] [IsScalarTower k A κ] [Algebra.EssFiniteType k κ]
@@ -85,41 +83,37 @@ end Construction
 open MvPolynomial in
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ _ n δ ω hω ι _ f M J i₀ p₀ hi₀`. Use `set I := relIdeal δ f J i₀ p₀ with hIdef`. Set `T` to `MvPolynomial (Var M ι) A ⧸ I`. Set `gm : MvPolynomial (Fin M × ι) k →ₐ[k] T` to `aeval (fun x => Ideal.Quotient.mk I (X (Sum.inl x)))`. Establish `g1mem : ∀ i ∈ J, (∑ p, X (Sum.inl (i, p)) * C (f p) : MvPolynomial (Var M ι) A) ∈ I` using `fun i hi => Ideal.subset_span (Or.inl ⟨i, hi, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2mem : ∀ l, (∑ i ∈ J, X (Sum.inr (Sum.inl i)) * ∑ p, X (Sum.inl (i, p)) * C (δ l (f p)) : MvPolynomial (Var M ι) A) ∈ I` using `fun l => Ideal.subset_span (Or.inr (Or.inl ⟨l, rfl⟩))`. Establish `g3mem : (X (Sum.inr (Sum.inl i₀)) - 1 : MvPolynomial (Var M ι) A) ∈ I` using `Ideal.subset_span (Or.inr (Or.inr (Or.inl rfl)))`. Establish `g4mem : (X (Sum.inr (Sum.inr ())) * C (f p₀) - 1 : MvPolynomial (Var M ι) A) ∈ I` using `Ideal.subset_span (Or.inr (Or.inr (Or.inr rfl)))`. Establish `hni : ¬ Function.Injective gm`. Introduce `hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `S : Submonoid T` to `(nonZeroDivisors (MvPolynomial (Fin M × ι) k)).map gm`. Establish `hS : ∀ Q : MvPolynomial (Fin M × ι) k, Q ≠ 0 → gm Q ∈ S` using `fun Q hQ => Submonoid.mem_map_of_mem _ (mem_nonZeroDivisors_of_ne_zero hQ)`. Establish `hdisj : Disjoint ((⊥ : Ideal T) : Set T) S`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `x hx ⟨Q, hQ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h0 : gm Q = 0` using `(Submodule.mem_bot _).1 hx`. Establish `: Q = 0` using `hinj (by rw [h0, map_zero])`. Conclude with `nonZeroDivisors.ne_zero hQ this`. Take `⟨𝔮, h𝔮, -, hd⟩` from `Ideal.exists_le_prime_disjoint ⊥ S hdisj`. Use `haveI := h𝔮`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D` to `T ⧸ 𝔮`. Set `κ` to `FractionRing D`. Set `π : MvPolynomial (Var M ι) A →+* κ` to `(algebraMap D κ).comp ((Ideal.Quotient.mk 𝔮).comp (Ideal.Quotient.mk I))`. Establish `hπC : ∀ a : A, π (C a) = algebraMap A κ a`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show algebraMap D κ (Ideal.Quotient.mk 𝔮 (Ideal.Quotient.mk I (C a))) = _`. Rewrite using `[IsScalarTower.algebraMap_apply A D κ]`. Both sides reduce to the same expression. Establish `hπI : ∀ x ∈ I, π x = 0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show algebraMap D κ (Ideal.Quotient.mk 𝔮 (Ideal.Quotient.mk I x)) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero, map_zero]`. Establish `ht : AlgebraicIndependent k (fun x : Fin M × ι => π (X (Sum.inl x)))`. Rewrite using `[algebraicIndependent_iff_injective_aeval, injective_iff_map_eq_zero]`. Introduce `Q hQ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hQ0`. Establish `heq : (aeval (fun x : Fin M × ι => π (X (Sum.inl x))) : MvPolynomial (Fin M × ι) k →ₐ[k] κ) = (IsScalarTower.toAlgHom k D κ).comp ((Ideal.Quotient.mkₐ k 𝔮).comp gm)`. Use extensionality with `x`. Simplify using `[π, gm]`. Rewrite `hQ` using `[heq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Ideal.Quotient.mk 𝔮 (gm Q) = 0` using `(IsFractionRing.injective D κ) (hQ.trans (map_zero _).symm)`. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Set.disjoint_left.1 hd h1 (hS Q hQ0)`. Apply `false_of_dependent_derivatives n δ ω hω f M J i₀ p₀ hi₀ _ ht (fun i => π (X (Sum.inr (Sum.inl i))))` to reduce the goal to its premises. Introduce `i hi`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hπI _ (g1mem i hi)` as an intermediate fact. Simplify `this` using `only [map_sum, map_mul, hπC]`. Introduce `l`. Use `hπI _ (g2mem l)` as an intermediate fact. Simplify `this` using `only [map_sum, map_mul, hπC]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h3 : π (X (Sum.inr (Sum.inl i₀)) - 1) = 0` using `hπI _ g3mem`. Rewrite `h3` using `[RingHom.map_sub, RingHom.map_one]`. Conclude with `h3`. Establish `h4` using `hπI _ g4mem`. Rewrite `h4` using `[RingHom.map_sub, RingHom.map_mul, hπC, RingHom.map_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4`. Choose the witnesses or unpack the hypotheses as in `⟨Q, hQ0, hQ⟩ : ∃ Q, Q ≠ 0 ∧ gm Q = 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hni ((injective_iff_map_eq_zero gm).2 fun Q hQ => by_contra fun h => hcon Q h hQ)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨Q, hQ0, ?_⟩` and prove the remaining obligations. Introduce `u hu K _ _ φ c hφ hc hrel hδ`. Set `e : MvPolynomial (Var M ι) A →+* K` to `eval₂Hom φ.toRingHom (Sum.elim (fun x => algebraMap k K (u x)) (Sum.elim c (fun _ => (φ (f p₀))⁻¹)))`. Establish `hI : I ≤ RingHom.ker e`. Rewrite using `[hIdef, relIdeal, Ideal.span_le]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `rintro x (⟨i, hi, rfl⟩ | ⟨l, rfl⟩ | rfl | rfl) <;> simp only [SetLike.mem_coe, RingHom.mem_ker]`. Use `hrel i hi` as an intermediate fact. Simplify `this` using `[e, map_sum, Algebra.smul_def]`. Use `hδ l` as an intermediate fact. Simplify `this` using `[e, map_sum, Algebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e, hc]`. Simplify using `[e, inv_mul_cancel₀ hφ]`. Set `e' : T →+* K` to `Ideal.Quotient.lift I e (fun a ha => hI ha)`. Establish `hcomp : e'.comp gm.toRingHom = (algebraMap k K).comp (eval u)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a show e' (gm (C a)) = algebraMap k K (eval u (C a))`. Rewrite using `[MvPolynomial.aeval_C]`. Use `show e (algebraMap k (MvPolynomial (Var M ι) A) a) = _`. Rewrite using `[MvPolynomial.algebraMap_apply, eval₂Hom_C, eval_C]`. Conclude with `φ.commutes a`.
-
-Introduce `x show e' (gm (X x)) = algebraMap k K (eval u (X x))`. Rewrite using `[MvPolynomial.aeval_X, eval_X]`. Use `show e (X (Sum.inl x)) = _`. Rewrite using `[eval₂Hom_X']`. Both sides reduce to the same expression.
-
-Use `RingHom.congr_fun hcomp Q` as an intermediate fact. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite `this` using `[hQ, map_zero]`. Conclude with `hu ((algebraMap k K).injective (this.symm.trans (map_zero _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem no_dependence_of_general : ∀ (k A : Type) [Field k] [CharZero k] [CommRing A] [Algebra k A] [Algebra.FiniteType k A] (n : ℕ) (δ : Fin n → Derivation k A A) (ω : Fin n → KaehlerDifferential k A), (∀ a : A, KaehlerDifferential.D k A a = ∑ l, δ l a • ω l) → ∀ {ι : Type} [Fintype ι] (f : ι → A) (M : ℕ) (J : Finset (Fin M)) (i₀ : Fin M) (p₀ : ι), i₀ ∈ J → ∃ Q : MvPolynomial (Fin M × ι) k, Q ≠ 0 ∧ ∀ u : Fin M × ι → k, MvPolynomial.eval u Q ≠ 0 → ∀ (K : Type) [Field K] [Algebra k K] (φ : A →ₐ[k] K) (c : Fin M → K), φ (f p₀) ≠ 0 → c i₀ = 1 → (∀ i ∈ J, φ (∑ p, u (i, p) • f p) = 0) → ¬ ∀ l, ∑ i ∈ J, c i * φ (δ l (∑ p, u (i, p) • f p)) = 0 := by
   intro k A _ _ _ _ _ n δ ω hω ι _ f M J i₀ p₀ hi₀

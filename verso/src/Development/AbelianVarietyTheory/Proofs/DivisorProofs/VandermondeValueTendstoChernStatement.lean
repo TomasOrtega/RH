@@ -12,7 +12,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open GlobalTheory.CovTestDR
 /- English proof (citation)
-Apply `GlobalTheory.VdmCore.tendsto_vdmVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVandermondeValueTendstoChern.lean&line=30#L30)
 -/

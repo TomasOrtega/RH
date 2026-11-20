@@ -16,37 +16,35 @@ section Abstract
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Set `Gen : Ideal (𝓞 E) → G → Prop` to `fun B y => ∀ Q : HeightOneSpectrum (𝓞 E), Fx Q → w Q y = WithZero.exp (-multiplicity Q.asIdeal B : ℤ)`. Establish `gmul : ∀ {A B y z}, A ≠ ⊥ → B ≠ ⊥ → Gen A y → Gen B z → Gen (A * B) (y * z)`. Introduce `A B y z hA hB hy hz Q hQ`. Rewrite using `[map_mul, hy Q hQ, hz Q hQ, GlobalTheory.EtaProduct.mult_mul Q hA hB, ← WithZero.exp_add]`. Use `push_cast`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[neg_add]`. Establish `guniq : ∀ {B y z}, Gen B y → Gen B z → ψ y = ψ z`. Introduce `B y z hy hz`. Use `h1 (y * z⁻¹) fun Q hQ => by` as an intermediate fact. Rewrite using `[map_mul, map_inv, hy Q hQ, hz Q hQ, mul_inv_cancel₀ WithZero.exp_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis. Establish `gspan : ∀ (u : 𝓞 E) (k : Eˣ), (k : E) = u → Gen (Ideal.span {u}) (i k)`. Introduce `u k hk Q _`. Establish `hu : u ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `k.ne_zero (by simpa using hk)`. Rewrite using `[hi, hk, GlobalTheory.EtaProduct.val_int Q hu]`. Establish `gone : Gen ⊤ 1` using `fun Q _ => by`. Rewrite using `[map_one, ← Ideal.one_eq_top, multiplicity_eq_zero.2 Q.prime.not_dvd_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `gmov : ∀ P : HeightOneSpectrum (𝓞 E), ¬ Fx P → Gen P.asIdeal 1` using `fun P hP Q hQ => by`. Rewrite using `[map_one, GlobalTheory.EtaProduct.mult_ne (P := P) (Q := Q) (fun h => hP (h ▸ hQ))]`. Simplify using the standard rewrite rules. Establish `gfix : ∀ (P : HeightOneSpectrum (𝓞 E)) z, w P z = WithZero.exp (-1 : ℤ) → (∀ Q, Q ≠ P → w Q z = 1) → Gen P.asIdeal z`. Introduce `P z a1 a3 Q _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hQ : Q = P`. Rewrite using `[hQ, a1, multiplicity_self]`. Simplify using the standard rewrite rules. Rewrite using `[a3 Q hQ, GlobalTheory.EtaProduct.mult_ne hQ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `gprime : ∀ P : HeightOneSpectrum (𝓞 E), ∃ z, Gen P.asIdeal z`. Introduce `P`. Distinguish the cases in `hP : Fx P`. Take `⟨z, a1, a3, -⟩` from `h3 P hP`. Conclude with `⟨z, gfix P z a1 a3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨1, gmov P hP⟩`. Establish `gex : ∀ B : Ideal (𝓞 E), B ≠ ⊥ → ∃ z, Gen B z`. Introduce `B`. Proceed by induction on `B using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => intro h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `absurd rfl h`. Consider the case `h₂ B hB => intro _`. Rewrite using `[Ideal.isUnit_iff.1 hB]`. Conclude with `⟨1, gone⟩`. Consider the case `h₃ C P hC hP ih`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `_`. Take `⟨a, a1⟩` from `gprime ⟨P, Ideal.isPrime_of_prime hP, hP.ne_zero⟩`. Take `⟨b, b1⟩` from `ih hC`. Conclude with `⟨a * b, gmul hP.ne_zero hC a1 b1⟩`. Establish `vprime : ∀ (P : HeightOneSpectrum (𝓞 E)) y, Gen P.asIdeal y → lam (Ideal.absNorm P.asIdeal) = (ψ y : ℂ) * (Real.sqrt (Ideal.absNorm P.asIdeal) : ℂ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `P y hy`. Distinguish the cases in `hP : Fx P`. Take `⟨z, a1, a3, a4⟩` from `h3 P hP`. Rewrite using `[guniq hy (gfix P z a1 a3), a4, (h5 P).1 hP, neg_one_mul]`. Rewrite using `[guniq hy (gmov P hP), map_one, (h5 P).2 hP]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `main : ∀ B : Ideal (𝓞 E), B ≠ ⊥ → ∀ y, Gen B y → lam (Ideal.absNorm B) = (ψ y : ℂ) * (Real.sqrt (Ideal.absNorm B) : ℂ)`. Introduce `B`. Proceed by induction on `B using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => intro h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd rfl h`. Consider the case `h₂ B hB`. Introduce `_ y hy`. Rewrite `hy`, the goal using `[Ideal.isUnit_iff.1 hB]`. Rewrite using `[guniq hy gone, Ideal.absNorm_top, map_one, map_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Consider the case `h₃ C P hC hP ih`. Introduce `_ y hy`. Take `⟨a, a1⟩` from `gprime ⟨P, Ideal.isPrime_of_prime hP, hP.ne_zero⟩`. Take `⟨b, b1⟩` from `gex C hC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `v1` using `vprime ⟨P, Ideal.isPrime_of_prime hP, hP.ne_zero⟩ a a1`. Rewrite using `[guniq hy (gmul hP.ne_zero hC a1 b1), map_mul, map_mul, map_mul, v1, ih hC b b1, Nat.cast_mul, Real.sqrt_mul (Nat.cast_nonneg _), Complex.ofReal_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `main _ ?_ _ (gspan u k hk)` and prove the remaining obligations. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
-
-Introduce and unpack `rfl`. Conclude with `k.ne_zero (by simpa using hk)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hom_fix (Fx : HeightOneSpectrum (𝓞 E) → Prop) {G : Type} [CommGroup G]
     (w : HeightOneSpectrum (𝓞 E) → G →* WithZero (Multiplicative ℤ)) (i : Eˣ →* G) (ψ : G →* Circle)
@@ -142,45 +140,45 @@ section Half
 open GlobalTheory.SplitDetCharF
 
 /- English proof (translation)
-Take `⟨s, ι, hsι⟩` from `exists_sqrt_adele F d`. Establish `hsq : ∀ v, (evalV F v ι = 1 ∧ IsSquare (algebraMap F (Fv F v) (d : F))) ∨ (evalV F v ι = 0 ∧ ¬ IsSquare (algebraMap F (Fv F v) (d : F)))` using `fun v => (hsι v).imp (fun h => ⟨h.1, ⟨_, h.2.symm⟩⟩) (fun h => ⟨h.1, fun ⟨r, hr⟩ => h.2.2 r hr.symm⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : ∃ h : AF F, h * (2 * algebraMap F (AF F) (d : F)) = 1 := by`. Establish `hd : (2 * (d : F)) ≠ 0` using `mul_ne_zero two_ne_zero hd0`. Use `congrArg (algebraMap F (AF F)) (inv_mul_cancel₀ hd)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_mul, map_ofNat, map_one]`. Conclude with `⟨_, this⟩`. Establish `hH : j h * (2 * j (algebraMap F (AF F) (d : F))) = 1`. Use `congrArg j hh` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hII : j (pairA _ 0 ι) * j (pairA _ 0 ι) = j (pairA _ 0 ι)`. Rewrite using `[← map_mul, pair_mul]`. Use `congr 2`. Use `af_ext' _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases hsι w with h | h <;> simp [h.1]`. Establish `hIS : j (pairA _ 0 ι) * j (pairA _ 0 s) = j (pairA _ 0 s)`. Rewrite using `[← map_mul, pair_mul]`. Use `congr 2`. Use `af_ext' _ fun w => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Break down `hsι w with h | h` into its components or cases. Simplify using `[h.1]`. Simplify using `[h.2.1]`. Establish `hSS : j (pairA _ 0 s) * j (pairA _ 0 s) = j (pairA _ 0 ι) * j (algebraMap F (AF F) (d : F))`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, pair_mul, pair_mul']`. Use `congr 2`. Use `af_ext' _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, evalV_snd_algebraMap]`. Break down `hsι w with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h.1, h.2, one_mul]`. Rewrite using `[h.1, h.2.1, zero_mul, zero_mul]`. Take `⟨ε, hε⟩ : ∃ ε : T, ε = j h * (j (pairA _ 0 ι) * j (algebraMap F (AF F) (d : F)) - j (pairA _ 0 s) * δ)` from `⟨_, rfl⟩`. Establish `hcε : c ε = j h * (j (pairA _ 0 ι) * j (algebraMap F (AF F) (d : F)) + j (pairA _ 0 s) * δ)`. Rewrite using `[hε, map_mul, map_sub, map_mul, map_mul, hcj, hcj, hcj, hcj, hcδ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hinfε : p ε = 0`. Rewrite using `[hε, map_mul, map_sub, map_mul, map_mul, hinf, hinf]`. Simplify using the standard rewrite rules. Generalize the expression as in `hI : j (pairA _ 0 ι) = I at hII hIS hSS hε hcε`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hS : j (pairA _ 0 s) = S at hIS hSS hε hcε`. Generalize the expression as in `hD : j (algebraMap F (AF F) (d : F)) = D at hH hSS hε hcε hδ2`. Generalize the expression as in `hHH : j h = H at hH hε hcε`. Establish `h2 : ε * c ε = 0`. Rewrite using `[hcε, hε]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `H * H * D * D * hII - H * H * δ * δ * hSS - H * H * I * D * hδ2`. Establish `h3 : ε + c ε = I`. Rewrite using `[hcε, hε]`. Take the linear combination `I * hH`. Establish `h4 : I * ε = ε`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hε]`. Take the linear combination `H * D * hII - H * δ * hIS`. Establish `h1 : ε * ε = ε`. Take the linear combination `ε * h3 - h2 + h4`. Use `⟨ε, ι, h1, h2, hinfε, h3.trans hI.symm, hsq, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `e ⟨he1, he2, v, η, ⟨α, rfl, hα1, hα0⟩, he3⟩`. Take `⟨a, b, hab⟩` from `hdec e`. Establish `hce : c e = j a - j b * δ`. Rewrite using `[hab, map_add, map_mul, hcj, hcj, hcδ]`. Expand and normalize the polynomial expressions, which then agree.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `he4 : c e * c e = c e` using `by rw [← map_mul, he1]`. Take `⟨B, hB⟩ : ∃ B : AF F, B = 2 * algebraMap F (AF F) (d : F) * b` from `⟨_, rfl⟩`. Establish `hjB : j B = δ * (e - c e)`. Rewrite using `[hB, map_mul, map_mul, map_ofNat, hD, hce]`. Take the linear combination `-δ * hab - 2 * j b * hδ2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hB1 : pairA _ 0 α * B = B` using `hinj (by`. Rewrite using `[map_mul, ← he3, hjB]`. Take the linear combination `δ * he1 - δ * he4)`. Establish `hB2 : B * B = pairA _ 0 α * algebraMap F (AF F) (d : F)` using `hinj (by`. Rewrite using `[map_mul, map_mul, hD, ← he3, hjB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `δ * δ * he1 + δ * δ * he4 - 2 * δ * δ * he2 + (e + c e) * hδ2)`. Establish `hB3 : evalV _ v (sndA _ B) * evalV _ v (sndA _ B) = algebraMap F (Fv F v) (d : F)`. Rewrite using `[← map_mul, ← map_mul, hB2, map_mul, map_mul, evalV_snd_algebraMap]`. Express the relevant statement in the definitionally equal form `evalV _ v α * _ = _`. Rewrite using `[hα1, one_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Break down `hsι v with ⟨hι, hs⟩ | ⟨-, -, hn⟩` into its components or cases. Use `swap`. Conclude with `absurd hB3 (hn _)`. Establish `hNI : (e + c e) * I = e + c e`. Rewrite using `[he3, ← hI, ← map_mul, pair_mul, place_ext _ hα0 (y := 1) (by rw [hι, map_one]), mul_one]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `mul_self_eq_mul_self_iff.1 (hB3.trans hs.symm) with hp | hp` into its components or cases. Use `right`. Establish `: j B = (e + c e) * S`. Rewrite using `[he3, ← hS, ← map_mul, ← hB1, pair_mul, pair_mul', place_ext _ hα0 hp]`. Establish `h5 : c e = (e + c e) * ε`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hε]`. Take the linear combination `-H * D * hNI - H * δ * this + H * δ * hjB + H * (e - c e) * hδ2 - c e * hH`. Prove the components needed by the constructor for the conclusion. Take the linear combination `-e * h5 + (1 - ε) * he2 - ε * he1`. Take the linear combination `-(c e) * h5 + (1 - ε) * he4 - ε * he2`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `left`. Establish `: j B = -((e + c e) * S)`. Rewrite using `[he3, ← hS, ← map_mul, ← hB1, pair_mul, pair_mul', ← map_neg, pair_neg, ← mul_neg, place_ext _ hα0 (y := -s) (by rw [hp, map_neg])]`. Establish `h5 : e = (e + c e) * ε`. Rewrite using `[hε]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-H * D * hNI + H * δ * this - H * δ * hjB - H * (e - c e) * hδ2 - e * hH`. Prove the components needed by the constructor for the conclusion. Take the linear combination `-e * h5 + (1 - ε) * he1 - ε * he2`. Take the linear combination `-(c e) * h5 + (1 - ε) * he2 - ε * he4`.
+A detailed English derivation is pending.
 -/
 theorem exists_half_abstract' {F T T' : Type} [Field F] [NumberField F] [CommRing T] [CommRing T']
     (j : AF F →+* T) (c : T →+* T) (p : T →+* T') (δ : T) (d : 𝓞 F) (hd0 : (d : F) ≠ 0) (hinj : Function.Injective j)
@@ -295,11 +293,9 @@ theorem exists_half_abstract' {F T T' : Type} [Field F] [NumberField F] [CommRin
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨θ, d, hd0, hσθ, hθθ, hdec⟩` from `exists_int_basis h`. Establish `hs : ∀ (a : AF F) (x : E), cAF σ (a ⊗ₜ[F] x) = a ⊗ₜ[F] σ x` using `fun _ _ => rfl`. Take `⟨ε, ι, h1, h2, h3, h5, h6, h4⟩` from `exists_half_abstract' (algebraMap (AF F) (AEF F E)) (cAF σ) (infPartF F E) ((1 : AF F) ⊗ₜ[F] θ) d hd0 tensor_inj (fun a => by`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, hs, map_one])`. Use the proof step `(by rw [hs, hσθ, TensorProduct.tmul_neg])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, hθθ, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one (A := E), TensorProduct.tmul_smul, Algebra.algebraMap_eq_smul_one (A := AF F), TensorProduct.smul_tmul']`. Use `congr 1`. Conclude with `(algebraMap_smul (AF F) (d : F) (1 : AF F)).symm)`. Use the proof step `(tensor_decomp θ hdec)`.
-
-Use the proof step `(fun α => by show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (algebraMap (AF F) (AEF F E) (pairA F 0 α)) = 0`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul, Algebra.algebraMap_self, RingHom.id_apply, show fstA F (pairA F 0 α) = 0 from rfl, TensorProduct.zero_tmul])`. Conclude with `⟨θ, d, ε, ι, hd0, hσθ, hθθ, hdec, h1, h2, h3, h5, h6, fun e he => h4 e he⟩`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_half {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
     ∃ (θ : E) (d : 𝓞 F) (ε : AEF F E) (ι : Af F), (d : F) ≠ 0 ∧ σ θ = -θ ∧ θ * θ = algebraMap F E (d : F) ∧

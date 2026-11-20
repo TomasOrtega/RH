@@ -13,13 +13,13 @@ namespace GlobalTheory.DegCnt.IdealPow
 variable {K : Type} [Field K] [NumberField K] {𝔡 : Ideal (𝓞 K)}
 
 /- English proof (translation)
-Simplify using `[ipow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ipow_zero (𝔡 : Ideal (𝓞 K)) : ipow 𝔡 0 = 1 := by
   simp [ipow]
 
 /- English proof (translation)
-Establish `h0 : (𝔡 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 h`. Unfold `ipow`. Rewrite using `[zpow_add₀ h0, FractionalIdeal.coe_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ipow_mul (h : 𝔡 ≠ ⊥) (m n : ℤ) : ipow 𝔡 m * ipow 𝔡 n = ipow 𝔡 (m + n) := by
   have h0 : (𝔡 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0 := FractionalIdeal.coeIdeal_ne_zero.2 h
@@ -27,7 +27,7 @@ theorem ipow_mul (h : 𝔡 ≠ ⊥) (m n : ℤ) : ipow 𝔡 m * ipow 𝔡 n = ip
   rw [zpow_add₀ h0, FractionalIdeal.coe_mul]
 
 /- English proof (translation)
-Rewrite using `[← hk, ← ipow_mul h]`. Conclude with `Submodule.mul_mem_mul hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem (h : 𝔡 ≠ ⊥) {m n k : ℤ} (hk : m + n = k) {x y : K} (hx : x ∈ ipow 𝔡 m) (hy : y ∈ ipow 𝔡 n) :
     x * y ∈ ipow 𝔡 k := by
@@ -35,7 +35,7 @@ theorem mul_mem (h : 𝔡 ≠ ⊥) {m n k : ℤ} (hk : m + n = k) {x y : K} (hx 
   exact Submodule.mul_mem_mul hx hy
 
 /- English proof (translation)
-Rewrite using `[← ipow_zero 𝔡]`. Conclude with `mul_mem h hk hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_one (h : 𝔡 ≠ ⊥) {m n : ℤ} (hk : m + n = 0) {x y : K} (hx : x ∈ ipow 𝔡 m) (hy : y ∈ ipow 𝔡 n) :
     x * y ∈ (1 : Submodule (𝓞 K) K) := by
@@ -43,7 +43,7 @@ theorem mul_mem_one (h : 𝔡 ≠ ⊥) {m n : ℤ} (hk : m + n = 0) {x y : K} (h
   exact mul_mem h hk hx hy
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp only [pow_zero, Nat.cast_zero, zero_mul, ipow_zero]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Consider the case `succ s ih => rw [pow_succ]; exact mul_mem h (by push_cast; ring) ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_mem (h : 𝔡 ≠ ⊥) {m : ℤ} {x : K} (hx : x ∈ ipow 𝔡 m) (s : ℕ) : x ^ s ∈ ipow 𝔡 (s * m) := by
   induction s with
@@ -51,11 +51,9 @@ theorem pow_mem (h : 𝔡 ≠ ⊥) {m : ℤ} {x : K} (hx : x ∈ ipow 𝔡 m) (s
   | succ s ih => rw [pow_succ]; exact mul_mem h (by push_cast; ring) ih hx
 
 /- English proof (translation)
-Establish `h1 : (1 : K) ∈ ipow 𝔡 n * ipow 𝔡 m`. Rewrite using `[ipow_mul h, add_comm, hk, ipow_zero]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Establish `h2 : ∀ z ∈ ipow 𝔡 n * ipow 𝔡 m, x * z ∈ ipow 𝔡 m`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_induction_on hz (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `Submodule.mem_one.1 (hx a ha)`. Rewrite using `[← mul_assoc, ← hc, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ c hb`. Rewrite using `[mul_add]`.
-
-Conclude with `add_mem ha hb`. Simplify using `using h2 1 h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_forall (h : 𝔡 ≠ ⊥) {m n : ℤ} (hk : m + n = 0) {x : K}
     (hx : ∀ y ∈ ipow 𝔡 n, x * y ∈ (1 : Submodule (𝓞 K) K)) : x ∈ ipow 𝔡 m := by
@@ -71,7 +69,7 @@ theorem mem_of_forall (h : 𝔡 ≠ ⊥) {m n : ℤ} (hk : m + n = 0) {x : K}
   simpa using h2 1 h1
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ipow_zero]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, ipow_mul h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_ipow (h : 𝔡 ≠ ⊥) {ι : Type} (s : Finset ι) (n : ι → ℤ) :
     ∏ i ∈ s, ipow 𝔡 (n i) = ipow 𝔡 (∑ i ∈ s, n i) := by
@@ -80,9 +78,9 @@ theorem prod_ipow (h : 𝔡 ≠ ⊥) {ι : Type} (s : Finset ι) (n : ι → ℤ
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, ipow_mul h]
 
 /- English proof (translation)
-Rewrite using `[← prod_ipow h]`. Establish `: ∏ i, ipow 𝔡 (n i) = ∏ i, Submodule.span (𝓞 K) (ipow 𝔡 (n i) : Set K)` using `by simp`. Rewrite using `[this, Submodule.prod_span, Submodule.span_le]`. Introduce `x hx`. Take `⟨α, hα, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hJ α hα`.
+A detailed English derivation is pending.
 -/
 theorem ipow_sum_le (h : 𝔡 ≠ ⊥) {ι : Type} [Fintype ι] (n : ι → ℤ) (J : Submodule (𝓞 K) K)
     (hJ : ∀ α : ι → K, (∀ i, α i ∈ ipow 𝔡 (n i)) → ∏ i, α i ∈ J) : ipow 𝔡 (∑ i, n i) ≤ J := by
@@ -96,11 +94,11 @@ theorem ipow_sum_le (h : 𝔡 ≠ ⊥) {ι : Type} [Fintype ι] (n : ι → ℤ)
 variable [StarRing K]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero`. Rewrite `hx`, the goal using `[Nat.cast_zero, ipow_zero]`. Conclude with `GlobalTheory.UnimodQuot.star_mem_one hx`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[Nat.cast_succ, ← ipow_mul h]`. Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[star_mul']`. Use `Submodule.mul_mem_mul (ih ha) ?_` and prove the remaining obligations. Simplify using `only [ipow, zpow_one, FractionalIdeal.mem_coe, FractionalIdeal.mem_coeIdeal] at hb ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `hb`. Conclude with `hs y hy`. Rewrite using `[star_add]`. Conclude with `add_mem ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_nat (h : 𝔡 ≠ ⊥) (hs : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (n : ℕ) {x : K}
     (hx : x ∈ ipow 𝔡 n) : star x ∈ ipow 𝔡 n := by
@@ -119,7 +117,7 @@ theorem star_mem_nat (h : 𝔡 ≠ ⊥) (hs : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y
     · rw [star_add]; exact add_mem ha hb
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Conclude with `star_mem_nat h hs m hx`. Use `mem_of_forall h (neg_add_cancel _) fun y hy => ?_` and prove the remaining obligations. Use `GlobalTheory.UnimodQuot.star_mem_one (mul_mem_one h (neg_add_cancel _) hx (star_mem_nat h hs m hy))` as an intermediate fact. Rewrite `this` using `[star_mul', star_star]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem star_mem (h : 𝔡 ≠ ⊥) (hs : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) {n : ℤ} {x : K}
     (hx : x ∈ ipow 𝔡 n) : star x ∈ ipow 𝔡 n := by

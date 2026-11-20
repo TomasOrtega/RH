@@ -15,43 +15,37 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ColumnSep
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α β _ _ _ _ _ m' _ _ c _ _ g W _ _ τ ψ hτ j₀ ν s`. Establish `hlaw : ∀ (F : indSpace (relParab k g) ((twist τ (relDeltaHalf k c)).comp (relProj k g))) (p : Levi k m'), p ∈ relParab k g → ∀ x, ∃ a : ℂ, F.1 (p * x) = a • F.1 x`. Introduce `F p hp x`. Use `⟨((relDeltaHalf k c (relProj k g ⟨p, hp⟩) : ℂˣ) : ℂ) * (ψ (relProj k g ⟨p, hp⟩) : ℂ), ?_⟩` and prove the remaining obligations. Rewrite using `[show p * x = ((⟨p, hp⟩ : relParab k g) : Levi k m') * x from rfl, F.2 ⟨p, hp⟩ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[twist_apply, hτ, smul_smul]`. Establish `hP : ∀ p : Levi k m', (∀ j, p j ∈ parab k (g j)) → p ∈ relParab k g` using `fun p h j _ => h j`. Set `St : Subgroup (Levi k m')` to `{ carrier := {x | ∀ y, s.1.1 (y * x) = s.1.1 y} mul_mem' := fun {a b} ha hb y => by rw [← mul_assoc, hb, ha] one_mem' := fun y => by rw [mul_one] inv_mem' := fun {a} ha y => by rw [← ha (y * a⁻¹), inv_mul_cancel_right] }`. Establish `hSt : IsOpen (St : Set (Levi k m'))`. Establish `h2 : IsOpen {x : Levi k m' | ind (relParab k g) ((twist τ (relDeltaHalf k c)).comp (relProj k g)) x s.1 = s.1}` using `s.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `⟨fun h => Subtype.ext (funext h), fun h y => congrFun (congrArg Subtype.val h) y⟩`. Set `K : ∀ j, Subgroup (GL (m' j) k)` to `fun j => St.comap (MonoidHom.mulSingle (fun j => GL (m' j) k) j)`. Establish `hK : ∀ j, IsOpen (K j : Set (GL (m' j) k))` using `fun j => hSt.preimage (continuous_mulSingle j)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpi : Subgroup.pi Set.univ K ≤ St` using `Subgroup.pi_le_iff.2 fun j => Subgroup.map_comap_le _ _`. Establish `hpiK : ∀ κ : Levi k m', (∀ j, κ j ∈ K j) → ∀ y, s.1.1 (y * κ) = s.1.1 y` using `fun κ h => hpi (fun j _ => h j)`. Use `choose Y hY using fun j => GlobalTheory.T.parabolic_finite_open_decomposition k (g j) (K j) (hK j)`. Establish `hdec : ∀ z : Levi k m', ∃ p : Levi k m', (∀ j, p j ∈ parab k (g j)) ∧ ∃ y : Levi k m', y ∈ Fintype.piFinset Y ∧ ∃ κ : Levi k m', (∀ j, κ j ∈ K j) ∧ z = p * y * κ`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `choose p hp y hy κ hκ e using fun j => hY j (z j)`. Conclude with `⟨p, hp, y, Fintype.mem_piFinset.2 hy, κ, hκ, funext e⟩`. Set `W₀ : Submodule ℂ W` to `Submodule.span ℂ (Set.range fun y : Fintype.piFinset Y => s.1.1 y)`. Use `haveI : FiniteDimensional ℂ W₀ := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Establish `hsW : ∀ x, s.1.1 x ∈ W₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨p, hp, y, hy, κ, hκ, rfl⟩` from `hdec x`. Take `⟨a, ha⟩` from `hlaw s.1 p (hP p hp) (y * κ)`. Rewrite using `[mul_assoc, ha, hpiK κ hκ y]`. Conclude with `W₀.smul_mem a (Submodule.subset_span ⟨⟨y, hy⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ρ'` to `(twist (relInd g τ) ν).comp (MonoidHom.mulSingle (fun j => GL (m' j) k) j₀)`. Establish `hact : ∀ h F x, (ρ' h F).1.1 x = (ν (Pi.mulSingle j₀ h) : ℂ) • F.1.1 (x * Pi.mulSingle j₀ h)` using `fun h F x => rfl`. Establish `hcomm : ∀ (κ : Levi k m'), κ j₀ = 1 → ∀ h : GL (m' j₀) k, κ * Pi.mulSingle j₀ h = Pi.mulSingle j₀ h * κ`. Introduce `κ hκ h`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `[hκ]`. Simplify using `[Pi.mulSingle_apply, hj]`. Set `R : Subrepresentation ρ'` to `{ toSubmodule := { carrier := {F | (∀ κ : Levi k m', κ j₀ = 1 → (∀ j, κ j ∈ K j) → ∀ x, F.1.1 (x * κ) = F.1.1 x) ∧ ∀ x, F.1.1 x ∈ W₀} add_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `F G ⟨hF1, hF2⟩ ⟨hG1, hG2⟩`. Use `⟨fun κ h1 h2 x => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show F.1.1 (x * κ) + G.1.1 (x * κ) = F.1.1 x + G.1.1 x`. Rewrite using `[hF1 κ h1 h2, hG1 κ h1 h2]`. Conclude with `W₀.add_mem (hF2 x) (hG2 x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := ⟨fun κ _ _ x => rfl, fun x => W₀.zero_mem⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `a F ⟨hF1, hF2⟩`. Use `⟨fun κ h1 h2 x => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show a • F.1.1 (x * κ) = a • F.1.1 x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hF1 κ h1 h2]`. Conclude with `W₀.smul_mem a (hF2 x) }`. Use `apply_mem_toSubmodule := by`. Introduce and unpack `h F ⟨hF1, hF2⟩`. Use `⟨fun κ h1 h2 x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hact, hact, mul_assoc, hcomm κ h1 h, ← mul_assoc, hF1 κ h1 h2]`. Rewrite using `[hact]`. Conclude with `W₀.smul_mem _ (hF2 _) }`. Establish `hsR : s ∈ R.toSubmodule` using `⟨fun κ _ h2 x => hpiK κ h2 x, hsW⟩`. Set `b` to `Module.finBasis ℂ W₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose L hL using fun t : Fin (Module.finrank ℂ W₀) => LinearMap.exists_extend (b.coord t)`. Use `⟨Fintype.piFinset Y × Fin (Module.finrank ℂ W₀), inferInstance, fun i => i.1.1, fun i => L i.2, R, hsR, ?_⟩` and prove the remaining obligations. Introduce and unpack `F ⟨hF1, hF2⟩ hF0`. Establish `hz : ∀ y ∈ Fintype.piFinset Y, ∀ x, F.1.1 (Function.update y j₀ x) = 0`. Introduce `y hy x`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw` using `hF2 (Function.update y j₀ x)`. Establish `hc : ∀ t, b.coord t ⟨_, hw⟩ = 0`. Introduce `t`. Rewrite using `[← hL t]`. Conclude with `hF0 (⟨y, hy⟩, t) x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg Subtype.val (b.forall_coord_eq_zero_iff.1 hc)`. Use `Subtype.ext (Subtype.ext (funext fun z => ?_))` and prove the remaining obligations. Use `show F.1.1 z = 0`. Take `⟨p, hp, y, hy, κ, hκ, e⟩` from `hdec z`. Establish `hp' : ∀ j, Function.update p j₀ 1 j ∈ parab k (g j)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `j`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `[one_mem]`. Simplify using `[hj, hp j]`.
-
-Establish `hκ' : ∀ j, Function.update κ j₀ 1 j ∈ K j`. Introduce `j`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `[one_mem]`.
-
-Simplify using `[hj, hκ j]`. Establish `hz' : z = Function.update p j₀ 1 * (Function.update y j₀ (z j₀) * Function.update κ j₀ 1)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality.
-
-Simplify using the standard rewrite rules. Simplify using `[hj, e, mul_assoc]`. Take `⟨a, ha⟩` from `hlaw F.1 _ (hP _ hp') (Function.update y j₀ (z j₀) * Function.update κ j₀ 1)`. Rewrite using `[hz', ha, hF1 _ (by simp) hκ', hz y hy, smul_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_evals_injective : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α β : Type} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] [DecidableEq β]

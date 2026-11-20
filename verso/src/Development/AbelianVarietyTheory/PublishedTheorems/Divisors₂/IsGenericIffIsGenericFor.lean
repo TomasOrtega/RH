@@ -15,25 +15,25 @@ section Bridge
 variable {k : Type} [Field k] {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Simplify using `only [superDiag, Finset.sum_filter, Fintype.sum_prod_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem superDiag_eq_sum_pairs (g : GL (Fin N) k) :
     superDiag g = ∑ p : Fin N × Fin N with (p.2 : ℕ) = p.1 + 1, g.val p.1 p.2 := by
   simp only [superDiag, Finset.sum_filter, Fintype.sum_prod_type]
 
 /- English proof (translation)
-Rewrite using `[superDiag_eq_sum_pairs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_whitChar (ψ : AddChar k Circle) (u : unipB k (Fin N)) :
     ((GlobalTheory.LocGL.whitChar ψ N u : ℂˣ) : ℂ) = ψ (superDiag u.1) := by
   rw [superDiag_eq_sum_pairs]; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, h⟩`. Use `Submodule.Quotient.nontrivial_iff.2 fun htop => hl (LinearMap.ker_eq_top.1 (eq_top_iff.2 (htop ▸ ?_)))` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_smul, smul_eq_mul, val_whitChar, h u.1 u.2 v, sub_self]`. Introduce `h`. Establish `h1` using `Submodule.Quotient.nontrivial_iff.1 h`. Take `⟨l, hl, hk⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 h1)`. Use `⟨l, hl, fun u hu v => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hk (Submodule.subset_span ⟨⟨u, hu⟩, v, rfl⟩)`. Simplify using `only [LinearMap.mem_ker, map_sub, map_smul, smul_eq_mul, val_whitChar] at h2`. Conclude with `sub_eq_zero.1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGeneric_iff_isGenericFor (ψ : AddChar k Circle) (π : Representation ℂ (GL (Fin N) k) V) :
     IsGeneric ψ π ↔ GlobalTheory.LocGL.IsGenericFor ψ π := by
@@ -52,14 +52,14 @@ theorem isGeneric_iff_isGenericFor (ψ : AddChar k Circle) (π : Representation 
     exact sub_eq_zero.1 h2
 
 /- English proof (translation)
-Introduce `h` and use `GlobalTheory.LocGL.not_isGenericFor_detRep hψ hN χ ((isGeneric_iff_isGenericFor _ _).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isGeneric_detRep {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (hN : 2 ≤ N) (χ : kˣ →* ℂˣ) :
     ¬ IsGeneric ψ (detRep (Fin N) χ) := fun h =>
   GlobalTheory.LocGL.not_isGenericFor_detRep hψ hN χ ((isGeneric_iff_isGenericFor _ _).1 h)
 
 /- English proof (translation)
-Take `⟨l, hl, h⟩` from `h`. Use `⟨l ∘ₗ f.toLinearMap, fun e => hl (LinearMap.ext fun w => ?_), fun u hu v => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hf w`. Conclude with `LinearMap.congr_fun e v`. Conclude with `(congrArg l (f.isIntertwining _ _ u v)).trans (h u hu _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsGeneric.of_surjective {ψ : AddChar k Circle} {π : Representation ℂ (GL (Fin N) k) V}
     {σ : Representation ℂ (GL (Fin N) k) W} (f : π.IntertwiningMap σ) (hf : Function.Surjective f) (h : IsGeneric ψ σ) :
@@ -77,9 +77,9 @@ section Exact
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨⟨u, trivial⟩, (θ u : ℂ) • v, ?_⟩` and prove the remaining obligations. Simplify using `[smul_smul]`. Introduce and unpack `_ ⟨u, v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `Submodule.subset_span ⟨u.1, (((θ u.1)⁻¹ : ℂˣ) : ℂ) • v, ?_⟩` and prove the remaining obligations. Simplify using `[smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem twKer_eq_twKer_twist (π : Representation ℂ G V) (U : Subgroup G) (θ : U →* ℂˣ) :
     twKer π U θ = twKer (twist (π.comp U.subtype) θ⁻¹) ⊤ 1 := by
@@ -94,9 +94,9 @@ theorem twKer_eq_twKer_twist (π : Representation ℂ G V) (U : Subgroup G) (θ 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `GlobalTheory.SplitWeil.exists_cball_addChar_eq_one ψ hψ`. Establish `hc : Continuous fun u : unipB k (Fin N) => superDiag u.1` using `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => (Units.continuous_val.comp continuous_subtype_val).matrix_elem i j`. Establish `h0 : superDiag ((1 : unipB k (Fin N)) : GL (Fin N) k) = 0` using `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j hj => Matrix.one_apply_ne fun e => by have := (Finset.mem_filter.1 hj).2; rw [e] at this; omega`. Use `(GlobalTheory.LocGL.whitChar ψ N).ker.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (((GlobalTheory.SplitWeil.isOpen_cball r).preimage hc).mem_nhds ?_) fun u hu => Units.ext ?_)` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GlobalTheory.SplitWeil.cball]`. Rewrite using `[val_whitChar, hr _ hu]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isSmoothChar_whitChar {ψ : AddChar k Circle} (hψ : Continuous ψ) : IsSmoothChar (GlobalTheory.LocGL.whitChar ψ N) := by
   obtain ⟨r, hr⟩ := GlobalTheory.SplitWeil.exists_cball_addChar_eq_one ψ hψ
@@ -115,13 +115,13 @@ theorem isSmoothChar_whitChar {ψ : AddChar k Circle} (hψ : Continuous ψ) : Is
 open GlobalTheory.JacInj GlobalTheory.IwahoriInj in
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isGeneric_iff_isGenericFor]`. Use `Submodule.Quotient.nontrivial_iff.2 fun e => Submodule.Quotient.nontrivial_iff.1 h (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations. Rewrite `e`, the goal using `[twKer_eq_twKer_twist]`. Set `U` to `unipB k (Fin N)`. Set `π'` to `twist (π.comp U.subtype) (GlobalTheory.LocGL.whitChar ψ N)⁻¹`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hs : IsSmooth π'` using `isSmooth_twist (ρ := π.comp U.subtype) (fun w => (hπ w).preimage continuous_subtype_val) (isSmoothChar_whitChar hψ).inv`. Establish `key : ∀ w ∈ twKer π' ⊤ 1, ∀ᶠ M : ℕ in Filter.atTop, w ∈ twKer π' ((grp k (conc_wt (points (Fin N)) M)).subgroupOf U) 1` using `fun w hw => by`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, w, rfl⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [eventually_mem_grp (points (Fin N)) u.1.2] with M hM`. Simplify using `using sub_mem_twKer (π := π') (H := (grp k (conc_wt (points (Fin N)) M)).subgroupOf U) hM w`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => filter_upwards [hx, hy] with M h1 h2 using add_mem h1 h2`. Consider the case `smul a x _ hx => filter_upwards [hx] with M h1 using Submodule.smul_mem _ a h1`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `(key (f v) (e ▸ Submodule.mem_top)).exists`. Establish `hc : IsCompact (((grp k (conc_wt (points (Fin N)) M)).subgroupOf U : Subgroup U) : Set U)` using `(isClosed_unipRad (k := k) (points (Fin N))).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_grp (conc_wt (points (Fin N)) M))`. Conclude with `twKer_mono le_top (mem_twKer_of_map (twistMap (compMap f U.subtype) _) hs hf hc hM)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsGeneric.of_injective {ψ : AddChar k Circle} (hψ : Continuous ψ) {σ : Representation ℂ (GL (Fin N) k) V}
     {π : Representation ℂ (GL (Fin N) k) W} (f : σ.IntertwiningMap π) (hπ : IsSmooth π) (hf : Function.Injective f)
@@ -150,7 +150,7 @@ theorem IsGeneric.of_injective {ψ : AddChar k Circle} (hψ : Continuous ψ) {σ
   exact twKer_mono le_top (mem_twKer_of_map (twistMap (compMap f U.subtype) _) hs hf hc hM)
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `hs`. Conclude with `(h.of_surjective f hf).of_injective hψ ⟨S.toSubmodule.subtype, fun _ => rfl⟩ hπ Subtype.val_injective`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsGeneric.of_isSubquotient {ψ : AddChar k Circle} (hψ : Continuous ψ) {σ : Representation ℂ (GL (Fin N) k) V}
     {π : Representation ℂ (GL (Fin N) k) W} (hπ : IsSmooth π) (hs : IsSubquotient σ π) (h : IsGeneric ψ σ) :
@@ -175,19 +175,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.CuspGeneric GlobalTheory.CuspRep.Generic in
 
 /- English proof (translation)
-Introduce `E _ _ _ a _ P w ψ' hc' h1'`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_standardAdelicAddChar E`. Establish `hg : ∀ v : P.V, Good ψ (a - 1) v.1.1` using `fun v => GlobalTheory.T.isMirabolicWhittakerStage_of_isCuspForm E a ψ v.1 (P.cusp _ v.2)`. Establish `h0 : a - 1 < a ∨ a - 1 = 0` using `by omega`. Use `Submodule.nontrivial_iff_ne_bot.2 P.ne_bot` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v₀, hv₀⟩` from `exists_ne (0 : P.V)`. Establish `hv1 : v₀.1.1 ≠ 0` using `fun h => hv₀ (Subtype.ext (Subtype.ext h))`. Take `⟨g₀, hg₀⟩` from `Function.ne_iff.1 ((whit_good hψ (a - 1) h0 (hg v₀)).2 hv1)`. Take `⟨h, gw, e, hc⟩` from `GlobalTheory.T.exists_split_adelicMatrix_localComponent E a w g₀`. Establish `hrt : ∀ u (v : P.V) x, whit ψ (a - 1) (P.locRep w u v).1.1 x = whit ψ (a - 1) v.1.1 (x * finGL E a (locGL E a w u))` using `fun u v x => whit_rt _ _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `l : P.V →ₗ[ℂ] ℂ` to `{ toFun := fun v => whit ψ (a - 1) v.1.1 h map_add' := fun v v' => congrFun (whit_add hψ (a - 1) h0 (hg v) (hg v')) h map_smul' := fun c v => congrFun (whit_smul (a - 1) c v.1.1) h }`. Establish `hl : ∀ v, l v = whit ψ (a - 1) v.1.1 h` using `fun _ => rfl`. Establish `hne : l (P.locRep w gw v₀) ≠ 0`. Rewrite using `[hl, hrt, ← e]`. Conclude with `hg₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgen : GlobalTheory.Whittaker.IsGeneric (locPsi hψ w) (P.locRep w)`. Use `⟨l, fun e => hne (by rw [e]; rfl), fun u hu v => ?_⟩` and prove the remaining obligations. Take `⟨u1, u2⟩` from `(GlobalTheory.SmGL.mem_unipB _).1 hu`. Take `⟨t1, t2, t3⟩` from `GlobalTheory.T.localUpperUnipotent_adelic_upperUnipotent E a w u u1 u2`. Establish `hlw` using `(whit_good hψ (a - 1) h0 (hg v)).1.law`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.whittakerLaw_upperTriangularUnipotent_adelic E a ψ _ (fun k hk => hlw k hk) _ t1 t2 h` as an intermediate fact. Rewrite using `[hl, hrt, hc, this, t3, superDiag_eq_sum_pairs]`. Both sides reduce to the same expression. Establish `hcont : Continuous (locPsi hψ w)`. Use `Continuous.subtype_mk (hψ.cont.comp ?_) _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E)).comp (CuspSub.continuous_sLoc w)`. Establish `hne1 : locPsi hψ w ≠ 1` using `fun h1 => by`. Take `⟨y, hy⟩` from `hψ.loc w`. Apply `hy` to reduce the goal to its premises. Use `congrArg (fun c : Circle => (c : ℂ)) (DFunLike.congr_fun h1 y)` as an intermediate fact.
-
-Simplify `this` using `[coe_locPsi]`. Conclude with `(isGeneric_iff_isGenericFor _ _).2 ((GlobalTheory.LocGL.isGenericFor_iff_of_continuous hcont hne1 hc' h1' _).1 ((isGeneric_iff_isGenericFor _ _).1 hgen))`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cuspidalGeneric_holds : CuspidalGeneric := by
   intro E _ _ _ a _ P w ψ' hc' h1'
@@ -253,13 +251,11 @@ namespace GenericityGL
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hm`. Take `⟨l, hl, h⟩` from `H k ψ hc h1 N c m e W ρ hρ (hg.of_isSubquotient hc (isSmooth_parInd e ρ) hs)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, l v ≠ 0 := by`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hl (LinearMap.ext h0)`. Use `not_isGeneric_detRep h1 (N := m a) (by omega) 1 ⟨LinearMap.id, fun e => one_ne_zero (LinearMap.congr_fun e 1), fun u hu x => ?_⟩` and prove the remaining obligations. Establish `h2` using `h (Pi.mulSingle a u) (fun b => by`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hu`. Rewrite using `[Pi.mulSingle_eq_of_ne hb]`. Conclude with `one_mem _) v`. Establish `h3 : ∀ b, superDiag (1 : GL (Fin (m b)) k) = 0` using `fun b => Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j hj => Matrix.one_apply_ne fun e => by have := (Finset.mem_filter.1 hj).2; rw [e] at this; omega`. Rewrite `h2` using `[Finset.prod_eq_single a (fun b _ hb => by rw [Pi.mulSingle_eq_of_ne hb, h3]; simp) (by simp), Pi.mulSingle_eq_same, ha u hu]`.
-
-Rewrite using `[(mul_eq_right₀ hv).1 h2.symm]`. Simplify using `[detRep]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem block_le_one (H : GenericityGL) {ψ : AddChar k Circle} (hc : Continuous ψ) (h1 : ψ ≠ 1) {N c : ℕ} {m : Fin c → ℕ}
     (e : (Σ a, Fin (m a)) ≃ Fin N) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]

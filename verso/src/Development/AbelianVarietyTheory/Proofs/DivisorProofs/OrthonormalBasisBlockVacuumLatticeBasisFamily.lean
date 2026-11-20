@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.BaseVacuum
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_prod_type']`. Conclude with `((posE n n').sum_comp (fun x => f x.1 x.2)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_posE {M : Type} [AddCommMonoid M] (n n' : ℕ) (f : Fin (n' * 2) → Fin (n * 2) → M) :
     ∑ i, ∑ j, f i j = ∑ p : (Fin n' × Fin n) × Fin 4, f (posE n n' p).1 (posE n n' p).2 := by
@@ -17,7 +17,7 @@ theorem sum_posE {M : Type} [AddCommMonoid M] (n n' : ℕ) (f : Fin (n' * 2) →
   exact ((posE n n').sum_comp (fun x => f x.1 x.2)).symm
 
 /- English proof (translation)
-Simplify using `[putB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem putB_posE (D : D7) {n n' : ℕ} (k : Fin n' × Fin n) (x : Fin 4 → D.host.E)
     (p : (Fin n' × Fin n) × Fin 4) :
@@ -25,13 +25,13 @@ theorem putB_posE (D : D7) {n n' : ℕ} (k : Fin n' × Fin n) (x : Fin 4 → D.h
   simp [putB]
 
 /- English proof (translation)
-Unfold `TaylorLogMetric.hYY`. Rewrite using `[sum_posE]`. Simplify using `only [putB_posE]`. Rewrite using `[Fintype.sum_prod_type]`. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[Fintype.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `k'' hk`. Simplify using `[hk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero, map_zero]`. Introduce `k'' _`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Distinguish the cases in `h1 : k'' = k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h1` using the available equality. Simplify using `[Ne.symm h, h]`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hYY_putB (D : D7) {n n' : ℕ} (k k' : Fin n' × Fin n) (x y : Fin 4 → D.host.E) :
     TaylorLogMetric.hYY D (putB D k x) (putB D k' y) =
@@ -62,17 +62,17 @@ namespace GlobalTheory.BaseVacuum
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
 /- English proof (translation)
-Simplify using `[xv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gamma_g_xv (B : Base D cc δ) (w : Fin 4 × D.what₂.Tau) : B.γ₀.g (xv B w) = Pi.single w 1 := by
   simp [xv]
 
 /- English proof (translation)
-Apply `(algebraMap D.host.K D.host.E).injective` to reduce the goal to its premises. Establish `h` using `B.γ₀.isom (xv B w) (xv B w')`. Rewrite `h` using `[gamma_g_xv, gamma_g_xv]`. Rewrite using `[map_sum, ← h]`. Simplify using `only [Pi.single_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hw : w = w'`. Substitute `hw` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hw, map_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u _`. Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Simplify using `[hw]`. Simplify using `[hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem trace_xv (B : Base D cc δ) (w w' : Fin 4 × D.what₂.Tau) :
     Algebra.trace D.host.K D.host.E (∑ a, xv B w a * D.host.conj (xv B w' a)) = if w = w' then 1 else 0 := by
@@ -93,13 +93,13 @@ theorem trace_xv (B : Base D cc δ) (w w' : Fin 4 × D.what₂.Tau) :
     · simp [hu]
 
 /- English proof (translation)
-Introduce `i j`. Unfold `bas`. Rewrite using `[hYY_putB]`. Distinguish the cases in `hk : (ixE D n n' i).1 = (ixE D n n' j).1`. Rewrite using `[if_pos hk, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `trace_xv B (ixE D n n' i).2 (ixE D n n' j).2` as an intermediate fact. Rewrite `this` using `[map_sum]`. Rewrite using `[this]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(ixE D n n').injective (Prod.ext hk h)`. Introduce `h`. Rewrite using `[h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hk, if_neg]`. Introduce `h`. Conclude with `hk (by rw [h])`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orthonormal_bas (B : Base D cc δ) (n n' : ℕ) : TaylorLogMetric.Orthonormal D (bas B n n') := by
   intro i j
@@ -124,9 +124,9 @@ theorem orthonormal_bas (B : Base D cc δ) (n n' : ℕ) : TaylorLogMetric.Orthon
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Establish `h1 : ∑ w, B.γ₀.g y w • (Pi.single w (1 : D.host.K) : Fin 4 × D.what₂.Tau → D.host.K) = B.γ₀.g y`. Use extensionality with `u`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_smul, xv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = y := by rw [h1, LinearEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem sum_g_smul_xv (B : Base D cc δ) (y : Fin 4 → D.host.E) :
     ∑ w, B.γ₀.g y w • xv B w = y := by
@@ -138,13 +138,13 @@ theorem sum_g_smul_xv (B : Base D cc δ) (y : Fin 4 → D.host.E) :
     _ = y := by rw [h1, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨p, hp⟩` from `(posE n n').surjective (i, j)`. Establish `hi : i = (posE n n' p).1` using `by rw [hp]`. Establish `hj : j = (posE n n' p).2` using `by rw [hp]`. Substitute `hi hj` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, putB_posE, smul_ite, smul_zero]`. Rewrite using `[Fintype.sum_eq_single p.1]`. Simplify using `only [if_true]`. Use `congrFun (sum_g_smul_xv B (fun a => M (posE n n' (p.1, a)).1 (posE n n' (p.1, a)).2)) p.2` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.smul_apply] at this`. Rewrite using `[this]`. Introduce `k hk`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `w _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hk)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_eq_sum_putB (B : Base D cc δ) (n n' : ℕ) (M : Matrix (Fin (n' * 2)) (Fin (n * 2)) D.host.E) :
     M = ∑ k : Fin n' × Fin n, ∑ w : Fin 4 × D.what₂.Tau,
@@ -167,9 +167,9 @@ theorem matrix_eq_sum_putB (B : Base D cc δ) (n n' : ℕ) (M : Matrix (Fin (n' 
     rw [if_neg (Ne.symm hk)]
 
 /- English proof (translation)
-Introduce `D cc δ B n n'`. Use `⟨orthonormal_bas B n n', ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun M _ => ?_` and prove the remaining obligations. Rewrite using `[matrix_eq_sum_putB B n n' M]`. Use `Submodule.sum_mem _ fun k _ => Submodule.sum_mem _ fun w _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨(ixE D n n').symm (k, w), ?_⟩` and prove the remaining obligations. Simplify using `[bas]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem onB_bas : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (n n' : ℕ),
     StandardLatticesGL3.OnB D (bas B n n') := by

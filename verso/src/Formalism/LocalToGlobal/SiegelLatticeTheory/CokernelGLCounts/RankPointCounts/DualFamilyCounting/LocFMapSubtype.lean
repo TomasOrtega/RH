@@ -14,17 +14,15 @@ variable {K F : Type} [Field K] [NumberField K] [Field F] [NumberField F] [Algeb
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, z, hz, hzy⟩`. Establish `ht0 : t ≠ 0` using `fun h0 => ht (h0 ▸ 𝔭.zero_mem)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hne : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) ≠ 0`. Establish `e : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) = algebraMap F K (t : F)` using `rfl`. Rewrite using `[e, map_ne_zero]`. Conclude with `fun h => ht0 (by exact_mod_cast h)`. Establish `hmem : algebraMap (𝓞 F) (𝓞 K) t • y ∈ X`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[← hzy]`. Conclude with `z.2`. Rewrite `hmem` using `[← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) t) y]`. Establish `hyX : y ∈ X` using `(X.smul_mem_iff hne).mp hmem`. Use `⟨⟨y, hyX⟩, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF]`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `e2 : algebraMap (𝓞 F) (𝓞 K) t • (⟨y, hyX⟩ : X) = z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hzy.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `hz`. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite `hz` using `[Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF]`. Take `⟨t, ht, hz⟩` from `hz`.
-
-Conclude with `⟨t, ht, _, hz, by simp⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locF_map_subtype (X : Submodule K V) (𝔭 : Ideal (𝓞 F)) [𝔭.IsPrime] (N : Submodule (𝓞 K) X) :
     locF 𝔭 (N.map (X.subtype.restrictScalars (𝓞 K))) =
@@ -57,17 +55,17 @@ theorem locF_map_subtype (X : Submodule K V) (𝔭 : Ideal (𝓞 F)) [𝔭.IsPri
 variable [FiniteDimensional K V]
 
 /- English proof (translation)
-Use `haveI : 𝔭.IsPrime := h𝔭.isPrime`. Take `⟨hfg, hspan⟩` from `hL`. Establish `hLX : ∀ v ∈ L, v ∈ X` using `fun v hv => hspan ▸ Submodule.subset_span hv`. Establish `hmapN : (L.comap (X.subtype.restrictScalars (𝓞 K))).map (X.subtype.restrictScalars (𝓞 K)) = L`. Rewrite using `[Submodule.map_comap_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `inf_eq_right.mpr ?_` and prove the remaining obligations. Introduce `v hv`. Conclude with `⟨⟨v, hLX v hv⟩, rfl⟩`. Establish `hinj : Function.Injective (X.subtype.restrictScalars (𝓞 K))` using `X.injective_subtype`. Establish `hfgN : (L.comap (X.subtype.restrictScalars (𝓞 K))).FG` using `Submodule.fg_of_fg_map_injective _ hinj (by rw [hmapN]; exact hfg)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `himg : X.subtype '' ((L.comap (X.subtype.restrictScalars (𝓞 K)) : Submodule (𝓞 K) X) : Set X) = (L : Set V)`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `hw`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hv`. Conclude with `⟨⟨v, hLX v hv⟩, hv, rfl⟩`. Establish `hspanN : Submodule.span K ((L.comap (X.subtype.restrictScalars (𝓞 K)) : Submodule (𝓞 K) X) : Set X) = ⊤`. Apply `Submodule.map_injective_of_injective X.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, himg, hspan, Submodule.map_top, Submodule.range_subtype]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hNlat : Submodule.IsLattice K (L.comap (X.subtype.restrictScalars (𝓞 K)))` using `⟨hfgN, hspanN⟩`. Take `⟨b, hbN, hbloc⟩` from `Formalism.HermitianLattices.Ext.L3.LocalSpans.exists_basis_locF hNlat h𝔭`. Use `⟨fun i => (b i : V), fun i => hbN i, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `b.linearIndependent.map' X.subtype X.ker_subtype`. Establish `hx : Set.range (fun i => (b i : V)) = X.subtype '' Set.range b` using `Set.range_comp _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hx : Set.range (fun i => (b i : V)) = (X.subtype.restrictScalars (𝓞 K)) '' Set.range b` using `Set.range_comp _ _`. Rewrite using `[hx, Submodule.span_image, locF_map_subtype, hbloc, ← locF_map_subtype, hmapN]`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis_in {X : Submodule K V} {L : Submodule (𝓞 K) V} (hL : Cnt.IsLatIn X L)
     {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
@@ -110,15 +108,15 @@ theorem exists_basis_in {X : Submodule K V} {L : Submodule (𝓞 K) V} (hL : Cnt
     rw [hx, Submodule.span_image, locF_map_subtype, hbloc, ← locF_map_subtype, hmapN]
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hdet`. Establish `hyX : (∑ i, star (c i) • x i) ∈ X`. Rewrite using `[← hsp]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ j, h (∑ i, star (c i) • x i) (x j) = 0`. Introduce `j`. Establish `hj` using `congrFun hc j`. Simplify using `only [Matrix.vecMul, dotProduct, U0.gram, Matrix.of_apply, Pi.zero_apply] at hj`. Simplify using `only [map_sum, map_smulₛₗ, starRingEnd_apply, star_star, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hj`. Establish `hall : ∀ z ∈ X, h (∑ i, star (c i) • x i) z = 0`. Introduce `z hz`. Rewrite `hz` using `[← hsp]`. Establish `hle : Submodule.span K (Set.range x) ≤ LinearMap.ker (h (∑ i, star (c i) • x i))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `key j`. Conclude with `hle hz`. Establish `hy0` using `hnd _ hyX hall`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcoef` using `Fintype.linearIndependent_iff.mp hli (fun i => star (c i)) hy0`. Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `using hcoef i`.
+A detailed English derivation is pending.
 -/
 theorem det_gram_ne_zero [StarRing K] {h : V →ₗ⋆[K] V →ₗ[K] K} {X : Submodule K V}
     (hnd : Cnt.NondegOn h X) {n : ℕ} {x : Fin n → V} (hli : LinearIndependent K x)

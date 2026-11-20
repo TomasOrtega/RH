@@ -6,13 +6,11 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ⟨h1, h2, _, h4, _⟩ x a D hD ha hn y hy`. Take `⟨s, s', hss, hs⟩` from `hD _ hy`. Establish `hai : a * Ring.inverse a = 1` using `Ring.mul_inverse_cancel a ha`. Establish `key : (x : A.K) * A.NL y = a * s ^ 2`. Rewrite using `[hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-((x : A.K) * A.NL y - a)) * hai`. Establish `hsu : IsUnit s` using `IsUnit.of_mul_eq_one s' hss`. Establish `hs'u : IsUnit s'` using `IsUnit.of_mul_eq_one s (by rw [mul_comm]; exact hss)`. Establish `hN : IsUnit (A.NL y)`. Establish `: IsUnit ((x : A.K) * A.NL y)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key]`. Conclude with `ha.mul (hsu.pow 2)`. Conclude with `isUnit_of_mul_isUnit_right this`. Use `hn ⟨y * algebraMap A.K A.L s', (h4 y hN).mul (hs'u.map _), ?_⟩` and prove the remaining obligations. Rewrite using `[h2, h1, ← mul_assoc, key]`.
-
-Take the linear combination `(-a * (s * s' + 1)) * hss`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_sub_notMem_of_not_norm :
     ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E), ((∀ s : A.K, A.NL (algebraMap A.K A.L s) = s ^ 2) ∧ (∀ y y' : A.L, A.NL (y * y') = A.NL y * A.NL y') ∧ (∀ t : unitary A.L, A.NL (t : A.L) = 1) ∧ (∀ y : A.L, IsUnit (A.NL y) → IsUnit y) ∧ (∀ y : A.L, IsUnit y → IsUnit (A.NL y))) → ∀ (x : A.Kˣ) (a : A.K) (D : Set A.K), (∀ b ∈ D, ∃ s s' : A.K, s * s' = 1 ∧ s ^ 2 = 1 + Ring.inverse a * b) → IsUnit a → (¬ ∃ y : A.L, IsUnit y ∧ a = x * A.NL y) → ∀ y : A.L, (x : A.K) * A.NL y - a ∉ D := by

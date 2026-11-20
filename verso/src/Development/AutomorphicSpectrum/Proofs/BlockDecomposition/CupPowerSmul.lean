@@ -7,9 +7,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistable
 namespace GlobalTheory.CompanionTheory.ConePow
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, one_smul]`. Both sides reduce to the same expression. Consider the case `succ k ih`. Express the relevant statement in the definitionally equal form `(CH.mulP A).cupC (by omega) (cupPowC A (a • z) k) (a • z) = a ^ (k + 1) • (CH.mulP A).cupC (by omega) (cupPowC A z k) z`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ih, map_smul, map_smul, LinearMap.smul_apply, pow_succ', mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cupPowC_smul {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (A : C ⥤ CommAlgCat.{0} R)
     (z : CH.Cn (CH.modF A) 2) (a : R) (k : ℕ) : cupPowC A (a • z) k = a ^ k • cupPowC A z k := by

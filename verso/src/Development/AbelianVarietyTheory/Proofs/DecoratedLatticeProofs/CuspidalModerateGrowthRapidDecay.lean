@@ -14,40 +14,36 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CuspGeo
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun τ i j => (h.2 τ i j).trans hle⟩`.
+Supply the required witnesses or components.
 -/
 theorem closeR_mono {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
     {u : GA D V} {a a' : ℝ} (h : CloseR θ V u a) (hle : a ≤ a') : CloseR θ V u a' :=
   ⟨h.1, fun τ i j => (h.2 τ i j).trans hle⟩
 
 /- English proof (translation)
-Introduce `D θ hθ V U hU A N`. Set `Dr : D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ → (GA D V → ℂ) → GA D V → ℂ` to `fun p f => Rder θ V p.1 p.2 f`. Set `𝓒 : Set (GA D V → ℂ)` to `{φ | IsAutFun V φ ∧ (∀ k ∈ U, k ∈ GfC V → ∀ g, φ (g * k) = φ g) ∧ SmoothW θ V φ ∧ (∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → GlobalTheory.Grow.ModGrowthExp V A (l.foldr Dr φ)) ∧ IsCuspFun V φ}`. Take `⟨B, Ω₀, Cm, δ₁, hB, hΩ₀, hδ₁, hCm, hmv⟩` from `GlobalTheory.T.meanValue_ineq_rightTranslate_realPoint_near_one D θ hθ V`. Take `⟨b, Cn, δn, hδn, hnear⟩` from `GlobalTheory.T.adelicUnitary_every_point_has_cusp_scale D θ hθ V U hU`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH⟩` from `GlobalTheory.Grow.exists_height_le_of_isCompact V hΩ₀`. Establish `hstab : ∀ ψ ∈ 𝓒, ∀ i ∈ B, Dr i ψ ∈ 𝓒`. Introduce and unpack `ψ ⟨ha, hlev, hs, hg, hc⟩ i hi`. Conclude with `GlobalTheory.T.rightDerivative_smoothCuspidal_same_level D θ hθ V U i.1 i.2 (hB i hi) A ψ ha hlev hs hg hc`. Establish `hwords : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ i ∈ l, i ∈ B) → ∀ ψ ∈ 𝓒, l.foldr Dr ψ ∈ 𝓒`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _ ψ hψ`. Conclude with `hψ`. Consider the case `cons a l ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hl ψ hψ`. Conclude with `hstab _ (ih (fun i hi => hl i (List.mem_cons_of_mem _ hi)) ψ hψ) a (hl a List.mem_cons_self)`. Use `set Cn' := max Cn 0 with hCn'`. Establish `hCn'0 : 0 ≤ Cn'` using `le_max_right _ _`. Use `set δ₀ := min δn (δ₁ / (Cn' + 1)) with hδ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ₀pos : 0 < δ₀` using `lt_min hδn (div_pos hδ₁ (by linarith))`. Use `set K := max (max Cn (Cm * Cn')) (max H 1) with hK`. Establish `hK1 : Cn ≤ K` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `hK2 : Cm * Cn' ≤ K` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `hK3 : H ≤ K` using `(le_max_left _ _).trans (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Establish `hstep : ∀ g, ∃ δ : ℝ, 0 < δ ∧ δ ≤ 1 ∧ GlobalTheory.Grow.quotHeight V g * δ ^ b ≤ K ∧ (δ₀ ≤ δ ∨ ∃ Ω : Set (GA D V), (∀ w ∈ Ω, GlobalTheory.Grow.quotHeight V w ≤ K * GlobalTheory.Grow.quotHeight V g ∧ GlobalTheory.Grow.quotHeight V g ≤ K * GlobalTheory.Grow.quotHeight V w) ∧ ∀ ψ ∈ …`. Introduce `g`. Take `⟨δ, hδ0, hδ1, hq, hcase⟩` from `hnear g`. Use `⟨δ, hδ0, hδ1, hq.trans hK1, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hδ : δ₀ ≤ δ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Or.inl hδ`. Use `right`. Use `push_neg at hδ`. Establish `hδn' : ¬ δn ≤ δ` using `fun h => absurd (hδ.trans_le (min_le_left _ _)) (not_lt.2 h)`. Take `⟨r, C₀, hC₀, hN⟩` from `hcase.resolve_left hδn'`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmall : Cn' * δ ≤ δ₁`. Establish `h1 : δ < δ₁ / (Cn' + 1)` using `hδ.trans_le (min_le_right _ _)`. Rewrite `h1` using `[lt_div_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨(g * ·) '' Ω₀, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hq0` using `GlobalTheory.Grow.one_le_quotHeight V g`. Establish `hq1` using `GlobalTheory.Grow.one_le_quotHeight V (g * w)`. Establish `hw1` using `hH w hw`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.Grow.height_inv]; exact mul_le_mul_of_nonneg_left (hw1.trans hK3) (by linarith)`. Use `_ = K * GlobalTheory.Grow.quotHeight V (g * w) := mul_comm _ _`. Introduce and unpack `ψ ⟨ha, hlev, hs, hg, hc⟩ c hc'`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : 0 ≤ ∑ i ∈ B, c i` using `Finset.sum_nonneg fun i hi => (hc' i hi).1`. Establish `hmain : ‖ψ g‖ ≤ Cm * (Cn' * δ) * ∑ p ∈ B, c p`. Use `GlobalTheory.T.norm_le_of_cuspidal_variation_unipotentRadical D V ψ ha hc r C₀ hC₀ g _ fun m hm => ?_` and prove the remaining obligations. Take `⟨γ, hγ, u, k, hu, hkU, hkf, hmg⟩` from `hN m hm`. Establish `hval : ψ (m * g) = ψ (g * u)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hmg, show γ * g * u * k = γ * (g * u) * k by group, hlev k hkU hkf, ha.left γ hγ]`. Rewrite using `[hval]`. Use `hmv ψ hs g u (Cn' * δ) (mul_nonneg hCn'0 hδ0.le) hsmall (closeR_mono hu (mul_le_mul_of_nonneg_right (le_max_left _ _) hδ0.le)) c fun p hp w hw => ?_` and prove the remaining obligations. Conclude with `(hc' p hp).2 _ ⟨w, hw, rfl⟩`. Use `hmain.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hK2 hδ0.le) hsum`. Take `⟨L, C', hLB, hL⟩` from `GlobalTheory.T.exists_rapid_decay_of_iterated_gain (GA D V) (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ) B (GlobalTheory.Grow.quotHeight V) 𝓒 Dr b K δ₀ hδ₀pos (GlobalTheory.Grow.one_le_quotHeight V) hstab hstep A N`. Use `⟨L, C' * 2 ^ A, fun l hl p hp => hB p (hLB l hl p hp), ?_⟩` and prove the remaining obligations. Introduce `φ ha hlev hs hg hc c hcl g`.
-
-Establish `hφ : φ ∈ 𝓒` using `⟨ha, hlev, hs, hg, hc⟩`. Establish `h` using `hL φ hφ (fun l => c l * 2 ^ A) (fun l hl g' => GlobalTheory.Grow.norm_le_quotHeight_pow (hwords l (hLB l hl) φ hφ).1.left (hcl l hl) g') g`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cuspDecayBound : GlobalTheory.Published.CuspDecayBound := by
   intro D θ hθ V U hU A N

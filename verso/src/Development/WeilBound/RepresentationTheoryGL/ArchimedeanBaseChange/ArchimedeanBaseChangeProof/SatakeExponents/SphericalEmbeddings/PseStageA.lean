@@ -20,9 +20,9 @@ section Lin
 variable {U X Y : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u x`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `add v w hv hw`. Rewrite using `[map_add, map_add, hv, hw, map_add, Finsupp.mapRange_add (map_add g)]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordL_lTensor {ι : Type} [DecidableEq ι] (b : Module.Basis ι ℂ U) (g : X →ₗ[ℂ] Y) (v : U ⊗[ℂ] X) :
     TensorProduct.equivFinsuppOfBasisLeft b (LinearMap.lTensor U g v) =
@@ -36,9 +36,9 @@ theorem coordL_lTensor {ι : Type} [DecidableEq ι] (b : Module.Basis ι ℂ U) 
     rw [map_add, map_add, hv, hw, map_add, Finsupp.mapRange_add (map_add g)]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x u`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `add v w hv hw`. Rewrite using `[map_add, map_add, hv, hw, map_add, Finsupp.mapRange_add (map_add g)]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordR_rTensor {ι : Type} [DecidableEq ι] (b : Module.Basis ι ℂ U) (g : X →ₗ[ℂ] Y) (v : X ⊗[ℂ] U) :
     TensorProduct.equivFinsuppOfBasisRight b (LinearMap.rTensor U g v) =
@@ -52,11 +52,11 @@ theorem coordR_rTensor {ι : Type} [DecidableEq ι] (b : Module.Basis ι ℂ U) 
     rw [map_add, map_add, hv, hw, map_add, Finsupp.mapRange_add (map_add g)]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℂ U`. Establish `key : TensorProduct.equivFinsuppOfBasisLeft b v = 0`. Use extensionality with `i`. Establish `h1 : ∀ h ∈ S, π h (TensorProduct.equivFinsuppOfBasisLeft b v i) = TensorProduct.equivFinsuppOfBasisLeft b v i`. Introduce `h hh`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun w => TensorProduct.equivFinsuppOfBasisLeft b w i) (hv h hh)` as an intermediate fact. Simplify `this` using `[coordL_lTensor]`. Establish `h2 : f (TensorProduct.equivFinsuppOfBasisLeft b v i) = 0`. Use `congrArg (fun w => TensorProduct.equivFinsuppOfBasisLeft b w i) h0` as an intermediate fact. Simplify `this` using `[coordL_lTensor]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hf _ h1 h2`. Conclude with `(LinearEquiv.map_eq_zero_iff _).mp key`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_lTensor {G : Type} [Group G] (π : G →* (X →ₗ[ℂ] X)) (S : Set G) (f : X →ₗ[ℂ] Y)
     (hf : ∀ x, (∀ h ∈ S, π h x = x) → f x = 0 → x = 0) (v : U ⊗[ℂ] X)
@@ -77,11 +77,11 @@ theorem eq_zero_of_lTensor {G : Type} [Group G] (π : G →* (X →ₗ[ℂ] X)) 
   exact (LinearEquiv.map_eq_zero_iff _).mp key
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℂ U`. Establish `key : TensorProduct.equivFinsuppOfBasisRight b v = 0`. Use extensionality with `i`. Establish `h1 : ∀ h ∈ S, π h (TensorProduct.equivFinsuppOfBasisRight b v i) = TensorProduct.equivFinsuppOfBasisRight b v i`. Introduce `h hh`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun w => TensorProduct.equivFinsuppOfBasisRight b w i) (hv h hh)` as an intermediate fact. Simplify `this` using `[coordR_rTensor]`. Establish `h2 : f (TensorProduct.equivFinsuppOfBasisRight b v i) = 0`. Use `congrArg (fun w => TensorProduct.equivFinsuppOfBasisRight b w i) h0` as an intermediate fact. Simplify `this` using `[coordR_rTensor]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hf _ h1 h2`. Conclude with `(LinearEquiv.map_eq_zero_iff _).mp key`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_rTensor {G : Type} [Group G] (π : G →* (X →ₗ[ℂ] X)) (S : Set G) (f : X →ₗ[ℂ] Y)
     (hf : ∀ x, (∀ h ∈ S, π h x = x) → f x = 0 → x = 0) (v : X ⊗[ℂ] U)
@@ -106,9 +106,9 @@ end Lin
 variable {n : ℕ} {V W Z : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup Z] [Module ℂ Z]
 
 /- English proof (translation)
-Introduce `v hv h0`. Establish `hv' : ∀ h : ↥(KO k (Fin n)), π h v = ((1 : ↥(KO k (Fin n)) →* ℂˣ) h : ℂ) • v` using `hv`. Establish `hSv : S v ∈ GlobalTheory.PRep.fixed σ (KO k (Fin n))` using `by show ∀ h : ↥(KO k (Fin n)), σ h (S v) = ((1 : ↥(KO k (Fin n)) →* ℂˣ) h : ℂ) • S v`. Introduce `h`. Rewrite using `[← S.isIntertwining, hv' h, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hS v hv (hT (S v) hSv h0)`.
+A detailed English derivation is pending.
 -/
 theorem kinj_comp {π : Representation ℂ (GL (Fin n) k) V} {σ : Representation ℂ (GL (Fin n) k) W}
     {τ : Representation ℂ (GL (Fin n) k) Z} (S : π.IntertwiningMap σ) (T : σ.IntertwiningMap τ) (hS : KInj k S)
@@ -122,7 +122,7 @@ theorem kinj_comp {π : Representation ℂ (GL (Fin n) k) V} {σ : Representatio
   exact hS v hv (hT (S v) hSv h0)
 
 /- English proof (translation)
-Introduce `v _ h`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kinj_equiv {π : Representation ℂ (GL (Fin n) k) V} {σ : Representation ℂ (GL (Fin n) k) W} (E : π.Equiv σ) :
     KInj k E.toIntertwiningMap := by

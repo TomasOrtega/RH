@@ -19,18 +19,18 @@ def CcUm : Prop :=
 def fe (i j : Fin n) : ℕ := if G.bl j < G.bl i then cc G.μ (G.bl j) (G.bl i) else 0
 
 /- English proof (translation)
-Simplify using `[fe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fe_self (i : Fin n) : fe G i i = 0 := by simp [fe]
 
 /- English proof (translation)
-Distinguish the cases in `hij : G.bl j < G.bl i`. Establish `e1 : fe G i j = cc G.μ (G.bl j) (G.bl i)` using `if_pos hij`. Rewrite using `[e1]`. Break down `le_or_gt (G.bl l) (G.bl j) with hlj | hjl` into its components or cases. Establish `e2 : fe G i l = cc G.μ (G.bl l) (G.bl i)` using `if_pos (lt_of_le_of_lt hlj hij)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `le_add_right (G.ball _ _ _ _ hlj hij le_rfl)`. Break down `le_or_gt (G.bl i) (G.bl l) with hil | hli` into its components or cases. Establish `e3 : fe G l j = cc G.μ (G.bl j) (G.bl l)` using `if_pos hjl`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_add_left (G.ball _ _ _ _ le_rfl hij hil)`. Establish `e2 : fe G i l = cc G.μ (G.bl l) (G.bl i)` using `if_pos hli`. Establish `e3 : fe G l j = cc G.μ (G.bl j) (G.bl l)` using `if_pos hjl`. Rewrite using `[e2, e3]`. Use `(hU (G.bl j) (G.bl l) (G.bl i)).2.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `e1 : fe G i j = 0` using `if_neg hij`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fe_tri (hU : CcUm G) (i l j : Fin n) : fe G i j ≤ fe G i l + fe G l j := by
   by_cases hij : G.bl j < G.bl i
@@ -85,17 +85,17 @@ def S (hU : CcUm G) : Subalgebra 𝒪[k] (Matrix (Fin n) (Fin n) 𝒪[k]) where
     · exact zero_mem _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_S (hU : CcUm G) (A : Matrix (Fin n) (Fin n) 𝒪[k]) :
     A ∈ S G hU ↔ ∀ i j, A i j ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ fe G i j := Iff.rfl
 
 /- English proof (translation)
-Use `set A : Matrix (Fin n) (Fin n) 𝒪[k] := (h : Matrix (Fin n) (Fin n) 𝒪[k]) with hAdef`. Establish `hdet : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).mp h.isUnit`. Rewrite `hdet` using `[Matrix.det_eq_sign_charpoly_coeff]`. Take `⟨u, hu⟩` from `isUnit_of_mul_isUnit_right hdet`. Establish `h0` using `Matrix.aeval_self_charpoly A`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[← Polynomial.X_mul_divX_add A.charpoly, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C]`. Establish `h1 : A * Polynomial.aeval A A.charpoly.divX = -algebraMap 𝒪[k] _ (A.charpoly.coeff 0)` using `eq_neg_of_add_eq_zero_left h0`. Establish `key : A * (-((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) • Polynomial.aeval A A.charpoly.divX) = 1`. Rewrite using `[mul_smul_comm, h1, neg_smul_neg, ← hu, Algebra.smul_def, ← map_mul, Units.inv_mul, map_one]`. Establish `hinv` using `Units.eq_inv_of_mul_eq_one_left key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hinv]`. Use `Subalgebra.smul_mem _ ?_ _` and prove the remaining obligations. Establish `hval : Polynomial.aeval A A.charpoly.divX = (S G hU).val (Polynomial.aeval (⟨A, hh⟩ : S G hU) A.charpoly.divX)` using `(Polynomial.aeval_algHom_apply (S G hU).val (⟨A, hh⟩ : S G hU) A.charpoly.divX)`. Rewrite using `[hval]`. Conclude with `Subtype.prop _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem (hU : CcUm G) (h : GL (Fin n) 𝒪[k])
     (hh : (h : Matrix (Fin n) (Fin n) 𝒪[k]) ∈ S G hU) :
@@ -124,15 +124,15 @@ end P_Jinv
 
 open P_Jinv in
 /- English proof (translation)
-Introduce `hU0 hB g hg`. Establish `hU : CcUm G` using `hU0 G.s G.μ (fun a b => ⟨_, hB.2.2.2 a b⟩)`. Take `⟨hK, hJ⟩` from `hg`. Take `⟨h, rfl⟩` from `hK`. Establish `hinj : Function.Injective (algebraMap 𝒪[k] k)` using `Subtype.val_injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : (h : Matrix (Fin n) (Fin n) 𝒪[k]) ∈ S G hU`. Introduce `a b`. Distinguish the cases in `hab : G.bl b < G.bl a`. Take `⟨y, hy, hyx⟩` from `hJ a b hab`. Establish `hy' : y = (h : Matrix (Fin n) (Fin n) 𝒪[k]) a b` using `hinj hyx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : fe G a b = cc G.μ (G.bl b) (G.bl a)` using `if_pos hab`. Rewrite using `[e1, ← hy']`. Conclude with `hy`. Establish `e1 : fe G a b = 0` using `if_neg hab`. Rewrite using `[e1, pow_zero, Ideal.one_eq_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_top`. Establish `hi` using `inv_mem G hU h hmem`. Use `⟨⟨h⁻¹, (map_inv _ h)⟩, fun i j hij => ?_⟩` and prove the remaining obligations. Use `⟨((h⁻¹ : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) i j, ?_, ?_⟩` and prove the remaining obligations. Use `hi i j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e1 : fe G i j = cc G.μ (G.bl j) (G.bl i)` using `if_pos hij`. Rewrite `this` using `[e1]`. Then use the resulting hypothesis. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem step_Jinv : JacquetInverseProp G := by
   intro hU0 hB g hg

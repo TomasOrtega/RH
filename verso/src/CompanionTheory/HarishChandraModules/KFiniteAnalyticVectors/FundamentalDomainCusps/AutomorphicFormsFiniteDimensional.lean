@@ -11,13 +11,13 @@ import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.FundamentalDo
 namespace CompanionTheory.D.gk.RF
 
 /- English proof (translation)
-Conclude with `arithmetic_subgroup_of_transport transport_to_standard_form`.
+A detailed English derivation is pending.
 -/
 theorem gamSub : GamSub := by
   exact arithmetic_subgroup_of_transport transport_to_standard_form
 
 /- English proof (translation)
-Establish `hT : Transp` using `transport_to_standard_form`. Establish `hG : GamSub` using `arithmetic_subgroup_of_transport hT`. Conclude with `reduction_geometry_at_infinity successive_minima_gap (short_isotropic_vector_of hT) covolume_span (covolume_orthogonal_complement hT) (mahler_compactness_of hT hG) (nilpotent_cover_of hT hG nilpotent_lie_algebra nilpotent_subgroup_representation)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geoInf : GeoInf := by
   have hT : Transp := transport_to_standard_form
@@ -26,13 +26,13 @@ theorem geoInf : GeoInf := by
     (mahler_compactness_of hT hG) (nilpotent_cover_of hT hG nilpotent_lie_algebra nilpotent_subgroup_representation)
 
 /- English proof (translation)
-The claim follows from `cuspidal_at_infinity_of selP (averaging_of_fundamental_domain fundamental_domain_inclusion) unipotent_radical_subgroup real_parabolic_decomposition parabolic_subgroup_decomposition transport_to_standard_form gamSub geoInf`.
+A detailed English derivation is pending.
 -/
 theorem cuspInf : CuspInf :=
   cuspidal_at_infinity_of selP (averaging_of_fundamental_domain fundamental_domain_inclusion) unipotent_radical_subgroup real_parabolic_decomposition parabolic_subgroup_decomposition transport_to_standard_form gamSub geoInf
 
 /- English proof (translation)
-Conclude with `rowsFinDim_of discrete_series_bound_of_inputs finite_dimensional_from_linear_forms (adelic_cusp_of_infinite_cusp cuspInf congruence_subgroup_compact_open) (fundamental_domain_discrete_of gamSub) level_structure_of convolution_operator_representation representation_of_convolution`.
+A detailed English derivation is pending.
 -/
 theorem automorphic_forms_finite_dimensional : Formalism.L2.SG.RowsDef.RowsFinDim := by
   exact rowsFinDim_of discrete_series_bound_of_inputs finite_dimensional_from_linear_forms (adelic_cusp_of_infinite_cusp cuspInf congruence_subgroup_compact_open)

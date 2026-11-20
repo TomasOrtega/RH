@@ -15,7 +15,7 @@ private theorem pull_D (S : Type) [CommRing S] [Algebra A S] (y : S ⊗[A] E') :
     (D.pull f).D S y = D.D S (Algebra.TensorProduct.map (AlgHom.id S S) f y) := rfl
 
 /- English proof (translation)
-Simplify using `[Det.gen, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem map_gen {ι : Type} [Fintype ι] (x : ι → E') :
     Algebra.TensorProduct.map (AlgHom.id (MvPolynomial ι A) (MvPolynomial ι A)) f (Det.gen (A := A) x) =
@@ -23,9 +23,9 @@ private theorem map_gen {ι : Type} [Fintype ι] (x : ι → E') :
   simp [Det.gen, map_sum]
 
 /- English proof (translation)
-Unfold `Det.chiS`. Rewrite using `[pull_D]`. Use `congr 1`. Rewrite using `[map_sub]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem pull_chiS (S : Type) [CommRing S] [Algebra A S] (y : S ⊗[A] E') :
     (D.pull f).chiS S y = D.chiS S (Algebra.TensorProduct.map (AlgHom.id S S) f y) := by
@@ -41,7 +41,7 @@ private theorem pull_chiS (S : Type) [CommRing S] [Algebra A S] (y : S ⊗[A] E'
     | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem map_coeff {ι : Type} (α : ι →₀ ℕ) (y : MvPolynomial ι A ⊗[A] E') :
     f (TensorProduct.lid A E' ((MvPolynomial.lcoeff A α).rTensor E' y)) =
@@ -53,7 +53,7 @@ private theorem map_coeff {ι : Type} (α : ι →₀ ℕ) (y : MvPolynomial ι 
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Unfold `Det.chElt`. Rewrite using `[map_coeff, pull_chiS, ← Polynomial.aeval_algHom_apply, map_gen]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_chElt {k : ℕ} (x : Fin k → E') (α : Fin k →₀ ℕ) :
     f ((D.pull f).chElt x α) = D.chElt (fun a => f (x a)) α := by
@@ -61,7 +61,7 @@ private theorem map_chElt {k : ℕ} (x : Fin k → E') (α : Fin k →₀ ℕ) :
   rw [map_coeff, pull_chiS, ← Polynomial.aeval_algHom_apply, map_gen]
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qk2.map_surj <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_surj (hf : Function.Surjective f) (S : Type) [CommRing S] [Algebra A S] :
     Function.Surjective (Algebra.TensorProduct.map (AlgHom.id S S) f) :=
@@ -70,27 +70,25 @@ private theorem map_surj (hf : Function.Surjective f) (S : Type) [CommRing S] [A
 end
 
 /- English proof (translation)
-Introduce `n A E _ _ _ D E' _ _ f`. Use `⟨fun x => ?_, fun x hx => ?_, fun x hx => ?_, fun hf => ⟨fun x hx => ?_, fun y hy => ?_⟩⟩` and prove the remaining obligations. Unfold `Det.chi`. Rewrite using `[pull_D]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hx`, the goal using `[Det.mem_ker]`. Introduce `S _ _ y u v`. Rewrite using `[pull_D, pull_D, map_add, map_mul, map_mul, Algebra.TensorProduct.map_tmul, map_one]`. Conclude with `hx S _ _ _`. Unfold `Det.CH at hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction.
 
-Proceed by induction on `hx using TwoSidedIdeal.span_induction with`. Consider the case `mem x h`. Take `⟨k, z, α, rfl⟩` from `h`. Conclude with `TwoSidedIdeal.subset_span ⟨k, _, α, map_chElt D f z α⟩`. Consider the case `zero => rw [map_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `D.CH.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `D.CH.add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `D.CH.neg_mem hx`.
+Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `left_absorb a x _ hx => rw [map_mul]`. Conclude with `D.CH.mul_mem_left _ _ hx`. Consider the case `right_absorb b x _ hx => rw [map_mul]`. Conclude with `D.CH.mul_mem_right _ _ hx`. Rewrite `hx`, the goal using `[Det.mem_ker]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Introduce `S _ _ y u v`. Take `⟨y, rfl⟩` from `map_surj f hf S y`. Take `⟨u, rfl⟩` from `map_surj f hf S u`. Take `⟨v, rfl⟩` from `map_surj f hf S v`. Use `hx S y u v` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[pull_D, pull_D, map_add, map_mul, map_mul, Algebra.TensorProduct.map_tmul, map_one]`. Then use the resulting hypothesis. Unfold `Det.CH at hy`. Proceed by induction on `hy using TwoSidedIdeal.span_induction with`. Consider the case `mem y h`. Take `⟨k, z, α, rfl⟩` from `h`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose w hw using fun a => hf (z a)`. Use `⟨(D.pull f).chElt w α, TwoSidedIdeal.subset_span ⟨k, w, α, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_chElt]`. Simplify using `only [hw]`. Consider the case `zero => exact ⟨0, (D.pull f).CH.zero_mem, map_zero f⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' + y', (D.pull f).CH.add_mem hx' hy', map_add f _ _⟩`. Consider the case `neg x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', rfl⟩` from `hx`. Conclude with `⟨-x', (D.pull f).CH.neg_mem hx', map_neg f _⟩`. Consider the case `left_absorb a x _ hx`. Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨a, rfl⟩` from `hf a`.
-
-Conclude with `⟨a * x', (D.pull f).CH.mul_mem_left _ _ hx', map_mul f _ _⟩`. Consider the case `right_absorb a x _ hx`. Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨a, rfl⟩` from `hf a`. Conclude with `⟨x' * a, (D.pull f).CH.mul_mem_right _ _ hx', map_mul f _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.d_pull :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) {E' : Type} [Ring E'] [Algebra A E'] (f : E' →ₐ[A] E), (∀ x, (D.pull f).chi x = D.chi (f x)) ∧ (∀ x, f x ∈ D.ker → x ∈ (D.pull f).ker) ∧ (∀ x ∈ (D.pull f).CH, f x ∈ D.CH) ∧ (Function.Surjective f → (∀ x, x ∈ (D.pull f).ker → f x ∈ D.ker) ∧ ∀ y ∈ D.CH, ∃ x ∈ (D.pull f).CH, f x = y) := by

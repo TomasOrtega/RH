@@ -15,7 +15,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Consider the case `simp [map_sub, map_sum, LinearMap.sub_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hT_sub_sum_left {r : ℕ} (x w : S.V) (c : Fin r → E) (y : Fin r → S.V) :
     S.hT (x - ∑ d, c d • y d) w = S.hT x w - ∑ d, star (c d) * S.hT (y d) w := by
@@ -25,26 +25,26 @@ theorem hT_sub_sum_left {r : ℕ} (x w : S.V) (c : Fin r → E) (y : Fin r → S
   | simp [map_sub, map_sum, LinearMap.sub_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
 
 /- English proof (translation)
-Simplify using `[map_sub, map_sum, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hT_sub_sum_right {r : ℕ} (x w : S.V) (c : Fin r → E) (y : Fin r → S.V) :
     S.hT w (x - ∑ d, c d • y d) = S.hT w x - ∑ d, c d * S.hT w (y d) := by
   simp [map_sub, map_sum, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hns`. Establish `hlt : LinearMap.range (LinearMap.pi (fun a => S.hT (F0.e a)) : S.V →ₗ[E] (Fin r → E)) < ⊤`. Rewrite using `[lt_top_iff_ne_top]`. Introduce `h`. Conclude with `hns (LinearMap.range_eq_top.mp h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψne, hψ⟩` from `Submodule.exists_le_ker_of_lt_top _ hlt`. Establish `key : ∀ x : S.V, ∑ a, ψ (Pi.single a 1) * S.hT (F0.e a) x = 0`. Introduce `x`. Establish `hx` using `hψ (LinearMap.mem_range_self (LinearMap.pi (fun a => S.hT (F0.e a)) : S.V →ₗ[E] (Fin r → E)) x)`. Rewrite `hx` using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdec : (LinearMap.pi (fun a => S.hT (F0.e a)) : S.V →ₗ[E] (Fin r → E)) x = ∑ a, S.hT (F0.e a) x • (Pi.single a 1 : Fin r → E)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite `hx` using `[hdec, map_sum]`. Simplify `hx` using `[map_smul, smul_eq_mul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hv : (∑ a, star (ψ (Pi.single a 1)) • F0.e a) = 0`. Apply `S.nondeg.1` to reduce the goal to its premises. Introduce `x`. Use `first`. Consider the case `simpa [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, smul_eq_mul, starRingEnd_apply, star_star] using key x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `simpa [map_sum, LinearMap.map_smulₛₗ, smul_eq_mul, starRingEnd_apply, star_star] using key x`. Establish `hc : ∀ a, ψ (Pi.single a 1) = 0`. Introduce `a`. Establish `h0` using `(Fintype.linearIndependent_iff.mp F0.e_indep) _ hv a`. Simplify using `using h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hψne` to reduce the goal to its premises. Apply `LinearMap.pi_ext` to reduce the goal to its premises. Introduce `i x`. Establish `hs : (Pi.single i x : Fin r → E) = x • (Pi.single i 1 : Fin r → E)`. Use extensionality with `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h : j = i <;> simp [Pi.single_apply, h]`. Rewrite using `[hs, map_smul, hc i]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_surj {r : ℕ} {T : E} (F0 : FlagG S r T) :
     Function.Surjective (LinearMap.pi (fun a => S.hT (F0.e a)) : S.V →ₗ[E] (Fin r → E)) := by
@@ -85,7 +85,7 @@ theorem coord_surj {r : ℕ} {T : E} (F0 : FlagG S r T) :
   simp
 
 /- English proof (translation)
-Establish `h : starRingEnd E (S.hT x y) = S.hT y x` using `by first`. Consider the case `exact S.herm.eq x y`. Consider the case `exact S.herm x y`. Simplify `h` using `[starRingEnd_apply]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem star_hT_eq_hT_swap (x y : S.V) : star (S.hT x y) = S.hT y x := by
   have h : starRingEnd E (S.hT x y) = S.hT y x := by
@@ -95,25 +95,23 @@ private theorem star_hT_eq_hT_swap (x y : S.V) : star (S.hT x y) = S.hT y x := b
   simpa [starRingEnd_apply] using h
 
 /- English proof (translation)
-Establish `hE : ∀ b, ∃ g0 : S.V, ∀ a, S.hT (F0.e a) g0 = if a = b then 1 else 0`. Introduce `b`. Take `⟨g0, hg0⟩` from `coord_surj S F0 (fun a => if a = b then (1 : E) else 0)`. Use `⟨g0, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun hg0 a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using h1`. Use `choose g0 hg0 using hE`. Establish `hZ : S.hT F0.z F0.z ≠ 0`. Rewrite using `[F0.z_norm]`. Conclude with `neg_ne_zero.mpr hT0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set g : Fin r → S.V := fun b => g0 b - (S.hT F0.z (g0 b) / S.hT F0.z F0.z) • F0.z with hgdef`. Establish `hgE : ∀ a b, S.hT (F0.e a) (g b) = if a = b then 1 else 0`. Introduce `a b`. Simplify using `[g, map_sub, map_smul, smul_eq_mul, F0.z_orth, hg0]`. Establish `hgZ : ∀ b, S.hT F0.z (g b) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Simplify using `only [g, map_sub, map_smul, smul_eq_mul]`. Rewrite using `[div_mul_cancel₀ _ hZ, sub_self]`. Establish `hZg : ∀ b, S.hT (g b) F0.z = 0`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← star_hT_eq_hT_swap, hgZ, star_zero]`. Establish `hgeE : ∀ a d, S.hT (g a) (F0.e d) = if d = a then 1 else 0`. Introduce `a d`. Rewrite using `[← star_hT_eq_hT_swap, hgE]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set c : Fin r → Fin r → E := fun b d => S.hT (g d) (g b) / 2 with hcdef`. Establish `hf1 : ∀ a b, S.hT (F0.e a) (g b - ∑ d, c b d • F0.e d) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[hT_sub_sum_right]`. Simplify using `[hgE, F0.e_iso]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨fun b => g b - ∑ d, c b d • F0.e d, hf1, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Rewrite using `[hT_sub_sum_left]`. Simplify using `only [hf1]`. Rewrite using `[hT_sub_sum_right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hgeE, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hs : star (c a b) = S.hT (g a) (g b) / 2`. Simplify using `only [c]`. Rewrite using `[← star_hT_eq_hT_swap (S := S) (g a) (g b)]`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `simp [star_div₀]`. Consider the case `simp [star_div']`. Consider the case `simp`. Rewrite using `[hs]`. Simplify using `only [c]`.
-
-Expand and normalize the polynomial expressions, which then agree. Introduce `a`. Rewrite using `[hT_sub_sum_left]`. Simplify using `[hZg, F0.z_orth]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem partner_exists {r : ℕ} {T : E} (F0 : FlagG S r T) (hT0 : T ≠ 0) :
     ∃ f : Fin r → S.V, (∀ a b, S.hT (F0.e a) (f b) = if a = b then 1 else 0) ∧
@@ -172,7 +170,7 @@ theorem partner_exists {r : ℕ} {T : E} (F0 : FlagG S r T) (hT0 : T ≠ 0) :
 end Gen
 
 /- English proof (translation)
-Introduce `D u F0`. Use `partner_exists (VS D) F0 ?_` and prove the remaining obligations. Unfold `Tn`. Conclude with `(D.mem u).A.T_prime.ne_zero` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem partner_vector_exists : PartnerEx := by
   intro D u F0

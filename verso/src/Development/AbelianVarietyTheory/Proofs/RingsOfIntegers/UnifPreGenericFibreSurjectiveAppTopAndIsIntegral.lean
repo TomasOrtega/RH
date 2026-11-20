@@ -13,7 +13,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨-, hs, -, hc⟩` from `hA`. Establish `: ConnectedSpace A.left` using `GeometricallyConnected.connectedSpace_of_subsingleton (f := A.hom)`. Conclude with `isIntegral_of_smooth_field_of_connectedSpace A.hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_left_of_isAbelianScheme_field {K : Type} [Field K]
     (A : Over (Spec (CommRingCat.of K))) [GrpObj A] (hA : IsAbelianScheme A) :
@@ -23,11 +23,9 @@ theorem isIntegral_left_of_isAbelianScheme_field {K : Type} [Field K]
   exact isIntegral_of_smooth_field_of_connectedSpace A.hom
 
 /- English proof (translation)
-Introduce `hGF R _ _ I D A G _ _ U`. Establish `hAi : IsIntegral A.A.left` using `isIntegral_left_of_isAbelianScheme_field A.A A.isAb`. Establish `hw : U.gen.hom.left ≫ A.A.hom = pullback.snd G.hom (jK R)` using `Over.w U.gen.hom`. Establish `: IsIso U.gen.hom.left` using `(Over.forget _).map_isIso U.gen.hom`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb` using `hGF _ A.A A.isAb`. Rewrite using `[← hw, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Establish `: IsIso U.gen.hom.left.appTop` using `inferInstanceAs (IsIso (U.gen.hom.left.app ⊤))`. Conclude with `(ConcreteCategory.bijective_of_isIso (U.gen.hom.left.appTop)).surjective.comp hb.surjective`. Use `show IsIntegral ((Over.pullback (jK R)).obj G).left`.
-
-Establish `: Nonempty ((Over.pullback (jK R)).obj G).left` using `⟨U.gen.inv.left (Classical.arbitrary A.A.left)⟩`. Conclude with `isIntegral_of_isOpenImmersion U.gen.hom.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unifPre_genericFibre_surjective_appTop_and_isIntegral :
     GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G), Function.Surjective (pullback.snd G.hom (jK R)).appTop.hom ∧ IsIntegral (pullback G.hom (jK R)) := by

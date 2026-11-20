@@ -11,9 +11,9 @@ namespace ComplMaxPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `m1 : ∀ k, (J ^ (e * k) • ⊤ : Submodule R R) ≤ I ^ k • ⊤` using `fun k => Submodule.smul_mono_left (h1 k)`. Establish `m2 : ∀ k, (I ^ k • ⊤ : Submodule R R) ≤ J ^ k • ⊤` using `fun k => Submodule.smul_mono_left (h2 k)`. Use `{ haus' := fun x hx => hI.haus' x fun k => SModEq.mono (m1 k) (hx (e * k)), prec' := fun f hf => ?_ }` and prove the remaining obligations. Take `⟨L, hL⟩` from `hI.prec' (fun k => f (e * k)) fun {m n} hmn => SModEq.mono (m1 m) (hf (Nat.mul_le_mul_left e hmn))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : n ≤ e * n` using `Nat.le_mul_of_pos_left n he`. Conclude with `(hf hn).trans (SModEq.mono (m2 n) (hL n))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_of_pow {I J : Ideal R} (e : ℕ) (he : 1 ≤ e) (h1 : ∀ k, J ^ (e * k) ≤ I ^ k)
     (h2 : ∀ k, I ^ k ≤ J ^ k) (hI : IsAdicComplete I R) : IsAdicComplete J R := by
@@ -30,11 +30,11 @@ theorem isAdicComplete_of_pow {I J : Ideal R} (e : ℕ) (he : 1 ≤ e) (h1 : ∀
 end ComplMaxPf
 
 /- English proof (translation)
-Introduce `O _ _ _ p hpm hp0 hc`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp0 hϖ`. Establish `he : 1 ≤ e`. Break down `Nat.eq_zero_or_pos e with rfl | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to derive a contradiction. Rewrite `hu` using `[pow_zero, mul_one]`. Rewrite `hpm` using `[hu]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hpm u.isUnit`. Conclude with `h`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hIk : ∀ k, Ideal.span {(p : O)} ^ k = maximalIdeal O ^ (e * k)` using `fun k => by`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_singleton_pow, hu, mul_pow, ← pow_mul, Ideal.span_singleton_mul_left_unit (u.isUnit.pow k)]`. Use `ComplMaxPf.isAdicComplete_of_pow e he (fun k => (hIk k).ge) (fun k => ?_) hc` and prove the remaining obligations. Rewrite using `[hIk k]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_mul_of_pos_left k he)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complMax_holds : ComplMax := by
   intro O _ _ _ p hpm hp0 hc

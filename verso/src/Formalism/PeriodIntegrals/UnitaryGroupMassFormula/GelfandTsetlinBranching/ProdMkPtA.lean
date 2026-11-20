@@ -16,28 +16,28 @@ def mStarA (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) : Fin (n + 1) × Fin
       (fun a => Fin.lastCases 0 (fun k => if k = a then kap a else 0) v.2) v.1
 
 /- English proof (translation)
-Simplify using `[mStarA]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mStarA_cc (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (a k : Fin n) :
     mStarA kap ν (Fin.castSucc a, Fin.castSucc k) = if k = a then kap a else 0 := by
   simp [mStarA]
 
 /- English proof (translation)
-Simplify using `[mStarA]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mStarA_cl (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (a : Fin n) :
     mStarA kap ν (Fin.castSucc a, Fin.last n) = 0 := by
   simp [mStarA]
 
 /- English proof (translation)
-Simplify using `[mStarA]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mStarA_lc (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (k : Fin n) :
     mStarA kap ν (Fin.last n, Fin.castSucc k) = ν (Fin.castSucc k) - kap k := by
   simp [mStarA]
 
 /- English proof (translation)
-Simplify using `[mStarA]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mStarA_ll (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) :
     mStarA kap ν (Fin.last n, Fin.last n) = ν (Fin.last n) := by
@@ -47,23 +47,21 @@ def IsDPtA (x : Fin (n + 1) × Fin (n + 1) → ℂ) : Prop :=
   ∀ a j : Fin (n + 1), a.val < n → a ≠ j → x (a, j) = 0
 
 /- English proof (translation)
-Establish `hz : ∀ v, x v = 0 → m v = 0`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hne (Finset.prod_eq_zero (Finset.mem_univ v) (by rw [hv, zero_pow h]))`. Establish `htop : ∀ (a : Fin n) (s : Fin (n + 1)), s ≠ Fin.castSucc a → m (Fin.castSucc a, s) = 0` using `fun a s hs => hz _ (hx _ _ (by simp) (Ne.symm hs))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiag : ∀ a : Fin n, m (Fin.castSucc a, Fin.castSucc a) = kap a`. Introduce `a`. Rewrite using `[← hrow m hm a, Finset.sum_eq_single (Fin.castSucc a)]`. Introduce `s _ hs`. Conclude with `htop a s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hcolsum : ∀ j, ∑ ρ, m (ρ, j) = ν j`. Introduce `j`. Rewrite using `[← lhwline_weight_col, hcol (mem_support_iff.mp hm)]`. Use extensionality with `⟨ρ, s⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `ρ using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `s using Fin.lastCases with`. Consider the case `last`. Establish `h` using `hcolsum (Fin.last n)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Fin.sum_univ_castSucc, Finset.sum_eq_zero (fun a _ => htop a _ (Fin.castSucc_lt_last a).ne'), zero_add]`. Rewrite using `[mStarA_ll, h]`. Consider the case `cast k`. Establish `h` using `hcolsum (Fin.castSucc k)`. Rewrite `h` using `[Fin.sum_univ_castSucc, Finset.sum_eq_single k]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hdiag]`. Rewrite using `[mStarA_lc]`. Use linear arithmetic over natural numbers and integers. Introduce `b _ hb`. Conclude with `htop b _ (fun e => hb (Fin.castSucc_injective _ e).symm)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction.
 
-Simplify using the standard rewrite rules. Consider the case `cast a`. Proceed by induction on `s using Fin.lastCases with`. Consider the case `last`. Rewrite using `[mStarA_cl]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `htop a _ (Fin.castSucc_lt_last a).ne'`. Consider the case `cast k`. Rewrite using `[mStarA_cc]`. Use `split_ifs with hka`. Substitute `hka` using the available equality.
-
-Conclude with `hdiag k`. Conclude with `htop a _ (fun e => hka (Fin.castSucc_injective _ e))`.
+A detailed English derivation is pending.
 -/
 theorem mono_eq_A (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (g : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
     (hcol : IsWeightedHomogeneous (colW (n + 1) (n + 1)) g ν)
@@ -116,13 +114,11 @@ theorem mono_eq_A (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (g : MvPolyno
       · exact htop a _ (fun e => hka (Fin.castSucc_injective _ e))
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq']`. Distinguish the cases in `hs : mStarA kap ν ∈ g.support`. Rewrite using `[Finset.sum_eq_single (mStarA kap ν)]`. Introduce `m hm hne`. Assume the negation of the conclusion as `hz`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hprod : ∏ v, x v ^ m v ≠ 0` using `fun h0 => hz (by rw [h0, mul_zero])`. Conclude with `hne (mono_eq_A kap ν g hcol hrow x hx m hm hprod)`. Introduce `h`. Conclude with `absurd hs h`. Establish `hc : coeff (mStarA kap ν) g = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hs (MvPolynomial.mem_support_iff.mpr h)`. Rewrite using `[hc, zero_mul]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hz`.
-
-Establish `hprod : ∏ v, x v ^ m v ≠ 0` using `fun h0 => hz (by rw [h0, mul_zero])`. Conclude with `hs (mono_eq_A kap ν g hcol hrow x hx m hm hprod ▸ hm)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eval_D_A (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (g : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
     (hcol : IsWeightedHomogeneous (colW (n + 1) (n + 1)) g ν)
@@ -150,11 +146,11 @@ theorem eval_D_A (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (g : MvPolynom
 def kapA (lam : DomWeight (n + 1)) (mu : DomWeight n) (a : Fin n) : ℕ := (mu.w a - lam.detShift).toNat
 
 /- English proof (translation)
-Use `⟨(lsat_mem_dualWeyl.mp hf).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x a b t hab hb`. Establish `ha : a.val < n` using `lt_trans hab hb`. Establish `h1 : a = Fin.castSucc ⟨a.val, ha⟩` using `Fin.ext rfl`. Establish `h2 : b = Fin.castSucc ⟨b.val, hb⟩` using `Fin.ext rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[h1, h2]`. Conclude with `fixed_rowOp_A lam mu f hfix _ _ (by rw [Fin.lt_def] at hab ⊢; exact hab) t x`. Conclude with `lhwline_CInv_of f (fun l j hlj c => ((dualWeylPoint ℂ (n + 1) (n + 1) lam.natW f).mp hf).2 l j hlj c)`. Introduce `m hm a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fixed_rowDeg_A lam mu f hfix m hm a` as an intermediate fact. Unfold `kapA`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem props_A (lam : DomWeight (n + 1)) (mu : DomWeight n) (f : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
     (hf : f ∈ nablaSq ℂ (n + 1) lam) (hfix : IsFixedW rfl lam mu f) :
@@ -179,9 +175,9 @@ def mkPtA (dv : Fin n → ℂ) (z : Fin (n + 1) → ℂ) : Fin (n + 1) × Fin (n
   fun v => Fin.lastCases (z v.2) (fun a => Fin.lastCases 0 (fun k => if k = a then dv a else 0) v.2) v.1
 
 /- English proof (translation)
-Introduce `a j ha hne`. Take `⟨a', rfl⟩ : ∃ a' : Fin n, a = Fin.castSucc a'` from `⟨⟨a.val, ha⟩, Fin.ext rfl⟩`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [mkPtA]`. Consider the case `cast k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [mkPtA, Fin.lastCases_castSucc]`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `hne rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mkPtA_D (dv : Fin n → ℂ) (z : Fin (n + 1) → ℂ) : IsDPtA (mkPtA dv z) := by
   intro a j ha hne
@@ -195,7 +191,7 @@ theorem mkPtA_D (dv : Fin n → ℂ) (z : Fin (n + 1) → ℂ) : IsDPtA (mkPtA d
     exact hne rfl
 
 /- English proof (translation)
-Establish `hpw : ∀ a' k : Fin n, (if k = a' then dv a' else 0) ^ (if k = a' then kap a' else 0) = if k = a' then dv a' ^ kap a' else 1`. Introduce `a' k`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `[Fin.prod_univ_castSucc, mkPtA, hpw, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_mkPtA (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (dv : Fin n → ℂ) (z : Fin (n + 1) → ℂ) :
     ∏ v, mkPtA dv z v ^ (mStarA kap ν) v =

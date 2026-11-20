@@ -5,19 +5,19 @@ namespace GroundTheory.Variant₂.N1
 open Subgroup
 
 /- English proof (translation)
-Use `symm`. Set `f : N →* (H ⊔ N : Subgroup G)` to `Subgroup.inclusion le_sup_right`. Set `g : N ⧸ H.subgroupOf N → (H ⊔ N : Subgroup G) ⧸ H.subgroupOf (H ⊔ N)` to `fun q => Quotient.liftOn' q (fun n => ((f n : (H ⊔ N : Subgroup G)) : (H ⊔ N : Subgroup G) ⧸ H.subgroupOf (H ⊔ N))) (by`. Introduce `a b hab`. Rewrite `hab` using `[QuotientGroup.leftRel_apply, mem_subgroupOf]`.
+Use symmetry to reverse the relation. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, mem_subgroupOf]`. Simplify `hab)` using `[f]`. Establish `hinj : Function.Injective g`. Introduce `x y hxy`. Proceed by induction on `x using QuotientGroup.induction_on with`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `H a`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H b`. Establish `h1 : ((f a : (H ⊔ N : Subgroup G)) : (H ⊔ N : Subgroup G) ⧸ H.subgroupOf (H ⊔ N)) = ((f b : (H ⊔ N : Subgroup G)) : (H ⊔ N : Subgroup G) ⧸ H.subgroupOf (H ⊔ N))` using `hxy`. Rewrite `h1` using `[QuotientGroup.eq, mem_subgroupOf]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, mem_subgroupOf]`. Simplify `h1` using `[f]`. Establish `hsurj : Function.Surjective g`. Introduce `x`. Proceed by induction on `x using QuotientGroup.induction_on with`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `H k`. Take `⟨y, hy⟩` from `k`. Establish `hy' : y ∈ ((N ⊔ H : Subgroup G) : Set G)`. Rewrite using `[sup_comm]`. Conclude with `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy'` using `[coe_mul_of_right_le_normalizer_left N H hLE]`. Take `⟨n, hn, h, hh, rfl⟩` from `hy'`. Use `⟨((⟨n, hn⟩ : N) : N ⧸ H.subgroupOf N), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((f ⟨n, hn⟩ : (H ⊔ N : Subgroup G)) : (H ⊔ N : Subgroup G) ⧸ H.subgroupOf (H ⊔ N)) = _`. Rewrite using `[QuotientGroup.eq, mem_subgroupOf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hh` using `[f]`. Rewrite using `[Subgroup.relIndex, Subgroup.relIndex, Subgroup.index, Subgroup.index]`. Conclude with `Nat.card_congr (Equiv.ofBijective g ⟨hinj, hsurj⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_sup_of_le_normalizer {G : Type*} [Group G] {H N : Subgroup G}
     (hLE : H ≤ Subgroup.normalizer (N : Set G)) : H.relIndex (H ⊔ N) = H.relIndex N := by

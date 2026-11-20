@@ -6,13 +6,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `A _ X D a q Δ h hX hD hDX ha hq hΔ hh`. Establish `hDX' : ∀ i j k l z, D i j * (X k l * z) = X k l * (D i j * z) + if i = k ∧ j = l then z else 0`. Introduce `i j k l z`. Rewrite using `[← mul_assoc, hDX, add_mul, mul_assoc]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hX' : ∀ i j k l z, X i j * (X k l * z) = X k l * (X i j * z)`. Introduce `i j k l z`. Rewrite using `[← mul_assoc, hX, mul_assoc]`. Establish `h2 : (2 : A) = 1 + 1` using `by norm_num`. Establish `h01 : ¬ ((0 : Fin 2) = 1)` using `by decide`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : ¬ ((1 : Fin 2) = 0)` using `by decide`. Substitute `hq hΔ hh` using the available equality. Simplify using `only [ha, Fin.sum_univ_two, h2, h01, h10, if_true, if_false]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals try simp only [mul_add, add_mul, mul_sub, sub_mul, mul_neg, neg_mul, neg_zero, zero_sub, neg_neg, mul_one, one_mul, mul_assoc, hDX, hDX', h01, h10, and_self, and_true, true_and, and_false, false_and, if_true, if_false, add_zero, hX 1 1 0 0, hX 1 1 0 1, hX 1 1 1 0, hX 1 …`.
-
-Apply the tactic sequence `all_goals abel`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.capelli :
     ∀ (A : Type) [Ring A] (X D a : Fin 2 → Fin 2 → A) (q Δ h : A), (∀ i j k l, X i j * X k l = X k l * X i j) → (∀ i j k l, D i j * D k l = D k l * D i j) →

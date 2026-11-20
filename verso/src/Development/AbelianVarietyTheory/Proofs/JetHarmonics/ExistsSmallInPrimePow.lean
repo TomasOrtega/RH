@@ -8,11 +8,11 @@ open scoped ComplexConjugate BigOperators Topology
 namespace GlobalTheory.MomOne
 
 /- English proof (translation)
-Establish `hs : Real.sqrt d * Real.sqrt d = d` using `Real.mul_self_sqrt (Nat.cast_nonneg d)`. Establish `he' : (d : ℝ) + 1 = 4 * e` using `by exact_mod_cast he`. Establish `h1 : ((u : ℂ) + (v : ℂ) * wK d).re = u + v / 2`. Simplify using `[wK]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : ((u : ℂ) + (v : ℂ) * wK d).im = v * Real.sqrt d / 2`. Simplify using `[wK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.normSq_apply, h1, h2]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `((v : ℝ) ^ 2 / 4) * hs + ((v : ℝ) ^ 2 / 4) * he'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem thue_normSq (d e : ℕ) (he : d + 1 = 4 * e) (u v : ℤ) :
     Complex.normSq ((u : ℂ) + (v : ℂ) * wK d) = ((u ^ 2 + u * v + e * v ^ 2 : ℤ) : ℝ) := by
@@ -27,26 +27,24 @@ theorem thue_normSq (d e : ℕ) (he : d + 1 = 4 * e) (u v : ℤ) :
   linear_combination ((v : ℝ) ^ 2 / 4) * hs + ((v : ℝ) ^ 2 / 4) * he'
 
 /- English proof (translation)
-Unfold `zc`. Rewrite using `[norm_algebraMap', PadicInt.padic_norm_e_of_padicInt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem thue_norm_zc {q : ℕ} [Fact q.Prime] (a : ℤ_[q]) : ‖zc a‖ = ‖a‖ := by
   unfold zc
   rw [norm_algebraMap', PadicInt.padic_norm_e_of_padicInt]
 
 /- English proof (translation)
-Establish `hq : q.Prime` using `Fact.out`. Use `haveI : NeZero (q ^ k) := ⟨pow_ne_zero _ hq.ne_zero⟩`. Use `set m := Nat.sqrt (q ^ k) with hm`. Set `f : Fin (m + 1) × Fin (m + 1) → ZMod (q ^ k)` to `fun p => PadicInt.toZModPow k (((p.1 : ℕ) : ℤ_[q]) + ((p.2 : ℕ) : ℤ_[q]) * a)`. Establish `hcard : Fintype.card (ZMod (q ^ k)) < Fintype.card (Fin (m + 1) × Fin (m + 1))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ZMod.card, Fintype.card_prod, Fintype.card_fin]`. Conclude with `Nat.lt_succ_sqrt _`. Take `⟨x, y, hxy, hf⟩` from `Fintype.exists_ne_map_eq_of_card_lt f hcard`. Establish `hm2 : ((m : ℤ)) ^ 2 ≤ (q : ℤ) ^ k`. Use `Nat.sqrt_le' (q ^ k)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hb : ∀ i j : Fin (m + 1), (((i : ℕ) : ℤ) - ((j : ℕ) : ℤ)) ^ 2 ≤ (q : ℤ) ^ k`. Introduce `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `le_trans ?_ hm2` and prove the remaining obligations. Apply the tactic sequence `apply sq_le_sq' <;> omega`. Use `⟨((x.1 : ℕ) : ℤ) - ((y.1 : ℕ) : ℤ), ((x.2 : ℕ) : ℤ) - ((y.2 : ℕ) : ℤ), ?_, hb _ _, hb _ _, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h push_neg at h`. Apply `hxy` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `ext`. Use `h.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `h.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Establish `: PadicInt.toZModPow k ((((x.1 : ℕ) : ℤ_[q]) + ((x.2 : ℕ) : ℤ_[q]) * a) - (((y.1 : ℕ) : ℤ_[q]) + ((y.2 : ℕ) : ℤ_[q]) * a)) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `hf`. Rewrite using `[← this]`.
-
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thue_pigeon {q : ℕ} [Fact q.Prime] (a : ℤ_[q]) (k : ℕ) :
     ∃ u v : ℤ, (u ≠ 0 ∨ v ≠ 0) ∧ u ^ 2 ≤ (q : ℤ) ^ k ∧ v ^ 2 ≤ (q : ℤ) ^ k ∧
@@ -86,19 +84,19 @@ theorem thue_pigeon {q : ℕ} [Fact q.Prime] (a : ℤ_[q]) (k : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `d q _ ι hd h16 hs k`. Take `⟨⟨-, hw, -⟩, h2, -⟩` from `GlobalTheory.T.imagQuadraticMaximalOrder_arithmetic_at_split_prime d q ι hd h16 hs`. Take `⟨⟨a, ha⟩, -⟩` from `h2 _ hw`. Take `⟨u, v, huv, hu, hv, hn⟩` from `thue_pigeon a k`. Take `⟨e, he⟩ : ∃ e : ℕ, d + 1 = 4 * e` from `⟨(d + 1) / 4, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `he1 : (1 : ℤ) ≤ e` using `by omega`. Establish `hed : (e : ℤ) ≤ d` using `by omega`. Establish `hpos : 0 < u ^ 2 + u * v + e * v ^ 2`. Establish `h3 : v ^ 2 ≤ e * v ^ 2` using `by nlinarith [sq_nonneg v]`. Establish `h4 : 0 < u ^ 2 + v ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `huv with h | h` into its components or cases. Use `sq_pos_of_ne_zero h` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg v]`. Use `sq_pos_of_ne_zero h` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg u]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[sq_nonneg (u + v)]`. Establish `hN` using `thue_normSq d e he u v`. Take `⟨N, hNe⟩` from `Int.eq_ofNat_of_zero_le hpos.le`. Use `⟨(u : ℂ) + (v : ℂ) * wK d, N, ⟨u, v, rfl⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hN` using `[h, map_zero]`. Establish `: u ^ 2 + u * v + e * v ^ 2 = 0` using `by exact_mod_cast hN.symm`. Use linear arithmetic over natural numbers and integers. Establish `: ι ((u : ℂ) + (v : ℂ) * wK d) = zc ((u : ℤ_[q]) + (v : ℤ_[q]) * a)`. Rewrite using `[map_add, map_mul, ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[zc]`. Rewrite using `[this, thue_norm_zc]`. Conclude with `hn`. Rewrite using `[Complex.mul_conj, hN, hNe]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h5 : (e : ℤ) * v ^ 2 ≤ d * (q : ℤ) ^ k` using `mul_le_mul hed hv (sq_nonneg v) (by positivity)`. Establish `h6 : (N : ℤ) ≤ (d + 3) * (q : ℤ) ^ k`. Rewrite using `[← hNe]`. Use polynomial arithmetic with `[sq_nonneg (u - v), sq_nonneg u, sq_nonneg v]`. Conclude with `h6` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_small_in_prime_pow : ∀ (d q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]), d.Prime → d % 16 = 7 → Split d q → ∀ k : ℕ, ∃ (β : ℂ) (N : ℕ), InOK d β ∧ β ≠ 0 ∧ ‖ι β‖ ≤ (q : ℝ) ^ (-(k : ℤ)) ∧ (N : ℂ) = β * conj β ∧ N ≤ (d + 3) * q ^ k := by
   intro d q _ ι hd h16 hs k

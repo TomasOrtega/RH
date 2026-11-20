@@ -12,7 +12,7 @@ noncomputable section
 namespace UpperTheory.V.Z.Win
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hb.2 (Algebra.norm B' x)`. Establish `h1 : Module.finrank A B' = 1`. Rewrite using `[← (AlgEquiv.ofBijective (Algebra.ofId A B') hb).toLinearEquiv.finrank_eq, Module.finrank_self]`. Rewrite using `[Algebra.norm_norm, ← Algebra.norm_norm (S := B') (R := A), ← ha, Algebra.norm_algebraMap, h1, pow_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_through {A B B' C : Type} [Field A] [Field B] [Field B'] [Field C] [Algebra A B] [Algebra A B'] [Algebra A C]
     [Algebra B C] [Algebra B' C] [IsScalarTower A B C] [IsScalarTower A B' C] [FiniteDimensional A B] [FiniteDimensional B C]
@@ -24,7 +24,7 @@ private theorem norm_through {A B B' C : Type} [Field A] [Field B] [Field B'] [F
   rw [Algebra.norm_norm, ← Algebra.norm_norm (S := B') (R := A), ← ha, Algebra.norm_algebraMap, h1, pow_one]
 
 /- English proof (translation)
-Use `IsScalarTower.of_algebraMap_eq fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `completionMap v u x = completionMap w u (completionMap v w x)`. Use `(HeightOneSpectrum.denseRange_algebraMap F v).induction_on x (isClosed_eq (continuous_completionMap v u) ((continuous_completionMap w u).comp (continuous_completionMap v w))) fun k => ?_` and prove the remaining obligations. Rewrite using `[completionMap_algebraMap, completionMap_algebraMap, IsScalarTower.algebraMap_apply F E (w.adicCompletion E), completionMap_algebraMap, IsScalarTower.algebraMap_apply F E (u.adicCompletion M), IsScalarTower.algebraMap_apply E M (u.adicCompletion M)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tower {F E M : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Field M] [NumberField M]
     [Algebra F E] [Algebra F M] [Algebra E M] [IsScalarTower F E M] (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
@@ -39,17 +39,13 @@ private theorem tower {F E M : Type} [Field F] [NumberField F] [Field E] [Number
     IsScalarTower.algebraMap_apply E M (u.adicCompletion M)]
 
 /- English proof (translation)
-Use `haveI hUv : U.asIdeal.LiesOver v.asIdeal := Ideal.LiesOver.trans U.asIdeal w'.asIdeal v.asIdeal`. Use `haveI hwv : w.asIdeal.LiesOver v.asIdeal := Ideal.LiesOver.tower_bot U.asIdeal w.asIdeal v.asIdeal`. Use `haveI := tower v w U`. Use `haveI := tower v w' U`. Use `haveI f1 : FiniteDimensional (v.adicCompletion F) (w.adicCompletion E) := GroundTheory.Global.finite_adicCompletion v w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI f2 : FiniteDimensional (w.adicCompletion E) (U.adicCompletion M) := GroundTheory.Global.finite_adicCompletion w U`. Use `haveI f3 : FiniteDimensional (v.adicCompletion F) (w'.adicCompletion E') := GroundTheory.Global.finite_adicCompletion v w'`. Use `haveI f4 : FiniteDimensional (w'.adicCompletion E') (U.adicCompletion M) := GroundTheory.Global.finite_adicCompletion w' U`. Establish `hmap : ∀ a, algebraMap (v.adicCompletion F) (w'.adicCompletion E') a = i a`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `completionMap v w' a = i a`. Use `(HeightOneSpectrum.denseRange_algebraMap F v).induction_on a (isClosed_eq (continuous_completionMap v w') hi.1) fun k => ?_` and prove the remaining obligations. Rewrite using `[completionMap_algebraMap, hi.2, IsScalarTower.algebraMap_apply F E' (w'.adicCompletion E')]`. Establish `hb : Function.Bijective (algebraMap (v.adicCompletion F) (w'.adicCompletion E'))`. Establish `: (algebraMap (v.adicCompletion F) (w'.adicCompletion E') : _ → _) = i` using `funext hmap`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `i.bijective`. Set `j : (v.adicCompletion F)ˣ →* (w'.adicCompletion E')ˣ` to `Units.map ((i : v.adicCompletion F →+* w'.adicCompletion E') : v.adicCompletion F →* w'.adicCompletion E')`. Establish `hj : Continuous j` using `Continuous.units_map _ hi.1`. Establish `hc : Continuous (algebraMap (v.adicCompletion F) (w.adicCompletion E))` using `continuous_completionMap v w`.
-
-Use `⟨(χ'.comp j).comp (nm (⟨w, hwv⟩ : PlacesOver E v)), GlobalTheory.LBC.Inh.isSmoothChar_comp_norm hc (hχ'.comp j hj), ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply]`. Use `congrArg χ' (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i (Algebra.norm (v.adicCompletion F) (Algebra.norm (w.adicCompletion E) (x : U.adicCompletion M))) = Algebra.norm (w'.adicCompletion E') (x : U.adicCompletion M)`.
-
-Rewrite using `[← hmap]`. Conclude with `norm_through hb _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_char {F E E' M : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Field E'] [NumberField E']
     [Field M] [NumberField M] [Algebra F E] [Algebra F E'] [Algebra F M] [Algebra E M] [Algebra E' M]
@@ -93,9 +89,9 @@ private theorem exists_char {F E E' M : Type} [Field F] [NumberField F] [Field E
 end UpperTheory.V.Z.Win
 
 /- English proof (translation)
-Introduce `F E E' M _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ n Q w w' u u' huu i hi hT`. Take `⟨U, hU⟩` from `u`. Take `⟨U', hU'⟩` from `u'`. Take `rfl : U = U'` from `huu`. Introduce `s hs ζ hζ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨χ', hχ', hun⟩` from `hT s hs ζ hζ hm`. Take `⟨χ, hχ, e⟩` from `exists_char _ w w' inferInstance U hU hU' i hi χ' hχ'`. Conclude with `⟨χ, hχ, by rw [e]; exact hun⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Win.thruTr :
     ThruTr := by

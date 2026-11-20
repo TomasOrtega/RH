@@ -11,17 +11,15 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `g hg v v'`. Establish `hC` using `rigid_orth_closure hgap hσ hD hV hc hVK j' hj horth v'`. Apply `hC` to reduce the goal to its premises. Take `⟨k, hk, Y, hY, rfl⟩` from `polar_UJ hg`. Establish `hVf : FiniteDimensional ℂ V` using `hV.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hVK' : IsKStableSub ε E V` using `hV.2.1`. Establish `hv : (v : D) ∈ genSub E V`. Unfold `genSub`. Conclude with `Submodule.mem_sInf.mpr fun T hT => hT.1 v.2`. Establish `hkJ : kᴴ * Jm ε * k = Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hku, hkJ⟩` from `hk`. Establish `hu : kᴴ * k = 1` using `(Matrix.mem_unitaryGroup_iff').mp hku`. Rewrite using `[Matrix.mul_assoc, ← hkJ, ← Matrix.mul_assoc, hu, Matrix.one_mul]`. Establish `hkU : k ∈ UJset ε` using `hkJ`. Establish `heU : NormedSpace.exp Y ∈ UJset ε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : (k * NormedSpace.exp Y)ᴴ * Jm ε * (k * NormedSpace.exp Y) = Jm ε` using `hg`. Rewrite `hg'` using `[Matrix.conjTranspose_mul]`. Use `show (NormedSpace.exp Y)ᴴ * Jm ε * NormedSpace.exp Y = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = Jm ε := hg'`. Rewrite using `[hσ.1.2 k hkU _ heU, ContinuousLinearMap.comp_apply]`. Establish `h1` using `exp_apply_mem_topologicalClosure hσ hD hVf hVK' hc hY hv`. Take `⟨Z, hZ, hZk⟩` from `exists_exp_eq_of_mem_Kset hk`. Use `closure_mapsTo_of_genSub (σ k) (fun w hw => ?_) h1` and prove the remaining obligations.
-
-Rewrite using `[← hZk]`. Conclude with `exp_inK_apply_mem_closure hσ hD hVf hVK' hZ hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigid_orth {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)

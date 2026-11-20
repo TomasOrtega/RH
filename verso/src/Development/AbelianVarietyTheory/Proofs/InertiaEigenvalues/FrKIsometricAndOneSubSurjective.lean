@@ -13,9 +13,9 @@ namespace GlobalTheory.ExpImage
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]`. Unfold `spectralNorm`. Establish `h1` using `minpoly.algHom_eq F.val F.val.injective (σ c)`. Establish `h2` using `minpoly.algHom_eq F.val F.val.injective c`. Establish `h3` using `minpoly.algHom_eq σ σ.injective c`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [IntermediateField.coe_val] at h1 h2`. Conclude with `congrArg spectralValue (h1.trans (h3.trans h2.symm))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_algHom_self (F : IntermediateField ℚ_[l] (Om l)) (σ : ↥F →ₐ[ℚ_[l]] ↥F) (c : ↥F) :
     ‖((σ c : ↥F) : Om l)‖ = ‖(c : Om l)‖ := by
@@ -28,7 +28,7 @@ theorem norm_algHom_self (F : IntermediateField ℚ_[l] (Om l)) (σ : ↥F →�
   exact congrArg spectralValue (h1.trans (h3.trans h2.symm))
 
 /- English proof (translation)
-Rewrite using `[norm_pow]`. Apply `pow_lt_one₀ (norm_nonneg _) _ (by omega)` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_pow_lt_one {j : ℕ} (hj : 1 ≤ j) : ‖(l : Om l) ^ j‖ < 1 := by
   rw [norm_pow]
@@ -37,9 +37,9 @@ theorem norm_l_pow_lt_one {j : ℕ} (hj : 1 ≤ j) : ‖(l : Om l) ^ j‖ < 1 :=
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Distinguish the cases in `hd : d = 0`. Simplify using `[hd]`. Establish `hd' : 0 < ‖(d : Om l)‖` using `norm_pos_iff.2 (by exact_mod_cast hd)`. Establish `hlt : ‖-((l : Om l) ^ j * ((σ d : ↥F) : Om l))‖ < ‖(d : Om l)‖`. Rewrite using `[norm_neg, norm_mul, norm_algHom_self]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_of_lt_one_left hd' (norm_l_pow_lt_one hj)`. Establish `e : ((d - (l : ↥F) ^ j * σ d : ↥F) : Om l) = (d : Om l) + -((l : Om l) ^ j * ((σ d : ↥F) : Om l))`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne', max_eq_left hlt.le]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_pow_mul_algHom (F : IntermediateField ℚ_[l] (Om l)) (σ : ↥F →ₐ[ℚ_[l]] ↥F)
     {j : ℕ} (hj : 1 ≤ j) (d : ↥F) :
@@ -57,13 +57,13 @@ theorem norm_sub_pow_mul_algHom (F : IntermediateField ℚ_[l] (Om l)) (σ : ↥
   rw [e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne', max_eq_left hlt.le]
 
 /- English proof (translation)
-Use `⟨norm_algHom_self _ _, fun j hj c hc => ?_⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := (P.PD K).finK₀`. Set `T : ↥(K0 K) →ₗ[ℚ_[l]] ↥(K0 K)` to `LinearMap.id - (LinearMap.mulLeft ℚ_[l] ((l : ↥(K0 K)) ^ j)).comp (frK P K).toLinearMap`. Establish `hT : ∀ d, T d = d - (l : ↥(K0 K)) ^ j * frK P K d` using `fun d => rfl`. Establish `hinj : Function.Injective T`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `d hd`. Use `norm_sub_pow_mul_algHom _ (frK P K) hj d` as an intermediate fact. Rewrite `this` using `[← hT, hd]`. Establish `h0 : (d : Om l) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_eq_zero, ← this]`. Simplify using the standard rewrite rules. Conclude with `h0` after adjusting the coercions. Take `⟨d, hd⟩` from `LinearMap.injective_iff_surjective.1 hinj c`. Rewrite `hd` using `[hT]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨d, ?_, hd⟩` and prove the remaining obligations. Rewrite using `[← norm_sub_pow_mul_algHom _ (frK P K) hj d, hd]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem frK_isometric_and_one_sub_surjective (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) :
     (∀ c : ↥(K0 K), ‖((frK P K c : ↥(K0 K)) : Om l)‖ = ‖(c : Om l)‖) ∧

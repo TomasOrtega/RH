@@ -15,11 +15,11 @@ open Formalism.L2.SG.RealObj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar instCMT2
 
 /- English proof (translation)
-Take `⟨C₆, Cc, C₄, hC6, hC4, hmain⟩` from `Formalism.FourierDecayAlt.P.real_inputs_closed_model_place_two hPA Formalism.FourierDecayAlt.P.radial_module_form Formalism.FourierDecayAlt.P.positive_density_moderate_growth Formalism.FourierDecayAlt.P.level_form_sesquilinear_moderate Formalism.FourierDecayAlt.P.theorem_P_module …`. Use `⟨C₆, Cc, C₄, hC6, hC4, fun D X u u' sc i0 i0' FdN FdN' νq δ M jn CA G0 de de' l hD => ?_⟩` and prove the remaining obligations. Use `haveI : IsCMField D.host.E := instCMT2 D`. Take `⟨Wp, Wq, i1, i2, i3, i4, i5, i6, S, p, f, χ, A₀, c, τ, Q, Qi, eP, eQ, hCA, hG, hde, hde', hl, hComp, hB, hSB, hc, hcut, hVt, hBF, hBase, hTop, hVJ, hE⟩` from `hD`. Use `letI := i1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := i2`. Use `letI := i3`. Use `letI := i4`. Use `letI := i5`. Use `letI := i6`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨L, j, lam, Cm, σ, hM, hRI⟩` from `hmain D.host.E Wp Wq S p f χ A₀ c _ (VtPt X u u' sc i0 i0' FdN FdN' νq) hB hSB hc hcut hVt`. Use `⟨Wp, Wq, i1, i2, i3, i4, i6, S, Formalism.FourierDecayAlt.KB.plT S p, f, χ, Formalism.FourierDecayAlt.KB.plν S p, Formalism.FourierDecayAlt.KB.plm S p, Formalism.FourierDecayAlt.KB.plTop S p, A₀, τ, Q, Qi, eP, eQ, hCA, hG, hde, hde', hl, hComp, isBuilt_of_builtPlace hB, hBF, hBas …` and prove the remaining obligations. Unfold `Formalism.L2.SG.DataInst.dOf`. Rewrite using `[← hE L j lam Cm σ hM]`. Conclude with `hRI _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carrier_input_exists_repaired (hPA : Formalism.FourierDecayAlt.P5.ThmPActual)
     (hLEM : Formalism.FourierDecayAlt.MA.LemmaEModel) (hMP : Formalism.FourierDecayAlt.JCT.ModelPlaceBuilt2)

@@ -14,17 +14,17 @@ namespace ReciprocityTheory.ChartRestriction.G.H1.SectionDivision
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
 
 /- English proof (translation)
-Establish `: IsAffine P'` using `isAffine_of_isAffineHom p`. Take `⟨w, -⟩` from `Surjective.surj (f := p) (IsLocalRing.closedPoint k)`. Establish `: Nonempty (⊤ : P'.Opens)` using `⟨⟨w, trivial⟩⟩`. Set `θ` to `Scheme.ΓSpecIso (CommRingCat.of k)`. Set `ψ : k →+* Γ(P', ⊤)` to `(p.appTop).hom.comp θ.inv.hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : Algebra k Γ(P', ⊤)` to `ψ.toAlgebra`. Establish `hfin : ψ.Finite` using `(IsFinite.finite_app p ⊤ (isAffineOpen_top _)).comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso θ.inv).2)`. Establish `: Module.Finite k Γ(P', ⊤)` using `hfin`. Take `⟨M, hM⟩` from `Ideal.exists_maximal Γ(P', ⊤)`. Set `_ : Field (Γ(P', ⊤) ⧸ M)` to `Ideal.Quotient.field M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `: Module.Finite k (Γ(P', ⊤) ⧸ M)` using `Module.Finite.of_surjective (Ideal.Quotient.mkₐ k M).toLinearMap (Ideal.Quotient.mkₐ_surjective k M)`. Establish `: Algebra.IsIntegral k (Γ(P', ⊤) ⧸ M)` using `Algebra.IsIntegral.of_finite k _`. Establish `hb` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k) (K := Γ(P', ⊤) ⧸ M)`. Set `e : k ≃+* Γ(P', ⊤) ⧸ M` to `RingEquiv.ofBijective (algebraMap k (Γ(P', ⊤) ⧸ M)) hb`. Set `φ' : Γ(P', ⊤) →+* k` to `e.symm.toRingHom.comp (Ideal.Quotient.mk M)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : ∀ c, φ' (ψ c) = c` using `fun c => by show e.symm (Ideal.Quotient.mk M (algebraMap k Γ(P', ⊤) c)) = c`. Rewrite using `[← Ideal.Quotient.algebraMap_eq, ← RingHom.comp_apply, ← IsScalarTower.algebraMap_eq]`. Conclude with `e.symm_apply_apply c`. Set `φ : Γ(P', ⊤) ⟶ Γ(Spec (CommRingCat.of k), ⊤)` to `CommRingCat.ofHom φ' ≫ θ.inv`. Establish `hret : p.appTop ≫ φ = 𝟙 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Take `⟨d, rfl⟩ : ∃ d, θ.inv.hom d = c` from `(ConcreteCategory.bijective_of_isIso θ.inv).2 c`. Use `show θ.inv.hom (φ' (ψ d)) = θ.inv.hom d`. Rewrite using `[hφ]`. Use `⟨(Spec (CommRingCat.of k)).isoSpec.hom ≫ Spec.map φ ≫ P'.isoSpec.inv, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `nat' : P'.isoSpec.inv ≫ p = Spec.map p.appTop ≫ (Spec (CommRingCat.of k)).isoSpec.inv`. Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, Scheme.isoSpec_hom_naturality, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc, nat', ← Category.assoc (Spec.map φ), ← Spec.map_comp, hret, Spec.map_id, Category.id_comp, Iso.hom_inv_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section {k : Type} [Field k] [IsAlgClosed k] {P' : Scheme.{0}}
     (p : P' ⟶ Spec (CommRingCat.of k)) [IsFinite p] [Surjective p] :
@@ -64,9 +64,9 @@ theorem exists_section {k : Type} [Field k] [IsAlgClosed k] {P' : Scheme.{0}}
     Category.id_comp, Iso.hom_inv_id]
 
 /- English proof (translation)
-Take `⟨hfin, -, hsurj, -, -⟩` from `hmul (Spec (CommRingCat.of k)) P r hr`. Take `⟨t, ht⟩` from `exists_section (pullback.snd (mulA P.A r).left a₀.left)`. Establish `hb' : (t ≫ pullback.fst (mulA P.A r).left a₀.left) ≫ (mulA P.A r).left = a₀.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ht, Category.id_comp]`. Establish `hw : (t ≫ pullback.fst (mulA P.A r).left a₀.left) ≫ P.A.hom = (baseOver (Spec (CommRingCat.of k))).hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.w (mulA P.A r), ← Category.assoc, hb', Over.w a₀]`. Use `⟨Over.homMk _ hw, ?_⟩` and prove the remaining obligations. Establish `e : ∀ b : baseOver (Spec (CommRingCat.of k)) ⟶ P.A, b ^ r = b ≫ mulA P.A r` using `fun b => (congrArg (· ^ r) (Category.comp_id b).symm).trans (MonObj.comp_pow (𝟙 P.A) r b).symm`. Rewrite using `[e]`. Conclude with `Over.OverMorphism.ext hb'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_div (hmul : MulNSt) {k : Type} [Field k] [IsAlgClosed k]
     (P : PolAV (Spec (CommRingCat.of k))) (a₀ : baseOver (Spec (CommRingCat.of k)) ⟶ P.A) (r : ℕ)

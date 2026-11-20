@@ -6,21 +6,21 @@ open scoped ComplexConjugate ContDiff
 namespace GlobalTheory.SUChartSection
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x hx w hw τ`. Establish `hG` using `FrameDegreeData.ortho_bOf X hw τ`. Rewrite `hG` using `[bOf_cpt X hx w]`. Establish `hm : mat (rmul (cpt X x w) (fun τ => gsB X w τ)) τ = mat x τ * yM X w τ` using `by show mat x τ * mat (nmat X w) τ * gsB X w τ = _`. Rewrite using `[yM, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hG` using `[hm, FrameDegreeData.gram_mul, hx τ]`. Establish `hd` using `congrArg Matrix.det hG`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `hc : ((yM X w τ).map (starRingEnd ℂ)).det = starRingEnd ℂ (yM X w τ).det` using `(RingHom.map_det (starRingEnd ℂ) (yM X w τ)).symm`. Rewrite `hd` using `[hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hJ : (Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)).det ≠ 0`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => by exact_mod_cast PoinPf.sgn_ne _ _`. Establish `hY : (yM X w τ).det = ((∏ k, gsS X w τ k : ℝ) : ℂ)`. Rewrite using `[yM, Matrix.det_mul, gsB, Matrix.det_mul, Matrix.det_diagonal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_lowerTriangular _ (fun a b hab => ?_)]`. Rewrite using `[gsU, Matrix.det_of_upperTriangular (FrameDegreeData.uMat_upper _)]`. Simplify using `only [FrameDegreeData.uMat_diag, Finset.prod_const_one, one_mul]`. Establish `: ∀ i, mat (nmat X w) τ i i = 1` using `fun i => by`. Simplify using `[mat, nmat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, Finset.prod_const_one, one_mul]`. Use `push_cast`. Both sides reduce to the same expression. Use `show nmat X w τ a b = 0`. Simplify using `only [nmat]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab' : a < b` using `hab`. Establish `h1 : ¬ b < a` using `not_lt.2 (le_of_lt hab')`. Rewrite using `[dif_neg h1, if_neg (ne_of_lt hab')]`. Use `set t : ℝ := ∏ k, gsS X w τ k with ht`. Establish `hpos : 0 ≤ t` using `Finset.prod_nonneg fun k _ => inv_nonneg.2 (Real.sqrt_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd` using `[hY, Complex.conj_ofReal]`. Establish `htt : ((t * t : ℝ) : ℂ) = 1`. Establish `h2 : (t : ℂ) * (Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)).det * (t : ℂ) = 1 * (Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)).det` using `by rw [hd, one_mul]`. Use `push_cast`. Establish `h3 : ((t : ℂ) * t) * (Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)).det = 1 * (Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)).det` using `by rw [← h2]; ring`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hJ h3`. Establish `htt' : t * t = 1` using `by exact_mod_cast htt`. Establish `ht1 : t = 1` using `by nlinarith`. Rewrite using `[secM, Matrix.det_conj ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (det_ne_of_orth X hx τ))) (yM X w τ), hY, ht1, Complex.ofReal_one]`.
+A detailed English derivation is pending.
 -/
 theorem det_secM_eq_one : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {x : Frame X.Ψ r}, IsOrth X x → ∀ {w : V (nd X)}, cpt X x w ∈ X.dom → ∀ τ : X.Ψ, (secM X x w τ).det = 1 := by
   intro E _ _ _ r X x hx w hw τ

@@ -12,14 +12,14 @@ section Height
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `h` using `G.rank_eq n ⟨⊥, Ideal.isPrime_bot⟩`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finrank_level (G : PDivGroup p k) (n : ℕ) : Module.finrank k (G.A n) = p ^ (n * G.height) := by
   have h := G.rank_eq n ⟨⊥, Ideal.isPrime_bot⟩
   rwa [Module.rankAtStalk_eq_finrank_of_free] at h
 
 /- English proof (translation)
-Establish `h : (CartierDual.map f : CartierDual k A →ₐ[k] CartierDual k B).toLinearMap = (CartierDual.toDual k B).symm.toLinearMap ∘ₗ ((f : B →ₐ[k] A).toLinearMap.dualMap ∘ₗ (CartierDual.toDual k A).toLinearMap)` using `rfl`. Rewrite using `[h, LinearMap.range_comp, LinearEquiv.finrank_map_eq, LinearMap.range_comp_of_range_eq_top _ (LinearEquiv.range _), LinearMap.finrank_range_dualMap_eq_finrank_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_range_cartierDual_map {A B : Type} [CommRing A] [CommRing B] [HopfAlgebra k A]
     [HopfAlgebra k B] [Module.Finite k A] [Module.Finite k B] (f : B →ₐc[k] A) :
@@ -33,7 +33,7 @@ theorem finrank_range_cartierDual_map {A B : Type} [CommRing A] [CommRing B] [Ho
     LinearMap.finrank_range_dualMap_eq_finrank_range]
 
 /- English proof (translation)
-Take `⟨f, hf, hk⟩` from `G.exists_res_le h`. Establish `hk' : kerIdeal (mulBy k (G.A n) (p ^ m)) = RingHom.ker (f : G.A n →ₐ[k] G.A m)` using `hk.symm`. Rewrite using `[hk', (Ideal.quotientKerAlgEquivOfSurjective (f := (f : G.A n →ₐ[k] G.A m)) hf).toLinearEquiv.finrank_eq, finrank_level]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_quot_mulBy (G : PDivGroup p k) {m n : ℕ} (h : m ≤ n) :
     Module.finrank k (G.A n ⧸ kerIdeal (mulBy k (G.A n) (p ^ m))) = p ^ (m * G.height) := by
@@ -43,15 +43,13 @@ theorem finrank_quot_mulBy (G : PDivGroup p k) {m n : ℕ} (h : m ≤ n) :
     finrank_level]
 
 /- English proof (translation)
-Establish `key : ∀ n, m ≤ n → p ^ (n * G.height) ≤ p ^ (m * G.height) * p ^ (n * H.height)`. Introduce `n hn`. Establish `hL` using `finrank_eq_ker_mul_range k (G.A n) (G.A n) (mulBy k (G.A n) (p ^ m))`. Rewrite `hL` using `[finrank_quot_mulBy G hn, finrank_level]`. Establish `happ : (q ≫ g).app n = mulBy k (G.A n) (p ^ m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hqg, ← natCast_smul_id_app]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hr : LinearMap.range ((mulBy k (G.A n) (p ^ m) : G.A n →ₐ[k] G.A n).toLinearMap) ≤ LinearMap.range ((q.app n : H.A n →ₐ[k] G.A n).toLinearMap)`. Rewrite using `[← happ]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.range_comp_le_range (g.app n : G.A n →ₐ[k] H.A n).toLinearMap (q.app n : H.A n →ₐ[k] G.A n).toLinearMap`. Establish `h1` using `Submodule.finrank_mono hr`. Establish `h2` using `LinearMap.finrank_range_le ((q.app n : H.A n →ₐ[k] G.A n).toLinearMap)`. Rewrite `h2` using `[finrank_level]`. Rewrite using `[hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Nat.mul_le_mul_left _ (h1.trans h2)`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h3` using `key (m * G.height + m + 1) (by nlinarith)`. Rewrite `h3` using `[← pow_add]`.
-
-Establish `h4` using `(Nat.pow_le_pow_iff_right (Fact.out : p.Prime).one_lt).1 h3`. Use polynomial arithmetic with `[Nat.mul_le_mul_left (m * G.height + m + 1) hlt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem height_le_of_comp_eq {G H : PDivGroup p k} (q : G ⟶ H) (g : H ⟶ G) (m : ℕ)
     (hqg : q ≫ g = (p : ℤ_[p]) ^ m • 𝟙 G) : G.height ≤ H.height := by
@@ -81,13 +79,13 @@ theorem height_le_of_comp_eq {G H : PDivGroup p k} (q : G ⟶ H) (g : H ⟶ G) (
   nlinarith [Nat.mul_le_mul_left (m * G.height + m + 1) hlt]
 
 /- English proof (translation)
-Take `⟨m, g, h1, h2⟩` from `hq`. Establish `hGH : G.height = H.height` using `le_antisymm (height_le_of_comp_eq q g m h1) (height_le_of_comp_eq g q m h2)`. Use `⟨hGH, ⟨m, dualHom H G g, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← dualHom_comp, h2, map_smul, dualHom_id]`. Rewrite using `[← dualHom_comp, h1, map_smul, dualHom_id]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `e ⟨N, hN⟩`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Establish `he` using `hN n hn`. Establish `L1` using `finrank_eq_ker_mul_range k (G.A n) (H.A n) (q.app n)`. Establish `L2` using `finrank_eq_ker_mul_range k (H.dual.A n) (G.dual.A n) ((dualHom G H q).app n)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `L1` using `[he, finrank_level]`. Rewrite `L2` using `[finrank_level, dualHom_app, finrank_range_cartierDual_map]`. Establish `hr : 0 < Module.finrank k (LinearMap.range (q.app n : H.A n →ₐ[k] G.A n).toLinearMap)`. Break down `Nat.eq_zero_or_pos (Module.finrank k (LinearMap.range (q.app n : H.A n →ₐ[k] G.A n).toLinearMap)) with h0 | h0` into its components or cases. Rewrite `L1` using `[h0, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd L1 (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`. Conclude with `h0`. Establish `L3 : p ^ (n * H.dual.height) = p ^ (n * G.height)` using `by rw [hGH]`. Rewrite `L3` using `[L1, L2]`. Conclude with `Nat.eq_of_mul_eq_mul_right hr L3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_eq_and_dual_isog (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     (G H : PDivGroup p k) (q : G ⟶ H) (hq : IsIsog q) :

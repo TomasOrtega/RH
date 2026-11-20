@@ -17,9 +17,9 @@ open GlobalTheory.AdelicU (evFin splitPrime)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM G * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM G⁻¹ = (1 : Matrix (Fin m) (Fin m) (AE D))`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hG, Matrix.map_one _ (map_zero _) (map_one _)]`. Unfold `GlobalTheory.TripleRead.ptO`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem ptO_crd {D : D7} {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (hG : IsUnit G.det) (e : Fin k ≃ Fin d)
     (u : Matrix (Fin m) (Fin k) (AE D)) :
@@ -33,7 +33,7 @@ private theorem ptO_crd {D : D7} {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.hos
   simp
 
 /- English proof (translation)
-Unfold `GlobalTheory.TripleRead.ptO`. Rewrite using `[two_nsmul, two_nsmul, Matrix.add_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ptO_two {D : D7} {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (e : Fin k ≃ Fin d)
     (x : Matrix (Fin d) (Fin m) (AE D)) : ptO G e (2 • x) = 2 • ptO G e x := by
@@ -42,7 +42,7 @@ private theorem ptO_two {D : D7} {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.hos
   rfl
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `congrArg (· * H l j) (h l (e.symm i))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isHalf_crd {D : D7} {m k d : ℕ} (H : Matrix (Fin m) (Fin m) (AE D)) (e : Fin k ≃ Fin d)
     (u : Matrix (Fin m) (Fin k) (AE D)) (a : AE D) (h : ∀ i j, a * u i j = u i j) :
@@ -54,15 +54,15 @@ private theorem isHalf_crd {D : D7} {m k d : ℕ} (H : Matrix (Fin m) (Fin m) (A
   exact congrArg (· * H l j) (h l (e.symm i))
 
 /- English proof (translation)
-Introduce `D ψ ε S X d e Bs Vs Ws M hP ΛS ΛX hL f₀ hth hvac`. Take `⟨-, hrho, -, -, hinj, hon⟩` from `UpperTheory.thetaOperator_intertwines_heisenberg D ψ ε S X d e Bs Vs Ws M hP`. Take `⟨hlat, -⟩` from `UpperTheory.ptO_sgn_mem_latAtV_iff_mem_latO D ψ ε S X d e Bs Vs Ws M hP ΛS ΛX hL`. Take `⟨Ψ, hΨ, rfl⟩` from `(hon f₀).1 hth`. Take `⟨r, s, hV⟩` from `hP.herm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r', s', hW⟩` from `hP.skew`. Establish `hψ` using `hP.psi`. Substitute `hψ` using the available equality. Establish `hG : IsUnit (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram).det` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit (sgn ε S)`. Establish `hfix : ∀ y : WO (sgn ε S) X, heisO Bs.ψ (sgn ε S) X y (thO M Bs.ψ (sgn ε S).gram e Ψ) = thO M Bs.ψ (sgn ε S).gram e Ψ → M.co.rho Bs.ψ (ptO (sgn ε S).gram e y) Ψ = Ψ` using `fun y hy => hinj _ (GlobalTheory.HeisSchA.rho_mem_schA M Bs.ψ hP.base.std _ Ψ hΨ) _ hΨ ((hrho Ψ y).trans hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `UpperTheory.exists_eq_pure_vacuum_of_lattice_invariant D.host.F D.host.E D.sp.cm.sig Bs S.rank d Vs Ws M r s r' s' hP.base hV hW hP.good Ψ hΨ (fun v γ hγ => by`. Establish `h0` using `ptO_crd (D := D) _ hG e γ`. Establish `h1` using `hlat v _ (h0.symm ▸ hγ)`. Establish `h2` using `hfix _ (hvac.1 _ h1)`. Establish `h3` using `(ptO_two (D := D) _ e _).trans (congrArg (2 • ·) h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3 ▸ h2)`. Use the proof step `(fun v t γ hγ ht => by`. Take `⟨a, ha, haz⟩` from `UpperTheory.exists_splitIdempotent_mul_eq_of_piW_eq_zero D v t`. Establish `h0` using `ptO_crd (D := D) _ hG e γ`. Establish `h1` using `hlat v _ (h0.symm ▸ hγ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable Vs Ws v).1 γ hγ`. Establish `h2` using `hfix _ (hvac.2 a ha _ h1 (isHalf_crd _ e γ a fun i j => haz _ (fun u hu => congrFun (congrFun (hat u hu) i) j) (congrFun (congrFun ht i) j)))`. Conclude with `h0 ▸ h2)`. Conclude with `⟨g, by rw [← hg]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_thO_eq_of_isLatVac_thetaFun :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) (S X : HSp D) (d : ℕ) (e : Fin d ≃ Fin X.rank)

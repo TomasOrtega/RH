@@ -16,9 +16,9 @@ namespace DeltaValuation
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1 : w + a ∈ nonunits O` using `h`. Establish `h2 : -a ∈ nonunits O`. Introduce `hh`. Conclude with `ha (by simpa using hh.neg)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `IsLocalRing.nonunits_add h1 h2`. Rewrite `h3` using `[add_neg_cancel_right]`. Conclude with `h3 hw`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma unit_add {w a : O} (hw : IsUnit w) (ha : ¬ IsUnit a) : IsUnit (w + a) := by
   by_contra h
@@ -31,15 +31,15 @@ lemma unit_add {w a : O} (hw : IsUnit w) (ha : ¬ IsUnit a) : IsUnit (w + a) := 
   exact h3 hw
 
 /- English proof (translation)
-Introduce `h` and use `ha (isUnit_of_mul_isUnit_left h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma nonunit_mul {a : O} (ha : ¬ IsUnit a) (b : O) : ¬ IsUnit (a * b) :=
   fun h => ha (isUnit_of_mul_isUnit_left h)
 
 /- English proof (translation)
-Establish `h1 : IsCoprime (m : ℤ) (l : ℤ)` using `Nat.isCoprime_iff_coprime.mpr h`. Take `⟨a, b, hab⟩` from `h1`. Establish `h2 : (a : O) * (m : O) + (b : O) * (l : O) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → O) hab`. Assume the negation of the conclusion as `hm`. Establish `h3 : (a : O) * (m : O) + (b : O) * (l : O) ∈ nonunits O` using `IsLocalRing.nonunits_add (by rw [mul_comm]; exact nonunit_mul hm _) (by rw [mul_comm]; exact nonunit_mul hl _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h3` using `[h2]`. Conclude with `h3 isUnit_one`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma unit_of_coprime {l m : ℕ} (hl : ¬ IsUnit (l : O)) (h : Nat.Coprime m l) : IsUnit (m : O) := by
   have h1 : IsCoprime (m : ℤ) (l : ℤ) := Nat.isCoprime_iff_coprime.mpr h
@@ -53,9 +53,9 @@ lemma unit_of_coprime {l m : ℕ} (hl : ¬ IsUnit (l : O)) (h : Nat.Coprime m l)
   exact h3 isUnit_one
 
 /- English proof (translation)
-Establish `h1 : x - 1 ∣ (∑ i ∈ range m, x ^ i) - m`. Establish `: (∑ i ∈ range m, x ^ i) - m = ∑ i ∈ range m, (x ^ i - 1)`. Rewrite using `[Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.dvd_sum fun i _ => by simpa using sub_dvd_pow_sub_pow x 1 i`. Take `⟨c, hc⟩` from `h1`. Establish `: ∑ i ∈ range m, x ^ i = (m : O) + (x - 1) * c` using `by rw [← hc]; ring`. Rewrite using `[this]`. Conclude with `unit_add (unit_of_coprime hl h) (nonunit_mul hx c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma geom_unit {l m : ℕ} (hl : ¬ IsUnit (l : O)) (h : Nat.Coprime m l) {x : O}
     (hx : ¬ IsUnit (x - 1)) : IsUnit (∑ i ∈ range m, x ^ i) := by
@@ -70,17 +70,17 @@ lemma geom_unit {l m : ℕ} (hl : ¬ IsUnit (l : O)) (h : Nat.Coprime m l) {x : 
   exact unit_add (unit_of_coprime hl h) (nonunit_mul hx c)
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h`. Take `⟨s', rfl⟩ : ∃ s', s = s' + 1` from `⟨s - 1, by omega⟩`. Establish `hx : x = 1 + (l : O) * ((l : O) ^ s' * y)`. Establish `: x = 1 + (x - 1)` using `by ring`. Rewrite using `[this, hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∃ w : Oˣ, ∑ i ∈ range l, x ^ i = (l : O) * w`. Distinguish the cases in `h2 : l = 2`. Substitute `h2` using the available equality. Take `⟨s'', rfl⟩ : ∃ s'', s' = s'' + 1` from `⟨s' - 1, by have := hs2 rfl; omega⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (1 + ((2 : ℕ) : O) * (((2 : ℕ) : O) ^ s'' * y))` using `unit_add isUnit_one (nonunit_mul hl _)`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, Finset.sum_range_succ, Finset.sum_range_one, hx]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hodd : Odd l` using `hp.odd_of_ne_two h2`. Take `⟨c, hc⟩` from `odd_sq_dvd_geom_sum₂_sub (R := O) (a := 1) (b := (l : O) ^ s' * y) hodd`. Establish `hu : IsUnit (1 + (l : O) * c)` using `unit_add isUnit_one (nonunit_mul hl _)`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_pow, mul_one] at hc`. Rewrite `hc` using `[← hx]`. Establish `: ∑ i ∈ range l, x ^ i = (l : O) + (l : O) ^ 2 * c` using `by rw [← hc]; ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨w, hw⟩` from `hsum`. Use `⟨y * w, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_geom_sum, hy, hw]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma step {l : ℕ} (hp : l.Prime) (hl : ¬ IsUnit (l : O)) (x : O) (s : ℕ) (hs : 1 ≤ s)
     (hs2 : l = 2 → 2 ≤ s) (h : ∃ y : Oˣ, x - 1 = (l : O) ^ s * y) :
@@ -116,7 +116,7 @@ lemma step {l : ℕ} (hp : l.Prime) (hl : ¬ IsUnit (l : O)) (x : O) (s : ℕ) (
   ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Use `step hp hl (x ^ (l ^ k)) (s + k) (by omega) (fun h2 => by have := hs2 h2; omega) ih` as an intermediate fact. Rewrite `this` using `[← pow_mul, ← pow_succ, add_assoc]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma iter {l : ℕ} (hp : l.Prime) (hl : ¬ IsUnit (l : O)) (x : O) (s : ℕ) (hs : 1 ≤ s)
     (hs2 : l = 2 → 2 ≤ s) (h : ∃ y : Oˣ, x - 1 = (l : O) ^ s * y) (k : ℕ) :
@@ -128,11 +128,11 @@ lemma iter {l : ℕ} (hp : l.Prime) (hl : ¬ IsUnit (l : O)) (x : O) (s : ℕ) (
     rwa [← pow_mul, ← pow_succ, add_assoc] at this
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hp⟩`. Take `⟨k, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn l hp.ne_one`. Establish `hm0 : m ≠ 0` using `fun h0 => hm (by rw [h0]; exact dvd_zero _)`. Establish `hv : padicValNat l (l ^ k * m) = k`. Rewrite using `[padicValNat.mul (pow_ne_zero _ hp.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `iter hp hl x s hs hs2 h k`. Establish `hnu : ¬ IsUnit (x ^ (l ^ k) - 1)`. Rewrite using `[hy, show s + k = (s + k - 1) + 1 by omega, pow_succ', mul_assoc]`. Conclude with `nonunit_mul hl _`. Establish `hg` using `geom_unit hl ((Nat.Prime.coprime_iff_not_dvd hp).mpr hm).symm hnu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y * hg.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, pow_mul, ← mul_geom_sum, hy]`. Use `push_cast`. Rewrite using `[IsUnit.unit_spec]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma pow_sub_one {l : ℕ} (hp : l.Prime) (hl : ¬ IsUnit (l : O)) (x : O) (s : ℕ) (hs : 1 ≤ s)
     (hs2 : l = 2 → 2 ≤ s) (h : ∃ y : Oˣ, x - 1 = (l : O) ^ s * y) (n : ℕ) (hn : n ≠ 0) :
@@ -157,7 +157,7 @@ lemma pow_sub_one {l : ℕ} (hp : l.Prime) (hl : ¬ IsUnit (l : O)) (x : O) (s :
 end DeltaValuation
 
 /- English proof (translation)
-Introduce `O _ _ _ ℓ hℓ hℓu s₀ hs hs2 x y hx n hn`. Take `⟨w, hw⟩` from `DeltaValuation.pow_sub_one hℓ hℓu x s₀ hs hs2 ⟨y, hx⟩ n hn`. Rewrite using `[hw, addVal_mul, addVal_pow, addVal_eq_zero_of_unit, add_zero, nsmul_eq_mul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem powSubOneO : StatPowSubOneO := by
   intro O _ _ _ ℓ hℓ hℓu s₀ hs hs2 x y hx n hn
@@ -165,13 +165,13 @@ theorem powSubOneO : StatPowSubOneO := by
   rw [hw, addVal_mul, addVal_pow, addVal_eq_zero_of_unit, add_zero, nsmul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `ℓ hℓ s₀ t`. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Proceed by induction on `t with`. Consider the case `zero`. Rewrite using `[show Finset.Ioo 0 (0 + 1) = ∅ from by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_Ioo, Finset.notMem_empty, iff_false]`. Use the proof step `omega]`. Simplify using the standard rewrite rules. Consider the case `succ t ih`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `h : Finset.Ioo 0 (t + 1 + 1) = insert (t + 1) (Finset.Ioo 0 (t + 1))`. Use extensionality with `i`. Simplify using `only [Finset.mem_Ioo, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, Finset.sum_insert (by simp), ih, Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero t) (Nat.factorial_ne_zero t)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem theorem_n_five_delta_sum : WachTwistTheoremDeltaSum := by
   intro ℓ hℓ s₀ t
@@ -189,15 +189,15 @@ theorem theorem_n_five_delta_sum : WachTwistTheoremDeltaSum := by
     ring
 
 /- English proof (translation)
-Introduce `O _ _ _ ℓ hℓ hℓu s₀ hs hs2 x y u₁ hx t δO eO`. Establish `he : eO = addVal O (ℓ : O)` using `IdempotentNormalFormsLenFacts.length_quot_span _`. Establish `hfac : ∀ i ∈ Finset.Ioo 0 t, addVal O ((u₁ : O) - (u₁ : O) * ((x⁻¹ ^ i : Oˣ) : O)) = eO * ((s₀ + padicValNat ℓ i : ℕ) : ℕ∞)`. Introduce `i hi`. Establish `hi0 : i ≠ 0` using `by rw [Finset.mem_Ioo] at hi; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ((x⁻¹ ^ i : Oˣ) : O) * (x : O) ^ i = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, inv_pow, inv_mul_cancel, Units.val_one]`. Establish `h2 : (u₁ : O) - (u₁ : O) * ((x⁻¹ ^ i : Oˣ) : O) = ((u₁ * x⁻¹ ^ i : Oˣ) : O) * ((x : O) ^ i - 1)`. Rewrite using `[Units.val_mul, mul_sub, mul_assoc, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2, addVal_mul, addVal_eq_zero_of_unit, zero_add, powSubOneO O ℓ hℓ hℓu s₀ hs hs2 x y hx i hi0, he]`. Establish `hval : addVal O δO = eO * ((∑ i ∈ Finset.Ioo 0 t, (s₀ + padicValNat ℓ i) : ℕ) : ℕ∞)` using `by show addVal O (∏ i ∈ Finset.Ioo 0 t, ((u₁ : O) - (u₁ : O) * ((x⁻¹ ^ i : Oˣ) : O))) = _`. Rewrite using `[IdempotentNormalFormsLenFacts.addVal_prod, Finset.sum_congr rfl hfac, ← Finset.mul_sum, Nat.cast_sum]`. Use `⟨hval, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∑ i ∈ Finset.Ioo 0 t, (s₀ + padicValNat ℓ i) ≤ t * s₀ + padicValNat ℓ t.factorial`. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Consider the cases of `t with`. Consider the case `zero => simp`. Consider the case `succ t`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[theorem_n_five_delta_sum ℓ hℓ s₀ t, Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero t) (Nat.factorial_ne_zero t)]`. Conclude with `add_le_add (Nat.mul_le_mul_right _ (Nat.le_succ t)) (Nat.le_add_left _ _)`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theorem_n_five_delta_clause : WachTwistTheoremDeltaClause := by
   intro O _ _ _ ℓ hℓ hℓu s₀ hs hs2 x y u₁ hx t δO eO
@@ -229,11 +229,11 @@ theorem theorem_n_five_delta_clause : WachTwistTheoremDeltaClause := by
   gcongr
 
 /- English proof (translation)
-Introduce `O Tc M _ _ _ _ _ t rr a h m`. Establish `key : ∀ s : Finset ℕ, (∀ i ∈ s, 0 < t ∧ i < t) → ∀ m : M, (∏ i ∈ s, (rr 0 - rr i)) • m = (∏ i ∈ s, (a 0 - a i)) • m`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _ m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`. Introduce `hs m`. Take `⟨h0, hit⟩` from `hs i (Finset.mem_insert_self i s)`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, mul_smul, mul_smul, ih (fun k hk => hs k (Finset.mem_insert_of_mem hk)) m, sub_smul, sub_smul, h 0 h0, h i hit]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ (fun i hi => by rw [Finset.mem_Ioo] at hi; omega) m`.
+A detailed English derivation is pending.
 -/
 theorem deltaPt : StatDeltaPt := by
   intro O Tc M _ _ _ _ _ t rr a h m
@@ -250,7 +250,7 @@ theorem deltaPt : StatDeltaPt := by
   exact key _ (fun i hi => by rw [Finset.mem_Ioo] at hi; omega) m
 
 /- English proof (translation)
-Introduce `O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ _ colIdx D j e' Kc k0 ℓ what₂ s L _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz HcG Hc F Vo Io ε T₁ T₂ _ _ _ _ ρ₁ ρ₂ inc π γ lam Cs _ _ cls pr Fs Im h`. Take `⟨h1, h2, h3, h4, ⟨a1, a2, a3, a4, a5, a6, a7, a8⟩, h6⟩` from `h`. Use `⟨h1, h2, h3, h4, fun l => ?_, h6⟩` and prove the remaining obligations. Take `⟨b1, b2, b3, b4, b5⟩` from `a8 l`. Conclude with `selmer_inj_column_place O A T' G M L V r χ (D (colIdx l)) iL qV tens a1 a2 a3 a4 a5 a6 a7 (Ff l) (j (colIdx l)) (κ l) (κz l) b1 b2 b3 b4 b5`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inputs_from_selmer_inj : SelmerInjConditions := by
   intro O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ _ colIdx D j e' Kc k0 ℓ what₂ s
@@ -264,15 +264,11 @@ theorem inputs_from_selmer_inj : SelmerInjConditions := by
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `O _ _ _ X X' T T' Z p q b ha hb d _ _ R' _ hc Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ colIdx hinj D j e' Kc k0 hEE hee hpts g₀ n hspan π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard hcard1 sE tE δO ℓ cB what₂ qs deg s vhE H0 Sha hEsum hk0 NNc cols eO vδ N h0 L _ _ _ _ tens v₁ κ V _ _ …`. Establish `hδm : ∀ (c : Fin (t + 1)) (m : blockRestrictedRepresentationType bl ρk c), δ • m = δO • m`. Introduce `c m`. Establish `h` using `deltaPt O Tc (blockRestrictedRepresentationType bl ρk c) t rr (fun i => (u₁ : O) * (((ε gI)⁻¹ ^ i : Oˣ) : O)) (hrr c) m`. Simplify using `only [pow_zero, Units.val_one, mul_one] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hδ, hδO]`. Conclude with `h`. Take `⟨hv1, hv2⟩` from `theorem_n_five_delta_clause O ℓ hℓ hℓu s₀ hs hs2 (ε gI) y u₁ hx t`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `theorem_n_five_top_holds O X X' T T' Z p q b ha hb d R' hc Tc G r χ E e₁ δ ι colIdx hinj D j e' Kc k0 hEE hee hpts g₀ n hspan π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard hcard1 sE tE δO ℓ cB what₂ qs deg s vhE H0 Sha hEsum hk0 L tens v₁ κ HcG Hc F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π γ …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a1, a2, a4, a5, a6⟩` from `hC c hc2`. Conclude with `⟨a1, a2, hδm c, a4, a5, a6⟩)`. Use the proof step `(by`. Take `⟨a1, a2, a3, a5, a6, a7, a8, a9⟩` from `hOne`. Conclude with `⟨a1, a2, a3, hδm _, a5, a6, a7, a8, a9⟩)`.
-
-Use `show addVal O δO = _`. Rewrite using `[hδO]`. Conclude with `hv1`. Use `show addVal O δO ≤ _`. Rewrite using `[hδO]`.
-
-Conclude with `hv2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theorem_n_five_top_variant : WachTwistTheoremVariant := by
   intro O _ _ _ X X' T T' Z p q b ha hb d _ _ R' _ hc Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ colIdx hinj

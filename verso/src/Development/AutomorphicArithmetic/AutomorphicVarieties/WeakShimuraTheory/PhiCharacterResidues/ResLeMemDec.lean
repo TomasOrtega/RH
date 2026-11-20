@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `N`. Use `(hf N).mul (hg N) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Conclude with `map_mul _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem adic_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R} {f g : Γ → R}
     (hf : AdicCont I f) (hg : AdicCont I g) : AdicCont I fun x => f x * g x := by
@@ -14,9 +14,9 @@ private theorem adic_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : I
   exact map_mul _ _ _
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `N`. Simplify using `only [pow_zero, map_one]`. Conclude with `IsLocallyConstant.const _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ k ih`. Simplify using `only [pow_succ]`. Conclude with `adic_mul ih hf`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem adic_pow {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R} {f : Γ → R}
     (hf : AdicCont I f) (n : ℕ) : AdicCont I fun x => f x ^ n := by
@@ -30,11 +30,11 @@ private theorem adic_pow {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : I
     exact adic_mul ih hf
 
 /- English proof (translation)
-Establish `hloc : IsLocalHom (algebraMap O R)` using `IsCO.isLocalHom`. Introduce `N`. Establish `hN : (maximalIdeal O) ^ N ≤ Ideal.comap (algebraMap O R) ((maximalIdeal R) ^ N)`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Use `Ideal.pow_right_mono ?_ N` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Conclude with `map_nonunit (algebraMap O R) a ha`. Use `(hf N).comp (Ideal.Quotient.lift ((maximalIdeal O) ^ N) ((Ideal.Quotient.mk ((maximalIdeal R) ^ N)).comp (algebraMap O R)) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.mpr (hN ha)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem adic_alg {Γ O R : Type} [TopologicalSpace Γ] [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R]
     [IsCO O R] {f : Γ → O} (hf : AdicCont (maximalIdeal O) f) :
@@ -55,7 +55,7 @@ private theorem adic_alg {Γ O R : Type} [TopologicalSpace Γ] [CommRing O] [IsL
   simp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `g.2`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem resLe_mem_Dec {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {F L : IntermediateField ℚ Ω}
     (h : F ≤ L) {A A' : ValuationSubring Ω} (e : A = A') (g : Dec (F := L) A) : resLe h g ∈ Dec (F := F) A' := by
@@ -63,21 +63,19 @@ private theorem resLe_mem_Dec {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure
   exact g.2
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K X n ψ hψ v i`. Express the relevant statement in the definitionally equal form `W.Vl l T.L at v`. Establish `hmem : ∀ g : Dec (F` using `T.L) (K.s.A (v : W.Plc (W.Lp T.L))), resLe T.F_le (g : G T.L Ω) ∈ (T.fr ∅).Gv (K.e v) := fun g => resLe_mem_Dec T.F_le (K.hA v) g`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hsc : AdicCont (maximalIdeal X.B) fun g : Dec (F` using `T.L) (K.s.A (v : W.Plc (W.Lp T.L))) => algebraMap c'.O X.B (K.sc n g) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : AdicCont (maximalIdeal c'.O) fun g : G T.L Ω => K.sc n g` using `adic_mul K.κ_cont (adic_pow K.β_cont n)`. Establish `h1 : AdicCont (maximalIdeal c'.O) fun g : Dec (F` using `T.L) (K.s.A (v : W.Plc (W.Lp T.L))) => K.sc n g := fun N => (h0 N).comp_continuous continuous_subtype_val`. Conclude with `adic_alg h1`. Establish `hX : AdicCont (maximalIdeal X.B) fun g : Dec (F` using `T.L) (K.s.A (v : W.Plc (W.Lp T.L))) => X.ψ (K.e v) i (resLe T.F_le g) := by`. Introduce `N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : Continuous fun g : Dec (F` using `T.L) (K.s.A (v : W.Plc (W.Lp T.L))) => (⟨resLe T.F_le g, hmem g⟩ : (T.fr ∅).Gv (K.e v)) := ((continuous_resLe T.F_le).comp continuous_subtype_val).subtype_mk hmem`. Conclude with `(X.ψ_cont (K.e v) i N).comp_continuous hc`. Use `show AdicCont (maximalIdeal X.B) fun g : Dec (F := T.L) (K.s.A (v : W.Plc (W.Lp T.L))) => ((ψ v i g : X.Bˣ) : X.B)`. Use `adic_mul hsc hX using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hψ v i g`. Introduce `g`. Express the relevant statement in the definitionally equal form `Dec (F := T.L) (K.s.A (v : W.Plc (W.Lp T.L))) at g`. Use `show (res c'.O X.B) ((ψ v i g : X.Bˣ) : X.B) = ((K.r.psib v i g : _) : ResidueField c'.O)`. Rewrite using `[hψ v i g, K.psib, K.chib, map_mul, AlgHom.commutes, X.ψ_red (K.e v) i _ (hmem g)]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Link.sc, IsLocalRing.ResidueField.algebraMap_eq, map_mul, map_pow, K.β_red, one_pow, mul_one]`. Both sides reduce to the same expression. Introduce `g`. Take `⟨hκ, ht⟩` from `K.mu v g.1 g.2`. Establish `hβ : K.β g.1.1 = 1` using `MonoidHom.mem_ker.mp (K.β_t (MonoidHom.mem_ker.mpr ht))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmu : resLe T.F_le g.1.1 ∈ (T.fr ∅).Mu (K.e v)` using `phiMu ((resLe T.F_le).comp (Dec (F := T.L) (K.s.A (v : W.Plc (W.Lp T.L)))).subtype) ((continuous_resLe T.F_le).comp continuous_subtype_val) (Dec (F := T.F) (T.pl (K.e v))) hmem g.1 g.2`. Establish `hψ1 : X.ψ (K.e v) i (resLe T.F_le g.1.1) = 1`. Apply `X.inj` to reduce the goal to its premises. Rewrite using `[X.ψ_map _ _ _ (hmem g.1), map_one]`. Conclude with `X.pair.mu (K.e v) _ hmu i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsc1 : K.sc n g.1.1 = 1`. Simplify using `[Link.sc, hκ, hβ]`. Establish `hth : ((K.r.th v i g : c'.Oˣ) : c'.O) = 1`. Use `congrArg (fun f => ((f g : c'.Oˣ) : c'.O)) (K.th v i)` as an intermediate fact. Simplify using `using this`.
-
-Use `show ((ψ v i g.1 : X.Bˣ) : X.B) = algebraMap c'.O X.B ((K.r.th v i g : c'.Oˣ) : c'.O)`. Use `Eq.trans ?_ (congrArg (algebraMap c'.O X.B) hth).symm` and prove the remaining obligations. Rewrite using `[map_one, hψ v i g.1, hsc1, hψ1, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiIsPsi :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (n : ℕ), ∀ (ψ : ∀ v : W.Vl l T.L, Fin 4 → Dec (F := T.L) (K.s.A v) →* X.Bˣ), K.IsPsiT X n ψ → ∀ v i, K.r.IsPsi v i (ψ v i) := by

@@ -20,13 +20,13 @@ scoped instance : TotallyDisconnectedSpace (GK p K) := inferInstance
 variable {p K L}
 
 /- English proof (translation)
-Introduce `_ hσ x hx` and use `hσ x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subG_anti {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : L ≤ L') : subG p K L' ≤ subG p K L :=
   fun _ hσ x hx => hσ x (h hx)
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subG_eq_fixingSubgroup (h : K ≤ L) :
     subG p K L = (IntermediateField.extendScalars h).fixingSubgroup := by
@@ -36,11 +36,9 @@ theorem subG_eq_fixingSubgroup (h : K ≤ L) :
 
 variable (p K L) in
 /- English proof (translation)
-Use `le_antisymm (subG_anti le_sup_right) fun σ hσ => ?_` and prove the remaining obligations. Establish `hle : K ⊔ L ≤ (IntermediateField.fixedField (Subgroup.zpowers σ)).restrictScalars ℚ_[p]`. Use `sup_le (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Conclude with `(IntermediateField.fixedField (Subgroup.zpowers σ)).algebraMap_mem ⟨x, hx⟩`. Rewrite using `[IntermediateField.mem_restrictScalars, IntermediateField.mem_fixedField_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ hτ`. Conclude with `(Subgroup.zpowers_le.2 hσ : Subgroup.zpowers σ ≤ subG p K L) hτ x hx`. Introduce `x hx`. Use `hle hx` as an intermediate fact. Rewrite `this` using `[IntermediateField.mem_restrictScalars, IntermediateField.mem_fixedField_iff]`.
-
-Conclude with `this σ (Subgroup.mem_zpowers σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subG_sup : subG p K (K ⊔ L) = subG p K L := by
   refine le_antisymm (subG_anti le_sup_right) fun σ hσ => ?_
@@ -56,7 +54,7 @@ theorem subG_sup : subG p K (K ⊔ L) = subG p K L := by
   exact this σ (Subgroup.mem_zpowers σ)
 
 /- English proof (translation)
-Rewrite using `[subG_eq_fixingSubgroup h, ← IntermediateField.mem_fixedField_iff, InfiniteGalois.fixedField_fixingSubgroup]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_iff_fixed (h : K ≤ L) (x : PadicAlgCl p) : x ∈ L ↔ ∀ σ ∈ subG p K L, σ x = x := by
   rw [subG_eq_fixingSubgroup h, ← IntermediateField.mem_fixedField_iff,
@@ -64,9 +62,9 @@ theorem mem_iff_fixed (h : K ≤ L) (x : PadicAlgCl p) : x ∈ L ↔ ∀ σ ∈ 
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hle x hx`. Rewrite using `[mem_iff_fixed (le_sup_left : K ≤ K ⊔ L'), subG_sup]`. Conclude with `fun σ hσ => hle hσ x hx`. Introduce `hle`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← subG_sup p K L']`. Conclude with `subG_anti hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subG_le_iff {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L) :
     subG p K L' ≤ subG p K L ↔ L ≤ K ⊔ L' := by
@@ -80,20 +78,20 @@ theorem subG_le_iff {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L
 
 variable (p K L) in
 /- English proof (translation)
-Rewrite using `[← subG_sup, subG_eq_fixingSubgroup le_sup_left]`. Conclude with `InfiniteGalois.fixingSubgroup_isClosed _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_subG : IsClosed (subG p K L : Set (GK p K)) := by
   rw [← subG_sup, subG_eq_fixingSubgroup le_sup_left]
   exact InfiniteGalois.fixingSubgroup_isClosed _
 
 /- English proof (translation)
-Establish `hint : Algebra.IsIntegral K (PadicAlgCl p)` using `Algebra.IsIntegral.tower_top (R := ℚ_[p])`. Set `b` to `Module.finBasis ℚ_[p] L`. Establish `hopen : IsOpen (⋂ i, {σ : GK p K | σ (b i : PadicAlgCl p) = b i})` using `isOpen_iInter_of_finite fun i => stabilizer_isOpen_of_isIntegral (K := K) (b i : PadicAlgCl p)`. Establish `heq : (subG p K L : Set (GK p K)) = ⋂ i, {σ : GK p K | σ (b i : PadicAlgCl p) = b i}`. Use extensionality with `σ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce `hσ i`. Conclude with `hσ _ (b i).2`. Introduce `hσ x hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : x = ∑ i, b.repr ⟨x, hx⟩ i • (b i : PadicAlgCl p)`. Use `congrArg L.val (b.sum_repr ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Conclude with `this.symm`. Rewrite using `[hx', map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `congrArg₂ _ ((σ.restrictScalars ℚ_[p]).commutes _) (hσ i)`. Rewrite using `[heq]`. Conclude with `hopen`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_subG (hL : FiniteDimensional ℚ_[p] L) : IsOpen (subG p K L : Set (GK p K)) := by
   have hint : Algebra.IsIntegral K (PadicAlgCl p) := Algebra.IsIntegral.tower_top (R := ℚ_[p])
@@ -119,14 +117,14 @@ theorem isOpen_subG (hL : FiniteDimensional ℚ_[p] L) : IsOpen (subG p K L : Se
   exact hopen
 
 /- English proof (translation)
-Establish `: Finite (GK p K ⧸ subG p K L)` using `Subgroup.quotient_finite_of_isOpen _ (isOpen_subG hL)`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteIndex_subG (hL : FiniteDimensional ℚ_[p] L) : (subG p K L).FiniteIndex := by
   have : Finite (GK p K ⧸ subG p K L) := Subgroup.quotient_finite_of_isOpen _ (isOpen_subG hL)
   exact Subgroup.finiteIndex_of_finite_quotient
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.finrank_eq_fixingSubgroup_index, ← subG_eq_fixingSubgroup h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem degLK_eq_finrank (h : K ≤ L) :
     degLK p K L = Module.finrank K (IntermediateField.extendScalars h) := by
@@ -134,7 +132,7 @@ theorem degLK_eq_finrank (h : K ≤ L) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[degLK_eq_finrank h, mul_comm]`. Conclude with `(Module.finrank_mul_finrank ℚ_[p] K (IntermediateField.extendScalars h)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_degLK_mul (h : K ≤ L) (hL : FiniteDimensional ℚ_[p] L) :
     Module.finrank ℚ_[p] L = degLK p K L * Module.finrank ℚ_[p] K := by
@@ -142,15 +140,15 @@ theorem finrank_eq_degLK_mul (h : K ≤ L) (hL : FiniteDimensional ℚ_[p] L) :
   exact (Module.finrank_mul_finrank ℚ_[p] K (IntermediateField.extendScalars h)).symm
 
 /- English proof (translation)
-The claim follows from `Nat.pos_of_ne_zero (finiteIndex_subG hL).index_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem degLK_pos (hL : FiniteDimensional ℚ_[p] L) : 0 < degLK p K L :=
   Nat.pos_of_ne_zero (finiteIndex_subG hL).index_ne_zero
 
 /- English proof (translation)
-Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩ x hx`. Conclude with `τ.commutes ⟨x, hx⟩`. Introduce `hσ`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨{ σ.toRingEquiv with commutes' := fun x => hσ x.1 x.2 }, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_galois_restriction (h : K ≤ L) : (resGK h).range = subG p K L := by
   ext σ
@@ -161,7 +159,7 @@ theorem range_galois_restriction (h : K ≤ L) : (resGK h).range = subG p K L :=
     exact ⟨{ σ.toRingEquiv with commutes' := fun x => hσ x.1 x.2 }, rfl⟩
 
 /- English proof (translation)
-Establish `hc : (subG p K L').comap (resGK h) = subG p L L'` using `rfl`. Use `show (subG p K L').index = (subG p K L).index * (subG p L L').index`. Rewrite using `[← hc, Subgroup.index_comap, range_galois_restriction, mul_comm, Subgroup.relIndex_mul_index (subG_anti h')]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degLK_mul {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L) (h' : L ≤ L') :
     degLK p K L' = degLK p K L * degLK p L L' := by
@@ -171,7 +169,7 @@ theorem degLK_mul {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L) 
     Subgroup.relIndex_mul_index (subG_anti h')]
 
 /- English proof (translation)
-Establish `h : K ≤ (IntermediateField.fixedField U).restrictScalars ℚ_[p]` using `fun x hx => (IntermediateField.fixedField U).algebraMap_mem ⟨x, hx⟩`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[subG_eq_fixingSubgroup h]`. Conclude with `InfiniteGalois.fixingSubgroup_fixedField ⟨U, hU⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subG_eq (U : Subgroup (GK p K)) (hU : IsClosed (U : Set (GK p K))) :
     ∃ L : IntermediateField ℚ_[p] (PadicAlgCl p), K ≤ L ∧ subG p K L = U := by
@@ -182,9 +180,7 @@ theorem exists_subG_eq (U : Subgroup (GK p K)) (hU : IsClosed (U : Set (GK p K))
   exact InfiniteGalois.fixingSubgroup_fixedField ⟨U, hU⟩
 
 /- English proof (translation)
-Take `⟨L, h, hL⟩` from `exists_subG_eq U (Subgroup.isClosed_of_isOpen U hU)`. Use `⟨L, h, ?_, hL⟩` and prove the remaining obligations. Establish `hfd : FiniteDimensional K (IntermediateField.extendScalars h)`. Rewrite using `[← InfiniteGalois.isOpen_iff_finite, ← subG_eq_fixingSubgroup h, hL]`. Conclude with `hU`.
-
-Conclude with `FiniteDimensional.trans ℚ_[p] K (IntermediateField.extendScalars h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subG_eq_of_isOpen (hK : FiniteDimensional ℚ_[p] K) (U : Subgroup (GK p K))
     (hU : IsOpen (U : Set (GK p K))) :
@@ -197,9 +193,9 @@ theorem exists_subG_eq_of_isOpen (hK : FiniteDimensional ℚ_[p] K) (U : Subgrou
   exact FiniteDimensional.trans ℚ_[p] K (IntermediateField.extendScalars h)
 
 /- English proof (translation)
-Use `⟨fun hn σ x hx => ?_, subG_normal_of_stable⟩` and prove the remaining obligations. Rewrite using `[mem_iff_fixed h]`. Introduce `τ hτ`. Establish `h1 : (σ⁻¹ * τ * σ⁻¹⁻¹) x = x` using `hn.conj_mem τ hτ σ⁻¹ x hx`. Rewrite `h1` using `[inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : σ ((σ⁻¹ * τ * σ) x) = τ (σ x)` using `by show (σ * (σ⁻¹ * τ * σ)) x = (τ * σ) x`. Rewrite using `[mul_assoc, mul_inv_cancel_left]`. Rewrite using `[← h2, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem subG_normal_iff (h : K ≤ L) : (subG p K L).Normal ↔ ∀ (σ : GK p K), ∀ x ∈ L, σ x ∈ L := by
   refine ⟨fun hn σ x hx => ?_, subG_normal_of_stable⟩
@@ -213,22 +209,22 @@ theorem subG_normal_iff (h : K ≤ L) : (subG p K L).Normal ↔ ∀ (σ : GK p K
   rw [← h2, h1]
 
 /- English proof (translation)
-The claim follows from `subG_normal_of_stable fun σ x hx => (subG_normal_iff hL).1 hn (resGK h σ) x hx`.
+A detailed English derivation is pending.
 -/
 theorem subG_normal_of_le {K' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ K') (hL : K ≤ L)
     (hn : (subG p K L).Normal) : (subG p K' L).Normal :=
   subG_normal_of_stable fun σ x hx => (subG_normal_iff hL).1 hn (resGK h σ) x hx
 
 /- English proof (translation)
-Introduce `_ _ hστ` and use `AlgEquiv.ext fun x => DFunLike.congr_fun hστ x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem resGK_injective (h : K ≤ L) : Injective (resGK h) :=
   fun _ _ hστ => AlgEquiv.ext fun x => DFunLike.congr_fun hστ x
 
 /- English proof (translation)
-Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩ x hx`. Conclude with `τ.commutes ⟨x, hx⟩`. Introduce `hσ`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨{ σ.toRingEquiv with commutes' := fun x => hσ x.1 x.2 }, AlgEquiv.ext fun _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_resGK (h : K ≤ L) : (resGK h).range = subG p K L := by
   ext σ
@@ -239,13 +235,13 @@ theorem range_resGK (h : K ≤ L) : (resGK h).range = subG p K L := by
     exact ⟨{ σ.toRingEquiv with commutes' := fun x => hσ x.1 x.2 }, AlgEquiv.ext fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `(resGK_continuous h).isClosedEmbedding (resGK_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_resGK (h : K ≤ L) : Topology.IsClosedEmbedding (resGK h) :=
   (resGK_continuous h).isClosedEmbedding (resGK_injective h)
 
 /- English proof (translation)
-Use extensionality with `σ`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem comap_resGK_subG (h : K ≤ L) (L' : IntermediateField ℚ_[p] (PadicAlgCl p)) :
     (subG p K L').comap (resGK h) = subG p L L' := by
@@ -253,11 +249,11 @@ theorem comap_resGK_subG (h : K ≤ L) (L' : IntermediateField ℚ_[p] (PadicAlg
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `hmem : ∀ σ, resGK h σ ∈ subG p K L` using `fun σ => by`. Rewrite using `[← range_resGK h]`. Conclude with `⟨σ, rfl⟩`. Set `f : GK p L →* subG p K L` to `(resGK h).codRestrict (subG p K L) hmem`. Establish `hf : Bijective f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨fun a b hab => resGK_injective h (congrArg Subtype.val hab), fun τ => ?_⟩` and prove the remaining obligations. Establish `hτ : τ.1 ∈ (resGK h).range` using `by rw [range_resGK h]; exact τ.2`. Take `⟨σ, hσ⟩` from `hτ`. Conclude with `⟨σ, Subtype.ext hσ⟩`. Establish `hc : Continuous (MulEquiv.ofBijective f hf)` using `(resGK_continuous h).subtype_mk hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨MulEquiv.ofBijective f hf, fun _ => rfl, hc, ?_⟩` and prove the remaining obligations. Conclude with `Continuous.continuous_symm_of_equiv_compact_to_t2 (f := (MulEquiv.ofBijective f hf).toEquiv) hc`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_equiv_subG (h : K ≤ L) : ∃ e : GK p L ≃* subG p K L, (∀ σ, (e σ : GK p K) = resGK h σ) ∧
     Continuous e ∧ Continuous e.symm := by
@@ -275,19 +271,19 @@ theorem exists_equiv_subG (h : K ≤ L) : ∃ e : GK p L ≃* subG p K L, (∀ �
 
 variable (p K L) in
 /- English proof (translation)
-Establish `hint : Algebra.IsIntegral K (PadicAlgCl p)` using `Algebra.IsIntegral.tower_top (R := ℚ_[p])`. Rewrite using `[totallySeparatedSpace_iff_exists_isClopen]`. Introduce `x y hxy`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H b`. Establish `hab : a⁻¹ * b ∉ subG p K L` using `fun hh => hxy (QuotientGroup.eq.2 hh)`. Rewrite `hab` using `[mem_subG_iff]`. Use `push Not at hab`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hne⟩` from `hab`. Establish `hpre : (QuotientGroup.mk : GK p K → GalLK p K L) ⁻¹' (QuotientGroup.mk '' {g : GK p K | g z = a z}) = (fun g : GK p K => a⁻¹ * g) ⁻¹' (MulAction.stabilizer (GK p K) z : Set (GK p K))`. Use extensionality with `g`. Establish `key : ∀ g : GK p K, (a⁻¹ * g) z = z ↔ g z = a z` using `fun g => by`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', hg', he⟩`. Establish `hn : g'⁻¹ * g ∈ subG p K L` using `QuotientGroup.eq.1 he`. Establish `h1 : (g'⁻¹ * g) z = z` using `hn z hz`. Rewrite `h1` using `[AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(key g).2 (h1.trans hg')`. Introduce `hg`. Conclude with `⟨g, (key g).1 hg, rfl⟩`. Establish `hop : IsOpen (MulAction.stabilizer (GK p K) z : Set (GK p K))` using `stabilizer_isOpen_of_isIntegral (K := K) z`. Establish `hcl : IsClopen (MulAction.stabilizer (GK p K) z : Set (GK p K))` using `⟨Subgroup.isClosed_of_isOpen _ hop, hop⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨QuotientGroup.mk '' {g : GK p K | g z = a z}, ?_, ⟨a, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.isOpenQuotientMap_mk.isQuotientMap.isClopen_preimage, hpre]`. Conclude with `hcl.preimage (continuous_const.mul continuous_id)`. Introduce and unpack `⟨g', hg', he⟩`. Establish `hn : g'⁻¹ * b ∈ subG p K L` using `QuotientGroup.eq.1 he`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (g'⁻¹ * b) z = z` using `hn z hz`. Rewrite `h1` using `[AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`. Apply `hne` to reduce the goal to its premises. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`. Conclude with `h1.trans hg'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem totallySeparatedSpace_GalLK : TotallySeparatedSpace (GalLK p K L) := by
   have hint : Algebra.IsIntegral K (PadicAlgCl p) := Algebra.IsIntegral.tower_top (R := ℚ_[p])
@@ -338,13 +334,13 @@ scoped instance [(subG p K L).Normal] : TotallyDisconnectedSpace (GalLK p K L) :
   TotallySeparatedSpace.totallyDisconnectedSpace _
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.discreteTopology (isOpen_subG hL)`.
+A detailed English derivation is pending.
 -/
 theorem discreteTopology_GalLK (hL : FiniteDimensional ℚ_[p] L) : DiscreteTopology (GalLK p K L) :=
   QuotientGroup.discreteTopology (isOpen_subG hL)
 
 /- English proof (translation)
-The claim follows from `have := finiteIndex_subG (K := K) hL Subgroup.finite_quotient_of_finiteIndex`.
+A detailed English derivation is pending.
 -/
 theorem finite_GalLK (hL : FiniteDimensional ℚ_[p] L) : Finite (GalLK p K L) :=
   have := finiteIndex_subG (K := K) hL
@@ -356,7 +352,7 @@ Both sides reduce to the same expression.
 theorem card_GalLK : Nat.card (GalLK p K L) = degLK p K L := rfl
 
 /- English proof (translation)
-Establish `h1 : x ∈ multOf p L ↔ ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p) ∈ L` using `Iff.rfl`. Rewrite using `[h1, mem_iff_fixed h]`. Use `forall₂_congr fun σ _ => ⟨fun hx => Units.ext hx, fun hx => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun y : KbarMult p => ((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p)) hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_multOf_iff_fixed (h : K ≤ L) (x : KbarMult p) :
     x ∈ multOf p L ↔ ∀ σ ∈ subG p K L, kbarRep p K σ x = x := by
@@ -366,15 +362,15 @@ theorem mem_multOf_iff_fixed (h : K ≤ L) (x : KbarMult p) :
   exact congrArg (fun y : KbarMult p => ((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p)) hx
 
 /- English proof (translation)
-The claim follows from `(mem_multOf_iff_fixed h x.1).2 fun σ hσ => x.2 ⟨σ, hσ⟩`.
+A detailed English derivation is pending.
 -/
 theorem layer_val_mem [(subG p K L).Normal] (h : K ≤ L) (x : (layer p K L).V) : x.1 ∈ multOf p L :=
   (mem_multOf_iff_fixed h x.1).2 fun σ hσ => x.2 ⟨σ, hσ⟩
 
 /- English proof (translation)
-Use `Iff.trans ?_ (mem_multOf_iff_fixed (le_refl K) x.1).symm` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hx σ _`. Conclude with `congrArg Subtype.val (hx (QuotientGroup.mk σ))`. Introduce `hx g`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H σ => exact Subtype.ext (hx σ fun y hy => σ.commutes ⟨y, hy⟩)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem layer_invariant_iff [(subG p K L).Normal] (x : (layer p K L).V) :
     (∀ g, (layer p K L).rho g x = x) ↔ x.1 ∈ multOf p K := by
@@ -387,17 +383,15 @@ theorem layer_invariant_iff [(subG p K L).Normal] (x : (layer p K L).V) :
     | H σ => exact Subtype.ext (hx σ fun y hy => σ.commutes ⟨y, hy⟩)
 
 /- English proof (translation)
-Take `⟨e, he, hc, hc'⟩` from `exists_equiv_subG h`. Set `P : Pair ((kbarT p K).resSub (subG p K L)) (kbarT p L)` to `{ φ := e.toMonoidHom u := LinearMap.id φ_cont := hc u_cont := continuous_id equiv := fun g m => by show kbarRep p K (e g : GK p K) m = kbarRep p L g m`. Rewrite using `[he]`. Use `rfl }`. Set `Q : Pair (kbarT p L) ((kbarT p K).resSub (subG p K L))` to `{ φ := e.symm.toMonoidHom u := LinearMap.id φ_cont := hc' u_cont := continuous_id equiv := fun g m => by show kbarRep p L (e.symm g) m = kbarRep p K (g : GK p K) m`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `: (g : GK p K) = resGK h (e.symm g)` using `by rw [← he, e.apply_symm_apply]`. Rewrite using `[this]`. Use `rfl }`. Establish `hPQ : ∀ n x, P.hom.H n (Q.hom.H n x) = x` using `fun n x => by`. Proceed by induction on `x using Cx.H_ind with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `h x hx`. Use `Cx.cls_congr _ _ (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Use `show x.1 (fun i => e.symm (e (g i))) = x.1 g`. Simplify using the standard rewrite rules. Establish `hQP : ∀ n x, Q.hom.H n (P.hom.H n x) = x` using `fun n x => by`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `x using Cx.H_ind with`. Consider the case `h x hx`. Use `Cx.cls_congr _ _ (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Use `show x.1 (fun i => e (e.symm (g i))) = x.1 g`. Simplify using the standard rewrite rules.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `⟨P, fun n => ⟨LeftInverse.injective (hQP n), RightInverse.surjective (hPQ n)⟩, fun n x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Cx.H_ind with`. Consider the case `h x hx`. Use `Cx.cls_congr _ _ (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Use `show x.1 (fun i => resGK h (g i)) = x.1 (fun i => (e (g i) : GK p K))`.
-
-Simplify using `only [he]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_resPair_factor (h : K ≤ L) :
     ∃ e : Pair ((kbarT p K).resSub (subG p K L)) (kbarT p L), (∀ n, Bijective (e.hom.H n)) ∧
@@ -441,7 +435,7 @@ theorem exists_resPair_factor (h : K ≤ L) :
     simp only [he]
 
 /- English proof (translation)
-Proceed by induction on `x using Cx.H_ind with`. Consider the case `h x hx => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem resPair_trans {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L) (h' : L ≤ L') (n : ℕ)
     (x : (kbarT p K).H n) :

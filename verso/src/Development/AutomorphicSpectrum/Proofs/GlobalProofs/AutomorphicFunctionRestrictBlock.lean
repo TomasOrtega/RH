@@ -22,9 +22,9 @@ def linOf {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n →
     simp only [Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum, RingHom.id_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i, ∑ j, (Matrix.single a b (1 : ℂ)) i j • E i j = E a b`. Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Matrix.single_apply, Ne.symm hj]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `i _ hi; exact Finset.sum_eq_zero fun j _ => by simp [Matrix.single_apply, Ne.symm hi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem linOf_single {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (a b : Fin n) :
     linOf E (Matrix.single a b 1) = E a b := by
@@ -38,7 +38,7 @@ theorem linOf_single {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n �
   · simp
 
 /- English proof (translation)
-Establish `h : Formalism.REAL.GlRel (fun i j => linOf E (Matrix.single i j 1))`. Simplify `hE` using `only [linOf_single]`. Introduce `a b c d`. Simplify using `only`. Rewrite using `[GlobalTheory.CapelliLowest.lie_of_glRel (linOf E) h, hM a b c d, map_sub, apply_ite (linOf E), apply_ite (linOf E), map_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem glRel_linOf {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E)
     {M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ} (hM : Formalism.REAL.GlRel M) :
@@ -50,9 +50,9 @@ theorem glRel_linOf {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {E : Fin n →
   rw [GlobalTheory.CapelliLowest.lie_of_glRel (linOf E) h, hM a b c d, map_sub, apply_ite (linOf E), apply_ite (linOf E), map_zero]
 
 /- English proof (translation)
-Establish `hZ : Z ∈ Submodule.span ℂ (Set.range fun p : Fin n × Fin n => M p.1 p.2)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Conclude with `(Formalism.REAL.qDetCentral A n _ (glRel_linOf hE hM) v p.1 p.2).symm`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, add_mul, mul_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, smul_mul_assoc, mul_smul_comm, hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem qdet_commute {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E)
     {M : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ} (hM : Formalism.REAL.GlRel M)
@@ -76,41 +76,37 @@ open GlobalTheory.CompanionTheory.CoreGL.CapScalar GlobalTheory.SmoothForms Glob
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `D θ hθ V τ M hM hsp c v`. Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Take `⟨P, Q, hPQ, h⟩` from `GlobalTheory.T.unitary_lie_generators_rep _ _ (R.1 τ).1 (R.1 τ).2`. Take `⟨h1, h2⟩` from `h (EnvAt V τ) (fun X => UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X)) (fun X Y => by rw [TensorProduct.tmul_add, map_add]) (fun c X => by`. Rewrite using `[← map_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Use the proof step `(fun X Y Z hZ => by`. Establish `: Z = ⁅X, Y⁆` using `Subtype.ext hZ`. Rewrite using `[this, ← Ring.lie_def, ← LieHom.map_lie, LieAlgebra.ExtendScalars.bracket_tmul, one_mul])`. Use `set E : Fin V.rank → Fin V.rank → EnvAt V τ := fun a b => UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] P a b) + Complex.I • UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] Q a b) with hEdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomm` using `qdet_commute h1 hM hsp v`. Use `set z : EnvAt V τ := Formalism.REAL.qdet (fun i j => linOf E (M i j)) v with hz`. Establish `hι : ∀ X : LieAt V τ, UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X) * z = z * UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X)`. Introduce `X`. Establish `hX` using `h2 X`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X) = y at hX`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Use `hcomm (Matrix.single p.1 p.2 1)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `this` using `[linOf_single]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul c x _ hx => rw [smul_mul_assoc, mul_smul_comm, hx]`. Take `⟨cg, hc, hg⟩` from `exists_gelf R τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcen : z ∈ Subalgebra.center ℂ (EnvAt V τ)`. Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `u`. Establish `: u ∈ Subalgebra.centralizer ℂ ({z} : Set (EnvAt V τ))`. Take `⟨w, rfl⟩` from `GlobalTheory.T.enveloping_map_surjective D V τ u`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `Subalgebra.sum_mem _ fun l _ => Subalgebra.smul_mem _ (Subalgebra.list_prod_mem _ fun x hx => ?_) _` and prove the remaining obligations. Take `⟨X, -, rfl⟩` from `List.mem_map.1 hx`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Conclude with `(hι X).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite `this` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(this z rfl).symm`. Establish `key : ∀ y ∈ Algebra.adjoin ℂ (Set.range cg), ∃ s : ℂ, ∀ ψ : SmF θ V, (∀ k, gelf θ V τ k ψ.1 = c k • ψ.1) → envRep R τ y ψ = s • ψ`. Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `⟨c k, fun ψ e => Subtype.ext ((hg k ψ).symm.trans (e k))⟩`. Consider the case `algebraMap r => exact ⟨r, fun ψ _ => by rw [AlgHom.commutes]; rfl⟩`. Consider the case `add x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hx`. Take `⟨t, ht⟩` from `hy`. Conclude with `⟨s + t, fun ψ e => by rw [map_add, LinearMap.add_apply, hs ψ e, ht ψ e, add_smul]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨s, hs⟩` from `hx`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hy`. Conclude with `⟨s * t, fun ψ e => by`. Rewrite using `[map_mul, Module.End.mul_apply, ht ψ e, map_smul, hs ψ e, smul_smul, mul_comm]⟩`. Rewrite `hcen` using `[hc]`. Take `⟨s, hs⟩` from `key z hcen`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : GlobalTheory.Mem.AutSpace.SmFun θ V = SmF θ V` using `Submodule.ext fun φ => smooth_iff R φ`. Set `T` to `(LinearEquiv.ofEq _ _ e).conjAlgEquiv ℂ`. Establish `k0 : ∀ a b, T (GlobalTheory.Mem.RealTranslate.derEnd (V` using `V) hθ τ (Matrix.single a b 1)) = envRep R τ (E a b) := by`. Introduce `a b`. Rewrite using `[hEdef]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_smul, envRep_ι]`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RderC θ V τ (Matrix.single a b 1) φ.1 = _`. Rewrite using `[RderC, conjAt, ← (hPQ _ _).1, ← (hPQ _ _).2, Rder_eq R, Rder_eq R]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `k1 : ∀ Z, T (GlobalTheory.Mem.RealTranslate.derEnd (V` using `V) hθ τ Z) = envRep R τ (linOf E Z) := by`. Introduce `Z`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Express the relevant statement in the definitionally equal form `_ = envRep R τ (∑ a, ∑ b, Z a b • E a b)`. Simplify using `only [map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `: Matrix.single a b (Z a b) = Z a b • Matrix.single a b (1 : ℂ)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, map_smul, map_smul, k0]`. Establish `k2 : T (Formalism.REAL.qdet (fun i j => GlobalTheory.Mem.RealTranslate.derEnd hθ τ (M i j)) v) = envRep R τ z`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a1` using `GlobalTheory.CompanionTheory.CapelliMap.map_qdet T.toAlgHom (fun i j => GlobalTheory.Mem.RealTranslate.derEnd (V := V) hθ τ (M i j)) v`. Establish `a2` using `GlobalTheory.CompanionTheory.CapelliMap.map_qdet (envRep R τ) (fun i j => linOf E (M i j)) v`. Express the relevant statement in the definitionally equal form `T _ = _ at a1`. Rewrite using `[a1, hz, a2]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `i j`. Conclude with `k1 (M i j)`. Use `⟨s, fun f hf => ?_⟩` and prove the remaining obligations. Establish `k3` using `congrArg (fun S : Module.End ℂ (SmF θ V) => (S (LinearEquiv.ofEq _ _ e f)).1) k2`. Establish `k4` using `hs (LinearEquiv.ofEq _ _ e f) hf`.
-
-Conclude with `Subtype.ext (k3.trans (congrArg Subtype.val k4))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qdet_scalar_of_gelf : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau)
     (M : Fin V.rank → Fin V.rank → Matrix (Fin V.rank) (Fin V.rank) ℂ), Formalism.REAL.GlRel M →

@@ -5,9 +5,9 @@ open GlobalTheory.QCoh (pullbackSections)
 open GlobalTheory.Twist (resM)
 
 /- English proof (translation)
-Use `⟨LB.homOfLinear (fun V => (he.basis (le_top : V ≤ ⊤)).constr ℕ (fun j => resM E (le_top : V ≤ ⊤) (q j))) ?_, fun j => ?_⟩` and prove the remaining obligations. Introduce `V W h s`. Establish `key (V : X.Opens) (j : ι) : (he.basis (le_top : V ≤ ⊤)).constr ℕ (fun j => resM E (le_top : V ≤ ⊤) (q j)) (resM E le_top (e j)) = resM E le_top (q j)`. Rewrite using `[← he.basis_apply, Module.Basis.constr_basis]`. Take `⟨c, rfl⟩` from `(he V le_top).2 s`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(he.basis (le_top : W ≤ ⊤)).constr ℕ (fun j => resM E (le_top : W ≤ ⊤) (q j)) (resM E h _) = resM E h _`. Simplify using `only [Fintype.linearCombination_apply, map_sum, Twist.resM_smul, Twist.resM_resM, map_smul, key]`. Rewrite using `[LB.homOfLinear_app]`. Use `(he.basis (le_top : (⊤ : X.Opens) ≤ ⊤)).constr_basis ℕ (fun j => resM E (le_top : (⊤ : X.Opens) ≤ ⊤) (q j)) j` as an intermediate fact. Rewrite `this` using `[he.basis_apply, Twist.resM_self, Twist.resM_self]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem UpperTheory.frame_defines_endomorphism {X : Scheme.{0}} {E : X.Modules} {ι : Type} [Fintype ι]
     {e : ι → Γ(E, ⊤)} (he : IsFrame e) (q : ι → Γ(E, ⊤)) :
@@ -29,25 +29,25 @@ private theorem UpperTheory.frame_defines_endomorphism {X : Scheme.{0}} {E : X.M
     rwa [he.basis_apply, Twist.resM_self, Twist.resM_self] at this
 
 /- English proof (translation)
-Introduce `X E m r e a he`. Take `⟨p, hp⟩` from `UpperTheory.frame_defines_endomorphism he (Sum.elim (fun i => ∑ k, a i k • e (Sum.inr k)) (fun k => e (Sum.inr k)))`. Establish `hr (k : Fin r) : p.app ⊤ (e (Sum.inr k)) = e (Sum.inr k)` using `hp _`. Establish `hl (i : Fin m) : p.app ⊤ (e (Sum.inl i)) = ∑ k, a i k • e (Sum.inr k)` using `hp _`. Establish `hz (V : X.Opens) (s : Γ(E, V)) : (cokernel.π (Sub.ker p).incl).app V s = 0 ↔ p.app V s = 0` using `(Sub.ker p).cokernel_π_app_eq_zero_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 (i : Fin m) : (cokernel.π (Sub.ker p).incl).app ⊤ (e (Sum.inl i)) = ∑ k, a i k • (cokernel.π (Sub.ker p).incl).app ⊤ (e (Sum.inr k))`. Simplify using `only [← Scheme.Modules.Hom.app_smul]`. Rewrite using `[← map_sum, ← sub_eq_zero, ← map_sub, hz, map_sub, hl, map_sum]`. Simplify using `only [Scheme.Modules.Hom.app_smul, hr, sub_self]`. Use `⟨Sub.ker p, ?_, h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgen (V : X.Opens) (h : V ≤ ⊤) (s : Γ(E, V)) : (cokernel.π (Sub.ker p).incl).app V s ∈ Submodule.span Γ(X, V) (Set.range fun k => resM _ h ((cokernel.π (Sub.ker p).incl).app ⊤ (e (Sum.inr k))))`. Take `⟨c, rfl⟩` from `(he V h).2 s`. Rewrite using `[Fintype.linearCombination_apply, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, Twist.app_resM]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Break down `j with i | k` into its components or cases. Rewrite using `[h2, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Twist.resM_smul]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `hpp (V : X.Opens) (s : Γ(E, V)) : p.app V (p.app V s) = p.app V s`. Take `⟨c, rfl⟩` from `(he V le_top).2 s`. Simplify using `only [Fintype.linearCombination_apply, map_sum, Scheme.Modules.Hom.app_smul, Twist.app_resM]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Break down `j with i | k` into its components or cases. Simplify using `only [hl, map_sum, Scheme.Modules.Hom.app_smul, hr]`. Simplify using `only [hr]`. Establish `h0 : (Sub.ker p).incl ≫ p = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `s`. Conclude with `(QCoh.app_app _ _ V s).symm.trans ((Sub.ker p).incl_app_mem s)`. Establish `h1 : cokernel.desc _ p h0 ≫ cokernel.π (Sub.ker p).incl = 𝟙 _`. Rewrite using `[← cancel_epi (cokernel.π (Sub.ker p).incl), cokernel.π_desc_assoc, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `s`. Use `(QCoh.app_app _ _ V s).symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (cokernel.π (Sub.ker p).incl).app V s`. Rewrite using `[← sub_eq_zero, ← map_sub, hz, map_sub, hpp, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `isFrame_iff.2 fun V h => ⟨?_, fun t _ => ?_⟩` and prove the remaining obligations. Establish `hli` using `((isFrame_iff.1 he V h).1).comp Sum.inr Sum.inr_injective`. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Apply `hli c` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [← Twist.app_resM, ← Scheme.Modules.Hom.app_smul] at hc`. Rewrite `hc` using `[← map_sum, hz, map_sum]`. Simplify `hc` using `only [Scheme.Modules.Hom.app_smul, Twist.app_resM, hr, Function.comp_apply]`. Use `hgen V h ((cokernel.desc _ p h0).app V t)` as an intermediate fact. Rewrite `this` using `[QCoh.app_app, h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_subbundle_cokernel_frame :
     ∀ (X : Scheme.{0}) (E : X.Modules) (m r : ℕ) (e : Fin m ⊕ Fin r → Γ(E, ⊤)) (a : Fin m → Fin r → Γ(X, ⊤)),

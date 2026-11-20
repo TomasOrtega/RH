@@ -8,23 +8,23 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.NL.HerrClassUniq
 
 /- English proof (translation)
-Establish `h1 : c 1 = 0`. Use `hcc 1 1` as an intermediate fact. Simplify `this` using `[ha]`. Establish `h1' : c' 1 = 0`. Use `hcc' 1 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[ha]`. Set `S : Subgroup G` to `{ carrier := {g | c g = c' g} mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `c (a * b) = c' (a * b)`. Rewrite using `[hcc, hcc', show c a = c' a from ha, show c b = c' b from hb]`. Use the proof step `one_mem' := by`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `c 1 = c' 1`. Rewrite using `[h1, h1']`. Use the proof step `inv_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `c a⁻¹ = c' a⁻¹`. Establish `e1` using `hcc a⁻¹ a`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `hcc' a⁻¹ a`. Rewrite `e1` using `[inv_mul_cancel, h1, show c a = c' a from ha]`. Rewrite `e2` using `[inv_mul_cancel, h1']`. Conclude with `add_right_cancel (e1.symm.trans e2) }`. Establish `hS : IsClosed (S : Set G)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: {g | c g = c' g} = ⋂ f : Module.Dual LL V, {g | f (c g) = f (c' g)}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Use `⟨fun h f => by rw [h], fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff LL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `f`. Rewrite using `[map_sub, h f, sub_self]`. Express the relevant statement in the definitionally equal form `IsClosed {g | c g = c' g}`. Rewrite using `[this]`. Use `isClosed_iInter fun f => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hf : Continuous f` using `IsModuleTopology.continuous_of_linearMap f`. Conclude with `isClosed_eq (hf.comp hc) (hf.comp hc')`. Use function extensionality and compare the values at `g`. Establish `hcl : IsClosed (lam '' (S : Set G))` using `(hS.isCompact.image hlam).isClosed`. Establish `hsub : Set.range (fun n : ℤ => Multiplicative.ofAdd (n : ℤ_[l])) ⊆ lam '' (S : Set G)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨n, rfl⟩`. Use `⟨g₀ ^ n, S.zpow_mem (show g₀ ∈ S from hg₀) n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow, h₀, ← ofAdd_zsmul]`. Simplify using the standard rewrite rules. Establish `hd : DenseRange (fun n : ℤ => Multiplicative.ofAdd (n : ℤ_[l]))` using `PadicInt.denseRange_intCast`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : lam g ∈ lam '' (S : Set G)` using `hcl.closure_subset_iff.2 hsub (hd (lam g))`. Take `⟨x, hx, hxg⟩` from `hmem`. Establish `h2 : g * x⁻¹ ∈ S` using `hker _ (by rw [map_mul, map_inv, hxg, mul_inv_cancel])`. Establish `h3 : g ∈ S` using `by simpa using S.mul_mem h2 hx`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem cocycle_eq {l : ℕ} [Fact l.Prime] {G V LL : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
     [Field LL] [TopologicalSpace LL] [IsTopologicalRing LL] [T2Space LL]
@@ -90,7 +90,7 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Unfold `Zf at e`. Conclude with `congrArg Subtype.val ((GlobalTheory.WittTensorFixed.main l K LL T).2.2 (add_right_cancel e))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem val_eq_of_Zf {P : LocPrime l} (AI : LocAinf l P) {K LL : FinExt l} (T : Lt K LL) (H : Subgroup ↥(GK K))
     (c c' : ↥(latticeCocycles (resLat T H))) (b : TW (RW LL) T) (g : ↥H) (e : Zf AI T H c b g = Zf AI T H c' b g) :
@@ -101,7 +101,7 @@ theorem val_eq_of_Zf {P : LocPrime l} (AI : LocAinf l P) {K LL : FinExt l} (T : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HerrClassMaps.compact_GK K`. Use `haveI : CompactSpace ↥H := isCompact_iff_compactSpace.1 hH.isCompact`. Use `haveI := T.mtop`. Conclude with `Subtype.ext (cocycle_eq (LL := ↥LL.1) (V := T.V) (fun (g : ↥H) (x : T.V) => T.ρ (g : ↥(GK K)) x) c c' c.2.1.1 c'.2.1.1 (fun x => by simp) c.2.1.2 c'.2.1.2 lam hlam g₀ h₀ hker hg₀)`.
+A detailed English derivation is pending.
 -/
 theorem cocycle_eq_lat {K LL : FinExt l} (T : Lt K LL) (H : Subgroup ↥(GK K)) (hH : IsClosed (H : Set ↥(GK K)))
     (c c' : ↥(latticeCocycles (resLat T H)))
@@ -118,7 +118,7 @@ theorem cocycle_eq_lat {K LL : FinExt l} (T : Lt K LL) (H : Subgroup ↥(GK K)) 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h T c b y z hyz g₀ hg₀ hb hk hz`. Use `(cl_fit D HW F K s LL h T y z hyz b hb).elim fun cW hW => ?_` and prove the remaining obligations. Use `(lam_exists D HW K s LL h).elim fun lam hl => ?_` and prove the remaining obligations. Establish `e : c = cW` using `cocycle_eq_lat T _ hl.2.2.2.2 c cW lam hl.1 g₀ ((hl.2.2.1 g₀).2 hg₀) (fun g hg => val_eq_of_Zf (D.locA l) T _ c cW b g ((hk g ((hl.2.1 g).1 hg)).trans (hW.2.1 g ((hl.2.1 g).1 hg)).symm)) (val_eq_of_Zf (D.locA l) T _ c cW b g₀ (hz.trans (hW.2.2 g₀ hg₀).symm))`. Conclude with `(congrArg Submodule.Quotient.mk e).trans hW.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem class_of_values : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (T : Lt K LL) (c : ↥(latticeCocycles (resLat T ((HW l).W K s LL h).GKs))) (b : TW (RW LL) T) (y z : ((HW l).W K s LL h).DD T) (hyz : (y, z) ∈ ((HW l).W K s LL h).divisibleCocycles T) (g₀ : ↥((HW l).W K s LL h).GKs), ((HW l).W K s LL h).resΓ (g₀ : ↥(GK K)) = ((HW l).W K s LL h).gam → TWmap (φRW LL) T b - b = ((F l).E K s LL h).tie.jD T y → (∀ g : ↥((HW l).W K s LL h).GKs, ((HW l).W K s LL h).resΓ (g : ↥(GK K)) = 1 → Zf (D.locA l) T ((HW l).W K s LL h).GKs c b g = 0) → Zf (D.locA l) T ((HW l).W K s LL h).GKs c b g₀ = ((F l).E K s LL h).tie.jD T z → Submodule.Quotient.mk c = ((HW l).W K s LL h).cl T ⟨(y, z), hyz⟩ := by
   intro D HW F l _ K s LL h T c b y z hyz g₀ hg₀ hb hk hz

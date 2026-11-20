@@ -16,9 +16,7 @@ set_option autoImplicit false
 namespace GlobalTheory.CoverExists
 
 /- English proof (translation)
-Use `letI : Algebra K L := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq (fun x => ((IntermediateField.inclusion hle).commutes x).symm)`. Use `haveI : Module.Finite K L := Module.Finite.of_restrictScalars_finite ℚ K L`. Use `haveI : Algebra.IsAlgebraic K L := Algebra.IsAlgebraic.of_finite K L`.
-
-Use `⟨(IsAlgClosed.lift : L →ₐ[K] ℂ).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(IsAlgClosed.lift : L →ₐ[K] ℂ).commutes x`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_ext_of_le {K L : IntermediateField ℚ ℂ} [FiniteDimensional ℚ L] (hle : K ≤ L) (σ : K →+* ℂ) :
     ∃ σ' : L →+* ℂ, σ'.comp (IntermediateField.inclusion hle).toRingHom = σ := by

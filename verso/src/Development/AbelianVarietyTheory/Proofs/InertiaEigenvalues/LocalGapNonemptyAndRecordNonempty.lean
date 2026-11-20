@@ -6,7 +6,7 @@ open Formalism Formalism.BasicNotions
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Introduce `R H`. Take `⟨L, A, ⟨T⟩⟩` from `exists_locTheory_tied`. Conclude with `⟨⟨L, A, T⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem localGap_nonempty : ∀ {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R),
     Nonempty (Formalism.BasicNotions.Examples₂.LocalGap H) := by
@@ -15,7 +15,7 @@ theorem localGap_nonempty : ∀ {R : Formalism.BasicNotions.Ranks} (H : Formalis
   exact ⟨⟨L, A, T⟩⟩
 
 /- English proof (translation)
-The claim follows from `Formalism.BasicNotions.Examples₂.record_nonempty_of_localGap (localGap_nonempty _)`.
+A detailed English derivation is pending.
 -/
 theorem record_nonempty : Nonempty Formalism.BasicNotions.D7 :=
   Formalism.BasicNotions.Examples₂.record_nonempty_of_localGap (localGap_nonempty _)

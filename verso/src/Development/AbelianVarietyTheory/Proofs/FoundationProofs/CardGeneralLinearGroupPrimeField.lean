@@ -5,9 +5,9 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Establish `h1 : ∀ i ∈ Finset.range N, g ^ N - g ^ i = g ^ i * (g ^ (N - 1 - i + 1) - 1)`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.mp hi`. Rewrite using `[Nat.mul_sub, mul_one, ← pow_add]`. Use `congr 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finset.sum_range_id, Finset.prod_range_reflect (fun i => g ^ (i + 1) - 1) N]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_pow_sub_pow_eq (g N : ℕ) :
     ∏ i ∈ Finset.range N, (g ^ N - g ^ i)
@@ -22,7 +22,7 @@ theorem prod_pow_sub_pow_eq (g N : ℕ) :
     Finset.sum_range_id, Finset.prod_range_reflect (fun i => g ^ (i + 1) - 1) N]
 
 /- English proof (translation)
-Rewrite using `[← prod_pow_sub_pow_eq, ← Nat.card_eq_fintype_card]`. Establish `h` using `Matrix.card_GL_field (𝔽 := ZMod g) N`. Rewrite `h` using `[ZMod.card]`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun i => g ^ N - g ^ i) N]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_GG_eq (g : ℕ) [Fact g.Prime] (N : ℕ) :
     Fintype.card (GG g N)

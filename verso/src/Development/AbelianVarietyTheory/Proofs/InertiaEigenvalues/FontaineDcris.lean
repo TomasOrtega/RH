@@ -25,7 +25,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {W : Type} [AddCommGroup W] [Module LL W] [Module Qp W] [IsScalarTower Qp LL W]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [Formalism.MainNotions.RamifiedCoefficientChains.mapVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mapVB_eq_rTensor (f : V →ₗ[LL] W) (x : V ⊗[Qp] B) :
     Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f x = (f.restrictScalars Qp).rTensor B x := by
@@ -35,14 +35,14 @@ theorem mapVB_eq_rTensor (f : V →ₗ[LL] W) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Dcris' (ρ : Representation LL G V) (x : V ⊗[Qp] B) :
     x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, Formalism.MainNotions.RamifiedCoefficientChains.mapVB, hf]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mapVB_act (ρ : Representation LL G V) (σ : Representation LL G W) (f : V →ₗ[LL] W)
     (hf : ∀ g v, f (ρ g v) = σ g (f v)) (g : G) (x : V ⊗[Qp] B) :
@@ -54,7 +54,7 @@ theorem mapVB_act (ρ : Representation LL G V) (σ : Representation LL G W) (f :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_Dcris']`. Introduce `g`. Rewrite using `[← mapVB_act PD ρ σ f hf, hx]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapVB_mem_Dcris (ρ : Representation LL G V) (σ : Representation LL G W) (f : V →ₗ[LL] W)
     (hf : ∀ g v, f (ρ g v) = σ g (f v)) {x : V ⊗[Qp] B} (hx : x ∈ Dcris PD ρ) :
@@ -64,7 +64,7 @@ theorem mapVB_mem_Dcris (ρ : Representation LL G V) (σ : Representation LL G W
   rw [← mapVB_act PD ρ σ f hf, hx]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ιV, Formalism.MainNotions.RamifiedCoefficientChains.mapVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ιV_mapVB (f : V →ₗ[LL] W) (x : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := W) (Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f x) =
@@ -75,9 +75,9 @@ theorem ιV_mapVB (f : V →ₗ[LL] W) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hy`. Use `⟨AlgebraTensorModule.map f (LinearMap.id : ↥((PD.Fil a).restrictScalars Qp) →ₗ[Qp] ↥((PD.Fil a).restrictScalars Qp)) z, ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem map_mem_FilV (f : V →ₗ[LL] W) (a : ℤ) {y : V ⊗[Qp] BdR}
     (hy : y ∈ FilV PD (LL := LL) (V := V) a) :
@@ -90,7 +90,7 @@ theorem map_mem_FilV (f : V →ₗ[LL] W) (a : ℤ) {y : V ⊗[Qp] BdR}
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `⟨mapVB_mem_Dcris PD ρ σ f hf hx.1, ?_⟩` and prove the remaining obligations. Use `show ιV PD (LL := LL) (V := W) (Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f x) ∈ FilV PD (LL := LL) (V := W) a`. Rewrite using `[ιV_mapVB]`. Conclude with `map_mem_FilV PD f a hx.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapVB_mem_FilCris (ρ : Representation LL G V) (σ : Representation LL G W) (f : V →ₗ[LL] W)
     (hf : ∀ g v, f (ρ g v) = σ g (f v)) (a : ℤ) {x : V ⊗[Qp] B} (hx : x ∈ FilCris PD ρ a) :
@@ -109,23 +109,23 @@ namespace GlobalTheory.Per.DcrisExact
 open GlobalTheory.Per.DcrisExact
 
 /- English proof (translation)
-Introduce `hb V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ ι π hι hπ hinj hsurj hex hc₀ hc₁ hc₂`. Establish `hE : Function.Exact (ι.restrictScalars ℚ_[l]) (π.restrictScalars ℚ_[l])`. Rewrite using `[LinearMap.exact_iff]`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.mem_range, LinearMap.restrictScalars_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun S : Submodule ↥LL.1 V₁ => x ∈ S) hex` as an intermediate fact. Simplify using `using this`. Establish `hexT` using `rTensor_exact P.R.B (f := ι.restrictScalars ℚ_[l]) (g := π.restrictScalars ℚ_[l]) hE hsurj`. Establish `hinjT : Function.Injective ((ι.restrictScalars ℚ_[l]).rTensor P.R.B)` using `Module.Flat.rTensor_preserves_injective_linearMap _ hinj`. Establish `hS` using `GlobalTheory.T.dcris_strict_hodgeFiltration_unramified l P AI hT K LL hb`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _ hx`. Apply `hinjT` to reduce the goal to its premises. Rewrite using `[← mapVB_eq_rTensor, hx, map_zero]`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨mapVB_mem_Dcris _ ρ₀ ρ₁ ι hι hx, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, mapVB_eq_rTensor, mapVB_eq_rTensor, ← LinearMap.rTensor_comp_apply]`. Establish `: (π.restrictScalars ℚ_[l]).comp (ι.restrictScalars ℚ_[l]) = 0`. Use extensionality with `v`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hE.apply_apply_eq_zero v`. Rewrite using `[this, LinearMap.rTensor_zero, LinearMap.zero_apply]`. Introduce and unpack `y ⟨hy, hk⟩`. Rewrite `hk` using `[SetLike.mem_coe, LinearMap.mem_ker, mapVB_eq_rTensor]`. Take `⟨x, hx⟩` from `(hexT y).mp hk`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[← mapVB_eq_rTensor]`. Use `⟨x, ?_, hx⟩` and prove the remaining obligations. Establish `hy'` using `(mem_Dcris' _ ρ₁ y).1 hy`. Rewrite using `[SetLike.mem_coe, mem_Dcris']`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinjT` to reduce the goal to its premises. Rewrite using `[← mapVB_eq_rTensor, ← mapVB_eq_rTensor, mapVB_act _ ρ₀ ρ₁ ι hι, hx, hy' g]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `mapVB_mem_Dcris _ ρ₁ ρ₂ π hπ hx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨x, hx, hxy⟩` from `((GlobalTheory.Per.CrysSubQuot.crys_sub_quot l P AI hT K LL V₁ ρ₁ V₂ ρ₂ π hπ).2 hsurj hc₁).2 y hy`. Conclude with `⟨x, hx, hxy⟩`. Introduce `a`. Use `⟨(hS V₁ ρ₁ V₂ ρ₂ π hπ).1 hsurj hc₁ a, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Conclude with `⟨hx.1, mapVB_mem_FilCris _ ρ₀ ρ₁ ι hι a hx⟩`. Introduce and unpack `x ⟨hx, hf⟩`. Conclude with `(hS V₀ ρ₀ V₁ ρ₁ ι hι).2 hinj a x hx hf`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exactStrict (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : LocTied l P AI)
     (K LL : FinExt l) : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict (P.PD K) ↥LL.1 := by
@@ -183,9 +183,9 @@ end GlobalTheory.Per.DcrisExact
 namespace GlobalTheory.Per.DcrisExact
 
 /- English proof (translation)
-Introduce `D l _ K LL`. Use `⟨exactStrict l (D.loc l) (D.locA l) (D.locT l) K LL, ?_, ?_⟩` and prove the remaining obligations. Introduce `V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ ι π hι hπ hinj hsurj _ hc₁`. Conclude with `⟨(GlobalTheory.Per.CrysSubQuot.crys_sub_quot l (D.loc l) (D.locA l) (D.locT l) K LL V₀ ρ₀ V₁ ρ₁ ι hι).1 hinj hc₁, ((GlobalTheory.Per.CrysSubQuot.crys_sub_quot l (D.loc l) (D.locA l) (D.locT l) K LL V₁ ρ₁ V₂ ρ₂ π hπ).2 hsurj hc₁).1⟩`. Introduce `hb V _ _ _ _ _ ρ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.Per.DdREqDcris.map_Dcris_eq_DdR l (D.loc l) (D.locA l) (D.locT l) K LL hb V ρ hc`.
+A detailed English derivation is pending.
 -/
 theorem fontaine_dcris : ∀ D : D7, Formalism.MainNotions.RamifiedCoefficientChains.adm11 D := by
   intro D l _ K LL

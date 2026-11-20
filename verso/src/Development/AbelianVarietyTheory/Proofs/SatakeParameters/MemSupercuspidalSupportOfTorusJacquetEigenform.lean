@@ -33,7 +33,7 @@ theorem jacB_mk {n : Type} [Fintype n] [DecidableEq n] [LinearOrder n] {V : Type
         (Submodule.Quotient.mk (π (leviEmb k (points n) (leviTorus k n t)) v) : Jacquet π (unipB k n)) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use extensionality with `a b`. Rewrite using `[val_torusToLevi]`. Simplify using `[leviTorus, points, Matrix.diagonal]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leviTorus_eq {n : Type} [Fintype n] [DecidableEq n] [LinearOrder n] (t : n → kˣ) :
     leviTorus k n t = torusToLevi k (points n) t := by
@@ -42,9 +42,7 @@ theorem leviTorus_eq {n : Type} [Fintype n] [DecidableEq n] [LinearOrder n] (t :
   simp [leviTorus, points, Matrix.diagonal]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use extensionality with `a b`. Rewrite using `[val_torusToLevi]`. Use `fin_cases a`. Use `fin_cases b`.
-
-Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_torusToLevi (n : ℕ) (g : Levi k (fun _ : Fin n => Fin 1)) :
     g = torusToLevi k (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) (fun j => Matrix.GeneralLinearGroup.det (g j)) := by
@@ -54,7 +52,7 @@ theorem eq_torusToLevi (n : ℕ) (g : Levi k (fun _ : Fin n => Fin 1)) :
   simp [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[modExp_fin (fun _ : Fin n => Fin 1) (fun _ => by simp), modExp_fin (fun _ : Fin n => Unit) (fun _ => by simp)]`. Conclude with `congrArg _ (congrFun ((leviTorus k (Fin n)).symm_apply_apply (fun j => Matrix.GeneralLinearGroup.det (g j))) a).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deltaHalf_eq (n : ℕ) (g : Levi k (fun _ : Fin n => Fin 1)) :
     deltaHalf k (fun _ : Fin n => Fin 1) g =
@@ -65,21 +63,19 @@ theorem deltaHalf_eq (n : ℕ) (g : Levi k (fun _ : Fin n => Fin 1)) :
   exact congrArg _ (congrFun ((leviTorus k (Fin n)).symm_apply_apply (fun j => Matrix.GeneralLinearGroup.det (g j))) a).symm
 
 /- English proof (translation)
-Set `f` to `Equiv.sigmaUnique (Fin n) fun _ : Fin n => Fin 1`. Establish `hmono : StrictMono (blk f)` using `fun a b h => by simpa [blk, f] using h`. Establish `h : unipRad k f = unipB k (Fin n)` using `unipRad_eq k f hmono`. Set `l' : Jacquet π (unipRad k f) →ₗ[ℂ] ℂ` to `(twKer π (unipRad k f) 1).liftQ (l ∘ₗ (twKer π (unipB k (Fin n)) 1).mkQ) (by`. Rewrite using `[h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Simplify using `[(Submodule.Quotient.mk_eq_zero _).mpr hx])`. Establish `hl' : ∀ v : V, l' (Submodule.Quotient.mk v) = l (Submodule.Quotient.mk v)` using `fun v => rfl`. Set `χ : Levi k (fun _ : Fin n => Fin 1) →* ℂˣ` to `leviChar _ ψ`. Establish `key : ∀ (g : Levi k (fun _ : Fin n => Fin 1)) (v : V), l' (jac f π g (Submodule.Quotient.mk v)) = (χ g : ℂ) * l' (Submodule.Quotient.mk v)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g v`. Use `set t : Fin n → kˣ := fun j => Matrix.GeneralLinearGroup.det (g j) with ht`. Establish `h1` using `hl t (Submodule.Quotient.mk v)`. Rewrite `h1` using `[jacB_mk, map_smul, leviTorus_eq, leviEmb_torusToLevi, ← leviTorus_eq]`. Establish `hEmb : leviEmb k f g = diagT k (Fin n) t` using `by conv_lhs => rw [eq_torusToLevi n g]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `leviEmb_torusToLevi k f t`. Rewrite using `[jac_mk, map_smul, hl', hl', deltaHalf_eq n g, hEmb, ← ht]`. Establish `hc : (χ g : ℂ) = (torusChar ψ t : ℂ)`. Simplify using `[χ, leviChar_apply, torusChar_apply, t]`. Rewrite using `[hc, ← h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, fun _ => 1, f, i, rfl, ℂ, inferInstance, inferInstance, ofChar χ, isIrreducible_ofChar χ, ?_, ?_⟩` and prove the remaining obligations. Use `IsSubquotient.of_surjective ⟨l', fun g => ?_⟩ ?_` and prove the remaining obligations. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[key, ofChar_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, l x ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hl0 (LinearMap.ext hc)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Introduce `c`. Use `⟨(c / l (Submodule.Quotient.mk v)) • Submodule.Quotient.mk v, ?_⟩` and prove the remaining obligations. Use `show l' _ = c`. Rewrite using `[map_smul, hl', smul_eq_mul, div_mul_cancel₀ _ hx]`.
-
-Introduce `g y`. Rewrite using `[ofChar_apply]`. Simplify using `[χ, leviChar_apply, Pi.mulSingle_apply, apply_ite, Finset.prod_ite_eq']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inSupport_of_eigenform (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) (ψ : Fin n → kˣ →* ℂˣ)
@@ -127,7 +123,7 @@ theorem inSupport_of_eigenform (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ
 end GlobalTheory.EigenSupport
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π ψ l hl0 hl i`. Conclude with `GlobalTheory.EigenSupport.inSupport_of_eigenform n V π ψ l hl0 hl i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EigenSupport.inSupport_of_torus_eigenform : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (ψ : Fin n → kˣ →* ℂˣ) (l : Jacquet π (unipB k (Fin n)) →ₗ[ℂ] ℂ), l ≠ 0 → (∀ t y, l (jacB π t y) = (torusChar ψ t : ℂ) * l y) → ∀ i, InSupport π (ψ i) := by
   intro k _ _ _ _ n V _ _ π ψ l hl0 hl i

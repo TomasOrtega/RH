@@ -11,9 +11,9 @@ set_option synthInstance.maxHeartbeats 200000
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ μ e hμ w hw k`. Establish `h1 : μ.val w = -1` using `by show μ.loc w (GlobalTheory.Mem.Chr.atFin w (GlobalTheory.Mem.Chr.unif w)) = -1`. Rewrite using `[hμ.2.2.1 w hw, GlobalTheory.SmGL.unrChar_apply, GlobalTheory.SmGL.ord_eq_one (GlobalTheory.MuInert.valuation_eq_uniformizer w (GlobalTheory.Mem.Chr.unif_spec w)), zpow_one]`. Proceed by induction on `k with`. Consider the case `zero => simp [HChar.val, HChar.locK, HChar.loc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [pow_succ, pow_succ, HChar.val_mul, ih, h1]`.
+Treat this case separately.
 -/
 theorem UpperTheory.HeckeLevelFrameExistence.muVal :
     UpperTheory.HeckeLevelFrameExistence.MuVal := by

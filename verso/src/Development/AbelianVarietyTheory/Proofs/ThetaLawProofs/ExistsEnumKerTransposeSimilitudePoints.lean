@@ -17,17 +17,15 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory.KeyKa
 
 /- English proof (translation)
-Introduce `laws K _ _ x m al hm hal`. Use `haveI := x.P.isAb.comm`. Use `haveI := x.P.isAb.smooth`. Use `haveI : LocallyOfFiniteType x.P.A.hom := inferInstance`. Establish `hm0 : m ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hm Nat.cast_zero`. Use `letI : CommGroup (Pt x) := Hom.commGroup`. Establish `hG : ∀ k : ℕ, k ∣ m → Nat.card {y : Pt x // y ^ k = 1} = k ^ (2 * x.P.g)`. Introduce and unpack `k ⟨l, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : (k : K) ≠ 0` using `fun h => hm (by rw [Nat.cast_mul, h, zero_mul])`. Establish `hk1 : 1 ≤ k` using `Nat.pos_of_ne_zero fun h => hk (by rw [h, Nat.cast_zero])`. Conclude with `(laws.mulN (Sp K) x.P k hk1).2.2.2.2 K (𝟙 _) hk`. Establish `hcard` using `GlobalTheory.card_ker_int_matrix_four (Pt x) m (2 * x.P.g) al (Nat.pos_of_ne_zero hm0) hal hG`. Establish `hfin : Finite {ξ : Fin 4 → Pt x // ∀ c, ∏ r', ξ r' ^ al r' c = 1}` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hm0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `hc : Nat.card (Fin 4 → Fin (m ^ x.P.g)) = Nat.card {ξ : Fin 4 → Pt x // ∀ c, ∏ r', ξ r' ^ al r' c = 1}`. Rewrite using `[hcard, Nat.card_eq_fintype_card, Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e⟩` from `Finite.card_eq.mp hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨fun I => (e I).1, fun I I' hI p => ?_, fun I c => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne push_neg at hne`. Use `hI (e.injective (Subtype.ext (funext fun r => ?_)))` and prove the remaining obligations. Establish `hp : p = IsLocalRing.closedPoint K` using `Subsingleton.elim _ _`. Substitute `hp` using the available equality.
-
-Conclude with `Over.OverMorphism.ext (ext_of_apply_closedPoint_eq x.P.A.hom (Over.w _) (Over.w _) (hne r))`. Rewrite using `[List.prod_ofFn]`. Conclude with `(e I).2 c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_enum_ker_transpose : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (m : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ), (m : K) ≠ 0 → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → ∃ ξ : (Fin 4 → Fin (m ^ x.P.g)) → Fin 4 → Pt x, (∀ I I', I ≠ I' → ∀ p : Sp K, ∃ r, (ξ I r).left p ≠ (ξ I' r).left p) ∧ (∀ I c, (List.ofFn fun r : Fin 4 => ξ I r ^ al r c).prod = 1) := by
   intro laws K _ _ x m al hm hal

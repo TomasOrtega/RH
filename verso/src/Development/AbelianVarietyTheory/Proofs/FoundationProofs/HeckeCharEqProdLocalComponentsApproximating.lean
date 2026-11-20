@@ -18,7 +18,7 @@ noncomputable def evalAt {E : Type} [Field E] [NumberField E] (P : HeightOneSpec
   map_add' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `P.valuedAdicCompletion_eq_valuation' a`.
+A detailed English derivation is pending.
 -/
 theorem val_algebraMap {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (a : E) :
     Valued.v (algebraMap E (P.adicCompletion E) a) = P.valuation E a :=
@@ -31,35 +31,31 @@ theorem evalAt_algebraMap {E : Type} [Field E] [NumberField E] (P : HeightOneSpe
     evalAt P (algebraMap E (FiniteAdeleRing (𝓞 E) E) a) = algebraMap E (P.adicCompletion E) a := rfl
 
 /- English proof (translation)
-Take `⟨u, hud⟩ : ∃ u : Rˣ, u = ∏ P ∈ S, l P` from `⟨_, rfl⟩`. Establish `hu : (u : R) = ∏ P ∈ S, (l P : R)`. Simplify using `only [hud, Units.coe_prod]`. Establish `huinf : p u = 1`. Rewrite using `[hu, map_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun P _ => ?_` and prove the remaining obligations. Simplify using `[hl, hinf]`. Establish `hloc1 : ∀ P, ev P (q (l P)) = algebraMap E _ (k P : E)`. Introduce `P`. Simplify using `only [hl, map_add, map_mul, map_sub, map_one, h1, hinc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hloc0 : ∀ P Q, Q ≠ P → ev Q (q (l P)) = 1`. Introduce `P Q hQ`. Simplify using `only [hl, map_add, map_mul, map_sub, map_one, h0 P Q hQ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `huS : ∀ P ∈ S, ev P (q u) = algebraMap E _ (k P : E)`. Introduce `P hP`. Rewrite using `[hu, map_prod, map_prod, Finset.prod_eq_single P, hloc1]`. Introduce `Q _ hQ`. Conclude with `hloc0 Q P hQ.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd hP h`. Establish `huS' : ∀ P, P ∉ S → ev P (q u) = 1`. Introduce `P hP`. Rewrite using `[hu, map_prod, map_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Finset.prod_eq_one fun Q hQ => hloc0 Q P ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hP hQ`. Take `⟨y, hy⟩ : ∃ y : Rˣ, y = x * u⁻¹` from `⟨_, rfl⟩`. Establish `hxu : x = y * u` using `by rw [hy, inv_mul_cancel_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyu : (y : R) * u = x`. Rewrite using `[← Units.val_mul, hxu]`. Establish `hyinf : p y = 1`. Use `congrArg p hyu` as an intermediate fact. Rewrite `this` using `[map_mul, huinf, hx, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hyev : ∀ P, ev P (q y) * ev P (q u) = ev P (q x)`. Introduce `P`. Rewrite using `[← map_mul, ← map_mul, hyu]`. Establish `hk0 : ∀ P : HeightOneSpectrum (𝓞 E), P.valuation E (k P : E) ≠ 0` using `fun P => (Valuation.ne_zero_iff _).2 (k P).ne_zero`. Establish `hN0 : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyv : ∀ P, Valued.v (ev P (q y)) = 1`. Introduce `P`. Use `congrArg Valued.v (hyev P)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Distinguish the cases in `hP : P ∈ S`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[huS P hP, val_algebraMap, (hS P hP).1]`. Conclude with `mul_right_cancel₀ (hk0 P) (by rw [this, one_mul])`. Rewrite `this` using `[huS' P hP, map_one, mul_one, (hS' P hP).1]`. Then use the resulting hypothesis. Establish `hyv' : ∀ P, Valued.v (ev P (q (y⁻¹ : Rˣ))) = 1`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: Valued.v (ev P (q y)) * Valued.v (ev P (q (y⁻¹ : Rˣ))) = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, map_one]`. Rewrite `this` using `[hyv, one_mul]`. Then use the resulting hypothesis. Establish `hcong : ∀ P, Valued.v (ev P (q y) - 1) ≤ P.valuation E (N : E)`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hP : P ∈ S`. Establish `h2` using `(hS P hP).2`. Rewrite `h2` using `[← hyev P, huS P hP, ← sub_one_mul, map_mul, val_algebraMap]`. Conclude with `le_of_mul_le_mul_right h2 (zero_lt_iff.2 (hk0 P))`. Establish `h2 : P.valuation E (N : E) = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) P (r := (N : 𝓞 E))).2 (hS' P hP).2` as an intermediate fact. Simplify using `using this`. Rewrite using `[h2]`. Conclude with `Valuation.map_sub_le _ (hyv P).le (by rw [map_one])`. Establish `hcy : c y = 1`.
-
-Use `hker y ⟨hyinf, (hint _).2 fun P => (hyv P).le, (hint _).2 fun P => (hyv' P).le⟩ ⟨q (inc (N : E)⁻¹) * (q y - 1), (hint _).2 fun P => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hinc, val_algebraMap, map_sub, map_one, map_inv₀]`. Establish `hv : 0 < P.valuation E (N : E)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hN0)`. Conclude with `(inv_mul_le_one₀ hv).2 (hcong P)`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, ← map_natCast (q.comp inc) N, RingHom.comp_apply, ← map_mul, ← map_mul, mul_inv_cancel₀ hN0, map_one, map_one, one_mul]`.
-
-Rewrite using `[hxu, map_mul, hcy, one_mul, hud, map_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_prod_of_components {E : Type} [Field E] [NumberField E] {R A B : Type} [CommRing R] [CommRing A]
     [CommRing B] (p : R →+* A) (q : R →+* B) (inc : E →+* R)
@@ -151,9 +147,9 @@ theorem eq_prod_of_components {E : Type} [Field E] [NumberField E] {R A B : Type
   rw [hxu, map_mul, hcy, one_mul, hud, map_prod]
 
 /- English proof (translation)
-Introduce `D ι hι hint hidem c χ hc`. Take `⟨N, hN, hker, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D c hc.1.1`. Use `⟨N, hN, fun x hx S k hS hS' => ?_⟩` and prove the remaining obligations. Use `choose e he hinf h1 h0 using hidem`. Establish `key` using `eq_prod_of_components (infPart D) (finPart D) (incA D) (fun P => (evalAt P).comp ι.toRingHom) (fun P a => (congrArg (evalAt P) (hι a)).trans (evalAt_algebraMap P a)) (intAE D) hint e hinf h1 h0 c N hN hker x hx S k (fun P => locU (he P).1 (k P)) (fun _ => rfl) hS hS'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `(map_prod Circle.coeHom _ _).trans (Finset.prod_congr rfl fun P _ => hc.2 P (e P) (he P) (k P) _ rfl)`.
+A detailed English derivation is pending.
 -/
 theorem char_eq_prod_locK : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E), (∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) x) → (∀ y, y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι y P) ≤ 1) → (∀ P : HeightOneSpectrum (𝓞 D.host.E), ∃ e : AE D, IsPlIdem D e P ∧ infPart D e = 0 ∧ ι (finPart D e) P = 1 ∧ ∀ P' : HeightOneSpectrum (𝓞 D.host.E), P' ≠ P → ι (finPart D e) P' = 0) → ∀ (c : (AE D)ˣ →* Circle) (χ : HChar D.host.E), ChrEq c χ → ∃ N : ℕ, 0 < N ∧ ∀ x : (AE D)ˣ, infPart D (x : AE D) = 1 → ∀ (S : Finset (HeightOneSpectrum (𝓞 D.host.E))) (k : HeightOneSpectrum (𝓞 D.host.E) → D.host.Eˣ), (∀ P ∈ S, Valued.v (ι (finPart D (x : AE D)) P) = P.valuation D.host.E (k P : D.host.E) ∧ Valued.v (ι (finPart D (x : AE D)) P - algebraMap D.host.E _ (k P : D.host.E)) ≤ P.valuation D.host.E (N : D.host.E) * P.valuation D.host.E (k P : D.host.E)) → (∀ P, P ∉ S → Valued.v (ι (finPart D (x : AE D)) P) = 1 ∧ (N : 𝓞 D.host.E) ∉ P.asIdeal) → ((c x : Circle) : ℂ) = ∏ P ∈ S, ((χ.locK P (k P) : ℂˣ) : ℂ) := by
   intro D ι hι hint hidem c χ hc

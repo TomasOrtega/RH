@@ -14,15 +14,13 @@ noncomputable section
 namespace GlobalTheory.CompactDualUnique
 
 /- English proof (translation)
-Use `haveI : BorelSpace (lieU P Q) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := inferInstanceAs (LocallyCompactSpace ((Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ))`. Use `haveI : SecondCountableTopology (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := inferInstanceAs (SecondCountableTopology ((Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ))`. Use `haveI : LocallyCompactSpace (lieU P Q) := (Submodule.closed_of_finiteDimensional (lieU P Q)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (lieU P Q) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `h`. Take `⟨h1', h2'⟩` from `h'`. Take `⟨t, ht⟩ : ∃ t : ℝ≥0, lam = t • lam'` from `⟨_, Measure.isAddLeftInvariant_eq_smul lam lam'⟩`. Establish `hp : lam.prod lam = (t * t) • lam'.prod lam'`. Rewrite using `[ht, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hp, Measure.map_smul, h2']`. Establish `h3` using `congrArg (fun m : Measure ((Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) → ℂ) => m (Metric.ball 0 1)) h2`. Simplify using `only [Measure.smul_apply] at h3`. Establish `hpos : (volume : Measure ((Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) → ℂ)) (Metric.ball 0 1) ≠ 0` using `(Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `hfin : (volume : Measure ((Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) → ℂ)) (Metric.ball 0 1) ≠ ⊤` using `measure_ball_lt_top.ne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((t * t : ℝ≥0) : ℝ≥0∞) = 1`. Rewrite `h3` using `[ENNReal.smul_def, smul_eq_mul]`. Conclude with `(ENNReal.mul_left_inj hpos hfin).1 (h3.trans (one_mul _).symm)`. Establish `h5 : t * t = 1` using `by exact_mod_cast h4`. Establish `h6 : t = 1`.
-
-Establish `h7 : (t : ℝ) * t = 1` using `by exact_mod_cast h5`. Establish `h8 : (0 : ℝ) ≤ t` using `t.2`. Establish `: (t : ℝ) = 1` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Rewrite using `[ht, h6, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOmegaLeb_unique {P Q : ℕ} {lam lam' : Measure (lieU P Q)}
     (h : IsOmegaLeb lam) (h' : IsOmegaLeb lam') : lam = lam' := by
@@ -60,7 +58,7 @@ theorem isOmegaLeb_unique {P Q : ℕ} {lam lam' : Measure (lieU P Q)}
   rw [ht, h6, one_smul]
 
 /- English proof (translation)
-Take `⟨lam, h1, h2⟩` from `h`. Take `⟨lam', h1', h2'⟩` from `h'`. Take `rfl` from `isOmegaLeb_unique h1 h1'`. Conclude with `tendsto_nhds_unique h2 h2'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem omegaDensity_unique {P Q : ℕ} {μ : Measure (UpqT P Q)} {c c' : ℝ≥0∞}
     (h : OmegaDensity μ c) (h' : OmegaDensity μ c') : c = c' := by
@@ -70,7 +68,7 @@ theorem omegaDensity_unique {P Q : ℕ} {μ : Measure (UpqT P Q)} {c c' : ℝ≥
   exact tendsto_nhds_unique h2 h2'
 
 /- English proof (translation)
-Take `⟨lam, h1, h2⟩` from `h`. Use `⟨lam, h1, ?_⟩` and prove the remaining obligations. Use `ENNReal.Tendsto.const_mul (a := (t : ℝ≥0∞)) h2 (Or.inr ENNReal.coe_ne_top)` as an intermediate fact. Use `this.congr fun r => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_div_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem omegaDensity_smul {P Q : ℕ} {μ : Measure (UpqT P Q)} {c : ℝ≥0∞} (t : ℝ≥0)
     (h : OmegaDensity μ c) : OmegaDensity (t • μ) (t * c) := by
@@ -81,7 +79,7 @@ theorem omegaDensity_smul {P Q : ℕ} {μ : Measure (UpqT P Q)} {c : ℝ≥0∞}
   rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_div_assoc]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))`. Use `haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (UpqT P Q) := (UpqUnimodular.modelEquiv P Q).toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (UpqT P Q) := (UpqUnimodular.modelEquiv P Q).toHomeomorph.secondCountableTopology`. Conclude with `⟨_, Measure.isMulLeftInvariant_eq_smul μ ν⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul {P Q : ℕ} (μ ν : Measure (UpqT P Q)) [μ.IsHaarMeasure] [ν.IsHaarMeasure] :
     ∃ t : ℝ≥0, μ = t • ν := by
@@ -94,13 +92,13 @@ theorem exists_eq_smul {P Q : ℕ} (μ ν : Measure (UpqT P Q)) [μ.IsHaarMeasur
   exact ⟨_, Measure.isMulLeftInvariant_eq_smul μ ν⟩
 
 /- English proof (translation)
-Use `haveI := cd.haar P Q`. Use `haveI := cd.haar (P + Q) 0`. Use `haveI := cd.prob (P + Q)`. Take `⟨c', h0', ht', h1', h2'⟩` from `cd.trick P Q`. Take `⟨s, hs⟩` from `exists_eq_smul νc (cd.cd (P + Q) 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs1 : s = 1`. Use `congrArg (fun m : Measure (UpqT (P + Q) 0) => m Set.univ) hs` as an intermediate fact. Simplify using `only [Measure.smul_apply, measure_univ, ENNReal.smul_def, smul_eq_mul, mul_one] at this`. Conclude with `this.symm` after adjusting the coercions. Rewrite `hs` using `[hs1, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[hs]`. Take `rfl` from `omegaDensity_unique h2 h2'`. Take `⟨t, ht⟩` from `exists_eq_smul ν (cd.cd P Q)`. Establish `h3` using `omegaDensity_smul t h1'`. Rewrite `h3` using `[← ht]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `omegaDensity_unique h3 h1`. Establish `h5 : (t : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj h0' ht').1 (h4.trans (one_mul _).symm)`. Establish `h6 : t = 1` using `by exact_mod_cast h5`. Rewrite using `[ht, h6, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem eq_cd (cd : CDHaar) (P Q : ℕ) (ν : Measure (UpqT P Q)) (νc : Measure (UpqT (P + Q) 0))
     (c : ENNReal) (hν : ν.IsHaarMeasure) (hνc : νc.IsHaarMeasure) (hp : IsProbabilityMeasure νc)

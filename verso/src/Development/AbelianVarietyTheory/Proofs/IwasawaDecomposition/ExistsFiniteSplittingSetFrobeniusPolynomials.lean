@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.OSplitCore
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => R.mul_mem (hX _ _) (hY _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mul_of_mem {A : Type} [CommRing A] (R : Subring A) {m n q : ℕ} (X : Matrix (Fin m) (Fin n) A)
     (Y : Matrix (Fin n) (Fin q) A) (hX : ∀ i j, X i j ∈ R) (hY : ∀ i j, Y i j ∈ R) :
@@ -38,13 +38,11 @@ theorem coe_mapRep {Γ : Type} [Group Γ] {A B : Type} [CommRing A] [CommRing B]
   rfl
 
 /- English proof (translation)
-Establish `hcz : CharZero (FractionRing O)` using `⟨fun m n h => by`. Use `congrArg iq h` as an intermediate fact. Simplify using `using this⟩`. Establish `hcoe : ∀ g, ((mapRep iq (mapRep (algebraMap O (FractionRing O)) r) g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) = ((r g : GL (Fin a) O) : Matrix (Fin a) (Fin a) O).map (iq.comp (algebraMap O (FractionRing O)))`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coe_mapRep, coe_mapRep, Matrix.map_map]`. Both sides reduce to the same expression. Use `⟨GlobalTheory.TraceSemisimple.isSSRep_mapRep _ _ _ iq a _ hss, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hcoe]`. Conclude with `hr.matrix_map (GlobalTheory.T.continuous_ringHom_finite_dvr_to_padicAlgClosure l O hadic iq hiq)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ hσ`. Rewrite using `[hcoe, Matrix.charpoly_map, Polynomial.map_map]`. Conclude with `hp σ hσ`. Take `⟨T, hT⟩` from `GlobalTheory.T.exists_finset_image_mem_subring l O iq hiq`. Use `⟨T, fun R hR hTR g i j => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hcoe]`. Conclude with `hT R hR hTR _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapped_props (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {Γ : Type} [Group Γ] [TopologicalSpace Γ] {a : ℕ}
     (U : Set Γ) (p : Γ → ℂ[X]) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
@@ -85,29 +83,25 @@ theorem mapped_props (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {Γ : Type
     exact hT R hR hTR _
 
 /- English proof (translation)
-Introduce `l _ ι E Ω _ _ _ _ _ a U p hU`. Distinguish the cases in `hex : ∃ (ρ₀ : G E Ω →* GL (Fin a) (Qbar l)) (T : Finset (Qbar l)), IsSSRep ρ₀ ∧ Continuous (fun g => ((ρ₀ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) ∧ (∀ σ ∈ U, ((ρ₀ σ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.map ι.toRingHom = p σ) ∧ ∀ …`. Use `swap`. Use `⟨∅, ?_⟩` and prove the remaining obligations. Introduce `l' _ h O _ _ _ _ _ _ _ hadic iq hiq _ r hr hss hp`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `h` using the available equality. It suffices to derive a contradiction. Take `⟨h1, h2, h3, T, h4⟩` from `mapped_props l ι U p O hadic iq hiq r hr hss hp`. Conclude with `hex ⟨_, T, h1, h2, h3, h4⟩`. Take `⟨ρ₀, T, hss₀, hc₀, hp₀, hT⟩` from `hex`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨n, Vs, hint, hirr⟩` from `GlobalTheory.semisimple_matrix_rep_decomp ρ₀ hss₀`. Use `choose b E D σ₀ hDE hran hσ₀ using fun j => GlobalTheory.T.exists_leftInverse_restrict_stable_submodule_matrixRep ρ₀ (Vs j) (hirr j).2.1`. Set `T' : Finset (Qbar l)` to `T ∪ Finset.univ.biUnion (fun j : Fin n => Finset.univ.image (fun ij : Fin a × Fin (b j) => E j ij.1 ij.2) ∪ Finset.univ.image (fun ij : Fin (b j) × Fin a => D j ij.1 ij.2))`. Use `⟨T'.image ι, ?_⟩` and prove the remaining obligations. Introduce `l' _ h O _ _ _ _ _ _ _ hadic iq hiq hS r hr hss hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Take `⟨hss', hc', hp', -⟩` from `mapped_props l ι U p O hadic iq hiq r hr hss hp`. Establish `hT'R : ∀ t ∈ T', t ∈ iq.range`. Introduce `t ht`. Take `⟨x, hx⟩` from `hS (ι t) (Finset.mem_image_of_mem _ ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨x, ι.injective hx⟩`. Establish `hRz : ∀ z : ℤ_[l], algebraMap ℚ_[l] (Qbar l) (z : ℚ_[l]) ∈ iq.range` using `fun z => ⟨_, hiq z⟩`. Establish `hTR : (↑T : Set (Qbar l)) ⊆ (iq.range : Set (Qbar l))` using `fun t ht => hT'R t (Finset.mem_union_left _ ht)`. Establish `hER : ∀ j i s, E j i s ∈ iq.range` using `fun j i s => hT'R _ (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, Finset.mem_union_left _ (Finset.mem_image_of_mem (fun ij : Fin a × Fin (b j) => E j ij.1 ij.2) (Finset.mem_univ (i, s)))⟩))`. Establish `hDR : ∀ j i s, D j i s ∈ iq.range` using `fun j i s => hT'R _ (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, Finset.mem_union_right _ (Finset.mem_image_of_mem (fun ij : Fin (b j) × Fin a => D j ij.1 ij.2) (Finset.mem_univ (i, s)))⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hρ₀R` using `hT iq.range hRz hTR`. Use `set ρ := mapRep (algebraMap O (FractionRing O)) r with hρ`. Establish `hcp : ∀ g, ((mapRep iq ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly = ((ρ₀ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly` using `GlobalTheory.T.charpoly_eq_of_continuous_of_eq_on_dense _ _ hc' hc₀ U hU fun x hx => Polynomial.map_injective _ ι.injective (by rw [hp' x hx, hp₀ x hx])`. Take `⟨Pm, hPm⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix (mapRep iq ρ) ρ₀ hss' hss₀ hcp`. Establish `hint' : ∀ g, ((mapRep iq ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) * (Pm : Matrix (Fin a) (Fin a) (Qbar l)) = (Pm : Matrix (Fin a) (Fin a) (Qbar l)) * ((ρ₀ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g`. Rewrite using `[hPm g]`. Simplify using `only [Units.val_mul, ← mul_assoc, Units.mul_inv, one_mul]`. Apply `GlobalTheory.T.isAbsolutelyIrreducibleSplitRep_of_constituent_models iq ρ` to reduce the goal to its premises. Introduce `V hV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, M, hM, hMV, hMd⟩` from `GlobalTheory.T.exists_intertwiner_map_eq_of_irrSub (mapRep iq ρ) ρ₀ Pm hint' hss' Vs hint.submodule_iSup_eq_top hirr V hV`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_rep_lift_of_entries_mem_range iq (σ₀ j) fun g i s => by`. Establish `: ((σ₀ j g : GL (Fin (b j)) (Qbar l)) : Matrix (Fin (b j)) (Fin (b j)) (Qbar l)) i s ∈ iq.range`. Rewrite using `[(hσ₀ j g).1]`. Conclude with `mem_mul_of_mem _ _ _ (mem_mul_of_mem _ _ _ (hDR j) (hρ₀R g)) (hER j) i s`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Use `⟨b j, σ, M * E j, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w hvw`. Simplify using `only [← Matrix.mulVec_mulVec] at hvw`. Establish `hv : (E j).mulVec v ∈ Vs j` using `hran j ▸ ⟨v, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : (E j).mulVec w ∈ Vs j` using `hran j ▸ ⟨w, rfl⟩`. Establish `hsub : (E j).mulVec v - (E j).mulVec w ∈ LinearMap.ker M.mulVecLin`. Rewrite using `[LinearMap.mem_ker, map_sub]`. Conclude with `sub_eq_zero.2 hvw`. Establish `h0` using `hMd.le_bot ⟨hsub, Submodule.sub_mem _ hv hw⟩`.
-
-Establish `hEq : (E j).mulVec v = (E j).mulVec w` using `sub_eq_zero.1 h0`. Use `congrArg (D j).mulVec hEq` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hDE j]`. Rewrite using `[Matrix.mulVecLin_mul, LinearMap.range_comp, hran j, hMV]`. Introduce `g`.
-
-Rewrite using `[hσ, ← Matrix.mul_assoc, hM g, Matrix.mul_assoc, (hσ₀ j g).2, Matrix.mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_splitting_set : ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (a : ℕ) (U : Set (G E Ω)) (p : G E Ω → ℂ[X]), Dense U → ∃ S : Finset ℂ, ∀ (l' : ℕ) [Fact l'.Prime] (h : l = l') (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l'] O] [Module.Finite ℤ_[l'] O] [TopologicalSpace O] [IsTopologicalRing O], IsAdic (IsLocalRing.maximalIdeal O) → ∀ iq : FractionRing O →+* Qbar l', (∀ z : ℤ_[l'], iq (algebraMap O (FractionRing O) (algebraMap ℤ_[l'] O z)) = algebraMap ℚ_[l'] (Qbar l') (z : ℚ_[l'])) → (∀ z ∈ S, ∃ x, qCast h ι (iq x) = z) → ∀ r : G E Ω →* GL (Fin a) O, Continuous (fun g => ((r g : GL (Fin a) O) : Matrix (Fin a) (Fin a) O)) → IsSSRep (mapRep (algebraMap O (FractionRing O)) r) → (∀ σ ∈ U, ((r σ : GL (Fin a) O) : Matrix (Fin a) (Fin a) O).charpoly.map ((qCast h ι).toRingHom.comp (iq.comp (algebraMap O (FractionRing O)))) = p σ) → GlobalTheory.SplitCoef.SplitRep (mapRep (algebraMap O (FractionRing O)) r) := by
   intro l _ ι E Ω _ _ _ _ _ a U p hU

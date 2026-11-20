@@ -15,7 +15,7 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj Formalism.MainNotions.S
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `first`. Consider the case `simp only [hJ, star_add, Matrix.add_dotProduct]`. Consider the case `simp only [hJ, star_add, add_dotProduct]`. Consider the case `simp [hJ, Matrix.add_dotProduct]`. Consider the case `simp [hJ, add_dotProduct]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hJ_add_l {n : ℕ} (ε : Fin n → Bool) (x y z : Fin n → ℂ) : hJ ε (x + y) z = hJ ε x z + hJ ε y z := by
   first
@@ -25,7 +25,7 @@ theorem hJ_add_l {n : ℕ} (ε : Fin n → Bool) (x y z : Fin n → ℂ) : hJ ε
     | simp [hJ, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hJ, Formalism.REAL.Jm, dotProduct, Matrix.mulVec_diagonal, star_sum, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : ε i <;> simp [h, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hJ_conj' {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) : hJ ε y x = star (hJ ε x y) := by
   simp only [hJ, Formalism.REAL.Jm, dotProduct, Matrix.mulVec_diagonal, star_sum, Pi.star_apply]
@@ -35,9 +35,9 @@ theorem hJ_conj' {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) : hJ ε y
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact NumberField.IsCMField.complexEmbedding_complexConj _ t`. Consider the case `(simp only [Formalism.MainNotions.S.embS]; exact NumberField.IsCMField.complexEmbedding_complexConj _ t)`. Consider the case `(haveI := D.host.isCMField_hostE`. Rewrite using `[show (star t : D.host.E) = NumberField.IsCMField.complexConj D.host.E t from rfl]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `NumberField.IsCMField.complexEmbedding_complexConj _ _ t)`. Consider the case `(haveI := D.host.isCMField_hostE`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E (embS D (X.pl v)) t)`.
+A detailed English derivation is pending.
 -/
 theorem emb_star (v : InfinitePlace X.B.I.F) (t : D.host.E) :
     embS D (X.pl v) (star t) = star (embS D (X.pl v) t) := by
@@ -51,11 +51,11 @@ theorem emb_star (v : InfinitePlace X.B.I.F) (t : D.host.E) :
        exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E (embS D (X.pl v)) t)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v j`. Establish `hc : X.crd (x + y) = X.crd x + X.crd y` using `by first`. Consider the case `exact Formalism.L2.SG.Pf.Vanish2.crd_add X x y`. Consider the case `exact Formalism.L2.SG.HidaSetting.crd_add X x y`. Consider the case `(funext i; simp [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf])`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hr : rv X.B.I v (X.crd x + X.crd y) = rv X.B.I v (X.crd x) + rv X.B.I v (X.crd y)`. Unfold `rv`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Simplify using `only [rowV, Pi.add_apply, hc, hr]`. Apply the tactic sequence `split_ifs <;> exact hJ_add_l _ _ _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowV_add (x y : (VS D).V) : rowV X u (x + y) = rowV X u x + rowV X u y := by
   funext v j
@@ -74,7 +74,7 @@ theorem rowV_add (x y : (VS D).V) : rowV X u (x + y) = rowV X u x + rowV X u y :
   split_ifs <;> exact hJ_add_l _ _ _ _
 
 /- English proof (translation)
-Establish `h` using `rowV_add X u 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rowV_zero : rowV X u 0 = 0 := by
   have h := rowV_add X u 0 0
@@ -82,13 +82,13 @@ theorem rowV_zero : rowV X u 0 = 0 := by
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[eq_neg_iff_add_eq_zero, add_comm (rowV X u (-x)), ← rowV_add, add_neg_cancel, rowV_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowV_neg (x : (VS D).V) : rowV X u (-x) = -rowV X u x := by
   rw [eq_neg_iff_add_eq_zero, add_comm (rowV X u (-x)), ← rowV_add, add_neg_cancel, rowV_zero]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, sub_eq_add_neg, rowV_add, rowV_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowV_sub (x y : (VS D).V) : rowV X u (x - y) = rowV X u x - rowV X u y := by
   rw [sub_eq_add_neg, sub_eq_add_neg, rowV_add, rowV_neg]

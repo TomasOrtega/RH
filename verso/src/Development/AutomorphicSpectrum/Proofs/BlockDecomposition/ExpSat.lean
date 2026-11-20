@@ -9,9 +9,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 namespace GlobalTheory.CompanionTheory.LocGL
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ n hd V _ _ π hs ha hirr ξ hξ hanti hv`. Establish `hsm : ∀ a, IsSmoothChar (ξ a)` using `fun a => isSmoothChar_of_isUnram (hξ a)`. Establish `hdeg : ∑ a, (IrrGL.ofChar (ξ a) (hsm a)).1 = n` using `(Finset.sum_congr rfl fun _ _ => rfl).trans hd`. Take `⟨f, hf⟩` from `GlobalTheory.CompanionTheory.GlFrob.embedding_of_exponent k n hd V π hs ha hirr ξ hsm hdeg hv`. Take `⟨⟨x, hx1, hxL⟩, hsoc⟩` from `GlobalTheory.CompanionTheory.LocGL.socleOne k n ξ hξ hanti hdeg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hx1` using the available equality. Establish `hS` using `hsoc _ x.rep hxL`. Take `⟨e⟩` from `hS.equiv_of_embeds hirr ⟨f, hf⟩`. Establish `hL : IsL (PositivityTheory.SphericalProduct.msOne ξ hξ) π` using `IsL.of_equiv hxL e.symm`. Conclude with `(GlobalTheory.T.l_one_satake_bound k _ ξ hξ V π hs).1 hL`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expSat : PositivityTheory.SphericalProduct.ExpSat := by
   intro k _ _ _ _ _ n hd V _ _ π hs ha hirr ξ hξ hanti hv

@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarefreePrimeFactor.A
 namespace PI.SqfPrimeFactor.W
 
 /- English proof (translation)
-The claim follows from `claim_of squarefree_count_estimate irreducible_count_lower_bound (analytic_of hRS)`.
+A detailed English derivation is pending.
 -/
 theorem sqfPrimeFactor_of (hRS : PI.PrimesDyadicRS.Claim) : PI.SqfPrimeFactor.Claim :=
   claim_of squarefree_count_estimate irreducible_count_lower_bound (analytic_of hRS)

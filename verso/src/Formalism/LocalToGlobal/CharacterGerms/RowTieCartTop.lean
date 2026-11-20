@@ -7,7 +7,7 @@ def GermIAllSt : Prop :=
     (Y : FBChart C V O dd), GermISt Y
 
 /- English proof (translation)
-The claim follows from `cartFB_of hPT (addCvFB_of hG) hStab`.
+A detailed English derivation is pending.
 -/
 theorem cartesian_of_germs (hPT : PTFBSt) (hG : GermIAllSt) (hStab : HStabFBSt) : CartFBSt :=
   cartFB_of hPT (addCvFB_of hG) hStab

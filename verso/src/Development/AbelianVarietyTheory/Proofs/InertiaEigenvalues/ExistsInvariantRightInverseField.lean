@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory.InvariantRightInverse
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap K L) (LinearMap.ker_eq_bot.mpr (fun x y hxy => Subtype.ext hxy))`. Establish `hπ' : ∀ x : K, π (x : L) = x` using `fun x => LinearMap.congr_fun hπ x`. Use `⟨Matrix.of fun k j => (π (Y k j) : L), ?_, fun k j => (π (Y k j)).2⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1 : ∑ k, κ i k * Y k j = (1 : Matrix b b L) i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[← h, Matrix.mul_apply]`. Establish `h2 : ∀ k, κ i k * (π (Y k j) : L) = (π (κ i k * Y k j) : L)`. Introduce `k`. Use `π.map_smul (⟨κ i k, hκ i k⟩ : K) (Y k j)` as an intermediate fact. Establish `e : (⟨κ i k, hκ i k⟩ : K) • Y k j = κ i k * Y k j` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `h3 : (1 : Matrix b b L) i j ∈ K`. Rewrite using `[Matrix.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `K.one_mem`. Conclude with `K.zero_mem`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Conclude with `congrArg Subtype.val (hπ' ⟨_, h3⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rightInverse_subfield {L : Type} [Field L] (K : Subfield L) {N b : Type}
     [Fintype N] [DecidableEq b] (κ : Matrix b N L) (Y : Matrix N b L)
@@ -47,9 +45,9 @@ theorem exists_rightInverse_subfield {L : Type} [Field L] (K : Subfield L) {N b 
         exact congrArg Subtype.val (hπ' ⟨_, h3⟩)
 
 /- English proof (translation)
-Establish `hK : ∀ x : L, x ∈ (⨅ g : G, RingHom.eqLocusField (act g) (RingHom.id L)) ↔ ∀ g, act g x = x`. Introduce `x`. Rewrite using `[Subfield.mem_iInf]`. Conclude with `Iff.rfl`. Take `⟨Λ, h1, h2⟩` from `exists_rightInverse_subfield (⨅ g : G, RingHom.eqLocusField (act g) (RingHom.id L)) κ Y h (fun i k => (hK _).2 (fun g => congrFun (congrFun (hκ g) i) k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Extract witnesses or component facts from the available result.
 
-Use `⟨Λ, h1, fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `k j`. Conclude with `(hK _).1 (h2 k j) g`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_invariant_rightInverse_field {L : Type} [Field L] (G : Type)
     (act : G → L →+* L) (N b : Type) [Fintype N] [DecidableEq b]
@@ -69,7 +67,7 @@ theorem exists_invariant_rightInverse_field {L : Type} [Field L] (G : Type)
   exact (hK _).1 (h2 k j) g
 
 /- English proof (translation)
-Introduce `L _ hL G act N b _ _ _ _ κ Y h hκ`. Use `letI : Field L := hL.toField`. Conclude with `exists_invariant_rightInverse_field G act N b κ Y h hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_invariant_rightInverse :
     ∀ (L : Type) [inst : CommRing L], IsField L → ∀ (G : Type) (act : G → L →+* L) (N b : Type) [inst_1 : Fintype N] [DecidableEq N] [Fintype b] [inst_4 : DecidableEq b] (κ : Matrix b N L) (Y : Matrix N b L), κ * Y = (1 : Matrix b b L) → (∀ (g : G), Matrix.map κ (⇑(act g) : L → L) = κ) → ∃ (Λ : Matrix N b L), κ * Λ = (1 : Matrix b b L) ∧ ∀ (g : G), Matrix.map Λ (⇑(act g) : L → L) = Λ := by

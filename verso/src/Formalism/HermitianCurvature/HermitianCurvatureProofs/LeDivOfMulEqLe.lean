@@ -9,45 +9,39 @@ namespace Formalism.FourierDecayAlt.P
 open C2x2 EntryMinorBounds
 
 /- English proof (translation)
-Rewrite using `[le_div_iff₀ hc, h]`. Conclude with `hD`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma le_div_of_mul_eq_le (x c D Kb : ℝ) (hc : 0 < c) (hD : D ≤ Kb) (h : x * c = D) : x ≤ Kb / c := by
   rw [le_div_iff₀ hc, h]; exact hD
 
 /- English proof (translation)
-Introduce `m P hP`. Take `⟨w, d, hd, rfl⟩` from `hP`. Establish `hcn : ∀ a : Fin m, C2.minorS (C2.monoP w d) (C2.wSet w (a.val + 1)) (C2.iSet m (a.val + 1)) ≠ 0` using `fun a => minor_C_nonzero m w d hd (a.val + 1) a.isLt`. Take `⟨K, hK⟩ : ∃ K : ℝ, K = (Nat.factorial m : ℝ)` from `⟨_, rfl⟩`. Establish `hK1 : 1 ≤ K` using `by rw [hK]; exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero m)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, hB⟩ : ∃ B : ℝ, B = 1 + ∑ a : Fin m, K / ‖C2.minorS (C2.monoP w d) (C2.wSet w (a.val + 1)) (C2.iSet m (a.val + 1))‖` from `⟨_, rfl⟩`. Establish `hterm0 : ∀ a : Fin m, 0 ≤ K / ‖C2.minorS (C2.monoP w d) (C2.wSet w (a.val + 1)) (C2.iSet m (a.val + 1))‖` using `fun a => div_nonneg (by linarith) (norm_nonneg _)`. Establish `hB1 : 1 ≤ B` using `by rw [hB]; linarith [Finset.sum_nonneg (fun a (_ : a ∈ Finset.univ) => hterm0 a)]`. Establish `hBa : ∀ a : Fin m, K / ‖C2.minorS (C2.monoP w d) (C2.wSet w (a.val + 1)) (C2.iSet m (a.val + 1))‖ ≤ B`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hB]`. Combine the linear relations using `[Finset.single_le_sum (fun a (_ : a ∈ Finset.univ) => hterm0 a) (Finset.mem_univ a)]`. Use `⟨K * B ^ m, fun l hl u' hu => ?_⟩` and prove the remaining obligations. Take `⟨Y, hY⟩ : ∃ Y, Y = C2.mx (l * C2.monoP w d * u')` from `⟨_, rfl⟩`. Rewrite using `[← hY]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hY0 : 0 ≤ Y` using `by rw [hY]; exact norm_nonneg _`. Establish `hY1 : 1 ≤ (1 + Y) ^ m` using `one_le_pow₀ (by linarith)`. Establish `hΔ : ∀ I J : Finset (Fin m), ‖C2.minorS (l * C2.monoP w d * u') I J‖ ≤ K * (1 + Y) ^ m`. Introduce `I J`. Rewrite using `[hK, hY]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `minor_le _ I J`. Establish `hEB : 0 ≤ B * (1 + Y) ^ m` using `by positivity`. Establish `hfin : ∀ (a : Fin m) (x : ℝ) (J : Finset (Fin m)), x * ‖C2.minorS (C2.monoP w d) (C2.wSet w (a.val + 1)) (C2.iSet m (a.val + 1))‖ = ‖C2.minorS (l * C2.monoP w d * u') (C2.wSet w (a.val + 1)) J‖ → x ≤ B * (1 + Y) ^ m`. Introduce `a x J hx`. Establish `hcpos` using `norm_pos_iff.mpr (hcn a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ B * (1 + Y) ^ m := mul_le_mul_of_nonneg_right (hBa a) (by positivity)`. Establish `hfin' : ∀ (a : Fin m) (x : ℝ) (J : Finset (Fin m)), x * ‖C2.minorS (C2.monoP w d) (C2.wSet w (a.val + 1)) (C2.iSet m (a.val + 1))‖ = ‖C2.minorS (l * C2.monoP w d * u') J (C2.iSet m (a.val + 1))‖ → x ≤ B * (1 + Y) ^ m`. Introduce `a x J hx`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hcpos` using `norm_pos_iff.mpr (hcn a)`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ B * (1 + Y) ^ m := mul_le_mul_of_nonneg_right (hBa a) (by positivity)`. Establish `hu_ent : ∀ a b, ‖u' a b‖ ≤ B * (1 + Y) ^ m`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Introduce `a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Take `⟨ε, hε, hf⟩` from `upper_minor_identity m w d hd a b h`. Establish `e` using `hf l hl u' hu`. Apply the tactic sequence `have hεn : ‖ε‖ = 1 := by rcases hε with rfl | rfl <;> simp`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfin a _ _ (by rw [← norm_mul, e, norm_mul, hεn, one_mul])`. Rewrite using `[hu.2, norm_one]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hu.1 a b h, norm_zero]`. Conclude with `hEB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hl_ent : ∀ x y, ‖l x y‖ ≤ B * (1 + Y) ^ m`. Introduce `x y`. Take `⟨a, rfl⟩ : ∃ a, y = w a` from `⟨w.symm y, by simp⟩`. Distinguish the cases in `hx : x ∈ C2.wSet w a.val`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.mp hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hpa : p < a`. Simplify using `only [C2.iSet, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Rewrite using `[Fin.lt_def]`. Conclude with `hp`. Rewrite using `[lower_parabolic_entry_zero w d hd l hl p a hpa, norm_zero]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hEB`. Take `⟨ε, hε, hf⟩` from `lower_minor_identity m w d hd a x hx`. Establish `e` using `hf l hl u' hu`. Apply the tactic sequence `have hεn : ‖ε‖ = 1 := by rcases hε with rfl | rfl <;> simp`. Conclude with `hfin' a _ _ (by rw [← norm_mul, e, norm_mul, hεn, one_mul])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hX1 : 1 ≤ B * (1 + Y) ^ m` using `by nlinarith`. Establish `hinvl : ∀ i j, ‖l⁻¹ i j‖ ≤ K * (B * (1 + Y) ^ m) ^ (m - 1)` using `fun i j => by`. Rewrite using `[hK]`. Conclude with `inv_entry_le l (lt_det hl.1) _ hX1 hl_ent i j`. Establish `hinvu : ∀ i j, ‖u'⁻¹ i j‖ ≤ K * (B * (1 + Y) ^ m) ^ (m - 1)` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Rewrite using `[hK]`. Conclude with `inv_entry_le u' (ut_det hu) _ hX1 hu_ent i j`. Establish `hpow : K * (B * (1 + Y) ^ m) ^ (m - 1) ≤ K * B ^ m * (1 + Y) ^ ((m - 1) * m)`. Rewrite using `[mul_pow, ← pow_mul, mul_assoc]`. Apply `mul_le_mul_of_nonneg_left _ (by linarith)` to reduce the goal to its premises.
-
-Rewrite using `[mul_comm m (m - 1)]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hB1 (Nat.sub_le m 1)) (by positivity)`. Establish `hfirst : B * (1 + Y) ^ m ≤ K * B ^ m * (1 + Y) ^ m`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Break down `Nat.eq_zero_or_pos m with h0 | hpos` into its components or cases.
-
-Substitute `h0` using the available equality. Rewrite using `[hB, Finset.univ_eq_empty, Finset.sum_empty, add_zero, pow_zero, mul_one]`. Conclude with `hK1`. Combine the equalities or inequalities in the displayed calculation. Establish `hI0 : 0 ≤ K * (B * (1 + Y) ^ m) ^ (m - 1)` using `by positivity`.
-
-Conclude with `⟨(mx_le l _ hEB hl_ent).trans hfirst, (mx_le u' _ hEB hu_ent).trans hfirst, (mx_le _ _ hI0 hinvl).trans hpow, (mx_le _ _ hI0 hinvu).trans hpow⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem monomial_factorization_bound : C2.MonomialFactorizationBound := by
   intro m P hP

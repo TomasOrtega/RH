@@ -22,7 +22,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.TensExists
 
 /- English proof (translation)
-Unfold `n1`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun i _ => Int.natAbs_add_le _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l1_add_le {n : ℕ} (x y : Fin n → ℤ) : n1 (x + y) ≤ n1 x + n1 y := by
   unfold n1
@@ -30,7 +30,7 @@ theorem l1_add_le {n : ℕ} (x y : Fin n → ℤ) : n1 (x + y) ≤ n1 x + n1 y :
   exact Finset.sum_le_sum fun i _ => Int.natAbs_add_le _ _
 
 /- English proof (translation)
-Unfold `n1`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun i _ => Int.natAbs_sub_le _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l1_sub_le {n : ℕ} (x y : Fin n → ℤ) : n1 (x - y) ≤ n1 x + n1 y := by
   unfold n1
@@ -38,7 +38,7 @@ theorem l1_sub_le {n : ℕ} (x y : Fin n → ℤ) : n1 (x - y) ≤ n1 x + n1 y :
   exact Finset.sum_le_sum fun i _ => Int.natAbs_sub_le _ _
 
 /- English proof (translation)
-Unfold `n1 eZ`. Establish `: ∀ i : Fin n, (if i ∈ I then (1 : ℤ) else 0).natAbs = if i ∈ I then 1 else 0`. Apply the tactic sequence `intro i; split_ifs <;> rfl`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem n1_eZ_eq_card {n : ℕ} (I : Finset (Fin n)) : n1 (eZ I) = I.card := by
   unfold n1 eZ
@@ -47,7 +47,7 @@ theorem n1_eZ_eq_card {n : ℕ} (I : Finset (Fin n)) : n1 (eZ I) = I.card := by
   simp [this]
 
 /- English proof (translation)
-Unfold `n1`. Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -59,9 +59,9 @@ theorem l1_single {n : ℕ} (s : Fin n) : n1 (Pi.single s (1 : ℤ)) = 1 := by
   · simp
 
 /- English proof (translation)
-Introduce `I J hIJ`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a`. Establish `h` using `congrFun hIJ a`. Simplify using `only [addSet, add_right_inj] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h1 : a ∈ I.1 <;> by_cases h2 : a ∈ J.1 <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem addSet_inj {n l : ℕ} (mu : Fin n → ℝ) : Function.Injective (fun I : Sub n l => addSet mu I.1) := by
   intro I J hIJ
@@ -72,7 +72,7 @@ theorem addSet_inj {n l : ℕ} (mu : Fin n → ℝ) : Function.Injective (fun I 
   by_cases h1 : a ∈ I.1 <;> by_cases h2 : a ∈ J.1 <;> simp_all
 
 /- English proof (translation)
-Introduce `s t hst`. Assume the negation of the conclusion as `hne`. Establish `h` using `congrFun hst s`. Simplify using `[Pi.single_apply, hne] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sub_single_inj {n : ℕ} (mu : Fin n → ℝ) :
     Function.Injective (fun s : Fin n => mu - (Pi.single s 1 : Fin n → ℝ)) := by
@@ -82,21 +82,21 @@ theorem sub_single_inj {n : ℕ} (mu : Fin n → ℝ) :
   simp [Pi.single_apply, hne] at h
 
 /- English proof (translation)
-Introduce `hH k r lam u b bv ga h q0 R hN hF ν`. Establish `hZ : ZuckG` using `hH.2.2.2.2.1`. Establish `hnum` using `(GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN).2 ν`. Prove the components needed by the constructor for the conclusion. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : n1 ν ≤ q0` using `by omega`. Establish `hR` using `hF ν h0`. Establish `hI : ∀ I : Sub (2 * r + k + 1) l, (R (ν + eZ I.1)).IsDG (PI.BesselPeriodGGP.eps48 k r) (addSet (fun a => lam a + (ν a : ℝ)) I.1)`. Introduce `I`. Establish `h1 : n1 (ν + eZ I.1) ≤ q0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `l1_add_le ν (eZ I.1)` as an intermediate fact. Rewrite `this` using `[n1_eZ_eq_card, I.2]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `hF _ h1`. Establish `e : (fun a => lam a + (((ν + eZ I.1) a : ℤ) : ℝ)) = addSet (fun a => lam a + (ν a : ℝ)) I.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [addSet, eZ, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Take `⟨io, pr, hT⟩` from `(hZ k r _ lam q0 R hF ν).1 l hl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.tensor_decomposition_injective_parameters hH k r _ _ _ _ l _ _ io pr _ _ _ hR hI (addSet_inj _) (GlobalTheory.T.isFRep_exteriorPower_standardRep k r l) hT`. Introduce `hl`. Establish `h0 : n1 ν ≤ q0` using `by omega`. Establish `hR` using `hF ν h0`. Establish `hI : ∀ s : Fin (2 * r + k + 1), (R (ν - Pi.single s 1)).IsDG (PI.BesselPeriodGGP.eps48 k r) ((fun a => lam a + (ν a : ℝ)) - Pi.single s 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `h1 : n1 (ν - Pi.single s 1) ≤ q0`. Use `l1_sub_le ν (Pi.single s 1)` as an intermediate fact. Rewrite `this` using `[l1_single]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2` using `hF _ h1`. Establish `e : (fun a => lam a + (((ν - Pi.single s 1 : Fin (2 * r + k + 1) → ℤ) a : ℤ) : ℝ)) = (fun a => lam a + (ν a : ℝ)) - Pi.single s 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Take `⟨io, pr, hT⟩` from `(hZ k r _ lam q0 R hF ν).2 hl`. Conclude with `GlobalTheory.T.tensor_decomposition_injective_parameters hH k r _ _ _ _ 1 _ _ io pr _ _ _ hR hI (sub_single_inj _) (GlobalTheory.T.isFRep_dual_standard_unitaryRep k r) hT`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tens_exists : HypsG → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r), Num k r lam u b bv ga h q0 → IsFamG lam q0 R → ∀ ν, (∀ l, n1 ν + l ≤ q0 → ∃ io pr ep, TensH (cmp l) (cmp l (Formalism.QuantumDeterminants.Hpk k r)) (R ν) (fun I : Sub (2 * r + k + 1) l => R (ν + eZ I.1)) io pr ep) ∧ (n1 ν + 1 ≤ q0 → ∃ io pr ep, TensH dualM (Formalism.QuantumDeterminants.Hpk k r) (R ν) (fun s => R (ν - Pi.single s 1)) io pr ep) := by
   intro hH k r lam u b bv ga h q0 R hN hF ν

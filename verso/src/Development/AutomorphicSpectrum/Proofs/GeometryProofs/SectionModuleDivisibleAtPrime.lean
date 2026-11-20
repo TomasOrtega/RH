@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.KeyDeg.FibDiv
 
 /- English proof (translation)
-Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Establish `hr : _root_.IsReduced ((R ⧸ m) ⊗[R] A)` using `isReduced_of_smooth_alg (R ⧸ m) _`. Establish `hr' : _root_.IsReduced (A ⊗[R] (R ⧸ m))` using `isReduced_of_injective (Algebra.TensorProduct.comm R A (R ⧸ m)).toRingEquiv.toRingHom (Algebra.TensorProduct.comm R A (R ⧸ m)).injective`. Establish `hq : _root_.IsReduced (A ⧸ m.map (algebraMap R A))` using `isReduced_of_injective (Algebra.TensorProduct.quotIdealMapEquivTensorQuot A m).toRingEquiv.toRingHom (Algebra.TensorProduct.quotIdealMapEquivTensorQuot A m).injective`. Establish `hrad : (m.map (algebraMap R A)).IsRadical` using `(Ideal.isRadical_iff_quotient_reduced _).2 hq`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hrad ?_` and prove the remaining obligations. Rewrite using `[Ideal.radical_eq_sInf]`. Use `Ideal.mem_sInf.2 ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP, hPp⟩`. Conclude with `h P hPp hP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_map_of_mem_primes {R A : Type} [CommRing R] [CommRing A] [Algebra R A] [Algebra.Smooth R A]
     (m : Ideal R) [hm : m.IsMaximal] (a : A)
@@ -42,11 +42,9 @@ theorem mem_map_of_mem_primes {R A : Type} [CommRing R] [CommRing A] [Algebra R 
   exact h P hPp hP
 
 /- English proof (translation)
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨π, hπ, rfl⟩` from `hx`. Rewrite using `[← map_mul]`. Conclude with `map_dvd _ (h π hπ)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [MulZeroClass.mul_zero]`. Conclude with `dvd_zero _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `dvd_add hx hy`. Consider the case `smul t x _ hx => rw [smul_eq_mul, mul_left_comm]`.
-
-Conclude with `hx.mul_left _`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dvd_mul_of_mem_map {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (m : Ideal R) {c e : R}
     (h : ∀ π ∈ m, e ∣ c * π) {a : A} (ha : a ∈ m.map (algebraMap R A)) :
@@ -61,7 +59,7 @@ theorem dvd_mul_of_mem_map {R A : Type} [CommRing R] [CommRing A] [Algebra R A] 
   | smul t x _ hx => rw [smul_eq_mul, mul_left_comm]; exact hx.mul_left _
 
 /- English proof (translation)
-Establish `e : X.basicOpen ((X.presheaf.map (homOfLE h).op).hom f) = V ⊓ X.basicOpen f` using `Scheme.basicOpen_res X f (homOfLE h).op`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_basicOpen_map {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U)) (y : X) :
     y ∈ X.basicOpen ((X.presheaf.map (homOfLE h).op).hom f) ↔ y ∈ V ∧ y ∈ X.basicOpen f := by
@@ -73,7 +71,7 @@ theorem mem_basicOpen_map {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (f : Γ
 variable {R : Type} [CommRing R] {X : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hmem : p x ∈ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)`. Establish `e` using `basicOpen_eq_of_affine (R := CommRingCat.of R) r`. Conclude with `(congrArg (fun U : (Sp R).Opens => p x ∈ U) e).mpr hx`. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_top_of_notMem (p : X ⟶ Sp R) (x : X) {r : R} (hx : r ∉ (p x).asIdeal) :
     x ∈ X.basicOpen ((p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) := by
@@ -84,7 +82,7 @@ theorem mem_basicOpen_top_of_notMem (p : X ⟶ Sp R) (x : X) {r : R} (hx : r ∉
   exact hmem
 
 /- English proof (translation)
-Establish `hu` using `(Scheme.mem_basicOpen X ((p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) x (show x ∈ p ⁻¹ᵁ ⊤ from trivial)).1 (mem_basicOpen_top_of_notMem p x hx)`. Rewrite using `[cst, gs_eq p x ⊤ (show p x ∈ (⊤ : (Sp R).Opens) from trivial)]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_cst_of_notMem (p : X ⟶ Sp R) (x : X) {r : R} (hx : r ∉ (p x).asIdeal) : IsUnit (cst p x r) := by
   have hu := (Scheme.mem_basicOpen X ((p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) x
@@ -93,34 +91,30 @@ theorem isUnit_cst_of_notMem (p : X ⟶ Sp R) (x : X) {r : R} (hx : r ∉ (p x).
   exact hu
 
 /- English proof (translation)
-Simplify using `only [cst, map_mul]`. Conclude with `gs_mul p x ⊤ trivial _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cst_mul (p : X ⟶ Sp R) (x : X) (a b : R) : cst p x (a * b) = cst p x a * cst p x b := by
   simp only [cst, map_mul]
   exact gs_mul p x ⊤ trivial _ _
 
 /- English proof (translation)
-Introduce `R _ _ X p _ M b hb u hu c e he hdiv`. Establish `key : ∀ j, ∀ x ∈ M.U j, cst p x e ∣ gs (𝟙 X) x (M.U j) (LB.Sec.f (c • u : SecMod p M) j)`. Introduce `j x hx`. Rewrite using `[smul_f, gs_mul _ x _ hx, gs_constFn p _ _ x hx, Category.id_comp]`. Distinguish the cases in `hxb : b.asIdeal ≤ (p x).asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨V, hV, hxV, hVU⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := M.U j) (x := x) hx`. Establish `hle : V ≤ M.U j` using `hVU`. Establish `sm` using `HasRingHomProperty.appLE @Smooth p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`. Establish `sm' : RingHom.Smooth ((p.appLE ⊤ V le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)` using `RingHom.Smooth.comp (RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.bijective) sm`. Use `letI := ((p.appLE ⊤ V le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `: Algebra.Smooth R Γ(X, V)` using `sm'`. Establish `hconst : ∀ r : R, algebraMap R Γ(X, V) r = constFn p V r` using `fun _ => rfl`. Establish `hmem : (X.presheaf.map (homOfLE hle).op).hom (LB.Sec.f u j) ∈ b.asIdeal.map (algebraMap R Γ(X, V))`. Use `hb` as an intermediate fact. Use `mem_map_of_mem_primes b.asIdeal _ fun P hP hbP => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `y : X` to `hV.fromSpec (⟨P, hP⟩ : PrimeSpectrum Γ(X, V))`. Establish `hbo : ∀ f : Γ(X, V), y ∈ X.basicOpen f ↔ f ∉ P` using `fun f => by`. Establish `e` using `hV.fromSpec_preimage_basicOpen f`. Establish `e'` using `congrArg (fun O : (Spec Γ(X, V)).Opens => (⟨P, hP⟩ : PrimeSpectrum Γ(X, V)) ∈ O) e`. Conclude with `iff_of_eq e'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyV : y ∈ V`. Establish `h4 : y ∈ Set.range hV.fromSpec` using `⟨_, rfl⟩`. Rewrite `h4` using `[hV.range_fromSpec]`. Conclude with `h4`. Establish `hcl : p y = b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hle' : b.asIdeal ≤ (p y).asIdeal` using `fun π hπ => by`. Assume the negation of the conclusion as `hn`. Establish `h2` using `mem_basicOpen_top_of_notMem p y hn`. Establish `h3 : y ∈ X.basicOpen (constFn p V π)`. Establish `e : constFn p V π = (X.presheaf.map (homOfLE le_top).op).hom ((p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom π))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[e]`. Conclude with `(mem_basicOpen_map le_top _ y).2 ⟨hyV, h2⟩`. Conclude with `(hbo _).1 h3 (hbP (Ideal.mem_map_of_mem _ hπ))`. Conclude with `PrimeSpectrum.ext (hb.eq_of_le (p y).isPrime.ne_top hle').symm`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hbo _).2 hn`. Conclude with `hu y hcl (TopologicalSpace.Opens.mem_iSup.2 ⟨j, ((mem_basicOpen_map hle _ y).1 h1).2⟩)`. Take `⟨t, ht⟩` from `dvd_mul_of_mem_map b.asIdeal hdiv hmem`. Use `⟨gs (𝟙 X) x V t, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (gs (𝟙 X) x V) ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e'` using `[hconst, hconst, gs_mul _ x _ hxV, gs_mul _ x _ hxV, gs_constFn p _ _ x hxV, gs_constFn p _ _ x hxV, gs_res _ x _ hxV, Category.id_comp]`. Conclude with `e'`. Take `⟨π, hπ, hπx⟩` from `Set.not_subset.1 hxb`. Establish `hunit` using `isUnit_cst_of_notMem p x hπx`. Take `⟨t, ht⟩` from `hdiv π hπ`.
-
-Establish `h1 : cst p x e ∣ cst p x c * cst p x π`. Rewrite using `[← cst_mul, ht, cst_mul]`. Conclude with `dvd_mul_right _ _`. Conclude with `((hunit.dvd_mul_right).1 h1).mul_right _`. Take `⟨s', hs'⟩` from `exists_div_sec p he (show LB.Sec M from (c • u : SecMod p M)) key`.
-
-Conclude with `⟨s', SecMod.ext fun j => (hs' j).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_smul : ∀ (R : Type) [CommRing R] [IsDomain R] (X : Scheme.{0}) (p : X ⟶ Sp R) [Smooth p] (M : LB X) (b : Sp R), b.asIdeal.IsMaximal → ∀ u : SecMod p M, (∀ y : X, p y = b → y ∉ Out.nonzeroLocus (M := M) u) → ∀ c e : R, e ≠ 0 → (∀ π ∈ b.asIdeal, e ∣ c * π) → ∃ u' : SecMod p M, e • u' = c • u := by
   intro R _ _ X p _ M b hb u hu c e he hdiv

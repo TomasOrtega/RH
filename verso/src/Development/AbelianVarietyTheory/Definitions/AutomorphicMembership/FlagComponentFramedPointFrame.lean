@@ -34,17 +34,17 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 open MonObj in
 
 /- English proof (translation)
-Establish `hb : ∀ a : R, spMap (epsMul a) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R))` using `fun a => by`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsMul]`. Establish `h1 : spMap (epsMul (1 : R)) = 𝟙 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsMul]`. Establish `h0 : spMap (epsMul (0 : R)) = spMap (algebraMap R (DualNumber R)) ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom`. Apply the tactic sequence `have e : epsMul (0 : R) = (algebraMap R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R).toRingHom := RingHom.ext fun z => by ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← Spec.map_comp, e]`. Both sides reduce to the same expression. Set `u : Fin m → (tEpsG x ⟶ t.G)` to `fun i => Over.homMk (spMap (epsMul ((Pi.single j 1 : Fin m → R) i)) ≫ v i) (by`. Rewrite using `[Category.assoc, (hv i).1, ← Category.assoc, hb]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ∀ i, i ≠ j → u i = 1` using `fun i hi => by`. Set `p : tEpsG x ⟶ Over.mk x` to `Over.homMk (spMap (algebraMap R (DualNumber R))) rfl`. Rewrite using `[← MonObj.comp_one p]`. Use `ext`. Use `show spMap (epsMul ((Pi.single j 1 : Fin m → R) i)) ≫ v i = _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Pi.single_eq_of_ne hi, h0, Category.assoc, (hv i).2]`. Both sides reduce to the same expression. Use `⟨u, fun i => rfl, ?_⟩` and prove the remaining obligations. Establish `: (List.ofFn u).prod = u j`. Rewrite using `[List.ofFn_eq_map, List.prod_map_eq_pow_single j u fun i hi _ => hu i hi, List.count_eq_one_of_mem (List.nodup_finRange m) (List.mem_finRange j), pow_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `show spMap (epsMul ((Pi.single j 1 : Fin m → R) j)) ≫ v j = _`. Rewrite using `[Pi.single_eq_same, h1, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem isCombAtG_single {X0 : Scheme.{0}} (t : SAB H X0) {R : Type} [CommRing R] (x : Sp R ⟶ X0) {m : ℕ}
     {v : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} (hv : ∀ j, IsTanAtG t x (v j)) (j : Fin m) :
@@ -83,9 +83,9 @@ theorem isCombAtG_single {X0 : Scheme.{0}} (t : SAB H X0) {R : Type} [CommRing R
   rw [Pi.single_eq_same, h1, Category.id_comp]
 
 /- English proof (translation)
-Establish `h1 : spMap (dualMap (RingHom.id R)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`. Establish `h2 : spMap (RingHom.id R) = 𝟙 _` using `Spec.map_id _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `⟨by rw [h2, Category.id_comp], rfl, fun τ i => ⟨Pi.single i 1, by simp, fun k hk => Pi.single_eq_of_ne hk.ne' _, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [h1, Category.id_comp]`. Conclude with `isCombAtG_single Z.t x (f.tan τ) i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EigFrame.tri_refl {Z : Model Xo c β} {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X}
     (f : EigFrame Z φ x) : f.Tri (RingHom.id R) f 1 := by
@@ -152,7 +152,7 @@ def LEx : (Ix Dw → ℤ) →+ C.Y.Dv where
 def Lw (la : GlobalTheory.AllWt.Weight Dw) : C.Y.Dv := C.LEx (GlobalTheory.AllWt.exOf Dw la 0)
 
 /- English proof (translation)
-Establish `h : GlobalTheory.AllWt.exOf Dw 0 0 = 0`. Apply the tactic sequence `rw [GlobalTheory.AllWt.exOf, GlobalTheory.AllWt.wtOf_zero]; funext i; cases i <;> rfl`. Rewrite using `[Lw, h, map_zero]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lw_zero : C.Lw 0 = 0 := by
   have h : GlobalTheory.AllWt.exOf Dw 0 0 = 0 := by
@@ -160,7 +160,7 @@ theorem Lw_zero : C.Lw 0 = 0 := by
   rw [Lw, h, map_zero]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.AllWt.exOf_add la la' 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[Lw, h, map_add, Lw, Lw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lw_add (la la' : GlobalTheory.AllWt.Weight Dw) : C.Lw (la + la') = C.Lw la + C.Lw la' := by
   have h := GlobalTheory.AllWt.exOf_add la la' 0 0
@@ -168,7 +168,7 @@ theorem Lw_add (la la' : GlobalTheory.AllWt.Weight Dw) : C.Lw (la + la') = C.Lw 
   rw [Lw, h, map_add, Lw, Lw]
 
 /- English proof (translation)
-Simplify using `only [LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem LEx_congr {a b : Ix Dw → ℤ} (h : ∀ x, a (some x) = b (some x)) : C.LEx a = C.LEx b := by
   simp only [LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk, h]
@@ -176,7 +176,7 @@ theorem LEx_congr {a b : Ix Dw → ℤ} (h : ∀ x, a (some x) = b (some x)) : C
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[Finset.sum_eq_single x (fun b _ hb => by rw [Pi.single_eq_of_ne (by simpa using hb), zero_smul]) (by simp), Pi.single_eq_same, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem LEx_single (x : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) : C.LEx (Pi.single (some x) 1) = -C.gr x.1 x.2 := by
   simp only [LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk]
@@ -211,9 +211,9 @@ def exKey (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Ix Dw �
   fun i => (ex Dw a n i : ℤ) + ((n / 2 : ℕ) : ℤ) * keyEx Dw i
 
 /- English proof (translation)
-Establish `h : GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) (m : ℤ) = GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ) + (m : ℤ)) 0`. Use function extensionality and compare the values at `τ j`. Simplify using `only [GlobalTheory.AllWt.weightOf]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[h, GlobalTheory.AllWt.exOf_weightOf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> simp [exKey, keyEx, ex, exZ]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exKey_two_mul (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ) :
     exKey Dw a (2 * m) = GlobalTheory.AllWt.exOf Dw (GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) m) 0 := by
@@ -228,18 +228,18 @@ theorem exKey_two_mul (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[exKey_two_mul, FlagCpt.Lw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem FlagCpt.LEx_exKey {Z : Model Xo c β} {e : F ≃+* c.F} (C : FlagCpt Z e) (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ) :
     C.LEx (exKey Dw a (2 * m)) = C.Lw (GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) m) := by
   rw [exKey_two_mul, FlagCpt.Lw]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Establish `h : (fun i => ((0 : ℕ) : ℤ) * keyEx Dw i) = 0` using `by funext i; simp`. Rewrite using `[pow_zero, h]`. Conclude with `GlobalTheory.AllWt.one_mem_secZ`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ m ih`. Establish `h : (fun i => ((m + 1 : ℕ) : ℤ) * keyEx Dw i) = (fun i => (m : ℤ) * keyEx Dw i) + keyEx Dw`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Use `push_cast`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_succ, h]`. Conclude with `GlobalTheory.AllWt.mul_mem_secZ ih κ.mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KeySec.pow_mem (κ : KeySec Xo c) (m : ℕ) :
     (κ.ρ : Rul Xo c) ^ m ∈ GlobalTheory.AllWt.secZ Xo c (fun i => (m : ℤ) * keyEx Dw i) := by
@@ -253,7 +253,7 @@ theorem KeySec.pow_mem (κ : KeySec Xo c) (m : ℕ) :
     rw [pow_succ, h]; exact GlobalTheory.AllWt.mul_mem_secZ ih κ.mem
 
 /- English proof (translation)
-Rewrite `hf` using `[← GlobalTheory.AllWt.secZ_nat]`. Conclude with `GlobalTheory.AllWt.mul_mem_secZ hf (κ.pow_mem (n / 2))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KeySec.mul_pow_mem (κ : KeySec Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
     f * (κ.ρ : Rul Xo c) ^ (n / 2) ∈ GlobalTheory.AllWt.secZ Xo c (exKey Dw a n) := by

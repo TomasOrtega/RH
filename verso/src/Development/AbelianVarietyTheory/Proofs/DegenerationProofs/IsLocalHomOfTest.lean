@@ -15,9 +15,9 @@ namespace GlobalTheory.ZH.ZHPre
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖(jV x : PadicAlgCl p)‖ = 1` using `le_antisymm ((mem_OO_iff _).1 (jV x).2) (not_lt.1 fun h => (not_isUnit_OO_iff _).2 h hx)`. Establish `h0 : algebraMap u.V (FractionRing u.V) x ≠ 0` using `fun h => by`. Rewrite `h1` using `[hj, h, map_zero, norm_zero]`. Conclude with `zero_ne_one h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `(u.norm_le (algebraMap u.V (FractionRing u.V) x)⁻¹).1 (by`. Rewrite using `[map_inv₀, ← hj, norm_inv, h1, inv_one])`. Use `IsUnit.of_mul_eq_one v (IsFractionRing.injective u.V (FractionRing u.V) ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hv, mul_inv_cancel₀ h0, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_test {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀)
     (jV : u.V →+* OO p)

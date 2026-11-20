@@ -24,7 +24,7 @@ def ratPts (D : D7) (N : ℕ) : Subgroup (GA D N) where
     exact ⟨by simpa using h₂, by simpa using h₁⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_entry_mem (D : D7) {N : ℕ} {A B : Matrix (Fin N) (Fin N) (AE D)}
     (hA : ∀ i j, A i j ∈ OhE D) (hB : ∀ i j, B i j ∈ OhE D) (i j : Fin N) : (A * B) i j ∈ OhE D := by
@@ -61,9 +61,9 @@ def idHat (D : D7) (𝔮 : Ideal (𝓞 D.host.E)) : AddSubgroup (AE D) :=
   AddSubgroup.closure {y | ∃ b ∈ 𝔮, ∃ s ∈ OhE D, y = inc D (b : D.host.E) * s}
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y h`. Take `⟨b, hb, s, hs, rfl⟩` from `h`. Conclude with `AddSubgroup.subset_closure ⟨b, hb, s * r, Subring.mul_mem _ hs hr, mul_assoc _ _ _⟩`. Consider the case `zero => rw [zero_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `AddSubgroup.zero_mem _`. Consider the case `add x y _ _ h₁ h₂ => rw [add_mul]`. Conclude with `AddSubgroup.add_mem _ h₁ h₂`. Consider the case `neg x _ h => rw [neg_mul]`. Conclude with `AddSubgroup.neg_mem _ h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idHat_mul (D : D7) {𝔮 : Ideal (𝓞 D.host.E)} {y r : AE D} (hy : y ∈ idHat D 𝔮) (hr : r ∈ OhE D) :
     y * r ∈ idHat D 𝔮 := by
@@ -80,9 +80,9 @@ def BlockMod (D : D7) {N : ℕ} (𝔮 : Ideal (𝓞 D.host.E)) (I : Finset (Fin 
   ∀ i ∉ I, ∀ j ∈ I, A i j ∈ idHat D 𝔮
 
 /- English proof (translation)
-Introduce `i hi j hj`. Rewrite using `[Matrix.mul_apply]`. Use `AddSubgroup.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l ∈ I`. Conclude with `idHat_mul D (h₁ i hi l hl) (hB l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Conclude with `idHat_mul D (h₂ l hl j hj) (hA i l)`.
+A detailed English derivation is pending.
 -/
 theorem BlockMod.mul (D : D7) {N : ℕ} {𝔮 : Ideal (𝓞 D.host.E)} {I : Finset (Fin N)}
     {A B : Matrix (Fin N) (Fin N) (AE D)} (hA : ∀ i j, A i j ∈ OhE D) (hB : ∀ i j, B i j ∈ OhE D)
@@ -95,7 +95,7 @@ theorem BlockMod.mul (D : D7) {N : ℕ} {𝔮 : Ideal (𝓞 D.host.E)} {I : Fins
   · rw [mul_comm]; exact idHat_mul D (h₂ l hl j hj) (hA i l)
 
 /- English proof (translation)
-Introduce `i hi j hj`. Establish `: i ≠ j` using `fun h => hi (h ▸ hj)`. Rewrite using `[Matrix.one_apply_ne this]`. Conclude with `AddSubgroup.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlockMod.one (D : D7) {N : ℕ} (𝔮 : Ideal (𝓞 D.host.E)) (I : Finset (Fin N)) :
     BlockMod D 𝔮 I 1 := by
@@ -293,15 +293,15 @@ def IsStandard : Prop :=
 end PairDatum
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelJ_le (D : D7) {N : ℕ} (𝔮 : Ideal (𝓞 D.host.E)) (I : Finset (Fin N)) :
     levelJ D 𝔮 I ≤ intPts D N := fun _ h => h.1
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ OhE D, y ∈ idHat D ⊤`. Introduce `y hy`. Conclude with `AddSubgroup.subset_closure ⟨1, Submodule.mem_top, y, hy, by simp⟩`. Use `le_antisymm (levelJ_le D _ I) fun h hh => ⟨hh, ?_, ?_⟩` and prove the remaining obligations. Introduce `i _ j _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key _ (hh i j).1`. Introduce `i _ j _`. Conclude with `key _ (hh i j).2`.
+A detailed English derivation is pending.
 -/
 theorem levelJ_top (D : D7) {N : ℕ} (I : Finset (Fin N)) : levelJ D ⊤ I = intPts D N := by
   have key : ∀ y ∈ OhE D, y ∈ idHat D ⊤ := by
@@ -312,7 +312,7 @@ theorem levelJ_top (D : D7) {N : ℕ} (I : Finset (Fin N)) : levelJ D ⊤ I = in
   · intro i _ j _; exact key _ (hh i j).2
 
 /- English proof (translation)
-Unfold `gNormSq`. Use `Finset.sum_eq_single _ (fun T _ hT => absurd ?_ hT) (fun h => absurd (Finset.mem_univ _) h)` and prove the remaining obligations. Use function extensionality and compare the values at `τ k`. Conclude with `k.elim0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 example (D : D7) {a d : ℕ} (l : Tup D a d (fun _ => 0) → ℂ) :
     gNormSq D l = ‖l (fun _ k => k.elim0)‖ ^ 2 := by

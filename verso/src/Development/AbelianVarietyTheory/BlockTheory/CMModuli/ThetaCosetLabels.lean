@@ -65,7 +65,7 @@ noncomputable def ThObj.ev (X : ThObj g M I ζ s) (t : EndTerm I) : X.P.A ⟶ X.
     (fun _ _ f f' => f' ≫ f) t
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (X : ThObj g M I ζ s) (i : I) (t t' : EndTerm I) :
     X.ev (.var i) = X.endo i ∧ X.ev .one = 𝟙 _ ∧ X.ev (.add t t') = X.ev t * X.ev t' ∧ X.ev (.neg t) = (X.ev t)⁻¹ ∧
@@ -149,7 +149,7 @@ def CritCond (n N' : ℕ) (V : Type) {K : Type} [CommRing V] [Field K] [Algebra 
   ∃ (c : Kˣ) (v : Lab g (N' ^ 2) → V), (∀ a, algebraMap V K (v a) = c * w a) ∧ (∃ a, IsUnit (v a)) ∧ CosetUnit n N' v
 
 /- English proof (translation)
-Introduce `c` and use `by obtain ⟨a, ha, hu⟩ := h c exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a, ha, rfl⟩) hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CosetUnit.cosetCond {n N' : ℕ} {R : Type} [CommRing R] {v : Lab g (N' ^ 2) → R} (h : CosetUnit n N' v) :
     CosetCond n N' v := fun c => by
@@ -157,7 +157,7 @@ theorem CosetUnit.cosetCond {n N' : ℕ} {R : Type} [CommRing R] {v : Lab g (N' 
   exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a, ha, rfl⟩) hu
 
 /- English proof (translation)
-Introduce `c` and use `by by_contra hc have : Ideal.span (v '' {a | SameCoset n N' a c}) ≤ IsLocalRing.maximalIdeal R := by rw [Ideal.span_le] rintro _ ⟨a, ha, rfl⟩ exact fun hu => hc ⟨a, ha, hu⟩ rw [h c] at this exact (IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.1 this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CosetCond.cosetUnit {n N' : ℕ} {R : Type} [CommRing R] [IsLocalRing R] {v : Lab g (N' ^ 2) → R}
     (h : CosetCond n N' v) : CosetUnit n N' v := fun c => by
@@ -258,7 +258,7 @@ def MMFamilyExists (n : ℕ) (C : CClass g N' I ζ e₀) : Prop :=
 end Family
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c => ⟨c, by simp [SameCoset], isUnit_one⟩, fun h => by obtain ⟨_, _, hu⟩ := h 0; exact not_isUnit_zero hu⟩`.
+Supply the required witnesses or components.
 -/
 example (g n N' : ℕ) : CosetUnit (g := g) n N' (fun _ => (1 : ℚ)) ∧ ¬ CosetUnit (g := g) n N' (fun _ => (0 : ℚ)) :=
   ⟨fun c => ⟨c, by simp [SameCoset], isUnit_one⟩, fun h => by obtain ⟨_, _, hu⟩ := h 0; exact not_isUnit_zero hu⟩

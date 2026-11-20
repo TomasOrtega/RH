@@ -17,7 +17,7 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.ThK.AdaptEv
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Rewrite using `[← eq.symm.sum_comp, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dotProduct_split_blocks {κ ι κ₁ R : Type} [Fintype κ] [Fintype ι] [Fintype κ₁] [CommRing R]
     (eq : κ ≃ ι ⊕ κ₁) (u v : κ → R) :
@@ -27,9 +27,9 @@ theorem dotProduct_split_blocks {κ ι κ₁ R : Type} [Fintype κ] [Fintype ι]
   rw [← eq.symm.sum_comp, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Introduce `hα hβ`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, prodVac]`. Rewrite using `[dotProduct_split_blocks eq x, dotProduct_split_blocks eq (α + ext0 eq a)]`. Simplify using `only [Pi.add_apply, ext0_inl, ext0_inr, hα, hβ, add_zero, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (fun i => x (eq.symm (Sum.inl i)) + α (eq.symm (Sum.inl i))) = (fun i => x (eq.symm (Sum.inl i))) + (fun i => α (eq.symm (Sum.inl i)))` using `rfl`. Establish `h2 : (fun j => x (eq.symm (Sum.inr j)) + a j) = (fun j => x (eq.symm (Sum.inr j))) + a` using `rfl`. Establish `e : (fun i => x (eq.symm (Sum.inl i))) ⬝ᵥ (fun i => β (eq.symm (Sum.inl i))) + (fun j => x (eq.symm (Sum.inr j))) ⬝ᵥ b + ⅟(2 : R) * ((fun i => α (eq.symm (Sum.inl i))) ⬝ᵥ (fun i => β (eq.symm (Sum.inl i))) + a ⬝ᵥ b) = ((fun i => x (eq.symm (Sum.inl i))) ⬝ᵥ (fun i => β (eq.symm (S …` using `by ring`. Rewrite using `[h1, h2, e, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schroedinger_ext_zero_product_vacuum {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ ι κ₁ : Type} [Fintype κ] [Fintype ι] [Fintype κ₁]
     (eq : κ ≃ ι ⊕ κ₁) (α β : κ → R) (a b : κ₁ → R) (A : (ι → R) → ℂ) (φ : (κ₁ → R) → ℂ) :

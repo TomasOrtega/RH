@@ -21,7 +21,7 @@ def dval {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (U : X.Opens) (h : ⊤
   (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((v.appLE U ⊤ h).hom f)
 
 /- English proof (translation)
-Simplify using `only [dval, ← Scheme.Hom.appLE_comp_appLE v t U V ⊤ e hV, CommRingCat.hom_comp, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dval_comp {X Y : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (t : X ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ (v ≫ t) ⁻¹ᵁ U) (V : X.Opens) (e : V ≤ t ⁻¹ᵁ U) (hV : ⊤ ≤ v ⁻¹ᵁ V) (f : Γ(Y, U)) :
@@ -29,7 +29,7 @@ theorem dval_comp {X Y : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (t : X ⟶ 
   simp only [dval, ← Scheme.Hom.appLE_comp_appLE v t U V ⊤ e hV, CommRingCat.hom_comp, RingHom.comp_apply]
 
 /- English proof (translation)
-Establish `key` using `congrArg (fun k => k.hom a) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at key`. Rewrite using `[← key]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ΓSpecIso_appLE_spMap_top {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (e : (⊤ : (Sp S).Opens) ≤ spMap φ ⁻¹ᵁ ⊤)
     (a : Γ(Sp R, ⊤)) :
@@ -41,7 +41,7 @@ private theorem ΓSpecIso_appLE_spMap_top {R S : Type} [CommRing R] [CommRing S]
   rfl
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v) ⁻¹ᵁ U` using `fun x _ => h (Set.mem_univ ((spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).base x))`. Rewrite using `[valAt', dif_pos h', valAt, dval, ← Scheme.Hom.appLE_comp_appLE _ v U ⊤ ⊤ h (fun _ _ => trivial), CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `(ΓSpecIso_appLE_spMap_top (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_dval {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (U : X.Opens) (h : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)) :
     (dval v U h f).fst = valAt' (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v) U f := by
@@ -52,9 +52,9 @@ theorem fst_dval {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (U : X.Opens) 
   exact (ΓSpecIso_appLE_spMap_top (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom _ _).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Assume the negation of the conclusion as `hne`. Conclude with `hp.ne_top (Ideal.eq_top_of_isUnit_mem p hx (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (isUnit_iff_ne_zero.2 hne)))`. Introduce `h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsq : x * x = 0`. Apply the tactic sequence `ext <;> simp [h0]`. Conclude with `hp.mem_of_pow_mem 2 (by rw [pow_two, hsq]; exact p.zero_mem)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem mem_prime_dualNumber_iff_fst_eq_zero (p : Ideal (DualNumber ℂ)) (hp : p.IsPrime) (x : DualNumber ℂ) :
     x ∈ p ↔ x.fst = 0 := by
@@ -69,11 +69,9 @@ private theorem mem_prime_dualNumber_iff_fst_eq_zero (p : Ideal (DualNumber ℂ)
     exact hp.mem_of_pow_mem 2 (by rw [pow_two, hsq]; exact p.zero_mem)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv x _`. Conclude with `hv (Set.mem_univ ((spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).base x))`. Introduce `hv y _`. Set `x : ↥(Sp ℂ)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).base x = y`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`. Conclude with `(mem_prime_dualNumber_iff_fst_eq_zero _ (PrimeSpectrum.isPrime _) a).trans (mem_prime_dualNumber_iff_fst_eq_zero _ (show PrimeSpectrum (DualNumber ℂ) from y).isPrime a).symm`. Establish `hx : v.base ((spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).base x) ∈ U` using `hv (Set.mem_univ x)`.
-
-Rewrite `hx` using `[e]`. Conclude with `hx`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_iff_dual {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (U : X.Opens) :
     ⊤ ≤ v ⁻¹ᵁ U ↔ ⊤ ≤ (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v) ⁻¹ᵁ U := by
@@ -92,19 +90,17 @@ theorem top_le_iff_dual {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (U : X.
     exact hx
 
 /- English proof (translation)
-Introduce `_ _` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem top_le_preimage_top' {X Y : Scheme.{0}} (f : X ⟶ Y) : (⊤ : X.Opens) ≤ f ⁻¹ᵁ ⊤ :=
   fun _ _ => trivial
 
 /- English proof (translation)
-Establish `hD : ∀ c : ℂ, dval (v ≫ p) ⊤ (top_le_preimage_top' _) ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c) = algebraMap ℂ (DualNumber ℂ) c`. Introduce `c`. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Rewrite using `[fst_dval, h1, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl, show (𝟙 (Sp ℂ)) = spMap (RingHom.id ℂ) by simp [spMap], valAt', dif_pos (top_le_preimage_top' _), valAt]`. Conclude with `(ΓSpecIso_appLE_spMap_top (RingHom.id ℂ) _ _).trans (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dval_comp v p ⊤ (top_le_preimage_top' _) ⊤ (top_le_preimage_top' _) (top_le_preimage_top' _)]`. Use `(h2 c).trans ?_` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl]`. Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv, ← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `CommRingCat.hom_ext (RingHom.ext fun c => ?_)` and prove the remaining obligations. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Use `(hD c).trans ?_` and prove the remaining obligations. Establish `k` using `ΓSpecIso_appLE_spMap_top (algebraMap ℂ (DualNumber ℂ)) (top_le_preimage_top' _) ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c)`. Rewrite `k` using `[Iso.inv_hom_id_apply]`.
-
-Conclude with `k.symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_eq_spMap {X : Scheme.{0}} (p : X ⟶ Sp ℂ) (v : Sp (DualNumber ℂ) ⟶ X)
     (h1 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v ≫ p = 𝟙 _)
@@ -137,19 +133,19 @@ variable {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (u : HolUnif A
 def tr (a : Fin g → ℂ) : A ⟶ A := (toUnit A ≫ u.ex a) * 𝟙 A
 
 /- English proof (translation)
-Rewrite using `[tr, comp_mul, ← Category.assoc, toUnit_unique (x ≫ toUnit A) (toUnit B), Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_tr {B : Over (Sp ℂ)} (x : B ⟶ A) (a : Fin g → ℂ) : x ≫ tr u a = (toUnit B ≫ u.ex a) * x := by
   rw [tr, comp_mul, ← Category.assoc, toUnit_unique (x ≫ toUnit A) (toUnit B), Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[comp_tr, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp, u.ex_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_tr (a z : Fin g → ℂ) : u.ex z ≫ tr u a = u.ex (a + z) := by
   rw [comp_tr, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp, u.ex_add]
 
 /- English proof (translation)
-Establish `h` using `u.ex_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `_root_.mul_eq_left.mp h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero : u.ex 0 = 1 := by
   have h := u.ex_add 0 0
@@ -157,7 +153,7 @@ theorem ex_zero : u.ex 0 = 1 := by
   exact _root_.mul_eq_left.mp h.symm
 
 /- English proof (translation)
-Rewrite using `[comp_tr, tr, ← _root_.mul_assoc, ← comp_mul, ← u.ex_add, add_neg_cancel, ex_zero, comp_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_neg_tr (a : Fin g → ℂ) : tr u (-a) ≫ tr u a = 𝟙 A := by
   rw [comp_tr, tr, ← _root_.mul_assoc, ← comp_mul, ← u.ex_add, add_neg_cancel, ex_zero, comp_one, _root_.one_mul]
@@ -167,13 +163,13 @@ def DiffAt (v : Sp (DualNumber ℂ) ⟶ A.left) (z w : Fin g → ℂ) : Prop :=
     (dval v U h f).snd = fderiv ℂ (fun z' => valAt' (u.ex z').left U f) z w
 
 /- English proof (translation)
-Establish `nat : ∀ {X Y : Scheme.{0}} (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (V : X.Opens) (e : V ≤ φ ⁻¹ᵁ U) (hx : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(Y, U)), valAt' x V ((φ.appLE U V e).hom f) = valAt' (x ≫ φ) U f`. Introduce `X Y x φ U V e hx f`. Establish `hxφ : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `fun y hy => e (hx hy)`. Rewrite using `[valAt', dif_pos hx, valAt', dif_pos hxφ, valAt, valAt, ← Scheme.Hom.appLE_comp_appLE x φ U V ⊤ e hx, CommRingCat.hom_comp, RingHom.comp_apply]`. Introduce `U h' f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hV : ⊤ ≤ v ⁻¹ᵁ ((TangentAt.tr u a).left ⁻¹ᵁ U)` using `h'`. Rewrite using `[dval_comp v (TangentAt.tr u a).left U h' _ le_rfl hV f, h]`. Establish `hfun : (fun z' => valAt' (u.ex z').left ((TangentAt.tr u a).left ⁻¹ᵁ U) (((TangentAt.tr u a).left.appLE U _ le_rfl).hom f)) = fun z' => valAt' (u.ex (a + z')).left U f`. Use function extensionality and compare the values at `z'`. Distinguish the cases in `hz : ⊤ ≤ (u.ex z').left ⁻¹ᵁ ((TangentAt.tr u a).left ⁻¹ᵁ U)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[nat _ _ _ _ _ hz, ← Over.comp_left, ex_tr]`. Establish `hz' : ¬ ⊤ ≤ (u.ex (a + z')).left ⁻¹ᵁ U`. Rewrite using `[← ex_tr, Over.comp_left]`. Conclude with `hz`. Rewrite using `[valAt', dif_neg hz, valAt', dif_neg hz']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `congrArg (fun L => L w) (fderiv_comp_add_left (𝕜 := ℂ) (f := fun y => valAt' (u.ex y).left U f) a)`.
+A detailed English derivation is pending.
 -/
 theorem DiffAt.tr {v : Sp (DualNumber ℂ) ⟶ A.left} {z w : Fin g → ℂ} (h : DiffAt u v z w) (a : Fin g → ℂ) :
     DiffAt u (v ≫ (tr u a).left) (a + z) w := by
@@ -200,9 +196,9 @@ theorem DiffAt.tr {v : Sp (DualNumber ℂ) ⟶ A.left} {z w : Fin g → ℂ} (h 
   exact congrArg (fun L => L w) (fderiv_comp_add_left (𝕜 := ℂ) (f := fun y => valAt' (u.ex y).left U f) a)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `DiffAt.tr u h (-z)`. Rewrite `h'` using `[neg_add_cancel]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `DiffAt.tr u h z`. Rewrite `h'` using `[add_zero, Category.assoc, ← Over.comp_left, tr_neg_tr, Over.id_left, Category.comp_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem diffAt_iff (v : Sp (DualNumber ℂ) ⟶ A.left) (z w : Fin g → ℂ) :
     DiffAt u v z w ↔ DiffAt u (v ≫ (tr u (-z)).left) 0 w := by
@@ -215,21 +211,19 @@ theorem diffAt_iff (v : Sp (DualNumber ℂ) ⟶ A.left) (z w : Fin g → ℂ) :
     rwa [add_zero, Category.assoc, ← Over.comp_left, tr_neg_tr, Over.id_left, Category.comp_id] at h'
 
 /- English proof (translation)
-Take `⟨v, ⟨hv0, hvd⟩, -⟩` from `PtDual.existsUnique_point hδ`. Establish `hv0' : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = (u.ex z).left` using `hv0`. Establish `hvd' : ∀ (W : A.left.Opens) (h : ⊤ ≤ v ⁻¹ᵁ W) (f : Γ(A.left, W)), (dval v W h f).snd = δ W f` using `hvd`. Establish `hone : (u.ex 0).left = (η : 𝟙_ (Over (Sp ℂ)) ⟶ A).left`. Rewrite using `[ex_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `h0 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v ≫ (tr u (-z)).left = (η : 𝟙_ (Over (Sp ℂ)) ⟶ A).left`. Rewrite using `[← Category.assoc, hv0', ← Over.comp_left, ex_tr, neg_add_cancel, hone]`. Establish `h1 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (v ≫ (tr u (-z)).left) ≫ A.hom = 𝟙 _`. Rewrite using `[← Category.assoc, h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.w _`. Establish `hc' : ∀ a, (dval (v ≫ (tr u (-z)).left) ⊤ (top_le_preimage_top' _) (constFn A.hom ⊤ a)).snd = 0`. Introduce `a`. Rewrite using `[dval_comp v (tr u (-z)).left ⊤ _ ⊤ (top_le_preimage_top' _) (top_le_preimage_top' _), hvd']`. Establish `e3` using `congrArg (fun k => k.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) (Scheme.Hom.appLE_comp_appLE (tr u (-z)).left A.hom ⊤ ⊤ ⊤ (top_le_preimage_top' _) (top_le_preimage_top' _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e3`. Establish `key : ∀ (k : A.left ⟶ Sp ℂ) (_ : k = A.hom) (e : ⊤ ≤ k ⁻¹ᵁ ⊤), (k.appLE ⊤ ⊤ e).hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a) = constFn A.hom ⊤ a`. Introduce and unpack `_ rfl e`. Both sides reduce to the same expression. Establish `e4 : ((tr u (-z)).left.appLE ⊤ ⊤ (top_le_preimage_top' _)).hom (constFn A.hom ⊤ a) = constFn A.hom ⊤ a` using `e3.trans (key _ (Over.w _) _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e4]`. Conclude with `hc a`. Set `v'' : epsR ℂ ⟶ A` to `Over.homMk (v ≫ (tr u (-z)).left) (comp_eq_spMap A.hom _ h1 hc')`. Establish `htv : IsTangent v''` using `h0`. Take `⟨w, hw, huniq⟩` from `htan v'' htv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdiff : ∀ w', u.IsDiff w' v'' ↔ DiffAt u (v ≫ (tr u (-z)).left) 0 w'` using `fun _ => Iff.rfl`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Introduce `O f hO`. Establish `hv : ⊤ ≤ v ⁻¹ᵁ O` using `(top_le_iff_dual v O).2 (by rw [hv0']; exact hO)`. Rewrite using `[← hvd' O hv f]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `((diffAt_iff u v z w).2 ((hdiff w).1 hw)) O hv f`. Introduce `w' hw'`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[hdiff, ← diffAt_iff]`. Introduce `U h f`.
-
-Rewrite using `[hvd' U h f]`. Conclude with `hw' U f (by rw [← hv0']; exact (top_le_iff_dual v U).1 h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_vector (htan : ∀ v, IsTangent v → ∃! w, u.IsDiff w v) (z : Fin g → ℂ)
     (δ : ∀ W : A.left.Opens, Γ(A.left, W) → ℂ) (hδ : PtDer (u.ex z).left δ)
@@ -279,7 +273,7 @@ theorem existsUnique_vector (htan : ∀ v, IsTangent v → ∃! w, u.IsDiff w v)
     exact hw' U f (by rw [← hv0']; exact (top_le_iff_dual v U).1 h)
 
 /- English proof (translation)
-Introduce `P₀ u Hm χ hG z δ hδ hc`. Take `⟨-, htan, -, -, -⟩` from `hG`. Conclude with `existsUnique_vector u htan z δ hδ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tangent_at_point : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ z δ, PtDer (u.ex z).left δ → (∀ a, δ ⊤ (constFn P₀.A.hom ⊤ a) = 0) → ∃! w, ∀ O f, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O → δ O f = fderiv ℂ (fun z' => valAt' (u.ex z').left O f) z w := by
   intro P₀ u Hm χ hG z δ hδ hc

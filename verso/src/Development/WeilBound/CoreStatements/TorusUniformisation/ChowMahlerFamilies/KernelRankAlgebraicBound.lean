@@ -5,11 +5,11 @@ open NumberField
 namespace PositivityTheory.Xgn.KernelRankAlgebraic
 
 /- English proof (translation)
-Take `⟨n, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd u (1 : A)`. Simplify using `only [smul_eq_mul, mul_one, Nat.succ_eq_add_one] at hy`. Establish `h1 : ∀ m : ℕ, u ^ n * (u * y) ^ m = u ^ n`. Introduce `m`. Proceed by induction on `m with`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ m ih`. Combine the equalities or inequalities in the displayed calculation. Use `⟨1 - (u * y) ^ n, n, ?_, fun M => ⟨u ^ n * y ^ (n + M), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_sub, h1, mul_one, sub_self]`.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h1 M` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem fitting {A : Type} [CommRing A] [IsArtinianRing A] (u : A) :
     ∃ (ε : A) (n : ℕ), u ^ n * ε = 0 ∧ ∀ M : ℕ, ∃ c, 1 - ε = c * u ^ M := by
@@ -30,7 +30,7 @@ theorem fitting {A : Type} [CommRing A] [IsArtinianRing A] (u : A) :
       _ = _ := by ring
 
 /- English proof (translation)
-Rewrite using `[Module.End.mem_maxGenEigenspace]`. Establish `: (Algebra.lsmul k k M t : Module.End k M) - α • 1 = Algebra.lsmul k k M (t - algebraMap k A α)`. Rewrite using `[map_sub, AlgHom.commutes, Algebra.algebraMap_eq_smul_one]`. Simplify using `only [this, ← map_pow, Algebra.lsmul_coe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_G {k A M : Type} [Field k] [CommRing A] [Algebra k A] [AddCommGroup M] [Module k M]
     [Module A M] [IsScalarTower k A M] (t : A) (α : k) (v : M) :
@@ -43,7 +43,7 @@ theorem mem_G {k A M : Type} [Field k] [CommRing A] [Algebra k A] [AddCommGroup 
   simp only [this, ← map_pow, Algebra.lsmul_coe]
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv`, the goal using `[mem_G]`. Take `⟨n, hn⟩` from `hv`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.lsmul_coe, smul_comm, hn, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapsTo_G {k A M : Type} [Field k] [CommRing A] [Algebra k A] [AddCommGroup M] [Module k M]
     [Module A M] [IsScalarTower k A M] (t π : A) (α : k) :
@@ -57,7 +57,7 @@ theorem mapsTo_G {k A M : Type} [Field k] [CommRing A] [Algebra k A] [AddCommGro
   rw [Algebra.lsmul_coe, smul_comm, hn, smul_zero]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `PositivityTheory.Xgn.JordanBasis.exists_span_sup_range π _ le_rfl`. Establish `hs` using `PositivityTheory.Xgn.JordanBasis.span_eq_top π e _ hπ x hx`. Use `finrank_range_le_card (R := k) (fun q : Fin (Module.finrank k (LinearMap.ker π)) × Fin e => (π ^ (q.2 : ℕ)) (x q.1))` as an intermediate fact. Rewrite `this` using `[Set.finrank, hs]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_le_of_nil {k W : Type} [Field k] [AddCommGroup W] [Module k W]
     [FiniteDimensional k W] (π : Module.End k W) (e : ℕ) (hπ : π ^ e = 0) :
@@ -70,21 +70,19 @@ theorem finrank_le_of_nil {k W : Type} [Field k] [AddCommGroup W] [Module k W]
   simpa using this
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hnil`. Use `set G := Module.End.maxGenEigenspace (Algebra.lsmul k k A t) α with hG`. Establish `hkill : ∀ v ∈ G, π ^ N * v = 0`. Introduce `v hv`. Take `⟨n, hn⟩` from `(mem_G t α v).1 hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : IsCoprime t (t - algebraMap k A α)`. Use `⟨algebraMap k A α⁻¹, -algebraMap k A α⁻¹, ?_⟩` and prove the remaining obligations. Establish `: algebraMap k A α⁻¹ * algebraMap k A α = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hα, map_one]`. Take the linear combination `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `IsCoprime.pow (m := N) (n := n) hc`. Rewrite `hn` using `[smul_eq_mul]`. Rewrite `hN` using `[mul_pow]`. Take the linear combination `(-(π ^ N * v)) * hab + (a * v) * hN + (π ^ N * b) * hn`. Set `f : Module.End k G` to `(Algebra.lsmul k k A π : Module.End k A).restrict (mapsTo_G t π α)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : ∀ (m : ℕ) (v : G), ((f ^ m) v : A) = π ^ m * v`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro v`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `v`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, mul_assoc]`. Both sides reduce to the same expression. Establish `hnf : IsNilpotent f` using `⟨N, by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Rewrite using `[hf, hkill _ v.2]`. Use the proof step `rfl⟩`. Establish `h0 : f ^ Module.finrank k G = 0`. Use `f.aeval_self_charpoly` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[hnf.charpoly_eq_X_pow_finrank]`. Simplify using `using this`. Introduce `v hv`. Use `hf (Module.finrank k G) ⟨v, hv⟩` as an intermediate fact. Rewrite `this` using `[h0]`.
-
-Simplify using `using this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pow_finrank_kill {k A : Type} [Field k] [CommRing A] [Algebra k A] [FiniteDimensional k A]
     (t π : A) (α : k) (hα : α ≠ 0) (hnil : IsNilpotent (π * t)) :
@@ -126,7 +124,7 @@ theorem pow_finrank_kill {k A : Type} [Field k] [CommRing A] [Algebra k A] [Fini
   simpa using this.symm
 
 /- English proof (translation)
-Rewrite using `[LinearMap.finrank_maxGenEigenspace_eq, LinearMap.finrank_maxGenEigenspace_eq, hch, ← Polynomial.count_roots, ← Polynomial.count_roots, Polynomial.roots_pow, Multiset.count_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_G {k A W : Type} [Field k] [CommRing A] [Algebra k A] [FiniteDimensional k A]
     [AddCommGroup W] [Module k W] [Module A W] [IsScalarTower k A W] [FiniteDimensional k W]
@@ -140,9 +138,9 @@ theorem finrank_G {k A W : Type} [Field k] [CommRing A] [Algebra k A] [FiniteDim
     ← Polynomial.count_roots, ← Polynomial.count_roots, Polynomial.roots_pow, Multiset.count_nsmul]
 
 /- English proof (translation)
-Establish `hinj` using `hK.dfinsupp_lsum_injective`. Establish `h1` using `LinearMap.finrank_range_of_inj hinj`. Establish `h2 : LinearMap.range (DFinsupp.lsum ℕ fun i => (K i).subtype) ≤ L`. Rewrite using `[← Submodule.iSup_eq_range_dfinsupp_lsum]`. Conclude with `iSup_le hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Submodule.finrank_mono h2`. Establish `h4 : Module.finrank k (DirectSum ι fun i => K i) = ∑ i, Module.finrank k (K i)` using `Module.finrank_directSum k _`. Rewrite using `[← h4]`. Conclude with `h1.symm.le.trans h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_finrank_le {k W ι : Type} [Field k] [AddCommGroup W] [Module k W]
     [FiniteDimensional k W] [Fintype ι] (K : ι → Submodule k W) (hK : iSupIndep K)
@@ -161,39 +159,37 @@ theorem sum_finrank_le {k W ι : Type} [Field k] [AddCommGroup W] [Module k W]
   exact h1.symm.le.trans h3
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Set `G : ι → Submodule k W` to `fun i => Module.End.maxGenEigenspace (Algebra.lsmul k k W t) (χ i t)`. Set `f : ∀ i, Module.End k (G i)` to `fun i => (Algebra.lsmul k k W π : Module.End k W).restrict (mapsTo_G t π (χ i t))`. Establish `hf : ∀ i (m : ℕ) (v : G i), ((f i ^ m) v : W) = π ^ m • (v : W)`. Introduce `i m`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => intro v`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `v`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, mul_smul]`. Both sides reduce to the same expression. Establish `hu : ∀ i, χ i (t - algebraMap k A (χ i t)) = 0`. Introduce `i`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlow : ∀ i, r ≤ Module.finrank k (LinearMap.ker (f i))`. Introduce `i`. Take `⟨ε, n, h1, h2⟩` from `fitting (t - algebraMap k A (χ i t))`. Establish `hεG : ε ∈ Module.End.maxGenEigenspace (Algebra.lsmul k k A t) (χ i t)` using `(mem_G _ _ _).2 ⟨n, h1⟩`. Establish `hε0 : ε ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Take `⟨c, hc⟩` from `h2 1`. Use `congrArg (χ i) hc` as an intermediate fact. Rewrite `this` using `[pow_one, map_mul, hu]`. Simplify using `at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set d := Module.finrank k (Module.End.maxGenEigenspace (Algebra.lsmul k k A t) (χ i t)) with hd`. Establish `hdpos : 0 < d`. Rewrite using `[hd, Module.finrank_pos_iff_exists_ne_zero]`. Conclude with `⟨⟨ε, hεG⟩, fun h => hε0 (congrArg Subtype.val h)⟩`. Establish `hk` using `pow_finrank_kill t π _ (hne i) hnil ε hεG`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h0 : f i ^ d = 0`. Use extensionality with `v`. Take `⟨M, hM⟩` from `(mem_G _ _ _).1 v.2`. Take `⟨c, hc⟩` from `h2 M`. Establish `hv : ε • (v : W) = v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (1 - ε) • (v : W) = 0` using `by rw [hc, mul_smul, hM, smul_zero]`. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[hf, ← hv, ← mul_smul, hk, zero_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `finrank_le_of_nil (f i) d h0`. Establish `h4 : Module.finrank k (G i) = r * d` using `finrank_G t r _ hch`. Rewrite `h3` using `[h4]`. Conclude with `Nat.le_of_mul_le_mul_right h3 hdpos`. Set `K : ι → Submodule k W` to `fun i => (LinearMap.ker (f i)).map (G i).subtype`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hKG : ∀ i, K i ≤ G i` using `fun i => Submodule.map_subtype_le _ _`. Establish `hKind : iSupIndep K` using `(((Algebra.lsmul k k W t : Module.End k W).independent_maxGenEigenspace).comp hinj).mono hKG`. Establish `hKL : ∀ i, K i ≤ LinearMap.ker (Algebra.lsmul k k W π : Module.End k W)`. Introduce and unpack `i _ ⟨v, hv, rfl⟩`. Conclude with `congrArg Subtype.val (LinearMap.mem_ker.1 hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsum` using `(sum_finrank_le K hKind _ hKL).trans hker`. Establish `hKr : ∀ i, Module.finrank k (K i) = Module.finrank k (LinearMap.ker (f i))` using `fun i => Submodule.finrank_map_subtype_eq _ _`. Simplify using `only [hKr] at hsum`. Establish `hup : Module.finrank k (LinearMap.ker (f j)) ≤ r`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∑ _i : ι, r < ∑ i, Module.finrank k (LinearMap.ker (f i))` using `Finset.sum_lt_sum (fun i _ => hlow i) ⟨j, Finset.mem_univ _, not_le.1 hlt⟩`. Rewrite `this` using `[Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_comm]`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx⟩` from `PositivityTheory.Xgn.JordanBasis.exists_span_sup_range (f j) r hup`. Use `⟨fun i => x i, fun w _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ε, n, h1, h2⟩` from `fitting (t - algebraMap k A (χ j t))`. Take `⟨c, hc⟩` from `h2 1`. Establish `hεw : ε • w ∈ G j` using `(mem_G _ _ _).2 ⟨n, by rw [← mul_smul, h1, zero_smul]⟩`. Take `⟨a, ha, u, hau⟩` from `hx ⟨ε • w, hεw⟩`. Establish `hau' : ε • w = (a : W) + π • (u : W)` using `congrArg Subtype.val hau`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ : π ∈ RingHom.ker (χ j)`. Use `(hnil.map (χ j)).eq_zero` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_right (hne j)`. Establish `h1ε : 1 - ε ∈ RingHom.ker (χ j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.mem_ker, hc, pow_one, map_mul, hu, mul_zero]`. Establish `hw : w = a + (π • (u : W) + (1 - ε) • w)`. Rewrite using `[← add_assoc, ← hau', sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hw]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Use `Submodule.add_mem_sup ?_ (Submodule.add_mem _ (Submodule.smul_mem_smul hπ Submodule.mem_top) (Submodule.smul_mem_smul h1ε Submodule.mem_top))` and prove the remaining obligations. Use `clear hau hau' hw`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`.
-
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => exact Submodule.smul_of_tower_mem _ c hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem core {k A W ι : Type} [Field k] [CommRing A] [Algebra k A] [FiniteDimensional k A]
     [AddCommGroup W] [Module k W] [Module A W] [IsScalarTower k A W] [FiniteDimensional k W]
@@ -295,19 +291,17 @@ theorem core {k A W ι : Type} [Field k] [CommRing A] [Algebra k A] [FiniteDimen
   | smul c y _ hy => exact Submodule.smul_of_tower_mem _ c hy
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (MaximalSpectrum A)`. Use `choose y hy using fun m : MaximalSpectrum A => h m.asIdeal m.isMaximal`. Establish `hcop : Pairwise (Function.onFun IsCoprime fun m : MaximalSpectrum A => m.asIdeal)`. Introduce `m m' hmm`. Conclude with `Ideal.isCoprime_iff_sup_eq.2 (Ideal.IsMaximal.coprime_of_ne m.isMaximal m'.isMaximal fun e => hmm (MaximalSpectrum.ext e))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ m : MaximalSpectrum A, ∃ c : A, ∀ m' : MaximalSpectrum A, c - (if m' = m then 1 else 0) ∈ m'.asIdeal`. Introduce `m`. Take `⟨c, hc⟩` from `Ideal.pi_quotient_surjective hcop (fun m' => Ideal.Quotient.mk m'.asIdeal (if m' = m then 1 else 0))`. Conclude with `⟨c, fun m' => Ideal.Quotient.eq.1 (hc m')⟩`. Use `choose c hc using hc`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `x : Fin r → W` to `fun i => ∑ m, c m • y m i`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `set N := Submodule.span A (Set.range x)`. Establish `key : ∀ m : MaximalSpectrum A, (⊤ : Submodule A W) ≤ N ⊔ m.asIdeal • ⊤`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(hy m).trans (sup_le ?_ le_sup_right)` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `e : y m i = x i - ∑ m', (c m' - (if m = m' then 1 else 0)) • y m' i`. Simplify using `[x, sub_smul, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)) (Submodule.mem_sup_right (Submodule.sum_mem _ fun m' _ => Submodule.smul_mem_smul (hc m' m) Submodule.mem_top))`. Establish `hcol : N.colon (Set.univ : Set W) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, ha1, ha2⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (Module.Finite.fg_top) le_rfl (key ⟨m, hm⟩)`. Establish `ham : a ∈ m` using `hle (Submodule.mem_colon.2 fun w _ => ha2 (Submodule.smul_mem_pointwise_smul w a ⊤ Submodule.mem_top))`. Apply `hm.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Use `m.sub_mem ham ha1` as an intermediate fact.
-
-Simplify using `using this`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `: (1 : A) ∈ N.colon (Set.univ : Set W)` using `by rw [hcol]; trivial`. Simplify using `using Submodule.mem_colon.1 this w trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem glue {A W : Type} [CommRing A] [IsArtinianRing A] [AddCommGroup W] [Module A W]
     [Module.Finite A W] (r : ℕ)
@@ -361,9 +355,9 @@ theorem glue {A W : Type} [CommRing A] [IsArtinianRing A] [AddCommGroup W] [Modu
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `haveI : IsDomain (A ⧸ m) := Ideal.Quotient.isDomain m`. Use `haveI : Module.Finite k (A ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ k m).toLinearMap Ideal.Quotient.mk_surjective`. Establish `hb : Function.Bijective (algebraMap k (A ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `e : k ≃ₐ[k] (A ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId k (A ⧸ m)) hb`. Use `⟨(e.symm : (A ⧸ m) →ₐ[k] k).comp (Ideal.Quotient.mkₐ k m), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, ← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `e.symm.map_eq_zero_iff`.
+A detailed English derivation is pending.
 -/
 theorem exists_char {k A : Type} [Field k] [IsAlgClosed k] [CommRing A] [Algebra k A]
     [FiniteDimensional k A] (m : Ideal A) (hm : m.IsMaximal) :
@@ -380,9 +374,9 @@ theorem exists_char {k A : Type} [Field k] [IsAlgClosed k] [CommRing A] [Algebra
   exact e.symm.map_eq_zero_iff
 
 /- English proof (translation)
-Use `haveI : CharP F p := φ.charP φ.injective p`. Use `letI : Algebra (ZMod p) F := ZMod.algebra F p`. Use `letI : Algebra (ZMod p) k := ZMod.algebra k p`. Use `haveI := Fintype.ofFinite F`. Use `haveI : Module.Finite (ZMod p) F := Module.Finite.of_finite`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `e : (F →ₐ[ZMod p] k) ≃ (F →+* k)` to `{ toFun := fun f => f.toRingHom invFun := fun f => { f with commutes' := fun r => RingHom.congr_fun (RingHom.ext_zmod (f.comp (algebraMap (ZMod p) F)) (algebraMap (ZMod p) k)) r } left_inv := fun f => rfl right_inv := fun f => rfl }`. Use `⟨Finite.of_equiv _ e, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_congr e, Nat.card_eq_fintype_card (α := F →ₐ[ZMod p] k), AlgHom.card, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod p), ZMod.card]`.
+A detailed English derivation is pending.
 -/
 theorem count_hom {F k : Type} [Field F] [Finite F] [Field k] [IsAlgClosed k] (p : ℕ)
     [Fact p.Prime] [CharP k p] (φ : F →+* k) :
@@ -406,25 +400,23 @@ theorem count_hom {F k : Type} [Field F] [Finite F] [Field k] [IsAlgClosed k] (p
     Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod p), ZMod.card]
 
 /- English proof (translation)
-Establish `hpne : (p : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `hp0 : Ideal.span {(p : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Take `⟨π, hπ⟩` from `IsDedekindDomain.exists_sup_span_eq (I := w * Ideal.span {(p : 𝓞 E)}) (J := w) (by rw [mul_comm]; exact Ideal.mul_le_right) (mul_ne_zero hw0 hp0)`. Establish `hle : Ideal.span {π} ≤ w` using `le_sup_right.trans hπ.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨I, hI⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hcop : Ideal.span {(p : 𝓞 E)} ⊔ I = ⊤`. Rewrite `hπ` using `[hI, ← Ideal.mul_sup]`. Apply `mul_left_cancel₀ hw0` to reduce the goal to its premises. Rewrite using `[hπ, Ideal.mul_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : 𝓞 E) ∈ Ideal.span {(p : 𝓞 E)} ⊔ I` using `by rw [hcop]; trivial`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h1`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `hnd : ¬ p ∣ Ideal.absNorm I`. Introduce `hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hI0 : I = ⊥`. Rewrite `hz` using `[hI0, Ideal.mem_bot]`. Rewrite `hyz` using `[hz, add_zero]`. Use `congrArg (Algebra.norm ℤ) hyz` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : IsUnit (Algebra.norm ℤ (p : 𝓞 E))` using `isUnit_of_dvd_one ⟨Algebra.norm ℤ a, by rw [mul_comm]; exact this.symm⟩`. Establish `e : (p : 𝓞 E) = algebraMap ℤ (𝓞 E) (p : ℤ)` using `by simp`. Rewrite `hu` using `[e, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hp.out.one_lt.ne' hu`. Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hd` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := 𝓞 E ⧸ I) p hd`. Establish `h2 : p • x = 0` using `by rw [← hx]; exact addOrderOf_nsmul_eq_zero x`. Establish `h3 : Ideal.Quotient.mk I a * (p : 𝓞 E ⧸ I) = 1`. Use `congrArg (Ideal.Quotient.mk I) hyz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 hz, add_zero, map_mul, map_natCast, map_one]`. Then use the resulting hypothesis. Establish `h4 : x = 0`. Rewrite `h2` using `[nsmul_eq_mul]`. Rewrite using `[← one_mul x, ← h3, mul_assoc, h2, mul_zero]`. Rewrite `hx` using `[h4, addOrderOf_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp.out.one_lt.ne hx`. Establish `hN0 : Ideal.absNorm I ≠ 0`. Introduce `h`. Conclude with `hnd (h ▸ dvd_zero p)`. Establish `hI0 : I ≠ ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Conclude with `hN0 (Ideal.absNorm_eq_zero_iff.2 h)`. Use `⟨π, ?_, hle (Ideal.mem_span_singleton_self π), fun f hf => ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `hI` using `[h, Ideal.span_singleton_zero]`.
-
-Conclude with `mul_ne_zero hw0 hI0 hI.symm`. Rewrite using `[← Ideal.absNorm_span_singleton, hI, map_mul, Ideal.absNorm_apply w, Submodule.cardQuot_apply, hf, padicValNat.mul (pow_ne_zero _ hp.out.ne_zero) hN0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hnd, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arith_pi {E : Type} [Field E] [NumberField E] (p : ℕ) [hp : Fact p.Prime]
     (w : Ideal (𝓞 E)) (hw0 : w ≠ ⊥) :
@@ -483,17 +475,17 @@ theorem arith_pi {E : Type} [Field E] [NumberField E] (p : ℕ) [hp : Fact p.Pri
       padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hnd, add_zero]
 
 /- English proof (translation)
-Establish `hpne : (p : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `hp0 : Ideal.span {(p : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Take `⟨Q, hQ, c, hc⟩ : ∃ Q : Ideal (𝓞 E), w ⊔ Q = ⊤ ∧ ∃ c : ℕ, Ideal.span {(p : 𝓞 E)} = w ^ c * Q` from `by classical`. Take `⟨Q, h1, h2⟩` from `Ideal.eq_prime_pow_mul_coprime hp0 w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Q, h1, _, h2⟩`. Use `letI : Field (𝓞 E ⧸ w) := Ideal.Quotient.field w`. Use `haveI : Finite (𝓞 E ⧸ w) := Ideal.finiteQuotientOfFreeOfNeBot w hw0`. Take `⟨g, hg⟩` from `IsCyclic.exists_monoid_generator (α := (𝓞 E ⧸ w)ˣ)`. Take `⟨g0, hg0⟩` from `Ideal.Quotient.mk_surjective (g : 𝓞 E ⧸ w)`.
+Supply the required witnesses or components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (1 : 𝓞 E) ∈ w ⊔ Q` using `by rw [hQ]; trivial`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h1`. Establish `hz1 : Ideal.Quotient.mk w z = 1`. Use `congrArg (Ideal.Quotient.mk w) hyz` as an intermediate fact. Rewrite `this` using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 hy, zero_add, map_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hθ : Ideal.Quotient.mk w (g0 * z) = g` using `by rw [map_mul, hz1, mul_one, hg0]`. Use `⟨g0 * z, fun π hπ => ⟨c + 1, ?_⟩, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, hc]`. Establish `e : (π * (g0 * z)) ^ (c + 1) = π ^ c * ((π * g0 * (g0 * z) ^ c) * z)` using `by ring`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow hπ c) (Q.mul_mem_left _ hz)`. Rewrite using `[hθ]`. Conclude with `g.ne_zero`. Take `⟨m, hm⟩` from `hg (Units.mk0 y hy)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hθ]`. Use `congrArg Units.val hm` as an intermediate fact. Simplify using `using this.symm`.
+A detailed English derivation is pending.
 -/
 theorem arith_theta {E : Type} [Field E] [NumberField E] (p : ℕ) [hp : Fact p.Prime]
     (w : Ideal (𝓞 E)) [hw : w.IsMaximal] (hw0 : w ≠ ⊥) :
@@ -530,23 +522,21 @@ theorem arith_theta {E : Type} [Field E] [NumberField E] (p : ℕ) [hp : Fact p.
     simpa using this.symm
 
 /- English proof (translation)
-Take `⟨χ0, rfl⟩` from `exists_char (k := k) m hm`. Set `inc : 𝓞 E →+* k ⊗[ℤ] 𝓞 E` to `(Algebra.TensorProduct.includeRight : 𝓞 E →ₐ[ℤ] k ⊗[ℤ] 𝓞 E).toRingHom`. Establish `hinc : ∀ a, inc a = (1 : k) ⊗ₜ[ℤ] a` using `fun a => rfl`. Set `ψ : 𝓞 E →+* k` to `χ0.toRingHom.comp inc`. Establish `hψ : ∀ a, ψ a = χ0 ((1 : k) ⊗ₜ[ℤ] a)` using `fun a => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpne : (p : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `hw0 : RingHom.ker ψ ≠ ⊥`. Introduce `h`. Establish `: (p : 𝓞 E) ∈ RingHom.ker ψ`. Rewrite using `[RingHom.mem_ker, map_natCast, CharP.cast_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hpne this`. Use `haveI hw : (RingHom.ker ψ).IsMaximal := (RingHom.ker_isPrime ψ).isMaximal hw0`. Take `⟨π, hπ0, hπw, hπ⟩` from `arith_pi p _ hw0`. Take `⟨θ, hθ1, hθ2, hθ3⟩` from `arith_theta p _ hw0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Field (𝓞 E ⧸ RingHom.ker ψ) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 E ⧸ RingHom.ker ψ) := Ideal.finiteQuotientOfFreeOfNeBot _ hw0`. Take `⟨hfin, hcard⟩` from `count_hom (F := 𝓞 E ⧸ RingHom.ker ψ) p (RingHom.kerLift ψ)`. Use `haveI := Fintype.ofFinite ((𝓞 E ⧸ RingHom.ker ψ) →+* k)`. Set `χ : ((𝓞 E ⧸ RingHom.ker ψ) →+* k) → (k ⊗[ℤ] 𝓞 E →ₐ[k] k)` to `fun j => Algebra.TensorProduct.lift (AlgHom.id k k) (j.comp (Ideal.Quotient.mk (RingHom.ker ψ))).toIntAlgHom (fun _ _ => Commute.all _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχ : ∀ j (c : k) (a : 𝓞 E), χ j (c ⊗ₜ[ℤ] a) = c * j (Ideal.Quotient.mk (RingHom.ker ψ) a)` using `fun j c a => rfl`. Establish `h0 : χ (RingHom.kerLift ψ) = χ0`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `c a`. Rewrite using `[hχ, RingHom.kerLift_mk, hψ, ← smul_eq_mul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `core (W := W) ((1 : k) ⊗ₜ[ℤ] θ : k ⊗[ℤ] 𝓞 E) ((1 : k) ⊗ₜ[ℤ] π) r (hch θ) ?_ χ ?_ ?_ ?_ (RingHom.kerLift ψ)` as an intermediate fact. Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Take `⟨N, b, hb⟩` from `hθ1 π hπw`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `hp0 : ((p : ℕ) : k ⊗[ℤ] 𝓞 E) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_natCast (algebraMap k (k ⊗[ℤ] 𝓞 E)), CharP.cast_eq_zero, map_zero]`. Rewrite using `[← hinc, ← hinc, ← map_mul, ← map_pow, hb, map_mul, map_natCast, hp0, zero_mul]`. Introduce `j j' hjj`. Simplify using `only [hχ, one_mul] at hjj`. Use `RingHom.ext fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, map_zero, map_zero]`. Take `⟨n, rfl⟩` from `hθ3 y hy`. Rewrite using `[map_pow, map_pow, hjj]`. Introduce `j`.
-
-Rewrite using `[hχ, one_mul]`. Conclude with `(map_ne_zero_iff j j.injective).2 hθ2`. Establish `h` using `hker π hπ0`. Rewrite `h` using `[hπ _ hcard, Nat.card_eq_fintype_card]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem locmax {E : Type} [Field E] [NumberField E] {k W : Type} [Field k] [IsAlgClosed k]
     (p : ℕ) [hp : Fact p.Prime] [CharP k p] [AddCommGroup W] [Module k W] [FiniteDimensional k W]
@@ -617,25 +607,21 @@ end PositivityTheory.Xgn.KernelRankAlgebraic
 
 open scoped TensorProduct in
 /- English proof (translation)
-Introduce `E _ _ k W _ _ p _ _ _ _ _ r ρ hch hker`. Set `φ : k ⊗[ℤ] 𝓞 E →ₐ[k] Module.End k W` to `Algebra.TensorProduct.lift (Algebra.ofId k (Module.End k W)) ρ.toIntAlgHom (fun c _ => Algebra.commutes c _)`. Establish `hφ : ∀ (c : k) (a : 𝓞 E), φ (c ⊗ₜ[ℤ] a) = c • ρ a` using `fun c a => by`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `letI : Module (k ⊗[ℤ] 𝓞 E) W := Module.compHom W φ.toRingHom`. Establish `hs : ∀ (a : k ⊗[ℤ] 𝓞 E) (w : W), a • w = φ a w` using `fun _ _ => rfl`. Use `haveI : IsScalarTower k (k ⊗[ℤ] 𝓞 E) W := ⟨fun c a w => by`. Rewrite using `[hs, hs, map_smul]`. Use the proof step `rfl⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Finite (k ⊗[ℤ] 𝓞 E) W := Module.Finite.of_restrictScalars_finite k _ _`. Use `haveI : IsArtinianRing (k ⊗[ℤ] 𝓞 E) := IsArtinianRing.of_finite k _`. Establish `h1 : ∀ a : 𝓞 E, (Algebra.lsmul k k W ((1 : k) ⊗ₜ[ℤ] a : k ⊗[ℤ] 𝓞 E) : Module.End k W) = ρ a`. Introduce `a`. Use extensionality with `w`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.lsmul_coe]`. Use `show ((1 : k) ⊗ₜ[ℤ] a : k ⊗[ℤ] 𝓞 E) • w = _`. Rewrite using `[hs, hφ, one_smul]`. Establish `h2 : ∀ a : 𝓞 E, (Algebra.lsmul k k (k ⊗[ℤ] 𝓞 E) ((1 : k) ⊗ₜ[ℤ] a : k ⊗[ℤ] 𝓞 E) : Module.End k (k ⊗[ℤ] 𝓞 E)).charpoly = (Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)).charpoly.map (Int.castRingHom k)`. Introduce `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (Algebra.lsmul k k (k ⊗[ℤ] 𝓞 E) ((1 : k) ⊗ₜ[ℤ] a : k ⊗[ℤ] 𝓞 E) : Module.End k (k ⊗[ℤ] 𝓞 E)) = (Algebra.lmul ℤ (𝓞 E) a).baseChange k`. Rewrite using `[Algebra.baseChange_lmul]`. Conclude with `LinearMap.ext fun _ => rfl`. Rewrite using `[e, LinearMap.charpoly_baseChange, algebraMap_int_eq]`. Take `⟨x, hx⟩` from `PositivityTheory.Xgn.KernelRankAlgebraic.glue (A := k ⊗[ℤ] 𝓞 E) (W := W) r (PositivityTheory.Xgn.KernelRankAlgebraic.locmax p r (fun a => by rw [h1, h2, hch]) (fun a ha => by rw [h1]; exact hker a ha))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : Submodule.span k (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ρ (RingOfIntegers.basis E q.2) (x q.1)) = ⊤` using `by set S := Submodule.span k (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ρ (RingOfIntegers.basis E q.2) (x q.1)) with hS`. Establish `hR : ∀ (a : 𝓞 E) (i : Fin r), ρ a (x i) ∈ S`. Introduce `a i`. Rewrite using `[← (RingOfIntegers.basis E).sum_repr a, map_sum, LinearMap.sum_apply]`. Use `S.sum_mem fun q _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_zsmul, LinearMap.smul_apply]`. Conclude with `S.toAddSubgroup.zsmul_mem (Submodule.subset_span ⟨(i, q), rfl⟩) _`. Establish `hA : ∀ (a : k ⊗[ℤ] 𝓞 E) (i : Fin r), a • x i ∈ S`. Introduce `a i`. Proceed by induction on `a using TensorProduct.induction_on with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => rw [zero_smul]`. Conclude with `S.zero_mem`. Consider the case `tmul c a => rw [hs, hφ, LinearMap.smul_apply]`. Conclude with `S.smul_mem _ (hR a i)`. Consider the case `add a b ha hb => rw [add_smul]`.
-
-Conclude with `S.add_mem ha hb`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `hw : w ∈ Submodule.span (k ⊗[ℤ] 𝓞 E) (Set.range x)` using `by rw [hx]; trivial`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hw`.
-
-Conclude with `S.sum_mem fun i _ => hA _ i`. Use `⟨x, linearIndependent_of_top_le_span_of_card_eq_finrank hspan.ge ?_, hspan⟩` and prove the remaining obligations. Establish `hd` using `congrArg Polynomial.natDegree (hch 0)`. Rewrite `hd` using `[LinearMap.charpoly_natDegree, Polynomial.natDegree_pow, (LinearMap.charpoly_monic _).natDegree_map, LinearMap.charpoly_natDegree, Module.finrank_eq_card_chooseBasisIndex ℤ (𝓞 E)]`. Rewrite using `[hd, Fintype.card_prod, Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.kernel_rank_algebraic_bound : ∀ (E : Type) [Field E] [NumberField E] (k W : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] [AddCommGroup W] [Module k W] [FiniteDimensional k W] (r : ℕ) (ρ : 𝓞 E →+* Module.End k W), (∀ a : 𝓞 E, (ρ a).charpoly = ((Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)).charpoly.map (Int.castRingHom k)) ^ r) → (∀ a : 𝓞 E, a ≠ 0 → Module.finrank k (LinearMap.ker (ρ a)) ≤ r * padicValNat p (Algebra.norm ℤ a).natAbs) → ∃ x : Fin r → W, LinearIndependent k (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ρ (RingOfIntegers.basis E q.2) (x q.1)) ∧ Submodule.span k (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ρ (RingOfIntegers.basis E q.2) (x q.1)) = ⊤ := by
   intro E _ _ k W _ _ p _ _ _ _ _ r ρ hch hker

@@ -12,13 +12,13 @@ def AIntO (D : D7) : Prop :=
       ((D.what₂.restRowsFiniteGroupCard : ℕ) : FractionRing (D.ntw.O i)) • D.nexp.eAlg i b
 
 /- English proof (translation)
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce and unpack `i j hj b _ ⟨x, hx, rfl⟩`. Take `⟨hxB, hxF⟩` from `hx`. Take `⟨c, hc⟩` from `h1 i b`. Establish `hz : IntegralHeckeForms.AO D.nexp i j b x = IntegralHeckeForms.zO D.nexp i j b c x`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [IntegralHeckeForms.AO, IntegralHeckeForms.zO, IntegralHeckeForms.eO, IntegralHeckeForms.eG, hc, LinearMap.smul_apply, LinearMap.coe_restrictScalars, Nat.cast_smul_eq_nsmul]`. Rewrite using `[map_nsmul, LinearMap.smul_apply]`. Establish `hB : IntegralHeckeForms.AO D.nexp i j b x ∈ D.nexp.Bsup i j b`. Rewrite using `[hz]`. Conclude with `ThetaNormsAndLinks.zO_mem D i j b (fun g => hS i j hj b g) c x hxB`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hV : IntegralHeckeForms.AO D.nexp i j b x ∈ IntegralHeckeForms.V0 D.nexp i j b`. Establish `e : IntegralHeckeForms.AO D.nexp i j b x = IntegralHeckeForms.eG D.nexp i j b ((D.what₂.restRowsFiniteGroupCard : ℕ) • x)`. Simplify using `only [IntegralHeckeForms.AO, IntegralHeckeForms.eO, LinearMap.smul_apply, LinearMap.coe_restrictScalars, Nat.cast_smul_eq_nsmul, map_nsmul]`. Rewrite using `[e]`. Conclude with `⟨_, Submodule.smul_of_tower_mem _ _ hxF, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨hB, ThetaNormsAndLinks.hermFramePairNormalForm_frameSpan_le_of_generators D i j b hV⟩, hV⟩`.
+A detailed English derivation is pending.
 -/
 theorem projector_statement_of_integrality (D : D7) (h1 : AIntO D) (hS : ThetaNormsAndLinks.SupLatticeGroupStable D) : PDVN.ConjugationNormInvariance D := by
   refine ⟨h1, ?_⟩

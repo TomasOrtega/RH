@@ -11,9 +11,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.S Formalism.UG Matrix
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ Lb` using `Module.Finite.trans (𝓞 E) Lb`. Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := Lb)`. Use `⟨k, fun i => (s i : Fin n → E), fun i => (s i).2, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hmem : (⟨l, hl⟩ : Lb) ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨z, hz⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val hz`. Simplify using `only [Submodule.coe_sum] at h2`. Conclude with `h2.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gen {E : Type} [Field E] [NumberField E] {n : ℕ}
     (Lb : Submodule (𝓞 E) (Fin n → E)) (hfin : Module.Finite (𝓞 E) Lb) :
@@ -30,11 +30,11 @@ theorem exists_gen {E : Type} [Field E] [NumberField E] {n : ℕ}
   exact h2.symm
 
 /- English proof (translation)
-Take `⟨⟨a, ⟨d, hd⟩⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 E)) e`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {d}))`. Use `⟨Ideal.absNorm (Ideal.span {d}), ?_, c * a, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd0`. Establish `h1 : ((Ideal.absNorm (Ideal.span {d}) : ℕ) : E) = algebraMap (𝓞 E) E c * algebraMap (𝓞 E) E d`. Rewrite using `[← map_mul, hc, map_natCast]`. Simplify using `only at h`. Rewrite using `[h1, map_mul, ← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_E {E : Type} [Field E] [NumberField E] (e : E) :
     ∃ c : ℕ, 0 < c ∧ ∃ t : 𝓞 E, (c : E) * e = algebraMap (𝓞 E) E t := by
@@ -52,7 +52,7 @@ theorem exists_nat_E {E : Type} [Field E] [NumberField E] (e : E) :
     ring
 
 /- English proof (translation)
-Use `choose f hf0 hf using h`. Use `⟨∏ i, f i, Finset.prod_pos fun i _ => hf0 i, fun i => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem f (Finset.mem_univ i)`. Rewrite using `[hk]`. Conclude with `hP i _ _ (hf i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem common_nat {ι : Type} [Fintype ι] (P : ι → ℕ → Prop)
     (hP : ∀ i N M, P i N → P i (N * M)) (h : ∀ i, ∃ N, 0 < N ∧ P i N) :
@@ -73,33 +73,33 @@ abbrev incA (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (a : 
 abbrev ivec (x : Fin n → E) : Fin n → E ⊗[F] Af F := fun i => inclE (F := F) (Af F) (x i)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 E) E t, ⟨t, rfl⟩⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem left_mem (t : 𝓞 E) : ((algebraMap (𝓞 E) E t) ⊗ₜ[F] (1 : Af F)) ∈ IntAf F E :=
   Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 E) E t, ⟨t, rfl⟩⟩, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem incA_mem {a : Af F} (ha : a ∈ intAd F) : incA F E a ∈ IntAf F E :=
   Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ivec_mem {L : Submodule (𝓞 E) (Fin n → E)} {x : Fin n → E} (hx : x ∈ L) :
     ivec (F := F) x ∈ lamAf (F := F) L :=
   Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_mem _ (⟨o, ho⟩ : IntAf F E) hw`.
+A detailed English derivation is pending.
 -/
 theorem smulO_mem {L : Submodule (𝓞 E) (Fin n → E)} {o : E ⊗[F] Af F} (ho : o ∈ IntAf F E)
     {w : Fin n → E ⊗[F] Af F} (hw : w ∈ lamAf (F := F) L) : o • w ∈ lamAf (F := F) L :=
   Submodule.smul_mem _ (⟨o, ho⟩ : IntAf F E) hw
 
 /- English proof (translation)
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem hw M`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_lam {L : Submodule (𝓞 E) (Fin n → E)} {w : Fin n → E ⊗[F] Af F} {N : ℕ}
     (hw : N • w ∈ lamAf (F := F) L) (M : ℕ) : (N * M) • w ∈ lamAf (F := F) L := by
@@ -114,15 +114,15 @@ section T
 variable {k : ℕ} {m : Fin k → Fin n → E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ => zero_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem T_zero : (0 : Fin n → E ⊗[F] Af F) ∈ Tset (F := F) m :=
   ⟨0, fun _ => zero_mem _, by simp⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hw`. Take `⟨a', ha', rfl⟩` from `hw'`. Use `⟨a + a', fun j => add_mem (ha j) (ha' j), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, map_add, add_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem T_add {w w' : Fin n → E ⊗[F] Af F} (hw : w ∈ Tset (F := F) m) (hw' : w' ∈ Tset (F := F) m) :
     w + w' ∈ Tset (F := F) m := by
@@ -134,7 +134,7 @@ theorem T_add {w w' : Fin n → E ⊗[F] Af F} (hw : w ∈ Tset (F := F) m) (hw'
   simp only [Pi.add_apply, map_add, add_smul]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hw`. Use `⟨-a, fun j => neg_mem (ha j), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.neg_apply, map_neg, neg_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem T_neg {w : Fin n → E ⊗[F] Af F} (hw : w ∈ Tset (F := F) m) : -w ∈ Tset (F := F) m := by
   obtain ⟨a, ha, rfl⟩ := hw
@@ -144,7 +144,7 @@ theorem T_neg {w : Fin n → E ⊗[F] Af F} (hw : w ∈ Tset (F := F) m) : -w �
   simp only [Pi.neg_apply, map_neg, neg_smul]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hw`. Use `⟨fun j => b * a j, fun j => mul_mem hb (ha j), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem T_smulA {b : Af F} (hb : b ∈ intAd F) {w : Fin n → E ⊗[F] Af F}
     (hw : w ∈ Tset (F := F) m) : incA F E b • w ∈ Tset (F := F) m := by
@@ -155,7 +155,7 @@ theorem T_smulA {b : Af F} (hb : b ∈ intAd F) {w : Fin n → E ⊗[F] Af F}
   simp [smul_smul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using T_zero`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `T_add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_sum {ι : Type} (s : Finset ι) (f : ι → Fin n → E ⊗[F] Af F)
     (h : ∀ i ∈ s, f i ∈ Tset (F := F) m) : ∑ i ∈ s, f i ∈ Tset (F := F) m := by
@@ -168,7 +168,7 @@ theorem T_sum {ι : Type} (s : Finset ι) (f : ι → Fin n → E ⊗[F] Af F)
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `[ivec, Finset.sum_apply, map_sum, map_zsmul, Int.cast_smul_eq_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ivec_zsum (z : Fin k → ℤ) :
     ivec (F := F) (∑ i, z i • m i) = ∑ i, incA F E (z i : Af F) • ivec (F := F) (m i) := by
@@ -176,7 +176,7 @@ theorem ivec_zsum (z : Fin k → ℤ) :
   simp [ivec, Finset.sum_apply, map_sum, map_zsmul, Int.cast_smul_eq_zsmul]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hgen x hx`. Conclude with `⟨fun i => (z i : Af F), fun i => intCast_mem _ _, ivec_zsum z⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem T_gen {L : Submodule (𝓞 E) (Fin n → E)}
     (hgen : ∀ l ∈ L, ∃ z : Fin k → ℤ, l = ∑ i, z i • m i) {x : Fin n → E} (hx : x ∈ L) :
@@ -185,7 +185,7 @@ theorem T_gen {L : Submodule (𝓞 E) (Fin n → E)}
   exact ⟨fun i => (z i : Af F), fun i => intCast_mem _ _, ivec_zsum z⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `[ivec, inclE, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem left_smul_ivec (t : 𝓞 E) (x : Fin n → E) :
     ((algebraMap (𝓞 E) E t) ⊗ₜ[F] (1 : Af F)) • ivec (F := F) x = ivec (F := F) (t • x) := by
@@ -193,7 +193,7 @@ theorem left_smul_ivec (t : 𝓞 E) (x : Fin n → E) :
   simp [ivec, inclE, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hw`. Rewrite using `[Finset.smul_sum]`. Use `T_sum _ _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, left_smul_ivec]`. Conclude with `T_smulA (ha j) (T_gen hgen (L.smul_mem t (hm j)))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_smul_left {L : Submodule (𝓞 E) (Fin n → E)} (hm : ∀ i, m i ∈ L)
     (hgen : ∀ l ∈ L, ∃ z : Fin k → ℤ, l = ∑ i, z i • m i) (t : 𝓞 E) {w : Fin n → E ⊗[F] Af F}
@@ -206,15 +206,13 @@ theorem T_smul_left {L : Submodule (𝓞 E) (Fin n → E)} (hm : ∀ i, m i ∈ 
   exact T_smulA (ha j) (T_gen hgen (L.smul_mem t (hm j)))
 
 /- English proof (translation)
-Unfold `IntAf tensInt at ho`. Proceed by induction on `ho using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨s, hs⟩, rfl⟩ | ⟨⟨a, ha⟩, rfl⟩` into its components or cases. Take `⟨t, rfl⟩` from `hs`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Conclude with `T_smul_left hm hgen t hw`. Introduce `w hw`. Conclude with `T_smulA ha hw`. Consider the case `zero => intro w _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[zero_smul]`. Conclude with `T_zero`. Consider the case `one => intro w hw`. Rewrite using `[one_smul]` and apply the resulting hypothesis. Consider the case `add x y _ _ hx hy => intro w hw`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_smul]`. Conclude with `T_add (hx w hw) (hy w hw)`. Consider the case `neg x _ hx => intro w hw`. Rewrite using `[neg_smul]`. Conclude with `T_neg (hx w hw)`.
-
-Consider the case `mul x y _ _ hx hy => intro w hw`. Rewrite using `[mul_smul]`. Conclude with `hx _ (hy w hw)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_smulO {L : Submodule (𝓞 E) (Fin n → E)} (hm : ∀ i, m i ∈ L)
     (hgen : ∀ l ∈ L, ∃ z : Fin k → ℤ, l = ∑ i, z i • m i) {o : E ⊗[F] Af F}
@@ -235,9 +233,9 @@ theorem T_smulO {L : Submodule (𝓞 E) (Fin n → E)} (hm : ∀ i, m i ∈ L)
   | mul x y _ _ hx hy => intro w hw; rw [mul_smul]; exact hx _ (hy w hw)
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨y, hy⟩, rfl⟩` from `hx`. Conclude with `T_gen hgen hy`. Consider the case `zero => exact T_zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact T_add hx hy`. Consider the case `smul o x _ hx => exact T_smulO hm hgen o.2 x hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lam_sub_alt {L : Submodule (𝓞 E) (Fin n → E)} (hm : ∀ i, m i ∈ L)
     (hgen : ∀ l ∈ L, ∃ z : Fin k → ℤ, l = ∑ i, z i • m i) {w : Fin n → E ⊗[F] Af F}
@@ -251,7 +249,7 @@ theorem lam_sub_alt {L : Submodule (𝓞 E) (Fin n → E)} (hm : ∀ i, m i ∈ 
   | smul o x _ hx => exact T_smulO hm hgen o.2 x hx
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `lam_sub_alt hm hgen hw`. Rewrite using `[Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `smulO_mem (incA_mem (ha j)) (hP j)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_lam {L : Submodule (𝓞 E) (Fin n → E)} (hm : ∀ i, m i ∈ L)
     (hgen : ∀ l ∈ L, ∃ z : Fin k → ℤ, l = ∑ i, z i • m i)
@@ -267,15 +265,13 @@ theorem mulVec_lam {L : Submodule (𝓞 E) (Fin n → E)} (hm : ∀ i, m i ∈ L
 end T
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `tmul e a`. Take `⟨c, hc0, t, ht⟩` from `exists_nat_E e`. Take `⟨N, hN0, hN⟩` from `exists_nat_adele a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c * N, Nat.mul_pos hc0 hN0, ?_⟩` and prove the remaining obligations. Establish `e1 : ((c * N : ℕ) : E ⊗[F] Af F) * (e ⊗ₜ[F] a) = ((algebraMap (𝓞 E) E t) ⊗ₜ[F] (1 : Af F)) * incA F E ((N : Af F) * a)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← TensorProduct.smul_tmul', TensorProduct.tmul_smul, mul_smul]`. Use `_ = ((c : E) * e) ⊗ₜ[F] ((N : Af F) * a) := by rw [nsmul_eq_mul, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Rewrite using `[ht]`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[e1]`. Conclude with `mul_mem (left_mem t) (incA_mem (fun v => hN v))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy`. Take `⟨N1, h1, hx⟩` from `hx`. Take `⟨N2, h2, hy⟩` from `hy`. Use `⟨N2 * N1, Nat.mul_pos h2 h1, ?_⟩` and prove the remaining obligations. Establish `e1 : ((N2 * N1 : ℕ) : E ⊗[F] Af F) * (x + y) = (N2 : E ⊗[F] Af F) * ((N1 : E ⊗[F] Af F) * x) + (N1 : E ⊗[F] Af F) * ((N2 : E ⊗[F] Af F) * y)` using `by push_cast; ring`.
-
-Rewrite using `[e1]`. Conclude with `add_mem (mul_mem (natCast_mem _ _) hx) (mul_mem (natCast_mem _ _) hy)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_R (r : E ⊗[F] Af F) : ∃ N : ℕ, 0 < N ∧ (N : E ⊗[F] Af F) * r ∈ IntAf F E := by
   induction r using TensorProduct.induction_on with
@@ -308,7 +304,7 @@ theorem exists_nat_R (r : E ⊗[F] Af F) : ∃ N : ℕ, 0 < N ∧ (N : E ⊗[F] 
     exact add_mem (mul_mem (natCast_mem _ _) hx) (mul_mem (natCast_mem _ _) hy)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.NatMulIsIntegral.goal1 .. | (apply Bl.NatMulIsIntegral.goal1 <;> assumption) | (intros; apply Bl.NatMulIsIntegral.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_nat_L {L : Submodule (𝓞 E) (Fin n → E)}
     {z : Fin n → E} (hz : z ∈ Submodule.span E (L : Set (Fin n → E))) :
@@ -316,15 +312,15 @@ theorem exists_nat_L {L : Submodule (𝓞 E) (Fin n → E)}
   first | exact Bl.NatMulIsIntegral.goal1 .. | (apply Bl.NatMulIsIntegral.goal1 <;> assumption) | (intros; apply Bl.NatMulIsIntegral.goal1 <;> assumption)
 
 /- English proof (translation)
-Establish `hi : ∀ i, ∃ N, 0 < N ∧ N • ((w i) • (Pi.single i 1 : Fin n → E ⊗[F] Af F)) ∈ lamAf (F` using `F) L := by`. Introduce `i`. Take `⟨A, hA0, hA⟩` from `exists_nat_R (F := F) (E := E) (w i)`. Take `⟨B, hB0, hB⟩` from `exists_nat_L (L := L) (z := Pi.single i 1) (by rw [hspan]; exact Submodule.mem_top)`. Use `⟨A * B, Nat.mul_pos hA0 hB0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ivec (F` using `F) (B • (Pi.single i 1 : Fin n → E)) = (B : E ⊗[F] Af F) • (Pi.single i 1 : Fin n → E ⊗[F] Af F) := by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[ivec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ivec, Pi.single_apply, h]`. Establish `e2 : (A * B) • ((w i) • (Pi.single i 1 : Fin n → E ⊗[F] Af F)) = ((A : E ⊗[F] Af F) * w i) • ivec (F` using `F) (B • (Pi.single i 1 : Fin n → E)) := by`. Rewrite using `[e1, smul_smul, ← Nat.cast_smul_eq_nsmul (E ⊗[F] Af F), smul_smul]`. Use `congr 1`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `smulO_mem hA (ivec_mem hB)`. Take `⟨N, hN0, hN⟩` from `common_nat (fun i N => N • ((w i) • (Pi.single i 1 : Fin n → E ⊗[F] Af F)) ∈ lamAf (F := F) L) (fun i N M h => nsmul_lam h M) hi`. Use `⟨N, hN0, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ew : w = ∑ i, (w i) • (Pi.single i 1 : Fin n → E ⊗[F] Af F)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[ew, Finset.smul_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => hN i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_vec {L : Submodule (𝓞 E) (Fin n → E)}
     (hspan : Submodule.span E (L : Set (Fin n → E)) = ⊤) (w : Fin n → E ⊗[F] Af F) :

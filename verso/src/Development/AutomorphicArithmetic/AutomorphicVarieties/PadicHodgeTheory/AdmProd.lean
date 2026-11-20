@@ -10,14 +10,14 @@ private def fixT {V : Type} [AddCommGroup V] [Module Q V] (r : G → V →ₗ[Q]
   ⨅ g : G, LinearMap.ker (AlgebraTensorModule.map (r g) (a g) - LinearMap.id)
 
 /- English proof (translation)
-Simplify using `[fixT, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_fixT {V : Type} [AddCommGroup V] [Module Q V] (r : G → V →ₗ[Q] V) (a : G → B →ₗ[Q] B)
     (x : V ⊗[Q] B) : x ∈ fixT r a ↔ ∀ g, AlgebraTensorModule.map (r g) (a g) x = x := by
   simp [fixT, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `zero => simp [Prod.ext_iff]`. Consider the case `tmul v b => obtain ⟨v, v'⟩ := v`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Prod.fst_add, Prod.snd_add, Prod.mk_add_mk]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem prodLeft_act (r : V →ₗ[Q] V) (r' : V' →ₗ[Q] V') (a : B →ₗ[Q] B) (x : (V × V') ⊗[Q] B) :
     TensorProduct.prodLeft Q Q V V' B (AlgebraTensorModule.map (r.prodMap r') a x) =
@@ -29,7 +29,7 @@ private theorem prodLeft_act (r : V →ₗ[Q] V) (r' : V' →ₗ[Q] V') (a : B �
   | add x y hx hy => simp only [map_add, hx, hy, Prod.fst_add, Prod.snd_add, Prod.mk_add_mk]
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨x, rfl⟩` from `(TensorProduct.prodLeft Q Q V V' B).surjective y`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, Submodule.mem_prod, mem_fixT, mem_fixT, mem_fixT, ← forall_and]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← (TensorProduct.prodLeft Q Q V V' B).injective.eq_iff, prodLeft_act, Prod.ext_iff]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fixT_map (r : G → V →ₗ[Q] V) (r' : G → V' →ₗ[Q] V') (a : G → B →ₗ[Q] B) :
     (fixT (fun g => (r g).prodMap (r' g)) a).map (TensorProduct.prodLeft Q Q V V' B).toLinearMap =
@@ -51,7 +51,7 @@ private def prodEquiv' {M N : Type} [AddCommGroup M] [Module Q M] [AddCommGroup 
   right_inv _ := rfl
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (finrank Q V) with h0 | h0` into its components or cases. Use `haveI : Subsingleton V := Module.finrank_zero_iff.mp h0 infer_instance`. Conclude with `Module.finite_of_finrank_pos (h ▸ Nat.mul_pos (Nat.pos_of_ne_zero hn) h0)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem fixT_finite [FiniteDimensional Q V] (r : G → V →ₗ[Q] V) (a : G → B →ₗ[Q] B) {n : ℕ} (hn : n ≠ 0)
     (h : finrank Q ↥(fixT r a) = n * finrank Q V) : Module.Finite Q ↥(fixT r a) := by
@@ -61,7 +61,7 @@ private theorem fixT_finite [FiniteDimensional Q V] (r : G → V →ₗ[Q] V) (a
   · exact Module.finite_of_finrank_pos (h ▸ Nat.mul_pos (Nat.pos_of_ne_zero hn) h0)
 
 /- English proof (translation)
-Use `haveI := fixT_finite r a hn h`. Use `haveI := fixT_finite r' a hn h'`. Rewrite using `[← LinearEquiv.finrank_map_eq (TensorProduct.prodLeft Q Q V V' B), fixT_map, (prodEquiv' _ _).finrank_eq, Module.finrank_prod, Module.finrank_prod, h, h', mul_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fixT_prod [FiniteDimensional Q V] [FiniteDimensional Q V'] (r : G → V →ₗ[Q] V)
     (r' : G → V' →ₗ[Q] V') (a : G → B →ₗ[Q] B) {n : ℕ} (hn : n ≠ 0)
@@ -75,9 +75,9 @@ private theorem fixT_prod [FiniteDimensional Q V] [FiniteDimensional Q V'] (r : 
 end
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ φ hφ A _ _ V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ ρ ρ' _ _`. Establish `ho : IsOpen (φ.range : Set (GQ l))`. Rewrite using `[MonoidHom.coe_range]`. Conclude with `hφ.isOpen_range`. Use `haveI : Finite (GQ l ⧸ φ.range) := Subgroup.quotient_finite_of_isOpen _ ho`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : φ.range.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h2 : (φ.range ⊔ Iq l).index ≠ 0` using `fun h => h1 (Nat.eq_zero_of_zero_dvd (h ▸ Subgroup.index_dvd_of_le le_sup_left))`. Conclude with `⟨fun h h' => fixT_prod (fun g => resCoef ℚ_[l] ρ g) (fun g => resCoef ℚ_[l] ρ' g) (fun g => ((PP l).actQ (φ g)).toLinearMap) h2 h h', fun h h' => fixT_prod (fun g => resCoef ℚ_[l] ρ g) (fun g => resCoef ℚ_[l] ρ' g) (fun g => ((PP l).actQdR (φ g)).toLinearMap) h1 h h'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.isCrys_isDR_prod :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {A : Type} [CommRing A] [Algebra ℚ_[l] A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] {V' : Type} [AddCommGroup V'] [Module A V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] A V'] [FiniteDimensional ℚ_[l] V'] [TopologicalSpace V'] [IsModuleTopology ℚ_[l] V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul A V'] (ρ : Representation A G V) (ρ' : Representation A G V'), ContAction ρ → ContAction ρ' → (IsCr φ ρ → IsCr φ ρ' → IsCr φ (ρ.prod ρ')) ∧ (IsDr φ ρ → IsDr φ ρ' → IsDr φ (ρ.prod ρ')) := by

@@ -36,11 +36,11 @@ def CF (ζ : ℂ) (Φ Φ' : X → ℂ) : Prop :=
 variable {φ τ}
 
 /- English proof (translation)
-Take `⟨p, c, H, hc⟩` from `h0.1`. Establish `hall : Exp φ Ψ (Fin.append c (Fin.append a (-b))) (Fin.append H (Fin.append F G))`. Introduce `x`. Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc x, ← ha x, ← hb x]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `h0.2 _ _ _ hc g`. Establish `e2` using `h0.2 _ _ _ hall g`. Rewrite `e2` using `[Fin.sum_univ_add, Fin.sum_univ_add]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Fin.append_left, Fin.append_right, Pi.neg_apply, map_neg, one_mul, neg_mul, Finset.sum_neg_distrib] at e1 e2`. Rewrite `e2` using `[e1]`. Take the linear combination `-e2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem conj_wd {Ψ Ψ' : X → ℂ} (h0 : CF φ τ 1 Ψ Ψ') {Φ : X → ℂ} {n m : ℕ} {a : Fin n → ℂ} {F : Fin n → B}
     {b : Fin m → ℂ} {G : Fin m → B} (ha : Exp φ Φ a F) (hb : Exp φ Φ b G) (g : X) :
@@ -61,15 +61,15 @@ theorem conj_wd {Ψ Ψ' : X → ℂ} (h0 : CF φ τ 1 Ψ Ψ') {Φ : X → ℂ} {
   linear_combination -e2
 
 /- English proof (translation)
-Use `choose n b G hG using fun k => (h k).1`. Set `e` to `(finSigmaFinEquiv (n := n)).symm`. Establish `hflat : Exp φ (fun g => ∑ k, β k * Φs k g) (fun q => β (e q).1 * b (e q).1 (e q).2) (fun q => G (e q).1 (e q).2)`. Introduce `g`. Rewrite using `[Fintype.sum_equiv e (fun q => β (e q).1 * b (e q).1 (e q).2 * φ (G (e q).1 (e q).2) g) (fun p => β p.1 * b p.1 p.2 * φ (G p.1 p.2) g) (fun _ => rfl), Fintype.sum_sigma]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hG k g, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨_, _, _, hflat⟩, fun N a F ha g => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw` using `conj_wd h0 ha hflat g`. Rewrite `hw` using `[Fintype.sum_equiv e (fun q => τ (β (e q).1 * b (e q).1 (e q).2) * φ (G (e q).1 (e q).2) g) (fun p => τ (β p.1 * b p.1 p.2) * φ (G p.1 p.2) g) (fun _ => rfl), Fintype.sum_sigma]`. Establish `hc : ∀ k, Φs' k g = ∑ j, τ (b k j) * φ (G k j) g` using `fun k => by`. Rewrite using `[(h k).2 _ _ _ (hG k) g]`. Simplify using `only [one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `show c * ∑ k, τ (β k) * Φs' k g = ∑ k, c * τ (a k) * φ (F k) g`. Simplify using `only [hc, map_mul] at hw ⊢`. Establish `e3 : ∑ k, c * τ (a k) * φ (F k) g = c * ∑ k, τ (a k) * φ (F k) g`. Rewrite using `[Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e3, hw]`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem conj_comb {Ψ Ψ' : X → ℂ} (h0 : CF φ τ 1 Ψ Ψ') {m : ℕ} (β : Fin m → ℂ) (Φs Φs' : Fin m → X → ℂ)
     (h : ∀ k, CF φ τ 1 (Φs k) (Φs' k)) (c : ℂ) :
@@ -108,7 +108,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {i : Fin D.R.m}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem conjFun_iff {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup) (κ : WeightFamilies.Wt D ((i : ℕ) + 1))
     (τ : ℂ ≃+* ℂ) (ζ : ℂ) (Φ Φ' : GA D (Wc D i) → ℂ) :
@@ -117,7 +117,7 @@ theorem conjFun_iff {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup
       τ ζ Φ Φ' := Iff.rfl
 
 /- English proof (translation)
-Unfold `ConjFun Expands`. Rewrite using `[GlobalTheory.OneMapAll.phi_eq O O' (T.cE ((i : ℕ) + 1))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjFun_congr {Tp Tp' : Type} {tup : Tp → T0} {tup' : Tp' → T0} (O : OMDat T.toCore R i Tp tup)
     (O' : OMDat T.toCore R i Tp' tup') (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (τ : ℂ ≃+* ℂ) (ζ : ℂ) (Φ Φ' : GA D (Wc D i) → ℂ) :
@@ -131,7 +131,7 @@ def psi {Tp : Type} {tup : Tp → T0} (M : OMDat T.toCore R i Tp tup) (κ : Weig
     rdU (unfBC M.hle (T.U ((i : ℕ) + 1)) (inC M.c')) (actLev M.c' M.lev2 z f) (M.dict g).1 (M.dict g).2
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[map_smul, map_smulₛₗ]`. Use `show _ * ((u : ℂ) * _) = _`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psi_smul {Tp : Type} {tup : Tp → T0} (M : OMDat T.toCore R i Tp tup) (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (z : G)
     (u : M.c'.F) (f : Rul (T.Q.Xo ((i : ℕ) + 1)) M.c') (g : GA D (Wc D i)) :
@@ -144,41 +144,39 @@ theorem psi_smul {Tp : Type} {tup : Tp → T0} (M : OMDat T.toCore R i Tp tup) (
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `hCI D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hsz hC hT0 hFW hio hQ i hOP hPT c hc τ hτ`. Take `⟨fw⟩` from `hFW`. Establish `hTie : TieIn T R κ v₀` using `⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩`. Take `⟨M, hMP, hlev, hext, hnorm, hcurve, hxiF, hcov⟩` from `GlobalTheory.T.exists_normalisedData_normalCoefficientField D G Pl0 T0 A T R F κ v₀ O hC hT0 ⟨fw⟩ hQ i hOP`. Set `τQ : ℂ ≃ₐ[ℚ] ℂ` to `AlgEquiv.ofRingEquiv (f := τ) (fun q => map_ratCast τ q)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ta : M.c'.F ≃+* M.c'.F` to `(τQ.restrictNormal M.c'.F).toRingEquiv`. Establish `hta : ∀ a : M.c'.F, ((ta a : M.c'.F) : ℂ) = τ (a : ℂ)` using `fun a => τQ.restrictNormal_commutes M.c'.F a`. Establish `hEq0 : (O i).EquivAt (κ i) (T.cE ((i : ℕ) + 1) (O i).s0)` using `(hPT (GlobalTheory.T.thetaOneMap_baseTuple_of_characterisation_extremal hCI D G Pl0 T0 A T R F κ v₀ hC hTie hio O i hOP)).1`. Establish `hlev2 : M.lev2 = (O i).lev2` using `by funext g; simp only [OMDat.lev2, hlev]`. Establish `hEqM : M.EquivAt (κ i) (T.cE ((i : ℕ) + 1) M.s0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `OMDat.EquivAt at hEq0 ⊢`. Rewrite using `[GlobalTheory.OneMapAll.phi_eq M (O i) (T.cE ((i : ℕ) + 1)), hlev2]`. Conclude with `hEq0`. Establish `hcM : ExtC R i (inC M.c') M.c0' c` using `(hext c).1 hc`. Take `⟨ζ, z, hζ, -, hser⟩` from `GlobalTheory.T.oneMap_every_normalisedFamily_at_coreConstants hCI D G Pl0 T0 A T R F κ v₀ O ph hsz hC hT0 ⟨fw⟩ hio hQ i hOP hPT T0 id M hMP hlev hext`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hf, k0, hk0, hgal⟩` from `GlobalTheory.T.conj_thetaClassSum_eq_rootOfUnity_conjTuple hCI D G Pl0 T0 A T R F κ v₀ hC ⟨fw⟩ i T0 id M hMP τ ta hta hτ hcurve hxiF`. Take `⟨a0, ha0, hza⟩` from `hζ`. Take `⟨b0, hb0, hkb⟩` from `hk0`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hza` using `[zero_pow ha0.ne']`. Conclude with `zero_ne_one hza`. Establish `hτζ : τ ζ ≠ 0` using `(map_ne_zero τ).2 hζ0`. Use `⟨ζ * k0 / τ ζ, ⟨a0 * b0, Nat.mul_pos ha0 hb0, ?_⟩, fun t t' hct => ?_⟩` and prove the remaining obligations. Rewrite using `[div_pow, mul_pow, ← map_pow, pow_mul ζ a0 b0, hza, one_pow, pow_mul' k0 a0 b0, hkb, one_pow, map_one, div_one, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, hsame⟩` from `hcov t t' hct.1`. Take `⟨u, s, hu, hgal'⟩` from `hgal t t' e hsame hct`. Use `⟨s, fun y y' hcf => ?_⟩` and prove the remaining obligations. Take `⟨n, α, ys, ys', hy, hy', hval⟩` from `GlobalTheory.T.conjugate_definiteForms_descend_numberField D G Pl0 T0 A T R F κ v₀ hC ⟨fw⟩ i T0 id M hMP τ ta hta hτ c hcM hxiF t t' hct y y' hcf`. Take `⟨h, J', hR, -⟩` from `(hMP.tuple t).reps`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlevJ` using `((GlobalTheory.T.conjugate_tuples_conjugate_residue_levels D G Pl0 T0 A T R F κ v₀ hC τ t t' hct).2.2.2 i hτ).1`. Establish `hR' : RepsR R i t' (fun j => h (e.symm j)) (M.bad t') J' (M.Lh t') (M.gam t') (M.vol t')`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `hR`. Take `⟨-, -, -, hbad, hvol, hk⟩` from `hsame`. Establish `hQ' : R.Q t' = R.Q t` using `hct.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hbad ▸ h1, fun PP hPP => ?_, ?_, ?_, ?_, fun g => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hbad]`. Conclude with `h2 PP (hQ' ▸ hPP)`. Rewrite using `[hlevJ]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hlevJ]`. Conclude with `h4`. Rewrite using `[hlevJ, hvol]`. Conclude with `h5`. Take `⟨p, hp, huniq⟩` from `h6 g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨e p, by simpa using hp, fun j hj => ?_⟩` and prove the remaining obligations. Use `huniq (e.symm j) hj` as an intermediate fact. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Take `⟨a1, a2, a3⟩` from `h7 (e.symm j)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hkj` using `hk (e.symm j)`. Simplify using `only [Equiv.apply_symm_apply] at hkj`. Conclude with `⟨hbad ▸ a1, hkj.1.trans a2, hkj.2.2.2.trans a3⟩`. Use `choose xv xv' hxv using hval`. Set `xs : Fin n → M.Cl' t → VsV D i M.c'.F` to `fun k p => xv k (h p)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Set `xs' : Fin n → M.Cl' t' → VsV D i M.c'.F` to `fun k j => xv' k (h (e.symm j))`. Use `choose f hfc hfs using fun k => GlobalTheory.ClassSumRule.exists_cusp_isThClsD_core hCI D G Pl0 T0 A T R F κ v₀ hC hTie i T0 id M hMP t (xs k)`. Establish `hsec : ∀ k, f k ∈ sec (T.Q.Xo ((i : ℕ) + 1)) M.c' (wtA (κ i)) (Vc D i).rank` using `fun k => cusp_le_sec _ _ _ _ _ (hfc k)`. Establish `hA : ∀ k g, ph i * R.thF i t (ys k) (v₀ i (sg0 D A)) g = ζ * psi M (κ i) z (f k) g` using `fun k g => by`. Use `(hser t h J' hR (ys k) (xs k) (fun p => (hxv k (h p)).2.1) (f k) (hsec k) (hfs k) g).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `psi`. Expand and normalize the polynomial expressions, which then agree. Establish `hG : ∀ k, u • galRul hf (f k) ∈ sec (T.Q.Xo ((i : ℕ) + 1)) M.c' (wtA (κ i)) (Vc D i).rank ∧ GlobalTheory.OneMapAll.IsSum M t' (xs' k) (u • galRul hf (f k))` using `fun k => hgal' (xs k) (xs' k) (fun p => by simp only [xs, xs', Equiv.symm_apply_apply]; exact (hxv k (h p)).1) (f k) (hsec k) (hfs k)`. Establish `hB : ∀ k g, ph i * R.thF i t' (ys' k) (v₀ i (sg0 D A)) g = ζ * (u : ℂ) * psi M (κ i) z (galRul hf (f k)) g` using `fun k g => by`. Use `(hser t' (fun j => h (e.symm j)) J' hR' (ys' k) (xs' k) (fun j => (hxv k (h (e.symm j))).2.2) (u • galRul hf (f k)) (hG k).1 (hG k).2 g).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show ζ * (u : ℂ) * psi M (κ i) z (galRul hf (f k)) g = ζ * ((u : ℂ) * psi M (κ i) z (galRul hf (f k)) g) by ring, ← psi_smul]`. Unfold `psi`. Expand and normalize the polynomial expressions, which then agree. Establish `hbc : ∀ k, ConjFun M (κ i) τ 1 (psi M (κ i) z (f k)) (psi M (κ i) z (galRul hf (f k)))` using `fun k => GlobalTheory.T.cuspFormReading_galoisConj_expansion D G Pl0 T0 A T R F κ v₀ hC ⟨fw⟩ i T0 id M hMP τ ta hta hτ hf z (f k) (hfc k) hEqM`. Establish `hbc0 : ConjFun M (κ i) τ 1 (psi M (κ i) z 0) (psi M (κ i) z (galRul hf 0))` using `GlobalTheory.T.cuspFormReading_galoisConj_expansion D G Pl0 T0 A T R F κ v₀ hC ⟨fw⟩ i T0 id M hMP τ ta hta hτ hf z 0 (Submodule.zero_mem _) hEqM`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcomb` using `GlobalTheory.ConjCombine.conj_comb ((conjFun_iff M (κ i) τ 1 _ _).1 hbc0) (fun k => ζ * α k) (fun k => psi M (κ i) z (f k)) (fun k => psi M (κ i) z (galRul hf (f k))) (fun k => (conjFun_iff M (κ i) τ 1 _ _).1 (hbc k)) (ζ * k0 / τ ζ * ((R.xi t' s : Circle) : ℂ))`. Establish `hΦ : (fun g => ph i * R.thF i t y (v₀ i (sg0 D A)) g) = fun g => ∑ k, (ζ * α k) * psi M (κ i) z (f k) g`. Use function extensionality and compare the values at `g`. Rewrite using `[hy, map_sum]`. Simplify using `only [map_smul, MultilinearMap.sum_apply, MultilinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, hA k g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΦ' : (fun g => ph i * R.thF i t' y' (v₀ i (sg0 D A)) g) = fun g => ζ * k0 / τ ζ * ((R.xi t' s : Circle) : ℂ) * ∑ k, τ (ζ * α k) * psi M (κ i) z (galRul hf (f k)) g`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy', map_sum]`. Simplify using `only [map_smul, MultilinearMap.sum_apply, MultilinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hu' : (u : ℂ) = k0 * ((R.xi t' s : Circle) : ℂ)` using `hu`. Establish `hcan : ζ * k0 / τ ζ * τ ζ = ζ * k0` using `div_mul_cancel₀ _ hτζ`.
-
-Rewrite using `[mul_left_comm, hB k g, hu', map_mul]`. Take the linear combination `(-(τ (α k) * ((R.xi t' s : Circle) : ℂ) * psi M (κ i) z (galRul hf (f k)) g)) * hcan`. Rewrite using `[conjFun_congr (O i) M, conjFun_iff, hΦ, hΦ']`. Conclude with `hcomb`.
+A detailed English derivation is pending.
 -/
 theorem conj_lifts : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → Finite T0 → Nonempty (FWTie T R κ v₀) → IoExt R → QGuard R → ∀ i : Fin D.R.m, OMPins T R κ v₀ O i → PhaseTie T R κ v₀ O ph i → ∀ (c : VsV D i ℂ →ₗ[ℂ] (R.cV i).W), ExtC R i (inC (O i).c') (O i).c0' c → ∀ τ : ℂ ≃+* ℂ, FixBase T R i τ → ∃ ζ0 : ℂ, IsRoot1 ζ0 ∧ ∀ t t' : T0, ConjTup R τ t t' → ∃ s : (AE D)ˣ, ∀ (y : (R.HV i t).H) (y' : (R.HV i t').H), ConjForm R i τ c t t' y y' → ConjFun (O i) (κ i) τ (ζ0 * ((R.xi t' s : Circle) : ℂ)) (fun g => ph i * R.thF i t y (v₀ i (sg0 D A)) g) (fun g => ph i * R.thF i t' y' (v₀ i (sg0 D A)) g) := by
   intro hCI D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hsz hC hT0 hFW hio hQ i hOP hPT c hc τ hτ

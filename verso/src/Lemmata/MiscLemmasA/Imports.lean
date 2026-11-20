@@ -3,53 +3,49 @@ import Mathlib
 namespace Bl.SecondBlockLemmaB
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `g _ _ _`. Apply the tactic sequence `refine ⟨0, 0, 0, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro i <;> exact i.elim0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ n ih`. Introduce `g hd hU hL'`. Take `⟨u, hu⟩ : ∃ u : O, g (Fin.last n) (Fin.last n) * u = 1` from `(hd _).exists_right_inv`. Establish `hnl : ∀ i : Fin n, ¬ (Fin.last n < i.castSucc)` using `fun i => not_lt.mpr (Fin.castSucc_lt_last i).le`. Establish `hcorr : ∀ i : Fin n, g i.castSucc (Fin.last n) * u * g (Fin.last n) i.castSucc ∈ U * L` using `fun i => Ideal.mul_mem_mul (U.mul_mem_right _ (hU _ _ (Fin.castSucc_lt_last i))) (hL' _ _ (Fin.castSucc_lt_last i))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAd : ∀ i : Fin n, IsUnit (g i.castSucc i.castSucc - g i.castSucc (Fin.last n) * u * g (Fin.last n) i.castSucc)`. Introduce `i`. Establish `h2` using `hd i.castSucc`. Rewrite `h2` using `[show g i.castSucc i.castSucc = (g i.castSucc i.castSucc - g i.castSucc (Fin.last n) * u * g (Fin.last n) i.castSucc) + g i.castSucc (Fin.last n) * u * g (Fin.last n) i.castSucc by ring]`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h2 with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `absurd h (mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp (hL (Ideal.mul_le_right (hcorr i)))))`. Establish `hAU : ∀ i j : Fin n, i < j → g i.castSucc j.castSucc - g i.castSucc (Fin.last n) * u * g (Fin.last n) j.castSucc ∈ U`. Introduce `i j hij`. Conclude with `U.sub_mem (hU _ _ (Fin.castSucc_lt_castSucc_iff.mpr hij)) (U.mul_mem_right _ (U.mul_mem_right _ (hU _ _ (Fin.castSucc_lt_last i))))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hAL : ∀ i j : Fin n, j < i → g i.castSucc j.castSucc - g i.castSucc (Fin.last n) * u * g (Fin.last n) j.castSucc ∈ L`. Introduce `i j hij`. Conclude with `L.sub_mem (hL' _ _ (Fin.castSucc_lt_castSucc_iff.mpr hij)) (L.mul_mem_left _ (hL' _ _ (Fin.castSucc_lt_last j)))`. Take `⟨x', y', δ', hg, hx1, hx0, hxU, hδu, hδ, hy1, hy0, hyL⟩` from `ih (Matrix.of fun i j => g i.castSucc j.castSucc - g i.castSucc (Fin.last n) * u * g (Fin.last n) j.castSucc) (fun i => by simp only [Matrix.of_apply]; exact hAd i) (fun i j h => by simp only [Matrix.of_apply]; exact hAU i j h) (fun i j h => by simp only [Matrix.of_apply]; exact …`. Use `⟨Matrix.of fun i j => Fin.lastCases (motive := fun _ => O) (Fin.lastCases (motive := fun _ => O) 1 (fun _ => 0) j) (fun i' => Fin.lastCases (motive := fun _ => O) (g i'.castSucc (Fin.last n) * u) (fun j' => x' i' j') j) i, Matrix.of fun i j => Fin.lastCases (motive := fun _ => O) …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Introduce `i j`. Rewrite using `[Fin.sum_univ_castSucc]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Consider the case `last => simp`. Consider the case `cast j`. Simplify using the standard rewrite rules. Take the linear combination `(-(g (Fin.last n) j.castSucc)) * hu`. Consider the case `cast i`.
+Treat this case separately. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Simplify using the standard rewrite rules. Take the linear combination `(-(g i.castSucc (Fin.last n))) * hu`. Consider the case `cast j`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `hg i j` as an intermediate fact. Simplify using `only [Matrix.of_apply] at this`. Simplify using the standard rewrite rules. Take the linear combination `this - (g i.castSucc (Fin.last n) * u * g (Fin.last n) j.castSucc) * hu`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast i => simp [hx1 i]`. Introduce `i j h`. Proceed by induction on `i using Fin.lastCases with`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd h (lt_irrefl _)`. Consider the case `cast j => simp`. Consider the case `cast i`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd h (hnl i)`. Consider the case `cast j`. Simplify using `only [Matrix.of_apply, Fin.lastCases_castSucc]`. Conclude with `hx0 i j (Fin.castSucc_lt_castSucc_iff.mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Introduce `i j h`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd h (lt_irrefl _)`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `cast j => simp`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Matrix.of_apply, Fin.lastCases_castSucc, Fin.lastCases_last]`.
+Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `U.mul_mem_right _ (hU _ _ (Fin.castSucc_lt_last i))`. Consider the case `cast j`. Simplify using `only [Matrix.of_apply, Fin.lastCases_castSucc]`. Conclude with `hxU i j (Fin.castSucc_lt_castSucc_iff.mp h)`. Introduce `i`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [Fin.lastCases_last]`. Conclude with `hd _`. Consider the case `cast i => simp only [Fin.lastCases_castSucc]`. Conclude with `hδu i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast i`. Establish `h1` using `hδ i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.of_apply] at h1`. Simplify using `only [Fin.lastCases_castSucc]`. Establish `e : δ' i - g i.castSucc i.castSucc = (δ' i - (g i.castSucc i.castSucc - g i.castSucc (Fin.last n) * u * g (Fin.last n) i.castSucc)) - g i.castSucc (Fin.last n) * u * g (Fin.last n) i.castSucc` using `by ring`. Rewrite using `[e]`. Conclude with `(U * L).sub_mem h1 (hcorr i)`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast i => simp [hy1 i]`. Introduce `i j h`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd h (lt_irrefl _)`. Consider the case `cast j => exact absurd h (hnl j)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast j`. Simplify using `only [Matrix.of_apply, Fin.lastCases_castSucc]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Conclude with `hy0 i j (Fin.castSucc_lt_castSucc_iff.mp h)`. Introduce `i j h`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`.
-
-Consider the case `last => exact absurd h (lt_irrefl _)`. Consider the case `cast j`. Simplify using `only [Matrix.of_apply, Fin.lastCases_castSucc, Fin.lastCases_last]`. Conclude with `L.mul_mem_left _ (hL' _ _ (Fin.castSucc_lt_last j))`. Consider the case `cast i`.
-
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd h (hnl i)`. Consider the case `cast j`. Simplify using `only [Matrix.of_apply, Fin.lastCases_castSucc]`. Conclude with `hyL i j (Fin.castSucc_lt_castSucc_iff.mp h)`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goal1 (O : Type) [CommRing O] [IsLocalRing O] (U L : Ideal O)
     (hL : L ≤ IsLocalRing.maximalIdeal O) :

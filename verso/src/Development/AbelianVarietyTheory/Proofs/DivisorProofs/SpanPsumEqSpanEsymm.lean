@@ -7,15 +7,13 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 namespace GlobalTheory
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, ⟨hk1, hkN⟩, rfl⟩`. Establish `he : ∀ j, 1 ≤ j → j ≤ N → esymm (Fin N) ℝ j ∈ Ideal.span ((fun k => esymm (Fin N) ℝ k) '' Set.Icc 1 N)` using `fun j h1 h2 => Ideal.subset_span ⟨j, ⟨h1, h2⟩, rfl⟩`. Use `show psum (Fin N) ℝ k ∈ Ideal.span _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[psum_eq_mul_esymm_sub_sum (Fin N) ℝ k hk1]`. Use `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ (he k hk1 hkN)) ?_` and prove the remaining obligations. Use `Ideal.sum_mem _ fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[Finset.mem_filter, Set.mem_Ioo]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (he a.1 ha.2.1 (ha.2.2.le.trans hkN)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, ⟨hk1, hkN⟩, rfl⟩`. Establish `hp : ∀ j, 1 ≤ j → j ≤ N → psum (Fin N) ℝ j ∈ Ideal.span ((fun k => psum (Fin N) ℝ k) '' Set.Icc 1 N)` using `fun j h1 h2 => Ideal.subset_span ⟨j, ⟨h1, h2⟩, rfl⟩`. Establish `h : (k : MvPolynomial (Fin N) ℝ) * esymm (Fin N) ℝ k ∈ Ideal.span ((fun k => psum (Fin N) ℝ k) '' Set.Icc 1 N)`. Rewrite using `[mul_esymm_eq_sum (Fin N) ℝ k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Ideal.mul_mem_left _ _ (Ideal.sum_mem _ fun a ha => ?_)` and prove the remaining obligations. Rewrite `ha` using `[Finset.mem_filter, Finset.HasAntidiagonal.mem_antidiagonal]`. Conclude with `Ideal.mul_mem_left _ _ (hp a.2 (by omega) (by omega))`. Establish `hk : (k : ℝ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Establish `h2` using `Ideal.mul_mem_left _ (C (k : ℝ)⁻¹) h`.
-
-Use `show esymm (Fin N) ℝ k ∈ Ideal.span _`. Rewrite `h2` using `[← mul_assoc, ← map_natCast (C : ℝ →+* MvPolynomial (Fin N) ℝ) k, ← map_mul, inv_mul_cancel₀ hk, map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_psum_eq_span_esymm (N : ℕ) :
     Ideal.span ((fun k => psum (Fin N) ℝ k) '' Set.Icc 1 N) =

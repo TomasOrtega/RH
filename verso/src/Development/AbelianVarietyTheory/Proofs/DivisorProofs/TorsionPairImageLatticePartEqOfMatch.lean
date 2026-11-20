@@ -18,11 +18,11 @@ namespace GlobalTheory.TInj
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
 /- English proof (translation)
-Introduce `V _ _ _ J hJ D₁ D₂ b φ F _ _ _ hM k p p' hA`. Take `⟨hmon, -, -, hnrm, hlast⟩` from `hM`. Take `⟨hex, hadd, -⟩` from `GlobalTheory.Mum.Two.act_two_hom V D₁.toPre D₂.toPre b φ.symm.toAddMonoidHom hmon hnrm F`. Use `choose α hα hαu using hex`. Set `f : GtPtF D₁.toPre F →+ GtPtF D₂.toPre F` to `AddMonoidHom.mk' α fun x y => (GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).1 (hadd x y (x + y) (α x) (α y) (α (x + y)) ((GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 rfl) (hα x) (hα y) (hα _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, hn₁, hi₁⟩` from `p.eq`. Take `⟨h₂, hn₂, hi₂⟩` from `p'.eq`. Take `⟨g', hg'A, hg'I⟩` from `hlast p.y h₁ hi₁`. Establish `e₁ : h₁ = k • p.g` using `(GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).1 hn₁`. Establish `e₂ : h₂ = k • p'.g` using `(GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).1 hn₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ep : p'.g = f p.g` using `hαu p.g p'.g hA`. Establish `eg : g' = f h₁` using `hαu h₁ g' hg'A`. Establish `: g' = h₂` using `by rw [eg, e₁, map_nsmul, ← ep, e₂]`. Rewrite `hi₂` using `[← this]`. Conclude with `GlobalTheory.IotaInj.main GlobalTheory.firstFiveLaws V J hJ D₂ F p'.y (φ p.y) g' hi₂ hg'I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qImg_lattice : ∀ (V : Type) [CommRing V] [IsDomain V] [CharZero V] (J : Ideal V), AdmBase V J → ∀ (D₁ D₂ : DegData V J) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (φ : D₁.toPre.X ≃+ D₂.toPre.X) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F], Match D₁.toPre D₂.toPre b φ F → ∀ (k : ℕ) (p : QkPt D₁.toPre F k) (p' : QkPt D₂.toPre F k), Act D₁.toPre D₂.toPre b φ.symm.toAddMonoidHom p.g p'.g → p'.y = φ p.y := by
   intro V _ _ _ J hJ D₁ D₂ b φ F _ _ _ hM k p p' hA

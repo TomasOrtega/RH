@@ -20,9 +20,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X} {k : Type} [Field k] {x : Sp k ⟶ X} {φ : Fib k} {m : CubeMap φ.G t.G}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hF.1.1.w, ← Category.assoc, Over.w w]`. Both sides reduce to the same expression. Establish `h1` using `Formalism.L2.Pj.grpPull_one hF.1 (𝟙_ (Over (Sp k)))`. Establish `h2 : (𝟙_ (Over (Sp k))).hom ≫ x = x` using `Category.id_comp x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hw]`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem isTanAtG_push (hF : FibAt t x φ m) {w : epsR k ⟶ φ.G} (hw : IsTangent w) :
     Formalism.L2.Pj.IsTanAtG t x (w.left ≫ m.F) := by
@@ -37,9 +37,9 @@ theorem isTanAtG_push (hF : FibAt t x φ m) {w : epsR k ⟶ φ.G} (hw : IsTangen
     congr 1
 
 /- English proof (translation)
-Establish `h1` using `Formalism.L2.Pj.grpPull_one hF.1 (𝟙_ (Over (Sp k)))`. Establish `h2 : (𝟙_ (Over (Sp k))).hom ≫ x = x` using `Category.id_comp x`. Rewrite `h1` using `[h2]`. Use `hF.1.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h, (isTan_tv w).2, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Category.assoc, Over.w w', Over.w]`. Conclude with `GlobalTheory.Diag.fstHom_base`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTangent_of_push (hF : FibAt t x φ m) {w' : epsR k ⟶ φ.G} {w : TanM x t.G}
     (h : w'.left ≫ m.F = (tv w).left) : IsTangent w' := by
@@ -53,7 +53,7 @@ theorem isTangent_of_push (hF : FibAt t x φ m) {w' : epsR k ⟶ φ.G} {w : TanM
     exact GlobalTheory.Diag.fstHom_base
 
 /- English proof (translation)
-Unfold `IsTangent at hw ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hw, ← Over.comp_left, IsMonHom.one_hom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_comp {G G' : Over (Sp k)} [GrpObj G] [GrpObj G'] (f : G ⟶ G') [IsMonHom f] {w : epsR k ⟶ G}
     (hw : IsTangent w) : IsTangent (w ≫ f) := by
@@ -61,9 +61,9 @@ theorem isTangent_comp {G G' : Over (Sp k)} [GrpObj G] [GrpObj G'] (f : G ⟶ G'
   rw [Over.comp_left, ← Category.assoc, hw, ← Over.comp_left, IsMonHom.one_hom]
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Establish `e : spMap (epsScaleR (0 : k)) = spMap (algebraMap k (DualNumber k)) ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom`. Rewrite using `[← Spec.map_comp]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by`. Apply the tactic sequence `ext <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1 : u = fun _ => 1` using `funext fun i => Over.OverMorphism.ext (by`. Rewrite using `[hu i, Pi.zero_apply, e, Category.assoc, hv i]`. Use the proof step `rfl)`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_one_of_isLieComb_zero {G : Over (Sp k)} [GrpObj G] {n : ℕ} {v : Fin n → (epsR k ⟶ G)}
     (hv : ∀ i, IsTangent (v i)) {w : epsR k ⟶ G} (h : IsLieComb 0 v w) : w = 1 := by
@@ -96,11 +96,11 @@ theorem left_torL (hF : FibAt t x φ m) (c : φ.X →+ k) :
     (tv (torL hF c)).left = (GlobalTheory.Diag.lieVec c ≫ φ.i).left ≫ m.F := rfl
 
 /- English proof (translation)
-Introduce `w hw`. Use `haveI := φ.i_hom`. Take `⟨w', h1, h2⟩` from `hq w`. Rewrite `h2` using `[LinearMap.mem_ker.1 hw]`. Establish `h3 : w' ≫ φ.q = toUnit _ ≫ η[φ.P.A]` using `eq_one_of_isLieComb_zero hv.1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : φ.isKernel.lift _ _ h3 ≫ φ.i = w'` using `φ.isKernel.lift_fst _ _ h3`. Set `e₀ : 𝟙_ (Over (Sp k)) ⟶ epsR k` to `Over.homMk (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) GlobalTheory.Diag.fstHom_base`. Establish `h4 : e₀ ≫ φ.isKernel.lift _ _ h3 = η[splitTorus (Sp k) φ.X]`. Use `φ.isKernel.hom_ext ?_ (toUnit_unique _ _)` and prove the remaining obligations. Rewrite using `[Category.assoc, hl, IsMonHom.one_hom]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Over.OverMorphism.ext (isTangent_of_push hF h1)`. Take `⟨c, hc⟩` from `(GlobalTheory.Diag.isTangent_iff_exists (φ.isKernel.lift _ _ h3)).1 (congrArg Over.Hom.left h4)`. Conclude with `⟨c, tan_ext (by rw [left_torL, hc, hl, h1])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ker_le_range (hF : FibAt t x φ m) {n : ℕ} {v : Fin n → (epsR k ⟶ φ.P.A)} (hv : IsLieBasis v)
     {q : TanM x t.G →ₗ[k] (Fin n → k)} (hq : IsAbMap φ m v q) : LinearMap.ker q ≤ LinearMap.range (torL hF) := by
@@ -120,9 +120,9 @@ theorem ker_le_range (hF : FibAt t x φ m) {n : ℕ} {v : Fin n → (epsR k ⟶ 
   exact ⟨c, tan_ext (by rw [left_torL, hc, hl, h1])⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t k _ x φ m hF n v hv q hq`. Set `b` to `GlobalTheory.Diag.dualBasis k (Module.finBasis ℤ φ.X)`. Use `⟨fun j => torL hF (b j), (ker_le_range hF hv hq).trans ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[← b.sum_repr c, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun j _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_le_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] (x : Sp k ⟶ X) (φ : Fib k) (m : CubeMap φ.G t.G), FibAt t x φ m → ∀ (n : ℕ) (v : Fin n → (epsR k ⟶ φ.P.A)), IsLieBasis v → ∀ q : TanM x t.G →ₗ[k] (Fin n → k), IsAbMap φ m v q → ∃ s : Fin (Module.finrank ℤ φ.X) → TanM x t.G, LinearMap.ker q ≤ Submodule.span k (Set.range s) := by
   intro E _ _ _ H X t k _ x φ m hF n v hv q hq

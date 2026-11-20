@@ -18,7 +18,7 @@ open scoped TensorProduct
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.induced_rep_sigma_apply_quotient χ₁ χ₂ u v p w`.
+A detailed English derivation is pending.
 -/
 theorem inducing_mk (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (p : relParab k (colEq u v)) (w : ℂ ⊗[ℂ] ℂ) :
     sigmaC χ₁ χ₂ u v p (Submodule.Quotient.mk w) =
@@ -44,11 +44,11 @@ def toFun (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ)
     Submodule.Quotient.mk (φ.1.1 (x false))
 
 /- English proof (translation)
-Establish `hq` using `(mem_relParab_colEq (p : Levi k (Two (Fin (u + v)) (Fin 1)))).1 p.2`. Establish `h1` using `parInd_law (two (stdSum (rfl : u + v = u + v))) (rhoL χ₁ χ₂ u v) φ ⟨_, hq⟩ (x false)`. Establish `h2 : rhoL χ₁ χ₂ u v (leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨_, hq⟩) (φ.1.1 (x false)) = ((χ₁ (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨_, hq⟩ false)) * (χ₂ * absPow k (-(1 / 2))) (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + …` using `GlobalTheory.IndLineGL.CellTorus.extTensor_detRep_apply χ₁ (χ₂ * absPow k (-(1 / 2))) _ _`. Unfold `toFun`. Rewrite using `[map_smul, inducing_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show (((χ₂ * absPow k ((v : ℂ) / 2)) (GeneralLinearGroup.det (p.1 true * x true)) : ℂˣ) : ℂ) • Submodule.Quotient.mk (φ.1.1 (p.1 false * x false)) = _`. Rewrite using `[h1, h2]`. Rewrite using `[map_mul, map_mul, Submodule.Quotient.mk_smul, Submodule.Quotient.mk_smul, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Simplify using `only [Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem toFun_law (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ)
     (φ : IndSp (two (stdSum (rfl : u + v = u + v))) (rhoL (k := k) χ₁ χ₂ u v))
@@ -74,11 +74,11 @@ theorem toFun_law (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ)
   ring
 
 /- English proof (translation)
-Establish `hc : IsSmoothChar (χ₂ * absPow k ((v : ℂ) / 2))` using `hχ₂.mul (isSmoothChar_of_isUnram (isUnram_absPow k _))`. Establish `hd` using `(hc.detChar (n := Fin 1)).comp (Pi.evalMonoidHom (fun j => GL (Two (Fin (u + v)) (Fin 1) j) k) true) (continuous_apply true)`. Establish `hφ : IsOpen {g : GL (Fin (u + v)) k | ind _ _ g φ.1 = φ.1}` using `φ.2`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (((hφ.preimage (continuous_apply false)).inter hd).mem_nhds ⟨by simp, by simp⟩) ?_)` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hy2' : (χ₂ * absPow k ((v : ℂ) / 2)) (GeneralLinearGroup.det (y true)) = 1` using `MonoidHom.mem_ker.1 hy2`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show toFun χ₁ χ₂ u v φ (x * y) = toFun χ₁ χ₂ u v φ x`. Establish `h3 : φ.1.1 (x false * y false) = φ.1.1 (x false)` using `congrArg (fun F => F.1 (x false)) (show ind _ _ (y false) φ.1 = φ.1 from hy1)`. Unfold `toFun`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mul_apply, Pi.mul_apply, h3, map_mul, map_mul, hy2', mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem toFun_smooth {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₂ : IsSmoothChar χ₂) (u v : ℕ)
     (φ : IndSp (two (stdSum (rfl : u + v = u + v))) (rhoL (k := k) χ₁ χ₂ u v)) :
@@ -124,11 +124,11 @@ theorem toCell_apply {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₂ : IsSmoothChar χ₂
     (toCell hχ₂ u v φ).1.1 x = toFun χ₁ χ₂ u v φ x := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `φ hφ`. Use `Subtype.ext (Subtype.ext (funext fun x₁ => ?_))` and prove the remaining obligations. Establish `h` using `congrArg (fun F => F.1.1 (leviTwo k (Fin (u + v)) (Fin 1) (x₁, 1))) hφ`. Simplify using `only [toCell_apply] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h' : (Submodule.Quotient.mk (φ.1.1 x₁) : Jacquet (rhoM (k` using `k) χ₁ χ₂ u v) (relUnip k (rowEq u v))) = 0 := by`. Establish `e : toFun χ₁ χ₂ u v φ (leviTwo k (Fin (u + v)) (Fin 1) (x₁, 1)) = Submodule.Quotient.mk (φ.1.1 x₁)`. Unfold `toFun`. Use `show ((((χ₂ * absPow k ((v : ℂ) / 2)) (GeneralLinearGroup.det (1 : GL (Fin 1) k)) : ℂˣ) : ℂ) • _) = _`. Rewrite using `[map_one, map_one, Units.val_one, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `h`. Rewrite `h'` using `[Submodule.Quotient.mk_eq_zero, twKer_rhoM, Submodule.mem_bot]`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toCell_injective {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₂ : IsSmoothChar χ₂) (u v : ℕ) :
     Function.Injective (toCell (k := k) (χ₁ := χ₁) hχ₂ u v) := by
@@ -171,7 +171,7 @@ def restr (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := k) χ₁
   Submodule.quotEquivOfEqBot _ (twKer_rhoM (k := k) χ₁ χ₂ u v) (Φ.1.1 (incl u v x₁))
 
 /- English proof (translation)
-The claim follows from `(Submodule.quotEquivOfEqBot _ (twKer_rhoM (k := k) χ₁ χ₂ u v)).symm_apply_apply _`.
+A detailed English derivation is pending.
 -/
 theorem mk_restr (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := k) χ₁ χ₂ u v) (x₁ : GL (Fin (u + v)) k) :
     (Submodule.Quotient.mk (restr χ₁ χ₂ u v Φ x₁) :
@@ -179,9 +179,9 @@ theorem mk_restr (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := k
   (Submodule.quotEquivOfEqBot _ (twKer_rhoM (k := k) χ₁ χ₂ u v)).symm_apply_apply _
 
 /- English proof (translation)
-Establish `hmem : incl u v (q : GL (Fin (u + v)) k) ∈ relParab k (colEq u v)` using `(mem_relParab_colEq _).2 q.2`. Establish `h1 : Φ.1.1 (incl u v (q : GL (Fin (u + v)) k) * incl u v x₁) = sigmaC χ₁ χ₂ u v ⟨_, hmem⟩ (Φ.1.1 (incl u v x₁))` using `Φ.1.2 ⟨_, hmem⟩ (incl u v x₁)`. Establish `h2 : rhoL χ₁ χ₂ u v (leviProj k (two (stdSum (rfl : u + v = u + v))) q) (restr χ₁ χ₂ u v Φ x₁) = ((χ₁ (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + v = u + v))) q false)) * (χ₂ * absPow k (-(1 / 2))) (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + v = u …` using `GlobalTheory.IndLineGL.CellTorus.extTensor_detRep_apply χ₁ (χ₂ * absPow k (-(1 / 2))) _ _`. Rewrite using `[MonoidHom.comp_apply, twist_apply, h2, smul_smul]`. Unfold `restr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_mul, h1, ← mk_restr χ₁ χ₂ u v Φ x₁, inducing_mk, map_smul]`. Unfold `restr`. Rewrite using `[Submodule.quotEquivOfEqBot_apply_mk]`. Use `congr 1`. Simplify using `only [Subtype.coe_mk, incl_true, incl_false, Subtype.coe_eta, map_one, one_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem restr_law (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := k) χ₁ χ₂ u v)
     (q : parab k (two (stdSum (rfl : u + v = u + v)))) (x₁ : GL (Fin (u + v)) k) :
@@ -205,11 +205,11 @@ theorem restr_law (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := 
   simp only [Subtype.coe_mk, incl_true, incl_false, Subtype.coe_eta, map_one, one_mul, Units.val_mul]
 
 /- English proof (translation)
-Establish `hΦ : IsOpen {y : Levi k (Two (Fin (u + v)) (Fin 1)) | ind (relParab k (colEq u v)) (sigmaC χ₁ χ₂ u v) y Φ.1 = Φ.1}` using `Φ.2`. Establish `hcont : Continuous (incl (k` using `k) u v) := (continuous_leviTwo k).comp (continuous_id.prodMk continuous_const)`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hΦ.preimage hcont).mem_nhds ?_) ?_)` and prove the remaining obligations. Use `show ind (relParab k (colEq u v)) (sigmaC χ₁ χ₂ u v) (incl u v 1) Φ.1 = Φ.1`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Φ.1.1 (y * incl u v 1) = Φ.1.1 y`. Rewrite using `[map_one, mul_one]`. Introduce `g₁ hg`. Use `Subtype.ext (funext fun x₁ => ?_)` and prove the remaining obligations. Use `show restr χ₁ χ₂ u v Φ (x₁ * g₁) = restr χ₁ χ₂ u v Φ x₁`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h` using `congrArg (fun F => F.1 (incl u v x₁)) (show ind (relParab k (colEq u v)) (sigmaC χ₁ χ₂ u v) (incl u v g₁) Φ.1 = Φ.1 from hg)`. Establish `h' : Φ.1.1 (incl u v (x₁ * g₁)) = Φ.1.1 (incl u v x₁)` using `(congrArg (fun y => Φ.1.1 y) (map_mul (incl (k := k) u v) x₁ g₁)).trans h`. Unfold `restr`. Conclude with `congrArg _ h'`.
+A detailed English derivation is pending.
 -/
 theorem restr_smooth (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := k) χ₁ χ₂ u v) :
     (⟨restr χ₁ χ₂ u v Φ, fun q x₁ => restr_law χ₁ χ₂ u v Φ q x₁⟩ :
@@ -236,13 +236,11 @@ theorem restr_smooth (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k 
     exact congrArg _ h'
 
 /- English proof (translation)
-Introduce `Φ`. Use `⟨⟨⟨restr χ₁ χ₂ u v Φ, fun q x₁ => restr_law χ₁ χ₂ u v Φ q x₁⟩, restr_smooth χ₁ χ₂ u v Φ⟩, Subtype.ext (Subtype.ext (funext fun x => ?_))⟩` and prove the remaining obligations. Use `show toFun χ₁ χ₂ u v _ x = Φ.1.1 x`. Establish `hx : x = leviTwo k (Fin (u + v)) (Fin 1) (1, x true) * incl u v (x false)`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `j`. Conclude with `(one_mul (x false)).symm`. Conclude with `(mul_one (x true)).symm`. Establish `hp : leviTwo k (Fin (u + v)) (Fin 1) (1, x true) ∈ relParab k (colEq u v)` using `(mem_relParab_colEq _).2 (one_mem _)`. Establish `h1 : Φ.1.1 (leviTwo k (Fin (u + v)) (Fin 1) (1, x true) * incl u v (x false)) = sigmaC χ₁ χ₂ u v ⟨_, hp⟩ (Φ.1.1 (incl u v (x false)))` using `Φ.1.2 ⟨_, hp⟩ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨(leviTwo k (Fin (u + v)) (Fin 1) (1, x true)) false, (mem_relParab_colEq _).1 hp⟩ = 1` using `map_one (leviProj k (two (stdSum (rfl : u + v = u + v))))`. Use `conv_rhs => rw [hx, h1, ← mk_restr χ₁ χ₂ u v Φ (x false), inducing_mk]`. Unfold `toFun`. Rewrite using `[hl]`. Simplify using `only [map_one, Pi.one_apply, Units.val_one, mul_one]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toCell_surjective {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₂ : IsSmoothChar χ₂) (u v : ℕ) :
     Function.Surjective (toCell (k := k) (χ₁ := χ₁) hχ₂ u v) := by
@@ -290,7 +288,7 @@ def mapF {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₂ : IsSmoothChar χ₂) (u v : ℕ
     ring))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(toCell_injective hχ₂ u v).comp (TensorProduct.rid ℂ _).injective, (toCell_surjective hχ₂ u v).comp (TensorProduct.rid ℂ _).surjective⟩`.
+Supply the required witnesses or components.
 -/
 theorem mapF_bijective {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₂ : IsSmoothChar χ₂) (u v : ℕ) :
     Function.Bijective (mapF (k := k) (χ₁ := χ₁) hχ₂ u v) :=
@@ -298,7 +296,7 @@ theorem mapF_bijective {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₂ : IsSmoothChar χ�
     (toCell_surjective hχ₂ u v).comp (TensorProduct.rid ℂ _).surjective⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ χ₁ χ₂ _ h₂ u v b hb`. Establish `e` using `eq_sizeFirst b hb`. Substitute `e` using the available equality. Conclude with `⟨rowEq u v, colEq u v, ⟨(LocGL.equivOfBijective (mapF h₂ u v) (mapF_bijective h₂ u v)).symm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem main : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ)

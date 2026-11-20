@@ -10,11 +10,11 @@ open PI.AddIntG.Wk (SerS mem_SerS mvsubst_mem_SerS lam nu wser wv Z3)
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Unfold `pr`. Apply the tactic sequence `have hz : ∀ i, MvPowerSeries.constantCoeff (![x, y] i) = 0 := fun i => by fin_cases i <;> simpa`. Establish `ha : MvPowerSeries.HasSubst ![x, y]` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hz`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun i => by rw [hz i]; exact IsNilpotent.zero)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hz`. Rewrite using `[MvPowerSeries.constantCoeff_subst ha, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Take `⟨s, hs⟩` from `Finsupp.ne_iff.mp hd`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finsupp.coe_zero, Pi.zero_apply] at hs`. Rewrite using `[Finsupp.prod, map_prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs)]`. Simplify using the standard rewrite rules. Apply the tactic sequence `rw [map_pow] fin_cases s <;> simp [hx, hy] <;> exact hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_pr_eq {x y : MvPowerSeries (Fin 3) ℂ_[p]} (hx : MvPowerSeries.constantCoeff x = 0)
     (hy : MvPowerSeries.constantCoeff y = 0) (f : MvPowerSeries (Fin 2) ℂ_[p]) :
@@ -37,19 +37,19 @@ theorem cc_pr_eq {x y : MvPowerSeries (Fin 3) ℂ_[p]} (hx : MvPowerSeries.const
       fin_cases s <;> simp [hx, hy] <;> exact hs
 
 /- English proof (translation)
-Introduce `p _ W wq ex h1 h2 h3 h4 h6 _ hW hex0 hex hadd`. Take `⟨S, hS⟩` from `PI.AddIntG.Wk.exists_intS p`. Establish `hS1 : W.a₁ ∈ S` using `(hS _).2 h1`. Establish `hS2 : W.a₂ ∈ S` using `(hS _).2 h2`. Establish `hS3 : W.a₃ ∈ S` using `(hS _).2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS4 : W.a₄ ∈ S` using `(hS _).2 h4`. Establish `hS6 : W.a₆ ∈ S` using `(hS _).2 h6`. Establish `hint : ∀ {σ : Type} (F : MvPowerSeries σ ℂ_[p]), IntegralMv F ↔ F ∈ SerS S σ` using `fun F => by`. Rewrite using `[mem_SerS]`. Conclude with `forall_congr' fun e => (hS _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : add (flog W wq) ex (MvPowerSeries.X 0) (MvPowerSeries.X 1) ∈ SerS S (Fin 2)` using `(hint _).1 hadd`. Establish `hwq` using `PI.AddIntG.Wk.wq_mem hS1 hS2 hS3 hS4 hS6 hW`. Take `⟨μ, hμS, hμ⟩` from `mu_exists hwq`. Take `⟨m, hmS, hm1, hmμ⟩` from `m_exists hS1 hS2 hS3 hS4 hS6 hW hμS hμ`. Take `⟨u1, hu1S, hu11, hu1⟩` from `add_factor hS1 hS2 hS3 hS4 hS6 hW hex0 hex hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, huS, hu0, hu⟩` from `sub_factor hS1 hS2 hS3 hS4 hS6 hW hex0 hex hF`. Establish `hl0` using `cc_flog W wq`. Establish `hsub : ∀ i j : Fin 3, sub (flog W wq) ex (MvPowerSeries.X i) (MvPowerSeries.X j) = (MvPowerSeries.X i - MvPowerSeries.X j) * pr (MvPowerSeries.X i) (MvPowerSeries.X j) u`. Introduce `i j`. Establish `ha` using `hasSubst_pr (h0X (p := p) i) (h0X (p := p) j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_pr hl0 (h0X i) (h0X j), hu]`. Unfold `pr`. Rewrite using `[MvPowerSeries.subst_mul ha, MvPowerSeries.subst_sub ha, MvPowerSeries.subst_X ha, MvPowerSeries.subst_X ha]`. Simplify using the standard rewrite rules. Establish `hvS : ∀ i j : Fin 3, pr (MvPowerSeries.X i) (MvPowerSeries.X j) u ∈ SerS S (Fin 3)` using `fun i j => pr_mem (h0X i) (h0X j) (X_mem_SerS' S i) (X_mem_SerS' S j) huS`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1 : ∀ i j : Fin 3, MvPowerSeries.constantCoeff (pr (MvPowerSeries.X i) (MvPowerSeries.X j) u) = 1` using `fun i j => (cc_pr_eq (h0X i) (h0X j) u).trans hu0`. Establish `hw1 : MvPowerSeries.constantCoeff (u1 * pr (MvPowerSeries.X 0) (MvPowerSeries.X 1) u * pr (MvPowerSeries.X 1) (MvPowerSeries.X 2) u * pr (MvPowerSeries.X 2) (MvPowerSeries.X 0) u) = 1`. Rewrite using `[map_mul, map_mul, map_mul, hu11, hv1, hv1, hv1]`. Evaluate the numerical expressions. Establish `hwS : u1 * pr (MvPowerSeries.X 0) (MvPowerSeries.X 1) u * pr (MvPowerSeries.X 1) (MvPowerSeries.X 2) u * pr (MvPowerSeries.X 2) (MvPowerSeries.X 0) u ∈ SerS S (Fin 3)` using `mul_mem (mul_mem (mul_mem hu1S (hvS 0 1)) (hvS 1 2)) (hvS 2 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv` using `MvPowerSeries.mul_inv_cancel (u1 * pr (MvPowerSeries.X 0) (MvPowerSeries.X 1) u * pr (MvPowerSeries.X 1) (MvPowerSeries.X 2) u * pr (MvPowerSeries.X 2) (MvPowerSeries.X 0) u) (by rw [hw1]; exact one_ne_zero)`. Use `⟨m * (u1 * pr (MvPowerSeries.X 0) (MvPowerSeries.X 1) u * pr (MvPowerSeries.X 1) (MvPowerSeries.X 2) u * pr (MvPowerSeries.X 2) (MvPowerSeries.X 0) u)⁻¹, (hint _).2 (mul_mem hmS (PI.AddIntG.Wk.inv_mem_SerS S hw1 hwS)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.constantCoeff_inv, hw1, hm1, inv_one, mul_one]`. Rewrite using `[T_eq, hμ, hmμ, hu1, hsub 0 1, hsub 1 2, hsub 2 0]`. Take the linear combination `(-((MvPowerSeries.X 2 - s3 W wq) * (MvPowerSeries.X 0 - MvPowerSeries.X 1) * (MvPowerSeries.X 1 - MvPowerSeries.X 2) * (MvPowerSeries.X 2 - MvPowerSeries.X 0) * m)) * hinv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : Lemma := by
   intro p _ W wq ex h1 h2 h3 h4 h6 _ hW hex0 hex hadd

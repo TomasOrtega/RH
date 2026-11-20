@@ -10,7 +10,7 @@ namespace GlobalTheory.ConjSelfRecip
 open ComplexConjugate
 
 /- English proof (translation)
-Establish `h1 : (1 : ℂ[X]).reverse = 1` using `by simp only [reverse, natDegree_one, reflect_one, pow_zero]`. Establish `hX : (X : ℂ[X]).reverse = 1` using `by simpa [h1] using reverse_X_mul (1 : ℂ[X])`. Rewrite using `[sub_eq_add_neg, ← C_neg, reverse_add_C, hX, natDegree_X, pow_one, C_neg, neg_mul, ← sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem reverse_X_sub_C' (μ : ℂ) : (X - C μ : ℂ[X]).reverse = 1 - C μ * X := by
   have h1 : (1 : ℂ[X]).reverse = 1 := by simp only [reverse, natDegree_one, reflect_one, pow_zero]
@@ -18,13 +18,13 @@ theorem reverse_X_sub_C' (μ : ℂ) : (X - C μ : ℂ[X]).reverse = 1 - C μ * X
   rw [sub_eq_add_neg, ← C_neg, reverse_add_C, hX, natDegree_X, pow_one, C_neg, neg_mul, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp [reverse]`. Consider the case `cons a s ih`. Establish `hs' : ∀ z ∈ s, ‖z‖ = 1` using `fun z hz => hs z (Multiset.mem_cons_of_mem hz)`. Establish `ha : ‖a‖ = 1` using `hs a (Multiset.mem_cons_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hca : conj a * a = 1`. Rewrite using `[Complex.conj_mul', ha]`. Simplify using the standard rewrite rules. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Polynomial.map_mul, reverse_mul_of_domain, ih hs', mul_coeff_zero]`. Establish `hlin : ((X - C a : ℂ[X]).map (starRingEnd ℂ)).reverse = C (-conj a) * (X - C a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.map_sub, map_X, map_C, reverse_X_sub_C']`. Establish `hw : C (conj a) * C a = (1 : ℂ[X])` using `by rw [← C_mul, hca, C_1]`. Rewrite using `[C_neg]`. Take the linear combination `(-1 : ℂ[X]) * hw`. Establish `hc0 : (X - C a : ℂ[X]).coeff 0 = -a` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hlin, hc0, map_mul, C_mul]`. Simplify using `only [map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_conj_reverse (s : Multiset ℂ) (hs : ∀ z ∈ s, ‖z‖ = 1) :
     (((s.map fun z => X - C z).prod).map (starRingEnd ℂ)).reverse =
@@ -55,22 +55,22 @@ namespace GlobalTheory.ConjSelfRecip
 open ComplexConjugate
 
 /- English proof (translation)
-Rewrite using `[reverse, reverse, natDegree_map_eq_of_injective hf, reflect_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reverse_map_inj {R S : Type} [CommRing R] [CommRing S] (f : R →+* S)
     (hf : Function.Injective f) (Q : R[X]) : (Q.map f).reverse = Q.reverse.map f := by
   rw [reverse, reverse, natDegree_map_eq_of_injective hf, reflect_map]
 
 /- English proof (translation)
-Introduce `E _ _ _ n P hP`. Take `⟨hm, -, -, hroots⟩` from `hP`. Set `τ : E →+* ℂ` to `Classical.choice inferInstance`. Establish `hQm : (P.map τ).Monic` using `hm.map τ`. Establish `hQ : ((P.map τ).roots.map fun z => X - C z).prod = P.map τ` using `prod_multiset_X_sub_C_of_monic_of_roots_card_eq hQm IsAlgClosed.card_roots_eq_natDegree`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ z ∈ (P.map τ).roots, ‖z‖ = 1` using `hroots τ`. Establish `key` using `prod_conj_reverse (P.map τ).roots hr`. Rewrite `key` using `[hQ]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0' : (0 : ℂ) ∈ (P.map τ).roots`. Rewrite using `[mem_roots hQm.ne_zero, IsRoot, ← coeff_zero_eq_eval_zero, coeff_map, h0, map_zero]`. Use `hr 0 h0'` as an intermediate fact. Simplify using `at this`. Apply `Polynomial.map_injective τ τ.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomp : τ.comp (IsCMField.complexConj E).toRingEquiv.toRingHom = (starRingEnd ℂ).comp τ`. Use extensionality with `x`. Simplify using `[IsCMField.complexEmbedding_complexConj]`. Rewrite using `[Polynomial.map_mul, map_C, ← reverse_map_inj τ τ.injective, Polynomial.map_map, hcomp, ← Polynomial.map_map, key, coeff_map]`. Use `congr 2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[IsCMField.complexEmbedding_complexConj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ell_conj_selfRecip : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (P : E[X]), P ∈ Ell E n →
     P.coeff 0 ≠ 0 ∧ C (IsCMField.complexConj E (P.coeff 0)) * P =

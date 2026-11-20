@@ -5,9 +5,9 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto Simplicial UpperTheory.Gal.KunnethLefschetz UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Introduce `T W r d P`. Apply `Presheaf.isLocallySurjective_of_surjective` to reduce the goal to its premises. Introduce `U s`. Take `⟨p, hp⟩` from `Quotient.exists_rep (s : _root_.Quotient (P.relS (unop U)))`. Take `⟨z, hz⟩` from `UpperTheory.projBundleData_exists_simplex_of_rel P 0 (unop U) (fun _ => p) (fun _ _ => P.rel_refl _ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`. Express the relevant statement in the definitionally equal form `Quotient.mk _ (P.sv z 0) = Quotient.mk _ p`. Rewrite using `[hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.projBundleData_isLocallySurjective_etale :
     ∀ {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P : PBData r d),

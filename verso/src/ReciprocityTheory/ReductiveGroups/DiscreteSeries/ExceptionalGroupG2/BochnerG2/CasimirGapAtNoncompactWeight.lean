@@ -21,9 +21,9 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {lam : Fin n → ℝ} {V : Submodule ℂ M}
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_layer_of_mem_genSub hE hV.2.1 hw`. Take `⟨w₀, hw₀, hw₀μ, ws, hsum, hws⟩` from `layer_khw_decomp hE hU hV.1 hV.2.1 hm hμ`. Use `⟨w₀, hw₀, hw₀μ, m, ws, hsum, fun j => ⟨(hws j).1, fun h0 => ?_⟩⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `khw_layer_succ_bound hE hU hV hc hmono hh hbig (j : ℕ) (hws j).1 (hws j).2.1 h0 (hws j).2.2`. Take `⟨a, b, hab⟩` from `isNCSum_succ_exists h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(gap_gt hab hbig).2` as an intermediate fact. Conclude with `⟨h1, by linarith, h2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem k_highest_weight_layer_decomp (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -44,11 +44,11 @@ theorem k_highest_weight_layer_decomp (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   exact ⟨h1, by linarith, h2⟩
 
 /- English proof (translation)
-Take `⟨w₀, hw₀, -, m, ws, hwsum, hws⟩` from `k_highest_weight_layer_decomp hE hU hV hc hmono hh hbig hw hμ`. Distinguish the cases in `hall : ∀ j, ws j = 0`. It suffices to derive a contradiction. Establish `hweq : w = w₀`. Rewrite using `[hwsum]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hall]`. Establish `hwV : w ∈ V`. Rewrite using `[hweq]`. Conclude with `hw₀`. Conclude with `hne (khw_weight_eq_of_irr hE hV hwV hw0 hμ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hall`. Take `⟨j, hj⟩` from `hall`. Take `⟨h1, h2, h3⟩` from `(hws j).2 hj`. Conclude with `⟨(j : ℕ), h1, h2, h3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem casimir_gap_at_noncompact_weight (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -73,9 +73,9 @@ theorem casimir_gap_at_noncompact_weight (hE : IsGlRep E) (hU : IsInfUnitary ε 
     exact ⟨(j : ℕ), h1, h2, h3⟩
 
 /- English proof (translation)
-Take `⟨hmono, h, hh, hbig⟩` from `hgap`. Take `⟨w₀, hw₀, -, m, ws, rfl, hws⟩` from `k_highest_weight_layer_decomp hE hU hV hc hmono hh hbig hw hμ`. Establish `hzero : ∀ j, ws j = 0`. Introduce `j`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨-, hpos, hle⟩` from `(hws j).2 hne`. Establish `h1 : (0 : ℝ) < 2 * (((j : ℕ) : ℝ) + 1)` using `by positivity`. Establish `h2` using `mul_pos h1 hpos`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify `hw₀` using `[hzero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem khw_lowK_mem (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -94,25 +94,23 @@ theorem khw_lowK_mem (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   simpa [hzero] using hw₀
 
 /- English proof (translation)
-Distinguish the cases in `hne : μ = lowK ε lam`. Substitute `hne` using the available equality. Conclude with `le_refl _`. Take `⟨hmono, h, hh, hbig⟩` from `hgap`. Take `⟨j, ⟨γ, -, hsum⟩, -, hle⟩` from `casimir_gap_at_noncompact_weight hE hU hV hc hmono hh hbig hw hw0 hμ hne`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hexp : ∀ x : Fin n → ℝ, nsq (x + (2 : ℝ) • rhoC ε) = nsq (x + rhoC ε) + 2 * dot x (rhoC ε) + 3 * nsq (rhoC ε)`. Introduce `x`. Simplify using `only [nsq, dot, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Establish `hlin : dot μ (rhoC ε) - dot (lowK ε lam) (rhoC ε) = dot (μ - lowK ε lam) (rhoC ε)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [dot, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`. Establish `hroot : ∀ a b : Fin n, dot (root a b) (rhoC ε) = rhoC ε a - rhoC ε b`. Introduce `a b`. Simplify using `[dot, root, Pi.single_apply, sub_mul, ite_mul, Finset.sum_sub_distrib]`. Establish `hdsum : dot (μ - lowK ε lam) (rhoC ε) = ∑ i, (rhoC ε (γ i).1 - rhoC ε (γ i).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsum]`. Simplify using `only [dot, Finset.sum_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => hroot _ _`. Establish `hρ : ∀ a, -((n : ℝ) / 2) ≤ rhoC ε a ∧ rhoC ε a ≤ (n : ℝ) / 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ s t : Finset (Fin n), -((n : ℝ) / 2) ≤ ((s.card : ℝ) - t.card) / 2 ∧ ((s.card : ℝ) - t.card) / 2 ≤ (n : ℝ) / 2`. Introduce `s t`. Establish `hs : (s.card : ℝ) ≤ n` using `by exact_mod_cast (card_le_univ s).trans (by simp)`. Establish `ht : (t.card : ℝ) ≤ n` using `by exact_mod_cast (card_le_univ t).trans (by simp)`. Establish `hs0 : (0 : ℝ) ≤ s.card` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht0 : (0 : ℝ) ≤ t.card` using `Nat.cast_nonneg _`. Apply the tactic sequence `constructor <;> linarith`. Introduce `a`. Conclude with `key _ _`. Establish `hterm : ∀ i : Fin (j + 1), -(n : ℝ) ≤ rhoC ε (γ i).1 - rhoC ε (γ i).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `i`. Take `⟨h1, -⟩` from `hρ (γ i).1`. Take `⟨-, h2⟩` from `hρ (γ i).2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdot : -(((j : ℝ) + 1) * n) ≤ dot (μ - lowK ε lam) (rhoC ε)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hdsum]`. Establish `hc : ∑ _i : Fin (j + 1), (-(n : ℝ)) = -(((j : ℝ) + 1) * n)`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hc]`. Conclude with `Finset.sum_le_sum fun i _ => hterm i`. Establish `hprod : 0 ≤ ((j : ℝ) + 1) * (h - 2 * n + 1)`. Establish `: (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Conclude with `mul_nonneg (by linarith) (by linarith)`.
-
-Simplify using `only [casValK] at hle`. Establish `e1` using `hexp μ`. Establish `e2` using `hexp (lowK ε lam)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vogan_min (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -174,15 +172,13 @@ theorem vogan_min (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   linarith
 
 /- English proof (translation)
-Take `⟨hmono, h, hh, hbig⟩` from `hgap`. Establish `hn : (0 : ℝ) < h - n + 1`. Establish `: (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmon : Monotone (layer ε E V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `monotone_nat_of_le_succ fun k => ?_` and prove the remaining obligations. Simplify using `only [layer]`. Conclude with `le_sup_left`. Use `⟨⌈(casValK ε μ - casValK ε (lowK ε lam)) / (2 * (h - n + 1))⌉₊, fun w hw hμ => ?_⟩` and prove the remaining obligations. Take `⟨w₀, hw₀, -, m, ws, rfl, hws⟩` from `k_highest_weight_layer_decomp hE hU hV hc hmono hh hbig hw hμ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem (hmon (Nat.zero_le _) (show w₀ ∈ layer ε E V 0 from hw₀)) (_root_.sum_mem fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : ws j = 0`. Rewrite using `[hj]`. Conclude with `zero_mem _`. Take `⟨hmem, hrest⟩` from `hws j`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, -, hle⟩` from `hrest hj`. Use `hmon ?_ hmem` and prove the remaining obligations. Establish `hq : (((j : ℕ) : ℝ) + 1) ≤ (casValK ε μ - casValK ε (lowK ε lam)) / (2 * (h - n + 1))`. Rewrite using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hq'` using `hq.trans (Nat.le_ceil _)`. Conclude with `hq'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem khw_mem_layer (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -214,13 +210,13 @@ theorem khw_mem_layer (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     exact_mod_cast hq'
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `khw_mem_layer hE hU hV hc hgap μ`. Take `⟨hfd, hks, -, -⟩` from `hV`. Establish `hcl : ∀ a b, ∀ v ∈ genSub E V, E a b v ∈ genSub E V`. Introduce `a b v hv`. Rewrite `hv`, the goal using `[genSub, Submodule.mem_sInf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `fun T hT => hT.2 a b v (hv T hT)`. Establish `hgen : ∀ j, layer ε E V j ≤ genSub E V`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `only [layer]`. Rewrite using `[genSub]`. Conclude with `le_sInf fun T hT => hT.1`. Consider the case `succ j ih`. Simplify using `only [layer]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le ih (iSup_le fun a => iSup_le fun b => iSup_le fun _ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `v hv`. Conclude with `hcl a b v (ih hv)`. Conclude with `⟨layer ε E V k, finiteDimensional_layer hfd k, hgen k, layer_kStable hE hks k, hk⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem admissible (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)

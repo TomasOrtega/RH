@@ -6,13 +6,13 @@ noncomputable section
 namespace GlobalTheory.AddExt
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp [hx0]`. Consider the case `insert a T ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. It suffices to establish `key : ∀ k : ℕ, x0 + (k • (a : ι → ℕ) + ∑ s ∈ T, n s • (s : ι → ℕ)) ∈ S ∧ c (x0 + (k • (a : ι → ℕ) + ∑ s ∈ T, n s • (s : ι → ℕ))) = c x0 + ((k : ℝ) * c a + ∑ s ∈ T, (n s : ℝ) * c s) from key (n a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using ih`. Consider the case `succ k ihk`. Establish `e : x0 + ((k+1) • (a : ι → ℕ) + ∑ s ∈ T, n s • (s : ι → ℕ)) = (x0 + (k • (a : ι → ℕ) + ∑ s ∈ T, n s • (s : ι → ℕ))) + a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[succ_nsmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Take `⟨h1, h2⟩` from `hS _ ihk.1 _ a.2`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, ihk.2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nat_comb {ι : Type} (S : Set (ι → ℕ)) (c : (ι → ℕ) → ℝ)
     (hS : ∀ x ∈ S, ∀ y ∈ S, x + y ∈ S ∧ c (x + y) = c x + c y) {x0 : ι → ℕ} (hx0 : x0 ∈ S)
@@ -40,13 +40,13 @@ theorem nat_comb {ι : Type} (S : Set (ι → ℕ)) (c : (ι → ℕ) → ℝ)
       rw [h2, ihk.2]; push_cast; ring
 
 /- English proof (translation)
-Rewrite `hl`, the goal using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Take `⟨p, hp⟩ : ∃ p : S → ℕ, ∀ s, p s = (l s).toNat` from `⟨_, fun _ => rfl⟩`. Take `⟨q, hq⟩ : ∃ q : S → ℕ, ∀ s, q s = (-l s).toNat` from `⟨_, fun _ => rfl⟩`. Establish `hpq : ∀ s, l s = (p s : ℤ) - q s` using `fun s => by`. Rewrite using `[hp, hq]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `heq : ∑ s ∈ l.support, p s • (s : ι → ℕ) = ∑ s ∈ l.support, q s • (s : ι → ℕ)`. Use function extensionality and compare the values at `i`. Use `congrFun hl i` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, hpq, sub_mul] at this`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Finset.sum_sub_distrib, sub_eq_zero]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `this` after adjusting the coercions. Establish `h1` using `(nat_comb S c hS hx0 l.support p).2`. Establish `h2` using `(nat_comb S c hS hx0 l.support q).2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[heq, h2]`. Establish `h3 : ∑ s ∈ l.support, (p s : ℝ) * c s = ∑ s ∈ l.support, (q s : ℝ) * c s` using `by linarith`. Simplify using `only [hpq, zsmul_eq_mul, Int.cast_sub, Int.cast_natCast, sub_mul, Finset.sum_sub_distrib, h3, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_le {ι : Type} (S : Set (ι → ℕ)) (c : (ι → ℕ) → ℝ)
     (hS : ∀ x ∈ S, ∀ y ∈ S, x + y ∈ S ∧ c (x + y) = c x + c y) {x0 : ι → ℕ} (hx0 : x0 ∈ S)
@@ -73,15 +73,15 @@ theorem ker_le {ι : Type} (S : Set (ι → ℕ)) (c : (ι → ℕ) → ℝ)
   simp only [hpq, zsmul_eq_mul, Int.cast_sub, Int.cast_natCast, sub_mul, Finset.sum_sub_distrib, h3, sub_self]
 
 /- English proof (translation)
-Introduce `ι _ S c hS`. Break down `S.eq_empty_or_nonempty with hE | ⟨x0, hx0⟩` into its components or cases. Conclude with `⟨0, by simp [hE]⟩`. Set `v : S → ι → ℤ` to `fun s i => ((s : ι → ℕ) i : ℤ)`. Set `A : (S →₀ ℤ) →+ (ι → ℤ)` to `(Finsupp.linearCombination ℤ v).toAddMonoidHom`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `C : (S →₀ ℤ) →+ ℝ` to `(Finsupp.linearCombination ℤ (fun s : S => c s)).toAddMonoidHom`. Establish `hker : A.ker ≤ C.ker` using `fun l hl => AddMonoidHom.mem_ker.mpr (ker_le S c hS hx0 l (AddMonoidHom.mem_ker.mp hl))`. Use `letI : DivisibleBy ℝ ℕ := divisibleByOfSMulRightSurj _ _ fun {n} hn u => ⟨u / n, by`. Establish `: (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Use `show n • (u / (n : ℝ)) = u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nsmul_eq_mul]`. Use the proof step `field_simp⟩`. Use `letI : DivisibleBy ℝ ℤ := AddGroup.divisibleByIntOfDivisibleByNat _`. Take `⟨g, hg⟩` from `(Module.Baer.of_divisible ℝ).extension_property_addMonoidHom (QuotientAddGroup.kerLift A) (QuotientAddGroup.kerLift_injective A) (QuotientAddGroup.lift A.ker C hker)`. Use `⟨fun i => g (Pi.single i 1), fun x hx => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `DFunLike.congr_fun hg (QuotientAddGroup.mk (Finsupp.single ⟨x, hx⟩ 1))`. Establish `hA : A (Finsupp.single ⟨x, hx⟩ 1) = ∑ i, ((x i : ℤ)) • (Pi.single i (1:ℤ) : ι → ℤ)`. Use extensionality with `j`. Simplify using `[A, v, Finset.sum_apply, Pi.single_apply]`. Establish `hC : C (Finsupp.single ⟨x, hx⟩ 1) = c x` using `by simp [C]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [AddMonoidHom.comp_apply, QuotientAddGroup.kerLift_mk, QuotientAddGroup.lift_mk] at h1`. Rewrite `h1` using `[hA, hC, map_sum]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, Int.cast_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear : ∀ (ι : Type) [Fintype ι] (S : Set (ι → ℕ)) (c : (ι → ℕ) → ℝ),
     (∀ x ∈ S, ∀ y ∈ S, x + y ∈ S ∧ c (x + y) = c x + c y) →

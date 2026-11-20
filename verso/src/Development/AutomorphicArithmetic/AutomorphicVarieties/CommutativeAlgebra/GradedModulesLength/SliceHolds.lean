@@ -5,15 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Set `L : (DirectSum ℤ fun i => 𝒜 i) →ₗ[O] K` to `DirectSum.toModule O ℤ K (fun i => ((i : ℤ) : K) • (ξ.toLinearMap ∘ₗ (𝒜 i).subtype))`. Set `E : A →ₗ[O] K` to `L ∘ₗ (DirectSum.decomposeLinearEquiv 𝒜).toLinearMap`. Establish `hE : ∀ (j : ℤ) (a : A), a ∈ 𝒜 j → E a = (j : K) * ξ a`. Introduce `j a ha`. Use `show L (DirectSum.decompose 𝒜 a) = _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DirectSum.decompose_of_mem 𝒜 ha, ← DirectSum.lof_eq_of O, DirectSum.toModule_lof]`. Simplify using `[smul_eq_mul]`. Use `⟨E, ?_, hE⟩` and prove the remaining obligations. Introduce `a b`. Proceed by induction on `a using DirectSum.Decomposition.inductionOn 𝒜 with`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `homogeneous a`. Proceed by induction on `b using DirectSum.Decomposition.inductionOn 𝒜 with`. Consider the case `zero => simp`. Consider the case `homogeneous b`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE _ _ (SetLike.GradedMul.mul_mem a.2 b.2), hE _ _ a.2, hE _ _ b.2]`. Simplify using `only [map_mul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add b₁ b₂ h₁ h₂`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_add, map_add, smul_add, h₁, h₂, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a₁ a₂ h₁ h₂`. Simplify using `only [add_mul, map_add, smul_add, add_smul, h₁, h₂, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem exists_ptDer_eq_degree_smul_of_graded {O A K : Type} [CommRing O] [CommRing A] [Algebra O A] [Field K] [Algebra O K]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] (ξ : A →ₐ[O] K) :
@@ -47,7 +47,7 @@ private theorem exists_ptDer_eq_degree_smul_of_graded {O A K : Type} [CommRing O
     ring
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 a, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hE i _ (SetLike.coe_mem _), hξ _ (hI i ha), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem degree_derivation_vanishes_on_homogeneous_ideal {O A K : Type} [CommRing O] [CommRing A] [Algebra O A] [Field K] [Algebra O K]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] (I : Ideal A) (hI : I.IsHomogeneous 𝒜) (ξ : A →ₐ[O] K)
@@ -60,65 +60,55 @@ private theorem degree_derivation_vanishes_on_homogeneous_ideal {O A K : Type} [
   rw [hE i _ (SetLike.coe_mem _), hξ _ (hI i ha), mul_zero]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hx I hI h2 h4 f hf g hg`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective O K)`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hπ0 : π ≠ 0` using `hπ.ne_zero`. Use `set J : Ideal A := I ⊔ Ideal.span {f - 1} with hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : A ⧸ J` to `algebraMap O (A ⧸ J) π * Ideal.Quotient.mk J g`. Set `C` to `Localization.Away s`. Set `φ : A →ₐ[O] C` to `(IsScalarTower.toAlgHom O (A ⧸ J) C).comp (Ideal.Quotient.mkₐ O J)`. Establish `hφ : ∀ a, φ a = algebraMap (A ⧸ J) C (Ideal.Quotient.mk J a)` using `fun a => rfl`. Establish `hφJ : ∀ a ∈ J, φ a = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Rewrite using `[hφ, Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]`. Establish `hf1 : φ f = 1`. Establish `h0 : φ (f - 1) = 0` using `hφJ _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs_unit : IsUnit (algebraMap (A ⧸ J) C s)` using `IsLocalization.Away.algebraMap_isUnit s`. Establish `hs_eq : algebraMap (A ⧸ J) C s = algebraMap O C π * φ g`. Rewrite using `[hφ]`. Simplify using `only [s, map_mul]`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs_unit` using `[hs_eq]`. Establish `hπu : IsUnit (algebraMap O C π)` using `isUnit_of_mul_isUnit_left hs_unit`. Establish `hgu : IsUnit (φ g)` using `isUnit_of_mul_isUnit_right hs_unit`. Establish `hunits : ∀ c : O, c ≠ 0 → IsUnit (algebraMap O C c)`. Introduce `c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hπ`. Rewrite using `[map_mul, map_pow]`. Conclude with `(u.isUnit.map _).mul (hπu.pow n)`. Use `haveI hft : Algebra.FiniteType O C := by`. Establish `h1 : Algebra.FiniteType O (A ⧸ I)` using `(ft_holds O A 𝒜 x hx).2 I h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : Algebra.FiniteType O (A ⧸ J)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.factorₐ O (le_sup_left : I ≤ J)) (Ideal.Quotient.factor_surjective (le_sup_left : I ≤ J))`. Conclude with `Algebra.FiniteType.trans h3 inferInstance`. Establish `hslice : ∀ ψ : C →ₐ[O] K, OnS I (ψ.comp φ) ∧ (ψ.comp φ) f = 1 ∧ (ψ.comp φ) g ≠ 0`. Introduce `ψ`. Use `⟨fun a ha => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AlgHom.comp_apply, hφJ a (Ideal.mem_sup_left ha), map_zero]`. Rewrite using `[AlgHom.comp_apply, hf1, map_one]`. Rewrite using `[AlgHom.comp_apply]`. Conclude with `(hgu.map ψ).ne_zero`. Establish `hder : ∀ ψ : C →ₐ[O] K, PtDer ψ K = ⊥`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `ψ`. Rewrite using `[eq_bot_iff]`. Introduce `D hD`. Rewrite using `[Submodule.mem_bot]`. Take `⟨hOn, hξf, hξg⟩` from `hslice ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `D' : A →ₗ[O] K` to `D ∘ₗ φ.toLinearMap`. Establish `hD' : D' ∈ PtDer (ψ.comp φ) K`. Introduce `a b`. Use `show D (φ (a * b)) = ψ (φ a) • D (φ b) + ψ (φ b) • D (φ a)`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hD _ _`. Take `⟨E, hEm, hE⟩` from `exists_ptDer_eq_degree_smul_of_graded 𝒜 (ψ.comp φ)`. Establish `hEI` using `degree_derivation_vanishes_on_homogeneous_ideal 𝒜 I hI (ψ.comp φ) hOn E hE`. Establish `hD'I : ∀ a ∈ I, D' a = 0`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show D (φ a) = 0`. Rewrite using `[hφJ a (Ideal.mem_sup_left ha), map_zero]`. Establish `htwo : TwoSigned 𝒜 (ψ.comp φ)`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h0` using `h (-2) (by norm_num) f hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[hξf]`. Conclude with `one_ne_zero h0`. Conclude with `hξg (h 2 (by norm_num) g hg)`. Take `⟨c, c', hcc, hlin⟩` from `h4 (ψ.comp φ) hOn htwo D' hD' E hEm hD'I hEI`. Establish `hD1 : D 1 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hD 1 1`. Establish `hψ1 : ψ 1 = 1` using `map_one ψ`. Rewrite `h0` using `[mul_one, hψ1, one_smul]`. Establish `h5 : D 1 + D 1 = D 1 + 0` using `by rw [add_zero]; exact h0.symm`. Conclude with `add_left_cancel h5`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD'f : D' f = 0` using `by show D (φ f) = 0`. Rewrite using `[hf1, hD1]`. Establish `hEf : E f = -2`. Rewrite using `[hE (-2) f hf, hξf]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc' : c' = 0`. Establish `h0` using `LinearMap.congr_fun hlin f`. Rewrite `h0` using `[LinearMap.add_apply, LinearMap.smul_apply, LinearMap.smul_apply, hD'f, hEf, LinearMap.zero_apply, smul_zero, zero_add, smul_eq_mul]`. Establish `h6 : (-2 : K) ≠ 0` using `by norm_num`. Conclude with `(mul_eq_zero.mp h0).resolve_right h6`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hc : c ≠ 0` using `hcc.resolve_right (fun h => h hc')`. Establish `hD0 : ∀ a, D (φ a) = 0`. Introduce `a`. Establish `h0` using `LinearMap.congr_fun hlin a`. Rewrite `h0` using `[LinearMap.add_apply, LinearMap.smul_apply, LinearMap.smul_apply, hc', zero_smul, add_zero, LinearMap.zero_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp h0).resolve_left hc`. Use extensionality with `z`. Take `⟨⟨b, t, ht⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers s) z`. Take `⟨n, rfl⟩` from `ht`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set z := IsLocalization.mk' C (Ideal.Quotient.mk J a) (⟨s ^ n, n, rfl⟩ : Submonoid.powers s) with hz`. Establish `hspec : z * algebraMap (A ⧸ J) C (s ^ n) = φ a`. Rewrite using `[hz, IsLocalization.mk'_spec]`. Both sides reduce to the same expression. Establish `ht : algebraMap (A ⧸ J) C (s ^ n) = φ ((algebraMap O A π * g) ^ n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφ]`. Use `congr 1`. Establish `htu : IsUnit (algebraMap (A ⧸ J) C (s ^ n))`. Rewrite using `[map_pow, hs_eq]`. Conclude with `hs_unit.pow n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression.
 
-Establish `h0` using `hD z (algebraMap (A ⧸ J) C (s ^ n))`. Rewrite `h0` using `[hspec, hD0, ht, hD0, smul_zero, zero_add, ← ht]`. Establish `hne : ψ (algebraMap (A ⧸ J) C (s ^ n)) ≠ 0` using `(htu.map ψ).ne_zero`. Rewrite `h0` using `[smul_eq_mul]`. Rewrite using `[LinearMap.zero_apply]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `((mul_eq_zero.mp h0.symm).resolve_left hne)`. Take `⟨hfin, hred⟩` from `et_holds O K C hunits hder`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hsub : {ξ : A →ₐ[O] K | OnS I ξ ∧ ξ f = 1 ∧ ξ g ≠ 0} ⊆ Set.range (fun ψ : C →ₐ[O] K => ψ.comp φ)`. Introduce and unpack `ξ ⟨hOn, hξf, hξg⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hJξ : ∀ a ∈ J, ξ a = 0`. Establish `hle : J ≤ RingHom.ker ξ`. Use `sup_le (fun a ha => hOn a ha) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show ξ (f - 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub, hξf, map_one, sub_self]`. Conclude with `fun a ha => hle ha`. Set `ξB : (A ⧸ J) →ₐ[O] K` to `Ideal.Quotient.liftₐ J ξ hJξ`. Establish `hu : ∀ y : Submonoid.powers s, IsUnit (ξB y)`. Introduce and unpack `⟨_, n, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Use `IsUnit.pow n (isUnit_iff_ne_zero.mpr ?_)` and prove the remaining obligations. Simplify using `only [s, map_mul, AlgHom.commutes]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective O K)).mpr hπ0`.
-
-Conclude with `hξg`. Use `⟨IsLocalization.liftAlgHom (M := Submonoid.powers s) (S := C) hu, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Use `show IsLocalization.liftAlgHom (M := Submonoid.powers s) (S := C) hu (algebraMap (A ⧸ J) C (Ideal.Quotient.mk J a)) = ξ a`. Rewrite using `[IsLocalization.liftAlgHom_apply, IsLocalization.lift_eq]`.
-
-Both sides reduce to the same expression. Conclude with `(Set.finite_range _).subset hsub`. Introduce `h hh`. Establish `hz : φ h = 0` using `hred (φ h) (fun ψ => by`. Take `⟨h1, h3, h5⟩` from `hslice ψ`.
-
-Conclude with `hh _ h1 h3 h5)`. Rewrite `hz` using `[hφ]`. Take `⟨⟨_, n, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers s) C _).mp hz`. Use `⟨n, π ^ n, pow_ne_zero _ hπ0, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
-
-Establish `heq : Ideal.Quotient.mk J (π ^ n • (g ^ n * h)) = s ^ n * Ideal.Quotient.mk J h`. Simplify using `only [s, Algebra.smul_def, map_mul, map_pow, mul_pow]`. Rewrite using `[Ideal.Quotient.mk_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
-
-Conclude with `hm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.slice_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

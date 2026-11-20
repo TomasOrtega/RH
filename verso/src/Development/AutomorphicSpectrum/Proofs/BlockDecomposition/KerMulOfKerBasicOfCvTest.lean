@@ -7,15 +7,13 @@ open scoped ENNReal Pointwise
 namespace GlobalTheory.CompanionTheory.KernelComposition
 
 /- English proof (translation)
-Use `haveI : MeasurableConstSMul X.Γ X.G := ⟨fun γ => measurable_const_mul (γ : X.G)⟩`. Use `haveI : SMulInvariantMeasure X.Γ X.G X.μ := ⟨fun γ s _ => measure_preimage_mul _ γ.1 s⟩`. Use `set g : X.G → ℂ := fun z => φ (x⁻¹ * z) * ker X.Γ ψ z y with hg`. Establish `hkc : Continuous fun z => ker X.Γ ψ z y` using `(hk X ψ hψ).2.1.comp (continuous_id.prodMk continuous_const)`. Establish `hgc : Continuous g` using `(hφ.1.comp (continuous_const.mul continuous_id)).mul hkc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgs : HasCompactSupport g` using `HasCompactSupport.mul_right (hφ.2.comp_homeomorph (Homeomorph.mulLeft x⁻¹))`. Establish `hgi : Integrable g X.μ` using `hgc.integrable_of_hasCompactSupport hgs`. Establish `hpt : ∀ z, ker X.Γ φ x z * ker X.Γ ψ z y = ∑' γ : X.Γ, g (γ • z)`. Introduce `z`. Establish `h1 : ∀ γ : X.Γ, g (γ • z) = φ (x⁻¹ * (γ : X.G) * z) * ker X.Γ ψ z y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `γ`. Establish `h2 : γ • z = (γ : X.G) * z` using `rfl`. Simplify using `only [hg, h2, (hk X ψ hψ).2.2.1 γ γ.2 z y |>.1, mul_assoc]`. Simplify using `only [h1]`. Rewrite using `[tsum_mul_right, ker, tsum_eq_finsum ((hk X φ hφ).1 x z)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : ∀ γ : X.Γ, Continuous fun z => g (γ • z)` using `fun γ => hgc.comp (continuous_const.mul continuous_id)`. Establish `hfin : ∑' γ : X.Γ, ∫⁻ z, ‖g (γ • z)‖ₑ ∂X.ν ≠ ∞`. Establish `h3 : ∑' γ : X.Γ, ∫⁻ z, ‖g (γ • z)‖ₑ ∂X.ν = ∫⁻ z, ‖g z‖ₑ ∂X.μ` using `(X.fd.lintegral_eq_tsum'' fun z => ‖g z‖ₑ).symm`. Rewrite using `[h3]`. Conclude with `hgi.2.ne`.
-
-Simplify using `only [hpt]`. Rewrite using `[integral_tsum (fun γ => (hmeas γ).aestronglyMeasurable) hfin]`. Conclude with `(X.fd.integral_eq_tsum'' g hgi).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_ker_mul_eq_unfolded (hk : KerBasic) (X : Ctx) (φ ψ : X.G → ℂ) (hφ : Tst φ)
     (hψ : Tst ψ) (x y : X.G) :
@@ -49,17 +47,17 @@ theorem integral_ker_mul_eq_unfolded (hk : KerBasic) (X : Ctx) (φ ψ : X.G → 
   exact (X.fd.integral_eq_tsum'' g hgi).symm
 
 /- English proof (translation)
-Establish `hC : IsCompact ((fun w => x * w * y⁻¹) '' (tsupport φ * tsupport ψ))` using `(hφ.2.isCompact.mul hψ.2.isCompact).image (by fun_prop)`. Establish `hfin` using `X.proper _ hC`. Use `set s : Finset X.Γ := hfin.toFinset with hs`. Establish `hmem : ∀ γ : X.Γ, x⁻¹ * (γ : X.G) * y ∈ tsupport φ * tsupport ψ → γ ∈ s`. Introduce `γ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, Set.Finite.mem_toFinset]`. Conclude with `⟨_, h, by simp [mul_assoc]⟩`. Establish `h1 : ∀ z, φ z * ker X.Γ ψ (x * z) y = ∑ γ ∈ s, φ z * ψ (z⁻¹ * (x⁻¹ * (γ : X.G) * y))`. Introduce `z`. Distinguish the cases in `hz : z ∈ tsupport φ`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ker, finsum_eq_sum_of_support_subset (s := s), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Simplify using `only [mul_inv_rev, mul_assoc]`. Introduce `γ hγ`. Use `Finset.mem_coe.2 (hmem γ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hγ' : (x * z)⁻¹ * (γ : X.G) * y ∈ tsupport ψ` using `subset_tsupport _ hγ`. Use `⟨z, hz, _, hγ', ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Simplify using `[image_eq_zero_of_notMem_tsupport hz]`. Establish `hint : ∀ w : X.G, Integrable (fun z => φ z * ψ (z⁻¹ * w)) X.μ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `hcont : Continuous fun z => φ z * ψ (z⁻¹ * w)` using `hφ.1.mul (hψ.1.comp (continuous_inv.mul continuous_const))`. Conclude with `hcont.integrable_of_hasCompactSupport (HasCompactSupport.mul_right hφ.2)`. Simplify using `only [h1]`. Rewrite using `[integral_finset_sum _ fun γ _ => hint _, ker, finsum_eq_sum_of_support_subset (s := s)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `γ hγ`. Conclude with `Finset.mem_coe.2 (hmem γ ((hc X φ ψ hφ hψ).2.1 hγ))`.
+A detailed English derivation is pending.
 -/
 theorem integral_shifted_eq_ker_cv (hc : CvTest) (X : Ctx) (φ ψ : X.G → ℂ) (hφ : Tst φ)
     (hψ : Tst ψ) (x y : X.G) :
@@ -98,7 +96,7 @@ theorem integral_shifted_eq_ker_cv (hc : CvTest) (X : Ctx) (φ ψ : X.G → ℂ)
     exact Finset.mem_coe.2 (hmem γ ((hc X φ ψ hφ hψ).2.1 hγ))
 
 /- English proof (translation)
-Introduce `hk hc X φ ψ hφ hψ x y`. Rewrite using `[integral_ker_mul_eq_unfolded hk X φ ψ hφ hψ x y, ← integral_shifted_eq_ker_cv hc X φ ψ hφ hψ x y, ← integral_mul_left_eq_self (fun z => φ (x⁻¹ * z) * ker X.Γ ψ z y) x]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kerMul_of_kerBasic_of_cvTest : KerBasic → CvTest → KerMul := by
   intro hk hc X φ ψ hφ hψ x y

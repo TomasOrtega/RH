@@ -14,9 +14,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL ValuativeRel Matrix 
 namespace UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n V _ _ π hi ω hω h`. Establish `hs : IsSmooth π` using `h.isSmooth (isSmooth_parInd _ _)`. Establish `hsupp` using `GlobalTheory.CompanionTheory.SphSupp.hasSupport_prinSeries n ω hω ⟨V, π, hs, hi⟩ h`. Take `⟨hf, -, hm⟩` from `UpperTheory.V.AlgebraTools.jqMult UpperTheory.Lit.Mix.geometricLemma GlobalTheory.bernsteinZelevinskyFiniteness_holds E n V π ω hs hω h`. Use `⟨hs, UpperTheory.jacquet_borel_nontrivial_of_character_support UpperTheory.Lit.Mix.geometricLemma UpperTheory.Lit.Mix.polynomialRing E n V π _ hsupp fun y hy => ?_, hf, fun μ hμ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Both sides reduce to the same expression. Establish `h1` using `lt_of_lt_of_le (Nat.pos_of_ne_zero fun e => hμ (Submodule.finrank_eq_zero.1 e)) (hm μ)`. Take `⟨w⟩` from `(Nat.card_pos_iff.1 h1).1`. Conclude with `⟨w.1, w.2⟩`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jFacts : JFacts := by
   intro E _ _ _ _ n V _ _ π hi ω hω h
@@ -33,13 +33,13 @@ theorem jFacts : JFacts := by
     exact ⟨w.1, w.2⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π μ hμ`. Use `⟨fun hs => ⟨hs.isIrreducible, ?_⟩, fun h => GlobalTheory.CompanionTheory.SphSupp.hasSupport_prinSeries n μ hμ ⟨V, π, h.2.isSmooth (isSmooth_parInd _ _), h.1⟩ h.2⟩` and prove the remaining obligations. Establish `hd : ∑ i, (IrrGL.ofChar (μ i) (hμ i)).1 = n` using `by simp [IrrGL.ofChar]`. Use `IsSubquotient.trans ?_ (GlobalTheory.SphSeg.isSubquotient_prodIrr_prinSeries _ hd μ hμ fun _ => rfl)` and prove the remaining obligations. Take `⟨Z, Ψ, -, hΨ, -⟩` from `UpperTheory.Lit.Mix.polynomialRing k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `SupportRing.pos_pc_sub hΨ hs hs.isSmooth hs.isIrreducible`. Take `⟨hp, ep⟩` from `SupportRing.prodIrr_cls hΨ _ hd`. Use `SupportRing.isSubquotient_of_clsGL_ne hp hs.isSmooth hs.isIrreducible ?_` and prove the remaining obligations. Establish `h2` using `h1 (IrrGL.of π hs.isSmooth hs.isIrreducible)`. Rewrite `h2` using `[SupportRing.pc_map, ← ep]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : ∀ (A : GrothGL k) (y : IrrGL k), Ψ.symm (Ψ A - SupportRing.bas Ψ y) y = A y - 1`. Introduce `A y`. Rewrite using `[SupportRing.bas, ← map_sub, Ψ.symm_apply_apply, Finsupp.sub_apply, Finsupp.single_eq_same]`. Rewrite `h2` using `[e1]`. Introduce `h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[h3]`. Conclude with `absurd h2 (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofSupport : OfSupport := by
   intro k _ _ _ _ n V _ _ π μ hμ
@@ -62,11 +62,9 @@ theorem ofSupport : OfSupport := by
   exact absurd h2 (by norm_num)
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n σ q hσ V _ _ π hi ω hω hinv h A hA`. Take `⟨hs, hn, hf, hm⟩` from `jFacts E n V π hi ω hω h`. Take `⟨μ, l, c, hl, hμ, hlt, hlA⟩` from `hE _ _ (jacB π) (fun t i => Units.map (σ : E →* E) (t i)) (jacA hA) (hJ E n σ hσ.isom V π A hA) fun μ hμ t => by`. Take `⟨w, rfl⟩` from `hm μ hμ`. Simplify using `only [torusChar_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_congr rfl fun i _ => hinv _ _`. Take `⟨χ, hχ, hχl⟩` from `hB E n σ hσ.isom V π μ hμ l hlt`. Use `⟨c, hC E n σ q hσ V π hs hi A hA χ hχ (l ∘ₗ Submodule.mkQ _) c (fun e => hl ?_) hχl fun v => hlA (Submodule.Quotient.mk v)⟩` and prove the remaining obligations. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
-
-Conclude with `LinearMap.congr_fun e v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem scalar_of (hE : Eig) (hB : ToBorel) (hJ : JacSemi) (hC : Core) : Scalar := by
   intro E _ _ _ _ n σ q hσ V _ _ π hi ω hω hinv h A hA
@@ -83,21 +81,19 @@ theorem scalar_of (hE : Eig) (hB : ToBorel) (hJ : JacSemi) (hC : Core) : Scalar 
   exact LinearMap.congr_fun e v
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n σ q hσ V _ _ π hi ω hω hinv h A hA h0`. Take `⟨hs, hn, hf, hm⟩` from `jFacts E n V π hi ω hω h`. Take `⟨c, hc, hψ⟩` from `hS E n σ q hσ V π hi ω hω hinv h A hA`. Establish `hw : whitChar (1 : AddChar E Circle) n = 1`. Use extensionality with `u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[whitChar]`. Establish `hj : jacA hA = c • LinearMap.id`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `hψ 1 continuous_const (fun _ => rfl) v` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[hw]`. Conclude with `(Submodule.Quotient.eq _).2 this`. Use `⟨hn, hf, hm, c, hc h0, hj, fun ψ h1 h2 l a hl hu ha => ?_, fun U hU hst t k₀ => ?_⟩` and prove the remaining obligations. Establish `hk : twKer π (unipB E (Fin n)) (whitChar ψ n) ≤ LinearMap.ker l`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, v, rfl⟩`. Simplify using `[hu]`. Take `⟨v, hv⟩ : ∃ v, l v ≠ 0` from `by by_contra! e`. Conclude with `hl (LinearMap.ext e)`. Use `hk (hψ ψ h1 h2 v)` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `this` using `[LinearMap.mem_ker, map_sub, map_smul, ha, smul_eq_mul, sub_eq_zero]`. Conclude with `(mul_right_cancel₀ hv this).symm`. Use `haveI : Nontrivial U := Submodule.nontrivial_iff_ne_bot.2 hU`. Set `φ : U →ₗ[ℂ] U` to `(jacB π t).restrict (hst t)`. Establish `hφ : Function.Injective φ` using `fun a b e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e' : jacB π t a = jacB π t b` using `congrArg Subtype.val e`. Use `congrArg (jacB π t⁻¹) e'` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Conclude with `Subtype.ext this`. Take `⟨k, hk, hne⟩` from `hT U φ hφ k₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmem : ∀ y ∈ U, (jacB π (t ^ k) ∘ₗ jacA hA) y ∈ U` using `fun y hy => by`. Rewrite using `[hj]`. Conclude with `hst _ _ (U.smul_mem c hy)`. Use `⟨k, hk, hmem, ?_⟩` and prove the remaining obligations. Establish `: (jacB π (t ^ k) ∘ₗ jacA hA).restrict hmem = c • φ ^ k`.
-
-Use extensionality with `y`. Simplify using `only [φ, Module.End.pow_restrict k (hst t), LinearMap.restrict_apply, LinearMap.smul_apply, Submodule.coe_smul, LinearMap.comp_apply, hj, LinearMap.id_apply, map_smul, map_pow]`. Rewrite using `[this, map_smul, smul_eq_mul]`. Conclude with `mul_ne_zero (hc h0) hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locDesc_of (hS : Scalar) (hT : TracePow) : LocDesc := by
   intro E _ _ _ _ n σ q hσ V _ _ π hi ω hω hinv h A hA h0

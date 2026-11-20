@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
 theorem mR_apply (g : Matrix ι ι K) (x : ι → K) : mR (R := R) g x = g.mulVec x := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h2` using `congrArg (fun v => g⁻¹.mulVec v) h`. Simplify using `only [mR_apply, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (Ne.isUnit hg), Matrix.one_mulVec] at h2`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mR_injective {g : Matrix ι ι K} (hg : g.det ≠ 0) : Function.Injective (mR (R := R) g) := by
   intro x y h
@@ -30,7 +30,7 @@ theorem mR_injective {g : Matrix ι ι K} (hg : g.det ≠ 0) : Function.Injectiv
   exact h2
 
 /- English proof (translation)
-The claim follows from `sat_of_linear P.asIdeal g.mulVecLin s y hs hy`.
+A detailed English derivation is pending.
 -/
 theorem mR_sat (P : HeightOneSpectrum R) (g : Matrix ι ι K) (s : R) (y : ι → K)
     (hs : s ∈ P.asIdeal.primeCompl) (hy : s • y ∈ LinearMap.range (mR (R := R) g)) :
@@ -38,7 +38,7 @@ theorem mR_sat (P : HeightOneSpectrum R) (g : Matrix ι ι K) (s : R) (y : ι �
   sat_of_linear P.asIdeal g.mulVecLin s y hs hy
 
 /- English proof (translation)
-The claim follows from `lidx_map P.asIdeal (mR g) (mR_injective hg) (mR_sat P g) A B`.
+A detailed English derivation is pending.
 -/
 theorem lidx_mR (P : HeightOneSpectrum R) {g : Matrix ι ι K} (hg : g.det ≠ 0)
     (A B : Submodule R (ι → K)) :
@@ -46,7 +46,7 @@ theorem lidx_mR (P : HeightOneSpectrum R) {g : Matrix ι ι K} (hg : g.det ≠ 0
   lidx_map P.asIdeal (mR g) (mR_injective hg) (mR_sat P g) A B
 
 /- English proof (translation)
-Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, mR_apply, mR_apply, mR_apply, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mR_mul (g h : Matrix ι ι K) (A : Submodule R (ι → K)) :
     (A.map (mR h)).map (mR g) = A.map (mR (g * h)) := by
@@ -56,7 +56,7 @@ theorem map_mR_mul (g h : Matrix ι ι K) (A : Submodule R (ι → K)) :
   rw [LinearMap.comp_apply, mR_apply, mR_apply, mR_apply, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `: mR (R` using `R) (1 : Matrix ι ι K) = LinearMap.id := by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.id_apply, mR_apply, Matrix.one_mulVec]`. Rewrite using `[this, Submodule.map_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mR_one (A : Submodule R (ι → K)) : A.map (mR (1 : Matrix ι ι K)) = A := by
   have : mR (R := R) (1 : Matrix ι ι K) = LinearMap.id := by
@@ -65,14 +65,14 @@ theorem map_mR_one (A : Submodule R (ι → K)) : A.map (mR (1 : Matrix ι ι K)
   rw [this, Submodule.map_id]
 
 /- English proof (translation)
-Simplify using `only [std, FractionalIdeal.coe_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem std_eq : (std : Submodule R (ι → K)) =
     Submodule.pi Set.univ (fun _ : ι => ((1 : FI) : Submodule R K)) := by
   simp only [std, FractionalIdeal.coe_one]
 
 /- English proof (translation)
-Rewrite using `[std_eq]`. Conclude with `isLat_pi (fun _ => 1) (fun _ => one_ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_std : IsLat (std : Submodule R (ι → K)) := by
   rw [std_eq]; exact isLat_pi (fun _ => 1) (fun _ => one_ne_zero)
@@ -83,13 +83,13 @@ def chi (P : HeightOneSpectrum R) (g : Matrix ι ι K) : ℤ :=
   lidx P.asIdeal (std : Submodule R (ι → K)) ((std : Submodule R (ι → K)).map (mR g))
 
 /- English proof (translation)
-Rewrite using `[chi, map_mR_one, lidx_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_one (P : HeightOneSpectrum R) : chi R P (1 : Matrix ι ι K) = 0 := by
   rw [chi, map_mR_one, lidx_self]
 
 /- English proof (translation)
-Establish `hgh : (g * h).det ≠ 0` using `by rw [Matrix.det_mul]; exact mul_ne_zero hg hh`. Unfold `chi`. Rewrite using `[← map_mR_mul, lat_cocycle P (B := (std : Submodule R (ι → K)).map (mR g)) isLat_std (isLat_map g hg isLat_std) (isLat_map g hg (isLat_map h hh isLat_std)), lidx_mR P hg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_mul (P : HeightOneSpectrum R) {g h : Matrix ι ι K} (hg : g.det ≠ 0) (hh : h.det ≠ 0) :
     chi R P (g * h) = chi R P g + chi R P h := by
@@ -99,9 +99,9 @@ theorem chi_mul (P : HeightOneSpectrum R) {g h : Matrix ι ι K} (hg : g.det ≠
     (isLat_map g hg isLat_std) (isLat_map g hg (isLat_map h hh isLat_std)), lidx_mR P hg]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy' : ∀ b, ∃ w : R, algebraMap R K w = y b` using `fun b => Submodule.mem_one.mp ((Submodule.mem_pi.mp hy) b (Set.mem_univ b))`. Use `choose w hw using hy'`. Use `choose z hz using hg`. Use `Submodule.mem_pi.mpr (fun a _ => Submodule.mem_one.mpr ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ b, z a b * w b, ?_⟩` and prove the remaining obligations. Rewrite using `[mR_apply, Matrix.mulVec, dotProduct, map_sum]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hz, hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_std_le {g : Matrix ι ι K} (hg : ∀ a b, ∃ z : R, algebraMap R K z = g a b) :
     (std : Submodule R (ι → K)).map (mR g) ≤ std := by
@@ -117,7 +117,7 @@ theorem map_std_le {g : Matrix ι ι K} (hg : ∀ a b, ∃ z : R, algebraMap R K
   rw [map_mul, hz, hw]
 
 /- English proof (translation)
-Use `le_antisymm (map_std_le hg) (fun y hy => ?_)` and prove the remaining obligations. Use `⟨g'.mulVec y, map_std_le hg' ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mR_apply, Matrix.mulVec_mulVec, hgg']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem map_std_eq {g g' : Matrix ι ι K} (hg : ∀ a b, ∃ z : R, algebraMap R K z = g a b)
     (hg' : ∀ a b, ∃ z : R, algebraMap R K z = g' a b) (hgg' : g * g' = 1) :
@@ -127,9 +127,9 @@ theorem map_std_eq {g g' : Matrix ι ι K} (hg : ∀ a b, ∃ z : R, algebraMap 
   simp [mR_apply, Matrix.mulVec_mulVec, hgg']
 
 /- English proof (translation)
-Establish `hint : ∀ c : R, ∀ a b, ∃ w : R, algebraMap R K w = Matrix.transvection i j (algebraMap R K c) a b`. Introduce `c a b`. Use `⟨Matrix.transvection i j c a b, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[chi, map_std_eq (hint z) (g' := Matrix.transvection i j (algebraMap R K (-z))) (hint (-z)) (by rw [Matrix.transvection_mul_transvection_same i j hij, ← map_add, add_neg_cancel, map_zero, Matrix.transvection_zero]), lidx_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_transvection_int (P : HeightOneSpectrum R) {i j : ι} (hij : i ≠ j) (z : R) :
     chi R P (Matrix.transvection i j (algebraMap R K z)) = 0 := by
@@ -143,23 +143,23 @@ theorem chi_transvection_int (P : HeightOneSpectrum R) {i j : ι} (hij : i ≠ j
       Matrix.transvection_zero]), lidx_self]
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Rewrite using `[hc, Matrix.transvection_zero, chi_one]`. Use `set D : Matrix ι ι K := Matrix.diagonal (Function.update 1 i c)`. Use `set D' : Matrix ι ι K := Matrix.diagonal (Function.update 1 i c⁻¹)`. Establish `hDD' : D * D' = 1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use extensionality with `a`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hc]`. Simplify using `[Function.update_of_ne ha]`. Establish `hdet : ∀ M N : Matrix ι ι K, M * N = 1 → M.det ≠ 0` using `fun M N h hM => by`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, hM, zero_mul, Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `hD : D.det ≠ 0` using `hdet D D' hDD'`. Establish `hD'D : D' * D = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use extensionality with `a`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using `[hc]`. Simplify using `[Function.update_of_ne ha]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD' : D'.det ≠ 0` using `hdet D' D hD'D`. Establish `ht1 : (Matrix.transvection i j (1 : K)).det ≠ 0`. Rewrite using `[Matrix.det_transvection_of_ne i j hij]`. Conclude with `one_ne_zero`. Establish `he : Matrix.transvection i j c = D * Matrix.transvection i j 1 * D'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Use extensionality with `a b`. Simplify using `only [D, D', Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Break down `eq_or_ne a i with rfl | ha` into its components or cases. Break down `eq_or_ne b a with rfl | hba` into its components or cases. Simplify using `[Function.update_self, hij.symm]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Break down `eq_or_ne b j with rfl | hbj` into its components or cases. Simplify using `[Function.update_self, Function.update_of_ne hba, hba.symm]`. Simplify using `[hba.symm, hbj.symm]`. Break down `eq_or_ne a b with rfl | hab` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Function.update_of_ne ha, ha.symm]`. Simplify using `[hab, ha.symm, Function.update_of_ne ha]`. Establish `h1` using `chi_transvection_int (K := K) P hij 1`. Rewrite `h1` using `[map_one]`. Rewrite using `[he, chi_mul P (by rw [Matrix.det_mul]; exact mul_ne_zero hD ht1) hD', chi_mul P hD ht1, h1, add_zero, ← chi_mul P hD hD', hDD', chi_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_transvection (P : HeightOneSpectrum R) {i j : ι} (hij : i ≠ j) (c : K) :
     chi R P (Matrix.transvection i j c) = 0 := by
@@ -209,9 +209,9 @@ theorem chi_transvection (P : HeightOneSpectrum R) {i j : ι} (hij : i ≠ j) (c
     add_zero, ← chi_mul P hD hD', hDD', chi_one]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Submodule.mem_map, std, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one, FractionalIdeal.mem_coe, FractionalIdeal.mem_spanSingleton, mR_apply, Matrix.mulVec_diagonal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ i`. Take `⟨w, hw⟩` from `hy i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, by rw [Matrix.mulVec_diagonal, Algebra.smul_def, hw, mul_comm]⟩`. Introduce `h choose w hw using h`. Use `⟨fun i => algebraMap R K (w i), fun i => ⟨w i, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Rewrite using `[Matrix.mulVec_diagonal, ← hw i, Algebra.smul_def, mul_comm]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem std_map_diagonal (D : ι → K) :
     (std : Submodule R (ι → K)).map (mR (Matrix.diagonal D)) =
@@ -231,7 +231,7 @@ theorem std_map_diagonal (D : ι → K) :
     rw [Matrix.mulVec_diagonal, ← hw i, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Establish `: FractionalIdeal.spanSingleton (nonZeroDivisors R) (∏ i, D i) = ∏ i, FractionalIdeal.spanSingleton (nonZeroDivisors R) (D i)`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, ← FractionalIdeal.spanSingleton_mul_spanSingleton, ih]`. Rewrite using `[this, FractionalIdeal.count_prod K P _ _ (fun i _ => FractionalIdeal.spanSingleton_ne_zero_iff.mpr (hD i))]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem count_spanSingleton_prod (P : HeightOneSpectrum R) (D : ι → K) (hD : ∀ i, D i ≠ 0) :
     FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors R) (∏ i, D i)) =
@@ -246,7 +246,7 @@ theorem count_spanSingleton_prod (P : HeightOneSpectrum R) (D : ι → K) (hD : 
     FractionalIdeal.spanSingleton_ne_zero_iff.mpr (hD i))]
 
 /- English proof (translation)
-Rewrite using `[chi, std_map_diagonal, std_eq, lidx_pi_frac P (fun _ => 1) (fun i => FractionalIdeal.spanSingleton _ (D i)) (fun _ => one_ne_zero) (fun i => FractionalIdeal.spanSingleton_ne_zero_iff.mpr (hD i)), count_spanSingleton_prod P D hD]`. Simplify using `[FractionalIdeal.count_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chi_diagonal (P : HeightOneSpectrum R) (D : ι → K) (hD : ∀ i, D i ≠ 0) :
     chi R P (Matrix.diagonal D) =
@@ -257,11 +257,11 @@ theorem chi_diagonal (P : HeightOneSpectrum R) (D : ι → K) (hD : ∀ i, D i �
   simp [FractionalIdeal.count_one]
 
 /- English proof (translation)
-Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun M => chi R P M = FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors R) M.det)) g hg ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD`. Establish `hD' : ∀ i, D i ≠ 0`. Introduce `i hi`. Rewrite `hD` using `[Matrix.det_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hD (Finset.prod_eq_zero (Finset.mem_univ i) hi)`. Rewrite using `[chi_diagonal P D hD', Matrix.det_diagonal]`. Introduce `t`. Rewrite using `[Matrix.TransvectionStruct.det, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`. Conclude with `chi_transvection P t.hij t.c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `A B hA hB hA' hB'`. Rewrite using `[chi_mul P hA hB, hA', hB', Matrix.det_mul, ← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K P (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hA) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hB)]`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq (P : HeightOneSpectrum R) (g : Matrix ι ι K) (hg : g.det ≠ 0) :
     chi R P g = FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors R) g.det) := by

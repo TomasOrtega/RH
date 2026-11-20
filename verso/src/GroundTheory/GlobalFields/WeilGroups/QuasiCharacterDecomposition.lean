@@ -18,7 +18,7 @@ def toUnitary (ψ : QuasiCharacter K) (h : ∀ c, ‖((ψ c : ℂˣ) : ℂ)‖ =
   continuous_toFun := (Units.continuous_val.comp ψ.continuous).subtype_mk _
 
 /- English proof (translation)
-Use extensionality with `c`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem ofUnitary_toUnitary (ψ : QuasiCharacter K) (h : ∀ c, ‖((ψ c : ℂˣ) : ℂ)‖ = 1) :
     ofUnitary (toUnitary ψ h) = ψ := by
@@ -26,21 +26,21 @@ theorem ofUnitary_toUnitary (ψ : QuasiCharacter K) (h : ∀ c, ‖((ψ c : ℂ�
   rfl
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_modulePow_zero (ψ : QuasiCharacter K) : ψ * modulePow (0 : ℂ) = ψ := by
   ext c
   simp
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ofUnitary_one_mul (ψ : QuasiCharacter K) : ofUnitary 1 * ψ = ψ := by
   ext c
   simp
 
 /- English proof (translation)
-Rewrite using `[ContinuousMonoidHom.mul_apply, Units.val_mul, norm_mul, norm_ofUnitary, one_mul, norm_modulePow_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_ofUnitary_mul_modulePow (χ : HeckeCharacter K) (σ : ℝ) (c : IdeleClassGroup K) :
     ‖(((ofUnitary χ * modulePow (σ : ℂ) : QuasiCharacter K) c : ℂˣ) : ℂ)‖ =
@@ -49,9 +49,9 @@ theorem norm_ofUnitary_mul_modulePow (χ : HeckeCharacter K) (σ : ℝ) (c : Ide
     norm_modulePow_ofReal]
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `ψ.exists_norm_eq_rpow`. Establish `h : ∀ c, ‖(((ψ * modulePow (-(σ : ℂ)) : QuasiCharacter K) c : ℂˣ) : ℂ)‖ = 1`. Introduce `c`. Rewrite using `[ContinuousMonoidHom.mul_apply, Units.val_mul, norm_mul, hσ, ← Complex.ofReal_neg, norm_modulePow_ofReal, ← Real.rpow_add (IdeleClassGroup.ideleModule K c).2, add_neg_cancel, Real.rpow_zero]`. Use `⟨toUnitary _ h, σ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ofUnitary_toUnitary, mul_assoc, ← modulePow_add, neg_add_cancel, mul_modulePow_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ofUnitary_mul_modulePow (ψ : QuasiCharacter K) :
     ∃ (χ : HeckeCharacter K) (σ : ℝ), ofUnitary χ * modulePow (σ : ℂ) = ψ := by
@@ -65,9 +65,9 @@ theorem exists_ofUnitary_mul_modulePow (ψ : QuasiCharacter K) :
   rw [ofUnitary_toUnitary, mul_assoc, ← modulePow_add, neg_add_cancel, mul_modulePow_zero]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `IdeleClassGroup.ideleModule_surjective K ⟨Real.exp 1, Real.exp_pos 1⟩`. Establish `hn` using `congrArg (fun ψ : QuasiCharacter K ↦ ‖((ψ c : ℂˣ) : ℂ)‖) h`. Simplify using `only [norm_ofUnitary_mul_modulePow, hc] at hn`. Rewrite `hn` using `[Real.exp_one_rpow, Real.exp_one_rpow]`. Establish `hσ : σ = σ'` using `Real.exp_injective hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Substitute `hσ` using the available equality. Use `⟨ofUnitary_injective (ContinuousMonoidHom.ext fun c ↦ Units.ext ?_), rfl⟩` and prove the remaining obligations. Establish `hc` using `congrArg (fun ψ : QuasiCharacter K ↦ ((ψ c : ℂˣ) : ℂ)) h`. Simplify using `only [ContinuousMonoidHom.mul_apply, Units.val_mul] at hc`. Conclude with `mul_right_cancel₀ (modulePow (σ : ℂ) c).ne_zero hc`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_ofUnitary_mul_modulePow_eq {χ χ' : HeckeCharacter K} {σ σ' : ℝ}
     (h : ofUnitary χ * modulePow (σ : ℂ) = ofUnitary χ' * modulePow (σ' : ℂ)) :
@@ -92,7 +92,7 @@ def ofUnitaryMulModulePow : HeckeCharacter K × Multiplicative ℝ →* QuasiCha
     exact mul_mul_mul_comm (ofUnitary p.1) (ofUnitary q.1) _ _
 
 /- English proof (translation)
-Use `⟨fun p q h ↦ ?_, fun ψ ↦ ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `eq_of_ofUnitary_mul_modulePow_eq h`. Conclude with `Prod.ext h1 (Multiplicative.toAdd.injective h2)`. Take `⟨χ, σ, h⟩` from `ψ.exists_ofUnitary_mul_modulePow`. Conclude with `⟨(χ, Multiplicative.ofAdd σ), h⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ofUnitaryMulModulePow_bijective :
     Function.Bijective (ofUnitaryMulModulePow (K := K)) := by
@@ -114,14 +114,14 @@ def unitaryPart : HeckeCharacter K := (unitaryDecomposition K ψ).1
 def exponent : ℝ := (unitaryDecomposition K ψ).2.toAdd
 
 /- English proof (translation)
-The claim follows from `MulEquiv.ofBijective_apply_symm_apply (n := ψ) ofUnitaryMulModulePow ofUnitaryMulModulePow_bijective`.
+A detailed English derivation is pending.
 -/
 theorem ofUnitary_unitaryPart_mul_modulePow_exponent :
     ofUnitary ψ.unitaryPart * modulePow (ψ.exponent : ℂ) = ψ :=
   MulEquiv.ofBijective_apply_symm_apply (n := ψ) ofUnitaryMulModulePow ofUnitaryMulModulePow_bijective
 
 /- English proof (translation)
-Use `conv_lhs => rw [← ψ.ofUnitary_unitaryPart_mul_modulePow_exponent]`. Conclude with `norm_ofUnitary_mul_modulePow _ _ _`. Use the proof step `@[simp]`.
+A detailed English derivation is pending.
 -/
 theorem norm_apply (c : IdeleClassGroup K) :
     ‖((ψ c : ℂˣ) : ℂ)‖ = (IdeleClassGroup.ideleModule K c : ℝ) ^ ψ.exponent := by
@@ -130,7 +130,7 @@ theorem norm_apply (c : IdeleClassGroup K) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(eq_of_ofUnitary_mul_modulePow_eq (ofUnitary_unitaryPart_mul_modulePow_exponent (ofUnitary χ * modulePow (σ : ℂ)))).1 @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem unitaryPart_ofUnitary_mul_modulePow (χ : HeckeCharacter K) (σ : ℝ) :
     (ofUnitary χ * modulePow (σ : ℂ)).unitaryPart = χ :=
@@ -139,7 +139,7 @@ theorem unitaryPart_ofUnitary_mul_modulePow (χ : HeckeCharacter K) (σ : ℝ) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(eq_of_ofUnitary_mul_modulePow_eq (ofUnitary_unitaryPart_mul_modulePow_exponent (ofUnitary χ * modulePow (σ : ℂ)))).2 @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem exponent_ofUnitary_mul_modulePow (χ : HeckeCharacter K) (σ : ℝ) :
     (ofUnitary χ * modulePow (σ : ℂ)).exponent = σ :=
@@ -148,7 +148,7 @@ theorem exponent_ofUnitary_mul_modulePow (χ : HeckeCharacter K) (σ : ℝ) :
 
 @[simp]
 /- English proof (translation)
-Establish `h` using `unitaryPart_ofUnitary_mul_modulePow χ 0`. Rewrite `h` using `[Complex.ofReal_zero, mul_modulePow_zero]`. Then use the resulting hypothesis. Use the proof step `@[simp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unitaryPart_ofUnitary (χ : HeckeCharacter K) : (ofUnitary χ).unitaryPart = χ := by
   have h := unitaryPart_ofUnitary_mul_modulePow χ 0
@@ -156,7 +156,7 @@ theorem unitaryPart_ofUnitary (χ : HeckeCharacter K) : (ofUnitary χ).unitaryPa
 
 @[simp]
 /- English proof (translation)
-Establish `h` using `exponent_ofUnitary_mul_modulePow χ 0`. Rewrite `h` using `[Complex.ofReal_zero, mul_modulePow_zero]`. Then use the resulting hypothesis. Use the proof step `@[simp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exponent_ofUnitary (χ : HeckeCharacter K) : (ofUnitary χ).exponent = 0 := by
   have h := exponent_ofUnitary_mul_modulePow χ 0
@@ -164,7 +164,7 @@ theorem exponent_ofUnitary (χ : HeckeCharacter K) : (ofUnitary χ).exponent = 0
 
 @[simp]
 /- English proof (translation)
-Establish `h` using `exponent_ofUnitary_mul_modulePow (1 : HeckeCharacter K) σ`. Rewrite `h` using `[ofUnitary_one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exponent_modulePow (σ : ℝ) : (modulePow (σ : ℂ) : QuasiCharacter K).exponent = σ := by
   have h := exponent_ofUnitary_mul_modulePow (1 : HeckeCharacter K) σ

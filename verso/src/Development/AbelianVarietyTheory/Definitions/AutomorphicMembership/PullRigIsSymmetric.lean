@@ -26,7 +26,7 @@ def combGen (F : J → (X' ⟶ X)) (δ : J → ℤ) (φ : K → (Y ⟶ X')) (ε 
   s := fun jj => ∏ i, res (GeneratorPullback.box_le L F φ jj i) ((t i).s (fun k _ => jj k i)) ^ δ i
 
 /- English proof (translation)
-The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ => (map_zpow _ _ _).trans (congrArg (· ^ δ i) (gm_res r z _ h _)))`.
+A detailed English derivation is pending.
 -/
 theorem gm_combGen (F : J → (X' ⟶ X)) (δ : J → ℤ) (φ : K → (Y ⟶ X')) (ε : K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb (L.pull (F i)) φ ε)) (r : Z ⟶ Y) (z : Z)
@@ -37,9 +37,9 @@ theorem gm_combGen (F : J → (X' ⟶ X)) (δ : J → ℤ) (φ : K → (Y ⟶ X'
     (map_zpow _ _ _).trans (congrArg (· ^ δ i) (gm_res r z _ h _)))
 
 /- English proof (translation)
-Unfold `trF`. Simplify using `only [← Finset.prod_zpow]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `(congrArg (· ^ ε k) (gm_linComb L F δ (r ≫ φ k) z (jj k) (jj' k) (Set.mem_iInter.1 h k) (Set.mem_iInter.1 h' k))).trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.prod_zpow _ _ _).symm.trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← zpow_mul, mul_comm, zpow_mul]`. Use `congrArg (fun q => (q ^ ε k) ^ δ i) ?_` and prove the remaining obligations. Conclude with `(gm_pull_g L (F i) (r ≫ φ k) z (fun _ => jj k i) (fun _ => jj' k i) (Set.mem_iInter.1 (GeneratorPullback.box_le L F φ jj i h) k) (Set.mem_iInter.1 (GeneratorPullback.box_le L F φ jj' i h') k)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trF_comb (F : J → (X' ⟶ X)) (δ : J → ℤ) (φ : K → (Y ⟶ X')) (ε : K → ℤ) (r : Z ⟶ Y) (z : Z)
     (jj jj' : K → (LB.LinComb L F δ).ι) (h : r z ∈ LB.wchart (LB.LinComb L F δ) φ jj)
@@ -59,7 +59,7 @@ theorem trF_comb (F : J → (X' ⟶ X)) (δ : J → ℤ) (φ : K → (Y ⟶ X'))
     (Set.mem_iInter.1 (GeneratorPullback.box_le L F φ jj i h) k) (Set.mem_iInter.1 (GeneratorPullback.box_le L F φ jj' i h') k)).symm
 
 /- English proof (translation)
-Use `isGen_of_gm _ fun y jj jj' h h' => ?_` and prove the remaining obligations. Rewrite using `[gm_combGen L F δ φ ε t (𝟙 Y) y jj h, gm_combGen L F δ φ ε t (𝟙 Y) y jj' h', trF_comb L F δ φ ε (𝟙 Y) y jj jj' h h', ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow]`. Conclude with `congrArg (· ^ δ i) (gen_trans (ht i) (𝟙 Y) y (GeneratorPullback.box_le L F φ jj i h) (GeneratorPullback.box_le L F φ jj' i h'))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGen_combGen (F : J → (X' ⟶ X)) (δ : J → ℤ) (φ : K → (Y ⟶ X')) (ε : K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb (L.pull (F i)) φ ε)) (ht : ∀ i, (t i).IsGen) :
@@ -74,14 +74,14 @@ theorem isGen_combGen (F : J → (X' ⟶ X)) (δ : J → ℤ) (φ : K → (Y ⟶
 variable {L}
 
 /- English proof (translation)
-Introduce `χ` and use `mem_pull.2 (Set.mem_iInter.1 (hI χ) i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_factor {F : J → (X' ⟶ X)} {δ : J → ℤ} {z : Z} {I : (Z ⟶ X') → (LB.LinComb L F δ).ι}
     (hI : Good (LB.LinComb L F δ) z I) (i : J) : Good (L.pull (F i)) z (fun χ _ => I χ i) :=
   fun χ => mem_pull.2 (Set.mem_iInter.1 (hI χ) i)
 
 /- English proof (translation)
-The claim follows from `gm_combGen L F δ φ ε t r z _ (hI.mem φ r)`.
+A detailed English derivation is pending.
 -/
 theorem val_combGen {F : J → (X' ⟶ X)} {δ : J → ℤ} {φ : K → (Y ⟶ X')} {ε : K → ℤ}
     (t : ∀ i, LB.Gen (LB.LinComb (L.pull (F i)) φ ε)) (r : Z ⟶ Y) {z : Z} {I : (Z ⟶ X') → (LB.LinComb L F δ).ι}
@@ -92,7 +92,7 @@ theorem val_combGen {F : J → (X' ⟶ X)} {δ : J → ℤ} {φ : K → (Y ⟶ X
 end Generators
 
 /- English proof (translation)
-The claim follows from `Finset.prod_eq_one fun i _ => by rw [(h i).face, one_zpow] s01 x y z := Finset.prod_congr rfl fun i _ => by rw [(h i).s01] s12 x y z := Finset.prod_congr rfl fun i _ => by rw [(h i).s12] coc x x' x'' y := by simp only [← Finset.prod_mul_distrib, ← mul_zpow] exact Finset.prod_cong …`.
+A detailed English derivation is pending.
 -/
 theorem isCub_prod {B U J : Type} [CommGroup B] [CommGroup U] [Fintype J] (θ : J → B → B → B → U)
     (h : ∀ i, IsCub (θ i)) (δ : J → ℤ) : IsCub fun x y z => ∏ i, θ i x y z ^ δ i where
@@ -115,7 +115,7 @@ def pullCub {L : RigLB G} (c : CubicalStr G L) (f : A ⟶ G) [IsMonHom f] : Cubi
   CubePf.cubical (CubeMap.ofHom f) L c _ _
 
 /- English proof (translation)
-Take `⟨_, _, -, h⟩` from `proved_CubePullSt S S G A (CubeMap.ofHom f) L c`. Conclude with `h hs`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pullRig_isSymmetric {L : RigLB G} (c : CubicalStr G L) (hs : L.IsSymmetric) (f : A ⟶ G) [IsMonHom f] :
     (pullRig L f).IsSymmetric := by
@@ -139,7 +139,7 @@ def combCub {L : RigLB G} (c : CubicalStr G L) : CubicalStr A (combRig u δ L) :
       exact val_combGen (fun i => (pullCub c (u i)).t) _ hI
 
 /- English proof (translation)
-Use `⟨fun ⟨_, w, h⟩ => ?_, fun ⟨sy, h⟩ => ⟨GlobalTheory.IndefiniteRowSideFullHecke.PowerGroupDatum.eSec_inv, _, (BoxCompare.isNormSymm_iff L sy).2 h⟩⟩` and prove the remaining obligations. Take `⟨sy, rfl⟩` from `(BoxCompare.symEquiv L.L _).surjective w`. Conclude with `⟨sy, (BoxCompare.isNormSymm_iff L sy).1 h⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSymmetric_iff (L : RigLB G) : L.IsSymmetric ↔ ∃ sy, BoxCompare.IsCanonSym L.L sy := by
   refine ⟨fun ⟨_, w, h⟩ => ?_, fun ⟨sy, h⟩ => ⟨GlobalTheory.IndefiniteRowSideFullHecke.PowerGroupDatum.eSec_inv, _, (BoxCompare.isNormSymm_iff L sy).2 h⟩⟩
@@ -147,9 +147,7 @@ theorem isSymmetric_iff (L : RigLB G) : L.IsSymmetric ↔ ∃ sy, BoxCompare.IsC
   exact ⟨sy, (BoxCompare.isNormSymm_iff L sy).1 h⟩
 
 /- English proof (translation)
-Use `choose sy hsy using fun i => (isSymmetric_iff _).1 (pullRig_isSymmetric c hs (u i))`. Use `(isSymmetric_iff _).2 ⟨combGen L.L (fun i => (u i).left) δ _ _ sy, isGen_combGen _ _ _ _ _ _ fun i => (hsy i).1, corr_of_val (combRig u δ L).isLB fun y I hI => ?_⟩` and prove the remaining obligations. Use `(val_pull hI _ _ _).trans (Eq.trans ?_ (val_one _).symm)` and prove the remaining obligations. Use `(val_combGen sy _ hI).trans (Finset.prod_eq_one fun i _ => ?_)` and prove the remaining obligations. Establish `e` using `(val_pull (good_factor hI i) (sy i) (eSec A) (𝟙 _)).symm.trans ((val_corr (good_factor hI i) (hsy i).2 (𝟙 _)).trans (val_one _))`.
-
-Conclude with `(congrArg (· ^ δ i) e).trans (one_zpow _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem combRig_isSymmetric {L : RigLB G} (c : CubicalStr G L) (hs : L.IsSymmetric) :
     (combRig u δ L).IsSymmetric := by

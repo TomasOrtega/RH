@@ -29,7 +29,7 @@ def spG : Submodule ℂ (M23 × (Fin 2 → ℂ) → ℂ) := Submodule.span ℂ {
 def spP (a b : ℕ) : Submodule ℂ (M23 × (Fin 2 → ℂ) → ℂ) := spM ^ a * spQ ^ b * spG
 
 /- English proof (translation)
-Establish `h1 : spM.FG` using `Submodule.fg_span (by simp)`. Establish `h2 : spQ.FG` using `Submodule.fg_span (by simp)`. Establish `h3 : spG.FG` using `Submodule.fg_span (by simp)`. Conclude with `((h1.pow a).mul (h2.pow b)).mul h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spP_fg (a b : ℕ) : (spP a b).FG := by
   have h1 : spM.FG := Submodule.fg_span (by simp)
@@ -41,9 +41,9 @@ instance spP_finiteDimensional (a b : ℕ) : FiniteDimensional ℂ (spP a b) :=
   Module.Finite.iff_fg.2 (spP_fg a b)
 
 /- English proof (translation)
-Establish `h : o.det * (starRingEnd ℂ) o.det = 1`. Use `congrArg Matrix.det ho` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one]`. Then use the resulting hypothesis. Rewrite `h` using `[Complex.mul_conj']`. Establish `h' : ‖o.det‖ ^ 2 = 1` using `by exact_mod_cast h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h'`.
+A detailed English derivation is pending.
 -/
 theorem norm_det_eq_one (o : Matrix (Fin 3) (Fin 3) ℂ) (ho : o * oᴴ = 1) : ‖o.det‖ = 1 := by
   have h : o.det * (starRingEnd ℂ) o.det = 1 := by
@@ -54,9 +54,9 @@ theorem norm_det_eq_one (o : Matrix (Fin 3) (Fin 3) ℂ) (ho : o * oᴴ = 1) : �
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h'
 
 /- English proof (translation)
-Establish `h : (X r ᵥ* o) ⬝ᵥ star (X r ᵥ* o) = X r ⬝ᵥ star (X r)`. Rewrite using `[Matrix.star_vecMul, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ho, Matrix.vecMul_one]`. Establish `hn : ∀ v : Fin 3 → ℂ, v ⬝ᵥ star v = ((∑ c, ‖v c‖ ^ 2 : ℝ) : ℂ)`. Introduce `v`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.mul_conj']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite `h` using `[hn, hn]`. Conclude with `h` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqs_mul (o : Matrix (Fin 3) (Fin 3) ℂ) (ho : o * oᴴ = 1) (X : M23) (r : Fin 2) :
     ∑ c, ‖(Matrix.of X * o) r c‖ ^ 2 = ∑ c, ‖X r c‖ ^ 2 := by
@@ -71,7 +71,7 @@ theorem sqs_mul (o : Matrix (Fin 3) (Fin 3) ℂ) (ho : o * oᴴ = 1) (X : M23) (
   exact_mod_cast h
 
 /- English proof (translation)
-Unfold `sec`. Simplify using `only [inn_mul_right Ψ Ψ₀ g o hΨ]`. Rewrite using `[Units.val_mul, Matrix.det_mul, norm_mul, ho, mul_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_translate (k : ℕ) (Ψ Ψ₀ : Sw) (g o : GL (Fin 3) ℂ)
     (ho : ‖(o : Matrix (Fin 3) (Fin 3) ℂ).det‖ = 1)
@@ -83,15 +83,13 @@ theorem sec_translate (k : ℕ) (Ψ Ψ₀ : Sw) (g o : GL (Fin 3) ℂ)
   rw [Units.val_mul, Matrix.det_mul, norm_mul, ho, mul_one]
 
 /- English proof (translation)
-Use `set u : M23 × (Fin 2 → ℂ) → ℂ := (o 0 0 * o 1 1 - o 0 1 * o 1 0) • mnr 0 1 + (o 0 0 * o 2 1 - o 0 1 * o 2 0) • mnr 0 2 + (o 1 0 * o 2 1 - o 1 1 * o 2 0) • mnr 1 2 with hu`. Use `set v : M23 × (Fin 2 → ℂ) → ℂ := (starRingEnd ℂ) (o 0 0) • qcj 0 + (starRingEnd ℂ) (o 1 0) • qcj 1 + (starRingEnd ℂ) (o 2 0) • qcj 2 with hv`. Establish `hum : u ∈ spM`. Apply the tactic sequence `refine Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_ <;>`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hvm : v ∈ spQ`. Apply the tactic sequence `refine Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_ <;>`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Establish `heq : (fun p : M23 × (Fin 2 → ℂ) => gauK k (Matrix.of.symm (Matrix.of p.1 * o), p.2)) = u ^ (2 * k - 2) * v ^ (4 * k - 4) * gs`. Use function extensionality and compare the values at `p`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hs : (∑ r, ∑ c, ‖(Matrix.of p.1 * o) r c‖ ^ 2) = ∑ r, ∑ c, ‖p.1 r c‖ ^ 2` using `Finset.sum_congr rfl fun r _ => sqs_mul o ho p.1 r`. Establish `h1 : (Matrix.of p.1 * o) 0 0 * (Matrix.of p.1 * o) 1 1 - (Matrix.of p.1 * o) 0 1 * (Matrix.of p.1 * o) 1 0 = u p`. Simplify using `only [hu, Matrix.mul_apply, Fin.sum_univ_three, Matrix.of_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, mnr]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (starRingEnd ℂ) (p.2 0 * (Matrix.of p.1 * o) 0 0 + p.2 1 * (Matrix.of p.1 * o) 1 0) = v p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [hv, Matrix.mul_apply, Fin.sum_univ_three, Matrix.of_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, qcj, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [gauK, Pi.mul_apply, Pi.pow_apply, gs]`. Express the relevant statement in the definitionally equal form `((Matrix.of p.1 * o) 0 0 * (Matrix.of p.1 * o) 1 1 - (Matrix.of p.1 * o) 0 1 * (Matrix.of p.1 * o) 1 0) ^ (2 * k - 2) * (starRingEnd ℂ) (p.2 0 * (Matrix.of p.1 * o) 0 0 + p.2 1 * (Matrix.of p.1 * o) 1 0) ^ (4 * k - 4) * Complex.exp (-(2 * Real.pi : ℂ) * ((∑ r, ∑ c, ‖(Matrix.of p. …`. Rewrite using `[h1, h2, hs]`.
-
-Rewrite using `[heq]`. Conclude with `Submodule.mul_mem_mul (Submodule.mul_mem_mul (Submodule.pow_mem_pow _ hum _) (Submodule.pow_mem_pow _ hvm _)) (Submodule.subset_span rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauK_translate_mem (k : ℕ) (o : Matrix (Fin 3) (Fin 3) ℂ) (ho : o * oᴴ = 1) :
     (fun p : M23 × (Fin 2 → ℂ) => gauK k (Matrix.of.symm (Matrix.of p.1 * o), p.2)) ∈
@@ -135,15 +133,13 @@ theorem gauK_translate_mem (k : ℕ) (o : Matrix (Fin 3) (Fin 3) ℂ) (ho : o * 
     (Submodule.pow_mem_pow _ hvm _)) (Submodule.subset_span rfl)
 
 /- English proof (translation)
-Introduce `hS k hk Ψ hΨ`. Set `L : Sw →ₗ[ℂ] (GL (Fin 3) ℂ → ℂ)` to `{ toFun := sec k map_add' := fun A B => (hS k hk A B 0).1 map_smul' := fun c A => (hS k hk A 0 c).2 }`. Set `co : Sw →ₗ[ℂ] (M23 × (Fin 2 → ℂ) → ℂ)` to `{ toFun := fun f => f map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hco : Function.Injective co` using `fun A B h => SchwartzMap.ext (congrFun h)`. Set `F : Submodule ℂ Sw` to `(spP (2 * k - 2) (4 * k - 4)).comap co`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : F →ₗ[ℂ] spP (2 * k - 2) (4 * k - 4)` to `co.restrict (fun _ hx => hx)`. Establish `he : Function.Injective e` using `fun A B h => Subtype.ext (hco (congrArg Subtype.val h))`. Use `haveI : FiniteDimensional ℂ F := FiniteDimensional.of_injective e he`. Establish `hle : Submodule.span ℂ {W' | ∃ o ∈ U3, W' = fun g => sec k Ψ (g * o)} ≤ F.map L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `W ⟨o, ho, rfl⟩`. Take `⟨Ψ₀, hΨ₀⟩` from `exists_rightTranslate o Ψ`. Use `⟨Ψ₀, ?_, funext fun g => ?_⟩` and prove the remaining obligations. Establish `hf : co Ψ₀ = fun p : M23 × (Fin 2 → ℂ) => gauK k (Matrix.of.symm (Matrix.of p.1 * (o : Matrix (Fin 3) (Fin 3) ℂ)), p.2)`. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ψ₀ (p.1, p.2) = _`. Rewrite using `[hΨ₀, hΨ]`. Express the relevant statement in the definitionally equal form `co Ψ₀ ∈ spP (2 * k - 2) (4 * k - 4)`. Rewrite using `[hf]`. Conclude with `gauK_translate_mem k _ ho`.
-
-Conclude with `(sec_translate k Ψ Ψ₀ g o (norm_det_eq_one _ ho) hΨ₀).symm`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translates_finiteDimensional : DKfd := by
   intro hS k hk Ψ hΨ

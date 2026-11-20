@@ -18,9 +18,9 @@ variable {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] 
   {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Establish `h1 : resG E σ • A = A` using `hσ`. Use `show σ • A = A`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `conv_rhs => rw [← h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_Dec_of_resG {σ : G E' Ω} (hσ : resG E σ ∈ Dec (F := E) A) : σ ∈ Dec (F := E') A := by
   have h1 : resG E σ • A = A := hσ
@@ -32,7 +32,7 @@ theorem mem_Dec_of_resG {σ : G E' Ω} (hσ : resG E σ ∈ Dec (F := E) A) : σ
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mem_Dec_of_resG hσ.1, fun x hx => hσ.2 x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Ine_of_resG {σ : G E' Ω} (hσ : resG E σ ∈ Ine (F := E) A) : σ ∈ Ine (F := E') A :=
   ⟨mem_Dec_of_resG hσ.1, fun x hx => hσ.2 x hx⟩
@@ -51,22 +51,20 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Use `show Continuous fun σ : Ine (F := E') A => (⟨resG E (σ : G E' Ω), resG_mem_Ine σ.2⟩ : Ine (F := E) A)`. Conclude with `((continuous_resG (E := E) (E' := E') (Ω := Ω)).comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_resIne : Continuous (resIne E A : Ine (F := E') A → Ine (F := E) A) := by
   show Continuous fun σ : Ine (F := E') A => (⟨resG E (σ : G E' Ω), resG_mem_Ine σ.2⟩ : Ine (F := E) A)
   exact ((continuous_resG (E := E) (E' := E') (Ω := Ω)).comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-Set `bQ` to `Module.finBasis ℚ E'`. Set `K : IntermediateField E Ω` to `IntermediateField.adjoin E (Set.range fun i => algebraMap E' Ω (bQ i))`. Establish `: Algebra.IsAlgebraic E Ω` using `IsAlgClosure.isAlgebraic`. Establish `: FiniteDimensional E K` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Set `U : Subgroup (Ine (F` to `E) A) := K.fixingSubgroup.comap (Ine (F := E) A).subtype`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU : IsOpen (U : Set (Ine (F` using `E) A)) := (IntermediateField.fixingSubgroup_isOpen K).preimage continuous_subtype_val`. Take `⟨σ, hσ, hne⟩` from `ht.exists_tval_ne_zero hU`. Establish `hσ' : (σ : G E Ω) ∈ K.fixingSubgroup` using `hσ`. Establish `hb : ∀ i, (σ : G E Ω) (algebraMap E' Ω (bQ i)) = algebraMap E' Ω (bQ i)` using `fun i => (IntermediateField.mem_fixingSubgroup_iff K _).mp hσ' _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Establish `: CharZero Ω` using `(RingHom.charZero_iff (algebraMap E Ω).injective).mp inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ y : E', (σ : G E Ω) (algebraMap E' Ω y) = algebraMap E' Ω y`. Introduce `y`. Rewrite using `[← bQ.sum_repr y, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_rat_smul, map_rat_smul, hb]`. Set `τ : G E' Ω` to `{ (σ : G E Ω).toRingEquiv with commutes' := hfix }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : resG E τ = (σ : G E Ω)` using `AlgEquiv.ext fun _ => rfl`. Establish `hτI : τ ∈ Ine (F` using `E') A := mem_Ine_of_resG (by rw [hτ]; exact σ.2)`. Use `⟨⟨τ, hτI⟩, ?_⟩` and prove the remaining obligations. Establish `e : resIne E A ⟨τ, hτI⟩ = σ` using `Subtype.ext hτ`. Rewrite using `[e]`.
-
-Conclude with `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tval_resIne_ne {l : ℕ} [Fact l.Prime] {t : Ine (F := E) A →* Multiplicative ℤ_[l]} (ht : IsTameChar t) :
     ∃ σ : Ine (F := E') A, tval t (resIne E A σ) ≠ 0 := by
@@ -103,7 +101,7 @@ variable {w : HeightOneSpectrum (𝓞 E)} {w' : HeightOneSpectrum (𝓞 E')}
 include h h' in
 
 /- English proof (translation)
-Introduce `H`. Apply `hl` to reduce the goal to its premises. Rewrite using `[← h]`. Use `(h' _).mpr H` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem notMem_of_place (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) : ((l : ℕ) : 𝓞 E') ∉ w'.asIdeal := by
   intro H
@@ -113,19 +111,19 @@ theorem notMem_of_place (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) : ((l : ℕ) :
   simpa using this
 
 /- English proof (translation)
-Establish `hpow : ∀ g : Weil h', ((normV w : ℕ) : Qbar l) ^ deg (resW h h' g) = ((normV w' : ℕ) : Qbar l) ^ deg g` using `fun g => by rw [deg_resW, zpow_mul, zpow_natCast, ← Nat.cast_pow, ← normV_eq_pow_resF h h']`. Establish `hq0 : ((normV w : ℕ) : Qbar l) ≠ 0` using `Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot`. Establish `hq1 : 1 - ((normV w' : ℕ) : Qbar l)⁻¹ ≠ 0`. Rewrite using `[sub_ne_zero, ne_comm, Ne, inv_eq_one]`. Conclude with `Nat.cast_ne_one.mpr (one_lt_normV w').ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `D : Weil h' → Qbar l` to `fun g => c' * tval t' (inePart hφ' g) - tval t (inePart hφ (resW h h' g))`. Establish `hD : ∀ g g', D (g * g') = (((normV w' : ℕ) : Qbar l) ^ deg g')⁻¹ * D g + D g'` using `fun g g' => by`. Simplify using `only [D, map_mul, ht'.tval_inePart_mul hl' hφ', ht.tval_inePart_mul hl hφ, hpow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD0 : ∀ g, deg g = 0 → D g = 0` using `fun g hg => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : g = ineIncl h' ⟨g, deg_eq_zero_iff.mp hg⟩` using `rfl`. Establish `e2 : ∀ σ : Ine (F` using `E') A, resW h h' (ineIncl h' σ) = ineIncl h (resIne E A σ) := fun σ => Subtype.ext rfl`. Rewrite using `[e]`. Simplify using `only [D, e2, inePart_ineIncl, hct, sub_self]`. Take `⟨b, hb⟩ : ∃ b : Qbar l, b = D φ' / (1 - ((normV w' : ℕ) : Qbar l)⁻¹)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ g, D g = (1 - (((normV w' : ℕ) : Qbar l) ^ deg g)⁻¹) * b` using `fun g => by`. Establish `h1` using `hD (φ' * g) ((φ' * g)⁻¹ * (g * φ'))`. Establish `h0 : deg ((φ' * g)⁻¹ * (g * φ')) = 0` using `by simp only [deg_mul, deg_inv]; ring`. Rewrite `h1` using `[mul_inv_cancel_left, hD0 _ h0, h0, hD, hD, hφ', zpow_one, zpow_zero, inv_one, one_mul, add_zero]`. Rewrite using `[hb, ← mul_div_assoc, eq_div_iff hq1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-h1`. Use `⟨b, fun g => ?_⟩` and prove the remaining obligations. Establish `h2` using `hN.mul_exp hl ht (resW h h' g) ((((normV w : ℕ) : Qbar l) ^ deg (resW h h' g))⁻¹ * b)`. Rewrite `h2` using `[mul_inv_cancel_left₀ (zpow_ne_zero _ hq0)]`. Establish `hw : wdMat t' hφ' (r.comp (resG E (E'` using `E') (Ω := Ω))) (c' • N) g = (r (resW h h' g) : Matrix n n (Qbar l)) * exp ((-(c' * tval t' (inePart hφ' g))) • N) := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[wdMat, smul_smul, show -tval t' (inePart hφ' g) * c' = -(c' * tval t' (inePart hφ' g)) by ring]`. Both sides reduce to the same expression. Rewrite using `[hw, wdMat, ← mul_assoc, ← h2, mul_assoc, mul_assoc, ← exp_add_smul hN.1, ← exp_add_smul hN.1]`. Use `congr 3`. Establish `k` using `key g`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [D] at k`. Rewrite using `[hpow]`. Take the linear combination `k`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_conj_res (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (hl' : ((l : ℕ) : 𝓞 E') ∉ w'.asIdeal)
     {t : Ine (F := E) A →* Multiplicative ℤ_[l]} {t' : Ine (F := E') A →* Multiplicative ℤ_[l]}
@@ -172,19 +170,19 @@ theorem exists_conj_res (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (hl' : ((l : �
   linear_combination k
 
 /- English proof (translation)
-Take `⟨t, ht, φ, hφ, N, a0, hN, ha, rfl⟩` from `hx`. Establish `hl'` using `notMem_of_place h h' hl`. Establish `ht'` using `isTameChar_tameL h' hl'`. Take `⟨c, hc⟩` from `GlobalTheory.TameCharUnique.exists_eq_mul E' Ω A w' h' l hl' (t.comp (resIne E A)) (tameL h' hl') (ht.1.comp continuous_resIne) ht'.1 ht'.2`. Establish `hct : ∀ σ, tval t (resIne E A σ) = algebraMap ℚ_[l] (Qbar l) (c : ℚ_[l]) * tval (tameL h' hl') σ` using `fun σ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (t (resIne E A σ)).toAdd = c * ((tameL h' hl') σ).toAdd` using `hc σ`. Simplify using `only [tval, e, PadicInt.coe_mul, map_mul]`. Generalize the expression as in `algebraMap ℚ_[l] (Qbar l) (c : ℚ_[l]) = c' at hct`. Establish `hc0 : c' ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨σ, hσ⟩` from `exists_tval_resIne_ne (E' := E') ht`. Conclude with `hσ (by rw [hct, h0, zero_mul])`. Establish `hN' : IsMonodromy (tameL h' hl') (r.comp (resG E (E'` using `E') (Ω := Ω))) (c' • N) := by`. Take `⟨U, hU, H⟩` from `hN.2`. Use `⟨hN.1.smul c', U.comap (resIne E A), hU.preimage continuous_resIne, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, mul_comm (tval _ σ), ← hct]`. Conclude with `H _ hσ`. Establish `hφ' : deg (frob h') = 1` using `deg_frob`. Take `⟨bb, hbb⟩` from `exists_conj_res h h' hl hl' ht ht' hN hφ hφ' hct`. Take `⟨b', hb'⟩` from `hN'.exists_isFrobSS hl' ht' hφ' ι`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨tameL h' hl', ht', frob h', hφ', c' • N, b', hN', hb', ?_⟩` and prove the remaining obligations. Rewrite using `[WD.res_mk]`. Take `⟨u, hu⟩` from `(isUnit_exp (hN.1.smul bb)).map (toEndC ι)`. Establish `ha2 : IsFrobSS (fun g => toEndC ι (wdMat t hφ r N (resW h h' g))) (toEndC ι N) (resRep h h' a0)` using `⟨ha.1, fun g => ha.2 (resW h h' g)⟩`. Establish `hcomm : ∀ g, (hN'.rep hl' ht' hφ' ι) g * toEndC ι N = ((normV w' : ℕ) : ℂ) ^ deg g • (toEndC ι N * (hN'.rep hl' ht' hφ' ι) g)` using `fun g => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `H` using `hN'.rep_comm hl' ht' hφ' ι g`. Rewrite `H` using `[toEndC_smul, mul_smul_comm, smul_mul_assoc, smul_comm]`. Conclude with `smul_right_injective _ ((map_ne_zero ι).mpr hc0) H`. Take `⟨b1, hb1⟩` from `exists_isFrobSS (hN'.rep hl' ht' hφ' ι) (toEndC ι N) (hN'.isSmooth_rep hl' ht' hφ' ι) (hN.1.map (toEndC ι)) hcomm`. Establish `i1 : (resRep h h' a0).Iso b1` using `ha2.iso hb1 (LinearMap.GeneralLinearGroup.toLinearEquiv u) (fun g v => by show ((u : End ℂ (n → ℂ)) * toEndC ι (wdMat t hφ r N (resW h h' g))) v = (toEndC ι (wdMat (tameL h' hl') hφ' (r.comp (resG E (E' := E') (Ω := Ω))) (c' • N) g) * (u : End ℂ (n → ℂ))) v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu, ← map_mul, hbb, map_mul])`. Use the proof step `(fun v => by show ((u : End ℂ (n → ℂ)) * toEndC ι N) v = (toEndC ι N * (u : End ℂ (n → ℂ))) v`. Rewrite using `[hu, ← map_mul, exp_smul_mul hN.1, map_mul])`. Establish `i2 : b1.Iso b'` using `IsFrobSS.iso_of_smul ((map_ne_zero ι).mpr hc0) hb1 (by rw [← toEndC_smul]; exact hb')`. Conclude with `WD.sound (i1.trans i2).symm`.
+A detailed English derivation is pending.
 -/
 theorem isWDOf_res (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL n (Qbar l)) {x : WD h}
     (hx : IsWDOf ι r x) : IsWDOf ι (r.comp (resG E (E' := E') (Ω := Ω))) (WD.res h h' x) := by
@@ -238,7 +236,7 @@ end
 end WeilDeligneRestriction
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ X l a _ ι r _ A w h w' h' hl x hx`. Conclude with `WeilDeligneRestriction.isWDOf_res h h' hl ι r hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weil_deligne_restriction_away : K5 := by
   intro E Ω _ _ _ _ _ X l a _ ι r _ A w h w' h' hl x hx

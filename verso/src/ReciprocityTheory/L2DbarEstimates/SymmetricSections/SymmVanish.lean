@@ -8,17 +8,17 @@ open Filter Topology Asymptotics
 universe u
 
 /- English proof (translation)
-Introduce `n M _ z U u w₀ N hcov hw₀ hfin hvan k`. Take `⟨W, d, s, hW, hwW, hcont, hzs, hvals⟩` from `sheets n M z U u hcov w₀ hw₀ hfin`. Establish `hWn : W ∈ 𝓝 w₀` using `hW.mem_nhds hwW`. Establish `hi : ∀ i, (fun v => u (s i v)) =O[𝓝 w₀] fun v => ‖v - w₀‖ ^ N`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : z (s i w₀) = w₀` using `hzs i w₀ hwW`. Establish `h1` using `IsBigO.comp_tendsto (hvan (s i w₀) hx) ((hcont i).continuousAt hWn)`. Use `h1.congr' (Eventually.of_forall fun v => rfl) ?_` and prove the remaining obligations. Use `filter_upwards [hWn] with v hv`. Simplify using `only [Function.comp_apply, hzs i v hv, hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hprod : ∀ t : Finset (Fin d), (fun v => ∏ i ∈ t, u (s i v)) =O[𝓝 w₀] fun v => ‖v - w₀‖ ^ (t.card * N)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using (isBigO_const_const (1 : ℂ) (one_ne_zero : (1 : ℝ) ≠ 0) (𝓝 w₀))`. Consider the case `insert a t ha ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hc : (insert a t).card = t.card + 1`. Conclude with `Finset.card_insert_of_notMem ha`. Simplify using `only [Finset.prod_insert ha]`. Rewrite using `[hc]`. Conclude with `((hi a).mul ih).congr' (Eventually.of_forall fun v => rfl) (Eventually.of_forall fun v => by show ‖v - w₀‖ ^ N * ‖v - w₀‖ ^ (t.card * N) = ‖v - w₀‖ ^ ((t.card + 1) * N)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Use the proof step `ring)`. Establish `heq : (fun v => ∑ t ∈ (Finset.univ : Finset (Fin d)).powersetCard k, ∏ i ∈ t, u (s i v)) =ᶠ[𝓝 w₀] fiberSymm n z u k` using `by filter_upwards [hWn] with v hv`. Rewrite using `[fiberSymm, hvals v hv, Finset.esymm_map_val]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `IsBigO.congr' ?_ heq (Eventually.of_forall fun _ => rfl)` and prove the remaining obligations. Use `IsBigO.fun_sum fun t ht => ?_` and prove the remaining obligations. Use `hprod t` as an intermediate fact. Rewrite `this` using `[(Finset.mem_powersetCard.mp ht).2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem symmVanish : symmVanishStatement.{u} := by
   intro n M _ z U u w₀ N hcov hw₀ hfin hvan k

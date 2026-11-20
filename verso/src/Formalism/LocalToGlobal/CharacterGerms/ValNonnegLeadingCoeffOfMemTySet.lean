@@ -12,17 +12,17 @@ open Formalism.IncomingBounds ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Establish `hdeg : ∑ j ∈ e.support, e j = 1` using `h`. Establish `hne : e.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `he`. Rewrite `hdeg` using `[he, Finset.sum_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hdeg (by norm_num)`. Take `⟨i, hi⟩` from `hne`. Establish `hle : ∀ j ∈ e.support, e j ≤ 1` using `fun j hj => hdeg ▸ Finset.single_le_sum (f := fun k => e k) (fun _ _ => Nat.zero_le _) hj`. Establish `hei : e i = 1`. Establish `h1` using `hle i hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Finsupp.mem_support_iff.mp hi`. Use linear arithmetic over natural numbers and integers. Use `⟨i, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Distinguish the cases in `hj : j = i`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using `[hei]`. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hj)]`. Assume the negation of the conclusion as `hc`. Establish `hjs : j ∈ e.support` using `Finsupp.mem_support_iff.mpr hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : e i + e j ≤ ∑ k ∈ e.support, e k`. Rewrite using `[← Finset.sum_pair (f := fun k => e k) (Ne.symm hj)]`. Apply `Finset.sum_le_sum_of_subset` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_insert, Finset.mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hx with rfl | rfl` into its components or cases. Conclude with `hi`. Conclude with `hjs`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finsupp_deg_one {σ : Type} (e : σ →₀ ℕ) (h : e.degree = 1) : ∃ i, e = Finsupp.single i 1 := by
   classical
@@ -58,19 +58,17 @@ theorem finsupp_deg_one {σ : Type} (e : σ →₀ ℕ) (h : e.degree = 1) : ∃
     omega
 
 /- English proof (translation)
-Establish `hγ0 : ∀ i, MvPowerSeries.constantCoeff (γ i) = 0` using `fun i => by`. Use `hγ i 0 (by omega)` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis. Unfold `alongCv`. Use `show MvPowerSeries.coeff (Finsupp.single () n) _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ0), finsum_eq_sum_of_support_subset (s := Finset.univ.image fun i : σ => Finsupp.single i 1)]`. Rewrite using `[Finset.sum_image (fun a _ b _ h => Finsupp.single_left_injective one_ne_zero h)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hp : (Finsupp.single i 1 : σ →₀ ℕ).prod (fun s e => γ s ^ e) = γ i`. Rewrite using `[Finsupp.prod_single_index (h := fun s e => γ s ^ e) (pow_zero _), pow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show MvPowerSeries.coeff (Finsupp.single i 1) f • MvPowerSeries.coeff (Finsupp.single () n) ((Finsupp.single i 1 : σ →₀ ℕ).prod fun s e => γ s ^ e) = _`. Rewrite using `[hp, smul_eq_mul]`. Both sides reduce to the same expression. Introduce `e he`. Rewrite `he` using `[Function.mem_support]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Finset.coe_image, Set.mem_image]`. Assume the negation of the conclusion as `hc`. Apply `he` to reduce the goal to its premises. Establish `hdeg : e.degree ≠ 1` using `fun h => by`. Take `⟨i, hi⟩` from `finsupp_deg_one e h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc ⟨i, by simp, hi.symm⟩`. Distinguish the cases in `h0 : e.degree = 0`. Rewrite `h0` using `[Finsupp.degree_eq_zero_iff]`. Rewrite using `[h0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf, zero_smul]`. Establish `h2 : 2 ≤ e.degree` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : (PowerSeries.X : PowerSeries C) ^ (n * e.degree) ∣ e.prod fun s m => γ s ^ m`. Unfold `Finsupp.prod`. Rewrite using `[Finsupp.degree_apply, pow_mul, ← Finset.prod_pow_eq_pow_sum]`. Apply `Finset.prod_dvd_prod_of_dvd` to reduce the goal to its premises. Introduce `i _`.
-
-Conclude with `pow_dvd_pow_of_dvd (PowerSeries.X_pow_dvd_iff.2 (hγ i)) _`. Establish `hz : PowerSeries.coeff n (e.prod fun s m => γ s ^ m) = 0` using `PowerSeries.X_pow_dvd_iff.1 hdvd n (by nlinarith)`. Use `show MvPowerSeries.coeff e f • PowerSeries.coeff n (e.prod fun s m => γ s ^ m) = 0`. Rewrite using `[hz, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_alongCv_low {σ : Type} [Fintype σ] {γ : σ → PowerSeries C} {n : ℕ} (hn : 1 ≤ n)
     (hγ : ∀ i, ∀ m < n, PowerSeries.coeff m (γ i) = 0) {f : MvPowerSeries σ C}
@@ -116,9 +114,9 @@ theorem coeff_alongCv_low {σ : Type} [Fintype σ] {γ : σ → PowerSeries C} {
       rw [hz, smul_zero]
 
 /- English proof (translation)
-Simplify using `only [tyS, PowerSeries.coeff_mk]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `t _`. Use `split_ifs with ht`. Apply `ha` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: l ^ s ≤ l ^ t` using `Nat.pow_le_pow_right (by omega) hc`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coeff_tyS_lt {l : ℕ} (hl : 2 ≤ l) (a : ℕ → C) (s : ℕ) (ha : ∀ i < s, a i = 0) (m : ℕ) (hm : m < l ^ s) :
     PowerSeries.coeff m (tyS l a) = 0 := by
@@ -138,35 +136,33 @@ namespace RawChart
 variable {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ] (X : RawChart C d I κ)
 
 /- English proof (translation)
-Establish `hl2` using `V.l_prime.two_le`. Take `⟨γ, lam, hγ, hlam, h1, h2⟩` from `hx`. Take `⟨w, hw, huw⟩` from `hsat`. Establish `hlg0 : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0` using `fun i => by`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hlin i 0 (by simp), MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.constantCoeff_X]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlg1 : ∀ i j, MvPowerSeries.coeff (Finsupp.single j 1) (X.lg i) = if j = i then 1 else 0` using `fun i j => by`. Rewrite using `[hlin i _ (by rw [Finsupp.degree_single]), MvPowerSeries.coeff_X]`. Distinguish the cases in `hji : j = i`. Rewrite using `[hji, if_pos rfl, if_pos rfl]`. Rewrite using `[if_neg hji, if_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hji (Finsupp.single_left_injective one_ne_zero h)`. Establish `hpos : 1 ≤ V.l ^ s` using `Nat.one_le_pow _ _ (by omega)`. Establish `hlow : ∀ (m : ℕ) (hm1 : 1 ≤ m), (∀ i, ∀ m' < m, PowerSeries.coeff m' (γ i) = 0) → ∀ i, PowerSeries.coeff m (γ i) = ∑ c : I g, X.u g c i * PowerSeries.coeff m (tyS V.l fun s => x s (Sum.inl c))`. Introduce `m hm1 hm i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `coeff_alongCv_low hm1 hm (hlg0 i)`. Rewrite `e1` using `[h1 i, map_sum]`. Simplify using `only [hlg1, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, PowerSeries.coeff_smul, smul_eq_mul] at e1`. Conclude with `e1.symm`. Establish `hord : ∀ m, m < V.l ^ s → ∀ i, PowerSeries.coeff m (γ i) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `hm i`. Distinguish the cases in `hm0 : m = 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm0, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `(hγ i).1`. Rewrite using `[hlow m (by omega) (fun i m' hm' => ih m' hm' (by omega) i) i]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[coeff_tyS_lt hl2 _ s (fun i hi => by rw [h0 i hi]; rfl) m hm, mul_zero]`. Establish `hord' : ∀ i, ∀ m < V.l ^ s, PowerSeries.coeff m (γ i) = 0` using `fun i m hm => hord m hm i`. Establish `hlead : ∀ i, PowerSeries.coeff (V.l ^ s) (γ i) = ∑ c : I g, X.u g c i * x s (Sum.inl c)`. Introduce `i`. Rewrite using `[hlow _ hpos hord' i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_tyS_pow hl2]`. Establish `hinl : ∀ c', x s (Sum.inl c') = ∑ i, PowerSeries.coeff (V.l ^ s) (γ i) * w i c'`. Introduce `c'`. Simplify using `only [hlead, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_comm]`. Establish `: ∀ c : I g, ∑ i, X.u g c i * x s (Sum.inl c) * w i c' = (if c = c' then 1 else 0) * x s (Sum.inl c)`. Introduce `c`. Rewrite using `[← huw c c', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [this, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hinlInt : ∀ c', V.Ge 0 (x s (Sum.inl c'))`. Introduce `c'`. Rewrite using `[hinl c']`. Conclude with `VF.Ge.sum fun i _ => ((hγ i).2 _).mul_int (hw i c')`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the cases of `n with`. Consider the case `inl c' => exact hinlInt c'`. Consider the case `inr q`. Establish `e2` using `congrArg (PowerSeries.coeff (V.l ^ s)) (h2 q)`. Rewrite `e2` using `[coeff_tyS_pow hl2, map_add, map_sub, coeff_alongCv_low hpos hord' (X.constantCoeff_sg hh _), map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3 : ∑ i, MvPowerSeries.coeff (Finsupp.single i 1) (X.sg (X.u (1 - g) q)) * PowerSeries.coeff (V.l ^ s) (γ i) = ∑ c : I g, X.sg1 (X.u g c) (X.u (1 - g) q) * x s (Sum.inl c)`. Simplify using `only [hlead, sg1, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Establish `e4 : ∀ c : I g, PowerSeries.coeff (V.l ^ s) (if X.ty g c = X.ty (1 - g) q then X.sg1 (X.u g c) (X.u (1 - g) q) • tyS V.l (fun s => x s (Sum.inl c)) else 0) = if X.ty g c = X.ty (1 - g) q then X.sg1 (X.u g c) (X.u (1 - g) q) * x s (Sum.inl c) else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `c`. Use `split_ifs`. Rewrite using `[PowerSeries.coeff_smul, coeff_tyS_pow hl2, smul_eq_mul]`. Rewrite using `[map_zero]`. Simplify using `only [e4] at e2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[e3, sub_add, ← Finset.sum_sub_distrib]`. Rewrite using `[e2]`. Use `((hlam q).2 _).sub (VF.Ge.sum fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs with hc`. Rewrite using `[sub_self]`.
-
-Conclude with `VF.Ge.zero 0`. Rewrite using `[sub_zero]`. Conclude with `(hmis c q hc).mul_int (hinlInt c)`.
+A detailed English derivation is pending.
 -/
 theorem val_nonneg_leading_coeff_of_mem_tySet (V : VF C) (g : Fin 2)
     (hlin : ∀ i (μ : κ →₀ ℕ), μ.degree ≤ 1 →

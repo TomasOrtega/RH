@@ -18,33 +18,31 @@ section Top
 variable {R : Type*} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {a b : R}
 
 /- English proof (translation)
-The claim follows from `(continuous_apply 0).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_re : Continuous (fun x : ℍ[R, a, b] => x.re) :=
   (continuous_apply 0).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))
 
 /- English proof (translation)
-The claim follows from `(continuous_apply 1).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_imI : Continuous (fun x : ℍ[R, a, b] => x.imI) :=
   (continuous_apply 1).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))
 
 /- English proof (translation)
-The claim follows from `(continuous_apply 2).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_imJ : Continuous (fun x : ℍ[R, a, b] => x.imJ) :=
   (continuous_apply 2).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))
 
 /- English proof (translation)
-The claim follows from `(continuous_apply 3).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_imK : Continuous (fun x : ℍ[R, a, b] => x.imK) :=
   (continuous_apply 3).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`. Conclude with `h2`.
-
-Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_of_coords {X : Type*} [TopologicalSpace X] {f : X → ℍ[R, a, b]}
     (h0 : Continuous fun x => (f x).re) (h1 : Continuous fun x => (f x).imI)
@@ -87,7 +85,7 @@ scoped instance : ContinuousStar ℍ[R, a, b] :=
     (by simp only [QuaternionAlgebra.imK_star]; fun_prop)⟩
 
 /- English proof (translation)
-Unfold `nrm`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_nrm : Continuous (fun x : ℍ[R, a, b] => nrm x) := by
   unfold nrm; fun_prop
@@ -103,11 +101,11 @@ namespace GlobalTheory.QSA.Unconj
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `h1 : fstA F (η * η) = fstA F η`. Rewrite using `[map_mul]`. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `fstA F η w * fstA F η w = fstA F η w`. Distinguish the cases in `hw : w ∈ S₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hη.1 w hw, one_mul]`. Rewrite using `[hη.2.1 w hw, zero_mul]`. Establish `h2 : sndA F (η * η) = sndA F η`. Use `RestrictedProduct.ext _ _ fun u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F u (sndA F (η * η)) = evalV F u (sndA F η)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hu : u ∈ S₂`. Rewrite using `[hη.2.2.1 u hu, one_mul]`. Rewrite using `[hη.2.2.2 u hu, zero_mul]`. Conclude with `Prod.ext h1 h2`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPlacesIdem_mul_self {S₁ : Finset (InfinitePlace F)} {S₂ : Finset (HeightOneSpectrum (𝓞 F))} {η : AF F}
     (hη : IsPlacesIdem S₁ S₂ η) : η * η = η := by
@@ -128,31 +126,31 @@ theorem isPlacesIdem_mul_self {S₁ : Finset (InfinitePlace F)} {S₂ : Finset (
   exact Prod.ext h1 h2
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_mul {a b : F} (x y : ℍ[F, a, b]) : rat (x * y) = rat x * rat y := by
   ext <;> simp [rat] <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_one {a b : F} : rat (1 : ℍ[F, a, b]) = 1 := by
   ext <;> simp [rat]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_star {a b : F} (x : ℍ[F, a, b]) : rat (star x) = star (rat x) := by
   ext <;> simp [rat]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat, Algebra.smul_def]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_smul {a b : F} (t : F) (x : ℍ[F, a, b]) : rat (t • x) = algebraMap F (AF F) t • rat x := by
   ext <;> simp [rat, Algebra.smul_def]
 
 /- English proof (translation)
-Simplify using `only [nrm, QuaternionAlgebra.re_smul, QuaternionAlgebra.imI_smul, QuaternionAlgebra.imJ_smul, QuaternionAlgebra.imK_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nrm_smul {R : Type*} [CommRing R] {a b : R} (s : R) (x : ℍ[R, a, b]) : nrm (s • x) = s ^ 2 * nrm x := by
   simp only [nrm, QuaternionAlgebra.re_smul, QuaternionAlgebra.imI_smul, QuaternionAlgebra.imJ_smul,
@@ -160,7 +158,7 @@ theorem nrm_smul {R : Type*} [CommRing R] {a b : R} (s : R) (x : ℍ[R, a, b]) :
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_smul' {R : Type*} [CommRing R] {a b : R} (s : R) (x : ℍ[R, a, b]) : star (s • x) = s • star x := by
   ext <;> simp <;> ring
@@ -169,7 +167,7 @@ end GlobalTheory.QSA.Unconj
 
 namespace GlobalTheory.QSA.Unconj
 /- English proof (translation)
-Use `conv_rhs => rw [← hh]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, star_smul', mul_assoc]`. Rewrite using `[hηη, mul_left_comm, hηη]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_core {R : Type*} [CommRing R] {a b : R} (η s : R) (hηη : η * η = η) (X c c' h : ℍ[R, a, b])
     (hh : η • h = h) :
@@ -182,37 +180,33 @@ end GlobalTheory.QSA.Unconj
 namespace GlobalTheory.QSA.Unconj
 
 /- English proof (translation)
-Introduce `F _ _ a b _ _ T₁ T₂ η hη ε hε g _ hgη c c' hcc' hc'c hx`. Establish `hηη` using `isPlacesIdem_mul_self hη`. Take `⟨-, -, hconj, -⟩` from `GlobalTheory.T.closure_normOneProducts_h0_properties F a b ε hε`. Distinguish the cases in `hη0 : η = 0`. Establish `hg1 : g = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `hgη` using `[hη0, zero_smul]`. Conclude with `(sub_eq_zero.1 hgη.symm)`. Rewrite using `[hg1]`. Conclude with `subset_closure (one_mem_H0_weight_zero ε)`. Rewrite using `[← closure_closure (s := H0 (a := a) (b := b) ε), mem_closure_iff_nhds]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `W hW`. Establish `hnn : nrm c' * nrm c = 1`. Rewrite using `[← nrm_mul, hc'c]`. Simplify using `[nrm]`. Establish `hcstar : nrm c • star c' = c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : star c' = nrm c' • c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, smul_smul, mul_comm, hnn, one_smul]`. Set `u : (AF F)ˣ` to `⟨nrm c', nrm c, hnn, by rw [mul_comm]; exact hnn⟩`. Set `Ξ : DA F a b × AF F → DA F a b` to `fun p => 1 + (p.1 * c) * (g - 1) * (c' * (p.2 • star p.1))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΞc : Continuous Ξ` using `continuous_const.add (((continuous_fst.mul continuous_const).mul continuous_const).mul (continuous_const.mul (continuous_snd.smul (continuous_star.comp continuous_fst))))`. Establish `hΞ0 : Ξ (η • c', η * nrm c) = g`. Establish `e1 : (η • c') * c = η • 1` using `by rw [smul_mul_assoc, hc'c]`. Establish `e2 : c' * ((η * nrm c) • star (η • c')) = η • 1`. Establish `hs : η * nrm c * η = η * nrm c` using `by linear_combination (nrm c) * hηη`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[star_smul', smul_smul, hs, ← smul_smul, hcstar, mul_smul_comm, hc'c]`. Establish `e3 : (η • (1 : DA F a b)) * (g - 1) * (η • 1) = g - 1`. Simplify using `only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, hgη]`. Use `show 1 + ((η • c') * c) * (g - 1) * (c' * ((η * nrm c) • star (η • c'))) = g`. Rewrite using `[e1, e2, e3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Establish `hW' : Ξ ⁻¹' W ∈ 𝓝 (η • c', η * nrm c)` using `hΞc.continuousAt.preimage_mem_nhds (by rw [hΞ0]; exact hW)`. Take `⟨N1, hN1, N2, hN2, hN12⟩` from `mem_nhds_prod_iff.1 hW'`. Take `⟨V, hV, hVt⟩` from `GlobalTheory.InvIdem.inv_cont F T₁ T₂ η hη u N2 hN2`. Establish `hN3 : (fun X : DA F a b => nrm X) ⁻¹' V ∈ 𝓝 (η • c')` using `continuous_nrm.continuousAt.preimage_mem_nhds (by rw [nrm_smul, pow_two, hηη]; exact hV)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `e : (Fin 4 → AF F) → DA F a b` to `fun v => η • c' - ⟨v 0, v 1, v 2, v 3⟩`. Establish `hec : Continuous e`. Apply the tactic sequence `refine continuous_const.sub (continuous_of_coords ?_ ?_ ?_ ?_) <;> exact continuous_apply _`. Establish `hN : e ⁻¹' (N1 ∩ (fun X : DA F a b => nrm X) ⁻¹' V) ∈ 𝓝 (0 : Fin 4 → AF F)`. Use `hec.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: e 0 = η • c'` using `by show η • c' - ⟨0, 0, 0, 0⟩ = η • c'`. Rewrite using `[show (⟨0, 0, 0, 0⟩ : DA F a b) = 0 from rfl, sub_zero]`. Rewrite using `[this]`. Conclude with `Filter.inter_mem hN1 hN3`. Rewrite `hN` using `[nhds_pi, Filter.mem_pi]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨I, -, t, ht, hIt⟩` from `hN`. Establish `hU : (⋂ i, t i) ∈ 𝓝 (0 : AF F)` using `Filter.iInter_mem.2 ht`. Use `choose q hq using fun i : Fin 4 => GlobalTheory.PlaceApprox.weak_approx_idem F T₁ T₂ η hη (coords c' i) (⋂ i, t i) hU`. Set `δ : ℍ[F, a, b]` to `⟨q 0, q 1, q 2, q 3⟩`. Establish `hδe : η • rat δ = e (fun i => η * (coords c' i - algebraMap F (AF F) (q i)))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [e, δ, rat, coords] <;> ring`. Establish `hδN : η • rat δ ∈ N1 ∩ (fun X : DA F a b => nrm X) ⁻¹' V`. Rewrite using `[hδe]`. Conclude with `hIt (show (fun i => η * (coords c' i - algebraMap F (AF F) (q i))) ∈ (I.pi t) from fun i _ => Set.mem_iInter.1 (hq i) i)`. Establish `hnδ : η * algebraMap F (AF F) (nrm δ) ∈ V`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hδN.2`. Simplify using `only [Set.mem_preimage, nrm_smul, nrm_rat, pow_two, hηη] at h`. Conclude with `h`. Take `⟨hn0, hn⟩` from `hVt (nrm δ) hnδ`. Establish `hn0` using `hn0 hη0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set δ' : ℍ[F, a, b] := (nrm δ)⁻¹ • star δ with hδ'`. Establish `hδδ' : δ * δ' = 1`. Rewrite using `[hδ', mul_smul_comm, mul_star_eq, Algebra.algebraMap_eq_smul_one (nrm δ), smul_smul, inv_mul_cancel₀ hn0, one_smul]`. Use `⟨rat δ * (c * g * c') * rat δ', ?_, hconj δ δ' hδδ' _ hx⟩` and prove the remaining obligations. Establish `hmem` using `hN12 (Set.mk_mem_prod hδN.1 hn)`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hval : Ξ (η • rat δ, η * algebraMap F (AF F) (nrm δ)⁻¹) = rat δ * (c * g * c') * rat δ'`. Establish `hcg : c * g * c' = 1 + c * (g - 1) * c'`. Rewrite using `[mul_sub, sub_mul, mul_one, hcc']`. Normalize the expressions using the abelian group laws. Establish `hr : rat δ * (c * g * c') * rat δ' = 1 + rat δ * (c * (g - 1) * c') * rat δ'`.
-
-Rewrite using `[hcg, mul_add, add_mul, mul_one, ← rat_mul, hδδ', rat_one]`. Rewrite using `[hr]`. Use `show 1 + ((η • rat δ) * c) * (g - 1) * (c' * ((η * algebraMap F (AF F) (nrm δ)⁻¹) • star (η • rat δ))) = _`. Use `congrArg (fun z => 1 + z) ?_` and prove the remaining obligations. Rewrite using `[hδ', rat_smul, rat_star]`.
-
-Conclude with `conj_core η _ hηη (rat δ) c c' (g - 1) hgη`. Rewrite using `[← hval]`. Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_closure_normOne_of_idempotent : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 →
     ∀ (T₁ : Finset (InfinitePlace F)) (T₂ : Finset (HeightOneSpectrum (𝓞 F))) (η : AF F), IsPlacesIdem T₁ T₂ η →

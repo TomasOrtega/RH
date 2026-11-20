@@ -6,7 +6,7 @@ open Polynomial
 namespace UpperTheory
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh50.charpoly_smul_alt M hc`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_smul_alt {k ι : Type*} [Field k] [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι k) {c : k} (hc : c ≠ 0) :
@@ -15,11 +15,11 @@ theorem charpoly_smul_alt {k ι : Type*} [Field k] [Fintype ι] [DecidableEq ι]
   _root_.UpperTheory.Reformulated.B.Qh50.charpoly_smul_alt M hc
 
 /- English proof (translation)
-Introduce `k _ n c hc M h`. Establish `hcc : (C c : k[X]) * C c⁻¹ = 1` using `by rw [← C_mul, mul_inv_cancel₀ hc, C_1]`. Rewrite using `[charpoly_smul_alt M hc]`. Establish `hcomp : (M.charpoly.comp (C c⁻¹ * X)).Separable`. Take `⟨a, b, hab⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨a.comp (C c⁻¹ * X), b.comp (C c⁻¹ * X) * C c, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun p : k[X] => p.comp (C c⁻¹ * X)) hab`. Simplify using `only [add_comp, mul_comp, one_comp] at h1`. Rewrite using `[derivative_comp, ← h1]`. Simplify using `only [derivative_mul, derivative_C, derivative_X, zero_mul, zero_add, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `((b.comp (C c⁻¹ * X)) * (derivative M.charpoly).comp (C c⁻¹ * X)) * hcc`. Establish `hu : IsUnit (C (c ^ Fintype.card (Fin n)) : k[X])` using `isUnit_C.2 (pow_ne_zero _ hc).isUnit`. Rewrite using `[Polynomial.Separable, derivative_mul, derivative_C, zero_mul, zero_add]`. Conclude with `(isCoprime_mul_unit_left hu _ _).2 hcomp`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_smul_separable :
     ∀ (k : Type) [Field k] (n : ℕ) (c : k), c ≠ 0 → ∀ M : Matrix (Fin n) (Fin n) k, M.charpoly.Separable → (c • M).charpoly.Separable := by

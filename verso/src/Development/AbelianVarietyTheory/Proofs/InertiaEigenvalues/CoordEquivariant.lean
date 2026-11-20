@@ -21,21 +21,21 @@ namespace GlobalTheory.Cyc.GradedTorsion
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.algebraMap_apply ℚ_[l] (Om l) (PadicComplex l) q`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_eq (q : ℚ_[l]) :
     algebraMap ℚ_[l] (PadicComplex l) q = ((algebraMap ℚ_[l] (Om l) q : Om l) : PadicComplex l) :=
   IsScalarTower.algebraMap_apply ℚ_[l] (Om l) (PadicComplex l) q
 
 /- English proof (translation)
-Rewrite using `[zC, algebraMap_eq, ha.1, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_zC {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : IsActC act)
     (g : GQ l) (z : ℤ_[l]) : act g (zC z) = zC z := by
   rw [zC, algebraMap_eq, ha.1, AlgEquiv.commutes]
 
 /- English proof (translation)
-Establish `h : (l : PadicComplex l) = algebraMap ℚ_[l] (PadicComplex l) (l : ℚ_[l])` using `(map_natCast _ _).symm`. Rewrite using `[h, algebraMap_eq, PadicComplex.norm_extends, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_lt : ‖(l : PadicComplex l)‖ < 1 := by
   have h : (l : PadicComplex l) = algebraMap ℚ_[l] (PadicComplex l) (l : ℚ_[l]) := (map_natCast _ _).symm
@@ -43,17 +43,17 @@ theorem norm_l_lt : ‖(l : PadicComplex l)‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Simplify using `[zC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zC_add (x y : ℤ_[l]) : zC (x + y) = zC x + zC y := by simp [zC]
 
 /- English proof (translation)
-Simplify using `[zC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zC_mul (x y : ℤ_[l]) : zC (x * y) = zC x * zC y := by simp [zC]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [zC]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, zC_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zC_sum {ι : Type} (s : Finset ι) (f : ι → ℤ_[l]) : zC (∑ j ∈ s, f j) = ∑ j ∈ s, zC (f j) := by
   classical
@@ -62,12 +62,12 @@ theorem zC_sum {ι : Type} (s : Finset ι) (f : ι → ℤ_[l]) : zC (∑ j ∈ 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, zC_add, ih]
 
 /- English proof (translation)
-Simplify using `[zC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zC_pow_l (k : ℕ) : zC ((l : ℤ_[l]) ^ k) = (l : PadicComplex l) ^ k := by simp [zC]
 
 /- English proof (translation)
-Introduce `a`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun b _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA a b) (norm_nonneg _) (hy b)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_ball {d : ℕ} {A : Matrix (Fin d) (Fin d) (PadicComplex l)}
     (hA : ∀ a b, ‖A a b‖ ≤ 1) {y : Fin d → PadicComplex l} (hy : y ∈ ball l d) :
@@ -79,7 +79,7 @@ theorem mulVec_mem_ball {d : ℕ} {A : Matrix (Fin d) (Fin d) (PadicComplex l)}
   exact mul_le_one₀ (hA a b) (norm_nonneg _) (hy b)
 
 /- English proof (translation)
-Establish `: (fun a => act σ (((n : PadicComplex l) • y) a)) = (n : PadicComplex l) • fun a => act σ (y a)`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Simplify using `only [twAct]`. Rewrite using `[this, Matrix.mulVec_smul, smul_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem twAct_smul_nat (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ)
     (i : ℤ) {d : ℕ} (U : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (σ : GQ l) (n : ℕ)
@@ -92,7 +92,7 @@ theorem twAct_smul_nat (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (
   rw [this, Matrix.mulVec_smul, smul_comm]
 
 /- English proof (translation)
-Establish `: (fun a => act σ ((D *ᵥ y) a)) = D.map (act σ) *ᵥ fun a => act σ (y a)`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct]`. Simplify using `only [twAct]`. Rewrite using `[this, Matrix.mulVec_mulVec, ← h, Matrix.mulVec_smul, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem twAct_mulVec (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ)
     (i : ℤ) {d : ℕ} (M U : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l))
@@ -105,15 +105,15 @@ theorem twAct_mulVec (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ
   rw [this, Matrix.mulVec_mulVec, ← h, Matrix.mulVec_smul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Take `⟨hdet, hint, hinv, -, hcomm⟩` from `hD`. Use `set E : Matrix (Fin d) (Fin d) (PadicComplex l) := (l : PadicComplex l) • D⁻¹ with hE`. Establish `hEint : ∀ a b, ‖E a b‖ ≤ 1` using `fun a b => by simpa [hE] using hinv a b`. Establish `hDE : ∀ y, D *ᵥ (E *ᵥ y) = (l : PadicComplex l) • y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, hE, Matrix.mul_smul, Matrix.mul_nonsing_inv _ hdet, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective D.mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det D).2 hdet)`. Establish `hEt : ∀ σ ∈ Gj K m, ∀ y, twAct act χ i U σ (E *ᵥ y) = E *ᵥ twAct act χ i M σ y`. Introduce `σ hσ y`. Apply `hinj` to reduce the goal to its premises. Use `show D *ᵥ _ = D *ᵥ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← twAct_mulVec act χ i M U D σ (hcomm σ hσ), hDE, hDE, twAct_smul_nat]`. Take `⟨x, hx, hxe⟩` from `hU (fun σ => E *ᵥ c σ) k ⟨(continuous_const.matrix_mulVec continuous_id).comp_continuousOn hc.1, fun σ hσ => mulVec_mem_ball hEint (hc.2.1 σ hσ), fun σ hσ τ hτ => by`. Simplify using `only [hc.2.2 σ hσ τ hτ, Matrix.mulVec_add, hEt σ hσ]⟩`. Use the proof step `(by`. Take `⟨x, hx, hxe⟩` from `hk`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨E *ᵥ x, mulVec_mem_ball hEint hx, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `hxe σ hσ` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[hEt σ hσ, ← Matrix.mulVec_sub, ← this, Matrix.mulVec_smul])`. Use `⟨D *ᵥ x, mulVec_mem_ball hint hx, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hxe σ hσ` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[twAct_mulVec act χ i M U D σ (hcomm σ hσ), ← Matrix.mulVec_sub, ← this, Matrix.mulVec_smul, hDE, smul_smul, pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem sandwich {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ l →* ℚ_[l]ˣ}
     {K : FinExt l} {m d : ℕ} {M U : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)}
@@ -157,21 +157,19 @@ theorem sandwich {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : G
     hDE, smul_smul, pow_succ]
 
 /- English proof (translation)
-Introduce and unpack `f ⟨hfc, hfm⟩ ⟨k, x, hx⟩`. Rewrite `hfc` using `[continuous_adicModule_iff]`. Establish `hb : ∀ y, Ψ y ∈ ball l d` using `fun y => hr ▸ ⟨y, rfl⟩`. Set `c : GQ l → Fin d → PadicComplex l` to `fun σ => if h : σ ∈ G then Ψ (f ⟨σ, h⟩) else 0`. Establish `hc : ∀ σ (h : σ ∈ G), c σ = Ψ (f ⟨σ, h⟩)` using `fun σ h => dif_pos h`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun g : ↥G => Ψ (f g)`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε (norm_l_lt (l := l))`. Use `filter_upwards [hfc g N] with h hh`. Take `⟨y, e⟩` from `hh`. Rewrite using `[dist_eq_norm, ← map_sub, e, hl, norm_smul, norm_pow]`. Use `lt_of_le_of_lt ?_ hN` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_of_le_one_right (by positivity) ((pi_norm_le_iff_of_nonneg zero_le_one).2 (hb y))`. Take `⟨y, hy, hye⟩` from `H c k ⟨by`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Use `hcont using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc g g.2,`. Use `fun σ hσ => by rw [hc σ hσ]; exact hb _,`. Use `fun σ hσ τ hτ => by`. Rewrite using `[hc σ hσ, hc τ hτ, hc _ (G.mul_mem hσ hτ)]`. Use `hfm ⟨σ, hσ⟩ ⟨τ, hτ⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA ⟨σ, hσ⟩, ← map_add, ← this]`. Use the proof step `rfl⟩`. Use the proof step `⟨Ψ x, hb x, fun σ hσ => by`. Use `hx ⟨σ, hσ⟩` as an intermediate fact. Simplify using `only [Pi.smul_apply] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[hc σ hσ, ← hl, this, map_sub, hA]⟩`. Rewrite `hy` using `[← hr]`. Take `⟨z, rfl⟩` from `hy`. Use `⟨z, fun g => hinj ?_⟩` and prove the remaining obligations.
-
-Use `hye g g.2` as an intermediate fact. Simplify using `only at this`. Rewrite using `[Pi.smul_apply, hl, map_sub, hA, ← this, hc g g.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer {G : Subgroup (GQ l)} {X : Type} [AddCommGroup X] [Module ℤ_[l] X]
     (ρ : Representation ℤ_[l] ↥G X) {d : ℕ}
@@ -227,17 +225,15 @@ theorem transfer {G : Subgroup (GQ l)} {X : Type} [AddCommGroup X] [Module ℤ_[
   rw [Pi.smul_apply, hl, map_sub, hA, ← this, hc g g.2]
 
 /- English proof (translation)
-Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := Q) b`. Use `⟨⟨⟨fun x a => Φ (e x a), ?_⟩, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Introduce `x y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Introduce `x y hxy`. Apply `e.injective` to reduce the goal to its premises. Use extensionality with `a`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `hinj (congrFun hxy a)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ a`. Conclude with `(hr ▸ ⟨_, rfl⟩ : Φ (e x a) ∈ {y : PadicComplex l | ‖y‖ ≤ 1})`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hy`. Establish `: ∀ a, ∃ q, Φ q = y a` using `fun a => (hr.symm ▸ hy a : y a ∈ Set.range Φ)`. Use `choose q hq using this`. Use `⟨e.symm (Finsupp.equivFunOnFinite.symm q), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[hq]`. Introduce `z x`. Use function extensionality and compare the values at `a`. Simplify using `[hz]`. Introduce `t q a`.
-
-Simplify using `[e, hz]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord {T Q : Type} [AddCommGroup T] [Module ℤ_[l] T] [AddCommGroup Q]
     [Module ℤ_[l] Q] {d : ℕ} (b : Module.Basis (Fin d) ℤ_[l] T) (Φ : Q →+ PadicComplex l)
@@ -272,11 +268,11 @@ theorem exists_coord {T Q : Type} [AddCommGroup T] [Module ℤ_[l] T] [AddCommGr
     simp [e, hz]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => funext a`. Simplify using `[twAct, Matrix.mulVec, dotProduct]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, map_add]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Simplify using `[twAct, Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib]`. Consider the case `tmul t q`. Use function extensionality and compare the values at `a`. Establish `h1 : b.repr (r t) a = ∑ j, b.repr (r (b j)) a * b.repr t j` using `by conv_lhs => rw [← b.sum_repr t, map_sum, map_sum, Finsupp.finsetSum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, mul_comm]`. Simplify using `only [TensorProduct.map_tmul, hΨ, twAct, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, map_mul, act_zC ha, hM, hs, h1, zC_sum, zC_mul, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem coord_equivariant {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : IsActC act)
     (χ : GQ l →* ℚ_[l]ˣ) (i : ℤ) {T Q : Type} [AddCommGroup T] [Module ℤ_[l] T] [AddCommGroup Q]
@@ -303,7 +299,7 @@ theorem coord_equivariant {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)
     refine Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[rI, ← finsum_mem_finset_eq_sum]`. Use `finsum_congr fun u => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : u ∈ J <;> by_cases h2 : u = i <;> simp [h1, h2, vZ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rI_eq (l m : ℕ) (J : Finset ℤ) (i : ℤ) :
     rI l m (J : Set ℤ) i = ∑ u ∈ J.erase i, (m + padicValInt l (u - i)) := by
@@ -312,13 +308,13 @@ theorem rI_eq (l m : ℕ) (J : Finset ℤ) (i : ℤ) :
   by_cases h1 : u ∈ J <;> by_cases h2 : u = i <;> simp [h1, h2, vZ]
 
 /- English proof (translation)
-Establish `ha : IsActC AI.actC` using `⟨AI.actC_ext, AI.actC_norm⟩`. Establish `hχ : IsCyc P.χQ` using `P.χQ_cyc`. Establish `hHT'` using `GlobalTheory.T.hodgeTateBasis_of_isDecompletionAtLevel l _ _ ha hχ K _ d M U Dm g _ hD hHT`. Establish `hJ : J = (hfin.toFinset : Set ℤ)` using `hfin.coe_toFinset.symm`. Establish `hc6` using `GlobalTheory.T.cocycle_twist_coboundary_on_ball l _ _ ha hχ K _ d hlev U g hD.2.2.2.1 hfin.toFinset (hJ ▸ hHT') i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc6` using `[← rI_eq, ← hJ]`. Establish `hs` using `sandwich hD i _ hc6`. Take `⟨Φ, hinj, hr, hz, hact⟩` from `GlobalTheory.T.xiGradedPiece_iso_twistedOC l P AI i`. Take `⟨Ψ, hΨi, hΨr, hΨz, hΨ⟩` from `exists_coord b Φ hinj hr hz`. Establish `hn : 2 + max 1 (rI l m J i) = 1 + max 1 (rI l m J i) + 1` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hn]`. Use `transfer _ (twAct AI.actC P.χQ i M) Ψ hΨi hΨr (fun k x => by rw [hΨz, zC_pow_l]) (fun σ x => ?_) _ hs` and prove the remaining obligations. Establish `hζ : (σ : GQ l) (P.ζQ 1) = P.ζQ 1`. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).1 σ.2 _ ?_` and prove the remaining obligations. Use `(le_sup_right : _ ≤ Ks K _) (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show P.ζQ 1 ^ (l ^ m) = 1`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hlev.1`. Establish `h1 : P.ζQ 1 ^ l = 1` using `(P.ζQ_succ 0).trans P.ζQ_zero`. Rewrite using `[pow_add, pow_one, pow_mul, h1, one_pow]`. Conclude with `coord_equivariant ha _ i b Φ Ψ hΨ M σ (ρ σ) (actQab (xiOK AI) i (i + 1) σ) (hb σ) (hact σ hζ) x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_basis (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l)
     {T : Type} [AddCommGroup T] [Module ℤ_[l] T] (m : ℕ) (hlev : Lev l m)
@@ -354,9 +350,9 @@ theorem of_basis (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l)
     (actQab (xiOK AI) i (i + 1) σ) (hb σ) (hact σ hζ) x
 
 /- English proof (translation)
-Introduce `D HW F h7 l _ K s LL h S E T M0 h0 i hle hW`. Establish `hsm : s ≤ mN l s (M0 + h0)` using `by unfold mN; omega`. Establish `hlev : Lev l (mN l s (M0 + h0))` using `⟨le_trans h.1 hsm, fun h2 => le_trans (h.2.1 h2) hsm⟩`. Establish `h1` using `(GlobalTheory.T.exists_continuous_galoisLatticeMatrix_integral l K LL T).1`. Use `h1.elim fun d h1 => h1.elim fun M h1 => h1.elim fun A hM => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `GlobalTheory.T.exists_decompletion_frame_of_lattice D HW F l K s LL h T M0 h0 hW d M A hM`. Use `h2.elim fun Dm h2 => h2.elim fun U h2 => h2.elim fun g hD => ?_` and prove the remaining obligations. Establish `h3` using `GlobalTheory.T.exists_hodgeTateBasis_of_crystalline_over_Ks D HW F h7 l K s LL h T hW.1 d M A hM _ hsm`. Use `Exists.elim hM fun b hb => ?_` and prove the remaining obligations. Conclude with `@of_basis l _ (D.loc l) (D.locA l) K _ _ (zlMod LL T) _ hlev ((actTZ LL T).comp (Subgroup.inclusion hle)) i _ h3.1 d M U b (fun σ => hb.1 (Subgroup.inclusion hle σ)) Dm g hD.1 h3.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem torsion_killed : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), adm7 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; ∀ (T : LocLat S.G S.Qp S.LL S.O) (M0 h0 : ℕ) (i : ℤ) (hle : Gj K (mN l s (M0 + h0)) ≤ GK K), HypW S E T M0 h0 → letI := zlMod LL T; letI : TopologicalSpace (TensorProduct ℤ_[l] ↥T.L.T (Qab (AinfSub l) (xiU (D.locA l)) i (i + 1))) := (Ideal.span {(l : ℤ_[l])}).adicModuleTopology _; TorsKilledBy (repQ (D.locA l) (Gj K (mN l s (M0 + h0))) ((actTZ LL T).comp (Subgroup.inclusion hle)) i (i + 1)) (l : ℤ_[l]) ((l : ℤ_[l]) ^ (2 + max 1 (rI l (mN l s (M0 + h0)) (Jset S T) i))) := by
   intro D HW F h7 l _ K s LL h S E T M0 h0 i hle hW

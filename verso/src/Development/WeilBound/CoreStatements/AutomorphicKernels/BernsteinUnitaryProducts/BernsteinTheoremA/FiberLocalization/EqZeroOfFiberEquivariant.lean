@@ -44,19 +44,17 @@ def FiberStable (p : X → Y) (W : Submodule ℂ (SC X)) : Prop :=
   ∀ V : Set Y, IsClopen V → ∀ hpV : IsClopen (p ⁻¹' V), ∀ w ∈ W, mulInd (p ⁻¹' V) hpV w ∈ W
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `g _`. Set `W' : Submodule ℂ (X → ℂ)` to `W.map (SC X).subtype`. Establish `hmem : (g : X → ℂ) ∈ W'`. Use `mem_of_forall_fiber (U := univ) (C := univ) isClosed_univ hp ?_ ?_ ⟨g.2, subset_univ _⟩ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `f ⟨-, hf0⟩`. Establish `: f = 0` using `funext fun x => hf0 x (mem_univ x)`. Rewrite using `[this]`. Conclude with `W'.zero_mem`. Introduce and unpack `V hV w ⟨w0, hw0, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨mulInd (p ⁻¹' V) (hV.preimage hp) w0, hW V hV (hV.preimage hp) w0 hw0, rfl⟩`. Introduce `y`. Set `K : Submodule ℂ (SC X)` to `(vanishingOn (p ⁻¹' {y})).comap (SC X).subtype`. Establish `hgM : g ∈ W ⊔ K`. Assume the negation of the conclusion as `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hDg, hDM⟩` from `Submodule.exists_le_ker_of_notMem hg`. Establish `hD0 : D = 0`. Use `hfib y D (fun w hw => hDM (Submodule.mem_sup_left hw)) ?_` and prove the remaining obligations. Introduce `f hf`. Use `hDM (Submodule.mem_sup_right ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hfx`. Conclude with `hf hfx hx`. Conclude with `hDg (by rw [hD0, LinearMap.zero_apply])`. Take `⟨w, hw, k, hk, hwk⟩` from `Submodule.mem_sup.1 hgM`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Submodule.mem_sup.2 ⟨(w : X → ℂ), ⟨w, hw, rfl⟩, (k : X → ℂ), ⟨⟨k.2, subset_univ _⟩, fun x hx => hk x hx.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hwk]`. Both sides reduce to the same expression. Take `⟨w, hw, hwg⟩` from `hmem`. Establish `: w = g` using `Subtype.ext hwg`.
-
-Conclude with `this ▸ hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_top_of_fiber {p : X → Y} (hp : Continuous p) (W : Submodule ℂ (SC X))
     (hW : FiberStable p W)
@@ -97,7 +95,7 @@ theorem eq_top_of_fiber {p : X → Y} (hp : Continuous p) (W : Submodule ℂ (SC
   exact this ▸ hw
 
 /- English proof (translation)
-Establish `htop` using `eq_top_of_fiber hp W hW hfib`. Use extensionality with `f`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `hD f (htop ▸ Submodule.mem_top)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fiber {p : X → Y} (hp : Continuous p) (W : Submodule ℂ (SC X))
     (hW : FiberStable p W)
@@ -115,11 +113,9 @@ def relSpanH {ι : Type*} (e : ι → X ≃ₜ X) (χ : ι → ℂ) : Submodule 
   Submodule.span ℂ (range fun q : ι × SC X => compHomeoL (e q.1) q.2 - χ q.1 • q.2)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hD w hw`. Establish `hle : relSpanH e χ ≤ LinearMap.ker D`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨i, f⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `[hD i f]`. Conclude with `hle hw`. Introduce `hD i f`. Use `hD _ (Submodule.subset_span ⟨(i, f), rfl⟩)` as an intermediate fact. Rewrite `this` using `[map_sub, map_smul, smul_eq_mul, sub_eq_zero]`.
-
-Conclude with `this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEquivariant_iff {ι : Type*} (e : ι → X ≃ₜ X) (χ : ι → ℂ) (D : Distr X) :
     IsEquivariant e χ D ↔ ∀ w ∈ relSpanH e χ, D w = 0 := by
@@ -137,7 +133,7 @@ theorem isEquivariant_iff {ι : Type*} (e : ι → X ≃ₜ X) (χ : ι → ℂ)
 
 omit [TopologicalSpace Y] [T2Space Y] [LocallyCompactSpace Y] [TotallyDisconnectedSpace Y] in
 /- English proof (translation)
-Use `Subtype.ext <| funext fun x => ?_` and prove the remaining obligations. Simplify using `only [coe_mulInd, coe_compHomeoL, Function.comp_apply]`. Use `congr 1`. Apply the tactic sequence `by_cases hx : p x ∈ V <;> simp [hx, he]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mulInd_compHomeoL {p : X → Y} (e : X ≃ₜ X) (he : ∀ x, p (e x) = p x) (V : Set Y)
     (hpV : IsClopen (p ⁻¹' V)) (f : SC X) :
@@ -149,9 +145,9 @@ theorem mulInd_compHomeoL {p : X → Y} (e : X ≃ₜ X) (he : ∀ x, p (e x) = 
 
 omit [T2Space Y] [LocallyCompactSpace Y] [TotallyDisconnectedSpace Y] in
 /- English proof (translation)
-Introduce `V _ hpV w hw`. Establish `hle : relSpanH e χ ≤ (relSpanH e χ).comap (mulInd (p ⁻¹' V) hpV)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨i, f⟩, rfl⟩`. Use `show mulInd (p ⁻¹' V) hpV (compHomeoL (e i) f - χ i • f) ∈ relSpanH e χ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, mulInd_compHomeoL (e i) (he i)]`. Conclude with `Submodule.subset_span ⟨(i, mulInd (p ⁻¹' V) hpV f), rfl⟩`. Conclude with `hle hw`.
+A detailed English derivation is pending.
 -/
 theorem fiberStable_relSpanH {ι : Type*} {p : X → Y} (e : ι → X ≃ₜ X) (χ : ι → ℂ)
     (he : ∀ i x, p (e i x) = p x) : FiberStable p (relSpanH e χ) := by
@@ -165,7 +161,7 @@ theorem fiberStable_relSpanH {ι : Type*} {p : X → Y} (e : ι → X ≃ₜ X) 
   exact hle hw
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_fiber hp (relSpanH e χ) (fiberStable_relSpanH e χ he) (fun y D' hD' hsupp => hfib y D' ((isEquivariant_iff e χ D').2 hD') hsupp) D ((isEquivariant_iff e χ D).1 hD)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fiber_equivariant {ι : Type*} {p : X → Y} (hp : Continuous p)
     (e : ι → X ≃ₜ X) (χ : ι → ℂ) (he : ∀ i x, p (e i x) = p x)
@@ -225,7 +221,7 @@ theorem restr_compHomeoL (hZ : IsClosed Z) (e : X ≃ₜ X) (heZ : ∀ x, x ∈ 
 variable [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X]
 
 /- English proof (translation)
-Introduce `φ`. Take `⟨f, hf, hfφ⟩` from `exists_lift (U := univ) isOpen_univ (subset_univ Z) φ.2`. Conclude with `⟨⟨f, hf.1⟩, Subtype.ext (funext hfφ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem restr_surjective (hZ : IsClosed Z) : Function.Surjective (restr hZ) := by
   intro φ
@@ -248,7 +244,7 @@ omit [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [T2Space Y
   [LocallyCompactSpace Y] in
 
 /- English proof (translation)
-Introduce `i f`. Rewrite using `[extendDistr_apply, extendDistr_apply, restr_compHomeoL _ (e i)]`. Conclude with `hD' i _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEquivariant_extendDistr {ι : Type*} {p : X → Y} (hp : Continuous p)
     (e : ι → X ≃ₜ X) (χ : ι → ℂ) (he : ∀ i x, p (e i x) = p x) (y : Y)
@@ -271,14 +267,14 @@ def extZeroFun (U : Set X) (φ : U → ℂ) : X → ℂ :=
 
 omit [TopologicalSpace X] in
 /- English proof (translation)
-Simplify using `[extZeroFun, x.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extZeroFun_val (φ : U → ℂ) (x : U) : extZeroFun U φ x = φ x := by
   simp [extZeroFun, x.2]
 
 omit [TopologicalSpace X] in
 /- English proof (translation)
-Simplify using `[extZeroFun, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extZeroFun_of_notMem (φ : U → ℂ) {x : X} (hx : x ∉ U) : extZeroFun U φ x = 0 := by
   simp [extZeroFun, hx]
@@ -286,15 +282,13 @@ theorem extZeroFun_of_notMem (φ : U → ℂ) {x : X} (hx : x ∉ U) : extZeroFu
 variable [T2Space X]
 
 /- English proof (translation)
-Use `set K : Set X := Subtype.val '' tsupport (φ : U → ℂ) with hKdef`. Establish `hKc : IsCompact K` using `φ.2.2.image continuous_subtype_val`. Establish `hK0 : ∀ x ∉ K, extZeroFun U φ x = 0`. Introduce `x hx`. Distinguish the cases in `hxU : x ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show x = ((⟨x, hxU⟩ : U) : X) from rfl, extZeroFun_val]`. Conclude with `image_eq_zero_of_notMem_tsupport fun h => hx ⟨⟨x, hxU⟩, h, rfl⟩`. Conclude with `extZeroFun_of_notMem _ hxU`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, HasCompactSupport.intro hKc hK0⟩` and prove the remaining obligations. Distinguish the cases in `hxU : x ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, hVo, hxV, hVc⟩` from `(IsLocallyConstant.iff_exists_open _).1 φ.2.1 ⟨x, hxU⟩`. Take `⟨O, hOo, hOV⟩` from `isOpen_induced_iff.1 hVo`. Establish `hxO : x ∈ O`. Establish `: (⟨x, hxU⟩ : U) ∈ Subtype.val ⁻¹' O` using `by rw [hOV]; exact hxV`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨O ∩ U, hOo.inter hU, ⟨hxO, hxU⟩, fun x' hx' => ?_⟩` and prove the remaining obligations. Establish `hx'V : (⟨x', hx'.2⟩ : U) ∈ V` using `by rw [← hOV]; exact hx'.1`. Rewrite using `[show x' = ((⟨x', hx'.2⟩ : U) : X) from rfl, extZeroFun_val, show x = ((⟨x, hxU⟩ : U) : X) from rfl, extZeroFun_val]`. Conclude with `hVc _ hx'V`. Establish `hxK : x ∉ K` using `fun ⟨z, _, hz⟩ => hxU (hz ▸ z.2)`.
-
-Use `⟨Kᶜ, hKc.isClosed.isOpen_compl, hxK, fun x' hx' => ?_⟩` and prove the remaining obligations. Rewrite using `[hK0 x' hx', hK0 x hxK]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extZeroFun_mem (hU : IsOpen U) (φ : SC U) : extZeroFun U φ ∈ SC X := by
   classical
@@ -341,7 +335,7 @@ def pullL (h : A ≃ₜ B) : SC B →ₗ[ℂ] SC A where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun a => by simp [pullL]`.
+A detailed English derivation is pending.
 -/
 theorem pullL_pullL_symm (h : A ≃ₜ B) (f : SC A) : pullL h (pullL h.symm f) = f :=
   Subtype.ext <| funext fun a => by simp [pullL]

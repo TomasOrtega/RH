@@ -27,7 +27,7 @@ variable {D : D7} (δ : ∀ p : PlF D, (D.s.atP p).Fp)
 abbrev γp : (D.s.atP p).Fp := δ p * ((uP p : ℚ) : (D.s.atP p).Fp)
 
 /- English proof (translation)
-Establish `hE : (D.s.atP p).ιE (uP p : D.host.E) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((uP p : ℚ) : (D.s.atP p).Fp)`. Rewrite using `[← map_ratCast (algebraMap D.host.F D.host.E), (D.s.atP p).compat, map_ratCast]`. Rewrite using `[cc, hE, ← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_eq : cc δ p = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (γp δ p) := by
   have hE : (D.s.atP p).ιE (uP p : D.host.E) =
@@ -36,14 +36,14 @@ theorem cc_eq : cc δ p = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (γp δ p) :=
   rw [cc, hE, ← map_mul]
 
 /- English proof (translation)
-Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_alg (x : (D.s.atP p).Fp) : g.e (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep x) = (x, x) := by
   rw [AlgEquiv.commutes]; rfl
 
 include hA in
 /- English proof (translation)
-Introduce `h0`. Establish `hu` using `cc_unit δ M hA p`. Rewrite `hu` using `[cc_eq, h0, map_zero]`. Conclude with `not_isUnit_zero hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γp_ne : γp δ p ≠ 0 := by
   intro h0
@@ -53,9 +53,9 @@ theorem γp_ne : γp δ p ≠ 0 := by
 
 include hA in
 /- English proof (translation)
-Establish `h` using `congrArg g.e (frFac_mul δ M hA p a)`. Rewrite `h` using `[map_mul, map_pow, cc_eq, e_alg, map_one]`. Establish `hγ` using `pow_ne_zero (D.R.rS - a.val) (γp_ne δ M hA p)`. Use `ext`. Establish `h1` using `congrArg Prod.fst h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Prod.fst_mul, Prod.pow_fst, Prod.fst_one] at h1`. Conclude with `eq_inv_of_mul_eq_one_left h1`. Establish `h2` using `congrArg Prod.snd h`. Simplify using `only [Prod.snd_mul, Prod.pow_snd, Prod.snd_one] at h2`. Conclude with `eq_inv_of_mul_eq_one_left h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem e_frFac (a : Fin (D.R.rS + 1)) :
     g.e (frFac δ p a) = ((γp δ p ^ (D.R.rS - a.val))⁻¹, (γp δ p ^ (D.R.rS - a.val))⁻¹) := by
@@ -71,7 +71,7 @@ theorem e_frFac (a : Fin (D.R.rS + 1)) :
     exact eq_inv_of_mul_eq_one_left h2
 
 /- English proof (translation)
-Rewrite using `[inv_div_inv, pow_sub₀ γ hγ h, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ratio {F : Type*} [Field F] {γ : F} (hγ : γ ≠ 0) {m n : ℕ} (h : m ≤ n) :
     (γ ^ m)⁻¹ / (γ ^ n)⁻¹ = γ ^ (n - m) := by
@@ -80,7 +80,7 @@ theorem ratio {F : Type*} [Field F] {γ : F} (hγ : γ ≠ 0) {m n : ℕ} (h : m
 include hA hs in
 
 /- English proof (translation)
-Rewrite using `[← (D.s.atP p).cj_ιE, ← (hA p).2.2.1]`. Conclude with `g.e_cj _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_conj (z : D.host.E) :
     g.e ((D.s.atP p).ιE (D.conjF z)) = (g.e ((D.s.atP p).ιE z)).swap := by
@@ -90,7 +90,7 @@ theorem e_conj (z : D.host.E) :
 include hA in
 
 /- English proof (translation)
-Establish `hint : ∀ s : (D.s.atP p).Fp, IsIntegral 𝒪[(D.s.atP p).Fp] s ↔ s ∈ 𝒪[(D.s.atP p).Fp]` using `fun s => ⟨fun h => (Valuation.integer.integers (valuation (D.s.atP p).Fp)).mem_of_integral h, fun h => by`. Use `isIntegral_algebraMap (R := 𝒪[(D.s.atP p).Fp]) (A := (D.s.atP p).Fp) (x := ⟨s, h⟩)` as an intermediate fact. Conclude with `this⟩`. Rewrite using `[(D.s.atP p).O_def, ← isIntegral_algEquiv (g.e.restrictScalars 𝒪[(D.s.atP p).Fp]), IsIntegral.pair_iff, hint, hint]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_O_split (w : (D.s.atP p).Ep) :
     w ∈ (D.s.atP p).O ↔ (g.e w).1 ∈ 𝒪[(D.s.atP p).Fp] ∧ (g.e w).2 ∈ 𝒪[(D.s.atP p).Fp] := by
@@ -106,15 +106,15 @@ theorem mem_O_split (w : (D.s.atP p).Ep) :
 include hs in
 
 /- English proof (translation)
-Simplify using `only [Loc.Model.R, hs, Subring.mem_comap, Subring.mem_map, RingHom.mem_eqLocus, RingHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hze⟩`. Establish `h1 : (g.e w).1 = (z.1 : (D.s.atP p).Fp)`. Use `congrArg Prod.fst hze` as an intermediate fact.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Establish `h2 : (g.e w).2 = (z.2 : (D.s.atP p).Fp)`. Use `congrArg Prod.snd hze` as an intermediate fact. Simplify using `using this.symm`. Rewrite `hz` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht⟩` from `hz`. Use `⟨by rw [h1]; exact z.1.2, by rw [h2]; exact z.2.2, t, t.2, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2, mul_comm]`. Conclude with `ht.symm` after adjusting the coercions. Introduce and unpack `⟨h1, h2, t, ht, he⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(⟨(g.e w).1, h1⟩, ⟨(g.e w).2, h2⟩), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [RingHom.coe_fst, RingHom.coe_snd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_R_split (w : (D.s.atP p).Ep) :
     w ∈ (M p).R ↔ (g.e w).1 ∈ 𝒪[(D.s.atP p).Fp] ∧ (g.e w).2 ∈ 𝒪[(D.s.atP p).Fp] ∧
@@ -143,9 +143,9 @@ theorem mem_R_split (w : (D.s.atP p).Ep) :
 
 include hA hs in
 /- English proof (translation)
-Simplify using `only [StabShape.lG, Matrix.of_apply, AlgEquiv.apply_symm_apply, e_frFac δ M hA p g, bt]`. Establish `h1 : j.val < i.val` using `hji`. Establish `h2` using `i.isLt`. Establish `hm : D.R.rS - i.val ≤ D.R.rS - j.val` using `by omega`. Establish `hk : D.R.rS - j.val - (D.R.rS - i.val) = i.val - j.val` using `by omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hk, ← ratio (γp_ne δ M hA p) hm]`. Apply the tactic sequence `ext <;> simp only <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem e_lG_low (a b : MatR D) (i j : Fin (D.R.rS + 1)) (hji : j < i) :
     g.e (StabShape.lG g.e (D.s.atP p).ιE (frFac δ p) a b i j) =
@@ -161,9 +161,9 @@ theorem e_lG_low (a b : MatR D) (i j : Fin (D.R.rS + 1)) (hji : j < i) :
 
 include hA hs in
 /- English proof (translation)
-Simplify using `only [StabShape.ρG, Matrix.of_apply, AlgEquiv.apply_symm_apply, e_frFac δ M hA p g, bt]`. Establish `h1 : j.val < i.val` using `hji`. Establish `h2` using `i.isLt`. Establish `hm : D.R.rS - i.val ≤ D.R.rS - j.val` using `by omega`. Establish `hk : D.R.rS - j.val - (D.R.rS - i.val) = i.val - j.val` using `by omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hk, ← ratio (γp_ne δ M hA p) hm]`. Apply the tactic sequence `ext <;> simp only <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem e_ρG_up (a b : MatR D) (i j : Fin (D.R.rS + 1)) (hji : j < i) :
     g.e (StabShape.ρG g.e (D.s.atP p).ιE (frFac δ p) a b j i) =
@@ -179,13 +179,13 @@ theorem e_ρG_up (a b : MatR D) (i j : Fin (D.R.rS + 1)) (hji : j < i) :
 
 include hA hs in
 /- English proof (translation)
-Establish `hl : StabShape.lOf δ M p a b = StabShape.lG g.e (D.s.atP p).ιE (frFac δ p) a b`. Simplify using `only [StabShape.lOf, hs]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hji`. Use `(mem_R_split M p g hs _).1 (h.2.2 i j)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hl, e_lG_low δ M hA p g hs a b i j hji]`. Conclude with `this`. Introduce `h`. Use `⟨StabShape.lOf_diag δ M (hA p) a b ha hb, fun i j hij => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hl]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[StabShape.lG, (ha i j).1 hij, (hb j i).1 hij]`. Break down `lt_trichotomy j i with hji | rfl | hij` into its components or cases. Rewrite using `[mem_R_split M p g hs, hl, e_lG_low δ M hA p g hs a b i j hji]`. Conclude with `h i j hji`. Rewrite using `[StabShape.lOf_diag δ M (hA p) a b ha hb]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Subring.one_mem _`. Rewrite using `[hl]`. Simplify using `[StabShape.lG, (ha i j).1 hij, (hb j i).1 hij, ← Prod.zero_eq_mk]`.
+A detailed English derivation is pending.
 -/
 theorem intLow_iff_G {a b : MatR D} (ha : IsLoUni a) (hb : IsUpUni b) :
     Formalism.MainNotions.S.TieN.IntLow (M p) (StabShape.lOf δ M p a b) ↔
@@ -211,13 +211,13 @@ theorem intLow_iff_G {a b : MatR D} (ha : IsLoUni a) (hb : IsUpUni b) :
 
 include hA hs in
 /- English proof (translation)
-Establish `hr : StabShape.ρOf δ M p a b = StabShape.ρG g.e (D.s.atP p).ιE (frFac δ p) a b`. Simplify using `only [StabShape.ρOf, hs]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hji`. Use `(mem_R_split M p g hs _).1 (h.2.2 j i)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hr, e_ρG_up δ M hA p g hs a b i j hji]`. Conclude with `this`. Introduce `h`. Use `⟨StabShape.ρOf_diag δ M (hA p) a b ha hb, fun i j hji => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[StabShape.ρG, (hb i j).1 hji, (ha j i).1 hji]`. Break down `lt_trichotomy i j with hij | rfl | hji` into its components or cases. Rewrite using `[mem_R_split M p g hs, hr, e_ρG_up δ M hA p g hs a b j i hij]`. Conclude with `h j i hij`. Rewrite using `[StabShape.ρOf_diag δ M (hA p) a b ha hb]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Subring.one_mem _`. Rewrite using `[hr]`. Simplify using `[StabShape.ρG, (hb i j).1 hji, (ha j i).1 hji, ← Prod.zero_eq_mk]`.
+A detailed English derivation is pending.
 -/
 theorem intUp_iff_G {a b : MatR D} (ha : IsLoUni a) (hb : IsUpUni b) :
     Formalism.MainNotions.S.TieN.IntUp (M p) (StabShape.ρOf δ M p a b) ↔
@@ -243,7 +243,7 @@ theorem intUp_iff_G {a b : MatR D} (ha : IsLoUni a) (hb : IsUpUni b) :
 
 include hA in
 /- English proof (translation)
-Rewrite using `[map_mul, map_pow, cc_eq, e_alg]`. Apply the tactic sequence `ext <;> simp [Prod.pow_fst, Prod.pow_snd]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem e_cc_mul (k : ℕ) (w : (D.s.atP p).Ep) :
     g.e (cc δ p ^ k * w) = (γp δ p ^ k * (g.e w).1, γp δ p ^ k * (g.e w).2) := by
@@ -252,11 +252,11 @@ theorem e_cc_mul (k : ℕ) (w : (D.s.atP p).Ep) :
 
 include hA in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho, rfl⟩`. Rewrite `ho` using `[mem_O_split δ M hA p g]`. Rewrite using `[map_mul, e_alg]`. Conclude with `⟨⟨_, ho.1, rfl⟩, ⟨_, ho.2, rfl⟩⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨t1, h1, e1⟩, ⟨t2, h2, e2⟩⟩`. Use `⟨g.e.symm (t1, t2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_O_split δ M hA p g, AlgEquiv.apply_symm_apply]`. Conclude with `⟨h1, h2⟩`. Apply `g.e.injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, e_alg, AlgEquiv.apply_symm_apply]`. Use `ext`. Simplify using `[e1]`. Simplify using `[e2]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mem_qO (w : (D.s.atP p).Ep) :
     (∃ o ∈ (D.s.atP p).O, w = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * o) ↔
@@ -278,7 +278,7 @@ theorem mem_qO (w : (D.s.atP p).Ep) :
 
 include hA hs in
 /- English proof (translation)
-Establish `hk : i.val - j.val ≤ D.R.rS` using `by have := i.isLt; omega`. Rewrite using `[locMem_iff δ M hA p hk, locMem_iff δ M hA p hk, hQ δ M hA p g hs _ hk]`. Establish `hq : ∀ w : (D.s.atP p).Ep, (∃ o ∈ (D.s.atP p).O, w = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * o) ↔ _` using `mem_qO δ M hA p g`. Rewrite using `[hq, mem_O_split δ M hA p g, mem_O_split δ M hA p g]`. Simplify using `only [e_cc_mul δ M hA p g, map_sub, Prod.fst_sub, Prod.snd_sub, e_conj δ M hA p g hs, Prod.fst_swap, Prod.snd_swap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem locEntry_iff_G (hQ : QLocG D) (a b : MatR D) (i j : Fin (D.R.rS + 1)) (hji : j < i) :
     (LocMem D p (ddPow D (i.val - j.val)) (a i j) ∧ LocMem D p (ddPow D (i.val - j.val)) (bt D b j i) ∧
@@ -300,13 +300,13 @@ theorem locEntry_iff_G (hQ : QLocG D) (a b : MatR D) (i j : Fin (D.R.rS + 1)) (h
     Prod.snd_swap]
 
 /- English proof (translation)
-Introduce `δ M p hA hsome a b ha hb`. Take `⟨g, hs⟩` from `Option.isSome_iff_exists.1 hsome`. Rewrite using `[intLow_iff_G δ M hA p g hs ha hb, intUp_iff_G δ M hA p g hs ha hb]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hji`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨x1, v1, t1, ht1, e1⟩` from `h1 i j hji`. Take `⟨u2, y2, t2, ht2, e2⟩` from `h2 i j hji`. Use `(locEntry_iff_G δ M hA p g hs hQ a b i j hji).2 ⟨⟨x1, y2⟩, ⟨u2, v1⟩, ⟨t1, ht1, by rw [mul_sub]; exact e1⟩, ⟨-t2, neg_mem ht2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_sub, mul_neg, ← e2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `h`. Use `⟨fun i j hji => ?_, fun i j hji => ?_⟩` and prove the remaining obligations. Take `⟨⟨x1, -⟩, ⟨-, v1⟩, ⟨t1, ht1, e1⟩, -⟩` from `(locEntry_iff_G δ M hA p g hs hQ a b i j hji).1 (h i j hji)`. Conclude with `⟨x1, v1, t1, ht1, by rw [← mul_sub]; exact e1⟩`. Take `⟨⟨-, y1⟩, ⟨u1, -⟩, -, ⟨t2, ht2, e2⟩⟩` from `(locEntry_iff_G δ M hA p g hs hQ a b i j hji).1 (h i j hji)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨u1, y1, -t2, neg_mem ht2, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_neg, ← e2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem locShapeG_of (hQ : QLocG D) : LocShapeG D := by
   intro δ M p hA hsome a b ha hb

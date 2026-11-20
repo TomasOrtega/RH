@@ -12,20 +12,18 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 abbrev W1 (L : Type) : Type := Matrix (Fin 1) (Fin 1) L
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_int {x : L} : x ∈ intL L ↔ Valued.v x ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, h2, hc⟩` from `h`. Set `O` to `(Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring`. Establish `hc' : Nat.card (IsLocalRing.ResidueField O) = q ^ 2` using `hc`. Use `haveI : Finite (IsLocalRing.ResidueField O) := Nat.finite_of_card_ne_zero (by rw [hc']; positivity)`. Use `haveI := Fintype.ofFinite (IsLocalRing.ResidueField O)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ((q ^ 2 : ℕ) : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← hc', Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero _`. Establish `hle : Valued.v (2 : L) ≤ 1` using `(2 : O).2`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : Valued.v (2 : L) < 1` using `lt_of_le_of_ne hle hne`. Establish `hm : (2 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[Valuation.mem_maximalIdeal_iff]`. Conclude with `hlt`. Establish `h2' : (2 : IsLocalRing.ResidueField O) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(IsLocalRing.residue_eq_zero_iff (2 : O)).2 hm` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Take `⟨k, hk⟩ : Odd (q ^ 2)` from `hq.pow`. Rewrite `h0` using `[hk]`. Move the coercions through the operations in `at h0`.
-
-Rewrite `h0` using `[h2']`. Simplify using `at h0`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem v_two {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (hq : Odd q) : Valued.v (2 : L) = 1 := by
   obtain ⟨-, -, -, -, -, h2, hc⟩ := h
@@ -58,9 +56,9 @@ def rho0 (σ : L →+* L) (δ : L) (ψ : AddChar L ℂ) (x : L) : Module.End ℂ
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `show ψ (bb σ δ w x) * (ψ (bb σ δ (w + x) y) * φ (w + x + y)) = ψ (bb σ δ x y) * (ψ (bb σ δ w (x + y)) * φ (w + (x + y)))`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc]`. Use `congr 2`. Simplify using `only [bb, map_add, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem residual_rep_mul (σ : L →+* L) (δ : L) (ψ : AddChar L ℂ) (x y : L) (φ : L → ℂ) :
     rho0 σ δ ψ x (rho0 σ δ ψ y φ) = ψ (bb σ δ x y) • rho0 σ δ ψ (x + y) φ := by
@@ -77,11 +75,9 @@ def vac0 (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] : L →
 def Mod (σ : L →+* L) (δ : L) (ψ : AddChar L ℂ) : Submodule ℂ (L → ℂ) := Submodule.span ℂ (Set.range fun x => rho0 σ δ ψ x (vac0 L))
 
 /- English proof (translation)
-Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨y, rfl⟩` from `h`. Rewrite using `[residual_rep_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem weil_rep_mem_module (σ : L →+* L) (δ : L) (ψ : AddChar L ℂ) (x : L) : ∀ φ ∈ Mod σ δ ψ, rho0 σ δ ψ x φ ∈ Mod σ δ ψ := by
   intro φ hφ
@@ -101,9 +97,9 @@ def sub0 (u : L) : Module.End ℂ (L → ℂ) where
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `show ψ (bb σ δ (u * w) x) * φ (u * w + x) = ψ (bb σ δ w (σ u * x)) * φ (u * (w + σ u * x))`. Establish `: u * (w + σ u * x) = u * w + x` using `by linear_combination x * hu`. Rewrite using `[this]`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [bb, map_mul, hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem translate_weil_rep_comm (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (δ : L) (ψ : AddChar L ℂ) {u : L} (hu : σ u * u = 1) (x : L) (φ : L → ℂ) :
     sub0 u (rho0 σ δ ψ x φ) = rho0 σ δ ψ (σ u * x) (sub0 u φ) := by
@@ -115,9 +111,7 @@ theorem translate_weil_rep_comm (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (�
   simp only [bb, map_mul, hσ]; ring
 
 /- English proof (translation)
-Establish `h` using `congrArg Valued.v hu`. Rewrite `h` using `[map_mul, hv, map_one]`. Conclude with `(mul_self_eq_one_iff_of_linearOrderedCommGroupWithZero h)`. Use `where mul_self_eq_one_iff_of_linearOrderedCommGroupWithZero {a : WithZero (Multiplicative ℤ)} (h : a * a = 1) : a = 1 := by`. Break down `lt_trichotomy a 1 with h1 | h1 | h1` into its components or cases.
-
-Conclude with `absurd h (ne_of_lt (mul_lt_one_of_lt_of_le h1 h1.le))`. Conclude with `h1`. Conclude with `absurd h (ne_of_gt (one_lt_mul_of_lt_of_le h1 h1.le))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem v_of_norm {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {u : L} (hu : σ u * u = 1) : Valued.v u = 1 := by
   have h := congrArg Valued.v hu
@@ -131,7 +125,7 @@ where
     · exact absurd h (ne_of_gt (one_lt_mul_of_lt_of_le h1 h1.le))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `show vac0 L (u * w) = vac0 L w`. Simplify using `only [vac0, mem_int, map_mul, hu, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem translate_vacuum_unit {u : L} (hu : Valued.v u = 1) : sub0 u (vac0 L) = vac0 L := by
   funext w
@@ -148,7 +142,7 @@ def ent (g : U1 σ) : L := ((g : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) 0 0
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Establish `hg : cT σ ((g : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) * ((1 : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) * ((g : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) = ((1 : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L)` using `g.2`. Use `congrFun (congrFun hg 0) 0` as an intermediate fact. Simplify `this` using `[cT, Matrix.mul_apply, ent]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ent_norm (g : U1 σ) : σ (ent g) * ent g = 1 := by
   have hg : cT σ ((g : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) * ((1 : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) *
@@ -158,25 +152,23 @@ theorem ent_norm (g : U1 σ) : σ (ent g) * ent g = 1 := by
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Simplify using `[ent, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ent_mul (g g' : U1 σ) : ent (g * g') = ent g * ent g' := by
   simp [ent, Matrix.mul_apply]
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Rewrite using `[map_mul, hσ]`. Take the linear combination `(σ (ent p.1) * ent p.1) * ent_norm p.2 + ent_norm p.1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem uu_norm (hσ : ∀ x, σ (σ x) = x) (p : U1 σ × U1 σ) : σ (σ (ent p.2) * ent p.1) * (σ (ent p.2) * ent p.1) = 1 := by
   rw [map_mul, hσ]
   linear_combination (σ (ent p.1) * ent p.1) * ent_norm p.2 + ent_norm p.1
 
 /- English proof (translation)
-Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨y, rfl⟩` from `hφ`. Rewrite using `[translate_weil_rep_comm σ h.1 δ ψ hu, translate_vacuum_unit (v_of_norm h.2.1 hu)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem translate_mem_weil_module (h : IsUnramInv ϖ σ q) {u : L} (hu : σ u * u = 1) : ∀ φ ∈ Mod σ δ ψ, sub0 u φ ∈ Mod σ δ ψ := by
   intro φ hφ
@@ -208,7 +200,7 @@ def om (h : IsUnramInv ϖ σ q) : U1 σ × U1 σ →* Module.End ℂ (Mod σ δ 
     rw [ent_mul, ent_mul, map_mul]; congr 1; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `show ψ (bb σ δ w 0) * φ (w + 0) = φ w`. Simplify using `[bb]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weil_rep_zero (φ : L → ℂ) : rho0 σ δ ψ 0 φ = φ := by
   funext w
@@ -233,14 +225,12 @@ def frobL : LaurentSeries K9 →+* LaurentSeries K9 where
   map_add' _ _ := by ext; simp
 
 /- English proof (translation)
-Rewrite using `[GaloisField.card 3 2 (by norm_num)]; norm_num`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_field_nine : Nat.card K9 = 9 := by rw [GaloisField.card 3 2 (by norm_num)]; norm_num
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite K9`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hd : (Polynomial.X ^ 3 - Polynomial.X : Polynomial K9).natDegree = 3` using `by compute_degree!`. Establish `hne : (Polynomial.X ^ 3 - Polynomial.X : Polynomial K9) ≠ 0` using `fun h0 => by simp [h0] at hd`.
-
-Use `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero (Polynomial.X ^ 3 - Polynomial.X : Polynomial K9) (f := id) Function.injective_id (fun a => by simp [h a]) (by rw [hd, ← Nat.card_eq_fintype_card, card_field_nine]; norm_num)` as an intermediate fact. Conclude with `hne this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ne : ∃ a : K9, a ^ 3 ≠ a := by
   haveI := Fintype.ofFinite K9

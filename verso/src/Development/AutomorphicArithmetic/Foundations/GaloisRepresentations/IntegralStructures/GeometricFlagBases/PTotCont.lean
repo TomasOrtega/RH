@@ -8,13 +8,11 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `hVF hDC l _ k Ω _ _ _ _ hl X p hp v μ`. Use `haveI := hp`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed k`. Use `haveI : Algebra.IsAlgebraic k Ω := IsAlgClosure.isAlgebraic`. Establish `hu : IsUnit (l : Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(map_ne_zero (algebraMap k Ω)).mpr hl`. Rewrite `h` using `[map_natCast]`. Conclude with `h.isUnit`. Establish `hfin : ∀ n : ℤ, Module.Finite ℤ_[l] (Hl l (sch.obj (geom Ω p)) n 0)` using `fun n => (hVF l Ω hu (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k Ω)))) n 0).1`. Establish `hv : ∀ σ, μ (galTot l Ω p σ v) = ∑ n ∈ v.support, (μ ∘ₗ DirectSum.lof ℚ_[l] ℤ (fun n => HQ l (sch.obj (geom Ω p)) n 0) n) (galHQ l Ω p n 0 σ (v n))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ`. Use `conv_lhs => rw [← DirectSum.sum_support_of v]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`.
-
-Use `congr 1`. Conclude with `DirectSum.lmap_lof (fun n => galHQ l Ω p n 0 σ) n (v n)`. Repeatedly rewrite using `[hv]`. Conclude with `continuous_finset_sum _ fun n _ => hDC l k Ω p inferInstance inferInstance n 0 (hfin n) (v n) _`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.totCont_of :
     GlobalTheory.GalV.VFin → DegCont → TotCont := by

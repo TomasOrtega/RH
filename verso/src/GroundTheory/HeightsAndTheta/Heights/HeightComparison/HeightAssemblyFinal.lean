@@ -26,7 +26,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `have hM : OrbitChartMax.Statement := OrbitChartMax.proof have hQ : OrbitChartQuot.Statement := OrbitChartQuot.proof have hIff : OrbitCenterMemIff.Statement := OrbitCenterMemIff.proof HeightAsIntersection.of_chart_and_centre OrbitChartRing.proof hM (OrbitChartResidue.proof hM hQ ( …`.
+A detailed English derivation is pending.
 -/
 theorem HeightAsIntersection.full : HeightAsIntersection.Statement :=
   have hM : OrbitChartMax.Statement := OrbitChartMax.proof

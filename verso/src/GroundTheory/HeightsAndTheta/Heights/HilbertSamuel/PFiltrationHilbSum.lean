@@ -19,15 +19,15 @@ variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K �
   [IsScalarTower F (MRing ι F) M] {piece : (K → ℤ) → Submodule F M}
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction generalizing m y with`. Consider the case `zero`. Establish `h0 : (fun k => ((Finsupp.weight (blockWeight ι) (0 : (Σ k, ι k) →₀ ℕ)) k : ℤ)) = 0`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, add_zero, ← C_apply, ← algebraMap_eq, algebraMap_smul]`. Conclude with `(piece m).smul_mem a hy`. Consider the case `single_add v k d' _ _ ih`. Establish `hpow : ∀ (e : ℕ) (m' : K → ℤ) (z : M), z ∈ piece m' → (X v ^ e : MRing ι F) • z ∈ piece (m' + e • unitDeg v.1)`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `e with`. Consider the case `zero => intro m' z hz`. Simplify using `using hz`. Consider the case `succ e ihe`. Introduce `m' z hz`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', mul_smul, succ_nsmul, ← add_assoc]`. Conclude with `hM.smul_mem v _ _ (ihe m' z hz)`. Rewrite using `[monomial_single_add, mul_smul]`. Establish `h2` using `hpow k _ _ (ih hy)`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k'`. Simplify using `only [map_add, Finsupp.weight_single, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Nat.cast_add, Nat.cast_mul, blockWeight, unitDeg, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem monomial_smul_mem (hM : IsMultigrading ι M piece) (d : (Σ k, ι k) →₀ ℕ) (a : F)
     {m : K → ℤ} {y : M} (hy : y ∈ piece m) :
@@ -59,7 +59,7 @@ theorem monomial_smul_mem (hM : IsMultigrading ι M piece) (d : (Σ k, ι k) →
     split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Rewrite using `[f.as_sum, Finset.sum_smul]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (blockWeight ι) d = b` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp hf (mem_support_iff.mp hd)`. Establish `h` using `monomial_smul_mem hM d (coeff d f) hy`. Rewrite `h` using `[hw]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem form_smul_mem (hM : IsMultigrading ι M piece) {b : K → ℕ} {f : MRing ι F}
     (hf : f ∈ weightedHomogeneousSubmodule F (blockWeight ι) b) {m : K → ℤ} {y : M}
@@ -85,11 +85,9 @@ theorem comp_apply [DirectSum.Decomposition piece] (m : K → ℤ) (y : M) :
 open Classical in
 
 /- English proof (translation)
-Use `conv_lhs => rw [s.as_sum]`. Rewrite using `[Finset.sum_smul, map_sum, Finset.sum_filter, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Establish `h` using `monomial_smul_mem hM d (coeff d s) hx`. Rewrite using `[comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with hd`. Rewrite `h` using `[hd, add_sub_cancel]`. Conclude with `DirectSum.decompose_of_mem_same piece h`. Rewrite using `[zero_smul]`. Use `DirectSum.decompose_of_mem_ne piece h fun h' => hd ?_` and prove the remaining obligations.
-
-Rewrite using `[← h', add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_smul (hM : IsMultigrading ι M piece) [DirectSum.Decomposition piece] {c : K → ℤ}
     {x : M} (hx : x ∈ piece c) (s : MRing ι F) (m : K → ℤ) :
@@ -109,7 +107,7 @@ theorem comp_smul (hM : IsMultigrading ι M piece) [DirectSum.Decomposition piec
     rw [← h', add_sub_cancel_left]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Rewrite using `[comp_smul hM hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem_span (hM : IsMultigrading ι M piece) [DirectSum.Decomposition piece]
     {c : K → ℤ} {x : M} (hx : x ∈ piece c) {y : M}
@@ -122,7 +120,7 @@ theorem comp_mem_span (hM : IsMultigrading ι M piece) [DirectSum.Decomposition 
 omit [DecidableEq K] [IsScalarTower F (MRing ι F) M] in
 
 /- English proof (translation)
-Introduce `y hy m`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h₁ a ha m) (h₂ b hb m)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem_sup [DirectSum.Decomposition piece] {N₁ N₂ : Submodule (MRing ι F) M}
     (h₁ : ∀ y ∈ N₁, ∀ m, comp (piece := piece) m y ∈ N₁)
@@ -136,53 +134,47 @@ theorem comp_mem_sup [DirectSum.Decomposition piece] {N₁ N₂ : Submodule (MRi
 open Classical in
 
 /- English proof (translation)
-Use `set A := N.restrictScalars F ⊓ piece m with hA`. Establish `hNN' : N ≤ N'` using `hN' ▸ le_sup_left`. Establish `hAB : A ≤ N'.restrictScalars F ⊓ piece m` using `inf_le_inf_right _ hNN'`. Establish `hdec : ∀ y ∈ N'.restrictScalars F ⊓ piece m, ∃ n ∈ A, ∃ s : MRing ι F, y = n + comp (piece` using `piece) m (s • x) := by`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.mp hy`. Rewrite `hy1` using `[Submodule.restrictScalars_mem, hN']`. Take `⟨n, hn, z, hz, rfl⟩` from `Submodule.mem_sup.mp hy1`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.mp hz`. Use `⟨comp (piece := piece) m n, Submodule.mem_inf.mpr ⟨hgr n hn m, ?_⟩, s, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_apply]`. Conclude with `Submodule.coe_mem _`. Establish `h` using `DirectSum.decompose_of_mem_same piece hy2`. Rewrite `h` using `[← comp_apply]`. Rewrite using `[← map_add, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hb : ∀ k, 0 ≤ (m - c) k`. Use `set b : K → ℕ := fun k => ((m - c) k).toNat with hbdef`. Establish `hbm : m = c + fun k => (b k : ℤ)`. Use function extensionality and compare the values at `k`. Use `hb k` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Pi.sub_apply] at this`. Simplify using `only [hbdef, Pi.add_apply, Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Set `ψ : MRing ι F →ₗ[F] M` to `(LinearMap.toSpanSingleton (MRing ι F) M x).restrictScalars F`. Establish `hψ : ∀ s, ψ s = s • x` using `fun s => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set P := weightedHomogeneousSubmodule F (blockWeight ι) b with hP`. Use `set Q := P ⊓ q.restrictScalars F with hQ`. Establish `hPm : ∀ s ∈ P, s • x ∈ piece m`. Introduce `s hs`. Establish `h` using `form_smul_mem hM hs hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[← hbm]`. Then use the resulting hypothesis. Establish `hsup : N'.restrictScalars F ⊓ piece m = A ⊔ P.map ψ`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨n, hn, s, rfl⟩` from `hdec y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.add_mem_sup hn ⟨weightedHomogeneousComponent (blockWeight ι) b s, weightedHomogeneousComponent_mem _ s b, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, comp_smul hM hx, weightedHomogeneousComponent_apply]`. Use `congr 1`. Use `Finset.sum_congr (Finset.filter_congr fun d _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Establish `h2 : ∀ k, 0 ≤ m k - c k` using `fun k => by simpa using hb k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `k`. Use `show ((Finsupp.weight (blockWeight ι) d k : ℕ) : ℤ) = m k - c k`. Rewrite using `[h, hbdef]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply]`. Use `h2 k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h`. Use function extensionality and compare the values at `k`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((Finsupp.weight (blockWeight ι) d k : ℕ) : ℤ) = m k - c k`. Simplify using `using congrFun h k`. Rewrite using `[hbdef]`. Use `show Finsupp.weight (blockWeight ι) d k = ((m - c) k).toNat`. Rewrite using `[Pi.sub_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers. Use `sup_le hAB ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, hψ, hN']`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x))`. Conclude with `hPm s hs`. Establish `hinf : A ⊓ P.map ψ = Q.map ψ`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨hA', ⟨s, hs, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨s, Submodule.mem_inf.mpr ⟨hs, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, ← hq, ← hψ]`. Conclude with `(Submodule.mem_inf.mp hA').1`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Take `⟨hs1, hs2⟩` from `Submodule.mem_inf.mp hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨?_, ?_⟩, ⟨s, hs1, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, hψ, hq]`. Conclude with `hs2`. Rewrite using `[hψ]`. Conclude with `hPm s hs1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: FiniteDimensional F P` using `FiltrationStepHilb.finiteDimensional_piece b`. Establish `e1` using `Submodule.finrank_sup_add_finrank_inf_eq A (P.map ψ)`. Establish `k1` using `LinearMap.finrank_range_add_finrank_ker (ψ.domRestrict P)`. Establish `k2` using `LinearMap.finrank_range_add_finrank_ker (ψ.domRestrict Q)`. Rewrite `k1`, `k2` using `[LinearMap.range_domRestrict]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hker : ∀ R : Submodule F (MRing ι F), Module.finrank F ↥(LinearMap.ker (ψ.domRestrict R)) = Module.finrank F ↥(R ⊓ LinearMap.ker ψ)`. Introduce `R`. Rewrite using `[LinearMap.ker_domRestrict, ← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype]`. Establish `hPQ : P ⊓ LinearMap.ker ψ = Q ⊓ LinearMap.ker ψ`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs`. Take `⟨hs1, hs2⟩` from `Submodule.mem_inf.mp hs`. Use `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨hs1, ?_⟩, hs2⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, ← hq, ← hψ, LinearMap.mem_ker.mp hs2]`. Conclude with `N.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `inf_le_inf_right _ inf_le_left`. Rewrite `k1` using `[hker, hPQ]`. Rewrite `k2` using `[hker]`. Establish `hq'` using `GradedPieceQuot.proof F K ι q b`. Establish `hhilb : hilbFn q (m - c) = (Module.finrank F ↥(gradedPiece q b) : ℤ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Unfold `hilbFn`. Rewrite using `[if_pos hb]`. Rewrite `*` using `[hsup, hinf]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `key : (Module.finrank F ↥(A ⊔ P.map ψ) : ℤ) = Module.finrank F A + (Module.finrank F P - Module.finrank F Q)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `k1' : Module.finrank F ↥(P.map ψ) + Module.finrank F ↥(Q ⊓ LinearMap.ker ψ) = Module.finrank F P` using `k1`. Establish `k2' : Module.finrank F ↥(Q.map ψ) + Module.finrank F ↥(Q ⊓ LinearMap.ker ψ) = Module.finrank F Q` using `k2`. Establish `e1' : Module.finrank F ↥(A ⊔ P.map ψ) + Module.finrank F ↥(Q.map ψ) = Module.finrank F A + Module.finrank F ↥(P.map ψ)` using `e1`. Use `clear k1 k2 e1 hq' hhilb`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[hhilb, hq', key]`. Establish `hsup : N'.restrictScalars F ⊓ piece m = A`. Use `le_antisymm (fun y hy => ?_) hAB` and prove the remaining obligations. Take `⟨n, hn, s, rfl⟩` from `hdec y hy`. Rewrite using `[comp_smul hM hx, Finset.filter_false_of_mem, Finset.sum_empty, zero_smul, add_zero]`.
-
-Conclude with `hn`. Introduce `d _ h`. Use `hb fun k => ?_` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `Int.natCast_nonneg _`.
-
-Establish `hhilb : hilbFn q (m - c) = 0`. Unfold `hilbFn`. Rewrite using `[if_neg hb]`. Rewrite using `[hsup, hhilb, add_zero]`. Conclude with `⟨inferInstance, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem step [∀ k, Fintype (ι k)] (hM : IsMultigrading ι M piece) [DirectSum.Decomposition piece]
     {N N' : Submodule (MRing ι F) M} {x : M} {c : K → ℤ} {q : Ideal (MRing ι F)}
@@ -324,27 +316,27 @@ theorem step [∀ k, Fintype (ι k)] (hM : IsMultigrading ι M piece) [DirectSum
 end FiltrationHilbSum
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ M _ _ _ _ piece hM n N x c q h0 hlast hstep m`. Use `letI : DirectSum.Decomposition piece := hM.internal.chooseDecomposition`. Establish `hgr : ∀ (i : ℕ) (hi : i < n + 1), ∀ y ∈ N ⟨i, hi⟩, ∀ m', FiltrationHilbSum.comp (piece` using `piece) m' y ∈ N ⟨i, hi⟩ := by`. Introduce `i`. Proceed by induction on `i with`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `hi y hy m'`. Establish `hN0 : N ⟨0, hi⟩ = ⊥` using `h0`. Rewrite `hy`, the goal using `[hN0, Submodule.mem_bot]`. Rewrite using `[hy, map_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ i ih`. Introduce `hi`. Establish `hi' : i < n` using `by omega`. Take `⟨hx, hN', -⟩` from `hstep ⟨i, hi'⟩`. Establish `e1 : (⟨i, hi'⟩ : Fin n).succ = ⟨i + 1, hi⟩` using `rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : (⟨i, hi'⟩ : Fin n).castSucc = ⟨i, by omega⟩` using `rfl`. Rewrite `hN'` using `[e1, e2]`. Rewrite using `[hN']`. Conclude with `FiltrationHilbSum.comp_mem_sup (ih _) (fun y hy m' => FiltrationHilbSum.comp_mem_span hM hx hy m')`. Establish `hcount : ∀ (i : ℕ) (hi : i < n + 1), FiniteDimensional F ↥((N ⟨i, hi⟩).restrictScalars F ⊓ piece m) ∧ (Module.finrank F ↥((N ⟨i, hi⟩).restrictScalars F ⊓ piece m) : ℤ) = ∑ j ∈ Finset.univ.filter (fun j : Fin n => j.val < i), hilbFn (q j) (m - c j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `hi`. Establish `hN0 : N ⟨0, hi⟩ = ⊥` using `h0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN0, Submodule.restrictScalars_bot, bot_inf_eq]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_bot, Finset.filter_false_of_mem (fun j _ => Nat.not_lt_zero _), Finset.sum_empty]`. Both sides reduce to the same expression. Consider the case `succ i ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hi`. Establish `hi' : i < n` using `by omega`. Take `⟨hfd, hr⟩` from `ih (by omega)`. Take `⟨hx, hN', hq⟩` from `hstep ⟨i, hi'⟩`. Establish `e1 : (⟨i, hi'⟩ : Fin n).succ = ⟨i + 1, hi⟩` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (⟨i, hi'⟩ : Fin n).castSucc = ⟨i, by omega⟩` using `rfl`. Rewrite `hN'` using `[e1, e2]`. Rewrite `hq` using `[e2]`. Take `⟨h1, h2⟩` from `FiltrationHilbSum.step hM hx hN' hq (hgr i (by omega)) m`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hr]`. Establish `hset : Finset.univ.filter (fun j : Fin n => j.val < i + 1) = insert ⟨i, hi'⟩ (Finset.univ.filter (fun j : Fin n => j.val < i))`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset, Finset.sum_insert (by simp)]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨-, h⟩` from `hcount n (by omega)`. Establish `hN : N ⟨n, by omega⟩ = ⊤` using `hlast`. Rewrite `h` using `[hN, Submodule.restrictScalars_top, top_inf_eq]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Finset.filter_true_of_mem (fun j _ => j.isLt)]`.
+A detailed English derivation is pending.
 -/
 theorem FiltrationHilbSum.proof : FiltrationHilbSum.Statement.{u, v} := by
   intro F _ K _ _ ι _ M _ _ _ _ piece hM n N x c q h0 hlast hstep m

@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Establish `h2 : 2 ^ e.factorization l ≤ e` using `le_trans (Nat.pow_le_pow_left hl.two_le _) (Nat.ordProj_le l he)`. Rewrite using `[← Real.log_pow]`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Conclude with `h2.trans het.le` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem fact_le_log {l e t : ℕ} (hl : l.Prime) (he : e ≠ 0) (het : e < t) :
     (e.factorization l : ℝ) * Real.log 2 ≤ Real.log t := by
@@ -16,15 +16,13 @@ private theorem fact_le_log {l e t : ℕ} (hl : l.Prime) (he : e ≠ 0) (het : e
   exact_mod_cast h2.trans het.le
 
 /- English proof (translation)
-Establish `hlog2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Use `⟨((max (N.factorization l) (if l = 2 then 2 else 1) : ℕ) + 1 : ℝ) / Real.log 2, div_nonneg (by positivity) hlog2.le, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Use `set M : ℕ := max (N.factorization l) (if l = 2 then 2 else 1) with hM`. Establish `hlogt : Real.log 2 ≤ Real.log t` using `Real.log_le_log (by norm_num) (by exact_mod_cast ht)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ e ∈ Finset.Ico 1 t, (LDataCardLeFinrank.nuBound l N e : ℝ) ≤ ((M : ℝ) + 1) / Real.log 2 * Real.log t`. Introduce `e he`. Rewrite `he` using `[Finset.mem_Ico]`. Establish `hv` using `fact_le_log hl (by omega) he.2`. Establish `hnbN : LDataCardLeFinrank.nuBound l N e ≤ M + e.factorization l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `LDataCardLeFinrank.nuBound`. Rewrite using `[hM]`. Apply the tactic sequence `split_ifs <;> first | exact le_refl _ | exact Nat.zero_le _`. Establish `hnb : (LDataCardLeFinrank.nuBound l N e : ℝ) ≤ (M : ℝ) + e.factorization l`. Conclude with `hnbN` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hlog2]`. Combine the equalities or inequalities in the displayed calculation. Establish `hC : 0 ≤ ((M : ℝ) + 1) / Real.log 2 * Real.log t` using `mul_nonneg (div_nonneg (by positivity) hlog2.le) (hlog2.le.trans hlogt)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Nat.card_Ico, nsmul_eq_mul]`.
-
-Use `_ ≤ (t : ℝ) * (((M : ℝ) + 1) / Real.log 2 * Real.log t) := mul_le_mul_of_nonneg_right (by exact_mod_cast Nat.sub_le t 1) hC`. Use `_ = ((M : ℝ) + 1) / Real.log 2 * (t * Real.log t) := by ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nu_sum (l N : ℕ) (hl : l.Prime) : ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℕ, 2 ≤ t →
     ∑ e ∈ Finset.Ico 1 t, (LDataCardLeFinrank.nuBound l N e : ℝ) ≤ C * (t * Real.log t) := by
@@ -65,17 +63,15 @@ private theorem nu_sum (l N : ℕ) (hl : l.Prime) : ∃ C : ℝ, 0 ≤ C ∧ ∀
     _ = ((M : ℝ) + 1) / Real.log 2 * (t * Real.log t) := by ring
 
 /- English proof (translation)
-Use `⟨nu_sum, ?_⟩` and prove the remaining obligations. Introduce `l _ O _ _ _ _ _ f a b t B B' h hB hB'`. Take `⟨-, -, -, -, -, hne0, hle, -, -⟩` from `dvrFacts l O`. Establish `hfin : eO l O ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) hle`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hfin`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn0 : (n : ℝ) ≠ 0`. Establish `: n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne0 (by rw [← hn]; rfl)`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `SumLe.mono l (g := fun e => a e * eO l O + (b e : ℕ∞) * eO l O)` to reduce the goal to its premises. Use `⟨fun e h0 ht => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp (h e h0 ht).1 show a e * eO l O + (b e : ℕ∞) * eO l O ≠ ⊤`. Rewrite using `[← hm, ← hn]`. Conclude with `ENat.coe_ne_top (m * n + b e * n)` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `e he`. Rewrite `he` using `[Finset.mem_Ico]`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp (h e (by omega) he.2).1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `nrm`. Rewrite using `[← hm, ← hn]`. Rewrite using `[show (m : ℕ∞) * (n : ℕ∞) + ((b e : ℕ) : ℕ∞) * (n : ℕ∞) = ((m * n + b e * n : ℕ) : ℕ∞) by push_cast; rfl]`. Rewrite using `[ENat.toNat_coe, ENat.toNat_coe, ENat.toNat_coe]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Use `_ = ∑ e ∈ Finset.Ico 1 t, ((a e).toNat : ℝ) + ∑ e ∈ Finset.Ico 1 t, (b e : ℝ) := Finset.sum_add_distrib`. Use `_ ≤ B + B' := add_le_add hB hB'`. Introduce `e h0 ht`. Conclude with `(h e h0 ht).2`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.nuSum :
     (∀ l N : ℕ, l.Prime → ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℕ, 2 ≤ t → ∑ e ∈ Finset.Ico 1 t, (LDataCardLeFinrank.nuBound l N e : ℝ) ≤ C * (t * Real.log t)) ∧

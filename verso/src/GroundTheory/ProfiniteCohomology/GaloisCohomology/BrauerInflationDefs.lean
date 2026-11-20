@@ -47,7 +47,7 @@ noncomputable def galRestrictOfLE : Gal(F/K) →* Gal(E/K) :=
   AlgEquiv.restrictNormalHom E
 
 /- English proof (translation)
-Set `: Algebra E F` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Establish `: IsScalarTower K E F` using `IsScalarTower.of_algebraMap_eq' rfl`. Conclude with `congrArg (fun y : F => (y : L)) (AlgEquiv.restrictNormal_commutes σ E x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coe_galRestrictOfLE_apply (σ : Gal(F/K)) (x : E) :
     ((galRestrictOfLE h σ x : E) : L) = ((σ (IntermediateField.inclusion h x) : F) : L) := by

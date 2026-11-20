@@ -10,9 +10,9 @@ namespace PI.KoszulExact
 variable {R : Type u} [CommRing R] {D : ℕ}
 
 /- English proof (translation)
-Rewrite `hx` using `[Li_eq_map]`. Use `contract_pow_eq_zero _ _ ?_ p x hx` and prove the remaining obligations. Introduce `m hm`. Establish `hle : Submodule.span R ((fun k : Fin D => (Pi.single k (1 : R) : Fin D → R)) '' {k : Fin D | (k : ℕ) < i}) ≤ LinearMap.ker (LinearMap.proj i : (Fin D → R) →ₗ[R] R)`. Rewrite using `[Submodule.span_le]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `hne : i ≠ k` using `fun h => by subst h; exact lt_irrefl (i : ℕ) hk`. Simplify using `[hne]`. Conclude with `hle hm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_kills_Li_pow (i : Fin D) (p : ℕ) (x : ExteriorAlgebra R (Fin D → R))
     (hx : x ∈ Li R D i ^ p) :
@@ -29,9 +29,9 @@ theorem proj_kills_Li_pow (i : Fin D) (p : ℕ) (x : ExteriorAlgebra R (Fin D �
   exact hle hm
 
 /- English proof (translation)
-Establish `h1` using `congrArg (CliffordAlgebra.contractLeft (LinearMap.proj i : (Fin D → R) →ₗ[R] R)) h`. Rewrite `h1` using `[map_add, map_zero, proj_kills_Li_pow i p u hu, zero_add, eb, CliffordAlgebra.contractLeft_ι_mul, ← eb, proj_kills_Li_pow i q v hv, mul_zero, sub_zero]`. Simplify using `only [LinearMap.coe_proj, Function.eval, Pi.single_eq_same, one_smul] at h1`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[h1, mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem uniq (i : Fin D) (p q : ℕ) (u v : ExteriorAlgebra R (Fin D → R))
     (hu : u ∈ Li R D i ^ p) (hv : v ∈ Li R D i ^ q) (h : u + eb R i * v = 0) : v = 0 ∧ u = 0 := by

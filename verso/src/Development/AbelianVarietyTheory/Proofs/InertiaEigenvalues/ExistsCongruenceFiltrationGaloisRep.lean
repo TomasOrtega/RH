@@ -8,9 +8,9 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < x` using `lt_of_le_of_ne hx0 (Ne.symm hne)`. Establish `hinv : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl1`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hpos hinv`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (l : ℝ) ^ (-((k : ℤ) + 2)) ≤ (l : ℝ) ^ (-(k : ℤ))` using `zpow_le_zpow_right₀ hl1.le (by omega)`. Establish `h2 : (l : ℝ) ^ (-(k : ℤ)) = ((l : ℝ)⁻¹) ^ k`. Rewrite using `[zpow_neg, zpow_natCast, inv_pow]`. Combine the linear relations using `[h k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem congrFilt_le_all_eq_zero (l : ℕ) [hl : Fact l.Prime] (x : ℝ) (hx0 : 0 ≤ x)
     (h : ∀ k : ℕ, x ≤ (l : ℝ) ^ (-((k : ℤ) + 2))) : x = 0 := by
@@ -26,21 +26,21 @@ theorem congrFilt_le_all_eq_zero (l : ℕ) [hl : Fact l.Prime] (x : ℝ) (hx0 : 
   linarith [h k]
 
 /- English proof (translation)
-Introduce `l _ n _ _ K ρ hcont`. Take `⟨Γ, hΓ⟩` from `GlobalTheory.T.exists_congruenceSubgroups_GL_padic l n`. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt.le`. Establish `hmem : ∀ k g, g ∈ (Γ k).comap ρ ↔ ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ (l : ℝ) ^ (-((k : ℤ) + 2))`. Introduce `k g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.mem_comap, hΓ]`. Use `⟨fun k => (Γ k).comap ρ, hmem, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab g hg`. Rewrite `hg`, the goal using `[hmem]`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hab' : (a : ℤ) ≤ b` using `by exact_mod_cast hab`. Conclude with `le_trans (hg i j) (zpow_le_zpow_right₀ hl1 (by omega))`. Introduce `k`. Establish `hset : (((Γ k).comap ρ : Subgroup ↥(GK K)) : Set ↥(GK K)) = ⋂ i, ⋂ j, (fun g => ((ρ g : Matrix n n ℚ_[l]) - 1) i j) ⁻¹' Metric.closedBall (0 : ℚ_[l]) ((l : ℝ) ^ (-((k : ℤ) + 2)))`. Use extensionality with `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, hmem, Set.mem_iInter, Set.mem_preimage, mem_closedBall_zero_iff]`. Rewrite using `[hset]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g => ((ρ g : Matrix n n ℚ_[l]) - 1) i j`. Simplify using `only [Matrix.sub_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hcont i j).sub continuous_const`. Conclude with `(IsUltrametricDist.isOpen_closedBall (0 : ℚ_[l]) (zpow_pos (by linarith) _).ne').preimage hc`. Introduce `k g hg`. Rewrite `hg`, the goal using `[hmem]`. Use `GlobalTheory.T.norm_pow_prime_sub_one_le_of_norm_sub_one_le l n (ρ g : Matrix n n ℚ_[l]) k hg` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify `this` using `[map_pow, Units.val_pow_eq_pow_val]`. Introduce `k g h0 hk`. Rewrite `h0`, `hk`, the goal using `[hmem]`. Establish `h0' : ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ (l : ℝ) ^ (-2 : ℤ)`. Simplify using `using h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk' : ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) ^ l - 1) i j‖ ≤ (l : ℝ) ^ (-(((k + 1 : ℕ) : ℤ) + 2))`. Simplify `hk` using `[map_pow, Units.val_pow_eq_pow_val]`. Conclude with `GlobalTheory.T.norm_sub_one_le_of_norm_pow_prime_sub_one_le l n _ k h0' hk'`. Introduce `g hg`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `i j`. Establish `hz : ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ = 0` using `congrFilt_le_all_eq_zero l _ (norm_nonneg _) fun k => (hmem k g).1 (hg k) i j`. Rewrite `hz` using `[norm_eq_zero, Matrix.sub_apply, sub_eq_zero]`. Simplify using `using hz`.
+A detailed English derivation is pending.
 -/
 theorem congrFiltration : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (ρ : ↥(GK K) →* GL n ℚ_[l]), (∀ i j, Continuous fun g => (ρ g : Matrix n n ℚ_[l]) i j) → ∃ N : ℕ → Subgroup ↥(GK K), (∀ k g, g ∈ N k ↔ ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ (l : ℝ) ^ (-((k : ℤ) + 2))) ∧ Antitone N ∧ (∀ k, IsOpen (N k : Set ↥(GK K))) ∧ (∀ k g, g ∈ N k → g ^ l ∈ N (k + 1)) ∧ (∀ k g, g ∈ N 0 → g ^ l ∈ N (k + 1) → g ∈ N k) ∧ ∀ g, (∀ k, g ∈ N k) → ρ g = 1 := by
   intro l _ n _ _ K ρ hcont

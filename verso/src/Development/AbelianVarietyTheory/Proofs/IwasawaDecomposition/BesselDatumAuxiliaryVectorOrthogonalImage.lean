@@ -46,20 +46,20 @@ def ExGe (d : BesselDatum A B ι) (ε : AE D) (p : ℕ) : Subgroup (GA D B) :=
   Subgroup.closure (⋃ l : Fin (d.ρ + 1), ⋃ _ : p ≤ l.1, d.ExSet ε l)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [rTr, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rTr_rTr (u g : GA D B) (F : GA D B → ℂ) : rTr B u (rTr B g F) = rTr B (u * g) F := by
   funext x; simp only [rTr, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [rTr, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rTr_one (F : GA D B → ℂ) : rTr B 1 F = F := by funext x; simp only [rTr, mul_one]
 
 /- English proof (translation)
-Unfold `BesselDatum.toPos toPosF`. Proceed by induction on `(List.finRange (d.ρ + 1)).filter fun i => decide (p ≤ i.1) with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Use function extensionality and compare the values at `g`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [List.foldr_cons, BesselDatum.exch, exF, ← ih, rTr_rTr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toPos_rTr (d : BesselDatum A B ι) (ε : AE D) (m : ∀ i, Measure (d.Ex ε i)) (p : ℕ)
     (b : (GA D B → ℂ) → ℂ) (F : GA D B → ℂ) :
@@ -72,7 +72,7 @@ theorem toPos_rTr (d : BesselDatum A B ι) (ε : AE D) (m : ∀ i, Measure (d.Ex
     simp only [List.foldr_cons, BesselDatum.exch, exF, ← ih, rTr_rTr]
 
 /- English proof (translation)
-Unfold `PosDatum.move moveF`. Proceed by induction on `List.finRange P.n with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.foldr_cons, ← ih, toPos_rTr]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem move_rTr (P : PosDatum A B ι) (b : (GA D B → ℂ) → ℂ) (F : GA D B → ℂ) :
     (fun g => P.move b (rTr B g F)) = moveF P fun g => b (rTr B g F) := by
@@ -82,47 +82,47 @@ theorem move_rTr (P : PosDatum A B ι) (b : (GA D B → ℂ) → ℂ) (F : GA D 
   | cons i l ih => simp only [List.foldr_cons, ← ih, toPos_rTr]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.DualPairCheck.cA_cA a`.
+A detailed English derivation is pending.
 -/
 theorem cA_cA (a : AE D) : cA D (cA D a) = a := GlobalTheory.DualPairCheck.cA_cA a
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem mt_inj {g h : GA D B} (e : mt B g = mt B h) : g = h := Subtype.ext (Units.ext e)
 
 /- English proof (translation)
-The claim follows from `mt_inj (Matrix.mulVec_injective (funext e))`.
+A detailed English derivation is pending.
 -/
 theorem mt_ext {g h : GA D B} (e : ∀ x, (mt B g).mulVec x = (mt B h).mulVec x) : g = h :=
   mt_inj (Matrix.mulVec_injective (funext e))
 
 /- English proof (translation)
-Rewrite using `[mt_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_mul (g h : GA D B) (x) : (mt B (g * h)).mulVec x = (mt B g).mulVec ((mt B h).mulVec x) := by
   rw [mt_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← mulVec_mul, inv_mul_cancel, mt_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_inv_cancel (g : GA D B) (x) : (mt B g⁻¹).mulVec ((mt B g).mulVec x) = x := by
   rw [← mulVec_mul, inv_mul_cancel, mt_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← mulVec_mul, mul_inv_cancel, mt_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_cancel_inv (g : GA D B) (x) : (mt B g).mulVec ((mt B g⁻¹).mulVec x) = x := by
   rw [← mulVec_mul, mul_inv_cancel, mt_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Simplify using `only [hA, dotProduct, Matrix.mulVec, Matrix.map_apply, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_eq (x y : Fin B.rank → AE D) : hA B x y = (fun i => cA D (y i)) ⬝ᵥ (B.gram.map (incA D)).mulVec x := by
   simp only [hA, dotProduct, Matrix.mulVec, Matrix.map_apply, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [hA, map_sum, RingHom.map_mul, cA_inc, cA_cA, GlobalTheory.LatVac.gram_star]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hA_herm (x y : Fin B.rank → AE D) : cA D (hA B x y) = hA B y x := by
   simp only [hA, map_sum, RingHom.map_mul, cA_inc, cA_cA, GlobalTheory.LatVac.gram_star]
@@ -130,47 +130,47 @@ theorem hA_herm (x y : Fin B.rank → AE D) : cA D (hA B x y) = hA B y x := by
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hA, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_add_right (x y y' : Fin B.rank → AE D) : hA B x (y + y') = hA B x y + hA B x y' := by
   simp only [hA, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hA, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_neg (x y : Fin B.rank → AE D) : hA B (-x) y = -hA B x y := by
   simp only [hA, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `only [hA, Pi.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_neg_right (x y : Fin B.rank → AE D) : hA B x (-y) = -hA B x y := by
   simp only [hA, Pi.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, hA_add, hA_neg, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_sub (x x' y : Fin B.rank → AE D) : hA B (x - x') y = hA B x y - hA B x' y := by
   rw [sub_eq_add_neg, hA_add, hA_neg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, hA_add_right, hA_neg_right, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_sub_right (x y y' : Fin B.rank → AE D) : hA B x (y - y') = hA B x y - hA B x y' := by
   rw [sub_eq_add_neg, hA_add_right, hA_neg_right, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `[hA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_zero (y : Fin B.rank → AE D) : hA B 0 y = 0 := by simp [hA]
 
 /- English proof (translation)
-Simplify using `[hA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_zero_right (x : Fin B.rank → AE D) : hA B x 0 = 0 := by simp [hA]
 
 /- English proof (translation)
-Establish `hg : ((mt B g).map (cA D))ᵀ * B.gram.map (incA D) * mt B g = B.gram.map (incA D)` using `g.2`. Establish `e : (fun i => cA D ((mt B g).mulVec y i)) = ((mt B g).map (cA D)).mulVec fun i => cA D (y i)`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (cA D) _ y i`. Rewrite using `[hA_eq, hA_eq, e, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_mt (g : GA D B) (x y : Fin B.rank → AE D) :
     hA B ((mt B g).mulVec x) ((mt B g).mulVec y) = hA B x y := by
@@ -181,16 +181,16 @@ theorem hA_mt (g : GA D B) (x y : Fin B.rank → AE D) :
     Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Rewrite using `[← hA_mt g x, mulVec_cancel_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_mt_left (g : GA D B) (x y : Fin B.rank → AE D) :
     hA B ((mt B g).mulVec x) y = hA B x ((mt B g⁻¹).mulVec y) := by
   rw [← hA_mt g x, mulVec_cancel_inv]
 
 /- English proof (translation)
-Establish `hu : IsUnit (B.gram.map (incA D))` using `(GlobalTheory.BesselCompare.gram_isUnit B).map (incA D).mapMatrix`. Use `Matrix.mulVec_injective_of_isUnit hu ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_zero]`. Use function extensionality and compare the values at `i`. Use `h (Pi.single i 1)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[hA_eq, show (fun j => cA D ((Pi.single i 1 : Fin B.rank → AE D) j)) = Pi.single i 1 from`. Apply the tactic sequence `funext fun j => by by_cases e : j = i <;> simp [e], single_one_dotProduct] at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hA_nondeg {x : Fin B.rank → AE D} (h : ∀ y, hA B x y = 0) : x = 0 := by
   have hu : IsUnit (B.gram.map (incA D)) := (GlobalTheory.BesselCompare.gram_isUnit B).map (incA D).mapMatrix
@@ -203,13 +203,13 @@ theorem hA_nondeg {x : Fin B.rank → AE D} (h : ∀ y, hA B x y = 0) : x = 0 :=
   exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Matrix.ext h, fun h i j => congrFun (congrFun h i) j⟩`.
+Supply the required witnesses or components.
 -/
 theorem suppAt_iff {ε : AE D} {g : GA D B} : SuppAt ε B g ↔ (ε + cA D ε) • (mt B g - 1) = mt B g - 1 :=
   ⟨fun h => Matrix.ext h, fun h i j => congrFun (congrFun h i) j⟩
 
 /- English proof (translation)
-Rewrite using `[suppAt_iff]`. Use `⟨fun h x => ?_, fun h => Matrix.mulVec_injective (funext fun x => ?_)⟩` and prove the remaining obligations. Simplify `congrArg (· *ᵥ x) h` using `only [Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`. Simplify `h x` using `only [Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem suppAt_iff_vec {ε : AE D} {g : GA D B} :
     SuppAt ε B g ↔ ∀ x, (ε + cA D ε) • ((mt B g).mulVec x - x) = (mt B g).mulVec x - x := by
@@ -219,13 +219,13 @@ theorem suppAt_iff_vec {ε : AE D} {g : GA D B} :
   · simpa only [Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec] using h x
 
 /- English proof (translation)
-Rewrite using `[suppAt_iff, mt_one, sub_self, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem suppAt_one (ε : AE D) : SuppAt ε B 1 := by
   rw [suppAt_iff, mt_one, sub_self, smul_zero]
 
 /- English proof (translation)
-Establish `e : mt B (g * h) - 1 = (mt B g - 1) * mt B h + (mt B h - 1)`. Rewrite using `[mt_mul, Matrix.sub_mul, Matrix.one_mul, sub_add_sub_cancel]`. Rewrite using `[suppAt_iff, e, smul_add, ← Matrix.smul_mul, suppAt_iff.1 hg, suppAt_iff.1 hh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppAt_mul {ε : AE D} {g h : GA D B} (hg : SuppAt ε B g) (hh : SuppAt ε B h) : SuppAt ε B (g * h) := by
   have e : mt B (g * h) - 1 = (mt B g - 1) * mt B h + (mt B h - 1) := by
@@ -233,7 +233,7 @@ theorem suppAt_mul {ε : AE D} {g h : GA D B} (hg : SuppAt ε B g) (hh : SuppAt 
   rw [suppAt_iff, e, smul_add, ← Matrix.smul_mul, suppAt_iff.1 hg, suppAt_iff.1 hh]
 
 /- English proof (translation)
-Establish `h` using `suppAt_iff.1 hg`. Establish `h1 : mt B g⁻¹ - 1 = (mt B g - 1) * (-mt B g⁻¹)`. Rewrite using `[Matrix.mul_neg, Matrix.sub_mul, ← mt_mul, mul_inv_cancel, mt_one, Matrix.one_mul, neg_sub]`. Rewrite using `[suppAt_iff, h1, ← Matrix.smul_mul, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppAt_inv {ε : AE D} {g : GA D B} (hg : SuppAt ε B g) : SuppAt ε B g⁻¹ := by
   have h := suppAt_iff.1 hg
@@ -248,13 +248,13 @@ def suppGrp (ε : AE D) (B : HSp D) : Subgroup (GA D B) where
   inv_mem' := suppAt_inv
 
 /- English proof (translation)
-The claim follows from `(Subgroup.closure_le (suppGrp ε B)).2 (fun _ h => h.1) hg`.
+A detailed English derivation is pending.
 -/
 theorem suppAt_of_mem_Ex {d : BesselDatum A B ι} {ε : AE D} {i} {g : GA D B} (hg : g ∈ d.Ex ε i) : SuppAt ε B g :=
   (Subgroup.closure_le (suppGrp ε B)).2 (fun _ h => h.1) hg
 
 /- English proof (translation)
-The claim follows from `(Subgroup.closure_le (suppGrp ε B)).2 (Set.iUnion_subset fun _ => Set.iUnion_subset fun _ _ h => h.1) hg`.
+A detailed English derivation is pending.
 -/
 theorem suppAt_of_mem_ExGe {d : BesselDatum A B ι} {ε : AE D} {p} {g : GA D B} (hg : g ∈ ExGe d ε p) :
     SuppAt ε B g :=
@@ -262,16 +262,16 @@ theorem suppAt_of_mem_ExGe {d : BesselDatum A B ι} {ε : AE D} {p} {g : GA D B}
     (Set.iUnion_subset fun _ => Set.iUnion_subset fun _ _ h => h.1) hg
 
 /- English proof (translation)
-The claim follows from `Subgroup.closure_mono fun _ hg => Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨h, hg⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem Ex_le_ExGe (d : BesselDatum A B ι) (ε : AE D) {p : ℕ} {i : Fin (d.ρ + 1)} (h : p ≤ i.1) :
     d.Ex ε i ≤ ExGe d ε p :=
   Subgroup.closure_mono fun _ hg => Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨h, hg⟩⟩
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h : infPart D ((mt B g - 1) i j) = 0`. Rewrite using `[← hg i j, RingHom.map_mul, RingHom.map_add, GlobalTheory.SplitScalar.infPart_splitIdem he, GlobalTheory.SplitScalar.infPart_splitIdem (GlobalTheory.SplitScalar.isSplitIdem_conj he), add_zero, zero_mul]`. Rewrite `h` using `[Matrix.sub_apply, RingHom.map_sub, sub_eq_zero]`. Use `show infPart D (mt B g i j) = (1 : Matrix _ _ _) i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[RingHom.map_one]`. Rewrite using `[RingHom.map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GfC {e : AE D} (he : IsSplitIdem D e) {g : GA D B} (hg : SuppAt e B g) : g ∈ GfC B := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -286,9 +286,9 @@ theorem mem_GfC {e : AE D} (he : IsSplitIdem D e) {g : GA D B} (hg : SuppAt e B 
   · rw [RingHom.map_zero]
 
 /- English proof (translation)
-Establish `h1 : (mt B g - 1) * (mt B g' - 1) = 0`. Rewrite using `[← suppAt_iff.1 hg, ← suppAt_iff.1 hg', Matrix.smul_mul, Matrix.mul_smul, smul_smul, h, zero_smul]`. Establish `h2 : (mt B g' - 1) * (mt B g - 1) = 0`. Rewrite using `[← suppAt_iff.1 hg, ← suppAt_iff.1 hg', Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_comm, h, zero_smul]`. Use `mt_inj ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mt_mul, mt_mul]`. Establish `: mt B g * mt B g' - mt B g' * mt B g = (mt B g - 1) * (mt B g' - 1) - (mt B g' - 1) * (mt B g - 1)` using `by noncomm_ring`. Rewrite `this` using `[h1, h2, sub_zero, sub_eq_zero]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_of_apart {ε ε' : AE D} (h : (ε + cA D ε) * (ε' + cA D ε') = 0) {g g' : GA D B}
     (hg : SuppAt ε B g) (hg' : SuppAt ε' B g') : g * g' = g' * g := by
@@ -304,11 +304,11 @@ theorem commute_of_apart {ε ε' : AE D} (h : (ε + cA D ε) * (ε' + cA D ε') 
   exact this
 
 /- English proof (translation)
-Establish `e : ∀ s, iA ι s = ∑ l, s l • vecA B (ι (A.frame l))` using `fun s => by`. Rewrite using `[iA, GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.eMat_mulVec]`. Establish `e2 : ∀ l, hA B (vecA B (ι (A.frame l))) (iA ι t) = ∑ k, cA D (t k) * incA D (A.gram k l)` using `fun l => by`. Rewrite using `[← hA_herm, e, GlobalTheory.BesselCompare.hA_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hA_smul, RingHom.map_mul, hA_herm, hA_vec]`. Use `congr 2`. Conclude with `hι _ _`. Rewrite using `[e s, GlobalTheory.BesselCompare.hA_sum]`. Simplify using `only [hA_smul, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hA_iA (hι : HSpace.IsIsomEmb A B ι) (s t : Fin A.rank → AE D) : hA B (iA ι s) (iA ι t) = hA A s t := by
   have e : ∀ s, iA ι s = ∑ l, s l • vecA B (ι (A.frame l)) := fun s => by
@@ -327,7 +327,7 @@ theorem hA_iA (hι : HSpace.IsIsomEmb A B ι) (s t : Fin A.rank → AE D) : hA B
   exact Finset.sum_congr rfl fun l _ => by ring
 
 /- English proof (translation)
-Rewrite using `[← hA_herm, iA, GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.eMat_mulVec, GlobalTheory.BesselCompare.hA_sum, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hA_smul, RingHom.map_mul, hA_herm, hA_vec, h, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_vec_iA {v : B.V} (h : ∀ x, B.hD v (ι x) = 0) (t : Fin A.rank → AE D) : hA B (vecA B v) (iA ι t) = 0 := by
   rw [← hA_herm, iA, GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.eMat_mulVec, GlobalTheory.BesselCompare.hA_sum, map_sum]
@@ -335,24 +335,22 @@ theorem hA_vec_iA {v : B.V} (h : ∀ x, B.hD v (ι x) = 0) (t : Fin A.rank → A
   rw [hA_smul, RingHom.map_mul, hA_herm, hA_vec, h, map_zero, mul_zero]
 
 /- English proof (translation)
-The claim follows from `Matrix.mulVec_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem iA_smul (a : AE D) (t : Fin A.rank → AE D) : iA ι (a • t) = a • iA ι t := Matrix.mulVec_smul _ _ _
 
 /- English proof (translation)
-The claim follows from `Matrix.mulVec_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem iA_add (s t : Fin A.rank → AE D) : iA ι (s + t) = iA ι s + iA ι t := Matrix.mulVec_add _ _ _
 
 /- English proof (translation)
-The claim follows from `Matrix.mulVec_neg _ _`.
+A detailed English derivation is pending.
 -/
 theorem iA_neg (t : Fin A.rank → AE D) : iA ι (-t) = -iA ι t := Matrix.mulVec_neg _ _
 
 /- English proof (translation)
-Unfold `BesselDatum.aux`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Conclude with `d.zA x`. Rewrite using `[Fin.snoc_castSucc]`.
-
-Conclude with `d.eA j x`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besselDatum_auxiliaryVector_orthogonal_image (d : BesselDatum A B ι) (i) (x : A.V) : B.hD (d.aux i) (ι x) = 0 := by
   unfold BesselDatum.aux
@@ -361,9 +359,9 @@ theorem besselDatum_auxiliaryVector_orthogonal_image (d : BesselDatum A B ι) (i
   · rw [Fin.snoc_castSucc]; exact d.eA j x
 
 /- English proof (translation)
-Unfold `dual`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Use `d.zA x` as an intermediate fact. Unfold `HSpace.hD at this ⊢`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_smul, this, smul_zero]`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `d.fA j x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_perp (d : BesselDatum A B ι) (i) (x : A.V) : B.hD (dual d i) (ι x) = 0 := by
   unfold dual

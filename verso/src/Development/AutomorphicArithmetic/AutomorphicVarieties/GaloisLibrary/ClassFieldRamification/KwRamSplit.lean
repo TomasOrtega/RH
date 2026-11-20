@@ -9,11 +9,11 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Distinguish the cases in `hc : N.Coprime M`. Conclude with `⟨1, N, 0, by simp, by simp, hc⟩`. Take `⟨p, hp, hpN, hpM⟩` from `Nat.Prime.not_coprime_iff_dvd.mp hc`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨N', rfl⟩` from `hpN`. Establish `hN' : 0 < N'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hN)`. Establish `hlt : N' < p * N'` using `by have := hp.two_le; nlinarith`. Take `⟨a, b, n, rfl, ha, hb⟩` from `ih N' hlt hN'`. Use `⟨p * a, b, n + 1, by ring, ?_, hb⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul hpM ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kwRam_split (M N : ℕ) (hN : 0 < N) :
     ∃ a b n : ℕ, N = a * b ∧ a ∣ M ^ n ∧ b.Coprime M := by
@@ -31,23 +31,19 @@ private theorem kwRam_split (M N : ℕ) (hN : 0 < N) :
       exact mul_dvd_mul hpM ha
 
 /- English proof (translation)
-Introduce `L _ _ _ M hM hram`. Take `⟨N, hN, ⟨f⟩⟩` from `kwHom L`. Take `⟨a, b, n, rfl, ha, hb⟩` from `kwRam_split M N hN`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hN`. Establish `hb0 : b ≠ 0` using `by rintro rfl; simp at hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : a.Coprime b` using `Nat.Coprime.coprime_dvd_left ha (hb.pow_right n).symm`. Use `haveI : NeZero (a * b) := ⟨hN.ne'⟩`. Use `haveI : NeZero ((a * b : ℕ) : ℚ) := ⟨by exact_mod_cast hN.ne'⟩`. Use `haveI : IsCyclotomicExtension {a * b} ℚ (CyclotomicField (a * b) ℚ) := by`. Use `CyclotomicField.isCyclotomicExtension (a * b) ℚ` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Conclude with `Subsingleton.elim _ _`. Take `⟨ζ, hζ⟩ : ∃ z : CyclotomicField (a * b) ℚ, IsPrimitiveRoot z (a * b)` from `⟨_, IsCyclotomicExtension.zeta_spec _ ℚ _⟩`. Set `F : IntermediateField ℚ (CyclotomicField (a * b) ℚ)` to `f.fieldRange`. Set `e : L ≃ₐ[ℚ] F` to `AlgEquiv.ofInjectiveField f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hF : ∀ p : ℕ, p.Prime → p ∣ b → UnramAt F p`. Introduce `p hp hpb`. Establish `hpM : ¬ p ∣ M` using `fun h => hp.not_dvd_one (Nat.Coprime.gcd_eq_one hb ▸ Nat.dvd_gcd hpb h)`. Use `letI : Algebra F L := e.symm.toRingHom.toAlgebra`. Conclude with `unramIff.2.2 F L p hp (hram p hp hpM)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hle` using `cycDescend a b (CyclotomicField (a * b) ℚ) ζ F hab hζ hF`. Establish `hζb : IsPrimitiveRoot (ζ ^ b) a`. Establish `h` using `hζ.pow_of_dvd hb0 (dvd_mul_left b a)`. Rewrite `h` using `[Nat.mul_div_cancel a (Nat.pos_of_ne_zero hb0)]`. Then use the resulting hypothesis. Establish `hapos : 0 < a` using `Nat.pos_of_ne_zero ha0`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℚ (ζ ^ b)` using `(hζb.isIntegral hapos).tower_top`. Use `haveI : NeZero (M ^ n) := ⟨pow_ne_zero _ hM.ne'⟩`. Use `haveI : NeZero ((M ^ n : ℕ) : ℚ) := ⟨by exact_mod_cast pow_ne_zero _ hM.ne'⟩`. Use `haveI : IsCyclotomicExtension {M ^ n} ℚ (CyclotomicField (M ^ n) ℚ) := by`. Use `CyclotomicField.isCyclotomicExtension (M ^ n) ℚ` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Conclude with `Subsingleton.elim _ _`. Take `⟨ω, hω⟩ : ∃ z : CyclotomicField (M ^ n) ℚ, IsPrimitiveRoot z (M ^ n)` from `⟨_, IsCyclotomicExtension.zeta_spec _ ℚ _⟩`. Establish `hq0 : M ^ n / a ≠ 0` using `(Nat.div_pos (Nat.le_of_dvd (pow_pos hM n) ha) hapos).ne'`. Establish `hη` using `hω.pow_of_dvd hq0 (Nat.div_dvd_of_dvd ha)`.
-
-Rewrite `hη` using `[Nat.div_div_self ha (pow_ne_zero _ hM.ne')]`. Establish `hmem : ω ^ (M ^ n / a) ∈ (minpoly ℚ (ζ ^ b)).aroots (CyclotomicField (M ^ n) ℚ)`. Rewrite using `[← Polynomial.cyclotomic_eq_minpoly_rat hζb hapos, Polynomial.mem_aroots]`. Use `⟨Polynomial.cyclotomic_ne_zero _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`.
-
-Conclude with `hη.isRoot_cyclotomic hapos`. Set `g` to `(IntermediateField.algHomAdjoinIntegralEquiv ℚ hint).symm ⟨_, hmem⟩`. Conclude with `⟨n, ⟨(g.comp (IntermediateField.inclusion hle)).comp e.toAlgHom⟩⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.kwRam :
     ∀ (L : Type) [Field L] [NumberField L] [IsAbelianGalois ℚ L] (M : ℕ), 0 < M → (∀ p : ℕ, p.Prime → ¬ p ∣ M → UnramAt L p) → ∃ n : ℕ, Nonempty (L →ₐ[ℚ] CyclotomicField (M ^ n) ℚ) := by

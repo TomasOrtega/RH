@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Use `(Ideal.map_mono h.le).lt_of_not_ge fun e => h.not_ge ?_` and prove the remaining obligations. Establish `e'` using `Ideal.comap_mono (f := Ideal.Quotient.mk P) e`. Rewrite `e'` using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.mpr hI, sup_eq_left.mpr (hI.trans h.le)]`. Conclude with `e'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma UpperTheory.Reformulated.B.MinimalPrimesMap.map_lt_map {A : Type} [CommRing A] {P I J : Ideal A}
     (hI : P ≤ I) (h : I < J) :
@@ -15,11 +15,11 @@ private lemma UpperTheory.Reformulated.B.MinimalPrimesMap.map_lt_map {A : Type} 
   exact e'
 
 /- English proof (translation)
-Introduce `A _ _ P Q W hP hQ s hW hPQ hQW`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_or]`. Establish `hW' : W.IsPrime` using `hW.1.1`. Establish `hprime : ∀ I : Ideal A, I.IsPrime → P ≤ I → (I.map (Ideal.Quotient.mk P)).IsPrime` using `fun I hI hle => Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1` using `hprime P hP le_rfl`. Establish `i2` using `hprime Q hQ hPQ`. Establish `i3` using `hprime W hW' (hPQ.trans hQW)`. Establish `h1` using `Ideal.height_add_one_le_of_lt_of_isPrime (UpperTheory.Reformulated.B.MinimalPrimesMap.map_lt_map le_rfl (lt_of_le_of_ne hPQ (Ne.symm hne.1)))`. Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime (UpperTheory.Reformulated.B.MinimalPrimesMap.map_lt_map hPQ (lt_of_le_of_ne hQW hne.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Ideal.map_height_le_one_of_mem_minimalPrimes hW`. Establish `h4 : (1 : ℕ∞) ≤ (Q.map (Ideal.Quotient.mk P)).height` using `le_add_self.trans h1`. Establish `h5 : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add h4 le_rfl).trans (h2.trans h3)`. Conclude with `absurd h5 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.MinimalPrimesMap.eq_or_eq_of_mem_minimalPrimes :
     ∀ {A : Type} [inst : CommRing A] [IsNoetherianRing A]

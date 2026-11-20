@@ -11,7 +11,7 @@ namespace PositivityTheory.Resplug.ResolutionBlowup
 def TopRes : Prop := FunctorialResolution.FunctorialResolutionCharZero.{0}
 
 /- English proof (translation)
-Use `⟨?_, fun W g _ => ⟨g ≫ e.inv, by simp, fun h hh => by rw [← hh]; simp⟩⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.comap_top]`. Introduce `y`. Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := y) (U := ⊤) trivial`. Conclude with `⟨⟨U, hU⟩, 1, hyU, one_mem _, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem blowup_top_of_iso {X Y : Scheme.{0}} (e : Y ≅ X) :
     ReciprocityTheory.AnForm.R.FinalTheorems.Blowup e.hom (⊤ : X.IdealSheafData) := by
@@ -22,14 +22,14 @@ theorem blowup_top_of_iso {X Y : Scheme.{0}} (e : Y ≅ X) :
   exact ⟨⟨U, hU⟩, 1, hyU, one_mem _, by simp⟩
 
 /- English proof (translation)
-Simplify using `[FunctorialResolution.BlowupSequence.structMap, FunctorialResolution.BlowupSequence.down]`.
+Simplify using the standard rewrite rules.
 -/
 theorem structMap_zero {X : Scheme.{0}} (s : FunctorialResolution.BlowupSequence X) :
     s.structMap 0 = s.isoZero.hom := by
   simp [FunctorialResolution.BlowupSequence.structMap, FunctorialResolution.BlowupSequence.down]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by rw [structMap_zero] exact GlobalTheory.CompanionTheory.Hypotheses₂.Resolution.IsBlowupSeq.single ⊤ _ (blowup_top_of_iso _) | i + 1, hi => by have hlt : i < s.length := hi rw [← s.structMap_down (Nat.le_succ i)] exact GlobalTheory.CompanionTheory.Hypotheses₂.Resolutio …`.
+A detailed English derivation is pending.
 -/
 theorem isBlowupSeq_structMap {X : Scheme.{0}} (s : FunctorialResolution.BlowupSequence X) :
     ∀ i, i ≤ s.length → GlobalTheory.CompanionTheory.Hypotheses₂.Resolution.IsBlowupSeq (s.structMap i)
@@ -43,16 +43,16 @@ theorem isBlowupSeq_structMap {X : Scheme.{0}} (s : FunctorialResolution.BlowupS
         (isBlowupSeq_structMap s i hlt.le) (s.isBlowup i hlt)
 
 /- English proof (translation)
-The claim follows from `isBlowupSeq_structMap s s.length le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem isBlowupSeq_topMap {X : Scheme.{0}} (s : FunctorialResolution.BlowupSequence X) :
     GlobalTheory.CompanionTheory.Hypotheses₂.Resolution.IsBlowupSeq s.topMap :=
   isBlowupSeq_structMap s s.length le_rfl
 
 /- English proof (translation)
-Take `⟨R, hR, -, -⟩` from `h`. Introduce `k _ _ X g _ hqc _ hred`. Use `hqc` as an intermediate fact. Use `hred` as an intermediate fact. Take `⟨h1, -, h3, -, -, h6⟩` from `hR k X g`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, (R k X g).topMap, isBlowupSeq_topMap _, h1, h3, h6⟩`.
+Supply the required witnesses or components.
 -/
 theorem resolutionCharZero_of_top (h : TopRes) : GlobalTheory.CompanionTheory.Hypotheses₂.ResolutionCharZero := by
   obtain ⟨R, hR, -, -⟩ := h

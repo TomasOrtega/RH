@@ -17,11 +17,11 @@ open Formalism.L2.Th1.F.TaylorWp
 open Formalism.L2.Th1.F.EndoZ
 
 /- English proof (translation)
-Use `choose φ hφ using hAB`. Use `Finset.sum_bij φ (fun i hi => (hφ i hi).1) ?_ ?_ (fun i hi => hf _ _ (hφ i hi).2)` and prove the remaining obligations. Introduce `i hi i' hi' h`. Apply `hA i hi i' hi'` to reduce the goal to its premises. Establish `h1` using `L.lattice.sub_mem (hφ i hi).2 (hφ i' hi').2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h]`. Establish `e : a i - b (φ i' hi') - (a i' - b (φ i' hi')) = a i - a i'` using `by ring`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Introduce `j hj`. Take `⟨i, hi, h⟩` from `hBA j hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Apply `hB _ (hφ i hi).1 j hj` to reduce the goal to its premises. Establish `h1` using `L.lattice.neg_mem (L.lattice.add_mem h (hφ i hi).2)`. Establish `e : -(b j - a i + (a i - b (φ i hi))) = b (φ i hi) - b j` using `by ring`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sum_reps {ι κ M : Type} [AddCommMonoid M] (L : PeriodPair) (s : Finset ι) (t : Finset κ)
     (a : ι → ℂ) (b : κ → ℂ)
@@ -57,7 +57,7 @@ Expand and normalize the polynomial expressions, which then agree.
 theorem two_mul_half (ω₀ : ℂ) : 2 * (ω₀ / 2) = ω₀ := by ring
 
 /- English proof (translation)
-Introduce `hQ`. Apply `h` to reduce the goal to its premises. Rewrite using `[two_mul]`. Conclude with `L.lattice.add_mem hQ hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_of_two {L : PeriodPair} {Q : ℂ} (h : 2 * Q ∉ L.lattice) : Q ∉ L.lattice := by
   intro hQ
@@ -66,43 +66,43 @@ theorem notMem_of_two {L : PeriodPair} {Q : ℂ} (h : 2 * Q ∉ L.lattice) : Q �
   exact L.lattice.add_mem hQ hQ
 
 /- English proof (translation)
-Establish `key` using `sum_reps L (Finset.insertNone S) (Sq.disjSum Sq) (repA (ω₀ / 2 / α)) repB ?_ ?_ ?_ ?_ f hf`. Rewrite `key` using `[Finset.sum_insertNone, Finset.sum_disjSum]`. Simplify `key` using `[repA, repB]`. Introduce `i hi i' hi' h`. Apply the tactic sequence `rcases i with _ | P <;> rcases i' with _ | P'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Both sides reduce to the same expression. It suffices to derive a contradiction. Establish `hP' : P' ∈ S` using `by simpa using hi'`. Apply `(hS.1 P' hP').2` to reduce the goal to its premises. Establish `h1` using `L.lattice.neg_mem h`.
+Both sides reduce to the same expression. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `h1` using `[repA]`. It suffices to derive a contradiction. Establish `hP : P ∈ S` using `by simpa using hi`. Apply `(hS.1 P hP).2` to reduce the goal to its premises. Simplify `h` using `[repA]`.
+Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hP : P ∈ S` using `by simpa using hi`. Establish `hP' : P' ∈ S` using `by simpa using hi'`. Use `congr 1`. Apply `hS.2.1 P hP P' hP'` to reduce the goal to its premises. Simplify `h` using `[repA]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `j hj j' hj' h`. Apply the tactic sequence `rcases j with Q | Q <;> rcases j' with Q' | Q'`. Establish `hQ : Q ∈ Sq` using `by simpa using hj`. Establish `hQ' : Q' ∈ Sq` using `by simpa using hj'`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hq.2.1 Q hQ Q' hQ' (Or.inl (by simpa [repB] using h))`. It suffices to derive a contradiction. Establish `hQ : Q ∈ Sq` using `by simpa using hj`. Establish `hQ' : Q' ∈ Sq` using `by simpa using hj'`. Establish `h1 : Q + Q' ∈ L.lattice` using `by simpa [repB] using h`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hq.2.1 Q hQ Q' hQ' (Or.inr h1)`. Substitute `e` using the available equality. Apply `(hq.1 Q hQ).2` to reduce the goal to its premises. Rewrite using `[two_mul]` and apply the resulting hypothesis. It suffices to derive a contradiction.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hQ : Q ∈ Sq` using `by simpa using hj`. Establish `hQ' : Q' ∈ Sq` using `by simpa using hj'`. Establish `h1 : Q + Q' ∈ L.lattice`. Establish `h2` using `L.lattice.neg_mem h`. Establish `e : -(repB (Sum.inr Q) - repB (Sum.inl Q')) = Q + Q'` using `by simp [repB]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `e` using `hq.2.1 Q hQ Q' hQ' (Or.inr h1)`. Substitute `e` using the available equality. Apply `(hq.1 Q hQ).2` to reduce the goal to its premises. Rewrite using `[two_mul]` and apply the resulting hypothesis.
+Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hQ : Q ∈ Sq` using `by simpa using hj`. Establish `hQ' : Q' ∈ Sq` using `by simpa using hj'`. Use `congr 1`. Use `hq.2.1 Q hQ Q' hQ' (Or.inl ?_)` and prove the remaining obligations. Establish `h2` using `L.lattice.neg_mem h`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : -(repB (Sum.inr Q) - repB (Sum.inr Q')) = Q - Q'` using `by simp [repB]; ring`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Introduce `i hi`. Establish `h1 : α * repA (ω₀ / 2 / α) i - ω₀ / 2 ∈ L.lattice`. Break down `i with _ | P` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e : α * repA (ω₀ / 2 / α) none - ω₀ / 2 = 0`. Simplify using `only [repA, Option.elim_none, add_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `L.lattice.zero_mem`. Establish `hP : P ∈ S` using `by simpa using hi`. Establish `e : α * repA (ω₀ / 2 / α) (some P) - ω₀ / 2 = α * P`. Simplify using `only [repA, Option.elim_some, id]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(hS.1 P hP).1`. Take `⟨Q, hQ, h2 | h2⟩` from `hq.2.2 _ h1`. Conclude with `⟨Sum.inl Q, by simpa using hQ, by simpa [repB] using h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨Sum.inr Q, by simpa using hQ, by simpa [repB] using h2⟩`. Introduce `j hj`. Establish `h1 : α * repB j - ω₀ / 2 ∈ L.lattice`. Break down `j with Q | Q` into its components or cases. Establish `hQ : Q ∈ Sq` using `by simpa using hj`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `(hq.1 Q hQ).1` using `[repB]`. Establish `hQ : Q ∈ Sq` using `by simpa using hj`. Establish `h2` using `L.lattice.sub_mem (L.lattice.neg_mem (hq.1 Q hQ).1) hω`. Establish `e : -(α * Q - ω₀ / 2) - ω₀ = α * repB (Sum.inr Q) - ω₀ / 2`. Simplify using `only [repB, Sum.elim_inr]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `h3 : α * (repB j - ω₀ / 2 / α) ∈ L.lattice`. Establish `e : α * (repB j - ω₀ / 2 / α) = α * repB j - ω₀ / 2`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Rewrite using `[e]` and apply the resulting hypothesis. Distinguish the cases in `h4 : repB j - ω₀ / 2 / α ∈ L.lattice`. Conclude with `⟨none, by simp, by simpa [repA] using h4⟩`. Take `⟨P, hP, h5⟩` from `hS.2.2 _ h3 h4`. Use `⟨some P, by simpa using hP, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : repB j - repA (ω₀ / 2 / α) (some P) = repB j - ω₀ / 2 / α - P`. Simplify using `only [repA, Option.elim_some, id]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fibre_sum {M : Type} [AddCommMonoid M] (L : PeriodPair) (α ω₀ : ℂ) (S Sq : Finset ℂ)
     (hα : α ≠ 0) (hS : IsKerReps L α S) (hω : ω₀ ∈ L.lattice)
@@ -206,7 +206,7 @@ theorem fibre_sum {M : Type} [AddCommMonoid M] (L : PeriodPair) (α ω₀ : ℂ)
       rwa [e]
 
 /- English proof (translation)
-Establish `h` using `fibre_sum L α ω₀ S Sq hα hS hω hq (fun _ => (1 : ℕ)) (fun _ _ _ => rfl)`. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one] at h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fibre_card (L : PeriodPair) (α ω₀ : ℂ) (S Sq : Finset ℂ)
     (hα : α ≠ 0) (hS : IsKerReps L α S) (hω : ω₀ ∈ L.lattice)
@@ -216,7 +216,7 @@ theorem fibre_card (L : PeriodPair) (α ω₀ : ℂ) (S Sq : Finset ℂ)
   omega
 
 /- English proof (translation)
-Establish `hP' : -P ∉ L.lattice` using `fun h => hP (by simpa using L.lattice.neg_mem h)`. Simplify `T_shift L hP'` using `only [← sub_eq_add_neg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem T_shift_sub (L : PeriodPair) {P : ℂ} (hP : P ∉ L.lattice) :
     T (fun z => L.weierstrassP (z - P)) (taylor0 fun z => L.weierstrassP (z - P)) := by
@@ -224,7 +224,7 @@ theorem T_shift_sub (L : PeriodPair) {P : ℂ} (hP : P ∉ L.lattice) :
   simpa only [← sub_eq_add_neg] using T_shift L hP'
 
 /- English proof (translation)
-Establish `h` using `clause2 L (P := Q) (Q := -Q) hQ (by simp)`. Simplify `h` using `only [← sub_eq_add_neg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem clause1 (L : PeriodPair) {Q : ℂ} (hQ : Q ∉ L.lattice) :
     Formalism.L2.Th1.C.HasSecondLogDeriv (Formalism.L2.Th1.C.wpShift (pSeries L) (L.weierstrassP Q))
@@ -234,7 +234,7 @@ theorem clause1 (L : PeriodPair) {Q : ℂ} (hQ : Q ∉ L.lattice) :
   simpa only [← sub_eq_add_neg] using h
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun z : ℂ => α * z) (𝓝 0) (𝓝 0)`. Establish `: Tendsto (fun z : ℂ => α * z) (𝓝 0) (𝓝 (α * 0))` using `(continuous_const.mul continuous_id).tendsto 0`. Rewrite `this` using `[mul_zero]`. Then use the resulting hypothesis. Conclude with `h1.eventually (ev_shift_notMem L ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ev_mul_shift_notMem (L : PeriodPair) (α : ℂ) {t : ℂ} (ht : t ∉ L.lattice) :
     ∀ᶠ z in 𝓝 (0 : ℂ), α * z + t ∉ L.lattice := by
@@ -245,11 +245,11 @@ theorem ev_mul_shift_notMem (L : PeriodPair) (α : ℂ) {t : ℂ} (ht : t ∉ L.
   exact h1.eventually (ev_shift_notMem L ht)
 
 /- English proof (translation)
-Establish `h1` using `T.mul taylor_ring (T.const taylor_ring (α ^ 2)) (T.rescale α (T_shift L ht))`. Establish `h2` using `T.sub (T.sum (Finset.univ : Finset Sq) (fun Q z => L.weierstrassP (z + (Q : ℂ)) + L.weierstrassP (z - (Q : ℂ))) (fun Q => (taylor0 fun z => L.weierstrassP (z + (Q : ℂ))) + taylor0 fun z => L.weierstrassP (z - (Q : ℂ))) (fun Q _ => T.add taylor_ring (T_shift L (notMem_of_two (hq.1 …`. Use `T.unique h1 h2 ?_` and prove the remaining obligations. Use `filter_upwards [(ev_mul_shift_notMem L α ht).filter_mono nhdsWithin_le_nhds] with z hz`. Establish `e : α * (z + ω₀ / 2 / α) = α * z + ω₀ / 2` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `isogenyP L α S hα hm hS (z + ω₀ / 2 / α) (by rwa [e])`. Rewrite `h3` using `[e, Finset.sum_sub_distrib]`. Establish `h4` using `fibre_sum L α ω₀ S Sq hα hS hω hq (fun c => L.weierstrassP (z + c)) (by`. Introduce `x y hxy`. Apply `wp_congr L` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2 : z + x - (z + y) = x - y` using `by ring`. Rewrite using `[e2])` and apply the resulting hypothesis. Rewrite using `[Finset.sum_coe_sort Sq (fun Q => L.weierstrassP (z + Q) + L.weierstrassP (z - Q)), Finset.sum_add_distrib]`. Simplify using `only [← sub_eq_add_neg, ← add_assoc] at h4`. Take the linear combination `h3 + h4`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem clauseSum (L : PeriodPair) (α ω₀ : ℂ) (S Sq : Finset ℂ) (hα : α ≠ 0) (hm : MulStable L α)
     (hS : IsKerReps L α S) (hω : ω₀ ∈ L.lattice) (ht : ω₀ / 2 ∉ L.lattice)
@@ -281,7 +281,7 @@ theorem clauseSum (L : PeriodPair) (α ω₀ : ℂ) (S Sq : Finset ℂ) (hα : �
   linear_combination h3 + h4
 
 /- English proof (translation)
-Introduce `L α ω₀ S Sq hα hm hS hω ht hq`. Use `⟨fibre_card L α ω₀ S Sq hα hS hω hq, ?_, clauseSum L α ω₀ S Sq hα hm hS hω ht hq⟩` and prove the remaining obligations. Introduce `Q`. Conclude with `clause1 L (notMem_of_two (hq.1 Q Q.2).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fibre_integer_instance_holds : FibreZInstance := by
   intro L α ω₀ S Sq hα hm hS hω ht hq
@@ -290,13 +290,13 @@ theorem fibre_integer_instance_holds : FibreZInstance := by
   exact clause1 L (notMem_of_two (hq.1 Q Q.2).2)
 
 /- English proof (translation)
-Introduce `L ω₀ hω ht`. Use `set t : ℂ := ω₀ / 2 with htd`. Establish `h2t : 2 * t ∈ L.lattice` using `by rw [htd, two_mul_half]; exact hω`. Establish `h1` using `T.mul taylor_ring (T.sub (T_shift L ht) (T.const taylor_ring (L.weierstrassP t))) (T_fP L t)`. Establish `h2` using `T.mul taylor_ring (T.const taylor_ring (3 * L.weierstrassP t ^ 2 - L.g₂ / 4)) (T.pow taylor_ring (T.id taylor_ring) 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `T.unique h1 h2 (by filter_upwards [ev_notMem L, (ev_shift_notMem L ht).filter_mono nhdsWithin_le_nhds] with z hz hzt`. Establish `hz0 : z ≠ 0` using `ne_zero_of_notMem L hz`. Rewrite using `[fP_eq L t hz0]`. Establish `h` using `halfShift L t z ht h2t hz hzt`. Take the linear combination `z ^ 2 * h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4` using `GCob.wOf_mul (L.weierstrassP t) (pSeries L)`. Establish `hU : (1 + X ^ 2 * pSeries L - C (L.weierstrassP t) * X ^ 2 : PowerSeries ℂ) ≠ 0`. Introduce `h`. Use `congrArg constantCoeff h` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_right_cancel₀ hU` to reduce the goal to its premises. Unfold `Formalism.L2.Th1.C.wpShift at h3`. Take the linear combination `h3 - C (3 * L.weierstrassP t ^ 2 - L.g₂ / 4) * h4`.
+Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem half_shift_series_holds : HalfShiftSeries := by
   intro L ω₀ hω ht

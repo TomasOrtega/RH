@@ -13,26 +13,26 @@ variable {X : Type*} [MeasurableSpace X] {n : ℕ}
 def MeasM (A : X → Matrix (Fin n) (Fin n) ℂ) : Prop := Measurable fun x => (Matrix.of.symm (A x) : Fin n → Fin n → ℂ)
 
 /- English proof (translation)
-Simplify using `only [MeasM, measurable_pi_iff]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem measM_iff {A : X → Matrix (Fin n) (Fin n) ℂ} : MeasM A ↔ ∀ i j, Measurable fun x => A x i j := by
   simp only [MeasM, measurable_pi_iff]
   exact Iff.rfl
 
 /- English proof (translation)
-The claim follows from `measurable_const`.
+A detailed English derivation is pending.
 -/
 theorem measM_const (C : Matrix (Fin n) (Fin n) ℂ) : MeasM (fun _ : X => C) := measurable_const
 
 /- English proof (translation)
-The claim follows from `hf.measurable.comp hg`.
+A detailed English derivation is pending.
 -/
 theorem measM_of_cont {Y : Type*} [TopologicalSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y]
     {f : Y → Matrix (Fin n) (Fin n) ℂ} (hf : Continuous fun y => (Matrix.of.symm (f y) : Fin n → Fin n → ℂ))
     {g : X → Y} (hg : Measurable g) : MeasM (fun x => f (g x)) := hf.measurable.comp hg
 
 /- English proof (translation)
-Rewrite `hA`, `hB`, the goal using `[measM_iff]`. Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.measurable_sum _ fun l _ => (hA i l).mul (hB l j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measM_mul {A B : X → Matrix (Fin n) (Fin n) ℂ} (hA : MeasM A) (hB : MeasM B) : MeasM (fun x => A x * B x) := by
   rw [measM_iff] at hA hB ⊢
@@ -41,7 +41,7 @@ theorem measM_mul {A B : X → Matrix (Fin n) (Fin n) ℂ} (hA : MeasM A) (hB : 
   exact Finset.measurable_sum _ fun l _ => (hA i l).mul (hB l j)
 
 /- English proof (translation)
-Rewrite `hA`, the goal using `[measM_iff]`. Introduce `i j`. Simplify using `only [Matrix.conjTranspose_apply]`. Conclude with `continuous_star.measurable.comp (hA j i)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measM_star {A : X → Matrix (Fin n) (Fin n) ℂ} (hA : MeasM A) : MeasM (fun x => (A x)ᴴ) := by
   rw [measM_iff] at hA ⊢
@@ -50,21 +50,21 @@ theorem measM_star {A : X → Matrix (Fin n) (Fin n) ℂ} (hA : MeasM A) : MeasM
   exact continuous_star.measurable.comp (hA j i)
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_det continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem cont_det : Continuous fun M : Fin n → Fin n → ℂ => (Matrix.of M).det :=
   Continuous.matrix_det continuous_id
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_adjugate continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem cont_adj : Continuous fun M : Fin n → Fin n → ℂ => (Matrix.of.symm (Matrix.of M).adjugate : Fin n → Fin n → ℂ) :=
   Continuous.matrix_adjugate continuous_id
 
 /- English proof (translation)
-Establish `hd : Measurable fun x => (A x).det` using `cont_det.measurable.comp hA`. Establish `hadj : MeasM (fun x => (A x).adjugate)` using `cont_adj.measurable.comp hA`. Rewrite `hadj`, the goal using `[measM_iff]`. Introduce `i j`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hd.inv.mul (hadj i j)`.
+A detailed English derivation is pending.
 -/
 theorem measM_inv {A : X → Matrix (Fin n) (Fin n) ℂ} (hA : MeasM A) : MeasM (fun x => (A x)⁻¹) := by
   have hd : Measurable fun x => (A x).det := cont_det.measurable.comp hA
@@ -77,11 +77,11 @@ theorem measM_inv {A : X → Matrix (Fin n) (Fin n) ℂ} (hA : MeasM A) : MeasM 
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hxi : Continuous fun ξ : Fin r → ℂ => C2.xiV k r ξ`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.val < r`. Simplify using `only [C2.xiV, h, ↓reduceDIte]`. Conclude with `continuous_apply _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [C2.xiV, h, ↓reduceDIte]`. Conclude with `continuous_const`. Establish `hc : Continuous fun ξ : Fin r → ℂ => (C2.nEich k r z ξ : Matrix _ _ ℂ)`. Unfold `C2.nEich`. Establish `h1 : Continuous fun ξ : Fin r → ℂ => vecMulVec (C2.xiV k r ξ) (star (Hpk k r *ᵥ z))` using `hxi.matrix_vecMulVec continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Continuous fun ξ : Fin r → ℂ => vecMulVec z (star (Hpk k r *ᵥ C2.xiV k r ξ))` using `continuous_const.matrix_vecMulVec (continuous_const.matrix_mulVec hxi).star`. Establish `h3 : Continuous fun ξ : Fin r → ℂ => vecMulVec (C2.xiV k r ξ) (star (Hpk k r *ᵥ C2.xiV k r ξ))` using `hxi.matrix_vecMulVec (continuous_const.matrix_mulVec hxi).star`. Use `fun_prop`. Conclude with `measM_of_cont (f := fun ξ => C2.nEich k r z ξ) hc hξ`.
+A detailed English derivation is pending.
 -/
 theorem measM_nEich (z : Fin (2 * r + k + 1) → ℂ) {ξ : X → Fin r → ℂ} (hξ : Measurable ξ) :
     MeasM (fun x => C2.nEich k r z (ξ x)) := by
@@ -104,7 +104,7 @@ theorem measM_nEich (z : Fin (2 * r + k + 1) → ℂ) {ξ : X → Fin r → ℂ}
   exact measM_of_cont (f := fun ξ => C2.nEich k r z ξ) hc hξ
 
 /- English proof (translation)
-Rewrite `hA`, the goal using `[measM_iff]`. Introduce `i j`. Conclude with `hA _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem measM_submatrix_castSucc {A : X → Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hA : MeasM A) :
     MeasM (fun x => (A x).submatrix Fin.castSucc Fin.castSucc) := by
@@ -113,9 +113,7 @@ theorem measM_submatrix_castSucc {A : X → Matrix (Fin (r + 1)) (Fin (r + 1)) �
   exact hA _ _
 
 /- English proof (translation)
-Establish `hinv : MeasM fun x => ((A x)ᴴ)⁻¹` using `measM_inv (measM_star hA)`. Rewrite `hA`, `hinv`, the goal using `[measM_iff]`. Introduce `i j`. Simplify using `only [C2.mX]`. Use `split_ifs`.
-
-Apply the tactic sequence `all_goals first | exact measurable_const | exact hA _ _ | exact hinv _ _`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measM_mX {A : X → Matrix (Fin r) (Fin r) ℂ} (hA : MeasM A) : MeasM (fun x => C2.mX k r (A x)) := by
   have hinv : MeasM fun x => ((A x)ᴴ)⁻¹ := measM_inv (measM_star hA)
@@ -126,7 +124,7 @@ theorem measM_mX {A : X → Matrix (Fin r) (Fin r) ℂ} (hA : MeasM A) : MeasM (
   all_goals first | exact measurable_const | exact hA _ _ | exact hinv _ _
 
 /- English proof (translation)
-Use `show MeasM fun x => C2.nEich k r z (fun a => v x a.castSucc (Fin.last r)) * C2.mX k r ((v x).submatrix Fin.castSucc Fin.castSucc)`. Use `measM_mul (measM_nEich z ?_) (measM_mX (measM_submatrix_castSucc hv))` and prove the remaining obligations. Conclude with `measurable_pi_lambda _ fun a => (measM_iff.1 hv) _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measM_tau (z : Fin (2 * r + k + 1) → ℂ) {v : X → Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hv : MeasM v) :
     MeasM (fun x => C2.tauM k r z (v x)) := by

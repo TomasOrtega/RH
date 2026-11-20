@@ -13,27 +13,25 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Fins
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hXi k r Wp Wq _ _ _ _ _ _ D lam d A s nn F hs hA hex hnn w`. Take `⟨N₀, Fi, ν, hν, hcl, hev, hF⟩` from `hex`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσs, hσ⟩ : ∃ σ : ℝ, s = (σ : ℂ) ∧ |σ| = 1 := by`. Break down `hs with h | h` into its components or cases. Conclude with `⟨1, by simp [h], by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨-1, by simp [h], by simp⟩`. Establish `h5 : ∀ i, B.InCC A 5 (Fi i)` using `fun i => (hcl i).2 5`. Use `set e : Fin N₀ → ℝ → ℝ := fun i Y => ∏ t, (Y + lam t + (ν i t : ℝ)) with he`. Use `set c : Fin N₀ → Bool × ℝ → ℝ := fun i a => σ * e i a.2 with hc`. Establish `hF1 : ∀ g ∈ B.GV k r, F g = ∑ i ∈ Finset.univ, (1 : ℂ) • Fi i g`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g hg`. Simplify using `using hF g hg`. Establish `hfold` using `GlobalTheory.foldr_capelli_sum_eigen k r Wp Wq N₀ Fi (fun i Y => ((e i Y : ℝ) : ℂ)) s F (fun i => (hcl i).1) (fun i Y g hg => hev i Y g hg) hF w`. Establish `e1` using `GlobalTheory.beta_finset_sum_smul_of_bessel hXi k r Wp Wq D A (Fin N₀) Finset.univ Finset.univ _ (fun _ => 1) Fi _ F hA h5 hfold hF1`. Establish `e2` using `GlobalTheory.beta_finset_sum_smul_of_bessel hXi k r Wp Wq D A (Fin N₀) Finset.univ Finset.univ (fun _ => 1) (fun _ => 1) Fi F F hA h5 hF1 hF1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcast : ∀ i, (w.map fun a => s * ((e i a.2 : ℝ) : ℂ)).prod = (((w.map (c i)).prod : ℝ) : ℂ)`. Introduce `i`. Establish `: ∀ v : List (Bool × ℝ), (v.map fun a => s * ((e i a.2 : ℝ) : ℂ)).prod = (((v.map (c i)).prod : ℝ) : ℂ)`. Introduce `v`. Proceed by induction on `v with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `nil => simp`. Consider the case `cons a v ih`. Rewrite using `[List.map_cons, List.prod_cons, ih, List.map_cons, List.prod_cons, hσs]`. Simplify using `only [hc, Complex.ofReal_mul]`. Conclude with `this w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `gram_blockDiagonal_energy_bound (Fin N₀) (Bool × ℝ) (fun i j => B.beta D (Fi i) (Fi j)) c w (fun l => nn l.2) ?_ ?_ ?_`. Unfold `C7.principalHermitianLattice`. Rewrite using `[e1, e2]`. Simplify using `only [star_one, mul_one, one_mul, hcast]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `S`. Establish `e3` using `GlobalTheory.beta_finset_sum_smul_of_bessel hXi k r Wp Wq D A (Fin N₀) S S (fun _ => 1) (fun _ => 1) Fi (fun g => ∑ i ∈ S, (1 : ℂ) • Fi i g) (fun g => ∑ i ∈ S, (1 : ℂ) • Fi i g) hA h5 (fun _ _ => rfl) (fun _ _ => rfl)`. Establish `e4` using `GlobalTheory.BetaPos.beta_self_re_nonneg k r Wp Wq D (fun g => ∑ i ∈ S, (1 : ℂ) • Fi i g)`. Rewrite `e4` using `[e3]`. Simplify `e4` using `only [star_one, mul_one, one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j a _ hne`. Establish `hne' : e i a.2 ≠ e j a.2` using `fun h => hne (by simp only [hc, h])`. Establish `hsym` using `GlobalTheory.beta_capelli_symm_of_bessel hXi k r Wp Wq D a.2 A (Fi i) (Fi j) hA (hcl i) (hcl j)`. Establish `h1` using `GlobalTheory.beta_finset_sum_smul_of_bessel hXi k r Wp Wq D A (Fin N₀) {i} {j} (fun _ => ((e i a.2 : ℝ) : ℂ)) (fun _ => 1) Fi (Q.CV k r (a.2 : ℂ) (Fi i)) (Fi j) hA h5 (fun g hg => by rw [Finset.sum_singleton]; exact hev i a.2 g hg) (fun g _ => by simp)`. Establish `h2` using `GlobalTheory.beta_finset_sum_smul_of_bessel hXi k r Wp Wq D A (Fin N₀) {i} {j} (fun _ => 1) (fun _ => ((e j a.2 : ℝ) : ℂ)) Fi (Fi i) (Q.CV k r (a.2 : ℂ) (Fi j)) hA h5 (fun g _ => by simp) (fun g hg => by rw [Finset.sum_singleton]; exact hev j a.2 g hg)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_singleton, star_one, mul_one, one_mul, Complex.star_def, Complex.conj_ofReal] at h1 h2`. Rewrite `hsym` using `[h1, h2]`. Establish `hcc : ((e i a.2 : ℂ) - (e j a.2 : ℂ)) ≠ 0` using `sub_ne_zero.mpr (by exact_mod_cast hne')`. Establish `h0 : ((e i a.2 : ℂ) - (e j a.2 : ℂ)) * B.beta D (Fi i) (Fi j) = 0`. Rewrite using `[sub_mul, hsym, sub_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_eq_zero.mp h0).resolve_left hcc`. Introduce `i a _`. Use `le_trans ?_ (hnn a.2)` and prove the remaining obligations. Simplify using `only [hc, he, abs_mul, hσ, one_mul, Finset.abs_prod]`. Use `Finset.prod_le_prod (fun _ _ => abs_nonneg _) (fun t _ => (abs_add_le _ _).trans ?_)` and prove the remaining obligations.
-
-Establish `: |(ν i t : ℝ)| ≤ (d : ℝ)` using `by exact_mod_cast hν i t`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levelZero_energy_le_of_eigen_sum :
     GlobalTheory.HCXi.BesselXiIntegrable → ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (lam : Fin (2 * r + k + 1) → ℝ) (d : ℕ) (A : ℝ) (s : ℂ) (nn : ℝ → ℝ) (F : B.Mat k r → (Wq →L[ℂ] Wp)), (s = 1 ∨ s = -1) → B.AB k r ≤ A → (∃ (N₀ : ℕ) (Fi : Fin N₀ → B.Mat k r → (Wq →L[ℂ] Wp)) (ν : Fin N₀ → Fin (2 * r + k + 1) → ℤ), (∀ i s, |ν i s| ≤ ((d : ℕ) : ℤ)) ∧ (∀ i, (B.CkOn ⊤ (B.GV k r) (Fi i) ∧ ∀ m : ℕ, B.InCC (A) m (Fi i))) ∧ (∀ i, (∀ Y : ℝ, ∀ g ∈ B.GV k r, Q.CV k r (Y : ℂ) (Fi i) g = ((∏ s, (Y + lam s + (ν i s : ℝ)) : ℝ) : ℂ) • (Fi i) g)) ∧ ∀ g ∈ B.GV k r, (F) g = ∑ i, Fi i g) → (∀ y : ℝ, ∏ t, (|y + lam t| + (d : ℝ)) ≤ nn y) → ∀ w : List (Bool × ℝ), (C7.principalHermitianLattice D s w F).re ≤ (w.map fun l => nn l.2).prod * (B.beta D F F).re := by

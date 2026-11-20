@@ -13,9 +13,9 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `k _ _ B _ hB L _ a ha`. Use `⟨1, fun n hn => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.abelianVarietyTorsionCardEqPow k B a n hB ha hn`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hn Nat.cast_zero`. Use `⟨Nat.finite_of_card_ne_zero ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `pow_ne_zero _ hn0`. Rewrite using `[h, Nat.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_torsion_le : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B], IsAbelianScheme B → ∀ (L : LB B.left), AmpleCub B L → ∀ a, SmoothOfRelativeDimension a B.hom → ∃ C : ℕ, ∀ n : ℕ, (n : k) ≠ 0 → Finite {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} ∧ Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} ≤ C * n ^ (2 * a) := by
   intro k _ _ B _ hB L _ a ha

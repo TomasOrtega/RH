@@ -4,9 +4,9 @@ open Polynomial GlobalTheory.EtC
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI := Ideal.Quotient.field P`. Use `haveI : Module.Finite k (B ⧸ P) := finite_of_finite_type_of_isJacobsonRing k (B ⧸ P)`. Set `φ : (B ⧸ P) →ₐ[k] k` to `IsAlgClosed.lift`. Use `⟨φ (Ideal.Quotient.mk P b), ?_⟩` and prove the remaining obligations. Establish `h : algebraMap k (B ⧸ P) (φ (Ideal.Quotient.mk P b)) = Ideal.Quotient.mk P b`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `φ.toRingHom.injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `h2 : Ideal.Quotient.mk P (algebraMap k B (φ (Ideal.Quotient.mk P b))) = algebraMap k (B ⧸ P) (φ (Ideal.Quotient.mk P b))` using `rfl`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, h2, h, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_sub_mem_of_isMaximal_of_isAlgClosed (k B : Type) [Field k] [IsAlgClosed k]
     [CommRing B] [Algebra k B] [Algebra.FiniteType k B] (P : Ideal B) [hP : P.IsMaximal] (b : B) :
@@ -23,25 +23,23 @@ theorem exists_algebraMap_sub_mem_of_isMaximal_of_isAlgClosed (k B : Type) [Fiel
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, h2, h, sub_self]
 
 /- English proof (translation)
-Establish `hq0 : 0 < q`. Break down `Nat.eq_zero_or_pos q with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hq`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hqB : IsUnit (q : B)`. Use `hq.map (algebraMap k B)` as an intermediate fact. Simplify using `using this`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Take `⟨c, hc⟩` from `exists_algebraMap_sub_mem_of_isMaximal_of_isAlgClosed k B P b`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq c hq0`. Use `⟨algebraMap k B z, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hz]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hc`. Consider the case `succ m ih`. Take `⟨r, hr⟩` from `ih`. Take `⟨e, he⟩ : ∃ e, e = b - r ^ q` from `⟨_, rfl⟩`. Rewrite `hr` using `[← he]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrP : r ∉ P`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Establish `h1 : r ^ q ∈ P` using `P.pow_mem_of_mem h q hq0`. Establish `h2 : e ∈ P` using `Ideal.pow_le_self (Nat.succ_ne_zero m) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: b = e + r ^ q` using `by rw [he]; ring`. Rewrite using `[this]`. Conclude with `P.add_mem h2 h1`. Establish `hderP : (q : B) * r ^ (q - 1) ∉ P`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `hP.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `hP.ne_top (Ideal.eq_top_of_isUnit_mem P h hqB)`. Conclude with `hrP (hP.isPrime.mem_of_pow_mem _ h)`. Take `⟨w, i, hi, hw⟩` from `hP.exists_inv hderP`. Take `⟨t, ht⟩` from `binomExpansion (X ^ q : B[X]) r (e * w)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[derivative_X_pow] at ht`. Use `⟨r + e * w, ?_⟩` and prove the remaining obligations. Establish `key : b - (r + e * w) ^ q = e * i - t * w ^ 2 * e ^ 2`. Rewrite using `[ht]`. Take the linear combination `(-e) * hw - he`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[key]`. Use `Ideal.sub_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul hr hi`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises.
-
-Establish `h3 : e ^ 2 ∈ (P ^ (m + 1)) ^ 2` using `Ideal.pow_mem_pow hr 2`. Rewrite `h3` using `[← pow_mul]`. Conclude with `Ideal.pow_le_pow_right (by omega) h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_sub_mem_pow_of_isMaximal_of_isAlgClosed (k B : Type) [Field k] [IsAlgClosed k]
     [CommRing B] [Algebra k B] [Algebra.FiniteType k B] (q : ℕ) (hq : IsUnit (q : k))
@@ -91,19 +89,17 @@ theorem exists_pow_sub_mem_pow_of_isMaximal_of_isAlgClosed (k B : Type) [Field k
       exact Ideal.pow_le_pow_right (by omega) h3
 
 /- English proof (translation)
-Introduce `k B _ _ _ _ _ _ q hq f hf b c hbc`. Establish `hI : Ideal.span {f} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using hf`. Establish `hroot : ∀ P : (UniqueFactorizationMonoid.factors (Ideal.span {f})).toFinset, ∃ r : B, b - r ^ q ∈ (P : Ideal B) ^ Multiset.count (P : Ideal B) (UniqueFactorizationMonoid.factors (Ideal.span {f}))`. Introduce `P`. Establish `hmem` using `Multiset.mem_toFinset.mp P.prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hprime : Prime (P : Ideal B)` using `UniqueFactorizationMonoid.prime_of_factor _ hmem`. Establish `hne : (P : Ideal B) ≠ ⊥` using `hprime.ne_zero`. Use `haveI hmax : (P : Ideal B).IsMaximal := (Ideal.isPrime_of_prime hprime).isMaximal hne`. Establish `hle : Ideal.span {f} ≤ (P : Ideal B)` using `Ideal.le_of_dvd (UniqueFactorizationMonoid.dvd_of_mem_factors hmem)`. Establish `hb : b ∉ (P : Ideal B)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hmax.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1` using `hle hbc`. Establish `: (1 : B) = b * c - (b * c - 1)` using `by ring`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_right _ _ h) h1`. Take `⟨r, hr⟩` from `exists_pow_sub_mem_pow_of_isMaximal_of_isAlgClosed k B q hq (P : Ideal B) b hb (Multiset.count (P : Ideal B) (UniqueFactorizationMonoid.factors (Ideal.span {f})))`. Conclude with `⟨r, Ideal.pow_le_pow_right (Nat.le_succ _) hr⟩`. Use `choose r hr using hroot`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `Ideal.Quotient.mk_surjective ((IsDedekindDomain.quotientEquivPiFactors hI).symm (fun P => Ideal.Quotient.mk _ (r P)))`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Apply `(IsDedekindDomain.quotientEquivPiFactors hI).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `P`. Establish `h1` using `congrFun (congrArg (IsDedekindDomain.quotientEquivPiFactors hI) hs) P`. Rewrite `h1` using `[RingEquiv.apply_symm_apply, IsDedekindDomain.quotientEquivPiFactors_mk]`. Simplify using `only at h1`. Rewrite using `[IsDedekindDomain.quotientEquivPiFactors_mk]`.
-
-Use `show Ideal.Quotient.mk _ (b - s ^ q) = 0`. Rewrite using `[map_sub, map_pow, h1, ← map_pow, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hr P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_sub_mem_span_of_isUnit_mod_of_isAlgClosed : ∀ (k B : Type) [Field k] [IsAlgClosed k]
     [CommRing B] [IsDedekindDomain B] [Algebra k B] [Algebra.FiniteType k B] (q : ℕ),

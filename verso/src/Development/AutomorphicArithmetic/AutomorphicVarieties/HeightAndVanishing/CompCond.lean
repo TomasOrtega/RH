@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Rewrite using `[← DirichletCharacter.mem_conductorSet_iff_conductor_dvd _ h, DirichletCharacter.mem_conductorSet_iff, DirichletCharacter.factorsThrough_iff_ker_unitsMap h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cond_dvd_iff {O : Type} [CommRing O] {N : ℕ} [NeZero N] (ψ : DirichletCharacter O N) {M : ℕ} (h : M ∣ N) :
     ψ.conductor ∣ M ↔ ∀ u, ZMod.unitsMap h u = 1 → ψ.toUnitHom u = 1 := by
@@ -13,7 +13,7 @@ private theorem cond_dvd_iff {O : Type} [CommRing O] {N : ℕ} [NeZero N] (ψ : 
   rfl
 
 /- English proof (translation)
-Unfold `comp`. Rewrite using `[MulChar.toUnitHom_eq, MulChar.ofUnitHom_eq, Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem comp_hom {O : Type} [CommRing O] {N : ℕ} (r : ℕ) (χ : DirichletCharacter O N) (u : (ZMod N)ˣ) :
     (comp r χ).toUnitHom u = χ.toUnitHom (proj r N u) := by
@@ -22,7 +22,7 @@ private theorem comp_hom {O : Type} [CommRing O] {N : ℕ} (r : ℕ) (χ : Diric
   rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mul_hom {O : Type} [CommRing O] {N : ℕ} (χ ψ : DirichletCharacter O N) (u : (ZMod N)ˣ) :
     (χ * ψ).toUnitHom u = χ.toUnitHom u * ψ.toUnitHom u := by
@@ -30,30 +30,30 @@ private theorem mul_hom {O : Type} [CommRing O] {N : ℕ} (χ ψ : DirichletChar
   simp
 
 /- English proof (translation)
-Rewrite using `[← mul_hom, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem rest_hom {O : Type} [CommRing O] {N : ℕ} (χ ψ : DirichletCharacter O N) (u : (ZMod N)ˣ) :
     (χ * ψ⁻¹).toUnitHom u * ψ.toUnitHom u = χ.toUnitHom u := by
   rw [← mul_hom, inv_mul_cancel_right]
 
 /- English proof (translation)
-Take `⟨-, -, hid, -, -, hra, hke, -, hnat⟩` from `projFacts N r hr`. Establish `hc` using `(cond_dvd_iff χ χ.conductor_dvd_level).1 dvd_rfl`. Establish `hc' : ∀ u, ZMod.unitsMap χ.conductor_dvd_level u = 1 → (comp r χ).toUnitHom u = 1`. Introduce `u hu`. Rewrite using `[comp_hom]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `hc` to reduce the goal to its premises. Rewrite using `[hnat, hu, map_one]`. Establish `ha1 : (comp r χ).conductor ∣ χ.conductor` using `(cond_dvd_iff _ χ.conductor_dvd_level).2 hc'`. Establish `hb1 : (χ * (comp r χ)⁻¹).conductor ∣ χ.conductor`. Use `(cond_dvd_iff _ χ.conductor_dvd_level).2 fun u hu => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `rest_hom χ (comp r χ) u` as an intermediate fact. Rewrite `this` using `[hc u hu, hc' u hu, mul_one]`. Then use the resulting hypothesis. Establish `ha2 : (comp r χ).conductor ∣ ordProj[r] N`. Use `(cond_dvd_iff _ (Nat.ordProj_dvd N r)).2 fun u hu => ?_` and prove the remaining obligations. Establish `: u ∈ (proj r N).ker` using `by rw [hke]; exact hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[comp_hom, MonoidHom.mem_ker.1 this, map_one]`. Establish `hb2 : (χ * (comp r χ)⁻¹).conductor ∣ ordCompl[r] N`. Use `(cond_dvd_iff _ (Nat.ordCompl_dvd N r)).2 fun u hu => ?_` and prove the remaining obligations. Establish `: u ∈ (proj r N).range` using `by rw [hra]; exact hu`. Take `⟨v, rfl⟩` from `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `rest_hom χ (comp r χ) (proj r N v)` as an intermediate fact. Rewrite `this` using `[comp_hom, hid]`. Conclude with `mul_eq_right.1 this`. Establish `hcop : (comp r χ).conductor.Coprime (χ * (comp r χ)⁻¹).conductor` using `((coprime_ordProj_ordCompl r N).coprime_dvd_left ha2).coprime_dvd_right hb2`. Establish `h1` using `hcop.mul_dvd_of_dvd_of_dvd ha1 hb1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : χ.conductor ∣ (comp r χ).conductor * (χ * (comp r χ)⁻¹).conductor`. Establish `hN` using `h1.trans χ.conductor_dvd_level`. Use `(cond_dvd_iff _ hN).2 fun u hu => ?_` and prove the remaining obligations. Establish `e1` using `(cond_dvd_iff _ hN).1 (dvd_mul_right _ _) u hu`. Establish `e2` using `(cond_dvd_iff _ hN).1 (dvd_mul_left _ _) u hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rest_hom χ (comp r χ) u, e1, e2, mul_one]`. Establish `he` using `h2.antisymm h1`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hr).1 ha2`. Establish `hb3 : ¬ r ∣ (χ * (comp r χ)⁻¹).conductor` using `fun h => Nat.not_dvd_ordCompl hr (NeZero.ne N) (h.trans hb2)`. Establish `hb0` using `(χ * (comp r χ)⁻¹).conductor_ne_zero`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : χ.conductor.factorization r = k`. Rewrite using `[he, hk, Nat.factorization_mul (pow_ne_zero _ hr.ne_zero) hb0]`. Simplify using `[hr.factorization_pow, Nat.factorization_eq_zero_of_not_dvd hb3]`. Rewrite using `[hf]`. Use `⟨hk, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[hk]`. Conclude with `(Nat.div_eq_of_eq_mul_right (pow_pos hr.pos k) he).symm`.
+A detailed English derivation is pending.
 -/
 private theorem split_cond {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : DirichletCharacter O N) {r : ℕ} (hr : r.Prime) :
     (comp r χ).conductor = ordProj[r] χ.conductor ∧ (χ * (comp r χ)⁻¹).conductor = ordCompl[r] χ.conductor := by
@@ -103,13 +103,13 @@ private theorem split_cond {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : Di
   exact (Nat.div_eq_of_eq_mul_right (pow_pos hr.pos k) he).symm
 
 /- English proof (translation)
-Introduce `O _ _ N _ χ r hr`. Establish `h2 : 2 ^ c2 χ = (psi2 χ).conductor`. Unfold `c2 psi2`. Rewrite using `[(split_cond χ Nat.prime_two).1, Nat.prime_two.factorization_pow]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨(split_cond χ hr).1, ?_, (split_cond χ hr).2, h2, h2 ▸ (psi2 χ).conductor_dvd_level, fun M _ => ⟨fun h p hp => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[DirichletCharacter.eq_one_iff_conductor_eq_one, (split_cond χ hr).1, hr.dvd_iff_one_le_factorization χ.conductor_ne_zero, Nat.pow_eq_one]`. Use `hr.one_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[(split_cond χ (Nat.prime_of_mem_primeFactors hp)).1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.ordProj_dvd _ _).trans h`. Rewrite using `[Nat.dvd_iff_prime_pow_dvd_dvd]`. Introduce `p k hp hk`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpN : p ∈ N.primeFactors` using `Nat.mem_primeFactors.2 ⟨hp, ((dvd_pow_self p hk0.ne').trans hk).trans χ.conductor_dvd_level, NeZero.ne N⟩`. Use `h p hpN` as an intermediate fact. Rewrite `this` using `[(split_cond χ hp).1]`. Conclude with `(pow_dvd_pow p ((hp.pow_dvd_iff_le_factorization χ.conductor_ne_zero).1 hk)).trans this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.compCond :
     ∀ (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (χ : DirichletCharacter O N) (r : ℕ), r.Prime →

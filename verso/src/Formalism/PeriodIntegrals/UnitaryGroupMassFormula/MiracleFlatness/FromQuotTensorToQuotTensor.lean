@@ -9,7 +9,7 @@ namespace PI.UnitaryGroupMassFormula.MF
 variable {A : Type u} {B : Type v} [CommRing A] [CommRing B] [Algebra A B] (x : A)
 
 /- English proof (translation)
-Simplify using `[Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 lemma quot_smul_mk (a : A) (b : B) :
     (Ideal.Quotient.mk (Ideal.span {x}) a) • (Ideal.Quotient.mk ((Ideal.span {x}).map (algebraMap A B)) b) =
@@ -19,13 +19,13 @@ lemma quot_smul_mk (a : A) (b : B) :
 variable (J : Ideal (A ⧸ Ideal.span {x}))
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.algebraMap_eq, IsScalarTower.algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma quot_smul_J (a : A) (j : J) : (Ideal.Quotient.mk (Ideal.span {x}) a) • j = a • j := by
   rw [← Ideal.Quotient.algebraMap_eq, IsScalarTower.algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[← quot_smul_J]`. Use `ext`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self x)]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma x_smul_J (j : J) : x • j = 0 := by
   rw [← quot_smul_J]
@@ -53,9 +53,9 @@ noncomputable def tmulHom : B →ₗ[B] (J →+ B ⊗[A] J) where
   map_smul' c b := by ext j; simp [smul_tmul']
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton]`. Introduce `y hy`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [tmulHom, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.toAddMonoidHom_coe, TensorProduct.mk_apply, AddMonoidHom.zero_apply]`. Rewrite using `[mul_comm, ← Algebra.smul_def, smul_tmul, x_smul_J, tmul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma tmulHom_vanish : (Ideal.span {x}).map (algebraMap A B) ≤ LinearMap.ker (tmulHom x J) := by
   rw [Ideal.map_span, Set.image_singleton]

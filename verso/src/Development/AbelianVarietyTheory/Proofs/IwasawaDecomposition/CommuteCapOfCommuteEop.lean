@@ -8,11 +8,9 @@ namespace GlobalTheory.CuspRep
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ (Module.End ℂ (Sm E a))` to `Subalgebra.centralizer ℂ {z}`. Establish `hS : ∀ x, x ∈ S ↔ Commute x z` using `fun x => by`. Simplify using `only [S, Subalgebra.mem_centralizer_iff, Set.mem_singleton_iff, forall_eq]`. Conclude with `⟨fun h => h.symm, fun h => h.symm⟩`. Establish `hE : ∀ i j, Eop τ i j ∈ S` using `fun i j => (hS _).2 (h i j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `(hS _).1 ?_` and prove the remaining obligations. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (hE _ _)` and prove the remaining obligations. Use `split_ifs`.
-
-Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem commute_cap_of_commute_Eop (τ : E →+* ℂ) (u : ℂ) (z : Module.End ℂ (Sm E a))
     (h : ∀ i j, Commute (Eop τ i j) z) : Commute (cap τ u) z := by
@@ -30,7 +28,7 @@ theorem commute_cap_of_commute_Eop (τ : E →+* ℂ) (u : ℂ) (z : Module.End 
   · exact S.zero_mem
 
 /- English proof (translation)
-Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Conclude with `cap_comm τ u i j`. Conclude with `commute_cap_of_commute_Eop τ u _ fun k l => Eop_comm h k l i j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem commute_cap_Eop (τ τ' : E →+* ℂ) (u : ℂ) (i j : Fin a) : Commute (cap τ u) (Eop τ' i j) := by
   by_cases h : τ = τ'
@@ -38,7 +36,7 @@ theorem commute_cap_Eop (τ τ' : E →+* ℂ) (u : ℂ) (i j : Fin a) : Commute
   · exact commute_cap_of_commute_Eop τ u _ fun k l => Eop_comm h k l i j
 
 /- English proof (translation)
-Establish `e : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules. Simplify using `only [Eop, atEmb_conj, map_one, Complex.conj_I, e, map_neg]`. Apply the tactic sequence `match_scalars <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lieS_atEmb_one (τ : E →+* ℂ) (i j : Fin a) :
     lieS E a i j (atEmb τ 1) = Eop τ i j + Eop (ComplexEmbedding.conjugate τ) i j := by
@@ -48,7 +46,7 @@ theorem lieS_atEmb_one (τ : E →+* ℂ) (i j : Fin a) :
   match_scalars <;> ring
 
 /- English proof (translation)
-Establish `e : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules. Simplify using `only [Eop, atEmb_conj, map_one, Complex.conj_I, e, map_neg]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lieS_atEmb_I (τ : E →+* ℂ) (i j : Fin a) :
     lieS E a i j (atEmb τ Complex.I) = Complex.I • (Eop τ i j - Eop (ComplexEmbedding.conjugate τ) i j) := by
@@ -58,9 +56,9 @@ theorem lieS_atEmb_I (τ : E →+* ℂ) (i j : Fin a) :
   match_scalars <;> ring_nf <;> simp
 
 /- English proof (translation)
-Establish `hx : x = ∑ w : InfinitePlace E, atEmb w.embedding (x w)` using `by conv_lhs => rw [← Finset.univ_sum_single x]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `atEmb`. Rewrite using `[InfinitePlace.mk_embedding, if_pos rfl]`. Rewrite using `[hx, map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Commute.sum_right _ _ _ fun w _ => ?_` and prove the remaining obligations. Rewrite using `[atEmb_eq, map_add, map_smul, map_smul, lieS_atEmb_one, lieS_atEmb_I]`. Conclude with `(((commute_cap_Eop τ _ u i j).add_right (commute_cap_Eop τ _ u i j)).smul_right _).add_right ((((commute_cap_Eop τ _ u i j).sub_right (commute_cap_Eop τ _ u i j)).smul_right _).smul_right _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_cap_lieS (τ : E →+* ℂ) (u : ℂ) (i j : Fin a) (x : Cinf E) : Commute (cap τ u) (lieS E a i j x) := by
   classical
@@ -76,7 +74,7 @@ theorem commute_cap_lieS (τ : E →+* ℂ) (u : ℂ) (i j : Fin a) (x : Cinf E)
     ((((commute_cap_Eop τ _ u i j).sub_right (commute_cap_Eop τ _ u i j)).smul_right _).smul_right _)
 
 /- English proof (translation)
-Establish `hX : lie E a X = ∑ i, ∑ j, lieS E a i j (X i j)`. Simplify using `only [lieS_apply, ← map_sum]`. Conclude with `congrArg _ (Matrix.matrix_eq_sum_single (Matrix.of X))`. Rewrite using `[hX]`. Conclude with `Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => commute_cap_lieS τ u i j _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_cap_lie (τ : E →+* ℂ) (u : ℂ) (X : Lie E a) : Commute (cap τ u) (lie E a X) := by
   have hX : lie E a X = ∑ i, ∑ j, lieS E a i j (X i j) := by
@@ -86,7 +84,7 @@ theorem commute_cap_lie (τ : E →+* ℂ) (u : ℂ) (X : Lie E a) : Commute (ca
   exact Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => commute_cap_lieS τ u i j _
 
 /- English proof (translation)
-Establish `h : ∀ i j x, Commute (lieS E a i j x) (finRep E a k)` using `fun i j x => lie_rt_fin _ k`. Conclude with `commute_cap_of_commute_Eop τ u _ fun i j => ((h i j _).sub_left ((h i j _).smul_left _)).smul_left _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem commute_cap_finRep (τ : E →+* ℂ) (u : ℂ) (k : GL (Fin a) (Af E)) : Commute (cap τ u) (finRep E a k) := by
   have h : ∀ i j x, Commute (lieS E a i j x) (finRep E a k) := fun i j x => lie_rt_fin _ k

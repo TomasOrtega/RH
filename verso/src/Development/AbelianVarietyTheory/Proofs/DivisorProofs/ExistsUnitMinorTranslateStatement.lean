@@ -9,7 +9,7 @@ open scoped Matrix
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FullRankCoinv.UnitMinor.exists_GL_mul_mem_unitMinorSet | exact GlobalTheory.FullRankCoinv.UnitMinor.exists_GL_mul_mem_unitMinorSet | (intros; apply GlobalTheory.FullRankCoinv.UnitMinor.exists_GL_mul_mem_unitMinorSet <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_unit_minor_translate : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (Y : Matrix (Fin n) (Fin d) k), Y.rank = n →

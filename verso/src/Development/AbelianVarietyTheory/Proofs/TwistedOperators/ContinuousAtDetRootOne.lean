@@ -14,9 +14,9 @@ namespace GlobalTheory.ExtCharCont
 open GlobalTheory.ExtChar Polynomial
 
 /- English proof (translation)
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[eval_mul, eval_C, eval_comp, eval_mul, eval_C, eval_X, Matrix.eval_charpoly, Matrix.eval_charpoly]`. Establish `h` using `Matrix.det_smul (Matrix.scalar (Fin n) (c⁻¹ * t) - M) c`. Rewrite `h` using `[Fintype.card_fin]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.scalar_apply, Matrix.sub_apply, Matrix.diagonal_apply, mul_sub]`. Apply the tactic sequence `split_ifs <;> field_simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charpoly_smul_comp {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) {c : ℂ} (hc : c ≠ 0) :
     (c • M).charpoly = C (c ^ n) * M.charpoly.comp (C c⁻¹ * X) := by
@@ -32,11 +32,11 @@ theorem charpoly_smul_comp {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) {c : ℂ} 
   split_ifs <;> field_simp
 
 /- English proof (translation)
-Unfold `IsRegSS at *`. Take `⟨a, b, hab⟩` from `h`. Rewrite using `[charpoly_smul_comp M hc]`. Establish `h1` using `congrArg (fun p : ℂ[X] => p.comp (C c⁻¹ * X)) hab`. Simplify using `only [add_comp, mul_comp, one_comp] at h1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨C (c ^ n)⁻¹ * a.comp (C c⁻¹ * X), C (c ^ n)⁻¹ * C c * b.comp (C c⁻¹ * X), ?_⟩` and prove the remaining obligations. Establish `e1 : (C (c ^ n)⁻¹ * C (c ^ n) : ℂ[X]) = 1`. Rewrite using `[← C_mul, inv_mul_cancel₀ (pow_ne_zero _ hc), C_1]`. Establish `e2 : (C c * C c⁻¹ : ℂ[X]) = 1`. Rewrite using `[← C_mul, mul_inv_cancel₀ hc, C_1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[derivative_C_mul, derivative_comp, derivative_C_mul, derivative_X, mul_one]`. Take the linear combination `h1 + (a.comp (C c⁻¹ * X) * M.charpoly.comp (C c⁻¹ * X) + C c * C c⁻¹ * b.comp (C c⁻¹ * X) * (derivative M.charpoly).comp (C c⁻¹ * X)) * e1 + b.comp (C c⁻¹ * X) * (derivative M.charpoly).comp (C c⁻¹ * X) * e2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isRegSS_smul {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) {c : ℂ} (hc : c ≠ 0) (h : IsRegSS M) :
     IsRegSS (c • M) := by
@@ -63,9 +63,9 @@ Both sides reduce to the same expression.
 theorem umat_mul' (a b : UJ ε) : umat (a * b) = umat a * umat b := rfl
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : UJ ε => (umat g).det` using `(Units.continuous_val.comp continuous_subtype_val).matrix_det`. Establish `h2 : (umat (1 : UJ ε)).det ∈ Complex.slitPlane`. Establish `: umat (1 : UJ ε) = 1` using `rfl`. Rewrite using `[this, Matrix.det_one]`. Conclude with `Complex.one_mem_slitPlane`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ContinuousAt (fun g : UJ ε => Complex.arg (umat g).det) 1` using `ContinuousAt.comp (f := fun g : UJ ε => (umat g).det) (Complex.continuousAt_arg h2) h1.continuousAt`. Conclude with `Circle.exp.continuous.continuousAt.comp (h3.div_const _)`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_detRoot_one : ContinuousAt (detRoot ε) 1 := by
   have h1 : Continuous fun g : UJ ε => (umat g).det :=
@@ -81,7 +81,7 @@ theorem continuousAt_detRoot_one : ContinuousAt (detRoot ε) 1 := by
 def locRoot (s y : UJ ε) : Circle := detRoot ε s * detRoot ε (s⁻¹ * y)
 
 /- English proof (translation)
-Establish `h : ContinuousAt (fun y : UJ ε => detRoot ε (s⁻¹ * y)) s`. Conclude with `(continuousAt_detRoot_one ε).comp_of_eq ((continuous_const.mul continuous_id).continuousAt (x := s)) (inv_mul_cancel s)`. Conclude with `continuousAt_const.mul h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousAt_locRoot (s : UJ ε) : ContinuousAt (locRoot ε s) s := by
   have h : ContinuousAt (fun y : UJ ε => detRoot ε (s⁻¹ * y)) s := by
@@ -92,7 +92,7 @@ theorem continuousAt_locRoot (s : UJ ε) : ContinuousAt (locRoot ε s) s := by
 variable [NeZero n]
 
 /- English proof (translation)
-Rewrite using `[locRoot, Circle.coe_mul, mul_pow, detRoot_pow ε (NeZero.ne n), detRoot_pow ε (NeZero.ne n), ← Matrix.det_mul, ← umat_mul', mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locRoot_pow (s y : UJ ε) : ((locRoot ε s y : Circle) : ℂ) ^ n = (umat y).det := by
   rw [locRoot, Circle.coe_mul, mul_pow, detRoot_pow ε (NeZero.ne n), detRoot_pow ε (NeZero.ne n),
@@ -108,7 +108,7 @@ def locPart (s y : UJ ε) : SUJ ε :=
     exact zero_ne_one this⟩
 
 /- English proof (translation)
-Rewrite using `[Topology.IsInducing.subtypeVal.continuousAt_iff]`. Use `show ContinuousAt (fun y => unitScalar ε (locRoot ε s y)⁻¹ * y) s`. Conclude with `((GlobalTheory.SqIntSU.continuous_unitScalar ε).continuousAt.comp (continuousAt_locRoot ε s).inv).mul continuousAt_id`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousAt_locPart (s : UJ ε) : ContinuousAt (locPart ε s) s := by
   rw [Topology.IsInducing.subtypeVal.continuousAt_iff]
@@ -116,14 +116,14 @@ theorem continuousAt_locPart (s : UJ ε) : ContinuousAt (locPart ε s) s := by
   exact ((GlobalTheory.SqIntSU.continuous_unitScalar ε).continuousAt.comp (continuousAt_locRoot ε s).inv).mul continuousAt_id
 
 /- English proof (translation)
-Use `show unitScalar ε (locRoot ε s y) * (unitScalar ε (locRoot ε s y)⁻¹ * y) = y`. Rewrite using `[← unitScalar_inv, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalarMul_loc (s y : UJ ε) : scalarMul ε (locRoot ε s y, locPart ε s y) = y := by
   show unitScalar ε (locRoot ε s y) * (unitScalar ε (locRoot ε s y)⁻¹ * y) = y
   rw [← unitScalar_inv, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `e : ujMat ε (unitScalar ε z * y) = (z : ℂ) • ujMat ε y` using `by show (z : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) * ujMat ε y = _`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `isRegSS_smul _ (Circle.coe_ne_zero z) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegSS_unitScalar_mul (z : Circle) (y : UJ ε) (h : IsRegSS (ujMat ε y)) :
     IsRegSS (ujMat ε (unitScalar ε z * y)) := by
@@ -134,7 +134,7 @@ theorem isRegSS_unitScalar_mul (z : Circle) (y : UJ ε) (h : IsRegSS (ujMat ε y
   exact isRegSS_smul _ (Circle.coe_ne_zero z) h
 
 /- English proof (translation)
-Unfold `avgChar`. Use `continuousAt_const.mul (tendsto_finset_sum _ fun j _ => ?_)` and prove the remaining obligations. Establish `h : ContinuousAt (fun x : SUJ ε => Θ' (cen ε j * x)) g` using `ContinuousAt.comp (f := fun x : SUJ ε => cen ε j * x) (hΘ _ (isRegSS_unitScalar_mul ε (ZMod.toCircle j)⁻¹ (g : UJ ε) hg)) (continuous_const.mul continuous_id).continuousAt`. Conclude with `continuousAt_const.mul h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousAt_avgChar (m : ℤ) (Θ' : SUJ ε → ℂ)
     (hΘ : ∀ g : SUJ ε, IsRegSS (suMat ε g) → ContinuousAt Θ' g) (g : SUJ ε) (hg : IsRegSS (suMat ε g)) :
@@ -148,9 +148,9 @@ theorem continuousAt_avgChar (m : ℤ) (Θ' : SUJ ε → ℂ)
   exact continuousAt_const.mul h
 
 /- English proof (translation)
-Introduce `n _ ε m Θ' hΘ s hs`. Establish `e : extChar ε m Θ' = fun y => ((locRoot ε s y : Circle) : ℂ) ^ m * avgChar ε m Θ' (locPart ε s y)`. Use function extensionality and compare the values at `y`. Rewrite using `[← extChar_scalarMul, scalarMul_loc]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ContinuousAt (fun y => ((locRoot ε s y : Circle) : ℂ)) s` using `continuous_subtype_val.continuousAt.comp (continuousAt_locRoot ε s)`. Use `(h1.zpow₀ m (Or.inl (Circle.coe_ne_zero _))).mul ?_` and prove the remaining obligations. Conclude with `ContinuousAt.comp (f := locPart ε s) (continuousAt_avgChar ε m Θ' hΘ _ (isRegSS_unitScalar_mul ε (locRoot ε s s)⁻¹ s hs)) (continuousAt_locPart ε s)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousAt_extChar : ∀ (n : ℕ) [NeZero n] (ε : Fin n → Bool) (m : ℤ) (Θ' : SUJ ε → ℂ), (∀ g : SUJ ε, IsRegSS (suMat ε g) → ContinuousAt Θ' g) → ∀ s : UJ ε, IsRegSS (ujMat ε s) → ContinuousAt (GlobalTheory.ExtChar.extChar ε m Θ') s := by
   intro n _ ε m Θ' hΘ s hs

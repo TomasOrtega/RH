@@ -20,9 +20,9 @@ noncomputable section
 variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h1 : ∀ x : ι → 𝔸[k], ((scalC a : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ x = (a : 𝔸[k]) • x`. Introduce `x`. Use function extensionality and compare the values at `i`. Establish `: ((scalC a : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) = Matrix.scalar ι (a : 𝔸[k])` using `rfl`. Rewrite using `[this, Matrix.scalar_apply, Matrix.mulVec_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, h1]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_scalC_mul (a : IdeleGroup k) (h : GL ι 𝔸[k]) (v : ι → 𝔸[k]) :
     ((scalC a * h : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ v =
@@ -36,7 +36,7 @@ theorem mulVec_scalC_mul (a : IdeleGroup k) (h : GL ι 𝔸[k]) (v : ι → 𝔸
   rw [Units.val_mul, ← Matrix.mulVec_mulVec, h1]
 
 /- English proof (translation)
-Establish `h1 : ((h⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ((h : Matrix ι ι 𝔸[k]) *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use `conv_lhs => rw [← h1]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_mulVec (h : GL ι 𝔸[k]) (v : ι → 𝔸[k]) (j : ι) :
     v j = ∑ i, ((h⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) j i * ((h : Matrix ι ι 𝔸[k]) *ᵥ v) i := by
@@ -48,7 +48,7 @@ theorem apply_eq_of_mulVec (h : GL ι 𝔸[k]) (v : ι → 𝔸[k]) (j : ι) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yva3.main hf h0`.
+A detailed English derivation is pending.
 -/
 theorem summable_prod_coord {f : k → ℝ} (hf : Summable f) (h0 : ∀ a, 0 ≤ f a) :
     Summable fun ξ : ι → k ↦ ∏ i, f (ξ i) :=
@@ -57,13 +57,13 @@ theorem summable_prod_coord {f : k → ℝ} (hf : Summable f) (h0 : ∀ a, 0 ≤
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `htκ : 0 < t * κ` using `mul_pos ht hκ`. Establish `g₁ : ∏ _j : ι, (Z ^ m)⁻¹ ≤ ∏ j, ((X j / B) ^ m)⁻¹` using `Finset.prod_le_prod (fun _ _ ↦ by positivity) fun j _ ↦ inv_anti₀ (pow_pos (div_pos (hX j) hB) m) (pow_le_pow_left₀ (div_pos (hX j) hB).le (h₀ j) m)`. Establish `e₁ : ∏ _j : ι, (Z ^ m)⁻¹ = (Z ^ (Fintype.card ι * m))⁻¹`. Rewrite using `[Finset.prod_const, Finset.card_univ, inv_pow, ← pow_mul, mul_comm m]`. Establish `e₂ : ∏ j, ((X j / B) ^ m)⁻¹ = B ^ (Fintype.card ι * m) * ∏ j, ((X j) ^ m)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ j, ((X j / B) ^ m)⁻¹ = B ^ m * ((X j) ^ m)⁻¹` using `fun j ↦ by`. Rewrite using `[div_pow, inv_div, div_eq_mul_inv]`. Simplify using `only [this]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← pow_mul, mul_comm m]`. Establish `g₂ : ((Z ^ n) ^ r)⁻¹ ≤ ((t * κ) ^ r)⁻¹` using `inv_anti₀ (pow_pos htκ r) (pow_le_pow_left₀ htκ.le h₂ r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `g₁` using `[e₁, e₂]`. Establish `hP : 0 ≤ ∏ j, ((X j) ^ m)⁻¹` using `Finset.prod_nonneg fun j _ ↦ inv_nonneg.2 (pow_pos (hX j) m).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add, pow_mul Z n r, mul_inv]`. Use `_ ≤ A * ((B ^ (Fintype.card ι * m) * ∏ j, ((X j) ^ m)⁻¹) * ((t * κ) ^ r)⁻¹) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left ?_ hA` and prove the remaining obligations. Conclude with `mul_le_mul g₁ g₂ (by positivity) (by positivity)`. Use `_ = (t ^ r)⁻¹ * (A * B ^ (Fintype.card ι * m) * (κ ^ r)⁻¹ * ∏ j, ((X j) ^ m)⁻¹) := by`. Rewrite using `[mul_pow, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem decay_real_bound {A B Z t κ : ℝ} {X : ι → ℝ} {m n r : ℕ} (hA : 0 ≤ A) (hB : 0 < B)
     (hX : ∀ j, 0 < X j) (ht : 0 < t) (hκ : 0 < κ) (hZ : 0 < Z) (h₀ : ∀ j, X j / B ≤ Z)
@@ -97,7 +97,7 @@ theorem decay_real_bound {A B Z t κ : ℝ} {X : ι → ℝ} {m n r : ℕ} (hA :
         ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty, infC, homeomorphMixedSpace_apply]`. Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace k)`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, infC_add, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem infC_sum {α : Type} (s : Finset α) (f : α → 𝔸[k]) :
     infC (∑ i ∈ s, f i) = ∑ i ∈ s, infC (f i) := by
@@ -111,53 +111,39 @@ theorem infC_sum {α : Type} (s : Finset α) (f : α → 𝔸[k]) :
 open scoped Classical in
 
 /- English proof (translation)
-Establish `hinv : Continuous fun h : GL ι 𝔸[k] ↦ ((h⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k])` using `Units.continuous_coe_inv`. Use `set Ci : Set (Matrix ι ι 𝔸[k]) := (fun h : GL ι 𝔸[k] ↦ ((h⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k])) '' C`. Establish `hCi : IsCompact Ci` using `hC.image hinv`. Use `set T : ι → Set 𝔸ᶠ[k] := fun i ↦ b i +ᵥ (idealFiniteAdeles I : Set 𝔸ᶠ[k])`. Establish `hT : ∀ i, IsCompact (T i)` using `fun i ↦ (isCompact_idealFiniteAdeles I).vadd (b i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTpi : IsCompact (Set.pi Set.univ T)` using `isCompact_univ_pi hT`. Establish `hent : ∀ i j, Continuous fun M : Matrix ι ι 𝔸[k] ↦ (M i j).2` using `fun i j ↦ continuous_snd.comp (continuous_id.matrix_elem i j)`. Use `set S : Set 𝔸ᶠ[k] := ⋃ j : ι, (fun p : Matrix ι ι 𝔸[k] × (ι → 𝔸ᶠ[k]) ↦ ∑ i, (p.1 j i).2 * p.2 i) '' (Ci ×ˢ Set.pi Set.univ T)`. Establish `hS : IsCompact S` using `isCompact_iUnion fun j ↦ (hCi.prod hTpi).image (continuous_finset_sum _ fun i _ ↦ ((hent j i).comp continuous_fst).mul ((continuous_apply i).comp continuous_snd))`. Take `⟨J, κ₀, hκ₀, hJ, hN⟩` from `exists_ideal_of_isCompact hS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun M : Matrix ι ι 𝔸[k] ↦ ∑ j, ∑ i, ‖infC (M j i)‖` using `continuous_finset_sum _ fun j _ ↦ continuous_finset_sum _ fun i _ ↦ continuous_norm.comp (continuous_infC.comp (continuous_id.matrix_elem j i))`. Take `⟨B, hB⟩` from `hCi.exists_bound_of_continuousOn hcont.continuousOn`. Use `set B' := max B 1`. Establish `hB'1 : 1 ≤ B'` using `le_max_right _ _`. Establish `hB'0 : 0 < B'` using `zero_lt_one.trans_le hB'1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hBj : ∀ h ∈ C, ∀ j : ι, ∑ i, ‖infC (((h⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) j i)‖ ≤ B'`. Introduce `h hh j`. Establish `h1` using `hB _ ⟨h, hh, rfl⟩`. Rewrite `h1` using `[Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ ↦ Finset.sum_nonneg fun _ _ ↦ norm_nonneg _)]`. Conclude with `(Finset.single_le_sum (f := fun j ↦ ∑ i, ‖infC (((h⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) j i)‖) (fun _ _ ↦ Finset.sum_nonneg fun _ _ ↦ norm_nonneg _) (Finset.mem_univ j)).trans (h1.trans (le_max_left _ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set m := Module.finrank ℤ (idealLattice k J) + 1`. Use `set n := Module.finrank ℚ k`. Use `set N := Fintype.card ι`. Take `⟨A, hA, hφ⟩` from `exists_norm_le_inv_one_add_pow φ (N * m + n * r)`. Use `set κ := κ₀ * (B' ^ n)⁻¹`.
+Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hκ : 0 < κ` using `mul_pos hκ₀ (inv_pos.2 (pow_pos hB'0 n))`. Use `set u₁ : k → ℝ := fun a ↦ if a ∈ (J : FractionalIdeal (𝓞 k)⁰ k) then ((1 + ‖mixedEmbedding k a‖) ^ m)⁻¹ else 0`. Establish `hu₁ : Summable u₁` using `summable_ite_mem_of_summable_idealLattice J (h := fun x ↦ ((1 + ‖x‖) ^ m)⁻¹) (summable_inv_one_add_norm_pow_idealLattice J)`. Establish `hu₁0 : ∀ a, 0 ≤ u₁ a` using `fun a ↦ by`. Simplify using `only [u₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`. Establish `hc0 : 0 ≤ A * B' ^ (N * m) * (κ ^ r)⁻¹` using `by positivity`. Use `⟨fun ξ ↦ A * B' ^ (N * m) * (κ ^ r)⁻¹ * ∏ i, u₁ (ξ i), (summable_prod_coord hu₁ hu₁0).mul_left _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h hh t ht ξ hξ0`. Establish `ht0 : (0 : ℝ) < t` using `t.2`. Use `set s := moduleSection w t`. Use `set v : ι → 𝔸[k] := ratV ξ`. Use `set y := (h : Matrix ι ι 𝔸[k]) *ᵥ v`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set hi := ((h⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k])`. Use `set e := infC ((s : IdeleGroup k) : 𝔸[k])`. Rewrite using `[mulVec_scalC_mul]`. Use `set z := infPartPi (((s : IdeleGroup k) : 𝔸[k]) • y)`. Establish `hz : ∀ i, z i = e * infC (y i)` using `fun i ↦ infC_mul _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : finPartPi (((s : IdeleGroup k) : 𝔸[k]) • y) = finPartPi y`. Use function extensionality and compare the values at `i`. Establish `h1 : (((s : IdeleGroup k) : 𝔸[k])).2 = 1`. Rewrite using `[coe_moduleSection]`. Express the relevant statement in the definitionally equal form `(((s : IdeleGroup k) : 𝔸[k])).2 * (y i).2 = (y i).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, one_mul]`. Establish `hP0 : 0 ≤ ∏ i, u₁ (ξ i)` using `Finset.prod_nonneg fun i _ ↦ hu₁0 _`. Establish `hnn : 0 ≤ ((t : ℝ) ^ r)⁻¹ * (A * B' ^ (N * m) * (κ ^ r)⁻¹ * ∏ i, u₁ (ξ i))` using `mul_nonneg (by positivity) (mul_nonneg hc0 hP0)`. Rewrite using `[schwartzBruhatTensorPi, hfin, finiteTensor]`. Distinguish the cases in `hm : ∀ i, (y i).2 ∈ T i`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrec : ∀ j, algebraMap k 𝔸[k] (ξ j) = ∑ i, hi j i * y i` using `fun j ↦ apply_eq_of_mulVec h v j`. Establish `hξJ : ∀ j, ξ j ∈ (J : FractionalIdeal (𝓞 k)⁰ k)`. Introduce `j`. Use `hJ _ (Set.mem_iUnion.2 ⟨j, (hi, fun i ↦ (y i).2), ⟨⟨h, hh, rfl⟩, fun i _ ↦ hm i⟩, ?_⟩)` and prove the remaining obligations. Establish `h1` using `congrArg Prod.snd (hrec j)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[adeleRing_algebraMap_snd]`. Establish `h2 : (∑ i, hi j i * y i).2 = ∑ i, (hi j i).2 * (y i).2` using `map_sum (RingHom.snd (InfiniteAdeleRing k) 𝔸ᶠ[k]) (fun i ↦ hi j i * y i) Finset.univ`. Rewrite using `[h1]`. Conclude with `h2.symm`. Establish `hmul : ∀ j, e * mixedEmbedding k (ξ j) = ∑ i, infC (hi j i) * z i`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `j`. Rewrite using `[← infC_algebraMap, hrec j, infC_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[infC_mul, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ j, ‖e * mixedEmbedding k (ξ j)‖ ≤ B' * ‖z‖`. Introduce `j`. Establish `h1` using `hBj h hh j`. Establish `h2 : ∀ i, ‖z i‖ ≤ ‖z‖` using `fun i ↦ norm_le_pi_norm z i`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmul j]`. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ ↦ norm_mul_le _ _)`. Use `_ ≤ ∑ i, ‖infC (hi j i)‖ * ‖z‖ := Finset.sum_le_sum fun i _ ↦ mul_le_mul_of_nonneg_left (h2 i) (norm_nonneg _)`. Use `_ = (∑ i, ‖infC (hi j i)‖) * ‖z‖ := by rw [Finset.sum_mul]`. Use `_ ≤ B' * ‖z‖ := mul_le_mul_of_nonneg_right h1 (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hemb : ∀ j, (1 + ‖mixedEmbedding k (ξ j)‖) / B' ≤ 1 + ‖z‖`. Introduce `j`. Establish `h1` using `(norm_le_norm_infC_moduleSection_mul w ht (mixedEmbedding k (ξ j))).trans (hbd j)`. Rewrite using `[div_le_iff₀ hB'0]`. Use polynomial arithmetic with `[norm_nonneg z]`.
-
-Establish `hnorm : (t : ℝ) * κ ≤ (1 + ‖z‖) ^ n`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, ξ j ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hξ0 (funext hcon)`.
-
-Establish `h1 : (t : ℝ) * κ₀ ≤ mixedEmbedding.norm (e * mixedEmbedding k (ξ j))`. Rewrite using `[map_mul, norm_infC_moduleSection]`. Conclude with `mul_le_mul_of_nonneg_left (hN _ (hξJ j) hj) ht0.le`. Establish `h2` using `h1.trans (mixedEmbedding_norm_le_norm_pow _)`. Establish `h3 : ‖e * mixedEmbedding k (ξ j)‖ ^ n ≤ (B' * (1 + ‖z‖)) ^ n` using `pow_le_pow_left₀ (norm_nonneg _) ((hbd j).trans (mul_le_mul_of_nonneg_left (by linarith [norm_nonneg z]) hB'0.le)) n`.
-
-Establish `h4` using `h2.trans h3`. Rewrite `h4` using `[mul_pow]`. Establish `hBn : 0 < B' ^ n` using `pow_pos hB'0 n`. Combine the equalities or inequalities in the displayed calculation. Establish `hone : ∏ i, cosetIndicator I (b i) (finPartPi y i) = 1` using `Finset.prod_eq_one fun i _ ↦ by`.
-
-Rewrite using `[cosetIndicator]`. Conclude with `Set.indicator_of_mem (hm i) _`. Rewrite using `[hone, mul_one]`. Establish `hu : ∏ i, u₁ (ξ i) = ∏ i, ((1 + ‖mixedEmbedding k (ξ i)‖) ^ m)⁻¹` using `Finset.prod_congr rfl fun i _ ↦ by`. Simplify using `only [u₁]`.
-
-Rewrite using `[if_pos (hξJ i)]`. Use `beta_reduce`. Rewrite using `[hu]`. Conclude with `(hφ z).trans (decay_real_bound hA hB'0 (X := fun j ↦ 1 + ‖mixedEmbedding k (ξ j)‖) (fun j ↦ by positivity) ht0 hκ (by positivity) hemb hnorm)`. Use `push_neg at hm`.
-
-Take `⟨i, hi'⟩` from `hm`. Establish `hprod : ∏ i, cosetIndicator I (b i) (finPartPi y i) = 0` using `Finset.prod_eq_zero (Finset.mem_univ i) (by`. Rewrite using `[cosetIndicator]`. Conclude with `Set.indicator_of_notMem hi' _)`. Rewrite using `[hprod, mul_zero, norm_zero]`.
-
-Conclude with `hnn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_decay_boundC_tensor (w : InfinitePlace k) (φ : 𝓢(ι → mixedSpace k, ℂ))
     (I : (FractionalIdeal (𝓞 k)⁰ k)ˣ) (b : ι → 𝔸ᶠ[k]) {C : Set (GL ι 𝔸[k])}
@@ -323,13 +309,11 @@ theorem exists_decay_boundC_tensor (w : InfinitePlace k) (φ : 𝓢(ι → mixed
     exact hnn
 
 /- English proof (translation)
-Rewrite `hF` using `[schwartzBruhatPi_eq_cosetSpanPi]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, I, b, rfl⟩` from `hG`. Conclude with `exists_decay_boundC_tensor w φ I b hC r`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, summable_zero, fun _ _ _ _ _ _ ↦ by simp⟩`. Consider the case `add G H _ _ hG hH`. Take `⟨u, hu, hGu⟩` from `hG`. Take `⟨v, hv, hHv⟩` from `hH`. Use `⟨u + v, hu.add hv, fun a ha t ht ξ hξ ↦ ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.add_apply, Pi.add_apply, mul_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hGu a ha t ht ξ hξ) (hHv a ha t ht ξ hξ))`. Consider the case `smul c G _ hG`. Take `⟨u, hu, hGu⟩` from `hG`. Use `⟨fun ξ ↦ ‖c‖ * u ξ, hu.mul_left _, fun a ha t ht ξ hξ ↦ ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hGu a ha t ht ξ hξ) (norm_nonneg c)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_decay_boundC (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) {C : Set (GL ι 𝔸[k])} (hC : IsCompact C) (r : ℕ) :
@@ -356,15 +340,13 @@ theorem exists_decay_boundC (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     exact mul_le_mul_of_nonneg_left (hGu a ha t ht ξ hξ) (norm_nonneg c)
 
 /- English proof (translation)
-Introduce `k _ _ ι _ _ w F hF C hC r`. Take `⟨u, hu, hFu⟩` from `exists_decay_boundC w hF hC r`. Use `⟨∑' ξ, |u ξ|, fun h hh t ht ↦ ?_⟩` and prove the remaining obligations. Establish `ht0 : 0 < ((t : ℝ) ^ r)⁻¹` using `inv_pos.2 (pow_pos t.2 r)`. Establish `hb : ∀ ξ : ι → k, ξ ≠ 0 → ‖F (((scalC (moduleSection w t) * h : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ)‖ ≤ ((t : ℝ) ^ r)⁻¹ * |u ξ|` using `fun ξ hξ ↦ (hFu h hh t ht ξ hξ).trans (mul_le_mul_of_nonneg_left (le_abs_self _) ht0.le)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Summable fun ξ : ι → k ↦ F (((scalC (moduleSection w t) * h : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ)`. Use `Summable.of_norm_bounded_eventually (hu.abs.mul_left ((t : ℝ) ^ r)⁻¹) ?_` and prove the remaining obligations. Use `filter_upwards [(Set.finite_singleton (0 : ι → k)).compl_mem_cofinite] with ξ hξ`. Conclude with `hb ξ hξ`. Establish `h0 : F (((scalC (moduleSection w t) * h : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ratV (0 : ι → k)) = F 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `: ratV (0 : ι → k) = (0 : ι → 𝔸[k])`. Use function extensionality and compare the values at `i`. Simplify using `[ratV]`. Rewrite using `[this, Matrix.mulVec_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[thetaC, hs.tsum_eq_add_tsum_ite 0, h0, add_sub_cancel_left, ← tsum_mul_left]`. Use `tsum_of_norm_bounded ((hu.abs.mul_left _).hasSum) fun ξ ↦ ?_` and prove the remaining obligations. Use `split_ifs with h'`. Rewrite using `[norm_zero]`. Conclude with `mul_nonneg ht0.le (abs_nonneg _)`.
-
-Conclude with `hb ξ h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_thetaC_sub_le : ∀ {k : Type} [Field k] [NumberField k], ∀ {ι : Type} [Fintype ι]
     [DecidableEq ι], ∀ (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι)

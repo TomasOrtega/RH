@@ -225,7 +225,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[← AlgebraicGeometry.Scheme.Hom.smoothLocus_eq_top_iff]`. Use `le_antisymm le_top ?_` and prove the remaining obligations. Introduce `x _`. Conclude with `(RingHom.FormallySmooth.of_bijective (ConcreteCategory.bijective_of_isIso _) : (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.stalkMap U.ι x)).FormallySmooth)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem smooth_opens_ι {X : Scheme.{u}} (U : X.Opens) :
     AlgebraicGeometry.Smooth U.ι := by
@@ -236,9 +236,9 @@ private theorem smooth_opens_ι {X : Scheme.{u}} (U : X.Opens) :
     (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.stalkMap U.ι x)).FormallySmooth)
 
 /- English proof (translation)
-Rewrite using `[← AlgebraicGeometry.Scheme.Hom.smoothLocus_eq_top_iff]`. Use `le_antisymm le_top ?_` and prove the remaining obligations. Introduce `x _`. Establish `hx : (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.stalkMap f (U.ι x))).FormallySmooth` using `hU x.2`. Establish `hg : (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.stalkMap U.ι x)).FormallySmooth` using `RingHom.FormallySmooth.of_bijective (ConcreteCategory.bijective_of_isIso _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.stalkMap (U.ι ≫ f) x)).FormallySmooth = (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.stalkMap f (U.ι x) ≫ AlgebraicGeometry.Scheme.Hom.stalkMap U.ι x)).FormallySmooth` using `congrArg (fun φ => (CommRingCat.Hom.hom φ).FormallySmooth) (AlgebraicGeometry.Scheme.Hom.stalkMap_comp U.ι f x)`. Conclude with `Eq.mpr heq (RingHom.FormallySmooth.comp hx hg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem smooth_ι_comp_of_le_smoothLocus {X Z : Scheme.{u}} (f : X ⟶ Z)
     [AlgebraicGeometry.LocallyOfFinitePresentation f] (U : X.Opens)
@@ -261,7 +261,7 @@ private theorem smooth_ι_comp_of_le_smoothLocus {X Z : Scheme.{u}} (f : X ⟶ Z
   exact Eq.mpr heq (RingHom.FormallySmooth.comp hx hg)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_smoothLocusComplement_iff {X Z : Scheme.{u}} (f : X ⟶ Z)
     [AlgebraicGeometry.LocallyOfFinitePresentation f] (x : ↥X) :
@@ -270,7 +270,7 @@ private theorem mem_smoothLocusComplement_iff {X Z : Scheme.{u}} (f : X ⟶ Z)
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `OpenImmersionRestriction.ker_eq_comap_ker_of_isPullback_isOpenImmersion f V.ι (f ∣_ V) ((f ⁻¹ᵁ V).ι) (AlgebraicGeometry.isPullback_morphismRestrict f V).flip`.
+A detailed English derivation is pending.
 -/
 private theorem ker_morphismRestrict {X W : Scheme.{u}} (f : X ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion f] (V : W.Opens) :
@@ -318,7 +318,7 @@ private noncomputable def restrictEmbeddingDatumBasicOpen {k : Type u} [Field k]
     exact hsnc k _ _ inferInstance
 
 /- English proof (translation)
-Use `hsmφ` as an intermediate fact. Conclude with `embeddedResolutionRule_isPullbackBlowupSequence_of_smooth A hA hw k Y Y' p p' D D' φ ψ hφ hsq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isPullbackSeq_of_smooth
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
@@ -338,11 +338,11 @@ private theorem isPullbackSeq_of_smooth
   exact embeddedResolutionRule_isPullbackBlowupSequence_of_smooth A hA hw k Y Y' p p' D D' φ ψ hφ hsq
 
 /- English proof (translation)
-Introduce `i hi x hx`. Establish `hne : s.center i ≠ ⊤`. Introduce `h0`. Establish `h1 : (s.center i).support = ⊥` using `(AlgebraicGeometry.Scheme.IdealSheafData.support_eq_bot_iff _).mpr h0`. Establish `h2 : x ∈ ((⊥ : TopologicalSpace.Closeds ↥(s.schemeAt i)) : Set ↥(s.schemeAt i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Conclude with `hx`. Conclude with `h2`. Take `⟨j, hj, hji⟩` from `s.exists_nontrivialIndex_eq_of_center_ne_top hi hne`. Substitute `hji` using the available equality.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `h j (by rw [SequenceOfBlowups.withoutIsoBlowups_length]; exact hj) x (by rw [SequenceOfBlowups.withoutIsoBlowups_center]; exact hx)`. Rewrite `h1` using `[SequenceOfBlowups.withoutIsoBlowups_projectionToBase]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem centersLieOver_of_withoutIsoBlowups {X : Scheme.{u}} (s : SequenceOfBlowups X) (Z : Set ↥X)
     (h : s.withoutIsoBlowups.CentersLieOver Z) : s.CentersLieOver Z := by
@@ -361,7 +361,7 @@ private theorem centersLieOver_of_withoutIsoBlowups {X : Scheme.{u}} (s : Sequen
   rwa [SequenceOfBlowups.withoutIsoBlowups_projectionToBase] at h1
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem blowupSequence_centersLieOver_congr {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -372,7 +372,7 @@ private theorem blowupSequence_centersLieOver_congr {k : Type u} [Field k] [Char
   exact h
 
 /- English proof (translation)
-Rewrite using `[← D.comp_eq]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quasiCompact_of_embeddingDatum {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -382,11 +382,11 @@ private theorem quasiCompact_of_embeddingDatum {k : Type u} [Field k] [CharZero 
   infer_instance
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.QuasiCompact pY` using `quasiCompact_of_embeddingDatum D`. Establish `hiso` using `OpenImmersionRestriction.detachedLocusIsOpen_toEmbeddedBlowupSequence OpenImmersionRestriction.idealSheafGeometryHypotheses_vanishingIdealAssignment hres hB hrad (OpenImmersionRestriction.chartIsolationHypotheses_reducedVanishingAssignment (canonicalPrincipalization hres hrad)) k …`. Establish `hnoe : NoetherianSpace ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransform t)` using `EmbeddedBlowupSequence.noetherianSpace_strictTransform_of_isNoetherian _ (EmbeddedBlowupSequence.isNoetherian_schemeAt (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad))) t (le_of_lt ht)`. Establish `hopen : IsOpen ((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).detachedLocus t)` using `hiso t ht`. Apply `(Scheme.IdealSheafData.eq_top_iff_support_eq_empty _).mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce `y hy`. Establish `h1` using `EmbeddedBlowupSequence.support_centerOffDetached_subset_preimage (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)) t hy`. Establish `h2 : y ∈ (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).detachedLocus t` using `OpenImmersionRestriction.mem_detachedLocus_of_mem_support_ambientCenter hres hB hrad D hsm t ht y h1`. Establish `h3` using `EmbeddedBlowupSequence.support_centerOffDetached_subset_detachedClosureCompl (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)) t hnoe hopen hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[EmbeddedBlowupSequence.detachedClosureCompl_coe, EmbeddedBlowupSequence.detachedClosure_coe]`. Conclude with `h3 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centerOffDetached_eq_top_of_smooth
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -420,7 +420,7 @@ theorem centerOffDetached_eq_top_of_smooth
   exact h3 h2
 
 /- English proof (translation)
-Rewrite using `[EmbeddedBlowupSequence.inducedBlowups_center, EmbeddedBlowupSequence.totalCenter_eq, centerOffDetached_eq_top_of_smooth hres hB hrad D hsm t ht]`. Conclude with `AlgebraicGeometry.Scheme.ker_eq_top_of_isEmpty ..`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toEmbeddedBlowupSequence_center_eq_top_of_smooth
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -437,9 +437,9 @@ theorem toEmbeddedBlowupSequence_center_eq_top_of_smooth
   exact AlgebraicGeometry.Scheme.ker_eq_top_of_isEmpty ..
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h0 : 0 < ((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).inducedBlowups hbl).lengthWithoutIsoBlowups` using `Nat.pos_of_ne_zero hne`. Establish `h1` using `SequenceOfBlowups.nontrivialIndex_lt_length _ h0`. Establish `h2` using `SequenceOfBlowups.center_nontrivialIndex_ne_top _ h0`. Rewrite `h1` using `[EmbeddedBlowupSequence.inducedBlowups_length]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 (toEmbeddedBlowupSequence_center_eq_top_of_smooth hres hB hrad D hsm hbl _ h1)`.
+A detailed English derivation is pending.
 -/
 private theorem withoutIsoBlowups_length_eq_zero_of_smooth
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -459,25 +459,21 @@ private theorem withoutIsoBlowups_length_eq_zero_of_smooth
   exact h2 (toEmbeddedBlowupSequence_center_eq_top_of_smooth hres hB hrad D hsm hbl _ h1)
 
 /- English proof (translation)
-Introduce `i hi x hx`. Assume the negation of the conclusion as `hns`. Establish `hy : (embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i x ∈ (↑(AlgebraicGeometry.Scheme.Hom.smoothLocus pY) : Set ↥Y)`. Assume the negation of the conclusion as `h`. Conclude with `hns ((mem_smoothLocusComplement_iff pY _).mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hWopen, hW⟩` from `((AlgebraicGeometry.IsClosedImmersion.isClosedEmbedding D.emb).isInducing).isOpen_iff.mp (AlgebraicGeometry.Scheme.Hom.smoothLocus pY).isOpen`. Establish `hWy : D.emb ((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i x) ∈ W`. Establish `h2 : (embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i x ∈ ⇑D.emb ⁻¹' W`. Rewrite using `[hW]`. Conclude with `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h2`. Take `⟨U', hU'mem, hxU', hU'le⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp (AlgebraicGeometry.isBasis_basicOpen D.ambient) (show D.emb ((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i x) ∈ (⟨W, hWopen⟩ : D.ambient.Opens) from hWy)`. Take `⟨r, hr⟩` from `hU'mem`. Establish `hyV : (embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i x ∈ D.emb ⁻¹ᵁ D.ambient.basicOpen r`. Establish `h3 : D.emb ((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i x) ∈ D.ambient.basicOpen r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hr]`. Conclude with `hxU'`. Conclude with `h3`. Establish `hVle : (D.emb ⁻¹ᵁ D.ambient.basicOpen r) ≤ AlgebraicGeometry.Scheme.Hom.smoothLocus pY`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : D.emb z ∈ D.ambient.basicOpen r` using `hz`. Rewrite `h3` using `[hr]`. Establish `h5 : z ∈ ⇑D.emb ⁻¹' W` using `hU'le h3`. Rewrite `h5` using `[hW]`. Conclude with `h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hVaff : AlgebraicGeometry.IsAffine (D.emb ⁻¹ᵁ D.ambient.basicOpen r).toScheme` using `((AlgebraicGeometry.isAffineOpen_top D.ambient).basicOpen r).preimage D.emb`. Establish `hsmV : AlgebraicGeometry.Smooth ((D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι ≫ pY)` using `smooth_ι_comp_of_le_smoothLocus pY _ hVle`. Establish `hqcV : AlgebraicGeometry.QuasiCompact ((D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι ≫ pY)` using `inferInstance`. Establish `hlen0 : (embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k (D.emb ⁻¹ᵁ D.ambient.basicOpen r).toScheme ((D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι ≫ pY) (restrictEmbeddingDatumBasicOpen D hsnc r)).length = 0`. Rewrite using `[embeddedResolutionRuleOfPrincipalization_apply, inducedBlowupsWithoutIso_eq_withoutIsoBlowups, SequenceOfBlowups.withoutIsoBlowups_length]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `withoutIsoBlowups_length_eq_zero_of_smooth hres hB hrad (restrictEmbeddingDatumBasicOpen D hsnc r) hsmV _`. Establish `hps` using `isPullbackSeq_of_smooth (canonicalPrincipalization hres hrad) hA hw k Y (D.emb ⁻¹ᵁ D.ambient.basicOpen r).toScheme pY ((D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι ≫ pY) D (restrictEmbeddingDatumBasicOpen D hsnc r) (D.ambient.basicOpen r).ι (smooth_opens_ι (D.ambient.basicOpen r)) (D.emb …`. Take `⟨ρ, e, h1, h2, h3, h4, h5, h6, h7⟩` from `hps`. Establish `hmemrange : (embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i x ∈ Set.range ⇑(D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι`. Rewrite using `[AlgebraicGeometry.Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hyV`. Take `⟨x', hx'eq⟩` from `hmemrange`. Take `⟨z, hz1, hz2⟩` from `AlgebraicGeometry.Scheme.Pullback.exists_preimage_pullback (f := (D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι) (g := (embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i) x' x hx'eq`. Establish `hex : ∃ w, w ∈ (((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).center i).comap (Limits.pullback.snd (D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι ((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).pro …`. Use `⟨z, ?_⟩` and prove the remaining obligations.
-
-Establish `hmem : z ∈ (↑((((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).center i).comap (Limits.pullback.snd (D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι ((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).proj …`. Rewrite using `[FunctorialResolution.EmbeddedResolution.support_comap]`. Use `show (Limits.pullback.snd (D.emb ⁻¹ᵁ D.ambient.basicOpen r).ι ((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).projectionToBase i)) z ∈ (↑((embeddedResolutionRuleOfPrincipalization (canonicalPrincipalization hres hrad) hw k Y pY D).cen …`. Rewrite using `[hz2]`. Conclude with `hx`.
-
-Conclude with `hmem`. Take `⟨j, hj, -⟩` from `(h4 i hi).mp hex`. Rewrite `hj` using `[hlen0]`. Conclude with `absurd hj (Nat.not_lt_zero j)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem centersLieOver_embeddedResolutionRuleOfPrincipalization
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -585,7 +581,7 @@ private theorem centersLieOver_embeddedResolutionRuleOfPrincipalization
   exact absurd hj (Nat.not_lt_zero j)
 
 /- English proof (translation)
-Apply `centersLieOver_of_withoutIsoBlowups` to reduce the goal to its premises. Establish `h` using `centersLieOver_embeddedResolutionRuleOfPrincipalization hres hB hrad hA hw hsnc D`. Rewrite `h` using `[embeddedResolutionRuleOfPrincipalization_apply]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toEmbeddedBlowupSequence_centersLieOver_smoothLocusComplement
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -607,9 +603,9 @@ theorem toEmbeddedBlowupSequence_centersLieOver_smoothLocusComplement
   exact h
 
 /- English proof (translation)
-Introduce `k _ _ Y pY _ _ _ _`. Unfold `FunctorialResolution.EmbeddedResolution.AffineSpacePrincipalizationData.InducedCentersLieOverSingularLocus`. Establish `hbl0 : ((affineSpaceEmbeddingDatum affineEmbedsIntoAffineSpace nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth k Y pY).toEmbeddedBlowupSequence principalizationWithRadicalCenters).TransitionsAreBlowups` using `transitionsAreBlowupsForEmbeddings_principalizationWithRadicalCenters k Y pY _`. Establish `key` using `toEmbeddedBlowupSequence_centersLieOver_smoothLocusComplement strictTransformIsBlowupOfClosedSubscheme canonicalAlgorithmRules_isCorrect smoothSubschemeIdealIsRadical (isFunctorialPrincipalization_canonicalPrincipalization strictTransformIsBlowupOfClosedSubscheme canonicalAlgorit …`. Rewrite using `[← AffineSpacePrincipalizationData.embeddedInducedBlowups_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `blowupSequence_centersLieOver_congr (affineSpaceEmbeddingDatum_toEmbeddedBlowupSequence principalizationWithRadicalCenters affineEmbedsIntoAffineSpace nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth k Y pY) hbl0 _ _ key`.
+A detailed English derivation is pending.
 -/
 theorem affineCentersLieOverSingularLocus_principalizationWithRadicalCenters :
     AffineCentersLieOverSingularLocus.{u} principalizationWithRadicalCenters affineEmbedsIntoAffineSpace

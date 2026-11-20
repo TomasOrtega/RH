@@ -43,7 +43,7 @@ def completionMap : v.adicCompletion K →+* w.adicCompletion L :=
       (HeightOneSpectrum.adicCompletion.equiv K v).toRingHom
 
 /- English proof (translation)
-The claim follows from `(HeightOneSpectrum.adicCompletion.continuous_ofCompletion L w).comp <| UniformSpace.Completion.continuous_map.comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion K v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_completionMap : Continuous (completionMap v w) :=
   (HeightOneSpectrum.adicCompletion.continuous_ofCompletion L w).comp <|
@@ -51,7 +51,7 @@ theorem continuous_completionMap : Continuous (completionMap v w) :=
       (HeightOneSpectrum.adicCompletion.continuous_toCompletion K v)
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `UniformSpace.Completion.map _ ((algebraMap K (WithVal (v.valuation K)) x : WithVal _) : UniformSpace.Completion (WithVal (v.valuation K))) = ((algebraMap K (WithVal (w.valuation L)) x : WithVal _) : UniformSpace.Completion (WithVal (w.valuation L)))`. Rewrite using `[UniformSpace.Completion.map_coe (HeightOneSpectrum.uniformContinuous_algebraMap_liesOver (K := K) L v w)]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem completionMap_algebraMap (x : K) :
     completionMap v w (algebraMap K (v.adicCompletion K) x) =
@@ -67,13 +67,13 @@ theorem completionMap_algebraMap (x : K) :
   rfl
 
 /- English proof (translation)
-Use `set e := w.asIdeal.ramificationIdx (𝓞 K) with he`. Establish `he0 : e ≠ 0` using `(Ideal.ramificationIdx_pos w.asIdeal (𝓞 K)).ne'`. Establish `hK : ∀ k : K, Valued.v (completionMap v w (algebraMap K _ k)) = Valued.v (algebraMap K (v.adicCompletion K) k) ^ e`. Introduce `k`. Rewrite using `[completionMap_algebraMap, IsScalarTower.algebraMap_apply K L (w.adicCompletion L), HeightOneSpectrum.algebraMap_adicCompletion, HeightOneSpectrum.algebraMap_adicCompletion]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Rewrite using `[he, ← Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal w.asIdeal v.ne_bot, HeightOneSpectrum.valuation_liesOver L v w]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Establish `hclosed : IsClosed {x : v.adicCompletion K | Valued.v (completionMap v w x) = Valued.v x ^ e}`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x0 hx0`. Establish `h0 : x0 ≠ 0`. Introduce and unpack `rfl`. Simplify using `[zero_pow he0] at hx0`. Establish `h1 : Valued.v x0 ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Valued.v (completionMap v w x0) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((map_ne_zero_iff _ (completionMap v w).injective).2 h0)`. Use `filter_upwards [Valued.locally_const h1, (continuous_completionMap v w).continuousAt.preimage_mem_nhds (Valued.locally_const h2)] with x hx hx'`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_compl_iff] at hx hx' hx0 ⊢`. Rewrite using `[hx, hx']` and apply the resulting hypothesis. Conclude with `(HeightOneSpectrum.denseRange_algebraMap K v).induction_on x hclosed hK`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem valued_completionMap (x : v.adicCompletion K) :
     Valued.v (completionMap v w x) = Valued.v x ^ w.asIdeal.ramificationIdx (𝓞 K) := by

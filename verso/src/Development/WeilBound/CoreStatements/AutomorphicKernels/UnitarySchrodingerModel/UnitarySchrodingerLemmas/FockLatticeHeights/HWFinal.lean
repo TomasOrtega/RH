@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodinge
 namespace PositivityTheory.PfSWUS.SwFockk
 
 /- English proof (translation)
-The claim follows from `heightWN_of_fin PositivityTheory.PfSWUS.SwsHwfin.hwFin`.
+A detailed English derivation is pending.
 -/
 theorem heightWN : PositivityTheory.PfSWUS.SwMatch.HeightWN :=
   heightWN_of_fin PositivityTheory.PfSWUS.SwsHwfin.hwFin

@@ -17,7 +17,7 @@ def adelicTheta (F : 𝔸[K] → ℂ) (a : IdeleGroup K) : ℂ :=
   ∑' ξ : K, F (a • algebraMap K 𝔸[K] ξ)
 
 /- English proof (translation)
-The claim follows from `tsum_smul_algebraMap_eq a hF`.
+A detailed English derivation is pending.
 -/
 theorem adelicTheta_eq {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) (a : IdeleGroup K) :
     adelicTheta F a =
@@ -25,9 +25,9 @@ theorem adelicTheta_eq {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) (a : 
   tsum_smul_algebraMap_eq a hF
 
 /- English proof (translation)
-Unfold `adelicTheta`. Use `conv_rhs => rw [← (Equiv.mulLeft₀ (δ : K) δ.ne_zero).tsum_eq]`. Use `tsum_congr fun ξ ↦ congrArg F ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((diagonal K δ * a : IdeleGroup K) : 𝔸[K]) * algebraMap K 𝔸[K] ξ = (a : 𝔸[K]) * algebraMap K 𝔸[K] ((δ : K) * ξ)`. Rewrite using `[Units.val_mul, coe_diagonal, map_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem adelicTheta_diagonal_mul (F : 𝔸[K] → ℂ) (δ : Kˣ) (a : IdeleGroup K) :
     adelicTheta F (diagonal K δ * a) = adelicTheta F a := by
@@ -40,7 +40,7 @@ theorem adelicTheta_diagonal_mul (F : 𝔸[K] → ℂ) (δ : Kˣ) (a : IdeleGrou
   ring
 
 /- English proof (translation)
-Unfold `adelicTheta`. Rewrite using `[← (Equiv.neg K).tsum_eq]`. Use `tsum_congr fun ξ ↦ congrArg F ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-((a : 𝔸[K]) * algebraMap K 𝔸[K] (-ξ)) = (a : 𝔸[K]) * algebraMap K 𝔸[K] ξ`. Rewrite using `[map_neg, mul_neg, neg_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicTheta_neg (F : 𝔸[K] → ℂ) (a : IdeleGroup K) :
     adelicTheta (fun x ↦ F (-x)) a = adelicTheta F a := by
@@ -51,13 +51,13 @@ theorem adelicTheta_neg (F : 𝔸[K] → ℂ) (a : IdeleGroup K) :
   rw [map_neg, mul_neg, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_algebraMap_zero (a : IdeleGroup K) : a • algebraMap K 𝔸[K] 0 = 0 := by
   rw [map_zero, smul_zero]
 
 /- English proof (translation)
-Take `⟨u, hu, hFu⟩` from `exists_summable_bound_smul_algebraMap hF hC`. Use `continuousOn_tsum (fun ξ ↦ ?_) hu (fun ξ a ha ↦ hFu a ha ξ)` and prove the remaining obligations. Establish `h : Continuous fun a : IdeleGroup K ↦ F ((a : 𝔸[K]) * algebraMap K 𝔸[K] ξ)` using `(continuous_of_mem_schwartzBruhat hF).comp (Units.continuous_val.mul continuous_const)`. Conclude with `h.continuousOn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_adelicTheta {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K)
     {C : Set (IdeleGroup K)} (hC : IsCompact C) : ContinuousOn (adelicTheta F) C := by
@@ -68,7 +68,7 @@ theorem continuousOn_adelicTheta {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruha
   exact h.continuousOn
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun a ↦ ?_` and prove the remaining obligations. Take `⟨C, hC, haC⟩` from `exists_compact_mem_nhds a`. Conclude with `(continuousOn_adelicTheta hF hC).continuousAt haC`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuous_adelicTheta {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) :
     Continuous (adelicTheta F) := by
@@ -77,11 +77,9 @@ theorem continuous_adelicTheta {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat 
   exact (continuousOn_adelicTheta hF hC).continuousAt haC
 
 /- English proof (translation)
-Use `IsFundamentalDomain.mk' hS.nullMeasurableSet fun u ↦ ?_` and prove the remaining obligations. Set `e : Kˣ ≃ (diagonalNormOne K).op` to `(diagonalNormOneEquiv K).trans (diagonalNormOne K).equivOp`. Establish `he : ∀ ξ : Kˣ, e ξ • u = u * diagonalToNormOne K ξ` using `fun _ ↦ rfl`. Take `⟨ξ, hξ, huniq⟩` from `h u`. Use `⟨e ξ, ?_, fun γ hγ ↦ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show e ξ • u ∈ S`. Rewrite using `[he]`. Conclude with `hξ`. Express the relevant statement in the definitionally equal form `γ • u ∈ S at hγ`. Rewrite `hγ` using `[← e.apply_symm_apply γ, he]`.
-
-Rewrite using `[← e.apply_symm_apply γ, huniq _ hγ]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_of_existsUnique {S : Set (normOneSubgroup K)} (hS : MeasurableSet S)
     (h : ∀ u, ∃! ξ : Kˣ, u * diagonalToNormOne K ξ ∈ S) (μ : Measure (normOneSubgroup K)) :
@@ -100,7 +98,7 @@ theorem isFundamentalDomain_of_existsUnique {S : Set (normOneSubgroup K)} (hS : 
   rw [← e.apply_symm_apply γ, huniq _ hγ]
 
 /- English proof (translation)
-Use `(isFundamentalDomain_of_existsUnique hS hSu _).setIntegral_eq (isFundamentalDomain_normOneFundamentalDomain K _) fun γ u ↦ ?_` and prove the remaining obligations. Set `e : Kˣ ≃ (diagonalNormOne K).op` to `(diagonalNormOneEquiv K).trans (diagonalNormOne K).equivOp`. Rewrite using `[← e.apply_symm_apply γ]`. Conclude with `hh _ u`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_eq_of_existsUnique {S : Set (normOneSubgroup K)} (hS : MeasurableSet S)
     (hSu : ∀ u, ∃! ξ : Kˣ, u * diagonalToNormOne K ξ ∈ S) {h : normOneSubgroup K → ℂ}
@@ -114,9 +112,9 @@ theorem setIntegral_eq_of_existsUnique {S : Set (normOneSubgroup K)} (hS : Measu
   exact hh _ u
 
 /- English proof (translation)
-Take `⟨η, hη, huniq⟩` from `existsUnique_mul_mem_normOneFundamentalDomain K u⁻¹`. Establish `key : ∀ ξ : Kˣ, u * diagonalToNormOne K ξ ∈ (normOneFundamentalDomain K)⁻¹ ↔ u⁻¹ * diagonalToNormOne K ξ⁻¹ ∈ normOneFundamentalDomain K` using `fun ξ ↦ by`. Rewrite using `[Set.mem_inv, mul_inv, map_inv]`. Use `⟨η⁻¹, (key _).2 (by rwa [inv_inv]), fun ξ hξ ↦ ?_⟩` and prove the remaining obligations. Use `huniq _ ((key ξ).1 hξ)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← this, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_mul_mem_inv_normOneFundamentalDomain (u : normOneSubgroup K) :
     ∃! ξ : Kˣ, u * diagonalToNormOne K ξ ∈ (normOneFundamentalDomain K)⁻¹ := by
@@ -129,9 +127,9 @@ theorem existsUnique_mul_mem_inv_normOneFundamentalDomain (u : normOneSubgroup K
   rw [← this, inv_inv]
 
 /- English proof (translation)
-Take `⟨η, hη, huniq⟩` from `existsUnique_mul_mem_normOneFundamentalDomain K (v * u)`. Use `⟨η, ?_, fun ξ hξ ↦ huniq _ ?_⟩` and prove the remaining obligations. Use `show v * (u * diagonalToNormOne K η) ∈ normOneFundamentalDomain K`. Rewrite using `[← mul_assoc]` and apply the resulting hypothesis. Express the relevant statement in the definitionally equal form `v * (u * diagonalToNormOne K ξ) ∈ normOneFundamentalDomain K at hξ show v * u * diagonalToNormOne K ξ ∈ normOneFundamentalDomain K`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hξ` using `[← mul_assoc]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_mul_mem_preimage_normOneFundamentalDomain (v u : normOneSubgroup K) :
     ∃! ξ : Kˣ, u * diagonalToNormOne K ξ ∈ (v * ·) ⁻¹' normOneFundamentalDomain K := by
@@ -144,7 +142,7 @@ theorem existsUnique_mul_mem_preimage_normOneFundamentalDomain (v u : normOneSub
     rwa [← mul_assoc] at hξ
 
 /- English proof (translation)
-Establish `hpre : (Inv.inv ⁻¹' (normOneFundamentalDomain K)⁻¹ : Set (normOneSubgroup K)) = normOneFundamentalDomain K` using `inv_inv _`. Establish `h1` using `(Measure.measurePreserving_inv (normOneMeasure K)).setIntegral_preimage_emb (MeasurableEquiv.inv (normOneSubgroup K)).measurableEmbedding h (normOneFundamentalDomain K)⁻¹`. Rewrite `h1` using `[hpre]`. Rewrite using `[h1]`. Conclude with `setIntegral_eq_of_existsUnique (measurableSet_normOneFundamentalDomain K).inv existsUnique_mul_mem_inv_normOneFundamentalDomain hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_inv_eq {h : normOneSubgroup K → ℂ}
     (hh : ∀ (ξ : Kˣ) (u : normOneSubgroup K), h (u * diagonalToNormOne K ξ) = h u) :
@@ -160,7 +158,7 @@ theorem setIntegral_inv_eq {h : normOneSubgroup K → ℂ}
     existsUnique_mul_mem_inv_normOneFundamentalDomain hh
 
 /- English proof (translation)
-Establish `hS : MeasurableSet ((v * ·) ⁻¹' normOneFundamentalDomain K)` using `(measurable_const_mul v) (measurableSet_normOneFundamentalDomain K)`. Establish `h1` using `(measurePreserving_mul_left (normOneMeasure K) v).setIntegral_preimage_emb (MeasurableEquiv.mulLeft v).measurableEmbedding h (normOneFundamentalDomain K)`. Establish `h2` using `setIntegral_eq_of_existsUnique hS (existsUnique_mul_mem_preimage_normOneFundamentalDomain v) (h := fun u ↦ h (v * u)) fun ξ u ↦ by simp only [← mul_assoc, hh]`. Rewrite using `[← h2, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem setIntegral_mul_left_eq {h : normOneSubgroup K → ℂ}
     (hh : ∀ (ξ : Kˣ) (u : normOneSubgroup K), h (u * diagonalToNormOne K ξ) = h u)
@@ -177,7 +175,7 @@ theorem setIntegral_mul_left_eq {h : normOneSubgroup K → ℂ}
   rw [← h2, h1]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_mul, coe_diagonalToNormOne, map_mul, HeckeCharacter.toIdele_diagonal, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toIdele_mul_diagonalToNormOne (χ : HeckeCharacter K) (ξ : Kˣ) (u : normOneSubgroup K) :
     (χ.toIdele ((u * diagonalToNormOne K ξ : normOneSubgroup K) : IdeleGroup K) : ℂ) =
@@ -185,9 +183,9 @@ theorem toIdele_mul_diagonalToNormOne (χ : HeckeCharacter K) (ξ : Kˣ) (u : no
   rw [Subgroup.coe_mul, coe_diagonalToNormOne, map_mul, HeckeCharacter.toIdele_diagonal, mul_one]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hχ`. Establish `h` using `setIntegral_mul_left_eq (h := fun u ↦ (χ.toIdele (u : IdeleGroup K) : ℂ)) (fun ξ u ↦ toIdele_mul_diagonalToNormOne χ ξ u) v`. Simplify using `only [Subgroup.coe_mul, map_mul, Circle.coe_mul] at h`. Rewrite `h` using `[integral_const_mul]`. Establish `hv' : (χ.toIdele (v : IdeleGroup K) : ℂ) ≠ 1` using `fun h1 ↦ hv (Circle.ext (by simpa using h1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((χ.toIdele (v : IdeleGroup K) : ℂ) - 1) * ∫ u in normOneFundamentalDomain K, (χ.toIdele (u : IdeleGroup K) : ℂ) ∂normOneMeasure K = 0`. Rewrite using `[sub_mul, one_mul, h, sub_self]`. Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hv')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_char_eq_zero {χ : HeckeCharacter K}
     (hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1) :
@@ -204,7 +202,7 @@ theorem setIntegral_char_eq_zero {χ : HeckeCharacter K}
   exact (mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hv')
 
 /- English proof (translation)
-Rewrite using `[normOneClassMeasure, Measure.map_apply QuotientGroup.measurable_coe MeasurableSet.univ, Set.preimage_univ, Measure.restrict_apply_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normOneClassMeasure_univ :
     normOneClassMeasure K Set.univ = normOneMeasure K (normOneFundamentalDomain K) := by
@@ -212,7 +210,7 @@ theorem normOneClassMeasure_univ :
     Set.preimage_univ, Measure.restrict_apply_univ]
 
 /- English proof (translation)
-Simplify using `only [hχ, Circle.coe_one]`. Rewrite using `[setIntegral_const, normOneClassMeasure_univ, Measure.real_def, Complex.real_smul, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem setIntegral_char_eq_volume {χ : HeckeCharacter K}
     (hχ : ∀ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) = 1) :
@@ -230,7 +228,7 @@ def thetaIntegral (w : InfinitePlace K) (F : 𝔸[K] → ℂ) (χ : HeckeCharact
   ∫ u in normOneFundamentalDomain K, thetaIntegrand w F χ t u ∂normOneMeasure K
 
 /- English proof (translation)
-Unfold `thetaIntegrand`. Rewrite using `[toIdele_mul_diagonalToNormOne]`. Use `congr 1`. Rewrite using `[Subgroup.coe_mul, coe_diagonalToNormOne, ← mul_assoc, mul_comm _ (diagonal K ξ)]`. Conclude with `adelicTheta_diagonal_mul F ξ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaIntegrand_mul_diagonalToNormOne (w : InfinitePlace K) (F : 𝔸[K] → ℂ)
     (χ : HeckeCharacter K) (t : {r : ℝ // 0 < r}) (ξ : Kˣ) (u : normOneSubgroup K) :
@@ -242,7 +240,7 @@ theorem thetaIntegrand_mul_diagonalToNormOne (w : InfinitePlace K) (F : 𝔸[K] 
   exact adelicTheta_diagonal_mul F ξ _
 
 /- English proof (translation)
-Establish `h1 : Continuous fun u : normOneSubgroup K ↦ moduleSection w t * (u : IdeleGroup K)` using `continuous_const.mul continuous_subtype_val`. Establish `h2 : Continuous fun u : normOneSubgroup K ↦ (χ.toIdele (u : IdeleGroup K) : ℂ)` using `continuous_subtype_val.comp (χ.continuous_toIdele.comp continuous_subtype_val)`. Conclude with `((continuous_adelicTheta hF).comp h1).mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_thetaIntegrand (w : InfinitePlace K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) (χ : HeckeCharacter K) (t : {r : ℝ // 0 < r}) :
@@ -254,7 +252,7 @@ theorem continuous_thetaIntegrand (w : InfinitePlace K) {F : 𝔸[K] → ℂ}
   exact ((continuous_adelicTheta hF).comp h1).mul h2
 
 /- English proof (translation)
-The claim follows from `((continuous_thetaIntegrand w hF χ t).continuousOn.integrableOn_compact (isCompact_closure_normOneFundamentalDomain K)).mono_set subset_closure`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_thetaIntegrand (w : InfinitePlace K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) (χ : HeckeCharacter K) (t : {r : ℝ // 0 < r}) :
@@ -263,7 +261,7 @@ theorem integrableOn_thetaIntegrand (w : InfinitePlace K) {F : 𝔸[K] → ℂ}
     (isCompact_closure_normOneFundamentalDomain K)).mono_set subset_closure
 
 /- English proof (translation)
-The claim follows from `((continuous_subtype_val.comp (χ.continuous_toIdele.comp continuous_subtype_val)).continuousOn.integrableOn_compact (isCompact_closure_normOneFundamentalDomain K)).mono_set subset_closure`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_char (χ : HeckeCharacter K) :
     IntegrableOn (fun u : normOneSubgroup K ↦ (χ.toIdele (u : IdeleGroup K) : ℂ))
@@ -280,9 +278,9 @@ theorem toIdele_inv (χ : HeckeCharacter K) (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-Unfold `thetaIntegrand`. Establish `hmod : (ideleModule K (moduleSection w t⁻¹ * (u : IdeleGroup K)) : ℝ) = (t : ℝ)⁻¹`. Establish `hu : ideleModule K (u : IdeleGroup K) = 1` using `u.2`. Rewrite using `[map_mul, hu, mul_one, ideleModule_moduleSection]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hinv : (moduleSection w t⁻¹ * (u : IdeleGroup K))⁻¹ = moduleSection w t * ((u⁻¹ : normOneSubgroup K) : IdeleGroup K)`. Rewrite using `[mul_inv, map_inv, inv_inv, InvMemClass.coe_inv, mul_comm]`. Establish `hχ : (χ.toIdele (u : IdeleGroup K) : ℂ) = ((χ⁻¹).toIdele ((u⁻¹ : normOneSubgroup K) : IdeleGroup K) : ℂ)`. Rewrite using `[toIdele_inv, InvMemClass.coe_inv, map_inv, inv_inv]`. Rewrite using `[adelicTheta_eq hF, hmod, hinv, hχ, Complex.ofReal_inv, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -305,7 +303,7 @@ theorem thetaIntegrand_inv (w : InfinitePlace K) {F : 𝔸[K] → ℂ} (hF : F �
   ring
 
 /- English proof (translation)
-Unfold `thetaIntegral`. Repeatedly rewrite using `[thetaIntegrand_inv w hF χ t]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `setIntegral_inv_eq (h := thetaIntegrand w (adelicFourier K F) χ⁻¹ t) (thetaIntegrand_mul_diagonalToNormOne w _ χ⁻¹ t)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem thetaIntegral_inv (w : InfinitePlace K) {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K)
     (χ : HeckeCharacter K) (t : {r : ℝ // 0 < r}) :
@@ -318,7 +316,7 @@ theorem thetaIntegral_inv (w : InfinitePlace K) {F : 𝔸[K] → ℂ} (hF : F �
     (thetaIntegrand_mul_diagonalToNormOne w _ χ⁻¹ t)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Unfold `thetaIntegral thetaIntegrand`. Simplify using `only [adelicTheta_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem thetaIntegral_neg (w : InfinitePlace K) (F : 𝔸[K] → ℂ) (χ : HeckeCharacter K) :
     thetaIntegral w (fun x ↦ F (-x)) χ = thetaIntegral w F χ := by

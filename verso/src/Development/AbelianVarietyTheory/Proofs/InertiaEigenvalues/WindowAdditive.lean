@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory.PMonE
 
 /- English proof (translation)
-Establish `hd : ∀ J, 0 ≤ α J - α (J + 1)` using `fun J => sub_nonneg.2 (hα (by omega))`. Establish `hq1 : (1 : ℝ) ≤ q` using `by linarith`. Prove the components needed by the constructor for the conclusion. Introduce `J hJ`. Proceed by induction on `J, hJ using Int.leInductionDown with`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `base => exact le_rfl`. Consider the case `pred n hn ih`. Establish `h1` using `hf (n - 1)`. Establish `h2` using `hd (n - 1)`. Rewrite `h1`, `h2` using `[sub_add_cancel]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : q ^ (1 : ℤ) ≤ q ^ (r - (n - 1))` using `zpow_le_zpow_right₀ hq1 (by omega)`. Rewrite `h3` using `[zpow_one]`. Use polynomial arithmetic with `[mul_nonneg h2 (show 0 ≤ q ^ (r - (n - 1)) - 2 by linarith)]`. Introduce `J hJ`. Proceed by induction on `J, hJ using Int.leInduction with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `base`. Establish `h1` using `hf r`. Rewrite `h1` using `[sub_self, zpow_zero, sub_self, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ n hn ih`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Establish `h1` using `hf n`. Establish `h2` using `hd n`. Establish `h3 : q ^ (r - n) ≤ q ^ (-1 : ℤ)` using `zpow_le_zpow_right₀ hq1 (by omega)`. Rewrite `h3` using `[zpow_neg_one]`. Establish `h4 : q⁻¹ ≤ (2 : ℝ)⁻¹` using `inv_anti₀ (by norm_num) hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg h2 (show 0 ≤ 2⁻¹ - q ^ (r - n) by linarith)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem window_additive (q : ℝ) (hq : 2 ≤ q) (r : ℤ) (α f : ℤ → ℝ) (hα : Antitone α)
     (hf : ∀ J, f (J + 1) - f J = (α J - α (J + 1)) * (q ^ (r - J) - 1)) :
@@ -47,33 +47,31 @@ theorem window_additive (q : ℝ) (hq : 2 ≤ q) (r : ℤ) (α f : ℤ → ℝ) 
       nlinarith [mul_nonneg h2 (show 0 ≤ 2⁻¹ - q ^ (r - n) by linarith)]
 
 /- English proof (translation)
-Introduce `p h hp hh a ρ ha hρ hanti hlt hper _ hrel r hr J`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Use `set α : ℤ → ℝ := fun J => Real.log (a J) with hαdef`. Use `set f : ℤ → ℝ := fun J => Real.log (a J * ρ J ^ ((p : ℝ) ^ r)) with hfdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα : Antitone α` using `fun i j hij => Real.log_le_log (ha j) (hanti hij)`. Establish `hpos : ∀ J, 0 < a J * ρ J ^ ((p : ℝ) ^ r)` using `fun J => mul_pos (ha J) (Real.rpow_pos_of_pos (hρ J) _)`. Establish `hlog : ∀ (J : ℤ) (e : ℝ), Real.log (a J * ρ J ^ e) = α J + e * Real.log (ρ J)`. Introduce `J e`. Rewrite using `[Real.log_mul (ha J).ne' (Real.rpow_pos_of_pos (hρ J) _).ne', Real.log_rpow (hρ J)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : ∀ J, f (J + 1) - f J = (α J - α (J + 1)) * ((p : ℝ) ^ ((r : ℤ) - J) - 1)`. Introduce `J`. Establish `h1` using `congrArg Real.log (hrel J)`. Rewrite `h1` using `[hlog, hlog]`. Establish `h2 : (p : ℝ) ^ r = (p : ℝ) ^ ((r : ℤ) - J) * (p : ℝ) ^ J`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← zpow_add₀ hp0.ne', sub_add_cancel, zpow_natCast]`. Simplify using `only [hfdef, hlog]`. Rewrite using `[h2]`. Take the linear combination `(p : ℝ) ^ ((r : ℤ) - J) * h1`. Take `⟨hL, hR⟩` from `window_additive p hp2 r α f hα hf`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hαper : ∀ J, α (J + h) = α J - Real.log p`. Introduce `J`. Simplify using `only [hαdef]`. Rewrite using `[hper, Real.log_div (ha J).ne' hp0.ne']`. Establish `hdiv : f J ≤ f r - Real.log p → a J * ρ J ^ ((p : ℝ) ^ r) ≤ a r * ρ r ^ ((p : ℝ) ^ r) / p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `H`. Rewrite using `[← Real.log_le_log_iff (hpos J) (div_pos (hpos r) hp0), Real.log_div (hpos r).ne' hp0.ne']`. Conclude with `H`. Establish `hr0 : α r ≤ α 0` using `hα (by omega)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← Real.log_le_log_iff (hpos J) (hpos r)]`. Express the relevant statement in the definitionally equal form `f J ≤ f r`. Break down `le_or_gt J r with hJ | hJ` into its components or cases. Use `hL J hJ` as an intermediate fact. Use `hα hJ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `hR J hJ` as an intermediate fact. Use `hα (show (r : ℤ) + 1 ≤ J from hJ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hJ`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[← Real.log_lt_log_iff (hpos J) (hpos r)]`. Express the relevant statement in the definitionally equal form `f J < f r`. Establish `h1` using `hL J (by omega)`. Establish `h2 : α (-1) ≤ α J` using `hα (by omega)`. Establish `h3 : α 0 < α (-1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Real.log_lt_log (ha 0)` to reduce the goal to its premises. Establish `h4` using `hlt`. Establish `h5` using `hper (-1)`. Rewrite `h5` using `[show (-1 : ℤ) + h = (h : ℤ) - 1 by ring]`. Rewrite `h4` using `[h5, mul_div_cancel₀ _ hp0.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h4`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hJ`. Apply `hdiv` to reduce the goal to its premises. Establish `h1` using `hL J (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : α (-h) ≤ α J` using `hα hJ`. Establish `h3` using `hαper (-h)`. Rewrite `h3` using `[neg_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hdiv` to reduce the goal to its premises. Establish `h1` using `hR J (by omega)`. Establish `h2 : α J ≤ α (h + h + h)` using `hα (by omega)`. Establish `h3` using `hαper (h + h)`. Establish `h4` using `hαper h`.
-
-Establish `h5 : α h ≤ α (r + 1)` using `hα (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem window_ineq : ∀ (p h : ℕ), 1 < p → 0 < h → ∀ a ρ : ℤ → ℝ, (∀ J, 0 < a J) → (∀ J, 0 < ρ J) → Antitone a → a 0 < p * a ((h : ℤ) - 1) → (∀ J, a (J + h) = a J / p) → (∀ J, ρ (J + h) = ρ J ^ ((p : ℝ) ^ h)⁻¹) → (∀ J, a (J + 1) * ρ (J + 1) ^ ((p : ℝ) ^ J) = a J * ρ J ^ ((p : ℝ) ^ J)) → ∀ r : ℕ, r < h → ∀ J : ℤ, a J * ρ J ^ ((p : ℝ) ^ r) ≤ a r * ρ r ^ ((p : ℝ) ^ r) ∧ (J < 0 → a J * ρ J ^ ((p : ℝ) ^ r) < a r * ρ r ^ ((p : ℝ) ^ r)) ∧ (J ≤ -(h : ℤ) → a J * ρ J ^ ((p : ℝ) ^ r) ≤ a r * ρ r ^ ((p : ℝ) ^ r) / p) ∧ (3 * (h : ℤ) ≤ J → a J * ρ J ^ ((p : ℝ) ^ r) ≤ a r * ρ r ^ ((p : ℝ) ^ r) / p) := by
   intro p h hp hh a ρ ha hρ hanti hlt hper _ hrel r hr J

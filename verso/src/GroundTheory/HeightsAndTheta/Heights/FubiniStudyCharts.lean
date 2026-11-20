@@ -16,20 +16,20 @@ namespace CP
 def chartVec (i : Fin (N + 1)) (z : Fin N → ℂ) : Fin (N + 1) → ℂ := Fin.insertNth i 1 z
 
 /- English proof (translation)
-Simplify using `[chartVec]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma chartVec_self (i : Fin (N + 1)) (z : Fin N → ℂ) : chartVec i z i = 1 := by
   simp [chartVec]
 
 /- English proof (translation)
-Simplify using `[chartVec]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma chartVec_succAbove (i : Fin (N + 1)) (z : Fin N → ℂ) (j : Fin N) :
     chartVec i z (i.succAbove j) = z j := by
   simp [chartVec]
 
 /- English proof (translation)
-Introduce `h`. Use `congr_fun h i` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma chartVec_ne_zero (i : Fin (N + 1)) (z : Fin N → ℂ) : chartVec i z ≠ 0 := by
   intro h
@@ -37,7 +37,7 @@ lemma chartVec_ne_zero (i : Fin (N + 1)) (z : Fin N → ℂ) : chartVec i z ≠ 
   simp at this
 
 /- English proof (translation)
-Take `rfl | ⟨k, rfl⟩` from `Fin.eq_self_or_eq_succAbove i m`. Simplify using `only [chartVec_self]`. Conclude with `contDiff_const`. Simplify using `only [chartVec_succAbove]`. Conclude with `(ContinuousLinearMap.proj (R := 𝕜) (φ := fun _ : Fin N => ℂ) k).contDiff`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiff_chartVec_apply (𝕜 : Type*) [NontriviallyNormedField 𝕜] [NormedAlgebra 𝕜 ℂ]
     (i m : Fin (N + 1)) : ContDiff 𝕜 ∞ (fun z : Fin N → ℂ => chartVec i z m) := by
@@ -47,7 +47,7 @@ lemma contDiff_chartVec_apply (𝕜 : Type*) [NontriviallyNormedField 𝕜] [Nor
     exact (ContinuousLinearMap.proj (R := 𝕜) (φ := fun _ : Fin N => ℂ) k).contDiff
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun m => (contDiff_chartVec_apply ℂ i m).continuous`.
+A detailed English derivation is pending.
 -/
 lemma continuous_chartVec (i : Fin (N + 1)) : Continuous (chartVec (N := N) i) :=
   continuous_pi fun m => (contDiff_chartVec_apply ℂ i m).continuous
@@ -56,7 +56,7 @@ def chartInv (i : Fin (N + 1)) (z : Fin N → ℂ) : CP N :=
   Projectivization.mk ℂ (chartVec i z) (chartVec_ne_zero i z)
 
 /- English proof (translation)
-The claim follows from `ProjTopology.continuous_mk'.comp ((continuous_chartVec i).subtype_mk fun z => chartVec_ne_zero i z)`.
+A detailed English derivation is pending.
 -/
 lemma continuous_chartInv (i : Fin (N + 1)) : Continuous (chartInv (N := N) i) :=
   ProjTopology.continuous_mk'.comp
@@ -85,27 +85,27 @@ def chartDomain (i : Fin (N + 1)) : Set (CP N) :=
     simp [ht]) x}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] lemma mk_mem_chartDomain (i : Fin (N + 1)) (v : Fin (N + 1) → ℂ) (hv : v ≠ 0) :
     Projectivization.mk ℂ v hv ∈ chartDomain i ↔ v i ≠ 0 := Iff.rfl
 
 /- English proof (translation)
-Simplify using `[chartInv]`.
+Simplify using the standard rewrite rules.
 -/
 lemma chartInv_mem (i : Fin (N + 1)) (z : Fin N → ℂ) : chartInv i z ∈ chartDomain i := by
   simp [chartInv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[chartInv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma chartCoord_chartInv (i : Fin (N + 1)) (z : Fin N → ℂ) : chartCoord i (chartInv i z) = z := by
   funext j; simp [chartInv]
 
 /- English proof (translation)
-Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv`. Rewrite `hx` using `[mk_mem_chartDomain]`. Simplify using `only [chartInv, chartCoord_mk]`. Rewrite using `[Projectivization.mk_eq_mk_iff]`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Units.mk0 (v i)⁻¹ (inv_ne_zero hx), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Take `rfl | ⟨k, rfl⟩` from `Fin.eq_self_or_eq_succAbove i m`. Simplify using `[hx]`. Simplify using `[div_eq_inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma chartInv_chartCoord (i : Fin (N + 1)) {x : CP N} (hx : x ∈ chartDomain i) :
     chartInv i (chartCoord i x) = x := by
@@ -121,7 +121,7 @@ lemma chartInv_chartCoord (i : Fin (N + 1)) {x : CP N} (hx : x ∈ chartDomain i
     · simp [div_eq_inv_mul]
 
 /- English proof (translation)
-Use `⟨⟨rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv => exact ⟨⟨v, hv⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 -/
 lemma isQuotientMap_mk' : IsQuotientMap (Projectivization.mk' ℂ : {v : Fin (N + 1) → ℂ // v ≠ 0} → CP N) := by
   refine ⟨⟨rfl⟩, fun x => ?_⟩
@@ -129,9 +129,9 @@ lemma isQuotientMap_mk' : IsQuotientMap (Projectivization.mk' ℂ : {v : Fin (N 
   | h v hv => exact ⟨⟨v, hv⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[ProjTopology.isOpen_iff]`. Establish `: (Projectivization.mk' ℂ) ⁻¹' (chartDomain (N` using `N) i) = {v : {v : Fin (N + 1) → ℂ // v ≠ 0} | v.1 i ≠ 0} := by`. Use extensionality with `⟨v, hv⟩`. Conclude with `Iff.rfl`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_ne_fun ((continuous_apply i).comp continuous_subtype_val) continuous_const`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_chartDomain (i : Fin (N + 1)) : IsOpen (chartDomain (N := N) i) := by
   rw [ProjTopology.isOpen_iff]
@@ -142,9 +142,9 @@ lemma isOpen_chartDomain (i : Fin (N + 1)) : IsOpen (chartDomain (N := N) i) := 
   exact isOpen_ne_fun ((continuous_apply i).comp continuous_subtype_val) continuous_const
 
 /- English proof (translation)
-Rewrite using `[isQuotientMap_mk'.continuousOn_isOpen_iff (isOpen_chartDomain i)]`. Use `continuousOn_pi.mpr fun j => ?_` and prove the remaining obligations. Introduce `v hv`. Establish `hvi : v.1 i ≠ 0` using `hv`. Establish `hc : ContinuousAt (fun w : {v : Fin (N + 1) → ℂ // v ≠ 0} => w.1 (i.succAbove j) / w.1 i) v` using `(((continuous_apply _).comp continuous_subtype_val).continuousAt).div (((continuous_apply _).comp continuous_subtype_val).continuousAt) hvi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc.continuousWithinAt`.
+A detailed English derivation is pending.
 -/
 lemma continuousOn_chartCoord (i : Fin (N + 1)) :
     ContinuousOn (chartCoord (N := N) i) (chartDomain i) := by
@@ -172,7 +172,7 @@ def chart (i : Fin (N + 1)) : OpenPartialHomeomorph (CP N) (Fin N → ℂ) where
   continuousOn_invFun := (continuous_chartInv i).continuousOn
 
 /- English proof (translation)
-Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hv`. Conclude with `⟨i, hi⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_mem_chartDomain (x : CP N) : ∃ i, x ∈ chartDomain i := by
   induction x using Projectivization.ind with
@@ -183,7 +183,7 @@ lemma exists_mem_chartDomain (x : CP N) : ∃ i, x ∈ chartDomain i := by
 def chartIndex (x : CP N) : Fin (N + 1) := (exists_mem_chartDomain x).choose
 
 /- English proof (translation)
-The claim follows from `(exists_mem_chartDomain x).choose_spec`.
+A detailed English derivation is pending.
 -/
 lemma mem_chartDomain_chartIndex (x : CP N) : x ∈ chartDomain (chartIndex x) :=
   (exists_mem_chartDomain x).choose_spec
@@ -201,7 +201,7 @@ lemma chartCoord_chartInv_eq (i j : Fin (N + 1)) (z : Fin N → ℂ) :
     chartCoord j (chartInv i z) = fun k => chartVec i z (j.succAbove k) / chartVec i z j := rfl
 
 /- English proof (translation)
-Simplify using `only [chartCoord_chartInv_eq]`. Use `contDiffOn_pi.mpr fun k => ?_` and prove the remaining obligations. Conclude with `(contDiff_chartVec_apply ℂ i _).contDiffOn.div (contDiff_chartVec_apply ℂ i _).contDiffOn fun z hz => hz`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma contDiffOn_transition (i j : Fin (N + 1)) :
     ContDiffOn ℂ ∞ (fun z => chartCoord j (chartInv i z)) {z | chartVec i z j ≠ 0} := by

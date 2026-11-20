@@ -16,15 +16,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocWeil.CompactPart
 
 /- English proof (translation)
-Rewrite using `[← Matrix.fromBlocks_toBlocks b]`. Generalize the expression as in `b.toBlocks₁₁ = a, b.toBlocks₁₂ = c, b.toBlocks₂₁ = d, b.toBlocks₂₂ = e`. Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.neg_mul, Matrix.mul_neg, true_and, and_true]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : c = 0`. Use extensionality with `i j`. Conclude with `h (.inl i) (.inr j) (by simp [sameBlock])`. Establish `hd : d = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `h (.inr i) (.inl j) (by simp [sameBlock])`. Simplify using `[hc, hd]`. Introduce and unpack `⟨h1, h2⟩ x y hxy`. Apply the tactic sequence `rcases x with i | i <;> rcases y with j | j`. Simplify using `[sameBlock] at hxy`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun (congrFun h1 i) j` as an intermediate fact. Simplify using `only [Matrix.neg_apply] at this`. Use `show c i j = 0`. Take the linear combination `this / 2`. Use `congrFun (congrFun h2 i) j` as an intermediate fact.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.neg_apply] at this`. Use `show d i j = 0`. Take the linear combination `-this / 2`. Simplify using `[sameBlock] at hxy`.
+A detailed English derivation is pending.
 -/
 theorem isKC_iff {p q : ℕ} (b : Mat p q) : IsKC b ↔ Formalism.UG.Jpq p q * b = b * Formalism.UG.Jpq p q := by
   rw [← Matrix.fromBlocks_toBlocks b]
@@ -54,22 +54,22 @@ theorem isKC_iff {p q : ℕ} (b : Mat p q) : IsKC b ↔ Formalism.UG.Jpq p q * b
     · simp [sameBlock] at hxy
 
 /- English proof (translation)
-Rewrite using `[isKC_iff, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isKC_one {p q : ℕ} : IsKC (1 : Mat p q) := by
   rw [isKC_iff, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite `*` using `[isKC_iff]`. Rewrite using `[← Matrix.mul_assoc, ha, Matrix.mul_assoc, hb, Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isKC_mul {p q : ℕ} {a b : Mat p q} (ha : IsKC a) (hb : IsKC b) : IsKC (a * b) := by
   rw [isKC_iff] at *
   rw [← Matrix.mul_assoc, ha, Matrix.mul_assoc, hb, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite `*` using `[isKC_iff]`. Establish `h' : b * a = 1` using `mul_eq_one_comm.1 h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc b a, ← ha]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [h, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem isKC_inv {p q : ℕ} {a b : Mat p q} (ha : IsKC a) (h : a * b = 1) : IsKC b := by
   rw [isKC_iff] at *
@@ -88,14 +88,14 @@ theorem infMat_eq (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
     infMat D.sp.cm.sig V.gram θ g = (infHom V g).1.map θ := rfl
 
 /- English proof (translation)
-Rewrite using `[infMat_eq V, infMat_eq V, infMat_eq V, map_mul, Units.val_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infMat_mul' (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (g g' : GA D V) :
     infMat D.sp.cm.sig V.gram θ (g * g') = infMat D.sp.cm.sig V.gram θ g * infMat D.sp.cm.sig V.gram θ g' := by
   rw [infMat_eq V, infMat_eq V, infMat_eq V, map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Establish `hk' : infHom V k = 1` using `hk`. Rewrite using `[infMat_eq V, hk', Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem infMat_of_fin (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) {k : GA D V} (hk : k ∈ GfC V) :
     infMat D.sp.cm.sig V.gram θ k = 1 := by
@@ -103,9 +103,9 @@ theorem infMat_of_fin (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →
   rw [infMat_eq V, hk', Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hd : IsUnit (gramAt D V τ).det`. Establish `: (gramAt D V τ).det = tauE D τ V.gram.det` using `((tauE D τ).map_det V.gram).symm`. Rewrite using `[this, isUnit_iff_ne_zero]`. Conclude with `(map_ne_zero _).2 (GlobalTheory.LocWCompare.gram_det_ne V)`. Establish `h1 : ((gramAt D V τ)⁻¹ * (Aᴴ * Formalism.UG.Jpq (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2)) * A = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, hA, Matrix.nonsing_inv_mul _ hd]`. Establish `hc` using `(Formalism.UG.P.sig_data _ _ _ (hV (tauE D τ))).1`. Use `⟨_, h1, (Matrix.mul_eq_one_comm_of_card_eq _ _ ℂ ?_).1 h1⟩` and prove the remaining obligations. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at hc ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_inv {V : HSp D} (hV : V.SigOK) {τ : D.what₂.Tau}
     {A : Matrix (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) (Fin V.rank) ℂ}

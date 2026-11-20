@@ -11,9 +11,9 @@ namespace GlobalTheory.KapOrb.PullInj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Set `O : Subring (w.adicCompletion E)` to `Ov E w`. Establish `inj : Function.Injective (O.subtype.mapMatrix (m` using `Fin n)) := fun A B h => funext fun i => funext fun j => Subtype.ext (congrFun (congrFun h i) j)`. Set `A : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : O.subtype.mapMatrix A = g.val` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : O.subtype.mapMatrix B = (g⁻¹).val` using `rfl`. Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hA, hB, map_one, Units.inv_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_KGL_of_int {n : ℕ} (w : Pl E) (g : GLw n w)
     (h1 : ∀ a b, g.val a b ∈ w.adicCompletionIntegers E)
@@ -30,9 +30,9 @@ theorem mem_KGL_of_int {n : ℕ} (w : Pl E) (g : GLw n w)
   · rw [map_mul, hA, hB, map_one, Units.inv_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Simplify using `using h 1 i`. Introduce `h c i`. Establish `hc : Valued.v (e (algebraMap K.O K.E c)) ≤ 1` using `(hB.2.1 _).1 ⟨c, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc' : e (algebraMap K.O K.E c) ∈ w.adicCompletionIntegers E` using `hc`. Express the relevant statement in the definitionally equal form `((g⁻¹ : GLw n w).val *ᵥ ψ (c • y)) i ∈ w.adicCompletionIntegers E`. Rewrite using `[← algebraMap_smul K.E c y, hψ, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hc' (h i)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pullLat_iff (w : Pl E) {K : GlobalTheory.UnitLemma.UQ} {e : K.E ≃+* w.adicCompletion E} (hB : Bridge w K e)
     (B : GlobalTheory.UnitLemma.InvAlg K) {n : ℕ} (ψ : B.A ≃+ (Fin n → w.adicCompletion E))
@@ -49,11 +49,11 @@ theorem mem_pullLat_iff (w : Pl E) {K : GlobalTheory.UnitLemma.UQ} {e : K.E ≃+
     exact mul_mem hc' (h i)
 
 /- English proof (translation)
-Use `set y := ψ.symm (g'.val *ᵥ Pi.single j 1) with hy`. Establish `hψy : ψ y = g'.val *ᵥ Pi.single j 1` using `by simp [hy]`. Establish `hy' : y ∈ pullLat w B ψ g'`. Rewrite using `[mem_pullLat_iff w hB B ψ hψ, hψy]`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(mem_pullLat_iff w hB B ψ hψ g y).1 (h hy') i` as an intermediate fact. Rewrite `this` using `[hψy, Matrix.mulVec_mulVec, ← Units.val_mul, Matrix.mulVec_single_one]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem entries_int_of_le (w : Pl E) {K : GlobalTheory.UnitLemma.UQ} {e : K.E ≃+* w.adicCompletion E} (hB : Bridge w K e)
     (B : GlobalTheory.UnitLemma.InvAlg K) {n : ℕ} (ψ : B.A ≃+ (Fin n → w.adicCompletion E))
@@ -74,9 +74,9 @@ theorem entries_int_of_le (w : Pl E) {K : GlobalTheory.UnitLemma.UQ} {e : K.E �
   simpa using this
 
 /- English proof (translation)
-Introduce `E _ _ _ w K e hB B n ψ hψ g g' h`. Use `mem_KGL_of_int w _ (entries_int_of_le w hB B ψ hψ g g' h.ge) ?_` and prove the remaining obligations. Introduce `a b`. Establish `e1 : (g⁻¹ * g')⁻¹ = g'⁻¹ * g` using `by group`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `entries_int_of_le w hB B ψ hψ g' g h.le a b`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (K : GlobalTheory.UnitLemma.UQ)
     (e : K.E ≃+* w.adicCompletion E), Bridge w K e → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (n : ℕ)

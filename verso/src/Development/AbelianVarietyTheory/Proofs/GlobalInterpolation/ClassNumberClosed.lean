@@ -8,7 +8,7 @@ namespace GlobalTheory.ColClassNumber
 open Formalism.MainNotions
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ x hx i => classNumber_all (Fm.D x i) (Fm.ex x hx i).lev⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem classNumber_closed (𝒞 : FamClass) :
     Closed 𝒞 fun Fm _ => ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.ClassNumberFormula₂ (Fm.D x i) (Fm.ex x hx i).lev :=

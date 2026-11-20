@@ -9,9 +9,9 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Use `(Set.finite_Iic (Finsupp.equivFunOnFinite.symm fun v : (Σ k, ι k) => m v.1)).subset ?_` and prove the remaining obligations. Introduce `d hd`. Simplify using `only [Set.mem_ofPred_eq] at hd`. Simplify using `only [Set.mem_Iic]`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoord : (Finsupp.weight (blockWeight ι) d) v.1 = Finsupp.weight (fun x => blockWeight ι x v.1) d`. Simplify using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Establish `hle : d v ≤ Finsupp.weight (fun x => blockWeight ι x v.1) d` using `Finsupp.le_weight _ (by simp [blockWeight]) d`. Rewrite `hle` using `[← hcoord, hd]`. Simplify using `using hle`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_blockWeight_eq {K : Type} [Fintype K] [DecidableEq K] (ι : K → Type)
     [∀ k, Fintype (ι k)] (m : K → ℕ) :
@@ -31,7 +31,7 @@ theorem finite_blockWeight_eq {K : Type} [Fintype K] [DecidableEq K] (ι : K →
   simpa using hle
 
 /- English proof (translation)
-Rewrite using `[weightedHomogeneousSubmodule_eq_finsupp_supported]`. Use `(finite_blockWeight_eq ι m).to_subtype` as an intermediate fact. Conclude with `Module.Finite.of_basis (basisRestrictSupport F {d | Finsupp.weight (blockWeight ι) d = m})`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_weightedHomogeneousSubmodule (F : Type u) [Field F] {K : Type}
     [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (m : K → ℕ) :
@@ -42,13 +42,13 @@ theorem finiteDimensional_weightedHomogeneousSubmodule (F : Type u) [Field F] {K
     (basisRestrictSupport F {d | Finsupp.weight (blockWeight ι) d = m})
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ I m`. Use `finiteDimensional_weightedHomogeneousSubmodule F ι m` as an intermediate fact. Use `set S := weightedHomogeneousSubmodule F (blockWeight ι) m with hS`. Use `set J : Submodule F (MRing ι F) := I.restrictScalars F with hJ`. Set `π : MRing ι F →ₗ[F] MRing ι F ⧸ I` to `(Ideal.Quotient.mkₐ F I).toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `q : S →ₗ[F] MRing ι F ⧸ I` to `π ∘ₗ S.subtype`. Establish `hrange : LinearMap.range q = gradedPiece I m`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Both sides reduce to the same expression. Establish `hkerπ : LinearMap.ker π = J`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `[π, hJ, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hker : (LinearMap.ker q).map S.subtype = S ⊓ J`. Rewrite using `[LinearMap.ker_comp, hkerπ, Submodule.map_comap_subtype]`. Establish `hkerdim : Module.finrank F (LinearMap.ker q) = Module.finrank F ↥(S ⊓ J)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hker]`. Conclude with `(Submodule.equivMapOfInjective S.subtype S.injective_subtype _).finrank_eq`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker q`. Rewrite `hrn` using `[hrange, hkerdim]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem GradedPieceQuot.proof : GradedPieceQuot.Statement.{u} := by
   intro F _ K _ _ ι _ I m

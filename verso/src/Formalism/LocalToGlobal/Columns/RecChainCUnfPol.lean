@@ -46,7 +46,7 @@ theorem stepF_mem (u : Pr.Word) (j : ℕ) (b : Λ.β j) :
     (stepF W Λ u j).mem b = formGSD (colVal W u j (Pr.vT u) Pr.vGs) (Λ.lev j b) := rfl
 
 /- English proof (translation)
-Introduce `_` and use `formGSD_ok _ _ hX (colVal_eqv W hX u j _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stepFOk (hX : X.Ok) (u : Pr.Word) (j : ℕ) : (stepF W Λ u j).Ok :=
   fun _ => formGSD_ok _ _ hX (colVal_eqv W hX u j _ _)
@@ -64,7 +64,7 @@ def recDGamC (hX : X.Ok) : ℕ :=
   Finset.univ.lcm fun u : Pr.Word => (Finset.range (R.m + 1)).lcm fun j => famLcm (stepF W Λ u j) (stepFOk W Λ hX u j)
 
 /- English proof (translation)
-Use `Dvd.dvd.trans ?_ (Finset.dvd_lcm (Finset.mem_univ u))` and prove the remaining obligations. Use `Dvd.dvd.trans ?_ (Finset.dvd_lcm (Finset.mem_range.2 (Nat.lt_succ_of_le hj)))` and prove the remaining obligations. Conclude with `famLcm_dvd _ _ c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem recDGamC_dvd (hX : X.Ok) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m) (c : StClC W Λ u j) :
     Nat.card (FamStab (stepF W Λ u j) c) ∣ recDGamC W Λ hX := by
@@ -74,9 +74,9 @@ theorem recDGamC_dvd (hX : X.Ok) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m) (c : S
   exact famLcm_dvd _ _ c
 
 /- English proof (translation)
-Use `Nat.pos_of_ne_zero ?_` and prove the remaining obligations. Unfold `recDGamC`. Rewrite using `[Ne, Finset.lcm_eq_zero_iff]`. Introduce and unpack `⟨u, -, h⟩`. Rewrite `h` using `[Finset.lcm_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j, -, h⟩` from `h`. Conclude with `(famLcm_pos _ _).ne' h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem recDGamC_pos (hX : X.Ok) : 0 < recDGamC W Λ hX := by
   classical
@@ -91,21 +91,21 @@ theorem recDGamC_pos (hX : X.Ok) : 0 < recDGamC W Λ hX := by
 @[irreducible] def recDGamAllC (Λ : LevCh X Pr R) {σ₀ : X.K →+* ℂ} (hX : X.Ok) (G : ChainGlob W σ₀) : ℕ := dGamAut X R
 
 /- English proof (translation)
-Unfold `recDGamAllC`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem recDGamAllC_eq {σ₀ : X.K →+* ℂ} (hX : X.Ok) (G : ChainGlob W σ₀) : recDGamAllC W Λ hX G = dGamAut X R := by
   unfold recDGamAllC
   rfl
 
 /- English proof (translation)
-Rewrite using `[recDGamAllC_eq]`. Conclude with `dGamAut_pos hX`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recDGamAllC_pos {σ₀ : X.K →+* ℂ} (hX : X.Ok) (G : ChainGlob W σ₀) : 0 < recDGamAllC W Λ hX G := by
   rw [recDGamAllC_eq]
   exact dGamAut_pos hX
 
 /- English proof (translation)
-Rewrite using `[recDGamAllC_eq]`. Conclude with `formGSD_stab_dvd_dGamAut hX (dga_N_mono R hj) (colVal W u j (Pr.vT u) Pr.vGs) (Λ.lev j c.1) (repC c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recDGamAllC_dvd {σ₀ : X.K →+* ℂ} (hX : X.Ok) (G : ChainGlob W σ₀) (u : Pr.Word) (j : ℕ) (hj : j ≤ R.m)
     (c : StClC W Λ u j) : Nat.card (FamStab (stepF W Λ u j) c) ∣ recDGamAllC W Λ hX G := by
@@ -140,7 +140,7 @@ def rhoPt' (Dc : DetChr X R.m) {u : Pr.Word} (i : ℕ) (p : DecoSet X.E (R.N (i 
   else 1
 
 /- English proof (translation)
-Unfold `rhoPt`. Use `split_ifs with hc`. Conclude with `(rec_norm_units σ₀ (rec_norm_detTw σ₀ (G.chr.muAt_unit G.chr_unit i) _ _) (rec_norm_detTw σ₀ G.chr_unit.2 _ _) _).1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rhoPt_norm {W : Wts X Pr.Word R} {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) {u : Pr.Word} (i : ℕ)
     (p : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs) : ‖σ₀ (rhoPt G.chr i p : X.K)‖ = 1 := by
@@ -150,7 +150,7 @@ theorem rhoPt_norm {W : Wts X Pr.Word R} {σ₀ : X.K →+* ℂ} (G : ChainGlob 
   · simp
 
 /- English proof (translation)
-Unfold `rhoPt'`. Use `split_ifs with hc`. Conclude with `(rec_norm_units σ₀ (rec_norm_detTw σ₀ (G.chr.muAt_unit G.chr_unit i) _ _) (rec_norm_detTw σ₀ G.chr_unit.2 _ _) _).2`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rhoPt'_norm {W : Wts X Pr.Word R} {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) {u : Pr.Word} (i : ℕ)
     (p : DecoSet X.E (R.N (i + 1)) (Pr.vT u) Pr.vGs) : ‖σ₀ (rhoPt' G.chr i p : X.K)‖ = 1 := by
@@ -188,13 +188,11 @@ def recChainC (hX : X.Ok) (σ₀ : X.K →+* ℂ) (G : ChainGlob W σ₀) (u : P
     (fun j hj c => recDGamAllC_dvd W Λ hX G u j hj c) A.toF
 
 /- English proof (translation)
-Use `set r := σ₀ (rhoPt G.chr i (repC c) : X.K) with hr`. Use `set r' := σ₀ (rhoPt' G.chr i (repC c') : X.K) with hr'`. Establish `h0 : r * r' ≠ 0`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `rhoPt_norm G i (repC c)` as an intermediate fact. Rewrite `this` using `[← hr, h, norm_zero]`. Conclude with `zero_ne_one this`. Introduce `h`. Use `rhoPt'_norm G i (repC c')` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← hr', h, norm_zero]`. Conclude with `zero_ne_one this`. Use function extensionality and compare the values at `(y' : FrS X σ₀ (R.N (i + 1)))`. Use `(congrArg (fun z : ℂ => (r * r') * z) (congrFun (A.unf_ev i c c' x) y')).trans ?_` and prove the remaining obligations. Use `show (r * r') * ((r * r')⁻¹ * _) = _`.
-
-Rewrite using `[← mul_assoc, mul_inv_cancel₀ h0, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recChainC_Kmap (hX : X.Ok) (σ₀ : X.K →+* ℂ) (G : ChainGlob W σ₀) (u : Pr.Word) (A : ChainArgC W Λ G u) (i : ℕ)
     (c : StClC W Λ u i) (c' : StClC W Λ u (i + 1)) (x : VV X.K (W.lamTrue u i)) :
@@ -296,7 +294,7 @@ def ChainArgC.ofXi {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} (hE : XiEquiv
         (σ₀ (rhoPt G.chr i (repC c) : X.K) * σ₀ (rhoPt' G.chr i (repC c') : X.K))⁻¹ • f) h0).trans (smul_zero _)).symm
 
 /- English proof (translation)
-The claim follows from `unfTh_polFn σ₀ Am.cD _ Q`.
+A detailed English derivation is pending.
 -/
 theorem recChainC_unf_pol (hX : X.Ok) {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} (hE : XiEquivC W Λ Ch sel mu cst Am u Ξ)
     (H : XiHypC W Λ Ch sel mu cst Am u Ξ G) (i : ℕ) (c : StClC W Λ u i) (c' : StClC W Λ u (i + 1)) (Q : Pol ℂ X.Tau (R.N i)) :

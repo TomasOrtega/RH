@@ -15,12 +15,12 @@ namespace GlobalTheory.GaussExt
 variable (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-The claim follows from `Monic.ne_zero (by monicity!)`.
+A detailed English derivation is pending.
 -/
 theorem X_sq_add_one_ne_zero : (X ^ 2 + 1 : F[X]) ≠ 0 := Monic.ne_zero (by monicity!)
 
 /- English proof (translation)
-Use `compute_degree!`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_X_sq_add_one : (X ^ 2 + 1 : F[X]).natDegree = 2 := by compute_degree!
 
@@ -29,35 +29,35 @@ def basisOneI : Module.Basis (Fin 2) F (Ext F) :=
     (finCongr (by rw [AdjoinRoot.powerBasis_dim, natDegree_X_sq_add_one]))
 
 /- English proof (translation)
-Simplify using `[basisOneI, Module.Basis.reindex_apply, PowerBasis.coe_basis, AdjoinRoot.powerBasis_gen, ii]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisOneI_apply (j : Fin 2) : basisOneI F j = ii F ^ (j : ℕ) := by
   simp [basisOneI, Module.Basis.reindex_apply, PowerBasis.coe_basis, AdjoinRoot.powerBasis_gen, ii]
 
 /- English proof (translation)
-Simplify using `[basisOneI_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisOneI_zero : basisOneI F 0 = 1 := by simp [basisOneI_apply]
 /- English proof (translation)
-Simplify using `[basisOneI_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisOneI_one : basisOneI F 1 = ii F := by simp [basisOneI_apply]
 
 /- English proof (translation)
-Simplify using `[gEmb, basisOneI_zero, basisOneI_one, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gEmb_eq (a b : F) : gEmb F (a, b) = a • basisOneI F 0 + b • basisOneI F 1 := by
   simp [gEmb, basisOneI_zero, basisOneI_one, Algebra.smul_def]
 
 /- English proof (translation)
-Simplify using `only [gEmb, basisOneI_zero, basisOneI_one, Algebra.smul_def, map_neg]`. Take the linear combination `(algebraMap F (Ext F) b) * ii_sq F`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gEmb_mul_ii (a b : F) : gEmb F (a, b) * ii F = (-b) • basisOneI F 0 + a • basisOneI F 1 := by
   simp only [gEmb, basisOneI_zero, basisOneI_one, Algebra.smul_def, map_neg]
   linear_combination (algebraMap F (Ext F) b) * ii_sq F
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_eq_matrix_det (basisOneI F), Matrix.det_fin_two]`. Simplify using `only [Algebra.leftMulMatrix_apply, LinearMap.toMatrix_apply, Algebra.coe_lmul_eq_mul, LinearMap.mul_apply']`. Rewrite using `[basisOneI_zero, mul_one, basisOneI_one, gEmb_mul_ii, gEmb_eq]`. Simplify using `[Module.Basis.repr_self, Finsupp.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_gEmb_F (a b : F) : Algebra.norm F (gEmb F (a, b)) = a ^ 2 + b ^ 2 := by
   rw [Algebra.norm_eq_matrix_det (basisOneI F), Matrix.det_fin_two]
@@ -68,7 +68,7 @@ theorem norm_gEmb_F (a b : F) : Algebra.norm F (gEmb F (a, b)) = a ^ 2 + b ^ 2 :
   ring
 
 /- English proof (translation)
-Rewrite using `[← Algebra.norm_norm (S := F), norm_gEmb_F]`. Establish `h` using `prod_emb (F := F) (a ^ 2 + b ^ 2)`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_ratCast, ← h, Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules.
 -/

@@ -23,19 +23,19 @@ section Cong
 variable {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem cm_refl (N : ℕ) (x : X) : CongMod N x x := ⟨0, by simp⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Conclude with `⟨-w, by rw [hw, smul_neg]; abel⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_symm {N : ℕ} {x y : X} (h : CongMod N x y) : CongMod N y x := by
   obtain ⟨w, hw⟩ := h
   exact ⟨-w, by rw [hw, smul_neg]; abel⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Take `⟨w', hw'⟩` from `h'`. Conclude with `⟨w' + w, by rw [hw, hw', smul_add]; abel⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_trans {N : ℕ} {x y z : X} (h : CongMod N x y) (h' : CongMod N y z) : CongMod N x z := by
   obtain ⟨w, hw⟩ := h
@@ -43,7 +43,7 @@ theorem cm_trans {N : ℕ} {x y z : X} (h : CongMod N x y) (h' : CongMod N y z) 
   exact ⟨w' + w, by rw [hw, hw', smul_add]; abel⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Conclude with `⟨f w, by rw [hw, map_add, map_nsmul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_map {Y : Type} [AddCommGroup Y] (f : X →+ Y) {N : ℕ} {x y : X} (h : CongMod N x y) :
     CongMod N (f x) (f y) := by
@@ -51,7 +51,7 @@ theorem cm_map {Y : Type} [AddCommGroup Y] (f : X →+ Y) {N : ℕ} {x y : X} (h
   exact ⟨f w, by rw [hw, map_add, map_nsmul]⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `QuotientAddGroup.eq.mp h`. Express the relevant statement in the definitionally equal form `N • w = -x + y at hw`. Use `⟨-w, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, hw]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cm_of_mk {N : ℕ} {x y : X}
     (h : (QuotientAddGroup.mk x : X ⧸ (nsmulAddMonoidHom N : X →+ X).range) = QuotientAddGroup.mk y) :
@@ -63,7 +63,7 @@ theorem cm_of_mk {N : ℕ} {x y : X}
   abel
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Use `QuotientAddGroup.eq.mpr ⟨-w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `N • (-w) = -x + y`. Rewrite using `[hw, smul_neg]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cm_mk {N : ℕ} {x y : X} (h : CongMod N x y) :
     (QuotientAddGroup.mk x : X ⧸ (nsmulAddMonoidHom N : X →+ X).range) = QuotientAddGroup.mk y := by
@@ -73,7 +73,7 @@ theorem cm_mk {N : ℕ} {x y : X} (h : CongMod N x y) :
   rw [hw, smul_neg]
   abel
 /- English proof (translation)
-The claim follows from `((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))).charZero`.
+A detailed English derivation is pending.
 -/
 private theorem charZero_uTest_V {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
     {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀) : CharZero u.V :=
@@ -89,17 +89,15 @@ end Cong
 open MonObj in
 
 /- English proof (translation)
-Take `⟨e, hps, hcg⟩` from `GlobalTheory.T.exists_latticeIso_of_two_padicAlgCl_uniformisations S S' ρ ρ' p y₀ y₁ u u' P₀ a a' ha ha' hL hL'`. Use `haveI := charZero_uTest_V u`. Use `haveI := charZero_uTest_V u'`. Use `⟨e, fun χ => ?_, fun m x x' w hm hx hx' hw hwa hwa' => ?_, fun m pk' x' hm hpk' => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hps χ _).1 (l.q_eq χ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `l'.q_eq (e χ)`. Establish `h3` using `Real.exp_injective (GlobalTheory.ZH.RealCase.psiNorm_unique u' (e χ) h2 h1)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨f, hf1, hf2, -⟩` from `GlobalTheory.ZH.uTors_closed u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) m hm`. Take `⟨f', hf1', hf2', -⟩` from `GlobalTheory.ZH.uTors_closed u'.V u'.complete u'.A u'.G u'.D u'.U (PadicAlgCl p) m hm`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨pk, rfl⟩` from `hf2 x hx`. Take `⟨pk', rfl⟩` from `hf2' x' hx'`. Establish `q1` using `(hf1 pk (f pk)).2 rfl`. Establish `q2` using `(hf1' pk' (f' pk')).2 rfl`. Conclude with `⟨pk, pk', q1, q2, hcg m pk pk' _ _ w hm q1 q2 hw hwa hwa'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x' ^ m = 1`. Establish `h0` using `hpk'`. Unfold `QkToAkU at h0`. Take `⟨w0, hw0⟩` from `u'.U.ext`. Establish `h1` using `h0 w0 hw0`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `QkToAk at h1`. Conclude with `h1.1`. Take `⟨w, x, hw, hwa', hwa, hx⟩` from `GlobalTheory.PtTrans.ptTrans (PadicAlgCl p) u'.A u.A P₀ a' a ha' ha m x' hx'`. Take `⟨f, hf1, hf2, -⟩` from `GlobalTheory.ZH.uTors_closed u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) m hm`. Take `⟨pk, rfl⟩` from `hf2 x hx`.
-
-Establish `q1` using `(hf1 pk (f pk)).2 rfl`. Conclude with `⟨pk, f pk, w, q1, hx, hw, hwa, hwa', hcg m pk pk' _ _ w hm q1 hpk' hw hwa hwa'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compare {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω] [CommRing o'] [Field Ω'] [Algebra o' Ω']
     {S : ThetaSys o Ω} {S' : ThetaSys o' Ω'} {ρ : S.Real} {ρ' : S'.Real} {p : ℕ} [Fact p.Prime]
@@ -149,33 +147,31 @@ theorem compare {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω] [Com
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ hg hn hodd hi hE8 hth hpr ε₁ hdiag D σ s hs a hga p _ z₁ c y h h' yy hlab`. Take `⟨c₀, hc, R', fg, frac, hth', hev, ρ', ε', hsame', hi₀', hR', y₀, hy₀, u, l, j, hq, hlabl, hmat⟩` from `hlab`. Take `⟨yy₂, hlab₂⟩` from `exists_isLab g n F W Z i D.X hg hn hodd hi hE8 hth D.proj D.ε D.diag p ((y ≫ s) (cPt p)) (D.lift c (y ≫ s) h')`. Take `⟨c₂, hc₂, R₂, fg₂, frac₂, hth₂, hev₂, ρ₂, ε₂, hsame₂, hi₀₂, hR₂, y₁, hy₁, u₂, l₂, j₂, hq₂, -, -⟩` from `hlab₂`. Take `⟨P₀, b, t, ε₀, hb, ht, lb, lt, hε, hp⟩` from `hga`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, b', b'', hb', hb'', lb', lb'', hpts, hend⟩` from `exists_generic D.X.ρ D.ε ρ' ε' ρ₂ ε₂ (fun x => x) (fun x => x) hsame' hsame₂ (σ : D.X.Ω₁ →+* D.X.Ω₁) a P₀ b t ε₀ hb ht lb lt hε hp`. Use `haveI : IsDedekindDomain D.X.o₁ := ArithBase.ded (Ω := D.X.Ω₁)`. Establish `hR₂' : R₂ ≤ D.X.M.O (((gPt p ≫ y) ≫ s) (closedPoint (PadicAlgCl p)))`. Rewrite using `[Category.assoc]`. Conclude with `hR₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy₁' : ∀ r : R₂, y₁ r = D.X.M.val ((gPt p ≫ y) ≫ s) r`. Introduce `r`. Rewrite using `[Category.assoc]`. Conclude with `hy₁ r`. Establish `hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme D.X.M.Z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hn` using `D.X.normal`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme`. Take `⟨h1, h2⟩` from `hn`. Conclude with `fun x => ⟨h1 x, h2 x⟩`. Take `⟨P₁, a₁, a₂, ha₁, ha₂, la₁, la₂, hpt, hen⟩` from `spread D.X.M hM ρ' ρ₂ (σ : D.X.Ω₁ →+* D.X.Ω₁) s hs (gPt p ≫ y) hR' hR₂' y₀ y₁ hy₀ hy₁' u u₂ Q hb' hb'' lb' lb''`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, heq, hfw, hbk⟩` from `compare u u₂ l l₂ P₁ a₁ a₂ ha₁ ha₂ la₁ la₂`. Establish `hN : 1 ≤ D.X.S.r * D.X.S.N`. Take `⟨jj, -, hr⟩` from `D.X.ρ.r_eq`. Rewrite using `[hr, D.X.ρ.N_eq]`. Establish `hnp` using `D.X.ρ.n_prime.pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Nat.mul_pos (pow_pos hnp _) (pow_pos (pow_pos hnp _) _)`. Use `⟨c₂, hc₂, R₂, fg₂, frac₂, hth₂, hev₂, ρ₂, ε₂, hsame₂, hi₀₂, hR₂, y₁, hy₁, u₂, l₂, e.symm.trans j, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `χ`. Establish `h1` using `heq (e.symm χ)`. Rewrite `h1` using `[AddEquiv.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1]`. Conclude with `hq (e.symm χ)`. Introduce `bb χ hb2`. Take `⟨wg, hwg, hwg1, hwg2⟩` from `hpts bb`. Take `⟨w1, x1, x2, hw1, hw1a, hw1b, hx1, hx2⟩` from `hpt (a bb) bb wg hwg hwg1 hwg2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1p` using `GlobalTheory.LabelTorsion.pow_eq_one_of_over_label _ ρ' p y₀ u (a bb) x1 hx1`. Establish `hx2p` using `GlobalTheory.LabelTorsion.pow_eq_one_of_over_label _ ρ₂ p y₁ u₂ bb x2 hx2`. Take `⟨pk, pk2, hq1, hq2, hc12⟩` from `hfw (D.X.S.r * D.X.S.N) x1 x2 w1 hN hx1p hx2p hw1 hw1a hw1b`. Establish `e1` using `l.yy_eq (a bb) pk x1 hq1 hx1`. Establish `e2` using `l₂.yy_eq bb pk2 x2 hq2 hx2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c1 : CongMod (D.X.S.r * D.X.S.N) χ pk2.y` using `cm_of_mk (hb2.symm.trans e2)`. Establish `c2` using `cm_trans c1 hc12`. Establish `c3 : CongMod (D.X.S.r * D.X.S.N) (e.symm χ) pk.y`. Establish `c4` using `cm_map e.symm.toAddMonoidHom c2`. Simplify using `using c4`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e3 : l.yy (a bb) = QuotientAddGroup.mk (e.symm χ)` using `e1.trans (cm_mk (cm_symm c3))`. Conclude with `hlabl (a bb) (e.symm χ) e3`. Introduce `m pk pk' x x' E hm hq hq' hxx`. Take `⟨pk0, x0, w0, hq0, hx0, hw0, hw0a, hw0b, hc0⟩` from `hbk m pk x hm hq`. Take `⟨pk0', x0', w0', hq0', hx0', hw0', hw0a', hw0b', hc0'⟩` from `hbk m pk' x' hm hq'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨η, hη1, hη2⟩` from `hend E`. Establish `hyp : w0' ≫ a₂ ≫ u₂.φ = w0 ≫ a₂ ≫ u₂.φ ≫ (ε₂ E).left`. Rewrite `hxx` using `[← hw0b', ← hw0b]`. Simplify `hxx` using `only [Category.assoc]`. Establish `key : x0'.left ≫ u.φ = x0.left ≫ u.φ ≫ (ε' E).left`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k1` using `hen (ε' E) (ε₂ E) η hη1 hη2 w0 w0' hw0 hw0' hyp`. Rewrite using `[← hw0a', ← hw0a]`. Simplify `k1` using `only [Category.assoc]`. Establish `hm0` using `hmat m pk0 pk0' x0 x0' E hm hq0 hq0' key`. Establish `A : CongMod m (j (e.symm pk'.y)) (j pk0'.y)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `A1` using `cm_map (e.symm.trans j).toAddMonoidHom hc0'`. Simplify using `using A1`. Establish `B : CongMod m (j (e.symm pk.y)) (j pk0.y)`. Establish `B1` using `cm_map (e.symm.trans j).toAddMonoidHom hc0`. Simplify using `using B1`.
-
-Establish `B2` using `cm_map (matAct E) B`. Conclude with `cm_trans A (cm_trans hm0 (cm_symm B2))`.
+A detailed English derivation is pending.
 -/
 theorem isLab_conj : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (D : Deep X₁ ε₁) (σ : D.X.Ω₁ ≃ₐ[X₁.Ω₁] D.X.Ω₁), ∀ (s : D.X.M.Z ⟶ D.X.M.Z), D.X.M.pt ≫ s = spMap (σ : D.X.Ω₁ →+* D.X.Ω₁) ≫ D.X.M.pt → ∀ a : D.X.S.Gam ≃+ D.X.S.Gam, D.GalLab σ a → ∀ (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (c : CTrait X₁ p z₁) (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = c.y) (h' : (y ≫ s) ≫ D.q = c.y) (yy : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) (Fin 8 → c.T.D.toPre.X)), IsLab D.X D.ε (D.lift c y h) yy → IsLab D.X D.ε (D.lift c (y ≫ s) h') (yy.comp a.toAddMonoidHom) := by
   intro g n F W Z i X₁ hg hn hodd hi hE8 hth hpr ε₁ hdiag D σ s hs a hga p _ z₁ c y h h' yy hlab

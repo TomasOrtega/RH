@@ -15,19 +15,17 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix in
 attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar in
 /- English proof (translation)
-Introduce `R F E _ _ _ _ _ _ sp W K _ _ _ ρ N J a T Λ hT hdual`. Establish `hsub : Λ ≤ _root_.Formalism.L2.PairingIndexBounds.F.compan (sp` using `sp) J a Λ := by`. Simplify using `only [_root_.Formalism.L2.PairingIndexBounds.F.compan]`. Conclude with `le_sup_left`. Establish `key : ∀ x ∈ _root_.Formalism.L2.PairingIndexBounds.F.compan (sp` using `sp) J a Λ, T • x ∈ Λ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Set `S : Submodule (𝓞 E) (Fin N → E)` to `Λ.comap (T • LinearMap.id : (Fin N → E) →ₗ[𝓞 E] (Fin N → E))`. Establish `hΛS : Λ ≤ S` using `fun y hy => by`. Simplify using `only [S, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `nsmul_mem hy T`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDS : Submodule.span (𝓞 E) (_root_.Formalism.BasicNotions.dualSet (sp.cm.sig : E →+* E) J Λ) ≤ S`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Simplify using `only [S, SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Simplify `hdual z hz` using `[Nat.cast_smul_eq_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hle : _root_.Formalism.L2.PairingIndexBounds.F.compan (sp` using `sp) J a Λ ≤ S := by`. Simplify using `only [_root_.Formalism.L2.PairingIndexBounds.F.compan]`. Conclude with `sup_le hΛS (Submodule.smul_le_right.trans hDS)`. Use `hle hx` as an intermediate fact. Simplify `this` using `[S]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [_root_.GlobalTheory.TwV.locSp]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨u, hu⟩` from `hT`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : (fun k => ρ ((T • x) k)) ∈ Submodule.span W ((fun x k ↦ ρ (x k)) '' (Λ : Set (Fin N → E)))` using `Submodule.subset_span ⟨_, key x hx, rfl⟩`. Establish `h2 : (fun k => ρ ((T • x) k)) = (u : W) • (fun k => ρ (x k))`. Use function extensionality and compare the values at `k`. Simplify using `[hu, map_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `h3` using `Submodule.smul_mem _ ((u⁻¹ : Wˣ) : W) h1`.
-
-Rewrite `h3` using `[h2, smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis. Conclude with `Submodule.span_mono (Set.image_mono hsub)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TwV.CompSp.locSp_compan_eq : ∀ {R : _root_.Formalism.BasicNotions.Ranks} {F E : Type} [Field F]
     [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (sp : _root_.Formalism.BasicNotions.Spaces R F E)

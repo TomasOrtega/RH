@@ -17,7 +17,7 @@ section Alg
 variable {K : Type} [Field K] {N : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc C C⁻¹, Matrix.mul_nonsing_inv _ hC, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_cancel_mid {C : Matrix (Fin N) (Fin N) K} (hC : IsUnit C.det) (A X Y B : Matrix (Fin N) (Fin N) K) :
     A * X * C * (C⁻¹ * Y * B) = A * (X * Y) * B := by
@@ -25,21 +25,21 @@ theorem mul_cancel_mid {C : Matrix (Fin N) (Fin N) K} (hC : IsUnit C.det) (A X Y
   rw [← Matrix.mul_assoc C C⁻¹, Matrix.mul_nonsing_inv _ hC, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hQP : Q * P = 1`. Rewrite using `[← Matrix.inv_eq_right_inv hPQ]`. Conclude with `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (Matrix.det_ne_zero_of_right_inverse hPQ))`. Establish `hpa : p ^ a ∈ R` using `pow_mem hp a`. Establish `mem3 : ∀ A B C : Matrix (Fin N) (Fin N) K, A ∈ R.matrix → p ^ a • B ∈ R.matrix → C ∈ R.matrix → p ^ a • (A * B * C) ∈ R.matrix`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A B C hA hB hC`. Rewrite using `[show p ^ a • (A * B * C) = A * (p ^ a • B) * C by simp [Matrix.mul_smul, Matrix.smul_mul]]`. Conclude with `mul_mem (mul_mem hA hB) hC`. Establish `u : ∀ {A : Matrix (Fin N) (Fin N) K}, Fr R A → IsUnit A.det` using `fun h => isUnit_iff_ne_zero.2 h.1`. Establish `inv3 : ∀ (A C : Matrix (Fin N) (Fin N) K), Fr R A → Fr R C → (A⁻¹ * P * C)⁻¹ = C⁻¹ * Q * A`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `A C hA hC`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[mul_cancel_mid (u hA), hQP, Matrix.mul_one, Matrix.nonsing_inv_mul _ (u hC)]`. Establish `det3 : ∀ (A C : Matrix (Fin N) (Fin N) K), Fr R A → Fr R C → (A⁻¹ * P * C).det ≠ 0`. Introduce `A C hA hC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.det_ne_zero_of_right_inverse (B := C⁻¹ * Q * A) ?_` and prove the remaining obligations. Rewrite using `[mul_cancel_mid (u hC), hPQ, Matrix.mul_one, Matrix.nonsing_inv_mul _ (u hA)]`. Establish `e3 : p ^ (k + 1 + 3 * a) = p ^ (k + 1 + a) * p ^ a * p ^ a` using `by ring`. Establish `e2 : p ^ (k + 1 + 3 * a) = p ^ (k + 1) * p ^ a * p ^ (2 * a)` using `by ring`. Establish `e1 : p ^ (k + 1 + a) = p ^ (k + 1) * p ^ a` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : p ^ (k + 1) ∈ R` using `pow_mem hp _`. Establish `h2a : p ^ (2 * a) ∈ R` using `pow_mem hp _`. Establish `iA` using `inv3 Mz' Mx hMz' hMx`. Establish `iA'` using `inv3 Mz' Mz hMz' hMz`. Establish `mA : p ^ a • (Mx⁻¹ * Q * Mz') ∈ R.matrix` using `mem3 _ _ _ hMx.2.2 hQ hMz'.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `mA' : p ^ a • (Mz⁻¹ * Q * Mz') ∈ R.matrix` using `mem3 _ _ _ hMz.2.2 hQ hMz'.2.1`. Take `⟨-, T₁⟩` from `GlobalTheory.T.triangular_modulus_inverse K N R (p ^ (k + 1 + a)) (p ^ a) _ d₁ hs hpa (det3 Mz' Mx hMz' hMx) (by rw [iA]; exact mA) (by rwa [← e3])`. Take `⟨-, T₂⟩` from `GlobalTheory.T.triangular_modulus_inverse K N R (p ^ (k + 1 + a)) (p ^ a) _ d₂ hs hpa (det3 Mz' Mz hMz' hMz) (by rw [iA']; exact mA') (by rwa [← e3])`. Rewrite `T₁` using `[e1, iA]`. Rewrite `T₂` using `[e1, iA']`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `U₂ : TriMod R (p ^ (k + 1) * p ^ a) (Mz'⁻¹ * P * Mz) d₂` using `by rw [e2] at H₂; exact H₂.of_mul h2a`. Establish `U₃ : TriMod R (p ^ (k + 1) * p ^ a) (Mx'⁻¹ * P * Mz) d₃` using `by rw [e2] at H₃; exact H₃.of_mul h2a`. Establish `m1` using `(GlobalTheory.T.triangular_modulus_products K N R (p ^ (k + 1)) (p ^ a) _ _ _ _ hh hpa).1 mA (mem3 _ _ _ hMz'.2.2 hP hMz.2.1) T₁ U₂`. Establish `m2` using `(GlobalTheory.T.triangular_modulus_products K N R (p ^ (k + 1)) (p ^ a) _ _ _ _ hh hpa).1 (mem3 _ _ _ hMx'.2.2 hP hMz.2.1) mA' U₃ T₂`. Rewrite `m1` using `[mul_cancel_mid (u hMz'), hQP, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `m2` using `[mul_cancel_mid (u hMz), hPQ, Matrix.mul_one]`. Conclude with `⟨m1, m2⟩`.
+A detailed English derivation is pending.
 -/
 theorem triMod_of_cross (R : Subring K) (p : K) (k a : ℕ) (hs : Small R (p ^ (k + 1 + a))) (hp : p ∈ R)
     (P Q Mx Mx' Mz Mz' : Matrix (Fin N) (Fin N) K) (hPQ : P * Q = 1)
@@ -94,13 +94,13 @@ theorem triMod_of_cross (R : Subring K) (p : K) (k a : ℕ) (hs : Small R (p ^ (
 end Alg
 
 /- English proof (translation)
-Introduce `X _ p k a N M M' c c' P Q hPQ hPQa H`. Establish `key : ∀ x, Ov p x → ∀ᶠ z in 𝓝 x, Ov p z → TriMod (loc z) ((p : X.functionField) ^ (k + 1)) ((M x)⁻¹ * M z) (fun i => (c x i : X.functionField) / c z i) ∧ TriMod (loc z) ((p : X.functionField) ^ (k + 1)) ((M' x)⁻¹ * M' z) (fun i => (c' x i : X.functionField) / c' z i)`. Introduce `x hx`. Take `⟨hMx, hMx', hev⟩` from `H x hx`. Use `filter_upwards [hev, hMx.eventually, hMx'.eventually] with z hz hzx hzx' hOz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hMz, hMz', hevz⟩` from `H z hOz`. Take `⟨hself, -⟩` from `hevz.self_of_nhds hOz`. Take `⟨h₃, h₁⟩` from `hz hOz`. Take `⟨hPz, hQz⟩` from `hPQa z hOz`. Establish `hs : Small (loc z) ((p : X.functionField) ^ (k + 1 + a))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `small_pow hOz (k + a); rwa [show k + a + 1 = k + 1 + a by omega] at this` as an intermediate fact. Take `⟨r₁, r₂⟩` from `triMod_of_cross (loc z) (p : X.functionField) k a hs (natCast_mem _ p) P Q (M x) (M' x) (M z) (M' z) hPQ hPz hQz hzx hzx' hMz hMz' _ _ _ h₁ hself h₃`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `r₁ using 2` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `r₂ using 2` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Conclude with `⟨fun x hx => ⟨(H x hx).1, (key x hx).mono fun z hz hOz => (hz hOz).1⟩, fun x hx => ⟨(H x hx).2.1, (key x hx).mono fun z hz hOz => (hz hOz).2⟩⟩`.
+Clear the denominators using the available nonvanishing facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coh_of_cross : ∀ (X : Scheme.{0}) [IsIntegral X] (p k a N : ℕ) (M M' : X → Matrix (Fin N) (Fin N) X.functionField) (c c' : X → Fin N → X.functionFieldˣ) (P Q : Matrix (Fin N) (Fin N) X.functionField), P * Q = 1 → (∀ x, Ov p x → ((p : X.functionField) ^ a) • P ∈ (loc x).matrix ∧ ((p : X.functionField) ^ a) • Q ∈ (loc x).matrix) → Cross p (k + 1 + 3 * a) M M' c c' P → Coh p (k + 1) M c ∧ Coh p (k + 1) M' c' := by
   intro X _ p k a N M M' c c' P Q hPQ hPQa H

@@ -15,7 +15,7 @@ namespace GlobalTheory.LBFrameEx
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_res' {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (x : Γ(X, U)ˣ) :
     res h' (res h x) = res (h'.trans h) x := by
@@ -25,7 +25,7 @@ private theorem res_res' {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (x : Γ(
   rfl
 
 /- English proof (translation)
-Establish `hW : W ≤ L.U i ⊓ L.U j ⊓ L.U k` using `le_inf h₁ (h₂.trans inf_le_right)`. Use `congrArg (res hW) (hL.cocycle i j k)` as an intermediate fact. Rewrite `this` using `[map_mul, res_res', res_res', res_res']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem coc {L : LB X} (hL : L.IsLB) (i j k : L.ι) {W : X.Opens} (h₁ : W ≤ L.U i ⊓ L.U j)
     (h₂ : W ≤ L.U j ⊓ L.U k) (h₃ : W ≤ L.U i ⊓ L.U k) :
@@ -55,11 +55,11 @@ def gen (L : LB X) (T : Ch L) (m : L.ι) : Γ(X, opOf (opF L) T ⊓ L.U m)ˣ :=
   res (le_inf inf_le_right (inf_le_left.trans T.le) : (T.U : X.Opens) ⊓ L.U m ≤ L.U m ⊓ L.U T.m) (L.g m T.m)
 
 /- English proof (translation)
-Establish `hch : ∀ x : X, ∃ m, x ∈ L.U m` using `fun x => by`. Establish `hx : x ∈ (⊤ : X.Opens)` using `trivial`. Rewrite `hx` using `[← hL.cover]`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `hb : ∀ {U : X.Opens} {x : X}, x ∈ U → ∃ U' ∈ X.affineOpens, x ∈ U' ∧ U' ≤ U` using `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x U hx => ?_, fun t₁ t₂ x U hx h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hch x`. Take `⟨V, hV, hxV, hVU⟩` from `hb (show x ∈ U ⊓ L.U m from ⟨hx, hm⟩)`. Conclude with `⟨⟨⟨V, hV⟩, m, hVU.trans inf_le_right⟩, hxV, hVU.trans inf_le_left⟩`. Take `⟨V, hV, hxV, hVU⟩` from `hb (show x ∈ U ⊓ (opOf (opF L) t₁ ⊓ opOf (opF L) t₂) from ⟨hx, h₁, h₂⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨V, hV⟩, t₁.m, (hVU.trans inf_le_right).trans (inf_le_left.trans t₁.le)⟩, ⟨homOfLE ?_⟩, ⟨homOfLE ?_⟩, hxV, hVU.trans inf_le_left⟩` and prove the remaining obligations. Conclude with `(hVU.trans inf_le_right).trans inf_le_left`. Conclude with `(hVU.trans inf_le_right).trans inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem isBas (L : LB X) (hL : L.IsLB) : IsBas (opOf (opF L)) := by
   have hch : ∀ x : X, ∃ m, x ∈ L.U m := fun x => by
@@ -79,9 +79,9 @@ theorem isBas (L : LB X) (hL : L.IsLB) : IsBas (opOf (opF L)) := by
     · exact (hVU.trans inf_le_right).trans inf_le_right
 
 /- English proof (translation)
-Use `⟨gen L, fun T m m' => ?_, fun T T' a m => ?_⟩` and prove the remaining obligations. Simplify using `only [gen]`. Rewrite using `[res_res', res_res']`. Conclude with `(coc hL m m' T.m _ _ _).symm`. Simplify using `only [gen, unit]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[res_res', res_res']`. Rewrite using `[mul_comm]`. Conclude with `(coc hL m T'.m T.m _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame (L : LB X) (hL : L.IsLB) : IsFrame L (opOf (opF L)) (opOf_le (opF L)) (unit L) := by
   refine ⟨gen L, fun T m m' => ?_, fun T T' a m => ?_⟩
@@ -94,7 +94,7 @@ theorem isFrame (L : LB X) (hL : L.IsLB) : IsFrame L (opOf (opF L)) (opOf_le (op
     exact (coc hL m T'.m T.m _ _ _).symm
 
 /- English proof (translation)
-Introduce `X L hL` and use `⟨Ch L, inferInstance, fun _ _ => inferInstance, opF L, unit L, isBas L hL, isFrame L hL⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_frame : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∃ (C : Type) (_ : Category.{0} C) (_ : Quiver.IsThin C)
     (G : C ⥤ AffOp X) (u : ∀ (T T' : C) (_ : T ⟶ T'), Γ(X, opOf G T')ˣ),

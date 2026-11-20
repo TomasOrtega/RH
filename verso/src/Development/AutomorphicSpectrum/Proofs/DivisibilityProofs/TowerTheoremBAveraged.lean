@@ -12,7 +12,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Take `⟨ρ, hρ, rfl⟩` from `htr τ' τ`. Conclude with `Fintype.sum_equiv (Equiv.mulRight (⟨ρ, hρ⟩ : Γ)) _ _ (fun g => by simp [Equiv.Perm.mul_apply])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_group_apply_eq {Ψ : Type} (Γ : Subgroup (Equiv.Perm Ψ)) [Fintype Γ]
     (htr : ∀ τ τ' : Ψ, ∃ σ ∈ Γ, σ τ = τ') (f : Ψ → ℝ) (τ τ' : Ψ) :
@@ -21,9 +21,9 @@ theorem sum_group_apply_eq {Ψ : Type} (Γ : Subgroup (Equiv.Perm Ψ)) [Fintype 
   exact Fintype.sum_equiv (Equiv.mulRight (⟨ρ, hρ⟩ : Γ)) _ _ (fun g => by simp [Equiv.Perm.mul_apply])
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty Ψ with h | ⟨⟨τ₀⟩⟩` into its components or cases. Conclude with `⟨0, fun τ => (h.false τ).elim⟩`. Establish `hc : (Fintype.card Γ : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Use `⟨(∑ g : Γ, f ((g : Equiv.Perm Ψ) τ₀)) / (Fintype.card Γ : ℝ), fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_cancel₀ _ hc]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_group_apply_eq Γ htr f τ τ₀`.
+A detailed English derivation is pending.
 -/
 theorem exists_group_mean {Ψ : Type} (Γ : Subgroup (Equiv.Perm Ψ)) [Fintype Γ]
     (htr : ∀ τ τ' : Ψ, ∃ σ ∈ Γ, σ τ = τ') (f : Ψ → ℝ) :
@@ -36,7 +36,7 @@ theorem exists_group_mean {Ψ : Type} (Γ : Subgroup (Equiv.Perm Ψ)) [Fintype �
     exact sum_group_apply_eq Γ htr f τ τ₀
 
 /- English proof (translation)
-The claim follows from `|P - V * (H - (A - Bs) * ∑ τ, S τ - Bs * ∑ τ, U τ)| ≤ bd := by have hn : (0 : ℝ) < (Fintype.card G : ℝ) := by exact_mod_cast Fintype.card_pos set n : ℝ := (Fintype.card G : ℝ) with hndef have h1 : ∑ g, ∑ τ, (a g τ - b g τ) * S τ = n * ((A - Bs) * ∑ τ, S τ) := by rw [Finset.sum_co …`.
+A detailed English derivation is pending.
 -/
 theorem mean_estimate {G Ψ : Type} [Fintype G] [Nonempty G] [Fintype Ψ] (P V H bd A Bs : ℝ) (S U : Ψ → ℝ)
     (a b : G → Ψ → ℝ) (hA : ∀ τ, ∑ g, a g τ = (Fintype.card G : ℝ) * A)
@@ -75,15 +75,13 @@ theorem mean_estimate {G Ψ : Type} [Fintype G] [Nonempty G] [Fintype Ψ] (P V H
   exact le_of_mul_le_mul_left hle hn
 
 /- English proof (translation)
-Introduce `II Ψ _ _ N T hh hB hA hL`. Take `⟨C, B₁, hC⟩` from `hB`. Take `⟨Γ, htr, hinv⟩` from `hA`. Establish `: Fintype Γ` using `Fintype.ofFinite _`. Use `⟨C, max B₁ 2, fun B hBge => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨α, β, hm⟩` from `hC B (le_trans (le_max_left _ _) hBge)`. Take `⟨A, hAm⟩` from `exists_group_mean Γ htr α`. Take `⟨Bs, hBm⟩` from `exists_group_mean Γ htr β`. Use `⟨A, Bs, fun m hdeg => ?_⟩` and prove the remaining obligations. Use `mean_estimate (G := Γ) _ _ _ _ A Bs _ _ (fun g τ => α ((g : Equiv.Perm Ψ) τ)) (fun g τ => β ((g : Equiv.Perm Ψ) τ)) hAm hBm fun g => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `set F : RP Ψ N := monomial m 1 with hF`. Use `set φ : Ψ × Fin N → Ψ × Fin N := fun x => ((g : Equiv.Perm Ψ) x.1, x.2) with hφ`. Establish `hR : (monomial (m.mapDomain φ) 1 : RP Ψ N) = rename φ F` using `(rename_monomial φ m 1).symm`. Establish `hest` using `hm (m.mapDomain φ) (by rw [Finsupp.degree_mapDomain]; exact hdeg)`. Establish `anti` using `fun τ j => ((GlobalTheory.T.flag_degree_symmetries Ψ N).2 (g : Equiv.Perm Ψ) F).2 j τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : ∑ τ, (α τ - β τ) * Sh T.j τ (rename φ F) = ∑ τ, (α ((g : Equiv.Perm Ψ) τ) - β ((g : Equiv.Perm Ψ) τ)) * Sh T.j τ F`. Rewrite using `[← Equiv.sum_comp (g : Equiv.Perm Ψ)]`. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [(anti τ T.j).1]`. Establish `hU : ∑ τ, β τ * Tot τ (rename φ F) = ∑ τ, β ((g : Equiv.Perm Ψ) τ) * Tot τ F`. Rewrite using `[← Equiv.sum_comp (g : Equiv.Perm Ψ)]`.
-
-Conclude with `Finset.sum_congr rfl fun τ _ => by rw [(anti τ T.j).2]`. Rewrite `hest` using `[hR, hS, hU, hinv g g.2 B (le_trans (le_max_right _ _) hBge) F, hL g F]`. Conclude with `hest`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thmBA_of_thmB_propA : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ)
     (T : RootTower Ψ N) (hh : RP Ψ N →ₗ[ℝ] ℝ), T.ThmB II hh → T.PropA II →

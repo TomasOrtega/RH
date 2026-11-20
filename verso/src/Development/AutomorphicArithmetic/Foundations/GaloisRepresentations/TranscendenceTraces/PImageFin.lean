@@ -4,25 +4,23 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Proceed by induction on `ι using Finite.induction_empty_option with`. Consider the case `of_equiv e ih`. Introduce `S Z p hp`. Use `ih (fun a => Z (e a)) (fun a => p (e a)) (fun a => hp _)` as an intermediate fact. Set `i : (∐ fun a => Z (e a)) ≅ ∐ Z` to `Sigma.whiskerEquiv e (fun _ => Iso.refl _)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h : i.hom ≫ Sigma.desc p = Sigma.desc (fun a => p (e a))`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[i]`. Establish `h' : Sigma.desc p = i.inv ≫ Sigma.desc (fun a => p (e a))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h, Iso.inv_hom_id_assoc]`. Rewrite using `[h']`. Use `infer_instance`. Consider the case `h_empty`. Introduce `S Z p hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: IsEmpty (∐ Z : Scheme.{0})` using `⟨fun x => by`. Take `⟨i, _, _⟩` from `(sigmaOpenCover Z).exists_eq x`. Conclude with `i.elim⟩`. Use `infer_instance`. Consider the case `h_option ih`.
+Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S Z p hp`. Establish `h1` using `ih (fun a => Z (some a)) (fun a => p (some a)) (fun a => hp _)`. Establish `h0` using `hp none`. Set `i : (Z none ⨿ ∐ fun a => Z (some a)) ≅ ∐ Z` to `{ hom := coprod.desc (Sigma.ι Z none) (Sigma.desc fun a => Sigma.ι Z (some a)) inv := Sigma.desc fun o => match o with`. Consider the case `none => coprod.inl`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Consider the case `some a => Sigma.ι (fun a => Z (some a)) a ≫ coprod.inr`. Use `hom_inv_id := by`. Apply `coprod.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Apply `Sigma.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `a`. Simplify using the standard rewrite rules. Use `inv_hom_id := by`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `rintro (_ | a) <;> simp }`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : i.hom ≫ Sigma.desc p = coprod.desc (p none) (Sigma.desc fun a => p (some a))`. Apply `coprod.hom_ext` to reduce the goal to its premises. Simplify using `[i]`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[i]`. Establish `h' : Sigma.desc p = i.inv ≫ coprod.desc (p none) (Sigma.desc fun a => p (some a))`. Rewrite using `[← h, Iso.inv_hom_id_assoc]`. Establish `c : IsFinite (coprod.desc (p none) (Sigma.desc fun a => p (some a)))` using `inferInstance`. Establish `d0 : IsIso i.inv` using `⟨i.hom, i.inv_hom_id, i.hom_inv_id⟩`.
-
-Establish `d : IsFinite i.inv` using `inferInstance`. Rewrite using `[h']`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isFinite_sigma_desc_of_finite (ι : Type) [Finite ι] :
     ∀ {S : Scheme.{0}} (Z : ι → Scheme.{0}) (p : ∀ a, Z a ⟶ S), (∀ a, IsFinite (p a)) →
@@ -80,19 +78,19 @@ private theorem isFinite_sigma_desc_of_finite (ι : Type) [Finite ι] :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `hOne S Y B bS bY _ _ ι _ Z p f hp hf`. Establish `hk : (Sigma.desc fun a => pullback.lift (f a) (p a) (hf a)) ≫ pullback.snd bY bS = Sigma.desc p`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨k, hkdef⟩ : ∃ k : ∐ Z ⟶ pullback bY bS, k = Sigma.desc fun a => pullback.lift (f a) (p a) (hf a)` from `⟨_, rfl⟩`. Rewrite `hk` using `[← hkdef]`. Establish `hι : ∀ a, Sigma.ι Z a ≫ k = pullback.lift (f a) (p a) (hf a)`. Introduce `a`. Simplify using `[hkdef]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfin : IsFinite (k ≫ pullback.snd bY bS)`. Rewrite using `[hk]`. Conclude with `isFinite_sigma_desc_of_finite ι Z p hp`. Take `⟨h1, h2⟩` from `hOne k (pullback.snd bY bS)`. Establish `hh : ∀ a, (Sigma.ι Z a ≫ k.toImage) ≫ k.imageι = pullback.lift (f a) (p a) (hf a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[Category.assoc, Scheme.Hom.toImage_imageι, hι]`. Establish `hpa : ∀ a, (Sigma.ι Z a ≫ k.toImage) ≫ k.imageι ≫ pullback.snd bY bS = p a`. Introduce `a`. Rewrite using `[← Category.assoc, hh, pullback.lift_snd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfa : ∀ a, (Sigma.ι Z a ≫ k.toImage) ≫ k.imageι ≫ pullback.fst bY bS = f a`. Introduce `a`. Rewrite using `[← Category.assoc, hh, pullback.lift_fst]`. Use `⟨k.image, k.imageι ≫ pullback.snd bY bS, k.imageι ≫ pullback.fst bY bS, fun a => Sigma.ι Z a ≫ k.toImage, h1, fun a => ?_, hpa, hfa, ?_⟩` and prove the remaining obligations. Establish `: IsFinite ((Sigma.ι Z a ≫ k.toImage) ≫ k.imageι ≫ pullback.snd bY bS)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpa]`. Conclude with `hp a`. Conclude with `IsFinite.of_comp _ (k.imageι ≫ pullback.snd bY bS)`. Introduce `T x y hs hf'`. Rewrite using `[← cancel_mono k.imageι]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `using hf'`. Simplify using `using hs`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.imageFin_of :
     ImageOne → ImageFin := by

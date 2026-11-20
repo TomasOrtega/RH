@@ -22,7 +22,7 @@ variable {X Y : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
   {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => match k with | Sum.inl k => Set.mem_iInter.1 hy.1 k | Sum.inr k => Set.mem_iInter.1 hy.2 k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_le (j' : K' → L.ι) (j : K → L.ι) :
     LB.wchart L φ' j' ⊓ LB.wchart L φ j ≤ LB.wchart L (Sum.elim φ' φ) (Sum.elim j' j) := fun _ hy =>
@@ -35,7 +35,7 @@ def genIso (t : LB.Gen (LB.LinComb L (Sum.elim φ' φ) (Sum.elim ε' (fun k => -
   ⟨fun p => res (chart_le p.1 p.2) (t.s (Sum.elim p.1 p.2))⟩
 
 /- English proof (translation)
-The claim follows from `gm_res r z (chart_le p.1 p.2) hp _`.
+A detailed English derivation is pending.
 -/
 theorem gm_genIso (t : LB.Gen (LB.LinComb L (Sum.elim φ' φ) (Sum.elim ε' (fun k => - ε k)))) {Z : Scheme.{0}}
     (r : Z ⟶ Y) (z : Z) (p : (K' → L.ι) × (K → L.ι)) (hp : r z ∈ LB.wchart L φ' p.1 ⊓ LB.wchart L φ p.2) :
@@ -43,9 +43,9 @@ theorem gm_genIso (t : LB.Gen (LB.LinComb L (Sum.elim φ' φ) (Sum.elim ε' (fun
   gm_res r z (chart_le p.1 p.2) hp _
 
 /- English proof (translation)
-Introduce `p q`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hp` using `chart_le (φ := φ) (φ' := φ') p.1 p.2 hy.1`. Establish `hq` using `chart_le (φ := φ) (φ' := φ') q.1 q.2 hy.2`. Establish `e` using `gen_trans ht (𝟙 Y) y hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((gm_res (𝟙 Y) y _ hy _).trans ((gm_genIso t (𝟙 Y) y p hy.1).trans e)).trans (Eq.symm ?_)` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div (LB.LinComb L φ ε) (LB.LinComb L φ' ε') (𝟙 Y) y p q hy) ((gm_res (𝟙 Y) y _ hy _).trans (gm_genIso t (𝟙 Y) y q hy.2)))).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `(congrArg₂ (· * ·) (gm_linComb L φ' ε' (𝟙 Y) y _ _ hy.1.1 hy.2.1) (congrArg (·⁻¹) (gm_linComb L φ ε (𝟙 Y) y _ _ hy.1.2 hy.2.2))).trans ?_` and prove the remaining obligations. Simplify using `only [trF, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -75,39 +75,37 @@ namespace GlobalTheory.MumFam
 open ActAdj in
 
 /- English proof (translation)
-Introduce `R _ _ I D O _ _ _ o a`. Establish `hL` using `D.toPre.P.isLB`. Set `B` to `D.toPre.P.A`. Set `f` to `o.onB.act a`. Set `g` to `o.onB.act (star a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI hf : IsMonHom f := o.onB.hom a`. Use `haveI hg : IsMonHom g := o.onB.hom (star a)`. Set `φ₀ : ULift.{0} (Finset (Fin 2)) → ((B ⊗ B).left ⟶ B.left)` to `fun I => (psum B ![fst B B ≫ f, snd B B] I.down).left`. Set `φ₁ : ULift.{0} (Finset (Fin 2)) → ((B ⊗ B).left ⟶ B.left)` to `fun I => (psum B ![fst B B, snd B B ≫ g] I.down).left`. Set `e₂ : ULift.{0} (Finset (Fin 2)) → ℤ` to `fun I => (-1) ^ (2 - I.down.card)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, h0⟩` from `exists_ros GlobalTheory.globalFns_holds D.toPre.P.isAb hL f g (o.onB.rosati a)`. Establish `hF : FormEq (rosatiφ B f g) (fun i => - rosatiε i) (Sum.elim φ₁ φ₀) (Sum.elim e₂ (fun k => - e₂ k))`. Introduce `U _ k`. Establish `p` using `prod_ros f g (fst B B) (snd B B) k`. Rewrite `p` using `[lift_fst_snd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p' : ∏ i, k (rosatiφ B f g i) ^ rosatiε i = _` using `(Finset.prod_congr rfl fun i _ => by erw [Over.id_left, Category.id_comp]).trans p`. Establish `s1 : ∏ I, k (φ₁ I) ^ e₂ I = _` using `GlobalTheory.NormRos.prod_square (fst B B) (snd B B ≫ g) k`. Establish `s0 : ∏ I, k (φ₀ I) ^ e₂ I = _` using `GlobalTheory.NormRos.prod_square (fst B B ≫ f) (snd B B) k`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[p', s1, s0]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Take `⟨t, ht, htv⟩` from `exists_gen hL hF (LB.invGen _ _ _ u) (DVR.invGen_isGen _ _ _ _ hu)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `w : LB.Iso (cubeLB B ![fst B B ≫ f, snd B B] D.toPre.P.L) (cubeLB B ![fst B B, snd B B ≫ g] D.toPre.P.L)` to `genIso t`. Use `⟨hf, hg, fun y => o.c_lin a y, fun y => o.c_lin (star a) y, w, genIso_isGen ht, fun y y' z J₁ J₂ hJ₁ hJ₂ => ?_⟩` and prove the remaining obligations. Set `P` to `(lift (toUnit (TK R) ≫ D.toPre.c y) (toUnit (TK R) ≫ D.toPre.c y')).left`. Establish `hp : ∀ b b' J, Good D.toPre.P.L z J → val ((pol D).tau b b') (𝟙 _) z J = val (D.toPre.tau b b') (𝟙 _) z J` using `fun b b' J hJ => (Wit.exists_tau D.toPre b b').choose_spec.2 _ _ z J hJ`. Establish `hK₁ : Good D.toPre.P.L z J₁` using `hJ₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK₂ : Good D.toPre.P.L z J₂` using `hJ₂`. Establish `bal` using `val_corr hK₁ (o.tau_bal a u hu h0 y y') (𝟙 _)`. Rewrite `bal` using `[val_mul hK₁, val_pull hK₁, Category.id_comp]`. Establish `hut : val t P z J₁ = (val u P z J₁)⁻¹` using `(htv _ P z J₁ hK₁).trans (val_inv _ _)`. Set `h` to `DistribMulAction.toAddMonoidHom D.toPre.X a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `h'` to `DistribMulAction.toAddMonoidHom D.toPre.X (star a)`. Establish `single : val ((pol D).tau (h y) y') (𝟙 _) z J₁ = val t P z J₁ * val ((pol D).tau y (h' y')) (𝟙 _) z J₁`. Conclude with `(hp _ _ _ hK₁).trans ((eq_inv_mul_of_mul_eq ((mul_comm _ _).trans bal)).trans (congrArg₂ (· * ·) hut.symm (hp _ _ _ hK₁).symm))`. Set `j₁ : ULift.{0} (Finset (Fin 2)) → D.toPre.P.L.ι` to `fun I => J₁ (P ≫ φ₁ I)`. Set `j₂ : ULift.{0} (Finset (Fin 2)) → D.toPre.P.L.ι` to `fun I => J₂ (P ≫ φ₀ I)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j₁' : ULift.{0} (Finset (Fin 2)) → D.toPre.P.L.ι` to `fun I => J₁ (P ≫ φ₀ I)`. Establish `m₁ : P z ∈ LB.wchart D.toPre.P.L φ₁ j₁` using `hK₁.mem φ₁ P`. Establish `m₂ : P z ∈ LB.wchart D.toPre.P.L φ₀ j₂` using `hK₂.mem φ₀ P`. Establish `m₁' : P z ∈ LB.wchart D.toPre.P.L φ₀ j₁'` using `hK₁.mem φ₀ P`. Establish `eA : adjVal w P z J₁ J₂ = gm P z _ (t.s (Sum.elim j₁ j₂))` using `gm_genIso t P z (j₁, j₂) ⟨m₁, m₂⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have eT : val t P z J₁ = gm P z _ (t.s (Sum.elim j₁ j₁')) := val_of t P z J₁ _ (by rintro (k | k) <;> rfl)`. Establish `tr` using `gen_trans ht P z (chart_le j₁ j₂ ⟨m₁, m₂⟩) (chart_le j₁ j₁' ⟨m₁, m₁'⟩)`. Establish `trτ` using `gen_trans ((pol D).tau_gen (h y) y') (𝟙 _) z (hK₂.mem _ (𝟙 _)) (hK₁.mem _ (𝟙 _))`. Set `H : ((TK R).left ⟶ B.left) → ((TK R).left.presheaf.stalk z)ˣ` to `fun ψ => gm ψ z (D.toPre.P.L.U (J₂ ψ) ⊓ D.toPre.P.L.U (J₁ ψ)) (D.toPre.P.L.g (J₂ ψ) (J₁ ψ))`. Establish `kt : trF (Sum.elim φ₁ φ₀) (Sum.elim e₂ fun k => -e₂ k) P z (Sum.elim j₁ j₂) (Sum.elim j₁ j₁') = (∏ I, H (P ≫ φ₀ I) ^ e₂ I)⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `trF`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[Finset.prod_eq_one (fun I _ => by erw [gm_self hL (P ≫ φ₁ I) z (hK₁ (P ≫ φ₁ I)), one_zpow]), _root_.one_mul]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Establish `cx : (toUnit (TK R) ≫ D.toPre.c y) ≫ f = toUnit (TK R) ≫ (pol D).c (h y)` using `(Category.assoc _ _ _).trans (congrArg (toUnit (TK R) ≫ ·) (o.c_lin a y)).symm`. Set `X : TK R ⟶ B` to `toUnit (TK R) ≫ (pol D).c (h y)`. Set `Y : TK R ⟶ B` to `toUnit (TK R) ≫ (pol D).c y'`. Establish `q1 : P ≫ ((fst B B ≫ f) * snd B B).left = (X * Y).left` using `by show (lift (toUnit (TK R) ≫ D.toPre.c y) (toUnit (TK R) ≫ D.toPre.c y')).left ≫ _ = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, MonObj.comp_mul, lift_fst_assoc, lift_snd, cx]`. Both sides reduce to the same expression. Establish `q2 : P ≫ (fst B B ≫ f).left = X.left` using `by show (lift (toUnit (TK R) ≫ D.toPre.c y) (toUnit (TK R) ≫ D.toPre.c y')).left ≫ _ = _`. Rewrite using `[← Over.comp_left, lift_fst_assoc, cx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `q3 : P ≫ (snd B B).left = Y.left` using `by show (lift (toUnit (TK R) ≫ D.toPre.c y) (toUnit (TK R) ≫ D.toPre.c y')).left ≫ _ = _`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `q4 : P ≫ (1 : B ⊗ B ⟶ B).left = (1 : TK R ⟶ B).left` using `by show (lift (toUnit (TK R) ≫ D.toPre.c y) (toUnit (TK R) ≫ D.toPre.c y')).left ≫ _ = _`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s0 : ∏ I, H (P ≫ φ₀ I) ^ e₂ I = H (P ≫ ((fst B B ≫ f) * snd B B).left) * (H (P ≫ (fst B B ≫ f).left))⁻¹ * (H (P ≫ (snd B B).left))⁻¹ * H (P ≫ (1 : B ⊗ B ⟶ B).left)` using `GlobalTheory.NormRos.prod_square (fst B B ≫ f) (snd B B) (fun ψ => H (P ≫ ψ))`. Establish `l4 : ∀ X Y : TK R ⟶ B, ∏ k, H (𝟙 _ ≫ lamPts X Y k) ^ negε k = (H (X * Y).left)⁻¹ * H X.left * H Y.left * (H (1 : TK R ⟶ B).left)⁻¹` using `fun X Y => by`. Establish `e` using `Wit.prod_neg_lamPts X Y (fun ψ => (H ψ)⁻¹)`. Simplify `e` using `only [inv_inv]`. Establish `kτ : ∏ k, H (𝟙 _ ≫ lamPts X Y k) ^ negε k = (∏ I, H (P ≫ φ₀ I) ^ e₂ I)⁻¹`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[l4 X Y, s0, q1, q2, q3, q4]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Use `(trτ.trans (congrArg (_ * ·) single)).trans (Eq.trans ?_ (congrArg (· * _) (eA.trans (tr.trans (congrArg (_ * ·) eT.symm)))).symm)` and prove the remaining obligations.
-
-Rewrite using `[_root_.mul_assoc]`. Use `congr 1`. Conclude with `kτ.trans kt.symm`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem adj_act : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (a : O), Adj (pol D) (pol D) (o.onB.act a) (o.onB.act (Star.star a)) (DistribMulAction.toAddMonoidHom D.toPre.X a) (DistribMulAction.toAddMonoidHom D.toPre.X (Star.star a)) := by
   intro R _ _ I D O _ _ _ o a

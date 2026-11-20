@@ -12,9 +12,9 @@ namespace GlobalTheory.Mem.Col2.ChEx
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Establish `e1 : (⟨P.1, (Finset.mem_union.mp (Finset.mem_union_right _ P.2)).resolve_left hP⟩ : QE sel (mu : Chr X.F X.E X.K)) = P` using `Subtype.ext rfl`. Simplify using `only [frsF, dif_neg hP, e1]`. Use `show _ = (g.1.1 * r.1.1.1.2 P * ((g.2.2.1 P)⁻¹).1) ((g.2.2.1 P).1 ((r.1.1.1.2 P).symm y))`. Establish `e2 : ((g.2.2.1 P)⁻¹).1 ((g.2.2.1 P).1 ((r.1.1.1.2 P).symm y)) = (r.1.1.1.2 P).symm y` using `by show (g.2.2.1 P).1.symm ((g.2.2.1 P).1 _) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearEquiv.symm_apply_apply _ _`. Rewrite using `[LinearEquiv.mul_apply, LinearEquiv.mul_apply, e2]`. Use `show g.1.1 y = g.1.1 ((r.1.1.1.2 P) ((r.1.1.1.2 P).symm y))`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_ya_symm {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
     {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ}
@@ -35,11 +35,11 @@ theorem frsF_ya_symm {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSp
   rw [LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `X Pr R sel S mu cst u j hQ Λ Θ g r P`. Establish `hP` using `hQ P.1 P.2`. Use extensionality with `z`. Simplify using `only [cqOf, cosetIn, Set.mem_setOf_eq, Set.mem_image, if_neg hP]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, hz⟩`. Use `⟨(g.2.2.1 P).1.symm z, ⟨y, hy, ?_⟩, LinearEquiv.apply_symm_apply _ _⟩` and prove the remaining obligations. Rewrite `hz` using `[frsF_ya_symm Λ Θ g r P hP y]`. Rewrite using `[← (g.2.2.1 P).2]`. Rewrite using `[map_smul, map_sub, LinearEquiv.apply_symm_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Introduce and unpack `⟨z0, ⟨y, hy, hz⟩, rfl⟩`. Use `⟨g.1.1 y, ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[frsF_ya_symm Λ Θ g r P hP y, ← map_sub, ← map_smul]`. Conclude with `((g.2.2.1 P).2 _).2 hz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invActs_cqOf : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ}, (∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) → GlobalTheory.Mem.Col2.ChEx.InvActs (GlobalTheory.Mem.Col2.ChEx.cqOf (R := R) (cst := cst) (u := u) (j := j) : PtAt R sel mu cst u j → _) := by
   intro X Pr R sel S mu cst u j hQ Λ Θ g r P

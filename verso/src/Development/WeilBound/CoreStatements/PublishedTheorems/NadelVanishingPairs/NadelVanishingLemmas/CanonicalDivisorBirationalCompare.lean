@@ -20,7 +20,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Discrepancy.CanonIso
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.isNormalScheme_iff Y).2 (GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth p ((GlobalTheory.isNormalScheme_iff _).1 inferInstance))`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_of_smooth' {k : Type} [Field k] {Y : Scheme.{0}} (p : Y ⟶ Sp k) [Smooth p] :
     GlobalTheory.IsNormalScheme Y :=
@@ -28,7 +28,7 @@ theorem isNormalScheme_of_smooth' {k : Type} [Field k] {Y : Scheme.{0}} (p : Y �
     ((GlobalTheory.isNormalScheme_iff _).1 inferInstance))
 
 /- English proof (translation)
-Introduce `h` and use `IsDiscreteValuationRing.not_isField E.ring (by rw [h] exact MulEquiv.isField (Field.toIsField X.functionField) Subring.topEquiv.toMulEquiv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ring_ne_top' {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     (E : DivOver p) : E.ring ≠ ⊤ := fun h =>
@@ -37,7 +37,7 @@ theorem ring_ne_top' {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p : X
     exact MulEquiv.isField (Field.toIsField X.functionField) Subring.topEquiv.toMulEquiv)
 
 /- English proof (translation)
-Establish `hle : F.ring ≤ E.ring` using `fun f hf => hE f ((hF f).1 hf)`. Use `ValuationSubring.eq_of_le_of_ne_top F.ring hle (ring_ne_top' E)` as an intermediate fact. Conclude with `fun f => this ▸ hF f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAt_of_through' {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     {z : X} {E F : DivOver p} (hF : F.IsAt z) (hE : E.Through z) : E.IsAt z := by
@@ -46,19 +46,17 @@ theorem isAt_of_through' {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p
   exact fun f => this ▸ hF f
 
 /- English proof (translation)
-Introduce `k _ _ Y₀ Y₁ _ _ _ _ q n t _ _ _ U hU hiso η hη K₀ K₁ h₀ h₁ y hy`. Use `haveI : Smooth q := SmoothOfRelativeDimension.smooth n q`. Use `haveI : Smooth (t ≫ q) := SmoothOfRelativeDimension.smooth n (t ≫ q)`. Use `haveI : GlobalTheory.IsNormalScheme Y₀ := isNormalScheme_of_smooth' q`. Use `haveI : GlobalTheory.IsNormalScheme Y₁ := isNormalScheme_of_smooth' (t ≫ q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hbir` using `GlobalTheory.T.functionFieldMap_bijective_of_isIso_restrict' Y₀ Y₁ t U hU hiso`. Establish `hpull : EtaleKlt.ratPull q t n η ≠ 0` using `fun h => hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k Y₀ Y₁ q t hbir n).1 (h.trans (map_zero _).symm))`. Rewrite using `[(GlobalTheory.T.cartier_divisor_mult_characterize Y₁ (K₁ - pullCart t K₀)).2.1 y]`. Introduce and unpack `⟨z, hzy, hz⟩`. Apply `hz` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htz : t z ∈ U` using `(hzy.map t.continuous).mem_open U.isOpen hy`. Take `⟨hc, hm⟩` from `GlobalTheory.T.coheight_and_multiplicity_pullback_isIso_open Y₀ Y₁ t U hiso z htz`. Establish `hsub : (K₁ - pullCart t K₀).mult z = K₁.mult z - (pullCart t K₀).mult z`. Use `CartierDiv.mult_add (K₁ - pullCart t K₀) (pullCart t K₀) z` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hsub, hm K₀, sub_eq_zero]`. Distinguish the cases in `h1 : Order.coheight z = 1`. Take `⟨E', hE'⟩` from `DivOver.exists_isAt_of_coheight_eq_one (p := t ≫ q) h1`. Take `⟨E, hO⟩` from `GlobalTheory.T.exists_primeDivisor_over_target_birational k Y₀ Y₁ q t hbir E'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `DivOver.exists_isAt_of_coheight_eq_one (p := q) (z := t z) (hc ▸ h1)`. Establish `hthr : E.Through (t z)`. Introduce `f hf`. Take `⟨a, rfl⟩` from `hf`. Conclude with `(hO _).2 ((hE' _).2 ⟨t.stalkMap z a, (GlobalTheory.functionFieldMap_algebraMap t z a).symm⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hE : E.IsAt (t z)` using `isAt_of_through' hF hthr`. Rewrite using `[← GlobalTheory.T.formOrd_eq_mult_of_isCartierDivisorOfRationalForm k Y₁ (t ≫ q) n _ hpull K₁ h₁ E' z hE', ← GlobalTheory.T.formOrd_eq_mult_of_isCartierDivisorOfRationalForm k Y₀ q n η hη K₀ h₀ E (t z) hE]`. Conclude with `GlobalTheory.T.form_order_birational_pullback k Y₀ Y₁ q t hbir E' E hO n η hη`. Establish `a : K₁.mult z = 0` using `by_contra fun h => h1 (CartierDiv.coheight_eq_one_of_mult_ne_zero h)`. Establish `b : K₀.mult (t z) = 0`.
-
-Assume the negation of the conclusion as `fun h => h1 (hc ▸ CartierDiv.coheight_eq_one_of_mult_ne_zero h)`. Rewrite using `[a, b]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_supp_sub_pullCart : ∀ (k : Type) [Field k] [CharZero k] (Y₀ Y₁ : Scheme.{0}) [IsIntegral Y₀] [IsIntegral Y₁] [IsLocallyNoetherian Y₀] [IsLocallyNoetherian Y₁] (q : Y₀ ⟶ Sp k) (n : ℕ) (t : Y₁ ⟶ Y₀) [IsDominant t] [SmoothOfRelativeDimension n q] [SmoothOfRelativeDimension n (t ≫ q)] (U : Y₀.Opens), (U : Set Y₀).Nonempty → IsIso (t ∣_ U) → ∀ (η : RatForms q n), η ≠ 0 → ∀ (K₀ : CartierDiv Y₀) (K₁ : CartierDiv Y₁), IsDivOfForm K₀ η → IsDivOfForm K₁ (EtaleKlt.ratPull q t n η) → ∀ y : Y₁, t y ∈ U → y ∉ (K₁ - pullCart t K₀).supp := by
   intro k _ _ Y₀ Y₁ _ _ _ _ q n t _ _ _ U hU hiso η hη K₀ K₁ h₀ h₁ y hy

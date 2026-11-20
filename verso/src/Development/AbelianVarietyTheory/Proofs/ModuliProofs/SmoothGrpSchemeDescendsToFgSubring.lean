@@ -58,7 +58,7 @@ def PairModel.refl (p : U ⟶ S) (a : T ⟶ U) [Smooth p] [IsSeparated p] [Quasi
   ⟨U, T, p, a, 𝟙 _, 𝟙 _, ‹_›, ‹_›, ‹_›, ‹_›, ‹_›, .of_horiz_isIso ⟨by simp⟩, .of_horiz_isIso ⟨by simp⟩⟩
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.fst q₀ g) (v₁₃ := q₀) (h₂₂ := g) ?_ (pullback.lift_snd _ _ _) (.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, e]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_lift {X X₀ : Scheme.{0}} {q : X ⟶ S} {q₀ : X₀ ⟶ S₀} {φ : X ⟶ X₀} (h : IsPullback φ q q₀ f)
     (σ : S ⟶ S₁) (g : S₁ ⟶ S₀) (e : σ ≫ g = f) :
@@ -98,18 +98,18 @@ def PairModel.baseChange (M : PairModel f p a) (σ : S ⟶ S₁) (g : S₁ ⟶ S
         · simp only [a₁, Category.assoc, pullback.lift_snd] }
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem PairModel.baseChange_a₀_p₀ (M : PairModel f p a) (σ : S ⟶ S₁) (g : S₁ ⟶ S₀) (e : σ ≫ g = f) :
     (M.baseChange σ g e).a₀ ≫ (M.baseChange σ g e).p₀ = pullback.snd (M.a₀ ≫ M.p₀) g :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Set `Y : Bool → Scheme.{0}` to `fun i => Bool.rec U W i`. Set `t : ∀ i, Y i ⟶ X` to `fun i => Bool.rec (motive := fun i => Y i ⟶ X) u v i`. Apply the tactic sequence `have ht : ∀ i, IsOpenImmersion (t i) := fun i => by cases i <;> assumption`. Set `𝒰 : X.OpenCover` to `Scheme.Cover.mkOfCovers Bool Y t (fun x => by`. Break down `hc x with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨false, y, hy⟩`. Conclude with `⟨true, y, hy⟩)`. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @Smooth.{0}) (Q := @RingHom.Smooth)` as an intermediate fact. Use `IsZariskiLocalAtSource.of_openCover (P := @Smooth.{0}) 𝒰 ?_` and prove the remaining obligations. Introduce and unpack `(_ | _)`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hu`. Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem smooth_of_two {X W : Scheme.{0}} {u : U ⟶ X} {v : W ⟶ X} [IsOpenImmersion u] [IsOpenImmersion v]
     (hc : ∀ x : X, x ∈ Set.range u ∨ x ∈ Set.range v) (q : X ⟶ S) (hu : Smooth (u ≫ q)) (hv : Smooth (v ≫ q)) :
@@ -128,25 +128,23 @@ theorem smooth_of_two {X W : Scheme.{0}} {u : U ⟶ X} {v : W ⟶ X} [IsOpenImme
   · exact hv
 
 /- English proof (translation)
-Establish `Hp` using `M.hτ`. Establish `Hq : IsPullback M.τ b (e.hom ≫ N.a₀) N.φ` using `N.hτ.of_iso (Iso.refl _) e.symm (Iso.refl _) (Iso.refl _) (by simp [← he]) (by simp) (by simp) (by simp)`. Use `isOpenImmersion_inl M.a₀ (e.hom ≫ N.a₀)` as an intermediate fact. Use `isOpenImmersion_inr M.a₀ (e.hom ≫ N.a₀)` as an intermediate fact. Take `⟨φ, h1, h2⟩` from `exists_glue h hc (M.φ ≫ pushout.inl M.a₀ (e.hom ≫ N.a₀)) (N.φ ≫ pushout.inr M.a₀ (e.hom ≫ N.a₀)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Hp.w_assoc, ← Hq.w_assoc, pushout.condition])`. Establish `e1 (x : U) : φ (u x) = pushout.inl M.a₀ (e.hom ≫ N.a₀) (M.φ x)` using `congrArg (fun g => g x) h1`. Establish `e2 (x : W) : φ (v x) = pushout.inr M.a₀ (e.hom ≫ N.a₀) (N.φ x)` using `congrArg (fun g => g x) h2`. Establish `e3 (w : T) : u (a w) = v (b w)` using `congrArg (fun g => g w) h.w`. Establish `hcov` using `pushout_cover M.a₀ (e.hom ≫ N.a₀)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, pushout.desc M.p₀ N.p₀ (by rw [Category.assoc, he']), φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `smooth_of_two hcov _ ?_ ?_` and prove the remaining obligations. Rewrite using `[pushout.inl_desc] infer_instance`. Rewrite using `[pushout.inr_desc] infer_instance`. Establish `: CompactSpace M.U₀` using `QuasiCompact.compactSpace_of_compactSpace M.p₀`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: CompactSpace N.U₀` using `QuasiCompact.compactSpace_of_compactSpace N.p₀`. Establish `: CompactSpace (pushout M.a₀ (e.hom ≫ N.a₀) : Scheme.{0})`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← Set.eq_univ_of_forall (s := Set.range (pushout.inl M.a₀ (e.hom ≫ N.a₀)) ∪ Set.range (pushout.inr M.a₀ (e.hom ≫ N.a₀))) hcov]`. Conclude with `(isCompact_range (Scheme.Hom.continuous _)).union (isCompact_range (Scheme.Hom.continuous _))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Use `isPullback_of_two hcov (u' := u) (v' := v) (aU := M.φ) (aV := N.φ) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `IsOpenImmersion.isPullback _ _ _ _ h1 ?_` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `⟨y, hy⟩`. Break down `hc x with hx | ⟨x, rfl⟩` into its components or cases. Conclude with `hx`. Take `⟨w, -, hw⟩` from `exists_of_inl_eq_inr _ _ (hy.trans (e2 x))`. Take `⟨z, -, rfl⟩` from `Scheme.exists_preimage_of_isPullback Hq w x hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨a z, e3 z⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨M.φ y, (e1 y).symm⟩`. Use `IsOpenImmersion.isPullback _ _ _ _ h2 ?_` and prove the remaining obligations. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Break down `hc x with ⟨x, rfl⟩ | hx` into its components or cases. Take `⟨w, hw, -⟩` from `exists_of_inl_eq_inr _ _ (hy.trans (e1 x)).symm`. Take `⟨z, -, rfl⟩` from `Scheme.exists_preimage_of_isPullback Hp w x hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨b z, (e3 z).symm⟩`. Conclude with `hx`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨N.φ y, (e2 y).symm⟩`. Simplify `M.hφ` using `only [pushout.inl_desc]`.
-
-Simplify `N.hφ` using `only [pushout.inr_desc]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_glued {X W : Scheme.{0}} (q : X ⟶ S) {u : U ⟶ X} {v : W ⟶ X} [IsOpenImmersion u] [IsOpenImmersion v]
     {b : T ⟶ W} (h : IsPullback a b u v) (hc : ∀ x : X, x ∈ Set.range u ∨ x ∈ Set.range v)
@@ -208,24 +206,22 @@ theorem exists_glued {X W : Scheme.{0}} (q : X ⟶ S) {u : U ⟶ X} {v : W ⟶ X
 variable {V : Type} [CommRing V]
 
 /- English proof (translation)
-The claim follows from `Algebra.FiniteType.trans hk ((Subalgebra.fg_iff_finiteType R).1 hR)`.
+A detailed English derivation is pending.
 -/
 theorem finiteType_of_fg {k : Type} [CommRing k] [Algebra k V] (hk : Algebra.FiniteType ℤ k) {R : Subalgebra k V}
     (hR : R.FG) : Algebra.FiniteType ℤ R :=
   Algebra.FiniteType.trans hk ((Subalgebra.fg_iff_finiteType R).1 hR)
 
 /- English proof (translation)
-Take `⟨k, _, f, X₀, p₀, φ, hk, _, _, _, hφ⟩` from `h`. Use `letI := f.toAlgebra`. Establish `hφ' : IsPullback φ p p₀ (spMap (algebraMap k V))` using `hφ`. Take `⟨s, O, hO, hs⟩` from `exists_preimage_eq (bcDiagram p₀ V) (bcCone p₀ V) (isLimitBcCone p₀ V) (a ≫ hφ'.isoPullback.hom).opensRange (isCompact_range (Scheme.Hom.continuous _))`. Set `R` to `Algebra.adjoin k (s.unop : Set V)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `O' : (pullback p₀ (spMap (algebraMap k R))).Opens` to `O`. Establish `hs' : bcMap p₀ R.val ⁻¹ᵁ O' = (a ≫ hφ'.isoPullback.hom).opensRange` using `hs`. Establish `hO' : CompactSpace O'` using `isCompact_iff_compactSpace.1 hO`. Establish `: QuasiSeparatedSpace ↥(pullback p₀ (spMap (algebraMap k R)))` using `(quasiSeparated_iff_quasiSeparatedSpace (pullback.snd p₀ _)).mp inferInstance`. Establish `hqc : QuasiCompact O'.ι` using `quasiCompact_of_compactSpace _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (hφ'.isoPullback.hom ≫ bcMap p₀ R.val) ⁻¹ᵁ O'.ι.opensRange = a.opensRange`. Rewrite using `[Scheme.Opens.opensRange_ι, Scheme.Hom.comp_preimage, hs']`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, hφ'.isoPullback.hom.isOpenEmbedding.injective (by simpa using hy)⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, by simp⟩`. Establish `hle : Set.range (a ≫ hφ'.isoPullback.hom ≫ bcMap p₀ R.val) ⊆ Set.range O'.ι`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hr.ge ⟨y, rfl⟩`. Use `⟨R, inferInstance, R.val.toRingHom, finiteType_of_fg hk (Subalgebra.fg_adjoin_finset _), ⟨⟨_, O', pullback.snd p₀ _, O'.ι, hφ'.isoPullback.hom ≫ bcMap p₀ R.val, IsOpenImmersion.lift O'.ι _ hle, inferInstance, inferInstance, inferInstance, inferInstance, hqc, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Establish `h₁ : IsPullback hφ'.isoPullback.hom p (pullback.snd _ _) (𝟙 _)` using `.of_horiz_isIso ⟨by simp⟩`. Simplify using `using h₁.paste_horiz (isPullback_bcMap p₀ R.val)`.
-
-Conclude with `IsOpenImmersion.isPullback _ _ _ _ (IsOpenImmersion.lift_fac _ _ _).symm hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pairModel {p : U ⟶ Sp V} (h : HasModel p) (a : T ⟶ U) [IsOpenImmersion a] [CompactSpace T] :
     ∃ (R : Type) (_ : CommRing R) (f : R →+* V), Algebra.FiniteType ℤ R ∧ Nonempty (PairModel (spMap f) p a) := by
@@ -262,9 +258,9 @@ theorem exists_pairModel {p : U ⟶ Sp V} (h : HasModel p) (a : T ⟶ U) [IsOpen
   · exact IsOpenImmersion.isPullback _ _ _ _ (IsOpenImmersion.lift_fac _ _ _).symm hr
 
 /- English proof (translation)
-Set `R : Subalgebra ℤ V` to `f₁.toIntAlgHom.range ⊔ f₂.toIntAlgHom.range`. Establish `hR : R.FG`. Apply the tactic sequence `refine Subalgebra.FG.sup ?_ ?_ <;> rw [← Algebra.map_top]`. Conclude with `h₁.out.map _`. Conclude with `h₂.out.map _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine ⟨R, inferInstance, R.val.toRingHom, f₁.codRestrict R fun x => (le_sup_left : _ ≤ R) ⟨x, rfl⟩, f₂.codRestrict R fun x => (le_sup_right : _ ≤ R) ⟨x, rfl⟩, (Subalgebra.fg_iff_finiteType R).1 hR, ?_, ?_⟩ <;>`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_common_level {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] (f₁ : R₁ →+* V) (f₂ : R₂ →+* V)
     (h₁ : Algebra.FiniteType ℤ R₁) (h₂ : Algebra.FiniteType ℤ R₂) :
@@ -282,17 +278,15 @@ theorem exists_common_level {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] (
     rfl
 
 /- English proof (translation)
-Establish `: QuasiSeparatedSpace X` using `(quasiSeparated_iff_quasiSeparatedSpace q).mp inferInstance`. Establish `: CompactSpace ↥(pullback u v)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.fst u v)`. Take `⟨R₁, _, f₁, h₁, ⟨M₁⟩⟩` from `exists_pairModel hU (pullback.fst u v)`. Take `⟨R₂, _, f₂, h₂, ⟨N₁⟩⟩` from `exists_pairModel hW (pullback.snd u v)`. Take `⟨k, _, f, g₁, g₂, hk, e₁, e₂⟩` from `exists_common_level f₁ f₂ h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI := f.toAlgebra`. Take `⟨M⟩ : Nonempty (PairModel (spMap (algebraMap k V)) (u ≫ q) (pullback.fst u v))` from `⟨M₁.baseChange _ _ e₁⟩`. Take `⟨N⟩ : Nonempty (PairModel (spMap (algebraMap k V)) (v ≫ q) (pullback.snd u v))` from `⟨N₁.baseChange _ _ e₂⟩`. Establish `hN` using `N.hτ.paste_vert N.hφ`. Rewrite `hN` using `[← pullback.condition_assoc]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨R, e, hR, he, he'⟩` from `GlobalTheory.T.exists_iso_pullback_over_fg_subalgebra k V M.T₀ N.T₀ _ (M.a₀ ≫ M.p₀) (N.a₀ ≫ N.p₀) _ M.τ N.τ inferInstance inferInstance inferInstance inferInstance inferInstance inferInstance (M.hτ.paste_vert M.hφ) hN`. Establish `w` using `spMap_algHom_comp R.val`. Take `⟨X₀, q₀, φ, _, _, hφ⟩` from `exists_glued q (IsPullback.of_hasPullback u v) hc (M.baseChange _ _ w) (N.baseChange _ _ w) e (by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(he' _ (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)).trans (pullback.lift_fst _ _ _).symm`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg _ he).trans ((pullback.lift_snd _ _ _).trans (Eq.trans ?_ (pullback.lift_snd _ _ _).symm))` and prove the remaining obligations. Simplify using `only [Category.assoc, pullback.condition_assoc])`. Use the proof step `(by rw [PairModel.baseChange_a₀_p₀, PairModel.baseChange_a₀_p₀]; exact he)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRZ` using `finiteType_of_fg hk hR`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing ℤ R`. Establish `hφ' : IsPullback φ q q₀ (spMap (algebraMap R V))` using `hφ`. Take `⟨R', hR', _⟩` from `GlobalTheory.T.exists_fg_subalgebra_isSeparated_pullback_snd R V X₀ q₀ inferInstance inferInstance (by`. Rewrite using `[← hφ'.isoPullback_inv_snd]`.
-
-Use the proof step `infer_instance)`. Conclude with `⟨R', inferInstance, R'.val.toRingHom, _, pullback.snd q₀ _, _, finiteType_of_fg hRZ hR', inferInstance, ‹_›, inferInstance, isPullback_lift hφ' _ _ (spMap_algHom_comp R'.val)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasModel_of_two {X W : Scheme.{0}} (q : X ⟶ Sp V) [IsSeparated q] (u : U ⟶ X) (v : W ⟶ X)
     [IsOpenImmersion u] [IsOpenImmersion v] (hc : ∀ x : X, x ∈ Set.range u ∨ x ∈ Set.range v)
@@ -329,20 +323,18 @@ theorem hasModel_of_two {X W : Scheme.{0}} (q : X ⟶ Sp V) [IsSeparated q] (u :
     ‹_›, inferInstance, isPullback_lift hφ' _ _ (spMap_algHom_comp R'.val)⟩
 
 /- English proof (translation)
-Take `⟨R, _, f, X₀, p₀, φ, h, _, _, hφ⟩` from `GlobalTheory.T.exists_finiteType_model_of_smooth_affine' V X q ‹_› ‹_›`. Conclude with `⟨R, _, f, X₀, p₀, φ, h, ‹_›, inferInstance, inferInstance, hφ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasModel_of_isAffine {X : Scheme.{0}} (q : X ⟶ Sp V) [IsAffine X] [Smooth q] : HasModel q := by
   obtain ⟨R, _, f, X₀, p₀, φ, h, _, _, hφ⟩ := GlobalTheory.T.exists_finiteType_model_of_smooth_affine' V X q ‹_› ‹_›
   exact ⟨R, _, f, X₀, p₀, φ, h, ‹_›, inferInstance, inferInstance, hφ⟩
 
 /- English proof (translation)
-Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace q`. Establish `key : HasModel ((⊤ : X.Opens).ι ≫ q)`. Use `compact_open_induction_on (P := fun S => HasModel (S.ι ≫ q)) ⊤ isCompact_univ ?_ ?_` and prove the remaining obligations. Establish `: IsAffine (⊥ : X.Opens)` using `isAffineOpen_bot X`. Conclude with `hasModel_of_isAffine _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hS W h`. Establish `: CompactSpace S` using `isCompact_iff_compactSpace.1 hS`. Establish `: IsAffine W.1` using `W.2`. Use `hasModel_of_two _ (X.homOfLE (le_sup_left : S ≤ S ⊔ W.1)) (X.homOfLE (le_sup_right : W.1 ≤ S ⊔ W.1)) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx | hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inl ⟨⟨x, hx⟩, Subtype.ext (by simp)⟩`. Conclude with `Or.inr ⟨⟨x, hx⟩, Subtype.ext (by simp)⟩`. Rewrite using `[Scheme.homOfLE_ι_assoc]` and apply the resulting hypothesis. Conclude with `hasModel_of_isAffine _`. Take `⟨R, _, f, X₀, p₀, φ, h₁, h₂, h₃, h₄, hφ⟩` from `key`.
-
-Use `⟨R, _, f, X₀, p₀, X.topIso.inv ≫ φ, h₁, h₂, h₃, h₄, ?_⟩` and prove the remaining obligations. Conclude with `hφ.of_iso X.topIso (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`.
+Prove the second alternative. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasModel {X : Scheme.{0}} (q : X ⟶ Sp V) [Smooth q] [IsSeparated q] [QuasiCompact q] : HasModel q := by
   have : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace q
@@ -369,7 +361,7 @@ end GlobalTheory.SpreadGroup
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ A _ _ F h₁ h₂ h₃`. Take `⟨k, _, f, X₀, p₀, φ, hk, g₁, g₂, g₃, hφ⟩` from `SpreadGroup.hasModel A.hom`. Use `letI := f.toAlgebra`. Take `⟨R, A₀, i₁, i₂, ψ, hF, hR, s₁, s₂, s₃, hψ⟩` from `GlobalTheory.T.exists_fg_subalgebra_grpObj_model k V A X₀ p₀ φ F g₁ g₂ g₃ hφ`. Conclude with `⟨R.toSubring, A₀, i₁, i₂, ψ, hF, SpreadGroup.finiteType_of_fg hk hR, s₁, s₂, s₃, hψ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smooth_grpScheme_descends_to_fg_subring : ∀ (V : Type) [CommRing V] (A : Over (Sp V)) [GrpObj A] [IsCommMonObj A] (F : Finset V), Smooth A.hom → IsSeparated A.hom → QuasiCompact A.hom → ∃ (R : Subring V) (A₀ : Over (Sp R)) (_ : GrpObj A₀) (_ : IsCommMonObj A₀) (φ : A.left ⟶ A₀.left), (F : Set V) ⊆ R ∧ Algebra.FiniteType ℤ R ∧ Smooth A₀.hom ∧ IsSeparated A₀.hom ∧ QuasiCompact A₀.hom ∧ IsGrpPullback A A₀ (spMap R.subtype) φ := by
   intro V _ A _ _ F h₁ h₂ h₃

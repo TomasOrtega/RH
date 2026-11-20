@@ -22,7 +22,7 @@ variable {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ i, Group (H i)] [�
   (ρ : ∀ i, Measure (R i)) (μ : ∀ i, Measure (H i))
 
 /- English proof (translation)
-The claim follows from `| [], _, h, z => by simp only [NIter] | j :: l, hi, h, z => by have hij : i ≠ j := fun e => hi (e ▸ List.mem_cons_self ..) have hil : i ∉ l := fun e => hi (List.mem_cons_of_mem _ e) simp only [NIter] constructor · rintro ⟨f, hf, hg⟩ refine ⟨f, hf, fun g' => ?_⟩ refine (niter_upda …`.
+A detailed English derivation is pending.
 -/
 theorem niter_update (q : (∀ i, H i) → ℂ) (i : ι) (g : H i) :
     ∀ l : List ι, i ∉ l → ∀ h z, NIter ρ μ q l (Function.update h i g) z ↔ NIter ρ μ (fun x => q (Function.update x i g)) l h z
@@ -43,7 +43,7 @@ theorem niter_update (q : (∀ i, H i) → ℂ) (i : ι) (g : H i) :
       exact (niter_update q i g l hil _ _).2 (hg g')
 
 /- English proof (translation)
-The claim follows from `| [], _, h, z, z', h1, h2 => by simp only [NIter] at h1 h2; rw [h1, h2] | i :: l, hu, h, z, z', h1, h2 => by simp only [NIter] at h1 h2 obtain ⟨f, hf, hg⟩ := h1 obtain ⟨f', hf', hg'⟩ := h2 have e : f = f' := funext fun g => niter_unique q l (fun j hj => hu j (List.mem_cons_of_mem …`.
+A detailed English derivation is pending.
 -/
 theorem niter_unique (q : (∀ i, H i) → ℂ) : ∀ l : List ι,
     (∀ i ∈ l, ∀ (f : H i → ℂ) (z z' : ℂ), IsQuotIntL1 (ρ i) (μ i) f z → IsQuotIntL1 (ρ i) (μ i) f z' → z = z') →
@@ -59,7 +59,7 @@ theorem niter_unique (q : (∀ i, H i) → ℂ) : ∀ l : List ι,
     exact hu i (List.mem_cons_self ..) f z z' hf hf'
 
 /- English proof (translation)
-The claim follows from `| [], h => by simp only [NIter] | i :: l, h => by simp only [NIter] exact ⟨0, IsQuotIntL1.zero, fun g => niter_zero l _⟩`.
+A detailed English derivation is pending.
 -/
 theorem niter_zero : ∀ (l : List ι) (h : ∀ i, H i), NIter ρ μ (fun _ => 0) l h 0
   | [], h => by simp only [NIter]
@@ -70,89 +70,75 @@ theorem niter_zero : ∀ (l : List ι) (h : ∀ i, H i), NIter ρ μ (fun _ => 0
 end Generic
 
 /- English proof (translation)
-Introduce `ι _ H _ _ _ _ _ _ _ _ A B R K l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ _ ρ μ ρ' μ' _ S q z _ _ _ hN hB`. Simplify using `only [NIter] at hN`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h0` using `hB 1 (fun i => (A i).one_mem) (fun _ _ => rfl)`. Simplify using `only [NIter] at h0`. Establish `e : (fun i => (1 : ∀ i, H i) i * (((1 : ∀ i, B i) i : B i) : H i)) = 1` using `by funext i; simp`. Rewrite `h0` using `[e]`. Rewrite using `[hN, ← h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons i l ih`. Introduce `hnd hsp ρ μ ρ' μ' hhaar S q z hSB hBi hsupp hN hB`. Establish `hil : i ∉ l` using `(List.nodup_cons.1 hnd).1`. Establish `hnd'` using `(List.nodup_cons.1 hnd).2`. Establish `sp` using `hsp i (List.mem_cons_self ..)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hρ, hμ, hρ', hμ'⟩` from `hhaar i (List.mem_cons_self ..)`. Use `haveI := hρ`. Use `haveI := hμ`. Use `haveI := hρ'`. Use `haveI := hμ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : (ρ i).IsInvInvariant := sp.uniR _ hρ`. Use `haveI : (ρ' i).IsInvInvariant := sp.uniRB _ hρ'`. Use `haveI : (μ' i).IsMulRightInvariant := sp.uniB _ hμ'`. Use `haveI : LocallyCompactSpace (B i) := sp.clB.locallyCompactSpace`. Establish `hRB : IsClosed (((R i).subgroupOf (B i) : Subgroup (B i)) : Set (B i))`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `sp.clR.preimage continuous_subtype_val`. Establish `hKbc : IsCompact (((K i).subgroupOf (B i) : Subgroup (B i)) : Set (B i))`. Rewrite using `[Subgroup.coe_subgroupOf, Subgroup.coe_subtype, Subtype.isCompact_iff, Set.image_preimage_eq_of_subset]`. Conclude with `sp.cpt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Conclude with `⟨⟨x, sp.le hx⟩, rfl⟩`. Establish `huH : ∀ j ∈ l, ∀ (f : H j → ℂ) (z z' : ℂ), IsQuotIntL1 (ρ j) (μ j) f z → IsQuotIntL1 (ρ j) (μ j) f z' → z = z'`. Introduce `j hj f z z' h1 h2`. Establish `spj` using `hsp j (List.mem_cons_of_mem _ hj)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨a1, a2, -, -⟩` from `hhaar j (List.mem_cons_of_mem _ hj)`. Use `haveI := a1`. Use `haveI := a2`. Use `haveI : (ρ j).IsInvInvariant := spj.uniR _ a1`. Conclude with `IsQuotIntL1.unique spj.clR h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huB : ∀ j ∈ l, ∀ (f : B j → ℂ) (z z' : ℂ), IsQuotIntL1 (ρ' j) (μ' j) f z → IsQuotIntL1 (ρ' j) (μ' j) f z' → z = z'`. Introduce `j hj f z z' h1 h2`. Establish `spj` using `hsp j (List.mem_cons_of_mem _ hj)`. Take `⟨-, -, a3, a4⟩` from `hhaar j (List.mem_cons_of_mem _ hj)`. Use `haveI := a3`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := a4`. Use `haveI : (ρ' j).IsInvInvariant := spj.uniRB _ a3`. Use `haveI : LocallyCompactSpace (B j) := spj.clB.locallyCompactSpace`. Establish `hRBj : IsClosed (((R j).subgroupOf (B j) : Subgroup (B j)) : Set (B j))`. Rewrite using `[Subgroup.coe_subgroupOf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `spj.clR.preimage continuous_subtype_val`. Conclude with `IsQuotIntL1.unique hRBj h1 h2`. Set `T : Finset (B i)` to `(S.image fun s => s i).subtype (· ∈ B i)`. Establish `cell : ∀ a ∈ A i, ∀ g : B i, (∃ s ∈ S, ∃ r ∈ R i, ∃ a₀ ∈ A i, ∃ k ∈ K i, a * (g : H i) = r * a₀ * s i * k) → ∃ t ∈ T, ∃ r ∈ (R i).subgroupOf (B i), ∃ k ∈ (K i).subgroupOf (B i), g = r * t * k`. Introduce and unpack `a ha g ⟨s, hs, r, hr, a₀, ha₀, k, hk, hdec⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsB : s i ∈ B i` using `hSB s hs i`. Establish `hkB : k ∈ B i` using `sp.le hk`. Take `⟨e, he⟩` from `sp.prod`. Take `⟨⟨pa, pb⟩, hp⟩ : ∃ p, e.symm r = p` from `⟨_, rfl⟩`. Establish `hrp : r = (pa : H i) * pb` using `by rw [← he (pa, pb), ← hp, e.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hrp` using the available equality. Establish `hpR` using `sp.split _ pa.2 _ pb.2 hr`. Establish `key : e (⟨a, ha⟩, g) = e (pa * ⟨a₀, ha₀⟩, pb * ⟨s i, hsB⟩ * ⟨k, hkB⟩)`. Rewrite using `[he, he]`. Use `show a * (g : H i) = ((pa : H i) * a₀) * ((pb : H i) * s i * k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hdec, mul_assoc (pa : H i) pb a₀, ← sp.comm a₀ ha₀ pb pb.2]`. Simplify using `only [mul_assoc]`. Establish `hq' : g = pb * ⟨s i, hsB⟩ * ⟨k, hkB⟩` using `congrArg Prod.snd (e.injective key)`. Conclude with `⟨⟨s i, hsB⟩, Finset.mem_subtype.2 (Finset.mem_image_of_mem _ hs), pb, Subgroup.mem_subgroupOf.2 hpR.2, ⟨k, hkB⟩, Subgroup.mem_subgroupOf.2 hk, hq'⟩`. Take `⟨T', w, -, hW⟩` from `GlobalTheory.T.quotientIntegral_finitelyManyCells_weightedSum (B i) ((R i).subgroupOf (B i)) ((K i).subgroupOf (B i)) hRB hKbc sp.opn (ρ' i) (μ' i) hρ' inferInstance hμ' inferInstance T`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Simplify using `only [NIter] at hN`. Take `⟨f, hfz, hfg⟩` from `hN`. Establish `hf' : ∀ g, NIter ρ μ (fun x => q (Function.update x i g)) l 1 (f g)` using `fun g => (niter_update ρ μ q i g l hil 1 (f g)).1 (hfg g)`. Establish `fK : ∀ g, ∀ k ∈ K i, f (g * k) = f g`. Introduce `g k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun x => q (Function.update x i (g * k))) = fun x => q (Function.update x i g)`. Use function extensionality and compare the values at `x`. Use `(hBi i (List.mem_cons_self ..) (Function.update x i g)).2 k hk` as an intermediate fact. Simplify `this` using `[Function.update_self, Function.update_idem]`. Establish `h1` using `hf' (g * k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Rewrite `h1` using `[e]`. Conclude with `niter_unique ρ μ _ l huH 1 _ _ h1 (hf' g)`. Establish `fL : ∀ r ∈ R i, ∀ x, f (r * x) = f x` using `(GlobalTheory.QuotZero.left_and_zero sp.clR (ρ i) (μ i) hfz).1`. Establish `fS : ∀ g, f g ≠ 0 → ∃ s ∈ S, ∃ r ∈ R i, ∃ a₀ ∈ A i, ∃ k ∈ K i, g = r * a₀ * s i * k`. Introduce `g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hno`. Apply `hg` to reduce the goal to its premises. Establish `h0 : NIter ρ μ (fun _ => (0:ℂ)) l 1 (f g)`. Use `(GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι H R ρ μ l 1).2 (fun x => q (Function.update x i g)) _ _ ?_ (hf' g)` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Assume the negation of the conclusion as `hq`. Take `⟨s, hs, hc⟩` from `hsupp (Function.update x i g) (fun j hj => by`. Establish `hji : j ≠ i` using `fun e => hj (e ▸ List.mem_cons_self ..)`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hx j (fun hjl => hj (List.mem_cons_of_mem _ hjl))) hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨r, hr, a₀, ha₀, k, hk, e⟩` from `hc i (List.mem_cons_self ..)`. Rewrite `e` using `[Function.update_self]`. Conclude with `hno ⟨s, hs, r, hr, a₀, ha₀, k, hk, e⟩`. Conclude with `niter_unique ρ μ _ l huH 1 _ _ h0 (niter_zero ρ μ l 1)`. Use `GlobalTheory.T.quotientIntegral_vanish_of_commutingProduct (H i) (A i) (B i) (R i) sp.clA sp.clB sp.clR sp.comm sp.prod sp.split (ρ i) (μ i) (ρ' i) (μ' i) hρ inferInstance hμ hρ' inferInstance hμ' f z hfz ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `h1` using `hW (fun b => f (a * b.1)) (fun r hr g => by show f (a * ((r : H i) * g)) = f (a * g)`. Rewrite using `[← mul_assoc, sp.comm a ha r (r.2), mul_assoc]`. Conclude with `fL _ (Subgroup.mem_subgroupOf.1 hr) _)`. Use the proof step `(fun k hk g => by show f (a * ((g : H i) * k)) = f (a * g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc]`. Conclude with `fK _ _ (Subgroup.mem_subgroupOf.1 hk))`. Use the proof step `(fun g hg => cell a ha g (fS _ hg))`. It suffices to establish `hsum : ∑ t ∈ T', w t * f (a * t.1) = 0 by rw [hsum] at h1; exact h1`. Set `q' : (∀ j, H j) → ℂ` to `fun x => ∑ t ∈ T', w t * q (Function.update x i (a * t.1))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq'N : NIter ρ μ q' l 1 (∑ t ∈ T', w t * f (a * t.1))` using `(GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι H R ρ μ l 1).1 (B i) T' w (fun t => f (a * t.1)) (fun t x => q (Function.update x i (a * t.1))) (fun t _ => hf' _)`. Use `ih hnd' (fun j hj => hsp j (List.mem_cons_of_mem _ hj)) ρ μ ρ' μ' (fun j hj => hhaar j (List.mem_cons_of_mem _ hj)) S q' _ hSB ?_ ?_ hq'N ?_` and prove the remaining obligations. Introduce `j hj x`. Establish `hji : j ≠ i` using `fun e => hil (e ▸ hj)`. Establish `hI` using `fun y => hBi j (List.mem_cons_of_mem _ hj) y`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `r hr`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `(hI (Function.update x i (a * t.1))).1 r hr` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Function.update_of_ne hji, Function.update_comm hji.symm]`. Conclude with `this`. Introduce `k hk`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use `(hI (Function.update x i (a * t.1))).2 k hk` as an intermediate fact. Rewrite `this` using `[Function.update_of_ne hji, Function.update_comm hji.symm]`. Conclude with `this`. Introduce `x hx hne`. Take `⟨t, -, ht⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hq : q (Function.update x i (a * t.1)) ≠ 0` using `right_ne_zero_of_mul ht`. Take `⟨s, hs, hc⟩` from `hsupp _ (fun j hj => by`. Establish `hji : j ≠ i` using `fun e => hj (e ▸ List.mem_cons_self ..)`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hx j (fun hjl => hj (List.mem_cons_of_mem _ hjl))) hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s, hs, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hji : j ≠ i` using `fun e => hil (e ▸ hj)`. Use `hc j (List.mem_cons_of_mem _ hj)` as an intermediate fact. Rewrite `this` using `[Function.update_of_ne hji]`. Then use the resulting hypothesis. Introduce `a' ha' ha'1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `a'' : ∀ j, H j` to `Function.update a' i a`. Establish `ha'' : ∀ j, a'' j ∈ A j` using `fun j => by`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[a'', ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [a'', Function.update_of_ne hj]`. Conclude with `ha' j`. Establish `ha''1 : ∀ j, j ∉ i :: l → a'' j = 1` using `fun j hj => by`. Establish `hji : j ≠ i` using `fun e => hj (e ▸ List.mem_cons_self ..)`. Simplify using `only [a'', Function.update_of_ne hji]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `ha'1 j (fun hjl => hj (List.mem_cons_of_mem _ hjl))`. Establish `hB''` using `hB a'' ha'' ha''1`. Simplify using `only [NIter] at hB''`. Take `⟨f₁, hf₁0, hf₁g⟩` from `hB''`. Set `Qa : (∀ j, B j) → ℂ` to `fun b => q fun j => a'' j * (b j).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hf₁' : ∀ g, NIter ρ' μ' (fun b => Qa (Function.update b i g)) l 1 (f₁ g)` using `fun g => (niter_update ρ' μ' Qa i g l hil 1 (f₁ g)).1 (hf₁g g)`. Establish `hQu : ∀ (b : ∀ j, B j) (g : B i), Qa (Function.update b i g) = q (Function.update (fun j => a'' j * (b j).1) i (a * g.1))`. Introduce `b g`. Use `show (q fun j => a'' j * (Function.update b i g j).1) = _`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[a'']`. Simplify using `[Function.update_of_ne hj]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `f₁K : ∀ g, ∀ k ∈ (K i).subgroupOf (B i), f₁ (g * k) = f₁ g`. Introduce `g k hk`. Establish `e : (fun b => Qa (Function.update b i (g * k))) = fun b => Qa (Function.update b i g)`. Use function extensionality and compare the values at `b`. Rewrite using `[hQu, hQu]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `(hBi i (List.mem_cons_self ..) (Function.update (fun j => a'' j * (b j).1) i (a * g.1))).2 k (Subgroup.mem_subgroupOf.1 hk)` as an intermediate fact. Simplify `this` using `[Function.update_self, Function.update_idem, mul_assoc]`. Establish `h1` using `hf₁' (g * k)`. Rewrite `h1` using `[e]`. Conclude with `niter_unique ρ' μ' _ l huB 1 _ _ h1 (hf₁' g)`.
-
-Establish `f₁L` using `(GlobalTheory.QuotZero.left_and_zero hRB (ρ' i) (μ' i) hf₁0).1`. Establish `f₁S : ∀ g, f₁ g ≠ 0 → ∃ s ∈ S, ∃ r ∈ R i, ∃ a₀ ∈ A i, ∃ k ∈ K i, a * (g : H i) = r * a₀ * s i * k`. Introduce `g hg`. Assume the negation of the conclusion as `hno`. Apply `hg` to reduce the goal to its premises.
-
-Establish `h0 : NIter ρ' μ' (fun _ => (0:ℂ)) l 1 (f₁ g)`. Use `(GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι (fun j => B j) (fun j => (R j).subgroupOf (B j)) ρ' μ' l 1).2 _ _ _ ?_ (hf₁' g)` and prove the remaining obligations. Introduce `b hb`. Assume the negation of the conclusion as `hq`. Rewrite `hq` using `[hQu]`.
-
-Take `⟨s, hs, hc⟩` from `hsupp _ (fun j hj => by`. Establish `hji : j ≠ i` using `fun e => hj (e ▸ List.mem_cons_self ..)`. Rewrite using `[Function.update_of_ne hji]`. Establish `h1 : b j = 1` using `hb j (fun hjl => hj (List.mem_cons_of_mem _ hjl))`. Simplify using `[h1, ha''1 j hj]) hq`.
-
-Take `⟨r, hr, a₀, ha₀, k, hk, e⟩` from `hc i (List.mem_cons_self ..)`. Rewrite `e` using `[Function.update_self]`. Conclude with `hno ⟨s, hs, r, hr, a₀, ha₀, k, hk, e⟩`. Conclude with `niter_unique ρ' μ' _ l huB 1 _ _ h0 (niter_zero ρ' μ' l 1)`. Establish `hf₁W` using `hW f₁ (fun r hr g => f₁L r hr g) (fun k hk g => f₁K g k hk) (fun g hg => cell a ha g (f₁S g hg))`.
-
-Establish `hz` using `IsQuotIntL1.unique hRB hf₁W hf₁0`. Establish `hlin` using `(GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι (fun j => B j) (fun j => (R j).subgroupOf (B j)) ρ' μ' l 1).1 (B i) T' w f₁ (fun t b => Qa (Function.update b i t)) (fun t _ => hf₁' t)`. Rewrite `hlin` using `[hz]`. Establish `e : (fun b : ∀ j, B j => q' fun j => a' j * (b j).1) = fun b => ∑ t ∈ T', w t * Qa (Function.update b i t)`. Use function extensionality and compare the values at `b`.
-
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hQu]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
-
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj, a'']`. Rewrite using `[e]`. Conclude with `hlin`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nested_vanish : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ i, Group (H i)] [∀ i, TopologicalSpace (H i)] [∀ i, IsTopologicalGroup (H i)] [∀ i, SecondCountableTopology (H i)] [∀ i, LocallyCompactSpace (H i)] [∀ i, T2Space (H i)] [∀ i, MeasurableSpace (H i)] [∀ i, BorelSpace (H i)] (A B R K : ∀ i, Subgroup (H i)) (l : List ι), l.Nodup → (∀ i ∈ l, Split (A i) (B i) (R i) (K i)) → ∀ (ρ : ∀ i, Measure (R i)) (μ : ∀ i, Measure (H i)) (ρ' : ∀ i, Measure ((R i).subgroupOf (B i))) (μ' : ∀ i, Measure (B i)), (∀ i ∈ l, (ρ i).IsHaarMeasure ∧ (μ i).IsHaarMeasure ∧ (ρ' i).IsHaarMeasure ∧ (μ' i).IsHaarMeasure) → ∀ (S : Finset (∀ i, H i)) (q : (∀ i, H i) → ℂ) (z : ℂ), (∀ b ∈ S, ∀ i, b i ∈ B i) → BiInv R K l q → (∀ h, (∀ i, i ∉ l → h i = 1) → q h ≠ 0 → ∃ b ∈ S, InCells A R K l b h) → NIter ρ μ q l 1 z → (∀ a : ∀ i, H i, (∀ i, a i ∈ A i) → (∀ i, i ∉ l → a i = 1) → NIter ρ' μ' (fun b : ∀ i, B i => q fun i => a i * (b i).1) l 1 0) → z = 0 := by
   intro ι _ H _ _ _ _ _ _ _ _ A B R K l

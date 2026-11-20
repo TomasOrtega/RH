@@ -19,7 +19,7 @@ namespace GlobalTheory.Mem.Chr.AntiExist
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Use `Function.update_self (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) v (x : v.adicCompletion L) (fun _ => 1)` as an intermediate fact. Use `this` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 -/
 theorem loc_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     ((localIdele L v x : Ideles L) : AdeleRing (𝓞 L) L).2 v = x := by
@@ -30,7 +30,7 @@ theorem loc_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
   rfl
 
 /- English proof (translation)
-Use `Function.update_of_ne (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) hw (x : v.adicCompletion L) (fun _ => 1)` as an intermediate fact. Use `this` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 -/
 theorem loc_ne {v w : HeightOneSpectrum (𝓞 L)} (hw : w ≠ v) (x : (v.adicCompletion L)ˣ) :
     ((localIdele L v x : Ideles L) : AdeleRing (𝓞 L) L).2 w = 1 := by
@@ -41,9 +41,9 @@ theorem loc_ne {v w : HeightOneSpectrum (𝓞 L)} (hw : w ≠ v) (x : (v.adicCom
   rfl
 
 /- English proof (translation)
-Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[loc_self]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[loc_ne hw, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem loc_mem {v : HeightOneSpectrum (𝓞 L)} {x : (v.adicCompletion L)ˣ} (hx : IsUnitAt v x) :
     localIdele L v x ∈ unitIdl L := by
@@ -55,30 +55,30 @@ theorem loc_mem {v : HeightOneSpectrum (𝓞 L)} {x : (v.adicCompletion L)ˣ} (h
   · rw [loc_ne hw, map_one]
 
 /- English proof (translation)
-Introduce `v` and use `by show Valued.v (1 : v.adicCompletion L) = 1 exact map_one _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inf_mem (w : InfinitePlace L) (y : (w.Completion)ˣ) : infIdele L w y ∈ unitIdl L := fun v => by
   show Valued.v (1 : v.adicCompletion L) = 1
   exact map_one _
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`.
+A detailed English derivation is pending.
 -/
 theorem val_atFin (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     Valued.v ((atFin v k : (v.adicCompletion L)ˣ) : v.adicCompletion L) = v.valuation L (k : L) :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`.
+A detailed English derivation is pending.
 -/
 theorem val_diag (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     Valued.v (((diagUnits L k : Ideles L) : AdeleRing (𝓞 L) L).2 v) = v.valuation L (k : L) :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _
 
 /- English proof (translation)
-Establish `hy : y ∉ w.asIdeal` using `fun h => by`. Rewrite `hb` using `[Ideal.Quotient.eq_zero_iff_mem.2 h]`. Use `w.isPrime` as an intermediate fact. Conclude with `b.ne_zero hb`. Unfold `IsUnitAt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_atFin, hk]`. Conclude with `(HeightOneSpectrum.valuation_of_algebraMap w y).trans (HeightOneSpectrum.intValuation_eq_one_iff.2 hy)`.
+A detailed English derivation is pending.
 -/
 theorem isUnitAt_of_residue {w : HeightOneSpectrum (𝓞 L)} {k : Lˣ} {y : 𝓞 L} {b : (𝓞 L ⧸ w.asIdeal)ˣ}
     (hk : (k : L) = (y : L)) (hb : (b : 𝓞 L ⧸ w.asIdeal) = Ideal.Quotient.mk w.asIdeal y) :
@@ -92,9 +92,9 @@ theorem isUnitAt_of_residue {w : HeightOneSpectrum (𝓞 L)} {k : Lˣ} {y : 𝓞
   exact (HeightOneSpectrum.valuation_of_algebraMap w y).trans (HeightOneSpectrum.intValuation_eq_one_iff.2 hy)
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (b : 𝓞 L ⧸ w.asIdeal)`. Establish `h0 : (y : L) ≠ 0` using `fun h => by`. Establish `h' : y = 0` using `by exact_mod_cast h`. Rewrite `hy` using `[h', map_zero]`. Use `w.isPrime` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `b.ne_zero hy.symm`. Conclude with `⟨Units.mk0 _ h0, y, rfl, hy.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {w : HeightOneSpectrum (𝓞 L)} (b : (𝓞 L ⧸ w.asIdeal)ˣ) :
     ∃ (k : Lˣ) (y : 𝓞 L), (k : L) = (y : L) ∧ (b : 𝓞 L ⧸ w.asIdeal) = Ideal.Quotient.mk w.asIdeal y := by
@@ -107,14 +107,14 @@ theorem exists_lift {w : HeightOneSpectrum (𝓞 L)} (b : (𝓞 L ⧸ w.asIdeal)
   exact ⟨Units.mk0 _ h0, y, rfl, hy.symm⟩
 
 /- English proof (translation)
-Introduce `x` and use `by rw [← h (c x), hc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjPl_symm {c : L ≃+* L} (hc : ∀ x, c (c x) = x) {v v' : HeightOneSpectrum (𝓞 L)} (h : ConjPl c v v') :
     ConjPl c v' v := fun x => by
   rw [← h (c x), hc]
 
 /- English proof (translation)
-Take `⟨x', hx'⟩` from `hC.locRange v v' h x`. Establish `h1` using `hC.val v v' h (localIdele L v x)`. Rewrite `h1` using `[hx', loc_self, loc_self]`. Conclude with `⟨x', hx', h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem conj_loc {c : L ≃+* L} {C : Ideles L →* Ideles L} (hC : IsConjI c C) {v v' : HeightOneSpectrum (𝓞 L)}
     (h : ConjPl c v v') (x : (v.adicCompletion L)ˣ) :
@@ -131,7 +131,7 @@ section CM
 variable {F : Type} [Field F] [NumberField F] [Algebra F L] {c : L ≃ₐ[F] L} {I : Type} {φ : I → L →+* ℂ}
 
 /- English proof (translation)
-Take `⟨ψ⟩ : Nonempty (L →+* ℂ)` from `inferInstance`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[h.embedding_conj, h.embedding_conj, Complex.conj_conj]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (h : CMData F c φ) (x : L) : c (c x) = x := by
   obtain ⟨ψ⟩ : Nonempty (L →+* ℂ) := inferInstance
@@ -139,9 +139,9 @@ theorem conj_conj (h : CMData F c φ) (x : L) : c (c x) = x := by
   rw [h.embedding_conj, h.embedding_conj, Complex.conj_conj]
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `e : c.toRingEquiv.symm x = c x`. Apply `c.toRingEquiv.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `(conj_conj h x).symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show w (c.toRingEquiv.symm x) = w x`. Rewrite using `[e, ← InfinitePlace.norm_embedding_eq, ← InfinitePlace.norm_embedding_eq, h.embedding_conj, Complex.norm_conj]`.
+A detailed English derivation is pending.
 -/
 theorem comap_eq (h : CMData F c φ) (w : InfinitePlace L) : w.comap (c.toRingEquiv.symm : L →+* L) = w := by
   ext x
@@ -153,7 +153,7 @@ theorem comap_eq (h : CMData F c φ) (w : InfinitePlace L) : w.comap (c.toRingEq
   rw [e, ← InfinitePlace.norm_embedding_eq, ← InfinitePlace.norm_embedding_eq, h.embedding_conj, Complex.norm_conj]
 
 /- English proof (translation)
-Rewrite using `[hC.inf, comap_eq h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_inf (h : CMData F c φ) {C : Ideles L →* Ideles L} (hC : IsConjI c.toRingEquiv C) (w : InfinitePlace L)
     (k : Lˣ) : C (infIdele L w (atInf w k)) =
@@ -161,15 +161,15 @@ theorem conj_inf (h : CMData F c φ) {C : Ideles L →* Ideles L} (hC : IsConjI 
   rw [hC.inf, comap_eq h]
 
 /- English proof (translation)
-The claim follows from `Units.ext (c.commutes (k : F))`.
+A detailed English derivation is pending.
 -/
 theorem conj_upF (k : Fˣ) : Units.map (MonoidHomClass.toMonoidHom c.toRingEquiv) (upF F k : Lˣ) = upF F k :=
   Units.ext (c.commutes (k : F))
 
 /- English proof (translation)
-Use `choose σ hσ hu using fun w => existsUnique_conjPl c.toRingEquiv w`. Establish `hσσ : ∀ w, σ (σ w) = w` using `fun w => (hu _ _ (conjPl_symm (conj_conj h) (hσ w))).symm`. Establish `hm : ∀ w ∈ aboveF (L` using `L) F v, σ w ∈ aboveF (L := L) F v := fun w hw => by`. Simplify using `only [aboveF, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hw ⊢`. Rewrite using `[← hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(under_eq_iff_conjPl c h.rank h.ne w (σ w)).2 (Or.inr (hσ w))`. Unfold `locF`. Rewrite using `[map_prod]`. Use `Finset.prod_nbij' σ σ hm hm (fun w _ => hσσ w) (fun w _ => hσσ w) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hC.loc w (σ w) (hσ w), conj_upF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_locF (h : CMData F c φ) {C : Ideles L →* Ideles L} (hC : IsConjI c.toRingEquiv C)
     (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) : C (locF F v k) = locF F v k := by
@@ -188,7 +188,7 @@ def normOne (c : L ≃ₐ[F] L) : Subgroup Lˣ :=
   (MonoidHom.id Lˣ * Units.map (MonoidHomClass.toMonoidHom c.toRingEquiv)).ker
 
 /- English proof (translation)
-Unfold `normOne`. Rewrite using `[MonoidHom.mem_ker, ← Units.val_inj]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_normOne {k : Lˣ} : k ∈ normOne c ↔ (k : L) * c (k : L) = 1 := by
   unfold normOne
@@ -196,13 +196,11 @@ theorem mem_normOne {k : Lˣ} : k ∈ normOne c ↔ (k : L) * c (k : L) = 1 := b
   rfl
 
 /- English proof (translation)
-Take `⟨ν, hν, hνu, hνU, hν1⟩` from `GlobalTheory.exists_unitary_char_of_open_subgroup_and_hom (Ideles L) (normOne c) (unitIdl L) GlobalTheory.Mem.UnitOpen.isOpen_unitIdl ((diagUnits L).comp (normOne c).subtype) 1 ψ hψ hu (fun _ => by simp) (by`. Introduce and unpack `⟨k, hk⟩ hkU`. Use `normOne_unit_isRoot F L c I φ h k (mem_normOne.1 hk) fun v => by` as an intermediate fact. Rewrite using `[← val_diag]`. Conclude with `hkU v`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 1 = ψ (diagUnits L k)`. Conclude with `(h1 k this).symm)`. Use `⟨⟨ν.comp (MonoidHom.id _ / C), hν.comp (continuous_id.div' hC.cont), fun k => ?_⟩, fun z => hνu _, fun z hz => hνU _ hz⟩` and prove the remaining obligations. Establish `hk : k / Units.map (MonoidHomClass.toMonoidHom c.toRingEquiv) k ∈ normOne c`. Rewrite using `[mem_normOne, Units.val_div_eq_div_val, map_div₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `show (k : L) / c k * (c k / c (c k)) = 1`. Establish `: c (k : L) ≠ 0` using `by simp`. Rewrite using `[conj_conj h]`. Clear the denominators using the available nonvanishing facts. Use `hν1 ⟨_, hk⟩` as an intermediate fact.
-
-Use `show ν (diagUnits L k / C (diagUnits L k)) = 1`. Rewrite using `[hC.diag, ← map_div]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_anti [Fintype I] (h : CMData F c φ) {C : Ideles L →* Ideles L} (hC : IsConjI c.toRingEquiv C)
     (ψ : Ideles L →* ℂˣ) (hψ : Continuous ψ) (hu : ∀ x, ‖((ψ x : ℂˣ) : ℂ)‖ = 1)
@@ -231,9 +229,9 @@ theorem exists_anti [Fintype I] (h : CMData F c φ) {C : Ideles L →* Ideles L}
 end CM
 
 /- English proof (translation)
-Establish `hn : ‖z‖ ≠ 0` using `norm_ne_zero_iff.2 hz`. Establish `hn' : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hn`. Establish `hc : (starRingEnd ℂ) z ≠ 0` using `by simpa using hz`. Rewrite using `[norm_div, Complex.norm_conj, div_self hn, Complex.ofReal_one, div_one, show -2 * n = 2 * (-n) by ring, zpow_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[zpow_two, div_mul_div_comm, div_eq_div_iff hc (mul_ne_zero hn' hn'), mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phase_div (z : ℂ) (hz : z ≠ 0) (n : ℤ) :
     (z / (starRingEnd ℂ) z / ((‖z / (starRingEnd ℂ) z‖ : ℝ) : ℂ)) ^ (-n) = (z / ((‖z‖ : ℝ) : ℂ)) ^ (-2 * n) := by
@@ -250,35 +248,33 @@ theorem phase_div (z : ℂ) (hz : z ≠ 0) (n : ℤ) :
 open Classical in
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ c I _ φ h e S θ0 hS hpar`. Establish `hcc : ∀ x, c.toRingEquiv (c.toRingEquiv x) = x` using `conj_conj h`. Take `⟨C, hC⟩` from `exists_isConjI L c.toRingEquiv`. Use `choose θ hθt hθr hθs using fun v => GlobalTheory.Mem.Chr.exists_tameLoc_of_residue L v (θ0 v)`. Take `⟨ψ, hψ, hψu, hψi, hψS, hψN, hψd⟩` from `GlobalTheory.ModelChar.exists_modelChar L I φ h.bij (fun i => -e i) S θ (fun v _ => hθt v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ k : Lˣ, (∃ m : ℕ, 0 < m ∧ (k : L) ^ m = 1) → ψ (diagUnits L k) = 1`. Introduce `k hr`. Take `⟨ζ, rfl⟩` from `exists_unit_of_root k hr`. Take `⟨m, hm, hpow⟩` from `hr`. Establish `hkv : ((Units.map (algebraMap (𝓞 L) L : 𝓞 L →* L) ζ : Lˣ) : L) = ((ζ : 𝓞 L) : L)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hψd, Units.val_mul, Units.coe_prod, (GlobalTheory.InfTypeLocal.infType_iff_local L I φ h.bij ψ hψ _).2 hψi, Units.val_one, ← hpar ζ ⟨m, hm, hpow⟩]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hn : ‖φ i ((Units.map (algebraMap (𝓞 L) L : 𝓞 L →* L) ζ : Lˣ) : L)‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hpow, map_one]) hm.ne'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, Complex.ofReal_one, div_one, hkv]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hθr w _ (ζ : 𝓞 L) (Units.map (Ideal.Quotient.mk w.asIdeal).toMonoidHom ζ) rfl rfl]`. Take `⟨χ, hχu, hχ⟩` from `exists_anti h hC ψ hψ hψu h1`. Establish `hfix : ∀ z, C z = z → χ.1 z = 1` using `fun z hz => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχ z (by rw [hz, div_self']; exact one_mem _), hz, div_self', map_one]`. Establish `hloc : ∀ v v' x x', C (localIdele L v x) = localIdele L v' x' → IsUnitAt v x → IsUnitAt v' x' → χ.loc v x = ψ (localIdele L v x) / ψ (localIdele L v' x')` using `fun v v' x x' hx h1 h2 => by show χ.1 (localIdele L v x) = _`. Rewrite using `[hχ _ (by rw [hx]; exact div_mem (loc_mem h1) (loc_mem h2)), hx, map_div]`. Establish `htame : ∀ v x, IsUnitAt v x → Valued.v ((x : v.adicCompletion L) - 1) ≤ WithZero.exp (-1 : ℤ) → ψ (localIdele L v x) = 1` using `fun v x h1 h2 => by`. Distinguish the cases in `hv : v ∈ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψS v hv, (hθt v).2 x h1 h2]`. Conclude with `hψN v hv x`. Establish `hw : ∀ w ∈ S, ∀ x, IsUnitAt w x → χ.loc w x = θ w x` using `fun w hwS x hx => by`. Take `⟨w', hw', -⟩` from `existsUnique_conjPl c.toRingEquiv w`. Take `⟨x', e1, e2, -⟩` from `conj_loc hC hw' x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hloc w w' x x' e1 hx (e2.trans hx), hψS w hwS, hψN w' (hS w hwS w' hw'), div_one]`. Use `⟨χ, hχu, ⟨fun v k => ?_, fun w k => ?_⟩, ?_, fun v x hx hx1 => ?_, fun v hv hv' x hx => ?_, fun w hwS k y b hk hb => ?_, fun w hwS n => ⟨⟨fun H => ?_, fun H x hx => ?_⟩, fun w' hw' => ⟨fun H => ?_, fun H x hx => ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[← hfix _ (conj_locF h hC v k)]`. Unfold `HChar.resFin locF`. Rewrite using `[MonoidHom.finset_prod_apply, map_prod]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Unfold `HChar.resInf`. Rewrite using `[MonoidHom.finset_prod_apply]`. Use `Finset.prod_eq_one fun w' _ => hfix (infIdele L w' (atInf w' (upF F k))) ?_` and prove the remaining obligations. Rewrite using `[conj_inf h hC, conj_upF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.InfTypeLocal.infType_iff_local L I φ h.bij χ.1 χ.2.1 _).2 fun i k => ?_` and prove the remaining obligations. Rewrite using `[hχ _ (by rw [conj_inf h hC]; exact div_mem (inf_mem _ _) (inf_mem _ _)), conj_inf h hC, ← map_div, ← map_div, hψi, Units.val_div_eq_div_val, map_div₀]`. Establish `e1 : φ i ((Units.map (MonoidHomClass.toMonoidHom c.toRingEquiv) k : Lˣ) : L) = (starRingEnd ℂ) (φ i k)` using `h.embedding_conj (φ i) k`. Rewrite using `[e1]`. Conclude with `phase_div _ (by simp) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v', hv', -⟩` from `existsUnique_conjPl c.toRingEquiv v`. Take `⟨x', e1, e2, e3⟩` from `conj_loc hC hv' x`. Establish `hx2 : Valued.v ((x : v.adicCompletion L) - 1) ≤ WithZero.exp (-1 : ℤ)` using `by simpa using hx1`. Rewrite using `[hloc v v' x x' e1 hx (e2.trans hx), htame v x hx hx2, htame v' x' (e2.trans hx) (e3.trans_le hx2), div_one]`. Take `⟨v', hc', -⟩` from `existsUnique_conjPl c.toRingEquiv v`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x', e1, e2, -⟩` from `conj_loc hC hc' x`. Rewrite using `[hloc v v' x x' e1 hx (e2.trans hx), hψN v hv, hψN v' (fun hS' => hv' v' hS' (conjPl_symm hcc hc')), div_one]`. Conclude with `(hw w hwS _ (isUnitAt_of_residue hk hb)).trans (hθr w k y b hk hb)`. Use `ext1 b`. Take `⟨k, y, hk, hb⟩` from `exists_lift b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `H _ (isUnitAt_of_residue hk hb)` as an intermediate fact. Rewrite `this` using `[hw w hwS _ (isUnitAt_of_residue hk hb), hθr w k y b hk hb]`. Then use the resulting hypothesis. Take `⟨b, hb⟩` from `hθs w x hx`. Rewrite using `[hw w hwS x hx, hb]`. Conclude with `DFunLike.congr_fun H b`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ext1 b`. Take `⟨k, y, hk, hb⟩` from `exists_lift b`. Establish `hu` using `isUnitAt_of_residue hk hb`. Establish `hu' : IsUnitAt w' (atFin w' (Units.map (MonoidHomClass.toMonoidHom c.toRingEquiv) k))`. Unfold `IsUnitAt at hu ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hu`, the goal using `[val_atFin]`. Conclude with `(hw' k).trans hu`. Establish `e1` using `hC.loc w' w (conjPl_symm hcc hw') (Units.map (MonoidHomClass.toMonoidHom c.toRingEquiv) k)`. Rewrite `e1` using `[show Units.map (MonoidHomClass.toMonoidHom c.toRingEquiv) (Units.map (MonoidHomClass.toMonoidHom c.toRingEquiv) k) = k from Units.ext (hcc k)]`. Use `H _ hu'` as an intermediate fact.
-
-Rewrite `this` using `[hloc w' w _ _ e1 hu' hu, hψN w' (hS w hwS w' hw'), hψS w hwS, hθr w k y b hk hb, one_div, inv_pow, inv_eq_one]`. Then use the resulting hypothesis. Take `⟨x', e1, e2, -⟩` from `conj_loc hC (conjPl_symm hcc hw') x`. Take `⟨b, hb⟩` from `hθs w x' (e2.trans hx)`. Rewrite using `[hloc w' w x x' e1 hx (e2.trans hx), hψN w' (hS w hwS w' hw'), hψS w hwS, hb, one_div, inv_pow, inv_eq_one]`. Conclude with `DFunLike.congr_fun H b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hecke_trivOn : ∀ (F L : Type) [Field F] [NumberField F] [Field L] [NumberField L] [Algebra F L] (c : L ≃ₐ[F] L) (I : Type) [Fintype I] (φ : I → L →+* ℂ), CMData F c φ → ∀ (e : I → ℤ) (S : Finset (HeightOneSpectrum (𝓞 L))) (θ0 : ∀ v : HeightOneSpectrum (𝓞 L), (𝓞 L ⧸ v.asIdeal)ˣ →* ℂˣ), (∀ w ∈ S, ∀ w', ConjPl c.toRingEquiv w w' → w' ∉ S) → (∀ ζ : (𝓞 L)ˣ, (∃ m : ℕ, 0 < m ∧ ((ζ : 𝓞 L) : L) ^ m = 1) → (∏ i, φ i ((ζ : 𝓞 L) : L) ^ (-e i)) * ∏ w ∈ S, ((θ0 w (Units.map (Ideal.Quotient.mk w.asIdeal).toMonoidHom ζ) : ℂˣ) : ℂ) = 1) → ∃ χ : HChar L, χ.IsUnitary ∧ χ.TrivOn F ∧ χ.HasInf φ (fun i => -2 * e i) ∧ (∀ v, χ.TameAt v) ∧ (∀ v, v ∉ S → (∀ w ∈ S, ¬ ConjPl c.toRingEquiv w v) → χ.UnrAt v) ∧ (∀ w ∈ S, ∀ (k : Lˣ) (y : 𝓞 L) (b : (𝓞 L ⧸ w.asIdeal)ˣ), (k : L) = (y : L) → (b : 𝓞 L ⧸ w.asIdeal) = Ideal.Quotient.mk w.asIdeal y → χ.locK w k = θ0 w b) ∧ (∀ w ∈ S, ∀ n : ℕ, ((∀ x, IsUnitAt w x → χ.loc w x ^ n = 1) ↔ θ0 w ^ n = 1) ∧ ∀ w', ConjPl c.toRingEquiv w w' → ((∀ x, IsUnitAt w' x → χ.loc w' x ^ n = 1) ↔ θ0 w ^ n = 1)) := by
   intro F L _ _ _ _ _ c I _ φ h e S θ0 hS hpar

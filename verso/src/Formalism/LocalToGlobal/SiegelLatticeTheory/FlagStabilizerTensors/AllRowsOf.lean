@@ -87,21 +87,19 @@ end Props
 section EJ
 
 /- English proof (translation)
-Use `set J := Finset.univ.filter (fun u : GL (Fin N) (ZMod g) => P (u : Matrix (Fin N) (Fin N) (ZMod g))) with hJ`. Use `set χ : GL (Fin N) (ZMod g) → ℂ := fun u => (ψ₀ (φ (u : Matrix (Fin N) (Fin N) (ZMod g))))⁻¹ with hχ`. Use `set A : MonoidAlgebra ℂ (GL (Fin N) (ZMod g)) := ∑ u ∈ J, MonoidAlgebra.single u (χ u) with hA`. Establish `hE : eDat g N P φ ψ₀ = ((J.card : ℂ)⁻¹) • A`. Simplify using `only [eDat, hJ, hA, hχ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1J : (1 : GL (Fin N) (ZMod g)) ∈ J`. Simplify using `only [hJ, Finset.mem_filter, Finset.mem_univ, true_and]`. Simplify using `using h1`. Establish `hcard : (J.card : ℂ) ≠ 0`. Establish `: 0 < J.card` using `Finset.card_pos.mpr ⟨1, h1J⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this.ne'` after adjusting the coercions. Establish `hχmul : ∀ u ∈ J, ∀ v ∈ J, χ u * χ v = χ (u * v)`. Introduce `u hu v hv`. Establish `hu' : P (u : Matrix (Fin N) (Fin N) (ZMod g))` using `(Finset.mem_filter.mp hu).2`. Establish `hv' : P (v : Matrix (Fin N) (Fin N) (ZMod g))` using `(Finset.mem_filter.mp hv).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hχ]`. Rewrite using `[hφ u v hu' hv', AddChar.map_add_eq_mul, mul_inv]`. Establish `hshift : ∀ u ∈ J, ∑ v ∈ J, MonoidAlgebra.single (u * v) (χ (u * v)) = ∑ w ∈ J, MonoidAlgebra.single w (χ w)`. Introduce `u hu`. Establish `hu' : P (u : Matrix (Fin N) (Fin N) (ZMod g))` using `(Finset.mem_filter.mp hu).2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hsub : J.image (fun v => u * v) ⊆ J`. Introduce `w hw`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.mp hw`. Simplify using `only [hJ, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `hmul u v hu' (Finset.mem_filter.mp hv).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Set.InjOn (fun v => u * v) (J : Set (GL (Fin N) (ZMod g)))` using `fun a _ b _ h => mul_left_cancel h`. Establish `heq : J.image (fun v => u * v) = J` using `Finset.eq_of_subset_of_card_le hsub (by rw [Finset.card_image_of_injOn hinj])`. Rewrite using `[← Finset.sum_image (f := fun w => MonoidAlgebra.single w (χ w)) hinj, heq]`. Establish `hAA : A * A = (J.card : ℂ) • A`. Rewrite using `[hA, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ u ∈ J, ∑ v ∈ J, MonoidAlgebra.single u (χ u) * MonoidAlgebra.single v (χ v) = ∑ w ∈ J, MonoidAlgebra.single w (χ w)`. Introduce `u hu`. Rewrite using `[← hshift u hu]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.single_mul_single, hχmul u hu v hv]`.
-
-Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Rewrite using `[hE, smul_mul_smul_comm, hAA, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem eDat_idem (g N : ℕ) [NeZero g] (P : Matrix (Fin N) (Fin N) (ZMod g) → Prop)
     (φ : Matrix (Fin N) (Fin N) (ZMod g) → ZMod g) (ψ₀ : AddChar (ZMod g) ℂ)
@@ -157,16 +155,16 @@ theorem eDat_idem (g N : ℕ) [NeZero g] (P : Matrix (Fin N) (Fin N) (ZMod g) �
   field_simp
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact GlobalTheory.UnipotentUpperMul.isUniUp_mul .. | (apply GlobalTheory.UnipotentUpperMul.isUniUp_mul <;> assumption) | (intros; apply GlobalTheory.UnipotentUpperMul.isUniUp_mul <;> assumption) | (apply @GlobalTheory.UnipotentUpperMul.isUniUp_mul <;> assumption) | (intr …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUniUp_mul {R : Type} [CommRing R] {N : ℕ} {M M' : Matrix (Fin N) (Fin N) R} (hM : IsUniUp M)
     (hM' : IsUniUp M') : IsUniUp (M * M') := by
   first | exact GlobalTheory.UnipotentUpperMul.isUniUp_mul .. | (apply GlobalTheory.UnipotentUpperMul.isUniUp_mul <;> assumption) | (intros; apply GlobalTheory.UnipotentUpperMul.isUniUp_mul <;> assumption) | (apply @GlobalTheory.UnipotentUpperMul.isUniUp_mul <;> assumption) | (intros; apply @GlobalTheory.UnipotentUpperMul.isUniUp_mul <;> assumption) | (apply @GlobalTheory.UnipotentUpperMul.isUniUp_mul <;> first | assumption | infer_instance) | exact @GlobalTheory.UnipotentUpperMul.isUniUp_mul R ‹_› N M M' hM hM' | exact @GlobalTheory.UnipotentUpperMul.isUniUp_mul R ‹_› N M M' hM | exact @GlobalTheory.UnipotentUpperMul.isUniUp_mul R ‹_› N M M' | exact @GlobalTheory.UnipotentUpperMul.isUniUp_mul R ‹_› N M | exact @GlobalTheory.UnipotentUpperMul.isUniUp_mul R ‹_› N | exact @GlobalTheory.UnipotentUpperMul.isUniUp_mul R ‹_› | exact @GlobalTheory.UnipotentUpperMul.isUniUp_mul R
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add a b (ne_of_lt hab) ?_]`. Rewrite using `[(hM a a).2 rfl, (hM' b b).2 rfl, one_mul, mul_one, add_comm]`. Introduce and unpack `x ⟨hxa, hxb⟩`. Break down `lt_trichotomy x a with h | h | h` into its components or cases. Rewrite using `[(hM a x).1 h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd h hxa`. Break down `lt_trichotomy x b with h' | h' | h'` into its components or cases. Conclude with `hgap x h h'`. Conclude with `absurd h' hxb`. Rewrite using `[(hM' x b).1 h', mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_entry_add {R : Type} [CommRing R] {N : ℕ} {M M' : Matrix (Fin N) (Fin N) R} (hM : IsUniUp M)
     (hM' : IsUniUp M') {a b : Fin N} (hab : a < b) (hgap : ∀ j : Fin N, a < j → j < b → M a j * M' j b = 0) :
@@ -183,9 +181,9 @@ theorem mul_entry_add {R : Type} [CommRing R] {N : ℕ} {M M' : Matrix (Fin N) (
       · rw [(hM' x b).1 h', mul_zero]
 
 /- English proof (translation)
-Unfold `entN`. Distinguish the cases in `h : a < N ∧ b < N`. Rewrite using `[dif_pos h, dif_pos h, dif_pos h]`. Use `mul_entry_add hM hM' (Fin.mk_lt_mk.mpr hab) fun j hj1 hj2 => ?_` and prove the remaining obligations. Establish `h0` using `hgap j.1 (Fin.lt_def.mp hj1) (Fin.lt_def.mp hj2)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `entN at h0`. Rewrite `h0` using `[dif_pos ⟨j.2, h.2⟩]`. Simplify using `only [Fin.eta] at h0`. Rewrite using `[h0, mul_zero]`. Rewrite using `[dif_neg h, dif_neg h, dif_neg h, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem entN_mul_add {R : Type} [CommRing R] {N : ℕ} {M M' : Matrix (Fin N) (Fin N) R} (hM : IsUniUp M)
     (hM' : IsUniUp M') {a b : ℕ} (hab : a < b) (hgap : ∀ j : ℕ, a < j → j < b → entN M' j b = 0) :
@@ -202,7 +200,7 @@ theorem entN_mul_add {R : Type} [CommRing R] {N : ℕ} {M M' : Matrix (Fin N) (F
   · rw [dif_neg h, dif_neg h, dif_neg h, add_zero]
 
 /- English proof (translation)
-Unfold `entN`. Use `split_ifs with hh`. Conclude with `Matrix.one_apply_ne fun e => h (congrArg Fin.val e)`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem entN_one_ne' {R : Type} [CommRing R] {N : ℕ} {a b : ℕ} (h : a ≠ b) :
     entN (1 : Matrix (Fin N) (Fin N) R) a b = 0 := by
@@ -212,9 +210,9 @@ theorem entN_one_ne' {R : Type} [CommRing R] {N : ℕ} {a b : ℕ} (h : a ≠ b)
   · rfl
 
 /- English proof (translation)
-Establish `hc : ∀ a, entN (u * v) a (a + 1) = entN u a (a + 1) + entN v a (a + 1)` using `fun a => entN_mul_add hu hv (by omega) (fun j h1 h2 => by omega)`. Establish `e1 : ∀ i, entN (u * v) (s + kk + 1 + i) (s + kk + 2 + i) = entN u (s + kk + 1 + i) (s + kk + 2 + i) + entN v (s + kk + 1 + i) (s + kk + 2 + i)` using `fun i => by`. Establish `h` using `hc (s + kk + 1 + i)`. Rewrite `h` using `[show s + kk + 1 + i + 1 = s + kk + 2 + i by omega]`. Then use the resulting hypothesis. Unfold `phiJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Simplify using `only [hc, e1, Finset.sum_add_distrib]`. Use `split_ifs with hs`. Rewrite using `[entN_mul_add hu hv (by omega) (fun j h1 h2 => hvJ j (by omega) h2)]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem phiJ_mul {g kk s N : ℕ} {u v : Matrix (Fin N) (Fin N) (ZMod g)} (hu : IsUniUp u) (hv : IsUniUp v)
     (hvJ : ∀ a, s ≤ a → a < s + kk → entN v a (s + kk) = 0) :
@@ -233,7 +231,7 @@ theorem phiJ_mul {g kk s N : ℕ} {u v : Matrix (Fin N) (Fin N) (ZMod g)} (hu : 
   · ring
 
 /- English proof (translation)
-Use `⟨isUniUp_mul hu.1 hv.1, fun a h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[entN_mul_add hu.1 hv.1 h2 (fun j hj1 hj2 => hv.2 j (by omega) hj2), hu.2 a h1 h2, hv.2 a h1 h2, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem J_mul {g kk s N : ℕ} {u v : Matrix (Fin N) (Fin N) (ZMod g)}
     (hu : IsUniUp u ∧ ∀ a, s ≤ a → a < s + kk → entN u a (s + kk) = 0)
@@ -243,9 +241,9 @@ theorem J_mul {g kk s N : ℕ} {u v : Matrix (Fin N) (Fin N) (ZMod g)}
   rw [entN_mul_add hu.1 hv.1 h2 (fun j hj1 hj2 => hv.2 j (by omega) hj2), hu.2 a h1 h2, hv.2 a h1 h2, add_zero]
 
 /- English proof (translation)
-Unfold `eJ`. Use `eDat_idem g N _ _ ψ₀ ⟨fun a b => ⟨fun h => Matrix.one_apply_ne (ne_of_lt h).symm, fun h => by` and prove the remaining obligations. Rewrite using `[h, Matrix.one_apply_eq]⟩, fun a _ h2 => entN_one_ne' (by omega)⟩ ?_ ?_`. Introduce `u v hu hv`. Rewrite using `[Units.val_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J_mul hu hv`. Introduce `u v hu hv`. Rewrite using `[Units.val_mul]`. Conclude with `phiJ_mul hu.1 hv.1 hv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eJ_idem (g N kk s : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ) :
     eJ g N kk s ψ₀ * eJ g N kk s ψ₀ = eJ g N kk s ψ₀ := by
@@ -260,7 +258,7 @@ theorem eJ_idem (g N kk s : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ) :
     exact phiJ_mul hu.1 hv.1 hv.2
 
 /- English proof (translation)
-Introduce `k`. Establish `: NeZero (D.host.g k)` using `⟨(D.host.g_prime k).ne_zero⟩`. Conclude with `eJ_idem _ _ _ _ (ψ₀ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ejIdem_holds (D : D7) (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) : EJIdem D ψ₀ := by
   intro k
@@ -274,7 +272,7 @@ section Ops
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[h.2 x y, h'.2 x y]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRConvF_unique {f : X.B.I.Gf → ℂ} {T T' : X.B.I.L2 X.B.μf X.B.fund →L[ℂ] X.B.I.L2 X.B.μf X.B.fund}
     (h : X.B.I.IsRConvF X.B.μf X.B.fund X.B.R f T) (h' : X.B.I.IsRConvF X.B.μf X.B.fund X.B.R f T') : T = T' := by
@@ -282,7 +280,7 @@ theorem isRConvF_unique {f : X.B.I.Gf → ℂ} {T T' : X.B.I.L2 X.B.μf X.B.fund
   rw [h.2 x y, h'.2 x y]
 
 /- English proof (translation)
-Establish `hFR` using `Formalism.L2.SG.Pf.foldReady_holds X.B.I`. Conclude with `Formalism.L2.SG.Pf.RConvFExistsPf.convergent_reduction_exists X.B.I X.B.μf (Formalism.L2.SG.Closed.GfUnimod_holds X.B.I X.B.μf) hFR.2.1 hFR.2.2.2.1 X.B.fund X.B.fund_spec X.B.R X.B.R_spec f hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRConvF_exists {f : X.B.I.Gf → ℂ} (hf : Integrable f X.B.μf) :
     ∃ T, X.B.I.IsRConvF X.B.μf X.B.fund X.B.R f T := by
@@ -291,7 +289,7 @@ theorem isRConvF_exists {f : X.B.I.Gf → ℂ} (hf : Integrable f X.B.μf) :
     hFR.2.1 hFR.2.2.2.1 X.B.fund X.B.fund_spec X.B.R X.B.R_spec f hf
 
 /- English proof (translation)
-Establish `h` using `isRConvF_exists X (hI S)`. Unfold `ReT`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reT_spec (hI : EtInt X) (S : Set (Tup2 D)) :
     X.B.I.IsRConvF X.B.μf X.B.fund X.B.R (eT X S) (ReT X S) := by
@@ -302,7 +300,7 @@ theorem reT_spec (hI : EtInt X) (S : Set (Tup2 D)) :
   exact Classical.choose_spec h
 
 /- English proof (translation)
-Establish `h` using `reT_spec X hI Set.univ`. Rewrite `h` using `[hU]`. Conclude with `isRConvF_unique X h X.B.Re_spec`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reT_univ (hU : EtUniv X) (hI : EtInt X) : ReT X Set.univ = X.B.Re := by
   have h := reT_spec X hI Set.univ
@@ -318,13 +316,13 @@ open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.RowDictPf
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Unfold `egA`. Distinguish the cases in `hx : x ∈ X.B.I.Kset`. Establish `hxk : x * k ∈ X.B.I.Kset` using `K_mul _ hx hk.1`. Establish `hpred : (fun γ => GoodAt X (x * k) γ) = (fun γ => GoodAt X x γ)`. Use function extensionality and compare the values at `fun γ => propext (goodAt_mul X hx hk γ)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hE : ∃ γ, GoodAt X x γ`. Establish `hE' : ∃ γ, GoodAt X (x * k) γ` using `by rw [hpred]; exact hE`. Rewrite using `[dif_pos ⟨hxk, hE'⟩, dif_pos ⟨hx, hE⟩, choose_congr hpred hE' hE]`. Establish `hE' : ¬ ∃ γ, GoodAt X (x * k) γ` using `by rw [hpred]; exact hE`. Rewrite using `[dif_neg (fun h => hE' h.2), dif_neg (fun h => hE h.2)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxk : x * k ∉ X.B.I.Kset`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use `K_mul _ h (K_inv _ hk.1)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[dif_neg (fun h => hxk h.1), dif_neg (fun h => hx h.1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem egA_mul (a : MonoidAlgebra ℂ (G0g D.nd)) (x : X.B.I.Gf) {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kg X.B.g) :
     egA X a (x * k) = egA X a x := by
@@ -346,14 +344,14 @@ theorem egA_mul (a : MonoidAlgebra ℂ (G0g D.nd)) (x : X.B.I.Gf) {k : X.B.I.Gf}
     rw [dif_neg (fun h => hxk h.1), dif_neg (fun h => hx h.1)]
 
 /- English proof (translation)
-Unfold `egA`. Rewrite using `[dif_neg (fun h => hx h.1)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem egA_of_not_mem (a : MonoidAlgebra ℂ (G0g D.nd)) {x : X.B.I.Gf} (hx : x ∉ X.B.I.Kset) : egA X a x = 0 := by
   unfold egA
   rw [dif_neg (fun h => hx h.1)]
 
 /- English proof (translation)
-Unfold `eT AutInst.convF`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[← mul_assoc, egA_mul X _ _ hk]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem eT_mul (S : Set (Tup2 D)) (x : X.B.I.Gf) {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kg X.B.g) :
     eT X S (x * k) = eT X S x := by
@@ -363,11 +361,9 @@ theorem eT_mul (S : Set (Tup2 D)) (x : X.B.I.Gf) {k : X.B.I.Gf} (hk : k ∈ X.B.
   rw [← mul_assoc, egA_mul X _ _ hk]
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hopen : IsOpen (X.B.I.Kg X.B.g)` using `X.B.I.topf_open X.B.g (Nat.one_le_iff_ne_zero.2 (level_ne_zero X))`. Establish `h1 : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g` using `⟨K_one _, fun y _ => ⟨0, zero_mem _, by rw [fmat_one, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩`. Establish `hop : IsOpen ((fun y => x⁻¹ * y) ⁻¹' X.B.I.Kg X.B.g)` using `hopen.preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : x ∈ (fun y => x⁻¹ * y) ⁻¹' X.B.I.Kg X.B.g` using `by show x⁻¹ * x ∈ X.B.I.Kg X.B.g`. Rewrite using `[inv_mul_cancel]`. Conclude with `h1`. Use `filter_upwards [hop.mem_nhds hmem] with y hy`. Use `eT_mul X S x hy` as an intermediate fact.
-
-Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_eT (S : Set (Tup2 D)) : IsLocallyConstant (eT X S) := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -384,11 +380,11 @@ theorem isLocallyConstant_eT (S : Set (Tup2 D)) : IsLocallyConstant (eT X S) := 
   rwa [mul_inv_cancel_left] at this
 
 /- English proof (translation)
-Unfold `eT AutInst.convF`. Establish `h0 : (fun y => X.B.e y * egA X (ES S) (y⁻¹ * x)) = fun _ => 0`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : X.B.e y = 0`. Rewrite using `[hy, zero_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hyK : y ∈ X.B.I.Kset` using `X.B.e_adm.2.2.2.2.1 y hy`. Establish `hz : y⁻¹ * x ∉ X.B.I.Kset`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use `K_mul _ hyK h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[egA_of_not_mem X _ hz, mul_zero]`. Rewrite using `[h0, integral_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eT_of_not_mem (S : Set (Tup2 D)) {x : X.B.I.Gf} (hx : x ∉ X.B.I.Kset) : eT X S x = 0 := by
   unfold eT AutInst.convF
@@ -406,7 +402,7 @@ theorem eT_of_not_mem (S : Set (Tup2 D)) {x : X.B.I.Gf} (hx : x ∉ X.B.I.Kset) 
   rw [h0, integral_zero]
 
 /- English proof (translation)
-Introduce `S`. Establish `hc : Continuous (eT X S)` using `(isLocallyConstant_eT X S).continuous`. Establish `hK : IsCompact X.B.I.Kset` using `Formalism.L2.SG.Closed.AutKCompact_holds X.B.I`. Establish `hon : IntegrableOn (eT X S) X.B.I.Kset X.B.μf` using `hc.continuousOn.integrableOn_compact' hK (isOpen_Kset X).measurableSet`. Conclude with `hon.integrable_of_forall_notMem_eq_zero fun x hx => eT_of_not_mem X S hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etInt_holds : EtInt X := by
   intro S
@@ -431,9 +427,9 @@ variable {D : D7} (X : HidaSetting D)
 def RedKer : Prop := ∀ x ∈ X.B.I.Kset, GoodAt X x 1 ↔ x ∈ X.B.I.Kg X.B.g
 
 /- English proof (translation)
-Use `⟨K_inv _ hk.1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hkz⟩` from `hk.2 y hy`. Use `⟨-(X.B.I.fmat k⁻¹ *ᵥ z), neg_mem (K_mv _ (K_inv _ hk.1) hz), ?_⟩` and prove the remaining obligations. Establish `h1 : X.B.I.fmat k⁻¹ * X.B.I.fmat k = 1` using `fmat_inv_mul _ k`. Establish `e : (X.B.I.fmat k⁻¹ - 1) *ᵥ y = -(X.B.I.fmat k⁻¹ *ᵥ ((X.B.I.fmat k - 1) *ᵥ y))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_sub, h1, mul_one, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hkz, Matrix.mulVec_smul, smul_neg]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kg_inv {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kg X.B.g) : k⁻¹ ∈ X.B.I.Kg X.B.g := by
   refine ⟨K_inv _ hk.1, fun y hy => ?_⟩
@@ -446,7 +442,7 @@ theorem Kg_inv {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kg X.B.g) : k⁻¹ ∈ X.B.I.Kg 
   rw [e, hkz, Matrix.mulVec_smul, smul_neg]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K_one _, fun y _ => ⟨0, zero_mem _, by rw [fmat_one, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_Kg : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g :=
   ⟨K_one _, fun y _ => ⟨0, zero_mem _, by rw [fmat_one, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩
@@ -454,19 +450,17 @@ theorem one_mem_Kg : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g :=
 open Classical in
 
 /- English proof (translation)
-Use `set V : ℝ := (X.B.μf (X.B.I.Kg X.B.g)).toReal with hV`. Establish `hopen : IsOpen (X.B.I.Kg X.B.g)` using `X.B.I.topf_open X.B.g (Nat.one_le_iff_ne_zero.2 (level_ne_zero X))`. Establish `hK : IsCompact X.B.I.Kset` using `Formalism.L2.SG.Closed.AutKCompact_holds X.B.I`. Establish `hne : X.B.μf (X.B.I.Kg X.B.g) ≠ 0` using `hopen.measure_ne_zero X.B.μf ⟨1, one_mem_Kg X⟩`. Establish `hfin : X.B.μf (X.B.I.Kg X.B.g) ≠ ⊤` using `(lt_of_le_of_lt (measure_mono fun z hz => hz.1) hK.measure_lt_top).ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV0 : (V : ℂ) ≠ 0`. Rewrite using `[hV]`. Conclude with `(ENNReal.toReal_pos hne hfin).ne'` after adjusting the coercions. Use `set T : Set X.B.I.Gf := (fun y => x⁻¹ * y) ⁻¹' X.B.I.Kg X.B.g with hT`. Establish `hTm : MeasurableSet T` using `(hopen.preimage (continuous_const.mul continuous_id)).measurableSet`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hμT : X.B.μf T = X.B.μf (X.B.I.Kg X.B.g)` using `measure_preimage_mul X.B.μf x⁻¹ _`. Establish `hfun : (fun y => X.B.e y * (fun z => if z ∈ X.B.I.Kg X.B.g then 1 / (V : ℂ) else 0) (y⁻¹ * x)) = T.indicator (fun _ => X.B.e x / (V : ℂ))`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : x⁻¹ * y ∈ X.B.I.Kg X.B.g`. Establish `hy' : y⁻¹ * x ∈ X.B.I.Kg X.B.g`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Kg_inv X hy` as an intermediate fact. Rewrite `this` using `[_root_.mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Establish `hey : X.B.e y = X.B.e x`. Use `X.B.e_adm.2.2.2.2.2.1 x 1 (one_mem_Kg X) (x⁻¹ * y) hy` as an intermediate fact. Rewrite `this` using `[one_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [if_pos hy', Set.indicator_of_mem (show y ∈ T from hy), hey]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy' : y⁻¹ * x ∉ X.B.I.Kg X.B.g`. Introduce `h`. Apply `hy` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Use `Kg_inv X h` as an intermediate fact. Rewrite `this` using `[_root_.mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Simplify using `only [if_neg hy', Set.indicator_of_notMem (show y ∉ T from hy), mul_zero]`. Unfold `AutInst.convF`. Rewrite using `[hfun, integral_indicator_const _ hTm, measureReal_def, hμT, ← hV, Complex.real_smul]`.
-
-Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem conv_Kg (x : X.B.I.Gf) :
     X.B.I.convF X.B.μf X.B.e
@@ -506,11 +500,11 @@ theorem conv_Kg (x : X.B.I.Gf) :
   field_simp
 
 /- English proof (translation)
-Take `⟨S, hS, hsum⟩` from `D.ntypes.eSer_sum k`. Rewrite using `[← hsum]`. Establish `hinj : ∀ a b : Fin D.R.r → ZMod (D.host.g k), Formalism.CyclotomicNorms.monicOf a = Formalism.CyclotomicNorms.monicOf b → a = b`. Introduce `a b h`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg (fun p : (ZMod (D.host.g k))[X] => p.coeff i) h` as an intermediate fact. Simplify `this` using `only [coeff_monicOf]`. Establish `himg : ∑ c : Fin D.R.r → ZMod (D.host.g k), D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf c) = ∑ f ∈ Finset.univ.image (fun c : Fin D.R.r → ZMod (D.host.g k) => Formalism.CyclotomicNorms.monicOf c), D.ntypes.eSer k f`. Rewrite using `[Finset.sum_image fun a _ b _ h => hinj a b h]`. Rewrite using `[himg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Finset.sum_subset (fun f hf => ?_) fun f _ hf => ?_` and prove the remaining obligations. Take `⟨hm, hd, -⟩` from `(hS f).1 hf`. Conclude with `Finset.mem_image.2 ⟨_, Finset.mem_univ _, monicOf_coeff hm hd⟩`. Conclude with `D.ntypes.eSer_zero _ _ fun hh => hf ((hS f).2 hh)`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_eSer' (k : Fin 2) :
     ∑ c : Fin D.R.r → ZMod (D.host.g k), D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf c) = 1 := by
@@ -534,11 +528,11 @@ theorem sum_eSer' (k : Fin 2) :
   · exact D.ntypes.eSer_zero _ _ fun hh => hf ((hS f).2 hh)
 
 /- English proof (translation)
-Unfold `ES`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm, Set.mem_univ, if_true]`. Rewrite using `[finsum_eq_sum_of_fintype, ← Fintype.prod_sum (fun (kv : Σ k : Fin 2, D.nd.PlG k) (c : Fin D.R.r → ZMod (D.host.g kv.1)) => (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf c)).coeff (γ kv))]`. Establish `hf : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ∑ c : Fin D.R.r → ZMod (D.host.g kv.1), (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf c)).coeff (γ kv) = if γ kv = 1 then 1 else 0`. Introduce `kv`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg (fun t : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g kv.1))) => t.coeff (γ kv)) (sum_eSer' (D := D) kv.1)`. Simplify using `only [MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply] at h`. Rewrite using `[h, MonoidAlgebra.one_def, MonoidAlgebra.coeff_single, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | (exact absurd h1.symm h2) | (exact absurd h2.symm h1)`. Rewrite using `[Finset.prod_congr rfl fun kv _ => hf kv, Finset.prod_boole]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `propext ⟨fun h => funext fun kv => h kv (Finset.mem_univ _), fun h kv _ => by rw [h]; rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ES_univ_coeff (γ : G0g D.nd) : (ES (D := D) Set.univ).coeff γ = if γ = 1 then 1 else 0 := by
   classical
@@ -563,13 +557,13 @@ theorem ES_univ_coeff (γ : G0g D.nd) : (ES (D := D) Set.univ).coeff γ = if γ 
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ X.B.I.Kset`. Establish `hE : ∃ γ, GoodAt X x γ` using `Formalism.L2.SG.Pf.RowDictPf.redExists_of X Formalism.L2.SG.Pf.RedExists0Pf.reduction_exists x hx`. Establish `hγ` using `Classical.choose_spec hE`. Unfold `egA`. Rewrite using `[dif_pos ⟨hx, hE⟩, ES_univ_coeff]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hk : x ∈ X.B.I.Kg X.B.g`. Establish `h1 : GoodAt X x 1` using `(hK x hx).2 hk`. Establish `hc : Classical.choose hE = 1`. Use function extensionality and compare the values at `kv`. Take `⟨P, hP⟩` from `Formalism.L2.SG.Pf.RedConj0Pf.reduction_conjugacy X.B.I (wB X (D.naut.plGw kv.1 kv.2)) (D.host.g kv.1) (D.host.g_prime kv.1) (by rw [card_wB, card_res_host]) D.R.r X.n_eq.symm x _ _ ((redMat_iff X _ _ x _).1 (hγ kv)) ((redMat_iff X _ _ x _).1 (h1 kv))`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `hP' : (1 : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) = P⁻¹ * (Classical.choose hE) kv * P` using `hP`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_pos hc, if_pos hk, one_div]`. Establish `hc : Classical.choose hE ≠ 1` using `fun h : Classical.choose hE = 1 => hk ((hK x hx).1 (by rw [← h]; exact hγ))`. Rewrite using `[if_neg hc, if_neg hk, zero_div]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `egA`. Rewrite using `[dif_neg (fun h => hx h.1), if_neg (fun h => hx h.1)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem egA_univ (hK : RedKer X) (x : X.B.I.Gf) :
     egA X (ES Set.univ) x =
@@ -597,9 +591,9 @@ theorem egA_univ (hK : RedKer X) (x : X.B.I.Gf) :
     rw [dif_neg (fun h => hx h.1), if_neg (fun h => hx h.1)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `eT`. Establish `h : egA X (ES Set.univ) = fun z => if z ∈ X.B.I.Kg X.B.g then 1 / ((X.B.μf (X.B.I.Kg X.B.g)).toReal : ℂ) else 0`. Use function extensionality and compare the values at `(egA_univ X hK)`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `conv_Kg X x`.
+A detailed English derivation is pending.
 -/
 theorem etUniv_of (hK : RedKer X) : EtUniv X := by
   classical
@@ -623,11 +617,11 @@ open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.RowDictPf
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Take `⟨γ0, h0⟩` from `Formalism.L2.SG.Pf.RowDictPf.redExists_of X Formalism.L2.SG.Pf.RedExists0Pf.reduction_exists x hx.1`. Introduce `kv`. Establish `: Fact (1 < D.host.g kv.1)` using `⟨(D.host.g_prime kv.1).one_lt⟩`. Take `⟨b, hb, -⟩` from `h0 kv`. Use `⟨b, hb, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : ∑ j, ((((1 : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) j i).val : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (b j) = incl X.B.I (b i)`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Matrix.one_apply_ne hj, ZMod.val_zero, Nat.cast_zero, zero_smul]) (fun h => absurd (Finset.mem_univ i) h)]`. Rewrite using `[Matrix.one_apply_eq, ZMod.val_one, Nat.cast_one, one_smul]`. Simplify using `only [Pi.one_apply, Units.val_one]`. Rewrite using `[hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz, hxz⟩` from `hx.2 _ (incl_mem_Lf X (hb.1 i))`. Establish `e : X.B.I.fmat x *ᵥ incl X.B.I (b i) - incl X.B.I (b i) = (X.B.I.fmat x - 1) *ᵥ incl X.B.I (b i)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite using `[e, hxz]`. Conclude with `smul_Lf_wLf X _ _ (level_mem X kv) hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodAt_one_of_mem_Kg {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kg X.B.g) : GoodAt X x 1 := by
   obtain ⟨γ0, h0⟩ := Formalism.L2.SG.Pf.RowDictPf.redExists_of X Formalism.L2.SG.Pf.RedExists0Pf.reduction_exists x hx.1
@@ -651,7 +645,7 @@ theorem goodAt_one_of_mem_Kg {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kg X.B.g) : GoodAt
 def RedKerOne : Prop := ∀ x ∈ X.B.I.Kset, GoodAt X x 1 → x ∈ X.B.I.Kg X.B.g
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨h x hx, goodAt_one_of_mem_Kg X⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem redKer_of (h : RedKerOne X) : RedKer X := fun x hx => ⟨h x hx, goodAt_one_of_mem_Kg X⟩
 
@@ -682,26 +676,26 @@ variable {X} {ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ} {hJ : EJId
   {hI : EtInt X} {hL : RowsLab X}
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (Classical.choose_spec hL)).2`.
+A detailed English derivation is pending.
 -/
 theorem thirdTie_allRows : LabelCountGoodInjective (allRowsOf X ψ₀ hJ hU hO hI hL) :=
   (Classical.choose_spec (Classical.choose_spec hL)).2
 
 /- English proof (translation)
-The claim follows from `place_law_of_statement _ hL6 hg fun k _ => ⟨ψ₀ k, hψ k, Or.inr rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem admissibleLevel_allRows (hψ : ∀ k, ψ₀ k ≠ 1) (hL6 : ConclusionL D) (hg : ∀ k, 2 * D.R.r ≤ D.host.g k) :
     PlaceLawIdempotents (allRowsOf X ψ₀ hJ hU hO hI hL) 6 :=
   place_law_of_statement _ hL6 hg fun k _ => ⟨ψ₀ k, hψ k, Or.inr rfl⟩
 
 /- English proof (translation)
-The claim follows from `labelCountSpace_toAt_of_labelCountGoodInjective _ thirdTie_allRows`.
+A detailed English derivation is pending.
 -/
 theorem thirdTieNumbers_allRows : LabelCountSpace (allRowsOf X ψ₀ hJ hU hO hI hL).toAt :=
   labelCountSpace_toAt_of_labelCountGoodInjective _ thirdTie_allRows
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.MainNotions.N.CylinderCountFamily.countCylAt_of D _ h1 hC hP, admissibleLevel_allRows (X := X) (hJ := hJ) (hU := hU) (hO := hO) (hI := hI) (hL := hL) hψ hL6 hg, thirdTieNumbers_allRows (X := X) (hJ := hJ) (hU := hU) (hO := hO) (hI := hI) (hL := hL), hC, hA⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleCount_allRows (hψ : ∀ k, ψ₀ k ≠ 1) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
     (h1 : Formalism.MainNotions.S.CountE.CountIdempotentsClass Formalism.MainNotions.S.CountE.PCount D n₀ Alev C₃ c₃ cb) (hL6 : ConclusionL D)
@@ -739,15 +733,15 @@ def KSub : Subgroup I.Gf where
   inv_mem' := fun hx => K_inv I hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K_one I, fun y _ => ⟨0, zero_mem _, by rw [fmat_one, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_Kg' (m : ℕ) : (1 : I.Gf) ∈ I.Kg m :=
   ⟨K_one I, fun y _ => ⟨0, zero_mem _, by rw [fmat_one, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩
 
 /- English proof (translation)
-Use `⟨K_mul I hx.1 hy.1, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hyz⟩` from `hy.2 v hv`. Take `⟨z', hz', hxz⟩` from `hx.2 v hv`. Use `⟨I.fmat x *ᵥ z + z', add_mem (K_mv I hx.1 hz) hz', ?_⟩` and prove the remaining obligations. Establish `e : (I.fmat (x * y) - 1) *ᵥ v = I.fmat x *ᵥ ((I.fmat y - 1) *ᵥ v) + (I.fmat x - 1) *ᵥ v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[fmat_mul, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hyz, hxz, Matrix.mulVec_smul, smul_add]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kg_mul' (m : ℕ) {x y : I.Gf} (hx : x ∈ I.Kg m) (hy : y ∈ I.Kg m) : x * y ∈ I.Kg m := by
   refine ⟨K_mul I hx.1 hy.1, fun v hv => ?_⟩
@@ -761,9 +755,9 @@ theorem Kg_mul' (m : ℕ) {x y : I.Gf} (hx : x ∈ I.Kg m) (hy : y ∈ I.Kg m) :
   rw [e, hyz, hxz, Matrix.mulVec_smul, smul_add]
 
 /- English proof (translation)
-Use `⟨K_inv I hk.1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hkz⟩` from `hk.2 y hy`. Use `⟨-(I.fmat k⁻¹ *ᵥ z), neg_mem (K_mv I (K_inv I hk.1) hz), ?_⟩` and prove the remaining obligations. Establish `h1 : I.fmat k⁻¹ * I.fmat k = 1` using `fmat_inv_mul I k`. Establish `e : (I.fmat k⁻¹ - 1) *ᵥ y = -(I.fmat k⁻¹ *ᵥ ((I.fmat k - 1) *ᵥ y))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_sub, h1, mul_one, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hkz, Matrix.mulVec_smul, smul_neg]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kg_inv' (m : ℕ) {k : I.Gf} (hk : k ∈ I.Kg m) : k⁻¹ ∈ I.Kg m := by
   refine ⟨K_inv I hk.1, fun y hy => ?_⟩
@@ -776,9 +770,9 @@ theorem Kg_inv' (m : ℕ) {k : I.Gf} (hk : k ∈ I.Kg m) : k⁻¹ ∈ I.Kg m := 
   rw [e, hkz, Matrix.mulVec_smul, smul_neg]
 
 /- English proof (translation)
-Use `⟨K_mul I (K_mul I hx hk.1) (K_inv I hx), fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hkz⟩` from `hk.2 _ (K_mv I (K_inv I hx) hv)`. Use `⟨I.fmat x *ᵥ z, K_mv I hx hz, ?_⟩` and prove the remaining obligations. Establish `h1 : I.fmat x * I.fmat x⁻¹ = 1` using `by rw [← fmat_mul, mul_inv_cancel, fmat_one]`. Establish `e : (I.fmat (x * k * x⁻¹) - 1) *ᵥ v = I.fmat x *ᵥ ((I.fmat k - 1) *ᵥ (I.fmat x⁻¹ *ᵥ v))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fmat_mul, fmat_mul, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite using `[e, hkz, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kg_conj' (m : ℕ) {x k : I.Gf} (hx : x ∈ I.Kset) (hk : k ∈ I.Kg m) : x * k * x⁻¹ ∈ I.Kg m := by
   refine ⟨K_mul I (K_mul I hx hk.1) (K_inv I hx), fun v hv => ?_⟩
@@ -802,7 +796,7 @@ instance KSub_compact : CompactSpace (KSub I) :=
   isCompact_iff_compactSpace.mp (Formalism.L2.SG.Closed.AutKCompact_holds I)
 
 /- English proof (translation)
-The claim follows from `Subgroup.quotient_finite_of_isOpen _ ((I.topf_open m hm).preimage continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot (m : ℕ) (hm : 1 ≤ m) : Finite (KSub I ⧸ KgN I m) :=
   Subgroup.quotient_finite_of_isOpen _ ((I.topf_open m hm).preimage continuous_subtype_val)
@@ -861,9 +855,9 @@ open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.RowDictPf
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Unfold `eT AutInst.convF`. Rewrite using `[← integral_mul_left_eq_self (fun y => X.B.e y * egA X (ES S) (y⁻¹ * (k * x))) k]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Establish `he : X.B.e (k * z) = X.B.e z`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `X.B.e_adm.2.2.2.2.2.1 z k hk 1 (one_mem_Kg X)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Simplify using `only [he, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem eT_mul_left (S : Set (Tup2 D)) (x : X.B.I.Gf) {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kg X.B.g) :
     eT X S (k * x) = eT X S x := by
@@ -877,7 +871,7 @@ theorem eT_mul_left (S : Set (Tup2 D)) (x : X.B.I.Gf) {k : X.B.I.Gf} (hk : k ∈
   simp only [he, mul_inv_rev, mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[eT_mul X S _ hk', eT_mul_left X S x hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eT_biInv (S : Set (Tup2 D)) (x : X.B.I.Gf) {k k' : X.B.I.Gf} (hk : k ∈ X.B.I.Kg X.B.g)
     (hk' : k' ∈ X.B.I.Kg X.B.g) : eT X S (k * x * k') = eT X S x := by
@@ -890,7 +884,7 @@ def EtUnip (k : Fin 2) (S : Set (Tup D k)) : Prop :=
   ∀ x, eT X (cyl D k S) x ≠ 0 → X.B.I.UnipMod (D.host.g (1 - k)) x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isLocallyConstant_eT X _, hA.1, hA.2.1, hA.2.2, fun _ hx => by_contra fun h => hx (eT_of_not_mem X _ h), fun x _ hk _ hk' => eT_biInv X _ x hk hk', hU⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAdmIdem_eT_cyl (k : Fin 2) (S : Set (Tup D k)) (hA : EtAlg X (cyl D k S)) (hU : EtUnip X k S) :
     X.B.I.IsAdmIdem X.B.μf X.B.g (D.host.g (1 - k)) (eT X (cyl D k S)) :=
@@ -910,7 +904,7 @@ def SetBase (I : AutInst) (n₀ : ℕ) (A b : ℝ) (lam : NumberField.InfinitePl
     1 ≤ g ∧ (g : ℝ) ≤ b ^ A ∧ g₀.Prime ∧ 4 * I.n < g₀ ∧ Formalism.MainNotions.S.SplitsCompl I.E g₀
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `hB`. Conclude with `⟨h1, h2, h3, h4, h5, h6, hA, h7, h8, h9, h10, h11⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem setting_of {I : AutInst} {n₀ : ℕ} {A b : ℝ} {lam : NumberField.InfinitePlace I.F → Fin I.n → ℝ}
     {μf : Measure I.Gf} {g g₀ : ℕ} {e : I.Gf → ℂ} (hB : SetBase I n₀ A b lam g g₀) (hA : I.IsAdmIdem μf g g₀ e) :
@@ -930,7 +924,7 @@ variable {X} {ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ} {hJ : EJId
   {hI : EtInt X} {hL : RowsLab X}
 
 /- English proof (translation)
-Take `⟨b, h, hS, hgap, hC, hf, hb, hpos⟩` from `hB`. Use `⟨b, h, fun k S => ⟨setting_of (hS k) (isAdmIdem_eT_cyl X k S (hA k S) (hUn k S)), fun v => X.ds v, fun v => X.low v, X.B.tens_spec, inferInstance, X.B.fund_spec, X.B.R_spec, reT_spec X hI _⟩, hgap, hC, hf, hb, hpos⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem tieCountAt_allRowsOf {n₀ : ℕ} {Alev C₃ cb : ℝ} (hB : CountBase X n₀ Alev C₃ cb)
     (hA : ∀ (k : Fin 2) (S : Set (Tup D k)), EtAlg X (cyl D k S)) (hUn : ∀ (k : Fin 2) (S : Set (Tup D k)), EtUnip X k S) :
@@ -941,7 +935,7 @@ theorem tieCountAt_allRowsOf {n₀ : ℕ} {Alev C₃ cb : ℝ} (hB : CountBase X
     reT_spec X hI _⟩, hgap, hC, hf, hb, hpos⟩
 
 /- English proof (translation)
-The claim follows from `admissibleCount_allRows (X := X) (hJ := hJ) (hU := hU) (hO := hO) (hI := hI) (hL := hL) hψ h1 hL6 hg (tieCountAt_allRowsOf hB hA hUn) hP hAd`.
+A detailed English derivation is pending.
 -/
 theorem admissibleCount_allRows_alt (hψ : ∀ k, ψ₀ k ≠ 1) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
     (h1 : Formalism.MainNotions.S.CountE.CountIdempotentsClass Formalism.MainNotions.S.CountE.PCount D n₀ Alev C₃ c₃ cb) (hL6 : ConclusionL D)
@@ -959,7 +953,7 @@ section FinalK
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `admissibleCount_allRows_alt hψ h1 hL6 hg hB hA hUn hP hAd`.
+A detailed English derivation is pending.
 -/
 theorem admissibleCount_allRows_unipotent (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (hK : RedKerOne X) (hO : EtOne X ψ₀)
     (hL : RowsLab X) (hψ : ∀ k, ψ₀ k ≠ 1) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
@@ -977,29 +971,27 @@ section Count
 open Classical in
 
 /- English proof (translation)
-Use `set B := T.filter (fun t => ¬ good t) with hB`. Set `R` to `Fin Dg ⊕ (Σ t : B, Fin (m t))`. Set `labR : R → α` to `Sum.elim G (fun x => (x.1 : α))`. Establish `hgood : Dg = ∑ t ∈ T.filter good, m t`. Rewrite using `[← Finset.sum_congr rfl (fun t ht => hcnt t (Finset.mem_filter.1 ht).1 (Finset.mem_filter.1 ht).2)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.card_eq_sum_card_fiberwise (fun σ _ => Finset.mem_filter.2 ⟨hGT σ, hGg σ⟩)]`. Simplify using the standard rewrite rules. Establish `hcardR : Fintype.card R = N`. Simplify using `only [R, Fintype.card_sum, Fintype.card_fin, Fintype.card_sigma]`. Rewrite using `[hN, ← Finset.sum_filter_add_sum_filter_not T good, ← hgood]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.sum_coe_sort B m`. Set `e : Fin N ≃ R` to `(Fintype.equivFinOfCardEq hcardR).symm`. Use `⟨fun τ => labR (e τ), fun σ => e.symm (Sum.inl σ), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `h : e τ with σ | x` into its components or cases. Simplify using `only [labR, h, Sum.elim_inl]`. Conclude with `hGT σ`. Simplify using `only [labR, h, Sum.elim_inr]`. Conclude with `(Finset.mem_filter.1 x.1.2).1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `hb : (Finset.univ.filter fun τ : Fin N => labR (e τ) ∈ S).card = (Finset.univ.filter fun r : R => labR r ∈ S).card`. Use `Finset.card_bij (fun τ _ => e τ) (fun τ hτ => by simpa using hτ) (fun a _ b _ h => e.injective h) (fun r hr => ⟨e.symm r, by simpa using hr, by simp⟩)` and prove the remaining obligations. Rewrite using `[hb, Finset.card_filter, Fintype.sum_sum_type, Fintype.sum_sigma]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not T good]`. Use `congr 1`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := G) (t := T.filter good) (fun σ _ => Finset.mem_filter.2 ⟨hGT σ, hGg σ⟩)]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Establish `hc` using `hcnt t (Finset.mem_filter.1 ht).1 (Finset.mem_filter.1 ht).2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hts : t ∈ S`. Rewrite using `[if_pos hts, ← hc, Finset.card_eq_sum_ones]`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Establish `hGσ : G σ = t` using `(Finset.mem_filter.1 hσ).2`. Simplify using `[labR, hGσ, hts]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hts]`. Use `Finset.sum_eq_zero fun σ hσ => ?_` and prove the remaining obligations. Establish `hGσ : G σ = t` using `(Finset.mem_filter.1 hσ).2`. Simplify using `[labR, hGσ, hts]`. Rewrite using `[← hB, ← Finset.sum_coe_sort B]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : (x : α) ∈ S`. Rewrite using `[if_pos hx, Finset.sum_congr rfl (fun y _ => if_pos (show labR (Sum.inr ⟨x, y⟩) ∈ S from hx))]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Finset.sum_eq_zero fun y _ => if_neg (show labR (Sum.inr ⟨x, y⟩) ∉ S from hx)`. Conclude with `e.symm.injective.comp Sum.inl_injective`. Introduce `σ`. Simplify using `[labR]`. Introduce `τ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Break down `h : e τ with σ | x` into its components or cases. Simplify using `only [labR, h, Sum.elim_inl]`. Use `⟨fun _ => ⟨σ, show e.symm (Sum.inl σ) = τ by rw [← h, Equiv.symm_apply_apply]⟩, fun _ => hGg σ⟩` and prove the remaining obligations. Simplify using `only [labR, h, Sum.elim_inr]`. Use `⟨fun hg => absurd hg (Finset.mem_filter.1 x.1.2).2, fun ⟨σ, hσ⟩ => ?_⟩` and prove the remaining obligations.
-
-Establish `: e τ = Sum.inl σ` using `by rw [← hσ, Equiv.apply_symm_apply]`. Rewrite `this` using `[h]`. Conclude with `absurd this (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lab {α : Type} [DecidableEq α] (T : Finset α) (m : α → ℕ) (good : α → Prop) [DecidablePred good]
     (Dg N : ℕ) (G : Fin Dg → α) (hGT : ∀ σ, G σ ∈ T) (hGg : ∀ σ, good (G σ))
@@ -1094,7 +1086,7 @@ def RowsGood : Prop :=
       (Finset.univ.filter fun σ => (fun k => D.nd.lab k (D.what₂.ft σ)) = t).card = dimX X {t}
 
 /- English proof (translation)
-Establish `h1 : dimX X Set.univ = X.B.D`. Unfold `dimX RowsAut.D`. Rewrite using `[reT_univ X hU (etInt_holds X)]`. Rewrite using `[← hT.D_eq, ← h1, hA Set.univ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowsTot_of (hA : RowsAdd X) (hU : EtUniv X) (hT : AutTie D X.B X.pl) :
     D.what₂.Dall = ∑ t ∈ labT (D := D), dimX X {t} := by
@@ -1106,11 +1098,11 @@ theorem rowsTot_of (hA : RowsAdd X) (hU : EtUniv X) (hT : AutTie D X.B X.pl) :
   simp
 
 /- English proof (translation)
-Establish `: ∀ k, Fact (D.host.g k).Prime` using `fun k => ⟨D.host.g_prime k⟩`. Establish `: ∀ k, NeZero (D.host.g k)` using `fun k => ⟨(D.host.g_prime k).ne_zero⟩`. Take `⟨hGl, hGg, hGc⟩` from `hG`. Establish `hGT : ∀ σ, (fun k => D.nd.lab k (D.what₂.ft σ)) ∈ labT (D` using `D) := by`. Introduce `σ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.mem_filter.2 ⟨Finset.mem_image.2 ⟨fun kv i => (D.nd.lab kv.1 (D.what₂.ft σ) kv.2).coeff i, Finset.mem_univ _, ?_⟩, fun k v => hGl σ k v⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k v`. Conclude with `monicOf_coeff (hGl σ k v).1 (hGl σ k v).2.1`. Take `⟨lab, inc, hlabT, hcount, hinj, hinc, hgood⟩` from `exists_lab (labT (D := D)) (fun t => dimX X {t}) (fun t => D.ntypes.goodTuple t) D.what₂.Drows D.what₂.Dall (fun σ => fun k => D.nd.lab k (D.what₂.ft σ)) hGT hGg hGc (rowsTot_of X hA hU hT)`. Use `⟨fun k τ => lab τ k, inc, fun k τ v => (Finset.mem_filter.1 (hlabT τ)).2 k v, fun S => ?_, hinj, fun k σ => congrFun (hinc σ) k, fun τ => hgood τ⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA S]`. Conclude with `(hcount S).symm`.
+A detailed English derivation is pending.
 -/
 theorem rowsLab_of (hA : RowsAdd X) (hG : RowsGood X) (hU : EtUniv X) (hT : AutTie D X.B X.pl) : RowsLab X := by
   classical
@@ -1143,7 +1135,7 @@ open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.RowDictPf
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `hn : 2 * D.R.rS + D.R.k + 1 ≤ X.B.I.n` using `by rw [X.n_eq, Formalism.MainNotions.S.dimS_eq]`. Conclude with `Formalism.L2.SG.Pf.BunEx.unipotence_mod_g X.B.I X.B.g g₀ X.e0 X.f0 X.z0 X.bw X.bwd X.ew (Nat.pos_of_ne_zero (level_ne_zero X)) hg₀ hn X.vectorsInLattice X.gramIntegral X.formsAtZero X.weightVectorsIntegral X.ew_idem X.ew_orth X.ew_int X.bw_w X.bwd_w X.bw_dual X.latticeSpan x hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levelSubgroup_unipotent_mod {g₀ : ℕ} (hg₀ : g₀ ∣ X.B.g) {x : X.B.I.Gf} (hx : x ∈ K2set X.B.I X.B.g X.e0 X.z0 X.bw) :
     X.B.I.UnipMod g₀ x := by
@@ -1153,7 +1145,7 @@ theorem levelSubgroup_unipotent_mod {g₀ : ℕ} (hg₀ : g₀ ∣ X.B.g) {x : X
     X.bw_w X.bwd_w X.bw_dual X.latticeSpan x hx
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Apply `hy` to reduce the goal to its premises. Rewrite using `[X.e_eq y, if_neg h]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem e_mem_levelSubgroup {y : X.B.I.Gf} (hy : X.B.e y ≠ 0) : y ∈ K2set X.B.I X.B.g X.e0 X.z0 X.bw := by
   classical
@@ -1162,9 +1154,9 @@ theorem e_mem_levelSubgroup {y : X.B.I.Gf} (hy : X.B.e y ≠ 0) : y ∈ K2set X.
   rw [X.e_eq y, if_neg h]
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro v hv`. Simplify using `using hv`. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `v hv`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec]`. Conclude with `K_sub_mv _ hyK (ih v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powSub_mem {y : X.B.I.Gf} (hyK : y ∈ X.B.I.Kset) : ∀ j : ℕ, ∀ v ∈ X.B.I.Lf,
     ((X.B.I.fmat y - 1) ^ j) *ᵥ v ∈ X.B.I.Lf := by
@@ -1177,17 +1169,17 @@ theorem powSub_mem {y : X.B.I.Gf} (hyK : y ∈ X.B.I.Kset) : ∀ j : ℕ, ∀ v 
     exact K_sub_mv _ hyK (ih v hv)
 
 /- English proof (translation)
-Establish `hsplit : ∀ u, (X.B.I.fmat (y * z) - 1) *ᵥ u = (X.B.I.fmat y - 1) *ᵥ u + X.B.I.fmat y *ᵥ ((X.B.I.fmat z - 1) *ᵥ u)`. Introduce `u`. Rewrite using `[fmat_mul, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Establish `key : ∀ j : ℕ, ∀ v ∈ X.B.I.Lf, ∃ w ∈ X.B.I.Lf, ((X.B.I.fmat (y * z) - 1) ^ j) *ᵥ v = ((X.B.I.fmat y - 1) ^ j) *ᵥ v + (l : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro v _; exact ⟨0, zero_mem _, by simp⟩`. Consider the case `succ j ih`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, hj⟩` from `ih v hv`. Take `⟨w', hw', hzw⟩` from `hz.2 _ (powSub_mem X hyK j v hv)`. Take `⟨w'', hw'', hzw''⟩` from `hz.2 _ hw`. Establish `hl : (l : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat y *ᵥ w'') ∈ X.B.I.Lf`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nsmul_mem (K_mv _ hyK hw'') l`. Use `⟨X.B.I.fmat y *ᵥ w' + ((X.B.I.fmat y - 1) *ᵥ w + (l : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat y *ᵥ w'')), add_mem (K_mv _ hyK hw') (add_mem (K_sub_mv _ hyK hw) hl), ?_⟩` and prove the remaining obligations. Establish `e1 : ((X.B.I.fmat y - 1) ^ (j + 1)) *ᵥ v = (X.B.I.fmat y - 1) *ᵥ (((X.B.I.fmat y - 1) ^ j) *ᵥ v)`. Rewrite using `[pow_succ', Matrix.mulVec_mulVec]`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec, hj, Matrix.mulVec_add, Matrix.mulVec_smul, hsplit, hsplit, hzw, hzw'', Matrix.mulVec_smul, Matrix.mulVec_smul, e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws. Introduce `v hv`. Take `⟨w, hw, hj⟩` from `key X.B.I.n v hv`. Take `⟨w₀, hw₀, h₀⟩` from `hy v hv`.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨w₀ + w, add_mem hw₀ hw, by rw [hj, h₀, smul_add]⟩`.
+A detailed English derivation is pending.
 -/
 theorem unipMod_mul_Kg {l : ℕ} {y z : X.B.I.Gf} (hyK : y ∈ X.B.I.Kset) (hy : X.B.I.UnipMod l y)
     (hz : z ∈ X.B.I.Kg l) : X.B.I.UnipMod l (y * z) := by
@@ -1235,19 +1227,17 @@ local instance neZeroG'' {D : D7} (k : Fin 2) : NeZero (D.host.g k) := ⟨(D.hos
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Unfold `ES`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[finsum_eq_sum_of_fintype]`. Set `A : (Σ k : Fin 2, D.nd.PlG k) → Type` to `fun kv => Fin D.R.r → ZMod (D.host.g kv.1)`. Set `e` to `Equiv.piSplitAt kv0 A`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← e.symm.sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun rest _ => ?_` and prove the remaining obligations. Establish `hval : ∀ (c0 : A kv0) (kv : Σ k : Fin 2, D.nd.PlG k), kv ≠ kv0 → (e.symm (c0, rest)) kv = (e.symm (0, rest)) kv`. Introduce `c0 kv hne`. Simplify using `[e, Equiv.piSplitAt_symm_apply, hne]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcond : ∀ c0 : A kv0, (tupOf (e.symm (c0, rest)) ∈ cyl D k S) ↔ (tupOf (e.symm (0, rest)) ∈ cyl D k S)`. Introduce `c0`. Establish `: (tupOf (e.symm (c0, rest))) k = (tupOf (e.symm (0, rest))) k`. Use function extensionality and compare the values at `v`. Establish `hne : (⟨k, v⟩ : Σ k : Fin 2, D.nd.PlG k) ≠ kv0` using `fun h => hk (by rw [← h])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [tupOf]`. Rewrite using `[hval c0 _ hne]`. Simplify using `only [cyl, Set.mem_setOf_eq, this]`. Establish `hsum0 : ∑ c0 : A kv0, (D.ntypes.eSer kv0.1 (Formalism.CyclotomicNorms.monicOf c0)).coeff (γ kv0) = 0`. Establish `h` using `congrArg (fun t : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g kv0.1))) => t.coeff (γ kv0)) (sum_eSer' (D := D) kv0.1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply] at h`. Rewrite `h` using `[MonoidAlgebra.one_def, MonoidAlgebra.coeff_single, Finsupp.single_apply, if_neg (Ne.symm hγ)]`. Conclude with `h`. Distinguish the cases in `hP : tupOf (e.symm (0, rest)) ∈ cyl D k S`. Rewrite using `[Finset.sum_congr rfl fun c0 _ => by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ((hcond c0).2 hP), ← Finset.mul_prod_erase _ _ (Finset.mem_univ kv0)]]`. Establish `hrest : ∀ c0 : A kv0, (∏ kv ∈ Finset.univ.erase kv0, (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf ((e.symm (c0, rest)) kv))).coeff (γ kv)) = ∏ kv ∈ Finset.univ.erase kv0, (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf ((e.symm (0, rest)) kv))).coeff (γ kv)` using `fun c0 => Finset.prod_congr rfl fun kv hkv => by rw [hval c0 kv (Finset.ne_of_mem_erase hkv)]`. Establish `hkv0 : ∀ c0 : A kv0, (e.symm (c0, rest)) kv0 = c0` using `fun c0 => by simp [e, Equiv.piSplitAt_symm_apply]`. Simplify using `only [hrest, hkv0]`. Rewrite using `[← Finset.sum_mul, hsum0, zero_mul]`.
-
-Conclude with `Finset.sum_eq_zero fun c0 _ => if_neg (fun h => hP ((hcond c0).1 h))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ES_cyl_coeff_zero (k : Fin 2) (S : Set (Tup D k)) (γ : G0g D.nd) (kv0 : Σ k : Fin 2, D.nd.PlG k)
     (hk : kv0.1 ≠ k) (hγ : γ kv0 ≠ 1) : (ES (D := D) (cyl D k (S : Set (Tup D k)))).coeff γ = 0 := by
@@ -1293,21 +1283,19 @@ def RedKerP (k : Fin 2) : Prop :=
   ∀ x ∈ X.B.I.Kset, (∀ v : D.nd.PlG k, RedMat X (D.naut.plGw k v) (D.host.g k) x 1) → x ∈ X.B.I.Kg (D.host.g k)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hex : ∃ y, X.B.e y * egA X (ES (cyl D k S)) (y⁻¹ * x) ≠ 0`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Apply `hx` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `eT AutInst.convF`. Rewrite using `[show (fun y => X.B.e y * egA X (ES (cyl D k S)) (y⁻¹ * x)) = fun _ => 0 from funext h, integral_zero]`. Take `⟨y, hy⟩` from `hex`. Establish `hey : X.B.e y ≠ 0` using `left_ne_zero_of_mul hy`. Establish `hz : egA X (ES (cyl D k S)) (y⁻¹ * x) ≠ 0` using `right_ne_zero_of_mul hy`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyK2` using `e_mem_levelSubgroup X hey`. Establish `hdiv : D.host.g (1 - k) ∣ X.B.g`. Rewrite using `[X.g_eq]`. Use `fin_cases k`. Conclude with `dvd_mul_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `dvd_mul_right _ _`. Establish `hyU` using `levelSubgroup_unipotent_mod X hdiv hyK2`. Unfold `egA at hz`. Distinguish the cases in `hzK : y⁻¹ * x ∈ X.B.I.Kset ∧ ∃ γ, GoodAt X (y⁻¹ * x) γ`. Use `swap`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hz` using `[dif_neg hzK]`. Conclude with `absurd rfl hz`. Rewrite `hz` using `[dif_pos hzK]`. Take `⟨hzK1, hzE⟩` from `hzK`. Establish `hγ` using `Classical.choose_spec hzE`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → (Classical.choose hzE) kv = 1`. Introduce `kv hkv`. Assume the negation of the conclusion as `hne`. Apply `hz` to reduce the goal to its premises. Rewrite using `[ES_cyl_coeff_zero k S _ kv hkv hne, zero_div]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzKg : y⁻¹ * x ∈ X.B.I.Kg (D.host.g (1 - k))`. Use `hR _ hzK1 fun v => ?_` and prove the remaining obligations. Apply the tactic sequence `have hk' : (⟨1 - k, v⟩ : Σ k : Fin 2, D.nd.PlG k).1 ≠ k := by show 1 - k ≠ k fin_cases k <;> decide`. Use `hγ ⟨1 - k, v⟩` as an intermediate fact. Rewrite `this` using `[h1 _ hk']`.
-
-Simplify using `using this`. Use `unipMod_mul_Kg X hyK2.1 hyU hzKg` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem etUnip_of (k : Fin 2) (hR : RedKerP X (1 - k)) (S : Set (Tup D k)) : EtUnip X k S := by
   classical
@@ -1359,15 +1347,13 @@ section RedKerOnePf
 open Formalism.L2.SG.Pf.unitaryCongruence
 
 /- English proof (translation)
-Use `⟨ha.1, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨za, hza, ea⟩` from `ha.2 v hv`. Take `⟨zb, hzb, eb⟩` from `hb.2 v hv`. Establish `hZ : Nat.gcdA a b * (a : ℤ) + Nat.gcdB a b * (b : ℤ) = 1`. Establish `h` using `Nat.gcd_eq_gcd_ab a b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hab, Nat.cast_one]`. Combine the linear relations using `[h]`. Establish `huw : ((Nat.gcdA a b : ℤ) : I.E ⊗[I.F] Af I.F) * (a : I.E ⊗[I.F] Af I.F) + ((Nat.gcdB a b : ℤ) : I.E ⊗[I.F] Af I.F) * (b : I.E ⊗[I.F] Af I.F) = 1`. Establish `h` using `congrArg (fun z : ℤ => (z : I.E ⊗[I.F] Af I.F)) hZ`. Move the coercions through the operations in `at h`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h`. Use `set u : I.E ⊗[I.F] Af I.F := ((Nat.gcdA a b : ℤ) : I.E ⊗[I.F] Af I.F)`. Use `set w : I.E ⊗[I.F] Af I.F := ((Nat.gcdB a b : ℤ) : I.E ⊗[I.F] Af I.F)`. Establish `hu : ∀ z ∈ I.Lf, u • z ∈ I.Lf` using `fun z hz => by show ((Nat.gcdA a b : ℤ) : I.E ⊗[I.F] Af I.F) • z ∈ I.Lf`. Rewrite using `[Int.cast_smul_eq_zsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zsmul_mem hz _`. Establish `hw : ∀ z ∈ I.Lf, w • z ∈ I.Lf` using `fun z hz => by show ((Nat.gcdB a b : ℤ) : I.E ⊗[I.F] Af I.F) • z ∈ I.Lf`. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem hz _`. Use `⟨u • zb + w • za, add_mem (hu zb hzb) (hw za hza), ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← eb, ← ea, add_smul, mul_smul, mul_smul]`. Use `_ = ((a * b : ℕ) : I.E ⊗[I.F] Af I.F) • (u • zb + w • za) := by`. Simplify using `only [smul_add, smul_smul, Nat.cast_mul]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Kg_inter (I : AutInst) {a b : ℕ} (hab : Nat.Coprime a b) {x : I.Gf} (ha : x ∈ I.Kg a) (hb : x ∈ I.Kg b) :
     x ∈ I.Kg (a * b) := by
@@ -1403,9 +1389,7 @@ theorem Kg_inter (I : AutInst) {a b : ℕ} (hab : Nat.Coprime a b) {x : I.Gf} (h
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Introduce `x hx hg`. Establish `hc : Nat.Coprime (D.host.g 0) (D.host.g 1)` using `(Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne`. Establish `hk : ∀ k : Fin 2, x ∈ X.B.I.Kg (D.host.g k)` using `fun k => by fin_cases k`. Conclude with `h0 x hx fun v => by simpa using hg ⟨0, v⟩`. Conclude with `h1 x hx fun v => by simpa using hg ⟨1, v⟩`.
-
-Rewrite using `[X.g_eq]`. Conclude with `Kg_inter X.B.I hc (hk 0) (hk 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redKerOne_of (h0 : RedKerP X 0) (h1 : RedKerP X 1) : RedKerOne X := by
   intro x hx hg
@@ -1429,7 +1413,7 @@ def allRowsOfP (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (h0 : Re
   allRowsOfK X ψ₀ (redKerOne_of X h0 h1) hO hL
 
 /- English proof (translation)
-The claim follows from `admissibleCount_allRows_unipotent X ψ₀ _ hO hL hψ hC1 hL6 hg hB hA (fun k S => etUnip_of X k (by fin_cases k; exacts [h1, h0]) S) hP hAd`.
+A detailed English derivation is pending.
 -/
 theorem admissibleCount_allRows_partner (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (h0 : RedKerP X 0) (h1 : RedKerP X 1)
     (hO : EtOne X ψ₀) (hL : RowsLab X) (hψ : ∀ k, ψ₀ k ≠ 1) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}

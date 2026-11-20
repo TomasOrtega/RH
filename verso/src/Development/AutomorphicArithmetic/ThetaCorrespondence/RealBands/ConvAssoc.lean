@@ -5,15 +5,13 @@ open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ e f h C _ hei _ hfi hh hC hef x`. Establish `h1 : Integrable (fun z : G × G => e z.1 * f z.2) (μ.prod μ)` using `hei.mul_prod hfi`. Establish `h2 : Integrable (fun z : G × G => e z.1 * f (z.1⁻¹ * z.2)) (μ.prod μ)` using `(measurePreserving_prod_inv_mul μ μ).integrable_comp_of_integrable h1`. Establish `h3 : Integrable (fun z : G × G => e z.1 * f (z.1⁻¹ * z.2) * h (z.2⁻¹ * x)) (μ.prod μ)`. Use `h2.mul_bdd (c := C) ?_ (Eventually.of_forall fun z => hC _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hh.comp (continuous_snd.inv.mul continuous_const)).aestronglyMeasurable`. Establish `h4 : ∀ g : G, conv μ f h (g⁻¹ * x) = ∫ y, f (g⁻¹ * y) * h (y⁻¹ * x) ∂μ`. Introduce `g`. Rewrite using `[← integral_mul_left_eq_self (fun y => f (g⁻¹ * y) * h (y⁻¹ * x)) g]`. Simplify using `only [conv, inv_mul_cancel_left, mul_inv_rev, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `conv`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[integral_mul_const, ← hef y]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `_ = ∫ g, ∫ y, e g * f (g⁻¹ * y) * h (y⁻¹ * x) ∂μ ∂μ := (integral_integral_swap (f := fun g y => e g * f (g⁻¹ * y) * h (y⁻¹ * x)) h3).symm`. Use `_ = conv μ e (conv μ f h) x := by show _ = ∫ g, e g * conv μ f h (g⁻¹ * x) ∂μ`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `beta_reduce`.
-
-Rewrite using `[h4, ← integral_const_mul]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.conv_assoc :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]

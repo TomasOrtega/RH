@@ -6,19 +6,19 @@ namespace Formalism.CohomologicalDescent.LP
 open Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
 /- English proof (translation)
-Introduce `K N q _ _ _ T hgl c d`. Establish `e : ∀ b b', T b b' * T b' b * T c d - T c d * (T b b' * T b' b) = ((if b = c then T b b' * T b' d else 0) - (if d = b' then T b b' * T c b else 0)) + ((if b' = c then T b d * T b' b else 0) - (if d = b then T c b' * T b' b else 0))`. Introduce `b b'`. Establish `h1` using `hgl b' b c d`. Establish `h2` using `hgl b b' c d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, h2]`. Simplify using `only [mul_sub, sub_mul, mul_ite, ite_mul, mul_zero, zero_mul]`. Use `show casOp T * T c d = T c d * casOp T`. Rewrite using `[← sub_eq_zero]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `casOp`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Simplify using `only [← Finset.sum_sub_distrib, e]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `s1 : ∑ b, ∑ b', (if b = c then T b b' * T b' d else 0) = ∑ b', T c b' * T b' d`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `s2 : ∑ b, ∑ b', (if d = b' then T b b' * T c b else 0) = ∑ b, T b d * T c b`. Simplify using `[Finset.sum_ite_eq]`. Establish `s3 : ∑ b, ∑ b', (if b' = c then T b d * T b' b else 0) = ∑ b, T b d * T c b`. Simplify using `[Finset.sum_ite_eq']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `s4 : ∑ b, ∑ b', (if d = b then T c b' * T b' b else 0) = ∑ b', T c b' * T b' d`. Rewrite using `[Finset.sum_eq_single d]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[s1, s2, s3, s4]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem casimir_central' : CasCentral := by
   intro K N q _ _ _ T hgl c d
@@ -61,23 +61,21 @@ theorem casimir_central' : CasCentral := by
   abel
 
 /- English proof (translation)
-Introduce `K N q _ _ _ T ε hmul hone hcomm z μ hz hw`. Establish `hex : ∃ b, ε b b z ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hz` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨b0, hb0⟩` from `hex`. Take `⟨b, hbS, hmax⟩` from `(Finset.univ.filter (fun a => ε a a z ≠ 0)).exists_max_image id ⟨b0, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb0⟩⟩`. Establish `hbz : ε b b z ≠ 0` using `(Finset.mem_filter.mp hbS).2`. Establish `hzero : ∀ c, b < c → ε c c z = 0` using `fun c hc => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `hmax c (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)` as an intermediate fact. Conclude with `absurd hc (not_lt.mpr this)`. Establish `hprod : ∀ a c d e (w : N), ε a c (ε d e w) = if c = d then ε a e w else 0`. Introduce `a c d e w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← Module.End.mul_apply, hmul]`. Apply the tactic sequence `split_ifs <;> rfl`. Use `⟨b, hbz, ?_, ?_⟩` and prove the remaining obligations. Introduce `a c hac`. Establish `h1 : T a c z = -(ε a c z)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hw.1 a c hac` as an intermediate fact. Rewrite `this` using `[LinearMap.add_apply]`. Conclude with `eq_neg_of_add_eq_zero_left this`. Establish `hcm : T a c (ε b b z) = ε b b (T a c z)` using `LinearMap.congr_fun (hcomm a c b b).eq z`. Rewrite using `[hcm, h1, map_neg, hprod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hba`. Substitute `hba` using the available equality. Establish `h3 : ε b c z = ε b c (ε c c z)` using `by rw [hprod, if_pos rfl]`. Rewrite using `[h3, hzero c hac, map_zero, neg_zero]`. Rewrite using `[neg_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a`. Establish `h1 : T a a z = μ a • z - ε a a z`. Use `hw.2 a` as an intermediate fact. Rewrite `this` using `[LinearMap.add_apply]`. Conclude with `eq_sub_of_add_eq this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hcm : T a a (ε b b z) = ε b b (T a a z)` using `LinearMap.congr_fun (hcomm a a b b).eq z`. Rewrite using `[hcm, h1, map_sub, map_smul, hprod]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[sub_smul]`.
-
-Rewrite using `[if_neg (Ne.symm hab)]`. Simplify using `[Pi.single_apply, hab]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem highest_weight_successive : StepHW := by
   intro K N q _ _ _ T ε hmul hone hcomm z μ hz hw
@@ -132,7 +130,7 @@ section Tower
 variable {K N : Type} {q : ℕ} [Field K] [LinearOrder K] [IsStrictOrderedRing K] [AddCommGroup N] [Module K N]
 
 /- English proof (translation)
-Introduce `a b x hx`. Conclude with `Submodule.iSup_induction S (motive := fun x => T a b x ∈ ⨆ i, S i) hx (fun i y hy => Submodule.mem_iSup_of_mem i (h i a b y hy)) (by simp) (fun y z hy hz => by rw [map_add]; exact Submodule.add_mem _ hy hz)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lp_stab_iSup {ι : Sort*} {T : Fin q → Fin q → Module.End K N} (S : ι → Submodule K N) (h : ∀ i, Stab T (S i)) :
     Stab T (⨆ i, S i) := by
@@ -148,7 +146,7 @@ def Eig (D : ℕ → Fin q → Fin q → Module.End K N) (j : ℕ) (κ : ℕ →
   ⨅ i : ℕ, ⨅ _ : i ≤ j, Module.End.eigenspace (casOp (D i)) ((casVal (κ i) : ℤ) : K)
 
 /- English proof (translation)
-Unfold `Eig`. Simplify using `only [Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lp_mem_Eig (D : ℕ → Fin q → Fin q → Module.End K N) (j : ℕ) (κ : ℕ → Fin q → ℕ) (z : N) :
     z ∈ Eig D j κ ↔ ∀ i ≤ j, casOp (D i) z = ((casVal (κ i) : ℤ) : K) • z := by
@@ -156,11 +154,11 @@ theorem lp_mem_Eig (D : ℕ → Fin q → Fin q → Module.End K N) (j : ℕ) (�
   simp only [Submodule.mem_iInf, Module.End.mem_eigenspace_iff]
 
 /- English proof (translation)
-Unfold `casVal`. Establish `key : ∀ b : Fin q, ((((κ + Pi.single ρ 1 : Fin q → ℕ) b : ℕ)) : ℤ) * ((((κ + Pi.single ρ 1 : Fin q → ℕ) b : ℕ) : ℤ) + (q : ℤ) - 1 - 2 * (b.val : ℤ)) = (κ b : ℤ) * ((κ b : ℤ) + (q : ℤ) - 1 - 2 * (b.val : ℤ)) + (if b = ρ then (q : ℤ) + 2 * ((κ ρ : ℤ) - (ρ.val : ℤ)) else 0)`. Introduce `b`. Simplify using `only [Pi.add_apply, Pi.single_apply]`. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h` using the available equality. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl (fun b _ => key b), Finset.sum_add_distrib, Finset.sum_ite_eq']`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lp_casVal_step (κ : Fin q → ℕ) (ρ : Fin q) :
     casVal (κ + Pi.single ρ 1) = casVal κ + (q : ℤ) + 2 * ((κ ρ : ℤ) - (ρ.val : ℤ)) := by
@@ -181,9 +179,9 @@ theorem lp_casVal_step (κ : Fin q → ℕ) (ρ : Fin q) :
   ring
 
 /- English proof (translation)
-Rewrite `h` using `[lp_casVal_step, lp_casVal_step]`. Establish `h' : (κ b : ℤ) - (b.val : ℤ) = (κ ρ : ℤ) - (ρ.val : ℤ)` using `by linarith`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Establish `h1` using `hκ hlt.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hv : b.val < ρ.val` using `hlt`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hκ hlt.le`. Establish `hv : ρ.val < b.val` using `hlt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lp_content_inj (κ : Fin q → ℕ) (hκ : Antitone κ) (b ρ : Fin q)
     (h : casVal (κ + Pi.single b 1) = casVal (κ + Pi.single ρ 1)) : b = ρ := by
@@ -199,29 +197,29 @@ theorem lp_content_inj (κ : Fin q → ℕ) (hκ : Antitone κ) (b ρ : Fin q)
     omega
 
 /- English proof (translation)
-Take `⟨hup, hdiag⟩` from `hw`. Establish `hdiag' : ∀ a, T a a z = (κ a : K) • z` using `hdiag`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Break down `eq_or_lt_of_le hab with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h]`. Use `hDom K N q T B hF z (fun b => (κ b : K)) hz ⟨hup, hdiag⟩ a b h` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hgl` using `hF.gl`. Take `⟨c, hc⟩ : ∃ c : Fin q → Fin q → ℤ, ∀ b b', c b b' = (if b = b' then (κ b : ℤ) * κ b else 0) + (if b < b' then (κ b : ℤ) else 0) - (if b < b' then (κ b' : ℤ) else 0)` from `⟨_, fun _ _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hterm : ∀ b b', (T b b' * T b' b) z = ((c b b' : ℤ) : K) • z`. Introduce `b b'`. Rewrite using `[hc]`. Break down `lt_trichotomy b b' with h | h | h` into its components or cases. Establish `hgl'` using `hgl b b' b' b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hgl'` using `[if_pos rfl, if_pos rfl]`. Establish `hA : T b b' * T b' b = T b' b * T b b' + (T b b - T b' b')` using `by rw [← hgl']; abel`. Rewrite using `[hA, LinearMap.add_apply, Module.End.mul_apply, hup b b' h, map_zero, zero_add, LinearMap.sub_apply, hdiag', hdiag', ← sub_smul, if_neg (ne_of_lt h), if_pos h, if_pos h]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Substitute `h` using the available equality. Rewrite using `[Module.End.mul_apply, hdiag', map_smul, hdiag', smul_smul, if_pos rfl, if_neg (lt_irrefl _)]`. Use `congr 1`. Use `push_cast`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Module.End.mul_apply, hup b' b h, map_zero, if_neg (ne_of_gt h), if_neg (not_lt.mpr h.le), if_neg (not_lt.mpr h.le)]`. Simplify using the standard rewrite rules. Establish `hIoi : ∀ b : Fin q, (∑ b' : Fin q, if b < b' then (1 : ℤ) else 0) = (q : ℤ) - 1 - (b.val : ℤ)`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_boole, Finset.filter_lt_eq_Ioi, Fin.card_Ioi]`. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hIio : ∀ b' : Fin q, (∑ b : Fin q, if b < b' then (1 : ℤ) else 0) = (b'.val : ℤ)`. Introduce `b'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_boole, Finset.filter_gt_eq_Iio, Fin.card_Iio]`. Establish `t1 : ∑ b : Fin q, ∑ b' : Fin q, (if b = b' then (κ b : ℤ) * κ b else 0) = ∑ b, (κ b : ℤ) * κ b`. Simplify using `[Finset.sum_ite_eq]`. Establish `t2 : ∑ b : Fin q, ∑ b' : Fin q, (if b < b' then (κ b : ℤ) else 0) = ∑ b, (κ b : ℤ) * ((q : ℤ) - 1 - (b.val : ℤ))`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hIoi b, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `t3 : ∑ b : Fin q, ∑ b' : Fin q, (if b < b' then (κ b' : ℤ) else 0) = ∑ b', (κ b' : ℤ) * (b'.val : ℤ)`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[← hIio b', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hsum : ∑ b, ∑ b', c b b' = casVal κ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[t1, t2, t3]`. Unfold `casVal`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `casOp`. Simplify using `only [LinearMap.sum_apply, hterm, ← Finset.sum_smul]`. Use `congr 1`. Conclude with `hsum` after adjusting the coercions.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lp_hw_cas (hDom : HWDominant) {T : Fin q → Fin q → Module.End K N} {B : LinearMap.BilinForm K N} (hF : FormMod T B)
     (κ : Fin q → ℕ) (z : N) (hz : z ≠ 0) (hw : IsHW T (fun b => (κ b : K)) z) :
@@ -297,7 +295,7 @@ theorem lp_hw_cas (hDom : HWDominant) {T : Fin q → Fin q → Module.End K N} {
 variable {n : ℕ} {D ε : ℕ → Fin q → Fin q → Module.End K N} {B : LinearMap.BilinForm K N}
 
 /- English proof (translation)
-Unfold `casOp`. Use `Commute.sum_left _ _ _ fun b _ => Commute.sum_left _ _ _ fun b' _ => ?_` and prove the remaining obligations. Conclude with `(H.comm i j hij hj b b' c d).mul_left (H.comm i j hij hj b' b c d)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lp_cas_eps (H : Tower n D ε B) (i j : ℕ) (hij : i ≤ j) (hj : j < n) (c d : Fin q) :
     Commute (casOp (D i)) (ε j c d) := by
@@ -306,7 +304,7 @@ theorem lp_cas_eps (H : Tower n D ε B) (i j : ℕ) (hij : i ≤ j) (hj : j < n)
   exact (H.comm i j hij hj b b' c d).mul_left (H.comm i j hij hj b' b c d)
 
 /- English proof (translation)
-Proceed by induction on `j, hij using Nat.le_induction generalizing c d with`. Consider the case `base => exact casimir_central' K N q (D i) (H.form i hj).gl c d`. Consider the case `succ j hij' ih`. Rewrite using `[H.step j (by omega) c d]`. Conclude with `(ih (by omega) c d).add_right (lp_cas_eps H i j hij' (by omega) c d)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lp_cas_D (H : Tower n D ε B) (i j : ℕ) (hij : i ≤ j) (hj : j ≤ n) (c d : Fin q) :
     Commute (casOp (D i)) (D j c d) := by
@@ -317,7 +315,7 @@ theorem lp_cas_D (H : Tower n D ε B) (i j : ℕ) (hij : i ≤ j) (hj : j ≤ n)
     exact (ih (by omega) c d).add_right (lp_cas_eps H i j hij' (by omega) c d)
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[lp_mem_Eig]`. Introduce `i hi`. Rewrite using `[← Module.End.mul_apply, (hX i hi).eq, Module.End.mul_apply, hz i hi, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem lp_Eig_of_comm (j : ℕ) (κ : ℕ → Fin q → ℕ) (X : Module.End K N) (hX : ∀ i ≤ j, Commute (casOp (D i)) X)
     (z : N) (hz : z ∈ Eig D j κ) : X z ∈ Eig D j κ := by
@@ -326,7 +324,7 @@ theorem lp_Eig_of_comm (j : ℕ) (κ : ℕ → Fin q → ℕ) (X : Module.End K 
   rw [← Module.End.mul_apply, (hX i hi).eq, Module.End.mul_apply, hz i hi, map_smul]
 
 /- English proof (translation)
-Introduce `a b x hx`. Conclude with `lp_Eig_of_comm j κ (D j' a b) (fun i hi => lp_cas_D H i j' (le_trans hi hjj) hj a b) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lp_Eig_stab (H : Tower n D ε B) (j j' : ℕ) (hjj : j ≤ j') (hj : j' ≤ n) (κ : ℕ → Fin q → ℕ) :
     Stab (D j') (Eig D j κ) := by
@@ -334,15 +332,13 @@ theorem lp_Eig_stab (H : Tower n D ε B) (j j' : ℕ) (hjj : j ≤ j') (hj : j' 
   exact lp_Eig_of_comm j κ (D j' a b) (fun i hi => lp_cas_D H i j' (le_trans hi hjj) hj a b) x hx
 
 /- English proof (translation)
-Establish `hw' : IsHW (fun a b => D j a b + ε j a b) μ z`. Establish `e : (fun a b => D j a b + ε j a b) = D (j + 1)`. Use function extensionality and compare the values at `a b`. Conclude with `(H.step j hj a b).symm`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hw`. Take `⟨b, hbz, hhw⟩` from `highest_weight_successive K N q (D j) (ε j) (H.unit_mul j hj) (H.unit_one j hj) (fun a b c d => H.comm j j le_rfl hj a b c d) z μ hz0 hw'`. Establish `hmem : ε j b b z ∈ Eig D j κ` using `lp_Eig_of_comm j κ (ε j b b) (fun i hi => lp_cas_eps H i j hi hj b b) z hz`. Establish `hμ` using `hb (ε j b b z) hmem (μ - Pi.single b 1) hbz hhw`. Establish `hμ' : μ = fun a => ((κ j + Pi.single b 1 : Fin q → ℕ) a : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Establish `h1` using `congrFun hμ a`. Simplify using `only [Pi.sub_apply] at h1`. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Rewrite `h1`, the goal using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs at h1 ⊢ <;> push_cast <;> linarith`. Establish `hw2 : IsHW (D (j + 1)) (fun a => ((κ j + Pi.single b 1 : Fin q → ℕ) a : K)) z`. Rewrite using `[← hμ']`. Conclude with `hw`. Take `⟨hanti, hcas⟩` from `lp_hw_cas hDom (H.form (j + 1) (by omega)) (κ j + Pi.single b 1) z hz0 hw2`.
-
-Conclude with `⟨b, hμ', hanti, hcas⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lp_key (hDom : HWDominant) (H : Tower n D ε B) (j : ℕ) (hj : j < n) (κ : ℕ → Fin q → ℕ)
     (hb : ∀ z ∈ Eig D j κ, ∀ μ : Fin q → K, z ≠ 0 → IsHW (D j) μ z → μ = fun b => (κ j b : K))
@@ -374,7 +370,7 @@ theorem lp_key (hDom : HWDominant) (H : Tower n D ε B) (j : ℕ) (hj : j < n) (
   exact ⟨b, hμ', hanti, hcas⟩
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite `hz`, the goal using `[lp_mem_Eig]`. Conclude with `fun i hi => hz i (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lp_Eig_mono (j : ℕ) (κ : ℕ → Fin q → ℕ) : Eig D (j + 1) κ ≤ Eig D j κ := by
   intro z hz
@@ -382,41 +378,37 @@ theorem lp_Eig_mono (j : ℕ) (κ : ℕ → Fin q → ℕ) : Eig D (j + 1) κ �
   exact fun i hi => hz i (by omega)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hanti : Antitone lam2`. Establish `hpath : PathTo lam2 0 (fun _ => lam2)` using `⟨rfl, fun i hi => absurd hi (Nat.not_lt_zero _), fun i _ => hanti⟩`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Apply `eq_top_iff.mpr` to reduce the goal to its premises. Use `le_trans ?_ (le_iSup₂_of_le (fun _ => lam2) hpath le_rfl)` and prove the remaining obligations. Use `hCR K N q (D 0) B (H.form 0 (Nat.zero_le _)) ⊤ (Eig D 0 (fun _ => lam2)) (fun a b x _ => trivial) (lp_Eig_stab H 0 0 le_rfl (Nat.zero_le _) _) ?_` and prove the remaining obligations. Introduce `v _ μ hv`. Distinguish the cases in `hv0 : v = 0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hv0]`. Conclude with `Submodule.zero_mem _`. Establish `hμ` using `h0 v μ hv0 hv`. Rewrite `hv` using `[hμ]`. Take `⟨-, hcas⟩` from `lp_hw_cas hDom (H.form 0 (Nat.zero_le _)) lam2 v hv0 hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lp_mem_Eig]`. Introduce `i hi`. Establish `hi0 : i = 0` using `by omega`. Substitute `hi0` using the available equality. Conclude with `hcas`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbot : (⊤ : Submodule K N) ≤ ⊥`. Use `hCR K N q (D 0) B (H.form 0 (Nat.zero_le _)) ⊤ ⊥ (fun a b x _ => trivial) (fun a b x hx => by rw [Submodule.mem_bot] at hx ⊢; rw [hx, map_zero]) ?_` and prove the remaining obligations. Introduce `v _ μ hv`. Assume the negation of the conclusion as `hne`. Establish `hv0 : v ≠ 0` using `fun h => hne (by rw [h]; exact Submodule.zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hanti` to reduce the goal to its premises. Establish `hμ` using `h0 v μ hv0 hv`. Rewrite `hv` using `[hμ]`. Conclude with `(lp_hw_cas hDom (H.form 0 (Nat.zero_le _)) lam2 v hv0 hv).1`. Conclude with `eq_top_iff.mpr (le_trans hbot bot_le)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `κ hκ z _ μ hz0 hzw`. Rewrite using `[h0 z μ hz0 hzw, hκ.1]`. Consider the case `succ j ih`. Take `⟨ihtop, ihuniq⟩` from `ih (by omega)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← ihtop]`. Use `iSup₂_le fun κ hκ => ?_` and prove the remaining obligations. Use `hCR K N q (D (j + 1)) B (H.form (j + 1) hj) (Eig D j κ) _ (lp_Eig_stab H j (j + 1) (by omega) hj κ) (lp_stab_iSup _ fun κ' => lp_stab_iSup _ fun _ => lp_Eig_stab H (j + 1) (j + 1) le_rfl hj κ') ?_` and prove the remaining obligations. Introduce `v hv μ hvw`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hv0 : v = 0`. Rewrite using `[hv0]`. Conclude with `Submodule.zero_mem _`. Take `⟨b, hμ, hanti, hcas⟩` from `lp_key hDom H j (by omega) κ (ihuniq κ hκ) v hv hv0 μ hvw`. Take `⟨κ', hκ'⟩ : ∃ κ' : ℕ → Fin q → ℕ, ∀ i, κ' i = if i = j + 1 then κ j + Pi.single b 1 else κ i` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκ'le : ∀ i ≤ j, κ' i = κ i` using `fun i hi => by rw [hκ', if_neg (by omega)]`. Establish `hκ'top : κ' (j + 1) = κ j + Pi.single b 1` using `by rw [hκ', if_pos rfl]`. Establish `hpath : PathTo lam2 (j + 1) κ'`. Use `⟨by rw [hκ'le 0 (Nat.zero_le _)]; exact hκ.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `⟨b, by rw [hκ'top, hκ'le i le_rfl]⟩`. Take `⟨ρ, hρ⟩` from `hκ.2.1 i (by omega)`. Conclude with `⟨ρ, by rw [hκ'le (i + 1) (by omega), hκ'le i (by omega), hρ]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Distinguish the cases in `hij : i = j + 1`. Substitute `hij` using the available equality. Rewrite using `[hκ'top]`. Conclude with `hanti`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hκ'le i (by omega)]`. Conclude with `hκ.2.2 i (by omega)`. Establish `hvE : v ∈ Eig D (j + 1) κ'`. Rewrite using `[lp_mem_Eig]`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hij : i = j + 1`. Substitute `hij` using the available equality. Rewrite using `[hκ'top]`. Conclude with `hcas`. Rewrite using `[hκ'le i (by omega)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lp_mem_Eig D j κ v).mp hv i (by omega)`. Conclude with `Submodule.mem_iSup_of_mem κ' (Submodule.mem_iSup_of_mem hpath hvE)`. Introduce `κ hκ z hz μ hz0 hzw`. Establish `hκj : PathTo lam2 j κ` using `⟨hκ.1, fun i hi => hκ.2.1 i (by omega), fun i hi => hκ.2.2 i (by omega)⟩`. Establish `hzj : z ∈ Eig D j κ` using `lp_Eig_mono j κ hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hμ, hanti, hcas⟩` from `lp_key hDom H j (by omega) κ (ihuniq κ hκj) z hzj hz0 μ hzw`. Take `⟨ρ, hρ⟩` from `hκ.2.1 j (by omega)`. Establish `hcas2 : casOp (D (j + 1)) z = ((casVal (κ (j + 1)) : ℤ) : K) • z` using `(lp_mem_Eig D (j + 1) κ z).mp hz (j + 1) le_rfl`. Establish `heq : casVal (κ j + Pi.single b 1) = casVal (κ j + Pi.single ρ 1)`. Rewrite using `[← hρ]`.
-
-Establish `h1 : ((casVal (κ j + Pi.single b 1) : ℤ) : K) • z = ((casVal (κ (j + 1)) : ℤ) : K) • z`. Rewrite using `[← hcas, ← hcas2]`. Establish `h2` using `smul_left_injective K hz0 h1`. Conclude with `h2` after adjusting the coercions. Establish `hbρ` using `lp_content_inj (κ j) (hκ.2.2 j (by omega)) b ρ heq`.
-
-Rewrite using `[hμ, hρ, hbρ]`.
+A detailed English derivation is pending.
 -/
 theorem lp_claim [FiniteDimensional K N] (hCR : CompleteRed) (hDom : HWDominant) (H : Tower n D ε B) (lam2 : Fin q → ℕ)
     (h0 : ∀ (v : N) (μ : Fin q → K), v ≠ 0 → IsHW (D 0) μ v → μ = fun b => (lam2 b : K)) (j : ℕ) (hj : j ≤ n) :
@@ -520,9 +512,9 @@ theorem lp_claim [FiniteDimensional K N] (hCR : CompleteRed) (hDom : HWDominant)
 end Tower
 
 /- English proof (translation)
-Introduce `K N q _ _ _ _ _ _ n D ε B lam2 H h0`. Establish `hc` using `(lp_claim hCR hDom H lam2 h0 n le_rfl).1`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← hc]`. Use `iSup₂_le fun κ hκ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `choose ρf hρf using hκ.2.1`. Conclude with `⟨κ n, κ, fun i => ρf i.val i.isLt, ⟨hκ.1, fun i => hρf i.val i.isLt, rfl, hκ.2.2⟩, (lp_mem_Eig D n κ z).mp hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem TowerPieri_of (hCR : CompleteRed) (hDom : HWDominant) : TowerPieri := by
   intro K N q _ _ _ _ _ _ n D ε B lam2 H h0

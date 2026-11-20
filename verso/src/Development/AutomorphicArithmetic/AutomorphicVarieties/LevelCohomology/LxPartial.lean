@@ -5,7 +5,7 @@ open Finset
 namespace UpperTheory.V.X
 
 /- English proof (translation)
-Establish `h1` using `Finset.sum_range_add w s F`. Establish `h2` using `Finset.sum_range_add w F s`. Rewrite `h2` using `[add_comm F s, h1]`. Rewrite using `[Finset.sum_sub_distrib]`. Take the linear combination `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem shift_sum {K : Type} [CommRing K] (F s : ℕ) (w : ℕ → K) :
     ∑ a ∈ range F, w (s + a) = ∑ a ∈ range F, w a + ∑ a ∈ range s, (w (F + a) - w a) := by
@@ -16,45 +16,43 @@ private theorem shift_sum {K : Type} [CommRing K] (F s : ℕ) (w : ℕ → K) :
   linear_combination h2
 
 /- English proof (translation)
-Set `ψ : ZMod N → ℕ → K` to `fun u a => if (a : ZMod N) = u then φ a else 0`. Set `A : ZMod N → K` to `fun u => ∑ a ∈ range (f * N), ψ u a * a`. Set `S : ZMod N → K` to `fun u => ∑ a ∈ range (f * N), ψ u a`. Establish `hF : ((f * N : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.mul_ne_zero hf.ne' (NeZero.ne N))`. Establish `hf' : (f : K) ≠ 0` using `Nat.cast_ne_zero.2 hf.ne'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : (N : K) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Establish `hψB : ∀ u a, ψ u a ∈ B`. Introduce `u a`. Simplify using `only [ψ]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hφ a`. Conclude with `B.zero_mem`. Establish `hper' : ∀ t a, φ (f * t + a) = φ a`. Introduce `t a`. Proceed by induction on `t with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `succ t ih => rw [show f * (t + 1) + a = (f * t + a) + f by ring, hper, ih]`. Establish `hψ : ∀ (t : ℕ) u a, ψ u (f * t + a) = ψ (u - (f * t : ℕ)) a`. Introduce `t u a`. Simplify using `only [ψ, hper']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[Nat.cast_add, eq_sub_iff_add_eq, add_comm]`. Establish `hψF : ∀ u a, ψ u (f * N + a) = ψ u a`. Introduce `u a`. Rewrite using `[hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hS : ∀ (t : ℕ) u, S (u - (f * t : ℕ)) = S u`. Introduce `t u`. Simplify using `only [S, ← hψ]`. Rewrite using `[shift_sum (f * N) (f * t) (ψ u)]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hψF]`. Establish `hA : ∀ (t : ℕ) u, A u - A (u - (f * t : ℕ)) = (f * t : ℕ) * S u - (f * N : ℕ) * ∑ a ∈ range (f * t), ψ u a`. Introduce `t u`. Establish `h` using `shift_sum (f * N) (f * t) (fun a => ψ u a * a)`. Simplify using `only [hψF] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ∑ a ∈ range (f * N), ψ u (f * t + a) * ((f * t + a : ℕ) : K) = A (u - (f * t : ℕ)) + (f * t : ℕ) * S (u - (f * t : ℕ))`. Simplify using `only [A, S, hψ, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : ∑ a ∈ range (f * t), (ψ u a * ((f * N + a : ℕ) : K) - ψ u a * a) = (f * N : ℕ) * ∑ a ∈ range (f * t), ψ u a`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h` using `[e1, e2, hS]`. Simplify using `only [A] at h ⊢`. Take the linear combination `-h`. Establish `hgen : ∀ u : ZMod N, ∃ t : ℕ, u - (f * t : ℕ) = 0`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `(ZMod.isUnit_iff_coprime f N).2 hc`. Use `⟨((v⁻¹ : (ZMod N)ˣ) * u : ZMod N).val, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val, ← hv, Units.mul_inv_cancel_left, sub_self]`. Establish `hS0 : ∀ u, S u = S 0`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hgen u`. Rewrite using `[← hS t u, ht]`. Establish `hcB : S 0 * (N : K)⁻¹ ∈ B` using `B.mul_mem (B.sum_mem fun a _ => hψB _ _) hN`. Establish `hd : ∀ (t : ℕ) u, A u / (f * N : ℕ) - A (u - (f * t : ℕ)) / (f * N : ℕ) = t * (S 0 * (N : K)⁻¹) - ∑ a ∈ range (f * t), ψ u a`. Introduce `t u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← sub_div, hA, hS0]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `⟨fun u => A u / (f * N : ℕ) - A 0 / (f * N : ℕ), S 0 * (N : K)⁻¹, ?_, hcB, ?_, ?_⟩` and prove the remaining obligations. Introduce `u`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht⟩` from `hgen u`. Use `hd t u` as an intermediate fact. Rewrite `this` using `[ht]`. Simplify using `only [this]`. Conclude with `B.sub_mem (B.mul_mem (natCast_mem B t) hcB) (B.sum_mem fun a _ => hψB _ _)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `t ht u`. Rewrite using `[sub_sub_sub_cancel_right, hd]`. Use `congr 1`. Establish `: ∀ a ∈ range (f * t), ψ u a = if u.val = a then φ a else 0`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `ha` using `[mem_range]`. Simplify using `only [ψ]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Conclude with `ZMod.val_natCast_of_lt (by omega)`. Introduce and unpack `rfl`. Conclude with `ZMod.natCast_zmod_val u`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `ξ hξ`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[← Finset.sum_mul, hξ, zero_mul, mul_zero, sub_zero, Finset.mul_sum]`. Establish `: ∀ u, ((f * N : ℕ) : K) * (ξ u * (A u / (f * N : ℕ))) = ∑ a ∈ range (f * N), ξ u * (ψ u a * a)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Rewrite using `[← Finset.mul_sum]`. Simplify using `only [A]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [this]`.
-
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [ψ, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq, mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lx_partial {K : Type} [Field K] [CharZero K] (f N : ℕ) [NeZero N] (hf : 0 < f) (hc : Nat.Coprime f N) (φ : ℕ → K)
     (hper : ∀ a, φ (a + f) = φ a) (B : Subring K) (hφ : ∀ a, φ a ∈ B) (hN : (N : K)⁻¹ ∈ B) :

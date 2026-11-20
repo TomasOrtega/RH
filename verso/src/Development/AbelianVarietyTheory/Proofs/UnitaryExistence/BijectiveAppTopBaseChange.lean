@@ -14,7 +14,7 @@ open GlobalTheory.AbLaw
 namespace GlobalTheory.UniversalConstants
 
 /- English proof (translation)
-Introduce `R _ X _ hp hg R' _ g X' π f' H`. Use `GlobalTheory.ProperFunctions.isIso_appTop_baseChange_of_field H` as an intermediate fact. Conclude with `ConcreteCategory.bijective_of_isIso f'.appTop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_appTop_baseChange : ∀ (R : Type) [Field R] (X : Over (Sp R)) (x₀ : 𝟙_ (Over (Sp R)) ⟶ X), IsProper X.hom → GeometricallyIntegral X.hom → (∀ (R' : Type) [CommRing R'] (g : R →+* R') (X' : Scheme.{0}) (π : X' ⟶ (X).left) (f' : X' ⟶ Spec (CommRingCat.of R')), IsPullback π f' (X).hom (Spec.map (CommRingCat.ofHom g)) → Function.Bijective f'.appTop.hom) := by
   intro R _ X _ hp hg R' _ g X' π f' H

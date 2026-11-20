@@ -9,7 +9,7 @@ namespace GlobalTheory.KMStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `hat latHat`. Use `congr 2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem hat_eq_latHat (L : Set (Fin n → E)) :
     ((hat F L : AddSubgroup (Fin n → RA F E)) : Set (Fin n → RA F E)) = (latHat F E L : Set _) := by
@@ -17,9 +17,9 @@ theorem hat_eq_latHat (L : Set (Fin n → E)) :
   congr 2
 
 /- English proof (translation)
-Establish `h` using `hat_eq_latHat (F := F) L`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `: y ∈ ((hat F L : AddSubgroup _) : Set _)` using `hy`. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `hy`. Establish `: y ∈ ((latHat F E L : AddSubgroup _) : Set _)` using `hy`. Rewrite `this` using `[← h]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hat_iff (L : Set (Fin n → E)) (y : Fin n → RA F E) : y ∈ hat F L ↔ y ∈ latHat F E L := by
   have h := hat_eq_latHat (F := F) L
@@ -28,17 +28,15 @@ theorem mem_hat_iff (L : Set (Fin n → E)) (y : Fin n → RA F E) : y ∈ hat F
   · intro hy; have : y ∈ ((latHat F E L : AddSubgroup _) : Set _) := hy; rw [← h] at this; exact this
 
 /- English proof (translation)
-Establish `hdet : IsUnit k.det` using `hk.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2, h3⟩ y`. Rewrite using `[← mem_hat_iff, ← mem_hat_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Take `⟨z, hz, hzk⟩` from `h2 y hy`. Establish `: k *ᵥ y = z + y` using `by rw [one_smul] at hzk; rw [← hzk]; abel`. Rewrite using `[this]`. Conclude with `add_mem hz hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Take `⟨z, hz, hzk⟩` from `h3 _ hy`. Establish `hinj : z = y`. Establish `e1 : k⁻¹ *ᵥ (k *ᵥ z) = z` using `by rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Establish `e2 : k⁻¹ *ᵥ (k *ᵥ y) = y` using `by rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2, hzk]`. Rewrite using `[← hinj]`. Conclude with `hz`. Introduce `hS`. Use `⟨hk, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hkx : k *ᵥ x ∈ hat F L` using `(mem_hat_iff L _).2 ((hS x).1 ((mem_hat_iff L x).1 hx))`. Conclude with `⟨k *ᵥ x - x, sub_mem hkx hx, by rw [one_smul]⟩`. Establish `e : k *ᵥ (k⁻¹ *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Use `⟨k⁻¹ *ᵥ x, (mem_hat_iff L _).2 ((hS _).2 ?_), e⟩` and prove the remaining obligations.
-
-Rewrite using `[e]`. Conclude with `(mem_hat_iff L x).1 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKM_one_iff_stabHat (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (L : Set (Fin n → E))
     (k : Matrix (Fin n) (Fin n) (RA F E)) (hk : IsUA c G k) :
@@ -69,7 +67,7 @@ theorem isKM_one_iff_stabHat (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) 
       rw [e]; exact (mem_hat_iff L x).1 hx
 
 /- English proof (translation)
-Introduce `E _ _ _ r G L k hk`. Conclude with `isKM_one_iff_stabHat _ G L k hk.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isKM_one_iff_stabHat_of_isSA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (G : Matrix (Fin r) (Fin r) E)

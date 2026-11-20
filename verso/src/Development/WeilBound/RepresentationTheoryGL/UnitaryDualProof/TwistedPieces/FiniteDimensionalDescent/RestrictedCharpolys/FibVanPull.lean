@@ -21,13 +21,13 @@ def eH (hd : PhiData q Z Z' φ e) : (Fin n → k) ≃ₜ (Fin N → k) :=
   { toEquiv := e.toEquiv, continuous_toFun := hd.econt, continuous_invFun := hd.econt' }
 
 /- English proof (translation)
-The claim follows from `hd.emb.prodMap (eH hd).isClosedEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_Φ (hd : PhiData q Z Z' φ e) : IsClosedEmbedding (Φ φ e) :=
   hd.emb.prodMap (eH hd).isClosedEmbedding
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hf`. Conclude with `⟨h1.comp_continuous (isClosedEmbedding_Φ hd).continuous, h2.comp_isClosedEmbedding (isClosedEmbedding_Φ hd)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp_mem (hd : PhiData q Z Z' φ e) {f : Sp k N → ℂ} (hf : f ∈ locallyConstantCompactSupport (Sp k N) ℂ ℂ) :
     f ∘ Φ φ e ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ := by
@@ -36,7 +36,7 @@ theorem comp_mem (hd : PhiData q Z Z' φ e) {f : Sp k N → ℂ} (hf : f ∈ loc
     h2.comp_isClosedEmbedding (isClosedEmbedding_Φ hd)⟩
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_val (hd : PhiData q Z Z' φ e) {g : GL (Fin n) k} {g' : GL (Fin N) k} (h : φ g.val = g'.val) :
     φ g⁻¹.val = g'⁻¹.val := by
@@ -45,16 +45,16 @@ theorem inv_val (hd : PhiData q Z Z' φ e) {g : GL (Fin n) k} {g' : GL (Fin N) k
     _ = g'⁻¹.val := by simp
 
 /- English proof (translation)
-Simplify using `only [act, Φ, map_mul, hd.intertw, h, inv_val hd h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_Φ (hd : PhiData q Z Z' φ e) {g : GL (Fin n) k} {g' : GL (Fin N) k} (h : φ g.val = g'.val) (p : Sp k n) :
     act g' (Φ φ e p) = Φ φ e (act g p) := by
   simp only [act, Φ, map_mul, hd.intertw, h, inv_val hd h]
 
 /- English proof (translation)
-Take `⟨L, hL, hKL, hLU⟩` from `exists_compact_between hK hU hKU`. Establish `hb` using `loc_compact_Haus_tot_disc_of_zero_dim (H := Y)`. Establish `hx : ∀ x : K, ∃ V : Set Y, IsClopen V ∧ (x : Y) ∈ V ∧ V ⊆ interior L` using `fun x => hb.mem_nhds_iff.1 (isOpen_interior.mem_nhds (hKL x.2))`. Use `choose V hV using hx`. Take `⟨I, hI⟩` from `hK.elim_finite_subcover V (fun x => (hV x).1.isOpen) (fun x hx => mem_iUnion.2 ⟨⟨x, hx⟩, (hV ⟨x, hx⟩).2.1⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcl : IsClopen (⋃ i ∈ I, V i)` using `I.finite_toSet.isClopen_biUnion (fun i _ => (hV i).1)`. Use `⟨⋃ i ∈ I, V i, hcl, ?_, hI, ?_⟩` and prove the remaining obligations. Conclude with `hL.of_isClosed_subset hcl.isClosed (iUnion₂_subset fun i _ => (hV i).2.2.trans interior_subset)`. Conclude with `iUnion₂_subset fun i _ => (hV i).2.2.trans (interior_subset.trans hLU)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_compact_clopen_between {Y : Type*} [TopologicalSpace Y] [LocallyCompactSpace Y] [T2Space Y]
     [TotallyDisconnectedSpace Y] {K U : Set Y} (hK : IsCompact K) (hU : IsOpen U) (hKU : K ⊆ U) :
@@ -73,15 +73,11 @@ private theorem exists_compact_clopen_between {Y : Type*} [TopologicalSpace Y] [
   · exact iUnion₂_subset fun i _ => (hV i).2.2.trans (interior_subset.trans hLU)
 
 /- English proof (translation)
-Use `haveI := totallyDisconnectedSpace_localField (F := k)`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin N) (Fin N) k) := inferInstanceAs (TotallyDisconnectedSpace (Fin N → Fin N → k))`. Establish `hE` using `isClosedEmbedding_Φ hd`. Establish `hO : IsOpen ({p : Sp k N | p.2 ≠ 0} ∩ (Φ φ e '' Aᶜ)ᶜ)` using `(isOpen_ne_fun continuous_snd continuous_const).inter (hE.isClosedMap _ hA.isOpen.isClosed_compl).isOpen_compl`. Establish `hKO : Φ φ e '' A ⊆ {p : Sp k N | p.2 ≠ 0} ∩ (Φ φ e '' Aᶜ)ᶜ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show e x.2 ≠ 0`. Introduce `h0`. Conclude with `hAO hx ((map_eq_zero_iff e e.injective).1 h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Introduce and unpack `⟨y, hy, hyx⟩`. Conclude with `hy (hE.injective hyx ▸ hx)`. Take `⟨V, hV, hVc, hKV, hVO⟩` from `exists_compact_clopen_between (Y := Sp k N) (hAc.image hE.continuous) hO hKO`. Use `⟨V, hV, hVc, fun p hp => (hVO hp).1, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Assume the negation of the conclusion as `hxA`. Conclude with `(hVO hx).2 ⟨x, hxA, rfl⟩`. Introduce `hx`.
-
-Conclude with `hKV ⟨x, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_compact_clopen_preimage_Phi_eq (hd : PhiData q Z Z' φ e) {A : Set (Sp k n)} (hA : IsClopen A)
     (hAc : IsCompact A) (hAO : A ⊆ {p | p.2 ≠ 0}) :
@@ -113,25 +109,23 @@ private theorem exists_compact_clopen_preimage_Phi_eq (hd : PhiData q Z Z' φ e)
     exact hKV ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Take `⟨⟨hlc, hcs⟩, hsupp⟩` from `hf`. Establish `hK` using `hcs.isCompact`. Establish `key : ∀ c : ℂ, c ≠ 0 → ∃ B : Set (Sp k N), IsClopen B ∧ IsCompact B ∧ B ⊆ {p | p.2 ≠ 0} ∧ Φ φ e ⁻¹' B = f ⁻¹' {c}`. Introduce `c hc`. Establish `hcl : IsClopen (f ⁻¹' {c})` using `hlc.isClopen_fiber c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsub : f ⁻¹' {c} ⊆ Function.support f` using `fun x hx => by`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hx`. Simplify using `[Function.mem_support, hx, hc]`. Conclude with `exists_compact_clopen_preimage_Phi_eq hd hcl (hK.of_isClosed_subset hcl.isClosed (hsub.trans (subset_tsupport f))) (hsub.trans hsupp)`. Use `choose! B hB using key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (Set.range f).Finite` using `by haveI : CompactSpace (tsupport f) := isCompact_iff_compactSpace.1 hK`. Establish `hc : Continuous (fun x : tsupport f => (x : Sp k n))` using `continuous_subtype_val`. Establish `h1` using `(hlc.comp_continuous hc).range_finite`. Use `(h1.insert 0).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Distinguish the cases in `hx : f x = 0`. Conclude with `Or.inl hx`. Conclude with `Or.inr ⟨⟨x, subset_tsupport f hx⟩, rfl⟩`. Use `set S := hfin.toFinset.filter (· ≠ 0) with hS`. Use `⟨∑ c ∈ S, c • (B c).indicator (fun _ => (1 : ℂ)), ?_, ?_⟩` and prove the remaining obligations.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Submodule.sum_mem _ fun c hc => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hc0 : c ≠ 0` using `(Finset.mem_filter.1 hc).2`. Take `⟨hBc, hBk, hBO, -⟩` from `hB c hc0`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `s`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Set.indicator_const_preimage (B c) s (1 : ℂ)` as an intermediate fact. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at this`. Apply the tactic sequence `rcases this with h | h | h | h <;> rw [h]`. Use `exacts [isOpen_univ, hBc.isOpen, hBc.isClosed.isOpen_compl, isOpen_empty]`. Conclude with `HasCompactSupport.intro hBk fun x hx => Set.indicator_of_notMem hx _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Set.support_indicator_subset.trans hBO`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `hterm : ∀ c ∈ S, c * (B c).indicator (fun _ => (1 : ℂ)) (Φ φ e x) = if f x = c then c else 0`. Introduce `c hc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpre` using `(hB c (Finset.mem_filter.1 hc).2).2.2.2`. Distinguish the cases in `hx : f x = c`. Establish `hm : Φ φ e x ∈ B c` using `by show x ∈ Φ φ e ⁻¹' B c`. Rewrite using `[hpre]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `[Set.indicator_of_mem hm, hx]`. Establish `hm : Φ φ e x ∉ B c` using `by show x ∉ Φ φ e ⁻¹' B c`. Rewrite using `[hpre]`. Conclude with `hx`. Simplify using `[Set.indicator_of_notMem hm, hx]`.
-
-Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `h (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 ⟨x, rfl⟩, Ne.symm hne⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_supportedIn_comp_Phi_eq (hd : PhiData q Z Z' φ e) {f : Sp k n → ℂ}
     (hf : f ∈ supportedIn {p : Sp k n | p.2 ≠ 0}) :
@@ -194,15 +188,15 @@ private theorem exists_supportedIn_comp_Phi_eq (hd : PhiData q Z Z' φ e) {f : S
       exact h (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 ⟨x, rfl⟩, Ne.symm hne⟩)
 
 /- English proof (translation)
-Introduce `ξ hS hI`. Set `ξ' : (Sp k N → ℂ) →ₗ[ℂ] ℂ` to `ξ.comp (LinearMap.funLeft ℂ ℂ (Φ φ e))`. Establish `hmem : ∀ g ∈ supportedIn (univ : Set (Sp k N)), g ∘ Φ φ e ∈ supportedIn (univ : Set (Sp k n))`. Introduce `g hg`. Take `⟨hg1, -⟩` from `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨comp_mem hd hg1, subset_univ _⟩`. Establish `hS' : Supp ξ' (F' ×ˢ univ)`. Introduce `g hg hz`. Use `show ξ (g ∘ Φ φ e) = 0`. Use `hS _ (hmem g hg) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `p ⟨hp, -⟩`. Conclude with `hz _ ⟨hF _ hp, mem_univ _⟩`. Establish `hI' : PositivityTheory.RgUd.T.Inv Z' ξ'`. Introduce `g' hg' g hg`. Take `⟨g0, hg0, hφ⟩` from `(hd.gz g').1 hg'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ξ ((fun p => g (act g' p)) ∘ Φ φ e) = ξ (g ∘ Φ φ e)`. Establish `hfun : ((fun p => g (act g' p)) ∘ Φ φ e) = fun p => (g ∘ Φ φ e) (act g0 p)`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, act_Φ hd hφ]`. Rewrite using `[hfun]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hI g0 hg0 _ (hmem g hg)`. Establish `hK` using `h' ξ' hS' hI'`. Introduce `f hf`. Take `⟨h, hh, rfl⟩` from `exists_supportedIn_comp_Phi_eq hd hf`. Conclude with `hK h hh`.
+A detailed English derivation is pending.
 -/
 theorem fibVan_pull (hd : PhiData q Z Z' φ e) (F : Set (Matrix (Fin n) (Fin n) k))
     (F' : Set (Matrix (Fin N) (Fin N) k)) (hF : ∀ x ∈ F, φ x ∈ F') (h' : FibVan Z' F') : FibVan Z F := by

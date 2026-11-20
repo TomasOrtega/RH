@@ -8,9 +8,9 @@ namespace GlobalTheory.DVRQuotCount
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Establish `: IsArtinianRing (R ⧸ I)` using `isArtinian_of_finite`. Take `⟨b⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq (R ⧸ I) ((R ⧸ I) ⊗[R] N) (Module.finrank R N) (fun P => by`. Use `P.isMaximal` as an intermediate fact. Set `: Field ((R ⧸ I) ⧸ P.asIdeal)` to `Ideal.Quotient.field _`. Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ I) ((R ⧸ I) ⧸ P.asIdeal) ((R ⧸ I) ⧸ P.asIdeal) N).finrank_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Module.rankAtStalk_baseChange (R := R) (M := N) (S := (R ⧸ I) ⧸ P.asIdeal) ⊥`. Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank]`. Conclude with `h1)`. Rewrite using `[← Nat.card_congr (TensorProduct.quotTensorEquivQuotSMul N I).toEquiv, Nat.card_congr b.equivFun.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_smul_top_of_flat' {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Flat R N] (I : Ideal R) [Finite (R ⧸ I)] :
@@ -29,11 +29,11 @@ theorem card_quot_smul_top_of_flat' {R N : Type} [CommRing R] [IsDomain R] [AddC
     Nat.card_congr b.equivFun.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.rank_range_add_rank_ker (LinearMap.fst R A B)`. Establish `hk : Module.rank R (LinearMap.ker (LinearMap.fst R A B)) = 0`. Rewrite using `[rank_eq_zero_iff]`. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, ha, hax⟩` from `hB x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `using congrArg (a • ·) (show x.1 = 0 from hx)`. Simplify using `using hax`. Rewrite `h` using `[LinearMap.range_eq_top.2 (fun a => ⟨(a, 0), rfl⟩), rank_top, hk, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem rank_prod_of_rank_zero {R A B : Type} [CommRing R] [IsDomain R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] (hB : ∀ x : B, ∃ a : R, a ≠ 0 ∧ a • x = 0) :
@@ -51,7 +51,7 @@ theorem rank_prod_of_rank_zero {R A B : Type} [CommRing R] [IsDomain R] [AddComm
   exact h.symm
 
 /- English proof (translation)
-Take `⟨q, hq, hqt⟩` from `WfDvdMonoid.exists_irreducible_factor htu ht`. Conclude with `(IsDiscreteValuationRing.associated_of_irreducible O hp hq).dvd.trans hqt`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem irreducible_dvd {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p t : O}
     (hp : Irreducible p) (ht : t ≠ 0) (htu : ¬ IsUnit t) : p ∣ t := by
@@ -59,23 +59,19 @@ theorem irreducible_dvd {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuatio
   exact (IsDiscreteValuationRing.associated_of_irreducible O hp hq).dvd.trans hqt
 
 /- English proof (translation)
-Introduce `O M _ _ _ _ _ _ t ht htu hfin`. Take `⟨n, ι, _, p, hp, e, ⟨eqv⟩⟩` from `Module.equiv_free_prod_directSum O M`. Use `set T := ⨁ i : ι, O ⧸ O ∙ p i ^ e i`. Use `set F := Fin n →₀ O`. Establish `hTi : ∀ i, Finite (O ⧸ O ∙ p i ^ e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hle : Ideal.span {t ^ e i} ≤ Ideal.span {p i ^ e i}`. Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Conclude with `pow_dvd_pow_of_dvd (irreducible_dvd (hp i) ht htu) _`. Use `haveI := hfin (e i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `Finite.of_surjective _ (Ideal.Quotient.factor_surjective hle)`. Use `haveI : Finite T := Finite.of_equiv _ (DirectSum.linearEquivFunOnFintype O ι _).toEquiv.symm`. Establish `hkill : ∀ x : T, ∃ a : O, a ≠ 0 ∧ a • x = 0`. Introduce `x`. Use `⟨∏ i, p i ^ e i, Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (hp i).ne_zero, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use extensionality with `i`. Rewrite using `[DirectSum.smul_apply, DirectSum.zero_apply]`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (x i)`. Rewrite using `[← hy, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Submodule.mem_span_singleton]`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun j => p j ^ e j) (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨c * y, by rw [hc, smul_eq_mul]; ring⟩`. Establish `hrank : finrank O M = n`. Rewrite using `[eqv.finrank_eq]`. Unfold `Module.finrank`. Rewrite using `[rank_prod_of_rank_zero hkill]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `finrank O F = n`. Simplify using `[F]`. Use `⟨Nat.card T, Nat.card_pos, fun r => ?_⟩` and prove the remaining obligations. Use `set I : Ideal O := Ideal.span {t ^ r}`. Use `haveI := hfin r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Nat.card (M ⧸ (I • ⊤ : Submodule O M)) = Nat.card (O ⧸ I) ^ n * Nat.card (T ⧸ (I • ⊤ : Submodule O T))`. Rewrite using `[← Nat.card_congr (TensorProduct.quotTensorEquivQuotSMul M I).toEquiv, Nat.card_congr (TensorProduct.congr (LinearEquiv.refl O (O ⧸ I)) eqv).toEquiv, Nat.card_congr (TensorProduct.prodRight O O (O ⧸ I) F T).toEquiv, Nat.card_prod, Nat.card_congr (TensorProduct.quotTensorEquivQuot …`. Simplify using `[F]`. Use `haveI : Finite (T ⧸ (I • ⊤ : Submodule O T)) := Finite.of_surjective _ (Submodule.mkQ_surjective _)`. Establish `h1 : 1 ≤ Nat.card (T ⧸ (I • ⊤ : Submodule O T))` using `Nat.card_pos`.
-
-Establish `h2 : Nat.card (T ⧸ (I • ⊤ : Submodule O T)) ≤ Nat.card T` using `Nat.card_le_card_of_surjective _ (Submodule.mkQ_surjective _)`. Rewrite using `[hcard, hrank]`. Prove the components needed by the constructor for the conclusion. Conclude with `Nat.le_mul_of_pos_right _ h1`. Rewrite using `[mul_comm]`.
-
-Conclude with `Nat.mul_le_mul_right _ h2`.
+A detailed English derivation is pending.
 -/
 theorem card_quot_pow_smul_bounds : ∀ (O M : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [AddCommGroup M] [Module O M] [Module.Finite O M] (t : O), t ≠ 0 → ¬ IsUnit t →

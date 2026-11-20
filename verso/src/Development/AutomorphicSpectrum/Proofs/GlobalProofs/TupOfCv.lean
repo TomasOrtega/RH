@@ -42,7 +42,7 @@ def tupOf {M d : ℕ} (b : Module.Basis (Fin d) F E) (u : Fin M × Fin d → AF 
   fun _ i => ∑ k, u (i, k) • ((1 : AF F) ⊗ₜ[F] b k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h : (tupOf b u 0 p.1) = ∑ k, u (p.1, k) • (Algebra.TensorProduct.basis (AF F) b) k`. Simplify using `only [tupOf, Algebra.TensorProduct.basis_apply]`. Simplify using `only [cv]`. Rewrite using `[h, Module.Basis.repr_sum_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_tupOf {M d : ℕ} (b : Module.Basis (Fin d) F E) (u : Fin M × Fin d → AF F) :
     cv (AF F) b (tupOf b u 0) = u := by
@@ -53,7 +53,7 @@ theorem cv_tupOf {M d : ℕ} (b : Module.Basis (Fin d) F E) (u : Fin M × Fin d 
   rw [h, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u i`. Take `rfl : u = 0` from `Subsingleton.elim _ _`. Simplify using `only [tupOf, cv]`. Use `conv_rhs => rw [← (Algebra.TensorProduct.basis (AF F) b).sum_repr (X 0 i)]`. Simplify using `only [Algebra.TensorProduct.basis_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tupOf_cv {M d : ℕ} (b : Module.Basis (Fin d) F E) (X : Fin 1 → Fin M → AF F ⊗[F] E) :
     tupOf b (cv (AF F) b (X 0)) = X := by

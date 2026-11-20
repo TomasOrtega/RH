@@ -18,13 +18,13 @@ open GlobalTheory.Core.Rk.SW
 namespace GlobalTheory.Core.Rk.SchInt
 
 /- English proof (translation)
-Establish `hc : Continuous (fun x => d.mixS T ψ v.μ v.𝓕 f x w)` using `(GlobalTheory.HeisMixSource.heis_mixS D ψ hψ S S₀ T ρ d v f hf).2.2.2.1.comp (f := fun x : Mx D T.rank ρ => (x, w)) (continuous_id.prodMk continuous_const)`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Take `⟨θ, hθ⟩` from `GlobalTheory.DualPairCompare.exists_infFam D`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D T.rank ρ`. Use `haveI : BorelSpace (Mx D T.rank ρ) := ⟨rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := v.covol.1`. Take `⟨N, hN⟩` from `GlobalTheory.Unf.MajInt.maj_integrable D θ hθ T.rank ρ (fun _ _ => True) 0 v.μ inferInstance (Filter.Eventually.of_forall fun x i j h => (h trivial).elim) (fun t _ => by`. Establish `e : (fun x : Mx D T.rank ρ => x + t) = fun x => t + x` using `funext fun x => add_comm x t`. Rewrite using `[e]`. Conclude with `map_add_left_eq_self v.μ t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hfU⟩` from `hf.level`. Establish `hfL : f ∈ GlobalTheory.Size.thetaLevel ψ S T U` using `⟨hf, hfU⟩`. Take `⟨K, hK, hKN⟩` from `GlobalTheory.Unf.mixS_le_maj D ψ hψ θ hθ S S₀ T ρ d v U hU`. Take `⟨C, hC⟩` from `hKN N`. Establish `hfin` using `(GlobalTheory.T.heisenberg_sup_sobolev_seminorm_theta_laws D ψ hψ θ hθ S T).1 N f hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hI` using `(hN K hK).2`. Use `lt_of_le_of_lt (lintegral_mono fun x => (hC f hfL x w).trans (mul_le_mul_right (Real.ofReal_le_enorm _) _)) ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.mul_ne_top ENNReal.coe_ne_top hfin)]`. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_ne_top ENNReal.coe_ne_top hfin).lt_top hI`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixS_continuous_integrable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S S₀ T : HSp D} {ρ : ℕ}
     (d : HypDec S S₀ ρ) (v : GlobalTheory.Unf.VolM D T.rank ρ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w : WO S₀ T) :
@@ -55,7 +55,7 @@ theorem mixS_continuous_integrable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (h�
   exact ENNReal.mul_lt_top (ENNReal.mul_ne_top ENNReal.coe_ne_top hfin).lt_top hI
 
 /- English proof (translation)
-Introduce `_ _ hψ A _ ν 𝓨 hν _ hf` and use `mixS_continuous_integrable hψ (dblDec A) ⟨ν, 𝓨, hν⟩ hf 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sch_continuous_integrable : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D)
     (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f →

@@ -22,14 +22,14 @@ theorem proj_coe (σ : M →ₗ[A] A) (v : M) (h : σ v = 1) (x : M) :
     (proj σ v h x : M) = x - σ x • v := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [proj_coe, LinearMap.mem_ker.1 x.2])`.
+A detailed English derivation is pending.
 -/
 theorem proj_ker (σ : M →ₗ[A] A) (v : M) (h : σ v = 1) (x : LinearMap.ker σ) :
     proj σ v h x = x :=
   Subtype.ext (by simp [proj_coe, LinearMap.mem_ker.1 x.2])
 
 /- English proof (translation)
-Establish `h` using `Submodule.mem_map_of_mem (f := f) hx`. Rewrite `h` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem_smul_top (f : M →ₗ[A] M') (I : Ideal A) {x : M}
     (hx : x ∈ I • (⊤ : Submodule A M)) : f x ∈ I • (⊤ : Submodule A M') := by
@@ -38,14 +38,14 @@ theorem apply_mem_smul_top (f : M →ₗ[A] M') (I : Ideal A) {x : M}
   exact Submodule.smul_mono le_rfl le_top h
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_surjective (proj σ v h) (fun x => ⟨x, proj_ker σ v h x⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ker_finite [Module.Finite A M] (σ : M →ₗ[A] A) (v : M) (h : σ v = 1) :
     Module.Finite A (LinearMap.ker σ) :=
   Module.Finite.of_surjective (proj σ v h) (fun x => ⟨x, proj_ker σ v h x⟩)
 
 /- English proof (translation)
-Use `haveI := ker_finite σ v h`. Use `haveI : Module.Projective A (LinearMap.ker σ) := Module.Projective.of_split (LinearMap.ker σ).subtype (proj σ v h) (LinearMap.ext fun x => proj_ker σ v h x)`. Use `haveI : Module.FinitePresentation A (LinearMap.ker σ) := Module.finitePresentation_of_projective _ _`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+A detailed English derivation is pending.
 -/
 theorem ker_free [IsLocalRing A] [Module.Finite A M] [Module.Free A M] (σ : M →ₗ[A] A) (v : M)
     (h : σ v = 1) : Module.Free A (LinearMap.ker σ) := by
@@ -72,7 +72,7 @@ noncomputable def kerEquiv (σ : M →ₗ[A] A) (v : M) (h : σ v = 1) :
       simp [proj_coe])
 
 /- English proof (translation)
-Use `haveI := ker_finite σ v h`. Use `haveI := ker_free σ v h`. Rewrite using `[(kerEquiv σ v h).finrank_eq, Module.finrank_prod, Module.finrank_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_ker [IsLocalRing A] [Module.Finite A M] [Module.Free A M] (σ : M →ₗ[A] A) (v : M)
     (h : σ v = 1) : Module.finrank A M = 1 + Module.finrank A (LinearMap.ker σ) := by
@@ -81,11 +81,11 @@ theorem finrank_ker [IsLocalRing A] [Module.Finite A M] [Module.Free A M] (σ : 
   rw [(kerEquiv σ v h).finrank_eq, Module.finrank_prod, Module.finrank_self]
 
 /- English proof (translation)
-Set `e` to `Module.Free.chooseBasis A M`. Distinguish the cases in `h : ∀ i, e.repr y i ∈ IsLocalRing.maximalIdeal A`. Use `absurd ?_ hy` and prove the remaining obligations. Rewrite using `[← e.sum_repr y]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) trivial`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_neg at h`. Take `⟨i, hi⟩` from `h`. Establish `hu : IsUnit (e.repr y i)`. Assume the negation of the conclusion as `hn`. Conclude with `hi ((IsLocalRing.mem_maximalIdeal _).2 hn)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨u, hu⟩` from `hu`. Use `⟨((↑u⁻¹ : A)) • e.coord i, ?_⟩` and prove the remaining obligations. Simplify using `[← hu]`.
+A detailed English derivation is pending.
 -/
 theorem exists_form [IsLocalRing A] [Module.Finite A M] [Module.Free A M] (y : M)
     (hy : y ∉ IsLocalRing.maximalIdeal A • (⊤ : Submodule A M)) :
@@ -116,16 +116,16 @@ theorem restr_coe (b : M →ₗ[A] M') (σ : M' →ₗ[A] A) (x : LinearMap.ker 
     (restr b σ x : M') = b x := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [restr_coe, proj_coe])`.
+A detailed English derivation is pending.
 -/
 theorem restr_proj (b : M →ₗ[A] M') (σ : M' →ₗ[A] A) (x₀ : M) (h : σ (b x₀) = 1) (q : M) :
     restr b σ (proj (σ ∘ₗ b) x₀ h q) = proj σ (b x₀) h (b q) :=
   Subtype.ext (by simp [restr_coe, proj_coe])
 
 /- English proof (translation)
-Introduce `J t hJ ht z hz`. Take `⟨x, hx, hxz⟩` from `hb J t hJ ht z (apply_mem_smul_top (LinearMap.ker σ).subtype _ hz)`. Use `⟨proj (σ ∘ₗ b) x₀ h x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[restr_proj]`. Conclude with `apply_mem_smul_top (proj σ (b x₀) h) _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : proj (σ ∘ₗ b) x₀ h x - z = proj (σ ∘ₗ b) x₀ h (x - z)`. Rewrite using `[map_sub, proj_ker]`. Rewrite using `[e]`. Conclude with `apply_mem_smul_top _ _ hxz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_restr [IsLocalRing A] (b : M →ₗ[A] M') (σ : M' →ₗ[A] A) (x₀ : M)
     (h : σ (b x₀) = 1) (hb : Lift b) : Lift (restr b σ) := by
@@ -140,17 +140,15 @@ theorem lift_restr [IsLocalRing A] (b : M →ₗ[A] M') (σ : M' →ₗ[A] A) (x
     exact apply_mem_smul_top _ _ hxz
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Q N _ _ _ _ _ _ _ _ b hn hb`. Distinguish the cases in `h : ∀ q, b q ∈ IsLocalRing.maximalIdeal A • (⊤ : Submodule A N)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.lift_reduction_zero_of_maximal A Q N b hb h]`. Simplify using the standard rewrite rules. Use `push_neg at h`. Take `⟨x₀, hx₀⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `exists_form _ hx₀`. Establish `hσ' : (σ ∘ₗ b) x₀ = 1` using `hσ`. Use `haveI := ker_finite σ (b x₀) hσ`. Use `haveI := ker_free σ (b x₀) hσ`. Use `haveI := ker_finite (σ ∘ₗ b) x₀ hσ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `haveI := ker_free (σ ∘ₗ b) x₀ hσ'`. Establish `hlt : Module.finrank A (LinearMap.ker σ) < n`. Use `finrank_ker σ (b x₀) hσ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨s₁, hs₁⟩` from `ih _ hlt (LinearMap.ker (σ ∘ₗ b)) (LinearMap.ker σ) (restr b σ) rfl (lift_restr b σ x₀ hσ hb)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨σ.smulRight x₀ + (LinearMap.ker (σ ∘ₗ b)).subtype ∘ₗ s₁ ∘ₗ proj σ (b x₀) hσ, ?_⟩` and prove the remaining obligations. Use extensionality with `q`. Establish `h1 : restr b σ (s₁ (restr b σ (proj (σ ∘ₗ b) x₀ hσ' q))) = restr b σ (proj (σ ∘ₗ b) x₀ hσ' q)` using `LinearMap.congr_fun hs₁ _`. Rewrite `h1` using `[restr_proj]`. Establish `h2` using `congrArg (Subtype.val) h1`.
-
-Rewrite `h2` using `[restr_coe, proj_coe]`. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, map_add, map_smul, Submodule.subtype_apply]`. Rewrite using `[h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem generalized_inverse_of_lift_rank [IsLocalRing A] : ∀ (n : ℕ) (Q N : Type) [AddCommGroup Q] [Module A Q]
     [Module.Finite A Q] [Module.Free A Q] [AddCommGroup N] [Module A N] [Module.Finite A N]
@@ -192,7 +190,7 @@ theorem generalized_inverse_of_lift_rank [IsLocalRing A] : ∀ (n : ℕ) (Q N : 
 end GlobalTheory.CompanionTheory.PerfVB.GenInv
 
 /- English proof (translation)
-Introduce `A Q N _ _ _ _ _ _ _ _ _ _ b hb` and use `GenInv.generalized_inverse_of_lift_rank (A := A) _ Q N b rfl hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.PerfVB.exists_generalised_inverse_of_lift :
     ∀ (A Q N : Type) [CommRing A] [IsLocalRing A] [AddCommGroup Q] [Module A Q] [Module.Finite A Q]

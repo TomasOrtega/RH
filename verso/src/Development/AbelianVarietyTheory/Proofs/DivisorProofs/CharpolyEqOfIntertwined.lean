@@ -5,15 +5,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `A _ _ h μ F G X Y hμ hGF hFX`. Establish `hdet : F.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hGF`. Rewrite `h1` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ hμ h1.symm`. Establish `hmap : (F.map Polynomial.C) * (X.map Polynomial.C) = (Y.map Polynomial.C) * (F.map Polynomial.C)`. Use `congrArg (fun M => Polynomial.C.mapMatrix M) hFX` as an intermediate fact. Simplify `this` using `[map_mul]`. Establish `hcomm : (F.map Polynomial.C) * Matrix.scalar (Fin h) (Polynomial.X : Polynomial A) = Matrix.scalar (Fin h) (Polynomial.X : Polynomial A) * (F.map Polynomial.C)` using `((Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (F.map Polynomial.C) * charmatrix X = charmatrix Y * (F.map Polynomial.C)`. Simplify using `only [charmatrix, RingHom.mapMatrix_apply, mul_sub, sub_mul]`. Rewrite using `[hmap, hcomm]`. Establish `hd` using `congrArg Matrix.det key`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : (F.map Polynomial.C).det ≠ 0`. Establish `: (F.map Polynomial.C).det = Polynomial.C F.det`. Simplify using `using (RingHom.map_det (Polynomial.C : A →+* Polynomial A) F).symm`. Rewrite using `[this]`. Conclude with `Polynomial.C_ne_zero.mpr hdet`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `mul_right_cancel₀ hC hd` as an intermediate fact. Simplify `this.symm` using `[Matrix.charpoly]`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_eq_of_intertwined :
     ∀ (A : Type) [CommRing A] [IsDomain A] (h : ℕ) (μ : A) (F G X Y : Matrix (Fin h) (Fin h) A),

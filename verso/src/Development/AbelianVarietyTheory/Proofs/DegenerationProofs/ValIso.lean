@@ -14,13 +14,13 @@ namespace GlobalTheory.Ex.Arch.FibEx
 open GlobalTheory.CubeValues GlobalTheory.SymmetricSemicharacter GlobalTheory.EigenNorm GlobalTheory.FrameValue
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ (M.U m ⊓ L.U i ⊓ (M.U m ⊓ L.U j))` using `(le_preimage_inf x _ _).2 ⟨(le_preimage_inf x _ _).2 ⟨hm, hi⟩, (le_preimage_inf x _ _).2 ⟨hm, hj⟩⟩`. Establish `l₁ : M.U m ⊓ L.U i ⊓ (M.U m ⊓ L.U j) ≤ M.U m ⊓ M.U m` using `le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)`. Establish `l₂ : M.U m ⊓ L.U i ⊓ (M.U m ⊓ L.U j) ≤ L.U i ⊓ L.U j` using `le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)`. It suffices to establish `H : ∀ (a : Γ(X, M.U m ⊓ L.U i)ˣ) (b : Γ(X, M.U m ⊓ L.U j)ˣ), res inf_le_left a = res l₁ (M.g m m) * (res l₂ (L.g i j))⁻¹ * res inf_le_right b → valAt' x _ a.val * valAt' x (L.U i ⊓ L.U j) (L.g i j).val = valAt' x _ b.val from H (w.s (m, i)) (w.s (m, j)) (hw (m, i) (m, j))`. Introduce `a b e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e' : res inf_le_left a * res l₂ (L.g i j) = res l₁ (M.g m m) * res inf_le_right b`. Rewrite using `[e, mul_right_comm, inv_mul_cancel_right]`. Establish `o : valAt' x (M.U m ⊓ M.U m) (M.g m m).val = 1`. Take `⟨ev, hev⟩` from `(valueRules X x).2.1 _ hm`. Rewrite using `[← val_res x valueRules (le_inf le_rfl le_rfl) hm, hM.g_self, hev, Units.val_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `v` using `congrArg (fun q : Γ(X, _)ˣ => valAt' x _ q.val) e'`. Take `⟨ev, hev⟩` from `(valueRules X x).2.1 _ h`. Simplify using `only [hev, Units.val_mul, map_mul] at v`. Simplify using `only [← hev] at v`. Rewrite `v` using `[val_res x valueRules _ h, val_res x valueRules _ h, val_res x valueRules _ h, val_res x valueRules _ h, o, _root_.one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `v`.
+A detailed English derivation is pending.
 -/
 theorem val_iso {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {L M : LB X} (hM : M.IsLB) {w : LB.Iso L M} (hw : w.IsGen)
     (m : M.ι) (i j : L.ι) (hm : ⊤ ≤ x ⁻¹ᵁ M.U m) (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) :
@@ -50,13 +50,13 @@ theorem val_iso {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {L M : LB X} (hM : M.IsLB) {
   exact v
 
 /- English proof (translation)
-Introduce `hL hT R _ _ _ P J hJ`. Take `⟨P', φ, hφ, -, hmul, t, ht⟩` from `hL.polBaseChange _ _ (TF (R := R) ℂ).hom P`. Establish `gp : IsGrpPullback P'.A P.A (TF (R` using `R) ℂ).hom φ := ⟨hφ, fun T x y x₀ y₀ hx hy => by`. Establish `ex : x₀ = toBase hφ.w x` using `Over.OverMorphism.ext hx`. Establish `ey : y₀ = toBase hφ.w y` using `Over.OverMorphism.ext hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ex, ey, ← hmul]`. Use the proof step `rfl⟩`. Take `⟨w, hw⟩` from `LBIso.symm ⟨t, ht⟩`. Take `⟨rig, hrig⟩` from `P'.rigid`. Take `⟨u, Hm, χ, Ef, hAH, -, h₁, h₂, h₃, -, hE, hB, -⟩` from `hT P' rig hrig`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ex : (Fin P'.g → ℂ) → (TF (R` to `R) ℂ ⟶ P.A) := fun z => Over.homMk ((u.ex z).left ≫ φ) (by show ((u.ex z).left ≫ φ) ≫ P.A.hom = _`. Rewrite using `[Category.assoc, hφ.w, ← Category.assoc, Over.w]`. Conclude with `Category.id_comp _)`. Establish `hm : ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (P.L.pull φ).U (fun _ => J (ex z).left)` using `fun z => (le_preimage_wchart _ P.L _ _).2 fun _ => hJ _`. Establish `hc` using `fun z => le_chartAt P'.isLB (u.ex z).left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨P'.g, u.Λ, Hm, χ, Ef, ex, fun z => Units.mk0 (valAt' (u.ex z).left _ (w.s (fun _ => J (ex z).left, chartAt P'.isLB (u.ex z).left)).val * u.fr (chartAt P'.isLB (u.ex z).left) z) (mul_ne_zero (val_unit_ne_zero _ valueRules ((le_preimage_inf _ _ _).2 ⟨hm z, hc z⟩) _) (u.fr_ne _ _ ( …` and prove the remaining obligations. Rewrite using `[Units.val_mk0, u.fr_compat _ i z ((le_preimage_inf _ _ _).2 ⟨hc z, hi⟩), ← _root_.mul_assoc]`. Conclude with `congrArg (· * u.fr i z) (val_iso _ (pull_isLB P.isLB φ) hw _ _ _ (hm z) (hc z) hi)`.
+A detailed English derivation is pending.
 -/
 theorem fibEx : Laws → ThetaUnifAV → FibExSt := by
   intro hL hT R _ _ _ P J hJ

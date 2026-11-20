@@ -9,45 +9,39 @@ noncomputable section
 variable {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use `set R := MvPolynomial (Σ k, ι k) ℂ`. Establish `hMp : M.IsPrime` using `hM.1.1`. Establish `hcM : chartIdeal P p ≤ M` using `hM.1.2`. Establish `hX1 : ∀ k, (X ⟨k, p k⟩ - 1 : R) ∈ M` using `fun k => hcM (Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩))`. Establish `hXM : ∀ k, (X ⟨k, p k⟩ : R) ∉ M` using `fun k h => hMp.ne_top ((Ideal.eq_top_iff_one _).mpr (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `M.sub_mem h (hX1 k)` as an intermediate fact. Simplify using `using this))`. Take `⟨q, hq, hqM⟩` from `Ideal.exists_minimalPrimes_le (le_sup_left.trans hcM : P ≤ M)`. Establish `hqp : q.IsPrime` using `hq.1.1`. Establish `hPq : P ≤ q` using `hq.1.2`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : R := ∏ k, X ⟨k, p k⟩`. Establish `hsq : s ∉ q`. Introduce `h`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (p := q)).mp h`. Conclude with `hXM k (hqM hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdis : Disjoint (Submonoid.powers s : Set R) ↑q` using `(Ideal.disjoint_powers_iff_notMem_of_isPrime s).mpr hsq`. Set `A` to `Localization.Away s`. Establish `hu : ∀ k, IsUnit (algebraMap R A (X ⟨k, p k⟩))` using `fun k => isUnit_of_dvd_unit (map_dvd (algebraMap R A) (Finset.dvd_prod_of_mem (fun k => (X ⟨k, p k⟩ : R)) (Finset.mem_univ k))) (IsLocalization.Away.algebraMap_isUnit (S := A) s)`. Set `u : K → A` to `fun k => ((hu k).unit⁻¹ : Aˣ)`. Establish `hu1 : ∀ k, u k * algebraMap R A (X ⟨k, p k⟩) = 1` using `fun k => (hu k).val_inv_mul`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `σ : R →+* A` to `eval₂Hom (algebraMap ℂ A) (fun r => u r.1 * algebraMap R A (X r))`. Establish `hσ : ∀ (f : R) (a : K → ℕ), IsMultiHomog f a → σ f = (∏ k, u k ^ a k) * algebraMap R A f`. Introduce `f a hf`. Use `show eval₂ (algebraMap ℂ A) (fun r => u r.1 * algebraMap R A (X r)) f = _`. Rewrite using `[eval₂_smul_of_isMultiHomog' (algebraMap ℂ A) hf u (fun r => algebraMap R A (X r))]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congr 1`. Use `conv_rhs => rw [← eval₂_eta f, eval₂_comp_left]`. Use `congr 1`. Set `Q : Ideal A` to `Ideal.map (algebraMap R A) q`. Establish `hQp : Q.IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers s) A q hqp hdis`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQq : Q.comap (algebraMap R A) = q` using `IsLocalization.under_map_of_isPrime_disjoint (Submonoid.powers s) A hqp hdis`. Set `M' : Ideal R` to `Q.comap σ`. Establish `: M'.IsPrime` using `Ideal.comap_isPrime σ Q`. Establish `hs1 : IsUnit (Ideal.Quotient.mk M s)`. Establish `: ∀ k, Ideal.Quotient.mk M (X ⟨k, p k⟩) = 1` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk M), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hX1 k`. Simplify using `[s, map_prod, this]`. Set `φ : A →+* R ⧸ M` to `IsLocalization.Away.lift s hs1`. Establish `hφa : ∀ x : R, φ (algebraMap R A x) = Ideal.Quotient.mk M x` using `fun x => IsLocalization.Away.lift_eq s hs1 x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hφu : ∀ k, φ (u k) = 1` using `fun k => by`. Establish `h` using `congrArg φ (hu1 k)`. Rewrite `h` using `[map_mul, map_one, hφa]`. Establish `hx : Ideal.Quotient.mk M (X ⟨k, p k⟩) = 1`. Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk M), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `hX1 k`. Rewrite `h` using `[hx, mul_one]`. Conclude with `h`. Establish `hφσ : φ.comp σ = Ideal.Quotient.mk M`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c`. Simplify using `[σ, IsScalarTower.algebraMap_apply ℂ R A, hφa]`. Both sides reduce to the same expression. Introduce `r`. Simplify using `[σ, hφa, hφu]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hM'M : M' ≤ M`. Introduce `g hg`. Establish `hQ : Q ≤ (⊥ : Ideal (R ⧸ M)).comap φ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ideal.mem_comap, hφa, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hqM hx`. Establish `h0` using `hQ hg`. Simplify using `only [Ideal.mem_comap, Ideal.mem_bot] at h0`. Establish `: Ideal.Quotient.mk M g = 0` using `by rw [← hφσ]; exact h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp this`. Establish `hcM' : chartIdeal P p ≤ M'`. Use `sup_le ?_ ?_` and prove the remaining obligations. Take `⟨S, hS, hPS⟩` from `hP`. Rewrite using `[hPS, Ideal.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `f hfS`. Take `⟨a, ha⟩` from `hS f hfS`. Use `show σ f ∈ Q`. Rewrite using `[hσ f a ha]`. Conclude with `Q.mul_mem_left _ (Ideal.mem_map_of_mem _ (hPq (hPS ▸ Ideal.subset_span hfS)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `show σ _ ∈ Q`. Establish `: σ (X ⟨k, p k⟩ - 1) = 0`. Establish `hσX : σ (X ⟨k, p k⟩) = u k * algebraMap R A (X ⟨k, p k⟩)` using `eval₂_X _ _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_one, hσX, hu1, sub_self]`. Rewrite using `[this]`. Conclude with `Q.zero_mem`. Establish `hMM' : M ≤ M'` using `hM.2 ⟨inferInstance, hcM'⟩ hM'M`. Use `⟨q, hq, fun k => ⟨p k, fun h => hXM k (hqM h)⟩, ?_⟩` and prove the remaining obligations.
-
-Take `⟨T, hT, hDT⟩` from `hD`. Rewrite using `[hDT, Ideal.span_le]`. Introduce `f hfT`. Take `⟨a, ha⟩` from `hT f hfT`. Establish `hfM' : σ f ∈ Q` using `hMM' (hDM (hDT ▸ Ideal.subset_span hfT))`.
-
-Rewrite `hfM'` using `[hσ f a ha]`. Establish `hunit : IsUnit (∏ k, u k ^ a k)` using `IsUnit.prod_univ_iff.mpr fun k => ((hu k).unit⁻¹).isUnit.pow _`. Establish `: algebraMap R A f ∈ Q`. Use `Q.mul_mem_left (hunit.unit⁻¹ : Aˣ).1 hfM'` as an intermediate fact. Rewrite `this` using `[← mul_assoc, hunit.val_inv_mul, one_mul]`. Then use the resulting hypothesis.
-
-Rewrite using `[← hQq]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_relevant_minimalPrime_of_chart {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
     (hP : IsMultiHomogIdeal P) (hD : IsMultiHomogIdeal D) (p : (k : K) → ι k)

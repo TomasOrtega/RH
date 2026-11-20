@@ -6,9 +6,9 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, rfl⟩` from `residue_surjective y`. Take `⟨w, hw⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (maximalIdeal W) 1 x)`. Use `⟨residue W w, ?_⟩` and prove the remaining obligations. Rewrite using `[ResidueField.map_residue, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hu`. Establish `h1` using `hu.map (AdicCompletion.evalₐ (maximalIdeal W) 1)`. Rewrite `h1` using `[map_sub, AlgHom.commutes, ← hw, Ideal.Quotient.algebraMap_eq, sub_self]`. Use `haveI : Nontrivial (W ⧸ maximalIdeal W ^ 1) := Ideal.Quotient.nontrivial_iff.mpr (by rw [pow_one]; exact (maximalIdeal.isMaximal W).ne_top)`. Conclude with `not_isUnit_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueField_map_adicCompletion_surjective (W : Type*) [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] :
@@ -28,15 +28,13 @@ theorem residueField_map_adicCompletion_surjective (W : Type*) [CommRing W] [IsD
   exact not_isUnit_zero h1
 
 /- English proof (translation)
-Use `set f := (algebraMap D (FractionRing D)).codRestrict V h1 with hf`. Use `letI : Algebra D V := f.toAlgebra`. Use `haveI : IsLocalHom (algebraMap D V) := ‹IsLocalHom f›`. Use `haveI : FaithfulSMul D V := (faithfulSMul_iff_algebraMap_injective _ _).mpr fun a b hab => IsFractionRing.injective D (FractionRing D) (congrArg Subtype.val hab)`. Establish `hB : ∀ x : V, ∃ c : D, c ≠ 0 ∧ ∃ b : D, algebraMap D V c * x = algebraMap D V b`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Take `⟨⟨b, c⟩, hbc⟩` from `IsLocalization.surj (nonZeroDivisors D) (x : FractionRing D)`. Use `⟨c, nonZeroDivisors.coe_ne_zero c, b, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Subalgebra.coe_mul] at hbc ⊢`. Express the relevant statement in the definitionally equal form `algebraMap D (FractionRing D) c * x = algebraMap D (FractionRing D) b`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_comm]`. Conclude with `hbc`. Establish `hm : maximalIdeal D ≠ ⊥` using `fun h => hD (isField_iff_maximalIdeal_eq.mpr h)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm`. Use `haveI := finite_quotient_span_of_birational hB ha0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : Ideal.span {algebraMap D V a} ≤ maximalIdeal V`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `map_nonunit (algebraMap D V) a ha`. Establish `hsurj : Function.Surjective (Ideal.Quotient.factorₐ D hle).toLinearMap`. Introduce `y`.
-
-Take `⟨v, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Ideal.Quotient.mk _ v, rfl⟩`. Use `haveI : Module.Finite D (ResidueField V) := Module.Finite.of_surjective _ hsurj`. Use `haveI : Module.Finite (ResidueField D) (ResidueField V) := Module.Finite.of_restrictScalars_finite D _ _`. Conclude with `Module.finite_of_finite (ResidueField D)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_residueField_of_dominating (D : Type*) [CommRing D] [IsDomain D] [IsLocalRing D]
     [IsNoetherianRing D] [Ring.DimensionLEOne D] (hD : ¬ IsField D) [Finite (ResidueField D)]
@@ -72,11 +70,9 @@ theorem finite_residueField_of_dominating (D : Type*) [CommRing D] [IsDomain D] 
   exact Module.finite_of_finite (ResidueField D)
 
 /- English proof (translation)
-Introduce `D _ _ _ hN hdim hF`. Establish `hD : ¬ IsField D` using `fun h => by`. Rewrite `hdim` using `[ringKrullDim_eq_zero_of_isField h]`. Conclude with `zero_ne_one hdim`. Use `haveI : Ring.KrullDimLE 1 D := Ring.krullDimLE_iff.mpr (by simp [hdim])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Ring.DimensionLEOne D := ⟨fun hp hpr => Ring.krullDimLE_one_iff_of_noZeroDivisors.mp this _ hp hpr⟩`. Take `⟨V, hV, h⟩` from `exists_discreteValuationSubring_dominating D (FractionRing D) (FractionRing D) hD`. Take `⟨h1, h2⟩` from `(localSubring_range_le_valuationSubring_iff_isLocalHom _ _).mp h`. Establish `hfin : Finite (ResidueField V)` using `finite_residueField_of_dominating D hD V h1`. Take `⟨hi, hl⟩` from `injective_and_isLocalHom_adicCompletion_comp ((algebraMap D (FractionRing D)).codRestrict V h1) fun a b hab => IsFractionRing.injective D (FractionRing D) (congrArg Subtype.val hab)`.
-
-Conclude with `⟨AdicCompletion (maximalIdeal V) V, inferInstance, inferInstance, inferInstance, inferInstance, _, hi, hl, Finite.of_surjective _ (residueField_map_adicCompletion_surjective V)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_complete_dvr_finite_residueField : ∀ (D : Type) [CommRing D] [IsDomain D] [IsLocalRing D], IsNoetherianRing D → ringKrullDim D = 1 → Finite (ResidueField D) → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (_ : IsAdicComplete (maximalIdeal V) V) (g : D →+* V), Function.Injective g ∧ IsLocalHom g ∧ Finite (ResidueField V) := by
   intro D _ _ _ hN hdim hF

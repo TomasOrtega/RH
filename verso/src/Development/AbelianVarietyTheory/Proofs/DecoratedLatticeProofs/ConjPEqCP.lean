@@ -25,13 +25,13 @@ open GlobalTheory.IdemSupport
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_cP, mem_cP, cO_cO])`.
+A detailed English derivation is pending.
 -/
 theorem cP_cP (P : HeightOneSpectrum (𝓞 D.host.E)) : cP (cP P) = P :=
   HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_cP, mem_cP, cO_cO])
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (Ideal.ext fun _ => Iff.rfl)`.
+A detailed English derivation is pending.
 -/
 theorem conjP_eq_cP (Q : HeightOneSpectrum (𝓞 D.host.E)) : Formalism.L2.Col.conjPrime₂ Q = cP Q :=
   HeightOneSpectrum.ext (Ideal.ext fun _ => Iff.rfl)
@@ -45,9 +45,7 @@ def evQ (Φ : AE D →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E) (Q : HeightOn
   map_add' a b := ev_add a b Q
 
 /- English proof (translation)
-Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[h.2.1]`. Conclude with `(Q.adicCompletionIntegers D.host.E).one_mem`. Rewrite using `[h.2.2 Q hQ]`.
-
-Conclude with `(Q.adicCompletionIntegers D.host.E).zero_mem`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_mem {Φ : AE D →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E} {P : HeightOneSpectrum (𝓞 D.host.E)}
     {x : AE D} (h : IsDelta Φ P x) (Q : HeightOneSpectrum (𝓞 D.host.E)) :

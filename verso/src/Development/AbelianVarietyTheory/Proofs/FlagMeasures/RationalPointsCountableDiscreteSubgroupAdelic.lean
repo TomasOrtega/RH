@@ -8,7 +8,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.RatDiscrete
 
 /- English proof (translation)
-Introduce `I` and use `⟨⟨ratSub I, rfl⟩, countable_GFset I, fun _ hC => Set.inter_comm _ _ ▸ finite_inter I hC⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem subgroup_countable_discrete : ∀ (I : AutInst), (∃ Γ : Subgroup I.GA, (Γ : Set I.GA) = I.GFset) ∧ I.GFset.Countable ∧ ∀ C : Set I.GA, IsCompact C → (I.GFset ∩ C).Finite :=
   fun I => ⟨⟨ratSub I, rfl⟩, countable_GFset I,

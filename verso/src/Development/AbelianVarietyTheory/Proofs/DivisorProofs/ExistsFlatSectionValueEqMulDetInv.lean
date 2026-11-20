@@ -11,9 +11,9 @@ open scoped Matrix Classical
 namespace GlobalTheory.FlatValue
 
 /- English proof (translation)
-Set `p : TRing K` to `⟨0, ⊥, Ideal.isRadical_bot⟩`. Take `⟨A, π, X, s, hA⟩` from `GlobalTheory.T.exists_frameRing_over_testRing K J m p`. Use `⟨A, X, s, hA.1, fun T _ _ g a hg => ?_⟩` and prove the remaining obligations. Set `ψ : p.R →ₐ[K] T` to `Ideal.Quotient.liftₐ ⊥ (MvPolynomial.aeval Fin.elim0) (fun x hx => by`. Rewrite using `[Ideal.mem_bot.1 hx, map_zero])`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, ⟨-, h1, h2⟩, -⟩` from `hA.2 T ψ g a hg`. Conclude with `⟨k, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_reduced_frameRing (K : Type) [Field K] (J : Type) [Fintype J] (m : J → ℕ) :
     ∃ (A : TRing K) (X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A.R) (s : (A.R)ˣ), (∀ τ, IsUnit (X τ).det) ∧
@@ -31,9 +31,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Distinguish the cases in `h : b (H.rt : E) = H.rt0`. Establish `hp : (i : ℕ) < Dw.p` using `by simpa [Datum.mult, h] using hi`. Use `(wtOf_big _ 0 ⟨b, h⟩ i hp).trans ?_` and prove the remaining obligations. Simplify using `[flatWt, parWt, Subtype.ext_iff]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hq' : (i : ℕ) < Dw.q` using `by simpa [Datum.mult, h] using hi`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exOf_flatWt (hq : Dw.q = 0) (τ : Psi H) (b : E →+* ℂ) (i : Fin (Dw.mult b)) :
     exOf Dw (flatWt Dw τ) 0 (some ⟨b, i⟩) = if b = τ.1 then -1 else 0 := by
@@ -46,9 +46,9 @@ theorem exOf_flatWt (hq : Dw.q = 0) (τ : Psi H) (b : E →+* ℂ) (i : Fin (Dw.
     omega
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨G, hG, hev⟩ := GlobalTheory.FieldPolyZ.exists_isHomogeneous_secZ E H Dw l Xo c K z _ (fun b => if b = τ.1 then 1 else 0) (fun _ _ => 0) rfl (fun b i => by rw [exOf_flatWt hq]; split_ifs <;> simp) f hf`. Simplify using `only [Finset.sum_const_zero] at hG`. Establish `hC : G = MvPolynomial.C (G.coeff 0)` using `MvPolynomial.totalDegree_eq_zero_iff_eq_C.1 (Nat.le_zero.1 hG.totalDegree_le)`. Establish `h1` using `hev y Y u hY h`. Establish `h2` using `hev z (fun _ => 1) 1 (fun _ => by simp) (by`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c K z z z).1)`. Rewrite `h1`, `h2` using `[hC]`. Simplify using `only [Formalism.L2.LamCM.evalFr, MvPolynomial.eval_C, pow_ite, pow_one, pow_zero, Finset.prod_ite_eq', Finset.mem_univ, if_true, Matrix.det_one, ite_self, Finset.prod_const_one, one_mul] at h1 h2`. Rewrite using `[mul_comm, h1, h2]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evR_mul_det_field (hq : Dw.q = 0) (τ : Psi H) {f : Rul Xo c} (hf : f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0))
     (K : Type) [Field K] [Algebra c.F K] (z y : FrPt Xo c K) (Y : Mats Dw K) (u : Kˣ) (hY : ∀ b, (Y b).det ≠ 0)
@@ -68,19 +68,17 @@ theorem evR_mul_det_field (hq : Dw.q = 0) (τ : Psi H) {f : Rul Xo c} (hf : f �
   rw [mul_comm, h1, h2]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U ξ hD Z P τ s`. Use `⟨evR Xo c s.sig P.y₀, left_ne_zero_of_mul_eq_one (s.evR_mul_inv P.on (GlobalTheory.FlagTan.fromTest_of_isLocalRing _)), ?_⟩` and prove the remaining obligations. Take `⟨A, X, t, hX, hA⟩` from `exists_reduced_frameRing c.F (E →+* ℂ) Dw.mult`. Use `haveI : _root_.IsReduced A.R := (Ideal.isRadical_iff_quotient_reduced _).1 A.rad`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.FlagTan.exists_frMap (Algebra.ofId c.F A.R) P.y₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c A.R w₀ (fun b => (X b)ᵀ) t (fun b => by rw [Matrix.det_transpose]; exact hX b)`. Establish `step : ∀ (S : Type) [CommRing S] [Algebra c.F S] (k : A.R →ₐ[c.F] S) (z y : FrPt Xo c S), FrMap (Algebra.ofId c.F S) P.y₀ z → (FrMap k w y ↔ FrChg (fun b => ((X b).map k)ᵀ) (k t) z y)`. Introduce `S _ _ k z y hz`. Establish `h0 : FrMap k w₀ z` using `GlobalTheory.FlagTan.frMap_of_comp hw₀ hz fun a => k.commutes a`. Conclude with `GlobalTheory.FlagTan.frMap_iff_frChg hw h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nat : ∀ (S : Type) [CommRing S] [Algebra c.F S] (k : A.R →ₐ[c.F] S) (y : FrPt Xo c S), FrMap k w y → evR Xo c s.sig y = k (evR Xo c s.sig w)` using `fun S _ _ k y h => GlobalTheory.FrameEval.evR_frMap_of_isReduced E H Dw l Xo c s.sig s.sig_mem.1 k w y h`. Establish `univ : evR Xo c s.sig w * (X τ.1).det = algebraMap c.F A.R (evR Xo c s.sig P.y₀)`. Rewrite using `[← sub_eq_zero]`. Use `IsNilpotent.eq_zero (nilpotent_iff_mem_prime.2 fun q hq => ?_)` and prove the remaining obligations. Set `K : Type` to `q.ResidueField`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `k : A.R →ₐ[c.F] K` to `IsScalarTower.toAlgHom c.F A.R K`. Take `⟨z, hz⟩` from `GlobalTheory.FlagTan.exists_frMap (Algebra.ofId c.F K) P.y₀`. Take `⟨y, hy⟩` from `GlobalTheory.FlagTan.exists_frMap k w`. Establish `hd : ∀ b, ((X b).map k).det = k (X b).det` using `fun b => (AlgHom.map_det k (X b)).symm`. Establish `h1` using `evR_mul_det_field hD.q τ s.sig_mem K z y (fun b => (X b).map k) (Units.map (k : A.R →* K) t) (fun b => by rw [hd]; exact ((hX b).map k).ne_zero) ((step K k z y hz).1 hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[nat K k y hy, GlobalTheory.FlagTan.evR_frMap s.sig_mem.1 hz, hd]`. Rewrite using `[← Ideal.algebraMap_residueField_eq_zero]`. Use `show k _ = 0`. Rewrite using `[map_sub, map_mul, h1, k.commutes]`. Conclude with `sub_self _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `S _ _ z y Y u hY hu hz h`. Take `⟨k, hk, hkt⟩` from `hA S Y hu.unit hY`. Establish `hy : FrMap k w y` using `(step S k z y hz).2 (by`. Rewrite using `[hkt, IsUnit.unit_spec]`. Simplify `h)` using `only [hk]`.
-
-Rewrite using `[nat S k y hy, ← hk τ.1, ← k.commutes, ← univ, map_mul]`. Conclude with `congrArg _ (AlgHom.map_det k (X τ.1)).symm`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_evR_mul_det : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ), DefCase U ξ → ∀ (Z : Comp Xo c) (P : PtData Z) (τ : Psi H) (s : FlatSec U ξ Z τ), ∃ b : c.F, b ≠ 0 ∧ (∀ (S : Type) [CommRing S] [Algebra c.F S] (z y : FrPt Xo c S) (Y : Mats Dw S) (u : S), (∀ τ', IsUnit (Y τ').det) → IsUnit u → FrMap (Algebra.ofId c.F S) P.y₀ z → FrChg (fun τ' => (Y τ')ᵀ) u z y → evR Xo c s.sig y * (Y τ.1).det = algebraMap c.F S b) := by
   intro E _ _ _ H Dw l Xo c r U ξ hD Z P τ s

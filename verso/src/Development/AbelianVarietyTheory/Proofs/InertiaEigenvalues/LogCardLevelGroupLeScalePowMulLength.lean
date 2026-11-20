@@ -13,9 +13,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NLink
 
 /- English proof (translation)
-Introduce `eps Fm`. Take `⟨x0, hx0⟩` from `GlobalTheory.log_levelGroup_le_and_level_large eps Fm`. Use `⟨15, max x0 1, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Establish `h` using `(hx0 x (le_trans (le_max_left _ _) hx) hx1 i).1`. Establish `h1x : (1 : ℝ) ≤ x` using `le_trans (le_max_right _ _) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 1 ≤ (Fm.L x i).sc.L` using `Real.one_le_rpow (Fm.L x i).sc.one_lt_alt.le (Fm.L x i).sc.eps_pos.le`. Establish `hp : (0 : ℝ) ≤ x ^ (15 : ℝ)` using `Real.rpow_nonneg (by linarith) _`. Unfold `Formalism.BasicNotions.lam0 at h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem log_card_levelGroup_le_scale_pow_mul_length : ∀ {eps : ℝ} (Fm : FamP eps), ∃ C x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x →
     ∀ i : Fm.Ix x, Real.log ((Fm.D x i).what₂.restRowsFiniteGroupCard : ℝ) ≤ C * x ^ C * (Fm.L x i).sc.L := by

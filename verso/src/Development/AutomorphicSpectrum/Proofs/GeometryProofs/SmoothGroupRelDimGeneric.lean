@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar.RootHt GroundTheory.Heights₂.Heights
 namespace GlobalTheory.CompanionTheory.Ar.RootHt.ArchB
 
 /- English proof (translation)
-Use `smoothOfRelativeDimension_comp 0 n (A.homOfLE h) (W.ι ≫ f)` as an intermediate fact. Rewrite `this` using `[zero_add, ← Category.assoc, Scheme.homOfLE_ι]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smoothOfRelativeDimension_restrict_of_le {A S : Scheme.{0}} (f : A ⟶ S) {n : ℕ} {V W : A.Opens} (h : V ≤ W)
     (hW : SmoothOfRelativeDimension n (W.ι ≫ f)) : SmoothOfRelativeDimension n (V.ι ≫ f) := by
@@ -19,7 +19,7 @@ private theorem smoothOfRelativeDimension_restrict_of_le {A S : Scheme.{0}} (f :
   exact this
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ (smoothOfRelativeDimension_restrict_of_le f inf_le_left hV) (smoothOfRelativeDimension_restrict_of_le f inf_le_right hW) ⟨x, hxV, hxW⟩`.
+A detailed English derivation is pending.
 -/
 private theorem relDim_eq_of_mem_of_mem {A S : Scheme.{0}} (f : A ⟶ S) {n m : ℕ} {V W : A.Opens}
     (hV : SmoothOfRelativeDimension n (V.ι ≫ f)) (hW : SmoothOfRelativeDimension m (W.ι ≫ f))
@@ -28,7 +28,7 @@ private theorem relDim_eq_of_mem_of_mem {A S : Scheme.{0}} (f : A ⟶ S) {n m : 
     ⟨x, hxV, hxW⟩
 
 /- English proof (translation)
-Use `haveI := smoothOfRelativeDimension_isStableUnderBaseChange n₁`. Use `haveI := smoothOfRelativeDimension_isStableUnderBaseChange n₂`. Establish `e₁ : SmoothOfRelativeDimension n₁ ((a₁ ⁻¹ᵁ W₁).ι ≫ p)` using `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension n₁) ((isPullback_morphismRestrict a₁ W₁).paste_vert h₁) d₁`. Establish `e₂ : SmoothOfRelativeDimension n₂ ((a₂ ⁻¹ᵁ W₂).ι ≫ p)` using `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension n₂) ((isPullback_morphismRestrict a₂ W₂).paste_vert h₂) d₂`. Conclude with `relDim_eq_of_mem_of_mem p e₁ e₂ hz₁ hz₂`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reldim_eq_of_two_pullbacks {P A S : Scheme.{0}} {f : A ⟶ S} {b : A ⟶ S} {p : P ⟶ A} {a₁ a₂ : P ⟶ A}
     (h₁ : IsPullback a₁ p f b) (h₂ : IsPullback a₂ p f b) {n₁ n₂ : ℕ} {W₁ W₂ : A.Opens}
@@ -45,18 +45,18 @@ theorem reldim_eq_of_two_pullbacks {P A S : Scheme.{0}} {f : A ⟶ S} {b : A ⟶
   exact relDim_eq_of_mem_of_mem p e₁ e₂ hz₁ hz₂
 
 /- English proof (translation)
-Conclude with `IsPullback.of_is_product (tensorProductIsBinaryProduct G G) isTerminalTensorUnit`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_fst_snd {X : Scheme.{0}} (G : Over X) :
     IsPullback (fst G G) (snd G G) (toUnit G) (toUnit G) := by
   exact IsPullback.of_is_product (tensorProductIsBinaryProduct G G) isTerminalTensorUnit
 
 /- English proof (translation)
-Use `IsPullback.of_is_product (c := BinaryFan.mk (fst G G * snd G G) (snd G G)) ?_ isTerminalTensorUnit` and prove the remaining obligations. Use `BinaryFan.IsLimit.mk _ (fun u v => lift (u * v⁻¹) v) ?_ ?_ ?_` and prove the remaining obligations. Introduce `T u v`. Simplify using `[comp_mul]`. Introduce `T u v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `T u v m h₁ h₂`. Simplify using `only [BinaryFan.mk_fst, BinaryFan.mk_snd] at h₁ h₂`. Establish `h₃ : m ≫ fst G G * v = u`. Rewrite using `[← h₂]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(comp_mul m (fst G G) (snd G G)).symm.trans h₁`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `using eq_mul_inv_of_mul_eq h₃`. Simplify using `using h₂`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPullback_mul_snd {X : Scheme.{0}} (G : Over X) [GrpObj G] :
     IsPullback (fst G G * snd G G) (snd G G) (toUnit G) (toUnit G) := by
@@ -76,19 +76,17 @@ theorem isPullback_mul_snd {X : Scheme.{0}} (G : Over X) [GrpObj G] :
     · simpa using h₂
 
 /- English proof (translation)
-Simplify using `using Over.w (toUnit G)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toUnit_left {X : Scheme.{0}} (G : Over X) : (toUnit G).left = G.hom := by
   simpa using Over.w (toUnit G)
 
 /- English proof (translation)
-Establish `h₁` using `(isPullback_fst_snd G).map (Over.forget X)`. Establish `h₂` using `(isPullback_mul_snd G).map (Over.forget X)`. Simplify using `only [Over.forget_map, toUnit_left] at h₁ h₂`. Establish `p₁ : (fst G G).left ((lift (𝟙 G) (𝟙 G)⁻¹).left g) = g`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, lift_fst]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `p₂ : (fst G G * snd G G).left ((lift (𝟙 G) (𝟙 G)⁻¹).left g) = (η[G]).left (G.hom g)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, comp_mul, lift_fst, lift_snd, mul_inv_cancel, Hom.one_def, Over.comp_left, Scheme.Hom.comp_apply, toUnit_left]`. Use `reldim_eq_of_two_pullbacks h₁ h₂ dW dV ((lift (𝟙 G) (𝟙 G)⁻¹).left g) ?_ ?_` and prove the remaining obligations. Use `show (fst G G).left ((lift (𝟙 G) (𝟙 G)⁻¹).left g) ∈ W`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[p₁]`. Conclude with `hg`. Use `show (fst G G * snd G G).left ((lift (𝟙 G) (𝟙 G)⁻¹).left g) ∈ V`. Rewrite using `[p₂]`. Unfold `eSec at hV`.
-
-Conclude with `hV`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem reldim_eq_unit {X : Scheme.{0}} (G : Over X) [GrpObj G] {n m : ℕ} {W V : G.left.Opens}
     (dW : SmoothOfRelativeDimension n (W.ι ≫ G.hom)) (dV : SmoothOfRelativeDimension m (V.ι ≫ G.hom))
@@ -112,13 +110,13 @@ theorem reldim_eq_unit {X : Scheme.{0}} (G : Over X) [GrpObj G] {n m : ℕ} {W V
     exact hV
 
 /- English proof (translation)
-Rewrite using `[smoothOfRelativeDimension_iff]`. Introduce `x`. Take `⟨W, hxW, hW⟩` from `h x`. Take `⟨U, hU, V, hV, hxV, e, hstd⟩` from `(smoothOfRelativeDimension_iff n (W.ι ≫ f)).1 hW ⟨x, hxW⟩`. Establish `e₁ : W.ι ''ᵁ V ≤ f ⁻¹ᵁ U`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `e hv`. Establish `e₂ : V ≤ W.ι ⁻¹ᵁ (W.ι ''ᵁ V)` using `fun v hv => ⟨v, hv, rfl⟩`. Establish `hcomp` using `Scheme.Hom.appLE_comp_appLE W.ι f U (W.ι ''ᵁ V) V e₁ e₂`. Establish `hiso : W.ι.appLE (W.ι ''ᵁ V) V e₂ = (W.ι.appIso V).hom` using `(Scheme.Hom.appIso_hom' W.ι V).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : f.appLE U (W.ι ''ᵁ V) e₁ = (W.ι ≫ f).appLE U V e ≫ (W.ι.appIso V).inv`. Rewrite using `[← hcomp, hiso, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Use `⟨U, hU, W.ι ''ᵁ V, hV.image_of_isOpenImmersion W.ι, ⟨⟨x, hxW⟩, hxV, rfl⟩, e₁, ?_⟩` and prove the remaining obligations. Rewrite using `[key, CommRingCat.hom_comp]`. Establish `h0 : RingHom.IsStandardSmoothOfRelativeDimension 0 (W.ι.appIso V).inv.hom` using `RingHom.IsStandardSmoothOfRelativeDimension.equiv (W.ι.appIso V).symm.commRingCatIsoToRingEquiv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h0.comp hstd`. Rewrite `h1` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem smoothOfRelativeDimension_of_local {A S : Scheme.{0}} (f : A ⟶ S) (n : ℕ)
     (h : ∀ x : A, ∃ W : A.Opens, x ∈ W ∧ SmoothOfRelativeDimension n (W.ι ≫ f)) :
@@ -143,9 +141,9 @@ private theorem smoothOfRelativeDimension_of_local {A S : Scheme.{0}} (f : A ⟶
   rwa [zero_add] at h1
 
 /- English proof (translation)
-Introduce `X Ω _ ξ G _ _ hgen`. Take `⟨n₀, W₀, hW₀, d₀⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_dim G.hom (eSec G (genPt ξ))`. Use `⟨n₀, smoothOfRelativeDimension_of_local G.hom n₀ fun g => ?_⟩` and prove the remaining obligations. Take `⟨n, W, hgW, dW⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_dim G.hom g`. Take `⟨m, V, hV, dV⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_dim G.hom (eSec G (G.hom g))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₁ : n = m` using `reldim_eq_unit G dW dV g hgW hV`. Establish `hsp : eSec G (genPt ξ) ⤳ eSec G (G.hom g)` using `(hgen (G.hom g)).map (eSec G).base.hom.continuous`. Establish `h₂ : m = n₀` using `relDim_eq_of_mem_of_mem G.hom dV d₀ (hsp.mem_open V.isOpen hV) hW₀`. Rewrite `dW` using `[h₁, h₂]`. Conclude with `⟨W, hgW, dW⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem smoothGrp_relDim : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G] [Smooth G.hom],
     (∀ q : X, genPt ξ ⤳ q) → ∃ g : ℕ, SmoothOfRelativeDimension g G.hom := by

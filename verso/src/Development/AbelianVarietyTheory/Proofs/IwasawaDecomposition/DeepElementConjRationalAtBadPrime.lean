@@ -23,7 +23,7 @@ def Cg (N : ℕ) (X : GL (Fin n) K) : Prop :=
   ∀ r s, Valued.v (((X : Matrix (Fin n) (Fin n) K) - 1) r s) ≤ exp (-(N : ℤ))
 
 /- English proof (translation)
-Introduce `r s`. Use `NearCong.mul_cong (Valued.v : Valuation K (WithZero (Multiplicative ℤ))) N X.1 Y.1 hX hY r s` as an intermediate fact. Simplify `this` using `only [Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cg_mul {N : ℕ} {X Y : GL (Fin n) K} (hX : Cg N X) (hY : Cg N Y) : Cg N (X * Y) := by
   intro r s
@@ -31,15 +31,15 @@ theorem cg_mul {N : ℕ} {X Y : GL (Fin n) K} (hX : Cg N X) (hY : Cg N Y) : Cg N
   simpa only [Units.val_mul] using this
 
 /- English proof (translation)
-Introduce `r s` and use `(hX r s).trans (by rw [exp_le_exp]; omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cg_mono {M N : ℕ} (h : M ≤ N) {X : GL (Fin n) K} (hX : Cg N X) : Cg M X :=
   fun r s => (hX r s).trans (by rw [exp_le_exp]; omega)
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv₀, hπ]`. Establish `h0 : (exp (-(N : ℤ)) : WithZero (Multiplicative ℤ)) ≠ 0` using `exp_ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← mul_assoc, mul_inv_cancel₀ h0, one_mul]`. Use `_ ≤ exp (-(N : ℤ)) * 1 := mul_le_mul' le_rfl h`. Use `_ = _ := mul_one _`. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem val_le_iff (π m : K) {N : ℕ} (hπ : Valued.v π = exp (-(N : ℤ))) :
     Valued.v (π⁻¹ * m) ≤ 1 ↔ Valued.v m ≤ exp (-(N : ℤ)) := by
@@ -56,11 +56,11 @@ theorem val_le_iff (π m : K) {N : ℕ} (hπ : Valued.v π = exp (-(N : ℤ))) :
       _ = 1 := inv_mul_cancel₀ h0
 
 /- English proof (translation)
-Establish `hπ0 : π ≠ 0`. Introduce `h`. Rewrite `hπ` using `[h, map_zero]`. Conclude with `exp_ne_zero hπ.symm`. Establish `hπ1 : Valued.v π < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hπ, ← exp_zero, exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ∀ i j, Valued.v (π⁻¹ * ((X : Matrix (Fin n) (Fin n) K) - 1) i j) ≤ 1` using `fun i j => (val_le_iff π _ hπ).2 (hX i j)`. Establish `h2 : ∀ i j, Valued.v (π⁻¹ * (((1 : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) - 1) i j) ≤ 1` using `fun i j => by simp`. Establish `h3` using `GlobalTheory.FrameAgree.inv_mul_cong π hπ0 hπ1 X 1 h1 h2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_one] at h3`. Introduce `r s`. Conclude with `(val_le_iff π _ hπ).1 (h3 r s)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cg_inv {N : ℕ} (hN : 1 ≤ N) (π : K) (hπ : Valued.v π = exp (-(N : ℤ))) {X : GL (Fin n) K} (hX : Cg N X) :
     Cg N X⁻¹ := by
@@ -80,11 +80,11 @@ theorem cg_inv {N : ℕ} (hN : 1 ≤ N) (π : K) (hπ : Valued.v π = exp (-(N :
   exact (val_le_iff π _ hπ).1 (h3 r s)
 
 /- English proof (translation)
-Introduce `r s`. Establish `hinv : ((G⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (G : Matrix (Fin n) (Fin n) K) = 1` using `Units.inv_mul G`. Establish `e : ((G⁻¹ * X * G : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) - 1 = ((G⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ((X : Matrix (Fin n) (Fin n) K) - 1) * (G : Matrix (Fin n) (Fin n) K)`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hinv, Units.val_mul, Units.val_mul]`. Establish `hin : ∀ m, Valued.v ((((G⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ((X : Matrix (Fin n) (Fin n) K) - 1)) r m) ≤ exp (-(N : ℤ))` using `fun m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_le _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cg_conj {N : ℕ} (G : GL (Fin n) K) (hG : ∀ r s, Valued.v ((G : Matrix (Fin n) (Fin n) K) r s) ≤ 1)
     (hGi : ∀ r s, Valued.v (((G⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) r s) ≤ 1)
@@ -108,21 +108,19 @@ theorem cg_conj {N : ℕ} (G : GL (Fin n) K) (hG : ∀ r s, Valued.v ((G : Matri
     _ = _ := mul_one _
 
 /- English proof (translation)
-Establish `hb : ∀ w : WithZero (Multiplicative ℤ), ∃ c : ℕ, w ≤ exp (c : ℤ)`. Introduce `w`. Distinguish the cases in `hw : w = 0`. Conclude with `⟨0, by rw [hw]; exact zero_le'⟩`. Use `⟨(WithZero.log w).toNat, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `choose c hc using hb`. Use `set f : Fin n × Fin n → ℕ := fun p => c (Valued.v ((k : Matrix (Fin n) (Fin n) K) p.1 p.2)) + c (Valued.v (((k⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) p.1 p.2)) with hf`. Use `set C : ℕ := Finset.univ.sup f with hC`. Establish `hle : ∀ r s, f (r, s) ≤ C` using `fun r s => Finset.le_sup (f := f) (Finset.mem_univ (r, s))`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : ∀ r s, Valued.v ((k : Matrix (Fin n) (Fin n) K) r s) ≤ exp (C : ℤ)` using `fun r s => by`. Use `(hc _).trans (exp_le_exp.2 ?_)` and prove the remaining obligations. Use `hle r s` as an intermediate fact. Simplify using `only [hf] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hki : ∀ r s, Valued.v (((k⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) r s) ≤ exp (C : ℤ)` using `fun r s => by`. Use `(hc _).trans (exp_le_exp.2 ?_)` and prove the remaining obligations. Use `hle r s` as an intermediate fact. Simplify using `only [hf] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨N + 2 * C, fun X hX r s => ?_⟩` and prove the remaining obligations. Establish `hinv : (k : Matrix (Fin n) (Fin n) K) * ((k⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1` using `Units.mul_inv k`. Establish `e : ((k * X * k⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) - 1 = (k : Matrix (Fin n) (Fin n) K) * ((X : Matrix (Fin n) (Fin n) K) - 1) * ((k⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hinv, Units.val_mul, Units.val_mul]`. Establish `hin : ∀ m, Valued.v (((k : Matrix (Fin n) (Fin n) K) * ((X : Matrix (Fin n) (Fin n) K) - 1)) r m) ≤ exp (C : ℤ) * exp (-((N + 2 * C : ℕ) : ℤ))` using `fun m => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hk r l) (hX l m)`. Rewrite using `[e, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_le _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← exp_add, ← exp_add]`. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cg_conj_bound (k : GL (Fin n) K) (N : ℕ) : ∃ N' : ℕ, ∀ X : GL (Fin n) K, Cg N' X → Cg N (k * X * k⁻¹) := by
   have hb : ∀ w : WithZero (Multiplicative ℤ), ∃ c : ℕ, w ≤ exp (c : ℤ) := by
@@ -181,9 +179,9 @@ section Core
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[hG, LinearMap.toMatrix'_apply]`. Establish `hs : (Pi.single s (1 : E) : Sp E n) ∈ Formalism.L2.Col.stdAt E n P`. Rewrite using `[GlobalTheory.Mem.ColAd.mem_stdAt_val]`. Introduce `l`. Rewrite using `[Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hm` using `(hh (Pi.single s 1)).2 hs`. Rewrite `hm` using `[GlobalTheory.Mem.ColAd.mem_stdAt_val]`. Conclude with `hm r`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_entry_le (P : HeightOneSpectrum (𝓞 E)) (G : (Sp E n ≃ₗ[E] Sp E n) →* GL (Fin n) E)
     (hG : ∀ h r s, (G h : Matrix (Fin n) (Fin n) E) r s = LinearMap.toMatrix' h.toLinearMap r s)
@@ -200,49 +198,39 @@ theorem val_entry_le (P : HeightOneSpectrum (𝓞 E)) (G : (Sp E n ≃ₗ[E] Sp 
   exact hm r
 
 /- English proof (translation)
-Use `set loc : GL (Fin n) (AfE F E) →* GL (Fin n) (P.adicCompletion E) := GlobalTheory.FrameAgree.locM P with hloc`. Use `set ra : GL (Fin n) E →* GL (Fin n) (P.adicCompletion E) := bc (algebraMap E (P.adicCompletion E)) with hra`. Establish `hlr : ∀ M, loc (GlobalTheory.TwU.ratA F M) = ra M` using `fun M => Units.ext (Matrix.ext fun r s => AdTieNear.adAt_ratA P M r s)`. Establish `hC : ∀ (N : ℕ) (z : GL (Fin n) (AfE F E)), GlobalTheory.TwU.CongAt P N z ↔ Cg N (loc z)` using `fun N z => hiff N z`. Establish `hπ : Valued.v (((qOf P : ℕ) : P.adicCompletion E) ^ D) = exp (-(D : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_pow, hq, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hGP : ∀ r s, Valued.v (((ra (G g)) : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) ≤ 1` using `fun r s => val_entry_le P G hG g hg r s`. Establish `hGPi : ∀ r s, Valued.v ((((ra (G g))⁻¹ : GL (Fin n) (P.adicCompletion E)) : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) ≤ 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r s`. Rewrite using `[← map_inv, ← map_inv]`. Conclude with `val_entry_le P G hG g⁻¹ (inv_mem hg) r s`. Establish `c1 : Cg D ((loc kk)⁻¹ * ra f)`. Use `(hC D _).1 h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_inv, hlr]`. Then use the resulting hypothesis. Establish `c2 : Cg D ((ra f)⁻¹ * loc kk)`. Use `(hC D _).1 h2` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, hlr]`. Then use the resulting hypothesis. Establish `c3 : Cg D (((ra f)⁻¹ * loc κ * ra f)⁻¹ * ra (G g))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(hC D _).1 h3` as an intermediate fact. Simplify `this` using `only [map_mul, map_inv, hlr]`. Use `set AP : GL (Fin n) (P.adicCompletion E) := (loc kk)⁻¹ * loc κ * loc kk with hAP`. Establish `s1 : Cg D (AP⁻¹ * ra (G g))`. Establish `e : AP⁻¹ * ra (G g) = ((loc kk)⁻¹ * ra f) * (((ra f)⁻¹ * loc κ * ra f)⁻¹ * ra (G g)) * ((ra (G g))⁻¹ * ((ra f)⁻¹ * loc kk) * ra (G g))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hAP]`. Use `group`. Rewrite using `[e]`. Conclude with `cg_mul (cg_mul c1 c3) (cg_conj _ hGP hGPi c2)`. Establish `s2 : Cg D ((ra (G g))⁻¹ * AP)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (ra (G g))⁻¹ * AP = ((ra (G g))⁻¹ * ((loc kk)⁻¹ * ra f) * ra (G g)) * (((ra f)⁻¹ * loc κ * ra f)⁻¹ * ra (G g))⁻¹ * ((ra f)⁻¹ * loc kk)`. Rewrite using `[hAP]`. Use `group`. Rewrite using `[e]`. Conclude with `cg_mul (cg_mul (cg_conj _ hGP hGPi c1) (cg_inv hD _ hπ c3)) c2`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨N0, hN0⟩` from `cg_conj_bound (loc kk) N`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.numberFieldGL_dense_in_completionGL_two_sided E P n (max D N0) AP`. Establish `d1 : Cg (max D N0) (AP⁻¹ * ra γ)` using `fun r s => (hγ r s).1`. Establish `d2 : Cg (max D N0) ((ra γ)⁻¹ * AP)` using `fun r s => (hγ r s).2`. Use `set g' : Sp E n ≃ₗ[E] Sp E n := LinearMap.GeneralLinearGroup.generalLinearEquiv E (Fin n → E) (Matrix.GeneralLinearGroup.toLin γ) with hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hg'γ : G g' = γ`. Use extensionality with `r s`. Rewrite using `[hG]`. Simplify using `[hg']`. Establish `hmv : ∀ h w, (G h : Matrix (Fin n) (Fin n) E) *ᵥ w = h w` using `fun h w => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (G h : Matrix (Fin n) (Fin n) E) = LinearMap.toMatrix' h.toLinearMap` using `Matrix.ext (hG h)`. Rewrite using `[e, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Establish `hy : ∀ r s, Valued.v (adAt F P (((kk⁻¹ * κ * kk)⁻¹ * GlobalTheory.TwU.ratA F (G g) : GL (Fin n) (AfE F E)) r s) - (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) ≤ exp (-(D : ℤ))`. Establish `e : loc ((kk⁻¹ * κ * kk)⁻¹ * GlobalTheory.TwU.ratA F (G g)) = AP⁻¹ * ra (G g)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_inv, hlr, hAP]`. Use `s1` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`. Establish `hy' : ∀ r s, Valued.v (adAt F P (((kk⁻¹ * κ * kk)⁻¹ * GlobalTheory.TwU.ratA F (G g') : GL (Fin n) (AfE F E)) r s) - (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) ≤ exp (-(D : ℤ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : loc ((kk⁻¹ * κ * kk)⁻¹ * GlobalTheory.TwU.ratA F (G g')) = AP⁻¹ * ra γ`. Simplify using `only [map_mul, map_inv, hlr, hAP, hg'γ]`. Use `cg_mono (le_max_left D N0) d1` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hCE : CongE P D g g'` using `(AdTieNear.congE_of_near P D D hD le_rfl (kk⁻¹ * κ * kk) g g' (G g) (G g') (hmv g) (hmv g') hg hq hy hy').symm`. Establish `toIntAt : ∀ H : GL (Fin n) E, Cg D (ra H) → ∀ a b, IntAt P ((((qOf P : ℕ) : E) ^ D)⁻¹ * ((H : Matrix (Fin n) (Fin n) E) a b - (1 : Matrix (Fin n) (Fin n) E) a b))`. Introduce `H hH a b`. Apply `GlobalTheory.FrameAgree.intAt_of_val` to reduce the goal to its premises. Rewrite using `[map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : algebraMap E (P.adicCompletion E) ((1 : Matrix (Fin n) (Fin n) E) a b) = (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) a b`. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[e1]`. Conclude with `(val_le_iff _ _ hπ).2 (hH a b)`. Use `set h : Sp E n ≃ₗ[E] Sp E n := g⁻¹ * g' with hh`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : Cg D (ra (G h))`. Establish `e : ra (G h) = ((ra (G g))⁻¹ * AP) * (AP⁻¹ * ra γ)`. Rewrite using `[hh, map_mul, map_mul, map_inv, map_inv, hg'γ]`. Use `group`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `cg_mul s2 (cg_mono (le_max_left D N0) d1)`. Establish `e2 : Cg D (ra (G h⁻¹))`. Establish `e : ra (G h⁻¹) = ((ra γ)⁻¹ * AP) * (AP⁻¹ * ra (G g))`. Rewrite using `[hh, map_inv, map_inv, map_mul, map_mul, map_inv, map_inv, hg'γ]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `cg_mul (cg_mono (le_max_left D N0) d2) s1`. Establish `hhm : h ∈ Formalism.L2.Col.GLint E n P`. Use `(GlobalTheory.FrameAgree.glint_of_cong P D h (fun a b => ?_) (fun a b => ?_)).1` and prove the remaining obligations. Rewrite using `[← hG]`.
-
-Conclude with `toIntAt _ e1 a b`. Use `toIntAt _ e2 a b` as an intermediate fact. Rewrite `this` using `[hG]`. Conclude with `this`. Establish `hg'm : g' ∈ Formalism.L2.Col.GLint E n P`.
-
-Use `mul_mem hg hhm` as an intermediate fact. Rewrite `this` using `[hh, mul_inv_cancel_left]`. Then use the resulting hypothesis. Take `⟨z, hzU, hzOff, hzP⟩` from `hlift ((loc x)⁻¹ * loc kk * ra γ * (loc kk)⁻¹)`. Establish `hlz : loc z = (loc x)⁻¹ * loc kk * ra γ * (loc kk)⁻¹` using `Units.ext (Matrix.ext fun r s => hzP r s)`. Use `⟨z, hzU, hzOff, (hC N z).2 ?_, g', hg'm, hCE, fun r s => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hlz, hx]`. Establish `e : (loc κ)⁻¹ * loc kk * ra γ * (loc kk)⁻¹ = loc kk * (AP⁻¹ * ra γ) * (loc kk)⁻¹`. Rewrite using `[hAP]`. Use `group`. Rewrite using `[e]`.
-
-Conclude with `hN0 _ (cg_mono (le_max_right D N0) d1)`. Establish `e : loc (kk⁻¹ * (x * z) * kk) = ra γ`. Rewrite using `[map_mul, map_mul, map_mul, map_inv, hlz]`. Use `group`. Use `congrArg (fun X : GL (Fin n) (P.adicCompletion E) => (X : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) e` as an intermediate fact.
-
-Rewrite using `[hg'γ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (P : HeightOneSpectrum (𝓞 E)) (hq : Valued.v ((qOf P : ℕ) : P.adicCompletion E) = exp (-1 : ℤ))
     (hiff : ∀ (N : ℕ) (z : GL (Fin n) (AfE F E)), GlobalTheory.TwU.CongAt P N z ↔
@@ -385,13 +373,11 @@ namespace GlobalTheory.Mem.Col2.AdT.DeepElt
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z a i hi kk fb hFr P v hv κ hκ g hg hIn x hx hxv N`. Establish `hlift` using `GlobalTheory.T.exists_unitaryAdelic_supported_at_bad_prime_place I hOk hPins l Z a i hi P v hv`. Take `⟨hseam, hq, -⟩` from `GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a 0 0 P 1`. Establish `hiff` using `fun N z => (GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a ((I.rec7 l Z).R.N i) N P z).2.2`. Take `⟨f1, f2⟩` from `hFr P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `GlobalTheory.TwU.InFrame GlobalTheory.TwU.NearAt at hIn`. Establish `hvP : (GlobalTheory.TwU.seamP (sm I l Z) P.1).under (𝓞 (I.rec7 l Z).host.F) = v` using `by ext1`. Conclude with `hv.symm`. Establish `hloc : GlobalTheory.FrameAgree.locM (GlobalTheory.TwU.seamP (sm I l Z) P.1) x = GlobalTheory.FrameAgree.locM (GlobalTheory.TwU.seamP (sm I l Z) P.1) κ`. Apply `GlobalTheory.FrameAgree.loc_agree` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvP]`. Conclude with `hxv`. Rewrite `hiff`, `hIn`, `f1`, `f2`, `hloc`, the goal using `[hseam]`. Establish `i1 : NumberField ↥(I.rec7 l Z).host.F` using `inferInstance`. Establish `i2 : NumberField (I.rec7 l Z).host.E` using `inferInstance`.
-
-Conclude with `@core (↥(I.rec7 l Z).host.F) (I.rec7 l Z).host.E _ i1 _ i2 _ _ _ P.1 hq hiff (GlobalTheory.TwU.seamGL (sm I l Z)) (fun _ _ _ => rfl) _ _ hlift ((I.cst a).D P) (((hOk.idx_ok a).cst_ok).D_pos P) kk (fb P) f1 f2 κ g hg hIn x hloc N`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (kk : GL (Fin ((I.rec7 l Z).R.N i)) (TensorProduct (I.rec7 l Z).host.F (I.rec7 l Z).host.E (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F))) (fb : SBof I a → GL (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E), FrNear I l Z a kk fb → ∀ (P : SBof I a) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) → ∀ κ ∈ UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), ∀ g ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1, GlobalTheory.TwU.InFrame (i := i) (sm I l Z) fb (I.cst a).D P κ g → ∀ x ∈ UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), bc (prV (E := (I.rec7 l Z).host.E) v) x = bc (prV (E := (I.rec7 l Z).host.E) v) κ → ∀ N : ℕ, ∃ z ∈ UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), (∀ v', v' ≠ v → bc (prV (E := (I.rec7 l Z).host.E) v') z = 1) ∧ GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) N z ∧ ∃ g' ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1, CongE P.1 ((I.cst a).D P) g g' ∧ ∀ r s, adAt (I.rec7 l Z).host.F (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((kk⁻¹ * (x * z) * kk).1 r s) = algebraMap (I.rec7 l Z).host.E ((GlobalTheory.TwU.seamP (sm I l Z) P.1).adicCompletion (I.rec7 l Z).host.E) ((GlobalTheory.TwU.seamGL (sm I l Z) g').1 r s) := by
   intro B X I hOk hPins l Z a i hi kk fb hFr P v hv κ hκ g hg hIn x hx hxv N

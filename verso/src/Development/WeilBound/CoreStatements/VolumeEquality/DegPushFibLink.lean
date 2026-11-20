@@ -8,11 +8,11 @@ open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Break down `s with τ | τ` into its components or cases. Establish `hm : (m : ℕ) < D.p` using `m.2`. Use `⟨(τ, ⟨m, by omega⟩), ?_, ?_, fun K x => ?_⟩` and prove the remaining obligations. Simplify using `only [HodgeCpt.rootIdx, hm, dif_pos]`. Simplify using `[HodgeCpt.rootSgn, hm]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[HodgeCpt.rootSgn, hm, grDeg]`. Establish `hm : (m : ℕ) < D.q` using `m.2`. Establish `h : ¬ D.p + D.q - 1 - m < D.p` using `by omega`. Use `⟨(τ, ⟨D.p + D.q - 1 - m, by omega⟩), ?_, ?_, fun K x => ?_⟩` and prove the remaining obligations. Simplify using `only [HodgeCpt.rootIdx, h, dif_neg, not_false_eq_true]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Fin.ext (by show D.p + D.q - 1 - (D.p + D.q - 1 - m) = m; omega)`. Simplify using `[HodgeCpt.rootSgn, h]`. Simplify using `[HodgeCpt.rootSgn, h, grDeg]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_root {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) (s : CMType H ⊕ CMType H)
     (m : Fin (labelRk D s)) : ∃ ρ : CMType H × Fin (D.p + D.q), HodgeCpt.rootIdx D ρ = ⟨s, m⟩ ∧
@@ -34,7 +34,7 @@ theorem exists_root {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
     · simp [HodgeCpt.rootSgn, h, grDeg]
 
 /- English proof (translation)
-Use `le_antisymm (val_le_of_mem_span O i _ hR (S := {t | ∃ s : Unit → Ω, (∀ j, Λ.IsGenAt q (s j)) ∧ t = ∏ j, s j ^ ε}) ?_ (show M ∈ Lat.tens (fun _ : Unit => Λ) (fun _ => ε) q from h ▸ Submodule.mem_span_singleton_self M)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Simplify using `[val_eq_of_span_eq O i _ hR ((hs ()).2.symm.trans ht.2)]`. Establish `: t ^ ε ∈ Submodule.span (regAt ξ q) {M}` using `h ▸ Submodule.subset_span ⟨fun _ => t, fun _ => ht, by simp⟩`. Simplify using `using val_le_of_mem_span O i _ hR (S := {M}) (γ := O.valuation (i M)) (by rintro _ rfl; rfl) this`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_tens {X : Scheme.{0}} {Ω Ω₃ : Type} [Field Ω] [Field Ω₃] (O : ValuationSubring Ω₃) (i : Ω →+* Ω₃) {ξ : Sp Ω ⟶ X}
     (q : Cpt ξ) (hR : ∀ a ∈ regAt ξ q, i a ∈ O) (Λ : Lat ξ Ω) {t M : Ω} (ε : ℤ) (ht : Λ.IsGenAt q t)
@@ -49,7 +49,7 @@ theorem val_tens {X : Scheme.{0}} {Ω Ω₃ : Type} [Field Ω] [Field Ω₃] (O 
     simpa using val_le_of_mem_span O i _ hR (S := {M}) (γ := O.valuation (i M)) (by rintro _ rfl; rfl) this
 
 /- English proof (translation)
-Establish `h3` using `congrArg (· ^ ε) h`. Simplify using `only [← zpow_mul, hε, zpow_one] at h3`. Establish `h4 : O.valuation (i e) ≠ 0` using `by simpa using he`. Rewrite using `[← h3, smul_eq_mul, map_mul, map_mul, mul_zpow, map_inv₀, map_inv₀, map_zpow₀, map_zpow₀, mul_inv_cancel_right₀ (zpow_ne_zero _ h4), ← map_zpow₀, ← map_zpow₀, ← Finset.prod_zpow]`. Simplify using `only [← zpow_mul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_step {Ω Ω₃ K : Type} [Field Ω] [Field Ω₃] [Fintype K] (O : ValuationSubring Ω₃) (i : Ω →+* Ω₃) (w : K → Ω)
     (x : K → ℤ) {ε : ℤ} (hε : ε * ε = 1) {e t : Ω} (he : e ≠ 0)
@@ -63,7 +63,7 @@ theorem val_step {Ω Ω₃ K : Type} [Field Ω] [Field Ω₃] [Fintype K] (O : V
   simp only [← zpow_mul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `HodgeCpt.Flag.rootLat`. Generalize the expression as in `HodgeCpt.rootIdx D ρ = z at h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem rootLat_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Tor.Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ} {Ω : Type}
@@ -76,25 +76,23 @@ theorem rootLat_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   rfl
 
 /- English proof (translation)
-Introduce `hCV hC hL E _ _ _ H D l Xo c Y S' Ω' _ K' _ J' _ y' 𝔐 Fl x e b u k _ _ Ω₃ _ _ i hRL hb _ _ hfl hk s m`. Take `⟨A, hA, hind, -⟩` from `hL E H D l Xo c Y S' Ω' K' J' y' 𝔐 Fl b hb`. Establish `h₀ : LinearIndependent Ω' (Fl.b s)`. Take `⟨_, _, -, -, -, h, -⟩` from `Fl.generic`. Conclude with `h s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ, hV⟩` from `flag_val 𝔐.fn i (fun m => Fl.j (b s m)) (Fl.b s) (u s) (hind s).1 h₀ (hfl s)`. Use `choose ρ hρ hε hx using exists_root D s`. Use `⟨i ((∏ m' ∈ Finset.Iic m, β m') * ∏ m' ∈ Finset.Iic m, (e (ρ m') ^ HodgeCpt.rootSgn D (ρ m'))⁻¹), (map_ne_zero i).2 (mul_ne_zero (Finset.prod_ne_zero_iff.2 fun m' _ => hβ m') (Finset.prod_ne_zero_iff.2 fun m' _ => inv_ne_zero (zpow_ne_zero _ (hRL _).1))), fun O hO => ?_⟩` and prove the remaining obligations. Take `⟨q, -, hq, -, -⟩` from `hC E H D l Xo c Y S' S' Ω' Ω' Ω₃ K' K' J' J' y' y' 𝔐 𝔐 i i O rfl`. Establish `hch : ∀ p : ℕ, p.Prime → ¬ InFibre 𝔐.ξ p q` using `fun p hp hn => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharZero Ω₃` using `charZero_of_injective_algebraMap (algebraMap k Ω₃).injective`. Establish `: CharZero Ω'` using `i.charZero`. Establish `h0 : (p : Ω') ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Use `hn ⟨h0, natCast_mem _ _, hq.2 _ (natCast_mem _ _) h0 ?_⟩` and prove the remaining obligations. Simplify using `using hO (p : k)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ch, hc⟩` from `𝔐.tie.cover q`. Establish `hy : ∀ a, y' ⟨a, ch a⟩ ≠ 0` using `fun a => Finset.prod_ne_zero_iff.1 hc.1 a (Finset.mem_univ a)`. Take `⟨U, hU, bb, hbf, hbq⟩` from `Fl.sub s q trivial`. Take `⟨hbi, hbs⟩` from `hbq q trivial hU`. Take `⟨t, ht, hv⟩` from `hV O (regAt 𝔐.ξ q) (A s (𝔐.f q.1)) bb hq.1 (fun a => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `hk a`. Conclude with `hz ▸ hO z) hbi hbf (hbs.symm.trans (hA q hch s))`. Establish `hgen : ∀ m', ((𝔐.V s).gr (Fl.b s) m').IsGenAt q (t m')` using `fun m' => by`. Use `gr_span h₀ hbi hbf (regAt 𝔐.ξ q) m' (ht m')` as an intermediate fact. Rewrite `this` using `[← hbs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hstep : ∀ m', O.valuation (i (∏ a, y' ⟨a, ch a⟩ ^ grDeg x s m' a)) = O.valuation (i (t m')) * O.valuation (i (e (ρ m') ^ HodgeCpt.rootSgn D (ρ m'))⁻¹)` using `fun m' => by`. Establish `h1` using `(hRL (ρ m')).2 q trivial ch hc`. Establish `h2 : Fl.rootLat (ρ m') = Lat.tens (fun _ : Unit => (𝔐.V s).gr (Fl.b s) m') fun _ => HodgeCpt.rootSgn D (ρ m')` using `rootLat_eq Fl (ρ m') s m' (hρ m')`. Rewrite `h1` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx]`. Conclude with `val_step O i _ _ (hε m') (hRL _).1 (val_tens O i q hq.1 _ _ (hgen m') h1)`. Establish `hm : (∏ a, y' ⟨a, ch a⟩ ^ stepDeg x s m a) = ∏ m' ∈ Finset.Iic m, ∏ a, y' ⟨a, ch a⟩ ^ grDeg x s m' a`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[stepDeg, Finset.sum_apply]`. Proceed by induction on `Finset.Iic m using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j S hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, zpow_add₀ (hy a), ih]`. Establish `hpl : vdeg O (plPt fun s => (u s).map i) (plDeg ⟨s, m⟩) = (Finset.univ.sup fun I : Fin (m + 1) → Fin (labelRk D s) => O.valuation (Matrix.of fun a b : Fin (m + 1) => (u s).map i (I a) (Fin.castLE m.2 b)).det)⁻¹`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[vdeg, Finset.prod_eq_single (⟨s, m⟩ : Σ s, Fin (labelRk D s)) (fun z _ hz => by simp [plDeg, hz]) (by simp)]`. Simplify using `only [plDeg, if_pos, zpow_neg, zpow_one]`. Both sides reduce to the same expression. Establish `h5` using `hv m`. Establish `h6 : O.valuation (i (∏ m' ∈ Finset.Iic m, β m')) ≠ 0` using `(map_ne_zero _).2 ((map_ne_zero i).2 (Finset.prod_ne_zero_iff.2 fun m' _ => hβ m'))`.
-
-Rewrite using `[hCV _ _ _ O i 𝔐.ξ q K' J' y' ch _ hq hc, hm, hpl, map_mul, map_mul, ← h5, mul_right_comm, mul_inv_cancel_right₀ (right_ne_zero_of_mul (h5 ▸ h6)), map_prod, map_prod, map_prod, map_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun m' _ => hstep m'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibLink : ChartVal → Centre → CoordLat → FibLink := by
   intro hCV hC hL E _ _ _ H D l Xo c Y S' Ω' _ K' _ J' _ y' 𝔐 Fl x e b u k _ _ Ω₃ _ _ i hRL hb _ _ hfl hk s m

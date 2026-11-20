@@ -13,13 +13,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 def NoRatio (x : WD h) (g : ↥(Weil h)) : Prop := ∀ α ∈ x.eig g, ((normV w : ℕ) : ℂ) ^ deg g * α ∉ x.eig g
 
 /- English proof (translation)
-Proceed by induction on `y using WD.ind with`. Consider the case `hP n a`. Rewrite using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Establish `hm : ∀ {β : ℂ} {v : Fin n → ℂ}, v ≠ 0 → a.ρ g v = β • v → β ∈ (WD.mk a).eig g` using `fun hv e => by`. Rewrite using `[WD.eig_mk, mem_roots (LinearMap.charpoly_monic _).ne_zero, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 e, hv⟩`. Establish `key : ∀ β : ℂ, ∀ v ∈ End.eigenspace (a.ρ g) β, a.N v = 0` using `fun β v hv => by`. Assume the negation of the conclusion as `h0`. Establish `hv0 : v ≠ 0` using `by rintro rfl; exact h0 (map_zero _)`. Establish `e` using `Module.End.mem_eigenspace_iff.1 hv`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hy β (hm hv0 e) (hm h0 ?_)` and prove the remaining obligations. Use `LinearMap.congr_fun (a.comm g) v` as an intermediate fact. Simplify `this` using `[e, smul_smul]`. Establish `top : ⨆ β : ℂ, End.eigenspace (a.ρ g) β = ⊤` using `(a.semisimple g).iSup_eigenspace_eq_top`. Use `LinearMap.ker_eq_top.1 (top_le_iff.1 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← top]`. Conclude with `iSup_le fun β v hv => key β v hv`.
+A detailed English derivation is pending.
 -/
 theorem monodromyFree_of_noRatio {y : WD h} {g : ↥(Weil h)} (hy : NoRatio y g) : y.mono0 := by
   induction y using WD.ind with
@@ -41,15 +41,15 @@ theorem monodromyFree_of_noRatio {y : WD h} {g : ↥(Weil h)} (hy : NoRatio y g)
     exact iSup_le fun β v hv => key β v hv
 
 /- English proof (translation)
-The claim follows from `k.n0 (monodromyFree_of_noRatio (g := g) (by simpa only [NoRatio, WD.eig, k.pol] using hx))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_noRatio {x y : WD h} (k : Aw x y) {g : ↥(Weil h)} (hx : NoRatio x g) : x = y :=
   k.n0 (monodromyFree_of_noRatio (g := g) (by simpa only [NoRatio, WD.eig, k.pol] using hx))
 
 /- English proof (translation)
-Introduce `α hα hβ`. Establish `h1` using `(hx α hα).1`. Establish `h2` using `(hx _ hβ).2`. Rewrite `h2` using `[hg, zpow_one, norm_mul, Complex.norm_natCast]`. Establish `hq : (0 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast zero_lt_one.trans (GlobalTheory.WeilDeligne.one_lt_normV w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd (lt_of_mul_lt_mul_left h2 hq.le) (not_lt.2 h1.le)`.
+A detailed English derivation is pending.
 -/
 theorem noRatio_of_window {x : WD h} {g : ↥(Weil h)} (hg : deg g = 1) {c : ℝ}
     (hx : ∀ α ∈ x.eig g, c < ‖α‖ ∧ ‖α‖ < ((normV w : ℕ) : ℝ) * c) : NoRatio x g := by

@@ -16,7 +16,7 @@ section Field
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨-, -, -, hτ⟩` from `h`. Set `w : InfinitePlace E` to `Classical.arbitrary _`. Apply `w.embedding.injective` to reduce the goal to its premises. Rewrite using `[hτ, hτ, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨-, -, -, hτ⟩ := h
@@ -25,11 +25,11 @@ theorem sigma_sigma (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x
   rw [hτ, hτ, star_star]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨-, htc, -, hτ⟩` from `h`. Set `w : InfinitePlace E` to `Classical.arbitrary _`. Establish `hcx : w.IsComplex` using `htc.isComplex w`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `InfinitePlace.not_isReal_iff_isComplex.mpr hcx` to reduce the goal to its premises. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `hτ w.embedding x` as an intermediate fact. Rewrite `this` using `[hc x]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_moved (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   by_contra hc
@@ -45,17 +45,17 @@ theorem exists_moved (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ x : E, σ x
   simpa using this.symm
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_moved σ h`. Establish `hd : x - σ x ≠ 0` using `fun h0 => hx (sub_eq_zero.mp h0).symm`. Establish `hli : LinearIndependent F ![(1 : E), x]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `congrArg σ hst`. Simplify using `only [Algebra.smul_def, map_add, map_mul, AlgHom.commutes, map_one, map_zero] at h2`. Establish `h3 : t • (x - σ x) = 0`. Simplify using `only [Algebra.smul_def] at hst ⊢`. Take the linear combination `hst - h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `ht : t = 0` using `(smul_eq_zero.mp h3).resolve_right hd`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero] at hst`. Use `⟨(smul_eq_zero.mp hst).resolve_right one_ne_zero, rfl⟩` and prove the remaining obligations. Establish `hspan : Submodule.span F (Set.range ![(1 : E), x]) = ⊤` using `hli.span_eq_top_of_card_eq_finrank (by simp [h.2.2.1])`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem : e ∈ Submodule.span F ({(1 : E), x} : Set E)`. Establish `: e ∈ Submodule.span F (Set.range ![(1 : E), x])` using `by rw [hspan]; trivial`. Simplify `this` using `[Matrix.range_cons, Matrix.range_empty, Set.pair_comm]`. Take `⟨a, b, hab⟩` from `Submodule.mem_span_pair.mp hmem`. Establish `h2 : a • (1 : E) + b • σ x = e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg σ hab` as an intermediate fact. Simplify using `only [Algebra.smul_def, map_add, map_mul, AlgHom.commutes, map_one, he] at this`. Simplify `this` using `only [Algebra.smul_def]`. Establish `h3 : b • (x - σ x) = 0`. Simplify using `only [Algebra.smul_def] at hab h2 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `hab - h2`. Establish `hb : b = 0` using `(smul_eq_zero.mp h3).resolve_right hd`. Substitute `hb` using the available equality. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hab, Algebra.algebraMap_eq_smul_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -95,9 +95,9 @@ theorem fixed_mem (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (e : E) (he : σ e =
   simp
 
 /- English proof (translation)
-Simplify using `only [hE, hform, map_sum, map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : σ ((σ : E →+* E) (x j)) = x j` using `sigma_sigma σ h (x j)`. Establish `h2 : σ (J j i) = J i j` using `hJ.1 i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (σ : E →+* E) (x i) = σ (x i)` using `rfl`. Rewrite using `[h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_self_fixed (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (x : Fin M → E) :
@@ -114,17 +114,17 @@ theorem hE_self_fixed (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {M : ℕ}
 end Field
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X`. Take `⟨t, ht⟩` from `fixed_mem σ hcm _ (hE_self_fixed σ hcm J hJ (X 0))`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `a b`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Conclude with `ht`. Introduce `n X`. Use extensionality with `a b`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hs : ∀ e : E, sigR (AF F) σ (inclR (AF F) e) = inclR (AF F) (σ e)` using `fun e => by`. Simplify using `[sigR, inclR]`. Simplify using `only [gramR, hR, hform, ratTup, JR, Matrix.map_apply, gramE, hE, map_sum, map_mul, hs]`. Both sides reduce to the same expression. Introduce `Ω hΩ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hlc, hsc, ht2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Establish `hcont : Continuous (gramR (AF F) σ J : (Fin 1 → Fin M → AF F ⊗[F] E) → _)` using `(GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)).2.2.2.2.2.2.2.2.2 1 M J`. Set `φ : (Fin 1 → Fin M → AF F ⊗[F] E) → Fin 1 → Fin 1 → AF F ⊗[F] E` to `fun Y _ _ => gramR (AF F) σ J Y 0 0`. Establish `hφ : Continuous φ` using `continuous_pi fun _ => continuous_pi fun _ => hcont.matrix_elem 0 0`. Establish `hfin` using `(GlobalTheory.T.rational_tuples_discrete_cocompact_adelic F E σ hcm 1 1).2.1 _ (hΩ.image hφ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ι : F → Fin 1 → Fin 1 → E` to `fun t _ _ => algebraMap F E t`. Use `Set.Finite.of_injOn (f := ι) ?_ ?_ hfin` and prove the remaining obligations. Introduce and unpack `t ⟨Y, hY, hYt⟩`. Use `⟨Y, hY, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a b`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrFun (congrFun hYt 0) 0`. Introduce `s _ t _ hst`. Conclude with `(algebraMap F E).injective (congrFun (congrFun hst 0) 0)`.
+A detailed English derivation is pending.
 -/
 theorem gram_rational_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →

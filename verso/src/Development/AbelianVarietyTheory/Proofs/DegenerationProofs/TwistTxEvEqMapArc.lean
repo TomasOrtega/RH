@@ -11,23 +11,23 @@ open scoped BigOperators
 namespace GlobalTheory.Ex
 
 /- English proof (translation)
-Establish `hB0 : ∀ x, 0 ≤ B x x`. Introduce `x`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Conclude with `(hp x hx).le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hE0 : ∀ χ, 0 ≤ E χ`. Introduce `χ`. Establish `h` using `hE χ`. Establish `h'` using `hB0 (y + m • χ)`. Assume the negation of the conclusion as `hneg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_neg at hneg`. Use the polynomial consequences of the given equalities and inequalities. Establish `hinj : Function.Injective (fun χ : X => y + m • χ)`. Introduce `a b h`. Establish `h' : (m : ℤ) • a = (m : ℤ) • b` using `by simpa using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `smul_right_injective X (Int.natCast_ne_zero.mpr hm) h'`. Establish `hQ` using `GlobalTheory.ClassMin.realExtension_ofIntBilin_posDef hs hp`. Establish `hfin : ∀ n : ℕ, {χ | (E χ).toNat = n}.Finite`. Introduce `n`. Use `(Set.Finite.preimage (fun _ _ _ _ h => hinj h) (GlobalTheory.ClassMin.finite_sublevel hQ ((D * n : ℤ) : ℝ))).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `χ hχ`. Simplify using `only [Set.mem_setOf_eq] at hχ`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, GlobalTheory.ClassMin.ofIntBilin_apply]`. Establish `h` using `hE χ`. Establish `h0` using `hE0 χ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hB0 (y + m • χ)`. Establish `hEn : E χ = n` using `by omega`. Rewrite `h` using `[hEn]`. Establish `h3 : (B (y + m • χ) (y + m • χ) : ℝ) ≤ ((D * n : ℤ) : ℝ)` using `by exact_mod_cast h`. Establish `h4 : (0 : ℝ) ≤ B (y + m • χ) (y + m • χ)` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `GlobalTheory.hasSum_map_powerSeries_mk_finsum O C X φ h1 hX (fun χ => (E χ).toNat) hfin a`. Establish `hf : (fun χ => ((u ^ E χ : Cˣ) : C) * φ (PowerSeries.C (a χ))) = fun χ => φ (PowerSeries.C (a χ)) * φ PowerSeries.X ^ (E χ).toNat`. Use function extensionality and compare the values at `χ`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (hE0 χ)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Simplify using `[hu, mul_comm]`. Establish `hg : (fun n : ℕ => ∑ᶠ (χ : X) (_ : E χ = n), a χ) = fun n : ℕ => ∑ᶠ (χ : X) (_ : (E χ).toNat = n), a χ`. Use function extensionality and compare the values at `n`. Use `finsum_congr fun χ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hE0 χ`. Establish `hiff : (E χ = n) = ((E χ).toNat = n)` using `propext (by omega)`. Rewrite using `[hiff]`. Rewrite using `[hf, hg]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_zpow_of_form_le {O C X : Type} [CommRing O] [NontriviallyNormedField C] [IsUltrametricDist C]
     [CompleteSpace C] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
@@ -88,21 +88,21 @@ theorem hasSum_zpow_of_form_le {O C X : Type} [CommRing O] [NontriviallyNormedFi
   exact h
 
 /- English proof (translation)
-Establish `hB0 : ∀ y, 0 ≤ β.be y y`. Introduce `y`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Conclude with `(β.pos y hy).le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos m with rfl | hm0` into its components or cases. Establish `hk : k = 0` using `by simpa using hm`. Establish `h0 : β.be x x = 0`. Establish `h` using `β.dvd x x`. Simplify `h` using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Establish `hmk : (2 * (m : ℤ) ^ 2) ∣ 2 * (k : ℤ)` using `mul_dvd_mul_left 2 (by exact_mod_cast hm)`. Establish `hjk : (j : ℤ) ∣ 2 * (k : ℤ)` using `dvd_mul_of_dvd_right (by exact_mod_cast hj) 2`. Take `⟨q, hq⟩` from `dvd_trans hmk (β.dvd x x)`. Take `⟨c, hc⟩` from `dvd_trans hjk (β.dvd z x)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm2 : (0 : ℤ) < 2 * (m : ℤ) ^ 2` using `by positivity`. Establish `hj1 : (1 : ℤ) ≤ j` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hj0`. Establish `hq' : β.be x x / (2 * m ^ 2) = q`. Rewrite using `[hq]`. Conclude with `Int.mul_ediv_cancel_left q hm2.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : β.be z x / j = c`. Rewrite using `[hc]`. Conclude with `Int.mul_ediv_cancel_left c (by omega)`. Rewrite using `[hq', hc']`. Establish `hexp` using `hB0 ((j : ℤ) • x + (2 * (m : ℤ) ^ 2) • z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul] at hexp`. Rewrite `hexp` using `[β.symm x z, hc]`. Establish `ha` using `hB0 z`. Establish `hs0 : 0 ≤ s` using `le_trans (mul_nonneg (by positivity) ha) hs`. Establish `hjj : (0 : ℤ) ≤ (j : ℤ) ^ 2 - 1` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h5 : 0 ≤ 4 * (m : ℤ) ^ 2 * (((j : ℤ) ^ 2 - 1) * s + (s - (m : ℤ) ^ 2 * β.be z z))` using `mul_nonneg (by positivity) (add_nonneg (mul_nonneg hjj hs0) (by linarith))`. Establish `key : 0 ≤ (j : ℤ) ^ 2 * (β.be x x + 4 * (m : ℤ) ^ 2 * c + 4 * (m : ℤ) ^ 2 * s)`. Use polynomial arithmetic with `[hexp, h5]`. Establish `hX : 0 ≤ β.be x x + 4 * (m : ℤ) ^ 2 * c + 4 * (m : ℤ) ^ 2 * s`. Assume the negation of the conclusion as `hneg`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_neg at hneg`. Use `mul_neg_of_pos_of_neg (by positivity : (0 : ℤ) < (j : ℤ) ^ 2) hneg` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[hX, hq]`.
+A detailed English derivation is pending.
 -/
 theorem form_le_exponent {O : Type} [CommRing O] {N : NumD O} {k : ℕ} (β : N.Form k) {m : ℕ} (hm : m ^ 2 ∣ k)
     {j : ℕ} (hj : j ∣ k) (hj0 : j ≠ 0) (x z : N.X) (s : ℤ) (hs : (m : ℤ) ^ 2 * β.be z z ≤ s) :
@@ -149,17 +149,15 @@ theorem form_le_exponent {O : Type} [CommRing O] {N : NumD O} {k : ℕ} (β : N.
     nlinarith [hX, hq]
 
 /- English proof (translation)
-Introduce `O C _ _ _ _ φ h1 hX u hu N₀ N I k β₀ β hβ m hm hmo p₀ p hp1 hp2`. Establish `hm0 : m ≠ 0` using `hmo.pos.ne'`. Establish `hT` using `(GlobalTheory.T.hom_transport_alt O C (φ.comp PowerSeries.C) N₀ N I).2.2.2.2 m hmo p₀ p hp1 hp2`. Establish `hpt : ∀ χ₀ : N₀.X, p.1.1.toAdd + m • I.e χ₀ = I.e (p₀.1.1.toAdd + m • χ₀)`. Introduce `χ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hp1, map_add, map_nsmul]`. Establish `hdiv2 : ∀ x y, (2 * (m : ℤ) ^ 2) ∣ β₀.be x y` using `fun x y => dvd_trans (mul_dvd_mul_left 2 (by exact_mod_cast hm)) (β₀.dvd x y)`. Establish `hD2 : (0 : ℤ) < 2 * (m : ℤ) ^ 2` using `by positivity`. Prove the components needed by the constructor for the conclusion. Establish `hsum` using `hasSum_zpow_of_form_le φ h1 hX u hu β₀.be β₀.symm β₀.pos p₀.1.1.toAdd hm0 hD2 (fun χ => β₀.be (p₀.1.1.toAdd + m • χ) (p₀.1.1.toAdd + m • χ) / (2 * m ^ 2)) (fun χ => (Int.mul_ediv_cancel' (hdiv2 _ _)).ge) (fun χ => N₀.txT m p₀ χ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `key : ∀ χ₀, (N.twist β u).txT m (N.twQ β u hm p) (I.e χ₀) = (I.lam : C) * (((u ^ (β₀.be (p₀.1.1.toAdd + m • χ₀) (p₀.1.1.toAdd + m • χ₀) / (2 * m ^ 2)) : Cˣ) : C) * φ (PowerSeries.C (N₀.txT m p₀ χ₀)))`. Introduce `χ₀`. Rewrite using `[(GlobalTheory.T.twist_terms_alt C N k β u m hm hmo p (I.e χ₀)).1, hpt, hβ, (hT χ₀).1, RingHom.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `show ∑' χ, (N.twist β u).txT m (N.twQ β u hm p) χ = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasSum.tsum_eq ((I.e.toEquiv.hasSum_iff).mp ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun f => HasSum f ((I.lam : C) * φ (N₀.arcTx β₀.be m p₀))) (funext key)).mpr (hsum.mul_left (I.lam : C))`. Introduce `j hj q₀ q hj0 hq1 hq2 s hs`. Establish `hsum` using `hasSum_zpow_of_form_le φ h1 hX u hu β₀.be β₀.symm β₀.pos p₀.1.1.toAdd hm0 (D := 4 * (m : ℤ) ^ 2) (by positivity) (fun χ => β₀.be (p₀.1.1.toAdd + m • χ) (p₀.1.1.toAdd + m • χ) / (2 * m ^ 2) + β₀.be q₀.1.1.toAdd (p₀.1.1.toAdd + m • χ) / j + s) (fun χ => form_le_exponent β₀ hm hj hj …`. Establish `key : ∀ χ₀, (u : C) ^ s * (N.twist β u).evT m (N.twQ β u hm p) (N.twQ β u hj q).1.2 (I.e χ₀) = ((I.lam * I.h q₀.1.2.b ^ (m ^ 2) : Cˣ) : C) * (((u ^ (β₀.be (p₀.1.1.toAdd + m • χ₀) (p₀.1.1.toAdd + m • χ₀) / (2 * m ^ 2) + β₀.be q₀.1.1.toAdd (p₀.1.1.toAdd + m • χ₀) / j + s) : Cˣ) : C …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `χ₀`. Rewrite using `[(GlobalTheory.T.twist_terms_alt C N k β u m hm hmo p (I.e χ₀)).2.1 j hj q hj0, hpt, hq1, hβ, hβ, (hT χ₀).2 q₀.1.2 q.1.2 hq2, RingHom.comp_apply]`. Simplify using `only [zpow_add, zpow_natCast, Units.val_mul, Units.val_pow_eq_pow_val]`. Expand and normalize the polynomial expressions, which then agree. Use `show (u : C) ^ s * ∑' χ, (N.twist β u).evT m (N.twQ β u hm p) (N.twQ β u hj q).1.2 χ = _`.
-
-Rewrite using `[← tsum_mul_left]`. Use `HasSum.tsum_eq ((I.e.toEquiv.hasSum_iff).mp ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun f => HasSum f (((I.lam * I.h q₀.1.2.b ^ (m ^ 2) : Cˣ) : C) * φ (N₀.arcEv β₀.be m p₀ q₀ s))) (funext key)).mpr (hsum.mul_left ((I.lam * I.h q₀.1.2.b ^ (m ^ 2) : Cˣ) : C))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twist_tx_ev_eq_map_arc : ∀ (O C : Type) [CommRing O] [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] (φ : PowerSeries O →+* C), (∀ f, ‖φ f‖ ≤ 1) → ‖φ PowerSeries.X‖ < 1 → ∀ (u : Cˣ), (u : C) = φ PowerSeries.X → ∀ (N₀ : NumD O) (N : NumD C) (I : NumD.Hom (φ.comp PowerSeries.C) N₀ N) (k : ℕ) (β₀ : N₀.Form k) (β : N.Form k), (∀ y z, β.be (I.e y) (I.e z) = β₀.be y z) → ∀ (m : ℕ) (hm : m ^ 2 ∣ k), Odd m → ∀ (p₀ : N₀.QT (m ^ 2)) (p : N.QT (m ^ 2)), p.1.1.toAdd = I.e p₀.1.1.toAdd → I.Rel p₀.1.2 p.1.2 → (N.twist β u).tx m (N.twQ β u hm p) = I.lam * φ (N₀.arcTx β₀.be m p₀) ∧ ∀ (j : ℕ) (hj : j ∣ k) (q₀ : N₀.QT j) (q : N.QT j), j ≠ 0 → q.1.1.toAdd = I.e q₀.1.1.toAdd → I.Rel q₀.1.2 q.1.2 → ∀ s : ℕ, (m : ℤ) ^ 2 * β₀.be q₀.1.1.toAdd q₀.1.1.toAdd ≤ s → (u : C) ^ s * (N.twist β u).ev m (N.twQ β u hm p) (N.twQ β u hj q).1.2 = (I.lam * I.h q₀.1.2.b ^ (m ^ 2) : Cˣ) * φ (N₀.arcEv β₀.be m p₀ q₀ s) := by
   intro O C _ _ _ _ φ h1 hX u hu N₀ N I k β₀ β hβ m hm hmo p₀ p hp1 hp2

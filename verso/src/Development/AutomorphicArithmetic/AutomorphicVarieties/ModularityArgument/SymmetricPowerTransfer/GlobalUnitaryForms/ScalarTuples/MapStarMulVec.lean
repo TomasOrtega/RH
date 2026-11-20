@@ -13,7 +13,7 @@ section Vec
 variable {R : Type} [CommRing R] [StarRing R]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_star_mulVec (M : Matrix (Fin 3) (Fin 3) R) (v : Fin 3 → R) :
     M.map star *ᵥ star v = star (M *ᵥ v) := by
@@ -21,7 +21,7 @@ private theorem map_star_mulVec (M : Matrix (Fin 3) (Fin 3) R) (v : Fin 3 → R)
   simp [Matrix.mulVec, dotProduct, star_sum, mul_comm]
 
 /- English proof (translation)
-Establish `h1 : (X *ᵥ p) ⬝ᵥ star (X *ᵥ q) = p ⬝ᵥ star q`. Rewrite using `[dotProduct_comm, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.star_eq_conjTranspose, hX, Matrix.one_mulVec, dotProduct_comm]`. Simplify `h1` using `[dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dot_unitary {X : Matrix (Fin 3) (Fin 3) R} (hX : star X * X = 1) (p q : Fin 3 → R) :
     ∑ i, (X *ᵥ p) i * star ((X *ᵥ q) i) = ∑ i, p i * star (q i) := by
@@ -31,9 +31,9 @@ private theorem dot_unitary {X : Matrix (Fin 3) (Fin 3) R} (hX : star X * X = 1)
   simpa [dotProduct] using h1
 
 /- English proof (translation)
-Establish `hM : ∀ p, LinearMap.toMatrix' T *ᵥ p = T p` using `fun p => by`. Simplify using `using congrFun (congrArg DFunLike.coe (Matrix.toLin'_toMatrix' T)) p`. Use `⟨LinearMap.toMatrix' T, ?_, hM⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Simplify using `only [← hM, Matrix.mulVec_single_one] at this`. Simplify `this` using `[Matrix.mul_apply, Matrix.star_apply, mul_comm, Pi.single_apply, Matrix.one_apply, eq_comm, apply_ite (star : R → R)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem unitary_of_map (T : (Fin 3 → R) →ₗ[R] (Fin 3 → R))
     (h : ∀ p q, ∑ i, T p i * star (T q i) = ∑ i, p i * star (q i)) :
@@ -55,7 +55,7 @@ section Shape
 variable {K : Type} [Field K] {Δ τ : K}
 
 /- English proof (translation)
-Use `Prod.ext (by simp [semi]) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d * sigL (d * sigL x.2) = _`. Rewrite using `[sigL_mul, sigL_sigL, ← mul_assoc, hd]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem semi_semi {d : EL Δ τ} (hd : d * sigL d = ofE Δ (ω : Etau K τ)) (x : Sp Δ τ) :
     semi d (semi d x) = (x.1, ofE Δ (ω : Etau K τ) * x.2) := by
@@ -64,9 +64,9 @@ private theorem semi_semi {d : EL Δ τ} (hd : d * sigL d = ofE Δ (ω : Etau K 
   rw [sigL_mul, sigL_sigL, ← mul_assoc, hd]
 
 /- English proof (translation)
-Establish `h2 : 2 - τ ≠ 0` using `fun h => hτ (by linear_combination (-(2 + τ)) * h)`. Use `⟨ofE Δ ⟨(τ - 1) / (2 - τ), -1 / (2 - τ)⟩, ?_⟩` and prove the remaining obligations. Establish `e : ofE Δ (ω : Etau K τ) - 1 = ofE Δ ((ω : Etau K τ) - 1)`. Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Rewrite using `[e, ← ofE_mul, ← ofE_one (Δ := Δ) (τ := τ)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem omega_sub_inv (hτ : τ ^ 2 - 4 ≠ 0) : ∃ u : EL Δ τ, (ofE Δ (ω : Etau K τ) - 1) * u = 1 := by
   have h2 : 2 - τ ≠ 0 := fun h => hτ (by linear_combination (-(2 + τ)) * h)
@@ -78,9 +78,9 @@ private theorem omega_sub_inv (hτ : τ ^ 2 - 4 ≠ 0) : ∃ u : EL Δ τ, (ofE 
   ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring
 
 /- English proof (translation)
-Use `congrArg QuadraticAlgebra.im h` as an intermediate fact. Simplify using `at this`. Establish `h2 : (2 : K) * x.im = 0` using `by linear_combination -this`. Establish `h3 : x.im = 0` using `by simpa using h2`. Use `ext`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Simplify using `using h3`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eq_of_star_eq [CharZero K] {x : Lsq K Δ} (h : star x = x) : x = algebraMap K _ x.re := by
   have := congrArg QuadraticAlgebra.im h
@@ -92,15 +92,15 @@ private theorem eq_of_star_eq [CharZero K] {x : Lsq K Δ} (h : star x = x) : x =
   · simpa using h3
 
 /- English proof (translation)
-Simplify using `using congrArg QuadraticAlgebra.re h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem alg_inj {x y : K} (h : algebraMap K (Lsq K Δ) x = algebraMap K _ y) : x = y := by
   simpa using congrArg QuadraticAlgebra.re h
 
 /- English proof (translation)
-Establish `h : (ω : Etau K τ) * star ω = 1`. Rewrite using `[← QuadraticAlgebra.algebraMap_norm_eq_mul_star]`. Simplify using `[QuadraticAlgebra.norm_def]`. Establish `: d * (sigL d * ofE Δ (star (ω : Etau K τ))) = 1`. Rewrite using `[← mul_assoc, hd, ← ofE_mul, h, ofE_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsUnit.of_mul_eq_one _ this`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_of_norm {d : EL Δ τ} (hd : d * sigL d = ofE Δ (ω : Etau K τ)) : IsUnit d := by
   have h : (ω : Etau K τ) * star ω = 1 := by
@@ -111,39 +111,35 @@ private theorem isUnit_of_norm {d : EL Δ τ} (hd : d * sigL d = ofE Δ (ω : Et
   exact IsUnit.of_mul_eq_one _ this
 
 /- English proof (translation)
-Use `set W : EL Δ τ := ofE Δ (ω : Etau K τ) with hW`. Take `⟨u, hu⟩` from `omega_sub_inv (Δ := Δ) hτ`. Rewrite `hu` using `[← hW]`. Establish `hN : ∀ v, Q (v.1, W * v.2) = ((Q v).1, W * (Q v).2)` using `fun v => by`. Rewrite using `[← semi_semi hd, hs, hs, semi_semi hd]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (Q (1, 0)).2 = 0`. Use `congrArg Prod.snd (hN (1, 0))` as an intermediate fact. Simplify using `only [mul_zero] at this`. Establish `h' : (W - 1) * (Q (1, 0)).2 = 0` using `by linear_combination -this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : ∀ y : EL Δ τ, (Q (0, y)).1 = 0` using `fun y => by`. Establish `e : ((0 : Lsq K Δ), y) = (0, W * (u * y)) - (0, u * y)`. Use `Prod.ext (by simp) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y = W * (u * y) - u * y`. Take the linear combination `(-y) * hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e, map_sub, Prod.fst_sub, hN (0, u * y)]`. Simplify using the standard rewrite rules. Use `set e : EL Δ τ := (Q (0, 1)).2 with he`. Establish `yy : ∀ y : EL Δ τ, y = y.re • (1 : EL Δ τ) + y.im • W` using `fun y => by`. Apply the tactic sequence `ext <;> simp [hW, ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ y : EL Δ τ, (Q (0, y)).2 = e * y` using `fun y => by`. Establish `ey : ((0 : Lsq K Δ), y) = y.re • ((0 : Lsq K Δ), (1 : EL Δ τ)) + y.im • (0, W * 1)`. Use `Prod.ext (by simp) ?_` and prove the remaining obligations. Simplify using `using yy y`. Establish `hw` using `congrArg Prod.snd (hN (0, 1))`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ey, map_add, map_smul, map_smul, Prod.snd_add, Prod.smul_snd, Prod.smul_snd, hw]`. Express the relevant statement in the definitionally equal form `y.re • e + y.im • (W * e) = _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, mul_smul_comm, mul_smul_comm, mul_one, mul_comm e W]`. Use `_ = e * y := by rw [← yy]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdu` using `isUnit_of_norm hd`. Establish `hsig : sigL e = e`. Establish `e1 : semi d ((0 : Lsq K Δ), (1 : EL Δ τ)) = (0, d)` using `Prod.ext (by simp [semi]) (by simp [semi, sigL_one])`. Establish `h` using `congrArg Prod.snd (hs (0, 1))`. Rewrite `h` using `[e1, h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e * d = d * sigL e at h`. Conclude with `hdu.mul_left_cancel (by rw [← h, mul_comm])`. Establish `hz : e = ofE Δ ⟨e.re.re, e.im.re⟩`. Establish `a1 : star e.re = e.re` using `congrArg QuadraticAlgebra.re hsig`. Establish `a2 : star e.im = e.im` using `congrArg QuadraticAlgebra.im hsig`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `ext1`. Conclude with `eq_of_star_eq a1`. Conclude with `eq_of_star_eq a2`. Use `set z : Etau K τ := ⟨e.re.re, e.im.re⟩ with hzdef`. Use `set a : Lsq K Δ := (Q (1, 0)).1 with ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hQ1 : Q (1, 0) = (a, 0)` using `Prod.ext rfl h1`. Establish `hstar : star a = a`. Establish `e1 : semi d ((1 : Lsq K Δ), (0 : EL Δ τ)) = (1, 0)` using `Prod.ext (by simp [semi]) (by`. Apply the tactic sequence `have s0 : sigL (0 : EL Δ τ) = 0 := by ext <;> simp [sigL]`. Simplify using `[semi, s0])`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h` using `congrArg Prod.fst (hs (1, 0))`. Rewrite `h` using `[e1, hQ1]`. Conclude with `h.symm`. Use `⟨a.re, z, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hf (1, 0) (1, 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hQ1]`. Simplify using `only [herm, mul_zero, zero_mul, map_zero, add_zero, star_one, mul_one, hstar] at h`. Rewrite `h` using `[eq_of_star_eq hstar]`. Simplify using `only [← map_mul] at h`. Take the linear combination `-alg_inj h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ∀ k : K, QuadraticAlgebra.trace (k • (1 : EL Δ τ)) = 2 * algebraMap K (Lsq K Δ) k` using `fun k => by`. Establish `: (k • (1 : EL Δ τ)).re = algebraMap K (Lsq K Δ) k`. Simplify using `[QuadraticAlgebra.re_one, Algebra.algebraMap_eq_smul_one]`. Establish `h0 : (k • (1 : EL Δ τ)).im = 0` using `by simp [QuadraticAlgebra.im_one]`. Rewrite using `[QuadraticAlgebra.trace_def, this, h0, mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hee : e * star (sigL e) = QuadraticAlgebra.norm z • (1 : EL Δ τ)`. Rewrite using `[hsig, hz, ← ofE_star, ← ofE_mul, ← QuadraticAlgebra.algebraMap_norm_eq_mul_star]`. Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one, Algebra.algebraMap_eq_smul_one]`. Establish `h` using `hf (0, n) (0, 1)`. Establish `q1 : Q (0, n) = (0, e * n)` using `Prod.ext (h2 n) (h3 n)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `q2 : Q (0, 1) = (0, e)` using `Prod.ext (h2 1) (by rw [h3, mul_one])`. Rewrite `h` using `[q1, q2]`. Simplify using `only [herm, mul_zero, zero_mul, star_zero, zero_add, sigL_one, star_one, mul_one] at h`. Establish `l1 : t₂ • m * (e * n) * star (sigL e) = (t₂ * QuadraticAlgebra.norm z) • (1 : EL Δ τ)`. Rewrite using `[mul_smul, ← hee]`.
-
-Simplify using `only [smul_mul_assoc]`. Use `congr 1`. Take the linear combination `(e * star (sigL e)) * hn`. Establish `l2 : t₁ • m * n = t₁ • (1 : EL Δ τ)` using `by rw [smul_mul_assoc, hn]`. Rewrite `h` using `[l1, l2, ht, ht]`.
-
-Establish `h4 : 2 * (t₂ * QuadraticAlgebra.norm z) = 2 * t₁` using `alg_inj (Δ := Δ) (by`. Rewrite using `[map_mul (algebraMap K (Lsq K Δ)) 2, map_mul (algebraMap K (Lsq K Δ)) 2, map_ofNat]`. Conclude with `h)`. Conclude with `(mul_left_cancel₀ two_ne_zero h4).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem shape [CharZero K] {c₁ c₂ t₁ t₂ : K} {d m n : EL Δ τ} (hτ : τ ^ 2 - 4 ≠ 0)
     (hd : d * sigL d = ofE Δ (ω : Etau K τ)) (hn : m * n = 1)
@@ -245,13 +241,13 @@ section Main
 variable {K : Type} [Field K] {Δ τ : K}
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem star_alg (r : K) : star (algebraMap K (Lsq K Δ) r) = algebraMap K _ r := by
   ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[← ofE_star, ← ofE_mul, ← QuadraticAlgebra.algebraMap_norm_eq_mul_star]`. Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ofE_norm (z : Etau K τ) :
     ofE Δ z * star (ofE Δ z) = QuadraticAlgebra.norm z • (1 : EL Δ τ) := by
@@ -264,11 +260,11 @@ private def scaleMap (r : K) (y : EL Δ τ) : Sp Δ τ →ₗ[Lsq K Δ] Sp Δ τ
   map_smul' a b := Prod.ext (by simp; ring) (mul_smul_comm _ _ _)
 
 /- English proof (translation)
-Use `set X : Matrix (Fin 3) (Fin 3) (Lsq K Δ) := ((x⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) with hX`. Establish `hXu : star X * X = 1` using `(Matrix.mem_unitaryGroup_iff').1 (x⁻¹ : U3 Δ).2`. Set `Q : Sp Δ τ →ₗ[Lsq K Δ] Sp Δ τ` to `P'.symm.toLinearMap ∘ₗ X.mulVecLin ∘ₗ P.toLinearMap`. Establish `hQ : ∀ v, P' (Q v) = X *ᵥ P v` using `fun v => by simp [Q]`. Use `⟨Q, fun v => P'.injective ?_, fun v w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, h'.semi, hQ, h.semi, hx]`. Establish `e : ((x⁻¹ * δ * theta Δ x : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = X * (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * (x : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map star` using `rfl`. Establish `e2 : (x : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * X = 1`. Rewrite using `[hX]`. Conclude with `congrArg Subtype.val (mul_inv_cancel x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← Matrix.mulVec_mulVec, map_star_mulVec, Matrix.mulVec_mulVec _ (x : Matrix (Fin 3) (Fin 3) (Lsq K Δ)), e2, Matrix.one_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[h'.form, h.form, hQ, hQ]`. Conclude with `dot_unitary hXu _ _`.
+A detailed English derivation is pending.
 -/
 private theorem fwd {c c' : K} {d m m' : EL Δ τ} {δ δ' x : U3 Δ} {ι ι' P P'}
     (h : Models c d m δ ι P) (h' : Models c' d m' δ' ι' P') (hx : δ' = x⁻¹ * δ * theta Δ x) :
@@ -290,11 +286,11 @@ private theorem fwd {c c' : K} {d m m' : EL Δ τ} {δ δ' x : U3 Δ} {ι ι' P 
     exact dot_unitary hXu _ _
 
 /- English proof (translation)
-Take `⟨M, hM, hMv⟩` from `unitary_of_map (P.toLinearMap ∘ₗ Q ∘ₗ P'.symm.toLinearMap) (fun p q => by`. Establish `e` using `hf (P'.symm p) (P'.symm q)`. Rewrite `e` using `[h.form, h'.form]`. Simplify using `using e)`. Establish `hMP : ∀ v, M *ᵥ P' v = P (Q v)` using `fun v => by simp [hMv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨⟨M, hM⟩, ?_⟩` and prove the remaining obligations. Establish `key : (⟨M, hM⟩ : U3 Δ) * δ' = δ * theta Δ ⟨M, hM⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `M * (δ' : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * M.map star`. Establish `hall : ∀ u, (M * (δ' : Matrix (Fin 3) (Fin 3) (Lsq K Δ))) *ᵥ u = ((δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * M.map star) *ᵥ u` using `fun u => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Take `⟨v, rfl⟩ : ∃ v, u = star (P' v)` from `⟨P'.symm (star u), by simp⟩`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← h'.semi, hMP, hs, h.semi, map_star_mulVec, hMP]`. Conclude with `Matrix.ext_of_mulVec_single fun i => hall _`. Rewrite using `[mul_assoc, ← key]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bwd {c c' : K} {d m m' : EL Δ τ} {δ δ' : U3 Δ} {ι ι' P P'}
     (h : Models c d m δ ι P) (h' : Models c' d m' δ' ι' P')
@@ -321,25 +317,25 @@ private theorem bwd {c c' : K} {d m m' : EL Δ τ} {δ δ' : U3 Δ} {ι ι' P P'
 end Main
 
 /- English proof (translation)
-Introduce `K _ _ Δ τ d m hΔ hD c c' t t' δ δ' ι ι' P P' h h'`. Take `⟨n, hn⟩ : ∃ n, m * n = 1` from `hD.m_unit.exists_right_inv`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Take `⟨Q, q1, q2⟩` from `fwd h h' hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, z, e1, e2⟩` from `shape hD.reg hD.d_norm hn Q q1 q2`. Establish `hs0 : s ≠ 0` using `fun h0 => c.ne_zero (by rw [e1, h0]; simp)`. Establish `hN0 : QuadraticAlgebra.norm z ≠ 0` using `fun h0 => t.ne_zero (by rw [e2, h0, mul_zero])`. Establish `hzu : IsUnit z` using `QuadraticAlgebra.isUnit_iff_norm_isUnit.2 (isUnit_iff_ne_zero.2 hN0)`. Use `⟨⟨Units.mk0 s⁻¹ (inv_ne_zero hs0), Units.ext ?_⟩, hzu.unit⁻¹, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_div_eq_div_val, Units.val_mul, Units.val_mk0]`. Rewrite using `[e1]`. Use `c'.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_inv_eq_inv_val, Units.coe_map, IsUnit.unit_spec, Units.val_div_eq_div_val, MonoidHom.coe_coe]`. Rewrite using `[e2]`. Use `t'.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Introduce and unpack `⟨⟨r, hr⟩, ⟨z, hz⟩⟩`. Establish `C : (c' : K) = c * r * r`. Use `congrArg Units.val hr` as an intermediate fact. Simplify using `only [Units.val_div_eq_div_val, Units.val_mul] at this`. Rewrite using `[mul_assoc, ← this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `c.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `T : (t' : K) = t * QuadraticAlgebra.norm (z : Etau K τ)`. Use `congrArg Units.val hz` as an intermediate fact. Simplify using `only [Units.val_div_eq_div_val, Units.coe_map, MonoidHom.coe_coe] at this`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `t.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `bwd h h' (scaleMap r (ofE Δ z)) (fun v => Prod.ext ?_ ?_) (fun v w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap K (Lsq K Δ) r * star v.1 = star (algebraMap K (Lsq K Δ) r * v.1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[star_mul', star_alg]`. Express the relevant statement in the definitionally equal form `ofE Δ (z : Etau K τ) * (d * sigL v.2) = d * sigL (ofE Δ (z : Etau K τ) * v.2)`. Rewrite using `[sigL_mul, sigL_ofE]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `herm (c : K) ((t : K) • m) (algebraMap K (Lsq K Δ) r * v.1, ofE Δ (z : Etau K τ) * v.2) (algebraMap K (Lsq K Δ) r * w.1, ofE Δ (z : Etau K τ) * w.2) = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [herm, sigL_mul, sigL_ofE, star_mul', star_alg]`. Use `congr 1`. Rewrite using `[C]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Simplify using `only [smul_mul_assoc]`. Rewrite using `[show m * (ofE Δ (z : Etau K τ) * v.2) * (star (ofE Δ (z : Etau K τ)) * star (sigL w.2)) = (ofE Δ (z : Etau K τ) * star (ofE Δ (z : Etau K τ))) * (m * v.2 * star (sigL w.2)) by ring, ofE_norm, smul_mul_assoc, one_mul, smul_smul, ← T]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem conjG : ConjG := by
   intro K _ _ Δ τ d m hΔ hD c c' t t' δ δ' ι ι' P P' h h'

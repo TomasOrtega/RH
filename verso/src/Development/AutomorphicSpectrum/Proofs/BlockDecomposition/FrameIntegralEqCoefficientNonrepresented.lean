@@ -24,13 +24,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 
 /- English proof (translation)
-Establish `hdot : Continuous (fun p : (κ → A) × (κ → A) => p.1 ⬝ᵥ p.2)`. Unfold `dotProduct`. Conclude with `continuous_finset_sum _ fun i _ => ((continuous_apply i).comp continuous_fst).mul ((continuous_apply i).comp continuous_snd)`. Establish `hd1 : ∀ w, Continuous fun v : κ → A => ψ (-(v ⬝ᵥ w))` using `fun w => hψc.comp (hdot.comp (Continuous.prodMk continuous_id continuous_const)).neg`. Establish `hd2 : ∀ v, Continuous fun w : κ → A => ψ (-(v ⬝ᵥ w))` using `fun v => hψc.comp (hdot.comp (Continuous.prodMk continuous_const continuous_id)).neg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd3 : ∀ v, Continuous fun w : κ → A => ψ (v ⬝ᵥ w)` using `fun v => hψc.comp (hdot.comp (Continuous.prodMk continuous_const continuous_id))`. Distinguish the cases in `hφ : Integrable φ ν`. Use `swap`. Establish `h0 : ∀ v : κ → A, ∫ y, φ y * ψ (v ⬝ᵥ g y) ∂ν = 0` using `fun v => integral_undef fun hi => hφ (integrable_of_mul_unimodular ν φ (fun y => ψ (v ⬝ᵥ g y)) hi ((hd3 v).measurable.comp hg).aestronglyMeasurable fun y => hψn _)`. Use `(integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)).trans (integral_zero _ _)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `show (∫ y, φ y * ψ (v ⬝ᵥ g y) ∂ν) * ψ (-(v ⬝ᵥ z₀)) = 0`. Rewrite using `[h0 v, zero_mul]`. Distinguish the cases in `hJ : Integrable (fun v : κ → A => ∫ y, φ y * ψ (v ⬝ᵥ g y) ∂ν) μ`. Use `swap`. Conclude with `integral_undef fun hi => hJ (integrable_of_mul_unimodular μ _ (fun v => ψ (-(v ⬝ᵥ z₀))) hi (hd1 z₀).aestronglyMeasurable fun y => hψn _)`.
-
-Conclude with `vanish_abs μ (fun v z => ψ (-(v ⬝ᵥ z))) hd1 hd2 (fun _ _ => hψn _) _ hJ N hN (hb hφ hJ) z₀ hz`.
+A detailed English derivation is pending.
 -/
 theorem vanish_ring {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     (ψ : AddChar A ℂ) (hψc : Continuous ψ) (hψn : ∀ x, ‖ψ x‖ = 1) (κ : Type) [Fintype κ]
@@ -73,9 +71,9 @@ end GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := hμ.1`. Use `vanish_ring ψ hψ.1 hψ.2.1 κ μ Y ν φ g hg N hN ?_ z₀ hz` and prove the remaining obligations. Introduce `hφ hJ N' hN' hsub z₁ hz₁`. Take `⟨Φ, hΦ, hΦ0, hΦN, hΦ1⟩` from `GlobalTheory.T.exists_nonnegative_schwartz_bump F κ N' hN' z₁ hz₁`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hΦc, -, hΦi⟩` from `GlobalTheory.SplitSvN.schA_facts hF hΦ`. Conclude with `⟨Φ, hΦc, hΦi μ hμ.1, hΦ0, hΦN, hΦ1, GlobalTheory.T.tamagawa_fourier_integrable F hF ψ hψ κ μ hμ Y ν φ g hφ hg hJ Φ hΦ (fun y => hΦN _ fun h' => hgN y (hsub h'))⟩`.
+A detailed English derivation is pending.
 -/
 theorem vanish_generic (F : Type) [Field F] [NumberField F] (hF : NumberField.IsTotallyReal F)
     (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (κ : Type) [Fintype κ] [MeasurableSpace (κ → AF F)]
@@ -100,13 +98,13 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `w hw hne`. Establish `h0` using `hS w hw`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hne`. Establish `hB : 0 < (star w ⬝ᵥ w).re`. Establish `e : (star w ⬝ᵥ w).re = ∑ j, Complex.normSq (w j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [dotProduct, Pi.star_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, mul_comm, Complex.mul_conj, Complex.ofReal_re]`. Rewrite using `[e]`. Conclude with `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.2 hi⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hεε : ε * ε = 1 := by rcases hε with rfl | rfl <;> norm_num`. Establish `e2 : (star w ⬝ᵥ (Z + ((ε * δ : ℝ) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)).mulVec w).re = (star w ⬝ᵥ Z.mulVec w).re + ε * δ * (star w ⬝ᵥ w).re`. Rewrite using `[Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_add, dotProduct_smul, Complex.add_re, smul_eq_mul, Complex.re_ofReal_mul]`. Rewrite using `[e2]`. Establish `: ε * ((star w ⬝ᵥ Z.mulVec w).re + ε * δ * (star w ⬝ᵥ w).re) = ε * (star w ⬝ᵥ Z.mulVec w).re + (ε * ε) * δ * (star w ⬝ᵥ w).re` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hεε, one_mul]`. Conclude with `add_pos_of_nonneg_of_pos h0 (mul_pos hδ hB)`.
+A detailed English derivation is pending.
 -/
 theorem posOn_add_smul_one {n : ℕ} {ε δ : ℝ} {Z : Matrix (Fin n) (Fin n) ℂ} {S : Submodule ℂ (Fin n → ℂ)}
     (hS : NonnegOn ε Z S) (hε : ε = 1 ∨ ε = -1) (hδ : 0 < δ) :
@@ -133,43 +131,39 @@ theorem posOn_add_smul_one {n : ℕ} {ε δ : ℝ} {Z : Matrix (Fin n) (Fin n) �
   exact add_pos_of_nonneg_of_pos h0 (mul_pos hδ hB)
 
 /- English proof (translation)
-Conclude with `Matrix.map_add (⇑((θ ρ).comp (infPart D))) ((θ ρ).comp (infPart D)).map_add a b`.
+A detailed English derivation is pending.
 -/
 theorem compAt_add' (θ : InfFam D) (ρ : D.what₂.Tau) {m n : ℕ} (a b : Mx D m n) :
     compAt θ ρ (a + b) = compAt θ ρ a + compAt θ ρ b := by
   exact Matrix.map_add (⇑((θ ρ).comp (infPart D))) ((θ ρ).comp (infPart D)).map_add a b
 
 /- English proof (translation)
-Conclude with `Matrix.map_neg (⇑((θ ρ).comp (infPart D))) ((θ ρ).comp (infPart D)).map_neg a`.
+A detailed English derivation is pending.
 -/
 theorem compAt_neg' (θ : InfFam D) (ρ : D.what₂.Tau) {m n : ℕ} (a : Mx D m n) :
     compAt θ ρ (-a) = -compAt θ ρ a := by
   exact Matrix.map_neg (⇑((θ ρ).comp (infPart D))) ((θ ρ).comp (infPart D)).map_neg a
 
 /- English proof (translation)
-Take `⟨hr, hψ, hθ, ⟨𝓕, hF⟩, ⟨𝓖, hG⟩, -, -, -⟩` from `h`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele D.host.F`. Use `haveI : BorelSpace (AF D.host.F) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D V.rank r`. Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : μ.IsAddHaarMeasure := hF.1`. Take `⟨n, c, u, R, hu, hR, hRu, hcu, hTam⟩` from `GlobalTheory.T.hermitian_coordinates_trace_pairing D r lam 𝓖 hG`. Establish `hin` using `GlobalTheory.T.gram_map_continuous_hermitian D θ hθ V r ρ`. Set `g : Mx D V.rank r → Fin n → AF D.host.F` to `fun y => u (inner V y y)`. Establish `hgc : Continuous g` using `hu.comp hin.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `N : Set (Fin n → AF D.host.F)` to `{w | PosOn ε (compAt θ ρ (R w)) S}`. Establish `hN : IsOpen N` using `(GlobalTheory.T.positive_on_subspace_open r ε S).preimage ((GlobalTheory.RealWeil.continuous_compAt hθ ρ r r).comp hR)`. Establish `hgN : ∀ y, g y ∉ N`. Introduce `y hy`. Establish `h1 : PosOn ε (compAt θ ρ (R (u (inner V y y)))) S` using `hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h1` using `[hRu _ (hin.2 y).1, (hin.2 y).2]`. Take `⟨T, hT1, hT2⟩` from `GlobalTheory.T.positivity_pulls_back_to_subspace _ _ _ _ ε S h1`. Use `hT T hT1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Set `z₀ : Fin n → AF D.host.F` to `u (rat β.1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : ∀ e' : ℕ → Mx D r r, (∀ k, e' k ∈ hermA D r) → Filter.Tendsto e' Filter.atTop (nhds 0) → (∀ k : ℕ, compAt θ ρ (e' k) = ((ε * ((1 : ℝ) / ((k : ℝ) + 1)) : ℝ) : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)) → z₀ ∈ closure N`. Introduce `e' he' het hec`. Establish `hlim : Filter.Tendsto (fun k => u (rat β.1 + e' k)) Filter.atTop (nhds z₀)`. Establish `h2 : Filter.Tendsto (fun k => rat β.1 + e' k) Filter.atTop (nhds (rat β.1 + 0))` using `tendsto_const_nhds.add het`. Rewrite `h2` using `[add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hu.tendsto _).comp h2`. Use `mem_closure_of_tendsto hlim (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show PosOn ε (compAt θ ρ (R (u (rat β.1 + e' k)))) S`. Establish `hrat : compAt θ ρ (rat β.1) = β.1.map (tauE D ρ)` using `GlobalTheory.AdForm.RatMove.compAt_rat hθ ρ β.1`. Rewrite using `[hRu _ ((hermA D r).add_mem (GlobalTheory.CompanionTheory.HermPoisson.rat_mem_hermA β) (he' k)), compAt_add', hec k, hrat]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `posOn_add_smul_one hS hε (by positivity)`. Take `⟨e, he, het, hec⟩` from `GlobalTheory.T.hermitian_scalar_sequence_tends_zero D θ hθ r`. Establish `hz : z₀ ∈ closure N`. Break down `hε with rfl | rfl` into its components or cases. Use `hcl e he het fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hec k, one_mul]`. Use `hcl (fun k => -e k) (fun k => (hermA D r).neg_mem (he k)) ?_ fun k => ?_` and prove the remaining obligations. Establish `h3` using `het.neg`. Rewrite `h3` using `[neg_zero]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[compAt_neg', hec k]`. Simplify using the standard rewrite rules. Establish `key` using `vanish_generic D.host.F D.sp.cm.totReal ψ hψ (Fin n) (lam.map c.symm) hTam _ μ φ g hgc.measurable N hN hgN z₀ hz`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D r) := Subtype.borelSpace _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hemb : MeasurableEmbedding (c.symm)` using `c.symm.toHomeomorph.measurableEmbedding`. Rewrite `key` using `[hemb.integral_map]`. Use `Eq.trans ?_ key` and prove the remaining obligations. Unfold `W`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations.
-
-Establish `h1 : ∀ x : Mx D r r, c.symm b ⬝ᵥ u x = halfTr (Matrix.trace (HMul.hMul b.1 x : Mx D r r))` using `fun x => by`. Rewrite using `[← hcu]`. Simplify using the standard rewrite rules. Use `show Jt ψ V μ φ b * _ = (∫ y, φ y * ψ (c.symm b ⬝ᵥ u (inner V y y)) ∂μ) * ψ (-(c.symm b ⬝ᵥ u (rat β.1)))`. Simplify using `only [h1]`.
-
-Rewrite using `[Matrix.trace_mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem W_eq_zero_of_obstruction (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (ν : Measure (GA D V))
@@ -245,9 +239,9 @@ end GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 
 /- English proof (translation)
-Introduce `D r V ψ θ μ lam ν φ h t β hβ hno`. Take `⟨ρ, ε, S, hε, hS, hT⟩` from `GlobalTheory.T.nonrepresented_signature_obstruction D r V h.1 t β hβ hno`. Rewrite using `[W_eq_zero_of_obstruction r V ψ θ μ lam ν φ h β ρ ε S hε hS hT]`. Use `haveI hemp : IsEmpty {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1} := ⟨fun x => hno ⟨x.1, x.2⟩⟩`. Unfold `IfrB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h0 : (fun q => GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (fun h => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}, φ (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D)))) q) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `q`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, tsum_empty]`. Rewrite using `[h0]`. Simplify using `[MeasureTheory.average]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem noFrame : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (ν : Measure (GA D V)) (φ : Mx D V.rank r → ℂ), Hyp D r V ψ θ μ lam ν φ → ∀ (t : ℕ) (β : HermE D r), GlobalTheory.CompanionTheory.WeilSiegel.Deg.IsBlockNF t β → (¬ ∃ x : Matrix (Fin V.rank) (Fin r) D.host.E, x.rank = r ∧ gramQ V x = β.1) → IfrB V ν φ β = W ψ V μ lam φ β := by
   intro D r V ψ θ μ lam ν φ h t β hβ hno

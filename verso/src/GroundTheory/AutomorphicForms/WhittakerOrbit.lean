@@ -23,14 +23,14 @@ Both sides reduce to the same expression.
 theorem transl_apply (h : H) (f : X → ℂ) (x : X) : transl h f x = f (h⁻¹ • x) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[transl, mul_inv_rev, mul_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem transl_mul (h k : H) (f : X → ℂ) : transl (h * k) f = transl h (transl k f) := by
   funext x
   simp [transl, mul_inv_rev, mul_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[transl]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem transl_one (f : X → ℂ) : transl (1 : H) f = f := by
   funext x
@@ -52,7 +52,7 @@ Both sides reduce to the same expression.
 theorem transl_smul (h : H) (c : ℂ) (f : X → ℂ) : transl h (c • f) = c • transl h f := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[transl, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem transl_sum {ι : Type*} (h : H) (s : Finset ι) (f : ι → X → ℂ) :
     transl h (∑ i ∈ s, f i) = ∑ i ∈ s, transl h (f i) := by
@@ -60,9 +60,9 @@ theorem transl_sum {ι : Type*} (h : H) (s : Finset ι) (f : ι → X → ℂ) :
   simp [transl, Finset.sum_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [transl_apply]`. Distinguish the cases in `hx : h⁻¹ • x ∈ A`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (Set.mem_smul_set_iff_inv_smul_mem.2 hx)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h' => hx (Set.mem_smul_set_iff_inv_smul_mem.1 h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_indicator (h : H) (A : Set X) : transl h (A.indicator 1) = (h • A).indicator 1 := by
   funext x
@@ -81,7 +81,7 @@ variable {X : Type*} [TopologicalSpace X] {H : Type*} [Group H] [TopologicalSpac
   [MulAction H X] [ContinuousSMul H X]
 
 /- English proof (translation)
-Use `⟨⟨hf.1.1.comp_continuous (continuous_const_smul h⁻¹), ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `hf.1.2.comp_homeomorph (Homeomorph.smul h⁻¹)`. Introduce `x hx`. Use `hUinv h _ (hf.2 hx)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem transl_mem_supportedIn {U : Set X} (hUinv : ∀ h : H, ∀ x ∈ U, h • x ∈ U) (h : H)
     {f : X → ℂ} (hf : f ∈ supportedIn U) : transl h f ∈ supportedIn U := by
@@ -96,14 +96,14 @@ def relSpan (χ : H →* ℂ) (U : Set X) : Submodule ℂ (X → ℂ) :=
 
 omit [TopologicalSpace H] [ContinuousSMul H X] in
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨h, f, hf, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sub_mem_relSpan (χ : H →* ℂ) {U : Set X} (h : H) {f : X → ℂ} (hf : f ∈ supportedIn U) :
     transl h f - χ h • f ∈ relSpan χ U :=
   Submodule.subset_span ⟨h, f, hf, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, f, hf, rfl⟩`. Conclude with `(supportedIn U).sub_mem (transl_mem_supportedIn hUinv h hf) ((supportedIn U).smul_mem _ hf)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem relSpan_le_supportedIn (χ : H →* ℂ) {U : Set X}
     (hUinv : ∀ h : H, ∀ x ∈ U, h • x ∈ U) : relSpan χ U ≤ supportedIn U := by
@@ -128,7 +128,7 @@ omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnect
   [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H]
   [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_orbitPiece {L : Subgroup H} {y x : X} : x ∈ orbitPiece L y ↔ ∃ l ∈ L, l • y = x :=
   Iff.rfl
@@ -137,7 +137,7 @@ omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnect
   [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H]
   [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, L.one_mem, one_smul _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem self_mem_orbitPiece (L : Subgroup H) (y : X) : y ∈ orbitPiece L y :=
   ⟨1, L.one_mem, one_smul _ _⟩
@@ -146,7 +146,7 @@ omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnect
   [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H]
   [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
 /- English proof (translation)
-Introduce and unpack `_ ⟨l, -, rfl⟩`. Conclude with `mem_orbit_of_mem_orbit l hy`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem orbitPiece_subset_orbit {L : Subgroup H} {x₀ y : X} (hy : y ∈ orbit H x₀) :
     orbitPiece L y ⊆ orbit H x₀ := by
@@ -158,9 +158,9 @@ omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnect
   [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
 
 /- English proof (translation)
-Take `⟨l, hl, rfl⟩` from `hz`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`. Conclude with `⟨m * l, L.mul_mem hm hl, mul_smul m l y⟩`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm, rfl⟩`. Use `⟨m * l⁻¹, L.mul_mem hm (L.inv_mem hl), ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem orbitPiece_eq_of_mem {L : Subgroup H} {y z : X} (hz : z ∈ orbitPiece L y) :
     orbitPiece L z = orbitPiece L y := by
@@ -178,7 +178,7 @@ omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnect
   [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
 
 /- English proof (translation)
-Distinguish the cases in `h : Disjoint (orbitPiece L y) (orbitPiece L z)`. Conclude with `Or.inr h`. Take `⟨x, hxy, hxz⟩` from `Set.not_disjoint_iff.1 h`. Conclude with `Or.inl ((orbitPiece_eq_of_mem hxy).symm.trans (orbitPiece_eq_of_mem hxz))`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Extract witnesses or component facts from the available result. Prove the first alternative.
 -/
 theorem orbitPiece_eq_or_disjoint (L : Subgroup H) (y z : X) :
     orbitPiece L y = orbitPiece L z ∨ Disjoint (orbitPiece L y) (orbitPiece L z) := by
@@ -192,9 +192,9 @@ omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnect
   [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Use `⟨j * a * j⁻¹, hj a ha, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨(j⁻¹ * a * j) • y, ⟨j⁻¹ * a * j, hj' a ha, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem smul_orbitPiece {A : Subgroup H} {j : H} (hj : ∀ a ∈ A, j * a * j⁻¹ ∈ A)
     (hj' : ∀ a ∈ A, j⁻¹ * a * j ∈ A) (y : X) : j • orbitPiece A y = orbitPiece A (j • y) := by
@@ -212,9 +212,9 @@ omit [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnect
   [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [ContinuousSMul H X] in
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, rfl⟩`. Use `⟨(h⁻¹ * l * h) • y, ⟨h⁻¹ * l * h, ⟨l, hl, by simp⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨_, ⟨_, ⟨l, hl, rfl⟩, rfl⟩, rfl⟩`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem orbitPiece_smul (L : Subgroup H) (h : H) (y : X) :
     orbitPiece L (h • y) = h • orbitPiece (L.map (MulAut.conj h⁻¹).toMonoidHom) y := by
@@ -230,7 +230,7 @@ theorem orbitPiece_smul (L : Subgroup H) (h : H) (y : X) :
 omit [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [IsTopologicalGroup H]
   [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] [SigmaCompactSpace H] in
 /- English proof (translation)
-The claim follows from `hL.image (continuous_id.smul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_orbitPiece {L : Subgroup H} (hL : IsCompact (L : Set H)) (y : X) :
     IsCompact (orbitPiece L y) :=
@@ -240,7 +240,7 @@ omit [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] [SigmaComp
   [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [ContinuousSMul H X] in
 
 /- English proof (translation)
-Establish `e : ((L.map (MulAut.conj h).toMonoidHom : Subgroup H) : Set H) = ((Homeomorph.mulLeft h).trans (Homeomorph.mulRight h⁻¹)) '' (L : Set H)`. Use extensionality with `x`. Simplify using `[Subgroup.coe_map, MulAut.conj_apply]`. Rewrite using `[e]`. Conclude with `⟨hLc.image (Homeomorph.continuous _), (Homeomorph.isOpenMap _) _ hLo⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isCompact_isOpen_map_conj {L : Subgroup H} (hLc : IsCompact (L : Set H))
     (hLo : IsOpen (L : Set H)) (h : H) :
@@ -256,9 +256,9 @@ theorem isCompact_isOpen_map_conj {L : Subgroup H} (hLc : IsCompact (L : Set H))
 omit [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [IsTopologicalGroup H]
   [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] [SigmaCompactSpace H] in
 /- English proof (translation)
-Use `⟨continuous_induced_rng.2 ?_⟩` and prove the remaining obligations. Establish `: ((Subtype.val : orbit H x₀ → X) ∘ fun p : H × orbit H x₀ => p.1 • p.2) = fun p : H × orbit H x₀ => p.1 • (p.2 : X)`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_fst.smul (continuous_subtype_val.comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuousSMul_orbit (x₀ : X) : ContinuousSMul H (orbit H x₀) := by
   refine ⟨continuous_induced_rng.2 ?_⟩
@@ -272,11 +272,11 @@ theorem continuousSMul_orbit (x₀ : X) : ContinuousSMul H (orbit H x₀) := by
 omit [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] [TotallyDisconnectedSpace X] in
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace (orbit H x₀)` using `hO.locallyCompactSpace`. Use `continuousSMul_orbit (H := H) x₀` as an intermediate fact. Establish `hmap` using `isOpenMap_smul_of_sigmaCompact (G := H) (X := orbit H x₀) ⟨y, hy⟩ _ hLo`. Use `hmap using 1` and compare the differences between its conclusion and the goal. Use extensionality with `⟨x, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_preimage, mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, rfl⟩`. Conclude with `⟨l, hl, Subtype.ext rfl⟩`. Introduce and unpack `⟨l, hl, e⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨l, hl, congrArg Subtype.val e⟩`.
+Supply the required witnesses or components.
 -/
 theorem isOpen_orbitPiece {x₀ : X} (hO : IsLocallyClosed (orbit H x₀)) {L : Subgroup H}
     (hLo : IsOpen (L : Set H)) {y : X} (hy : y ∈ orbit H x₀) :
@@ -296,7 +296,7 @@ theorem isOpen_orbitPiece {x₀ : X} (hO : IsLocallyClosed (orbit H x₀)) {L : 
 omit [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] in
 
 /- English proof (translation)
-Establish `hOl : IsLocallyClosed (orbit H x₀)` using `⟨U, C, hU, hC, hO.symm⟩`. Conclude with `exists_lift_indicator hU (hO ▸ inter_subset_left) (orbitPiece_subset_orbit hy) (isCompact_orbitPiece hLc y) (isOpen_orbitPiece hOl hLo hy)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lift_orbit_piece {U C : Set X} (hU : IsOpen U) (hC : IsClosed C) {x₀ : X}
     (hO : U ∩ C = orbit H x₀) {L : Subgroup H} (hLc : IsCompact (L : Set H))
@@ -315,9 +315,9 @@ omit [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [IsTopologicalGroup H]
   [ContinuousSMul H X] [T2Space X] [TopologicalSpace H] in
 
 /- English proof (translation)
-Use `⟨(supportedIn U).sub_mem hf hg, fun x hxC => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxU : x ∈ U`. Establish `hx : x ∈ orbit H x₀` using `hO ▸ ⟨hxU, hxC⟩`. Simplify using `[heq x hx]`. Establish `h1 : f x = 0` using `Function.notMem_support.1 fun h => hxU (hf.2 h)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : g x = 0` using `Function.notMem_support.1 fun h => hxU (hg.2 h)`. Simplify using `[h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sub_mem_of_eqOn_orbit (hO : U ∩ C = orbit H x₀) {f g : X → ℂ} (hf : f ∈ supportedIn U)
     (hg : g ∈ supportedIn U) (heq : ∀ x ∈ orbit H x₀, f x = g x) :
@@ -335,7 +335,7 @@ omit [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [IsTopologicalGroup H]
   [ContinuousSMul H X] [T2Space X] [TopologicalSpace H] in
 
 /- English proof (translation)
-Establish `hfU : f ∈ supportedIn U` using `(sup_le hWU inf_le_left) hf`. Use `(W ⊔ (supportedIn U ⊓ vanishingOn C)).add_mem hf (le_sup_right (a := W) (sub_mem_of_eqOn_orbit hO hg hfU heq))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_eqOn_orbit (hO : U ∩ C = orbit H x₀) {W : Submodule ℂ (X → ℂ)}
     (hWU : W ≤ supportedIn U) {f g : X → ℂ} (hg : g ∈ supportedIn U)
@@ -351,7 +351,7 @@ omit [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [IsTopologicalGroup H]
   [TopologicalSpace H] [ContinuousSMul H X] in
 
 /- English proof (translation)
-Establish `hfU : f ∈ supportedIn U` using `(sup_le hWU inf_le_left) hf`. Establish `e : transl h f = (transl h f - χ h • f) + χ h • f` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem (le_sup_left (b := supportedIn U ⊓ vanishingOn C) (hW (sub_mem_relSpan χ h hfU))) (Submodule.smul_mem _ _ hf)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transl_mem_of_mem (χ : H →* ℂ)
     {W : Submodule ℂ (X → ℂ)} (hWU : W ≤ supportedIn U) (hW : relSpan χ U ≤ W) (h : H)
@@ -370,9 +370,9 @@ def GoodPiece (U C : Set X) (x₀ : X) (W : Submodule ℂ (X → ℂ)) (A : Set 
 omit [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [IsTopologicalGroup H]
   [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] [SigmaCompactSpace H] [T2Space X] in
 /- English proof (translation)
-Introduce `g hg hgA`. Establish `h1 : transl h⁻¹ g ∈ W ⊔ (supportedIn U ⊓ vanishingOn C)`. Use `hA _ (transl_mem_supportedIn hUinv _ hg) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[transl_apply, inv_inv, hgA _ (mem_orbit_of_mem_orbit h hx)]`. Distinguish the cases in `hxA : x ∈ A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hxA, Set.indicator_of_mem (Set.smul_mem_smul_set hxA)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hxA, Set.indicator_of_notMem (fun h' => hxA ((Set.smul_mem_smul_set_iff).1 h'))]`. Use `transl_mem_of_mem χ hWU hW h h1` as an intermediate fact. Rewrite `this` using `[← transl_mul, mul_inv_cancel, transl_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GoodPiece.smul (hUinv : ∀ h : H, ∀ x ∈ U, h • x ∈ U) (χ : H →* ℂ)
     {W : Submodule ℂ (X → ℂ)} (hWU : W ≤ supportedIn U) (hW : relSpan χ U ≤ W) {A : Set X}
@@ -392,21 +392,19 @@ theorem GoodPiece.smul (hUinv : ∀ h : H, ∀ x ∈ U, h • x ∈ U) (χ : H �
 omit [TotallyDisconnectedSpace X] [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] in
 
 /- English proof (translation)
-Establish `hsm : ∀ j ∈ J, j • orbitPiece A y = orbitPiece A (j • y)` using `fun j hj => smul_orbitPiece (hAn j hj) (fun a ha => by simpa using hAn j⁻¹ (J.inv_mem hj) a ha) y`. Establish `hsub : ∀ j ∈ J, orbitPiece A (j • y) ⊆ orbitPiece J y`. Introduce and unpack `j hj _ ⟨a, ha, rfl⟩`. Conclude with `⟨a * j, J.mul_mem (hAJ ha) hj, mul_smul a j y⟩`. Set `K' : Set (orbit H x₀)` to `(fun j : H => j • (⟨y, hy⟩ : orbit H x₀)) '' (J : Set H)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `continuousSMul_orbit (H := H) x₀` as an intermediate fact. Establish `hK' : IsCompact K'` using `hJc.image (continuous_id.smul continuous_const)`. Take `⟨t, htJ, htfin, hcov⟩` from `hK'.elim_finite_subcover_image (b := (J : Set H)) (c := fun j => (Subtype.val : orbit H x₀ → X) ⁻¹' orbitPiece A (j • y)) (fun j _ => isOpen_orbitPiece hOl hAo (mem_orbit_of_mem_orbit j hy)) (by`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `mem_iUnion₂.2 ⟨j, hj, self_mem_orbitPiece A _⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hcov' : ∀ x ∈ orbitPiece J y, ∃ j ∈ t, x ∈ orbitPiece A (j • y)`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hx : (j • (⟨y, hy⟩ : orbit H x₀)) ∈ K'` using `⟨j, hj, rfl⟩`. Take `⟨i, hi, hxi⟩` from `mem_iUnion₂.1 (hcov hx)`. Conclude with `⟨i, hi, hxi⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨htfin.toFinset.image fun j => orbitPiece A (j • y), ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨j, hj, -⟩` from `hcov' y (self_mem_orbitPiece J y)`. Conclude with `⟨_, Finset.mem_image_of_mem _ (htfin.mem_toFinset.2 hj)⟩`. Introduce `S hS`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hS`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjJ` using `htJ (htfin.mem_toFinset.1 hj)`. Conclude with `⟨j, hjJ, (hsm j hjJ).symm⟩`. Introduce `x`. Distinguish the cases in `hx : x ∈ orbitPiece J y`. Take `⟨j, hj, hxj⟩` from `hcov' x hx`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hx, Finset.sum_eq_single (orbitPiece A (j • y))]`. Rewrite using `[Set.indicator_of_mem hxj]`. Introduce `S hS hSne`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hS`. Use `Set.indicator_of_notMem (fun hxi => hSne ?_) _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `orbitPiece_eq_or_disjoint A (i • y) (j • y) with e | e` into its components or cases. Conclude with `e`. Conclude with `absurd hxj (Set.disjoint_left.1 e hxi)`. Introduce `h`. Conclude with `absurd (Finset.mem_image_of_mem _ (htfin.mem_toFinset.2 hj)) h`.
-
-Rewrite using `[Set.indicator_of_notMem hx]`. Use `(Finset.sum_eq_zero fun S hS => ?_).symm` and prove the remaining obligations. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hS`. Conclude with `Set.indicator_of_notMem (fun hxi => hx (hsub i (htJ (htfin.mem_toFinset.1 hi)) hxi)) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finset_orbitPiece (hOl : IsLocallyClosed (orbit H x₀)) {J A : Subgroup H}
     (hJc : IsCompact (J : Set H)) (hAo : IsOpen (A : Set H)) (hAJ : A ≤ J)
@@ -462,11 +460,11 @@ theorem exists_finset_orbitPiece (hOl : IsLocallyClosed (orbit H x₀)) {J A : S
 omit [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] in
 
 /- English proof (translation)
-Establish `hOl : IsLocallyClosed (orbit H x₀)` using `⟨U, C, hU, hC, hO.symm⟩`. Take `⟨𝒮, -, h𝒮, hsum⟩` from `exists_finset_orbitPiece hOl hJc hAo hAJ hAn hy`. Establish `hAc : IsCompact (A : Set H)` using `hJc.of_isClosed_subset (A.isClosed_of_isOpen hAo) hAJ`. Take `⟨gA, hgA, hgAO⟩` from `exists_lift_orbit_piece hU hC hO hAc hAo hy`. Establish `hgAT` using `hA gA hgA hgAO`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose! j hjJ hjS using h𝒮`. Introduce `g hg hgJ`. Use `mem_of_eqOn_orbit hO hWU hg (f := ∑ S ∈ 𝒮, transl (j S) gA) (Submodule.sum_mem _ fun S _ => transl_mem_of_mem χ hWU hW _ hgAT) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hgJ x hx, hsum x, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[transl_apply, hgAO _ (mem_orbit_of_mem_orbit _ hx)]`. Use `conv_lhs => rw [hjS S hS]`. Distinguish the cases in `hxS : (j S)⁻¹ • x ∈ orbitPiece A y`. Simplify using `only [Set.indicator_of_mem hxS, Set.indicator_of_mem (Set.mem_smul_set_iff_inv_smul_mem.2 hxS), Pi.one_apply]`. Rewrite using `[Set.indicator_of_notMem hxS, Set.indicator_of_notMem (fun h' => hxS (Set.mem_smul_set_iff_inv_smul_mem.1 h'))]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GoodPiece.up {U C : Set X} (hU : IsOpen U) (hC : IsClosed C) {x₀ : X}
     (hO : U ∩ C = orbit H x₀) (χ : H →* ℂ)
@@ -498,15 +496,15 @@ theorem GoodPiece.up {U C : Set X} (hU : IsOpen U) (hC : IsClosed C) {x₀ : X}
 omit [TotallyDisconnectedSpace X] [LocallyCompactSpace H] [T2Space H] [TotallyDisconnectedSpace H] in
 
 /- English proof (translation)
-Establish `hOl : IsLocallyClosed (orbit H x₀)` using `⟨U, C, hU, hC, hO.symm⟩`. Take `⟨𝒮, hne, h𝒮, hsum⟩` from `exists_finset_orbitPiece hOl hJc hAo hAJ hAn hy`. Use `choose! j hjJ hjS using h𝒮`. Introduce `gA hgA hgAO`. Use `set T := W ⊔ (supportedIn U ⊓ vanishingOn C)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : ∑ S ∈ 𝒮, transl (j S) gA ∈ T`. Use `hJ _ (Submodule.sum_mem _ fun S _ => transl_mem_supportedIn hUinv _ hgA) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hsum x, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Rewrite using `[transl_apply, hgAO _ (mem_orbit_of_mem_orbit _ hx)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [hjS S hS]`. Distinguish the cases in `hxS : (j S)⁻¹ • x ∈ orbitPiece A y`. Simplify using `only [Set.indicator_of_mem hxS, Set.indicator_of_mem (Set.mem_smul_set_iff_inv_smul_mem.2 hxS), Pi.one_apply]`. Rewrite using `[Set.indicator_of_notMem hxS, Set.indicator_of_notMem (fun h' => hxS (Set.mem_smul_set_iff_inv_smul_mem.1 h'))]`. Establish `hR : ∑ S ∈ 𝒮, (transl (j S) gA - χ (j S) • gA) ∈ T` using `le_sup_left (b := supportedIn U ⊓ vanishingOn C) (hW (Submodule.sum_mem _ fun S _ => sub_mem_relSpan χ _ hgA))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : (𝒮.card : ℂ) • gA ∈ T`. Establish `e : (𝒮.card : ℂ) • gA = ∑ S ∈ 𝒮, transl (j S) gA - ∑ S ∈ 𝒮, (transl (j S) gA - χ (j S) • gA)`. Rewrite using `[Finset.sum_sub_distrib, sub_sub_cancel, Finset.sum_congr rfl fun S hS => by`. Rewrite using `[hχJ _ (hjJ S hS), one_smul], Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `T.sub_mem hG hR`. Establish `hc : (𝒮.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 hne)`. Use `T.smul_mem (𝒮.card : ℂ)⁻¹ hcard` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem GoodPiece.down {U C : Set X} (hU : IsOpen U) (hC : IsClosed C) {x₀ : X}
     (hO : U ∩ C = orbit H x₀) (hUinv : ∀ h : H, ∀ x ∈ U, h • x ∈ U) (χ : H →* ℂ)
@@ -551,15 +549,15 @@ theorem GoodPiece.down {U C : Set X} (hU : IsOpen U) (hC : IsClosed C) {x₀ : X
 omit [TotallyDisconnectedSpace X] [T2Space X] [LocallyCompactSpace X] [SigmaCompactSpace H] in
 
 /- English proof (translation)
-Establish `hOC : orbit H x₀ ⊆ C` using `hO ▸ inter_subset_right`. Set `K` to `C ∩ Function.support f`. Establish `hK : IsCompact K` using `(isCompact_support hf.1).inter_left hC`. Set `Wset : Set (H × X)` to `{p | f (p.1 • p.2) = f p.2}`. Establish `hWo : IsOpen Wset`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF : IsLocallyConstant fun p : H × X => (f (p.1 • p.2), f p.2)` using `(hf.1.1.comp_continuous continuous_smul).prodMk (hf.1.1.comp_continuous continuous_snd)`. Conclude with `hF {q | q.1 = q.2}`. Establish `hsub : ({1} : Set H) ×ˢ K ⊆ Wset`. Introduce and unpack `⟨h, x⟩ ⟨hh, -⟩`. Simplify using `only [mem_singleton_iff] at hh`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Wset, hh]`. Take `⟨u, v, hu, -, h1u, hKv, huv⟩` from `generalized_tube_lemma isCompact_singleton hK hWo hsub`. Take `⟨L, hLc, hLu⟩` from `exists_openSubgroup_isCompact_subset (hu.mem_nhds (h1u rfl))`. Use `⟨L, hLc, L.isOpen, fun l hl x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxK : x ∈ K`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `huv (show (l, x) ∈ u ×ˢ v from ⟨hLu hl, hKv hxK⟩)`. Establish `hfx : f x = 0`. Assume the negation of the conclusion as `h`. Conclude with `hxK ⟨hOC hx, h⟩`. Rewrite using `[hfx]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `hlx : l • x ∈ K` using `⟨hOC (mem_orbit_of_mem_orbit l hx), h⟩`. Use `huv (show (l⁻¹, l • x) ∈ u ×ˢ v from ⟨hLu (L.inv_mem hl), hKv hlx⟩)` as an intermediate fact. Simplify using `only [Wset, Set.mem_ofPred_eq, inv_smul_smul] at this`. Conclude with `h (by rw [← this, hfx])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_forall_smul_eq {U C : Set X} (hC : IsClosed C) {x₀ : X}
     (hO : U ∩ C = orbit H x₀) {f : X → ℂ} (hf : f ∈ supportedIn U) :
@@ -593,47 +591,43 @@ theorem exists_forall_smul_eq {U C : Set X} (hC : IsClosed C) {x₀ : X}
     exact h (by rw [← this, hfx])
 
 /- English proof (translation)
-Establish `hx₀ : x₀ ∈ orbit H x₀` using `mem_orbit_self x₀`. Use `set T := W ⊔ (supportedIn U ⊓ vanishingOn C)`. Establish `hOU : orbit H x₀ ⊆ U` using `hO ▸ inter_subset_left`. Establish `hOl : IsLocallyClosed (orbit H x₀)` using `⟨U, C, hU, hC, hO.symm⟩`. Establish `hgood0 : GoodPiece (H` using `H) U C x₀ W (orbitPiece L₀ x₀) := fun g hg hgO => mem_of_eqOn_orbit hO hWU hg hbase fun x hx => by rw [hgO x hx, hf₀O x hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ M : Subgroup H, IsOpen (M : Set H) → M ≤ L₀ → (∀ k ∈ L₀, ∀ m ∈ M, k * m * k⁻¹ ∈ M) → GoodPiece (H` using `H) U C x₀ W (orbitPiece M x₀) := fun M hMo hML hMn => GoodPiece.down hU hC hO hUinv χ hW hL₀c hχL₀ hMo hML hMn hx₀ hgood0`. Establish `hB : ∀ M : Subgroup H, IsOpen (M : Set H) → M ≤ L₀ → GoodPiece (H` using `H) U C x₀ W (orbitPiece M x₀) := by`. Introduce `M hMo hML`. Take `⟨N₀, hN₀o, hN₀L, hN₀M, hN₀n, -⟩` from `exists_normal_subgroup hL₀c hL₀o (hMo.mem_nhds M.one_mem)`. Establish `hMc : IsCompact (M : Set H)` using `hL₀c.of_isClosed_subset (M.isClosed_of_isOpen hMo) hML`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GoodPiece.up hU hC hO χ hWU hW hMc hN₀o (fun x hx => hN₀M hx) (fun j hj a ha => hN₀n j (hML hj) a ha) hx₀ (hA N₀ hN₀o hN₀L hN₀n)`. Establish `hC' : ∀ J : Subgroup H, IsCompact (J : Set H) → IsOpen (J : Set H) → GoodPiece (H` using `H) U C x₀ W (orbitPiece J x₀) := by`. Introduce `J hJc hJo`. Take `⟨A, hAo, hAJ, hAJL, hAn, -⟩` from `exists_normal_subgroup hJc hJo (U := (J : Set H) ∩ L₀) (Filter.inter_mem (hJo.mem_nhds J.one_mem) (hL₀o.mem_nhds L₀.one_mem))`. Conclude with `GoodPiece.up hU hC hO χ hWU hW hJc hAo hAJ hAn hx₀ (hB A hAo fun x hx => (hAJL hx).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hall : ∀ J : Subgroup H, IsCompact (J : Set H) → IsOpen (J : Set H) → ∀ y ∈ orbit H x₀, GoodPiece (H` using `H) U C x₀ W (orbitPiece J y) := by`. Introduce `J hJc hJo y hy`. Take `⟨h, rfl⟩` from `mem_orbit_iff.1 hy`. Rewrite using `[orbitPiece_smul]`. Establish `hc` using `isCompact_isOpen_map_conj hJc hJo h⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `GoodPiece.smul hUinv χ hWU hW (hC' _ hc.1 hc.2) h`. Introduce `f hf`. Take `⟨L, hLc, hLo, hLf⟩` from `exists_forall_smul_eq hC hO hf`. Establish `key : ∀ t : Finset X, (↑t : Set X) ⊆ orbit H x₀ → ∀ g ∈ supportedIn U, (∀ l ∈ L, ∀ x ∈ orbit H x₀, g (l • x) = g x) → (∀ x ∈ orbit H x₀, g x ≠ 0 → x ∈ ⋃ y ∈ t, orbitPiece L y) → g ∈ T`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `_ g hg _ hg0`. Use `le_sup_right (a := W) ⟨hg, fun x hxC => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Distinguish the cases in `hxU : x ∈ U`. Use `hg0 x (hO ▸ ⟨hxU, hxC⟩) h` as an intermediate fact. Simplify using `at this`. Conclude with `hxU (hg.2 h)`. Consider the case `insert y t hyt ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `htO g hg hgL hg0`. Establish `hy : y ∈ orbit H x₀` using `htO (by simp)`. Take `⟨gy, hgy, hgyO⟩` from `exists_lift_orbit_piece hU hC hO hLc hLo hy`. Establish `hgyT : gy ∈ T` using `hall L hLc hLo y hy gy hgy hgyO`. Establish `e : g = (g - g y • gy) + g y • gy` using `by abel`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `T.add_mem (ih (fun x hx => htO (by simp [hx])) _ ((supportedIn U).sub_mem hg ((supportedIn U).smul_mem _ hgy)) ?_ ?_) (T.smul_mem _ hgyT)` and prove the remaining obligations. Introduce `l hl x hx`. Establish `hlx` using `mem_orbit_of_mem_orbit l hx`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hgL l hl x hx, hgyO _ hlx, hgyO _ hx]`. Distinguish the cases in `hxy : x ∈ orbitPiece L y`. Establish `hlxy : l • x ∈ orbitPiece L y`. Take `⟨m, hm, rfl⟩` from `hxy`. Conclude with `⟨l * m, L.mul_mem hl hm, mul_smul l m y⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.indicator_of_mem hxy, Set.indicator_of_mem hlxy, Pi.one_apply]`. Establish `hlxy : l • x ∉ orbitPiece L y`. Introduce and unpack `⟨m, hm, hmy⟩`. Use `hxy ⟨l⁻¹ * m, L.mul_mem (L.inv_mem hl) hm, ?_⟩` and prove the remaining obligations. Use `show (l⁻¹ * m) • y = x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_smul, show m • y = l • x from hmy, inv_smul_smul]`. Simplify using `only [Set.indicator_of_notMem hxy, Set.indicator_of_notMem hlxy]`. Introduce `x hx hx0`. Establish `hxy : x ∉ orbitPiece L y`. Introduce `hxy`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `hx0` to reduce the goal to its premises. Take `⟨m, hm, rfl⟩` from `hxy`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hgL m hm y hy, hgyO _ (mem_orbit_of_mem_orbit m hy), Set.indicator_of_mem (show m • y ∈ orbitPiece L y from ⟨m, hm, rfl⟩)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hgx : g x ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h, hgyO _ hx, Set.indicator_of_notMem hxy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Use `hg0 x hx hgx` as an intermediate fact. Rewrite `this` using `[Finset.set_biUnion_insert]`. Conclude with `this.resolve_left hxy`. Establish `hK : IsCompact (C ∩ Function.support f)` using `(isCompact_support hf.1).inter_left hC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hopen : ∀ y ∈ C ∩ Function.support f, ∃ V : Set X, IsOpen V ∧ V ∩ orbit H x₀ = orbitPiece L y`. Introduce `y hy`. Establish `hyO : y ∈ orbit H x₀` using `hO ▸ ⟨hf.2 hy.2, hy.1⟩`. Take `⟨V, hVo, hV⟩` from `isOpen_induced_iff.1 (isOpen_orbitPiece hOl hLo hyO)`. Use `⟨V, hVo, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxV, hxO⟩`. Establish `: (⟨x, hxO⟩ : orbit H x₀) ∈ (Subtype.val : orbit H x₀ → X) ⁻¹' V` using `hxV`. Rewrite `this` using `[hV]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Introduce `hx`. Establish `hxO` using `orbitPiece_subset_orbit hyO hx`. Establish `: (⟨x, hxO⟩ : orbit H x₀) ∈ (Subtype.val : orbit H x₀ → X) ⁻¹' orbitPiece L y` using `hx`. Rewrite `this` using `[← hV]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨this, hxO⟩`. Use `choose! V hVo hVO using hopen`. Take `⟨t, htK, htfin, hcov⟩` from `hK.elim_finite_subcover_image hVo (fun y hy => mem_iUnion₂.2 ⟨y, hy, by`. Establish `: y ∈ V y ∩ orbit H x₀`. Rewrite using `[hVO y hy]`.
-
-Conclude with `self_mem_orbitPiece L y`. Conclude with `this.1⟩)`. Use `key htfin.toFinset (fun x hx => ?_) f hf hLf fun x hx hfx => ?_` and prove the remaining obligations. Use `htK (htfin.mem_toFinset.1 hx)` as an intermediate fact. Conclude with `hO ▸ ⟨hf.2 this.2, this.1⟩`.
-
-Take `⟨y, hy, hxy⟩` from `mem_iUnion₂.1 (hcov ⟨(hO ▸ hx : x ∈ U ∩ C).2, hfx⟩)`. Use `mem_iUnion₂.2 ⟨y, htfin.mem_toFinset.2 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← hVO y (htK hy)]`. Conclude with `⟨hxy, hx⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem supportedIn_le_of_base {U C : Set X} (hU : IsOpen U) (hC : IsClosed C) {x₀ : X}
     (hO : U ∩ C = orbit H x₀) (hUinv : ∀ h : H, ∀ x ∈ U, h • x ∈ U) (χ : H →* ℂ)
@@ -774,17 +768,15 @@ theorem supportedIn_le_of_base {U C : Set X} (hU : IsOpen U) (hC : IsClosed C) {
     exact ⟨hxy, hx⟩
 
 /- English proof (translation)
-Take `⟨L, hLo, hχL⟩` from `hχ`. Take `⟨L₀, hL₀c, hL₀L, hL₀n⟩` from `exists_compactOpenSubgroup_normalized hS₀ (hLo.mem_nhds L.one_mem)`. Establish `hx₀ : x₀ ∈ orbit H x₀` using `mem_orbit_self x₀`. Establish `hWU` using `relSpan_le_supportedIn χ hUinv`. Take `⟨f₀, hf₀, hf₀O⟩` from `exists_lift_orbit_piece hU hC hO hL₀c L₀.isOpen hx₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set T := relSpan χ U ⊔ (supportedIn U ⊓ vanishingOn C)`. Establish `hspiece : s • orbitPiece (L₀ : Subgroup H) x₀ = orbitPiece (L₀ : Subgroup H) x₀`. Rewrite using `[smul_orbitPiece (fun a ha => hL₀n s hs a ha) (fun a ha => by simpa using hL₀n s⁻¹ (S₀.inv_mem hs) a ha), hsx]`. Establish `h1 : transl s f₀ - f₀ ∈ T`. Use `le_sup_right (a := relSpan χ U) (sub_mem_of_eqOn_orbit hO (transl_mem_supportedIn hUinv s hf₀) hf₀ fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[transl_apply, hf₀O _ (mem_orbit_of_mem_orbit _ hx), hf₀O x hx]`. Use `conv_rhs => rw [← hspiece]`. Distinguish the cases in `hxS : s⁻¹ • x ∈ orbitPiece (L₀ : Subgroup H) x₀`. Simplify using `only [Set.indicator_of_mem hxS, Set.indicator_of_mem (Set.mem_smul_set_iff_inv_smul_mem.2 hxS), Pi.one_apply]`. Rewrite using `[Set.indicator_of_notMem hxS, Set.indicator_of_notMem (fun h' => hxS (Set.mem_smul_set_iff_inv_smul_mem.1 h'))]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : transl s f₀ - χ s • f₀ ∈ T` using `le_sup_left (b := supportedIn U ⊓ vanishingOn C) (sub_mem_relSpan χ s hf₀)`. Establish `h3 : (χ s - 1) • f₀ ∈ T`. Establish `e : (χ s - 1) • f₀ = (transl s f₀ - f₀) - (transl s f₀ - χ s • f₀)`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `T.sub_mem h1 h2`. Establish `hbase : f₀ ∈ T`. Use `T.smul_mem (χ s - 1)⁻¹ h3` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ (sub_ne_zero.2 hχs), one_smul]`. Then use the resulting hypothesis.
-
-Conclude with `supportedIn_le_of_base hU hC hO hUinv χ hWU le_rfl (L₀ : Subgroup H) hL₀c L₀.isOpen (fun l hl => hχL l (hL₀L hl)) f₀ hf₀O hbase`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem supportedIn_le_of_stabilizer {U C : Set X} (hU : IsOpen U) (hC : IsClosed C) {x₀ : X}
     (hO : U ∩ C = orbit H x₀) (hUinv : ∀ h : H, ∀ x ∈ U, h • x ∈ U) (χ : H →* ℂ)

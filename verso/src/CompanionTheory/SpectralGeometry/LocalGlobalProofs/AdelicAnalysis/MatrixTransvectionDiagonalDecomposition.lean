@@ -17,14 +17,14 @@ noncomputable def liftT (e : K ≃+* ∀ m, F m) (m : M) (t : TransvectionStruct
   ⟨t.i, t.j, t.hij, e.symm (Pi.single m t.c)⟩
 
 /- English proof (translation)
-Simplify using `[coord]`.
+Simplify using the standard rewrite rules.
 -/
 lemma coord_symm_single (e : K ≃+* ∀ m, F m) (m m' : M) (c : F m) :
     coord e m' (e.symm (Pi.single m c)) = (Pi.single m c : ∀ m, F m) m' := by
   simp [coord]
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [RingHom.mapMatrix_apply, map_apply, single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma mapMatrix_single (f : K →+* K') (a b : ι) (c : K) :
     f.mapMatrix (single a b c) = single a b (f c) := by
@@ -39,7 +39,7 @@ lemma liftT_toMatrix (e : K ≃+* ∀ m, F m) (m : M) (t : TransvectionStruct ι
     (liftT e m t).toMatrix = 1 + single t.i t.j (e.symm (Pi.single m t.c)) := rfl
 
 /- English proof (translation)
-Rewrite using `[liftT_toMatrix, map_add, map_one, mapMatrix_single, coord_symm_single, Pi.single_eq_same]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma mapMatrix_liftT_same (e : K ≃+* ∀ m, F m) (m : M) (t : TransvectionStruct ι (F m)) :
     (coord e m).mapMatrix (liftT e m t).toMatrix = t.toMatrix := by
@@ -47,7 +47,7 @@ lemma mapMatrix_liftT_same (e : K ≃+* ∀ m, F m) (m : M) (t : TransvectionStr
   rfl
 
 /- English proof (translation)
-Rewrite using `[liftT_toMatrix, map_add, map_one, mapMatrix_single, coord_symm_single, Pi.single_eq_of_ne h, single_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mapMatrix_liftT_ne (e : K ≃+* ∀ m, F m) {m m' : M} (h : m' ≠ m)
     (t : TransvectionStruct ι (F m)) :
@@ -56,7 +56,7 @@ lemma mapMatrix_liftT_ne (e : K ≃+* ∀ m, F m) {m m' : M} (h : m' ≠ m)
     Pi.single_eq_of_ne h, single_zero, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `T with`. Consider the case `nil => simp`. Consider the case `cons t T ih => simp only [List.map_cons, List.prod_cons, map_mul, ih, mapMatrix_liftT_same]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma mapMatrix_prod_same (e : K ≃+* ∀ m, F m) (m : M) (T : List (TransvectionStruct ι (F m))) :
     (coord e m).mapMatrix (((T.map (liftT e m)).map TransvectionStruct.toMatrix).prod) =
@@ -66,7 +66,7 @@ lemma mapMatrix_prod_same (e : K ≃+* ∀ m, F m) (m : M) (T : List (Transvecti
   | cons t T ih => simp only [List.map_cons, List.prod_cons, map_mul, ih, mapMatrix_liftT_same]
 
 /- English proof (translation)
-Proceed by induction on `T with`. Consider the case `nil => simp`. Consider the case `cons t T ih`. Simplify using `only [List.map_cons, List.prod_cons, map_mul, ih, mapMatrix_liftT_ne e h, mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 lemma mapMatrix_prod_ne (e : K ≃+* ∀ m, F m) {m m' : M} (h : m' ≠ m)
     (T : List (TransvectionStruct ι (F m))) :
@@ -81,11 +81,11 @@ noncomputable def big (e : K ≃+* ∀ m, F m) (T : ∀ m, List (TransvectionStr
   l.flatMap fun m => (T m).map (liftT e m)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [big]`. Consider the case `cons m l ih`. Establish `ih'` using `ih (List.nodup_cons.mp hl).2`. Establish `hm : m ∉ l` using `(List.nodup_cons.mp hl).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : big e T (m :: l) = (T m).map (liftT e m) ++ big e T l` using `by simp [big]`. Rewrite using `[hb, List.map_append, List.prod_append, map_mul, ih']`. Distinguish the cases in `h : m' = m`. Substitute `h` using the available equality. Rewrite using `[mapMatrix_prod_same]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hm]`. Rewrite using `[mapMatrix_prod_ne e h, one_mul]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mapMatrix_big (e : K ≃+* ∀ m, F m) (T : ∀ m, List (TransvectionStruct ι (F m)))
     (m' : M) (l : List M) (hl : l.Nodup) :
@@ -106,7 +106,7 @@ lemma mapMatrix_big (e : K ≃+* ∀ m, F m) (T : ∀ m, List (TransvectionStruc
       simp [h]
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Use `congrFun (congrFun (h m) a) b` as an intermediate fact. Simplify `this` using `[coord]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma matrix_ext_coord (e : K ≃+* ∀ m, F m) {A B : Matrix ι ι K}
     (h : ∀ m, (coord e m).mapMatrix A = (coord e m).mapMatrix B) : A = B := by
@@ -117,11 +117,11 @@ lemma matrix_ext_coord (e : K ≃+* ∀ m, F m) {A B : Matrix ι ι K}
   simpa [coord] using this
 
 /- English proof (translation)
-Use `choose L L' D hD using fun m => hF m ((coord e m).mapMatrix A)`. Use `⟨big e L Finset.univ.toList, big e L' Finset.univ.toList, fun i => e.symm (fun m => D m i), matrix_ext_coord e fun m => ?_⟩` and prove the remaining obligations. Establish `hnd` using `Finset.nodup_toList (Finset.univ : Finset M)`. Establish `hdiag : (coord e m).mapMatrix (diagonal fun i => e.symm (fun m => D m i)) = diagonal (D m)`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[coord]`. Simplify using `[hab]`. Rewrite using `[map_mul, map_mul, mapMatrix_big e L m _ hnd, mapMatrix_big e L' m _ hnd, hdiag]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hD m`.
+A detailed English derivation is pending.
 -/
 theorem factor_of_pi [Fintype M] (e : K ≃+* ∀ m, F m)
     (hF : ∀ (m : M) (A : Matrix ι ι (F m)),
@@ -150,7 +150,7 @@ end GlobalTheory.CompanionTheory.SW.ArtinElem
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Use `letI : Fintype (MaximalSpectrum K) := Fintype.ofFinite _`. Use `ArtinElem.factor_of_pi (F := fun m : MaximalSpectrum K => K ⧸ m.asIdeal) (IsArtinianRing.equivPi K).toRingEquiv (fun m B => ?_) A` and prove the remaining obligations. Use `letI : Field (K ⧸ m.asIdeal) := Ideal.Quotient.field m.asIdeal`. Conclude with `Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec B`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem artinian_reduced_list_transvec_mul_diagonal_mul_list_transvec
     (K : Type) [CommRing K] [IsArtinianRing K] [IsReduced K] (ι : Type) [Fintype ι]

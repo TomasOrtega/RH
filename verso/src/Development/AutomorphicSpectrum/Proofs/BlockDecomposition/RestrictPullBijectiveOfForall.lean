@@ -8,7 +8,7 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers Crystal
 namespace GlobalTheory.CompanionTheory.OmRes
 
 /- English proof (translation)
-Introduce `R _ C _ F Q h n`. Use `haveI : Q.ι.EssSurj := ⟨fun Y => ⟨⟨Y, h Y⟩, ⟨Iso.refl _⟩⟩⟩`. Use `haveI : Q.ι.IsEquivalence := { }`. Conclude with `CrystallineSemistableComparison.P.adj F Q.ι Q.ι.inv Q.ι.asEquivalence.toAdjunction n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restrict_pull_bijective_of_forall :
     ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R)

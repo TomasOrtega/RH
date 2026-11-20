@@ -31,11 +31,11 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.PtTie
 
 /- English proof (translation)
-Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu` using `[zero_pow hm.ne']`. Conclude with `zero_ne_one hu`. Establish `h1 : m • v u = 0` using `by rw [← AddValuation.map_pow, hu, AddValuation.map_one]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : v u ≠ ⊤` using `by rwa [Ne, AddValuation.top_iff]`. Use `lift v u to ℚ using ht with q hq`. Establish `h3 : m • q = 0` using `by exact_mod_cast h1`. Rewrite `h3` using `[nsmul_eq_mul]`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `absurd h (by exact_mod_cast hm.ne')`. Rewrite using `[h]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem addVal_eq_zero_of_pow_eq_one {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) (u : F) (m : ℕ) (hm : 0 < m)
     (hu : u ^ m = 1) : v u = 0 := by
@@ -53,7 +53,7 @@ theorem addVal_eq_zero_of_pow_eq_one {F : Type} [Field F] (v : AddValuation F (W
   · rw [h]; rfl
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, AddValuation.map_mul, hu, ih, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_prod_eq_zero {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {K : Type} (s : Finset K) (u : K → F)
     (hu : ∀ i, v (u i) = 0) : v (∏ i ∈ s, u i) = 0 := by
@@ -63,7 +63,7 @@ theorem addVal_prod_eq_zero {F : Type} [Field F] (v : AddValuation F (WithTop �
   rw [Finset.prod_insert ha, AddValuation.map_mul, hu, ih, add_zero]
 
 /- English proof (translation)
-Simplify using `only [boxSer, map_smul]`. Simplify using `only [Algebra.smul_def, Finset.prod_mul_distrib, map_prod]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem boxSer_smul {k : Type} [CommRing k] {n d : ℕ} (u : Fin n → k) (f : Fin n → PS k 1 d) :
     boxSer (fun i => u i • f i) = (∏ i, u i) • boxSer f := by
@@ -73,25 +73,23 @@ theorem boxSer_smul {k : Type} [CommRing k] {n d : ℕ} (u : Fin n → k) (f : F
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c nab hnab T io y C hFT P hTors hAlg ϖ hϖ Q hQ F _ _ _ _ _ _ v hv n D' A' G' _ _ pD pA pG U' PU _ oD' hxe hoD α N hN hα hMb θ θα hθ hθα p w ζ x t₀ t q e σ' h hw hζ hFin hQk hPhi hSm hExp hGerm hx`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Substitute `hN` using the available equality. Take `rfl : q = l.M` from `by rw [← e, Nat.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hodd : Odd l.M` using `l.odd`. Establish `h1 : 1 ≤ l.M` using `le_trans (by norm_num) l.three_le`. Take `⟨τ, hτG, hτEL, hτT⟩` from `frame1St_holds E H T.V C.I.G P (chD C.ch) C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.15 C.17 C.18`. Establish `hUJ : IsUnivJ C.I.G.G (Fin 1 × Fin (chD C.ch)) C.xT` using `GlobalTheory.T.universal_statement E H Dw l Xo c T io y C`. Establish `hAG` using `GlobalTheory.GermBasic.main T.V _ _ _ P.U _ C.xT hUJ τ hτG F l.M`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : Algebra c.F F := ((algebraMap T.Fr F).comp io).toAlgebra`. Set `φ : T.Fr →ₐ[c.F] F` to `{ algebraMap T.Fr F with commutes' := fun _ => rfl }`. Take `⟨yF, hyF⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1 E H Dw l Xo c T.Fr F φ y.1`. Take `⟨θ₁, θα₁, hθ₁, hθα₁, hcol⟩` from `GlobalTheory.OneColTranslate.oneColumn_translate E H Dw l Xo c T io y.1 C.I P ϖ hϖ F φ rfl yF hyF α l.M hodd hα`. Take `⟨u₀, p₁, w₁, ζ₁, r₀, r, σ₁, f, hu₀, hhf, hcols⟩` from `GlobalTheory.ColumnSplit.main E H Dw l Xo c T io y C hFT P hTors hAlg ϖ hϖ Q hQ F v hv n D' A' G' pD pA pG U' PU oD' hxe hoD τ hτG hτEL α l.M h1 hα θ₁ θα₁ hθ₁ hθα₁ θ θα hθ hθα p w ζ x t₀ t l.M e σ' h hw hζ hFin hQk hPhi hSm hExp hGerm`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hall` using `fun i => hcol (p₁ i) (w₁ i) (ζ₁ i) (x ≫ pA.pr i) (r₀ i) (r i) (σ₁ i) (hcols i).1 (hcols i).2.1 (hcols i).2.2.1 ((Category.assoc _ _ _).trans (hx i)) (hcols i).2.2.2.1 (hcols i).2.2.2.2.1 (hcols i).2.2.2.2.2.1`. Use `choose U B HH S0 hU hB hTP hTie hσ using hall`. Establish `hex : ∀ i, ∃ g, GermA P.U.toUnifPre C.xT τ F l.M (S0 i) g` using `fun i => hAG.2.2 (hτT hFT) (S0 i)`. Use `choose f' hf' using hex`. Establish `hff : ∀ i, f i = U i • f' i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hlin` using `hAG.2.1 1 (fun _ => U i) (fun _ => S0 i) (fun _ => f' i) (σ₁ i) (fun _ => hf' i) (by intro jj; rw [Fin.sum_univ_one]; exact hσ i jj)`. Use `hAG.1 (σ₁ i) _ _ (hcols i).2.2.2.2.2.2 hlin` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh2 : h = (u₀ * ∏ i, U i) • boxSer f'`. Rewrite using `[hhf, show f = fun i => U i • f' i from funext hff, boxSer_smul, smul_smul]`. Establish `hv0 : v (u₀ * ∏ i, U i) = 0`. Rewrite using `[AddValuation.map_mul, hu₀, zero_add]`. Use `addVal_prod_eq_zero v Finset.univ U (fun i => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hum⟩` from `hU i`. Conclude with `addVal_eq_zero_of_pow_eq_one v (U i) m hm hum`. Establish `hT` using `GlobalTheory.harmonic_value_of_tied_sections E H Dw l Xo c nab hnab T io y C P τ hτG hτEL F φ rfl yF hyF l.M n S0 HH f' hTie hf'`. Take `⟨xx, Fs, hFs, hA⟩` from `GlobalTheory.AlphaForm.alphaForm_at_point E H Dw l Xo c nab hnab F yF α hα hMb n B HH hB hTP`. Use `⟨xx, u₀ * ∏ i, U i, hv0, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a Pp hP fth hth`. Establish `h9918` using `GlobalTheory.PtTie.evI_eq_thExpr_ext E H Dw l Xo c nab hnab T io y F φ rfl yF hyF a n xx Pp hP Fs hFs fth hth`. Establish `key : ∀ (g : PS F n (chD C.ch)) (s : F), nabValN C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 l.M (s • g) (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i)) (MvPolynomial.map ((algebraMap T.Fr F).comp io) Pp) = s * n …`. Introduce `g s`. Use `(GlobalTheory.PowGerm.nabJet _ _ _ C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 l.M n (LtN Dw n) (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i))).2.1 (MvPolynomial.map ((algebraMap T.Fr F).comp io) Pp) (Fin 1) (fu …` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.sum_univ_one] at this`. Conclude with `this`. Establish `hT'` using `hT a Pp hP`. Rewrite `hT'` using `[hA a Pp hP]`. Rewrite using `[hh2, key, map_mul, h9918]`.
-
-Conclude with `congrArg (fun z => (u₀ * ∏ i, U i) * z) hT'.symm`.
+A detailed English derivation is pending.
 -/
 theorem harmonicValue_translate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT → ∀ (P : PELUnif (maximalIdeal T.V) C.I.G), P.TorsionIso → y.IsAlg → ∀ (ϖ : T.V), Irreducible ϖ → ∀ (Q : P.D.toPre.X → ℤ), IsQ P.D.toPre ϖ Q → ∀ (F : Type) [Field F] [IsAlgClosed F] [CharZero F] [Algebra T.Fr F] [Algebra T.V F] [IsScalarTower T.V T.Fr F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ (n : ℕ) (D' : DegData T.V (maximalIdeal T.V)) (A' : PolAV (Spec (CommRingCat.of T.Fr))) (G' : Over (Sp T.V)) [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre P.D.toPre n) (pA : IsPowPolAV A' P.A n) (pG : IsPowGrp G' C.I.G.G n) (U' : Unif (maximalIdeal T.V) D' A' G') (PU : UnifPowOf3 pD pA pG U' P.U) [Module (𝓞 E) D'.toPre.X] (oD' : D'.toPre.OAct (𝓞 E)), (∀ (a : 𝓞 E) (x : D'.toPre.X) (i : Fin n), pD.xe (a • x) i = a • pD.xe x i) → (∀ (a : 𝓞 E) (i : Fin n), oD'.onB.act a ≫ pD.pw.pr i = pD.pw.pr i ≫ P.oD.onB.act a) → ∀ (α : 𝓞 E) (N : ℕ), N = l.M → α * star α = (N : 𝓞 E) → l.Mb = Ideal.span {star α} → ∀ (θ : Fam D'.toPre F 1) (θα : Fam D'.toPre F (1 * N)), ThFrame D' ϖ F θ → PullAl D' F oD' α 1 N θ θα → ∀ (p : QkPt D'.toPre F (1 * N)) (w : LB.Gen (LB.LinComb D'.toPre.P.L (DegPre.lineφ D'.toPre F p.g.b) (DegPre.lineε (1 * N)))) (ζ : F) (x : TFK (R := T.V) F ⟶ A'.A) (t₀ t : Fam D'.toPre F (1 * N)) (q : ℕ) (e : 1 * N = q) (σ' : U'.toUnifPre.SecGF F q) (h : PS F n (chD C.ch)), w.IsGen → ζ ≠ 0 → FinOrd D' F (1 * N) p w ζ → QkToAkU U'.toUnifPre F (1 * N) p x → PhiRel D'.toPre F (1 * N) p w θα t₀ → Fam.IsSmul D'.toPre F ζ t₀ t → U'.toUnifPre.ExpandsG F q σ' (PowGerm.famCast (Dp := D'.toPre) (F := F) e t) → IsGermN P C.xT C.actT C.eT C.wPT pG PU.toUnifPowOf F q σ' h → (∀ k, x ≫ pA.pr k ≫ P.oA.act (star α) = 1) → letI := io.toAlgebra; ∃ (xx : Fin n → Dw.La) (u : F), v u = 0 ∧ ∀ (a : ((E →+* ℂ) × ℕ → ℕ)) (Pp : MvPolynomial (LtN Dw n) c.F), Pp ∈ harmA c a n → ∀ f, IsThRule Xo c nab xx Pp f → nabValN C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 q h (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i)) (MvPolynomial.map ((algebraMap T.Fr F).comp io) Pp) = u * algebraMap T.Fr F (io (nrm Dw c a α) * evI y f) := by
   intro E _ _ _ H Dw l Xo c nab hnab T io y C hFT P hTors hAlg ϖ hϖ Q hQ F _ _ _ _ _ _ v hv n D' A' G' _ _ pD pA pG

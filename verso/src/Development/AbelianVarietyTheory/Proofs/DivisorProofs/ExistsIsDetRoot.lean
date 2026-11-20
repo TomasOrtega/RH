@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DetOnto
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y h`. Take `⟨a, ha, x, rfl⟩` from `h`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, ⟨D.sp.cm.sig x, (x.2 : IsIntegral ℤ (x : D.host.E)).map D.sp.cm.sig.toRingHom.toIntAlgHom⟩, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sigR_mem_intAE (D : D7) {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE D) :
     sigR (Af D.host.F) D.sp.cm.sig y ∈ intAE D := by
@@ -27,7 +27,7 @@ theorem sigR_mem_intAE (D : D7) {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y
   | neg a _ ha => rw [map_neg]; exact neg_mem ha
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => exact congrArg (fun x => a ⊗ₜ[D.host.F] x) (star_star b)`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (D : D7) (a : Af D.host.F ⊗[D.host.F] D.host.E) :
     sigR (Af D.host.F) D.sp.cm.sig (sigR (Af D.host.F) D.sp.cm.sig a) = a := by
@@ -37,7 +37,7 @@ theorem sigR_sigR (D : D7) (a : Af D.host.F ⊗[D.host.F] D.host.E) :
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Apply `e.injective` to reduce the goal to its premises. Conclude with `Prod.ext ((he a).1.trans (h1.trans (he b).1.symm)) ((he a).2.trans (h2.trans (he b).2.symm))`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ext_parts (D : D7) {a b : AE D} (h1 : infPart D a = infPart D b) (h2 : finPart D a = finPart D b) :
     a = b := by
@@ -46,7 +46,7 @@ theorem ext_parts (D : D7) {a b : AE D} (h1 : infPart D a = infPart D b) (h2 : f
   exact Prod.ext ((he a).1.trans (h1.trans (he b).1.symm)) ((he a).2.trans (h2.trans (he b).2.symm))
 
 /- English proof (translation)
-Establish `h'` using `congrArg σ h`. Rewrite `h'` using `[map_mul, map_one]`. Rewrite using `[map_mul, hσ]`. Take the linear combination `(σ a * σ b) * h + h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem norm_one {R : Type} [CommRing R] (σ : R →+* R) (hσ : ∀ a, σ (σ a) = a) {a b : R} (h : a * b = 1) :
     a * σ b * σ (a * σ b) = 1 := by
@@ -56,7 +56,7 @@ theorem norm_one {R : Type} [CommRing R] (σ : R →+* R) (hσ : ∀ a, σ (σ a
   linear_combination (σ a * σ b) * h + h'
 
 /- English proof (translation)
-Establish `h : infHom V k = 1` using `hk`. Establish `h' : (infHom V k).1.det = infPart D (matHom V k).1.det` using `((infPart D).map_det _).symm`. Rewrite using `[← h', h, Units.val_one, Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_det {D : D7} (V : HSp D) (k : GA D V) (hk : k ∈ GfC V) : infPart D (matHom V k).1.det = 1 := by
   have h : infHom V k = 1 := hk
@@ -64,14 +64,14 @@ theorem infPart_det {D : D7} (V : HSp D) (k : GA D V) (hk : k ∈ GfC V) : infPa
   rw [← h', h, Units.val_one, Matrix.det_one]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.DetRootCong.map_sigR _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem infPart_sigR (D : D7) (x : AE D) :
     infPart D (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D x) :=
   GlobalTheory.DetRootCong.map_sigR _ _ x
 
 /- English proof (translation)
-The claim follows from `(finPart D).map_det _`.
+A detailed English derivation is pending.
 -/
 theorem finPart_det {D : D7} (V : HSp D) (k : GA D V) : finPart D (matHom V k).1.det = (finHom V k).1.det :=
   (finPart D).map_det _

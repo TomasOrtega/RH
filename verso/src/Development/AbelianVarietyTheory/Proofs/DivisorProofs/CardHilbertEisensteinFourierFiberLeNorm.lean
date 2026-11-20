@@ -17,7 +17,7 @@ def toIdeal (K : FractionalIdeal (𝓞 F)⁰ F) : Ideal (𝓞 F) :=
   open Classical in if h : K ≤ 1 then (le_one_iff_exists_coeIdeal.mp h).choose else ⊥
 
 /- English proof (translation)
-Unfold `toIdeal`. Rewrite using `[dif_pos h]`. Conclude with `(le_one_iff_exists_coeIdeal.mp h).choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_toIdeal {K : FractionalIdeal (𝓞 F)⁰ F} (h : K ≤ 1) :
     ((toIdeal K : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = K := by
@@ -26,48 +26,44 @@ theorem coe_toIdeal {K : FractionalIdeal (𝓞 F)⁰ F} (h : K ≤ 1) :
   exact (le_one_iff_exists_coeIdeal.mp h).choose_spec
 
 /- English proof (translation)
-Unfold `nrm`. Conclude with `absNorm_nonneg _` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nrm_nonneg (𝔞 : Frac F) : 0 ≤ nrm 𝔞 := by
   unfold nrm; exact_mod_cast absNorm_nonneg _
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Conclude with `⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem emb_nonempty [IsTotallyReal F] : Nonempty (Emb F) := by
   obtain ⟨φ⟩ : Nonempty (F →+* ℂ) := inferInstance
   exact ⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟 ξ s hs`. Break down `s.eq_empty_or_nonempty with rfl | ⟨c0, hc0⟩` into its components or cases. Simplify using `only [Finset.card_empty, Nat.cast_zero]`. Conclude with `div_nonneg (abs_nonneg _) (mul_nonneg (nrm_nonneg 𝔞) (nrm_nonneg 𝔟))`. Establish `hA : ((𝔞 : FractionalIdeal (𝓞 F)⁰ F)) ≠ 0` using `𝔞.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ((𝔟 : FractionalIdeal (𝓞 F)⁰ F)) ≠ 0` using `𝔟.ne_zero`. Establish `hξ : ξ ≠ 0`. Take `⟨τ⟩` from `emb_nonempty (F := F)`. Establish `h` using `c0.out.2.2.2 τ`. Rewrite `h` using `[hs c0 hc0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `h` using `[h0, map_zero]`. Conclude with `lt_irrefl _ h`. Establish `hle : ∀ c : Quotient (qRel 𝔞 𝔟), spanSingleton (𝓞 F)⁰ c.out.1.1 * (𝔞 : FractionalIdeal (𝓞 F)⁰ F)⁻¹ ≤ 1` using `fun c => by`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIle : ∀ c ∈ s, spanSingleton (𝓞 F)⁰ ξ * (𝔞 : FractionalIdeal (𝓞 F)⁰ F)⁻¹ * (𝔟 : FractionalIdeal (𝓞 F)⁰ F)⁻¹ ≤ spanSingleton (𝓞 F)⁰ c.out.1.1 * (𝔞 : FractionalIdeal (𝓞 F)⁰ F)⁻¹`. Introduce `c hc`. Establish `hb : spanSingleton (𝓞 F)⁰ c.out.1.2 * (𝔟 : FractionalIdeal (𝓞 F)⁰ F)⁻¹ ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hs c hc, ← spanSingleton_mul_spanSingleton]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hI1` using `(hIle c0 hc0).trans (hle c0)`. Use `set I := toIdeal (spanSingleton (𝓞 F)⁰ ξ * (𝔞 : FractionalIdeal (𝓞 F)⁰ F)⁻¹ * (𝔟 : FractionalIdeal (𝓞 F)⁰ F)⁻¹) with hIdef`. Set `f : Quotient (qRel 𝔞 𝔟) → Ideal (𝓞 F)` to `fun c => toIdeal (spanSingleton (𝓞 F)⁰ c.out.1.1 * (𝔞 : FractionalIdeal (𝓞 F)⁰ F)⁻¹)`. Establish `hIJ : ∀ c ∈ s, I ≤ f c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c hc`. Rewrite using `[← coeIdeal_le_coeIdeal F, coe_toIdeal hI1, coe_toIdeal (hle c)]`. Conclude with `hIle c hc`. Establish `hI0 : I ≠ ⊥`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h'` using `coe_toIdeal hI1`. Rewrite `h'` using `[← hIdef, h, coeIdeal_bot]`. Use `h'.symm` as an intermediate fact. Simplify using `only [mul_eq_zero, spanSingleton_eq_zero_iff, inv_eq_zero] at this`. The claim follows by propositional logic.
+The claim follows by propositional logic. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Set.InjOn f s`. Introduce `c hc c' hc' hcc`. Establish `h1 : spanSingleton (𝓞 F)⁰ c.out.1.1 * (𝔞 : FractionalIdeal (𝓞 F)⁰ F)⁻¹ = spanSingleton (𝓞 F)⁰ c'.out.1.1 * (𝔞 : FractionalIdeal (𝓞 F)⁰ F)⁻¹`. Rewrite using `[← coe_toIdeal (hle c), ← coe_toIdeal (hle c')]`. Conclude with `congrArg _ hcc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_right_cancel₀ (inv_ne_zero hA) h1`. Take `⟨u, hu⟩` from `spanSingleton_eq_spanSingleton.mp h2`. Rewrite `hu` using `[Units.smul_def, Algebra.smul_def]`. Establish `hν : c.out.1.1 ≠ 0` using `left_ne_zero_of_mul (by rw [hs c hc]; exact hξ)`. Establish `hu0 : algebraMap (𝓞 F) F (u : 𝓞 F) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]`. Conclude with `u.ne_zero`. Establish `h4 : algebraMap (𝓞 F) F (u : 𝓞 F) * (((u⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) = 1`. Rewrite using `[mul_comm]`. Conclude with `unit_inv_mul u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hs c hc`. Establish `e2` using `hs c' hc'`. Rewrite `e2` using `[← hu]`. Establish `hb : c'.out.1.2 = (((u⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * c.out.1.2`. Apply `mul_left_cancel₀ (mul_ne_zero hu0 hν)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `e2 - e1 - c.out.1.1 * c.out.1.2 * h4`. Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c']`. Apply `Quotient.sound` to reduce the goal to its premises. Use `⟨u⁻¹, ?_, hb⟩` and prove the remaining obligations. Rewrite using `[inv_inv, ← hu]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : (FractionalIdeal.absNorm ((I : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) : ℚ) = |Algebra.norm ℚ ξ| / (FractionalIdeal.absNorm (𝔞 : FractionalIdeal (𝓞 F)⁰ F) * FractionalIdeal.absNorm (𝔟 : FractionalIdeal (𝓞 F)⁰ F))`. Rewrite using `[coe_toIdeal hI1, map_mul, map_mul, map_inv₀, map_inv₀, absNorm_span_singleton]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[coeIdeal_absNorm]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `GlobalTheory.T.card_divisors_le_absNorm_numberField F I hI0 (s.image f) (by` after adjusting the coercions. Introduce `J hJ`. Take `⟨c, hc, rfl⟩` from `Finset.mem_image.mp hJ`. Conclude with `hIJ c hc)`. Use `_ = _ := by`.
-
-Unfold `nrm`. Use `congrArg (Rat.cast : ℚ → ℝ) key` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem card_le_norm : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔞 𝔟 : Frac F) (ξ : F)
     (s : Finset (Quotient (qRel 𝔞 𝔟))), (∀ c ∈ s, c.out.1.1 * c.out.1.2 = ξ) →

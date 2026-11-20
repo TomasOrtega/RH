@@ -28,7 +28,7 @@ variable {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n)
 end Conj
 
 /- English proof (translation)
-Establish `h2` using `congrArg (Multiset.map fun z : ℂ => ((n : ℂ) - 1) / 2 - z) h`. Simplify using `only [Multiset.map_map, Function.comp_def, sub_sub_cancel, Multiset.map_id', Int.cast_neg, sub_neg_eq_add] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem infOf_of_weights {n : ℕ} (m : Fin n → ℤ) (μ : Multiset ℂ)
     (h : (Finset.univ.val.map fun i => -m i).map (fun n : ℤ => (n : ℂ)) = μ.map fun z => ((n : ℂ) - 1) / 2 - z) :
@@ -38,9 +38,9 @@ private theorem infOf_of_weights {n : ℕ} (m : Fin n → ℤ) (μ : Multiset �
   exact h2.symm
 
 /- English proof (translation)
-Establish `hl : (l : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hu : ¬ IsUnit (l : 𝓞 F)` using `fun hu => by`. Establish `h` using `hu.map (Algebra.norm ℤ)`. Rewrite `h` using `[← map_natCast (algebraMap ℤ (𝓞 F)), Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne']`. Conclude with `(Nat.prime_iff_prime_int.1 Fact.out).not_unit h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {(l : 𝓞 F)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hmem : (l : 𝓞 F) ∈ P` using `hle (Ideal.mem_span_singleton_self _)`. Conclude with `⟨⟨P, hP.isPrime, fun h0 => hl (by rw [h0] at hmem; exact hmem)⟩, hmem⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_over (F : Type) [Field F] [NumberField F] (l : ℕ) [Fact l.Prime] :
     ∃ w : HeightOneSpectrum (𝓞 F), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal := by

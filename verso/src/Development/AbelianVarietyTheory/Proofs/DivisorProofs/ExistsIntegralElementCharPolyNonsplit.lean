@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.ExInertUnit
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_hermitian_form_char_poly`.
+A detailed English derivation is pending.
 -/
 theorem globalForm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (P : E[X]), P ∈ Ell E n →
     ∃ M G : Matrix (Fin n) (Fin n) E, M.charpoly = P ∧ IsUnit G ∧
@@ -21,16 +21,16 @@ theorem globalForm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(algebraMap E (FiniteAdeleRing (𝓞 E) E) a).2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_mem_integers (a : E) :
     ∀ᶠ w : Pl E in cofinite, algebraMap E (w.adicCompletion E) a ∈ w.adicCompletionIntegers E :=
   (algebraMap E (FiniteAdeleRing (𝓞 E) E) a).2
 
 /- English proof (translation)
-Set `O : Subring (w.adicCompletion E)` to `Ov E w`. Establish `inj : Function.Injective (O.subtype.mapMatrix (m` using `Fin n)) := fun A B h => funext fun i => funext fun j => Subtype.ext (congrFun (congrFun h i) j)`. Set `A : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : O.subtype.mapMatrix A = g.val` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : O.subtype.mapMatrix B = (g⁻¹).val` using `rfl`. Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hA, hB, map_one, Units.inv_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_KGL_of_entries (w : Pl E) (g : GLw n w)
     (h1 : ∀ a b, g.val a b ∈ w.adicCompletionIntegers E)
@@ -47,7 +47,7 @@ theorem mem_KGL_of_entries (w : Pl E) (g : GLw n w)
   · rw [map_mul, hA, hB, map_one, Units.inv_mul]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hk`. Conclude with `(a.val i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entries_of_mem_KGL {w : Pl E} {k : GLw n w} (hk : k ∈ GlobalTheory.LFun.KGL w n) (i j : Fin n) :
     k.val i j ∈ w.adicCompletionIntegers E := by
@@ -55,7 +55,7 @@ theorem entries_of_mem_KGL {w : Pl E} {k : GLw n w} (hk : k ∈ GlobalTheory.LFu
   exact (a.val i j).2
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hA i k) (hB k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_entries {w : Pl E} {A B : Matrix (Fin n) (Fin n) (w.adicCompletion E)}
     (hA : ∀ i j, A i j ∈ w.adicCompletionIntegers E) (hB : ∀ i j, B i j ∈ w.adicCompletionIntegers E)
@@ -66,31 +66,27 @@ theorem mul_entries {w : Pl E} {A B : Matrix (Fin n) (Fin n) (w.adicCompletion E
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨-, -, hv, hns, -⟩` from `GlobalTheory.ConjAtPlace.main E hE w`. Take `⟨hconj, ⟨ϖ, q, hU, -⟩, -⟩` from `hns hw`. Set `f` to `algebraMap E (w.adicCompletion E)`. Set `c` to `(IsCMField.complexConj E).toRingEquiv.toRingHom`. Establish `hcT : ∀ A : Matrix (Fin n) (Fin n) E, cT (cj w) (f.mapMatrix A) = f.mapMatrix (cT c A)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `A`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, RingHom.mapMatrix_apply]`. Conclude with `hconj _`. Establish `hdet : IsUnit G.det` using `(Matrix.isUnit_iff_isUnit_det G).1 hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGu : IsUnit (f.mapMatrix G)` using `hG.map _`. Establish `hginv : ((hGu.unit)⁻¹ : GLw n w).val = f.mapMatrix G⁻¹`. Establish `h : f.mapMatrix G⁻¹ * f.mapMatrix G = 1`. Rewrite using `[← map_mul, Matrix.nonsing_inv_mul _ hdet, map_one]`. Rewrite using `[Matrix.coe_units_inv, IsUnit.unit_spec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.inv_eq_left_inv h`. Establish `hgK : hGu.unit ∈ GlobalTheory.LFun.KGL w n` using `mem_KGL_of_entries w _ (fun a b => by rw [IsUnit.unit_spec]; exact hG1 a b) (fun a b => by rw [hginv]; exact hG2 a b)`. Establish `hgh : cT (cj w) hGu.unit.val = hGu.unit.val`. Rewrite using `[IsUnit.unit_spec, hcT, hGh]`. Take `⟨k, hk, hkk⟩` from `GlobalTheory.LFun.InertChart.exists_norm hU hgK hgh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMu : IsUnit M`. Establish `h : (G⁻¹ * cT c M * G) * M = 1`. Establish `h'` using `hMG`. Simplify using `only [Matrix.mul_assoc] at h' ⊢`. Rewrite using `[h', Matrix.nonsing_inv_mul _ hdet]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det M).2 (Matrix.isUnit_det_of_left_inverse h)`. Establish `hMwu : IsUnit (f.mapMatrix M)` using `hMu.map _`. Establish `hmG : cT (cj w) hMwu.unit.val * hGu.unit.val * hMwu.unit.val = hGu.unit.val`. Rewrite using `[IsUnit.unit_spec, IsUnit.unit_spec, hcT, ← map_mul, ← map_mul, hMG]`. Establish `hkinv : cT (cj w) (k⁻¹ : GLw n w).val * cT (cj w) k.val = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← cT_mul, Units.mul_inv, cT_one]`. Use `set γ0 : GLw n w := k * hMwu.unit * k⁻¹ with hγ0`. Establish `hγU : cT (cj w) γ0.val * 1 * γ0.val = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hγ0, Units.val_mul, Units.val_mul, cT_mul, cT_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.mul_one]`. Use `_ = cT (cj w) (k⁻¹ : GLw n w).val * (cT (cj w) k.val * k.val) * (k⁻¹ : GLw n w).val := by`. Rewrite using `[hkk, hmG]`. Use `_ = 1 := by`. Simplify using `only [← Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hkinv, Matrix.one_mul, Units.mul_inv]`. Establish `hγUL : γ0 ∈ UL n w`. Rewrite using `[UL, if_neg hw]`. Conclude with `hγU`. Use `⟨⟨γ0, hγUL⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[KL, Subgroup.mem_subgroupOf]`. Establish `hinv : cT (cj w) γ0.val = (γ0⁻¹ : GLw n w).val`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `(Matrix.inv_eq_left_inv (by simpa using hγU)).symm`. Establish `hint : ∀ a b, γ0.val a b ∈ w.adicCompletionIntegers E`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[hγ0, Units.val_mul, Units.val_mul]`. Use `mul_entries (mul_entries (entries_of_mem_KGL hk) (fun i j => ?_)) (entries_of_mem_KGL (inv_mem hk)) a b` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`. Conclude with `hM i j`.
-
-Use `mem_KGL_of_entries w γ0 hint (fun a b => ?_)` and prove the remaining obligations. Rewrite using `[← hinv]`. Establish `h0` using `hint b a`. Rewrite `h0`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply]`.
-
-Rewrite using `[hv]`. Conclude with `h0`. Use `show (k.val * hMwu.unit.val * (k⁻¹ : GLw n w).val).charpoly = _`. Rewrite using `[Matrix.coe_units_inv, Matrix.charpoly_units_conj, IsUnit.unit_spec]`. Conclude with `Matrix.charpoly_map M f`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_step (hE : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (M G : Matrix (Fin n) (Fin n) E)
     (hG : IsUnit G) (hGh : cT (IsCMField.complexConj E).toRingEquiv.toRingHom G = G)
@@ -171,9 +167,9 @@ theorem local_step (hE : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (M G : Matrix (
     exact Matrix.charpoly_map M f
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n _ P hP`. Take `⟨M, G, hMP, hG, hGh, hMG⟩` from `globalForm E n P hP`. Establish `h1 : ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (M i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => eventually_mem_integers _`. Establish `h2 : ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (G i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => eventually_mem_integers _`. Establish `h3 : ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (G⁻¹ i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => eventually_mem_integers _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h1, h2, h3] with w hw1 hw2 hw3 hw`. Take `⟨γ, hγ, hc⟩` from `local_step hE w hw M G hG hGh hMG hw1 hw2 hw3`. Conclude with `⟨γ, hγ, by rw [hc, hMP]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_integral_unitary_charpoly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ P ∈ Ell E n, ∀ᶠ w in cofinite, ¬ IsSplitAt w → ∃ γ : UL n w, γ ∈ KL n w ∧ γ.1.val.charpoly = atPl w P := by

@@ -8,23 +8,23 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.WeilRepresentation.
 namespace UpperTheory.Lit.Sw47
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.StdUnn.sw_doubled_of_std PositivityTheory.SiegelWeilCoefficients.field`.
+A detailed English derivation is pending.
 -/
 theorem convergent : GlobalTheory.Published.SiegelWeilUnitaryConvergent := GlobalTheory.StdUnn.sw_doubled_of_std PositivityTheory.SiegelWeilCoefficients.field
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.SiegelWeilFormulaUnitary.weilSiegelFormulaUnitary_of_two UpperTheory.Lit.weilThetaConvergence PositivityTheory.Rg.Wsf.weilSiegelFormula`.
+A detailed English derivation is pending.
 -/
 theorem weilUnitary : GlobalTheory.Published.WeilSiegelFormulaUnitary :=
   PositivityTheory.SiegelWeilFormulaUnitary.weilSiegelFormulaUnitary_of_two UpperTheory.Lit.weilThetaConvergence PositivityTheory.Rg.Wsf.weilSiegelFormula
 
 /- English proof (translation)
-The claim follows from `fa_of convergent weilUnitary`.
+A detailed English derivation is pending.
 -/
 theorem fa : FA := fa_of convergent weilUnitary
 
 /- English proof (translation)
-The claim follows from `fa D`.
+A detailed English derivation is pending.
 -/
 theorem fockAniso_free (_ : GlobalTheory.Published.SiegelWeilAnisotropicUnitary) (D : Formalism.BasicNotions.D7) :
     GlobalTheory.BottomRallis.SiegelWeilFockAniso D := fa D

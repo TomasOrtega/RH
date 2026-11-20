@@ -9,25 +9,21 @@ namespace GlobalTheory.InertiaDecomp
 open Pointwise
 
 /- English proof (translation)
-Introduce `l _ P K K' h hN hF hS g hg`. Use `haveI : Nontrivial P.R.B := by`. Assume the negation of the conclusion as `hB`. Establish `: Subsingleton P.R.B` using `not_nontrivial_iff_subsingleton.mp hB`. Apply `(P.PD K).not_mem_filtration_two` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim (P.PD K).t 0, map_zero]`. Conclude with `Submodule.zero_mem _`. Establish `hfix : ∀ x ∈ K0 K', (g : GQ l) x = x`. Introduce `x hx`. Establish `h1 : (P.PD K).actB g (algebraMap ↥(K0 K') P.R.B ⟨x, hx⟩) = algebraMap ↥(K0 K') P.R.B ⟨x, hx⟩` using `hg ⟨x, hx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[P.PD_actB]`. Establish `h2` using `P.actQ_Kur ((g : ↥(GK K)) : GQ l) ⟨x, hx.2⟩ ⟨_, GlobalTheory.TameInertiaCyclic.map_mem_Kur _ hx.2⟩ rfl`. Establish `h3` using `(algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).injective (h2.symm.trans h1)`. Conclude with `congrArg Subtype.val h3`. Use `haveI := K'.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Subgroup (GQ l)` to `(MaximalUnramifiedExtension l).fixingSubgroup ⊔ (K'.1).fixingSubgroup`. Establish `hSo : IsOpen (S : Set (GQ l))` using `Subgroup.isOpen_mono le_sup_right (IntermediateField.fixingSubgroup_isOpen K'.1)`. Set `SC : ClosedSubgroup (GQ l)` to `⟨S, Subgroup.isClosed_of_isOpen S hSo⟩`. Establish `hfe : IntermediateField.fixedField (SC : Subgroup (GQ l)) ≤ K0 K'`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`. Use `IntermediateField.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(InfiniteGalois.fixedField_fixingSubgroup K'.1).le ((IntermediateField.mem_fixedField_iff _ _).2 fun f hf => hx f (Subgroup.mem_sup_right hf))`. Conclude with `(InfiniteGalois.fixedField_fixingSubgroup (MaximalUnramifiedExtension l)).le ((IntermediateField.mem_fixedField_iff _ _).2 fun f hf => hx f (Subgroup.mem_sup_left hf))`. Establish `hgS : (g : GQ l) ∈ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `InfiniteGalois.fixingSubgroup_fixedField SC`. Establish `: (g : GQ l) ∈ (IntermediateField.fixedField (SC : Subgroup (GQ l))).fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `hfix x (hfe hx)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Conclude with `this`. Use `haveI := GlobalTheory.FrobGen.normal_fix (l := l)`. Establish `hgS' : (g : GQ l) ∈ ((MaximalUnramifiedExtension l).fixingSubgroup : Set (GQ l)) * ((K'.1).fixingSubgroup : Set (GQ l))`. Rewrite using `[← Subgroup.normal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgS`. Take `⟨b, hb, a, ha, hba⟩` from `hgS'`. Establish `haK : a ∈ GK K` using `GK_le h ha`. Establish `hbK : b ∈ GK K`. Establish `: b = (g : GQ l) * a⁻¹` using `by rw [← hba, mul_inv_cancel_right]`.
-
-Rewrite using `[this]`. Conclude with `mul_mem g.2 (inv_mem haK)`. Use `⟨⟨b, hbK⟩, Subgroup.subset_closure fun x hx => GlobalTheory.FrobGen.norm_sub_lt hb x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[GKin, Subgroup.mem_subgroupOf]`. Establish `: (((⟨b, hbK⟩ : ↥(GK K))⁻¹ * g : ↥(GK K)) : GQ l) = a`.
-
-Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, ← hba]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iner_decomp : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' : FinExt l) (h : K.1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : ↥(GK K)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), (P.PD K).actB g (algebraMap ↥(K0 K') P.R.B c) = algebraMap ↥(K0 K') P.R.B c') (g : ↥(GK K)), g ∈ (pc P h hN hF hS).Iner → ∃ s : ↥(GK K), s ∈ IK K ∧ s⁻¹ * g ∈ GKin h := by
   intro l _ P K K' h hN hF hS g hg

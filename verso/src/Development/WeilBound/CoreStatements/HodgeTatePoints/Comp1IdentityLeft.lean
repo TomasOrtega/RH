@@ -10,20 +10,20 @@ open ReciprocityTheory.ChartRestriction.G.TB.WickVanishing (eXv eZ swE coeff_ev_
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `cechDeRhamTotalCocyclesTwo Z_zero (Z_pt 0)`.
+A detailed English derivation is pending.
 -/
 theorem ZZa : ZZ (![0, pt R d 0] : Fin 2 → Pt R 1 d) := cechDeRhamTotalCocyclesTwo Z_zero (Z_pt 0)
 /- English proof (translation)
-The claim follows from `cechDeRhamTotalCocyclesTwo (Z_pt 0) Z_zero`.
+A detailed English derivation is pending.
 -/
 theorem ZZb : ZZ (![pt R d 0, 0] : Fin 2 → Pt R 1 d) := cechDeRhamTotalCocyclesTwo (Z_pt 0) Z_zero
 /- English proof (translation)
-The claim follows from `cechDeRhamTotalCocyclesTwo (Z_pt 1) (Z_pt 0)`.
+A detailed English derivation is pending.
 -/
 theorem ZZs : ZZ (![pt R d 1, pt R d 0] : Fin 2 → Pt R 2 d) := cechDeRhamTotalCocyclesTwo (Z_pt 1) (Z_pt 0)
 
 /- English proof (translation)
-Take `⟨hf1, hf2⟩` from `hf`. Take `⟨hg1, hg2⟩` from `hg`. Conclude with `⟨by rw [ev_mul _ ZZa, hf1, hg1, one_mul], by rw [ev_mul _ ZZb, hf2, hg2, one_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem axOne_mul {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) : AxOne (f * g) := by
   obtain ⟨hf1, hf2⟩ := hf
@@ -31,9 +31,9 @@ theorem axOne_mul {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) : AxOne (f * g)
   exact ⟨by rw [ev_mul _ ZZa, hf1, hg1, one_mul], by rw [ev_mul _ ZZb, hf2, hg2, one_mul]⟩
 
 /- English proof (translation)
-Establish `h` using `ev_ev ZZa (cechDeRhamTotalCocyclesOne ha) f`. Rewrite `h` using `[hf.1, ev_one]`. Rewrite using `[h]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases j`. Simplify using `[evalPoints_zero (cechDeRhamTotalCocyclesOne ha)]`. Simplify using `[evalPoints_coordinatePoint (cechDeRhamTotalCocyclesOne ha)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ax_left {f : PS R 2 d} (hf : AxOne f) {n : ℕ} {a : Pt R n d} (ha : Z a) : ev ![0, a] f = 1 := by
   have h := ev_ev ZZa (cechDeRhamTotalCocyclesOne ha) f
@@ -46,9 +46,9 @@ theorem ax_left {f : PS R 2 d} (hf : AxOne f) {n : ℕ} {a : Pt R n d} (ha : Z a
   · simp [evalPoints_coordinatePoint (cechDeRhamTotalCocyclesOne ha)]
 
 /- English proof (translation)
-Establish `h` using `ev_ev ZZb (cechDeRhamTotalCocyclesOne ha) f`. Rewrite `h` using `[hf.2, ev_one]`. Rewrite using `[h]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases j`. Simplify using `[evalPoints_coordinatePoint (cechDeRhamTotalCocyclesOne ha)]`. Simplify using `[evalPoints_zero (cechDeRhamTotalCocyclesOne ha)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ax_right {f : PS R 2 d} (hf : AxOne f) {n : ℕ} {a : Pt R n d} (ha : Z a) : ev ![a, 0] f = 1 := by
   have h := ev_ev ZZb (cechDeRhamTotalCocyclesOne ha) f
@@ -61,7 +61,7 @@ theorem ax_right {f : PS R 2 d} (hf : AxOne f) {n : ℕ} {a : Pt R n d} (ha : Z 
   · simp [evalPoints_zero (cechDeRhamTotalCocyclesOne ha)]
 
 /- English proof (translation)
-Rewrite using `[coeff_ev_zero_right, Finsupp.embDomain_single]`. Establish `h0 : (Finsupp.single (eXv d ((0 : Fin 1), i)) m) ((1 : Fin 2), j) = 0` using `by show (Finsupp.single ((0 : Fin 2), i) m) ((1 : Fin 2), j) = 0`. Simplify using `[Finsupp.single_apply]`. Rewrite using `[← coeff_add_single _ _ h0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bil_right (f : PS R 2 d) (m : ℕ) (i j : Fin d) :
     bil f m 1 i j = coeff (Finsupp.single ((0 : Fin 1), i) m)
@@ -74,7 +74,7 @@ theorem bil_right (f : PS R 2 d) (m : ℕ) (i j : Fin d) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bil, Matrix.transpose_apply]`. Rewrite using `[coeff_ev_swap', Finsupp.embDomain_add, Finsupp.embDomain_single, Finsupp.embDomain_single, add_comm]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bil_swap (f : PS R 2 d) (m n : ℕ) :
     bil (ev (n := 2) ![pt R d 1, pt R d 0] f) m n = (bil f n m).transpose := by
@@ -84,9 +84,9 @@ theorem bil_swap (f : PS R 2 d) (m n : ℕ) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[ev_ev ZZs ZZa]`. Use `hf.2 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_coordinatePoint ZZa]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[ev_ev ZZs ZZb]`. Use `hf.1 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_coordinatePoint ZZb]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem axOne_swap {f : PS R 2 d} (hf : AxOne f) : AxOne (ev (n := 2) ![pt R d 1, pt R d 0] f) := by
   constructor
@@ -100,7 +100,7 @@ theorem axOne_swap {f : PS R 2 d} (hf : AxOne f) : AxOne (ev (n := 2) ![pt R d 1
     fin_cases j <;> simp [evalPoints_coordinatePoint ZZb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, bil_right, bil_right, bil_right, Derivation.leibniz, smul_eq_mul, smul_eq_mul, ev_add _ ZZb, ev_mul _ ZZb, ev_mul _ ZZb, hf.2, hg.2, one_mul, one_mul, map_add, add_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem bil_mul_left {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) (m : ℕ) :
     bil (f * g) m 1 = bil f m 1 + bil g m 1 := by
@@ -109,7 +109,7 @@ theorem bil_mul_left {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) (m : ℕ) :
     ev_add _ ZZb, ev_mul _ ZZb, ev_mul _ ZZb, hf.2, hg.2, one_mul, one_mul, map_add, add_comm]
 
 /- English proof (translation)
-Establish `key : ∀ h : PS R 2 d, bil h 1 n = (bil (ev (n` using `2) ![pt R d 1, pt R d 0] h) n 1).transpose := by`. Introduce `h`. Rewrite using `[bil_swap, Matrix.transpose_transpose]`. Rewrite using `[key (f * g), key f, key g, ev_mul _ ZZs, bil_mul_left (axOne_swap hf) (axOne_swap hg), Matrix.transpose_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem bil_mul_right {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) (n : ℕ) :
     bil (f * g) 1 n = bil f 1 n + bil g 1 n := by
@@ -120,9 +120,9 @@ theorem bil_mul_right {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) (n : ℕ) :
     Matrix.transpose_add]
 
 /- English proof (translation)
-Establish `ha : ZZ (![comp1 φ (pt R d 0), comp1 ψ (pt R d 1)] : Fin 2 → Pt R 2 d)` using `cechDeRhamTotalCocyclesTwo (Z_comp1 hφ (Z_pt 0)) (Z_comp1 hψ (Z_pt 1))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ev_ev ha ZZa]`. Use `ax_left hf (Z_comp1 hψ (Z_pt (n := 1) (d := d) (R := R) 0)) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZa, evalPoints_coordinatePoint ZZa, germComp1_zero_of_noConstantCoeff hφ, Z_pt]`. Rewrite using `[ev_ev ha ZZb]`. Use `ax_right hf (Z_comp1 hφ (Z_pt (n := 1) (d := d) (R := R) 0)) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZb, evalPoints_coordinatePoint ZZb, germComp1_zero_of_noConstantCoeff hψ, Z_pt]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem axOne_comp {f : PS R 2 d} (hf : AxOne f) {φ ψ : Pt R 1 d} (hφ : Z φ) (hψ : Z ψ) :
     AxOne (ev (n := 2) ![comp1 φ (pt R d 0), comp1 ψ (pt R d 1)] f) := by
@@ -139,7 +139,7 @@ theorem axOne_comp {f : PS R 2 d} (hf : AxOne f) {φ ψ : Pt R 1 d} (hφ : Z φ)
     fin_cases j <;> simp [evalPoints_comp ZZb, evalPoints_coordinatePoint ZZb, germComp1_zero_of_noConstantCoeff hψ, Z_pt]
 
 /- English proof (translation)
-Use `show coeff (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), j) 1) f = _`. Rewrite using `[coeff_add_single (Finsupp.single ((0 : Fin 2), i) 1) ((1 : Fin 2), j) (by simp [Finsupp.single_apply]), coeff_single_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bil_dd (f : PS R 2 d) (i j : Fin d) :
     bil f 1 1 i j = constantCoeff (pderiv R ((0 : Fin 2), i) (pderiv R ((1 : Fin 2), j) f)) := by
@@ -148,9 +148,9 @@ theorem bil_dd (f : PS R 2 d) (i j : Fin d) :
     (by simp [Finsupp.single_apply]), coeff_single_one]
 
 /- English proof (translation)
-Take `⟨k, l⟩` from `p`. Rewrite using `[← coeff_single_one]`. Use `fin_cases k`. Establish `h` using `coeff_ev_zero_right f (Finsupp.single ((0 : Fin 1), l) 1)`. Rewrite `h` using `[hf.2, Finsupp.embDomain_single, coeff_one, if_neg (Finsupp.single_ne_zero.mpr one_ne_zero)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `h` using `coeff_ev_zero_left f (Finsupp.single ((0 : Fin 1), l) 1)`. Rewrite `h` using `[hf.1, Finsupp.embDomain_single, coeff_one, if_neg (Finsupp.single_ne_zero.mpr one_ne_zero)]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_d_ax {f : PS R 2 d} (hf : AxOne f) (p : Fin 2 × Fin d) : constantCoeff (pderiv R p f) = 0 := by
   obtain ⟨k, l⟩ := p
@@ -166,9 +166,9 @@ theorem cc_d_ax {f : PS R 2 d} (hf : AxOne f) (p : Fin 2 × Fin d) : constantCoe
     exact h.symm
 
 /- English proof (translation)
-Establish `ha : ZZ (![comp1 φ (pt R d 0), comp1 ψ (pt R d 1)] : Fin 2 → Pt R 2 d)` using `cechDeRhamTotalCocyclesTwo (Z_comp1 hφ (Z_pt 0)) (Z_comp1 hψ (Z_pt 1))`. Use extensionality with `i j`. Rewrite using `[bil_dd, cc_dd_ev ha _ _ f (cc_d_ax hf)]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, cc_d_comp1_pt]`. Simplify using `[bil_dd, Finset.sum_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem bil_comp {f : PS R 2 d} (hf : AxOne f) {φ ψ : Pt R 1 d} (hφ : Z φ) (hψ : Z ψ) :
     bil (ev (n := 2) ![comp1 φ (pt R d 0), comp1 ψ (pt R d 1)] f) 1 1 =
@@ -183,11 +183,11 @@ theorem bil_comp {f : PS R 2 d} (hf : AxOne f) {φ ψ : Pt R 1 d} (hφ : Z φ) (
   refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hfun : (fun p : Fin 2 × Fin d => (![ptPow R d m 0, ptPow R d n 1] : Fin 2 → Pt R 2 d) p.1 p.2) = fun s => X s ^ (![m, n] : Fin 2 → ℕ) s.1`. Use function extensionality and compare the values at `⟨k, l⟩`. Apply the tactic sequence `fin_cases k <;> rfl`. Use `show coeff (Finsupp.single ((0 : Fin 2), i) m + Finsupp.single ((1 : Fin 2), j) n) (subst (fun p : Fin 2 × Fin d => (![ptPow R d m 0, ptPow R d n 1] : Fin 2 → Pt R 2 d) p.1 p.2) f) = coeff (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), j) 1) f`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Apply `coeff_subst_pow` to reduce the goal to its premises. Introduce and unpack `⟨k, l⟩ fin_cases k`. Simplify using `using hm`. Simplify using `using hn`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rintro ⟨k, l⟩ fin_cases k <;> simp [Finsupp.single_apply, mul_ite]`.
+A detailed English derivation is pending.
 -/
 theorem bil_ptPow (f : PS R 2 d) {m n : ℕ} (hm : 1 ≤ m) (hn : 1 ≤ n) :
     bil (ev (n := 2) ![ptPow R d m 0, ptPow R d n 1] f) m n = bil f 1 1 := by
@@ -209,7 +209,7 @@ theorem bil_ptPow (f : PS R 2 d) {m n : ℕ} (hm : 1 ≤ m) (hn : 1 ≤ n) :
     fin_cases k <;> simp [Finsupp.single_apply, mul_ite]
 
 /- English proof (translation)
-Introduce `R _ d f g φ ψ hf hg hφ hψ`. Conclude with `⟨axOne_mul hf hg, fun m => bil_mul_left hf hg m, fun n => bil_mul_right hf hg n, axOne_comp hf hφ hψ, bil_comp hf hφ hψ, fun m n => bil_swap f m n, fun m n hm hn => bil_ptPow f hm hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem bil_calc : ∀ (R : Type) [CommRing R] (d : ℕ) (f g : PS R 2 d) (φ ψ : Pt R 1 d), AxOne f → AxOne g → (∀ i, constantCoeff (φ i) = 0) → (∀ i, constantCoeff (ψ i) = 0) → AxOne (f * g) ∧ (∀ m, bil (f * g) m 1 = bil f m 1 + bil g m 1) ∧ (∀ n, bil (f * g) 1 n = bil f 1 n + bil g 1 n) ∧ AxOne (ev (n := 2) ![comp1 φ (pt R d 0), comp1 ψ (pt R d 1)] f) ∧ bil (ev (n := 2) ![comp1 φ (pt R d 0), comp1 ψ (pt R d 1)] f) 1 1 = (lin φ 1).transpose * bil f 1 1 * lin ψ 1 ∧ (∀ m n, bil (ev (n := 2) ![pt R d 1, pt R d 0] f) m n = (bil f n m).transpose) ∧ ∀ m n : ℕ, 1 ≤ m → 1 ≤ n → bil (ev (n := 2) ![ptPow R d m 0, ptPow R d n 1] f) m n = bil f 1 1 := by
   intro R _ d f g φ ψ hf hg hφ hψ
@@ -218,13 +218,13 @@ theorem bil_calc : ∀ (R : Type) [CommRing R] (d : ℕ) (f g : PS R 2 d) (φ ψ
     fun m n hm hn => bil_ptPow f hm hn⟩
 
 /- English proof (translation)
-Establish `hF1 : ∀ i l, constantCoeff (pderiv R ((1 : Fin 2), l) (G.F i)) = if i = l then 1 else 0`. Introduce `i l`. Establish `h` using `coeff_ev_zero_left (G.F i) (Finsupp.single ((0 : Fin 1), l) 1)`. Rewrite `h` using `[G.unit i, Finsupp.embDomain_single, coeff_X]`. Rewrite using `[← coeff_single_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h.symm.trans ?_` and prove the remaining obligations. Distinguish the cases in `h' : i = l`. Substitute `h'` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_eq_single_iff, Ne.symm h', h']`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hF0 : ∀ i l, constantCoeff (pderiv R ((0 : Fin 2), l) (G.F i)) = if i = l then 1 else 0`. Introduce `i l`. Establish `h2` using `coeff_ev_swap' (G.F i) (Finsupp.single ((0 : Fin 2), l) 1)`. Rewrite `h2` using `[G.comm i, Finsupp.embDomain_single]`. Rewrite using `[← coeff_single_one, h2, ← hF1 i l, coeff_single_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, lin, FGLaw.add, addOf]`. Rewrite using `[coeff_single_one, coeff_single_one, coeff_single_one, cc_d_ev (cechDeRhamTotalCocyclesTwo ha hb), Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[hF0, hF1]`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lin_add (G : FGLaw R d) {a b : Pt R 1 d} (ha : Z a) (hb : Z b) :
     lin (G.add a b) 1 = lin a 1 + lin b 1 := by
@@ -253,51 +253,45 @@ theorem lin_add (G : FGLaw R d) {a b : Pt R 1 d} (ha : Z a) (hb : Z b) :
 variable {O : Type} [CommRing O] [StarRing O]
 
 /- English proof (translation)
-Use `show lin (B.A.act (a * b)) 1 = lin (B.A.act a) 1 * lin (B.A.act b) 1`. Rewrite using `[B.A.mul_act, lin_comp1 _ (B.A.const b)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_mul (B : FB R d O) (a b : O) : rho B (a * b) = rho B a * rho B b := by
   show lin (B.A.act (a * b)) 1 = lin (B.A.act a) 1 * lin (B.A.act b) 1
   rw [B.A.mul_act, lin_comp1 _ (B.A.const b)]
 
 /- English proof (translation)
-Use `show lin (B.A.act (a + b)) 1 = lin (B.A.act a) 1 + lin (B.A.act b) 1`. Rewrite using `[B.A.add_act, lin_add B.G (B.A.const a) (B.A.const b)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_add (B : FB R d O) (a b : O) : rho B (a + b) = rho B a + rho B b := by
   show lin (B.A.act (a + b)) 1 = lin (B.A.act a) 1 + lin (B.A.act b) 1
   rw [B.A.add_act, lin_add B.G (B.A.const a) (B.A.const b)]
 
 /- English proof (translation)
-Establish `hc : ∀ i, constantCoeff (B.A.act 0 i) = 0` using `B.A.const 0`. Establish `hidem : B.A.act 0 = comp1 (B.A.act 0) (B.A.act 0)`. Rewrite using `[← B.A.mul_act, mul_zero]`. Establish `hlin : ∀ i j, coeff (Finsupp.single ((0 : Fin 1), j) 1) (B.A.act 0 i) = 0`. Establish `h` using `rho_add B 0 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[add_zero]`. Establish `h0 : rho B 0 = 0` using `by simpa using h`. Introduce `i j`. Conclude with `congrFun (congrFun h0 i) j`. Establish `hdeg1 : ∀ e : Fin 1 × Fin d →₀ ℕ, Finsupp.degree e = 1 → ∃ t, e = Finsupp.single t 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, e t ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `: e = 0` using `Finsupp.ext hne`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[this] at he`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `hle : Finsupp.single t 1 ≤ e`. Introduce `s`. Rewrite using `[Finsupp.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Use `split_ifs with hs`. Substitute `hs` using the available equality. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.zero_le _`. Establish `hsum` using `congrArg Finsupp.degree (tsub_add_cancel_of_le hle)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsum` using `[map_add, Finsupp.degree_single, he]`. Establish `hz : Finsupp.degree (e - Finsupp.single t 1) = 0` using `by omega`. Rewrite `hz` using `[Finsupp.degree_eq_zero_iff, tsub_eq_zero_iff_le]`. Conclude with `le_antisymm hz hle`. Establish `hord : ∀ i, (2 : ℕ∞) ≤ (B.A.act 0 i).order`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `i`. Apply `MvPowerSeries.le_order` to reduce the goal to its premises. Introduce `e he`. Establish `he' : Finsupp.degree e < 2` using `by exact_mod_cast he`. Break down `Nat.lt_succ_iff_lt_or_eq.mp he' with h0 | h1` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h0` using `[Nat.lt_one_iff, Finsupp.degree_eq_zero_iff]`. Substitute `h0` using the available equality. Simplify using `using hc i`. Take `⟨⟨q, j⟩, rfl⟩` from `hdeg1 e h1`. Establish `hq : q = 0` using `Subsingleton.elim _ _`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hq` using the available equality. Conclude with `hlin i j`. Establish `hsubst : HasSubst (fun p : Fin 1 × Fin d => (![B.A.act 0] : Fin 1 → Pt R 1 d) p.1 p.2)` using `hasSubst_ev ![B.A.act 0] (by`. Introduce `j l`. Use `fin_cases j`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc l)`. Establish `hstep : ∀ i, (⨅ i, (B.A.act 0 i).order) * (⨅ i, (B.A.act 0 i).order) ≤ (B.A.act 0 i).order`. Introduce `i`. Establish `hsub` using `MvPowerSeries.le_order_subst hsubst (B.A.act 0 i)`. Establish `heq : subst (fun p : Fin 1 × Fin d => (![B.A.act 0] : Fin 1 → Pt R 1 d) p.1 p.2) (B.A.act 0 i) = B.A.act 0 i` using `by conv_rhs => rw [hidem]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `hsub` using `[heq]`. Use `le_trans ?_ hsub` and prove the remaining obligations. Establish `h1 : (⨅ i, (B.A.act 0 i).order) ≤ ⨅ p : Fin 1 × Fin d, ((![B.A.act 0] : Fin 1 → Pt R 1 d) p.1 p.2).order`. Use `le_iInf fun p => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hp : (![B.A.act 0] : Fin 1 → Pt R 1 d) p.1 = B.A.act 0`. Rewrite using `[Subsingleton.elim p.1 0]`. Both sides reduce to the same expression. Rewrite using `[hp]`. Conclude with `iInf_le _ p.2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `mul_le_mul' h1 (iInf_le _ i)`. Establish `hkk` using `le_iInf hstep`. Establish `h2k : (2 : ℕ∞) ≤ ⨅ i, (B.A.act 0 i).order` using `le_iInf hord`. Establish `htop : (⨅ i, (B.A.act 0 i).order) = ⊤`. Assume the negation of the conclusion as `hne`.
-
-Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hne`. Rewrite `hkk`, `h2k` using `[← hn]`. Establish `h2n : 2 ≤ n` using `by exact_mod_cast h2k`. Establish `hnn : n * n ≤ n` using `by exact_mod_cast hkk`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use function extensionality and compare the values at `i`. Establish `hi : (B.A.act 0 i).order = ⊤`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← htop]`. Conclude with `iInf_le _ i`.
-
-Conclude with `MvPowerSeries.order_eq_top_iff.mp hi`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_zero_eq (B : FB R d O) : B.A.act 0 = 0 := by
   have hc : ∀ i, constantCoeff (B.A.act 0 i) = 0 := B.A.const 0
@@ -383,9 +377,9 @@ theorem act_zero_eq (B : FB R d O) : B.A.act 0 = 0 := by
   exact MvPowerSeries.order_eq_top_iff.mp hi
 
 /- English proof (translation)
-Establish `h` using `ev_ev (zero_constant_triple Z_zero (Z_pt 0) (Z_pt 1) : ZZ (![0, pt R d 0, pt R d 1] : Fin 3 → Pt R 2 d)) (cechDeRhamTotalCocyclesTwo ha hb) f`. Rewrite `h` using `[hf, ev_one]`. Rewrite using `[h]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases j <;> simp [evalPoints_zero (cechDeRhamTotalCocyclesTwo ha hb), evalPoints_coordinatePoint (cechDeRhamTotalCocyclesTwo ha hb)]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval3_axiom_zero {f : PS R 3 d} (hf : ev (n := 2) ![0, pt R d 0, pt R d 1] f = 1) {n : ℕ} {a b : Pt R n d}
     (ha : Z a) (hb : Z b) : ev ![0, a, b] f = 1 := by
@@ -398,9 +392,9 @@ theorem eval3_axiom_zero {f : PS R 3 d} (hf : ev (n := 2) ![0, pt R d 0, pt R d 
   fin_cases j <;> simp [evalPoints_zero (cechDeRhamTotalCocyclesTwo ha hb), evalPoints_coordinatePoint (cechDeRhamTotalCocyclesTwo ha hb)]
 
 /- English proof (translation)
-Establish `h` using `ev_ev (zero_constant_triple (Z_pt 0) Z_zero (Z_pt 1) : ZZ (![pt R d 0, 0, pt R d 1] : Fin 3 → Pt R 2 d)) (cechDeRhamTotalCocyclesTwo ha hb) f`. Rewrite `h` using `[hf, ev_one]`. Rewrite using `[h]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases j <;> simp [evalPoints_zero (cechDeRhamTotalCocyclesTwo ha hb), evalPoints_coordinatePoint (cechDeRhamTotalCocyclesTwo ha hb)]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval3_axiom_one {f : PS R 3 d} (hf : ev (n := 2) ![pt R d 0, 0, pt R d 1] f = 1) {n : ℕ} {a b : Pt R n d}
     (ha : Z a) (hb : Z b) : ev ![a, 0, b] f = 1 := by
@@ -413,9 +407,9 @@ theorem eval3_axiom_one {f : PS R 3 d} (hf : ev (n := 2) ![pt R d 0, 0, pt R d 1
   fin_cases j <;> simp [evalPoints_zero (cechDeRhamTotalCocyclesTwo ha hb), evalPoints_coordinatePoint (cechDeRhamTotalCocyclesTwo ha hb)]
 
 /- English proof (translation)
-Establish `h` using `ev_ev (zero_constant_triple (Z_pt 0) (Z_pt 1) Z_zero : ZZ (![pt R d 0, pt R d 1, 0] : Fin 3 → Pt R 2 d)) (cechDeRhamTotalCocyclesTwo ha hb) f`. Rewrite `h` using `[hf, ev_one]`. Rewrite using `[h]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases j <;> simp [evalPoints_zero (cechDeRhamTotalCocyclesTwo ha hb), evalPoints_coordinatePoint (cechDeRhamTotalCocyclesTwo ha hb)]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval3_axiom_two {f : PS R 3 d} (hf : ev (n := 2) ![pt R d 0, pt R d 1, 0] f = 1) {n : ℕ} {a b : Pt R n d}
     (ha : Z a) (hb : Z b) : ev ![a, b, 0] f = 1 := by
@@ -431,9 +425,9 @@ def Ax3 (f : PS R 3 d) : Prop := ev (n := 2) ![0, pt R d 0, pt R d 1] f = 1 ∧
   ev (n := 2) ![pt R d 0, 0, pt R d 1] f = 1 ∧ ev (n := 2) ![pt R d 0, pt R d 1, 0] f = 1
 
 /- English proof (translation)
-Establish `ha : ZZ (![comp1 φ (pt R d 0), comp1 ψ (pt R d 0), pt R d 1] : Fin 3 → Pt R 2 d)` using `zero_constant_triple (Z_comp1 hφ (Z_pt 0)) (Z_comp1 hψ (Z_pt 0)) (Z_pt 1)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ev_ev ha ZZa]`. Use `eval3_axiom_zero hf.1 (Z_zero (n := 1)) (Z_pt (R := R) (d := d) (n := 1) 0) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZa, evalPoints_coordinatePoint ZZa, germComp1_zero_of_noConstantCoeff hφ, germComp1_zero_of_noConstantCoeff hψ, Z_pt]`. Rewrite using `[ev_ev ha ZZb]`. Use `eval3_axiom_two hf.2.2 (Z_comp1 hφ (Z_pt (R := R) (d := d) (n := 1) 0)) (Z_comp1 hψ (Z_pt (R := R) (d := d) (n := 1) 0)) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZb, evalPoints_coordinatePoint ZZb, Z_pt]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem axOne_xxz {f : PS R 3 d} (hf : Ax3 f) {φ ψ : Pt R 1 d} (hφ : Z φ) (hψ : Z ψ) :
     AxOne (ev (n := 2) ![comp1 φ (pt R d 0), comp1 ψ (pt R d 0), pt R d 1] f) := by
@@ -451,9 +445,9 @@ theorem axOne_xxz {f : PS R 3 d} (hf : Ax3 f) {φ ψ : Pt R 1 d} (hφ : Z φ) (h
     fin_cases j <;> simp [evalPoints_comp ZZb, evalPoints_coordinatePoint ZZb, Z_pt]
 
 /- English proof (translation)
-Establish `ha : ZZ (![pt R d 0, comp1 φ (pt R d 1), comp1 ψ (pt R d 1)] : Fin 3 → Pt R 2 d)` using `zero_constant_triple (Z_pt 0) (Z_comp1 hφ (Z_pt 1)) (Z_comp1 hψ (Z_pt 1))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ev_ev ha ZZa]`. Use `eval3_axiom_zero hf.1 (Z_comp1 hφ (Z_pt (R := R) (d := d) (n := 1) 0)) (Z_comp1 hψ (Z_pt (R := R) (d := d) (n := 1) 0)) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZa, evalPoints_coordinatePoint ZZa, Z_pt]`. Rewrite using `[ev_ev ha ZZb]`. Use `eval3_axiom_one hf.2.1 (Z_pt (R := R) (d := d) (n := 1) 0) (Z_zero (n := 1)) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZb, evalPoints_coordinatePoint ZZb, germComp1_zero_of_noConstantCoeff hφ, germComp1_zero_of_noConstantCoeff hψ, Z_pt]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem axOne_xzz {f : PS R 3 d} (hf : Ax3 f) {φ ψ : Pt R 1 d} (hφ : Z φ) (hψ : Z ψ) :
     AxOne (ev (n := 2) ![pt R d 0, comp1 φ (pt R d 1), comp1 ψ (pt R d 1)] f) := by
@@ -471,23 +465,23 @@ theorem axOne_xzz {f : PS R 3 d} (hf : Ax3 f) {φ ψ : Pt R 1 d} (hφ : Z φ) (h
     fin_cases j <;> simp [evalPoints_comp ZZb, evalPoints_coordinatePoint ZZb, germComp1_zero_of_noConstantCoeff hφ, germComp1_zero_of_noConstantCoeff hψ, Z_pt]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨B.cocycleLeft_zero_fst, B.cocycleLeft_zero_snd, B.cocycleLeft_zero_thd⟩`.
+Supply the required witnesses or components.
 -/
 theorem ax3_ph1 (B : FB R d O) : Ax3 B.ph1 := ⟨B.cocycleLeft_zero_fst, B.cocycleLeft_zero_snd, B.cocycleLeft_zero_thd⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨B.cocycleRight_zero_fst, B.cocycleRight_zero_snd, B.cocycleRight_zero_thd⟩`.
+Supply the required witnesses or components.
 -/
 theorem ax3_ph2 (B : FB R d O) : Ax3 B.ph2 := ⟨B.cocycleRight_zero_fst, B.cocycleRight_zero_snd, B.cocycleRight_zero_thd⟩
 
 /- English proof (translation)
-The claim follows from `germ_comp1_zero_point_left _ (Z_pt j)`.
+A detailed English derivation is pending.
 -/
 theorem comp1_identity_left {n : ℕ} (j : Fin n) : comp1 (pt R d 0) (pt R d j) = pt R d j := germ_comp1_zero_point_left _ (Z_pt j)
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.prod_empty]`. Conclude with `⟨ev_one _, ev_one _⟩`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `axOne_mul (h a) ih`.
+A detailed English derivation is pending.
 -/
 theorem axOne_prod {ι : Type} (s : Finset ι) (f : ι → PS R 2 d) (h : ∀ i, AxOne (f i)) : AxOne (∏ i ∈ s, f i) := by
   classical
@@ -499,19 +493,19 @@ theorem axOne_prod {ι : Type} (s : Finset ι) (f : ι → PS R 2 d) (h : ∀ i,
     exact axOne_mul (h a) ih
 
 /- English proof (translation)
-Introduce `R _ d O _ _ B`. Use `⟨act_zero_eq B, fun n => ?_, fun a b => ?_, fun n => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_succ, B.A.add_act, B.A.one_act]`. Rewrite using `[← B.A.mul_act, ← B.A.mul_act, mul_comm]`. Unfold `GlobalTheory.CompanionTheory.Ar.Conj.pow1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply `axOne_prod` to reduce the goal to its premises. Introduce `k`. Establish `hφ : Z (B.A.act (k : O))` using `B.A.const _`. Establish `ha : ZZ (![comp1 (B.A.act (k : O)) (pt R d 0), pt R d 0, pt R d 1] : Fin 3 → Pt R 2 d)` using `zero_constant_triple (Z_comp1 hφ (Z_pt 0)) (Z_pt 0) (Z_pt 1)`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[ev_ev ha ZZa]`. Use `eval3_axiom_zero B.cocycleLeft_zero_fst (Z_zero (n := 1)) (Z_pt (R := R) (d := d) (n := 1) 0) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZa, evalPoints_coordinatePoint ZZa, germComp1_zero_of_noConstantCoeff hφ, Z_pt]`. Rewrite using `[ev_ev ha ZZb]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `eval3_axiom_two B.cocycleLeft_zero_thd (Z_comp1 hφ (Z_pt (R := R) (d := d) (n := 1) 0)) (Z_pt (R := R) (d := d) (n := 1) 0) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZb, evalPoints_coordinatePoint ZZb, Z_pt]`. Unfold `GlobalTheory.CompanionTheory.Ar.Conj.pow2`. Apply `axOne_prod` to reduce the goal to its premises.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k`. Establish `hφ : Z (B.A.act (k : O))` using `B.A.const _`. Establish `ha : ZZ (![pt R d 0, comp1 (B.A.act (k : O)) (pt R d 1), pt R d 1] : Fin 3 → Pt R 2 d)` using `zero_constant_triple (Z_pt 0) (Z_comp1 hφ (Z_pt 1)) (Z_pt 1)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ev_ev ha ZZa]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `eval3_axiom_zero B.cocycleRight_zero_fst (Z_comp1 hφ (Z_pt (R := R) (d := d) (n := 1) 0)) (Z_pt (R := R) (d := d) (n := 1) 0) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZa, evalPoints_coordinatePoint ZZa, Z_pt]`. Rewrite using `[ev_ev ha ZZb]`. Use `eval3_axiom_one B.cocycleRight_zero_snd (Z_pt (R := R) (d := d) (n := 1) 0) (Z_zero (n := 1)) using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [evalPoints_comp ZZb, evalPoints_coordinatePoint ZZb, germComp1_zero_of_noConstantCoeff hφ, Z_pt]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act_zero : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O), B.A.act 0 = 0 ∧ (∀ n : ℕ, B.A.act ((n + 1 : ℕ) : O) = B.G.add (B.A.act (n : O)) (pt R d 0)) ∧ (∀ a b, comp1 (B.A.act a) (B.A.act b) = comp1 (B.A.act b) (B.A.act a)) ∧ ∀ n, AxOne (pow1 B n) ∧ AxOne (pow2 B n) := by
   intro R _ d O _ _ B

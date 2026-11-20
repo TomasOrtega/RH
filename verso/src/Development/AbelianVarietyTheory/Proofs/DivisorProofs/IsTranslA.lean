@@ -20,21 +20,21 @@ def IsTranslA (f : D.La →+ D.La) (c k N : ℕ) {s : S ⟶ Sp R} (o : Obj b (N 
     Nonempty (LBIso (Hecke.lbPow o.P (k ^ 2 / c)) (o'.P.pull (sq2 ψ))) ∧ c ∣ k ^ 2
 
 /- English proof (translation)
-The claim follows from `h.2.2.1 x`.
+A detailed English derivation is pending.
 -/
 theorem IsTranslA.eta {f : D.La →+ D.La} {c k N : ℕ} {s : S ⟶ Sp R} {o : Obj b (N * k) s} {o' : Obj b N s}
     {ψ : o.A ⟶ o'.A} (h : IsTranslA f c k N o o' ψ) (x : D.La) : o'.eta x = o.eta (f x) ≫ ψ :=
   h.2.2.1 x
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem IsTranslA.dvd {f : D.La →+ D.La} {c k N : ℕ} {s : S ⟶ Sp R} {o : Obj b (N * k) s} {o' : Obj b N s}
     {ψ : o.A ⟶ o'.A} (h : IsTranslA f c k N o o' ψ) : c ∣ k ^ 2 :=
   h.2.2.2.2.2
 
 /- English proof (translation)
-Introduce `h` and use `absurd h.dvd (by decide)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (f : D.La →+ D.La) (N : ℕ) {s : S ⟶ Sp R} (o : Obj b (N * 3) s) (o' : Obj b N s) (ψ : o.A ⟶ o'.A) :
     ¬ IsTranslA f 5 3 N o o' ψ :=

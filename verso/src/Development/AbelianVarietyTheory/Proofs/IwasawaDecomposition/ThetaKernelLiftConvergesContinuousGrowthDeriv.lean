@@ -13,13 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Lift
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hκ.growth`. Take `⟨C', hC'⟩` from `hF N`. Use `⟨N, fun f => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN f`. Use `⟨|C| * 2 ^ N * |C'|, by positivity, fun g h => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, hle⟩` from `exists_height_le (θ := θ) g`. Establish `h1 : (height θ V (γ * g) : ℝ) ≤ 2 * (quotHeight θ V g : ℝ)` using `by exact_mod_cast hle`. Establish `h2 : ‖κ f g h‖ ≤ |C| * (2 * (quotHeight θ V g : ℝ) * (height θ W h : ℝ)) ^ N`. Use `hκ.left f γ hγ 1 (one_mem _) g h` as an intermediate fact. Rewrite `this` using `[one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `(hC _ _).trans (mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (by positivity) (mul_le_mul_of_nonneg_right h1 (NNReal.coe_nonneg _)) N) (by positivity) (abs_nonneg _))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ |C| * 2 ^ N * |C'| * (height θ W h : ℝ) ^ N := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ((hC' g).trans (le_abs_self _)) (by positivity)) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsKerSys.mul_decay_le {D : D7} {θ : InfF D} {V W : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M]
     {κ : M →ₗ[ℂ] (GA D V → GA D W → ℂ)} (hκ : IsKerSys θ V W κ) {F : GA D V → ℂ} (hF : IsRapidDecay θ V F) :
@@ -48,19 +46,17 @@ theorem IsKerSys.mul_decay_le {D : D7} {θ : InfF D} {V W : HSp D} {M : Type} [A
           (by positivity)
 
 /- English proof (translation)
-Introduce `D θ hθ V W M _ _ κ hκ μ 𝓕 hQ F hF`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (GA D V)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1`. Establish `: SecondCountableTopology (GA D W)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W).2.1`. Establish `: IsTopologicalGroup (GA D W)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W).2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : μ 𝓕 ≠ ⊤` using `(GlobalTheory.Mem.QuotVol.quot_volume_ne_zero_ne_top D V μ 𝓕 hQ).2`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 hfin`. Take `⟨hc, hd⟩ : Continuous F ∧ IsRapidDecay θ V F` from `hF.2.2 [] (by simp)`. Take `⟨N, hN⟩` from `hκ.mul_decay_le hd`. Establish `hm : ∀ f h, AEStronglyMeasurable (fun g => κ f g h * F g) (μ.restrict 𝓕)` using `fun f h => (((hκ.cont f).comp (Continuous.prodMk_left h)).mul hc).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint : ∀ f h, IntegrableOn (fun g => κ f g h * F g) 𝓕 μ` using `fun f h => by`. Take `⟨C, -, hC⟩` from `hN f`. Conclude with `Measure.integrableOn_of_bounded hfin (((hκ.cont f).comp (Continuous.prodMk_left h)).mul hc).aestronglyMeasurable (.of_forall fun g => hC g h)`. Establish `hloc : ∀ f h₀, ∃ B : ℝ, ∀ᶠ h in 𝓝 h₀, ∀ g, ‖κ f g h * F g‖ ≤ B` using `fun f h₀ => by`. Take `⟨C, h0, hC⟩` from `hN f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `GlobalTheory.Mem.LiftHeight.height_locally_bounded D θ hθ W h₀`. Conclude with `⟨C * B ^ N, hB.mono fun h hh g => (hC g h).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) hh N) h0)⟩`. Use `⟨hint, fun f => continuous_iff_continuousAt.2 fun h₀ => ?_, ⟨N, fun f => ?_⟩, fun τ X hX f f' hder h => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hloc f h₀`. Conclude with `continuousAt_of_dominated (bound := fun _ => B) (.of_forall (hm f)) (hB.mono fun h hh => .of_forall hh) (integrable_const B) (.of_forall fun g => (((hκ.cont f).comp (Continuous.prodMk_right g)).mul continuous_const).continuousAt)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, -, hC⟩` from `hN f`. Use `⟨C * (μ.restrict 𝓕).real Set.univ, fun h => ?_⟩` and prove the remaining obligations. Use `(norm_integral_le_of_norm_le_const (.of_forall fun g => hC g h)).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨B, hB⟩` from `hloc f' h`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hco : Filter.Tendsto (fun t : ℝ => h * oneP θ W τ X t) (𝓝 0) (𝓝 h)`. Use `(continuous_const (y := h).mul (continuous_oneP hθ hX)).tendsto 0` as an intermediate fact. Rewrite `this` using `[Pi.mul_apply, oneP_zero hθ, mul_one]`. Conclude with `this`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓕) (x₀ := (0 : ℝ)) (F := fun t g => κ f g (h * oneP θ W τ X t) * F g) (F' := fun t g => κ f' g (h * oneP θ W τ X t) * F g) (bound := fun _ => B) (hco.eventually hB) (.of_forall fun t => hm f _) (hint f _) (hm f' _ …` as an intermediate fact.
-
-Simplify `this` using `only [oneP_zero hθ, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lift_conv_cont_growth_deriv : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V W : HSp D) (M : Type) [AddCommGroup M] [Module ℂ M] (κ : M →ₗ[ℂ] (GA D V → GA D W → ℂ)), IsKerSys θ V W κ → ∀ μ 𝓕, IsQuot V μ 𝓕 → ∀ F ∈ Decay θ V, (∀ f h, IntegrableOn (fun g => κ f g h * F g) 𝓕 μ) ∧ (∀ f, Continuous fun h => ∫ g in 𝓕, κ f g h * F g ∂μ) ∧ (∃ N : ℕ, ∀ f, ∃ C : ℝ, ∀ h, ‖∫ g in 𝓕, κ f g h * F g ∂μ‖ ≤ C * (height θ W h : ℝ) ^ N) ∧ ∀ τ, ∀ X ∈ lieAt W τ, ∀ f f', (∀ g h, HasDerivAt (fun t : ℝ => κ f g (h * oneP θ W τ X t)) (κ f' g h) 0) → ∀ h, HasDerivAt (fun t : ℝ => ∫ g in 𝓕, κ f g (h * oneP θ W τ X t) * F g ∂μ) (∫ g in 𝓕, κ f' g h * F g ∂μ) 0 := by
   intro D θ hθ V W M _ _ κ hκ μ 𝓕 hQ F hF

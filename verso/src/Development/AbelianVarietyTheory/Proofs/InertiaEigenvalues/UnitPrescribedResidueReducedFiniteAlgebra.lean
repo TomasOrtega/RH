@@ -6,15 +6,15 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing B.A := IsArtinianRing.of_finite K.E B.A`. Set `e` to `IsArtinianRing.equivPi B.A`. Set `v : (I : MaximalSpectrum B.A) → B.A ⧸ I.asIdeal` to `fun I => if h : I = m then h ▸ z else 1`. Establish `hv : IsUnit v`. Rewrite using `[Pi.isUnit_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I`. Use `letI := Ideal.Quotient.field I.asIdeal`. Rewrite using `[isUnit_iff_ne_zero]`. Distinguish the cases in `h : I = m`. Substitute `h` using the available equality.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hz` using `[v]`. Simplify using `[v, h]`. Establish `hy : IsUnit (e.symm v)` using `hv.map e.symm`. Use `⟨hy.unit, ?_, ?_⟩` and prove the remaining obligations. Use `IsArtinianRing.equivPi_apply B.A (e.symm v) m` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[AlgEquiv.apply_symm_apply]`. Simplify using `only [IsUnit.unit_spec]`. Rewrite using `[← this]`. Simplify using `[v]`. Introduce `m' hm'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `IsArtinianRing.equivPi_apply B.A (e.symm v) m'` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply]`. Simplify using `only [IsUnit.unit_spec]`. Rewrite using `[← this]`. Simplify using `[v, hm']`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UnitLemma.exists_unit_residue (K : UQ) (B : InvAlg K) (hB : IsReduced B.A) (m : MaximalSpectrum B.A)
     (z : B.A ⧸ m.asIdeal) (hz : z ≠ 0) :
@@ -46,7 +46,7 @@ theorem UnitLemma.exists_unit_residue (K : UQ) (B : InvAlg K) (hB : IsReduced B.
     rw [← this]; simp [v, hm']
 
 /- English proof (translation)
-Introduce `K B hB m z hz` and use `UnitLemma.exists_unit_residue K B hB m z hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UnitLemma.unit_prescribed_residue : ∀ (K : UQ) (B : InvAlg K), IsReduced B.A → ∀ (m : MaximalSpectrum B.A)
     (z : B.A ⧸ m.asIdeal), z ≠ 0 → ∃ y : B.Aˣ, Ideal.Quotient.mk m.asIdeal (y : B.A) = z ∧

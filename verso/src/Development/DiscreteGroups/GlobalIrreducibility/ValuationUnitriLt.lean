@@ -5,29 +5,27 @@ namespace DiscreteGroups.sglob.DzType
 open Matrix
 
 /- English proof (translation)
-Establish `mlt : ∀ a b : Γ, a ≤ 1 → b < 1 → a * b < 1` using `fun a b ha hb => lt_of_le_of_lt (show a * b ≤ b from (by gcongr : a * b ≤ 1 * b).trans_eq (one_mul b)) hb`. Establish `split : ∀ (i c a : Fin m), (L * U) i c = L i a * U a c + ∑ l ∈ Finset.univ.erase a, L i l * U l c`. Introduce `i c a`. Rewrite using `[Matrix.mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ a)]`. Establish `key : ∀ n : ℕ, ∀ i : Fin m, i.val = n → ∀ j, i < j → v (U i j) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `i hin`. Establish `up : ∀ l : Fin m, l < i → ∀ j, l < j → v (U l j) < 1` using `fun l hl j hlj => ih l.val (by rw [← hin]; exact hl) l rfl j hlj`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLi : ∀ p : ℕ, ∀ l : Fin m, l.val = p → l < i → v (L i l) ≤ 1`. Introduce `p`. Proceed by induction on `p using Nat.strong_induction_on with`. Consider the case `_ p ihp`. Introduce `l hlp hli`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : v (∑ l' ∈ Finset.univ.erase l, L i l' * U l' l) < 1`. Use `Valuation.map_sum_lt v one_ne_zero fun l' hl' => ?_` and prove the remaining obligations. Establish `hne : l' ≠ l` using `Finset.ne_of_mem_erase hl'`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mlt _ _ (ihp l'.val (by rw [← hlp]; exact h) l' rfl (h.trans hli)) (up l' (h.trans hli) l h)`. Rewrite using `[hU0 l' l h, mul_zero, map_zero]`. Conclude with `zero_lt_one`. Establish `hs` using `split i l l`. Rewrite `hs` using `[hU1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : L i l = (L * U) i l - ∑ l' ∈ Finset.univ.erase l, L i l' * U l' l` using `by rw [hs]; ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_sub v _ _).trans (max_le (hX i l) hR.le)`. Establish `hR : ∀ c, (∀ l', l' < i → v (U l' c) < 1) → v (∑ l' ∈ Finset.univ.erase i, L i l' * U l' c) < 1`. Introduce `c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Valuation.map_sum_lt v one_ne_zero fun l' hl' => ?_` and prove the remaining obligations. Establish `hne : l' ≠ i` using `Finset.ne_of_mem_erase hl'`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Rewrite using `[map_mul]`. Conclude with `mlt _ _ (hLi l'.val l' rfl h) (hc l' h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hL i l' h, zero_mul, map_zero]`. Conclude with `zero_lt_one`. Establish `hLii : v (L i i) = 1`. Establish `hs` using `split i i i`. Rewrite `hs` using `[hU1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hr` using `hR i (fun l' h => up l' h i h)`. Establish `e : L i i = (L * U) i i - ∑ l' ∈ Finset.univ.erase i, L i l' * U l' i` using `by rw [hs]; ring`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(Valuation.map_sub v _ _).trans (max_le (hX i i) hr.le)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt push Not at hlt`. Establish `h2` using `Valuation.map_add v (L i i) (∑ l' ∈ Finset.univ.erase i, L i l' * U l' i)`. Rewrite `h2` using `[← hs, hXd i]`. Conclude with `absurd (h2.trans_lt (max_lt hlt hr)) (lt_irrefl 1)`. Introduce `j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `split i j i`. Establish `hr` using `hR j (fun l' h => up l' h j (h.trans hij))`. Establish `h1 : v (L i i * U i j) < 1`. Establish `e : L i i * U i j = (L * U) i j - ∑ l' ∈ Finset.univ.erase i, L i l' * U l' j` using `by rw [hs]; ring`. Rewrite using `[e]`.
-
-Conclude with `(Valuation.map_sub v _ _).trans_lt (max_lt (hXu i j hij) hr)`. Rewrite `h1` using `[map_mul, hLii, one_mul]`. Then use the resulting hypothesis. Introduce `i j hij`. Conclude with `key i.val i rfl j hij`.
+A detailed English derivation is pending.
 -/
 theorem valuation_unitri_lt {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) {m : ℕ}
     (L U : Matrix (Fin m) (Fin m) K) (hL : ∀ i j, i < j → L i j = 0) (hU1 : ∀ i, U i i = 1)

@@ -13,39 +13,39 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def Le (ϖ : kˣ) (e : ℤ) (x : k) : Prop := valuation k x ≤ valuation k (ϖ : k) ^ e
 
 /- English proof (translation)
-Rewrite using `[Valuation.pos_iff]`. Conclude with `ϖ.ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_pos (ϖ : kˣ) : 0 < valuation k (ϖ : k) := by
   rw [Valuation.pos_iff]; exact ϖ.ne_zero
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `uniformizer_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_lt (h : IsUnif ϖ) : valuation k (ϖ : k) < 1 := by rw [h]; exact uniformizer_lt_one
 
 /- English proof (translation)
-The claim follows from `le_trans hx (zpow_le_zpow_right_of_le_one₀ (u_pos ϖ) (u_lt h).le he)`.
+A detailed English derivation is pending.
 -/
 theorem Le.mono (h : IsUnif ϖ) {e e' : ℤ} {x : k} (hx : Le ϖ e x) (he : e' ≤ e) : Le ϖ e' x :=
   le_trans hx (zpow_le_zpow_right_of_le_one₀ (u_pos ϖ) (u_lt h).le he)
 
 /- English proof (translation)
-The claim follows from `(valuation k).map_add_le hx hy`.
+A detailed English derivation is pending.
 -/
 theorem Le.add {e : ℤ} {x y : k} (hx : Le ϖ e x) (hy : Le ϖ e y) : Le ϖ e (x + y) := (valuation k).map_add_le hx hy
 
 /- English proof (translation)
-The claim follows from `(valuation k).map_sub_le hx hy`.
+A detailed English derivation is pending.
 -/
 theorem Le.sub {e : ℤ} {x y : k} (hx : Le ϖ e x) (hy : Le ϖ e y) : Le ϖ e (x - y) := (valuation k).map_sub_le hx hy
 
 /- English proof (translation)
-Simplify using `[Le]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Le.zero (e : ℤ) : Le ϖ e 0 := by simp [Le]
 
 /- English proof (translation)
-Unfold `Le at *`. Rewrite using `[map_mul, zpow_add₀ (u_pos ϖ).ne']`. Conclude with `mul_le_mul' hx hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Le.mul {e f : ℤ} {x y : k} (hx : Le ϖ e x) (hy : Le ϖ f y) : Le ϖ (e + f) (x * y) := by
   unfold Le at *
@@ -53,7 +53,7 @@ theorem Le.mul {e f : ℤ} {x y : k} (hx : Le ϖ e x) (hy : Le ϖ f y) : Le ϖ (
   exact mul_le_mul' hx hy
 
 /- English proof (translation)
-Unfold `Le`. Rewrite using `[map_mul, zpow_add₀ (u_pos ϖ).ne', hy]`. Conclude with `mul_le_mul_iff_left₀ (zpow_pos (u_pos ϖ) f)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_mul_iff {e f : ℤ} {x y : k} (hy : valuation k y = valuation k (ϖ : k) ^ f) : Le ϖ (e + f) (x * y) ↔ Le ϖ e x := by
   unfold Le
@@ -61,25 +61,25 @@ theorem le_mul_iff {e f : ℤ} {x y : k} (hy : valuation k y = valuation k (ϖ :
   exact mul_le_mul_iff_left₀ (zpow_pos (u_pos ϖ) f)
 
 /- English proof (translation)
-Unfold `Le`. Rewrite using `[zpow_one, h, le_uniformizer_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem le_one_iff (h : IsUnif ϖ) {x : k} : Le ϖ 1 x ↔ valuation k x < 1 := by
   unfold Le; rw [zpow_one, h, le_uniformizer_iff]
 
 /- English proof (translation)
-Unfold `Le`. Rewrite using `[zpow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem le_zero_iff {x : k} : Le ϖ 0 x ↔ valuation k x ≤ 1 := by unfold Le; rw [zpow_zero]
 
 /- English proof (translation)
-The claim follows from `map_zpow₀ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_zpow (e : ℤ) : valuation k ((ϖ : k) ^ e) = valuation k (ϖ : k) ^ e := map_zpow₀ _ _ _
 
 /- English proof (translation)
-Establish `h0 : (ϖ : k) ^ e ≠ 0` using `zpow_ne_zero _ ϖ.ne_zero`. Establish `hx : x = x / (ϖ : k) ^ e * (ϖ : k) ^ e` using `(div_mul_cancel₀ _ h0).symm`. Establish `hp` using `zpow_pos (u_pos ϖ) e`. Rewrite using `[hx, add_comm, le_mul_iff (val_zpow e), le_one_iff h]`. Unfold `Le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← lt_iff_le_and_ne, map_mul, val_zpow]`. Conclude with `(mul_lt_iff_lt_one_left hp).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_succ_iff (h : IsUnif ϖ) {e : ℤ} {x : k} : Le ϖ (e + 1) x ↔ Le ϖ e x ∧ valuation k x ≠ valuation k (ϖ : k) ^ e := by
   have h0 : (ϖ : k) ^ e ≠ 0 := zpow_ne_zero _ ϖ.ne_zero
@@ -91,11 +91,11 @@ theorem le_succ_iff (h : IsUnif ϖ) {e : ℤ} {x : k} : Le ϖ (e + 1) x ↔ Le �
   exact (mul_lt_iff_lt_one_left hp).symm
 
 /- English proof (translation)
-Establish `: Fintype 𝓀[k]` using `Fintype.ofFinite _`. Take `⟨s, hs⟩` from `(IsLocalRing.residue_surjective (R := 𝒪[k])).hasRightInverse`. Establish `key : ∀ (x : 𝒪[k]) (z : 𝓀[k]), Le ϖ 1 ((x : k) - (s z : k)) ↔ IsLocalRing.residue _ x = z`. Introduce `x z`. Rewrite using `[le_one_iff h, ← hs z, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, hs z, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨Finset.univ.image fun z => (s z : k), ?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_image_of_injective (f := fun z => (s z : k)) _ (Subtype.val_injective.comp hs.injective), Finset.card_univ, GlobalTheory.SplitWeil.resCard, Nat.card_eq_fintype_card]`. Introduce `ρ hρ`. Take `⟨z, -, rfl⟩` from `Finset.mem_image.1 hρ`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `le_zero_iff.2 (s z).2`. Set `x' : 𝒪[k]` to `⟨x, le_zero_iff.1 hx⟩`. Use `⟨s (IsLocalRing.residue _ x'), Finset.mem_image_of_mem _ (Finset.mem_univ _), (key x' _).2 rfl, fun ρ' hρ' h' => ?_⟩` and prove the remaining obligations. Take `⟨z, -, rfl⟩` from `Finset.mem_image.1 hρ'`. Rewrite using `[(key x' z).1 h']`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps (h : IsUnif ϖ) : ∃ R : Finset k, R.card = GlobalTheory.SplitWeil.resCard k ∧ (∀ ρ ∈ R, Le ϖ 0 ρ) ∧
     ∀ x, Le ϖ 0 x → ∃ ρ ∈ R, Le ϖ 1 (x - ρ) ∧ ∀ ρ' ∈ R, Le ϖ 1 (x - ρ') → ρ' = ρ := by
@@ -119,11 +119,11 @@ theorem exists_reps (h : IsUnif ϖ) : ∃ R : Finset k, R.card = GlobalTheory.Sp
     rw [(key x' z).1 h']
 
 /- English proof (translation)
-Take `⟨R, hc, hR, hx⟩` from `exists_reps h`. Establish `: S'.indicator (1 : M → ℂ) = ∑ ρ ∈ R, fun Y => S.indicator (1 : M → ℂ) (s ρ Y)`. Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hY : Y ∈ S'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨ρ, hρ, h4, h5⟩` from `hx _ (h1 Y hY)`. Rewrite using `[Finset.sum_eq_single_of_mem ρ hρ, Set.indicator_of_mem hY, Set.indicator_of_mem ((h2 ρ (hR ρ hρ) Y).2 ⟨hY, h4⟩)]`. Both sides reduce to the same expression. Introduce `ρ' hρ' hne`. Conclude with `Set.indicator_of_notMem (fun hm => hne (h5 ρ' hρ' ((h2 ρ' (hR ρ' hρ') Y).1 hm).2)) _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hY, Finset.sum_eq_zero]`. Introduce `ρ hρ`. Conclude with `Set.indicator_of_notMem (fun hm => hY ((h2 ρ (hR ρ hρ) Y).1 hm).1) _`. Rewrite using `[this, map_sum, Finset.sum_congr rfl fun ρ hρ => h3 ρ (hR ρ hρ), Finset.sum_const, hc, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count (h : IsUnif ϖ) {M : Type} (l : (M → ℂ) →ₗ[ℂ] ℂ) (S S' : Set M) (f : M → k) (s : k → M → M)
     (h1 : ∀ Y ∈ S', Le ϖ 0 (f Y)) (h2 : ∀ ρ, Le ϖ 0 ρ → ∀ Y, s ρ Y ∈ S ↔ Y ∈ S' ∧ Le ϖ 1 (f Y - ρ))
@@ -151,13 +151,11 @@ def Piv (ϖ : kˣ) (a : Fin n) (i : Fin d) (e : Fin n → Fin d → ℤ) : Set (
   {Y | Y ∈ Box ϖ e ∧ valuation k (Y a i) = valuation k (ϖ : k) ^ e a i}
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hc : IsCompact (Box ϖ e)`. Establish `h : IsCompact (Set.pi Set.univ fun x : Fin n => Set.pi Set.univ fun y : Fin d => {z : k | valuation k z ≤ valuation k (ϖ : k) ^ e x y})` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _`. Establish `e' : Box ϖ e = (Set.pi Set.univ fun x : Fin n => Set.pi Set.univ fun y : Fin d => {z : k | valuation k z ≤ valuation k (ϖ : k) ^ e x y})` using `Set.ext fun x => ⟨fun hx i _ j _ => hx i j, fun hx i j => hx i trivial j trivial⟩`. Rewrite using `[e']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `ho : IsOpen (Box ϖ e)`. Simplify using `only [Box, Set.ofPred_forall]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Use `GlobalTheory.SplitWeil.Model.isOpen_int.preimage (f := fun A : Matrix (Fin n) (Fin d) k => A i j * (ϖ : k) ^ (-e i j)) (by fun_prop) using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `A`. Use `le_mul_iff (ϖ := ϖ) (e := e i j) (x := A i j) (val_zpow (-e i j))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, le_zero_iff]`. Conclude with `this.symm`. Use `⟨?_, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations.
-
-Conclude with `(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) ⟨hc.isClosed, ho⟩).isLocallyConstant`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem box_SB (ϖ : kˣ) (e : Fin n → Fin d → ℤ) : (Box ϖ e).indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ SB (Matrix (Fin n) (Fin d) k) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -182,13 +180,11 @@ theorem box_SB (ϖ : kˣ) (e : Fin n → Fin d → ℤ) : (Box ϖ e).indicator (
   exact (LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) ⟨hc.isClosed, ho⟩).isLocallyConstant
 
 /- English proof (translation)
-Establish `key : ∀ Y, Y ∈ Box ϖ e' ↔ Y ∈ Box ϖ e ∧ valuation k (Y a i) ≠ valuation k (ϖ : k) ^ e a i`. Introduce `Y`. Prove the components needed by the constructor for the conclusion. Introduce `hY`. Apply the tactic sequence `refine ⟨fun x y => (hY x y).mono h (by rw [he]; split_ifs <;> omega), ?_⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `hY a i` as an intermediate fact. Rewrite `this` using `[he, if_pos ⟨rfl, rfl⟩]`. Conclude with `((le_succ_iff h).1 this).2`. Introduce and unpack `⟨hY, hn⟩ x y`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `split_ifs with hxy`. Take `⟨rfl, rfl⟩` from `hxy`. Conclude with `(le_succ_iff h).2 ⟨hY _ _, hn⟩`. Simplify using `using hY x y`. Use function extensionality and compare the values at `Y`.
-
-Apply the tactic sequence `by_cases h1 : Y ∈ Box ϖ e <;> by_cases h2 : valuation k (Y a i) = valuation k (ϖ : k) ^ e a i <;>`. Simplify using `[Set.indicator, Piv, key, h1, h2]`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piv_eq (h : IsUnif ϖ) (a : Fin n) (i : Fin d) (e e' : Fin n → Fin d → ℤ)
     (he : ∀ x y, e' x y = e x y + if x = a ∧ y = i then 1 else 0) :
@@ -212,7 +208,7 @@ theorem piv_eq (h : IsUnif ϖ) (a : Fin n) (i : Fin d) (e e' : Fin n → Fin d �
     simp [Set.indicator, Piv, key, h1, h2]
 
 /- English proof (translation)
-Rewrite using `[piv_eq h a i e (fun x y => e x y + if x = a ∧ y = i then 1 else 0) fun _ _ => rfl]`. Conclude with `Submodule.sub_mem _ (box_SB _ _) (box_SB _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piv_SB (h : IsUnif ϖ) (a : Fin n) (i : Fin d) (e : Fin n → Fin d → ℤ) :
     (Piv ϖ a i e).indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ SB (Matrix (Fin n) (Fin d) k) := by
@@ -220,25 +216,23 @@ theorem piv_SB (h : IsUnif ϖ) (a : Fin n) (i : Fin d) (e : Fin n → Fin d → 
   exact Submodule.sub_mem _ (box_SB _ _) (box_SB _ _)
 
 /- English proof (translation)
-Use `set w := e' x₀ y₀ - e' a i with hw`. Establish `hai : e a i = e' a i` using `by rw [he, if_neg hne, add_zero]`. Establish `ht : ∀ ρ, Le ϖ 0 ρ → Le ϖ w (-(ρ * (ϖ : k) ^ w))` using `fun ρ hρ => by`. Use `(le_mul_iff (val_zpow w)).2 hρ` as an intermediate fact. Rewrite `this` using `[zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Le.zero w).sub this`. Establish `hd : ∀ z : k, valuation k z = valuation k (ϖ : k) ^ e' a i → valuation k ((ϖ : k) ^ w * z) = valuation k (ϖ : k) ^ e' x₀ y₀ ∧ (ϖ : k) ^ w * z ≠ 0` using `fun z hz => by`. Establish `: valuation k ((ϖ : k) ^ w * z) = valuation k (ϖ : k) ^ e' x₀ y₀`. Rewrite using `[map_mul, val_zpow, hz, ← zpow_add₀ (u_pos ϖ).ne', hw, sub_add_cancel]`. Use `⟨this, fun h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, map_zero]`. Conclude with `(zpow_pos (u_pos ϖ) _).ne this`. Establish `hb : ∀ t, Le ϖ w t → ∀ Y ∈ Box ϖ e', Y + t • δ Y ∈ Box ϖ e'` using `fun t ht Y hY x y => by`. Use `ht.mul (h3 Y hY x y)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(hY x y).add this`. Use `count h l _ _ (fun Y => Y x₀ y₀ / ((ϖ : k) ^ w * Y a i)) (fun ρ Y => Y + (-(ρ * (ϖ : k) ^ w)) • δ Y) ?_ ?_ fun ρ hρ => h4 _ (ht ρ hρ)` and prove the remaining obligations. Introduce and unpack `Y ⟨hY, hp⟩`. Take `⟨h5, h6⟩` from `hd _ hp`. Rewrite using `[← le_mul_iff h5, div_mul_cancel₀ _ h6, zero_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hY _ _`. Introduce `ρ hρ Y`. Establish `hpiv : (Y + (-(ρ * (ϖ : k) ^ w)) • δ Y) a i = Y a i` using `by simp [h1]`. Establish `hent : ∀ h6 : (ϖ : k) ^ w * Y a i ≠ 0, (Y x₀ y₀ / ((ϖ : k) ^ w * Y a i) - ρ) * ((ϖ : k) ^ w * Y a i) = (Y + (-(ρ * (ϖ : k) ^ w)) • δ Y) x₀ y₀` using `fun h6 => by`. Rewrite using `[sub_mul, div_mul_cancel₀ _ h6]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hZ, hp⟩`. Rewrite `hp` using `[hpiv, hai]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h5, h6⟩` from `hd _ hp`. Apply the tactic sequence `have hZ' : Y + (-(ρ * (ϖ : k) ^ w)) • δ Y ∈ Box ϖ e' := fun x y => (hZ x y).mono h (by rw [he]; split_ifs <;> omega)`. Use `hb (-(-(ρ * (ϖ : k) ^ w))) (by simpa using (Le.zero w).sub (ht ρ hρ)) _ hZ'` as an intermediate fact. Rewrite `this` using `[h2, neg_smul (-(ρ * (ϖ : k) ^ w)), add_neg_cancel_right]`. Use `⟨⟨this, hp⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← le_mul_iff h5, hent h6, add_comm 1]`. Use `hZ x₀ y₀` as an intermediate fact. Rewrite `this` using `[he, if_pos ⟨rfl, rfl⟩]`. Then use the resulting hypothesis. Introduce and unpack `⟨⟨hY, hp⟩, h7⟩`. Take `⟨h5, h6⟩` from `hd _ hp`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h7` using `[← le_mul_iff h5, hent h6, add_comm 1]`. Use `⟨fun x y => ?_, by rw [hpiv, hai]; exact hp⟩` and prove the remaining obligations. Rewrite using `[he]`. Use `split_ifs with hxy`. Take `⟨rfl, rfl⟩` from `hxy`.
-
-Conclude with `h7`. Rewrite using `[add_zero]`. Conclude with `hb _ (ht ρ hρ) Y hY x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem move (h : IsUnif ϖ) (l : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ) (a : Fin n) (i : Fin d) (e e' : Fin n → Fin d → ℤ)
     (x₀ : Fin n) (y₀ : Fin d) (hne : ¬ (a = x₀ ∧ i = y₀)) (he : ∀ x y, e x y = e' x y + if x = x₀ ∧ y = y₀ then 1 else 0)

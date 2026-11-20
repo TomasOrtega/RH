@@ -21,11 +21,11 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨hx, hy, hι⟩` from `h`. Establish `hinv : mat m⁻¹ * mat m = 1` using `GlobalTheory.StabHaar.mat_inv_mul m`. Establish `hinv₁ : mat g₀ * mat g₀⁻¹ = 1` using `GlobalTheory.StabHaar.mat_mul_inv g₀`. Establish `hcl : cA σ ((l⁻¹ : (AE F E)ˣ) : AE F E) * cA σ (l : AE F E) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_smul, smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [← hx, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Rewrite using `[inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_smul, smul_smul, mul_comm, hcl, one_smul]`. Use `_ = _ := by rw [← hy, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isLevi_inv {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} (H : Plane E n n₁) {l : (AE F E)ˣ}
     {g₀ : UA σ X₁.J} {m : UA σ X.J} (h : IsLevi H l g₀ m) : IsLevi H l⁻¹ g₀⁻¹ m⁻¹ := by
@@ -49,52 +49,38 @@ theorem isLevi_inv {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} (H : Pla
       _ = incM F H.ι * mat g₀⁻¹ := by rw [← Matrix.mul_assoc, hinv, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite `*` using `[mem_imA]`. Rewrite using `[map_mul, ha, hz, mul_neg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_imA {a z : AE F E} (ha : cA σ a = a) (hz : z ∈ imA σ) : a * z ∈ imA σ := by
   rw [mem_imA] at *
   rw [map_mul, ha, hz, mul_neg]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X X₁ r s r₁ s₁ i₀ i₁ H hB hX hX₁ hH m hm μN hμ l g₀ f hf`. Take `⟨hR, hLC, hSC, hT2⟩` from `topAE F E`. Use `haveI := hR`. Use `haveI := hLC`. Use `haveI := hSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hT2`. Take `⟨hTG, hLCU, hSCU, hT2U⟩` from `topUA σ X.J`. Use `haveI := hTG`. Use `haveI := hLCU`. Use `haveI := hSCU`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hT2U`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Establish `hx0 : H.x ≠ 0` using `fun h0 => by`. Establish `h1` using `hH.xy`. Rewrite `h1` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[form] at h1`. Establish `hcl` using `GlobalTheory.UnipClosed.isClosed_unip F E σ n n₁ X H hx0`. Use `haveI : LocallyCompactSpace (unip σ X H) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (unip σ X H) := hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Take `⟨Ψ, ω, hω, hlaw, hconj⟩` from `GlobalTheory.T.unipotent_radical_homeomorph_heisenberg F E σ B n n₁ X X₁ r s r₁ s₁ i₀ i₁ H hB hX hX₁ hH`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ (l' : (AE F E)ˣ) (g' : UA σ X₁.J) (m' : UA σ X.J), IsLevi H l' g' m' → ∀ u ∈ unip σ X H, m' * u * m'⁻¹ ∈ unip σ X H`. Introduce `l' g' m' hl' u hu`. Take `⟨p, hp, -, -⟩` from `hconj l' g' m' hl' (Ψ.symm ⟨u, hu⟩).1 (Ψ.symm ⟨u, hu⟩).2`. Rewrite `hp` using `[Prod.mk.eta, Homeomorph.apply_symm_apply]`. Rewrite using `[hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ψ p).2`. Establish `hm0` using `hm l g₀`. Establish `h₁` using `hmem l g₀ (m l g₀) hm0`. Establish `h₂ : ∀ u ∈ unip σ X H, (m l g₀)⁻¹ * u * m l g₀ ∈ unip σ X H` using `fun u hu => by`. Simplify using `using hmem _ _ _ (isLevi_inv H hm0) u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `φ` to `conjOn (unip σ X H) (m l g₀) h₁ h₂`. Establish `hσσ : ∀ a, σ (σ a) = a` using `cm_conj_conj hB.cm`. Establish `hcc : ∀ z : AE F E, cA σ (cA σ z) = z` using `cA_cA σ hσσ`. Establish `hcu : ∀ u : (AE F E)ˣ, cA σ ((u⁻¹ : (AE F E)ˣ) : AE F E) * cA σ (u : AE F E) = 1` using `fun u => by`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Establish `hcu' : ∀ u : (AE F E)ˣ, cA σ (u : AE F E) * cA σ ((u⁻¹ : (AE F E)ˣ) : AE F E) = 1` using `fun u => by`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hN : ∀ u : (AE F E)ˣ, cA σ ((u : AE F E) * cA σ u) = u * cA σ u` using `fun u => by`. Rewrite using `[map_mul, hcc, mul_comm]`. Establish `hmc : Continuous fun a : Fin n₁ → AE F E => a` using `continuous_id`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `L₁ : (Fin n₁ → AE F E) ≃ₜ+ (Fin n₁ → AE F E)` to `{ toFun := fun a => cA σ (l : AE F E) • (mat g₀ *ᵥ a) invFun := fun a => cA σ ((l⁻¹ : (AE F E)ˣ) : AE F E) • (mat g₀⁻¹ *ᵥ a) left_inv := fun a => by`. Simplify using `only`. Rewrite using `[Matrix.mulVec_smul, smul_smul, hcu, one_smul, Matrix.mulVec_mulVec, GlobalTheory.StabHaar.mat_inv_mul, Matrix.one_mulVec]`. Use `right_inv := fun a => by`. Simplify using `only`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Equip the data with the indicated structure.
 
-Rewrite using `[Matrix.mulVec_smul, smul_smul, hcu', one_smul, Matrix.mulVec_mulVec, GlobalTheory.StabHaar.mat_mul_inv, Matrix.one_mulVec]`. Use the proof step `map_add' := fun a b => by simp only [Matrix.mulVec_add, smul_add]`. Use `continuous_toFun := (continuous_const.matrix_mulVec continuous_id).const_smul (cA σ (l : AE F E))`. Use `continuous_invFun := (continuous_const.matrix_mulVec continuous_id).const_smul (cA σ ((l⁻¹ : (AE F E)ˣ) : AE F E)) }`. Set `L₂ : imA σ ≃ₜ+ imA σ` to `{ toFun := fun b => ⟨(l : AE F E) * cA σ l * b, mul_mem_imA (hN l) b.2⟩ invFun := fun b => ⟨((l⁻¹ : (AE F E)ˣ) : AE F E) * cA σ ((l⁻¹ : (AE F E)ˣ) : AE F E) * b, mul_mem_imA (hN l⁻¹) b.2⟩ left_inv := fun b => Subtype.ext (by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Simplify using `only`. Rewrite using `[← mul_assoc, mul_mul_mul_comm, Units.inv_mul, hcu, one_mul, one_mul])`. Use `right_inv := fun b => Subtype.ext (by`. Simplify using `only`. Rewrite using `[← mul_assoc, mul_mul_mul_comm, Units.mul_inv, hcu', one_mul, one_mul])`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `map_add' := fun a b => Subtype.ext (by simp only [AddSubgroup.coe_add, mul_add])`. Use `continuous_toFun := (continuous_const.mul continuous_subtype_val).subtype_mk _`. Use `continuous_invFun := (continuous_const.mul continuous_subtype_val).subtype_mk _ }`. Establish `hφΨ : ∀ a b, φ (Ψ (a, b)) = Ψ (L₁ a, L₂ b)`. Introduce `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨p, hp, hp1, hp2⟩` from `hconj l g₀ (m l g₀) hm0 a b`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[conjOn_apply, hp]`. Use `congr 2`. Conclude with `Prod.ext hp1 (Subtype.ext hp2)`.
-
-Use `letI : MeasurableSpace (Fin n₁ → AE F E) := borel _`. Use `haveI : BorelSpace (Fin n₁ → AE F E) := ⟨rfl⟩`. Use `letI : MeasurableSpace (imA σ) := borel _`. Use `haveI : BorelSpace (imA σ) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (imA σ) := (isClosed_imA σ).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
-
-Use `haveI : SecondCountableTopology (imA σ) := (isClosed_imA σ).isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Establish `hchar : mulEquivHaarChar φ = absE F E l ^ n₁ * absE F E l`. Rewrite using `[GlobalTheory.T.haar_measure_product_groups _ _ _ Ψ ω hω hlaw φ L₁ L₂ hφΨ, GlobalTheory.T.haar_scaling_linear_equiv_unit F E σ B n₁ X₁ r₁ s₁ hB hX₁ l g₀ L₁ (fun a => rfl), GlobalTheory.T.haar_char_mul_conj_eq_abs F E σ B hB l L₂ (fun b => rfl)]`. Use `haveI : IsTopologicalGroup (unip σ X H) := inferInstance`. Use `haveI : T2Space (unip σ X H) := inferInstance`.
-
-Use `haveI : RegularSpace (unip σ X H) := by first`. Consider the case `exact IsTopologicalGroup.regularSpace _`. Consider the case `exact TopologicalGroup.regularSpace _`. Consider the case `exact inferInstanceAs (RegularSpace (Subtype _))`. Use `haveI : T1Space (unip σ X H) := T2Space.t1Space`.
-
-Use `haveI : T0Space (unip σ X H) := T1Space.t0Space`. Use `haveI : T3Space (unip σ X H) := T3Space.mk`. Use `haveI : TopologicalSpace.MetrizableSpace (unip σ X H) := TopologicalSpace.metrizableSpace_of_t3_secondCountable _`. Use `haveI : μN.Regular := Measure.Regular.of_sigmaCompactSpace_of_isLocallyFiniteMeasure _`. Establish `hsm` using `mulEquivHaarChar_smul_map μN φ`.
-
-Rewrite `hsm` using `[hchar]`. Establish `hpos : absE F E l ≠ 0` using `((Group.isUnit l).map (absE F E)).ne_zero`. Use `set c : ℝ≥0 := absE F E l ^ n₁ * absE F E l with hc`. Establish `hc0 : c ≠ 0` using `mul_ne_zero (pow_ne_zero _ hpos) hpos`. Establish `hmap : μN.map φ = c⁻¹ • μN` using `by conv_rhs => rw [← hsm]`.
-
-Rewrite using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Establish `e1 : ∫⁻ u, f (m l g₀ * u.1 * (m l g₀)⁻¹) ∂μN = ∫⁻ u, f u.1 ∂(μN.map φ)` using `(lintegral_map_equiv (fun v : unip σ X H => f v.1) φ.toHomeomorph.toMeasurableEquiv).symm`. Rewrite using `[e1, hmap, lintegral_smul_measure]`. Establish `hn : (n : ℝ) = n₁ + 2` using `by rw [hH.rank]; push_cast; ring`. Establish `e2 : ((absE F E l : ℝ)) ^ (1 - (n : ℝ)) = ((c⁻¹ : ℝ≥0) : ℝ)`.
-
-Rewrite using `[hn, show (1 : ℝ) - (n₁ + 2) = -((n₁ + 1 : ℕ) : ℝ) by push_cast; ring, Real.rpow_neg (NNReal.coe_nonneg _), Real.rpow_natCast, hc, NNReal.coe_inv, NNReal.coe_mul, NNReal.coe_pow, pow_succ]`. Rewrite using `[e2, ENNReal.ofReal_coe_nnreal, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_conj_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n n₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (r s r₁ s₁ i₀ i₁ : ℕ) (H : Plane E n n₁), B.IsGood σ → X.IsHerm σ B r s →

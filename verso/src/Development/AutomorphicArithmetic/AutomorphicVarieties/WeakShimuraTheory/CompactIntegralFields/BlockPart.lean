@@ -20,7 +20,7 @@ private theorem bp_apply (X : M4 R) (i j : Fin 4) : bp X i j = if lamW i = lamW 
 private def Tri (s : ℤ) (X : M4 R) : Prop := ∀ i j, s * lamW i < s * lamW j → X i j = 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[bp_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(Matrix.one_apply_ne fun e => h (by rw [e])).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem bp_one : bp (1 : M4 R) = 1 := by
   ext i j
@@ -30,7 +30,7 @@ private theorem bp_one : bp (1 : M4 R) = 1 := by
   · exact (Matrix.one_apply_ne fun e => h (by rw [e])).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bp_apply, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bp_add (X Y : M4 R) : bp (X + Y) = bp X + bp Y := by
   ext i j
@@ -38,7 +38,7 @@ private theorem bp_add (X Y : M4 R) : bp (X + Y) = bp X + bp Y := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bp_apply, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bp_smul (a : R) (X : M4 R) : bp (a • X) = a • bp X := by
   ext i j
@@ -46,11 +46,11 @@ private theorem bp_smul (a : R) (X : M4 R) : bp (a • X) = a • bp X := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bp_apply, Matrix.mul_apply]`. Establish `key : ∀ k, lamW i ≠ lamW k → lamW i = lamW j → X i k * Y k j = 0` using `fun k h1 h2 => by`. Break down `lt_or_gt_of_ne (fun e => h1 (mul_left_cancel₀ hs e) : s * lamW i ≠ s * lamW k) with h | h` into its components or cases. Rewrite using `[hX i k h, zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY k j (h2 ▸ h), mul_zero]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : lamW i = lamW k`. Rewrite using `[if_pos h1, if_pos (h1.symm.trans h)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, zero_mul, key k h1 h]`. Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `h1 : lamW i = lamW k`. Rewrite using `[if_neg (fun e : lamW k = lamW j => h (h1.trans e)), mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bp_mul {s : ℤ} (hs : s ≠ 0) {X Y : M4 R} (hX : Tri s X) (hY : Tri s Y) : bp (X * Y) = bp X * bp Y := by
   ext i j
@@ -70,12 +70,12 @@ private theorem bp_mul {s : ℤ} (hs : s ≠ 0) {X Y : M4 R} (hX : Tri s X) (hY 
     · rw [if_neg h1, zero_mul]
 
 /- English proof (translation)
-Use `revert i`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem lam_rev (i : Fin 4) : lamW i.rev = 1 - lamW i := by revert i; decide
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bp_apply, adj_apply, lam_rev]`. Distinguish the cases in `h : lamW i = lamW j`. Rewrite using `[if_pos h, if_pos (by rw [h])]`. Rewrite using `[if_neg h, if_neg (fun e => h (by linarith)), smul_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem adj_bp (X : M4 R) : adj (bp X) = bp (adj X) := by
   ext i j
@@ -85,13 +85,13 @@ private theorem adj_bp (X : M4 R) : adj (bp X) = bp (adj X) := by
   · rw [if_neg h, if_neg (fun e => h (by linarith)), smul_zero]
 
 /- English proof (translation)
-Introduce `i j h` and use `by rw [adj_apply, hX _ _ (by rw [lam_rev, lam_rev]; linarith), smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Tri.adj {s : ℤ} {X : M4 R} (hX : Tri s X) : Tri s (adj X) := fun i j h => by
   rw [adj_apply, hX _ _ (by rw [lam_rev, lam_rev]; linarith), smul_zero]
 
 /- English proof (translation)
-Unfold `IsGSp at *`. Rewrite using `[adj_bp, ← bp_mul hs hX.adj hX, h, bp_smul, bp_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gsp_bp {s : ℤ} (hs : s ≠ 0) {X : M4 R} (hX : Tri s X) {ν : R} (h : IsGSp ν X) : IsGSp ν (bp X) := by
   unfold IsGSp at *
@@ -105,14 +105,14 @@ private def bpRep {H : Type} [Group H] {s : ℤ} (hs : s ≠ 0) (r : H →* M4 R
 private def ee : M4 R := !![1, 0, 0, 0; 0, 0, 0, 0; 0, 0, 1, 0; 0, 0, 0, 0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ee, Matrix.mul_apply, Fin.sum_univ_four]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ee_mul : (ee : M4 R) * ee = ee := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [ee, Matrix.mul_apply, Fin.sum_univ_four]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.mul_apply, Fin.sum_univ_four, bp_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ee, lamW, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bp_eq (X : M4 R) : bp X = ee * X * ee + (1 - ee) * X * (1 - ee) := by
   ext i j
@@ -120,7 +120,7 @@ private theorem bp_eq (X : M4 R) : bp X = ee * X * ee + (1 - ee) * X * (1 - ee) 
   fin_cases i <;> fin_cases j <;> simp [ee, lamW, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hX i k h, zero_mul]`. Rewrite using `[hY k i h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem up_diag {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) (i : Fin 4) : (X * Y) i i = X i i * Y i i := by
   rw [Matrix.mul_apply]
@@ -130,7 +130,7 @@ private theorem up_diag {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) (i : Fin 4) : (
   · rw [hY k i h, mul_zero]
 
 /- English proof (translation)
-Introduce `i j h` and use `by rw [Matrix.mul_apply] refine Finset.sum_eq_zero fun k _ => ?_ rcases lt_or_ge k i with h' | h' · rw [hX i k h', zero_mul] · rw [hY k j (h.trans_le h'), mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem up_mul {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) : IsUp (X * Y) := fun i j h => by
   rw [Matrix.mul_apply]
@@ -140,16 +140,16 @@ private theorem up_mul {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) : IsUp (X * Y) :
   · rw [hY k j (h.trans_le h'), mul_zero]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Matrix.one_apply_ne h.ne'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem up_one : IsUp (1 : M4 R) := fun _ _ h => Matrix.one_apply_ne h.ne'
 
 /- English proof (translation)
-Establish `h2 : u * v = 1` using `mul_eq_one_comm.1 h1`. Establish `k : ∀ A B : M4 R, v * (A * B) * u = (v * A * u) * (v * B * u)` using `fun A B => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hf : v * (1 - ee) * u = 1 - v * ee * u` using `by rw [mul_sub, sub_mul, mul_one, h1]`. Establish `hF : IsUp (1 - v * ee * u)` using `fun i j h => by rw [Matrix.sub_apply, up_one i j h, he i j h, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : v * bp X * u = (v * ee * u) * (v * X * u) * (v * ee * u) + (1 - v * ee * u) * (v * X * u) * (1 - v * ee * u)`. Rewrite using `[bp_eq, mul_add, add_mul, k, k, k, k, hf]`. Rewrite using `[e]`. Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, up_mul (up_mul he hX) he i j h, up_mul (up_mul hF hX) hF i j h, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `id` using `up_diag he he i`. Rewrite `id` using `[← k, ee_mul]`. Rewrite using `[Matrix.add_apply, up_diag (up_mul he hX) he, up_diag (up_mul hF hX) hF, up_diag he hX, up_diag hF hX, Matrix.sub_apply, Matrix.one_apply_eq]`. Take the linear combination `(-2 * (v * X * u) i i) * id`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem flag_bp {u v X : M4 R} (h1 : v * u = 1) (he : IsUp (v * ee * u)) (hX : IsUp (v * X * u)) :
     IsUp (v * bp X * u) ∧ ∀ i, (v * bp X * u) i i = (v * X * u) i i := by
@@ -172,13 +172,13 @@ private theorem flag_bp {u v X : M4 R} (h1 : v * u = 1) (he : IsUp (v * ee * u))
     linear_combination (-2 * (v * X * u) i i) * id
 
 /- English proof (translation)
-Establish `step : ∀ y0 y1 y2 y3 : R, (!![y0, 0, y1, 0; 0, 0, 0, 0; y2, 0, y3, 0; 0, 0, 0, 0] : M4 R) ∈ A → IsUnit (y0 * y3 - y1 * y2) → ee ∈ A` using `fun y0 y1 y2 y3 hY hu => by`. Take `⟨v, hv⟩` from `hu.exists_left_inv`. Use `A.smul_mem (A.sub_mem (A.smul_mem hY (y0 + y3)) (A.mul_mem hY hY)) v using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ee, Matrix.mul_apply, Fin.sum_univ_four] <;> first | linear_combination -hv | ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `b01` using `hb 0 1 (by decide)`. Establish `b03` using `hb 0 3 (by decide)`. Establish `b10` using `hb 1 0 (by decide)`. Establish `b12` using `hb 1 2 (by decide)`. Establish `b21` using `hb 2 1 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b23` using `hb 2 3 (by decide)`. Establish `b30` using `hb 3 0 (by decide)`. Establish `b32` using `hb 3 2 (by decide)`. Use `step _ _ _ _ ?_ hu` and prove the remaining obligations. Use `A.add_mem (A.sub_mem (A.mul_mem hX hX) (A.smul_mem hX (X 1 1 + X 3 3))) (A.smul_mem A.one_mem (X 1 1 * X 3 3 - X 1 3 * X 3 1)) using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_four, b01, b03, b10, b12, b21, b23, b30, b32] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ee_mem (A : Subalgebra R (M4 R)) (X : M4 R) (hX : X ∈ A) (hb : IsBlock X)
     (hu : IsUnit ((X 0 0 * X 0 0 + X 0 2 * X 2 0 - (X 1 1 + X 3 3) * X 0 0 + (X 1 1 * X 3 3 - X 1 3 * X 3 1)) *
@@ -223,7 +223,7 @@ private def stab {u v : M4 R} (h1 : v * u = 1) : Subalgebra R (M4 R) where
     rw [Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, h1, Matrix.smul_apply, up_one i j h, smul_zero]
 
 /- English proof (translation)
-Use `ee_mem (stab h1) X hX hb ?_` and prove the remaining obligations. Rewrite using `[← residue_ne_zero_iff_isUnit]`. Simplify using `only [map_sub, map_mul, map_add, ho 0 2 (by decide), ho 2 0 (by decide), ho 1 3 (by decide)]`. Establish `k` using `mul_ne_zero (mul_ne_zero (sub_ne_zero.2 (hd 0 1 (by decide))) (sub_ne_zero.2 (hd 0 3 (by decide)))) (mul_ne_zero (sub_ne_zero.2 (hd 2 1 (by decide))) (sub_ne_zero.2 (hd 2 3 (by decide))))`. Use `k using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -239,11 +239,11 @@ private theorem ee_up [IsLocalRing R] {u v X : M4 R} (h1 : v * u = 1) (hX : IsUp
   ring
 
 /- English proof (translation)
-Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨g, h g⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Establish `: bp ((0 : M4 R).map y) = 0` using `by ext i j; simp [bp_apply]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`. Rewrite using `[Matrix.map_add _ (map_add y), bp_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a x _ hx`. Establish `: (a • x).map y = y a • x.map y` using `by ext i j; simp`. Rewrite using `[this, bp_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem span_bp {H K : Type} [Group H] [Field K] (ρ : H →* M4 R) (y : R →+* K) (r₁ : H →* M4 K)
     (h : ∀ g, r₁ g = bp (mapRep y ρ g)) (X : M4 R) (hX : X ∈ Submodule.span R (Set.range ρ)) :
@@ -264,37 +264,31 @@ private theorem span_bp {H K : Type} [Group H] [Field K] (ρ : H →* M4 R) (y :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD 𝔞 r hV u hK h02 h20 ht`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hT⟩ : ∃ s : ℤ, s ≠ 0 ∧ ∀ g, Tri s (r g) := by`. Break down `ht with h | h` into its components or cases. Conclude with `⟨1, one_ne_zero, fun g i j hij => by_contra fun hn => h i j (by linarith) ⟨g, hn⟩⟩`. Conclude with `⟨-1, by decide, fun g i j hij => by_contra fun hn => h i j (by linarith) ⟨g, hn⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨-, R, _, _, _, ρ, y, hpt, -, -, hr⟩` from `hV`. Take `⟨-, hTT, -, -, -, -, -, -, hphG, hph, -⟩` from `facts D hD`. Establish `hl` using `(hTT l (Finset.mem_insert_self _ _)).2.2`. Establish `h1 : adj u * u = 1` using `by simpa [IsGSp] using hK.sp`. Establish `hred : ∀ g i j, residue 𝔞.V (r g i j) = 𝔞.j c (D.rbar g i j)` using `fun g i j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(residue_eq_zero_iff _).2 (hK.red g i j)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hee : IsUp (adj u * ee * u)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `ee_up h1 (hK.flag _ hphG) (fun i j h => ?_) (fun i j h => ?_) fun i j h => ?_` and prove the remaining obligations. Rewrite using `[hr, mapRep_apply, hpt.nrm.1 i j h, map_zero]`. Rewrite using `[hred]`. Simplify using `[Raw.rbar, Raw.r0, diagRep, h]`. Rewrite using `[hred, hred, hph]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `fun e => hl i j h ?_` and prove the remaining obligations. Simplify `(𝔞.j c).injective e` using `[Raw.rbar, Raw.r0, diagRep]`. Establish `hb : ∀ g, IsBlock (bpRep hs r hT g)` using `fun g i j h => if_neg h`. Establish `hm : ∀ g, IsGSp (𝔞.a c (D.th g)) (bpRep hs r hT g)` using `fun g => gsp_bp hs (hT g) (hK.mult g)`. Establish `h_one : ∀ g, r g = 1 → bpRep hs r hT g = 1` using `fun g h => by show bp (r g) = 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, bp_one]`. Use `⟨bpRep hs r hT, u, ⟨?_, fun g i j => ?_, hm, fun A hA g hg h => h_one g (hK.unr A hA g hg h), fun p hp g hg => h_one g (hK.atP p hp g hg), hK.sp, fun t ht => (flag_bp h1 hee (hK.flag t ht)).1, fun t ht i => ?_, fun t ht i => ?_⟩, hb, ?_⟩` and prove the remaining obligations. Take `⟨A, _, _, _, f, P, hf, hc, hP⟩` from `hK.small`. Establish `e1 : ∀ g i j, f (P.r g i j) = r g i j` using `fun g i j => congrArg (fun Q : PD Unit _ _ => Q.r g i j) hP`. Establish `hT' : ∀ g, Tri s (P.r g)` using `fun g i j h => hf.inj (by rw [e1, hT g i j h, map_zero])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨A, inferInstance, inferInstance, inferInstance, f, ⟨bpRep hs P.r hT', P.n⟩, hf, fun i j => ?_, ?_⟩` and prove the remaining obligations. Use `show AdicCont _ fun g => if lamW i = lamW j then P.r g i j else 0 split_ifs`. Conclude with `hc i j`. Conclude with `fun n => IsLocallyConstant.const _`. Establish `e2` using `congrArg PD.n hP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `PD.ext ?_ e2` and prove the remaining obligations. Use extensionality with `g i j`. Use `show ((f (if lamW i = lamW j then P.r g i j else 0) : 𝔞.V) : 𝔞.K) = ((if lamW i = lamW j then r g i j else 0 : 𝔞.V) : 𝔞.K)`. Use `split_ifs`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Use `show (if lamW i = lamW j then r g i j else 0) - _ ∈ _ split_ifs with h`. Conclude with `hK.red g i j`. Establish `: i ≠ j` using `fun e => h (by rw [e])`. Simplify using `[Raw.r0, diagRep, this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show (adj u * bp (r t) * u) i i - _ ∈ _`. Rewrite using `[(flag_bp h1 hee (hK.flag t ht)).2]`. Conclude with `hK.char t ht i`. Use `show (adj u * bp (r t) * u) i i = _`. Rewrite using `[(flag_bp h1 hee (hK.flag t (Ine_le_Dec _ ht))).2]`.
+Both sides reduce to the same expression. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hK.inert t ht i`. Establish `he : ∀ i, Matrix.single i i (1 : 𝔞.K) ∈ Submodule.span 𝔞.K (Set.range (mapRep 𝔞.toK (bpRep hs r hT)))` using `fun i => by`. Use `span_bp ρ.hom (𝔞.toK.comp y) (mapRep 𝔞.toK (bpRep hs r hT)) (fun g => by` as an intermediate fact. Use extensionality with `a b`. Use `show 𝔞.toK (if lamW a = lamW b then r g a b else 0) = if lamW a = lamW b then 𝔞.toK (y (ρ.hom g a b)) else 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `split_ifs`. Rewrite using `[hr]`. Both sides reduce to the same expression. Use the proof step `rfl) _ (eii D hD R ρ hpt.mult hpt.nrm i)`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `a b`. Rewrite using `[bp_apply, Matrix.map_apply, Matrix.single_apply, Matrix.single_apply]`. Distinguish the cases in `h : i = a ∧ i = b`. Rewrite using `[if_pos h, if_pos h, if_pos (by rw [← h.1, ← h.2]), map_one]`. Simplify using `[h]`.
-
-Use `(geAlg 𝔞.K (mapRep 𝔞.toK (bpRep hs r hT)) (fun g => 𝔞.toK (𝔞.a c (D.th g))) (fun g => ?_) he).2.2.2.2.2 ?_ ?_ fun g i j h => ?_` and prove the remaining obligations. Use extensionality with `a b`. Use `congrArg 𝔞.toK (congrFun (congrFun (hm g) a) b)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, adj_apply, map_sum, map_mul, map_zsmul, Matrix.smul_apply, smul_eq_mul, Matrix.one_apply] at this ⊢`. Rewrite `this` using `[apply_ite 𝔞.toK, map_one, map_zero]`.
-
-Conclude with `this`. Take `⟨g, hg⟩` from `h02`. Conclude with `⟨g, fun e => hg (𝔞.V.subtype_injective (e.trans (map_zero _).symm))⟩`. Take `⟨g, hg⟩` from `h20`. Conclude with `⟨g, fun e => hg (𝔞.V.subtype_injective (e.trans (map_zero _).symm))⟩`.
-
-Rewrite using `[mapRep_apply, hb g i j h, map_zero]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.blockPart :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l) r, VPt D 𝔞 r → ∀ u, KPair D 𝔞 r u → Ge r 0 2 → Ge r 2 0 → ((∀ i j, lamW i < lamW j → ¬ Ge r i j) ∨ ∀ i j, lamW j < lamW i → ¬ Ge r i j) →

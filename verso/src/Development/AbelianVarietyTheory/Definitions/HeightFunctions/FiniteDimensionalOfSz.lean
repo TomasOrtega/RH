@@ -25,7 +25,7 @@ def weberSet (L : PeriodPair) (n : ℕ) : Set ℂ :=
     {w | ∃ z ∈ L.lattice, z / n ∉ L.lattice ∧ w = L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP (z / n)}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_sz {F : IntermediateField ℚ ℂ} {a b : ℝ} (h : Sz F a b) : FiniteDimensional ℚ F := h.1
 

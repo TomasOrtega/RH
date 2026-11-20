@@ -14,7 +14,7 @@ section Mat
 variable {p q n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Conclude with `(Formalism.L2.SG.InstExistsPf.Jpq_sub _ _ e _ fun _ => rfl).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Jm_sub (e : Fin n ≃ Fin p ⊕ Fin q) :
     Formalism.REAL.Jm (fun i => (e i).isLeft) = (Formalism.UG.Jpq p q).submatrix e e := by
@@ -22,18 +22,18 @@ theorem Jm_sub (e : Fin n ≃ Fin p ⊕ Fin q) :
   exact (Formalism.L2.SG.InstExistsPf.Jpq_sub _ _ e _ fun _ => rfl).symm
 
 /- English proof (translation)
-Rewrite using `[Jm_sub, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, submatrix_id_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_gram (e : Fin n ≃ Fin p ⊕ Fin q) (A : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ) :
     (A.submatrix e id)ᴴ * Formalism.REAL.Jm (fun i => (e i).isLeft) * A.submatrix e id = Aᴴ * Formalism.UG.Jpq p q * A := by
   rw [Jm_sub, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, submatrix_id_id]
 
 /- English proof (translation)
-Take `⟨e, P', hP'⟩` from `h`. Rewrite `hP'` using `[Formalism.L2.SG.InstExistsPf.cT_eq]`. Set `A : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ` to `(P' : Matrix _ _ ℂ)`. Set `Ai : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ` to `((P'⁻¹ : GL _ ℂ) : Matrix _ _ ℂ)`. Use `⟨e, A.submatrix e e, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : A.submatrix e e * Ai.submatrix e e = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, show A * Ai = 1 from P'.mul_inv, Matrix.submatrix_one_equiv]`. Conclude with `Matrix.isUnit_det_of_right_inverse h1`. Establish `hM : M = (M.reindex e e).submatrix e e`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hM, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Rewrite using `[show Aᴴ * M.reindex e e * A = Formalism.UG.Jpq _ _ from hP']`. Conclude with `(Jm_sub e).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_frame (M : Matrix (Fin n) (Fin n) ℂ) (h : Formalism.UG.HasSignature M p q) :
     ∃ (e : Fin n ≃ Fin p ⊕ Fin q) (P : Matrix (Fin n) (Fin n) ℂ), IsUnit P.det ∧
@@ -53,7 +53,7 @@ theorem sig_frame (M : Matrix (Fin n) (Fin n) ℂ) (h : Formalism.UG.HasSignatur
     exact (Jm_sub e).symm
 
 /- English proof (translation)
-Rewrite using `[← h]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = M := by rw [mul_nonsing_inv _ hP, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_frame {M J P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P.det) (h : Pᴴ * M * P = J) :
     (P⁻¹)ᴴ * J * P⁻¹ = M := by
@@ -63,17 +63,15 @@ theorem inv_frame {M J P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P.det) (h : 
     _ = M := by rw [mul_nonsing_inv _ hP, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `set J := Formalism.UG.Jpq p q`. Establish `hJ : Jᴴ = J` using `Formalism.BasicNotions.Examples₂.CD.J_star p q`. Use `set L₀ := G⁻¹ * A₀ᴴ * J`. Use `set L₁ := G⁻¹ * A₁ᴴ * J`. Establish `hL₀ : L₀ * A₀ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hL₁ : L₁ * A₁ = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hA₀ : A₀ * L₀ = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).mp hL₀`. Establish `hA₁ : A₁ * L₁ = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).mp hL₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `m1 : (A₁ * L₀) * (A₀ * L₁) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `m2 : (A₀ * L₁) * (A₁ * L₀) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hGi : (G⁻¹)ᴴ = G⁻¹` using `by rw [conjTranspose_nonsing_inv, hGh]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : star (A₁ * L₀) * J * (A₁ * L₀) = J`. Rewrite using `[show star (A₁ * L₀) = (A₁ * L₀)ᴴ from rfl]`. Establish `hL₀h : L₀ᴴ = J * A₀ * G⁻¹`. Simplify using `only [L₀, conjTranspose_mul, conjTranspose_conjTranspose, hJ, hGi, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J * A₀ * (G⁻¹ * G) * (G⁻¹ * A₀ᴴ * J) := by rw [h₁, hL₀h]; simp only [L₀, Matrix.mul_assoc]`. Use `_ = J * (A₀ * L₀) := by rw [nonsing_inv_mul _ hG]; simp only [L₀, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = J := by rw [hA₀, Matrix.mul_one]`.
-
-Set `g : GL (Fin p ⊕ Fin q) ℂ` to `⟨A₁ * L₀, A₀ * L₁, m1, m2⟩`. Establish `hg : g ∈ Formalism.UG.Upq p q` using `(Formalism.UG.P.mem_Upq_iff p q g).mpr hmem`. Use `⟨(⟨g, hg⟩ : Formalism.UG.Upq p q), ?_⟩` and prove the remaining obligations. Use `show A₁ = A₁ * L₀ * A₀`. Rewrite using `[Matrix.mul_assoc, hL₀, Matrix.mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_change (e : Fin n ≃ Fin p ⊕ Fin q) (G : Matrix (Fin n) (Fin n) ℂ) (hG : IsUnit G.det) (hGh : Gᴴ = G)
     (A₀ A₁ : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ) (h₀ : A₀ᴴ * Formalism.UG.Jpq p q * A₀ = G)
@@ -127,14 +125,14 @@ structure FrA (V : HSp D) where
 def sqA (F : FrA V) (ρ : D.what₂.Tau) : Matrix (Fin V.rank) (Fin V.rank) ℂ := (F.A ρ).submatrix (F.e ρ) id
 
 /- English proof (translation)
-Rewrite using `[sqA, sq_gram, F.hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqA_gram (F : FrA V) (ρ : D.what₂.Tau) :
     (sqA F ρ)ᴴ * Formalism.REAL.Jm (fun i => (F.e ρ i).isLeft) * sqA F ρ = gramAt D V ρ := by
   rw [sqA, sq_gram, F.hA]
 
 /- English proof (translation)
-Use `show (V.gram.map (tauE D ρ)).det ≠ 0`. Rewrite using `[show (V.gram.map (tauE D ρ)).det = tauE D ρ V.gram.det from (RingHom.map_det _ _).symm]`. Conclude with `(map_ne_zero _).mpr (UI.J_det D V)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_det (ρ : D.what₂.Tau) : (gramAt D V ρ).det ≠ 0 := by
   show (V.gram.map (tauE D ρ)).det ≠ 0
@@ -142,9 +140,9 @@ theorem gramAt_det (ρ : D.what₂.Tau) : (gramAt D V ρ).det ≠ 0 := by
   exact (map_ne_zero _).mpr (UI.J_det D V)
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show star (tauE D ρ (V.gram j i)) = tauE D ρ (V.gram i j)`. Establish `hij : starRingEnd D.host.E (V.gram j i) = V.gram i j`. Use `congrFun (congrFun (UI.J_herm D V) i) j` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem gramAt_herm (ρ : D.what₂.Tau) : (gramAt D V ρ)ᴴ = gramAt D V ρ := by
   ext i j
@@ -156,9 +154,9 @@ theorem gramAt_herm (ρ : D.what₂.Tau) : (gramAt D V ρ)ᴴ = gramAt D V ρ :=
     _ = tauE D ρ (V.gram i j) := by rw [← hij]; rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg det (sqA_gram F ρ)`. Rewrite `h` using `[det_mul, det_mul]`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Rewrite `h` using `[h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `gramAt_det ρ h.symm`.
+A detailed English derivation is pending.
 -/
 theorem sqA_det (F : FrA V) (ρ : D.what₂.Tau) : IsUnit (sqA F ρ).det := by
   have h := congrArg det (sqA_gram F ρ)
@@ -186,7 +184,7 @@ def phiR (F : FrA V) (v : InfinitePlace D.host.F) :
   PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi (F.e (ρv v)).symm (fun i => by simp [toFrames]) (fun j => by simp [toFrames])
 
 /- English proof (translation)
-Use `show reindex _ _ (UpqT.mat b) = _`. Rewrite using `[reindex_apply, Equiv.symm_symm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uMat_phiR (F : FrA V) (v : InfinitePlace D.host.F)
     (b : UpqT (V.sig (tauE D (ρv v))).1 (V.sig (tauE D (ρv v))).2) :
@@ -195,23 +193,21 @@ theorem uMat_phiR (F : FrA V) (v : InfinitePlace D.host.F)
   rw [reindex_apply, Equiv.symm_symm]
 
 /- English proof (translation)
-Use `set e := F.e (ρv v)`. Use `set A := F.A (ρv v)`. Use `set A' := sqA F (ρv v)`. Establish `hu` using `sqA_det F (ρv v)`. Establish `hX : infMat D.sp.cm.sig V.gram (thetaC D (ρv v)) (UI.brg (toFrames F) x) = A'⁻¹ * uM (toFrames F) x v * A'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `infMat_brg (toFrames F) x (ρv v)`. Rewrite `h` using `[Equiv.apply_symm_apply]`. Rewrite using `[h]`. Use `show A'⁻¹ * _ * (A'⁻¹)⁻¹ = _`. Rewrite using `[nonsing_inv_nonsing_inv _ hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hS : ∀ M : Matrix (Fin (V.sig (tauE D (ρv v))).1 ⊕ Fin (V.sig (tauE D (ρv v))).2) (Fin V.rank) ℂ, (M.submatrix e id).submatrix e.symm id = M`. Introduce `M`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `key : ∀ b : UpqT (V.sig (tauE D (ρv v))).1 (V.sig (tauE D (ρv v))).2, UpqT.mat b * A = A * (A'⁻¹ * uM (toFrames F) x v * A') ↔ (uMat (phiR F v b) : Matrix (Fin V.rank) (Fin V.rank) ℂ) = uM (toFrames F) x v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Rewrite using `[uMat_phiR]`. Use `set u : Matrix (Fin V.rank) (Fin V.rank) ℂ := uM (toFrames F) x v`. Establish `h1 : (UpqT.mat b * A).submatrix e id = (UpqT.mat b).submatrix e e * A'`. Rewrite using `[show A' = A.submatrix e id from rfl, submatrix_mul_equiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `h2 : (A * (A'⁻¹ * u * A')).submatrix e id = A' * (A'⁻¹ * u * A')`. Rewrite using `[show A' = A.submatrix e id from rfl]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h3 : (UpqT.mat b).submatrix e e * A' = u * A'`. Rewrite using `[← h1, h, h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `_ = u * A' * A'⁻¹ := by rw [h3]`. Use `_ = u := by rw [Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.mul_one]`. Introduce `h`. Rewrite using `[← hS (UpqT.mat b * A), ← hS (A * (A'⁻¹ * u * A')), h1, h2, h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.one_mul]`. Rewrite using `[hX]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hba⟩`. Conclude with `⟨b, hb, Subtype.ext (Units.ext ((key b).mp hba))⟩`. Introduce and unpack `⟨b, hb, hbx⟩`. Use `⟨b, hb, (key b).mpr ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hbx]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cond_iff (F : FrA V) (x : (UI.instV (toFrames F)).GA) (v : InfinitePlace D.host.F)
     (B : Set (UpqT (V.sig (tauE D (ρv v))).1 (V.sig (tauE D (ρv v))).2)) :
@@ -265,9 +261,9 @@ theorem cond_iff (F : FrA V) (x : (UI.instV (toFrames F)).GA) (v : InfinitePlace
     rfl
 
 /- English proof (translation)
-Establish `h : ∀ ρ : D.what₂.Tau, ∃ (e : Fin V.rank ≃ Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2) (A : Matrix (Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2) (Fin V.rank) ℂ), Aᴴ * Formalism.UG.Jpq (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2 * A = gramAt D V ρ` using `fun ρ => by`. Take `⟨e, Q, hQ, hQs⟩` from `sig_frame (V.gram.map (tauE D ρ)) (hS (tauE D ρ))`. Use `⟨e, (Q⁻¹).submatrix e.symm id, ?_⟩` and prove the remaining obligations. Rewrite using `[← sq_gram e]`. Establish `: ((Q⁻¹).submatrix e.symm id).submatrix e id = Q⁻¹` using `by ext i j; simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `inv_frame hQ hQs`. Use `choose e A hA using h`. Conclude with `⟨⟨e, A, hA⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frA_nonempty (hS : V.SigOK) : Nonempty (FrA V) := by
   have h : ∀ ρ : D.what₂.Tau, ∃ (e : Fin V.rank ≃ Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2)

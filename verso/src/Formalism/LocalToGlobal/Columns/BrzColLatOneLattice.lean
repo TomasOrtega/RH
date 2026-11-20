@@ -19,9 +19,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {V ι : Type} [AddCom
   (b : Basis ι K V) (P : V →ₗ⋆[K] V →ₗ[K] K)
 
 /- English proof (translation)
-Introduce `v`. Use `⟨fun x x' y => ?_, fun x y y' => ?_, fun a x y => ?_, fun a x y => ?_⟩` and prove the remaining obligations. Simplify using `only [formAt, map_add, Finsupp.add_apply, add_mul, Finset.sum_add_distrib]`. Simplify using `only [formAt, map_add, Finsupp.add_apply, mul_add, Finset.sum_add_distrib]`. Simplify using `only [formAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [formAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isSesq_formAt : IsSesq (formAt b P) := by
   intro v
@@ -34,11 +34,11 @@ theorem isSesq_formAt : IsSesq (formAt b P) := by
     ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramOf, Matrix.of_apply, formAt, Basis.repr_self, Finsupp.single_apply]`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `j' _ hj`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hj]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `i' _ hi`. Simplify using `[Ne.symm hi]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem gramOf_formAt [DecidableEq ι] (v : InfinitePlace K) :
     gramOf b (formAt b P v) = Matrix.of fun i j => v.embedding (P (b i) (b j)) := by
@@ -54,7 +54,7 @@ theorem gramOf_formAt [DecidableEq ι] (v : InfinitePlace K) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `v` and use `by rw [gramOf_formAt]; exact hpos v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem posAt_formAt [DecidableEq ι] (hpos : ∀ v : InfinitePlace K, (Matrix.of fun i j => v.embedding (P (b i) (b j))).PosDef) :
     PosAt b (formAt b P) := fun v => by rw [gramOf_formAt]; exact hpos v
@@ -62,7 +62,7 @@ theorem posAt_formAt [DecidableEq ι] (hpos : ∀ v : InfinitePlace K, (Matrix.o
 variable [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `of_form_spec K V ι b L (formAt b P) (isSesq_formAt b P) (posAt_formAt b P hpos)`.
+A detailed English derivation is pending.
 -/
 theorem formH_spec (hpos : ∀ v : InfinitePlace K, (Matrix.of fun i j => v.embedding (P (b i) (b j))).PosDef)
     (L : Submodule (𝓞 K) V) :
@@ -73,7 +73,7 @@ theorem formH_spec (hpos : ∀ v : InfinitePlace K, (Matrix.of fun i j => v.embe
   of_form_spec K V ι b L (formAt b P) (isSesq_formAt b P) (posAt_formAt b P hpos)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(formH_spec b P hpos L).1, hL.fg, hL.span_eq_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem formH_good (hpos : ∀ v : InfinitePlace K, (Matrix.of fun i j => v.embedding (P (b i) (b j))).PosDef)
     {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L) : (ofFormB b L (formAt b P)).Good :=
@@ -82,7 +82,7 @@ theorem formH_good (hpos : ∀ v : InfinitePlace K, (Matrix.of fun i j => v.embe
 end Forms
 
 /- English proof (translation)
-Establish `h1` using `(Formalism.HN.plLat K A.V A.ι A.b A.X hX A.L hL).1`. Establish `h2` using `(Formalism.HN.muChar (𝓞 K) A.V _ (Formalism.HermitianLatticesTheory.realize A.b A.X) A.L h1 hne).2.2.2.2`. Unfold `HLat.mu HLat.muMax Formalism.HN.muDef Formalism.HN.muMaxDef`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hlat_mu_le_muMax {K : Type} [Field K] [NumberField K] [StarRing K] (A : HLat K) (hX : FrameOK A) (hL : A.L.FG)
     (hne : A.L ≠ ⊥) : A.mu ≤ A.muMax := by
@@ -92,7 +92,7 @@ theorem hlat_mu_le_muMax {K : Type} [Field K] [NumberField K] [StarRing K] (A : 
   linarith
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `hL.span_eq_top`. Rewrite `h2` using `[h, Submodule.bot_coe, Submodule.span_zero_singleton]`. Conclude with `bot_ne_top h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_ne_bot {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Nontrivial V] {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L) : L ≠ ⊥ := by
@@ -106,13 +106,13 @@ section Val
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K}
 
 /- English proof (translation)
-The claim follows from `R.pos v`.
+A detailed English derivation is pending.
 -/
 theorem GSD.Rat.pos' (R : S.Rat) (v : InfinitePlace K) :
     (Matrix.of fun i j => v.embedding (S.pair (S.bV i) (S.bV j))).PosDef := R.pos v
 
 /- English proof (translation)
-The claim follows from `formH_spec S.bV S.pair R.pos' (S.Del d)`.
+A detailed English derivation is pending.
 -/
 theorem GSD.valH_spec (R : S.Rat) (d : S.D) :
     FrameOK (S.valH d) ∧
@@ -121,13 +121,13 @@ theorem GSD.valH_spec (R : S.Rat) (d : S.D) :
   formH_spec S.bV S.pair R.pos' (S.Del d)
 
 /- English proof (translation)
-The claim follows from `formH_good S.bV S.pair R.pos' hD`.
+A detailed English derivation is pending.
 -/
 theorem GSD.valH_good (R : S.Rat) (d : S.D) (hD : Submodule.IsLattice K (S.Del d)) : (S.valH d).Good :=
   formH_good S.bV S.pair R.pos' hD
 
 /- English proof (translation)
-The claim follows from `formH_good S.bV S.pair R.pos' hD`.
+A detailed English derivation is pending.
 -/
 theorem GSD.valNabH_good (R : S.Rat) (d : S.D) (hD : Submodule.IsLattice K (S.Nab d)) : (S.valNabH d).Good :=
   formH_good S.bV S.pair R.pos' hD
@@ -139,7 +139,7 @@ section Std
 variable (K : Type) [Field K] [NumberField K] [StarRing K] {n : ℕ} (lam : DomWeight n)
 
 /- English proof (translation)
-The claim follows from `pairPos K Unit n (oneW lam) _ v.embedding fun _ => by rw [Matrix.map_one _ (map_zero _) (map_one _)] exact Matrix.PosDef.one`.
+A detailed English derivation is pending.
 -/
 theorem stdPair_pos (v : InfinitePlace K) :
     (Matrix.of fun i j => v.embedding (stdPair K lam (bVV K (oneW lam) i) (bVV K (oneW lam) j))).PosDef :=
@@ -148,9 +148,9 @@ theorem stdPair_pos (v : InfinitePlace K) :
     exact Matrix.PosDef.one
 
 /- English proof (translation)
-Unfold `stdNabL nabK`. Establish `h` using `(nabDelFree K Unit n (oneW lam) 1).1`. Establish `h1 : (nabStd K (oneW lam)).map ((actP (oneW lam) (1 : Unit → GL (Fin n) K)).restrictScalars (𝓞 K)) = nabStd K (oneW lam)`. Use extensionality with `F`. Simplify using `[polyAction_one₂]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[h1]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stdNabL_eq : stdNabL K lam = nabK (oneW lam) fun _ => colLat (1 : GL (Fin n) K) := by
   unfold stdNabL nabK
@@ -163,9 +163,9 @@ theorem stdNabL_eq : stdNabL K lam = nabK (oneW lam) fun _ => colLat (1 : GL (Fi
   rfl
 
 /- English proof (translation)
-Unfold `stdDelL delK`. Establish `h` using `(nabDelFree K Unit n (oneW lam) 1).2`. Establish `h1 : (delStd K (oneW lam)).map ((actP (oneW lam) (1 : Unit → GL (Fin n) K)).restrictScalars (𝓞 K)) = delStd K (oneW lam)`. Use extensionality with `F`. Simplify using `[polyAction_one₂]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[h1]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stdDelL_eq : stdDelL K lam = delK (oneW lam) fun _ => colLat (1 : GL (Fin n) K) := by
   unfold stdDelL delK
@@ -178,9 +178,9 @@ theorem stdDelL_eq : stdDelL K lam = delK (oneW lam) fun _ => colLat (1 : GL (Fi
   rfl
 
 /- English proof (translation)
-Establish `e : colLat (1 : GL (Fin n) K) = stdLat K n`. Use extensionality with `x`. Rewrite using `[lc_mem_colLat_one]`. Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff]`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `stdLat_lattice`.
+A detailed English derivation is pending.
 -/
 theorem brz_colLat_one_lattice : Submodule.IsLattice K (colLat (1 : GL (Fin n) K)) := by
   have e : colLat (1 : GL (Fin n) K) = stdLat K n := by
@@ -191,49 +191,49 @@ theorem brz_colLat_one_lattice : Submodule.IsLattice K (colLat (1 : GL (Fin n) K
   exact stdLat_lattice
 
 /- English proof (translation)
-Rewrite using `[stdNabL_eq]`. Conclude with `(nabDelLattice K Unit n (oneW lam) _ fun _ => brz_colLat_one_lattice K).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdNabL_isLattice : Submodule.IsLattice K (stdNabL K lam) := by
   rw [stdNabL_eq]
   exact (nabDelLattice K Unit n (oneW lam) _ fun _ => brz_colLat_one_lattice K).1
 
 /- English proof (translation)
-Rewrite using `[stdDelL_eq]`. Conclude with `(nabDelLattice K Unit n (oneW lam) _ fun _ => brz_colLat_one_lattice K).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdDelL_isLattice : Submodule.IsLattice K (stdDelL K lam) := by
   rw [stdDelL_eq]
   exact (nabDelLattice K Unit n (oneW lam) _ fun _ => brz_colLat_one_lattice K).2
 
 /- English proof (translation)
-The claim follows from `formH_good _ _ (stdPair_pos K lam) (stdNabL_isLattice K lam)`.
+A detailed English derivation is pending.
 -/
 theorem stdNabH_good : (stdNabH K lam).Good := formH_good _ _ (stdPair_pos K lam) (stdNabL_isLattice K lam)
 
 /- English proof (translation)
-The claim follows from `formH_good _ _ (stdPair_pos K lam) (stdDelL_isLattice K lam)`.
+A detailed English derivation is pending.
 -/
 theorem stdDelH_good : (stdDelH K lam).Good := formH_good _ _ (stdPair_pos K lam) (stdDelL_isLattice K lam)
 
 /- English proof (translation)
-Conclude with `isLattice_ne_bot (stdNabL_isLattice K lam)`.
+A detailed English derivation is pending.
 -/
 theorem stdNabL_ne_bot : stdNabL K lam ≠ ⊥ := by
   exact isLattice_ne_bot (stdNabL_isLattice K lam)
 
 /- English proof (translation)
-Conclude with `isLattice_ne_bot (stdDelL_isLattice K lam)`.
+A detailed English derivation is pending.
 -/
 theorem stdDelL_ne_bot : stdDelL K lam ≠ ⊥ := by
   exact isLattice_ne_bot (stdDelL_isLattice K lam)
 
 /- English proof (translation)
-The claim follows from `Submodule.comap_mono (delStd_le_nabStd K (oneW lam))`.
+A detailed English derivation is pending.
 -/
 theorem stdDelL_le : stdDelL K lam ≤ stdNabL K lam :=
   Submodule.comap_mono (delStd_le_nabStd K (oneW lam))
 
 /- English proof (translation)
-The claim follows from `hlat_mu_le_muMax (stdNabH K lam) (stdNabH_good K lam).1 (stdNabH_good K lam).2.1 (stdNabL_ne_bot K lam)`.
+A detailed English derivation is pending.
 -/
 theorem slopeLeMax : SlopeLeMax K lam :=
   hlat_mu_le_muMax (stdNabH K lam) (stdNabH_good K lam).1 (stdNabH_good K lam).2.1 (stdNabL_ne_bot K lam)
@@ -245,7 +245,7 @@ section Cols
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-The claim follows from `GSD.valH_good (colRat W Ch hX u j) d (thl_colDel_isLattice W Ch u j d)`.
+A detailed English derivation is pending.
 -/
 theorem colValH_good (hX : X.Ok) (u : Pr.Word) (j : ℕ) (d : (colGSD W Ch u j).D) : ((colGSD W Ch u j).valH d).Good :=
   GSD.valH_good (colRat W Ch hX u j) d (thl_colDel_isLattice W Ch u j d)

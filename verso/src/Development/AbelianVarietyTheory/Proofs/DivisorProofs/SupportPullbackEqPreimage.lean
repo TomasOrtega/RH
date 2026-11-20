@@ -12,9 +12,9 @@ namespace GlobalTheory.QCoh
 open TensorProduct in
 
 /- English proof (translation)
-Use `letI : Algebra p.ResidueField q.ResidueField := (Ideal.ResidueField.map p q (algebraMap R S) hpq).toAlgebra`. Use `haveI : IsScalarTower R p.ResidueField q.ResidueField := .of_algebraMap_eq fun r => (IsScalarTower.algebraMap_apply R S q.ResidueField r).trans (Ideal.ResidueField.map_algebraMap _ _ _ hpq r).symm`. Establish `e₁ : q.ResidueField ⊗[S] N ≃ₗ[S] q.ResidueField ⊗[S] (S ⊗[R] M)` using `LinearEquiv.lTensor q.ResidueField hl.equiv.symm`. Establish `e₂ : q.ResidueField ⊗[S] (S ⊗[R] M) ≃ₗ[q.ResidueField] q.ResidueField ⊗[R] M` using `AlgebraTensorModule.cancelBaseChange R S q.ResidueField q.ResidueField M`. Establish `e₃ : q.ResidueField ⊗[p.ResidueField] (p.ResidueField ⊗[R] M) ≃ₗ[q.ResidueField] q.ResidueField ⊗[R] M` using `AlgebraTensorModule.cancelBaseChange R p.ResidueField q.ResidueField q.ResidueField M`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁.toEquiv.nontrivial_congr, e₂.toEquiv.nontrivial_congr, ← e₃.toEquiv.nontrivial_congr]`. Conclude with `Module.FaithfullyFlat.nontrivial_tensorProduct_iff_right p.ResidueField q.ResidueField`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_fibre_of_isBaseChange {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     {M N : Type*} [AddCommGroup M] [Module R M]
@@ -39,7 +39,7 @@ theorem nontrivial_fibre_of_isBaseChange {R S : Type*} [CommRing R] [CommRing S]
   exact Module.FaithfullyFlat.nontrivial_tensorProduct_iff_right p.ResidueField q.ResidueField
 
 /- English proof (translation)
-Use `haveI : Module.Finite S N := Module.Finite.equiv hl.equiv`. Rewrite using `[Module.mem_support_iff_nontrivial_residueField_tensorProduct, Module.mem_support_iff_nontrivial_residueField_tensorProduct]`. Conclude with `nontrivial_fibre_of_isBaseChange hl _ _ rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_support_of_isBaseChange {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     {M N : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M]
@@ -52,11 +52,11 @@ theorem mem_support_of_isBaseChange {R S : Type*} [CommRing R] [CommRing S] [Alg
   exact nontrivial_fibre_of_isBaseChange hl _ _ rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨U, V, hU, hV, hy, -, e⟩` from `exists_affine_pair f y (W := ⊤) trivial`. Establish `hfy : f y ∈ V` using `e hy`. Rewrite using `[Set.mem_preimage, mem_support_iff_primeIdealOf hU ⟨y, hy⟩, mem_support_iff_primeIdealOf hV ⟨f y, hfy⟩]`. Use `letI := appLEAlgebra f e`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e`. Use `haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e`. Use `finite_sections G hV` as an intermediate fact. Rewrite using `[mem_support_of_isBaseChange (isBaseChange_pullbackSections f G hU hV e)]`. Establish `h` using `IsAffineOpen.comap_primeIdealOf_appLE V hV U hU e hy`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Iff.rfl using 2` and compare the differences between its conclusion and the goal. Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem support_pullback {X Y : Scheme.{0}} (f : Y ⟶ X) (G : X.Modules) [IsFiniteQC G] :
     support ((Scheme.Modules.pullback f).obj G) = f.base ⁻¹' support G := by

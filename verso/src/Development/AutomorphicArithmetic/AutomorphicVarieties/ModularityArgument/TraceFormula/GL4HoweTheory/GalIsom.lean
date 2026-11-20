@@ -4,7 +4,7 @@ import GroundTheory.LocalFields.Uniqueness
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ x`. Conclude with `GroundTheory.LocalField.valuation_algEquiv_apply k E σ x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.L4.galIsom :
     ∀ (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

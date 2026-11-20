@@ -4,19 +4,19 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FiniteO
 
 open MvPolynomial in
 /- English proof (translation)
-Take `⟨m, s, hs⟩` from `Module.Finite.exists_fin (R := R) (M := S)`. Set `φ : MvPolynomial (Fin n ⊕ Fin m) ℂ →+* S` to `eval₂Hom ((algebraMap R S).comp (algebraMap ℂ R)) (Sum.elim (fun i => algebraMap R S (π (X i))) s)`. Establish `hcomp : φ.comp (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n ⊕ Fin m) ℂ).toRingHom = (algebraMap R S).comp π.toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : π (C r) = algebraMap ℂ R r` using `π.commutes r`. Simplify using `[φ, h]`. Introduce `i`. Simplify using `[φ]`. Establish `hren : ∀ q, φ (rename Sum.inl q) = algebraMap R S (π q)` using `fun q => RingHom.congr_fun hcomp q`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hY : ∀ i, φ (X (Sum.inr i)) = s i` using `fun i => by simp [φ]`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Establish `hy : y ∈ Submodule.span R (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose p hp using fun i => hπ (c i)`. Use `⟨∑ i, rename Sum.inl (p i) * X (Sum.inr i), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, hren, hY, hp, Algebra.smul_def]`. Use `⟨⟨m, RingHom.ker φ, RingHom.ker_isPrime _, IsIntegrallyClosed.of_equiv (RingHom.quotientKerEquivOfSurjective hsurj).symm, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `q`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hren, ← hJ, RingHom.mem_ker, map_eq_zero_iff _ hinj]`. Introduce `i`. Take `⟨Q, hQ, hQ0⟩ : IsIntegral R (s i)` from `Algebra.IsIntegral.isIntegral _`. Take `⟨P, hP, -, hPm⟩` from `Polynomial.lifts_and_degree_eq_and_monic (f := π.toRingHom) (Polynomial.mem_lifts_of_surjective hπ Q) hQ`. Use `⟨P, hPm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, Polynomial.hom_eval₂, hcomp, hY, ← Polynomial.eval₂_map, hP, hQ0]`. Introduce `i`. Take `⟨a, b, hb, hab⟩` from `hfrac (s i)`. Take `⟨a, rfl⟩` from `hπ a`. Take `⟨b, rfl⟩` from `hπ b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hJ, RingHom.mem_ker]`. Conclude with `hb`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, hren, hren, hY, hab, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Gc5.nonempty_normalModel_of_extension {n : ℕ}
     (J : Ideal (MvPolynomial (Fin n) ℂ)) (R S : Type) [CommRing R] [Nontrivial R] [Algebra ℂ R]
@@ -69,11 +69,9 @@ private theorem UpperTheory.Reformulated.B.Gc5.nonempty_normalModel_of_extension
     · rw [RingHom.mem_ker, map_sub, map_mul, hren, hren, hY, hab, sub_self]
 
 /- English proof (translation)
-Introduce `n J R _ _ _ π hπ hJ`. Use `haveI : Algebra.FiniteType ℂ R := Algebra.FiniteType.of_surjective π hπ`. Use `haveI : Module.Finite R (integralClosure R (FractionRing R)) := UpperTheory.integralClosure_finite ℂ R (FractionRing R)`. Use `haveI : IsIntegrallyClosed (integralClosure R (FractionRing R)) := integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing R)`. Use `UpperTheory.Reformulated.B.Gc5.nonempty_normalModel_of_extension J R (integralClosure R (FractionRing R)) π hπ hJ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x y hxy`. Conclude with `IsFractionRing.injective R (FractionRing R) (congrArg Subtype.val hxy)`. Introduce `s`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors R) (s : FractionRing R)`. Use `⟨a, b, nonZeroDivisors.coe_ne_zero b, Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Rewrite `hab` using `[mul_comm]`. Conclude with `hab`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gc5.nonempty_normalModel_of_presentation :
     ∀ {n : ℕ}

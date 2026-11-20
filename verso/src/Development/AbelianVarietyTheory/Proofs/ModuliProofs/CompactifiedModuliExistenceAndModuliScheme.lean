@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory.Moduli
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_root_.GlobalTheory.partI_of_semistableReduction _root_.GlobalTheory.SS.semistableReductionSt, _root_.GlobalTheory.Moduli.moduli_scheme_exists⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.Moduli.jointExistence_and_moduliScheme : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PartI ∧ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.N1ab :=
   ⟨_root_.GlobalTheory.partI_of_semistableReduction _root_.GlobalTheory.SS.semistableReductionSt,

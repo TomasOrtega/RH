@@ -24,9 +24,7 @@ structure PtLaw {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n
     ∀ p, pt (((1, 1, k) : UF E n × GLG E n SG × GLQ E n Q) • p) = g • pt p
 
 /- English proof (translation)
-Use `⟨fun γ => ⟨(γ, 1, 1), rfl, ?_, fun p => Subtype.ext (Prod.ext rfl (Set.image_empty _).symm)⟩, fun k hk => ?_⟩` and prove the remaining obligations. Use `show (Λ b).chr 1 * (Θ b).chr 1 = 1`. Rewrite using `[map_one, map_one, mul_one]`. Use `choose h1 h2 using fun P => hΘ P _ (hk P)`. Use `⟨(1, 1, ⟨k, fun P _ => h1 P⟩), map_one (ufGL X.E n), ?_, fun p => Subtype.ext (Prod.ext rfl (Set.image_empty _).symm)⟩` and prove the remaining obligations.
-
-Use `show (Λ b).chr 1 * (Θ b).chr ⟨k, fun P _ => h1 P⟩ = 1`. Rewrite using `[map_one, one_mul]`. Conclude with `(MonoidHom.finset_prod_apply _ _ _).trans (Finset.prod_eq_one fun P _ => h2 P)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptLaw_stepY {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))} (y : Ys X n) (β : Type) [Fintype β]
     [DecidableEq β] (Λ : β → LevFam X.E X.K n SG) (Θ : β → LevQFam X.E X.K n Q) (pref : DecoF X.E n ST SG Q → Prop)
@@ -43,7 +41,7 @@ theorem ptLaw_stepY {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum 
     exact (MonoidHom.finset_prod_apply _ _ _).trans (Finset.prod_eq_one fun P _ => h2 P)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.rat, h.lev⟩`.
+Supply the required witnesses or components.
 -/
 theorem PtLaw.reRep {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ}
     {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {S : GStep E K n} {b : S.β} {pt : DecoF E n ST SG Q → S.D b} {c : ℕ}
@@ -64,7 +62,7 @@ def adFun : (S.Cl → Fr emb σ n → ℂ) →ₗ[ℂ] (GA D V → ℂ) :=
 variable {S b pt c emb σ} {lam : ι → DomWeight n} {φ : S.Cl → Fr emb σ n → ℂ}
 
 /- English proof (translation)
-Take `⟨k, hk, rfl⟩` from `h.exists_smul h'`. Take `⟨g, g1, g2, g3⟩` from `hp.lev k hk`. Rewrite using `[g3, valL_smul hφ]`. Use function extensionality and compare the values at `y`. Simplify using `[GStep.tr, trFr_apply, g1, g2, frMul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem valL_near (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) {x : GL (Fin n) (AfE D.host.F D.host.E)}
     {p p' : DecoF D.host.E n ST SG Q} (h : Near c x p) (h' : Near c x p') :
@@ -78,7 +76,7 @@ theorem valL_near (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) {x : GL (
 variable {V x₀}
 
 /- English proof (translation)
-Rewrite using `[← valL_near hp hφ h (near_ptOf D.sp.cm c (mul_mem (finN_mem hn hG g) hx))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adFun_eq (hG : V.gram = 1) (hx : x₀ ∈ UAd D.sp.cm n) (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) {g : GA D V}
     {p : DecoF D.host.E n ST SG Q} (h : Near c (finN V hn g * x₀) p) :
@@ -87,7 +85,7 @@ theorem adFun_eq (hG : V.gram = 1) (hx : x₀ ∈ UAd D.sp.cm n) (hp : PtLaw S b
   rfl
 
 /- English proof (translation)
-The claim follows from `funext fun g => by have h := near_ptOf (ST := ST) (SG := SG) (Q := Q) D.sp.cm c (mul_mem (finN_mem hn hG g) hx) rw [adFun_eq θ hn t l hG hx hp hφ h, adFun_eq θ hn t l hG hx' hp hφ (Near.change D.sp.cm hx hx' h₀ h₁ h)]`.
+A detailed English derivation is pending.
 -/
 theorem adFun_congr (hG : V.gram = 1) (hx : x₀ ∈ UAd D.sp.cm n) {x₁ : GL (Fin n) (AfE D.host.F D.host.E)} (hx' : x₁ ∈ UAd D.sp.cm n)
     {p₀ : DecoF D.host.E n ST SG Q} (h₀ : Near c x₀ p₀) (h₁ : Near c x₁ p₀) (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) :
@@ -96,17 +94,15 @@ theorem adFun_congr (hG : V.gram = 1) (hx : x₀ ∈ UAd D.sp.cm n) {x₁ : GL (
   rw [adFun_eq θ hn t l hG hx hp hφ h, adFun_eq θ hn t l hG hx' hp hφ (Near.change D.sp.cm hx hx' h₀ h₁ h)]
 
 /- English proof (translation)
-Use `haveI := valC_finiteDimensional emb σ lam`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hnr` using `fun g => near_ptOf (ST := ST) (SG := SG) (Q := Q) D.sp.cm c (mul_mem (finN_mem hn hG g) hx)`. Use `isAutFunDef_of θ hn t hθ (Gr emb σ n) lam (fun g => valL S emb σ b (pt (ptOf ST SG Q c (finN V hn g * x₀))) φ) (fun g => valL_mem hφ _ _) (fun γ hγ g => ?_) ?_ (fun k hk g => by rw [map_mul, finN_of_inf hn hk, mul_one]) l` and prove the remaining obligations. Take `⟨δ, d1, d2⟩` from `exists_rat θ hn t hθ hG hγ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hnr g).left D.sp.cm δ`. Rewrite `h1` using `[← d1, ← mul_assoc, ← map_mul]`. Take `⟨a, a1, a2, a3⟩` from `hp.rat (ratHom D.sp.cm n δ)`. Establish `e : ufGL D.host.E n (ratHom D.sp.cm n δ) = δ.1`. Take `⟨f, hf⟩` from `(toGLm D.host.E n).surjective δ.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show toGLm D.host.E n (Formalism.UG.glEquiv δ.1) = δ.1`. Rewrite using `[← hf, glEquiv_toGLm]`. Rewrite using `[valL_near hp hφ h1 (hnr _), a3, valL_smul hφ]`. Use function extensionality and compare the values at `y`. Rewrite using `[lT_apply, GStep.tr, trFr_apply, a1, a2, e, Units.val_one, map_one, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congrArg _ (Subtype.ext (funext fun τ => ?_))` and prove the remaining obligations. Use `show ((δ.1⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E).map (embAt σ emb τ) * ((infN θ V hn t γ τ : Matrix (Fin n) (Fin n) ℂ) * y.1 τ) = y.1 τ`. Rewrite using `[d2, he, ← Matrix.mul_assoc, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Take `⟨a, -, ha⟩` from `exists_cong ST SG Q D.sp.cm (n := n) c`. Establish `h1` using `eventually_congOne hn x₀ a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `ht : Tendsto (fun g : GA D V => g⁻¹) (𝓝 1) (𝓝 1)` using `by simpa using continuous_inv.tendsto (1 : GA D V)`. Use `filter_upwards [h1, ht.eventually h1] with κ k1 k2 g`. Establish `h2` using `ha _ (mul_mem (mul_mem (inv_mem hx) (finN_mem hn hG κ)) hx) k1 (by`. Rewrite `k2` using `[map_inv]`. Use `k2 using 1` and compare the differences between its conclusion and the goal.
-
-Use the proof step `group) _ _ (hnr g)`. Use `valL_near hp hφ ?_ (hnr _)` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAutFunDef_adFun (hθ : IsInfFam θ) (hG : V.gram = 1) (he : ∀ τ, embAt σ emb τ = tauE D (t τ)) (hx : x₀ ∈ UAd D.sp.cm n)
     (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) : IsAutFunDef V (adFun θ V hn t emb σ S b pt c x₀ l φ) := by
@@ -144,9 +140,9 @@ theorem isAutFunDef_adFun (hθ : IsInfFam θ) (hG : V.gram = 1) (he : ∀ τ, em
     group
 
 /- English proof (translation)
-Take `⟨P, -, hP⟩` from `valL_mem hφ b (pt p)`. Rewrite using `[← hP, eq_zero_of_forall_unitary 1 (fun τ => by simp) P fun u hu => ?_, map_zero]`. Take `⟨g, g1, g2⟩` from `exists_point θ hn t hθ hG (mul_mem hx' (inv_mem hx)) u hu`. Establish `h1` using `adFun_eq θ hn t (LinearMap.proj (fr0 emb σ n)) hG hx hp hφ (g := g) (p := p) (by rwa [g1, inv_mul_cancel_right])`. Rewrite `h1` using `[h0, ← hP]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (0 : ℂ) = (∏ τ, (1 * ((infN θ V hn t g τ : Matrix (Fin n) (Fin n) ℂ) * 1)).det ^ shiftOf lam τ) * MvPolynomial.eval (fun v : ι × Fin n × Fin n => (1 * ((infN θ V hn t g v.1).1 * 1) : Matrix (Fin n) (Fin n) ℂ) v.2.1 v.2.2) P` using `h1`. Simplify using `only [g2, Matrix.mul_one] at h2`. Use `(mul_eq_zero.1 h2.symm).resolve_left (Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_mul]`. Conclude with `(Matrix.isUnit_det_of_left_inverse (hu τ)).ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_adFun (hθ : IsInfFam θ) (hG : V.gram = 1) (hx : x₀ ∈ UAd D.sp.cm n) (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam)
     (h0 : adFun θ V hn t emb σ S b pt c x₀ (LinearMap.proj (fr0 emb σ n)) φ = 0) {x : GL (Fin n) (AfE D.host.F D.host.E)}
@@ -171,7 +167,7 @@ def adForm (hθ : IsInfFam θ) (hG : V.gram = 1) (hs : V.SigOK) (hd : V.IsDefini
     (fun F => mem_cuspS θ hθ hG hs hd (isAutFunDef_adFun θ hn t l hθ hG he hx hp F.2)) ∘ₗ prFi S emb σ lam
 
 /- English proof (translation)
-Use `show adFun θ V hn t emb σ S b pt c x₀ l (prFi S emb σ lam φ).1 = _`. Rewrite using `[prFi_of_mem hφ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adForm_val (hθ : IsInfFam θ) (hG : V.gram = 1) (hs : V.SigOK) (hd : V.IsDefinite) (he : ∀ τ, embAt σ emb τ = tauE D (t τ))
     (hx : x₀ ∈ UAd D.sp.cm n) (hp : PtLaw S b pt c) (hφ : φ ∈ S.Fi emb σ lam) :
@@ -203,7 +199,7 @@ def colLin {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : Col
       exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Unfold `ColumnChain.col`. Generalize the expression as in `R.m = n at hV ⊢`. Proceed by induction on `n with`. Consider the case `zero => exact hφ`. Consider the case `succ n ih => exact hV n n.lt_succ_self _ (ih fun i hi => hV i (hi.trans n.lt_succ_self))`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem col_mem {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc)
     (V : ∀ i, Submodule ℂ (C.cls i → C.Y i → ℂ)) (hV : ∀ i < R.m, ∀ φ ∈ V i, C.K i φ ∈ V (i + 1)) {φ} (hφ : φ ∈ V 0) :
@@ -218,14 +214,14 @@ def topVec {ι : Type} [Fintype ι] {n : ℕ} (sg : ι → DomWeight n) : Pol �
   ((Real.sqrt (Module.finrank ℂ (VV ℂ sg)) : ℝ) : ℂ) • (extV ℂ sg).1
 
 /- English proof (translation)
-Rewrite using `[pairB_apply, show fockB (extV ℂ sg).1 (extV ℂ sg).1 = extNormB ℂ sg from @fockSymTensor_holds ℂ _ starRingOfComm ι _ n _ _]`. Conclude with `inv_mul_cancel₀ (pb_extNormB_ne ℂ sg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairB_extV {ι : Type} [Fintype ι] {n : ℕ} (sg : ι → DomWeight n) : pairB sg (extV ℂ sg).1 (extV ℂ sg).1 = 1 := by
   rw [pairB_apply, show fockB (extV ℂ sg).1 (extV ℂ sg).1 = extNormB ℂ sg from @fockSymTensor_holds ℂ _ starRingOfComm ι _ n _ _]
   exact inv_mul_cancel₀ (pb_extNormB_ne ℂ sg)
 
 /- English proof (translation)
-Simplify using `only [topVec, map_smul, LinearMap.smul_apply, pairB_extV, smul_eq_mul, mul_one]`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _), Complex.ofReal_natCast]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairB_topVec {ι : Type} [Fintype ι] {n : ℕ} (sg : ι → DomWeight n) :
     pairB sg (topVec sg) (topVec sg) = (Module.finrank ℂ (VV ℂ sg) : ℂ) := by
@@ -247,7 +243,7 @@ instance neZeroN (R : Ranks) (j : ℕ) : NeZero (R.N j) := ⟨(R.N_pos j).ne'⟩
 instance neZeroN' (R : Ranks) : NeZero (R.N R.m - 1) := ⟨by have := R.m_add_three_le_k; unfold Ranks.N; omega⟩
 
 /- English proof (translation)
-Use `R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zero_succ_ne (R : Ranks) : 0 + 1 ≠ R.m := by have := R.two_le_m; omega
 
@@ -259,7 +255,7 @@ def baseTop (u : B.Word) (a : I.ι) : ChPt (Pr := B.primes X) (R := B.R) I.sel (
 variable {I}
 
 /- English proof (translation)
-Take `⟨hs, h1, -⟩` from `h.spaces`. Rewrite using `[h1 j]`. Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Ok.gram_X (h : I.Ok) (j : ℕ) : (B.sp.X j).gram = 1 := by
   obtain ⟨hs, h1, -⟩ := h.spaces
@@ -268,9 +264,9 @@ theorem Ok.gram_X (h : I.Ok) (j : ℕ) : (B.sp.X j).gram = 1 := by
   simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]
 
 /- English proof (translation)
-Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Establish `hd : Disjoint ((B.primes X).vT u) (rowSG (B.primes X) I.sel (I.tup a))` using `Finset.disjoint_left.2 fun P h1 h2 => GlobalTheory.Proof.NarrowJetMoments.notMem_rowSG hPr h.sel_ok (hPr.T_prime u) (h.T_mem u) (hPr.T_ne_g u) h2 (T_mem_vT hPr u ⟨P, h1⟩)`. Use `PtExist.exists_isPtOf_cm B.sp.cm n _ _ _ p (hd.mono_right Finset.subset_union_left) (hd.mono_right Finset.subset_union_right) ((LevTwist.levOk_twists B X I h).2.1.mono_right (I.Q_subset_SQ a)) fun P hP => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.ThetaMove.BadPrimes.bad_primes B.fields (B.primes X) I.sel I.S (I.tup a) u hX hPr h.sel_ok (h.T_mem u) h.g_mem P`. Unfold `Sall at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Finset.mem_union] at h1 hP ⊢`. Conclude with `(h1 hP).1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Ok.exists_isPtOf (h : I.Ok) (u : B.Word) (a : I.ι) {n : ℕ}
     (p : DecoF B.host.E n ((B.primes X).vT u) (B.primes X).vGs (I.Q a)) : ∃ x, IsPtOf B.sp.cm x p := by
@@ -289,7 +285,7 @@ def Ok.xTop (h : I.Ok) (u : B.Word) (a : I.ι) : GL (Fin (B.R.N B.R.m)) (AfE B.h
   (h.exists_isPtOf u a (I.baseTop u a)).choose
 
 /- English proof (translation)
-The claim follows from `(h.exists_isPtOf u a (I.baseTop u a)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem Ok.xTop_spec (h : I.Ok) (u : B.Word) (a : I.ι) : IsPtOf B.sp.cm (h.xTop u a) (I.baseTop u a) :=
   (h.exists_isPtOf u a (I.baseTop u a)).choose_spec
@@ -310,7 +306,7 @@ def ptAt (u : B.Word) (a : I.ι) {j : ℕ} (hj : j + 1 ≠ B.R.m) (b : Idx I.sel
   ⟨(p, ∅), by rw [ysAt_ys_of_ne I.sel (I.tup a) (I.cst a) hj]; rfl⟩
 
 /- English proof (translation)
-The claim follows from `PtLaw.reRep (S := I.stp0 u I.mu0 0) (ptLaw_stepY _ _ _ _ _ (fun N => by rw [ysAt_ys_of_ne I.sel _ _ (zero_succ_ne B.R)]; rfl) b c fun P => absurd (I.twistPrimes_reference_tuple_eq_empty ▸ P.2 : P.1 ∈ (∅ : Finset _)) (Finset.notMem_empty _)) _`.
+A detailed English derivation is pending.
 -/
 theorem ptLaw_zero (u : B.Word) (b : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) 0) (c : ℕ) :
     PtLaw (I.stp u I.mu0 0) b (I.ptAt u I.mu0 (zero_succ_ne B.R) b) c :=
@@ -319,7 +315,7 @@ theorem ptLaw_zero (u : B.Word) (b : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) 0) (c
       absurd (I.twistPrimes_reference_tuple_eq_empty ▸ P.2 : P.1 ∈ (∅ : Finset _)) (Finset.notMem_empty _)) _
 
 /- English proof (translation)
-The claim follows from `PtLaw.reRep (S := I.stp0 u a B.R.m) (ptLaw_stepY _ _ _ _ _ (fun N => by rw [ysAt_ys_of_ne I.sel _ _ (Nat.succ_ne_self _)]; rfl) _ _ fun P k hk => by have e : levQAt I.sel (I.tup a) (I.idx a) (I.Tp a) B.R.m (idxTop I.sel (I.tup a) (I.idx a)) = levQTop B.R I.sel (I.tup a) (topDep B …`.
+A detailed English derivation is pending.
 -/
 theorem ptLaw_top (u : B.Word) (a : I.ι) : PtLaw (I.stp u a B.R.m) (idxTop I.sel (I.tup a) (I.idx a))
     (I.ptAt u a (Nat.succ_ne_self _) (idxTop I.sel (I.tup a) (I.idx a))) (I.depTop a) :=
@@ -342,7 +338,7 @@ variable (h : I.Ok) (l : I.Laws) (Z : Later B (I.cols l)) {θ : InfF (I.rec7 l Z
 def eT : Tau B.R ≃ (I.rec7 l Z).what₂.Tau := Equiv.refl _
 
 /- English proof (translation)
-The claim follows from `B.fields_embC τ`.
+A detailed English derivation is pending.
 -/
 theorem embAt_eq (τ : Tau B.R) : embAt B.embLL B.fields.emb τ = tauE (I.rec7 l Z) (eT l Z τ) := B.fields_embC τ
 
@@ -358,7 +354,7 @@ def src (u : B.Word) : Z.W.Mu u →ₗ[ℂ] ((I.stp u I.mu0 0).Cl → Fr B.field
   ((I.cols l).mem u).A.Mram.subtype ∘ₗ (Z.W.eMu u).toLinearMap
 
 /- English proof (translation)
-The claim follows from `(Z.W.eMu u φ).2.1`.
+A detailed English derivation is pending.
 -/
 theorem src_mem (u : B.Word) (φ : Z.W.Mu u) :
     src l Z u φ ∈ (I.stp u I.mu0 0).Fi B.fields.emb B.embLL (lamT (B.hcW u) 0) := (Z.W.eMu u φ).2.1
@@ -371,13 +367,13 @@ def Carries (u : B.Word) (a : I.ι) : Prop :=
     (I.chain l u a).K i φ ∈ (I.stp u a (i + 1)).Fi B.fields.emb B.embLL (lamT (B.hcW u) (i + 1))
 
 /- English proof (translation)
-The claim follows from `hK.2 u a ha`.
+A detailed English derivation is pending.
 -/
 theorem carries_of_kFi (l0 : I.Law0 l) (hK : Formalism.MainNotions.OrbitPlaces.KFi (I.rec7 l Z) (I.tw l l0 Z)) (u : B.Word) (a : I.ι)
     (ha : DV.Used (I.rec7 l Z) a) : Carries l u a := hK.2 u a ha
 
 /- English proof (translation)
-Introduce `c` and use `by refine ⟨(hφ ((I.eCls0 l u a).symm c)).1, fun g => ?_⟩ rw [show g.1 = 1 from (l.lev u a).free0 c.1 g.1 _ g.2] exact DiaStab.tr_one _ _ _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twistedIdempotent_mem_fixed (u : B.Word) (a : I.ι) {φ : (I.stp u I.mu0 0).Cl → Fr B.fields.emb B.embLL (B.R.N 0) → ℂ}
     (hφ : φ ∈ (I.stp u I.mu0 0).Fi B.fields.emb B.embLL (lamT (B.hcW u) 0)) :
@@ -387,7 +383,7 @@ theorem twistedIdempotent_mem_fixed (u : B.Word) (a : I.ι) {φ : (I.stp u I.mu0
   exact DiaStab.tr_one _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `col_mem (I.chain l u a) (fun i => (I.stp u a i).Fi B.fields.emb B.embLL (lamT (B.hcW u) i)) hC (twistedIdempotent_mem_fixed l u a (src_mem l Z u φ))`.
+A detailed English derivation is pending.
 -/
 theorem topF_mem {u : B.Word} {a : I.ι} (hC : Carries l u a) (φ : Z.W.Mu u) :
     topF l Z u a φ ∈ (I.stp u a B.R.m).Fi B.fields.emb B.embLL (lamT (B.hcW u) B.R.m) :=
@@ -412,34 +408,34 @@ def colAF (u : (I.rec7 l Z).what₂.Word) (μ : (I.rec7 l Z).what₂.Tup) (j : �
   colAFw h l Z hθ (topVec B.wts.sgTrue) u μ j
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem colAFw_zero (w) (u μ) : colAFw h l Z hθ w u μ 0 = colZero h l Z hθ u := dif_pos rfl
 
 /- English proof (translation)
-The claim follows from `(dif_neg (by have := B.R.two_le_m; omega)).trans (dif_pos rfl)`.
+A detailed English derivation is pending.
 -/
 theorem colAFw_top (w) (u μ) : colAFw h l Z hθ w u μ B.R.m = colTop h l Z hθ u μ w :=
   (dif_neg (by have := B.R.two_le_m; omega)).trans (dif_pos rfl)
 
 /- English proof (translation)
-The claim follows from `(dif_neg h0).trans (dif_neg hm)`.
+A detailed English derivation is pending.
 -/
 theorem colAFw_mid (w) (u μ) {j : ℕ} (h0 : j ≠ 0) (hm : j ≠ B.R.m) : colAFw h l Z hθ w u μ j = 0 :=
   (dif_neg h0).trans (dif_neg hm)
 
 /- English proof (translation)
-The claim follows from `colAFw_zero h l Z hθ _ u μ`.
+A detailed English derivation is pending.
 -/
 theorem colAF_zero (u μ) : colAF h l Z hθ u μ 0 = colZero h l Z hθ u := colAFw_zero h l Z hθ _ u μ
 
 /- English proof (translation)
-The claim follows from `colAFw_top h l Z hθ _ u μ`.
+A detailed English derivation is pending.
 -/
 theorem colAF_top (u μ) : colAF h l Z hθ u μ B.R.m = colTop h l Z hθ u μ (topVec B.wts.sgTrue) := colAFw_top h l Z hθ _ u μ
 
 /- English proof (translation)
-The claim follows from `colAFw_mid h l Z hθ _ u μ h0 hm`.
+A detailed English derivation is pending.
 -/
 theorem colAF_mid (u μ) {j : ℕ} (h0 : j ≠ 0) (hm : j ≠ B.R.m) : colAF h l Z hθ u μ j = 0 := colAFw_mid h l Z hθ _ u μ h0 hm
 
@@ -449,7 +445,7 @@ Both sides reduce to the same expression.
 theorem perIn_sgT (u : B.Word) (a : I.ι) : (I.perIn u a).sgT = B.wts.sgTrue := rfl
 
 /- English proof (translation)
-The claim follows from `(congrFun (adForm_val (D := I.rec7 l Z) θ _ _ _ hθ (h.gram_X 0) (B.sp.X_sig 0) (B.sp.X_def 0 (Nat.zero_le _)) (embAt_eq l Z) (one_mem _) (I.ptLaw_zero u _ 0) (src_mem l Z u φ)) g).trans (adFun_eq (D := I.rec7 l Z) θ _ _ _ (h.gram_X 0) (one_mem _) (I.ptLaw_zero u _ 0) (src_mem l Z …`.
+A detailed English derivation is pending.
 -/
 theorem colZero_apply (u : B.Word) (φ : Z.W.Mu u) (g : Formalism.L2.Theta.GA (I.rec7 l Z) ((I.rec7 l Z).sp.X 0))
     (p : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup I.mu0) u 0)
@@ -463,7 +459,7 @@ theorem colZero_apply (u : B.Word) (φ : Z.W.Mu u) (g : Formalism.L2.Theta.GA (I
       Near 0 (finX l Z (Nat.zero_le _) g * 1) p))
 
 /- English proof (translation)
-The claim follows from `(congrFun (adForm_val (D := I.rec7 l Z) θ _ _ _ hθ (h.gram_X _) (B.sp.X_sig _) (B.sp.X_def _ le_rfl) (embAt_eq l Z) (h.xTop_spec u a).uni (I.ptLaw_top u a) hφ) g).trans (adFun_eq (D := I.rec7 l Z) θ _ _ _ (h.gram_X _) (h.xTop_spec u a).uni (I.ptLaw_top u a) hφ (Near.change B.sp.c …`.
+A detailed English derivation is pending.
 -/
 theorem colTop_apply (u : B.Word) (a : I.ι) (w) (φ : Z.W.Mu u)
     (hφ : topF l Z u a φ ∈ (I.stp u a B.R.m).Fi B.fields.emb B.embLL (lamT (B.hcW u) B.R.m))
@@ -479,7 +475,7 @@ theorem colTop_apply (u : B.Word) (a : I.ι) (w) (φ : Z.W.Mu u)
       (Near.change B.sp.cm hx (h.xTop_spec u a).uni h₀ (near_of_isPtOf (h.xTop_spec u a) _) hp))
 
 /- English proof (translation)
-The claim follows from `colTop_apply h l Z hθ u a w φ (topF_mem l Z hC φ) g hx h₀ p hp`.
+A detailed English derivation is pending.
 -/
 theorem colTop_apply_of_carries {u : B.Word} {a : I.ι} (hC : Carries l u a) (w) (φ : Z.W.Mu u)
     (g : Formalism.L2.Theta.GA (I.rec7 l Z) ((I.rec7 l Z).sp.X B.R.m))
@@ -491,7 +487,7 @@ theorem colTop_apply_of_carries {u : B.Word} {a : I.ι} (hC : Carries l u a) (w)
   colTop_apply h l Z hθ u a w φ (topF_mem l Z hC φ) g hx h₀ p hp
 
 /- English proof (translation)
-Take `⟨k, k1, k2⟩` from `exists_point (D := I.rec7 l Z) (V := (I.rec7 l Z).sp.X 0) θ (B.sp.X_rank 0 (Nat.zero_le _)) (eT l Z) hθ (h.gram_X 0) hx 1 fun τ => by simp`. Establish `k3 : infX l Z θ (Nat.zero_le _) k = 1` using `funext fun τ => Units.ext (k2 τ)`. Establish `k4 : finX l Z (Nat.zero_le _) k = x₀` using `k1`. Use `⟨k, k4, k3, fun φ g p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[colZero_apply h l Z hθ u φ (g * k) p (by rwa [map_mul, k4]), map_mul, k3, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem colZero_translate (u : B.Word) {x₀ : GL (Fin (B.R.N 0)) (AfE B.host.F B.host.E)} (hx : x₀ ∈ UAd B.sp.cm _) :
     ∃ k : Formalism.L2.Theta.GA (I.rec7 l Z) ((I.rec7 l Z).sp.X 0), finX l Z (Nat.zero_le _) k = x₀ ∧ infX l Z θ (Nat.zero_le _) k = 1 ∧
@@ -508,7 +504,7 @@ theorem colZero_translate (u : B.Word) {x₀ : GL (Fin (B.R.N 0)) (AfE B.host.F 
   rw [colZero_apply h l Z hθ u φ (g * k) p (by rwa [map_mul, k4]), map_mul, k3, mul_one]
 
 /- English proof (translation)
-The claim follows from `(Classical.epsilon_spec (BasePoint.exists_kStd X hPr u n)).1.choose_spec.1.uni`.
+A detailed English derivation is pending.
 -/
 theorem kStd_mem (hPr : (B.primes X).Ok) (u : B.Word) (n : ℕ) : kStd X u n ∈ UAd B.sp.cm n :=
   (Classical.epsilon_spec (BasePoint.exists_kStd X hPr u n)).1.choose_spec.1.uni
@@ -516,18 +512,18 @@ theorem kStd_mem (hPr : (B.primes X).Ok) (u : B.Word) (n : ℕ) : kStd X u n ∈
 include l in
 
 /- English proof (translation)
-Take `⟨c', rfl⟩` from `(l.bij0 u a b).2 c`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem idx_zero_eq (u : B.Word) (a : I.ι) (b : Idx I.sel (I.tup a) (I.idx a) 0) (c : (I.stp u a 0).Cl) : c.1 = b := by
   obtain ⟨c', rfl⟩ := (l.bij0 u a b).2 c
   rfl
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun φ h0 => ?_` and prove the remaining obligations. Establish `h1` using `(adForm_val (D := I.rec7 l Z) θ _ _ _ hθ (h.gram_X 0) (B.sp.X_sig 0) (B.sp.X_def 0 (Nat.zero_le _)) (embAt_eq l Z) (one_mem _) (I.ptLaw_zero u _ 0) (src_mem l Z u φ)).symm.trans (congrArg Subtype.val h0)`. Establish `h2 : src l Z u φ = 0` using `funext fun c => by`. Take `⟨b, q⟩` from `c`. Take `rfl : b = (l.idx0 I.mu0).some` from `idx_zero_eq l u _ _ ⟨b, q⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `h.exists_isPtOf u I.mu0 ((I.stp u I.mu0 0).rep ⟨_, q⟩).1.1`. Establish `h3` using `eq_zero_of_adFun (D := I.rec7 l Z) θ _ _ hθ (h.gram_X 0) (one_mem _) (I.ptLaw_zero u _ 0) (src_mem l Z u φ) h1 hx.uni (near_of_isPtOf hx 0)`. Establish `e : I.ptAt u I.mu0 (zero_succ_ne B.R) _ ((I.stp u I.mu0 0).rep ⟨_, q⟩).1.1 = (I.stp u I.mu0 0).rep ⟨_, q⟩`. Use `((I.stp u I.mu0 0).rep ⟨_, q⟩).2` as an intermediate fact. Rewrite `this` using `[ysAt_ys_of_ne I.sel _ _ (zero_succ_ne B.R)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext (Prod.ext rfl (Eq.symm this))`. Rewrite `h3` using `[e]`. Conclude with `(valL_rep (src_mem l Z u φ) ⟨_, q⟩).symm.trans h3`. Conclude with `(Z.W.eMu u).injective (Subtype.ext (h2.trans (by rw [map_zero]; rfl)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colZero_injective (u : B.Word) : Function.Injective (colZero h l Z hθ u) := by
   refine (injective_iff_map_eq_zero _).2 fun φ h0 => ?_
@@ -548,18 +544,16 @@ theorem colZero_injective (u : B.Word) : Function.Injective (colZero h l Z hθ u
   exact (Z.W.eMu u).injective (Subtype.ext (h2.trans (by rw [map_zero]; rfl)))
 
 /- English proof (translation)
-Rewrite using `[colAF_zero]`. Conclude with `colZero_injective h l Z hθ u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colAF_zero_injective (u μ) : Function.Injective (colAF h l Z hθ u μ 0) := by
   rw [colAF_zero]
   exact colZero_injective h l Z hθ u
 
 /- English proof (translation)
-Establish `key : ∀ c, I.eCls0 l u I.mu0 c = c` using `fun c => by`. Take `⟨b, q⟩` from `c`. Take `rfl : b = (l.idx0 I.mu0).some` from `idx_zero_eq l u _ _ ⟨b, q⟩`. Establish `e : I.pt0 u I.mu0 I.mu0 ((I.stp u I.mu0 0).rep ⟨_, q⟩) = (I.stp u I.mu0 0).rep ⟨_, q⟩`. Use `((I.stp u I.mu0 0).rep ⟨_, q⟩).2` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ysAt_ys_of_ne I.sel _ _ (zero_succ_ne B.R)]`. Conclude with `Subtype.ext (Prod.ext (extTo_self (I.twistPrimes_reference_tuple_eq_empty.symm ▸ Finset.disjoint_empty_right _ : Disjoint _ (I.Q I.mu0)) _) (Eq.symm this))`. Use `show (I.stp u I.mu0 0).cl _ (I.pt0 u I.mu0 I.mu0 _) = _`. Rewrite using `[e]`. Conclude with `congrArg (Sigma.mk _) ((I.stp u I.mu0 0).rp_spec _ q)`.
-
-Use function extensionality and compare the values at `c`. Conclude with `congrArg φ ((Equiv.symm_apply_eq _).2 (key c).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stepZeroTwist_reference_tuple_eq_id (u : B.Word) (φ : (I.stp u I.mu0 0).Cl → Fr B.fields.emb B.embLL (B.R.N 0) → ℂ) :
     (I.cols l).e0Tw u I.mu0 φ = φ := by
@@ -577,13 +571,13 @@ theorem stepZeroTwist_reference_tuple_eq_id (u : B.Word) (φ : (I.stp u I.mu0 0)
   exact congrArg φ ((Equiv.symm_apply_eq _).2 (key c).symm)
 
 /- English proof (translation)
-The claim follows from `Z.W.perCol_tie u a ha φ F`.
+A detailed English derivation is pending.
 -/
 theorem perCol_eq (u : B.Word) (a : (I.cols l).Tup) (ha : a ≠ I.mu0) (φ : Z.W.Mu u) (F : Z.W.Amb a) :
     (I.rec7 l Z).what₂.perCol u a φ F = (I.per l u a).Ptil (topF l Z u a φ) ((Z.W.eMtTw u a).symm F) := Z.W.perCol_tie u a ha φ F
 
 /- English proof (translation)
-Establish `e : topF l Z u I.mu0 φ = (I.chain l u I.mu0).col (src l Z u φ)` using `congrArg (I.chain l u I.mu0).col (stepZeroTwist_reference_tuple_eq_id l u _)`. Rewrite using `[e]`. Conclude with `Z.W.perCol_base_eq_PtilCol u φ F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem periodColumn_eq_reference (u : B.Word) (φ : Z.W.Mu u) (F : Z.W.Amb (I.cols l).mu0) :
     (I.rec7 l Z).what₂.perCol u I.mu0 φ F = (I.per l u I.mu0).Ptil (topF l Z u I.mu0 φ) ((Z.W.eMt0 u).symm F) := by
@@ -592,7 +586,7 @@ theorem periodColumn_eq_reference (u : B.Word) (φ : Z.W.Mu u) (F : Z.W.Amb (I.c
   exact Z.W.perCol_base_eq_PtilCol u φ F
 
 /- English proof (translation)
-Rewrite using `[colZero_apply h l Z hθ u φ 1 (DecoF.base _ _ _ _ _) (by rw [map_one]; exact near_one 0), map_one]`. Conclude with `congrFun (lT_one _ _) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (u : B.Word) (φ : Z.W.Mu u) : (colZero h l Z hθ u φ).1 1 =
     valL (I.stp u I.mu0 0) B.fields.emb B.embLL _ (I.ptAt u I.mu0 (zero_succ_ne B.R) (l.idx0 I.mu0).some (DecoF.base _ _ _ _ _))
@@ -601,7 +595,7 @@ example (u : B.Word) (φ : Z.W.Mu u) : (colZero h l Z hθ u φ).1 1 =
   exact congrFun (lT_one _ _) _
 
 /- English proof (translation)
-Rewrite using `[colTop_apply h l Z hθ u a w φ hφ 1 (h.xTop_spec u a).uni (near_of_isPtOf (h.xTop_spec u a) _) (I.baseTop u a) (by rw [map_one, one_mul]; exact near_of_isPtOf (h.xTop_spec u a) _), map_one, lT_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (u : B.Word) (a : I.ι) (w) (φ : Z.W.Mu u)
     (hφ : topF l Z u a φ ∈ (I.stp u a B.R.m).Fi B.fields.emb B.embLL (lamT (B.hcW u) B.R.m)) :
@@ -611,7 +605,7 @@ example (u : B.Word) (a : I.ι) (w) (φ : Z.W.Mu u)
     (by rw [map_one, one_mul]; exact near_of_isPtOf (h.xTop_spec u a) _), map_one, lT_one]
 
 /- English proof (translation)
-The claim follows from `{ Rc with col := colAF h l Z hθ }`.
+A detailed English derivation is pending.
 -/
 example {ψ} (Rc : RecFun (I.rec7 l Z) θ ψ) : RecFun (I.rec7 l Z) θ ψ := { Rc with col := colAF h l Z hθ }
 

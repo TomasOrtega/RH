@@ -16,9 +16,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: zeta 0 = 1` using `by simp [zeta]`. Rewrite using `[this]`. Conclude with `isIntegral_one`. Establish `h` using `Complex.isPrimitiveRoot_exp n hn.ne'`.
-
-Conclude with `(h.isIntegral hn).tower_top`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_rat_zeta_of_coeff (n : ℕ) : IsIntegral ℚ (zeta n) := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -28,17 +26,13 @@ theorem isIntegral_rat_zeta_of_coeff (n : ℕ) : IsIntegral ℚ (zeta n) := by
     exact (h.isIntegral hn).tower_top
 
 /- English proof (translation)
-Introduce `E _ _ _ H l s hs`. Set `b` to `Module.finBasis ℚ E`. Set `S : Set ℂ` to `(s : Set ℂ) ∪ Set.range (fun p : (E →+* ℂ) × Fin (Module.finrank ℚ E) => p.1 (b p.2)) ∪ {zeta l.M', H.rt0, zeta l.A}`. Establish `hfin : S.Finite` using `((s.finite_toSet).union (Set.finite_range _)).union (Set.toFinite _)`. Use `haveI : Finite S := hfin.to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ x ∈ S, IsIntegral ℚ x`. Introduce and unpack `x ((hx | ⟨p, rfl⟩) | hx)`. Conclude with `(hs x hx).isIntegral`. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℚ) (b p.2)).map p.1.toRatAlgHom`. Break down `hx with rfl | rfl | rfl` into its components or cases.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isIntegral_rat_zeta_of_coeff _`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `(isIntegral_natCast _).neg`. Conclude with `isIntegral_rat_zeta_of_coeff _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : S ⊆ IntermediateField.adjoin ℚ S` using `IntermediateField.subset_adjoin _ _`. Use `⟨⟨IntermediateField.adjoin ℚ S, IntermediateField.finiteDimensional_adjoin hint, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `τ a`. Rewrite using `[← b.sum_repr a, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_rat_smul]`. Conclude with `IntermediateField.smul_mem _ (hsub (Or.inl (Or.inr ⟨(τ, i), rfl⟩)))`. Conclude with `hsub (Or.inr (by simp))`. Use `IntermediateField.adjoin.mono _ _ _ ?_` and prove the remaining obligations. Introduce `x hx`.
-
-Conclude with `Or.inr (Or.inr hx)`. Introduce `z hz`. Conclude with `hsub (Or.inl (Or.inl hz))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_coeff_containing :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (s : Finset ℂ), (∀ z ∈ s, IsAlgebraic ℚ z) → ∃ c : Coeff l, ∀ z ∈ s, z ∈ c.F := by

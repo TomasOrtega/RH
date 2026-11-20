@@ -17,9 +17,9 @@ namespace LevelOneQExpansion
 def term (a : PowerSeries ℤ) (z : ℂ) (n : ℕ) : ℂ := (a.coeff n : ℂ) * z ^ n
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `h.tendsto_atTop_zero.norm.bddAbove_range`. Use `⟨M, fun z n ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : ‖term a z₀ n‖ ≤ M` using `hM ⟨n, rfl⟩`. Establish `h0 : 0 < ‖z₀‖` using `norm_pos_iff.2 hz₀`. Establish `h2 : ‖z₀‖ * (‖z‖ / ‖z₀‖) = ‖z‖` using `by field_simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ‖term a z n‖ = ‖term a z₀ n‖ * (‖z‖ / ‖z₀‖) ^ n`. Simplify using `only [term, norm_mul, norm_pow]`. Rewrite using `[mul_assoc, ← mul_pow, h2]`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right h1 (by positivity)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_term_le {a : PowerSeries ℤ} {z₀ : ℂ} (hz₀ : z₀ ≠ 0)
     (h : Summable (term a z₀)) :
@@ -36,11 +36,11 @@ theorem exists_norm_term_le {a : PowerSeries ℤ} {z₀ : ℂ} (hz₀ : z₀ ≠
   exact mul_le_mul_of_nonneg_right h1 (by positivity)
 
 /- English proof (translation)
-Establish `hB0` using `le_max_left B 0`. Establish `hb0` using `le_max_right B 0`. Use `set b : ℝ := max B 0 + 1 with hbdef`. Establish `hb : 0 < b` using `by linarith`. Set `τ₀ : ℍ` to `⟨(b : ℂ) * Complex.I, by simpa using hb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ₀ : τ₀.im = b` using `by simp [τ₀, UpperHalfPlane.im]`. Establish `hq₀ : 𝕢 1 (τ₀ : ℂ) ≠ 0` using `Function.Periodic.qParam_ne_zero _`. Take `⟨M, hM⟩` from `exists_norm_term_le hq₀ (h τ₀ (by rw [hτ₀]; linarith)).summable`. Use `⟨b, ‖𝕢 1 (τ₀ : ℂ)‖, M, by linarith, norm_pos_iff.2 hq₀, fun τ hτ ↦ ?_, hM⟩` and prove the remaining obligations. Rewrite using `[Function.Periodic.norm_qParam, Function.Periodic.norm_qParam, Real.exp_lt_exp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [UpperHalfPlane.coe_im, div_one, hτ₀]`. Use polynomial arithmetic with `[Real.pi_pos]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_bound {a : PowerSeries ℤ} {B : ℝ} {F : ℍ → ℂ}
     (h : ∀ τ : ℍ, B < τ.im → HasSum (term a (𝕢 1 τ)) (F τ)) :
@@ -60,7 +60,7 @@ theorem exists_bound {a : PowerSeries ℤ} {B : ℝ} {F : ℍ → ℂ}
   nlinarith [Real.pi_pos]
 
 /- English proof (translation)
-Establish `hρ : ‖z‖ / r < 1` using `(div_lt_one hr).2 hz`. Conclude with `Summable.of_nonneg_of_le (fun n ↦ norm_nonneg _) (hM z) ((summable_geometric_of_lt_one (by positivity) hρ).mul_left M)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem summable_norm_term {a : PowerSeries ℤ} {r M : ℝ} (hr : 0 < r)
     (hM : ∀ (z : ℂ) (n : ℕ), ‖term a z n‖ ≤ M * (‖z‖ / r) ^ n) {z : ℂ} (hz : ‖z‖ < r) :
@@ -70,11 +70,11 @@ theorem summable_norm_term {a : PowerSeries ℤ} {r M : ℝ} (hr : 0 < r)
     ((summable_geometric_of_lt_one (by positivity) hρ).mul_left M)
 
 /- English proof (translation)
-Establish `key : term (a * b) z = fun n ↦ ∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, term a z kl.1 * term b z kl.2`. Use function extensionality and compare the values at `n`. Simplify using `only [term, PowerSeries.coeff_mul, Int.cast_sum, Int.cast_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun kl hkl ↦ ?_` and prove the remaining obligations. Rewrite `hkl` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hkl, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `hs` using `summable_norm_sum_mul_antidiagonal_of_summable_norm ha hb`. Use `⟨?_, hs⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht` using `tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm ha hb`. Rewrite `ht` using `[hu.tsum_eq, hv.tsum_eq]`. Rewrite using `[ht]`. Conclude with `hs.of_norm.hasSum`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_term_mul {a b : PowerSeries ℤ} {z u v : ℂ}
     (ha : Summable fun n ↦ ‖term a z n‖) (hb : Summable fun n ↦ ‖term b z n‖)
@@ -97,11 +97,11 @@ theorem hasSum_term_mul {a b : PowerSeries ℤ} {z u v : ℂ}
   exact hs.of_norm.hasSum
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Establish `h1 : term (1 : PowerSeries ℤ) z = fun n ↦ if n = 0 then 1 else 0`. Use function extensionality and compare the values at `n`. Apply the tactic sequence `by_cases hn : n = 0 <;> simp [term, PowerSeries.coeff_one, hn]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [pow_zero, h1]`. Use `⟨hasSum_ite_eq 0 1, summable_of_ne_finset_zero (s := {0}) fun n hn ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_singleton] at hn`. Simplify using `[hn]`. Consider the case `succ N ih`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[pow_succ, pow_succ]`. Conclude with `hasSum_term_mul ih.2 ha ih.1 hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_term_pow {a : PowerSeries ℤ} {z u : ℂ}
     (ha : Summable fun n ↦ ‖term a z n‖) (hu : HasSum (term a z) u) (N : ℕ) :
@@ -120,17 +120,17 @@ theorem hasSum_term_pow {a : PowerSeries ℤ} {z u : ℂ}
     exact hasSum_term_mul ih.2 ha ih.1 hu
 
 /- English proof (translation)
-Take `⟨B', r, M, hBB, hr, hq, hM⟩` from `exists_bound h`. Establish `hM0 : 0 ≤ M` using `by simpa using (norm_nonneg _).trans (hM 0 0)`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hq0 : Tendsto (fun τ : ℍ ↦ 𝕢 1 (τ : ℂ)) atImInfty (𝓝 0)` using `UpperHalfPlane.qParam_tendsto_atImInfty one_pos`. Establish `hlim : Tendsto (fun τ : ℍ ↦ 2 * M / r * ‖𝕢 1 (τ : ℂ)‖) atImInfty (𝓝 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hq0.norm.const_mul (2 * M / r)`. Use `squeeze_zero' (Eventually.of_forall fun τ ↦ norm_nonneg _) ?_ hlim` and prove the remaining obligations. Establish `hev1 : ∀ᶠ τ : ℍ in atImInfty, B' < τ.im` using `(atImInfty_mem _).2 ⟨B' + 1, fun τ hτ ↦ by show B' < τ.im; linarith⟩`. Establish `hev2 : ∀ᶠ τ : ℍ in atImInfty, ‖𝕢 1 (τ : ℂ)‖ < r / 2`. Use `hq0.norm` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[norm_zero]`. Conclude with `this.eventually (gt_mem_nhds (by linarith))`. Use `filter_upwards [hev1, hev2] with τ h1 h2`. Use `set q := 𝕢 1 (τ : ℂ)`. Use `set ρ := ‖q‖ / r with hρdef`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hρ0 : 0 ≤ ρ` using `by positivity`. Establish `hρ1 : ρ ≤ 1 / 2` using `by rw [hρdef, div_le_iff₀ hr]; linarith`. Establish `hs` using `(hasSum_nat_add_iff' 1).2 (h τ (by linarith))`. Simplify using `only [Finset.range_one, Finset.sum_singleton, term, pow_zero, mul_one] at hs`. Establish `hg : HasSum (fun n : ℕ ↦ M * ρ * ρ ^ n) (M * ρ * (1 - ρ)⁻¹)` using `(hasSum_geometric_of_lt_one hρ0 (by linarith)).mul_left (M * ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `hle` using `hs.norm_le_of_bounded hg fun n ↦ by`. Use `hM q (n + 1)` as an intermediate fact. Simplify using `only [term] at this`. Combine the equalities or inequalities in the displayed calculation. Establish `hinv : (1 - ρ)⁻¹ ≤ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : 0 < 1 - ρ` using `by linarith`. Rewrite using `[inv_eq_one_div, div_le_iff₀ h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem tendsto_of_hasSum {a : PowerSeries ℤ} {B : ℝ} {F : ℍ → ℂ}
     (h : ∀ τ : ℍ, B < τ.im → HasSum (term a (𝕢 1 τ)) (F τ)) :
@@ -172,13 +172,11 @@ theorem tendsto_of_hasSum {a : PowerSeries ℤ} {B : ℝ} {F : ℍ → ℂ}
     _ = 2 * M / r * ‖q‖ := by rw [hρdef]; ring
 
 /- English proof (translation)
-Establish `hlim` using `tendsto_of_hasSum h`. Establish `hslash : ∀ γ : SL(2, ℤ), f ∣[(0 : ℤ)] γ = f` using `fun γ ↦ by`. Use function extensionality and compare the values at `τ`. Simplify using `only [SL_slash_apply, neg_zero, zpow_zero, mul_one]`. Conclude with `hinv γ τ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `F : ModularForm 𝒮ℒ 0` to `{ toFun := f slash_action_eq' := fun _ ⟨γ, hγ⟩ ↦ hγ ▸ hslash γ holo' := hf bdd_at_cusps' := fun {c} hc ↦ by`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Rewrite using `[OnePoint.isBoundedAt_iff_forall_SL2Z hc]`. Introduce `γ _`. Rewrite using `[hslash γ, IsBoundedAtImInfty, BoundedAtFilter]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hlim.isBigO_one ℝ }`. Take `⟨c, hc⟩` from `ModularFormClass.levelOne_weight_zero_const F`. Establish `hfc : f = Function.const ℍ c` using `hc`. Establish `hc' : Tendsto f atImInfty (𝓝 c)`. Rewrite using `[hfc]`.
-
-Conclude with `tendsto_const_nhds`. Rewrite using `[hfc, Function.const_apply, tendsto_nhds_unique hc' hlim]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_const_of_hasSum {f : ℍ → ℂ} (hf : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f)
     (hinv : ∀ (γ : SL(2, ℤ)) (τ : ℍ), f (γ • τ) = f τ) {a : PowerSeries ℤ} {B : ℝ}
@@ -207,31 +205,29 @@ theorem eq_const_of_hasSum {f : ℍ → ℂ} (hf : MDifferentiable 𝓘(ℂ) �
   rw [hfc, Function.const_apply, tendsto_nhds_unique hc' hlim]
 
 /- English proof (translation)
-Take `⟨c, hc0, hc⟩` from `hJ`. Use `set J : PowerSeries ℤ := PowerSeries.mk c with hJdef`. Establish `hJt : ∀ τ : ℍ, HasSum (term J (𝕢 1 τ)) (𝕢 1 (τ : ℂ) * modularJ τ)` using `fun τ ↦ by`. Use `hc τ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[term, J]`. Establish `hJ0 : J.coeff 0 = 1` using `by simp [J, hc0]`. Establish `hjd : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) modularJ` using `UpperHalfPlane.mdifferentiable_iff.2 differentiableOn_modularJC`. Take `⟨B₂, r₂, M₂, -, hr₂, hq₂, hM₂⟩` from `exists_bound (B := 0) fun τ _ ↦ hJt τ`. Proceed by induction on `N with`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `f hf hinv a B h`. Use `⟨C (a.coeff 0), fun τ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[eq_const_of_hasSum hf hinv (B := B) (fun τ hτ ↦ by simpa using h τ hτ) τ]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ N ih`. Introduce `f hf hinv a B h`. Use `set c₀ := a.coeff 0 with hc₀`. Set `g : ℍ → ℂ` to `fun τ ↦ f τ - c₀ * modularJ τ ^ (N + 1)`. Establish `hg : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) g` using `hf.sub (mdifferentiable_const.mul (hjd.pow _))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hginv : ∀ (γ : SL(2, ℤ)) (τ : ℍ), g (γ • τ) = g τ` using `fun γ τ ↦ by`. Simplify using `only [g]`. Rewrite using `[hinv, modularJ_smul]`. Take `⟨B₁, r₁, M₁, hB₁, hr₁, hq₁, hM₁⟩` from `exists_bound h`. Use `set R : PowerSeries ℤ := a - c₀ • J ^ (N + 1) with hRdef`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJp : (J ^ (N + 1)).coeff 0 = 1`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, hJ0, one_pow]`. Establish `hR0 : R.coeff 0 = 0`. Rewrite using `[hRdef, map_sub, map_smul, hJp, smul_eq_mul, mul_one, hc₀, sub_self]`. Establish `hser : ∀ τ : ℍ, max B₁ B₂ < τ.im → HasSum (term (PowerSeries.mk fun n ↦ R.coeff (n + 1)) (𝕢 1 τ)) (𝕢 1 (τ : ℂ) ^ N * g τ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ hτ`. Use `set q := 𝕢 1 (τ : ℂ)`. Establish `hq : q ≠ 0` using `Function.Periodic.qParam_ne_zero _`. Establish `hτ₁ : B₁ < τ.im` using `lt_of_le_of_lt (le_max_left _ _) hτ`. Establish `hτ₂ : B₂ < τ.im` using `lt_of_le_of_lt (le_max_right _ _) hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJs` using `summable_norm_term hr₂ hM₂ (hq₂ τ hτ₂)`. Establish `hpow` using `(hasSum_term_pow hJs (hJt τ) (N + 1)).1`. Establish `ha` using `h τ (lt_of_le_of_lt hB₁ hτ₁)`. Establish `hRs : HasSum (term R q) (q ^ (N + 1) * f τ - c₀ * (q * modularJ τ) ^ (N + 1))`. Establish `: term R q = fun n ↦ term a q n - c₀ * term (J ^ (N + 1)) q n`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use function extensionality and compare the values at `n`. Simplify using `only [term, hRdef]`. Rewrite using `[map_sub, map_smul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `ha.sub (hpow.mul_left _)`. Establish `h1` using `(hasSum_nat_add_iff' 1).2 hRs`. Simplify using `only [Finset.range_one, Finset.sum_singleton, term, hR0, Int.cast_zero, zero_mul, sub_zero] at h1`. Establish `h2` using `h1.mul_left q⁻¹`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `e1 : (fun i ↦ q⁻¹ * (↑(R.coeff (i + 1)) * q ^ (i + 1))) = term (PowerSeries.mk fun n ↦ R.coeff (n + 1)) q`. Use function extensionality and compare the values at `n`. Simplify using `only [term, PowerSeries.coeff_mk, pow_succ]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : q⁻¹ * (q ^ (N + 1) * f τ - ↑c₀ * (q * modularJ τ) ^ (N + 1)) = q ^ N * g τ`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [g]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e1, e2]`. Conclude with `h2`.
-
-Take `⟨Q, hQ⟩` from `ih g hg hginv _ _ hser`. Use `⟨Q + Polynomial.C c₀ * X ^ (N + 1), fun τ ↦ ?_⟩` and prove the remaining obligations. Use `hQ τ` as an intermediate fact. Simplify using `only [g] at this`. Simplify using `[← this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_poly (hJ : JQExpansion.Statement) (N : ℕ) :
     ∀ f : ℍ → ℂ, MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f → (∀ (γ : SL(2, ℤ)) (τ : ℍ), f (γ • τ) = f τ) →
@@ -314,7 +310,7 @@ end LevelOneQExpansion
 open LevelOneQExpansion in
 
 /- English proof (translation)
-Introduce and unpack `f hf hinv ⟨N, c, A, h⟩`. Conclude with `exists_poly hJ N f hf hinv (PowerSeries.mk c) A fun τ hτ ↦ by`. Use `h τ hτ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Simplify using `[term]`.
+Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LevelOneQExpansion.proof (hJ : JQExpansion.Statement) : LevelOneQExpansion.Statement := by
   rintro f hf hinv ⟨N, c, A, h⟩

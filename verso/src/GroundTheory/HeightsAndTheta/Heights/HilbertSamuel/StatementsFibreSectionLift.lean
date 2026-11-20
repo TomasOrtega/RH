@@ -16,9 +16,9 @@ def FibreSectionLift.Statement : Prop :=
       ∃ s ∈ chartLat y a 1, GenOnFibres.secCoch y (ZMod p) s a = z
 
 /- English proof (translation)
-Use `⟨unitPoint_isArithVar, Nat.prime_two, ?_⟩` and prove the remaining obligations. Use `cechC_one_subsingleton (ZMod 2) (MRingOver (ZMod 2) PtIdx ⧸ fibreIdeal (ι := PtIdx) 2 unitPoint)` as an intermediate fact. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Subsingleton.elim a b]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem FibreSectionLift.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := PtIdx) unitPoint) (0 + 1) ∧ Nat.Prime 2 ∧

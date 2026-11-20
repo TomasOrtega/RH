@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOfIrreducible
 namespace GlobalTheory.CompanionTheory.Burnside
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IrreducibleMembership.mem_of_irreducible`. Consider the case `exact _root_.GlobalTheory.IrreducibleMembership.mem_of_irreducible`. Consider the case `(apply _root_.GlobalTheory.IrreducibleMembership.mem_of_irreducible <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IrreducibleMembership.mem_of_irreducible <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IrreducibleMembership.mem_of_irreducible <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IrreducibleMembership.mem_of_irreducible ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_of_irred {K V : Type*} [Field K] [IsAlgClosed K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (S : Subalgebra K (Module.End K V))
@@ -21,7 +21,7 @@ theorem mem_of_irred {K V : Type*} [Field K] [IsAlgClosed K] [AddCommGroup V] [M
   | (intros; exact _root_.GlobalTheory.IrreducibleMembership.mem_of_irreducible ..)
 
 /- English proof (translation)
-Introduce `f`. Establish `h` using `mem_of_irred ρ.range (fun N hN => hirr N fun a w hw => hN (ρ a) ⟨a, rfl⟩ w hw) f`. Take `⟨a, ha⟩` from `h`. Conclude with `⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem burnside_surj_of_irred {A V : Type} [Ring A] [Algebra ℂ A] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : A →ₐ[ℂ] Module.End ℂ V) (hirr : ∀ W : Submodule ℂ V, (∀ h, ∀ w ∈ W, ρ h w ∈ W) → W = ⊥ ∨ W = ⊤) :

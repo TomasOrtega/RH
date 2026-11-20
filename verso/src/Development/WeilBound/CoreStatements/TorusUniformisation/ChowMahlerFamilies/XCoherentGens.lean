@@ -9,14 +9,14 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace PositivityTheory.Xgn.A_coherent_gens
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, one_mem R, e, he, (one_smul Ω e).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_spanOver {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {E : Type*} [AddCommGroup E]
     [Module Ω E] (R : Subalgebra o Ω) {S : Set E} {e : E} (he : e ∈ S) : e ∈ spanOver R S :=
   AddSubgroup.subset_closure ⟨1, one_mem R, e, he, (one_smul Ω e).symm⟩
 
 /- English proof (translation)
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, e, he, rfl⟩`. Conclude with `hL a ha e (hS e he)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem spanOver_le {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {E : Type*} [AddCommGroup E]
     [Module Ω E] (R : Subalgebra o Ω) {S : Set E} {L : AddSubgroup E}
@@ -26,7 +26,7 @@ theorem spanOver_le {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {E : T
   exact hL a ha e (hS e he)
 
 /- English proof (translation)
-Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, e, he, rfl⟩`. Conclude with `⟨a, ha, e, h he, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem spanOver_mono {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {E : Type*} [AddCommGroup E]
     [Module Ω E] (R : Subalgebra o Ω) {S T : Set E} (h : S ⊆ T) : spanOver R S ≤ spanOver R T := by
@@ -35,9 +35,9 @@ theorem spanOver_mono {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {E :
   exact ⟨a, ha, e, h he, rfl⟩
 
 /- English proof (translation)
-Use `⟨∏ k, (x ⟨k, c k⟩ / x ⟨k, t k⟩) ^ (a k - m).toNat, prod_mem fun k _ => pow_mem (TwistedDualGensExist.ratio_mem (O := o) x ht k (c k)) _, ?_⟩` and prove the remaining obligations. Simplify using `only [chartMon, mseg]`. Rewrite using `[← Finset.prod_div_distrib, ← Finset.prod_pow, ← Finset.prod_mul_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h : a k = (((a k - m).toNat + m : ℕ) : ℤ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hm k` as an intermediate fact. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← pow_add, ← zpow_natCast, ← h, div_zpow, div_eq_inv_mul]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem transition {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {K : Type} [Fintype K]
     [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) {c t : ∀ k, ι k}
@@ -59,15 +59,13 @@ theorem transition {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {K : Ty
 end PositivityTheory.Xgn.A_coherent_gens
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x V _ _ Γ ⟨hst, hov⟩ hfg`. Use `choose! S hS using hfg`. Set `I` to `Σ c : {c : ∀ k, ι k // mseg x c ≠ 0}, S c.1`. Establish `hmem : ∀ i : I, (i.2 : V) ∈ Γ i.1.1` using `fun i => by`. Rewrite using `[hS _ i.1.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `A_coherent_gens.mem_spanOver _ i.2.2`. Establish `hex : ∀ p : I × {c : ∀ k, ι k // mseg x c ≠ 0}, ∃ m : ℕ, (mseg x p.1.1.1 / mseg x p.2.1) ^ m • (p.1.2 : V) ∈ Γ p.2.1` using `fun p => hov _ _ p.1.1.2 p.2.2 _ (hmem p.1)`. Use `choose m hm using hex`. Use `⟨fun _ => ((∑ p, m p : ℕ) : ℤ), fun a ha => ?_⟩` and prove the remaining obligations. Set `e` to `Fintype.equivFin I`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, fun j => chartMon x (e.symm j).1.1 a • ((e.symm j).2 : V), fun t ht => ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hS t ht]`. Use `A_coherent_gens.spanOver_mono _ fun w hw => ⟨e ⟨⟨t, ht⟩, ⟨w, hw⟩⟩, ?_⟩` and prove the remaining obligations. Establish `hne : chartMon x t a ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ ((Finset.prod_ne_zero_iff.1 ht) k (Finset.mem_univ _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[e.symm_apply_apply, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Use `A_coherent_gens.spanOver_le _ (hst t ht) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨r, hr, heq⟩` from `A_coherent_gens.transition (o := O) x (c := (e.symm j).1.1) ht a (m (e.symm j, ⟨t, ht⟩)) fun k => le_trans (by`.
-
-Conclude with `Nat.cast_le.2 (Finset.single_le_sum (f := m) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _))) (ha k)`. Simplify using `only`. Rewrite using `[smul_smul, heq, mul_smul]`. Conclude with `hst t ht r hr _ (hm (e.symm j, ⟨t, ht⟩))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_coherent_gens : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (V : Type) [AddCommGroup V] [Module Ω V] (Γ : (∀ k, ι k) → AddSubgroup V), IsLatFamily O x Γ → (∀ c, mseg x c ≠ 0 → ∃ S : Finset V, Γ c = spanOver (chartRing O (mseg x) c) (S : Set V)) → ∃ a₁ : K → ℤ, ∀ a : K → ℤ, a₁ ≤ a → ∃ (M : ℕ) (v : Fin M → V), ∀ c, mseg x c ≠ 0 → Γ c = spanOver (chartRing O (mseg x) c) (Set.range fun j => (chartMon x c a)⁻¹ • v j) := by
   classical

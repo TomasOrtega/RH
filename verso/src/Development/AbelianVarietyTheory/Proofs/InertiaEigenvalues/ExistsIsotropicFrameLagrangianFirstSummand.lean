@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.RawLift
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, Pi.star_apply, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjTranspose_gram_mul_apply {D : D7} {n s t : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E)
     (A : Matrix (Fin n) (Fin s) D.host.E) (B : Matrix (Fin n) (Fin t) D.host.E) (a : Fin s) (c : Fin t) :
@@ -26,15 +26,15 @@ theorem conjTranspose_gram_mul_apply {D : D7} {n s t : ℕ} (G : Matrix (Fin n) 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Introduce `D W Y hY`. Use `set I₁ := Y.1.comap (LinearMap.inl D.host.E (Fin W.rank → D.host.E) (Fin W.rank → D.host.E)) with hI₁`. Establish `hpos : 0 < Module.finrank D.host.E I₁` using `Nat.pos_of_ne_zero fun h => hY (Submodule.finrank_eq_zero.mp h)`. Set `b` to `Module.finBasisOfFinrankEq D.host.E I₁ rfl`. Establish `hsp : Submodule.span D.host.E (Set.range (I₁.subtype ∘ b)) = I₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (Submodule.map I₁.subtype) b.span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `h`. Set `I : Matrix (Fin W.rank) (Fin (Module.finrank D.host.E I₁)) D.host.E` to `Matrix.of fun a j => (b j : Fin W.rank → D.host.E) a`. Establish `hT : I.transpose = I₁.subtype ∘ b`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `j a`. Both sides reduce to the same expression. Use `⟨_, I, ⟨hpos, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hT]`. Conclude with `b.linearIndependent.map' I₁.subtype (Submodule.ker_subtype I₁)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.MixModel.cT_sig]`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Rewrite using `[conjTranspose_gram_mul_apply, Matrix.zero_apply]`. Establish `ha : LinearMap.inl D.host.E _ (Fin W.rank → D.host.E) (b a : Fin W.rank → D.host.E) ∈ Y.1` using `(b a).2`. Establish `hc : LinearMap.inl D.host.E _ (Fin W.rank → D.host.E) (b c : Fin W.rank → D.host.E) ∈ Y.1` using `(b c).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Y.2.2 _ ha _ hc`. Simplify using `only [LinearMap.inl_apply, star_zero, Matrix.mulVec_zero, dotProduct_zero] at h`. Conclude with `h`. Rewrite using `[hT]`. Conclude with `hsp`.
+A detailed English derivation is pending.
 -/
 theorem exists_isoFrame_comap_inl : ∀ (D : D7) (W : HSp D) (Y : Lag W), Y.1.comap (LinearMap.inl D.host.E _ _) ≠ ⊥ →
     ∃ (s : ℕ) (I : Matrix (Fin W.rank) (Fin s) D.host.E), IsIsoFrame W I ∧

@@ -13,7 +13,7 @@ attribute [local instance] GlobalTheory.SqIntSU.circleBorelMS GlobalTheory.SqInt
   GlobalTheory.SqIntSU.sigmaCompact_special
 
 /- English proof (translation)
-Establish `h1 : IntegrableOn Θ' ((fun g => c * g) '' K) μ'` using `h.integrableOn_isCompact (hK.image (continuous_const.mul continuous_id))`. Establish `h2` using `((measurePreserving_mul_left μ' c).integrableOn_comp_preimage (MeasurableEquiv.mulLeft c).measurableEmbedding).2 h1`. Conclude with `h2.mono_set (Set.subset_preimage_image _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_translate {n : ℕ} (ε : Fin n → Bool) (μ' : Measure (SUJ ε)) [μ'.IsHaarMeasure]
     (Θ' : SUJ ε → ℂ) (h : LocallyIntegrable Θ' μ') (c : SUJ ε) {K : Set (SUJ ε)} (hK : IsCompact K) :
@@ -25,7 +25,7 @@ theorem integrableOn_translate {n : ℕ} (ε : Fin n → Bool) (μ' : Measure (S
   exact h2.mono_set (Set.subset_preimage_image _ _)
 
 /- English proof (translation)
-Unfold `avgChar`. Conclude with `(integrable_finset_sum _ fun j _ => (integrableOn_translate ε μ' Θ' h _ hK).const_mul _).const_mul _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem integrableOn_avgChar {n : ℕ} [NeZero n] (ε : Fin n → Bool) (μ' : Measure (SUJ ε)) [μ'.IsHaarMeasure]
     (m : ℤ) (Θ' : SUJ ε → ℂ) (h : LocallyIntegrable Θ' μ') {K : Set (SUJ ε)} (hK : IsCompact K) :
@@ -34,15 +34,15 @@ theorem integrableOn_avgChar {n : ℕ} [NeZero n] (ε : Fin n → Bool) (μ' : M
   exact (integrable_finset_sum _ fun j _ => (integrableOn_translate ε μ' Θ' h _ hK).const_mul _).const_mul _
 
 /- English proof (translation)
-Introduce `n _ ε μ' _ m Θ' h hm`. Establish `hsc : Continuous (scalarMul ε)` using `GlobalTheory.SqIntSU.continuous_scalarMul ε`. Rewrite using `[locallyIntegrable_iff]`. Introduce `K hK`. Establish `hP : IsCompact (scalarMul ε ⁻¹' K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(isProperMap_iff_tendsto_cocompact.2 ⟨hsc, GlobalTheory.SqIntSU.scalarMul_proper ε⟩)` as an intermediate fact. Conclude with `this.isCompact_preimage hK`. Establish `hK' : IsCompact (Prod.snd '' (scalarMul ε ⁻¹' K))` using `hP.image continuous_snd`. Establish `hmr` using `hm.restrict (s := K)`. Rewrite using `[IntegrableOn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hmr`, the goal using `[Measure.restrict_map hsc.measurable hK.measurableSet]`. Rewrite using `[integrable_map_measure hmr hsc.measurable.aemeasurable]`. Establish `hz : Integrable (fun z : Circle => (z : ℂ) ^ m) circleHaar`. Establish `hc : Continuous (fun z : Circle => (z : ℂ) ^ m)` using `(continuous_subtype_val : Continuous (fun z : Circle => (z : ℂ))).zpow₀ m fun z => Or.inl (Circle.coe_ne_zero z)`. Conclude with `hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hz.mul_prod (integrableOn_avgChar ε μ' m Θ' h hK')`. Establish `h2 : IntegrableOn (fun p : Circle × SUJ ε => (p.1 : ℂ) ^ m * avgChar ε m Θ' p.2) (Set.univ ×ˢ (Prod.snd '' (scalarMul ε ⁻¹' K))) (circleHaar.prod μ')`. Rewrite using `[IntegrableOn, ← Measure.prod_restrict, Measure.restrict_univ]`. Conclude with `h1`. Establish `h3` using `h2.mono_set (t := _) (s := scalarMul ε ⁻¹' K) fun p hp => ⟨trivial, p, hp, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : extChar ε m Θ' ∘ scalarMul ε = fun p : Circle × SUJ ε => (p.1 : ℂ) ^ m * avgChar ε m Θ' p.2`. Use function extensionality and compare the values at `p`. Conclude with `extChar_scalarMul ε m Θ' p.1 p.2`. Rewrite using `[e]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem locallyIntegrable_extChar : ∀ (n : ℕ) [NeZero n] (ε : Fin n → Bool) (μ' : Measure (SUJ ε)) [μ'.IsHaarMeasure] (m : ℤ) (Θ' : SUJ ε → ℂ), LocallyIntegrable Θ' μ' → AEStronglyMeasurable (GlobalTheory.ExtChar.extChar ε m Θ') (letI := GlobalTheory.SqIntSU.circleBorelMS; Measure.map (scalarMul ε) (circleHaar.prod μ')) → LocallyIntegrable (GlobalTheory.ExtChar.extChar ε m Θ') (letI := GlobalTheory.SqIntSU.circleBorelMS; Measure.map (scalarMul ε) (circleHaar.prod μ')) := by
   intro n _ ε μ' _ m Θ' h hm

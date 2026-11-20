@@ -17,14 +17,14 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-The claim follows from `(GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs (ι := ι) 1).mul (contDiffOn_const (c := Real.exp (-(-1 : ℝ))))`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm : IsSmoothHerm (scaledFSH ι) :=
   (GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs (ι := ι) 1).mul
     (contDiffOn_const (c := Real.exp (-(-1 : ℝ))))
 
 /- English proof (translation)
-Use `filter_upwards [isOpen_noZeroBlock.mem_nhds hz] with y hy`. Establish `hρ : ∀ k, (fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩) ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hy k`. Conclude with `((fsMetric (ι k)).pos _ fun h0 => hi (congrFun h0 i)).ne'`. Rewrite using `[scaledFSH_h, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => hρ k) (Real.exp_pos 1).ne', Real.log_exp, Real.log_prod fun k _ => hρ k]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_h_eventuallyEq {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     (fun y => Real.log ((scaledFSH ι).h y)) =ᶠ[𝓝 z]
@@ -37,11 +37,9 @@ theorem log_h_eventuallyEq {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k
     Real.log_exp, Real.log_prod fun k _ => hρ k]
 
 /- English proof (translation)
-Establish `hd : fderiv ℝ (fun y => Real.log ((scaledFSH ι).h y)) =ᶠ[𝓝 z] fderiv ℝ (fun y => ∑ k, Real.log ((fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩)))` using `by filter_upwards [(log_h_eventuallyEq hz).fderiv (𝕜 := ℝ)] with y hy`. Rewrite using `[hy]`. Conclude with `fderiv_add_const (1 : ℝ)`. Establish `hL : leviForm (fun y => Real.log ((scaledFSH ι).h y)) z w = leviForm (fun y => ∑ k, Real.log ((fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩))) z w`. Unfold `leviForm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd.fderiv_eq]`. Rewrite using `[hL, levi_Phi hz w]`. Use `Finset.sum_nonneg fun k _ => leviForm_phi_nonneg ?_ _` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz k`. Use `(lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hi) 2) ?_).ne'` and prove the remaining obligations.
-
-Conclude with `Finset.single_le_sum (f := fun j => ‖blk k z j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem leviForm_log_h_nonneg {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (w : (Σ k, ι k) → ℂ) :
     0 ≤ leviForm (fun y => Real.log ((scaledFSH ι).h y)) z w := by
@@ -61,13 +59,13 @@ theorem leviForm_log_h_nonneg {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z �
   exact Finset.single_le_sum (f := fun j => ‖blk k z j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isSmoothHerm, fun _ hz w _ => leviForm_log_h_nonneg hz.1 w⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSemipositiveRel (P0 P : Ideal (MRing ι)) : IsSemipositiveRel P0 P (scaledFSH ι) :=
   ⟨isSmoothHerm, fun _ hz w _ => leviForm_log_h_nonneg hz.1 w⟩
 
 /- English proof (translation)
-Introduce `z`. Rewrite using `[scaledFSH_h, scaledFSH_h]`. Simplify using `[fsMetric, EuclideanSpace.norm_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isConjInvariantH : IsConjInvariantH (scaledFSH ι) := by
   intro z
@@ -75,7 +73,7 @@ theorem isConjInvariantH : IsConjInvariantH (scaledFSH ι) := by
   simp [fsMetric, EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-Use `show ‖z ⟨k, i⟩‖ ≤ ‖WithLp.toLp 2 (fun i => z ⟨k, i⟩)‖`. Simplify using `using PiLp.norm_apply_le (WithLp.toLp 2 (fun i => z ⟨k, i⟩)) i`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_le_rho (z : (Σ k, ι k) → ℂ) (k : K) (i : ι k) :
     ‖z ⟨k, i⟩‖ ≤ (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩) := by
@@ -83,11 +81,11 @@ theorem norm_le_rho (z : (Σ k, ι k) → ℂ) (k : K) (i : ι k) :
   simpa using PiLp.norm_apply_le (WithLp.toLp 2 (fun i => z ⟨k, i⟩)) i
 
 /- English proof (translation)
-Introduce `z _ μ hμ`. Rewrite using `[scaledFSH_h, norm_prod, Fintype.prod_sigma]`. Establish `hρ : ∀ k, 0 ≤ (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩)` using `fun k => norm_nonneg _`. Establish `hblk : ∀ k, ∏ i, ‖z ⟨k, i⟩ ^ μ ⟨k, i⟩‖ ≤ (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_le_rho z k i) _`. Use `_ = (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩) := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.prod_pow_eq_pow_sum, hμ k]`. Conclude with `pow_one _`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem monomialsBounded (P : Ideal (MRing ι)) : MonomialsBounded P (scaledFSH ι) (fun _ => 1) := by
   intro z _ μ hμ
@@ -110,7 +108,7 @@ theorem monomialsBounded (P : Ideal (MRing ι)) : MonomialsBounded P (scaledFSH 
 end ScaledFSHProps
 
 /- English proof (translation)
-Introduce `_ _ _ _ P P0` and use `⟨ScaledFSHProps.isSemipositiveRel P0 P, ScaledFSHProps.isConjInvariantH, ScaledFSHProps.monomialsBounded P⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ScaledFSHProps.proof : ScaledFSHProps.Statement := fun _ _ _ _ P P0 =>
   ⟨ScaledFSHProps.isSemipositiveRel P0 P, ScaledFSHProps.isConjInvariantH, ScaledFSHProps.monomialsBounded P⟩

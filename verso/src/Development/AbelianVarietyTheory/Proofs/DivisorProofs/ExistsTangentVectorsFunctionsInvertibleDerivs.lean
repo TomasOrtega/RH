@@ -17,13 +17,13 @@ open scoped Classical
 namespace GlobalTheory.TanVec
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension D k A := h`. Take `⟨ι, σ, _, _, P, hP⟩` from `‹Algebra.IsStandardSmoothOfRelativeDimension D k A›.out`. Use `letI := Fintype.ofFinite ι`. Use `letI := Fintype.ofFinite σ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc : Fintype.card ((Set.range P.map)ᶜ : Set ι) = D`. Rewrite using `[Fintype.card_compl_set, Set.card_range_of_injective P.map_inj, ← hP]`. Simplify using `[Algebra.Presentation.dimension]`. Set `e` to `Fintype.equivFinOfCardEq hc`. Set `B` to `P.basisKaehler.reindex e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ i, KaehlerDifferential.D k A (P.val (e.symm i)) = B i` using `fun i => by`. Simplify using `[B]`. Use `⟨fun i => P.val (e.symm i), fun c => { toFun := fun s => B.coord c (KaehlerDifferential.D k A s) map_zero' := by simp map_add' := fun s t => by simp }, fun c a b => ?_, fun a c => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B.coord c (KaehlerDifferential.D k A (a * b)) = a * B.coord c (KaehlerDifferential.D k A b) + b * B.coord c (KaehlerDifferential.D k A a)`. Rewrite using `[Derivation.leibniz, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `B.coord c (KaehlerDifferential.D k A (P.val (e.symm a))) = _`. Rewrite using `[hB, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coords_derivs {k A : Type} [CommRing k] [CommRing A] {α : k →+* A} {D : ℕ}
     (h : α.IsStandardSmoothOfRelativeDimension D) :
@@ -77,17 +77,17 @@ def jetHom {A K : Type} [CommRing A] [Field K] (φ : A →+* K) (d : A →+ A)
     rw [hd, map_add, map_mul, map_mul, mul_comm (φ t)]
 
 /- English proof (translation)
-Introduce `k _ Y p D _ K _ z`. Take `⟨V, hV, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (Opens.mem_top (GlobalTheory.Adelic.ptOf z))`. Establish `h` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension D) p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`. Take `⟨s, hs, h⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h`. Take `⟨t, hxt⟩ : ∃ t : (s : Set Γ(Y, V)), GlobalTheory.Adelic.ptOf z ∈ Y.basicOpen (t : Γ(Y, V))` from `Opens.mem_iSup.1 (((IsAffineOpen.iSup_basicOpen_eq_self_iff hV).2 hs).ge hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `IsAffineOpen.isLocalization_basicOpen hV (t : Γ(Y, V))` as an intermediate fact. Establish `h₁` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv (h t t.2 Γ(Y, Y.basicOpen (t : Γ(Y, V))))`. Establish `h₂ : (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (Y.basicOpen (t : Γ(Y, V)))).IsStandardSmoothOfRelativeDimension D`. Rewrite using `[← resG_comp_algX p (Y.basicOpen_le (t : Γ(Y, V)))]`. Conclude with `h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, d, hl, hd⟩` from `exists_coords_derivs h₂`. Establish `hO : IsAffineOpen (Y.basicOpen (t : Γ(Y, V)))` using `IsAffineOpen.basicOpen hV _`. Establish `hzO : ⊤ ≤ z ⁻¹ᵁ Y.basicOpen (t : Γ(Y, V))` using `(GlobalTheory.Adelic.le_iff_ptOf_mem z _).2 hxt`. Use `choose w hw he using fun c => exists_evalPt_eq hO (jetHom (evalPt z _ hzO) (d c) (hl c))`. Use `⟨_, hzO, x, w, fun b => ?_, fun hwO => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ w b) ⁻¹ᵁ Y.basicOpen (t : Γ(Y, V))` using `fun q _ => hw b (Set.mem_univ _)`. Use `ext_evalPt hO h' hzO (RingHom.ext fun f => ?_)` and prove the remaining obligations. Use `(evalPt_spMap_comp _ (w b) _ (hw b) h' f).trans ?_` and prove the remaining obligations. Rewrite using `[he]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hm : (Matrix.of fun a b => (evalPt (w b) _ (hwO b) (x a)).snd) = (1 : Matrix (Fin D) (Fin D) K)`. Use extensionality with `a b`. Establish `e1 : (evalPt (w b) _ (hwO b) (x a)).snd = evalPt z _ hzO (d b (x a))`. Rewrite using `[he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.of_apply, e1, hd, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hm, Matrix.det_one]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tangent_matrix : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ Sp k) (D : ℕ) [SmoothOfRelativeDimension D p] {K : Type} [Field K] (z : Sp K ⟶ Y), ∃ (O : Y.Opens) (_ : ⊤ ≤ z ⁻¹ᵁ O) (x : Fin D → Γ(Y, O)) (w : Fin D → (Sp (DualNumber K) ⟶ Y)), (∀ b, spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ w b = z) ∧ ∀ hwO : (∀ b, ⊤ ≤ w b ⁻¹ᵁ O), (Matrix.of fun a b => (evalPt (w b) O (hwO b) (x a)).snd).det ≠ 0 := by
   intro k _ Y p D _ K _ z

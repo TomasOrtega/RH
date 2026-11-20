@@ -16,7 +16,7 @@ open Polynomial
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Simplify using `only [RingHom.comp_apply, scaleHom, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X, map_mul]`. Use `IsUnit.mul ?_ (IsLocalization.Away.algebraMap_isUnit _)` and prove the remaining obligations. Conclude with `((isUnit_iff_exists_inv.mpr ⟨v, huv⟩).map Polynomial.C).map _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem scaleX_isUnit (R : Type) [CommRing R] [Algebra k R] {u v : R} (huv : u * v = 1) :
     IsUnit ((algebraMap (Polynomial R) (Localization.Away (X : Polynomial R))).comp (scaleHom k R u) X) := by
@@ -29,7 +29,7 @@ private def psiHom (R : Type) [CommRing R] [Algebra k R] {u v : R} (huv : u * v 
   IsLocalization.Away.lift (X : Polynomial k) (scaleX_isUnit R huv)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by simp only [RingHom.comp_apply, psiHom, IsLocalization.Away.lift_eq]`.
+A detailed English derivation is pending.
 -/
 private theorem psi_loc (R : Type) [CommRing R] [Algebra k R] {u v : R} (huv : u * v = 1) :
     (algebraMap (Polynomial R) (Localization.Away (X : Polynomial R))).comp (scaleHom k R u) =
@@ -37,15 +37,15 @@ private theorem psi_loc (R : Type) [CommRing R] [Algebra k R] {u v : R} (huv : u
   RingHom.ext fun a => by simp only [RingHom.comp_apply, psiHom, IsLocalization.Away.lift_eq]
 
 /- English proof (translation)
-Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Establish `e : (algebraMap k (Localization.Away (X : Polynomial k))) a = algebraMap (Polynomial k) (Localization.Away (X : Polynomial k)) (Polynomial.C a)`. Rewrite using `[IsScalarTower.algebraMap_apply k (Polynomial k) (Localization.Away (X : Polynomial k))]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : (algebraMap R (Localization.Away (X : Polynomial R))) (algebraMap k R a) = algebraMap (Polynomial R) (Localization.Away (X : Polynomial R)) (Polynomial.C (algebraMap k R a))`. Rewrite using `[IsScalarTower.algebraMap_apply R (Polynomial R) (Localization.Away (X : Polynomial R))]`. Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Polynomial.aeval_C, e, psiHom, IsLocalization.Away.lift_eq]`. Simplify using `[scaleHom, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Polynomial.aeval_X]`. Establish `hb : psiHom R huv (algebraMap (Polynomial k) (Localization.Away (X : Polynomial k)) X) = algebraMap (Polynomial R) (Localization.Away (X : Polynomial R)) (Polynomial.C u) * algebraMap (Polynomial R) (Localization.Away (X : Polynomial R)) X`. Simplify using `[psiHom, IsLocalization.Away.lift_eq, scaleHom]`. Establish `hc : psiHom R huv (algebraMap (Polynomial k) (Localization.Away (X : Polynomial k)) X) * psiHom R huv (IsLocalization.Away.invSelf (X : Polynomial k) : Localization.Away (X : Polynomial k)) = 1`. Rewrite using `[← map_mul, IsLocalization.Away.mul_invSelf, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : (Polynomial.aeval (IsLocalization.Away.invSelf (X : Polynomial R) : Localization.Away (X : Polynomial R))) (scaleHom k R v X) * psiHom R huv (algebraMap (Polynomial k) (Localization.Away (X : Polynomial k)) X) = 1`. Rewrite using `[hb]`. Establish `hv : (Polynomial.aeval (IsLocalization.Away.invSelf (X : Polynomial R) : Localization.Away (X : Polynomial R))) (scaleHom k R v X) = algebraMap (Polynomial R) (Localization.Away (X : Polynomial R)) (Polynomial.C v) * IsLocalization.Away.invSelf (X : Polynomial R)`. Simplify using `[scaleHom, Polynomial.aeval_def, Polynomial.eval₂_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hv]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `left_inv_eq_right_inv hl hc`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem psi_inv (R : Type) [CommRing R] [Algebra k R] {u v : R} (huv : u * v = 1) :
     (Polynomial.aeval (IsLocalization.Away.invSelf (X : Polynomial R) :
@@ -91,14 +91,14 @@ private theorem psi_inv (R : Type) [CommRing R] [Algebra k R] {u v : R} (huv : u
     exact left_inv_eq_right_inv hl hc
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ ≫ spMap (scaleHom k R u) ≫ f₀ = _ ≫ spMap (scaleHom k R v) ≫ f₁`. Rewrite using `[← Category.assoc, ← Category.assoc, sp_comp, sp_comp, psi_loc R huv, psi_inv R huv, ← sp_comp (algebraMap (Polynomial k) (Localization.Away (Polynomial.X : Polynomial k))) (psiHom R huv), Category.assoc, hyp, ← Category.assoc, sp_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem scaled_loc (B : Over (Sp k)) (f₀ f₁ : Sp (Polynomial k) ⟶ B.left)
     (h0 : f₀ ≫ B.hom = spMap (algebraMap k (Polynomial k)))
@@ -140,9 +140,9 @@ private def locInv (R : Type) [CommRing R] [Algebra k R] : locOver (k := k) R �
     rw [sp_comp, e])
 
 /- English proof (translation)
-Introduce `k _ B _ f₀ f₁ h0 h1 hyp R _ _ u v huv`. Establish `hs : ∀ {a b : R}, a * b = 1 → locIncl (k` using `k) R ≫ scaled B f₀ h0 R a = locInv R ≫ scaled B f₁ h1 R b := by`. Introduce `a b hab`. Use `ext1`. Conclude with `scaled_loc B f₀ f₁ h0 h1 hyp R hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg CommaMorphism.left (show locIncl (k := k) R ≫ (scaled B f₀ h0 R u * (scaled B f₀ h0 R 1)⁻¹) = locInv R ≫ (scaled B f₁ h1 R v * (scaled B f₁ h1 R 1)⁻¹) by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, MonObj.comp_mul, GrpObj.comp_inv, hs huv, hs (_root_.one_mul 1)])`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem famMap_loc_eq : ∀ {k : Type} [Field k] (B : Over (Sp k)) [GrpObj B] (f₀ f₁ : Sp (Polynomial k) ⟶ B.left) (h0 : f₀ ≫ B.hom = spMap (algebraMap k (Polynomial k))) (h1 : f₁ ≫ B.hom = spMap (algebraMap k (Polynomial k))), spMap (algebraMap (Polynomial k) (Localization.Away (Polynomial.X : Polynomial k))) ≫ f₀ = spMap (Polynomial.aeval (IsLocalization.Away.invSelf (Polynomial.X : Polynomial k) : Localization.Away (Polynomial.X : Polynomial k))).toRingHom ≫ f₁ → ∀ (R : Type) [CommRing R] [Algebra k R] (u v : R), u * v = 1 → spMap (algebraMap (Polynomial R) (Localization.Away (Polynomial.X : Polynomial R))) ≫ famMap B f₀ h0 R u = spMap (Polynomial.aeval (IsLocalization.Away.invSelf (Polynomial.X : Polynomial R) : Localization.Away (Polynomial.X : Polynomial R))).toRingHom ≫ famMap B f₁ h1 R v := by
   intro k _ B _ f₀ f₁ h0 h1 hyp R _ _ u v huv

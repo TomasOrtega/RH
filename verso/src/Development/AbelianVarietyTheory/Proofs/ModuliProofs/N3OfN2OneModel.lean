@@ -16,7 +16,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨L, L2, L3, L4, L5, -⟩` from `GlobalTheory.T.all_six_abelian_scheme_laws_hold`. Conclude with `GlobalTheory.T.model_uniformisation_of_abelianLocus_directImage L L2 L3 L4 L5 GlobalTheory.LN.ega_holds GlobalTheory.uniformisation_dvr_unconditional GlobalTheory.T.linearUniformisation_triples_torsion`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem model_uniformisation_unconditional :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (p : ℕ), Y.LevelStructureConditions p → Y.N3 := by

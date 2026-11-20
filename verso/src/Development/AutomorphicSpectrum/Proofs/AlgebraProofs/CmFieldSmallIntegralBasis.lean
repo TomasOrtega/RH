@@ -19,11 +19,11 @@ open scoped ComplexConjugate nonZeroDivisors Classical
 variable (K : Type) [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h3 : ∀ w : InfinitePlace K, ∑ φ ∈ Finset.univ.filter (fun φ : K →+* ℂ => InfinitePlace.mk φ = w), ‖φ x‖ ^ 2 = mult w * (w x) ^ 2`. Introduce `w`. Establish `h : ∀ φ ∈ Finset.univ.filter (fun φ : K →+* ℂ => InfinitePlace.mk φ = w), ‖φ x‖ ^ 2 = (w x) ^ 2`. Introduce `φ hφ`. Rewrite using `[← (Finset.mem_filter.mp hφ).2, InfinitePlace.apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl h, Finset.sum_const, card_filter_mk_eq, nsmul_eq_mul]`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun φ : K →+* ℂ => InfinitePlace.mk φ) (fun φ => ‖φ x‖ ^ 2)]`. Repeatedly rewrite using `[h3]`. Rewrite using `[sum_eq_sum_add_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_isReal, Nat.cast_one, one_mul, mixedEmbedding_apply_isReal, ← InfinitePlace.norm_embedding_of_isReal w.2 x, Real.norm_eq_abs, sq_abs]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_isComplex, mixedEmbedding_apply_isComplex, InfinitePlace.norm_embedding_eq]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem sum_norm_sq_embeddings (x : K) :
     ∑ σ : K →+* ℂ, ‖σ x‖ ^ 2 = ∑ w, (mixedEmbedding K x).1 w ^ 2 +
@@ -51,7 +51,7 @@ theorem sum_norm_sq_embeddings (x : K) :
 
 omit [Field K] [NumberField K] in
 /- English proof (translation)
-Rewrite using `[Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re, _root_.norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (by norm_num)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_conj_sqrtTwo_smul_mul (z : ℂ) :
     (conj ((√2 : ℝ) • z) * ((√2 : ℝ) • z)).re = 2 * ‖z‖ ^ 2 := by
@@ -59,7 +59,7 @@ theorem re_conj_sqrtTwo_smul_mul (z : ℂ) :
     Real.norm_eq_abs, sq_abs, Real.sq_sqrt (by norm_num)]
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, mixedToEuclidean, ContinuousLinearEquiv.trans_apply, inner_toMixed_symm]`. Simplify using `only [mapComplexCoord_apply, sqrtTwoSMulComplex_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`. Conclude with `Finset.sum_congr rfl fun w _ => re_conj_sqrtTwo_smul_mul _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem norm_sq_mixedToEuclidean (x : mixedSpace K) :
     ‖mixedToEuclidean K x‖ ^ 2 = ∑ w, x.1 w ^ 2 + ∑ w, 2 * ‖x.2 w‖ ^ 2 := by
@@ -71,9 +71,9 @@ theorem norm_sq_mixedToEuclidean (x : mixedSpace K) :
   · exact Finset.sum_congr rfl fun w _ => re_conj_sqrtTwo_smul_mul _
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, mixedToEuclideanConj, ContinuousLinearEquiv.trans_apply, inner_toMixed_symm]`. Simplify using `only [mapComplexCoord_apply, sqrtTwoSMulConj_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[re_conj_sqrtTwo_smul_mul, Complex.norm_conj]`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_mixedToEuclideanConj (x : mixedSpace K) :
     ‖mixedToEuclideanConj K x‖ ^ 2 = ∑ w, x.1 w ^ 2 + ∑ w, 2 * ‖x.2 w‖ ^ 2 := by
@@ -97,11 +97,11 @@ instance : IsZLattice ℝ (integersEuclid K) := by
   infer_instance
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(mixedToEuclidean K).symm z ∈ idealLattice K 1 ↔ _`. Rewrite using `[mem_idealLattice]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Establish `hy1 : y ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)` using `by simpa using hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hy1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mixedToEuclidean K (mixedEmbedding K (algebraMap (𝓞 K) K a)) = z`. Rewrite using `[h, ContinuousLinearEquiv.apply_symm_apply]`. Introduce and unpack `⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨(a : K), ?_, by simp⟩` and prove the remaining obligations. Establish `: (a : K) ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)` using `(FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_integersEuclid {z : euclidean.mixedSpace K} :
     z ∈ integersEuclid K ↔ ∃ a : 𝓞 K, mixedToEuclidean K (mixedEmbedding K (a : K)) = z := by
@@ -121,22 +121,20 @@ theorem mem_integersEuclid {z : euclidean.mixedSpace K} :
     simpa using this
 
 /- English proof (translation)
-Rewrite using `[norm_sq_mixedToEuclidean, sum_norm_sq_embeddings]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_mixedToEuclidean_embedding (x : K) :
     ‖mixedToEuclidean K (mixedEmbedding K x)‖ ^ 2 = ∑ σ : K →+* ℂ, ‖σ x‖ ^ 2 := by
   rw [norm_sq_mixedToEuclidean, sum_norm_sq_embeddings]
 
 /- English proof (translation)
-Use `set y0 := (mixedToEuclideanConj K).symm y with hy0`. Establish `hmem : y0 ∈ idealLattice K (traceDualIdeal K 1)`. Rewrite using `[mem_idealLattice_traceDualIdeal_iff]`. Introduce `x hx`. Take `⟨m, hm⟩` from `h (mixedToEuclidean K x) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(mixedToEuclidean K).symm (mixedToEuclidean K x) ∈ idealLattice K 1`. Simplify using `using hx)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[mixedTraceForm_comm, mixedTraceForm_eq_inner, hy0, ContinuousLinearEquiv.apply_symm_apply, hm]`. Take `⟨t, ht, hty⟩` from `(mem_idealLattice K _).1 hmem`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyy : y = mixedToEuclideanConj K (mixedEmbedding K t)`. Rewrite using `[hty, hy0, ContinuousLinearEquiv.apply_symm_apply]`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy (by simpa using hyy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : t ∈ (differentIdeal ℤ (𝓞 K) : FractionalIdeal (𝓞 K)⁰ K)⁻¹`. Rewrite using `[← GlobalTheory.dual_one_eq_inv_differentIdeal]`. Simplify `ht` using `[coe_traceDualIdeal]`. Establish `hb` using `GlobalTheory.finrank_div_rootDiscr_sq_le_sum_sq ht' ht0`. Rewrite using `[hyy, norm_sq_mixedToEuclideanConj, ← sum_norm_sq_embeddings]`.
-
-Conclude with `hb`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_div_rootDiscr_sq_le_norm_sq {y : euclidean.mixedSpace K} (hy : y ≠ 0)
     (h : ∀ x ∈ integersEuclid K, ∃ m : ℤ, ⟪x, y⟫_ℝ = m) :
@@ -165,19 +163,17 @@ theorem finrank_div_rootDiscr_sq_le_norm_sq {y : euclidean.mixedSpace K} (hy : y
   exact hb
 
 /- English proof (translation)
-Establish `hfr : finrank ℝ (euclidean.mixedSpace K) = finrank ℚ K` using `euclidean.finrank K`. Establish `hn : (0 : ℝ) < finrank ℚ K` using `by exact_mod_cast finrank_pos`. Establish `hrd : 0 < rootDiscr K`. Rewrite using `[rootDiscr_def]`. Conclude with `Real.rpow_pos_of_pos (by exact_mod_cast abs_pos.2 (discr_ne_zero K)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hμ : 0 < √(finrank ℚ K : ℝ) / rootDiscr K` using `by positivity`. Establish `hdual : ∀ y : euclidean.mixedSpace K, y ≠ 0 → (∀ x ∈ integersEuclid K, ∃ m : ℤ, ⟪x, y⟫_ℝ = m) → √(finrank ℚ K : ℝ) / rootDiscr K ≤ ‖y‖`. Introduce `y hy h`. Use `(sq_le_sq₀ hμ.le (norm_nonneg y)).1 ?_` and prove the remaining obligations. Rewrite using `[div_pow, Real.sq_sqrt hn.le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `finrank_div_rootDiscr_sq_le_norm_sq K hy h`. Take `⟨b, hbL, hbi, hbn⟩` from `exists_independent_le_of_dual_min (euclidean.mixedSpace K) (integersEuclid K) _ hμ hdual`. Establish `hbound : (finrank ℚ K : ℝ) ^ (3 / 2 : ℝ) / (√(finrank ℚ K : ℝ) / rootDiscr K) = finrank ℚ K * rootDiscr K`. Rewrite using `[show (3 / 2 : ℝ) = 1 + 1 / 2 by norm_num, Real.rpow_add hn, Real.rpow_one, ← Real.sqrt_eq_rpow]`. Establish `: √(finrank ℚ K : ℝ) ≠ 0` using `(Real.sqrt_pos.2 hn).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hb' : ∀ i : Fin (finrank ℚ K), ∃ a : 𝓞 K, mixedToEuclidean K (mixedEmbedding K (a : K)) = b (Fin.cast hfr.symm i)` using `fun i => (mem_integersEuclid K).1 (hbL _)`. Use `choose a ha using hb'`. Use `⟨a, ?_, fun i σ => ?_⟩` and prove the remaining obligations. Establish `h1 : LinearIndependent ℤ (fun i : Fin (finrank ℚ K) => b (Fin.cast hfr.symm i))` using `(hbi.comp _ (Fin.cast_injective _)).restrict_scalars (R := ℤ) (fun x y h => by simpa using h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← LinearIndependent.iff_fractionRing (R := ℤ) (K := ℚ)]`. Set `g : K →ₗ[ℤ] euclidean.mixedSpace K` to `AddMonoidHom.toIntLinearMap { toFun := fun x => mixedToEuclidean K (mixedEmbedding K x) map_zero' := by simp map_add' := fun x y => by simp }`. Establish `hg : (⇑g ∘ fun i => ((a i : 𝓞 K) : K)) = fun i => b (Fin.cast hfr.symm i)` using `funext ha`. Use `LinearIndependent.of_comp g ?_` and prove the remaining obligations. Rewrite using `[hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `h2 : ‖σ (a i)‖ ^ 2 ≤ ∑ τ : K →+* ℂ, ‖τ (a i)‖ ^ 2` using `Finset.single_le_sum (f := fun τ : K →+* ℂ => ‖τ (a i)‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ σ)`. Rewrite `h2` using `[← norm_sq_mixedToEuclidean_embedding, ha i]`. Establish `h3` using `hbn (Fin.cast hfr.symm i)`. Rewrite `h3` using `[show ((finrank ℝ (euclidean.mixedSpace K) : ℕ) : ℝ) = finrank ℚ K by rw [hfr], hbound]`.
-
-Conclude with `(sq_le_sq₀ (norm_nonneg _) (by positivity)).1 (h2.trans (pow_le_pow_left₀ (norm_nonneg _) h3 2))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_short_integers :
     ∃ a : Fin (finrank ℚ K) → 𝓞 K, LinearIndependent ℚ (fun i => (a i : K)) ∧
@@ -231,7 +227,7 @@ theorem exists_short_integers :
 end ShortIntegers
 
 /- English proof (translation)
-Introduce `E _ _ _`. Establish `h : hostRd E = rootDiscr E` using `by simp [hostRd, rootDiscr_def]`. Rewrite using `[h]`. Conclude with `exists_short_integers E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_full_family_conjugates_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E],
     ∃ a : Fin (Module.finrank ℚ E) → 𝓞 E, LinearIndependent ℚ (fun i => (a i : E)) ∧

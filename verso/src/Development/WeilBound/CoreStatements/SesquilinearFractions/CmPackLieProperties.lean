@@ -32,7 +32,7 @@ namespace PositivityTheory.Xgf
 
 open PositivityTheory.Xgf.cm_lie_model_action in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c g ty FU i Z P hP X`. Take `⟨h1, h2, h3, h4, h5⟩` from `h E H D l Xo c g ty FU i Z P hP X`. Conclude with `⟨Mm X, ρm X, lam X, hρm X, h1, h2, h3, h4, h5⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_pack_lie_properties (h : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty)

@@ -10,28 +10,26 @@ namespace GlobalTheory.CompanionTheory.EisTube
 universe u
 
 /- English proof (translation)
-Simplify using `[PiLp.inner_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_eq_sum_coord {ι : Type} [Fintype ι] (v w : EuclideanSpace ℝ ι) :
     ⟪v, w⟫ = ∑ i, v i * w i := by
   simp [PiLp.inner_apply, mul_comm]
 
 /- English proof (translation)
-Introduce `ι _ g hgc hgi hFi y`. Use `set F : (ι → ℝ) → ℂ := fun t => ∫ y, g y * Complex.exp (-(2 * (Real.pi : ℂ) * Complex.I) * ∑ i, (y i : ℂ) * t i) with hF`. Set `f : EuclideanSpace ℝ ι → ℂ` to `fun v => g (WithLp.ofLp v)`. Establish `mp` using `PiLp.volume_preserving_ofLp ι`. Establish `memb : MeasurableEmbedding (@WithLp.ofLp 2 (ι → ℝ))` using `(MeasurableEquiv.toLp 2 (ι → ℝ)).symm.measurableEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : Continuous f` using `hgc.comp (PiLp.continuous_ofLp 2 _)`. Establish `hfi : Integrable f` using `(mp.integrable_comp hgi.aestronglyMeasurable).2 hgi`. Establish `hFou : ∀ v : EuclideanSpace ℝ ι, 𝓕 f v = F (WithLp.ofLp v)`. Introduce `v`. Rewrite using `[Real.fourier_eq']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF]`. Rewrite using `[← mp.integral_comp memb]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul, f]`. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Rewrite using `[inner_eq_sum_coord]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hFfun : 𝓕 f = fun v => F (WithLp.ofLp v)` using `funext hFou`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFi' : Integrable (𝓕 f)`. Rewrite using `[hFfun]`. Conclude with `(mp.integrable_comp hFi.aestronglyMeasurable).2 hFi`. Establish `hinv : 𝓕⁻ (𝓕 f) = f` using `Continuous.fourierInv_fourier_eq hfc hfi hFi'`. Establish `h` using `congrFun hinv (WithLp.toLp 2 y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Real.fourierInv_eq', hFfun]`. Establish `h2 : ∫ t : ι → ℝ, F t * Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * ∑ i, (y i : ℂ) * t i) = ∫ v : EuclideanSpace ℝ ι, Complex.exp (((2 * Real.pi * ⟪v, WithLp.toLp 2 y⟫ : ℝ) : ℂ) * Complex.I) • F (WithLp.ofLp v)`. Rewrite using `[← mp.integral_comp memb]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_comm]`. Use `congr 2`. Rewrite using `[inner_eq_sum_coord]`. Use `push_cast`. Simplify using `only [mul_comm]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `h2.trans h`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fourierInvCoord : ∀ (ι : Type) [Fintype ι] (g : (ι → ℝ) → ℂ), Continuous g → MeasureTheory.Integrable g →
     MeasureTheory.Integrable (fun t : ι → ℝ =>

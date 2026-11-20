@@ -7,25 +7,23 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.PerfectRing
 
 /- English proof (translation)
-Introduce `p _ A _ h`. Establish `hp : p.Prime` using `Fact.out`. Establish `hadd : ∀ x y : A, (x + y) ^ p = x ^ p + y ^ p`. Introduce `x y`. Take `⟨c, hc⟩` from `exists_add_pow_prime_eq hp x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc, h.char]`. Simplify using the standard rewrite rules. Set `F : A →+* A` to `{ toFun := fun x => x ^ p map_one' := one_pow p map_mul' := fun x y => mul_pow x y p map_zero' := zero_pow hp.ne_zero map_add' := hadd }`. Establish `hk : ∀ k : ℕ, Function.Bijective fun x : A => x ^ p ^ k`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [pow_zero, pow_one]`. Conclude with `Function.bijective_id`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (fun x : A => x ^ p ^ (k + 1)) = (fun x : A => x ^ p) ∘ (fun x : A => x ^ p ^ k)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[pow_succ, pow_mul]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.bij.comp ih`. Establish `hinj : ∀ (k : ℕ) (x y : A), x ^ p ^ k = y ^ p ^ k → x = y` using `fun k x y e => (hk k).1 e`. Establish `hred : ∀ (x : A) (n : ℕ), x ^ n = 0 → x = 0`. Introduce `x n e`. Apply `hinj n` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : n < p ^ n` using `Nat.lt_pow_self hp.one_lt`. Rewrite using `[pow_eq_zero_of_le hlt.le e, zero_pow (pow_ne_zero n hp.ne_zero)]`. Use `⟨⟨RingEquiv.ofBijective F h.bij, fun x => rfl⟩, hred, fun k x => (hk k).2 x, hinj, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Establish `hroot : ∀ k, r k ^ p ^ k = r 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, hr k, ih]`. Use `⟨?_, hroot, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Use `⟨r (k + 1) ^ (p - 2), ?_⟩` and prove the remaining obligations. Establish `h2 : p = (p - 2) + 1 + 1` using `by have := hp.two_le; omega`. Use `conv_lhs => rw [← hr k, h2]`. Rewrite using `[pow_succ, pow_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Introduce `N x e k`. Apply `hred _ (p ^ k * N + 1)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ (r k), pow_mul, hroot k, pow_succ x]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = 0 := by rw [e, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pf_facts : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A], Pf p A →
     (∃ F : A ≃+* A, ∀ x, F x = x ^ p) ∧ (∀ (x : A) (n : ℕ), x ^ n = 0 → x = 0) ∧

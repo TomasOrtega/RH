@@ -10,9 +10,9 @@ namespace PositivityTheory.KB.SpectralGap.DesignMultiplication
 open Finset
 
 /- English proof (translation)
-Establish `h1 : ∀ k, f (e * x * e' * k) = f (x * (e' * k))`. Introduce `k`. Rewrite using `[show e * x * e' * k = e * (x * (e' * k)) by group]`. Conclude with `hf e he _`. Repeatedly rewrite using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem core_lemma {G : Type*} [Group G] [Fintype G] (E : Subgroup G) (f : G → ℝ)
     (hf : ∀ e ∈ E, ∀ k, f (e * k) = f k) (x e e' : G) (he : e ∈ E) (he' : e' ∈ E) :
@@ -28,41 +28,33 @@ private theorem core_lemma {G : Type*} [Group G] [Fintype G] (E : Subgroup G) (f
         Fintype.sum_equiv (Equiv.mulLeft e') _ _ (fun k => rfl)
 
 /- English proof (translation)
-Use `set c : G → ℝ := fun x => ∑ k, f (x * k) * f k with hc`. Establish `cE : ∀ x ∈ E, c x = ∑ k, f k ^ 2`. Introduce `x hx`. Simplify using `only [hc]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hf x hx k, sq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `csum : ∑ x, c x = 0`. Simplify using `only [hc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ x, f (x * k) = ∑ x, f x` using `Fintype.sum_equiv (Equiv.mulRight k) _ _ (fun _ => rfl)`. Rewrite using `[this, h0, zero_mul]`. Establish `cinv : ∀ x e e', e ∈ E → e' ∈ E → c (e * x * e') = c x` using `fun x e e' he he' => core_lemma E f hf x e e' he he'`. Establish `cneg : ∀ x, x ∉ E → c x ≤ 0`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `split` using `(Finset.sum_filter_add_sum_filter_not Finset.univ (fun y => y ∈ E) c)`. Rewrite `split` using `[csum]`. Establish `hpos : 0 ≤ ∑ y ∈ Finset.univ.filter (fun y => y ∈ E), c y` using `Finset.sum_nonneg fun y hy => by`. Rewrite using `[cE y (Finset.mem_filter.1 hy).2]`. Conclude with `Finset.sum_nonneg fun k _ => sq_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hconst : ∀ y ∈ Finset.univ.filter (fun y => y ∉ E), c y = c x`. Introduce `y hy`. Take `⟨e, he, e', he', rfl⟩` from `htt x hx y (Finset.mem_filter.1 hy).2`. Conclude with `cinv x e e' he he'`. Rewrite `split` using `[Finset.sum_congr rfl hconst, Finset.sum_const, nsmul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcard : (0:ℝ) < ((Finset.univ.filter (fun y => y ∉ E)).card : ℝ)`. Conclude with `Finset.card_pos.2 ⟨x, Finset.mem_filter.2 ⟨Finset.mem_univ _, hx⟩⟩` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities. Establish `key1 : ∀ a : E', ∑ k, f (a * k) * g k = ∑ k, f k * g k`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (Equiv.mulLeft (a : G)) _ _ (fun k => ?_)` and prove the remaining obligations. Use `show f ((a : G) * k) * g k = f ((a : G) * k) * g ((a : G) * k)`. Rewrite using `[hg _ a.2 k]`. Use `set n' : ℝ := (Fintype.card E' : ℝ) with hn'`. Use `set F : G → ℝ := fun k => ∑ a : E', f (a * k) with hF`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hFg : n' * ∑ k, f k * g k = ∑ k, F k * g k`. Simplify using `only [hF, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [key1, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hn']`. Establish `hpair : ∀ a b : E', ∑ k, f (a * k) * f (b * k) = c ((a : G) * (b : G)⁻¹)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b`. Use `Fintype.sum_equiv (Equiv.mulLeft (b : G)) _ _ (fun k => ?_)` and prove the remaining obligations. Use `show f ((a : G) * k) * f ((b : G) * k) = f ((a : G) * (b : G)⁻¹ * ((b : G) * k)) * f ((b : G) * k)`. Rewrite using `[show (a : G) * (b : G)⁻¹ * ((b : G) * k) = (a : G) * k by group]`. Establish `hF2 : ∑ k, F k ^ 2 = n' * ∑ a : E', c a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hF, sq, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Use `_ = ∑ a : E', ∑ b : E', c ((a : G) * (b : G)⁻¹) := by simp only [hpair]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ b : E', ∑ a : E', c ((a : G) * (b : G)⁻¹) := Finset.sum_comm`. Use `_ = ∑ b : E', ∑ a : E', c a := by`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `Fintype.sum_equiv (Equiv.mulRight b⁻¹) _ _ (fun a => rfl)`. Use `_ = n' * ∑ a : E', c a := by`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hn']`. Use `set m : ℝ := ((Finset.univ.filter (fun a : E' => (a : G) ∈ E)).card : ℝ) with hm`. Establish `hcE' : ∑ a : E', c a ≤ m * ∑ k, f k ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(cE _ h).le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `cneg _ h`. Use `_ = m * ∑ k, f k ^ 2 := by`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `hidx : ((E.subgroupOf E').index : ℝ) * m = n'`. Establish `h1` using `Subgroup.card_mul_index (E.subgroupOf E')`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Nat.card (E.subgroupOf E') = (Finset.univ.filter (fun a : E' => (a : G) ∈ E)).card`. Rewrite using `[Nat.card_eq_fintype_card, ← Fintype.card_subtype]`. Conclude with `Fintype.card_congr (Equiv.subtypeEquivRight (fun x => Subgroup.mem_subgroupOf))`. Rewrite `h1` using `[h2, Nat.card_eq_fintype_card]`. Rewrite using `[hm, hn', ← h1]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn0 : 0 < n'`. Rewrite using `[hn']`. Conclude with `Fintype.card_pos` after adjusting the coercions.
-
-Establish `hm0 : 0 < m`. Rewrite using `[hm]`. Establish `h1 : (1 : E') ∈ Finset.univ.filter (fun a : E' => (a : G) ∈ E)` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, E.one_mem⟩`. Conclude with `Finset.card_pos.2 ⟨1, h1⟩` after adjusting the coercions. Establish `CS` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ F g`.
-
-Rewrite `CS` using `[← hFg, hF2]`. Establish `hB : 0 ≤ ∑ k, g k ^ 2` using `Finset.sum_nonneg fun k _ => sq_nonneg _`. Establish `h3 : n' * (n' * (∑ k, f k * g k) ^ 2) ≤ n' * (m * (∑ k, f k ^ 2) * ∑ k, g k ^ 2)`. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hcE' hn0.le) hB` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `h4` using `le_of_mul_le_mul_left h3 hn0`. Rewrite `h4` using `[← hidx]`. Establish `h5 : m * ((∑ k, f k * g k) ^ 2 * ((E.subgroupOf E').index : ℝ)) ≤ m * ((∑ k, f k ^ 2) * ∑ k, g k ^ 2)`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `le_of_mul_le_mul_left h5 hm0`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem core {G : Type*} [Group G] [Fintype G] (E E' : Subgroup G)
     (htt : ∀ g, g ∉ E → ∀ g', g' ∉ E → ∃ e ∈ E, ∃ e' ∈ E, g' = e * g * e')
@@ -167,7 +159,7 @@ theorem core {G : Type*} [Group G] [Fintype G] (E E' : Subgroup G)
   exact le_of_mul_le_mul_left h5 hm0
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `QuotientGroup.mk_out_eq_mul N k`. Rewrite using `[hn]`. Establish `e : k * (n : Γ) = (k * n * k⁻¹) * k` using `by group`. Rewrite using `[e, hφ _ (hNH (Subgroup.Normal.conj_mem ‹_› _ n.2 k))]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem out_mk {Γ : Type*} [Group Γ] (N H : Subgroup Γ) [N.Normal] (hNH : N ≤ H) (φ : Γ → ℝ)
     (hφ : ∀ h ∈ H, ∀ k, φ (h * k) = φ k) (k : Γ) : φ ((k : Γ ⧸ N).out) = φ k := by
@@ -177,7 +169,7 @@ theorem out_mk {Γ : Type*} [Group Γ] (N H : Subgroup Γ) [N.Normal] (hNH : N �
   rw [e, hφ _ (hNH (Subgroup.Normal.conj_mem ‹_› _ n.2 k))]
 
 /- English proof (translation)
-Establish `h1 : y * ((Quotient.mk (QuotientGroup.rightRel H) y).out)⁻¹ ∈ H` using `QuotientGroup.rightRel_apply.mp (Quotient.mk_out (s := QuotientGroup.rightRel H) y)`. Establish `e : (Quotient.mk (QuotientGroup.rightRel H) y).out = (y * ((Quotient.mk (QuotientGroup.rightRel H) y).out)⁻¹)⁻¹ * y` using `by group`. Rewrite using `[e, hφ _ (H.inv_mem h1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_out {Γ : Type*} [Group Γ] (H : Subgroup Γ) (φ : Γ → ℝ)
     (hφ : ∀ h ∈ H, ∀ k, φ (h * k) = φ k) (y : Γ) :
@@ -204,29 +196,25 @@ def rmul {Γ : Type*} [Group Γ] (H : Subgroup Γ) (k : Γ) :
     | h a => simp [Quotient.map'_mk'']
 
 /- English proof (translation)
-Set `π : (Γ ⧸ N) → Quotient (QuotientGroup.rightRel H)` to `fun q => Quotient.mk (QuotientGroup.rightRel H) q.out`. Establish `hrel : ∀ a b : Γ, (Quotient.mk (QuotientGroup.rightRel H) a = Quotient.mk _ b) ↔ b * a⁻¹ ∈ H`. Introduce `a b`. Rewrite using `[Quotient.eq]`. Conclude with `QuotientGroup.rightRel_apply`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hπ : ∀ g : Γ, π (g : Γ ⧸ N) = Quotient.mk _ g`. Introduce `g`. Take `⟨n, hn⟩` from `QuotientGroup.mk_out_eq_mul N g`. Use `show Quotient.mk _ (g : Γ ⧸ N).out = _`. Rewrite using `[hn, hrel, show g * (g * (n : Γ))⁻¹ = g * (n : Γ)⁻¹ * g⁻¹ by group]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hNH (‹N.Normal›.conj_mem _ (N.inv_mem n.2) g)`. Establish `hsurj : Function.Surjective π` using `fun c => ⟨(c.out : Γ ⧸ N), by rw [hπ]; exact Quotient.out_eq c⟩`. Use `haveI : Fintype (Quotient (QuotientGroup.rightRel H)) := Fintype.ofSurjective π hsurj`. Establish `hψ : ∀ q : Γ ⧸ N, φ q.out = φ (π q).out` using `fun q => (rel_out H φ hφ q.out).symm`. Establish `hπmul : ∀ q t x : Γ ⧸ N, π q = π x → π (q * t) = π (x * t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `q t x h`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective t`. Take `⟨d, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, hπ, hπ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hπ, hπ, hrel]`. Rewrite using `[hrel, show d * b * (a * b)⁻¹ = d * a⁻¹ by group]`. Conclude with `h`. Use `set r := (Finset.univ.filter (fun q : Γ ⧸ N => π q = π 1)).card with hr`. Establish `hfib : ∀ c, (Finset.univ.filter (fun q : Γ ⧸ N => π q = c)).card = r`.
+Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c`. Take `⟨t, rfl⟩` from `hsurj c`. Use `symm`. Use `Finset.card_nbij' (fun q => q * t) (fun q => q * t⁻¹) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `q hq`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hq ⊢`. Simplify using `using hπmul q t 1 hq`. Introduce `q hq`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hq ⊢`. Simplify using `using hπmul q t⁻¹ t hq`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `q _`. Simplify using the standard rewrite rules. Introduce `q _`. Simplify using the standard rewrite rules. Establish `hsum : ∑ q : Γ ⧸ N, φ q.out = r * ∑ c : Quotient (QuotientGroup.rightRel H), φ c.out`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(Finset.mem_filter.1 hq).2]`. Use `_ = ∑ c : Quotient (QuotientGroup.rightRel H), (r : ℝ) * φ c.out := by`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, hfib c, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = r * ∑ c : Quotient (QuotientGroup.rightRel H), φ c.out := (Finset.mul_sum _ _ _).symm`. Establish `hcard : Fintype.card (Γ ⧸ N) = r * Fintype.card (Quotient (QuotientGroup.rightRel H))`. Rewrite using `[← Finset.card_univ, Finset.card_eq_sum_card_fiberwise (f := π) (t := Finset.univ) (fun _ _ => Finset.mem_univ _)]`. Simplify using `only [hfib, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_comm]`. Establish `hindex : H.index = Fintype.card (Quotient (QuotientGroup.rightRel H))`.
-
-Rewrite using `[Subgroup.index_eq_card, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel H).symm`. Establish `hr0 : (r : ℝ) ≠ 0`. Establish `h1 : (1 : Γ ⧸ N) ∈ Finset.univ.filter (fun q : Γ ⧸ N => π q = π 1)` using `by simp`. Conclude with `(Finset.card_pos.2 ⟨1, h1⟩).ne'` after adjusting the coercions.
-
-Rewrite using `[finsum_eq_sum_of_fintype, hsum, hcard, hindex]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem bridge {Γ : Type*} [Group Γ] (H N : Subgroup Γ) [N.Normal] (hNH : N ≤ H) (hH : H.index ≠ 0)
     [Fintype (Γ ⧸ N)] (φ : Γ → ℝ) (hφ : ∀ h ∈ H, ∀ k, φ (h * k) = φ k) :
@@ -308,39 +296,31 @@ namespace PositivityTheory.KB.SpectralGap
 
 open DesignMultiplication in
 /- English proof (translation)
-Introduce `Λ S _ _ j B E E' K hB hEK hE'K hidx hTT h25 a b ha hb x h0`. Substitute `hB` using the available equality. Use `set Bk := (E ⊓ E').subgroupOf K with hBk`. Use `set N := Bk.normalCore with hN`. Use `haveI : Bk.FiniteIndex := Subgroup.finiteIndex_iff.mpr hidx`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Finite (K ⧸ N) := Subgroup.finite_quotient_of_finiteIndex`. Use `letI : Fintype (K ⧸ N) := Fintype.ofFinite _`. Establish `hNB : N ≤ Bk` using `Subgroup.normalCore_le _`. Set `φ : (S → ℝ) → K → ℝ` to `fun u k => u (j (k : Λ) * x)`. Establish `hinvB : ∀ u, LInv j (E ⊓ E') u → ∀ h ∈ Bk, ∀ k, φ u (h * k) = φ u k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu h hh k`. Use `show u (j ((h : Λ) * (k : Λ)) * x) = u (j (k : Λ) * x)`. Rewrite using `[map_mul, mul_assoc]`. Conclude with `hu _ (Subgroup.mem_subgroupOf.mp hh) _`. Establish `havg : ∀ u, LInv j (E ⊓ E') u → avg j (E ⊓ E') K u x = (Fintype.card (K ⧸ N) : ℝ)⁻¹ * ∑ q : K ⧸ N, φ u q.out` using `fun u hu => bridge Bk N hNB hidx (φ u) (hinvB u hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `haB : LInv j (E ⊓ E') a` using `fun γ hγ y => ha γ hγ.1 y`. Establish `hbB : LInv j (E ⊓ E') b` using `fun γ hγ y => hb γ hγ.2 y`. Establish `habB : LInv j (E ⊓ E') (fun y => a y * b y)` using `fun γ hγ y => by`. Simplify using `only [haB γ hγ y, hbB γ hγ y]`. Establish `haaB : LInv j (E ⊓ E') (fun y => a y ^ 2)` using `fun γ hγ y => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [haB γ hγ y]`. Establish `hbbB : LInv j (E ⊓ E') (fun y => b y ^ 2)` using `fun γ hγ y => by`. Simplify using `only [hbB γ hγ y]`. Establish `hf0 : ∀ u, LInv j (E ⊓ E') u → ∀ k : K, φ u ((k : K ⧸ N).out) = φ u k` using `fun u hu k => out_mk N Bk hNB (φ u) (hinvB u hu) k`. Use `set EG := (E.subgroupOf K).map (QuotientGroup.mk' N) with hEG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set E'G := (E'.subgroupOf K).map (QuotientGroup.mk' N) with hE'G`. Use `set f : K ⧸ N → ℝ := fun q => φ a q.out with hfdef`. Use `set g : K ⧸ N → ℝ := fun q => φ b q.out with hgdef`. Establish `hf : ∀ e ∈ EG, ∀ q, f (e * q) = f q`. Introduce `e he q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e0, he0, rfl⟩` from `Subgroup.mem_map.mp he`. Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective q`. Use `show φ a ((QuotientGroup.mk' N e0 * (k : K ⧸ N)).out) = φ a (k : K ⧸ N).out`. Rewrite using `[QuotientGroup.mk'_apply, ← QuotientGroup.mk_mul, hf0 a haB, hf0 a haB]`. Use `show a (j ((e0 : Λ) * (k : Λ)) * x) = a (j (k : Λ) * x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, mul_assoc]`. Conclude with `ha _ (Subgroup.mem_subgroupOf.mp he0) _`. Establish `hg : ∀ e ∈ E'G, ∀ q, g (e * q) = g q`. Introduce `e he q`. Take `⟨e0, he0, rfl⟩` from `Subgroup.mem_map.mp he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective q`. Use `show φ b ((QuotientGroup.mk' N e0 * (k : K ⧸ N)).out) = φ b (k : K ⧸ N).out`. Rewrite using `[QuotientGroup.mk'_apply, ← QuotientGroup.mk_mul, hf0 b hbB, hf0 b hbB]`. Use `show b (j ((e0 : Λ) * (k : Λ)) * x) = b (j (k : Λ) * x)`. Rewrite using `[map_mul, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hb _ (Subgroup.mem_subgroupOf.mp he0) _`. Establish `htt : ∀ q, q ∉ EG → ∀ q', q' ∉ EG → ∃ e ∈ EG, ∃ e' ∈ EG, q' = e * q * e'`. Introduce `q hq q' hq'`. Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨k', rfl⟩` from `QuotientGroup.mk_surjective q'`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : (k : Λ) ∉ E` using `fun h => hq (Subgroup.mem_map.mpr ⟨k, Subgroup.mem_subgroupOf.mpr h, rfl⟩)`. Establish `hk' : (k' : Λ) ∉ E` using `fun h => hq' (Subgroup.mem_map.mpr ⟨k', Subgroup.mem_subgroupOf.mpr h, rfl⟩)`. Take `⟨e, he, e', he', heq⟩` from `hTT k k.2 hk k' k'.2 hk'`. Use `⟨QuotientGroup.mk' N ⟨e, hEK he⟩, Subgroup.mem_map.mpr ⟨_, Subgroup.mem_subgroupOf.mpr he, rfl⟩, QuotientGroup.mk' N ⟨e', hEK he'⟩, Subgroup.mem_map.mpr ⟨_, Subgroup.mem_subgroupOf.mpr he', rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.mk'_apply, ← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using `[heq]`. Establish `hcard0 : (Fintype.card (K ⧸ N) : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hsum0 : ∑ q, f q = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `havg a haB` as an intermediate fact. Rewrite `this` using `[h0]`. Break down `mul_eq_zero.mp this.symm with h | h` into its components or cases. Conclude with `absurd h (inv_ne_zero hcard0)`. Conclude with `h`.
-
-Establish `hcore` using `core EG E'G htt f g hf hg hsum0`. Establish `hidxG : ((EG.subgroupOf E'G).index : ℝ) ≥ 25`. Establish `hNE : N ≤ E.subgroupOf K` using `fun y hy => Subgroup.mem_subgroupOf.mpr (Subgroup.mem_subgroupOf.mp (hNB hy)).1`. Establish `e1 : (EG.subgroupOf E'G).index = (E.subgroupOf E').index`. Establish `h1` using `Subgroup.relIndex_comap EG (QuotientGroup.mk' N) (E'.subgroupOf K)`.
-
-Rewrite `h1` using `[hEG, Subgroup.comap_map_eq, QuotientGroup.ker_mk', sup_eq_left.mpr hNE, Subgroup.relIndex_subgroupOf hE'K]`. Conclude with `h1.symm`. Rewrite using `[e1, ← Subgroup.inf_subgroupOf_right]`. Conclude with `h25` after adjusting the coercions. Rewrite using `[havg _ habB, havg _ haaB, havg _ hbbB]`.
-
-Establish `hA : 0 ≤ ∑ q, f q ^ 2` using `Finset.sum_nonneg fun q _ => sq_nonneg _`. Establish `hBq : 0 ≤ ∑ q, g q ^ 2` using `Finset.sum_nonneg fun q _ => sq_nonneg _`. Establish `key : (∑ q, f q * g q) ^ 2 ≤ 1 / 25 * ((∑ q, f q ^ 2) * ∑ q, g q ^ 2)`. Establish `hS : 0 ≤ (∑ q, f q * g q) ^ 2` using `sq_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `show ((Fintype.card (K ⧸ N) : ℝ)⁻¹ * ∑ q, f q * g q) ^ 2 ≤ 1 / 25 * (((Fintype.card (K ⧸ N) : ℝ)⁻¹ * ∑ q, f q ^ 2) * ((Fintype.card (K ⧸ N) : ℝ)⁻¹ * ∑ q, g q ^ 2))`. Establish `hc2 : 0 ≤ ((Fintype.card (K ⧸ N) : ℝ)⁻¹) ^ 2` using `sq_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem design_holds : Design := by
   intro Λ S _ _ j B E E' K hB hEK hE'K hidx hTT h25 a b ha hb x h0

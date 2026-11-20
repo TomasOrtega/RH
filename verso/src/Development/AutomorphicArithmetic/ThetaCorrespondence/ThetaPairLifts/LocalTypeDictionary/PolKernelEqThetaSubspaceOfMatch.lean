@@ -11,19 +11,15 @@ section
 open NumberField IsDedekindDomain
 open scoped TensorProduct
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' _ R Rf hM`. Establish `hiff` using `GlobalTheory.T.polynomialMatch_zero_iff_pureTensor_image_zero F E σ Bs a a' G Xc om om' R Rf hM`. Take `⟨h00, hlin⟩` from `GlobalTheory.PolMatchLin.polMatch_linear Bs G Xc om om' R Rf hM.fin`. Set `K : Submodule ℂ ((Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) → ℂ)` to `{ carrier := {Φ | Φ ∈ GlobalTheory.SquareAgree.algD G.M Bs.ψ Bs.emb ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch Bs G Xc R Rf Φ 0} add_mem' := fun {x y} hx hy => ⟨add_mem hx.1 hy.1, by`. Simplify using `using hlin x y 0 0 1 hx.2 hy.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `zero_mem' := ⟨zero_mem _, h00⟩`. Use the proof step `smul_mem' := fun c x hx => ⟨Submodule.smul_mem _ c hx.1, by`. Simplify using `using hlin 0 x 0 0 c h00 hx.2⟩ }`. Establish `memK : ∀ Φ, Φ ∈ K ↔ GlobalTheory.PolKer.PolZero Bs G Xc R Rf Φ` using `fun Φ => ⟨fun h => (hiff Φ).1 h.2, fun h => ⟨GlobalTheory.PolKer.algD_of_polZero Bs G Xc R Rf Φ h, (hiff Φ).2 h⟩⟩`. Establish `one_W : ∀ v, (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ G.W (GlobalTheory.AdelicU.evFin F v)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v u _`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat]`. Use `⟨K, ⟨⟨fun Φ h => h.1, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `v h hh Φ hΦ`. Conclude with `(memK _).2 (GlobalTheory.T.finitePlace_unitaryPoint_keeps_zeroMatchedData F E σ Bs a a' G Xc om om' R Rf hM v h hh Φ ((memK Φ).1 hΦ))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk Φ hΦ`. Conclude with `(memK _).2 (_root_.GlobalTheory.T.polarization_kernel_compact_vanishing hP F E σ Bs a a' G Xc om om' R Rf hM k hk Φ ((memK Φ).1 hΦ))`. Introduce `γ hγ Φ hΦ Φ₁ _ hd`. Conclude with `(memK _).2 (_root_.GlobalTheory.T.lieAlgebra_preserves_polynomialKernel hP F E σ Bs a a' G Xc om om' R Rf hM γ hγ Φ Φ₁ ((memK Φ).1 hΦ) hd)`. Introduce `v g hg Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(memK _).2 (GlobalTheory.T.algebraicData_unitaryRelations_finitePlace_polZero F E σ Bs a a' G Xc om om' R Rf hM v g hg Φ hΦ)`. Introduce `k hk Φ hΦ`. Conclude with `(memK _).2 (_root_.GlobalTheory.T.maximalCompact_invariants_polynomialKernel hP F E σ Bs a a' G Xc om om' R Rf hM k hk Φ hΦ)`. Introduce `γ hγ Φ hΦ Φ₁ _ hd`. Conclude with `(memK _).2 (_root_.GlobalTheory.T.lieAlgebra_preserves_polynomialKernel_dualSpace hP F E σ Bs a a' G Xc om om' R Rf hM γ hγ Φ hΦ Φ₁ hd)`.
-
-Introduce `hK`. Take `⟨Φ, hΦ, hn⟩` from `GlobalTheory.T.exists_algebraicDatum_not_matched_zero F E σ Bs a a' G Xc om om' R Rf hM`. Rewrite `hΦ` using `[← hK]`. Conclude with `hn ((memK Φ).1 hΦ)`. Introduce `ΦD hΦD`.
-
-Conclude with `⟨fun h => h.2, fun h => ⟨hΦD, h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PolKer.polKernel_eq_thetaSubspace_of_match : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -72,7 +68,7 @@ section
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PolKer.polKernel_eq_thetaSubspace_of_match | exact _root_.GlobalTheory.PolKer.polKernel_eq_thetaSubspace_of_match | (intros; apply _root_.GlobalTheory.PolKer.polKernel_eq_thetaSubspace_of_match <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.thetaSubspace_contains_polKernel : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

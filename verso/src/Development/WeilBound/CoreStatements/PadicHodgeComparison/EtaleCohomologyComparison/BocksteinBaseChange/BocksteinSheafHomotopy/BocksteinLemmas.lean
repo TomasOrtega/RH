@@ -14,9 +14,9 @@ open GlobalTheory.EtC
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpost_mk, cpost_mk, ← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff]`. Use `⟨n - 1, by omega, α.1.comp (Cochain.ofHomotopy h) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_comp _ _ _ (n + 1) 0 n (by omega) rfl (by omega), δ_ofHomotopy, Cocycle.δ_eq_zero, Cochain.zero_comp, smul_zero, add_zero]`. Use extensionality with `p q hpq`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[zcomp, Cochain.comp_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cpost_homotopy (K : Cx R) {I J : Cx R} {f g : I ⟶ J} (h : Homotopy f g) (n : ℤ) (x : CohomologyClass K I n) :
     cpost K (Cocycle.ofHom f) n n (add_zero n) x = cpost K (Cocycle.ofHom g) n n (add_zero n) x := by
@@ -29,7 +29,7 @@ theorem cpost_homotopy (K : Cx R) {I J : Cx R} {f g : I ⟶ J} (h : Homotopy f g
   simp [zcomp, Cochain.comp_sub]
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpost_mk, cpost_mk, cpost_mk, ← CohomologyClass.mk_add]`. Use `congr 1`. Apply the tactic sequence `all_goals (ext p q hpq; simp [zcomp, Cochain.ofHom_add, Cochain.comp_add])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cpost_add (K : Cx R) {I J : Cx R} (f g : I ⟶ J) (n : ℤ) (x : CohomologyClass K I n) :
     cpost K (Cocycle.ofHom (f + g)) n n (add_zero n) x =
@@ -40,7 +40,7 @@ theorem cpost_add (K : Cx R) {I J : Cx R} (f g : I ⟶ J) (n : ℤ) (x : Cohomol
   all_goals (ext p q hpq; simp [zcomp, Cochain.ofHom_add, Cochain.comp_add])
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpost_mk]`. Use `congr 1`. Apply the tactic sequence `all_goals (ext p q hpq; simp [zcomp])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cpost_id (K : Cx R) (I : Cx R) (n : ℤ) (x : CohomologyClass K I n) :
     cpost K (Cocycle.ofHom (𝟙 I)) n n (add_zero n) x = x := by
@@ -50,7 +50,7 @@ theorem cpost_id (K : Cx R) (I : Cx R) (n : ℤ) (x : CohomologyClass K I n) :
   all_goals (ext p q hpq; simp [zcomp])
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpost_mk, cpost_mk, cpost_mk]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem cpost_comp (K : Cx R) {I J L : Cx R} (f : I ⟶ J) (g : J ⟶ L) (n : ℤ) (x : CohomologyClass K I n) :
     cpost K (Cocycle.ofHom (f ≫ g)) n n (add_zero n) x =
@@ -60,7 +60,7 @@ theorem cpost_comp (K : Cx R) {I J L : Cx R} (f : I ⟶ J) (g : J ⟶ L) (n : �
   congr 1
 
 /- English proof (translation)
-The claim follows from `cpost_homotopy K ((InjectiveResolution.descHomotopy φ _ g (InjectiveResolution.desc_commutes _ _ _) hg).extend ComplexShape.embeddingUpNat) n x`.
+A detailed English derivation is pending.
 -/
 theorem post_eq (K : Cx R) {F G : Shv R} (φ : F ⟶ G)
     (g : (injectiveResolution F).cocomplex ⟶ (injectiveResolution G).cocomplex)
@@ -71,14 +71,14 @@ theorem post_eq (K : Cx R) {F G : Shv R} (φ : F ⟶ G)
     ComplexShape.embeddingUpNat) n x
 
 /- English proof (translation)
-Rewrite using `[post_eq K (𝟙 F) (𝟙 _) (by simp), HomologicalComplex.extendMap_id]`. Conclude with `cpost_id K _ n x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem post_id (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) : HK.post R K (𝟙 F) n x = x := by
   rw [post_eq K (𝟙 F) (𝟙 _) (by simp), HomologicalComplex.extendMap_id]
   exact cpost_id K _ n x
 
 /- English proof (translation)
-Rewrite using `[post_eq K (φ + ψ) (InjectiveResolution.desc φ (injectiveResolution G) (injectiveResolution F) + InjectiveResolution.desc ψ (injectiveResolution G) (injectiveResolution F)) (by rw [Preadditive.comp_add, InjectiveResolution.desc_commutes, InjectiveResolution.desc_commutes, Functor …`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem post_add (K : Cx R) {F G : Shv R} (φ ψ : F ⟶ G) (n : ℤ) (x : HK R K F n) :
     HK.post R K (φ + ψ) n x = HK.post R K φ n x + HK.post R K ψ n x := by
@@ -90,7 +90,7 @@ theorem post_add (K : Cx R) {F G : Shv R} (φ ψ : F ⟶ G) (n : ℤ) (x : HK R 
   rfl
 
 /- English proof (translation)
-Rewrite using `[post_eq K (φ ≫ ψ) (InjectiveResolution.desc φ (injectiveResolution G) (injectiveResolution F) ≫ InjectiveResolution.desc ψ (injectiveResolution L) (injectiveResolution G)) (by rw [← Category.assoc, InjectiveResolution.desc_commutes, Category.assoc, InjectiveResolution.desc_commu …`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem post_comp (K : Cx R) {F G L : Shv R} (φ : F ⟶ G) (ψ : G ⟶ L) (n : ℤ) (x : HK R K F n) :
     HK.post R K (φ ≫ ψ) n x = HK.post R K ψ n (HK.post R K φ n x) := by
@@ -102,7 +102,7 @@ theorem post_comp (K : Cx R) {F G L : Shv R} (φ : F ⟶ G) (ψ : G ⟶ L) (n : 
   rfl
 
 /- English proof (translation)
-Establish `h` using `post_add K (0 : F ⟶ G) 0 n x`. Rewrite `h` using `[add_zero]`. Conclude with `add_left_cancel (h.symm.trans (add_zero _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem post_zero (K : Cx R) {F G : Shv R} (n : ℤ) (x : HK R K F n) : HK.post R K (0 : F ⟶ G) n x = 0 := by
   have h := post_add K (0 : F ⟶ G) 0 n x
@@ -110,7 +110,7 @@ theorem post_zero (K : Cx R) {F G : Shv R} (n : ℤ) (x : HK R K F n) : HK.post 
   exact add_left_cancel (h.symm.trans (add_zero _).symm)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, zero_nsmul, post_zero]`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, post_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem post_nsmul (K : Cx R) {F G : Shv R} (f : F ⟶ G) (n : ℤ) (k : ℕ) (x : HK R K F n) :
     HK.post R K (k • f) n x = k • HK.post R K f n x := by
@@ -119,9 +119,9 @@ theorem post_nsmul (K : Cx R) {F G : Shv R} (f : F ⟶ G) (n : ℤ) (k : ℕ) (x
   | succ k ih => rw [succ_nsmul, succ_nsmul, post_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[zero_nsmul, zero_nsmul]`. Establish `h` using `post_add K (0 : F ⟶ F) 0 n x`. Rewrite `h` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `add_left_cancel (h.symm.trans (add_zero _).symm)`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, post_add, ih, post_id]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem post_nsmul_id (K : Cx R) (F : Shv R) (n : ℤ) (k : ℕ) (x : HK R K F n) : HK.post R K (k • 𝟙 F) n x = k • x := by
   induction k with

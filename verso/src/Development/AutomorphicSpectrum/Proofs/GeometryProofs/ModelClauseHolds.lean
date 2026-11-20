@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-The claim follows from `modelClause_of_rankZero GlobalTheory.T.level_and_hecke_of_zero_signature`.
+A detailed English derivation is pending.
 -/
 theorem modelClause_holds :
     PartI ∧ N1ab ∧ N1c ∧

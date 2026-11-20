@@ -11,7 +11,7 @@ open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HTSummand.crys_projective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCrystalProjectiveOverTensorRingOfIntegers.lean&line=24#L24)
 -/

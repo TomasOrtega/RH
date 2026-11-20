@@ -11,7 +11,7 @@ open scoped Matrix NNReal
 namespace UpperTheory.Esk
 
 /- English proof (translation)
-Introduce `_ F _ _ t u`. Establish `hU : IsOpen {z : Af F | ((t⁻¹ : (Af F)ˣ) : Af F) * (u - z) ∈ Ohat F}` using `isOpen_Ohat.preimage (by fun_prop)`. Take `⟨y, hy⟩` from `(GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing F).exists_mem_open hU ⟨u, by simp⟩`. Conclude with `⟨y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem aAdd : AMem → AAdd := by
   intro _ F _ _ t u

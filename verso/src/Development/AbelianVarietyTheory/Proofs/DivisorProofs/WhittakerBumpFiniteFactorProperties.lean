@@ -8,17 +8,17 @@ namespace GlobalTheory.WhitBump.FinBump
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [psiFin, map_add, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psiFin_add (a b : Af E) : psiFin (a + b) = psiFin a * psiFin b := by
   simp only [psiFin, map_add, AddChar.map_add_eq_mul, Circle.coe_mul]
 
 /- English proof (translation)
-Establish `h : ∃ u ∈ GlobalTheory.SmGL.unipB (Af E) (Fin n), u⁻¹ * g ∈ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n` using `⟨u, hu, hg⟩`. Unfold `bumpFin`. Rewrite using `[dif_pos h]`. Take `⟨hu', hg'⟩` from `h.choose_spec`. Use `set u' := h.choose`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : u⁻¹ * u' ∈ GlobalTheory.SmGL.unipB (Af E) (Fin n)` using `mul_mem (inv_mem hu) hu'`. Establish `hwK : u⁻¹ * u' ∈ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n`. Establish `: u⁻¹ * u' = (u⁻¹ * g) * (u'⁻¹ * g)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem hg (inv_mem hg')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : u' = u * (u⁻¹ * u')` using `by group`. Rewrite using `[hsplit, GlobalTheory.GamMul.UnipPlaced.superDiag_mul_unip hu hw, psiFin_add, hK _ hw hwK, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem bumpFin_eq (hK : ∀ u ∈ GlobalTheory.SmGL.unipB (Af E) (Fin n),
       u ∈ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n → psiFin (GlobalTheory.Whittaker.superDiag u) = 1)
@@ -43,7 +43,7 @@ end GlobalTheory.WhitBump.FinBump
 namespace GlobalTheory.WhitBump.FinBump
 
 /- English proof (translation)
-Unfold `bumpFin`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bumpFin_zero_of_not {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
     {g : GL (Fin n) (Af E)}
@@ -52,17 +52,15 @@ theorem bumpFin_zero_of_not {E : Type} [Field E] [NumberField E] [IsTotallyCompl
   unfold bumpFin; rw [dif_neg h]
 
 /- English proof (translation)
-Introduce `E _ _ _ n hK`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[bumpFin_eq hK (one_mem _) (by simpa using one_mem _), hK 1 (one_mem _) (one_mem _)]`. Introduce `u hu g`. Distinguish the cases in `h : ∃ v ∈ GlobalTheory.SmGL.unipB (Af E) (Fin n), v⁻¹ * g ∈ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨v, hv, hvg⟩` from `h`. Establish `e : (u * v)⁻¹ * (u * g) = v⁻¹ * g` using `by group`. Rewrite using `[bumpFin_eq hK (mul_mem hu hv) (by rw [e]; exact hvg), bumpFin_eq hK hv hvg, GlobalTheory.GamMul.UnipPlaced.superDiag_mul_unip hu hv, psiFin_add]`. Rewrite using `[bumpFin_zero_of_not h, mul_zero]`. Use `bumpFin_zero_of_not fun ⟨v, hv, hvg⟩ => h ⟨u⁻¹ * v, mul_mem (inv_mem hu) hv, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (u⁻¹ * v)⁻¹ * g = v⁻¹ * (u * g)` using `by group`. Rewrite using `[e]`. Conclude with `hvg`. Introduce `k hk g`. Distinguish the cases in `h : ∃ v ∈ GlobalTheory.SmGL.unipB (Af E) (Fin n), v⁻¹ * g ∈ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hvg⟩` from `h`. Establish `e : v⁻¹ * (g * k) = (v⁻¹ * g) * k` using `by group`. Rewrite using `[bumpFin_eq hK hv (by rw [e]; exact mul_mem hvg hk), bumpFin_eq hK hv hvg]`. Rewrite using `[bumpFin_zero_of_not h]`. Use `bumpFin_zero_of_not fun ⟨v, hv, hvg⟩ => h ⟨v, hv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : v⁻¹ * g = (v⁻¹ * (g * k)) * k⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem hvg (inv_mem hk)`. Introduce `g hg`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hg (bumpFin_zero_of_not h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem bumpFin_props : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ),
     (∀ u ∈ GlobalTheory.SmGL.unipB (Af E) (Fin n), u ∈ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n →

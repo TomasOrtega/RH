@@ -19,19 +19,19 @@ section Kset
 variable (I : Formalism.MainNotions.S.AutInst)
 
 /- English proof (translation)
-The claim follows from `(Formalism.UG.stabGL I.Lf).inv_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem kset_inv' {x : I.Gf} (hx : x ∈ I.Kset) : x⁻¹ ∈ I.Kset :=
   (Formalism.UG.stabGL I.Lf).inv_mem hx
 
 /- English proof (translation)
-The claim follows from `(Formalism.UG.stabGL I.Lf).mul_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem kset_mul' {x y : I.Gf} (hx : x ∈ I.Kset) (hy : y ∈ I.Kset) : x * y ∈ I.Kset :=
   (Formalism.UG.stabGL I.Lf).mul_mem hx hy
 
 /- English proof (translation)
-The claim follows from `(hk w).symm`.
+A detailed English derivation is pending.
 -/
 theorem kset_act {k : I.Gf} (hk : k ∈ I.Kset) (w : Fin I.n → I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) :
     I.fmat k *ᵥ w ∈ I.Lf ↔ w ∈ I.Lf := (hk w).symm
@@ -42,7 +42,7 @@ Both sides reduce to the same expression.
 theorem fmat_mul' (x y : I.Gf) : I.fmat (x * y) = I.fmat x * I.fmat y := rfl
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fmat_inv_mul' (x : I.Gf) : I.fmat x⁻¹ * I.fmat x = 1 := by
   simp [Formalism.MainNotions.S.AutInst.fmat]
@@ -56,13 +56,13 @@ variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 def lat (h : Hfin X u) : Submodule (𝓞 D.host.E) (VS D).V := Classical.choose (latSub X u h)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (latSub X u h)`.
+A detailed English derivation is pending.
 -/
 theorem lat_coe (h : Hfin X u) : (lat X u h : Set (VS D).V) = latOf X u h :=
   Classical.choose_spec (latSub X u h)
 
 /- English proof (translation)
-Rewrite using `[← SetLike.mem_coe, lat_coe]`. Use `show X.B.I.fmat (((h : X.B.I.Gf)) * X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd y) ∈ X.B.I.Lf ↔ _`. Rewrite using `[_root_.mul_inv_rev, fmat_mul', ← Matrix.mulVec_mulVec, kset_act X.B.I (kset_inv' X.B.I (X.xu_K u))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lat (h : Hfin X u) (y : (VS D).V) :
     y ∈ lat X u h ↔ X.B.I.fmat ((h : X.B.I.Gf))⁻¹ *ᵥ incl X.B.I (X.crd y) ∈ X.B.I.Lf := by
@@ -71,9 +71,7 @@ theorem mem_lat (h : Hfin X u) (y : (VS D).V) :
   rw [_root_.mul_inv_rev, fmat_mul', ← Matrix.mulVec_mulVec, kset_act X.B.I (kset_inv' X.B.I (X.xu_K u))]
 
 /- English proof (translation)
-Establish `h1 : incl X.B.I (X.crd (matE X M y)) = incl X.B.I (X.crd y)`. Rewrite using `[matE_incl]`. Conclude with `hfix _ hy`. Apply `X.bas.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
-
-Conclude with `X.ιE.symm.injective (inclInj_holds X (congrFun h1 i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem matE_fix (M : GL (Fin X.B.I.n) X.B.I.E)
     (hfix : ∀ y ∈ fixSet X u, (M : Matrix _ _ _).map (Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F)) *ᵥ
@@ -86,11 +84,9 @@ theorem matE_fix (M : GL (Fin X.B.I.n) X.B.I.E)
   exact X.ιE.symm.injective (inclInj_holds X (congrFun h1 i))
 
 /- English proof (translation)
-Use `⟨matE_isom X M hM, fun j => ?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.S.FlagG.Xa`. Rewrite using `[Submodule.map_span, Set.image_image]`. Use `congr 1`. Apply `Set.image_congr` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a _`. Rewrite using `[X.Fu_e u]`. Conclude with `matE_fix X u M hfix _ (Or.inl (Or.inl ⟨a, rfl⟩))`. Use `show matE X M (X.Fu u).z = (X.Fu u).z`. Rewrite using `[X.flagZVector u]`.
-
-Conclude with `matE_fix X u M hfix _ (Or.inr rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matE_stab (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J)
     (hfix : ∀ y ∈ fixSet X u, (M : Matrix _ _ _).map (Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F)) *ᵥ
@@ -108,15 +104,15 @@ theorem matE_stab (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ (st
     exact matE_fix X u M hfix _ (Or.inr rfl)
 
 /- English proof (translation)
-The claim follows from `g.2 y hy`.
+A detailed English derivation is pending.
 -/
 theorem hfin_fix (g : Hfin X u) (y : Fin X.B.I.n → X.B.I.E) (hy : y ∈ fixSet X u) :
     X.B.I.fmat (g : X.B.I.Gf) *ᵥ incl X.B.I y = incl X.B.I y := g.2 y hy
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `hy`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨γ.symm y, hy, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_gmap (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞 D.host.E) (VS D).V) (y : (VS D).V) :
     y ∈ Formalism.HermitianLatticesTheory.gmap γ Λ ↔ γ.symm y ∈ Λ := by
@@ -128,9 +124,9 @@ theorem mem_gmap (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞
     exact ⟨γ.symm y, hy, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_gmap, mem_lat, mem_lat]`. Establish `hinc : incl X.B.I (X.crd ((matE X M).symm y)) = X.B.I.fmat ((g : X.B.I.Gf))⁻¹ *ᵥ incl X.B.I (X.crd y)`. Establish `h1` using `matE_incl X M ((matE X M).symm y)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, ← hM]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, Matrix.mulVec_mulVec, fmat_inv_mul', Matrix.one_mulVec]`. Rewrite using `[hinc, Matrix.mulVec_mulVec]`. Use `show X.B.I.fmat (((g : X.B.I.Gf) * (h : X.B.I.Gf) * (k : X.B.I.Gf)))⁻¹ *ᵥ incl X.B.I (X.crd y) ∈ X.B.I.Lf ↔ _`. Rewrite using `[_root_.mul_inv_rev, fmat_mul', ← Matrix.mulVec_mulVec, kset_act X.B.I (kset_inv' X.B.I hk), _root_.mul_inv_rev, fmat_mul']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_act (g h k : Hfin X u) (M : GL (Fin X.B.I.n) X.B.I.E)
     (hM : X.B.I.fmat (g : X.B.I.Gf) = (M : Matrix _ _ _).map (Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F)))
@@ -158,7 +154,7 @@ def cls (h : Hfin X u) : Submodule (𝓞 D.host.E) (VS D).V :=
 variable {X u what₂}
 
 /- English proof (translation)
-Establish `hex : ∃ Λ', Λ' ∈ what₂ ∧ Eqv X u Λ' (lat X u h)` using `(hR.2 (lat X u h) (hL h (lat X u h) (lat_coe X u h))).exists`. Unfold `cls`. Rewrite using `[dif_pos hex]`. Conclude with `Classical.choose_spec hex`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_spec (hR : IsRowReps D (X.Fu u) what₂) (hL : LatRowLat X u) (h : Hfin X u) :
     cls X u what₂ h ∈ what₂ ∧ Eqv X u (cls X u what₂ h) (lat X u h) := by
@@ -169,7 +165,7 @@ theorem cls_spec (hR : IsRowReps D (X.Fu u) what₂) (hL : LatRowLat X u) (h : H
   exact Classical.choose_spec hex
 
 /- English proof (translation)
-The claim follows from `(hR.2 (lat X u h) (hL h (lat X u h) (lat_coe X u h))).unique (cls_spec hR hL h) ⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem cls_eq (hR : IsRowReps D (X.Fu u) what₂) (hL : LatRowLat X u) {h : Hfin X u}
     {Λ' : Submodule (𝓞 D.host.E) (VS D).V} (h1 : Λ' ∈ what₂) (h2 : Eqv X u Λ' (lat X u h)) :
@@ -177,7 +173,7 @@ theorem cls_eq (hR : IsRowReps D (X.Fu u) what₂) (hL : LatRowLat X u) {h : Hfi
   (hR.2 (lat X u h) (hL h (lat X u h) (lat_coe X u h))).unique (cls_spec hR hL h) ⟨h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `(mem_gamR_iff X u g).1 hg`.
+A detailed English derivation is pending.
 -/
 theorem gamR_mat {g : Hfin X u} (hg : g ∈ gamR X u) :
     ∃ M : GL (Fin X.B.I.n) X.B.I.E, M ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J ∧
@@ -185,17 +181,17 @@ theorem gamR_mat {g : Hfin X u} (hg : g ∈ gamR X u) :
   (mem_gamR_iff X u g).1 hg
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Establish `e1` using `(cls_spec hR hL h).2`. Establish `e2` using `(cls_spec hR hL h').2`. Rewrite `e1` using `[hc]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3 : Eqv X u (lat X u h) (lat X u h')` using `(eqvEquiv X u).trans ((eqvEquiv X u).symm e1) e2`. Take `⟨g, k, hh', hkl⟩` from `hI h h' (lat X u h) (lat X u h') (lat_coe X u h) (lat_coe X u h') e3`. Use `⟨iotaF X u g, ?_, k, ?_, hh'⟩` and prove the remaining obligations. Rewrite using `[mem_gamR_iff]`. Take `⟨hGF, -⟩` from `Subgroup.mem_inf.1 g.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hGF' : (g : X.B.I.GA) ∈ X.B.I.GFset` using `hGF`. Take `⟨M, hM, -, hf⟩` from `hGF'`. Conclude with `⟨M, hM, hf⟩`. Rewrite using `[mem_kR_iff]`. Establish `hK` using `Formalism.L2.SG.Pf.LatDictK.dict_K X ((h : X.B.I.Gf) * X.xu u) ((h : X.B.I.Gf) * (k : X.B.I.Gf) * X.xu u) (latOf X u h) (fun y => Iff.rfl) (fun y => by rw [← hkl]; exact Iff.rfl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4 : ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h : X.B.I.Gf) * (k : X.B.I.Gf) * X.xu u) = (X.xu u)⁻¹ * (k : X.B.I.Gf) * X.xu u` using `by group`. Rewrite `hK` using `[e4]`. Establish `e5 : (k : X.B.I.Gf) = X.xu u * ((X.xu u)⁻¹ * (k : X.B.I.Gf) * X.xu u) * (X.xu u)⁻¹` using `by group`. Rewrite using `[e5]`. Conclude with `kset_mul' X.B.I (kset_mul' X.B.I (X.xu_K u) hK) (kset_inv' X.B.I (X.xu_K u))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨g, hg, k, hk, rfl⟩`. Take `⟨M, hM, hMf⟩` from `gamR_mat hg`. Establish `hst : matE X M ∈ stabF D (X.Fu u)` using `matE_stab X u M hM (fun y hy => by`. Rewrite using `[← hMf]`. Conclude with `hfin_fix X u g y hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(cls_spec hR hL h).2`. Establish `e2 : Eqv X u (lat X u h) (lat X u (g * h * k))` using `⟨matE X M, hst, (lat_act X u g h k M hMf ((mem_kR_iff X u k).1 hk)).symm⟩`. Conclude with `(cls_eq hR hL (cls_spec hR hL h).1 ((eqvEquiv X u).trans e1 e2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem cls_rel (hR : IsRowReps D (X.Fu u) what₂) (hL : LatRowLat X u) (hI : LatInj X u) (h h' : Hfin X u) :
     cls X u what₂ h = cls X u what₂ h' ↔ ∃ g ∈ gamR X u, ∃ k ∈ kR X u, h' = g * h * k := by
@@ -231,7 +227,7 @@ theorem cls_rel (hR : IsRowReps D (X.Fu u) what₂) (hL : LatRowLat X u) (hI : L
     exact (cls_eq hR hL (cls_spec hR hL h).1 ((eqvEquiv X u).trans e1 e2)).symm
 
 /- English proof (translation)
-Take `⟨h, Λ', hΛ', he⟩` from `hS s (hR.1 s hs)`. Establish `e1 : Λ' = lat X u h` using `SetLike.coe_injective (hΛ'.trans (lat_coe X u h).symm)`. Rewrite `he` using `[e1]`. Conclude with `⟨h, cls_eq hR hL hs ((eqvEquiv X u).symm he)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cls_surj (hR : IsRowReps D (X.Fu u) what₂) (hL : LatRowLat X u) (hS : LatSurj X u)
     (s : Submodule (𝓞 D.host.E) (VS D).V) (hs : s ∈ what₂) : ∃ h, cls X u what₂ h = s := by

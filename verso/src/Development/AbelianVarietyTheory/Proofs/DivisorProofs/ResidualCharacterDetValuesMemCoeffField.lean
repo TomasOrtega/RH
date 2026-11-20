@@ -16,11 +16,11 @@ namespace GlobalTheory.ChiDetValues
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨e, he, hinf, -⟩` from `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3 P`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (I := P.asIdeal) (u : kP P)`. Establish `hnt : Nontrivial (kP P)` using `Ideal.Quotient.nontrivial_iff.2 P.isPrime.ne_top`. Establish `ha0 : (a : D.host.E) ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h0 : a = 0` using `RingOfIntegers.ext h`. Rewrite `ha` using `[h0, map_zero]`. Conclude with `u.ne_zero ha.symm`. Establish `h4` using `hψ a (Units.mk0 _ ha0) u rfl ha.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `hc.2 P e he (Units.mk0 _ ha0) (Formalism.L2.JoinChr.locU he.1 (Units.mk0 _ ha0)) rfl`. Establish `h6` using `hS (Formalism.L2.JoinChr.locU he.1 (Units.mk0 _ ha0)) (by`. Rewrite using `[Formalism.L2.JoinChr.locU_val, Formalism.L2.JoinChr.locE, RingHom.map_add, RingHom.map_one, RingHom.map_mul, hinf, zero_mul, add_zero])`. Rewrite `h6` using `[h5, ← h4, MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Conclude with `inv_mem_iff.1 h6`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mem {D : D7} (S : Subfield ℂ) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (hc : ChrEq c χ)
     (hS : ∀ x : (AE D)ˣ, infPart D (x : AE D) = 1 → ((c x : Circle) : ℂ) ∈ S)
@@ -45,11 +45,11 @@ theorem res_mem {D : D7} (S : Subfield ℂ) (c : (AE D)ˣ →* Circle) (χ : For
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hL t i g`. Establish `e0 : res T D.what₂.embLL = T.σ₀` using `res_embLL T t.alg t.laws.pins.2.2.1`. Establish `hσ : GoodEmb T.Q.c (res T D.what₂.embLL)` using `e0 ▸ T.good_σ₀`. Establish `hA` using `(t.chiR i D.what₂.embLL hσ).2.2.2.1`. Establish `h : ((chiC R i g : ℂˣ) : ℂ) ∈ (res T D.what₂.embLL).fieldRange`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `chiC`. Rewrite using `[Units.coe_prod]`. Use `prod_mem fun PP _ => ?_` and prove the remaining obligations. Use `res_mem _ _ _ (hL.mu0 i) (fun x hx => ?_) _ _ (hL.chi i _ PP.2) _` and prove the remaining obligations. Take `⟨y, hy, -⟩` from `hA x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy.symm⟩`. Conclude with `h`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chiC_mem_coeff : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (g : G), ∃ y : T.Q.c.F, D.what₂.embLL (algebraMap T.Q.c.F D.what₂.LL y) = ((chiC R i g : ℂˣ) : ℂ) := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hL t i g

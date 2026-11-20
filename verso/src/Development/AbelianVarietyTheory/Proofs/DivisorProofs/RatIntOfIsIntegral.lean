@@ -6,28 +6,28 @@ open GlobalTheory.LKTorus
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h`. Conclude with `⟨n, by simpa using hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma LKTorus.rat_int_of_isIntegral {q : ℚ} (h : IsIntegral ℤ q) : ∃ n : ℤ, (n : ℚ) = q := by
   obtain ⟨n, hn⟩ := IsIntegrallyClosed.isIntegral_iff.mp h
   exact ⟨n, by simpa using hn⟩
 
 /- English proof (translation)
-Establish `hF` using `NumberField.Embeddings.finite_of_norm_le L ℂ 1`. Use `(hF.preimage (Set.injOn_of_injective Units.val_injective)).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨⟨t, ht⟩, hx, hxi⟩`. Establish `hinv : x⁻¹ ∈ simT ℚ c` using `(simT ℚ c).inv_mem ⟨t, ht⟩`. Take `⟨t', ht'⟩` from `hinv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcint : ∀ y : L, IsIntegral ℤ y → IsIntegral ℤ (c y)` using `fun y hy => hy.map (c.toRingHom.toIntAlgHom)`. Establish `hinj : Function.Injective (algebraMap ℚ L)` using `(algebraMap ℚ L).injective`. Establish `htI : IsIntegral ℤ ((t : ℚ))`. Rewrite using `[← isIntegral_algebraMap_iff hinj, ← ht]`. Conclude with `hx.mul (hcint _ hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht'I : IsIntegral ℤ ((t' : ℚ))`. Rewrite using `[← isIntegral_algebraMap_iff hinj, ← ht']`. Conclude with `hxi.mul (hcint _ hxi)`. Take `⟨n, hn⟩` from `LKTorus.rat_int_of_isIntegral htI`. Take `⟨m, hm⟩` from `LKTorus.rat_int_of_isIntegral ht'I`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hprod : (t : ℚ) * t' = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, ← ht, ← ht', map_one]`. Establish `h1 : ((x⁻¹ : Lˣ) : L) * (x : L) = 1` using `by simp`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnm : n * m = 1`. Establish `: ((n * m : ℤ) : ℚ) = 1` using `by push_cast; rw [hn, hm, hprod]`. Conclude with `this` after adjusting the coercions. Use `⟨hx, fun τ => ?_⟩` and prove the remaining obligations. Establish `hτ : ((‖τ x‖ ^ 2 : ℝ) : ℂ) = ((n : ℝ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg τ ht`. Rewrite `e` using `[map_mul, hc, Complex.mul_conj, Complex.normSq_eq_norm_sq, eq_ratCast, map_ratCast, ← hn]`. Rewrite using `[e]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hτ' : ‖τ x‖ ^ 2 = (n : ℝ)` using `by exact_mod_cast hτ`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one hnm with h | h` into its components or cases. Rewrite `hτ'` using `[h]`. Establish `h0 : 0 ≤ ‖τ x‖` using `norm_nonneg _`. Move the coercions through the operations in `at hτ'`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite `hτ'` using `[h]`. Move the coercions through the operations in `at hτ'`. Use polynomial arithmetic with `[sq_nonneg ‖τ x‖]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem LKTorus.simT_integral_finite (L : Type) [Field L] [NumberField L] (c : L →ₐ[ℚ] L)
     (hc : ∀ (τ : L →+* ℂ) (x : L), τ (c x) = (starRingEnd ℂ) (τ x)) :

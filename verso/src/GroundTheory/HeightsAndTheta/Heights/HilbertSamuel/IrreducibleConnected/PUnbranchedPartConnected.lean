@@ -11,7 +11,7 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial Matrix
 
 /- English proof (translation)
-Establish `h` using `IndefiniteRowSideFullHecke.ComplexSets.ManifoldZerosComplementConnected.isPreconnected_convex_inter_ne_zero isOpen_univ convex_univ (AnalyticOnNhd.eval_continuousLinearMap (ContinuousLinearMap.id ℂ (Fin d → ℂ)) Q)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UnbranchedPartConnected.isPreconnected_ne_zero {d : ℕ} (Q : MvPolynomial (Fin d) ℂ) :
     IsPreconnected {y : Fin d → ℂ | eval y Q ≠ 0} := by
@@ -20,19 +20,17 @@ theorem UnbranchedPartConnected.isPreconnected_ne_zero {d : ℕ} (Q : MvPolynomi
   simpa using h
 
 /- English proof (translation)
-Introduce `n d W A hW hd hA`. Take `⟨P₀, hP₀, hdc⟩` from `ComplexSets.DiscriminantCover.full n d W A hW hd hA`. Take `⟨P₁, hP₁, hpc⟩` from `hsheets n d W A hW hd hA`. Use `⟨P₁ * P₀, mul_ne_zero hP₁ hP₀, fun R hR => ?_⟩` and prove the remaining obligations. Establish `hQ' : P₁ * P₀ * R = P₁ * (P₀ * R)` using `mul_assoc _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hP₀y : ∀ y, eval y (P₁ * P₀ * R) ≠ 0 → eval y P₀ ≠ 0` using `fun y hy h => hy (by simp [h])`. Establish `hfin : ∀ y, eval y (P₁ * P₀ * R) ≠ 0 → (ComplexSets.fibre W A y).Finite ∧ (ComplexSets.fibre W A y).ncard = ComplexSets.projDegree W A` using `fun y hy => ⟨(hdc y (hP₀y y hy)).1, (hdc y (hP₀y y hy)).2.1⟩`. Introduce `u v hu hv hsub ⟨x₀, hx₀S, hx₀u⟩ ⟨x₁, hx₁S, hx₁v⟩`. Assume the negation of the conclusion as `hne`. Establish `hx₁u : x₁ ∉ u` using `fun h => hne ⟨x₁, hx₁S, h, hx₁v⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hclo : {x | x ∈ ComplexSets.zeroSet W ∧ eval (A *ᵥ x) (P₁ * P₀ * R) ≠ 0} ∩ u = {x | x ∈ ComplexSets.zeroSet W ∧ eval (A *ᵥ x) (P₁ * P₀ * R) ≠ 0} ∩ vᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxS, hxu⟩`. Conclude with `⟨hxS, fun hxv => hne ⟨x, hxS, hxu, hxv⟩⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hxS, hxv⟩`. Conclude with `⟨hxS, (hsub hxS).resolve_right hxv⟩`. Take `⟨k, hk⟩` from `hcount n d (ComplexSets.projDegree W A) A (ComplexSets.zeroSet W) {y | eval y (P₁ * P₀ * R) ≠ 0} u vᶜ (isOpen_ne_fun (MvPolynomial.continuous_eval _) continuous_const) (UnbranchedPartConnected.isPreconnected_ne_zero _) (fun y hy => by`. Take `⟨h1, h2, h3⟩` from `hdc y (hP₀y y hy)`. Use `⟨h1, h2, fun x hx hxy => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, V, g, hU, hyU, hV, hxV, hg, hgy, hAg, hZ⟩` from `h3 x ⟨hx, hxy⟩`. Conclude with `⟨U, V, g, hU, hyU, hV, hxV, hg.continuousOn, hgy, hAg, hZ⟩)`. Use `hu hv.isClosed_compl hclo`. Establish `hk'` using `hpc (P₀ * R) (mul_ne_zero hP₀ hR) u vᶜ k hu hv.isClosed_compl (by rw [← hQ']; exact hclo) (fun y hy => hk y (by rw [hQ']; exact hy))`. Establish `hsubf : ∀ y, {x | x ∈ ComplexSets.zeroSet W ∧ x ∈ u ∧ A *ᵥ x = y} ⊆ ComplexSets.fibre W A y` using `fun y x hx => ⟨hx.1, hx.2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < k`. Rewrite using `[← hk _ hx₀S.2]`. Conclude with `(Set.ncard_pos ((hfin _ hx₀S.2).1.subset (hsubf _))).2 ⟨x₀, hx₀S.1, hx₀u, rfl⟩`. Establish `hlt : k < ComplexSets.projDegree W A`. Rewrite using `[← hk _ hx₁S.2, ← (hfin _ hx₁S.2).2]`.
-
-Conclude with `Set.ncard_lt_ncard ⟨hsubf _, fun h => hx₁u (h ⟨hx₁S.1, rfl⟩).2.1⟩ (hfin _ hx₁S.2).1`. Apply the tactic sequence `rcases hk' with h | h <;> omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UnbranchedPartConnected.proof (hcount : ClopenPieceSheetCount.Statement)
     (hsheets : PrimeCoverPieceSheets.Statement) : UnbranchedPartConnected.Statement := by

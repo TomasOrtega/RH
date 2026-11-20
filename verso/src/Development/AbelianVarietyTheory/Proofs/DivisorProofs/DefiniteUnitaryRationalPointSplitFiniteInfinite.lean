@@ -10,19 +10,17 @@ noncomputable section
 namespace GlobalTheory.BCT.RatSplit
 
 /- English proof (translation)
-Introduce `E _ _ _ n γ hγ`. Take `⟨g0, hg0⟩` from `(Subgroup.mem_subgroupOf.1 hγ : γ.1 ∈ (ratGL E n).range)`. Establish `hval : γ.1.val = g0.val.map (algebraMap E (Ad E))` using `by rw [← hg0]; rfl`. Establish `hU : g0 ∈ UE E n`. Establish `h2 : cT (conjAd E) γ.1.val * 1 * γ.1.val = 1` using `γ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show cT (IsCMField.complexConj E).toRingEquiv.toRingHom g0.val * 1 * g0.val = 1`. Establish `hinj : Function.Injective (algebraMap E (Ad E))`. Introduce `x y hxy`. Establish `τ` using `(Classical.arbitrary (InfinitePlace E)).embedding`. Conclude with `τ.injective (by rw [← coord_algebraMap τ x, ← coord_algebraMap τ y, hxy])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions.
 
-Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, FinPtLoc.map_cT (algebraMap E (Ad E)) _ (conjAd E) (fun x => (conjAd_algebraMap x).symm), Matrix.map_one _ (map_zero _) (map_one _), ← hval, h2]`. Use `⟨⟨g0, hU⟩, ?_, ?_⟩` and prove the remaining obligations. Use `set a : finU E n := finPt ⟨g0, hU⟩ with ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haval : ((a : UA E n) : GA E n) = finGL E n (ratF E n g0)`. Rewrite using `[ha, FinPtLoc.finPt_eq]`. Establish `hb : (a : UA E n)⁻¹ * γ ∈ infU E n` using `by show GeneralLinearGroup.map (pFin E) (((a : UA E n)⁻¹ * γ : UA E n) : GA E n) = 1`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, haval, pFin_finGL, ← hg0]`. Establish `: GeneralLinearGroup.map (pFin E) (ratGL E n g0) = ratF E n g0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[this, inv_mul_cancel]`. Establish `hγs : γ = (a : UA E n) * ((⟨_, hb⟩ : infU E n) : UA E n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[hγs, splitFin_mul]`. Introduce `v`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
-
-Express the relevant statement in the definitionally equal form `coord v.embedding (pInf E (γ.1.val i j)) = v.embedding (g0.val i j)`. Rewrite using `[hval, Matrix.map_apply, coord_algebraMap]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratU_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), ∀ γ ∈ ratU E n,
     ∃ γ₀ : UE E n, splitFin E n γ = finPt γ₀ ∧

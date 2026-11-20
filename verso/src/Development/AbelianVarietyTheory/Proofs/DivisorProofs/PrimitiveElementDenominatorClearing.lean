@@ -4,15 +4,15 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `H using MvPolynomial.induction_on with`. Consider the case `C c`. Apply the tactic sequence `refine ⟨0, Polynomial.C (MvPolynomial.C c), ?_, ?_⟩ <;> simp`. Consider the case `add p q hp hq`. Take `⟨N1, R1, h1, h1'⟩` from `hp`.
+Proceed by induction. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N2, R2, h2, h2'⟩` from `hq`. Use `⟨N1 + N2, R1 * Polynomial.C Δ ^ N2 + R2 * Polynomial.C Δ ^ N1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_C, h1, h2, map_add]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_C, h1', h2', map_add]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p j hp`. Take `⟨N, R, h, h'⟩` from `hp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨N + 1, R * Q j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_mul, h, hQ]`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Polynomial.eval₂_mul, h', hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem specialisation_clear_denominators {k C : Type} [Field k] [Field C] [Algebra k C] {m d : ℕ}
     (a : Fin m → C) (t : Fin d → C) (θ : C) (Δ : MvPolynomial (Fin d) k)
@@ -52,21 +52,21 @@ theorem specialisation_clear_denominators {k C : Type} [Field k] [Field C] [Alge
       ring
 
 /- English proof (translation)
-Introduce `k C _ _ _ m d a t θ P Δ Q hΔ hQ hP B _ _ t' θ' hΔ' hP'`. Use `set b : Fin m → B := fun j => Polynomial.eval₂ (MvPolynomial.aeval t').toRingHom θ' (Q j) / MvPolynomial.aeval t' Δ with hbdef`. Establish `hb : ∀ j, Polynomial.eval₂ (MvPolynomial.aeval t').toRingHom θ' (Q j) = MvPolynomial.aeval t' Δ * b j`. Introduce `j`. Rewrite using `[hbdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Set `Ψ : MvPolynomial (Fin m) k →ₐ[k] B` to `MvPolynomial.aeval b`. Set `g : MvPolynomial (Fin m) k →ₐ[k] Algebra.adjoin k (Set.range a)` to `(MvPolynomial.aeval a).codRestrict (Algebra.adjoin k (Set.range a)) (by`. Introduce `x`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨x, rfl⟩)`. Establish `hg : Function.Surjective g`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨x, rfl⟩` from `hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, rfl⟩`. Establish `hker : ∀ H ∈ RingHom.ker g, Ψ H = 0`. Introduce `H hH`. Establish `h0 : MvPolynomial.aeval a H = 0`. Use `congrArg Subtype.val (RingHom.mem_ker.mp hH)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[g]`. Take `⟨N, R, hR, hR'⟩` from `specialisation_clear_denominators a t θ Δ Q hQ t' θ' b hb H`. Rewrite `hR` using `[h0, mul_zero]`. Take `⟨S, rfl⟩` from `hP R hR`. Rewrite `hR'` using `[Polynomial.eval₂_mul, hP', zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(mul_eq_zero.mp hR'.symm).resolve_left (pow_ne_zero _ hΔ')` as an intermediate fact. Conclude with `this`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hg`. Use `⟨(Ideal.Quotient.liftₐ (RingHom.ker g) Ψ hker).comp e.symm.toAlgHom, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : e.symm ⟨a j, Algebra.subset_adjoin (Set.mem_range_self j)⟩ = Ideal.Quotient.mkₐ k (RingHom.ker g) (MvPolynomial.X j)`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[e, g]`. Rewrite using `[hb j]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `show b j = Ideal.Quotient.liftₐ (RingHom.ker g) Ψ hker (e.symm _)`. Rewrite using `[he, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.mkₐ_eq_mk]`. Use `erw [Ideal.Quotient.lift_mk]`. Simplify using `[Ψ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem specialisation_lift : ∀ (k C : Type) [Field k] [Field C] [Algebra k C] (m d : ℕ) (a : Fin m → C) (t : Fin d → C) (θ : C) (P : Polynomial (MvPolynomial (Fin d) k)) (Δ : MvPolynomial (Fin d) k) (Q : Fin m → Polynomial (MvPolynomial (Fin d) k)), MvPolynomial.aeval t Δ ≠ 0 → (∀ j, Polynomial.eval₂ (MvPolynomial.aeval t).toRingHom θ (Q j) = MvPolynomial.aeval t Δ * a j) → (∀ R : Polynomial (MvPolynomial (Fin d) k), Polynomial.eval₂ (MvPolynomial.aeval t).toRingHom θ R = 0 → P ∣ R) → ∀ (B : Type) [Field B] [Algebra k B] (t' : Fin d → B) (θ' : B), MvPolynomial.aeval t' Δ ≠ 0 → Polynomial.eval₂ (MvPolynomial.aeval t').toRingHom θ' P = 0 → ∃ f : Algebra.adjoin k (Set.range a) →ₐ[k] B, ∀ j, Polynomial.eval₂ (MvPolynomial.aeval t').toRingHom θ' (Q j) = MvPolynomial.aeval t' Δ * f ⟨a j, Algebra.subset_adjoin (Set.mem_range_self j)⟩ := by
   intro k C _ _ _ m d a t θ P Δ Q hΔ hQ hP B _ _ t' θ' hΔ' hP'

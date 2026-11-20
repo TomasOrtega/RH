@@ -14,15 +14,15 @@ noncomputable section
 namespace GlobalTheory.VMetric
 
 /- English proof (translation)
-Use `HermLB.isometric_of_local (J := VBExt.AdaptedChart S r s) (fun a => a.U) (fun x => VBExt.exists_adaptedChart hS h₁ h₃ x) (fun a => a.mid hS) (fun a => (a.sub, a.quot)) (fun _ => le_rfl) (fun _ => le_inf le_rfl le_rfl) (fun _ => 1) (fun x a a' hx hx' => ?_) (fun σ a y hy => ?_)` and prove the remaining obligations. Establish `key : gm (𝟙 X) x _ ((VMetric.det H).B.g (a.mid hS) (a'.mid hS)) = gm (𝟙 X) x _ (((VMetric.det (H.restrict hf h₁)).tens (VMetric.det (H.quot hS h₁ h₃))).B.g (a.sub, a.quot) (a'.sub, a'.quot))` using `((congrArg (gm (𝟙 X) x _) (VBExt.detUnit_sumElim hS a.he a.ht a'.he a'.ht inf_le_left inf_le_right)).trans (map_mul _ _ _)).trans (CechPic.gm_tens (VB.det S.X₁ r) (VB.det S.X₃ s) (𝟙 X) x (a.sub, a.quot) (a'.sub, a'.quot) ⟨hx, hx⟩ ⟨hx', hx'⟩).symm`. Rewrite using `[map_one, map_one, mul_one, key, mul_inv_cancel]`. Rewrite using `[CxPts.logSq_one hy, add_zero]`. Express the relevant statement in the definitionally equal form `-Real.log ((h.met σ).G (a.mid hS) y).det.re = -Real.log (((h.met σ).restrict hf h₁).G a.sub y).det.re + -Real.log (((h.met σ).quot hS h₁ h₃).G a.quot y).det.re`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hP` using `(h.met σ).posDef_gram_frame hS a hy`. Establish `e₁ : ((h.met σ).restrict hf h₁).G a.sub y = subGram ((h.met σ).gram a.frame y)` using `rfl`. Establish `e₂ : ((h.met σ).G (a.mid hS) y).det = ((h.met σ).gram a.frame y).det`. Rewrite using `[(h.met σ).gram_frame hS a hy, Matrix.det_submatrix_equiv_self]`. Establish `e₃ : ((h.met σ).gram a.frame y).det = (subGram ((h.met σ).gram a.frame y)).det * (quotGram ((h.met σ).gram a.frame y)).det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA` using `posDef_subGram hP`. Use `letI : Invertible ((h.met σ).gram a.frame y).toBlocks₁₁ := hA.isUnit.invertible`. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks ((h.met σ).gram a.frame y)]`. Rewrite using `[Matrix.det_fromBlocks₁₁, Matrix.invOf_eq_nonsing_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, (h.met σ).quot_G hS h₁ h₃ a hy, e₂, e₃]`. Establish `hA` using `posDef_subGram hP`. Establish `hQ` using `posDef_quotGram hP`. Establish `i₁ : (subGram ((h.met σ).gram a.frame y)).det.im = 0` using `(Complex.lt_def.1 hA.det_pos).2.symm`. Rewrite using `[Complex.mul_re, i₁, zero_mul, sub_zero, Real.log_mul (det_re_pos hA).ne' (det_re_pos hQ).ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isometric_det_tens_det (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     (S : ShortComplex X.Modules) (r s : ℕ) (h : VMetric p S.X₂ (r + s)) (H : h.IsCInf)

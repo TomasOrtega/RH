@@ -28,7 +28,7 @@ abbrev jm (M : Model R A) (D : I → VF A) (U : M.Y.left.Opens) (t : I → Γ(M.
   jac D (M.j ⁻¹ᵁ U) (fun i => (M.j.app U).hom (t i))
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.comp_eval₂Hom]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ h hφ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_comp {B C I : Type} [CommRing B] [CommRing C] (c : R →+* B) (t : I → B) (φ : B →+* C)
     (h : (MvPolynomial.eval₂Hom c t).Etale) (hφ : φ.Etale) :
@@ -37,9 +37,9 @@ theorem etale_comp {B C I : Type} [CommRing B] [CommRing C] (c : R →+* B) (t :
   exact RingHom.Etale.stableUnderComposition _ _ h hφ
 
 /- English proof (translation)
-Take `⟨a, h1, h2⟩` from `GlobalTheory.EtaleCoordJacobian.chain_rule_and_jacobian_criterion R _ (cst M U) I t t' h`. Use `⟨a, h1 _ (M.j.app U).hom (fun i => ((D i).D _).comp (M.j.app U).hom.toAddMonoidHom) (fun i x y => ?_) (fun i r => ?_), h2⟩` and prove the remaining obligations. Use `show (D i).D _ ((M.j.app U).hom (x * y)) = _`. Rewrite using `[map_mul, (D i).leibniz]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show (D i).D _ ((M.j.app U).hom (cst M U r)) = _`. Rewrite using `[j_cst, (D i).const]`.
+A detailed English derivation is pending.
 -/
 theorem chain_model (M : Model R A) (D : I → VF A) (U : M.Y.left.Opens) (t t' : I → Γ(M.Y.left, U))
     (h : IsCoord M U t) : ∃ a, jm M D U t' = (M.j.app U).hom a * jm M D U t ∧ (IsUnit a → IsCoord M U t') := by
@@ -52,7 +52,7 @@ theorem chain_model (M : Model R A) (D : I → VF A) (U : M.Y.left.Opens) (t t' 
     rw [j_cst, (D i).const]
 
 /- English proof (translation)
-Use `(𝟙 X : X ⟶ X).etale_appLE hU hV h` as an intermediate fact. Simplify `this` using `[Scheme.Hom.appLE]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem etale_rs (X : Scheme.{0}) {U V : X.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) (h : V ≤ U) :
     (rs X h).Etale := by
@@ -60,7 +60,7 @@ theorem etale_rs (X : Scheme.{0}) {U V : X.Opens} (hU : IsAffineOpen U) (hV : Is
   simpa [Scheme.Hom.appLE] using this
 
 /- English proof (translation)
-Use `etale_comp _ t _ ht (etale_rs _ hU hV h)` as an intermediate fact. Establish `e : (rs _ h).comp (cst M U) = cst M V` using `RingHom.ext (rs_cst M h)`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coord_rs (M : Model R A) {I : Type} {U V : M.Y.left.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V)
     (h : V ≤ U) {t : I → Γ(M.Y.left, U)} (ht : IsCoord M U t) : IsCoord M V fun i => rs _ h (t i) := by
@@ -69,14 +69,14 @@ theorem coord_rs (M : Model R A) {I : Type} {U V : M.Y.left.Opens} (hU : IsAffin
   rwa [e] at this
 
 /- English proof (translation)
-Rewrite using `[jm, rs_jac]`. Conclude with `congrArg (jac D _) (funext fun i => rs_j M h (t i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rs_jm (M : Model R A) (D : I → VF A) {U V : M.Y.left.Opens} (h : V ≤ U) (t : I → Γ(M.Y.left, U)) :
     rs _ (M.j.preimage_mono h) (jm M D U t) = jm M D V fun i => rs _ h (t i) := by
   rw [jm, rs_jac]; exact congrArg (jac D _) (funext fun i => rs_j M h (t i))
 
 /- English proof (translation)
-Use `X.toRingedSpace.isUnit_of_isUnit_germ U f fun x hx => ?_` and prove the remaining obligations. Take `⟨V, hV, hxV, hu⟩` from `h x hx`. Use `hu.map (X.presheaf.germ V x hxV).hom` as an intermediate fact. Conclude with `(X.presheaf.germ_res_apply (homOfLE hV) x hxV f).subst this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_local (X : Scheme.{0}) (U : X.Opens) (f : Γ(X, U))
     (h : ∀ x ∈ U, ∃ (V : X.Opens) (hV : V ≤ U), x ∈ V ∧ IsUnit (rs X hV f)) : IsUnit f := by
@@ -86,9 +86,9 @@ theorem isUnit_of_local (X : Scheme.{0}) (U : X.Opens) (f : Γ(X, U))
   exact (X.presheaf.germ_res_apply (homOfLE hV) x hxV f).subst this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact isUnit_of_dvd_one (by simpa using h)`. Consider the case `succ k ih`. Take `⟨b, hb⟩` from `h`. Take `⟨b', rfl⟩ : p ∣ b` from `(hp.dvd_or_dvd (hb ▸ dvd_pow_self p k.succ_ne_zero)).resolve_left hs`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `ih ⟨b', ?_⟩` and prove the remaining obligations. Establish `: p * (p ^ k - s * b') = 0` using `by linear_combination hb`. Conclude with `sub_eq_zero.1 ((mem_nonZeroDivisors_iff_left.1 h0) _ this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_dvd_pow {B : Type} [CommRing B] {p s : B} (hp : Prime p) (h0 : p ∈ nonZeroDivisors B)
     (hs : ¬ p ∣ s) (k : ℕ) (h : s ∣ p ^ k) : IsUnit s := by
@@ -106,13 +106,13 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {K : T
   [IsFractionRing R K] {A : Over (Sp K)} {π : R} {I : Type} [Fintype I] [DecidableEq I]
 
 /- English proof (translation)
-Use `isOpenImmersion_j M` as an intermediate fact. Use `isUnit_of_local _ _ _ fun z hz => ?_` and prove the remaining obligations. Take `⟨U', t', hz', hu⟩` from `hD.2 z`. Take `⟨V, hV, hzV, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := A.left) (U := U' ⊓ M.j ⁻¹ᵁ U) ⟨hz', hz⟩`. Establish `h1 : V ≤ U'` using `fun _ h => (hle h).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : V ≤ M.j ⁻¹ᵁ U` using `fun _ h => (hle h).2`. Use `⟨V, h2, hzV, ?_⟩` and prove the remaining obligations. Establish `he` using `etale_comp _ t _ ht (M.j.etale_appLE hU hV h2)`. Take `⟨a, ha, -⟩` from `GlobalTheory.EtaleCoordJacobian.chain_rule_and_jacobian_criterion R _ _ I _ (fun i => rs _ h1 (t' i)) he`. Establish `hb` using `ha _ (RingHom.id _) (fun i => (D i).D V) (fun i => (D i).leibniz V) (fun i r => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: ((M.j.appLE U V h2).hom.comp (cst M U)) r = cstK A V (algebraMap R K r)`. Rewrite using `[← rs_cstK h2, ← j_cst]`. Both sides reduce to the same expression. Rewrite using `[this, (D i).const])`. Establish `hc : IsUnit (jac D V fun i => rs _ h1 (t' i))` using `by rw [← rs_jac]; exact hu.map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[jm, rs_jac]`. Conclude with `isUnit_of_mul_isUnit_right (show IsUnit (_ * _) from hb.subst hc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_jm (M : Model R A) {D : I → VF A} (hD : IsFrame D) {U : M.Y.left.Opens} (hU : IsAffineOpen U)
     {t : I → Γ(M.Y.left, U)} (ht : IsCoord M U t) : IsUnit (jm M D U t) := by
@@ -134,21 +134,21 @@ theorem isUnit_jm (M : Model R A) {D : I → VF A} (hD : IsFrame D) {U : M.Y.lef
   exact isUnit_of_mul_isUnit_right (show IsUnit (_ * _) from hb.subst hc)
 
 /- English proof (translation)
-The claim follows from `(IsUnit.mk0 _ (zpow_ne_zero n (by simpa using hπ.ne_zero))).map _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_cstK (hπ : Irreducible π) (U : A.left.Opens) (n : ℤ) : IsUnit (cstK A U (algebraMap R K π ^ n)) :=
   (IsUnit.mk0 _ (zpow_ne_zero n (by simpa using hπ.ne_zero))).map _
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hn.1 U t`. Use `⟨s, ?_, hs⟩` and prove the remaining obligations. Take `⟨U₀, t₀, s₀, h₀, hu₀, hs₀⟩` from `hn.2`. Establish `hjs : IsUnit ((M.j.app U).hom s)` using `isUnit_of_mul_isUnit_right (show IsUnit (_ * _) from hs.subst (isUnit_jm M hD hU ht))`. Take `⟨z, hz, hzU, hzU₀⟩` from `hM.2 U U₀ U.isOpen U₀.isOpen (Set.inter_comm _ _ ▸ h) (Set.inter_comm _ _ ▸ h₀)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hzV, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := M.Y.left) (U := U ⊓ U₀) ⟨hzU, hzU₀⟩`. Establish `h1 : V ≤ U` using `fun _ h => (hle h).1`. Establish `h2 : V ≤ U₀` using `fun _ h => (hle h).2`. Take `⟨a, ha, -⟩` from `chain_model M D V _ (fun i => rs _ h2 (t₀ i)) (coord_rs M hU hV h1 ht)`. Rewrite `ha` using `[← rs_jm M D h1, ← rs_jm M D h2, jm, jm, hs, hs₀, map_mul, map_mul, rs_cstK, rs_cstK, rs_j M h1, rs_j M h2, mul_left_comm, ← map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb` using `j_app_injective M V ((isUnit_cstK hπ _ n).mul_left_cancel ha)`. Establish `hc : IsUnit (rs _ h1 s)` using `isUnit_of_mul_isUnit_right (hb ▸ hu₀.map (rs _ h2))`. Take `⟨f, hf⟩` from `hjs.exists_right_inv`. Take `⟨k, b, hk⟩` from `exists_pow_mul_eq hπ M hU f`. Use `isUnit_of_dvd_pow (prime_cst hπ M hM hU h) (cst_mem_nonZeroDivisors hπ M U) ?_ k ⟨b, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hd`. Use `map_dvd (rs _ h1) hd` as an intermediate fact. Rewrite `this` using `[rs_cst]`. Conclude with `not_isUnit_cst M V ⟨z, hzV, hz⟩ hπ.not_isUnit (isUnit_of_dvd_unit this hc)`. Apply `j_app_injective M U` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hk, mul_left_comm, hf, _root_.mul_one, map_pow]`.
+A detailed English derivation is pending.
 -/
 theorem chart (hπ : Irreducible π) (M : Model R A) (hM : M.Irr) {D : I → VF A} (hD : IsFrame D) {n : ℤ}
     (hn : HasOrd M D π n) {U : M.Y.left.Opens} (hU : IsAffineOpen U) (h : ((U : Set M.Y.left) ∩ M.sp).Nonempty)
@@ -187,14 +187,14 @@ instance {X : Scheme.{0}} (W : X.Opens) : IsIso (th W) := by
   rw [this]; infer_instance
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_congr {X Y : Scheme.{0}} {f g : X ⟶ Y} (e : f = g) (U : Y.Opens) (V : X.Opens) (h : V ≤ f ⁻¹ᵁ U)
     (h' : V ≤ g ⁻¹ᵁ U) : f.appLE U V h = g.appLE U V h' := by
   subst e; rfl
 
 /- English proof (translation)
-Use `⟨by rw [Category.assoc, h.1, Scheme.homOfLE_ι_assoc], ?_⟩` and prove the remaining obligations. Establish `: M.j ∣_ W ≫ M.Y.left.homOfLE hW = A.left.homOfLE (M.j.preimage_mono hW) ≫ M.j ∣_ U`. Rewrite using `[← cancel_mono U.ι]`. Simplify using the standard rewrite rules. Rewrite using `[← Category.assoc, this, Category.assoc, h.2, Scheme.homOfLE_ι_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extends_res {M N : Model R A} {U W : M.Y.left.Opens} {g : U.toScheme ⟶ N.Y.left}
     (h : Extends M N (𝟙 A) U g) (hW : W ≤ U) : Extends M N (𝟙 A) W (M.Y.left.homOfLE hW ≫ g) := by
@@ -204,19 +204,15 @@ theorem extends_res {M N : Model R A} {U W : M.Y.left.Opens} {g : U.toScheme ⟶
   rw [← Category.assoc, this, Category.assoc, h.2, Scheme.homOfLE_ι_assoc]
 
 /- English proof (translation)
-Establish `h2 : M.j ∣_ W ≫ g = (M.j ⁻¹ᵁ W).ι ≫ N.j` using `by simpa using h.2`. Establish `hle : M.j ⁻¹ᵁ W ≤ N.j ⁻¹ᵁ V` using `fun x hx => by`. Establish `: ((M.j ⁻¹ᵁ W).ι ≫ N.j) ⟨x, hx⟩ ∈ V`. Rewrite using `[← h2]`. Conclude with `hV (x := (M.j ∣_ W) ⟨x, hx⟩) trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `⟨(g.appLE V ⊤ hV ≫ inv (th W)).hom, hle, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: N.Y.hom.appLE ⊤ V le_top ≫ g.appLE V ⊤ hV ≫ inv (th W) = M.Y.hom.appLE ⊤ W le_top`. Rewrite using `[← Category.assoc, IsIso.comp_inv_eq, th, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_congr h.1 _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Conclude with `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) this`. Establish `a : M.j.app W ≫ th (M.j ⁻¹ᵁ W) = th W ≫ (M.j ∣_ W).appLE ⊤ ⊤ le_top`. Rewrite using `[th, th, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_congr (morphismRestrict_ι _ _).symm _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (g.appLE V ⊤ hV ≫ inv (th W)) ≫ M.j.app W = N.j.appLE V _ hle`. Rewrite using `[← cancel_mono (th (M.j ⁻¹ᵁ W)), Category.assoc, a, Category.assoc, IsIso.inv_hom_id_assoc, th, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_congr h2 _ _ _ _`. Introduce `u`. Conclude with `congrArg (fun q => q.hom u) this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hW hV' he`. Establish `: IsAffine W.toScheme` using `hW`. Establish `he' : (g.appLE V ⊤ hV).hom.Etale` using `(RingHom.Etale.respectsIso.cancel_right_isIso _ _).1 he`. Establish `h3 : Etale (g.resLE V ⊤ hV)`. Establish `: IsAffine V.toScheme` using `hV'`.
-
-Establish `: IsAffine (⊤ : W.toScheme.Opens).toScheme` using `isAffineOpen_top _`. Rewrite using `[HasRingHomProperty.iff_of_isAffine (P := @Etale)]`. Conclude with `(RingHom.Etale.respectsIso.arrow_mk_iso_iff (arrowResLEAppIso g V ⊤ hV)).2 he'`. Establish `h4 : Etale ((⊤ : W.toScheme.Opens).ι ≫ g)`. Rewrite using `[← Scheme.Hom.resLE_comp_ι g hV]`.
-
-Use `infer_instance`. Establish `h5 : g = W.toScheme.topIso.inv ≫ (⊤ : W.toScheme.Opens).ι ≫ g` using `by simp`. Rewrite using `[h5]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull {M N : Model R A} {W : M.Y.left.Opens} {g : W.toScheme ⟶ N.Y.left}
     (h : Extends M N (𝟙 A) W g) (V : N.Y.left.Opens) (hV : ⊤ ≤ g ⁻¹ᵁ V) :
@@ -258,23 +254,21 @@ theorem exists_pull {M N : Model R A} {W : M.Y.left.Opens} {g : W.toScheme ⟶ N
 end
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ π hπ A _ I _ _ D hD M N m n hM hN hm hn ⟨y, hy, U, g, hyU, hg⟩`. Establish `hx : g ⟨y, hyU⟩ ∈ N.sp`. Establish `: (g ≫ N.Y.hom) ⟨y, hyU⟩ = (U.ι ≫ M.Y.hom) ⟨y, hyU⟩` using `by rw [hg.1]`. Conclude with `this.trans hy`. Take `⟨V, t, hV, hxV, -, ht⟩` from `GlobalTheory.SS.Ord.exists_etale_coord R K A I hD.1 N (g ⟨y, hyU⟩) ⊤ trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, e⟩` from `chart hπ N hN hD hn hV ⟨_, hxV, hx⟩ ht`. Take `⟨W, r, hW, hyW, hle, hr⟩` from `GlobalTheory.SS.Ord.exists_etale_coord R K A I hD.1 M y (U.ι ''ᵁ g ⁻¹ᵁ V) ⟨⟨y, hyU⟩, hxV, rfl⟩`. Establish `hWU : W ≤ U` using `hle.trans (U.ι_image_le _)`. Establish `hg'` using `extends_res hg hWU`. Establish `htop : ⊤ ≤ (M.Y.left.homOfLE hWU ≫ g) ⁻¹ᵁ V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z _`. Take `⟨w, hw, e⟩` from `hle z.2`. Establish `: M.Y.left.homOfLE hWU z = w` using `Subtype.ext (by rw [Scheme.homOfLE_apply]; exact e.symm)`. Use `show g (M.Y.left.homOfLE hWU z) ∈ V`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hw`. Take `⟨ψ, hj, hc, hψ, het⟩` from `exists_pull hg' V htop`. Establish `key : jm M D W (fun i => ψ (t i)) = cstK A _ (algebraMap R K π ^ n) * (M.j.app W).hom (ψ s)`. Use `congrArg (rs _ hj) e` as an intermediate fact. Rewrite `this` using `[jm, rs_jac, map_mul, rs_cstK, ← hψ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `only [jm, hψ]`. Establish `hp : algebraMap R K π ≠ 0` using `by simpa using hπ.ne_zero`. Use `⟨not_lt.1 fun hlt => ?_, ?_⟩` and prove the remaining obligations. Take `⟨s', e'⟩` from `hm.1 W fun i => ψ (t i)`. Take `⟨k, hk⟩ : ∃ k : ℕ, m = n + (k + 1 : ℕ)` from `⟨(m - n - 1).toNat, by omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `replace e' := key.symm.trans e'`. Rewrite `e'` using `[hk, zpow_add₀ hp, map_mul, _root_.mul_assoc, zpow_natCast, ← map_pow, ← j_cst, ← map_mul]`. Establish `h1` using `j_app_injective M W ((isUnit_cstK hπ _ n).mul_left_cancel e')`. Establish `h2` using `hs.map ψ`. Rewrite `h2` using `[h1, pow_succ, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_cst M W ⟨y, hyW, hy⟩ hπ.not_isUnit (isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left h2))`. Introduce and unpack `rfl`. Take `⟨s', e'⟩` from `hm.1 W r`. Take `⟨a, ha, hb⟩` from `chain_model M D W r (fun i => ψ (t i)) hr`. Rewrite `ha` using `[key, jm, e', mul_left_comm, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `j_app_injective M W ((isUnit_cstK hπ _ m).mul_left_cancel ha)`. Establish `h2` using `hb (isUnit_of_mul_isUnit_left (show IsUnit (_ * _) from h1.subst (hs.map ψ)))`. Establish `h3 : (ψ.comp (MvPolynomial.eval₂Hom (cst N V) t)).Etale`. Rewrite using `[MvPolynomial.comp_eval₂Hom, hc]`. Conclude with `h2`.
-
-Establish `h4 : ψ.Etale` using `by algebraize [MvPolynomial.eval₂Hom (cst N V) t, ψ, ψ.comp (MvPolynomial.eval₂Hom (cst N V) t)]`. Conclude with `Algebra.Etale.of_restrictScalars (R := MvPolynomial I R) _ _`. Conclude with `⟨y, hy, W, _, hyW, hg', GlobalTheory.SS.Ord.isOpenImmersion_of_extends_id_of_etale R K A M N W _ hg' (het hW hV h4)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ord_mono : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (π : R), Irreducible π → ∀ (A : Over (Sp K)) [IsIntegral A.left] (I : Type) [Fintype I] [DecidableEq I] (D : I → VF A), IsFrame D → ∀ (M N : Model R A) (m n : ℤ), M.Irr → N.Irr → HasOrd M D π m → HasOrd N D π n → (∃ y ∈ M.sp, DefAt M N (𝟙 A) y) → m ≤ n ∧ (m = n → GenIso M N (𝟙 A)) := by
   intro R K _ _ _ _ _ _ π hπ A _ I _ _ D hD M N m n hM hN hm hn ⟨y, hy, U, g, hyU, hg⟩

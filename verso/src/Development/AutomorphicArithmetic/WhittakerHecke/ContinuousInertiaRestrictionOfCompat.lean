@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTranspor
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.GLq
 
 /- English proof (translation)
-Introduce `E L Ω _ _ _ _ _ _ _ _ _ A ι hι`. Use `haveI : FiniteDimensional E L := Module.Finite.of_restrictScalars_finite ℚ E L`. Apply `continuous_of_continuousAt_one ι` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one, tendsto_subtype_rng, Filter.tendsto_def]`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[OneMemClass.coe_one]`. Take `⟨K, hK, hKs⟩` from `(krullTopology_mem_nhds_one_iff L Ω s).mp hs`. Use `haveI : FiniteDimensional E K := Module.Finite.trans L K`. Use `haveI : FiniteDimensional E (K.restrictScalars E) := inferInstanceAs (FiniteDimensional E K)`. Establish `hopen` using `(K.restrictScalars E).fixingSubgroup_isOpen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Filter.mem_of_superset ((hopen.preimage continuous_subtype_val).mem_nhds ?_) ?_` and prove the remaining obligations. Conclude with `(K.restrictScalars E).fixingSubgroup.one_mem`. Introduce `t ht`. Apply `hKs` to reduce the goal to its premises. Rewrite `ht` using `[Set.mem_preimage, SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
-
-Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Rewrite using `[hι]`. Conclude with `ht x ((IntermediateField.mem_restrictScalars E).mpr hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.continuous_inertia_restriction_of_compat :
     ∀ {E L Ω : Type} [Field E] [NumberField E] [Field L] [NumberField L] [Field Ω] [Algebra E L] [Algebra E Ω] [Algebra L Ω]

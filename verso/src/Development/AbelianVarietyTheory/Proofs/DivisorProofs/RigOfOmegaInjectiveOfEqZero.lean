@@ -50,7 +50,7 @@ Both sides reduce to the same expression.
     (f.prim b).1 = f b.1 := rfl
 
 /- English proof (translation)
-Rewrite `hb` using `[LinearMap.mem_ker, cobOne_apply, sub_sub, sub_eq_zero]`. Conclude with `hb`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrimitiveElem_of_mem_ker {b : A} (hb : b ∈ LinearMap.ker (cobOne R A)) :
     IsPrimitiveElem R b := by
@@ -58,7 +58,7 @@ theorem isPrimitiveElem_of_mem_ker {b : A} (hb : b ∈ LinearMap.ker (cobOne R A
   exact hb
 
 /- English proof (translation)
-The claim follows from `(CartierDual.isPrimitiveElem_iff_mul b.1).1 (isPrimitiveElem_of_mem_ker b.2) φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem evalAt_mul [Module.Finite R A] [Module.Projective R A] [IsCocomm R A]
     (b : LinearMap.ker (cobOne R A)) (φ ψ : CartierDual R A) :
@@ -76,7 +76,7 @@ def primTangent [Module.Finite R A] [Module.Projective R A] [IsCocomm R A] :
   map_smul' r b := AugCot.hom_ext fun φ => by simp
 
 /- English proof (translation)
-The claim follows from `AugCot.lift_d _ _ (evalAt_mul b) φ`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem primTangent_d [Module.Finite R A] [Module.Projective R A] [IsCocomm R A]
     (b : LinearMap.ker (cobOne R A)) (φ : CartierDual R A) :
@@ -139,7 +139,7 @@ Both sides reduce to the same expression.
     G.resOne (n + 1) a = G.resOne n (G.res (n + 1) a) := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact Function.surjective_id`. Consider the case `succ n ih => exact ih.comp (G.res_surjective (n + 1))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem resOne_surjective (n : ℕ) : Function.Surjective (G.resOne n) := by
   induction n with
@@ -147,7 +147,7 @@ theorem resOne_surjective (n : ℕ) : Function.Surjective (G.resOne n) := by
   | succ n ih => exact ih.comp (G.res_surjective (n + 1))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [resOne_succ, B.2, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem resOne_funs (B : G.funs) (n : ℕ) : G.resOne n (B.1 (n + 1)) = B.1 1 := by
   induction n with
@@ -155,7 +155,7 @@ theorem resOne_funs (B : G.funs) (n : ℕ) : G.resOne n (B.1 (n + 1)) = B.1 1 :=
   | succ n ih => rw [resOne_succ, B.2, ih]
 
 /- English proof (translation)
-Establish `h` using `G.mulBy_pow_self 1 (G.resOne n a)`. Rewrite `h` using `[pow_one, CoalgHomClass.counit_comp_apply]`. Rewrite using `[map_mulBy, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem resOne_mulBy (n : ℕ) (a : G.A (n + 1)) :
     G.resOne n (mulBy R _ p a) = algebraMap R _ (counit a) := by
@@ -164,7 +164,7 @@ theorem resOne_mulBy (n : ℕ) (a : G.A (n + 1)) :
   rw [map_mulBy, h]
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `G.res_surjective n a`. Rewrite using `[mulP_res, resOne_mulBy, CoalgHomClass.counit_comp_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem resOne_mulP (n : ℕ) (a : G.A n) :
     G.resOne n (G.mulP n a) = algebraMap R _ (counit a) := by
@@ -182,9 +182,9 @@ theorem transl_apply (n : ℕ) (a : G.A (n + 1)) :
     G.transl n a = (G.resOne n : G.A (n + 1) →ₗ[R] G.A 1).lTensor _ (comul a) := rfl
 
 /- English proof (translation)
-Rewrite using `[transl_apply, transl_apply, ← pullTwo_comul]`. Generalize the expression as in `comul (R := R) a = t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x y => simp`.
+Treat this case separately.
 -/
 theorem transl_res (n : ℕ) (a : G.A (n + 2)) :
     G.transl n (G.res (n + 1) a) =
@@ -197,9 +197,9 @@ theorem transl_res (n : ℕ) (a : G.A (n + 2)) :
   | tmul x y => simp
 
 /- English proof (translation)
-Rewrite using `[transl_apply, ← pullTwo_comul]`. Use `conv_rhs => rw [← (TensorProduct.rid R _).apply_symm_apply a, TensorProduct.rid_symm_apply, ← Coalgebra.lTensor_counit_comul]`. Generalize the expression as in `comul (R := R) a = t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, add_tmul, hx, hy]`. Consider the case `tmul x y => simp [resOne_mulP, Algebra.algebraMap_eq_smul_one, smul_tmul]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem transl_mulP (n : ℕ) (a : G.A n) : G.transl n (G.mulP n a) = G.mulP n a ⊗ₜ 1 := by
   rw [transl_apply, ← pullTwo_comul]
@@ -212,13 +212,13 @@ theorem transl_mulP (n : ℕ) (a : G.A n) : G.transl n (G.mulP n a) = G.mulP n a
   | tmul x y => simp [resOne_mulP, Algebra.algebraMap_eq_smul_one, smul_tmul]
 
 /- English proof (translation)
-The claim follows from `TensorProduct.map_injective_of_flat_flat _ _ (Test.mulP_injective G n) (Test.mulP_injective G n)`.
+A detailed English derivation is pending.
 -/
 theorem pullbackTwo_mulP_injective (n : ℕ) : Function.Injective (pullbackTwo (G.mulP n)) :=
   TensorProduct.map_injective_of_flat_flat _ _ (Test.mulP_injective G n) (Test.mulP_injective G n)
 
 /- English proof (translation)
-The claim follows from `Test.mulP_injective G n (by rw [mulP_res, (mulBy_of_cobOne_eq_zero hb p).1, ← Nat.cast_smul_eq_nsmul R, hp, zero_smul, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem res_eq_zero_of_cobOne_eq_zero (hp : (p : R) = 0) (n : ℕ) {b : G.A (n + 1)}
     (hb : cobOne R _ b = 0) : G.res n b = 0 :=
@@ -227,14 +227,14 @@ theorem res_eq_zero_of_cobOne_eq_zero (hp : (p : R) = 0) (n : ℕ) {b : G.A (n +
       map_zero])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun n => (B.2 n).symm.trans (G.res_eq_zero_of_cobOne_eq_zero hp n (congrArg (fun c : G.cocycles => c.1 (n + 1)) hB)))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cob_eq_zero (hp : (p : R) = 0) {B : G.funs} (hB : G.cob B = 0) : B = 0 :=
   Subtype.ext (funext fun n => (B.2 n).symm.trans (G.res_eq_zero_of_cobOne_eq_zero hp n
     (congrArg (fun c : G.cocycles => c.1 (n + 1)) hB)))
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hw`. Rewrite `hb` using `[G.eq_zero_of_cob_eq_zero hp (congrArg Prod.fst hb), map_zero]`. Conclude with `(congrArg Prod.snd hb).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigOfOmega_injective_of_eq_zero (hp : (p : R) = 0) : Function.Injective G.rigOfOmega := by
   refine (injective_iff_map_eq_zero _).2 fun w hw => ?_
@@ -243,7 +243,7 @@ theorem rigOfOmega_injective_of_eq_zero (hp : (p : R) = 0) : Function.Injective 
   exact (congrArg Prod.snd hb).symm
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun w hw => ?_, G.omegaLevel_surjective 1⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(G.omega_val_eq_zero_iff 1 w).1 hw`. Rewrite using `[pow_one, hp, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem omegaLevel_one_bijective (hp : (p : R) = 0) : Function.Bijective (G.omegaLevel 1) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun w hw => ?_, G.omegaLevel_surjective 1⟩
@@ -254,7 +254,7 @@ def primLie : LinearMap.ker (cobOne R (G.A 1)) →ₗ[R] G.dual.Lie :=
   (G.dual.omegaLevel 1).dualMap ∘ₗ primTangent R (G.A 1)
 
 /- English proof (translation)
-The claim follows from `(congrArg (primTangent R (G.A 1) b) h).trans (primTangent_d b φ)`.
+A detailed English derivation is pending.
 -/
 theorem primLie_apply (b : LinearMap.ker (cobOne R (G.A 1))) (w : G.dual.omega)
     (φ : CartierDual R (G.A 1)) (h : w.1 1 = dUnit R φ) : G.primLie b w = φ b.1 :=

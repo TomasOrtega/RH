@@ -46,9 +46,9 @@ variable {O : Type} [CommRing O] {bar : O → O} {ψ lab : InvFun O} {i : ℕ}
 open Classical in
 
 /- English proof (translation)
-Unfold `markVal`. Establish `h : ∃ β' : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, ((β a b : ℤ) : ℝ) = β' a b` using `⟨β, fun _ _ => rfl⟩`. Rewrite using `[dif_pos h]`. Establish `e : h.choose = β` using `LinearMap.ext₂ fun a b => by`. Use `h.choose_spec a b` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm` after adjusting the coercions. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem markVal_int (n : ℕ) (β : LinearMap.BilinForm ℤ (Fin n → O)) :
     markVal bar ψ lab i n (fun a b => (β a b : ℝ)) = if IsMarked bar ψ lab i (Fin n → O) β then 1 else 0 := by
@@ -62,7 +62,7 @@ theorem markVal_int (n : ℕ) (β : LinearMap.BilinForm ℤ (Fin n → O)) :
   rw [e]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mem_balForms_int.2 fun y z => by simp [mul_comm], fun y => by simp [mul_self_nonneg], fun y h => h, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example : InFace (id : ℤ → ℤ) (zeroFun ℤ) (zeroFun ℤ) mulForm mulForm :=
   ⟨mem_balForms_int.2 fun y z => by simp [mul_comm], fun y => by simp [mul_self_nonneg], fun y h => h,

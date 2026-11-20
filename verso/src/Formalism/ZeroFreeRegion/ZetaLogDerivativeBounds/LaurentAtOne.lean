@@ -12,20 +12,20 @@ def laHfun (y : ℝ) (s : ℂ) : ℂ :=
 def laU : Set ℂ := {s | riemannZeta₁ s ≠ 0} ∩ {s | s ≠ 0}
 
 /- English proof (translation)
-The claim follows from `(isOpen_ne_fun differentiable_riemannZeta₁.continuous continuous_const).inter isOpen_ne`.
+A detailed English derivation is pending.
 -/
 theorem laU_open : IsOpen laU :=
   (isOpen_ne_fun differentiable_riemannZeta₁.continuous continuous_const).inter isOpen_ne
 
 /- English proof (translation)
-Simplify using `[laU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_mem_laU : (1 : ℂ) ∈ laU := by simp [laU]
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hZ : riemannZeta₁ s ≠ 0` using `hs.1`. Establish `h0 : s ≠ 0` using `hs.2`. Establish `hy0 : (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hd : DifferentiableAt ℂ (deriv riemannZeta₁) s` using `differentiable_riemannZeta₁.deriv s`. Establish `hz : DifferentiableAt ℂ riemannZeta₁ s` using `differentiable_riemannZeta₁ s`. Establish `hc : DifferentiableAt ℂ (fun s : ℂ => (y : ℂ) ^ s) s` using `differentiableAt_id.const_cpow (Or.inl hy0)`. Conclude with `((differentiableAt_const _).sub ((differentiableAt_id.sub_const 1).mul (hd.div hz hZ))).mul (hc.div differentiableAt_id h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem laH_diffOn (y : ℝ) (hy : 0 < y) : DifferentiableOn ℂ (laHfun y) laU := by
   intro s hs
@@ -41,14 +41,14 @@ theorem laH_diffOn (y : ℝ) (hy : 0 < y) : DifferentiableOn ℂ (laHfun y) laU 
     (hd.div hz hZ))).mul (hc.div differentiableAt_id h0)
 
 /- English proof (translation)
-Simplify using `[laHfun]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laH_one (y : ℝ) : laHfun y 1 = y := by simp [laHfun]
 
 /- English proof (translation)
-Establish `hy0 : (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Establish `hB : DifferentiableAt ℂ (fun s => deriv riemannZeta₁ s / riemannZeta₁ s) 1` using `(differentiable_riemannZeta₁.deriv 1).div (differentiable_riemannZeta₁ 1) (by simp)`. Establish `hk` using `(((hasDerivAt_id' (1 : ℂ)).sub_const 1).mul hB.hasDerivAt).const_sub 1`. Establish `hc : HasDerivAt (fun s : ℂ => (y : ℂ) ^ s) ((y : ℂ) ^ (1 : ℂ) * Complex.log y) 1`. Simplify using `using (hasStrictDerivAt_const_cpow (x := (y : ℂ)) (y := 1) (Or.inl hy0)).hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg` using `hc.div (hasDerivAt_id' (1 : ℂ)) one_ne_zero`. Establish `hh` using `hk.mul hg`. Establish `hh' : HasDerivAt (laHfun y) _ 1` using `hh`. Rewrite using `[hh'.deriv]`. Rewrite using `[← Complex.ofReal_log hy.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,19 +69,19 @@ theorem laH_deriv_one (y : ℝ) (hy : 0 < y) :
   ring
 
 /- English proof (translation)
-Introduce `y hy`. Use `set h := laHfun y with hdef`. Establish `hn : laU ∈ 𝓝 (1 : ℂ)` using `laU_open.mem_nhds one_mem_laU`. Use `⟨dslope (dslope h 1) 1, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : DifferentiableOn ℂ (dslope (dslope h 1) 1) laU` using `(differentiableOn_dslope hn).2 ((differentiableOn_dslope hn).2 (laH_diffOn y hy))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.differentiableAt hn`. Establish `hU : ∀ᶠ w in 𝓝[≠] (1 : ℂ), w ∈ laU` using `nhdsWithin_le_nhds hn filter_upwards [log_deriv_riemannZeta_eq_neg_inv_sub_add, hU, self_mem_nhdsWithin] with w hw hwU hw1`. Establish `hw1' : w - 1 ≠ 0` using `sub_ne_zero.2 hw1`. Establish `hw0 : w ≠ 0` using `hwU.2`. Establish `e1` using `sub_smul_dslope h 1 w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `sub_smul_dslope (dslope h 1) 1 w`. Rewrite `e2` using `[dslope_same]`. Simplify using `only [smul_eq_mul] at e1 e2`. Rewrite `e2` using `[hdef, laH_deriv_one y hy]`. Rewrite `e1` using `[hdef, laH_one y]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hhw : laHfun y w = (1 - (w - 1) * (deriv riemannZeta₁ w / riemannZeta₁ w)) * ((y : ℂ) ^ w / w)` using `rfl`. Unfold `Fy`. Rewrite using `[hw]`. Rewrite `*` using `[hdef]`. Generalize the expression as in `deriv riemannZeta₁ w / riemannZeta₁ w = B at hhw ⊢`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(y : ℂ) ^ w = P at hhw ⊢`. Generalize the expression as in `dslope (dslope (laHfun y) 1) 1 w = q at e2 ⊢`. Generalize the expression as in `dslope (laHfun y) 1 w = D at e1 e2`. Generalize the expression as in `laHfun y w = H at e1 hhw`. Establish `key : (1 - (w - 1) * B) * (P / w) = y + (w - 1) * (((y : ℂ) * Real.log y - (1 + Real.eulerMascheroniConstant) * y) + (w - 1) * q)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← hhw]`. Take the linear combination `-e1 - (w - 1) * e2`. Establish `lhs : -(-(w - 1)⁻¹ + B) * P / (w * (w - 1)) = (1 - (w - 1) * B) * (P / w) / (w - 1) ^ 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[lhs, key]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem laurentExpansionAtOne : LaurentAtOne := by
   intro y hy

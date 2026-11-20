@@ -21,13 +21,11 @@ noncomputable section
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Introduce `p _ R _ N hN A _ hA hL G t ψ hψ x hx`. Establish `: IsAdicComplete (Ideal.span {(p : R)}) R` using `GlobalTheory.isAdicComplete_span_natCast_of_isNilpotent p R ⟨N, hN⟩`. Take `⟨v, hv⟩` from `exists_lieCorr_of_pow_eq_zero p R N hN A G t x`. Take `⟨h, hh⟩` from `hL.2 v hv.1`. Establish `hFil : h ∈ Fil A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mem_Fil]`. Introduce `f hf`. Establish `hF : (⟨_, hf⟩ : primDR A) ∈ PrimitiveSubmodule A`. Express the relevant statement in the definitionally equal form `Form.cl _ f ∈ F1 (A.hom ≫ 𝟙 _)`. Rewrite using `[hodgeFiltration_eq_range]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.mem_range_self _ f`. Rewrite using `[hh.2 f hf, ← lie_psi_cl_eq_tanVal p R N hN A hA G t ψ hψ f hf hF x v hv]`. Conclude with `hx _`. Establish `hv1 : v = 1` using `(hL.1 h).unique hh (isLieImage_one_iff.mpr hFil)`. Substitute `hv1` using the available equality.
-
-Conclude with `hv.unique_left TorsionTower.lieCorr_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_apply_psi_eq_zero : ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → LieExact A → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (ψ : PrimitiveSubmodule A →ₗ[R] G.omega), (∀ c : PrimitiveSubmodule A, IsCan t c.1 (G.rigOfOmega (ψ c))) → ∀ x : G.Lie, (∀ c, x (ψ c) = 0) → x = 0 := by
   intro p _ R _ N hN A _ hA hL G t ψ hψ x hx

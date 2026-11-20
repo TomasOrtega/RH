@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' d G J L L' N hv hP' hP hJ hL hL' _`. Establish `hN : (fun j => fibreDeg κ (N j).a) = (Fin.elim0 : Fin 0 → FibreBlock κ → ℤ)`. Use function extensionality and compare the values at `fun j => j.elim0`. Establish `hA : Fin.append L' N = L'` using `funext fun j => by`. Rewrite using `[Fin.append_right_nil L' N rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hN, hA]`. Conclude with `hAI3 I hI K ι K' ι' κ v P' d G J L L' hv hP' hP hJ hL hL'`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfAt_zero (hAI3 : PushforwardArithIntersection.Statement) (I : AllFam) (hI : I.IsFamily) : PFAt I 0 := by
   intro K _ ι _ K' _ ι' _ κ v P' d G J L L' N hv hP' hP hJ hL hL' _
@@ -23,7 +23,7 @@ theorem pfAt_zero (hAI3 : PushforwardArithIntersection.Statement) (I : AllFam) (
   exact hAI3 I hI K ι K' ι' κ v P' d G J L L' hv hP' hP hJ hL hL'
 
 /- English proof (translation)
-Introduce `I hI K _ ι _ K' _ ι' _ κ v P' d r`. Establish `key : ∀ r, PFAt I r` using `fun r => Nat.rec (pfAt_zero hAI3 I hI) (fun r h => hStep I hI r h) r`. Conclude with `key r K ι K' ι' κ v P' d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PushforwardProjLineFlag.proof (hAI3 : PushforwardArithIntersection.Statement) (hStep : PFStep.Statement) : PushforwardProjLineFlag.Statement := by
   intro I hI K _ ι _ K' _ ι' _ κ v P' d r

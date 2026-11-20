@@ -9,9 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hW hfib`. Use `haveI : IsAffineHom (pullback.fst A.hom (spMap a)) := isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip inferInstance`. Use `⟨(pullback.fst A.hom (spMap a)) ⁻¹ᵁ W, hW.preimage _, ?_⟩` and prove the remaining obligations. Introduce `s`. Take `⟨x, hxW, hx⟩` from `hfib (spMap a s) ⟨s, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := A.hom) (g := spMap a) x s hx`. Conclude with `⟨z, by show (pullback.fst A.hom (spMap a)) z ∈ W; rw [hz1]; exact hxW, hz2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem affine_preimage_pullback_meets_fibres {R R' : Type} [CommRing R] [CommRing R'] (a : R →+* R')
     (A : Over (Sp R)) (W : A.left.Opens) : IsAffineOpen W →

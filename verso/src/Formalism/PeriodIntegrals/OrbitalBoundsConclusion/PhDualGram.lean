@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DualGramSubstitution.Ph
 namespace PI.Final.PhDualGram
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.PhDualGram.phDualGram_main`.
+A detailed English derivation is pending.
 -/
 theorem phase_dual_gram : PI.FglGram.PhDualGram := PI.UnitaryGroupMassFormula.PhDualGram.phDualGram_main
 

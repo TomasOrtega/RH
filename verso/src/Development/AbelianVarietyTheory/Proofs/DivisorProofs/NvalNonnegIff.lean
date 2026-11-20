@@ -18,9 +18,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `[nval_zero]`. Rewrite using `[nval_of_ne hx, EReal.coe_nonneg, le_div_iff₀ (by exact_mod_cast he), zero_mul]`. Simplify using `only [ne_eq, hx, not_false_eq_true, forall_const]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem nval_nonneg_iff {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K']
     [Algebra V K'] [IsFractionRing V K'] {e : ℕ} (he : 0 < e) (x : K') :
@@ -32,9 +32,9 @@ theorem nval_nonneg_iff {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValua
   norm_cast
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h T io y hy hne`. Take `⟨la, e, ho⟩` from `GlobalTheory.AlgLawsCompare.exists_overLa T io hy`. Use `h la _ ⟨PtV.mk (PY := Unit) (lies := fun _ _ _ _ => True) la ho y hy () trivial, rfl⟩` as an intermediate fact. Conclude with `(nval_nonneg_iff ho.1 _).1 this hne`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h la _ ⟨⟨q, T, ι, e, ho, y, hy, η, hη, rfl⟩, rfl⟩`. Conclude with `(nval_nonneg_iff ho.1 _).2 (h T ι y hy)`.
+A detailed English derivation is pending.
 -/
 theorem intAt_iff {Xo : Moduli Dw l} {c : Coeff l} (f : Rul Xo c) :
     IntAt Xo c f ↔ ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), y.IsAlg →
@@ -48,15 +48,13 @@ theorem intAt_iff {Xo : Moduli Dw l} {c : Coeff l} (f : Rul Xo c) :
     exact (nval_nonneg_iff ho.1 _).2 (h T ι y hy)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c d hpq hlev hO a n f hf g hg hP`. Rewrite using `[intAt_iff, intAt_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hG T io y hy hne`. Take `⟨T', iT, e, y', io₂, y₂, ⟨he, hv, φ, hφ, hm⟩, hfin, hio, hover⟩` from `GlobalTheory.CoverPoint.exists_ext_lift_to_cover E H Dw l Xo c 0 d hlev T io y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : evI y₂ g = evI y' f`. Use `letI := (iT.comp io).toAlgebra`. Use `letI := io₂.toAlgebra`. Conclude with `GlobalTheory.CoverDown.evR_eq_of_pull hf hg hP (fun a => hio a) hover`. Establish `h2 : evI y' f = iT (evI y f)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI := io.toAlgebra`. Use `letI := (iT.comp io).toAlgebra`. Use `GlobalTheory.SupLawProbe.evR_map (GlobalTheory.TransferCompare.evalWD_framed Xo c) f hf.1 φ y.1 (GlobalTheory.TransferCompare.allTest_framed Xo c T.Fr y.1) y'.1 hm` as an intermediate fact. Use `show evR Xo c f y'.1 = iT (evR Xo c f y.1)`. Rewrite using `[this]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `DFunLike.congr_fun hφ _`. Establish `key` using `hG T' io₂ y₂ hfin (by rw [h1, h2]; exact (map_ne_zero iT).2 hne)`. Rewrite `key` using `[h1, h2, hv]`. Conclude with `(mul_nonneg_iff_of_pos_left (by exact_mod_cast he)).1 key`. Introduce `hF T io₂ y₂ hy hne`.
-
-Take `⟨y, hyalg, -, hval⟩` from `GlobalTheory.CoverDown.exists_intFr_below E H Dw l Xo c d hpq hlev hO T io₂ y₂ hy`. Rewrite `hne`, the goal using `[hval a n f hf g hg hP]`. Conclude with `hF T _ y hyalg hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_intAt_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (d : DeltaDat Xo c 0), 1 ≤ Dw.p + Dw.q → d.IsLev → ((Dw.p ≠ Dw.q ∧ l.A = 1) ∨ GlobalTheory.ClsVal.Cmp.OverBase d) → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, ∀ g ∈ sec d.Xo₂ d.c₂ a n, Pull d f g → (IntAt d.Xo₂ d.c₂ g ↔ IntAt Xo c f) := by
   intro E _ _ _ H Dw l Xo c d hpq hlev hO a n f hf g hg hP

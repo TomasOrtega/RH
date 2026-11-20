@@ -24,14 +24,14 @@ variable (K p) in
 def incl : AInf K p →+* WittVector p K♭ := WittVector.map (algebraMap 𝒪♭ K♭)
 
 /- English proof (translation)
-The claim follows from `map_coeff _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem incl_coeff (x : AInf K p) (n : ℕ) :
     (incl K p x).coeff n = algebraMap 𝒪♭ K♭ (x.coeff n) :=
   map_coeff _ _ _
 
 /- English proof (translation)
-Introduce `x y h`. Use extensionality with `n`. Use `congrArg (fun z => z.coeff n) h` as an intermediate fact. Simplify using `only [incl_coeff] at this`. Conclude with `IsFractionRing.injective 𝒪♭ K♭ this`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incl_injective : Function.Injective (incl K p) := by
   intro x y h
@@ -41,14 +41,14 @@ theorem incl_injective : Function.Injective (incl K p) := by
   exact IsFractionRing.injective 𝒪♭ K♭ this
 
 /- English proof (translation)
-The claim follows from `map_teichmuller p _ a`.
+A detailed English derivation is pending.
 -/
 theorem incl_teichmuller (a : 𝒪♭) :
     incl K p (teichmuller p a) = teichmuller p (algebraMap 𝒪♭ K♭ a) :=
   map_teichmuller p _ a
 
 /- English proof (translation)
-Introduce `h`. Use `coeff_p_pow (p := p) (R := K♭) 1` as an intermediate fact. Rewrite `this` using `[pow_one, h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem natCast_p_ne_zero : (p : WittVector p K♭) ≠ 0 := by
   intro h
@@ -57,7 +57,7 @@ theorem natCast_p_ne_zero : (p : WittVector p K♭) ≠ 0 := by
   simp at this
 
 /- English proof (translation)
-The claim follows from `mem_nonZeroDivisors_of_ne_zero natCast_p_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem p_mem_nonZeroDivisors : (p : WittVector p K♭) ∈ nonZeroDivisors (WittVector p K♭) :=
   mem_nonZeroDivisors_of_ne_zero natCast_p_ne_zero
@@ -121,9 +121,9 @@ Both sides reduce to the same expression.
 theorem teichLift_red (x : WittVector p K♭) : (teichLift K p).red x = x.coeff 0 := rfl
 
 /- English proof (translation)
-Use `haveI := (teichLift K p).isAdicComplete`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := (teichLift K p).I) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, Ideal.smul_eq_mul, Ideal.mul_top, (teichLift K p).I_pow]`. Establish `h` using `(teichLift K p).teich_sub_pow_mem a n (teichmuller p ((((frobeniusEquiv K♭ p).symm : K♭ →+* K♭))^[n] a)) (by rw [teichLift_red, teichmuller_coeff_zero])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← map_pow, TeichLift.iterate_frobeniusEquiv_symm_pow]`. Conclude with `(teichLift K p).span_pow_anti (Nat.le_succ n) h`.
+A detailed English derivation is pending.
 -/
 theorem teich_eq (a : K♭) : (teichLift K p).teich a = teichmuller p a := by
   haveI := (teichLift K p).isAdicComplete
@@ -139,15 +139,15 @@ theorem teich_eq (a : K♭) : (teichLift K p).teich a = teichmuller p a := by
 def tcoeff (x : AInf K p) (n : ℕ) : 𝒪♭ := ((_root_.frobeniusEquiv 𝒪♭ p).symm ^ n) (x.coeff n)
 
 /- English proof (translation)
-Simplify using `[tcoeff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tcoeff_zero (x : AInf K p) : tcoeff x 0 = x.coeff 0 := by
   simp [tcoeff]
 
 /- English proof (translation)
-Use `(teichLift K p).coeff_eq_of_mem (a := fun i => algebraMap 𝒪♭ K♭ (tcoeff x i)) ?_ n le_rfl` and prove the remaining obligations. Establish `hx` using `(WittVector.eq_teichmullerSeries_iff (tcoeff x) x).1 (WittVector.teichmullerSeries_coeff_eq x).symm n`. Establish `h2` using `map_dvd (incl K p) hx`. Rewrite `h2` using `[map_pow, map_natCast, map_sub, map_sum]`. Rewrite using `[Ideal.mem_span_singleton, teichLift_π]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h2 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[TeichLift.finSum, show Finset.range (n + 1) = Finset.Iic n by ext; simp [Nat.lt_succ_iff]]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast, incl_teichmuller, teich_eq, teichLift_π, mul_comm]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_incl (x : AInf K p) (n : ℕ) :
     (teichLift K p).coeff (incl K p x) n = algebraMap 𝒪♭ K♭ (tcoeff x n) := by
@@ -163,18 +163,18 @@ theorem coeff_incl (x : AInf K p) (n : ℕ) :
   rw [map_mul, map_pow, map_natCast, incl_teichmuller, teich_eq, teichLift_π, mul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem incl_mem_int (x : AInf K p) : incl K p x ∈ (teichLift K p).int := ⟨x, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(teichLift K p).mem_int_iff.1 (incl_mem_int x) n`.
+A detailed English derivation is pending.
 -/
 theorem norm_coeff_incl_le_one (x : AInf K p) (n : ℕ) : ‖(teichLift K p).coeff (incl K p x) n‖ ≤ 1 :=
   (teichLift K p).mem_int_iff.1 (incl_mem_int x) n
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Conclude with `IsLocalization.Away.algebraMap_isUnit (teichLift K p).π`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_incl_p : IsUnit (algebraMap (WittVector p K♭) (teichLift K p).B
     (incl K p (p : AInf K p))) := by
@@ -188,16 +188,16 @@ def toB : 𝔸 →+* (teichLift K p).B :=
     (p : AInf K p) isUnit_incl_p
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 theorem toB_algebraMap (x : AInf K p) :
     toB K p (algebraMap (AInf K p) 𝔸 x) = algebraMap (WittVector p K♭) (teichLift K p).B (incl K p x) :=
   IsLocalization.lift_eq _ x
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨⟨y, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers (p : AInf K p)) z`. Simplify using `only at hs`. Establish `h1` using `congrArg (toB K p) hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, hz, zero_mul, toB_algebraMap]`. Establish `hy : y = 0` using `incl_injective (TeichLift.algebraMap_injective _ (by rw [map_zero, map_zero]; exact h1.symm))`. Rewrite `hs` using `[hy, map_zero]`. Conclude with `(IsLocalization.map_units 𝔸 s).mul_left_eq_zero.1 hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toB_injective : Function.Injective (toB K p) := by
   rw [injective_iff_map_eq_zero]
@@ -211,7 +211,7 @@ theorem toB_injective : Function.Injective (toB K p) := by
   exact (IsLocalization.map_units 𝔸 s).mul_left_eq_zero.1 hs
 
 /- English proof (translation)
-Rewrite using `[toB_algebraMap, TeichLift.coeffB_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffB_toB_algebraMap (x : AInf K p) :
     (teichLift K p).coeffB (toB K p (algebraMap (AInf K p) 𝔸 x)) = (teichLift K p).zcoeff (incl K p x) := by

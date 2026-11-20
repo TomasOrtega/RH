@@ -21,13 +21,13 @@ def evalHom (w : Sp T ⟶ X) (U : X.Opens) (h : ⊤ ≤ w ⁻¹ᵁ U) : Γ(X, U)
   (w.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of T)).hom).hom
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valT_eq (w : Sp T ⟶ X) (U : X.Opens) (h : ⊤ ≤ w ⁻¹ᵁ U) (f : Γ(X, U)) : valT w U f = evalHom w U h f :=
   dif_pos h
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ w ⁻¹ᵁ U` using `fun p hp => hle (h hp)`. Rewrite using `[valT_eq w V h, valT_eq w U h']`. Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE hle).op ≫ w.appLE V ⊤ h) ≫ _).hom f = _`. Rewrite using `[Scheme.Hom.map_appLE]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valT_res (w : Sp T ⟶ X) {U V : X.Opens} (hle : V ≤ U) (h : ⊤ ≤ w ⁻¹ᵁ V) (f : Γ(X, U)) :
     valT w V (rs X hle f) = valT w U f := by
@@ -38,9 +38,9 @@ theorem valT_res (w : Sp T ⟶ X) {U V : X.Opens} (hle : V ≤ U) (h : ⊤ ≤ w
   rfl
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap φ ≫ w) ⁻¹ᵁ U` using `fun p _ => h (Set.mem_univ _)`. Rewrite using `[valT_eq _ U h', valT_eq w U h]`. Establish `e : (spMap φ ≫ w).appLE U ⊤ h' = w.appLE U ⊤ h ≫ (spMap φ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `evalHom`. Rewrite using `[e, Category.assoc]`. Use `erw [Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem valT_comp (φ : T →+* T') (w : Sp T ⟶ X) (U : X.Opens) (h : ⊤ ≤ w ⁻¹ᵁ U) (f : Γ(X, U)) :
     valT (spMap φ ≫ w) U f = φ (valT w U f) := by
@@ -55,9 +55,9 @@ theorem valT_comp (φ : T →+* T') (w : Sp T ⟶ X) (U : X.Opens) (h : ⊤ ≤ 
   rfl
 
 /- English proof (translation)
-Establish `e` using `valT_res w (le_top : U ≤ ⊤) h (π.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of T)).inv.hom a))`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[valT_eq w ⊤ (fun _ _ => trivial)]`. Establish `e2 : w.appLE ⊤ ⊤ (fun _ _ => trivial) = w.appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `evalHom`. Rewrite using `[e2]`. Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso (CommRingCat.of T)).inv ≫ (π.appTop ≫ w.appTop) ≫ (Scheme.ΓSpecIso (CommRingCat.of T)).hom).hom a = a`. Rewrite using `[← Scheme.Hom.comp_appTop, hw]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -78,13 +78,13 @@ def trU (w : Sp T ⟶ X) (L : LB X) (c c' : L.ι) (h : ⊤ ≤ w ⁻¹ᵁ L.U c)
   Units.map (evalHom w (L.U c ⊓ L.U c') (fun _ hp => ⟨h hp, h' hp⟩)).toMonoidHom (L.g c c')
 
 /- English proof (translation)
-The claim follows from `(valT_eq _ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem trU_val (w : Sp T ⟶ X) (L : LB X) (c c' : L.ι) (h : ⊤ ≤ w ⁻¹ᵁ L.U c) (h' : ⊤ ≤ w ⁻¹ᵁ L.U c') :
     (trU w L c c' h h').val = valT w (L.U c ⊓ L.U c') (L.g c c').val := (valT_eq _ _ _ _).symm
 
 /- English proof (translation)
-Establish `hh : ⊤ ≤ w ⁻¹ᵁ (L.U c ⊓ L.U c')` using `fun _ hp => ⟨h hp, h' hp⟩`. Establish `e : rs X (inf_le_left : L.U c ⊓ L.U c' ≤ L.U c) (s.f c) = ((L.g c c') ^ (l : ℤ)).val * rs X (inf_le_right : L.U c ⊓ L.U c' ≤ L.U c') (s.f c')` using `s.compat c c'`. Establish `e1` using `valT_res w (inf_le_left : L.U c ⊓ L.U c' ≤ L.U c) hh (s.f c)`. Establish `e2` using `valT_res w (inf_le_right : L.U c ⊓ L.U c' ≤ L.U c') hh (s.f c')`. Rewrite using `[← e1, ← e2, e, trU_val, valT_eq _ _ hh, valT_eq _ _ hh, valT_eq _ _ hh, zpow_natCast, Units.val_pow_eq_pow_val, map_mul, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valT_sec (w : Sp T ⟶ X) (L : LB X) (c c' : L.ι) (h : ⊤ ≤ w ⁻¹ᵁ L.U c) (h' : ⊤ ≤ w ⁻¹ᵁ L.U c') (l : ℕ)
     (s : LB.Sec (pw L (l : ℤ))) :
@@ -97,21 +97,19 @@ theorem valT_sec (w : Sp T ⟶ X) (L : LB X) (c c' : L.ι) (h : ⊤ ≤ w ⁻¹�
   rw [← e1, ← e2, e, trU_val, valT_eq _ _ hh, valT_eq _ _ hh, valT_eq _ _ hh, zpow_natCast, Units.val_pow_eq_pow_val, map_mul, map_pow]
 
 /- English proof (translation)
-Establish `hs : ∀ q q' : Sp K, q = q'` using `fun q q' => Subsingleton.elim (α := PrimeSpectrum K) q q'`. Take `rfl` from `hs p p'`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (w p)) isOpen_univ`. Establish `h : ⊤ ≤ w ⁻¹ᵁ U` using `fun q _ => by rw [hs q p]; exact hxU`. Establish `h' : ⊤ ≤ w' ⁻¹ᵁ U` using `fun q _ => by rw [hs q p]; change w' p ∈ U; rw [← e]; exact hxU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (v : Sp K ⟶ X) (hv : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)), IsUnit (evalHom v U hv f) ↔ v p ∈ X.basicOpen f`. Introduce `v hv f`. Establish `e1 : IsUnit (evalHom v U hv f) ↔ IsUnit ((v.appLE U ⊤ hv).hom f)` using `isUnit_map_iff (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv _`. Rewrite using `[e1]`. Establish `e2` using `Scheme.basicOpen_appLE v ⊤ U hv f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `: p ∈ (Sp K).basicOpen ((v.appLE U ⊤ hv).hom f)`. Rewrite using `[Scheme.basicOpen_of_isUnit _ hu]`. Discharge the goal by the elementary cases of `trivial`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Use `erw [e2] at this`. Conclude with `this.2`. Introduce `hp`. Apply `RingedSpace.isUnit_of_isUnit_germ` to reduce the goal to its premises. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: q ∈ (Sp K).basicOpen ((v.appLE U ⊤ hv).hom f)` using `by erw [e2]; rw [hs q p]; exact ⟨trivial, hp⟩`. Conclude with `((Sp K).mem_basicOpen _ q hq).1 this`. Establish `hev : evalHom w U h = evalHom w' U h'`. Use extensionality with `f`. Establish `h1 : evalHom w U h (f - cst π U (evalHom w U h f)) = 0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, ← valT_eq w U h (cst _ _ _), valT_cst w π hw U h, sub_self]`. Establish `h2 : ¬ IsUnit (evalHom w' U h' (f - cst π U (evalHom w U h f)))`. Rewrite using `[key, ← e, ← key w h, h1]`. Conclude with `not_isUnit_zero`. Rewrite `h2` using `[isUnit_iff_ne_zero, not_not, map_sub, ← valT_eq w' U h' (cst _ _ _), valT_cst w' π hw' U h', sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2.symm`. Establish `happ : w.appLE U ⊤ h = w'.appLE U ⊤ h'`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of K)).hom]`. Conclude with `CommRingCat.hom_ext hev`. Establish `a1` using `IsAffineOpen.SpecMap_appLE_fromSpec w hU (isAffineOpen_top (Sp K)) h`.
-
-Establish `a2` using `IsAffineOpen.SpecMap_appLE_fromSpec w' hU (isAffineOpen_top (Sp K)) h'`. Rewrite `a1` using `[happ, a2, IsAffineOpen.fromSpec_top]`. Conclude with `((cancel_epi _).1 a1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section_ext {K : Type} [Field K] (π : X ⟶ Sp K) (w w' : Sp K ⟶ X) (hw : w ≫ π = 𝟙 _) (hw' : w' ≫ π = 𝟙 _)
     (p p' : Sp K) (e : w p = w' p') : w = w' := by
@@ -157,9 +155,9 @@ theorem section_ext {K : Type} [Field K] (π : X ⟶ Sp K) (w w' : Sp K ⟶ X) (
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Set `io : 𝟙_ (Over (Sp R)) ⟶ epsR R` to `Over.homMk (spMap (TrivSqZeroExt.fstHom R R R).toRingHom) (by`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1)`. Establish `h1 : io ≫ x.v k = 1`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[Hom.one_def, toUnit_unique (toUnit (𝟙_ (Over (Sp R)))) (𝟙 _), Category.id_comp]`. Conclude with `Over.OverMorphism.ext (x.basis.1 k)`. Establish `h2 : io ≫ ((toUnit (epsR R) ≫ z) * x.v k) = z`. Rewrite using `[MonObj.comp_mul, h1, _root_.mul_one, ← Category.assoc, toUnit_unique (io ≫ toUnit _) (𝟙 _), Category.id_comp]`. Conclude with `congrArg (·.left) h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_translate (x : KeyIn R) (z : Pt x) (k : Fin x.P.g) :
     spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ ((toUnit (epsR R) ≫ z) * x.v k).left = z.left := by
@@ -175,11 +173,11 @@ theorem fst_translate (x : KeyIn R) (z : Pt x) (k : Fin x.P.g) :
   exact congrArg (·.left) h2
 
 /- English proof (translation)
-Introduce `p _`. Establish `hp : (p : PrimeSpectrum (DualNumber R)) ∈ Set.range (PrimeSpectrum.comap (TrivSqZeroExt.fstHom R R R).toRingHom)`. Rewrite using `[range_comap_of_surjective _ _ (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩)]`. Introduce `a ha`. Establish `ha' : a.fst = 0` using `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `p.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `have : a ^ 2 = 0 := by ext <;> simp [ha', pow_two]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Take `⟨q, rfl⟩` from `hp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h (Set.mem_univ q)` as an intermediate fact. Rewrite `this` using `[← fst_translate x z k]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_translate (x : KeyIn R) (z : Pt x) (k : Fin x.P.g) {U : x.P.A.left.Opens} (h : ⊤ ≤ z.left ⁻¹ᵁ U) :
     ⊤ ≤ (show Sp (DualNumber R) ⟶ x.P.A.left from ((toUnit (epsR R) ≫ z) * x.v k).left) ⁻¹ᵁ U := by
@@ -198,15 +196,13 @@ theorem top_le_translate (x : KeyIn R) (z : Pt x) (k : Fin x.P.g) {U : x.P.A.lef
   exact this
 
 /- English proof (translation)
-Unfold `jac`. Rewrite using `[mul_comm x.P.g n, pow_mul]`. Establish `hd : ∀ (a : R) (M : Matrix (Fin x.P.g) (Fin x.P.g) R), a ^ x.P.g * M.det = (a • M).det` using `fun a M => by`. Rewrite using `[Matrix.det_smul, Fintype.card_fin]`. Rewrite using `[hd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i k`. Establish `hk` using `top_le_translate x z k h`. Establish `hk'` using `top_le_translate x z k h'`. Establish `e1 : (valT (T` using `DualNumber R) ((toUnit (epsR R) ≫ z) * x.v k).left (x.P.L.U c') ((s i).f c')).fst = 0 := by`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `valT_comp (TrivSqZeroExt.fstHom R R R).toRingHom _ _ hk' ((s i).f c')` as an intermediate fact. Use `erw [fst_translate x z k, h0 i] at this`. Conclude with `this.symm`. Establish `e2 : ((trU (T` using `DualNumber R) ((toUnit (epsR R) ≫ z) * x.v k).left x.P.L c c' hk hk').val).fst = (trU (T := R) z.left x.P.L c c' h h').val := by`. Use `valT_comp (TrivSqZeroExt.fstHom R R R).toRingHom _ (x.P.L.U c ⊓ x.P.L.U c') (fun _ hp => ⟨hk hp, hk' hp⟩) (x.P.L.g c c').val` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [fst_translate x z k] at this`. Rewrite using `[trU_val, trU_val]`. Conclude with `this.symm`. Rewrite using `[Matrix.smul_apply, Matrix.of_apply, Matrix.of_apply]`. Use `erw [valT_sec _ x.P.L c c' hk hk' n (s i)]`.
-
-Rewrite using `[TrivSqZeroExt.snd_mul]`. Use `erw [e1]`. Rewrite using `[TrivSqZeroExt.fst_pow, e2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jac_chart (x : KeyIn R) {n : ℕ} (s : Fin x.P.g → RR x n) (z : Pt x) (c c' : x.P.L.ι)
     (h : ⊤ ≤ z.left ⁻¹ᵁ x.P.L.U c) (h' : ⊤ ≤ z.left ⁻¹ᵁ x.P.L.U c')
@@ -253,9 +249,9 @@ def IsComb {N : ℕ} (b : Fin N → ∀ i, Γ(X, L.U i)) (c : Fin N → R) (f : 
 variable {π L}
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [he i, Finset.mul_sum, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `hM k i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only at this`. Rewrite using `[mul_left_comm, this, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k' _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsComb.mulVec {N N' : ℕ} {b : Fin N → ∀ i, Γ(X, L.U i)} {b' : Fin N' → ∀ i, Γ(X, L.U i)}
     {M : Matrix (Fin N) (Fin N') R} {u f : ∀ i, Γ(X, L.U i)} {e : Fin N' → R}
@@ -271,7 +267,7 @@ theorem IsComb.mulVec {N N' : ℕ} {b : Fin N → ∀ i, Γ(X, L.U i)} {b' : Fin
   exact Finset.sum_congr rfl fun k' _ => by ring
 
 /- English proof (translation)
-Use `IsComb.mulVec (u := fun _ => 1) (M := M) (b := b) (b' := b') (by simpa only [_root_.one_mul] using hM) he` as an intermediate fact. Simplify `this` using `only [_root_.one_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsComb.mulVec' {N N' : ℕ} {b : Fin N → ∀ i, Γ(X, L.U i)} {b' : Fin N' → ∀ i, Γ(X, L.U i)}
     {M : Matrix (Fin N) (Fin N') R} {f : ∀ i, Γ(X, L.U i)} {e : Fin N' → R}
@@ -281,9 +277,9 @@ theorem IsComb.mulVec' {N N' : ℕ} {b : Fin N → ∀ i, Γ(X, L.U i)} {b' : Fi
   simpa only [_root_.one_mul] using this
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `k' _ h`. Simplify using `[Matrix.one_apply_ne h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsComb.single {N : ℕ} (b : Fin N → ∀ i, Γ(X, L.U i)) (k : Fin N) :
     IsComb π L b (fun k' => (1 : Matrix (Fin N) (Fin N) R) k' k) (b k) := by
@@ -294,7 +290,7 @@ theorem IsComb.single {N : ℕ} (b : Fin N → ∀ i, Γ(X, L.U i)) (k : Fin N) 
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[h i, valT_eq w _ hi, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← valT_eq, ← valT_eq, valT_cst w π hw _ hi, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsComb.valT {N : ℕ} {b : Fin N → ∀ i, Γ(X, L.U i)} {c : Fin N → R} {f : ∀ i, Γ(X, L.U i)}
     (h : IsComb π L b c f) (w : Sp R ⟶ X) (hw : w ≫ π = 𝟙 _) (i : L.ι) (hi : ⊤ ≤ w ⁻¹ᵁ L.U i) :
@@ -318,7 +314,7 @@ variable {R : Type} [CommRing R]
 abbrev fam (x : KeyIn R) {l N : ℕ} (b : Fin N → RR x l) : Fin N → ∀ i, Γ(x.P.A.left, x.P.L.U i) := fun k => (b k).f
 
 /- English proof (translation)
-Establish `e : (combSec (π` using `x.P.A.hom) b c).f = f := funext fun i => (h i).symm`. Conclude with `(hb (combSec (π := x.P.A.hom) b c)).unique (fun i => (congrFun e i).trans (h i)) (fun i => (congrFun e i).trans (h' i))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comb_unique {x : KeyIn R} {l N : ℕ} {b : Fin N → RR x l} (hb : IsBasis x b) {c c' : Fin N → R}
     {f : ∀ i, Γ(x.P.A.left, x.P.L.U i)} (h : IsComb x.P.A.hom x.P.L (fam x b) c f)
@@ -328,9 +324,9 @@ theorem comb_unique {x : KeyIn R} {l N : ℕ} {b : Fin N → RR x l} (hb : IsBas
     (fun i => (congrFun e i).trans (h' i))
 
 /- English proof (translation)
-Use `choose c hc using fun k => (hb (b' k)).exists`. Use `choose c' hc' using fun k => (hb' (b k)).exists`. Establish `h1 : ∀ k, IsComb x.P.A.hom x.P.L (fam x b) (fun k' => (Matrix.of fun a k => c k a) k' k) (fam x b' k)` using `hc`. Establish `h2 : ∀ k, IsComb x.P.A.hom x.P.L (fam x b') (fun k' => (Matrix.of fun a k => c' k a) k' k) (fam x b k)` using `hc'`. Use `⟨⟨Matrix.of fun a k => c k a, Matrix.of fun a k => c' k a, ?_, ?_⟩, h1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components.
 
-Use extensionality with `a k`. Conclude with `congrFun (comb_unique hb (IsComb.mulVec' h1 (h2 k)) (IsComb.single _ k)) a`. Use extensionality with `a k`. Conclude with `congrFun (comb_unique hb' (IsComb.mulVec' h2 (h1 k)) (IsComb.single _ k)) a`.
+A detailed English derivation is pending.
 -/
 theorem exists_change {x : KeyIn R} {l N : ℕ} {b b' : Fin N → RR x l} (hb : IsBasis x b) (hb' : IsBasis x b') :
     ∃ B : (Matrix (Fin N) (Fin N) R)ˣ, ∀ k, IsComb x.P.A.hom x.P.L (fam x b) (fun k' => B.val k' k) (fam x b' k) := by
@@ -345,7 +341,7 @@ theorem exists_change {x : KeyIn R} {l N : ℕ} {b b' : Fin N → RR x l} (hb : 
     exact congrFun (comb_unique hb' (IsComb.mulVec' h2 (h1 k)) (IsComb.single _ k)) a
 
 /- English proof (translation)
-The claim follows from `hm i j hj k`.
+A detailed English derivation is pending.
 -/
 theorem isMul_comb {x : KeyIn R} {n l : ℕ} {s : Fin x.P.g → RR x n}
     {b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)} {m} (hm : IsMul x l s b m) (i j) (hj : j < x.P.g) (k) :
@@ -353,11 +349,11 @@ theorem isMul_comb {x : KeyIn R} {n l : ℕ} {s : Fin x.P.g → RR x n}
   hm i j hj k
 
 /- English proof (translation)
-Use `isCx_kosD (N := fun j => (l - j * n) ^ x.P.g) m _ (fun i i' j hj => ?_) (fun i => ?_)` and prove the remaining obligations. Use extensionality with `a k`. Establish `h1` using `IsComb.mulVec (isMul_comb hm i j (by omega)) (isMul_comb hm i' (j + 1) hj k)`. Establish `h2` using `IsComb.mulVec (isMul_comb hm i' j (by omega)) (isMul_comb hm i (j + 1) hj k)`. Simplify using `only [mul_left_comm (fam x s i' _) (fam x s i _)] at h2`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun (comb_unique (hb j (by omega)) h1 h2) a`. Use extensionality with `a k`. Establish `h1` using `(isMul_comb hm i 0 x.g_pos k).valT (z a).left (Over.w (z a)) (ch a) (hz.1 a)`. Use `h1.symm.trans ?_` and prove the remaining obligations. Establish `h2 : valT (T` using `R) (z a).left (x.P.L.U (ch a)) (fam x s i (ch a)) = 0 := hz.2.1 a i`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[valT_eq _ _ (hz.1 a)]`. Use `beta_reduce`. Rewrite using `[valT_eq _ _ (hz.1 a), map_mul, h2, zero_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCx_of_isMul {x : KeyIn R} {n l d : ℕ} {s : Fin x.P.g → RR x n} {z : Fin d → Pt x} {ch : Fin d → x.P.L.ι}
     {b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)} {m} (hm : IsMul x l s b m)

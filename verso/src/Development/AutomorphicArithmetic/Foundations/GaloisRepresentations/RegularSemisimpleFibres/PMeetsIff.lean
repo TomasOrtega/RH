@@ -9,19 +9,17 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `haveI : Invertible (Nat.card H : ℂ) := invertibleOfNonzero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')`. Establish `key` using `Representation.card_inv_mul_sum_char_mul_char_eq_finrank κ ρ`. Establish `hsum : (∑ g : H, κ.character g⁻¹ * ρ.character g) = ∑ g : H, ρ.character g * κ.character g⁻¹` using `Finset.sum_congr rfl fun g _ => mul_comm _ _`. Establish `hc : (Nat.card H : ℂ)⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hpos : Module.finrank ℂ (Representation.IntertwiningMap κ ρ) ≠ 0`. Introduce `h0`. Rewrite `key` using `[h0, Nat.cast_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h ((mul_eq_zero.mp key).resolve_left hc)`. Use `haveI := Module.nontrivial_of_finrank_pos (Nat.pos_of_ne_zero hpos)`. Take `⟨φ, hφ⟩` from `exists_ne (0 : Representation.IntertwiningMap κ ρ)`. Use `⟨φ.toLinearMap, ?_, fun g x => Representation.IntertwiningMap.isIntertwining κ ρ φ g x⟩` and prove the remaining obligations. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hφ (Representation.IntertwiningMap.ext (by simpa using h0))`. Introduce and unpack `⟨f, hf0, hf⟩`. Set `φ` to `f.intertwiningMap_of_isIntertwiningMap κ ρ hf`. Establish `hφ : φ ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hf0` to reduce the goal to its premises. Use extensionality with `x`. Use `congrArg (fun ψ : Representation.IntertwiningMap κ ρ => ψ x) h0` as an intermediate fact. Simplify `this` using `[φ]`. Establish `hpos : Module.finrank ℂ (Representation.IntertwiningMap κ ρ) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (Representation.invariantsEquivIntertwiningMap κ ρ).finrank_eq]`. Apply `Nat.pos_iff_ne_zero.mp` to reduce the goal to its premises. Rewrite using `[Module.finrank_pos_iff_exists_ne_zero]`. Use `⟨(Representation.invariantsEquivIntertwiningMap κ ρ).symm φ, ?_⟩` and prove the remaining obligations. Simplify using `using hφ`.
-
-Introduce `hs`. Rewrite `key` using `[hs, mul_zero]`. Conclude with `hpos (by exact_mod_cast key.symm)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_ne_iff {H V W : Type} [Group H] [Fintype H] [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
@@ -67,13 +65,13 @@ private theorem sum_ne_iff {H V W : Type} [Group H] [Fintype H] [AddCommGroup V]
     exact hpos (by exact_mod_cast key.symm)
 
 /- English proof (translation)
-Introduce `H V W _ _ _ _ _ _ _ _ ρ κ`. Use `haveI := Fintype.ofFinite H`. Establish `hstar : ∀ g : H, star (LinearMap.trace ℂ W (κ g)) = κ.character g⁻¹`. Introduce `g`. Establish `hmem : (fun g => algebraMap ℂ ℂ (κ.character g)) ∈ GlobalTheory.BI.Virt ℂ ℂ H` using `AddSubgroup.subset_closure (GlobalTheory.T.isCharacterOverSubfield_of_representation ℂ ℂ H W κ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.star_virtualCharacter_eq_apply_inv H _ hmem g` as an intermediate fact. Express the relevant statement in the definitionally equal form `star (κ.character g) = _`. Simplify using `using this`. Establish `hM : Meets ρ (fun g => LinearMap.trace ℂ W (κ g)) ↔ ∑ g : H, κ.character g⁻¹ * ρ.character g ≠ 0`. Unfold `Meets`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [hstar]`. Both sides reduce to the same expression. Establish `hswap : (∑ g : H, κ.character g⁻¹ * ρ.character g) = ∑ g : H, ρ.character g⁻¹ * κ.character g` using `Fintype.sum_equiv (Equiv.inv H) _ _ fun g => by simp [mul_comm]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, hswap]`. Conclude with `sum_ne_iff κ ρ`. Rewrite using `[hM]`. Conclude with `sum_ne_iff ρ κ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.meetsIff :
     MeetsIff := by

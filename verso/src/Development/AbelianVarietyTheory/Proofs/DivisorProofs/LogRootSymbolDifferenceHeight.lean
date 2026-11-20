@@ -12,19 +12,17 @@ noncomputable section
 namespace GlobalTheory.CovHt.Link
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k B x v e y`. Establish `hind : ArIn.ind (∅ : Finset ℕ) = fun _ => false` using `funext fun q => by simp [ArIn.ind]`. Establish `h` using `GlobalTheory.LatHt.abs_lgOf_rootSym_sub_le (Φ.C k) (DV.tauEmb D x.1) x.2 (Pad.setB κ B) v e y`. Rewrite `h` using `[hind, abs_sub_comm]`. Use `h.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpr : ∀ p ∈ Pad.setB κ B, p.Prime`. Introduce `p hp`. Break down `Finset.mem_union.1 hp with h | h` into its components or cases. Conclude with `(Finset.mem_filter.1 h).2`. Conclude with `Nat.prime_of_mem_primeFactors h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ p ∈ Pad.setB κ B, 0 ≤ -Real.log (NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (p : D.what₂.LL)) * htEx D.host.E p` using `fun p hp => mul_nonneg (neg_log_adicAbv_natCast_nonneg _ p v) (htEx_nonneg' _ p (hpr p hp))`. Use `split_ifs with hT`. Establish `hp` using `hpr _ hT`. Establish `hlp : 0 < Real.log (resP v)` using `Real.log_pos (by exact_mod_cast hp.one_lt)`. Establish `hp1 : (1 : ℝ) < (resP v : ℝ)` using `by exact_mod_cast hp.one_lt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha` using `neg_log_adicAbv_natCast_nonneg D.what₂.LL (resP v) v`. Establish `hvd : 0 ≤ vDiff D.host.E (resP v)` using `by unfold vDiff; positivity`. Rewrite using `[← map_natCast (algebraMap D.what₂.LL (AlgebraicClosure D.what₂.LL)), e.w_alg]`. Establish `key : |-Real.log (NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (resP v : D.what₂.LL)) / Real.log (resP v)| * LatHt.jump D.host.E (resP v) ≤ -Real.log (NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (resP v : D.what₂.LL)) * htEx D.host.E (resP v)`. Rewrite using `[abs_of_nonneg (div_nonneg ha hlp.le)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 
-Establish `e1 : -Real.log (NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (resP v : D.what₂.LL)) / Real.log (resP v) * LatHt.jump D.host.E (resP v) = -Real.log (NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (resP v : D.what₂.LL)) * (1 / ((resP v : ℝ) - 1) + vDiff D.host.E (resP v))`. Unfold `LatHt.jump`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Use `mul_le_mul_of_nonneg_left ?_ ha` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `htEx`. Establish `: vDiff D.host.E (resP v) = (padicValNat (resP v) (discr D.host.E).natAbs : ℝ) / (Module.finrank ℚ D.host.E : ℝ)` using `rfl`. Rewrite using `[← this]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `key.trans (Finset.single_le_sum (f := fun p : ℕ => -Real.log (NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (p : D.what₂.LL)) * htEx D.host.E p) hterm hT)`.
-
-Conclude with `Finset.sum_nonneg hterm`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem abs_lgOf_rootSym_false_sub_ind_le : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (B : ℝ) (x : DV.Rt D.what₂.Tau N) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (e : Ext v) (y : AlgPt (Φ.C k).Y), |lgOf (Φ.C k) (rootSym S.Dw (fun _ => false) none (DV.tauEmb D x.1) x.2) v e y - lgOf (Φ.C k) (rootSym S.Dw (ArIn.ind (setB κ B)) none (DV.tauEmb D x.1) x.2) v e y| ≤ htLog κ B v := by
   intro D A N j S κ s Φ k B x v e y

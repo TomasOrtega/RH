@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.HermHom
 
 /- English proof (translation)
-Rewrite `hw` using `[ReciprocityTheory.ChartRestriction.G.Chart.isLieComb_iff]`. Substitute `hw` using the available equality. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.Chart.isTan_iff]`. Conclude with `(GlobalTheory.UnifDifferential.isDiff_prod u (fun i => c i • W i) _ (fun i => ReciprocityTheory.ChartRestriction.G.Chart.isTan_scale _ ((ReciprocityTheory.ChartRestriction.G.Chart.isTan_iff _).2 (hv i))) (fun i => GlobalTheory.UnifDifferential.isDiff_scale u (h i) _)).1`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTangent_of_isLieComb {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g n : ℕ} (u : HolUnif A L g)
     {W : Fin n → (Fin g → ℂ)} {v : Fin n → (epsR ℂ ⟶ A)} {c : Fin n → ℂ} {w : epsR ℂ ⟶ A}
@@ -32,11 +32,11 @@ theorem isTangent_of_isLieComb {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g
     (fun i => GlobalTheory.UnifDifferential.isDiff_scale u (h i) _)).1
 
 /- English proof (translation)
-Establish `ht : ∀ i, IsTangent (t i)` using `fun i => (hW i).1.isTangent hψ (hv i)`. Establish `ht' : ∀ i, IsTangent (t' i)` using `fun i => (hW' i).1.isTangent hψ' (hv' i)`. Establish `hw : IsLieComb c v (ReciprocityTheory.ChartRestriction.G.Chart.prodPts c v)` using `(ReciprocityTheory.ChartRestriction.G.Chart.isLieComb_iff c v _).2 rfl`. Establish `hx : IsLieComb (fun i => s (c i)) t (ReciprocityTheory.ChartRestriction.G.Chart.prodPts (fun i => s (c i)) t)` using `(ReciprocityTheory.ChartRestriction.G.Chart.isLieComb_iff _ t _).2 rfl`. Establish `hxo : IsVecOver s ψ (ReciprocityTheory.ChartRestriction.G.Chart.prodPts c v) (ReciprocityTheory.ChartRestriction.G.Chart.prodPts (fun i => s (c i)) t)` using `(GlobalTheory.lieComb_baseChange _ _ s _ _ ψ hψ _ v _ c t _ (fun j => (hW j).1) hw).2 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxT` using `isTangent_of_isLieComb u ht (fun i => (hW i).2) hx`. Establish `hxD` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb _ _ _ _ u W t _ _ ht (fun i => (hW i).2) hx`. Take `⟨hfT, hfD⟩` from `hΦ _ _ hxT hxD`. Establish `hyo` using `GlobalTheory.NormHom.isVecOver_comp hxo e`. Establish `hy : IsLieComb (fun i => s (c' i)) t' (ReciprocityTheory.ChartRestriction.G.Chart.prodPts (fun i => s (c i)) t ≫ f₁)` using `(GlobalTheory.lieComb_baseChange _ _ s _ _ ψ' hψ' _ v' _ c' t' _ (fun j => (hW' j).1) (hc _ hw)).1 hyo`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyD` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb _ _ _ _ u' W' t' _ _ ht' (fun i => (hW' i).2) hy`. Conclude with `(hu _ hfT).unique hfD hyD`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_comb {K : Type} [Field K] (s : K →+* ℂ) {A A' : Over (Sp K)} [GrpObj A] [GrpObj A']
     {B B' : Over (Sp ℂ)} [GrpObj B] [GrpObj B'] {ψ : B.left ⟶ A.left} {ψ' : B'.left ⟶ A'.left}
@@ -72,7 +72,7 @@ theorem map_comb {K : Type} [Field K] (s : K →+* ℂ) {A A' : Over (Sp K)} [Gr
   exact (hu _ hfT).unique hfD hyD
 
 /- English proof (translation)
-Simplify using `only [hermForm, sum_dotProduct, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hermForm_sum_smul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) {J : Type*} (S : Finset J)
     (a : J → ℂ) (z : J → Fin g → ℂ) (w : Fin g → ℂ) :
@@ -80,9 +80,9 @@ private lemma hermForm_sum_smul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ)
   simp only [hermForm, sum_dotProduct, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using `[hermForm]`. Introduce `i S hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih]`. Simplify using `only [hermForm, star_add, star_smul, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, dotProduct_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.star_def]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hermForm_sum_smul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) {J : Type*}
     (S : Finset J) (a : J → ℂ) (w : J → Fin g → ℂ) :
@@ -97,7 +97,7 @@ private lemma hermForm_sum_smul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ
     simp [Complex.star_def]
 
 /- English proof (translation)
-Establish `hx` using `h.add_right σ x 0 0`. Rewrite `hx` using `[add_zero]`. Take the linear combination `-hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma hermFam_form_apply_zero {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (h : HermFam K V)
     (σ : K →+* ℂ) (x : V) : h.form σ x 0 = 0 := by
@@ -106,7 +106,7 @@ private lemma hermFam_form_apply_zero {K V : Type*} [Field K] [AddCommGroup V] [
   linear_combination -hx
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using `[hermFam_form_apply_zero]`. Introduce `i S hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, h.add_right, h.smul_right, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private lemma form_sum_smul_right {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (h : HermFam K V)
     (σ : K →+* ℂ) (x : V) {J : Type*} (S : Finset J) (a : J → K) (y : J → V) :
@@ -118,7 +118,7 @@ private lemma form_sum_smul_right {K V : Type*} [Field K] [AddCommGroup V] [Modu
     rw [Finset.sum_insert hi, Finset.sum_insert hi, h.add_right, h.smul_right, ih]
 
 /- English proof (translation)
-Rewrite using `[← h.conj_symm σ y, form_sum_smul_right, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, h.conj_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma form_sum_smul_left {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (h : HermFam K V)
     (σ : K →+* ℂ) (y : V) {J : Type*} (S : Finset J) (a : J → K) (x : J → V) :
@@ -128,9 +128,9 @@ private lemma form_sum_smul_left {K V : Type*} [Field K] [AddCommGroup V] [Modul
   rw [map_mul, h.conj_symm]
 
 /- English proof (translation)
-Establish `hb : ∀ d : Fin n → K, d = ∑ i, d i • (Pi.single i 1 : Fin n → K)` using `fun d => by`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hb c, hb c']`. Rewrite using `[form_sum_smul_left]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[form_sum_smul_right, hh, hermForm_sum_smul_left, hermForm_sum_smul_right, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem form_eq {K : Type} [Field K] {n g : ℕ} (h : HermFam K (Fin n → K)) (s : K →+* ℂ)
     (Hm : Matrix (Fin g) (Fin g) ℂ) (W : Fin n → Fin g → ℂ) (r : ℂ)
@@ -148,15 +148,13 @@ theorem form_eq {K : Type} [Field K] {n g : ℕ} (h : HermFam K (Fin n → K)) (
   ring
 
 /- English proof (translation)
-Introduce `hT hL K _ _ P F P' F' h h' f g M N hh hh' hf hg hl hM hN s c c'`. Take `⟨Q, ψ, v, u, Hm, χ, W, hQ, hAH, hW, hF⟩` from `hh s`. Take `⟨Q', ψ', v', u', Hm', χ', W', hQ', hAH', hW', hF'⟩` from `hh' s`. Take `⟨-, f₀, hf₀, ef₀, hc₀⟩` from `GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P' F' f hf`. Take `⟨-, g₀, hg₀, eg₀, hcg₀⟩` from `GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P F g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hf₀`. Use `haveI := hg₀`. Take `⟨f₁, hf₁, ef₁⟩` from `GlobalTheory.NormHom.exists_monHom_lift hQ.2.1 hQ'.2.1 f₀`. Take `⟨g₁, hg₁, eg₁⟩` from `GlobalTheory.NormHom.exists_monHom_lift hQ.2.1 hQ.2.1 g₀`. Take `⟨-, -, -, -, tu1, tu2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT Q Q.g u Hm χ hAH`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, tu1', tu2', -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT Q' Q'.g u' Hm' χ' hAH'`. Take `⟨Φ, hΦex, -, hΦ, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom Q.A Q'.A Q.isAb Q'.isAb Q.L Q'.L Q.g Q'.g u u' tu1' tu2' f₁ hf₁`. Take `⟨Γ, hΓex, -, hΓ, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom Q.A Q.A Q.isAb Q.isAb Q.L Q.L Q.g Q.g u u tu1 tu2 g₁ hg₁`. Establish `e1 : ∀ d : Fin F.P₀.g → K, Φ (∑ i, s (d i) • W i) = ∑ i, s (M d i) • W' i` using `fun d => map_comb s hQ.2.1 hQ'.2.1 u u' (fun i => F.basis.1 i) (fun i => F'.basis.1 i) hW hW' tu1' ef₁ hΦ (fun w hw => hc₀ M hM d w hw)`. Establish `e2 : ∀ d : Fin F.P₀.g → K, Γ (∑ i, s (d i) • W i) = ∑ i, s (N d i) • W i` using `fun d => map_comb s hQ.2.1 hQ.2.1 u u (fun i => F.basis.1 i) (fun i => F.basis.1 i) hW hW tu1 eg₁ hΓ (fun w hw => hcg₀ N hN d w hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lam1 : LamEq F'.P₀.L f₀ f₀ F.P₀.L g₀ (𝟙 F.P₀.A)` using `GlobalTheory.CM.lamEq_baseChange _ _ _ P.A P.A P'.A P.A F.P₀.A F.P₀.A F'.P₀.A F.P₀.A F.φ F.φ F'.φ F.φ F.fib.2.1.1.w F.fib.2.1.1.w F'.fib.2.1 F.fib.2.1 P'.L P.L F'.P₀.L F.P₀.L P'.isLB P.isLB F'.P₀.isLB F.P₀.isLB F'.fib.2.2 F.fib.2.2 f f g (𝟙 _) f₀ f₀ g₀ (𝟙 _) ef₀ ef₀ eg₀ (by simp) …`. Establish `lam2 : LamEq Q'.L f₁ f₁ Q.L g₁ (𝟙 Q.A)` using `GlobalTheory.CM.lamEq_baseChange _ _ _ F.P₀.A F.P₀.A F'.P₀.A F.P₀.A Q.A Q.A Q'.A Q.A ψ ψ ψ' ψ hQ.2.1.1.w hQ.2.1.1.w hQ'.2.1 hQ.2.1 F'.P₀.L F.P₀.L Q'.L Q.L F'.P₀.isLB F.P₀.isLB Q'.isLB Q.isLB hQ'.2.2 hQ.2.2 f₀ f₀ g₀ (𝟙 _) f₁ f₁ g₁ (𝟙 _) ef₁ ef₁ eg₁ (by simp) lam1`. Establish `hweil` using `GlobalTheory.CM.weilEq_of_lamEq hL ℂ Q Q Q' Q f₁ f₁ g₁ (𝟙 _) hf₁ hf₁ hg₁ inferInstance lam2`. Establish `hherm` using `(GlobalTheory.T.weilEq_iff_hermForm_eq_complex hT hL Q Q Q' Q u u u' u Hm' Hm χ' χ hAH' hAH f₁ f₁ g₁ (𝟙 _) Φ Φ Γ LinearMap.id hΦex hΦex hΓex (fun z => by simp)).1 hweil`. Rewrite using `[form_eq h' s Hm' W' _ hF' (M c) (M c'), form_eq h s Hm W _ hF c (N c'), ← e1 c, ← e1 c', ← e2 c', hherm]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem form_diff_eq : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (P' : Out.PolAV (Sp (𝓞 K))) (F' : GenFib P') (h : HermFam K (Fin F.P₀.g → K)) (h' : HermFam K (Fin F'.P₀.g → K)) (f : P.A ⟶ P'.A) (g : P.A ⟶ P.A) (M : (Fin F.P₀.g → K) →ₗ[K] (Fin F'.P₀.g → K)) (N : (Fin F.P₀.g → K) →ₗ[K] (Fin F.P₀.g → K)), F.IsHerm h → F'.IsHerm h' → IsMonHom f → IsMonHom g → LamEq P'.L f f P.L g (𝟙 P.A) → F.IsDiffOf F' f M → F.IsDiffOf F g N → ∀ s c c', h'.form s (M c) (M c') = h.form s c (N c') := by
   intro hT hL K _ _ P F P' F' h h' f g M N hh hh' hf hg hl hM hN s c c'

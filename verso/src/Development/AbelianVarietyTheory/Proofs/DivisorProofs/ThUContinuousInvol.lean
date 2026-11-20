@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.EulerTw
 
 /- English proof (translation)
-Establish `hc : Continuous (prjM E n T)` using `by show Continuous fun M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E) => idem E T • M + (1 - idem E T) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))`. Conclude with `(continuous_id.const_smul (idem E T)).add (continuous_const (y := (1 - idem E T) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))))`. Conclude with `Continuous.units_map (prjM E n T) hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_prjG (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (T : Finset (Pl E)) :
     Continuous (prjG E n T) := by
@@ -23,7 +23,7 @@ theorem continuous_prjG (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
   exact Continuous.units_map (prjM E n T) hc
 
 /- English proof (translation)
-Introduce `E _ _ _ n u`. Use `⟨?_, fun g => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hT : Continuous (thF E n)` using `GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)`. Conclude with `(((continuous_prjG E n (orb E u)).comp hT).comp continuous_subtype_val).subtype_mk _`. Rewrite using `[Comm.thU_val, Comm.thU_val, Comm.thF_thF]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thU_continuous_invol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (u : Pl E),
     Continuous (GlobalTheory.EulerTw.thU E n u) ∧ ∀ g, GlobalTheory.EulerTw.thU E n u (GlobalTheory.EulerTw.thU E n u g) = g := by

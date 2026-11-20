@@ -199,9 +199,9 @@ def KapOf : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
     (∀ y g, Φ (g * ζ y) = (ψ y : ℂ) • Φ g) → ∃ κ : HChar E, IsKap x W j S Φ κ
 
 /- English proof (translation)
-Introduce `E _ _ _ n hn d x hd hx π W hW j Up hUp w₀ hw₀ hu J χ hJo hJc hT`. Take `⟨ζ, hζ⟩` from `h1 E n d x hd hx`. Take `⟨S, Kw, hS, rfl, hsph, f, hf, hf0, hfix⟩` from `h2 E n π W hW Up hUp w₀ hw₀ hu J χ hJo hJc hT`. Establish `hχ` using `(h3 E n π w₀ hw₀).2 _ χ hT`. Take `⟨Φ, ψ, hΦ, hψ⟩` from `h4 E n x ζ hζ π W j Up w₀ hw₀ S Kw hS χ hχ f hf hf0 hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `h5 E n hn x ζ hζ π.V W j Up w₀ S Kw hS χ hχ Φ ψ hΦ hψ`. Conclude with `⟨S, Kw, Φ, κ, hS, rfl, hχ, h6 E n S Kw hS.opn, h7 E n Up w₀ hw₀ S Kw hS, hsph, hΦ, hκ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem seedGU_of (h1 : ZetaEx) (h2 : VecU) (h3 : SphType) (h4 : FormGU) (h5 : KapOf) (h6 : LevOpen) (h7 : LevCompact) : SeedGU := by
   intro E _ _ _ n hn d x hd hx π W hW j Up hUp w₀ hw₀ hu J χ hJo hJc hT

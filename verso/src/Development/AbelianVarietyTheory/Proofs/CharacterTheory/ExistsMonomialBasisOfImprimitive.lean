@@ -6,15 +6,15 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `hW`. Establish `hinj : ∀ g : G, Function.Injective (ρ g)`. Introduce `g x y h`. Establish `h2` using `congrArg (ρ g⁻¹) h`. Simplify `h2` using `[← Module.End.mul_apply, ← map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hint : DirectSum.IsInternal (fun q : G ⧸ T => W.map (ρ q.out))` using `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind hsup`. Set `bq : ∀ q : G ⧸ T, Module.Basis (Fin n) k (W.map (ρ q.out))` to `fun q => b.map (Submodule.equivMapOfInjective (ρ q.out) (hinj _) W)`. Set `B` to `hint.collectedBasis bq`. Establish `hB : ∀ (q : G ⧸ T) (i : Fin n), B ⟨q, i⟩ = ρ q.out (b i : V)`. Introduce `q i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[B, bq]`. Use `haveI : Fintype (G ⧸ T) := Fintype.ofFinite _`. Set `e` to `Fintype.equivFin (Σ _ : G ⧸ T, Fin n)`. Use `⟨_, B.reindex e, fun g i => ?_⟩` and prove the remaining obligations. Take `⟨⟨q, i⟩, rfl⟩` from `e.surjective i`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `QuotientGroup.mk_out_eq_mul T (g * q.out)`. Take `⟨j, c, hj⟩` from `hb (t⁻¹ : T) (t⁻¹).2 i`. Use `⟨e ⟨(QuotientGroup.mk (g * q.out) : G ⧸ T), j⟩, c, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.reindex_apply, Equiv.symm_apply_apply, hB]`. Rewrite using `[← map_smul, ← hj, ht, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_monomial_basis_of_imprimitive (k : Type) [Field k] (G : Type) [Group G] [Finite G]
     (V : Type) [AddCommGroup V] [Module k V] [FiniteDimensional k V] (ρ : Representation k G V)

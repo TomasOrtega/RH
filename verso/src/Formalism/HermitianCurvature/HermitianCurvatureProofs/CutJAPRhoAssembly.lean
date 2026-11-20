@@ -18,18 +18,18 @@ namespace Asm
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Qx8.frame_sub h (by intro v hv; simp only [List.mem_cons, List.not_mem_nil, or_false] at hv ⊢; tauto)`.
+A detailed English derivation is pending.
 -/
 theorem frame_swap {z b : Fin (2 * r + k + 1) → ℂ} {m : ℕ} {Fr : Fin m → Fin (2 * r + k + 1) → ℂ}
     (h : IsFrameOf k r [z, b] Fr) : IsFrameOf k r [b, z] Fr :=
   Qx8.frame_sub h (by intro v hv; simp only [List.mem_cons, List.not_mem_nil, or_false] at hv ⊢; tauto)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, h2, fun a v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h3 a _ (by simp)`. Use `h3 a (c • v) (by simp)` as an intermediate fact. Rewrite `this` using `[Qx8.herm_smul_right']`. Conclude with `(mul_eq_zero.1 this).resolve_left (star_ne_zero.2 hc)`. Introduce and unpack `⟨h1, h2, h3⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨h1, h2, fun a v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases. Conclude with `h3 a _ (by simp)`. Rewrite using `[Qx8.herm_smul_right', h3 a b (by simp), mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_smul {z b : Fin (2 * r + k + 1) → ℂ} {c : ℂ} (hc : c ≠ 0) {m : ℕ}
     {Fr : Fin m → Fin (2 * r + k + 1) → ℂ} : IsFrameOf k r [z, c • b] Fr ↔ IsFrameOf k r [z, b] Fr := by
@@ -54,7 +54,7 @@ section Wp
 variable {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Kset, Set.mem_ofPred_eq, frame_smul hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Kset_smul {z b : Fin (2 * r + k + 1) → ℂ} {c : ℂ} (hc : c ≠ 0) (π : Mx k r → (Wp →L[ℂ] Wp)) (f : ℂ → ℂ) :
     Kset k r z (c • b) π f = Kset k r z b π f := by
@@ -62,7 +62,7 @@ theorem Kset_smul {z b : Fin (2 * r + k + 1) → ℂ} {c : ℂ} (hc : c ≠ 0) (
   simp only [Kset, Set.mem_ofPred_eq, frame_smul hc]
 
 /- English proof (translation)
-Unfold `K`. Rewrite using `[Kset_smul hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem K_smul {z b : Fin (2 * r + k + 1) → ℂ} {c : ℂ} (hc : c ≠ 0) (π : Mx k r → (Wp →L[ℂ] Wp)) (f : ℂ → ℂ) :
     K k r z (c • b) π f = K k r z b π f := by
@@ -71,11 +71,11 @@ theorem K_smul {z b : Fin (2 * r + k + 1) → ℂ} {c : ℂ} (hc : c ≠ 0) (π 
 variable [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Set `S : Submodule ℂ Wp` to `{ carrier := Kset k r z b π f add_mem' := fun {x y} hx hy Fr hFr w => by`. Establish `hl` using `Qx8.capRep_lin hFr (z := z) (by simp) hrep hcont w`. Establish `e` using `hl x y 1`. Simplify using `only [one_smul] at e`. Rewrite using `[e, hx Fr hFr w, hy Fr hFr w, smul_add]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := fun Fr hFr w => by`. Rewrite using `[(Qx8.capRep_lin hFr (z := z) (by simp) hrep hcont w).map_zero, smul_zero]`. Use the proof step `smul_mem' := fun c x hx Fr hFr w => by`. Establish `hl` using `Qx8.capRep_lin hFr (z := z) (by simp) hrep hcont w`. Rewrite using `[hl.map_smul, hx Fr hFr w, smul_comm] }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `(Submodule.span_le (p := S)).2 (fun y hy => hy) hx`. Introduce `hx`. Conclude with `Submodule.subset_span hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_K {z b : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {f : ℂ → ℂ}
     (hrep : IsCRepOn (UWset k r z) π) (hcont : ContinuousOn π (UWset k r z)) {x : Wp} :
@@ -99,15 +99,15 @@ theorem mem_K {z b : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ]
     exact Submodule.subset_span hx
 
 /- English proof (translation)
-Introduce `Fr' hFr' w`. Establish `hhi : h⁻¹ ∈ UWset k r z` using `WeylGroupFacts.uw_inv hh`. Establish `hu` using `WeylGroupFacts.isUnit_of_uh hh.1`. Set `Fr : Fin (k - 1) → Fin (2 * r + k + 1) → ℂ` to `fun a => h⁻¹ *ᵥ Fr' a`. Establish `hFr : IsFrameOf k r [z, b] Fr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨fun p => CutBP.TNM.tc_inWb hhi (hFr'.1 p), fun p q => ?_, fun a v hv => ?_⟩` and prove the remaining obligations. Use `show herm (Hpk k r) (h⁻¹ *ᵥ Fr' p) (h⁻¹ *ᵥ Fr' q) = _`. Rewrite using `[Qx2.herm_uh hhi.1]`. Conclude with `hFr'.2.1 p q`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation.
 
-Break down `hv with rfl | rfl` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Use `show herm (Hpk k r) (h⁻¹ *ᵥ Fr' a) v = 0`. Rewrite using `[← Qx2.herm_uh hh.1, Qx8.inv_mulVec_uh hh.1]`. Conclude with `hFr'.2.2 a _ (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hint : ∀ h' ∈ UWset k r z, h' *ᵥ b = b → ∀ v, π h (π h' v) = π (h * h' * h⁻¹) (π h v)`. Introduce `h' hh' _ v`. Establish `e1` using `hrep.2 _ (WeylGroupFacts.uw_mul (WeylGroupFacts.uw_mul hh hh') hhi) h hh`. Rewrite `e1` using `[Matrix.mul_assoc (h * h'), Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`. Establish `e3` using `hrep.2 h hh h' hh'`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e` using `Qx8.capRep_intertwine (frame_swap hFr) hrep hcont hh.1 (π h) hint w x`. Establish `e2 : (fun a => h *ᵥ Fr a) = Fr'` using `funext fun a => Qx8.inv_mulVec_uh hh.1 (Fr' a)`. Rewrite `e` using `[e2]`. Rewrite using `[← e, hx Fr hFr w, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kset_uw {z b : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {f : ℂ → ℂ}
     (hrep : IsCRepOn (UWset k r z) π) (hcont : ContinuousOn π (UWset k r z)) {h : Mx k r} (hh : h ∈ UWset k r z)
@@ -147,23 +147,21 @@ section Proj
 variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sp_congr {K₁ K₂ : Submodule ℂ Wp} (h : K₁ = K₂) : K₁.starProjection = K₂.starProjection := by
   subst h; rfl
 
 /- English proof (translation)
-Establish `hhi : h⁻¹ ∈ UWset k r z` using `WeylGroupFacts.uw_inv hh`. Establish `hu` using `WeylGroupFacts.isUnit_of_uh hh.1`. Establish `hinv : ∀ v, π h (π h⁻¹ v) = v`. Introduce `v`. Establish `e` using `hrep.2 _ hh _ hhi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[Matrix.mul_nonsing_inv _ hu, hrep.1]`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← e]`. Both sides reduce to the same expression. Set `Lh : Wp →ₗᵢ[ℂ] Wp` to `{ toLinearMap := (π h : Wp →ₗ[ℂ] Wp), norm_map' := hunit h hh }`. Establish `hin : ∀ u v, inner ℂ (π h u) (π h v) = inner ℂ u v` using `fun u v => Lh.inner_map_map u v`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[mem_K hrep hcont]`. Conclude with `Kset_uw hrep hcont hh ((mem_K hrep hcont).1 (Submodule.starProjection_apply_mem _ _))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hy' : π h⁻¹ y ∈ K k r z b π f`. Rewrite `hy`, the goal using `[mem_K hrep hcont]`. Use `Kset_uw hrep hcont hhi hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : x - π h ((K k r z b π f).starProjection (π h⁻¹ x)) = π h (π h⁻¹ x - (K k r z b π f).starProjection (π h⁻¹ x))`. Rewrite using `[map_sub, hinv]`. Rewrite using `[e]`. Use `conv_lhs => rw [← hinv y]`. Rewrite using `[hin]`.
-
-Conclude with `Submodule.starProjection_inner_eq_zero _ _ hy'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_uw {z b : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {f : ℂ → ℂ}
     (hrep : IsCRepOn (UWset k r z) π) (hcont : ContinuousOn π (UWset k r z))
@@ -210,53 +208,47 @@ end Asm
 
 open Asm in
 /- English proof (translation)
-Introduce `hF hC hO hL`. Unfold `PRho.PRhoExists`. Introduce `Wp Wq _ _ _ _ _ _ P Bs hPl hk`. Take `⟨hOK, hz, -, -, -, hπ, -⟩` from `hPl`. Take `⟨-, hrep, hcont, hunit, -, -⟩` from `id hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : 0 < Tz P.k P.r Bs.z` using `Bs.T_pos`. Take `⟨w, p, hLag⟩` from `hL hO P hOK hk`. Establish `hNF` using `weighted_norm_facts_hold P.k P.r Bs.z hz hT`. Establish `hfr : ∀ a, 0 < PRho.nrmW P.k P.r Bs.z a → ∃ Fr : Fin (P.k - 1) → Fin (2 * P.r + P.k + 1) → ℂ, IsFrameOf P.k P.r [Bs.z, SSn.prWv P.k P.r Bs.z a] Fr`. Introduce `a ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Fr, -, hev⟩` from `hF P.k P.r Bs.z hk hz hT a ha`. Conclude with `⟨Fr a, hev.self_of_nhds⟩`. Use `⟨fun ρ a => PrDef P Bs.z Bs.π ρ a, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ a₀ ha₀`. Establish `ha₀' : 0 < PRho.nrmW P.k P.r Bs.z a₀`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) / 4 < PRho.nrmW P.k P.r Bs.z a₀` using `ha₀`. Combine the linear equalities and inequalities to obtain the conclusion. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Take `⟨Fr, hFr, hev⟩` from `hF P.k P.r Bs.z hk hz hT a₀ ha₀'`. Take `⟨C, hCs, hCeq⟩` from `hC Wp P.k P.r (P.k - 1) Bs.z Bs.π ⟨hrep, hcont⟩ w`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpos : ∀ᶠ a in 𝓝 a₀, 0 < PRho.nrmW P.k P.r Bs.z a` using `(hNF.1.continuous.tendsto a₀).eventually (lt_mem_nhds ha₀')`. Establish `hCF : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun a => C (Fr a)) a₀` using `hCs.contDiffAt.comp a₀ hFr`. Establish `hsm : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun a => Polynomial.aeval (C (Fr a)) (p ρ)) a₀`. Simplify using `only [Polynomial.aeval_eq_sum_range]`. Conclude with `ContDiffAt.sum fun i _ => (hCF.pow i).const_smul _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsm.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hpos, hev] with a ha hfa`. Use `set b := SSn.prWv P.k P.r Bs.z a with hb`. Establish `hzz : herm (Hpk P.k P.r) Bs.z Bs.z ≠ 0`. Introduce `h0; have : Tz P.k P.r Bs.z = 0 := by unfold Tz; rw [h0]; simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzzT : herm (Hpk P.k P.r) Bs.z Bs.z = ((-(Tz P.k P.r Bs.z) : ℝ) : ℂ)`. Establish `e2` using `Complex.conj_eq_iff_re.1 (Qx2.herm_star Bs.z Bs.z)`. Simplify using `only [Tz, neg_neg]`. Conclude with `e2.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbW : inWb P.k P.r b ∧ herm (Hpk P.k P.r) b Bs.z = 0`. Rewrite using `[hb]`. Prove the components needed by the constructor for the conclusion. Introduce `i hi`. Simplify using `only [SSn.prWv, SSn.wbP, Pi.add_apply, Pi.smul_apply, hz i hi, smul_eq_mul, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (by omega)]`. Unfold `SSn.prWv`. Rewrite using `[Qx8.herm_add_left', Qx8.herm_smul_left', hzzT]`. Establish `hT0 : ((Tz P.k P.r Bs.z : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set s : ℝ := Real.sqrt (PRho.nrmW P.k P.r Bs.z a) with hs`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.2 ha`. Use `set c : ℂ := ((s⁻¹ : ℝ) : ℂ) with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc0 : c ≠ 0` using `by rw [hc]; exact_mod_cast (inv_pos.2 hs0).ne'`. Establish `hbb : herm (Hpk P.k P.r) b b = ((PRho.nrmW P.k P.r Bs.z a : ℝ) : ℂ)`. Establish `e1 : star (herm (Hpk P.k P.r) b b) = herm (Hpk P.k P.r) b b` using `Qx2.herm_star b b`. Establish `e2` using `Complex.conj_eq_iff_re.1 e1`. Rewrite using `[← e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `he1 : inWb P.k P.r (c • b)` using `fun i hi => by simp [hbW.1 i hi]`. Establish `he2 : herm (Hpk P.k P.r) (c • b) Bs.z = 0` using `by rw [Qx8.herm_smul_left', hbW.2, mul_zero]`. Establish `he3 : herm (Hpk P.k P.r) (c • b) (c • b) = 1`. Rewrite using `[Qx8.herm_smul_left', Qx8.herm_smul_right', hbb, hc, Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hss : s * s = PRho.nrmW P.k P.r Bs.z a` using `Real.mul_self_sqrt ha.le`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul, ← hss]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish `hfe : IsFrameOf P.k P.r [Bs.z, c • b] (Fr a)` using `(frame_smul hc0).2 hfa`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hCv : ∀ v, C (Fr a) v = capRep P.k P.r Bs.π (Fr a) w v` using `hCeq (Fr a) (Qx8.frame_sub hfa (by simp))`. Rewrite using `[hLag Wp Bs.z (c • b) Bs.π hz hT hπ he1 he2 he3 (Fr a) hfe (C (Fr a)) hCv ρ]`. Use `show PrDef P Bs.z Bs.π ρ a = _`. Unfold `PrDef`. Rewrite using `[if_pos ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `sp_congr (K_smul hc0 _ _).symm`. Introduce `h hh ρ a`. Establish `hn : PRho.nrmW P.k P.r Bs.z (h *ᵥ a) = PRho.nrmW P.k P.r Bs.z a` using `hNF.2 h hh a`. Use `show PrDef P Bs.z Bs.π ρ (h *ᵥ a) = (Bs.π h).comp ((PrDef P Bs.z Bs.π ρ a).comp (Bs.π h⁻¹))`. Unfold `PrDef`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hn]`. Use `split_ifs with ha`. Use `(sp_congr ?_).trans (proj_uw hrep hcont hunit hh)` and prove the remaining obligations. Rewrite using `[kap_prWv_mulVec hz hh a]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Introduce `a ha`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ c hc`. Establish `hpos : 0 < PRho.nrmW P.k P.r Bs.z (c • a)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[nrmW_smul]`. Conclude with `mul_pos (Complex.normSq_pos.2 hc) ha`. Use `show PrDef P Bs.z Bs.π ρ (c • a) = PrDef P Bs.z Bs.π ρ a`. Unfold `PrDef`. Rewrite using `[if_pos hpos, if_pos ha]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sp_congr (by rw [SSn.Geom.prWv_eq, SSn.Geom.prW_smul, ← SSn.Geom.prWv_eq]; exact K_smul hc _ _)`. Introduce `ρ x y show inner ℂ (PrDef P Bs.z Bs.π ρ a x) y = inner ℂ x (PrDef P Bs.z Bs.π ρ a y)`. Unfold `PrDef`. Rewrite using `[if_pos ha]`. Conclude with `Submodule.inner_starProjection_left_eq_right _ x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ρ ρ' show (PrDef P Bs.z Bs.π ρ a).comp (PrDef P Bs.z Bs.π ρ' a) = if ρ = ρ' then PrDef P Bs.z Bs.π ρ a else 0`. Unfold `PrDef`. Rewrite using `[if_pos ha, if_pos ha]`. Use `split_ifs with hρ`. Substitute `hρ` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Conclude with `Submodule.starProjection_eq_self_iff.2 (Submodule.starProjection_apply_mem _ x)`. Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply, zero_apply]`.
-
-Rewrite using `[Submodule.starProjection_apply_eq_zero_iff, Submodule.mem_orthogonal]`. Introduce `u hu`. Establish `hu'` using `(mem_K hrep hcont).1 hu`. Establish `hv'` using `(mem_K hrep hcont).1 (Submodule.starProjection_apply_mem (K P.k P.r Bs.z (SSn.prWv P.k P.r Bs.z a) Bs.π (fun w => M.xC P ρ' (w - ((P.k : ℂ) - 2) / 2))) x)`. Take `⟨Y, hY⟩` from `Qx8.xC_sep hOK hρ`.
-
-Use `hO Wp P.k P.r Bs.z (SSn.prWv P.k P.r Bs.z a) Bs.π hz hT ⟨hrep, hcont⟩ hunit (hfr a ha) _ _ u _ hu' hv' ⟨Y + ((P.k : ℂ) - 2) / 2, ?_⟩` and prove the remaining obligations. Simplify using `using hY`. Introduce `ρ x show PrDef P Bs.z Bs.π ρ a x = x ↔ _`. Unfold `PrDef`. Rewrite using `[if_pos ha, Submodule.starProjection_eq_self_iff, mem_K hrep hcont]`.
-
-Conclude with `Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem rho_projection_assembly : Assembly := by
   intro hF hC hO hL

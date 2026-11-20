@@ -12,9 +12,9 @@ section General
 variable {K : Type*} [Field K]
 
 /- English proof (translation)
-Establish `h : v x + v x⁻¹ = 0` using `by rw [← v.map_mul, mul_inv_cancel₀ hx, v.map_one]`. Establish `h' : v x ≠ ⊤`. Introduce `e`. Rewrite `h` using `[e, top_add]`. Conclude with `WithTop.top_ne_zero h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp h'`. Conclude with `⟨r, hr.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coe (v : AddValuation K (WithTop ℚ)) {x : K} (hx : x ≠ 0) :
     ∃ r : ℚ, v x = (r : WithTop ℚ) := by
@@ -32,7 +32,7 @@ open GlobalTheory.Per.Val
 
 open TensorProduct in
 /- English proof (translation)
-Rewrite using `[AddValuation.map_div, AddValuation.map_mul, AddValuation.map_pow, AddValuation.map_pow, AddValuation.map_pow, hx, hu]`. Use `norm_cast`. Simplify using `[nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Simplify using the standard rewrite rules.
 -/
 private lemma addValuation_pow_mul_pow_div_pow {F : Type*} [Field F]
     (u : AddValuation F (WithTop ℚ)) {π : F} (hu : u π = 1) {x : F} {t : ℚ} (hx : u x = t)
@@ -44,9 +44,9 @@ private lemma addValuation_pow_mul_pow_div_pow {F : Type*} [Field F]
 
 open TensorProduct in
 /- English proof (translation)
-Establish `hMN : ((t.num.toNat : ℕ) : ℚ) - ((-t.num).toNat : ℕ) = t.num`. Conclude with `Int.toNat_sub_toNat_neg t.num` after adjusting the coercions. Establish `hbt : (t.den : ℚ) * t = t.num` using `by rw [mul_comm]; exact Rat.mul_den_eq_num t`. Establish `hy` using `h (x ^ t.den * π ^ (-t.num).toNat / π ^ t.num.toNat) (by`. Rewrite using `[addValuation_pow_mul_pow_div_pow v hv hvx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(by linarith : (0 : ℚ) ≤ t.den * t + ((-t.num).toNat : ℕ) - (t.num.toNat : ℕ)))` after adjusting the coercions. Rewrite `hy` using `[addValuation_pow_mul_pow_div_pow w hw hwx]`. Establish `hy' : (0 : ℚ) ≤ t.den * s + ((-t.num).toNat : ℕ) - (t.num.toNat : ℕ)` using `by exact_mod_cast hy`. Establish `hd : (0 : ℚ) < t.den` using `by exact_mod_cast t.den_pos`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma le_of_nonneg_imp_nonneg {F : Type*} [Field F] (v w : AddValuation F (WithTop ℚ)) {π : F}
     (hv : v π = 1) (hw : w π = 1) (h : ∀ y, 0 ≤ v y → 0 ≤ w y) {x : F} {t s : ℚ}
@@ -64,9 +64,9 @@ private lemma le_of_nonneg_imp_nonneg {F : Type*} [Field F] (v w : AddValuation 
 
 open TensorProduct in
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.mp (mt (AddValuation.top_iff v).mp hx)`. Take `⟨s, hs⟩` from `WithTop.ne_top_iff_exists.mp (mt (AddValuation.top_iff w).mp hx)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ht, ← hs]`. Establish `h1` using `le_of_nonneg_imp_nonneg v w hv hw (fun y => (h y).mp) ht.symm hs.symm`. Establish `h2` using `le_of_nonneg_imp_nonneg w v hw hv (fun y => (h y).mpr) hs.symm ht.symm`. Conclude with `congrArg _ (le_antisymm h1 h2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma addValuation_eq_of_nonneg_iff {F : Type*} [Field F] (v w : AddValuation F (WithTop ℚ))
     {π : F} (hv : v π = 1) (hw : w π = 1) (h : ∀ y, 0 ≤ v y ↔ 0 ≤ w y) (x : F) : v x = w x := by
@@ -82,13 +82,13 @@ private lemma addValuation_eq_of_nonneg_iff {F : Type*} [Field F] (v w : AddValu
 open TensorProduct in
 
 /- English proof (translation)
-Introduce `l _ P LL`. Use `set w : AddValuation (↥LL.1) (WithTop ℚ) := (_root_.GlobalTheory.Per.Val.vOm l).comap (algebraMap (↥LL.1) (_root_.Formalism.BasicNotions.Loc.Om l)) with hwdef`. Establish `hwx : ∀ x : ↥LL.1, w x = _root_.GlobalTheory.Per.Val.vf (x : _root_.Formalism.BasicNotions.Loc.Om l)` using `fun x => rfl`. Establish `hw : w (l : ↥LL.1) = 1`. Rewrite using `[hwx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((l : ↥LL.1) : _root_.Formalism.BasicNotions.Loc.Om l) = (l : _root_.Formalism.BasicNotions.Loc.Om l)` using `by simp`. Rewrite using `[this]`. Conclude with `_root_.GlobalTheory.Per.Val.vf_l`. Establish `hnn : ∀ y : ↥LL.1, 0 ≤ P.v LL y ↔ 0 ≤ w y`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.Formalism.BasicNotions.LocPrime.v_O, _root_.GlobalTheory.Per.Val.mem_OL_iff, hwx]`. Use `_root_.GlobalTheory.Per.Val.le_vf_iff (y : _root_.Formalism.BasicNotions.Loc.Om l) 0` as an intermediate fact. Simplify using `only [Rat.cast_zero, neg_zero, Real.rpow_zero, WithTop.coe_zero] at this`. Conclude with `this.symm`. Establish `key : ∀ x : ↥LL.1, P.v LL x = _root_.GlobalTheory.Per.Val.vf (x : _root_.Formalism.BasicNotions.Loc.Om l)` using `fun x => (addValuation_eq_of_nonneg_iff (P.v LL) w (P.v_l LL) hw hnn x).trans (hwx x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x q => ?_, fun x q => ?_, fun x => _root_.GlobalTheory.Per.Val.mem_OL_iff LL x⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `_root_.GlobalTheory.Per.Val.vf_eq_iff _ q`. Rewrite using `[key]`. Conclude with `_root_.GlobalTheory.Per.Val.le_vf_iff _ q`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HWL.NormVal.locPrime_v_normalised : ∀ (l : ℕ) [Fact l.Prime] (P : _root_.Formalism.BasicNotions.LocPrime l) (LL : _root_.Formalism.BasicNotions.Loc.FinExt l), (∀ (x : ↥LL.1) (q : ℚ), P.v LL x = (q : WithTop ℚ) ↔ ‖(x : _root_.Formalism.BasicNotions.Loc.Om l)‖ = (l : ℝ) ^ (-(q : ℝ))) ∧ (∀ (x : ↥LL.1) (q : ℚ), (q : WithTop ℚ) ≤ P.v LL x ↔ ‖(x : _root_.Formalism.BasicNotions.Loc.Om l)‖ ≤ (l : ℝ) ^ (-(q : ℝ))) ∧ ∀ x : ↥LL.1, x ∈ _root_.Formalism.BasicNotions.Loc.OL LL ↔ ‖(x : _root_.Formalism.BasicNotions.Loc.Om l)‖ ≤ 1 := by
   intro l _ P LL

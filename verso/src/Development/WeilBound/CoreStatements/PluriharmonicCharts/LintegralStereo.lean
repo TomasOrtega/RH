@@ -18,28 +18,26 @@ def nE (a : ℂ) : E3 := WithLp.toLp 2 (nF a)
 def wt (a : ℂ) : ℝ := Real.pi⁻¹ / (1 + ‖a‖ ^ 2) ^ 2
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [nF] <;> fun_prop (disch := (intro x; positivity))`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_nF : Continuous nF := by
   refine continuous_pi fun i => ?_
   fin_cases i <;> simp [nF] <;> fun_prop (disch := (intro x; positivity))
 
 /- English proof (translation)
-The claim follows from `((PiLp.continuous_toLp (p := 2) (β := fun _ : Fin 3 => ℝ)).comp continuous_nF).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_nE : Measurable nE :=
   ((PiLp.continuous_toLp (p := 2) (β := fun _ : Fin 3 => ℝ)).comp continuous_nF).measurable
 
 /- English proof (translation)
-Use `set a := Complex.polarCoord.symm (ρ, θ) with ha`. Establish `hn : ‖a‖ ^ 2 = ρ ^ 2`. Rewrite using `[ha, Complex.norm_polarCoord_symm, sq_abs]`. Establish `hre : a.re = ρ * Real.cos θ` using `by rw [ha]; simp [Complex.cos_ofReal_re]`. Establish `him : a.im = ρ * Real.sin θ` using `by rw [ha]; simp [Complex.sin_ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < 1 + ρ ^ 2` using `by positivity`. Establish `hsq : Real.sqrt (1 - ht ρ ^ 2) = 2 * ρ / (1 + ρ ^ 2)`. Rewrite using `[show 1 - ht ρ ^ 2 = (2 * ρ / (1 + ρ ^ 2)) ^ 2 by unfold ht; field_simp; ring]`. Conclude with `Real.sqrt_sq (by positivity)`. Unfold `nE spherePoint`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Use `fin_cases i`. Use `show 2 * a.re / (1 + ‖a‖ ^ 2) = Real.sqrt (1 - ht ρ ^ 2) * Real.cos θ`. Rewrite using `[hre, hn, hsq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show 2 * a.im / (1 + ‖a‖ ^ 2) = Real.sqrt (1 - ht ρ ^ 2) * Real.sin θ`. Rewrite using `[him, hn, hsq]`. Expand and normalize the polynomial expressions, which then agree. Use `show (1 - ‖a‖ ^ 2) / (1 + ‖a‖ ^ 2) = ht ρ`. Rewrite using `[hn]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem nE_polar {ρ : ℝ} (hρ : 0 ≤ ρ) (θ : ℝ) :
     nE (Complex.polarCoord.symm (ρ, θ)) = spherePoint (ht ρ) θ := by
@@ -63,13 +61,13 @@ theorem nE_polar {ρ : ℝ} (hρ : 0 ≤ ρ) (θ : ℝ) :
     rw [hn]; rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ρ, hρ, rfl⟩`. Establish `hρ' : (0 : ℝ) < ρ` using `hρ`. Establish `hp : (0 : ℝ) < 1 + ρ ^ 2` using `by positivity`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ht`. Prove the components needed by the constructor for the conclusion. Rewrite using `[lt_div_iff₀ hp]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[div_lt_one hp]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce and unpack `⟨h1, h2⟩`. Establish `hq : 0 < (1 - y) / (1 + y)` using `div_pos (by linarith) (by linarith)`. Use `⟨Real.sqrt ((1 - y) / (1 + y)), Real.sqrt_pos.2 hq, ?_⟩` and prove the remaining obligations. Unfold `ht`.
+Use the polynomial consequences of the given equalities and inequalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[Real.sq_sqrt hq.le]`. Establish `: (1 : ℝ) + y ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ht_image : ht '' Ioi 0 = Ioo (-1) 1 := by
   ext y
@@ -91,9 +89,9 @@ theorem ht_image : ht '' Ioi 0 = Ioo (-1) 1 := by
     ring
 
 /- English proof (translation)
-Introduce `x hx y hy hxy`. Establish `hx' : (0 : ℝ) < x` using `hx`. Establish `hy' : (0 : ℝ) < y` using `hy`. Unfold `ht at hxy`. Rewrite `hxy` using `[div_eq_div_iff (by positivity) (by positivity)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : x ^ 2 = y ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[sq_nonneg (x - y), sq_nonneg (x + y)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem ht_injOn : InjOn ht (Ioi 0) := by
   intro x hx y hy hxy
@@ -105,11 +103,11 @@ theorem ht_injOn : InjOn ht (Ioi 0) := by
   nlinarith [sq_nonneg (x - y), sq_nonneg (x + y)]
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) + ρ ^ 2 ≠ 0` using `by positivity`. Establish `h1 : HasDerivAt (fun x : ℝ => 1 - x ^ 2) (-(2 * ρ)) ρ`. Simplify using `using (hasDerivAt_pow 2 ρ).const_sub 1`. Establish `h2 : HasDerivAt (fun x : ℝ => 1 + x ^ 2) (2 * ρ) ρ`. Simplify using `using (hasDerivAt_pow 2 ρ).const_add 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h1.div h2 hp` as an intermediate fact. Establish `e : (fun x : ℝ => 1 - x ^ 2) / (fun x : ℝ => 1 + x ^ 2) = ht`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.congr_deriv (by ring)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_ht (ρ : ℝ) : HasDerivAt ht (-(4 * ρ) / (1 + ρ ^ 2) ^ 2) ρ := by
   have hp : (1 : ℝ) + ρ ^ 2 ≠ 0 := by positivity
@@ -124,7 +122,7 @@ theorem hasDerivAt_ht (ρ : ℝ) : HasDerivAt ht (-(4 * ρ) / (1 + ρ ^ 2) ^ 2) 
   exact this.congr_deriv (by ring)
 
 /- English proof (translation)
-Rewrite using `[← ht_image, lintegral_image_eq_lintegral_abs_deriv_mul measurableSet_Ioi (fun ρ _ => (hasDerivAt_ht ρ).hasDerivWithinAt) ht_injOn G]`. Use `setLIntegral_congr_fun measurableSet_Ioi (fun ρ hρ => ?_)` and prove the remaining obligations. Establish `hρ' : (0 : ℝ) < ρ` using `hρ`. Rewrite using `[neg_div, abs_neg, abs_of_nonneg (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_ht (G : ℝ → ℝ≥0∞) :
     ∫⁻ c in Ioo (-1 : ℝ) 1, G c =
@@ -136,24 +134,22 @@ theorem lintegral_ht (G : ℝ → ℝ≥0∞) :
   rw [neg_div, abs_neg, abs_of_nonneg (by positivity)]
 
 /- English proof (translation)
-Unfold `ht`. Use `fun_prop (disch := (intro x; positivity))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ht : Continuous ht := by
   unfold ht
   fun_prop (disch := (intro x; positivity))
 
 /- English proof (translation)
-Establish `hsp` using `SphereLongitudeCoordinates.continuous_spherePoint`. Use `set F : ℝ × ℝ → ℝ≥0∞ := fun p => ENNReal.ofReal (p.1 * (Real.pi⁻¹ / (1 + p.1 ^ 2) ^ 2)) * g (spherePoint (ht p.1) p.2) with hF`. Establish `hFm : Measurable F`. Use `Measurable.mul ?_ ?_` and prove the remaining obligations. Conclude with `ENNReal.measurable_ofReal.comp (by fun_prop)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg.comp (hsp.measurable.comp ((continuous_ht.measurable.comp measurable_fst).prodMk measurable_snd))`. Establish `hC : (ENNReal.ofReal (4 * Real.pi))⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 (ENNReal.ofReal_pos.2 (by positivity)).ne'`. Rewrite using `[← Complex.lintegral_comp_polarCoord_symm, polarCoord_target]`. Establish `h1 : ∫⁻ p in Ioi (0 : ℝ) ×ˢ Ioo (-Real.pi) Real.pi, ENNReal.ofReal p.1 • (ENNReal.ofReal (wt (Complex.polarCoord.symm p)) * g (nE (Complex.polarCoord.symm p))) = ∫⁻ p in Ioi (0 : ℝ) ×ˢ Ioo (-Real.pi) Real.pi, F p`. Use `setLIntegral_congr_fun (measurableSet_Ioi.prod measurableSet_Ioo) (fun p hp => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨ρ, θ⟩` from `p`. Establish `hp1 : (0 : ℝ) < ρ` using `hp.1`. Simplify using `only [smul_eq_mul, hF]`. Rewrite using `[nE_polar hp1.le, ← mul_assoc, ← ENNReal.ofReal_mul hp1.le]`. Unfold `wt`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.norm_polarCoord_symm, abs_of_pos hp1]`. Rewrite using `[h1, Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod _ hFm.aemeasurable, lintegral_lintegral_swap hFm.aemeasurable, ← lintegral_const_mul' _ _ hC]`. Use `lintegral_congr fun θ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_ht (fun c => g (spherePoint c θ)), ← lintegral_const_mul' _ _ hC]`. Use `setLIntegral_congr_fun measurableSet_Ioi (fun ρ hρ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ' : (0 : ℝ) < ρ` using `hρ`. Simplify using `only [hF]`. Rewrite using `[← mul_assoc]`. Use `congr 1`. Rewrite using `[← ENNReal.ofReal_inv_of_pos (by positivity), ← ENNReal.ofReal_mul (by positivity)]`.
-
-Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lintegral_stereo (g : E3 → ℝ≥0∞) (hg : Measurable g) :
     ∫⁻ a : ℂ, ENNReal.ofReal (wt a) * g (nE a) =
@@ -194,7 +190,7 @@ theorem lintegral_stereo (g : E3 → ℝ≥0∞) (hg : Measurable g) :
   field_simp
 
 /- English proof (translation)
-Establish `h` using `SphereLongitudeCoordinates.toSphere_preimage (s := (univ : Set E3)) MeasurableSet.univ`. Rewrite `h` using `[preimage_univ]`. Rewrite using `[h]`. Simplify using `[Real.volume_Icc, Real.volume_Ioc]`. Rewrite using `[show (1 : ℝ) + 1 = 2 by norm_num, ENNReal.ofReal_ofNat]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -207,13 +203,11 @@ theorem toSphere_univ : (volume : Measure E3).toSphere univ = ENNReal.ofReal (4 
   ring
 
 /- English proof (translation)
-Use `set h : ℝ → ℝ≥0∞ := fun φ => ∫⁻ c in Icc (-1 : ℝ) 1, g (spherePoint c φ) with hh`. Establish `hper : Function.Periodic h (2 * Real.pi)` using `fun φ => by`. Simplify using `only [hh, SphereLongitudeCoordinates.spherePoint_add_two_pi]`. Establish `: Fact (0 < 2 * Real.pi)` using `⟨by positivity⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show -Real.pi + 2 * Real.pi = Real.pi by ring]`. Rewrite using `[Measure.restrict_congr_set Ioo_ae_eq_Ioc]`. Use `lintegral_congr fun φ => ?_` and prove the remaining obligations. Simplify using `only [hh]`. Rewrite using `[Measure.restrict_congr_set Ioo_ae_eq_Icc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ b : AddCircle (2 * Real.pi), hper.lift b := by`. Rewrite using `[← AddCircle.lintegral_preimage (2 * Real.pi) (-Real.pi)]`. Both sides reduce to the same expression. Use `_ = ∫⁻ φ in Ioc 0 (0 + 2 * Real.pi), h φ := by`. Rewrite using `[← AddCircle.lintegral_preimage (2 * Real.pi) 0]`.
-
-Both sides reduce to the same expression. Use `_ = _ := by rw [zero_add]`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem per_conv (g : E3 → ℝ≥0∞) :
     ∫⁻ φ in Ioo (-Real.pi) Real.pi, ∫⁻ c in Ioo (-1 : ℝ) 1, g (spherePoint c φ) =
@@ -238,7 +232,7 @@ theorem per_conv (g : E3 → ℝ≥0∞) :
     _ = _ := by rw [zero_add]
 
 /- English proof (translation)
-Use extensionality with `s hs`. Rewrite using `[Measure.map_apply measurable_nE hs, withDensity_apply _ (measurable_nE hs), Measure.map_apply measurable_subtype_coe hs, sphereMeasure, Measure.smul_apply, smul_eq_mul, SphereLongitudeCoordinates.toSphere_preimage hs, toSphere_univ, ← per_conv, ← lintegral_stereo _ (measurable_o …`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases ha : nE a ∈ s <;> simp [Set.indicator, ha]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_stereo :
     (volume.withDensity fun a : ℂ => ENNReal.ofReal (wt a)).map nE =

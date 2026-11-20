@@ -15,9 +15,9 @@ variable {K : Type*} [Field K] [NumberField K]
 open IdeleGroup
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Conclude with `(φ.continuous.comp ((homeomorphMixedSpace K).continuous.comp continuous_fst)).mul (hg.1.continuous.comp continuous_snd)`. Consider the case `zero => exact continuous_const`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add G H _ _ hG hH => exact hG.add hH`. Consider the case `smul c G _ hG => exact hG.const_smul c`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_of_mem_schwartzBruhat {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) :
     Continuous F := by
@@ -31,20 +31,20 @@ theorem continuous_of_mem_schwartzBruhat {F : 𝔸[K] → ℂ} (hF : F ∈ schwa
   | smul c G _ hG => exact hG.const_smul c
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp continuous_ideleModule`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ideleModule_val : Continuous fun x : IdeleGroup K ↦ (ideleModule K x : ℝ) :=
   continuous_subtype_val.comp continuous_ideleModule
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun w _ ↦ by positivity`.
+A detailed English derivation is pending.
 -/
 theorem infiniteZetaBound_nonneg (σ : ℝ) (k : ℕ) (a : (InfiniteAdeleRing K)ˣ) :
     0 ≤ infiniteZetaBound σ k a :=
   Finset.prod_nonneg fun w _ ↦ by positivity
 
 /- English proof (translation)
-Rewrite using `[ideleModule_apply, Real.mul_rpow (infiniteModule_pos x).le (finiteModule_pos x).le, infiniteModule, ← Real.finsetProd_rpow _ _ (fun w _ ↦ by positivity)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ideleModule_rpow_eq (x : IdeleGroup K) (σ : ℝ) :
     (ideleModule K x : ℝ) ^ σ = (∏ w, ‖((toInfinite K x : (InfiniteAdeleRing K)ˣ) :
@@ -57,17 +57,17 @@ theorem ideleModule_rpow_eq (x : IdeleGroup K) (σ : ℝ) :
   rfl
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℕ, 2 * σ + 2 < k` from `exists_nat_gt _`. Take `⟨C₁, hC₁, hφ⟩` from `exists_norm_schwartz_le_prod φ k`. Take `⟨M, hM⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Take `⟨L, hL⟩` from `exists_subset_idealFiniteAdeles hg.2`. Use `⟨C₁ * max M 0, k, L, by positivity, hk, fun x ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set a := toInfinite K x`. Use `set b := toFinite K x`. Establish `hinf : ‖φ (homeomorphMixedSpace K (x : 𝔸[K]).1)‖ * ∏ w, ‖(a : InfiniteAdeleRing K) w‖ ^ ((w.mult : ℝ) * σ) ≤ C₁ * infiniteZetaBound σ k a`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Finset.prod_mul_distrib, infiniteZetaBound]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun w _ ↦ ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, mul_comm]`. Establish `hI` using `infiniteZetaBound_nonneg σ k a`. Unfold `schwartzBruhatTensor`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hb : (b : FiniteAdeleRing (𝓞 K) K) ∈ idealFiniteAdeles L`. Establish `hfz : finiteZetaBound L σ b = finiteModule (ofFinite b) ^ σ`. Rewrite using `[finiteZetaBound, if_pos hb]`. Rewrite using `[hfz, ideleModule_rpow_eq, norm_mul]`. Establish `hgM : ‖g (x : 𝔸[K]).2‖ ≤ max M 0` using `(hM _).trans (le_max_left _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm : 0 ≤ finiteModule (ofFinite b) ^ σ`. Use `finiteModule_pos (ofFinite b)` as an intermediate fact. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Establish `hg0 : g (x : 𝔸[K]).2 = 0`.
+Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hb (hL (subset_tsupport g h))`. Rewrite using `[hg0, mul_zero, norm_zero, zero_mul]`. Conclude with `mul_nonneg (by positivity) (mul_nonneg hI (finiteZetaBound_nonneg _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound_schwartzBruhatTensor (φ : 𝓢(mixedSpace K, ℂ))
     {g : FiniteAdeleRing (𝓞 K) K → ℂ} (hg : g ∈ finiteSchwartzBruhat K) (σ : ℝ) :
@@ -120,7 +120,7 @@ theorem exists_bound_schwartzBruhatTensor (φ : 𝓢(mixedSpace K, ℂ))
     exact mul_nonneg (by positivity) (mul_nonneg hI (finiteZetaBound_nonneg _ _ _))
 
 /- English proof (translation)
-Establish `h` using `(integrable_infiniteZetaBound (K := K) hσ.le hk).mul_prod (integrable_finiteZetaBound L hσ)`. Conclude with `((measurePreserving_prodEquiv K).integrable_comp_emb (prodEquiv K).toHomeomorph.measurableEmbedding).2 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_zetaBound {σ : ℝ} (hσ : 1 < σ) {k : ℕ} (hk : 2 * σ + 2 < k)
     (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
@@ -133,7 +133,7 @@ theorem integrable_zetaBound {σ : ℝ} (hσ : 1 < σ) {k : ℕ} (hk : 2 * σ + 
     (prodEquiv K).toHomeomorph.measurableEmbedding).2 h
 
 /- English proof (translation)
-The claim follows from `(hF.comp Units.continuous_val).norm.mul (continuous_ideleModule_val.rpow_const fun _ ↦ Or.inr hσ)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_norm_mul_rpow {F : 𝔸[K] → ℂ} (hF : Continuous F) {σ : ℝ} (hσ : 0 ≤ σ) :
     Continuous fun x : IdeleGroup K ↦ ‖F x‖ * (ideleModule K x : ℝ) ^ σ :=
@@ -141,15 +141,13 @@ theorem continuous_norm_mul_rpow {F : 𝔸[K] → ℂ} (hF : Continuous F) {σ :
     (continuous_ideleModule_val.rpow_const fun _ ↦ Or.inr hσ)
 
 /- English proof (translation)
-Establish `hcont : ∀ {G : 𝔸[K] → ℂ}, G ∈ schwartzBruhat K → AEStronglyMeasurable (fun x : IdeleGroup K ↦ ‖G x‖ * (ideleModule K x : ℝ) ^ σ) (ideleMeasure K)` using `fun hG ↦ (continuous_norm_mul_rpow (continuous_of_mem_schwartzBruhat hG) (by linarith)).aestronglyMeasurable`. Establish `hpow : ∀ x : IdeleGroup K, 0 ≤ (ideleModule K x : ℝ) ^ σ` using `fun x ↦ Real.rpow_nonneg (ideleModule K x).2.le σ`. Establish `hmem` using `hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨φ, g, hg, rfl⟩` from `hG`. Take `⟨C, k, L, hC, hk, hb⟩` from `exists_bound_schwartzBruhatTensor φ hg σ`. Use `Integrable.mono' ((integrable_zetaBound hσ hk L).const_mul C) (hcont hmem) (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (hpow x))]`. Conclude with `hb x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Simplify using `only [Pi.zero_apply, norm_zero, zero_mul]`. Conclude with `integrable_zero _ _ _`. Consider the case `add G H hGm hHm hG hH`. Use `Integrable.mono' ((hG hGm).add (hH hHm)) (hcont hmem) (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (hpow x))]`. Use `show ‖G x + H x‖ * _ ≤ ‖G x‖ * _ + ‖H x‖ * _`. Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (hpow x)`. Consider the case `smul c G hGm hG`.
-
-Use `(hG hGm).const_mul ‖c‖ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_norm_mul_rpow {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) {σ : ℝ}
     (hσ : 1 < σ) :
@@ -187,7 +185,7 @@ def globalZeta (f : 𝔸[K] → ℂ) (χ : HeckeCharacter K) (s : ℂ) : ℂ :=
   ∫ x, f x * (χ.toIdele x : ℂ) * ((ideleModule K x : ℝ) : ℂ) ^ s ∂ideleMeasure K
 
 /- English proof (translation)
-The claim follows from `((hF.comp Units.continuous_val).mul (continuous_subtype_val.comp χ.continuous_toIdele)).mul ((Complex.continuous_ofReal.comp continuous_ideleModule_val).cpow continuous_const fun x ↦ Complex.ofReal_mem_slitPlane.2 (ideleModule K x).2)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_zetaIntegrand {F : 𝔸[K] → ℂ} (hF : Continuous F) (χ : HeckeCharacter K)
     (s : ℂ) :
@@ -197,7 +195,7 @@ theorem continuous_zetaIntegrand {F : 𝔸[K] → ℂ} (hF : Continuous F) (χ :
       fun x ↦ Complex.ofReal_mem_slitPlane.2 (ideleModule K x).2)
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_mul, Circle.norm_coe, mul_one, Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule K x).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_zetaIntegrand (F : 𝔸[K] → ℂ) (χ : HeckeCharacter K) (s : ℂ) (x : IdeleGroup K) :
     ‖F x * (χ.toIdele x : ℂ) * ((ideleModule K x : ℝ) : ℂ) ^ s‖ =
@@ -206,7 +204,7 @@ theorem norm_zetaIntegrand (F : 𝔸[K] → ℂ) (χ : HeckeCharacter K) (s : �
     Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule K x).2]
 
 /- English proof (translation)
-Use `(integrable_norm_mul_rpow hF hs).mono' (continuous_zetaIntegrand (continuous_of_mem_schwartzBruhat hF) χ s).aestronglyMeasurable (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Rewrite using `[norm_zetaIntegrand]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_globalZetaIntegrand {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K)
     (χ : HeckeCharacter K) {s : ℂ} (hs : 1 < s.re) :
@@ -218,15 +216,13 @@ theorem integrable_globalZetaIntegrand {F : 𝔸[K] → ℂ} (hF : F ∈ schwart
   rw [norm_zetaIntegrand]
 
 /- English proof (translation)
-Establish `hσ'` using `abs_lt.1 hσ`. Break down `le_or_gt 1 t with h1 | h1` into its components or cases. Establish `hlog : |Real.log t| ≤ t ^ δ / δ`. Rewrite using `[abs_of_nonneg (Real.log_nonneg h1)]`. Conclude with `Real.log_le_rpow_div ht.le hδ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : t ^ σ ≤ t ^ (σ₀ + δ)` using `Real.rpow_le_rpow_of_exponent_le h1 (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc', ← Real.rpow_add ht]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `_ ≤ (t ^ (σ₀ - 2 * δ) + t ^ (σ₀ + 2 * δ)) / δ := div_le_div_of_nonneg_right (le_add_of_nonneg_left (by positivity)) hδ.le`. Establish `hlog : |Real.log t| ≤ t ^ (-δ) / δ`. Rewrite using `[abs_of_nonpos (Real.log_nonpos ht.le h1.le)]`. Use `Real.log_le_rpow_div (inv_nonneg.2 ht.le) hδ` as an intermediate fact. Rewrite `this` using `[Real.log_inv, Real.inv_rpow ht.le, ← Real.rpow_neg ht.le]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hpow : t ^ σ ≤ t ^ (σ₀ - δ)` using `Real.rpow_le_rpow_of_exponent_ge ht h1.le (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc', ← Real.rpow_add ht]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ (t ^ (σ₀ - 2 * δ) + t ^ (σ₀ + 2 * δ)) / δ := div_le_div_of_nonneg_right (le_add_of_nonneg_right (by positivity)) hδ.le`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rpow_mul_abs_log_le {t σ₀ δ σ : ℝ} (ht : 0 < t) (hδ : 0 < δ) (hσ : |σ - σ₀| < δ) :
     t ^ σ * |Real.log t| ≤ (t ^ (σ₀ - 2 * δ) + t ^ (σ₀ + 2 * δ)) / δ := by

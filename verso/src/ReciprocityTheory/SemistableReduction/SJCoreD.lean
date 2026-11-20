@@ -7,7 +7,7 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open MeasureTheory Metric Set Real
 
 /- English proof (translation)
-Simplify using `only [sphereProb, ProbabilityTheory.cond, Measure.restrict_univ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sphereProb_eq (n : ℕ) : sphereProb n =
     ((volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere univ)⁻¹ •
@@ -15,9 +15,9 @@ theorem sphereProb_eq (n : ℕ) : sphereProb n =
   simp only [sphereProb, ProbabilityTheory.cond, Measure.restrict_univ]
 
 /- English proof (translation)
-Establish `h1 : ∑ i, WithLp.ofLp c i * WithLp.ofLp (r • (z : EuclideanSpace ℂ (Fin n))) i = (r : ℂ) * ∑ i, WithLp.ofLp c i * spherePoint z i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [WithLp.ofLp_smul, Pi.smul_apply, Complex.real_smul, spherePoint]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : ‖r • (z : EuclideanSpace ℂ (Fin n))‖ = r`. Rewrite using `[norm_smul, norm_eq_of_mem_sphere z, mul_one, Real.norm_of_nonneg hr.le]`. Rewrite using `[h1, h2, norm_mul, Complex.norm_real, Real.norm_of_nonneg hr.le, Real.log_mul hr.ne' (norm_ne_zero_iff.mpr hz)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma log_norm_sum_smul_sphere_mul_exp_eq {n : ℕ} (c : EuclideanSpace ℂ (Fin n)) (z : UnitSphereC n) (r : ℝ) (hr : 0 < r)
     (hz : ∑ i, WithLp.ofLp c i * spherePoint z i ≠ 0) :
@@ -36,37 +36,31 @@ private lemma log_norm_sum_smul_sphere_mul_exp_eq {n : ℕ} (c : EuclideanSpace 
     Real.log_mul hr.ne' (norm_ne_zero_iff.mpr hz)]
 
 /- English proof (translation)
-Establish `hdim : Module.finrank ℝ (EuclideanSpace ℂ (Fin n)) = 2 * n`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ (Fin n)), Complex.finrank_real_complex, finrank_euclideanSpace_fin]`. Establish `hk : Module.finrank ℝ (EuclideanSpace ℂ (Fin n)) - 1 = 2 * n - 1` using `by rw [hdim]`. Establish `hk1 : 1 ≤ 2 * n - 1` using `by omega`. Use `haveI : Nontrivial (EuclideanSpace ℂ (Fin n)) := Module.nontrivial_of_finrank_pos (R := ℝ) (by rw [hdim]; omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : radJ (2 * n - 1) ≠ 0` using `(radJ_pos _).ne'`. Establish `h2n : ((Module.finrank ℝ (EuclideanSpace ℂ (Fin n)) : ℕ) : ENNReal) ≠ 0`. Rewrite using `[hdim]; exact Nat.cast_ne_zero.mpr (by omega)`. Establish `hA0 : (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere univ ≠ 0`. Rewrite using `[Measure.toSphere_apply_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero h2n (measure_ball_pos _ _ one_pos).ne'`. Establish `hAtop : (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere univ ≠ ⊤`. Rewrite using `[Measure.toSphere_apply_univ]`. Conclude with `ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) measure_ball_lt_top.ne`. Use `haveI : IsFiniteMeasure (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere := ⟨lt_top_iff_ne_top.mpr hAtop⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ((volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere univ).toReal = (Module.finrank ℝ (EuclideanSpace ℂ (Fin n)) : ℝ) * (volume : Measure (EuclideanSpace ℂ (Fin n))).real (ball 0 1)`. Rewrite using `[Measure.toSphere_apply_univ, ENNReal.toReal_mul, ENNReal.toReal_natCast, measureReal_def]`. Establish `hApos : 0 < ((volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere univ).toReal` using `ENNReal.toReal_pos hA0 hAtop`. Establish `hIe : ∫ x : EuclideanSpace ℂ (Fin n), exp (-‖x‖ ^ 2) = ((volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere univ).toReal * radJ (2 * n - 1)`. Establish `h` using `integral_fun_norm_addHaar (volume : Measure (EuclideanSpace ℂ (Fin n))) (fun y : ℝ => exp (-y ^ 2))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [nsmul_eq_mul, smul_eq_mul] at h`. Rewrite using `[h, hA, hk, radJ, mul_assoc]`. Take `⟨s, hs, hGi, hIG0, hIe0⟩` from `gauss_pair hn c hc`. Establish `hae : ∀ᵐ z ∂(volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere, ∑ i, WithLp.ofLp c i * spherePoint z i ≠ 0`. Rewrite using `[ae_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [ne_eq, not_not]`. Conclude with `sphere_linear_zero_null c hc`. Establish `hinner : ∀ z : UnitSphereC n, ∑ i, WithLp.ofLp c i * spherePoint z i ≠ 0 → ∫ r : Ioi (0 : ℝ), log ‖∑ i, WithLp.ofLp c i * WithLp.ofLp ((r : ℝ) • (z : EuclideanSpace ℂ (Fin n))) i‖ * exp (-‖(r : ℝ) • (z : EuclideanSpace ℂ (Fin n))‖ ^ 2) ∂(Measure.volumeIoiPow (Module.finrank ℝ (Eu …`. Introduce `z hz`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hk]`. Conclude with `integral_volumeIoiPow (2 * n - 1) (fun t : ℝ => (log t + log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖) * exp (-t ^ 2))`. Use `_ = ∫ t in Ioi (0 : ℝ), (t ^ (2 * n - 1) * log t * exp (-t ^ 2) + log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖ * (t ^ (2 * n - 1) * exp (-t ^ 2))) := by`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = radK (2 * n - 1) + log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖ * radJ (2 * n - 1) := by`. Apply the tactic sequence `rw [integral_add (integrableOn_radK hk1) (Integrable.const_mul (integrableOn_radJ _) _), integral_const_mul] <;> rfl`. Establish `hΦ` using `integrable_polar n hGi`. Establish `hψint : Integrable (fun z : UnitSphereC n => radK (2 * n - 1) + log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖ * radJ (2 * n - 1)) (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `hΦ.integral_prod_left.congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with z hz`. Conclude with `hinner z hz`. Establish `hLσ : Integrable (fun z : UnitSphereC n => log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖) (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere`. Use `((hψint.sub (integrable_const (radK (2 * n - 1)))).div_const (radJ (2 * n - 1))).congr (ae_of_all _ fun z => ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply]`. Rewrite using `[add_sub_cancel_left, mul_div_cancel_right₀ _ hJ]`. Establish `hIG : ∫ x : EuclideanSpace ℂ (Fin n), log ‖∑ i, WithLp.ofLp c i * WithLp.ofLp x i‖ * exp (-‖x‖ ^ 2) = ((volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere univ).toReal * radK (2 * n - 1) + (∫ z, log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖ ∂(volume : Measure (EuclideanSpace ℂ …`. Rewrite using `[integral_polar hn, integral_prod _ hΦ]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with z hz`. Conclude with `hinner z hz`. Use `_ = _ := by`. Rewrite using `[integral_add (integrable_const _) (hLσ.mul_const _), integral_mul_const]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [integral_const, smul_eq_mul, measureReal_def]`. Establish `e1` using `hIG.symm.trans hIG0`. Establish `e2` using `hIe.symm.trans hIe0`. Establish `hgn : gaussOneC ^ n = gaussOneC * gaussOneC ^ (n - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel (by omega : 1 ≤ n)]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hg : gaussOneC ≠ 0`. Introduce `h0`. Rewrite `e2` using `[hgn, h0, zero_mul, mul_zero]`. Conclude with `(mul_pos hApos (radJ_pos _)).ne' e2`. Rewrite using `[sphereProb_eq]`.
-
-Use `⟨hLσ.smul_measure (ENNReal.inv_ne_top.mpr hA0), ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_measure, ENNReal.toReal_inv, smul_eq_mul]`. Use `set A := ((volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere univ).toReal with hAdef`. Use `set IL := ∫ z, log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖ ∂(volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere with hILdef`. Establish `hA0' : A ≠ 0` using `hApos.ne'`.
-
-Establish `hIL : IL = (s * (gaussLogC ‖c‖ * gaussOneC ^ (n - 1)) - A * radK (2 * n - 1)) / radJ (2 * n - 1)`. Rewrite using `[eq_div_iff hJ]`. Take the linear combination `e1`. Establish `hX : s * (gaussLogC ‖c‖ * gaussOneC ^ (n - 1)) / (A * radJ (2 * n - 1)) = gaussLogC ‖c‖ / gaussOneC`. Rewrite using `[div_eq_div_iff (mul_ne_zero hA0' hJ) hg]`.
-
-Take the linear combination `(-gaussLogC ‖c‖) * e2 - (gaussLogC ‖c‖ * s) * hgn`. Rewrite using `[hIL, ← hX]`. Apply the tactic sequence `field_simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem polar_mean {n : ℕ} (hn : 0 < n) (c : EuclideanSpace ℂ (Fin n)) (hc : c ≠ 0) :
     Integrable (fun z : UnitSphereC n ↦ log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖)

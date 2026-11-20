@@ -10,7 +10,7 @@ open GlobalTheory.UT GlobalTheory.ZH
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `_ R _ _ _ I _ D F _ _ _ k pk z hz`. Use `⟨GlobalTheory.TorusExt.qkShift D.tau_bimult pk (-z), ?_, GlobalTheory.TorusExt.equiv_qkShift D.tau_bimult pk (-z)⟩` and prove the remaining obligations. Use `show pk.y + k • (-z) = 0`. Rewrite using `[hz, smul_neg, add_neg_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_y_eq_zero : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (k : ℕ) (pk : QkPt D.toPre F k) (z : D.toPre.X), pk.y = k • z → ∃ p' : QkPt D.toPre F k, p'.y = 0 ∧ QkPt.Equiv D.toPre F pk p' := by
   intro _ R _ _ _ I _ D F _ _ _ k pk z hz

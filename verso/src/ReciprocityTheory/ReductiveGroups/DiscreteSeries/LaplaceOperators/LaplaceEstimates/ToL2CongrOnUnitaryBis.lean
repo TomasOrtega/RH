@@ -16,9 +16,7 @@ section Group
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
 /- English proof (translation)
-Use `show (A * B)ᴴ * H * (A * B) = H`. Establish `hA' : Aᴴ * H * A = H` using `hA`. Establish `hB' : Bᴴ * H * B = H` using `hB`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = H := by rw [hA', hB']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uh_mul {H A B : Mat k r} (hA : A ∈ Formalism.QuantumDeterminants.UH H) (hB : B ∈ Formalism.QuantumDeterminants.UH H) :
     A * B ∈ Formalism.QuantumDeterminants.UH H := by
@@ -30,7 +28,7 @@ theorem uh_mul {H A B : Mat k r} (hA : A ∈ Formalism.QuantumDeterminants.UH H)
     _ = H := by rw [hA', hB']
 
 /- English proof (translation)
-Establish `hPu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPu`. Use `⟨h1, Matrix.nonsing_inv_mul P hPu, ?_⟩` and prove the remaining obligations. Rewrite using `[← conjTranspose_mul, h1, conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cay_inv {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) : P * P⁻¹ = 1 ∧ P⁻¹ * P = 1 ∧ (P⁻¹)ᴴ * Pᴴ = 1 := by
   have hPu : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).1 hP.1
@@ -39,9 +37,9 @@ theorem cay_inv {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) :
   rw [← conjTranspose_mul, h1, conjTranspose_one]
 
 /- English proof (translation)
-Take `⟨h1, -, h2⟩` from `cay_inv hP`. Establish `hC : Pᴴ * Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP.2`. Establish `hM' : Mᴴ * Formalism.QuantumDeterminants.Hpk k r * M = Formalism.QuantumDeterminants.Hpk k r` using `hM`. Use `show (P * M * P⁻¹)ᴴ * Jm ε * (P * M * P⁻¹) = Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((P⁻¹)ᴴ * Pᴴ) * Jm ε * (P * P⁻¹) := by rw [hC, hM', ← hC]; simp only [Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem ujset_conj {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) {M : Mat k r}
     (hM : M ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : P * M * P⁻¹ ∈ UJset ε := by
@@ -55,9 +53,9 @@ theorem ujset_conj {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P
     _ = Jm ε := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨h1, -, h2⟩` from `cay_inv hP`. Establish `hC : Pᴴ * Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP.2`. Establish `hu' : uᴴ * Jm ε * u = Jm ε` using `hu`. Use `show (P⁻¹ * u * P)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (P⁻¹ * u * P) = Formalism.QuantumDeterminants.Hpk k r`. Rewrite using `[← hC]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Pᴴ * Jm ε * P := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one, hu']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uh_conj {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) {u : Mat k r} (hu : u ∈ UJset ε) :
     P⁻¹ * u * P ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
@@ -79,11 +77,11 @@ variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Vp : Type*} [NormedAdd
   [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
 
 /- English proof (translation)
-Establish `hW` using `hB.2.2.2.2.1`. Establish `hN` using `hB.2.2.2.2.2`. Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact. Establish `h1 : (μW.prod μN) ({x | Matrix.of x ∉ Formalism.QuantumDeterminants.UWset k r z} ×ˢ Set.univ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.prod_prod, hW.2.2.1, zero_mul]`. Establish `h2 : (μW.prod μN) (Set.univ ×ˢ {x | Matrix.of x ∉ Formalism.QuantumDeterminants.Nset k r}) = 0`. Rewrite using `[Measure.prod_prod, hN.2.2.1, mul_zero]`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun p hp => ?_) (measure_union_null h1 h2)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_ofPred_eq, not_and_or] at hp`. Break down `hp with hp | hp` into its components or cases. Conclude with `Or.inl ⟨hp, trivial⟩`. Conclude with `Or.inr ⟨trivial, hp⟩`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem ae_bdata {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {u : Fin k → ℝ} {π : Mat k r → (Vp →L[ℂ] Vp)}
     {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} (hB : IsBData z c u π μW μN) :
@@ -104,7 +102,7 @@ theorem ae_bdata {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {u : Fin 
   · exact Or.inr ⟨trivial, hp⟩
 
 /- English proof (translation)
-Unfold `per sInt`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_bdata hB] with p hp`. Establish `hm : Matrix.of p.1 * Matrix.of p.2 * x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `uh_mul (uh_mul hp.1.1 hp.2.1) hx`. Rewrite using `[hFG _ (ujset_conj hP hm)]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_congr {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {u : Fin k → ℝ} {π : Mat k r → (Vp →L[ℂ] Vp)}
     {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
@@ -119,11 +117,11 @@ theorem per_congr {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {u : Fin
   rw [hFG _ (ujset_conj hP hm)]
 
 /- English proof (translation)
-Take `⟨-, h2, -⟩` from `cay_inv hP`. Establish `key : ∀ X, inG ε X → (fun t : ℝ => f (P⁻¹ * (P * x * P⁻¹ * NormedSpace.exp ((t : ℂ) • X)) * P)) = fun _ => 0`. Introduce `X hX`. Use function extensionality and compare the values at `t`. Apply `hf` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: P⁻¹ * (P * x * P⁻¹ * NormedSpace.exp ((t : ℂ) • X)) * P = x * (P⁻¹ * NormedSpace.exp ((t : ℂ) • X) * P)`. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `uh_mul hx (uh_conj hP (exp_smul_mem_UJset hX t))`. Unfold `eabB S7.EabV S7.EcV S7.RdV`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[key _ (SmDerA.inG_cpart1 ε _), key _ (SmDerA.inG_cpart2 ε _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eabB_zero {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) {f : Mat k r → Vp}
     (hf : ∀ y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), f y = 0) (a b : Fin (2 * r + k + 1)) {x : Mat k r}
@@ -145,9 +143,9 @@ theorem eabB_zero {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
   simp
 
 /- English proof (translation)
-Establish `hi` using `(per_spec k r ε u h z c Vp π μW μN P hP hB hp hq hgap).1`. Take `⟨CF, hCF⟩` from `hFb`. Take `⟨CG, hCG⟩` from `hGb`. Establish `iF` using `hi F CF hFc hCF x hx ξ`. Establish `iG` using `hi G CG hGc hCG x hx ξ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `per sInt`. Rewrite using `[← integral_add iF iG]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.add_apply, add_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem per_add {u : Fin k → ℝ} {h : ℝ} {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ}
     {Vp : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp] {π : Mat k r → (Vp →L[ℂ] Vp)}
@@ -171,7 +169,7 @@ theorem per_add {u : Fin k → ℝ} {h : ℝ} {z : Fin (2 * r + k + 1) → ℂ} 
   simp only [Pi.add_apply, add_smul]
 
 /- English proof (translation)
-Unfold `per sInt`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem per_smul (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (ψ : Mat k r → ℂ)
     (π : Mat k r → (Vp →L[ℂ] Vp)) (a : ℂ) (F : Mat k r → ℂ) (ξ : Vp) (x : Mat k r) :
@@ -190,9 +188,7 @@ variable {n : ℕ} {ε : Fin n → Bool}
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F', hU, hg, hF', hEq⟩` from `hF g₀ hg₀`. Establish `hc : ContinuousAt F' g₀` using `hF'.continuousOn.continuousAt (hU.mem_nhds hg)`. Use `hc.continuousWithinAt.congr_of_eventuallyEq ?_ (hEq g₀ hg hg₀)` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin (UJset ε) (hU.mem_nhds hg)] with g hg'`.
-
-Conclude with `hEq g hg'.2 hg'.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contOn_of_smooth {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Formalism.REAL.SmoothOnG ε F) :
     ContinuousOn F (UJset ε) := by
@@ -204,11 +200,11 @@ theorem contOn_of_smooth {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Formalis
   exact hEq g hg'.2 hg'.1
 
 /- English proof (translation)
-Establish `hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `hF.2 []`. Establish `hG2 : MemLp (fun g : Formalism.REAL.UJ ε => G (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `hG.2 []`. Unfold `toL2 at h`. Rewrite `h` using `[dif_pos hF2, dif_pos hG2]`. Establish `hae` using `(MemLp.toLp_eq_toLp_iff hF2 hG2).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcF : Continuous (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g))` using `Formalism.REAL.continuous_smooth_on_group_eval hF.1`. Establish `hcG : Continuous (fun g : Formalism.REAL.UJ ε => G (Formalism.MainNotions.S.umat g))` using `Formalism.REAL.continuous_smooth_on_group_eval hG.1`. Establish `heq` using `(hcF.ae_eq_iff_eq (Formalism.REAL.muG ε) hcG).1 hae`. Introduce `g hg`. Take `⟨y, rfl⟩` from `exists_unitary_preimage ε hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `congrFun heq y`.
+A detailed English derivation is pending.
 -/
 theorem eqOn_unitary_of_toL2_eq {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) (hG : IsSmoothL2 ε G)
     (h : toL2 ε F = toL2 ε G) : ∀ g ∈ UJset ε, F g = G g := by
@@ -225,9 +221,9 @@ theorem eqOn_unitary_of_toL2_eq {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF :
   exact congrFun heq y
 
 /- English proof (translation)
-Establish `hfun : (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) = fun g => G (Formalism.MainNotions.S.umat g)`. Use function extensionality and compare the values at `fun g => h _ (unitary_matrix_mem_set ε g)`. Establish `key : ∀ f₁ f₂ : Formalism.REAL.UJ ε → ℂ, f₁ = f₂ → (if h : MemLp f₁ 2 (Formalism.REAL.muG ε) then h.toLp f₁ else 0) = (if h : MemLp f₂ 2 (Formalism.REAL.muG ε) then h.toLp f₂ else 0)`. Introduce and unpack `_ _ rfl`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Conclude with `key _ _ hfun`.
+A detailed English derivation is pending.
 -/
 theorem toL2_congr_on_unitary_bis {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (h : ∀ g ∈ UJset ε, F g = G g) :
     toL2 ε F = toL2 ε G := by
@@ -241,9 +237,9 @@ theorem toL2_congr_on_unitary_bis {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (h 
   exact key _ _ hfun
 
 /- English proof (translation)
-Establish `hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `hF.2 []`. Establish `hG2 : MemLp (fun g : Formalism.REAL.UJ ε => G (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `hG.2 []`. Establish `hS2 : MemLp (fun g : Formalism.REAL.UJ ε => (F + G) (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `hF2.add hG2`. Unfold `toL2`. Rewrite using `[dif_pos hS2, dif_pos hF2, dif_pos hG2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MemLp.toLp_add hF2 hG2`.
+A detailed English derivation is pending.
 -/
 theorem toL2_add_smooth {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) (hG : IsSmoothL2 ε G) :
     toL2 ε (F + G) = toL2 ε F + toL2 ε G := by
@@ -255,7 +251,7 @@ theorem toL2_add_smooth {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoot
   exact MemLp.toLp_add hF2 hG2
 
 /- English proof (translation)
-Establish `hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `hF.2 []`. Establish `hS2 : MemLp (fun g : Formalism.REAL.UJ ε => (a • F) (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `hF2.const_smul a`. Unfold `toL2`. Rewrite using `[dif_pos hS2, dif_pos hF2]`. Conclude with `MemLp.toLp_const_smul a hF2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toL2_smul_smooth (a : ℂ) {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) :
     toL2 ε (a • F) = a • toL2 ε F := by
@@ -267,11 +263,11 @@ theorem toL2_smul_smooth (a : ℂ) {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF 
   exact MemLp.toLp_const_smul a hF2
 
 /- English proof (translation)
-Take `⟨Gc, hGc⟩` from `Submodule.exists_isCompl G`. Set `T0 : G →ₗ[ℂ] smD ε (rreg ε)` to `{ toFun := fun f => ⟨toL2 ε (T f), toL2_mem_smD_of_isSmoothL2 (hsm f f.2)⟩ map_add' := fun f f' => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, map_add]`. Conclude with `toL2_add_smooth (hsm f f.2) (hsm f' f'.2)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `map_smul' := fun a f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, map_smul, RingHom.id_apply]`. Conclude with `toL2_smul_smooth a (hsm f f.2) }`. Use `⟨T0 ∘ₗ Submodule.projectionOnto G Gc hGc, fun f hf => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hpr : Submodule.projectionOnto G Gc hGc f = ⟨f, hf⟩` using `Submodule.projectionOnto_apply_left hGc ⟨f, hf⟩`. Rewrite using `[LinearMap.comp_apply, hpr]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_phi {Y : Type*} [AddCommGroup Y] [Module ℂ Y] (T : Y →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ))
     (G : Submodule ℂ Y) (hsm : ∀ f ∈ G, IsSmoothL2 ε (T f)) :
@@ -295,7 +291,7 @@ theorem exists_phi {Y : Type*} [AddCommGroup Y] [Module ℂ Y] (T : Y →ₗ[ℂ
   rfl
 
 /- English proof (translation)
-Introduce `a b f hf`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : φ f = ⟨toL2 ε (T f), toL2_mem_smD_of_isSmoothL2 (hsm f hf)⟩` using `Subtype.ext (hφ f hf)`. Rewrite using `[hφ _ (hGA a b f hf), h1, rightDerivative_toL2 (hsm f hf)]`. Conclude with `(toL2_congr_on_unitary_bis (hder a b f hf)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_intertwine {Y : Type*} [AddCommGroup Y] [Module ℂ Y] (A : Fin n → Fin n → Module.End ℂ Y)
     (T : Y →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (G : Submodule ℂ Y) (hsm : ∀ f ∈ G, IsSmoothL2 ε (T f))

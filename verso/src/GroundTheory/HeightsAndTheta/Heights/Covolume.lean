@@ -33,7 +33,7 @@ end Real
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[basisMatrix_eq_embeddingsMatrixReindex, ← Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two ℚ ℂ (integralBasis K ∘ (equivReindex K)) (RingHom.equivRatAlgHom K ℂ), ← (equivReindex K).symm_symm, Algebra.discr_reindex ℚ (integralBasis K) (equivReindex K).symm, ← coe_discr]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_basisMatrix_sq : (basisMatrix K).det ^ 2 = ((discr K : ℤ) : ℂ) := by
   rw [basisMatrix_eq_embeddingsMatrixReindex,
@@ -44,7 +44,7 @@ theorem det_basisMatrix_sq : (basisMatrix K).det ^ 2 = ((discr K : ℤ) : ℂ) :
   simp
 
 /- English proof (translation)
-Simplify using `[basisMatrix, canonicalEmbedding.latticeBasis_apply, integralBasis_apply, canonicalEmbedding.apply_at]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisMatrix_apply' (τ σ : K →+* ℂ) :
     basisMatrix K τ σ = σ ((RingOfIntegers.basis K (equivReindex K τ) : 𝓞 K) : K) := by
@@ -78,7 +78,7 @@ def spanToReal (s : ι → E) : Submodule.span (𝓞 K) (Set.range s) →ₗ[ℤ
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `(RealSpace.ofModule_injective h).comp Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem spanToReal_injective (s : ι → E) : Function.Injective (spanToReal h s) :=
   (RealSpace.ofModule_injective h).comp Subtype.val_injective
@@ -87,7 +87,7 @@ def spanLattice (s : ι → E) : Submodule ℤ (RealSpace h) := LinearMap.range 
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem spanLattice_le (s : ι → E) : spanLattice h s ≤ RealSpace.lattice h := by
   rintro _ ⟨x, rfl⟩

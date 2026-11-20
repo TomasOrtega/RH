@@ -10,7 +10,7 @@ open Classical
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 /- English proof (citation)
-Apply `GlobalTheory.UnitTheta.exists_sec_of_baseOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsSectionOfBaseProductSection.lean&line=59#L59)
 -/

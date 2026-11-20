@@ -12,9 +12,9 @@ open GlobalTheory.ConeBumpB
 open scoped GlobalTheory.VacAny
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => obtain ⟨T, hT⟩ := h0; exact ⟨T, hT, by simp⟩`. Consider the case `insert a S _ ih`. Take `⟨T, hT, hv⟩` from `ih fun u hu => hD u (Finset.mem_insert_of_mem hu)`. Take `⟨T', hT', e⟩` from `hD a (Finset.mem_insert_self _ _) T hT`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨T', hT', fun u hu t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Break down `Finset.mem_insert.1 hu with rfl | hu` into its components or cases. Rewrite using `[ht, sub_self]`. Rewrite using `[hv u hu t ht, hv u hu (a * t) (by rw [mul_left_comm, ht]), sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.exists_test_function_killing_fixed_points {A : Type} [CommRing A] (P : (A → ℂ) → Prop) (Φ : (A → ℂ) → A → ℂ) (S : Finset Aˣ)
     (h0 : ∃ T, P T) (hD : ∀ u ∈ S, ∀ T, P T → ∃ T', P T' ∧ ∀ t, Φ T' t = Φ T t - Φ T (u * t)) :
@@ -32,13 +32,13 @@ private theorem UpperTheory.exists_test_function_killing_fixed_points {A : Type}
     · rw [hv u hu t ht, hv u hu (a * t) (by rw [mul_left_comm, ht]), sub_self]
 
 /- English proof (translation)
-Use `set V : Set G := U ∩ {l | χ l = 1} with hV`. Establish `hf` using `hχ.isClopen_fiber 1`. Establish `hVc : IsCompact V` using `hc.inter_right hf.1`. Establish `hVo : IsOpen V` using `ho.inter hf.2`. Establish `hWc : IsCompact (j '' V)` using `hVc.image hj.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : IsClopen (j '' V)` using `⟨hWc.isClosed, hj.isOpenMap _ hVo⟩`. Use `⟨(j '' V).indicator 1, (LocallyConstant.charFn ℂ hW).isLocallyConstant, HasCompactSupport.intro hWc fun y hy => Set.indicator_of_notMem hy _, ?_⟩` and prove the remaining obligations. Establish `e : (fun l => (j '' V).indicator (1 : A → ℂ) (j l) * χ l) = V.indicator fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l ∈ V`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (Set.mem_image_of_mem j h), show χ l = 1 from h.2]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (by rwa [hj.injective.mem_set_image]), zero_mul]`. Rewrite using `[e, integral_indicator_const _ hVo.measurableSet]`. Establish `: μ.real V ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`. Conclude with `⟨hVo.measure_ne_zero μ ⟨x, hx, h1⟩, hVc.measure_lt_top.ne⟩`. Simplify using `using this`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_locally_constant_test_function {G A : Type} [TopologicalSpace G] [TopologicalSpace A] [T2Space A] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts μ]
@@ -66,37 +66,33 @@ private theorem UpperTheory.exists_locally_constant_test_function {G A : Type} [
   simpa using this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v ψ hc hψ _ _ m _ μ hμ ν hν z hz`. Use `haveI := GlobalTheory.LocTateInt.isTopologicalRing_Ev (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.t2Space_Fv_tensor (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.isModuleTopology_Ev (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.isOpenUnits_Ev (E := E) v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI := hμ.1`. Use `set φ := idelesAtEquiv E v with hφ`. Set `j : idelesAt E (evFin F v) → Fv F v ⊗[F] E` to `fun l => compFin F E v (l.1 : AE F E)`. Establish `hoe : IsOpenEmbedding j` using `(IsOpenUnits.isOpenEmbedding_unitsVal (M := Fv F v ⊗[F] E)).comp φ.toHomeomorph.isOpenEmbedding`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hjφ : ∀ l, j l = ((φ l : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)` using `fun l => rfl`. Set `χ : idelesAt E (evFin F v) → ℂ` to `fun l => (ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ z`. Establish `hχ : IsLocallyConstant χ` using `GlobalTheory.LocConstChar.isLocallyConstant_char_absPow F E ν hν z v`. Establish `hχm : ∀ a b, χ (a * b) = χ a * χ b` using `fun a b => by`. Simplify using `only [χ, Subgroup.coe_mul, map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul, mul_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∀ T : Fv F v ⊗[F] E → ℂ, IsLocallyConstant T → HasCompactSupport T → Integrable (fun l => T (j l) * χ l) μ`. Introduce `T hl hT`. Take `⟨R, hR⟩` from `hT.isCompact.exists_bound_of_continuousOn hl.continuous.continuousOn`. Establish `hI` using `(GlobalTheory.LocTateInt.integrable_indicator_absE_pow v μ hμ _ hT.isCompact z (by omega)).const_mul R`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hI.mono' ((hl.continuous.comp hoe.continuous).mul hχ.continuous).aestronglyMeasurable (ae_of_all _ fun l => ?_)` and prove the remaining obligations. Distinguish the cases in `h : j l ∈ tsupport T`. Rewrite using `[Set.indicator_of_mem h]`. Simplify using `only [χ, norm_mul, norm_pow, Circle.norm_coe, one_mul, Complex.norm_real, NNReal.norm_eq]`. Conclude with `mul_le_mul_of_nonneg_right (hR _ h) (by positivity)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.indicator_of_notMem h, image_eq_zero_of_notMem_tsupport h]`. Simplify using the standard rewrite rules. Establish `hintF : ∀ T : Fv F v ⊗[F] E → ℂ, IsLocallyConstant T → HasCompactSupport T → ∀ t, Integrable (fun s => T s * ψ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (t * s))) m`. Introduce `T hl hT t`. Use `Continuous.integrable_of_hasCompactSupport (hl.continuous.mul (hc.comp ((IsModuleTopology.continuous_of_linearMap (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))).comp (continuous_const.mul continuous_id)))) hT.mul_right` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨S, hS1, hS2⟩` from `UpperTheory.finite_unit_contractions F E v`. Take `⟨hUc, hUo⟩` from `isCompact_isOpen_unitsAt (E := E) v`. Take `⟨T, ⟨hl, hT, hZ⟩, hv⟩` from `UpperTheory.exists_test_function_killing_fixed_points (fun T => IsLocallyConstant T ∧ HasCompactSupport T ∧ ∫ l, T (j l) * χ l ∂μ ≠ 0) (four v ψ m) S (UpperTheory.exists_locally_constant_test_function μ j hoe χ hχ _ hUc hUo 1 (one_mem (unitsAt E v)) (by simp [χ])) (by`. Introduce and unpack `u hu T ⟨hl, hT, hZ⟩`. Use `set a : ℝ≥0 := GlobalTheory.Doubling.absEv F E v u with ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha0 : a ≠ 0` using `fun h => by`. Establish `e` using `congrArg (GlobalTheory.Doubling.absEv F E v) (mul_inv_cancel u)`. Rewrite `e` using `[map_mul, map_one, ← ha, h, zero_mul]`. Conclude with `zero_ne_one e`. Set `T₁ : Fv F v ⊗[F] E → ℂ` to `fun s => T ((u⁻¹ : (Fv F v ⊗[F] E)ˣ) * s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Establish `hl₁ : IsLocallyConstant T₁` using `hl.comp_continuous (continuous_const.mul continuous_id)`. Establish `hT₁ : HasCompactSupport T₁` using `hT.comp_homeomorph (Homeomorph.smul u⁻¹)`. Establish `hTu : ∀ s, T₁ (u * s) = T s` using `fun s => by simp only [T₁, Units.inv_mul_cancel_left]`. Use `⟨fun s => T s - (((a : ℝ) : ℂ))⁻¹ * T₁ s, ⟨hl.sub ((IsLocallyConstant.const _).mul hl₁), hT.sub hT₁.mul_left, ?_⟩, fun t => ?_⟩` and prove the remaining obligations. Establish `e` using `integral_mul_left_eq_self (μ := μ) (fun l => T₁ (j l) * χ l) (φ.symm u)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ l, T₁ (j (φ.symm u * l)) * χ (φ.symm u * l) = χ (φ.symm u) * (T (j l) * χ l)` using `fun l => by`. Rewrite using `[hjφ, map_mul, ContinuousMulEquiv.apply_symm_apply, Units.val_mul, hTu, hχm, ← hjφ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e2, integral_const_mul] at e`. Simplify using `only [sub_mul, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_sub (hint T hl hT) ((hint T₁ hl₁ hT₁).const_mul _), integral_const_mul, ← e, ← mul_assoc, ← one_sub_mul]`. Use `mul_ne_zero (sub_ne_zero.2 fun h => hS1 u hu ?_) hZ` and prove the remaining obligations. Establish `hab : absE F E (φ.symm u).1 = a`. Rewrite using `[absE_of_mem (φ.symm u).2]`. Conclude with `congrArg _ (φ.apply_symm_apply u)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `congrArg norm h`. Simplify using `only [χ, hab, norm_one, norm_mul, norm_inv, norm_pow, Circle.norm_coe, one_mul, Complex.norm_real, NNReal.norm_eq] at h2`. Establish `ha' : (a : ℝ) ≠ 0` using `by exact_mod_cast ha0`. Rewrite `h2` using `[← mul_pow_sub_one (show z ≠ 0 by omega), inv_mul_cancel_left₀ ha']`. Establish `h3` using `(pow_eq_one_iff_of_nonneg a.coe_nonneg (show z - 1 ≠ 0 by omega)).1 h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h3` after adjusting the coercions. Establish `e` using `UpperTheory.haar_integral_units_scaling F E v m u fun s => T₁ s * ψ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (t * s))`. Simplify using `only [four, sub_mul, mul_assoc]`. Rewrite using `[integral_sub (hintF T hl hT t) ((hintF T₁ hl₁ hT₁ t).const_mul _), integral_const_mul, ← e]`. Simplify using `only [hTu, mul_left_comm t])`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hFl, hFc⟩` from `UpperTheory.fourier_schwartz_bruhat_preserved F E v ψ hc hψ m T ⟨hl, hT⟩`. Establish `hcl : IsClosed (Function.support (four v ψ m T))` using `(hFl.isClopen_fiber 0).2.isClosed_compl`. Establish `hsc : IsCompact (Function.support (four v ψ m T))`. Rewrite using `[← hcl.closure_eq]`. Conclude with `hFc`.
-
-Establish `hsub : Function.support (four v ψ m T) ⊆ Set.range j`. Introduce `t ht`. Distinguish the cases in `hu : IsUnit t`. Conclude with `⟨φ.symm hu.unit, by rw [hjφ, ContinuousMulEquiv.apply_symm_apply, hu.unit_spec]⟩`. Take `⟨u, hu, e⟩` from `hS2 t hu`.
-
-Conclude with `absurd (hv u hu t e) ht`. Use `⟨T, ⟨hl, hT⟩, j ⁻¹' Function.support (four v ψ m T), hoe.isInducing.isCompact_preimage' hsc hsub, fun t ht => ?_, ?_⟩` and prove the remaining obligations. Take `⟨l, rfl⟩` from `hsub ht`. Conclude with `⟨l, ht, rfl⟩`. Simplify `hZ` using `only [mul_assoc]`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_schwartz_bruhat_nonvanishing_integral :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (ψ : AddChar (Fv F v) ℂ), Continuous ψ → ψ ≠ 1 →

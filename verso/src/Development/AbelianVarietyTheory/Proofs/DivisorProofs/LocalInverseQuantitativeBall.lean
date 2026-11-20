@@ -5,19 +5,17 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hUn : U ∈ nhds v₀` using `hU.mem_nhds hv₀`. Establish `hcd : ContDiffAt ℝ 1 Ψ v₀` using `hΨ.contDiffAt hUn`. Establish `hs : HasStrictFDerivAt Ψ (fderiv ℝ Ψ v₀) v₀` using `hcd.hasStrictFDerivAt one_ne_zero`. Set `e : ReciprocityTheory.L2DbarEstimates.V d ≃L[ℝ] ReciprocityTheory.L2DbarEstimates.V d` to `(LinearEquiv.ofBijective ((fderiv ℝ Ψ v₀ : ReciprocityTheory.L2DbarEstimates.V d →L[ℝ] ReciprocityTheory.L2DbarEstimates.V d) : ReciprocityTheory.L2DbarEstimates.V d →ₗ[ℝ] ReciprocityTheory.L2DbarEstimates.V d) hbij).toContinuousLinearEquiv`. Establish `he : (e : ReciprocityTheory.L2DbarEstimates.V d →L[ℝ] ReciprocityTheory.L2DbarEstimates.V d) = fderiv ℝ Ψ v₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Both sides reduce to the same expression. Establish `hs' : HasStrictFDerivAt Ψ (e : ReciprocityTheory.L2DbarEstimates.V d →L[ℝ] ReciprocityTheory.L2DbarEstimates.V d) v₀`. Rewrite using `[he]`. Conclude with `hs`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set P := hs'.toOpenPartialHomeomorph Ψ with hP`. Establish `hsrc : P.source ∈ nhds v₀` using `P.open_source.mem_nhds (hs'.mem_toOpenPartialHomeomorph_source)`. Establish `hinj : Set.InjOn Ψ P.source`. Use `P.injOn` as an intermediate fact. Simplify `this` using `[hP, HasStrictFDerivAt.toOpenPartialHomeomorph_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn (fderiv ℝ Ψ) U` using `hΨ.continuousOn_fderiv_of_isOpen hU le_rfl`. Establish `hca : ContinuousAt (fderiv ℝ Ψ) v₀` using `hcont.continuousAt hUn`. Establish `hdet0 : (fderiv ℝ Ψ v₀).det ≠ 0`. Use `(LinearEquiv.ofBijective ((fderiv ℝ Ψ v₀ : ReciprocityTheory.L2DbarEstimates.V d →L[ℝ] ReciprocityTheory.L2DbarEstimates.V d) : ReciprocityTheory.L2DbarEstimates.V d →ₗ[ℝ] ReciprocityTheory.L2DbarEstimates.V d) hbij).isUnit_det'` as an intermediate fact. Conclude with `this.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set J : ℝ := |(fderiv ℝ Ψ v₀).det| / 2 with hJ`. Establish `hJpos : 0 < J` using `by positivity`. Establish `hdc : ContinuousAt (fun v => |(fderiv ℝ Ψ v).det|) v₀` using `(continuous_abs.comp ContinuousLinearMap.continuous_det).continuousAt.comp hca`. Establish `ev1 : ∀ᶠ v in nhds v₀, J < |(fderiv ℝ Ψ v).det|` using `hdc.eventually (lt_mem_nhds (by rw [hJ]; linarith [abs_pos.mpr hdet0]))`. Establish `hnc : ContinuousAt (fun v => ‖fderiv ℝ Ψ v‖) v₀` using `continuous_norm.continuousAt.comp hca`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ev2 : ∀ᶠ v in nhds v₀, ‖fderiv ℝ Ψ v‖ < ‖fderiv ℝ Ψ v₀‖ + 1` using `hnc.eventually (gt_mem_nhds (by linarith))`. Establish `ev : ∀ᶠ v in nhds v₀, (v ∈ U ∧ v ∈ P.source) ∧ (J < |(fderiv ℝ Ψ v).det| ∧ ‖fderiv ℝ Ψ v‖ < ‖fderiv ℝ Ψ v₀‖ + 1)` using `(Filter.Eventually.and hUn hsrc).and (ev1.and ev2)`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.mp ev`. Use `⟨r, J, ‖fderiv ℝ Ψ v₀‖ + 1, hr, hJpos, by positivity, fun v hv => (hball v hv).1.1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hinj.mono (fun v hv => (hball v hv).1.2)`.
-
-Introduce `v hv`. Conclude with `⟨(hball v hv).2.1.le, (hball v hv).2.2.le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem contDiffOn_one_injOn_ball_det_norm_bounds {d : ℕ} (U : Set (ReciprocityTheory.L2DbarEstimates.V d)) (v₀ : ReciprocityTheory.L2DbarEstimates.V d)
     (Ψ : ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.L2DbarEstimates.V d) (hU : IsOpen U) (hv₀ : v₀ ∈ U)

@@ -23,13 +23,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hg : GoodEmb T.Q.c (resC T σ)` using `good_resC T hσ`. Establish `h1` using `(hT i σ hσ hV).1 hB`. Take `⟨v, hv, h1⟩` from `h1`. Establish `h2` using `hE i ((starRingEnd ℂ).comp σ) hg hV`. Establish `h3 : ∀ f g, evAt R i σ v (fw.jK i σ f) g = starRingEnd ℂ (evAt R i _ (v₀ i ((starRingEnd ℂ).comp σ)) (fw.jK i ((starRingEnd ℂ).comp σ) f) g)` using `fun f g => (congrFun (h1 f) g).trans (congrArg (starRingEnd ℂ) (congrFun (h2 f) g).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∀ f f', ⟪fw.jK i σ f, fw.jK i σ f'⟫_ℂ = starRingEnd ℂ ⟪fw.jK i ((starRingEnd ℂ).comp σ) f, fw.jK i ((starRingEnd ℂ).comp σ) f'⟫_ℂ` using `fun f f' => inner_conj_of_values R he i σ hv (fun τ => ((fw.hv₀ i _).1 τ).1) (h3 f) (h3 f')`. Establish `h5` using `fw.ks i`. Take `⟨n, b, hb, -, -, -, h5⟩` from `h5`. Use `inner_conj_of_span σ _ _ _ h5 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩ _ ⟨l, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `e : ∀ k, ∃ f, ((fw.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) = b k` using `fun k => ⟨(fw.e i).symm ⟨b k, hb k⟩, congrArg Subtype.val ((fw.e i).apply_symm_apply _)⟩`. Establish `e1` using `e k`. Establish `e2` using `e l`. Take `⟨f, e1⟩` from `e1`. Take `⟨f', e2⟩` from `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← e1, ← e2]`. Conclude with `h4 f f'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_reading_conj_at (he : R.models_HW) (fw : FWTie T R κ v₀) (hE : fw.Evaluates) (hT : BarTie fw) (i : Fin D.R.m)
     (σ : D.what₂.LL →+* ℂ) (hσ : ¬ GoodEmb T.Q.c (res T σ)) (hV : T.V ((i : ℕ) + 1) (resC T σ) = Wc D i)
@@ -60,7 +60,7 @@ theorem inner_reading_conj_at (he : R.models_HW) (fw : FWTie T R κ v₀) (hE : 
   exact h4 f f'
 
 /- English proof (translation)
-Rewrite `h` using `[inner_conj_symm]`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ _ _ _ _ x, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_of_inner_conj {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H']
     [InnerProductSpace ℂ H'] {x : H} {y : H'} (h : ⟪x, x⟫_ℂ = starRingEnd ℂ ⟪y, y⟫_ℂ) : ‖y‖ = ‖x‖ := by
@@ -70,11 +70,11 @@ theorem norm_eq_of_inner_conj {H H' : Type} [NormedAddCommGroup H] [InnerProduct
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hV : T.V ((i : ℕ) + 1) (resC T σ) = Wc D i` using `fw.laws.spaceW _ (inR i) _ (good_resC T hσ)`. Distinguish the cases in `hB : JEvBarAt T R κ i σ hV`. Conclude with `norm_eq_of_inner_conj (inner_reading_conj_at T R κ v₀ he fw hE hT i σ hσ hV hB x x)`. Establish `h0` using `(hT i σ hσ hV).2 hB`. Establish `hx : x = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hx`. Establish `h1 : LinearIndependent D.what₂.LL (fun _ : Fin 1 => x)` using `linearIndependent_unique_iff.2 hx`. Establish `h2` using `((hu i σ).1 1 _ h1).ne_zero 0`. Rewrite `h2` using `[h0]`. Conclude with `h2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hx` using the available equality. Rewrite using `[map_zero, map_zero, norm_zero, norm_zero]`.
+A detailed English derivation is pending.
 -/
 theorem norm_conj_of_not_good (he : R.models_HW) (fw : FWTie T R κ v₀) (hE : fw.Evaluates) (hT : BarTie fw) (hu : R.LUnif)
     (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (hσ : ¬ GoodEmb T.Q.c (res T σ)) (x : Fin (R.nW i) → D.what₂.LL) :
@@ -95,9 +95,9 @@ theorem norm_conj_of_not_good (he : R.models_HW) (fw : FWTie T R κ v₀) (hE : 
 omit R in
 
 /- English proof (translation)
-Establish `key : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) {s : c.F →+* ℂ}, GoodEmb c s → ¬ GoodEmb c (( …`. Introduce `E _ _ _ H l c s h h'`. Establish `h2 : starRingEnd ℂ H.rt0 = H.rt0` using `by conv_lhs => rw [← h]`. Conclude with `h'`. Establish `him : H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Simplify using `[pow_two, him] at h3`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Conclude with `key T.Q.c h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem not_good_conj {σ : D.what₂.LL →+* ℂ} (h : GoodEmb T.Q.c (res T σ)) :
     ¬ GoodEmb T.Q.c (res T ((starRingEnd ℂ).comp σ)) := by
@@ -120,9 +120,9 @@ end GlobalTheory.ConjNorm
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC _ fw hT hu i σ x`. Establish `hE` using `GlobalTheory.evaluates_of_unif D G Pl0 T0 A T R F κ v₀ fw hu`. Establish `key : ∀ σ, ¬ GoodEmb T.Q.c (res T σ) → (R.FW i).nrmAt ((starRingEnd ℂ).comp σ) x = (R.FW i).nrmAt σ x` using `fun σ hσ => GlobalTheory.ConjNorm.norm_conj_of_not_good T R κ v₀ hC.models.HW fw hE hT hu i σ hσ x`. Distinguish the cases in `hσ : GoodEmb T.Q.c (res T σ)`. Establish `h1` using `key _ (GlobalTheory.ConjNorm.not_good_conj T hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ` using `RingHom.ext fun a => Complex.conj_conj _`. Conclude with `h1.symm.trans (congrArg (fun s => (R.FW i).nrmAt s x) e)`. Conclude with `key σ hσ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConjNorm.pConj : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → GlobalTheory.Hk3.SchurAll R → ∀ fw : FWTie T R κ v₀, BarTie fw → R.LUnif → R.PConj := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hC _ fw hT hu i σ x

@@ -20,9 +20,9 @@ open Formalism.BasicNotions Formalism.MainNotions
 end
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory Formalism.MainNotions.RT Formalism.L2.Top3 Formalism.L2.Top4
 /- English proof (translation)
-Introduce `hG 𝒜 sel cIc hcI irrC`. Establish `irr : Closed (D3 3 𝒜) fun {eps} Fm _ => ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ A : Formalism.MainNotions.ArithmeticCylinders.AllRows (Fm.D x i), Formalism.MainNotions.ArithmeticCylinders.LabelCountGoodInjective A ∧ Formalism.L2.GlobalTheoryTheory.AllJoin.AllJoinA A ∧ Formalism.Main …` using `closed_of_mem (irrC.imp fun Fm _ _ H hc => by`. Take `⟨x0, H⟩` from `H`. Use `⟨max (max x0 (sel Fm (d3_a hc)).1) (max (Fm.x1 + 1) 4), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h1 : Fm.x1 < x` using `by have := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : (sel Fm (d3_a hc)).1 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Take `⟨A, a, b, c⟩` from `H x (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx) i`. Conclude with `⟨A, a, b, GlobalTheory.Top.Lq.admissibleLabelWeights_of_greenCuspidalParametrisation hG _ _ ((sel Fm (d3_a hc)).2 x h1 hs i).T.n.types, c, sizesRec_at Fm h1 (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) i le_rfl⟩)`. Conclude with `(irr.and (closed_eps_le_one _)).imp fun Fm _ he ⟨h, h1⟩ => linkIRR_of_join_ex _ 6 cIc he h1 hcI Fm h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closed_linkIRR_of_join_count : GlobalTheory.GLq.Green → ∀ (𝒜 : FamClass)
     (sel : _root_.Formalism.L2.TwistSelection 𝒜)

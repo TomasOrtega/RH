@@ -10,7 +10,7 @@ namespace GlobalTheory.K5.TraceTower
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [← Nat.add_assoc, pow_succ', pow_mul, T.ζpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_pow (T : Tower p Ω) (m k : ℕ) : T.ζ (m + k) ^ (p ^ k) = T.ζ m := by
   induction k with
@@ -18,7 +18,7 @@ theorem zeta_pow (T : Tower p Ω) (m k : ℕ) : T.ζ (m + k) ^ (p ^ k) = T.ζ m 
   | succ k ih => rw [← Nat.add_assoc, pow_succ', pow_mul, T.ζpow, ih]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [← Nat.add_assoc, pow_succ', pow_mul, T.qpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem qq_pow (T : Tower p Ω) (m k : ℕ) : T.qq (m + k) ^ (p ^ k) = T.qq m := by
   induction k with
@@ -26,30 +26,30 @@ theorem qq_pow (T : Tower p Ω) (m k : ℕ) : T.qq (m + k) ^ (p ^ k) = T.qq m :=
   | succ k ih => rw [← Nat.add_assoc, pow_succ', pow_mul, T.qpow, ih]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Simplify using `using zeta_pow T m k`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zeta_pow' (T : Tower p Ω) {m n : ℕ} (h : m ≤ n) : T.ζ n ^ (p ^ (n - m)) = T.ζ m := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
   simpa using zeta_pow T m k
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Simplify using `using qq_pow T m k`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem qq_pow' (T : Tower p Ω) {m n : ℕ} (h : m ≤ n) : T.qq n ^ (p ^ (n - m)) = T.qq m := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
   simpa using qq_pow T m k
 
 /- English proof (translation)
-Use `qq_pow' T (Nat.zero_le n)` as an intermediate fact. Simplify `this` using `[T.q0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem qq_pow_top (T : Tower p Ω) (n : ℕ) : T.qq n ^ (p ^ n) = algebraMap (O0 p) Ω (qO p) := by
   have := qq_pow' T (Nat.zero_le n)
   simpa [T.q0] using this
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[(hω.pow_eq_one_iff_dvd i).2 h]`. Simplify using the standard rewrite rules. Establish `h1 : ω ^ i ≠ 1` using `fun e => h ((hω.pow_eq_one_iff_dvd i).1 e)`. Establish `h2` using `geom_sum_mul (ω ^ i) K`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (ω ^ i) ^ K = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hω.pow_eq_one, one_pow]`. Rewrite `h2` using `[h3, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_right (sub_ne_zero.2 h1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geo (ω : Ω) (K : ℕ) (hω : IsPrimitiveRoot ω K) (i : ℕ) :
     ∑ c ∈ Finset.range K, (ω ^ i) ^ c = if K ∣ i then (K : Ω) else 0 := by
@@ -62,9 +62,7 @@ theorem geo (ω : Ω) (K : ℕ) (hω : IsPrimitiveRoot ω K) (i : ℕ) :
     exact (mul_eq_zero.1 h2).resolve_right (sub_ne_zero.2 h1)
 
 /- English proof (translation)
-Use `letI : Algebra A S := ι.toRingHom.toAlgebra`. Use `letI : Algebra A M := f.toAlgebra`. Use `haveI : IsScalarTower R A S := IsScalarTower.of_algebraMap_eq fun x => (ι.commutes x).symm`. Use `haveI : Algebra.IsAlgebraic A S := Algebra.IsAlgebraic.extendScalars (R := R) hA`. Use `haveI : Module.IsTorsionFree A S := Module.isTorsionFree_iff_algebraMap_injective.2 hι`.
-
-Use `haveI : Module.IsTorsionFree A M := Module.isTorsionFree_iff_algebraMap_injective.2 hf`. Set `L : S →ₐ[A] M` to `IsAlgClosed.lift`. Conclude with `⟨L.toRingHom, fun x => L.commutes x⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_hom {R A S M : Type} [CommRing R] [CommRing A] [IsDomain A] [Algebra R A] [Field S]
     [Algebra R S] [Algebra.IsAlgebraic R S] [Field M] [IsAlgClosed M]
@@ -81,15 +79,13 @@ theorem lift_hom {R A S M : Type} [CommRing R] [CommRing A] [IsDomain A] [Algebr
   exact ⟨L.toRingHom, fun x => L.commutes x⟩
 
 /- English proof (translation)
-Use `haveI := hΩ.clo`. Use `haveI := hΩ.alg`. Use `haveI : IsDomain (O0 p) := hΩ.inj.isDomain _`. Establish `hinj : ∀ g : A →ₐ[O0 p] Ω, Function.Injective g`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := O0 p) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `r hr`. Rewrite `hr` using `[Ideal.mem_comap, RingHom.mem_ker, AlgHom.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hΩ.inj (by rw [hr, map_zero])`. Establish `hA : Function.Injective (algebraMap (O0 p) A)`. Introduce `x y hxy`. Apply `hΩ.inj` to reduce the goal to its premises. Rewrite using `[← ι.commutes, ← ι.commutes, hxy]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨τ, hτ⟩` from `lift_hom hA ι f.toRingHom (hinj ι) (hinj f)`. Set `τ' : Ω →ₐ[O0 p] Ω` to `{ τ with commutes' := fun r => by show τ _ = _`. Rewrite using `[← ι.commutes, hτ, ι.commutes]`. Conclude with `f.commutes r }`. Use `haveI : Module.IsTorsionFree (O0 p) Ω := Module.isTorsionFree_iff_algebraMap_injective.2 hΩ.inj`.
-
-Conclude with `⟨AlgEquiv.ofBijective τ' (Algebra.IsAlgebraic.algHom_bijective τ'), hτ⟩`.
+A detailed English derivation is pending.
 -/
 theorem ext_aut (hΩ : IsClo p Ω) {A : Type} [CommRing A] [IsDomain A] [Algebra (O0 p) A]
     [Algebra.IsIntegral (O0 p) A] (ι f : A →ₐ[O0 p] Ω) :
@@ -122,13 +118,13 @@ theorem ext_aut (hΩ : IsClo p Ω) {A : Type} [CommRing A] [IsDomain A] [Algebra
 open Polynomial in
 
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Establish `hcop : a.Coprime (p ^ n)` using `Nat.Coprime.pow_right n (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 ha))`. Establish `hprim : IsPrimitiveRoot (T.ζ n ^ a) (p ^ n)` using `(T.prim n).pow_of_coprime a hcop`. Set `φ : Polynomial (Polynomial (O0 p)) →ₐ[O0 p] Ω` to `aevalTower (aeval (T.ζ n ^ a)) (T.ζ n ^ b * T.qq n)`. Establish `hle : towerIdeal p n ≤ RingHom.ker φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker] show aevalTower (aeval (T.ζ n ^ a)) (T.ζ n ^ b * T.qq n) (C (cyclotomic (p ^ n) (O0 p))) = 0`. Rewrite using `[aevalTower_C, aeval_def, ← eval_map, map_cyclotomic]`. Conclude with `hprim.isRoot_cyclotomic (pow_pos hp.pos n)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, RingHom.mem_ker] show aevalTower (aeval (T.ζ n ^ a)) (T.ζ n ^ b * T.qq n) (X ^ (p ^ n) - C (C (qO p))) = 0`. Rewrite using `[map_sub, map_pow, aevalTower_X, aevalTower_C, aeval_C, mul_pow, qq_pow_top, ← pow_mul, mul_comm b, pow_mul, (T.prim n).pow_eq_one, one_pow, one_mul, sub_self]`. Set `f0 : On p n →ₐ[O0 p] Ω` to `Ideal.Quotient.liftₐ (towerIdeal p n) φ (fun x hx => (RingHom.mem_ker).1 (hle hx))`. Establish `hf0x : f0 (xn p n) = T.ζ n ^ a` using `by show aevalTower (aeval (T.ζ n ^ a)) (T.ζ n ^ b * T.qq n) (C X) = _`. Rewrite using `[aevalTower_C, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0y : f0 (yn p n) = T.ζ n ^ b * T.qq n` using `by show aevalTower (aeval (T.ζ n ^ a)) (T.ζ n ^ b * T.qq n) X = _`. Rewrite using `[aevalTower_X]`. Conclude with `⟨f0, hf0x, hf0y⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hom (T : Tower p Ω) (n : ℕ) (a b : ℕ) (ha : ¬ p ∣ a) :
     ∃ f : On p n →ₐ[O0 p] Ω, f (xn p n) = T.ζ n ^ a ∧ f (yn p n) = T.ζ n ^ b * T.qq n := by
@@ -160,11 +156,11 @@ theorem exists_hom (T : Tower p Ω) (n : ℕ) (a b : ℕ) (ha : ¬ p ∣ a) :
   exact ⟨f0, hf0x, hf0y⟩
 
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Take `⟨ι, hx, hy⟩` from `exists_hom T n 1 0 hp.not_dvd_one`. Take `⟨f, hfx, hfy⟩` from `exists_hom T n a b ha`. Take `⟨_, -⟩` from `GlobalTheory.K5.OnDVR.isDVR_On p n hn`. Take `⟨B, -⟩` from `GlobalTheory.K5.OnFree.on_free p n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Finite (O0 p) (On p n) := Module.Finite.of_basis B`. Use `haveI : Algebra.IsIntegral (O0 p) (On p n) := Algebra.IsIntegral.of_finite (O0 p) (On p n)`. Take `⟨σ, key⟩` from `ext_aut hΩ ι f`. Establish `k1` using `key (xn p n)`. Establish `k2` using `key (yn p n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k1` using `[hx, hfx, pow_one]`. Rewrite `k2` using `[hy, hfy, pow_zero, one_mul]`. Conclude with `⟨σ, k1, k2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_aut (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ) (hn : 1 ≤ n) (a b : ℕ) (ha : ¬ p ∣ a) :
     ∃ σ : Gal p Ω, σ (T.ζ n) = T.ζ n ^ a ∧ σ (T.qq n) = T.ζ n ^ b * T.qq n := by
@@ -183,7 +179,7 @@ theorem exists_aut (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ) (hn : 1 ≤ n) 
   exact ⟨σ, k1, k2⟩
 
 /- English proof (translation)
-Rewrite using `[Gms, Subgroup.mem_inf, MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, AlgEquiv.smul_def, AlgEquiv.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gms_iff {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω] (T : Tower p Ω)
     (m s : ℕ) (g : Gal p Ω) : g ∈ Gms T m s ↔ g (T.ζ m) = T.ζ m ∧ g (T.qq s) = T.qq s := by

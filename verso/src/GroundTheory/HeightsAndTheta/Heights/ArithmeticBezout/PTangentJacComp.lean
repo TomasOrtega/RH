@@ -7,14 +7,14 @@ namespace GroundTheory.Heights₂.Heights
 noncomputable section
 
 /- English proof (translation)
-Simplify using `[PiLp.inner_apply, Complex.inner, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem TangentJacComp.real_inner_eq_re {d : ℕ} (x y : EuclideanSpace ℂ (Fin d)) :
     @inner ℝ _ _ x y = RCLike.re (@inner ℂ _ _ x y) := by
   simp [PiLp.inner_apply, Complex.inner, map_sum]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[TangentJacComp.real_inner_eq_re, TangentJacComp.real_inner_eq_re]`. Simplify using `[LinearMap.adjoint_inner_left]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem TangentJacComp.adjoint_restrictScalars {d n : ℕ}
     (L : EuclideanSpace ℂ (Fin d) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) :
@@ -26,7 +26,7 @@ theorem TangentJacComp.adjoint_restrictScalars {d n : ℕ}
   simp [LinearMap.adjoint_inner_left]
 
 /- English proof (translation)
-Establish `hsq : ((L.normDet ^ 2 : ℝ) : ℂ) = LinearMap.det (LinearMap.adjoint L ∘ₗ L)` using `L.normDet_sq`. Rewrite using `[areaJacobian, TangentJacComp.adjoint_restrictScalars]`. Establish `hc : (LinearMap.adjoint L).restrictScalars ℝ ∘ₗ L.restrictScalars ℝ = (LinearMap.adjoint L ∘ₗ L).restrictScalars ℝ` using `rfl`. Rewrite using `[hc, LinearMap.det_restrictScalars, ← hsq, Algebra.norm_complex_apply, Complex.normSq_ofReal, Real.sqrt_mul_self (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem TangentJacComp.areaJacobian_eq {d n : ℕ}
     (L : EuclideanSpace ℂ (Fin d) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) :
@@ -39,9 +39,9 @@ theorem TangentJacComp.areaJacobian_eq {d n : ℕ}
     Real.sqrt_mul_self (by positivity)]
 
 /- English proof (translation)
-Introduce `d n L π`. Establish `hc` using `LinearMap.normDet_comp L (linProjₗ π)`. Establish `hr : |LinearMap.det (((linProjₗ π).comp L).restrictScalars ℝ)| = ((linProjₗ π).comp L).normDet ^ 2`. Rewrite using `[LinearMap.det_restrictScalars, Algebra.norm_complex_apply, LinearMap.normDet_eq_norm_det, Complex.sq_norm, abs_of_nonneg (Complex.normSq_nonneg _)]`. Rewrite using `[hr, hc, tangentJac, TangentJacComp.areaJacobian_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem TangentJacComp.proof : TangentJacComp.Statement := by
   intro d n L π

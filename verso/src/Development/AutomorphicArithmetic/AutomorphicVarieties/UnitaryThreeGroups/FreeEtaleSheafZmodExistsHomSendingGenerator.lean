@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open Matrix UpperTheory.V.U3
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `e` using `congrFun (congrFun h i) j`. Rewrite `e` using `[Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]`. Assume the negation of the conclusion as `hM`. Establish `e'` using `mul_right_cancel₀ hM e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hne' : z ≠ -z'` using `fun h => hne (by rw [h, neg_neg])`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [eq_comm]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem offdiag_zero {κ : Type} [Field κ] (M : Matrix (Fin 3) (Fin 3) κ) (z z' : κ)
     (hz : z ≠ 0) (hz' : z' ≠ 0) (hne : z' ≠ -z)
@@ -23,19 +23,19 @@ private theorem offdiag_zero {κ : Type} [Field κ] (M : Matrix (Fin 3) (Fin 3) 
   fin_cases i <;> fin_cases j <;> simp_all [eq_comm]
 
 /- English proof (translation)
-Establish `h0` using `hm 0`. Establish `h1'` using `hm 1`. Establish `h2'` using `hm 2`. Establish `ha : ∀ g i j, a' g i j = m i / m j * a g i j`. Introduce `g i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hm j` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h1 g i j`. Distinguish the cases in `hd : m 0 * m 2 = m 1 * m 1`. Use `⟨Units.mk0 (m 0 / m 1) (div_ne_zero h0 h1'), fun g i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ha]`. Use `congr 1`. Establish `e2 : m 2 = m 1 * m 1 / m 0` using `by field_simp; linear_combination hd`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wt, wt1, e2, zpow_ofNat, h0, h1'] <;> field_simp`. Take `⟨s, hs⟩` from `IsAlgClosed.exists_eq_mul_self (m 0 / m 2)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `div_ne_zero h0 h2' (by simpa using hs)`. Establish `hz : ∀ g i j, (m i * m i.rev - m j * m j.rev) * a g i j = 0`. Introduce `g i j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `m i.rev * h1 g i j - m j * h2 g i j`. Establish `hd1 : m 0 * m 2 - m 1 * m 1 ≠ 0` using `sub_ne_zero.2 hd`. Establish `hd2 : m 2 * m 0 - m 1 * m 1 ≠ 0` using `by rwa [mul_comm (m 2)]`. Establish `hd3 : m 1 * m 1 - m 0 * m 2 ≠ 0` using `sub_ne_zero.2 (Ne.symm hd)`. Establish `hd4 : m 1 * m 1 - m 2 * m 0 ≠ 0` using `by rwa [mul_comm (m 2)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.mk0 s hs0, fun g i j => ?_⟩` and prove the remaining obligations. Establish `z01 : a g 0 1 = 0` using `(mul_eq_zero.1 (hz g 0 1)).resolve_left hd1`. Establish `z21 : a g 2 1 = 0` using `(mul_eq_zero.1 (hz g 2 1)).resolve_left hd2`. Establish `z10 : a g 1 0 = 0` using `(mul_eq_zero.1 (hz g 1 0)).resolve_left hd3`. Establish `z12 : a g 1 2 = 0` using `(mul_eq_zero.1 (hz g 1 2)).resolve_left hd4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : m 0 = s * s * m 2` using `by rw [← hs]; field_simp`. Rewrite using `[ha]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [wt, wt1, z01, z21, z10, z12, e0, zpow_ofNat, h1', h2', hs0] <;> left <;> field_simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem free_etale_sheaf_zmod_exists_hom_sending_generator {κ ι : Type} [Field κ] [IsAlgClosed κ] (m : Fin 3 → κ) (hm : ∀ i, m i ≠ 0)
     (a a' : ι → Matrix (Fin 3) (Fin 3) κ)
@@ -78,25 +78,25 @@ private theorem free_etale_sheaf_zmod_exists_hom_sending_generator {κ ι : Type
       simp [wt, wt1, z01, z21, z10, z12, e0, zpow_ofNat, h1', h2', hs0] <;> left <;> field_simp
 
 /- English proof (translation)
-Introduce `G κ _ _ _ η r r' c g₁ h2 hr hr' hc hg hN hN' hz hz' hne _ hiso`. Take `⟨M, hM⟩` from `hiso`. Establish `hstar : ∀ g, η g = 1 → η (gstar c g) = 1`. Introduce `g h`. Simplify using `[gstar, hc, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hZ : (M : Matrix (Fin 3) (Fin 3) κ) * zmat c g₁ r = zmat c g₁ r' * M`. Establish `e1` using `hM g₁ hg`. Establish `e2` using `hM (gstar c g₁) (hstar g₁ hg)`. Unfold `mats at e1 e2`. Rewrite using `[zmat, zmat, Matrix.mul_sub, Matrix.sub_mul, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hZ` using `[zmat_diag r c g₁ h2.isUnit ((hr c).trans hc) ((hr g₁).trans hg) hN, zmat_diag r' c g₁ h2.isUnit ((hr' c).trans hc) ((hr' g₁).trans hg) hN']`. Establish `hoff` using `offdiag_zero _ _ _ hz hz' hne hZ`. Establish `hdiag : (M : Matrix (Fin 3) (Fin 3) κ) = Matrix.diagonal fun i => M i i`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hij, hoff i j hij]`. Establish `hm : ∀ i, (M : Matrix (Fin 3) (Fin 3) κ) i i ≠ 0`. Establish `hdet : (M : Matrix (Fin 3) (Fin 3) κ).det ≠ 0` using `M.det_ne_zero`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdet` using `[hdiag, Matrix.det_diagonal, Finset.prod_ne_zero_iff]`. Conclude with `fun i => hdet i (Finset.mem_univ i)`. Establish `h1 : ∀ g, η g = 1 → ∀ i j, M i i * (r g).mat i j = (r' g).mat i j * M j j`. Introduce `g h i j`. Establish `e` using `hM g h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[hdiag]`. Establish `e'` using `congrFun (congrFun e i) j`. Rewrite `e'` using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Then use the resulting hypothesis. Establish `hJ : ∀ (X : Matrix (Fin 3) (Fin 3) κ) (i j : Fin 3), (Jmat κ 3 * Xᵀ * Jmat κ 3) j.rev i.rev = X i j`. Introduce `X i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`. Establish `h2' : ∀ g, η g = 1 → ∀ i j : Fin 3, M j.rev j.rev * (r g).mat i j = (r' g).mat i j * M i.rev i.rev`. Introduce `g h i j`. Establish `e` using `h1 _ (hstar g h) j.rev i.rev`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[(mat_gstar r c g hN.atc ((hr c).trans hc) ((hr g).trans h)).1, (mat_gstar r' c g hN'.atc ((hr' c).trans hc) ((hr' g).trans h)).1, hJ, hJ]`. Then use the resulting hypothesis. Take `⟨t, ht⟩` from `free_etale_sheaf_zmod_exists_hom_sending_generator (ι := η.ker) (fun i => M i i) hm (fun g => (r g).mat) (fun g => (r' g).mat) (fun g => h1 g g.2) (fun g => h2' g g.2)`. Take `⟨k1, k2, k3, -⟩` from `conjBy_tor r t`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `hker : ∀ g, η g = 1 → r' g = conjBy (tor κ t) r g`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `g h`. Use `SemidirectProduct.ext (Units.ext ?_) (by rw [k2, hr g, hr' g])` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(ht ⟨g, h⟩ i j).trans (k1 g i j).symm`. Establish `hcc : r' c = conjBy (tor κ t) r c` using `SemidirectProduct.ext (Units.ext (hN'.atc.trans (k3 c g₁ hN).atc.symm)) (by rw [k2, hr c, hr' c])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Break down `Int.units_eq_one_or (η g) with h | h` into its components or cases. Conclude with `hker g h`. Establish `e : g = g * c⁻¹ * c` using `by simp`. Rewrite using `[e, map_mul r' _ c, map_mul _ _ c, hcc, hker (g * c⁻¹) (by simp [h, hc])]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.conjBy_tor_of_iso :
     ∀ {G κ : Type} [Group G] [Field κ] [IsAlgClosed κ] (η : G →* ℤˣ) (r r' : G →* GG 3 κ) (c g₁ : G), (2 : κ) ≠ 0 → HasMult η r → HasMult η r' →

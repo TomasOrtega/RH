@@ -8,7 +8,7 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Break down `N with _ | m` into its components or cases. Simplify using `at h`. Simplify using `only [Nat.add_sub_cancel] at h`. Establish `h4 : 4 * m ≤ (m + 1) ^ 2` using `by nlinarith [sq_nonneg ((m : ℤ) - 1)]`. Use `Nat.mul_le_mul_left f h4` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -21,13 +21,13 @@ theorem twelve_le_mul_sq (f N : ℕ) (h : 2 < f * (N - 1)) : 12 ≤ f * N ^ 2 :=
     nlinarith
 
 /- English proof (translation)
-Introduce `D Y h`. Establish `hrd : 1 ≤ D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.one_le_rpow` to reduce the goal to its premises. Establish `h0` using `NumberField.discr_ne_zero D.host.E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℤ) ≤ |NumberField.discr D.host.E|` using `Int.one_le_abs h0`. Conclude with `h1` after adjusting the coercions. Check the signs of the components of the expression. Use `⟨fun u g hw => ?_, hrd, fun B hB => ?_⟩` and prove the remaining obligations. Establish `h12 : (12 : ℝ) ≤ (D.R.f : ℝ) * (Y.N : ℝ) ^ 2` using `by exact_mod_cast twelve_le_mul_sq _ _ h`.
+Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 ≤ supAbs Y u` using `Real.iSup_nonneg fun _ => abs_nonneg _`. Establish `hq : 0 ≤ supAbs Y u / g` using `div_nonneg hs hw.1.le`. Unfold `bigB0`. Use the polynomial consequences of the given equalities and inequalities. Unfold `lg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h1 : Real.log B ≤ Real.log (B * D.host.rdE)` using `Real.log_le_log (by linarith) (by nlinarith)`. Combine the linear relations using `[abs_nonneg (dlogL D 1)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem threshold_ge_and_rootDiscr_ge : ∀ (D : D7) (Y : ShimX D.what₂.Tau), 2 < D.R.f * (Y.N - 1) → (∀ u g, WeightHyp Y u g → 48 ≤ bigB0 Y u g) ∧ 1 ≤ D.host.rdE ∧ ∀ B : ℝ, 1 ≤ B → Real.log B ≤ lg D B := by
   intro D Y h

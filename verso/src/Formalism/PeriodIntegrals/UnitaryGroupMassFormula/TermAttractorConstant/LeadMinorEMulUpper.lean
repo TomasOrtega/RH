@@ -16,11 +16,11 @@ section Mat
 variable {K : Type*} [CommRing K]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Set `e : Fin l ↪ Fin N` to `⟨Fin.castLE h, Fin.castLE_injective h⟩`. Establish `hs : ∑ k : Fin l, A (Fin.castLE h i) (Fin.castLE h k) * Z (Fin.castLE h k) (Fin.castLE h j) = ∑ k ∈ Finset.univ.map e, A (Fin.castLE h i) k * Z k (Fin.castLE h j)`. Rewrite using `[Finset.sum_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hs]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `k _ hk`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hkl : l ≤ k.val`. Assume the negation of the conclusion as `hc`. Conclude with `hk (Finset.mem_map.2 ⟨⟨k.val, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Rewrite using `[hA _ _ (by rw [Fin.lt_def]; simp; omega), zero_mul]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mul_lower {N l : ℕ} (h : l ≤ N) (A Z : Matrix (Fin N) (Fin N) K)
     (hA : ∀ a c : Fin N, a < c → A a c = 0) :
@@ -42,11 +42,11 @@ theorem sub_mul_lower {N l : ℕ} (h : l ≤ N) (A Z : Matrix (Fin N) (Fin N) K)
   rw [hA _ _ (by rw [Fin.lt_def]; simp; omega), zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Set `e : Fin l ↪ Fin N` to `⟨Fin.castLE h, Fin.castLE_injective h⟩`. Establish `hs : ∑ k : Fin l, Z (Fin.castLE h i) (Fin.castLE h k) * B (Fin.castLE h k) (Fin.castLE h j) = ∑ k ∈ Finset.univ.map e, Z (Fin.castLE h i) k * B k (Fin.castLE h j)`. Rewrite using `[Finset.sum_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hs]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `k _ hk`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hkl : l ≤ k.val`. Assume the negation of the conclusion as `hc`. Conclude with `hk (Finset.mem_map.2 ⟨⟨k.val, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Rewrite using `[hB _ _ (by rw [Fin.lt_def]; simp; omega), mul_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mul_upper {N l : ℕ} (h : l ≤ N) (Z B : Matrix (Fin N) (Fin N) K)
     (hB : ∀ c b : Fin N, b < c → B c b = 0) :
@@ -68,7 +68,7 @@ theorem sub_mul_upper {N l : ℕ} (h : l ≤ N) (Z B : Matrix (Fin N) (Fin N) K)
   rw [hB _ _ (by rw [Fin.lt_def]; simp; omega), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isLowerTriangular A (fun i j hij => hA i j (OrderDual.toDual_lt_toDual.1 hij))]`. Simplify using `[hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_lower_one {N : ℕ} (A : Matrix (Fin N) (Fin N) K)
     (hA : ∀ a c : Fin N, a < c → A a c = 0) (hd : ∀ a, A a a = 1) : A.det = 1 := by
@@ -76,7 +76,7 @@ theorem det_lower_one {N : ℕ} (A : Matrix (Fin N) (Fin N) K)
   simp [hd]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular (M := B) (fun i j hij => hB i j hij)]`. Simplify using `[hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_upper_one {N : ℕ} (B : Matrix (Fin N) (Fin N) K)
     (hB : ∀ c b : Fin N, b < c → B c b = 0) (hd : ∀ a, B a a = 1) : B.det = 1 := by
@@ -84,11 +84,11 @@ theorem det_upper_one {N : ℕ} (B : Matrix (Fin N) (Fin N) K)
   simp [hd]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge i k with hik | hki` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[(hA i k).1 hik, zero_mul]`. Rewrite using `[(hL k j).1 (lt_of_le_of_lt hki hij), mul_zero]`. Substitute `hij` using the available equality. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[(hA i i).2 rfl, (hL i i).2 rfl, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hki | hik` into its components or cases. Rewrite using `[(hL k i).1 hki, mul_zero]`. Rewrite using `[(hA i k).1 hik, zero_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isLoUni_mul {N : ℕ} {A L : Matrix (Fin N) (Fin N) K} (hA : IsLoUni A) (hL : IsLoUni L) :
     IsLoUni (A * L) := by
@@ -109,7 +109,7 @@ theorem isLoUni_mul {N : ℕ} {A L : Matrix (Fin N) (Fin N) K} (hA : IsLoUni A) 
     · simp
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul .. | (apply GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul <;> assumption) | (intros; apply GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul <;> assumption) | (apply @ …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUpUni_mul {N : ℕ} {U B : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) (hB : IsUpUni B) :
     IsUpUni (U * B) := by
@@ -122,7 +122,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Unfold `leadMinorE`. Use `split_ifs with h`. Rewrite using `[sub_mul_lower h A Z (fun a c hac => (hA a c).1 hac), Matrix.det_mul, det_lower_one (A.submatrix (Fin.castLE h) (Fin.castLE h)) (fun a c hac => (hA _ _).1 hac) (fun a => (hA _ _).2 rfl), one_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leadMinorE_lower_mul {N : ℕ} (A Z : Matrix (Fin N) (Fin N) E) (hA : IsLoUni A) (l : ℕ) :
     leadMinorE (A * Z) l = leadMinorE Z l := by
@@ -134,7 +134,7 @@ theorem leadMinorE_lower_mul {N : ℕ} (A Z : Matrix (Fin N) (Fin N) E) (hA : Is
   · rfl
 
 /- English proof (translation)
-Unfold `leadMinorE`. Use `split_ifs with h`. Rewrite using `[sub_mul_upper h Z B (fun c b hbc => (hB c b).1 hbc), Matrix.det_mul, det_upper_one (B.submatrix (Fin.castLE h) (Fin.castLE h)) (fun c b hbc => (hB _ _).1 hbc) (fun a => (hB _ _).2 rfl), mul_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leadMinorE_mul_upper {N : ℕ} (Z B : Matrix (Fin N) (Fin N) E) (hB : IsUpUni B) (l : ℕ) :
     leadMinorE (Z * B) l = leadMinorE Z l := by
@@ -146,9 +146,9 @@ theorem leadMinorE_mul_upper {N : ℕ} (Z B : Matrix (Fin N) (Fin N) E) (hB : Is
   · rfl
 
 /- English proof (translation)
-Rewrite `hv` using `[Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, hl, rfl⟩` from `hv`. Use `⟨l, fun d hd => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `: d ∈ (l.support : Set (Fin N))` using `by simpa using hne`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hd ((Finsupp.mem_supported E l).1 hl this)`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Introduce `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coeffs {N : ℕ} (f : Fin N → S.V) (a : Fin N) (v : S.V)
     (hv : v ∈ Submodule.span E (f '' {c | c < a})) :
@@ -163,13 +163,13 @@ theorem exists_coeffs {N : ℕ} (f : Fin N → S.V) (a : Fin N) (v : S.V)
     intro i; simp
 
 /- English proof (translation)
-Use `choose c hc0 hcs using fun a => exists_coeffs f a _ (h a)`. Use `⟨Matrix.of fun a d => (if a = d then (1 : E) else 0) + star (c a d), ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `[ne_of_lt hij, hc0 i j (lt_asymm hij)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using `[hc0 i i (lt_irrefl i)]`. Use extensionality with `a b`. Establish `hg : g a = f a + ∑ d, c a d • f d` using `by rw [hcs a]; abel`. Establish `key : S.hT (g a) (w b) = S.hT (f a) (w b) + ∑ d, star (c a d) * S.hT (f d) (w b)`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, map_add, LinearMap.add_apply, map_sum, LinearMap.sum_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Rewrite using `[Matrix.mul_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem gram_first {N : ℕ} (f g w : Fin N → S.V)
     (h : ∀ a, g a - f a ∈ Submodule.span E (f '' {c | c < a})) :
@@ -194,13 +194,13 @@ theorem gram_first {N : ℕ} (f g w : Fin N → S.V)
     exact key
 
 /- English proof (translation)
-Use `choose c hc0 hcs using fun b => exists_coeffs w b _ (h b)`. Use `⟨Matrix.of fun d b => (if d = b then (1 : E) else 0) + c b d, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Use `⟨fun hji => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `[ne_of_gt hji, hc0 j i (lt_asymm hji)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using `[hc0 i i (lt_irrefl i)]`. Use extensionality with `a b`. Establish `hw : w' b = w b + ∑ d, c b d • w d` using `by rw [hcs b]; abel`. Establish `key : S.hT (f a) (w' b) = S.hT (f a) (w b) + ∑ d, S.hT (f a) (w d) * c b d`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, map_add, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Rewrite using `[Matrix.mul_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, mul_add, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem gram_second {N : ℕ} (f w w' : Fin N → S.V)
     (h : ∀ b, w' b - w b ∈ Submodule.span E (w '' {c | c < b})) :
@@ -227,21 +227,21 @@ theorem gram_second {N : ℕ} (f w w' : Fin N → S.V)
 variable {T T' : E}
 
 /- English proof (translation)
-Simplify using `[frame, Formalism.MainNotions.S.FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_castSucc (F : LFlag S r T) (i : Fin r) : frame F (Fin.castSucc i) = F.fl.e i := by
   simp [frame, Formalism.MainNotions.S.FlagG.fvec]
 
 /- English proof (translation)
-Simplify using `[frame, Formalism.MainNotions.S.FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_last (F : LFlag S r T) : frame F (Fin.last r) = F.fl.z := by
   simp [frame, Formalism.MainNotions.S.FlagG.fvec]
 
 /- English proof (translation)
-Rewrite using `[mem_orth_iff]`. Introduce `x hx`. Simplify using `only [Xsp, Formalism.MainNotions.S.FlagG.X] at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hy`. Conclude with `F.fl.z_orth i`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h1 h2 => rw [map_add, LinearMap.add_apply, h1, h2, add_zero]`. Consider the case `smul c y _ h => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h, smul_zero]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem z_mem_orth (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   rw [mem_orth_iff]
@@ -256,13 +256,13 @@ theorem z_mem_orth (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   | smul c y _ h => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h, smul_zero]
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Establish `h` using `hn.2.2 _ (z_mem_orth F)`. Rewrite using `[frame_last]`. Use `(show Xsp F ≤ _ from ?_) h` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Xsp, Formalism.MainNotions.S.FlagG.X]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨Fin.castSucc j, Fin.castSucc_lt_last j, frame_castSucc F j⟩`. Consider the case `cast i`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Treat this case separately.
 
-Establish `h` using `hn.2.1 i.1 _ (e_mem_Xflag F i)`. Rewrite using `[frame_castSucc]`. Use `(show Xflag F i.1 ≤ _ from ?_) h` and prove the remaining obligations. Simplify using `only [Xflag, Formalism.MainNotions.S.FlagG.Xa]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `⟨Fin.castSucc j, Fin.castSucc_lt_castSucc_iff.2 hj, frame_castSucc F j⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem nlam_frame (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F)
     (a : Fin (r + 1)) : n (frame F a) - frame F a ∈ Submodule.span E (frame F '' {c | c < a}) := by
@@ -285,18 +285,18 @@ theorem nlam_frame (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {n : S.V ≃�
     exact ⟨Fin.castSucc j, Fin.castSucc_lt_castSucc_iff.2 hj, frame_castSucc F j⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem zhat_eq (F : LFlag S r T) (F' : LFlag S r T') :
     ZhatL F F' = Matrix.of fun a b => S.hT (frame F a) (frame F' b) := by
   ext a b; rfl
 
 /- English proof (translation)
-Take `⟨n, hn, m, hm, hfr, -⟩` from `h`. Establish `hni` using `nlam_inv hn`. Take `⟨A, hA, hAe⟩` from `gram_first (frame F) (fun a => n⁻¹ (frame F a)) (fun b => m (frame F₁ b)) (fun a => nlam_frame Λ hni a)`. Take `⟨B, hB, hBe⟩` from `gram_second (frame F) (frame F₁) (fun b => m (frame F₁ b)) (fun b => nlam_frame Λ hm b)`. Use `⟨A, B, hA, hB, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ZhatL F F₂ = Matrix.of fun a b => S.hT (n⁻¹ (frame F a)) (m (frame F₁ b))`. Rewrite using `[zhat_eq]`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[hfr b, ← isom_app hn.1.1 (n⁻¹ (frame F a)) (m (frame F₁ b))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show n (n⁻¹ (frame F a)) = frame F a from n.apply_symm_apply _]`. Rewrite using `[h2, hAe, hBe, zhat_eq, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem zhat_factor (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {F₁ F₂ : LFlag S r T'}
     (h : DCRel Λ F F₁ F₂) :
@@ -318,7 +318,7 @@ theorem zhat_factor (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {F₁ F₂ :
   rw [h2, hAe, hBe, zhat_eq, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨A, B, hA, hB, he⟩` from `zhat_factor Λ h`. Establish `: Formalism.MainNotions.S.Zhat F.fl F₂.fl = A * Formalism.MainNotions.S.Zhat F.fl F₁.fl * B` using `he`. Unfold `Formalism.MainNotions.S.Dl`. Rewrite using `[this, leadMinorE_mul_upper _ _ hB, leadMinorE_lower_mul _ _ hA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_eq (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {F₁ F₂ : LFlag S r T'}
     (h : DCRel Λ F F₁ F₂) (l : ℕ) : Formalism.MainNotions.S.Dl F.fl F₂.fl l = Formalism.MainNotions.S.Dl F.fl F₁.fl l := by
@@ -328,7 +328,7 @@ theorem dl_eq (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {F₁ F₂ : LFlag
   rw [this, leadMinorE_mul_upper _ _ hB, leadMinorE_lower_mul _ _ hA]
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h' : DCRel Λ F x.1 y.1` using `h`. Use `show Formalism.MainNotions.S.Gflag F.fl x.1.fl = Formalism.MainNotions.S.Gflag F.fl y.1.fl`. Unfold `Formalism.MainNotions.S.Gflag`. Rewrite using `[dl_eq Λ h', dl_eq Λ h']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gFun_all (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (P : LFlag S r T' → Prop) :
     GFun Λ F P := by
@@ -339,7 +339,7 @@ theorem gFun_all (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (P : LFlag S r 
   rw [dl_eq Λ h', dl_eq Λ h']
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[ZhatOM, Matrix.mul_diagonal, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem zhatOM_eq_mul {K : Type*} [CommRing K] (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     ZhatOM Z = Z * Matrix.diagonal (fun b : Fin (r + 1) => ((-1 : K) ^ (r - b.val))) := by
@@ -347,16 +347,16 @@ theorem zhatOM_eq_mul {K : Type*} [CommRing K] (Z : Matrix (Fin (r + 1)) (Fin (r
   simp [ZhatOM, Matrix.mul_diagonal, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sgn_sq {K : Type*} [CommRing K] (b : Fin (r + 1)) :
     ((-1 : K) ^ (r - b.val)) * ((-1 : K) ^ (r - b.val)) = 1 := by
   rw [← mul_pow]; simp
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hji => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mul_diagonal, Matrix.diagonal_mul, (hB i j).1 hji]`. Substitute `hij` using the available equality. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, (hB i i).2 rfl, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `sgn_sq i`.
+A detailed English derivation is pending.
 -/
 theorem isUpUni_conj_sgn {K : Type*} [CommRing K] {B : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (hB : IsUpUni B) :
@@ -370,11 +370,11 @@ theorem isUpUni_conj_sgn {K : Type*} [CommRing K] {B : Matrix (Fin (r + 1)) (Fin
     exact sgn_sq i
 
 /- English proof (translation)
-Take `⟨L, U, hL, hU, hZ⟩` from `hc`. Use `set Ds := Matrix.diagonal (fun b : Fin (r + 1) => ((-1 : K) ^ (r - b.val))) with hDs`. Establish `hDD : Ds * Ds = 1`. Rewrite using `[hDs, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Conclude with `sgn_sq b`. Use `⟨A * L, U * (Ds * B * Ds), isLoUni_mul hA hL, isUpUni_mul hU (isUpUni_conj_sgn hB), ?_⟩` and prove the remaining obligations. Rewrite `hZ`, the goal using `[zhatOM_eq_mul]`. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : A * Z * B * Ds = A * (Z * Ds) * (Ds * B * Ds)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Ds Ds (B * Ds), hDD, Matrix.one_mul]`. Rewrite using `[e1, hZ]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cell_step {K : Type*} [CommRing K] {Z Z₂ A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (hA : IsLoUni A) (hB : IsUpUni B) (he : Z₂ = A * Z * B) (w : Point K (r + 1))
@@ -396,9 +396,9 @@ theorem cell_step {K : Type*} [CommRing K] {Z Z₂ A B : Matrix (Fin (r + 1)) (F
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `x y h w`. Establish `h' : DCRel Λ F x.1 y.1` using `h`. Establish `hs : DCRel Λ F y.1 x.1` using `(dCRelEquivAll_holds E S r T T' Λ F).symm h'`. Take `⟨A, B, hA, hB, he⟩` from `zhat_factor Λ h'`. Take `⟨A', B', hA', hB', he'⟩` from `zhat_factor Λ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨cell_step hA hB he w, cell_step hA' hB' he' w⟩`.
+Supply the required witnesses or components.
 -/
 theorem cellFun_all (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (P : LFlag S r T' → Prop) :
     CellFun Λ F P := by
@@ -410,11 +410,11 @@ theorem cellFun_all (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (P : LFlag S
   exact ⟨cell_step hA hB he w, cell_step hA' hB' he' w⟩
 
 /- English proof (translation)
-Take `⟨n1, hn1, h1⟩` from `hx`. Take `⟨n, hn, m, hm, hfr, -⟩` from `h`. Establish `hTT : T' = T`. Establish `e1` using `isom_app hn1.1.1 (frame F (Fin.last r)) (frame F (Fin.last r))`. Rewrite `e1` using `[h1, frame_last, frame_last, x.fl.z_norm, F.fl.z_norm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_injective e1`. Substitute `hTT` using the available equality. Establish `hc` using `(nLamConj_holds E S r T' Λ F x n1 hn1.1 (fun a => (h1 a).symm) m).1 hm`. Use `⟨n * m * n1, ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `e : n * m * n1 = n * n1 * (n1⁻¹ * m * n1)` using `by group`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `nlam_mul (nlam_mul hn hn1) hc`. Rewrite using `[hfr a, ← h1 a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem feqF_fwd (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {x y : LFlag S r T'} (h : DCRel Λ F x y)
     (hx : ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame x a) :
@@ -435,7 +435,7 @@ theorem feqF_fwd (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {x y : LFlag S 
     rfl
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h' : DCRel Λ F x.1 y.1` using `h`. Establish `hs : DCRel Λ F y.1 x.1` using `(dCRelEquivAll_holds E S r T T' Λ F).symm h'`. Conclude with `⟨feqF_fwd Λ h', feqF_fwd Λ hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem feqFFun_all (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (P : LFlag S r T' → Prop) :
     FeqFFun Λ F P := by

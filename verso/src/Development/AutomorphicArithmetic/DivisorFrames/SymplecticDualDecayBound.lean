@@ -13,7 +13,7 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallUnf
 
 /- English proof (translation)
-Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Rewrite using `[symp, GlobalTheory.XTermSupp.hTens_vv, GlobalTheory.XTermSupp.form_inc, GlobalTheory.XTermSupp.form_inc, hH, GlobalTheory.XTermSupp.form_skew hcm hJ, hH', hc, GlobalTheory.XTermSupp.invol hcm]`. Use `congr 1`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem symp_dual {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin d) (Fin d) E}
@@ -31,25 +31,23 @@ private theorem symp_dual {F E : Type} [Field F] [NumberField F] [Field E] [Numb
 
 open GlobalTheory.XTermDecay GlobalTheory.HeisSchA GlobalTheory.Published.Metaplectic GlobalTheory.DiffDecay in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC e he X om om' om₁ om₁' hT _ Ψ hΨ C hCc U hU c N k`. Establish `hw` using `hT.weil'`. Take `⟨m, g, f, hg, hdec, hf⟩` from `exists_decomp (fun p : C => om' p.1 Ψ) (fun p => (IsUWeilPair.isUSplitting hw).pres p.1 Ψ hΨ) fun l hl => by`. Establish `hc` using `hw.2.2 l hl Ψ hΨ`. Take `⟨D, hD⟩` from `hCc.exists_bound_of_continuousOn hc.continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨D, fun p => hD p.1 p.2⟩`. Use `choose t ht using GlobalTheory.XTermSupp.trace_mul_dual (F := F) (E := E)`. Set `S` to `fun j => G.M'.co.e (inclR (F := F) (AF F) (σ (Module.finBasis F E j)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x))`. Set `U'` to `fun i => G.M'.co.e (inclR (F := F) (AF F) (-(t i)) • Matrix.vecMulVec (incV F H.x) (incV F H'.y))`. Establish `hp : Continuous ⇑(Finset.sup (Finset.Iic (k, k)) (schwartzSeminormFamily ℂ (Fin b × Fin (a + b) → mixedEmbedding.mixedSpace F) ℂ))` using `Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm i`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSU : ∀ i j, (S j).1 ⬝ᵥ (U' i).2 - (U' i).1 ⬝ᵥ (S j).2 = if i = j then 1 else 0` using `fun i j => by`. Establish `h1` using `symp_dual hT.base.cm hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy (-(t i)) (Module.finBasis F E j)`. Rewrite `h1` using `[G.M'.co.form, map_neg, mul_neg, map_neg, ht]`. Establish `h2 : GlobalTheory.XTermMaj.crd F E (inclR (F` using `F) (AF F) (Module.finBasis F E j)) i = if i = j then 1 else 0 := by`. Establish `h3 : inclR (F` using `F) (AF F) (Module.finBasis F E j) = Algebra.TensorProduct.basis (AF F) (Module.finBasis F E) j := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Rewrite using `[h3]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun _ i = _`. Rewrite using `[Module.Basis.equivFun_self]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [eq_comm]`. Rewrite using `[← h2, ← neg_sub]`. Simplify using `only [S, U', map_neg]`. Rewrite using `[h1, neg_neg]`. Use `choose D₀ hCb using fun j => slice_decay B.ψ hT.base.std S U' (fun i j => by convert hSU i j) (sliceL c ∘ₗ e) (exists_slice_clm hT.geo.hM' he c) (fun i a Ψ hΨ => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `he.inv (a • inclR (F := F) (AF F) (-(t i)) • Matrix.vecMulVec (incV F H.x) (incV F H'.y)) (Or.inl ⟨a • inclR (F := F) (AF F) (-(t i)) • incV F H'.y, by` as an intermediate fact. Rewrite using `[Matrix.vecMulVec_smul, Matrix.vecMulVec_smul]⟩) Ψ hΨ`. Rewrite `this` using `[Darboux.rho, map_smul]`. Conclude with `congrArg (sliceL c) this) (hg j) (f j) (hf j) hU _ hp N`. Use `⟨∑ j, D₀ j, fun p hp l hl => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `choose f₁ hf₁ hb₁ using fun j => hCb j ⟨p, hp⟩ (GlobalTheory.XTermMaj.crd F E (l : AE F E)) hl`. Establish `hS : G.M'.co.e (shiftB σ H H' l) = ∑ i, GlobalTheory.XTermMaj.crd F E (l : AE F E) i • S i`. Simplify using `only [S, ← map_smul, ← map_sum, ← smul_assoc, ← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[shiftB]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `(congrArg (cA σ) ((Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).sum_equivFun (l : AE F E)).symm).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.TensorProduct.basis_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `⟨∑ j, f₁ j, fun y => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hdec ⟨p, hp⟩`. Simplify using `only at h1`. Rewrite using `[h1, Darboux.rho, hS]`.
-
-Express the relevant statement in the definitionally equal form `coeL (∑ j, f₁ j) y = (sliceL c ∘ₗ e) (schrL B.ψ _ _) y`. Rewrite using `[map_sum, map_sum, map_sum]`. Conclude with `congrFun (Finset.sum_congr rfl fun j _ => hf₁ j) y`. Rewrite using `[Finset.sum_mul]`. Conclude with `(Finset.le_sum_of_subadditive _ (map_zero _).le (map_add_le_add _) _ _).trans (Finset.sum_le_sum fun j _ => hb₁ j)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.theta_geometry_triple_vanishing :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)

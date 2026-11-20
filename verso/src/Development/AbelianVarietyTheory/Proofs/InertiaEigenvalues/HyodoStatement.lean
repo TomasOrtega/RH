@@ -18,13 +18,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Introduce `l _ P AI T K V _ _ _ _ _ ρ hcont hsst c hc hcoc hdR`. Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[l] V`. Use `haveI : ContinuousSMul ℚ_[l] V := IsModuleTopology.toContinuousSMul ℚ_[l] V`. Take `⟨ρ', m, hρ'c, hdual⟩` from `GlobalTheory.T.exists_tateTwistDual_perfectPairing l P K V ρ hcont`. Establish `hdrV : IsDR (P.PD K) ρ` using `GlobalTheory.T.isDeRham_of_isSemistable l P AI T K V ρ hsst`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hdrV' : IsDR (P.PD K) ρ'`. Use `letI : Module ℤ_[l] V := Module.compHom V (algebraMap ℤ_[l] ℚ_[l])`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Conclude with `(GlobalTheory.T.de_rham_filtration_duality l P AI T K).1 ℚ_[l] ℤ_[l] GlobalTheory.Published.BlochKato.goodO_padicInt { V := V, ρ := ρ, cont := hcont } { V := Fin (finrank ℚ_[l] V) → ℚ_[l], ρ := ρ', cont := hρ'c } m hdrV hdual`. Establish `hfin : Module.Finite ℚ_[l] ↥(continuousCocycles ρ)` using `GlobalTheory.T.finiteDimensional_continuousCocycles_galoisRep l P K V ρ hcont`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, _hfS, hSc, hSst, hSdR, hS⟩` from `GlobalTheory.T.semistable_cocycles_between_blochKato_and_continuous l P AI T K V _ ρ ρ' m hcont hdual hsst hfin`. Establish `hgc : geometricCocycles (P.PD K) ρ ≤ continuousCocycles ρ` using `fun _ h => h.1`. Use `haveI : Module.Finite ℚ_[l] ↥(geometricCocycles (P.PD K) ρ) := Module.Finite.of_injective (Submodule.inclusion hgc) (Submodule.inclusion_injective hgc)`. Establish `hSg : S ≤ geometricCocycles (P.PD K) ρ` using `fun c hc => ⟨hSc hc, hSdR c hc⟩`. Establish `h1` using `GlobalTheory.T.finrank_blochKato_g_add_e_le_f_add_f l P AI T K V ρ _ ρ' m hcont hρ'c hdrV hdrV' hdual`.
-
-Establish `h2` using `GlobalTheory.T.finrank_finite_le_exponential_cocycles l P AI T K _ ρ' hρ'c hdrV'`. Establish `hEq : S = geometricCocycles (P.PD K) ρ` using `Submodule.eq_of_le_of_finrank_le hSg (by omega)`. Establish `hcg : c ∈ geometricCocycles (P.PD K) ρ` using `⟨⟨hc, hcoc⟩, hdR⟩`. Rewrite `hcg` using `[← hEq]`. Conclude with `hSst c hcg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hyodo : Hyodo := by
   intro l _ P AI T K V _ _ _ _ _ ρ hcont hsst c hc hcoc hdR

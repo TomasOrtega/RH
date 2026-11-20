@@ -12,13 +12,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.MoverFibre
 
 /- English proof (translation)
-Introduce `R _ G _ hG x`. Set `j` to `G.left.fromSpecResidueField x`. Set `p₁ : pullback G.hom G.hom ⟶ G.left` to `pullback.fst G.hom G.hom`. Establish `hp : (fst G G).left = p₁` using `rfl`. Establish `hirr0` using `GlobalTheory.SemiAbFibre.irreducibleSpace_fibre _ G hG _ (j ≫ G.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hirr : IrreducibleSpace (pullback G.hom (j ≫ G.hom) : Scheme.{0}) := hirr0`. Apply the tactic sequence `let e : pullback G.hom (j ≫ G.hom) ≅ p₁.fiber x := pullbackSymmetry _ _ ≪≫ (pullbackRightPullbackFstIso G.hom G.hom j).symm ≪≫ pullbackSymmetry _ _`. Establish `hr` using `(IrreducibleSpace.isIrreducible_univ (pullback G.hom (j ≫ G.hom) : Scheme.{0})).image _ ((e.hom ≫ Scheme.Hom.fiberι p₁ x).continuous.continuousOn)`. Rewrite `hr` using `[Set.image_univ]`. Establish `hrange : Set.range (e.hom ≫ Scheme.Hom.fiberι p₁ x) = Set.range (Scheme.Hom.fiberι p₁ x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨e.hom z, by rw [Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨z, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨e.inv z, by rw [Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply e.inv e.hom, e.inv_hom_id]; rfl⟩`. Use `show IsIrreducible (p₁ ⁻¹' {x})`. Rewrite using `[← Scheme.Hom.range_fiberι p₁ x, ← hrange]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_fibre_fst : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ x : G.left, IsIrreducible ((fst G G).left ⁻¹' {x}) := by
   intro R _ G _ hG x

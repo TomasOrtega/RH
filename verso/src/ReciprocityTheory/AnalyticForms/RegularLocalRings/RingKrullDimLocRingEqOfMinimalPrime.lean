@@ -10,17 +10,17 @@ open MvPolynomial
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨MvPolynomial.C c, by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ptIdeal_isMaximal (p : Fin n → ℂ) : (ptIdeal p).IsMaximal :=
   RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨MvPolynomial.C c, by simp⟩)
 
 /- English proof (translation)
-Proceed by induction on `b using WithBot.recBotCoe with`. Consider the case `bot => simp at hb`. Consider the case `coe y`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => rw [← h] at hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Simplify using `at hb`. Consider the case `coe x`. Rewrite `h` using `[← WithBot.coe_add, ← WithBot.coe_add, WithBot.coe_inj]`. Rewrite `hb` using `[← WithBot.coe_add]`. Establish `hc : c ≠ ⊤`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hb` using `[add_top]`. Rewrite `hb` using `[← WithBot.coe_natCast, WithBot.coe_inj]`. Conclude with `ENat.top_ne_natCast N hb`. Conclude with `congrArg _ (WithTop.add_right_cancel hc h)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem withBot_add_right_cancel {a b : WithBot ℕ∞} {c : ℕ∞} {N : ℕ}
     (h : a + (c : WithBot ℕ∞) = b + c) (hb : b + (c : WithBot ℕ∞) = N) : a = b := by
@@ -40,29 +40,25 @@ private theorem withBot_add_right_cancel {a b : WithBot ℕ∞} {c : ℕ∞} {N 
       exact congrArg _ (WithTop.add_right_cancel hc h)
 
 /- English proof (translation)
-Use `set A := MvPolynomial (Fin n) ℂ`. Use `set P := ptIdeal p`. Use `set S := locPt p`. Use `set I : Ideal S := Ideal.map (algebraMap A S) K with hI`. Establish `: IsDomain (S ⧸ I)` using `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIp : I.IsPrime` using `(Ideal.Quotient.isDomain_iff_prime I).mp inferInstance`. Use `set 𝔮 : Ideal A := I.under A with h𝔮`. Establish `h𝔮p : 𝔮.IsPrime` using `Ideal.IsPrime.under A I`. Establish `hdisj : Disjoint (P.primeCompl : Set A) 𝔮` using `((IsLocalization.isPrime_iff_isPrime_disjoint P.primeCompl S I).mp hIp).2`. Establish `h𝔮P : 𝔮 ≤ P`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hxP`. Conclude with `Set.disjoint_left.mp hdisj (show x ∈ (P.primeCompl : Set A) from hxP) hx`. Establish `hK𝔮 : K ≤ 𝔮` using `fun x hx => Ideal.mem_map_of_mem _ hx`. Establish `key : ∀ Q : Ideal A, Q.IsPrime → K ≤ Q → Q ≤ P → 𝔮 ≤ Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `Q hQ hKQ hQP`. Establish `hd : Disjoint (P.primeCompl : Set A) Q`. Rewrite using `[Set.disjoint_left]`. Introduce `x hx hxQ`. Conclude with `hx (hQP hxQ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : I ≤ Ideal.map (algebraMap A S) Q` using `Ideal.map_mono hKQ`. Combine the equalities or inequalities in the displayed calculation. Establish `hmin : 𝔮 ∈ K.minimalPrimes` using `⟨⟨h𝔮p, hK𝔮⟩, fun Q ⟨hQ, hKQ⟩ hQ𝔮 => key Q hQ hKQ (hQ𝔮.trans h𝔮P)⟩`. Use `⟨𝔮, hmin, h𝔮P, ?_, ?_⟩` and prove the remaining obligations. Introduce `𝔮' h' h'P`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `le_antisymm (h'.2 ⟨h𝔮p, hK𝔮⟩ (key 𝔮' h'.1.1 h'.1.2 h'P)) (key 𝔮' h'.1.1 h'.1.2 h'P)`. Use `set 𝔪 : Ideal (A ⧸ 𝔮) := P.map (Ideal.Quotient.mk 𝔮) with h𝔪`. Establish `hmem : ∀ a : A, Ideal.Quotient.mk 𝔮 a ∈ 𝔪 ↔ a ∈ P` using `fun a => Ideal.mem_quotient_iff_mem h𝔮P`. Establish `hPmax : P.IsMaximal` using `ptIdeal_isMaximal p`. Establish `h𝔪max : 𝔪.IsMaximal`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk 𝔮) Ideal.Quotient.mk_surjective hPmax with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : Ideal.Quotient.mk 𝔮 1 ∈ 𝔪` using `by rw [h𝔪, h]; exact Submodule.mem_top`. Conclude with `hPmax.ne_top ((Ideal.eq_top_iff_one (I := P)).mpr ((hmem 1).mp h1))`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : A ⧸ 𝔮 →+* S ⧸ I` to `Ideal.quotientMap I (algebraMap A S) le_rfl`. Use `letI : Algebra (A ⧸ 𝔮) (S ⧸ I) := f.toAlgebra`. Establish `hf : ∀ a : A, algebraMap (A ⧸ 𝔮) (S ⧸ I) (Ideal.Quotient.mk 𝔮 a) = Ideal.Quotient.mk I (algebraMap A S a)` using `fun a => Ideal.quotientMap_mk`. Establish `hloc : IsLocalization.AtPrime (S ⧸ I) 𝔪` using `by show IsLocalization 𝔪.primeCompl (S ⧸ I)`. Rewrite using `[isLocalization_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `ha : a ∈ P.primeCompl` using `fun h => hy ((hmem a).mpr h)`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsLocalization.map_units S (⟨a, ha⟩ : P.primeCompl)).map _`. Introduce `z`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨⟨a, t⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl s`. Establish `ht : Ideal.Quotient.mk 𝔮 (t : A) ∈ 𝔪.primeCompl` using `fun h => t.2 ((hmem _).mp h)`.
-
-Use `⟨⟨Ideal.Quotient.mk 𝔮 a, ⟨_, ht⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [hf, ← map_mul]`. Rewrite using `[IsLocalization.mk'_spec]`. Introduce `x y hxy`. Conclude with `⟨1, by rw [Ideal.quotientMap_injective hxy]⟩`.
-
-Establish `hdim : ringKrullDim (S ⧸ I) = 𝔪.height` using `IsLocalization.AtPrime.ringKrullDim_eq_height 𝔪 (S ⧸ I)`. Establish `hsum` using `ReciprocityTheory.CA.height_add_height_maximal_quotient_field ℂ n 𝔮 𝔪`. Use `show ringKrullDim (S ⧸ I) + _ = _`. Rewrite using `[hdim, ← WithBot.coe_add, add_comm, hsum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem regular_point_unique_minimalPrime (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ)
     [IsRegularLocalRing (locRing K p)] :
@@ -140,9 +136,9 @@ theorem regular_point_unique_minimalPrime (K : Ideal (MvPolynomial (Fin n) ℂ))
     rfl
 
 /- English proof (translation)
-Take `⟨q1, -, -, hu1, hd1⟩` from `regular_point_unique_minimalPrime K p`. Take `⟨q2, -, -, hu2, hd2⟩` from `regular_point_unique_minimalPrime K p'`. Take `rfl` from `hu1 𝔮 h𝔮 hp`. Take `rfl` from `hu2 𝔮 h𝔮 hp'`. Rewrite `hd1` using `[← hd2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `withBot_add_right_cancel hd1 hd2`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_locRing_eq_of_minimalPrime (K : Ideal (MvPolynomial (Fin n) ℂ))
     (p p' : Fin n → ℂ) [IsRegularLocalRing (locRing K p)] [IsRegularLocalRing (locRing K p')]

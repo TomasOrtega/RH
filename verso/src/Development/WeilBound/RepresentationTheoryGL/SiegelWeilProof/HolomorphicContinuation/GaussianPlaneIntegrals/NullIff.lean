@@ -14,19 +14,19 @@ namespace PositivityTheory.Rg.Sw
 open FFTSteps
 
 /- English proof (translation)
-The claim follows from `assembly stable ext avg pos`.
+A detailed English derivation is pending.
 -/
 theorem fft : FFT := assembly stable ext avg pos
 
 /- English proof (translation)
-Introduce `m n ε c hc P` and use `by obtain ⟨Q, hQ, hPQ⟩ := cycAvg m n ε c hc P exact ⟨Q, cycFFT h m n ε Q hQ, hPQ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cyc_of (h : FFT) : Cyc := fun m n ε c hc P => by
   obtain ⟨Q, hQ, hPQ⟩ := cycAvg m n ε c hc P
   exact ⟨Q, cycFFT h m n ε Q hQ, hPQ⟩
 
 /- English proof (translation)
-The claim follows from `nullIff_of secLine powSpan`.
+A detailed English derivation is pending.
 -/
 theorem nullIff : NullIff := nullIff_of secLine powSpan
 

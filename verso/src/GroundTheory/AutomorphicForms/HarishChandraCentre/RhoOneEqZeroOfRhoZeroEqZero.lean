@@ -15,14 +15,14 @@ noncomputable def rhoDeriv (c : Matrix (Fin n) (Fin n) ℂ) (M : gl n) :
   mkDerivation ℂ fun a => ∑ i, C (M i a.1) * (X (i, a.2) + C (c i a.2))
 
 /- English proof (translation)
-The claim follows from `mkDerivation_X ℂ _ a`.
+A detailed English derivation is pending.
 -/
 theorem rhoDeriv_X (c : Matrix (Fin n) (Fin n) ℂ) (M : gl n) (a : Fin n × Fin n) :
     rhoDeriv c M (X a) = ∑ i, C (M i a.1) * (X (i, a.2) + C (c i a.2)) :=
   mkDerivation_X ℂ _ a
 
 /- English proof (translation)
-Apply `derivation_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [rhoDeriv_X, Derivation.add_apply, Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem rhoDeriv_add (c : Matrix (Fin n) (Fin n) ℂ) (M N : gl n) :
     rhoDeriv c (M + N) = rhoDeriv c M + rhoDeriv c N := by
@@ -32,7 +32,7 @@ theorem rhoDeriv_add (c : Matrix (Fin n) (Fin n) ℂ) (M N : gl n) :
     Finset.sum_add_distrib]
 
 /- English proof (translation)
-Apply `derivation_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [rhoDeriv_X, Derivation.smul_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.smul_sum, smul_eq_C_mul, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem rhoDeriv_smul (c : Matrix (Fin n) (Fin n) ℂ) (r : ℂ) (M : gl n) :
     rhoDeriv c (r • M) = r • rhoDeriv c M := by
@@ -42,7 +42,7 @@ theorem rhoDeriv_smul (c : Matrix (Fin n) (Fin n) ℂ) (r : ℂ) (M : gl n) :
     Finset.smul_sum, smul_eq_C_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[rhoDeriv_X, map_sum]`. Simplify using `only [Derivation.leibniz, Derivation.map_add, derivation_C, smul_zero, add_zero, smul_eq_mul, mul_zero, rhoDeriv_X, Matrix.mul_apply, map_sum, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,7 +58,7 @@ theorem rhoDeriv_rhoDeriv_X (c : Matrix (Fin n) (Fin n) ℂ) (P Q : gl n) (a : F
   ring
 
 /- English proof (translation)
-Apply `derivation_ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[Derivation.commutator_apply, rhoDeriv_rhoDeriv_X, rhoDeriv_rhoDeriv_X, rhoDeriv_X, LieRing.of_associative_ring_bracket]`. Simplify using `only [Matrix.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rhoDeriv_lie (c : Matrix (Fin n) (Fin n) ℂ) (M N : gl n) :
     rhoDeriv c ⁅M, N⁆ = ⁅rhoDeriv c M, rhoDeriv c N⁆ := by
@@ -79,23 +79,23 @@ noncomputable def rho (c : Matrix (Fin n) (Fin n) ℂ) : U n →ₐ[ℂ] Module.
   UniversalEnvelopingAlgebra.lift ℂ (rhoLie c)
 
 /- English proof (translation)
-Simplify using `[rho, rhoLie]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rho_ι_apply (c : Matrix (Fin n) (Fin n) ℂ) (M : gl n) (f : Poly n) :
     rho c (UniversalEnvelopingAlgebra.ι ℂ M) f = rhoDeriv c M f := by
   simp [rho, rhoLie]
 
 /- English proof (translation)
-The claim follows from `rho_ι_apply c (E a) f`.
+A detailed English derivation is pending.
 -/
 theorem rho_e_apply (c : Matrix (Fin n) (Fin n) ℂ) (a : Fin n × Fin n) (f : Poly n) :
     rho c (e a) f = rhoDeriv c (E a) f :=
   rho_ι_apply c (E a) f
 
 /- English proof (translation)
-Rewrite using `[rhoDeriv_X, Finset.sum_eq_single i]`. Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Simplify using `[E]`. Simplify using `[E, Matrix.single_apply, Ne.symm h, h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `k _ hk`. Simplify using `[E, Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rhoDeriv_E_X (c : Matrix (Fin n) (Fin n) ℂ) (i j a b : Fin n) :
     rhoDeriv c (E (i, j)) (X (a, b)) = if a = j then X (i, b) + C (c i b) else 0 := by
@@ -111,13 +111,13 @@ noncomputable def rowDeriv (i j : Fin n) : Derivation ℂ (Poly n) (Poly n) :=
   mkDerivation ℂ fun a => if a.1 = j then X (i, a.2) else 0
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => simp [rowDeriv, rowOp_apply, derivation_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`. Consider the case `mul_X p a hp`. Rewrite using `[Derivation.leibniz, hp, rowOp_apply, rowOp_apply, smul_eq_mul, smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : rowDeriv i j (X a) = ∑ k, X (i, k) * pderiv (j, k) (X a)`. Take `⟨a1, a2⟩` from `a`. Simplify using `only [rowDeriv, mkDerivation_X, pderiv_X, Pi.single_apply, Prod.mk.injEq]`. Rewrite using `[Finset.sum_eq_single a2]`. Apply the tactic sequence `by_cases h : a1 = j <;> simp [h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `k _ hk`. Simplify using `[Ne.symm hk]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Simplify using `only [Derivation.leibniz, smul_eq_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun k _ => by ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowDeriv_apply (i j : Fin n) (f : Poly n) : rowDeriv i j f = rowOp i j f := by
   induction f using MvPolynomial.induction_on with
@@ -137,7 +137,7 @@ theorem rowDeriv_apply (i j : Fin n) (f : Poly n) : rowDeriv i j f = rowOp i j f
     congr 1 <;> refine Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Apply `derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩`. Rewrite using `[rhoDeriv_E_X]`. Simplify using `[rowDeriv, mkDerivation_X]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rhoDeriv_zero_E (i j : Fin n) : rhoDeriv 0 (E (i, j)) = rowDeriv i j := by
   apply derivation_ext
@@ -146,18 +146,18 @@ theorem rhoDeriv_zero_E (i j : Fin n) : rhoDeriv 0 (E (i, j)) = rowDeriv i j := 
   simp [rowDeriv, mkDerivation_X]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[rho_e_apply, rhoDeriv_zero_E, rowDeriv_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_zero_e (i j : Fin n) : rho 0 (e (i, j)) = rowOp i j := by
   refine LinearMap.ext fun f => ?_
   rw [rho_e_apply, rhoDeriv_zero_E, rowDeriv_apply]
 
 /- English proof (translation)
-Rewrite using `[rho_e_apply, ← rowDeriv_apply, ← Derivation.add_apply]`. Use `congr 1`. Apply `derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩`. Rewrite using `[rhoDeriv_E_X, Derivation.add_apply, pderiv_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rowDeriv, mkDerivation_X, Matrix.one_apply, Pi.single_apply, Prod.mk.injEq]`. Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Distinguish the cases in `h' : b = i`. Substitute `h'` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[add_comm]`. Apply the tactic sequence `simp [h'] <;> exact fun hh => h' hh.symm`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem rho_one_e_apply (i j : Fin n) (f : Poly n) :
     rho 1 (e (i, j)) f = pderiv (j, i) f + rowOp i j f := by
@@ -180,23 +180,23 @@ noncomputable def shift : Poly n ≃ₐ[ℂ] Poly n :=
     (by ext a : 1; simp) (by ext a : 1; simp)
 
 /- English proof (translation)
-Simplify using `[shift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shift_X (a : Fin n × Fin n) : shift (X a : Poly n) = X a + C (if a.1 = a.2 then 1 else 0) := by
   simp [shift]
 
 /- English proof (translation)
-The claim follows from `(shift : Poly n ≃ₐ[ℂ] Poly n).commutes r`.
+A detailed English derivation is pending.
 -/
 theorem shift_C (r : ℂ) : shift (C r : Poly n) = C r :=
   (shift : Poly n ≃ₐ[ℂ] Poly n).commutes r
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `: shift (C r : Poly n) = C r` using `(shift : Poly n ≃ₐ[ℂ] Poly n).commutes r`. Rewrite using `[this, derivation_C, derivation_C, map_zero]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X p a hp`. Rewrite using `[map_mul, Derivation.leibniz, Derivation.leibniz, hp, map_add, smul_eq_mul, smul_eq_mul, smul_eq_mul, smul_eq_mul, map_mul, map_mul]`. Use `congr 2`. Rewrite using `[shift_X, Derivation.map_add, derivation_C, add_zero, rhoDeriv_X, rhoDeriv_X, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[shift_X, shift_C, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhoDeriv_one_shift (M : gl n) (f : Poly n) :
     rhoDeriv 1 M (shift f) = shift (rhoDeriv 0 M f) := by
@@ -214,7 +214,7 @@ theorem rhoDeriv_one_shift (M : gl n) (f : Poly n) :
     simp [shift_X, shift_C, Matrix.one_apply]
 
 /- English proof (translation)
-Proceed by induction on `u using U.induction generalizing f with`. Consider the case `halg r => simp [AlgHom.commutes, Module.algebraMap_end_apply]`. Consider the case `hι M => rw [rho_ι_apply, rho_ι_apply, rhoDeriv_one_shift]`. Consider the case `hmul a b ha hb => rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hb, ha]`. Consider the case `hadd a b ha hb => rw [map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, ha, hb, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rho_one_shift (u : U n) (f : Poly n) : rho 1 u (shift f) = shift (rho 0 u f) := by
   induction u using U.induction generalizing f with
@@ -225,7 +225,7 @@ theorem rho_one_shift (u : U n) (f : Poly n) : rho 1 u (shift f) = shift (rho 0 
       map_add]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `(shift : Poly n ≃ₐ[ℂ] Poly n).surjective f`. Rewrite using `[rho_one_shift, h, LinearMap.zero_apply, map_zero, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_one_eq_zero_of_rho_zero_eq_zero (u : U n) (h : rho 0 u = 0) : rho 1 u = 0 := by
   refine LinearMap.ext fun f => ?_
@@ -239,13 +239,13 @@ def geDeg (t : ℕ) : Submodule ℂ (Poly n) where
   smul_mem' r f hf s hs := by rw [coeff_smul, hf s hs, smul_zero]
 
 /- English proof (translation)
-Introduce `_ hf s hs` and use `hf s (lt_of_lt_of_le hs h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem geDeg_anti {t t' : ℕ} (h : t' ≤ t) : (geDeg t : Submodule ℂ (Poly n)) ≤ geDeg t' :=
   fun _ hf s hs => hf s (lt_of_lt_of_le hs h)
 
 /- English proof (translation)
-Introduce `s' hs'`. Rewrite using `[coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 -/
 theorem monomial_mem_geDeg {t : ℕ} (s : Fin n × Fin n →₀ ℕ) (c : ℂ) (h : t ≤ s.degree) :
     (monomial s c : Poly n) ∈ geDeg t := by
@@ -255,7 +255,7 @@ theorem monomial_mem_geDeg {t : ℕ} (s : Fin n × Fin n →₀ ℕ) (c : ℂ) (
   omega
 
 /- English proof (translation)
-Establish `h0 : constantCoeff f = coeff 0 f` using `by rw [constantCoeff_eq]`. Rewrite using `[h0]`. Conclude with `hf 0 (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_eq_zero_of_mem_geDeg {f : Poly n} (hf : f ∈ geDeg 1) :
     constantCoeff f = 0 := by
@@ -264,7 +264,7 @@ theorem constantCoeff_eq_zero_of_mem_geDeg {f : Poly n} (hf : f ∈ geDeg 1) :
   exact hf 0 (by simp)
 
 /- English proof (translation)
-Introduce `s hs`. Assume the negation of the conclusion as `h`. Establish `h2 : s.degree = d` using `by rw [Finsupp.degree_eq_weight_one]; exact hf h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mem_geDeg_of_isHomogeneous {f : Poly n} {d : ℕ} (hf : f.IsHomogeneous d) :
     f ∈ geDeg d := by
@@ -274,7 +274,7 @@ theorem mem_geDeg_of_isHomogeneous {f : Poly n} {d : ℕ} (hf : f.IsHomogeneous 
   omega
 
 /- English proof (translation)
-Rewrite using `[f.as_sum, map_sum]`. Conclude with `Submodule.sum_mem _ fun s hs => h s _ (hf s (mem_support_iff.1 hs))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_of_monomial (L : Poly n →ₗ[ℂ] Poly n) (P : Submodule ℂ (Poly n))
     (Q : (Fin n × Fin n →₀ ℕ) → Prop) {f : Poly n} (hf : ∀ s, coeff s f ≠ 0 → Q s)
@@ -283,7 +283,7 @@ theorem map_mem_of_monomial (L : Poly n →ₗ[ℂ] Poly n) (P : Submodule ℂ (
   exact Submodule.sum_mem _ fun s hs => h s _ (hf s (mem_support_iff.1 hs))
 
 /- English proof (translation)
-Establish `hle : Finsupp.single a 1 ≤ s`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Use `conv_rhs => rw [← tsub_add_cancel_of_le hle]`. Rewrite using `[map_add, Finsupp.degree_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_sub_single {s : Fin n × Fin n →₀ ℕ} {a : Fin n × Fin n} (h : s a ≠ 0) :
     (s - Finsupp.single a 1).degree + 1 = s.degree := by
@@ -293,9 +293,9 @@ theorem degree_sub_single {s : Fin n × Fin n →₀ ℕ} {a : Fin n × Fin n} (
   rw [map_add, Finsupp.degree_single]
 
 /- English proof (translation)
-Rewrite using `[pderiv_monomial]`. Distinguish the cases in `hs : s a = 0`. Rewrite using `[hs, Nat.cast_zero, mul_zero, monomial_zero]`. Conclude with `Submodule.zero_mem _`. Apply `monomial_mem_geDeg` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `degree_sub_single hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem pderiv_monomial_mem_geDeg {t : ℕ} (a : Fin n × Fin n) (s : Fin n × Fin n →₀ ℕ) (c : ℂ)
     (h : t ≤ s.degree) : pderiv a (monomial s c : Poly n) ∈ geDeg (t - 1) := by
@@ -307,7 +307,7 @@ theorem pderiv_monomial_mem_geDeg {t : ℕ} (a : Fin n × Fin n) (s : Fin n × F
     omega
 
 /- English proof (translation)
-Use `map_mem_of_monomial (pderiv a : Derivation ℂ (Poly n) (Poly n)).toLinearMap _ (fun s => t ≤ s.degree) (fun s hs => ?_) (fun s c hs => pderiv_monomial_mem_geDeg a s c hs)` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hs (hf s (not_le.1 hlt))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem pderiv_mem_geDeg {t : ℕ} (a : Fin n × Fin n) {f : Poly n} (hf : f ∈ geDeg t) :
     pderiv a f ∈ geDeg (t - 1) := by
@@ -317,7 +317,7 @@ theorem pderiv_mem_geDeg {t : ℕ} (a : Fin n × Fin n) {f : Poly n} (hf : f ∈
   exact hs (hf s (not_le.1 hlt))
 
 /- English proof (translation)
-Rewrite using `[rowOp_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_monomial, X, monomial_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowOp_monomial (i j : Fin n) (s : Fin n × Fin n →₀ ℕ) (c : ℂ) :
     rowOp i j (monomial s c) =
@@ -327,7 +327,7 @@ theorem rowOp_monomial (i j : Fin n) (s : Fin n × Fin n →₀ ℕ) (c : ℂ) :
   rw [pderiv_monomial, X, monomial_mul, one_mul]
 
 /- English proof (translation)
-Distinguish the cases in `hs : s (j, k) = 0`. Rewrite using `[hs, Nat.cast_zero, mul_zero, monomial_zero]`. Conclude with `Submodule.zero_mem _`. Conclude with `h hs`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowOp_monomial_term_mem {i j k : Fin n} {s : Fin n × Fin n →₀ ℕ} (c : ℂ)
     (P : Submodule ℂ (Poly n))
@@ -340,7 +340,7 @@ theorem rowOp_monomial_term_mem {i j k : Fin n} {s : Fin n × Fin n →₀ ℕ} 
   · exact h hs
 
 /- English proof (translation)
-Rewrite using `[map_add, Finsupp.degree_single, ← degree_sub_single hs]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem degree_rowOp_term {i j k : Fin n} {s : Fin n × Fin n →₀ ℕ} (hs : s (j, k) ≠ 0) :
     (Finsupp.single (i, k) 1 + (s - Finsupp.single (j, k) 1)).degree = s.degree := by
@@ -348,7 +348,7 @@ theorem degree_rowOp_term {i j k : Fin n} {s : Fin n × Fin n →₀ ℕ} (hs : 
   ring
 
 /- English proof (translation)
-Rewrite using `[rowOp_monomial]`. Use `Submodule.sum_mem _ fun k _ => rowOp_monomial_term_mem c _ fun hs => ?_` and prove the remaining obligations. Apply `monomial_mem_geDeg` to reduce the goal to its premises. Rewrite using `[degree_rowOp_term hs]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowOp_monomial_mem_geDeg {t : ℕ} (i j : Fin n) (s : Fin n × Fin n →₀ ℕ) (c : ℂ)
     (h : t ≤ s.degree) : rowOp i j (monomial s c) ∈ geDeg t := by
@@ -358,7 +358,7 @@ theorem rowOp_monomial_mem_geDeg {t : ℕ} (i j : Fin n) (s : Fin n × Fin n →
   rw [degree_rowOp_term hs]; exact h
 
 /- English proof (translation)
-Use `map_mem_of_monomial (rowOp i j) _ (fun s => t ≤ s.degree) (fun s hs => ?_) (fun s c hs => rowOp_monomial_mem_geDeg i j s c hs)` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hs (hf s (not_le.1 hlt))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem rowOp_mem_geDeg {t : ℕ} (i j : Fin n) {f : Poly n} (hf : f ∈ geDeg t) :
     rowOp i j f ∈ geDeg t := by
@@ -382,7 +382,7 @@ Both sides reduce to the same expression.
     iterPd (a :: w) f = pderiv (a.2, a.1) (iterPd w f) := rfl
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simpa using hf`. Consider the case `cons a w ih`. Rewrite using `[iterPd_cons, List.length_cons, ← Nat.sub_sub]`. Conclude with `pderiv_mem_geDeg _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterPd_mem_geDeg (w : List (Fin n × Fin n)) {t : ℕ} {f : Poly n} (hf : f ∈ geDeg t) :
     iterPd w f ∈ geDeg (t - w.length) := by
@@ -393,13 +393,13 @@ theorem iterPd_mem_geDeg (w : List (Fin n × Fin n)) {t : ℕ} {f : Poly n} (hf 
     exact pderiv_mem_geDeg _ ih
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp`. Consider the case `cons a w ih`. Rewrite `hw`, the goal using `[List.length_cons]`. Establish `ih` using `ih (by omega)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[word_cons, map_mul, Module.End.mul_apply, iterPd_cons]`. Take `⟨i, j⟩` from `a`. Rewrite using `[rho_one_e_apply]`. Use `set g := rho 1 (word w) f`. Establish `e1 : pderiv (j, i) g + rowOp i j g - pderiv (j, i) (iterPd w f) = pderiv (j, i) (g - iterPd w f) + rowOp i j (g - iterPd w f) + rowOp i j (iterPd w f)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Establish `ht : t - (w.length + 1) + 1 = t - w.length` using `by omega`. Rewrite using `[ht]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Use `pderiv_mem_geDeg (j, i) ih` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel]`. Then use the resulting hypothesis. Conclude with `geDeg_anti (by omega) (rowOp_mem_geDeg i j ih)`. Conclude with `rowOp_mem_geDeg i j (iterPd_mem_geDeg w hf)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem rho_one_word_sub_iterPd (w : List (Fin n × Fin n)) {t : ℕ} {f : Poly n}
     (hw : w.length ≤ t) (hf : f ∈ geDeg t) :
@@ -426,7 +426,7 @@ theorem rho_one_word_sub_iterPd (w : List (Fin n × Fin n)) {t : ℕ} {f : Poly 
     · exact rowOp_mem_geDeg i j (iterPd_mem_geDeg w hf)
 
 /- English proof (translation)
-Establish `hf'` using `mem_geDeg_of_isHomogeneous hf`. Establish `h1` using `rho_one_word_sub_iterPd w h.le hf'`. Establish `h2` using `iterPd_mem_geDeg w hf'`. Rewrite using `[← sub_add_cancel (rho 1 (word w) f) (iterPd w f), map_add, constantCoeff_eq_zero_of_mem_geDeg (geDeg_anti (by omega) h1), constantCoeff_eq_zero_of_mem_geDeg (geDeg_anti (by omega) h2), add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_rho_one_word_of_lt (w : List (Fin n × Fin n)) (f : Poly n) (d : ℕ)
     (hf : f.IsHomogeneous d) (h : w.length < d) :
@@ -439,7 +439,7 @@ theorem constantCoeff_rho_one_word_of_lt (w : List (Fin n × Fin n)) (f : Poly n
     constantCoeff_eq_zero_of_mem_geDeg (geDeg_anti (by omega) h2), add_zero]
 
 /- English proof (translation)
-Rewrite using `[List.map_cons, ← Multiset.cons_coe, ← Multiset.singleton_add, Multiset.toFinsupp_add, Multiset.toFinsupp_singleton]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toFinsupp_map_swap_cons (a : Fin n × Fin n) (w : List (Fin n × Fin n)) :
     Multiset.toFinsupp (((a :: w).map Prod.swap : List _) : Multiset (Fin n × Fin n)) =
@@ -450,15 +450,15 @@ theorem toFinsupp_map_swap_cons (a : Fin n × Fin n) (w : List (Fin n × Fin n))
   rfl
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨1, by simp, by simp⟩`. Consider the case `cons a w ih`. Take `⟨κ, h1, h2⟩` from `ih`. Rewrite using `[toFinsupp_map_swap_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `Multiset.toFinsupp ((w.map Prod.swap : List _) : Multiset (Fin n × Fin n)) = T at h1 h2 ⊢`. Use `⟨κ * ((s - T) (a.2, a.1) : ℕ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[iterPd_cons, h1, pderiv_monomial, tsub_tsub, add_comm T, mul_assoc]`. Rewrite using `[mul_ne_zero_iff, h2, Nat.cast_ne_zero, Finsupp.tsub_apply]`. Prove the components needed by the constructor for the conclusion.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hT, hb⟩ x`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply]`. Use `hT x` as an intermediate fact. Use `split_ifs with hx`. Substitute `hx` using the available equality.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `hx : ∀ x, T x ≤ s x` using `fun x => le_trans (by simp) (h x)`. Use `⟨hx, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h (a.2, a.1)` as an intermediate fact. Rewrite `this` using `[Finsupp.add_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem iterPd_monomial (w : List (Fin n × Fin n)) (s : Fin n × Fin n →₀ ℕ) (c : ℂ) :
     ∃ κ : ℂ, iterPd w (monomial s c) =
@@ -489,11 +489,9 @@ theorem iterPd_monomial (w : List (Fin n × Fin n)) (s : Fin n × Fin n →₀ �
         omega
 
 /- English proof (translation)
-Establish `hf' : (monomial s (1 : ℂ) : Poly n) ∈ geDeg s.degree` using `monomial_mem_geDeg s 1 le_rfl`. Establish `h1` using `rho_one_word_sub_iterPd w h.le hf'`. Rewrite using `[← sub_add_cancel (rho 1 (word w) (monomial s 1)) (iterPd w (monomial s 1)), map_add, constantCoeff_eq_zero_of_mem_geDeg (geDeg_anti (by omega) h1), zero_add]`. Take `⟨κ, hκ, hiff⟩` from `iterPd_monomial w s 1`. Rewrite using `[hκ, constantCoeff_monomial, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `set T := Multiset.toFinsupp ((w.map Prod.swap : List _) : Multiset (Fin n × Fin n))`. Prove the components needed by the constructor for the conclusion. Introduce `hne split_ifs at hne with h0`. Conclude with `le_antisymm (hiff.1 hne) (tsub_eq_zero_iff_le.1 h0)`. Conclude with `absurd rfl hne`.
-
-Introduce and unpack `rfl`. Rewrite using `[tsub_self, if_pos rfl]`. Conclude with `hiff.2 le_rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_rho_one_word_monomial (w : List (Fin n × Fin n))
     (s : Fin n × Fin n →₀ ℕ) (h : w.length = s.degree) :

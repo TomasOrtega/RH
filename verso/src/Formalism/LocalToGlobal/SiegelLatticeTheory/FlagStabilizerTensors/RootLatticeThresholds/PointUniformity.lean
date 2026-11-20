@@ -24,9 +24,9 @@ section Minor
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e : ∀ W : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, ((ZhatOM W).submatrix (Fin.castLE hl) (Fin.castLE hl)).det = (∏ j : Fin l, ((-1 : D.host.E) ^ (D.R.rS - (Fin.castLE hl j).val))) * (W.submatrix (Fin.castLE hl) (Fin.castLE hl)).det`. Introduce `W`. Rewrite using `[← Matrix.det_mul_row]`. Both sides reduce to the same expression. Simplify using `only [leadMinorK]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[e Z, Finset.prod_pow_eq_pow_sum]`. Apply the tactic sequence `rcases neg_one_pow_eq_or D.host.E (∑ j : Fin l, (D.R.rS - (Fin.castLE hl j).val)) with h | h <;>`. Apply the tactic sequence `rw [h] <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lead_sign (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) (l : ℕ) (hl : l ≤ D.R.rS + 1) :
     leadMinorK (ZhatOM Z) l hl * D.host.conj (leadMinorK (ZhatOM Z) l hl) =
@@ -44,11 +44,11 @@ theorem lead_sign (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) (l
     rw [h] <;> simp
 
 /- English proof (translation)
-Take `⟨L, U, hL, hU, hZ⟩` from `hc`. Establish `hinv : ∀ (l : ℕ) (hl : l ≤ D.R.rS + 1), leadMinorK (ZhatOM (ZhatL F F')) l hl = leadMinorK (ptMat p) l hl`. Introduce `l hl`. Rewrite using `[leadMinorK_eq, leadMinorK_eq, hZ]`. Conclude with `Formalism.HermitianLatticeCounting.Final.ExpansionTerms.leadingMinorUnipotentInvariant _ _ _ _ _ _ ⟨fun i => (hL i i).2 rfl, fun i j h => (hL i j).1 h⟩ ⟨fun i => (hU i i).2 rfl, fun i j h => (hU i j).1 h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Gglob`. Rewrite using `[← hinv, ← hinv, lead_sign, lead_sign]`. Unfold `Gval Gflag Dl`. Use `clear hinv hZ hL hU L U`. Simplify using `only [Formalism.MainNotions.S.Inh.tie_star]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE : ∀ (l : ℕ) (hl : l ≤ D.R.rS + 1), leadMinorE (Zhat F.fl F'.fl) l = leadMinorK (ZhatL F F') l hl`. Introduce `l hl`. Unfold `leadMinorE leadMinorK`. Rewrite using `[dif_pos hl]`. Rewrite using `[hE _ le_rfl, hE _ (Nat.le_succ _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gglob_of_cell {T T' : ℕ} (F : LFlag (VS D) D.R.rS (T : D.host.E)) (F' : LFlag (VS D) D.R.rS (T' : D.host.E))
     (p : Point D.host.E (D.R.rS + 1)) (hc : IsInCell (ZhatOM (ZhatL F F')) p) :
@@ -72,9 +72,9 @@ theorem gglob_of_cell {T T' : ℕ} (F : LFlag (VS D) D.R.rS (T : D.host.E)) (F' 
   rw [hE _ le_rfl, hE _ (Nat.le_succ _)]
 
 /- English proof (translation)
-Establish `key : M.det ∈ integralClosure ℤ D.host.E`. Rewrite using `[Matrix.det_apply]`. Use `Subalgebra.sum_mem _ (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `Subalgebra.zsmul_mem _ ?_ _` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subalgebra.prod_mem _ (fun i _ => (mem_integralClosure_iff ..).2 (hM _ _))`. Conclude with `(mem_integralClosure_iff ..).1 key`.
+A detailed English derivation is pending.
 -/
 theorem det_isIntegral {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) (hM : ∀ i j, IsIntegral ℤ (M i j)) :
     IsIntegral ℤ M.det := by
@@ -89,23 +89,21 @@ theorem det_isIntegral {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) (hM : ∀
 end Minor
 
 /- English proof (translation)
-Establish `hrel : t.toTerm.relevant`. Assume the negation of the conclusion as `hr`. Apply `hv` to reduce the goal to its premises. Establish `h0 : OOt t = 0` using `Formalism.L2.SG.TermOp.Vanish.ooVanish_of Formalism.L2.SG.TermOp.Vanish.avgCore Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Pf.chiTrivialC_outright Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalism.L2.SG.Pf.r …`. Use `show vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `vec ampN`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Take `⟨w, hw⟩` from `Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u' t.toTerm hG hrel`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F2, ⟨hP2, -⟩, hG2, hcell⟩` from `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm ⟨w, hw, hrel⟩`. Establish `hrow` using `(Y.rowsOK u).1 t.toTerm.lam t.toTerm.mem`. Establish `hF : ∀ b, frame (lf D (X.Fu u)) b ∈ t.toTerm.lam` using `Formalism.L2.SG.NGCut.PtPf.frame_mem _ hrow.2.1.2.2.1.1 hrow.2.2`. Establish `hF2 : ∀ b, frame F2 b ∈ t.toTerm.lam` using `Formalism.L2.SG.NGCut.PtPf.frame_mem _ hP2.1.1 hP2.2.2.2`. Establish `hZint : ∀ i j, IsIntegral ℤ (ZhatOM (ZhatL (lf D (X.Fu u)) F2) i j)` using `Formalism.L2.SG.NGCut.PtPf.zhatOM_isIntegral _ _ hrow.2.1.2.1 hF hF2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGg : Gglob D (D.mem u).A.T (D.mem u').A.T (Formalism.L2.SG.PairVal.ptOf t.toTerm) = Gval (lf D (X.Fu u)) F2` using `gglob_of_cell (lf D (X.Fu u)) F2 _ hcell`. Establish `hTu` using `tie_Tu_pos D u`. Use `⟨⟨⟨ZhatOM (ZhatL (lf D (X.Fu u)) F2), hZint, hcell⟩, by rw [hGg]; exact hG2, ?_⟩, fun v => ?_⟩` and prove the remaining obligations. Take `⟨L, U, hL, hU, hZ⟩` from `hcell`. Establish `hlm : ∀ l (hl : l ≤ D.R.rS + 1), IsIntegral ℤ (leadMinorK (ptMat (Formalism.L2.SG.PairVal.ptOf t.toTerm)) l hl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl`. Establish `e : leadMinorK (ptMat (Formalism.L2.SG.PairVal.ptOf t.toTerm)) l hl = leadMinorK (ZhatOM (ZhatL (lf D (X.Fu u)) F2)) l hl`. Rewrite using `[leadMinorK_eq, leadMinorK_eq]`. Conclude with `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.lead_cell _ _ ⟨L, U, hL, hU, hZ⟩ l`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `det_isIntegral _ fun i j => hZint _ _`. Establish `hconj : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (D.host.conj x)` using `fun x hx => by`. Rewrite using `[← Formalism.MainNotions.S.Inh.tie_star]`. Conclude with `hx.map (starRingEnd D.host.E).toIntAlgHom`. Unfold `Gglob`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ n : ℕ, IsIntegral ℤ (n : D.host.E)` using `fun n => by`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := (n : ℤ)))`. Conclude with `((hlm _ _).mul (hconj _ (hlm _ _))).sub (((hn _).mul (hn _)).mul ((hlm _ _).mul (hconj _ (hlm _ _))))`. Establish `hpos` using `(b_G_pos (p_starConj D) hTu (lf D (X.Fu u)) F2 rfl hP2.1.2 hG2 (p_posX D _ hTu (lf D (X.Fu u))) (plEmb D v)).1`. Establish `hpos2 : 0 < ((plEmb D v) (Gglob D (D.mem u).A.T (D.mem u').A.T (Formalism.L2.SG.PairVal.ptOf t.toTerm))).re`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hpos2` using `[plEmb_Gglob, Complex.ofReal_re]`. Rewrite using `[GPoint_loc]`. Establish `hc : 0 < ((∏ i : Fin D.R.rS, alf D i) ^ 2) ^ 2`. Use `Finset.prod_pos (s := Finset.univ) (fun (i : Fin D.R.rS) _ => alf_pos D i)` as an intermediate fact.
-
-Check the signs of the components of the expression. Conclude with `mul_pos hc hpos2`.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem rowPt_of {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
     (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) (hG : t.toTerm.G ≠ 0) (hv : (Y.tO u u').vec t ≠ 0) :
@@ -165,7 +163,7 @@ theorem rowPt_of {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Wor
     exact mul_pos hc hpos2
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' _ t ht hv => rowPt_of Y u u' t ?_ hv⟩` and prove the remaining obligations. Introduce `h0`. Apply `ht.1` to reduce the goal to its premises. Simplify using `[Full.tO, tOf, Gt, GTerm.G, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem ptUnif' : Formalism.L2.SG.Pf.BDat.PtUnif := by
   intro Cg cb Cw cT CT C0
@@ -175,7 +173,7 @@ theorem ptUnif' : Formalism.L2.SG.Pf.BDat.PtUnif := by
   simp [Full.tO, tOf, Gt, GTerm.G, h0]
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u _ t ht hv => rowPt_of Y u u t ?_ hv⟩` and prove the remaining obligations. Introduce `h0`. Apply `ht.1` to reduce the goal to its premises. Simplify using `[Full.tO, tOf, Gt, GTerm.G, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem ptUnifG : Formalism.L2.SG.Pf.BDat.PtUnifG := by
   intro Cg cb Cw cT CT C0

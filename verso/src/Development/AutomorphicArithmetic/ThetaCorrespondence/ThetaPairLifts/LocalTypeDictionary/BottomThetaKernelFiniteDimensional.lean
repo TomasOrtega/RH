@@ -16,11 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.KerFin
 /- English proof (translation)
-Introduce `hPr hTI hLM hInp hBS`. Use `gbig_comb (_root_.GlobalTheory.T.theta_parameters_match hPr hTI hLM hInp hBS) GlobalTheory.BotWeights.weights_const ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b q2 q3 W hW i j A A' WW X δ t0 hX hβ`. Take `⟨r, rc, κ, hr, hrc, hκ, H2⟩` from `q2 W hW i j A A' WW X δ t0 hX hβ`. Take `⟨n₀, H3⟩` from `q3 i j δ t0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ω, hΩ, H1⟩` from `GlobalTheory.T.bottomTriple_thetaKernel_minors_eq_const_conjJet G W hW i j A A' WW X hX r rc hr hrc n₀`. Use `⟨Ω * starRingEnd ℂ κ, mul_ne_zero hΩ ((map_ne_zero _).2 hκ), fun s Q P P' hB => ?_⟩` and prove the remaining obligations. Take `⟨u, hu0, huQ, huU, hEq⟩` from `H2 s Q P P' hB`. Use `⟨u, hu0, huQ, huU, fun ea ed h g x y hg hy Tu => ?_⟩` and prove the remaining obligations. Establish `hne : κ * starRingEnd ℂ u ≠ 0` using `mul_ne_zero hκ ((map_ne_zero _).2 hu0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[H1 P.a P.d P.n ea ed (H3 s Q P P' hB) s g y hg.1 hy.1 Tu, hEq ea ed h g x y hg hy, GlobalTheory.FunObj.NormUniq.applyAt0_smul _ hne]`. Simplify using `only [GlobalTheory.NormSum.Pair.term, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bottomTheta_kernel_finite : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
@@ -60,7 +60,7 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.KerFin.bottomTheta_kernel_finite | exact _root_.GlobalTheory.KerFin.bottomTheta_kernel_finite | (intros; apply _root_.GlobalTheory.KerFin.bottomTheta_kernel_finite <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottomTheta_kernel_finiteDimensional : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

@@ -21,7 +21,7 @@ section Additive
 variable {K L : Type} [Field K] [Field L]
 
 /- English proof (translation)
-Set `φ : Kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun a => Multiplicative.ofAdd (v a)) fun a b => by`. Rewrite using `[Units.val_mul, hv _ _ a.ne_zero b.ne_zero, ofAdd_add]`. Establish `h` using `congrArg Multiplicative.toAdd (map_zpow φ (Units.mk0 x hx) n)`. Simplify `h` using `[φ]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem add_zpow (v : K → ℤ) (hv : ∀ x y, x ≠ 0 → y ≠ 0 → v (x * y) = v x + v y) {x : K} (hx : x ≠ 0) (n : ℤ) :
     v (x ^ n) = n * v x := by
@@ -31,9 +31,9 @@ theorem add_zpow (v : K → ℤ) (hv : ∀ x y, x ≠ 0 → y ≠ 0 → v (x * y
   simpa [φ] using h
 
 /- English proof (translation)
-Establish `key : ∀ a b : ℤ, a * v x + b * v y = 0 → 0 ≤ a * v' (f x) + b * v' (f y)`. Introduce `a b hab`. Establish `h1` using `h (x ^ a * y ^ b) (mul_ne_zero (zpow_ne_zero _ hx) (zpow_ne_zero _ hy)) (by`. Rewrite using `[hv _ _ (zpow_ne_zero _ hx) (zpow_ne_zero _ hy), add_zpow v hv hx, add_zpow v hv hy, hab])`. Establish `hfx : f x ≠ 0` using `(map_ne_zero f).2 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfy : f y ≠ 0` using `(map_ne_zero f).2 hy`. Rewrite `h1` using `[map_mul, map_zpow₀, map_zpow₀, hv' _ _ (zpow_ne_zero _ hfx) (zpow_ne_zero _ hfy), add_zpow v' hv' hfx, add_zpow v' hv' hfy]`. Then use the resulting hypothesis. Establish `h1` using `key (v y) (-v x) (by ring)`. Establish `h2` using `key (-v y) (v x) (by ring)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem proportional (f : K →+* L) (v : K → ℤ) (v' : L → ℤ)
     (hv : ∀ x y, x ≠ 0 → y ≠ 0 → v (x * y) = v x + v y)
@@ -67,14 +67,14 @@ def ordK (x : FractionRing R) : ℤ :=
 variable {R}
 
 /- English proof (translation)
-Unfold `ordR`. Rewrite using `[AddValuation.map_mul, ENat.toNat_add (by simpa [IsDiscreteValuationRing.addVal_eq_top_iff] using ha) (by simpa [IsDiscreteValuationRing.addVal_eq_top_iff] using hb)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordR_mul {a b : R} (ha : a ≠ 0) (hb : b ≠ 0) : ordR R (a * b) = ordR R a + ordR R b := by
   unfold ordR
   rw [AddValuation.map_mul, ENat.toNat_add (by simpa [IsDiscreteValuationRing.addVal_eq_top_iff] using ha) (by simpa [IsDiscreteValuationRing.addVal_eq_top_iff] using hb)]
 
 /- English proof (translation)
-Unfold `ordR`. Rewrite using `[ENat.toNat_eq_zero, IsDiscreteValuationRing.addVal_eq_zero_iff]`. Simplify using `[ha, IsDiscreteValuationRing.addVal_eq_top_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ordR_eq_zero_iff {a : R} (ha : a ≠ 0) : ordR R a = 0 ↔ IsUnit a := by
   unfold ordR
@@ -82,7 +82,7 @@ theorem ordR_eq_zero_iff {a : R} (ha : a ≠ 0) : ordR R a = 0 ↔ IsUnit a := b
   simp [ha, IsDiscreteValuationRing.addVal_eq_top_iff]
 
 /- English proof (translation)
-Unfold `ordR at h`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd]`. Rewrite using `[← ENat.coe_toNat (n := IsDiscreteValuationRing.addVal R a) (by simpa [IsDiscreteValuationRing.addVal_eq_top_iff] using ha), ← ENat.coe_toNat (n := IsDiscreteValuationRing.addVal R b) (by simpa [IsDiscreteValuationRing.addVal_eq_top_iff] using hb)]`. Conclude with `h` after adjusting the coercions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_ordR_le {a b : R} (ha : a ≠ 0) (hb : b ≠ 0) (h : ordR R b ≤ ordR R a) : b ∣ a := by
   unfold ordR at h
@@ -92,11 +92,11 @@ theorem dvd_of_ordR_le {a b : R} (ha : a ≠ 0) (hb : b ≠ 0) (h : ordR R b ≤
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective R (FractionRing R)`. Establish `hp` using `(IsLocalization.surj (nonZeroDivisors R) x).choose_spec`. Unfold `ordK`. Use `set p := (IsLocalization.surj (nonZeroDivisors R) x).choose`. Establish `hp2 : (p.2 : R) ≠ 0` using `nonZeroDivisors.coe_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ {c d : R}, d ≠ 0 → x * algebraMap R _ d = algebraMap R _ c → c ≠ 0`. Introduce and unpack `c d hd hcd rfl`. Rewrite `hcd` using `[map_zero]`. Conclude with `mul_ne_zero hx ((map_ne_zero_iff _ hinj).2 hd) hcd`. Establish `he : p.1 * b = a * p.2` using `hinj (by rw [map_mul, map_mul, ← hp, ← h]; ring)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg (ordR R) he`. Rewrite `h2` using `[ordR_mul (hne hp2 hp) hb, ordR_mul (hne hb h) hp2]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ordK_eq {x : FractionRing R} (hx : x ≠ 0) {a b : R} (hb : b ≠ 0)
     (h : x * algebraMap R _ b = algebraMap R _ a) : ordK R x = (ordR R a : ℤ) - ordR R b := by
@@ -115,7 +115,7 @@ theorem ordK_eq {x : FractionRing R} (hx : x ≠ 0) {a b : R} (hb : b ≠ 0)
   omega
 
 /- English proof (translation)
-Rewrite using `[ordK_eq ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 ha) (a := a) one_ne_zero (by simp), (ordR_eq_zero_iff one_ne_zero).2 isUnit_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ordK_algebraMap {a : R} (ha : a ≠ 0) : ordK R (algebraMap R (FractionRing R) a) = ordR R a := by
   rw [ordK_eq ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 ha) (a := a) one_ne_zero
@@ -123,9 +123,9 @@ theorem ordK_algebraMap {a : R} (ha : a ≠ 0) : ordK R (algebraMap R (FractionR
   simp
 
 /- English proof (translation)
-Take `⟨⟨a, b⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors R) x`. Establish `hb : (b : R) ≠ 0` using `nonZeroDivisors.coe_ne_zero _`. Use `⟨a, b, ?_, hb, h⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `only [map_zero] at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero hx ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hb) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_frac {x : FractionRing R} (hx : x ≠ 0) :
     ∃ a b : R, a ≠ 0 ∧ b ≠ 0 ∧ x * algebraMap R _ b = algebraMap R _ a := by
@@ -137,7 +137,7 @@ theorem exists_frac {x : FractionRing R} (hx : x ≠ 0) :
   exact mul_ne_zero hx ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hb) h
 
 /- English proof (translation)
-Take `⟨a, b, ha, hb, h⟩` from `exists_frac hx`. Take `⟨c, d, hc, hd, h'⟩` from `exists_frac hy`. Rewrite using `[ordK_eq hx hb h, ordK_eq hy hd h', ordK_eq (mul_ne_zero hx hy) (a := a * c) (mul_ne_zero hb hd) (by rw [map_mul, map_mul, ← h, ← h']; ring), ordR_mul ha hc, ordR_mul hb hd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ordK_mul (x y : FractionRing R) (hx : x ≠ 0) (hy : y ≠ 0) : ordK R (x * y) = ordK R x + ordK R y := by
   obtain ⟨a, b, ha, hb, h⟩ := exists_frac hx
@@ -148,7 +148,7 @@ theorem ordK_mul (x y : FractionRing R) (hx : x ≠ 0) (hy : y ≠ 0) : ordK R (
   ring
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `h`. Rewrite using `[ordK_algebraMap (by rintro rfl; simp at hx)]`. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem ordK_nonneg_of_mem {x : FractionRing R} (hx : x ≠ 0)
     (h : x ∈ (algebraMap R (FractionRing R)).range) : 0 ≤ ordK R x := by
@@ -157,9 +157,9 @@ theorem ordK_nonneg_of_mem {x : FractionRing R} (hx : x ≠ 0)
   positivity
 
 /- English proof (translation)
-Take `⟨a, b, ha, hb, h⟩` from `exists_frac hx`. Rewrite `h0` using `[ordK_eq hx hb h]`. Take `⟨c, rfl⟩` from `dvd_of_ordR_le ha hb (by omega)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[map_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_left_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hb) h).symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_ordK_nonneg {x : FractionRing R} (hx : x ≠ 0) (h0 : 0 ≤ ordK R x) :
     x ∈ (algebraMap R (FractionRing R)).range := by
@@ -171,7 +171,7 @@ theorem mem_of_ordK_nonneg {x : FractionRing R} (hx : x ≠ 0) (h0 : 0 ≤ ordK 
   exact (mul_left_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hb) h).symm
 
 /- English proof (translation)
-Unfold `BlochKatoReduction.Gen.vK BlochKatoReduction.Gen.nval ordK ordR`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vK_eq (l : ℕ) (x : FractionRing R) :
     BlochKatoReduction.Gen.vK R l x = (ordK R x : ℝ) / (ordR R (l : R) : ℝ) := by
@@ -180,15 +180,13 @@ theorem vK_eq (l : ℕ) (x : FractionRing R) :
   ring
 
 /- English proof (translation)
-Conclude with `Nat.pos_of_ne_zero fun h => hu ((ordR_eq_zero_iff ha).1 h)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem ordR_pos {a : R} (ha : a ≠ 0) (hu : ¬ IsUnit a) : (0 : ℝ) < ordR R a := by
   exact_mod_cast Nat.pos_of_ne_zero fun h => hu ((ordR_eq_zero_iff ha).1 h)
 
 /- English proof (translation)
-Establish `h` using `proportional f (ordK R) (ordK S) ordK_mul ordK_mul (fun y hy h0 => by`. Take `⟨a, rfl⟩` from `mem_of_ordK_nonneg hy h0`. Conclude with `ordK_nonneg_of_mem ((map_ne_zero f).2 hy) ⟨g a, (hfg a).symm⟩) hx`. Use the proof step `((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hR0)`. Rewrite `h` using `[hfg, map_natCast g, ordK_algebraMap hR0, ordK_algebraMap hS0]`.
-
-Rewrite using `[vK_eq, vK_eq, div_eq_div_iff (ordR_pos hS0 hS).ne' (ordR_pos hR0 hR).ne']`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vK_map {S : Type} [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     (f : FractionRing R →+* FractionRing S) (g : R →+* S)
@@ -204,7 +202,7 @@ theorem vK_map {S : Type} [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
   exact_mod_cast h
 
 /- English proof (translation)
-Rewrite using `[vK_eq, vK_eq, vK_eq, ordK_mul x y hx hy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vK_mul (l : ℕ) {x y : FractionRing R} (hx : x ≠ 0) (hy : y ≠ 0) :
     BlochKatoReduction.Gen.vK R l (x * y) = BlochKatoReduction.Gen.vK R l x + BlochKatoReduction.Gen.vK R l y := by
@@ -213,7 +211,7 @@ theorem vK_mul (l : ℕ) {x y : FractionRing R} (hx : x ≠ 0) (hy : y ≠ 0) :
   ring
 
 /- English proof (translation)
-Rewrite using `[vK_eq, ordK_algebraMap u.ne_zero, (ordR_eq_zero_iff u.ne_zero).2 u.isUnit]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vK_unit (l : ℕ) (u : Rˣ) : BlochKatoReduction.Gen.vK R l (algebraMap R (FractionRing R) (u : R)) = 0 := by
   rw [vK_eq, ordK_algebraMap u.ne_zero, (ordR_eq_zero_iff u.ne_zero).2 u.isUnit]
@@ -222,7 +220,7 @@ theorem vK_unit (l : ℕ) (u : Rˣ) : BlochKatoReduction.Gen.vK R l (algebraMap 
 end Ord
 
 /- English proof (translation)
-Establish `h : w.valuation K x = WithZero.exp (-Formalism.DivisionValues.vw w x)` using `GlobalTheory.Idele.valuation_eq_exp_neg_count w hx`. Rewrite using `[vAdd, h, WithZero.log_exp, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_eq_vAdd {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
     Formalism.DivisionValues.vw w x = vAdd w x := by
@@ -230,7 +228,7 @@ theorem vw_eq_vAdd {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (
   rw [vAdd, h, WithZero.log_exp, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[vw_eq_vAdd w hx, vw_eq_vAdd w hy, vw_eq_vAdd w (mul_ne_zero hx hy), vAdd, vAdd, vAdd, map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vw_mul {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (x y : K) (hx : x ≠ 0)
     (hy : y ≠ 0) : Formalism.DivisionValues.vw w (x * y) = Formalism.DivisionValues.vw w x + Formalism.DivisionValues.vw w y := by
@@ -239,33 +237,27 @@ theorem vw_mul {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞
   ring
 
 /- English proof (translation)
-Introduce `D nch w N0 lam a u z hC hid`. Take `⟨hne, -, hle⟩` from `hC lam`. Use `set T := BlochKatoReduction.Gen.thEval D.ntw (nch.twI w) (nch.Q w) lam (nch.k' w) (BlochKatoReduction.Gen.psiAt (D.ntw.sideL (nch.twI w) lam) (nch.psi' w ^ a)) with hT`. Unfold `BlochKatoReduction.Gen.c0 twEps at hle`. Use `set S := ∑ δ, D.ntw.th (nch.twI w) ∅ lam δ with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `nch.twI_l w`. Use `set l := D.what₂.places.resChar w with hldef`. Establish `hlp : l.Prime` using `D.what₂.places.resChar_prime w`. Establish `hlL : (l : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.mpr hlp.ne_zero`. Establish `hlE : (l : nch.Oe w) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Establish `h1` using `congrArg (algebraMap (nch.Oe w) (FractionRing (nch.Oe w))) h`. Rewrite `h1` using `[map_natCast, map_zero, ← map_natCast (nch.embW w)]`. Conclude with `hlL ((map_eq_zero _).1 h1)`. Establish `hlk : (l : D.ntw.Ok (nch.twI w) (nch.k' w)) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `congrArg (algebraMap (D.ntw.Ok (nch.twI w) (nch.k' w)) (nch.Oe w)) h`. Rewrite `h1` using `[map_natCast, map_zero]`. Conclude with `hlE h1`. Establish `hlO : (l : D.ntw.O (nch.twI w)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `congrArg (algebraMap (D.ntw.O (nch.twI w)) (D.ntw.Ok (nch.twI w) (nch.k' w))) h`. Rewrite `h1` using `[map_natCast, map_zero]`. Conclude with `hlk h1`. Establish `huO : ¬ IsUnit (l : D.ntw.O (nch.twI w))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `D.ntw.O_l (nch.twI w)` as an intermediate fact. Rewrite `this` using `[hl]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 this`. Establish `huk : ¬ IsUnit (l : D.ntw.Ok (nch.twI w) (nch.k' w))` using `by haveI := D.ntw.Ok_fin (nch.twI w) (nch.k' w) haveI : FaithfulSMul (D.ntw.O (nch.twI w)) (D.ntw.Ok (nch.twI w) (nch.k' w)) := (faithfulSMul_iff_algebraMap_injective _ _).2 (D.ntw.Ok_inj _ _)`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[← map_natCast (algebraMap (D.ntw.O (nch.twI w)) (D.ntw.Ok (nch.twI w) (nch.k' w)))]`. Conclude with `huO (IsUnit.of_map _ _ h)`. Establish `huE : ¬ IsUnit (l : nch.Oe w)` using `by haveI := nch.Oe_loc w`. Introduce `h`. Rewrite `h` using `[← map_natCast (algebraMap (D.ntw.Ok (nch.twI w) (nch.k' w)) (nch.Oe w))]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `huk (IsUnit.of_map _ _ h)`. Establish `hu0 : algebraMap (nch.Oe w) (FractionRing (nch.Oe w)) (u : nch.Oe w) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 u.ne_zero`. Establish `hT0 : nch.kMapE w T ≠ 0` using `(map_ne_zero _).2 hne`. Establish `hprod` using `mul_ne_zero hu0 hT0`. Rewrite `hprod` using `[← hid]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz0 : z ≠ 0` using `(map_ne_zero _).1 (left_ne_zero_of_mul hprod)`. Establish `hS1 : BlochKatoReduction.Gen.kMap D.ntw (nch.twI w) (nch.k' w) S ≠ 0` using `(map_ne_zero _).1 (right_ne_zero_of_mul hprod)`. Establish `hS0 : S ≠ 0` using `(map_ne_zero _).1 hS1`. Establish `hE : ∀ {x}, x ≠ 0 → BlochKatoReduction.Gen.vK (nch.Oe w) l (nch.kMapE w x) = BlochKatoReduction.Gen.vK (D.ntw.Ok (nch.twI w) (nch.k' w)) l x` using `fun hx => vK_map (nch.kMapE w) (algebraMap _ _) (fun b => by`. Unfold `NChoice.kMapE IsFractionRing.map`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IsLocalization.map_eq _ b) l hlk huk hlE huE hx`. Establish `hk : BlochKatoReduction.Gen.vK (D.ntw.Ok (nch.twI w) (nch.k' w)) l (BlochKatoReduction.Gen.kMap D.ntw (nch.twI w) (nch.k' w) S) = BlochKatoReduction.Gen.vK (D.ntw.O (nch.twI w)) l S` using `vK_map _ (algebraMap _ _) (fun b => IsFractionRing.lift_algebraMap _ b) l hlO huO hlk huk hS0`. Establish `hv` using `congrArg (BlochKatoReduction.Gen.vK (nch.Oe w) l) hid`. Rewrite `hv` using `[vK_mul l (left_ne_zero_of_mul hprod) (right_ne_zero_of_mul hprod), vK_mul l hu0 hT0, vK_unit, hE hS1, hE hne, hk]`. Rewrite `hle` using `[hl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hz : BlochKatoReduction.Gen.vK (nch.Oe w) l (nch.embW w z) ≤ ((l : ℝ) ^ 2)⁻¹` using `by linarith`. Establish `hp` using `proportional (nch.embW w) (Formalism.DivisionValues.vw (D.plEq w)) (ordK (nch.Oe w)) (vw_mul _) ordK_mul (fun y hy h0 => ordK_nonneg_of_mem ((map_ne_zero _).2 hy) ((nch.embW_w w y).1 (by`. Rewrite using `[D.val_eq w y hy, ← vw_eq_vAdd _ hy]`. Conclude with `h0))) hz0 hlL` after adjusting the coercions. Rewrite `hp` using `[map_natCast, ← map_natCast (algebraMap (nch.Oe w) (FractionRing (nch.Oe w))), ordK_algebraMap hlE]`.
-
-Establish `hvl : 0 ≤ Formalism.DivisionValues.vw (D.plEq w) (l : D.what₂.LL)`. Establish `h` using `D.what₂.places.val_resChar w`. Rewrite `h` using `[D.val_eq w _ hlL, ← vw_eq_vAdd _ hlL]`. Establish `h1 : Formalism.DivisionValues.vw (D.plEq w) (l : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ)` using `WithTop.coe_injective h`. Rewrite using `[h1]`.
-
-Check the signs of the components of the expression. Establish `hpos` using `ordR_pos hlE huE`. Establish `hp' : (Formalism.DivisionValues.vw (D.plEq w) z : ℝ) = BlochKatoReduction.Gen.vK (nch.Oe w) l (nch.embW w z) * (Formalism.DivisionValues.vw (D.plEq w) (l : D.what₂.LL) : ℝ)`. Rewrite using `[vK_eq, div_mul_eq_mul_div, eq_div_iff hpos.ne']`. Conclude with `hp.symm` after adjusting the coercions.
-
-Rewrite using `[hp', div_eq_inv_mul]`. Conclude with `mul_le_mul_of_nonneg_right hz (by exact_mod_cast hvl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vw_le_of_bound : ∀ {D : D7} (nch : NChoice D) (w : D.what₂.places.Pl) (N0 : D.ntw.Tw → ℕ) (lam : D.ntw.abelian₂ (nch.twI w)) (a : ℤ)
     (u : (nch.Oe w)ˣ) (z : D.what₂.LL),

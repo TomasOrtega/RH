@@ -24,9 +24,9 @@ section SlopeTestRemainingChoices
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hd : Module.finrank F E ≠ 0` using `Module.finrank_pos.ne'`. Establish `hroot : (⟨(s : ℝ) ^ ((Module.finrank F E : ℝ))⁻¹, Real.rpow_pos_of_pos s.2 _⟩ : {r : ℝ // 0 < r}) ^ Module.finrank F E = s`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Positive.val_pow]`. Conclude with `Real.rpow_inv_natCast_pow s.2.le hd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hroot, ← UpperTheory.centralSection_baseChange F E n]`. Conclude with `(UpperTheory.adele_galois_action_baseChange_compat F E σ n).2.2.2.2.1 _`.
+A detailed English derivation is pending.
 -/
 private theorem central_fixed (σ : E ≃ₐ[F] E) (s : {r : ℝ // 0 < r}) :
     mapGL n (galAd σ) (centralSection E n s) = centralSection E n s := by
@@ -40,7 +40,7 @@ private theorem central_fixed (σ : E ≃ₐ[F] E) (s : {r : ℝ // 0 < r}) :
   exact (UpperTheory.adele_galois_action_baseChange_compat F E σ n).2.2.2.2.1 _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `θ.e (retractOne (finEmb E n x)) = retractOne (finEmb E n x')`. Establish `h1 : ((θ.e (retractOne (finEmb E n x)) : G1 E n) : AdelicGLn.AdelicGL E n) * centralSection E n (detModule E n (finEmb E n x)) = finEmb E n x'`. Rewrite using `[hθ, coe_retractOne, map_mul, map_inv, central_fixed, inv_mul_cancel_right, h]`. Rewrite using `[← h1, retractOne_mul, retractOne_coe, retractOne_centralSection, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem galois_twist_finite_adelic_point (σ : E ≃ₐ[F] E) (hn : 0 < n) {μ : Measure (G1 E n)} [μ.IsHaarMeasure] {θ : Twist μ}
     (hθ : IsGalTwist σ θ) {x x' : FA E n} (h : mapGL n (galAd σ) (finEmb E n x) = finEmb E n x') :
@@ -52,9 +52,9 @@ private theorem galois_twist_finite_adelic_point (σ : E ≃ₐ[F] E) (hn : 0 < 
   rw [← h1, retractOne_mul, retractOne_coe, retractOne_centralSection, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[GM.prodFn, finprod_eq_prod_of_fintype]`. Distinguish the cases in `hg : g ∈ UE`. Rewrite using `[Set.indicator_of_mem (show g ∈ (UE : Set _) from hg)]`. Conclude with `(Finset.prod_eq_one fun u _ => Set.indicator_of_mem ((h g).1 hg u) _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (show g ∉ (UE : Set _) from hg)]`. Take `⟨u, hu⟩` from `not_forall.1 fun hh => hg ((h g).2 hh)`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ u) (Set.indicator_of_notMem hu _)).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem indicator_prod {v : Pl F} (UE : Subgroup (GL (Fin n) (CompletionsOver E v)))
     (H : ∀ u : PlacesOver E v, Set (Gw n u.1)) (h : ∀ g, g ∈ UE ↔ ∀ u, GM.cmp u g ∈ H u) :
@@ -69,9 +69,9 @@ private theorem indicator_prod {v : Pl F} (UE : Subgroup (GL (Fin n) (Completion
     exact (Finset.prod_eq_zero (Finset.mem_univ u) (Set.indicator_of_notMem hu _)).symm
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[GroundTheory.Automorphic.Parabolic.diagPow_zero, mul_one]`. Conclude with `mul_mem ha hb`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Conclude with `⟨g, hg, 1, one_mem _, by rw [GroundTheory.Automorphic.Parabolic.diagPow_zero, mul_one, mul_one]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem iwCoset_zero_eq (w : Pl E) :
     GM.iwCoset w (0 : Fin n → ℤ) = (GLnLocal.iwahori (w.adicCompletion E) n : Set (Gw n w)) := by
@@ -84,9 +84,9 @@ private theorem iwCoset_zero_eq (w : Pl E) :
     exact ⟨g, hg, 1, one_mem _, by rw [GroundTheory.Automorphic.Parabolic.diagPow_zero, mul_one, mul_one]⟩
 
 /- English proof (translation)
-Establish `hcl : IsClopen (J : Set G)` using `⟨Subgroup.isClosed_of_isOpen J h.2, h.2⟩`. Use `⟨⟨?_, HasCompactSupport.intro h.1 fun x hx => Set.indicator_of_notMem hx _⟩, fun u hu g => ?_⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (J : Set G)`. Conclude with `⟨J, h.2, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]; rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨(J : Set G)ᶜ, hcl.compl.isOpen, hx, fun y hy => by`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`. Establish `h1 : u * g ∈ (J : Set G) ↔ g ∈ (J : Set G)` using `Subgroup.mul_mem_cancel_left J hu`. Establish `h2 : g * u ∈ (J : Set G) ↔ g ∈ (J : Set G)` using `Subgroup.mul_mem_cancel_right J hu`. Simplify using `only [Set.indicator_apply, h1, h2, Pi.one_apply, and_self]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem indicator_test {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G) (h : CO J) :
     Test ((J : Set G).indicator (1 : G → ℂ)) ∧
@@ -104,17 +104,15 @@ private theorem indicator_test {G : Type} [Group G] [TopologicalSpace G] [IsTopo
     simp only [Set.indicator_apply, h1, h2, Pi.one_apply, and_self]
 
 /- English proof (translation)
-Establish `hL` using `fun u : PlacesOver E v => UpperTheory.ConvolutionTheory.L1.splitLoc F E v u (hv u) n`. Use `choose e he using fun u => (hL u).1`. Set `A : Subgroup (Gw n v)` to `⨅ u, (U₀ u).comap (mapGL n (completionMap v u.1))`. Establish `hA : ∀ g, g ∈ A ↔ ∀ u, e u g ∈ U₀ u` using `fun g => by`. Simplify using `only [A, Subgroup.mem_iInf, Subgroup.mem_comap, he]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hAo : IsOpen (A : Set (Gw n v))`. Establish `hset : (A : Set (Gw n v)) = ⋂ u, (e u) ⁻¹' (U₀ u : Set (Gw n u.1))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, hA, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[hset]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isOpen_iInter_of_finite fun u => (hU u).1.2.preimage (e u).continuous`. Establish `hAc : IsCompact (A : Set (Gw n v))`. Establish `hc : IsCompact ((e u₀) ⁻¹' (U₀ u₀ : Set (Gw n u₀.1)))` using `(e u₀).toHomeomorph.isCompact_preimage.2 (hU u₀).1.1`. Conclude with `hc.of_isClosed_subset (Subgroup.isClosed_of_isOpen A hAo) fun g hg => (hA g).1 hg u₀`. Establish `hJ : ∀ u, ((A.map (mapGL n (completionMap v u.1)) : Subgroup (Gw n u.1)) : Set (Gw n u.1)) = e u '' A` using `fun u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_map]`. Conclude with `Set.image_congr fun g _ => (he u g).symm`. Use `⟨A, fun u => A.map (mapGL n (completionMap v u.1)), ⟨hAc, hAo⟩, fun g hg => ?_, fun u => ⟨⟨?_, ?_⟩, ?_, fun g => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `((hL u₀).2.1 g).1 ((hU u₀).2 (by rw [← he]; exact (hA g).1 hg u₀))`. Rewrite using `[hJ]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `hAc.image (e u).continuous`. Rewrite using `[hJ]`. Conclude with `(e u).toHomeomorph.isOpenMap _ hAo`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Rewrite using `[← he]`.
-
-Conclude with `(hA g).1 hg u`. Conclude with `fun hg => ⟨g, hg, rfl⟩`. Introduce and unpack `⟨g', hg', h⟩`. Rewrite `h` using `[← he, ← he]`. Rewrite using `[← (e u).injective h]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem split_level (v : Pl F) (hv : GM.Split E v) (u₀ : PlacesOver E v)
     (U₀ : ∀ u : PlacesOver E v, Subgroup (Gw n u.1))
@@ -187,15 +185,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hne : Nonempty (PlacesOver E v)`. Take `⟨⟨P, hP, hl⟩⟩ : Nonempty (v.asIdeal.primesOver (𝓞 E))` from `inferInstance`. Conclude with `⟨⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, hl⟩⟩`. Take `⟨o1, o2, ⟨U1, o3⟩, ⟨U2, o4⟩, o5⟩` from `UpperTheory.ConvolutionTheory.T.offStable F E σ hσ hp n hn v`. Distinguish the cases in `hvS : v ∈ S`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨u₀⟩` from `hne`. Establish `hv` using `hsp v hvS`. Take `⟨A, J, hA, hAi, hJ⟩` from `split_level v hv u₀ (fun u => U₀ u.1) fun u => hU₀ u.1`. Take `⟨s1, s2⟩` from `UpperTheory.ConvolutionTheory.T.splitStable F E σ hσ hp n hn v hv A J fun u => (hJ u).2.2`. Take `⟨UE, e1, e2, e3⟩` from `s2 hA hAi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `UpperTheory.ConvolutionTheory.T.splitMatch F E σ hσ hp n hn v u₀ hv A J hA fun u => ⟨(hJ u).1, (hJ u).2.2⟩`. Establish `hi` using `indicator_test (J u₀) (hJ u₀).1`. Take `⟨m1, m2, m3, m4, m5⟩` from `hc _ hi.1 hi.2`. Establish `hφ : Function.update (fun u : PlacesOver E v => ((J u : Set (Gw n u.1)).indicator 1 : Gw n u.1 → ℂ)) u₀ ((J u₀ : Set (Gw n u₀.1)).indicator 1) = fun u => (J u : Set (Gw n u.1)).indicator 1` using `Function.update_eq_self u₀ _`. Rewrite `m1`, `m2`, `m4` using `[hφ, ← indicator_prod UE (fun u => (J u : Set (Gw n u.1))) e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨J, c, _, UE, A, ⟨fun u => ⟨(hJ u).1, (hJ u).2.1.trans (hU₀ u.1).2⟩, e1, s1, fun h => absurd hvS h, fun h => absurd (h ▸ hvS) hqS, fun _ => ⟨fun u => (hJ u).2.1, m2.1, m2.2, m3.1, m3.2, e2, e3, hA.2, hAi, fun y hy => m4 y ((e1 y).1 hy), m5, m1⟩⟩⟩`. Distinguish the cases in `hvq : v = q`. Conclude with `⟨fun u => GLnLocal.iwahori (u.1.adicCompletion E) n, 0, (GM.iwCoset v 0).indicator 1, U2, GLnLocal.iwahori (v.adicCompletion F) n, ⟨fun u => ⟨(o5 u.1).2.1, (o5 u.1).2.2⟩, o4, o2, fun _ h => absurd hvq h, fun _ => ⟨rfl, rfl, fun _ => rfl⟩, fun h => absurd h hvS⟩⟩`. Use `⟨fun u => GLnLocal.integralGL (u.1.adicCompletion E) n, 0, (GLnLocal.integralGL (v.adicCompletion F) n : Set _).indicator 1, U1, GLnLocal.integralGL (v.adicCompletion F) n, ⟨fun u => ⟨(o5 u.1).1, le_rfl⟩, fun g => ?_, o1, fun _ _ => ⟨o3, rfl, rfl, fun _ => rfl⟩, fun h => absurd h …` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, o3]`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem level_at (σ : E ≃ₐ[F] E) (hσ : ∀ τ, τ ∈ Subgroup.zpowers σ) (hp : (Module.finrank F E).Prime) (hn : 0 < n)
     (q : Pl F) (S : Finset (Pl F)) (hqS : q ∉ S) (hsp : ∀ v ∈ S, GM.Split E v) (U₀ : ∀ w : Pl E, Subgroup (Gw n w)) (hU₀ : Lev U₀)
@@ -240,17 +238,17 @@ section Build
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hq : ∀ g, g ∈ UE q ↔ ∀ u, GM.cmp u g ∈ GLnLocal.iwahori (u.1.adicCompletion E) n` using `fun g => ((k q).mem g).trans (forall_congr' fun u => by rw [((k q).at_q rfl).2.2 u])`. Establish `hφq : (UE q : Set (GL (Fin n) (CompletionsOver E q))).indicator (1 : GL (Fin n) (CompletionsOver E q) → ℂ) = GM.iwFn w₀ 0`. Use `(indicator_prod (UE q) (fun u => (GLnLocal.iwahori (u.1.adicCompletion E) n : Set _)) hq).trans ?_` and prove the remaining obligations. Unfold `GM.iwFn`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[ite_self, iwCoset_zero_eq]`. Use `⟨⟨S, hqS, hunr, fun v => (UE v : Set (GL (Fin n) (CompletionsOver E v))).indicator 1, f, c, UE, UF, ?_, ?_, ?_, ?_, ?_, ?_⟩, rfl, rfl, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `fun v hv => by`. Take `⟨-, a, b, d, e, -⟩` from `(k v).in_S hv`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b, d, e⟩`. Conclude with `fun v hv => by`. Take `⟨-, -, -, -, -, a, b, d, e, -⟩` from `(k v).in_S hv`. Conclude with `⟨a, b, d, e⟩`. Conclude with `fun v hv => by`.
+Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨-, -, -, -, -, -, -, -, -, a, b, -⟩` from `(k v).in_S hv`. Conclude with `⟨a, b⟩`. Conclude with `fun v hv => by`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, a⟩` from `(k v).in_S hv`. Conclude with `a`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hφq, ((k q).at_q rfl).1, hq, ((k q).at_q rfl).2.1⟩`. Introduce `v a b`. Take `⟨e1, e2, e3, -⟩` from `(k v).off a b`. Use `⟨?_, e2, e1, e3⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(UE v : Set (GL (Fin n) (CompletionsOver E v))).indicator 1 = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_loc (σ : E ≃ₐ[F] E) (q : Pl F) (w₀ : PlacesOver E q) (S : Finset (Pl F)) (hqS : q ∉ S)
     (hunr : ∀ v ∉ S, GM.Unr E v) (U₀ : ∀ w : Pl E, Subgroup (Gw n w))
@@ -293,7 +291,7 @@ section Lev
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hite : ∀ w, (if w ∈ SE then U w else GLnLocal.integralGL (w.adicCompletion E) n) = U w` using `fun w => by split_ifs with hw`. Both sides reduce to the same expression. Conclude with `(hU w hw).symm`. Conclude with `forall_congr' fun w => by rw [← hite w]`.
+Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem mem_levOn_iff (SE : Finset (Pl E)) (U : ∀ w : Pl E, Subgroup (Gw n w))
     (hU : ∀ w, w ∉ SE → U w = GLnLocal.integralGL (w.adicCompletion E) n) (x : FA E n) :
@@ -305,18 +303,18 @@ private theorem mem_levOn_iff (SE : Finset (Pl E)) (U : ∀ w : Pl E, Subgroup (
   exact forall_congr' fun w => by rw [← hite w]
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 private theorem cmp_atFin (v : Pl F) (u : PlacesOver E v) (g : AdelicGLn.AdelicGL E n) :
     GM.cmp u (mapGL n (atFin v) g) = finAt u.1 g :=
   Units.ext (Matrix.ext fun _ _ => rfl)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_levOn_iff SE U hU]`. Simplify using `only [GM.levE, Subgroup.mem_iInf, Subgroup.mem_comap, MonoidHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hm _ _).1 (h (w.under (𝓞 F))) ⟨w, ⟨rfl⟩⟩` as an intermediate fact. Rewrite `this` using `[cmp_atFin]`. Then use the resulting hypothesis. Introduce `h v`. Use `(hm v _).2 fun u => ?_` and prove the remaining obligations. Rewrite using `[cmp_atFin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h u.1`.
+A detailed English derivation is pending.
 -/
 private theorem levE_eq (SE : Finset (Pl E)) (U : ∀ w : Pl E, Subgroup (Gw n w))
     (hU : ∀ w, w ∉ SE → U w = GLnLocal.integralGL (w.adicCompletion E) n)
@@ -336,13 +334,13 @@ private theorem levE_eq (SE : Finset (Pl E)) (U : ∀ w : Pl E, Subgroup (Gw n w
     exact h u.1
 
 /- English proof (translation)
-Take `⟨c1, c2, -⟩` from `UpperTheory.adele_galois_action_baseChange_compat F E σ n`. Establish `hI : finEmb E n (AdelicGLn.prodEquiv E n (mapGL n (galAd σ) (finEmb E n x))).2 = mapGL n (galAd σ) (finEmb E n x)`. Apply `(AdelicGLn.prodEquiv E n).injective` to reduce the goal to its premises. Rewrite using `[prodEquiv_finEmb]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ∀ g : AdelicGLn.AdelicGL E n, (AdelicGLn.prodEquiv E n g).1 = T4.pI E n g` using `fun g => Units.ext (Matrix.ext fun a b => AdelicGLn.prodEquiv_apply_fst E n g a b)`. Establish `e2 : T4.pI E n (finEmb E n x) = 1` using `by rw [← e1, prodEquiv_finEmb]`. Express the relevant statement in the definitionally equal form `1 = _`. Rewrite using `[e1, c1, e2, map_one]`. Use `⟨_, ?_, galois_twist_finite_adelic_point σ hn hθ hI.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_levOn_iff SE U hU, hI]`. Introduce `w`. Establish `h1` using `(mem_levOn_iff SE U hU x).1 hx`. Establish `h3 : mapGL n (atFin (w.under (𝓞 F))) (mapGL n (galAd σ) (finEmb E n x)) = mapGL n (galFin σ (w.under (𝓞 F))) (mapGL n (atFin (w.under (𝓞 F))) (finEmb E n x))` using `c2 _ _`. Establish `h4` using `hs _ (mapGL n (atFin (w.under (𝓞 F))) (finEmb E n x)) (fun u => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cmp_atFin]`. Conclude with `h1 u.1) ⟨w, ⟨rfl⟩⟩`. Rewrite `h4` using `[← h3, cmp_atFin]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem twist_stable (σ : E ≃ₐ[F] E) (hn : 0 < n) (SE : Finset (Pl E)) (U : ∀ w : Pl E, Subgroup (Gw n w))
     (hU : ∀ w, w ∉ SE → U w = GLnLocal.integralGL (w.adicCompletion E) n)
@@ -374,15 +372,13 @@ private theorem twist_stable (σ : E ≃ₐ[F] E) (hn : 0 < n) (SE : Finset (Pl 
 end Lev
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ h2 hσ n hn q w₀ S hqS hunr hsp U₀ hU₀ SE hSE`. Establish `hp : (Module.finrank F E).Prime` using `h2 ▸ Nat.prime_two`. Use `choose J c f UE UF k using level_at (n := n) σ hσ hp hn q S hqS hsp U₀ hU₀`. Establish `hu : ∀ (v : Pl F) (u : PlacesOver E v), u.1.under (𝓞 F) = v` using `fun v u => HeightOneSpectrum.ext u.2.over.symm`. Set `U : ∀ w : Pl E, Subgroup (Gw n w)` to `fun w => J (w.under (𝓞 F)) ⟨w, ⟨rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `eJ : ∀ v (u : PlacesOver E v), U u.1 = J v u`. Introduce and unpack `v ⟨w, hw⟩`. Take `rfl : w.under (𝓞 F) = v` from `hu v ⟨w, hw⟩`. Both sides reduce to the same expression. Establish `hoff : ∀ w, w ∉ SE → U w = GLnLocal.integralGL (w.adicCompletion E) n` using `fun w hw => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw'` using `mt (hSE w).2 hw`. Rewrite `hw'` using `[not_or]`. Conclude with `((k _).off hw'.1 hw'.2).2.2.2 ⟨w, ⟨rfl⟩⟩`. Establish `hm : ∀ (v : Pl F) g, g ∈ UE v ↔ ∀ u : PlacesOver E v, GM.cmp u g ∈ U u.1` using `fun v g => ((k v).mem g).trans (forall_congr' fun u => by rw [eJ])`. Establish `hs : ∀ (v : Pl F) (x : GL (Fin n) (CompletionsOver E v)), (∀ u : PlacesOver E v, GM.cmp u x ∈ U u.1) → ∀ u : PlacesOver E v, GM.cmp u (mapGL n (galFin σ v) x) ∈ U u.1` using `fun v x hx u => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eJ]`. Conclude with `(k v).stable x (fun u => by rw [← eJ]; exact hx u) u`. Take `⟨L, hS, hUE, hφ⟩` from `exists_loc σ q w₀ S hqS hunr U₀ J c f UE UF k`. Use `⟨L, U, hS, fun w => (k _).co ⟨w, ⟨rfl⟩⟩, fun w hw => ((k _).in_S hw).1 ⟨w, ⟨rfl⟩⟩, fun w hw => ((k _).at_q hw).2.2 ⟨w, ⟨rfl⟩⟩, ?_, fun v => ?_, fun μ _ θ hθ x hx => twist_stable σ hn SE U hoff hs hθ x hx⟩` and prove the remaining obligations. Rewrite using `[hUE]`.
-
-Conclude with `levE_eq SE U hoff UE hm`. Rewrite using `[hφ, hUE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.locSm :
     LocSm := by

@@ -34,17 +34,17 @@ namespace PositivityTheory.Xgn.A_s_blowupfibre
 open GroundTheory.Heights₂.Heights.NumbersDVR GroundTheory.Heights₂.Heights.FieldNumbers MvPolynomial
 
 /- English proof (translation)
-Establish `hLM : L ≤ M` using `fun z hz => by`. Take `⟨a, ha⟩` from `(hL z).mp hz`. Conclude with `(hM z).mpr ⟨_, ha⟩`. Set `τ' : B →+* (Subfield.extendScalars hLM)` to `τ.codRestrict (Subfield.extendScalars hLM) (fun b => (hM _).mpr ⟨b, rfl⟩)`. Set `σ : A →+* L` to `(τ.comp (algebraMap A B)).codRestrict L (fun a => (hL _).mpr ⟨a, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : Function.Surjective τ'`. Introduce and unpack `⟨z, hz⟩`. Take `⟨b, rfl⟩` from `(hM z).mp hz`. Conclude with `⟨b, rfl⟩`. Establish `hσ : Function.Surjective σ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz⟩`. Take `⟨a, rfl⟩` from `(hL z).mp hz`. Conclude with `⟨a, rfl⟩`. Establish `hk : 𝔫 = RingHom.ker τ'`. Use extensionality with `b`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h𝔫, RingHom.mem_ker, ← ZeroMemClass.coe_eq_zero]`. Both sides reduce to the same expression. Substitute `hk` using the available equality. Establish `: (RingHom.ker τ').IsMaximal` using `RingHom.ker_isMaximal_of_surjective τ' hτ`. Establish `: (RingHom.ker σ).IsMaximal` using `RingHom.ker_isMaximal_of_surjective σ hσ`.
+Both sides reduce to the same expression. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (RingHom.ker τ').LiesOver (RingHom.ker σ)` using `⟨by`. Use extensionality with `a`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, h𝔫, RingHom.mem_ker, ← ZeroMemClass.coe_eq_zero]`. Use the proof step `rfl⟩`. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal (RingHom.ker σ), Subfield.relfinrank_eq_finrank_of_le hLM]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `Algebra.finrank_eq_of_equiv_equiv (RingHom.quotientKerEquivOfSurjective hσ) (RingHom.quotientKerEquivOfSurjective hτ) ?_` and prove the remaining obligations. Use extensionality with `a`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inertiaDeg_eq_relfinrank {A B E : Type*} [CommRing A] [CommRing B] [Algebra A B] [Field E]
     (L M : Subfield E) (τ : B →+* E) (𝔫 : Ideal B) (h𝔫 : ∀ b, b ∈ 𝔫 ↔ τ b = 0)
@@ -82,13 +82,13 @@ theorem inertiaDeg_eq_relfinrank {A B E : Type*} [CommRing A] [CommRing B] [Alge
   rfl
 
 /- English proof (translation)
-Establish `hne : ∀ {g}, r g ≠ 0 → ev g ≠ 0` using `fun hg h => hg (hker _ h)`. Establish `hwd : ∀ {f g f' g'}, r g ≠ 0 → r g' ≠ 0 → ev f / ev g = ev f' / ev g' → r f / r g = r f' / r g'`. Introduce `f g f' g' hg hg' h`. Rewrite `h` using `[div_eq_div_iff (hne hg) (hne hg')]`. Rewrite using `[div_eq_div_iff hg hg', ← sub_eq_zero, ← map_mul, ← map_mul, ← map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hker` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, map_mul, h, sub_self]`. Use `choose nu de hde hrep using hΩ`. Establish `key : ∀ (x : Ω) f g, r g ≠ 0 → (x : F) = ev f / ev g → r (nu x.1 x.2) / r (de x.1 x.2) = r f / r g` using `fun x f g hg hx => hwd (hde _ _) hg ((hrep _ _).symm.trans hx)`. Use `⟨{ toFun := fun x => r (nu x.1 x.2) / r (de x.1 x.2) map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, key⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key 1 1 1 (by simp) (by simp)]; simp`. Introduce `x y`. Establish `hx` using `hde x.1 x.2`. Establish `hy` using `hde y.1 y.2`. Rewrite using `[key (x * y) (nu x.1 x.2 * nu y.1 y.2) (de x.1 x.2 * de y.1 y.2) (by rw [map_mul]; exact mul_ne_zero hx hy) (by rw [map_mul, map_mul, ← div_mul_div_comm, ← hrep, ← hrep]; rfl), map_mul, map_mul, div_mul_div_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key 0 0 1 (by simp) (by simp)]; simp`. Introduce `x y`. Establish `hx` using `hde x.1 x.2`. Establish `hy` using `hde y.1 y.2`. Rewrite using `[key (x + y) (nu x.1 x.2 * de y.1 y.2 + de x.1 x.2 * nu y.1 y.2) (de x.1 x.2 * de y.1 y.2) (by rw [map_mul]; exact mul_ne_zero hx hy) (by rw [map_add, map_mul, map_mul, map_mul, ← div_add_div _ _ (hne hx) (hne hy), ← hrep, ← hrep]; rfl), map_add, map_mul, map_mul, map_mul, div_ad …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_residue {S F E : Type*} [CommRing S] [Field F] [Field E] (ev : S →+* F) (r : S →+* E)
     (hker : ∀ s, ev s = 0 → r s = 0) (Ω : Subring F)
@@ -126,7 +126,7 @@ theorem exists_residue {S F E : Type*} [CommRing S] [Field F] [Field E] (ev : S 
         ← hrep]; rfl), map_add, map_mul, map_mul, map_mul, div_add_div _ _ hx hy]
 
 /- English proof (translation)
-Introduce `d hd`. Apply `hf` to reduce the goal to its premises. Introduce `h`. Apply `hd` to reduce the goal to its premises. Rewrite using `[coeff_map, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem homog_map {O k K : Type} [CommRing O] [CommRing k] [DecidableEq K] {ι : K → Type}
     (π : O →+* k) {f : MRing ι O} {b : K → ℕ} (hf : IsMultiHomog f b) :
@@ -138,9 +138,9 @@ theorem homog_map {O k K : Type} [CommRing O] [CommRing k] [DecidableEq K] {ι :
   rw [coeff_map, h, map_zero]
 
 /- English proof (translation)
-Take `⟨f₀, rfl⟩` from `MvPolynomial.map_surjective π hπ f`. Use `⟨weightedHomogeneousComponent (blockWeight ι) b f₀, weightedHomogeneousComponent_isWeightedHomogeneous _ _, ?_⟩` and prove the remaining obligations. Use extensionality with `d`. Rewrite using `[coeff_map, coeff_weightedHomogeneousComponent]`. Use `split_ifs with h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_map]`. Rewrite using `[map_zero]`. Assume the negation of the conclusion as `h0`. Conclude with `h (hf (Ne.symm h0))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_homog_lift {O k K : Type} [CommRing O] [CommRing k] [DecidableEq K] {ι : K → Type}
     (π : O →+* k) (hπ : Function.Surjective π) {f : MRing ι k} {b : K → ℕ} (hf : IsMultiHomog f b) :
@@ -160,29 +160,29 @@ theorem exists_homog_lift {O k K : Type} [CommRing O] [CommRing k] [DecidableEq 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hW : W.IsPrime`. Establish `: W = V.comap (MvPolynomial.map π)`. Use extensionality with `f`. Rewrite using `[Ideal.mem_comap, hV]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.comap_isPrime _ _`. Set `ev : MRing ι O →+* FractionRing (MRing ι O ⧸ P)` to `(algebraMap (MRing ι O ⧸ P) _).comp (Ideal.Quotient.mk P)`. Set `r : MRing ι O →+* FractionRing (MRing ι k ⧸ V)` to `((algebraMap (MRing ι k ⧸ V) _).comp (Ideal.Quotient.mk V)).comp (MvPolynomial.map π)`. Establish `hr : ∀ f, r f = 0 ↔ f ∈ W` using `fun f => by show algebraMap (MRing ι k ⧸ V) (FractionRing (MRing ι k ⧸ V)) (Ideal.Quotient.mk V (MvPolynomial.map π f)) = 0 ↔ _`. Rewrite using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem, hV]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ f, ev f = 0 ↔ f ∈ P` using `fun f => by show algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (Ideal.Quotient.mk P f) = 0 ↔ _`. Rewrite using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hmem` using `HomLocRingMem.proof O K ι P W hW hPW`. Establish `hunit` using `(HomLocRingIsLocal.proof HomLocRingMem.proof O K ι P W hW hPW).2`. Take `⟨ρ, hρ⟩` from `exists_residue ev r (fun s hs => (hr s).mpr (hPW ((hev s).mp hs))) (homLocRing P W) (fun z hz => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, f, g, -, -, hg, rfl⟩` from `(hmem z).mp hz`. Conclude with `⟨f, g, fun h => hg ((hr g).mp h), rfl⟩)`. Establish `hρ' : ∀ (x : homLocRing P W) (f g : MRing ι O), g ∉ W → (x : FractionRing (MRing ι O ⧸ P)) = ev f / ev g → ρ x = r f / r g` using `fun x f g hg hx => hρ x f g (fun h => hg ((hr g).mp h)) hx`. Establish `hu : ∀ x, ρ x ≠ 0 → IsUnit x`. Introduce and unpack `⟨x, hx⟩ h0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, f, g, hf, hg, hgW, rfl⟩` from `(hmem x).mp hx`. Rewrite using `[hunit b f g hf hg hgW hx]`. Introduce `hfW`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hρ' _ f g hgW rfl, (hr f).mpr hfW, zero_div]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ρ, hρ', hu, fun z => ⟨fun hz => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hgen : ∀ (b : K → ℕ) (f g : MRing ι k), IsMultiHomog f b → IsMultiHomog g b → g ∉ V → ∃ x, ρ x = algebraMap (MRing ι k ⧸ V) _ (Ideal.Quotient.mk V f) / algebraMap (MRing ι k ⧸ V) _ (Ideal.Quotient.mk V g)`. Introduce `b f g hf hg hgV`. Take `⟨f, hf', rfl⟩` from `exists_homog_lift π hπ hf`. Take `⟨g, hg', rfl⟩` from `exists_homog_lift π hπ hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgW : g ∉ W` using `fun h => hgV ((hV g).mpr h)`. Conclude with `⟨⟨_, (hmem _).mpr ⟨b, f, g, hf', hg', hgW, rfl⟩⟩, hρ' _ f g hgW rfl⟩`. Unfold `homFracDegZero at hz`. Proceed by induction on `hz using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, f, g, hf, hg, hgV, rfl⟩` from `hx`. Conclude with `hgen b f g hf hg hgV`. Consider the case `algebraMap c`. Take `⟨x, hx⟩` from `hgen 0 (C c) 1 (isWeightedHomogeneous_C _ _) (isWeightedHomogeneous_one _ _) ((Ideal.ne_top_iff_one V).mp Ideal.IsPrime.ne_top')`. Use `⟨x, hx.trans ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_one, map_one, div_one, IsScalarTower.algebraMap_apply k (MRing ι k ⧸ V), ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq]`. Consider the case `add x y _ _ hx hy`. Take `⟨x, rfl⟩` from `hx`. Take `⟨y, rfl⟩` from `hy`. Conclude with `⟨x + y, map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `inv x _ hx`. Take `⟨x, rfl⟩` from `hx`. Distinguish the cases in `h0 : ρ x = 0`. Conclude with `⟨0, by rw [h0, map_zero, inv_zero]⟩`. Take `⟨v, rfl⟩` from `hu x h0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨(v⁻¹ : _ˣ), by simp⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨x, rfl⟩` from `hx`. Take `⟨y, rfl⟩` from `hy`. Conclude with `⟨x * y, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨⟨x, hx⟩, rfl⟩`. Take `⟨b, f, g, hf, hg, hgW, rfl⟩` from `(hmem x).mp hx`. Rewrite using `[hρ' _ f g hgW rfl]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨b, _, _, homog_map π hf, homog_map π hg, fun h => hgW ((hV g).mp h), rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_residue_hom {O k K : Type} [CommRing O] [Field k] [DecidableEq K] {ι : K → Type}
     (π : O →+* k) (hπ : Function.Surjective π) (P W : Ideal (MRing ι O)) [P.IsPrime]
@@ -272,31 +272,31 @@ theorem exists_residue_hom {O k K : Type} [CommRing O] [Field k] [DecidableEq K]
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Set `_` to `(Subring.inclusion h).toAlgebra`. Use `h𝔫.isPrime` as an intermediate fact. Establish `: (blowUpOf P u).IsPrime` using `RingHom.ker_isPrime _`. Establish `hml : ∀ f : MRing ι O, (MvPolynomial.map π (liftForm (J` using `J) f) : MRing (extIdx ι J) k) = rename (blockIncl Function.Embedding.some (extIdx ι J)) (MvPolynomial.map π f) := fun f => MvPolynomial.map_rename _ _ _`. Set `V : Ideal (MRing ι k)` to `contractPrime Function.Embedding.some V'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: V.IsPrime` using `contractPrime.isPrime Function.Embedding.some V'`. Establish `hV : ∀ f : MRing ι O, MvPolynomial.map π f ∈ V ↔ f ∈ W` using `fun f => by`. Rewrite using `[← hW', Ideal.mem_comap, ← hV', hml]`. Both sides reduce to the same expression. Establish `hW : W.IsPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: W = V.comap (MvPolynomial.map π)`. Use extensionality with `f`. Rewrite using `[Ideal.mem_comap, hV]`. Rewrite using `[this]`. Conclude with `Ideal.comap_isPrime _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, hρu, hρr⟩` from `exists_residue_hom π hπ (blowUpOf P u) W' hbl V' hV'`. Take `⟨ρA, hρA, -, hρAr⟩` from `exists_residue_hom π hπ P W hPW V hV`. Take `⟨φ, hφ⟩` from `BlowUpLocRingIso.proof O K ι J P u W' hbl`. Set `ρ' : blowUpLocRing P u W' →+* FractionRing (MRing (extIdx ι J) k ⧸ V')` to `ρ.comp φ.symm.toRingHom`. Set `τ : blowUpOverLoc P W u →+* FractionRing (MRing (extIdx ι J) k ⧸ V')` to `ρ'.comp (algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u W'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : ∀ b, τ b = ρ' (algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u W') b)` using `fun _ => rfl`. Establish `hker : ∀ b, b ∈ 𝔫 ↔ τ b = 0`. Introduce `b`. Rewrite using `[← not_iff_not, ← Ideal.mem_primeCompl_iff, ← IsLocalization.AtPrime.isUnit_to_map_iff (blowUpLocRing P u W') 𝔫 b]`. Use `⟨fun hb => (hb.map ρ').ne_zero, fun hb => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hρu _ hb).map φ` as an intermediate fact. Simplify using `using this`. Use `inertiaDeg_eq_relfinrank _ _ τ 𝔫 hker (fun z => ?_) (fun z => ?_)` and prove the remaining obligations. Use `(hρr z).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨b, s⟩, hbs⟩` from `IsLocalization.surj 𝔫.primeCompl (φ y)`. Take `⟨t, m, hm, htm⟩` from `h𝔫.exists_inv s.2`. Use `⟨b * t, ?_⟩` and prove the remaining obligations. Establish `h1 : τ t * τ s = 1`. Rewrite using `[← map_mul, ← add_zero (τ _), ← (hker m).mp hm, ← map_add, htm, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ρ y * τ s = τ b`. Rewrite using `[hτ, hτ, ← hbs, map_mul]`. Use `congr 1`. Use `show _ = ρ (φ.symm (φ y))`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul, ← h2, mul_assoc, mul_comm (τ s), h1, mul_one]`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨_, rfl⟩`. Establish `hcomp : ∀ a : homLocRing P W, τ (algebraMap _ _ a) = contractFracMap Function.Embedding.some V' (ρA a)`. Introduce and unpack `⟨a, ha⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, f, g, hf, hg, hgW, rfl⟩` from `(HomLocRingMem.proof O K ι P W hW hPW a).mp ha`. Establish `hgl : liftForm (J` using `J) g ∉ W' := fun hm => hgW (by rw [← hW']; exact hm)`. Establish `h1` using `hφ (liftMDeg b) _ _ (isMultiHomog_liftForm hf) (isMultiHomog_liftForm hg) hgl`. Rewrite `h1` using `[blowUpEval_liftForm, blowUpEval_liftForm]`. Establish `h2 : φ.symm (algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u W') (algebraMap (homLocRing P W) (blowUpOverLoc P W u) ⟨_, ha⟩)) = ⟨_, Subring.subset_closure ⟨liftMDeg b, _, _, isMultiHomog_liftForm hf, isMultiHomog_liftForm hg, hgl, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `Subtype.ext h1.symm`. Establish `h3` using `congrArg (contractFracMap Function.Embedding.some V') (hρA ⟨_, ha⟩ f g hgW rfl)`. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations. Use `(congrArg ρ h2).trans ((hρ _ _ _ hgl rfl).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hml, hml, ← contractFracMap_algebraMap, ← contractFracMap_algebraMap, ← map_div₀]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨a, rfl⟩` from `(hρAr w).mp hw`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨a, hcomp a⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨ρA a, (hρAr _).mpr ⟨a, rfl⟩, (hcomp a).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem inertiaDeg_eq_relDeg {O k K : Type} [CommRing O] [Field k] [Fintype K] [DecidableEq K]
     {ι : K → Type} {J : Type}
@@ -384,7 +384,7 @@ theorem inertiaDeg_eq_relDeg {O k K : Type} [CommRing O] [Field k] [Fintype K] [
       exact ⟨ρA a, (hρAr _).mpr ⟨a, rfl⟩, (hcomp a).symm⟩
 
 /- English proof (translation)
-The claim follows from `HomLocRingLocal.proof (HomLocRingIsLocal.proof HomLocRingMem.proof) (HomLocRingNoetherian.proof HomLocRingMem.proof) (HomLocRingDimLe.proof HomLocRingMem.proof (HomLocRingIsLocal.proof HomLocRingMem.proof))`.
+A detailed English derivation is pending.
 -/
 theorem hloc : HomLocRingLocal.Statement.{0} :=
   HomLocRingLocal.proof (HomLocRingIsLocal.proof HomLocRingMem.proof)
@@ -392,40 +392,40 @@ theorem hloc : HomLocRingLocal.Statement.{0} :=
     (HomLocRingDimLe.proof HomLocRingMem.proof (HomLocRingIsLocal.proof HomLocRingMem.proof))
 
 /- English proof (translation)
-The claim follows from `BlowUpOverLocFinite.proof hloc BlowUpOverLocInChart.proof ChartsInColon.proof (BlowUpColonFinite.proof PowSpanFinrankBounded.proof PrincipalReductionOfBoundedGens.proof)`.
+A detailed English derivation is pending.
 -/
 theorem hfin : BlowUpOverLocFinite.Statement.{0} :=
   BlowUpOverLocFinite.proof hloc BlowUpOverLocInChart.proof ChartsInColon.proof
     (BlowUpColonFinite.proof PowSpanFinrankBounded.proof PrincipalReductionOfBoundedGens.proof)
 
 /- English proof (translation)
-The claim follows from `BlowUpOverLocFamilyFinite.proof BlowUpOverLocFibreFinite.proof`.
+A detailed English derivation is pending.
 -/
 theorem hfam : BlowUpOverLocFamilyFinite.Statement.{0} :=
   BlowUpOverLocFamilyFinite.proof BlowUpOverLocFibreFinite.proof
 
 /- English proof (translation)
-The claim follows from `BlowUpOverLocMaxCentre.proof BlowUpOverLocCentreDom.proof (BlowUpOverLocLocalization.proof hfam) hfin BlowUpLocRingIso.proof`.
+A detailed English derivation is pending.
 -/
 theorem hcen : BlowUpOverLocMaxCentre.Statement.{0} :=
   BlowUpOverLocMaxCentre.proof BlowUpOverLocCentreDom.proof
     (BlowUpOverLocLocalization.proof hfam) hfin BlowUpLocRingIso.proof
 
 /- English proof (translation)
-The claim follows from `BlowUpOverLocPointLoc.proof hfin hcen BlowUpLocRingInj.proof`.
+A detailed English derivation is pending.
 -/
 theorem hptloc : BlowUpOverLocPointLoc.Statement.{0} :=
   BlowUpOverLocPointLoc.proof hfin hcen BlowUpLocRingInj.proof
 
 /- English proof (translation)
-The claim follows from `BlowUpOverLocPointMax.proof hfin BlowUpLocRingIso.proof (BlowUpLocRingFrac.proof BlowUpLocRingIso.proof hfam MultiHomogPrimeAvoid.proof)`.
+A detailed English derivation is pending.
 -/
 theorem hptmax : BlowUpOverLocPointMax.Statement.{0} :=
   BlowUpOverLocPointMax.proof hfin BlowUpLocRingIso.proof
     (BlowUpLocRingFrac.proof BlowUpLocRingIso.proof hfam MultiHomogPrimeAvoid.proof)
 
 /- English proof (translation)
-The claim follows from `BlowUpFibreSemilocal.proof hloc (DivCycleHomLoc.proof hloc) BlowUpLocRingIso.proof hfin (BlowUpOverLocMax.proof (BlowUpOverLocMaxPoint.proof hcen (BlowUpOverLocFibreMinimal.proof hptloc BlowUpLocRingInj.proof) hdeg) hptmax BlowUpLocRingInj.proof)`.
+A detailed English derivation is pending.
 -/
 theorem of_deg (hdeg : BlowUpOverLocPointDeg.Statement.{0}) : BlowUpFibreSemilocal.Statement.{0} :=
   BlowUpFibreSemilocal.proof hloc (DivCycleHomLoc.proof hloc) BlowUpLocRingIso.proof hfin
@@ -435,11 +435,11 @@ theorem of_deg (hdeg : BlowUpOverLocPointDeg.Statement.{0}) : BlowUpFibreSemiloc
       hptmax BlowUpLocRingInj.proof)
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hϖW hWmin hWrel W' hW'min hW'rel hW'W`. Use `hP.multiProj.isPrime` as an intermediate fact. Take `⟨h, 𝔫, h𝔫, hl⟩` from `hptmax O ϖ hϖ K ι J P n hP N u hu hu' c x hx hxP W hϖW hWmin hWrel W' hW'min hW'rel hW'W`. Use `⟨h, 𝔫, h𝔫, hl, ?_⟩` and prove the remaining obligations. Establish `hϖW' : (C ϖ : MRing (extIdx ι J) O) ∈ W'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hϖW` using `[← hW'W, Ideal.mem_comap]`. Simplify `hϖW` using `[liftForm]`. Establish `hp : (specialIdeal W').IsPrime` using `(SpecialIdealCorresp.proof O ϖ hϖ (Option K) (extIdx ι J) W' W' hW'min.1.1 hϖW').1`. Rewrite using `[specialRelDeg, dif_pos hp]`. Use `inertiaDeg_eq_relDeg (IsLocalRing.residue O) IsLocalRing.residue_surjective P W (le_sup_left.trans hWmin.1.2) u W' (le_sup_left.trans hW'min.1.2) hW'W (specialIdeal W') (fun f => ?_) h 𝔫 h𝔫 hl` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Ideal.mem_comap, specialIdeal, Ideal.comap_map_of_surjective' _ (MvPolynomial.map_surjective _ IsLocalRing.residue_surjective), ker_map_residue_eq_span hϖ, sup_eq_left.mpr (by rwa [Ideal.span_le, Set.singleton_subset_iff])]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hdeg : BlowUpOverLocPointDeg.Statement.{0} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hϖW hWmin hWrel W' hW'min hW'rel hW'W
@@ -463,7 +463,7 @@ theorem hdeg : BlowUpOverLocPointDeg.Statement.{0} := by
 end PositivityTheory.Xgn.A_s_blowupfibre
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Xgn.A_s_blowupfibre.of_deg PositivityTheory.Xgn.A_s_blowupfibre.hdeg`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_s_blowupfibre : GroundTheory.Heights₂.Heights.NumbersDVR.BlowUpFibreSemilocal.Statement.{0} :=
   PositivityTheory.Xgn.A_s_blowupfibre.of_deg PositivityTheory.Xgn.A_s_blowupfibre.hdeg

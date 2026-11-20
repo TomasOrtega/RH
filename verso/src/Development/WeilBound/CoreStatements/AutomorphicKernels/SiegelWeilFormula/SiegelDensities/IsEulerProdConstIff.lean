@@ -8,9 +8,9 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureThe
 open scoped TensorProduct ENNReal NNReal
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, S₀, h3⟩`. Use `⟨h1, h2, S₀, fun S hS φinf φ hφi hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[h3 S hS φinf φ hφi hφ, lintegral_smul_measure, ENNReal.smul_def]`. Simplify using `only [ENNReal.coe_one, one_mul, smul_eq_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨h1, h2, S₀, h3⟩`. Use `⟨h1, h2, S₀, fun S hS φinf φ hφi hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[h3 S hS φinf φ hφi hφ, lintegral_smul_measure, ENNReal.smul_def]`. Simplify using `only [ENNReal.coe_one, one_mul, smul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

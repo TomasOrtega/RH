@@ -29,9 +29,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory.BlowEqv
 
 /- English proof (translation)
-Establish `key : ∀ i : Fin N, (Um.join x).1 (Fin.castSucc i) = x.2.1 0 * x.1.1 i`. Introduce `i`. Simplify using `[Um.join, Fin.snoc_castSucc]`. Rewrite using `[← Ideal.span_singleton_eq_top]`. Use `eq_top_iff.2 (le_trans (le_of_eq h.symm) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Rewrite using `[key]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem s_unit {N : ℕ} {A : Type} [CommRing A] (x : Um N A × Um 2 A)
     (h : Ideal.span ((Um.join x).1 '' Set.range Fin.castSucc) = ⊤) : IsUnit (x.2.1 0) := by
@@ -51,7 +51,7 @@ private def vec1 {A : Type} [CommRing A] (s : A) (h : IsUnit s) : Um 1 A :=
     exact Ideal.span_singleton_eq_top.2 h⟩
 
 /- English proof (translation)
-Establish `h` using `c.2`. Rewrite `h` using `[Set.range_unique]`. Conclude with `Ideal.span_singleton_eq_top.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unimodularRow_one_isUnit {A : Type} [CommRing A] (c : Um 1 A) : IsUnit (c.1 0) := by
   have h := c.2
@@ -59,11 +59,11 @@ private theorem unimodularRow_one_isUnit {A : Type} [CommRing A] (c : Um 1 A) : 
   exact Ideal.span_singleton_eq_top.1 h
 
 /- English proof (translation)
-Establish `h1` using `congrArg Subtype.val h`. Establish `hl : x.2.1 1 = y.2.1 1`. Use `congrFun h1 (Fin.last N)` as an intermediate fact. Simplify `this` using `[Um.join]`. Establish `hi : ∀ i, x.1.1 i = y.1.1 i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `i`. Use `congrFun h1 (Fin.castSucc i)` as an intermediate fact. Simplify using `only [Um.join, Fin.snoc_castSucc] at this`. Rewrite `this` using `[← hs]`. Conclude with `hu.mul_left_cancel this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext (Subtype.ext (funext hi)) (Subtype.ext (funext fun j => ?_))` and prove the remaining obligations. Use `Fin.cases hs (fun k => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero k]`. Conclude with `hl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem join_inj {N : ℕ} {A : Type} [CommRing A] {x y : Um N A × Um 2 A} (hs : x.2.1 0 = y.2.1 0)
     (hu : IsUnit (x.2.1 0)) (h : Um.join x = Um.join y) : x = y := by
@@ -83,11 +83,11 @@ private theorem join_inj {N : ℕ} {A : Type} [CommRing A] {x y : Um N A × Um 2
   exact hl
 
 /- English proof (translation)
-Use `⟨(⟨fun i => (↑u⁻¹ : A) * w.1 (Fin.castSucc i), ?_⟩, ⟨![(u : A), w.1 (Fin.last N)], ?_⟩), rfl, ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 (le_trans (le_of_eq hw.symm) ?_)` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Establish `e : w.1 (Fin.castSucc i) = (u : A) * ((↑u⁻¹ : A) * w.1 (Fin.castSucc i))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨0, rfl⟩) u.isUnit`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `[Um.join]`. Simplify using `[Um.join, Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem join_surj {N : ℕ} {A : Type} [CommRing A] (w : Um (N + 1) A)
     (hw : Ideal.span (w.1 '' Set.range Fin.castSucc) = ⊤) (u : Aˣ) :
@@ -136,13 +136,11 @@ private def sig (N : ℕ) (Q : Pred (XC (N + 1))) (hQ : Q.Le (Q2 N)) :
   eq A u x := Subtype.ext (funext fun _ => rfl)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Establish `e1 : Um.join x = Um.join y` using `congrArg Subtype.val h1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : x.2.1 0 = y.2.1 0` using `congrArg (fun c : Um 1 A => c.1 0) h2`. Conclude with `Subtype.ext (join_inj e2 (s_unit x (hQ A _ hx)) e1)`. Introduce and unpack `⟨⟨w, hw⟩, c⟩`. Take `⟨x, hx0, hxw⟩` from `join_surj w (hQ A w hw) (unimodularRow_one_isUnit c).unit`. Use `⟨⟨x, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Q.P A (Um.join x)`. Rewrite using `[hxw]`. Conclude with `hw`. Use `Prod.ext (Subtype.ext hxw) (Subtype.ext (funext fun i => ?_))` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
-
-Conclude with `hx0.trans (unimodularRow_one_isUnit c).unit_spec`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem pts_bij (N : ℕ) (Q : Pred (XC (N + 1))) (hQ : Q.Le (Q2 N)) (A : CommRingCat.{0}) :
     Function.Bijective (fun x : ((BC N).sub (Q.comap (βC N))).D.obj A =>
@@ -166,17 +164,17 @@ private theorem pts_bij (N : ℕ) (Q : Pred (XC (N + 1))) (hQ : Q.Le (Q2 N)) (A 
       exact hx0.trans (unimodularRow_one_isUnit c).unit_spec
 
 /- English proof (translation)
-Rewrite using `[mul_inv_rev, inv_inv, mul_comm c, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_ringHom_units_ratio {G : Type} [CommGroup G] (m c : G) : m * (m * c⁻¹)⁻¹ = c := by
   rw [mul_inv_rev, inv_inv, mul_comm c, mul_inv_cancel_left]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Express the relevant statement in the definitionally equal form `b = b' at h1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `b * a⁻¹ = b' * a'⁻¹ at h2`. Substitute `h1` using the available equality. Establish `e : a⁻¹ = a'⁻¹` using `mul_left_cancel h2`. Conclude with `Prod.ext (inv_injective e) rfl`. Introduce and unpack `⟨m, c⟩`.
+Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `m' : (↑A : Type)ˣ` to `m`. Set `c' : (↑A : Type)ˣ` to `c`. Use `⟨(show (↑A : Type)ˣ × (↑A : Type)ˣ from (m' * c'⁻¹, m')), ?_⟩` and prove the remaining obligations. Use `Prod.ext rfl ?_` and prove the remaining obligations. Conclude with `mul_ringHom_units_ratio m' c'`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem grp_bij (N : ℕ) (Q : Pred (XC (N + 1))) (hQ : Q.Le (Q2 N)) (A : CommRingCat.{0}) :
     Function.Bijective (fun g : ((BC N).sub (Q.comap (βC N))).G.obj A =>
@@ -199,9 +197,9 @@ private theorem grp_bij (N : ℕ) (Q : Pred (XC (N + 1))) (hQ : Q.Le (Q2 N)) (A 
     exact mul_ringHom_units_ratio m' c'
 
 /- English proof (translation)
-Take `rfl : d = fun _ => 0` from `funext hd`. Take `rfl : e = fun _ => 0` from `funext he`. Establish `hc' : c = fun _ => one q X` using `funext fun j => by`. Rewrite using `[hc j]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Substitute `hc'` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem lh_norm {q : ℕ} {X E : Spc} (π : X ⟶ E) {d e : Fin 1 → ℤ} (c : ∀ j, Ht q X (d j) (e j))
     (hd : ∀ j, d j = 0) (he : ∀ j, e j = 0) (hc : ∀ j, c j = (one q X).cast (hd j).symm (he j).symm)
@@ -218,11 +216,11 @@ end UpperTheory.BlowEqv
 
 open UpperTheory.BlowEqv in
 /- English proof (translation)
-Introduce `q _ N E Q i hQ hE`. Establish `invS : ∀ {X : Spc} (Z : Spc), Inv q X → Inv q (mulS X Z)` using `fun Z hX U ⟨x⟩ => hX U ⟨x.1⟩`. Establish `hF : Inv q (Sp E ((XC (N + 1)).sub Q))` using `invS _ hE`. Establish `hX : Inv q (Sp (Sp E ((XC (N + 1)).sub Q)) (XC 1))` using `invS _ hF`. Establish `hP : Pbf q (Sp E ((XC (N + 1)).sub Q)) 1` using `(UpperTheory.projBundleFormula_iff_pglForm q _ 1 hF).1 (UpperTheory.projectiveBundleFormula_rank_one_of_homotopyInvariant q _ hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Pbf at hP`. Establish `hL` using `lh_norm _ _ (fun j => by obtain rfl : j = 0 := Subsingleton.elim _ _; simp) (fun j => by obtain rfl : j = 0 := Subsingleton.elim _ _; simp) (fun j => by obtain rfl : j = 0 := Subsingleton.elim _ _; exact cpow_zero q _) hP`. Establish `hfst : ∀ i, Eqv (ZMod q) (Sp.fst (Sp E ((XC (N + 1)).sub Q)) (XC 1)) (tw q i)` using `(UpperTheory.lerayHirsch_one_iff_twist_equiv q _ hX).1 hL`. Establish `hiso` using `UpperTheory.isIso_stackProductPair_of_bijective E ((βC N).sub Q) (sig N Q hQ) (pts_bij N Q hQ) (grp_bij N Q hQ)`. Establish `hcomp : Sp.pair E ((βC N).sub Q) (sig N Q hQ) ≫ Sp.fst _ (XC 1) = Sp.map E ((βC N).sub Q)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[← hcomp]`. Take `⟨hiso', hcmp, -, -⟩` from `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Conclude with `(hcmp _ _ _ _ _).1 (hiso' _ _ _ hiso) (hfst i)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eqv_twist_blowupRestriction :
     ∀ (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (Q : Pred (XC (N + 1))) (i : ℤ), Q.Le (Q2 N) → Inv q E →

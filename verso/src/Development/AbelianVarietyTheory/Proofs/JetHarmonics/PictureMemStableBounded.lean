@@ -19,21 +19,19 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {P0 : M.Par} {T : D.LevTower P0.k P0.r Wp Wq} {j : Fin (P0.r + 1)}
 
 /- English proof (translation)
-Set `w : List C.Letter` to `[(true, Y)]`. Set `Fv : Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)` to `Pi.single (eS 0 b) F`. Establish `hFv : ∀ e, JC.NiceCoef (T.bs j) ε (Fv e)`. Introduce `e`. Distinguish the cases in `h : e = eS 0 b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify `hF` using `[Fv]`. Simplify using `only [Fv, Pi.single_eq_of_ne h]`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_zero`. Establish `hRv : ∀ e, BSR R (Fv e)`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Distinguish the cases in `h : e = eS 0 b`. Substitute `h` using the available equality. Simplify `hR` using `[Fv]`. Simplify using `only [Fv, Pi.single_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun g _ h0 => absurd rfl h0`. Set `xv : Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)` to `fun e => B.JF (T.bs j) (Fv e)`. Set `Φv : Ix (Fin w.length) → RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π'` to `Pi.single (eS 0 b) Φ`. Establish `hx : ∀ e, xv e ∈ FFl (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' 0 (OmPlus (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z')` using `fun e => Formalism.FourierDecayAlt.P.bessel_function_finite_class _ _ Wp Wq (T.bs j) (Fv e) ε hε (hFv e)`. Establish `hΦv : ∀ e, ∀ y ∈ DomR (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z', (Φv e : Fn (JC.parLev P0 j).k (JC.parLev P0 j).r (Wq →L[ℂ] Wp)) y.1 y.2 = resG (JC.parLev P0 j).k (JC.parLev P0 j).r (Fin.last _) (xv e) y.1 y.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e y hy`. Distinguish the cases in `h : e = eS 0 b`. Substitute `h` using the available equality. Use `hΦ y hy` as an intermediate fact. Simplify using `only [Φv, xv, Fv, Pi.single_eq_same]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Simplify using `only [Φv, xv, Fv, Pi.single_eq_of_ne h]`. Establish `h0` using `congrFun (congrFun (resG_JF_zero (T.bs j) (Fin.last (JC.parLev P0 j).r)) y.1) y.2`. Conclude with `h0.symm`. Use `⟨D.actOp (D.RRlev T (M.sgn P0 l0) j w) Fv (eS 0 a), (actOp_nice_bsr P0 T (M.sgn P0 l0) j w Fv hFv hRv (eS 0 a)).1, (actOp_nice_bsr P0 T (M.sgn P0 l0) j w Fv hFv hRv (eS 0 a)).2, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hact` using `Formalism.FourierDecayAlt.P.radial_module_action Wp Wq P0 T j X μ L st l0 hD w xv Φv hx hΦv (eS 0 a) y hy`. Establish `hbes` using `Formalism.FourierDecayAlt.P.bessel_module Wp Wq P0 T (M.sgn P0 l0) j w Fv ε hε hFv (eS 0 a) y hy`. Establish `e : P5.act (RRi L st 0 (D.positionted w)) Φv (eS 0 a) = (QQi L st 0 (Y : ℂ) a b).1 Φ` using `by show actP (RRw (QQi L st 0) [(⟨true, 0, (Y : ℂ)⟩ : Letter ℂ (Fin 1))]) (Pi.single (eS 0 b) Φ) (eS 0 a) = _`. Conclude with `blockMulVec_one_letter _ _ _ _ _ _`. Establish `e'` using `congrArg (fun Ψ : RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' => (Ψ : Fn (JC.parLev P0 j).k (JC.parLev P0 j).r (Wq →L[ℂ] Wp)) y.1 y.2) e`.
-
-Conclude with `e'.symm.trans (hact.trans hbes.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem entry_picture_bounded {X : ActualOps (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π'}
     {μ : MeasureTheory.Measure (Mt (JC.parLev P0 j).k (JC.parLev P0 j).r)}
@@ -106,13 +104,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
     Submodule ℂ (RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π')}
 
 /- English proof (translation)
-Introduce `m hm`. Establish `key : ∀ m ∈ Submonoid.closure (Gen L st Pts), ∀ (F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (Φ : RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π'), JC.NiceCoef (T.bs j) ε F → BSR R F → IsPic T j Φ F → ∃ F', JC.NiceCoef (T.bs j) ε F' ∧ BSR …`. Introduce `m hm`. Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `F Φ hF hR hΦ`. Take `⟨Y, _, i, i', rfl⟩` from `ha`. Conclude with `entry_picture_bounded hD hε hF hR Φ hΦ Y i i'`. Consider the case `one => intro F Φ hF hR hΦ`. Conclude with `⟨F, hF, hR, hΦ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul a b _ _ iha ihb`. Introduce `F Φ hF hR hΦ`. Take `⟨F1, h1, h1r, h1'⟩` from `ihb F Φ hF hR hΦ`. Take `⟨F2, h2, h2r, h2'⟩` from `iha F1 _ h1 h1r h1'`. Conclude with `⟨F2, h2, h2r, h2'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨F', hF', hR', hΦ'⟩` from `key m hm F Φ hF hR hΦ`. Take `⟨Ψ, hK, hΨ⟩` from `hJ F' ε R hε hF' hR'`. Establish `e : m.1 Φ = Ψ` using `radSp_ext _ Ψ (fun y hy => (hΦ' y hy).trans (hΨ y hy).symm)`. Rewrite using `[e]`. Conclude with `hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem picture_mem_stable_bounded (hD : IsData (JC.parLev P0 j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' X μ L st l0)
     (hJ : ∀ (F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (ε R : ℝ), 0 < ε → JC.NiceCoef (T.bs j) ε F → BSR R F →
@@ -146,49 +144,45 @@ theorem picture_mem_stable_bounded (hD : IsData (JC.parLev P0 j) (T.bs j).z (T.b
 end Cls
 
 /- English proof (translation)
-Introduce `hP Wp Wq _ _ _ _ _ _ P p j hj w ys hc1 hc2 hys`. Establish `hOK : P.OK` using `p.hP.1`. Take `⟨hl1, hlk, -⟩` from `p.hl`. Establish `hqpos` using `qw_pos P hOK p.l0 hl1 hlk w ys hc1 hc2`. Use `⟨fun y hy => (hqpos y hy).1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x x' hcx hcx'`. Take `⟨ε₁, hε₁, hx₁⟩` from `Formalism.FourierDecayAlt.P.PBL.nv_of_cv (Bs := p.T.bs j) (x := x) hcx`. Take `⟨ε₂, hε₂, hx₂⟩` from `Formalism.FourierDecayAlt.P.PBL.nv_of_cv (Bs := p.T.bs j) (x := x') hcx'`. Take `⟨ε, hε, hx, hx'⟩ : ∃ ε : ℝ, 0 < ε ∧ (∀ e, JC.NiceCoef (p.T.bs j) ε (x e)) ∧ (∀ e, JC.NiceCoef (p.T.bs j) ε (x' e))` from `⟨min ε₁ ε₂, lt_min hε₁ hε₂, Formalism.FourierDecayAlt.P.PBL.nv_mono hx₁ (min_le_left _ _), Formalism.FourierDecayAlt.P.PBL.nv_mono hx₂ (min_le_right _ _)⟩`. Use `choose Rx hRx using fun e => (cpt_nice_bsr (hcx e)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose Rx' hRx' using fun e => (cpt_nice_bsr (hcx' e)).2`. Set `jF : Fin (P.r + 1)` to `⟨j, by omega⟩`. Establish `hPl` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P p.T jF p.hP`. Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist _ _ _ _ _ _ _ hPl`. Take `⟨L, st, h1, h2, h3, h4, h5, h6⟩` from `Formalism.FourierDecayAlt.P.level_start_actual _ _ _ _ _ _ _ hPl X p.l0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨μ0, hμ0⟩` from `Formalism.FourierDecayAlt.P.JCTx5.exists_haar_level_zero (Nat.sub_self P.r) (p.T.bs P.r)`. Use `set μ := μ0.map (Formalism.FourierDecayAlt.P.JCTx5.embL P.k (P.r - j)) with hμ`. Establish `hD : IsData (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' X μ L st p.l0` using `⟨hPl, Formalism.FourierDecayAlt.P.JCTx5.haar_glev μ0 hμ0, h1, h2, h3, h4, h5, h6⟩`. Take `⟨K, hThm, -, -, hJ⟩` from `hP Wp Wq (Fin (KB.plusW ys w).length) (JC.parLev P jF) _ _ _ _ X μ L st p.l0 (p.T.bs jF) _ _ hD hl1 hlk rfl rfl rfl rfl le_rfl le_rfl`. Take `⟨Cst, hC, hform⟩` from `hRMF Wp Wq P p.T jF X μ L st p.l0 hD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hJ' : ∀ (F : B.Mat P.k (P.r - jF) → (Wq →L[ℂ] Wp)) (ε R : ℝ), 0 < ε → JC.NiceCoef (p.T.bs jF) ε F → BSR R F → ∃ Φ ∈ K 0, IsPic p.T jF Φ F` using `fun F ε R hε hF hR => pic_of_cptClause (p.T.bs jF) (K 0) hJ hε hF hR`. Use `choose Φ hΦK hΦ using fun a => hJ' (x a) ε (Rx a) hε (hx a) (hRx a)`. Use `choose Φ' hΦ'K hΦ' using fun a => hJ' (x' a) ε (Rx' a) hε (hx' a) (hRx' a)`. Set `Pts : Set ℝ` to `{Y | (∃ l ∈ KB.plusW ys w, l.2 = Y) ∨ (∃ l ∈ KB.minusW ys w, l.2 = Y)}`. Establish `hW1` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 (KB.plusW ys w) hc1.1 hc1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hW2` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 (KB.minusW ys w) hc2.1 hc2.2`. Establish `hPts : ∀ Y ∈ Pts, ∃ s0 : Fin (KB.plusW ys w).length, WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 [(⟨true, s0, (Y : ℂ)⟩ : Letter ℂ (Fin (KB.plusW ys w).length))]`. Introduce `Y hY`. Establish `hn : 0 < (KB.plusW ys w).length ∧ I.OnCut P.u P.u' p.l0 Y`. Break down `hY with ⟨l, hl, rfl⟩ | ⟨l, hl, rfl⟩` into its components or cases.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨List.length_pos_of_mem hl, cutWord_mem P hc1 hl⟩`. Conclude with `⟨by rw [← len_pm]; exact List.length_pos_of_mem hl, cutWord_mem P hc2 hl⟩`. Use `⟨⟨0, hn.1⟩, wordOK_gen (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 _ (by simp) (fun l hl => ⟨Y, by simp at hl; rw [hl], hn.2⟩) (by simp)⟩` and prove the remaining obligations. Establish `hΦU : ∀ e, Φ e ∈ Ucls (K 0) (Gen L st Pts)` using `fun e => picture_mem_stable_bounded hD hJ' Pts hε (hx e) (hRx e) (Φ e) (hΦ e)`. Establish `hΦ'U : ∀ e, Φ' e ∈ Ucls (K 0) (Gen L st Pts)` using `fun e => picture_mem_stable_bounded hD hJ' Pts hε (hx' e) (hRx' e) (Φ' e) (hΦ' e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS` using `isStart_QQi _ _ _ _ _ X μ L st p.l0 hD 0`. Establish `hle` using `Ucls_le (K 0) (Gen L st Pts)`. Establish `hU` using `(sesquilinear_level_zero_pairing hThm).mono hle`. Establish `hP1 : ∀ l ∈ Lw ys w ++ Ww ys w, ∃ Y ∈ Pts, l.pt = (Y : ℂ)`. Introduce `l hl`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hl` using `[Lw_append_Ww]`. Unfold `D.positionted at hl`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hl`. Conclude with `⟨((KB.plusW ys w).get a).2, Or.inl ⟨_, List.get_mem _ _, rfl⟩, rfl⟩`. Establish `hLmem : ∀ l ∈ Lw ys w, ∃ y ∈ ys, l.pt = (y : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `l hl`. Take `⟨i, hi, rfl⟩` from `List.getElem_of_mem hl`. Rewrite using `[Lw_getElem]`. Conclude with `⟨_, List.getElem_mem _, rfl⟩`. Establish `hP2 : ∀ l ∈ Lw ys w, ∃ Y ∈ Pts, l.pt + 1 = (Y : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l hl`. Take `⟨y, hy, e⟩` from `hLmem l hl`. Use `⟨y + 1, Or.inr ⟨(false, y + 1), ?_, rfl⟩, by rw [e]; push_cast; ring⟩` and prove the remaining obligations. Rewrite using `[minusW_eq]`. Conclude with `List.mem_append_left _ (List.mem_map.2 ⟨y, hy, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hOK1 : WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 (Lw ys w ++ Ww ys w)` using `by rw [Lw_append_Ww]; exact hW1`. Establish `hOK2 : WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 ((Lw ys w).map dl ++ Ww ys w)`. Rewrite using `[Lw_dual]`. Conclude with `cast_map_pred (len_pm ys w) (fun k u => WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 u) _ hW2`. Establish `hDK : FormPairingAction.DKHyp (M.qC (JC.parLev P jF)) (Ww ys w) (Lw ys w)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨Lw_plus ys w, good_of_adm st _ hOK1.1, good_of_adm st _ hOK2.1, Lw_pairwise w ys hys, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Take `⟨y, hy, e⟩` from `hLmem l hl`. Rewrite using `[e, qw_Ww]`. Introduce `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `(hqpos y hy).1` as an intermediate fact. Rewrite `this` using `[show qw (M.qC P) (D.positionted w) (y : ℂ) = qw (M.qC (JC.parLev P jF)) (D.positionted w) (y : ℂ) from rfl, h0]`. Simplify using `at this`. Establish `dk` using `dk_radial hD hThm Pts hPts (Ww ys w) (Lw ys w) hDK hOK1 hOK2 hP1 hP2 Φ (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) hΦU (fun e => hΦ'U _)`. Establish `hRRw : RRw (QQi L st 0) (D.positionted w) ∈ entSub (adjB (Ucls (K 0) (Gen L st Pts)) (bet μ) hU)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `rrw_mem_at _ _ fun l hl a b => ?_` and prove the remaining obligations. Unfold `D.positionted at hl`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hl`. Use `gen_mem_adjB hThm hS Pts hPts ⟨(w.get i).2, Or.inl ⟨w.get i, ?_, rfl⟩, a, b, rfl⟩` and prove the remaining obligations. Rewrite using `[plusW_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `List.mem_append_right _ (List.get_mem _ _)`. Establish `hodd` using `bet_neg (k := (JC.parLev P jF).k) (r := (JC.parLev P jF).r) (z := (p.T.bs jF).z) (z' := (p.T.bs jF).z') (π := (p.T.bs jF).π) (π' := (p.T.bs jF).π') μ`. Establish `hmn : w.length ≤ (KB.plusW ys w).length` using `by rw [len_plusW]; omega`. Establish `ePlus` using `hform (KB.plusW ys w) x x Φ Φ ε hε hx hx hΦ hΦ`. Establish `eMinus` using `hform (KB.minusW ys w) x' x' Φ' Φ' ε hε hx' hx' hΦ' hΦ'`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ePJ` using `pairJ_rel (w := w) (fun F Ψ => JC.NiceCoef (p.T.bs jF) ε F ∧ IsPic p.T jF Ψ F) (Cst : ℂ) (p.form j hj w) (fun u u' => form μ 0 (P5.act (RRi L st 0 (D.positionted w)) u) u' 0) (fun u u' v v' hu hu' => hform w u u' v v' ε hε (fun e => (hu e).1) (fun e => (hu' e).1) (fun e => (hu e) …`. Establish `eXi` using `pairJ_rel (w := w) (fun a b => a = b ∧ a ∈ Ucls (K 0) (Gen L st Pts)) (1 : ℂ) (fun u u' => form μ 0 (P5.act (RRi L st 0 (D.positionted w)) u) u' 0) (fun x x' => ∑ e, bet μ (actP (RRw (QQi L st 0) (D.positionted w)) x e) (x' e)) (fun u u' v v' hu hu' => by`. Establish `e1 : u = v` using `funext fun e => (hu e).1`. Establish `e2 : u' = v'` using `funext fun e => (hu' e).1`. Substitute `e1 e2` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[one_mul]`. Establish `hin : InU (Ucls (K 0) (Gen L st Pts)) (actP (RRw (QQi L st 0) (D.positionted w)) u)` using `blockMulVec_apply_mem (fun a b x hx => (hRRw a b).1 x hx) (fun e => (hu e).2)`. Conclude with `form_zero_eq_position_pairing_of_le hThm hmn _ _ (fun a => hle (hin a)) (fun a => hle (hu' a).2))`. Use `ys Φ Φ' Φ Φ' (fun e => ⟨rfl, hΦU e⟩) (fun e => ⟨rfl, hΦ'U e⟩)`. Establish `ePosition` using `position_pair (V := RadSp (JC.parLev P jF).k (JC.parLev P jF).r (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π') (bet μ) hodd (QQi L st 0) w ys Φ Φ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eA : form μ 0 (P5.act (RRi L st 0 (Lw ys w ++ Ww ys w)) Φ) Φ 0 = form μ 0 (P5.act (RRi L st 0 (D.positionted (KB.plusW ys w))) Φ) Φ 0` using `by rw [Lw_append_Ww]`. Establish `eB : form μ 0 (P5.act (RRi L st 0 ((Lw ys w).map dl ++ Ww ys w)) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0 = form μ 0 (P5.act (RRi L st 0 (D.positionted (KB.minusW ys w))) Φ') Φ' 0`. Rewrite using `[Lw_dual]`. Use `show form μ 0 (actP (RRw (QQi L st 0) ((D.positionted (KB.minusW ys w)).map (castL (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0 = _`. Establish `hc` using `blockMulVec_cast (QQi L st 0) (len_pm ys w) (D.positionted (KB.minusW ys w)) Φ'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg (fun V => form μ 0 V (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0) hc).trans (form_castIx μ (len_pm ys w) _ _ 0)`. Take `⟨hAi, -, hBi, -, hdk⟩` from `dk`. Establish `ePlus' : p.form j hj (KB.plusW ys w) x x = (Cst : ℂ) * form μ 0 (P5.act (RRi L st 0 (Lw ys w ++ Ww ys w)) Φ) Φ 0` using `ePlus.trans (congrArg _ eA.symm)`. Establish `eMinus' : p.form j hj (KB.minusW ys w) x' x' = (Cst : ℂ) * form μ 0 (P5.act (RRi L st 0 ((Lw ys w).map dl ++ Ww ys w)) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0` using `eMinus.trans (congrArg _ eB.symm)`. Establish `hPJ : KB.pairJ (p.form j hj w) ys x x' = (Cst : ℂ) * pairS (bet μ) (actP (JL (Lw ys w) * RRw (QQi L st 0) (Ww ys w)) Φ) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))` using `ePJ.trans (congrArg (fun t => (Cst : ℂ) * t) (eXi.trans ((one_mul _).trans ePosition.symm)))`.
-
-Establish `hQ : ((Lw ys w).map fun l => qw (M.qC (JC.parLev P jF)) (Ww ys w) l.pt).prod = (ys.map fun y : ℝ => qw (M.qC P) (D.positionted w) (y : ℂ)).prod` using `congrArg List.prod (Lw_qw _ ys w)`. Establish `hre : (ys.map fun y : ℝ => (qw (M.qC P) (D.positionted w) (y : ℂ)).re) = (ys.map fun y : ℝ => qw (M.qC P) (D.positionted w) (y : ℂ)).map Complex.re`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Rewrite using `[hPJ, ePlus', eMinus', hre]`.
-
-Use `final_ineq Cst _ _ _ _ _ hQ (fun z hz => ?_) hAi hBi hdk` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hz`. Conclude with `hqpos y hy`.
+A detailed English derivation is pending.
 -/
 theorem listDuality_cpt (hRMF : Formalism.FourierDecayAlt.JC.RadialModuleForm) : Formalism.FourierDecayAlt.KB.SizeStdCpt := by
   intro hP Wp Wq _ _ _ _ _ _ P p j hj w ys hc1 hc2 hys
@@ -344,7 +338,7 @@ theorem listDuality_cpt (hRMF : Formalism.FourierDecayAlt.JC.RadialModuleForm) :
   exact hqpos y hy
 
 /- English proof (translation)
-The claim follows from `listDuality_cpt (GlobalTheory.RadialModule.radialModuleForm_of_bessel h)`.
+A detailed English derivation is pending.
 -/
 theorem listDuality_cpt_of_bessel (h : GlobalTheory.HCXi.BesselXiIntegrable) : Formalism.FourierDecayAlt.KB.SizeStdCpt :=
   listDuality_cpt (GlobalTheory.RadialModule.radialModuleForm_of_bessel h)

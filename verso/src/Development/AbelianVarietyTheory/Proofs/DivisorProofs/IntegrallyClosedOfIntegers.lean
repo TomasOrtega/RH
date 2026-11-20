@@ -54,23 +54,23 @@ theorem appendEquiv_symm_apply {m n : ℕ} (z : Fin (m + n) → R) :
   rfl
 
 /- English proof (translation)
-The claim follows from `((appendEquiv R m n).map_eq_zero_iff (x := (x, y))).trans Prod.mk_eq_zero`.
+A detailed English derivation is pending.
 -/
 theorem append_eq_zero_iff {m n : ℕ} (x : Fin m → R) (y : Fin n → R) :
     Fin.append x y = 0 ↔ x = 0 ∧ y = 0 :=
   ((appendEquiv R m n).map_eq_zero_iff (x := (x, y))).trans Prod.mk_eq_zero
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; refine Fin.addCases (fun i => ?_) (fun j => ?_) i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comp_append {α β : Type*} {m n : ℕ} (f : α → β) (x : Fin m → α) (y : Fin n → α) :
     (fun i => f (Fin.append x y i)) = Fin.append (fun i => f (x i)) (fun j => f (y j)) := by
   funext i; refine Fin.addCases (fun i => ?_) (fun j => ?_) i <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) k` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Establish `hne : Fin.natAdd m j ≠ Fin.castAdd n i` using `fun h' => by`. Establish `h''` using `congrArg Fin.val h'`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at h''`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[Pi.single_apply, hne]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem single_castAdd {m n : ℕ} (i : Fin m) :
     (Pi.single (Fin.castAdd n i) 1 : Fin (m + n) → R) = Fin.append (Pi.single i 1) 0 := by
@@ -85,9 +85,9 @@ theorem single_castAdd {m n : ℕ} (i : Fin m) :
     simp [Pi.single_apply, hne]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) k` and prove the remaining obligations. Establish `hne : Fin.castAdd n i ≠ Fin.natAdd m j` using `fun h' => by`. Establish `h''` using `congrArg Fin.val h'`. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at h''`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[Pi.single_apply, hne]`. Simplify using `[Pi.single_apply]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_natAdd {m n : ℕ} (j : Fin n) :
     (Pi.single (Fin.natAdd m j) 1 : Fin (m + n) → R) = Fin.append 0 (Pi.single j 1) := by
@@ -115,7 +115,7 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {G G₁ G₂ : PDivGro
 include i₁ i₂ in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨splitEquiv (tateMap G₁ G O i₁) (tateMap G₂ G O i₂) (tateMap G G₁ O q₁) (tateMap G G₂ O q₂) (fun x => by rw [← tateMap_comp, h₁, tateMap_id]) (fun x => by rw [← tateMap_comp, h₂, tateMap_id]) (fun x => by rw [← tateMap_comp, h₁₂, map_zero, LinearMap.zero_apply]) (fun x => by rw [ …`.
+Supply the required witnesses or components.
 -/
 theorem exists_tateSplit (h₁ : i₁ ≫ q₁ = 𝟙 _) (h₂ : i₂ ≫ q₂ = 𝟙 _) (h₁₂ : i₁ ≫ q₂ = 0)
     (h₂₁ : i₂ ≫ q₁ = 0) (h : q₁ ≫ i₁ + q₂ ≫ i₂ = 𝟙 _) :
@@ -135,7 +135,7 @@ theorem exists_tateSplit (h₁ : i₁ ≫ q₁ = 𝟙 _) (h₂ : i₂ ≫ q₂ =
 include i₁ i₂ in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨splitEquiv (lieMap G₁ G i₁) (lieMap G₂ G i₂) (lieMap G G₁ q₁) (lieMap G G₂ q₂) (fun x => by have := LinearMap.congr_fun (lieMap_comp i₁ q₁) x rw [h₁, lieMap_id] at this; exact this.symm) (fun x => by have := LinearMap.congr_fun (lieMap_comp i₂ q₂) x rw [h₂, lieMap_id] at this; e …`.
+Supply the required witnesses or components.
 -/
 theorem exists_lieSplit (h₁ : i₁ ≫ q₁ = 𝟙 _) (h₂ : i₂ ≫ q₂ = 𝟙 _) (h₁₂ : i₁ ≫ q₂ = 0)
     (h₂₁ : i₂ ≫ q₁ = 0) (h : q₁ ≫ i₁ + q₂ ≫ i₂ = 𝟙 _) :
@@ -161,7 +161,7 @@ theorem exists_lieSplit (h₁ : i₁ ≫ q₁ = 𝟙 _) (h₂ : i₂ ≫ q₂ = 
 include i₁ i₂ in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨splitEquiv (omegaDualMap G₁ G i₁) (omegaDualMap G₂ G i₂) (omegaDualMap G G₁ q₁) (omegaDualMap G G₂ q₂) (fun x => by have := LinearMap.congr_fun (omegaDualMap_comp i₁ q₁) x rw [h₁, omegaDualMap_id] at this; exact this.symm) (fun x => by have := LinearMap.congr_fun (omegaDualMap_c …`.
+Supply the required witnesses or components.
 -/
 theorem exists_omegaDualSplit (h₁ : i₁ ≫ q₁ = 𝟙 _) (h₂ : i₂ ≫ q₂ = 𝟙 _) (h₁₂ : i₁ ≫ q₂ = 0)
     (h₂₁ : i₂ ≫ q₁ = 0) (h : q₁ ≫ i₁ + q₂ ≫ i₂ = 𝟙 _) :
@@ -195,14 +195,14 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   {D : Datum ε (h₁ + h₂) ℤ_[p]} {D₁ : Datum ε h₁ ℤ_[p]} {D₂ : Datum ε h₂ ℤ_[p]}
 
 /- English proof (translation)
-Simplify using `only [Datum.Fil, LinearMap.mem_ker, hb, append_eq_zero_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem append_mem_fil_iff (hb : ∀ x y, D.bb (Fin.append x y) = Fin.append (D₁.bb x) (D₂.bb y))
     (x : Fin h₁ → O) (y : Fin h₂ → O) : Fin.append x y ∈ D.Fil ↔ x ∈ D₁.Fil ∧ y ∈ D₂.Fil := by
   simp only [Datum.Fil, LinearMap.mem_ker, hb, append_eq_zero_iff]
 
 /- English proof (translation)
-The claim follows from `(append_mem_fil_iff hb _ _).1 (by rwa [Fin.append_castAdd_natAdd])`.
+A detailed English derivation is pending.
 -/
 theorem split_mem_fil (hb : ∀ x y, D.bb (Fin.append x y) = Fin.append (D₁.bb x) (D₂.bb y))
     (z : Fin (h₁ + h₂) → O) (hz : z ∈ D.Fil) :
@@ -210,7 +210,7 @@ theorem split_mem_fil (hb : ∀ x y, D.bb (Fin.append x y) = Fin.append (D₁.bb
   (append_mem_fil_iff hb _ _).1 (by rwa [Fin.append_castAdd_natAdd])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun z => (⟨_, (split_mem_fil hb z.1 z.2).1⟩, ⟨_, (split_mem_fil hb z.1 z.2).2⟩) invFun := fun w => ⟨Fin.append w.1.1 w.2.1, (append_mem_fil_iff hb _ _).2 ⟨w.1.2, w.2.2⟩⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun z => Subtype.ext Fin.append …`.
+Supply the required witnesses or components.
 -/
 theorem exists_filSplit (hb : ∀ x y, D.bb (Fin.append x y) = Fin.append (D₁.bb x) (D₂.bb y)) :
     ∃ F : D.Fil ≃ₗ[O] D₁.Fil × D₂.Fil,
@@ -228,11 +228,11 @@ def quotProj : (Fin (h₁ + h₂) → O) →ₗ[O] ((Fin h₁ → O) ⧸ D₁.Fi
   (D₁.Fil.mkQ.prodMap D₂.Fil.mkQ) ∘ₗ (appendEquiv O h₁ h₂).symm.toLinearMap
 
 /- English proof (translation)
-Establish `hker : D.Fil = LinearMap.ker (quotProj D₁ D₂)`. Use extensionality with `z`. Rewrite using `[LinearMap.mem_ker]`. Use `conv_lhs => rw [← Fin.append_castAdd_natAdd (f := z)]`. Rewrite using `[append_mem_fil_iff hb]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[quotProj, appendEquiv_symm_apply, Submodule.Quotient.mk_eq_zero]`. Establish `hs : Function.Surjective (quotProj D₁ D₂)`. Introduce and unpack `⟨u, v⟩`. Take `⟨a, rfl⟩` from `D₁.Fil.mkQ_surjective u`. Take `⟨b, rfl⟩` from `D₂.Fil.mkQ_surjective v`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Fin.append a b, by simp [quotProj, appendEquiv_symm_apply]⟩`. Conclude with `⟨(D.Fil.quotEquivOfEq _ hker).trans ((quotProj D₁ D₂).quotKerEquivOfSurjective hs), fun z => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_quotSplit (hb : ∀ x y, D.bb (Fin.append x y) = Fin.append (D₁.bb x) (D₂.bb y)) :
     ∃ Q : ((Fin (h₁ + h₂) → O) ⧸ D.Fil) ≃ₗ[O] ((Fin h₁ → O) ⧸ D₁.Fil) × ((Fin h₂ → O) ⧸ D₂.Fil),
@@ -253,9 +253,7 @@ theorem exists_quotSplit (hb : ∀ x y, D.bb (Fin.append x y) = Fin.append (D₁
     fun z => rfl⟩
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `Q.surjective u`. Take `⟨z, rfl⟩` from `D.Fil.mkQ_surjective q`. Rewrite using `[LinearEquiv.symm_apply_apply, hQ]`. Simplify using `only [bQuot, Submodule.mkQ_apply, Submodule.liftQ_apply]`. Use `conv_lhs => rw [← Fin.append_castAdd_natAdd (f := z)]`.
-
-Conclude with `hb _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bQuot_symm (hb : ∀ x y, D.bb (Fin.append x y) = Fin.append (D₁.bb x) (D₂.bb y))
     (Q : ((Fin (h₁ + h₂) → O) ⧸ D.Fil) ≃ₗ[O] ((Fin h₁ → O) ⧸ D₁.Fil) × ((Fin h₂ → O) ⧸ D₂.Fil))
@@ -282,9 +280,9 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   (hε : IsPrimitiveSystem ε) {h₁ h₂ : ℕ} {G G₁ G₂ : PDivGroup p O}
 
 /- English proof (translation)
-Establish `hp1 : ∀ i : Fin h₁, epsPairing hε G (e.symm (Pi.single (Fin.castAdd h₂ i) 1)) χ = epsPairing hε G₁ (e₁.symm (Pi.single i 1)) (tateMap _ _ O (dualHom G₁ G i₁) χ)`. Introduce `i`. Rewrite using `[single_castAdd, he]`. Simplify using `[epsPairing, pairing_tateMap]`. Establish `hp2 : ∀ j : Fin h₂, epsPairing hε G (e.symm (Pi.single (Fin.natAdd h₁ j) 1)) χ = epsPairing hε G₂ (e₂.symm (Pi.single j 1)) (tateMap _ _ O (dualHom G₂ G i₂) χ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[single_natAdd, he]`. Simplify using `[epsPairing, pairing_tateMap]`. Simplify using `only [pairingO, Fin.sum_univ_add, Fin.append_left, Fin.append_right, hp1, hp2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pairingO_append (i₁ : G₁ ⟶ G) (i₂ : G₂ ⟶ G)
     (e : G.Tate ≃ₗ[ℤ_[p]] (Fin (h₁ + h₂) → ℤ_[p])) (e₁ : G₁.Tate ≃ₗ[ℤ_[p]] (Fin h₁ → ℤ_[p]))
@@ -314,7 +312,7 @@ end GlobalTheory.SumDatum
 namespace GlobalTheory.SumDatum
 
 /- English proof (translation)
-The claim follows from `isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun h => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem integrallyClosed_of_integers {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
     [CommRing O] [Algebra O C] (hv : v.Integers O) : IsIntegrallyClosedIn O C :=
@@ -322,19 +320,17 @@ theorem integrallyClosed_of_integers {C : Type} [Field C] {v : Valuation C NNRea
     (hv.isIntegral_iff_v_le_one.1 h)⟩
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G G₁ G₂ ⟨i₁, i₂, q₁, q₂, h₁, h₂, h₁₂, h₂₁, h⟩ ⟨D₁, e₁, fil₁, lie₁, hal₁, hb₁⟩ ⟨D₂, e₂, fil₂, lie₂, hal₂, hb₂⟩`. Use `haveI := integrallyClosed_of_integers hv`. Take `⟨D, hal, hbb⟩` from `GlobalTheory.T.exists_ainfSandwichDatum_blockSum p C v O hv ε hε _ _ D₁ D₂`. Take `⟨T, hT, hTs⟩` from `exists_tateSplit i₁ i₂ q₁ q₂ h₁ h₂ h₁₂ h₂₁ h`. Take `⟨L, hL⟩` from `exists_lieSplit i₁ i₂ q₁ q₂ h₁ h₂ h₁₂ h₂₁ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW⟩` from `exists_omegaDualSplit i₁ i₂ q₁ q₂ h₁ h₂ h₁₂ h₂₁ h`. Take `⟨F, hF⟩` from `exists_filSplit hbb`. Take `⟨Q, hQ⟩` from `exists_quotSplit hbb`. Set `e : G.Tate ≃ₗ[ℤ_[p]] (Fin (G₁.height + G₂.height) → ℤ_[p])` to `T ≪≫ₗ e₁.prodCongr e₂ ≪≫ₗ appendEquiv ℤ_[p] _ _`. Establish `he : ∀ t, e t = Fin.append (e₁ (tateMap G G₁ O q₁ t)) (e₂ (tateMap G G₂ O q₂ t))` using `fun t => by simp [e, hT, appendEquiv_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hes : ∀ a b, e.symm (Fin.append a b) = tateMap G₁ G O i₁ (e₁.symm a) + tateMap G₂ G O i₂ (e₂.symm b)` using `fun a b => by`. Establish `: (appendEquiv ℤ_[p] G₁.height G₂.height).symm (Fin.append a b) = (a, b)` using `(appendEquiv ℤ_[p] G₁.height G₂.height).symm_apply_apply (a, b)`. Simplify using `[e, this, hTs]`. Establish `hh : G.height = G₁.height + G₂.height`. Rewrite using `[← G.finrank_tate C, e.finrank_eq, Module.finrank_fin_fun]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∃ (D : Datum ε (G₁.height + G₂.height) ℤ_[p]) (e : G.Tate ≃ₗ[ℤ_[p]] (Fin (G₁.height + G₂.height) → ℤ_[p])) (fil : G.dual.omega ≃ₗ[O] D.Fil) (lie : ((Fin (G₁.height + G₂.height) → O) ⧸ D.Fil) ≃ₗ[O] G.Lie), (∀ t, D.al (toO e t) = (fil (hodgeTate G t) : Fin (G₁.height + G₂.hei …`. Use `⟨D, e, W ≪≫ₗ fil₁.prodCongr fil₂ ≪≫ₗ F.symm, Q ≪≫ₗ lie₁.prodCongr lie₂ ≪≫ₗ L.symm, fun t => ?_, fun x χ => ?_⟩` and prove the remaining obligations. Establish `ht : toO e t = Fin.append (toO e₁ (tateMap G G₁ O q₁ t)) (toO e₂ (tateMap G G₂ O q₂ t))` using `by show (fun i => padicToO p O (e t i)) = _`. Rewrite using `[he]`. Conclude with `comp_append _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, hal, hal₁, hal₂, hodgeTate_tateMap, hodgeTate_tateMap]`. Use `show _ = ((F.symm ((fil₁.prodCongr fil₂) (W (hodgeTate G t))) : D.Fil) : Fin (G₁.height + G₂.height) → O)`. Rewrite using `[hW, LinearEquiv.prodCongr_apply, hF]`. Establish `hx : (Q ≪≫ₗ lie₁.prodCongr lie₂ ≪≫ₗ L.symm).symm x = Q.symm (lie₁.symm (lieMap G G₁ q₁ x), lie₂.symm (lieMap G G₂ q₂ x))`. Simplify using `[hL]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hx, bQuot_symm hbb Q hQ, pairingO_append hε i₁ i₂ e e₁ e₂ hes, hb₁, hb₂, lieMap_apply, lieMap_apply, dlog_tateMap, dlog_tateMap, ← map_add]`. Establish `hw` using `LinearMap.congr_fun (congrArg (omegaMap G G) h) (dlog G χ)`. Rewrite `hw` using `[map_add, omegaMap_comp, omegaMap_comp, omegaMap_id]`. Conclude with `congrArg x hw`. Unfold `HasDatum`.
-
-Rewrite using `[hh]`. Conclude with `key`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDatum_of_isSum : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C]

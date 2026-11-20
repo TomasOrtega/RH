@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.Mum.TensAct
 
 /- English proof (translation)
-Use `letI := D.P.isAb.comm`. Simplify using `only [TensTor.cmp, GlobalTheory.Relabel.actV, MulEquiv.apply_symm_apply, Category.assoc, hact.2 x i]`. Set `P : (D'.P.A ⟶ D.P.A) →* (TF (R` to `R) F ⟶ D.P.A) := { toFun := fun f => ν'.eA b ≫ f map_one' := by simp [Hom.one_def] map_mul' := fun f g => MonObj.comp_mul _ _ _ }`. Use `map_prod (ν.eA.symm.toMonoidHom.comp P) (fun j => T.pr j ^ ρ x i j) Finset.univ` as an intermediate fact. Simplify using `only [map_zpow] at this`.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem cmp_actV {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     (T : Tens D D' W) {F : Type} [Field F] [Algebra (FractionRing R) F] {N N' : NumD F} (ν : NumOf D F N)
@@ -50,9 +50,9 @@ variable {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {W : Matrix (Fin r) (Fin
   {φ : N'.A → Fin r → N.A} {e : N'.X → Fin r → N.X} {wv : N'.A → F}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.T.exists_tensorTorusPoint_of_componentTuple F N N' W φ e wv hF 1`. Establish `h2` using `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv hF u u 1 1 hu hu`. Rewrite `h2` using `[_root_.mul_one]`. Establish `h3 : u * u = u` using `GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W φ e wv hF _ _ _ h2 hu`. Rewrite `h3` using `[_root_.mul_eq_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3 ▸ hu`.
+A detailed English derivation is pending.
 -/
 theorem rel_one (hF : TensFacts W φ e wv) : GtRelV W φ e wv 1 1 := by
   obtain ⟨u, hu⟩ := GlobalTheory.T.exists_tensorTorusPoint_of_componentTuple F N N' W φ e wv hF 1
@@ -63,7 +63,7 @@ theorem rel_one (hF : TensFacts W φ e wv) : GtRelV W φ e wv 1 1 := by
   exact h3 ▸ hu
 
 /- English proof (translation)
-The claim follows from `| 0 => by simpa using rel_one hF | m + 1 => by rw [_root_.pow_succ, _root_.pow_succ] exact GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv hF _ _ _ _ (rel_pow hF h m) h`.
+A detailed English derivation is pending.
 -/
 theorem rel_pow (hF : TensFacts W φ e wv) {v' : N'.Gt} {vs : Fin r → N.Gt} (h : GtRelV W φ e wv v' vs) :
     ∀ m : ℕ, GtRelV W φ e wv (v' ^ m) (vs ^ m)
@@ -75,9 +75,9 @@ theorem rel_pow (hF : TensFacts W φ e wv) {v' : N'.Gt} {vs : Fin r → N.Gt} (h
 end V
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.sum_insert hk, Finset.prod_insert hk, N.io_add, ih]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `N.ioHom.map_zpow (Multiplicative.ofAdd (y k)) (m k)` as an intermediate fact. Simplify `this` using `[← ofAdd_zsmul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem io_sum {O : Type} [CommRing O] (N : NumD O) {κ : Type} (s : Finset κ) (m : κ → ℤ) (y : κ → N.X) :
     N.io (∑ j ∈ s, m j • y j) = ∏ j ∈ s, N.io (y j) ^ m j := by
@@ -95,9 +95,9 @@ def qTH {O : Type} [CommRing O] (N : NumD O) (k : ℕ) : Multiplicative N.X →*
     (by simp [NumD.qTriv, smul_add, ofAdd_add]) (by simp [NumD.qTriv, N.io_add]))
 
 /- English proof (translation)
-Rewrite using `[N.qEq_iff, QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨Multiplicative.ofAdd z, by simp [qTH]⟩`. Introduce and unpack `⟨z, hz⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨z.toAdd, ?_⟩` and prove the remaining obligations. Establish `: N.qTriv k z.toAdd = p⁻¹ * p'` using `hz`. Rewrite using `[this, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem qEq_iff_mk {O : Type} [CommRing O] (N : NumD O) {k : ℕ} (p p' : N.QT k) :
     N.QEq p p' ↔ (p : N.QT k ⧸ (qTH N k).range) = p' := by
@@ -114,45 +114,41 @@ end GlobalTheory.Mum.TensAct
 
 open GlobalTheory.Mum.TensAct in
 /- English proof (translation)
-Introduce `R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' E _ _ _ H ρ hρ _ o hact g ev hadd hker n hn x a p' q' hp hq`. Use `letI := H.starRing`. Establish `hF` using `GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν'`. Establish `hB` using `GtValues.points_correspond R D.toPre D.psi_even D.tau_bimult F N ν`. Establish `hB'` using `GtValues.points_correspond R D'.toPre D'.psi_even D'.tau_bimult F N' ν'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce at hB hB'`. Take `⟨q0, qs, hq0, hqs, hrel0⟩` from `hp`. Take `⟨q1, qs1, hq1, hqs1, hrel1⟩` from `hq`. Take `⟨ρ', hρ'⟩` from `(GlobalTheory.Relabel.gtAct_values GlobalTheory.globalFns_holds R D'.toPre F N' ν' (𝓞 E)).1 o.onB x`. Set `us : Fin r → N.QT n` to `fun i => ∏ j, qs j ^ ρ x i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ts : Fin r → N.Gt` to `fun i => ∏ j, (qs j).1.2 ^ ρ x i j`. Establish `hts : ∀ i, (us i).1.2 = ts i` using `fun i => by show ((MonoidHom.snd _ _).comp (N.QT n).subtype) (∏ j, qs j ^ ρ x i j) = ∏ j, (qs j).1.2 ^ ρ x i j`. Rewrite using `[map_prod]`. Simplify using `only [map_zpow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `husy : ∀ i, (us i).1.1.toAdd = ∑ j, ρ x i j • (qs j).1.1.toAdd` using `fun i => by show Multiplicative.toAdd (((MonoidHom.fst _ _).comp (N.QT n).subtype) (∏ j, qs j ^ ρ x i j)) = _`. Rewrite using `[map_prod, toAdd_prod]`. Simplify using `only [map_zpow, toAdd_zpow]`. Both sides reduce to the same expression. Take `⟨w', hw'⟩` from `GlobalTheory.T.exists_tensorTorusPoint_of_componentTuple F N N' W _ _ _ hF ts`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : w'.b = GlobalTheory.Relabel.actV ν' o.onB x q0.1.2.b`. Apply `hF.2.1.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[cmp_actV T ν ν' ρ o hact x _ i, hw'.1 i]`. Simplify using `only [ts]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← NumD.projB_apply, map_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, NumD.projB_apply, hrel0.2.1 j]`. Establish `hros` using `GlobalTheory.T.rosati_values_tensor_data_matrix_action R hR D D' W T F N N' ν ν' E H ρ hρ o hact x ρ' hρ' q0.1.2 w' (fun j => (qs j).1.2) hrel0.2 hw'`. Use `set y'' : N'.X := ν'.eX.symm (x • p'.y) with hy''`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hey : ∀ i, TensTor.chi T ν ν' y'' i = (us i).1.1.toAdd` using `fun i => by`. Rewrite using `[husy i]`. Establish `h1 : ν'.eX y'' = x • p'.y` using `by rw [hy'', AddEquiv.apply_symm_apply]`. Simplify using `only [TensTor.chi, h1, hact.1 x p'.y i, map_sum, map_zsmul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hrel0.1 j, ← hq0.1]`. Both sides reduce to the same expression. Establish `hwn : w' ^ n = N'.io y''`. Establish `hpow` using `rel_pow hF hw' n`. Establish `hio` using `GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W _ _ _ hF y''`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ts ^ n = fun j => N.io (TensTor.chi T ν ν' y'' j)` using `funext fun i => by`. Rewrite using `[hey i, husy i, io_sum]`. Simplify using `only [Pi.pow_apply, ts, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← (qs j).2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← zpow_natCast, ← zpow_natCast ((qs j).1.2), ← zpow_mul, ← zpow_mul, mul_comm]`. Rewrite `hpow` using `[e1]`. Conclude with `GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W _ _ _ hF _ _ _ hpow hio`. Set `tv : N'.QT n` to `⟨(Multiplicative.ofAdd y'', w'), by rw [NumD.mem_QT]; exact hwn⟩`. Take `⟨t', ht'⟩` from `(hB'.2.2.2.2 n).2.1 tv`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ b, ∃ c, ν.QPt (ev n b) c` using `fun b => ((hB.2.2.2.2 n).1 (ev n b)).exists`. Use `choose qv hqv using hex`. Establish `huniq : ∀ b c, ν.QPt (ev n b) c → c = qv b` using `fun b c h => ((hB.2.2.2.2 n).1 (ev n b)).unique h (hqv b)`. Establish `haddv : ∀ b c, N.QEq (qv b * qv c) (qv (b + c))` using `fun b c => by`. Take `⟨q, hqy, hqadd, hqeq⟩` from `hadd n hn b c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨cq, hcq⟩` from `((hB.2.2.2.2 n).1 q).exists`. Establish `e1 : cq = qv b * qv c`. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Apply `ν.eX.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `ν.eX cq.1.1.toAdd = ν.eX ((qv b).1.1.toAdd + (qv c).1.1.toAdd)`. Rewrite using `[map_add, (hqv b).1, (hqv c).1, hcq.1, hqy]`. Conclude with `(hB.2.2.1 _ _ _ _ _ _ (hqv b).2 (hqv c).2 hcq.2).1 hqadd`. Rewrite using `[← e1]`. Conclude with `((hB.2.2.2.2 n).2.2 q (ev n (b + c)) cq (qv (b + c)) hcq (hqv _)).1 hqeq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `f : Multiplicative ((Fin g → ℤ) × (Fin g → ℤ)) →* N.QT n ⧸ (qTH N n).range` to `MonoidHom.mk' (fun b => ((qv b.toAdd : N.QT n) : N.QT n ⧸ (qTH N n).range)) fun b c => by`. Rewrite using `[toAdd_mul, ← (qEq_iff_mk N _ _).1 (haddv _ _), QuotientGroup.mk_mul]`. Establish `hQi : ∀ i, N.QEq (us i) (qs1 i)` using `fun i => by`. Rewrite using `[qEq_iff_mk, huniq _ _ (hqs1 i)]`. Establish `h1 : ((qv (∑ j, ρ x i j • a j) : N.QT n) : N.QT n ⧸ (qTH N n).range) = f (Multiplicative.ofAdd (∑ j, ρ x i j • a j))` using `rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, ofAdd_sum, map_prod]`. Simplify using `only [us, QuotientGroup.mk_prod, QuotientGroup.mk_zpow]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ofAdd_zsmul, map_zpow, huniq _ _ (hqs j)]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `choose z hz1 hz2 using hQi`. Take `⟨z', hz'⟩` from `hF.2.2.2.1.2 z`. Set `eH : N'.X →+ (Fin r → N.X)` to `AddMonoidHom.mk' (TensTor.chi T ν ν') fun a b => funext (hF.2.2.1 a b)`. Establish `hQ : N'.QEq tv q1`. Use `⟨z', ?_, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hF.2.2.2.1.1` to reduce the goal to its premises. Establish `hs : TensTor.chi T ν ν' (y'' + n • z') = TensTor.chi T ν ν' y'' + n • TensTor.chi T ν ν' z'` using `(map_add eH _ _).trans (congrArg _ (map_nsmul eH n z'))`. Express the relevant statement in the definitionally equal form `TensTor.chi T ν ν' q1.1.1.toAdd = TensTor.chi T ν ν' (y'' + n • z')`. Rewrite using `[hs]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.add_apply, Pi.smul_apply]`. Rewrite using `[hrel1.1 i, hz1 i, hey i, hz']`. Establish `hm` using `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W _ _ _ hF _ _ _ _ hw' (GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W _ _ _ hF z')`. Establish `e2 : ts * (fun j => N.io (TensTor.chi T ν ν' z' j)) = fun j => (qs1 j).1.2` using `funext fun i => by`. Rewrite using `[Pi.mul_apply, hz2 i, hts i, hz']`.
-
-Rewrite `hm` using `[e2]`. Conclude with `GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W _ _ _ hF _ _ _ hrel1.2 hm`. Use `⟨t', ?_, ?_, ((hB'.2.2.2.2 n).2.2 t' q' tv q1 ht' hq1).2 hQ⟩` and prove the remaining obligations. Rewrite using `[← ht'.1]`. Conclude with `AddEquiv.apply_symm_apply _ _`.
-
-Conclude with `((GlobalTheory.Relabel.gtAct_values GlobalTheory.globalFns_holds R D'.toPre F N' ν' (𝓞 E)).2 o x ρ' hρ' p'.g t'.g q0.1.2 w' hq0.2 ht'.2).2 ⟨hb, hros⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.TensAct.qkAct_tens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ), (∀ a, (ρ a).transpose * (W + W.transpose) = (W + W.transpose) * ρ (H.bar a)) → ∀ [Module (𝓞 E) D'.toPre.X] (o : letI := H.starRing; D'.toPre.OAct (𝓞 E)), (letI := H.starRing; T.IsAct o ρ) → ∀ (g : ℕ) (ev : ∀ n : ℕ, ((Fin g → ℤ) × (Fin g → ℤ)) → QkPt D.toPre F n), (∀ n, 0 < n → ∀ a b, QkAdd (ev n a) (ev n b) (ev n (a + b))) → (∀ n, 0 < n → ∀ a b, QkPt.Equiv D.toPre F (ev n a) (ev n b) ↔ ∃ e, a = b + n • e) → ∀ n, 0 < n → ∀ (x : 𝓞 E) (a : Fin r → (Fin g → ℤ) × (Fin g → ℤ)) (p' q' : QkPt D'.toPre F n), PtRel T ν ν' p' (fun j => ev n (a j)) → PtRel T ν ν' q' (fun i => ev n (∑ j, ρ x i j • a j)) → (letI := H.starRing; QkAct o x p' q') := by
   intro R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' E _ _ _ H ρ hρ _ o hact g ev hadd hker n hn x a p' q' hp hq

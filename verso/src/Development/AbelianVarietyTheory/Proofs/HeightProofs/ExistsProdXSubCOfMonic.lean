@@ -5,9 +5,9 @@ open Polynomial
 namespace GlobalTheory.MonicRootsProduct
 
 /- English proof (translation)
-Establish `hc : p.roots.toList.length = p.natDegree`. Rewrite using `[Multiset.length_toList, IsAlgClosed.card_roots_eq_natDegree]`. Use `⟨fun j => p.roots.toList[(j : ℕ)]'(by rw [hc]; exact j.2), ?_⟩` and prove the remaining obligations. Establish `hprod` using `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hm IsAlgClosed.card_roots_eq_natDegree`. Rewrite `hprod` using `[← Multiset.coe_toList p.roots, Multiset.map_coe, Multiset.prod_coe, ← Fin.prod_univ_fun_getElem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Fintype.prod_equiv (finCongr hc.symm) _ _ (fun j => rfl)).trans hprod`.
+A detailed English derivation is pending.
 -/
 theorem exists_prod_X_sub_C_of_monic (p : ℂ[X]) (hm : p.Monic) :
     ∃ r : Fin p.natDegree → ℂ, ∏ j, (X - C (r j)) = p := by
@@ -22,9 +22,9 @@ theorem exists_prod_X_sub_C_of_monic (p : ℂ[X]) (hm : p.Monic) :
   exact (Fintype.prod_equiv (finCongr hc.symm) _ _ (fun j => rfl)).trans hprod
 
 /- English proof (translation)
-Establish `hdeg` using `Polynomial.degree_sum_fin_lt c`. Establish `hmon : (X ^ δ + ∑ i : Fin δ, C (c i) * X ^ (i : ℕ)).Monic` using `Polynomial.monic_X_pow_add hdeg`. Establish `hd : (X ^ δ + ∑ i : Fin δ, C (c i) * X ^ (i : ℕ)).natDegree = δ`. Rewrite using `[Polynomial.natDegree_add_eq_left_of_degree_lt (by rwa [Polynomial.degree_X_pow]), Polynomial.natDegree_X_pow]`. Take `⟨r, hr⟩` from `exists_prod_X_sub_C_of_monic _ hmon`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun j => r (Fin.cast hd.symm j), (Fintype.prod_equiv (finCongr hd.symm) _ _ (fun j => rfl)).trans hr⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_roots {δ : ℕ} (c : Fin δ → ℂ) :
     ∃ r : Fin δ → ℂ, ∏ j : Fin δ, (X - C (r j)) =

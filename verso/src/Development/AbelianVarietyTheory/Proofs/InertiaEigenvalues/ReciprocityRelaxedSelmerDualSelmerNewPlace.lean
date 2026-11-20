@@ -42,11 +42,11 @@ def locZ (A : ValuationSubring Ω) (w : Z2 (muRep F Ω l n)) : Z2 (muLoc F l n A
 
 omit [NumberField F] in
 /- English proof (translation)
-Establish `hl : l ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Use `haveI : NeZero (l ^ n) := ⟨hl⟩`. Take `⟨j, hj⟩` from `hc.1`. Establish `h1 : c ζ * ζ = 1`. Apply `j.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hn : ‖j ζ‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hζ.pow_eq_one, map_one]) hl`. Rewrite using `[map_mul, hj, map_one, Complex.conj_mul', hn]`. Simplify using the standard rewrite rules. Establish `h2 : ζ ^ (-1 : ZMod (l ^ n)).val * ζ = 1`. Rewrite using `[← pow_succ, hζ.pow_eq_one_iff_dvd, ← ZMod.natCast_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `mul_right_cancel₀ (hζ.ne_zero hl) (h1.trans h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem conj_root {c : Ω ≃+* Ω} (hc : IsCMConjOm F Ω c) {ζ : Ω} (hζ : IsPrimitiveRoot ζ (l ^ n)) :
     c ζ = ζ ^ (-1 : ZMod (l ^ n)).val := by
@@ -64,7 +64,7 @@ theorem conj_root {c : Ω ≃+* Ω} (hc : IsCMConjOm F Ω c) {ζ : Ω} (hζ : Is
   exact mul_right_cancel₀ (hζ.ne_zero hl) (h1.trans h2.symm)
 
 /- English proof (translation)
-Introduce `τ hτ`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) hA hB`. Establish `h1` using `hH.conj_mem _ (h (conj_mem_ine_of_smul A g τ hτ)) g`. Establish `e : g * (g⁻¹ * τ * g) * g⁻¹ = τ` using `by group`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ine_le_of_normal [IsAlgClosure F Ω] {H : Subgroup (G F Ω)} (hH : H.Normal) {v : HeightOneSpectrum (𝓞 F)}
     {A B : ValuationSubring Ω} (hA : IsPlaceOver A v) (hB : IsPlaceOver B v) (h : Ine (F := F) A ≤ H) :
@@ -76,7 +76,7 @@ theorem ine_le_of_normal [IsAlgClosure F Ω] {H : Subgroup (G F Ω)} (hH : H.Nor
   rwa [e] at h1
 
 /- English proof (translation)
-Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal fun τ hτ => ?_) hc` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion] at hτ`. Take `⟨v, hv, B, hB, hτ⟩` from `hτ`. Conclude with `ine_le_of_normal hH (A.2 v) hB (h v hv) hτ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem NS_le [IsAlgClosure F Ω] {H : Subgroup (G F Ω)} (hH : H.Normal) (hc : IsClosed (H : Set (G F Ω)))
     {S : Set (HeightOneSpectrum (𝓞 F))} (A : Formalism.GaloisCohomology.Places F Ω) (h : ∀ v ∉ S, Ine (F := F) (A.1 v) ≤ H) :
@@ -93,9 +93,9 @@ variable {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [Topological
 omit [NumberField F] in
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨fun g => -P (x.1 g) (ρ' g m), ?_, ?_⟩` and prove the remaining obligations. Conclude with `((continuous_of_discreteTopology (f := fun q : M × M' => -P q.1 q.2)).comp (x.2.1.prodMk (hc.comp (continuous_id.prodMk (continuous_const (y := m)))))).comp continuous_subtype_val`. Use function extensionality and compare the values at `⟨g, h⟩`. Express the relevant statement in the definitionally equal form `((cycMod F Ω l n g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * (-P (x.1 h) (ρ' h m)) - (-P (x.1 (g * h)) (ρ' (g * h) m)) + -P (x.1 g) (ρ' g m) = P (x.1 g) (ρ' g (y.1 h))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_neg, ← hP, hm h h.2, x.2.2, map_mul, Module.End.mul_apply]`. Simplify using `only [map_add, map_sub, AddMonoidHom.add_apply]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem loc_eq_zero (hc : ContAction ρ')
     (hP : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycMod F Ω l n g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * P x y)
@@ -119,7 +119,7 @@ section HidaSetting
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {i : X.Tw}
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one (cConj X) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `U hU`. Take `⟨L, hL, hLU⟩` from `(krullTopology_mem_nhds_one_iff D.host.E N.Om U).1 hU`. Conclude with `Filter.mem_of_superset ((isOpen_comap_cConj X (IntermediateField.fixingSubgroup_isOpen L)).mem_nhds (Subgroup.one_mem _)) fun g hg => hLU hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuous_cConj : Continuous (cConj X) := by
   refine continuous_of_continuousAt_one (cConj X) ?_
@@ -130,7 +130,7 @@ theorem continuous_cConj : Continuous (cConj X) := by
     (Subgroup.one_mem _)) fun g hg => hLU hg
 
 /- English proof (translation)
-Introduce and unpack `v ⟨h | h, -⟩`. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 h`. Conclude with `X.placesOver_subset_exceptional i k hk`. Conclude with `X.primes_subset_exceptional i h`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem spl_subset : Spl (X := X) i ⊆ ↑(X.S0 i) := by
   rintro v ⟨h | h, -⟩
@@ -139,9 +139,9 @@ theorem spl_subset : Spl (X := X) i ⊆ ↑(X.S0 i) := by
   · exact X.primes_subset_exceptional i h
 
 /- English proof (translation)
-Establish `h : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i)` using `fun h => by`. Establish `h2` using `h.map (algebraMap (X.O0 i) (X.O i))`. Rewrite `h2` using `[map_natCast]`. Conclude with `X.O_l i h2`. Use `hK _ (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) h)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_pow, map_natCast]`. Rewrite using `[Nat.cast_pow, pow_succ, this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_eq_zero {A : Type} [CommRing A] [Algebra (X.O0 i) A] (hK : Kills i A) : ((X.l i ^ (nu X i + 1) : ℕ) : A) = 0 := by
   have h : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i) := fun h => by
@@ -153,17 +153,17 @@ theorem sq_eq_zero {A : Type} [CommRing A] [Algebra (X.O0 i) A] (hK : Kills i A)
   rw [Nat.cast_pow, pow_succ, this]
 
 /- English proof (translation)
-Establish `hA` using `N.plOm.2 P`. Take `⟨u, hu⟩` from `GlobalTheory.T.tame_cupProduct_invariant_unramified_hom hT D.host.E N.Om (X.l i) n _ P hn hA hl hq (inv _) (hinv.1 _ _ hA).1 M hM d hd ⟨γ, Ine_le_Dec _ hγ⟩ ⟨φ, hφ.1⟩ hγ hdγ hφ`. Use `⟨u, fun x y hy hy' => ?_⟩` and prove the remaining obligations. Establish `hμ : ∀ (g : DecV N P) m, muLoc D.host.E (X.l i) n (N.plOm.1 P) g m = m` using `fun g m => by`. Express the relevant statement in the definitionally equal form `((cycMod D.host.E N.Om (X.l i) n g : (ZMod (X.l i ^ n))ˣ) : ZMod (X.l i ^ n)) * m = m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[(hP g g.2).2.2, Units.val_one, one_mul]`. Establish `key` using `hu W W' B`. Prove the components needed by the constructor for the conclusion. Conclude with `key (fun g => x.1 g) (fun g => y.1 g) hW (x.2.1.comp continuous_subtype_val) (y.2.1.comp continuous_subtype_val) (fun g h => by rw [Subgroup.coe_mul, x.2.2, (hP g g.2).1]) (fun g h => by rw [Subgroup.coe_mul, y.2.2, (hP g g.2).2.1]) (fun g hg => hy g hg) _ (fun g h => by`. Express the relevant statement in the definitionally equal form `B (x.1 g) (ρ' g (y.1 h)) = B (x.1 g) (y.1 h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hP g g.2).2.1])`. Establish `hcc : Continuous ((cConj X).comp (DecV N P).subtype)` using `continuous_cConj.comp continuous_subtype_val`. Set `w : Z2 (muLoc D.host.E (X.l i) n (N.plOm.1 P))` to `compatiblePairCocycles2 (muRep D.host.E N.Om (X.l i) n) _ ((cConj X).comp (DecV N P).subtype) hcc LinearMap.id continuous_id (fun g m => by`. Rewrite using `[hμ]`. Express the relevant statement in the definitionally equal form `((cycMod D.host.E N.Om (X.l i) n (cConj X g) : (ZMod (X.l i ^ n))ˣ) : ZMod (X.l i ^ n)) * m = m`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hP' g g.2).2.2, Units.val_one, one_mul]) (cupZ hc hB x y)`. Establish `h1` using `key (fun g => x.1 (cConj X g)) (fun g => y.1 (cConj X g)) hW (x.2.1.comp hcc) (y.2.1.comp hcc) (fun g h => by rw [Subgroup.coe_mul, map_mul, x.2.2, (hP' g g.2).1]) (fun g h => by rw [Subgroup.coe_mul, map_mul, y.2.2, (hP' g g.2).2.1]) (fun g hg => hy' _ (cConj_mem_ine X hg)) w (f …`. Express the relevant statement in the definitionally equal form `B (x.1 (cConj X g)) (ρ' (cConj X g) (y.1 (cConj X h))) = B (x.1 (cConj X g)) (y.1 (cConj X h))`. Rewrite using `[(hP' g g.2).2.1])`. Establish `h2` using `hinv.2 X.cc D.host.conj.toRingEquiv (cc_algebraMap X) (-1) (conj_root X.cc_cm hζ) _ (moveVal X.cc (N.plOm.1 P)) P hA (fun x => by rw [mem_moveVal, RingEquiv.symm_apply_apply]) (-w) (locZ _ (cupZ hc hB x y)) (fun g h g' h' hg hh => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ {a b : GE N}, (∀ x, b (X.cc x) = X.cc (a x)) → b = cConj X a` using `fun hab => by`. Use extensionality with `x`. Rewrite using `[cConj_apply, ← hab, RingEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `(cupZ hc hB x y).1 (g', h') = -1 * -(cupZ hc hB x y).1 (cConj X g, cConj X h)`. Rewrite using `[e hg, e hh, neg_one_mul, neg_neg])`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Submodule.Quotient.mk_neg, map_neg, h1]`.
+A detailed English derivation is pending.
 -/
 theorem local_pair (hT : TameLocal) {n : ℕ} (hn : 0 < n) {R W W' : Type} [CommRing R] [AddCommGroup W] [Module R W]
     [TopologicalSpace W] [DiscreteTopology W] [AddCommGroup W'] [Module R W'] [TopologicalSpace W'] [DiscreteTopology W']
@@ -230,49 +230,43 @@ end HidaSetting
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hPT hT D N X bkP i s hl2 M L z p d σ γ hM hS hp A _ _ _ _ κ Q Q' ρ hset hK hρ hanti hκ hQ' Y _ _ _ _ Y' _ _ _ _ β hβ y f hy hf`. Take `⟨x, rfl, hx⟩` from `hf`. Take `⟨hp0, hsplit, hnorm, hDL, hd, hσ, hγ, hdγ⟩` from `hp`. Establish `hl : (X.l i).Prime` using `Fact.out`. Use `haveI : NeZero (X.l i ^ (nu X i + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Use `haveI : IsAlgClosed N.Om := IsAlgClosure.isAlgClosed D.host.E`. Use `haveI : CharZero N.Om := charZero_of_injective_algebraMap (algebraMap D.host.E N.Om).injective`. Use `haveI : NeZero ((X.l i : ℕ) : N.Om) := ⟨Nat.cast_ne_zero.mpr hl.ne_zero⟩`. Use `haveI : NeZero ((X.l i ^ (nu X i + 1) : ℕ) : N.Om) := ⟨Nat.cast_ne_zero.mpr (pow_ne_zero _ hl.ne_zero)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot N.Om (X.l i ^ (nu X i + 1))`. Take `⟨inv, hinv, hsum⟩` from `GlobalTheory.T.sum_local_inv_eq_zero_of_unramified_cocycle_pow hPT D.host.E N.Om (X.l i) (nu X i + 1) ζ (show 0 < nu X i + 1 by omega) hζ`. Take `⟨hc, hc', hB, hunr⟩` from `GlobalTheory.T.pairing_equivariant_alt D N X bkP i s A κ Q ρ hset hK hρ Y Y' β hβ`. Establish `hS0 : ∀ v, Over p v → v ∉ placesOver D.host.E (X.l i) ∧ v ∉ Spl (X` using `X) i := fun v hv => ⟨fun e => hp0 v hv (X.twistExcludedPlaces_contains_residueChar i e), fun e => hp0 v hv (spl_subset e)⟩`. Establish `hq : normV p ≡ 1 [MOD X.l i ^ (nu X i + 1)]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : normV p ≡ 1 [MOD 2 * X.l i ^ M]`. Rewrite using `[← hnorm]`. Conclude with `(Nat.mod_modEq _ _).symm`. Conclude with `h1.of_dvd (Dvd.dvd.mul_left (pow_dvd_pow _ (by omega)) 2)`. Set `H : Subgroup (GE N)` to `L ⊓ κ.ker`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHn : H.Normal` using `haveI := hS.1.2.1`. Use `inferInstance`. Establish `hHc : ∀ g ∈ H, cConj X g ∈ H` using `fun g hg => ⟨(hS.1.2.2.1 g _ (cConj_apply X g)).1 hg.1, by`. Express the relevant statement in the definitionally equal form `κ (cConj X g) = 1`. Rewrite using `[antiHom_cConj X hanti, show κ g = 1 from hg.2, inv_one]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hHt : ∀ g ∈ H, (∀ m, repOn (Tgl i s) κ Y g m = m) ∧ (∀ m, repOn ρ κ⁻¹ Y' g m = m) ∧ cycMod D.host.E N.Om (X.l i) (nu X i + 1) g = 1` using `fun g hg => by`. Establish `h1` using `GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z (by omega) hS A κ ρ hK hρ Y g hg.1`. Establish `h2` using `GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z (by omega) hS A κ⁻¹ ρ hK hρ Y' g hg.1`. Establish `h3 : κ g = 1` using `hg.2`. Use `⟨fun m => ?_, fun m => ?_, h1.2.2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h1.1, h3, Units.val_one, one_smul]`. Rewrite using `[h2.2.1, MonoidHom.inv_apply, h3, inv_one, Units.val_one, one_smul]`. Establish `hDH : ∀ g ∈ DecV N p, g ∈ H` using `fun g hg => ⟨hDL hg, hκ g hg⟩`. Take `⟨pb, hpb⟩` from `exists_isConjPl p`. Establish `hne : p ≠ pb` using `ne_of_isSplitPl hsplit hpb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hover : ∀ v, Over p v ↔ v = p ∨ v = pb` using `fun v => or_congr_right ⟨fun e => isConjPl_unique e hpb, fun e => e ▸ hpb⟩`. Establish `hIp : ∀ B, IsPlaceOver B p → Ine (F` using `D.host.E) B ≤ H := fun B hB => ine_le_of_normal hHn (N.plOm.2 p) hB fun g hg => hDH g (Ine_le_Dec _ hg)`. Establish `hI : ∀ v, Over p v → Ine (F` using `D.host.E) (N.plOm.1 v) ≤ H := fun v hv g hg => by`. Break down `hv with rfl | hv` into its components or cases. Conclude with `hIp _ (N.plOm.2 _) hg`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hHc _ (hIp _ (isPlaceOver_moveVal_cc X (isConjPl_symm hv) (N.plOm.2 v)) (cConj_mem_ine X hg))` as an intermediate fact. Rewrite `this` using `[cConj_cConj]`. Then use the resulting hypothesis. Establish `hyI : ∀ v, Over p v → ∀ B, IsPlaceOver B v → ∀ τ ∈ Ine (F` using `D.host.E) B, y.1 τ = 0 := fun v hv B hB τ hτ => by`. Use `(ine_le_of_normal (kerSub_normal _ y) (N.plOm.2 v) hB (fun g hg => ?_) hτ).1` and prove the remaining obligations. Establish `ht` using `(hHt g (hI v hv hg)).2.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ht⟩` and prove the remaining obligations. Distinguish the cases in `e : v ∈ Q`. Take `⟨m, hm⟩` from `hy.2.1 v (Or.inr e)`. Rewrite using `[hm g (Ine_le_Dec _ hg), ht, sub_self]`. Conclude with `hy.1 v (hS0 v hv).1 (hS0 v hv).2 e g hg`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `local_pair hT (show 0 < nu X i + 1 by omega) hc' hB (fun m => by rw [← Nat.cast_smul_eq_nsmul A, sq_eq_zero hK, zero_smul]) hζ hinv (hS0 _ (over_refl p)).1 hq (fun g hg => hHt g (hDH g hg)) (fun g hg => hHt _ (hHc g (hDH g hg))) (by omega) d hd hγ hdγ hσ`. Take `⟨e1, e2⟩` from `hu x y (hyI _ (over_refl _) _ (N.plOm.2 _)) (hyI _ (Or.inr hpb) _ (isPlaceOver_moveVal_cc X hpb (N.plOm.2 _)))`. Set `Av : PlE D.host → ValuationSubring N.Om` to `Function.update N.plOm.1 pb (moveVal X.cc (N.plOm.1 p))`. Establish `hAb : Av pb = moveVal X.cc (N.plOm.1 p)` using `Function.update_self ..`. Establish `hAv : ∀ v, v ≠ pb → Av v = N.plOm.1 v` using `fun v hv => Function.update_of_ne hv ..`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hplace : ∀ v, IsPlaceOver (Av v) v` using `fun v => by`. Distinguish the cases in `hv : v = pb`. Rewrite using `[hv, hAb]`. Conclude with `isPlaceOver_moveVal_cc X hpb (N.plOm.2 _)`. Rewrite using `[hAv v hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `N.plOm.2 v`. Set `S : Finset (PlE D.host)` to `(X.S0 i).filter (fun v => v ∈ placesOver D.host.E (X.l i) ∨ v ∈ Spl (X := X) i) ∪ Q'`. Establish `hmem : ∀ v, v ∈ S ↔ v ∈ placesOver D.host.E (X.l i) ∨ v ∈ Spl (X` using `X) i ∨ v ∈ Q' := fun v => by`. Rewrite using `[Finset.mem_union, Finset.mem_filter, ← or_assoc]`. Conclude with `or_congr_left ⟨fun e => e.2, fun e => ⟨e.elim (fun e => X.twistExcludedPlaces_contains_residueChar i e) fun e => spl_subset e, e⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hout : ∀ v ∉ (S : Set (PlE D.host)), v ∉ placesOver D.host.E (X.l i) ∧ v ∉ Spl (X` using `X) i ∧ v ∉ Q' := fun v hv => by`. Simplify `hv` using `only [Finset.mem_coe, hmem, not_or]`. Establish `houtQ : ∀ v ∉ (S : Set (PlE D.host)), v ∉ Q` using `fun v hv e => (hout v hv).2.2 ((hQ' v).2 (Or.inl e))`. Establish `hxloc` using `(mem_Sel _ _ _ _ _).1 hx`. Establish `hxN` using `NS_le (S := S) (kerSub_normal _ x) (kerSub_isClosed _ hc x) N.plOm fun v hv τ hτ => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `ht` using `(hunr v (hout v hv).1 (hout v hv).2.1 (houtQ v hv) _ (N.plOm.2 v) τ hτ).1`. Use `⟨?_, fun m => by rw [ht, Module.End.one_apply]⟩` and prove the remaining obligations. Establish `h` using `hxloc v`. Unfold `Formalism.GaloisCohomology.bkCond at h`. Rewrite `h` using `[if_neg (show ¬ ((X.l i : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal from (hout v hv).1), if_neg (fun e => e.elim (hout v hv).2.1 (hout v hv).2.2)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 h)`. Establish `h3 : x.1 τ = repOn (Tgl i s) κ Y τ m - m` using `hm ⟨⟨τ, Ine_le_Dec _ hτ⟩, hτ⟩`. Rewrite using `[h3, ht, Module.End.one_apply, sub_self]`. Establish `hyN` using `NS_le (S := S) (kerSub_normal _ y) (kerSub_isClosed _ hc' y) N.plOm fun v hv τ hτ => ⟨hy.1 v (hout v hv).1 (hout v hv).2.1 (houtQ v hv) τ hτ, fun m => by`. Rewrite using `[(hunr v (hout v hv).1 (hout v hv).2.1 (houtQ v hv) _ (N.plOm.2 v) τ hτ).2, Module.End.one_apply]⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `t : ValuationSubring N.Om → ZMod (X.l i ^ (nu X i + 1))` to `fun B => inv B (Submodule.Quotient.mk (locZ B (cupZ hc' hB x y)))`. Establish `h0 : ∑ v ∈ S, t (Av v) = 0` using `hsum S (fun v hv => (hmem v).2 (Or.inl hv)) Av hplace (cupZ hc' hB x y) (fun g k n hn n' hn' => by`. Express the relevant statement in the definitionally equal form `vecPair D.R.r β (x.1 (g * n)) (repOn ρ κ⁻¹ Y' (g * n) (y.1 (k * n'))) = vecPair D.R.r β (x.1 g) (repOn ρ κ⁻¹ Y' g (y.1 k))`. Rewrite using `[x.2.2, y.2.2, (hxN hn).1, (hyN hn').1, map_zero, map_zero, add_zero, add_zero, map_mul, Module.End.mul_apply, (hyN hn).2]) (fun v => locZ (Av v) (cupZ hc' hB x y)) fun _ _ _ => rfl`. Establish `h1 : ∑ v ∈ S, t (Av v) = t (Av p) + t (Av pb)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `Finset.sum_eq_add_of_mem p pb ((hmem _).2 (Or.inr (Or.inr ((hQ' _).2 (Or.inr (over_refl _)))))) ((hmem _).2 (Or.inr (Or.inr ((hQ' _).2 (Or.inr (Or.inr hpb)))))) hne fun v hv hv' => ?_` and prove the remaining obligations. Rewrite using `[hAv v hv'.2]`. Establish `: (Submodule.Quotient.mk (locZ (N.plOm.1 v) (cupZ hc' hB x y)) : H2 _) = 0`. Distinguish the cases in `e : v ∈ placesOver D.host.E (X.l i)`. Establish `h` using `hxloc v`.
+Prove the second alternative. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Formalism.GaloisCohomology.bkCond at h`. Rewrite `h` using `[if_pos (show ((X.l i : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal from e)]`. Take `⟨c, hc1, hc2⟩` from `hy.2.2 v e (restrictCocycles1 _ _ continuous_subtype_val x) h`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨c, hc1.continuous, ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `⟨g, h⟩`. Conclude with `(hc2 g h).symm`. Take `⟨m, hm⟩` from `hy.2.1 v (by`. Break down `(hmem v).1 hv with e' | e' | e'` into its components or cases. Conclude with `absurd e' e`.
-
-Conclude with `Or.inl e'`. Conclude with `Or.inr (((hQ' v).1 e').resolve_right fun o => ((hover v).1 o).elim hv'.1 hv'.2))`. Conclude with `loc_eq_zero hc' hB x y _ m hm`. Express the relevant statement in the definitionally equal form `inv _ _ = 0`. Rewrite using `[this, map_zero]`.
-
-Rewrite `h1` using `[h0, hAb, hAv p hne]`. Simplify using `only [t] at h1`. Rewrite `h1` using `[e1, e2, ← sub_eq_add_neg, ← mul_sub, eq_comm, Units.mul_right_eq_zero, sub_eq_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocity : PoitouTateTotallyComplex → TameLocal → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), 0 < nu X i → ∀ (M : ℕ) (L : Subgroup (GE N)) (z : GE N) (p : PlE D.host) (d : GE N →* Multiplicative (ZMod (X.l i ^ M))) (σ γ : GE N), nu X i + 2 ≤ M → Small2 i s M L z → NewPl i M L p d σ γ → ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] (κ : GE N →* Aˣ) (Q Q' : Finset (PlE D.host)) (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)), Setup bkP i s κ Q → Kills i A → IsDual i s ρ → AntiHom X.cc κ → (∀ g ∈ DecV N p, κ g = 1) → (∀ v, v ∈ Q' ↔ v ∈ Q ∨ Over p v) → ∀ (Y : Type) [AddCommGroup Y] [Module A Y] [TopologicalSpace Y] [DiscreteTopology Y] (Y' : Type) [AddCommGroup Y'] [Module A Y'] [TopologicalSpace Y'] [DiscreteTopology Y'] (β : Y →+ Y' →+ ZMod (X.l i ^ (nu X i + 1))), Bal A β → ∀ (y : Z1 (repOn ρ κ⁻¹ Y')) (f : GE N → Fin D.R.r → Y), DualSel bkP i s κ ρ β Q y → SelC bkP i s κ Y Q' f → vecPair D.R.r β (f γ) (y.1 σ) = vecPair D.R.r β (f (cConj X γ)) (y.1 (cConj X σ)) := by
   intro hPT hT D N X bkP i s hl2 M L z p d σ γ hM hS hp A _ _ _ _ κ Q Q' ρ hset hK hρ hanti hκ hQ' Y _ _ _ _ Y' _ _ _ _ β hβ

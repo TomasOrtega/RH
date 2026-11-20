@@ -49,7 +49,7 @@ def DeRhamComparisonSemistable : Prop :=
     Nonempty (ComparisonOn (Model.Good (l := l) (K := K)))
 
 /- English proof (translation)
-Introduce `l _ K _` and use `(h l K).elim fun C => ⟨⟨C.c, C.lin, C.lin', C.fin, C.equi, C.inj, C.fil, fun M hM _ => C.strict M hM, C.nat⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DeRhamComparisonSemistable.dr (h : DeRhamComparisonSemistable) : FilteredDeRhamComparison := fun l _ K _ =>
   (h l K).elim fun C => ⟨⟨C.c, C.lin, C.lin', C.fin, C.equi, C.inj, C.fil, fun M hM _ => C.strict M hM, C.nat⟩⟩

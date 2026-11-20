@@ -10,17 +10,15 @@ open GlobalTheory.AbLaw (rs)
 namespace GlobalTheory.CompanionTheory.FewEq
 
 /- English proof (translation)
-Use `⟨fun j => t (l.succAbove j), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[← ht]`. Conclude with `Ideal.subset_span ⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set N : Ideal R := Ideal.span (Set.range fun j => t (l.succAbove j)) with hN`. Establish `hmem : ∀ j, t (l.succAbove j) ∈ N` using `fun j => Ideal.subset_span ⟨j, rfl⟩`. Establish `htl : t l ∈ N ⊔ IsLocalRing.maximalIdeal R • I`. Take `⟨u, hu⟩` from `hu`. Establish `hsum : x l * t l = ∑ i, x i * t i - ∑ j, x (l.succAbove j) * t (l.succAbove j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Fin.sum_univ_succAbove _ l]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : x l * t l ∈ N ⊔ IsLocalRing.maximalIdeal R • I`. Rewrite using `[hsum]`. Use `Ideal.sub_mem _ (Ideal.mem_sup_right (by simpa [smul_eq_mul] using hx)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_sup_left (Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hmem j))`. Establish `h2 : t l = (↑u⁻¹ : R) * (x l * t l)`. Rewrite using `[← hu, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[h2]`. Conclude with `Ideal.mul_mem_left _ _ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hle : I ≤ N ⊔ IsLocalRing.maximalIdeal R • I` using `by conv_lhs => rw [← ht]`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Break down `Fin.eq_self_or_eq_succAbove l i with h | ⟨j, h⟩` into its components or cases. Rewrite using `[h]`.
-
-Conclude with `htl`. Rewrite using `[h]`. Conclude with `Ideal.mem_sup_left (hmem j)`. Conclude with `Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian I) (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fin_span_eq_of_unit_coeff {R : Type} [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] (I : Ideal R) {n : ℕ} (t : Fin (n + 1) → R)
@@ -58,11 +56,11 @@ theorem exists_fin_span_eq_of_unit_coeff {R : Type} [CommRing R] [IsLocalRing R]
     (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge hle
 
 /- English proof (translation)
-Introduce `R _ _ _ I`. Establish `hex : ∃ r : ℕ, ∃ t : Fin r → R, Ideal.span (Set.range t) = I` using `Submodule.fg_iff_exists_fin_generating_family.mp (IsNoetherian.noetherian I)`. Take `⟨t, ht⟩` from `Nat.find_spec hex`. Use `⟨_, t, ht, fun x hx l => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu : IsUnit (x l)`. Assume the negation of the conclusion as `h`. Conclude with `hl ((IsLocalRing.mem_maximalIdeal _).mpr h)`. Establish `hmin : ∀ m : ℕ, (∃ s : Fin m → R, Ideal.span (Set.range s) = I) → Nat.find hex ≤ m` using `fun m h => Nat.find_min' hex h`. Generalize the expression as in `Nat.find hex = r at t ht x hx l hu hmin`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `r with`. Consider the case `zero => exact l.elim0`. Consider the case `succ n`. Use `hmin n (exists_fin_span_eq_of_unit_coeff I t ht x hx l hu)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_minimal_generators : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R),
     ∃ (r : ℕ) (t : Fin r → R), Ideal.span (Set.range t) = I ∧

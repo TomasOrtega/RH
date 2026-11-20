@@ -15,9 +15,9 @@ namespace Formalism.FourierDecayAlt.P.CutSH
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5 Formalism.FourierDecayAlt.P.PBH
 
 /- English proof (translation)
-Take `⟨⟨hCC, ε, hε, hεG⟩, hcpt⟩` from `hF`. Use `⟨Formalism.FourierDecayAlt.P.SmoothnessOrderArithmetic.ckOn_top_of_all (fun m => (hCC 0 m).choose_spec.1), ?_, ε, hε, hεG⟩` and prove the remaining obligations. Establish `hcont : Continuous (fun g : B.Mat P.k (P.r - j) => B.gN g)`. Unfold `B.gN`. Use `fun_prop`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `(hcpt.isCompact.image hcont).bddAbove`. Use `⟨R, fun g _ hg => hR ⟨g, subset_tsupport F hg, rfl⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sliceFamJF_cpt {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (j : ℕ)
@@ -32,7 +32,7 @@ theorem sliceFamJF_cpt {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace
   refine ⟨R, fun g _ hg => hR ⟨g, subset_tsupport F hg, rfl⟩⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Establish `hq` using `congrFun h ⟨q.1 + i, by omega⟩`. Simplify using `only [liftVec] at hq`. Rewrite `hq` using `[dif_pos ⟨by simp, by simp; omega⟩, dif_pos ⟨by simp, by simp; omega⟩]`. Simplify using `using hq`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem liftVec_injective_apply {k i r' : ℕ} {v w : Fin (2 * r' + k + 1) → ℂ}
     (h : liftVec k i r' v = liftVec k i r' w) : v = w := by
@@ -43,7 +43,7 @@ private theorem liftVec_injective_apply {k i r' : ℕ} {v w : Fin (2 * r' + k + 
   simpa using hq
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem castM_castM_eq_castM_trans {k a b c : ℕ} (h1 : a = b) (h2 : b = c) (h3 : a = c) (g : B.Mat k a) :
     D.castM h2 (D.castM h1 g) = D.castM h3 g := by
@@ -51,19 +51,19 @@ private theorem castM_castM_eq_castM_trans {k a b c : ℕ} (h1 : a = b) (h2 : b 
   rfl
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P T _ hN j hj _ _ F hF t ht γ hγ hΩ`. Establish `e : P.r - (j + 1) + 1 = P.r - j` using `by omega`. Establish `hC` using `sliceFamJF_cpt P j (T.bs j) F hF`. Use `set c : ℂ := ((‖t‖ ^ (2 * (P.r - j) + P.k) : ℝ) : ℂ) with hc`. Set `f0 : B.Mat P.k (P.r - (j + 1)) → Wq →L[ℂ] Wp` to `(B.GV P.k (P.r - (j + 1))).indicator fun g => ∫ xx : U.RC P.k 1 (P.r - (j + 1)) × U.RC P.k 1 (P.r - (j + 1)), (psi P.k (P.r - j) (T.bs j).z cStd (rn1 e xx.1) * star (psi P.k (P.r - j) (T.bs j).z' cStd (rn1 e xx.2))) • F ((rn1 e xx.1)⁻¹ * mc e t g * rn1 e xx.2) ∂(U.muRC P.k 1 (P.r …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsf : sliceFam T j hj F t = fun g => c • f0 g`. Use function extensionality and compare the values at `g`. Simplify using `only [sliceFam, f0, Set.indicator]`. Use `split_ifs`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero]`. Rewrite using `[hsf, JCx2.bc_JF_smul]`. Use `congr 1`. Take `⟨hW1, hW1', hN1⟩` from `hN j (by omega)`. Take `⟨hW0, hW0', hN0⟩` from `hN (j + 1) hj`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `jfStep P.k (P.r - (j + 1)) (P.r - j) e Wp Wq (T.bs j) (T.bs (j + 1)) ?_ ?_ ?_ ?_ hW1 hW1' hW0 hW0' hN1 hN0 F f0 t ht hC ?_ γ hγ hΩ` and prove the remaining obligations. Apply `liftVec_injective_apply (i := j)` to reduce the goal to its premises. Apply `castV_inj (h := (by omega : j + (P.r - j) = P.r))` to reduce the goal to its premises. Rewrite using `[T.z_lev j (by omega), asm_castV_castV, lift_lift_V j (P.r - (j + 1)) (P.r - j) P.r (by omega) (by omega) (by omega), T.z_lev (j + 1) hj]`. Apply `liftVec_injective_apply (i := j)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `castV_inj (h := (by omega : j + (P.r - j) = P.r))` to reduce the goal to its premises. Rewrite using `[T.z'_lev j (by omega), asm_castV_castV, lift_lift_V j (P.r - (j + 1)) (P.r - j) P.r (by omega) (by omega) (by omega), T.z'_lev (j + 1) hj]`. Introduce `y`. Rewrite using `[T.π_lev (j + 1) hj, T.π_lev j (by omega)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lev1]`. Rewrite using `[castM_castM_eq_castM_trans _ _ (by omega : 1 + (P.r - (j + 1)) = P.r - j), lift_lift_M j (P.r - (j + 1)) (P.r - j) P.r (by omega) (by omega) (by omega)]`. Introduce `y`. Rewrite using `[T.π'_lev (j + 1) hj, T.π'_lev j (by omega)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lev1]`. Rewrite using `[castM_castM_eq_castM_trans _ _ (by omega : 1 + (P.r - (j + 1)) = P.r - j), lift_lift_M j (P.r - (j + 1)) (P.r - j) P.r (by omega) (by omega) (by omega)]`. Introduce `g hg`. Simplify using `[f0, Set.indicator, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slice_family_orbital : SliceFamJF := by
   intro Wp Wq _ _ _ _ _ _ P T _ hN j hj _ _ F hF t ht γ hγ hΩ

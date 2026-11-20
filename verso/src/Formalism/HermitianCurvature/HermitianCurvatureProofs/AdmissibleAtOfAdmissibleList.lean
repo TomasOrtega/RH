@@ -20,7 +20,7 @@ def pushTh {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (mk : List ℝ →
   ∑ j : Fin K → Fin (d + 1), if mk (List.ofFn fun b => grid b (j b)) = a then F7.thGrid grid j else 0
 
 /- English proof (translation)
-Introduce `δ h1 h2`. Establish `h'` using `h (-δ) (by omega) (by omega)`. Rewrite using `[show y.2 - x.2 + (δ : ℝ) = -(x.2 - y.2 + ((-δ : ℤ) : ℝ)) by push_cast; ring, abs_neg]`. Conclude with `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_symm {x y : C.Letter} (h : Sep x y) : Sep y x := by
   intro δ h1 h2
@@ -29,9 +29,7 @@ theorem sep_symm {x y : C.Letter} (h : Sep x y) : Sep y x := by
   exact h'
 
 /- English proof (translation)
-Introduce `δ h1 h2`. Establish `hδ1 : (-2 : ℝ) ≤ δ` using `by exact_mod_cast h1`. Establish `hδ2 : (δ : ℝ) ≤ 2` using `by exact_mod_cast h2`. Break down `lt_abs.mp h with h | h` into its components or cases. Conclude with `lt_abs.mpr (Or.inl (by linarith))`.
-
-Conclude with `lt_abs.mpr (Or.inr (by linarith))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sep_of_four {x y : C.Letter} (h : 4 < |x.2 - y.2|) : Sep x y := by
   intro δ h1 h2
@@ -42,9 +40,9 @@ theorem sep_of_four {x y : C.Letter} (h : 4 < |x.2 - y.2|) : Sep x y := by
   · exact lt_abs.mpr (Or.inr (by linarith))
 
 /- English proof (translation)
-Rewrite using `[List.pairwise_iff_getElem]`. Prove the components needed by the constructor for the conclusion. Introduce `h j j' hj hj' hne`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Conclude with `h j j' hj hj' hlt`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sep_symm (h j' j hj' hj hlt)`. Introduce `h j j' hj hj' hlt`. Conclude with `h j j' hj hj' (ne_of_lt hlt)`.
+A detailed English derivation is pending.
 -/
 theorem pairwise_iff_idx (L : List C.Letter) :
     L.Pairwise Sep ↔ ∀ (j j' : ℕ) (hj : j < L.length) (hj' : j' < L.length), j ≠ j' → Sep (L[j]'hj) (L[j']'hj') := by
@@ -67,14 +65,14 @@ def AdmList (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (L : List C.Letter) : Prop
   (∀ j (hj : j < L.length), nodeOf (L[j]'hj) ∈ S.grid v (L.length - j) ∪ S.grid1 v) ∧ L.Pairwise Sep
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, -⟩` from `w.2`. Conclude with `⟨fun j hj => h1 v j hj, (pairwise_iff_idx _).2 fun j j' hj hj' hne δ hδ1 hδ2 => h2 v j j' hj hj' hne δ hδ1 hδ2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_list_of_word (S : C.HidaSetting E Wp Wq) (w : S.W) (v : Fin S.f) : AdmList S v (w.1 v) := by
   obtain ⟨⟨h1, h2⟩, -⟩ := w.2
   exact ⟨fun j hj => h1 v j hj, (pairwise_iff_idx _).2 fun j j' hj hj' hne δ hδ1 hδ2 => h2 v j j' hj hj' hne δ hδ1 hδ2⟩
 
 /- English proof (translation)
-Establish `h : 20 ≤ S.Ntop`. Unfold `C.HidaSetting.Ntop C.Kst`. Use linear arithmetic over natural numbers and integers. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ntop_ge (S : C.HidaSetting E Wp Wq) : (20 : ℝ) ≤ S.Ntop := by
   have h : 20 ≤ S.Ntop := by
@@ -83,19 +81,17 @@ theorem ntop_ge (S : C.HidaSetting E Wp Wq) : (20 : ℝ) ≤ S.Ntop := by
   exact_mod_cast h
 
 /- English proof (translation)
-Take `⟨hL1, hL2⟩` from `hL`. Take `⟨⟨h1, h2⟩, hc⟩` from `w.2`. Use `⟨⟨Function.update w.1 v L, ⟨⟨fun u => ?_, fun u => ?_⟩, ?_⟩⟩, by simp⟩` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Generalize the expression as in `hM : Function.update w.1 u L u = M`. Establish `hML : M = L` using `by rw [← hM]; simp`. Substitute `hML` using the available equality. Conclude with `hL1`. Generalize the expression as in `hM : Function.update w.1 v L u = M`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Substitute using the available equality. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hML : M = w.1 u` using `by rw [← hM]; simp [hu]`. Substitute `hML` using the available equality. Conclude with `h1 u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `hM : Function.update w.1 u L u = M`. Establish `hML : M = L` using `by rw [← hM]; simp`. Substitute `hML` using the available equality. Conclude with `fun j j' hj hj' hne δ hδ1 hδ2 => (pairwise_iff_idx M).1 hL2 j j' hj hj' hne δ hδ1 hδ2`. Generalize the expression as in `hM : Function.update w.1 v L u = M`.
+Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hML : M = w.1 u` using `by rw [← hM]; simp [hu]`. Substitute `hML` using the available equality. Conclude with `h2 u`. Unfold `C.Word.cnt`. Use `Finset.sup_le fun u _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Simplify using `using hlen`. Establish `hM : Function.update w.1 v L u = w.1 u` using `by simp [hu]`. Rewrite using `[hM]`.
-
-Conclude with `(Finset.le_sup (f := fun u => (w.1 u).length) (Finset.mem_univ u)).trans hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_at_of_admissible_list (S : C.HidaSetting E Wp Wq) (w : S.W) (v : Fin S.f) (L : List C.Letter)
     (hL : AdmList S v L) (hlen : L.length ≤ S.Ntop) : D.AdmAt S v L := by
@@ -133,9 +129,9 @@ theorem admissible_at_of_admissible_list (S : C.HidaSetting E Wp Wq) (w : S.W) (
       exact (Finset.le_sup (f := fun u => (w.1 u).length) (Finset.mem_univ u)).trans hc
 
 /- English proof (translation)
-Use `⟨fun j hj => ?_, List.pairwise_append.2 ⟨hpp, ha.2, hpa⟩⟩` and prove the remaining obligations. Distinguish the cases in `hjp : j < pre.length`. Rewrite using `[List.getElem_append_left hjp, List.length_append]`. Conclude with `hpre j hjp`. Establish `hj2 : j - pre.length < a.length`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[List.length_append]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[List.getElem_append_right (by omega), List.length_append, show pre.length + a.length - j = a.length - (j - pre.length) by omega]`. Conclude with `ha.1 (j - pre.length) hj2`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_list_prepend (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (pre a : List C.Letter) (ha : AdmList S v a)
     (hpre : ∀ j (hj : j < pre.length), nodeOf (pre[j]'hj) ∈ S.grid v (pre.length + a.length - j) ∪ S.grid1 v)
@@ -152,15 +148,13 @@ theorem admissible_list_prepend (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (pre a
     exact ha.1 (j - pre.length) hj2
 
 /- English proof (translation)
-Take `⟨hlen, hgr, -⟩` from `hG v`. Establish `hN : (20 : ℝ) ≤ S.Ntop` using `ntop_ge S`. Take `⟨-, -, hyl, hyu⟩` from `hgr b y hy`. Take `⟨-, -, hyl', hyu'⟩` from `hgr b' y' hy'`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at he he'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `have he0 : 0 ≤ e ∧ e ≤ 1 := by rcases he with rfl | rfl <;> norm_num`. Apply the tactic sequence `have he0' : 0 ≤ e' ∧ e' ≤ 1 := by rcases he' with rfl | rfl <;> norm_num`. Unfold `C.gridL at hyl hyu hyl' hyu'`. Establish `hNpos : (0 : ℝ) < 6 * S.Ntop` using `by positivity`. Establish `hΔ : (S.Ntop : ℝ) ^ 2 + 1 ≤ (S.cutHi v - S.cutLo v) / (6 * S.Ntop)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hNpos]`. Use the polynomial consequences of the given equalities and inequalities. Use `set Δ := (S.cutHi v - S.cutLo v) / (6 * S.Ntop) with hΔdef`. Establish `hΔ0 : 0 ≤ Δ` using `by nlinarith`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hbb : (b : ℝ) + 1 ≤ b'` using `by exact_mod_cast hlt`. Establish `key : 2 * (b : ℝ) * Δ + 2 * Δ ≤ 2 * (b' : ℝ) * Δ` using `by nlinarith`. Conclude with `le_abs.2 (Or.inr (by linarith))`. Establish `hbb : (b' : ℝ) + 1 ≤ b` using `by exact_mod_cast hlt`. Establish `key : 2 * (b' : ℝ) * Δ + 2 * Δ ≤ 2 * (b : ℝ) * Δ` using `by nlinarith`.
-
-Conclude with `le_abs.2 (Or.inl (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sep_grid (S : C.HidaSetting E Wp Wq) (hG : C.GridsOK S) (v : Fin S.f) {b b' : ℕ} {y y' : ℝ}
     (hy : y ∈ S.grid v b) (hy' : y' ∈ S.grid v b') (hne : b ≠ b') {e e' : ℝ}
@@ -189,14 +183,14 @@ theorem sep_grid (S : C.HidaSetting E Wp Wq) (hG : C.GridsOK S) (v : Fin S.f) {b
     exact le_abs.2 (Or.inl (by linarith))
 
 /- English proof (translation)
-Apply the tactic sequence `rcases x with ⟨_ | _, p⟩ <;> simp [nodeOf]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pt_split (x : C.Letter) : x.2 = nodeOf x + (if x.1 then 0 else 1) ∧
     (if x.1 then (0 : ℝ) else 1) ∈ ({0, 1} : Finset ℝ) := by
   rcases x with ⟨_ | _, p⟩ <;> simp [nodeOf]
 
 /- English proof (translation)
-Take `⟨j, hj, rfl⟩` from `List.getElem_of_mem hz`. Break down `Finset.mem_union.1 (ha.1 j hj) with h | h` into its components or cases. Conclude with `Or.inl ⟨a.length - j, Nat.sub_le _ _, h⟩`. Conclude with `Or.inr h`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem nodeOf_mem_grid_or_grid1 (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (a : List C.Letter) (ha : AdmList S v a) (z : C.Letter)
     (hz : z ∈ a) : (∃ n, n ≤ a.length ∧ nodeOf z ∈ S.grid v n) ∨ nodeOf z ∈ S.grid1 v := by
@@ -206,16 +200,16 @@ theorem nodeOf_mem_grid_or_grid1 (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (a : 
   · exact Or.inr h
 
 /- English proof (translation)
-Establish `h` using `ntop_ge S`. Apply the tactic sequence `constructor <;> nlinarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem four_lt_sq (S : C.HidaSetting E Wp Wq) : (4 : ℝ) < (S.Ntop : ℝ) ^ 2 / 8 ∧ (4 : ℝ) < (S.Ntop : ℝ) ^ 2 + 1 := by
   have h := ntop_ge S
   constructor <;> nlinarith
 
 /- English proof (translation)
-Establish `hz'` using `(pt_split z).1`. Establish `he'` using `(pt_split z).2`. Break down `nodeOf_mem_grid_or_grid1 S v a ha z hz with ⟨n, hn, hnode⟩ | hnode` into its components or cases. Establish `h` using `sep_grid S hG v hy hnode (by omega) he he'`. Rewrite using `[hz']`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[(four_lt_sq S).2]`. Establish `h` using `(hG v).2.2.2.2.1 (nodeOf z) hnode B y hy _ he' e he`. Rewrite using `[hz', abs_sub_comm]`. Combine the linear relations using `[(four_lt_sq S).2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem grid_point_far_from_letters (S : C.HidaSetting E Wp Wq) (hG : C.GridsOK S) (v : Fin S.f) (a : List C.Letter)
     (ha : AdmList S v a) {B : ℕ} {y : ℝ} (hy : y ∈ S.grid v B) (hB : a.length < B) (z : C.Letter) (hz : z ∈ a)
@@ -231,9 +225,9 @@ theorem grid_point_far_from_letters (S : C.HidaSetting E Wp Wq) (hG : C.GridsOK 
     linarith [(four_lt_sq S).2]
 
 /- English proof (translation)
-Establish `hz'` using `(pt_split z).1`. Establish `he'` using `(pt_split z).2`. Break down `nodeOf_mem_grid_or_grid1 S v a ha z hz with ⟨n, hn, hnode⟩ | hnode` into its components or cases. Establish `h` using `(hG v).2.2.2.2.1 y hy n (nodeOf z) hnode e he _ he'`. Rewrite using `[hz']`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[(four_lt_sq S).2]`. Establish `hne : y ≠ nodeOf z` using `fun h => hyn (by rw [h]; exact List.mem_map.2 ⟨z, hz, rfl⟩)`. Establish `h` using `(hG v).2.2.2.1 y hy (nodeOf z) hnode hne e he _ he'`. Rewrite using `[hz']`. Combine the linear relations using `[(four_lt_sq S).1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem grid1_point_far_from_letters (S : C.HidaSetting E Wp Wq) (hG : C.GridsOK S) (v : Fin S.f) (a : List C.Letter)
     (ha : AdmList S v a) {y : ℝ} (hy : y ∈ S.grid1 v) (hyn : y ∉ a.map nodeOf) (z : C.Letter) (hz : z ∈ a)
@@ -250,25 +244,23 @@ theorem grid1_point_far_from_letters (S : C.HidaSetting E Wp Wq) (hG : C.GridsOK
     linarith [(four_lt_sq S).1]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `haA`. Establish `ha : AdmList S v a` using `by rw [← hw]; exact admissible_list_of_word S w v`. Establish `hcut : ∀ y, ((∃ n, y ∈ S.grid v n) ∨ y ∈ S.grid1 v) → ∀ e ∈ ({0, 1} : Finset ℝ), I.OnCut (D.parOf S v).u (D.parOf S v).u' (S.l + 1) (y + e)`. Introduce `y hy e he`. Take `⟨h1, h2, -⟩` from `(hG v).2.2.2.2.2 y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1a, h1b⟩` from `h1`. Take `⟨h2a, h2b⟩` from `h2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at he`. Apply `hC v` to reduce the goal to its premises. Rewrite using `[Set.mem_Icc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Unfold `C.HidaSetting.cutLo C.HidaSetting.cutHi`. Apply the tactic sequence `rcases he with rfl | rfl <;> constructor <;> linarith`. Establish `hLcut : ∀ L, AdmList S v L → KB.CutWord (D.parOf S v) (S.l + 1) L`. Introduce `L hL`. Use `(cutWord_iff _ _ L).2 ⟨fun x hx => ?_, hL.2.imp fun h => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, hj, rfl⟩` from `List.getElem_of_mem hx`. Rewrite using `[(pt_split _).1]`. Use `hcut _ ?_ _ (pt_split _).2` and prove the remaining obligations. Break down `Finset.mem_union.1 (hL.1 j hj) with h | h` into its components or cases. Conclude with `Or.inl ⟨_, h⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr h`. Establish `h0` using `h 0 (by norm_num) (by norm_num)`. Simplify using `using h0`. Establish `hP : AdmList S v (KB.plusW ys a)`. Rewrite using `[plusW_eq]`.
+Prove the second alternative. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `admissible_list_prepend S v _ a ha ?_ ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Establish `hj' : j < ys.length` using `by simpa using hj`. Simplify `H3 j hj'` using `[nodeOf]`. Rewrite using `[List.pairwise_map]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H1.imp fun h => sep_of_four h`. Introduce `x hx z hz`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Conclude with `sep_of_four (by simpa using (H2 y hy z hz).1)`. Establish `hM : AdmList S v (KB.minusW ys a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[minusW_eq]`. Use `admissible_list_prepend S v _ a ha ?_ ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Establish `hj' : j < ys.length` using `by simpa using hj`. Simplify `H3 j hj'` using `[nodeOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.pairwise_map]`. Conclude with `H1.imp fun h => sep_of_four (by simpa using h)`. Introduce `x hx z hz`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Conclude with `sep_of_four (by simpa using (H2 y hy z hz).2)`.
-
-Establish `hlenP : (KB.plusW ys a).length ≤ S.Ntop` using `by rw [plusW_eq]; simpa using hlen`. Establish `hlenM : (KB.minusW ys a).length ≤ S.Ntop` using `by rw [minusW_eq]; simpa using hlen`. Conclude with `⟨admissible_at_of_admissible_list S w v _ hP hlenP, admissible_at_of_admissible_list S w v _ hM hlenM, hLcut _ hP, hLcut _ hM⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem extend (S : C.HidaSetting E Wp Wq) (hG : C.GridsOK S) (hC : KB.CutInside S) (v : Fin S.f) (a : List C.Letter)
     (haA : D.AdmAt S v a) (ys : List ℝ) (H1 : ys.Pairwise fun y y' => 4 < |y - y'|)
@@ -336,7 +328,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Unfold `F7.lagCo`. Conclude with `Finset.prod_ne_zero_iff.2 fun i hi => inv_ne_zero (sub_ne_zero.2 fun h => Finset.ne_of_mem_erase hi (hy h).symm)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lagCo_ne_zero {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injective y) (j : Fin (d + 1)) :
     F7.lagCo y j ≠ 0 := by
@@ -345,7 +337,7 @@ theorem lagCo_ne_zero {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injecti
     inv_ne_zero (sub_ne_zero.2 fun h => Finset.ne_of_mem_erase hi (hy h).symm)
 
 /- English proof (translation)
-Unfold `F7.thGrid`. Conclude with `Finset.prod_nonneg fun a _ => div_nonneg (abs_nonneg _) (Finset.sum_nonneg fun i _ => abs_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem thGrid_nonneg {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (j : Fin K → Fin (d + 1)) :
     0 ≤ F7.thGrid grid j := by
@@ -353,9 +345,9 @@ theorem thGrid_nonneg {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (j : Fi
   exact Finset.prod_nonneg fun a _ => div_nonneg (abs_nonneg _) (Finset.sum_nonneg fun i _ => abs_nonneg _)
 
 /- English proof (translation)
-Unfold `F7.thGrid`. Establish `h` using `Finset.prod_univ_sum (fun _ : Fin K => (Finset.univ : Finset (Fin (d + 1)))) (fun a i => |F7.lagCo (grid a) i| / ∑ i, |F7.lagCo (grid a) i|)`. Rewrite `h` using `[Fintype.piFinset_univ]`. Rewrite using `[← h]`. Use `Finset.prod_eq_one fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_div, div_self]`. Establish `h0 : 0 < |F7.lagCo (grid b) 0|` using `abs_pos.2 (lagCo_ne_zero _ (hinj b) 0)`. Conclude with `(Finset.sum_pos' (fun i _ => abs_nonneg _) ⟨0, Finset.mem_univ _, h0⟩).ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thGrid_sum {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hinj : ∀ b, Function.Injective (grid b)) :
     ∑ j, F7.thGrid grid j = 1 := by
@@ -370,11 +362,11 @@ theorem thGrid_sum {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hinj : �
   exact (Finset.sum_pos' (fun i _ => abs_nonneg _) ⟨0, Finset.mem_univ _, h0⟩).ne'
 
 /- English proof (translation)
-Use `⟨⟨fun a => ?_, fun a ha => ?_, ?_⟩, fun a ha => ?_⟩` and prove the remaining obligations. Unfold `pushTh`. Conclude with `Finset.sum_nonneg fun j _ => by split_ifs exacts [thGrid_nonneg grid j, le_refl 0]`. Unfold `pushTh`. Use `Finset.sum_eq_zero fun j _ => if_neg fun h => ha ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ j)`. Unfold `pushTh`. Rewrite using `[Finset.sum_comm, ← thGrid_sum grid hinj]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_ite_eq, if_pos (by unfold pushU; exact Finset.mem_image_of_mem _ (Finset.mem_univ j))]`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `hmk j`.
+A detailed English derivation is pending.
 -/
 theorem locProb_push (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (n' : ℕ) {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ)
     (hinj : ∀ b, Function.Injective (grid b)) (mk : List ℝ → List C.Letter)
@@ -436,21 +428,19 @@ def NewLetters1 : Prop :=
       ys.Pairwise fun y y' => 4 < |y - y'|
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S hG hR hC v a K n haA hlen hn`. Take `⟨w, hw⟩` from `haA`. Establish `ha : AdmList S v a` using `hw ▸ admissible_list_of_word S w v`. Use `⟨hw ▸ cutWord_of_adm S hG hC w v, ?_⟩` and prove the remaining obligations. Establish `hex : ∀ b : Fin K, ∃ y : Fin (n + 1) → ℝ, Function.Injective y ∧ (∀ j, y j ∈ S.grid v (a.length + K - (b : ℕ))) ∧ ∑ j, |F7.lagCo y j| ≤ (28 * (S.Ntop : ℝ) / (S.cutHi v - S.cutLo v)) ^ n` using `fun b => (hR v).2 _ (by omega) (by omega) n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose grid hinj hmem hbd using hex`. Establish `h4` using `four_lt_sq S`. Establish `key : ∀ j : Fin K → Fin (n + 1), D.AdmAt S v (KB.plusW (List.ofFn fun b => grid b (j b)) a) ∧ D.AdmAt S v (KB.minusW (List.ofFn fun b => grid b (j b)) a) ∧ KB.CutWord (D.parOf S v) (S.l + 1) (KB.plusW (List.ofFn fun b => grid b (j b)) a) ∧ KB.CutWord (D.parOf S v) (S.l + 1) (KB.m …`. Introduce `j`. Establish `H1 : (List.ofFn fun b => grid b (j b)).Pairwise fun y y' => 4 < |y - y'|`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.pairwise_ofFn]`. Introduce `i i' hii'`. Establish `hlt : (i : ℕ) < i'` using `hii'`. Establish `hi` using `i.isLt`. Establish `hi'` using `i'.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sep_grid S hG v (hmem i (j i)) (hmem i' (j i')) (by omega) (e := 0) (e' := 0) (by simp) (by simp)` as an intermediate fact. Simplify using `only [add_zero] at this`. Combine the linear relations using `[h4.2]`. Establish `H2 : ∀ y ∈ List.ofFn (fun b => grid b (j b)), ∀ z ∈ a, 4 < |(y + 0) - z.2| ∧ 4 < |(y + 1) - z.2|`. Introduce `y hy z hz`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, rfl⟩` from `List.getElem_of_mem hy`. Establish `hiK : i < K` using `by simpa using hi`. Rewrite using `[List.getElem_ofFn]`. Establish `hB : a.length < a.length + K - ((⟨i, hiK⟩ : Fin K) : ℕ)` using `by show a.length < a.length + K - i; omega`. Conclude with `⟨grid_point_far_from_letters S hG v a ha (hmem ⟨i, hiK⟩ (j ⟨i, hiK⟩)) hB z hz (by simp), grid_point_far_from_letters S hG v a ha (hmem ⟨i, hiK⟩ (j ⟨i, hiK⟩)) hB z hz (by simp)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `H3 : ∀ i (hi : i < (List.ofFn fun b => grid b (j b)).length), (List.ofFn fun b => grid b (j b))[i] ∈ S.grid v ((List.ofFn fun b => grid b (j b)).length + a.length - i) ∪ S.grid1 v`. Introduce `i hi`. Rewrite using `[List.getElem_ofFn]`. Use `Finset.mem_union_left _ ?_` and prove the remaining obligations. Use `hmem ⟨i, by simpa using hi⟩ (j ⟨i, by simpa using hi⟩)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Nat.add_comm]`. Take `⟨e1, e2, e3, e4⟩` from `extend S hG hC v a ⟨w, hw⟩ _ H1 H2 H3 (by simp; omega)`. Conclude with `⟨e1, e2, e3, e4, H1⟩`. Use `⟨grid, hinj, hbd, hmem, key, ?_, ?_⟩` and prove the remaining obligations. Conclude with `locProb_push S v _ grid hinj _ fun j => ⟨(key j).1, by rw [plusW_eq]; simp; omega⟩`.
-
-Conclude with `locProb_push S v _ grid hinj _ fun j => ⟨(key j).2.1, by rw [minusW_eq]; simp; omega⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem newLetters : NewLetters := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S hG hR hC v a K n haA hlen hn
@@ -502,15 +492,15 @@ theorem newLetters : NewLetters := by
   · exact locProb_push S v _ grid hinj _ fun j => ⟨(key j).2.1, by rw [minusW_eq]; simp; omega⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S hG hR hC v a K haA hlen`. Take `⟨w, hw⟩` from `haA`. Establish `ha : AdmList S v a` using `by rw [← hw]; exact admissible_list_of_word S w v`. Establish `hT1 : K ≤ (S.grid1 v \ (a.map nodeOf).toFinset).card`. Establish `h1` using `Finset.le_card_sdiff ((a.map nodeOf).toFinset) (S.grid1 v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `List.toFinset_card_le (a.map nodeOf)`. Establish `h3` using `(hR v).1`. Rewrite `h2` using `[List.length_map]`. Use linear arithmetic over natural numbers and integers. Take `⟨U, hUT, hUc⟩` from `Finset.exists_subset_card_eq hT1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ y ∈ U.toList, y ∈ S.grid1 v ∧ y ∉ a.map nodeOf`. Introduce `y hy`. Establish `h` using `hUT (Finset.mem_toList.1 hy)`. Rewrite `h` using `[Finset.mem_sdiff, List.mem_toFinset]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpw : U.toList.Pairwise fun y y' => 4 < |y - y'|`. Use `U.nodup_toList.pairwise_of_forall_ne fun y hy y' hy' hne => ?_` and prove the remaining obligations. Establish `h` using `(hG v).2.2.2.1 y (hmem y hy).1 y' (hmem y' hy').1 hne 0 (by simp) 0 (by simp)`. Simplify using `only [add_zero] at h`. Combine the linear relations using `[(four_lt_sq S).1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hlen2 : U.toList.length + a.length ≤ S.Ntop`. Rewrite using `[Finset.length_toList, hUc]`. Use linear arithmetic over natural numbers and integers. Take `⟨h1, h2, h3, h4⟩` from `extend S hG hC v a ⟨w, hw⟩ U.toList hpw (fun y hy z hz => ⟨grid1_point_far_from_letters S hG v a ha (hmem y hy).1 (hmem y hy).2 z hz (by simp), grid1_point_far_from_letters S hG v a ha (hmem y hy).1 (hmem y hy).2 z hz (by simp)⟩) (fun i hi => Finset.mem_union_right _ (hmem _ (Lis …`. Conclude with `⟨U.toList, by rw [Finset.length_toList, hUc], U.nodup_toList, fun y hy => (hmem y hy).1, h1, h2, h3, h4, hpw⟩`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem newLetters1 : NewLetters1 := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S hG hR hC v a K haA hlen
@@ -547,10 +537,10 @@ theorem newLetters1 : NewLetters1 := by
 end Formalism.FourierDecayAlt.P.PBD
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBD.newLetters`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.new_letters_admissible : Formalism.FourierDecayAlt.P.PBD.NewLetters := Formalism.FourierDecayAlt.P.PBD.newLetters
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBD.newLetters1`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.new_letters_admissible_level_one : Formalism.FourierDecayAlt.P.PBD.NewLetters1 := Formalism.FourierDecayAlt.P.PBD.newLetters1

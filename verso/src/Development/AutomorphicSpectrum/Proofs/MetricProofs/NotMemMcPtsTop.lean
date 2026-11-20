@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.FA.StepMap
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Use `show z' q = (c q.1)⁻¹ * (c q.1 * z' q)`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hc q.1), one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_symm {K : Type} {ι : K → Type} {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     SameOrbit z' z := by
@@ -21,9 +21,9 @@ theorem orbit_symm {K : Type} {ι : K → Type} {z z' : (Σ k, ι k) → ℂ} (h
   rw [← mul_assoc, inv_mul_cancel₀ (hc q.1), one_mul]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Take `⟨c', hc', rfl⟩` from `h'`. Use `⟨fun k => c k * c' k, fun k => mul_ne_zero (hc k) (hc' k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Use `show c q.1 * (c' q.1 * z'' q) = c q.1 * c' q.1 * z'' q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem orbit_trans {K : Type} {ι : K → Type} {z z' z'' : (Σ k, ι k) → ℂ} (h : SameOrbit z z')
     (h' : SameOrbit z' z'') : SameOrbit z z'' := by
@@ -35,7 +35,7 @@ theorem orbit_trans {K : Type} {ι : K → Type} {z z' z'' : (Σ k, ι k) → �
   rw [mul_assoc]
 
 /- English proof (translation)
-Introduce `hz`. Establish `h1` using `(show (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) ∧ ∀ f ∈ (⊤ : Ideal (MRing ι)), eval z (map (Int.castRingHom ℂ) f) = 0 from hz).2 1 Submodule.mem_top`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_mem_mcPts_top {K : Type} {ι : K → Type} [∀ k, Fintype (ι k)] (z : (Σ k, ι k) → ℂ) :
     z ∉ mcPts (⊤ : Ideal (MRing ι)) := by
@@ -45,17 +45,15 @@ theorem not_mem_mcPts_top {K : Type} {ι : K → Type} [∀ k, Fintype (ι k)] (
   simp at h1
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ N j M p n e e' Rb R Rp pr prp hh H1 H2 H3`. Establish `hnz : ∀ x k, ∃ i, R.lift x x ⟨k, i⟩ ≠ 0` using `fun x => (R.mem x x (R.mem_U x)).1`. Establish `hb : ∀ z w : (Σ k, ι k) → ℂ, SameOrbit (z ∘ stepV M p) (w ∘ stepV M p) → SameOrbit (basePart M.blk z) (basePart M.blk w)`. Introduce and unpack `z w ⟨c, hc, hzw⟩`. Conclude with `⟨fun k => c ⟨k.1, Or.inl k.2⟩, fun k => hc _,`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use function extensionality and compare the values at `fun q => congrFun hzw ⟨⟨q.1.1, Or.inl q.1.2⟩, q.2⟩⟩`. Use `⟨fun x => ?_, fun x x' hpr hsc => ?_⟩` and prove the remaining obligations. Take `⟨z, -, hz1, hz2⟩` from `H2 (hh x)`. Establish `o1 : SameOrbit (z ∘ stepV M p) (R.lift x x ∘ stepV M p)`. Rewrite using `[hz1]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H3 x`. Conclude with `Rb.inj _ _ (not_mem_mcPts_top _) (orbit_trans (orbit_trans (orbit_symm hz2) (hb _ _ o1)) (H1 x))`. Apply `Rp.inj _ _ (not_mem_mcPts_top _)` to reduce the goal to its premises. Use `orbit_trans (H3 x) (orbit_trans ?_ (orbit_symm (H3 x')))` and prove the remaining obligations. Establish `h1'` using `H1 x'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1'` using `[← hpr]`. Take `⟨cb, hcb, hbeq⟩` from `orbit_trans (H1 x) (orbit_symm h1')`. Use `⟨fun k => if hk : (∀ p', M.blk p' ≠ some k.1) then cb ⟨k.1, hk⟩ else (hsc k.1 (k.2.resolve_left hk)).choose, fun k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs with hk`. Conclude with `hcb _`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Take `⟨i, hi⟩` from `hnz x k.1`. Apply `hi` to reduce the goal to its premises. Rewrite using `[(hsc k.1 (k.2.resolve_left hk)).choose_spec i, h0, zero_mul]`. Use function extensionality and compare the values at `q show R.lift x x ⟨q.1.1, q.2⟩ = _ * R.lift x' x' ⟨q.1.1, q.2⟩ dsimp only split_ifs with hk`.
-
-Conclude with `congrFun hbeq ⟨⟨q.1.1, hk⟩, q.2⟩`. Conclude with `(hsc q.1.1 (q.1.2.resolve_left hk)).choose_spec q.2`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem factor : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ]
     (y : (Σ k, ι k) → Φ) (Ψ : Type) (N j : ℕ) (M : FlagModel y Ψ N j) (p : Ψ × Fin N) (n e e' : ℕ)

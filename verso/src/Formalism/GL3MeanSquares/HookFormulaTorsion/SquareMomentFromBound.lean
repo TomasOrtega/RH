@@ -7,9 +7,9 @@ open Finset
 open Formalism.LogVandermondeBounds.flipTwoThree (hookF Interlace B0 len)
 
 /- English proof (translation)
-Introduce `f N y R2 hf h0 hs`. Establish `hy : ∀ c τ, y c τ ≤ R2` using `fun c τ => le_trans (Finset.single_le_sum (fun i _ => h0 c i) (Finset.mem_univ τ)) (hs c)`. Establish `hP : ∏ τ, ∏ c, y c τ ≤ ∏ _τ : Fin f, ∏ _c : Fin N, R2` using `Finset.prod_le_prod (fun τ _ => Finset.prod_nonneg fun c _ => h0 c τ) (fun τ _ => Finset.prod_le_prod (fun c _ => h0 c τ) (fun c _ => hy c τ))`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin] at hP`. Establish `hP0 : 0 ≤ ∏ τ, ∏ c, y c τ` using `Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun c _ => h0 c τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem moduli_index_formula : Ms_index := by
   intro f N y R2 hf h0 hs
@@ -24,15 +24,15 @@ theorem moduli_index_formula : Ms_index := by
     _ = R2 ^ (2 * f * N) := by rw [← pow_mul, ← pow_mul]; ring_nf
 
 /- English proof (translation)
-Introduce `κ lam A bt S hbt hS h0 hl hmid`. Establish `hsucc : ∀ j : Fin (κ + 1), lam j.succ ≤ S`. Introduce `j`. Distinguish the cases in `hj : j.succ = Fin.last (κ + 1)`. Rewrite using `[hj, hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hmid j.succ (Fin.succ_ne_zero j) hj).2`. Establish `hsum : ∑ j : Fin (κ + 1), lam j.succ ≤ (κ + 1) * S`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Unfold `wt`. Rewrite using `[Fin.sum_univ_succ, h0]`.
+Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Unfold `wt plus`. Rewrite using `[Fin.sum_univ_succ, h0, hl]`. Establish `e : ∑ j : Fin (κ + 1), (lam j.succ - -bt) = ∑ j : Fin (κ + 1), lam j.succ + (κ + 1) * bt`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem column_top_entry : LastColumnBound := by
   intro κ lam A bt S hbt hS h0 hl hmid
@@ -58,13 +58,13 @@ theorem column_top_entry : LastColumnBound := by
     nlinarith
 
 /- English proof (translation)
-Introduce `X X' V V' _ _ _ _ K u u' D B hD hB hu hu'`. Establish `hDpos : 0 < D` using `by linarith`. Establish `A1 : ∀ (Y : Type) [Fintype Y] (w : Y → ℝ) (a : Y → ℝ), (∀ y, 1 / D ≤ w y ∧ w y ≤ 1) → (∀ y, 0 ≤ a y) → ∑ y, w y * a y ≤ ∑ y, a y ∧ ∑ y, a y ≤ D * ∑ y, w y * a y`. Introduce `Y _ w a hw ha`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Finset.sum_le_sum fun y _ => by`. Use `(hw y).2` as an intermediate fact. Use polynomial arithmetic with `[ha y]`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun y _ => by`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hw y).1`. Rewrite `h1` using `[div_le_iff₀ hDpos]`. Use polynomial arithmetic with `[ha y]`. Use `⟨fun hK φ => ?_, fun hK φ => ?_⟩` and prove the remaining obligations. Take `⟨h1, _⟩` from `A1 X' u' (fun x => ‖K φ x‖ ^ 2) hu' (fun x => by positivity)`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Take `⟨_, h2⟩` from `A1 X u (fun x => ‖φ x‖ ^ 2) hu (fun x => by positivity)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨_, h1⟩` from `A1 X' u' (fun x => ‖K φ x‖ ^ 2) hu' (fun x => by positivity)`. Take `⟨h2, _⟩` from `A1 X u (fun x => ‖φ x‖ ^ 2) hu (fun x => by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem weight_change_formula : Weight_change := by
   intro X X' V V' _ _ _ _ K u u' D B hD hB hu hu'
@@ -97,11 +97,11 @@ theorem weight_change_formula : Weight_change := by
       _ = (B * D) * ∑ x, ‖φ x‖ ^ 2 := by ring
 
 /- English proof (translation)
-Introduce `f g u v hf hv hu`. Establish `hfR : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hfv : 0 < (f : ℝ) / v` using `div_pos (by linarith) hv`. Use `set t := 2 * Real.sqrt u / Real.sqrt (f / v) with ht`. Establish `ht2 : t ^ 2 = 4 * u * v / f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, div_pow, mul_pow, Real.sq_sqrt hu, Real.sq_sqrt hfv.le]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `huv : 0 ≤ 4 * u * v` using `by positivity`. Establish `ht2' : t ^ 2 ≤ 4 * u * v`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht2]`. Conclude with `div_le_self huv hfR`. Establish `key : (1 + t) ^ 2 ≤ 2 * (1 + 4 * u * v)` using `by nlinarith [sq_nonneg (1 - t)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem first_zeta_count : PackingCountBound := by
   intro f g u v hf hv hu
@@ -121,7 +121,7 @@ theorem first_zeta_count : PackingCountBound := by
     _ = 2 ^ g * (1 + 4 * u * v) ^ g := mul_pow _ _ _
 
 /- English proof (translation)
-Introduce `n lam nu`. Unfold `degZ Formalism.LogVandermondeBounds.flipTwoThree.B0`. Rewrite using `[Fin.sum_univ_succ, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem third_zeta_degree_bound : DegreeEqHeadMinusBalance := by
   intro n lam nu
@@ -130,7 +130,7 @@ theorem third_zeta_degree_bound : DegreeEqHeadMinusBalance := by
   ring
 
 /- English proof (translation)
-Introduce `n lam nu X _`. Rewrite using `[← Finset.sum_add_sum_compl X (fun i => min (len lam i) (B0 lam nu))]`. Establish `h1 : ∑ i ∈ X, min (len lam i) (B0 lam nu) ≤ X.card * B0 lam nu`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∑ i ∈ Xᶜ, min (len lam i) (B0 lam nu) ≤ ∑ i ∈ Xᶜ, len lam i` using `Finset.sum_le_sum fun i _ => min_le_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -146,11 +146,11 @@ theorem third_zeta_position_count : CoordinatesBoundedByBalance := by
   linarith
 
 /- English proof (translation)
-Introduce `f k v l1 ln hf hv hl1 hln h hl`. Establish `hfR : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hv2 : 0 < (2 * v) ^ 2` using `by positivity`. Establish `h1 : (ln * l1) ^ 2 ≤ (2 * f * k) ^ 2` using `pow_le_pow_left₀ (mul_nonneg hln hl1) h 2`. Establish `h2 : ln ^ 2 * ((f : ℝ) / (2 * v) ^ 2) ≤ ln ^ 2 * l1 ^ 2` using `mul_le_mul_of_nonneg_left hl (sq_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ln ^ 2 * (f : ℝ) / (2 * v) ^ 2 ≤ 4 * f ^ 2 * k ^ 2`. Rewrite using `[mul_div_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[div_le_iff₀ hv2]`. Establish `hf0 : (0 : ℝ) < f` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `le_of_mul_le_mul_right ?_ hf0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem fifth_zeta_transference : LastMinimumSqBoundOfProductBound := by
   intro f k v l1 ln hf hv hl1 hln h hl
@@ -171,9 +171,9 @@ theorem fifth_zeta_transference : LastMinimumSqBoundOfProductBound := by
     _ = 16 * f * (k : ℝ) ^ 2 * v ^ 2 * f := by ring
 
 /- English proof (translation)
-Introduce `C₀ L logT logg b' m N hC hL hm hT hg hb`. Establish `hmR : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `h1 : L ≤ m * L` using `by nlinarith`. Establish `h2 : C₀ * L ≤ C₀ * m * L` using `by nlinarith [mul_nonneg hC hL0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : L + logT + logg ≤ (1 + 2 * C₀) * m * L` using `by nlinarith`. Establish `hmN : 0 ≤ (m : ℝ) ^ 2 * (N : ℝ) ^ 2` using `by positivity`. Establish `hNL : 0 ≤ (N : ℝ) * L` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem square_moment_from_bound : Sqm_from := by
   intro C₀ L logT logg b' m N hC hL hm hT hg hb

@@ -6,11 +6,11 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Module A E := Module.compHom E (algebraMap A K)`. Establish `hs : ∀ (a : A) (e : E), a • e = algebraMap A K a • e` using `fun _ _ => rfl`. Use `haveI : IsScalarTower A K E := ⟨fun a k e => by rw [hs, Algebra.smul_def, mul_smul]⟩`. Set `Θ' : B →ₗ[A] E` to `{ toFun := Θ map_add' := fun b b' => by simpa using h 1 1 b b' map_smul' := fun a b => by`. Use `h a 0 b b` as an intermediate fact.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[zero_smul, add_zero, map_zero, zero_smul, add_zero] at this }` and apply the resulting hypothesis. Establish `hinj : Function.Injective (B.subtype.baseChange K)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ B.injective_subtype`. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective (B.subtype.baseChange K) (LinearMap.ker_eq_bot.2 hinj)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(Θ'.liftBaseChange K).comp r, fun b => ?_⟩` and prove the remaining obligations. Establish `h1 : r (1 ⊗ₜ[A] (b : M)) = 1 ⊗ₜ[A] b`. Simplify using `using LinearMap.congr_fun hr (1 ⊗ₜ[A] b)`. Rewrite using `[LinearMap.comp_apply, h1, LinearMap.liftBaseChange_tmul, one_smul]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_baseChange_extension_of_flat {A K E M : Type*} [CommRing A] [Field K] [Algebra A K]
     [Module.Flat A K] [AddCommGroup E] [Module K E] [AddCommGroup M] [Module A M]
@@ -39,9 +39,9 @@ theorem exists_baseChange_extension_of_flat {A K E M : Type*} [CommRing A] [Fiel
   rfl
 
 /- English proof (translation)
-Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hq : ‖(l : ℤ_[l])‖ < 1`. Rewrite using `[PadicInt.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun n => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hq)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn : ∀ z : ℤ_[l], ‖algebraMap ℤ_[l] (PadicAlgCl l) z‖ = ‖z‖` using `fun z => PadicAlgCl.norm_extends l (z : ℚ_[l])`. Rewrite using `[← UniformSpace.Completion.coe_sub, PadicComplex.norm_extends, ← map_natCast (algebraMap ℤ_[l] (PadicAlgCl l)), ← map_sub, hn, norm_sub_rev]`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n a)`. Rewrite using `[← ht, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) t.norm_le_one`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_appr_padicComplex (l : ℕ) [Fact l.Prime] (a : ℤ_[l]) :
     Tendsto (fun n => (((a.appr n : ℕ) : PadicAlgCl l) : ℂ_[l])) atTop
@@ -61,25 +61,21 @@ theorem tendsto_appr_padicComplex (l : ℕ) [Fact l.Prime] (a : ℤ_[l]) :
   exact mul_le_of_le_one_left (by positivity) t.norm_le_one
 
 /- English proof (translation)
-Introduce `l _ M _ _ B R C h1 h2 h3`. Simplify using `only [norm_pow] at h2 ⊢`. Use `set q : ℝ := ‖((l : ℕ) : PadicAlgCl l)‖ with hqdef`. Establish `hq0 : 0 ≤ q` using `norm_nonneg _`. Establish `hq1 : q < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hqdef, ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Use `choose! x hx using h1`. Establish `hC : 0 ≤ C`. Use `(norm_nonneg _).trans (h2 0 0 B.zero_mem _ _ (hx 1 0 B.zero_mem) (hx 0 0 B.zero_mem))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hmono : ∀ {n m : ℕ}, n ≤ m → C * q ^ m ≤ C * q ^ n` using `fun h => mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hq0 hq1.le h) hC`. Establish `htail : ∀ n, ∀ b ∈ B, ∀ y, R n b y → ∀ m, n + 1 ≤ m → ‖x m b - y‖ ≤ C * q ^ n`. Introduce `n b hb y hy m hm`. Proceed by induction on `m, hm using Nat.le_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `base => exact h2 n b hb _ _ (hx _ b hb) hy`. Consider the case `succ m hm ih`. Establish `e : x (m + 1) b - y = (x (m + 1) b - x m b) + (x m b - y)` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ih)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(h2 m b hb _ _ (hx _ b hb) (hx _ b hb)).trans (hmono (by omega))`. Establish `hlim : ∀ b : B, ∃ z : ℂ_[l], Tendsto (fun n => ((x n b : PadicAlgCl l) : ℂ_[l])) atTop (𝓝 z)`. Introduce `b`. Use `cauchySeq_tendsto_of_complete (cauchySeq_of_le_geometric q C hq1 fun n => ?_)` and prove the remaining obligations. Rewrite using `[dist_eq_norm, ← UniformSpace.Completion.coe_sub, PadicComplex.norm_extends, norm_sub_rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 n b b.2 _ _ (hx _ _ b.2) (hx _ _ b.2)`. Use `choose Θ hΘ using hlim`. Establish `hbound : ∀ n (b : B) (y : PadicAlgCl l), R n b y → ‖(y : ℂ_[l]) - Θ b‖ ≤ C * q ^ n`. Introduce `n b y hy`. Use `le_of_tendsto ((tendsto_const_nhds (x := (y : ℂ_[l]))).sub (hΘ b)).norm (eventually_atTop.2 ⟨n + 1, fun m hm => ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← UniformSpace.Completion.coe_sub, PadicComplex.norm_extends, norm_sub_rev]`. Conclude with `htail n b b.2 y hy m hm`. Use `haveI : Module.Flat ℤ_[l] ℚ_[l] := IsLocalization.flat ℚ_[l] (nonZeroDivisors ℤ_[l])`. Use `haveI : Module.Flat ℤ_[l] (PadicAlgCl l) := Module.Flat.trans ℤ_[l] ℚ_[l] (PadicAlgCl l)`. Take `⟨L, hL⟩` from `exists_baseChange_extension_of_flat (K := PadicAlgCl l) B Θ (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a a' b b'`. Establish `hA` using `((tendsto_appr_padicComplex l a).mul (hΘ b)).add ((tendsto_appr_padicComplex l a').mul (hΘ b'))`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Use `tendsto_nhds_unique ?_ hA` and prove the remaining obligations. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`.
-
-Establish `h0 : Tendsto (fun n : ℕ => C * q ^ n) atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hq0 hq1).const_mul C`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun n => ?_) h0` and prove the remaining obligations. Use `hbound n (a • b + a' • b') _ (h3 n b b.2 b' b'.2 a a' _ _ (hx n _ b.2) (hx n _ b'.2))` as an intermediate fact. Rewrite using `[UniformSpace.Completion.coe_add, UniformSpace.Completion.coe_mul, UniformSpace.Completion.coe_mul] at this)` and apply the resulting hypothesis.
-
-Use `⟨L, fun n b hb y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[show L (1 ⊗ₜ[ℤ_[l]] b) = Θ ⟨b, hb⟩ from hL ⟨b, hb⟩]`. Conclude with `hbound n ⟨b, hb⟩ y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear_limit_of_compatible_family :
     ∀ (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M] (B : Submodule ℤ_[l] M)

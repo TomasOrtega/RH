@@ -27,7 +27,7 @@ private theorem cycMod_emb (F Ω : Type) [Field F] [NumberField F] [Field Ω] [C
     (l : ℕ) [Fact l.Prime] (g : G F Ω) : cycMod ℚ Ω l 1 (galEmb ℚ F Ω g) = cycMod F Ω l 1 g := rfl
 
 /- English proof (translation)
-Establish `h1 : x - 1 ∈ RingHom.ker (PadicInt.toZMod : ℤ_[l] →+* ZMod l)`. Rewrite using `[RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `(ZMod.castHom (dvd_refl l) k).injective (h.trans (map_one _).symm)`. Rewrite `h1` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, ← pow_one (l : ℤ_[l]), ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_of_cast (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (x : ℤ_[l])
     (h : ZMod.castHom (dvd_refl l) k (PadicInt.toZMod x) = 1) : PadicInt.toZModPow 1 x = 1 := by
@@ -39,11 +39,11 @@ private theorem one_of_cast (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP
   exact h1
 
 /- English proof (translation)
-Establish `hU : upl Ω L ⊓ A ⊓ A' ⊓ (cycMod ℚ Ω l 1).ker ≤ galOf ℚ (W.Lp L) Ω` using `fun g hg x => hg.1.1.1 x.1 x.2`. Rewrite using `[← clrk_tr Ω l (W.Lp L) _ hU]`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_comap, MonoidHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[cycMod_emb]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨ha, ha'⟩, hc⟩`. Conclude with `⟨⟨⟨fun x hx => galEmb_mem ℚ (W.Lp L) Ω g ⟨x, hx⟩, ha⟩, ha'⟩, hc⟩`. Introduce and unpack `⟨⟨⟨_, ha⟩, ha'⟩, hc⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨ha, ha'⟩, hc⟩`.
+Supply the required witnesses or components.
 -/
 private theorem rk_link {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (L : Type) [Field L]
     [NumberField L] [IsCMField L] [Algebra L Ω] (A A' : Subgroup (G ℚ Ω)) :
@@ -63,19 +63,17 @@ private theorem rk_link {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
     exact ⟨⟨ha, ha'⟩, hc⟩
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure (W.Lp L) Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) (W.Lp L)⟩`. Establish `hb` using `ok_basic l η Ψ σ B M Hb hG m L g₁ Φ hU hL hg`. Take `⟨h_del_open, h_csq, h_delc, h_loc, h_eps, h_Ψopen, h_Ψc, h_g0, h_card, h_cw, h_delcw, h_f2a, h_f2b, h_f2c, h_f3, h_f5, h_ΨN, h_dv, h_ne⟩` from `hb`. Establish `hf4` using `frobenius_galoisField_four_compatibility l η Ψ σ B M Hb hG m L g₁ Φ hU hL 1 (Or.inl rfl) (hS 1 (Or.inl rfl))`. Establish `hf4'` using `frobenius_galoisField_four_compatibility l η Ψ σ B M Hb hG m L g₁ Φ hU hL 2 (Or.inr rfl) (hS 2 (Or.inr rfl))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf4` using `[pow_one]`. Take `⟨k, S, π, ι, pl, e, c, hF, hπ, hι⟩` from `hL`. Establish `hrk : GC.clRk l (((η.ker ⊓ (barChar O Ψ).ker).comap (galEmb ℚ (W.Lp L) Ω)) ⊓ (cycMod (W.Lp L) Ω l 1).ker) ≤ C₀`. Rewrite using `[rk_link l L η.ker (barChar O Ψ).ker]`. Conclude with `hC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hom : ∀ v : Φ.V, ∃ s, (Φ.om (ResidueField O)) ((Φ.loc v) s) ≠ 1`. Introduce `v`. Take `⟨g, hg'⟩` from `k.mu v`. Use `⟨g, fun h => hg' ?_⟩` and prove the remaining obligations. Rewrite `h` using `[k.j_loc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Frame.om, MonoidHom.comp_apply, k.eps] at h`. Establish `h1` using `congrArg Units.val h`. Simplify using `only [Units.coe_map, Units.val_one, MonoidHom.coe_coe, RingHom.coe_comp, Function.comp_apply] at h1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [cycMod, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, Units.val_one]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_of_cast l (ResidueField O) _ h1`. Establish `hfin : Finite (ResidueField O)` using `hG.fin`. Establish `hok : Φ.Ok C₀` using `{ l_odd := hG.odd fin := hfin del_open := h_del_open c_sq := h_csq del_c := h_delc loc_cont := h_loc eps_cont := h_eps Ψ_open := h_Ψopen Ψ_c := h_Ψc baseSubgroup_spec := h_g0 phi := GC.phi _ Ω l _ Φ S _ π ι k.pl pl e c hF card_inf := h_card cw_sq := h_cw del_cw := h_delcw f2a := …`. Use `⟨hok, ?_, ?_⟩` and prove the remaining obligations. Take `⟨v⟩` from `h_ne`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h1 : Φ.dv v ≤ Φ.d`. Unfold `Frame.d`. Conclude with `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ v)`. Use `h_dv v` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Introduce `v`. Use `h_dv v` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem ok_link (P : GC.Hypotheses₂) {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type}
     [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* Oˣ} {σ : G ℚ Ω}
@@ -152,19 +150,17 @@ private theorem ok_link (P : GC.Hypotheses₂) {Ω : Type} [Field Ω] [CharZero 
     omega
 
 /- English proof (translation)
-Introduce `P Ω _ _ _ l _ O _ _ _ η Ψ σ B M Hb hG Q hQ`. Take `⟨H₀, h0⟩` from `exists_twistCharacter_continuousCohomology l η Ψ σ B M Hb hG`. Take `⟨w, hw, hwQ⟩` from `auxw_ex l η Ψ σ B M Hb hG Q hQ`. Take `⟨C₀, hC₀⟩` from `b0 l η Ψ σ B M Hb hG H₀ w h0 hw`. Establish `hl : l.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set m := 3 * C₀ + 7 with hm_def`. Establish `hm : 3 * C₀ + 7 < l ^ m` using `Nat.lt_pow_self hl.one_lt`. Establish `hU` using `ufacts l η Ψ σ B M Hb hG H₀ w h0 hw m`. Take `⟨L, iF, iN, iC, iA, hab, hup, hgal⟩` from `field_ex l η Ψ σ B M Hb hG m _ hU`. Establish `hM : B.valuation (M : Ω) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hG.l_dvd`. Rewrite using `[ht, Nat.cast_mul, map_mul]`. Establish `hle : B.valuation (t : Ω) ≤ 1` using `B.valuation_le_one ⟨(t : Ω), natCast_mem B t⟩`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hle) hG.over_l`. Take `⟨s, ⟨hsD, hsU⟩, hs2⟩` from `hU.f3 B hG.over_l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsη : s ∈ η.ker` using `hU.split B hM ⟨hsD, hsU⟩`. Establish `hs : s ∈ galOf ℚ L Ω`. Rewrite using `[hgal]`. Conclude with `⟨hsU, hsη⟩`. Rewrite `hU` using `[← hup]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Φ, hL⟩` from `link_ex l η Ψ σ B M Hb hG m L s hU hab (by rw [hgal, hup]) hs`. Establish `hS : ∀ a : ℕ, a = 1 ∨ a = 2 → StrictCl l η Ψ ((barChar O Ψ)⁻¹ ^ a * etaO O η) (upl Ω L)`. Introduce `a ha`. Rewrite using `[hup]`. Conclude with `strict P l η Ψ σ B M Hb hG H₀ w h0 hw m a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hC : GC.clRk l (upl Ω L ⊓ η.ker ⊓ (barChar O Ψ).ker ⊓ (cycMod ℚ Ω l 1).ker) ≤ C₀`. Rewrite using `[hup]`. Conclude with `hC₀ m`. Take `⟨hok, hbig⟩` from `ok_link P l hG m C₀ L s Φ hU hL hs2 hS hC hm`. Use `⟨L, iF, iN, iC, iA, s, Φ, C₀, w, hL, hok, hbig, hw, hwQ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hup]`. Introduce `x hx`. Conclude with `hx.1.1.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.frame_ex :
     GC.Hypotheses₂ → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] (η : G ℚ Ω →* ℤˣ) (Ψ : G ℚ Ω →* Oˣ) (σ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ) (Hb : Subgroup (G ℚ Ω)), Gen l η Ψ σ B M Hb → ∀ Q : ℕ, Q ≠ 0 → HasFrameW l η Ψ σ B M Q := by

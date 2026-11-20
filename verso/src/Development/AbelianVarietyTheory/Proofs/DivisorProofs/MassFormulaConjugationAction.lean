@@ -8,7 +8,7 @@ open scoped Classical
 namespace GlobalTheory.MassConj
 
 /- English proof (translation)
-Establish `h : (Quotient.mk'' (Quotient.out (Quotient.mk'' p : MulAction.orbitRel.Quotient T α)) : MulAction.orbitRel.Quotient T α) = Quotient.mk'' p` using `Quotient.out_eq' _`. Conclude with `MulAction.orbitRel_apply.1 (Quotient.eq''.1 h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_out' {T α : Type} [Group T] [MulAction T α] (p : α) :
     ∃ t : T, t • p = Quotient.out (Quotient.mk'' p : MulAction.orbitRel.Quotient T α) := by
@@ -17,11 +17,11 @@ theorem exists_smul_eq_out' {T α : Type} [Group T] [MulAction T α] (p : α) :
   exact MulAction.orbitRel_apply.1 (Quotient.eq''.1 h)
 
 /- English proof (translation)
-Introduce `H _ X _ f hinv hfo hsupp`. Use `(Set.finite_iUnion fun a : MulAction.orbitRel.Quotient H X => (hsupp (Quotient.out a)).image fun γ => (Quotient.mk'' (ConjPair.mk γ (Quotient.out a)) : MulAction.orbitRel.Quotient H (ConjPair H X))).subset ?_` and prove the remaining obligations. Introduce `O hO`. Establish `hO' : f (Quotient.out O).elt (Quotient.out O).pt ≠ 0` using `hO`. Take `⟨δ, hδ⟩` from `exists_smul_eq_out' (T := H) (Quotient.out O).pt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Set.mem_iUnion.2 ⟨Quotient.mk'' (Quotient.out O).pt, δ * (Quotient.out O).elt * δ⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `show f _ _ ≠ 0`. Rewrite using `[← hδ, hinv]`. Conclude with `hO'`. Establish `e : ConjPair.mk (δ * (Quotient.out O).elt * δ⁻¹) (Quotient.out (Quotient.mk'' (Quotient.out O).pt : MulAction.orbitRel.Quotient H X)) = δ • Quotient.out O`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hδ]`. Both sides reduce to the same expression. Use `show (Quotient.mk'' (ConjPair.mk _ _) : MulAction.orbitRel.Quotient H (ConjPair H X)) = O`. Rewrite using `[e]`. Conclude with `(Quotient.sound' (MulAction.mem_orbit _ δ)).trans (Quotient.out_eq' O)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_support_pairs : ∀ (H : Type) [Group H] (X : Type) [MulAction H X] (f : H → X → ℂ),
     (∀ δ γ : H, ∀ x : X, f (δ * γ * δ⁻¹) (δ • x) = f γ x) →
@@ -48,7 +48,7 @@ theorem finite_support_pairs : ∀ (H : Type) [Group H] (X : Type) [MulAction H 
     exact (Quotient.sound' (MulAction.mem_orbit _ δ)).trans (Quotient.out_eq' O)
 
 /- English proof (translation)
-Use `hfin.subset fun O hO => ?_` and prove the remaining obligations. Conclude with `right_ne_zero_of_mul hO`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_support_weighted {H X : Type} [Group H] [MulAction H X] (f : H → X → ℂ)
     (hfin : {O : MulAction.orbitRel.Quotient H (ConjPair H X) |
@@ -60,9 +60,9 @@ theorem finite_support_weighted {H X : Type} [Group H] [MulAction H X] (f : H �
   exact right_ne_zero_of_mul hO
 
 /- English proof (translation)
-Introduce `H _ X _ f hinv hfo hstab hsupp hfin`. Rewrite using `[GlobalTheory.finsum_fiberwise_of_finite_support (fun O : MulAction.orbitRel.Quotient H (ConjPair H X) => (Quotient.mk'' (Quotient.out O).pt : MulAction.orbitRel.Quotient H X)) _ (finite_support_weighted f hfin)]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.finsum_over_conj_pairs_eq_orbit_sum H X f hinv hstab hsupp (Quotient.out a)`. Rewrite `h` using `[Quotient.out_eq']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem mass_pt_side : ∀ (H : Type) [Group H] (X : Type) [MulAction H X] (f : H → X → ℂ),
     (∀ δ γ : H, ∀ x : X, f (δ * γ * δ⁻¹) (δ • x) = f γ x) →
@@ -86,9 +86,9 @@ theorem mass_pt_side : ∀ (H : Type) [Group H] (X : Type) [MulAction H X] (f : 
   exact h.symm
 
 /- English proof (translation)
-Introduce `G _ X _ Γ Φ hinv hstab hfin`. Rewrite using `[GlobalTheory.finsum_fiberwise_of_finite_support (fun O : MulAction.orbitRel.Quotient Γ (ConjPair Γ X) => ConjClasses.mk (Quotient.out O).elt) _ (finite_support_weighted Φ hfin)]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.finsum_stabilizer_weighted_pair_orbits_conjClass G X Γ Φ hinv (Quotient.out c)`. Establish `e : ConjClasses.mk (Quotient.out c) = c` using `Quotient.out_eq c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_class_side : ∀ (G : Type) [Group G] (X : Type) [MulAction G X] (Γ : Subgroup G) (Φ : Γ → X → ℂ),
     (∀ δ γ : Γ, ∀ x : X, Φ (δ * γ * δ⁻¹) ((δ : G) • x) = Φ γ x) →
@@ -113,11 +113,11 @@ theorem mass_class_side : ∀ (G : Type) [Group G] (X : Type) [MulAction G X] (�
   exact h
 
 /- English proof (translation)
-Introduce `G _ X _ Γ Φ hinv hfo hstab hsupp`. Establish `hinv' : ∀ δ γ : Γ, ∀ x : X, Φ (δ * γ * δ⁻¹) (δ • x) = Φ γ x` using `fun δ γ x => hinv δ γ x`. Establish `hfin` using `finite_support_pairs Γ X Φ hinv' hfo hsupp`. Use `⟨?_, mass_pt_side Γ X Φ hinv' hfo hstab hsupp hfin |>.trans (mass_class_side G X Γ Φ hinv hstab hfin)⟩` and prove the remaining obligations. Use `(hfin.image (fun O => ConjClasses.mk (Quotient.out O).elt)).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `c ⟨x, hx⟩`. Take `⟨δ, hδ⟩` from `exists_smul_eq_out' (T := Γ) (ConjPair.mk (Quotient.out c) x)`. Use `⟨Quotient.mk'' (ConjPair.mk (Quotient.out c) x), ?_, ?_⟩` and prove the remaining obligations. Use `show Φ _ _ ≠ 0`. Rewrite using `[← hδ, smul_elt, smul_pt, hinv']`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Use `show ConjClasses.mk _ = c`. Rewrite using `[← hδ, smul_elt]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mass_formula_conj : ∀ (G : Type) [Group G] (X : Type) [MulAction G X] (Γ : Subgroup G) (Φ : Γ → X → ℂ),
     (∀ δ γ : Γ, ∀ x : X, Φ (δ * γ * δ⁻¹) ((δ : G) • x) = Φ γ x) →

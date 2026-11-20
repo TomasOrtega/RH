@@ -11,29 +11,25 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 namespace GlobalTheory.PsType
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n ψ hord y hy hny`. Establish `hbad : ∃ a b : Fin n, a < b ∧ ¬ Triv (ψ a / ψ b) (y.val a b)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hny ⟨hy, fun i j hij => h i j hij⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Finset (Fin n)` to `Finset.univ.filter (fun a => ∃ b, a < b ∧ ¬ Triv (ψ a / ψ b) (y.val a b))`. Establish `hS : S.Nonempty`. Take `⟨a, b, hab, h⟩` from `hbad`. Conclude with `⟨a, by simp [S]; exact ⟨b, hab, h⟩⟩`. Use `set a := S.min' hS with ha_def`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `haS : a ∈ S` using `S.min'_mem hS`. Establish `hamin : ∀ i ∈ S, a ≤ i` using `fun i hi => S.min'_le i hi`. Set `T : Finset (Fin n)` to `Finset.univ.filter (fun b => a < b ∧ ¬ Triv (ψ a / ψ b) (y.val a b))`. Establish `hT : T.Nonempty`. Use `haS` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and] at this`. Take `⟨b, hb⟩` from `this`. Conclude with `⟨b, by simp [T]; exact hb⟩`. Use `set b := T.max' hT with hb_def`. Establish `hbT : b ∈ T` using `T.max'_mem hT`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and] at hbT`. Take `⟨hab, hbad_ab⟩` from `hbT`. Establish `hbmax : ∀ j, b < j → Triv (ψ a / ψ j) (y.val a j)`. Introduce `j hj`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: j ∈ T` using `by simp [T]; exact ⟨lt_trans hab hj, hc⟩`. Conclude with `absurd (T.le_max' j this) (not_le.mpr hj)`. Take `⟨j, hj, u, s, hu, hs, hsu, hne, hθj, hKO, hval⟩` from `GlobalTheory.T.exists_rankOne_corner_principalSeriesCongruence k n ψ hord y hy a b hab hbad_ab hbmax`. Establish `hprops` using `GlobalTheory.PsType.triv_ev_props k`. Use `⟨j, hj, ⟨hKO, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `i i' hii'`. Rewrite using `[hval]`. Distinguish the cases in `hi' : i' = a`. Substitute `hi'` using the available equality. Simplify using `only [Matrix.add_apply, Matrix.one_apply, Matrix.vecMulVec_apply, Pi.single_eq_same, mul_one, if_neg (ne_of_lt hii'), zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hiS : i ∉ S` using `fun h => absurd (hamin i h) (not_le.mpr hii')`. Establish `hib : Triv (ψ i / ψ b) (y.val i b)`. Assume the negation of the conclusion as `hc`. Conclude with `hiS (by simp [S]; exact ⟨b, lt_trans hii' hab, hc⟩)`. Establish `h2 : Triv (ψ i / ψ a) (y.val i b)` using `hord i i a b le_rfl hii'.le hab.le _ hib`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `hprops.1 _ _ _ ?_ h2` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `first`. Consider the case `exact mul_le_of_le_one_left' hs`. Consider the case `exact (mul_le_mul' hs le_rfl).trans_eq (one_mul _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Consider the case `exact mul_le_of_le_one_left (zero_le _) hs`. Simplify using `only [Matrix.add_apply, Matrix.one_apply, Matrix.vecMulVec_apply, Pi.single_eq_of_ne hi', mul_zero, if_neg (ne_of_lt hii'), add_zero]`. Conclude with `hprops.2.2.1 _`. Establish `hθ : theta ψ (y * j * y⁻¹) = (ψ a u : ℂ)`. Use `GlobalTheory.T.principalSeriesTypeCharacter_rankOne_perturbation k n ψ (y * j * y⁻¹) (fun i => s * y.val i b) (Pi.single a 1) a u hu hval ?_` and prove the remaining obligations.
-
-Introduce `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `[hsu]`. Simplify using `[Pi.single_eq_of_ne hi, hi]`.
-
-Rewrite using `[hθj, hθ]`. Introduce `h`. Conclude with `hne (Units.ext h).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem not_intertwine : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ), Ordered ψ → ∀ y ∈ KO k (Fin n), y ∉ grp ψ → ∃ j ∈ grp ψ, y * j * y⁻¹ ∈ grp ψ ∧ theta ψ j ≠ theta ψ (y * j * y⁻¹) := by
   intro k _ _ _ _ n ψ hord y hy hny

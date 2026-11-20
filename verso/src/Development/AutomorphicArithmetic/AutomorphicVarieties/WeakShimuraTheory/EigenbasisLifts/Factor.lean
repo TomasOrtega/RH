@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `D.D A[X] (MonoidAlgebra.mapDomainRingHom A[X] φ _) = D.D A[X] _`. Use `congr 1`. Rewrite using `[map_sub]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem factor_chi {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : W.GDet n A G) (φ : H →* G)
     (h : H) : (D.comap φ).chi (MonoidAlgebra.single h 1) = D.chi (MonoidAlgebra.single (φ h) 1) := by
@@ -17,15 +17,15 @@ private theorem factor_chi {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Grou
   simp
 
 /- English proof (translation)
-Establish `hchi : ∀ h, D.chi (MonoidAlgebra.single (φ h) 1) = (W.GDet.ofRep (W.mat ρ)).chi (MonoidAlgebra.single h 1)` using `fun h => by rw [← hD, factor_chi]`. Establish `hker : φ.ker ≤ ρ.ker` using `fun g hg => by`. Establish `h0` using `(trPlus ρ hF).1 (MonoidAlgebra.single g 1 - MonoidAlgebra.single 1 1) fun h => by`. Establish `e : (W.GDet.ofRep (W.mat ρ)).tr (MonoidAlgebra.single (h * g) 1) = (W.GDet.ofRep (W.mat ρ)).tr (MonoidAlgebra.single h 1)`. Unfold `W.GDet.tr W.GDet.lam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hchi, ← hchi, map_mul, MonoidHom.mem_ker.1 hg, mul_one]`. Rewrite `e` using `[(AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn, (AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn]`. Rewrite using `[(AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn, mul_sub, map_sub, Matrix.trace_sub, MonoidAlgebra.single_mul_single, MonoidAlgebra.single_mul_single, mul_one, mul_one, e, sub_self]`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h0` using `[W.GDet.repAlg, W.mat]`. Set `ρ₀ : G →* GL (Fin n) A` to `φ.liftOfSurjective hφ ⟨ρ, hker⟩`. Establish `h0 : ∀ h, ρ₀ (φ h) = ρ h` using `fun h => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ h`. Establish `hm : ∀ h, W.mat ρ₀ (φ h) = W.mat ρ h` using `fun h => congrArg Units.val (h0 h)`. Use `⟨ρ₀, MonoidHom.ext h0, ?_, CA.d_gext _ _ fun g i _ _ => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `top_le_iff.1 (le_trans (le_of_eq (Eq.symm hF)) (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `⟨φ h, hm h⟩`. Take `⟨h, rfl⟩` from `hφ g`. Unfold `W.GDet.lam`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[hchi, (AlgebraTools.Det.repApi _).2.1, (AlgebraTools.Det.repApi _).2.1, hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem factor_abs {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : W.GDet n A G) (φ : H →* G)
     (hφ : Function.Surjective φ) (ρ : H →* GL (Fin n) A) (hn : 1 ≤ n) (hF : Full ρ)
@@ -57,9 +57,9 @@ private theorem factor_abs {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Grou
     rw [hchi, (AlgebraTools.Det.repApi _).2.1, (AlgebraTools.Det.repApi _).2.1, hm]
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V c n r B x ρ hn hx hirr`. Establish `hs : Function.Surjective V.pr` using `fun g => by`. Take `⟨τ, hτ⟩ : ∃ τ, toGS Ω V.S' τ = g.1` from `QuotientGroup.mk_surjective g.1`. Take `⟨σ, rfl⟩` from `(V.hη τ).1 (by rw [hτ]; exact g.2)`. Conclude with `⟨σ, Subtype.ext hτ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hF : Full ρ` using `(AlgebraTools.Det.irrIffSpan (W.mat ρ)).1 fun N hN => hirr.2.2 N le_top fun g v hv => hN g v hv`. Conclude with `factor_abs x.D V.pr hs ρ hn hF hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.factor :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev) {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} (B : W.UniversalOrdinaryDeterminantRing r) (x : B.Pt) (ρ : G L Ω →* GL (Fin n) (PadicAlgCl l)), 1 ≤ n → x.IsRep ρ → Af.IsIrr (ρ.comp (cycBar L Ω l).ker.subtype) →

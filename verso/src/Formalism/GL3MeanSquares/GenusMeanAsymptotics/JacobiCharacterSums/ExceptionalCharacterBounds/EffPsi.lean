@@ -9,21 +9,19 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.SupplyAP
 
 /- English proof (translation)
-Use `set S : DirichletCharacter ℂ q → ℝ := fun χ => ∑ β ∈ B χ, x ^ β / β with hS`. Use `set E : DirichletCharacter ℂ q → ℂ := fun χ => psiChi χ x - (if χ = 1 then (x : ℂ) else 0) + ∑ β ∈ B χ, (x : ℂ) ^ (β : ℂ) / (β : ℂ) with hEdef`. Establish `hSnn : ∀ χ, 0 ≤ S χ` using `fun χ => Finset.sum_nonneg (fun β hβ => div_nonneg (Real.rpow_nonneg hx β) (hB χ β hβ))`. Establish `hT : ∀ χ, ∑ β ∈ B χ, (x : ℂ) ^ (β : ℂ) / (β : ℂ) = ((S χ : ℝ) : ℂ)`. Introduce `χ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hS, Complex.ofReal_sum]`. Conclude with `Finset.sum_congr rfl (fun β _ => excTerm_ofReal x β hx)`. Establish `hsplit : ∀ χ, psiChi χ x = (if χ = 1 then (x : ℂ) else 0) + (E χ - ((S χ : ℝ) : ℂ))`. Introduce `χ`. Simplify using `only [hEdef, hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set W : ℂ := ∑ χ : DirichletCharacter ℂ q, χ ((a : ZMod q)⁻¹) * (E χ - ((S χ : ℝ) : ℂ)) with hW`. Establish `hid : (((q.totient : ℝ) * psiAP q a x : ℝ) : ℂ) = (x : ℂ) + W`. Establish `h0` using `chebyshev_progression_orthogonality q a ha x`. Simplify using `only [hsplit, mul_add, Finset.sum_add_distrib, principal_character_orthogonality_term q a ha x] at h0`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[h0]`. Establish `hre : (q.totient : ℝ) * psiAP q a x = x + W.re`. Use `congrArg Complex.re hid` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWn : ‖W‖ ≤ (q.totient : ℝ) * K + ∑ χ : DirichletCharacter ℂ q, S χ`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `: ∀ χ ∈ (Finset.univ : Finset (DirichletCharacter ℂ q)), ‖χ ((a : ZMod q)⁻¹) * (E χ - ((S χ : ℝ) : ℂ))‖ ≤ K + S χ`. Introduce `χ _`. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `DirichletCharacter.norm_le_one χ ((a : ZMod q)⁻¹)`. Establish `h4 : ‖E χ - ((S χ : ℝ) : ℂ)‖ ≤ K + S χ`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hSnn χ)]`. Use `hE χ` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_le_sum this).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, card_dirichletCharacter_eq_totient]`. Establish `hreW : -‖W‖ ≤ W.re`.
-
-Use `Complex.abs_re_le_norm W` as an intermediate fact. Combine the linear relations using `[neg_abs_le W.re]`. Use `show x - ∑ χ : DirichletCharacter ℂ q, S χ - (q.totient : ℝ) * K ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem charSum_lowerOf (q a : ℕ) [NeZero q] (ha : Nat.Coprime a q) (x K : ℝ) (hx : 0 ≤ x)
     (B : DirichletCharacter ℂ q → Finset ℝ) (hB : ∀ χ, ∀ β ∈ B χ, 0 ≤ β)
@@ -77,13 +75,11 @@ theorem charSum_lowerOf (q a : ℕ) [NeZero q] (ha : Nat.Coprime a q) (x K : ℝ
   linarith
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ i, (B i).Nonempty`. Take `⟨i, hi⟩` from `h`. Rewrite using `[Finset.sum_eq_single i]`. Establish `h1 : (B i).card = 1` using `le_antisymm (hcard i) (Finset.card_pos.mpr hi)`. Take `⟨β, hβ⟩` from `Finset.card_eq_one.mp h1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hβ, Finset.sum_singleton]`. Conclude with `hf i β (by rw [hβ]; exact Finset.mem_singleton_self β)`. Introduce `j _ hji`. Establish `: ¬ (B j).Nonempty` using `fun hj => hji (huniq j i hj hi)`. Rewrite using `[Finset.not_nonempty_iff_eq_empty.mp this, Finset.sum_empty]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hi'`. Conclude with `absurd (Finset.mem_univ i) hi'`. Establish `h' : ∀ i, ¬ (B i).Nonempty` using `fun i hi => h ⟨i, hi⟩`. Establish `: ∑ i, ∑ β ∈ B i, f β = 0` using `Finset.sum_eq_zero (fun i _ => by`. Rewrite using `[Finset.not_nonempty_iff_eq_empty.mp (h' i), Finset.sum_empty])`.
-
-Rewrite using `[this]`. Conclude with `hM`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem excSum_leOf {ι : Type*} [Fintype ι] (B : ι → Finset ℝ) (f : ℝ → ℝ) (M : ℝ) (hM : 0 ≤ M)
     (hcard : ∀ i, (B i).card ≤ 1) (huniq : ∀ i j, (B i).Nonempty → (B j).Nonempty → i = j)
@@ -107,35 +103,33 @@ theorem excSum_leOf {ι : Type*} [Fintype ι] (B : ι → Finset ℝ) (f : ℝ �
     exact hM
 
 /- English proof (translation)
-Take `⟨c₁, hc₁, hc₁', hex⟩` from `excOne`. Take `⟨c, C, hc, hPC⟩` from `psiChiBound c₁ hc₁ hc₁'`. Take `⟨cE, hcE, hEB⟩` from `hA`. Use `⟨c, min 1 cE / 2, max C 0, hc, by positivity, le_max_right _ _, ?_⟩` and prove the remaining obligations. Introduce `m a x hm ha hx hL hmx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: NeZero m` using `⟨by omega⟩`. Take `⟨B, hBexc, hBuniq, hBprop⟩` from `hex m`. Use `set e := Real.exp (-c * Real.sqrt (Real.log x)) with he`. Use `set K := max C 0 * x * e with hKdef`. Establish `hx2 : 2 ≤ x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (4 : ℝ) + 1 ≤ Real.exp 4` using `Real.add_one_le_exp 4`. Establish `h2 : Real.exp 4 ≤ Real.exp (Real.log x)` using `Real.exp_le_exp.mpr hL`. Rewrite `h2` using `[Real.exp_log hx]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK : ∀ χ : DirichletCharacter ℂ m, ‖psiChi χ x - (if χ = 1 then (x : ℂ) else 0) + ∑ β ∈ B χ, (x : ℂ) ^ (β : ℂ) / (β : ℂ)‖ ≤ K`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `χ`. Use `(hPC m χ (B χ) x (hBexc χ) hx2 hmx).trans ?_` and prove the remaining obligations. Establish `: 0 ≤ x * e` using `by positivity`. Rewrite using `[hKdef, mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hB0 : ∀ χ, ∀ β ∈ B χ, 0 ≤ β` using `fun χ β hβ => by`. Use `(hBprop χ β hβ).2.2.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow` using `charSum_lowerOf m a ha x K hx.le B hB0 hK`. Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmA1 : (1 : ℝ) ≤ (m : ℝ) ^ A` using `one_le_pow₀ hm1`. Establish `hminv : 0 < ((m : ℝ) ^ A)⁻¹` using `by positivity`. Establish `hminv1 : ((m : ℝ) ^ A)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ hmA1`. Use `set d := min 1 cE * ((m : ℝ) ^ A)⁻¹ / 2 with hd`. Establish `hmin1 : min 1 cE ≤ 1` using `min_le_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hminE : min 1 cE ≤ cE` using `min_le_right _ _`. Establish `hmin0 : 0 < min 1 cE` using `lt_min one_pos hcE`. Establish `hd1 : d ≤ 1 / 2`. Establish `: min 1 cE * ((m : ℝ) ^ A)⁻¹ ≤ 1 * 1` using `mul_le_mul hmin1 hminv1 hminv.le zero_le_one`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd0 : 0 < d` using `by positivity`. Establish `hS : ∑ χ : DirichletCharacter ℂ m, ∑ β ∈ B χ, x ^ β / β ≤ x * (1 - d)`. Use `excSum_leOf B (fun β => x ^ β / β) (x * (1 - d)) (by nlinarith) (fun χ => (hBexc χ).1) hBuniq ?_` and prove the remaining obligations. Introduce `χ β hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hsq, hne, hhalf, hz⟩` from `hBprop χ β hβ`. Establish `hb` using `hEB m χ β hsq hne hz`. Rewrite `hb` using `[Real.rpow_neg (by positivity), Real.rpow_natCast]`. Establish `hce : cE * ((m : ℝ) ^ A)⁻¹ ≥ min 1 cE * ((m : ℝ) ^ A)⁻¹` using `mul_le_mul_of_nonneg_right hminE hminv.le`. Establish `hβ1 : β ≤ 1` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `excTerm x β hx hL hhalf hβ1`. Use `h1.trans ?_` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ hx.le` to reduce the goal to its premises. Rewrite using `[hd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφpos : (0 : ℝ) < (m.totient : ℝ)` using `by exact_mod_cast Nat.totient_pos.mpr (by omega)`. Establish `hφle : (m.totient : ℝ) ≤ m` using `by exact_mod_cast Nat.totient_le m`. Establish `hmain : x * d ≤ (m.totient : ℝ) * (psiAP m a x + K)`. Rewrite using `[mul_add]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hnn : 0 ≤ psiAP m a x + K`. Establish `: (m.totient : ℝ) * 0 ≤ (m.totient : ℝ) * (psiAP m a x + K)`. Rewrite using `[mul_zero]`. Use polynomial arithmetic with `[mul_pos hx hd0]`. Conclude with `le_of_mul_le_mul_left this hφpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmain2 : x * d ≤ (m : ℝ) * (psiAP m a x + K)` using `hmain.trans (mul_le_mul_of_nonneg_right hφle hnn)`. Establish `hm0 : (0 : ℝ) < m` using `by linarith`. Establish `hgoal : min 1 cE / 2 * x / (m : ℝ) ^ (A + 1) ≤ psiAP m a x + K`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `hxd : min 1 cE / 2 * x = (m : ℝ) ^ A * (x * d)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hd]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hxd]`. Use `mul_le_mul_of_nonneg_left hmain2 (by positivity : (0 : ℝ) ≤ (m : ℝ) ^ A)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem psiAPLowerOf (A : ℕ) (hA : ExcBoundAt A) : ∃ c c₀ C : ℝ, 0 < c ∧ 0 < c₀ ∧ 0 ≤ C ∧
     ∀ (m a : ℕ) (x : ℝ), 1 ≤ m → Nat.Coprime a m → 0 < x → 4 ≤ Real.log x →

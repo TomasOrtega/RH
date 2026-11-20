@@ -21,7 +21,7 @@ open GlobalTheory.ArcPull GlobalTheory.ArcQ
 open GlobalTheory.PsiEvenPull (proj)
 
 /- English proof (translation)
-The claim follows from `Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun x hx => (Y.mem_basicOpen _ x hx).1 (h.ge hx)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_basicOpen_top {Y : Scheme.{0}} (s : Γ(Y, ⊤)) (h : Y.basicOpen s = ⊤) : IsUnit s :=
   Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun x hx => (Y.mem_basicOpen _ x hx).1 (h.ge hx)
@@ -29,7 +29,7 @@ theorem isUnit_of_basicOpen_top {Y : Scheme.{0}} (s : Γ(Y, ⊤)) (h : Y.basicOp
 abbrev fnSp (A : Type) [CommRing A] : A →+* Γ(Sp A, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom
 
 /- English proof (translation)
-Establish `nat` using `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom α))`. Rewrite using `[Scheme.Hom.comp_appTop]`. Conclude with `congrArg s.appTop.hom nat.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appTop_comp_spMap {R₀ A : Type} [CommRing R₀] [CommRing A] (α : R₀ →+* A) {Z : Scheme.{0}}
     (s : Z ⟶ Sp A) (r : R₀) : (s ≫ spMap α).appTop.hom (fnSp R₀ r) = s.appTop.hom (fnSp A (α r)) := by
@@ -41,7 +41,7 @@ def fnOn {R₀ : Type} [CommRing R₀] (W : (Sp R₀).Opens) : R₀ →+* Γ(W.t
   W.ι.appTop.hom.comp (fnSp R₀)
 
 /- English proof (translation)
-Establish `e : t.appTop.hom (fnOn W r) = (t ≫ W.ι).appTop.hom (fnSp R₀ r)`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Rewrite using `[e, h, appTop_comp_spMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem appTop_fnOn {R₀ A : Type} [CommRing R₀] [CommRing A] (W : (Sp R₀).Opens) (α : R₀ →+* A) {Z : Scheme.{0}}
     (t : Z ⟶ W.toScheme) (s : Z ⟶ Sp A) (h : t ≫ W.ι = s ≫ spMap α) (r : R₀) :
@@ -51,7 +51,7 @@ theorem appTop_fnOn {R₀ A : Type} [CommRing R₀] [CommRing A] (W : (Sp R₀).
   rw [e, h, appTop_comp_spMap]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.UU.gm_top t, GlobalTheory.UU.gm_top s]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show t.appTop.hom (u : Γ(W.toScheme, ⊤)) = s.appTop.hom (fnSp A (v : A))`. Rewrite using `[hu, hv, appTop_fnOn W α t s h r]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_fnOn {R₀ A : Type} [CommRing R₀] [CommRing A] (W : (Sp R₀).Opens) (α : R₀ →+* A) {Z : Scheme.{0}}
     (t : Z ⟶ W.toScheme) (s : Z ⟶ Sp A) (h : t ≫ W.ι = s ≫ spMap α) (r : R₀) (u : Γ(W.toScheme, ⊤)ˣ) (v : Aˣ)
@@ -64,9 +64,7 @@ theorem gm_fnOn {R₀ A : Type} [CommRing R₀] [CommRing A] (W : (Sp R₀).Open
   rw [hu, hv, appTop_fnOn W α t s h r]
 
 /- English proof (translation)
-Use `set W := (Sp R₀).basicOpen (fnSp R₀ f)`. Establish `hf : IsUnit (fnOn W f)` using `isUnit_of_basicOpen_top _ (by`. Establish `e` using `Scheme.preimage_basicOpen W.ι (fnSp R₀ f)`. Rewrite `e` using `[Scheme.Opens.ι_preimage_self]`. Conclude with `e.symm)`.
-
-Conclude with `isUnit_of_dvd_unit (map_dvd (fnOn W) hr |>.trans (by rw [map_pow])) (hf.pow N)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_fnOn {R₀ : Type} [CommRing R₀] (f r : R₀) (N : ℕ) (hr : r ∣ f ^ N) :
     IsUnit (fnOn ((Sp R₀).basicOpen (fnSp R₀ f)) r) := by
@@ -82,11 +80,11 @@ end GlobalTheory.RescaleLift
 namespace GlobalTheory.RescaleLift
 
 /- English proof (translation)
-Set `m : W'.toScheme ⟶ W.toScheme` to `(Sp R₀).homOfLE hle`. Establish `hm : m ≫ W.ι = W'.ι` using `Scheme.homOfLE_ι _ _`. Establish `hφ : ∀ y : D₁.X, m ≫ (toUnit (TW W) ≫ D₁.c y).left = (toUnit (TW W') ≫ D₁.c y).left` using `fun y => by show m ≫ W.ι ≫ (D₁.c y).left = W'.ι ≫ (D₁.c y).left`. Rewrite using `[← Category.assoc, hm]`. Use `choose b hb vb using fun y : D₁.X => exists_gen D₁.P.isLB (K' := PUnit) (φ' := fun _ => (toUnit (TW W') ≫ D₁.c y).left) (ε' := fun _ => -1) (fun U _ k => Finset.prod_congr rfl fun _ _ => congrArg (fun q => k q ^ (-1 : ℤ)) (hφ y)) (GlobalTheory.UU.scaleGen (u y) (LB.pullGen D₁.P.L …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ev : ∀ (y : D₁.X) {Z : Scheme.{0}} (t : Z ⟶ W'.toScheme) (z : Z) J, Good D₁.P.L z J → val (b y) t z J = gm t z ⊤ (u y) * val (ψ.psi y) (t ≫ m) z J` using `fun y Z t z J hJ => (vb y Z t z J hJ).trans ((GlobalTheory.UU.val_scaleGen _ _ _ hJ).trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _)))`. Use `⟨{ psi := b, psi_gen := hb, psi_eq := fun y => corr_of_val D₁.P.isLB fun z J hJ => ?_ }, ev⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ((ev y _ z J hJ).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ?_ ?_).trans (GlobalTheory.UU.val_scaleGen (unitOn (κ₀ y)) (D₁.psi y) _ hJ).symm` and prove the remaining obligations. Use `gm_fnOn W' (algebraMap R₀ (FractionRing R₀)) _ _ ?_ (r y) _ _ (hu y) (hr y).symm z` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp, Category.id_comp, morphismRestrict_ι]`. Use `GlobalTheory.ArcSpecialise.psiOn_generic ψ y _ _ ?_ hJ` and prove the remaining obligations. Rewrite using `[Category.assoc, hm, Category.id_comp, Category.id_comp, morphismRestrict_ι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psiOn_rescale {R₀ : Type} [CommRing R₀] [IsDomain R₀] (D₁ : DegPre R₀) (κ₀ : D₁.X → (FractionRing R₀)ˣ)
     {W W' : (Sp R₀).Opens} (ψ : PsiOn D₁ W) (hle : W' ≤ W) (u : D₁.X → Γ(W'.toScheme, ⊤)ˣ) (r : D₁.X → R₀)

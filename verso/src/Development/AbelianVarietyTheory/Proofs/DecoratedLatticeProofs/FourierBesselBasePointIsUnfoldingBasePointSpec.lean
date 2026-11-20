@@ -22,7 +22,7 @@ variable {D : D7} {σ : ℕ}
 def eLast (D : D7) (ρ : ℕ) : Fin ρ → D.host.E := fun i => if i.1 + 1 = ρ then 1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [ratV, eLast, ell]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ratV_eLast (ρ : ℕ) : ratV (eLast D ρ) = ell D ρ := by
   funext i
@@ -32,7 +32,7 @@ theorem ratV_eLast (ρ : ℕ) : ratV (eLast D ρ) = ell D ρ := by
 def zlQ (B : BesLev D σ) : Matrix (Fin B.L.rank) (Fin (σ + 1)) D.host.E := vecMulVec B.ζ (eLast D (σ + 1))
 
 /- English proof (translation)
-Rewrite using `[zl, zEll, ← ratV_eLast]`. Use function extensionality and compare the values at `i j`. Simplify using `[rat, zlQ, vecMulVec_apply, ratV]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rat_zlQ (B : BesLev D σ) : (rat (zlQ B) : Mx D B.L.rank (σ + 1)) = zl B := by
   rw [zl, zEll, ← ratV_eLast]
@@ -40,14 +40,14 @@ theorem rat_zlQ (B : BesLev D σ) : (rat (zlQ B) : Mx D B.L.rank (σ + 1)) = zl 
   simp [rat, zlQ, vecMulVec_apply, ratV]
 
 /- English proof (translation)
-Rewrite using `[gramQ, rat_mul, rat_mul, rat_conjTranspose]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rat_gramQ (W : HSp D) {ρ : ℕ} (x : Matrix (Fin W.rank) (Fin ρ) D.host.E) :
     (rat (gramQ W x) : Mx D ρ ρ) = adj (rat x) ⬝ (gA W ⬝ rat x) := by
   rw [gramQ, rat_mul, rat_mul, rat_conjTranspose]; rfl
 
 /- English proof (translation)
-Establish `hu : IsUnit (-incA D D.host.xi0)` using `((isUnit_iff_ne_zero.2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)).map (incA D)).neg`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew at h`. Rewrite `h` using `[hu.smul_left_cancel, Matrix.transpose_inj]`. Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_gramQ, rat_gramQ, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramQ_eq_of_gramSkew {W W' : HSp D} {ρ : ℕ} (x : Matrix (Fin W.rank) (Fin ρ) D.host.E)
     (x' : Matrix (Fin W'.rank) (Fin ρ) D.host.E)
@@ -61,16 +61,16 @@ theorem gramQ_eq_of_gramSkew {W W' : HSp D} {ρ : ℕ} (x : Matrix (Fin W.rank) 
   rw [rat_gramQ, rat_gramQ, h]
 
 /- English proof (translation)
-Rewrite using `[pairS, adj_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairS_mul (T : HSp D) {ρ : ℕ} (x : Mx D T.rank ρ) (c : Mx D ρ ρ) :
     pairS T x (x ⬝ c) = (adj c ⬝ (adj x ⬝ (gA T ⬝ x))).trace := by
   rw [pairS, adj_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [gramQ, zlQ, Matrix.mulVec, dotProduct, Matrix.mul_apply, conjTranspose_apply, vecMulVec_apply, eLast, Pi.star_apply, Fin.val_last]`. Simplify using `only [if_true, mul_one, star_one]`. Rewrite using `[Finset.sum_eq_single (Fin.last σ)]`. Simplify using `only [Fin.val_last, if_true, mul_one]`. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb' : ¬ (b.1 + 1 = σ + 1)` using `fun h => hb (Fin.ext (by simp only [Fin.val_last]; omega))`. Simplify using `only [hb', if_false, mul_zero, Finset.sum_const_zero, zero_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gramQ_zlQ_mulVec_last (B : BesLev D σ) (a : Fin (σ + 1) → D.host.E) :
     (gramQ B.L (zlQ B) *ᵥ a) (Fin.last σ) = (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ) * a (Fin.last σ) := by
@@ -85,13 +85,13 @@ theorem gramQ_zlQ_mulVec_last (B : BesLev D σ) (a : Fin (σ + 1) → D.host.E) 
   · simp
 
 /- English proof (translation)
-Introduce `D σ B`. Take `⟨x, ⟨hli, hg⟩, hx⟩` from `GlobalTheory.T.exists_mem_orb_rat_eq_x0 D σ B`. Rewrite `hg` using `[← rat_zlQ]`. Establish `hG : gramQ B.V x = gramQ B.L (zlQ B)` using `gramQ_eq_of_gramSkew x (zlQ B) hg`. Establish `hA : adj (x0 B) ⬝ (gA B.V ⬝ x0 B) = adj (zl B) ⬝ (gA B.L ⬝ zl B)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx, ← rat_zlQ, ← rat_gramQ, ← rat_gramQ, hG]`. Use `⟨x, hx, ⟨hli, fun u hu => ?_⟩, ?_, fun a ha => ?_, fun S S₀ d c => ?_⟩` and prove the remaining obligations. Rewrite using `[rat_gramQ, hx, hA, ]`. Establish `hz : zl B ⬝ u.1 = zl B` using `zEll_mul B.L B.ζ hu`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = adj (zl B) ⬝ (gA B.L ⬝ zl B) := by rw [hz]`. Use extensionality with `g`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((GlobalTheory.T.mem_besGrp_iff_mt_mul_x0_eq_x0_mul D σ B).1 g).symm`. Establish `h1` using `congrFun ha (Fin.last σ)`. Rewrite `h1` using `[hG, gramQ_zlQ_mulVec_last, Pi.zero_apply]`. Conclude with `(mul_eq_zero.1 h1).resolve_left B.line.2`. Rewrite using `[HypDec.qS, HypDec.qS, HypDec.symplOH_extX_extY, HypDec.symplOH_extX_extY, pairS_mul, pairS_mul, hA]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basePoint_spec : ∀ (D : D7) (σ : ℕ) (B : BesLev D σ), ∃ x₀ : Matrix (Fin B.V.rank) (Fin (σ + 1)) D.host.E,
     (rat x₀ : Mx D B.V.rank (σ + 1)) = x0 B ∧ IsBase B.V x₀ ∧

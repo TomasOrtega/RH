@@ -7,19 +7,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.CtLevel
 
 /- English proof (translation)
-Take `⟨hKo, hKc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n`. Establish `hUtop : UL n w = ⊤` using `by unfold UL; rw [if_pos hw]`. Establish `hUo : IsOpen (UL n w : Set (GLw n w))` using `by rw [hUtop]; exact isOpen_univ`. Establish `hmemU : ∀ x : GLw n w, x ∈ UL n w` using `fun x => by rw [hUtop]; trivial`. Distinguish the cases in `hKL : K' = KL n w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨GlobalTheory.LFun.KGL w n, hKo, ?_, ?_, fun _ => rfl⟩` and prove the remaining obligations. Introduce `x hx`. Use `Subgroup.mem_map.2 ⟨⟨x, hmemU x⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hKL, KL, Subgroup.mem_subgroupOf]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk x hx`. Conclude with `(GlobalTheory.LFun.KGL w n).mul_mem ((GlobalTheory.LFun.KGL w n).mul_mem ((GlobalTheory.LFun.KGL w n).inv_mem hk) hx) hk`. Use `set S : Subgroup (GLw n w) := K'.map (UL n w).subtype with hSdef`. Establish `hSo : IsOpen (S : Set (GLw n w))`. Rewrite using `[hSdef, Subgroup.coe_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hUo.isOpenMap_subtype_val _ hK.1`. Use `haveI : CompactSpace (GlobalTheory.LFun.KGL w n) := isCompact_iff_compactSpace.1 hKc`. Establish `hWo : IsOpen ((S.subgroupOf (GlobalTheory.LFun.KGL w n) : Subgroup _) : Set (GlobalTheory.LFun.KGL w n))`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hSo.preimage continuous_subtype_val`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨V, hV⟩` from `IsTopologicalGroup.exist_openNormalSubgroup_sub_clopen_nhds_of_one ⟨Subgroup.isClosed_of_isOpen _ hWo, hWo⟩ (Subgroup.one_mem _)`. Use `⟨V.toSubgroup.map (GlobalTheory.LFun.KGL w n).subtype, ?_, ?_, ?_, fun h => absurd h hKL⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_map]`. Conclude with `hKo.isOpenMap_subtype_val _ V.isOpen'`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `hV hv` as an intermediate fact. Rewrite `this` using `[SetLike.mem_coe, Subgroup.mem_subgroupOf]`. Conclude with `this`. Introduce and unpack `k hk _ ⟨v, hv, rfl⟩`. Use `⟨(⟨k, hk⟩ : GlobalTheory.LFun.KGL w n)⁻¹ * v * (⟨k, hk⟩ : GlobalTheory.LFun.KGL w n), ?_, ?_⟩` and prove the remaining obligations.
-
-Use `V.isNormal'.conj_mem v hv (⟨k, hk⟩ : GlobalTheory.LFun.KGL w n)⁻¹` as an intermediate fact. Simplify using `using this`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_open_conjStable_sub_level (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E)
     (K' : Subgroup (UL n w)) (hw : IsSplitAt w) (hK : IsLevel (MonoidHom.id _) (KL n w) K') :

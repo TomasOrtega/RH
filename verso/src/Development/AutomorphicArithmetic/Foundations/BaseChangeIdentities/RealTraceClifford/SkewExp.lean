@@ -12,9 +12,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n`. Use `⟨fun X hX => ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Express the relevant statement in the definitionally equal form `NormedSpace.exp X * (NormedSpace.exp X)ᴴ = 1`. Rewrite using `[← Matrix.exp_conjTranspose, hX, ← Matrix.exp_add_of_commute _ _ (Commute.neg_right (Commute.refl X)), add_neg_cancel, NormedSpace.exp_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨X, p, hX, hk, -⟩` from `GlobalTheory.unitary_exists_skew_log n k.1 (Matrix.mem_unitaryGroup_iff'.mp k.2)`. Conclude with `⟨X, hX, hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.RealTr.skewExp :
     ∀ n : ℕ, (∀ X : Mat n, Xᴴ = -X → NormedSpace.exp X ∈ Matrix.unitaryGroup (Fin n) ℂ) ∧

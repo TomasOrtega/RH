@@ -14,9 +14,9 @@ namespace Formalism.L2.SG.Pf.SatGramActL
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `e : kB c Λ γ = ((c.h (c.base Λ) : X.B.I.Gf) * X.xu w)⁻¹ * (((iotaF X w γ * c.h (c.base Λ) : Hfin X w) : X.B.I.Gf) * X.xu w)`. Simplify using `only [kB, Subgroup.coe_mul, mul_assoc]`. Rewrite `hk`, the goal using `[e]`. Use `colGood X w _ _ hk ?_` and prove the remaining obligations. Establish `h2` using `K_inv X.B.I hk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[mul_inv_rev, inv_inv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem satGramActLIota_kB_good {D : D7} {X : HidaSetting D} {w : D.what₂.Word}
     {rs : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (c : ColSys X w rs) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
@@ -30,7 +30,7 @@ theorem satGramActLIota_kB_good {D : D7} {X : HidaSetting D} {w : D.what₂.Word
   rwa [mul_inv_rev, inv_inv] at h2
 
 /- English proof (translation)
-The claim follows from `levi_mul Y.TR (satGramActLIota_kB_good (Y.cs u) Λ γ hk) hG`.
+A detailed English derivation is pending.
 -/
 theorem levi_kB_mul_kBB_of_good {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
     (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V) (γ : Gam X u) (hk : kB (Y.cs u) Λ γ ∈ X.B.I.Kset)
@@ -39,7 +39,7 @@ theorem levi_kB_mul_kBB_of_good {D : D7} {X : HidaSetting D} (Y : Full X) (u u' 
   levi_mul Y.TR (satGramActLIota_kB_good (Y.cs u) Λ γ hk) hG
 
 /- English proof (translation)
-Introduce `D X Y u u' t γ hk`. Conclude with `levi_kB_mul_kBB_of_good Y u u' t.lam t.lam' γ hk t.rep.1.1 (Formalism.L2.SG.Closed.AdmPar_holds (Y.cs u) (Y.cs u') (Formalism.L2.SG.Full.Full.frameTie (X := X) u u') t)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iotaLeft_holds : IotaLeft := by
   intro D X Y u u' t γ hk

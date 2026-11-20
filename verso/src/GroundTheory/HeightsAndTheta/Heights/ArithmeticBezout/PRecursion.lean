@@ -12,9 +12,9 @@ open MvPolynomial MeasureTheory NumberField
 noncomputable section
 
 /- English proof (translation)
-Unfold `specFirst`. Rewrite using `[map_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `ij`. Take `⟨i, j⟩` from `ij`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [specFirstVar]`. Consider the case `succ i => simp [specFirstVar]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_specFirst {R S : Type*} [CommSemiring R] [CommSemiring S] (φ : R →+* S) {k n : ℕ}
     (f : MvPolynomial (Fin (k + 1) × Fin n) R) (u : Fin n → R) :
@@ -29,23 +29,21 @@ theorem map_specFirst {R S : Type*} [CommSemiring R] [CommSemiring S] (φ : R �
   | succ i => simp [specFirstVar]
 
 /- English proof (translation)
-Introduce `K _ _ n e δ H I f u hI hf hδ hu`. Use `set u' : Fin n → K := fun j => (u j : K) with hu'`. Use `set g := specFirst f u' with hg`. Establish `hfin_f` using `log_gaussNorm_support_finite (K := K) hf.1`. Establish `hfin_g : (Function.support fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 K) => Real.log (gaussNorm v g)).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hg0 : g = 0`. Establish `: (fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 K) => Real.log (gaussNorm v g)) = 0`. Use function extensionality and compare the values at `v`. Rewrite using `[hg0]`. Simplify using `[gaussNorm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl rfl`. Rewrite using `[this, Function.support_zero]`. Conclude with `Set.finite_empty`. Conclude with `log_gaussNorm_support_finite hg0`. Establish `hfinsum : ∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), Real.log (gaussNorm v f) = (∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), Real.log (gaussNorm v g)) + vertTerm I (e + 1) u`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `vertTerm`. Rewrite using `[← finsum_add_distrib hfin_g]`. Use `finsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[← hV K n e I f u hI hf hu v]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Use `Set.Finite.subset (hfin_f.union hfin_g) fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[Function.mem_support, ← hV K n e I f u hI hf hu v]`. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at hcon`. Conclude with `hv (by rw [hcon.1, hcon.2, sub_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `harch : ∀ σ : K →+* ℂ, mahler (H.normAt σ) (e + 1) (f.map σ) = mahler (H.normAt σ) e (g.map σ) - δ * (harmonic (n - 1) : ℝ) / 2 - cycleIntegral (H.normAt σ) (fundCycle (I.map (MvPolynomial.map σ))) e (fsLog (H.normAt σ) fun j => σ (u j))`. Introduce `σ`. Take `⟨hprime, hcyc⟩` from `hB K n (e + 1) I f σ hI hf`. Establish `hδσ : IsMultiHomog δ (MvPolynomial.map σ f)` using `(isMultiHomog_iff _ _).mpr fun i => IsWeightedHomogeneous.map' ((isMultiHomog_iff _ _).mp hδ i) σ`. Establish `h` using `hA n e δ (H.normAt σ) _ _ (fun j => σ (u j)) hprime hcyc hδσ (fun W hW => hAv K n I u' σ hI hu W hW)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, map_specFirst, h]`. Expand and normalize the polynomial expressions, which then agree. Unfold `chowHt`. Establish `hs : ∑ σ : K →+* ℂ, (mahler (H.normAt σ) (e + 1) (f.map σ) + ((e + 1 : ℕ) : ℝ) * δ * (harmonic (n - 1) : ℝ) / 2) = ∑ σ : K →+* ℂ, (mahler (H.normAt σ) e (g.map σ) + (e : ℝ) * δ * (harmonic (n - 1) : ℝ) / 2) - ∑ σ : K →+* ℂ, cycleIntegral (H.normAt σ) (fundCycle (I.map (MvPolynomi …`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[harch σ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfinsum, hs]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ChowHeightRecursion.proof (hV : ChowFormSectionVertical.Statement) (hA : MahlerSection.Statement)
     (hB : ChowFormBaseChange.Statement) (hAv : BaseChangeAvoid.Statement) :

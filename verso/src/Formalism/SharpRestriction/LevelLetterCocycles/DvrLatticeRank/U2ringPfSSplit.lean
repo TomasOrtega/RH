@@ -23,65 +23,53 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 local notation "mkI" y => Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia y)
 
 /- English proof (translation)
-Establish `: Fact PD.p.Prime` using `⟨PD.hp⟩`. Take `⟨-, -, ⟨w, hw⟩, hdeg, ⟨w₁, hq⟩, -, -, -⟩` from `hR`. Use `set p := PD.p with hpdef`. Establish `hp2 : 2 ≤ p` using `PD.hp.two_le`. Use `set π := π' c with hπdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u := (w : LetA O n) c with hudef`. Establish `hu : IsUnit u` using `w.isUnit.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) c)`. Establish `hπu : π = u * PowerSeries.X ^ s'` using `by rw [hπdef, hw]; rfl`. Use `set wq := (w₁ : LetA O n) c with hwqdef`. Establish `hwq : IsUnit wq` using `w₁.isUnit.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) c)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Ec := E c with hEcdef`. Establish `hQ : W.q₀ = wq * Polynomial.aeval π Ec` using `congrFun hq c`. Use `set I := Finset.Ico 1 p with hI`. Set `xs : ℕ → O` to `fun i => ζ ^ i - 1`. Establish `hxroot : ∀ i, (1 + xs i) ^ p = 1` using `fun i => by show (1 + (ζ ^ i - 1)) ^ p = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_sub_cancel, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Establish `hxm : ∀ i, xs i ∈ IsLocalRing.maximalIdeal O` using `fun i => u2ringPfE_mem_max p hpm (hxroot i)`. Establish `hxinj : Set.InjOn xs I`. Introduce `i hi j hj hij`. Establish `h' : ζ ^ i = ζ ^ j` using `sub_left_injective hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hζ.pow_inj (Finset.mem_Ico.1 hi).2 (Finset.mem_Ico.1 hj).2 h'`. Establish `hval : ∀ i, ∃ y : O, (mkI (xs i)) π = (mkI (xs i)) (PowerSeries.C y)` using `fun i => DualFramesAlt.eigenRingInvariants.ev_exists (hxm i) π`. Use `choose yv hyv using hval`. Establish `hyvm : ∀ i, yv i ∈ IsLocalRing.maximalIdeal O`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨uv, huv⟩` from `DualFramesAlt.eigenRingInvariants.ev_exists (hxm i) u`. Establish `h1 : (mkI (xs i)) π = (mkI (xs i)) (PowerSeries.C (uv * xs i ^ s'))`. Rewrite using `[hπu, map_mul, map_pow, huv, DualFramesAlt.eigenRingInvariants.mk_X, ← map_pow, ← map_mul, ← map_pow, ← map_mul]`. Establish `h2` using `DualFramesAlt.eigenRingInvariants.ev_inj (hxm i) ((hyv i).symm.trans h1)`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ (hxm i) _ (by omega))`. Establish `hEy : ∀ i ∈ I, Ec.eval (yv i) = 0`. Introduce `i hi`. Establish `hxne : xs i ≠ 0` using `by show ζ ^ i - 1 ≠ 0`. Rewrite using `[sub_ne_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hζ.pow_ne_one_of_pos_of_lt (by have := (Finset.mem_Ico.1 hi).1; omega) (Finset.mem_Ico.1 hi).2`. Take `⟨qv, hqv⟩` from `DualFramesAlt.eigenRingInvariants.ev_exists (hxm i) W.q₀`. Establish `h1` using `congrArg (Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia (xs i))) W.q₀_def`. Establish `e1 : (mkI (xs i)) (PowerSeries.X * W.q₀) = (mkI (xs i)) (PowerSeries.C (xs i * qv))`. Rewrite using `[map_mul, DualFramesAlt.eigenRingInvariants.mk_X, hqv, ← map_mul, ← map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (mkI (xs i)) ((1 + PowerSeries.X) ^ p - 1) = (mkI (xs i)) (PowerSeries.C ((1 + xs i) ^ p - 1))`. Simplify using `only [map_sub, map_pow, map_add, map_one, DualFramesAlt.eigenRingInvariants.mk_X]`. Rewrite `h1` using `[e1, e2, hxroot i, sub_self]`. Establish `h3` using `DualFramesAlt.eigenRingInvariants.ev_inj (hxm i) h1`. Establish `hqv0 : qv = 0` using `(mul_eq_zero.1 h3).resolve_left hxne`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨wv, hwv⟩` from `DualFramesAlt.eigenRingInvariants.ev_exists (hxm i) wq`. Establish `hwvu : IsUnit wv` using `u2ringPfE_val_unit (hxm i) ((PowerSeries.isUnit_iff_constantCoeff).1 hwq) hwv`. Establish `h4 : (mkI (xs i)) W.q₀ = (mkI (xs i)) (PowerSeries.C (wv * Ec.eval (yv i)))`. Rewrite using `[hQ, map_mul, hwv, u2ringPfE_mk_aeval (hyv i), ← map_mul, ← map_mul]`. Rewrite `h4` using `[hqv, hqv0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h5` using `DualFramesAlt.eigenRingInvariants.ev_inj (hxm i) h4`. Conclude with `(mul_eq_zero.1 h5.symm).resolve_left hwvu.ne_zero`. Establish `hfib : ∀ y ∈ IsLocalRing.maximalIdeal O, (I.filter fun i => yv i = y).card ≤ s'`. Introduce `y hy`. Use `set Fb := I.filter fun i => yv i = y with hFb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Tt := Fb.image xs with hTt`. Establish `hTcard : Tt.card = Fb.card` using `Finset.card_image_of_injOn (hxinj.mono (by intro i hi; exact (Finset.mem_filter.1 hi).1))`. Establish `hTm : ∀ t ∈ Tt, t ∈ IsLocalRing.maximalIdeal O`. Introduce `t ht`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 ht`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxm i`. Establish `hf0 : ∀ t ∈ Tt, Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia t) (π - PowerSeries.C y) = 0`. Introduce `t ht`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 ht`. Rewrite using `[map_sub, hyv i, (Finset.mem_filter.1 hi).2, sub_self]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `DualFramesAlt.eigenRingInvariants.prod_dvd Tt hTm _ hf0`. Establish `hres : (π - PowerSeries.C y).map (IsLocalRing.residue O) = (PowerSeries.X ^ s' * u).map (IsLocalRing.residue O)`. Rewrite using `[hπu, map_sub, PowerSeries.map_C, (IsLocalRing.residue_eq_zero_iff y).2 hy, map_zero, sub_zero, mul_comm]`. Use `(DualFramesAlt.eigenRingInvariants.card_le_of_dvd Tt hTm hu hres hk).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `set S := I.image yv with hS`. Establish `hcardI : I.card = p - 1` using `by rw [hI, Nat.card_Ico]`. Establish `hsum` using `Finset.card_eq_sum_card_image yv I`. Establish `hle : I.card ≤ S.card * s'`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_le_card_nsmul S (fun y => (I.filter fun i => yv i = y).card) s' (fun y hy => by` as an intermediate fact. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hfib _ (hyvm i))`. Simplify using `using this`. Establish `hSe : e ≤ S.card`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : e * s' ≤ S.card * s'` using `by rw [hes, ← hcardI]; exact hle`. Conclude with `Nat.le_of_mul_le_mul_right h1 (by omega)`. Establish `hq0 : W.q₀ ≠ 0` using `u2ringPfB_q₀_ne_zero W PD.hp.ne_zero`. Establish `hEc0 : Ec ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Apply `hq0` to reduce the goal to its premises. Rewrite using `[hQ, h0, map_zero, mul_zero]`. Establish `hSroots : S ⊆ Ec.roots.toFinset`. Introduce `y hy`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hEc0]`. Conclude with `hEy i hi`. Establish `hroots_le : Multiset.card Ec.roots ≤ e` using `(hdeg c) ▸ Polynomial.card_roots' Ec`. Establish `h1 : S.card ≤ Ec.roots.toFinset.card` using `Finset.card_le_card hSroots`. Establish `h2 : Ec.roots.toFinset.card ≤ Multiset.card Ec.roots` using `Multiset.toFinset_card_le _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hSeq : S = Ec.roots.toFinset` using `Finset.eq_of_subset_of_card_le hSroots (by omega)`. Establish `hcardr : Multiset.card Ec.roots = Ec.natDegree` using `by rw [hdeg c]; omega`. Establish `hnodup : Ec.roots.Nodup`. Rewrite using `[← Multiset.toFinset_card_eq_card_iff_nodup]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsplit` using `Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C hcardr`. Use `set s := Ec.roots.toFinset with hsdef`. Establish `hscard : s.card = e` using `by omega`. Set `eqv : Fin e ≃ s` to `(s.equivFin.trans (finCongr hscard)).symm`. Use `⟨Ec.leadingCoeff, fun j => (eqv j : O), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hna`. Establish `ham : Ec.leadingCoeff ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hna`. Establish `hq : W.q₀ = PowerSeries.C Ec.leadingCoeff * (wq * Polynomial.aeval π (Ec.roots.map fun a => Polynomial.X - Polynomial.C a).prod)`. Rewrite using `[hQ]`. Use `conv_lhs => rw [← hsplit]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Polynomial.aeval_C, PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc1` using `congrArg (PowerSeries.coeff (p - 1)) hq`. Rewrite `hc1` using `[PowerSeries.coeff_C_mul]`. Establish `hcoef : PowerSeries.coeff (p - 1) W.q₀ = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg (PowerSeries.coeff p) W.q₀_def`. Establish `e : (1 + PowerSeries.X : PowerSeries O) ^ p = ((((1 : Polynomial O) + Polynomial.X) ^ p : Polynomial O) : PowerSeries O)`. Simplify using `[Polynomial.coe_pow, Polynomial.coe_add, Polynomial.coe_one, Polynomial.coe_X]`. Take `⟨p', hp'⟩ : ∃ p', p = p' + 1` from `⟨p - 1, by omega⟩`. Rewrite `h` using `[map_sub, e, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow, Nat.choose_self, PowerSeries.coeff_one, if_neg (by omega), sub_zero, hp', PowerSeries.coeff_succ_X_mul]`.
-
-Rewrite using `[hp', Nat.add_sub_cancel]`. Conclude with `h` after adjusting the coercions. Rewrite `hc1` using `[hcoef]`. Establish `: (1 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[hc1]`.
-
-Conclude with `Ideal.mul_mem_right _ _ ham`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 this)`. Introduce `j show (eqv j : O) ∈ IsLocalRing.maximalIdeal O`. Establish `hj : (eqv j : O) ∈ S` using `by rw [hSeq]; exact (eqv j).2`. Take `⟨i, -, hi⟩` from `Finset.mem_image.1 hj`.
-
-Rewrite using `[← hi]`. Conclude with `hyvm i`. Use `conv_lhs => rw [← hsplit]`. Use `congr 1`. Establish `hval : s.val = Ec.roots` using `by rw [hsdef, Multiset.toFinset_val, Multiset.dedup_eq_self.2 hnodup]`.
-
-Rewrite using `[← hval, ← Finset.prod_eq_multiset_prod, ← Finset.prod_coe_sort s]`. Conclude with `(Equiv.prod_comp eqv (fun x : s => Polynomial.X - Polynomial.C (x : O))).symm`. Introduce `j`. Establish `hj : (eqv j : O) ∈ S` using `by rw [hSeq]; exact (eqv j).2`. Take `⟨i, hi, hij⟩` from `Finset.mem_image.1 hj`.
-
-Use `⟨xs i, hxm i, hxroot i, ?_, ?_⟩` and prove the remaining obligations. Use `show ζ ^ i - 1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `hζ.pow_ne_one_of_pos_of_lt (by have := (Finset.mem_Ico.1 hi).1; omega) (Finset.mem_Ico.1 hi).2`. Use `show (mkI xs i) π = _`.
-
-Rewrite using `[hyv i]`. Use `show _ = (mkI xs i) (PowerSeries.C (eqv j : O))`. Rewrite using `[hij]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u2ringPfS_split [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O]

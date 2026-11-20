@@ -13,7 +13,7 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 local notation3 "L⁺" => maximalRealSubfield L
 
 /- English proof (translation)
-Rewrite using `[ALint, tensInt]`. Apply the tactic sequence `congr 2 <;> ext x`. Conclude with `⟨fun ⟨y, h⟩ => ⟨⟨y, y, rfl⟩, h.symm⟩, fun ⟨⟨_, y, rfl⟩, h⟩ => ⟨y, h.symm⟩⟩`. Conclude with `⟨fun ⟨a, ha, h⟩ => ⟨⟨a, ha⟩, h.symm⟩, fun ⟨⟨a, ha⟩, h⟩ => ⟨a, ha, h.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem ALint_eq : ALint L = tensInt (F := L⁺) (AFplus L) (intOE L) (intAd L⁺) := by
   rw [ALint, tensInt]
@@ -22,14 +22,14 @@ theorem ALint_eq : ALint L = tensInt (F := L⁺) (AFplus L) (intOE L) (intAd L�
   · exact ⟨fun ⟨a, ha, h⟩ => ⟨⟨a, ha⟩, h.symm⟩, fun ⟨⟨a, ha⟩, h⟩ => ⟨a, ha, h.symm⟩⟩
 
 /- English proof (translation)
-Rewrite using `[P.levelafC, map_natCast]`. Conclude with `map_natCast (Algebra.TensorProduct.includeRight (R := L⁺) (A := L) (B := AFplus L)) N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelafC_nat (N : ℕ) : P.levelafC L (N : 𝓞 L⁺) = (N : AL L) := by
   rw [P.levelafC, map_natCast]
   exact map_natCast (Algebra.TensorProduct.includeRight (R := L⁺) (A := L) (B := AFplus L)) N
 
 /- English proof (translation)
-Take `⟨d, hd, h⟩` from `P.levelaf_denom (F := L⁺) z`. Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {d}))`. Use `⟨Ideal.absNorm (Ideal.span {d}), by simpa using hd, ?_⟩` and prove the remaining obligations. Rewrite using `[← levelafC_nat, ← he, P.levelafC_mul, mul_assoc, ALint_eq]`. Conclude with `Subring.mul_mem _ (P.levelafC_mem e) h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den (z : AL L) : ∃ c : ℕ, c ≠ 0 ∧ (c : AL L) * z ∈ ALint L := by
   obtain ⟨d, hd, h⟩ := P.levelaf_denom (F := L⁺) z
@@ -39,9 +39,7 @@ theorem exists_den (z : AL L) : ∃ c : ℕ, c ≠ 0 ∧ (c : AL L) * z ∈ ALin
   exact Subring.mul_mem _ (P.levelafC_mem e) h
 
 /- English proof (translation)
-Use `hT.fintype` as an intermediate fact. Use `choose c h0 h using fun p : T × Fin n × Fin n => exists_den (ent p.1.1 p.2.1 p.2.2)`. Use `⟨∏ p, c p, Finset.prod_ne_zero_iff.2 fun p _ => h0 p, fun t ht i j => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `Finset.dvd_prod_of_mem c (Finset.mem_univ (⟨t, ht⟩, i, j))`. Rewrite using `[he, mul_comm _ e, Nat.cast_mul, mul_assoc]`.
-
-Conclude with `Subring.mul_mem _ (natCast_mem _ e) (h (⟨t, ht⟩, i, j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_fin {T : Set (GA L n)} (hT : T.Finite) :
     ∃ c : ℕ, c ≠ 0 ∧ ∀ t ∈ T, ∀ i j, (c : AL L) * ent t i j ∈ ALint L := by
@@ -53,7 +51,7 @@ theorem exists_den_fin {T : Set (GA L n)} (hT : T.Finite) :
   exact Subring.mul_mem _ (natCast_mem _ e) (h (⟨t, ht⟩, i, j))
 
 /- English proof (translation)
-Use `show cT σ (g : Matrix (Fin n) (Fin n) A) * 1 * g = 1 ↔ (g : Matrix (Fin n) (Fin n) A) * conjT σ g = 1`. Rewrite using `[Matrix.mul_one]`. Conclude with `mul_eq_one_comm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_UJ_one {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (g : GL (Fin n) A) :
     g ∈ UJ σ (1 : Matrix (Fin n) (Fin n) A) ↔ g ∈ UGroup n σ hσ := by
@@ -62,17 +60,15 @@ theorem mem_UJ_one {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ (σ
   exact mul_eq_one_comm
 
 /- English proof (translation)
-Set `σ : L →ₐ[L⁺] L` to `(IsCMField.complexConj L).toAlgHom`. Establish `hσ : ∀ τ : L →+* ℂ, τ.comp (σ : L →+* L) = (starRingEnd ℂ).comp τ` using `fun τ => RingHom.ext fun x => IsCMField.complexEmbedding_complexConj L τ x`. Take `⟨h1, h2, -⟩` from `Final.StdFormDef L⁺ L (Fin n) σ hσ (fun e he => ⟨⟨e, (IsCMField.complexConj_eq_self_iff L e).1 he⟩, rfl⟩) inferInstance`. Establish `hfin` using `Final.ClassSetFinite L⁺ L (Fin n) σ 1 hσ h1 (by simp) h2`. Establish `hU : ∀ g, g ∈ UPts σ (1 : Matrix (Fin n) (Fin n) L) (AFplus L) ↔ g ∈ GA L n` using `fun g => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[UPts, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `mem_UJ_one _ (conjAL_conjAL L) g`. Set `e : UPts σ (1 : Matrix (Fin n) (Fin n) L) (AFplus L) → GA L n` to `fun x => ⟨x, (hU x).1 x.2⟩`. Use `⟨Set.range fun q : ClassSet _ _ => e q.out, @Set.finite_range _ _ _ hfin, fun g => ?_⟩` and prove the remaining obligations. Use `set q := DoubleCoset.mk ((ratPts σ (1 : Matrix (Fin n) (Fin n) L) (AFplus L)).subgroupOf _) ((levelAf σ 1).subgroupOf _) (⟨g, (hU g).2 g.2⟩ : UPts σ (1 : Matrix (Fin n) (Fin n) L) (AFplus L)) with hq`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, κ, hγ, hκ, h⟩` from `DoubleCoset.mk_out_eq_mul ((ratPts σ (1 : Matrix (Fin n) (Fin n) L) (AFplus L)).subgroupOf _) ((levelAf σ 1).subgroupOf _) ⟨g, (hU g).2 g.2⟩`. Use `⟨(e γ)⁻¹, (GQ L n).inv_mem ?_, e q.out, ⟨q, rfl⟩, (e κ)⁻¹, (Umax L n).inv_mem (show e κ ∈ Umax L n from fun i j => ?_), ?_⟩` and prove the remaining obligations. Take `⟨γ₀, h0, e0⟩` from `Subgroup.mem_subgroupOf.1 hγ`. Conclude with `Subgroup.mem_subgroupOf.2 ⟨γ₀, (mem_UJ_one _ (complexConj_invol L) γ₀).1 h0, e0⟩`. Use `(Subgroup.mem_subgroupOf.1 hκ).2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Final.StabStd _ _ _ Subtype.val_injective]`. Take `⟨a, ha⟩` from `this`. Rewrite using `[ALint_eq]`. Establish `e1` using `congrArg (fun M : GL (Fin n) (AL L) => (M : Matrix (Fin n) (Fin n) (AL L)) i j) ha`. Use `(show ((κ : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) i j ∈ tensInt (F := L⁺) (AFplus L) (intOE L) (intAd L⁺) from ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e1]`. Conclude with `((a : Matrix (Fin n) (Fin n) (tensInt (F := L⁺) (AFplus L) (intOE L) (intAd L⁺))) i j).2`. Establish `h' : (q.out : GL (Fin n) (AL L)) = γ * g * κ` using `congrArg Subtype.val h`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show (g : GL (Fin n) (AL L)) = ((γ : GL (Fin n) (AL L)))⁻¹ * q.out * ((κ : GL (Fin n) (AL L)))⁻¹`.
-
-Rewrite using `[h']`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reps_Umax : ∃ T : Set (GA L n), T.Finite ∧ ∀ g, ∃ γ ∈ GQ L n, ∃ t ∈ T, ∃ κ ∈ Umax L n, g = γ * t * κ := by
   let σ : L →ₐ[L⁺] L := (IsCMField.complexConj L).toAlgHom
@@ -108,13 +104,11 @@ theorem reps_Umax : ∃ T : Set (GA L n), T.Finite ∧ ∀ g, ∃ γ ∈ GQ L n,
     group
 
 /- English proof (translation)
-Establish `hfin : Finite (ALint L ⧸ Ideal.span {(N : ALint L)})`. Use `P.levelaf_finite_quot (F := L⁺) (E := L) (N : 𝓞 L⁺) (Nat.cast_ne_zero.2 hN) N (by rw [levelafC_nat]; rfl)` as an intermediate fact. Rewrite `this` using `[← ALint_eq]`. Then use the resulting hypothesis. Set `red : Umax L n → Fin n → Fin n → ALint L ⧸ Ideal.span {(N : ALint L)}` to `fun u i j => Ideal.Quotient.mk _ ⟨_, u.2 i j⟩`. Use `⟨Set.range fun m => (Function.invFun red m : Umax L n), Set.finite_range _, fun u hu => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `set t := Function.invFun red (red ⟨u, hu⟩) with ht`. Establish `e : red t = red ⟨u, hu⟩` using `Function.invFun_eq ⟨_, rfl⟩`. Use `⟨t, ⟨_, rfl⟩, (Umax L n).mul_mem ((Umax L n).inv_mem t.2) hu, fun i j => ?_⟩` and prove the remaining obligations. Use `choose y hy using fun a b => Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 (congrFun (congrFun e.symm a) b))`. Use `⟨∑ a, ent (t : GA L n)⁻¹ i a * y a j, Subring.sum_mem _ fun a _ => Subring.mul_mem _ ((Umax L n).inv_mem t.2 i a) (y a j).2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ent (t : GA L n)⁻¹ * ent (t : GA L n) = 1` using `congrArg ent (inv_mul_cancel (t : GA L n))`. Use `show (ent (t : GA L n)⁻¹ * ent u) i j - _ = _`. Rewrite using `[← h1, ← Matrix.sub_apply, ← Matrix.mul_sub, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `: (y a j : AL L) * N = ent u a j - ent (t : GA L n) a j` using `congrArg Subtype.val (hy a j)`.
-
-Rewrite using `[Matrix.sub_apply, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem reps_Cong {N : ℕ} (hN : N ≠ 0) :
     ∃ T : Set (GA L n), T.Finite ∧ ∀ u ∈ Umax L n, ∃ t ∈ T, NG.Cong L n N (t⁻¹ * u) := by
@@ -140,9 +134,9 @@ theorem reps_Cong {N : ℕ} (hN : N ≠ 0) :
   ring
 
 /- English proof (translation)
-Take `⟨T, hT, h⟩` from `reps_Umax (L := L) (n := n)`. Take `⟨T', hT', h'⟩` from `reps_Cong (L := L) (n := n) hN`. Use `⟨Set.image2 (· * ·) T T', hT.image2 _ hT', fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, t, ht, κ, hκ, rfl⟩` from `h g`. Take `⟨t', ht', hc⟩` from `h' κ hκ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨γ, hγ, t * t', Set.mem_image2_of_mem ht ht', _, hc, by group⟩`.
+Supply the required witnesses or components.
 -/
 theorem reps {N : ℕ} (hN : N ≠ 0) :
     ∃ T : Set (GA L n), T.Finite ∧ ∀ g, ∃ γ ∈ GQ L n, ∃ t ∈ T, ∃ κ, NG.Cong L n N κ ∧ g = γ * t * κ := by
@@ -156,21 +150,19 @@ theorem reps {N : ℕ} (hN : N ≠ 0) :
 variable (s : SplitPlace L)
 
 /- English proof (translation)
-Establish `h0 : ϖ ≠ 0` using `fun e => by simp [e] at hϖ; exact WithZero.exp_ne_zero hϖ.symm`. Take `⟨a, -, k₁, h₁, k₂, h₂, e⟩` from `Final.CartanDecomp L⁺ s.v n ϖ (show Valued.v ϖ ≤ 1 by rw [hϖ, ← WithZero.exp_zero, WithZero.exp_le_exp]; norm_num) hϖ t`. Take `⟨d, rfl⟩ : ∃ d, t = k₁ * d * k₂` from `⟨k₁⁻¹ * t * k₂⁻¹, by group⟩`. Establish `hd : (d : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) = diagPow L⁺ s.v ϖ a`. Rewrite `e` using `[Units.val_mul, Units.val_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Units.mul_right_inj k₁).1 ((Units.mul_left_inj k₂).1 e)`. Establish `hle : ∀ i j, a j ≤ a i` using `fun i j => by`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Conclude with `le_rfl`. Set `E : GL (Fin n) (s.v.adicCompletion L⁺)` to `⟨Matrix.transvection i j 1, Matrix.transvection i j (-1), by rw [Matrix.transvection_mul_transvection_same i j hij, add_neg_cancel, Matrix.transvection_zero], by rw [Matrix.transvection_mul_transvection_same i j hij, neg_add_cancel, Matrix.transvection_zero]⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : ∀ c : s.v.adicCompletion L⁺, Valued.v c ≤ 1 → ∀ p q, Valued.v (Matrix.transvection i j c p q) ≤ 1` using `fun c hc p q => by`. Rewrite using `[Matrix.transvection, Matrix.add_apply]`. Use `(Valuation.map_add _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Apply the tactic sequence `rw [Matrix.single_apply]; split_ifs <;> simp [hc]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEK : E ∈ KL s n` using `(mem_KL s).2 ⟨hE 1 (by simp), hE (-1) (by simp)⟩`. Establish `hM : d * E * d⁻¹ ∈ KL s n`. Use `(KL s n).mul_mem ((KL s n).mul_mem ((KL s n).inv_mem h₁) (ht _ ((KL s n).mul_mem ((KL s n).mul_mem ((KL s n).inv_mem h₂) hEK) h₂))) h₁` as an intermediate fact. Rewrite `this` using `[show k₁⁻¹ * (k₁ * d * k₂ * (k₂⁻¹ * E * k₂) * (k₁ * d * k₂)⁻¹) * k₁ = d * E * d⁻¹ by group]`. Then use the resulting hypothesis. Establish `h3` using `((mem_KL s).1 hM).1 i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4' : ((d * E * d⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) * ((d : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) = ((d : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adic …`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Establish `h4` using `congrArg (fun M : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺) => M i j) h4'`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd, diagPow, Matrix.mul_diagonal, Matrix.diagonal_mul] at h4`. Establish `h5 : ((E : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j = 1`. Simplify using `[E, Matrix.transvection, hij]`. Establish `h6` using `mul_le_mul_left h3 (Valued.v (ϖ ^ a j))`. Rewrite `h6` using `[← map_mul, h4, h5, mul_one, one_mul, map_zpow₀, map_zpow₀, hϖ, ← WithZero.exp_zsmul, ← WithZero.exp_zsmul, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h6`. Establish `hc : ∀ h, d * h = h * d` using `fun h => Units.ext (Matrix.ext fun i j => by`. Rewrite using `[Units.val_mul, Units.val_mul, hd, diagPow, Matrix.mul_diagonal, Matrix.diagonal_mul, le_antisymm (hle j i) (hle i j), mul_comm])`. Use `⟨k₁ * k₂, (KL s n).mul_mem h₁ h₂, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[show k₁ * d * k₂ * h * (k₁ * d * k₂)⁻¹ = k₁ * (d * (k₂ * h * k₂⁻¹)) * d⁻¹ * k₁⁻¹ by group, hc]`.
-
-Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normaliser {ϖ : s.v.adicCompletion L⁺} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ))
     (t : GL (Fin n) (s.v.adicCompletion L⁺)) (ht : ∀ k ∈ KL s n, t * k * t⁻¹ ∈ KL s n) :
@@ -221,9 +213,9 @@ theorem normaliser {ϖ : s.v.adicCompletion L⁺} (hϖ : Valued.v ϖ = WithZero.
   group
 
 /- English proof (translation)
-Use `s.v.isMaximal` as an intermediate fact. Set `_ : Field (𝓞 L⁺ ⧸ s.v.asIdeal)` to `Ideal.Quotient.field _`. Establish `: Finite (𝓞 L⁺ ⧸ s.v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ s.v.ne_bot`. Set `_ : Fintype (𝓞 L⁺ ⧸ s.v.asIdeal)` to `Fintype.ofFinite _`. Take `⟨p, hp, f, hpp, hf⟩` from `FiniteField.card' (𝓞 L⁺ ⧸ s.v.asIdeal)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨p, hpp, Ideal.Quotient.eq_zero_iff_mem.1 (by rw [map_natCast, CharP.cast_eq_zero]), f, ?_⟩` and prove the remaining obligations. Rewrite using `[SplitPlace.q, Nat.card_eq_fintype_card, hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_prime : ∃ p : ℕ, p.Prime ∧ s.Above p ∧ ∃ f : ℕ, s.q = p ^ f := by
   have := s.v.isMaximal
@@ -235,13 +227,13 @@ theorem exists_prime : ∃ p : ℕ, p.Prime ∧ s.Above p ∧ ∃ f : ℕ, s.q =
   rw [SplitPlace.q, Nat.card_eq_fintype_card, hf]
 
 /- English proof (translation)
-Establish `hv : Valued.v (p : s.v.adicCompletion L⁺) < 1`. Use `(s.split_mem_ideal _).1 ((s.split_alg_mem p).2 hp)` as an intermediate fact. Rewrite `this` using `[map_natCast, show (((p : 𝓞 L) : 𝓞 L) : L) = p from map_natCast (algebraMap (𝓞 L) L) p, map_natCast]`. Then use the resulting hypothesis. Establish `key : ∀ y : s.v.adicCompletion L⁺, ∃ a : ℕ, ∀ b, a ≤ b → Valued.v ((p : s.v.adicCompletion L⁺) ^ b * y) ≤ 1`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Conclude with `⟨0, fun _ _ => by simp⟩`. Establish `hy' : Valued.v y ≠ 0` using `(map_ne_zero _).2 hy`. Take `⟨a, ha⟩` from `exists_pow_lt₀ hv (Units.mk0 _ (inv_ne_zero hy'))`. Use `⟨a, fun b hb => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_pow, ← le_mul_inv_iff₀ (zero_lt_iff.2 hy'), one_mul]`. Conclude with `(pow_le_pow_right_of_le_one' hv.le hb).trans ha.le`. Take `⟨a, ha⟩` from `key (s.proj z)`. Take `⟨b, hb⟩` from `key (s.proj (conjAL L z))`. Take `⟨e, he, he'⟩` from `GlobalTheory.SplitSep.exists_sep L s`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a + b, GlobalTheory.mem_ALint_of_supported_at_split L s e he he' _ (fun w hw => by rw [map_mul, hz w hw, mul_zero]) ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast, Nat.cast_pow]`. Conclude with `ha _ (Nat.le_add_right _ _)`. Rewrite using `[map_mul, map_mul, map_natCast, map_natCast, Nat.cast_pow]`. Conclude with `hb _ (Nat.le_add_left _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_mem {p : ℕ} (hp : s.Above p) {z : AL L} (hz : ∀ w, w ≠ s.v → compAt L w z = 0) :
     ∃ a : ℕ, ((p ^ a : ℕ) : AL L) * z ∈ ALint L := by
@@ -285,12 +277,12 @@ def Sl (L : Type) [Field L] [NumberField L] [IsCMField L] {l : ℕ} (hl : l.Prim
     exact ⟨m, hm, by rw [mul_neg]; exact Subring.neg_mem _ h⟩
 
 /- English proof (translation)
-Introduce `z hz` and use `⟨1, hl.not_dvd_one, by simpa using hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ALint_le_Sl {l : ℕ} (hl : l.Prime) : ALint L ≤ Sl L hl := fun z hz => ⟨1, hl.not_dvd_one, by simpa using hz⟩
 
 /- English proof (translation)
-Take `⟨p, hp, hA, -⟩` from `exists_prime s`. Take `⟨a, ha⟩` from `pow_mul_mem s hA fun w => sub_one_supp hx i j`. Establish `h1 : ent x i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ Sl L hl` using `⟨p ^ a, fun e => hs (((Nat.prime_dvd_prime_iff_eq hl hp).1 (hl.dvd_of_dvd_pow e)).symm ▸ hA), ha⟩`. Use `add_mem h1 (ALint_le_Sl hl ((Umax L n).one_mem i j))` as an intermediate fact. Rewrite `this` using `[show ((1 : GA L n).1 : Matrix (Fin n) (Fin n) (AL L)) = 1 from rfl, sub_add_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ent_mem_Sl {l : ℕ} (hl : l.Prime) (hs : ¬ s.Above l) {x : GA L n} (hx : TrivOutside {s.v} x) (i j : Fin n) :
     ent x i j ∈ Sl L hl := by

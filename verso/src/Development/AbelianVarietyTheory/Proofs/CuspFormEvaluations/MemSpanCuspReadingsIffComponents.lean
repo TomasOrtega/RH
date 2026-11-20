@@ -16,9 +16,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.Shares
 
 /- English proof (translation)
-Use `⟨hP, fun ξ hξ ν hν x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨⟨hsec, C, hC⟩, h0⟩` from `hP`. Establish `hpos` using `(moderateCoefficientPositivity_holds r X la P C 0 hsec (fun y hy => by simpa using hC y hy)).1 ξ hξ ν x hx hne`. Establish `hsum : ∑ τ, ν τ = 0` using `le_antisymm hν (Finset.sum_nonneg fun τ _ => hpos τ)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ν = 0`. Use function extensionality and compare the values at `τ`. Conclude with `(Finset.sum_eq_zero_iff_of_nonneg fun τ _ => hpos τ).1 hsum τ (Finset.mem_univ τ)`. Substitute `hz` using the available equality. Conclude with `hne (h0 ξ hξ x hx)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem spanMem_ssgt_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (la : ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) {P : Frame X.Ψ r → ℂ} (hP : P ∈ X.SS la) : P ∈ X.SSgt la 0 := by
@@ -34,7 +34,7 @@ theorem spanMem_ssgt_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r 
   exact hne (h0 ξ hξ x hx)
 
 /- English proof (translation)
-Establish `hF : F.1 ∈ T.C j u`. Rewrite using `[← cutR_eq T.C hj]`. Conclude with `F.2`. Conclude with `spanMem_ssgt_zero _ _ (ReciprocityTheory.ChartRestriction.G.PullbackSections.readings_holomorphic_cuspForms (U := T.U j) siegelSpaceAlgebra_holds T.good_σ₀ (wtA u) u.n ⟨F.1, hF⟩ k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanMem_rdR {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j) (u : WeightFamilies.Wt D j)
     (F : (recB h.toLawsCore).Cusp j u) (k : (T.U j T.σ₀).Comp) :
@@ -45,17 +45,17 @@ theorem spanMem_rdR {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j) 
     (ReciprocityTheory.ChartRestriction.G.PullbackSections.readings_holomorphic_cuspForms (U := T.U j) siegelSpaceAlgebra_holds T.good_σ₀ (wtA u) u.n ⟨F.1, hF⟩ k)
 
 /- English proof (translation)
-Introduce `D T h j hj n R e hR u`. Use `⟨fun g hg => ?_, fun A s hA f hf => ?_, fun F k => spanMem_rdR h j hj u F k⟩` and prove the remaining obligations. Unfold `Rdg.sp at hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨F, -, rfl⟩` from `hg`. Conclude with `⟨fun k => rdR h j F k, fun k => spanMem_rdR h j hj u F k, fun y => hR.2 u F y⟩`. Consider the case `zero`. Conclude with `⟨fun _ => 0, fun k => (siegelSpaceAlgebra_holds _ _ (laR T j u k) (laR T j u k) 0).2.2.1.1, fun _ => rfl⟩`. Consider the case `add g g' _ _ hg hg'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨f, hf, e1⟩` from `hg`. Take `⟨f', hf', e2⟩` from `hg'`. Use `⟨fun k => f k + f' k, fun k => (siegelSpaceAlgebra_holds _ _ (laR T j u k) (laR T j u k) 0).2.2.1.2.1 _ (hf k) _ (hf' k), fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, e1, e2]`. Consider the case `smul a g _ hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨f, hf, e1⟩` from `hg`. Use `⟨fun k => a • f k, fun k => (siegelSpaceAlgebra_holds _ _ (laR T j u k) (laR T j u k) 0).2.2.1.2.2 a _ (hf k), fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, e1]`. Take `⟨m, a, F, hF, hsum⟩` from `hA f hf`. Establish `: (fun y => f (e y).1 (e y).2.1) = ∑ i, a i • R.ev ((recPlusN h j hj n).inc u (F i))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[hsum _ _ (e y).2.2, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hR.2 u (F i) y, smul_eq_mul]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨F i, hF i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_readings_components : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)) (R : Rdg (recPlusN h j hj n)) (e : R.Y ≃ DomPt T j), IsRdgU h j hj n R e → ∀ u : WeightFamilies.Wt D j, (∀ g ∈ R.sp u Set.univ, ∃ f : ∀ k : (T.U j T.σ₀).Comp, Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ, (∀ k, f k ∈ ((T.U j T.σ₀).X k).SSgt (laR T j u k) 0) ∧ ∀ y, g y = f (e y).1 (e y).2.1) ∧ (∀ (A : ∀ k : (T.U j T.σ₀).Comp, Set (Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ)) (s : Set ((recB h.toLawsCore).Cusp j u)), OntoBy h j u A s → ∀ f : ∀ k : (T.U j T.σ₀).Comp, Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ, (∀ k, f k ∈ A k) → (fun y => f (e y).1 (e y).2.1) ∈ R.sp u s) ∧ ∀ (F : (recB h.toLawsCore).Cusp j u) (k : (T.U j T.σ₀).Comp), rdR h j F k ∈ ((T.U j T.σ₀).X k).SSgt (laR T j u k) 0 := by
   intro D T h j hj n R e hR u

@@ -15,13 +15,13 @@ noncomputable section
 namespace GlobalTheory.TorusPart
 
 /- English proof (translation)
-Use `g.i_hom` as an intermediate fact. Use `g.q_hom` as an intermediate fact. Use `D.P.isAb.proper` as an intermediate fact. Establish `: IsProper (Out.thickObj R I e D.P.A).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Take `⟨q', hq', hk'⟩` from `exists_isKernel_pullTorus (isGrpPullback_thickLift hρ h) g.i g.q g.isKernel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk : IsPullback (gtTorus g hρ h) (toUnit _) q' η[_]` using `hk'`. Establish `: IsProper ((Over.pullback (thickPt e hρ)).obj (Out.thickObj R I e D.P.A)).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Use `haveI : ConnectedSpace (Sp A) := GlobalTheory.SplitTorus.connectedSpace_of_isLocalRing A`. Establish `hm : Mono (gtTorus g hρ h)` using `⟨fun a b k => hk.hom_ext k (toUnit_unique _ _)⟩`. Use `⟨hm, fun X _ _ _ i hi => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := hi`. Use `haveI := hq'`. Establish `ht : i ≫ q' = toUnit _ ≫ η[_]` using `splitTorus_hom_proper_trivial_local A X _ (i ≫ q') inferInstance`. Set `u` to `hk.lift i (toUnit _) ht`. Establish `hu : u ≫ gtTorus g hρ h = i` using `hk.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: IsMonHom u` using `Serre.isMonHom_of_mul_comp u fun T x y => by`. Rewrite using `[← cancel_mono (gtTorus g hρ h), MonObj.mul_comp (x ≫ u), Category.assoc, Category.assoc, Category.assoc, hu, MonObj.mul_comp]`. Take `⟨r, hr⟩` from `GlobalTheory.SplitTorus.exists_eq_torusMap u`. Conclude with `⟨r, by rw [← hr, hu]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mono_gtTorus_and_factor {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {A : Type}
     [CommRing A] [IsLocalRing A] [IsNoetherianRing A] {ρ : R →+* A} {D : Out.DegPre R} {e : ℕ}
@@ -52,7 +52,7 @@ theorem mono_gtTorus_and_factor {R : Type} [CommRing R] [IsDomain R] {I : Ideal 
   exact ⟨r, by rw [← hr, hu]⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ I t P A _ _ _ a e ha G₀ _ φ h`. Conclude with `mono_gtTorus_and_factor (P.U.gt e) ha h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mono_gtTorus_unif_and_factor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (t : SAB H (Sp R)) (P : PELUnif I t)
     (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (a : R →+* A) (e : ℕ) (ha : ∀ x ∈ I ^ (e + 1), a x = 0)

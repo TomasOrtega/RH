@@ -11,17 +11,17 @@ namespace ProjectiveLinePlaces
 variable {R : Type u} [CommRing R] {A B : Cx R}
 
 /- English proof (translation)
-Unfold `Cx.cls`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cls_eq_zero (A : Cx R) (n : ℕ) (x : A.X n) (hx) : A.cls n x hx = 0 ↔ x ∈ A.B n := by
   unfold Cx.cls; rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]; rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_bot R`.
+A detailed English derivation is pending.
 -/
 theorem mem_B_zero (A : Cx R) (x : A.X 0) : x ∈ A.B 0 ↔ x = 0 := Submodule.mem_bot R
 /- English proof (translation)
-The claim follows from `LinearMap.mem_range`.
+A detailed English derivation is pending.
 -/
 theorem mem_B_succ (A : Cx R) (n : ℕ) (x : A.X (n+1)) : x ∈ A.B (n+1) ↔ ∃ y, A.d n y = x :=
   LinearMap.mem_range
@@ -33,7 +33,7 @@ theorem H_cls (φ : Hom A B) (n : ℕ) (x : A.X n) (hx) :
     φ.H n (A.cls n x hx) = B.cls n (φ.f n x) (by rw [← φ.comm, hx, map_zero]) := rfl
 
 /- English proof (translation)
-Establish `h : (show B.X 0 from B.up.d 0 x.2) = 0` using `rfl`. Use `show φ.f 0 x.1 + (show B.X 0 from B.up.d 0 x.2) = _`. Rewrite using `[h, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_d_snd_zero (φ : Hom A B) (x : (fib φ).X 0) : (((fib φ).d 0 x).2 : B.X 0) = φ.f 0 x.1 := by
   have h : (show B.X 0 from B.up.d 0 x.2) = 0 := rfl
@@ -41,7 +41,7 @@ theorem fib_d_snd_zero (φ : Hom A B) (x : (fib φ).X 0) : (((fib φ).d 0 x).2 :
   rw [h, add_zero]
 
 /- English proof (translation)
-Use `show φ.f (n+1) x.1 + -B.d n x.2 = _`. Rewrite using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_d_snd_succ (φ : Hom A B) (n : ℕ) (x : (fib φ).X (n+1)) :
     (((fib φ).d (n+1) x).2 : B.X (n+1)) = φ.f (n+1) x.1 - B.d n x.2 := by
@@ -49,7 +49,7 @@ theorem fib_d_snd_succ (φ : Hom A B) (n : ℕ) (x : (fib φ).X (n+1)) :
   rw [sub_eq_add_neg]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨congrArg Prod.fst h, sub_eq_zero.mp ((fib_d_snd_succ φ n x).symm.trans (congrArg Prod.snd h))⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `Prod.ext h1 ((fib_d_snd_succ φ n x).trans (sub_eq_zero.mpr h2))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fib_d_succ_iff (φ : Hom A B) (n : ℕ) (x : (fib φ).X (n+1)) :
     (fib φ).d (n+1) x = 0 ↔ A.d (n+1) x.1 = 0 ∧ φ.f (n+1) x.1 = B.d n x.2 := by
@@ -58,7 +58,7 @@ theorem fib_d_succ_iff (φ : Hom A B) (n : ℕ) (x : (fib φ).X (n+1)) :
   · rintro ⟨h1, h2⟩; exact Prod.ext h1 ((fib_d_snd_succ φ n x).trans (sub_eq_zero.mpr h2))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_congr (A : Cx R) (n : ℕ) {x y : A.X n} (hx hy) (e : x = y) : A.cls n x hx = A.cls n y hy := by
   subst e; rfl

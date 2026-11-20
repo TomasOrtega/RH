@@ -11,13 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CharDepth
 
 /- English proof (translation)
-Introduce `C _ v O _ _ hv d s N F w hw u hu c hc hspan`. Establish `hA : ∀ y : Fin s → O, c • y ∈ Submodule.span O (Set.range fun k => res w (dl (u k)))`. Introduce `y`. Take `⟨f, rfl⟩` from `hw y`. Establish `h1 : (Set.range fun k => res w (dl (u k))) = res w '' (Set.range fun k => dl (u k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, ← map_smul]`. Conclude with `Submodule.mem_map_of_mem (hspan f)`. Take `⟨t, ht, hmin⟩` from `GlobalTheory.exists_leading_minors_ge C v O hv s _ c hc hA`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose k hk using ht`. Use `⟨fun b => u (k b), fun b => hu _, fun i => ?_⟩` and prove the remaining obligations. Establish `hm : (Matrix.of fun a b : Fin (i.val + 1) => ∑ j, w (Fin.castLE i.isLt a) j * dl (u (k (Fin.castLE i.isLt b))) j) = Matrix.of fun a b : Fin (i.val + 1) => t (Fin.castLE i.isLt b) (Fin.castLE i.isLt a)`. Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, ← hk]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[res, Matrix.mulVec, dotProduct]`. Rewrite using `[hm]`. Conclude with `(pow_le_pow_right_of_le_one' (hv.map_le_one c) i.isLt).trans (hmin i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_chars_leading_minors_ge :
     ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ (d s N : ℕ) (F : Fin d → PS O 2 d) (w : Fin s → Fin d → O), Function.Surjective (res w) → ∀ (u : Fin N → PS O 1 d), (∀ k, IsCh F (u k)) → ∀ c : O, c ≠ 0 → (∀ f : Fin d → O, c • f ∈ Submodule.span O (Set.range fun k => dl (u k))) → ∃ χ : Fin s → PS O 1 d, (∀ b, IsCh F (χ b)) ∧ ∀ i : Fin s, v (algebraMap O C c) ^ s ≤ v (algebraMap O C (Matrix.of fun a b : Fin (i.val + 1) => ∑ j, w (Fin.castLE i.isLt a) j * dl (χ (Fin.castLE i.isLt b)) j).det) := by

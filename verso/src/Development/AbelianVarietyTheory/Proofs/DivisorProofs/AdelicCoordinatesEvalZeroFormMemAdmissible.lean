@@ -21,9 +21,9 @@ abbrev ev0 {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ] : ((κ 
   LinearMap.proj (R := ℂ) (φ := fun _ : (κ → AF F) => ℂ) 0
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g 0 • (BoundedContinuousFunction.evalCLM ℂ 0).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [ev0, LinearMap.proj_apply, pureA, ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_comp', Function.comp_apply, Pi.smul_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, BoundedContinuousFunction.evalCLM_apply, smul_eq_mul]`. Establish `h1 : (fun i : κ => InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : κ → AdeleRing (𝓞 F) F) i).1) = 0`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `h2 : (fun i : κ => ((0 : κ → AdeleRing (𝓞 F) F) i).2) = 0`. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Rewrite using `[h1, h2, mul_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelicCoordinatesEvalZeroForm_mem_admissible {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ] : ev0 (F := F) κ ∈ (adeleClass F).adm κ := by
   intro g _
@@ -42,14 +42,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Simplify using `[Darboux.rho, schr, hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rho_zero_first (M₁ : Model σ X W₁) (ψ : AddChar (AF F) ℂ) (z : Matrix (Fin n) (Fin d₁) (AE F E))
     (hz : (M₁.co.e z).1 = 0) (Ψ : Fn F n d₁) : M₁.co.rho ψ z Ψ 0 = Ψ 0 := by
   simp [Darboux.rho, schr, hz]
 
 /- English proof (translation)
-Simplify using `[Darboux.rho, schr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rho_first (M₁ : Model σ X W₁) (ψ : AddChar (AF F) ℂ) (y : Fin n × Fin d₁ → AF F) (Ψ : Fn F n d₁) :
     M₁.co.rho ψ (M₁.co.e.symm (y, 0)) Ψ 0 = Ψ y := by
@@ -63,7 +63,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Rewrite using `[hS _ Φ hΦ]`. Simplify using `only [ev0, LinearMap.proj_apply]`. Rewrite using `[rho_first]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_eq_evaluation_zero (M : Model σ X W) (M₁ : Model σ X W₁) (ψ : AddChar (AF F) ℂ) (ι' : Matrix (Fin d) (Fin d₁) E)
     (S : Fn F n d →ₗ[ℂ] Fn F n d₁)
@@ -75,7 +75,7 @@ theorem apply_eq_evaluation_zero (M : Model σ X W) (M₁ : Model σ X W₁) (ψ
   rw [rho_first]
 
 /- English proof (translation)
-Take `⟨u, hu, z, hz, he⟩` from `hw`. Establish `h1` using `GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) Φ hΦ`. Simplify using `only [LinearMap.comp_apply, ev0, LinearMap.proj_apply]`. Rewrite using `[he, hI u hu _ h1, hS z Φ hΦ, rho_zero_first M₁ ψ z hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evAt_zero_comp_eq_of_exp_phase_mul (M : Model σ X W) (M₁ : Model σ X W₁) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (H' : Plane E d d₁)
     (S : Fn F n d →ₗ[ℂ] Fn F n d₁)
@@ -94,11 +94,11 @@ theorem evAt_zero_comp_eq_of_exp_phase_mul (M : Model σ X W) (M₁ : Model σ X
   rw [he, hI u hu _ h1, hS z Φ hΦ, rho_zero_first M₁ ψ z hz]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he T hTm hTh hTi hTa`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Take `⟨L, hiso, hrk, hL⟩` from `GlobalTheory.T.skew_adapted_pair_restriction_theta F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁`. Establish `hadmT : ev0 (Fin n × Fin d₁) ∘ₗ T ∈ (adeleClass F).adm (Fin n × Fin d)` using `hTa _ (adelicCoordinatesEvalZeroForm_mem_admissible _)`. Establish `hadmE : ev0 (Fin n × Fin d₁) ∘ₗ e ∈ (adeleClass F).adm (Fin n × Fin d)` using `GlobalTheory.T.eigen_intertwiner_composition F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he _ (adelicCoordinatesEvalZeroForm_mem_admissible _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Φ₀, hΦ₀, hne⟩` from `GlobalTheory.T.eigen_intertwiner_transitive F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hne`. Take `⟨c, hc⟩` from `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hψ (Fin n × Fin d) L hiso hrk _ hadmT _ hadmE (fun t w hw Φ hΦ => evAt_zero_comp_eq_of_exp_phase_mul M M₁ B.ψ hψ H' T hTh hTi _ (hL t w hw) Φ hΦ) (fun t w hw Φ hΦ => evAt_zero_comp_eq_of_exp_phase_mul M M₁ B.ψ hψ H' …`. Rewrite using `[LinearMap.comp_apply, ← apply_eq_evaluation_zero M M₁ B.ψ H'.ι e he.Heisenberg₂ Φ₀ hΦ₀ y]`. Conclude with `hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, fun Φ hΦ => funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[apply_eq_evaluation_zero M M₁ B.ψ H'.ι T hTh Φ hΦ y, Pi.smul_apply, apply_eq_evaluation_zero M M₁ B.ψ H'.ι e he.Heisenberg₂ Φ hΦ y, smul_eq_mul]`. Conclude with `hc _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ Φ hΦ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

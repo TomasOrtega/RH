@@ -5,7 +5,7 @@ open MeasureTheory Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hμ : (volume : Measure (Fin a → ℝ)).restrict (Set.pi Set.univ (fun _ : Fin a => S)) = Measure.pi (fun _ : Fin a => (volume : Measure ℝ).restrict S)`. Rewrite using `[volume_pi]`. Conclude with `Measure.restrict_pi_pi (fun _ : Fin a => (volume : Measure ℝ)) (fun _ => S)`. Rewrite using `[hμ]`. Conclude with `integral_fintype_prod_eq_prod (ι := Fin a) f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_cube_prod (a : ℕ) (S : Set ℝ) (f : Fin a → ℝ → ℝ) :
     ∫ τ in Set.pi Set.univ (fun _ : Fin a => S), ∏ i, f i (τ i) = ∏ i, ∫ t in S, f i t := by
@@ -17,9 +17,9 @@ theorem setIntegral_cube_prod (a : ℕ) (S : Set ℝ) (f : Fin a → ℝ → ℝ
   exact integral_fintype_prod_eq_prod (ι := Fin a) f
 
 /- English proof (translation)
-Establish `hhalf : (0 : ℝ) < 1 / 2` using `by norm_num`. Rewrite using `[integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le h1]`. Establish `hfun : (fun t : ℝ => c / t) = fun t => c * t⁻¹`. Use function extensionality and compare the values at `t`. Rewrite using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun, intervalIntegral.integral_const_mul, integral_inv_of_pos h0 hhalf]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem setIntegral_Icc_const_div (c lo : ℝ) (h0 : 0 < lo) (h1 : lo ≤ 1 / 2) :
     ∫ t in Set.Icc lo (1 / 2), c / t = c * Real.log (1 / (2 * lo)) := by
@@ -32,9 +32,9 @@ theorem setIntegral_Icc_const_div (c lo : ℝ) (h0 : 0 < lo) (h1 : lo ≤ 1 / 2)
   field_simp
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, c * m = k + 1` from `⟨c * m - 1, by have := Nat.mul_le_mul hc hm; omega⟩`. Establish `hcongr : Set.EqOn (fun t : ℝ => t ^ (c * m) * ((c : ℝ) / t)) (fun t => (c : ℝ) * t ^ k) (Set.Ioo (0 : ℝ) (1 / 2))`. Introduce `t ht`. Establish `htne : t ≠ 0` using `ne_of_gt ht.1`. Simplify using `only`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk, pow_succ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[setIntegral_congr_fun measurableSet_Ioo hcongr, ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (by norm_num), intervalIntegral.integral_const_mul, integral_pow, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma setIntegral_Ioo_pow_mul_div_eq (c m : ℕ) (hm : 1 ≤ m) (hc : 1 ≤ c) :
     ∫ t in Set.Ioo (0 : ℝ) (1 / 2), t ^ (c * m) * ((c : ℝ) / t) =
@@ -54,11 +54,11 @@ private lemma setIntegral_Ioo_pow_mul_div_eq (c m : ℕ) (hm : 1 ≤ m) (hc : 1 
   ring
 
 /- English proof (translation)
-Rewrite using `[setIntegral_Ioo_pow_mul_div_eq c m hm hc]`. Establish `hcpos : (0 : ℝ) < c` using `by exact_mod_cast hc`. Establish `hmpos : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hpow0 : (0 : ℝ) ≤ (1 / 2 : ℝ) ^ (c * m)` using `by positivity`. Establish `hpow1 : (1 / 2 : ℝ) ^ (c * m) ≤ 1` using `pow_le_one₀ (by norm_num) (by norm_num)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm : ((c * m : ℕ) : ℝ) = (c : ℝ) * m` using `by push_cast; ring`. Rewrite using `[hcm]`. Establish `hden : (0 : ℝ) < (c : ℝ) * m` using `by positivity`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_assoc', div_le_one hden]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem setIntegral_Ioo_pow_mul_div (c m : ℕ) (hm : 1 ≤ m) (hc : 1 ≤ c) :
     0 ≤ ∫ t in Set.Ioo (0 : ℝ) (1 / 2), t ^ (c * m) * ((c : ℝ) / t) ∧
@@ -77,7 +77,7 @@ theorem setIntegral_Ioo_pow_mul_div (c m : ℕ) (hm : 1 ≤ m) (hc : 1 ≤ c) :
     _ ≤ (c : ℝ) * m := by gcongr
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega), composition_card, Nat.add_sub_cancel, pow_succ]`. Use linear arithmetic over natural numbers and integers.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_card_composition_lt (q : ℕ) :
     ∑ j ∈ Finset.Icc 1 q, Fintype.card (Composition j) < 2 ^ q := by
@@ -88,7 +88,7 @@ theorem sum_card_composition_lt (q : ℕ) :
     omega
 
 /- English proof (translation)
-Use `⟨fun a c lo h0 h1 _ => ?_, fun a c m hm hc => ?_, sum_card_composition_lt⟩` and prove the remaining obligations. Use `(setIntegral_cube_prod a (Set.Icc lo (1 / 2)) (fun i t => c i / t)).trans ?_` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun i _ => setIntegral_Icc_const_div (c i) lo h0 h1`. Use `(setIntegral_cube_prod a (Set.Ioo (0 : ℝ) (1 / 2)) (fun i t => t ^ (c i * m) * ((c i : ℝ) / t))).trans_le ?_` and prove the remaining obligations. Conclude with `Finset.prod_le_one (fun i _ => (setIntegral_Ioo_pow_mul_div (c i) m hm (hc i)).1) fun i _ => (setIntegral_Ioo_pow_mul_div (c i) m hm (hc i)).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sizeIntegrals_and_card_compositions :
     (∀ (a : ℕ) (c : Fin a → ℝ) (lo : ℝ), 0 < lo → lo ≤ 1 / 2 → (∀ i, 0 ≤ c i) → ∫ τ in Set.pi Set.univ (fun _ : Fin a => Set.Icc lo (1 / 2)), ∏ i, c i / τ i = ∏ i, c i * Real.log (1 / (2 * lo))) ∧ (∀ (a : ℕ) (c : Fin a → ℕ) (m : ℕ), 1 ≤ m → (∀ i, 1 ≤ c i) → ∫ τ in Set.pi Set.univ (fun _ : Fin a => Set.Ioo (0 : ℝ) (1 / 2)), ∏ i, τ i ^ (c i * m) * ((c i : ℝ) / τ i) ≤ 1) ∧ ∀ q : ℕ, ∑ j ∈ Finset.Icc 1 q, Fintype.card (Composition j) < 2 ^ q := by

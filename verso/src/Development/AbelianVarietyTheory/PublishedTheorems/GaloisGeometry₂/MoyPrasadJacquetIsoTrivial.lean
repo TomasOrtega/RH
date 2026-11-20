@@ -16,7 +16,7 @@ def MoyPrasadJacquetIso : Prop :=
       (fixed (jacU e π) ((KOne k (Fin n) ⊔ (unipRad k e ⊓ KO k (Fin n))).comap (leviEmb k e)))
 
 /- English proof (translation)
-Introduce `v hv h`. Establish `h1 : π (leviEmb k e h) v = v` using `by simpa using hv ⟨_, h.2⟩`. Establish `h2 : jacU e π h (Submodule.Quotient.mk v) = Submodule.Quotient.mk (π (leviEmb k e h) v)` using `rfl`. Simplify using `only [h2, h1, MonoidHom.one_apply, Units.val_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mapsTo_fixed_jacU {k : Type} [Field k] {n s : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin n) {V : Type}
     [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (H : Subgroup (GL (Fin n) k)) :
@@ -28,11 +28,11 @@ theorem mapsTo_fixed_jacU {k : Type} [Field k] {n s : ℕ} {d : Fin s → ℕ} (
   simp only [h2, h1, MonoidHom.one_apply, Units.val_one, one_smul]
 
 /- English proof (translation)
-Establish `htop : fixed (Representation.trivial ℂ (GL (Fin n) k) ℂ) H = ⊤` using `eq_top_iff.2 fun v _ h => by simp`. Establish `hbot : twKer (Representation.trivial ℂ (GL (Fin n) k) ℂ) (unipRad k e) 1 = ⊥`. Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `⟨⟨fun v => by simp, fun K _ _ => inferInstance⟩, htop, mapsTo_fixed_jacU e _ H, ?_, ?_⟩` and prove the remaining obligations. Introduce `v _ w _ h`. Use `(Submodule.Quotient.eq _).1 h` as an intermediate fact. Rewrite `this` using `[hbot, Submodule.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis. Introduce `x _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨v, by rw [htop]; trivial, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem moyPrasadJacquetIso_trivial (k : Type) [Field k] [TopologicalSpace k] {n s : ℕ} {d : Fin s → ℕ}
     (e : (Σ a, Fin (d a)) ≃ Fin n) (H : Subgroup (GL (Fin n) k)) :

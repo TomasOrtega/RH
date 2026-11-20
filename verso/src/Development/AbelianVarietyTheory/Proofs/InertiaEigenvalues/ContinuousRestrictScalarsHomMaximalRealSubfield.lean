@@ -17,17 +17,15 @@ open scoped Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _`. Use `set F := maximalRealSubfield E`. Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[map_one, krullTopology_mem_nhds_one_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, hMs⟩` from `hs`. Set `b` to `Module.finBasis F M`. Use `set t : Set Ω := Set.range (fun i => ((b i : M) : Ω)) with ht_def`. Establish `hMt : M ≤ IntermediateField.adjoin F t`. Introduce `m hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg (fun y : M => (y : Ω)) (b.sum_repr ⟨m, hm⟩)`. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul] at h`. Rewrite using `[← h]`. Conclude with `sum_mem fun i _ => IntermediateField.smul_mem _ (IntermediateField.subset_adjoin F t (Set.mem_range_self i))`. Establish `hint : ∀ x ∈ t, IsIntegral E x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨i, rfl⟩`. Establish `: IsIntegral F (b i)` using `IsIntegral.of_finite F _`. Conclude with `(IsIntegral.map (IsScalarTower.toAlgHom F M Ω) this).tower_top`. Use `haveI : Finite t := Set.finite_range _`. Use `haveI : FiniteDimensional E (IntermediateField.adjoin E t) := IntermediateField.finiteDimensional_adjoin hint`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`. Use `⟨IntermediateField.adjoin E t, inferInstance, fun σ hσ => hMs ?_⟩` and prove the remaining obligations. Establish `hH : IntermediateField.adjoin F t ≤ IntermediateField.fixedField (Subgroup.map (AlgEquiv.restrictScalarsHom F (A` using `Ω) (S := E)) (IntermediateField.adjoin E t).fixingSubgroup) := by`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`.
-
-Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixedField_iff]`. Introduce and unpack `f ⟨τ, hτ, rfl⟩`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hτ x (IntermediateField.subset_adjoin E _ hx)`. Conclude with `IntermediateField.fixingSubgroup_antitone hMt ((IntermediateField.le_iff_le _ _).1 hH ⟨σ, hσ, rfl⟩)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem restrictScalarsHom_maximalRealSubfield_continuous :
     ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω],

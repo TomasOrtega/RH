@@ -16,7 +16,7 @@ open GlobalTheory.LocMod GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory
 namespace GlobalTheory.SeeSaw.LocTarget
 
 /- English proof (translation)
-Establish `h1 : Formalism.L2.Theta.mt S 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Use `⟨fun i j => by rw [h1, sub_self, Matrix.zero_apply, mul_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[h1, Units.val_one, Matrix.mul_one, F.βγ]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLoc_one {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {Y : Type} [Fintype Y] [DecidableEq Y] {S : HSp D} (F : GlobalTheory.LocMod.Frame k S.rank Y) : p.IsLoc F 1 1 := by
@@ -26,7 +26,7 @@ theorem isLoc_one {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Introduce `x a ha`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, h x a ha, MonoidHom.inv_apply, Circle.coe_inv, inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isComp_inv {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {χ : (AE D)ˣ →* Circle} {μ : kˣ →* ℂˣ} (h : p.IsComp χ⁻¹ μ) : p.IsComp χ μ⁻¹ := by
@@ -34,9 +34,9 @@ theorem isComp_inv {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   rw [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, h x a ha, MonoidHom.inv_apply, Circle.coe_inv, inv_inv]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.SeeSaw.MuUnits.withMu_eq k s κ S t μ hμ hu`. Establish `hL : ((withMu S μ hμ).T t).Laws` using `Chain.ofType_laws _ _ _ _ _`. Take `⟨hJ, hl⟩` from `h2 (j + 1) b hb`. Establish `hx : x.1 ∈ (((withMu S μ hμ).T t).lev (j + 1) b hb).J` using `by rw [hJ]; exact x.2`. Use `(hL.1 j b H).2 ⟨x.1, hx⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h1, hl x.1 hx x.2, Units.val_inv_eq_inv_val]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_phi {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s κ : ℕ}
     (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j))
@@ -53,11 +53,11 @@ theorem om_phi {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNon
   exact this
 
 /- English proof (translation)
-Introduce `D c v G hc hv j χS χT ω hω μ hμ hu hS hT b hb x h hx f hf`. Establish `hs` using `G.hs`. Establish `H : j + b = G.s` using `by omega`. Take `⟨μT, hT, -⟩` from `hT`. Take `⟨Tm, hTm, hO⟩` from `(GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D G.k G.q G.unit _ _ _ _ (G.FY j (b + 1) (by omega)) (G.FY (j + 1) b hb) c.ψ G.S.ψ hc.std G.char G.S.cond (v.N j) (v.N (j + 1)) (hv.sd j (by omega)) (hv.sd (j + 1) (by omega)) (G.latY j (b + 1) (by omega)) (G.latY (j …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨O, hO1, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := G.k) (Y := XIx (Fin D.R.k) (Fin D.R.t) (j + 1) ⊕ Fin b) (Y' := XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin (b + 1))`. Establish `hR : (G.S.T (Fin D.R.t)).Regular` using `Chain.ofType_regular _ _ _ _ _`. Establish `e1` using `(G.eg_is j b H).2 Tm hTm O ⟨_, hR.1 j b H⟩ hO1 rfl`. Rewrite using `[← hO O hO1, ← e1, ← map_smul]`. Use `GlobalTheory.T.weilDatum_localModel_formula D G.k (ofSplit G.q) c.ψ _ _ χS χT ω hω _ μT (isComp_inv _ hS) hT _ _ _ _ Tm hTm 1 1 h x.1 (isLoc_one _ _) hx _ _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one, map_one, Units.val_one, one_smul, inv_inv]`. Conclude with `(om_phi G.S _ μ hμ hu j b H hb x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem target_law : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), c.Is → v.Is → ∀ (j : ℕ) (χS χT : (AE D)ˣ →* Circle) (om : Om (c.V j) (c.V (j + 1))), IsWeilDatumO c.ψ _ _ χS χT om → ∀ (μ : ℕ → G.kˣ →* ℂˣ), (∀ i, IsTame (μ i)) → (∀ i (x : G.kˣ), valuation G.k (x : G.k) = 1 → μ i x = G.S.μ i x) → (ofSplit G.q).IsComp χS⁻¹ (μ (j + 1)) → (∃ μ', (ofSplit G.q).IsComp χT μ' ∧ ∀ x : G.kˣ, valuation G.k (x : G.k) = 1 → μ' x * μ (j + 1) x = 1) → ∀ (b : ℕ) (hb : j + 1 + b = G.s + 1) (x : ((G.S.T (Fin D.R.t)).lev (j + 1) b hb).J) (h : GA D (c.V (j + 1))), (ofSplit G.q).IsLoc (G.FY (j + 1) b hb) h x.1 → ∀ f : WO (c.V j) (c.V (j + 1)) → ℂ, Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = G.q.v) f → om (1, h) (comb c.ψ _ _ (G.eg j) f) = ((((G.S.T (Fin D.R.t)).lev (j + 1) b hb).lam x : ℂ))⁻¹ • comb c.ψ _ _ (G.eg j) f := by
   intro D c v G hc hv j χS χT ω hω μ hμ hu hS hT b hb x h hx f hf

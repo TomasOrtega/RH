@@ -12,15 +12,13 @@ universe u v w
 noncomputable section
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (Set.range v)`. Establish `: FiniteDimensional ℂ W` using `FiniteDimensional.span_of_finite ℂ (Set.finite_range v)`. Set `w : Fin n → W` to `fun i ↦ ⟨v i, Submodule.subset_span ⟨i, rfl⟩⟩`. Establish `hgw : gram ℂ v = gram ℂ w`. Use extensionality with `i j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [gram_apply, w, Submodule.coe_inner]`. Establish `hfin : Module.finrank ℂ W = Fintype.card (Fin n)` using `finrank_span_eq_card hv`. Set `b : OrthonormalBasis (Fin n) ℂ W` to `gramSchmidtOrthonormalBasis hfin w`. Establish `hb : b.toBasis.det w = ∏ i, inner ℂ (b i) (w i)` using `gramSchmidtOrthonormalBasis_det hfin w`. Use `set A := b.toBasis.toMatrix w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hA : gram ℂ w = Aᴴ * A`. Use extensionality with `j k`. Rewrite using `[gram_apply, mul_apply, ← b.sum_inner_mul_inner]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Simplify using `only [A, conjTranspose_apply, Module.Basis.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply, RCLike.star_def, inner_conj_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : (det (gram ℂ w)).re = ‖b.toBasis.det w‖ ^ 2`. Rewrite using `[hA, det_mul, det_conjTranspose, Module.Basis.det_apply, RCLike.star_def, Complex.conj_mul']`. Use `norm_cast`. Rewrite using `[hgw, hdet, hb, norm_prod, ← Finset.prod_pow]`. Use `gcongr with i`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem det_gram_re_le_prod_norm_sq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     {n : ℕ} (v : Fin n → E) (hv : LinearIndependent ℂ v) :
@@ -56,11 +54,11 @@ variable {K : Type*} [Field K] [NumberField K] {E : Type*} [AddCommGroup E] [Mod
   [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E]
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin ι`. Establish `hs' : LinearIndependent (𝓞 K) (s ∘ e.symm)` using `hs.comp _ e.symm.injective`. Establish `hne : ∀ i, fibreVec h σ (s i) ≠ 0` using `(linearIndependent_fibreVec h σ hs).ne_zero`. Establish `hH` using `det_gram_re_le_prod_norm_sq (fun i ↦ fibreVec h σ ((s ∘ e.symm) i)) (linearIndependent_fibreVec h σ hs')`. Rewrite using `[← gramDet_reindex h σ e.symm s]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_prod (s := Finset.univ) (f := fun i ↦ ‖fibreVec h σ ((s ∘ e.symm) i)‖ ^ 2) (fun i _ ↦ pow_ne_zero 2 (norm_ne_zero_iff.mpr (hne (e.symm i)))), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow]`. Use `push_cast`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = 2 * ∑ i, Real.log ‖fibreVec h σ (s i)‖ := by`. Use `congr 1`. Conclude with `e.symm.sum_comp (fun i ↦ Real.log ‖fibreVec h σ (s i)‖)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem log_gramDet_le (h : HermitianMetric K E) (σ : K →+* ℂ) {ι : Type*} [Fintype ι]
     [DecidableEq ι] {s : ι → E} (hs : LinearIndependent (𝓞 K) s) :
@@ -88,11 +86,11 @@ theorem log_gramDet_le (h : HermitianMetric K E) (σ : K →+* ℂ) {ι : Type*}
 end Gram
 
 /- English proof (translation)
-Introduce `K _ _ M ι _ x La hli hcard hnorm`. Use `set r := Module.finrank (𝓞 K) M.carrier`. Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `hN : 0 ≤ Real.log (Nat.card (M.carrier ⧸ Submodule.span (𝓞 K) (Set.range x)))` using `Real.log_natCast_nonneg _`. Establish `hσ : ∀ σ : K →+* ℂ, Real.log (gramDet M.metric σ x) ≤ 2 * (r * Real.log La)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Use `(log_gramDet_le M.metric σ hli).trans ?_` and prove the remaining obligations. Establish `hle : ∑ i, Real.log ‖fibreVec M.metric σ (x i)‖ ≤ ∑ _i : ι, Real.log La` using `Finset.sum_le_sum fun i _ ↦ Real.log_le_log (norm_pos_iff.mpr ((linearIndependent_fibreVec M.metric σ hli).ne_zero i)) (hnorm i σ)`. Rewrite `hle` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsum : ∑ σ : K →+* ℂ, Real.log (gramDet M.metric σ x) ≤ Module.finrank ℚ K * (2 * (r * Real.log La))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[HermitianBundle.deg, HermitianBundle.arithDegree, arithDegree_eq M.metric hli hcard, degreeWith, le_div_iff₀ hd]`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem Hadamard.intersectionNumber_baseChange : Hadamard.Statement.{u, v, w} := by
   intro K _ _ M ι _ x La hli hcard hnorm
@@ -118,7 +116,7 @@ theorem Hadamard.intersectionNumber_baseChange : Hadamard.Statement.{u, v, w} :=
   nlinarith
 
 /- English proof (translation)
-The claim follows from `Hadamard.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem Hadamard.proof (_h1 : Sublattice.Statement.{u, v}) : Hadamard.Statement.{u, v, w} :=
   Hadamard.intersectionNumber_baseChange

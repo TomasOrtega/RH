@@ -13,22 +13,20 @@ namespace GlobalTheory.SliceModelT
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[OrthDec.resT_symm_apply, GlobalTheory.MixModel.sandwich_apply, Matrix.mul_one, Matrix.mul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resT_symm_left {T A B : HSp D} (d : OrthDec T A B) (S : HSp D) (u : WO S A) :
     (d.resT S).symm (u, 0) = GlobalTheory.MixModel.sandwich d.jA (1 : Mx D S.rank S.rank) u := by
   rw [OrthDec.resT_symm_apply, GlobalTheory.MixModel.sandwich_apply, Matrix.mul_one, Matrix.mul_zero, add_zero]
 
 /- English proof (translation)
-Establish `e0 : (d.resT S).symm (ratW A S γ, 0) = ratW T S (d.iA * γ)`. Rewrite using `[OrthDec.resT_symm_apply, Matrix.mul_zero, add_zero, ratW_eq, ratW_eq, rat_mul]`. Both sides reduce to the same expression. Establish `e : ((ratW A S γ + u, v) : WO S A × WO S B) = (ratW A S γ, (0 : WO S B)) + (u, v)` using `by simp`. Use `show f ((d.resT S).symm (ratW A S γ + u, v)) = ψ (-(symplOH S A (ratW A S γ) u)) * f ((d.resT S).symm (u, v))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_add, e0, hf.quasi, ← e0, d.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, GlobalTheory.MixModel.symplOH_zero_left, add_zero]`. Use `level := by`. Take `⟨U, hU, hk⟩` from `hf.level`. Use `⟨U.comap (GlobalTheory.MixModel.sandwich d.jA (1 : Mx D S.rank S.rank)), hU.preimage (GlobalTheory.MixModel.continuous_sandwich _ _), fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `congrFun (hk _ hu (GlobalTheory.MixModel.map_sandwich _ _ _ h0)) ((d.resT S).symm (w, v))`. Rewrite `e1` using `[← resT_symm_left]`. Simplify using `only [heisO] at e1 ⊢`. Rewrite using `[← e1, ← map_add (d.resT S).symm, Prod.mk_add_mk, add_zero, d.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, GlobalTheory.MixModel.symplOH_zero_right, add_zero]`. Use `cont := hf.cont.comp ((d.continuous_resT_symm S).comp (continuous_id.prodMk continuous_const))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `smooth m L hL h0 w := by`. Establish `e : ∀ t, (d.resT S).symm (w + L t, v) = (d.resT S).symm (w, v) + ((GlobalTheory.MixModel.sandwich d.jA (1 : Mx D S.rank S.rank)).comp L) t`. Introduce `t`. Rewrite using `[AddMonoidHom.comp_apply, ← resT_symm_left, ← map_add (d.resT S).symm, Prod.mk_add_mk, add_zero]`. Simplify using `only [e]`.
-
-Conclude with `hf.smooth m ((GlobalTheory.MixModel.sandwich d.jA (1 : Mx D S.rank S.rank)).comp L) ((GlobalTheory.MixModel.continuous_sandwich _ _).comp hL) (fun t => GlobalTheory.MixModel.map_sandwich _ _ _ (h0 t)) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_sliceT_left {ψ : AddChar (AF D.host.F) ℂ} {T A B S : HSp D} (d : OrthDec T A B) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (v : WO S B) : IsThetaFunO ψ S A fun u => f ((d.resT S).symm (u, v)) where
@@ -64,14 +62,14 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def prH : D.host.E →+* k := p.π.comp (incA D)
 
 /- English proof (translation)
-Establish `h1 : p.π a * x = p.π (a * p.ι x)` using `by rw [map_mul, p.π_ι]`. Rewrite using `[h1, p.ι_π, mul_left_comm, ← p.ι_π, p.π_ι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_mul (a : AE D) (x : k) : p.ι (p.π a * x) = a * p.ι x := by
   have h1 : p.π a * x = p.π (a * p.ι x) := by rw [map_mul, p.π_ι]
   rw [h1, p.ι_π, mul_left_comm, ← p.ι_π, p.π_ι]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, ι_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_map_ι {m l n : Type} [Fintype l] (N : Matrix m l (AE D)) (M : Matrix l n k) :
     N * M.map p.ι = (N.map p.π * M).map p.ι := by
@@ -82,7 +80,7 @@ variable {ρ : ℕ} (B : BesLev D ρ) (S : HSp D) {s : k} {n n' : Type} [Fintype
   {FA : Frame k B.A.rank n'} {F₀ : Frame k B.V₀.rank (n' ⊕ Unit)} (FS : Frame k S.rank n)
 
 /- English proof (translation)
-Use extensionality with `r (a | _)`. Conclude with `hF.1 r a`. Conclude with `hF.2 r`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem beta_eq (hF : p.IsCoreFrame B s FA F₀) :
     F₀.β = fromCols (B.o.iA.map (prH p) * FA.β) (Matrix.of fun r (_ : Unit) => s * prH p (vecB B.o B.ζ r)) := by
@@ -91,7 +89,7 @@ theorem beta_eq (hF : p.IsCoreFrame B s FA F₀) :
   · exact hF.2 r
 
 /- English proof (translation)
-Use extensionality with `r u`. Simplify using `[Matrix.mul_apply, vecB, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem col_eq : (Matrix.of fun r (_ : Unit) => s * prH p (vecB B.o B.ζ r)) =
     s • (B.o.iB.map (prH p) * Matrix.of fun j (_ : Unit) => prH p (B.ζ j)) := by
@@ -99,7 +97,7 @@ theorem col_eq : (Matrix.of fun r (_ : Unit) => s * prH p (vecB B.o B.ζ r)) =
   simp [Matrix.mul_apply, vecB, Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Rewrite using `[beta_eq p B hF, col_eq, Matrix.mul_fromCols, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, ← Matrix.map_mul, B.o.qA_iA, B.o.qA_iB, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), Matrix.one_mul, Matrix.zero_mul, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qA_beta (hF : p.IsCoreFrame B s FA F₀) : B.o.qA.map (prH p) * F₀.β = fromCols FA.β 0 := by
   rw [beta_eq p B hF, col_eq, Matrix.mul_fromCols, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
@@ -107,7 +105,7 @@ theorem qA_beta (hF : p.IsCoreFrame B s FA F₀) : B.o.qA.map (prH p) * F₀.β 
     Matrix.map_zero _ (map_zero _), Matrix.one_mul, Matrix.zero_mul, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[OrthDec.resT_symm_apply, Matrix.mul_zero, add_zero, Place.up, Place.up, OrthDec.jA, rat, mul_map_ι, beta_eq p B hF, fromCols_mul_fromRows, Matrix.mul_zero, add_zero, Matrix.map_map]`. Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem up_fromRows (hF : p.IsCoreFrame B s FA F₀) (x : Matrix n' n k) :
     p.up FS F₀ (fromRows x 0) = (B.o.resT S).symm (p.up FS FA x, 0) := by
@@ -117,9 +115,9 @@ theorem up_fromRows (hF : p.IsCoreFrame B s FA F₀) (x : Matrix n' n k) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[OrthDec.resT_apply]`. Simplify using `only`. Rewrite using `[Place.up, Place.up, OrthDec.pA, rat, mul_map_ι, Matrix.map_map]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(B.o.qA.map (prH p) * F₀.β) * x * FS.γ = _`. Rewrite using `[qA_beta p B hF]`. Use `conv_lhs => rw [← fromRows_toRows x]`. Rewrite using `[fromCols_mul_fromRows, Matrix.zero_mul, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resT_up_fst (hF : p.IsCoreFrame B s FA F₀) (x : Matrix (n' ⊕ Unit) n k) :
     (B.o.resT S (p.up FS F₀ x)).1 = p.up FS FA x.toRows₁ := by
@@ -134,7 +132,7 @@ theorem resT_up_fst (hF : p.IsCoreFrame B s FA F₀) (x : Matrix (n' ⊕ Unit) n
   rw [fromCols_mul_fromRows, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Simplify using `[symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_zero_right' (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
   simp [symplO, hO]
@@ -175,19 +173,17 @@ end GlobalTheory.SliceModelT
 open GlobalTheory.SliceModelT in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ n n' _ _ _ _ ρ B S s FA F₀ FS hF T₀ hT a ha v`. Set `a' : SB (n → k)` to `⟨a, ha⟩`. Set `T₁ : SB (Matrix n' n k) →ₗ[ℂ] (WO S B.A → ℂ)` to `(LinearMap.funLeft ℂ ℂ (fun u : WO S B.A => (B.o.resT S).symm (u, v))) ∘ₗ T₀ ∘ₗ tens a'`. Establish `hT₁ : ∀ Ξ u, T₁ Ξ u = T₀ (tens a' Ξ) ((B.o.resT S).symm (u, v))` using `fun _ _ => rfl`. Use `⟨T₁, ⟨fun Φ => ?_, fun x Φ Φ' hΦ => ?_, fun y hy Φ Φ' hΦ => ?_⟩, fun Ξ Ψ hΨ u => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isThetaFunO_sliceT_left B.o (hT.theta _) v`. Establish `h1` using `hT.trans (fromRows x 0) (tens a' Φ) (tens a' Φ') (fun t => by`. Establish `e1 : (t + fromRows x (0 : Matrix Unit n k)).toRows₁ = t.toRows₁ + x`. Use extensionality with `i j`. Simplify using `[Matrix.toRows₁, Matrix.fromRows_apply_inl]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (t + fromRows x (0 : Matrix Unit n k) : Matrix (n' ⊕ Unit) n k) (Sum.inr ()) = t (Sum.inr ())`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.fromRows_apply_inr]`. Rewrite using `[tens_apply, tens_apply, hΦ, e1, e2])`. Use function extensionality and compare the values at `u`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT₁, h1, up_fromRows p B S FS hF]`. Simplify using `only [heisO, hT₁]`. Rewrite using `[← map_add (B.o.resT S).symm, Prod.mk_add_mk, add_zero, B.o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, GlobalTheory.MixModel.symplOH_zero_right, add_zero]`. Use `set Y : WO S B.V₀ := (B.o.resT S).symm (y, 0) with hYdef`. Establish `hY : IsHalf (cA D p.e) Y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[hYdef, OrthDec.resT_symm_apply, Matrix.mul_zero, add_zero, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, hy l j]`. Establish `h1` using `hT.modul Y hY (tens a' Φ) (tens a' Φ') (fun t => by`. Rewrite using `[tens_apply, tens_apply, hΦ, B.o.symplO_resT, resT_up_fst p B S FS hF, hYdef, AddEquiv.apply_symm_apply, symplO_zero_right', add_zero, mul_assoc])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[hT₁, h1]`. Simplify using `only [heisO, hT₁]`. Rewrite using `[← map_add (B.o.resT S).symm, Prod.mk_add_mk, add_zero, B.o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, GlobalTheory.MixModel.symplOH_zero_right, add_zero]`. Establish `e : Ψ = tens a' Ξ` using `Subtype.ext (funext hΨ)`.
-
-Rewrite using `[e, hT₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SliceModelT.main : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (ρ : ℕ) (B : BesLev D ρ) (S : HSp D) (s : k) (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit)) (FS : Frame k S.rank n), p.IsCoreFrame B s FA F₀ → ∀ T₀, p.IsModel ψ FS F₀ T₀ → ∀ (a : (n → k) → ℂ), a ∈ SB _ → ∀ v : WO S B.L, ∃ T₁, p.IsModel ψ FS FA T₁ ∧ ∀ (Ξ : SB (Matrix n' n k)) (Ψ : SB (Matrix (n' ⊕ Unit) n k)), (∀ x, Ψ.1 x = Ξ.1 x.toRows₁ * a (x (Sum.inr ()))) → ∀ u, T₀ Ψ ((B.o.resT S).symm (u, v)) = T₁ Ξ u := by
   intro D k _ _ _ _ p ψ n n' _ _ _ _ ρ B S s FA F₀ FS hF T₀ hT a ha v

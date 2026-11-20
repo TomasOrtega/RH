@@ -11,9 +11,9 @@ namespace GlobalTheory.EisM
 def ptXY (p : ℝ × ℝ) : ℍ := ofComplex ((p.1 : ℂ) + (p.2 : ℂ) * Complex.I)
 
 /- English proof (translation)
-Rewrite using `[← measurableEmbedding_coe.measurable_comp_iff]`. Establish `h : (UpperHalfPlane.coe ∘ (ofComplex : ℂ → ℍ)) = fun w : ℂ => if 0 < w.im then w else ((ofComplex 0 : ℍ) : ℂ)`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : 0 < w.im`. Simplify using `[hw, ofComplex_apply_of_im_pos hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, hw, if_false]`. Rewrite using `[ofComplex_apply_of_im_nonpos (not_lt.mp hw), ofComplex_apply_of_im_nonpos (le_refl _ : (0 : ℂ).im ≤ 0)]`. Rewrite using `[h]`. Conclude with `Measurable.ite (measurableSet_lt measurable_const Complex.measurable_im) measurable_id measurable_const`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_ofComplex_hp : Measurable (ofComplex : ℂ → ℍ) := by
   classical
@@ -31,7 +31,7 @@ theorem measurable_ofComplex_hp : Measurable (ofComplex : ℂ → ℍ) := by
     measurable_const
 
 /- English proof (translation)
-Unfold `ptXY`. Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ptXY_eq (p : ℝ × ℝ) : ptXY p = ofComplex (Complex.measurableEquivRealProd.symm p) := by
   unfold ptXY
@@ -39,22 +39,22 @@ theorem ptXY_eq (p : ℝ × ℝ) : ptXY p = ofComplex (Complex.measurableEquivRe
   apply Complex.ext <;> simp
 
 /- English proof (translation)
-Simplify using `only [funext ptXY_eq]`. Conclude with `measurable_ofComplex_hp.comp Complex.measurableEquivRealProd.symm.measurable`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_ptXY : Measurable ptXY := by
   simp only [funext ptXY_eq]
   exact measurable_ofComplex_hp.comp Complex.measurableEquivRealProd.symm.measurable
 
 /- English proof (translation)
-Establish `hm` using `measurable_ptXY`. Use extensionality with `s hs`. Establish `hp : (volume : Measure ℝ).prod (volume.restrict (Set.Ioi (0 : ℝ))) = (volume : Measure (ℝ × ℝ)).restrict (Set.univ ×ˢ Set.Ioi 0)`. Rewrite using `[Measure.volume_eq_prod, ← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hset : ptXY ⁻¹' s ∩ Set.univ ×ˢ Set.Ioi 0 = Complex.measurableEquivRealProd.symm ⁻¹' (UpperHalfPlane.coe '' s)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `p`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_prod, Set.mem_univ, true_and, Set.mem_Ioi, Set.mem_image, ptXY_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : 0 < (Complex.measurableEquivRealProd.symm p).im` using `by simpa using h2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[ofComplex_apply_of_im_pos h3]`. Introduce and unpack `⟨z, hz, hzp⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzp, ofComplex_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Establish `h3 : 0 < (Complex.measurableEquivRealProd.symm p).im`. Rewrite using `[← hzp]`. Conclude with `z.im_pos`. Simplify using `using h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Measure.map_apply hm hs, withDensity_apply _ (hm hs), hp, Measure.restrict_restrict (hm hs), hset, volume_eq_lintegral, ← (Complex.volume_preserving_equiv_real_prod.symm _).setLIntegral_comp_preimage_emb Complex.measurableEquivRealProd.symm.measurableEmbedding]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem volume_eq_map_ptXY : (volume : Measure ℍ) = Measure.map ptXY
     (((volume : Measure ℝ).prod (volume.restrict (Set.Ioi 0))).withDensity
@@ -90,7 +90,7 @@ theorem volume_eq_map_ptXY : (volume : Measure ℍ) = Measure.map ptXY
   simp
 
 /- English proof (translation)
-Establish `h : strip = (fun z : ℍ => z.re) ⁻¹' (Set.Ico 0 1)` using `rfl`. Rewrite using `[h]`. Conclude with `UpperHalfPlane.continuous_re.measurable measurableSet_Ico`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_strip : MeasurableSet strip := by
   have h : strip = (fun z : ℍ => z.re) ⁻¹' (Set.Ico 0 1) := rfl
@@ -98,7 +98,7 @@ theorem measurableSet_strip : MeasurableSet strip := by
   exact UpperHalfPlane.continuous_re.measurable measurableSet_Ico
 
 /- English proof (translation)
-Establish `h : 0 < ((x : ℂ) + (y : ℂ) * Complex.I).im` using `by simpa using hy`. Rewrite using `[ptXY, ofComplex_apply_of_im_pos h]`. Simplify using `[UpperHalfPlane.re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ptXY_re (x y : ℝ) (hy : 0 < y) : (ptXY (x, y)).re = x := by
   have h : 0 < ((x : ℂ) + (y : ℂ) * Complex.I).im := by simpa using hy
@@ -106,11 +106,11 @@ theorem ptXY_re (x y : ℝ) (hy : 0 < y) : (ptXY (x, y)).re = x := by
   simp [UpperHalfPlane.re]
 
 /- English proof (translation)
-Establish `hm` using `measurable_ptXY`. Establish `hS` using `hm measurableSet_strip`. Establish `h1 : ((volume : Measure ℝ).prod ((volume : Measure ℝ).restrict (Set.Ioi 0))) = ((volume : Measure ℝ).prod (volume : Measure ℝ)).restrict (Set.univ ×ˢ Set.Ioi 0)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `h2 : ptXY ⁻¹' strip ∩ Set.univ ×ˢ Set.Ioi 0 = Set.Ico 0 1 ×ˢ Set.Ioi 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `⟨x, y⟩`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_prod, Set.mem_univ, true_and, Set.mem_Ioi, Set.mem_Ico, strip, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hy⟩`. Rewrite `h` using `[ptXY_re x y hy]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨h, hy⟩`. Introduce and unpack `⟨h, hy⟩`. Rewrite using `[ptXY_re x y hy]`. Conclude with `⟨h, hy⟩`. Rewrite using `[volume_eq_map_ptXY, Measure.restrict_map hm measurableSet_strip, restrict_withDensity hS, h1, Measure.restrict_restrict hS, h2, Measure.prod_restrict]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrict_strip_eq_map : (volume : Measure ℍ).restrict strip = Measure.map ptXY
     ((((volume : Measure ℝ).restrict (Set.Ico 0 1)).prod (volume.restrict (Set.Ioi 0))).withDensity
@@ -135,15 +135,15 @@ theorem restrict_strip_eq_map : (volume : Measure ℍ).restrict strip = Measure.
     Measure.restrict_restrict hS, h2, Measure.prod_restrict]
 
 /- English proof (translation)
-Establish `hm` using `measurable_ptXY`. Establish `hd : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal (1 / p.2 ^ 2))` using `by fun_prop`. Use `⟨fun F hF => ?_, fun H hH => ?_⟩` and prove the remaining obligations. Rewrite using `[restrict_strip_eq_map, lintegral_map hF hm, lintegral_withDensity_eq_lintegral_mul _ hd (g := fun a => F (ptXY a)) (hF.comp hm)]`. Simplify using `only [Pi.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lintegral_prod_symm (fun a => ENNReal.ofReal (1 / a.2 ^ 2) * F (ptXY a)) ((hd.mul (hF.comp hm)).aemeasurable)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul (ENNReal.ofReal (1 / y ^ 2)) (f := fun x : ℝ => F (ptXY (x, y))) (hF.comp (hm.comp (measurable_id.prodMk measurable_const))), mul_comm]`. Both sides reduce to the same expression. Unfold `IntegrableOn at hH`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite `hH`, the goal using `[restrict_strip_eq_map]`. Establish `hI` using `(integrable_map_measure hH.1 hm.aemeasurable).1 hH`. Rewrite using `[integral_map hm.aemeasurable hH.1, integral_withDensity_eq_integral_toReal_smul hd (by simp)]`. Rewrite `hI` using `[integrable_withDensity_iff_integrable_smul' hd (by simp)]`. Establish `key : ∀ y : ℝ, ∫ x in Set.Ico (0 : ℝ) 1, (ENNReal.ofReal (1 / y ^ 2)).toReal • (H ∘ ptXY) (x, y) = (∫ x in (0 : ℝ)..1, H (ofComplex (x + y * Complex.I))) / (y : ℂ) ^ 2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[integral_smul, ENNReal.toReal_ofReal (by positivity), intervalIntegral.integral_of_le zero_le_one, integral_Ico_eq_integral_Ioc, Complex.real_smul]`. Simplify using `only [Function.comp_apply, ptXY]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(integral_prod_symm _ hI).trans ?_` and prove the remaining obligations. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => key y)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem strip_iterated :
     (∀ F : ℍ → ENNReal, Measurable F → ∫⁻ τ in strip, F τ = ∫⁻ y in Set.Ioi (0 : ℝ),

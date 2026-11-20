@@ -7,9 +7,9 @@ open MeasureTheory Metric Filter Topology
 open MeasureTheory Metric Filter Topology
 
 /- English proof (translation)
-Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `analyticAt_const`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_succ]`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) j).analyticAt w`.
+A detailed English derivation is pending.
 -/
 private theorem analyticAt_cons_right {D : ℕ} (t : ℂ) (w : Fin D → ℂ) :
     AnalyticAt ℂ (fun v : Fin D → ℂ => (Fin.cons t v : Fin (D + 1) → ℂ)) w := by
@@ -22,9 +22,9 @@ private theorem analyticAt_cons_right {D : ℕ} (t : ℂ) (w : Fin D → ℂ) :
     exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) j).analyticAt w
 
 /- English proof (translation)
-Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `analyticAt_id`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_succ]`. Conclude with `analyticAt_const`.
+A detailed English derivation is pending.
 -/
 private theorem analyticAt_cons_left {D : ℕ} (t : ℂ) (w : Fin D → ℂ) :
     AnalyticAt ℂ (fun s : ℂ => (Fin.cons s w : Fin (D + 1) → ℂ)) t := by
@@ -37,7 +37,7 @@ private theorem analyticAt_cons_left {D : ℕ} (t : ℂ) (w : Fin D → ℂ) :
     exact analyticAt_const
 
 /- English proof (translation)
-Simplify using `only [ball_pi _ hr, Set.mem_pi, Set.mem_univ, true_implies, Fin.forall_fin_succ, Fin.cons_zero, Fin.cons_succ, Fin.tail]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cons_mem_ball {D : ℕ} {c : Fin (D + 1) → ℂ} {r : ℝ} (hr : 0 < r) (t : ℂ)
     (w : Fin D → ℂ) :
@@ -46,9 +46,9 @@ private theorem cons_mem_ball {D : ℕ} {c : Fin (D + 1) → ℂ} {r : ℝ} (hr 
     Fin.cons_zero, Fin.cons_succ, Fin.tail]
 
 /- English proof (translation)
-Establish `h1 : IsOpen (U ∩ f ⁻¹' {0}ᶜ)` using `hf.continuousOn.isOpen_inter_preimage hU isOpen_compl_singleton`. Establish `h2 : {z | z ∈ U ∧ f z = 0} = U \ (U ∩ f ⁻¹' {0}ᶜ)`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_sdiff, Set.mem_inter_iff, Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff]`. The claim follows by propositional logic.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Rewrite using `[h2]`. Conclude with `hU.measurableSet.diff h1.measurableSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem measurableSet_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [MeasurableSpace E] [OpensMeasurableSpace E] {U : Set E} (hU : IsOpen U) {f : E → ℂ}
@@ -64,11 +64,9 @@ private theorem measurableSet_zero {E : Type*} [NormedAddCommGroup E] [NormedSpa
   exact hU.measurableSet.diff h1.measurableSet
 
 /- English proof (translation)
-Apply `measure_null_of_locally_null` to reduce the goal to its premises. Introduce and unpack `z ⟨hzU, -⟩`. Break down `(hg z hzU).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨w, hwU, hgw⟩` from `hne`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hgw (hg.eqOn_zero_of_preconnected_of_eventuallyEq_zero hc hzU h hwU)`. Use `⟨{z}, ?_, measure_singleton z⟩` and prove the remaining obligations. Rewrite using `[mem_nhdsWithin_iff_eventually]`. Rewrite `h` using `[eventually_nhdsWithin_iff]`. Use `filter_upwards [h] with x hx hxZ`.
-
-Assume the negation of the conclusion as `hxz`. Conclude with `hx hxz hxZ.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem nz_one {U : Set ℂ} (hc : IsPreconnected U) {g : ℂ → ℂ} (hg : AnalyticOnNhd ℂ g U)
     (hne : ∃ z ∈ U, g z ≠ 0) : volume {z | z ∈ U ∧ g z = 0} = 0 := by
@@ -86,25 +84,23 @@ private theorem nz_one {U : Set ℂ} (hc : IsPreconnected U) {g : ℂ → ℂ} (
     exact hx hxz hxZ.2
 
 /- English proof (translation)
-Introduce `D`. Proceed by induction on `D with`. Consider the case `zero`. Introduce `c r f _ hne`. Take `⟨z₀, _, hz₀⟩` from `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : {z | z ∈ ball c r ∧ f z = 0} = ∅`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `_ hz`. Conclude with `hz₀ (Subsingleton.elim z z₀ ▸ hz)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, measure_empty]`. Consider the case `succ D ih`. Introduce `c r f hf hne`. Take `⟨z₀, hz₀b, hz₀⟩` from `hne`. Establish `hr : 0 < r` using `pos_of_mem_ball hz₀b`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZm : MeasurableSet {z | z ∈ ball c r ∧ f z = 0}` using `measurableSet_zero isOpen_ball hf`. Set `e` to `MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => ℂ) 0`. Establish `he : MeasurePreserving e` using `volume_preserving_piFinSuccAbove (fun _ : Fin (D + 1) => ℂ) 0`. Establish `h1` using `(MeasurePreserving.symm e he).measure_preimage hZm.nullMeasurableSet`. Rewrite using `[← h1, Measure.volume_eq_prod, Measure.prod_apply_symm (e.symm.measurable hZm)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hslice : ∀ w : Fin D → ℂ, (fun t => (t, w)) ⁻¹' (e.symm ⁻¹' {z | z ∈ ball c r ∧ f z = 0}) = {t | (Fin.cons t w : Fin (D + 1) → ℂ) ∈ ball c r ∧ f (Fin.cons t w) = 0}`. Introduce `w`. Use extensionality with `t`. Simplify using `[e, MeasurableEquiv.piFinSuccAbove_symm_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hslice]`. Use `set t₀ := z₀ 0 with ht₀_def`. Establish `hz₀' : (Fin.cons t₀ (Fin.tail z₀) : Fin (D + 1) → ℂ) = z₀` using `Fin.cons_self_tail z₀`. Establish `hmem₀` using `(cons_mem_ball hr t₀ (Fin.tail z₀)).1 (by rw [hz₀']; exact hz₀b)`. Establish `hf' : AnalyticOnNhd ℂ (fun w => f (Fin.cons t₀ w)) (ball (Fin.tail c) r)` using `fun w hw => (hf _ ((cons_mem_ball hr t₀ w).2 ⟨hmem₀.1, hw⟩)).comp (analyticAt_cons_right t₀ w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0` using `ih (Fin.tail c) r _ hf' ⟨Fin.tail z₀, hmem₀.2, by simpa [hz₀'] using hz₀⟩`. Establish `hae : ∀ᵐ w ∂(volume : Measure (Fin D → ℂ)), volume {t | (Fin.cons t w : Fin (D + 1) → ℂ) ∈ ball c r ∧ f (Fin.cons t w) = 0} = 0` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 hW0] with w hw`. Distinguish the cases in `hwb : w ∈ ball (Fin.tail c) r`. Establish `hw' : f (Fin.cons t₀ w) ≠ 0` using `fun h0 => hw ⟨hwb, h0⟩`. Establish `hg : AnalyticOnNhd ℂ (fun t => f (Fin.cons t w)) (ball (c 0) r)` using `fun t ht => AnalyticAt.comp (g := f) (f := fun s => (Fin.cons s w : Fin (D + 1) → ℂ)) (hf _ ((cons_mem_ball hr t w).2 ⟨ht, hwb⟩)) (analyticAt_cons_left t w)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `nz_one (convex_ball (c 0) r).isPreconnected hg ⟨t₀, hmem₀.1, hw'⟩`. Establish `hset : {t | (Fin.cons t w : Fin (D + 1) → ℂ) ∈ ball c r ∧ f (Fin.cons t w) = 0} = {t | t ∈ ball (c 0) r ∧ f (Fin.cons t w) = 0}`. Use extensionality with `t`. Simplify using `only [Set.mem_ofPred_eq, cons_mem_ball hr, hwb, and_true]`. Rewrite using `[hset]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `h2`. Establish `hset : {t | (Fin.cons t w : Fin (D + 1) → ℂ) ∈ ball c r ∧ f (Fin.cons t w) = 0} = ∅`. Use extensionality with `t`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, cons_mem_ball hr]`. The claim follows by propositional logic.
-
-Rewrite using `[hset, measure_empty]`. Rewrite using `[lintegral_congr_ae hae, lintegral_zero]`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nz_ball : ∀ (D : ℕ) (c : Fin D → ℂ) (r : ℝ) (f : (Fin D → ℂ) → ℂ),
     AnalyticOnNhd ℂ f (ball c r) → (∃ z ∈ ball c r, f z ≠ 0) →
@@ -165,11 +161,9 @@ private theorem nz_ball : ∀ (D : ℕ) (c : Fin D → ℂ) (r : ℝ) (f : (Fin 
     rw [lintegral_congr_ae hae, lintegral_zero]
 
 /- English proof (translation)
-Apply `measure_null_of_locally_null` to reduce the goal to its premises. Introduce and unpack `z ⟨hzU, -⟩`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hU z hzU`. Use `⟨{x | x ∈ ball z ε ∧ f x = 0}, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_nhdsWithin_iff_eventually] filter_upwards [ball_mem_nhds z hε] with x hx hxZ using ⟨hx, hxZ.2⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `nz_ball D z ε f (hf.mono hball)` to reduce the goal to its premises. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Take `⟨w, hwU, hfw⟩` from `hne`. Establish `h1 : f =ᶠ[𝓝 z] 0` using `by filter_upwards [ball_mem_nhds z hε] with x hx using hall x hx`.
-
-Conclude with `hfw (hf.eqOn_zero_of_preconnected_of_eventuallyEq_zero hc hzU h1 hwU)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem volume_zero_set_of_analyticOnNhd {D : ℕ} {U : Set (Fin D → ℂ)} (hU : IsOpen U)
     (hc : IsPreconnected U) {f : (Fin D → ℂ) → ℂ} (hf : AnalyticOnNhd ℂ f U)
@@ -190,9 +184,9 @@ theorem volume_zero_set_of_analyticOnNhd {D : ℕ} {U : Set (Fin D → ℂ)} (hU
     exact hfw (hf.eqOn_zero_of_preconnected_of_eventuallyEq_zero hc hzU h1 hwU)
 
 /- English proof (translation)
-Apply `measure_null_of_locally_null` to reduce the goal to its premises. Introduce `z hz`. Take `⟨W, hWo, hzW, hWc, f, hf, hne, hS⟩` from `h z hz`. Use `⟨S ∩ W, inter_mem_nhdsWithin S (hWo.mem_nhds hzW), ?_⟩` and prove the remaining obligations. Use `measure_mono_null (fun w hw => ?_) (volume_zero_set_of_analyticOnNhd hWo hWc hf hne)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨hw.2, hS w hw⟩`.
+Supply the required witnesses or components.
 -/
 theorem volume_eq_zero_of_locally_in_analytic_zero_set {D : ℕ} (S : Set (Fin D → ℂ))
     (h : ∀ z ∈ S, ∃ W : Set (Fin D → ℂ), IsOpen W ∧ z ∈ W ∧ IsPreconnected W ∧

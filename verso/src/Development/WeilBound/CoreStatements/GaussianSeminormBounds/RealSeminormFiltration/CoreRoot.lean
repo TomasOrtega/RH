@@ -8,55 +8,53 @@ open scoped InnerProductSpace
 namespace PositivityTheory.KReal
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> simp_all [sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem not_sameBlock_of_sameBlock_of_not_sameBlock {r s : ℕ} {a b c : Ix r s} (h1 : sameBlock a b) (h2 : ¬ sameBlock b c) :
     ¬ sameBlock a c := by
   rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> simp_all [sameBlock]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> simp_all [sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem not_sameBlock_of_not_sameBlock_of_sameBlock {r s : ℕ} {a b c : Ix r s} (h1 : sameBlock b c) (h2 : ¬ sameBlock a b) :
     ¬ sameBlock a c := by
   rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> simp_all [sameBlock]
 
 /- English proof (translation)
-Take `⟨hg12, hgD⟩` from `Submodule.mem_inf.1 hg`. Take `⟨hgH, hgC⟩` from `Submodule.mem_inf.1 hg12`. Establish `hH1 : ∀ Z : Mat p q, IsPC Z → minusPart ((fockAct1 p q r s) Z) g = 0` using `(mem_harm1_iff g).1 hgH`. Establish `hdeg : ((d0 + 2 : ℕ) : ℚ) = degW (cPair p q) ν` using `PI.FockOneDegW.Swap.hwHarmDeg2 (PI.FockOneDegW.Core.hwHarmDeg_of PI.FockOneDegW.fock_operators_kernel PI.FockOneDegW.harmIff) p q r s ν (d0 + 2) g hgD hw hH1`. Use `⟨?_, by rw [← hdeg, ← hd]; push_cast; ring⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlow0 : ∀ h : Pol p q r s, h ∈ polChi p q r s c → h ∈ homog (Ix p q × Ix r s) d0 → ∀ c' d' : Ix r s, ¬ sameBlock c' d' → PI.FockOneDegW.lowOp c' d' h = 0`. Introduce `h hC hD c' d' hcd`. Break down `Nat.lt_or_ge d0 2 with h2 | h2` into its components or cases. Conclude with `low_homog_small c' d' h2 hD`. Take `⟨e, rfl⟩ : ∃ e, d0 = e + 2` from `⟨d0 - 2, by omega⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD'` using `low_homog c' d' (e := e) hD`. Establish `hC'` using `polChi_low c hcd hC`. Use `polChi_small c c0 hc e ?_ hD' hC'` and prove the remaining obligations. Rewrite using `[← hd]`. Conclude with `(by omega : e < e + 2)` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1` using `hw.1`. Establish `hhw` using `hw.2`. Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker] at hhw`. Take `⟨hwt, hpos⟩` from `hhw`. Establish `shapeOf` using `PI.FJM.shapeOf_of_cauchy PI.FJM.cauchy_highest_weight`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hK1 : ∀ h : Pol p q r s, h ∈ polChi p q r s c → h ∈ hwSub (fockAct1 p q r s) (fun _ : Ix p q => c0)` using `fun h hh => (mem_polChi_iff_hw c c0 hc h).1 hh`. Distinguish the cases in `hex : ∃ cd : Ix r s × Ix r s, ¬ sameBlock cd.1 cd.2 ∧ PI.FockOneDegW.lowOp cd.1 cd.2 g ≠ 0`. Take `⟨⟨c1, d1⟩, hmem, hmax⟩` from `Finset.exists_max_image (Finset.univ.filter fun cd : Ix r s × Ix r s => ¬ sameBlock cd.1 cd.2 ∧ PI.FockOneDegW.lowOp cd.1 cd.2 g ≠ 0) (fun cd => PI.FockOneDegW.HwC.tw cd.1 - PI.FockOneDegW.HwC.tw cd.2) (by obtain ⟨cd, h⟩ := hex; exact ⟨cd, by simpa using h⟩)`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hmem hmax`. Take `⟨hcd, hne⟩` from `hmem`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlg : PI.FockOneDegW.lowOp c1 d1 g ∈ polChi p q r s c` using `polChi_low c hcd hgC`. Establish `hlD : PI.FockOneDegW.lowOp c1 d1 g ∈ homog (Ix p q × Ix r s) d0` using `low_homog c1 d1 hgD`. Establish `hJ : PI.FockOneDegW.lowOp c1 d1 g ∈ jHarm p q r s` using `(mem_jHarm_iff _).2 ⟨harmonic_stable_lowering hcd hgH, fun c' d' h' => hlow0 _ hlg hlD c' d' h'⟩`. Establish `hc1d1 : c1 ≠ d1` using `fun h => hcd (h ▸ PI.FockOneDegW.HwC.sameBlock_refl' c1)`. Establish `hK2 : PI.FockOneDegW.lowOp c1 d1 g ∈ hwSub (fockAct2 p q r s) (fun x => (ν x + if x = c1 then 1 else 0) - if x = d1 then 1 else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `⟨fun x => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `key` using `low_comm (PI.FockOneDegW.HwC.sameBlock_refl' x) hcd g`. Establish `hx` using `hwt x`. Rewrite `hx` using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hx, map_smul, sub_eq_iff_eq_add]`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, key]`. Distinguish the cases in `h1 : x = c1`. Substitute `h1` using the available equality. Establish `h2 : ¬ d1 = x` using `fun h => hc1d1 h.symm`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [if_true, h2, if_false, hc1d1]`. Use `push_cast`. Use `module`. Distinguish the cases in `h2 : d1 = x`. Substitute `h2` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `h3 : ¬ d1 = c1` using `fun h => hc1d1 h.symm`. Simplify using `only [h1, if_true, if_false]`. Use `push_cast`. Use `module`. Establish `h3 : ¬ x = d1` using `fun h => h2 h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [h1, h2, h3, if_false]`. Use `push_cast`. Use `module`. Establish `hsb` using `PI.FockOneDegW.Core.posC_sb a b hab`. Establish `key` using `low_comm hsb hcd g`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `key` using `[hpos a b hab, map_zero, sub_zero]`. Rewrite using `[key]`. Establish `hA : (if b = c1 then PI.FockOneDegW.lowOp a d1 g else 0) = 0` using `by split_ifs with hb`. Substitute `hb` using the available equality. Assume the negation of the conclusion as `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Both sides reduce to the same expression.
 
-Establish `hm` using `hmax (a, d1) ⟨not_sameBlock_of_sameBlock_of_not_sameBlock hsb hcd, hz⟩`. Use `(PI.FockOneDegW.HwC.posC_facts hab).2.2` as an intermediate fact. Simplify using `only at hm`. Combine the linear equalities and inequalities to obtain the conclusion. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (if d1 = a then PI.FockOneDegW.lowOp c1 b g else 0) = 0` using `by split_ifs with hd1`. Substitute `hd1` using the available equality. Assume the negation of the conclusion as `hz`. Establish `hm` using `hmax (c1, b) ⟨not_sameBlock_of_not_sameBlock_of_sameBlock hsb hcd, hz⟩`. Use `(PI.FockOneDegW.HwC.posC_facts hab).2.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only at hm`. Combine the linear equalities and inequalities to obtain the conclusion. Both sides reduce to the same expression. Rewrite using `[hA, hB, sub_zero]`. Establish `hJH : PI.FockOneDegW.lowOp c1 d1 g ∈ PI.FJM.JH p q r s (fun _ => c0) (fun x => (ν x + if x = c1 then 1 else 0) - if x = d1 then 1 else 0)` using `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨hK1 _ hlg, hK2⟩, hJ⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEq` using `hU _ (shapeOf p q r s _ _ _ hJH hne)`. Conclude with `⟨c1, d1, hcd, fun x => congrFun hEq x⟩`. Use `push_neg at hex`. It suffices to derive a contradiction. Establish `hJ : g ∈ jHarm p q r s` using `(mem_jHarm_iff g).2 ⟨hgH, fun c' d' h' => hex (c', d') h'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hK2 : g ∈ hwSub (fockAct2 p q r s) ν` using `hw.2`. Establish `hJH : g ∈ PI.FJM.JH p q r s (fun _ => c0) ν` using `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨hK1 g hgC, hK2⟩, hJ⟩`. Take `⟨⟨e, he, hge⟩, -⟩` from `PI.FJMF.minimal_degree_joint p q r s _ _ g hJH hw1`. Establish `he' : e = d0`. Establish `: (e : ℚ) = d0` using `by rw [he, hd]`.
-
-Conclude with `this` after adjusting the coercions. Substitute `he'` using the available equality. Use `MvPolynomial.IsHomogeneous.inj_right ((MvPolynomial.mem_homogeneousSubmodule _ _).1 hge) ((MvPolynomial.mem_homogeneousSubmodule _ _).1 hgD) hw1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem root_of_hw {p q r s : ℕ} (c : ℂ) (c0 : ℚ) (hc : c = c0) (La : Ix r s → ℚ)
     (hU : ∀ ν, JointShape p q r s (fun _ => c0) ν → ν = La) (d0 : ℕ)

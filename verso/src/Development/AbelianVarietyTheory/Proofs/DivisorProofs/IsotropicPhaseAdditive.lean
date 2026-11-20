@@ -18,7 +18,7 @@ namespace GlobalTheory.IsoPhaseAdd
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `GlobalTheory.UnipMass.hA`. Rewrite using `[add_dotProduct, smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_smul_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : AE F E) (v v' w : Fin n → AE F E) :
     GlobalTheory.UnipMass.hA σ J (c • v + v') w = c * GlobalTheory.UnipMass.hA σ J v w + GlobalTheory.UnipMass.hA σ J v' w := by
@@ -26,7 +26,7 @@ theorem hA_smul_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin
   rw [add_dotProduct, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cA_mulVec (σ : E →ₐ[F] E) {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE F E)) (w : Fin n → AE F E) :
     (fun i => cA σ ((M *ᵥ w) i)) = M.map (cA σ) *ᵥ fun i => cA σ (w i) := by
@@ -34,7 +34,7 @@ theorem cA_mulVec (σ : E →ₐ[F] E) {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Establish `hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Unfold `GlobalTheory.UnipMass.hA`. Rewrite using `[cA_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_mat_mulVec (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) (v w : Fin n → AE F E) :
     GlobalTheory.UnipMass.hA σ J (mat g *ᵥ v) (mat g *ᵥ w) = GlobalTheory.UnipMass.hA σ J v w := by
@@ -44,17 +44,15 @@ theorem hA_mat_mulVec (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n)
     Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r' s' _ _ hH w u hu v hv`. Rewrite `hu`, `hv` using `[GlobalTheory.UnipCT.unip_eq]`. Establish `hui` using `(GlobalTheory.UnipCT.unipSet σ W H').inv_mem hu`. Use `set a : Fin d → AE F E := incV F (H'.ι *ᵥ w) with ha`. Use `set X : Fin d → AE F E := incV F H'.x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Y : Fin d → AE F E := incV F H'.y`. Establish `haY : GlobalTheory.UnipMass.hA σ W.J a Y = 0`. Rewrite using `[ha, GlobalTheory.UnipMass.hA_incV, (hH.orth w).2, map_zero]`. Use `set t : Fin d → AE F E := mat u⁻¹ *ᵥ Y - Y with ht`. Establish `hXt : GlobalTheory.UnipMass.hA σ W.J X t = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : mat u⁻¹ *ᵥ X = X` using `hui.1`. Establish `h1` using `hA_mat_mulVec σ u⁻¹ X Y`. Rewrite `h1` using `[hx]`. Establish `h2 : mat u⁻¹ *ᵥ Y = t + Y` using `by rw [ht, sub_add_cancel]`. Rewrite `h1` using `[h2, GlobalTheory.UnipMass.hA_add_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `add_eq_right.1 h1`. Take `⟨c, hc⟩` from `hv.2 (incV F w)`. Rewrite `hc` using `[GlobalTheory.UnipMass.incM_mulVec_incV]`. Establish `hc' : mat v *ᵥ a = a + c • X` using `hc`. Establish `hvt : GlobalTheory.UnipMass.hA σ W.J a (mat v⁻¹ *ᵥ t) = GlobalTheory.UnipMass.hA σ W.J a t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hA_mat_mulVec σ v a (mat v⁻¹ *ᵥ t)`. Rewrite `h1` using `[Matrix.mulVec_mulVec, ← GlobalTheory.UnipCT.mat_mul', mul_inv_cancel, hc']`. Establish `h3 : mat (1 : UA σ W.J) = 1` using `rfl`. Rewrite `h1` using `[h3, Matrix.one_mulVec, add_comm, hA_smul_add_left, hXt, mul_zero, zero_add]`. Conclude with `h1.symm`.
-
-Establish `key : GlobalTheory.UnipMass.hA σ W.J a (mat (u * v)⁻¹ *ᵥ Y) = GlobalTheory.UnipMass.hA σ W.J a (mat u⁻¹ *ᵥ Y) + GlobalTheory.UnipMass.hA σ W.J a (mat v⁻¹ *ᵥ Y)`. Establish `e1 : mat u⁻¹ *ᵥ Y = Y + t` using `by rw [ht, add_sub_cancel]`. Rewrite using `[mul_inv_rev, GlobalTheory.UnipCT.mat_mul', ← Matrix.mulVec_mulVec, e1, Matrix.mulVec_add, GlobalTheory.UnipMass.hA_add_right, hvt, GlobalTheory.UnipMass.hA_add_right, haY, zero_add, add_comm]`. Unfold `GlobalTheory.IsoPhase.phase`. Rewrite using `[← ha, key, map_add, neg_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phase_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r' s' : ℕ), IsCMExt F E σ → W.IsSkew σ B r' s' →
     H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ w : Fin d₁ → E, ∀ u ∈ unip σ W H', ∀ v ∈ unip σ W H',

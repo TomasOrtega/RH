@@ -33,19 +33,17 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {θ
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `m` using `AllPlus.finite_smooth_irreducible D V S M hp`. Establish `h2` using `tensor_irreducible D V S M m hp`. Take `⟨fd, inj, πt, hπ, irr⟩` from `h2`. Establish `key` using `pair_tens hp (fun τ => (m τ).2.1) inj hπ hpr`. Establish `hb` using `pair_bijective hθ hp hc hpr`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `GlobalTheory.multT_cont_left_equiv D θ V S M πt _ _ hp (fun τ => (m τ).2.1) inj hπ T hT`. Use `choose Ψ hΨ using fun h : GA D V => hb.2 (LinearMap.proj h ∘ₗ T)`. Use `replace hΨ : ∀ h x, pr (Ψ h) x = T x h := fun h x => LinearMap.congr_fun (hΨ h) x`. Establish `hlev : ∀ k ∈ K, ∀ x g, T x (g * k) = T x g` using `fun k hk x g => by`. Proceed by induction on `x using PiTensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul_tprod r v`. Use `(GlobalTheory.mult_value_left_cont_level θ M _ _ _ ((mem_multT θ M _ _ _).1 hT) v).2.2 k hk g` as an intermediate fact. Rewrite `this` using `[Pi.one_apply, one_mul]`. Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply]`. Conclude with `congrArg (r • ·) this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy => rw [map_add, Pi.add_apply, Pi.add_apply, hx, hy]`. Set `U : Submonoid (GA D V)` to `{ carrier := {a | ∀ h, Ψ (h * a) = c.ρ a⁻¹ (Ψ h)} one_mem' := fun h => by rw [mul_one, inv_one, map_one]; rfl mul_mem' := fun {a b} ha hb h => by rw [← mul_assoc, hb, ha, mul_inv_rev, map_mul]; rfl }`. Take `⟨f, hf⟩` from `exists_descend (finHom V) c.ρ Ψ fun a ha => real_le hθ U (fun τ g hg h => by`. Take `⟨u, rfl⟩` from `hp.exists_unfr τ hg`. Use `hb.1 (LinearMap.ext fun x => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← key, hΨ, hΨ, (hE x).2.2]`. Use the proof step `rfl) ha`. Use `⟨f, mem_adForms (finHom V) (GQ V) (GfC V) (exists_fin_lift V) c.ρ hc.1 _ _ Ψ f hf fun γ hγ g κ hκ hk => ?_, LinearMap.ext fun x => funext fun h => ?_⟩` and prove the remaining obligations. Establish `e2 : Ψ (γ * g * κ) = Ψ g`. Use `hb.1 (LinearMap.ext fun x => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hΨ, hΨ, hlev κ (hJ κ hκ hk), (hE x).2.1 γ hγ]`. Rewrite using `[e2]`. Simplify using the standard rewrite rules. Establish `e` using `GlobalTheory.DefiniteEnd.rho_inv_cancel (c := c) h⁻¹ (Ψ h)`. Rewrite `e` using `[inv_inv]`.
-
-Conclude with `(congrArg (fun w => pr w x) ((congrArg (c.ρ h⁻¹) (hf h)).trans e)).trans (hΨ h x)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_triv (hθ : IsInfFam θ) (hp : AllPlus M) (hc : c.Is) (hpr : IsDualPair θ M c pr)
     (K : Subgroup (GA D V)) (J : Subgroup (Bridge.Gf V))
@@ -90,7 +88,7 @@ theorem exists_form_triv (hθ : IsInfFam θ) (hp : AllPlus M) (hc : c.Is) (hpr :
 end GlobalTheory.TopColumn
 
 /- English proof (translation)
-Introduce `D T L sc G θ hθ S M hε hc pr hpr y hy`. Conclude with `GlobalTheory.TopColumn.exists_form_triv (V := G.V (.core D.R.m)) (c := coefPlus G θ) hθ hε hc hpr (lev G (.core D.R.m)) (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.levPlus G) (fun κ hκ h => ⟨hκ, h⟩) hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TopColumn.exists_col : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (θ : InfFam D), IsInfFam θ → ∀ {S : D.what₂.Tau → SPar} (M : DSModel (G.V (.core D.R.m)) S), (∀ τ a, M.ε τ a = true) → (coefPlus G θ).Is → ∀ (pr : (coefPlus G θ).W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ), IsDualPair θ M (coefPlus G θ) pr → ∀ y ∈ CoreForms G θ D.R.m M, ∃ c ∈ Cols G θ, (coefPlus G θ).toMap pr c = y := by
   intro D T L sc G θ hθ S M hε hc pr hpr y hy

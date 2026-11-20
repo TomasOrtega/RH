@@ -17,11 +17,11 @@ namespace UpperTheory.TNZ.Grp
 open UpperTheory.TNZ.Grp.P_spOrd GlobalTheory.LocGL.SupportRing
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 /- English proof (translation)
-Introduce `hL V _ _ π hs hi c hc σ h`. Take `⟨Z, Ψ, -, hΨ, -⟩` from `hL.loc.zel k`. Take `⟨hp1, e1⟩` from `multiProd_cls (Ψ := Ψ) hΨ (d := fun _ : Fin n => 1) (X := fun _ => ℂ) (sum_one n) (fun i => detRep (Fin 1) (c (σ i))) (fun i => isSmooth_detRep1 (hc (σ i))) (fun i => hasFiniteLength_detRep1 (c (σ i)))`. Take `⟨hp2, e2⟩` from `multiProd_cls (Ψ := Ψ) hΨ (d := fun _ : Fin n => 1) (X := fun _ => ℂ) (sum_one n) (fun i => detRep (Fin 1) (c i)) (fun i => isSmooth_detRep1 (hc i)) (fun i => hasFiniteLength_detRep1 (c i))`. Establish `hcl : clsGL _ hp1 = clsGL _ hp2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Ψ.injective` to reduce the goal to its premises. Rewrite using `[e1, e2]`. Conclude with `Equiv.prod_comp σ (fun i => Ψ (clsGL (detRep (Fin 1) (c i)) (hasFiniteLength_detRep1 (c i))))`. Establish `h1` using `h.trans (prin_sub_multi (fun i => c (σ i)))`. Establish `h2` using `clsGL_of_pos hp1 hs hi h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hcl]`. Conclude with `(isSubquotient_of_clsGL_ne hp2 hs hi h2.ne').trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries _ c)`.
+A detailed English derivation is pending.
 -/
 theorem step_spOrd_alt : _root_.UpperTheory.TNZ.Grp.Step_spOrd_alt (k := k) (n := n) := by
   intro hL V _ _ π hs hi c hc σ h

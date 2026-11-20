@@ -14,13 +14,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SplitPlaceExists
 
 /- English proof (translation)
-Introduce `E _ _ _`. Take `⟨p, hp, hsplit⟩` from `GlobalTheory.SplitRealPrime.exists_prime_isSplitAt E`. Establish `hP : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 E) (Ideal.span {(p : ℤ)}) (by`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[RingHom.mem_ker]`. Establish `: x = 0` using `(FaithfulSMul.algebraMap_injective ℤ (𝓞 E)) (by rw [hx, map_zero])`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _)`. Establish `hpQ : ((p : ℕ) : 𝓞 E) ∈ Q`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((p : ℤ)) ∈ Q.comap (algebraMap ℤ (𝓞 E))`. Rewrite using `[hQ]`. Conclude with `Ideal.subset_span rfl`. Rewrite `h1` using `[Ideal.mem_comap]`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hQ0 : Q ≠ ⊥` using `Ideal.IsMaximal.ne_bot_of_isIntegral_int Q`. Conclude with `⟨⟨Q, hQmax.isPrime, hQ0⟩, hsplit _ hpQ⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E],
     ∃ w : HeightOneSpectrum (𝓞 E), GlobalTheory.UnitaryBC.IsSplitAt w := by

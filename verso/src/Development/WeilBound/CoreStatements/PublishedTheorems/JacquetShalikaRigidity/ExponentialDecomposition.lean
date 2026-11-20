@@ -18,7 +18,7 @@ section Loc
 variable (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Iwasawa.coe_torusPow]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem torusPow_zero : Iwasawa.torusPow F n 0 = 1 := by
   apply Units.ext
@@ -26,14 +26,14 @@ theorem torusPow_zero : Iwasawa.torusPow F n 0 = 1 := by
   simp
 
 /- English proof (translation)
-Use `Iwasawa.iwasawaExponent_torusPow F n 0` as an intermediate fact. Rewrite `this` using `[torusPow_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exp_one : Iwasawa.iwasawaExponent F n 1 = 0 := by
   have := Iwasawa.iwasawaExponent_torusPow F n 0
   rwa [torusPow_zero] at this
 
 /- English proof (translation)
-Use `Iwasawa.iwasawaExponent_mul_of_mem_integralGL F n 1 hκ` as an intermediate fact. Rewrite `this` using `[one_mul, exp_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_of_mem {κ : GL (Fin n) F} (hκ : κ ∈ GLnLocal.integralGL F n) :
     Iwasawa.iwasawaExponent F n κ = 0 := by
@@ -42,11 +42,9 @@ theorem exp_of_mem {κ : GL (Fin n) F} (hκ : κ ∈ GLnLocal.integralGL F n) :
   exact this
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x hx`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (GLnLocal.integralGL F n : Set (GL (Fin n) F)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `e : y = x * (x⁻¹ * y)` using `by group`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show Iwasawa.iwasawaExponent F n y ∈ A`. Rewrite using `[e, Iwasawa.iwasawaExponent_mul_of_mem_integralGL F n x hy]`. Conclude with `hx`. Conclude with `(GLnLocal.isOpen_integralGL F n).preimage (continuous_const_mul _)`. Use `show x⁻¹ * x ∈ GLnLocal.integralGL F n`.
-
-Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_exp (A : Set (Fin n → ℤ)) :
     IsOpen {x : GL (Fin n) F | Iwasawa.iwasawaExponent F n x ∈ A} := by
@@ -64,7 +62,7 @@ theorem isOpen_exp (A : Set (Fin n → ℤ)) :
     exact one_mem _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_compl_iff.1 (isOpen_exp F n {l}ᶜ), isOpen_exp F n {l}⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClopen_exp (l : Fin n → ℤ) : IsClopen {x : GL (Fin n) F | Iwasawa.iwasawaExponent F n x = l} :=
   ⟨isOpen_compl_iff.1 (isOpen_exp F n {l}ᶜ), isOpen_exp F n {l}⟩
@@ -74,7 +72,7 @@ end Loc
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[Valuation.mem_integer_iff, HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int_iff (w : Pl E) (x : w.adicCompletion E) :
     x ∈ (ValuativeRel.valuation (w.adicCompletion E)).integer ↔ x ∈ w.adicCompletionIntegers E := by
@@ -84,7 +82,7 @@ theorem mem_int_iff (w : Pl E) (x : w.adicCompletion E) :
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin k) (Fin k) S) i c - s ((1 : Matrix (Fin k) (Fin k) R) i c) + s (g.val i c) = _`. Rewrite using `[h, sub_add_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_entry {R S : Type} [CommRing R] [CommRing S] (s : R →ₙ+* S) (g : GL (Fin k) R) (i c : Fin k)
     (h : g.val i c = (1 : Matrix (Fin k) (Fin k) R) i c) :
@@ -93,18 +91,18 @@ theorem corner_entry {R S : Type} [CommRing R] [CommRing S] (s : R →ₙ+* S) (
   rw [h, sub_add_cancel]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i c h => by rw [Units.val_one, Matrix.one_apply_ne h.ne'], fun i => by rw [Units.val_one, Matrix.one_apply_eq], fun i c h => absurd h (Nat.not_lt_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem uu_one : UU 0 (1 : GA E k) :=
   ⟨fun i c h => by rw [Units.val_one, Matrix.one_apply_ne h.ne'], fun i => by rw [Units.val_one, Matrix.one_apply_eq],
     fun i c h => absurd h (Nat.not_lt_zero _)⟩
 
 /- English proof (translation)
-Use `⟨fun i c hci => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `lt_or_ge j i with hj | hj` into its components or cases. Rewrite using `[hg.1 i j hj, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh.1 j c (lt_of_lt_of_le hci hj), mul_zero]`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hg.2.1, hh.2.1, one_mul]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with hj | hj` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hg.1 i j hj, zero_mul]`. Rewrite using `[hh.1 j i hj, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem uu_mul {g h : GA E k} (hg : UU 0 g) (hh : UU 0 h) : UU 0 (g * h) := by
   refine ⟨fun i c hci => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩
@@ -123,11 +121,11 @@ theorem uu_mul {g h : GA E k} (hg : UU 0 g) (hh : UU 0 h) : UU 0 (g * h) := by
       exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `key : ∀ i c : Fin k, c ≤ i → (fl k w n).val i c = (1 : Matrix (Fin k) (Fin k) (Ad E)) i c`. Introduce `i c hci`. Use `show (cornerGL k (sFin E) (cornerGL k (sLoc E w) n)).val i c = _`. Apply the tactic sequence `refine corner_entry _ _ _ _ (corner_entry _ _ _ _ ?_)`. Break down `hci.lt_or_eq with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn.1 h, Matrix.one_apply_ne h.ne']`. Substitute `h` using the available equality. Rewrite using `[hn.2, Matrix.one_apply_eq]`. Use `⟨fun i c h => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Rewrite using `[key i c h.le, Matrix.one_apply_ne h.ne']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key i i le_rfl, Matrix.one_apply_eq]`.
+A detailed English derivation is pending.
 -/
 theorem uu_fl (w : Pl E) {n : GL (Fin k) (w.adicCompletion E)} (hn : n ∈ Iwasawa.unipotent (w.adicCompletion E) k) :
     UU 0 (fl k w n) := by
@@ -144,7 +142,7 @@ theorem uu_fl (w : Pl E) {n : GL (Fin k) (w.adicCompletion E)} (hn : n ∈ Iwasa
   · rw [key i i le_rfl, Matrix.one_apply_eq]
 
 /- English proof (translation)
-Use `⟨fun i c h => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show ((pLoc E w).comp (pFin E)) (u.val i c) = 0`. Rewrite using `[hu.1 i c h, map_zero]`. Use `show ((pLoc E w).comp (pFin E)) (u.val i i) = 1`. Rewrite using `[hu.2.1 i, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cLoc_uu {u : GA E k} (hu : UU 0 u) (w : Pl E) : cLoc w u ∈ Iwasawa.unipotent (w.adicCompletion E) k := by
   refine ⟨fun i c h => ?_, fun i => ?_⟩
@@ -158,9 +156,7 @@ def Gd (g : GA E k) (w : Pl E) : Prop :=
     (pFin E ((g⁻¹ : GA E k).val i j)).1 w ∈ w.adicCompletionIntegers E
 
 /- English proof (translation)
-Establish `h : ∀ᶠ w in cofinite, Gd g w`. Unfold `Gd`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`. Conclude with `(pFin E (g.val i j)).2.and (pFin E ((g⁻¹ : GA E k).val i j)).2`.
-
-Conclude with `Filter.eventually_cofinite.1 h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gd_fin (g : GA E k) : {w | ¬ Gd g w}.Finite := by
   have h : ∀ᶠ w in cofinite, Gd g w := by
@@ -171,7 +167,7 @@ theorem gd_fin (g : GA E k) : {w | ¬ Gd g w}.Finite := by
   exact Filter.eventually_cofinite.1 h
 
 /- English proof (translation)
-Rewrite using `[GLnLocal.mem_integralGL_iff]`. Use `⟨fun i j => (mem_int_iff w _).2 (h i j).1, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `(mem_int_iff w _).2 (h i j).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gd_mem {g : GA E k} {w : Pl E} (h : Gd g w) : cLoc w g ∈ GLnLocal.integralGL (w.adicCompletion E) k := by
   rw [GLnLocal.mem_integralGL_iff]
@@ -180,11 +176,11 @@ theorem gd_mem {g : GA E k} {w : Pl E} (h : Gd g w) : cLoc w g ∈ GLnLocal.inte
   exact (mem_int_iff w _).2 (h i j).2
 
 /- English proof (translation)
-Set `V : Set (Af E)` to `{x | ∀ w, w ∉ T → x.1 w ∈ w.adicCompletionIntegers E}`. Establish `hV : IsOpen V` using `RestrictedProduct.isOpen_forall_imp_mem (fun w => GroundTheory.Global.isOpen_adicCompletionIntegers w)`. Establish `e : {g : GA E k | ∀ w, w ∉ T → Gd g w} = ⋂ i, ⋂ j, ((fun g : GA E k => pFin E (g.val i j)) ⁻¹' V ∩ (fun g : GA E k => pFin E ((g⁻¹ : GA E k).val i j)) ⁻¹' V)`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_inter_iff, Set.mem_preimage, V, Gd]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h i j => ⟨fun w hw => (h w hw i j).1, fun w hw => (h w hw i j).2⟩, fun h w hw i j => ⟨(h i j).1 w hw, (h i j).2 w hw⟩⟩`. Rewrite using `[e]`. Establish `hp : Continuous (pFin E)` using `continuous_snd`. Establish `hv : Continuous (fun g : GA E k => (g.val : Matrix (Fin k) (Fin k) (Ad E)))` using `Units.continuous_val`. Establish `hw : Continuous (fun g : GA E k => ((g⁻¹ : GA E k).val : Matrix (Fin k) (Fin k) (Ad E)))` using `Units.continuous_coe_inv`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.inter ?_ ?_` and prove the remaining obligations. Conclude with `hV.preimage (hp.comp (hv.matrix_elem i j))`. Conclude with `hV.preimage (hp.comp (hw.matrix_elem i j))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_gd (T : Set (Pl E)) : IsOpen {g : GA E k | ∀ w, w ∉ T → Gd g w} := by
   let V : Set (Af E) := {x | ∀ w, w ∉ T → x.1 w ∈ w.adicCompletionIntegers E}
@@ -205,11 +201,9 @@ theorem isOpen_gd (T : Set (Pl E)) : IsOpen {g : GA E k | ∀ w, w ∉ T → Gd 
   · exact hV.preimage (hp.comp (hw.matrix_elem i j))
 
 /- English proof (translation)
-Establish `hcont : ∀ w, Continuous (cLoc w : GA E k → _)` using `(hG E k).2.2.2.2.2.2.2.2.2.2.2.2.1`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`. Establish `hT : {w | ¬ Gd g w ∧ w ∉ S}.Finite` using `(gd_fin g).subset fun w hw => hw.1`. Use `⟨{h | ∀ w, w ∉ {w | ¬ Gd g w} → Gd h w} ∩ ⋂ w ∈ {w | ¬ Gd g w ∧ w ∉ S}, (cLoc w) ⁻¹' {x | Iwasawa.iwasawaExponent _ k x = 0}, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `h ⟨h1, h2⟩ w hw`. Distinguish the cases in `hg' : Gd g w`. Conclude with `exp_of_mem _ _ (gd_mem (h1 w fun h => h hg'))`. Conclude with `Set.mem_iInter₂.1 h2 w ⟨hg', hw⟩`. Conclude with `(isOpen_gd _).inter (hT.isOpen_biInter fun w _ => (isOpen_exp _ k {0}).preimage (hcont w))`.
-
-Use `⟨fun w hw => not_not.1 hw, Set.mem_iInter₂.2 fun w hw => hg w hw.2⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_G0 (hG : jumpWindows.G0) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ}
     (S : Finset (Pl E)) : IsOpen (G0 (k := k) S) := by
@@ -227,25 +221,21 @@ theorem isOpen_G0 (hG : jumpWindows.G0) {E : Type} [Field E] [NumberField E] [Is
   · refine ⟨fun w hw => not_not.1 hw, Set.mem_iInter₂.2 fun w hw => hg w hw.2⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, hloc, hlocne, -, -, -, -, -, hsplit, -⟩` from `hG E k`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `g _ hK`. Take `⟨g₀, h1, h2, h3⟩` from `hsplit S g`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨1, g₀, g₀⁻¹ * g, uu_one, h3, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, h1, inv_mul_cancel]`. Introduce `w hw`. Rewrite using `[map_mul, map_inv, h2 w hw, inv_mul_cancel]`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hw : w ∈ S`. Rewrite using `[map_mul, map_inv, h2 w hw, inv_mul_cancel]`. Conclude with `one_mem _`. Rewrite using `[map_mul, map_inv, h3 w hw, inv_one, one_mul]`. Conclude with `hK w hw (Finset.notMem_empty w)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Consider the case `insert v T hvT ih`. Introduce `g hexp hK`. Distinguish the cases in `hvS : v ∈ S`. Use `ih g hexp fun w hw hwT => hK w hw fun h => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Finset.mem_insert.1 h with h | h` into its components or cases. Conclude with `hw (h ▸ hvS)`. Conclude with `hwT h`. Take `⟨u, hu, κ, hκ, he⟩` from `Iwasawa.exists_eq_mul_torusPow_iwasawaExponent _ k (cLoc v g)`. Rewrite `he` using `[hexp v hvS, torusPow_zero, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc' : ∀ w, w ≠ v → cLoc w ((fl k v u)⁻¹ * g) = cLoc w g`. Introduce `w hw`. Rewrite using `[map_mul, map_inv, hlocne v w u hw, inv_one, one_mul]`. Establish `hv' : cLoc v ((fl k v u)⁻¹ * g) = κ`. Rewrite using `[map_mul, map_inv, hloc v u, he, inv_mul_cancel_left]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, g₀, κ', hn, h1, h2, h3, h4, h5⟩` from `ih ((fl k v u)⁻¹ * g) (fun w hw => by`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Rewrite using `[hv']`. Conclude with `exp_of_mem _ _ hκ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hloc' w hwv]`. Conclude with `hexp w hw)`. Use the proof step `(fun w hw hwT => by`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality.
-
-Rewrite using `[hv']`. Conclude with `hκ`. Rewrite using `[hloc' w hwv]`. Conclude with `hK w hw fun h => (Finset.mem_insert.1 h).elim hwv hwT)`. Use `⟨fl k v u * n, g₀, κ', uu_mul (uu_fl v hu) hn, h1, h2, h3, h4, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc n, ← h5, ← mul_assoc, mul_inv_cancel, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp (hG : jumpWindows.G0) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ}
     (S T : Finset (Pl E)) : ∀ g : GA E k, (∀ w, w ∉ S → Iwasawa.iwasawaExponent _ k (cLoc w g) = 0) →
@@ -304,17 +294,15 @@ theorem decomp (hG : jumpWindows.G0) {E : Type} [Field E] [NumberField E] [IsTot
 end ExponentialDecomposition
 
 /- English proof (translation)
-Introduce `hG E _ _ _ k S`. Establish `hGk` using `hG E k`. Take `⟨-, -, hinf1, hloc, hlocne, -, -, -, -, -, -, -, hcont, -⟩` from `hGk`. Use `⟨ExponentialDecomposition.isOpen_G0 hG S, fun w _ => by rw [map_one]; exact ExponentialDecomposition.exp_one _ _, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u g hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Rewrite using `[← h w hw, map_mul, Iwasawa.iwasawaExponent_mul_of_mem_unipotent _ _ (ExponentialDecomposition.cLoc_uu hu w)]`. Introduce `h w hw`. Rewrite using `[map_mul, Iwasawa.iwasawaExponent_mul_of_mem_unipotent _ _ (ExponentialDecomposition.cLoc_uu hu w)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h w hw`. Introduce `g hg classical`. Conclude with `ExponentialDecomposition.decomp hG S (ExponentialDecomposition.gd_fin g).toFinset g hg fun w _ hwT => ExponentialDecomposition.gd_mem (not_not.1 fun h => hwT ((ExponentialDecomposition.gd_fin g).mem_toFinset.2 h))`. Introduce `g`. Use `(ExponentialDecomposition.gd_fin g).subset fun w hw => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hw (ExponentialDecomposition.exp_of_mem _ _ (ExponentialDecomposition.gd_mem h))`. Introduce `w l`. Conclude with `(ExponentialDecomposition.isClopen_exp _ k l).preimage (hcont w)`. Introduce `w g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨g * (fl k w (cLoc w g))⁻¹, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hloc, mul_inv_cancel]`. Use `group`. Rewrite using `[map_mul, map_inv, hinf1, inv_one, mul_one]`. Introduce `v hv`.
-
-Rewrite using `[map_mul, map_inv, hlocne w v _ hv, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem open_decomposition_of_G0 : jumpWindows.G0 → C0 := by
   intro hG E _ _ _ k S

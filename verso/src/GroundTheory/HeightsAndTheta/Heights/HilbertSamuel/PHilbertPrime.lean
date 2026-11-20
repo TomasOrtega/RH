@@ -15,7 +15,7 @@ section Walk
 variable {K : Type*} [Fintype K] [DecidableEq K]
 
 /- English proof (translation)
-The claim follows from `|g a| ≤ |g (fun _ => a₀)| + B * ((∑ k, (a k : ℝ)) + 1) ^ (n + 1) := by suffices H : ∀ N : ℕ, ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∑ k, (a k - a₀) = N → |g a| ≤ |g (fun _ => a₀)| + B * ((∑ k, (a k : ℝ)) + 1) ^ (n + 1) from fun a ha => H _ a ha rfl intro N induction N with | zero => intr …`.
+A detailed English derivation is pending.
 -/
 theorem walk_bound (g : (K → ℕ) → ℝ) (a₀ : ℕ) (B : ℝ) (hB : 0 ≤ B) (n : ℕ)
     (hstep : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, a₀ < a b →
@@ -90,13 +90,11 @@ section Multilinear
 variable {K : Type*} [Fintype K] [DecidableEq K]
 
 /- English proof (translation)
-Use `set E : K → K → ℤ := fun k j => if k = j then 1 else 0`. Use `⟨∑ r : Fin n → K, |f (fun i => E (r i))|, Finset.sum_nonneg (fun _ _ => abs_nonneg _), ?_⟩` and prove the remaining obligations. Introduce `m`. Establish `hm : m = fun i => ∑ k, m i k • E k`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `pi_eq_sum_univ (m i)`. Establish `hexp : f m = ∑ r : Fin n → K, (∏ i, m i (r i)) * f (fun i => E (r i))` using `by conv_lhs => rw [hm]`. Rewrite using `[MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl (fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hexp, Finset.sum_mul]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum (fun r _ => ?_))` and prove the remaining obligations. Rewrite using `[abs_mul, Finset.abs_prod]`. Use `(mul_comm _ _).trans_le (mul_le_mul_of_nonneg_left ?_ (abs_nonneg _))` and prove the remaining obligations. Use `Finset.prod_le_prod (fun i _ => abs_nonneg _) (fun i _ => ?_)` and prove the remaining obligations.
-
-Conclude with `Finset.single_le_sum (f := fun k => |m i k|) (fun k _ => abs_nonneg _) (Finset.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem multilinear_abs_le {n : ℕ} (f : MultilinearMap ℤ (fun _ : Fin n => K → ℤ) ℤ) :
     ∃ M : ℤ, 0 ≤ M ∧ ∀ m : Fin n → K → ℤ, |f m| ≤ M * ∏ i, ∑ k, |m i k| := by
@@ -149,7 +147,7 @@ theorem ofPositionAdditive_apply {n : ℕ} (L : (Fin n → K → ℤ) → ℤ) (
 omit [Fintype K] [DecidableEq K] in
 
 /- English proof (translation)
-Take `⟨k', rfl⟩` from `Fin.exists_succ_eq.mpr hk`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem vecCons_const_of_ne_zero {d : ℕ} (y x : K → ℤ) (k : Fin (d + 1)) (hk : k ≠ 0) :
     Matrix.vecCons y (fun _ : Fin d => x) k = x := by
@@ -159,29 +157,27 @@ theorem vecCons_const_of_ne_zero {d : ℕ} (y x : K → ℤ) (k : Fin (d + 1)) (
 omit [Fintype K] [DecidableEq K] in
 
 /- English proof (translation)
-Establish `hadd : f (fun _ => x - e) = ∑ s : Finset (Fin (d + 1)), f (s.piecewise (fun _ => x) (fun _ => -e))`. Rewrite using `[← MultilinearMap.map_add_univ]`. Use `congr 1`. Establish `hone : ∀ s : Finset (Fin (d + 1)), s.card = d → f (s.piecewise (fun _ => x) (fun _ => -e)) = -f (Matrix.vecCons e fun _ : Fin d => x)`. Introduce `s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, j ∉ s := by`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_not] at hne`. Establish `: s = Finset.univ` using `Finset.eq_univ_of_forall hne`. Rewrite `hs` using `[this, Finset.card_univ, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsj : s = Finset.univ.erase j`. Use `Finset.eq_of_subset_of_card_le (fun i hi => ?_) ?_` and prove the remaining obligations. Conclude with `Finset.mem_erase.mpr ⟨fun h => hj (h ▸ hi), Finset.mem_univ _⟩`. Rewrite using `[Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin, hs]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hpw : s.piecewise (fun _ => x) (fun _ => -e) = (Matrix.vecCons (-e) fun _ : Fin d => x) ∘ (Equiv.swap 0 j)`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hj, Equiv.swap_apply_right]`. Simplify using the standard rewrite rules. Establish `hi : i ∈ s` using `by rw [hsj]; exact Finset.mem_erase.mpr ⟨hij, Finset.mem_univ _⟩`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(vecCons_const_of_ne_zero _ _ _ ?_).symm` and prove the remaining obligations. Introduce `h0`. Rewrite `h0` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Conclude with `hij h0`. Rewrite using `[hpw, hsym]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hupd : (Matrix.vecCons (-e) fun _ : Fin d => x) = Function.update (Matrix.vecCons e fun _ : Fin d => x) 0 (-e)`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hupd, MultilinearMap.map_update_neg]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simp`. Rewrite using `[hadd, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun s : Finset (Fin (d + 1)) => s.card + 2 ≤ d + 1), ← Finset.sum_filter_add_sum_filter_not (Finset.univ.filter fun s : Finset (Fin (d + 1)) => ¬ s.card + 2 ≤ d + 1) (fun s => s.card = d + 1)]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hA : ((Finset.univ.filter fun s : Finset (Fin (d + 1)) => ¬ s.card + 2 ≤ d + 1).filter fun s => s.card = d + 1) = {Finset.univ}`. Use extensionality with `s`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.eq_univ_of_card s (by rw [h, Fintype.card_fin])`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Establish `hB : ((Finset.univ.filter fun s : Finset (Fin (d + 1)) => ¬ s.card + 2 ≤ d + 1).filter fun s => ¬ s.card = d + 1) = Finset.powersetCard d Finset.univ`. Use extensionality with `s`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hle : s.card ≤ d + 1` using `by simpa using Finset.card_le_univ s`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_powersetCard, Finset.subset_univ]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hA, hB, Finset.sum_singleton, Finset.piecewise_univ, Finset.sum_congr rfl (fun s hs => hone s (Finset.mem_powersetCard.mp hs).2), Finset.sum_const, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin, Nat.choose_succ_self_right]`. Simplify using `only [nsmul_eq_mul]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem multilinear_step {d : ℕ} (f : MultilinearMap ℤ (fun _ : Fin (d + 1) => K → ℤ) ℤ)
     (hsym : ∀ (σ : Equiv.Perm (Fin (d + 1))) (m : Fin (d + 1) → K → ℤ), f (m ∘ σ) = f m)
@@ -259,7 +255,7 @@ theorem multilinear_step {d : ℕ} (f : MultilinearMap ℤ (fun _ : Fin (d + 1) 
   ring
 
 /- English proof (translation)
-The claim follows from `|f (fun _ => fun k => (a k : ℤ)) - f (fun _ => (fun k => (a k : ℤ)) - unitDeg b) - ((d + 1 : ℕ) : ℤ) * f (Matrix.vecCons (unitDeg b) fun _ : Fin d => fun k => (a k : ℤ))| ≤ M * ((∑ k, (a k : ℤ)) + 1) ^ (d - 1) := by obtain ⟨M₀, hM₀, hbd⟩ := multilinear_abs_le f refine ⟨(Fintype.c …`.
+A detailed English derivation is pending.
 -/
 theorem multilinear_step_le {d : ℕ} (f : MultilinearMap ℤ (fun _ : Fin (d + 1) => K → ℤ) ℤ)
     (hsym : ∀ (σ : Equiv.Perm (Fin (d + 1))) (m : Fin (d + 1) → K → ℤ), f (m ∘ σ) = f m) :
@@ -299,11 +295,11 @@ theorem multilinear_step_le {d : ℕ} (f : MultilinearMap ℤ (fun _ : Fin (d + 
 end Expansion
 
 /- English proof (translation)
-Rewrite `h` using `[Nat.cast_zero, zero_sub, Real.rpow_neg_one]`. Rewrite using `[← sub_eq_zero]`. Use `set z := z₁ - z₂`. Establish `hz : (z : ℝ) = (z₁ : ℝ) - (z₂ : ℝ)` using `by push_cast [z]; rfl`. Rewrite `h` using `[← hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < s + 1` using `by linarith`. Establish `h1 : c * (s + 1)⁻¹ < 1`. Rewrite using `[← div_eq_mul_inv, div_lt_one hpos]`. Conclude with `lt_of_le_of_lt (le_abs_self c) hc`. Establish `h2 : |(z : ℝ)| < 1` using `lt_of_le_of_lt h h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← Int.cast_abs]`. Establish `h3 : |z| < 1` using `by exact_mod_cast h2`. Conclude with `Int.abs_lt_one_iff.mp h3`.
+A detailed English derivation is pending.
 -/
 theorem int_eq_of_abs_sub_le {z₁ z₂ : ℤ} {c s : ℝ} (hs : 0 ≤ s) (hc : |c| < s + 1)
     (h : |(z₁ : ℝ) - (z₂ : ℝ)| ≤ c * (s + 1) ^ (((0 : ℕ) : ℝ) - 1)) : z₁ = z₂ := by
@@ -322,47 +318,43 @@ theorem int_eq_of_abs_sub_le {z₁ z₂ : ℤ} {c s : ℝ} (hs : 0 ≤ s) (hc : 
   exact Int.abs_lt_one_iff.mp h3
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ q hq hdim`. Take `⟨hsym, hadd⟩` from `hM F K ι q (d + 1) hq hdim`. Take `⟨M, hM0, hE⟩` from `multilinear_step_le (ofPositionAdditive (intNum F q) hadd) hsym`. Simplify using `only [ofPositionAdditive_apply] at hE`. Use `choose A C hAC using hI d hmod F K ι q hq hdim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set Cs : ℝ := ∑ b, |C b| with hCs`. Use `set a₀ : ℕ := ∑ b, A b + ⌈Cs⌉₊ with ha₀`. Use `set g : (K → ℕ) → ℝ := fun a => (hilbFn q (fun k => (a k : ℤ)) : ℝ) - (intNum F q (fun _ : Fin (d + 1) => fun k => (a k : ℤ)) : ℝ) / ((d + 1).factorial : ℝ) with hg`. Establish `hAb : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, ∀ k, A b ≤ a k`. Introduce `a ha b k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Use `le_trans ?_ (ha k)` and prove the remaining obligations. Conclude with `le_trans (Finset.single_le_sum (fun j _ => Nat.zero_le (A j)) (Finset.mem_univ b)) (Nat.le_add_right _ _)`. Establish `hCb : ∀ b, |C b| ≤ (a₀ : ℝ)`. Introduce `b`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hs0 : ∀ a : K → ℕ, 0 ≤ ∑ k, (a k : ℝ)` using `fun a => Finset.sum_nonneg (fun k _ => Nat.cast_nonneg _)`. Establish `key : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, a₀ < a b → g a - g (Function.update a b (a b - 1)) = ((((hilbFn q (fun k => (a k : ℤ)) - hilbFn q ((fun k => (a k : ℤ)) - unitDeg b) : ℤ) : ℝ) - (intNum F q (Matrix.vecCons (unitDeg b) fun _ : Fin d => fun k => (a k : ℤ)) : ℝ) / d.factori …`. Introduce `a ha b hb`. Establish `hcast : (fun k => ((Function.update a b (a b - 1) k : ℕ) : ℤ)) = (fun k => (a k : ℤ)) - unitDeg b`. Use function extensionality and compare the values at `k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : k = b`. Substitute `hk` using the available equality. Simplify using `only [Function.update_self, Pi.sub_apply, unitDeg, Pi.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Simplify using `[unitDeg, hk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `gfun : ∀ (c : K → ℕ) (y : K → ℤ), (fun k => (c k : ℤ)) = y → g c = (hilbFn q y : ℝ) - (intNum F q (fun _ : Fin (d + 1) => y) : ℝ) / ((d + 1).factorial : ℝ)`. Introduce `c y h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[gfun _ _ hcast, gfun a _ rfl]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Consider the cases of `d with`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `zero`. Establish `hempty : (Finset.univ.filter fun s : Finset (Fin (0 + 1)) => s.card + 2 ≤ 0 + 1) = ∅`. Use extensionality with `s`. Simplify using the standard rewrite rules. Establish `hstep : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, a₀ < a b → |g a - g (Function.update a b (a b - 1))| ≤ 0 * ((∑ k, (a k : ℝ)) + 1) ^ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a ha b hb`. Establish `hR` using `multilinear_step (ofPositionAdditive (intNum F q) hadd) hsym (fun k => (a k : ℤ)) (unitDeg b)`. Rewrite `hR` using `[hempty, Finset.sum_empty, neg_zero]`. Simplify using `only [ofPositionAdditive_apply] at hR`. Establish `hIb` using `hAC b a (hAb a ha b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : |C b| < (∑ k, (a k : ℝ)) + 1`. Establish `h1 : (a₀ : ℝ) < a b` using `by exact_mod_cast hb`. Establish `h2 : (a b : ℝ) ≤ ∑ k, (a k : ℝ)` using `Finset.single_le_sum (f := fun k => (a k : ℝ)) (fun k _ => Nat.cast_nonneg _) (Finset.mem_univ b)`. Combine the linear relations using `[hCb b]`. Rewrite using `[key a ha b hb, hR]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Nat.factorial_zero, Nat.cast_one, div_one, Int.cast_zero, zero_div, sub_zero] at hIb ⊢`. Establish `hz` using `int_eq_of_abs_sub_le (hs0 a) hlt hIb`. Rewrite using `[hz, sub_self]`. Simplify using the standard rewrite rules. Use `⟨a₀, |g (fun _ => a₀)|, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `hw` using `walk_bound g a₀ 0 le_rfl 0 hstep a ha`. Establish `hexp : (((0 + 1 : ℕ) : ℝ) - 1) = 0` using `by norm_num`. Rewrite using `[hexp, Real.rpow_zero, mul_one]`. Use `show |g a| ≤ _`. Simplify using `using hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ n`. Establish `hstep : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, a₀ < a b → |g a - g (Function.update a b (a b - 1))| ≤ (Cs + M) * ((∑ k, (a k : ℝ)) + 1) ^ n`. Introduce `a ha b hb`. Establish `hIb` using `hAC b a (hAb a ha b)`. Establish `hRb` using `hE a b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set s := ∑ k, (a k : ℝ) with hs`. Establish `hexp : (((n + 1 : ℕ) : ℝ) - 1) = (n : ℝ)` using `by push_cast; ring`. Rewrite `hIb` using `[hexp, Real.rpow_natCast]`. Establish `hRb' : |((intNum F q (fun _ : Fin (n + 1 + 1) => fun k => (a k : ℤ)) - intNum F q (fun _ : Fin (n + 1 + 1) => (fun k => (a k : ℤ)) - unitDeg b) - ((n + 1 + 1 : ℕ) : ℤ) * intNum F q (Matrix.vecCons (unitDeg b) fun _ : Fin (n + 1) => fun k => (a k : ℤ)) : ℤ) : ℝ)| ≤ (M : ℝ) * (s + …`. Rewrite using `[← Int.cast_abs]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((M * ((∑ k, (a k : ℤ)) + 1) ^ (n + 1 - 1) : ℤ) : ℝ) = (M : ℝ) * (s + 1) ^ n`. Rewrite using `[hs]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[← this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hRb` after adjusting the coercions. Rewrite using `[key a ha b hb]`. Establish `hpos : (1 : ℝ) ≤ ((n + 1 + 1).factorial : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `hdiv : ∀ x : ℝ, |x / ((n + 1 + 1).factorial : ℝ)| ≤ |x|`. Introduce `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[abs_div, abs_of_pos (by linarith : (0 : ℝ) < ((n + 1 + 1).factorial : ℝ))]`. Conclude with `div_le_self (abs_nonneg _) hpos`. Establish `hCb' : C b * (s + 1) ^ n ≤ Cs * (s + 1) ^ n`. Establish `hp : 0 ≤ (s + 1) ^ n` using `by positivity`. Establish `: C b ≤ Cs` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun b => |C b|) (fun j _ => abs_nonneg _) (Finset.mem_univ b))`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right this hp`. Use `(abs_sub _ _).trans ?_` and prove the remaining obligations. Use `(add_le_add hIb ((hdiv _).trans hRb')).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 0 ≤ Cs + (M : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: 0 ≤ Cs` using `Finset.sum_nonneg (fun j _ => abs_nonneg _)`. Establish `: (0 : ℝ) ≤ M` using `by exact_mod_cast hM0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨a₀, |g (fun _ => a₀)| + (Cs + M), fun a ha => ?_⟩` and prove the remaining obligations. Establish `hw` using `walk_bound g a₀ (Cs + M) hB n hstep a ha`.
-
-Establish `hexp : (((n + 1 + 1 : ℕ) : ℝ) - 1) = ((n + 1 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[hexp, Real.rpow_natCast]`. Establish `h1 : (1 : ℝ) ≤ ((∑ k, (a k : ℝ)) + 1) ^ (n + 1)` using `one_le_pow₀ (by linarith [hs0 a])`. Establish `h2 : |g (fun _ => a₀)| ≤ |g (fun _ => a₀)| * ((∑ k, (a k : ℝ)) + 1) ^ (n + 1)` using `le_mul_of_one_le_right (abs_nonneg _) h1`. Use `show |g a| ≤ _`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem hilbertPrime_succ (d : ℕ) (hM : MixedNumberPolynomial.Statement.{u})
     (hI : HilbertIncrement.Statement.{u}) (hmod : HilbertModule.AtDim.{u, u} d) :
@@ -493,11 +485,11 @@ theorem hilbertPrime_succ (d : ℕ) (hM : MixedNumberPolynomial.Statement.{u})
     nlinarith
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Consider the cases of `d with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Introduce `F _ K _ _ ι _ q hq hdim`. Take `⟨a₀, ha₀⟩` from `hZ F K ι q hq (by simpa using hdim)`. Use `⟨a₀, 0, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hfun : (fun _ : Fin 0 => fun k => (a k : ℤ)) = (![] : Fin 0 → K → ℤ)` using `Subsingleton.elim _ _`. Rewrite using `[hfun, ha₀ a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ d`. Conclude with `hilbertPrime_succ d hM hI (hMP d (fun e he => ih e (by omega)))`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem HilbertPrime.proof (hZ : HilbertDimZero.Statement.{u}) (hI : HilbertIncrement.Statement.{u})
     (hM : MixedNumberPolynomial.Statement.{u}) (hMP : ModulesFromPrimes.Statement.{u, u}) :

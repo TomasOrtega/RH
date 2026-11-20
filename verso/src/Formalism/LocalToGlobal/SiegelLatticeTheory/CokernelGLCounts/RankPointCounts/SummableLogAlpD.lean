@@ -15,13 +15,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `haP : ∀ T : ℕ, aP (E` using `X.B.I.E) v D.R.k X.B.I.n T = aPD (plEquiv X v) T := by`. Introduce `T`. Unfold `aP aPD`. Establish `hI : Finset.Icc (if ((T : 𝓞 X.B.I.F) ∈ v.asIdeal) then D.R.k else D.R.k + 1) X.B.I.n = Finset.Icc (if ((T : 𝓞 D.host.F) ∈ (plEquiv X v).asIdeal) then D.R.k else D.R.k + 1) D.R.r`. Rewrite using `[X.n_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : ((T : 𝓞 X.B.I.F) ∈ v.asIdeal)`. Rewrite using `[if_pos hm, if_pos ((natCast_mem_plEquiv X v T).2 hm)]`. Rewrite using `[if_neg hm, if_neg (fun h => hm ((natCast_mem_plEquiv X v T).1 h))]`. Rewrite using `[hI]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hEta v, absNorm_plEquiv]`. Unfold `alX alpD Tw`. Rewrite using `[haP, haP]`. Distinguish the cases in `h : TypAt X v`. Rewrite using `[if_pos h, if_pos ((typAt_iff X v).1 h)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg (fun h' => h ((typAt_iff X v).2 h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem alX_eq (hEta : EtaTie X) (u u' : D.what₂.Word) (v : HeightOneSpectrum (𝓞 X.B.I.F)) :
     alX X u u' v = alpD u u' (plEquiv X v) := by
@@ -44,13 +44,13 @@ theorem alX_eq (hEta : EtaTie X) (u u' : D.what₂.Word) (v : HeightOneSpectrum 
   · rw [if_neg h, if_neg (fun h' => h ((typAt_iff X v).2 h'))]
 
 /- English proof (translation)
-Establish `hP` using `Formalism.L2.SG.Pf.placesOver_holds D`. Establish `hα` using `Formalism.L2.SG.IntegralApproximation.AlpBound_holds D`. Use `set s := D.R.k - 2 * D.R.rS - 2 with hs`. Establish `hs2 : 2 ≤ s` using `by omega`. Use `set a : PlF D → ℝ := fun p => (Formalism.L2.SG.DataCut.qP p ^ s)⁻¹ with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : ∀ p, 0 ≤ a p` using `fun p => inv_nonneg.2 (pow_nonneg (Formalism.L2.SG.DataCut.qP_nonneg p) _)`. Establish `hsum : ∀ S : Finset (PlF D), ∑ p ∈ S, a p ≤ 3 * (D.R.f : ℝ) * ((2 : ℝ) ^ s)⁻¹`. Introduce `S`. Conclude with `Formalism.FourierDecayAlt.P.DensitySumsAndDomination.densSum (PlF D) S Formalism.L2.SG.DataCut.qP Loc.resChar D.R.f s hs2 (fun p _ => ⟨(D.s.atP p).ellPrime.out, hP.1 p⟩) (fun m => hP.2 m _ (fun p hp => (Finset.mem_filter.1 hp).2))`. Establish `haS : Summable a` using `summable_of_sum_le ha0 hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hαb` using `hα hk u u'`. Establish `hal0 : ∀ p, 0 < alpD u u' p` using `fun p => lt_of_lt_of_le (Real.exp_pos _) (hαb p).1`. Use `⟨hal0, ?_⟩` and prove the remaining obligations. Use `Summable.of_norm_bounded (g := fun p => 2 * a p) (haS.mul_left 2) (fun p => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Real.log_le_log (Real.exp_pos _) (hαb p).1`. Establish `h2` using `Real.log_le_log (hal0 p) (hαb p).2`. Rewrite `h1`, `h2` using `[Real.log_exp]`. Establish `ha' : a p = (Formalism.L2.SG.DataCut.qP p ^ (D.R.k - 2 * D.R.rS - 2))⁻¹` using `rfl`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem summable_log_alpD (hk : 2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k) (u u' : D.what₂.Word) :
     (∀ p, 0 < alpD u u' p) ∧ Summable fun p => Real.log (alpD u u' p) := by
@@ -78,9 +78,9 @@ theorem summable_log_alpD (hk : 2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k) (u u' : D.
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `hls : Summable (fun v : {v // v ∉ s} => Real.log (f v.1))` using `hlog.comp_injective (i := fun v : {v // v ∉ s} => v.1) Subtype.val_injective`. Establish `hO : ∏' v : {v // v ∉ s}, f v.1 = Real.exp (∑' v : {v // v ∉ s}, Real.log (f v.1))` using `(Real.rexp_tsum_eq_tprod (f := fun v : {v // v ∉ s} => f v.1) (fun v => hpos v.1) hls).symm`. Establish `hT : ∏ p : ↥s, f p.1 = Real.exp (∑ p : ↥s, Real.log (f p.1))`. Rewrite using `[Real.exp_sum]`. Conclude with `Finset.prod_congr rfl fun p _ => (Real.exp_log (hpos _)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : ∑ p : ↥s, Real.log (f p.1) + ∑' v : {v // v ∉ s}, Real.log (f v.1) = ∑' v, Real.log (f v)`. Rewrite using `[Finset.sum_coe_sort s (fun x => Real.log (f x))]`. Conclude with `hlog.sum_add_tsum_compl (s := s)`. Rewrite using `[hO, hT, ← Real.exp_add, hsplit, Real.rexp_tsum_eq_tprod hpos hlog]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_split {β : Type} (f : β → ℝ) (s : Finset β) (hpos : ∀ v, 0 < f v)
     (hlog : Summable fun v => Real.log (f v)) :
@@ -98,11 +98,11 @@ theorem prod_split {β : Type} (f : β → ℝ) (s : Finset β) (hpos : ∀ v, 0
   rw [hO, hT, ← Real.exp_add, hsplit, Real.rexp_tsum_eq_tprod hpos hlog]
 
 /- English proof (translation)
-Take `⟨hpos, hlog⟩` from `summable_log_alpD hk u u'`. Establish `he : ∀ v, alX X u u' v = alpD u u' (plEquiv X v)` using `alX_eq X hEta u u'`. Establish `hxpos : ∀ v, 0 < alX X u u' v` using `fun v => (he v).symm ▸ hpos _`. Establish `hxlog : Summable fun v => Real.log (alX X u u' v)`. Establish `h1 : Summable fun v => Real.log (alpD u u' (plEquiv X v))` using `(plEquiv X).summable_iff.2 hlog`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.congr fun v => by rw [he v]`. Establish `hS` using `prod_split (alX X u u') (Formalism.L2.SG.TypedSets.typSet X.B.I.F (D.host.g 0) (D.host.g 1)) hxpos hxlog`. Establish `hR : ∏' v, alX X u u' v = ∏' q, alpD u u' q`. Rewrite using `[tprod_congr he]`. Conclude with `(plEquiv X).tprod_eq (alpD u u')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hR, ← hS]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem locOf_al_eq (hEta : EtaTie X) (hk : 2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k) (u u' : D.what₂.Word)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) :
@@ -130,7 +130,7 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Loca
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `AlTieC`. Conclude with `AlTie.locOf_al_eq X hEta hk u u' ψ`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem AlTieC_of {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : Formalism.L2.SG.Full.Full X)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
@@ -144,7 +144,7 @@ theorem AlTieC_of {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : For
   exact AlTie.locOf_al_eq X hEta hk u u' ψ
 
 /- English proof (translation)
-The claim follows from `AlTieC_of X hb Y u u' X0 ψ sd C Th vR Q M δ i0 i0' νq (AlTie.etaTie_of X hL) hk`.
+A detailed English derivation is pending.
 -/
 theorem AlTieC_of_loc {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : Formalism.L2.SG.Full.Full X)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)

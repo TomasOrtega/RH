@@ -28,7 +28,7 @@ namespace GlobalTheory.LamPr
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_lt_one : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l]) := by simp
@@ -36,13 +36,13 @@ theorem norm_l_lt_one : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem l_ne_zero : ((l : ℕ) : Qbar l) ≠ 0 := by
   exact_mod_cast (Fact.out : l.Prime).ne_zero
 
 /- English proof (translation)
-Establish `h1 : Filter.Tendsto (fun n : ℕ => C * ‖((l : ℕ) : Qbar l) ^ n‖) Filter.atTop (nhds 0)`. Repeatedly rewrite using `[norm_pow]`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (norm_l_lt_one (l := l))).const_mul C`. Conclude with `norm_le_zero_iff.1 (ge_of_tendsto h1 (Filter.eventually_atTop.2 ⟨c, h⟩))`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_le {z : ℂ_[l]} {C : ℝ} {c : ℕ} (h : ∀ n, c ≤ n → ‖z‖ ≤ C * ‖((l : ℕ) : Qbar l) ^ n‖) : z = 0 := by
   have h1 : Filter.Tendsto (fun n : ℕ => C * ‖((l : ℕ) : Qbar l) ^ n‖) Filter.atTop (nhds 0) := by
@@ -51,9 +51,9 @@ theorem eq_zero_of_le {z : ℂ_[l]} {C : ℝ} {c : ℕ} (h : ∀ n, c ≤ n → 
   exact norm_le_zero_iff.1 (ge_of_tendsto h1 (Filter.eventually_atTop.2 ⟨c, h⟩))
 
 /- English proof (translation)
-Establish `hp : 0 < ‖a‖` using `norm_pos_iff.2 ha`. Establish `h` using `hC (a⁻¹ • f) (fun s => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv, inv_mul_le_iff₀ hp, mul_one]`. Conclude with `hf s)`. Rewrite `h` using `[map_smul, smul_eq_mul, norm_mul, norm_inv, inv_mul_le_iff₀ hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lam_le {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} {C : ℝ} (hC : ∀ f : ℕ → Qbar l, (∀ s, ‖f s‖ ≤ 1) → ‖lam f‖ ≤ C)
     {a : Qbar l} (ha : a ≠ 0) (f : ℕ → Qbar l) (hf : ∀ s, ‖f s‖ ≤ ‖a‖) : ‖lam f‖ ≤ C * ‖a‖ := by
@@ -64,11 +64,11 @@ theorem lam_le {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} {C : ℝ} (hC : �
   linarith
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h`. Establish `key : ∀ f : ℕ → Qbar l, lam f = ∑ s ∈ S, f s * lam (Pi.single s 1)`. Introduce `f`. Establish `h0` using `hS (f - ∑ s ∈ S, f s • (Pi.single s 1 : ℕ → Qbar l)) (fun s hs => by`. Simplify using `[Finset.sum_apply, Pi.single_apply, hs])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[map_sub, sub_eq_zero, map_sum]`. Simplify using `using h0`. Use `⟨S.image fun s => lam (Pi.single s 1), fun τ hτ f => ?_⟩` and prove the remaining obligations. Rewrite using `[key f, key, map_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hτ _ (Finset.mem_image_of_mem _ hs)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_gal {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp lam) : ∃ F : Finset (Qbar l),
     ∀ τ : Qbar l →+* Qbar l, (∀ a ∈ F, τ a = a) → ∀ f : ℕ → Qbar l, lam (fun s => τ (f s)) = τ (lam f) := by
@@ -88,7 +88,7 @@ theorem lam_gal {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp lam)
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Use `letI : Algebra Ω (Qbar l) := j.toAlgebra`. Use `haveI : IsScalarTower ℚ Ω (Qbar l) := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Set `τ' : Qbar l ≃ₐ[ℚ] Qbar l` to `AlgEquiv.ofRingEquiv (f := τ) (fun x => by simp)`. Conclude with `⟨τ'.restrictNormal Ω, fun x => τ'.restrictNormal_commutes Ω x⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_restrict [IsAlgClosure ℚ Ω] (j : Ω →+* Qbar l) (τ : Qbar l ≃+* Qbar l) :
     ∃ s : Ω ≃ₐ[ℚ] Ω, ∀ x, j (s x) = τ (j x) := by
@@ -98,7 +98,7 @@ theorem exists_restrict [IsAlgClosure ℚ Ω] (j : Ω →+* Qbar l) (τ : Qbar l
   exact ⟨τ'.restrictNormal Ω, fun x => τ'.restrictNormal_commutes Ω x⟩
 
 /- English proof (translation)
-Take `⟨z, hz, h⟩` from `h`. Rewrite using `[← map_sub, h, map_mul, map_pow, map_natCast, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) ((hj z).1 hz)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_cgA {A : ValuationSubring Ω} {j : Ω →+* Qbar l} (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) {n : ℕ} {x y : Ω}
     (h : CgA A l n x y) : ‖j x - j y‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ := by
@@ -107,9 +107,9 @@ theorem norm_le_of_cgA {A : ValuationSubring Ω} {j : Ω →+* Qbar l} (hj : ∀
   exact mul_le_of_le_one_right (norm_nonneg _) ((hj z).1 hz)
 
 /- English proof (translation)
-Establish `h0 : (l : Ω) ≠ 0` using `fun h => l_ne_zero (l := l) (by rw [← map_natCast j, h, map_zero])`. Assume the negation of the conclusion as `hc`. Establish `h1 : A.valuation (l : Ω)⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ (not_lt.1 hc)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(hj _).1 ((A.valuation_le_one_iff _).1 h1)`. Rewrite `h2` using `[map_inv₀, map_natCast, norm_inv, inv_le_one₀ (norm_pos_iff.2 l_ne_zero)]`. Conclude with `absurd norm_l_lt_one (not_lt.2 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_l_lt_one {A : ValuationSubring Ω} {j : Ω →+* Qbar l} (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) :
     A.valuation (l : Ω) < 1 := by
@@ -122,11 +122,11 @@ theorem val_l_lt_one {A : ValuationSubring Ω} {j : Ω →+* Qbar l} (hj : ∀ x
   exact absurd norm_l_lt_one (not_lt.2 h2)
 
 /- English proof (translation)
-Use `⟨hj x, fun h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Establish `hx0 : x ≠ 0` using `fun h0 => hx (h0 ▸ A.zero_mem)`. Establish `hv : x⁻¹ ∈ A.nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff, map_inv₀]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_lt_one_of_one_lt₀ (not_le.1 fun h1 => hx ((A.valuation_le_one_iff x).1 h1))`. Take `⟨k, z, hz, hk⟩` from `GlobalTheory.cgA_pow_of_mem_nonunits l A hl _ hv`. Establish `h1` using `congrArg (fun y => ‖j y‖) hk`. Simplify using `only [sub_zero, pow_one, map_mul, map_pow, map_inv₀, map_natCast, norm_mul, norm_pow, norm_inv] at h1`. Establish `hp : 0 < ‖j x‖` using `norm_pos_iff.2 ((map_ne_zero j).2 hx0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ ‖j x‖⁻¹ ^ k` using `one_le_pow₀ ((one_le_inv₀ hp).2 h)`. Establish `h3` using `mul_le_of_le_one_right (norm_nonneg ((l : ℕ) : Qbar l)) (hj z hz)`. Combine the linear relations using `[norm_l_lt_one (l := l)]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_le [IsAlgClosure ℚ Ω] {A : ValuationSubring Ω} {j : Ω →+* Qbar l} (hl : (l : Ω) ∈ A.nonunits)
     (hj : ∀ x ∈ A, ‖j x‖ ≤ 1) (x : Ω) : x ∈ A ↔ ‖j x‖ ≤ 1 := by
@@ -145,23 +145,23 @@ theorem mem_iff_of_le [IsAlgClosure ℚ Ω] {A : ValuationSubring Ω} {j : Ω �
   linarith [norm_l_lt_one (l := l)]
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `hlN : ¬ l ∣ N` using `(Nat.Prime.coprime_iff_not_dvd Fact.out).1 hNl.symm`. Establish `hlA : (l : Ω) ∈ A.nonunits` using `(ValuationSubring.mem_nonunits_iff A).2 (val_l_lt_one hj)`. Establish `hhol' : ∃ φ : ℂ → ℂ, X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs` using `hhol.imp fun _ h => h.symm`. Establish `hex : ∀ n, ∀ b ∈ X.B N l w, ∃ φ, IsThB X A N l n b φ` using `fun n b hb => (GlobalTheory.T.exists_cuspFunctional_oddWeight_oddPrime Ω ε X A N l inferInstance hhol' hl2 hlN (by omega) hlA n w hw b hb).imp fun _ h => h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨L, hL⟩` from `GlobalTheory.T.exists_linearMap_limit_of_compatible_approximations l (X.Fn l) (X.B N l w) (fun n b x => ∃ φ, IsThB X A N l n b φ ∧ x = lam (seqN D j φ)) C (fun n b hb => (hex n b hb).elim fun φ h => ⟨_, φ, h, rfl⟩) (by`. Introduce and unpack `n b hb _ _ ⟨φ, h, rfl⟩ ⟨φ', h', rfl⟩`. Rewrite using `[← map_sub]`. Conclude with `lam_le hC (pow_ne_zero _ l_ne_zero) _ fun s => norm_le_of_cgA hj (GlobalTheory.T.cgA_coeff_of_isThB_succ Ω ε X A N l hl2 hlN (by omega) hlA n b φ φ' h h' _))`. Use the proof step `(by`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `n b hb b' hb' a a' _ _ ⟨φ, h, rfl⟩ ⟨φ', h', rfl⟩`. Use `⟨_, GlobalTheory.ThAdd.isThB_add Ω ε X A N l n w b b' hlA hb hb' a a' φ φ' h h', ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← smul_eq_mul, ← map_smul, ← map_smul, ← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[seqN])`. Establish `hL' : ∀ n, ∀ b ∈ X.B N l w, ∀ φ, IsThB X A N l n b φ → ‖(lam (seqN D j φ) : ℂ_[l]) - L (1 ⊗ₜ[ℤ_[l]] b)‖ ≤ C * ‖((l : ℕ) : Qbar l) ^ n‖` using `fun n b hb φ h => hL n b hb _ ⟨φ, h, rfl⟩`. Take `⟨F, hF⟩` from `lam_gal hfin`. Use `⟨L, F, hL', fun b hb => ?_, fun K hK τ s hs b hb => ?_⟩` and prove the remaining obligations. Take `⟨φ, h⟩` from `hex 0 b hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hL' 0 b hb φ h`. Rewrite `h1` using `[pow_zero, norm_one, mul_one]`. Establish `h2 : ‖(lam (seqN D j φ) : ℂ_[l])‖ ≤ C`. Rewrite using `[PadicComplex.norm_extends]`. Take `⟨f, -, -, -, hint, -⟩` from `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `hC _ fun s => (hj _).1 (hint _)`. Establish `e : L (1 ⊗ₜ[ℤ_[l]] b) = (lam (seqN D j φ) : ℂ_[l]) + -((lam (seqN D j φ) : ℂ_[l]) - L (1 ⊗ₜ[ℤ_[l]] b))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 (by rwa [norm_neg]))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsA : ∀ x, x ∈ A ↔ s x ∈ A` using `fun x => by rw [hj, hj, hs, GroundTheory.PAdicHodge.norm_gal_apply]`. Establish `hgb` using `GlobalTheory.KZ.StabGal.galB_mem_B ε X ε.injective hhol N l w hl2 hN hNl hw s b hb`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_le (C := C) (c := 0) fun n _ => ?_` and prove the remaining obligations. Take `⟨φ, h⟩` from `hex n b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hL' n _ hgb _ (GlobalTheory.isThB_galB Ω ε X A N l n w s hlA hsA b hb φ h)`. Establish `h2` using `hL' n b hb φ h`. Establish `e1 : seqN D j (HahnSeries.map φ (s : Ω →+* Ω)) = fun t => (τ : Qbar l →+* Qbar l) (seqN D j φ t)`. Use function extensionality and compare the values at `t`. Simplify using `[seqN, hs]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e1, hF _ (fun a ha => τ.commutes ⟨a, hK a ha⟩)]`. Rewrite `h2` using `[← GroundTheory.PAdicHodge.norm_smul_gal τ, smul_sub, GroundTheory.PAdicHodge.gal_smul_coe]`. Establish `e : L (1 ⊗ₜ[ℤ_[l]] X.galB l s b) - τ • L (1 ⊗ₜ[ℤ_[l]] b) = (((τ (lam (seqN D j φ)) : Qbar l) : ℂ_[l]) - τ • L (1 ⊗ₜ[ℤ_[l]] b)) + -(((τ (lam (seqN D j φ)) : Qbar l) : ℂ_[l]) - L (1 ⊗ₜ[ℤ_[l]] X.galB l s b))` using `by ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 (by rw [norm_neg]; exact h1))`.
+A detailed English derivation is pending.
 -/
 theorem exists_limit [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (A : ValuationSubring Ω) (j : Ω →+* Qbar l)
     (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1)
@@ -230,23 +230,23 @@ theorem exists_limit [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (A : ValuationSubri
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 (by rw [norm_neg]; exact h1))
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `hlN : ¬ l ∣ N` using `(Nat.Prime.coprime_iff_not_dvd Fact.out).1 hNl.symm`. Establish `hlA : (l : Ω) ∈ A.nonunits` using `(ValuationSubring.mem_nonunits_iff A).2 (val_l_lt_one hj)`. Establish `hhol' : ∃ φ : ℂ → ℂ, X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs` using `hhol.imp fun _ h => h.symm`. Take `⟨L, F, hL, hb, hg⟩` from `exists_limit X A j hj hhol N w D hl2 hN hNl hw lam hfin C hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F₀, hF₀⟩` from `hρ`. Take `⟨c, hc⟩` from `GlobalTheory.T.theta_kills_Fplus_discrete_form l Ω ε X A hhol' (val_l_lt_one hj) N w F₀ hl2 hlN (by omega) hw`. Use `(GlobalTheory.T.kummerBettiModule_free_finite ε X ε.injective hhol N l w hl2 hN hNl hw).1` as an intermediate fact. Establish `hkill : ∀ i, L (σ i ![1, 0]) = 0`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsp` using `GlobalTheory.T.mem_span_eigen_of_baseChange_eigen' l (X.Fn l) {s : Ω ≃ₐ[ℚ] Ω // s ∈ Ine (F := ℚ) A ∧ ∀ y ∈ F₀, s y = y} (X.B N l w) (fun s => X.galB l s.1) (fun s => (cycZ ℚ Ω l s.1 : ℤ_[l]) ^ (w + 1)) (fun s => GlobalTheory.KZ.StabGal.galB_mem_B ε X ε.injective hhol N l w hl2 hN …`. Take `⟨h1, h2⟩` from `hF₀ s.1 s.2.1 s.2.2`. Establish `h` using `hσg i s.1 ![1, 0]`. Rewrite using `[← h2, ← map_smul]`. Use `h.trans (congrArg _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, h1])`. Use `(Submodule.span_le (p := LinearMap.ker L)).2 ?_ hsp` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hbB, hbe, rfl⟩`. Use `eq_zero_of_le (C := C * ‖((l : ℕ) : Qbar l) ^ c‖⁻¹) (c := 0) fun n _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨φ, hφ, -⟩` from `GlobalTheory.T.exists_cuspFunctional_oddWeight_oddPrime Ω ε X A N l inferInstance hhol' hl2 hlN (by omega) hlA n w hw b hbB`. Establish `hlc : ((l : ℕ) : Qbar l) ^ c ≠ 0` using `pow_ne_zero _ l_ne_zero`. Establish `hp : 0 < ‖((l : ℕ) : Qbar l) ^ c‖` using `norm_pos_iff.2 hlc`. Establish `hc1 : 1 ≤ ‖((l : ℕ) : Qbar l) ^ c‖⁻¹`. Rewrite using `[one_le_inv₀ hp, norm_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_one₀ (norm_nonneg _) norm_l_lt_one.le`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hb 0 (Submodule.zero_mem _))`. Establish `h1` using `hL n b hbB φ hφ`. Establish `h2 : ‖(lam (seqN D j φ) : ℂ_[l])‖ ≤ C * ‖((l : ℕ) : Qbar l) ^ c‖⁻¹ * ‖((l : ℕ) : Qbar l) ^ n‖`. Rewrite using `[PadicComplex.norm_extends, mul_assoc, ← norm_inv, ← norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lam_le hC (mul_ne_zero (inv_ne_zero hlc) (pow_ne_zero _ l_ne_zero)) _ fun t => ?_` and prove the remaining obligations. Establish `h3` using `norm_le_of_cgA hj (hc b hbB (fun s hs hs' => hbe ⟨s, hs, hs'⟩) n φ hφ ((t : ℚ) / D))`. Rewrite `h3` using `[map_zero, sub_zero, map_mul, map_pow, map_natCast, norm_mul]`. Rewrite using `[norm_mul, norm_inv, le_inv_mul_iff₀ hp]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : L (1 ⊗ₜ[ℤ_[l]] b) = (lam (seqN D j φ) : ℂ_[l]) + -((lam (seqN D j φ) : ℂ_[l]) - L (1 ⊗ₜ[ℤ_[l]] b))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_mul_of_one_le_right hC0 hc1) (norm_nonneg _))`. Take `⟨κ, per, h1, h2⟩` from `GlobalTheory.T.line_functional_eq_period_mul_alt l (X.Fn l) (Ω ≃ₐ[ℚ] Ω) (X.B N l w) (X.galB l) (fun s => mat ρ s) L F (fun K hK τ => (exists_restrict j τ.toRingEquiv).imp fun s hs => hg K hK τ s hs) m σ hσ hσg hkill`. Conclude with `⟨L, κ, per, hL, hb, h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_period [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (A : ValuationSubring Ω) (j : Ω →+* Qbar l)
     (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1)
@@ -310,9 +310,9 @@ theorem exists_period [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (A : ValuationSubr
   exact ⟨L, κ, per, hL, hb, h1, h2⟩
 
 /- English proof (translation)
-Distinguish the cases in `hi : ∀ f : ℕ → Qbar l, (∀ s, ‖f s‖ ≤ 1) → ‖lam f‖ ≤ 1`. Conclude with `⟨1, hi, fun _ => le_rfl⟩`. Take `⟨S, hS⟩` from `h.exists_sum`. Use `⟨∑ s ∈ S, ‖lam (Pi.single s 1)‖, fun f hf => ?_, fun h => absurd h hi⟩` and prove the remaining obligations. Rewrite using `[hS f]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hf s)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp lam) : ∃ C : ℝ,
     (∀ f : ℕ → Qbar l, (∀ s, ‖f s‖ ≤ 1) → ‖lam f‖ ≤ C) ∧ ((∀ f : ℕ → Qbar l, (∀ s, ‖f s‖ ≤ 1) → ‖lam f‖ ≤ 1) → C ≤ 1) := by
@@ -326,9 +326,9 @@ theorem exists_bound {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp
     exact mul_le_of_le_one_right (norm_nonneg _) (hf s)
 
 /- English proof (translation)
-Take `⟨⟨h0, h1⟩, h2⟩` from `Betti.isDiam_sgD (d := 1) hN (Fact.out : l.Prime).ne_zero (Nat.coprime_one_left N)`. Establish `h3 : (⟨sgD N l 1, h0⟩ : CongruenceSubgroup.Gamma0 N) ∈ CongruenceSubgroup.Gamma1' N`. Rewrite using `[CongruenceSubgroup.Gamma1_mem']`. Simplify `h2` using `[en, CongruenceSubgroup.Gamma0Map]`. Establish `h4 : sgD N l 1 ∈ Gam N l` using `⟨(CongruenceSubgroup.Gamma1_mem N _).2 ((CongruenceSubgroup.Gamma1_to_Gamma0_mem _).1 h3), h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.2 _ h4`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul a x _ hx => rw [map_smul, hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_sgD_one (X : Tower Ω ε) {N w : ℕ} (hN : N ≠ 0) {b : X.Fn l} (hb : b ∈ X.B N l w) :
     X.act l (sgD N l 1 : Matrix (Fin 2) (Fin 2) ℤ) b = b := by

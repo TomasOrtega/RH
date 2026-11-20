@@ -8,7 +8,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Use `Int.eq_zero_of_abs_lt_dvd (h n.natAbs) ?_` and prove the remaining obligations. Establish `h1 : n.natAbs < 2 ^ n.natAbs` using `Nat.lt_two_pow_self`. Rewrite using `[Int.abs_eq_natAbs]`. Conclude with `h1` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_eq_zero_of_forall_two_pow_dvd (n : ℤ) (h : ∀ k : ℕ, (2 : ℤ) ^ k ∣ n) : n = 0 := by
   refine Int.eq_zero_of_abs_lt_dvd (h n.natAbs) ?_
@@ -17,9 +17,9 @@ theorem int_eq_zero_of_forall_two_pow_dvd (n : ℤ) (h : ∀ k : ℕ, (2 : ℤ) 
   exact_mod_cast h1
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact fun y => ⟨d y, by simp⟩`. Consider the case `succ k ih`. Introduce `y`. Take `⟨i, x, rfl⟩` from `ha y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `ih x`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, hd, hz, zero_add, pow_succ, mul_smul, two_smul]`. Simplify using `only [two_smul, smul_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_two_pow_smul_of_covers2 {X : Type} [AddCommGroup X] {ι : Type} {a : ι → X}
     (ha : Covers2 a) (d : X →+ X) (hd : ∀ i, d (a i) = 0) (k : ℕ) :
@@ -35,9 +35,9 @@ theorem exists_two_pow_smul_of_covers2 {X : Type} [AddCommGroup X] {ι : Type} {
     simp only [two_smul, smul_add]
 
 /- English proof (translation)
-Use extensionality with `y`. Set `b` to `Module.Free.chooseBasis ℤ X`. Use `b.repr.injective (Finsupp.ext fun j => ?_)` and prove the remaining obligations. Establish `: b.repr (d y) j = 0`. Use `int_eq_zero_of_forall_two_pow_dvd _ fun k => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `exists_two_pow_smul_of_covers2 ha d hd k y`. Conclude with `⟨b.repr z j, by rw [hz]; simp⟩`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem addHom_eq_zero_of_covers2 {X : Type} [AddCommGroup X] [Module.Finite ℤ X] [Module.Free ℤ X]
     {ι : Type} {a : ι → X} (ha : Covers2 a) (d : X →+ X) (hd : ∀ i, d (a i) = 0) : d = 0 := by
@@ -51,7 +51,7 @@ theorem addHom_eq_zero_of_covers2 {X : Type} [AddCommGroup X] [Module.Finite ℤ
   simpa using this
 
 /- English proof (translation)
-Use `addHom_eq_zero_of_covers2 ha (f - g) (fun i => by simp [h i])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem addHom_ext_of_covers2 {X : Type} [AddCommGroup X] [Module.Finite ℤ X] [Module.Free ℤ X]
     {ι : Type} {a : ι → X} (ha : Covers2 a) {f g : X →+ X} (h : ∀ i, f (a i) = g (a i)) : f = g := by
@@ -59,7 +59,7 @@ theorem addHom_ext_of_covers2 {X : Type} [AddCommGroup X] [Module.Finite ℤ X] 
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Introduce `X _ _ _ ι _ a ha F hF`. Establish `hT : (Set.pi Set.univ fun _ : ι => F).Finite` using `Set.Finite.pi fun _ => hF`. Use `Set.Finite.of_injOn (f := fun (f : X →+ X) (i : ι) => f (a i)) ?_ ?_ hT` and prove the remaining obligations. Conclude with `fun f hf i _ => hf i`. Conclude with `fun f _ g _ h => addHom_ext_of_covers2 ha fun i => congrFun h i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_addHom_of_covers2 : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] [Module.Free ℤ X] (ι : Type)
     [Finite ι] (a : ι → X), Covers2 a → ∀ F : Set X, F.Finite → {f : X →+ X | ∀ i, f (a i) ∈ F}.Finite := by

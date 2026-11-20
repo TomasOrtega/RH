@@ -74,7 +74,7 @@ def ThetaChernBoundOfLastLine (D : D7) : Prop := adm2 → Conclusion1 D → Conc
 def GGFromIrreducibility (D : D7) : Prop := adm1 D → adm3 D → Conclusion0 D → Conclusion2 D → Conclusion5 D
 
 /- English proof (translation)
-Introduce and unpack `⟨a1, a2, a3⟩`. Establish `p0` using `h0`. Establish `p1` using `h1 a1 p0`. Establish `p3` using `h3 p0`. Conclude with `⟨p0, p1, h2, p3, h4 a2 p1 h2 p3, h5 a1 a3 p0 h2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem local_statement_of_parts (D : D7) (h0 : HarishChandraFormulaStatement D) (h1 : IntegralityFromMetric D) (h2 : HodgeTateFromSandwich D) (h3 : TowerRallisLemma D) (h4 : ThetaChernBoundOfLastLine D)
     (h5 : GGFromIrreducibility D) : Stmt D := by
@@ -126,7 +126,7 @@ def LiftNormFamilyStatement : Prop := admF2 → ConclusionF1 Fm → ConclusionF2
 def DegreeBoundFamilyStatement : Prop := admF1 Fm → admF3 Fm → FamilyLowestKTypeFormula Fm → ConclusionF2 Fm → ConclusionF5 Fm
 
 /- English proof (translation)
-Introduce and unpack `⟨a1, a2, a3⟩`. Establish `p0` using `h0`. Establish `p1` using `h1 a1 p0`. Establish `p3` using `h3 p0`. Conclude with `⟨p0, p1, h2, p3, h4 a2 p1 h2 p3, h5 a1 a3 p0 h2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem family_statement_of_components (h0 : FamilyFormulaStatement Fm) (h1 : PeriodFamilyStatement Fm) (h2 : DeterminantValueFamily Fm) (h3 : FlatLineDegreeFamilyStatement Fm) (h4 : LiftNormFamilyStatement Fm)
     (h5 : DegreeBoundFamilyStatement Fm) : KudlaFamilyStatement Fm := by

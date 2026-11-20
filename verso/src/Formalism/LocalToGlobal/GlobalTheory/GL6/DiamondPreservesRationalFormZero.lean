@@ -58,14 +58,14 @@ def HeckeRationalLevelZero : Prop :=
     (∃ y, (D.fm u).emb 0 y = Dop D u 0 v ((D.fm u).emb 0 x))
 
 /- English proof (translation)
-Unfold `Nm`. Rewrite using `[LinearMap.sum_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_sum_diamond (i : ℕ) (v : (D.mem u).A.vT) (φ : Fn D u i) :
     Nm D u i v φ = ∑ a : ((D.mem u).A.Fv v)ˣ, dia D u i v a φ := by
   unfold Nm; rw [LinearMap.sum_apply]
 
 /- English proof (translation)
-Unfold `MramI`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_ramified_forms_iff {i : ℕ} (φ : Fn D u i) :
     φ ∈ MramI D u i ↔ φ ∈ (D.fm u).Fi i ∧ ∀ v, Nm D u i v φ = 0 := by
@@ -73,9 +73,9 @@ theorem mem_ramified_forms_iff {i : ℕ} (φ : Fn D u i) :
   simp only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hinj : Function.Injective (U.restrict hU)`. Introduce `a b hab`. Establish `h1 : U a = U b` using `congrArg Subtype.val hab`. Establish `h2 : c • (a : V) = c • (b : V)` using `by rw [← hDU a a.2, ← hDU b b.2, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (smul_right_injective V hc h2)`. Take `⟨y, hy⟩` from `(LinearMap.injective_iff_surjective.1 hinj) ⟨x, hx⟩`. Establish `hy' : U y = x` using `congrArg Subtype.val hy`. Rewrite using `[← hy', hDU y y.2, map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem U_D_of_D_U_on_finite_dim {V : Type*} [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V) [FiniteDimensional ℂ W]
     (U Dm : V →ₗ[ℂ] V) (c : ℂ) (hc : c ≠ 0) (hU : ∀ x ∈ W, U x ∈ W)
@@ -91,7 +91,7 @@ theorem U_D_of_D_U_on_finite_dim {V : Type*} [AddCommGroup V] [Module ℂ V] (W 
   rw [← hy', hDU y y.2, map_smul]
 
 /- English proof (translation)
-Establish `h` using `FiniteDimensional.span_of_finite ℂ (Set.finite_range (fun a => (D.fm u).emb i (((D.fm u).lat i).b a)))`. Rewrite `h` using `[((D.fm u).emb_basis i).2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem forms_finite_dimensional (i : ℕ) : FiniteDimensional ℂ ((D.fm u).Fi i) := by
   have h := FiniteDimensional.span_of_finite ℂ
@@ -99,14 +99,14 @@ theorem forms_finite_dimensional (i : ℕ) : FiniteDimensional ℂ ((D.fm u).Fi 
   rwa [((D.fm u).emb_basis i).2] at h
 
 /- English proof (translation)
-Use `forms_finite_dimensional D u i` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (inf_le_left : MramI D u i ≤ (D.fm u).Fi i)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ramified_forms_finite_dimensional (i : ℕ) : FiniteDimensional ℂ (MramI D u i) := by
   have := forms_finite_dimensional D u i
   exact Submodule.finiteDimensional_of_le (inf_le_left : MramI D u i ≤ (D.fm u).Fi i)
 
 /- English proof (translation)
-Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_le_rank_of_level (i : ℕ) : 2 ≤ D.R.N i := by
   have := D.R.m_add_three_le_k; unfold Ranks.N; omega

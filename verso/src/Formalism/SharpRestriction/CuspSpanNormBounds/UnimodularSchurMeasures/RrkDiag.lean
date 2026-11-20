@@ -8,25 +8,21 @@ open MeasureTheory Set TopologicalSpace
 open scoped ENNReal InnerProductSpace
 
 /- English proof (translation)
-Establish `hTT : ∀ f, T (T f) = T f` using `fun f => by`. Use `hT.isIdempotentElem` as an intermediate fact. Conclude with `congrArg (fun S : Lp ℂ 2 ν →L[ℂ] Lp ℂ 2 ν => S f) this`. Establish `hsym : ∀ f g : Lp ℂ 2 ν, ⟪T f, g⟫_ℂ = ⟪f, T g⟫_ℂ` using `fun f g => by`. Establish `h` using `hT.isSelfAdjoint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[ContinuousLinearMap.isSelfAdjoint_iff']`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, h]`. Use `set d : ℕ → Lp ℂ 2 ν := denseSeq (Lp ℂ 2 ν) with hd`. Establish `h1 : ∀ᵐ x ∂ν, ∀ n, ⟪κ x, d n - T (d n)⟫_ℂ = 0`. Rewrite using `[ae_all_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Establish `hz : T (d n - T (d n)) = 0` using `by rw [map_sub, hTT, sub_self]`. Establish `h0 : ((T (d n - T (d n)) : Lp ℂ 2 ν) : Y → ℂ) =ᵐ[ν] 0`. Rewrite using `[hz]`. Conclude with `Lp.coeFn_zero _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `filter_upwards [hκ (d n - T (d n)), h0] with x a1 a2`. Rewrite using `[← a1, a2]`. Both sides reduce to the same expression. Establish `h2 : ∀ᵐ x ∂ν, ∀ w, (((F w : LinearMap.range (T : Lp ℂ 2 ν →ₗ[ℂ] Lp ℂ 2 ν)) : Lp ℂ 2 ν) : Y → ℂ) x = ⟪κ x, ((F w : LinearMap.range (T : Lp ℂ 2 ν →ₗ[ℂ] Lp ℂ 2 ν)) : Lp ℂ 2 ν)⟫_ℂ`. Rewrite using `[ae_all_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Take `⟨u, hu⟩` from `(F w).2`. Establish `hfix : T ((F w : LinearMap.range (T : Lp ℂ 2 ν →ₗ[ℂ] Lp ℂ 2 ν)) : Lp ℂ 2 ν) = ((F w : LinearMap.range (T : Lp ℂ 2 ν →ₗ[ℂ] Lp ℂ 2 ν)) : Lp ℂ 2 ν)`. Rewrite using `[← hu]`. Conclude with `hTT u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hκ ((F w : LinearMap.range (T : Lp ℂ 2 ν →ₗ[ℂ] Lp ℂ 2 ν)) : Lp ℂ 2 ν)] with x a1`. Rewrite using `[← a1, hfix]`. Use `filter_upwards [h1, h2] with x a1 a2`. Establish `hall : ∀ f : Lp ℂ 2 ν, ⟪κ x, f - T f⟫_ℂ = 0`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun f : Lp ℂ 2 ν => ⟪κ x, f - T f⟫_ℂ` using `by fun_prop`. Establish `hcl : IsClosed {f : Lp ℂ 2 ν | ⟪κ x, f - T f⟫_ℂ = 0}` using `isClosed_eq hc continuous_const`. Conclude with `(denseRange_denseSeq (Lp ℂ 2 ν)).induction_on (p := fun f => ⟪κ x, f - T f⟫_ℂ = 0) f hcl a1`. Establish `hfix : T (κ x) = κ x`. Establish `e1 : ⟪κ x - T (κ x), κ x - T (κ x)⟫_ℂ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inner_sub_left, hall, hsym, map_sub, hTT, sub_self, inner_zero_right, sub_zero]`. Use `inner_self_eq_zero.1 e1` as an intermediate fact. Conclude with `(sub_eq_zero.1 this).symm`. Use `set v : LinearMap.range (T : Lp ℂ 2 ν →ₗ[ℂ] Lp ℂ 2 ν) := ⟨κ x, ⟨κ x, hfix⟩⟩ with hv`. Establish `hp` using `F.sum_sq_norm_inner_right v`.
-
-Establish `hn : ‖v‖ = ‖κ x‖` using `rfl`. Rewrite using `[← hn, ← hp]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[a2 w]`. Establish `: ⟪F w, v⟫_ℂ = ⟪((F w : LinearMap.range (T : Lp ℂ 2 ν →ₗ[ℂ] Lp ℂ 2 ν)) : Lp ℂ 2 ν), κ x⟫_ℂ` using `rfl`.
-
-Rewrite using `[this, ← norm_inner_symm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rrk_diag {Y : Type*} [MeasurableSpace Y] (ν : Measure Y) [SeparableSpace (Lp ℂ 2 ν)]
     (T : Lp ℂ 2 ν →L[ℂ] Lp ℂ 2 ν) (hT : IsStarProjection T) {N : ℕ}

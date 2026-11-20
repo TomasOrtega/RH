@@ -25,15 +25,15 @@ namespace GlobalTheory.GalOne.Rebase
 open GlobalTheory.ConjLiftUnique
 
 /- English proof (translation)
-Establish `hk : ∀ τ, ∃ k ∈ Formalism.REAL.Kset (M.ε τ), B τ = onb M τ * k` using `fun τ => by`. Take `⟨k, hk, -, k2, -⟩` from `exists_kset (M.fr_unit τ) (M.fr_gram τ) (hO τ) (hB τ)`. Use `⟨k, hk, k2.trans ?_⟩` and prove the remaining obligations. Unfold `onb`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)), Matrix.mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `choose k hk hBk using hk`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : PolF D W.rank V.rank →ₗ[ℂ] PolF D W.rank V.rank, ∀ P, pureTensorO ψ θ V W (fun _ => 1) (cart M) BV B f P = pureTensorO ψ θ V W (fun _ => 1) (cart M) BV (onb M) f (s P) := by`. Take `rfl : B = fun τ => onb M τ * k τ` from `funext hBk`. Establish `h` using `GlobalTheory.FockSubst.pureTensorO_subst D ψ θ V W S M BV f k (fun τ b a => if M.ε τ a then k τ b a else starRingEnd ℂ (k τ b a)) hω.std hθ hV hf hk fun _ _ _ => rfl`. Generalize the expression as in `MvPolynomial.aeval (R := ℂ) (S₁ := MvPolynomial (FVar D W.rank V.rank) ℂ) _ = s at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Supply the required witnesses or components.
 
-Conclude with `⟨s.toLinearMap, h⟩`. Establish `e0 : ∀ x w, pureTensorO ψ θ V W (fun _ => 1) (cart M) BV (onb M) f (io.compr₂ s x w) = pureTensorO ψ θ V W (fun _ => 1) (cart M) BV B f (io x w)` using `fun x w => (hs _).symm`. Use `⟨io.compr₂ s, ⟨fun u hu x w => by rw [e0, e0, hio.1 u hu], fun τ k hk v u hu w => by rw [e0, e0, hio.2.1 τ k hk v u hu], ?_⟩, fun x w => (e0 x w).symm⟩` and prove the remaining obligations. Establish `t1` using `GlobalTheory.GalLift.Vec.theta_pureTensorO hω.std hθ (fun _ => 1) BV (cart M) B hf`. Set `F : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] thetaSub ψ V W` to `io.compr₂ ((pureTensorO ψ θ V W (fun _ => 1) (cart M) BV B f).codRestrict _ t1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `f1 : ∀ x w, (F x w).1 = pureTensorO ψ θ V W (fun _ => 1) (cart M) BV B f (io x w)` using `fun _ _ => rfl`. Use `clear_value F`. Establish `hF : Eqv θ ω F` using `⟨fun u hu x w => by rw [f1, f1, hio.1 u hu], fun τ k hk v u hu w => by rw [f1, f1, hio.2.1 τ k hk v u hu]⟩`. Take `⟨v₀, w₀, n1, n2, e⟩` from `hio.2.2`. Take `⟨v₁, l, n3, hl, e1⟩` from `exists_move hω hθ kV kW hV h1 h2 hF hf hv hB hO Δ n1 ((f1 _ w₀).trans (congrArg _ e))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `l0 : l ≠ 0` using `fun h => by simp [h] at hl`. Use `⟨v₁, l⁻¹ • w₀, n3, by rw [norm_smul, norm_inv, hl, n2, inv_one, one_mul], hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, e0, ← f1, e1, smul_smul, inv_mul_cancel₀ l0, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rebase_gen {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D} {χV χW : (AE D)ˣ →* Circle}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {S : D.what₂.Tau → SPar} {M : DSModel W S}

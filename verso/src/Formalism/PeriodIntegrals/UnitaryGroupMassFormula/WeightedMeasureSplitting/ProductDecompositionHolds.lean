@@ -9,9 +9,9 @@ namespace PI.UnitaryGroupMassFormula.MeasWCore
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures MeasureTheory NumberField
 
 /- English proof (translation)
-Use extensionality with `B hB`. Establish `hf : Measurable (B.indicator (1 : G → ENNReal))` using `measurable_one.indicator hB`. Establish `hv : Measurable (Prod.map (Subtype.val : N → G) (Subtype.val : H → G))` using `measurable_subtype_coe.prodMap measurable_subtype_coe`. Establish `hm : Measurable (fun p : G × G => p.1 * p.2)` using `measurable_mul`. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Measure.map_prod_map μN μH measurable_subtype_coe measurable_subtype_coe]`. Use `_ = ∫⁻ x, B.indicator 1 x ∂(((amb μN).prod (amb μH)).map (fun p => p.1 * p.2)) := (lintegral_map hf hm).symm`. Use `_ = (((amb μN).prod (amb μH)).map (fun p => p.1 * p.2)) B := lintegral_indicator_one hB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem amb_eq_map_mul_of_lintegral {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [MeasurableMul₂ G] {K N H : Subgroup G} (μK : Measure K) (μN : Measure N) (μH : Measure H)
@@ -39,9 +39,9 @@ theorem amb_eq_map_mul_of_lintegral {G : Type} [Group G] [TopologicalSpace G] [M
     _ = (((amb μN).prod (amb μH)).map (fun p => p.1 * p.2)) B := lintegral_indicator_one hB
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r P T hCM hJ hStd μNf μHf hN hH`. Take `⟨⟨μS, hμS, hprod⟩, -⟩` from `level_s_all_split F E σ hCM n J hJ hJ r P T hStd ∅ ∅ ∅ (by simp [PI.LevelKSplit.Adapted]) μNf hN μHf hH`. Use `⟨μS, hμS, ?_⟩` and prove the remaining obligations. Use `hN` as an intermediate fact. Use `hH` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `amb_eq_map_mul_of_lintegral μS μNf μHf hprod`.
+A detailed English derivation is pending.
 -/
 theorem product_decomposition_holds : SProd := by
   intro F E _ _ _ _ _ σ n J r P T hCM hJ hStd μNf μHf hN hH

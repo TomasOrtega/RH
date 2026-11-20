@@ -16,9 +16,9 @@ section Lattice
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Consider the cases of `c with`. Consider the case `zero => simp [Loc.atN]`. Consider the case `succ c`. Rewrite using `[Fin.sum_univ_succ]`. Establish `h0 : ∀ i : Fin c, ¬ ((Fin.succ i).1 = 0)` using `fun i => by simp`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_zero, if_true, h0, if_false, Finset.sum_const_zero, add_zero]`. Unfold `Loc.atN`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem sum_ite_zero_eq_atN {n c : ℕ} (y : Fin (n + c) → E) :
     ∑ i : Fin c, (if i.1 = 0 then y (Fin.natAdd n i) else 0) = Loc.atN y n := by
@@ -33,13 +33,13 @@ theorem sum_ite_zero_eq_atN {n c : ℕ} (y : Fin (n + c) → E) :
     congr 1
 
 /- English proof (translation)
-Establish `hx : ∀ w : Sp E n, Loc.inX E n c w (Fin.natAdd n b) = 0` using `fun w => by`. Rewrite using `[inX_apply, dif_neg (by simp)]`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, nfGen, smul_eq_mul, hx, zero_add]`. Rewrite using `[Finset.sum_eq_single b]`. Apply the tactic sequence `have : (if b.1 = 0 then Loc.inX E n c z else 0) (Fin.natAdd n b) = 0 := by split_ifs <;> simp [hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Loc.eN, this]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i _ hib`. Establish `hne : ¬ ((Fin.natAdd n b).1 = n + i.1)`. Introduce `h`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hib` to reduce the goal to its premises. Use `ext`. Simplify using `at h`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `have : (if i.1 = 0 then Loc.inX E n c z else 0) (Fin.natAdd n b) = 0 := by split_ifs <;> simp [hx]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hne' : ¬ (b.1 = i.1)` using `fun h => hib (Fin.ext h).symm`. Simplify using `[Loc.eN, hne', this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem comb_natAdd (q : ℕ) {n c : ℕ} (e : Fin c → ℤ) (z : Sp E n) (l : Sp E n) (s : Fin c → E) (b : Fin c) :
     (Loc.inX E n c l + ∑ i, s i • nfGen q n c e z i) (Fin.natAdd n b) = (q : E) ^ e b * s b := by
@@ -61,9 +61,9 @@ theorem comb_natAdd (q : ℕ) {n c : ℕ} (e : Fin c → ℤ) (z : Sp E n) (l : 
   · simp
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, nfGen, smul_eq_mul, inX_castAdd, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hne : ¬ (a.1 = n + i.1)` using `by omega`. Use `split_ifs with hi`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Loc.eN, hne, inX_castAdd]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Loc.eN, hne]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comb_castAdd (q : ℕ) {n c : ℕ} (e : Fin c → ℤ) (z : Sp E n) (l : Sp E n) (s : Fin c → E) (a : Fin n) :
     (Loc.inX E n c l + ∑ i, s i • nfGen q n c e z i) (Fin.castAdd c a) =
@@ -79,21 +79,21 @@ theorem comb_castAdd (q : ℕ) {n c : ℕ} (e : Fin c → ℤ) (z : Sp E n) (l :
 end Lattice
 
 /- English proof (translation)
-Introduce `X Pr R j P hP h hT`. Use `(GlobalTheory.QNF.nf_iff_matNF X Pr R j P hP h).1 ?_` and prove the remaining obligations. Take `⟨n, z, hn, hz, hcrit⟩` from `hT`. Use `⟨fun i => n i.1, z, fun i => hn i.1, hz, ?_⟩` and prove the remaining obligations. Establish `hq` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hzV` using `(mem_stdAt_iff z).1 hz`. Use extensionality with `y`. Establish `hmem : y ∈ h '' (lamYat (Pr` using `Pr) (R := R) j P : Set _) ↔ h⁻¹ y ∈ lamYat (Pr := Pr) (R := R) j P := by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `using hx`. Introduce `hy`. Conclude with `⟨h⁻¹ y, hy, by simp⟩`. Rewrite using `[hmem, hcrit y]`. Prove the components needed by the constructor for the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hX, hN⟩`. Use `⟨fun a => y (Fin.castAdd _ a) - Loc.atN y (R.N j) * z a, (mem_stdAt_iff _).2 hX, fun i => ((qOf P : X.E) ^ n i.1)⁻¹ * y (Fin.natAdd _ i), hN, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Use `Fin.addCases (fun a => ?_) (fun b => ?_) p` and prove the remaining obligations. Rewrite using `[comb_castAdd]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ i : Fin (cOf R j), (if i.1 = 0 then (qOf P : X.E) ^ n i.1 * (((qOf P : X.E) ^ n i.1)⁻¹ * y (Fin.natAdd _ i)) else 0) = (if i.1 = 0 then y (Fin.natAdd _ i) else 0)` using `fun i => by`. Rewrite using `[mul_inv_cancel_left₀ (zpow_ne_zero _ hq)]`. Simplify using `only [this, sum_ite_zero_eq_atN]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[comb_natAdd, mul_inv_cancel_left₀ (zpow_ne_zero _ hq)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨l, hl, s, hs, rfl⟩`. Establish `hlV` using `(mem_stdAt_iff l).1 hl`. Establish `hb` using `comb_natAdd (qOf P) (fun i : Fin (cOf R j) => n i.1) z l s`. Establish `hat : Loc.atN (Loc.inX X.E (R.N j) (cOf R j) l + ∑ i, s i • nfGen (qOf P) (R.N j) (cOf R j) (fun i => n i.1) z i) (R.N j) = ∑ i : Fin (cOf R j), (if i.1 = 0 then (qOf P : X.E) ^ n i.1 * s i else 0)`. Rewrite using `[← sum_ite_zero_eq_atN]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hb i]`. Use `⟨fun a => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[comb_castAdd, hat, add_sub_cancel_right]`. Conclude with `hlV a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb i, inv_mul_cancel_left₀ (zpow_ne_zero _ hq)]`. Conclude with `hs i`.
+A detailed English derivation is pending.
 -/
 theorem twNF_imp_matNF : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)),
     P ∉ Pr.vGs → ∀ h : AutY X R j, TwNF (Pr := Pr) j P h → GlobalTheory.QNF.MatNF Pr R j P h := by

@@ -17,9 +17,9 @@ def WtNonneg (g : MvPowerSeries σ C) : Prop :=
 
 omit [Fintype σ] in
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem wtNonneg_one : WtNonneg v ρ (1 : MvPowerSeries σ C) := by
   intro α
@@ -31,11 +31,11 @@ theorem wtNonneg_one : WtNonneg v ρ (1 : MvPowerSeries σ C) := by
 
 omit [Fintype σ] in
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_mul]`. Apply `AddValuation.map_le_sum` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[AddValuation.map_mul]`. Establish `e : ((0 - α.sum (fun j e => ρ j * (e : ℝ)) : ℝ) : WithTop ℝ) = ((0 - p.1.sum (fun j e => ρ j * (e : ℝ)) : ℝ) : WithTop ℝ) + ((0 - p.2.sum (fun j e => ρ j * (e : ℝ)) : ℝ) : WithTop ℝ)`. Rewrite using `[← WithTop.coe_add, ← hp, Finsupp.sum_add_index' (by simp) (by intros; push_cast; ring)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `add_le_add (hf p.1) (hg p.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtNonneg_mul {f g : MvPowerSeries σ C} (hf : WtNonneg v ρ f) (hg : WtNonneg v ρ g) :
     WtNonneg v ρ (f * g) := by
@@ -56,7 +56,7 @@ theorem wtNonneg_mul {f g : MvPowerSeries σ C} (hf : WtNonneg v ρ f) (hg : WtN
 
 omit [Fintype σ] in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using wtNonneg_one v ρ`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi]`. Conclude with `wtNonneg_mul v ρ (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtNonneg_prod {ι : Type*} (s : Finset ι) (f : ι → MvPowerSeries σ C)
     (h : ∀ i ∈ s, WtNonneg v ρ (f i)) : WtNonneg v ρ (∏ i ∈ s, f i) := by
@@ -70,7 +70,7 @@ theorem wtNonneg_prod {ι : Type*} (s : Finset ι) (f : ι → MvPowerSeries σ 
 
 omit [Fintype σ] in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using wtNonneg_one v ρ`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Conclude with `wtNonneg_mul v ρ ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtNonneg_pow {f : MvPowerSeries σ C} (hf : WtNonneg v ρ f) (n : ℕ) :
     WtNonneg v ρ (f ^ n) := by
@@ -81,11 +81,11 @@ theorem wtNonneg_pow {f : MvPowerSeries σ C} (hf : WtNonneg v ρ f) (n : ℕ) :
     exact wtNonneg_mul v ρ ih hf
 
 /- English proof (translation)
-Introduce `C _ v σ τ _ _ _ ρ K t hK ht0 ht α`. Establish `hs : MvPowerSeries.HasSubst t` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ht0`. Rewrite using `[MvPowerSeries.coeff_subst hs, finsum_eq_sum _ (MvPowerSeries.coeff_subst_finite hs K α)]`. Apply `AddValuation.map_le_sum` to reduce the goal to its premises. Introduce `d _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_eq_mul, AddValuation.map_mul]`. Establish `h1 : (0 : WithTop ℝ) ≤ v (MvPowerSeries.coeff d K)` using `hK d`. Establish `h2 : WtNonneg v ρ (d.prod fun c e => t c ^ e)`. Unfold `Finsupp.prod`. Conclude with `wtNonneg_prod v ρ _ _ (fun c _ => wtNonneg_pow v ρ (ht c) _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h3` using `add_le_add h1 (h2 α)`. Rewrite `h3` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem weight_subst_nonneg :
   (∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (σ τ : Type) [Fintype σ] [DecidableEq σ] [Fintype τ] (ρ : σ → ℝ) (K : MvPowerSeries τ C) (t : τ → MvPowerSeries σ C),

@@ -13,11 +13,9 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨α₀, hα₀⟩` from `H _ P N`. Establish `e₁ : (snd T P.A).left ≫ (Out.mulA P.A N).left = (snd T P.A ^ N).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Take `⟨α, hα, -⟩` from `exists_gen P.isLB (φ' := ![(snd T P.A).left, (snd T P.A ^ N).left]) (ε' := ![(N : ℤ) ^ 2, -1]) (fun U _ f => by`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Conclude with `congrArg (fun q => f q ^ ((N : ℤ) ^ 2)) (Category.comp_id _)`. Conclude with `congrArg (fun q => f q ^ (-1 : ℤ)) e₁)`. Use the proof step `(LB.pullGen P.L ![𝟙 P.A.left, (Out.mulA P.A N).left] ![(N : ℤ) ^ 2, -1] α₀ (snd T P.A).left)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ hα₀ _)`.
-
-Conclude with `⟨α, hα⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mulPull_gen_over (H : Out.MulPullSt) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : Out.PolAV S)
     (T : Over S) (N : ℕ) :
@@ -38,11 +36,11 @@ theorem exists_mulPull_gen_over (H : Out.MulPullSt) {S : Scheme.{0}} [IsLocallyN
   exact ⟨α, hα⟩
 
 /- English proof (translation)
-Introduce `hLaw _ _ _ P u Hm χ N θ T _ p th hAH _ hth`. Establish `hL` using `P.isLB`. Take `⟨α, hα⟩` from `exists_mulPull_gen_over hLaw.mulPull P T N`. Take `⟨s1, hs1⟩` from `ThetaPtExist.exists_isTwistPull hL (Out.mulT P.A T N) (snd T P.A ^ N) (lift_snd _ _) ((N : ℤ) ^ 2) 1 α hα th`. Take `⟨c, hc0, -, hc, -⟩` from `(ThetaFn.pull_analytic_at hL hAH (ψ := Out.mulT P.A T N) (p := p) (m := snd T P.A ^ N) (lift_snd _ _) (Φ := (N : ℂ) • LinearMap.id) (fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, ThetaFn.exAt_mulT]) (a := (N : ℤ) ^ 2) (b := 1) hα).2`. Establish `h1 : ThetaFn.IsFnAt u p 1 th θ` using `fun j z hj => hth j z ((ThetaFn.exAt_mem_chart_iff u p 1 j z).1 hj)`. Establish `h2` using `ThetaFn.isFnAt_fnAt u p hL ((N : ℤ) ^ 2) s1`. Use `⟨s1, α, c, hc0, hα, hs1, fun j z hj => ?_⟩` and prove the remaining obligations. Use `(h2 j z ((ThetaFn.exAt_mem_chart_iff u p _ j z).2 hj)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc th s1 θ _ hs1 h1 h2 z]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_twistPull_mul_fn : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (N : ℕ) (θ : (Fin P.g → ℂ) → ℂ) (T : Over (Sp ℂ)) [IsIso T.hom] (p : 𝟙_ (Over (Sp ℂ)) ⟶ T) (th : LB.Sec (Out.LPow P.A P.L 1 T)), u.IsAH Hm χ → Odd N → (∀ (j : Fin 1 → P.L.ι) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U (j 0) → valAt' (lift p (u.ex z)).left ((Out.LPow P.A P.L 1 T).U j) (th.f j) = θ z * u.fr (j 0) z ^ (1 : ℤ)) → ∃ (s1 : LB.Sec (Out.LPow P.A P.L ((N : ℤ) ^ 2) T)) (α : LB.Gen (LB.LinComb P.L (K := Fin 2) ![(snd T P.A).left, (snd T P.A ^ N).left] ![(N : ℤ) ^ 2, -1])) (c : ℂ), c ≠ 0 ∧ α.IsGen ∧ Out.IsTwistPull P.A P.L (Out.mulT P.A T N) (snd T P.A ^ N) (lift_snd _ _) ((N : ℤ) ^ 2) 1 α th s1 ∧ (∀ (j : Fin 1 → P.L.ι) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U (j 0) → valAt' (lift p (u.ex z)).left ((Out.LPow P.A P.L ((N : ℤ) ^ 2) T).U j) (s1.f j) = c * θ ((N : ℂ) • z) * u.fr (j 0) z ^ (((N : ℤ) ^ 2) : ℤ)) := by
   intro hLaw _ _ _ P u Hm χ N θ T _ p th hAH _ hth

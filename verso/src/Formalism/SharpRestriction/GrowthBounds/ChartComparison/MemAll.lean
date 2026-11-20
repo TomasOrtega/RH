@@ -30,7 +30,7 @@ def stepInMem (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (hi : i �
       (X.locMid (by omega)).loc (X.locMid (by omega)).pos
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem stepInMem_top (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (hi : i ≤ D.R.m) (G : GAtP p) (X : MemStep F i h1 hi G)
     (h : i = D.R.m) : stepInMem F i h1 hi G X =
@@ -38,7 +38,7 @@ theorem stepInMem_top (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (h
   dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem stepInMem_mid (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (hi : i ≤ D.R.m) (G : GAtP p) (X : MemStep F i h1 hi G)
     (h2 : i + 1 ≤ D.R.m) : stepInMem F i h1 hi G X =
@@ -46,7 +46,7 @@ theorem stepInMem_mid (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (h
   dif_neg (by omega)
 
 /- English proof (translation)
-Distinguish the cases in `h : i = D.R.m`. Rewrite using `[stepInMem_top F i h1 hi G X h]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[stepInMem_mid F i h1 hi G X (by omega)]`. Discharge the goal by the elementary cases of `trivial`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 -/
 theorem stepInMem_ok (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (hi : i ≤ D.R.m) (G : GAtP p) (X : MemStep F i h1 hi G)
     (w : D.what₂.places.Pl) : (stepInMem F i h1 hi G X).okW w := by
@@ -57,7 +57,7 @@ theorem stepInMem_ok (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (hi
     trivial
 
 /- English proof (translation)
-Distinguish the cases in `h : i = D.R.m`. Rewrite using `[stepInMem_top F i h1 hi G X h]`. Both sides reduce to the same expression. Rewrite using `[stepInMem_mid F i h1 hi G X (by omega)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stepInMem_bad (F : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (hi : i ≤ D.R.m) (G : GAtP p) (X : MemStep F i h1 hi G) :
     (stepInMem F i h1 hi G X).bad = badG D := by

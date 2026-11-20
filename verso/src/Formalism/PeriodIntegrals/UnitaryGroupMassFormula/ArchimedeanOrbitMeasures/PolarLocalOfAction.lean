@@ -28,21 +28,19 @@ def JacOneC : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ
       PolId X u' μinf νinf a Ω₂ c → c (TI X u' hT) = (ENNReal.ofReal (KVal X u'))⁻¹
 
 /- English proof (translation)
-The claim follows from `isOpen_compl_singleton.inter isOpen_compl_singleton`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ne_zero_top : IsOpen (({0}ᶜ ∩ {⊤}ᶜ : Set ENNReal)) :=
   isOpen_compl_singleton.inter isOpen_compl_singleton
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP`. Take `⟨Ω, a, hC⟩` from `sqChart_holds X u' ψ hT μinf νinf fibInf hP`. Take `⟨Ω₁, hΩ₁, hΩ₁n, c, hcc, hc⟩` from `h2 X u' ψ hT μinf νinf fibInf hP Ω a hC`. Establish `hK0 : 0 < KVal X u'` using `hK X u' ψ hT μinf νinf fibInf hP`. Establish `hc0 : c (TI X u' hT) = (ENNReal.ofReal (KVal X u'))⁻¹` using `h4 X u' ψ hT μinf νinf fibInf hP Ω a hC Ω₁ hΩ₁ hΩ₁n c hcc hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne0 : c (TI X u' hT) ≠ 0` using `by rw [hc0]; exact ENNReal.inv_ne_zero.2 ENNReal.ofReal_ne_top`. Establish `hneT : c (TI X u' hT) ≠ ⊤` using `by rw [hc0]; exact ENNReal.inv_ne_top.2 (ENNReal.ofReal_pos.2 hK0).ne'`. Establish `hN : c ⁻¹' ({0}ᶜ ∩ {⊤}ᶜ) ∈ 𝓝 (TI X u' hT)` using `hcc (isOpen_ne_zero_top.mem_nhds ⟨Set.mem_compl_singleton_iff.2 hne0, Set.mem_compl_singleton_iff.2 hneT⟩)`. Use `⟨Ω₁ ∩ c ⁻¹' ({0}ᶜ ∩ {⊤}ᶜ), a, fun T => ((c T)⁻¹).toReal, inter_mem hΩ₁n hN, hC.2.1, hC.2.2.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ((c (TI X u' hT))⁻¹).toReal = KVal X u'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc0, inv_inv, ENNReal.toReal_ofReal hK0.le]`. Establish `ht : (c (TI X u' hT))⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 hne0`. Establish `hinv : ContinuousAt (fun T => (c T)⁻¹) (TI X u' hT)` using `ENNReal.tendsto_inv_iff.2 hcc`. Conclude with `ContinuousAt.comp (g := ENNReal.toReal) (f := fun T => (c T)⁻¹) (ENNReal.continuousAt_toReal ht) hinv`. Introduce `φ hφ S hS hSm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc φ hφ S (hS.trans Set.inter_subset_left) hSm]`. Use `setLIntegral_congr_fun hSm ?_` and prove the remaining obligations. Introduce `T hTS`. Establish `hT2` using `(hS hTS).2`. Establish `h0 : c T ≠ 0` using `Set.mem_compl_singleton_iff.1 hT2.1`.
-
-Use `show c T * _ = (ENNReal.ofReal ((c T)⁻¹).toReal)⁻¹ * _`. Rewrite using `[ENNReal.ofReal_toReal (ENNReal.inv_ne_top.2 h0), inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polar_local_of_orbit (hK : KPos) (h2 : OrbCont) (h4 : JacOneC) : PolarLoc := by
   intro D X u' ψ hT μinf νinf fibInf hP
@@ -72,29 +70,27 @@ theorem polar_local_of_orbit (hK : KPos) (h2 : OrbCont) (h4 : JacOneC) : PolarLo
     rw [ENNReal.ofReal_toReal (ENNReal.inv_ne_top.2 h0), inv_inv]
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC`. Take `⟨Ω₁, hΩ₁, hΩ₁n, hk⟩` from `h1 X u' ψ hT μinf νinf fibInf hP Ω a hC`. Take `⟨φ, hφc, hφm, hφs, hφU, hφ0, hIpos, hIfin, hIc⟩` from `h2 X u' ψ hT μinf νinf fibInf hP a hC.2.1 hC.2.2.1`. Establish `hfib` using `hP.2.2.2.2.2.2`. Establish `hΦm : Measurable fun y => ENNReal.ofReal (φ y)` using `ENNReal.measurable_ofReal.comp hφm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I : HmI X → ENNReal := fun T => ∫⁻ g, ENNReal.ofReal (φ (g • rmulT X (a T) (Y0 X u'))) ∂X.measG.μGinf with hIdef`. Use `set Nf : HmI X → ENNReal := fun T => ∫⁻ y, ENNReal.ofReal (φ y) ∂(fibInf T) with hNdef`. Establish `hI1 : I (TI X u' hT) = ∫⁻ g, ENNReal.ofReal (φ (g • Y0 X u')) ∂X.measG.μGinf`. Simplify using `only [hIdef]`. Rewrite using `[hC.2.1, rmulT_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI0 : I (TI X u' hT) ≠ 0` using `by rw [hI1]; exact hIpos.ne'`. Establish `hIT : I (TI X u' hT) ≠ ⊤` using `by rw [hI1]; exact hIfin.ne`. Establish `hIN : I ⁻¹' ({0}ᶜ ∩ {⊤}ᶜ) ∈ 𝓝 (TI X u' hT)` using `hIc (isOpen_ne_zero_top.mem_nhds ⟨Set.mem_compl_singleton_iff.2 hI0, Set.mem_compl_singleton_iff.2 hIT⟩)`. Establish `c3` using `hfib.2.2 φ hφc hφs hφU`. Establish `hNeq : Nf = fun T => ENNReal.ofReal (∫ v, φ v ∂(fibInf T))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `T`. Conclude with `(ofReal_integral_eq_lintegral_ofReal (c3.1 T (Set.mem_univ _)) (Eventually.of_forall fun y => hφ0 y)).symm`. Establish `hNc : ContinuousAt Nf (TI X u' hT)`. Rewrite using `[hNeq]`. Conclude with `(ENNReal.continuous_ofReal.comp (continuousOn_univ.1 c3.2)).continuousAt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Ω₁ ∩ I ⁻¹' ({0}ᶜ ∩ {⊤}ᶜ), Set.inter_subset_left.trans hΩ₁, inter_mem hΩ₁n hIN, fun T => Nf T / I T, ENNReal.Tendsto.div hNc (Or.inr hI0) hIc (Or.inl hIT), ?_⟩` and prove the remaining obligations. Introduce `φ' hφ' S hS hSm`. Establish `hGS` using `hG X S hSm`. Establish `c2` using `hfib.2.1 ((gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ⁻¹' (Subtype.val '' S)).indicator φ') (hφ'.indicator hGS)`. Rewrite `c2` using `[lintegral_indicator hGS, Measure.restrict_restrict hGS]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[c2]`. Establish `inner : ∀ b, ∫⁻ v, (gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ⁻¹' (Subtype.val '' S)).indicator φ' v ∂(fibInf b) = S.indicator (fun T => ∫⁻ v, φ' v ∂(fibInf T)) b`. Introduce `b`. Establish `hae : ∀ᵐ y ∂(fibInf b), y ∈ gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ⁻¹' {Subtype.val b} ∩ IndI X` using `ae_iff.2 (hfib.1 b)`. Distinguish the cases in `hb : b ∈ S`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hb]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with y hy`. Establish `hy1` using `Set.mem_singleton_iff.1 (Set.mem_preimage.1 hy.1)`. Conclude with `Set.indicator_of_mem (Set.mem_preimage.2 (show gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J y ∈ Subtype.val '' S from ⟨b, hb, hy1.symm⟩)) _`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Set.indicator_of_notMem hb]`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with y hy`. Establish `hy1` using `Set.mem_singleton_iff.1 (Set.mem_preimage.1 hy.1)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨c, hc, hcy⟩`. Establish `hcb : c = b` using `Subtype.val_injective (hcy.trans hy1)`. Conclude with `hb (hcb ▸ hc)`. Use `_ = 0 := lintegral_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[inner]`. Rewrite using `[lintegral_indicator hSm]`. Use `setLIntegral_congr_fun hSm ?_` and prove the remaining obligations. Introduce `T hTS`. Take `⟨k, hkT⟩` from `hk T (hS hTS).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hIT2` using `(hS hTS).2`. Establish `h0 : I T ≠ 0` using `Set.mem_compl_singleton_iff.1 hIT2.1`. Establish `hTop : I T ≠ ⊤` using `Set.mem_compl_singleton_iff.1 hIT2.2`. Establish `hm` using `hA X (rmulT X (a T) (Y0 X u'))`. Establish `e1 : ∀ ψ' : TupI X → ENNReal, Measurable ψ' → ∫⁻ v, ψ' v ∂(fibInf T) = k * ∫⁻ g, ψ' (g • rmulT X (a T) (Y0 X u')) ∂X.measG.μGinf`.
-
-Introduce `ψ' hψ'`. Rewrite using `[hkT, lintegral_smul_measure, lintegral_map hψ' hm, smul_eq_mul]`. Establish `hNk : Nf T = k * I T` using `e1 _ hΦm`. Use `show ∫⁻ v, φ' v ∂(fibInf T) = Nf T / I T * ∫⁻ g, φ' (g • rmulT X (a T) (Y0 X u')) ∂X.measG.μGinf`. Rewrite using `[hNk, ENNReal.mul_div_cancel_right h0 hTop, e1 φ' hφ']`.
+A detailed English derivation is pending.
 -/
 theorem orbCont_of (hG : GramMeas) (hA : ActMeas) (h1 : FibOrbAt) (h2 : PushCont) : OrbCont := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC
@@ -168,7 +164,7 @@ theorem orbCont_of (hG : GramMeas) (hA : ActMeas) (h1 : FibOrbAt) (h2 : PushCont
   rw [hNk, ENNReal.mul_div_cancel_right h0 hTop, e1 φ' hφ']
 
 /- English proof (translation)
-The claim follows from `polar_local_of_orbit hK (orbCont_of hG hA h1 h2) h4`.
+A detailed English derivation is pending.
 -/
 theorem polar_local_of_action (hK : KPos) (hG : GramMeas) (hA : ActMeas) (h1 : FibOrbAt) (h2 : PushCont) (h4 : JacOneC) :
     PolarLoc :=

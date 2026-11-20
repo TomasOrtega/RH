@@ -6,13 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `C X _ _ u hu`. Establish `hgX : closure ({genericPoint X} : Set X) = Set.univ` using `genericPoint_spec X`. Establish `hcl : closure ({u (genericPoint X)} : Set C) = Set.univ`. Apply `Set.eq_univ_of_univ_subset` to reduce the goal to its premises. Establish `h1` using `image_closure_subset_closure_image (s := ({genericPoint X} : Set X)) u.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h1` using `[Set.image_singleton, hgX, Set.image_univ, (Surjective.surj (f := u)).range_eq]`. Conclude with `h1`. Establish `hsp : u (genericPoint X) ⤳ genericPoint C`. Rewrite using `[specializes_iff_mem_closure, hcl]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(C.presheaf.stalkSpecializes hsp ≫ u.stalkMap (genericPoint X)).hom, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Introduce `W _ _ a`. Establish `hmem : u (genericPoint X) ∈ W` using `((genericPoint_spec X).mem_open_set_iff (u ⁻¹ᵁ W).isOpen).mpr (by simpa using ‹Nonempty (u ⁻¹ᵁ W)›)`. Express the relevant statement in the definitionally equal form `(u.stalkMap (genericPoint X)).hom ((C.presheaf.stalkSpecializes hsp).hom ((C.presheaf.germ W (genericPoint C) _).hom a)) = _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes_apply (hy := _) (h := hsp)]`. Conclude with `Scheme.Hom.germ_stalkMap_apply u W (genericPoint X) hmem a`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_functionField_hom_germ_of_surjective :
     ∀ {C X : Scheme.{0}} [IsIntegral C] [IsIntegral X] (u : X ⟶ C), Surjective u → ∃ φ : C.functionField →+* X.functionField, Spec.map (CommRingCat.ofHom φ) ≫ C.fromSpecStalk (genericPoint C) = X.fromSpecStalk (genericPoint X) ≫ u ∧ ∀ (W : C.Opens) [Nonempty W] [Nonempty (u ⁻¹ᵁ W)] (a : Γ(C, W)), φ (C.germToFunctionField W a) = X.germToFunctionField (u ⁻¹ᵁ W) (u.app W a) := by

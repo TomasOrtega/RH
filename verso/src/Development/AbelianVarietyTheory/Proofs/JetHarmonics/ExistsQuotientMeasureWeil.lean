@@ -12,7 +12,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.QuotWeil
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.measurable_sum _ fun k _ => Measurable.mul ?_ ?_` and prove the remaining obligations. Conclude with `(measurable_pi_apply k).comp ((measurable_pi_apply i).comp ha)`. Conclude with `(measurable_pi_apply j).comp ((measurable_pi_apply k).comp hb)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_mulM {m : ℕ} {α : Type} [MeasurableSpace α] {a b : α → PI.MtM m}
     (ha : Measurable a) (hb : Measurable b) :
@@ -24,7 +24,7 @@ theorem measurable_mulM {m : ℕ} {α : Type} [MeasurableSpace α] {a b : α →
   · exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp hb)
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Establish `hc : Continuous (fun s : PI.MtM m => (Matrix.of s : Matrix (Fin m) (Fin m) ℂ))` using `continuous_id`. Simplify using `only [Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Use `Measurable.mul (Measurable.inv hc.matrix_det.measurable) ?_` and prove the remaining obligations. Conclude with `(hc.matrix_adjugate.matrix_elem i j).measurable`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_invM {m : ℕ} :
     Measurable (fun s : PI.MtM m => (fun i j => (Matrix.of s)⁻¹ i j : PI.MtM m)) := by
@@ -35,17 +35,13 @@ theorem measurable_invM {m : ℕ} :
   exact (hc.matrix_adjugate.matrix_elem i j).measurable
 
 /- English proof (translation)
-Establish `hl : ∀ s, Measurable (mu s)` using `fun s => hmu.comp (measurable_const.prodMk measurable_id)`. Establish `hr : ∀ x, Measurable (fun s => mu s x)` using `fun x => hmu.comp (measurable_id.prodMk measurable_const)`. Establish `h1 : Measurable (fun p : X × X => f (mu p.2 p.1))` using `hf.comp (hmu.comp measurable_swap)`. Establish `h2 : Measurable (fun p : X × X => φ (mu (iv p.1) p.2) * f p.2)` using `(hφ.comp (hmu.comp ((hiv.comp measurable_fst).prodMk measurable_snd))).mul (hf.comp measurable_snd)`. Establish `hF : Measurable (fun x : X => ∫⁻ s, f (mu s x) ∂μS)` using `h1.lintegral_prod_right'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hφ hF]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, lintegral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf.comp (hr x)`. Use `_ = ∫⁻ s, ∫⁻ x, φ x * f (mu s x) ∂μG ∂μS := lintegral_lintegral_swap ((hφ.comp measurable_fst).mul h1).aemeasurable`. Use `_ = ∫⁻ s, ∫⁻ y, φ (mu (iv s) y) * f y ∂μG ∂μS := by`. Use `lintegral_congr_ae (hleft.mono fun s hs => ?_)` and prove the remaining obligations. Establish `hm : Measurable (fun y : X => φ (mu (iv s) y) * f y)` using `(hφ.comp (hl _)).mul hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Use `conv_rhs => rw [← hs.1, lintegral_map hm (hl s)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[hs.2]`. Use `_ = ∫⁻ y, ∫⁻ s, φ (mu (iv s) y) * f y ∂μS ∂μG := lintegral_lintegral_swap h2.aemeasurable`.
-
-Use `_ = ∫⁻ y, f y ∂μG := by`. Use `lintegral_congr_ae (hφ1.mono fun y hy => ?_)` and prove the remaining obligations. Establish `hm : Measurable (fun s : X => φ (mu s y))` using `hφ.comp (hr y)`. Establish `hm' : Measurable (fun s : X => φ (mu (iv s) y))` using `hm.comp hiv`. Use `hinv _ hm` as an intermediate fact.
-
-Use `beta_reduce at this ⊢`. Rewrite using `[lintegral_mul_const _ hm', this, hy, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_abstract {X : Type} [MeasurableSpace X] (mu : X → X → X) (iv : X → X)
     (hmu : Measurable (fun p : X × X => mu p.1 p.2)) (hiv : Measurable iv)
@@ -90,11 +86,11 @@ theorem unfold_abstract {X : Type} [MeasurableSpace X] (mu : X → X → X) (iv 
         rw [lintegral_mul_const _ hm', this, hy, one_mul]
 
 /- English proof (translation)
-Introduce `m G S μG μS hG hS hSG hμG hμS hR`. Take `⟨φ, hφ, hφ1⟩` from `GlobalTheory.T.exists_normalised_cutoff' m G S μS hG hS hSG hμS hR`. Establish `hinv` using `GlobalTheory.T.lintegral_inv_eq_of_biInvariant_matGroup m S μS hS hμS hR`. Use `haveI := hμG.1`. Use `haveI := hμS.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haeS : ∀ᵐ s ∂μS, Matrix.of s ∈ S` using `by rw [ae_iff]; exact hμS.2.2.1`. Establish `haeG : ∀ᵐ s ∂μG, Matrix.of s ∈ G` using `by rw [ae_iff]; exact hμG.2.2.1`. Use `⟨μG.withDensity φ, fun f hf => ?_⟩` and prove the remaining obligations. Use `unfold_abstract (fun s x : PI.MtM m => fun i j => (Matrix.of s * Matrix.of x) i j) (fun s i j => (Matrix.of s)⁻¹ i j) (measurable_mulM measurable_fst measurable_snd) measurable_invM μG μS (haeS.mono fun s hs => ⟨hμG.2.2.2 _ (hSG hs), fun x => ?_⟩) hinv φ hφ (haeG.mono fun x hx => …` and prove the remaining obligations. Establish `hs1 : (Matrix.of s)⁻¹ * Matrix.of s = 1` using `mul_eq_one_comm.1 (hS.2.2.2 _ hs).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Matrix.of s)⁻¹ * (Matrix.of s * Matrix.of x) = Matrix.of x`. Rewrite using `[← Matrix.mul_assoc, hs1, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isQuotM : ∀ (m : ℕ) (G S : Set (Matrix (Fin m) (Fin m) ℂ)) (μG μS : Measure (PI.MtM m)),
     PI.IsMatGroup G → PI.IsMatGroup S → S ⊆ G → PI.IsHaarOnM G μG → PI.IsHaarOnM S μS →

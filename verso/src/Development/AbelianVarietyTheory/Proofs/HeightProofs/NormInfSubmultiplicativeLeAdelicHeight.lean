@@ -9,11 +9,9 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 namespace GlobalTheory.SmoothForms.NormInf
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => norm_mul_le _ _)` and prove the remaining obligations. Use `_ = ∑ k, ‖A i k‖ * ∑ j, ‖B k j‖ := by`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => (Finset.mul_sum _ _ _).symm`. Use `_ ≤ _ := by`.
-
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => ∑ j, ‖B k j‖) (fun k _ => Finset.sum_nonneg fun j _ => norm_nonneg _) (Finset.mem_univ k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem entrySum_mul_le {n : Type} [Fintype n] (A B : Matrix n n ℂ) :
     ∑ i, ∑ j, ‖(A * B) i j‖ ≤ (∑ i, ∑ j, ‖A i j‖) * ∑ i, ∑ j, ‖B i j‖ := by
@@ -33,9 +31,9 @@ theorem entrySum_mul_le {n : Type} [Fintype n] (A B : Matrix n n ℂ) :
           (fun k _ => Finset.sum_nonneg fun j _ => norm_nonneg _) (Finset.mem_univ k)
 
 /- English proof (translation)
-Establish `h` using `(Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) A).le_opNorm (EuclideanSpace.single j (1 : ℂ))`. Establish `h1 : ‖(EuclideanSpace.single j (1 : ℂ) : EuclideanSpace ℂ n)‖ = 1` using `by simp`. Rewrite `h` using `[h1, mul_one]`. Use `le_trans ?_ h` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (PiLp.norm_apply_le _ i)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = (A *ᵥ Pi.single j 1) i`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem norm_entry_le_opNorm {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ) (i j : n) :
     ‖A i j‖ ≤ ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) A‖ := by
@@ -49,7 +47,7 @@ theorem norm_entry_le_opNorm {n : Type} [Fintype n] [DecidableEq n] (A : Matrix 
   simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h : c i + d i ≤ ∑ i, (c i + d i)` using `Finset.single_le_sum (f := fun i => c i + d i) (fun i _ => add_nonneg (hc i) (hd i)) (Finset.mem_univ i)`. Use `le_trans ?_ (mul_le_mul_of_nonneg_left h (add_nonneg (ha i) (hb i)))` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg (ha i) (hd i), mul_nonneg (hb i) (hc i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sum_mul_add_le {ι : Type} [Fintype ι] (a b c d : ι → ℝ) (ha : ∀ i, 0 ≤ a i) (hb : ∀ i, 0 ≤ b i)
     (hc : ∀ i, 0 ≤ c i) (hd : ∀ i, 0 ≤ d i) :
@@ -62,7 +60,7 @@ theorem sum_mul_add_le {ι : Type} [Fintype ι] (a b c d : ι → ℝ) (ha : ∀
   nlinarith [mul_nonneg (ha i) (hd i), mul_nonneg (hb i) (hc i)]
 
 /- English proof (translation)
-Establish `: HA.mat (AF D.host.F) D.sp.cm.sig V.gram (g * h) = HA.mat (AF D.host.F) D.sp.cm.sig V.gram g * HA.mat (AF D.host.F) D.sp.cm.sig V.gram h` using `rfl`. Simplify using `only [infMat, this, Units.val_mul]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem infMat_mul' {D : D7} (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) (g h : GA D V) :
     infMat D.sp.cm.sig V.gram θ (g * h) = infMat D.sp.cm.sig V.gram θ g * infMat D.sp.cm.sig V.gram θ h := by
@@ -72,7 +70,7 @@ theorem infMat_mul' {D : D7} (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
   rw [Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height`. Use `le_trans ?_ (le_mul_of_one_le_right' (one_le_finprod' fun _ => le_max_left _ _))` and prove the remaining obligations. Conclude with `Finset.single_le_prod' (f := fun τ => GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infHt θ V τ g) (fun _ _ => le_max_left _ _) (Finset.mem_univ τ)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem infHt_le_height {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (τ : D.what₂.Tau) (g : GA D V) : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infHt θ V τ g ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g := by
@@ -88,13 +86,13 @@ namespace GlobalTheory.SmoothForms
 open NormInf in
 
 /- English proof (translation)
-Introduce `D θ V`. Use `⟨fun g h => ?_, ⟨∑ _τ : D.what₂.Tau, ∑ _i : Fin V.rank, ∑ _j : Fin V.rank, (2 : ℝ), fun g => ?_⟩⟩` and prove the remaining obligations. Unfold `normInf`. Simplify using `only [Finset.sum_add_distrib (s := (Finset.univ : Finset (Fin V.rank)))]`. Establish `hn : ∀ (x : GA D V) τ, 0 ≤ ∑ i, ∑ j, ‖infMat D.sp.cm.sig V.gram (θ τ) x i j‖` using `fun x τ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `le_trans ?_ (sum_mul_add_le _ _ _ _ (hn g) (hn g⁻¹) (hn h) (hn h⁻¹))` and prove the remaining obligations. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, infMat_mul', infMat_mul']`. Conclude with `add_le_add (entrySum_mul_le _ _) (entrySum_mul_le _ _)`. Unfold `normInf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_mul]`. Use `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `h0` using `infHt_le_height θ V τ g`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infNorm θ V τ g ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g` using `((le_max_left _ _).trans (le_max_right _ _)).trans h0`. Establish `h2 : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infNorm θ V τ g⁻¹ ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g` using `((le_max_right _ _).trans (le_max_right _ _)).trans h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(norm_entry_le_opNorm (infMat D.sp.cm.sig V.gram (θ τ) g) i j).trans (NNReal.coe_le_coe.2 h1)`. Establish `h4` using `(norm_entry_le_opNorm (infMat D.sp.cm.sig V.gram (θ τ) g⁻¹) i j).trans (NNReal.coe_le_coe.2 h2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem normInf_mul_le_and_le_height :
     ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D),

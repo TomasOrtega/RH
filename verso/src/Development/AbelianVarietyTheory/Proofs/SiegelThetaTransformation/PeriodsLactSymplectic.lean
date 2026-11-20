@@ -20,7 +20,7 @@ noncomputable def spOf (γ : GL (Fin r) E) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_mulVec_inv_mulVec (γ : GL (Fin r) E) (v : Fin r → E) :
     (γ : Matrix (Fin r) (Fin r) E) *ᵥ ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v = v := by
@@ -29,17 +29,17 @@ theorem gl_mulVec_inv_mulVec (γ : GL (Fin r) E) (v : Fin r → E) :
 variable {X bas}
 
 /- English proof (translation)
-Establish `hent : ∀ a b, ∑ c, ∑ d, (γ : Matrix (Fin r) (Fin r) E) c a * X.Gm c d * cc ((γ : Matrix (Fin r) (Fin r) E) d b) = X.Gm a b`. Introduce `a b`. Establish `h` using `hγ (Pi.single a 1) (Pi.single b 1)`. Simplify `h` using `[herm, Matrix.mulVec, dotProduct, Pi.single_apply, cc]`. Establish `key : ∀ τ : X.Ψ, ((γ : Matrix (Fin r) (Fin r) E).map τ.1)ᵀ * X.Gm.map τ.1 * ((γ : Matrix (Fin r) (Fin r) E).map τ.1).map (starRingEnd ℂ) = X.Gm.map τ.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `τ`. Use extensionality with `a b`. Establish `h` using `congrArg τ.1 (hent a b)`. Simplify using `only [map_sum, map_mul, cc, NumberField.IsCMField.complexEmbedding_complexConj] at h`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `h`. Establish `hgram : ∀ (τ : X.Ψ) (m : Matrix (Fin r) (Fin r) ℂ), gram τ.1 X.Gm m = mᵀ * X.Gm.map τ.1 * m.map (starRingEnd ℂ)`. Introduce `τ m`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [FD.gram, FD.hermC, FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hmat : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat (lact γ x) τ) = gram τ.1 X.Gm (mat x τ)`. Introduce `τ`. Establish `hm : mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, hgram, hgram, Matrix.transpose_mul, Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `τ`. Take `⟨hdet, hpos⟩` from `hx τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`. Rewrite using `[hm, Matrix.det_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `mul_ne_zero ((map_ne_zero τ.1).mpr (Matrix.isUnits_det_units γ).ne_zero) hdet`. Simplify `hpos i` using `only [dmin, hmat τ]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsUn.lact_mem {γ : GL (Fin r) E} (hγ : IsUn X γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact γ x ∈ X.dom := by
@@ -87,15 +87,15 @@ theorem IsUn.lact_mem {γ : GL (Fin r) E} (hγ : IsUn X γ) {x : Frame X.Ψ r} (
   · simpa only [dmin, hmat τ] using hpos i
 
 /- English proof (translation)
-Establish `hinv : ∀ u v : Fin r → E, EF X (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ u) (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) = EF X u v`. Introduce `u v`. Establish `h` using `hγ (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ u) (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v)`. Rewrite `h` using `[gl_mulVec_inv_mulVec, gl_mulVec_inv_mulVec]`. Rewrite using `[EF_def, EF_def, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hrow : ∀ p p' : Fin g ⊕ Fin g, ∑ i, (spOf X bas γ p (Sum.inr i) * spOf X bas γ p' (Sum.inl i) - spOf X bas γ p (Sum.inl i) * spOf X bas γ p' (Sum.inr i)) = ((omegaStd (Pi.single p.swap 1 : Fin g ⊕ Fin g → ℤ) (Pi.single p'.swap 1) : ℤ) : ℚ)`. Introduce `p p'`. Establish `h` using `hinv (bas (Pi.single p.swap 1)) (bas (Pi.single p'.swap 1))`. Rewrite `h` using `[EF_crd hs, hs]`. Simplify using `only [spOf, Matrix.of_apply, Sum.swap_inl, Sum.swap_inr]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[SymplecticGroup.mem_iff]`. Use extensionality with `p p'`. Establish `hJl : ∀ j, (spOf X bas γ * Matrix.J (Fin g) ℚ) p (Sum.inl j) = spOf X bas γ p (Sum.inr j)`. Introduce `j`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.J, Matrix.one_apply]`. Establish `hJr : ∀ j, (spOf X bas γ * Matrix.J (Fin g) ℚ) p (Sum.inr j) = -spOf X bas γ p (Sum.inl j)`. Introduce `j`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.J, Matrix.one_apply]`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hJl, hJr, Matrix.transpose_apply, neg_mul, Finset.sum_neg_distrib, ← sub_eq_add_neg, ← Finset.sum_sub_distrib]`. Rewrite using `[hrow]`. Apply the tactic sequence `rcases p with i | i <;> rcases p' with j | j <;>`. Simplify using `[omegaStd, Pi.single_apply, Matrix.J, Matrix.one_apply, eq_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem spOf_mem (hs : IsSympl X bas) {γ : GL (Fin r) E} (hγ : IsUn X γ) :
     spOf X bas γ ∈ Matrix.symplecticGroup (Fin g) ℚ := by
@@ -133,11 +133,11 @@ theorem spOf_mem (hs : IsSympl X bas) {γ : GL (Fin r) E} (hγ : IsUn X γ) :
     simp [omegaStd, Pi.single_apply, Matrix.J, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Establish `hsym` using `tauMat_isSymm (idx := idx) hs hx`. Use extensionality with `i k`. Establish `hcol : (fun l => perMat X bas idx s (lact γ x) l k) = per X x (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((bas (Pi.single (s k) 1) : X.Λ) : Fin r → E)) ∘ idx`. Use function extensionality and compare the values at `l`. Rewrite using `[perMat_apply, Function.comp_apply, ← per_lact x hγ (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((bas (Pi.single (s k) 1) : X.Λ) : Fin r → E)), gl_mulVec_inv_mulVec]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hlhs : (hMat X bas idx x * perMat X bas idx s (lact γ x)) i k = (hMat X bas idx x *ᵥ fun l => perMat X bas idx s (lact γ x) l k) i`. Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[hlhs, hcol, hMat_mulVec_per_crd (idx := idx) hs hx]`. Simplify using `only [spOf, qm, qv, Matrix.of_apply, Matrix.transpose_apply, Matrix.add_apply, Pi.add_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, Sum.swap_swap, Sum.swap_inl, Sum.swap_inr]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hsym.apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hMat_mul_perMat_lact (hs : IsSympl X bas) {γ : GL (Fin r) E} (hγ : IsUn X γ)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) (s : Fin g → Fin g ⊕ Fin g) :
@@ -167,13 +167,13 @@ theorem hMat_mul_perMat_lact (hs : IsSympl X bas) {γ : GL (Fin r) E} (hγ : IsU
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs _ γ hγ`. Use `⟨spOf X bas γ, spOf_mem hs hγ, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx'` using `IsUn.lact_mem hγ hx`. Establish `hD : hMat X bas idx x * perMat X bas idx Sum.inl (lact γ x) = (spDen (spOf X bas γ) (tauMat X bas idx x))ᵀ` using `hMat_mul_perMat_lact (idx := idx) hs hγ hx Sum.inl`. Establish `hN : hMat X bas idx x * perMat X bas idx Sum.inr (lact γ x) = (qm (spOf X bas γ).toBlocks₁₁ * tauMat X bas idx x + qm (spOf X bas γ).toBlocks₁₂)ᵀ` using `hMat_mul_perMat_lact (idx := idx) hs hγ hx Sum.inr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `isUnit_det_hMat (idx := idx) hs hx`. Establish `hP` using `isUnit_det_perMat (idx := idx) hs hx'`. Establish `hPeq : perMat X bas idx Sum.inl (lact γ x) = (hMat X bas idx x)⁻¹ * (spDen (spOf X bas γ) (tauMat X bas idx x))ᵀ`. Rewrite using `[← hD, Matrix.nonsing_inv_mul_cancel_left _ _ hH]`. Establish `hh : hMat X bas idx (lact γ x) = ((spDen (spOf X bas γ) (tauMat X bas idx x))⁻¹)ᵀ * hMat X bas idx x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(perMat X bas idx Sum.inl (lact γ x))⁻¹ = _`. Rewrite using `[hPeq, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hH, Matrix.transpose_nonsing_inv]`. Use `⟨hx', ⟨tauMat_isSymm (idx := idx) hs hx, tauMat_im_posDef (idx := idx) hs hx⟩, ?_, hh⟩` and prove the remaining obligations. Establish `ht : tauMat X bas idx (lact γ x) = (spAct (spOf X bas γ) (tauMat X bas idx x))ᵀ`. Express the relevant statement in the definitionally equal form `hMat X bas idx (lact γ x) * perMat X bas idx Sum.inr (lact γ x) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hh, Matrix.mul_assoc, hN, spAct, Matrix.transpose_mul]`. Establish `hsym` using `tauMat_isSymm (idx := idx) hs hx'`. Rewrite using `[← hsym, ht, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem periods_lact_symplectic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ γ : GL (Fin r) E, IsUn X γ → ∃ σ ∈ Matrix.symplecticGroup (Fin g) ℚ, ∀ x ∈ X.dom, lact γ x ∈ X.dom ∧ tauMat X bas idx x ∈ Siegel (Fin g) ∧ tauMat X bas idx (lact γ x) = spAct σ (tauMat X bas idx x) ∧ hMat X bas idx (lact γ x) = ((spDen σ (tauMat X bas idx x))⁻¹)ᵀ * hMat X bas idx x := by
   intro E _ _ _ r X g bas idx n hs _ γ hγ

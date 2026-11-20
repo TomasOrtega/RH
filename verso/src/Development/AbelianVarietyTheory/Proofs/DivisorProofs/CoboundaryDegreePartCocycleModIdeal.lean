@@ -15,32 +15,32 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog
 
 namespace GlobalTheory.CobRel
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mvPowerSeries_subst_coeff_sub_mem_ideal`.
+A detailed English derivation is pending.
 -/
 theorem coeff_subst_sub_mem : ∀ {B Q σ τ : Type} [CommRing B] [CommRing Q] [Algebra B Q] [Fintype σ] (N : Ideal B) (u ℓ : σ → MvPowerSeries τ B), (∀ s, constantCoeff (u s) = 0) → (∀ s (β : τ →₀ ℕ), β.degree ≤ 1 → coeff β (u s) = coeff β (ℓ s)) → ∀ (m : ℕ) (c : MvPowerSeries σ Q), (∀ α : σ →₀ ℕ, α.degree < m → ∃ b ∈ N, coeff α c = algebraMap B Q b) → ∀ (w : τ →₀ ℕ), w.degree = m → ∃ r ∈ N, coeff w (subst (up Q u) c) - coeff w (subst (up Q ℓ) c) = algebraMap B Q r := GlobalTheory.T.mvPowerSeries_subst_coeff_sub_mem_ideal
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.coeff_formalGroupLawEvalPoints_of_degree_le_one`.
+A detailed English derivation is pending.
 -/
 theorem coeff_op_of_degree_le_one : ∀ {B O : Type} [CommRing B] [CommRing O] (θ : B →+* O) {d : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}, IsLift θ μ → ∀ {τ : Type} (u v : Fin d → MvPowerSeries τ B), (∀ j, constantCoeff (u j) = 0) → (∀ j, constantCoeff (v j) = 0) → ∀ (i : Fin d) (β : τ →₀ ℕ), β.degree ≤ 1 → coeff β (op μ u v i) = coeff β (u i + v i) := GlobalTheory.T.coeff_formalGroupLawEvalPoints_of_degree_le_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.coeff_prod_pow_first_add_second_threeGroups`.
+A detailed English derivation is pending.
 -/
 theorem coeff_prod_addLeft : ∀ {R : Type} [CommRing R] {d : ℕ} (α : Fin d ⊕ Fin d →₀ ℕ) (a b e : Fin d →₀ ℕ), coeff (Finsupp.sumElim a (Finsupp.sumElim b e)) (α.prod fun s k => (Sum.elim (fun i => (x1 i + x2 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R)) x3 s) ^ k) = if α = Finsupp.sumElim (a + b) e then (∏ i, ((a + b) i).choose (a i) : R) else 0 := GlobalTheory.T.coeff_prod_pow_first_add_second_threeGroups
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.coeff_prod_pow_x1_x2_add_x3`.
+A detailed English derivation is pending.
 -/
 theorem coeff_prod_addRight : ∀ {R : Type} [CommRing R] {d : ℕ} (α : Fin d ⊕ Fin d →₀ ℕ) (a b e : Fin d →₀ ℕ), coeff (Finsupp.sumElim a (Finsupp.sumElim b e)) (α.prod fun s k => (Sum.elim x1 (fun i => (x2 i + x3 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R)) s) ^ k) = if α = Finsupp.sumElim a (b + e) then (∏ i, ((b + e) i).choose (b i) : R) else 0 := GlobalTheory.T.coeff_prod_pow_x1_x2_add_x3
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.coeff_powerSeriesEvalTwoGroups_second_third_eq_zero`.
+A detailed English derivation is pending.
 -/
 theorem coeff_evalTwoGroups_second_third_eq_zero : ∀ {R : Type} [CommRing R] {d : ℕ} (c : MvPowerSeries (Fin d ⊕ Fin d) R) (a b e : Fin d →₀ ℕ), a ≠ 0 → coeff (Finsupp.sumElim a (Finsupp.sumElim b e)) (at2 c x2 x3) = 0 := GlobalTheory.T.coeff_powerSeriesEvalTwoGroups_second_third_eq_zero
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.coeff_evalTwoGroups_threeGroups_eq_zero_of_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem coeff_evalTwoGroups_first_second_eq_zero : ∀ {R : Type} [CommRing R] {d : ℕ} (c : MvPowerSeries (Fin d ⊕ Fin d) R) (a b e : Fin d →₀ ℕ), e ≠ 0 → coeff (Finsupp.sumElim a (Finsupp.sumElim b e)) (at2 c x1 x2) = 0 := GlobalTheory.T.coeff_evalTwoGroups_threeGroups_eq_zero_of_ne_zero
 
@@ -49,14 +49,14 @@ end GlobalTheory.CobRel
 namespace GlobalTheory.CobRel
 
 /- English proof (translation)
-Simplify using `[Finsupp.degree_eq_sum, Fintype.sum_sum_type, add_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem degree_sumElim3 {d : ℕ} (a b e : Fin d →₀ ℕ) :
     (Finsupp.sumElim a (Finsupp.sumElim b e)).degree = a.degree + b.degree + e.degree := by
   simp [Finsupp.degree_eq_sum, Fintype.sum_sum_type, add_assoc]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp [hu, hv]`.
+A detailed English derivation is pending.
 -/
 theorem x_hasSubst {R : Type} [CommRing R] {d : ℕ} (u v : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R)
     (hu : ∀ j, constantCoeff (u j) = 0) (hv : ∀ j, constantCoeff (v j) = 0) :
@@ -68,45 +68,43 @@ end GlobalTheory.CobRel
 namespace GlobalTheory.CobRel
 
 /- English proof (translation)
-Introduce `B O Q _ _ _ _ θ d μ hμ N m c hc hcob n hn a b ha _ hab hab'`. Use `set e := n - (a + b) with he_def`. Establish `he : e ≠ 0` using `fun h => hab' (le_antisymm hab (tsub_eq_zero_iff_le.1 h))`. Establish `hbe : b + e = n - a`. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `hab i` as an intermediate fact. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.coe_tsub, Pi.sub_apply, he_def] at this ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hn' : a + b + e = n`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `hab i` as an intermediate fact. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.coe_tsub, Pi.sub_apply, he_def] at this ⊢`. Use linear arithmetic over natural numbers and integers. Use `set w : Fin d ⊕ (Fin d ⊕ Fin d) →₀ ℕ := Finsupp.sumElim a (Finsupp.sumElim b e) with hw_def`. Establish `hw : w.degree = m`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hn, ← hn', hw_def, degree_sumElim3, map_add, map_add]`. Establish `hX : ∀ (R : Type) [CommRing R] (j : Fin d), constantCoeff (x1 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) = 0 ∧ constantCoeff (x2 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) = 0 ∧ constantCoeff (x3 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) = 0` using `fun R _ j => by`. Simplify using `[x1, x2, x3]`. Apply the tactic sequence `have hop : ∀ (R : Type) [CommRing R] (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R), (∀ i, constantCoeff (ν i) = 0) → ∀ (u v : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (∀ j, constantCoeff (u j) = 0) → (∀ j, constantCoeff (v j) = 0) → ∀ i, constantCoeff (op ν u v i) = 0 …`. Establish `hmapop : ∀ (u v : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) B), (∀ j, constantCoeff (u j) = 0) → (∀ j, constantCoeff (v j) = 0) → ∀ i, map (algebraMap B Q) (op μ u v i) = op (up Q μ) (fun j => map (algebraMap B Q) (u j)) (fun j => map (algebraMap B Q) (v j)) i` using `fun u v hu hv i => by`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [op, at2, up]`. Rewrite using `[map_subst (x_hasSubst u v hu hv)]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmX : ∀ j, (map (algebraMap B Q) (x1 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) B) = x1 j) ∧ (map (algebraMap B Q) (x2 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) B) = x2 j) ∧ (map (algebraMap B Q) (x3 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) B) = x3 j)` using `fun j => by`. Simplify using `[x1, x2, x3, map_X]`. Establish `hc2 : ∀ s, constantCoeff (Sum.elim (op μ x1 x2) x3 s) = 0`. Introduce `s`. Consider the cases of `s with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `inl i => exact hop B μ hμ.const _ _ (fun j => (hX B j).1) (fun j => (hX B j).2.1) i`. Consider the case `inr i => exact (hX B i).2.2`. Establish `hd2 : ∀ s (β : Fin d ⊕ (Fin d ⊕ Fin d) →₀ ℕ), β.degree ≤ 1 → coeff β (Sum.elim (op μ x1 x2) x3 s) = coeff β (Sum.elim (fun i => x1 i + x2 i) x3 s)`. Introduce `s β hβ`. Consider the cases of `s with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `inl i => exact coeff_op_of_degree_le_one θ hμ _ _ (fun j => (hX B j).1) (fun j => (hX B j).2.1) i β hβ`. Consider the case `inr i => rfl`. Take `⟨r2, hr2, h2⟩` from `coeff_subst_sub_mem N _ _ hc2 hd2 m c hc w hw`. Establish `hu2 : up Q (Sum.elim (op μ x1 x2) x3) = Sum.elim (op (up Q μ) x1 x2) x3`. Use function extensionality and compare the values at `s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `s with`. Consider the case `inl i`. Simplify using `only [up, Sum.elim_inl]`. Rewrite using `[hmapop _ _ (fun j => (hX B j).1) (fun j => (hX B j).2.1)]`. Simplify using `only [(hmX _).1, (hmX _).2.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `inr i => simp only [up, Sum.elim_inr]`. Conclude with `(hmX i).2.2`. Establish `hl2 : up Q (Sum.elim (fun i => (x1 i + x2 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) B)) x3) = Sum.elim (fun i => x1 i + x2 i) x3`. Use function extensionality and compare the values at `s`. Consider the cases of `s with`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `inl i => simp only [up, Sum.elim_inl, map_add, (hmX i).1, (hmX i).2.1]`. Consider the case `inr i => simp only [up, Sum.elim_inr]`. Conclude with `(hmX i).2.2`. Rewrite `h2` using `[hu2, hl2]`. Establish `hv2 : coeff w (subst (Sum.elim (fun i => (x1 i + x2 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) Q)) x3) c) = (∏ i, ((a + b) i).choose (a i) : Q) * coeff (Finsupp.sumElim (a + b) e) c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_subst (x_hasSubst _ _ (fun j => by simp [(hX Q j).1, (hX Q j).2.1]) (fun j => (hX Q j).2.2)), finsum_eq_single _ (Finsupp.sumElim (a + b) e)]`. Rewrite using `[hw_def, coeff_prod_addLeft, if_pos rfl, smul_eq_mul, mul_comm]`. Introduce `α hα`. Rewrite using `[hw_def, coeff_prod_addLeft, if_neg hα, smul_zero]`. Establish `hc3 : ∀ s, constantCoeff (Sum.elim x1 (op μ x2 x3) s) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Introduce `s`. Consider the cases of `s with`. Consider the case `inl i => exact (hX B i).1`. Consider the case `inr i => exact hop B μ hμ.const _ _ (fun j => (hX B j).2.1) (fun j => (hX B j).2.2) i`. Establish `hd3 : ∀ s (β : Fin d ⊕ (Fin d ⊕ Fin d) →₀ ℕ), β.degree ≤ 1 → coeff β (Sum.elim x1 (op μ x2 x3) s) = coeff β (Sum.elim x1 (fun i => x2 i + x3 i) s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Introduce `s β hβ`. Consider the cases of `s with`. Consider the case `inl i => rfl`. Consider the case `inr i => exact coeff_op_of_degree_le_one θ hμ _ _ (fun j => (hX B j).2.1) (fun j => (hX B j).2.2) i β hβ`. Take `⟨r3, hr3, h3⟩` from `coeff_subst_sub_mem N _ _ hc3 hd3 m c hc w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hu3 : up Q (Sum.elim x1 (op μ x2 x3)) = Sum.elim x1 (op (up Q μ) x2 x3)`. Use function extensionality and compare the values at `s`. Consider the cases of `s with`. Consider the case `inl i => simp only [up, Sum.elim_inl]`. Conclude with `(hmX i).1`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `inr i`. Simplify using `only [up, Sum.elim_inr]`. Rewrite using `[hmapop _ _ (fun j => (hX B j).2.1) (fun j => (hX B j).2.2)]`. Simplify using `only [(hmX _).2.1, (hmX _).2.2]`. Establish `hl3 : up Q (Sum.elim x1 (fun i => (x2 i + x3 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) B))) = Sum.elim x1 (fun i => x2 i + x3 i)`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Consider the cases of `s with`. Consider the case `inl i => simp only [up, Sum.elim_inl]`. Conclude with `(hmX i).1`. Consider the case `inr i => simp only [up, Sum.elim_inr, map_add, (hmX i).2.1, (hmX i).2.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[hu3, hl3]`. Establish `hv3 : coeff w (subst (Sum.elim x1 (fun i => (x2 i + x3 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) Q))) c) = (∏ i, ((b + e) i).choose (b i) : Q) * coeff (Finsupp.sumElim a (b + e)) c`. Rewrite using `[coeff_subst (x_hasSubst _ _ (fun j => (hX Q j).1) (fun j => by simp [(hX Q j).2.1, (hX Q j).2.2])), finsum_eq_single _ (Finsupp.sumElim a (b + e))]`. Rewrite using `[hw_def, coeff_prod_addRight, if_pos rfl, smul_eq_mul, mul_comm]`. Introduce `α hα`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hw_def, coeff_prod_addRight, if_neg hα, smul_zero]`. Take `⟨k, hk, hk'⟩` from `hcob w`. Establish `hsplit : coeff w (cob2 (up Q μ) c) = coeff w (at2 c x2 x3) - coeff w (subst (Sum.elim (op (up Q μ) x1 x2) x3) c) + coeff w (subst (Sum.elim x1 (op (up Q μ) x2 x3)) c) - coeff w (at2 c x1 x2)`. Simplify using `only [cob2, map_sub, map_add]`. Both sides reduce to the same expression.
-
-Rewrite `hk'` using `[hsplit, hw_def, coeff_evalTwoGroups_second_third_eq_zero c a b e ha, coeff_evalTwoGroups_first_second_eq_zero c a b e he, ← hw_def]`. Rewrite `hv3` using `[hbe]`. Use `⟨-k - r2 + r3, N.add_mem (N.sub_mem (N.neg_mem hk) hr2) hr3, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_sub, map_neg, ← hk', ← h2, ← h3, hv2, hv3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cocycle_rel_mod : ∀ (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O) (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLift θ μ → ∀ (N : Ideal B) (m : ℕ) (c : MvPowerSeries (Fin d ⊕ Fin d) Q), (∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < m → ∃ b ∈ N, coeff α c = algebraMap B Q b) → In N (cob2 (up Q μ) c) → ∀ n : Fin d →₀ ℕ, n.degree = m → ∀ a b : Fin d →₀ ℕ, a ≠ 0 → b ≠ 0 → a + b ≤ n → a + b ≠ n → ∃ r ∈ N, (∏ i, Nat.choose ((a + b) i) (a i) : Q) * coeff (Finsupp.sumElim (a + b) (n - (a + b))) c - (∏ i, Nat.choose ((n - a) i) (b i) : Q) * coeff (Finsupp.sumElim a (n - a)) c = algebraMap B Q r := by
   intro B O Q _ _ _ _ θ d μ hμ N m c hc hcob n hn a b ha _ hab hab'

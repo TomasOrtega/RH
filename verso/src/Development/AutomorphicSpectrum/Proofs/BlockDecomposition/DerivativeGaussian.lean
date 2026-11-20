@@ -24,20 +24,20 @@ def toEuc : (M23 × (Fin 2 → ℂ)) →ₗ[ℝ] EuclideanSpace ℝ RIdx :=
     LinearMap.pi fun i => Real.sqrt 2 • (rc i.2 ∘ₗ cz i.1)
 
 /- English proof (translation)
-Simplify using `[toEuc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toEuc_apply (p : M23 × (Fin 2 → ℂ)) (i : RIdx) :
     toEuc p i = Real.sqrt 2 * rc i.2 (cz i.1 p) := by
   simp [toEuc]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`. Establish `hs : Real.sqrt 2 ≠ 0` using `by positivity`. Establish `key : ∀ i : CIdx, cz i p = 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `toEuc_apply p (i, false)`. Establish `h1` using `toEuc_apply p (i, true)`. Rewrite `h0`, `h1` using `[hp]`. Simplify using `only [PiLp.zero_apply] at h0 h1`. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(mul_eq_zero.1 h0.symm).resolve_left hs` as an intermediate fact. Simplify `this` using `[rc]`. Use `(mul_eq_zero.1 h1.symm).resolve_left hs` as an intermediate fact. Simplify `this` using `[rc]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `r c`. Simplify `key (.inl (r, c))` using `[cz]`. Use function extensionality and compare the values at `a`. Simplify `key (.inr a)` using `[cz]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toEuc_injective : Function.Injective toEuc := by
   rw [injective_iff_map_eq_zero]
@@ -61,7 +61,7 @@ theorem toEuc_injective : Function.Injective toEuc := by
     simpa [cz] using key (.inr a)
 
 /- English proof (translation)
-Simplify using `[Module.finrank_prod, Module.finrank_pi_fintype, Complex.finrank_real_complex]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finrank_eq :
     Module.finrank ℝ (M23 × (Fin 2 → ℂ)) = Module.finrank ℝ (EuclideanSpace ℝ RIdx) := by
@@ -76,9 +76,9 @@ Both sides reduce to the same expression.
 theorem euc_apply (p : M23 × (Fin 2 → ℂ)) : euc p = toEuc p := rfl
 
 /- English proof (translation)
-Establish `hs : Real.sqrt 2 ^ 2 = 2` using `Real.sq_sqrt (by norm_num)`. Establish `hz : ∀ z : ℂ, ‖z‖ ^ 2 = z.re ^ 2 + z.im ^ 2` using `fun z => by`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[euc_apply, EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, Fintype.sum_sum_type, Fintype.sum_prod_type]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [toEuc_apply, Fintype.sum_bool, Real.norm_eq_abs, sq_abs, mul_pow, hs, rc, cz, hz, mul_add, Finset.mul_sum]`. Simplify using `[Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem euc_norm_sq (p : M23 × (Fin 2 → ℂ)) :
     ‖euc p‖ ^ 2 = 2 * (∑ r, ∑ c, ‖p.1 r c‖ ^ 2 + ∑ a, ‖p.2 a‖ ^ 2) := by
@@ -97,7 +97,7 @@ def gaussK : Sw :=
     (GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ RIdx))
 
 /- English proof (translation)
-Rewrite using `[gaussK, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply, euc_norm_sq, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaussK_apply (p : M23 × (Fin 2 → ℂ)) :
     gaussK p = Complex.exp (-(2 * Real.pi : ℂ) *
@@ -113,7 +113,7 @@ def polyK (k : ℕ) (p : M23 × (Fin 2 → ℂ)) : ℂ :=
     (crqc 0 p * crdc 0 0 p + crqc 1 p * crdc 1 0 p) ^ (4 * k - 4)
 
 /- English proof (translation)
-Establish `h1 : (fun p => crd 0 0 p * crd 1 1 p - crd 0 1 p * crd 1 0 p).HasTemperateGrowth` using `((crd_temperate 0 0).mul (crd_temperate 1 1)).sub ((crd_temperate 0 1).mul (crd_temperate 1 0))`. Establish `h2 : (fun p => crqc 0 p * crdc 0 0 p + crqc 1 p * crdc 1 0 p).HasTemperateGrowth` using `((crqc_temperate 0).mul (crdc_temperate 0 0)).add ((crqc_temperate 1).mul (crdc_temperate 1 0))`. Conclude with `(h1.pow _).mul (h2.pow _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polyK_temperate (k : ℕ) : (polyK k).HasTemperateGrowth := by
   have h1 : (fun p => crd 0 0 p * crd 1 1 p - crd 0 1 p * crd 1 0 p).HasTemperateGrowth :=
@@ -123,7 +123,7 @@ theorem polyK_temperate (k : ℕ) : (polyK k).HasTemperateGrowth := by
   exact (h1.pow _).mul (h2.pow _)
 
 /- English proof (translation)
-Introduce `k` and use `⟨SchwartzMap.smulLeftCLM ℂ (polyK k) gaussK, fun p => by rw [SchwartzMap.smulLeftCLM_apply_apply (polyK_temperate k), gaussK_apply, smul_eq_mul] simp [polyK, gauK, crd, crdc, crqc, map_add, map_mul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem dGauK : DGau := fun k =>
   ⟨SchwartzMap.smulLeftCLM ℂ (polyK k) gaussK, fun p => by

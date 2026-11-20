@@ -11,7 +11,7 @@ namespace NormalFamily
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
 
 /- English proof (translation)
-Establish `e : S (LinearMap.adjoint S v) = LinearMap.adjoint S (S v)` using `LinearMap.congr_fun h.eq v`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), LinearMap.adjoint_inner_right, e, hv, map_zero, inner_zero_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint_apply_eq_zero {S : Module.End ℂ E} (h : Commute S (LinearMap.adjoint S)) {v : E}
     (hv : S v = 0) : LinearMap.adjoint S v = 0 := by
@@ -19,9 +19,9 @@ theorem adjoint_apply_eq_zero {S : Module.End ℂ E} (h : Commute S (LinearMap.a
   rw [← inner_self_eq_zero (𝕜 := ℂ), LinearMap.adjoint_inner_right, e, hv, map_zero, inner_zero_left]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing v with`. Consider the case `zero`. Establish `: v = 0` using `by simpa using hv`. Rewrite using `[this, map_zero]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite `hv` using `[pow_succ, Module.End.mul_apply]`. Establish `h1` using `adjoint_apply_eq_zero h (ih hv)`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), ← LinearMap.adjoint_inner_left, h1, inner_zero_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_eq_zero_of_pow {S : Module.End ℂ E} (h : Commute S (LinearMap.adjoint S)) (k : ℕ) {v : E}
     (hv : (S ^ k) v = 0) : S v = 0 := by
@@ -35,7 +35,7 @@ theorem apply_eq_zero_of_pow {S : Module.End ℂ E} (h : Commute S (LinearMap.ad
     rw [← inner_self_eq_zero (𝕜 := ℂ), ← LinearMap.adjoint_inner_left, h1, inner_zero_left]
 
 /- English proof (translation)
-Rewrite using `[map_sub, LinearEquiv.map_smulₛₗ]`. Use `congr 2`. Conclude with `star_one (Module.End ℂ E)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem adjoint_sub_smul (T : Module.End ℂ E) (a : ℂ) :
     LinearMap.adjoint (T - a • (1 : Module.End ℂ E)) =
@@ -45,7 +45,7 @@ theorem adjoint_sub_smul (T : Module.End ℂ E) (a : ℂ) :
   exact star_one (Module.End ℂ E)
 
 /- English proof (translation)
-Rewrite using `[adjoint_sub_smul]`. Conclude with `(h.sub_right ((Commute.one_right T).smul_right _)).sub_left ((Commute.one_left _).smul_left a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_sub_smul {T : Module.End ℂ E} (h : Commute T (LinearMap.adjoint T)) (a : ℂ) :
     Commute (T - a • (1 : Module.End ℂ E)) (LinearMap.adjoint (T - a • (1 : Module.End ℂ E))) := by
@@ -53,9 +53,9 @@ theorem commute_sub_smul {T : Module.End ℂ E} (h : Commute T (LinearMap.adjoin
   exact (h.sub_right ((Commute.one_right T).smul_right _)).sub_left ((Commute.one_left _).smul_left a)
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[Module.End.mem_maxGenEigenspace, Module.End.mem_eigenspace_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Use `apply_eq_zero_of_pow (commute_sub_smul h a) k hk` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify `this` using `[sub_eq_zero]`. Introduce `hv`. Conclude with `⟨1, by simp [hv]⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem maxGenEigenspace_eq {T : Module.End ℂ E} (h : Commute T (LinearMap.adjoint T)) (a : ℂ) :
     T.maxGenEigenspace a = T.eigenspace a := by
@@ -69,9 +69,9 @@ theorem maxGenEigenspace_eq {T : Module.End ℂ E} (h : Commute T (LinearMap.adj
     exact ⟨1, by simp [hv]⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.isOrtho_iff_inner_eq]`. Introduce `v hv w hw`. Rewrite `hv`, `hw` using `[Module.End.mem_eigenspace_iff]`. Establish `h0 : (T - a • (1 : Module.End ℂ E)) v = 0` using `by simp [hv]`. Establish `h1` using `adjoint_apply_eq_zero (commute_sub_smul h a) h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : inner ℂ v ((T - a • (1 : Module.End ℂ E)) w) = 0`. Rewrite using `[← LinearMap.adjoint_inner_left, h1, inner_zero_left]`. Establish `h3 : (T - a • (1 : Module.End ℂ E)) w = (b - a) • w` using `by simp [hw, sub_smul]`. Rewrite `h2` using `[h3, inner_smul_right, mul_eq_zero]`. Conclude with `h2.resolve_left (sub_ne_zero.2 hab.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenspace_isOrtho {T : Module.End ℂ E} (h : Commute T (LinearMap.adjoint T)) {a b : ℂ}
     (hab : a ≠ b) : T.eigenspace a ⟂ T.eigenspace b := by
@@ -89,11 +89,9 @@ theorem eigenspace_isOrtho {T : Module.End ℂ E} (h : Commute T (LinearMap.adjo
 end NormalFamily
 
 /- English proof (translation)
-Introduce `E I _ _ _ op hc hadj`. Establish `hn : ∀ i, Commute (op i) (LinearMap.adjoint (op i))` using `fun i => by`. Take `⟨i', hi'⟩` from `hadj i`. Rewrite using `[← hi']`. Conclude with `hc i i'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ x, eigAt op x = ⨅ i, (op i).eigenspace (x i)` using `fun x => iInf_congr fun i => NormalFamily.maxGenEigenspace_eq (hn i) (x i)`. Use `⟨h1, iSup_eigAt_eq_top hc fun i => Module.End.iSup_maxGenEigenspace_eq_top (op i), ?_⟩` and prove the remaining obligations. Introduce `x x' hx`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Rewrite using `[h1, h1]`.
-
-Conclude with `(NormalFamily.eigenspace_isOrtho (hn i) hi).mono (iInf_le _ i) (iInf_le _ i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalFamily_orthogonal_decomposition :
     ∀ {E I : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] (op : I → Module.End ℂ E), PairComm op → (∀ i, ∃ i', op i' = LinearMap.adjoint (op i)) → (∀ x, eigAt op x = ⨅ i, (op i).eigenspace (x i)) ∧ (⨆ x, eigAt op x) = ⊤ ∧ ∀ x x', x ≠ x' → eigAt op x ⟂ eigAt op x' := by

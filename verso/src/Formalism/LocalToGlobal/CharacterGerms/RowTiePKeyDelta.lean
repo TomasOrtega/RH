@@ -13,9 +13,9 @@ section Val
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Unfold `VF.MM at h`. Unfold `VF.Ge`. Consider the cases of `hva : V.v a with`. Consider the case `top => exact ⟨1, one_pos, le_top⟩`. Consider the case `coe x`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite `h` using `[hva]`. Conclude with `⟨x, by exact_mod_cast h, le_rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mm_exists {a : C} (h : V.MM a) : ∃ r : ℝ, 0 < r ∧ V.Ge r a := by
   unfold VF.MM at h
@@ -27,7 +27,7 @@ theorem mm_exists {a : C} (h : V.MM a) : ∃ r : ℝ, 0 < r ∧ V.Ge r a := by
     exact ⟨x, by exact_mod_cast h, le_rfl⟩
 
 /- English proof (translation)
-Unfold `VF.MM`. Unfold `VF.Ge at h`. Conclude with `lt_of_lt_of_le (by exact_mod_cast hr) h`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mm_of_ge {a : C} {r : ℝ} (hr : 0 < r) (h : V.Ge r a) : V.MM a := by
   unfold VF.MM
@@ -35,14 +35,14 @@ theorem mm_of_ge {a : C} {r : ℝ} (hr : 0 < r) (h : V.Ge r a) : V.MM a := by
   exact lt_of_lt_of_le (by exact_mod_cast hr) h
 
 /- English proof (translation)
-Unfold `VF.MM at ha hb ⊢`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add _ a b)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mm_add {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) := by
   unfold VF.MM at ha hb ⊢
   exact lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add _ a b)
 
 /- English proof (translation)
-Unfold `VF.MM at ha ⊢`. Rewrite using `[AddValuation.map_neg]`. Conclude with `ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_neg {a : C} (ha : V.MM a) : V.MM (-a) := by
   unfold VF.MM at ha ⊢
@@ -50,7 +50,7 @@ theorem mm_neg {a : C} (ha : V.MM a) : V.MM (-a) := by
   exact ha
 
 /- English proof (translation)
-Unfold `VF.MM at hx`. Establish `h1 : V.v (1 : C) = 0` using `AddValuation.map_one _`. Establish `e : x = (x - 1) + 1` using `by ring`. Rewrite using `[e, AddValuation.map_add_of_distinct_val _ (by rw [h1]; exact ne_of_gt hx), h1]`. Conclude with `min_eq_right hx.le`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_unit {x : C} (hx : V.MM (x - 1)) : V.v x = 0 := by
   unfold VF.MM at hx
@@ -60,9 +60,9 @@ theorem v_unit {x : C} (hx : V.MM (x - 1)) : V.v x = 0 := by
   exact min_eq_right hx.le
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, AddValuation.map_zero]`. Conclude with `le_top`. Consider the case `@insert a S ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (le_min (h a (Finset.mem_insert_self a S)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))) ?_` and prove the remaining obligations. Conclude with `AddValuation.map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 private lemma le_v_finset_sum_of_forall_le {ι : Type} (S : Finset ι) (f : ι → C) (c : WithTop ℝ)
     (h : ∀ i ∈ S, c ≤ V.v (f i)) : c ≤ V.v (∑ i ∈ S, f i) := by
@@ -76,9 +76,9 @@ private lemma le_v_finset_sum_of_forall_le {ι : Type} (S : Finset ι) (f : ι �
     exact AddValuation.map_add _ _ _
 
 /- English proof (translation)
-Rewrite using `[← geom_sum₂_mul, AddValuation.map_mul]`. Establish `h0 : (0 : WithTop ℝ) ≤ V.v (∑ j ∈ Finset.range i, s ^ j * t ^ (i - 1 - j))`. Apply `le_v_finset_sum_of_forall_le` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, AddValuation.map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_nonneg (nsmul_nonneg hs _) (nsmul_nonneg ht _)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma le_v_pow_sub_pow_of_le_v_sub {s t : C} (hs : (0 : WithTop ℝ) ≤ V.v s) (ht : (0 : WithTop ℝ) ≤ V.v t)
     {c : WithTop ℝ} (h : c ≤ V.v (s - t)) (i : ℕ) : c ≤ V.v (s ^ i - t ^ i) := by
@@ -92,21 +92,19 @@ private lemma le_v_pow_sub_pow_of_le_v_sub {s t : C} (hs : (0 : WithTop ℝ) ≤
     _ ≤ _ := add_le_add h0 h
 
 /- English proof (translation)
-Unfold `VF.Ge at hs ht h ⊢`. Establish `hs0 : (0 : WithTop ℝ) ≤ V.v s` using `by simpa using hs`. Establish `ht0 : (0 : WithTop ℝ) ≤ V.v t` using `by simpa using ht`. Establish `e : ∑ i ∈ Finset.range V.l, t ^ i * t ^ (V.l - 1 - i) = (V.l : C) * t ^ (V.l - 1)`. Establish `hc : ∀ i ∈ Finset.range V.l, t ^ i * t ^ (V.l - 1 - i) = t ^ (V.l - 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Rewrite using `[← pow_add]`. Use `congr 1`. Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.sum_congr rfl hc, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `key : ∑ i ∈ Finset.range V.l, s ^ i * t ^ (V.l - 1 - i) = (V.l : C) * t ^ (V.l - 1) + ∑ i ∈ Finset.range V.l, (s ^ i - t ^ i) * t ^ (V.l - 1 - i)`. Rewrite using `[← e, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hd : V.v (s ^ V.l - t ^ V.l) = V.v (s - t) + V.v (∑ i ∈ Finset.range V.l, s ^ i * t ^ (V.l - 1 - i))`. Rewrite using `[← geom_sum₂_mul, AddValuation.map_mul]`. Conclude with `add_comm _ _`. Establish `hA : (1 : WithTop ℝ) ≤ V.v ((V.l : C) * t ^ (V.l - 1))`. Rewrite using `[AddValuation.map_mul, V.4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AddValuation.map_pow]`. Conclude with `nsmul_nonneg ht0 _)`. Establish `hB : (r : WithTop ℝ) ≤ V.v (∑ i ∈ Finset.range V.l, (s ^ i - t ^ i) * t ^ (V.l - 1 - i))`. Apply `le_v_finset_sum_of_forall_le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Rewrite using `[AddValuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AddValuation.map_pow]`. Conclude with `nsmul_nonneg ht0 _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : ((min 1 r : ℝ) : WithTop ℝ) ≤ V.v (∑ i ∈ Finset.range V.l, s ^ i * t ^ (V.l - 1 - i))`. Rewrite using `[key]`. Use `le_trans ?_ (AddValuation.map_add _ _ _)` and prove the remaining obligations. Rewrite using `[WithTop.coe_min, WithTop.coe_one]`. Conclude with `min_le_min hA hB`.
-
-Rewrite using `[hd, WithTop.coe_add]`. Conclude with `add_le_add h hG`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_l_close {s t : C} (hs : V.Ge 0 s) (ht : V.Ge 0 t) {r : ℝ} (hr : 0 ≤ r) (h : V.Ge r (s - t)) :
     V.Ge (r + min 1 r) (s ^ V.l - t ^ V.l) := by
@@ -153,7 +151,7 @@ theorem pow_l_close {s t : C} (hs : V.Ge 0 s) (ht : V.Ge 0 t) {r : ℝ} (hr : 0 
   exact add_le_add h hG
 
 /- English proof (translation)
-Unfold `VF.Ge at hs ⊢`. Rewrite using `[AddValuation.map_pow]`. Establish `h0 : (0 : WithTop ℝ) ≤ V.v s` using `by simpa using hs`. Simplify using `using nsmul_nonneg h0 n`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma ge_zero_pow_of_ge_zero {s : C} (hs : V.Ge 0 s) (n : ℕ) : V.Ge 0 (s ^ n) := by
   unfold VF.Ge at hs ⊢
@@ -162,11 +160,11 @@ private lemma ge_zero_pow_of_ge_zero {s : C} (hs : V.Ge 0 s) (n : ℕ) : V.Ge 0 
   simpa using nsmul_nonneg h0 n
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact absurd hk (lt_irrefl 0)`. Consider the case `succ k ih`. Break down `Nat.eq_zero_or_pos k with rfl | hk'` into its components or cases. Rewrite using `[zero_add, pow_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_l_close hs ht hr h`. Establish `h1` using `ih hk'`. Establish `hR : 0 ≤ r + min 1 r` using `add_nonneg hr (le_min zero_le_one hr)`. Establish `h2` using `pow_l_close (ge_zero_pow_of_ge_zero hs _) (ge_zero_pow_of_ge_zero ht _) hR h1`. Rewrite using `[pow_succ, pow_mul, pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `VF.Ge at h2 ⊢`. Use `le_trans ?_ h2` and prove the remaining obligations. Conclude with `le_add_of_nonneg_right (le_min zero_le_one hR)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pow_lk_close {s t : C} (hs : V.Ge 0 s) (ht : V.Ge 0 t) {r : ℝ} (hr : 0 ≤ r) (h : V.Ge r (s - t))
     (k : ℕ) (hk : 0 < k) : V.Ge (r + min 1 r) (s ^ V.l ^ k - t ^ V.l ^ k) := by
@@ -189,7 +187,7 @@ end Val
 section Main
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `only [pow_zero, pow_one]`. Conclude with `h`. Take `⟨r, hr, hge⟩` from `mm_exists h`. Conclude with `mm_of_ge (add_pos_of_pos_of_nonneg hr (le_min zero_le_one hr.le)) (pow_lk_close hs ht hr.le hge k hk)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma mm_pow_l_pow_sub_of_mm_sub {C : Type} [Field C] {V : VF C} {s t : C} (hs : V.Ge 0 s) (ht : V.Ge 0 t)
     (h : V.MM (s - t)) (k : ℕ) : V.MM (s ^ V.l ^ k - t ^ V.l ^ k) := by
@@ -201,11 +199,11 @@ private lemma mm_pow_l_pow_sub_of_mm_sub {C : Type} [Field C] {V : VF C} {s t : 
       (pow_lk_close hs ht hr.le hge k hk)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [Nat.cast_zero, add_zero, pow_zero, pow_one, sub_self]`. Unfold `VF.MM`. Rewrite using `[AddValuation.map_zero]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Establish `h1` using `K.6 (a + k) y`. Establish `h2` using `mm_pow_l_pow_sub_of_mm_sub (K.5 (a + k) y) (ge_zero_pow_of_ge_zero (K.5 a y) _) ih 1`. Simplify using `only [pow_one] at h2`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `mm_add h1 h2`. Rewrite `h3` using `[sub_add_sub_cancel]`. Rewrite using `[Nat.cast_succ, ← add_assoc, pow_succ, pow_mul]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mm_em_add_sub_em_pow_l_pow {C : Type} [Field C] {V : VF C} {O : Type} [CommRing O] {n d : ℕ} [NeZero d]
     (K : KeyData C V O n d) (a : ZMod d) (y : O) (k : ℕ) :
@@ -226,47 +224,45 @@ private lemma mm_em_add_sub_em_pow_l_pow {C : Type} [Field C] {V : VF C} {O : Ty
     exact h3
 
 /- English proof (translation)
-Introduce `C _ _ V O _ n d _ K χ c hχ hcong`. Establish `hunit : V.v (χ K.7) = 0`. Apply `v_unit` to reduce the goal to its premises. Establish `h` using `mm_add (hcong K.7) (K.9 c)`. Rewrite `h` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hunit' : V.v ((K.em c) K.7) = 0` using `v_unit (K.9 c)`. Establish `hrad : ∀ x : O, (∀ a, V.MM ((K.em a) x)) → ∀ r : ℝ, (∀ w, V.Ge r (χ w - (K.em c) w)) → V.Ge (r + 1) (χ x - (K.em c) x)`. Introduce `x hx r hr`. Take `⟨w, hw⟩` from `K.10 x hx`. Establish `hχw : χ K.7 * χ x = (V.l : C) * χ w` using `by rw [← map_mul, hw, map_mul, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hew : (K.em c) K.7 * (K.em c) x = (V.l : C) * (K.em c) w`. Rewrite using `[← map_mul, hw, map_mul, map_natCast]`. Establish `hid : χ K.7 * (χ x - (K.em c) x) = (V.l : C) * (χ w - (K.em c) w) + -((χ K.7 - (K.em c) K.7) * (K.em c) x)`. Take the linear combination `hχw - hew`. Establish `hex : (1 : WithTop ℝ) ≤ V.v ((K.em c) x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `congrArg V.v hew`. Rewrite `h` using `[AddValuation.map_mul, AddValuation.map_mul, hunit', zero_add, V.4]`. Rewrite using `[h]`. Establish `h0` using `K.5 c w`. Unfold `VF.Ge at h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hv : V.v (χ x - (K.em c) x) = V.v (χ K.7 * (χ x - (K.em c) x))`. Rewrite using `[AddValuation.map_mul, hunit, zero_add]`. Unfold `VF.Ge`. Rewrite using `[hv, hid]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (le_min ?_ ?_) (AddValuation.map_add _ _ _)` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul, V.4, WithTop.coe_add, WithTop.coe_one, add_comm (1 : WithTop ℝ)]`. Conclude with `add_le_add (show (r : WithTop ℝ) ≤ _ from hr w) le_rfl`. Rewrite using `[AddValuation.map_neg, AddValuation.map_mul, WithTop.coe_add, WithTop.coe_one]`. Conclude with `add_le_add (show (r : WithTop ℝ) ≤ _ from hr K.7) hex`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hradY : ∀ y : O, ∀ a, V.MM ((K.em a) (y ^ V.l ^ d - y))`. Introduce `y a`. Establish `h` using `mm_em_add_sub_em_pow_l_pow K a y d`. Rewrite `h` using `[ZMod.natCast_self, add_zero]`. Rewrite using `[map_sub, map_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h'` using `mm_neg h`. Rewrite `h'` using `[neg_sub]`. Then use the resulting hypothesis. Establish `step : ∀ r : ℝ, (∀ w, V.Ge r (χ w - (K.em c) w)) → ∀ y, V.Ge (r + 1) (χ y - (K.em c) y)`. Introduce `r hr y`. Establish `hx` using `hrad _ (hradY y) r hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ ρ : ℝ, 0 < ρ → V.Ge ρ (χ y - (K.em c) y) → V.Ge (ρ + min 1 ρ) (χ (y ^ V.l ^ d) - (K.em c) (y ^ V.l ^ d))`. Introduce `ρ hρ hge`. Rewrite using `[map_pow, map_pow]`. Conclude with `pow_lk_close (hχ y) (K.5 c y) hρ.le hge d (Nat.pos_of_ne_zero (NeZero.ne d))`. Establish `hdec : χ y - (K.em c) y = (χ (y ^ V.l ^ d) - (K.em c) (y ^ V.l ^ d)) + -(χ (y ^ V.l ^ d - y) - (K.em c) (y ^ V.l ^ d - y))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree. Unfold `VF.Ge`. Consider the cases of `hv : V.v (χ y - (K.em c) y) with`. Consider the case `top => exact le_top`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `coe ρ`. Establish `hρ : 0 < ρ`. Establish `h` using `hcong y`. Unfold `VF.MM at h`. Rewrite `h` using `[hv]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h` after adjusting the coercions. Establish `hge : V.Ge ρ (χ y - (K.em c) y)`. Unfold `VF.Ge`. Rewrite using `[hv]`. Establish `h1` using `hpow ρ hρ hge`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `VF.Ge at h1 hx`. Establish `h2 : min ((ρ + min 1 ρ : ℝ) : WithTop ℝ) ((r + 1 : ℝ) : WithTop ℝ) ≤ (ρ : WithTop ℝ)`. Rewrite using `[← hv, hdec]`. Use `le_trans (min_le_min h1 ?_) (AddValuation.map_add _ _ _)` and prove the remaining obligations. Rewrite using `[AddValuation.map_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx`. Rewrite `h2` using `[← WithTop.coe_min, WithTop.coe_le_coe]`. Rewrite using `[WithTop.coe_le_coe]`. Break down `le_total (r + 1) (ρ + min 1 ρ) with hle | hle` into its components or cases. Rewrite `h2` using `[min_eq_right hle]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2`. Rewrite `h2` using `[min_eq_left hle]`. Establish `: 0 < min 1 ρ` using `lt_min one_pos hρ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `all : ∀ N : ℕ, ∀ y, V.Ge N (χ y - (K.em c) y)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `y`. Rewrite using `[Nat.cast_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hχ y`. Establish `h1` using `K.5 c y`. Unfold `VF.Ge at h0 h1 ⊢`. Rewrite using `[sub_eq_add_neg]`. Use `le_trans (le_min h0 ?_) (AddValuation.map_add _ _ _)` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[AddValuation.map_neg]`. Conclude with `h1`. Consider the case `succ N ih`. Introduce `y`. Rewrite using `[Nat.cast_succ]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `step N ih y`. Introduce `y`. Establish `htop : V.v (χ y - (K.em c) y) = ⊤`. Consider the cases of `hv : V.v (χ y - (K.em c) y) with`. Consider the case `top => rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `coe ρ`. It suffices to derive a contradiction. Take `⟨N, hN⟩` from `exists_nat_gt ρ`. Establish `h` using `all N y`. Unfold `VF.Ge at h`.
-
-Rewrite `h` using `[hv, WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `htop` using `[AddValuation.top_iff]`. Conclude with `sub_eq_zero.mp htop`.
+A detailed English derivation is pending.
 -/
 theorem keyDelta_holds : KeyDeltaSt := by
   intro C _ _ V O _ n d _ K χ c hχ hcong

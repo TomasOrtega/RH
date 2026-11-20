@@ -3,9 +3,7 @@ open PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.G UpperTheory.Conv
 
 open NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Establish `hs' : (s : Matrix (Fin n) (Fin n) R) * (γ : Matrix (Fin n) (Fin n) F).map f = (γ : Matrix (Fin n) (Fin n) F).map f * (s : Matrix (Fin n) (Fin n) R)`. Rewrite using `[← hD]`. Conclude with `congrArg Units.val hs`. Establish `ht' : (t : Matrix (Fin n) (Fin n) R) * (γ : Matrix (Fin n) (Fin n) F).map f = (γ : Matrix (Fin n) (Fin n) F).map f * (t : Matrix (Fin n) (Fin n) R)`. Rewrite using `[← hD]`.
-
-Conclude with `congrArg Units.val ht`. Conclude with `Units.ext (hC F R f n _ hγ _ _ hs' ht')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cent_comm_of {F R : Type} [Field F] [CharZero F] [CommRing R] (hC : CentComm) (f : F →+* R) {n : ℕ}
     (γ : GL (Fin n) F) (hγ : (γ : Matrix (Fin n) (Fin n) F).charpoly.Separable) (D : GL (Fin n) R)
@@ -23,13 +21,13 @@ private theorem cent_comm_of {F R : Type} [Field F] [CharZero F] [CommRing R] (h
 
 open NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Introduce `hC F _ _ n γ hγ`. Establish `hsep : (γ : Matrix (Fin n) (Fin n) F).charpoly.Separable` using `hγ`. Establish `hA : ∀ s t : GA F n, s * AdelicGLn.diagonal F n γ = AdelicGLn.diagonal F n γ * s → t * AdelicGLn.diagonal F n γ = AdelicGLn.diagonal F n γ * t → s * t = t * s`. Use `cent_comm_of hC (algebraMap F _) γ hsep _ ?_` and prove the remaining obligations. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Use `⟨fun s t => ?_, fun s t => ?_, fun v s t => ?_, fun γ₁ h₁ s t => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (hA _ _ (Subgroup.mem_centralizer_singleton_iff.1 s.2) (Subgroup.mem_centralizer_singleton_iff.1 t.2))`. Use `Subtype.ext (cent_comm_of hC (algebraMap F (InfiniteAdeleRing F)) γ hsep _ ?_ _ _ (Subgroup.mem_centralizer_singleton_iff.1 s.2) (Subgroup.mem_centralizer_singleton_iff.1 t.2))` and prove the remaining obligations. Use extensionality with `a b`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `Subtype.ext (cent_comm_of hC (algebraMap F (v.adicCompletion F)) γ hsep _ ?_ _ _ (Subgroup.mem_centralizer_singleton_iff.1 s.2) (Subgroup.mem_centralizer_singleton_iff.1 t.2))` and prove the remaining obligations. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `key : ∀ u : Subgroup.centralizer {γ₁}, u.1.1 * AdelicGLn.diagonal F n γ = AdelicGLn.diagonal F n γ * u.1.1`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[← h₁]`. Conclude with `congrArg Subtype.val (Subgroup.mem_centralizer_singleton_iff.1 u.2)`. Conclude with `Subtype.ext (Subtype.ext (hA _ _ (key s) (key t)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.torusCommutative_of_centralizerCommutative :
     CentComm → TComm := by

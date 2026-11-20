@@ -17,9 +17,9 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 namespace Step
 
 /- English proof (translation)
-Establish `hD'` using `hD.ne'`. Establish `hP'` using `hP.ne'`. Establish `ha'` using `ha.ne'`. Establish `hmm'` using `hmm.ne'`. Establish `hvv'` using `hvv.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq'` using `hsq.ne'`. Establish `hX : (P / (mm * a)) ^ f / (vv * D) ≠ 0` using `by positivity`. Rewrite `h` using `[zero_add]`. Rewrite using `[eq_div_of_mul_eq hX h, div_pow, mul_pow, div_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem final_algebra (μ c lam D P a mm vv sq lV : ℝ) (f : ℕ) (hD : 0 < D) (hP : 0 < P)
     (ha : 0 < a) (hmm : 0 < mm) (hvv : 0 < vv) (hsq : 0 < sq)
@@ -40,11 +40,11 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `hd' : ∀ x, h x x = 0 → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `hd x hne φ` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[hx] at this`. Establish `hne` using `LocF.discrIdeal_ne_bot hd' hL hLi`. Unfold `normD`. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Establish `: Ideal.absNorm (discrIdeal h L) ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.mpr hne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem normD_pos {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) : 0 < normD h L := by
@@ -61,9 +61,9 @@ theorem normD_pos {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : IsTotPosDef h) {L : S
   exact_mod_cast Nat.pos_of_ne_zero this
 
 /- English proof (translation)
-Rewrite using `[RankOne.mass_eq_sum h L s hsr, Finset.sum_mul]`. Repeatedly rewrite using `[Finset.sum_div]`. Use `tendsto_finsetSum _ fun M hM => ?_` and prove the remaining obligations. Establish `hg` using `hsr.1 M hM`. Take `⟨hMi, -, hMD⟩` from `integral_of_mem_genus hK hF hs hd hL hLi hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht` using `(tendsto_ballCount hK hF hs hd hg.1 hMi).const_mul ((Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℝ)⁻¹)`. Rewrite `ht` using `[hMD]`. Use `ht.congr fun j => ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv (ballCount h M ((j : ℝ) ^ 2) : ℝ), div_eq_mul_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tendsto_left (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -87,9 +87,9 @@ theorem tendsto_left (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
   ring
 
 /- English proof (translation)
-Establish `hf : 0 < Formalism.HermitianLatticesTheory.fDeg K` using `Fintype.card_pos`. Establish `hexp : 2 * Formalism.HermitianLatticesTheory.fDeg K * finrank K V ≠ 0` using `by positivity`. Establish `h1 : Tendsto (fun j : ℕ => Formalism.HermitianLatticesTheory.mass h L / (j : ℝ) ^ (2 * Formalism.HermitianLatticesTheory.fDeg K * finrank K V)) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop ((tendsto_pow_atTop hexp).comp tendsto_natCast_atTop_atTop)`. Establish `h2` using `(tendsto_singS_sum hK hF hs hd hL hLi hm).const_mul (c * lamG F h L * (normD h L)⁻¹)`. Use `(h1.add h2).congr fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_div]`. Use `congr 1`. Rewrite using `[finsum_mem_congr rfl fun n hn => repMass_eq hH hLI hK hF hs hd hL hLi hm hc hn, finsum_mem_eq_finite_toFinset_sum _ (A5.boxSet_finite hK hF ((j : ℝ) ^ 2)), finsum_mem_eq_finite_toFinset_sum _ (A5.boxSet_finite hK hF ((j : ℝ) ^ 2)), ← Finset.mul_sum, zpow_neg, zpow_natCast, ← pow …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tendsto_right (hH : HermRepUnram) (hLI : LIStat) (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h)
@@ -119,15 +119,15 @@ theorem tendsto_right (hH : HermRepUnram) (hLI : LIStat) (hK : Formalism.Hermiti
 end Step
 
 /- English proof (translation)
-Unfold `MassConst`. Introduce `V _ _ _ _ _ h L hs hd hfin hL hLi`. Substitute `hfin` using the available equality. Take `⟨s, hsr⟩` from `StabilizerLattices.exists_classReps hs hd hL`. Establish `hlim` using `Step.tendsto_left hK hF hs hd hL hLi hsr`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlim2` using `Step.tendsto_right hH hLI hK hF hs hd hL hLi hm hc`. Establish `hfun : (fun j : ℕ => (∑ M ∈ s, (ballCount h M ((j : ℝ) ^ 2) : ℝ) / (Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℝ)) / (j : ℝ) ^ (2 * Formalism.HermitianLatticesTheory.fDeg K * finrank K V)) = fun j : ℕ => (Formalism.HermitianLatticesTheory.mass h L + ∑ᶠ n ∈ boxSet K F ( …`. Use function extensionality and compare the values at `j`. Rewrite using `[sum_ballCount_eq hK hF hs hd hL hLi hsr (by positivity)]`. Rewrite `hlim` using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAB` using `tendsto_nhds_unique hlim hlim2`. Establish `hn0 : 0 < finrank K V` using `by omega`. Establish `hfact : ((finrank K V).factorial : ℝ) = (finrank K V : ℝ) * ((finrank K V - 1).factorial : ℝ)`. Rewrite using `[← Nat.mul_factorial_pred hn0.ne']`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hAB` using `[hfact, zpow_neg, zpow_natCast]`. Establish `hv` using `vInv_pos K`. Establish `key` using `Step.final_algebra (Formalism.HermitianLatticesTheory.mass h L) c (lamG F h L) (normD h L) (Real.pi ^ finrank K V) ((finrank K V - 1).factorial : ℝ) (finrank K V : ℝ) (Formalism.HermitianLatticesTheory.vInv K ^ (Formalism.HermitianLatticesTheory.fDeg K * finrank K V)) (Real.sqrt …`. Rewrite using `[massRatio_eq_lvalue hK hF (finrank K V) hm]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem massConst_succ (hH : HermRepUnram) (hLI : LIStat) (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : IsFixF K F) {m : ℕ} (hm : 2 ≤ m) {c : ℝ} (hc0 : 0 < c) (hc : MassConst K F (m - 1) c) :

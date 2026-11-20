@@ -25,7 +25,7 @@ open GlobalTheory.RawLift
 namespace GlobalTheory.RawLiftTrans
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.norm_integral_star_mul_sq_le_mul μ f h hf hh hf2 hh2`.
+A detailed English derivation is pending.
 -/
 theorem norm_integral_star_mul_sq_le {X : Type} [MeasurableSpace X] (μ : Measure X) (f h : X → ℂ)
     (hf : AEStronglyMeasurable f μ) (hh : AEStronglyMeasurable h μ)
@@ -34,7 +34,7 @@ theorem norm_integral_star_mul_sq_le {X : Type} [MeasurableSpace X] (μ : Measur
   GlobalTheory.T.norm_integral_star_mul_sq_le_mul μ f h hf hh hf2 hh2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_finite_local_double_coset_representatives V β L v f hf α hα`.
+A detailed English derivation is pending.
 -/
 theorem exists_cosetRep_levG {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (f : AE D) (hf : IsFinIdem D v f) (α : GA D V) (hα : SuppF V f α) :
@@ -45,7 +45,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.local_hecke_sum_preserves_principal_level_forms hLP v f hf α hα C hC hR T hT`.
+A detailed English derivation is pending.
 -/
 theorem heckeOn_mem_wall (hLP : LevProd R i) (v : HeightOneSpectrum (𝓞 D.host.F)) (f : AE D) (hf : IsFinIdem D v f)
     (α : GA D (Wc D i)) (hα : SuppF (Wc D i) f α) (C : Finset (GA D (Wc D i))) (hC : ∀ γ ∈ C, SuppF (Wc D i) f γ)
@@ -54,7 +54,7 @@ theorem heckeOn_mem_wall (hLP : LevProd R i) (v : HeightOneSpectrum (𝓞 D.host
   GlobalTheory.T.local_hecke_sum_preserves_principal_level_forms hLP v f hf α hα C hC hR T hT
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_finset_levW_mul_heckeOn_mem_wall hLP γ hγ`.
+A detailed English derivation is pending.
 -/
 theorem exists_doubleCoset_sum (hLP : LevProd R i) (γ : GA D (Wc D i)) (hγ : γ ∈ GfC (Wc D i)) :
     ∃ C : Finset (GA D (Wc D i)), C.Nonempty ∧ (∀ δ ∈ C, ∃ k ∈ levW R i, δ = k * γ) ∧
@@ -62,56 +62,54 @@ theorem exists_doubleCoset_sum (hLP : LevProd R i) (γ : GA D (Wc D i)) (hγ : �
   GlobalTheory.T.exists_finset_levW_mul_heckeOn_mem_wall hLP γ hγ
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hT`.
+A detailed English derivation is pending.
 -/
 theorem wall_props {T : MMap (R.MW i (sg0 D A))} (hT : T ∈ R.Wall i (sg0 D A)) :
     IsMultMap R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) T :=
   (GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hT
 
 /- English proof (translation)
-Rewrite using `[(wall_props hT).lev v k hk g, hLP.2.1 k hk, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rinv (hLP : LevProd R i) {T : MMap (R.MW i (sg0 D A))} (hT : T ∈ R.Wall i (sg0 D A)) (v : (R.MW i (sg0 D A)).Vec)
     {k : GA D (Wc D i)} (hk : k ∈ levW R i) (g : GA D (Wc D i)) : T v (g * k) = T v g := by
   rw [(wall_props hT).lev v k hk g, hLP.2.1 k hk, one_mul]
 
 /- English proof (translation)
-The claim follows from `((wall_props hT).aut v).left δ hδ g`.
+A detailed English derivation is pending.
 -/
 theorem linv {T : MMap (R.MW i (sg0 D A))} (hT : T ∈ R.Wall i (sg0 D A)) (v : (R.MW i (sg0 D A)).Vec)
     {δ : GA D (Wc D i)} (hδ : δ ∈ GQ (Wc D i)) (g : GA D (Wc D i)) : T v (δ * g) = T v g :=
   ((wall_props hT).aut v).left δ hδ g
 
 /- English proof (translation)
-The claim follows from `((wall_props hT).aut v).cont`.
+A detailed English derivation is pending.
 -/
 theorem cont {T : MMap (R.MW i (sg0 D A))} (hT : T ∈ R.Wall i (sg0 D A)) (v : (R.MW i (sg0 D A)).Vec) :
     Continuous (T v) := ((wall_props hT).aut v).cont
 
 /- English proof (translation)
-Simplify using `[heckeOn, postOn_apply, heckeLin_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeOn_single_apply (T : MMap (R.MW i (sg0 D A))) (γ : GA D (Wc D i)) (v : (R.MW i (sg0 D A)).Vec)
     (g : GA D (Wc D i)) : heckeOn (R.MW i (sg0 D A)) {γ} T v g = T v (g * γ) := by
   simp [heckeOn, postOn_apply, heckeLin_apply]
 
 /- English proof (translation)
-Simplify using `[heckeOn, postOn_apply, heckeLin_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeOn_apply (T : MMap (R.MW i (sg0 D A))) (C : Finset (GA D (Wc D i))) (v : (R.MW i (sg0 D A)).Vec)
     (g : GA D (Wc D i)) : heckeOn (R.MW i (sg0 D A)) C T v g = ∑ δ ∈ C, T v (g * δ) := by
   simp [heckeOn, postOn_apply, heckeLin_apply]
 
 /- English proof (translation)
-Use extensionality with `v g`. Simplify using `[heckeOn, postOn_apply, heckeLin_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hecke_one (T : MMap (R.MW i (sg0 D A))) : heckeOn (R.MW i (sg0 D A)) {1} T = T := by
   ext v g; simp [heckeOn, postOn_apply, heckeLin_apply]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D (Wc D i)) := ⟨rfl⟩`. Use `haveI : Countable (GQ (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _`. Use `haveI := (hL.models.νW i).1.1`. Use `haveI := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D (Wc D i) (R.νW i) (hL.models.νW i).1.1`.
-
-Conclude with `GlobalTheory.DoubleCosetAdjoint.setIntegral_mul_right (R.νW i) (GQ (Wc D i)) (R.fdW i) (hL.models.νW i).2 u hu y`.
+A detailed English derivation is pending.
 -/
 theorem shift {F : Face D A} (hL : Laws R F) (u : GA D (Wc D i) → ℂ)
     (hu : ∀ δ ∈ GQ (Wc D i), ∀ h, u (δ * h) = u h) (y : GA D (Wc D i)) :
@@ -124,7 +122,7 @@ theorem shift {F : Face D A} (hL : Laws R F) (u : GA D (Wc D i) → ℂ)
   exact GlobalTheory.DoubleCosetAdjoint.setIntegral_mul_right (R.νW i) (GQ (Wc D i)) (R.fdW i) (hL.models.νW i).2 u hu y
 
 /- English proof (translation)
-Establish `hHW` using `hL.models.HW i (sg0 D A)`. Take `⟨x, rfl⟩ : T ∈ LinearMap.range (R.HW i (sg0 D A)).e` from `by rw [hHW.2.1]; exact hT`. Take `⟨c, hc⟩` from `GlobalTheory.HeckeParts.exists_isMultIP hHW x x`. Conclude with `(hc v v).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sq_int {F : Face D A} (hL : Laws R F) {T : MMap (R.MW i (sg0 D A))} (hT : T ∈ R.Wall i (sg0 D A))
     (v : (R.MW i (sg0 D A)).Vec) : IntegrableOn (fun g => star (T v g) * T v g) (R.fdW i) (R.νW i) := by
@@ -134,9 +132,7 @@ theorem sq_int {F : Face D A} (hL : Laws R F) {T : MMap (R.MW i (sg0 D A))} (hT 
   exact (hc v v).1
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D (Wc D i)) := ⟨rfl⟩`. Use `haveI : Countable (GQ (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _`. Use `haveI := (hL.models.νW i).1.1`. Use `haveI := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D (Wc D i) (R.νW i) (hL.models.νW i).1.1`.
-
-Conclude with `GlobalTheory.DoubleCosetAdjoint.integrableOn_mul_right (R.νW i) (GQ (Wc D i)) (R.fdW i) (hL.models.νW i).2 (fun g => star (T v g) * T v g) (fun δ' hδ' g => by simp only [linv hT v hδ' g]) δ (sq_int hL hT v)`.
+A detailed English derivation is pending.
 -/
 theorem sq_int_tr {F : Face D A} (hL : Laws R F) {T : MMap (R.MW i (sg0 D A))} (hT : T ∈ R.Wall i (sg0 D A))
     (v : (R.MW i (sg0 D A)).Vec) (δ : GA D (Wc D i)) :
@@ -150,7 +146,7 @@ theorem sq_int_tr {F : Face D A} (hL : Laws R F) {T : MMap (R.MW i (sg0 D A))} (
     (fun g => star (T v g) * T v g) (fun δ' hδ' g => by simp only [linv hT v hδ' g]) δ (sq_int hL hT v)
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D (Wc D i)) := ⟨rfl⟩`. Conclude with `GlobalTheory.DoubleCosetAdjoint.integrableOn_star_mul (R.νW i) (R.fdW i) (T v) (fun g => T' v' (g * δ)) (cont hT v) ((cont hT' v').comp (continuous_mul_right δ)) (sq_int hL hT v) (sq_int_tr hL hT' v' δ)`.
+A detailed English derivation is pending.
 -/
 theorem int_tr {F : Face D A} (hL : Laws R F) {T T' : MMap (R.MW i (sg0 D A))} (hT : T ∈ R.Wall i (sg0 D A))
     (hT' : T' ∈ R.Wall i (sg0 D A)) (v v' : (R.MW i (sg0 D A)).Vec) (δ : GA D (Wc D i)) :
@@ -161,15 +157,15 @@ theorem int_tr {F : Face D A} (hL : Laws R F) {T T' : MMap (R.MW i (sg0 D A))} (
     (cont hT v) ((cont hT' v').comp (continuous_mul_right δ)) (sq_int hL hT v) (sq_int_tr hL hT' v' δ)
 
 /- English proof (translation)
-Establish `hHW` using `hL.models.HW i (sg0 D A)`. Take `⟨C, hCne, hCk, hCW⟩` from `exists_doubleCoset_sum hLP γ hγ`. Take `⟨x, rfl⟩ : T ∈ LinearMap.range (R.HW i (sg0 D A)).e` from `by rw [hHW.2.1]; exact hT`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : heckeOn (R.MW i (sg0 D A)) C T' ∈ LinearMap.range (R.HW i (sg0 D A)).e := by`. Rewrite using `[hHW.2.1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hCW T' hT'`. Take `⟨c, hc⟩` from `GlobalTheory.HeckeParts.exists_isMultIP hHW x y`. Establish `hn : (C.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 hCne)`. Use `⟨c / C.card, fun v v' => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify `int_tr hL hT hT' v v' γ` using `only [heckeOn_single_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key : ∀ δ ∈ C, ∫ g in R.fdW i, star ((R.HW i (sg0 D A)).e x v g) * T' v' (g * δ) ∂(R.νW i) = ∫ g in R.fdW i, star ((R.HW i (sg0 D A)).e x v g) * T' v' (g * γ) ∂(R.νW i)`. Introduce `δ hδ`. Take `⟨k, hk, rfl⟩` from `hCk δ hδ`. Establish `hs` using `shift hL (fun g => star ((R.HW i (sg0 D A)).e x v (g * k⁻¹)) * T' v' (g * γ)) (fun δ' hδ' g => by simp only [mul_assoc, linv hT v hδ', linv hT' v' hδ']) k`. Simplify using `only [mul_inv_cancel_right, rinv hLP hT v (inv_mem hk)] at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [← mul_assoc]`. Conclude with `hs`. Establish `h2` using `(hc v v').2`. Rewrite `h2` using `[hy]`. Simplify using `only [heckeOn_apply, Finset.mul_sum] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[integral_finset_sum _ fun δ _ => int_tr hL hT hT' v v' δ, Finset.sum_congr rfl key, Finset.sum_const, nsmul_eq_mul]`. Simplify using `only [heckeOn_single_apply]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hn, mul_comm, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ip {F : Face D A} (hL : Laws R F) (hLP : LevProd R i) {γ : GA D (Wc D i)} (hγ : γ ∈ GfC (Wc D i))
     {T T' : MMap (R.MW i (sg0 D A))} (hT : T ∈ R.Wall i (sg0 D A)) (hT' : T' ∈ R.Wall i (sg0 D A)) :
@@ -202,67 +198,61 @@ theorem exists_ip {F : Face D A} (hL : Laws R F) (hLP : LevProd R i) {γ : GA D 
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `hHW` using `hL.models.HW i (sg0 D A)`. Establish `hW : ∀ x, (R.HW i (sg0 D A)).e x ∈ R.Wall i (sg0 D A)` using `fun x => by`. Rewrite using `[← hHW.2.1]`. Conclude with `LinearMap.mem_range_self _ x`. Establish `hfin : ∀ k ∈ levW R i, k ∈ GfC (Wc D i)` using `fun k hk => hLP.1 hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∀ v f, IsFinIdem D v f → ∀ α, SuppF (Wc D i) f α → ∃ C : Finset (GA D (Wc D i)), (∀ γ ∈ C, SuppF (Wc D i) f γ) ∧ IsCosetRep (Wc D i) {k | k ∈ levW R i ∧ SuppF (Wc D i) f k} α C` using `fun v f hf α hα => exists_cosetRep_levG _ _ _ v f hf α hα`. Establish `h1 : ∀ x y, trPair R i 1 x y = ⟪x, y⟫_ℂ` using `fun x y => by`. Unfold `trPair`. Rewrite using `[hecke_one]`. Conclude with `(hHW.2.2 x y).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hv : ∃ v0 : (R.MW i (sg0 D A)).Vec, ∏ τ, ⟪((v0 τ : (R.MW i (sg0 D A)).sm τ) : (R.MW i (sg0 D A)).H τ), (v0 τ : (R.MW i (sg0 D A)).H τ)⟫_ℂ ≠ 0`. Use `swap`. Use `push_neg at hv`. Establish `hz : ∀ T : MMap (R.MW i (sg0 D A)), T = 0`. Introduce `T`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `v g`. Take `⟨τ, -, hτ⟩` from `Finset.prod_eq_zero_iff.1 (hv v)`. Establish `: v τ = 0` using `Subtype.ext (inner_self_eq_zero.1 hτ)`. Simplify using `[T.map_coord_zero τ this]`. Establish `hx0 : ∀ x : (R.HW i (sg0 D A)).H, x = 0` using `fun x => hHW.1 (by rw [hz ((R.HW i (sg0 D A)).e x), map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `ht0 : ∀ γ x y, trPair R i γ x y = 0`. Introduce `γ x y`. Rewrite using `[hx0 x, hx0 y, ← inner_zero_left (𝕜 := ℂ) (0 : (R.HW i (sg0 D A)).H)]`. Unfold `trPair`. Rewrite using `[map_zero, map_zero, hHW.2.2 0 0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨ha, fun v f hf α hα C hC hR y => ⟨0, by rw [hz ((R.HW i _).e 0), hz (heckeOn _ C _)], fun γ _ x => by` and prove the remaining obligations. Simplify using `[ht0]⟩, fun γ _ => ⟨0, by simp, fun x y => by simp [ht0]⟩, fun γ _ k _ k' _ x y => by simp [ht0],`. Use `fun γ _ x y => by simp [ht0], h1⟩`. Take `⟨v0, hv0⟩` from `hv`. Use `set P := ∏ τ, ⟪((v0 τ : (R.MW i (sg0 D A)).sm τ) : (R.MW i (sg0 D A)).H τ), (v0 τ : (R.MW i (sg0 D A)).H τ)⟫_ℂ with hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set cst : ℂ := ∏ ρ, ((dimK _ _ (kapAt (Wc D i) (sg0 D A) ρ) : ℚ) : ℂ) with hcst`. Use `set e := (R.HW i (sg0 D A)).e with he`. Establish `hI : ∀ x y γ, IntegrableOn (fun g => star (e x v0 g) * e y v0 (g * γ)) (R.fdW i) (R.νW i)` using `fun x y γ => int_tr hL (hW x) (hW y) v0 v0 γ`. Establish `htp : ∀ γ ∈ GfC (Wc D i), ∀ x y, trPair R i γ x y = cst * (∫ g in R.fdW i, star (e x v0 g) * e y v0 (g * γ) ∂(R.νW i)) / P`. Introduce `γ hγ x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `ipM_spec _ _ _ _ _ (exists_ip hL hLP hγ (hW x) (hW y)) v0 v0`. Simplify using `only [heckeOn_single_apply] at h`. Rewrite using `[eq_div_iff hv0]`. Use `show cst * ipM _ _ _ _ _ * P = _`. Rewrite using `[mul_assoc, ← h.2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hb : ∀ v f, IsFinIdem D v f → ∀ α, SuppF (Wc D i) f α → ∀ C : Finset (GA D (Wc D i)), (∀ γ ∈ C, SuppF (Wc D i) f γ) → IsCosetRep (Wc D i) {k | k ∈ levW R i ∧ SuppF (Wc D i) f k} α C → ∀ y, ∃ y', e y' = heckeOn (R.MW i (sg0 D A)) C (e y) ∧ ∀ γ ∈ GfC (Wc D i), ∀ x, trPair R i γ x y …`. Introduce `v f hf α hα C hC hR y`. Choose the witnesses or unpack the hypotheses as in `⟨y', hy'⟩ : heckeOn (R.MW i (sg0 D A)) C (e y) ∈ LinearMap.range e := by`. Rewrite using `[he, hHW.2.1]`. Conclude with `heckeOn_mem_wall hLP v f hf α hα C hC hR _ (hW y)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y', hy', fun γ hγ x => ?_⟩` and prove the remaining obligations. Establish `hCf : ∀ δ ∈ C, δ ∈ GfC (Wc D i)` using `fun δ hδ => (hR.1 δ hδ).1`. Rewrite using `[htp γ hγ, Finset.sum_congr rfl fun δ hδ => htp (γ * δ) (mul_mem hγ (hCf δ hδ)) x y, ← Finset.sum_div, ← Finset.mul_sum, ← integral_finset_sum _ fun δ _ => hI x y (γ * δ)]`. Use `congr 3`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy', heckeOn_apply, Finset.mul_sum]`. Simplify using `only [mul_assoc]`. Establish `hd : ∀ γ ∈ GfC (Wc D i), ∀ k ∈ levW R i, ∀ k' ∈ levW R i, ∀ x y, trPair R i (k * γ * k') x y = trPair R i γ x y`. Introduce `γ hγ k hk k' hk' x y`. Rewrite using `[htp _ (mul_mem (mul_mem (hfin k hk) hγ) (hfin k' hk')), htp _ hγ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∀ g, e y v0 (g * (k * γ * k')) = e y v0 (g * k * γ)` using `fun g => by`. Rewrite using `[show g * (k * γ * k') = g * k * γ * k' by group, rinv hLP (hW y) v0 hk']`. Simplify using `only [e1]`. Establish `hs` using `shift hL (fun g => star (e x v0 (g * k⁻¹)) * e y v0 (g * γ)) (fun δ hδ g => by simp only [mul_assoc, linv (hW x) v0 hδ, linv (hW y) v0 hδ]) k`. Simplify using `only [mul_inv_cancel_right, rinv hLP (hW x) v0 (inv_mem hk)] at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs]`. Establish `hcs : (starRingEnd ℂ) cst = cst` using `by rw [hcst, map_prod]; simp`. Establish `hPs : (starRingEnd ℂ) P = P`. Rewrite using `[hP, map_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => inner_conj_symm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsym : ∀ γ ∈ GfC (Wc D i), ∀ x y, trPair R i γ⁻¹ x y = star (trPair R i γ y x)`. Introduce `γ hγ x y`. Rewrite using `[htp _ (inv_mem hγ), htp _ hγ, Complex.star_def, map_div₀, map_mul, hcs, hPs]`. Use `congr 2`. Establish `hs` using `shift hL (fun g => star (e x v0 g) * e y v0 (g * γ⁻¹)) (fun δ hδ g => by simp only [mul_assoc, linv (hW x) v0 hδ, linv (hW y) v0 hδ]) γ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_inv_cancel_right, Complex.star_def] at hs`. Rewrite using `[← hs, ← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [map_mul, Complex.star_def, Complex.conj_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨ha, hb, ?_, hd, hsym, h1⟩` and prove the remaining obligations. Introduce `γ hγ`. Use `haveI : IsTopologicalGroup (GA D (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D (Wc D i)) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hn2 : ∀ z : (R.HW i (sg0 D A)).H, ‖⟪z, z⟫_ℂ‖ = ‖z‖ ^ 2` using `fun z => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Establish `hsq : ∀ x, ‖x‖ ^ 2 = ‖cst‖ * ‖∫ g in R.fdW i, star (e x v0 g) * e x v0 g ∂(R.νW i)‖ / ‖P‖` using `fun x => by`. Rewrite using `[← hn2, ← h1, htp 1 (one_mem _), norm_div, norm_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_one]`. Establish `hab : ∀ x y, ‖∫ g in R.fdW i, star (e x v0 g) * e y v0 (g * γ) ∂(R.νW i)‖ ^ 2 ≤ ‖∫ g in R.fdW i, star (e x v0 g) * e x v0 g ∂(R.νW i)‖ * ‖∫ g in R.fdW i, star (e y v0 g) * e y v0 g ∂(R.νW i)‖`. Introduce `x y`. Establish `hcs'` using `norm_integral_star_mul_sq_le ((R.νW i).restrict (R.fdW i)) (e x v0) (fun g => e y v0 (g * γ)) (cont (hW x) v0).aestronglyMeasurable ((cont (hW y) v0).comp (continuous_mul_right γ)).aestronglyMeasurable (sq_int hL (hW x) v0) (sq_int_tr hL (hW y) v0 γ)`. Establish `hsh` using `shift hL (fun g => star (e y v0 g) * e y v0 g) (fun δ hδ g => by simp only [linv (hW y) v0 hδ]) γ`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcs'` using `[hsh]`. Use `hcs'.trans ((le_abs_self _).trans ?_)` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul (Complex.abs_re_le_norm _) (Complex.abs_re_le_norm _) (abs_nonneg _) (norm_nonneg _)`. Establish `hbd : ∀ x y, ‖trPair R i γ x y‖ ≤ 1 * ‖x‖ * ‖y‖`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x y`. Establish `key : (‖cst‖ * ‖∫ g in R.fdW i, star (e x v0 g) * e y v0 (g * γ) ∂(R.νW i)‖ / ‖P‖) ^ 2 ≤ (‖x‖ * ‖y‖) ^ 2`. Rewrite using `[mul_pow, hsq x, hsq y, div_pow, mul_pow]`. Rewrite using `[div_mul_div_comm, ← mul_pow, mul_mul_mul_comm, ← sq]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply the tactic sequence `all_goals first`. Consider the case `positivity`. Consider the case `exact (sq _).ge`. Consider the case `(rw [mul_pow]; exact mul_le_mul_of_nonneg_left (hab x y) (by positivity))`. Rewrite using `[htp γ hγ, norm_div, norm_mul, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : 0 ≤ ‖cst‖ * ‖∫ g in R.fdW i, star (e x v0 g) * e y v0 (g * γ) ∂(R.νW i)‖ / ‖P‖` using `by positivity`. Use polynomial arithmetic with `[norm_nonneg x, norm_nonneg y, mul_nonneg (norm_nonneg x) (norm_nonneg y)]`. Establish `hadd1 : ∀ x1 x2 y : (R.HW i (sg0 D A)).H, trPair R i γ (x1 + x2) y = trPair R i γ x1 y + trPair R i γ x2 y`. Introduce `x1 x2 y`. Establish `hf : ∀ g : GA D (Wc D i), star (e (x1 + x2) v0 g) * e y v0 (g * γ) = star (e x1 v0 g) * e y v0 (g * γ) + star (e x2 v0 g) * e y v0 (g * γ)` using `fun g => by`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, MultilinearMap.add_apply, Pi.add_apply, Complex.star_def, add_mul]`. Rewrite using `[htp γ hγ, htp γ hγ, htp γ hγ]`. Simplify using `only [hf]`. Rewrite using `[integral_add (hI x1 y γ) (hI x2 y γ)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm1 : ∀ (c : ℂ) (x y : (R.HW i (sg0 D A)).H), trPair R i γ (c • x) y = (starRingEnd ℂ) c • trPair R i γ x y`. Introduce `c x y`. Establish `hf : ∀ g : GA D (Wc D i), star (e (c • x) v0 g) * e y v0 (g * γ) = (starRingEnd ℂ) c * (star (e x v0 g) * e y v0 (g * γ))` using `fun g => by`. Simplify using `only [map_smul, MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, Complex.star_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[htp γ hγ, htp γ hγ]`. Simplify using `only [hf]`. Rewrite using `[integral_const_mul (μ := (R.νW i).restrict (R.fdW i)) ((starRingEnd ℂ) c) (fun g => star (e x v0 g) * e y v0 (g * γ)), smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hadd2 : ∀ x y1 y2 : (R.HW i (sg0 D A)).H, trPair R i γ x (y1 + y2) = trPair R i γ x y1 + trPair R i γ x y2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `x y1 y2`. Establish `hf : ∀ g : GA D (Wc D i), star (e x v0 g) * e (y1 + y2) v0 (g * γ) = star (e x v0 g) * e y1 v0 (g * γ) + star (e x v0 g) * e y2 v0 (g * γ)` using `fun g => by`. Simplify using `only [map_add, MultilinearMap.add_apply, Pi.add_apply, mul_add]`. Rewrite using `[htp γ hγ, htp γ hγ, htp γ hγ]`. Simplify using `only [hf]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[integral_add (hI x y1 γ) (hI x y2 γ)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsm2 : ∀ (c : ℂ) (x y : (R.HW i (sg0 D A)).H), trPair R i γ x (c • y) = (RingHom.id ℂ) c • trPair R i γ x y`. Introduce `c x y`. Establish `hf : ∀ g : GA D (Wc D i), star (e x v0 g) * e (c • y) v0 (g * γ) = c * (star (e x v0 g) * e y v0 (g * γ))` using `fun g => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [map_smul, MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[htp γ hγ, htp γ hγ]`. Simplify using `only [hf]`. Rewrite using `[integral_const_mul (μ := (R.νW i).restrict (R.fdW i)) c (fun g => star (e x v0 g) * e y v0 (g * γ)), smul_eq_mul, RingHom.id_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Set `Bs : (R.HW i (sg0 D A)).H →ₗ⋆[ℂ] (R.HW i (sg0 D A)).H →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => trPair R i γ x y) hadd1 hsm1 hadd2 hsm2`. Set `Bc` to `Bs.mkContinuous₂ 1 hbd`. Establish `hrep : ∀ x y, trPair R i γ x y = ⟪x, ContinuousLinearMap.adjoint (InnerProductSpace.continuousLinearMapOfBilin Bc) y⟫_ℂ` using `fun x y => by`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, InnerProductSpace.continuousLinearMapOfBilin_apply]`.
-
-Both sides reduce to the same expression. Use `⟨ContinuousLinearMap.adjoint (InnerProductSpace.continuousLinearMapOfBilin Bc), ?_, hrep⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun y => ?_` and prove the remaining obligations. Establish `h2` using `hbd (ContinuousLinearMap.adjoint (InnerProductSpace.continuousLinearMapOfBilin Bc) y) y`. Rewrite `h2` using `[hrep, hn2, one_mul]`.
-
-Use polynomial arithmetic with `[norm_nonneg (ContinuousLinearMap.adjoint (InnerProductSpace.continuousLinearMapOfBilin Bc) y), norm_nonneg y]`.
+A detailed English derivation is pending.
 -/
 theorem transLaws_of {F : Face D A} (hL : Laws R F) (hLP : LevProd R i) : TransLaws R i := by
   classical
@@ -433,7 +423,7 @@ theorem transLaws_of {F : Face D A} (hL : Laws R F) (hLP : LevProd R i) : TransL
   nlinarith [norm_nonneg (ContinuousLinearMap.adjoint (InnerProductSpace.continuousLinearMapOfBilin Bc) y), norm_nonneg y]
 
 /- English proof (translation)
-Introduce `_ D G _ _ Pl0 T A Ks _ _ _ R F hL hFull i`. Conclude with `transLaws_of hL (GlobalTheory.T.level_subgroup_restricted_product_of_laws D G Pl0 T A Ks R F hL hFull i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem transLaws : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

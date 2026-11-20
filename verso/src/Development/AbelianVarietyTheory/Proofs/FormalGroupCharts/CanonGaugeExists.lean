@@ -9,7 +9,7 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `canonGauge_of_log FormalLog.logSt_and_logDerivSt.1`.
+A detailed English derivation is pending.
 -/
 theorem canonGauge_exists : CanonGaugeSt :=
   canonGauge_of_log FormalLog.logSt_and_logDerivSt.1

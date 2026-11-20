@@ -23,14 +23,14 @@ section General
 variable {E : Type} [Field E] {M : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left' (σ : E →+* E) (J : Matrix (Fin M) (Fin M) E) (x x' y : Fin M → E) :
     Formalism.UG.hform σ J (x + x') y = Formalism.UG.hform σ J x y + Formalism.UG.hform σ J x' y := by
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_left' (σ : E →+* E) (J : Matrix (Fin M) (Fin M) E) (c : E) (x y : Fin M → E) :
     Formalism.UG.hform σ J (c • x) y = σ c • Formalism.UG.hform σ J x y := by
@@ -38,14 +38,14 @@ theorem hform_smul_left' (σ : E →+* E) (J : Matrix (Fin M) (Fin M) E) (c : E)
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right' (σ : E →+* E) (J : Matrix (Fin M) (Fin M) E) (x y y' : Fin M → E) :
     Formalism.UG.hform σ J x (y + y') = Formalism.UG.hform σ J x y + Formalism.UG.hform σ J x y' := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_right' (σ : E →+* E) (J : Matrix (Fin M) (Fin M) E) (c : E) (x y : Fin M → E) :
     Formalism.UG.hform σ J x (c • y) = RingHom.id E c • Formalism.UG.hform σ J x y := by
@@ -65,9 +65,9 @@ theorem hSes_apply (J : Matrix (Fin M) (Fin M) E) (x y : Fin M → E) :
     hSes J x y = Formalism.UG.hform (starRingEnd E) J x y := rfl
 
 /- English proof (translation)
-Rewrite using `[hSes_apply, hSes_apply]`. Use `show starRingEnd E _ = _`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, starRingEnd_self_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hSes_herm (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, starRingEnd E (J j i) = J i j)
     (x y : Fin M → E) : star (hSes J x y) = hSes J y x := by
@@ -80,9 +80,9 @@ theorem hSes_herm (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, starRingEnd E (J
   ring
 
 /- English proof (translation)
-Establish `h1 : (fun i => starRingEnd E (x i)) ᵥ* J = 0`. Use function extensionality and compare the values at `j`. Use `hx (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hSes_apply]`. Simplify `this` using `[Formalism.UG.hform, Pi.single_apply, vecMul, dotProduct]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `Matrix.eq_zero_of_vecMul_eq_zero hdet h1`. Use function extensionality and compare the values at `i`. Use `congrFun h2 i` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hSes_nondeg (J : Matrix (Fin M) (Fin M) E) (hdet : J.det ≠ 0) (x : Fin M → E)
     (hx : ∀ y, hSes J x y = 0) : x = 0 := by
@@ -97,11 +97,11 @@ theorem hSes_nondeg (J : Matrix (Fin M) (Fin M) E) (hdet : J.det ≠ 0) (x : Fin
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `h1 : G *ᵥ c = 0`. Use function extensionality and compare the values at `j`. Use `congrArg (hSes J (X j)) hc` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, map_zero, smul_eq_mul] at this`. Simplify using `only [mulVec, dotProduct, Pi.zero_apply, hG]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hSes_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Conclude with `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hdet h1) i`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linInd_of_gram (J : Matrix (Fin M) (Fin M) E) {a : ℕ} (X : Fin a → Fin M → E)
     (G : Matrix (Fin a) (Fin a) E) (hG : ∀ i j, G i j = Formalism.UG.hform (starRingEnd E) J (X i) (X j))
@@ -123,23 +123,23 @@ theorem linInd_of_gram (J : Matrix (Fin M) (Fin M) E) {a : ℕ} (X : Fin a → F
 variable [CharZero E]
 
 /- English proof (translation)
-Set `U` to `Submodule.span E (Set.range X0)`. Set `bU : Module.Basis (Fin a) E U` to `Module.Basis.span h0`. Establish `hb : ∀ i, ((bU i : U) : Fin M → E) = X0 i` using `fun i => by show ((Module.Basis.span h0 i : U) : Fin M → E) = X0 i`. Rewrite using `[Module.Basis.span_apply]`. Set `f : U →ₗ[E] (Fin M → E)` to `bU.constr E X`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hf : ∀ i, f (bU i) = X i` using `fun i => bU.constr_basis E X i`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`. Establish `hs` using `bU.sum_repr u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hu` using `[← hs]`. Simplify using `only [map_sum, map_smul, hf] at hu`. Establish `hc` using `(Fintype.linearIndependent_iff.mp h1) _ hu`. Rewrite using `[← hs]`. Simplify using `[hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ((hSes J).comp f).compl₂ f = ((hSes J).comp U.subtype).compl₂ U.subtype`. Use `LinearMap.ext_basis bU bU fun i j => ?_` and prove the remaining obligations. Use `show hSes J (f (bU i)) (f (bU j)) = hSes J ((bU i : U) : Fin M → E) ((bU j : U) : Fin M → E)`. Rewrite using `[hf, hf, hb, hb]`. Conclude with `hG i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hiso : ∀ x y : U, hSes J (f x) (f y) = hSes J x y` using `fun x y => DFunLike.congr_fun (DFunLike.congr_fun key x) y`. Take `⟨g, hgiso, hgf⟩` from `witt_extension_theorem E (Fin M → E) (hSes J) (hSes_herm J hJ) (hSes_nondeg J hdet) U f hinj hiso`. Set `m : Matrix (Fin M) (Fin M) E` to `LinearMap.toMatrix' (g : (Fin M → E) →ₗ[E] (Fin M → E))`. Set `mi : Matrix (Fin M) (Fin M) E` to `LinearMap.toMatrix' (g.symm : (Fin M → E) →ₗ[E] (Fin M → E))`. Establish `hc1 : (g : (Fin M → E) →ₗ[E] (Fin M → E)).comp (g.symm : (Fin M → E) →ₗ[E] (Fin M → E)) = LinearMap.id` using `LinearMap.ext fun x => by simp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : (g.symm : (Fin M → E) →ₗ[E] (Fin M → E)).comp (g : (Fin M → E) →ₗ[E] (Fin M → E)) = LinearMap.id` using `LinearMap.ext fun x => by simp`. Establish `hm1 : m * mi = 1`. Simplify using `only [m, mi]`. Rewrite using `[← LinearMap.toMatrix'_comp, hc1, LinearMap.toMatrix'_id]`. Establish `hm2 : mi * m = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [m, mi]`. Rewrite using `[← LinearMap.toMatrix'_comp, hc2, LinearMap.toMatrix'_id]`. Establish `hmv : ∀ v, m *ᵥ v = g v` using `fun v => by`. Simplify using `only [m]`. Rewrite using `[LinearMap.toMatrix'_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `⟨⟨m, mi, hm1, hm2⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.cT (starRingEnd E) m * J * m = J`. Use extensionality with `i j`. Establish `h` using `hgiso (Pi.single i 1) (Pi.single j 1)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hSes_apply, hSes_apply, ← hmv, ← hmv, Formalism.UG.P.hform_mulVec, Formalism.UG.P.hform_single, Formalism.UG.P.hform_single]`. Conclude with `h`. Introduce `i show m *ᵥ X0 i = X i`. Rewrite using `[hmv, ← hb i]`. Conclude with `(hgf (bU i)).trans (hf i)`.
+A detailed English derivation is pending.
 -/
 theorem witt_tuple (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, starRingEnd E (J j i) = J i j)
     (hdet : J.det ≠ 0) {a : ℕ} (X0 X : Fin a → Fin M → E) (h0 : LinearIndependent E X0)
@@ -204,7 +204,7 @@ theorem witt_tuple (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, starRingEnd E (
 end General
 
 /- English proof (translation)
-Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
@@ -213,11 +213,11 @@ theorem sigma_invol_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Unfold `Witt InCtx`. Introduce `F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 _ hdet X hX`. Use `letI : StarRing E := starOfInv (σ : E →+* E) (sigma_invol_cm σ hCM)`. Establish `hs : starRingEnd E = (σ : E →+* E)` using `RingHom.ext fun _ => rfl`. Establish `hJ' : ∀ i j, starRingEnd E (J j i) = J i j`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `hJ.1`. Establish `hG : ∀ i j, Formalism.UG.hform (starRingEnd E) J (X i) (X j) = Formalism.UG.hform (starRingEnd E) J (X0 i) (X0 j)`. Rewrite using `[hs]`. Conclude with `fun i j => congrFun (congrFun hX i) j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hl0 : LinearIndependent E X0` using `linInd_of_gram J X0 (gramE σ J X0) (by rw [hs]; intro i j; rfl) hdet`. Establish `hl1 : LinearIndependent E X` using `linInd_of_gram J X (gramE σ J X) (by rw [hs]; intro i j; rfl) (hX ▸ hdet)`. Take `⟨g, hg, hgX⟩` from `witt_tuple J hJ' hJ.2 X0 X hl0 hl1 hG`. Rewrite `hg` using `[hs]`. Conclude with `⟨g, hg, hgX⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem witt_holds : Witt := by
   unfold Witt InCtx

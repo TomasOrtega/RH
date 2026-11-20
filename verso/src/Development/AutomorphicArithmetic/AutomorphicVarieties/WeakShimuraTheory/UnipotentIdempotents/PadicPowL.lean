@@ -4,7 +4,7 @@ import Mathlib.NumberTheory.Multiplicity
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
 /- English proof (translation)
-Rewrite using `[← map_pow]`. Establish `hle : (commutator Γ).topologicalClosure ≤ f.ker` using `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker f) hf`. Conclude with `hle hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem kill {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CommGroup M] (f : Γ →* M)
     (hf : IsClosed (f.ker : Set Γ)) {g : Γ} {n : ℕ} (hg : g ^ n ∈ (commutator Γ).topologicalClosure) : f g ^ n = 1 := by
@@ -14,15 +14,13 @@ private theorem kill {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologic
   exact hle hg
 
 /- English proof (translation)
-Establish `hp` using `PadicInt.prime_p (p := l)`. Establish `hodd : Odd l` using `hl.out.odd_of_ne_two h2`. Establish `hc : PadicInt.toZMod x = 1`. Establish `h1 : PadicInt.toZMod x ^ l = 1` using `by rw [← map_pow, hx, map_one]`. Rewrite `h1` using `[ZMod.pow_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `hdvd : (l : ℤ_[l]) ∣ x - 1`. Establish `hs` using `PadicInt.toZMod_spec x`. Rewrite `hs` using `[hc, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton, ZMod.cast_eq_val, ZMod.val_one, Nat.cast_one]`. Conclude with `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnd : ¬ (l : ℤ_[l]) ∣ x`. Introduce `h`. Establish `h1 : (l : ℤ_[l]) ∣ x ^ l` using `dvd_pow h hl.out.ne_zero`. Rewrite `h1` using `[hx]`. Conclude with `hp.not_dvd_one h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `key` using `emultiplicity_pow_prime_sub_pow_prime hp hodd hdvd hnd`. Rewrite `key` using `[hx, one_pow, sub_self, emultiplicity_zero]`. Assume the negation of the conclusion as `hne`. Establish `hfin : FiniteMultiplicity (l : ℤ_[l]) (x - 1)` using `FiniteMultiplicity.of_not_isUnit hp.not_unit (sub_ne_zero.2 hne)`. Rewrite `key` using `[hfin.emultiplicity_eq_multiplicity]`.
-
-Conclude with `ENat.coe_ne_top (multiplicity (l : ℤ_[l]) (x - 1) + 1) (by push_cast; exact key.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem padic_pow_l {l : ℕ} [hl : Fact l.Prime] (h2 : l ≠ 2) (x : ℤ_[l]) (hx : x ^ l = 1) : x = 1 := by
   have hp := PadicInt.prime_p (p := l)
@@ -50,9 +48,9 @@ private theorem padic_pow_l {l : ℕ} [hl : Fact l.Prime] (h2 : l ≠ 2) (x : �
   exact ENat.coe_ne_top (multiplicity (l : ℤ_[l]) (x - 1) + 1) (by push_cast; exact key.symm)
 
 /- English proof (translation)
-Proceed by induction on `a generalizing x with`. Consider the case `zero => simpa using hx`. Consider the case `succ a ih`. Apply `ih` to reduce the goal to its premises. Apply `padic_pow_l h2` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← pow_mul, ← pow_succ]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem padic_pow {l : ℕ} [Fact l.Prime] (h2 : l ≠ 2) (a : ℕ) (x : ℤ_[l]) (hx : x ^ l ^ a = 1) : x = 1 := by
   induction a generalizing x with
@@ -64,19 +62,19 @@ private theorem padic_pow {l : ℕ} [Fact l.Prime] (h2 : l ≠ 2) (a : ℕ) (x :
     exact hx
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T P hD g a hg`. Establish `h2 : l ≠ 2` using `Raw.Good.l_odd hD`. Establish `hl` using `(Fact.out : l.Prime)`. Establish `hcLe : Continuous (resLe (K_le T))`. Use `letI : Algebra T.K T.L := (IntermediateField.inclusion (K_le T)).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower T.K T.L Ω := IsScalarTower.of_algebraMap_eq (fun x => rfl)`. Conclude with `Af.continuous_restrictScalarsHom T.K T.L Ω`. Establish `ht : P.tL g = 1`. Establish `hk : IsClosed ((P.t.comp (resLe (K_le T))).ker : Set (G T.L Ω))` using `isClosed_singleton.preimage (P.t_cont.comp hcLe)`. Establish `hp` using `kill (P.t.comp (resLe (K_le T))) hk hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(P.t.comp (resLe (K_le T))) g = 1`. Establish `hz : (l ^ a) • Multiplicative.toAdd ((P.t.comp (resLe (K_le T))) g) = 0`. Rewrite using `[← toAdd_pow, hp, toAdd_one]`. Establish `hz'` using `(smul_eq_zero.1 hz).resolve_left (pow_ne_zero _ hl.ne_zero)`. Rewrite using `[← ofAdd_toAdd ((P.t.comp (resLe (K_le T))) g), hz', ofAdd_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, ht⟩` and prove the remaining obligations. Establish `hβ : P.βL g = 1` using `P.β_t ht`. Establish `hγ : P.γ (resQ T.L g) = 1`. Establish `hcQ : Continuous (resQ T.L)` using `Af.continuous_restrictScalarsHom ℚ T.L Ω`. Establish `hk : IsClosed (((cycZ ℚ Ω l).comp (resQ T.L)).ker : Set (G T.L Ω))` using `isClosed_singleton.preimage ((continuous_cycZ ℚ Ω l).comp hcQ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `kill ((cycZ ℚ Ω l).comp (resQ T.L)) hk hg`. Establish `hu : ((((cycZ ℚ Ω l).comp (resQ T.L)) g : ℤ_[l]ˣ) : ℤ_[l]) = 1` using `padic_pow h2 a _ (by rw [← Units.val_pow_eq_pow_val, hp, Units.val_one])`. Conclude with `P.γ_ker (Units.ext hu)`. Establish `hκ : P.κ₀ (resLe (K_le T) g) = 1`. Establish `hk : IsClosed ((P.κ₀.comp (resLe (K_le T))).ker : Set (G T.L Ω))` using `(Subgroup.isClosed_of_isOpen _ P.κ₀_open).preimage hcLe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp` using `kill (P.κ₀.comp (resLe (K_le T))) hk hg`. Take `⟨m, hm, hm1⟩` from `P.κ₀_ord`. Establish `hq : P.κ₀ (resLe (K_le T) g) ^ m = 1`. Rewrite using `[← MonoidHom.pow_apply, hm1, MonoidHom.one_apply]`. Establish `hcop : Nat.Coprime (l ^ a) m` using `Nat.Coprime.pow_left a hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `pow_gcd_eq_one.2 ⟨hp, hq⟩` as an intermediate fact. Rewrite `this` using `[hcop, pow_one]`. Then use the resulting hypothesis. Establish `hγ' : P.γ (AlgEquiv.restrictScalars ℚ g) = 1` using `hγ`. Simplify using `only [Pre.κ, MonoidHom.mul_apply, MonoidHom.comp_apply, hβ, hγ, hκ]`. Simplify using `[hγ', hβ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lk.kapMu :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} (P : Pre T), D.Good → ∀ (g : G T.L Ω) (a : ℕ), g ^ l ^ a ∈ (commutator (G T.L Ω)).topologicalClosure → P.κ g = 1 ∧ P.tL g = 1 := by

@@ -94,7 +94,7 @@ def JointWin (Ct : ℝ) : Prop :=
         BaAt (AbF.ofChar ψ) eps e t q d x ∧ HVAt ψ C eps e t q d x
 
 /- English proof (translation)
-Introduce `M B' L hB eps A1 h0 h1`. Take `⟨X0, H⟩` from `hP M B' L hB eps A1 h0 h1`. Use `⟨X0, fun e t ha X hX q d hp hl => ?_⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `H e t ha X hX q d hp hl`. Conclude with `⟨Y, h _ _ _ _ _ _ _ _ _ _ hY⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem BShape.mono {K : BConst} {Ct : ℝ}
     {P Q : ℝ → AbF → Finset ℕ → (ℕ → AbF) → (ℝ → ℕ) → (ℝ → ℕ) → ℕ → ℕ → ℝ → ℝ → Prop}
@@ -107,27 +107,25 @@ theorem BShape.mono {K : BConst} {Ct : ℝ}
   exact ⟨Y, h _ _ _ _ _ _ _ _ _ _ hY⟩
 
 /- English proof (translation)
-The claim follows from `BShape.mono (fun _ _ _ _ _ _ _ _ _ _ h => ⟨h.1, fun x a b => (h.2 x a b).1⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem ThmBab.a {K : BConst} {Ct : ℝ} (h : ThmBab K Ct) : ThmBa K Ct :=
   BShape.mono (fun _ _ _ _ _ _ _ _ _ _ h => ⟨h.1, fun x a b => (h.2 x a b).1⟩) h
 
 /- English proof (translation)
-The claim follows from `BShape.mono (fun _ _ _ _ _ _ _ _ _ _ h => ⟨h.1, fun x a b => (h.2 x a b).2⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem ThmBab.b {K : BConst} {Ct : ℝ} (h : ThmBab K Ct) : ThmBb K Ct :=
   BShape.mono (fun _ _ _ _ _ _ _ _ _ _ h => ⟨h.1, fun x a b => (h.2 x a b).2⟩) h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, H⟩`. Use `⟨C, fun M e t q d he ht hp E _ _ _ hE => ?_⟩` and prove the remaining obligations. Use `set x : ℝ := max ((2 : ℝ) ^ e) t with hx`. Establish `ht2 : (2 : ℝ) ≤ t` using `by exact_mod_cast ht`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : (2 : ℝ) ≤ x` using `ht2.trans (le_max_right _ _)`. Establish `hA : admitted 2 Ct (fun y => if y = x then e else 2) (fun y => if y = x then t else 2)`. Introduce `y hy`. Establish `h1 : y ≤ y ^ Ct` using `Real.self_le_rpow_of_one_le (by linarith) hC`. Establish `h2 : y ≤ y ^ (2 : ℝ)` using `Real.self_le_rpow_of_one_le (by linarith) (by norm_num)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hyx : y = x`. Simplify using `only [if_pos hyx]`. Conclude with `⟨he, le_trans (hyx ▸ le_max_left _ _) h2, ht, le_trans (hyx ▸ le_max_right _ _) h1⟩`. Simplify using `only [if_neg hyx]`. Use `⟨le_rfl, ?_, le_rfl, by push_cast; linarith⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_two]`. Use `gcongr`. Use `H M 2 _ _ hA x hx2 q d hp E (by simpa only [if_true] using hE)` as an intermediate fact. Simplify `this` using `only [if_true]`. Introduce and unpack `⟨C, H⟩`.
-
-Conclude with `⟨C, fun M A1 e t ha x hx q d hp E _ _ _ hE => H M _ _ q d (ha x hx).1 (ha x hx).2.2.1 hp E hE⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thmBc_iff {Ct : ℝ} (hC : 1 ≤ Ct) : ThmBc Ct ↔ ThmBcFree := by
   classical
@@ -154,13 +152,13 @@ theorem thmBc_iff {Ct : ℝ} (hC : 1 ≤ Ct) : ThmBc Ct ↔ ThmBcFree := by
     exact ⟨C, fun M A1 e t ha x hx q d hp E _ _ _ hE => H M _ _ q d (ha x hx).1 (ha x hx).2.2.1 hp E hE⟩
 
 /- English proof (translation)
-Introduce `_ hl` and use `⟨(prime_of_mem_Bchi hl).1, (prime_of_mem_Bchi hl).2, AbF.hasMu_cyc (prime_of_mem_Bchi hl).1.pos (NeZero.pos _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem primeSetBoundData_of_primitiveChar (ψ : PChar) : OddPrimesWithRootsOfUnity (Bchi ψ) (Lchi ψ) := fun _ hl =>
   ⟨(prime_of_mem_Bchi hl).1, (prime_of_mem_Bchi hl).2, AbF.hasMu_cyc (prime_of_mem_Bchi hl).1.pos (NeZero.pos _)⟩
 
 /- English proof (translation)
-Use `K.CK_pos` as an intermediate fact. Unfold `BConst.J`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem BConst.J_pos (K : BConst) {Ct eps : ℝ} (hC : 0 < Ct) (he : 0 < eps) (M : AbF) (B' : Finset ℕ) (L : ℕ → AbF) :
     0 < K.J Ct eps M B' L := by
@@ -169,9 +167,9 @@ theorem BConst.J_pos (K : BConst) {Ct eps : ℝ} (hC : 0 < Ct) (he : 0 < eps) (M
   positivity
 
 /- English proof (translation)
-Introduce `ψ eps A1 h0 h1 e t ha`. Take `⟨X0, H⟩` from `hB (AbF.ofChar ψ) (Bchi ψ) (Lchi ψ) (primeSetBoundData_of_primitiveChar ψ) eps A1 h0 h1`. Take `⟨C, r₁, r₂, -, -, H'⟩` from `hV ψ`. Take `⟨X1, H'⟩` from `H' eps A1 h0 h1`. Use `⟨Jchi K Ct eps ψ, C, (([ψ.N, ordC ψ, pK ψ, hStar ψ, pOne ψ, r₁, r₂].sum : ℕ) : ℝ), max X0 X1, K.J_pos hC h0 _ _ _, fun X hX q d hp a b c c' hl => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Y, hY⟩` from `H e t ha X ((le_max_left _ _).trans hX) q d hp hl`. Use `⟨Y, hY.1, fun x u v => ⟨(hY.2 x u v).1, H' e t ha X ((le_max_right _ _).trans hX) q d hp a b (fun y hy => ?_) hl Y hY x u v⟩⟩` and prove the remaining obligations. Use `List.le_sum_of_mem hy` as an intermediate fact. Conclude with `⟨this.trans_lt (by exact_mod_cast c), this.trans_lt (by exact_mod_cast c')⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem jointWin_of {K : BConst} {Ct : ℝ} (hC : 0 < Ct) (hB : ThmBab K Ct) (hV : ThmHV K Ct) : JointWin Ct := by
   intro ψ eps A1 h0 h1 e t ha

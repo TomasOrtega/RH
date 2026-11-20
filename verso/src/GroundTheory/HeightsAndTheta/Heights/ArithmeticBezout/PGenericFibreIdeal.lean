@@ -25,7 +25,7 @@ def blkRingEquiv (n : ℕ) : MvPolynomial (Fin n) ℤ ≃+* MRing (PBlk n) :=
   (renameEquiv ℤ (blkEquiv n)).toRingEquiv
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_symm]`. Conclude with `Ideal.ext fun _ => Iff.rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finIdeal_eq_map (P : Ideal (MRing (PBlk n))) :
     IndefiniteRowSideFullHecke.ArithBezout.finIdeal P = P.map (blkRingEquiv n).symm := by
@@ -35,7 +35,7 @@ theorem finIdeal_eq_map (P : Ideal (MRing (PBlk n))) :
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Use `show MvPolynomial.map (algebraMap ℤ ℚ) = _`. Rewrite using `[RingHom.ext_int (algebraMap ℤ ℚ) (Int.castRingHom ℚ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_eq :
     algebraMap (MvPolynomial (Fin n) ℤ) (MvPolynomial (Fin n) ℚ) =
@@ -50,11 +50,9 @@ instance : IsLocalization (intUnits n) (MvPolynomial (Fin n) ℚ) :=
   MvPolynomial.isLocalization (nonZeroDivisors ℤ) ℚ
 
 /- English proof (translation)
-Take `⟨-, ⟨hprime, -, -⟩, hhor, -⟩` from `hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hprime` as an intermediate fact. Conclude with `Ideal.comap_isPrime _ _`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩ hx`. Establish `h1 : (C a : MRing (PBlk n)) ∈ P`. Simplify `hx` using `[IndefiniteRowSideFullHecke.ArithBezout.finIdeal, Ideal.mem_comap]`. Establish `h2 : a ∈ P.comap (C : ℤ →+* MRing (PBlk n))` using `h1`. Rewrite `h2` using `[hhor, Ideal.mem_bot]`.
-
-Conclude with `nonZeroDivisors.ne_zero ha h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finIdeal_isPrime_disjoint (n d : ℕ) (P : Ideal (MRing (PBlk n))) (hP : IsArithVar P d) :
     (IndefiniteRowSideFullHecke.ArithBezout.finIdeal P).IsPrime ∧
@@ -76,11 +74,11 @@ section Homog
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Take `⟨S, hS, hPS⟩` from `hP`. Establish `hH : (genericIdeal P).IsHomogeneous (homogeneousSubmodule (Fin n) ℚ)`. Rewrite using `[genericIdeal, finIdeal_eq_map, hPS, Ideal.map_span, Ideal.map_span]`. Use `Ideal.homogeneous_span _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨s, hs, rfl⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨a, ha⟩` from `hS s hs`. Use `⟨a (), (mem_homogeneousSubmodule _ _).mpr ?_⟩` and prove the remaining obligations. Establish `hs' : s.IsHomogeneous (a ())`. Introduce `m hm`. Express the relevant statement in the definitionally equal form `Finsupp.weight (fun _ => 1) m = a ()`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Finsupp.degree_eq_weight_one, Finsupp.degree_eq_sum, Fintype.sum_sigma]`. Simplify using `using ha m (mem_support_iff.mpr hm) ()`. Conclude with `(IsHomogeneous.rename_isHomogeneous hs').map _`. Introduce `f hf k`. Conclude with `homogeneousComponent_mem_of_mem hH hf k`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genericIdeal_isHomogIdeal (P : Ideal (MRing (PBlk n)))
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal P) : IsHomogIdeal (genericIdeal P) := by
@@ -103,13 +101,13 @@ theorem genericIdeal_isHomogIdeal (P : Ideal (MRing (PBlk n)))
 end Homog
 
 /- English proof (translation)
-Introduce `n d P hP`. Take `⟨hQprime, hdisj⟩` from `finIdeal_isPrime_disjoint n d P hP`. Establish `hgen : genericIdeal P = (IndefiniteRowSideFullHecke.ArithBezout.finIdeal P).map (algebraMap (MvPolynomial (Fin n) ℤ) (MvPolynomial (Fin n) ℚ))`. Rewrite using `[algebraMap_eq]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hsat : (genericIdeal P).comap (MvPolynomial.map (Int.castRingHom ℚ)) = IndefiniteRowSideFullHecke.ArithBezout.finIdeal P`. Rewrite using `[hgen, ← algebraMap_eq]`. Conclude with `IsLocalization.under_map_of_isPrime_disjoint (intUnits n) _ hQprime hdisj`. Take `⟨-, ⟨-, ⟨S, hS, hPS⟩, hrel⟩, -, -⟩` from `hP`. Use `⟨⟨?_, ?_, ?_⟩, hsat⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgen]`. Conclude with `IsLocalization.isPrime_of_isPrime_disjoint (intUnits n) _ _ hQprime hdisj`. Conclude with `genericIdeal_isHomogIdeal P ⟨S, hS, hPS⟩`. Take `⟨i, hi⟩` from `hrel ()`. Use `⟨i, fun hX => hi ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmem : (X i : MvPolynomial (Fin n) ℤ) ∈ IndefiniteRowSideFullHecke.ArithBezout.finIdeal P`. Rewrite using `[← hsat, Ideal.mem_comap, map_X]`. Conclude with `hX`. Simplify `hmem` using `[IndefiniteRowSideFullHecke.ArithBezout.finIdeal, Ideal.mem_comap]`.
+A detailed English derivation is pending.
 -/
 theorem proof : GenericFibreIdeal.Statement := by
   intro n d P hP

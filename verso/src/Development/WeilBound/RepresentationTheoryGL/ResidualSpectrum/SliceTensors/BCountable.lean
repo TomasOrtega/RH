@@ -26,11 +26,11 @@ instance B_countable : Countable (B_lat K ι) := by
   exact hc.to_subtype
 
 /- English proof (translation)
-Use `IsAddFundamentalDomain.mk' (MeasurableSet.univ_pi fun _ => GroundTheory.Global.measurableSet_fundamentalSet K).nullMeasurableSet fun X => ?_` and prove the remaining obligations. Use `choose k hk huniq using fun p => GroundTheory.Global.existsUnique_sub_mem_fundamentalSet K (X p)`. Use `⟨⟨fun p => algebraMap K 𝔸[K] (-k p), fun p => -k p, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `p _`. Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] (-k p) + X p ∈ GroundTheory.Global.fundamentalSet K`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, neg_add_eq_sub]`. Conclude with `hk p`. Introduce and unpack `⟨_, ξ, rfl⟩ h`. Use `Subtype.ext (funext fun p => ?_)` and prove the remaining obligations. Establish `: -ξ p = k p` using `huniq p (-ξ p) (by show X p - algebraMap K 𝔸[K] (-ξ p) ∈ GroundTheory.Global.fundamentalSet K`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hp : algebraMap K 𝔸[K] (ξ p) + X p ∈ GroundTheory.Global.fundamentalSet K` using `h p (mem_univ p)`. Rewrite using `[map_neg, sub_neg_eq_add, add_comm])` and apply the resulting hypothesis. Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] (ξ p) = algebraMap K 𝔸[K] (-k p)`. Rewrite using `[← this, neg_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem B_isFD : IsAddFundamentalDomain (B_lat K ι) (Set.univ.pi fun _ : ι => GroundTheory.Global.fundamentalSet K)
     (Measure.pi fun _ : ι => GroundTheory.Global.adeleMeasure K) := by
@@ -53,13 +53,13 @@ theorem B_isFD : IsAddFundamentalDomain (B_lat K ι) (Set.univ.pi fun _ : ι => 
     rw [← this, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[← setIntegral_box_eq, ← setIntegral_box_eq]`. Use `set μ := Measure.pi fun _ : ι => GroundTheory.Global.adeleMeasure K`. Use `set D := Set.univ.pi fun _ : ι => GroundTheory.Global.fundamentalSet K`. Establish `hD : IsAddFundamentalDomain (B_lat K ι) D μ` using `B_isFD`. Establish `hf : ∀ (g : B_lat K ι) x, f (g +ᵥ x) = f x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨_, ξ, rfl⟩ x`. Conclude with `hper ξ x`. Establish `hD' : IsAddFundamentalDomain (B_lat K ι) ((fun y => y - c) ⁻¹' D) μ` using `hD.preimage_of_equiv (measurePreserving_sub_right μ c).quasiMeasurePreserving (e := id) Function.bijective_id fun g x => by`. Express the relevant statement in the definitionally equal form `(g +ᵥ x) - c = g +ᵥ (x - c)`. Simplify using `only [vadd_eq_add, AddSubgroup.vadd_def]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hmp : MeasurePreserving (fun x : ι → 𝔸[K] => x + c) μ μ` using `measurePreserving_add_right μ c`. Establish `e1 : (fun x : ι → 𝔸[K] => x + c) ⁻¹' ((fun y => y - c) ⁻¹' D) = D`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hmp.setIntegral_preimage_emb (measurableEmbedding_addRight c) f ((fun y => y - c) ⁻¹' D)`. Rewrite `h2` using `[e1]`. Rewrite using `[h2]`. Conclude with `(hD.setIntegral_eq hD' hf).symm`.
+A detailed English derivation is pending.
 -/
 theorem B_translate (f : (ι → 𝔸[K]) → ℂ)
     (hper : ∀ (ξ : ι → K) x, f (fun i => algebraMap K 𝔸[K] (ξ i) + x i) = f x) (c : ι → 𝔸[K]) :
@@ -92,11 +92,11 @@ section Fubini
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Take `⟨e, he⟩ : ∃ e, e = MeasurableEquiv.piEquivPiSubtypeProd (fun _ : ι => 𝔸[K]) P` from `⟨_, rfl⟩`. Establish `hmp : MeasurePreserving e (Measure.pi fun _ : ι => boxMeasure K) ((Measure.pi fun _ : {i // P i} => boxMeasure K).prod (Measure.pi fun _ : {i // ¬ P i} => boxMeasure K))` using `he ▸ measurePreserving_piEquivPiSubtypeProd (fun _ : ι => boxMeasure K) P`. Establish `hsymm : ∀ u v, e.symm (u, v) = fun i => if h : P i then u ⟨i, h⟩ else v ⟨i, h⟩`. Introduce `u v`. Substitute `he` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Use function extensionality and compare the values at `i`. Simplify using `[MeasurableEquiv.piEquivPiSubtypeProd_symm_apply]`. Establish `hGi` using `integrable_box (K := K) (ι := ι) hG`. Establish `hGe : Integrable (G ∘ e.symm) ((Measure.pi fun _ : {i // P i} => boxMeasure K).prod (Measure.pi fun _ : {i // ¬ P i} => boxMeasure K))` using `((hmp.symm e).integrable_comp_emb e.symm.measurableEmbedding).2 hGi`. Establish `e1 : ∫ x, G x ∂(Measure.pi fun _ : ι => boxMeasure K) = ∫ z, (G ∘ e.symm) z ∂((Measure.pi fun _ : {i // P i} => boxMeasure K).prod (Measure.pi fun _ : {i // ¬ P i} => boxMeasure K))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hmp.integral_comp' (G ∘ e.symm)]`. Simplify using `only [Function.comp_apply, MeasurableEquiv.symm_apply_apply]`. Rewrite using `[e1, integral_prod_symm _ hGe]`. Simplify using `only [Function.comp_apply, hsymm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem B_fubini (P : ι → Prop) [DecidablePred P] (G : (ι → 𝔸[K]) → ℂ) (hG : Continuous G) :
     ∫ x, G x ∂(Measure.pi fun _ : ι => boxMeasure K) =
@@ -124,13 +124,13 @@ theorem B_fubini (P : ι → Prop) [DecidablePred P] (G : (ι → 𝔸[K]) → �
   simp only [Function.comp_apply, hsymm]
 
 /- English proof (translation)
-Rewrite using `[B_fubini P (fun x => f (x - ℓ x)) (hf.comp (continuous_id.sub hℓc)), B_fubini P f hf]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Set `J : ({i // P i} → 𝔸[K]) → (ι → 𝔸[K])` to `fun u i => if h : P i then u ⟨i, h⟩ else v ⟨i, h⟩`. Set `c : {i // P i} → 𝔸[K]` to `fun i => ℓ (J 0) i.1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : ∀ u, J u - ℓ (J u) = J (u + -c)`. Introduce `u`. Establish `hl : ℓ (J u) = ℓ (J 0)` using `hℓ2 _ _ fun i hi => by simp [J, hi]`. Use function extensionality and compare the values at `i`. Rewrite using `[hl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : P i`. Simplify using `[J, hi, c, sub_eq_add_neg]`. Simplify using `[J, hi, hℓ1 _ i hi]`. Express the relevant statement in the definitionally equal form `∫ u, f (J u - ℓ (J u)) ∂_ = ∫ u, f (J u) ∂_`. Repeatedly rewrite using `[key]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `B_translate (fun u => f (J u)) (fun ξ u => ?_) (-c)` and prove the remaining obligations. Establish `e : J (fun i => algebraMap K 𝔸[K] (ξ i) + u i) = fun i => algebraMap K 𝔸[K] ((fun i => if h : P i then ξ ⟨i, h⟩ else 0) i) + J u i`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : P i <;> simp [J, hi]`. Rewrite using `[e, hper]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem B_shear (P : ι → Prop) [DecidablePred P] (f : (ι → 𝔸[K]) → ℂ) (hf : Continuous f)
     (hper : ∀ (ξ : ι → K) x, f (fun i => algebraMap K 𝔸[K] (ξ i) + x i) = f x)

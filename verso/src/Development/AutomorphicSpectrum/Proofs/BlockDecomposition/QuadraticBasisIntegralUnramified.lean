@@ -14,9 +14,9 @@ section Val
 variable {K : Type} [Field K] (w : Valuation K (WithZero (Multiplicative ℤ)))
 
 /- English proof (translation)
-Establish `h0 : w x ≠ 0` using `(Valuation.ne_zero_iff w).2 hx`. Take `⟨a, ha⟩ : ∃ a : ℤ, w x = WithZero.exp a` from `⟨WithZero.log (w x), (WithZero.exp_log h0).symm⟩`. Rewrite `h1` using `[ha]`. Establish `ha0 : a ≤ 0`. Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Use `⟨(-a).toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, Int.toNat_of_nonneg (by omega), neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_exp {x : K} (hx : x ≠ 0) (h1 : w x ≤ 1) :
     ∃ k : ℕ, w x = WithZero.exp (-(k : ℤ)) := by
@@ -30,7 +30,7 @@ theorem exists_exp {x : K} (hx : x ≠ 0) (h1 : w x ≤ 1) :
   rw [ha, Int.toNat_of_nonneg (by omega), neg_neg]
 
 /- English proof (translation)
-Rewrite using `[map_pow, hϖ, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem val_pow {ϖ : K} (hϖ : w ϖ = WithZero.exp (-1 : ℤ)) (k : ℕ) :
     w (ϖ ^ k) = WithZero.exp (-(k : ℤ)) := by
@@ -41,13 +41,11 @@ theorem val_pow {ϖ : K} (hϖ : w ϖ = WithZero.exp (-1 : ℤ)) (k : ℕ) :
 variable {D : K}
 
 /- English proof (translation)
-Introduce `hN`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Establish `hx : x ≠ 0` using `h.resolve_right (by simp)`. Conclude with `hx (by simpa using hN)`. Establish `he : (x / y) ^ 2 = D`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `hN`. Distinguish the cases in `hle : w (x / y) ≤ 1`. Apply `hsq _ hle` to reduce the goal to its premises. Rewrite using `[he, sub_self, map_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_lt_one`. Use `push_neg at hle`. Establish `h2 : w (x / y) ^ 2 = 1` using `by rw [← map_pow, he, hD]`. Establish `h3 : (1 : WithZero (Multiplicative ℤ)) < w (x / y) ^ 2` using `one_lt_pow' hle two_ne_zero`. Rewrite `h3` using `[h2]`.
-
-Conclude with `lt_irrefl _ h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ne_zero (hD : w D = 1) (hsq : ∀ e : K, w e ≤ 1 → ¬ w (e ^ 2 - D) < 1) {x y : K}
     (h : x ≠ 0 ∨ y ≠ 0) : x ^ 2 - D * y ^ 2 ≠ 0 := by
@@ -69,15 +67,13 @@ theorem norm_ne_zero (hD : w D = 1) (hsq : ∀ e : K, w e ≤ 1 → ¬ w (e ^ 2 
       exact lt_irrefl _ h3
 
 /- English proof (translation)
-Break down `lt_or_eq_of_le hq with hq1 | hq1` into its components or cases. Establish `hp1 : w p = 1` using `h.resolve_right (ne_of_lt hq1)`. Establish `hA : w (p ^ 2) = 1` using `by rw [map_pow, hp1, one_pow]`. Establish `hB : w (D * q ^ 2) < 1`. Rewrite using `[map_mul, map_pow, hD, one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_lt_one₀ zero_le' hq1 two_ne_zero`. Rewrite using `[sub_eq_add_neg, Valuation.map_add_eq_of_lt_left w (by rwa [Valuation.map_neg, hA]), hA]`. Establish `hq0 : q ≠ 0`. Introduce `h0`. Rewrite `hq1` using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one hq1`. Establish `hsplit : p ^ 2 - D * q ^ 2 = q ^ 2 * ((p / q) ^ 2 - D)`. Clear the denominators using the available nonvanishing facts. Establish `he : w (p / q) ≤ 1` using `by rw [map_div₀, hq1, div_one]; exact hp`. Establish `hle : w ((p / q) ^ 2 - D) ≤ 1`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (Valuation.map_sub w _ _) (max_le ?_ (le_of_eq hD))` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `pow_le_one₀ zero_le' he`. Establish `hge : ¬ w ((p / q) ^ 2 - D) < 1` using `hsq _ he`. Rewrite using `[hsplit, map_mul, map_pow, hq1, one_pow, one_mul]`.
-
-Conclude with `le_antisymm hle (not_lt.1 hge)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_val (hD : w D = 1) (hsq : ∀ e : K, w e ≤ 1 → ¬ w (e ^ 2 - D) < 1) {p q : K}
     (hp : w p ≤ 1) (hq : w q ≤ 1) (h : w p = 1 ∨ w q = 1) : w (p ^ 2 - D * q ^ 2) = 1 := by
@@ -113,7 +109,7 @@ variable {K A : Type} [Field K] [CommRing A] [Algebra K A]
   (w : Valuation K (WithZero (Multiplicative ℤ))) (B : Module.Basis (Fin 2) K A) {D : K}
 
 /- English proof (translation)
-Establish `hc : algebraMap K A (p ^ 2 - D * q ^ 2) * algebraMap K A (1 / (p ^ 2 - D * q ^ 2)) = 1`. Rewrite using `[← map_mul, mul_one_div_cancel hN, map_one]`. Rewrite using `[← hc, div_eq_mul_one_div p, div_eq_mul_one_div (-q)]`. Simplify using `only [map_mul, map_sub, map_neg, map_pow, ← hBD]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_conj_div (hBD : B 1 * B 1 = algebraMap K A D) (p q : K)
     (hN : p ^ 2 - D * q ^ 2 ≠ 0) :
@@ -127,15 +123,15 @@ theorem mul_conj_div (hBD : B 1 * B 1 = algebraMap K A D) (p q : K)
   ring
 
 /- English proof (translation)
-Use `⟨⟨0, 1, ?_⟩, mul_comm, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1` using `B.ne_zero 0`. Rewrite `h1` using `[hB0]`. Conclude with `h1 h.symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hxpq : x = algebraMap K A (B.repr x 0) + algebraMap K A (B.repr x 1) * B 1` using `by conv_lhs => rw [← B.sum_repr x]`. Rewrite using `[Fin.sum_univ_two, hB0, Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `hpq : B.repr x 0 ≠ 0 ∨ B.repr x 1 ≠ 0`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hc`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hxpq, hc.1, hc.2]`. Simplify using the standard rewrite rules. Take `⟨p, q, hxe, hpq'⟩ : ∃ p q : K, x = algebraMap K A p + algebraMap K A q * B 1 ∧ (p ≠ 0 ∨ q ≠ 0)` from `⟨_, _, hxpq, hpq⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN` using `hne p q hpq'`. Use `⟨algebraMap K A (p / (p ^ 2 - D * q ^ 2)) + algebraMap K A (-q / (p ^ 2 - D * q ^ 2)) * B 1, ?_⟩` and prove the remaining obligations. Establish `hc : algebraMap K A (p ^ 2 - D * q ^ 2) * algebraMap K A (1 / (p ^ 2 - D * q ^ 2)) = 1`. Rewrite using `[← map_mul, mul_one_div_cancel hN, map_one]`. Rewrite using `[hxe, ← hc, div_eq_mul_one_div p, div_eq_mul_one_div (-q)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_mul, map_sub, map_neg, map_pow, ← hBD]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isField (hB0 : B 0 = 1) (hBD : B 1 * B 1 = algebraMap K A D)
     (hne : ∀ p q : K, p ≠ 0 ∨ q ≠ 0 → p ^ 2 - D * q ^ 2 ≠ 0) : IsField A := by
@@ -167,35 +163,31 @@ theorem isField (hB0 : B 0 = 1) (hBD : B 1 * B 1 = algebraMap K A D)
 variable {ϖ : K}
 
 /- English proof (translation)
-Establish `hrep : ∀ a b : K, B.repr (algebraMap K A a + algebraMap K A b * B 1) 0 = a ∧ B.repr (algebraMap K A a + algebraMap K A b * B 1) 1 = b`. Introduce `a b`. Establish `h : algebraMap K A a + algebraMap K A b * B 1 = a • B 0 + b • B 1`. Rewrite using `[hB0, Algebra.smul_def, Algebra.smul_def, mul_one]`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.single_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨p, q, hxpq, hp, hq⟩ : ∃ p q : K, x = algebraMap K A p + algebraMap K A q * B 1 ∧ w p ≤ 1 ∧ w q ≤ 1 := by`. Use `⟨B.repr x 0, B.repr x 1, ?_, hx 0, hx 1⟩` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr x]`. Rewrite using `[Fin.sum_univ_two, hB0, Algebra.smul_def, Algebra.smul_def, mul_one]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hxpq` using the available equality. Establish `hpq : p ≠ 0 ∨ q ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hx0` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc.1, hc.2]`. Simplify using the standard rewrite rules. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `hϖ` using `[h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `WithZero.zero_ne_coe hϖ`. Choose the witnesses or unpack the hypotheses as in `⟨m, hpm, hqm, hor⟩ : ∃ m : ℕ, w p ≤ WithZero.exp (-(m : ℤ)) ∧ w q ≤ WithZero.exp (-(m : ℤ)) ∧ (w p = WithZero.exp (-(m : ℤ)) ∨ w q = WithZero.exp (-(m : ℤ))) := by`. Distinguish the cases in `hp0 : p = 0`. Take `⟨b, hb⟩` from `exists_exp w (hpq.resolve_left (not_not.2 hp0)) hq`. Conclude with `⟨b, (by rw [hp0, map_zero]; exact zero_le'), le_of_eq hb, Or.inr hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hq0 : q = 0`. Take `⟨a, ha⟩` from `exists_exp w hp0 hp`. Conclude with `⟨a, le_of_eq ha, (by rw [hq0, map_zero]; exact zero_le'), Or.inl ha⟩`. Take `⟨a, ha⟩` from `exists_exp w hp0 hp`. Take `⟨b, hb⟩` from `exists_exp w hq0 hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `le_total a b with hab | hab` into its components or cases. Use `⟨a, le_of_eq ha, ?_, Or.inl ha⟩` and prove the remaining obligations. Rewrite using `[hb, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `⟨b, ?_, le_of_eq hb, Or.inr hb⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[ha, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hc : w ((ϖ ^ m)⁻¹) = WithZero.exp (m : ℤ)`. Rewrite using `[map_inv₀, val_pow w hϖ m, ← WithZero.exp_neg, neg_neg]`. Establish `hone : WithZero.exp (-(m : ℤ)) * WithZero.exp (m : ℤ) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_add, neg_add_cancel, WithZero.exp_zero]`. Establish `hp' : w (p * (ϖ ^ m)⁻¹) ≤ 1`. Rewrite using `[map_mul, hc, ← hone]`. Conclude with `mul_le_mul' hpm le_rfl`. Establish `hq' : w (q * (ϖ ^ m)⁻¹) ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hc, ← hone]`. Conclude with `mul_le_mul' hqm le_rfl`. Establish `hor' : w (p * (ϖ ^ m)⁻¹) = 1 ∨ w (q * (ϖ ^ m)⁻¹) = 1`. Break down `hor with h | h` into its components or cases. Use `left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, hc, h, hone]`. Use `right`. Rewrite using `[map_mul, hc, h, hone]`. Establish `hN1` using `norm_val w hD hsq hp' hq' hor'`. Establish `hN : (p * (ϖ ^ m)⁻¹) ^ 2 - D * (q * (ϖ ^ m)⁻¹) ^ 2 ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hN1` using `[h, map_zero]`. Conclude with `zero_ne_one hN1`. Use `⟨m, algebraMap K A (p * (ϖ ^ m)⁻¹) + algebraMap K A (q * (ϖ ^ m)⁻¹) * B 1, algebraMap K A (p * (ϖ ^ m)⁻¹ / ((p * (ϖ ^ m)⁻¹) ^ 2 - D * (q * (ϖ ^ m)⁻¹) ^ 2)) + algebraMap K A (-(q * (ϖ ^ m)⁻¹) / ((p * (ϖ ^ m)⁻¹) ^ 2 - D * (q * (ϖ ^ m)⁻¹) ^ 2)) * B 1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j fin_cases j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((⟨0, by norm_num⟩ : Fin 2)) = 0 from rfl, (hrep _ _).1]`. Conclude with `hp'`. Rewrite using `[show ((⟨1, by norm_num⟩ : Fin 2)) = 1 from rfl, (hrep _ _).2]`. Conclude with `hq'`. Introduce `j fin_cases j`.
-
-Rewrite using `[show ((⟨0, by norm_num⟩ : Fin 2)) = 0 from rfl, (hrep _ _).1, map_div₀, hN1, div_one]`. Conclude with `hp'`. Rewrite using `[show ((⟨1, by norm_num⟩ : Fin 2)) = 1 from rfl, (hrep _ _).2, map_div₀, hN1, div_one, Valuation.map_neg]`. Conclude with `hq'`. Conclude with `mul_conj_div B hBD _ _ hN`.
-
-Establish `e1 : ϖ ^ m * (p * (ϖ ^ m)⁻¹) = p` using `by field_simp`. Establish `e2 : ϖ ^ m * (q * (ϖ ^ m)⁻¹) = q` using `by field_simp`. Rewrite using `[mul_add, ← mul_assoc, ← map_pow, ← map_mul, ← map_mul, e1, e2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor (hϖ : w ϖ = WithZero.exp (-1 : ℤ)) (hB0 : B 0 = 1)
     (hBD : B 1 * B 1 = algebraMap K A D) (hD : w D = 1)
@@ -287,15 +279,15 @@ theorem exists_factor (hϖ : w ϖ = WithZero.exp (-1 : ℤ)) (hB0 : B 0 = 1)
     rw [mul_add, ← mul_assoc, ← map_pow, ← map_mul, ← map_mul, e1, e2]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hji`. Use `push_neg at hji`. Take `⟨k, rfl⟩ : ∃ k, j = i + (k + 1)` from `⟨j - i - 1, by omega⟩`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`. Establish `hi : IsUnit ((algebraMap K A ϖ) ^ i)` using `(IsUnit.map (algebraMap K A) (Ne.isUnit hϖ0)).pow i`. Establish `h1 : (1 : A) = algebraMap K A (ϖ ^ (k + 1)) * u`. Apply `hi.mul_left_cancel` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_one, map_pow, ← mul_assoc, ← pow_add]`. Conclude with `h`. Establish `hu' : u = algebraMap K A ((ϖ ^ (k + 1))⁻¹)`. Establish `hk : algebraMap K A ((ϖ ^ (k + 1))⁻¹) * algebraMap K A (ϖ ^ (k + 1)) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ (pow_ne_zero _ hϖ0), map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hk, one_mul]`. Use `_ = algebraMap K A ((ϖ ^ (k + 1))⁻¹) := by rw [← h1, mul_one]`. Establish `hr : B.repr u 0 = (ϖ ^ (k + 1))⁻¹`. Rewrite using `[hu', Algebra.algebraMap_eq_smul_one, ← hB0, map_smul, B.repr_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2` using `hu 0`. Rewrite `h2` using `[hr, map_inv₀, map_pow, hϖ, ← WithZero.exp_nsmul, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Simplify using `at h2`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_of_eq_mul (hϖ : w ϖ = WithZero.exp (-1 : ℤ)) (hB0 : B 0 = 1) {i j : ℕ} {u : A}
     (hu : ∀ l, w (B.repr u l) ≤ 1)
@@ -334,9 +326,9 @@ section Place
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hv : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1 : ℤ)`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`. Use `⟨(π : v.adicCompletion F), hv, ?_⟩` and prove the remaining obligations. Establish `h0 : WithZero.exp (-1 : ℤ) ≠ 0` using `WithZero.exp_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[NumberField.FinitePlace.norm_def, hv, WithZeroMulInt.toNNReal_neg_apply _ h0]`. Establish `he : Multiplicative.toAdd (WithZero.unzero h0) = -1` using `rfl`. Rewrite using `[he, zpow_neg_one, NNReal.coe_inv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_unif (v : HeightOneSpectrum (𝓞 F)) :
     ∃ ϖ : Fv F v, Valued.v ϖ = WithZero.exp (-1 : ℤ) ∧
@@ -354,7 +346,7 @@ theorem exists_unif (v : HeightOneSpectrum (𝓞 F)) :
 end Place
 
 /- English proof (translation)
-Rewrite using `[← B.sum_repr y]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hy k) (hB k j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem basis_repr_mem_subring_of_change_of_basis {K V ι ι' : Type} [Field K] [AddCommGroup V] [Module K V] [Fintype ι]
     (S : Subring K) (B : Module.Basis ι K V) (B' : Module.Basis ι' K V)
@@ -365,31 +357,27 @@ private theorem basis_repr_mem_subring_of_change_of_basis {K V ι ι' : Type} [F
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hy k) (hB k j)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ d b b₂ D hb0 _ hbD v hD _ H1 H2 hno`. Establish `hB0 : Algebra.TensorProduct.basis (Fv F v) b₂ 0 = 1`. Rewrite using `[Algebra.TensorProduct.basis_apply, hb0]`. Both sides reduce to the same expression. Establish `hBD : Algebra.TensorProduct.basis (Fv F v) b₂ 1 * Algebra.TensorProduct.basis (Fv F v) b₂ 1 = algebraMap (Fv F v) (Fv F v ⊗[F] E) (algebraMap F (Fv F v) D)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.basis_apply, ← Algebra.TensorProduct.includeRight_apply (R := F) (A := Fv F v), ← map_mul, hbD, AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`. Establish `hsq : ∀ e : Fv F v, Valued.v e ≤ 1 → ¬ Valued.v (e ^ 2 - algebraMap F (Fv F v) D) < 1` using `fun e he hlt => hno ⟨⟨e, he⟩, hlt⟩`. Establish `hfield : IsField (Fv F v ⊗[F] E)` using `isField (Algebra.TensorProduct.basis (Fv F v) b₂) hB0 hBD (fun p q h => norm_ne_zero Valued.v hD hsq h)`. Use `haveI := hfield.nontrivial`. Take `⟨ϖ, hϖ, hnorm⟩` from `exists_unif v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`. Establish `hϖO : ϖ ∈ v.adicCompletionIntegers F` using `by show Valued.v ϖ ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[hϖ, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions. Establish `hincl2 : ∀ j, Algebra.TensorProduct.basis (Fv F v) b₂ j = inclR (Fv F v) (b₂ j)`. Introduce `j`. Rewrite using `[Algebra.TensorProduct.basis_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hincl : ∀ k, Algebra.TensorProduct.basis (Fv F v) b k = inclR (Fv F v) (b k)`. Introduce `k`. Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `T1 : ∀ y : Fv F v ⊗[F] E, (∀ j, (Algebra.TensorProduct.basis (Fv F v) b₂).repr y j ∈ v.adicCompletionIntegers F) → y ∈ intK b v`. Introduce `y hy`. Simplify using `only [intK, Set.mem_setOf_eq]`. Introduce `k`. Conclude with `basis_repr_mem_subring_of_change_of_basis (v.adicCompletionIntegers F).toSubring (Algebra.TensorProduct.basis (Fv F v) b₂) (Algebra.TensorProduct.basis (Fv F v) b) (fun j k => by rw [hincl2]; exact H2 j k) y hy k`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `T2 : ∀ y ∈ intK b v, ∀ j, (Algebra.TensorProduct.basis (Fv F v) b₂).repr y j ∈ v.adicCompletionIntegers F`. Introduce `y hy j`. Simplify using `only [intK, Set.mem_setOf_eq] at hy`. Conclude with `basis_repr_mem_subring_of_change_of_basis (v.adicCompletionIntegers F).toSubring (Algebra.TensorProduct.basis (Fv F v) b) (Algebra.TensorProduct.basis (Fv F v) b₂) (fun k j => by rw [hincl]; exact H1 k j) y hy j`. Establish `hsig : sigR (Fv F v) σ (algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ) = algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`. Use `⟨hfield, fun i => (algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ) ^ i, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `⟨(IsUnit.map _ (Ne.isUnit hϖ0)).pow i, T1 _ fun j => ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_pow, Algebra.algebraMap_eq_smul_one, ← hB0, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, smul_eq_mul]`. Use `(v.adicCompletionIntegers F).mul_mem _ _ ((v.adicCompletionIntegers F).pow_mem hϖO i) ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs`. Conclude with `(v.adicCompletionIntegers F).one_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(v.adicCompletionIntegers F).zero_mem`. Introduce `i`. Use `⟨ϖ ^ (2 * i), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow (algebraMap (Fv F v) (Fv F v ⊗[F] E)), map_pow (sigR (Fv F v) σ), hsig, ← pow_add, two_mul]`. Rewrite using `[norm_pow, hnorm, inv_pow]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[qv]`. Introduce `x hx hux`. Take `⟨i, u, u', hu, hu', huu, hxu⟩` from `exists_factor Valued.v (Algebra.TensorProduct.basis (Fv F v) b₂) hϖ hB0 hBD hD hsq x (fun j => T2 x hx j) hux.ne_zero`. Conclude with `⟨i, u, T1 u hu, u', T1 u' hu', huu, hxu⟩`. Introduce `i j u hu u' hu' huu h`.
-
-Establish `h' : (algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ) ^ i = (algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ) ^ j * u` using `h`. Establish `h1` using `le_of_eq_mul Valued.v (Algebra.TensorProduct.basis (Fv F v) b₂) hϖ hB0 (fun l => T2 u hu l) h'`. Establish `h'' : (algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ) ^ j = (algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ) ^ i * u'`. Rewrite using `[h', mul_assoc, huu, mul_one]`. Establish `h2` using `le_of_eq_mul Valued.v (Algebra.TensorProduct.basis (Fv F v) b₂) hϖ hB0 (fun l => T2 u' hu' l) h''`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem inert_content : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (b₂ : Module.Basis (Fin 2) F E) (D : F), b₂ 0 = 1 → σ (b₂ 1) = -b₂ 1 → b₂ 1 * b₂ 1 = algebraMap F E D → ∀ v : HeightOneSpectrum (𝓞 F), Valued.v (algebraMap F (Fv F v) D) = 1 → Valued.v (algebraMap F (Fv F v) 2) = 1 → (∀ k j, (Algebra.TensorProduct.basis (Fv F v) b₂).repr (inclR (Fv F v) (b k)) j ∈ v.adicCompletionIntegers F) → (∀ j k, (Algebra.TensorProduct.basis (Fv F v) b).repr (inclR (Fv F v) (b₂ j)) k ∈ v.adicCompletionIntegers F) → (¬ ∃ e : v.adicCompletionIntegers F, Valued.v ((e : Fv F v) ^ 2 - algebraMap F (Fv F v) D) < 1) → IsField (Fv F v ⊗[F] E) ∧ ∃ c : ℕ → Fv F v ⊗[F] E, (∀ i, IsUnit (c i) ∧ c i ∈ intK b v) ∧ (∀ i, ∃ t : Fv F v, algebraMap (Fv F v) (Fv F v ⊗[F] E) t = sigR (Fv F v) σ (c i) * c i ∧ ‖t‖ = ((qv v : ℝ) ^ (2 * i))⁻¹) ∧ (∀ x ∈ intK b v, IsUnit x → ∃ i, ∃ u ∈ intK b v, ∃ u' ∈ intK b v, u * u' = 1 ∧ x = c i * u) ∧ (∀ i j, ∀ u ∈ intK b v, ∀ u' ∈ intK b v, u * u' = 1 → c i = c j * u → i = j) := by
   intro F E _ _ _ _ _ σ _ d b b₂ D hb0 _ hbD v hD _ H1 H2 hno

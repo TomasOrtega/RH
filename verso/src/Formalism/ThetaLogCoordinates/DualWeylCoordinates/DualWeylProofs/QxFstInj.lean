@@ -11,9 +11,9 @@ variable {n : ℕ} [NeZero n] {κ : Type} [Fintype κ] [DecidableEq κ] {B : Mat
   {ps : (mu nu : Fin n → ℤ) → Matrix (TIdx mu × κ) (TIdx nu) ℤ} {M M' : GLMod n}
 
 /- English proof (translation)
-Take `⟨⟨j, nu, hnu⟩, hx⟩` from `x`. Take `⟨⟨j', nu', hnu'⟩, hy⟩` from `y`. Simplify using `only at h hx hy`. Substitute `h` using the available equality. Substitute `hx` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma qx_fst_inj (CF : ColFam M) (nu0 : Fin n → ℤ) (x y : {x : qx_J Str CF // (x.2 : Fin n → ℤ) = nu0})
     (h : x.1.1 = y.1.1) : x = y := by
@@ -26,25 +26,23 @@ lemma qx_fst_inj (CF : ColFam M) (nu0 : Fin n → ℤ) (x y : {x : qx_J Str CF /
   rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨x1, hx1⟩` from `hcon`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `s : Finset (Fin n → ℤ)` to `(univ.filter fun x => g x ≠ 0).image fun x => CF.mu x.1.1`. Take `⟨mu0, hmu0, hmax⟩` from `qb_exists_max s ⟨_, mem_image.2 ⟨x1, by simp [hx1], rfl⟩⟩`. Take `⟨x0, hx0, rfl⟩` from `mem_image.1 hmu0`. Use `replace hx0 : g x0 ≠ 0 := by simpa using hx0`. Take `⟨k0, hk0, heps⟩` from `hd.2.2.2.2.1 (CF.mu x0.1.1) (CF.dom _) x0.1.2 x0.1.2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK : ∀ x, g x ≠ 0 → ∀ K, ps (CF.mu x.1.1) x.1.2 (K, k0) (canT (x.1.2 : Fin n → ℤ)) ≠ 0 → CF.mu x.1.1 = CF.mu x0.1.1 ∧ K = canT (CF.mu x.1.1)`. Introduce `x hgx K hne`. Establish `h1` using `qx_wt_can hd (CF.dom _) x.1.2.2 K k0 hne`. Establish `h2 : qb_wtT (CF.mu x.1.1) K = CF.mu x0.1.1`. Rewrite using `[h1, hk0, x.2, x0.2, sub_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : DomLE (CF.mu x0.1.1) (CF.mu x.1.1)` using `h2 ▸ qb_wtT_le (CF.dom _) K`. Establish `h4` using `hmax _ (mem_image.2 ⟨x, by simp [hgx], rfl⟩) h3`. Conclude with `⟨h4, (qb_wtT_eq_iff (CF.dom _) K).1 (h2.trans h4.symm)⟩`. Establish `hterm : ∀ x (i : M.ι), g x * ((qx_ph ps e CF x.1 (e.symm (i, k0)) (canT (x.1.2 : Fin n → ℤ)) : ℤ) : F) = if CF.mu x.1.1 = CF.mu x0.1.1 then (g x * ((ps (CF.mu x.1.1) x.1.2 (canT (CF.mu x.1.1), k0) (canT (x.1.2 : Fin n → ℤ)) : ℤ) : F)) * ((CF.ph x.1.1 i (canT (CF.mu x.1.1)) : ℤ) : …`. Introduce `x i`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hgx : g x = 0`. Simplify using `[hgx]`. Rewrite using `[qx_ph_apply]`. Simplify using `only [Equiv.apply_symm_apply]`. Use `split_ifs with hm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_eq_single (canT (CF.mu x.1.1))]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `K _ hKne`. Conclude with `mul_eq_zero_of_right _ (by_contra fun h => hKne (hK x hgx K h).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (mem_univ _) h`. Rewrite using `[Finset.sum_eq_zero, Int.cast_zero, mul_zero]`. Introduce `K _`. Conclude with `mul_eq_zero_of_right _ (by_contra fun h => hm (hK x hgx K h).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrel : ∀ i : M.ι, ∑ x, g x * ((qx_ph ps e CF x.1 (e.symm (i, k0)) (canT (x.1.2 : Fin n → ℤ)) : ℤ) : F) = 0`. Introduce `i`. Use `congrFun hg (e.symm (i, k0))` as an intermediate fact. Simplify `this` using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Simplify using `only [hterm] at hrel`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hli` using `(qb_indepF CF F (CF.mu x0.1.1)).comp (fun x : {x : {x : qx_J Str CF // (x.2 : Fin n → ℤ) = nu0} // CF.mu x.1.1 = CF.mu x0.1.1} => (⟨x.1.1.1, x.2⟩ : {j : CF.J // CF.mu j = CF.mu x0.1.1})) (fun x y h => Subtype.ext (qx_fst_inj CF nu0 x.1 y.1 (congrArg Subtype.val h)))`. Establish `h0` using `Fintype.linearIndependent_iff.1 hli (fun x => g x.1 * ((ps (CF.mu x.1.1.1) x.1.1.2 (canT (CF.mu x.1.1.1), k0) (canT (x.1.1.2 : Fin n → ℤ)) : ℤ) : F)) ?_ ⟨x0, rfl⟩`. Simplify using `only at h0`. Apply the tactic sequence `rcases heps with h | h <;> rw [h] at h0 <;> simp at h0 <;> exact hx0 h0`. Use function extensionality and compare the values at `i`.
-
-Use `hrel i` as an intermediate fact. Rewrite `this` using `[← Finset.sum_filter, Finset.sum_subtype (p := fun x => CF.mu x.1.1 = CF.mu x0.1.1) _ (by simp)]`. Simplify `this` using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Function.comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem qx_indep (hd : IsStripData B be Str ps) (e : M'.ι ≃ M.ι × κ) (CF : ColFam M) (F : Type) [Field F]
     (nu0 : Fin n → ℤ) :

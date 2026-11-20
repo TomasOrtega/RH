@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.PrimeNatCastMembership
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Distinguish the cases in `h1 : n = 1`. Substitute `h1` using the available equality. Conclude with `absurd ((Ideal.eq_top_iff_one P).2 (by simpa using hmem)) hP.ne_top`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, m, hm⟩` from `Nat.exists_prime_and_dvd h1`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn (by simpa using hm)`. Establish `hlt : m < n`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hq.two_le`. Establish `h3` using `Nat.pos_of_ne_zero hm0`. Rewrite using `[hm]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hprod : (q : A) * (m : A) ∈ P`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← Nat.cast_mul, ← hm]`. Conclude with `hmem`. Break down `hP.mem_or_mem hprod with h | h` into its components or cases. Conclude with `⟨q, hq, h⟩`. Conclude with `ih m hlt hm0 h`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_prime_natCast_mem {A : Type} [inst : CommRing A] (P : Ideal A) (hP : Ideal.IsPrime P)
     (n : ℕ) (hn : n ≠ (0 : ℕ)) (hmem : (↑n : A) ∈ P) :

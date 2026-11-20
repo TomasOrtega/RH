@@ -7,20 +7,20 @@ namespace GlobalTheory.Ex.NumD.Int
 variable {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap ℤ N.X ℝ}
 
 /- English proof (translation)
-Rewrite using `[cubN, Units.coe_prod, norm_prod]`. Conclude with `Finset.prod_eq_one fun i _ => h.θ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cubN (h : N.Int q) (k : ℕ) (a b x : N.A) : ‖((cubN N.θ k a b x : Cˣ) : C)‖ = 1 := by
   rw [cubN, Units.coe_prod, norm_prod]
   exact Finset.prod_eq_one fun i _ => h.θ _ _ _
 
 /- English proof (translation)
-Rewrite using `[dbl, Units.val_div_eq_div_val, norm_div, h.θ, h.σ, div_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_dbl (h : N.Int q) (x : N.A) : ‖((dbl N.θ N.σ x : Cˣ) : C)‖ = 1 := by
   rw [dbl, Units.val_div_eq_div_val, norm_div, h.θ, h.σ, div_one]
 
 /- English proof (translation)
-Rewrite using `[mulq, Units.coe_prod, norm_prod]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_div_eq_div_val, norm_div, h.norm_cubN, Units.val_pow_eq_pow_val, norm_pow, h.norm_dbl, one_pow, div_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_mulq (h : N.Int q) (n : ℕ) (x : N.A) : ‖((mulq N.θ N.σ n x : Cˣ) : C)‖ = 1 := by
   rw [mulq, Units.coe_prod, norm_prod]
@@ -29,7 +29,7 @@ theorem norm_mulq (h : N.Int q) (n : ℕ) (x : N.A) : ‖((mulq N.θ N.σ n x : 
     one_pow, div_one]
 
 /- English proof (translation)
-Rewrite using `[NumD.τ, Units.val_div_eq_div_val, Units.val_div_eq_div_val, norm_div, norm_div, h.ψ, h.ψ, h.ψ, ← Real.exp_sub, ← Real.exp_sub, QuadraticMap.polar]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_τ (h : N.Int q) (a b : N.X) : ‖(N.τ a b : C)‖ = Real.exp (-QuadraticMap.polar q a b) := by
   rw [NumD.τ, Units.val_div_eq_div_val, Units.val_div_eq_div_val, norm_div, norm_div, h.ψ, h.ψ, h.ψ,
@@ -38,7 +38,7 @@ theorem norm_τ (h : N.Int q) (a b : N.X) : ‖(N.τ a b : C)‖ = Real.exp (-Qu
   ring
 
 /- English proof (translation)
-Use `congrArg (fun u : Cˣ => ‖(u : C)‖) (g.pow_s k χ)` as an intermediate fact. Simplify `this` using `only [Units.val_mul, norm_mul, h.norm_cubN, mul_one, Units.val_pow_eq_pow_val, norm_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_pow_generators_eq_pow (h : N.Int q) (g : N.Gt) (k : ℕ) (χ : N.X) :
     ‖((g ^ k).s χ : C)‖ = ‖(g.s χ : C)‖ ^ k := by
@@ -46,9 +46,9 @@ theorem norm_pow_generators_eq_pow (h : N.Int q) (g : N.Gt) (k : ℕ) (χ : N.X)
   simpa only [Units.val_mul, norm_mul, h.norm_cubN, mul_one, Units.val_pow_eq_pow_val, norm_pow] using this
 
 /- English proof (translation)
-Establish `e` using `h.norm_pow_generators_eq_pow p.1.2 k χ`. Rewrite `e` using `[N.mem_QT.1 p.2, NumD.io_s, h.norm_τ]`. Use `(pow_left_inj₀ (norm_nonneg _) (Real.exp_pos _).le hk).1 ?_` and prove the remaining obligations. Rewrite using `[← e, ← Real.exp_nat_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (k : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hk`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem norm_rep_generators_eq_exp (h : N.Int q) {k : ℕ} (p : N.QT k) (hk : k ≠ 0) (χ : N.X) :
     ‖(p.1.2.s χ : C)‖ = Real.exp (-(QuadraticMap.polar q p.1.1.toAdd χ / k)) := by
@@ -61,11 +61,11 @@ theorem norm_rep_generators_eq_exp (h : N.Int q) {k : ℕ} (p : N.QT k) (hk : k 
   field_simp
 
 /- English proof (translation)
-Establish `hk0 : k ≠ 0` using `hk.pos.ne'`. Rewrite using `[NumD.wQ, NumB.wS]`. Simplify using `only [Units.val_div_eq_div_val, Units.val_mul, Units.val_pow_eq_pow_val, norm_div, norm_mul, norm_pow, h.norm_cubN, h.norm_dbl, h.norm_mulq, h.ψ, h.norm_rep_generators_eq_exp p hk0, mul_one, one_pow, div_one]`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_sub, QuadraticMap.polar_self]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨j, rfl⟩` from `hk`. Establish `e : (2 * j + 1 - 1) / 2 = j` using `by omega`. Establish `: ((2 * j + 1 : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hk0`. Rewrite using `[e, two_smul]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_wQ (h : N.Int q) {k : ℕ} (hk : Odd k) (p : N.QT k) :
     ‖(N.wQ p : C)‖ = Real.exp (-(q p.1.1.toAdd / k)) := by
@@ -84,13 +84,13 @@ theorem norm_wQ (h : N.Int q) {k : ℕ} (hk : Odd k) (p : N.QT k) :
   ring
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0` using `hm.pos.ne'`. Rewrite using `[NumD.txT, NumD.vt]`. Simplify using `only [Units.val_div_eq_div_val, Units.val_mul, norm_div, norm_mul, h.norm_mulq, h.ψ, h.norm_wQ hm.pow, h.norm_pow_generators_eq_pow, h.norm_rep_generators_eq_exp p (pow_ne_zero 2 hm0), div_one, NumD.Gt.pow_b]`. Rewrite using `[← mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : q (p.1.1.toAdd + m • χ) = q p.1.1.toAdd + (m : ℝ) ^ 2 * q χ + m * QuadraticMap.polar q p.1.1.toAdd χ`. Establish `a : QuadraticMap.polar q p.1.1.toAdd (m • χ) = m * QuadraticMap.polar q p.1.1.toAdd χ`. Rewrite using `[← natCast_zsmul, QuadraticMap.polar_smul_right, zsmul_eq_mul, Int.cast_natCast]`. Establish `b : q (m • χ) = (m : ℝ) ^ 2 * q χ`. Rewrite using `[← natCast_zsmul, QuadraticMap.map_smul, zsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← a, ← b, QuadraticMap.polar]`. Expand and normalize the polynomial expressions, which then agree. Establish `: (m : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hm0`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_txT (h : N.Int q) {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (χ : N.X) :
     ‖N.txT m p χ‖ = Real.exp (-(q (p.1.1.toAdd + m • χ) / (m : ℝ) ^ 2)) * ‖N.th (N.c χ * p.1.2.b ^ m)‖ := by
@@ -121,7 +121,7 @@ end GlobalTheory.Ex.NumD.Int
 namespace GlobalTheory.Ex
 
 /- English proof (translation)
-Introduce `_ _ _ _ h` and use `⟨fun _ p hk χ => h.norm_rep_generators_eq_exp p hk χ, fun _ hm p χ => h.norm_txT hm p χ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem norm_QT_s_and_norm_txT : ∀ (C : Type) [NormedField C] (N : NumD C) (q : QuadraticMap ℤ N.X ℝ), N.Int q → (∀ (k : ℕ) (p : N.QT k), k ≠ 0 → ∀ χ, ‖(p.1.2.s χ : C)‖ = Real.exp (-(QuadraticMap.polar q p.1.1.toAdd χ / k))) ∧ ∀ (m : ℕ), Odd m → ∀ (p : N.QT (m ^ 2)) χ, ‖N.txT m p χ‖ = Real.exp (-(q (p.1.1.toAdd + m • χ) / (m : ℝ) ^ 2)) * ‖N.th (N.c χ * p.1.2.b ^ m)‖ :=
   fun _ _ _ _ h => ⟨fun _ p hk χ => h.norm_rep_generators_eq_exp p hk χ, fun _ hm p χ => h.norm_txT hm p χ⟩

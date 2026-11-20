@@ -23,17 +23,17 @@ def gR {D : D7} (u : D.what₂.Word) (c : Fin (D.R.k + 1)) : ℝ :=
   if c.val < D.R.k then 1 else -(1 / Formalism.L2.SG.RealObj.Tw u)
 
 /- English proof (translation)
-Apply the tactic sequence `unfold gC gR; split_ifs <;> push_cast <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gC_eq {D : D7} (u : D.what₂.Word) (c : Fin (D.R.k + 1)) : gC u c = ((gR u c : ℝ) : ℂ) := by
   unfold gC gR; split_ifs <;> push_cast <;> rfl
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, -, l, hl, rfl⟩` from `hy`. Take `⟨h1, h2⟩` from `X.Lb_perp l hl a`. Conclude with `⟨by rw [map_smul, h1, smul_zero], by rw [map_smul, h2, smul_zero]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨map_zero _, map_zero _⟩`. Consider the case `add y z _ _ hy hz => exact ⟨by rw [map_add, hy.1, hz.1, add_zero], by rw [map_add, hy.2, hz.2, add_zero]⟩`. Consider the case `smul c y _ hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E c y, map_smul, hy.1, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul D.host.E c y, map_smul, hy.2, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem perp_aaLbS {D : D7} (X : HidaSetting D) (b : Fin D.R.rS) {x : (VS D).V} (hx : x ∈ aaLbS X b) (a : Fin D.R.rS) :
     (VS D).hT (X.eX a) x = 0 ∧ (VS D).hT (X.fY a) x = 0 := by
@@ -50,9 +50,7 @@ theorem perp_aaLbS {D : D7} (X : HidaSetting D) (b : Fin D.R.rS) {x : (VS D).V} 
     · rw [← algebraMap_smul D.host.E c y, map_smul, hy.2, smul_zero]
 
 /- English proof (translation)
-Establish `hT` using `Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) u`. Unfold `gR`. Use `split_ifs`. Conclude with `one_ne_zero`. Simplify using `only [ne_eq, neg_eq_zero, one_div, inv_eq_zero]`.
-
-Conclude with `hT.ne'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gR_ne {D : D7} (u : D.what₂.Word) (c : Fin (D.R.k + 1)) : gR u c ≠ 0 := by
   have hT := Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) u
@@ -61,9 +59,9 @@ theorem gR_ne {D : D7} (u : D.what₂.Word) (c : Fin (D.R.k + 1)) : gR u c ≠ 0
   · simp only [ne_eq, neg_eq_zero, one_div, inv_eq_zero]; exact hT.ne'
 
 /- English proof (translation)
-Establish `hT` using `Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) u`. Rewrite using `[Fin.prod_univ_castSucc]`. Establish `h1 : ∀ i : Fin D.R.k, |gR u (Fin.castSucc i)| = 1` using `fun i => by`. Unfold `gR; rw [if_pos (by simp)]; simp`. Establish `h2 : |gR u (Fin.last D.R.k)| = 1 / Formalism.L2.SG.RealObj.Tw u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `gR; rw [if_neg (by simp)]; rw [abs_neg, abs_of_pos (by positivity)]`. Rewrite using `[Finset.prod_congr rfl fun i _ => h1 i, Finset.prod_const_one, one_mul, h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_gR {D : D7} (u : D.what₂.Word) : ∏ c : Fin (D.R.k + 1), |gR u c| = 1 / Formalism.L2.SG.RealObj.Tw u := by
   have hT := Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) u
@@ -75,9 +73,9 @@ theorem prod_gR {D : D7} (u : D.what₂.Word) : ∏ c : Fin (D.R.k + 1), |gR u c
   rw [Finset.prod_congr rfl fun i _ => h1 i, Finset.prod_const_one, one_mul, h2]
 
 /- English proof (translation)
-Rewrite using `[← traceRe_holds X]`. Unfold `Qf`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← rowParseval_holds X u x y hx hy v, Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gC_eq, Complex.re_mul_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Qf_rowV {D : D7} (X : HidaSetting D) (u : D.what₂.Word) {x y : (VS D).V}
     (hx : ∀ a, (VS D).hT (X.eX a) x = 0 ∧ (VS D).hT (X.fY a) x = 0)
@@ -91,41 +89,37 @@ theorem Qf_rowV {D : D7} (X : HidaSetting D) (u : D.what₂.Word) {x y : (VS D).
   rw [gC_eq, Complex.re_mul_ofReal]
 
 /- English proof (translation)
-Introduce `D X u b`. Take `⟨m⟩` from `CovolumeSpans.rowRank_holds X b`. Use `set N := Module.finrank ℚ D.host.E * (D.R.k + 1) with hNdef`. Use `set w : Fin N → (InfinitePlace X.B.I.F → Fin (D.R.k + 1) → ℂ) := fun i => rowV X u (m i : (VS D).V) with hw`. Establish `hmem : ∀ i, ((m i : (VS D).V)) ∈ aaLbS X b` using `fun i => (m i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcl : cLat X u (Sum.inl (Sum.inr b)) = AddSubgroup.closure (Set.range w)` using `by show AddSubgroup.closure (rowV X u '' aaLb X b) = _`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ (aaLbS X b).restrictScalars ℤ` using `hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `m.sum_repr ⟨x, hx'⟩`. Establish `e : x = ∑ i, (m.repr ⟨x, hx'⟩ i) • (m i : (VS D).V)`. Use `congrArg Subtype.val hsum` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `: rowV X u (∑ i, (m.repr ⟨x, hx'⟩ i) • (m i : (VS D).V)) = ∑ i, (m.repr ⟨x, hx'⟩ i) • w i`. Establish `h` using `map_sum (Formalism.L2.SG.Pf.NcReal.JX.NOf.rowHom X u) (fun i => (m.repr ⟨x, hx'⟩ i) • (m i : (VS D).V)) Finset.univ`. Simplify using `only [map_zsmul] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, this]`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self i)) _`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨(m i : (VS D).V), hmem i, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hQ : (Matrix.of fun i j => Qf (gR u) (w i) (w j)) = (1 / 2 : ℝ) • (Matrix.of fun i j => (Algebra.trace ℚ D.host.E ((VS D).hT (m i : (VS D).V) (m j : (VS D).V)))).map (Rat.castHom ℝ)`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply, Matrix.map_apply, hw, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `_ = 1 / 2 * (((Algebra.trace ℚ D.host.E ((VS D).hT (m i : (VS D).V) (m j : (VS D).V))) : ℚ) : ℝ)`. Rewrite using `[Qf_rowV X u (perp_aaLbS X b (hmem i)) (perp_aaLbS X b (hmem j))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hTr` using `hT X b m rfl`. Establish `hdE : (discr D.host.E : ℚ) ≠ 0` using `by exact_mod_cast discr_ne_zero D.host.E`. Establish `hNa : (FractionalIdeal.absNorm (aaD D b) : ℚ) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.absNorm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `aaD_ne_zero X b`. Establish `hdetQ : (Matrix.of fun i j => (Algebra.trace ℚ D.host.E ((VS D).hT (m i : (VS D).V) (m j : (VS D).V)))).det ≠ 0`. Introduce `h0`. Rewrite `hTr` using `[h0, abs_zero]`. Conclude with `(mul_ne_zero (pow_ne_zero _ (abs_ne_zero.2 hdE)) (pow_ne_zero _ hNa)) hTr.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hdetG : (Matrix.of fun i j => Qf (gR u) (w i) (w j)).det = (1 / 2 : ℝ) ^ N * (((Matrix.of fun i j => (Algebra.trace ℚ D.host.E ((VS D).hT (m i : (VS D).V) (m j : (VS D).V)))).det : ℚ) : ℝ)`. Rewrite using `[hQ, Matrix.det_smul, Fintype.card_fin]`. Use `congr 1`. Conclude with `(RingHom.map_det (Rat.castHom ℝ) _).symm`. Establish `hdet : (Matrix.of fun i j => Qf (gR u) (w i) (w j)).det ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdetG]; exact mul_ne_zero (pow_ne_zero _ (by norm_num)) (by exact_mod_cast hdetQ)`. Establish `hcard : Fintype.card (InfinitePlace X.B.I.F × Fin (D.R.k + 1) × Fin 2) = N`. Rewrite using `[Fintype.card_prod, Fintype.card_prod, card_ι X, Fintype.card_fin, Fintype.card_fin, hNdef, ← Module.finrank_mul_finrank ℚ D.host.F D.host.E, D.sp.cm.deg2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2, h3⟩` from `covol_of_gram w (gR u) (gR_ne u) hcard hdet`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcl]`. Use `⟨h1, h2, fun F hF hFd => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(volume : Measure (InfinitePlace X.B.I.F → Fin (D.R.k + 1) → ℂ)) F = _`. Rewrite using `[h3 F hF hFd]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set dF : ℝ := |(discr X.B.I.F : ℝ)| with hdF`. Establish `hdF0 : 0 < dF` using `dF_pos X`. Use `set fC : ℕ := Fintype.card (InfinitePlace X.B.I.F) with hfC`. Use `set T : ℝ := Formalism.L2.SG.RealObj.Tw u with hTdef`. Establish `hT0 : 0 < T` using `Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) u`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hNf : N = 2 * (fC * (D.R.k + 1))`. Rewrite using `[← hcard, Fintype.card_prod, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Use `set x : ℝ := -(2 * ((D.R.rS : ℝ) - (b : ℕ))) with hx`. Establish `hTrR : |(((Matrix.of fun i j => (Algebra.trace ℚ D.host.E ((VS D).hT (m i : (VS D).V) (m j : (VS D).V)))).det : ℚ) : ℝ)| = (dF ^ 2) ^ (D.R.k + 1) * (dF ^ x) ^ (2 * (D.R.k + 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h` using `congrArg (fun q : ℚ => (q : ℝ)) hTr`. Simplify using `only [Rat.cast_abs, Rat.cast_mul, Rat.cast_pow] at h`. Rewrite using `[h, ← absDiscrE X, absNorm_aaD X b]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : |(Matrix.of fun i j => Qf (gR u) (w i) (w j)).det| = ((1 / 2 : ℝ) ^ (fC * (D.R.k + 1)) * dF ^ (D.R.k + 1) * (dF ^ x) ^ (D.R.k + 1)) ^ 2`. Rewrite using `[hdetG, abs_mul, hTrR, abs_pow, abs_of_pos (by norm_num : (0 : ℝ) < 1 / 2), hNf]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : 0 ≤ (1 / 2 : ℝ) ^ (fC * (D.R.k + 1)) * dF ^ (D.R.k + 1) * (dF ^ x) ^ (D.R.k + 1)` using `by positivity`. Rewrite using `[hsq, Real.sqrt_sq hnn]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hprod : ∏ v : InfinitePlace X.B.I.F, ∏ c : Fin (D.R.k + 1), |gR u c| = (1 / T) ^ fC`. Simplify using `only [prod_gR, Finset.prod_const, Finset.card_univ]`. Both sides reduce to the same expression. Rewrite using `[hprod]`. Use `show _ = T ^ fC * (2 : ℝ)⁻¹ ^ (fC * (D.R.k + 1)) * dF ^ (((D.R.k : ℝ) + 1) * (1 - 2 * ((D.R.rS : ℝ) - (b : ℕ))))`.
-
-Establish `hexp : dF ^ (D.R.k + 1) * (dF ^ x) ^ (D.R.k + 1) = dF ^ (((D.R.k : ℝ) + 1) * (1 - 2 * ((D.R.rS : ℝ) - (b : ℕ))))`. Rewrite using `[← Real.rpow_natCast dF, ← Real.rpow_natCast (dF ^ x), ← Real.rpow_mul hdF0.le, ← Real.rpow_add hdF0]`. Use `congr 1`. Rewrite using `[hx]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hTinv : ((1 / T) ^ fC)⁻¹ = T ^ fC` using `by rw [one_div, inv_pow, inv_inv]`. Rewrite using `[mul_assoc, hexp, div_eq_mul_inv, hTinv]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem rowBlockCovol_of (hT : TrDetUnimod) : RowBlockCovol := by
   intro D X u b

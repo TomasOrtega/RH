@@ -5,13 +5,13 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Establish `h1 : g z = z.re • g 1 + z.im • g Complex.I`. Rewrite using `[← map_smul, ← map_smul, ← map_add]`. Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `h2 : g (z * Complex.I) = z.re • g Complex.I + (-z.im) • g 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← map_smul, ← map_smul, ← map_add]`. Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `hc : ∀ (c : ℂ) (u : R), c ⊗ₜ[ℝ] u = c • ((1 : ℂ) ⊗ₜ[ℝ] u)`. Introduce `c u`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, h2]`. Simplify using `only [TensorProduct.tmul_add, TensorProduct.tmul_smul]`. Rewrite using `[hc (σ * Complex.I) (g 1), hc (σ * Complex.I) (g Complex.I)]`. Simplify using `only [← algebraMap_smul ℂ z.re, ← algebraMap_smul ℂ z.im, ← algebraMap_smul ℂ (-z.im)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `match_scalars <;> simp only [Complex.coe_algebraMap, Complex.ofReal_neg] <;> first`. Consider the case `ring1`. Consider the case `linear_combination (z.im * σ * σ) * Complex.I_mul_I - z.im * hσ`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 -/
 private theorem one_tmul_add_tmul_mul_I_eq_smul_of_sq_eq_one {R : Type} [CommRing R] [Algebra ℝ R] (g : ℂ →ₗ[ℝ] R) (σ z : ℂ)
     (hσ : σ * σ = 1) :
@@ -39,49 +39,47 @@ private theorem one_tmul_add_tmul_mul_I_eq_smul_of_sq_eq_one {R : Type} [CommRin
     | linear_combination (z.im * σ * σ) * Complex.I_mul_I - z.im * hσ
 
 /- English proof (translation)
-Set `σ : Bool → ℂ` to `fun s => if s then 1 else -1`. Establish `hσ : ∀ s, σ s * σ s = 1`. Introduce `s`. Apply the tactic sequence `cases s <;> simp [σ]`. Set `g : B → ℂ →ₗ[ℝ] ((A → ℝ) × (B → ℂ))` to `fun b => (LinearMap.inr ℝ (A → ℝ) (B → ℂ)).comp (LinearMap.single ℝ (fun _ : B => ℂ) b)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hg : ∀ b w, g b w = ((0 : A → ℝ), Pi.single b w)` using `fun b w => rfl`. Establish `hgmul : ∀ b u v, g b u * g b v = g b (u * v)`. Introduce `b u v`. Rewrite using `[hg, hg, hg]`. Use `Prod.ext (by simp) (funext fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : i = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hgmul' : ∀ b b' u v, b ≠ b' → g b u * g b' v = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b b' u v hb`. Rewrite using `[hg, hg]`. Use `Prod.ext (by simp) (funext fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h : i = b`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hb]`. Simplify using `[h]`. Establish `hc : ∀ (c : ℂ) (u : (A → ℝ) × (B → ℂ)), c ⊗ₜ[ℝ] u = c • ((1 : ℂ) ⊗ₜ[ℝ] u)`. Introduce `c u`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ e := Sum.elim (fun a => (1 : ℂ) ⊗ₜ[ℝ] ((Pi.single a 1, 0) : (A → ℝ) × (B → ℂ))) (fun p => (1 / 2 : ℂ) • ((1 : ℂ) ⊗ₜ[ℝ] g p.1 1 + (σ p.2 * Complex.I) ⊗ₜ[ℝ] g p.1 Complex.I)) ch := Sum.elim (fun a => (algebraMap ℝ ℂ).comp ((Pi.evalRingHom (fun _ : A => ℝ) a).comp (RingHom.fst _ …` and prove the remaining obligations. Introduce and unpack `(a | ⟨b, s⟩) x`. Simplify using `only [Sum.elim_inl, RingHom.comp_apply]`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `hx : x * ((Pi.single a 1, 0) : (A → ℝ) × (B → ℂ)) = x.1 a • ((Pi.single a (1 : ℝ), 0) : (A → ℝ) × (B → ℂ))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Prod.ext (funext fun i => ?_) (by simp)` and prove the remaining obligations. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx, TensorProduct.tmul_smul, algebraMap_smul]`. Both sides reduce to the same expression. Simplify using `only [Sum.elim_inr]`. Rewrite using `[mul_smul_comm, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `only [one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx : ∀ w : ℂ, x * g b w = g b (x.2 b * w)`. Introduce `w`. Rewrite using `[hg, hg]`. Use `Prod.ext (by simp) (funext fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h : i = b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[hx, hx, mul_one, one_tmul_add_tmul_mul_I_eq_smul_of_sq_eq_one (g b) (σ s) (x.2 b) (hσ s), smul_comm]`. Use `congr 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Consider the cases of `s`. Apply the tactic sequence `simp [σ] all_goals (apply Complex.ext <;> simp)`. Apply the tactic sequence `simp [σ] all_goals (apply Complex.ext <;> simp)`. Introduce and unpack `(a | ⟨b, s⟩) (a' | ⟨b', s'⟩) hne`. Establish `ha : a ≠ a'` using `fun h => hne (by rw [h])`.
+Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [Sum.elim_inl]`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h0 : ((Pi.single a (1 : ℝ), 0) : (A → ℝ) × (B → ℂ)) * (Pi.single a' 1, 0) = 0`. Use `Prod.ext (funext fun i => ?_) (by simp)` and prove the remaining obligations. Distinguish the cases in `h : i = a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[ha]`. Simplify using `[h]`. Rewrite using `[h0, TensorProduct.tmul_zero]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_smul_comm, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h0 : ∀ w, ((Pi.single a (1 : ℝ), 0) : (A → ℝ) × (B → ℂ)) * g b' w = 0`. Introduce `w`. Rewrite using `[hg]`. Conclude with `Prod.ext (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, h0]`. Simplify using the standard rewrite rules. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[smul_mul_assoc, add_mul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h0 : ∀ w, g b w * ((Pi.single a' (1 : ℝ), 0) : (A → ℝ) × (B → ℂ)) = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[hg]`. Conclude with `Prod.ext (by simp) (by simp)`. Rewrite using `[h0, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_inr]`. Rewrite using `[smul_mul_smul_comm]`. Simplify using `only [add_mul, mul_add, Algebra.TensorProduct.tmul_mul_tmul]`. Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : s ≠ s'` using `fun h => hne (by rw [h])`. Establish `hc2 : ∀ (c d : ℂ) (u : (A → ℝ) × (B → ℂ)), (c * d) ⊗ₜ[ℝ] u = (c * d) • ((1 : ℂ) ⊗ₜ[ℝ] u)` using `fun c d u => hc _ _`. Simplify using `only [hgmul, hc2]`. Simplify using `only [mul_one, one_mul, Complex.I_mul_I, map_neg, TensorProduct.tmul_neg]`. Apply the tactic sequence `cases s <;> cases s' <;> simp only [ne_eq, not_true_eq_false, Bool.false_eq_true, not_false_eq_true, Bool.true_eq_false] at hs <;> simp only [σ, if_true, Bool.false_eq_true, if_false] <;> match_scalars <;> first`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `ring1`. Consider the case `linear_combination (1 / 4 : ℂ) * Complex.I_mul_I`. Consider the case `linear_combination (-1 / 4 : ℂ) * Complex.I_mul_I`. Simplify using `only [hgmul' b b' _ _ hb, TensorProduct.tmul_zero, add_zero, smul_zero]`. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_prod_type]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fintype.sum_bool]`. Establish `hb : ∀ b, (1 / 2 : ℂ) • ((1 : ℂ) ⊗ₜ[ℝ] g b 1 + (σ true * Complex.I) ⊗ₜ[ℝ] g b Complex.I) + (1 / 2 : ℂ) • ((1 : ℂ) ⊗ₜ[ℝ] g b 1 + (σ false * Complex.I) ⊗ₜ[ℝ] g b Complex.I) = (1 : ℂ) ⊗ₜ[ℝ] g b 1`. Introduce `b`. Rewrite using `[hc (σ true * Complex.I), hc (σ false * Complex.I)]`. Simplify using `only [σ, if_true, Bool.false_eq_true, if_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `module`. Simplify using `only [hb]`. Rewrite using `[← TensorProduct.tmul_sum, ← TensorProduct.tmul_sum, ← TensorProduct.tmul_add, Algebra.TensorProduct.one_def]`. Use `congr 1`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations.
-
-Simplify using `[hg, Prod.fst_sum, Finset.sum_apply, Pi.single_apply]`. Simplify using `[hg, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem idem_lemma_2 (A B : Type) [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] :
     Nonempty (Idem ((A → ℝ) × (B → ℂ)) (A ⊕ (B × Bool))) := by
@@ -217,7 +215,7 @@ private theorem idem_lemma_2 (A B : Type) [Fintype A] [DecidableEq A] [Fintype B
     · simp [hg, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `K _ _`. Conclude with `⟨_, inferInstance, idem_lemma_2 {w : InfinitePlace K // w.IsReal} {w : InfinitePlace K // w.IsComplex}⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_idempotent_decomposition_mixedSpace :
     ∀ (K : Type) [Field K] [NumberField K], ∃ (ι : Type) (_ : Fintype ι), Nonempty (Idem (mixedSpace K) ι) := by

@@ -13,23 +13,21 @@ open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (FiniteAdeleRing (𝓞 F) F ⊗[F] E) := moduleTopology (FiniteAdeleRing (𝓞 F) F) (FiniteAdeleRing (𝓞 F) F ⊗[F] E)`. Set `L : Submodule (𝓞 E) (Fin 1 → E)` to `(1 : Submodule (𝓞 E) E).comap (LinearMap.proj (R := 𝓞 E) (φ := fun _ : Fin 1 => E) 0)`. Establish `hL : ∀ x : Fin 1 → E, x ∈ L ↔ x 0 ∈ Set.range (algebraMap (𝓞 E) E)`. Introduce `x`. Simplify using `only [L, Submodule.mem_comap, Submodule.mem_one, LinearMap.proj_apply, Set.mem_range]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hspan : Submodule.span E (L : Set (Fin 1 → E)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : (fun _ => (1 : E)) ∈ L` using `(hL _).2 ⟨1, map_one _⟩`. Establish `: x = x 0 • (fun _ : Fin 1 => (1 : E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ho` using `(GlobalTheory.AdLat.OpenLat.isOpen_nsmul_hat F E 1 L hspan).1 N hN`. Establish `hc : Continuous (fun z : GlobalTheory.AdLat.RA F E => fun _ : Fin 1 => z)` using `continuous_pi fun _ => continuous_id`. Establish `h1 : ∀ y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin 1 → E)), y 0 ∈ GlobalTheory.AdLat.hat1 F (Set.range (algebraMap (𝓞 E) E))`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, x 0, (hL x).1 hx, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add u v _ _ hu hv => exact add_mem hu hv`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `neg u _ hu => exact neg_mem hu`. Establish `h2 : ∀ y ∈ GlobalTheory.AdLat.hat1 F (Set.range (algebraMap (𝓞 E) E)), (fun _ : Fin 1 => y) ∈ GlobalTheory.AdLat.hat F (L : Set (Fin 1 → E))`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, fun _ => x, (hL _).2 hx, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add u v _ _ hu hv => exact add_mem hu hv`. Consider the case `neg u _ hu => exact neg_mem hu`.
+Treat this case separately. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `ho.preimage hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨_, h2 y hy, rfl⟩`.
-
-Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨y 0, h1 y hy, congrFun h 0⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_nsmul_adelicCompletion_integers (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (N : ℕ) (hN : 0 < N) :
@@ -84,9 +82,9 @@ theorem isOpen_nsmul_adelicCompletion_integers (F E : Type) [Field F] [NumberFie
     exact ⟨y 0, h1 y hy, congrFun h 0⟩
 
 /- English proof (translation)
-Unfold `intAE GlobalTheory.AdLat.hat1`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem integralFiniteAdeles_eq_adelicCompletion_integers (D : D7) :
     intAE D = GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)) := by
@@ -100,13 +98,13 @@ theorem integralFiniteAdeles_eq_adelicCompletion_integers (D : D7) :
     exact ⟨a, ha, x, rfl⟩
 
 /- English proof (translation)
-Set `a0 : R →* R` to `e.symm.toRingHom.toMonoidHom.comp ((MonoidHom.inl _ _).comp ((MonoidHom.fst _ _).comp e.toRingHom.toMonoidHom))`. Set `b0 : R →* R` to `e.symm.toRingHom.toMonoidHom.comp ((MonoidHom.inr _ _).comp ((MonoidHom.snd _ _).comp e.toRingHom.toMonoidHom))`. Establish `ha0 : ∀ z, a0 z = e.symm ((e z).1, 1)` using `fun z => rfl`. Establish `hb0 : ∀ z, b0 z = e.symm (1, (e z).2)` using `fun z => rfl`. Establish `hac : Continuous a0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (a0 : R → R) = fun z => e.symm ((e z).1, 1) from funext ha0]`. Conclude with `hes.comp ((continuous_fst.comp hec).prodMk continuous_const)`. Establish `hbc : Continuous b0`. Rewrite using `[show (b0 : R → R) = fun z => e.symm (1, (e z).2) from funext hb0]`. Conclude with `hes.comp (continuous_const.prodMk (continuous_snd.comp hec))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨Units.map a0, Units.map b0, Continuous.units_map a0 hac, Continuous.units_map b0 hbc, fun x => ?_, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.coe_map, Units.coe_map, ha0, hb0, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Conclude with `(e.symm_apply_apply _).symm`. Rewrite using `[Units.coe_map, ha0, ← (he _).1, ← (he _).2, e.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(he _).1, rfl⟩`. Rewrite using `[Units.coe_map, hb0, ← (he _).1, ← (he _).2, e.apply_symm_apply]`. Conclude with `⟨rfl, (he _).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_units_parts {R A B : Type} [Ring R] [Ring A] [Ring B] [TopologicalSpace R] [TopologicalSpace A]
     [TopologicalSpace B] (e : R ≃+* A × B) (hec : Continuous e) (hes : Continuous e.symm)
@@ -136,17 +134,15 @@ theorem exists_units_parts {R A B : Type} [Ring R] [Ring A] [Ring B] [Topologica
     exact ⟨rfl, (he _).2⟩
 
 /- English proof (translation)
-Introduce `D`. Use `letI tf : TopologicalSpace (Af D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E)`. Use `letI ti : TopologicalSpace (Ainf D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (Ainf D.host.F) (Ainf D.host.F ⊗[D.host.F] D.host.E)`. Take `⟨e, he, hec, hes⟩ : ∃ e : AE D ≃+* (Ainf D.host.F ⊗[D.host.F] D.host.E) × (Af D.host.F ⊗[D.host.F] D.host.E), (∀ z, (e z).1 = infPart D z ∧ (e z).2 = finPart D z) ∧ Continuous e ∧ Continuous e.symm` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hfc : Continuous (finPart D)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (finPart D : AE D → _) = fun z => (e z).2` using `funext fun z => (he z).2.symm`. Rewrite using `[this]`. Conclude with `continuous_snd.comp hec`. Use `⟨fun N hN => ?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩ haveI : ContinuousAdd (Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.toContinuousAdd (Af D.host.F) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN' : IsOpen {z : Af D.host.F ⊗[D.host.F] D.host.E | ∃ y ∈ intAE D, z = N • y}`. Rewrite using `[integralFiniteAdeles_eq_adelicCompletion_integers]`. Conclude with `isOpen_nsmul_adelicCompletion_integers D.host.F D.host.E N hN`. Establish `h1 : IsOpen {z : Af D.host.F ⊗[D.host.F] D.host.E | z ∈ intAE D}`. Use `isOpen_nsmul_adelicCompletion_integers D.host.F D.host.E 1 one_pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Rewrite `this` using `[← integralFiniteAdeles_eq_adelicCompletion_integers]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using the standard rewrite rules. Establish `c1 : Continuous fun x : (AE D)ˣ => finPart D (x : AE D)` using `hfc.comp Units.continuous_val`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c2 : Continuous fun x : (AE D)ˣ => finPart D ((x⁻¹ : (AE D)ˣ) : AE D)` using `hfc.comp Units.continuous_coe_inv`. Establish `c3 : Continuous fun x : (AE D)ˣ => finPart D (x : AE D) - 1`. Simplify using `only [sub_eq_add_neg]`. Conclude with `c1.add continuous_const`. Conclude with `(h1.preimage c1).inter ((h1.preimage c2).inter (hN'.preimage c3))`.
-
-Conclude with `exists_units_parts e hec hes (infPart D) (finPart D) he`.
+A detailed English derivation is pending.
 -/
 theorem congr_open_and_parts : ∀ (D : D7), (∀ N : ℕ, 0 < N → IsOpen {x : (AE D)ˣ | finPart D (x : AE D) ∈ intAE D ∧ finPart D ((x⁻¹ : (AE D)ˣ) : AE D) ∈ intAE D ∧ ∃ y ∈ intAE D, finPart D (x : AE D) - 1 = N • y}) ∧ ∃ a b : (AE D)ˣ →* (AE D)ˣ, Continuous a ∧ Continuous b ∧ (∀ x, x = a x * b x) ∧ (∀ x, infPart D (a x : AE D) = infPart D (x : AE D) ∧ finPart D (a x : AE D) = 1) ∧ ∀ x, infPart D (b x : AE D) = 1 ∧ finPart D (b x : AE D) = finPart D (x : AE D) := by
   intro D

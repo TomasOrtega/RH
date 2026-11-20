@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.Unfold.GlueOver
 
 /- English proof (translation)
-Introduce `D Z FP d0 hT hΛ`. Take `⟨Λ₀, hΛ₀, hfin⟩` from `hΛ`. Establish `hc : ∀ p, ∃ τ : Loc.Term (Vp D p) (Z.M p) D.R.rS, LocNG.IsTermOver (FP p) (d0 p) τ ∧ ((∃ τ' : Loc.Term (Vp D p) (Z.M p) D.R.rS, LocNG.IsTermOver (FP p) (d0 p) τ' ∧ τ'.abelian₂ = lattice₂ D Z.M p Λ₀) → τ.abelian₂ = lattice₂ D Z.M p Λ₀)`. Introduce `p`. Distinguish the cases in `h : ∃ τ' : Loc.Term (Vp D p) (Z.M p) D.R.rS, LocNG.IsTermOver (FP p) (d0 p) τ' ∧ τ'.abelian₂ = lattice₂ D Z.M p Λ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨τ', h1, h2⟩` from `h`. Conclude with `⟨τ', h1, fun _ => h2⟩`. Take `⟨τ', h1⟩` from `hT p`. Conclude with `⟨τ', h1, fun h' => absurd h' h⟩`. Use `choose τ hτ hτ' using hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ, hΛ, heq⟩` from `(GlobalTheory.Unfold.LatLoc.lattices_local_global D Z).2 Λ₀ hΛ₀ (fun p => (τ p).abelian₂) (fun p => GlobalTheory.T.localTermLattice_over_innerDatum_fg_span D Z FP p (d0 p) (τ p) (hτ p)) (hfin.subset (fun p hp h => hp (hτ' p h)))`. Conclude with `⟨Λ, hΛ, fun p => ⟨τ p, hτ p, (heq p).symm⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locOver : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (d0 : Dat Z FP), (∀ p, ∃ τ, LocNG.IsTermOver (FP p) (d0 p) τ) → (∃ Λ₀ : LV D, Submodule.IsLattice D.host.E Λ₀ ∧ {p | ¬ ∃ τ, LocNG.IsTermOver (FP p) (d0 p) τ ∧ τ.abelian₂ = lattice₂ D Z.M p Λ₀}.Finite) → ∃ Λ : LV D, LocOver Λ d0 := by
   intro D Z FP d0 hT hΛ

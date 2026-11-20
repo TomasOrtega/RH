@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.BcB.CV
 namespace QuotientIntegral
 
 /- English proof (translation)
-Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg]`. Conclude with `ENNReal.ofReal_toReal_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_ofReal_toReal_le (r : ℝ≥0∞) : ‖((r.toReal : ℝ) : ℂ)‖ₑ ≤ r := by
   rw [← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg]
@@ -20,39 +20,35 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace T` using `hT.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology T` using `TopologicalSpace.Subtype.secondCountableTopology (T : Set G)`. Establish `: SigmaCompactSpace T` using `inferInstance`. Establish `: SFinite ν` using `inferInstance`. Establish `hmcoe : Measurable (fun h : T => (h : G))` using `measurable_subtype_coe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ν.IsMulRightInvariant`. Establish `: ν.inv.IsMulRightInvariant` using `inferInstance`. Rewrite `this` using `[Measure.inv_eq_self]`. Then use the resulting hypothesis. Take `⟨U, hUc, hU1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set K : Set G := U * C with hKdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKc : IsCompact K` using `hUc.mul hC`. Establish `hKm : MeasurableSet K` using `hKc.isClosed.measurableSet`. Use `set S : Set G := (T : Set G) * C with hSdef`. Establish `hSm : MeasurableSet S` using `(hT.mul_right_of_isCompact hC).measurableSet`. Establish `hSinv : ∀ t ∈ T, ∀ x, t * x ∈ S ↔ x ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `t ht x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, c, hc, hsc⟩`. Conclude with `⟨t⁻¹ * s, T.mul_mem (T.inv_mem ht) hs, c, hc, by show t⁻¹ * s * c = x`. Rewrite using `[mul_assoc, show s * c = t * x from hsc, inv_mul_cancel_left]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨s, hs, c, hc, rfl⟩`. Conclude with `⟨t * s, T.mul_mem ht hs, c, hc, mul_assoc _ _ _⟩`. Establish `hKind : Measurable (K.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hKm`. Use `set I : G → ℝ≥0∞ := fun g => ∫⁻ h : T, K.indicator 1 ((h : G) * g) ∂ν with hIdef`. Establish `hIm : Measurable I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Measurable (fun p : G × T => K.indicator (1 : G → ℝ≥0∞) ((p.2 : G) * p.1))` using `hKind.comp ((hmcoe.comp measurable_snd).mul measurable_fst)`. Conclude with `this.lintegral_prod_right'`. Establish `hIT : ∀ t ∈ T, ∀ g, I (t * g) = I g`. Introduce `t ht g`. Use `lintegral_mul_right_eq_self (μ := ν) (fun h : T => K.indicator (1 : G → ℝ≥0∞) ((h : G) * g)) ⟨t, ht⟩` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hIdef]`. Rewrite using `[← this]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`. Use `set V : Set T := (fun h : T => (h : G)) ⁻¹' interior U with hVdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hVm : MeasurableSet V` using `hmcoe measurableSet_interior`. Establish `hVpos : ν V ≠ 0`. Establish `hVo : IsOpen V` using `isOpen_interior.preimage continuous_subtype_val`. Establish `h1 : (1 : T) ∈ V` using `by show ((1 : T) : G) ∈ interior U`. Simplify using `using mem_interior_iff_mem_nhds.mpr hU1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hVo.measure_pos ν ⟨1, h1⟩).ne'`. Establish `hIC : ∀ g ∈ S, ν V ≤ I g`. Introduce and unpack `_ ⟨t, ht, c, hc, rfl⟩`. Rewrite using `[hIT t ht c, ← lintegral_indicator_one hVm]`. Use `lintegral_mono fun h => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hh : h ∈ V`. Establish `hK : (h : G) * c ∈ K` using `Set.mul_mem_mul (interior_subset hh) hc`. Simplify using `[hh, hK]`. Simplify using `[Set.indicator_apply, hh]`. Establish `hIfin : ∀ g, I g ≠ ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `g`. Establish `hemb : Topology.IsClosedEmbedding (fun h : T => (h : G) * g)` using `(Homeomorph.mulRight g).isClosedEmbedding.comp hT.isClosedEmbedding_subtypeVal`. Establish `hmeas : Measurable (fun h : T => (h : G) * g)` using `hmcoe.mul_const g`. Establish `: I g = ν ((fun h : T => (h : G) * g) ⁻¹' K)`. Rewrite using `[← lintegral_indicator_one (hmeas hKm)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `((hemb.isCompact_preimage hKc).measure_lt_top).ne`. Use `set ρ : G → ℝ≥0∞ := S.piecewise (fun g => K.indicator 1 g * (I g)⁻¹) ρ0 with hρdef`. Establish `hρ : IsQuotNormaliser T ν ρ`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Measurable.piecewise hSm (hKind.mul hIm.inv) h0.1, fun g => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ S`. Establish `hmem : ∀ h : T, (h : G) * g ∈ S` using `fun h => (hSinv _ h.2 g).2 hg`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun h => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hρdef, Set.piecewise_eq_of_mem _ _ _ (hmem h), hIT _ h.2]`. Use `_ = I g * (I g)⁻¹ := lintegral_mul_const _ (hKind.comp (hmcoe.mul_const g))`. Use `_ = 1 := ENNReal.mul_inv_cancel (ne_of_gt (lt_of_lt_of_le (pos_iff_ne_zero.mpr hVpos) (hIC g hg))) (hIfin g)`. Establish `hmem : ∀ h : T, (h : G) * g ∉ S` using `fun h hh => hg ((hSinv _ h.2 g).1 hh)`. Rewrite using `[← h0.2 g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Simplify using `only [hρdef, Set.piecewise_eq_of_notMem _ _ _ (hmem h)]`. Establish `hF1 : Measurable (S.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hSm`. Establish `hFinv : ∀ h ∈ T, ∀ g, S.indicator (1 : G → ℝ≥0∞) (h * g) = S.indicator 1 g`. Introduce `h hh g`.
-
-Simplify using `only [Set.indicator_apply, hSinv h hh g, Pi.one_apply]`. Rewrite using `[lintegral_normaliser_eq hF1 hFinv h0 hρ]`. Use `ne_of_lt (lt_of_le_of_lt (b := ∫⁻ g, K.indicator 1 g * (ν V)⁻¹ ∂μ) (lintegral_mono fun g => ?_) ?_)` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ S`. Simplify using `only [Set.indicator_of_mem hg, Pi.one_apply, one_mul, hρdef, Set.piecewise_eq_of_mem _ _ _ hg] gcongr`.
-
-Conclude with `hIC g hg`. Simplify using `[hg]`. Rewrite using `[lintegral_mul_const _ hKind, lintegral_indicator_one hKm]`. Conclude with `ENNReal.mul_lt_top hKc.measure_lt_top (ENNReal.inv_lt_top.mpr (pos_iff_ne_zero.mpr hVpos))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_indicator_ne_top (μ : Measure G) [μ.IsHaarMeasure]
     (T : Subgroup G) (ν : Measure T) [ν.IsHaarMeasure] [ν.IsInvInvariant] {C : Set G}
@@ -155,19 +151,17 @@ theorem lintegral_indicator_ne_top (μ : Measure G) [μ.IsHaarMeasure]
     exact ENNReal.mul_lt_top hKc.measure_lt_top (ENNReal.inv_lt_top.mpr (pos_iff_ne_zero.mpr hVpos))
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ ρ, IsQuotNormaliser T ν ρ`. Establish `h0 : IsQuotNormaliser T ν hex.choose` using `hex.choose_spec set S : Set G := (T : Set G) * C with hSdef`. Establish `hL : ∫⁻ g, S.indicator 1 g * hex.choose g ∂μ ≠ ⊤` using `lintegral_indicator_ne_top μ T ν hT hC h0`. Use `⟨(∫⁻ g, S.indicator 1 g * hex.choose g ∂μ).toReal, ENNReal.toReal_nonneg, fun F B hB hF hFT hFS hFC => ?_⟩` and prove the remaining obligations. Establish `hbound : ∀ g, ‖F g‖ₑ ≤ ENNReal.ofReal B * S.indicator 1 g`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `g`. Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem hg, Pi.one_apply, mul_one]`. Take `⟨t, ht, c, hc, rfl⟩` from `hg`. Rewrite using `[hFT t ht c, ← ofReal_norm]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hFC c hc)`. Establish `: F g = 0`. Assume the negation of the conclusion as `h`. Conclude with `hg (hFS g h)`. Simplify using `[this]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hle : ∫⁻ g, ‖F g‖ₑ * hex.choose g ∂μ ≤ ENNReal.ofReal B * ∫⁻ g, S.indicator 1 g * hex.choose g ∂μ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc]`. Use `gcongr`. Conclude with `hbound g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ENNReal.ofReal B * ∫⁻ g, S.indicator 1 g * hex.choose g ∂μ := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Establish `hne : ENNReal.ofReal B * ∫⁻ g, S.indicator 1 g * hex.choose g ∂μ ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hL`. Establish `hfin : ∫⁻ g, ‖F g‖ₑ * hex.choose g ∂μ ≠ ⊤` using `ne_top_of_le_ne_top hne hle`. Use `⟨by rw [quotLIntegral, dif_pos hex]; exact hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[quotIntegral, dif_pos hex]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.toReal_mono hfin ((enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun g => ?_))` and prove the remaining obligations. Rewrite using `[enorm_mul]`. Use `gcongr`. Conclude with `enorm_ofReal_toReal_le _`.
-
-Use `_ ≤ (ENNReal.ofReal B * ∫⁻ g, S.indicator 1 g * hex.choose g ∂μ).toReal := ENNReal.toReal_mono hne hle`. Use `_ = (∫⁻ g, S.indicator 1 g * hex.choose g ∂μ).toReal * B := by`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hB, mul_comm]`. Use `⟨0, le_rfl, fun F B _ _ _ _ _ => ?_⟩` and prove the remaining obligations. Simplify using `[quotLIntegral, quotIntegral, hex]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main (μ : Measure G) [μ.IsHaarMeasure] (T : Subgroup G) (ν : Measure T) [ν.IsHaarMeasure]
     [ν.IsInvInvariant] (C : Set G) (hT : IsClosed (T : Set G)) (hC : IsCompact C) :
@@ -227,7 +221,7 @@ theorem main (μ : Measure G) [μ.IsHaarMeasure] (T : Subgroup G) (ν : Measure 
 end QuotientIntegral
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ T ν _ _ C hT hC`. Conclude with `QuotientIntegral.main μ T ν C hT hC`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pf_QInt : QInt := by
   intro G _ _ _ _ _ _ _ _ μ _ T ν _ _ C hT hC

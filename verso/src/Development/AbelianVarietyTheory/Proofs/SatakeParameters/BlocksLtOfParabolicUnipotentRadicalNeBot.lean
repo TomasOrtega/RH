@@ -11,15 +11,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 namespace GlobalTheory.UnipRadProper
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n s d e h a`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Apply `h` to reduce the goal to its premises. Establish `hcard : ∑ b, d b = n` using `by simpa using (Fintype.card_congr e)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : ∀ b, b ≠ a → d b = 0`. Introduce `b hb`. Establish `h2 : d a + d b ≤ ∑ c, d c` using `Finset.add_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ a) (Finset.mem_univ b) (Ne.symm hb)`. Use linear arithmetic over natural numbers and integers. Establish `hblk : ∀ (b : Fin s) (j : Fin (d b)), b = a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b j`. Assume the negation of the conclusion as `hb`. Conclude with `(hzero b hb ▸ j).elim0`. Rewrite using `[eq_bot_iff]`. Introduce `g hg`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Subgroup.mem_bot]`. Use extensionality with `i j`. Take `⟨⟨b, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨c, j⟩, rfl⟩` from `e.surjective j`. Take `rfl` from `hblk b i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `rfl` from `hblk c j`. Rewrite using `[(mem_unipRad.1 hg).2]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blocks_lt_of_unipRad_ne_bot : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), unipRad k e ≠ ⊥ → ∀ a, d a < n := by
   intro k _ _ _ _ n s d e h a

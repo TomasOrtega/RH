@@ -11,11 +11,11 @@ namespace GlobalTheory.DenAwayCpt
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum GlobalTheory.DenAway
 
 /- English proof (translation)
-Introduce `p _ Q hQ`. Use `choose m hm0 hm using fun a : AfP p => exists_nat_adele a`. Take `⟨t, ht⟩` from `hQ.elim_finite_subcover (fun a => (fun x => (m a : AfP p) * x) ⁻¹' intAfP p) (fun a => (isOpen_intAfP p).preimage (continuous_const_mul _)) (fun x _ => Set.mem_iUnion.mpr ⟨x, hm x⟩)`. Use `⟨∏ a ∈ t, m a, Finset.prod_pos (fun a _ => hm0 a), fun x hx v => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.mp (ht hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m ha`. Establish `hxa' : (m a : AfP p) * x ∈ intAfP p` using `hxa`. Establish `e : ((∏ a ∈ t, m a : ℕ) : AfP p) * x = (k : AfP p) * ((m a : AfP p) * x)`. Rewrite using `[hk, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, eval_natCast_mul]`. Conclude with `mul_mem (natCast_mem v.1 k) (hxa' v)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_integral_of_isCompact : ∀ (p : ℕ) [Fact p.Prime] (Q : Set (AfP p)), IsCompact Q →
     ∃ D : ℕ, 0 < D ∧ ∀ a ∈ Q, ∀ v : AwayP p, AfP.eval v ((D : AfP p) * a) ∈ v.1.adicCompletionIntegers ℚ := by

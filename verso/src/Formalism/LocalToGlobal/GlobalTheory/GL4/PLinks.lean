@@ -8,12 +8,12 @@ namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `_ Fm x i` and use `h (Fm.D x i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Link3F_of_Link3 (h : Link3) : Link3F := fun _ Fm x i => h (Fm.D x i)
 
 /- English proof (translation)
-Introduce `eps Fm hH hT`. Take `⟨C₀, hC, hM⟩` from `h eps Fm hH hT`. Conclude with `Formalism.MainNotions.flipTwoThree.familyMass_of_massCount Fm C₀ hC hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Link1F_of_count
     (h : ∀ (eps : ℝ) (Fm : Formalism.MainNotions.FamP eps), (∀ (x : ℝ) (i : Fm.Ix x), Formalism.L2.Herm.FullTied (Fm.D x i)) →

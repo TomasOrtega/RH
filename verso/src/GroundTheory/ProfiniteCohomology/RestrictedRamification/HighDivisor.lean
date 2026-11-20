@@ -24,9 +24,9 @@ def PrimaryVanishes (ℓ p : ℕ) (M : Rep.{0} k G) [IsDiscreteRep M] : Prop :=
   ∀ (x : cohomology M p) (k : ℕ), ℓ ^ k • x = 0 → x = 0
 
 /- English proof (translation)
-Introduce `x k hx`. Establish `hg : (cohomologyMap S.g p).hom x = 0` using `h₃ _ k (by rw [← map_nsmul, hx, map_zero])`. Take `⟨y, rfl⟩` from `exists_cohomologyMap_f_eq_of_cohomologyMap_g_eq_zero hS p x hg`. Take `⟨y', ⟨j, hj⟩, hy'⟩` from `exists_primary_map_eq (cohomologyMap S.f p).hom.toAddMonoidHom hℓ (isTorsion_cohomology _ hp y) (k := k) hx`. Establish `: y' = 0` using `h₁ y' j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hy'.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(cohomologyMap S.f p).hom y' = 0`. Rewrite using `[this, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem PrimaryVanishes.of_shortExact {S : ShortComplex (Rep.{0} k G)} [IsDiscreteRep S.X₁]
     [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] (hS : S.ShortExact) {ℓ p : ℕ} (hℓ : ℓ.Prime) (hp : 1 ≤ p)
@@ -43,11 +43,11 @@ theorem PrimaryVanishes.of_shortExact {S : ShortComplex (Rep.{0} k G)} [IsDiscre
   rw [this, map_zero]
 
 /- English proof (translation)
-Introduce `x k hx`. Take `⟨i, y, rfl⟩` from `exists_cohomologyMap_subtype_eq M W hW hstable hunion p x`. Establish `hy : (cohomologyMap (Rep.subtype M (W i) (hstable i)) p).hom (ℓ ^ k • y) = 0`. Rewrite using `[map_nsmul]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hij, hj⟩` from `exists_cohomologyMap_subrepInclusion_eq_zero M W hW hstable hunion p i _ hy`. Rewrite `hj` using `[map_nsmul]`. Take `⟨l, hjl, hl⟩` from `hW' j _ k hj`. Establish `e : subrepInclusion M W hW hstable hij ≫ subrepInclusion M W hW hstable hjl ≫ Rep.subtype M (W l) (hstable l) = Rep.subtype M (W i) (hstable i)`. Rewrite using `[subrepInclusion_comp_subtype, subrepInclusion_comp_subtype]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, cohomologyMap_comp, cohomologyMap_comp, ModuleCat.hom_comp, ModuleCat.hom_comp, LinearMap.comp_apply, LinearMap.comp_apply, hl, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem PrimaryVanishes.of_union (M : Rep.{0} k G) [IsDiscreteRep M] {ι : Type} [Preorder ι]
     [Nonempty ι] [IsDirectedOrder ι] (W : ι → Submodule k M) (hW : Monotone W)
@@ -118,7 +118,7 @@ def coindToDivFunOne (U : OpenSubgroup G) (hU : ψ.range ≤ (U : Subgroup G)) :
       map_smul' := fun _ _ => rfl }, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `F F' h` and use `Subtype.ext (congrFun (congrArg Subtype.val h) PUnit.unit)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coindToDivFunOne_injective (U : OpenSubgroup G) (hU : ψ.range ≤ (U : Subgroup G)) :
     Function.Injective (coindToDivFunOne ψ U hU).hom := fun F F' h =>
@@ -139,7 +139,7 @@ def coindIncl {U U' : OpenSubgroup G} (h : (U' : Subgroup G) ≤ U) :
       map_smul' := fun _ _ => rfl }, fun _ => rfl⟩
 
 /- English proof (translation)
-Rewrite using `[shapiroMap, shapiroMap, cohomologyResLE, ← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (by ext; rfl) (fun _ => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_coindIncl_comp_shapiroMap {U U' : OpenSubgroup G} (h : (U' : Subgroup G) ≤ U) (n : ℕ) :
     cohomologyMap (coindIncl h) n ≫ shapiroMap U' (trivQZRes U') n =
@@ -152,7 +152,7 @@ def divFunOneLevel (a : OpenSubgroupAbove ψ.range) : Submodule (ULift.{0} ℤ) 
   LinearMap.range (coindToDivFunOne ψ a.1 a.2).hom.toLinearMap
 
 /- English proof (translation)
-The claim follows from `range_repHom_le_comap _ g`.
+A detailed English derivation is pending.
 -/
 theorem divFunOneLevel_stable (a : OpenSubgroupAbove ψ.range) (g : G) :
     divFunOneLevel ψ a ≤ (divFunOneLevel ψ a).comap ((divFunRepOne ψ).ρ g) :=
@@ -163,7 +163,7 @@ instance isDiscreteRep_divFunOneLevel (a : OpenSubgroupAbove ψ.range) :
   isDiscreteRep_subrepresentation _ _ _
 
 /- English proof (translation)
-Introduce `a b hab`. Introduce and unpack `_ ⟨F, rfl⟩`. Conclude with `⟨(coindIncl hab).hom F, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem divFunOneLevel_mono : Monotone (divFunOneLevel ψ) := by
   intro a b hab
@@ -173,13 +173,13 @@ theorem divFunOneLevel_mono : Monotone (divFunOneLevel ψ) := by
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Take `⟨hlc, hinv⟩` from `f.2.2 PUnit.unit`. Take `⟨V, hV, hVf⟩` from `exists_mem_nhds_one_forall_mul_eq hlc`. Take `⟨W, hWV, hWo, h1W⟩` from `mem_nhds_iff.1 hV`. Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hWo h1W`. Set `U : OpenSubgroup G` to `⟨ψ.range ⊔ (N : Subgroup G), Subgroup.isOpen_mono le_sup_right N.isOpen'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hU : ψ.range ≤ (U : Subgroup G)` using `le_sup_left`. Establish `hF : ∀ (g : (U : Subgroup G)) (x : G), (f : PUnit → G → QZ) PUnit.unit ((U : Subgroup G).subtype g * x) = (trivQZRes U).ρ g ((f : PUnit → G → QZ) PUnit.unit x)`. Introduce `g x`. Take `⟨m, ⟨h, rfl⟩, v, hv, hmv⟩` from `Subgroup.mem_sup_of_normal_right.1 g.2`. Express the relevant statement in the definitionally equal form `(f : PUnit → G → QZ) PUnit.unit ((g : G) * x) = (f : PUnit → G → QZ) PUnit.unit x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hv' : x⁻¹ * v * x ∈ (N : Subgroup G)`. Use `Subgroup.Normal.conj_mem inferInstance v hv x⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Rewrite using `[← hmv, show ψ h * v * x = ψ h * (x * (x⁻¹ * v * x)) by group, hinv, hVf x _ (hWV (hN hv'))]`. Use `⟨⟨U, hU⟩, ⟨⟨(f : PUnit → G → QZ) PUnit.unit, hF⟩, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem exists_mem_divFunOneLevel [TotallyDisconnectedSpace G] (f : divFunRepOne ψ) :
     ∃ a, f ∈ divFunOneLevel ψ a := by
@@ -211,7 +211,7 @@ def coindToDivFunOneLevel (a : OpenSubgroupAbove ψ.range) :
       (fun F => ⟨F, rfl⟩), fun _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun F F' h => coindToDivFunOne_injective ψ a.1 a.2 (congrArg Subtype.val h), fun y => by obtain ⟨F, hF⟩ := y.2 exact ⟨F, Subtype.ext hF⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem coindToDivFunOneLevel_bijective (a : OpenSubgroupAbove ψ.range) :
     Function.Bijective (coindToDivFunOneLevel ψ a).hom :=
@@ -236,7 +236,7 @@ theorem coindToDivFunOneLevel_comp_subrepInclusion {a b : OpenSubgroupAbove ψ.r
   rfl
 
 /- English proof (translation)
-Establish `: IsIso (cohomologyMap f n)` using `⟨cohomologyMap (inv f) n, by rw [← cohomologyMap_comp, IsIso.hom_inv_id, cohomologyMap_id], by rw [← cohomologyMap_comp, IsIso.inv_hom_id, cohomologyMap_id]⟩`. Conclude with `⟨(ModuleCat.mono_iff_injective _).1 inferInstance, (ModuleCat.epi_iff_surjective _).1 inferInstance⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bijective_cohomologyMap_of_isIso {k : Type} [CommRing k] {A B : Rep.{0} k G} [IsDiscreteRep A]
     [IsDiscreteRep B] (f : A ⟶ B) [IsIso f] (n : ℕ) : Function.Bijective (cohomologyMap f n).hom := by
@@ -246,23 +246,19 @@ theorem bijective_cohomologyMap_of_isIso {k : Type} [CommRing k] {A B : Rep.{0} 
   exact ⟨(ModuleCat.mono_iff_injective _).1 inferInstance, (ModuleCat.epi_iff_surjective _).1 inferInstance⟩
 
 /- English proof (translation)
-Use `PrimaryVanishes.of_union (divFunRepOne ψ) (divFunOneLevel ψ) (divFunOneLevel_mono ψ) (divFunOneLevel_stable ψ) (exists_mem_divFunOneLevel ψ) fun a y k hy => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(bijective_cohomologyMap_of_isIso (coindToDivFunOneLevel ψ a) p).2 y`. Establish `hx : ℓ ^ k • x = 0` using `(bijective_cohomologyMap_of_isIso (coindToDivFunOneLevel ψ a) p).1 (by rw [map_nsmul, hy, map_zero])`. Use `set z := (shapiroMap a.1 (trivQZRes a.1) p).hom x with hzdef`. Establish `hz : ℓ ^ k • z = 0` using `by rw [hzdef, ← map_nsmul, hx, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : (cohomologyResLE (trivRep G QZ) a.2 p).hom z = 0` using `hloc _ ⟨k, by rw [← map_nsmul, hz, map_zero]⟩`. Rewrite `hw` using `[cohomologyResLE_apply_eq_zero_iff]`. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Establish `hZc : IsClosed ((ψ.range.subgroupOf (a.1 : Subgroup G) : Subgroup (a.1 : Subgroup G)) : Set (a.1 : Subgroup G))`. Rewrite using `[Subgroup.coe_subgroupOf]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hZ.preimage continuous_subtype_val`. Take `⟨U₀, hU₀o, hZU₀, hU₀⟩` from `exists_cohomologyRes_eq_zero (M := trivQZRes a.1) hZc q z hw`. Establish `hopen : IsOpen ((U₀.map (a.1 : Subgroup G).subtype : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `(a.1.isOpen).isOpenMap_subtype_val _ hU₀o`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `U' : OpenSubgroup G` to `⟨U₀.map (a.1 : Subgroup G).subtype, hopen⟩`. Establish `hU'a : (U' : Subgroup G) ≤ a.1` using `Subgroup.map_subtype_le U₀`. Establish `hZU' : ψ.range ≤ (U' : Subgroup G)` using `fun z hz => ⟨⟨z, a.2 hz⟩, hZU₀ (show (⟨z, a.2 hz⟩ : (a.1 : Subgroup G)) ∈ ψ.range.subgroupOf (a.1 : Subgroup G) from hz), rfl⟩`. Set `b : OpenSubgroupAbove ψ.range` to `⟨U', hZU'⟩`. Establish `hab : a ≤ b` using `hU'a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsDiscreteRep (Rep.coind (b.1 : Subgroup G).subtype (trivQZRes b.1))` using `isDiscreteRep_coind_trivQZRes b.1`. Establish `hres : (cohomologyResLE (trivRep G QZ) hU'a (q + 1)).hom z = 0`. Rewrite using `[cohomologyResLE_apply_eq_zero_iff]`. Establish `e : (U' : Subgroup G).subgroupOf (a.1 : Subgroup G) = U₀` using `Subgroup.comap_map_eq_self_of_injective (Subgroup.subtype_injective _) U₀`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hU₀`. Establish `hsh : (shapiroMap b.1 (trivQZRes b.1) (q + 1)).hom ((cohomologyMap (coindIncl hab) (q + 1)).hom x) = 0`. Use `congrArg (fun φ => φ.hom x) (cohomologyMap_coindIncl_comp_shapiroMap hab (q + 1))` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hres`. Establish `hinj : Function.Injective (shapiroMap b.1 (trivQZRes b.1) (q + 1)).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Establish `h0 : (cohomologyMap (coindIncl hab) (q + 1)).hom x = 0` using `hinj (hsh.trans (map_zero _).symm)`. Use `⟨b, hab, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[cohomologyMap_comp]`. Both sides reduce to the same expression. Use `_ = (cohomologyMap (coindIncl hab ≫ coindToDivFunOneLevel ψ b) (q + 1)).hom x := by`. Rewrite using `[coindToDivFunOneLevel_comp_subrepInclusion]`. Use `_ = 0 := by`.
-
-Rewrite using `[cohomologyMap_comp, ModuleCat.hom_comp, LinearMap.comp_apply, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primaryVanishes_divFunRepOne (hZ : IsClosed (ψ.range : Set G)) {ℓ p : ℕ} (hp : 1 ≤ p)
     (hloc : ∀ x : cohomology (Rep.res ψ.range.subtype (trivRep G QZ)) p, (∃ k : ℕ, ℓ ^ k • x = 0) → x = 0) :
@@ -332,7 +328,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
 omit [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Introduce `a ha`. Express the relevant statement in the definitionally equal form `f.hom (A.ρ g a) = 0`. Rewrite using `[Rep.hom_comm_apply]`. Express the relevant statement in the definitionally equal form `B.ρ g (f.hom a) = 0`. Rewrite using `[show f.hom a = 0 from ha, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_repHom_le_comap {k : Type} [CommRing k] {A B : Rep.{0} k G} (f : A ⟶ B) (g : G) :
     LinearMap.ker f.hom.toLinearMap ≤ (LinearMap.ker f.hom.toLinearMap).comap (A.ρ g) := by
@@ -345,9 +341,9 @@ theorem ker_repHom_le_comap {k : Type} [CommRing k] {A B : Rep.{0} k G} (f : A �
 omit [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `⟨f.2.1.subset fun i hi => ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `hc`. Apply `hi` to reduce the goal to its premises. Simplify using `only [hc, ite_self]`. Distinguish the cases in `hi : i ∈ T`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hi, if_true]`. Conclude with `⟨IsLocallyConstant.const 0, fun _ _ => rfl⟩`. Simplify using `only [hi, if_false]`. Conclude with `f.2.2 i`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_divFun_ite (T : Finset I) (f : divFun φ QZ) :
     (fun i => if i ∈ T then 0 else (f : I → G → QZ) i) ∈ divFun φ QZ := by
@@ -390,11 +386,11 @@ def divFunSupp (T : Finset I) : Submodule (ULift.{0} ℤ) (divFunRep φ QZ) :=
   LinearMap.ker (divFunOutside φ T).hom.toLinearMap
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf i hi`. Use `congrFun (congrArg Subtype.val (show (divFunOutside φ T).hom f = 0 from hf)) i` as an intermediate fact. Simplify `this` using `[divFunOutside, hi]`. Introduce `hf`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(if i ∈ T then 0 else (f : I → G → QZ) i) = 0`. Distinguish the cases in `hi : i ∈ T`. Simplify using `[hi]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hi, hf i hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_divFunSupp_iff (T : Finset I) (f : divFunRep φ QZ) :
     f ∈ divFunSupp φ T ↔ ∀ i, i ∉ T → (f.1 : I → G → QZ) i = 0 := by
@@ -411,7 +407,7 @@ theorem mem_divFunSupp_iff (T : Finset I) (f : divFunRep φ QZ) :
     · simp [hi, hf i hi]
 
 /- English proof (translation)
-The claim follows from `ker_repHom_le_comap _ g`.
+A detailed English derivation is pending.
 -/
 theorem divFunSupp_stable (T : Finset I) (g : G) :
     divFunSupp φ T ≤ (divFunSupp φ T).comap ((divFunRep φ QZ).ρ g) :=
@@ -422,7 +418,7 @@ instance isDiscreteRep_divFunSupp (T : Finset I) :
   isDiscreteRep_subrepresentation _ _ _
 
 /- English proof (translation)
-Introduce `T T' h f hf` and use `(mem_divFunSupp_iff φ T' f).2 fun i hi => (mem_divFunSupp_iff φ T f).1 hf i fun hiT => hi (h hiT)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem divFunSupp_mono : Monotone (divFunSupp φ) := fun T T' h f hf =>
   (mem_divFunSupp_iff φ T' f).2 fun i hi => (mem_divFunSupp_iff φ T f).1 hf i fun hiT => hi (h hiT)
@@ -461,9 +457,9 @@ instance isDiscreteRep_divFunSuppSequence_X₃ (T : Finset I) (j : I) (hj : j �
 omit [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `⟨(Set.finite_singleton j).subset fun i hi => ?_, fun i => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h' : i ≠ j` using `fun e => h (Set.mem_singleton_iff.2 e)`. Conclude with `hi (by simp [Pi.single_apply, h'])`. Distinguish the cases in `h : i = j`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `hF`. Simplify using `only [Pi.single_eq_of_ne h]`. Conclude with `⟨IsLocallyConstant.const 0, fun _ _ => rfl⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem single_mem_divFun (j : I) (F : G → QZ) (hF : IsLocallyConstant F ∧ ∀ (h : H j) (x : G), F (φ j h * x) = F x) :
     (Pi.single j F : I → G → QZ) ∈ divFun φ QZ := by
@@ -479,13 +475,11 @@ theorem single_mem_divFun (j : I) (F : G → QZ) (hF : IsLocallyConstant F ∧ �
       exact ⟨IsLocallyConstant.const 0, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Apply `shortComplex_exact_of_forall_exists` to reduce the goal to its premises. Introduce `f hf`. Establish `hj0 : ((f.1 : divFun φ QZ) : I → G → QZ) j = 0` using `congrFun (congrArg Subtype.val hf) PUnit.unit`. Use `⟨⟨f.1, (mem_divFunSupp_iff φ T f.1).2 fun i hi => ?_⟩, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hij : i = j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Conclude with `hj0`. Conclude with `(mem_divFunSupp_iff φ _ f.1).1 f.2 i (by simp [hij, hi])`. Use `mono_f := (Rep.mono_iff_injective _).2 fun a b h => Subtype.ext (by`. Establish `h'` using `congrArg Subtype.val h`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `h')`. Use `epi_g := (Rep.epi_iff_surjective _).2 fun e => by`. Use `⟨⟨⟨Pi.single j ((e.1 : PUnit → G → QZ) PUnit.unit), single_mem_divFun φ j _ (e.2.2 PUnit.unit)⟩, (mem_divFunSupp_iff φ _ _).2 fun i hi => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hij : i ≠ j` using `fun h => hi (h ▸ Finset.mem_insert_self j T)`. Express the relevant statement in the definitionally equal form `(Pi.single j ((e.1 : PUnit → G → QZ) PUnit.unit) : I → G → QZ) i = 0`.
-
-Simplify using `[Pi.single_apply, hij]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Conclude with `Pi.single_eq_same j _`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem divFunSuppSequence_shortExact (T : Finset I) (j : I) (hj : j ∉ T) :
     (divFunSuppSequence φ T j hj).ShortExact where
@@ -512,9 +506,9 @@ theorem divFunSuppSequence_shortExact (T : Finset I) (j : I) (hj : j ∉ T) :
       exact Pi.single_eq_same j _
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Establish `: Subsingleton ((divFunRep φ QZ).subrepresentation (divFunSupp φ ∅) (divFunSupp_stable φ ∅))` using `⟨fun a b => Subtype.ext (Subtype.ext (funext fun i => ((mem_divFunSupp_iff φ ∅ a.1).1 a.2 i (by simp)).trans ((mem_divFunSupp_iff φ ∅ b.1).1 b.2 i (by simp)).symm))⟩`. Introduce `x k hx`. Use `subsingleton_cohomology_of_subsingleton ((divFunRep φ QZ).subrepresentation (divFunSupp φ ∅) (divFunSupp_stable φ ∅)) p` as an intermediate fact.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subsingleton.elim _ _`. Consider the case `insert j T hj ih`. Conclude with `PrimaryVanishes.of_shortExact (divFunSuppSequence_shortExact φ T j hj) hℓ hp ih (primaryVanishes_divFunRepOne (φ j) (hZ j) hp (hloc j))`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem primaryVanishes_divFunSupp (hZ : ∀ i, IsClosed ((φ i).range : Set G)) {ℓ p : ℕ} (hℓ : ℓ.Prime)
     (hp : 1 ≤ p)
@@ -536,7 +530,7 @@ theorem primaryVanishes_divFunSupp (hZ : ∀ i, IsClosed ((φ i).range : Set G))
       (primaryVanishes_divFunRepOne (φ j) (hZ j) hp (hloc j))
 
 /- English proof (translation)
-Use `PrimaryVanishes.of_union (divFunRep φ QZ) (divFunSupp φ) (divFunSupp_mono φ) (divFunSupp_stable φ) (fun a => ⟨a.2.1.toFinset, (mem_divFunSupp_iff φ _ a).2 fun i hi => ?_⟩) (fun T y k hy => ⟨T, le_rfl, ?_⟩) x k hx` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hi (a.2.1.mem_toFinset.2 h)`. Rewrite using `[primaryVanishes_divFunSupp φ hZ hℓ hp hloc T y k hy, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_nsmul_cohomology_divFunRep' (hZ : ∀ i, IsClosed ((φ i).range : Set G)) {ℓ : ℕ}
     (hℓ : ℓ.Prime) {p : ℕ} (hp : 1 ≤ p)
@@ -550,7 +544,7 @@ theorem eq_zero_of_pow_nsmul_cohomology_divFunRep' (hZ : ∀ i, IsClosed ((φ i)
   · rw [primaryVanishes_divFunSupp φ hZ hℓ hp hloc T y k hy, map_zero]
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_pow_nsmul_cohomology_divFunRep' φ (fun i => by rw [MonoidHom.coe_range] exact (isCompact_range (hφ i)).isClosed) hℓ hp hloc x k hx`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_nsmul_cohomology_divFunRep [T2Space G] [∀ i, TopologicalSpace (H i)]
     [∀ i, CompactSpace (H i)] (hφ : ∀ i, Continuous (φ i)) {ℓ : ℕ} (hℓ : ℓ.Prime) {p : ℕ} (hp : 1 ≤ p)

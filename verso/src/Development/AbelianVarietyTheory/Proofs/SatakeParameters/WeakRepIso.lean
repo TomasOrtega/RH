@@ -18,9 +18,9 @@ open GlobalTheory.GalCut GlobalTheory.Published
 namespace GlobalTheory.GalCut
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a π r r' h h'`. Take `⟨hc, hss, hev⟩` from `h`. Take `⟨hc', hss', hev'⟩` from `h'`. Use `GlobalTheory.IsoOfFrobFree.main E Ω l ι a r r' hc hc' hss hss' ?_` and prove the remaining obligations. Use `filter_upwards [hev, hev'] with w ⟨B, hB, hF⟩ ⟨B', hB', hF'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `CG.HasSat.unique hB hB'`. Conclude with `⟨_, hF, hF'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weak_repIso : ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : CuspSub E a) (r r' : G E Ω →* GL (Fin a) (Qbar l)), Weak π ι r → Weak π ι r' → UpperTheory.V.Af.RepIso r r' := by
   intro E Ω _ _ _ _ _ _ l _ ι a π r r' h h'

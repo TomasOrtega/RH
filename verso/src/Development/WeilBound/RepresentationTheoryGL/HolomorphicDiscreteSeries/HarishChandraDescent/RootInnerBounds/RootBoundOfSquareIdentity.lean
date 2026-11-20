@@ -13,20 +13,20 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
 
 /- English proof (translation)
-Rewrite using `[@norm_sq_eq_re_inner ℂ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_sq_eq_re' (x : M) : ‖x‖ ^ 2 = (⟪x, x⟫_ℂ).re := by
   rw [@norm_sq_eq_re_inner ℂ]
   rfl
 
 /- English proof (translation)
-Rewrite using `[inner_smul_left, Complex.conj_ofReal, Complex.re_ofReal_mul, ← norm_sq_eq_re']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_inner_real_smul (r : ℝ) (v : M) : (⟪(r : ℂ) • v, v⟫_ℂ).re = r * ‖v‖ ^ 2 := by
   rw [inner_smul_left, Complex.conj_ofReal, Complex.re_ofReal_mul, ← norm_sq_eq_re']
 
 /- English proof (translation)
-Rewrite using `[inner_smul_right, Complex.re_ofReal_mul, ← norm_sq_eq_re']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_inner_smul_real (r : ℝ) (v : M) : (⟪v, (r : ℂ) • v⟫_ℂ).re = r * ‖v‖ ^ 2 := by
   rw [inner_smul_right, Complex.re_ofReal_mul, ← norm_sq_eq_re']
@@ -38,17 +38,17 @@ namespace PositivityTheory.RgHe3
 open ReciprocityTheory.ChartRestriction.DS RootBounds
 
 /- English proof (translation)
-Introduce `hsq`. Unfold `SqId ForAlg at hsq`. Unfold `RootBd ForAlg`. Introduce `n ε M _ _ E hG hU Λ c v hv hc a b hab`. Take `⟨_, h2, _⟩` from `hsq n ε M E hG hU v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hK : casimirK ε E v = ((casValK ε Λ : ℝ) : ℂ) • v` using `casimirK_khwVec ε hG hv`. Rewrite `h2` using `[hK, hc, re_inner_real_smul, re_inner_real_smul]`. Establish `hnn : ∀ x : M, 0 ≤ ‖x‖ ^ 2` using `fun x => sq_nonneg _`. Establish `hv2` using `hnn v`. Distinguish the cases in `he : ε b = ε a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Break down `lt_or_gt_of_ne hab with hlt | hlt` into its components or cases. Rewrite using `[hv.2 a b hlt he.symm, norm_zero]`. Establish `: 0 ≤ |Λ a - Λ b| + |casValK ε Λ - c|` using `by positivity`. Rewrite using `[zero_pow two_ne_zero]`. Conclude with `mul_nonneg this hv2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hba : E b a v = 0` using `hv.2 b a hlt he`. Establish `hcomm : E b a (E a b v) = ((Λ b - Λ a : ℝ) : ℂ) • v`. Establish `h` using `congrArg (fun T : Module.End ℂ M => T v) (hG b a a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hba, map_zero, sub_zero, ↓reduceIte] at h`. Rewrite using `[h, hv.1 b, hv.1 a, ← sub_smul, Complex.ofReal_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : adjSign ε a b = 1` using `by simp [adjSign, he.symm]`. Establish `key : ‖E a b v‖ ^ 2 = (Λ b - Λ a) * ‖v‖ ^ 2`. Rewrite using `[norm_sq_eq_re', hU a b, hs, one_mul, hcomm, re_inner_smul_real]`. Rewrite using `[key]`. Apply `mul_le_mul_of_nonneg_right _ hv2` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hle : ‖E a b v‖ ^ 2 ≤ ∑ a' : Fin n, ∑ b' : Fin n with ε b' ≠ ε a', ‖E a' b' v‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hle` using `[← h2, ← sub_mul]`. Conclude with `hle.trans (mul_le_mul_of_nonneg_right ((le_abs_self _).trans (le_add_of_nonneg_left (abs_nonneg _))) hv2)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_bound_of_square_identity : SqId → RootBd := by
   intro hsq

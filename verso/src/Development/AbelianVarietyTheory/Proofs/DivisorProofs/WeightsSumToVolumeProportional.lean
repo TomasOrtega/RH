@@ -16,7 +16,7 @@ namespace GlobalTheory.CompPropObj
 open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs
 
 /- English proof (translation)
-Rewrite using `[← Fin.prod_const, GlobalTheory.ProjVar.Var.interPoly_prod_sum, GlobalTheory.T.weighted_boundary_divisor_sum]`. Conclude with `GlobalTheory.ShFam.Mumford.src hM O.s O.L O.Φ c la`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interPoly_int (hM : GlobalTheory.Published.MumfordProportionality) {D : D7} (O : Setup D) (c : O.s.Comp)
     (la : D.what₂.Tau → Fin O.N → ℤ) :
@@ -27,15 +27,13 @@ theorem interPoly_int (hM : GlobalTheory.Published.MumfordProportionality) {D : 
   exact GlobalTheory.ShFam.Mumford.src hM O.s O.L O.Φ c la
 
 /- English proof (translation)
-Introduce `hP _ D O _ _ A T H h`. Establish `hM : GlobalTheory.Published.MumfordProportionality` using `(GlobalTheory.T.stronger_published_hypotheses_imply hP).p16`. Establish `hw : A.w = (O.s.cx O.L O.B O.fl).volC` using `h.aux.w`. Use `⟨fun c => ⟨hw ▸ (O.s.cx O.L O.B O.fl).volC_pos c, fun u => ?_⟩, by rw [hw]; rfl, fun Q => by show O.Y.vol * Formalism.L2.Geo.degFlL D.what₂.Tau O.N Q = _ erw [Formalism.L2.Geo.degFlL_apply]; rfl⟩` and prove the remaining obligations. Establish `he : (O.var c).dim = dimY O.Y` using `O.dim_eq c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.monge_ampere_intersection_polynomial hP.p16.1 (h.man c) he _ _ _ ((h.an c).th u), hw]`. Establish `key` using `GlobalTheory.T.polynomial_power_eq_of_integral_points (dimY O.Y) ((O.var c).interPoly fun x : DV.Rt D.what₂.Tau O.N => GlobalTheory.ShFam.Pad.divOf (O.Φ.C c) (O.ex x)) ((O.s.cx O.L O.B O.fl).volC c • Formalism.L2.Geo.degFlL D.what₂.Tau O.N) (fun a => by`. Use `interPoly_int hM O c fun τ i => -a (τ, i)` as an intermediate fact. Simplify using `only [neg_neg, he] at this`. Use `this.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : linRoot (fun τ i => ((-a (τ, i) : ℤ) : ℝ)) = ∑ x, C ((a x : ℤ) : ℝ) * X x`. Simplify using `[linRoot, Finset.sum_neg_distrib]`. Use `show _ * degFl _ _ (linRoot _ ^ dimFl _ _) = _ * (Formalism.L2.Geo.degFlL D.what₂.Tau O.N _)`. Rewrite using `[hl]`. Use `erw [Formalism.L2.Geo.degFlL_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use the proof step `rfl)`. Use `fun x => -u x.1 x.2`. Rewrite using `[key, LinearMap.smul_apply, smul_eq_mul, Formalism.L2.Geo.degFlL_apply, Formalism.DegreeFormula.flagDeg]`. Use `congr 2`. Simplify using `[Formalism.DegreeFormula.linRoot, Finset.sum_neg_distrib]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : Hypotheses2 → HypothesesH → OnObj fun _ O A T _ _ =>
     (∀ c, (T.F c).Prop4 (A.w c)) ∧ O.Y.vol = ∑ c, A.w c ∧ Propor O.Y := by

@@ -9,7 +9,7 @@ namespace PositivityTheory.KB.CentralizerFixed
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
 /- English proof (translation)
-Unfold `pb`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pb_congr {q : ℕ} {g g' : Gp L N} (e : actL g = actL g') (ω : Form (HS L N) q) :
     pb g ω = pb g' ω := by
@@ -17,9 +17,9 @@ theorem pb_congr {q : ℕ} {g g' : Gp L N} (e : actL g = actL g') (ω : Form (HS
   rw [e]
 
 /- English proof (translation)
-Establish `e : actL (g * g') = (actL g).comp (actL g')` using `by ext1 x`. Conclude with `actL_mul g g' x`. Unfold `pb`. Rewrite using `[e]`. Use extensionality with `m`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem pb_mul {q : ℕ} (g g' : Gp L N) (ω : Form (HS L N) q) (h : HS L N) :
     pb (g * g') ω h = (pb g ω (actL g' h)).compContinuousLinearMap (actL g') := by
@@ -32,9 +32,9 @@ theorem pb_mul {q : ℕ} (g g' : Gp L N) (ω : Form (HS L N) q) (h : HS L N) :
   rfl
 
 /- English proof (translation)
-Establish `e : actL (1 : Gp L N) = ContinuousLinearMap.id ℝ (HS L N)` using `by ext1 x`. Conclude with `actL_one x`. Unfold `pb`. Rewrite using `[e]`. Use extensionality with `m`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem pb_one {q : ℕ} (ω : Form (HS L N) q) (h : HS L N) : pb 1 ω h = ω h := by
   have e : actL (1 : Gp L N) = ContinuousLinearMap.id ℝ (HS L N) := by
@@ -46,7 +46,7 @@ theorem pb_one {q : ℕ} (ω : Form (HS L N) q) (h : HS L N) : pb 1 ω h = ω h 
   rfl
 
 /- English proof (translation)
-Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_left_cancel (a := (sc 0 : Gp L N)) (this.symm.trans (mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_zero (hadd : ∀ t t' : InfinitePlace L → ℝ, (sc (t + t') : Gp L N) = sc t * sc t') :
     (sc 0 : Gp L N) = 1 := by
@@ -55,7 +55,7 @@ theorem sc_zero (hadd : ∀ t t' : InfinitePlace L → ℝ, (sc (t + t') : Gp L 
   exact mul_left_cancel (a := (sc 0 : Gp L N)) (this.symm.trans (mul_one _).symm)
 
 /- English proof (translation)
-Introduce `h _`. Rewrite using `[sc_zero hadd]`. Conclude with `pb_one ω h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_zero {q : ℕ} {ω : Form (HS L N) q}
     (hadd : ∀ t t' : InfinitePlace L → ℝ, (sc (t + t') : Gp L N) = sc t * sc t') : (0 : InfinitePlace L → ℝ) ∈ Fix ω := by
@@ -64,7 +64,7 @@ theorem fix_zero {q : ℕ} {ω : Form (HS L N) q}
   exact pb_one ω h
 
 /- English proof (translation)
-Introduce `h hh`. Establish `e` using `ht (actL (sc t') h) (actL_pos _ hh)`. Rewrite using `[hadd, pb_mul, e]`. Conclude with `ht' h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_add {q : ℕ} {ω : Form (HS L N) q}
     (hadd : ∀ t t' : InfinitePlace L → ℝ, (sc (t + t') : Gp L N) = sc t * sc t') {t t' : InfinitePlace L → ℝ}
@@ -75,9 +75,7 @@ theorem fix_add {q : ℕ} {ω : Form (HS L N) q}
   exact ht' h hh
 
 /- English proof (translation)
-Introduce `h hh`. Use `show (∫ τ in (0:ℝ)..1, pb (sc (τ • v)) ω h) = ∫ τ in (0:ℝ)..1, pb (sc (τ • v)) ω' h`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Use `show (ω (actL _ h)).compContinuousLinearMap _ = (ω' (actL _ h)).compContinuousLinearMap _`.
-
-Rewrite using `[e _ (actL_pos _ hh)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem av_congr {q : ℕ} (v : InfinitePlace L → ℝ) {ω ω' : Form (HS L N) q}
     (e : ∀ h ∈ Pos L N, ω h = ω' h) : ∀ h ∈ Pos L N, av v ω h = av v ω' h := by
@@ -89,7 +87,7 @@ theorem av_congr {q : ℕ} (v : InfinitePlace L → ℝ) {ω ω' : Form (HS L N)
   rw [e _ (actL_pos _ hh)]
 
 /- English proof (translation)
-Introduce `h hh`. Use `(hA L N q v ω hc).2.1 g hg h hh` as an intermediate fact. Express the relevant statement in the definitionally equal form `pb g (av v ω) h = _`. Rewrite using `[this]`. Conclude with `av_congr v (fun k hk => hinv k hk) h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_av (hA : TAv) {q : ℕ} (v : InfinitePlace L → ℝ) {ω : Form (HS L N) q}
     (hc : ContinuousOn ω (Pos L N)) {g : Gp L N} (hg : ∀ t, sc t * g = g * sc t) (hinv : FInv ω g) :
@@ -101,11 +99,9 @@ theorem inv_av (hA : TAv) {q : ℕ} (v : InfinitePlace L → ℝ) {ω : Form (HS
   exact av_congr v (fun k hk => hinv k hk) h hh
 
 /- English proof (translation)
-Use `continuous_pi fun w => ?_` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `show Continuous fun τ : ℝ => Matrix.scalar (Fin N) ((Real.exp ((τ • v) w) : ℂ))`. Simplify using `only [Matrix.scalar_apply, Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.matrix_diagonal (continuous_pi fun _ => ?_)` and prove the remaining obligations. Use `fun_prop`. Use `show Continuous fun τ : ℝ => Matrix.scalar (Fin N) (((Real.exp ((τ • v) w) : ℂ))⁻¹)`. Simplify using `only [Matrix.scalar_apply, Pi.smul_apply, smul_eq_mul]`. Use `Continuous.matrix_diagonal (continuous_pi fun _ => ?_)` and prove the remaining obligations.
-
-Use `Continuous.inv₀ (by fun_prop) (fun τ => ?_)` and prove the remaining obligations. Conclude with `(Real.exp_pos _).ne'` after adjusting the coercions.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sc_cont (v : InfinitePlace L → ℝ) : Continuous fun τ : ℝ => (sc (τ • v) : Gp L N) := by
   refine continuous_pi fun w => ?_
@@ -129,11 +125,11 @@ def Carr {k : ℕ} (ω₀ : Form (HS L N) (k + 1)) (B : Gp L N → ℝ) (ω : Fo
     ∃ C, 0 ≤ C ∧ ∀ x, ‖fr ω x‖ ≤ C * B x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Take `⟨_, _, _, hcont, hint, _⟩` from `hA L N (k+1) v ω hc`. Establish `e : dC (intP (av v ω)) y = ∫ τ in (0:ℝ)..1, dC (intP ω) (fun j => (sc (τ • v) : Gp L N) • y j)`. Simplify using `only [dC, hint]`. Rewrite using `[intervalIntegral.integral_finset_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[intervalIntegral.integral_const_mul]`. Introduce `i _`. Conclude with `((hcont _).const_mul _).intervalIntegrable _ _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step_dC (hA : TAv) {k : ℕ} {ω : Form (HS L N) (k + 1)} (hc : ContinuousOn ω (Pos L N))
     (hd : dC (intP ω) = 0) (v : InfinitePlace L → ℝ) : dC (intP (av v ω)) = 0 := by
@@ -151,15 +147,15 @@ theorem step_dC (hA : TAv) {k : ℕ} {ω : Form (HS L N) (k + 1)} (hc : Continuo
   simp
 
 /- English proof (translation)
-Take `⟨_, _, _, hcont, hint, _⟩` from `hA L N (k+1) v ω hc`. Establish `hcomm` using `(hSc L N).2.1`. Establish `hinvF : Inv (emb L N) (intP ω)` using `fun γ y => (hSi L N (k+1)).2 ω _ (hΓ γ) y`. Establish `hcst` using `(hEv (Gm L N) (Gp L N) (Pos L N) (emb L N) k (intP ω) hinvF hd).2`. Establish `key : ∀ τ : ℝ, (z.sum fun g r => r * intP ω (fun j => (sc (τ • v) : Gp L N) • (emb L N (Fin.partialProd g j) • one L N))) = ev (emb L N) (intP ω) (one L N) z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Rewrite using `[← hcst ((sc (τ • v) : Gp L N) • one L N) (one L N) z hz]`. Simplify using `only [ev]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[smul_smul, smul_smul, hcomm]`. Use `show (z.sum fun g r => r * intP (av v ω) (fun j => emb L N (Fin.partialProd g j) • one L N)) = _`. Simplify using `only [hint]`. Establish `e : (z.sum fun g r => r * ∫ τ in (0:ℝ)..1, intP ω (fun j => (sc (τ • v) : Gp L N) • (emb L N (Fin.partialProd g j) • one L N))) = ∫ τ in (0:ℝ)..1, z.sum fun g r => r * intP ω (fun j => (sc (τ • v) : Gp L N) • (emb L N (Fin.partialProd g j) • one L N))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finsupp.sum]`. Rewrite using `[intervalIntegral.integral_finset_sum]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[intervalIntegral.integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g _`. Conclude with `((hcont _).const_mul _).intervalIntegrable _ _`. Rewrite using `[e]`. Simplify using `only [key]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step_ev (hEv : SEv) (hSc : TScal) (hSi : TSimp) (hA : TAv) {k : ℕ} {ω : Form (HS L N) (k + 1)}
     (hc : ContinuousOn ω (Pos L N)) (hd : dC (intP ω) = 0) (hΓ : ∀ γ, FInv ω (emb L N γ))
@@ -194,11 +190,11 @@ theorem step_ev (hEv : SEv) (hSc : TScal) (hSi : TSimp) (hA : TAv) {k : ℕ} {ω
   simp
 
 /- English proof (translation)
-Take `⟨-, hcomm, -, -, -⟩` from `hSc L N`. Take `⟨-, -, -, -, -, hAfr⟩` from `hA L N (k + 1) v ω hc`. Take `⟨CK, hCK⟩` from `hB _ ((isCompact_Icc (a := (0 : ℝ)) (b := 1)).image (sc_cont (N := N) v))`. Use `⟨C * max CK 0, mul_nonneg hC0 (le_max_right _ _), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hAfr x]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ τ ∈ Set.uIoc (0 : ℝ) 1, ‖fr ω (sc (τ • v) * x)‖ ≤ C * max CK 0 * B x` using `fun τ hτ => by`. Rewrite `hτ` using `[Set.uIoc_of_le zero_le_one]`. Rewrite using `[hcomm]`. Combine the equalities or inequalities in the displayed calculation. Use `intervalIntegral.norm_integral_le_of_norm_le_const hb` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem step_bd (hSc : TScal) (hA : TAv) {k : ℕ} {ω : Form (HS L N) (k + 1)} (hc : ContinuousOn ω (Pos L N))
     {B : Gp L N → ℝ} (hB : ∀ K : Set (Gp L N), IsCompact K → ∃ C, ∀ g ∈ K, ∀ x, B (x * g) ≤ C * B x)
@@ -220,9 +216,9 @@ theorem step_bd (hSc : TScal) (hA : TAv) {k : ℕ} {ω : Form (HS L N) (k + 1)} 
   simpa using this
 
 /- English proof (translation)
-Take `⟨hc, hd, hΓ, hdiag, hev, C, hC0, hC⟩` from `hω`. Take `⟨-, hcomm, -, -, -⟩` from `hSc L N`. Establish `hfix : ∀ t ∈ Fix ω, t ∈ Fix (av v ω)` using `fun t ht => inv_av hA v hc (fun t' => hcomm t' (sc t)) ht`. Establish `hper` using `((hA L N (k + 1) v ω hc).2.2.1 hv)`. Establish `hAc` using `(hA L N (k + 1) v ω hc).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨hAc, step_dC hA hc hd v, fun γ => inv_av hA v hc (fun t => hcomm t _) (hΓ γ), fun c => hfix _ (hdiag c), fun z hz => (step_ev hEv hSc hSi hA hc hd hΓ v z hz).trans (hev z hz), step_bd hSc hA hc hB hB0 hC0 hC v⟩, hfix, hper⟩`.
+Supply the required witnesses or components.
 -/
 theorem step (hEv : SEv) (hSc : TScal) (hSi : TSimp) (hA : TAv) {k : ℕ} {ω₀ ω : Form (HS L N) (k + 1)}
     {B : Gp L N → ℝ} (hB : ∀ K : Set (Gp L N), IsCompact K → ∃ C, ∀ g ∈ K, ∀ x, B (x * g) ≤ C * B x)
@@ -239,11 +235,11 @@ theorem step (hEv : SEv) (hSc : TScal) (hSi : TSimp) (hA : TAv) {k : ℕ} {ω₀
     step_bd hSc hA hc hB hB0 hC0 hC v⟩, hfix, hper⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨ω, hω, by simp⟩`. Consider the case `cons u l ih`. Take `⟨ω1, h1, hl1⟩` from `ih`. Take `⟨-, -, hemb, -, -⟩` from `hSc L N`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu : lg u ∈ Fix ω1`. Introduce `h hh`. Rewrite using `[pb_congr (hemb u).symm]`. Conclude with `h1.2.2.1 _ h hh`. Take `⟨h2, hfix, hper⟩` from `step hEv hSc hSi hA hB hB0 h1 (lg u) hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨av (lg u) ω1, h2, fun u' hu' σ => ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hu' with rfl | hu'` into its components or cases. Conclude with `hper σ`. Conclude with `hfix _ (hl1 u' hu' σ)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem iter (hEv : SEv) (hSc : TScal) (hSi : TSimp) (hA : TAv) {k : ℕ} {ω₀ ω : Form (HS L N) (k + 1)}
     {B : Gp L N → ℝ} (hB : ∀ K : Set (Gp L N), IsCompact K → ∃ C, ∀ g ∈ K, ∀ x, B (x * g) ≤ C * B x)
@@ -265,19 +261,17 @@ theorem iter (hEv : SEv) (hSc : TScal) (hSi : TSimp) (hA : TAv) {k : ℕ} {ω₀
     · exact hfix _ (hl1 u' hu' σ)
 
 /- English proof (translation)
-Introduce `L _ _ N k ω hG hΓ hS B hB hfr`. Establish `hB0 : ∀ x, 0 ≤ B x` using `fun x => (norm_nonneg _).trans (hfr x)`. Take `⟨l, hl⟩` from `hSp L`. Establish `h0 : Carr ω B ω` using `⟨hG.1, hG.2, hΓ, fun c => hS (fun _ => Units.mk0 ((Real.exp c : ℝ) : ℂ) (by exact_mod_cast (Real.exp_pos c).ne')) (fun _ _ => rfl), fun _ _ => rfl, 1, zero_le_one, fun x => by simpa using hfr x⟩`. Take `⟨ω', ⟨hc, hd, hΓ', hdiag, hev, C, -, hC⟩, hlf⟩` from `iter hEv hSc hSi hA hB hB0 h0 l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hadd, -, -, hscal, -⟩` from `hSc L N`. Establish `key : ∀ t ∈ Submodule.span ℝ (insert (fun _ => (1 : ℝ)) {x | ∃ u ∈ l, lg u = x}), ∀ σ : ℝ, σ • t ∈ Fix ω'`. Introduce `t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `hx with rfl | ⟨u, hu, rfl⟩` into its components or cases. Introduce `σ`. Use `hdiag σ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `hlf u hu`. Consider the case `zero => intro σ`. Rewrite using `[smul_zero]`. Conclude with `fix_zero hadd`. Consider the case `add x y _ _ hx hy => intro σ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[smul_add]`. Conclude with `fix_add hadd (hx σ) (hy σ)`. Consider the case `smul a x _ hx => intro σ`. Rewrite using `[smul_smul]`. Conclude with `hx _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨ω', ⟨hc, hd⟩, hΓ', fun s => ?_, hev, C, hC⟩` and prove the remaining obligations. Introduce `h hh`. Use `key _ (hl (fun w => Real.log ‖(s w : ℂ)‖)) 1 h hh` as an intermediate fact. Rewrite `this` using `[one_smul]`. Express the relevant statement in the definitionally equal form `pb (scal L N s) ω' h = ω' h`.
-
-Rewrite using `[pb_congr (hscal s)]`. Conclude with `this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem join (hSp : TSpan) (hSc : TScal) (hSi : TSimp) (hA : TAv) (hEv : SEv) : SCen := by
   intro L _ _ N k ω hG hΓ hS B hB hfr

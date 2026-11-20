@@ -18,14 +18,14 @@ namespace GlobalTheory.CuspDecay.Model
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.AutFunCompare.isInfFam_iff (D := D) _).2 rfl`. Conclude with `⟨_, h, _, GlobalTheory.SmoothForms.isExpFam_expInf ((GlobalTheory.SmoothForms.RealPts.realPoints D).2 _ h V)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_theta_exp (V : HSp D) : ∃ θ, IsInfFam (D := D) θ ∧ ∃ e, IsExpFam θ V e := by
   have h := (GlobalTheory.AutFunCompare.isInfFam_iff (D := D) _).2 rfl
   exact ⟨_, h, _, GlobalTheory.SmoothForms.isExpFam_expInf ((GlobalTheory.SmoothForms.RealPts.realPoints D).2 _ h V)⟩
 
 /- English proof (translation)
-Use `⟨⟨fun _ _ _ => rfl, ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, continuous_const⟩, isSmoothInf_const V e c, 0, fun l => ?_⟩` and prove the remaining obligations. Take `⟨c', hc⟩` from `wordDer_const V e l c`. Conclude with `⟨‖c'‖, fun g => by rw [hc]; simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem const_hyps (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (e : LieInf V → GA D V) (c : ℂ) :
@@ -36,7 +36,7 @@ theorem const_hyps (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E
   exact ⟨‖c'‖, fun g => by rw [hc]; simp⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCuspFun_zero (V : HSp D) : IsCuspFun V fun _ => 0 := fun _ _ _ _ _ _ _ _ => by simp
 
@@ -45,13 +45,13 @@ def line (D : D7) : HSp D := Examples₂.posSpace Examples₂.star_isIntegral 1
 def plane (D : D7) : HSp D := Examples₂.stdSpace Examples₂.star_isIntegral 2 ![false, true] 1 1
 
 /- English proof (translation)
-Introduce `r C hC`. It suffices to derive a contradiction. Take `⟨hr, hli, h0⟩` from `hC`. Establish `h1` using `congrFun (congrFun h0 ⟨0, hr⟩) ⟨0, hr⟩`. Establish `hg : (line D).gram = 1`.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Use `(Examples₂.stdSpace_gram_apply (E := D.host.E) Examples₂.star_isIntegral 1 (fun _ => false) 1 0 i j).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if i = j then (Examples₂.sgn false : D.host.E) else 0) = if i = j then 1 else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Examples₂.sgn]`. Rewrite `h1` using `[hg, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `C' : Matrix (Fin 1) (Fin r) D.host.E` to `C`. Establish `h2 : ∑ i : Fin 1, D.sp.cm.sig (C' i ⟨0, hr⟩) * C' i ⟨0, hr⟩ = 0` using `h1`. Rewrite `h2` using `[Fin.sum_univ_one]`. Establish `h3 : C' 0 ⟨0, hr⟩ = 0`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(map_eq_zero_iff _ (D.sp.cm.sig : D.host.E →+* D.host.E).injective).1 h`. Conclude with `h`. Use `hli.ne_zero ⟨0, hr⟩ (funext fun i => ?_)` and prove the remaining obligations. Establish `hi : ∀ i : Fin 1, C' i ⟨0, hr⟩ = 0` using `fun i => by rw [Subsingleton.elim i 0]; exact h3`. Conclude with `hi i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCuspFun_line (φ : GA D (line D) → ℂ) : IsCuspFun (line D) φ := by
   intro r C hC
@@ -76,7 +76,7 @@ theorem isCuspFun_line (φ : GA D (line D) → ℂ) : IsCuspFun (line D) φ := b
   exact hi i
 
 /- English proof (translation)
-Take `⟨θ, hθ, e, he⟩` from `exists_theta_exp (line D)`. Take `⟨h1, h2, h3⟩` from `const_hyps θ (line D) e 1`. Conclude with `⟨θ, hθ, e, he, h1, h2, h3, isCuspFun_line _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hyps_line (D : D7) : ∃ θ, IsInfFam (D := D) θ ∧ ∃ e, IsExpFam θ (line D) e ∧ IsAutFun (line D) (fun _ => 1) ∧
     IsSmoothInf (line D) e (fun _ => 1) ∧ IsUnifModerate θ (line D) e (fun _ => 1) ∧ IsCuspFun (line D) fun _ => 1 := by
@@ -85,9 +85,9 @@ theorem hyps_line (D : D7) : ∃ θ, IsInfFam (D := D) θ ∧ ∃ e, IsExpFam θ
   exact ⟨θ, hθ, e, he, h1, h2, h3, isCuspFun_line _⟩
 
 /- English proof (translation)
-Use `⟨one_pos, ?_, ?_⟩` and prove the remaining obligations. Use `linearIndependent_unique_iff.2 fun h => ?_` and prove the remaining obligations. Use `congrFun h (0 : Fin 2)` as an intermediate fact. Conclude with `one_ne_zero this`. Establish `hg : ∀ i j : Fin 2, (plane D).gram i j = if i = j then (Examples₂.sgn (![false, true] i) : D.host.E) else 0` using `Examples₂.stdSpace_gram_apply Examples₂.star_isIntegral 2 ![false, true] 1 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a b`. Express the relevant statement in the definitionally equal form `∑ j : Fin 2, (∑ i : Fin 2, D.sp.cm.sig 1 * (plane D).gram i j) * 1 = 0`. Simplify using `[Fin.sum_univ_two, hg, Examples₂.sgn]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIsoFrame_plane (D : D7) : IsIsoFrame (plane D) (r := 1) (Matrix.of fun _ _ => 1) := by
   refine ⟨one_pos, ?_, ?_⟩
@@ -101,9 +101,9 @@ theorem isIsoFrame_plane (D : D7) : IsIsoFrame (plane D) (r := 1) (Matrix.of fun
     simp [Fin.sum_univ_two, hg, Examples₂.sgn]
 
 /- English proof (translation)
-Take `⟨L, hL, -⟩` from `GlobalTheory.AutFunCompare.exists_dual D.sp.cm V C hC.2.1 hC.2.2`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `: T2Space (AF D.host.F)` using `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField _`. Establish `: T2Space (AF D.host.F ⊗[D.host.F] D.host.E)` using `.of_injective_continuous (f := (Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).equivFun) (LinearEquiv.injective _) (IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).equivFun.to …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Continuous fun g : GA D V => (HA.mat _ D.sp.cm.sig V.gram g).1` using `Units.continuous_val.comp continuous_subtype_val`. Rewrite using `[GlobalTheory.AutFunCompare.NI_eq]`. Establish `hcl : IsClosed {g : GA D V | ((HA.mat _ D.sp.cm.sig V.gram g).1 - 1) * (C * L).map (inclR (F` using `D.host.F) (AF D.host.F)) = 0 ∧ (1 - (C * L).map (inclR (F := D.host.F) (AF D.host.F))) * ((HA.mat _ D.sp.cm.sig V.gram g).1 - 1) * (1 - GlobalTheory.AutFunCompare.adj D.sp.cm V ((C * L).map (inclR (F := D.host.F) (AF D.host.F)))) = 0} := (isClosed_eq ((hm.sub continuous_const).ma …`. Use `hcl using 1` and compare the differences between its conclusion and the goal. Conclude with `Set.ext fun g => GlobalTheory.AutFunCompare.mem_unipRad_idem D.sp.cm V C L hL g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isClosed_NI (V : HSp D) {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : IsIsoFrame V C) :
     IsClosed (NI V C : Set (GA D V)) := by
@@ -128,15 +128,13 @@ theorem isClosed_NI (V : HSp D) {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.hos
   exact Set.ext fun g => GlobalTheory.AutFunCompare.mem_unipRad_idem D.sp.cm V C L hL g
 
 /- English proof (translation)
-Introduce `h`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `: LocallyCompactSpace (NI V C)` using `(isClosed_NI V hC).locallyCompactSpace`. Set `i : NIQ V C → GQ V` to `fun x => ⟨x.1.1, x.2⟩`. Establish `hi : Function.Injective i` using `fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : GQ V => z.1) h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: DiscreteTopology (NIQ V C)` using `DiscreteTopology.of_continuous_injective (f := i) ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) hi`. Establish `: Countable (NIQ V C)` using `hi.countable`. Establish `: SecondCountableTopology (NI V C)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Set `μ : Measure (NI V C)` to `Measure.haar`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (NIQ V C) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `h r C hC μ 𝓕 inferInstance h𝓕 1`. Establish `hne : μ 𝓕 ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne μ)`. Establish `hint : IntegrableOn (fun _ : NI V C => c) 𝓕 μ`. Establish `key : ∀ N : Subgroup (GA D V), N = GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.unipRad D.sp.cm V (AF D.host.F) (GlobalTheory.AutFunCompare.colSpan V C) → ∀ Q : Subgroup (GA D V), Q = GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.ratPts D.sp.cm V → ∀ …`. Introduce and unpack `N rfl Q rfl μ 𝓕 hμ h𝓕`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.AutFunCompare.integrableOn_constTerm D.sp.cm V _ ((GlobalTheory.AutFunCompare.isIsoFrame_iff V C).1 hC).2 (fun _ => c) continuous_const (fun _ _ _ => rfl) μ hμ 𝓕 h𝓕 1`. Conclude with `key _ (GlobalTheory.AutFunCompare.NI_eq V C) _ (GlobalTheory.AutFunCompare.GQ_eq V) μ 𝓕 inferInstance h𝓕`. Establish `hlt : μ 𝓕 ≠ ⊤`. Break down `(integrableOn_const_iff (C := c)).1 hint with h | h` into its components or cases. Conclude with `absurd (by simpa using h) hc`.
-
-Conclude with `h.ne`. Rewrite `h0` using `[setIntegral_const, smul_eq_zero]`. Break down `h0 with h0 | h0` into its components or cases. Conclude with `ENNReal.toReal_ne_zero.2 ⟨hne, hlt⟩ h0`. Conclude with `hc h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_isCuspFun_const (V : HSp D) {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : IsIsoFrame V C)
     {c : ℂ} (hc : c ≠ 0) : ¬ IsCuspFun V fun _ => c := by
@@ -172,13 +170,13 @@ theorem not_isCuspFun_const (V : HSp D) {r : ℕ} {C : Matrix (Fin V.rank) (Fin 
   · exact hc h0
 
 /- English proof (translation)
-The claim follows from `not_isCuspFun_const _ (isIsoFrame_plane D) one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem not_isCuspFun_one_plane (D : D7) : ¬ IsCuspFun (plane D) fun _ => 1 :=
   not_isCuspFun_const _ (isIsoFrame_plane D) one_ne_zero
 
 /- English proof (translation)
-Establish `: IsEmpty (Fin V.rank)` using `by rw [hV]; infer_instance`. Establish `hs : ∀ g : GA D V, g = 1` using `fun g => Subtype.ext (Units.ext (Matrix.ext fun i _ => isEmptyElim i))`. Conclude with `fun N => ⟨‖φ 1‖ * (quotHeight θ V 1 : ℝ) ^ N, fun g => by rw [hs g]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isRapidDecay_rank_zero (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (hV : V.rank = 0) (φ : GA D V → ℂ) : IsRapidDecay θ V φ := by
@@ -187,7 +185,7 @@ theorem isRapidDecay_rank_zero (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host
   exact fun N => ⟨‖φ 1‖ * (quotHeight θ V 1 : ℝ) ^ N, fun g => by rw [hs g]⟩
 
 /- English proof (translation)
-Establish `key : ∀ {γ : GA D V}, γ ∈ GQ V → ∀ g, quotHeight θ V g ≤ quotHeight θ V (γ * g)` using `fun {γ} hγ g => le_ciInf fun δ => by`. Rewrite using `[← mul_assoc]`. Conclude with `quotHeight_le g (mul_mem δ.2 hγ)`. Use `le_antisymm ?_ (key hγ g)` and prove the remaining obligations. Simplify using `using key (inv_mem hγ) (γ * g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem quotHeight_rat_mul (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     {γ : GA D V} (hγ : γ ∈ GQ V) (g : GA D V) : quotHeight θ V (γ * g) = quotHeight θ V g := by

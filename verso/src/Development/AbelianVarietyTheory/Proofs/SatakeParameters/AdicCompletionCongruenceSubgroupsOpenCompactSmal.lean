@@ -17,7 +17,7 @@ abbrev cong (t : w.adicCompletionIntegers E) : Subgroup (GL (Fin a) (w.adicCompl
     (Matrix.GeneralLinearGroup.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)))
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers w`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_integers : IsCompact (w.adicCompletionIntegers E : Set (w.adicCompletion E)) :=
   ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers w
@@ -25,7 +25,7 @@ theorem isCompact_integers : IsCompact (w.adicCompletionIntegers E : Set (w.adic
 variable {w a}
 
 /- English proof (translation)
-Use `Valuation.map_add_le Valued.v (h.trans hc) hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem le_one_of_sub_le {x y : w.adicCompletion E} {c : WithZero (Multiplicative ℤ)} (hc : c ≤ 1)
     (hy : Valued.v y ≤ 1) (h : Valued.v (x - y) ≤ c) : Valued.v x ≤ 1 := by
@@ -33,14 +33,14 @@ theorem le_one_of_sub_le {x y : w.adicCompletion E} {c : WithZero (Multiplicativ
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem v_one_apply_le (i j : Fin a) :
     Valued.v ((1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) ≤ 1 := by
   rw [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coe_one_apply (i j : Fin a) :
     (((1 : Matrix (Fin a) (Fin a) (w.adicCompletionIntegers E)) i j : w.adicCompletionIntegers E) :
@@ -48,7 +48,7 @@ theorem coe_one_apply (i j : Fin a) :
   rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e2 : (1 : Matrix (Fin a) (Fin a) (w.adicCompletionIntegers E ⧸ Ideal.span {t})) i j = Ideal.Quotient.mk (Ideal.span {t}) ((1 : Matrix (Fin a) (Fin a) (w.adicCompletionIntegers E)) i j)`. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Establish `hI` using `Valuation.integer.integers (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[e2, Ideal.Quotient.eq, Ideal.mem_span_singleton, ← coe_one_apply]`. Conclude with `hI.dvd_iff_le`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_one_apply_iff (t x : w.adicCompletionIntegers E) (i j : Fin a) :
     Ideal.Quotient.mk (Ideal.span {t}) x =
@@ -69,7 +69,7 @@ namespace GlobalTheory.CongOpenSmall
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {a : ℕ}
 
 /- English proof (translation)
-Rewrite `hh` using `[MonoidHom.mem_ker]`. Establish `e` using `congrArg (fun g : GL (Fin a) (w.adicCompletionIntegers E ⧸ Ideal.span {t}) => g.1 i j) hh`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (h.1 i j) = (1 : Matrix (Fin a) (Fin a) _) i j at e`. Conclude with `(mk_eq_one_apply_iff t _ i j).1 e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem entry_le_of_mem_ker (t : w.adicCompletionIntegers E) (h : GL (Fin a) (w.adicCompletionIntegers E))
     (hh : h ∈ (Matrix.GeneralLinearGroup.map (n := Fin a) (Ideal.Quotient.mk (Ideal.span {t}))).ker)
@@ -84,7 +84,7 @@ theorem entry_le_of_mem_ker (t : w.adicCompletionIntegers E) (h : GL (Fin a) (w.
   exact (mk_eq_one_apply_iff t _ i j).1 e
 
 /- English proof (translation)
-Take `⟨h, hh, rfl⟩` from `Subgroup.mem_map.1 hg`. Use `⟨entry_le_of_mem_ker t h hh i j, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `entry_le_of_mem_ker t h⁻¹ (inv_mem hh) i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounds_of_mem (t : w.adicCompletionIntegers E) (g : GL (Fin a) (w.adicCompletion E))
     (hg : g ∈ cong w a t) (i j : Fin a) :
@@ -98,13 +98,13 @@ theorem bounds_of_mem (t : w.adicCompletionIntegers E) (g : GL (Fin a) (w.adicCo
   exact entry_le_of_mem_ker t h⁻¹ (inv_mem hh) i j
 
 /- English proof (translation)
-Establish `ht : Valued.v (t : w.adicCompletion E) ≤ 1` using `t.2`. Establish `h1 : ∀ i j, (g : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j ∈ w.adicCompletionIntegers E` using `fun i j => (HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 E) E w).2 (le_one_of_sub_le ht (v_one_apply_le i j) (hb i j).1)`. Establish `h2 : ∀ i j, (↑g⁻¹ : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j ∈ w.adicCompletionIntegers E` using `fun i j => (HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 E) E w).2 (le_one_of_sub_le ht (v_one_apply_le i j) (hb i j).2)`. Set `M : Matrix (Fin a) (Fin a) (w.adicCompletionIntegers E)` to `Matrix.of fun i j => ⟨_, h1 i j⟩`. Set `M' : Matrix (Fin a) (Fin a) (w.adicCompletionIntegers E)` to `Matrix.of fun i j => ⟨_, h2 i j⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hM : M.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)) = g` using `by ext i j; rfl`. Establish `hM' : M'.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)) = ↑g⁻¹` using `by ext i j; rfl`. Establish `inj : Function.Injective fun N : Matrix (Fin a) (Fin a) (w.adicCompletionIntegers E) => N.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))` using `Matrix.map_injective fun x y hxy => Subtype.ext hxy`. Establish `hMM : M * M' = 1` using `inj (by`. Simplify using `only [Matrix.map_mul, hM, hM', Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `g.mul_inv)`. Establish `hM'M : M' * M = 1` using `inj (by`. Simplify using `only [Matrix.map_mul, hM, hM', Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.inv_mul)`. Use `Subgroup.mem_map.2 ⟨⟨M, M', hMM, hM'M⟩, ?_, Units.ext hM⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.mem_ker]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (M i j) = (1 : Matrix (Fin a) (Fin a) _) i j`. Conclude with `(mk_eq_one_apply_iff t _ i j).2 (hb i j).1`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mem_cong_of (t : w.adicCompletionIntegers E) (g : GL (Fin a) (w.adicCompletion E))
     (hb : ∀ i j, Valued.v ((g : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j
@@ -139,13 +139,13 @@ theorem mem_cong_of (t : w.adicCompletionIntegers E) (g : GL (Fin a) (w.adicComp
   exact (mk_eq_one_apply_iff t _ i j).2 (hb i j).1
 
 /- English proof (translation)
-Establish `hv : Valued.v (t : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).2 ht`. Establish `hnb : ∀ x : w.adicCompletion E, {y | Valued.v (y - x) ≤ Valued.v (t : w.adicCompletion E)} ∈ 𝓝 x` using `fun x => by`. Establish `hc : Continuous fun y : w.adicCompletion E => (t : w.adicCompletion E)⁻¹ * (y - x)` using `continuous_const.mul (continuous_id.sub continuous_const)`. Establish `hO : (w.adicCompletionIntegers E : Set (w.adicCompletion E)) ∈ 𝓝 (0 : w.adicCompletion E)` using `(ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers w).mem_nhds (zero_mem _)`. Establish `h0` using `hc.tendsto x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[sub_self, mul_zero]`. Use `mem_of_superset (h0 hO) fun y hy => ?_` and prove the remaining obligations. Establish `hy'` using `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 E) E w).1 hy`. Rewrite `hy'` using `[map_mul, map_inv₀, inv_mul_le_iff₀ (zero_lt_iff.2 hv), mul_one]`. Conclude with `hy'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc1 : ∀ i j, Tendsto (fun g : GL (Fin a) (w.adicCompletion E) => (g : Matrix (Fin a) (Fin a) _) i j) (𝓝 1) (𝓝 ((1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j))` using `fun i j => by`. Use `(Units.continuous_val.matrix_elem i j).tendsto (1 : GL (Fin a) (w.adicCompletion E))` as an intermediate fact. Simplify using `using this`. Establish `hc2 : ∀ i j, Tendsto (fun g : GL (Fin a) (w.adicCompletion E) => (↑g⁻¹ : Matrix (Fin a) (Fin a) _) i j) (𝓝 1) (𝓝 ((1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j))` using `fun i j => by`. Use `(Units.continuous_coe_inv.matrix_elem i j).tendsto (1 : GL (Fin a) (w.adicCompletion E))` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hev : ∀ᶠ g : GL (Fin a) (w.adicCompletion E) in 𝓝 1, ∀ i j, Valued.v ((g : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j - (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) ≤ Valued.v (t : w.adicCompletion E) ∧ Valued.v ((↑g⁻¹ : Matrix (Fin a) (Fin a) (w.adicCompletion E) …` using `eventually_all.2 fun i => eventually_all.2 fun j => ((hc1 i j).eventually (hnb _)).and ((hc2 i j).eventually (hnb _))`. Conclude with `mem_of_superset hev fun g hg => mem_cong_of t g hg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cong_mem_nhds (t : w.adicCompletionIntegers E) (ht : (t : w.adicCompletion E) ≠ 0) :
     (cong w a t : Set (GL (Fin a) (w.adicCompletion E))) ∈ 𝓝 (1 : GL (Fin a) (w.adicCompletion E)) := by
@@ -180,16 +180,16 @@ theorem cong_mem_nhds (t : w.adicCompletionIntegers E) (ht : (t : w.adicCompleti
   exact mem_of_superset hev fun g hg => mem_cong_of t g hg
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_of_mem_nhds _ (cong_mem_nhds t ht)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_cong (t : w.adicCompletionIntegers E) (ht : (t : w.adicCompletion E) ≠ 0) :
     IsOpen (cong w a t : Set (GL (Fin a) (w.adicCompletion E))) :=
   Subgroup.isOpen_of_mem_nhds _ (cong_mem_nhds t ht)
 
 /- English proof (translation)
-Establish `hB : IsCompact (Set.univ.pi fun _ : Fin a => Set.univ.pi fun _ : Fin a => (w.adicCompletionIntegers E : Set (w.adicCompletion E)) : Set (Matrix (Fin a) (Fin a) (w.adicCompletion E)))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_integers w`. Establish `hS : IsCompact (Units.embedProduct (Matrix (Fin a) (Fin a) (w.adicCompletion E)) ⁻¹' ((Set.univ.pi fun _ : Fin a => Set.univ.pi fun _ : Fin a => (w.adicCompletionIntegers E : Set (w.adicCompletion E)) : Set (Matrix (Fin a) (Fin a) (w.adicCompletion E))) ×ˢ (MulOpposite.op '' (Set …` using `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hB.prod (hB.image MulOpposite.continuous_op))`. Use `hS.of_isClosed_subset (Subgroup.isClosed_of_isOpen (cong w a t) (isOpen_cong t ht)) ?_` and prove the remaining obligations. Introduce `g hg`. Establish `ht1 : Valued.v (t : w.adicCompletion E) ≤ 1` using `t.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => ?_, ⟨_, Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => ?_, rfl⟩⟩` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 E) E w).2 (le_one_of_sub_le ht1 (v_one_apply_le i j) (bounds_of_mem t g hg i j).1)`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 E) E w).2 (le_one_of_sub_le ht1 (v_one_apply_le i j) (bounds_of_mem t g hg i j).2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompact_cong (t : w.adicCompletionIntegers E) (ht : (t : w.adicCompletion E) ≠ 0) :
     IsCompact (cong w a t : Set (GL (Fin a) (w.adicCompletion E))) := by
@@ -220,9 +220,9 @@ namespace GlobalTheory.CongOpenSmall
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {a : ℕ}
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `Valued.mem_nhds.1 hs`. Establish `hs0 : {y : w.adicCompletion E | Valued.v y < MonoidWithZeroHom.ValueGroup₀.embedding γ.1} ∈ 𝓝 (0 : w.adicCompletion E)` using `Valued.mem_nhds.2 ⟨γ, fun y hy => by`. Simplify using `using ((Valuation.restrict_lt_iff_lt_embedding _).1 hy)⟩`. Take `⟨m, hm⟩` from `((Valued.tendsto_zero_pow_of_v_lt_one hk).eventually hs0).exists`. Use `⟨m, fun y hy => hγ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Valuation.restrict_lt_iff_lt_embedding _).2 (hy.trans_lt ?_)` and prove the remaining obligations. Simplify `hm` using `[map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_small_ball {x : w.adicCompletion E} {s : Set (w.adicCompletion E)} (hs : s ∈ 𝓝 x)
     {k : w.adicCompletion E} (hk : Valued.v k < 1) :
@@ -238,19 +238,17 @@ theorem exists_small_ball {x : w.adicCompletion E} {s : Set (w.adicCompletion E)
   simpa [map_pow] using hm
 
 /- English proof (translation)
-Establish `hpow : ∀ m : ℕ, Valued.v (((l ^ m : w.adicCompletionIntegers E)) : w.adicCompletion E) = Valued.v (l : w.adicCompletion E) ^ m` using `fun m => by`. Rewrite using `[← map_pow]`. Both sides reduce to the same expression. Establish `hanti : ∀ m m' : ℕ, m ≤ m' → (cong w a (l ^ m') : Set (GL (Fin a) (w.adicCompletion E))) ⊆ cong w a (l ^ m)`. Introduce `m m' hmm g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Valued.v (((l ^ m' : w.adicCompletionIntegers E)) : w.adicCompletion E) ≤ Valued.v (((l ^ m : w.adicCompletionIntegers E)) : w.adicCompletion E)`. Rewrite using `[hpow, hpow]`. Conclude with `pow_le_pow_right_of_le_one' hl.le hmm`. Conclude with `mem_cong_of _ g fun i j => ⟨(bounds_of_mem _ g hg i j).1.trans hle, (bounds_of_mem _ g hg i j).2.trans hle⟩`. Set `G : Filter (GL (Fin a) (w.adicCompletion E))` to `⨅ m : ℕ, 𝓟 (cong w a (l ^ m) : Set (GL (Fin a) (w.adicCompletion E)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hent : ∀ i j, Tendsto (fun g : GL (Fin a) (w.adicCompletion E) => (g : Matrix (Fin a) (Fin a) _) i j) G (𝓝 ((1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j)) ∧ Tendsto (fun g : GL (Fin a) (w.adicCompletion E) => (↑g⁻¹ : Matrix (Fin a) (Fin a) _) i j) G (𝓝 ((1 : Matrix (Fin …`. Introduce `i j`. Establish `key : ∀ s ∈ 𝓝 ((1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j), ∃ m : ℕ, ∀ g ∈ (cong w a (l ^ m) : Set (GL (Fin a) (w.adicCompletion E))), (g : Matrix (Fin a) (Fin a) _) i j ∈ s ∧ (↑g⁻¹ : Matrix (Fin a) (Fin a) _) i j ∈ s`. Introduce `s hs`. Take `⟨m, hm⟩` from `exists_small_ball hs hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨m, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hb` using `bounds_of_mem _ g hg i j`. Rewrite `hb` using `[hpow]`. Conclude with `⟨hm _ hb.1, hm _ hb.2⟩`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `s hs`. Take `⟨m, hm⟩` from `key s hs`. Conclude with `mem_iInf_of_mem m (mem_principal.2 fun g hg => (hm g hg).1)`. Introduce `s hs`. Take `⟨m, hm⟩` from `key s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_iInf_of_mem m (mem_principal.2 fun g hg => (hm g hg).2)`. Establish `hG : Tendsto id G (𝓝 (1 : GL (Fin a) (w.adicCompletion E)))`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Use `Tendsto.prodMk_nhds ?_ ?_` and prove the remaining obligations. Conclude with `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => (hent i j).1`.
-
-Conclude with `(MulOpposite.continuous_op.tendsto _).comp (tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => (hent i j).2)`. Establish `hdir : Directed (· ≥ ·) fun m : ℕ => 𝓟 (cong w a (l ^ m) : Set (GL (Fin a) (w.adicCompletion E)))` using `fun m m' => ⟨max m m', principal_mono.2 (hanti _ _ (le_max_left _ _)), principal_mono.2 (hanti _ _ (le_max_right _ _))⟩`. Take `⟨m₀, hm₀⟩` from `(mem_iInf_of_directed hdir _).1 (hG hN)`. Use `filter_upwards [eventually_ge_atTop m₀] with m hm`. Conclude with `(hanti _ _ hm).trans (mem_principal.1 hm₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_cong_subset (l : w.adicCompletionIntegers E) (hl : Valued.v (l : w.adicCompletion E) < 1)
     (N : Set (GL (Fin a) (w.adicCompletion E))) (hN : N ∈ 𝓝 (1 : GL (Fin a) (w.adicCompletion E))) :
@@ -307,13 +305,13 @@ end GlobalTheory.CongOpenSmall
 namespace GlobalTheory.CongOpenSmall
 
 /- English proof (translation)
-Introduce `E _ _ w a l hl hw`. Establish `hchar : CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Establish `hcoe : ((l : w.adicCompletionIntegers E) : w.adicCompletion E) = (l : w.adicCompletion E)` using `rfl`. Establish `hl0 : ((l : w.adicCompletionIntegers E) : w.adicCompletion E) ≠ 0`. Rewrite using `[hcoe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.cast_ne_zero.2 hl.ne_zero`. Establish `hv : Valued.v ((l : w.adicCompletionIntegers E) : w.adicCompletion E) < 1`. Establish `h : Valued.v (((algebraMap (𝓞 E) E (l : 𝓞 E) : E)) : w.adicCompletion E) = w.valuation E (algebraMap (𝓞 E) E (l : 𝓞 E))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Establish `h2 : w.valuation E (algebraMap (𝓞 E) E (l : 𝓞 E)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem w _).mpr hw`. Rewrite `h2` using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((algebraMap (𝓞 E) E (l : 𝓞 E) : E)) : w.adicCompletion E) = ((l : ℕ) : w.adicCompletion E)`. Rewrite using `[map_natCast]`. Conclude with `map_natCast (algebraMap E (w.adicCompletion E)) l`. Rewrite `h2` using `[e, ← hcoe]`. Then use the resulting hypothesis. Establish `hm0 : ∀ m : ℕ, (((l : w.adicCompletionIntegers E) ^ m : w.adicCompletionIntegers E) : w.adicCompletion E) ≠ 0` using `fun m => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (((l : w.adicCompletionIntegers E) ^ m : w.adicCompletionIntegers E) : w.adicCompletion E) = ((l : w.adicCompletionIntegers E) : w.adicCompletion E) ^ m` using `rfl`. Rewrite using `[this]`. Conclude with `pow_ne_zero _ hl0`. Conclude with `⟨fun m => ⟨isOpen_cong _ (hm0 m), isCompact_cong _ (hm0 m)⟩, fun N hN => eventually_cong_subset _ hv N hN⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem congruence_open_compact_small : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (a l : ℕ), l.Prime → (l : 𝓞 E) ∈ w.asIdeal → (∀ m : ℕ, IsOpen (((Matrix.GeneralLinearGroup.map (n := Fin a) (Ideal.Quotient.mk (Ideal.span {(l : w.adicCompletionIntegers E) ^ m}))).ker.map (Matrix.GeneralLinearGroup.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))) : Subgroup (GL (Fin a) (w.adicCompletion E))) : Set (GL (Fin a) (w.adicCompletion E))) ∧ IsCompact (((Matrix.GeneralLinearGroup.map (n := Fin a) (Ideal.Quotient.mk (Ideal.span {(l : w.adicCompletionIntegers E) ^ m}))).ker.map (Matrix.GeneralLinearGroup.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))) : Subgroup (GL (Fin a) (w.adicCompletion E))) : Set (GL (Fin a) (w.adicCompletion E)))) ∧ ∀ N ∈ nhds (1 : GL (Fin a) (w.adicCompletion E)), ∀ᶠ m : ℕ in Filter.atTop, (((Matrix.GeneralLinearGroup.map (n := Fin a) (Ideal.Quotient.mk (Ideal.span {(l : w.adicCompletionIntegers E) ^ m}))).ker.map (Matrix.GeneralLinearGroup.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))) : Subgroup (GL (Fin a) (w.adicCompletion E))) : Set (GL (Fin a) (w.adicCompletion E))) ⊆ N := by
   intro E _ _ w a l hl hw

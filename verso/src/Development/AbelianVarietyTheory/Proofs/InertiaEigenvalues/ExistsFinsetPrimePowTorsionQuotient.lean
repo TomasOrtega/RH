@@ -13,15 +13,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.GoodCoeff
 
 /- English proof (translation)
-Introduce `l _ LL _ _ _ O _ _ hG k`. Use `haveI hfin : Finite (O ⧸ Ideal.span {((l : ℕ) : O) ^ k}) := (good_coeff_integers l LL O hG).2.2.1 k`. Establish `hl : (l : LL) ≠ 0`. Use `(algebraMap ℚ_[l] LL).injective.ne (show (l : ℚ_[l]) ≠ 0 from Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hlk : (l : LL) ^ k ≠ 0` using `pow_ne_zero _ hl`. Set `f : O ⧸ Ideal.span {((l : ℕ) : O) ^ k} → LL ⧸ LinearMap.range (Algebra.linearMap O LL)` to `fun q => Submodule.Quotient.mk (((l : LL) ^ k)⁻¹ * algebraMap O LL q.out)`. Use `⟨(Set.finite_range f).toFinset, fun e he => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ e`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨a, ha⟩` from `he`. Rewrite `ha` using `[Algebra.linearMap_apply, Algebra.smul_def, map_pow, map_natCast]`. Use `⟨Ideal.Quotient.mk _ a, ?_⟩` and prove the remaining obligations. Establish `h1 : (Ideal.Quotient.mk (Ideal.span {((l : ℕ) : O) ^ k}) a).out - a ∈ Ideal.span {((l : ℕ) : O) ^ k}` using `Ideal.Quotient.eq.1 (Ideal.Quotient.mk_out _)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h1`. Establish `hc'` using `congrArg (algebraMap O LL) hc`. Rewrite `hc'` using `[map_mul, map_pow, map_natCast, map_sub, ha]`. Use `(Submodule.Quotient.eq _).2 ⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `hc'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_finset_pow_torsion : ∀ (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ k : ℕ, ∃ Es : Finset (LL ⧸ LinearMap.range (Algebra.linearMap O LL)), ∀ e, ((l : ℕ) : O) ^ k • e = 0 → e ∈ Es := by
   intro l _ LL _ _ _ O _ _ hG k

@@ -35,7 +35,7 @@ def dtrans (y : CxPts p σ) (ξ : Fin D → ℂ) : Fin D → ℂ :=
 variable {c c'}
 
 /- English proof (translation)
-The claim follows from `congrArg Complex.re (leviV_congr (eventually_of_mem ((isOpen_over c.e hS).mem_nhds (mem_over c.e hy hyS)) fun _ hv => congrArg Complex.ofReal (h _ hv.2)) ξ)`.
+A detailed English derivation is pending.
 -/
 theorem levi_congr (hS : IsOpen S) (hy : y ∈ c.e.source) (hyS : y ∈ S) (h : ∀ z ∈ S, f z = g z)
     (ξ : Fin D → ℂ) : c.levi f y ξ = c.levi g y ξ :=
@@ -44,7 +44,7 @@ theorem levi_congr (hS : IsOpen S) (hy : y ∈ c.e.source) (hyS : y ∈ S) (h : 
       congrArg Complex.ofReal (h _ hv.2)) ξ)
 
 /- English proof (translation)
-The claim follows from `(congrArg Complex.re (flA_leviV_add hf hg ξ)).trans (Complex.add_re _ _)`.
+A detailed English derivation is pending.
 -/
 theorem levi_add (hf : ContDiffAt ℝ 2 (f ∘ c.e.symm) (c.e y))
     (hg : ContDiffAt ℝ 2 (g ∘ c.e.symm) (c.e y)) (ξ : Fin D → ℂ) :
@@ -52,14 +52,14 @@ theorem levi_add (hf : ContDiffAt ℝ 2 (f ∘ c.e.symm) (c.e y))
   (congrArg Complex.re (flA_leviV_add hf hg ξ)).trans (Complex.add_re _ _)
 
 /- English proof (translation)
-The claim follows from `(congrArg Complex.re (LocalMaximumSecondDerivative.leviV_ofReal_const_mul a hf ξ)).trans (Complex.re_ofReal_mul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem levi_const_mul (a : ℝ) (hf : ContDiffAt ℝ 2 (f ∘ c.e.symm) (c.e y)) (ξ : Fin D → ℂ) :
     c.levi (fun z => a * f z) y ξ = a * c.levi f y ξ :=
   (congrArg Complex.re (LocalMaximumSecondDerivative.leviV_ofReal_const_mul a hf ξ)).trans (Complex.re_ofReal_mul _ _)
 
 /- English proof (translation)
-The claim follows from `congrArg Complex.re (flA_leviV_log_normSq (h := u ∘ c.e.symm) (eventually_of_mem ((isOpen_over c.e hS).mem_nhds (mem_over c.e hy hyS)) fun _ hv => hu.differentiableAt ((isOpen_over c.e hS).mem_nhds hv)) (by rwa [Function.comp_apply, c.e.left_inv hy]) ξ)`.
+A detailed English derivation is pending.
 -/
 theorem levi_log_normSq {u : CxPts p σ → ℂ} (hS : IsOpen S) (hy : y ∈ c.e.source) (hyS : y ∈ S)
     (hu : DifferentiableOn ℂ (u ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' S)) (h0 : u y ≠ 0)
@@ -70,9 +70,9 @@ theorem levi_log_normSq {u : CxPts p σ → ℂ} (hS : IsOpen S) (hy : y ∈ c.e
     (by rwa [Function.comp_apply, c.e.left_inv hy]) ξ)
 
 /- English proof (translation)
-Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `hn` using `ho.mem_nhds (mem_over c.e hy hy')`. Establish `ht : ContDiffAt ℂ 2 (c'.e ∘ c.e.symm) (c.e y)` using `(((contDiffOn_piLp 2).2 fun a => contDiffOn_of_differentiableOn D _ _ ho (differentiableOn_euclidean.1 (c.holo_trans c') a)).contDiffAt hn).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `e : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Establish `hU : ContDiffAt ℝ 2 (fun v => (f (c'.e.symm v) : ℂ)) ((c'.e ∘ c.e.symm) (c.e y))` using `e ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `flA_leviV_comp hU ht ξ` as an intermediate fact. Rewrite `this` using `[e]`. Use `congrArg Complex.re (Eq.trans (leviV_congr (eventually_of_mem hn fun v hv => ?_) ξ) this)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem levi_trans (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source)
     (hf : ContDiffAt ℝ 2 (f ∘ c'.e.symm) (c'.e y)) (ξ : Fin D → ℂ) :
@@ -92,7 +92,7 @@ theorem levi_trans (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source)
   simp only [Function.comp_apply, c'.e.left_inv hv.2]
 
 /- English proof (translation)
-Introduce `h` and use `by have hd : transDet c.e c'.e y ≠ 0 := rv_chart c c' hy hy' ▸ rv_ne_zero _ _ (c.source_subset hy) (c'.source_subset hy') have hi := (LinearMap.isUnit_iff_ker_eq_bot _).1 ((LinearMap.isUnit_iff_isUnit_det _).2 hd.isUnit) have := LinearMap.ker_eq_bot'.1 hi (WithLp.toLp 2 ξ) (PiLp. …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dtrans_ne_zero (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) {ξ : Fin D → ℂ}
     (hξ : ξ ≠ 0) : c.dtrans c' y ξ ≠ 0 := fun h => by
@@ -110,7 +110,7 @@ namespace AnRead
 variable {R : AnRead p σ D} {S : Set (CxPts p σ)} {y : CxPts p σ}
 
 /- English proof (translation)
-The claim follows from `((h.chart hS c).contDiffAt ((isOpen_over c.e hS).mem_nhds (mem_over c.e hy hyS))).of_le (WithTop.coe_le_coe.2 le_top)`.
+A detailed English derivation is pending.
 -/
 theorem SmoothOn.contDiffAt_two {f : CxPts p σ → ℝ} (h : R.SmoothOn S f) (hS : IsOpen S)
     {c : AlgChart p σ D} (hy : y ∈ c.e.source) (hyS : y ∈ S) :
@@ -119,7 +119,7 @@ theorem SmoothOn.contDiffAt_two {f : CxPts p σ → ℝ} (h : R.SmoothOn S f) (h
     (WithTop.coe_le_coe.2 le_top)
 
 /- English proof (translation)
-Rewrite using `[AlgChart.levi_congr hS hy hyS h, AlgChart.levi_add (hf.contDiffAt_two hS hy hyS) ((hu.smoothOn_log hS h0).contDiffAt_two hS hy hyS), AlgChart.levi_log_normSq hS hy hyS (hu.chart hS c) (h0 y hyS), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_eq_of_add_log {f g : CxPts p σ → ℝ} {u : CxPts p σ → ℂ} (hS : IsOpen S)
     (hf : R.SmoothOn S f) (hu : R.HoloOn S u) (h0 : ∀ z ∈ S, u z ≠ 0)
@@ -139,14 +139,14 @@ variable {R R' : AnRead p σ D} {A B : LB Y} {φ : Weight p σ B} {ψ : Weight p
   {c : AlgChart p σ D} {y : CxPts p σ}
 
 /- English proof (translation)
-The claim follows from `(h i).contDiffAt_two (isOpen_ptsIn _) hy hi`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.contDiffAt_two (h : φ.IsSmooth R) {i : B.ι} (hy : y ∈ c.e.source)
     (hi : y ∈ ptsIn p σ (B.U i)) : ContDiffAt ℝ 2 (φ.φ i ∘ c.e.symm) (c.e y) :=
   (h i).contDiffAt_two (isOpen_ptsIn _) hy hi
 
 /- English proof (translation)
-The claim follows from `levi_eq_of_add_log ((isOpen_ptsIn (B.U i)).inter (isOpen_ptsIn (B.U j))) ((h j).mono inter_subset_right) (u := gv p σ B i j) (holoOn_ev_of_subset _ fun _ => mem_ptsIn_inf.2) (fun _ hz => gv_ne_zero hz.1 hz.2) (fun z hz => by rw [φ.trans i j z hz.1 hz.2, sub_add_cancel]) hy ⟨hi, h …`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.levi_frame (h : φ.IsSmooth R) {i j : B.ι} (hy : y ∈ c.e.source)
     (hi : y ∈ ptsIn p σ (B.U i)) (hj : y ∈ ptsIn p σ (B.U j)) (ξ : Fin D → ℂ) :
@@ -157,7 +157,7 @@ theorem IsSmooth.levi_frame (h : φ.IsSmooth R) {i j : B.ι} (hy : y ∈ c.e.sou
     (fun z hz => by rw [φ.trans i j z hz.1 hz.2, sub_add_cancel]) hy ⟨hi, hj⟩ ξ
 
 /- English proof (translation)
-Introduce `i c y hy ξ` and use `by rcases eq_or_ne ξ 0 with rfl | hξ · simp [leviV] · exact (h i c y hy ξ hξ).le`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StrictPos.semiPos (h : φ.StrictPos R) : φ.SemiPos R := fun i c y hy ξ => by
   rcases eq_or_ne ξ 0 with rfl | hξ
@@ -165,7 +165,7 @@ theorem StrictPos.semiPos (h : φ.StrictPos R) : φ.SemiPos R := fun i c y hy ξ
   · exact (h i c y hy ξ hξ).le
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `R.cover y`. Rewrite using `[AlgChart.levi_trans hy hj (hs.contDiffAt_two hj hi)]`. Conclude with `h i j y ⟨hj, hi⟩ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SemiPos.chart (h : φ.SemiPos R) (hs : φ.IsSmooth R) {i : B.ι} (hy : y ∈ c.e.source)
     (hi : y ∈ ptsIn p σ (B.U i)) (ξ : Fin D → ℂ) : 0 ≤ c.levi (φ.φ i) y ξ := by
@@ -174,7 +174,7 @@ theorem SemiPos.chart (h : φ.SemiPos R) (hs : φ.IsSmooth R) {i : B.ι} (hy : y
   exact h i j y ⟨hj, hi⟩ _
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `R.cover y`. Rewrite using `[AlgChart.levi_trans hy hj (hs.contDiffAt_two hj hi)]`. Conclude with `h i j y ⟨hj, hi⟩ _ (AlgChart.dtrans_ne_zero hy hj hξ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem StrictPos.chart (h : φ.StrictPos R) (hs : φ.IsSmooth R) {i : B.ι} (hy : y ∈ c.e.source)
     (hi : y ∈ ptsIn p σ (B.U i)) {ξ : Fin D → ℂ} (hξ : ξ ≠ 0) : 0 < c.levi (φ.φ i) y ξ := by
@@ -183,19 +183,19 @@ theorem StrictPos.chart (h : φ.StrictPos R) (hs : φ.IsSmooth R) {i : B.ι} (hy
   exact h i j y ⟨hj, hi⟩ _ (AlgChart.dtrans_ne_zero hy hj hξ)
 
 /- English proof (translation)
-Introduce `_ _ _ hy ξ` and use `h.chart hs hy.1 hy.2 ξ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SemiPos.of_anRead (h : φ.SemiPos R) (hs : φ.IsSmooth R) (R' : AnRead p σ D) :
     φ.SemiPos R' := fun _ _ _ hy ξ => h.chart hs hy.1 hy.2 ξ
 
 /- English proof (translation)
-Introduce `_ _ _ hy _ hξ` and use `h.chart hs hy.1 hy.2 hξ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StrictPos.of_anRead (h : φ.StrictPos R) (hs : φ.IsSmooth R) (R' : AnRead p σ D) :
     φ.StrictPos R' := fun _ _ _ hy _ hξ => h.chart hs hy.1 hy.2 hξ
 
 /- English proof (translation)
-Introduce `j c' y hy ξ` and use `by obtain ⟨c, i, hc, hi, h⟩ := h y exact (h _).trans_eq ((hs.levi_frame hc hi hy.2 _).trans (AlgChart.levi_trans hy.1 hc (hs.contDiffAt_two hc hy.2) ξ).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsSmooth.semiPos_of_exists (hs : φ.IsSmooth R)
     (h : ∀ y, ∃ (c : AlgChart p σ D) (i : B.ι), y ∈ c.e.source ∧ y ∈ ptsIn p σ (B.U i) ∧
@@ -205,7 +205,7 @@ theorem IsSmooth.semiPos_of_exists (hs : φ.IsSmooth R)
     (AlgChart.levi_trans hy.1 hc (hs.contDiffAt_two hc hy.2) ξ).symm)
 
 /- English proof (translation)
-Introduce `j c' y hy ξ hξ` and use `by obtain ⟨c, i, hc, hi, h⟩ := h y exact (h _ (AlgChart.dtrans_ne_zero hy.1 hc hξ)).trans_eq ((hs.levi_frame hc hi hy.2 _).trans (AlgChart.levi_trans hy.1 hc (hs.contDiffAt_two hc hy.2) ξ).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsSmooth.strictPos_of_exists (hs : φ.IsSmooth R)
     (h : ∀ y, ∃ (c : AlgChart p σ D) (i : B.ι), y ∈ c.e.source ∧ y ∈ ptsIn p σ (B.U i) ∧
@@ -215,7 +215,7 @@ theorem IsSmooth.strictPos_of_exists (hs : φ.IsSmooth R)
     (AlgChart.levi_trans hy.1 hc (hs.contDiffAt_two hc hy.2) ξ).symm)
 
 /- English proof (translation)
-The claim follows from `AlgChart.levi_add (hψ.contDiffAt_two hy (mem_ptsIn_inf.1 hi).1) (hφ.contDiffAt_two hy (mem_ptsIn_inf.1 hi).2) ξ`.
+A detailed English derivation is pending.
 -/
 theorem levi_tens (hψ : ψ.IsSmooth R) (hφ : φ.IsSmooth R) {i : (CechPic.tens A B).ι}
     (hy : y ∈ c.e.source) (hi : y ∈ ptsIn p σ ((CechPic.tens A B).U i)) (ξ : Fin D → ℂ) :
@@ -224,7 +224,7 @@ theorem levi_tens (hψ : ψ.IsSmooth R) (hφ : φ.IsSmooth R) {i : (CechPic.tens
     (hφ.contDiffAt_two hy (mem_ptsIn_inf.1 hi).2) ξ
 
 /- English proof (translation)
-Rewrite using `[funext (φ.zpow_φ n j)]`. Conclude with `AlgChart.levi_const_mul _ (hφ.contDiffAt_two hy hj) ξ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_zpow (hφ : φ.IsSmooth R) (n : ℤ) {j : PUnit → B.ι} (hy : y ∈ c.e.source)
     (hj : y ∈ ptsIn p σ (B.U (j PUnit.unit))) (ξ : Fin D → ℂ) :
@@ -233,7 +233,7 @@ theorem levi_zpow (hφ : φ.IsSmooth R) (n : ℤ) {j : PUnit → B.ι} (hy : y �
   exact AlgChart.levi_const_mul _ (hφ.contDiffAt_two hy hj) ξ
 
 /- English proof (translation)
-The claim follows from `levi_eq_of_add_log ((isOpen_ptsIn (A.U a)).inter (isOpen_ptsIn (B.U b))) ((hφ b).mono inter_subset_right) (holoOn_ev_of_subset (w.s (a, b)).val fun _ => mem_ptsIn_inf.2) (fun _ hz => ev_iso_ne_zero w hz.2 hz.1) (fun _ hz => ofPairs_φ hz.1 hz.2) hy ⟨ha, hb⟩ ξ`.
+A detailed English derivation is pending.
 -/
 theorem levi_ofIso (hφ : φ.IsSmooth R) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) {a : A.ι}
     {b : B.ι} (hy : y ∈ c.e.source) (ha : y ∈ ptsIn p σ (A.U a)) (hb : y ∈ ptsIn p σ (B.U b))
@@ -244,7 +244,7 @@ theorem levi_ofIso (hφ : φ.IsSmooth R) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.
     (fun _ hz => ev_iso_ne_zero w hz.2 hz.1) (fun _ hz => ofPairs_φ hz.1 hz.2) hy ⟨ha, hb⟩ ξ
 
 /- English proof (translation)
-Introduce `i c y hy ξ` and use `(add_nonneg (h' _ c y ⟨hy.1, (mem_ptsIn_inf.1 hy.2).1⟩ ξ) (h _ c y ⟨hy.1, (mem_ptsIn_inf.1 hy.2).2⟩ ξ)).trans_eq (levi_tens hψ hφ hy.1 hy.2 ξ).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SemiPos.tens (h' : ψ.SemiPos R) (h : φ.SemiPos R) (hψ : ψ.IsSmooth R)
     (hφ : φ.IsSmooth R) : (ψ.tens φ).SemiPos R := fun i c y hy ξ =>
@@ -252,7 +252,7 @@ theorem SemiPos.tens (h' : ψ.SemiPos R) (h : φ.SemiPos R) (hψ : ψ.IsSmooth R
     (h _ c y ⟨hy.1, (mem_ptsIn_inf.1 hy.2).2⟩ ξ)).trans_eq (levi_tens hψ hφ hy.1 hy.2 ξ).symm
 
 /- English proof (translation)
-Introduce `j c y hy ξ` and use `(mul_nonneg (Int.cast_nonneg hn) (h _ c y ⟨hy.1, mem_pow_iff.1 hy.2⟩ ξ)).trans_eq (levi_zpow hφ n hy.1 (mem_pow_iff.1 hy.2) ξ).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SemiPos.zpow (h : φ.SemiPos R) (hφ : φ.IsSmooth R) {n : ℤ} (hn : 0 ≤ n) :
     (φ.zpow n).SemiPos R := fun j c y hy ξ =>
@@ -260,7 +260,7 @@ theorem SemiPos.zpow (h : φ.SemiPos R) (hφ : φ.IsSmooth R) {n : ℤ} (hn : 0 
     (levi_zpow hφ n hy.1 (mem_pow_iff.1 hy.2) ξ).symm
 
 /- English proof (translation)
-Introduce `j c y hy ξ hξ` and use `(mul_pos (Int.cast_pos.2 hn) (h _ c y ⟨hy.1, mem_pow_iff.1 hy.2⟩ ξ hξ)).trans_eq (levi_zpow hφ n hy.1 (mem_pow_iff.1 hy.2) ξ).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StrictPos.zpow (h : φ.StrictPos R) (hφ : φ.IsSmooth R) {n : ℤ} (hn : 0 < n) :
     (φ.zpow n).StrictPos R := fun j c y hy ξ hξ =>
@@ -268,19 +268,19 @@ theorem StrictPos.zpow (h : φ.StrictPos R) (hφ : φ.IsSmooth R) {n : ℤ} (hn 
     (levi_zpow hφ n hy.1 (mem_pow_iff.1 hy.2) ξ).symm
 
 /- English proof (translation)
-The claim follows from `h.zpow hφ (Int.natCast_nonneg n)`.
+A detailed English derivation is pending.
 -/
 theorem SemiPos.pow (h : φ.SemiPos R) (hφ : φ.IsSmooth R) (n : ℕ) : (φ.pow n).SemiPos R :=
   h.zpow hφ (Int.natCast_nonneg n)
 
 /- English proof (translation)
-The claim follows from `h.zpow hφ (Int.natCast_pos.2 hn)`.
+A detailed English derivation is pending.
 -/
 theorem StrictPos.pow (h : φ.StrictPos R) (hφ : φ.IsSmooth R) {n : ℕ} (hn : 0 < n) :
     (φ.pow n).StrictPos R := h.zpow hφ (Int.natCast_pos.2 hn)
 
 /- English proof (translation)
-Introduce `_ c y hy ξ` and use `(h _ c y ⟨hy.1, mem_pick φ.isLB y⟩ ξ).trans_eq (levi_ofIso hφ hA w hw hy.1 hy.2 (mem_pick φ.isLB y) ξ).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SemiPos.ofIso (h : φ.SemiPos R) (hφ : φ.IsSmooth R) (hA : A.IsLB) (w : LB.Iso B A)
     (hw : w.IsGen) : (φ.ofIso hA w hw).SemiPos R := fun _ c y hy ξ =>
@@ -288,7 +288,7 @@ theorem SemiPos.ofIso (h : φ.SemiPos R) (hφ : φ.IsSmooth R) (hA : A.IsLB) (w 
     (levi_ofIso hφ hA w hw hy.1 hy.2 (mem_pick φ.isLB y) ξ).symm
 
 /- English proof (translation)
-Introduce `_ c y hy ξ hξ` and use `(h _ c y ⟨hy.1, mem_pick φ.isLB y⟩ ξ hξ).trans_eq (levi_ofIso hφ hA w hw hy.1 hy.2 (mem_pick φ.isLB y) ξ).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StrictPos.ofIso (h : φ.StrictPos R) (hφ : φ.IsSmooth R) (hA : A.IsLB) (w : LB.Iso B A)
     (hw : w.IsGen) : (φ.ofIso hA w hw).StrictPos R := fun _ c y hy ξ hξ =>
@@ -296,7 +296,7 @@ theorem StrictPos.ofIso (h : φ.StrictPos R) (hφ : φ.IsSmooth R) (hA : A.IsLB)
     (levi_ofIso hφ hA w hw hy.1 hy.2 (mem_pick φ.isLB y) ξ).symm
 
 /- English proof (translation)
-Introduce `i c y hy ξ` and use `by have ho := isOpen_over (R.chart c).e (isOpen_ptsIn (p := p) (σ := σ) (B.U i)) have hc (a) : ContDiffAt ℂ 2 (e a i ∘ (R.chart c).e.symm) ((R.chart c).e y) := ((contDiffOn_of_differentiableOn D _ _ ho ((he a).2 i c)).contDiffAt (ho.mem_nhds (mem_over _ hy.1 hy.2))).of_le (WithTo …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem semiPos_fs {α : Type*} [Fintype α] {e : α → B.ι → CxPts p σ → ℂ} (hB : B.IsLB)
     (he : ∀ a, e a ∈ R.holSec B) (h : NoCommonZero e) :
@@ -323,7 +323,7 @@ variable [SmoothOfRelativeDimension D p] {R : AnRead p σ D} {κ : Type} [Fintyp
   {m : Option κ → ℤ} {r : F.Reading B m} {φ : Weight p σ B}
 
 /- English proof (translation)
-Introduce `i` and use `AnRead.smoothOn_of_cover (fun c => (F.atlas.chart c).open_source) (fun y _ => ⟨_, F.atlas.mem_pick y⟩) fun c => by have hS := (F.atlas.chart c).open_source.inter (isOpen_ptsIn (p := p) (σ := σ) (B.U i)) have h₁ : R.SmoothOn (F.atlas.chart c).source (F.atlas.ph m c) := fun j => Co …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Isometric.isSmooth (h : r.Isometric φ) : φ.IsSmooth R := fun i =>
   AnRead.smoothOn_of_cover (fun c => (F.atlas.chart c).open_source)

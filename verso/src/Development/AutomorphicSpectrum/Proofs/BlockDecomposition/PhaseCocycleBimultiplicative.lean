@@ -29,9 +29,9 @@ section Gen
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Set `s : E ≃ₐ[F] E` to `AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)`. Set `e : (R ⊗[F] E) ≃ₐ[R] (R ⊗[F] E)` to `Algebra.TensorProduct.congr AlgEquiv.refl s`. Establish `h : sigR R σ z = e z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a c => simp [sigR, e, s]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[h]`. Conclude with `Algebra.trace_eq_of_algEquiv e z`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_sigR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e)
     (z : R ⊗[F] E) :
@@ -47,7 +47,7 @@ theorem trace_sigR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (h
   exact Algebra.trace_eq_of_algEquiv e z
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_add_left (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (x x' y : Fin M → R ⊗[F] E) :
@@ -55,7 +55,7 @@ theorem hR_add_left (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {
   simp only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_add_right (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (x y y' : Fin M → R ⊗[F] E) :
@@ -69,9 +69,9 @@ section Fin
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[← trace_sigR (Af F) σ hσ]`. Use `congr 1`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, map_sum, map_mul, gram2]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : sigR (Af F) σ ((b : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) c a) = (b : Matrix _ _ _) a c` using `b.2 a c`. Rewrite using `[hb, GlobalTheory.CompanionTheory.SiegelND.Coef.sigR_hR (Af F) σ hσ hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_gram2_swap (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e)
     {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : ∀ i j, σ (J j i) = J i j) (b : HermR (Af F) σ n)
@@ -89,7 +89,7 @@ theorem trace_gram2_swap (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e)
   rw [hb, GlobalTheory.CompanionTheory.SiegelND.Coef.sigR_hR (Af F) σ hσ hJ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a c`. Simplify using `only [gramR, gram2, Pi.add_apply, Matrix.add_apply, hR_add_left, hR_add_right]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem gramR_add (σ : E →ₐ[F] E) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (X Y : Fin n → Fin M → Af F ⊗[F] E) :
@@ -101,7 +101,7 @@ theorem gramR_add (σ : E →ₐ[F] E) {M n : ℕ}
 end Fin
 
 /- English proof (translation)
-Establish `h : pairA F 0 (u + v) = pairA F 0 u + pairA F 0 v`. Establish `h0 : (0 : Ainf F) = 0 + 0` using `(add_zero 0).symm`. Conclude with `congrArg (fun t => pairA F t (u + v)) h0`. Simplify using `only [psiFin]`. Rewrite using `[h, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiFin_add {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (u v : Af F) :
     psiFin F ψ (u + v) = psiFin F ψ u * psiFin F ψ v := by
@@ -112,9 +112,9 @@ theorem psiFin_add {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ
   rw [h, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ n ψ _ b X Y`. Establish `hsw` using `trace_gram2_swap σ (GlobalTheory.CompanionTheory.SiegelND.Coef.sig_invol hCM) hJ.1 b X Y`. Establish `h2 : algebraMap F (Af F) (1 / 2) + algebraMap F (Af F) (1 / 2) = 1`. Rewrite using `[← map_add]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Simplify using `only [phaseB, pairB]`. Rewrite using `[← psiFin_add, ← psiFin_add]`. Use `congr 1`. Rewrite using `[gramR_add, mul_add, mul_add, mul_add, Matrix.trace_add, Matrix.trace_add, Matrix.trace_add, map_add, map_add, map_add, hsw]`. Take the linear combination `(Algebra.trace (Af F) (Af F ⊗[F] E) (Matrix.trace ((b : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) * gram2 σ J X Y))) * h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem phaseB_add : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →

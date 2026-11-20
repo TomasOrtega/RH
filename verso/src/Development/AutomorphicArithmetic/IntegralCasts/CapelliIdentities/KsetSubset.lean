@@ -3,7 +3,7 @@ import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.DiscreteSeriesC
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsInvariantSubspace
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h1 : star g * g = 1` using `(Matrix.mem_unitaryGroup_iff' ).1 hg.1`. Use `show g.conjTranspose * PI.UpqRep.Jm ε * g = PI.UpqRep.Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, h1, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Gc1.kset_subset {n : ℕ} (ε : Fin n → Bool) :
     PI.UpqRep.Kset ε ⊆ PI.UpqRep.UJset ε := by
@@ -13,7 +13,7 @@ private theorem UpperTheory.Reformulated.B.Gc1.kset_subset {n : ℕ} (ε : Fin n
   rw [Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ S E _ hS`. Take `⟨V₀, h1, h2⟩` from `UpperTheory.exists_invariant_subspace H (Matrix (Fin n) (Fin n) ℂ) (Fin n × Fin n) (PI.UpqRep.Kset ε) (fun g => (σ g : H →ₗ[ℂ] H)) S (fun p => E p.1 p.2) (fun g p q => g q.1 p.1 * g⁻¹ p.2 q.2) (fun g hg v hv => hS.stab g (UpperTheory.Reformulated.B.Gc1.kset_subset ε hg) v hv) (fu …`. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `hS.conj g (UpperTheory.Reformulated.B.Gc1.kset_subset ε hg) p.1 p.2 v w hw)`. Conclude with `⟨V₀, h1, fun a b => h2 (a, b)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gc1.kFinStab :
     CompanionTheory.D.DSIC.KFinStab := by

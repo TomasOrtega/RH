@@ -28,14 +28,14 @@ def Corr (φ : H ≃* H') (A : Set G) (A' : Set G') : Prop :=
   (∀ g ∈ A, g ∈ H) ∧ (∀ g ∈ A', g ∈ H') ∧ ∀ g : H, (g : G) ∈ A ↔ (φ g : G') ∈ A'
 
 /- English proof (translation)
-Use `⟨h.2.1, h.1, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h.2.2 (φ.symm g), MulEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Corr.symm {φ : H ≃* H'} {A : Set G} {A' : Set G'} (h : Corr φ A A') : Corr φ.symm A' A := by
   refine ⟨h.2.1, h.1, fun g => ?_⟩
   rw [h.2.2 (φ.symm g), MulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `⟨φ.symm ⟨x, h.2.1 x hx⟩, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[h.2.2, MulEquiv.apply_symm_apply]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Corr.lift {φ : H ≃* H'} {A : Set G} {A' : Set G'} (h : Corr φ A A') {x : G'} (hx : x ∈ A') :
     ∃ g : H, (g : G) ∈ A ∧ (φ g : G') = x := by
@@ -44,15 +44,15 @@ theorem Corr.lift {φ : H ≃* H'} {A : Set G} {A' : Set G'} (h : Corr φ A A') 
   exact hx
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `h`. Establish `memK : ∀ g : H, (g : G) ∈ K ↔ (φ g : G') ∈ K'` using `hK.2.2`. Use `⟨fun γ' hγ' => ?_, fun x' hx' => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγR, rfl⟩` from `hR.lift hγ'`. Take `⟨-, k₁, hk₁, k₂, hk₂, heq⟩` from `h₁ γ hγR`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : γ = ⟨k₁, hK.1 k₁ hk₁⟩ * α * ⟨k₂, hK.1 k₂ hk₂⟩` using `Subtype.ext heq`. Use `⟨hR.2.1 _ hγ', _, (memK ⟨k₁, hK.1 k₁ hk₁⟩).mp hk₁, _, (memK ⟨k₂, hK.1 k₂ hk₂⟩).mp hk₂, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_mul, map_mul]`. Both sides reduce to the same expression. Take `⟨k₁', hk₁', k₂', hk₂', rfl⟩` from `hx'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, hk₁, rfl⟩` from `hK.lift hk₁'`. Take `⟨k₂, hk₂, rfl⟩` from `hK.lift hk₂'`. Take `⟨γ, ⟨hγR, hγK⟩, huniq⟩` from `h₂ ((k₁ * α * k₂ : H) : G) ⟨k₁, hk₁, k₂, hk₂, rfl⟩`. Establish `key : ∀ c : H, (c : G)⁻¹ * ((k₁ * α * k₂ : H) : G) ∈ K ↔ (φ c : G')⁻¹ * ((φ k₁ : G') * (φ α : G') * (φ k₂ : G')) ∈ K'`. Introduce `c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `memK (c⁻¹ * (k₁ * α * k₂))` as an intermediate fact. Simplify `this` using `only [map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]`. Set `g : H` to `⟨γ, (h₁ γ hγR).1⟩`. Use `⟨φ g, ⟨(hR.2.2 g).mp hγR, (key g).mp hγK⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y' ⟨hy'R, hy'K⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hcR, rfl⟩` from `hR.lift hy'R`. Establish `hc : c = g` using `Subtype.ext (huniq c ⟨hcR, (key c).mpr hy'K⟩)`. Rewrite using `[hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Corr.cosets {φ : H ≃* H'} {K R : Set G} {K' R' : Set G'} (hK : Corr φ K K') (hR : Corr φ R R') (α : H)
     (h : (∀ γ ∈ R, γ ∈ H ∧ ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * α * k₂) ∧
@@ -100,11 +100,9 @@ structure Link (V V' : HSp D) (M : ℕ) (φ : GfC V ≃* GfC V')
   loc' : ∀ f, Good (D := D) M f → ∀ y ∈ Formalism.L2.NTheta.LamHat V', f • y ∈ Formalism.L2.NTheta.LamHat V'
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HeckeTrans.finMat_eq, GlobalTheory.HeckeTrans.supp_map_iff]`. Use `⟨fun hs i j => by rw [hs i j], fun hs i j => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.FinIsoGrp.proj_inj D _ _ ?_ (congrArg (swapAE D) ?_)` and prove the remaining obligations. Use `show infPart D _ = infPart D _`. Establish `hij` using `congrFun (congrFun (GlobalTheory.HeckeTrans.inf_eq hα) i) j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hij` using `[Matrix.map_apply]`. Establish `h0 : infPart D ((mt V α - 1) i j) = 0`. Rewrite using `[Matrix.sub_apply, map_sub, hij]`. Apply the tactic sequence `by_cases hh : i = j <;> simp [Matrix.one_apply, hh]`. Rewrite using `[map_mul, h0, mul_zero]`.
-
-Conclude with `hs i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppF_iff (f : Formalism.L2.Theta.AE D) {V : HSp D} {α : GA D V} (hα : α ∈ GfC V) :
     SuppF V f α ↔ finPart D f • (finMat D.sp.cm.sig V.gram α - 1) = finMat D.sp.cm.sig V.gram α - 1 := by
@@ -128,7 +126,7 @@ variable {V V' : HSp D} {M : ℕ} {φ : GfC V ≃* GfC V'}
 include h
 
 /- English proof (translation)
-The claim follows from `h.rank.symm h1 := h.h2 h2 := h.h1 hc := fun g => by have e := h.hc (φ.symm g) rw [MulEquiv.apply_symm_apply] at e have e' : finMat D.sp.cm.sig V'.gram (g : GA D V') * J = J * finMat D.sp.cm.sig V.gram (φ.symm g : GA D V) := e have h1' : J * J' = 1 := h.h1 have h2' : J' * J = 1 := …`.
+A detailed English derivation is pending.
 -/
 theorem symm : Link V' V M φ.symm J' J where
   rank := h.rank.symm
@@ -154,7 +152,7 @@ theorem symm : Link V' V M φ.symm J' J where
   loc' := h.loc
 
 /- English proof (translation)
-Establish `h1' : J * J' = 1` using `h.h1`. Establish `h2' : J' * J = 1` using `h.h2`. Establish `hc : finMat D.sp.cm.sig V'.gram (φ g : GA D V') * J = J * finMat D.sp.cm.sig V.gram (g : GA D V)` using `h.hc g`. Rewrite using `[suppF_iff f g.2, suppF_iff f (φ g).2]`. Conclude with `⟨fun hs => GlobalTheory.HeckeTrans.supp_conj h1' hc hs, fun hs => GlobalTheory.HeckeTrans.supp_conj h2' (GlobalTheory.HeckeTrans.conj_inv h1' h2' hc) hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem supp (f : Formalism.L2.Theta.AE D) (g : GfC V) : SuppF V f (g : GA D V) ↔ SuppF V' f (φ g : GA D V') := by
   have h1' : J * J' = 1 := h.h1
@@ -165,9 +163,9 @@ theorem supp (f : Formalism.L2.Theta.AE D) (g : GfC V) : SuppF V f (g : GA D V) 
     fun hs => GlobalTheory.HeckeTrans.supp_conj h2' (GlobalTheory.HeckeTrans.conj_inv h1' h2' hc) hs⟩
 
 /- English proof (translation)
-Establish `h1' : J * J' = 1` using `h.h1`. Establish `h2' : J' * J = 1` using `h.h2`. Establish `hc : finMat D.sp.cm.sig V'.gram (φ g : GA D V') * J = J * finMat D.sp.cm.sig V.gram (g : GA D V)` using `h.hc g`. Use `GlobalTheory.FinIsoGrp.proj_inj D _ _ ?_ (congrArg (swapAE D) ?_)` and prove the remaining obligations. Use `show infPart D _ = infPart D _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, RingHom.map_det, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, GlobalTheory.HeckeTrans.inf_eq (φ g).2, GlobalTheory.HeckeTrans.inf_eq g.2, Matrix.det_one, Matrix.det_one]`. Use `show finPart D _ = finPart D _`. Rewrite using `[RingHom.map_det, RingHom.map_det, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, ← GlobalTheory.HeckeTrans.finMat_eq, ← GlobalTheory.HeckeTrans.finMat_eq]`. Conclude with `GlobalTheory.HeckeTrans.det_conj h1' h2' hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det (g : GfC V) : (Formalism.L2.Theta.mt V' (φ g : GA D V')).det = (Formalism.L2.Theta.mt V (g : GA D V)).det := by
   have h1' : J * J' = 1 := h.h1
@@ -183,7 +181,7 @@ theorem det (g : GfC V) : (Formalism.L2.Theta.mt V' (φ g : GA D V')).det = (For
     exact GlobalTheory.HeckeTrans.det_conj h1' h2' hc
 
 /- English proof (translation)
-Establish `h1' : J * J' = 1` using `h.h1`. Establish `hc : finMat D.sp.cm.sig V'.gram (φ g : GA D V') * J = J * finMat D.sp.cm.sig V.gram (g : GA D V)` using `h.hc g`. Rewrite using `[stab_part (h.loc f hf) hs, stab_part (h.loc' f hf) (GlobalTheory.HeckeTrans.supp_conj h1' hc hs)]`. Conclude with `stab_pred (p := fun y => f • y ∈ Formalism.L2.NTheta.LamHat V) (p' := fun y => f • y ∈ Formalism.L2.NTheta.LamHat V') h1' hc (h.lat f hf)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab {f : Af D.host.F ⊗[D.host.F] D.host.E} (hf : Good M f) (g : GfC V)
     (hs : f • (finMat D.sp.cm.sig V.gram (g : GA D V) - 1) = finMat D.sp.cm.sig V.gram (g : GA D V) - 1) :
@@ -197,9 +195,9 @@ theorem stab {f : Af D.host.F ⊗[D.host.F] D.host.E} (hf : Good M f) (g : GfC V
     h1' hc (h.lat f hf)
 
 /- English proof (translation)
-Take `⟨f₀, hf₀, hev⟩` from `good_away S M hS`. Establish `hs` using `supp_away S hev (finMat D.sp.cm.sig V.gram (g : GA D V)) hg.2.2`. Use `⟨(φ g).2, (h.stab hf₀ g hs).mp hg.2.1, fun v hv => ?_⟩` and prove the remaining obligations. Set `ψ` to `(Algebra.TensorProduct.map (evalV D.host.F v) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `e1` using `GlobalTheory.HeckeTrans.map_conj ψ (h.hc g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : J.map ψ * J'.map ψ = 1` using `GlobalTheory.HeckeTrans.map_mul_one ψ h.h1`. Establish `e3 : (finMat D.sp.cm.sig V.gram (g : GA D V)).map ψ = 1` using `hg.2.2 v hv`. Rewrite `e1` using `[e3, Matrix.mul_one]`. Use `show (finMat D.sp.cm.sig V'.gram (φ g : GA D V')).map ψ = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sph_imp (S : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (hS : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (M : 𝓞 D.host.F) ∈ v.asIdeal → v ∈ S) (g : GfC V)
@@ -219,9 +217,9 @@ theorem sph_imp (S : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     _ = 1 := e2
 
 /- English proof (translation)
-Take `⟨-, hfg, -⟩` from `good_of_primeIdem hP hM`. Establish `key` using `h.stab hfg g ((suppF_iff f g.2).mp hs)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hl, -⟩`. Conclude with `⟨(φ g).2, key.mp hl, fun v hv => by simp at hv⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨-, hl, -⟩`. Conclude with `⟨g.2, key.mpr hl, fun v hv => by simp at hv⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem sphLoc {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D} (hP : IsPrimeIdem P e f) (hM : (M : 𝓞 D.host.E) ∉ P.asIdeal)
     (g : GfC V) (hs : SuppF V f (g : GA D V)) : (g : GA D V) ∈ KsphC V ∅ ↔ (φ g : GA D V') ∈ KsphC V' ∅ := by
@@ -234,7 +232,7 @@ theorem sphLoc {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D} (hP : IsPrimeId
     exact ⟨g.2, key.mpr hl, fun v hv => by simp at hv⟩
 
 /- English proof (translation)
-Establish `hP : IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Take `⟨hge, -, -⟩` from `good_of_primeIdem hP hM`. Conclude with `GlobalTheory.HeckeTrans.transfer he.1 J J' h.h1 h.h2 (φ g).2 (h.hc g) (h.lat _ hge) (h.loc _ hge) (h.loc' _ hge) hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hecke_imp {P : Pl D.host.E} {e : Formalism.L2.Theta.AE D} (he : Formalism.L2.NTheta.IsIdemAt e P)
     (hM : (M : 𝓞 D.host.E) ∉ P.asIdeal) {ϖ : D.host.E} {k : ℕ} (g : GfC V)
@@ -244,7 +242,7 @@ theorem hecke_imp {P : Pl D.host.E} {e : Formalism.L2.Theta.AE D} (he : Formalis
   exact GlobalTheory.HeckeTrans.transfer he.1 J J' h.h1 h.h2 (φ g).2 (h.hc g) (h.lat _ hge) (h.loc _ hge) (h.loc' _ hge) hg
 
 /- English proof (translation)
-Take `⟨hge, -, -⟩` from `good_of_primeIdem hP hM`. Take `⟨hlen, hdiv⟩` from `hg`. Establish `H : HasDiv (finPart D e) (intAE D) (fun i => finPart D (incA D (ϖ ^ d.getD i 0))) (Formalism.L2.NTheta.LamHat V) (finMat D.sp.cm.sig V.gram (g : GA D V))` using `hdiv`. Take `⟨B, b1, b2, b3, b4⟩` from `H.conj h.rank hge.1 h.h1 (h.hc g) (h.lat _ hge) (h.loc _ hge) (h.loc' _ hge)`. Conclude with `⟨hlen.trans h.rank, B, b1, b2, b3, b4⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem div_imp {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D} (hP : IsPrimeIdem P e f) (hM : (M : 𝓞 D.host.E) ∉ P.asIdeal)
     {ϖ : D.host.E} {d : List ℤ} (g : GfC V) (hg : DivAt V e ϖ d (g : GA D V)) : DivAt V' e ϖ d (φ g : GA D V') := by
@@ -260,9 +258,9 @@ variable {K : Set (GA D V)} {K' : Set (GA D V')} {χ : GA D V → ℂ} {χ' : GA
 include hK hχ
 
 /- English proof (translation)
-Use `⟨fun g' hs' => ?_, fun g' hg' hs' => ?_, ⟨fun g hg => hK.1 g hg.1, fun g hg => hK.2.1 g hg.1, fun g => and_congr (hK.2.2 g) (h.supp f g)⟩⟩` and prove the remaining obligations. Distinguish the cases in `hG : g' ∈ GfC V'`. Take `⟨g, rfl⟩ : ∃ g : GfC V, (φ g : GA D V') = g'` from `⟨φ.symm ⟨g', hG⟩, by simp⟩`. Establish `hs : SuppF V f (g : GA D V)` using `(h.supp f g).mpr hs'`. Rewrite using `[← hK.2.2 g, a _ hs]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.sphLoc hP hM g hs`. Conclude with `iff_of_false (fun h' => hG (hK.2.1 _ h')) (fun h' => hG h'.1)`. Take `⟨g, hgK, rfl⟩` from `hK.lift hg'`. Rewrite using `[hχ g hgK]`. Conclude with `b _ hgK ((h.supp f g).mpr hs')`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_imp {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D} (hP : IsPrimeIdem P e f) (hM : (M : 𝓞 D.host.E) ∉ P.asIdeal)
     (a : ∀ g, SuppF V f g → (g ∈ K ↔ g ∈ KsphC V ∅)) (b : ∀ g ∈ K, SuppF V f g → χ g = 1) :
@@ -284,9 +282,9 @@ variable {R : Finset (GA D V)} {R' : Finset (GA D V')} (hR : Corr φ (R : Set (G
 include hR
 
 /- English proof (translation)
-Take `⟨e, ϖ, α, hS, he, h1, h2, hk, hJ, hχ1, hα, hRs, hcos⟩` from `H`. Establish `hP : IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Take `⟨l1, l2, l3⟩` from `h.level_imp hK hχ hP hM hJ hχ1`. Establish `hαG : α ∈ GfC V` using `hα.1`. Establish `hc` using `Corr.cosets l3 hR (⟨α, hαG⟩⁻¹) hcos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[map_inv]`. Use `⟨e, ϖ, (φ ⟨α, hαG⟩ : GA D V'), hS, he, h1, h2, hk.trans_eq h.rank, l1, l2, h.hecke_imp he hM ⟨α, hαG⟩ hα, ?_, hc⟩` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨g, hgR, rfl⟩` from `hR.lift hγ`. Conclude with `(h.supp _ g).mp (hRs _ hgR)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem opAt_imp (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) {P : Pl D.host.E} (hM : (M : 𝓞 D.host.E) ∉ P.asIdeal) {k : ℕ}
     (H : IsHeckeOpAt V K χ S P k R) : IsHeckeOpAt V' K' χ' S P k R' := by
@@ -303,13 +301,13 @@ theorem opAt_imp (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) {P : Pl D.host
   exact (h.supp _ g).mp (hRs _ hgR)
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, hS, hP, h1, h2, hd, hJ, hχ1, hαs, hdiv, hRs, hcos⟩` from `H`. Take `⟨l1, l2, l3⟩` from `h.level_imp hK hχ hP hM hJ hχ1`. Establish `hs1 : SuppF V f (1 : GA D V)`. Introduce `i j`. Simplify using `[Formalism.L2.Theta.mt]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1K : (1 : GA D V) ∈ K`. Rewrite using `[hJ 1 hs1]`. Use `⟨one_mem _, fun y => ?_, fun v hv => by simp at hv⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HeckeTrans.finMat_eq]`. Simplify using `[Formalism.L2.Theta.mt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hαG : α ∈ GfC V`. Take `⟨γ, ⟨hγR, hγK⟩, -⟩` from `hcos.2 α ⟨1, ⟨h1K, hs1⟩, 1, ⟨h1K, hs1⟩, by simp⟩`. Establish `hm` using `mul_mem (hcos.1 γ hγR).1 (hK.1 _ hγK.1)`. Rewrite `hm` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hc` using `Corr.cosets l3 hR ⟨α, hαG⟩ hcos`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨e, f, ϖ, (φ ⟨α, hαG⟩ : GA D V'), hS, hP, h1, h2, hd, l1, l2, (h.supp f ⟨α, hαG⟩).mp hαs, h.div_imp hP hM ⟨α, hαG⟩ hdiv, ?_, hc⟩` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨g, hgR, rfl⟩` from `hR.lift hγ`. Conclude with `(h.supp _ g).mp (hRs _ hgR)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem opFull_imp (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) {P : Pl D.host.E} (hM : (M : 𝓞 D.host.E) ∉ P.asIdeal)
     {d : List ℤ} (H : Hecke₂ V K χ S P d R) : Hecke₂ V' K' χ' S P d R' := by

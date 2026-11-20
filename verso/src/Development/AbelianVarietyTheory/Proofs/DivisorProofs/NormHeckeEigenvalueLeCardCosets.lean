@@ -4,21 +4,19 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSph
 namespace GlobalTheory.LFun
 
 /- English proof (translation)
-Introduce `G _ K V _ _ ρ Bf hsym hpos hinv h x c hh hfin hx hc`. Establish `hnn : ∀ y, 0 ≤ (Bf y y).re`. Introduce `y`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `(hpos y hy).le`. Set `core : PreInnerProductSpace.Core ℂ V` to `{ inner := fun x y => Bf x y conj_inner_symm := fun x y => by rw [hsym x y]; simp re_inner_nonneg := hnn add_left := fun x y z => by simp smul_left := fun x y r => by simp }`. Establish `cs : ∀ y, ‖Bf x y‖ * ‖Bf y x‖ ≤ (Bf x x).re * (Bf y y).re` using `fun y => @InnerProductSpace.Core.inner_mul_inner_self_le ℂ V _ _ _ core x y`. Establish `hr : 0 < (Bf x x).re` using `hpos x hx`. Establish `hb : ∀ g, ‖Bf x (ρ g x)‖ ≤ (Bf x x).re`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `h1` using `cs (ρ g x)`. Rewrite `h1` using `[hinv, hsym x (ρ g x), RCLike.norm_conj]`. Use polynomial arithmetic with `[norm_nonneg (Bf x (ρ g x))]`. Establish `hxx : ‖Bf x x‖ = (Bf x x).re`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (starRingEnd ℂ) (Bf x x) = Bf x x` using `(hsym x x).symm`. Rewrite `e` using `[RCLike.conj_eq_iff_re]`. Rewrite using `[← e]`. Simplify using `[abs_of_pos hr]`. Use `set S := hfin.toFinset`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsupp : (Function.support fun q : G ⧸ K => h q.out • ρ q.out x) ⊆ S`. Introduce `q hq`. Simplify using `only [S, Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Introduce `h0`. Conclude with `hq (by simp [h0])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : heckeVec ρ K h x = ∑ q ∈ S, h q.out • ρ q.out x` using `finsum_eq_sum_of_support_subset _ hsupp`. Establish `key : c * Bf x x = ∑ q ∈ S, h q.out * Bf x (ρ q.out x)`. Rewrite using `[← smul_eq_mul, ← map_smul, ← hc, hsum, map_sum]`. Simplify using the standard rewrite rules. Establish `hcard : Nat.card {q : G ⧸ K // h q.out ≠ 0} = S.card` using `Nat.card_eq_card_finite_toFinset hfin`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : ‖c‖ * (Bf x x).re ≤ (S.card : ℝ) * (Bf x x).re`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun q _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `_ = (S.card : ℝ) * (Bf x x).re := by simp`. Rewrite using `[hcard]`. Conclude with `le_of_mul_le_mul_right hle hr`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_card_of_heckeVec_eq_smul :
     ∀ (G : Type) [Group G] (K : Subgroup G) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)

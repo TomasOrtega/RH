@@ -12,7 +12,7 @@ import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.CauchyI
 namespace PositivityTheory.RgJS
 
 /- English proof (translation)
-Establish `hg` using `complete_homogeneous_generating`. Establish `hs` using `homogeneous_sum_bound hg`. Establish `hj` using `schur_jacobi_trudi_of_alternating (alternating_jacobi_trudi_of_relation (elementary_relation_of_generating hg))`. Conclude with `cauchy_of_beta_bounds (beta_all_of_generating (beta_generating_of_sum_bound hg hs hj) hs hj) hs hj jacobi_trudi_padding`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cauchy_variation_inequality : Cauchy := by
   have hg := complete_homogeneous_generating
@@ -21,7 +21,7 @@ theorem cauchy_variation_inequality : Cauchy := by
   exact cauchy_of_beta_bounds (beta_all_of_generating (beta_generating_of_sum_bound hg hs hj) hs hj) hs hj jacobi_trudi_padding
 
 /- English proof (translation)
-The claim follows from `cauchy_local_of_cauchy cauchy_variation_inequality (schur_jacobi_trudi_of_alternating (alternating_jacobi_trudi_of_relation (elementary_relation_of_generating complete_homogeneous_generating))) jacobi_trudi_padding`.
+A detailed English derivation is pending.
 -/
 theorem cauchy_local_inequality : CauchyLoc :=
   cauchy_local_of_cauchy cauchy_variation_inequality (schur_jacobi_trudi_of_alternating (alternating_jacobi_trudi_of_relation (elementary_relation_of_generating complete_homogeneous_generating))) jacobi_trudi_padding

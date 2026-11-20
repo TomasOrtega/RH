@@ -28,13 +28,13 @@ def secOf (hp : IsGrpPullback A' A π φ) (x : Over.mk π ⟶ A) : 𝟙_ (Over V
   Over.homMk (hp.1.lift x.left (𝟙 V) ((Over.w x).trans (Category.id_comp π).symm)) (hp.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `hp.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem secOf_left (hp : IsGrpPullback A' A π φ) (x : Over.mk π ⟶ A) : (secOf hp x).left ≫ φ = x.left :=
   hp.1.lift_fst _ _ _
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((toUnit T).left ≫ (secOf hp x).left) ≫ φ = T.hom ≫ x.left`. Rewrite using `[Category.assoc, secOf_left, Over.toUnit_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_secOf (hp : IsGrpPullback A' A π φ) (x : Over.mk π ⟶ A) (T : Over V) :
     pushHom hp T (toUnit T ≫ secOf hp x) = (Over.homMk T.hom rfl : Over.mk (T.hom ≫ π) ⟶ Over.mk π) ≫ x := by
@@ -43,7 +43,7 @@ theorem push_secOf (hp : IsGrpPullback A' A π φ) (x : Over.mk π ⟶ A) (T : O
   rw [Category.assoc, secOf_left, Over.toUnit_left]
 
 /- English proof (translation)
-Establish `e` using `push_secOf hp x (𝟙_ (Over V))`. Rewrite `e` using `[toUnit_unit, Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem push_secOf' (hp : IsGrpPullback A' A π φ) (x : Over.mk π ⟶ A) :
     pushHom hp _ (secOf hp x) =
@@ -52,21 +52,21 @@ theorem push_secOf' (hp : IsGrpPullback A' A π φ) (x : Over.mk π ⟶ A) :
   rwa [toUnit_unit, Category.id_comp] at e
 
 /- English proof (translation)
-The claim follows from `push_injective hp _ (by rw [map_mul, push_secOf', push_secOf', push_secOf', MonObj.comp_mul])`.
+A detailed English derivation is pending.
 -/
 theorem secOf_mul (hp : IsGrpPullback A' A π φ) (x y : Over.mk π ⟶ A) :
     secOf hp (x * y) = secOf hp x * secOf hp y :=
   push_injective hp _ (by rw [map_mul, push_secOf', push_secOf', push_secOf', MonObj.comp_mul])
 
 /- English proof (translation)
-The claim follows from `push_injective hp _ (by rw [map_pow, push_secOf', push_secOf', MonObj.comp_pow])`.
+A detailed English derivation is pending.
 -/
 theorem secOf_pow (hp : IsGrpPullback A' A π φ) (x : Over.mk π ⟶ A) (k : ℕ) :
     secOf hp (x ^ k) = secOf hp x ^ k :=
   push_injective hp _ (by rw [map_pow, push_secOf', push_secOf', MonObj.comp_pow])
 
 /- English proof (translation)
-The claim follows from `push_injective hp _ (by rw [map_one, push_secOf', MonObj.comp_one])`.
+A detailed English derivation is pending.
 -/
 theorem secOf_one (hp : IsGrpPullback A' A π φ) : secOf hp (1 : Over.mk π ⟶ A) = 1 :=
   push_injective hp _ (by rw [map_one, push_secOf', MonObj.comp_one])
@@ -79,7 +79,7 @@ variable {h n n' n'' : ℕ} {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRi
   {S S' S'' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {s'' : S'' ⟶ Sp B''}
 
 /- English proof (translation)
-Use `⟨hψ.comp hφ, ψ₂ ≫ φ₂, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, hs'.1, Category.assoc]`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, hs'.2, Category.assoc]`. Conclude with `(hw'.trans c''.isLB (pull_isLB c'.isLB _) (pull_isLB (pull_isLB c.isLB _) _) (iso_pull ψ₂ hw)).trans c''.isLB (pull_isLB (pull_isLB c.isLB _) _) (pull_isLB c.isLB _) (iso_pull_pull c.isLB φ₂ ψ₂)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_with {c : SiegPre h n ζ s} {c' : SiegPre h n' ζ' s'} {c'' : SiegPre h n'' ζ'' s''} {f : S' ⟶ S}
     {f' : S'' ⟶ S'} {φ : c'.A.left ⟶ c.A.left} {φ₂ : (G2 c'.A).left ⟶ (G2 c.A).left} (hφ : IsGrpPullback c'.A c.A f φ)
@@ -95,15 +95,13 @@ theorem comp_with {c : SiegPre h n ζ s} {c' : SiegPre h n' ζ' s'} {c'' : SiegP
       c''.isLB (pull_isLB (pull_isLB c.isLB _) _) (pull_isLB c.isLB _) (iso_pull_pull c.isLB φ₂ ψ₂)
 
 /- English proof (translation)
-Establish `hp` using `hφ.1`. Set `F : c''.A.left ⟶ c'.A.left` to `hp.lift χ (c''.A.hom ≫ f') (by rw [hχ.1.w, Category.assoc])`. Establish `hF : F ≫ φ = χ` using `hp.lift_fst _ _ _`. Establish `hFw : F ≫ c'.A.hom = c''.A.hom ≫ f'` using `hp.lift_snd _ _ _`. Set `U : Over.mk ((c''.A ⊗ c''.A).hom ≫ f') ⟶ c'.A ⊗ c'.A` to `lift (pushPt hFw (fst c''.A c''.A)) (pushPt hFw (snd c''.A c''.A))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `F₂ : (c''.A ⊗ c''.A).left ⟶ (c'.A ⊗ c'.A).left` to `U.left`. Establish `h₁ : F₂ ≫ (fst c'.A c'.A).left = (fst c''.A c''.A).left ≫ F` using `congrArg (fun q => q.left) (lift_fst (pushPt hFw (fst c''.A c''.A)) (pushPt hFw (snd c''.A c''.A)))`. Establish `h₂ : F₂ ≫ (snd c'.A c'.A).left = (snd c''.A c''.A).left ≫ F` using `congrArg (fun q => q.left) (lift_snd (pushPt hFw (fst c''.A c''.A)) (pushPt hFw (snd c''.A c''.A)))`. Establish `h₃ : F₂ ≫ φ₂ = χ₂`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (_ ≫ _) ≫ (fst c.A c.A).left = _ ≫ (fst c.A c.A).left`. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, h₁, Category.assoc, hF, hs'.1]`. Use `show (_ ≫ _) ≫ (snd c.A c.A).left = _ ≫ (snd c.A c.A).left`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, h₂, Category.assoc, hF, hs'.2]`. Use `⟨F, F₂, hφ.cancel (by rw [hF]; exact hχ) hFw, ⟨h₁, h₂⟩, ?_, fun a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hw'` using `[← h₃]`. Conclude with `(hw'.trans c''.isLB (pull_isLB c.isLB _) (pull_isLB (pull_isLB c.isLB _) _) (iso_pull_pull c.isLB φ₂ F₂).symm).trans c''.isLB (pull_isLB (pull_isLB c.isLB _) _) (pull_isLB c'.isLB _) (iso_pull F₂ hw).symm`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hF, hl a, Category.assoc]`. Establish `a₁ : (c''.lev a).left ≫ c''.A.hom = 𝟙 S''` using `Over.w (c''.lev a)`.
-
-Establish `a₂ : (c'.lev a).left ≫ c'.A.hom = 𝟙 S'` using `Over.w (c'.lev a)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hFw).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ f') a₁).trans ((Category.id_comp _).trans ((Category.comp_id _).symm.trans ((congrArg (f' ≫ ·) a₂.symm).trans (Category.assoc _ _ _).symm))))))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cancel_with {c : SiegPre h n ζ s} {c' : SiegPre h n' ζ' s'} {c'' : SiegPre h n' ζ'' s''} {f : S' ⟶ S}
     {f' : S'' ⟶ S'} {φ : c'.A.left ⟶ c.A.left} {φ₂ : (G2 c'.A).left ⟶ (G2 c.A).left} (hφ : IsGrpPullback c'.A c.A f φ)
@@ -188,13 +186,11 @@ namespace GlobalTheory
 open SiegCover SiegLevCalc
 
 /- English proof (translation)
-Introduce `h n N d B B' _ _ ζ ζ' S V s sV π c e hadd htor hd hgeom`. Establish `levd : ∀ a, ((cover c sV ζ' π e hadd htor hgeom).lev a ^ d).left ≫ (pair c π).φ = π ≫ (c.lev a ^ 1).left`. Introduce `a`. Use `show (secOf (pair c π).pb (e a) ^ d).left ≫ _ = _`. Rewrite using `[← secOf_pow, secOf_left, hd a, pow_one, Over.comp_left, Over.toUnit_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `try rfl`. Use `⟨cover c sV ζ' π e hadd htor hgeom, (pair c π).φ, ⟨(pair c π).pb, ⟨(pair c π).φ₂, (pair c π).sq, (pair c π).iso⟩, levd⟩, fun a => secOf_left (pair c π).pb (e a), ?_⟩` and prove the remaining obligations. Introduce `T t B'' _ ζ'' sT C'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ, ψ₂, hψ, hs', hw', hl'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hc, χ₂, hsq, hiso⟩` from `comp_with (c' := cover c sV ζ' π e hadd htor hgeom) (pair c π).pb (pair c π).sq (pair c π).iso hψ hs' hw'`. Use `⟨ψ ≫ (pair c π).φ, ⟨hc, ⟨χ₂, hsq, hiso⟩, fun a => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (pair c π).φ) (pow_section hψ _ _ (hl' a) d)).trans ((Category.assoc _ _ _).trans ((congrArg (t ≫ ·) (levd a)).trans (Category.assoc _ _ _).symm)))`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (pair c π).φ) (hl' a)).trans ((Category.assoc _ _ _).trans (congrArg (t ≫ ·) (secOf_left (pair c π).pb (e a)))))`. Introduce and unpack `⟨φ', ⟨hχ, ⟨χ₂, hs', hw'⟩, -⟩, hl'⟩`.
-
-Conclude with `cancel_with (c' := cover c sV ζ' π e hadd htor hgeom) (pair c π).pb (pair c π).sq (pair c π).iso hχ hs' hw' fun a => (hl' a).trans (congrArg (t ≫ ·) (secOf_left (pair c π).pb (e a))).symm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem siegCover_build : ∀ (h n N d : ℕ) (B B' : Type) [CommRing B] [CommRing B'] (ζ : B) (ζ' : B') (S V : Scheme.{0}) (s : S ⟶ Sp B) (sV : V ⟶ Sp B') (π : V ⟶ S) (c : SiegPre h n ζ s) (e : (Fin h ⊕ Fin h → ℤ) → (Over.mk π ⟶ c.A)), (∀ a a', e (a + a') = e a * e a') → (∀ a, e a ^ N = 1) → (∀ a, e a ^ d = toUnit (Over.mk π) ≫ c.lev a) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ V) (β : B' →+* k) (z : kˣ), x ≫ sV = spMap β → (z : k) = β ζ' → (∀ a, (Over.homMk x rfl : Over.mk (x ≫ π) ⟶ Over.mk π) ≫ e a = 1 ↔ ∃ a', a = N • a') ∧ (∀ g : Over.mk (x ≫ π) ⟶ c.A, g ^ N = 1 → ∃ a, (Over.homMk x rfl : Over.mk (x ≫ π) ⟶ Over.mk π) ≫ e a = g) ∧ ∀ a a', Out.WeilIs c.A c.diag N ((Over.homMk x rfl : Over.mk (x ≫ π) ⟶ Over.mk π) ≫ e a) ((Over.homMk x rfl : Over.mk (x ≫ π) ⟶ Over.mk π) ≫ e a') (unitOn (z ^ (2 * omegaStd a a')))) → ∃ (C : SiegPre h N ζ' sV) (φ : C.A.left ⟶ c.A.left), SRelBy C c d 1 π φ ∧ (∀ a, (C.lev a).left ≫ φ = (e a).left) ∧ ∀ (T : Scheme.{0}) (t : T ⟶ V) (B'' : Type) [CommRing B''] (ζ'' : B'') (sT : T ⟶ Sp B'') (C' : SiegPre h N ζ'' sT), SiegPB C' C t ↔ ∃ φ' : C'.A.left ⟶ c.A.left, SRelBy C' c d 1 (t ≫ π) φ' ∧ ∀ a, (C'.lev a).left ≫ φ' = t ≫ (e a).left := by
   intro h n N d B B' _ _ ζ ζ' S V s sV π c e hadd htor hd hgeom

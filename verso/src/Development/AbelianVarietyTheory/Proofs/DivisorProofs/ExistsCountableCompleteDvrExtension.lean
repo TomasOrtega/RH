@@ -14,15 +14,15 @@ def traceSubring (K₀ : Subfield (FractionRing V)) : Subring V :=
   K₀.toSubring.comap (algebraMap V (FractionRing V))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_traceSubring {K₀ : Subfield (FractionRing V)} {x : V} :
     x ∈ traceSubring K₀ ↔ algebraMap V (FractionRing V) x ∈ K₀ := Iff.rfl
 
 /- English proof (translation)
-Rewrite `*` using `[mem_traceSubring]`. Establish `hx0' : algebraMap V (FractionRing V) x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hx0`. Establish `: algebraMap V (FractionRing V) c = algebraMap V (FractionRing V) (x * c) / algebraMap V (FractionRing V) x`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this]`. Conclude with `K₀.div_mem hxc hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceSubring_cancel {K₀ : Subfield (FractionRing V)} {x c : V} (hx : x ∈ traceSubring K₀)
     (hx0 : x ≠ 0) (hxc : x * c ∈ traceSubring K₀) : c ∈ traceSubring K₀ := by
@@ -35,7 +35,7 @@ theorem traceSubring_cancel {K₀ : Subfield (FractionRing V)} {x c : V} (hx : x
   rw [this]; exact K₀.div_mem hxc hx
 
 /- English proof (translation)
-Use `⟨fun h => h.map (traceSubring K₀).subtype, fun h => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.exists_right_inv`. Establish `hx0 : (x : V) ≠ 0` using `fun h0 => by simp [h0] at hc`. Establish `hcm : c ∈ traceSubring K₀` using `traceSubring_cancel x.2 hx0 (by rw [hc]; exact (traceSubring K₀).one_mem)`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨c, hcm⟩, Subtype.ext hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem traceSubring_isUnit_iff {K₀ : Subfield (FractionRing V)} (x : traceSubring K₀) :
     IsUnit x ↔ IsUnit (x : V) := by
@@ -47,7 +47,7 @@ theorem traceSubring_isUnit_iff {K₀ : Subfield (FractionRing V)} (x : traceSub
   exact isUnit_iff_exists_inv.2 ⟨⟨c, hcm⟩, Subtype.ext hc⟩
 
 /- English proof (translation)
-Use `IsLocalRing.of_nonunits_add fun a b ha hb => ?_` and prove the remaining obligations. Simplify using `only [mem_nonunits_iff, traceSubring_isUnit_iff] at *`. Use `push_cast`. Conclude with `IsLocalRing.nonunits_add ha hb`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem traceSubring_isLocalRing (K₀ : Subfield (FractionRing V)) : IsLocalRing (traceSubring K₀) := by
   refine IsLocalRing.of_nonunits_add fun a b ha hb => ?_
@@ -56,17 +56,17 @@ theorem traceSubring_isLocalRing (K₀ : Subfield (FractionRing V)) : IsLocalRin
   exact IsLocalRing.nonunits_add ha hb
 
 /- English proof (translation)
-Use `⟨fun I => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hI : I = ⊥`. Rewrite using `[hI]`. Conclude with `bot_isPrincipal`. Take `⟨y₀, hy₀, hy₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∃ n : ℕ, ∃ y ∈ I, y ≠ 0 ∧ IsDiscreteValuationRing.addVal V (y : V) = n`. Establish `hne : IsDiscreteValuationRing.addVal V (y₀ : V) ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `fun h => hy₀0 (Subtype.ext h)`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, y₀, hy₀, hy₀0, hn.symm⟩`. Take `⟨x, hxI, hx0, hxn⟩` from `Nat.find_spec hex`. Use `⟨⟨x, le_antisymm (fun y hy => ?_) ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_span_singleton]`. Distinguish the cases in `hy0 : y = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [hy0]⟩`. Establish `hyne : IsDiscreteValuationRing.addVal V (y : V) ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `fun h => hy0 (Subtype.ext h)`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.1 hyne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : Nat.find hex ≤ m` using `Nat.find_min' hex ⟨y, hy, hy0, hm.symm⟩`. Establish `hdvd : (x : V) ∣ (y : V)`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, hxn, ← hm]`. Conclude with `hle` after adjusting the coercions. Take `⟨c, hc⟩` from `hdvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0' : (x : V) ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Establish `hcm : c ∈ traceSubring K₀` using `traceSubring_cancel x.2 hx0' (by rw [← hc]; exact y.2)`. Conclude with `⟨⟨c, hcm⟩, Subtype.ext (by simp [hc, mul_comm])⟩`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hxI`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceSubring_principal (K₀ : Subfield (FractionRing V)) :
     IsPrincipalIdealRing (traceSubring K₀) := by
@@ -105,19 +105,15 @@ end GlobalTheory.SmallDVR
 namespace GlobalTheory.SmallDVR
 
 /- English proof (translation)
-Introduce `A V _ _ _ _ _ _ φ hA hφ ⟨a, ha, hφa⟩`. Set `K₀ : Subfield (FractionRing V)` to `Subfield.closure (Set.range ((algebraMap V (FractionRing V)).comp φ))`. Set `V₀` to `traceSubring K₀`. Establish `hmem : ∀ x, φ x ∈ V₀` using `fun x => (mem_traceSubring).2 (Subfield.subset_closure ⟨x, rfl⟩)`. Use `haveI : Countable K₀ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `(Subfield.cardinalMk_closure_le_max _).trans (max_le ?_ le_rfl)` and prove the remaining obligations. Conclude with `Cardinal.mk_le_aleph0_iff.2 (Set.countable_range _).to_subtype`. Use `haveI : Countable V₀ := by`. Use `Function.Injective.countable (f := fun x : V₀ => (⟨algebraMap V (FractionRing V) x, x.2⟩ : K₀)) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x y h`. Conclude with `Subtype.ext (IsFractionRing.injective V (FractionRing V) (congrArg Subtype.val h))`. Use `haveI : CharZero V₀ := V₀.subtype.charZero`. Use `haveI : IsLocalRing V₀ := traceSubring_isLocalRing K₀`. Use `haveI : IsPrincipalIdealRing V₀ := traceSubring_principal K₀`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `φ₀ : A →+* V₀` to `φ.codRestrict V₀ hmem`. Establish `hcomp : V₀.subtype.comp φ₀ = φ` using `by ext; rfl`. Use `haveI : IsLocalHom (V₀.subtype.comp φ₀) := by rw [hcomp]; exact hφ`. Use `haveI : IsLocalHom φ₀ := isLocalHom_of_comp φ₀ V₀.subtype`. Use `haveI : IsDiscreteValuationRing V₀ := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `{ not_a_field' := ?_ }` and prove the remaining obligations. Introduce `hbot`. Establish `hnu : ¬ IsUnit (φ₀ a)` using `fun h => (IsLocalRing.mem_maximalIdeal a).1 ha (IsLocalHom.map_nonunit a h)`. Establish `: φ₀ a ∈ maximalIdeal V₀` using `hnu`. Rewrite `this` using `[hbot, Ideal.mem_bot]`.
-
-Conclude with `hφa (congrArg Subtype.val this)`. Take `⟨T, i, hi, hil, hcard⟩` from `GlobalTheory.CountableCompletion.exists_cdvr_mk_le_continuum V₀ inferInstance`. Use `⟨T, i.comp φ₀, inferInstance, ?_, hcard⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [RingHom.mem_ker, RingHom.comp_apply]`.
-
-Rewrite using `[map_eq_zero_iff i hi]`. Conclude with `⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_small_cdvr_of_localHom :
     ∀ (A V : Type) [CommRing A] [IsLocalRing A] [CommRing V] [IsDomain V]

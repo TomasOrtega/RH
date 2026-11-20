@@ -31,23 +31,21 @@ variable {D : D7} {n : ℕ}
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨ψ₀, h₀, a, ha0, ha⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Use `set y : D.host.E := algebraMap D.host.F D.host.E a with hy_def`. Establish `hyc : NumberField.IsCMField.complexConj D.host.E y = y` using `(NumberField.IsCMField.complexConj_eq_self_iff D.host.E y).2 a.2`. Establish `hreal : ∀ τ, (tauE D τ y).im = 0`. Introduce `τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `NumberField.IsCMField.complexEmbedding_complexConj D.host.E (tauE D τ) y`. Rewrite `h` using `[hyc]`. Use `congrArg Complex.im h` as an intermediate fact. Rewrite `this` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hl' : HasRealPar ψ θ (fun τ => -(tauE D τ y).re)`. Introduce `x`. Establish `e1 : psiInf D.host.F ψ x = psiInf D.host.F ψ₀ (algebraMap D.host.F (Ainf D.host.F) a * x)`. Simplify using `only [psiInf]`. Rewrite using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `show (algebraMap D.host.F (Ainf D.host.F) a * x, algebraMap D.host.F (Af D.host.F) a * 0) = _`. Rewrite using `[mul_zero]`. Both sides reduce to the same expression. Rewrite using `[e1, h₀.2.2 θ hθ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `e2 : ∀ ρ, θ ρ ((algebraMap D.host.F (Ainf D.host.F) a * x) ⊗ₜ[D.host.F] (1 : D.host.E)) = θ ρ (x ⊗ₜ[D.host.F] (1 : D.host.E)) * tauE D ρ y`. Introduce `ρ`. Establish `e3 : (algebraMap D.host.F (Ainf D.host.F) a * x) ⊗ₜ[D.host.F] (1 : D.host.E) = (x ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] y)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, ← Algebra.smul_def, ← TensorProduct.smul_tmul', ← TensorProduct.tmul_smul, Algebra.smul_def, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e3, map_mul, (hθ ρ).1]`. Simplify using `only [e2]`. Establish `e4 : ∀ ρ, (((-(tauE D ρ y).re : ℝ)) : ℂ) = -tauE D ρ y`. Introduce `ρ`. Apply the tactic sequence `apply Complex.ext <;> simp [hreal ρ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [e4, Finset.mul_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hy0 : y ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hy_def]`. Introduce `h`. Conclude with `ha0 ((map_eq_zero_iff _ (algebraMap D.host.F D.host.E).injective).1 h)`. Establish `e` using `congrFun (GlobalTheory.StdUnn.RealPar.realPar_unique D ψ θ hθ l _ hl hl') τ`. Rewrite using `[e]`.
-
-Introduce `h0`. Establish `h1 : (tauE D τ y).re = 0` using `by simpa using h0`. Conclude with `(map_ne_zero (tauE D τ)).2 hy0 (Complex.ext h1 (hreal τ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem realPar_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D} (hθ : IsInfFam θ)
     {l : D.what₂.Tau → ℝ} (hl : HasRealPar ψ θ l) (τ : D.what₂.Tau) : l τ ≠ 0 := by
@@ -99,15 +97,13 @@ theorem realPar_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.
   exact (map_ne_zero (tauE D τ)).2 hy0 (Complex.ext h1 (hreal τ))
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify `Function.HasTemperateGrowth.const a` using `[evalPoly]`. Consider the case `add p q hp hq`. Establish `e : (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p + q) (fun τ => Matrix.of (z τ))) = (fun z => evalPoly p (fun τ => Matrix.of (z τ))) + (fun z => evalPoly q (fun τ => Matrix.of (z τ)))`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Simplify using `[evalPoly]`. Rewrite using `[e]`. Conclude with `hp.add hq`. Consider the case `mul_X p k hp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hk : Function.HasTemperateGrowth (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => if k.2.2.2 then conj (z k.1 k.2.1 k.2.2.1) else z k.1 k.2.1 k.2.2.1)`. Set `L : (D.what₂.Tau → Fin m → Fin n → ℂ) →L[ℝ] ℂ` to `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) k.2.2.1).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) k.2.1).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : D.what₂.Tau => Fin m → Fin n → ℂ) k.1))`. Distinguish the cases in `h : k.2.2.2 = true`. Simplify using `only [h, if_true]`. Conclude with `(Complex.conjCLE.toContinuousLinearMap.comp L).hasTemperateGrowth`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h]`. Conclude with `L.hasTemperateGrowth`. Establish `e : (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p * MvPolynomial.X k) (fun τ => Matrix.of (z τ))) = (fun z => evalPoly p (fun τ => Matrix.of (z τ))) * (fun z => if k.2.2.2 then conj (z k.1 k.2.1 k.2.2.1) else z k.1 k.2.1 k.2.2.1)`. Use function extensionality and compare the values at `z`. Simplify using `[evalPoly]`.
-
-Rewrite using `[e]`. Conclude with `hp.mul hk`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_evalPoly {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     Function.HasTemperateGrowth (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly p (fun τ => Matrix.of (z τ))) := by
@@ -149,25 +145,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteD
   {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ}
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `X`. Establish `hS` using `Filter.eventually_cofinite.1 (hae.and (eventually_mem_latV b X))`. Set `O : Set (Af F)` to `{x | ∀ v, x v ∈ v.adicCompletionIntegers F}`. Establish `hOo : IsOpen O` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `U : Set (Fin n → Fin M → Af F ⊗[F] E)` to `{Y | ∀ a i k, crd b (Af F) ((Y - X) a i) k ∈ O}`. Establish `hUo : IsOpen U`. Establish `e : U = ⋂ a, ⋂ i, ⋂ k, (fun Y : Fin n → Fin M → Af F ⊗[F] E => crd b (Af F) ((Y - X) a i) k) ⁻¹' O`. Use extensionality with `Y`. Simplify using `[U]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => hOo.preimage ((continuous_crd b (Af F) k).comp ((continuous_apply i).comp ((continuous_apply a).comp (continuous_id.sub continuous_const))))`. Establish `hXU : X ∈ U`. Introduce `a i k v`. Simplify using `only [sub_self, crd, Pi.zero_apply, map_zero, Finsupp.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `zero_mem (v.adicCompletionIntegers F)`. Establish `hev : (fun Y : Fin n → Fin M → Af F ⊗[F] E => ∏ᶠ v, Φv v (projV v Y)) =ᶠ[nhds X] fun Y => ∏ v ∈ hS.toFinset, Φv v (projV v Y)` using `by filter_upwards [hUo.mem_nhds hXU] with Y hY`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `v hv`. Rewrite using `[Set.Finite.coe_toFinset]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hv` to reduce the goal to its premises. Establish `hYX : projV v (Y - X) ∈ latV b v`. Introduce `a i k`. Use `crd_projV b (Y - X) v a i k` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [crd] at this`. Rewrite using `[this]`. Conclude with `hY a i k v`. Establish `hmem : projV v Y ∈ latV b v`. Establish `e : projV v Y = projV v (Y - X) + projV v X`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← projV_add]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `latV_add b v hYX h.2`. Use `show Φv v (projV v Y) = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[h.1, Set.indicator_of_mem hmem]`. Both sides reduce to the same expression. Establish `hlc : ∀ s : Finset (HeightOneSpectrum (𝓞 F)), IsLocallyConstant (fun Y : Fin n → Fin M → Af F ⊗[F] E => ∏ v ∈ s, Φv v (projV v Y))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `IsLocallyConstant.const 1`. Consider the case `insert v s hv ih`. Simplify using `only [Finset.prod_insert hv]`.
-
-Conclude with `((hSB v).1.comp_continuous (continuous_projV_fin b v)).mul ih`. Establish `h2` using `(IsLocallyConstant.iff_eventually_eq _).1 (hlc hS.toFinset) X`. Use `filter_upwards [hev, h2] with Y h3 h4`. Rewrite using `[h3, h4]`. Conclude with `hev.self_of_nhds.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_finprod (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ)
     (hSB : ∀ v, IsSB (Φv v)) (hae : ∀ᶠ v in Filter.cofinite, Φv v = (latV b v).indicator 1) :
@@ -234,9 +228,9 @@ theorem isLocallyConstant_finprod (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fi
 end Pure
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Establish `hc` using `(GlobalTheory.isPureFin_continuous_hasCompactSupport F E d M n b Φf Φv h).2`. Take `⟨hSB, hae, hprod⟩` from `h`. Establish `e : Φf = fun X => ∏ᶠ v, Φv v (projV v X)` using `funext hprod`. Use `⟨?_, hc⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `isLocallyConstant_finprod b Φv hSB hae`.
+A detailed English derivation is pending.
 -/
 theorem mem_SB_of_isPureFin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d M n : ℕ}
     (b : Module.Basis (Fin d) F E) {Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ}
@@ -251,11 +245,11 @@ theorem mem_SB_of_isPureFin {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   exact isLocallyConstant_finprod b Φv hSB hae
 
 /- English proof (translation)
-Take `⟨e, c, g, d, bs, gv, hp, rfl⟩` from `hφ`. Establish `hg : g ∈ GlobalTheory.WeilM.SB (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)`. Establish `h1` using `mem_SB_of_isPureFin bs (Φf := fun X => g fun i j => X j i) (Φv := gv) hp`. Establish `h2` using `GlobalTheory.CompanionTheory.SiegelND.SchGlue.isSB_swap (D := D) h1`. Conclude with `⟨h2.1, h2.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨f, hf⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_gauss D n V l hl s hs`. Establish `hmem : (fun x : Mx D V.rank n => f (fun τ i j => compAt θ τ x i j) * g (fun i j => finPart D (x i j))) ∈ schwartzA θ V.rank n` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `h3` using `GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA D θ V.rank n _ (hasTemperateGrowth_evalPoly (MvPolynomial.monomial e c)) _ hmem`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hf, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_schwartzA_of_isMonoFock {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {l : D.what₂.Tau → ℝ} (hl : ∀ τ, l τ ≠ 0)
     {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hs : ∀ τ, IsCartanInv (gramAt D V τ) (s τ))

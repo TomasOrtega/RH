@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.InvFieldSemiAb
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ t v`. Conclude with `GlobalTheory.InvFieldBase.exists_isInv R t.G v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isInv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (t : SAB H (Sp R)) (v : TanM (𝟙 (Sp R)) t.G), ∃ dd : Fld t.G.left, IsInv t.G v dd := by
   intro E _ _ _ H R _ t v

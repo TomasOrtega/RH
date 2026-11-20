@@ -18,7 +18,7 @@ def OrbitConjSum.Statement : Prop :=
           g (Quot.out q : Geo.mcPts (ι := blockIdx n) (orbitIdeal x))
 
 /- English proof (translation)
-Use `⟨samplePoint_blockNonzero, fun c z hc _ ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [norm_mul]`. Conclude with `mul_div_mul_left _ _ (norm_ne_zero_iff.mpr (hc ()))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : BlockNonzero samplePoint ∧
     ∀ (c : Unit → ℂ) (z : Coord (fun _ : Unit ↦ 1) → ℂ), (∀ k, c k ≠ 0) →

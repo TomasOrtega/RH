@@ -37,22 +37,22 @@ def IntFact_k : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
 section Split
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
 /- English proof (translation)
-The claim follows from `Matrix.map_add _ (map_add _) X Z`.
+A detailed English derivation is pending.
 -/
 theorem cw_add'_k (X Z : Mx F E d.m d.n) : d.cw w (X + Z) = d.cw w X + d.cw w Z := Matrix.map_add _ (map_add _) X Z
 /- English proof (translation)
-The claim follows from `Matrix.map_sub _ (map_sub _) X Z`.
+A detailed English derivation is pending.
 -/
 theorem cw_sub'_k (X Z : Mx F E d.m d.n) : d.cw w (X - Z) = d.cw w X - d.cw w Z := Matrix.map_sub _ (map_sub _) X Z
 /- English proof (translation)
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.RD_k.loc`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.cw_add'_k, Matrix.mul_add]`. Conclude with `Matrix.map_add _ (fun a b => star_add a b) _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_add'_k (X Z : Mx F E d.m d.n) : R.loc w (X + Z) = R.loc w X + R.loc w Z := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.RD_k.loc
   rw [_root_.PositivityTheory.SiegelWeilFormula.KFock.cw_add'_k, Matrix.mul_add]
   exact Matrix.map_add _ (fun a b => star_add a b) _ _
 /- English proof (translation)
-Establish `h : d.cw w b = 0` using `hb`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.RD_k.loc`. Rewrite using `[h, Matrix.mul_zero]`. Conclude with `Matrix.map_zero _ (star_zero _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_of_mem_k {b : Mx F E d.m d.n} (hb : b ∈ _root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w) : R.loc w b = 0 := by
   have h : d.cw w b = 0 := hb
@@ -60,50 +60,40 @@ theorem loc_of_mem_k {b : Mx F E d.m d.n} (hb : b ∈ _root_.PositivityTheory.Si
   rw [h, Matrix.mul_zero]
   exact Matrix.map_zero _ (star_zero _)
 /- English proof (translation)
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.RD_k.loc`. Conclude with `(continuous_const.matrix_mul (_root_.PositivityTheory.SiegelWeilFormula.Place.continuous_cw_k d w)).matrix_map continuous_star`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_loc_k : Continuous (R.loc w) := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.RD_k.loc
   exact (continuous_const.matrix_mul (_root_.PositivityTheory.SiegelWeilFormula.Place.continuous_cw_k d w)).matrix_map continuous_star
 end Split
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w ν hν`. Use `haveI := hν.1`. Take `⟨i1, i2, i3, i4⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstanceAs (IsTopologicalAddGroup (Fin d.m → Fin d.n → AE F E))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : LocallyCompactSpace (Mx F E d.m d.n) := inferInstanceAs (LocallyCompactSpace (Fin d.m → Fin d.n → AE F E))`. Use `haveI : SecondCountableTopology (Mx F E d.m d.n) := inferInstanceAs (SecondCountableTopology (Fin d.m → Fin d.n → AE F E))`. Use `haveI : BorelSpace (Mx F E d.m d.n) := inferInstanceAs (BorelSpace (Fin d.m → Fin d.n → AE F E))`. Establish `hcl : IsClosed ((_root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))` using `isClosed_eq (_root_.PositivityTheory.SiegelWeilFormula.Place.continuous_cw_k d w) continuous_const`. Use `haveI : LocallyCompactSpace (_root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (_root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w) := TopologicalSpace.Subtype.secondCountableTopology ((_root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))`. Use `haveI : BorelSpace (_root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w) := Subtype.borelSpace ((_root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))`. Use `haveI := volume_isAddHaar d.m d.n`. Take `⟨s, hsc, hs1, hs2, hsa, -⟩` from `Place.exists_sec d.cm d.B.emb`. Use `set fr : Matrix (Fin d.m) (Fin d.m) ℂ := (R.fr w).1 with hfr`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Set `U : (Fin d.m → Fin d.n → ℂ) → Matrix (Fin d.m) (Fin d.n) ℂ` to `fun u => fr * Matrix.of fun b j => star (u b j)`. Set `sW : (Fin d.m → Fin d.n → ℂ) → Mx F E d.m d.n` to `fun u i j => s fun w' => if w' = w then U u i j else 0`. Establish `cw_sW : ∀ u, d.cw w (sW u) = U u` using `fun u => by`. Use extensionality with `i j`. Use `show piInf (d.B.emb w) (s _) = U u i j`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hs1, if_pos rfl]`. Establish `cw_sW' : ∀ u w', w' ≠ w → d.cw w' (sW u) = 0` using `fun u w' h => by`. Use extensionality with `i j`. Use `show piInf (d.B.emb w') (s _) = 0`. Rewrite using `[hs1, if_neg h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `fin_sW : ∀ u, finOne F • sW u = 0` using `fun u => by`. Use extensionality with `i j`. Use `show finOne F • s _ = 0`. Conclude with `hs2 _`. Establish `inv_fr : ((R.fr w)⁻¹).1 * fr = 1` using `Units.inv_mul (R.fr w)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `fr_inv : fr * ((R.fr w)⁻¹).1 = 1` using `Units.mul_inv (R.fr w)`. Establish `loc_sW : ∀ u, R.loc w (sW u) = u` using `fun u => by`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.RD_k.loc`. Rewrite using `[cw_sW, ← Matrix.mul_assoc, inv_fr, Matrix.one_mul]`. Use extensionality with `a j`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `U_loc : ∀ X, U (R.loc w X) = d.cw w X` using `fun X => by`. Simplify using `only [U, _root_.PositivityTheory.SiegelWeilFormula.RD_k.loc]`. Establish `: (Matrix.of fun b j => star ((((R.fr w)⁻¹).1 * d.cw w X).map star b j)) = ((R.fr w)⁻¹).1 * d.cw w X`. Use extensionality with `b j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, ← Matrix.mul_assoc, fr_inv, Matrix.one_mul]`. Establish `U_add : ∀ u v, U (u + v) = U u + U v` using `fun u v => by`. Simplify using `only [U]`. Rewrite using `[← Matrix.mul_add]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `b j`. Simplify using `[star_add]`. Establish `sW_add : ∀ u v, sW (u + v) = sW u + sW v` using `fun u v => by`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `show s _ = s _ + s _`. Rewrite using `[← hsa]`. Use `congr 1`. Use function extensionality and compare the values at `w'`. Use `show _ = (if w' = w then U u i j else 0) + (if w' = w then U v i j else 0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : w' = w`. Rewrite using `[if_pos h, if_pos h, if_pos h, U_add]`. Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg h, if_neg h, add_zero]`. Establish `hU : Continuous U`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [U]`. Conclude with `continuous_const.matrix_mul (continuous_pi fun b => continuous_pi fun j => continuous_star.comp ((continuous_apply j).comp (continuous_apply b)))`. Establish `hsW : Continuous sW`. Use `continuous_pi fun i => continuous_pi fun j => hsc.comp (continuous_pi fun w' => ?_)` and prove the remaining obligations. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_apply j).comp ((continuous_apply i).comp hU)`. Conclude with `continuous_const`. Establish `mem : ∀ X, X - sW (R.loc w X) ∈ _root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w` using `fun X => by show d.cw w (X - sW (R.loc w X)) = 0`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.cw_sub'_k, cw_sW, U_loc, sub_self]`. Set `Φ : (Fin d.m → Fin d.n → ℂ) × _root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w ≃ₜ+ Mx F E d.m d.n` to `{ toFun := fun p => sW p.1 + p.2.1 invFun := fun X => (R.loc w X, ⟨X - sW (R.loc w X), mem X⟩) left_inv := fun p => by`.
-
-Take `⟨u, b, hb⟩` from `p`. Establish `e1 : R.loc w (sW u + b) = u` using `by rw [_root_.PositivityTheory.SiegelWeilFormula.KFock.loc_add'_k, loc_sW, _root_.PositivityTheory.SiegelWeilFormula.KFock.loc_of_mem_k d R w hb, add_zero]`. Use `Prod.ext e1 (Subtype.ext ?_)` and prove the remaining obligations. Use `show sW u + b - sW (R.loc w (sW u + b)) = b`. Rewrite using `[e1, add_sub_cancel_left]`.
-
-Use `right_inv := fun X => by show sW (R.loc w X) + (X - sW (R.loc w X)) = X`. Rewrite using `[add_sub_cancel]`. Use the proof step `map_add' := fun p q => by show sW (p.1 + q.1) + (p.2.1 + q.2.1) = sW p.1 + p.2.1 + (sW q.1 + q.2.1)`. Rewrite using `[sW_add]`. Normalize the expressions using the abelian group laws.
-
-Use `continuous_toFun := (hsW.comp continuous_fst).add (continuous_subtype_val.comp continuous_snd)`. Use `continuous_invFun := (_root_.PositivityTheory.SiegelWeilFormula.KFock.continuous_loc_k d R w).prodMk ((continuous_id.sub (hsW.comp (_root_.PositivityTheory.SiegelWeilFormula.KFock.continuous_loc_k d R w))).subtype_mk _) }`. Take `⟨C, hC, hg⟩` from `integral_split ν (volume : Measure (Fin d.m → Fin d.n → ℂ)) (Measure.addHaar : Measure (_root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w)) Φ`. Use `⟨C, Measure.addHaar, hC, inferInstance, fun f Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`.
-
-Establish `e : ∀ p : (Fin d.m → Fin d.n → ℂ) × _root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w, R.tens w f Ψ (Φ p) = f p.1 * Ψ p.2.1` using `fun p => by`. Take `⟨u, b, hb⟩` from `p`. Use `show f (R.loc w (sW u + b)) * Ψ (sW u + b) = f u * Ψ b`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.loc_add'_k, loc_sW, _root_.PositivityTheory.SiegelWeilFormula.KFock.loc_of_mem_k d R w hb, add_zero, add_comm, hΨ b (sW u) (cw_sW' u) (fin_sW u)]`. Repeatedly rewrite using `[e]`.
-
-Establish `hp` using `integral_prod_mul (μ := (volume : Measure (Fin d.m → Fin d.n → ℂ))) (ν := (Measure.addHaar : Measure (_root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w))) f (fun Z : _root_.PositivityTheory.SiegelWeilFormula.KFock.cmpW_k d w => Ψ Z.1)`. Rewrite using `[hp, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem intFact_k : _root_.PositivityTheory.SiegelWeilFormula.KFock.IntFact_k := by
   intro F E _ _ _ _ _ σ d R w ν hν

@@ -40,7 +40,7 @@ theorem sqzPoint_apply (φ : O →+* C) (n : ι → C) (hn : ∀ a b, n a * n b 
     sqzPoint φ n hn x = φ x.fst + ∑ i, φ (x.snd i) * n i := rfl
 
 /- English proof (translation)
-Rewrite using `[sqzPoint_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sqzPoint_inl (φ : O →+* C) (n : ι → C) (hn : ∀ a b, n a * n b = 0) (a : O) :
     sqzPoint φ n hn (inl a) = φ a := by
@@ -48,7 +48,7 @@ Rewrite using `[sqzPoint_apply]`. Simplify using the standard rewrite rules.
   simp
 
 /- English proof (translation)
-Rewrite using `[sqzPoint_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sqzPoint_inr (φ : O →+* C) (n : ι → C) (hn : ∀ a b, n a * n b = 0) (v : ι → O) :
     sqzPoint φ n hn (inr v) = ∑ i, φ (v i) * n i := by
@@ -62,7 +62,7 @@ section Leibniz
 variable {A O M : Type*} [CommRing A] [CommRing O] [AddCommGroup M] [Module O M]
 
 /- English proof (translation)
-Establish `h` using `hd 1 1`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem leibniz_map_one (ε : A →+* O) (d : A →+ M)
     (hd : ∀ f f', d (f * f') = ε f • d f' + ε f' • d f) : d 1 = 0 := by

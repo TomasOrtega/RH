@@ -28,9 +28,9 @@ namespace GlobalTheory.ThKTorusBound
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair M₁ e hM₁ hev φ hφ κ h z`. Establish `hS` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hPair.weil`. Establish `hl : (LinearMap.proj z : Fn F n d →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm (Fin n × Fin d)` using `GlobalTheory.RealLift.eval_mem_adm z`. Establish `hl2` using `GlobalTheory.DoublingEv.IsTame.comp_adm (GlobalTheory.EvTame.isTame_of_isEv F E σ B n d n d X W X W M M₁ 1 1 ∅ e hPair.good hM₁ hev) hl`. Establish `hl3` using `hS.adm (κ, h) _ hl2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hT⟩` from `hl3 φ hφ`. Conclude with `⟨T, fun f => by simpa using (hT f)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_clm_eval : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
@@ -48,11 +48,11 @@ theorem exists_clm_eval : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   exact ⟨T, fun f => by simpa using (hT f)⟩
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ e hM₁ hev`. Take `⟨a, ha, hco⟩` from `GlobalTheory.goodModel_coords_rat_symplectic F E σ B.ψ n d X W M M₁ hP.good hM₁`. Take `⟨e₀, -, -, he₀, hbij, -⟩` from `GlobalTheory.RatWeilOp.exists_intertwiner hK.base F E σ B n d X W M M₁ r s r' s' hP.base hP.herm hP.skew hP.good hM₁ a ha hco`. Take `⟨om₁, hW, hint⟩` from `GlobalTheory.T.weil_eigen_bijective_schwartz F E σ B n d X W M χX χW om r s r' s' hP M₁ hM₁ e₀ he₀ hbij`. Establish `h1n : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `by simp [incM]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1d : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `by simp [incM]`. Take `⟨c, hc⟩` from `GlobalTheory.T.pair_evaluation_self_linear hK F E σ B n d X W M χX χW om r s r' s' hP M₁ e₀ hM₁ he₀ e (fun z Φ hΦ => by`. Use `hev.Heisenberg₂ z Φ hΦ` as an intermediate fact. Rewrite using `[h1n, h1d, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one] at this)` and apply the resulting hypothesis. Use `⟨om₁, e₀, c, ⟨hP.base, hP.herm, hP.skew, hM₁, hP.hX, hP.hW, hP.resX, hP.resW, hW⟩, he₀, fun x Φ hΦ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc _ (hP.weil.isUSplitting.pres x Φ hΦ), hint x Φ hΦ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_transfer : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
@@ -74,17 +74,17 @@ theorem exists_transfer : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [Nu
   rw [hc _ (hP.weil.isUSplitting.pres x Φ hΦ), hint x Φ hΦ]
 
 /- English proof (translation)
-Take `⟨D, hD, hcond⟩` from `std_char_denom ψ hψ`. Take `⟨m, hm, htriv⟩` from `GlobalTheory.PsiTriv.exists_nat_trivial ψ hψ.1`. Use `⟨D, hD, fun x hx v => ?_⟩` and prove the remaining obligations. Take `⟨ξ, a, ha, hxa⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat F m hm).1 x.2`. Use `set A : AF F := ((0 : InfiniteAdeleRing F), a) with hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAv : ∀ v : Pl F, evFin F v A ∈ v.adicCompletionIntegers F` using `fun v => ha v`. Establish `hev : ∀ v : Pl F, evFin F v x = algebraMap F (Fv F v) ξ + (m : Fv F v) * evFin F v A` using `fun v => by`. Establish `e1 : evFin F v x = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v x.2` using `rfl`. Establish `e2 : evFin F v A = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v a` using `rfl`. Rewrite using `[e1, e2, hxa, map_add, map_nsmul, AlgHom.commutes, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : ∀ t : AF F, t.1 = 0 → x * t = algebraMap F (AF F) ξ * t + (m : AF F) * A * t` using `fun t ht => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.1 * t.1 = (algebraMap F (AF F) ξ).1 * t.1 + ((m : AF F) * A).1 * t.1`. Rewrite using `[ht, mul_zero, mul_zero, mul_zero, add_zero]`. Express the relevant statement in the definitionally equal form `x.2 * t.2 = algebraMap F (FiniteAdeleRing (𝓞 F) F) ξ * t.2 + (m : FiniteAdeleRing (𝓞 F) F) * a * t.2`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxa, nsmul_eq_mul, add_mul]`. Take `⟨o, ho⟩` from `hcond ξ fun t ht0 ht1 => by`. Establish `h1` using `hx t ht0 ht1`. Establish `h2 : ψ ((m : AF F) * A * t) = 1`. Use `htriv _ ?_ fun v => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((m : AF F) * A).1 * t.1 = 0`. Rewrite using `[ht0, mul_zero]`. Rewrite using `[map_mul, map_mul, map_natCast, norm_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (mul_le_one₀ (Valued.toNormedField.norm_le_one_iff.2 (hAv v)) (norm_nonneg _) (ht1 v))`. Rewrite `h1` using `[hsplit t ht0, AddChar.map_add_eq_mul, h2, mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho' : (D : Fv F v) * algebraMap F (Fv F v) ξ ∈ v.adicCompletionIntegers F`. Rewrite using `[← map_natCast (algebraMap F (Fv F v)) D, ← map_mul, ho]`. Conclude with `HeightOneSpectrum.coe_mem_adicCompletionIntegers v o`. Rewrite using `[map_mul, map_natCast, hev, mul_add]`. Conclude with `add_mem ho' (mul_mem (natCast_mem _ D) (mul_mem (natCast_mem _ m) (hAv v)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_char_denom {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) :
     ∃ D : ℕ, 0 < D ∧ ∀ x : AF F, (∀ t : AF F, t.1 = 0 → (∀ v, ‖evFin F v t‖ ≤ 1) → ψ (x * t) = 1) →
@@ -122,11 +122,9 @@ theorem adelic_char_denom {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF
   exact add_mem ho' (mul_mem (natCast_mem _ D) (mul_mem (natCast_mem _ m) (hAv v)))
 
 /- English proof (translation)
-Take `⟨ι, _, P, g', hg', hP⟩` from `hT g hg`. Take `⟨m₃, hm₃, h3⟩` from `GlobalTheory.PsiTriv.exists_nat_trivial ψ hψ`. Use `choose m₁ hm₁ h1 using fun j => GlobalTheory.SBTransl.transInv (g' j) (hg' j)`. Use `choose M hM h2 using fun j => GlobalTheory.SuppDen.support_bounded_denominators (g' j) (hg' j)`. Use `⟨∏ j, 2 * m₁ j * M j * m₃, Finset.prod_pos fun j _ => by have := hm₁ j; have := hM j; positivity, fun f a b ha hb => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj : ∀ j, schr ψ (a, b) (pureA F (P j f) (g' j)) = pureA F (P j f) (g' j)` using `fun j => by`. Rewrite `ha`, `hb` using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j)]`. Conclude with `GlobalTheory.PureFix.pureA_fixed ψ (g' j) (m₁ j) (M j) m₃ (hm₁ j) (hM j) hm₃ (h1 j) (h2 j) h3 _ a b ha.mono hb.mono`. Rewrite using `[hP]`. Use function extensionality and compare the values at `z`.
-
-Establish `hz` using `fun j => congrFun (hj j) z`. Simplify using `only [schr, Finset.sum_apply, Finset.mul_sum] at hz ⊢`. Conclude with `Finset.sum_congr rfl fun j _ => hz j`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tame_fixed {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ)
     {T : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)} (hT : GlobalTheory.DoublingEv.IsTame F T)
@@ -149,7 +147,7 @@ theorem tame_fixed {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
   exact Finset.sum_congr rfl fun j _ => hz j
 
 /- English proof (translation)
-Establish `hc : Continuous fun κ : UA σ J => (ht κ : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`. Take `⟨H, hH⟩` from `hCc.bddAbove_image hc.continuousOn`. Conclude with `⟨max H 0, le_max_right _ _, fun κ hκ => (hH ⟨κ, hκ, rfl⟩).trans (le_max_left _ _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ht_bdd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {Cc : Set (UA σ J)} (hCc : IsCompact Cc) :
@@ -160,25 +158,23 @@ theorem ht_bdd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   exact ⟨max H 0, le_max_right _ _, fun κ hκ => (hH ⟨κ, hκ, rfl⟩).trans (le_max_left _ _)⟩
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ e hM₁ hev Cc hCc φ hφ`. Take `⟨om₁, e₀, c, hP₁, he₀, hint⟩` from `exists_transfer hK F E σ B n d X W M χX χW om r s r' s' hP M₁ e hM₁ hev`. Establish `hsp` using `hP₁.weil.isUSplitting`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Take `⟨m₀, hm₀, hinv⟩` from `tame_fixed B.ψ hstd.1 (GlobalTheory.EvTame.isTame_of_isEv F E σ B n d n d X W X W M M₁ 1 1 ∅ e₀ hP.good hM₁ he₀) φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD, hcond⟩` from `adelic_char_denom B.ψ hstd`. Take `⟨C, hC⟩` from `transport_denom M₁.co.e`. Take `⟨H, hH0, hH⟩` from `ht_bdd hCc`. Use `⟨D * m₀ * (max C 0 * H), 1, fun g h hg => ?_⟩` and prove the remaining obligations. Take `⟨N, hN, hNle, hT⟩` from `hC ((g : GL (Fin n) (AF F ⊗[F] E))⁻¹) ((h : GL (Fin d) (AF F ⊗[F] E))⁻¹)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hNle` using `[heightGL_inv, heightGL_inv]`. Use `⟨D * (m₀ * N), Nat.one_le_iff_ne_zero.2 (by positivity), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Establish `: ((D * (m₀ * N) : ℕ) : ℝ) = D * m₀ * N` using `by push_cast; ring`. Rewrite using `[this, mul_assoc (D * m₀ : ℝ)]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left (hNle.trans ?_) (by positivity)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul (le_max_left _ _) (mul_le_mul_of_nonneg_right (hH g hg) (NNReal.coe_nonneg _)) (by positivity) (le_max_right _ _)`. Introduce `f z hz j v`. Establish `hΦ₀ : pureA F f φ ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : e₀ (pureA F f φ) ∈ schA F (Fin n × Fin d)` using `he₀.maps _ hΦ₀`. Establish `hz' : om₁ (g, h) (e₀ (pureA F f φ)) z ≠ 0`. Introduce `h0`. Apply `hz` to reduce the goal to its premises. Rewrite using `[hint _ _ hΦ₀, Pi.smul_apply, h0, smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : ∀ y : Fin n × Fin d → AF F, IsMulInt F (m₀ * N) y → schr B.ψ (0, y) (om₁ (g, h) (e₀ (pureA F f φ))) = om₁ (g, h) (e₀ (pureA F f φ))` using `by clear hz hz' hcond hNle hC`. Introduce `y hy`. Use `set w' := M₁.co.e.symm (0, y) with hw'`. Use `set w := ((g : GL (Fin n) (AF F ⊗[F] E))⁻¹ : GL (Fin n) (AF F ⊗[F] E)).1 * w' * (((h : GL (Fin d) (AF F ⊗[F] E))⁻¹ : GL (Fin d) (AF F ⊗[F] E)).1)ᵀ with hw`. Take `⟨h1, h2⟩` from `hT m₀ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hΦw : M₁.co.rho B.ψ w (e₀ (pureA F f φ)) = e₀ (pureA F f φ)` using `hinv f _ _ h1 h2`. Establish `hact : actAB (cA σ) (g, h) w = w'`. Simplify using `only [actAB, hw]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one, Matrix.mul_one]`. Establish `himpl` using `hsp.impl (g, h) w _ hΦ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `himpl` using `[hΦw, hact]`. Rewrite `himpl` using `[Darboux.rho, hw', LinearEquiv.apply_symm_apply]`. Conclude with `himpl.symm`. Establish `key` using `hcond (((m₀ * N : ℕ) : AF F) * z j) (fun t ht0 ht1 => by`. Establish `e1` using `congrFun (hfix _ (isMulInt_single (m₀ * N) j t ht0 ht1)) z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [schr, dotProduct_single, zero_dotProduct, Pi.zero_apply, zero_mul, mul_zero, add_zero] at e1`. Establish `e2` using `(mul_eq_right₀ hz').1 e1`. Rewrite using `[← e2]`. Use `congr 1`. Use the proof step `ring) v`.
-
-Rewrite `key` using `[← mul_assoc, ← Nat.cast_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem support_unif : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
@@ -243,11 +239,11 @@ theorem support_unif : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [Numbe
   rwa [← mul_assoc, ← Nat.cast_mul] at key
 
 /- English proof (translation)
-Use `⟨1 + Fintype.card κ * Fintype.card (InfinitePlace F), by positivity, fun z => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ j (w : InfinitePlace F), mixedEmbedding.normAtPlace w (evI F (z j)) ≤ ‖fun i => evI F (z i)‖` using `fun j w => by`. Use `le_trans ?_ (norm_le_pi_norm (fun i => evI F (z i)) j)` and prove the remaining obligations. Distinguish the cases in `hw : w.IsReal`. Rewrite using `[mixedEmbedding.normAtPlace_apply_of_isReal hw]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_le_pi_norm _ _).trans (norm_fst_le _)`. Establish `hc : w.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.mp hw`. Rewrite using `[mixedEmbedding.normAtPlace_apply_of_isComplex hc]`. Conclude with `(norm_le_pi_norm _ _).trans (norm_snd_le _)`. Establish `h2 : ∑ j, ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (z j)) ≤ Fintype.card κ * Fintype.card (InfinitePlace F) * ‖fun i => evI F (z i)‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(Finset.sum_le_sum fun j _ => Finset.sum_le_sum fun w _ => h1 j w).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (0 : ℝ) ≤ Fintype.card κ * Fintype.card (InfinitePlace F)` using `by positivity`. Use polynomial arithmetic with `[norm_nonneg fun i => evI F (z i)]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem size_le {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] :
     ∃ A : ℝ, 0 ≤ A ∧ ∀ z : κ → AF F, 1 + ∑ j, ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (z j)) ≤
@@ -270,13 +266,13 @@ theorem size_le {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] :
   nlinarith [norm_nonneg fun i => evI F (z i)]
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ e hM₁ hev Cc hCc φ hφ N f`. Take `⟨om₁, e₀, c, hP₁, he₀, hint⟩` from `exists_transfer hK F E σ B n d X W M χX χW om r s r' s' hP M₁ e hM₁ hev`. Establish `hΦ₀ : pureA F f φ ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Take `⟨C, k, hC⟩` from `GlobalTheory.ArchDecay.om_bound_arch F E σ B n d X W M₁ χX χW om₁ r s r' s' hP₁ _ (he₀.maps _ hΦ₀) N`. Take `⟨H, hH0, hH⟩` from `ht_bdd hCc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA0, hA⟩` from `size_le (F := F) (κ := Fin n × Fin d)`. Use `⟨k, ‖c‖ * A ^ N * (max C 0 * H ^ k), fun κ h z hκ => ?_⟩` and prove the remaining obligations. Establish `hS0 : (0 : ℝ) ≤ 1 + ∑ j, ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (z j))` using `add_nonneg zero_le_one (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => mixedEmbedding.normAtPlace_nonneg w _)`. Establish `h1` using `pow_le_pow_left₀ hS0 (hA z) N`. Establish `h2 : C * ((ht κ : ℝ) * ht h) ^ k ≤ max C 0 * H ^ k * (ht h : ℝ) ^ k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ (by positivity) (mul_le_mul_of_nonneg_right (hH κ hκ) (NNReal.coe_nonneg _)) k) (by positivity) (le_max_right _ _)`. Rewrite using `[hint _ _ hΦ₀, Pi.smul_apply, smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ‖c‖ * A ^ N * (max C 0 * H ^ k * (ht h : ℝ) ^ k) := mul_le_mul_of_nonneg_left ((hC κ h z).trans h2) (by positivity)`. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem decay_one : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
@@ -313,9 +309,7 @@ theorem decay_one : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberFi
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨N, C, s, hs⟩` from `GlobalTheory.schwartz_family_uniform_bound (κ → mixedEmbedding.mixedSpace F) ι T w hw hT`. Use `set k := s.sup (fun x : ℕ × ℕ => max x.1 x.2)`. Establish `hsub : s ⊆ Finset.Iic (k, k)` using `fun x hx => Finset.mem_Iic.2 ⟨le_trans (le_max_left _ _) (Finset.le_sup (f := fun x : ℕ × ℕ => max x.1 x.2) hx), le_trans (le_max_right _ _) (Finset.le_sup (f := fun x : ℕ × ℕ => max x.1 x.2) hx)⟩`. Use `⟨N, max C 0, k, le_max_right _ _, fun i f => (hs i f).trans ?_⟩` and prove the remaining obligations. Establish `h3 : (s.sup (schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)) f ≤ semK κ k f` using `Seminorm.le_def.mp (Finset.sup_mono hsub) f`.
-
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul (le_max_left _ _) h3 (apply_nonneg _ _) (le_max_right _ _)) (pow_nonneg (hw i) _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem family_bound (F : Type) [Field F] [NumberField F] (κ ι : Type) [Fintype κ] (T : ι → SInf F κ →L[ℂ] ℂ) (w : ι → ℝ)
     (hw : ∀ i, 0 ≤ w i) (hT : ∀ f, ∃ (N : ℕ) (C : ℝ), ∀ i, ‖T i f‖ ≤ C * w i ^ N) :
@@ -332,21 +326,19 @@ theorem family_bound (F : Type) [Field F] [NumberField F] (κ ι : Type) [Fintyp
     (pow_nonneg (hw i) _)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair M₁ e hM₁ hev Cc hCc φ hφ N`. Take `⟨C₁, k₁, hsupp⟩` from `support_unif hKP F E σ B n d X W M χX χW om r s r' s' hPair M₁ e hM₁ hev Cc hCc φ hφ`. Establish `hdec` using `decay_one hKP F E σ B n d X W M χX χW om r s r' s' hPair M₁ e hM₁ hev Cc hCc φ hφ N`. Use `choose T hT using exists_clm_eval F E σ B n d X W M χX χW om r s r' s' hPair M₁ e hM₁ hev φ hφ`. Use `set S : (Fin n × Fin d → AF F) → ℝ := fun z => 1 + ∑ j, ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (z j)) with hSdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS1 : ∀ z, 1 ≤ S z` using `fun z => le_add_of_nonneg_right (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => mixedEmbedding.normAtPlace_nonneg w _)`. Establish `hSp : ∀ z, 0 < S z ^ N` using `fun z => pow_pos (lt_of_lt_of_le one_pos (hS1 _)) _`. Establish `hht : ∀ h : UA σ W.J, (1 : ℝ) ≤ (ht h : ℝ)` using `fun h => by`. Use `GlobalTheory.AdelicU.one_le_heightGL F h.1` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι` to `{p : UA σ X.J × UA σ W.J × (Fin n × Fin d → AF F) // p.1 ∈ Cc}`. Set `T' : ι → SInf F (Fin n × Fin d) →L[ℂ] ℂ` to `fun i => ((S i.1.2.2 ^ N : ℝ) : ℂ) • T i.1.1 i.1.2.1 i.1.2.2`. Establish `hT' : ∀ i f, ‖T' i f‖ = ‖e (om (i.1.1, i.1.2.1) (pureA F f φ)) i.1.2.2‖ * S i.1.2.2 ^ N` using `fun i f => by`. Simplify using `only [T', ContinuousLinearMap.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (hSp _), hT]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k₂, C₃, k₃, hC₃, hBS⟩` from `family_bound F (Fin n × Fin d) ι T' (fun i => (ht i.1.2.1 : ℝ)) (fun i => NNReal.coe_nonneg _) fun f => by`. Take `⟨k, C, hC⟩` from `hdec f`. Conclude with `⟨k, C, fun i => by rw [hT']; exact hC i.1.1 i.1.2.1 i.1.2.2 i.2⟩`. Use `set K := max k₁ (max k₂ k₃)`. Use `⟨max C₁ 0 + C₃, K, fun f κ h hκ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm1, hmC, hmz⟩` from `hsupp κ h hκ`. Establish `hhtK : ∀ k, k ≤ K → (ht h : ℝ) ^ k ≤ (ht h : ℝ) ^ K` using `fun k hk => pow_le_pow_right₀ (hht h) hk`. Establish `hsemK : semK (Fin n × Fin d) k₃ f ≤ semK (Fin n × Fin d) K f`. Establish `hsub : Finset.Iic (k₃, k₃) ⊆ Finset.Iic (K, K)` using `fun x hx => by`. Simplify using `only [Finset.mem_Iic] at hx ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_trans hx (by simp [K, Prod.le_def])`. Conclude with `Seminorm.le_def.mp (Finset.sup_mono hsub) f`. Establish `hsem0 : 0 ≤ semK (Fin n × Fin d) k₃ f` using `apply_nonneg _ _`. Establish `hpos : ∀ k, 0 ≤ (ht h : ℝ) ^ k` using `fun k => pow_nonneg (NNReal.coe_nonneg _) _`. Establish `hC0 : 0 ≤ max C₁ 0 + C₃` using `add_nonneg (le_max_right _ _) hC₃`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, hm1, ?_, fun z => ⟨?_, fun hz j v => hmz f z hz j v⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `hBS ⟨(κ, h, z), hκ⟩ f`. Rewrite `h1` using `[hT']`. Use `(le_mul_inv_iff₀ (hSp z)).2 (le_trans h1 ?_)` and prove the remaining obligations.
-
-Use `mul_le_mul ?_ (hhtK _ (le_trans (le_max_left _ _) (le_max_right _ _))) (hpos _) (mul_nonneg hC0 (apply_nonneg _ _))` and prove the remaining obligations. Conclude with `mul_le_mul (le_add_of_nonneg_left (le_max_right _ _)) hsemK hsem0 hC0`.
+A detailed English derivation is pending.
 -/
 theorem major_bound : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

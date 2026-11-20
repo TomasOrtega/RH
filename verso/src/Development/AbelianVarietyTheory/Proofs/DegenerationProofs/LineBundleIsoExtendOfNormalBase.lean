@@ -16,9 +16,9 @@ namespace GlobalTheory.IsoExtend
 variable {X Y Y' : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Use `⟨⟨fun i => res (a.le i) (pullU h _ (w.s (a.idx i)))⟩, fun i j => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `val : ∀ i, y ∈ A'.U i → gm (𝟙 Y') y _ (res (a.le i) (pullU h _ (w.s (a.idx i)))) = gm h y (A.U (a.idx i)) (w.s (a.idx i))` using `fun i hi => (gm_res (𝟙 Y') y (a.le i) hi _).trans ((gm_pull (𝟙 Y') h y _ (a.le i hi) _).trans (by rw [Category.id_comp]))`. Establish `hm : h y ∈ A.U (a.idx i) ⊓ A.U (a.idx j)` using `⟨a.le i hy.1, a.le j hy.2⟩`. Establish `e` using `congrArg (gm h y (A.U (a.idx i) ⊓ A.U (a.idx j))) (hw (a.idx i) (a.idx j))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `(gm_res h y _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·)`. Use `rfl (gm_res h y _ hm _))))`. Use `((gm_res (𝟙 Y') y _ hy _).trans (val i hy.1)).trans (e'.trans (Eq.symm ?_))` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (a.g y i j hy.1 hy.2) ((gm_res (𝟙 Y') y _ hy _).trans (val j hy.2)))`.
+Establish an intermediate fact. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_gen_chartPull {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h)
     (H : ∃ t : LB.Gen A, t.IsGen) : ∃ t : LB.Gen A', t.IsGen := by
@@ -36,7 +36,7 @@ theorem exists_gen_chartPull {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPu
     ((gm_res (𝟙 Y') y _ hy _).trans (val j hy.2)))
 
 /- English proof (translation)
-Use `(gm_pull_g (LB.div M L) f (𝟙 Y) y J J' hJ hJ').trans ?_` and prove the remaining obligations. Rewrite using `[ep, eq]`. Use `(gm_div L M (𝟙 Y ≫ f) y (p.1 PUnit.unit, p.2 PUnit.unit) (q.1 PUnit.unit, q.2 PUnit.unit) ⟨⟨mem_pull.1 hp.1, mem_pull.1 hp.2⟩, mem_pull.1 hq.1, mem_pull.1 hq.2⟩).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(gm_div (L.pull f) (M.pull f) (𝟙 Y) y p q ⟨hp, hq⟩).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (gm_pull_g M f (𝟙 Y) y p.1 q.1 hp.1 hq.1) (congrArg (·⁻¹) (gm_pull_g L f (𝟙 Y) y p.2 q.2 hp.2 hq.2))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_div_pull (L M : LB X) (f : Y ⟶ X) (y : Y) (J J' : PUnit → M.ι × L.ι) (p q : (PUnit → M.ι) × (PUnit → L.ι))
     (ep : J PUnit.unit = (p.1 PUnit.unit, p.2 PUnit.unit)) (eq : J' PUnit.unit = (q.1 PUnit.unit, q.2 PUnit.unit))
@@ -76,16 +76,16 @@ def chartDivPull (L M : LB X) (f : Y ⟶ X) :
       (fun _ => (q.1 PUnit.unit, q.2 PUnit.unit)) p q rfl rfl (le p y hp) (le q y hq) hp hq).symm }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_gen_chartPull (chartPullDiv L M f), exists_gen_chartPull (chartDivPull L M f)⟩`.
+Supply the required witnesses or components.
 -/
 theorem lbIso_pull_iff_gen (L M : LB X) (f : Y ⟶ X) :
     LBIso (L.pull f) (M.pull f) ↔ ∃ t : LB.Gen ((LB.div M L).pull f), t.IsGen :=
   ⟨exists_gen_chartPull (chartPullDiv L M f), exists_gen_chartPull (chartDivPull L M f)⟩
 
 /- English proof (translation)
-Establish `le : ∀ J : PUnit → D.ι, (D.pull f).U J ≤ f ⁻¹ᵁ (D.U (J PUnit.unit) ⊓ D.U i)` using `fun J y hy => ⟨mem_pull.1 hy, hf y⟩`. Use `⟨⟨fun J => res (le J) (pullU f _ (D.g (J PUnit.unit) i))⟩, fun J J' => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `val : ∀ J, y ∈ (D.pull f).U J → gm (𝟙 Y) y _ (res (le J) (pullU f _ (D.g (J PUnit.unit) i))) = gm (𝟙 Y ≫ f) y _ (D.g (J PUnit.unit) i)` using `fun J hJ => (gm_res (𝟙 Y) y (le J) hJ _).trans (gm_pull (𝟙 Y) f y _ (le J hJ) _)`. Use `((gm_res (𝟙 Y) y _ hy _).trans (val J hy.1)).trans (Eq.symm ?_)` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_pull_g D f (𝟙 Y) y J J' hy.1 hy.2) ((gm_res (𝟙 Y) y _ hy _).trans (val J' hy.2)))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `gm_cocycle hD (𝟙 Y ≫ f) y (mem_pull.1 hy.1) (mem_pull.1 hy.2) (hf y)`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_of_chart {D : LB X} (hD : D.IsLB) (f : Y ⟶ X) (i : D.ι) (hf : ∀ y, f y ∈ D.U i) :
     ∃ t : LB.Gen (D.pull f), t.IsGen := by
@@ -101,9 +101,9 @@ theorem exists_gen_of_chart {D : LB X} (hD : D.IsLB) (f : Y ⟶ X) (i : D.ι) (h
   exact gm_cocycle hD (𝟙 Y ≫ f) y (mem_pull.1 hy.1) (mem_pull.1 hy.2) (hf y)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `H`. Take `⟨u, hu, -⟩` from `exists_gen hD (φ' := fun _ : PUnit => r) (ε' := fun _ => 1) (by`. Introduce `U _ h`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_two, hr])`. Use the proof step `(LB.mulGen D _ _ _ _ (LB.pullGen D _ _ c r) (LB.pullGen D _ _ t q))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ c hc r) (DVR.pullGen_isGen _ _ _ t ht q))`. Conclude with `⟨u, hu⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_of_diff {D : LB X} (hD : D.IsLB) (σ : X ⟶ X)
     (c : LB.Gen (LB.LinComb D ![𝟙 X, σ] ![1, -1])) (hc : c.IsGen) (r : Y ⟶ X) {B : Scheme.{0}} (q : Y ⟶ B)
@@ -118,13 +118,11 @@ theorem exists_gen_of_diff {D : LB X} (hD : D.IsLB) (σ : X ⟶ X)
   exact ⟨u, hu⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `H₀`. Set `eU : U ⟶ HU` to `sq.lift (j ≫ e) (𝟙 U) (by rw [Category.assoc, he, Category.comp_id, Category.id_comp])`. Establish `h₁ : eU ≫ jH = j ≫ e` using `sq.lift_fst _ _ _`. Establish `h₂ : eU ≫ pU = 𝟙 U` using `sq.lift_snd _ _ _`. Establish `h₃ : jH ≫ p ≫ e = (pU ≫ eU) ≫ jH` using `by rw [Category.assoc, h₁, sq.w_assoc]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t', ht', vt⟩` from `exists_gen hD (φ' := fun i => jH ≫ ![𝟙 H, p ≫ e] i) (ε' := ![1, -1]) (by`. Introduce `U _ h`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_two, h₃])`. Use the proof step `(LB.mulGen D _ _ _ _ t (LB.invGen D _ _ (LB.pullGen D _ _ t (pU ≫ eU))))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ t ht _)))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ρ, hρ, vρ⟩` from `exists_gen hD (φ' := fun i => e ≫ ![𝟙 H, p ≫ e] i) (ε' := ![1, -1]) (by`. Introduce `U _ h`. Simplify using `[Fin.prod_univ_two, reassoc_of% he])`. Use the proof step `(LB.oneGen D) (LB.isGen_oneGen D)`. Take `⟨c, ⟨hc, -⟩, -⟩` from `GlobalTheory.GenExtendNormal.existsUnique_gen_extend S hS U H HU H j p e jH pU eU hp hg he sq h₁ D hD (Fin 2) _ _ t' ρ ht' hρ (corr_of_val hD fun y J hJ => by`.
-
-Rewrite using `[val_pull hJ, val_pull hJ, vt _ _ _ _ hJ, vρ _ _ _ _ hJ, val_mul hJ, val_inv, val_pull hJ, val_one, Category.id_comp, reassoc_of% h₂, mul_inv_cancel])`. Conclude with `⟨c, hc⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen_diff (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian S] (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     (U H HU : Scheme.{0}) [Nonempty U] (j : U ⟶ S) [IsOpenImmersion j] (p : H ⟶ S) (e : S ⟶ H) (jH : HU ⟶ H)
@@ -156,9 +154,9 @@ end GlobalTheory.IsoExtend
 open GlobalTheory.IsoExtend in
 
 /- English proof (translation)
-Introduce `S _ _ hS U H HU _ j _ p e jH pU hp hg he sq L M hL hM h`. Establish `hD : (LB.div M L).IsLB` using `LB.isLB_div hM hL`. Take `⟨c, hc⟩` from `exists_gen_diff S hS U H HU j p e jH pU hp hg he sq hD ((lbIso_pull_iff_gen L M jH).1 h)`. Use `⟨fun h' => ?_, fun s => ?_⟩` and prove the remaining obligations. Conclude with `exists_gen_chartPull (chartPullUnpull (LB.div M L) (𝟙 H) rfl) (exists_gen_of_diff hD _ c hc (𝟙 H) p e (Category.id_comp _) ((lbIso_pull_iff_gen L M e).1 h'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart hD (e s)`. Use `⟨e ⁻¹ᵁ (LB.div M L).U i, hi, (lbIso_pull_iff_gen L M _).2 ?_⟩` and prove the remaining obligations. Conclude with `exists_gen_of_diff hD _ c hc _ (𝟙 _) _ (Category.id_comp _).symm (exists_gen_of_chart hD _ i fun y => y.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.lbIso_extend_of_normal : ∀ (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian S], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S → ∀ (U H HU : Scheme.{0}) [Nonempty U] (j : U ⟶ S) [IsOpenImmersion j] (p : H ⟶ S) (e : S ⟶ H) (jH : HU ⟶ H) (pU : HU ⟶ U), Smooth p → GeometricallyIntegral p → e ≫ p = 𝟙 _ → IsPullback jH pU p j → ∀ (L M : LB H), L.IsLB → M.IsLB → LBIso (L.pull jH) (M.pull jH) → (LBIso (L.pull e) (M.pull e) → LBIso L M) ∧ ∀ s : S, ∃ N : S.Opens, s ∈ N ∧ LBIso (L.pull (p ⁻¹ᵁ N).ι) (M.pull (p ⁻¹ᵁ N).ι) := by
   intro S _ _ hS U H HU _ j _ p e jH pU hp hg he sq L M hL hM h

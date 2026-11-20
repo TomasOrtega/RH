@@ -9,9 +9,9 @@ open Finset Real
 open scoped Nat
 
 /- English proof (translation)
-Establish `hb : 0 < b` using `lt_of_lt_of_le ha hab`. Establish `h` using `Real.one_sub_inv_le_log_of_pos (div_pos hb ha)`. Rewrite `h` using `[Real.log_div hb.ne' ha.ne', inv_div]`. Establish `h2 : b - a ≤ b * (log b - log a)`. Establish `h3` using `mul_le_mul_of_nonneg_left h hb.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[mul_sub, mul_one, mul_div_cancel₀ _ hb.ne']`. Then use the resulting hypothesis. Establish `e : (b * log b - b) - (a * log a - a) - (b - a) * log a = b * (log b - log a) - (b - a)`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem g_diff {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) :
     (b - a) * log a ≤ (b * log b - b) - (a * log a - a) := by
@@ -26,7 +26,7 @@ theorem g_diff {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) :
   linarith
 
 /- English proof (translation)
-Establish `h` using `g_diff (by linarith : (0 : ℝ) < a) hab`. Establish `hl : 0 ≤ (b - a) * log a` using `mul_nonneg (by linarith) (Real.log_nonneg ha)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem g_mono {a b : ℝ} (ha : 1 ≤ a) (hab : a ≤ b) : a * log a - a ≤ b * log b - b := by
   have h := g_diff (by linarith : (0 : ℝ) < a) hab
@@ -34,7 +34,7 @@ theorem g_mono {a b : ℝ} (ha : 1 ≤ a) (hab : a ≤ b) : a * log a - a ≤ b 
   linarith
 
 /- English proof (translation)
-Establish `h` using `Real.one_sub_inv_le_log_of_pos (by norm_num : (0 : ℝ) < 3 / 2)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem third_le_log : (1 : ℝ) / 3 ≤ log (3 / 2) := by
   have h := Real.one_sub_inv_le_log_of_pos (by norm_num : (0 : ℝ) < 3 / 2)
@@ -42,11 +42,11 @@ theorem third_le_log : (1 : ℝ) / 3 ≤ log (3 / 2) := by
     _ ≤ log (3 / 2) := h
 
 /- English proof (translation)
-Establish `ha0 : (0 : ℝ) < a` using `by linarith`. Establish `hb0 : (0 : ℝ) < b` using `by linarith`. Establish `hg` using `g_diff ha0 hab`. Establish `hlog : log b - log a ≤ (b - a) / a`. Establish `h` using `Real.log_le_sub_one_of_pos (div_pos hb0 ha0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Real.log_div hb0.ne' ha0.ne']`. Rewrite `h` using `[show b / a - 1 = (b - a) / a by field_simp]`. Then use the resulting hypothesis. Establish `hla : 1 / 3 ≤ log a` using `le_trans third_le_log (Real.log_le_log (by norm_num) ha)`. Establish `h3 : (b - a) / a ≤ (b - a) * (2 / 3)`. Rewrite using `[div_le_iff₀ ha0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (b - a) * (1 / 3) ≤ (b - a) * log a` using `mul_le_mul_of_nonneg_left hla (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem h_mono {a b : ℝ} (ha : 3 / 2 ≤ a) (hab : a ≤ b) :
     a * log a - a - log a / 2 ≤ b * log b - b - log b / 2 := by
@@ -65,11 +65,11 @@ theorem h_mono {a b : ℝ} (ha : 3 / 2 ≤ a) (hab : a ≤ b) :
   linarith
 
 /- English proof (translation)
-Distinguish the cases in `ha' : 3 / 2 ≤ a`. Conclude with `h_mono ha' hab`. Use `push_neg at ha'`. Establish `hb2` using `h_mono (a := 2) (b := b) (by norm_num) hb`. Establish `hla : log a ≤ a - 1` using `Real.log_le_sub_one_of_pos (by linarith)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (a - 1 / 2) * log a ≤ (a - 1 / 2) * (a - 1)` using `mul_le_mul_of_nonneg_left hla (by linarith)`. Establish `hq2 : (a - 1 / 2) * (a - 1) - a ≤ -1` using `by nlinarith`. Establish `h2 : -1 ≤ 2 * log 2 - 2 - log 2 / 2`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : (a - 1 / 2) * log a = a * log a - log a / 2` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem h_le {a b : ℝ} (ha : 1 ≤ a) (hab : a ≤ b) (hb : 2 ≤ b) :
     a * log a - a - log a / 2 ≤ b * log b - b - log b / 2 := by
@@ -88,9 +88,9 @@ theorem h_le {a b : ℝ} (ha : 1 ≤ a) (hab : a ≤ b) (hb : 2 ≤ b) :
   linarith
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Establish `h1 : Stirling.stirlingSeq (m + 1) ≤ Stirling.stirlingSeq 1` using `Stirling.stirlingSeq'_antitone (Nat.zero_le m)`. Establish `hpos` using `Stirling.stirlingSeq'_pos m`. Establish `h2` using `Real.log_le_log hpos h1`. Rewrite `h2` using `[Stirling.log_stirlingSeq_formula, Stirling.stirlingSeq_one, Real.log_div (Real.exp_pos 1).ne' (by positivity), Real.log_exp, Real.log_sqrt (by norm_num)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : (0 : ℝ) < ((m + 1 : ℕ) : ℝ)` using `by positivity`. Rewrite `h2` using `[Real.log_mul (by norm_num) hm.ne', Real.log_div hm.ne' (Real.exp_pos 1).ne', Real.log_exp]`. Move the coercions through the operations in `at h2 ⊢`. Use polynomial arithmetic with `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_factorial_le {n : ℕ} (hn : n ≠ 0) :
     log ((n ! : ℕ) : ℝ) ≤ n * log n - n + log n / 2 + 1 := by
@@ -109,11 +109,11 @@ theorem log_factorial_le {n : ℕ} (hn : n ≠ 0) :
   nlinarith [h2]
 
 /- English proof (translation)
-Rewrite using `[Real.le_log_iff_exp_le (by positivity)]`. Establish `he` using `Real.exp_one_lt_d9`. Establish `h15 : (6 : ℝ) / 5 ≤ Real.exp (1 / 5)`. Use `Real.add_one_le_exp (1 / 5 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hsplit : Real.exp (9 / 5) * Real.exp (1 / 5) = Real.exp 1 * Real.exp 1`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Evaluate the numerical expressions. Establish `hpi` using `Real.pi_gt_d2`. Establish `hpos : 0 < Real.exp (9 / 5)` using `Real.exp_pos _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he2 : Real.exp 1 * Real.exp 1 < 2.7182818286 * 2.7182818286` using `mul_self_lt_mul_self (Real.exp_pos 1).le he`. Establish `h3 : Real.exp (9 / 5) * (6 / 5) ≤ Real.exp (9 / 5) * Real.exp (1 / 5)` using `mul_le_mul_of_nonneg_left h15 hpos.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_two_pi_ge : (9 : ℝ) / 5 ≤ log (2 * π) := by
   rw [Real.le_log_iff_exp_le (by positivity)]
@@ -133,13 +133,13 @@ theorem log_two_pi_ge : (9 : ℝ) / 5 ≤ log (2 * π) := by
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[Real.le_log_iff_exp_le (by norm_num)]`. Establish `he` using `Real.exp_one_lt_d9`. Establish `hsplit : Real.exp (33 / 10) = Real.exp 1 * Real.exp 1 * Real.exp 1 * Real.exp (3 / 10)`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hm : Real.exp (3 / 10) * Real.exp (-3 / 10) = 1`. Rewrite using `[← Real.exp_add]`. Evaluate the numerical expressions. Establish `h1 : (7 : ℝ) / 10 ≤ Real.exp (-3 / 10)`. Use `Real.add_one_le_exp (-3 / 10 : ℝ)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h310 : Real.exp (3 / 10) ≤ 10 / 7`. Establish `hp` using `Real.exp_pos (3 / 10)`. Use the polynomial consequences of the given equalities and inequalities. Establish `he2 : Real.exp 1 * Real.exp 1 < 2.7182818286 * 2.7182818286` using `mul_self_lt_mul_self (Real.exp_pos 1).le he`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `he3 : Real.exp 1 * Real.exp 1 * Real.exp 1 < 2.7182818286 * 2.7182818286 * 2.7182818286` using `mul_lt_mul'' he2 he (by positivity) (Real.exp_pos 1).le`. Rewrite using `[hsplit]`. Establish `h4 : Real.exp 1 * Real.exp 1 * Real.exp 1 * Real.exp (3 / 10) ≤ (2.7182818286 * 2.7182818286 * 2.7182818286) * (10 / 7)` using `mul_le_mul he3.le h310 (Real.exp_pos _).le (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_thirty_ge : (33 : ℝ) / 10 ≤ log 30 := by
   rw [Real.le_log_iff_exp_le (by norm_num)]
@@ -167,9 +167,9 @@ theorem log_thirty_ge : (33 : ℝ) / 10 ≤ log 30 := by
   linarith
 
 /- English proof (translation)
-Introduce `y hy`. Simplify using `only [lf]`. Establish `hn1 : 1 ≤ ⌊y⌋₊` using `Nat.le_floor (by simpa using hy)`. Establish `hny : (⌊y⌋₊ : ℝ) ≤ y` using `Nat.floor_le (by linarith)`. Establish `h` using `log_factorial_le (n := ⌊y⌋₊) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1' : (1 : ℝ) ≤ ⌊y⌋₊` using `by exact_mod_cast hn1`. Establish `hg` using `g_mono hn1' hny`. Establish `hl` using `Real.log_le_log (by linarith) hny`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lfUpper : LfUpper := by
   intro y hy
@@ -183,11 +183,11 @@ theorem lfUpper : LfUpper := by
   linarith
 
 /- English proof (translation)
-Introduce `y hy`. Simplify using `only [lf]`. Establish `hn1 : 1 ≤ ⌊y⌋₊` using `Nat.le_floor (by simpa using hy)`. Establish `hn1' : (1 : ℝ) ≤ ⌊y⌋₊` using `by exact_mod_cast hn1`. Establish `hy' : y ≤ (⌊y⌋₊ : ℝ) + 1` using `(Nat.lt_floor_add_one y).le`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `Stirling.le_log_factorial_stirling (n := ⌊y⌋₊ + 1) (Nat.succ_ne_zero _)`. Establish `hfac : Real.log (((⌊y⌋₊ + 1) ! : ℕ) : ℝ) = Real.log ((⌊y⌋₊ : ℝ) + 1) + Real.log ((⌊y⌋₊ ! : ℕ) : ℝ)`. Rewrite using `[Nat.factorial_succ, Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2π` using `log_two_pi_ge`. Establish `hh` using `h_le hy hy' (by linarith)`. Move the coercions through the operations in `at hS hfac`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lfLower : LfLower := by
   intro y hy
@@ -207,9 +207,9 @@ theorem lfLower : LfLower := by
   linarith
 
 /- English proof (translation)
-Establish `h2 : log (x / 2) = log x - log 2` using `Real.log_div hx.ne' (by norm_num)`. Establish `h3 : log (x / 3) = log x - log 3` using `Real.log_div hx.ne' (by norm_num)`. Establish `h5 : log (x / 5) = log x - log 5` using `Real.log_div hx.ne' (by norm_num)`. Establish `h30 : log (x / 30) = log x - log 30` using `Real.log_div hx.ne' (by norm_num)`. Rewrite using `[h2, h3, h5, h30]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [chA]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem main_term {x : ℝ} (hx : 0 < x) :
     (x * log x - x) - (x / 2 * log (x / 2) - x / 2) - (x / 3 * log (x / 3) - x / 3)
@@ -223,18 +223,18 @@ theorem main_term {x : ℝ} (hx : 0 < x) :
   ring
 
 /- English proof (translation)
-Rewrite using `[show (30 : ℝ) = 2 * 3 * 5 by norm_num, Real.log_mul (by norm_num) (by norm_num), Real.log_mul (by norm_num) (by norm_num)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem stir_log_thirty : log 30 = log 2 + log 3 + log 5 := by
   rw [show (30 : ℝ) = 2 * 3 * 5 by norm_num, Real.log_mul (by norm_num) (by norm_num),
     Real.log_mul (by norm_num) (by norm_num)]
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [chD]`. Establish `hx0 : (0 : ℝ) < x` using `by linarith`. Establish `l1` using `lfLower x (by linarith)`. Establish `l30` using `lfLower (x / 30) (by rw [le_div_iff₀ (by norm_num)]; linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u2` using `lfUpper (x / 2) (by rw [le_div_iff₀ (by norm_num)]; linarith)`. Establish `u3` using `lfUpper (x / 3) (by rw [le_div_iff₀ (by norm_num)]; linarith)`. Establish `u5` using `lfUpper (x / 5) (by rw [le_div_iff₀ (by norm_num)]; linarith)`. Establish `hm` using `main_term hx0`. Establish `h2 : log (x / 2) = log x - log 2` using `Real.log_div hx0.ne' (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : log (x / 3) = log x - log 3` using `Real.log_div hx0.ne' (by norm_num)`. Establish `h5 : log (x / 5) = log x - log 5` using `Real.log_div hx0.ne' (by norm_num)`. Establish `h30 : log (x / 30) = log x - log 30` using `Real.log_div hx0.ne' (by norm_num)`. Establish `hl30` using `log_thirty_ge`. Establish `hs` using `stir_log_thirty`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -257,11 +257,11 @@ theorem dLower : DLower := by
   linarith
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [chD]`. Establish `hx0 : (0 : ℝ) < x` using `by linarith`. Establish `l1` using `lfUpper x (by linarith)`. Establish `l30` using `lfUpper (x / 30) (by rw [le_div_iff₀ (by norm_num)]; linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u2` using `lfLower (x / 2) (by rw [le_div_iff₀ (by norm_num)]; linarith)`. Establish `u3` using `lfLower (x / 3) (by rw [le_div_iff₀ (by norm_num)]; linarith)`. Establish `u5` using `lfLower (x / 5) (by rw [le_div_iff₀ (by norm_num)]; linarith)`. Establish `hm` using `main_term hx0`. Establish `h2 : log (x / 2) = log x - log 2` using `Real.log_div hx0.ne' (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : log (x / 3) = log x - log 3` using `Real.log_div hx0.ne' (by norm_num)`. Establish `h5 : log (x / 5) = log x - log 5` using `Real.log_div hx0.ne' (by norm_num)`. Establish `h30 : log (x / 30) = log x - log 30` using `Real.log_div hx0.ne' (by norm_num)`. Establish `hl30` using `log_thirty_ge`. Establish `hs` using `stir_log_thirty`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

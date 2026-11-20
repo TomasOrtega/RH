@@ -7,22 +7,20 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (e.toEquiv.subtypeEquiv h)`.
+A detailed English derivation is pending.
 -/
 private theorem card_eq_of_iff {G G' : Type*} [Group G] [Group G'] (e : G ≃* G') {A : Subgroup G} {B : Subgroup G'}
     (h : ∀ g, g ∈ A ↔ e g ∈ B) : Nat.card A = Nat.card B :=
   Nat.card_congr (e.toEquiv.subtypeEquiv h)
 
 /- English proof (translation)
-Introduce `φ H l hl P _ _`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `haveI := H.galois`. Use `haveI hmax : (span {(l : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime l`. Establish `hI : ∀ σ : H.E ≃ₐ[ℚ] H.E, (∀ x : 𝓞 H.E, σ • x - x ∈ P) ↔ H.gal σ ∈ H.inertG l` using `fun σ => (H.der.inertia l P σ).trans (H.mem_inertG l _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ∀ σ : H.E ≃ₐ[ℚ] H.E, σ ∈ MulAction.stabilizer _ P ↔ H.gal σ ∈ H.decG l` using `fun σ => (H.der.decomp l P σ).trans ((UpperTheory.HF.artL_spec H.toHostRaw hl).2.2 _).symm`. Establish `hcI : Nat.card (P.inertia Gal(H.E/ℚ)) = H.el l` using `card_eq_of_iff H.gal (fun σ => AddSubgroup.mem_inertia.trans (hI σ))`. Establish `hcD : Nat.card (MulAction.stabilizer Gal(H.E/ℚ) P) = Nat.card (H.decG l)` using `card_eq_of_iff H.gal hD`. Establish `hle : H.inertG l ≤ H.decG l` using `le_sup_left`. Establish `hmul : Nat.card (H.decG l) = H.el l * H.nw l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← ((H.inertG l).subgroupOf (H.decG l)).card_mul_index, Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv]`. Both sides reduce to the same expression. Establish `he : (span {(l : ℤ)}).ramificationIdxIn (𝓞 H.E) = H.el l`. Rewrite using `[← hcI, card_inertia_eq_ramificationIdxIn (G := Gal(H.E/ℚ)) (span {(l : ℤ)}) P]`. Establish `hf : (span {(l : ℤ)}).inertiaDegIn (𝓞 H.E) = H.nw l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `card_stabilizer_eq (G := Gal(H.E/ℚ)) (span {(l : ℤ)}) P`. Rewrite `h` using `[hcD, hmul, he]`. Conclude with `(Nat.eq_of_mul_eq_mul_left (H.el_pos l) h).symm`. Use `⟨hI, hD, ?_, ?_, hmul, ?_⟩` and prove the remaining obligations. Rewrite using `[← he, ramificationIdxIn_eq_ramificationIdx (span {(l : ℤ)}) P Gal(H.E/ℚ)]`.
-
-Rewrite using `[← hf, inertiaDegIn_eq_inertiaDeg (span {(l : ℤ)}) P Gal(H.E/ℚ)]`. Rewrite using `[← he, ← hf, ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (span {(l : ℤ)}) (𝓞 H.E) Gal(H.E/ℚ), IsGalois.card_aut_eq_finrank, H.der.finrank_E]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.grp_bridge :
     ∀ {φ : Frame} (H : HostAx φ) {l : ℕ}, l.Prime → ∀ (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})], (∀ σ : H.E ≃ₐ[ℚ] H.E, (∀ x : 𝓞 H.E, σ • x - x ∈ P) ↔ H.gal σ ∈ H.inertG l) ∧ (∀ σ : H.E ≃ₐ[ℚ] H.E, σ ∈ MulAction.stabilizer _ P ↔ H.gal σ ∈ H.decG l) ∧ P.ramificationIdx ℤ = H.el l ∧ P.inertiaDeg ℤ = H.nw l ∧ Nat.card (H.decG l) = H.el l * H.nw l ∧ (primesOver (span {(l : ℤ)}) (𝓞 H.E)).ncard * (H.el l * H.nw l) = 4 * φ.ord := by

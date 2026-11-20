@@ -321,7 +321,7 @@ structure Layers (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (L
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun K s LL g => toWach (h K s LL g).some.Cl (h K s LL g).some.Cm, fun _ _ _ _ => rfl, fun K s LL g T => (h K s LL g).some.Mo.N_proj T⟩, ⟨fun K s LL g => ⟨toEt (h K s LL g).some.Cl (h K s LL g).some.Cm, (h K s LL g).some.ioW⟩⟩, ⟨⟨fun K s LL g => ⟨toCmp (h K s LL g).some.Cl (h K …`.
+Supply the required witnesses or components.
 -/
 theorem exists_of_layers (P : LocPrime l) (AI : LocAinf l P)
     (h : ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → Nonempty (Layers P AI K s LL))

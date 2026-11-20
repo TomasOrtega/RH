@@ -12,9 +12,9 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.Axis
 
 /- English proof (translation)
-Introduce `R _ C _ F N _ _ t ht`. Establish `hex : Function.Exact ((d0 F).codRestrict (Z1 F) (commAlgFunctorCoboundaryZero_mem_cocyclesOne F)) (H1.mk F)` using `LinearMap.exact_map_mkQ_range _`. Take `⟨u, rfl⟩` from `(rTensor_exact N hex (H1.mk_surjective F) t).1 ht`. Use `⟨fun T => (LinearMap.proj T : C0 F →ₗ[R] F.obj T).rTensor N u, fun T T' φ => ?_⟩` and prove the remaining obligations. Establish `key : evZ F φ ∘ₗ (d0 F).codRestrict (Z1 F) (commAlgFunctorCoboundaryZero_mem_cocyclesOne F) = (LinearMap.proj T' : C0 F →ₗ[R] F.obj T') - (mp F φ).toLinearMap ∘ₗ (LinearMap.proj T : C0 F →ₗ[R] F.obj T)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `g`. Both sides reduce to the same expression. Rewrite using `[← LinearMap.rTensor_comp_apply, key, LinearMap.rTensor_sub, LinearMap.sub_apply, LinearMap.rTensor_comp_apply]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem rTensor_cocycle_eq_coboundary_of_class_eq_zero :
     ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)

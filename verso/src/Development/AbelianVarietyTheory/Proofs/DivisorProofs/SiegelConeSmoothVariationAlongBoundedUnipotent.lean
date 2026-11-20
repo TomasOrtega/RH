@@ -14,7 +14,7 @@ namespace GlobalTheory.RapVari
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [nilM, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nilM_smul {r : ℕ} (τ : ℝ) (x : BlockIx a r → Cinf E) :
     (nilM (τ • x) : Matrix (Fin a) (Fin a) (Cinf E)) = τ • nilM x := by
@@ -23,9 +23,7 @@ theorem nilM_smul {r : ℕ} (τ : ℝ) (x : BlockIx a r → Cinf E) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(nilM x : Matrix (Fin a) (Fin a) (Cinf E)) i j‖ ≤ ‖x‖`. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs with h`. Conclude with `norm_le_pi_norm x _`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_toL_nilM_le {r : ℕ} (x : BlockIx a r → Cinf E) :
     ‖toL (nilM x : Matrix (Fin a) (Fin a) (Cinf E))‖ ≤ ‖x‖ := by
@@ -38,9 +36,7 @@ theorem norm_toL_nilM_le {r : ℕ} (x : BlockIx a r → Cinf E) :
   · simp
 
 /- English proof (translation)
-Establish `hN : Continuous (fun x : BlockIx a r → Cinf E => (nilM x : Matrix (Fin a) (Fin a) (Cinf E)))`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`.
-
-Conclude with `continuous_const`. Conclude with `Units.continuous_iff.2 ⟨continuous_const.add hN, continuous_const.sub hN⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_unip_inf {r : ℕ} :
     Continuous (fun x : BlockIx a r → Cinf E => (unip x : GL (Fin a) (Cinf E))) := by
@@ -53,9 +49,9 @@ theorem continuous_unip_inf {r : ℕ} :
   exact Units.continuous_iff.2 ⟨continuous_const.add hN, continuous_const.sub hN⟩
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun c : GL (Fin a) (Cinf E) => toL (c : Matrix (Fin a) (Fin a) (Cinf E)))`. Establish `h` using `(Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E)))`. Conclude with `h`. Establish `h2 : Continuous (fun c : GL (Fin a) (Cinf E) => toL ((c⁻¹ : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)))`. Establish `h` using `(Units.continuous_coe_inv (M := Matrix (Fin a) (Fin a) (Cinf E)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨A1, hA1⟩` from `hΩ.exists_bound_of_continuousOn h1.continuousOn`. Take `⟨A2, hA2⟩` from `hΩ.exists_bound_of_continuousOn h2.continuousOn`. Conclude with `⟨max (max A1 A2) 0, le_max_right _ _, fun c hc => ⟨(hA1 c hc).trans ((le_max_left _ _).trans (le_max_left _ _)), (hA2 c hc).trans ((le_max_right _ _).trans (le_max_left _ _))⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bound_compact {Ω : Set (GL (Fin a) (Cinf E))} (hΩ : IsCompact Ω) :
     ∃ A : ℝ, 0 ≤ A ∧ ∀ c ∈ Ω, ‖toL (c : Matrix (Fin a) (Fin a) (Cinf E))‖ ≤ A ∧
@@ -74,9 +70,9 @@ theorem exists_bound_compact {Ω : Set (GL (Fin a) (Cinf E))} (hΩ : IsCompact �
       (hA2 c hc).trans ((le_max_right _ _).trans (le_max_left _ _))⟩⟩
 
 /- English proof (translation)
-Establish `hA : 0 ≤ A` using `(norm_nonneg _).trans h1`. Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `p1` using `norm_toL_mul_le ((c⁻¹ : GL (Fin a) (Cinf E)).val * N) c.val`. Establish `p2` using `norm_toL_mul_le (c⁻¹ : GL (Fin a) (Cinf E)).val N`. Establish `p2' : ‖toL ((c⁻¹ : GL (Fin a) (Cinf E)).val * N)‖ ≤ a * (A * ‖toL N‖)` using `p2.trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right h2 (norm_nonneg _)) ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3 : ‖toL ((c⁻¹ : GL (Fin a) (Cinf E)).val * N)‖ * ‖toL c.val‖ ≤ (a * (A * ‖toL N‖)) * A` using `mul_le_mul p2' h1 (norm_nonneg _) (mul_nonneg ha (mul_nonneg hA (norm_nonneg _)))`. Conclude with `(p1.trans (mul_le_mul_of_nonneg_left p3 ha)).trans (le_of_eq (by ring))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_conj_le (A : ℝ) (c : GL (Fin a) (Cinf E)) (N : Matrix (Fin a) (Fin a) (Cinf E))
     (h1 : ‖toL (c : Matrix (Fin a) (Fin a) (Cinf E))‖ ≤ A)
@@ -97,25 +93,23 @@ end GlobalTheory.RapVari
 open GlobalTheory.RapVari in
 
 /- English proof (translation)
-Introduce `E _ _ _ a t ht i j hij Ω hΩ R hR`. Take `⟨C0, hC0, hconj⟩` from `GlobalTheory.T.blockUnipotent_conj_coneDiagonal_bound E a t ht i j hij`. Take `⟨B, Cb, hCb, hbasis⟩` from `GlobalTheory.T.lieDerivative_le_of_bound_on_finiteDirections E a`. Take `⟨A, hA, hAc⟩` from `exists_bound_compact hΩ`. Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `haA : (0 : ℝ) ≤ a * a * A * A` using `mul_nonneg (mul_nonneg (mul_nonneg ha ha) hA) hA`. Use `⟨(fun p : (BlockIx a j → Cinf E) × GL (Fin a) (Cinf E) => unip p.1 * p.2) '' (Metric.closedBall 0 (C0 * C0 * R) ×ˢ Ω), B, Cb * (a * a * A * A) * (C0 * R), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((isCompact_closedBall 0 (C0 * C0 * R)).prod hΩ).image ((continuous_unip_inf.comp continuous_fst).mul continuous_snd)`. Conclude with `mul_nonneg (mul_nonneg hCb haA) (mul_nonneg hC0 hR)`. Introduce `ψ r d hr hrat hd M hM hB c hc z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hq, hz'⟩` from `hconj r d hr hrat hd`. Take `⟨z', hz'n, hcomm⟩` from `hz' z`. Establish `hq0 : 0 ≤ r j / r i` using `div_nonneg (hr j).le (hr i).le`. Establish `hz'R : ‖z'‖ ≤ C0 * (r j / r i) * R` using `hz'n.trans (mul_le_mul_of_nonneg_left hz (mul_nonneg hC0 hq0))`. Establish `hz'R' : ‖z'‖ ≤ C0 * C0 * R` using `hz'R.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hq hC0) hR)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : ∀ τ : ℝ, ((c⁻¹ * unip (τ • z') * c : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) = 1 + τ • ((c⁻¹ : GL (Fin a) (Cinf E)).val * nilM z' * c.val)`. Introduce `τ`. Rewrite using `[Units.val_mul, Units.val_mul]`. Express the relevant statement in the definitionally equal form `(c⁻¹ : GL (Fin a) (Cinf E)).val * (1 + nilM (τ • z')) * c.val = _`. Rewrite using `[nilM_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Units.inv_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hNN : ((c⁻¹ : GL (Fin a) (Cinf E)).val * nilM z' * c.val) * ((c⁻¹ : GL (Fin a) (Cinf E)).val * nilM z' * c.val) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [Units.mul_inv, Matrix.mul_one, nilM_mul, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hNnorm : ‖toL ((c⁻¹ : GL (Fin a) (Cinf E)).val * nilM z' * c.val)‖ ≤ a * a * A * A * (C0 * (r j / r i) * R)` using `(norm_conj_le A c _ (hAc c hc).1 (hAc c hc).2).trans (mul_le_mul_of_nonneg_left ((norm_toL_nilM_le z').trans hz'R) haA)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ τ ∈ Set.Icc (0 : ℝ) 1, unip (τ • z') * c ∈ (fun p : (BlockIx a j → Cinf E) × GL (Fin a) (Cinf E) => unip p.1 * p.2) '' (Metric.closedBall 0 (C0 * C0 * R) ×ˢ Ω)`. Introduce `τ hτ`. Use `⟨(τ • z', c), ⟨?_, hc⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right, norm_smul, Real.norm_eq_abs, abs_of_nonneg hτ.1]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hτ.2).trans hz'R'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `GlobalTheory.T.norm_sub_le_of_lieDerivative_unipotentSegment E a ψ (infGL E a (d * c)) _ (fun τ => c⁻¹ * unip (τ • z') * c) (Cb * (a * a * A * A * (C0 * (r j / r i) * R)) * M) hNN hu (by`. Introduce `τ hτ`. Establish `e : infGL E a (d * c) * infGL E a (c⁻¹ * unip (τ • z') * c) = infGL E a (d * (unip (τ • z') * c))`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[e]`. Use `(hbasis ψ.1 _ _ M (fun Y hY => hB Y hY _ (hmem τ hτ)) hM).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hNnorm hCb) hM)`. Establish `e : infGL E a (d * c) * infGL E a (c⁻¹ * unip ((1 : ℝ) • z') * c) = infGL E a (unip z * (d * c))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_mul]`. Use `congr 1`. Establish `h1` using `hcomm 1`. Rewrite `h1` using `[one_smul, one_smul]`. Rewrite using `[one_smul, ← mul_assoc (unip z) d c, h1]`.
-
-Use `group`. Rewrite `key` using `[e]`. Conclude with `key.trans (le_of_eq (by ring))`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.rap_vari : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (t : ℝ), 0 < t →
     ∀ i j : Fin a, (j : ℕ) = i + 1 → ∀ (Ω : Set (GL (Fin a) (Cinf E))), IsCompact Ω → ∀ R : ℝ, 0 ≤ R →

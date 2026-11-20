@@ -10,21 +10,21 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce `H _ _ _ W A hW hA hinv hK η hη`. Establish `hsa : IsSelfAdjoint A` using `isSelfAdjoint_of_nonneg hA`. Take `⟨hfin, hfd⟩` from `UpperTheory.eigIn_finite_above_of_isCompactOperator H W A hW hsa hinv hK η hη`. Take `⟨s, b, hb⟩` from `UpperTheory.exists_hilbertBasis_prj_eigenvectors_of_isCompactOperator H W A hW hsa hinv hK`. Establish `hS : ∀ x, x ∈ hfin.toFinset ↔ η < x ∧ eigIn W A x ≠ ⊥` using `fun x => by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hfin.toFinset, hS, fun x hx => hfd x ((hS x).1 hx).1, fun φ c T hφ hc hφc hT => ?_⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.trOn_sub_sum_eq_trace_comp_compression H W (eigIn W A) hfin.toFinset (fun x => (φ x : ℂ)) (cfc φ A) T (fun x => inf_le_left) hT]`. Establish `hmem : ∀ v, prj W v ∈ W` using `fun v => by`. Establish `h : prj W v ∈ W.topologicalClosure` using `Submodule.starProjection_apply_mem _ v`. Rewrite `h` using `[hW.submodule_topologicalClosure_eq]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hPP : ∀ v, prj W (prj W v) = prj W v` using `fun v => Submodule.starProjection_eq_self_iff.2 (Submodule.starProjection_apply_mem _ v)`. Use `UpperTheory.norm_trace_comp_le_mul_traceNorm H s b _ _ c hc hT fun i => ?_` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `hb i`. Establish `hF` using `UpperTheory.cfc_apply_of_eigenvector H A hsa φ hφ μ _ hμ`. Establish `hD : (prj W ∘L cfc φ A ∘L prj W - ∑ x ∈ hfin.toFinset, (φ x : ℂ) • prj (eigIn W A x)) (b i) = (if μ ∈ hfin.toFinset then 0 else (φ μ : ℂ)) • prj W (b i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, hF, map_smul, hPP, UpperTheory.prj_eigIn_of_eigenvector_prj H W A hW hsa (b i) μ _ hμ, smul_ite, smul_zero, Finset.sum_ite_eq']`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hD]`. Distinguish the cases in `h0 : prj W (b i) = 0`. Conclude with `⟨0, by simpa using hc, by simp [h0]⟩`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Use `⟨if μ ∈ hfin.toFinset then 0 else (φ μ : ℂ), ?_, by simp only [map_smul, ContinuousLinearMap.comp_apply, hPP]⟩` and prove the remaining obligations. Use `split_ifs with hm`. Simplify using `using hc`. Establish `hne : eigIn W A μ ≠ ⊥`. Rewrite using `[Submodule.ne_bot_iff]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨hmem _, Module.End.mem_eigenspace_iff.2 hμ⟩, h0⟩`. Establish `hle : μ ≤ η` using `not_lt.1 fun h => hm ((hS μ).2 ⟨h, hne⟩)`. Establish `hge : 0 ≤ μ`. Establish `h1` using `((ContinuousLinearMap.nonneg_iff_isPositive A).1 hA).re_inner_nonneg_right (prj W (b i))`. Rewrite `h1` using `[hμ, inner_smul_right, inner_self_eq_norm_sq_to_K]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 0 < ‖prj W (b i)‖ ^ 2` using `by positivity`. Establish `h3 : 0 ≤ μ * ‖prj W (b i)‖ ^ 2`. Establish `: RCLike.re ((μ : ℂ) * ((‖prj W (b i)‖ : ℝ) : ℂ) ^ 2) = μ * ‖prj W (b i)‖ ^ 2`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `h1`. Conclude with `nonneg_of_mul_nonneg_left h3 h2`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Conclude with `hφc μ ⟨hge, hle⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.eigSplit :
     UpperTheory.ConvolutionTheory.C.EigSplit := by

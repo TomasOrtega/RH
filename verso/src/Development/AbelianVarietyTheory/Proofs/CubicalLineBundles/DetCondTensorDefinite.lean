@@ -37,17 +37,15 @@ Both sides reduce to the same expression.
 theorem rightAction_tmul (a : O') (c : k) (m : M) : rightAction k O O' M a (c ⊗ₜ m) = c ⊗ₜ (a • m) := rfl
 
 /- English proof (translation)
-Set `ρ` to `rightAction k O O' M`. Set `π : k ⊗[O] M →ₗ[k] k ⊗[O'] M` to `((TensorProduct.mk O' k M 1).restrictScalars O).liftBaseChange k`. Establish `hπ : ∀ m, π (1 ⊗ₜ m) = 1 ⊗ₜ m` using `fun m => by simp [π]`. Set `ρ' : O' →+* Module.End k (k ⊗[O'] M)` to `(algebraMap k _).comp (σ i)`. Establish `he : EigenSplit.IsEquivariant ρ ρ' π` using `fun a x => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: π ∘ₗ ρ a = ρ' a ∘ₗ π`. Use extensionality with `m`. Simplify using `only [TensorProduct.AlgebraTensorModule.curry_apply, TensorProduct.curry_apply, LinearMap.comp_apply, LinearMap.coe_restrictScalars, ρ, rightAction_tmul, hπ]`. Simplify using `[ρ', hi]`. Conclude with `congr($this x)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `g : M →ₗ[O'] k ⊗[O] M` to `{ toFun := fun m => EigenSplit.proj h ρ i (1 ⊗ₜ m) map_add' := fun m n => by rw [TensorProduct.tmul_add, map_add] map_smul' := fun a m => by`. Rewrite using `[← rightAction_tmul, ← (EigenSplit.isEquivariant_action ρ a).proj h, EigenSplit.mem_eigenSub.1 (EigenSplit.proj_mem h ρ i _), hi, algebraMap_smul]`. Use `rfl }`. Set `s : k ⊗[O'] M →ₗ[k] k ⊗[O] M` to `g.liftBaseChange k`. Establish `h1 : s ∘ₗ π = EigenSplit.proj h ρ i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Simplify using `[hπ, s, g]`. Establish `h2 : ∀ x, π (EigenSplit.proj h ρ i x) = π x` using `fun x => by`. Rewrite using `[he.proj h]`. Conclude with `EigenSplit.proj_of_mem h (EigenSplit.mem_eigenSub.2 fun a => rfl)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h3 : π ∘ₗ s = LinearMap.id`. Use extensionality with `m`. Simplify using `[s, g, h2, hπ]`. Use `⟨LinearEquiv.ofBijective (π ∘ₗ Submodule.subtype _) ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ⟨EigenSplit.projTo h ρ i (s y), (h2 _).trans congr($h3 y)⟩⟩⟩` and prove the remaining obligations. Use `Subtype.ext ((EigenSplit.proj_of_mem h x.2).symm.trans ?_)` and prove the remaining obligations.
-
-Rewrite using `[← h1]`. Conclude with `(congrArg s hx).trans (map_zero s)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_eigenSub_equiv [Algebra O' k] [IsScalarTower O O' k] {I : Type} {σ : I → O' →+* k}
     (h : EigenSplit.IsSplitting σ) (i : I) (hi : σ i = algebraMap O' k) :
@@ -90,7 +88,7 @@ theorem nonempty_eigenSub_equiv [Algebra O' k] [IsScalarTower O O' k] {I : Type}
 end Algebra
 
 /- English proof (translation)
-Rewrite using `[RingHom.injective_iff_ker_eq_bot, ← Ideal.absNorm_eq_zero_iff]`. Simplify using `using RingHom.mem_ker.1 (Ideal.absNorm_mem (RingHom.ker τ))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem injective_of_charZero {E k : Type} [Field E] [NumberField E] [Field k] [CharZero k] (τ : 𝓞 E →+* k) :
     Function.Injective τ := by
@@ -98,9 +96,9 @@ theorem injective_of_charZero {E k : Type} [Field E] [NumberField E] [Field k] [
   simpa using RingHom.mem_ker.1 (Ideal.absNorm_mem (RingHom.ker τ))
 
 /- English proof (translation)
-Establish `hs : EigenSplit.IsSplitting fun φ : E →+* k => φ.comp (algebraMap (𝓞 E) E)` using `by classical`. Take `⟨b⟩` from `EigenSplit.nonempty_basis (E := E) (NumberField.Embeddings.card E k)`. Conclude with `EigenSplit.isSplitting_of_isUnit_discr b (EigenSplit.det_sq_eq_discr_of_field Function.injective_id b) (by simpa using NumberField.discr_ne_zero E)`. Establish `hi` using `injective_of_charZero τ`. Set `_` to `τ.toAlgebra`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower O (𝓞 E) k` using `IsScalarTower.of_algebraMap_eq' hτ.symm`. Establish `: FaithfulSMul (𝓞 E) k` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Establish `e : (IsFractionRing.lift hi : E →+* k).comp (algebraMap (𝓞 E) E) = τ` using `RingHom.ext fun a => IsFractionRing.lift_algebraMap hi a`. Take `⟨f⟩` from `nonempty_eigenSub_equiv (O := O) (M := M) hs (IsFractionRing.lift hi) e`. Rewrite using `[← (TensorProduct.isBaseChange (𝓞 E) M k).finrank_eq, ← f.finrank_eq, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eigenSub {E k O M : Type} [Field E] [NumberField E] [Field k] [IsAlgClosed k] [CharZero k]
     [CommRing O] [Algebra O k] [Algebra O (𝓞 E)] [AddCommGroup M] [Module O M] [Module (𝓞 E) M]
@@ -121,19 +119,17 @@ theorem finrank_eigenSub {E k O M : Type} [Field E] [NumberField E] [Field k] [I
   rw [← (TensorProduct.isBaseChange (𝓞 E) M k).finrank_eq, ← f.finrank_eq, e]
 
 /- English proof (translation)
-Establish `sm : ∀ (c : k) y x, x.left = spMap (epsScaleR c) ≫ (Φ y).left ↔ x = Φ (c • y)` using `fun c y x => by`. Rewrite using `[← (LieMultiple.isLieComb_one_iff _ _ _).1 (smul c y)]`. Conclude with `⟨fun h => Over.OverMorphism.ext h, fun h => by rw [h]⟩`. Set `F : Multiplicative V →* (epsR k ⟶ A)` to `MonoidHom.mk' (fun y => Φ y.toAdd) (fun y z => add _ _)`. Establish `pr : ∀ (n : ℕ) (y : Fin n → V), (List.ofFn fun i => Φ (y i)).prod = Φ (∑ i, y i)` using `fun n y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `map_list_prod F (List.ofFn fun i => Multiplicative.ofAdd (y i))` as an intermediate fact. Rewrite `this` using `[List.map_ofFn, List.prod_ofFn, ← ofAdd_sum]`. Conclude with `this.symm`. Set `B` to `Module.finBasisOfFinrankEq k _ hn`. Set `j : epsPt (𝟙 (Sp k)) ≅ epsR k` to `Over.isoMk (Iso.refl _) (by simp)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : (epsPt (𝟙 (Sp k)) ⟶ A) ≃* (epsR k ⟶ A)` to `MulEquiv.ofBijective (preHom j.inv) (j.symm.homCongr (Iso.refl A)).symm.bijective`. Establish `he : ∀ w, (e w).left = w.left` using `fun w => Category.id_comp _`. Establish `he' : ∀ w, (e.symm w).left = w.left` using `fun w => by rw [← he, e.apply_symm_apply]`. Establish `one : (1 : Over.mk (𝟙 (Sp k)) ⟶ A).left = η[A].left` using `Category.id_comp _`. Establish `mem : ∀ y, y ∈ EigenSplit.eigenSub ρ τ ↔ ∀ a, (Φ y ≫ act.act a).left = spMap (epsScaleR (τ a)) ≫ (Φ y).left` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[EigenSplit.mem_eigenSub]`. Conclude with `forall_congr' fun a => by rw [sm, ← eqv, inj.eq_iff]`. Use `LiePull.basis_transport e.symm (Q := IsLieEigen act (𝟙 _) τ) (R' := fun c u v => u.left = spMap (epsScale c) ≫ v.left) (R := fun c u v => u.left = spMap (epsScaleR c) ≫ v.left) (P := fun w => IsTangent w ∧ ∀ a, (w ≫ act.act a).left = spMap (epsScaleR (τ a)) ≫ w.left) (fun w => an …` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, he']`. Use the proof step `rfl))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use the proof step `(fun c u v => by rw [he', he']; rfl) n`. Use the proof step `⟨fun i => Φ (B i), fun i => ⟨(tan _).2 ⟨_, rfl⟩, (mem _).1 (B i).2⟩, ?_⟩`. Introduce and unpack `w ⟨hw, hw'⟩`. Take `⟨y, rfl⟩` from `(tan w).1 hw`. Set `y' : EigenSplit.eigenSub ρ τ` to `⟨y, (mem y).2 hw'⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(existsUnique_congr fun d => ?_).1 (existsUnique_eq' (a' := B.equivFun y'))` and prove the remaining obligations. Establish `e₁ : B.equivFun y' = d ↔ y = ∑ i, d i • (B i : V)`. Rewrite using `[← LinearEquiv.eq_symm_apply, Module.Basis.equivFun_symm_apply, Subtype.ext_iff]`. Simplify using `[y']`. Rewrite using `[e₁, ← inj.eq_iff, ← pr]`.
-
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨_, fun i => (sm _ _ _).2 rfl, h⟩`. Introduce and unpack `⟨u, hu, h⟩`. Rewrite using `[h, show u = fun i => Φ (d i • (B i : V)) from funext fun i => (sm _ _ _).1 (hu i)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieMult_of_param {k O V : Type} [Field k] [CommRing O] [AddCommGroup V] [Module k V] [Module.Finite k V]
     {A : Over (Sp k)} [GrpObj A] (act : OAct O A) (ρ : O →+* Module.End k V) (Φ : V → (epsR k ⟶ A))

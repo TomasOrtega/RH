@@ -6,17 +6,17 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowS
 namespace GlobalTheory.DualBase
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ _ φ hcm hval d δ hd hδ hφ η`. Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`. Establish `: (d : E) = 0` using `by simpa using hδ.symm`. Establish `: d = 0` using `by exact_mod_cast this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨i0, -⟩` from `hcm (Classical.choice (inferInstance : Nonempty (E →+* ℂ)))`. Establish `hconj : IsCMField.complexConj E δ = -δ`. Apply `(φ i0).injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, hφ, map_neg, hφ]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.conj_ofReal]`. Establish `hξ0 : ((η : ℤ) : E) * δ⁻¹ ≠ 0` using `mul_ne_zero (by simp) (inv_ne_zero hδ0)`. Establish `hξc : IsCMField.complexConj E (((η : ℤ) : E) * δ⁻¹) = -(((η : ℤ) : E) * δ⁻¹)`. Rewrite using `[map_mul, map_inv₀, hconj, map_intCast, inv_neg, mul_neg]`. Take `⟨h1, h2⟩` from `hval _ hξ0 hξc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, fun B hB ε => ?_⟩` and prove the remaining obligations. Take `⟨h3, h4⟩` from `h2 B hB ε`. Use `⟨h3, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[h4 i, map_mul, map_inv₀, map_intCast, hφ]`. Establish `hs : (Real.sqrt d : ℂ) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: 0 < Real.sqrt d` using `Real.sqrt_pos.2 (by exact_mod_cast hd)`. Conclude with `this.ne'` after adjusting the coercions. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Apply the tactic sequence `rcases Int.units_eq_one_or η with rfl | rfl <;> rcases Int.units_eq_one_or ε with rfl | rfl <;>`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem dualFormBase_of_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] [DecidableEq I]
     (φ : I → E →+* ℂ), IsCMType φ → DualFormValue φ → DualFormBase φ := by
@@ -48,7 +48,7 @@ theorem dualFormBase_of_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
       field_simp
 
 /- English proof (translation)
-Substitute `hε hη` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 example (ε : ℤˣ) (η : ℤˣ) (hε : ε = 1) (hη : η = -1) : (((ε * η : ℤˣ) : ℤ) : ℂ) = -1 := by
   subst hε hη; simp

@@ -31,7 +31,7 @@ def pushPullIso (G : X.Modules) :
 variable {k : Type} [Field k] [Algebra k Γ(X, ⊤)] [Algebra k Γ(Y, ⊤)]
 
 /- English proof (translation)
-Establish `h₁ : chi k G = chi k ((Scheme.Modules.pullback e.hom).obj G)` using `(chi_congr k (pushPullIso e G)).trans (chi_pushforward_of_isClosedImmersion hf _)`. Establish `h₂ : chi k (structureModule X) = chi k (structureModule Y)` using `(chi_congr k (asIso (unitToPush e.hom))).trans (chi_pushforward_of_isClosedImmersion hf _)`. Rewrite using `[degOfRank, degOfRank, h₁, h₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem degOfRank_pullback_iso
     (hf : ∀ r : k, e.hom.appTop (algebraMap k Γ(X, ⊤) r) = algebraMap k Γ(Y, ⊤) r)

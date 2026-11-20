@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hf`. Use `set T : Finset (G →* ℂˣ) := a.support.image Prod.fst with hT`. Use `set K : ℕ := a.support.sup Prod.snd with hK`. Use `⟨T.card, K, fun i => (T.equivFin.symm i : G →* ℂˣ), fun i k => a ((T.equivFin.symm i : G →* ℂˣ), (k : ℕ)), Subtype.val_injective.comp T.equivFin.symm.injective, fun t => ?_⟩` and prove the remaining obligations. Set `g : (G →* ℂˣ) × ℕ → ℂ` to `fun p => a p * ((p.1 t : ℂˣ) : ℂ) * L t ^ p.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : f t = ∑ p ∈ a.support, g p`. Rewrite using `[← ha, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[g, mul_assoc]`. Establish `h2 : ∑ p ∈ a.support, g p = ∑ p ∈ T ×ˢ Finset.range (K + 1), g p`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_subset (fun p hp => ?_) (fun p _ hp => ?_)` and prove the remaining obligations. Use `Finset.mem_product.mpr ⟨Finset.mem_image_of_mem _ hp, ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_range.mpr (Nat.lt_succ_of_le (Finset.le_sup (f := Prod.snd) hp))`. Simplify using `[g, Finsupp.notMem_support_iff.mp hp]`. Rewrite using `[h1, h2, Finset.sum_product, ← Finset.sum_coe_sort T, ← Equiv.sum_comp T.equivFin.symm]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_range]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_distinct_chars_of_mem_span_char_mul_pow
     (G : Type) [Monoid G] (L : G → ℂ) (f : G → ℂ)

@@ -17,11 +17,9 @@ noncomputable def coAugNat {J : Type} [SmallCategory J] (D : J ⥤ Arrow CommRin
     exact h
 
 /- English proof (translation)
-Introduce `A B g hg`. Take `⟨J, _, _, D, ι, ⟨hc⟩, hD⟩` from `GlobalTheory.T.etaleFaithfullyFlat_filtered_colimit_finiteType A B g hg`. Take `⟨⟨hU⟩, hX⟩` from `GlobalTheory.EtC.isColimit_leftFunc_and_cechConerve_levels J D _ hc`. Use `GlobalTheory.EtC.WExactColim.wExact_colimit CommRingCat.{0} N hN J (D ⋙ Arrow.leftFunc) (D ⋙ CosimplicialObject.cechConerve) (coAugNat D) (Arrow.leftFunc.mapCocone (Cocone.mk (Arrow.mk g) ι)) (CosimplicialObject.cechConerve.mapCocone (Cocone.mk (Arrow.mk g) ι)) (coAug g) hU (fun …` and prove the remaining obligations. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(CosimplicialObject.augmentedCechConerve.map (ι.app j)).w`. Conclude with `h.symm`. Introduce `j`. Take `⟨hj, hl, hr⟩` from `hD j`. Use `(GlobalTheory.EtC.wExact_congr CommRingCat.{0} _ _ (coAug (D.obj j).hom) N M ε (hε _ hl) (fun k => hε _ ?_)).2 (hM _ _ _ hj)` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.cechConerve_obj_finiteType_int _ _ (D.obj j).hom hr k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wExact_of_finiteType_iso (N M : CommRingCat.{0} ⥤ AddCommGrpCat.{1}) (ε : N ⟶ M)
     (hN : PreservesFilteredColimitsOfSize.{0, 0} N)

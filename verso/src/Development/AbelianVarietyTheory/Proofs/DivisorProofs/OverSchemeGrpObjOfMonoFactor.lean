@@ -6,19 +6,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI M : MonObj K := { one := e, mul := m one_mul := by`. Rewrite using `[← cancel_mono i, Category.assoc, hm]`. Establish `h1 : e ▷ K ≫ (i ⊗ₘ i) = 𝟙_ C ◁ i ≫ η[A] ▷ A`. Rewrite using `[← tensorHom_id, tensorHom_comp_tensorHom, Category.id_comp, he, tensorHom_def']`. Rewrite using `[reassoc_of% h1, MonObj.one_mul, leftUnitor_naturality]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `mul_one := by`. Rewrite using `[← cancel_mono i, Category.assoc, hm]`. Establish `h1 : K ◁ e ≫ (i ⊗ₘ i) = i ▷ 𝟙_ C ≫ A ◁ η[A]`. Rewrite using `[← id_tensorHom, tensorHom_comp_tensorHom, Category.id_comp, he, MonoidalCategory.tensorHom_def]`. Rewrite using `[reassoc_of% h1, MonObj.mul_one, rightUnitor_naturality]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `mul_assoc := by`. Rewrite using `[← cancel_mono i]`. Establish `h1 : m ▷ K ≫ m ≫ i = ((i ⊗ₘ i) ⊗ₘ i) ≫ μ[A] ▷ A ≫ μ[A]`. Simplify using `only [← tensorHom_id, tensorHom_comp_tensorHom_assoc, hm, Category.id_comp, Category.comp_id]`. Establish `h2 : K ◁ m ≫ m ≫ i = (i ⊗ₘ (i ⊗ₘ i)) ≫ A ◁ μ[A] ≫ μ[A]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [← id_tensorHom, tensorHom_comp_tensorHom_assoc, hm, Category.id_comp, Category.comp_id]`. Simplify using `only [Category.assoc]`. Rewrite using `[h1, h2, MonObj.mul_assoc (X := A), associator_naturality_assoc] }`. Use `letI G : GrpObj K := { inv := v left_inv := by`. Rewrite using `[← cancel_mono i]`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Category.assoc]`. Express the relevant statement in the definitionally equal form `lift v (𝟙 K) ≫ m ≫ i = toUnit K ≫ e ≫ i`. Establish `h3 : lift (i ≫ ι[A]) i = i ≫ lift ι[A] (𝟙 A)` using `by simp`. Rewrite using `[hm, he, lift_map_assoc, hv, Category.id_comp, h3, Category.assoc, GrpObj.left_inv, ← Category.assoc, toUnit_unique (i ≫ toUnit A) (toUnit K)]`. Use `right_inv := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← cancel_mono i]`. Simplify using `only [Category.assoc]`. Express the relevant statement in the definitionally equal form `lift (𝟙 K) v ≫ m ≫ i = toUnit K ≫ e ≫ i`. Establish `h3 : lift i (i ≫ ι[A]) = i ≫ lift (𝟙 A) ι[A]` using `by simp`. Rewrite using `[hm, he, lift_map_assoc, hv, Category.id_comp, h3, Category.assoc, GrpObj.right_inv, ← Category.assoc, toUnit_unique (i ≫ toUnit A) (toUnit K)] }`.
-
-Conclude with `⟨G, { one_hom := he, mul_hom := hm }⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem grpObj_of_mono_factor {C : Type*} [Category C] [CartesianMonoidalCategory C]
     {A K : C} [GrpObj A] (i : K ⟶ A) [Mono i] (m : K ⊗ K ⟶ K) (hm : m ≫ i = (i ⊗ₘ i) ≫ μ[A])
@@ -65,7 +63,7 @@ theorem grpObj_of_mono_factor {C : Type*} [Category C] [CartesianMonoidalCategor
   exact ⟨G, { one_hom := he, mul_hom := hm }⟩
 
 /- English proof (translation)
-Introduce `T A K _ i hi ⟨m, hm⟩ ⟨e, he⟩ ⟨v, hv⟩`. Conclude with `grpObj_of_mono_factor i m hm e he v hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem overScheme_grpObj_of_mono_factor : ∀ (T : Scheme.{0}) (A K : Over T) [GrpObj A] (i : K ⟶ A),
     Mono i → (∃ m : K ⊗ K ⟶ K, m ≫ i = (i ⊗ₘ i) ≫ μ[A]) → (∃ e : 𝟙_ (Over T) ⟶ K, e ≫ i = η[A]) →

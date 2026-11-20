@@ -21,7 +21,7 @@ def genSec {X : Scheme.{0}} {L : LB X} (t : LB.Gen L) (ht : t.IsGen) : LB.Sec L 
     exact h⟩
 
 /- English proof (translation)
-Introduce `a b`. Establish `h : res (inf_le_left : N.U a ⊓ N.U b ≤ _) (t.s a)⁻¹ = g a b * res (inf_le_right : N.U a ⊓ N.U b ≤ _) (t.s b)⁻¹`. Rewrite using `[map_inv, map_inv, ht a b, _root_.mul_inv, hg]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGen_inv_of_eq {X : Scheme.{0}} {N : LB X} (t : LB.Gen N) (ht : t.IsGen)
     (g : ∀ a b, Γ(X, N.U a ⊓ N.U b)ˣ) (hg : ∀ a b, g a b = (N.g a b)⁻¹) :
@@ -33,7 +33,7 @@ theorem isGen_inv_of_eq {X : Scheme.{0}} {N : LB X} (t : LB.Gen N) (ht : t.IsGen
   exact h
 
 /- English proof (translation)
-Use `⟨⟨fun i => (t.s i)⁻¹⟩, isGen_inv_of_eq t ht ((⟨I, U, g'⟩ : LB X).pull j).g fun a b => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [LB.pull, LB.LinComb]`. Simplify using `only [hg, map_inv, zpow_one, Finset.prod_inv_distrib]`. Apply the tactic sequence `try rfl`. Conclude with `(map_mul _ _ _).symm.trans ((congrArg _ (Units.mul_inv _)).trans (map_one _))`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isGen_inv {X Y : Scheme.{0}} {I : Type} {U : I → X.Opens}
     (g g' : ∀ a b, Γ(X, U a ⊓ U b)ˣ) (hg : ∀ a b, g' a b = (g a b)⁻¹) (j : Y ⟶ X)
@@ -49,9 +49,7 @@ theorem exists_isGen_inv {X Y : Scheme.{0}} {I : Type} {U : I → X.Opens}
   · exact (map_mul _ _ _).symm.trans ((congrArg _ (Units.mul_inv _)).trans (map_one _))
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `h` using `congrArg X.basicOpen (s.compat i k)`. Rewrite `h` using `[Scheme.basicOpen_mul, X.basicOpen_of_isUnit (L.g i k).isUnit]`. Use `erw [Scheme.basicOpen_res, Scheme.basicOpen_res] at h`. Establish `hm : x ∈ L.U i ⊓ L.U k` using `⟨hi, X.basicOpen_le _ hk⟩`.
-
-Conclude with `(h.ge (⟨hm, hm, hk⟩ : x ∈ _ ⊓ (_ ⊓ X.basicOpen (s.f k)))).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_of_mem {X : Scheme.{0}} {L : LB X} (s : LB.Sec L) {x : X}
     (hx : x ∈ Out.nonzeroLocus s) {i : L.ι} (hi : x ∈ L.U i) : x ∈ X.basicOpen (s.f i) := by
@@ -63,7 +61,7 @@ theorem mem_basicOpen_of_mem {X : Scheme.{0}} {L : LB X} (s : LB.Sec L) {x : X}
   exact (h.ge (⟨hm, hm, hk⟩ : x ∈ _ ⊓ (_ ⊓ X.basicOpen (s.f k)))).2
 
 /- English proof (translation)
-Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ f.appTop ≫ j.appTop = CommRingCat.ofHom φ ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ g.appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, h, Scheme.Hom.comp_appTop, Scheme.ΓSpecIso_inv_naturality_assoc]`. Establish `h2` using `congrArg (fun u => u.hom a) h1`. Establish `h3` using `congrArg (fun u => u.hom (f.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a))) (j.naturality (homOfLE (le_top : U ≤ ⊤)).op)`. Conclude with `h3.trans (congrArg (rs Y le_top) h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem app_cst {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K) {X Y : Scheme.{0}}
     {f : X ⟶ Sp O} {j : Y ⟶ X} {g : Y ⟶ Sp K} (h : j ≫ f = g ≫ spMap φ) (U : X.Opens) (a : O) :
@@ -77,9 +75,9 @@ theorem app_cst {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K) {X Y : S
   exact h3.trans (congrArg (rs Y le_top) h2)
 
 /- English proof (translation)
-Establish `h : X.basicOpen (GlobalTheory.AbLaw.cst f U a) = U ⊓ X.basicOpen (f.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a))` using `Scheme.basicOpen_res _ _ _`. Establish `h1 : x ∈ X.basicOpen (f.appTop ((Scheme.ΓSpecIso (CommRingCat.of O)).inv a))` using `(h.le hx).2`. Rewrite `h1` using `[← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Establish `h2 : a ∉ (f x).asIdeal` using `h1`. Rewrite `h2` using `[hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_not.1 h2`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_mem_basicOpen {O : Type} [CommRing O] [IsLocalRing O] {X : Scheme.{0}}
     (f : X ⟶ Sp O) {U : X.Opens} {a : O} {x : X} (hx : x ∈ X.basicOpen (GlobalTheory.AbLaw.cst f U a))
@@ -94,21 +92,21 @@ theorem isUnit_of_mem_basicOpen {O : Type} [CommRing O] [IsLocalRing O] {X : Sch
   exact not_not.1 h2
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _ _ X XK f j fK hp hsm hqc hgi M hM ⟨t, ht⟩`. Establish `: IsDominant (spMap (algebraMap O K))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective O K)).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap (algebraMap O K))` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant j` using `IsSchemeTheoreticallyDominant.of_isPullback hp.flip`. Establish `: QuasiCompact j` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hp.flip inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral XK` using `GeometricallyIntegral.geometrically_isIntegral _ _ _ hp`. Take `⟨z⟩ : Nonempty XK` from `inferInstance`. Take `⟨i₀, hi₀⟩` from `exists_chart hM (j z)`. Establish `: Nonempty ((M.pull j).U fun _ => i₀)` using `⟨⟨z, le_pull M j le_rfl hi₀⟩⟩`. Take `⟨t', ht', htt⟩` from `exists_isGen_inv M.g (GlobalTheory.AbLaw.pw M (-1)).g (fun a b => zpow_neg_one _) j t ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : (t'.s fun _ => i₀).val ≠ 0` using `fun h => by`. Establish `h1` using `htt i₀`. Establish `: Nonempty (j ⁻¹ᵁ M.U i₀)` using `⟨⟨z, hi₀⟩⟩`. Rewrite `h1` using `[h, map_zero, mul_zero]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, s, hc, hs, x, hx, hfx⟩` from `GlobalTheory.T.exists_sec_nonzero_on_special_fibre_extending_smul O K X XK f j fK hp hsm hqc hgi M hM (genSec t ht) ⟨fun _ => i₀, (t.s fun _ => i₀).ne_zero⟩`. Take `⟨c', s', hc', hs', x', hx', hfx'⟩` from `GlobalTheory.T.exists_sec_nonzero_on_special_fibre_extending_smul O K X XK f j fK hp hsm hqc hgi _ (isLB_pw hM (-1)) (genSec t' ht') ⟨fun _ => i₀, hne⟩`. Establish `hprod : ∀ i : M.ι, (j.app (M.U i)).hom (s.f i * (show Γ(X, M.U i) from s'.f i)) = GlobalTheory.AbLaw.cst fK (j ⁻¹ᵁ M.U i) (c * c')` using `fun i => by`. Establish `h' : (j.app (M.U i)).hom (s'.f i) = GlobalTheory.AbLaw.cst fK (j ⁻¹ᵁ M.U i) c' * rs XK (le_pull (GlobalTheory.AbLaw.pw M (-1)) j (W` using `M.U i) (i := i) le_rfl) (t'.s fun _ => i).val := hs' i`. Establish `h : (j.app (M.U i)).hom (s.f i) = GlobalTheory.AbLaw.cst fK (j ⁻¹ᵁ M.U i) c * rs XK (le_pull M j le_rfl) (t.s fun _ => i).val` using `hs i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, h, h', _root_.mul_mul_mul_comm, ← map_mul]`. Conclude with `(congrArg _ (htt i)).trans (_root_.mul_one _)`. Establish `key : ∀ i, IsUnit (s.f i)`. Break down `ValuationRing.isInteger_or_isInteger O (c * c') with ⟨a, ha⟩ | ⟨a, ha⟩` into its components or cases. Establish `e : ∀ i : M.ι, s.f i * (show Γ(X, M.U i) from s'.f i) = GlobalTheory.AbLaw.cst f (M.U i) a` using `fun i => j.app_injective _ ((hprod i).trans (ha ▸ (app_cst _ hp.w _ a).symm))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hy₁, hy₂⟩` from `(f.isIrreducible_preimage f.isOpenMap (isIrreducible_singleton (x := IsLocalRing.closedPoint O))).isPreirreducible _ _ (Out.nonzeroLocus s).isOpen (Out.nonzeroLocus s').isOpen ⟨x, hfx, hx⟩ ⟨x', hfx', hx'⟩`. Take `⟨k, hk⟩` from `exists_chart hM y`. Establish `hu : IsUnit a`. Use `isUnit_of_mem_basicOpen f (U := M.U k) (x := y) ?_ hy` and prove the remaining obligations. Rewrite using `[← e k, Scheme.basicOpen_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `⟨mem_basicOpen_of_mem s hy₁ hk, mem_basicOpen_of_mem s' hy₂ (i := k) hk⟩`. Conclude with `fun i => isUnit_of_mul_isUnit_left ((e i).symm ▸ hu.map _)`. Introduce `i`. Establish `e : s.f i * ((show Γ(X, M.U i) from s'.f i) * GlobalTheory.AbLaw.cst f (M.U i) a) = 1`. Use `j.app_injective _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(j.app (M.U i)).hom _ = (j.app (M.U i)).hom _`. Rewrite using `[← _root_.mul_assoc, map_mul, hprod, app_cst _ hp.w, ← map_mul, ha, mul_inv_cancel₀ (mul_ne_zero hc hc'), map_one, map_one]`. Conclude with `IsUnit.of_mul_eq_one _ e`. Conclude with `⟨⟨fun i => (key i).unit⟩, fun a b => Units.ext (s.compat a b)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem triv_of_triv_generic : ∀ (O K : Type) [CommRing O] [IsDomain O] [ValuationRing O] [Ring.DimensionLEOne O] [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K] (X XK : Scheme.{0}) (f : X ⟶ Sp O) (j : XK ⟶ X) (fK : XK ⟶ Sp K), IsPullback j fK f (spMap (algebraMap O K)) → Smooth f → QuasiCompact f → GeometricallyIntegral f → ∀ M : LB X, M.IsLB → Triv (M.pull j) → Triv M := by
   intro O K _ _ _ _ _ _ _ _ X XK f j fK hp hsm hqc hgi M hM ⟨t, ht⟩

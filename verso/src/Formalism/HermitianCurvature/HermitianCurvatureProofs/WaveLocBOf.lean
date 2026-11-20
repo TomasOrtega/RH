@@ -23,9 +23,9 @@ def GermPartsC : Prop :=
     ∀ n v, GermRealisation.GermFibres (PBL.setC S p (cutSeq S p f χ n)) v ∧ GermRealisation.GermCont (PBL.setC S p (cutSeq S p f χ n)) v
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨c1, h1⟩` from `hI Cb`. Take `⟨c2, h2⟩` from `hG Cb`. Use `⟨max c1 c2, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB n v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hI'` using `h1 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place (le_max_left _ _) hB) n v`. Take `⟨hF, hC⟩` from `h2 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place (le_max_right _ _) hB) n v`. Conclude with `GermRealisation.germLoc_of_fibres hI' hB.1 hB.2.1 hF hC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem germLocB_of (hI : IntB) (hG : GermPartsC) : GermLocB := by
   intro Cb

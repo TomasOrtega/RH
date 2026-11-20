@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InVolumesAtOfSWS
 
 /- English proof (translation)
-The claim follows from `PI.VolStabS.MassDataS.inVolumesAt_of_SWS hSW`.
+A detailed English derivation is pending.
 -/
 theorem volumes_s_at_instance
     (hSW : ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D),

@@ -4,33 +4,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open MulAction in
 /- English proof (translation)
-Introduce `Γ G _ _ ι S U' Γ₁ Γ₀ x Φ hcomm hΓS hN htriv hΦl hΦr hTex hst hrel hcard`. Use `haveI hSn : S.Normal := ⟨fun n hn g => by`. Use `S.mul_mem (hcomm g n) hn using 1` and compare the differences between its conclusion and the goal. Use the proof step `group⟩`. Use `set C := Subgroup.comap ι (S ⊔ U') with hC`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set f := (orbit ↥S (x : G ⧸ U')).indicator fun y => Φ (Quotient.out y) with hf`. Establish `hΓC : Γ₁ ≤ C` using `fun a ha => Subgroup.mem_comap.mpr ((le_sup_left : S ≤ S ⊔ U') (Subgroup.mem_comap.mp (hΓS ha)))`. Set `j : C →* G` to `ι.comp C.subtype`. Set `φ : Γ₁ →* C` to `Subgroup.inclusion hΓC`. Establish `hclos : ∀ g ∈ S ⊔ U', ∀ y ∈ orbit ↥S (x : G ⧸ U'), g • y ∈ orbit ↥S (x : G ⧸ U')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg y hy`. Take `⟨s, hs, u, hu, rfl⟩` from `Subgroup.mem_sup_of_normal_left.mp hg`. Take `⟨⟨s', hs'⟩, rfl⟩` from `hy`. Use `⟨⟨s * (u * (s' * x) * u⁻¹ * (s' * x)⁻¹) * s', S.mul_mem (S.mul_mem hs (hcomm _ _)) hs'⟩, ?_⟩` and prove the remaining obligations. Use `show ((s * (u * (s' * x) * u⁻¹ * (s' * x)⁻¹) * s' * x : G) : G ⧸ U') = ((s * u * (s' * x) : G) : G ⧸ U')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[QuotientGroup.eq]`. Establish `he : (s * (u * (s' * x) * u⁻¹ * (s' * x)⁻¹) * s' * x)⁻¹ * (s * u * (s' * x)) = u` using `by group`. Rewrite using `[he]`. Conclude with `hu`. Establish `hinv : ∀ (h : C) (y : G ⧸ U'), f (j h • y) = f y`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h y`. Establish `hg : ι h.1 ∈ S ⊔ U'` using `h.2`. Express the relevant statement in the definitionally equal form `f (ι h.1 • y) = f y`. Distinguish the cases in `hy : y ∈ orbit ↥S (x : G ⧸ U')`. Establish `hy'` using `hclos _ hg y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf, Set.indicator_of_mem hy', Set.indicator_of_mem hy]`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U' (ι h.1 * Quotient.out y)`. Establish `hyy : ι h.1 • y = ((ι h.1 * Quotient.out y : G) : G ⧸ U')` using `by conv_lhs => rw [← QuotientGroup.out_eq' y]`. Both sides reduce to the same expression. Rewrite using `[hyy, hu, hΦr _ u.2, hΦl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy' : ι h.1 • y ∉ orbit ↥S (x : G ⧸ U')` using `fun hm => hy (by`. Use `hclos _ (inv_mem hg) _ hm` as an intermediate fact. Rewrite using `[inv_smul_smul] at this)` and apply the resulting hypothesis. Rewrite using `[hf, Set.indicator_apply, if_neg hy', Set.indicator_apply, if_neg hy]`. Establish `hfin : ∃ T' : Finset (G ⧸ U'), ∀ y, f y ≠ 0 → ∃ h : C, ∃ x' ∈ T', y = j h • x'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hT⟩` from `hTex`. Use `⟨T.image (QuotientGroup.mk : G → G ⧸ U'), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨⟨s, hs⟩, rfl⟩` from `Set.mem_of_indicator_ne_zero hy`. Take `⟨h, hh, t, ht, u, hu, he⟩` from `hT s hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨h, hΓC hh⟩, (t : G ⧸ U'), Finset.mem_image_of_mem QuotientGroup.mk ht, ?_⟩` and prove the remaining obligations. Use `show ((s * x : G) : G ⧸ U') = ((ι h * t : G) : G ⧸ U')`. Rewrite using `[he, QuotientGroup.eq]`. Rewrite using `[show (ι h * t * u)⁻¹ * (ι h * t) = u⁻¹ by group]`. Conclude with `inv_mem hu`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hsup : φ.range ⊔ Γ₀.subgroupOf C = (Γ₁ ⊔ Γ₀).subgroupOf C`. Use extensionality with `z`. Rewrite using `[Subgroup.mem_sup_of_normal_right, Subgroup.mem_subgroupOf, Subgroup.mem_sup_of_normal_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ⟨a', rfl⟩, b, hb, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a'.1, a'.2, b.1, Subgroup.mem_subgroupOf.mp hb, rfl⟩`. Introduce and unpack `⟨a, ha, b, hb, hab⟩`. Establish `hbC : b ∈ C`. Establish `hb' : b = a⁻¹ * (z : Γ)` using `by rw [← hab]; group`. Rewrite using `[hb']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `C.mul_mem (C.inv_mem (hΓC ha)) z.2`. Conclude with `⟨φ ⟨a, ha⟩, ⟨⟨a, ha⟩, rfl⟩, ⟨b, hbC⟩, Subgroup.mem_subgroupOf.mpr hb, Subtype.ext hab⟩`. Establish `hidx : (φ.range ⊔ Γ₀.subgroupOf C).index = (Γ₁ ⊔ Γ₀).relIndex C`. Rewrite using `[hsup]`. Both sides reduce to the same expression.
-
-Establish `key` using `UpperTheory.V.Z.Sym.Tf.gqIndex Γ₁ C G φ j (Γ₀.subgroupOf C) U' f inferInstance (fun z hz y => htriv z.1 (Subgroup.mem_subgroupOf.mp hz) y) (by rw [hidx]; exact hrel) hinv hfin (fun y _ => by`. Rewrite using `[← Subgroup.comap_comap]`. Conclude with `Subgroup.relIndex_comap_ne_zero _ (hst y))`. Establish `e1 : UpperTheory.V.Z.Sym.gqOn (ι.comp Γ₁.subtype) (Γ₀.subgroupOf Γ₁) U' f = UpperTheory.V.Z.Sym.gqOn (j.comp φ) (Subgroup.comap φ (Γ₀.subgroupOf C)) U' f` using `rfl`. Establish `hb : UpperTheory.V.Z.Sym.gqOn (ι.comp Γ₁.subtype) (Γ₀.subgroupOf Γ₁) U' f = ↑(Nat.card ↥(Γ₀.subgroupOf Γ₁)) * UpperTheory.V.Z.Sym.gqOn (ι.comp Γ₁.subtype) ⊥ U' f`.
-
-Use `letI := MulAction.compHom (G ⧸ U') (ι.comp Γ₁.subtype)`. Conclude with `(UpperTheory.orbitalFiber_of_bot Γ₁ (G ⧸ U') (Γ₀.subgroupOf Γ₁) f).2 hcard (fun z hz y => htriv z.1 (Subgroup.mem_subgroupOf.mp hz) y)`. Rewrite using `[← hb, e1, key, hidx]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbitalFiber_single :
     UpperTheory.V.Z.Sym.Glob.Fib.OneFib := by

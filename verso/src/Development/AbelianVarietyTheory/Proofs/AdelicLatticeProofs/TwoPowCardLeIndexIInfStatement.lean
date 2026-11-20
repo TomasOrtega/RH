@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.QNorm.two_pow_card_le_index_iInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FTwoPowCardLeIndexIInf.lean&line=9#L9)
 -/

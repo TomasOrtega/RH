@@ -12,7 +12,7 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.RStab
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gramT, hf, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, AlgEquiv.commutes, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem gramT_scale {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) {n m : ℕ}
@@ -25,7 +25,7 @@ theorem gramT_scale {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [rmul, sub_smul, Finset.sum_sub_distrib]`. Use `congr 1`. Simplify using `[Matrix.one_apply, ite_smul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem rmul_sub {E : Type} [CommRing E] {n m : ℕ} (x : Fin m → Fin n → E)
     (A : Matrix (Fin m) (Fin m) E) (a : Fin m) :
@@ -35,19 +35,17 @@ theorem rmul_sub {E : Type} [CommRing E] {n m : ℕ} (x : Fin m → Fin n → E)
   simp [Matrix.one_apply, ite_smul]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ n Hm hH Λ hΛ m Γ hΓ N e`. Establish `h0 : ((ϖ : F) ^ e) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hϖ.ne_zero)`. Establish `ht : IsUnit (algebraMap F E ((ϖ : F) ^ e))` using `(IsUnit.mk0 _ h0).map _`. Use `set t := algebraMap F E ((ϖ : F) ^ e) with htdef`. Establish `hΓ' : IsUnit ((t * t) • Γ).det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_smul]`. Conclude with `((ht.mul ht).pow _).mul hΓ`. Take `⟨N', hN'⟩` from `GlobalTheory.T.exists_isometry_near_identity_close_tuples L ϖ hϖ Hm hH Λ hΛ m _ hΓ' N`. Use `⟨N', fun i hi x hx hG A hA hAΓ => ?_⟩` and prove the remaining obligations. Establish `hϖO : algebraMap F E ((ϖ : F) ^ (i - N')) ∈ L.O`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[L.O_def]`. Establish `h1 : IsIntegral 𝒪[F] ((ϖ : F) ^ (i - N'))` using `(isIntegral_algebraMap (R := 𝒪[F]) (A := F) (x := ϖ)).pow _`. Conclude with `h1.map (IsScalarTower.toAlgHom 𝒪[F] F E)`. Take `⟨g, hg, hc, hgx⟩` from `hN' (fun a => t • x a) (fun a => t • rmul x A a) hx (by rw [gramT_scale, hG]) (by rw [gramT_scale, ContModel.gramT_rmul, hG, hAΓ]) (by`. Introduce `a`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose c hc hc' using hA`. Use `⟨∑ j, (algebraMap F E ((ϖ : F) ^ (i - N')) * c j a) • t • x j, ?_, ?_⟩` and prove the remaining obligations. Use `Λ.sum_mem fun j _ => ?_` and prove the remaining obligations. Conclude with `Λ.smul_mem (⟨_, L.O.mul_mem hϖO (hc j a)⟩ : L.O) (hx j)`. Rewrite using `[← smul_sub, rmul_sub, Finset.smul_sum, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hc', smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Establish `: (ϖ : F) ^ i = (ϖ : F) ^ N' * (ϖ : F) ^ (i - N')`. Rewrite using `[← pow_add]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, map_mul]`. Use the proof step `ring)`. Use `⟨g, hg, hc, fun a => ?_⟩` and prove the remaining obligations.
-
-Establish `h` using `hgx a`. Simplify using `only [map_smul] at h`. Conclude with `ht.smul_left_cancel.1 h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isometry_rmul : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ Λ, IsSD L Hm Λ → ∀ (m : ℕ) (Γ : Matrix (Fin m) (Fin m) E), IsUnit Γ.det → ∀ N e : ℕ, ∃ i0 : ℕ, ∀ i ≥ i0, ∀ x : Fin m → Fin n → E, (∀ a, algebraMap F E ((ϖ : F) ^ e) • x a ∈ Λ) → gramT L Hm x = Γ → ∀ A ∈ congK L ϖ m i, cT L A * Γ * A = Γ → ∃ g ∈ isomG L Hm, CongId L ϖ Λ N g ∧ ∀ a, g (x a) = rmul x A a := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ n Hm hH Λ hΛ m Γ hΓ N e

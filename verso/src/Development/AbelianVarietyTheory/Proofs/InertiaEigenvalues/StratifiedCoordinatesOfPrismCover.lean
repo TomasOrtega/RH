@@ -13,13 +13,13 @@ namespace GlobalTheory.BSP.SiteCoord
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `Hom.ext' rfl`.
+A detailed English derivation is pending.
 -/
 theorem comp_assoc {R : Type} [CommRing R] {P₁ P₂ P₃ P₄ : Obj l R} (a : Hom P₃ P₄) (b : Hom P₂ P₃)
     (c : Hom P₁ P₂) : (a.comp b).comp c = a.comp (b.comp c) := Hom.ext' rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec, S.ε_nat]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_mulVec (S : Strat bk d) {Y Y' : Obj l ↥(OL K)} (k : Hom Y Y') (g₁ g₂ : Hom bk.prism Y)
     (w : Fin d → Y.A) :
@@ -29,7 +29,7 @@ theorem map_mulVec (S : Strat bk d) {Y Y' : Obj l ↥(OL K)} (k : Hom Y Y') (g�
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_map_add {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (M : Matrix (Fin d) (Fin d) A')
     (w w' : Fin d → A) :
@@ -40,7 +40,7 @@ theorem mulVec_map_add {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A'
   simp
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_map_smul {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (M : Matrix (Fin d) (Fin d) A')
     (c : A) (w : Fin d → A) : M.mulVec (fun i => φ ((c • w) i)) = φ c • M.mulVec (fun i => φ (w i)) := by
@@ -50,23 +50,23 @@ theorem mulVec_map_smul {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A
   simp
 
 /- English proof (translation)
-Introduce `l _ K bk d S B C h f hC P _ _ u hu Q a g`. Take `⟨Q₀, a₀, h₀, hpo⟩` from `hC.stable.po Q a`. Establish `hc₀ : Cover h₀` using `(GlobalTheory.T.stable_and_cover_prismHom_of_pushout l _ B C Q Q₀ h a a₀ h₀ hpo).2 hC`. Take `⟨hinj, hsh⟩` from `GlobalTheory.T.prism_cover_injective_and_descent l _ Q Q₀ h₀ hc₀`. Take `⟨D, p, q, hpq⟩` from `hc₀.stable.po Q₀ h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcf : ∀ b, a₀.f (h.f b) = h₀.f (a.f b)` using `fun b => congrArg (fun k : Hom B Q₀ => k.f b) hpo.comm`. Take `⟨z, hzdef⟩ : ∃ z : P → Fin d → Q₀.A, z = fun x => (S.ε (h₀.comp g) (a₀.comp f)).mulVec fun i => a₀.f (u x i)` from `⟨_, rfl⟩`. Establish `hpa : (p.comp a₀).comp h = (q.comp a₀).comp h`. Rewrite using `[comp_assoc p a₀ h, comp_assoc q a₀ h, hpo.comm, ← comp_assoc p h₀ a, ← comp_assoc q h₀ a, hpq.comm]`. Establish `hg : p.comp (h₀.comp g) = q.comp (h₀.comp g)` using `by rw [← comp_assoc p h₀ g, hpq.comm, comp_assoc q h₀ g]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ x, (fun i => p.f (z x i)) = fun i => q.f (z x i)`. Introduce `x`. Establish `e1` using `hu D (p.comp a₀) (q.comp a₀) hpa x`. Simplify using `only [comp_assoc] at e1`. Establish `e1' : (fun i => p.f (a₀.f (u x i))) = (S.ε (p.comp (a₀.comp f)) (q.comp (a₀.comp f))).mulVec fun i => q.f (a₀.f (u x i))` using `e1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2` using `map_mulVec S p (h₀.comp g) (a₀.comp f) (fun i => a₀.f (u x i))`. Establish `e3` using `map_mulVec S q (h₀.comp g) (a₀.comp f) (fun i => a₀.f (u x i))`. Establish `hzx : z x = (S.ε (h₀.comp g) (a₀.comp f)).mulVec fun i => a₀.f (u x i)` using `by rw [hzdef]`. Combine the equalities or inequalities in the displayed calculation. Establish `hz : ∀ x i, ∃ y, h₀.f y = z x i` using `fun x i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hsh D p q hpq (z x i) (congrFun (key x) i)`. Conclude with `⟨y, hy⟩`. Use `choose y hy using hz`. Establish `hzx : ∀ x, z x = (S.ε (h₀.comp g) (a₀.comp f)).mulVec fun i => a₀.f (u x i)` using `fun x => congrFun hzdef x`. Establish `z_add : ∀ x x', z (x + x') = z x + z x'` using `fun x x' =>`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `z_smul : ∀ (b : B.A) x, z (b • x) = h₀.f (a.f b) • z x` using `fun b x =>`. Combine the equalities or inequalities in the displayed calculation. Set `v : P →ₛₗ[a.f] (Fin d → Q.A)` to `{ toFun := y map_add' := fun x x' => by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Conclude with `calc h₀.f (y (x + x') i) = z (x + x') i := hy _ i _ = z x i + z x' i := congrFun (z_add x x') i _ = h₀.f (y x i) + h₀.f (y x' i) := congrArg₂ (· + ·) (hy x i).symm (hy x' i).symm _ = h₀.f (y x i + y x' i) := (map_add h₀.f _ _).symm`. Use the proof step `map_smul' := fun b x => by`. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `calc h₀.f (y (b • x) i) = z (b • x) i := hy _ i _ = h₀.f (a.f b) * z x i := congrFun (z_smul b x) i _ = h₀.f (a.f b) * h₀.f (y x i) := congrArg (h₀.f (a.f b) * ·) (hy x i).symm _ = h₀.f (a.f b * y x i) := (map_mul h₀.f _ _).symm }`. Use `⟨v, ?_⟩` and prove the remaining obligations. Introduce `Q' h' a' hcomm x`. Establish `hU` using `GlobalTheory.T.prismPushoutModAdicPow_universal l _ B C Q Q₀ h a a₀ h₀ hpo Q' a' h' hcomm`. Take `⟨c, hc, -⟩` from `hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun i => h'.f (v x i)) = fun i => (c.comp h₀).f (y x i)` using `congrArg (fun k : Hom Q Q' => fun i => k.f (y x i)) hc.2.symm`. Establish `e' : (fun i => (c.comp h₀).f (y x i)) = fun i => c.f (z x i)`. Use function extensionality and compare the values at `i`. Conclude with `congrArg c.f (hy x i)`. Conclude with `calc (fun i => h'.f (v x i)) = fun i => c.f (z x i) := e.trans e' _ = fun i => c.f ((S.ε (h₀.comp g) (a₀.comp f)).mulVec (fun i => a₀.f (u x i)) i) := congrArg (fun w : Fin d → Q₀.A => fun i => c.f (w i)) (hzx x) _ = (S.ε (c.comp (h₀.comp g)) (c.comp (a₀.comp f))).mulVec fun i => …`.
+Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coords_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d) (B C : Obj l ↥(OL K)) (h : Hom B C) (f : Hom bk.prism C), Cover h → ∀ (P : Type) [AddCommGroup P] [Module B.A P] (u : P →ₛₗ[h.f] (Fin d → C.A)), (∀ (Q : Obj l ↥(OL K)) (p q : Hom C Q), p.comp h = q.comp h → ∀ x, (fun i => p.f (u x i)) = (S.ε (p.comp f) (q.comp f)).mulVec fun i => q.f (u x i)) → ∀ (Q : Obj l ↥(OL K)) (a : Hom B Q) (g : Hom bk.prism Q), ∃ v : P →ₛₗ[a.f] (Fin d → Q.A), ∀ (Q' : Obj l ↥(OL K)) (h' : Hom Q Q') (a' : Hom C Q'), a'.comp h = h'.comp a → ∀ x, (fun i => h'.f (v x i)) = (S.ε (h'.comp g) (a'.comp f)).mulVec fun i => a'.f (u x i) := by
   intro l _ K bk d S B C h f hC P _ _ u hu Q a g

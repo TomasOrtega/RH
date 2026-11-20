@@ -11,14 +11,14 @@ namespace GlobalTheory.FlagEmb.CellOpen
 variable {O : Type} [CommRing O] {X P : Scheme.{0}} {N : ℕ} {k : Type} [Field k]
 
 /- English proof (translation)
-Introduce `y _` and use `by have : y = x := Subsingleton.elim (α := PrimeSpectrum k) y x exact this ▸ hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_of_mem {W : (Sp k).Opens} {x : Sp k} (hx : x ∈ W) : ⊤ ≤ W := fun y _ => by
   have : y = x := Subsingleton.elim (α := PrimeSpectrum k) y x
   exact this ▸ hx
 
 /- English proof (translation)
-Rewrite using `[basicOpen_fnOn, top_inf_eq, mem_spOpen]`. Establish `: x.asIdeal = ⊥` using `congrArg PrimeSpectrum.asIdeal (Subsingleton.elim (α := PrimeSpectrum k) x ⊥)`. Rewrite using `[this, Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_basicOpen_fnOn (x : Sp k) (a : k) : x ∈ (Sp k).basicOpen (fnOn ⊤ a) ↔ a ≠ 0 := by
   rw [basicOpen_fnOn, top_inf_eq, mem_spOpen]
@@ -26,9 +26,9 @@ theorem mem_basicOpen_fnOn (x : Sp k) (a : k) : x ∈ (Sp k).basicOpen (fnOn ⊤
   rw [this, Ideal.mem_bot]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `e` using `appLE_appLE (spMap φ) hU.fromSpec hU.fromSpec_preimage_self.ge (le_rfl : ⊤ ≤ spMap φ ⁻¹ᵁ ⊤) a`. Use `e.symm.trans ?_` and prove the remaining obligations. Rewrite using `[fromSpec_appLE_self]`. Establish `e2` using `congrArg (fun ψ => ψ.hom a) (Scheme.ΓSpecIso_inv_naturality (R := Γ(X, U)) (S := .of A) (CommRingCat.ofHom φ))`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (congrArg (resG (Sp A) (le_top : (⊤ : (Sp A).Opens) ≤ ⊤)) e2.symm)` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem appLE_spMap_fromSpec {U : X.Opens} (hU : IsAffineOpen U) {A : Type} [CommRing A] (φ : Γ(X, U) →+* A)
     {x : Sp A ⟶ X} (hx : x = spMap φ ≫ hU.fromSpec) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) :
@@ -46,9 +46,9 @@ def sec (p0 : P ⟶ X) (g : P ⟶ PSpace O N) (U : X.Opens) (a : Fin (N + 1) →
   ∑ q, (p0.appLE U _ inf_le_left).hom (a q) * pullRatio g _ r inf_le_right q
 
 /- English proof (translation)
-Establish `h2 : ⊤ ≤ pt b v hv ⁻¹ᵁ chart O N r` using `hz ▸ h.trans (z.preimage_mono inf_le_right)`. Establish `hr : v r ≠ 0`. Use `h2 (Set.mem_univ (IsLocalRing.closedPoint k))` as an intermediate fact. Rewrite `this` using `[pt_preimage_chart]`. Introduce `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_spOpen.1 this) (e ▸ zero_mem _)`. Use `⟨hr, ((IsUnit.mk0 _ hr).map (fnOn ⊤)).mul_right_cancel ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, div_mul_cancel₀ _ hr, sec, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, appLE_appLE, appLE_spMap_fromSpec hU φ hφ, appLE_pullRatio, pullRatio_of_eq hz _ h2, mul_assoc, pullRatio_pt_top_mul _ _ _ _ _ (IsUnit.mk0 _ hr)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_sec (p0 : P ⟶ X) (g : P ⟶ PSpace O N) {U : X.Opens} (hU : IsAffineOpen U) (a : Fin (N + 1) → Γ(X, U))
     (r : Fin (N + 1)) (z : Sp k ⟶ P) (φ : Γ(X, U) →+* k) (hφ : z ≫ p0 = spMap φ ≫ hU.fromSpec) (b : O →+* k)
@@ -70,13 +70,13 @@ def linOpen (p0 : P ⟶ X) (g : P ⟶ PSpace O N) (U : X.Opens) (a : Fin (N + 1)
   ⨆ r, P.basicOpen (sec p0 g U a r)
 
 /- English proof (translation)
-Establish `key : ∀ r (h : ⊤ ≤ z ⁻¹ᵁ (p0 ⁻¹ᵁ U ⊓ g ⁻¹ᵁ chart O N r)), z x ∈ P.basicOpen (sec p0 g U a r) ↔ ∑ q, φ (a q) * v q ≠ 0` using `fun r h => by`. Take `⟨hr, e⟩` from `appLE_sec p0 g hU a r z φ hφ b v hv hz h`. Establish `e2` using `Scheme.basicOpen_appLE z ⊤ _ h (sec p0 g U a r)`. Rewrite `e2` using `[top_inf_eq]`. Use `(iff_of_eq (congrArg (x ∈ ·) e2)).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(iff_of_eq (congrArg (fun t => x ∈ (Sp k).basicOpen t) e)).trans ?_` and prove the remaining obligations. Rewrite using `[mem_basicOpen_fnOn, div_ne_zero_iff, and_iff_left hr]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨r, hr⟩` from `Opens.mem_iSup.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(key r (top_le_of_mem (x := x) (P.basicOpen_le _ hr))).1 hr`. Introduce `hx`. Take `⟨r, hr⟩` from `exists_mem_chart O N (g (z x))`. Use `Opens.mem_iSup.2 ⟨r, (key r (top_le_of_mem (x := x) ⟨?_, hr⟩)).2 hx⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ (z ≫ p0) ⁻¹ᵁ U`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self]`. Discharge the goal by the elementary cases of `trivial`.
+Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem mem_linOpen_iff (p0 : P ⟶ X) (g : P ⟶ PSpace O N) {U : X.Opens} (hU : IsAffineOpen U)
     (a : Fin (N + 1) → Γ(X, U)) (z : Sp k ⟶ P) (φ : Γ(X, U) →+* k) (hφ : z ≫ p0 = spMap φ ≫ hU.fromSpec) (b : O →+* k)
@@ -102,13 +102,13 @@ theorem mem_linOpen_iff (p0 : P ⟶ X) (g : P ⟶ PSpace O N) {U : X.Opens} (hU 
     trivial
 
 /- English proof (translation)
-Set `F : (Σ τ : T, Fin (m τ + 1)) → P.Opens` to `fun i => linOpen p0 (p (stdEn i.1 i.2 (Nat.le_of_lt_succ i.2.2))) U.1 (lform D (wLet w ∘ std i.1 i.2 (Nat.le_of_lt_succ i.2.2)))`. Use `⟨p0 ⁻¹ᵁ U.1 ⊓ ⟨⋂ i, (F i : Set P), isOpen_iInter_of_finite fun i => (F i).2⟩, fun k _ z => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : Set.range (z ≫ p0) ⊆ Set.range U.2.fromSpec`. Rewrite using `[U.2.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(h ⟨x, rfl⟩).1`. Establish `hi : IsOpenImmersion U.2.fromSpec` using `IsAffineOpen.isOpenImmersion_fromSpec U.2`. Set `l` to `IsOpenImmersion.lift U.2.fromSpec (z ≫ p0) h1`. Establish `hφ : z ≫ p0 = spMap (Spec.preimage l).hom ≫ U.2.fromSpec` using `(IsOpenImmersion.lift_fac _ _ h1).symm.trans (congrArg (· ≫ _) (Spec.map_preimage l).symm)`. Use `⟨(Spec.preimage l).hom, hφ, fun τ j hj b v hv hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_linOpen_iff p0 _ U.2 _ z _ hφ b v hv hz (IsLocalRing.closedPoint k)).1 ?_` and prove the remaining obligations. Conclude with `Set.mem_iInter.1 (h ⟨_, rfl⟩).2 ⟨τ, j, Nat.lt_succ_of_le hj⟩`. Introduce and unpack `⟨φ, hφ, H⟩ _ ⟨x, rfl⟩`. Use `⟨?_, Set.mem_iInter.2 fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ (z ≫ p0) ⁻¹ᵁ U.1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[hφ, Scheme.Hom.comp_preimage, U.2.fromSpec_preimage_self]`. Discharge the goal by the elementary cases of `trivial`. Set `y` to `z ≫ p (stdEn i.1 i.2 (Nat.le_of_lt_succ i.2.2))`. Take `⟨v, hv, e⟩` from `exists_eq_pt (Spec.preimage (y ≫ PSpace.str _ _)).hom y (Spec.map_preimage _).symm`. Conclude with `(mem_linOpen_iff p0 _ U.2 _ z φ hφ _ v hv e x).2 (H _ _ _ _ v hv e)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isCellOpen (O : Type) [CommRing O] (X P : Scheme.{0}) (T : Type) [Finite T] (m : T → ℕ) (M : ℕ)
     (p0 : P ⟶ X) (p : ∀ en : En m, P ⟶ PSpace O (plN M en.1)) (U : X.affineOpens)

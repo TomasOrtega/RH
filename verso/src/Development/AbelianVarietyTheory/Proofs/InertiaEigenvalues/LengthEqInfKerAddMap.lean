@@ -6,9 +6,9 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.Cut.Peel
 
 /- English proof (translation)
-Use `Module.length_eq_add_of_exact (Submodule.inclusion (inf_le_left : C ⊓ LinearMap.ker f ≤ C)) (f.submoduleMap C) (Submodule.inclusion_injective _) (f.submoduleMap_surjective C) ?_` and prove the remaining obligations. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : f y = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `congrArg Subtype.val hy` using `[LinearMap.submoduleMap_coe_apply]`. Conclude with `⟨⟨y.1, y.2, hy'⟩, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`. Use `ext`. Simplify `z.2.2` using `[LinearMap.submoduleMap_coe_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem length_eq_inf_ker_add_map {R M N : Type*} [Ring R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (f : M →ₗ[R] N) (C : Submodule R M) :
@@ -26,13 +26,11 @@ theorem length_eq_inf_ker_add_map {R M N : Type*} [Ring R] [AddCommGroup M] [Mod
     simpa [LinearMap.submoduleMap_coe_apply] using z.2.2
 
 /- English proof (translation)
-Proceed by induction on `Q using Finset.induction_on with`. Consider the case `empty => exact ⟨C, le_rfl, by simp, by simp⟩`. Consider the case `insert q Q hq ih`. Take `⟨C₀, hC₀, hmap, hlen⟩` from `ih`. Use `⟨C₀ ⊓ LinearMap.ker (f q), inf_le_left.trans hC₀, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Break down `Finset.mem_insert.mp hp with rfl | hp` into its components or cases. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff, ← hmap p hp]`. Conclude with `Submodule.map_mono inf_le_left`. Establish `hsplit` using `length_eq_inf_ker_add_map (f q) C₀`. Establish `hle : Module.length R ↥(C₀.map (f q)) ≤ Module.length R ↥(C.map (f q))` using `Module.length_le_of_injective _ (Submodule.inclusion_injective (Submodule.map_mono hC₀))`. Rewrite using `[Finset.sum_insert hq]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_le_map_eq_bot {R M ι : Type*} [Ring R] [AddCommGroup M] [Module R M]
     {N : ι → Type*} [∀ q, AddCommGroup (N q)] [∀ q, Module R (N q)] (f : ∀ q, M →ₗ[R] N q)
@@ -64,7 +62,7 @@ theorem exists_le_map_eq_bot {R M ι : Type*} [Ring R] [AddCommGroup M] [Module 
         _ = _ := by rw [add_assoc]
 
 /- English proof (translation)
-Introduce `D i k C Q`. Conclude with `exists_le_map_eq_bot (fun q => LinearMap.funLeft (D.nd.O i) (KOG (D.nd.O i) k) (Subtype.val : ↥(Ine (F := D.host.E) (D.nd.plOm.1 q)) → GE D.nd)) C Q`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (k : ℕ) (C : Submodule (D.nd.O i) (GE D.nd → KOG (D.nd.O i) k)) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))), ∃ C' : Submodule (D.nd.O i) (GE D.nd → KOG (D.nd.O i) k), C' ≤ C ∧ (∀ q ∈ Q, resIne i C' q = ⊥) ∧ Module.length (D.nd.O i) ↥C ≤ Module.length (D.nd.O i) ↥C' + ∑ q ∈ Q, Module.length (D.nd.O i) ↥(resIne i C q) := by
   intro D i k C Q

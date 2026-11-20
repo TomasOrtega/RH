@@ -11,13 +11,13 @@ def latMap {L : PeriodPair} {c : ℂ} {τ : ℍ} (h : IsTauOf L c τ) (v : Fin 2
   ⟨c * ((v 0 : ℂ) * (τ : ℂ) + (v 1 : ℂ)), (h.2 _).2 ⟨v 0, v 1, rfl⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `v w hvw`. Establish `h1 : c * ((v 0 : ℂ) * (τ : ℂ) + (v 1 : ℂ)) = c * ((w 0 : ℂ) * (τ : ℂ) + (w 1 : ℂ))` using `congrArg Subtype.val hvw`. Establish `h2` using `mul_left_cancel₀ h.1 h1`. Establish `him` using `congrArg Complex.im h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre` using `congrArg Complex.re h2`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.intCast_re, Complex.intCast_im, zero_mul, add_zero, Complex.add_re, Complex.mul_re, sub_zero] at him hre`. Establish `hτ : (τ : ℂ).im ≠ 0` using `τ.im_ne_zero`. Establish `h0 : (v 0 : ℝ) = w 0` using `mul_right_cancel₀ hτ him`. Rewrite `hre` using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1' : (v 1 : ℝ) = w 1` using `add_left_cancel hre`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h0` after adjusting the coercions. Conclude with `h1'` after adjusting the coercions.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx⟩`. Take `⟨u, v, rfl⟩` from `(h.2 x).1 hx`. Conclude with `⟨![u, v], by simp [latMap]⟩`.
+A detailed English derivation is pending.
 -/
 theorem latMap_bijective {L : PeriodPair} {c : ℂ} {τ : ℍ} (h : IsTauOf L c τ) :
     Function.Bijective (latMap h) := by
@@ -43,9 +43,9 @@ theorem latMap_bijective {L : PeriodPair} {c : ℂ} {τ : ℍ} (h : IsTauOf L c 
     exact ⟨![u, v], by simp [latMap]⟩
 
 /- English proof (translation)
-Establish `hE : E hk τ = (1 / 2 : ℂ) * eisensteinSeries (N` using `1) 0 k τ := by`. Rewrite using `[show E hk τ = (1 / 2 : ℂ) • eisensteinSeriesSIF (N := 1) 0 k τ from rfl, eisensteinSeriesSIF_apply 0 k τ, smul_eq_mul]`. Establish `H` using `tsum_eisSummand_eq_riemannZeta_mul_eisensteinSeries hk τ`. Establish `h1 : L.G k = ∑' v : Fin 2 → ℤ, (c ^ k)⁻¹ * eisSummand k v τ`. Rewrite using `[PeriodPair.G, ← (Equiv.ofBijective _ (latMap_bijective h)).tsum_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun v => ?_` and prove the remaining obligations. Simplify using `[latMap, eisSummand, mul_pow, mul_comm]`. Rewrite using `[h1, tsum_mul_left, H, hE]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem G_eq {L : PeriodPair} {c : ℂ} {τ : ℍ} (h : IsTauOf L c τ) {k : ℕ} (hk : 3 ≤ k) (hk2 : Even k) :
     L.G k = (c ^ k)⁻¹ * (2 * riemannZeta k) * E hk τ := by
@@ -61,11 +61,11 @@ theorem G_eq {L : PeriodPair} {c : ℂ} {τ : ℍ} (h : IsTauOf L c τ) {k : ℕ
   ring
 
 /- English proof (translation)
-Establish `h5 : bernoulli' 5 = 0`. Rewrite using `[bernoulli'_def]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, bernoulli'_zero, bernoulli'_one, bernoulli'_two, bernoulli'_three, bernoulli'_four]`. Evaluate the numerical expressions using `[Nat.choose]`. Establish `h6 : bernoulli' 6 = 1 / 42`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[bernoulli'_def]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, bernoulli'_zero, bernoulli'_one, bernoulli'_two, bernoulli'_three, bernoulli'_four, h5]`. Evaluate the numerical expressions using `[Nat.choose]`. Establish `hB : bernoulli 6 = 1 / 42`. Rewrite using `[bernoulli_eq_bernoulli'_of_ne_one (by norm_num), h6]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `riemannZeta_two_mul_nat (k := 3) (by norm_num)`. Evaluate the numerical expressions using `[Nat.factorial, hB] at h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sixVal : riemannZeta 6 = (Real.pi : ℂ) ^ 6 / 945 := by
   have h5 : bernoulli' 5 = 0 := by
@@ -86,7 +86,7 @@ theorem sixVal : riemannZeta 6 = (Real.pi : ℂ) ^ 6 / 945 := by
   ring
 
 /- English proof (translation)
-Rewrite using `[PeriodPair.g₂, G_eq h (k := 4) (by norm_num) ⟨2, rfl⟩, show ((4 : ℕ) : ℂ) = 4 by norm_num, riemannZeta_four]`. Establish `hE : E (k` using `4) (by norm_num) τ = E₄ τ := rfl`. Rewrite using `[hE]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem g₂_eq {L : PeriodPair} {c : ℂ} {τ : ℍ} (h : IsTauOf L c τ) :
     L.g₂ = (c ^ 4)⁻¹ * (4 * (Real.pi : ℂ) ^ 4 / 3) * E₄ τ := by
@@ -97,7 +97,7 @@ theorem g₂_eq {L : PeriodPair} {c : ℂ} {τ : ℍ} (h : IsTauOf L c τ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[PeriodPair.g₃, G_eq h (k := 6) (by norm_num) ⟨3, rfl⟩, show ((6 : ℕ) : ℂ) = 6 by norm_num, sixVal]`. Establish `hE : E (k` using `6) (by norm_num) τ = E₆ τ := rfl`. Rewrite using `[hE]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem g₃_eq {L : PeriodPair} {c : ℂ} {τ : ℍ} (h : IsTauOf L c τ) :
     L.g₃ = (c ^ 6)⁻¹ * (8 * (Real.pi : ℂ) ^ 6 / 27) * E₆ τ := by

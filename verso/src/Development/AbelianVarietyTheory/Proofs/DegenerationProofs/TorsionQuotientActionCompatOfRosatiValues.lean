@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.Relabel
 
 /- English proof (translation)
-Rewrite using `[actV, ν.eA.eq_symm_apply, ν.c_eq, ν.c_eq, ν.eX.apply_symm_apply, DegPre.cF, oa.c_lin, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem c_smul_val {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {N : NumD F} {O : Type} [CommRing O] [StarRing O] [Module O D.X]
@@ -21,9 +21,9 @@ theorem c_smul_val {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type
   rw [actV, ν.eA.eq_symm_apply, ν.c_eq, ν.c_eq, ν.eX.apply_symm_apply, DegPre.cF, oa.c_lin, Category.assoc]
 
 /- English proof (translation)
-Establish `a` using `congrArg Units.val e₂`. Establish `b` using `congrArg Units.val e₃`. Simplify using `only [Units.val_mul] at a b e₄`. Use `mul_right_cancel₀ (mul_ne_zero h₃.ne_zero h₄.ne_zero) ?_` and prove the remaining obligations. Rewrite `a` using `[e₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(h₄ : F) * a - ρ' * h₃ * b - (s₀ : F) * t * e₄`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem actq_cancel {F : Type} [Field F] {s s' s₀ s₀' t h₁ h₂ h₃ h₄ h₅ h₆ : Fˣ} {ρ ρ' : F}
     (e₁ : (s : F) = s₀ * ρ) (e₂ : s' * h₃ = s * t * h₅ * h₆) (e₃ : s₀' * h₄ = s₀ * t * h₁ * h₂)
@@ -36,21 +36,21 @@ theorem actq_cancel {F : Type} [Field F] {s s' s₀ s₀' t h₁ h₂ h₃ h₄ 
   linear_combination (h₄ : F) * a - ρ' * h₃ * b - (s₀ : F) * t * e₄
 
 /- English proof (translation)
-Introduce `hG hB E _ _ _ H D`. Use `letI := H.starRing`. Introduce `R R' _ _ _ _ F _ _ _ _ A D' _ oa' he' hb' N' ν' k β u r J hr hbal hX hA hρ`. Introduce `j hj x p₀ p₁ p₀' p₁' q₀ q₁ q₀' q₁' ⟨q, hqy, hqg, hqe⟩ h₀ h₁ t₀ t₁ h₀' h₁'`. Take `⟨-, -, -, -, B⟩` from `hB R A.D₀ A.even A.bimult F A.N A.ν`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, B'⟩` from `hB R' D' he' hb' F N' ν'`. Take `⟨τ, hτ, hτe, -⟩` from `(twJ_mulEquiv F A.N N' k β u J).1 (r j) j (hr.pow hj)`. Take `⟨qv, hqv, -⟩` from `(B j).1 q`. Take `⟨q', hq'⟩` from `(B' j).2.1 (τ qv)`. Establish `tq` using `(hτ qv _).1 rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, ρ', hρ₁, hρ₂, hρ₃⟩` from `hρ x`. Take `⟨vb, vs⟩` from `((gtAct_values hG R A.D₀ F A.N A.ν (𝓞 E)).2 A.oa x ρ hρ₁ _ _ _ _ h₀.2 hqv.2).1 hqg`. Establish `hy : qv.1.1.toAdd = A.act x q₀.1.1.toAdd`. Rewrite using `[ArcF.act, A.ν.eX.eq_symm_apply, hqv.1, h₀.1, hqy]`. Take `⟨P, ⟨Py, Pb, Ps⟩, Py', Pb', Ps'⟩` from `tq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P₀, ⟨P₀y, P₀b, P₀s⟩, P₀y', P₀b', P₀s'⟩` from `t₀`. Use `⟨q', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq'.1, ← h₀'.1, Py', P₀y', Py, P₀y]`. Conclude with `(congrArg (fun y => ν'.eX (J.e y)) hy).trans (hX _ _)`. Use `((gtAct_values hG R' D' F N' ν' (𝓞 E)).2 oa' x ρ' hρ₂ _ _ _ _ h₀'.2 hq'.2).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pb', P₀b', Pb, P₀b, vb]`. Conclude with `hA _ _`. Rewrite using `[J.e.surjective.forall]`. Introduce `(χ : A.N.X)`. Establish `e₁` using `vs χ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `Ps' χ`. Establish `e₃` using `P₀s' (A.act (star x) χ)`. Establish `e₄` using `hρ₃ (A.N.c χ) q₀.1.2.b`. Establish `c₁ : (A.N.twist β u).c (A.act (star x) χ) = actV (N` using `A.N) A.ν A.oa.onB (star x) (A.N.c χ) := c_smul_val A.ν A.oa (star x) χ`. Rewrite `e₂` using `[Ps, Pb, vb, hy, hbal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e₃` using `[P₀s, P₀b, c₁]`. Establish `l : ν'.eX.symm (star x • ν'.eX (J.e χ)) = J.e (A.act (star x) χ)`. Rewrite using `[ν'.eX.symm_apply_eq, hX]`. Establish `c₂ : N'.c (J.e χ) = J.φ (A.N.c χ)` using `J.c_eq χ`. Rewrite using `[l, c₂, P₀b', P₀b]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `actq_cancel e₁ e₂ e₃ e₄`. Use `((B' j).2.2 q' p₁' _ _ hq' h₁').2 ?_` and prove the remaining obligations. Rewrite using `[← (hτ q₁ q₁').2 t₁]`. Conclude with `(hτe _ _).1 (((B j).2.2 q p₁ _ _ hqv h₁).1 hqe)`.
+A detailed English derivation is pending.
 -/
 theorem actCompat_of_rosV : GlobalFnsSt → BrGtSt → AllD fun {E} _ _ _ {H} D => letI := H.starRing; ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] [Algebra (FractionRing R') F] (A : ArcF D R F) (D' : DegPre R') [Module (𝓞 E) D'.X] (oa' : D'.OAct (𝓞 E)), D'.PsiEven → D'.TauBimult → ∀ (N' : NumD F) (ν' : NumOf D' F N') (k : ℕ) (β : A.N.Form k) (u : Fˣ) (r : ℕ → Fˣ) (J : NumD.Iso (A.N.twist β u) N'), Roots u r → A.Bal β → (∀ (x : 𝓞 E) y, ν'.eX (J.e (A.act x y)) = x • ν'.eX (J.e y)) → (∀ (x : 𝓞 E) b, J.φ (actV (N := A.N) A.ν A.oa.onB x b) = actV ν' oa'.onB x (J.φ b)) → (∀ a : 𝓞 E, ∃ ρ ρ', RosV A.ν A.oa.onB a ρ ∧ RosV ν' oa'.onB a ρ' ∧ ∀ b b' : A.N.A, ρ' (J.φ b) (J.φ b') * (J.h (actV (N := A.N) A.ν A.oa.onB (star a) b) * J.h b' * J.h (b * actV (N := A.N) A.ν A.oa.onB a b') : Fˣ) = ρ b b' * (J.h (actV (N := A.N) A.ν A.oa.onB (star a) b * b') * J.h b * J.h (actV (N := A.N) A.ν A.oa.onB a b') : Fˣ)) → ActCompat A.ν A.oa ν' oa' β u r J := by
   intro hG hB E _ _ _ H D

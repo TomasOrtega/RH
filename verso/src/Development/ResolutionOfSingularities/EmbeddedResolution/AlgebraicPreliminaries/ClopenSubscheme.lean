@@ -7,7 +7,7 @@ universe u
 namespace AlgebraicGeometry.Scheme.Opens
 
 /- English proof (translation)
-The claim follows from `IsClosedImmersion.of_isPreimmersion U.ι (by rw [U.range_ι]; exact hU)`.
+A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_ι_of_isClosed {X : Scheme.{u}} (U : X.Opens)
     (hU : IsClosed (U : Set X)) : IsClosedImmersion U.ι :=
@@ -18,23 +18,21 @@ end AlgebraicGeometry.Scheme.Opens
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `hCclosed : IsClosed (C : Set X)` using `by rw [← hZ]; exact Z.2`. Establish `: IsClosedImmersion C.ι` using `IsClosedImmersion.of_isPreimmersion C.ι (by rw [C.range_ι]; exact hCclosed)`. Establish `hkersupp : ((Scheme.Hom.ker C.ι).support : Set X) = (Z : Set X)`. Rewrite using `[Scheme.Hom.support_ker, C.range_ι, hCclosed.closure_eq]`. Conclude with `hZ.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZsupp : (Scheme.Hom.ker C.ι).support = Z` using `TopologicalSpace.Closeds.ext hkersupp`. Establish `hvan : Scheme.IdealSheafData.vanishingIdeal Z = (Scheme.Hom.ker C.ι).radical`. Rewrite using `[← hZsupp]`. Conclude with `Scheme.IdealSheafData.vanishingIdeal_support`. Establish `hsupp : (Scheme.IdealSheafData.vanishingIdeal Z).support = Z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hvan, Scheme.IdealSheafData.support_radical]`. Conclude with `hZsupp`. Establish `hrange : Set.range ⇑(Scheme.IdealSheafData.vanishingIdeal Z).subschemeι = (C : Set X)`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι, hsupp]`. Conclude with `hZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : Scheme.Hom.ker C.ι ≤ Scheme.Hom.ker (Scheme.IdealSheafData.vanishingIdeal Z).subschemeι`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, hvan]`. Conclude with `Scheme.IdealSheafData.le_radical _`. Set `φ : (Scheme.IdealSheafData.vanishingIdeal Z).subscheme ⟶ C.toScheme` to `IsClosedImmersion.lift C.ι (Scheme.IdealSheafData.vanishingIdeal Z).subschemeι hle`. Establish `hφ : φ ≫ C.ι = (Scheme.IdealSheafData.vanishingIdeal Z).subschemeι` using `IsClosedImmersion.lift_fac _ _ hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφbase : ∀ x, ⇑C.ι (⇑φ x) = ⇑(Scheme.IdealSheafData.vanishingIdeal Z).subschemeι x`. Introduce `x`. Rewrite using `[← hφ]`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective ⇑C.ι` using `C.ι.isOpenEmbedding.injective`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective ⇑φ`. Introduce `y`. Establish `hy : ⇑C.ι y ∈ Set.range ⇑(Scheme.IdealSheafData.vanishingIdeal Z).subschemeι`. Rewrite using `[hrange, ← C.range_ι]`. Conclude with `Set.mem_range_self y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hy`. Use `⟨x, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[hφbase x]`. Conclude with `hx`. Establish `: IsPreimmersion (φ ≫ C.ι)` using `by rw [hφ]; infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: IsPreimmersion φ` using `IsPreimmersion.of_comp φ C.ι`. Establish `: IsClosedImmersion φ` using `IsClosedImmersion.of_isPreimmersion φ (by rw [hsurj.range_eq]; exact isClosed_univ)`. Establish `hker : Scheme.Hom.ker φ = ⊥`. Rewrite using `[← Scheme.IdealSheafData.support_eq_top_iff]`. Use `TopologicalSpace.Closeds.ext ?_` and prove the remaining obligations.
-
-Rewrite using `[Scheme.Hom.support_ker, hsurj.range_eq, closure_univ]`. Simplify using the standard rewrite rules. Establish `: IsIso φ` using `IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker`. Conclude with `⟨asIso φ, hφ⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_iso_subscheme_vanishingIdeal_of_coe_eq {X : Scheme} [IsReduced X]
     (C : X.Opens) (Z : Closeds X) (hZ : (Z : Set X) = (C : Set X)) :
@@ -93,7 +91,7 @@ private theorem exists_iso_subscheme_vanishingIdeal_of_coe_eq {X : Scheme} [IsRe
   exact ⟨asIso φ, hφ⟩
 
 /- English proof (translation)
-The claim follows from `exists_iso_subscheme_vanishingIdeal_of_coe_eq C _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_subscheme_vanishingIdeal_of_isClosed
     {X : Scheme} [IsReduced X] (C : X.Opens) (hC : IsClosed (C : Set X)) :

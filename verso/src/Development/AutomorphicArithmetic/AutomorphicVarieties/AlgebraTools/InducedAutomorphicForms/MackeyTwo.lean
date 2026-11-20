@@ -4,13 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Induc
 open UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Establish `key : ∀ x : V, x - (B.projectionOnto W hB x : V) ∈ W`. Introduce `x`. Rewrite using `[← Submodule.projectionOnto_apply_eq_zero_iff hB, map_sub, Submodule.projectionOnto_apply_left, sub_self]`. Use `⟨LinearEquiv.ofBijective ((B.projectionOnto W hB) ∘ₗ A.subtype) ⟨?_, ?_⟩, fun v => key v⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Establish `h1 : (a : V) ∈ W` using `(Submodule.projectionOnto_apply_eq_zero_iff hB).1 ha`. Conclude with `Subtype.ext (Submodule.disjoint_def.1 hA.disjoint _ a.2 h1)`. Introduce `b`. Establish `hb : (b : V) ∈ A ⊔ W` using `by rw [hA.sup_eq_top]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, w, hw, hsum⟩` from `Submodule.mem_sup.1 hb`. Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : a = (b : V) - w` using `by rw [← hsum]; abel`. Establish `h2 : B.projectionOnto W hB w = 0` using `(Submodule.projectionOnto_apply_eq_zero_iff hB).2 hw`. Use `show B.projectionOnto W hB a = b`.
-
-Rewrite using `[h1, map_sub, h2, sub_zero, Submodule.projectionOnto_apply_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem graph_equiv {k V : Type} [Field k] [AddCommGroup V] [Module k V]
     (A B W : Submodule k V) (hA : IsCompl A W) (hB : IsCompl B W) :
@@ -34,37 +32,33 @@ private theorem graph_equiv {k V : Type} [Field k] [AddCommGroup V] [Module k V]
     rw [h1, map_sub, h2, sub_zero, Submodule.projectionOnto_apply_left]
 
 /- English proof (translation)
-Introduce `k G V _ _ _ _ ρ H s V₁ hi hs hst hirr hc hne W hW`. Establish `hmul : ∀ (a b : G) (x : V), ρ a (ρ b x) = ρ (a * b) x`. Introduce `a b x`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hinv : ∀ x : V, ρ s⁻¹ (ρ s x) = x`. Introduce `x`. Rewrite using `[hmul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Establish `hinv' : ∀ x : V, ρ s (ρ s⁻¹ x) = x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[hmul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Establish `hconj : ∀ h ∈ H, s⁻¹ * (h * s) ∈ H`. Introduce `h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Subgroup.mul_mem_iff_of_index_two hi, hs, hh]`. Establish `hss : s * s ∈ H` using `by simp [Subgroup.mul_mem_iff_of_index_two hi]`. Establish `hst2 : StableOn ρ H (V₁.map (ρ s))`. Introduce and unpack `h hh _ ⟨v, hv, rfl⟩`. Use `⟨ρ (s⁻¹ * (h * s)) v, hst _ (hconj h hh) v hv, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmul, hmul, mul_inv_cancel_left]`. Establish `hW' : ∀ g, ∀ v ∈ W, ρ g v ∈ W` using `fun g => hW g trivial`. Break down `hirr (V₁ ⊓ W) inf_le_left (fun h hh v hv => ⟨hst h hh v hv.1, hW' h v hv.2⟩) with h0 | h1` into its components or cases. Use `swap`. Use `right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : V₁ ≤ W` using `inf_eq_left.1 h1`. Rewrite using `[eq_top_iff, ← hc.sup_eq_top]`. Use `sup_le hle ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hW' s v (hle hv)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d1 : Disjoint V₁ W` using `disjoint_iff.2 h0`. Establish `d2 : Disjoint (V₁.map (ρ s)) W`. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ ⟨v, hv, rfl⟩ hw`. Establish `: v ∈ W` using `hinv v ▸ hW' s⁻¹ _ hw`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.disjoint_def.1 d1 v hv this, map_zero]`. Break down `hirr (V₁ ⊓ (V₁.map (ρ s) ⊔ W)) inf_le_left (fun h hh v hv => ⟨hst h hh v hv.1, by` into its components or cases. Take `⟨a, ha, w, hw, rfl⟩` from `Submodule.mem_sup.1 hv.2`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hst2 h hh a ha) (hW' h w hw)⟩) with h2 | h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Establish `hb : w ∈ V₁ ⊔ V₁.map (ρ s)` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨a, ha, b, hb, hsum⟩` from `Submodule.mem_sup.1 hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha' : a ∈ V₁ ⊓ (V₁.map (ρ s) ⊔ W)`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Establish `: a = -b + w` using `by rw [← hsum]; abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (neg_mem hb) hw`.
+Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ha'` using `[h2, Submodule.mem_bot]`. Rewrite `hsum` using `[ha', zero_add]`. Conclude with `Submodule.disjoint_def.1 d2 w (hsum ▸ hb) hw`. It suffices to derive a contradiction. Establish `hle : V₁ ≤ V₁.map (ρ s) ⊔ W` using `inf_eq_left.1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c2 : IsCompl (V₁.map (ρ s)) W`. Use `⟨d2, codisjoint_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hc.sup_eq_top]`. Conclude with `sup_le hle le_sup_left`. Establish `c1 : IsCompl V₁ W`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d1, codisjoint_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hc.sup_eq_top]`. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Take `⟨_, ⟨a, ha, rfl⟩, w, hw, rfl⟩` from `Submodule.mem_sup.1 (hle hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[map_add, hmul]`. Conclude with `Submodule.add_mem_sup (hst _ hss a ha) (hW' s w hw)`. Take `⟨e, he⟩` from `graph_equiv _ _ _ c1 c2`. Use `hne ⟨e, fun h hh v w hvw => ?_⟩` and prove the remaining obligations. Establish `m1 : (e w : V) - ρ h (e v) ∈ V₁.map (ρ s)` using `sub_mem (e w).2 (hst2 h hh _ (e v).2)`.
-
-Establish `m2 : (e w : V) - ρ h (e v) ∈ W`. Establish `: (e w : V) - ρ h (e v) = ρ h ((v : V) - e v) - ((w : V) - e w)`. Rewrite using `[map_sub, ← hvw]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
-
-Conclude with `sub_mem (hW' h _ (he v)) (he w)`. Conclude with `sub_eq_zero.1 (Submodule.disjoint_def.1 d2 _ m1 m2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.mackeyTwo :
     ∀ {k G V : Type} [Field k] [Group G] [AddCommGroup V] [Module k V] (ρ : Representation k G V) (H : Subgroup G) (s : G) (V₁ : Submodule k V), H.index = 2 → s ∉ H → StableOn ρ H V₁ → (∀ W ≤ V₁, StableOn ρ H W → W = ⊥ ∨ W = V₁) → IsCompl V₁ (V₁.map (ρ s)) → (¬ ∃ e : V₁ ≃ₗ[k] V₁.map (ρ s), ∀ h ∈ H, ∀ v w : V₁, (w : V) = ρ h v → (e w : V) = ρ h (e v)) → IrrOn ρ ⊤ := by

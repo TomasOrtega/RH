@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.HhModel
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Establish `h : (monomial m a : RP Ψ N) = a • basisMonomials (Ψ × Fin N) ℝ m`. Simplify using `[coe_basisMonomials, smul_monomial]`. Rewrite using `[h, map_smul, hhFl, Module.Basis.constr_basis, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hhFl_monomial (II : IntersectionSystem) (m : Ψ × Fin N →₀ ℕ) (a : ℝ) :
     hhFl Ψ N II (monomial m a) = a * ((-1) ^ m.degree * hFlMono Ψ N II m) := by
@@ -19,7 +19,7 @@ theorem hhFl_monomial (II : IntersectionSystem) (m : Ψ × Fin N →₀ ℕ) (a 
   rw [h, map_smul, hhFl, Module.Basis.constr_basis, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[hhFl_monomial, hFlMono, if_neg]`. Simplify using the standard rewrite rules. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hhFl_monomial_of_ne (II : IntersectionSystem) (m : Ψ × Fin N →₀ ℕ) (a : ℝ)
     (h : m.degree ≠ GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N + 1) : hhFl Ψ N II (monomial m a) = 0 := by
@@ -28,7 +28,7 @@ theorem hhFl_monomial_of_ne (II : IntersectionSystem) (m : Ψ × Fin N →₀ �
   · exact h
 
 /- English proof (translation)
-Establish `h1 : (Finset.univ.filter (fun i : Fin 2 => 1 ≤ (i : ℕ))) = {1}` using `by decide`. Establish `h2 : (Finset.univ.filter (fun ab : Fin 2 × Fin 2 => ab.1 < ab.2 ∧ ((ab.1 : ℕ) < 1 ↔ (ab.2 : ℕ) < 1))) = ∅`. Evaluate the decidable proposition. Simplify using `only [testPoly, muSmall, fibClass, dimX, h1, h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the decidable proposition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem testPoly_line : (testPoly 1 : RP Unit 2) = X ((), 1) ^ 2 := by
   have h1 : (Finset.univ.filter (fun i : Fin 2 => 1 ≤ (i : ℕ))) = {1} := by decide
@@ -38,11 +38,9 @@ theorem testPoly_line : (testPoly 1 : RP Unit 2) = X ((), 1) ^ 2 := by
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `DFunLike.congr_fun h ((), 1)`. Simplify using `[permExp] at h1`. Use `revert h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `σ () = s`. Use `revert s`. Evaluate the decidable proposition. Introduce `h`. Use extensionality with `⟨⟨⟩, i⟩`.
-
-Apply the tactic sequence `fin_cases i <;> simp [permExp, h]`.
+Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem permExp_eq_iff (σ : Unit → Equiv.Perm (Fin 2)) :
     Finsupp.single ((), (1 : Fin 2)) 1 = permExp σ ↔ σ () = Equiv.swap 0 1 := by
@@ -59,11 +57,11 @@ theorem permExp_eq_iff (σ : Unit → Equiv.Perm (Fin 2)) :
     fin_cases i <;> simp [permExp, h]
 
 /- English proof (translation)
-Establish `h1 : (Finset.univ.filter (fun i : Fin 2 => 1 ≤ (i : ℕ))) = {1}` using `by decide`. Establish `h2 : (Finset.univ.filter (fun ab : Fin 2 × Fin 2 => ab.1 < ab.2 ∧ ((ab.1 : ℕ) < 1 ↔ (ab.2 : ℕ) < 1))) = ∅`. Evaluate the decidable proposition. Establish `h3 : (muSmall 1 ^ dimX Unit 2 1 * fibClass 1 : RP Unit 2) = X ((), 1)`. Simplify using `only [muSmall, fibClass, dimX, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the decidable proposition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[testDeg, h3, degFl, Finset.sum_eq_single (fun _ => Equiv.swap 0 1)]`. Rewrite using `[coeff_X, if_pos ((permExp_eq_iff _).2 rfl)]`. Simplify using `[GlobalTheory.CompanionTheory.Ar.Top.dimFl]`. Introduce `σ _ hσ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_X, if_neg, mul_zero]`. Introduce `h`. Conclude with `hσ (funext fun _ => (permExp_eq_iff σ).1 h)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem testDeg_line : testDeg Unit 2 1 = 1 := by
   have h1 : (Finset.univ.filter (fun i : Fin 2 => 1 ≤ (i : ℕ))) = {1} := by decide
@@ -82,7 +80,7 @@ theorem testDeg_line : testDeg Unit 2 1 = 1 := by
   · simp
 
 /- English proof (translation)
-Rewrite using `[HhTestBound, testPoly_line, testDeg_line]`. Evaluate the numerical expressions using `[dimX]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hhTestBound_line (hh : RP Unit 2 → ℝ) : HhTestBound 1 hh ↔ hh (X ((), 1) ^ 2) ≤ Real.log 3 := by
   rw [HhTestBound, testPoly_line, testDeg_line]
@@ -90,7 +88,7 @@ theorem hhTestBound_line (hh : RP Unit 2 → ℝ) : HhTestBound 1 hh ↔ hh (X (
   constructor <;> intro h <;> linarith
 
 /- English proof (translation)
-Rewrite using `[hhTestBound_line]`. Use `Real.one_sub_inv_le_log_of_pos (show (0 : ℝ) < 3 by norm_num)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hhTestBound_half : HhTestBound (Ψ := Unit) (N := 2) 1 (fun _ => 1 / 2) := by
   rw [hhTestBound_line]
@@ -98,7 +96,7 @@ theorem hhTestBound_half : HhTestBound (Ψ := Unit) (N := 2) 1 (fun _ => 1 / 2) 
   linarith
 
 /- English proof (translation)
-Rewrite using `[hhTestBound_line, not_le]`. Use `Real.log_lt_sub_one_of_pos (show (0 : ℝ) < 3 by norm_num) (by norm_num)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem not_hhTestBound_two : ¬ HhTestBound (Ψ := Unit) (N := 2) 1 (fun _ => 2) := by
   rw [hhTestBound_line, not_le]
@@ -106,11 +104,11 @@ theorem not_hhTestBound_two : ¬ HhTestBound (Ψ := Unit) (N := 2) 1 (fun _ => 2
   linarith
 
 /- English proof (translation)
-Rewrite using `[testPoly_line, X_pow_eq_monomial, hhFl_monomial, hFlMono, if_pos (by simp; rfl)]`. Simplify using `only [Finsupp.degree_single, even_two, Even.neg_pow, one_pow, one_mul]`. Use `show II (FlBlock Unit 2) (FlIdx Unit 2) (PFl Unit 2) 2 _ = _`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hl : (Finsupp.toMultiset (Finsupp.single ((), (1 : Fin 2)) 2)).toList.length = 2` using `by simp`. Unfold `GroundTheory.Heights₂.Heights.LowerBoundFree.monoLines`. Rewrite using `[dif_pos (by rw [hl]; exact k.2)]`. Use `congr 1`. Establish `hm` using `List.get_mem (Finsupp.toMultiset (Finsupp.single ((), (1 : Fin 2)) 2)).toList ⟨k, by rw [hl]; exact k.2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[Multiset.mem_toList, Finsupp.mem_toMultiset]`. Simplify using `using Finsupp.support_single_subset hm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hhFl_testPoly_line (II : IntersectionSystem) :
     hhFl Unit 2 II (testPoly 1) =
@@ -129,11 +127,11 @@ theorem hhFl_testPoly_line (II : IntersectionSystem) :
   simpa using Finsupp.support_single_subset hm
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial, hhFl_monomial, hFlMono, if_pos (by simp; rfl)]`. Simplify using `only [Finsupp.degree_single, one_mul]`. Use `congr 1`. Use `show II (FlBlock Ψ N) (FlIdx Ψ N) (PFl Ψ N) (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N + 1) _ = _`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Establish `hl : (Finsupp.toMultiset (Finsupp.single p (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N + 1))).toList.length = GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N + 1` using `by simp`. Unfold `GroundTheory.Heights₂.Heights.LowerBoundFree.monoLines`. Rewrite using `[dif_pos (by rw [hl]; exact k.2)]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hm` using `List.get_mem (Finsupp.toMultiset (Finsupp.single p (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N + 1))).toList ⟨k, by rw [hl]; exact k.2⟩`. Rewrite `hm` using `[Multiset.mem_toList, Finsupp.mem_toMultiset]`. Simplify using `using Finsupp.support_single_subset hm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hhFl_X_pow (II : IntersectionSystem) (p : Ψ × Fin N) :
     hhFl Ψ N II (X p ^ (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N + 1)) = (-1) ^ (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N + 1) *
@@ -155,9 +153,9 @@ theorem hhFl_X_pow (II : IntersectionSystem) (p : Ψ × Fin N) :
   simpa using Finsupp.support_single_subset hm
 
 /- English proof (translation)
-Take `⟨K, _, ι, _, Ω, _, _, E, _, _, D, O, Lt, _, _, _, X, hN, hj, hrd, hLv, h1, h2, h4, h5, h6, h7, h8, h9⟩` from `h`. Establish `hj' : D.j' = N - T.j` using `by rw [ComponentData.j', hN, hj]`. Use `hL II Ψ K ι Ω E D O Lt X Ch Cu hII h1 h2 h4 h5 h6 h7 (by rw [hj', hN]; exact h3) B hB (by rw [hN]; exact hB') h8` as an intermediate fact. Rewrite `this` using `[hj', ComponentSetting.La, hrd, hLv]`. Rewrite using `[h9]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right this (mul_nonneg (by positivity) hv)`.
+A detailed English derivation is pending.
 -/
 theorem lower_bound_of_base_setting (hL : LowerBoundComponent.Statement) (II : IntersectionSystem) (hII : IsIntersectionSystem II)
     (T : RootTower Ψ N) (Ch Cu rd Lval : ℝ) (B : ℕ) (c : T.Comp) (h3 : 3 * (N - T.j) + 1 ≤ N)

@@ -16,7 +16,7 @@ structure IsFiniteAbelian (L : IntermediateField F (AlgebraicClosure F)) : Prop 
   comm : ∀ a b : L ≃ₐ[F] L, a * b = b * a
 
 /- English proof (translation)
-The claim follows from `inferInstance isGalois := inferInstance comm a b := by have key : ∀ c : (⊥ : IntermediateField F (AlgebraicClosure F)) ≃ₐ[F] (⊥ : IntermediateField F (AlgebraicClosure F)), c = 1 := by intro c ext x obtain ⟨r, hr⟩ := IntermediateField.mem_bot.mp x.2 have hx : x = algebraMap F _ r …`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteAbelian_bot : IsFiniteAbelian F (⊥ : IntermediateField F (AlgebraicClosure F)) where
   finiteDimensional := inferInstance
@@ -52,7 +52,7 @@ def abRestrict (L : IntermediateField F (AlgebraicClosure F)) (h : IsFiniteAbeli
         exact hc)
 
 /- English proof (translation)
-The claim follows from `h.isGalois abRestrict F L h (toAb F g) = AlgEquiv.restrictNormalHom L g := by unfold abRestrict toAb exact QuotientGroup.lift_mk' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem abRestrict_mk (L : IntermediateField F (AlgebraicClosure F)) (h : IsFiniteAbelian F L)
     (g : AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F) :
@@ -167,7 +167,7 @@ def rayUnits (m₀ : Ideal (𝓞 K)) (mInf : Set (InfinitePlace K)) : Set (Idele
         Valued.v (algebraMap K (v.adicCompletion K) (x : K))}
 
 /- English proof (translation)
-Use `⟨fun w _ => ⟨1, by rw [mul_one]; rfl⟩, fun v => ⟨?_, 0, m₀.zero_mem, ?_⟩⟩` and prove the remaining obligations. Use `show Valued.v (1 : v.adicCompletion K) = 1`. Conclude with `map_one _`. Use `show Valued.v ((1 : v.adicCompletion K) - 1) ≤ _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_rayUnits (m₀ : Ideal (𝓞 K)) (mInf : Set (InfinitePlace K)) :
     (1 : Ideles K) ∈ rayUnits K m₀ mInf := by
@@ -193,7 +193,7 @@ def localIdele (v : HeightOneSpectrum (𝓞 K)) : (v.adicCompletion K)ˣ →* Id
       map_mul' := fun x y => Prod.ext (mul_one 1).symm (map_mul (finiteSingle K v) x y) }
 
 /- English proof (translation)
-Use `show Pi.mulSingle v (x : v.adicCompletion K) v = _`. Conclude with `Pi.mulSingle_eq_same v _`.
+A detailed English derivation is pending.
 -/
 theorem localIdele_snd_self (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
     (localIdele K v x : AdeleRing (𝓞 K) K).2 v = x := by
@@ -202,7 +202,7 @@ theorem localIdele_snd_self (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicComplet
   exact Pi.mulSingle_eq_same v _
 
 /- English proof (translation)
-Use `⟨fun w => rfl, fun v' hv' => ?_⟩` and prove the remaining obligations. Use `show Pi.mulSingle v (x : v.adicCompletion K) v' = 1`. Conclude with `Pi.mulSingle_eq_of_ne hv' _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem localIdele_isSupportedAt (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
     IsSupportedAt K (localIdele K v x) v := by
@@ -212,7 +212,7 @@ theorem localIdele_isSupportedAt (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCo
   exact Pi.mulSingle_eq_of_ne hv' _
 
 /- English proof (translation)
-Establish `e : algebraMap K (v.adicCompletion K) (y : K) = ((algebraMap (𝓞 K) K y : K) : v.adicCompletion K)` using `rfl`. Rewrite using `[e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_algebraMap_eq_one (v : HeightOneSpectrum (𝓞 K)) (y : 𝓞 K) (hy : y ∉ v.asIdeal) :
     Valued.v (algebraMap K (v.adicCompletion K) (y : K)) = 1 := by
@@ -223,11 +223,11 @@ theorem valued_algebraMap_eq_one (v : HeightOneSpectrum (𝓞 K)) (y : 𝓞 K) (
   exact hy
 
 /- English proof (translation)
-Use `⟨fun w _ => ?_, fun v' => ?_⟩` and prove the remaining obligations. Rewrite using `[ha.1 w]`. Conclude with `⟨1, (mul_one 1).symm⟩`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨hu, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyv⟩` from `SetLike.not_le_iff_exists.mp hv`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[valued_algebraMap_eq_one K v' y hyv]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[ha.2 v' h]`. Conclude with `⟨map_one _, 0, m₀.zero_mem, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_rayUnits_of_isSupportedAt (m₀ : Ideal (𝓞 K)) (mInf : Set (InfinitePlace K))
     (a : Ideles K) (v : HeightOneSpectrum (𝓞 K)) (ha : IsSupportedAt K a v)
@@ -250,11 +250,11 @@ theorem mem_rayUnits_of_isSupportedAt (m₀ : Ideal (𝓞 K)) (mInf : Set (Infin
     exact ⟨map_one _, 0, m₀.zero_mem, by simp⟩
 
 /- English proof (translation)
-Use `⟨mem_rayUnits_of_isSupportedAt K m₀ mInf _ v (localIdele_isSupportedAt K v _) hv ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[localIdele_snd_self]`. Simplify using the standard rewrite rules. Introduce `h`. Establish `h1` using `congrArg (fun a : Ideles K => (a : AdeleRing (𝓞 K) K).2 v) h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [localIdele_snd_self] at h1`. Establish `h2 : (-1 : v.adicCompletion K) = 1` using `h1.trans rfl`. Establish `h3 : algebraMap K (v.adicCompletion K) 2 = algebraMap K (v.adicCompletion K) 0`. Rewrite using `[map_ofNat, map_zero]`. Take the linear combination `-h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `two_ne_zero ((algebraMap K (v.adicCompletion K)).injective h3)`.
+A detailed English derivation is pending.
 -/
 theorem localIdele_neg_one_mem_rayUnits (m₀ : Ideal (𝓞 K)) (mInf : Set (InfinitePlace K))
     (v : HeightOneSpectrum (𝓞 K)) (hv : ¬ m₀ ≤ v.asIdeal) :
@@ -285,7 +285,7 @@ def localNormGroup (v : HeightOneSpectrum (𝓞 K)) (L : Type*) [Field L] [Algeb
     TensorProduct K (v.adicCompletion K) L →* v.adicCompletion K)).range
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example (v : HeightOneSpectrum (𝓞 K)) (L : Type*) [Field L] [Algebra K L]
     [FiniteDimensional K L] :
@@ -307,7 +307,7 @@ def localComposite (Art : IdeleClassGroup K →* Field.absoluteGaloisGroupAbelia
     (Art.comp ((QuotientGroup.mk' (diagUnits K).range).comp (localIdele K v)))
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (v.adicCompletionIntegers K)`. Establish `h0 : (ϖ : v.adicCompletion K) ≠ 0`. Introduce `h`. Conclude with `hϖ.ne_zero (Subtype.ext h)`. Conclude with `⟨Units.mk0 _ h0, ϖ.2, hϖ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isUniformiserAt (v : HeightOneSpectrum (𝓞 K)) :
     ∃ π : (v.adicCompletion K)ˣ, IsUniformiserAt K v (π : v.adicCompletion K) := by

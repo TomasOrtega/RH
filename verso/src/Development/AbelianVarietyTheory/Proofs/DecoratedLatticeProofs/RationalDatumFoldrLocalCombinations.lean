@@ -17,11 +17,11 @@ namespace GlobalTheory.LocComb
 open GlobalTheory.ExportSeries
 
 /- English proof (translation)
-Take `⟨k, _, _, _, _, p, Y, Y', _, _, _, _, FS, FT, Ξk, hd, hat, hint, hSB, hcomb, hΞ⟩` from `hloc`. Establish `hP : SplitSet P` using `hs.mono (Finset.subset_insert _ _)`. Establish `he : idem P + p.e = idem (insert PP P)`. Rewrite using `[idem, idem, Finset.sum_insert hPP, idemAt_eq hat, add_comm]`. Establish `hs' : IsIdemSum (idem P + p.e) (@insert _ _ (@Finset.instInsert _ (Classical.decEq _)) PP P)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Use `hs.isIdemSum` and compare the differences between its conclusion and the goal. Establish `key` using `GlobalTheory.T.rationalDatum_splitPlace_combination_mul_local D k p ψ hψ hd S T Y Y' FS FT P PP (idem P) hPP hat hP.isIdemSum hs' hint ΛS ΛT hSd hTd hSi hTi Ξ Ξk hSB c hcomb f₀ f h0 h1 hf`. Rewrite `key` using `[he]`. Establish `hfun : (fun γ => Ξ γ * Ξk (FT.γ * γ.map p.pr * FS.β)) = fun γ => Ξ γ * Ξl γ`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun γ => by rw [hΞ γ]`. Rewrite `key` using `[hfun]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ratDatum_insert (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (PP : Formalism.L2.DIV.Pl D.host.E) (hPP : PP ∉ P)
@@ -48,17 +48,17 @@ theorem ratDatum_insert (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdCh
   rwa [hfun] at key
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`. Establish `: (fun γ => Ξ γ * (([] : List (Fin n)).map fun i => Ξl i γ).prod) = Ξ` using `funext fun γ => by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `hf` using `[this]`. Consider the case `cons i L ih`. Introduce `hnd`. Rewrite `hnd` using `[List.nodup_cons]`. Establish `hsub : P₀ ∪ ((i :: L).map PPn).toFinset ⊆ P₀ ∪ Q`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Break down `Finset.mem_union.1 hx with h | h` into its components or cases. Conclude with `Finset.mem_union_left _ h`. Take `⟨j, -, rfl⟩` from `List.mem_map.1 (List.mem_toFinset.1 h)`. Conclude with `Finset.mem_union_right _ (hQ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hins : P₀ ∪ ((i :: L).map PPn).toFinset = insert (PPn i) (P₀ ∪ (L.map PPn).toFinset)`. Rewrite using `[List.map_cons, List.toFinset_cons, Finset.union_insert]`. Establish `hnot : PPn i ∉ P₀ ∪ (L.map PPn).toFinset`. Introduce `h`. Break down `Finset.mem_union.1 h with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.disjoint_left.1 hdis h (hQ i)`. Take `⟨j, hj, hji⟩` from `List.mem_map.1 (List.mem_toFinset.1 h)`. Conclude with `hnd.1 (hinj hji ▸ hj)`. Establish `step` using `ratDatum_insert D ψ hψ S T _ (PPn i) hnot (hins ▸ hs.mono hsub) (c i) (Ξl i) (hloc i) ΛS ΛT hSd hTd hSi hTi _ f₀ _ h0 h1 (ih hnd.2)`. Rewrite `step` using `[← hins]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfun : (fun γ => Ξ γ * (L.map fun i => Ξl i γ).prod * Ξl i γ) = fun γ => Ξ γ * ((i :: L).map fun i => Ξl i γ).prod` using `funext fun γ => by`. Rewrite using `[List.map_cons, List.prod_cons]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `step` using `[hfun]`. Simplify `step` using `only [List.foldr_cons]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ratDatum_list (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (P₀ Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (n : ℕ) (PPn : Fin n → Formalism.L2.DIV.Pl D.host.E)
@@ -106,11 +106,11 @@ theorem ratDatum_list (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar
     simpa only [List.foldr_cons] using step
 
 /- English proof (translation)
-Introduce `D ψ hψ S T P₀ Q n PPn hinj hQ hdis c Ξl hloc ΛS ΛT hSd hTd hSi hTi Ξ f₀ f h0 h1 hrat e he`. Establish `hs : SplitSet (P₀ ∪ Q)` using `⟨e, he⟩`. Establish `hQ' : ∀ i, PPn i ∈ Q` using `fun i => (hQ _).2 ⟨i, rfl⟩`. Establish `hP₀ : SplitSet P₀` using `hs.mono Finset.subset_union_left`. Establish `key` using `ratDatum_list D ψ hψ S T P₀ Q n PPn hinj hQ' hdis hs c Ξl hloc ΛS ΛT hSd hTd hSi hTi Ξ f₀ f h0 h1 (hrat _ hP₀.isIdemSum) (List.finRange n) (List.nodup_finRange n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hset : ((List.finRange n).map PPn).toFinset = Q`. Use extensionality with `x`. Simplify using `only [List.mem_toFinset, List.mem_map, List.mem_finRange, true_and]`. Conclude with `⟨fun ⟨i, hi⟩ => (hQ x).2 ⟨i, hi⟩, fun h => (hQ x).1 h⟩`. Rewrite `key` using `[hset, idem_eq he]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfun : (fun γ => Ξ γ * ((List.finRange n).map fun i => Ξl i γ).prod) = fun γ => Ξ γ * ∏ i, Ξl i γ`. Use function extensionality and compare the values at `fun γ => by rw [Fin.prod_univ_def]`. Rewrite `key` using `[hfun]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ratDatum_foldr_comb : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (P₀ Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (n : ℕ) (PPn : Fin n → Formalism.L2.DIV.Pl D.host.E), Function.Injective PPn → (∀ PP, PP ∈ Q ↔ ∃ i, PPn i = PP) → Disjoint P₀ Q → ∀ (c : Fin n → WO S T →₀ ℂ) (Ξl : Fin n → Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ), (∀ i, GlobalTheory.LocMod.IsLocFac D ψ S T (PPn i) (c i) (Ξl i)) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → (ΛS : Set (Fin S.rank → D.host.E)) = intVec D S.rank → (ΛT : Set (Fin T.rank → D.host.E)) = intVec D T.rank → ∀ (Ξ : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ) (f₀ f : WO S T → ℂ), IsThetaFunO ψ S T f₀ → IsLatVac (heisO ψ S T) (stdHom S T) f₀ → (∀ e₀, IsIdemSum e₀ P₀ → IsRatDatum ψ S T e₀ Ξ f₀ f) → ∀ e, IsIdemSum e (P₀ ∪ Q) → IsRatDatum ψ S T e (fun γ => Ξ γ * ∏ i, Ξl i γ) f₀ ((List.finRange n).foldr (fun i g => comb ψ S T (c i) g) f) := by
   intro D ψ hψ S T P₀ Q n PPn hinj hQ hdis c Ξl hloc ΛS ΛT hSd hTd hSi hTi Ξ f₀ f h0 h1 hrat e he

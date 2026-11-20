@@ -3,15 +3,13 @@ import Formalism.JumpKernelCokernel.KerCokerEq
 namespace Formalism.KernelCokernelLengths.KernelCokernelEqualityLemmas
 
 /- English proof (translation)
-Establish `h1 : Module.length O M = Module.length O (LinearMap.ker f) + Module.length O (M ⧸ LinearMap.ker f)` using `Module.length_eq_add_of_exact _ _ (LinearMap.ker f).injective_subtype (LinearMap.ker f).mkQ_surjective (LinearMap.exact_subtype_mkQ _)`. Establish `h2 : Module.length O (M ⧸ LinearMap.ker f) = Module.length O (LinearMap.range f)` using `(f.quotKerEquivRange).length_eq`. Establish `h3 : Module.length O M = Module.length O (LinearMap.range f) + Module.length O (M ⧸ LinearMap.range f)` using `Module.length_eq_add_of_exact _ _ (LinearMap.range f).injective_subtype (LinearMap.range f).mkQ_surjective (LinearMap.exact_subtype_mkQ _)`. Rewrite `h1` using `[h2]`. Establish `hk : Module.length O (LinearMap.ker f) ≠ ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Apply `hM` to reduce the goal to its premises. Rewrite using `[h1, h]`. Conclude with `top_add _`. Establish `hr : Module.length O (LinearMap.range f) ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hM` to reduce the goal to its premises. Rewrite using `[h1, h]`. Conclude with `add_top _`. Establish `hc : Module.length O (M ⧸ LinearMap.range f) ≠ ⊤`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hM` to reduce the goal to its premises. Rewrite using `[h3, h]`. Conclude with `add_top _`. Use `lift Module.length O M to ℕ using hM with m hm`.
-
-Use `lift Module.length O (LinearMap.ker f) to ℕ using hk with a ha`. Use `lift Module.length O (LinearMap.range f) to ℕ using hr with b hb`. Use `lift Module.length O (M ⧸ LinearMap.range f) to ℕ using hc with c hc'`. Normalize the coercions in `at h1 h3 ⊢`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem main (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M]
     (hM : Module.length O M ≠ ⊤) (f : Module.End O M) :
@@ -41,9 +39,9 @@ theorem main (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M]
   omega
 
 /- English proof (translation)
-Establish `hle : LinearMap.range f ≤ (LinearMap.range f').comap g`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `⟨g m, (LinearMap.congr_fun hc m).symm⟩`. Establish `hs : Function.Surjective (Submodule.mapQ (LinearMap.range f) (LinearMap.range f') g hle)`. Introduce `x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H y`. Take `⟨m, rfl⟩` from `hg y`. Conclude with `⟨Submodule.Quotient.mk m, rfl⟩`. Conclude with `Module.length_le_of_surjective _ hs`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coker (O : Type) [CommRing O] (M M' : Type) [AddCommGroup M] [Module O M]
     [AddCommGroup M'] [Module O M'] (f : Module.End O M) (f' : Module.End O M')
@@ -63,13 +61,13 @@ theorem coker (O : Type) [CommRing O] (M M' : Type) [AddCommGroup M] [Module O M
 end Formalism.KernelCokernelLengths.KernelCokernelEqualityLemmas
 
 /- English proof (translation)
-Introduce `O _ M _ _ hM f` and use `Formalism.KernelCokernelLengths.KernelCokernelEqualityLemmas.main O M hM f`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.KernelCokernelLengths.endKernelCokernelLengthEq : Formalism.KernelCokernelLengths.KerCokerEq :=
   fun O _ M _ _ hM f => Formalism.KernelCokernelLengths.KernelCokernelEqualityLemmas.main O M hM f
 
 /- English proof (translation)
-Introduce `O _ M M' _ _ _ _ f f' g hg hc` and use `Formalism.KernelCokernelLengths.KernelCokernelEqualityLemmas.coker O M M' f f' g hg hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.KernelCokernelLengths.cokernelLengthLeOfSurjective : Formalism.KernelCokernelLengths.CokerSurj :=
   fun O _ M M' _ _ _ _ f f' g hg hc => Formalism.KernelCokernelLengths.KernelCokernelEqualityLemmas.coker O M M' f f' g hg hc

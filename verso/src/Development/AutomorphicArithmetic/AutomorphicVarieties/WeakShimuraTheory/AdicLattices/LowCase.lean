@@ -24,29 +24,29 @@ Evaluate the decidable proposition.
 private theorem vV_case : ∀ i j : Fin 4, wt i j ∉ vV → wt i j ∉ nP ∨ wt i j = -wPs := by decide
 
 /- English proof (translation)
-Simplify using `[nCo, wBe, UpperTheory.V.GradeZeroInterpolatingElement.wAl, UpperTheory.V.GradeZeroInterpolatingElement.wPs, UpperTheory.V.GradeZeroInterpolatingElement.wTh]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nCo_be {R : Type} [CommRing R] (X : M4 R) : nCo X wBe = 0 := by
   simp [nCo, wBe, UpperTheory.V.GradeZeroInterpolatingElement.wAl, UpperTheory.V.GradeZeroInterpolatingElement.wPs, UpperTheory.V.GradeZeroInterpolatingElement.wTh]
 
 /- English proof (translation)
-Simplify using `[nCo, wBe, UpperTheory.V.GradeZeroInterpolatingElement.wAl, UpperTheory.V.GradeZeroInterpolatingElement.wPs, UpperTheory.V.GradeZeroInterpolatingElement.wTh]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nCo_nbe {R : Type} [CommRing R] (X : M4 R) : nCo X (-wBe) = X 2 1 := by
   simp [nCo, wBe, UpperTheory.V.GradeZeroInterpolatingElement.wAl, UpperTheory.V.GradeZeroInterpolatingElement.wPs, UpperTheory.V.GradeZeroInterpolatingElement.wTh]
 
 /- English proof (translation)
-Simplify using `[nCo, wBe, UpperTheory.V.GradeZeroInterpolatingElement.wAl, UpperTheory.V.GradeZeroInterpolatingElement.wPs, UpperTheory.V.GradeZeroInterpolatingElement.wTh]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nCo_nps {R : Type} [CommRing R] (X : M4 R) : nCo X (-wPs) = X 2 0 := by
   simp [nCo, wBe, UpperTheory.V.GradeZeroInterpolatingElement.wAl, UpperTheory.V.GradeZeroInterpolatingElement.wPs, UpperTheory.V.GradeZeroInterpolatingElement.wTh]
 
 /- English proof (translation)
-Take `⟨hg, hd, hu⟩` from `hN`. Unfold `IsGSp at hg`. Establish `e1` using `congrFun (congrFun hg 2) 0`. Establish `e2` using `hup 2 0 (by decide)`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj, sgn] at e1 e2`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e2` using `[hu 0 1 (by decide), hd 0, hd 1, hN21, hX0 1 (by decide), hX0 2 (by decide), hX0 3 (by decide), hX2 0 (by decide), hX2 1 (by decide), hX2 3 (by decide)]`. Rewrite `e1` using `[hu 0 1 (by decide), hd 0, hd 1, hN21]`. Establish `h : (X 2 2 - X 0 0) * N 2 0 = 0` using `by linear_combination e2 - X 0 0 * e1`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Take the linear combination `-h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `absurd h hc`.
+A detailed English derivation is pending.
 -/
 private theorem entry_zero_zero_eq_two_two_of_isUp_conj {k : Type} [Field k] (N X : M4 k) (hN : IsLow N) (hN21 : N 2 1 = 0)
     (hX0 : ∀ j, j ≠ 0 → X 0 j = 0) (hX2 : ∀ j, j ≠ 2 → X 2 j = 0)
@@ -65,29 +65,23 @@ private theorem entry_zero_zero_eq_two_two_of_isUp_conj {k : Type} [Field k] (N 
   · exact absurd h hc
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ Φ k _ a P hP hE hbe hps hsub`. Establish `hS : Supp nP P.r`. Introduce `g i j hij hw`. Assume the negation of the conclusion as `h`. Conclude with `hw (hsub ⟨wt_root i j hij, Or.inl ⟨g, i, j, rfl, h⟩⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hN : ∀ v, SuppM qQ (P.n v)`. Introduce `v i j hij hw`. Break down `low_case i j hij hw with h | ⟨rfl, rfl⟩` into its components or cases. Conclude with `(hP.pair.low v).2.2 i j h`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : -wBe ∈ Tight P` using `⟨by decide, Or.inr ⟨v, by rw [nCo_nbe]; exact h⟩⟩`. Conclude with `absurd (hsub hT) (by decide)`. Establish `hEbe : Ent P.r wBe`. Break down `hbe.2 with h | ⟨v, hv⟩` into its components or cases. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (nCo_be _) hv`. Use `⟨hS, hN, hEbe, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : Ent P.r (-wPs)`. Conclude with `Or.inl hp`. Use `right`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv⟩` from `hps.2.resolve_left hp`. Rewrite `hv` using `[nCo_nps]`. Establish `h0 : ∀ g i j, wt i j = -wPs → P.r g i j = 0` using `fun g i j hw => by`. Assume the negation of the conclusion as `h`. Conclude with `hp ⟨g, i, j, hw, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ⟨v, hv, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g i j hij hw`. Break down `vV_case i j hw with h | h` into its components or cases. Conclude with `hS g i j hij h`. Conclude with `h0 g i j h`.
+Reduce the claim to the hypotheses of an applicable result. Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s hs`. Establish `key` using `entry_zero_zero_eq_two_two_of_isUp_conj (P.n v) (P.r s) (hP.pair.low v) (hN v 2 1 (by decide) (by decide)) ?_ ?_ (hP.pair.flag v s hs) hv`. Rewrite `key` using `[hP.diag s 0, hP.diag s 2]`. Conclude with `key`. Introduce `j hj`.
+Evaluate the decidable proposition. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `hS s 0 j (Ne.symm hj)` to reduce the goal to its premises. Use `revert hj`. Use `revert j`. Evaluate the decidable proposition. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hw : wt 2 j = -wPs`. Conclude with `h0 s 2 j hw`. Apply `hS s 2 j (Ne.symm hj) revert hw hj revert j` to reduce the goal to its premises. Evaluate the decidable proposition. Introduce and unpack `⟨m, hm⟩`.
-
-Establish `hz` using `(hE 1 2 (by decide) ?_ m hm).1`. Take `⟨g, i, j, hw, hne⟩` from `hEbe`. Take `⟨rfl, rfl⟩` from `be_case i j hw`. Conclude with `hne (hz g)`. Introduce `g h x hx1 hx2`.
-
-Establish `a1 : P.r h 0 2 = 0` using `hS h 0 2 (by decide) (by decide)`. Establish `a2 : P.r g 1 3 = 0` using `hS g 1 3 (by decide) (by decide)`. Use `fin_cases x`. Simplify using `[a1]`. Conclude with `absurd rfl hx1`.
-
-Conclude with `absurd rfl hx2`. Simplify using `[a2]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lat.shape :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* k) (P : PD Φ.ι Γ k), PreRes Φ a P → EntVan Φ a P →

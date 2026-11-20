@@ -17,20 +17,20 @@ def DualStdBaseChange.Statement : Prop :=
       (Module.finrank ℚ K : ℝ) * II Unit (PBlk i) ⊥ i (fun _ => fsMulti (PBlk i))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, dualEmbMatrix_standard_bijective, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)))
     (_ : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))), 1 ≤ 1 :=
   ⟨dualBasisStandard, dualEmbMatrix_standard_bijective, le_rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective, fsMulti (PBlk 1)⟩`.
+Supply the required witnesses or components.
 -/
 example : HermLine (dualBlocks Unit) × HermLine (PBlk 1) :=
   ⟨dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective, fsMulti (PBlk 1)⟩
 
 /- English proof (translation)
-Simplify using `[fsMulti, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]`.
+Simplify using the standard rewrite rules.
 -/
 example : (fsMulti (PBlk 1)).h (fun _ => 1) = 1 := by
   simp [fsMulti, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]

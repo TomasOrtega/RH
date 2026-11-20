@@ -26,7 +26,7 @@ variable {G N : Type} [MeasurableSpace G] [MeasurableSpace N] {μ : Measure G} {
   {P P' R : G → N → ℂ}
 
 /- English proof (translation)
-Rewrite using `[← integral_add h.2 h'.2]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← integral_add (h.1 g) (h'.1 g)]`. Simplify using `only [hR]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iterated_add (h : (∀ g, IntegrableOn (P g) 𝓝 ν) ∧ IntegrableOn (fun g => ∫ n in 𝓝, P g n ∂ν) 𝓕 μ)
     (h' : (∀ g, IntegrableOn (P' g) 𝓝 ν) ∧ IntegrableOn (fun g => ∫ n in 𝓝, P' g n ∂ν) 𝓕 μ)
@@ -39,7 +39,7 @@ theorem iterated_add (h : (∀ g, IntegrableOn (P g) 𝓝 ν) ∧ IntegrableOn (
   simp only [hR]
 
 /- English proof (translation)
-Simplify using `only [hR, integral_const_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iterated_mul (c : ℂ) (hR : ∀ g n, R g n = c * P g n) :
     ∫ g in 𝓕, ∫ n in 𝓝, R g n ∂ν ∂μ = c * ∫ g in 𝓕, ∫ n in 𝓝, P g n ∂ν ∂μ := by
@@ -50,11 +50,11 @@ end Iterated
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Take `⟨K, hK, h⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D B ρ e he).1`. Use `haveI : DiscreteTopology (GQ B ⊓ NFlag B e : Subgroup (GA D B)) := DiscreteTopology.of_subset (s := (GQ B : Set (GA D B))) i6 (fun x hx => hx.1)`. Establish `h1 : IsClosed ((GQ B ⊓ NFlag B e : Subgroup (GA D B)) : Set (GA D B))` using `Subgroup.isClosed_of_discrete`. Establish `h2 : IsClosed (NFlag B e : Set (GA D B))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h1.mul_right_of_isCompact (hK.image continuous_subtype_val) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨γ, hγ, k, hk, e⟩` from `h ⟨x, hx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨γ, ⟨hγ, γ.2⟩, k, ⟨k, hk, rfl⟩, (congrArg Subtype.val e).symm⟩`. Introduce and unpack `⟨γ, hγ, _, ⟨k, -, rfl⟩, rfl⟩`. Conclude with `mul_mem hγ.2 k.2`. Use `⟨h2.locallyCompactSpace, (inferInstance : SecondCountableTopology (NFlag B e : Set (GA D B))), inferInstance, ?_⟩` and prove the remaining obligations. Conclude with `Function.Injective.countable (f := fun γ : NFlagQ B e => (⟨γ.1.1, γ.2⟩ : GQ B)) fun a b h => Subtype.ext (Subtype.ext (congrArg (fun x : GQ B => (x : GA D B)) h))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flag_topology (B : HSp D) {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E} (he : IsIsoSub B e) :
     LocallyCompactSpace (NFlag B e) ∧ SecondCountableTopology (NFlag B e) ∧ BorelSpace (NFlag B e) ∧
@@ -91,13 +91,13 @@ structure IsRatInv (ι : A.V →ₗ[D.host.E] B.V) (e : Matrix (Fin B.rank) (Fin
 variable {Q : GA D A → GA D B → ℂ}
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Take `⟨-, -, -, -, _, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Take `⟨_, _, _, _⟩` from `flag_topology B he`. Take `⟨s, -, hs, hq⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι`. Establish `hl : ∀ g, ∀ γ ∈ NFlagQ B e, ∀ n : NFlag B e, Q g (γ * n : NFlag B e) = Q g n` using `fun g γ hγ n => hQ.left g n n.2 γ γ.2 hγ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : ∀ g, ∫ n in 𝓝', Q g n ∂ν' = ∫ n in 𝓝, Q g n ∂ν` using `fun g => GlobalTheory.Mem.TrueRecord.integral_unit _ hN'.1 hN'.2.1 hN'.2.2 hN.1 hN.2.1 hN.2.2 _ (hl g)`. Simplify using `only [e1]`. Take `rfl : μ = μ'` from `(GlobalTheory.Mem.VolMeasure.existsUnique_isVolMeasG D A hA).unique hv.1 hv'.1`. Use `haveI := hv.1.1`. Use `hv.2.setIntegral_eq hv'.2 fun γ g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `r1 : EmbRel B A ι (s γ) γ` using `(hs _ _).2 rfl`. Establish `r2 : EmbRel B A ι (s γ)⁻¹ (γ : GA D A)⁻¹` using `(hs _ _).2 (map_inv s _).symm`. Set `c : NFlag B e ≃ₜ* NFlag B e` to `{ toFun := fun n => ⟨s γ * n * (s γ)⁻¹, hQ.norm _ _ r1 n n.2⟩ invFun := fun n => ⟨(s γ)⁻¹ * n * (s γ)⁻¹⁻¹, hQ.norm _ _ r2 n n.2⟩ left_inv := fun n => Subtype.ext (by simp [mul_assoc]) right_inv := fun n => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by s …`. Establish `hc : ∀ n, c n ∈ NFlagQ B e ↔ n ∈ NFlagQ B e` using `fun n => by`. Express the relevant statement in the definitionally equal form `s γ * (n : GA D B) * (s γ)⁻¹ ∈ GQ B ↔ (n : GA D B) ∈ GQ B`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mul_mem_cancel_right _ (inv_mem (hq _ γ.2)), Subgroup.mul_mem_cancel_left _ (hq _ γ.2)]`. Use `(GlobalTheory.Mem.TrueRecord.integral_aut _ hN.1 hN.2.1 hN.2.2 c hc _ (hl ((γ : GA D A) * g))).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `n`. Conclude with `hQ.conj g n n.2 γ γ.2 _ r1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem IsRatInv.integral_eq (hQ : IsRatInv ι e Q) (he : IsIsoSub B e) (hι : HSpace.IsIsomEmb A B ι) (hA : A.SigOK)
     {μ 𝓕 μ' 𝓕'} (hv : IsVolPair D A μ 𝓕) (hv' : IsVolPair D A μ' 𝓕') {ν 𝓝 ν' 𝓝'} (hN : IsUnitN B e ν 𝓝)
@@ -134,13 +134,13 @@ theorem IsRatInv.integral_eq (hQ : IsRatInv ι e Q) (he : IsIsoSub B e) (hι : H
   exact hQ.conj g n n.2 γ γ.2 _ r1
 
 /- English proof (translation)
-Take `⟨K, hK, hcov⟩` from `GlobalTheory.Mem.AnisoQuotient.exists_compact D A hA`. Take `⟨K', hK', hcov'⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D B _ _ he).1`. Take `⟨s, -, hs, -⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hv.1.1`. Establish `hfin : μ 𝓕 < ⊤` using `GlobalTheory.BesselConvDefinite.measure_fundamentalDomain_lt_top (GQ A) hK hcov μ hv.2`. Take `⟨M, hM⟩` from `(hK.prod hK').exists_bound_of_continuousOn hc.continuousOn`. Use `FJConv.iterated_integrableOn hfin.ne (by rw [hN.2.2]; exact ENNReal.one_ne_top) hc (M := M) fun g n => ?_` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ', hγ', k', hk', e⟩` from `hcov' ⟨_, hQ.norm _ γ⁻¹ ((hs _ _).2 rfl) n n.2⟩`. Establish `e' : s γ⁻¹ * n * (s γ⁻¹)⁻¹ = (γ' : GA D B) * k'` using `congrArg Subtype.val e`. Establish `e1 : (n : GA D B) = s γ * (γ' * k') * (s γ)⁻¹`. Rewrite using `[← e']`. Simplify using `only [map_inv, inv_inv, mul_assoc, mul_inv_cancel_left, mul_inv_cancel, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (le_of_eq ?_) (hM (k, k') ⟨hk, hk'⟩)` and prove the remaining obligations. Rewrite using `[e1, hQ.conj k _ (mul_mem γ'.2 k'.2) γ hγ _ ((hs _ _).2 rfl), hQ.left k _ k'.2 _ γ'.2 hγ']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRatInv.integrable (hQ : IsRatInv ι e Q) (he : IsIsoSub B e) (hι : HSpace.IsIsomEmb A B ι) (hA : IsAniso A)
     (hc : Continuous fun q : GA D A × NFlag B e => Q q.1 q.2) {μ 𝓕} (hv : IsVolPair D A μ 𝓕) {ν 𝓝} (hN : IsUnitN B e ν 𝓝) :
@@ -169,7 +169,7 @@ section Integrands
 variable {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} {s : GA D A → GA D B} {φ : GA D A → ℂ} {F : GA D B → ℂ}
 
 /- English proof (translation)
-Take `⟨s₀, -, hrel, hq⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι`. Take `rfl : s = s₀` from `funext fun h => (hrel h _).1 (hs h)`. Rewrite using `[(hrel _ _).1 hδ, ← hF.left _ (hq γ hγ) (n * s₀ g * y)]`. Simplify using `only [map_mul, mul_assoc, inv_mul_cancel_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_arg (hι : HSpace.IsIsomEmb A B ι) (hs : ∀ h, EmbRel B A ι (s h) h) (hF : IsAutFun B F) {γ δ}
     (hγ : γ ∈ GQ A) (hδ : EmbRel B A ι δ γ) (g n y) : F (δ * n * δ⁻¹ * s (γ * g) * y) = F (n * s g * y) := by
@@ -179,7 +179,7 @@ theorem conj_arg (hι : HSpace.IsIsomEmb A B ι) (hs : ∀ h, EmbRel B A ι (s h
   simp only [map_mul, mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Take `⟨s₀, hc, hrel, -⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι`. Take `rfl : s = s₀` from `funext fun h => (hrel h _).1 (hs h)`. Conclude with `hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem emb_continuous (hι : HSpace.IsIsomEmb A B ι) (hs : ∀ h, EmbRel B A ι (s h) h) : Continuous s := by
   obtain ⟨s₀, hc, hrel, -⟩ := GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι
@@ -187,7 +187,7 @@ theorem emb_continuous (hι : HSpace.IsIsomEmb A B ι) (hs : ∀ h, EmbRel B A �
   exact hc
 
 /- English proof (translation)
-Take `⟨s₀, -, hrel, -⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι`. Conclude with `funext fun h => ((hrel h _).1 (hs h)).trans ((hrel h _).1 (hs' h)).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem emb_unique (hι : HSpace.IsIsomEmb A B ι) (hs : ∀ h, EmbRel B A ι (s h) h) {s' : GA D A → GA D B}
     (hs' : ∀ h, EmbRel B A ι (s' h) h) : s = s' := by
@@ -195,7 +195,7 @@ theorem emb_unique (hι : HSpace.IsIsomEmb A B ι) (hs : ∀ h, EmbRel B A ι (s
   exact funext fun h => ((hrel h _).1 (hs h)).trans ((hrel h _).1 (hs' h)).symm
 
 /- English proof (translation)
-The claim follows from `(BesselChar.besChar_conj ψ d δ γ h n hn).1 left g n hn γ hγ hq := by rw [BesselChar.besChar_mul ψ d γ n hγ hn, BesselChar.besChar_rat ψ hψ.1 d γ hγ hq, one_mul, mul_assoc γ, mul_assoc γ, hF.left γ hq] conj g n hn γ hγ δ hδ := by rw [(BesselChar.besChar_conj ψ d δ γ hδ n hn).2, co …`.
+A detailed English derivation is pending.
 -/
 theorem bes_inv {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (hι : HSpace.IsIsomEmb A B ι) (d : BesDat A B ι)
     (hs : ∀ h, EmbRel B A ι (s h) h) (hφ : IsAutFun A φ) (hF : IsAutFun B F) :
@@ -208,7 +208,7 @@ theorem bes_inv {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (h�
     rw [(BesselChar.besChar_conj ψ d δ γ hδ n hn).2, conj_arg hι hs hF hγ hδ, hφ.left γ hγ]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, _, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Use `(bes_inv hψ hι d hs hφ hF).integrable d.e_iso hι hA ?_ hv hN` and prove the remaining obligations. Conclude with `((hφ.cont.comp continuous_fst).star.mul (hF.cont.comp (((continuous_subtype_val.comp continuous_snd).mul ((emb_continuous hι hs).comp continuous_fst)).mul continuous_const))).mul ((BesselChar.besChar_continuous ψ hψ.1 d).comp continuous_snd).star`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem besConv {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (hι : HSpace.IsIsomEmb A B ι) (hA : IsAniso A)
     (d : BesDat A B ι) {μ 𝓕} (hv : IsVolPair D A μ 𝓕) {ν 𝓝} (hN : IsUnitN B d.e ν 𝓝)
@@ -220,7 +220,7 @@ theorem besConv {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (h�
     ((BesselChar.besChar_continuous ψ hψ.1 d).comp continuous_snd).star
 
 /- English proof (translation)
-The claim follows from `HeisCoord.conj_mem d h hn left g n hn γ hγ hq := by rw [HeisLaw.chr_mul d hγ hn, HeisCoord.chr_rat d Wl.ψ_std.1 hq, one_mul, mul_assoc γ, hF.left γ hq, (GlobalTheory.T.theta_kernel_invariance D X T Wl L A B ι d hr Φ g n hn).1 γ hγ hq] conj g n hn γ hγ δ hδ := by have h := conj_ar …`.
+A detailed English derivation is pending.
 -/
 theorem fj_inv {X : ThetaX D} {T : ThetaTied D X} (Wl : WeilTied D X T) {L : HSp D} (d : FJDat L A B ι) (hr : 1 < A.rank)
     (Φ : X.Sch L A) (hs : ∀ h, EmbRel B A ι (s h) h) (hφ : IsAutFun A φ) (hF : IsAutFun B F) :
@@ -249,13 +249,13 @@ structure IsGood (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) : Prop where
   isom : HSpace.IsIsomEmb A B ι
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(X.Xs_sig t j hj.le).1, isAniso_Xs T t hj.le, one_lt_rank_Xs X t hj.le, X.iXYs_isom t j hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGood_step (T : ThetaTied D X) (t : ℕ) {j : ℕ} (hj : j < D.R.m) : IsGood (X.Xs t j) (X.Ys t j) (X.iXYs t j) :=
   ⟨(X.Xs_sig t j hj.le).1, isAniso_Xs T t hj.le, one_lt_rank_Xs X t hj.le, X.iXYs_isom t j hj⟩
 
 /- English proof (translation)
-Establish `h0` using `Nat.zero_le D.R.m`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, D.sp.iXY_isom 0 (by have := D.R.two_le_m; omega)⟩ <;> rw [← X.Xs_rec 0 h0]`. Use `exacts [(X.Xs_sig _ 0 h0).1, isAniso_Xs T _ h0, one_lt_rank_Xs X _ h0]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isGood_member (T : ThetaTied D X) : IsGood (D.sp.X 0) (D.sp.Y 0) (D.sp.iXY 0) := by
   have h0 := Nat.zero_le D.R.m
@@ -273,7 +273,7 @@ structure Frame (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) {ρ : ℕ} (e : Ma
   emb : ∀ h, EmbRel B A ι (s h) h
 
 /- English proof (translation)
-Take `⟨μ, hμ, -⟩` from `GlobalTheory.Mem.VolMeasure.existsUnique_isVolMeasG D A hg.sigOK`. Take `⟨-, 𝓕, h𝓕⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D A μ hμ.1`. Take `⟨ν, 𝓝, hN⟩` from `UnitN.exists_isUnitN D B ρ e he`. Take `⟨s, -, hs, -⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hg.isom`. Conclude with `⟨⟨μ, 𝓕, ν, 𝓝, s, ⟨hμ, h𝓕⟩, hN, fun h => (hs h _).2 rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frame_nonempty (hg : IsGood A B ι) {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E} (he : IsIsoSub B e) :
     Nonempty (Frame A B ι e) := by
@@ -293,21 +293,21 @@ section
 variable {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E} {f f' f'' : Frame A B ι e → ℂ}
 
 /- English proof (translation)
-Unfold `atFrame`. Use `split_ifs`. Use `exacts [h _, (add_zero _).symm]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atFrame_add (h : ∀ c, f'' c = f c + f' c) : atFrame f'' = atFrame f + atFrame f' := by
   unfold atFrame; split_ifs
   exacts [h _, (add_zero _).symm]
 
 /- English proof (translation)
-Unfold `atFrame`. Use `split_ifs`. Use `exacts [h _, (mul_zero _).symm]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atFrame_mul (a : ℂ) (h : ∀ c, f' c = a * f c) : atFrame f' = a * atFrame f := by
   unfold atFrame; split_ifs
   exacts [h _, (mul_zero _).symm]
 
 /- English proof (translation)
-Unfold `atFrame`. Rewrite using `[dif_pos ⟨c⟩, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem atFrame_eq (c : Frame A B ι e) (h : ∀ c', f c' = f c) : atFrame f = f c := by
   unfold atFrame; rw [dif_pos ⟨c⟩, h]
@@ -325,7 +325,7 @@ variable (hg : IsGood A B ι)
 include hg
 
 /- English proof (translation)
-Use `atFrame_eq c fun c' => ?_` and prove the remaining obligations. Rewrite using `[emb_unique hg.isom c'.emb c.emb]`. Conclude with `(bes_inv Wl.ψ_std hg.isom d c.emb (T.ev_aut A φ) (T.ev_aut B F)).integral_eq d.e_iso hg.isom hg.sigOK c'.vol c.vol c'.unit c.unit`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besVal_eq (d : BesDat A B ι) (c : Frame A B ι d.e) (φ F) :
     besVal Wl d φ F = besPer Wl.ψ d c.μ c.𝓕 c.ν c.𝓝 c.s (T.ev A φ) (T.ev B F) := by
@@ -335,7 +335,7 @@ theorem besVal_eq (d : BesDat A B ι) (c : Frame A B ι d.e) (φ F) :
     c'.vol c.vol c'.unit c.unit
 
 /- English proof (translation)
-Use `atFrame_eq c fun c' => ?_` and prove the remaining obligations. Rewrite using `[emb_unique hg.isom c'.emb c.emb]`. Conclude with `(fj_inv Wl d hg.rank Φ c.emb (T.ev_aut A φ) (T.ev_aut B F)).integral_eq d.isIsoSub hg.isom hg.sigOK c'.vol c.vol c'.unit c.unit`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fjVal_eq {L : HSp D} (d : FJDat L A B ι) (c : Frame A B ι d.eM) (Φ φ F) :
     fjVal Wl d Φ φ F = d.per Wl.ψ (omZ Wl L A Φ) c.μ c.𝓕 c.ν c.𝓝 c.s (T.ev A φ) (T.ev B F) := by
@@ -345,14 +345,14 @@ theorem fjVal_eq {L : HSp D} (d : FJDat L A B ι) (c : Frame A B ι d.eM) (Φ φ
     c'.vol c.vol c'.unit c.unit
 
 /- English proof (translation)
-The claim follows from `besConv Wl.ψ_std hg.isom hg.aniso d c.vol c.unit c.emb (T.ev_aut A φ) (T.ev_aut B F)`.
+A detailed English derivation is pending.
 -/
 theorem bes_conv (d : BesDat A B ι) (c : Frame A B ι d.e) (φ F) :
     BesConv Wl.ψ d c.μ c.𝓕 c.ν c.𝓝 c.s (T.ev A φ) (T.ev B F) :=
   besConv Wl.ψ_std hg.isom hg.aniso d c.vol c.unit c.emb (T.ev_aut A φ) (T.ev_aut B F)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.theta_convolution_anisotropic D X T Wl L A B ι d hg.rank hg.aniso _ _ c.vol.1.1 c.vol.2 _ _ c.unit _ c.emb Φ _ _ (T.ev_aut A φ) (T.ev_aut B F)`.
+A detailed English derivation is pending.
 -/
 theorem fj_conv {L : HSp D} (d : FJDat L A B ι) (c : Frame A B ι d.eM) (Φ φ F) :
     d.Conv Wl.ψ (omZ Wl L A Φ) c.μ c.𝓕 c.ν c.𝓝 c.s (T.ev A φ) (T.ev B F) :=
@@ -360,7 +360,7 @@ theorem fj_conv {L : HSp D} (d : FJDat L A B ι) (c : Frame A B ι d.eM) (Φ φ 
     (T.ev_aut A φ) (T.ev_aut B F)
 
 /- English proof (translation)
-The claim follows from `atFrame_add fun c => iterated_add (bes_conv Wl hg d c φ F) (bes_conv Wl hg d c φ' F) fun g n => by simp only [besFun, map_add, Pi.add_apply, star_add]; ring`.
+A detailed English derivation is pending.
 -/
 theorem besVal_add_left (d : BesDat A B ι) (φ φ' F) :
     besVal Wl d (φ + φ') F = besVal Wl d φ F + besVal Wl d φ' F :=
@@ -368,7 +368,7 @@ theorem besVal_add_left (d : BesDat A B ι) (φ φ' F) :
     simp only [besFun, map_add, Pi.add_apply, star_add]; ring
 
 /- English proof (translation)
-The claim follows from `atFrame_add fun c => iterated_add (bes_conv Wl hg d c φ F) (bes_conv Wl hg d c φ F') fun g n => by simp only [besFun, map_add, Pi.add_apply]; ring`.
+A detailed English derivation is pending.
 -/
 theorem besVal_add_right (d : BesDat A B ι) (φ F F') :
     besVal Wl d φ (F + F') = besVal Wl d φ F + besVal Wl d φ F' :=
@@ -376,7 +376,7 @@ theorem besVal_add_right (d : BesDat A B ι) (φ F F') :
     simp only [besFun, map_add, Pi.add_apply]; ring
 
 /- English proof (translation)
-The claim follows from `atFrame_add fun c => iterated_add (fj_conv Wl hg d c Φ φ F) (fj_conv Wl hg d c Φ φ' F) fun g n => by simp only [FJDat.perFun, map_add, Pi.add_apply, star_add]; ring`.
+A detailed English derivation is pending.
 -/
 theorem fjVal_add_left {L : HSp D} (d : FJDat L A B ι) (Φ φ φ' F) :
     fjVal Wl d Φ (φ + φ') F = fjVal Wl d Φ φ F + fjVal Wl d Φ φ' F :=
@@ -384,7 +384,7 @@ theorem fjVal_add_left {L : HSp D} (d : FJDat L A B ι) (Φ φ φ' F) :
     simp only [FJDat.perFun, map_add, Pi.add_apply, star_add]; ring
 
 /- English proof (translation)
-The claim follows from `atFrame_add fun c => iterated_add (fj_conv Wl hg d c Φ φ F) (fj_conv Wl hg d c Φ φ F') fun g n => by simp only [FJDat.perFun, map_add, Pi.add_apply]; ring`.
+A detailed English derivation is pending.
 -/
 theorem fjVal_add_right {L : HSp D} (d : FJDat L A B ι) (Φ φ F F') :
     fjVal Wl d Φ φ (F + F') = fjVal Wl d Φ φ F + fjVal Wl d Φ φ F' :=
@@ -394,7 +394,7 @@ theorem fjVal_add_right {L : HSp D} (d : FJDat L A B ι) (Φ φ F F') :
 omit hg
 
 /- English proof (translation)
-The claim follows from `atFrame_mul _ fun c => iterated_mul _ fun g n => by simp only [besFun, map_smul, Pi.smul_apply, smul_eq_mul, star_mul']; ring`.
+A detailed English derivation is pending.
 -/
 theorem besVal_smul (d : BesDat A B ι) (a b : ℂ) (φ F) :
     besVal Wl d (a • φ) (b • F) = star a * b * besVal Wl d φ F :=
@@ -402,7 +402,7 @@ theorem besVal_smul (d : BesDat A B ι) (a b : ℂ) (φ F) :
     simp only [besFun, map_smul, Pi.smul_apply, smul_eq_mul, star_mul']; ring
 
 /- English proof (translation)
-The claim follows from `atFrame_mul _ fun c => iterated_mul _ fun g n => by simp only [FJDat.perFun, map_smul, Pi.smul_apply, smul_eq_mul, star_mul']; ring`.
+A detailed English derivation is pending.
 -/
 theorem fjVal_smul {L : HSp D} (d : FJDat L A B ι) (a b : ℂ) (Φ φ F) :
     fjVal Wl d Φ (a • φ) (b • F) = star a * b * fjVal Wl d Φ φ F :=
@@ -425,7 +425,7 @@ def period (Wl : WeilTied D X T) (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (
   (T.petC A : ℂ) * p.1.elim (fun d => besVal Wl d.1 φ F) fun d => fjVal Wl d Φ φ F
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨d | d, hg⟩ := p <;>`. Apply the tactic sequence `simp only [period, Sum.elim_inl, Sum.elim_inr, Submodule.coe_smul, besVal_smul, fjVal_smul] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem period_smul (Wl : WeilTied D X T) {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (p : Pos A B ι) (Φ) (a b : ℂ) (φ F) :
     period Wl A B ι p Φ (a • φ) (b • F) = star a * b * period Wl A B ι p Φ φ F := by
@@ -470,7 +470,7 @@ def recordW (Wl : WeilTied D X T) : WeilTied D (record Wl) (recordT Wl) :=
 variable (Wl : WeilTied D X T) {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
 /- English proof (translation)
-Introduce `μ 𝓕 hv ν 𝓝 hN s hs _ φ F _` and use `congrArg ((T.petC A : ℂ) * ·) (besVal_eq Wl hg d ⟨μ, 𝓕, ν, 𝓝, s, hv, hN, hs⟩ φ F.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isBesPos_record (hg : IsGood A B ι) (d : BesDat A B ι) (hy : (d.y : GA D B) = 1) :
     IsBesPos (recordW Wl) d (⟨.inl ⟨d, hy⟩, hg⟩ : Pos A B ι) :=
@@ -478,7 +478,7 @@ theorem isBesPos_record (hg : IsGood A B ι) (d : BesDat A B ι) (hy : (d.y : GA
     congrArg ((T.petC A : ℂ) * ·) (besVal_eq Wl hg d ⟨μ, 𝓕, ν, 𝓝, s, hv, hN, hs⟩ φ F.1)
 
 /- English proof (translation)
-Introduce `μ 𝓕 hv ν 𝓝 hN s hs Φ φ F _` and use `congrArg ((T.petC A : ℂ) * ·) (fjVal_eq Wl hg d ⟨μ, 𝓕, ν, 𝓝, s, hv, hN, hs⟩ Φ φ F.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFJPos_record (hg : IsGood A B ι) (d : FJDat (negLine D) A B ι) :
     IsFJPos (recordW Wl) (L := negLine D) (LinearEquiv.refl ℂ (X.Sch (negLine D) A)) d (⟨.inr d, hg⟩ : Pos A B ι) :=
@@ -486,7 +486,7 @@ theorem isFJPos_record (hg : IsGood A B ι) (d : FJDat (negLine D) A B ι) :
     congrArg ((T.petC A : ℂ) * ·) (fjVal_eq Wl hg d ⟨μ, 𝓕, ν, 𝓝, s, hv, hN, hs⟩ Φ φ F.1)
 
 /- English proof (translation)
-Rewrite using `[X.Ys_rank t j hj.le, X.Xs_rank t j hj.le, mul_add, mul_one, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_step (X : ThetaX D) (t : ℕ) {j : ℕ} (hj : j < D.R.m) :
     (X.Ys t j).rank + j + 1 = (X.Xs t j).rank + D.R.m := by
@@ -546,7 +546,7 @@ def SameTies {X X' : ThetaX D} {T : ThetaTied D X} {T' : ThetaTied D X'} (Wl : W
     Wl'.ψ = Wl.ψ ∧ HEq Wl'.evS Wl.evS ∧ HEq Wl'.om Wl.om
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, _, _, _, _, (record Wl).Bper_right, (record Wl).Bper_add_left, (record Wl).Bper_smul_left, (record Wl).Bper_odd, _, _, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameOffPeriods_record {X : ThetaX D} {T : ThetaTied D X} (Wl : WeilTied D X T) :
     SameOffPeriods X (record Wl) :=
@@ -554,13 +554,13 @@ theorem sameOffPeriods_record {X : ThetaX D} {T : ThetaTied D X} (Wl : WeilTied 
     (record Wl).Bper_odd, _, _, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.rfl, .rfl, rfl, rfl, .rfl, rfl, .rfl, .rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameTies_record {X : ThetaX D} {T : ThetaTied D X} (Wl : WeilTied D X T) : SameTies Wl (recordW Wl) :=
   ⟨.rfl, .rfl, rfl, rfl, .rfl, rfl, .rfl, .rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨record a.W, ⟨recordT a.W, a.sm, a.ty, recordW a.W, a.unr, { a.kf with }, a.phiUp, recordB a.W, a.real, a.prov⟩, ⟨perTied a.W⟩, sameOffPeriods_record _, sameTies_record _, .rfl, .rfl, fun _ => isBesPos_record a.W (isGood_member a.T) _ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_allTied_perTied (D : D7) (X : ThetaX D) (P : TH.ProvA) (a : AllTied D X P) :
     ∃ (X' : ThetaX D) (a' : AllTied D X' P), Nonempty (PerTied a'.W) ∧ SameOffPeriods X X' ∧ SameTies a.W a'.W ∧
@@ -571,7 +571,7 @@ theorem exists_allTied_perTied (D : D7) (X : ThetaX D) (P : TH.ProvA) (a : AllTi
     fun _ => isBesPos_record a.W (isGood_member a.T) _ rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨record Wl, recordT Wl, recordW Wl, ⟨perTied Wl⟩, sameOffPeriods_record Wl, sameTies_record Wl, fun _ => isBesPos_record Wl (isGood_member T) _ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_perTied (D : D7) (X : ThetaX D) (T : ThetaTied D X) (Wl : WeilTied D X T) :
     ∃ (X' : ThetaX D) (T' : ThetaTied D X') (Wl' : WeilTied D X' T'), Nonempty (PerTied Wl') ∧ SameOffPeriods X X' ∧

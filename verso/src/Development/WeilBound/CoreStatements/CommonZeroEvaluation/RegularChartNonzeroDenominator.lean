@@ -18,17 +18,17 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec GlobalT
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hL h C`. Take `⟨q, φ₀, y₀, hy₀⟩` from `hL.test _ (genFr h C.Z)`. Use `choose a ha b hb hb0 hab using C.frac`. Set `x : Fin q.n ⊕ Ix Dw → Om C.Z` to `fun k => match k with`. Consider the case `.inl i => φ₀ (Ideal.Quotient.mk q.I (MvPolynomial.X i))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `.inr k => (((C.t k)⁻¹ : (Om C.Z)ˣ) : Om C.Z)`. Set `bb : Fin q.n ⊕ Ix Dw → C.R` to `fun k => ⟨b (x k), hb (x k)⟩`. Establish `hbb : ∀ k, bb k ≠ 0` using `fun k h0 => hb0 (x k) (congrArg Subtype.val h0)`. Use `⟨∏ k, bb k, Finset.prod_ne_zero_iff.2 fun k _ => hbb k, fun A hA hg L _ io ev => ?_⟩` and prove the remaining obligations. Use `letI := io.toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ψ hψ z y t hz hb'`. Establish `hx : ∀ k, x k ∈ A` using `fun k => by`. Establish `e1 : ((∏ k, bb k : C.R) : Om C.Z) = b (x k) * ((∏ j ∈ Finset.univ.erase k, bb j : C.R) : Om C.Z)`. Rewrite using `[← Finset.mul_prod_erase _ bb (Finset.mem_univ k)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hne : ((∏ k, bb k : C.R) : Om C.Z) ≠ 0` using `fun h0 => Finset.prod_ne_zero_iff.2 (fun k _ => hbb k) (Subtype.ext h0)`. Establish `e2 : x k = a (x k) * ((∏ j ∈ Finset.univ.erase k, bb j : C.R) : Om C.Z) * ((∏ k, bb k : C.R) : Om C.Z)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ hne, e1, ← mul_assoc, hab]`. Rewrite using `[e2]`. Conclude with `A.mul_mem (A.mul_mem (hA ⟨_, ha _⟩) (hA _)) hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ a : c.F, algebraMap c.F (Om C.Z) a ∈ A` using `fun a => hA (algebraMap c.F C.R a)`. Establish `hev : ∀ (a : c.F) (h : algebraMap c.F (Om C.Z) a ∈ A), ev ⟨_, h⟩ = io a` using `fun a h => by`. Use `hψ (algebraMap c.F C.R a)` as an intermediate fact. Rewrite `this` using `[ψ.commutes]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hφ : ∀ r, φ₀ r ∈ A` using `ModelDimension.Spread.test_mem q φ₀ A hc (fun i => hx (.inl i))`. Set `ψq` to `ModelDimension.Spread.evAlg φ₀ A hφ ev hev`. Take `⟨zq, hzq⟩` from `hL.bc _ _ ψq y₀`. Take `⟨t', ht'⟩` from `ModelDimension.Spread.spec_bor φ₀ C.R.val hy₀ C.gen C.bor A hφ hA (fun k => hx (.inr k)) ev ψq ψ (fun _ => rfl) hψ hzq hz`. Conclude with `⟨fun a => ⟨hc a, hev a _⟩, q, φ₀, ψq, y₀, zq, _, hy₀, hzq, fun r => ⟨hφ r, rfl⟩, (GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c L).2.1 _ _ _ _ _ ht' hb'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ModelDimension.regular_chart_nonzero_denominator : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), GlobalTheory.Reg.EvLaws Xo c → ∀ (h : GenFrEx Xo c) (C : GlobalTheory.Reg.FChart h), ∃ g₀ : C.R, g₀ ≠ 0 ∧ ∀ (A : Subring (Om C.Z)) (hA : ∀ r : C.R, (r : Om C.Z) ∈ A), (g₀ : Om C.Z)⁻¹ ∈ A → ∀ (L : Type) [Field L] (io : c.F →+* L) (ev : A →+* L), letI := io.toAlgebra; ∀ (ψ : C.R →ₐ[c.F] L), (∀ r : C.R, ψ r = ev ⟨r, hA r⟩) → ∀ (z y : FrPt Xo c L) (t : Ix Dw → Lˣ), FrMap ψ C.y z → FrBor t z y → FinTr.RegAt h C.Z io A ev y := by
   intro E _ _ _ H Dw l Xo c hL h C

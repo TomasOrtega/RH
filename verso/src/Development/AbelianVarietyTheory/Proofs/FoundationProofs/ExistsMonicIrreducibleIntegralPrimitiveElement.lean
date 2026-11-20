@@ -12,31 +12,29 @@ open Matrix in
 open Polynomial in
 
 /- English proof (translation)
-Establish `htK : t ∈ IntermediateField.adjoin F {t}` using `IntermediateField.mem_adjoin_simple_self F t`. Establish `hne : ∀ p : Polynomial F, p ≠ 0 → Polynomial.aeval t p ≠ 0` using `fun p hp h => ht ⟨p, hp, h⟩`. Establish `hden : ∀ y ∈ IntermediateField.adjoin F {t}, ∃ s : Polynomial F, s ≠ 0 ∧ ∃ r : Polynomial F, Polynomial.aeval t s * y = Polynomial.aeval t r`. Introduce `y hy`. Take `⟨r, s, rfl⟩` from `(IntermediateField.mem_adjoin_simple_iff F y).1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hs : s = 0`. Conclude with `⟨1, one_ne_zero, 0, by simp [hs]⟩`. Conclude with `⟨s, hs, r, by rw [mul_div_cancel₀ _ (hne s hs)]⟩`. Establish `hcomm : ∀ p : Polynomial F, ((Polynomial.aeval (⟨t, htK⟩ : IntermediateField.adjoin F {t}) p : IntermediateField.adjoin F {t}) : L) = Polynomial.aeval t p` using `fun p => (Polynomial.aeval_algHom_apply (IntermediateField.adjoin F {t}).val (⟨t, htK⟩ : IntermediateField.adjoin F {t}) p).symm`. Use `letI algK : Algebra (Polynomial F) (IntermediateField.adjoin F {t}) := (Polynomial.aeval (⟨t, htK⟩ : IntermediateField.adjoin F {t})).toRingHom.toAlgebra`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI algL : Algebra (Polynomial F) L := (Polynomial.aeval t).toRingHom.toAlgebra`. Use `haveI : IsScalarTower (Polynomial F) (IntermediateField.adjoin F {t}) L := IsScalarTower.of_algebraMap_eq fun p => (hcomm p).symm`. Use `haveI : Algebra.IsAlgebraic (Polynomial F) (IntermediateField.adjoin F {t}) := by`. Prove the components needed by the constructor for the conclusion. Introduce `k`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, r, hsr⟩` from `hden k.1 k.2`. Use `⟨Polynomial.C s * Polynomial.X - Polynomial.C r, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1` using `congrArg (fun P => Polynomial.coeff P 1) h`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs h1`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_C, Polynomial.aeval_X]`. Use `show ((Polynomial.aeval (⟨t, htK⟩ : IntermediateField.adjoin F {t}) s : IntermediateField.adjoin F {t}) : L) * k - ((Polynomial.aeval (⟨t, htK⟩ : IntermediateField.adjoin F {t}) r : IntermediateField.adjoin F {t}) : L) = 0`. Rewrite using `[hcomm, hcomm, hsr, sub_self]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic (IntermediateField.adjoin F {t}) L := Algebra.IsAlgebraic.of_finite _ _`. Use `haveI : Algebra.IsAlgebraic (Polynomial F) L := Algebra.IsAlgebraic.trans (Polynomial F) (IntermediateField.adjoin F {t}) L`. Take `⟨θ, hθ⟩` from `Field.exists_primitive_element (IntermediateField.adjoin F {t}) L`. Take `⟨y, hy0, hyint⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := Polynomial F) θ).exists_integral_multiple`. Establish `hωdef : y • θ = Polynomial.aeval t y * θ` using `Algebra.smul_def y θ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyK : Polynomial.aeval t y ∈ IntermediateField.adjoin F {t}`. Rewrite using `[← hcomm]`. Conclude with `Subtype.property _`. Establish `htop : IntermediateField.adjoin (IntermediateField.adjoin F {t}) {y • θ} = ⊤`. Rewrite using `[eq_top_iff, ← hθ, IntermediateField.adjoin_simple_le_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hθeq : θ = (Polynomial.aeval t y)⁻¹ * (y • θ)`. Rewrite using `[hωdef, inv_mul_cancel_left₀ (hne y hy0)]`. Establish `hmem : (Polynomial.aeval t y)⁻¹ * (y • θ) ∈ IntermediateField.adjoin (IntermediateField.adjoin F {t}) {y • θ}` using `mul_mem (inv_mem (IntermediateField.algebraMap_mem _ (⟨Polynomial.aeval t y, hyK⟩ : IntermediateField.adjoin F {t}))) (IntermediateField.mem_adjoin_simple_self _ (y • θ))`. Rewrite `hmem` using `[← hθeq]`. Then use the resulting hypothesis. Use `⟨minpoly (Polynomial F) (y • θ), y • θ, minpoly.monic hyint, minpoly.irreducible hyint, minpoly.aeval _ _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Establish `hx : x ∈ Algebra.adjoin (IntermediateField.adjoin F {t}) {y • θ}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic (y • θ)), htop]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mem z hz`. Rewrite using `[Set.mem_singleton_iff.1 hz]`. Conclude with `⟨1, one_ne_zero, Polynomial.X, by simp⟩`. Consider the case `algebraMap k`. Take `⟨s, hs, r, hsr⟩` from `hden k.1 k.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨s, hs, Polynomial.C r, by rw [Polynomial.eval₂_C]; exact hsr⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨Q₁, hQ₁, R₁, h₁⟩` from `ha`. Take `⟨Q₂, hQ₂, R₂, h₂⟩` from `hb`. Use `⟨Q₁ * Q₂, mul_ne_zero hQ₁ hQ₂, Polynomial.C Q₂ * R₁ + Polynomial.C Q₁ * R₂, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_C, ← h₁, ← h₂]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul a b _ _ ha hb`. Take `⟨Q₁, hQ₁, R₁, h₁⟩` from `ha`.
-
-Take `⟨Q₂, hQ₂, R₂, h₂⟩` from `hb`. Use `⟨Q₁ * Q₂, mul_ne_zero hQ₁ hQ₂, R₁ * R₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_mul, ← h₁, ← h₂, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FunctionFieldPrimitive.exists_integral_primitive {F : Type} [Field F] [CharZero F]
     {L : Type} [Field L]

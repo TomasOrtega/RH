@@ -13,7 +13,7 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `hz' : z ∈ ⨅ w ∈ U, LinearMap.ker (h w)` using `hz`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hz'`. Conclude with `hz' u hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_U_orth {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {u z : V} (hu : u ∈ U)
     (hz : z ∈ orthK h U) : h u z = 0 := by
@@ -22,16 +22,16 @@ theorem form_U_orth {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {u z 
   exact hz' u hu
 
 /- English proof (translation)
-The claim follows from `hs.eq_iff.1 (form_U_orth hu hz)`.
+A detailed English derivation is pending.
 -/
 theorem form_orth_U {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {U : Submodule K V} {u z : V}
     (hu : u ∈ U) (hz : z ∈ orthK h U) : h z u = 0 :=
   hs.eq_iff.1 (form_U_orth hu hz)
 
 /- English proof (translation)
-Simplify using `only [glueFam, Sum.elim_inl]`. Use `split_ifs with h1 h2 h2`. Conclude with `hbo _ _ hii`. Simplify using `only [map_smulₛₗ, map_smul, map_add, LinearMap.add_apply, LinearMap.smul_apply, smul_zero, add_zero, zero_add, smul_eq_mul, mul_zero, hbo _ _ hii, form_U_orth (hbU i) (hwW _)]`. Simplify using `only [map_smulₛₗ, map_smul, map_add, LinearMap.add_apply, LinearMap.smul_apply, smul_zero, add_zero, zero_add, smul_eq_mul, mul_zero, hbo _ _ hii, form_orth_U hs (hbU i') (hwW _)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hτ' : τ i ≠ τ i'` using `fun e => hii (hτ i i' h1 h2 e)`. Simplify using `only [map_smulₛₗ, map_smul, map_add, LinearMap.add_apply, LinearMap.smul_apply, smul_zero, add_zero, zero_add, smul_eq_mul, mul_zero, hbo _ _ hii, form_U_orth (hbU i) (hwW _), form_orth_U hs (hbU i') (hwW _), hwo _ _ hτ']`.
+A detailed English derivation is pending.
 -/
 theorem glue_inl_inl {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {U : Submodule K V}
     {𝔭 : Ideal (𝓞 F)} {n m : ℕ} {b : Fin n → V} {a : Fin n → 𝓞 F} {π : 𝓞 F} {w : Fin m → V}
@@ -49,7 +49,7 @@ theorem glue_inl_inl {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {U : Sub
       form_orth_U hs (hbU i') (hwW _), hwo _ _ hτ']
 
 /- English proof (translation)
-Simplify using `only [glueFam, Sum.elim_inl]`. Use `split_ifs with h1`. Conclude with `form_U_orth (hbU i) (hwW j)`. Simplify using `only [map_smulₛₗ, map_smul, map_add, LinearMap.add_apply, LinearMap.smul_apply, smul_zero, add_zero, zero_add, smul_eq_mul, mul_zero, form_U_orth (hbU i) (hwW j), hwo _ _ (hj h1)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glue_inl_w {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V}
     {𝔭 : Ideal (𝓞 F)} {n m : ℕ} {b : Fin n → V} {a : Fin n → 𝓞 F} {π : 𝓞 F} {w : Fin m → V}

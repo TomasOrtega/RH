@@ -12,7 +12,7 @@ open GlobalTheory.GaugeAdjoint
 variable {R : Type} [CommRing R] {d m n : ℕ} (G : FGLaw R d)
 
 /- English proof (translation)
-Use `fin_cases j`. Conclude with `hx i`. Conclude with `hy i`. Conclude with `hz i`.
+A detailed English derivation is pending.
 -/
 theorem const_three {x y z : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) (hz : ∀ i, constantCoeff (z i) = 0) (j : Fin 3)
@@ -23,7 +23,7 @@ theorem const_three {x y z : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
   · exact hz i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `ev_pt ha j i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ev_pt_fun {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0) (j : Fin m) :
     (fun i => ev a (pt R d j i)) = a j := by
@@ -31,7 +31,7 @@ theorem ev_pt_fun {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) 
   exact ev_pt ha j i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `ev_zero ha`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ev_zero_fun {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0) :
     (fun i => ev a ((0 : Pt R m d) i)) = 0 := by
@@ -39,7 +39,7 @@ theorem ev_zero_fun {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i
   exact ev_zero ha
 
 /- English proof (translation)
-Use `show constantCoeff (ev ![x, y] (G.F i)) = 0`. Rewrite using `[constantCoeff_ev (const_two hx hy)]`. Conclude with `G.const i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_add {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) (i : Fin d) : constantCoeff (G.add x y i) = 0 := by
@@ -48,7 +48,7 @@ theorem const_add {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
   exact G.const i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `ev_ev_two hx hy hb (G.F i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ev_add_pts {x y : Pt R m d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) {b : Fin m → Pt R n d}
@@ -58,7 +58,7 @@ theorem ev_add_pts {x y : Pt R m d} (hx : ∀ i, constantCoeff (x i) = 0)
   exact ev_ev_two hx hy hb (G.F i)
 
 /- English proof (translation)
-Establish `hu : G.add 0 (pt R (n` using `1) d 0) = pt R (n := 1) d 0 := funext fun i => G.unit i`. Establish `h : (fun i => ev ![y] (G.add 0 (pt R (n` using `1) d 0) i)) = fun i => ev ![y] (pt R (n := 1) d 0 i) := by rw [hu]`. Rewrite `h` using `[ev_add_pts G const_zero (const_pt 0) (const_one hy), ev_zero_fun (const_one hy), ev_pt_fun (const_one hy) 0]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_add_pt {y : Pt R n d} (hy : ∀ i, constantCoeff (y i) = 0) : G.add 0 y = y := by
   have hu : G.add 0 (pt R (n := 1) d 0) = pt R (n := 1) d 0 := funext fun i => G.unit i
@@ -69,7 +69,7 @@ theorem zero_add_pt {y : Pt R n d} (hy : ∀ i, constantCoeff (y i) = 0) : G.add
   exact h
 
 /- English proof (translation)
-Establish `hc : G.add (pt R (n` using `2) d 1) (pt R (n := 2) d 0) = G.F := funext fun i => G.comm i`. Establish `h : (fun i => ev ![x, y] (G.add (pt R (n` using `2) d 1) (pt R (n := 2) d 0) i)) = fun i => ev ![x, y] (G.F i) := by rw [hc]`. Rewrite `h` using `[ev_add_pts G (const_pt 1) (const_pt 0) (const_two hx hy), ev_pt_fun (const_two hx hy) 1, ev_pt_fun (const_two hx hy) 0]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_comm_pt {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) : G.add x y = G.add y x := by
@@ -81,16 +81,16 @@ theorem add_comm_pt {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[add_comm_pt G hx const_zero]`. Conclude with `zero_add_pt G hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_zero_pt {x : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0) : G.add x 0 = x := by
   rw [add_comm_pt G hx const_zero]
   exact zero_add_pt G hx
 
 /- English proof (translation)
-Establish `h3` using `const_three hx hy hz`. Establish `hA : G.add (G.add (pt R (n` using `3) d 0) (pt R d 1)) (pt R d 2) = G.add (pt R (n := 3) d 0) (G.add (pt R d 1) (pt R d 2)) := funext fun i => G.assoc i`. Establish `h : (fun i => ev ![x, y, z] (G.add (G.add (pt R (n` using `3) d 0) (pt R d 1)) (pt R d 2) i)) = fun i => ev ![x, y, z] (G.add (pt R (n := 3) d 0) (G.add (pt R d 1) (pt R d 2)) i) := by`. Rewrite using `[hA]`. Rewrite `h` using `[ev_add_pts G (const_add G (const_pt 0) (const_pt 1)) (const_pt 2) h3, ev_add_pts G (const_pt 0) (const_add G (const_pt 1) (const_pt 2)) h3, ev_add_pts G (const_pt 0) (const_pt 1) h3, ev_add_pts G (const_pt 1) (const_pt 2) h3, ev_pt_fun h3 0, ev_pt_fun h3 1, ev_pt_fun h3 2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem add_assoc_pt {x y z : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) (hz : ∀ i, constantCoeff (z i) = 0) :
@@ -108,7 +108,7 @@ theorem add_assoc_pt {x y z : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
   exact h
 
 /- English proof (translation)
-Rewrite using `[add_assoc_pt G hx hy (const_add G hz hw), ← add_assoc_pt G hy hz hw, add_comm_pt G hy hz, add_assoc_pt G hz hy hw, ← add_assoc_pt G hx hz (const_add G hy hw)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_add_add_comm_pt {x y z w : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) (hz : ∀ i, constantCoeff (z i) = 0)
@@ -118,7 +118,7 @@ theorem add_add_add_comm_pt {x y z w : Pt R n d} (hx : ∀ i, constantCoeff (x i
     add_assoc_pt G hz hy hw, ← add_assoc_pt G hx hz (const_add G hy hw)]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro i`. Conclude with `const_zero i`. Consider the case `succ k ih => intro i`. Conclude with `const_add G ih (const_pt 0) i`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem const_mulN (k : ℕ) : ∀ i, constantCoeff (mulN G k i) = 0 := by
   induction k with
@@ -126,14 +126,14 @@ theorem const_mulN (k : ℕ) : ∀ i, constantCoeff (mulN G k i) = 0 := by
   | succ k ih => intro i; exact const_add G ih (const_pt 0) i
 
 /- English proof (translation)
-Conclude with `ev_zero_fun (const_one hx)`.
+A detailed English derivation is pending.
 -/
 theorem formalGroupLaw_comp_mulN_zero {x : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0) :
     comp1 (mulN G 0) x = 0 := by
   exact ev_zero_fun (const_one hx)
 
 /- English proof (translation)
-Use `show (fun i => ev ![x] (G.add (mulN G k) (pt R d 0) i)) = _`. Rewrite using `[ev_add_pts G (const_mulN G k) (const_pt 0) (const_one hx), ev_pt_fun (const_one hx) 0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem formalGroupLaw_comp_mulN_succ (k : ℕ) {x : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0) :
     comp1 (mulN G (k + 1)) x = G.add (comp1 (mulN G k) x) x := by
@@ -142,7 +142,7 @@ theorem formalGroupLaw_comp_mulN_succ (k : ℕ) {x : Pt R n d} (hx : ∀ i, cons
   rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[formalGroupLaw_comp_mulN_zero G (const_add G hx hy), formalGroupLaw_comp_mulN_zero G hx, formalGroupLaw_comp_mulN_zero G hy, zero_add_pt G const_zero]`. Consider the case `succ k ih`. Rewrite using `[formalGroupLaw_comp_mulN_succ G k (const_add G hx hy), ih, formalGroupLaw_comp_mulN_succ G k hx, formalGroupLaw_comp_mulN_succ G k hy, add_add_add_comm_pt G (const_comp1 (const_mulN G k) hx) (const_comp1 (const_mulN G k) hy) hx hy]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem formalGroupLaw_comp_mulN_add (k : ℕ) {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) :
@@ -157,7 +157,7 @@ theorem formalGroupLaw_comp_mulN_add (k : ℕ) {x y : Pt R n d} (hx : ∀ i, con
       add_add_add_comm_pt G (const_comp1 (const_mulN G k) hx) (const_comp1 (const_mulN G k) hy) hx hy]
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_single_one {σ : Type} (s : σ) (f : MvPowerSeries σ R) :
     coeff (Finsupp.single s 1) f = constantCoeff (pderiv R s f) := by
@@ -165,7 +165,7 @@ theorem coeff_single_one {σ : Type} (s : σ) (f : MvPowerSeries σ R) :
   simp
 
 /- English proof (translation)
-Establish `ha` using `const_two hx hy`. Rewrite using `[coeff_single_one s (ev ![x, y] f), pderiv_ev ha, map_sum, Fin.sum_univ_two]`. Simplify using `only [map_sum, map_mul, constantCoeff_ev ha, ← coeff_single_one, Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lin_ev_two {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) (f : PS R 2 d) (s : Fin n × Fin d) :
@@ -178,9 +178,9 @@ theorem lin_ev_two {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     Matrix.cons_val_one]
 
 /- English proof (translation)
-Use `show coeff _ (X (j, l)) = _`. Rewrite using `[coeff_X]`. Distinguish the cases in `h : j = j' ∧ l = l'`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Establish `h2` using `Finsupp.single_left_injective one_ne_zero h'`. Simplify using `only [Prod.mk.injEq] at h2`. Conclude with `h ⟨h2.1.symm, h2.2.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma coeff_single_pt_eq_ite (j j' : Fin n) (l l' : Fin d) :
     coeff (Finsupp.single (j', l') 1) (pt R d j l) = if j = j' ∧ l = l' then 1 else 0 := by
@@ -196,7 +196,7 @@ private lemma coeff_single_pt_eq_ite (j j' : Fin n) (l l' : Fin d) :
     exact h ⟨h2.1.symm, h2.2.symm⟩
 
 /- English proof (translation)
-Rewrite using `[coeff_single_pt_eq_ite]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_single_pt (j : Fin n) (l l' : Fin d) :
     coeff (Finsupp.single (j, l') 1) (pt R d j l) = if l = l' then 1 else 0 := by
@@ -204,7 +204,7 @@ theorem coeff_single_pt (j : Fin n) (l l' : Fin d) :
   simp
 
 /- English proof (translation)
-Establish `h` using `congrArg (coeff (Finsupp.single ((0 : Fin 1), l) 1)) (G.unit i)`. Establish `hX : coeff (Finsupp.single ((0 : Fin 1), l) 1) (X ((0 : Fin 1), i) : PS R 1 d) = if i = l then 1 else 0` using `coeff_single_pt 0 i l`. Rewrite `h` using `[lin_ev_two const_zero (const_pt 0), hX]`. Simplify `h` using `[coeff_single_pt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lin_F_right (i l : Fin d) :
     coeff (Finsupp.single ((1 : Fin 2), l) 1) (G.F i) = if i = l then 1 else 0 := by
@@ -215,9 +215,9 @@ theorem lin_F_right (i l : Fin d) :
   simpa [coeff_single_pt] using h
 
 /- English proof (translation)
-Use `show coeff _ (X (j, l)) = _`. Rewrite using `[coeff_X]`. Distinguish the cases in `h : j = j' ∧ l = l'`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Establish `h2` using `Finsupp.single_left_injective one_ne_zero h'`. Simplify using `only [Prod.mk.injEq] at h2`. Conclude with `h ⟨h2.1.symm, h2.2.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma coeff_single_pt_eq_ite' (j j' : Fin n) (l l' : Fin d) :
     coeff (Finsupp.single (j', l') 1) (pt R d j l) = if j = j' ∧ l = l' then 1 else 0 := by
@@ -233,7 +233,7 @@ private lemma coeff_single_pt_eq_ite' (j j' : Fin n) (l l' : Fin d) :
     exact h ⟨h2.1.symm, h2.2.symm⟩
 
 /- English proof (translation)
-Establish `h` using `congrArg (coeff (Finsupp.single ((0 : Fin 2), l) 1)) (G.comm i)`. Rewrite `h` using `[lin_ev_two (const_pt 1) (const_pt 0)]`. Rewrite using `[← h]`. Simplify using `[coeff_single_pt_eq_ite', lin_F_right G]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lin_F_left (i l : Fin d) :
     coeff (Finsupp.single ((0 : Fin 2), l) 1) (G.F i) = if i = l then 1 else 0 := by
@@ -243,7 +243,7 @@ theorem lin_F_left (i l : Fin d) :
   simp [coeff_single_pt_eq_ite', lin_F_right G]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply]`. Use `show coeff (Finsupp.single ((0 : Fin 1), j) 1) (ev ![x, y] (G.F i)) = coeff (Finsupp.single ((0 : Fin 1), j) 1) (x i) + coeff (Finsupp.single ((0 : Fin 1), j) 1) (y i)`. Rewrite using `[lin_ev_two hx hy]`. Simplify using `[lin_F_left G, lin_F_right G]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dLin_add {x y : Pt R 1 d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) : dLin (G.add x y) = dLin x + dLin y := by
@@ -255,7 +255,7 @@ theorem dLin_add {x y : Pt R 1 d} (hx : ∀ i, constantCoeff (x i) = 0)
   simp [lin_F_left G, lin_F_right G]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.one_apply]`. Conclude with `coeff_single_pt 0 i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dLin_pt : dLin (pt R (n := 1) d 0) = 1 := by
   ext i j
@@ -263,9 +263,9 @@ theorem dLin_pt : dLin (pt R (n := 1) d 0) = 1 := by
   exact coeff_single_pt 0 i j
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use extensionality with `i j`. Simplify using `[dLin, mulN]`. Consider the case `succ k ih => show dLin (G.add (mulN G k) (pt R d 0)) = _`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[dLin_add G (const_mulN G k) (const_pt 0), ih, dLin_pt, Nat.cast_succ, add_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dLin_mulN (k : ℕ) : dLin (mulN G k) = (k : R) • (1 : Matrix (Fin d) (Fin d) R) := by
   induction k with
@@ -277,7 +277,7 @@ theorem dLin_mulN (k : ℕ) : dLin (mulN G k) = (k : R) • (1 : Matrix (Fin d) 
     rw [dLin_add G (const_mulN G k) (const_pt 0), ih, dLin_pt, Nat.cast_succ, add_smul, one_smul]
 
 /- English proof (translation)
-Introduce `R inst d G n`. Conclude with `⟨const_mulN G n, formalGroupLaw_comp_mulN_add G n (const_pt 0) (const_pt 1), dLin_mulN G n⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mulN_hom : ∀ (R : Type) [CommRing R] (d : ℕ) (G : FGLaw R d) (n : ℕ),
     (∀ i, constantCoeff (mulN G n i) = 0) ∧

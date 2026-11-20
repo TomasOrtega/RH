@@ -20,13 +20,11 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.Gen.CxSmooth
 
 /- English proof (translation)
-Use `choose n W hW hd using ReciprocityTheory.ChartRestriction.G.H1.exists_dim f`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension g)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Establish `key : ∀ x, n x = g`. Introduce `x`. Set `κ` to `Y.residueField (f x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k` to `AlgebraicClosure κ`. Set `t : Sp k ⟶ Y` to `spMap (algebraMap κ k) ≫ Y.fromSpecResidueField (f x)`. Establish `ht : f x = t (IsLocalRing.closedPoint k)` using `by show f x = (Y.fromSpecResidueField (f x)) ((spMap (algebraMap κ k)) (IsLocalRing.closedPoint k))`. Rewrite using `[Scheme.fromSpecResidueField_apply]`. Take `⟨z, hz⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := t) x (IsLocalRing.closedPoint k) ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sq` using `IsPullback.paste_vert (isPullback_morphismRestrict (pullback.fst f t) (W x)) (IsPullback.of_hasPullback f t)`. Establish `h₁ : SmoothOfRelativeDimension (n x) (((pullback.fst f t) ⁻¹ᵁ W x).ι ≫ pullback.snd f t)` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback sq (hd x)`. Establish `h₂ : SmoothOfRelativeDimension g (((pullback.fst f t) ⁻¹ᵁ W x).ι ≫ pullback.snd f t)` using `IsZariskiLocalAtSource.comp (h k t) _`. Conclude with `ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ h₁ h₂ ⟨z, show pullback.fst f t z ∈ W x by rw [hz.1]; exact hW x⟩`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension g) W (top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hW x⟩) fun x => ?_` and prove the remaining obligations.
-
-Rewrite using `[← key x]`. Conclude with `hd x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_geomFibres {X Y : Scheme.{0}} (f : X ⟶ Y) [Smooth f] (g : ℕ)
     (h : ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Y), SmoothOfRelativeDimension g (pullback.snd f t)) :
@@ -71,9 +69,9 @@ def baseOfG {p : ℕ} [Fact p.Prime] {D : Datum p} (gb : GBase D.toG ℂ) : Base
     exact not_isUnit_zero h2
 
 /- English proof (translation)
-Take `⟨M⟩` from `GlobalTheory.T.harrisTaylorIntegralModel_nonempty p D ℂ (baseOfG gb) N hN hNp`. Take `⟨j, hj, -, hjs, -⟩` from `GlobalTheory.T.exists_open_closed_immersion_genModel_to_fibre p D ℂ (baseOfG gb) ℂ (RingHom.id ℂ) gb rfl (fun i => (RingHom.id_comp _).symm) N hN hNp M X`. Establish `h1 : SmoothOfRelativeDimension (D.a * (D.n - 1)) (pullback.snd M.s (spMap (RingHom.id ℂ)))` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) M.smooth`. Establish `: IsOpenImmersion j` using `hj`. Establish `h0 : SmoothOfRelativeDimension 0 j` using `inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨0 + D.a * (D.n - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← hjs]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genericModel_complex_smooth {p : ℕ} [Fact p.Prime] (D : Datum p) (gb : GBase D.toG ℂ) (N : ℕ) (hN : 3 ≤ N)
     (hNp : N.Coprime p) (X : GenModel gb N) : ∃ d, SmoothOfRelativeDimension d X.s := by
@@ -89,23 +87,19 @@ theorem genericModel_complex_smooth {p : ℕ} [Fact p.Prime] (D : Datum p) (gb :
   infer_instance
 
 /- English proof (translation)
-Use `haveI := G.freeLa`. Use `haveI := G.finLa`. Use `haveI : NeZero ℓ := ⟨hℓ.ne'⟩`. Use `set r := Module.finrank ℤ G.La`. Set `B` to `Module.finBasis ℤ G.La`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `v : (Fin r → ZMod ℓ) → G.La` to `fun c => ∑ i, ((c i).val : ℤ) • B i`. Establish `evneg : ∀ x y : G.La, I.ev ℓ (x - y) = I.ev ℓ x * (I.ev ℓ y)⁻¹` using `fun x y => by`. Rewrite using `[eq_mul_inv_iff_mul_eq, ← I.add, sub_add_cancel]`. Establish `hrep : ∀ c i, B.repr (v c) i = ((c i).val : ℤ)` using `fun c i => by`. Simplify using `[v, Module.Basis.repr_self, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `F : (Fin r → ZMod ℓ) → {q : Q // q ^ ℓ = 1}` to `fun c => ⟨I.ev ℓ (v c), (I.onto ℓ hℓ _).2 ⟨_, rfl⟩⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `c c' hcc`. Establish `h1 : I.ev ℓ (v c - v c') = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[evneg, mul_inv_eq_one]`. Conclude with `congrArg Subtype.val hcc`. Take `⟨y, hy⟩` from `(I.ker ℓ hℓ _).1 h1`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (fun z => B.repr z i) hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_sub, Finsupp.sub_apply, hrep, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul] at h2`. Establish `h3` using `congrArg (fun z : ℤ => (z : ZMod ℓ)) h2`. Simplify using `only [Int.cast_sub, Int.cast_natCast, ZMod.natCast_zmod_val, Int.cast_mul, ZMod.natCast_self, zero_mul] at h3`. Conclude with `sub_eq_zero.1 h3`. Introduce and unpack `⟨q, hq⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `(I.onto ℓ hℓ q).1 hq`. Set `c : Fin r → ZMod ℓ` to `fun i => (B.repr x i : ZMod ℓ)`. Establish `hdiv : ∀ i, (ℓ : ℤ) ∣ ((c i).val : ℤ) - B.repr x i` using `fun i => by`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `[c]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `choose y hy using hdiv`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show I.ev ℓ (v c) = I.ev ℓ x`. Establish `e1 : v c = x + ℓ • ∑ i, y i • B i`. Use `B.ext_elem fun i => ?_` and prove the remaining obligations.
-
-Rewrite using `[hrep, map_add, map_nsmul, Finsupp.add_apply, Finsupp.smul_apply, map_sum]`. Simplify using `only [map_zsmul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, nsmul_eq_mul]`. Simplify using `only [mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Take the linear combination `hy i`. Rewrite using `[e1, I.add, (I.ker ℓ hℓ _).2 ⟨_, rfl⟩, _root_.mul_one]`.
-
-Rewrite using `[← Nat.card_congr (Equiv.ofBijective F hF), Nat.card_fun, Nat.card_zmod, Nat.card_fin]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_torsion_of_gTateIso (G : GDatum) {k : Type} [Field k] {Q : Type} [Group Q] {act : G.O → Q → Q}
     {e : ℕ → Q → Q → kˣ → Prop} (I : GTateIso G k Q act e) {ℓ : ℕ} (hℓ : 0 < ℓ) :
@@ -154,17 +148,17 @@ theorem card_torsion_of_gTateIso (G : GDatum) {k : Type} [Field k] {Q : Type} [G
   rw [← Nat.card_congr (Equiv.ofBijective F hF), Nat.card_fun, Nat.card_zmod, Nat.card_fin]
 
 /- English proof (translation)
-Establish `hab` using `X.univ.ab`. Establish `: Smooth X.univ.A.hom` using `hab.smooth`. Establish `: IsProper X.univ.A.hom` using `hab.proper`. Establish `: GeometricallyConnected X.univ.A.hom` using `hab.geomConnected`. Use `of_geomFibres X.univ.A.hom _ fun k _ _ t => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `B` to `(Over.pullback t).obj X.univ.A`. Establish `hB : IsAbelianScheme B` using `{ comm := inferInstance smooth := by show Smooth (pullback.snd _ _); infer_instance proper := by show IsProper (pullback.snd _ _); infer_instance geomConnected := by show GeometricallyConnected (pullback.snd _ _); infer_instance }`. Establish `: Smooth B.hom` using `hB.smooth`. Establish `: GeometricallyConnected B.hom` using `hB.geomConnected`. Establish `: ConnectedSpace B.left` using `GeometricallyConnected.connectedSpace_of_subsingleton (f := B.hom)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `exists_dim_of_preconnected B.hom (Classical.arbitrary _)`. It suffices to establish `e : d = G.m * G.n * Module.finrank ℚ G.F / 2 by rw [← e]; exact hd`. Take `⟨β, hβ⟩` from `Spec.map_surjective (t ≫ X.s)`. Take `⟨I, -⟩` from `X.univ.geom k t β.hom hβ.symm`. Establish `h2k : ((2 : ℕ) : k) ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : IsUnit ((2 : ℕ) : ℂ)` using `Ne.isUnit (by norm_num)`. Use `h.map β.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `c₁` using `GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional k B d 2 hB hd h2k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₂` using `card_torsion_of_gTateIso G I (ℓ := 2) two_pos`. Take `⟨e, -⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback (isGrpPullback_pullback X.univ.A t) (𝟙 _) t (Category.id_comp t).symm`. Establish `c₃ : Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ 2 = 1} = Nat.card {q : Over.mk t ⟶ X.univ.A // q ^ 2 = 1}` using `Nat.card_congr (e.toEquiv.subtypeEquiv fun x => by show x ^ 2 = 1 ↔ e x ^ 2 = 1`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff])`. Rewrite `c₃` using `[c₁, c₂, G.rankLa]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.pow_right_injective le_rfl c₃` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem relDim_A {G : GDatum} (gb : GBase G ℂ) (N : ℕ) (X : GenModel gb N) :
     SmoothOfRelativeDimension (G.m * G.n * Module.finrank ℚ G.F / 2) X.univ.A.hom := by
@@ -205,7 +199,7 @@ theorem relDim_A {G : GDatum} (gb : GBase G ℂ) (N : ℕ) (X : GenModel gb N) :
   omega
 
 /- English proof (translation)
-Introduce `G gb N hN X`. Use `⟨?_, relDim_A gb N X⟩` and prove the remaining obligations. Take `⟨p, _, D, hNp, rfl⟩` from `GlobalTheory.T.exists_harrisTaylorDatum_at_prime_coprime G N (by omega)`. Conclude with `genericModel_complex_smooth D gb N hN hNp X`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem genModel_smooth : ∀ (G : GDatum) (gb : GBase G ℂ) (N : ℕ), 3 ≤ N → ∀ X : GenModel gb N,
     (∃ d : ℕ, SmoothOfRelativeDimension d X.s) ∧

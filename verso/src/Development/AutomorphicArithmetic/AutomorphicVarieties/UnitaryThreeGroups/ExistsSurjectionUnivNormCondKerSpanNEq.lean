@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
 /- English proof (translation)
-Establish `h : x.left * theta x.left = 1`. Use `congrArg SemidirectProduct.left h2` as an intermediate fact. Rewrite `this` using `[SemidirectProduct.mul_left, hx, sgnAct_neg_one]`. Then use the resulting hypothesis. Establish `h' : x.left = (theta x.left)⁻¹` using `eq_inv_of_mul_eq_one_left h`. Use `theta_inv_val x.left` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← h']`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mat_symm {R : Type} [CommRing R] (x : GG 3 R) (h2 : x * x = 1) (hx : x.right = -1) :
     x.mat = Jmat R 3 * x.matᵀ * Jmat R 3 := by
@@ -19,15 +19,15 @@ private theorem mat_symm {R : Type} [CommRing R] (x : GG 3 R) (h2 : x * x = 1) (
   exact this
 
 /- English proof (translation)
-Establish `hs` using `mat_symm (r c) (by rw [← map_mul, hc, map_one]) hr`. Establish `hsym : ∀ i j, (r c).mat i j = (r c).mat j.rev i.rev`. Introduce `i j`. Use `conv_lhs => rw [hs]`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.mul_apply, Jmat, Fin.sum_univ_three]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ⟨h1, h2, h3⟩ i fin_cases i <;> simp [nEq, h1, h2, h3]`. Introduce `h`. Establish `h0` using `h 0`. Establish `h1` using `h 1`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h 2`. Establish `h3` using `h 3`. Establish `h4` using `h 4`. Establish `h5` using `h 5`. Establish `h6` using `h 6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `h 7`. Simplify using `[nEq, sub_eq_zero] at h0 h1 h2 h3 h4 h5 h6 h7`. Establish `e12 : (r c).mat 1 2 = (r c).mat 0 1` using `hsym 1 2`. Establish `e21 : (r c).mat 2 1 = (r c).mat 1 0` using `hsym 2 1`. Establish `e22 : (r c).mat 2 2 = (r c).mat 0 0` using `hsym 2 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, h6, h7⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h0, h1, h2, h3, h4, h5, e12, e21, e22]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem norm_iff {G R : Type} [Group G] [CommRing R] (c g₁ : G) (r : G →* GG 3 R) (hc : c * c = 1)
     (hr : (r c).right = -1) : Normalised c g₁ r ↔ ∀ i, nEq c g₁ r i = 0 := by
@@ -57,7 +57,7 @@ private theorem norm_iff {G R : Type} [Group G] [CommRing R] (c g₁ : G) (r : G
     fin_cases i <;> fin_cases j <;> simp [h0, h1, h2, h3, h4, h5, e12, e21, e22]
 
 /- English proof (translation)
-Establish `hm : ∀ g, ((r.map f).hom g).mat = (r.hom g).mat.map f` using `fun g => GG.map_mat (f : R →+* R') (r.hom g)`. Apply the tactic sequence `fin_cases i <;> simp [nEq, zmat, hm, map_sub, map_one]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem nEq_map {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} (c g₁ : Γ) {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R']
@@ -67,9 +67,9 @@ private theorem nEq_map {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Gro
   fin_cases i <;> simp [nEq, zmat, hm, map_sub, map_one]
 
 /- English proof (translation)
-Apply `GLift.ext` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `x`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Conclude with `Units.ext (h x)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a.hasMult x, b.hasMult x]`.
+A detailed English derivation is pending.
 -/
 private theorem ext_lemma {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
@@ -82,7 +82,7 @@ private theorem ext_lemma {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [G
   · rw [a.hasMult x, b.hasMult x]
 
 /- English proof (translation)
-The claim follows from `GG.map_mat (f : R →+* R') (r.hom x)`.
+A detailed English derivation is pending.
 -/
 private theorem gLift_map_hom_mat_eq_map {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R']
@@ -91,7 +91,7 @@ private theorem gLift_map_hom_mat_eq_map {O : Type} [CommRing O] [IsLocalRing O]
   GG.map_mat (f : R →+* R') (r.hom x)
 
 /- English proof (translation)
-Apply `ext_lemma` to reduce the goal to its premises. Introduce `x`. Rewrite using `[gLift_map_hom_mat_eq_map, gLift_map_hom_mat_eq_map, gLift_map_hom_mat_eq_map]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem comp_lemma_3 {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} {R R' R'' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R']
@@ -104,7 +104,7 @@ private theorem comp_lemma_3 {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type}
   simp
 
 /- English proof (translation)
-Apply `ext_lemma` to reduce the goal to its premises. Introduce `x`. Rewrite using `[gLift_map_hom_mat_eq_map]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem gLift_map_id {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
@@ -116,25 +116,21 @@ private theorem gLift_map_id {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type}
   simp
 
 /- English proof (translation)
-Introduce `O _ _ Γ _ _ η Ψ P c g₁ B S hc hη`. Establish `hr : ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (r : GLift O η Ψ R), (r.hom c).right = -1` using `fun R _ _ _ r => by rw [r.hasMult c, hη]`. Establish `hNS : NormCond c g₁ P S.R S.r`. Establish `h` using `(S.rep S.R).1 (AlgHom.id O S.R)`. Rewrite `h` using `[gLift_map_id]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨p, hp, -⟩` from `(B.rep S.R).2 S.r hNS.2`. Establish `hI : Ideal.span (Set.range (nEq c g₁ B.r.hom)) ≤ RingHom.ker p`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show p (nEq c g₁ B.r.hom i) = 0`. Rewrite using `[← nEq_map, hp]`. Conclude with `(norm_iff c g₁ S.r.hom hc (hr _ S.r)).1 hNS.1 i`. Use `set I := Ideal.span (Set.range (nEq c g₁ B.r.hom)) with hIdef`. Use `haveI : Nontrivial (B.R ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (RingHom.ker_ne_top _) hI)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsCO O (B.R ⧸ I) := co_quot O B.R (B.R ⧸ I) (Ideal.Quotient.mkₐ O I) (Ideal.Quotient.mkₐ_surjective O I)`. Establish `hNq : NormCond c g₁ P (B.R ⧸ I) (B.r.map (Ideal.Quotient.mkₐ O I))`. Use `⟨(norm_iff c g₁ _ hc (hr _ _)).2 (fun i => ?_), (B.rep _).1 _⟩` and prove the remaining obligations. Rewrite using `[nEq_map]`. Use `show Ideal.Quotient.mk I _ = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨i, rfl⟩)`. Take `⟨s, hs, -⟩` from `(S.rep (B.R ⧸ I)).2 _ hNq`. Establish `hsp : s.comp p = Ideal.Quotient.mkₐ O I`. Take `⟨u, -, hu⟩` from `(B.rep (B.R ⧸ I)).2 _ hNq.2`. Establish `e1` using `hu (s.comp p) (by show GLift.map (s.comp p) B.r = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_lemma_3, hp, hs])`. Establish `e2` using `hu (Ideal.Quotient.mkₐ O I) rfl`. Rewrite using `[e1, e2]`. Establish `hker : RingHom.ker p = I`. Use `le_antisymm (fun x hx => ?_) hI` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Ideal.Quotient.mkₐ O I x = 0`. Rewrite using `[← hsp, AlgHom.comp_apply, RingHom.mem_ker.1 hx, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`. Establish `hI' : ∀ a ∈ I, p a = 0` using `fun a ha => RingHom.mem_ker.1 (hI ha)`. Set `p'` to `Ideal.Quotient.liftₐ I p hI'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp'q : ∀ z, p' (Ideal.Quotient.mkₐ O I z) = p z` using `fun z => by show Ideal.Quotient.lift I (p : B.R →+* S.R) hI' (Ideal.Quotient.mk I z) = p z`. Conclude with `Ideal.Quotient.lift_mk I _ _`. Establish `hpq : p'.comp (Ideal.Quotient.mkₐ O I) = p` using `AlgHom.ext hp'q`. Establish `hid : p'.comp s = AlgHom.id O S.R`. Take `⟨u, -, hu⟩` from `(S.rep S.R).2 S.r hNS`.
-
-Establish `e1` using `hu (p'.comp s) (by show GLift.map (p'.comp s) S.r = S.r`. Rewrite using `[comp_lemma_3, hs, ← comp_lemma_3, hpq, hp])`. Establish `e2` using `hu (AlgHom.id O S.R) (gLift_map_id _)`. Rewrite using `[e1, e2]`. Use `⟨p, fun y => ?_, hp, hker⟩` and prove the remaining obligations.
-
-Take `⟨z, hz⟩` from `Ideal.Quotient.mkₐ_surjective O I (s y)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp'q, hz]`. Conclude with `congrArg (fun f => f y) hid`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_surjection_univ_normCond_ker_span_nEq :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ] {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} {P : GCond O η Ψ} (c g₁ : Γ)

@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace FunctorialResolution.Blowup
 
 /- English proof (translation)
-Use `comap_eq_top_of_notMem_support _ Z fun x => ?_` and prove the remaining obligations. Use `show x.1 ∉ Z.support`. Conclude with `x.2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comap_ι_support_compl_eq_top {X : Scheme.{u}} (Z : X.IdealSheafData) :
     Z.comap (Scheme.Opens.ι Z.support.compl) = ⊤ := by
@@ -19,7 +19,7 @@ theorem comap_ι_support_compl_eq_top {X : Scheme.{u}} (Z : X.IdealSheafData) :
   exact x.2
 
 /- English proof (translation)
-Introduce `X X' π Z h`. Establish `h1` using `h.restrict Z.support.compl`. Rewrite `h1` using `[comap_ι_support_compl_eq_top Z]`. Conclude with `h1.isIso_of_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blowupIsIsoOffCenter : BlowupIsIsoOffCenter.{u} := by
   intro X X' π Z h

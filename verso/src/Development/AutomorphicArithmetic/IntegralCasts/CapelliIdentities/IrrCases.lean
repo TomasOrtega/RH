@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G V _ _ _ ρ hρ W hW`. Set `S : Subrepresentation ρ` to `⟨W, fun g v hv => hW g v hv⟩`. Break down `hρ.eq_bot_or_eq_top S with h | h` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule h)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule h)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem UpperTheory.Reformulated.B.Qe20.irrCases :
     ∀ {G V : Type} [inst : Group G]

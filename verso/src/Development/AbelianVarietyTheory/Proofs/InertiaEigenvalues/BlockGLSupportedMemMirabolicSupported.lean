@@ -20,11 +20,11 @@ open Matrix
 namespace GlobalTheory.BlockMirabolic
 
 /- English proof (translation)
-Introduce `E _ _ m r S h hh`. Prove the components needed by the constructor for the conclusion. Introduce `w hw`. Establish `hw1` using `congrArg Units.val (hh w hw)`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Units.val_one] at hw1 ⊢`. Express the relevant statement in the definitionally equal form `((GroundTheory.Automorphic.FourierWhittaker.blockMat _ h.val).map _) = 1`. Express the relevant statement in the definitionally equal form `(h.val.map _) = 1 at hw1`. Rewrite using `[GroundTheory.Automorphic.FourierWhittaker.map_blockMat, hw1, GroundTheory.Automorphic.FourierWhittaker.blockMat_one]`. Introduce `j`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `GroundTheory.Automorphic.FourierWhittaker.blockMat _ h.val (Fin.last (m + r + 1)) j = _`. Rewrite using `[GroundTheory.Automorphic.FourierWhittaker.blockMat_apply, dif_neg (by simp)]`. Simplify using `only [eq_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockGL_mem_mirS : ∀ (E : Type) [Field E] [NumberField E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))),
     ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S,

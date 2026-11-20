@@ -17,7 +17,7 @@ def rem (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) : ∀ k, Finset (ι k) :=
 
 omit [Fintype K] in
 /- English proof (translation)
-The claim follows from `Function.update_of_ne h _ _`.
+A detailed English derivation is pending.
 -/
 theorem rem_apply_of_ne {I : ∀ k, Finset (ι k)} {k l : K} (i : ι k) (h : l ≠ k) :
     rem I ⟨k, i⟩ l = I l :=
@@ -25,7 +25,7 @@ theorem rem_apply_of_ne {I : ∀ k, Finset (ι k)} {k l : K} (i : ι k) (h : l �
 
 omit [Fintype K] in
 /- English proof (translation)
-The claim follows from `Function.update_self _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem rem_apply_self (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) :
     rem I ⟨k, i⟩ k = (I k).erase i :=
@@ -33,9 +33,9 @@ theorem rem_apply_self (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) :
 
 omit [Fintype K] in
 /- English proof (translation)
-Take `⟨k, i⟩` from `p`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite using `[rem_apply_self]`. Conclude with `Finset.erase_subset _ _`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rem_apply_of_ne i hl]`.
+A detailed English derivation is pending.
 -/
 theorem rem_apply_subset (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) (l : K) : rem I p l ⊆ I l := by
   obtain ⟨k, i⟩ := p
@@ -46,7 +46,7 @@ theorem rem_apply_subset (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) (l : K) : r
 omit [∀ k, LinearOrder (ι k)] in
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun l hl => by rw [Function.update_of_ne (ne_of_lt (Finset.mem_filter.1 hl).2)]`.
+A detailed English derivation is pending.
 -/
 theorem offset_update (I : ∀ k, Finset (ι k)) (k : K) (X : Finset (ι k)) :
     ∑ l ∈ Finset.univ.filter (· < k), ((Function.update I k X l).card - 1) =
@@ -55,11 +55,11 @@ theorem offset_update (I : ∀ k, Finset (ι k)) (k : K) (X : Finset (ι k)) :
     rw [Function.update_of_ne (ne_of_lt (Finset.mem_filter.1 hl).2)]
 
 /- English proof (translation)
-Establish `h1 : ((I k).erase i').filter (· < i) = (I k).filter (· < i)`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, hz⟩, hzi⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hz, hzi⟩`. Introduce and unpack `⟨hz, hzi⟩`. Conclude with `⟨⟨(hzi.trans hlt).ne, hz⟩, hzi⟩`. Establish `h3 : i ∈ (I k).filter (· < i')` using `Finset.mem_filter.2 ⟨hi, hlt⟩`. Establish `h2 : (((I k).erase i).filter (· < i')).card + 1 = ((I k).filter (· < i')).card`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.filter_erase, Finset.card_erase_add_one h3]`. Unfold `faceSign rem`. Simplify using `only [Function.update_self, offset_update]`. Rewrite using `[h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sign_swap_same {I : ∀ k, Finset (ι k)} {k : K} {i i' : ι k} (hi : i ∈ I k) (hlt : i < i') :
     faceSign I k i' * faceSign (rem I ⟨k, i'⟩) k i = -(faceSign I k i * faceSign (rem I ⟨k, i⟩) k i') := by
@@ -78,9 +78,9 @@ theorem sign_swap_same {I : ∀ k, Finset (ι k)} {k : K} {i i' : ι k} (hi : i 
   ring
 
 /- English proof (translation)
-Establish `hmem : k ∈ Finset.univ.filter (· < k')` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hk⟩`. Establish `hoff : ∑ l ∈ Finset.univ.filter (· < k'), ((Function.update I k ((I k).erase i) l).card - 1) + 1 = ∑ l ∈ Finset.univ.filter (· < k'), ((I l).card - 1)`. Rewrite using `[← Finset.add_sum_erase _ _ hmem, ← Finset.add_sum_erase _ _ hmem, Function.update_self, Finset.sum_congr rfl fun l hl => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)], Finset.card_erase_of_mem hi]`. Use linear arithmetic over natural numbers and integers. Establish `hlow : ∑ l ∈ Finset.univ.filter (· < k), ((Function.update I k' ((I k').erase i') l).card - 1) = ∑ l ∈ Finset.univ.filter (· < k), ((I l).card - 1)` using `Finset.sum_congr rfl fun l hl => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne (ne_of_lt ((Finset.mem_filter.1 hl).2.trans hk))]`. Unfold `faceSign rem`. Simplify using `only [Function.update_of_ne hk.ne, Function.update_of_ne hk.ne', hlow]`. Rewrite using `[← hoff]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sign_swap_lt {I : ∀ k, Finset (ι k)} {k k' : K} (i : ι k) (i' : ι k') (hi : i ∈ I k)
     (hk : k < k') (h2 : 2 ≤ (I k).card) :
@@ -104,7 +104,7 @@ theorem sign_swap_lt {I : ∀ k, Finset (ι k)} {k k' : K} (i : ι k) (i' : ι k
 
 omit [Fintype K] [LinearOrder K] in
 /- English proof (translation)
-Use `h.card_pos` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem hi]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_le_card {I : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ I k)
     (h : ((I k).erase i).Nonempty) : 2 ≤ (I k).card := by
@@ -113,11 +113,11 @@ theorem two_le_card {I : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ I 
   omega
 
 /- English proof (translation)
-Take `⟨k, i⟩` from `p`. Take `⟨k', i'⟩` from `q`. Break down `lt_trichotomy k k' with h | rfl | h` into its components or cases. Establish `hb` using `hJ k`. Rewrite `hb` using `[rem_apply_of_ne _ h.ne, rem_apply_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sign_swap_lt i i' hp h (two_le_card hp hb), neg_neg]`. Establish `hii : i' ≠ i` using `fun e => hne (by rw [e])`. Break down `lt_or_gt_of_ne hii with h | h` into its components or cases. Conclude with `sign_swap_same hq h`. Rewrite using `[sign_swap_same hp h, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `hJ k'`. Rewrite `hb` using `[rem_apply_self, rem_apply_of_ne _ h.ne]`. Conclude with `sign_swap_lt i' i hq h (two_le_card hq hb)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_swap {I : ∀ k, Finset (ι k)} {p q : Σ k, ι k} (hp : p.2 ∈ I p.1) (hq : q.2 ∈ I q.1)
     (hne : q ≠ p) (hJ : ∀ l, (rem (rem I p) q l).Nonempty) :
@@ -138,7 +138,7 @@ theorem sign_swap {I : ∀ k, Finset (ι k)} {p q : Σ k, ι k} (hp : p.2 ∈ I 
     exact sign_swap_lt i' i hq h (two_le_card hq hb)
 
 /- English proof (translation)
-Unfold `faceSign`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem faceSign_mul_self (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) :
     faceSign I k i * faceSign I k i = 1 := by
@@ -147,7 +147,7 @@ theorem faceSign_mul_self (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) :
   norm_num
 
 /- English proof (translation)
-Rewrite using `[← pow_add, show x + z + (y + z) = 2 * z + 1 by omega, pow_succ, pow_mul]`. Evaluate the numerical expressions.
+Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem neg_one_pow_pair (x y z : ℕ) (h : x + y = 1) :
     ((-1 : ℤ) ^ (x + z)) * (-1) ^ (y + z) = -1 := by
@@ -155,9 +155,9 @@ theorem neg_one_pow_pair (x y z : ℕ) (h : x + y = 1) :
   norm_num
 
 /- English proof (translation)
-Establish `hc : ((I k).filter (· < a)).card + ((I k).filter (· < b)).card = 1`. Rewrite using `[h]`. Break down `lt_or_gt_of_ne hab with h' | h'` into its components or cases. Simplify using `[Finset.filter_insert, Finset.filter_singleton, h', not_lt.2 h'.le]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, h', not_lt.2 h'.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `neg_one_pow_pair _ _ _ hc`.
+A detailed English derivation is pending.
 -/
 theorem faceSign_pair {I : ∀ k, Finset (ι k)} {k : K} {a b : ι k} (h : I k = {a, b}) (hab : a ≠ b) :
     faceSign I k a * faceSign I k b = -1 := by
@@ -169,7 +169,7 @@ theorem faceSign_pair {I : ∀ k, Finset (ι k)} {k : K} {a b : ι k} (h : I k =
   exact neg_one_pow_pair _ _ _ hc
 
 /- English proof (translation)
-Unfold `faceSign`. Rewrite using `[hl]`. Simplify using `only [hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem faceSign_congr {I I' : ∀ k, Finset (ι k)} {l : K} (i : ι l) (hl : I l = I' l)
     (hc : ∀ m, (I m).card = (I' m).card) : faceSign I l i = faceSign I' l i := by
@@ -185,21 +185,21 @@ def setC (c : ∀ k, ι k) (T : Finset K) (I : ∀ k, Finset (ι k)) : ∀ k, Fi
 
 omit [Fintype K] in
 /- English proof (translation)
-The claim follows from `Function.update_self _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem addC_apply_self (c : ∀ k, ι k) (I : ∀ k, Finset (ι k)) (k : K) : addC c I k k = insert (c k) (I k) :=
   Function.update_self _ _ _
 
 omit [Fintype K] in
 /- English proof (translation)
-The claim follows from `Function.update_of_ne h _ _`.
+A detailed English derivation is pending.
 -/
 theorem addC_apply_of_ne (c : ∀ k, ι k) (I : ∀ k, Finset (ι k)) {k l : K} (h : l ≠ k) : addC c I k l = I l :=
   Function.update_of_ne h _ _
 
 omit [Fintype K] in
 /- English proof (translation)
-Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite using `[addC_apply_self]`. Conclude with `Finset.subset_insert _ _`. Rewrite using `[addC_apply_of_ne c I hl]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subset_addC (c : ∀ k, ι k) (I : ∀ k, Finset (ι k)) (k l : K) : I l ⊆ addC c I k l := by
   by_cases hl : l = k
@@ -208,7 +208,7 @@ theorem subset_addC (c : ∀ k, ι k) (I : ∀ k, Finset (ι k)) (k l : K) : I l
 
 omit [Fintype K] in
 /- English proof (translation)
-Unfold `rem addC`. Simplify using `only [Function.update_idem, Function.update_self, Finset.erase_insert h, Function.update_eq_self]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem rem_addC {c : ∀ k, ι k} {I : ∀ k, Finset (ι k)} {k : K} (h : c k ∉ I k) :
     rem (addC c I k) ⟨k, c k⟩ = I := by
@@ -217,7 +217,7 @@ theorem rem_addC {c : ∀ k, ι k} {I : ∀ k, Finset (ι k)} {k : K} (h : c k �
 
 omit [Fintype K] in
 /- English proof (translation)
-Unfold `rem addC`. Simplify using `only [Function.update_idem, Function.update_self, Finset.insert_erase h, Function.update_eq_self]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem addC_rem {c : ∀ k, ι k} {I : ∀ k, Finset (ι k)} {k : K} (h : c k ∈ I k) :
     addC c (rem I ⟨k, c k⟩) k = I := by
@@ -226,9 +226,9 @@ theorem addC_rem {c : ∀ k, ι k} {I : ∀ k, Finset (ι k)} {k : K} (h : c k �
 
 omit [Fintype K] in
 /- English proof (translation)
-Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Establish `hne : c l ≠ i` using `fun e => h (e ▸ hi)`. Unfold `rem addC`. Simplify using `only [Function.update_idem, Function.update_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.erase_insert_of_ne hne]`. Unfold `rem addC`. Simplify using `only [Function.update_of_ne hl]`. Rewrite using `[Function.update_comm (Ne.symm hl)]`. Simplify using `only [Function.update_of_ne (Ne.symm hl)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rem_addC_comm {c : ∀ k, ι k} {I : ∀ k, Finset (ι k)} {k l : K} {i : ι l} (hi : i ∈ I l)
     (h : c k ∉ I k) : rem (addC c I k) ⟨l, i⟩ = addC c (rem I ⟨l, i⟩) k := by
@@ -245,7 +245,7 @@ theorem rem_addC_comm {c : ∀ k, ι k} {I : ∀ k, Finset (ι k)} {k l : K} {i 
 
 omit [Fintype K] [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem setC_apply_mem {c : ∀ k, ι k} {T : Finset K} {I : ∀ k, Finset (ι k)} {j : K} (h : j ∈ T) :
     setC c T I j = {c j} :=
@@ -253,7 +253,7 @@ theorem setC_apply_mem {c : ∀ k, ι k} {T : Finset K} {I : ∀ k, Finset (ι k
 
 omit [Fintype K] [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem setC_apply_not_mem {c : ∀ k, ι k} {T : Finset K} {I : ∀ k, Finset (ι k)} {j : K} (h : j ∉ T) :
     setC c T I j = I j :=
@@ -261,9 +261,9 @@ theorem setC_apply_not_mem {c : ∀ k, ι k} {T : Finset K} {I : ∀ k, Finset (
 
 omit [Fintype K] in
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j ∈ T`. Establish `: j ≠ l` using `fun e => hl (e ▸ hj)`. Rewrite using `[setC_apply_mem hj, rem_apply_of_ne i this, setC_apply_mem hj]`. Rewrite using `[setC_apply_not_mem hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hjl : j = l`. Substitute `hjl` using the available equality. Rewrite using `[rem_apply_self, rem_apply_self, setC_apply_not_mem hj]`. Rewrite using `[rem_apply_of_ne i hjl, rem_apply_of_ne i hjl, setC_apply_not_mem hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rem_setC {c : ∀ k, ι k} {T : Finset K} {I : ∀ k, Finset (ι k)} {l : K} (i : ι l) (hl : l ∉ T) :
     setC c T (rem I ⟨l, i⟩) = rem (setC c T I) ⟨l, i⟩ := by
@@ -278,9 +278,9 @@ theorem rem_setC {c : ∀ k, ι k} {T : Finset K} {I : ∀ k, Finset (ι k)} {l 
 
 omit [Fintype K] [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Rewrite using `[setC_apply_mem (Finset.mem_singleton_self _), setC_apply_mem (Finset.mem_insert_self _ _)]`. Rewrite using `[setC_apply_not_mem (by simpa using hj)]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hjT : j ∈ T`. Rewrite using `[setC_apply_mem hjT, setC_apply_mem (Finset.mem_insert_of_mem hjT)]`. Rewrite using `[setC_apply_not_mem hjT, setC_apply_not_mem (by simp [hj, hjT])]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem setC_setC {c : ∀ k, ι k} {T : Finset K} {I : ∀ k, Finset (ι k)} {k : K} (hk : k ∉ T) :
     setC c {k} (setC c T I) = setC c (insert k T) I := by
@@ -294,7 +294,7 @@ theorem setC_setC {c : ∀ k, ι k} {T : Finset K} {I : ∀ k, Finset (ι k)} {k
     · rw [setC_apply_not_mem hjT, setC_apply_not_mem (by simp [hj, hjT])]
 
 /- English proof (translation)
-Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ k), ← Finset.add_sum_erase _ _ (Finset.mem_univ k), addC_apply_self, Finset.sum_insert hck, add_assoc]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun l hl => by rw [addC_apply_of_ne c I (Finset.ne_of_mem_erase hl)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_addC {M : Type} [AddCommMonoid M] (c : ∀ k, ι k) (I : ∀ k, Finset (ι k)) (k : K) (hck : c k ∉ I k)
     (F : (l : K) → ι l → M) :
@@ -307,15 +307,15 @@ theorem sum_addC {M : Type} [AddCommMonoid M] (c : ∀ k, ι k) (I : ∀ k, Fins
 omit [Fintype K] in
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on_max with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `has : a ∉ s` using `fun h => lt_irrefl a (ha a h)`. Establish `e1 : (insert a s).filter (· < a) = s`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl | hx, hlt⟩`. Conclude with `absurd hlt (lt_irrefl _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Introduce `hx`. Conclude with `⟨Or.inr hx, ha x hx⟩`. Establish `e2 : (insert a s).filter (· ≤ a) = insert a s` using `Finset.filter_true_of_mem fun x hx => by`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases.
+Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_rfl`. Conclude with `(ha x hx).le`. Establish `e3 : ∀ k ∈ s, (insert a s).filter (· < k) = s.filter (· < k) ∧ (insert a s).filter (· ≤ k) = s.filter (· ≤ k)`. Introduce `k hk`. Establish `hak : ¬ a < k` using `not_lt.2 (ha k hk).le`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hak' : ¬ a ≤ k` using `not_le.2 (ha k hk)`. Conclude with `⟨by rw [Finset.filter_insert, if_neg hak], by rw [Finset.filter_insert, if_neg hak']⟩`. Rewrite using `[Finset.sum_insert has, e1, e2, Finset.sum_congr rfl fun k hk => by rw [(e3 k hk).1, (e3 k hk).2], ih]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem telescope {M : Type} [AddCommGroup M] (g : Finset K → M) (s : Finset K) :
     ∑ k ∈ s, (g (s.filter (· < k)) - g (s.filter (· ≤ k))) = g ∅ - g s := by
@@ -373,28 +373,28 @@ def projOp (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (T : Finset K) (f : (∀ 
 variable {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k}
 
 /- English proof (translation)
-Rewrite using `[dif, if_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dif_of_good {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Finset (ι k)} (h : Good y I) :
     dif y f I = ∑ k, ∑ i ∈ I k, faceSign I k i • f (rem I ⟨k, i⟩) := by
   rw [dif, if_pos h]
 
 /- English proof (translation)
-Rewrite using `[dif, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dif_of_not {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Finset (ι k)} (h : ¬ Good y I) :
     dif y f I = 0 := by
   rw [dif, if_neg h]
 
 /- English proof (translation)
-Rewrite using `[coneOp, if_pos ⟨h, hk⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coneOp_of_good {k : K} {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Finset (ι k)} (h : Good y I)
     (hk : c k ∉ I k) : coneOp y c k f I = faceSign (addC c I k) k (c k) • f (addC c I k) := by
   rw [coneOp, if_pos ⟨h, hk⟩]
 
 /- English proof (translation)
-Rewrite using `[coneOp, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coneOp_of_not {k : K} {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Finset (ι k)}
     (h : ¬ (Good y I ∧ c k ∉ I k)) : coneOp y c k f I = 0 := by
@@ -402,7 +402,7 @@ theorem coneOp_of_not {k : K} {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Fi
 
 omit [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Rewrite using `[projOp, if_pos ⟨h, hT⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem projOp_of_good {T : Finset K} {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Finset (ι k)} (h : Good y I)
     (hT : ∀ j ∈ T, (I j).card = 1) : projOp y c T f I = f (setC c T I) := by
@@ -410,7 +410,7 @@ theorem projOp_of_good {T : Finset K} {f : (∀ k, Finset (ι k)) → Ω} {I : �
 
 omit [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Rewrite using `[projOp, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem projOp_of_not {T : Finset K} {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Finset (ι k)}
     (h : ¬ (Good y I ∧ ∀ j ∈ T, (I j).card = 1)) : projOp y c T f I = 0 := by
@@ -418,16 +418,16 @@ theorem projOp_of_not {T : Finset K} {f : (∀ k, Finset (ι k)) → Ω} {I : �
 
 omit [Fintype K] in
 /- English proof (translation)
-Introduce `l j hj` and use `hI l j (rem_apply_subset I p l hj)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem meets_rem {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (p : Σ k, ι k) : CellMeets y (rem I p) :=
   fun l j hj => hI l j (rem_apply_subset I p l hj)
 
 omit [Fintype K] in
 /- English proof (translation)
-Use `⟨fun l => ?_, meets_rem hI.2 _⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite using `[rem_apply_self]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rem_apply_of_ne i hl]`. Conclude with `hI.1 l`.
+A detailed English derivation is pending.
 -/
 theorem good_rem {I : ∀ k, Finset (ι k)} (hI : Good y I) {k : K} {i : ι k} (h : ((I k).erase i).Nonempty) :
     Good y (rem I ⟨k, i⟩) := by
@@ -438,11 +438,11 @@ theorem good_rem {I : ∀ k, Finset (ι k)} (hI : Good y I) {k : K} {i : ι k} (
 
 omit [Fintype K] in
 /- English proof (translation)
-Use `⟨fun l => ?_, fun l j hj => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite using `[addC_apply_self]`. Conclude with `Finset.insert_nonempty _ _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[addC_apply_of_ne c I hl]`. Conclude with `hI.1 l`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite `hj` using `[addC_apply_self, Finset.mem_insert]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hj with rfl | hj` into its components or cases. Conclude with `hc l`. Conclude with `hI.2 l j hj`. Rewrite `hj` using `[addC_apply_of_ne c I hl]`. Conclude with `hI.2 l j hj`.
+A detailed English derivation is pending.
 -/
 theorem good_addC (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {I : ∀ k, Finset (ι k)} (hI : Good y I) (k : K) :
     Good y (addC c I k) := by
@@ -460,11 +460,9 @@ theorem good_addC (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {I : ∀ k, Finset (ι k)} 
 
 omit [Fintype K] [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Use `⟨fun l => ?_, fun l j hj => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l ∈ T`. Rewrite using `[setC_apply_mem hl]`. Conclude with `Finset.singleton_nonempty _`. Rewrite using `[setC_apply_not_mem hl]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hI.1 l`. Distinguish the cases in `hl : l ∈ T`. Rewrite `hj` using `[setC_apply_mem hl, Finset.mem_singleton]`. Substitute `hj` using the available equality. Conclude with `hc l`.
-
-Rewrite `hj` using `[setC_apply_not_mem hl]`. Conclude with `hI.2 l j hj`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_setC (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {I : ∀ k, Finset (ι k)} (hI : Good y I) (T : Finset K) :
     Good y (setC c T I) := by
@@ -477,53 +475,51 @@ theorem good_setC (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {I : ∀ k, Finset (ι k)} 
     · rw [setC_apply_not_mem hl] at hj; exact hI.2 l j hj
 
 /- English proof (translation)
-Introduce `_ h` and use `coneOp_of_not fun h' => h h'.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supp_coneOp (k : K) (f : (∀ k, Finset (ι k)) → Ω) : Supp y (coneOp y c k f) :=
   fun _ h => coneOp_of_not fun h' => h h'.1
 
 /- English proof (translation)
-Distinguish the cases in `hI : Good y I`. Use `swap`. Rewrite using `[dif_of_not hI, coneOp_of_not (fun h => hI h.1), projOp_of_not (fun h => hI h.1), hf I hI]`. Simplify using the standard rewrite rules. Distinguish the cases in `hck : c k ∈ I k`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coneOp_of_not (fun h => h.2 hck), add_zero, dif_of_good hI]`. Rewrite using `[Finset.sum_eq_single k]`. Use `rotate_left`. Introduce `l _ hl`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[coneOp_of_not, smul_zero]`. Introduce and unpack `⟨-, h⟩`. Conclude with `h (by rw [rem_apply_of_ne i (Ne.symm hl)]; exact hck)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Finset.sum_eq_single (c k)]`. Use `rotate_left`. Introduce `i _ hne`. Rewrite using `[coneOp_of_not, smul_zero]`. Introduce and unpack `⟨-, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h (by rw [rem_apply_self]; exact Finset.mem_erase.2 ⟨Ne.symm hne, hck⟩)`. Introduce `h`. Conclude with `absurd hck h`. Distinguish the cases in `hne : ((I k).erase (c k)).Nonempty`. Establish `hnin : c k ∉ rem I ⟨k, c k⟩ k` using `by rw [rem_apply_self]; exact Finset.notMem_erase _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coneOp_of_good (good_rem hI hne) hnin, addC_rem hck, smul_smul, faceSign_mul_self, one_smul]`. Establish `hP : projOp y c {k} f I = 0` using `projOp_of_not fun h => by`. Establish `h1` using `two_le_card hck hne`. Establish `h2` using `h.2 k (Finset.mem_singleton_self k)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[hP, sub_zero]`. Establish `hg : ¬ Good y (rem I ⟨k, c k⟩)` using `fun h => hne (by simpa [rem_apply_self] using h.1 k)`. Rewrite using `[coneOp_of_not (fun h => hg h.1), smul_zero]`. Establish `hempty : (I k).erase (c k) = ∅` using `Finset.not_nonempty_iff_eq_empty.1 hne`. Establish `hIk : I k = {c k}` using `Finset.eq_singleton_iff_unique_mem.2 ⟨hck, fun x hx => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Assume the negation of the conclusion as `h`. Establish `: x ∈ (I k).erase (c k)` using `Finset.mem_erase.2 ⟨h, hx⟩`. Rewrite `this` using `[hempty]`. Conclude with `Finset.notMem_empty _ this⟩`. Establish `hset : setC c {k} I = I`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Rewrite using `[setC_apply_mem (Finset.mem_singleton_self _), hIk]`. Rewrite using `[setC_apply_not_mem (by simpa using hj)]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[projOp_of_good hI (by simp [hIk]), hset, sub_self]`. Establish `hJ` using `good_addC hc hI k`. Establish `key : ∀ l, ∀ i ∈ I l, faceSign I l i • coneOp y c k f (rem I ⟨l, i⟩) + faceSign (addC c I k) k (c k) • faceSign (addC c I k) l i • f (rem (addC c I k) ⟨l, i⟩) = if (I l).erase i = ∅ ∧ l = k then -f (setC c {k} I) else 0`. Introduce `l i hi`. Distinguish the cases in `hne : ((I l).erase i).Nonempty`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg` using `good_rem hI hne`. Establish `hnin : c k ∉ rem I ⟨l, i⟩ k` using `fun h => hck (rem_apply_subset I _ k h)`. Establish `hne' : (⟨l, i⟩ : Σ k, ι k) ≠ ⟨k, c k⟩`. Introduce `h`. Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `hck (by rw [← eq_of_heq h2]; exact hi)`. Establish `e1` using `sign_swap (I := addC c I k) (p := ⟨k, c k⟩) (q := ⟨l, i⟩) (show c k ∈ addC c I k k by rw [addC_apply_self]; exact Finset.mem_insert_self _ _) (show i ∈ addC c I k l from subset_addC c I k l hi) hne' (by rw [rem_addC hck]; exact hg.1)`. Simplify using `only at e1`. Rewrite `e1` using `[rem_addC hck]`. Rewrite using `[coneOp_of_good hg hnin, ← rem_addC_comm hi hck, smul_smul, smul_smul, ← add_smul, if_neg (fun h => hne.ne_empty h.1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hε` using `faceSign_mul_self (addC c I k) k (c k)`. Establish `hσ` using `faceSign_mul_self (rem (addC c I k) ⟨l, i⟩) k (c k)`. Establish `hsum : faceSign I l i * faceSign (rem (addC c I k) ⟨l, i⟩) k (c k) + faceSign (addC c I k) k (c k) * faceSign (addC c I k) l i = 0`. Take the linear combination `(faceSign (addC c I k) k (c k) * faceSign (rem (addC c I k) ⟨l, i⟩) k (c k)) * e1 - (faceSign I l i * faceSign (rem (addC c I k) ⟨l, i⟩) k (c k)) * hε - (faceSign (addC c I k) k (c k) * faceSign (addC c I k) l i) * hσ`. Rewrite using `[hsum, zero_smul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hempty : (I l).erase i = ∅` using `Finset.not_nonempty_iff_eq_empty.1 hne`. Establish `hg : ¬ Good y (rem I ⟨l, i⟩)` using `fun h => hne (by simpa [rem_apply_self] using h.1 l)`. Rewrite using `[coneOp_of_not (fun h => hg h.1), smul_zero, zero_add]`. Distinguish the cases in `hlk : l = k`. Substitute `hlk` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos ⟨hempty, rfl⟩]`. Establish `hIl : I l = {i}` using `Finset.eq_singleton_iff_unique_mem.2 ⟨hi, fun x hx => by`. Assume the negation of the conclusion as `h`. Establish `: x ∈ (I l).erase i` using `Finset.mem_erase.2 ⟨h, hx⟩`. Rewrite `this` using `[hempty]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.notMem_empty _ this⟩`. Establish `hci : c l ≠ i` using `fun e => hck (by rw [e]; exact hi)`. Establish `hset : rem (addC c I l) ⟨l, i⟩ = setC c {l} I`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = l`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Substitute `hj` using the available equality. Rewrite using `[rem_apply_self, addC_apply_self, setC_apply_mem (Finset.mem_singleton_self _), Finset.erase_insert_of_ne hci, hempty]`. Simplify using the standard rewrite rules. Rewrite using `[rem_apply_of_ne i hj, addC_apply_of_ne c I hj, setC_apply_not_mem (by simpa using hj)]`. Establish `hpair : faceSign (addC c I l) l (c l) * faceSign (addC c I l) l i = -1` using `faceSign_pair (by rw [addC_apply_self, hIl]) hci`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hset, smul_smul, hpair, neg_one_smul]`. Rewrite using `[if_neg (fun h => hlk h.2)]`. Establish `hbad : ¬ Good y (rem (addC c I k) ⟨l, i⟩)` using `fun h => hne (by`. Use `h.1 l` as an intermediate fact. Rewrite using `[rem_apply_self, addC_apply_of_ne c I hlk] at this)` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hf _ hbad, smul_zero, smul_zero]`. Establish `hsum : ∑ l, ∑ i ∈ I l, (if (I l).erase i = ∅ ∧ l = k then -f (setC c {k} I) else 0) = -projOp y c {k} f I`. Rewrite using `[Finset.sum_eq_single k (fun l _ hl => Finset.sum_eq_zero fun i _ => if_neg fun h => hl h.2) (fun h => absurd (Finset.mem_univ k) h)]`. Distinguish the cases in `h1 : (I k).card = 1`. Take `⟨a, ha⟩` from `Finset.card_eq_one.1 h1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[projOp_of_good hI (by simpa using h1), ha, Finset.sum_singleton, Finset.erase_singleton, if_pos ⟨rfl, rfl⟩]`. Rewrite using `[projOp_of_not (fun h => h1 (h.2 k (Finset.mem_singleton_self k))), neg_zero]`. Use `Finset.sum_eq_zero fun i hi => if_neg fun h => ?_` and prove the remaining obligations. Establish `h2` using `Finset.card_erase_of_mem hi`. Rewrite `h2` using `[h.1, Finset.card_empty]`.
-
-Establish `h3` using `Finset.card_pos.2 ⟨i, hi⟩`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_of_good hI, coneOp_of_good hI hck, dif_of_good hJ, sum_addC c I k hck, rem_addC hck, smul_add, smul_smul, faceSign_mul_self, one_smul, sub_eq_add_neg, ← hsum, ← Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl (key l)]`. Simplify using `only [Finset.sum_add_distrib, Finset.smul_sum]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem dif_coneOp (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {f : (∀ k, Finset (ι k)) → Ω} (hf : Supp y f) (k : K)
     (I : ∀ k, Finset (ι k)) :
@@ -648,15 +644,15 @@ theorem dif_coneOp (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {f : (∀ k, Finset (ι k)
     abel
 
 /- English proof (translation)
-Establish `hcard : (rem I ⟨j, i⟩ j).card = 1` using `by rw [rem_apply_self, Finset.card_erase_of_mem hi, h2]`. Establish `hne : ((I j).erase i).Nonempty`. Rewrite using `[← Finset.card_pos, Finset.card_erase_of_mem hi, h2]`. Evaluate the numerical expressions. Establish `hset : setC c T (rem I ⟨j, i⟩) = setC c T I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m ∈ T`. Rewrite using `[setC_apply_mem hm, setC_apply_mem hm]`. Rewrite using `[setC_apply_not_mem hm, setC_apply_not_mem hm, rem_apply_of_ne i (fun e => hm (by rw [e]; exact hj))]`. Distinguish the cases in `hT : ∀ m ∈ T, m ≠ j → (I m).card = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hT, projOp_of_good (good_rem hI hne), hset]`. Introduce `m hm`. Distinguish the cases in `hmj : m = j`. Substitute `hmj` using the available equality. Conclude with `hcard`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rem_apply_of_ne i hmj]`. Conclude with `hT m hm hmj`. Rewrite using `[if_neg hT, projOp_of_not]`. Introduce and unpack `⟨-, h⟩`. Apply `hT` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m hm hmj`. Use `h m hm` as an intermediate fact. Rewrite `this` using `[rem_apply_of_ne i hmj]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem projOp_rem_pair {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Finset (ι k)}
     (hI : Good y I) {T : Finset K} {j : K} (hj : j ∈ T) {i : ι j} (hi : i ∈ I j) (h2 : (I j).card = 2) :
@@ -683,31 +679,29 @@ theorem projOp_rem_pair {f : (∀ k, Finset (ι k)) → Ω} {I : ∀ k, Finset (
     rwa [rem_apply_of_ne i hmj] at this
 
 /- English proof (translation)
-Distinguish the cases in `hI : Good y I`. Use `swap`. Rewrite using `[dif_of_not hI, projOp_of_not (fun h => hI h.1)]`. Rewrite using `[dif_of_good hI]`. Distinguish the cases in `hT : ∀ j ∈ T, (I j).card = 1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[projOp_of_good hI hT, dif_of_good (good_setC hc hI T)]`. Establish `hcards : ∀ m, (I m).card = (setC c T I m).card`. Introduce `m`. Distinguish the cases in `hm : m ∈ T`. Rewrite using `[setC_apply_mem hm, Finset.card_singleton, hT m hm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setC_apply_not_mem hm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l ∈ T`. Take `⟨a, ha⟩` from `Finset.card_eq_one.1 (hT l hl)`. Establish `h1 : projOp y c T f (rem I ⟨l, a⟩) = 0` using `projOp_of_not fun h => by`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.1.1 l` as an intermediate fact. Rewrite `this` using `[rem_apply_self, ha, Finset.erase_singleton]`. Conclude with `Finset.not_nonempty_empty this`. Establish `h2 : f (rem (setC c T I) ⟨l, c l⟩) = 0` using `hf _ fun h => by`. Use `h.1 l` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[rem_apply_self, setC_apply_mem hl, Finset.erase_singleton]`. Conclude with `Finset.not_nonempty_empty this`. Rewrite using `[ha, setC_apply_mem hl, Finset.sum_singleton, Finset.sum_singleton, h1, h2, smul_zero, smul_zero]`. Rewrite using `[setC_apply_not_mem hl]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[faceSign_congr i (setC_apply_not_mem hl).symm hcards]`. Use `congr 1`. Distinguish the cases in `hne : ((I l).erase i).Nonempty`. Rewrite using `[projOp_of_good (good_rem hI hne) (fun j hj => by`. Rewrite using `[rem_apply_of_ne i (fun e => hl (e ▸ hj))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hT j hj), rem_setC i hl]`. Establish `hbad : ¬ Good y (rem (setC c T I) ⟨l, i⟩)` using `fun h => hne (by`. Use `h.1 l` as an intermediate fact. Rewrite using `[rem_apply_self, setC_apply_not_mem hl] at this)` and apply the resulting hypothesis. Rewrite using `[projOp_of_not (fun h => hne (by simpa [rem_apply_self] using h.1.1 l)), hf _ hbad]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨j, hjT, hj1⟩ : ∃ j ∈ T, (I j).card ≠ 1 := by`. Assume the negation of the conclusion as `hne`. Conclude with `hT fun j hj => by_contra fun h => hne ⟨j, hj, h⟩`. Rewrite using `[projOp_of_not (fun h => hT h.2)]`. Rewrite using `[Finset.sum_eq_single j]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h2 : (I j).card = 2`. Take `⟨a, b, hab, hIj⟩` from `Finset.card_eq_two.1 h2`. Establish `ha : a ∈ I j` using `by rw [hIj]; simp`. Establish `hb : b ∈ I j` using `by rw [hIj]; simp`. Establish `e1` using `faceSign_pair hIj hab`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `faceSign_mul_self I j a`. Establish `e3 : faceSign I j a + faceSign I j b = 0`. Take the linear combination `faceSign I j a * e1 - faceSign I j b * e2`. Rewrite using `[hIj, Finset.sum_pair hab, projOp_rem_pair hI hjT ha h2, projOp_rem_pair hI hjT hb h2, ← add_smul, e3, zero_smul]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[projOp_of_not, smul_zero]`. Introduce and unpack `⟨-, h⟩`. Establish `h3` using `h j hjT`. Rewrite `h3` using `[rem_apply_self, Finset.card_erase_of_mem hi]`. Establish `h4` using `Finset.card_pos.2 ⟨i, hi⟩`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use linear arithmetic over natural numbers and integers. Introduce `l _ hl`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[projOp_of_not, smul_zero]`. Introduce and unpack `⟨-, h⟩`.
-
-Conclude with `hj1 (by have := h j hjT; rwa [rem_apply_of_ne i (Ne.symm hl)] at this)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dif_projOp (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {f : (∀ k, Finset (ι k)) → Ω} (hf : Supp y f) (T : Finset K)
     (I : ∀ k, Finset (ι k)) : dif y (projOp y c T f) I = projOp y c T (dif y f) I := by
@@ -777,13 +771,13 @@ theorem dif_projOp (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {f : (∀ k, Finset (ι k)
 omit [∀ k, LinearOrder (ι k)] in
 
 /- English proof (translation)
-Distinguish the cases in `h : Good y I ∧ ∀ j ∈ insert k T, (I j).card = 1`. Rewrite using `[projOp_of_good h.1 (fun j hj => h.2 j (Finset.mem_insert_of_mem hj)), projOp_of_good (good_setC hc h.1 T), setC_setC hk, projOp_of_good h.1 h.2]`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_singleton]`. Rewrite using `[hj, setC_apply_not_mem hk]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.2 k (Finset.mem_insert_self _ _)`. Rewrite using `[projOp_of_not h]`. Distinguish the cases in `h' : Good y I ∧ ∀ j ∈ T, (I j).card = 1`. Rewrite using `[projOp_of_good h'.1 h'.2, projOp_of_not]`. Introduce and unpack `⟨-, h2⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Use `⟨h'.1, fun j hj => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hj with hj | hj` into its components or cases. Rewrite using `[hj]`. Use `h2 k (Finset.mem_singleton_self k)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[setC_apply_not_mem hk]`. Then use the resulting hypothesis. Conclude with `h'.2 j hj`. Rewrite using `[projOp_of_not h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projOp_projOp (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (f : (∀ k, Finset (ι k)) → Ω) (T : Finset K) {k : K}
     (hk : k ∉ T) (I : ∀ k, Finset (ι k)) :
@@ -810,7 +804,7 @@ theorem projOp_projOp (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (f : (∀ k, Finset (ι
 
 omit [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Distinguish the cases in `h : Good y I ∧ ∀ j ∈ T, (I j).card = 1`. Rewrite using `[projOp_of_good h.1 h.2, projOp_of_good h.1 h.2, projOp_of_good h.1 h.2]`. Rewrite using `[projOp_of_not h, projOp_of_not h, projOp_of_not h, sub_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem projOp_sub (T : Finset K) (a b : (∀ k, Finset (ι k)) → Ω) (I : ∀ k, Finset (ι k)) :
     projOp y c T (fun J => a J - b J) I = projOp y c T a I - projOp y c T b I := by
@@ -820,7 +814,7 @@ theorem projOp_sub (T : Finset K) (a b : (∀ k, Finset (ι k)) → Ω) (I : ∀
 
 omit [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Distinguish the cases in `h : Good y I`. Rewrite using `[projOp_of_good h (by simp)]`. Use `congr 1`. Rewrite using `[projOp_of_not (fun h' => h h'.1), hf I h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem projOp_empty {f : (∀ k, Finset (ι k)) → Ω} (hf : Supp y f) (I : ∀ k, Finset (ι k)) :
     projOp y c ∅ f I = f I := by
@@ -831,7 +825,7 @@ theorem projOp_empty {f : (∀ k, Finset (ι k)) → Ω} (hf : Supp y f) (I : �
 
 omit [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Conclude with `projOp_of_not fun h' => hj (h'.2 j (Finset.mem_univ j))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem projOp_univ (f : (∀ k, Finset (ι k)) → Ω) {I : ∀ k, Finset (ι k)} (h : ∃ j, (I j).card ≠ 1) :
     projOp y c Finset.univ f I = 0 := by
@@ -839,9 +833,9 @@ theorem projOp_univ (f : (∀ k, Finset (ι k)) → Ω) {I : ∀ k, Finset (ι k
   exact projOp_of_not fun h' => hj (h'.2 j (Finset.mem_univ j))
 
 /- English proof (translation)
-Distinguish the cases in `h : Good y I`. Simplify using `only [dif_of_good h, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dif_of_not h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dif_sum (g : K → (∀ k, Finset (ι k)) → Ω) (I : ∀ k, Finset (ι k)) :
     dif y (fun J => ∑ k, g k J) I = ∑ k, dif y (g k) I := by
@@ -856,15 +850,15 @@ def homot (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (f : (∀ k, Finset (ι k)
   ∑ k, projOp y c (Finset.univ.filter (· < k)) (coneOp y c k f) I
 
 /- English proof (translation)
-Establish `hcone : ∀ k, dif y (coneOp y c k f) = fun J => f J - projOp y c {k} f J`. Introduce `k`. Use function extensionality and compare the values at `J`. Establish `h` using `dif_coneOp hc hf k J`. Establish `hz : coneOp y c k (dif y f) J = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show dif y f = fun _ => 0 from funext h0]`. Unfold `coneOp`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h` using `[hz, add_zero]`. Then use the resulting hypothesis. Establish `hterm : ∀ k, dif y (projOp y c (Finset.univ.filter (· < k)) (coneOp y c k f)) I = projOp y c (Finset.univ.filter (· < k)) f I - projOp y c (Finset.univ.filter (· ≤ k)) f I`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `k`. Establish `hins : insert k (Finset.univ.filter (· < k)) = Finset.univ.filter (· ≤ k)`. Use extensionality with `x`. Simplify using `only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨fun h => h.elim (fun e => e ▸ le_rfl) le_of_lt, fun h => (eq_or_lt_of_le h).imp id id⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[dif_projOp hc (supp_coneOp k f), hcone k, projOp_sub, projOp_projOp hc f _ (by simp), hins]`. Unfold `homot`. Rewrite using `[dif_sum, Finset.sum_congr rfl fun k _ => hterm k]`. Use `(telescope (fun T => projOp y c T f I) Finset.univ).trans ?_` and prove the remaining obligations. Use `show projOp y c ∅ f I - projOp y c Finset.univ f I = f I`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[projOp_empty hf, projOp_univ f hpos, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem dif_homot (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {f : (∀ k, Finset (ι k)) → Ω} (hf : Supp y f)
     (h0 : ∀ J, dif y f J = 0) (I : ∀ k, Finset (ι k)) (hpos : ∃ j, (I j).card ≠ 1) :
@@ -894,7 +888,7 @@ theorem dif_homot (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {f : (∀ k, Finset (ι k))
   rw [projOp_empty hf, projOp_univ f hpos, sub_zero]
 
 /- English proof (translation)
-Introduce `_ h` and use `Finset.sum_eq_zero fun _ _ => projOp_of_not fun h' => h h'.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supp_homot (f : (∀ k, Finset (ι k)) → Ω) : Supp y (homot y c f) :=
   fun _ h => Finset.sum_eq_zero fun _ _ => projOp_of_not fun h' => h h'.1
@@ -905,7 +899,7 @@ def extC (m : ℕ) (t : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH
   if h : (∀ l, (J l).Nonempty) ∧ ∑ l, ((J l).card - 1) = m then t ⟨J, h⟩ else 0
 
 /- English proof (translation)
-Establish `hk` using `two_le_card hi hne`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ k), ← Finset.add_sum_erase _ _ (Finset.mem_univ k), rem_apply_self, Finset.card_erase_of_mem hi, Finset.sum_congr rfl fun l hl => by rw [rem_apply_of_ne i (Finset.ne_of_mem_erase hl)]]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem deg_rem {J : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ J k) (hne : ((J k).erase i).Nonempty) :
     ∑ l, ((rem J ⟨k, i⟩ l).card - 1) + 1 = ∑ l, ((J l).card - 1) := by
@@ -918,9 +912,9 @@ theorem deg_rem {J : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ J k) (
 variable (S : Type) [CommRing S] [Algebra S Ω]
 
 /- English proof (translation)
-Simplify using `only [cellD, LinearMap.pi_apply, if_pos hJ, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `extC rem`. Distinguish the cases in `h : (∀ l, (Function.update J.1 k ((J.1 k).erase i) l).Nonempty) ∧ ∑ l, ((Function.update J.1 k ((J.1 k).erase i) l).card - 1) = m`. Rewrite using `[dif_pos h, dif_pos h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[dif_neg h, dif_neg h, smul_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cellD_apply (m : ℕ) (t : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι m → Ω) (J : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι (m + 1)) (hJ : CellMeets y J.1) :
     cellD S y m t J = ∑ k, ∑ i ∈ J.1 k, faceSign J.1 k i • extC m t (rem J.1 ⟨k, i⟩) := by
@@ -933,18 +927,18 @@ theorem cellD_apply (m : ℕ) (t : ReciprocityTheory.ChartRestriction.G.Arakelov
   · rw [dif_neg h, dif_neg h, smul_zero]; rfl
 
 /- English proof (translation)
-Simplify using `only [cellD, LinearMap.pi_apply, if_neg hJ, LinearMap.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cellD_apply_not (m : ℕ) (t : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι m → Ω) (J : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι (m + 1)) (hJ : ¬ CellMeets y J.1) :
     cellD S y m t J = 0 := by
   simp only [cellD, LinearMap.pi_apply, if_neg hJ, LinearMap.zero_apply]
 
 /- English proof (translation)
-Distinguish the cases in `hJ : Good y J`. Rewrite using `[dif_of_good hJ]`. Distinguish the cases in `hd : ∑ l, ((J l).card - 1) = q + 1 + 1`. Establish `h` using `congrFun hs ⟨J, hJ.1, hd⟩`. Rewrite `h` using `[cellD_apply S (q + 1) s ⟨J, hJ.1, hd⟩ hJ.2]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Use `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[extC, dif_neg, smul_zero]`. Introduce and unpack `⟨hne, hdeg⟩`. Use `deg_rem hi (by simpa [rem_apply_self] using hne k)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `dif_of_not hJ`.
+A detailed English derivation is pending.
 -/
 theorem dif_extC_eq_zero {q : ℕ} {s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι (q + 1) → Ω} (hs : cellD S y (q + 1) s = 0)
     (J : ∀ k, Finset (ι k)) : dif y (extC (q + 1) s) J = 0 := by
@@ -963,7 +957,7 @@ theorem dif_extC_eq_zero {q : ℕ} {s : ReciprocityTheory.ChartRestriction.G.Ara
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Unfold `extC`. Use `split_ifs with h`. Conclude with `(Submodule.mem_pi.1 hs) ⟨J, h⟩ (Set.mem_univ _)`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem extC_mem {m : ℕ} {G : (∀ k, Finset (ι k)) → Submodule S Ω} {s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι m → Ω}
     (hs : s ∈ cellCOf S G m) (J : ∀ k, Finset (ι k)) : extC m s J ∈ G J := by
@@ -974,9 +968,9 @@ theorem extC_mem {m : ℕ} {G : (∀ k, Finset (ι k)) → Submodule S Ω} {s : 
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
 /- English proof (translation)
-Introduce `J hJ`. Unfold `extC`. Use `split_ifs with h`. Establish `hm` using `(Submodule.mem_pi.1 hs) ⟨J, h⟩ (Set.mem_univ _)`. Rewrite `hm` using `[hbot J h.1 (fun hm' => hJ ⟨h.1, hm'⟩)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(Submodule.mem_bot S).1 hm`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem supp_extC {m : ℕ} {G : (∀ k, Finset (ι k)) → Submodule S Ω} {s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι m → Ω}
     (hs : s ∈ cellCOf S G m)
@@ -993,13 +987,11 @@ theorem supp_extC {m : ℕ} {G : (∀ k, Finset (ι k)) → Submodule S Ω} {s :
 omit [Fintype K] in
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k T hk ih`. Establish `hne : ∀ l, ((fun j => if j ∈ T then insert (c j) (J j) else J j) l).Nonempty`. Introduce `l`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only`. Use `split_ifs`. Conclude with `Finset.insert_nonempty _ _`. Conclude with `hJ l`. Establish `e : Function.update (fun j => if j ∈ T then insert (c j) (J j) else J j) k (insert (c k) ((fun j => if j ∈ T then insert (c j) (J j) else J j) k)) = fun j => if j ∈ insert k T then insert (c j) (J j) else J j`.
+Simplify by unfolding definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[hk]`. Rewrite using `[Function.update_of_ne hj]`.
-
-Simplify using `[hj]`. Rewrite using `[← e, hins _ hne k, ih]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem G_fill {G : (∀ k, Finset (ι k)) → Submodule S Ω}
     (hins : ∀ I : ∀ k, Finset (ι k), (∀ k, (I k).Nonempty) → ∀ k,
@@ -1025,17 +1017,15 @@ theorem G_fill {G : (∀ k, Finset (ι k)) → Submodule S Ω}
     rw [← e, hins _ hne k, ih]
 
 /- English proof (translation)
-Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : Good y J ∧ ∀ j ∈ Finset.univ.filter (· < k), (J j).card = 1`. Rewrite using `[projOp_of_good h.1 h.2]`. Distinguish the cases in `h' : Good y (setC c (Finset.univ.filter (· < k)) J) ∧ c k ∉ setC c (Finset.univ.filter (· < k)) J k`. Rewrite using `[coneOp_of_good h'.1 h'.2]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `zsmul_mem ?_ _` and prove the remaining obligations. Establish `hfill : G (fun j => insert (c j) (J j)) = G J`. Use `G_fill S hins h.1.1 Finset.univ` as an intermediate fact. Simplify using `using this`. Rewrite using `[← hfill]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `hmono _ _ (good_addC hc h'.1 k).1 (fun l => ?_) (fun l j hj => ?_) (hfG _)` and prove the remaining obligations. Establish `hs : setC c (Finset.univ.filter (· < k)) J l ⊆ insert (c l) (J l)`. Distinguish the cases in `hl : l ∈ Finset.univ.filter (· < k)`. Rewrite using `[setC_apply_mem hl]`. Conclude with `Finset.singleton_subset_iff.2 (Finset.mem_insert_self _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setC_apply_not_mem hl]`. Conclude with `Finset.subset_insert _ _`. Distinguish the cases in `hlk : l = k`. Substitute `hlk` using the available equality. Rewrite using `[addC_apply_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Finset.insert_subset (Finset.mem_insert_self _ _) hs`. Rewrite using `[addC_apply_of_ne c _ hlk]`. Conclude with `hs`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `hc l`.
-
-Conclude with `h.1.2 l j hj`. Rewrite using `[coneOp_of_not h']`. Conclude with `zero_mem _`. Rewrite using `[projOp_of_not h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homot_mem (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {G : (∀ k, Finset (ι k)) → Submodule S Ω}
     (hins : ∀ I : ∀ k, Finset (ι k), (∀ k, (I k).Nonempty) → ∀ k,
@@ -1074,19 +1064,17 @@ end CellContract
 open CellContract in
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ Ω _ _ y G c hc hbot hmono hins q s hs hds`. Establish `hf` using `supp_extC S hs hbot`. Establish `h0` using `dif_extC_eq_zero S hds`. Establish `hfG` using `extC_mem S hs`. Use `⟨fun J => homot y c (extC (q + 1) s) J.1, Submodule.mem_pi.2 fun J _ => homot_mem S hc hins hmono hfG J.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `I`. Distinguish the cases in `hI : CellMeets y I.1`. Establish `hpos : ∃ j, (I.1 j).card ≠ 1`. Assume the negation of the conclusion as `h`. Establish `h1 : ∀ j, (I.1 j).card = 1` using `fun j => by_contra fun hj => h ⟨j, hj⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2` using `I.2.2`. Simplify using `[h1] at h2`. Establish `hgood : Good y I.1` using `⟨I.2.1, hI⟩`. Establish `hsI : extC (q + 1) s I.1 = s I`. Unfold `extC`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos I.2]`. Both sides reduce to the same expression. Rewrite using `[cellD_apply S q _ I hI, ← hsI, ← dif_homot hc hf h0 I.1 hpos, dif_of_good hgood]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `extC`. Use `split_ifs with hcell`. Both sides reduce to the same expression. Use `symm`. Establish `hbad : ¬ Good y (rem I.1 ⟨k, i⟩)` using `fun hg => hcell ⟨hg.1, by`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Use symmetry to reverse the relation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `deg_rem hi (by simpa [rem_apply_self] using hg.1 k)`. Establish `h2` using `I.2.2`. Use the proof step `omega⟩`. Conclude with `supp_homot _ _ hbad`. Rewrite using `[cellD_apply_not S q _ I hI]`.
-
-Establish `hm` using `(Submodule.mem_pi.1 hs) I (Set.mem_univ _)`. Rewrite `hm` using `[hbot I.1 I.2.1 hI]`. Conclude with `((Submodule.mem_bot S).1 hm).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CellContract.proof : CellContract.Statement := by
   intro S _ K _ _ ι _ _ Ω _ _ y G c hc hbot hmono hins q s hs hds

@@ -13,7 +13,7 @@ def ordY (κ τ j c n : ℕ) (h : κ + j + j * τ + c = n) : XIx (Fin κ) (Fin �
     finSumFinEquiv).trans (finCongr h)
 
 /- English proof (translation)
-Introduce and unpack `(((i | i) | ⟨p, r⟩) | i)`. Apply the tactic sequence `all_goals simp [ordY, yPos, xPos, finProdFinEquiv]`. Apply the tactic sequence `all_goals ring`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ordY_isOrd (κ τ j c n : ℕ) (h : κ + j + j * τ + c = n) :
     IsOrd (yPos xPos (κ + j + j * τ)) (ordY κ τ j c n h) := by
@@ -22,7 +22,7 @@ theorem ordY_isOrd (κ τ j c n : ℕ) (h : κ + j + j * τ + c = n) :
   all_goals ring
 
 /- English proof (translation)
-The claim follows from `Equiv.ext fun a => Fin.ext ((he a).trans (he' a).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isOrd_unique {A : Type} {n : ℕ} (pos : A → ℕ) (e e' : A ≃ Fin n) (he : IsOrd pos e) (he' : IsOrd pos e') : e = e' :=
   Equiv.ext fun a => Fin.ext ((he a).trans (he' a).symm)
@@ -30,7 +30,7 @@ theorem isOrd_unique {A : Type} {n : ℕ} (pos : A → ℕ) (e e' : A ≃ Fin n)
 variable {E k : Type} [Field E] [Field k]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toLoc, LinearMap.toMatrix'_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toLoc_eq (ι : E →+* k) {A B : Type} {a b : ℕ} (e : A ≃ Fin a) (e' : B ≃ Fin b) (x : (Fin b → E) →ₗ[E] (Fin a → E)) :
     toLoc ι e e' x = ((LinearMap.toMatrix' x).submatrix e e').map ι := by
@@ -38,14 +38,14 @@ theorem toLoc_eq (ι : E →+* k) {A B : Type} {a b : ℕ} (e : A ≃ Fin a) (e'
   simp [toLoc, LinearMap.toMatrix'_apply]
 
 /- English proof (translation)
-Rewrite using `[toLoc_eq, toLoc_eq, toLoc_eq, LinearMap.toMatrix'_comp, ← Matrix.submatrix_mul_equiv _ _ _ e, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toLoc_comp (ι : E →+* k) {A : Type} [Fintype A] {a : ℕ} (e : A ≃ Fin a) (x y : (Fin a → E) →ₗ[E] (Fin a → E)) :
     toLoc ι e e (x ∘ₗ y) = toLoc ι e e x * toLoc ι e e y := by
   rw [toLoc_eq, toLoc_eq, toLoc_eq, LinearMap.toMatrix'_comp, ← Matrix.submatrix_mul_equiv _ _ _ e, Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[toLoc_eq, LinearMap.toMatrix'_id, Matrix.submatrix_one_equiv, Matrix.map_one _ (map_zero ι) (map_one ι)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toLoc_id (ι : E →+* k) {A : Type} [Fintype A] [DecidableEq A] {a : ℕ} (e : A ≃ Fin a) :
     toLoc ι e e (LinearMap.id : (Fin a → E) →ₗ[E] (Fin a → E)) = 1 := by
@@ -64,11 +64,11 @@ namespace GlobalTheory.TwBridge
 open GlobalTheory.SymBridge MatGL
 
 /- English proof (translation)
-Introduce `X R k _ _ _ _ ι j c hc γ`. Substitute `hc` using the available equality. Establish `hN : R.k + j + j * R.t = R.N j` using `by simp only [Ranks.N]; ring`. Establish `hn : R.k + j + j * R.t + cOf R j = R.N j + cOf R j` using `by rw [hN]`. Establish `ho : IsOrdY (ordY R.k R.t j (cOf R j) _ hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ordY_isOrd R.k R.t j (cOf R j) _ hn` as an intermediate fact. Rewrite `this` using `[hN]`. Then use the resulting hypothesis. Use `⟨toLocGL ι (ordY R.k R.t j (cOf R j) _ hn) γ, ⟨_, ho, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨e, he, hg⟩`. Take `rfl` from `isOrd_unique _ _ _ he ho`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Units.ext hg`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isGL : ∀ (X : Fields) (R : Ranks) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (j c : ℕ), c = cOf R j → ∀ γ : AutY X R j,

@@ -13,16 +13,16 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 abbrev rd (M : ℕ) : SL(2, ℤ) →* SL(2, ZMod M) := Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M))
 
 /- English proof (translation)
-Establish `e'` using `congrArg (ZMod.castHom h (ZMod K)) e`. Rewrite `e'` using `[map_intCast, map_intCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cast_down {M K : ℕ} (h : K ∣ M) {a b : ℤ} (e : (a : ZMod M) = b) : (a : ZMod K) = b := by
   have e' := congrArg (ZMod.castHom h (ZMod K)) e
   rwa [map_intCast, map_intCast] at e'
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨h1, h2, h3, h4⟩` from `hγ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1)` using `using cast_down h (b := 1) (by simpa`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2)` using `using cast_down h (b := 0) (by simpa`. Simplify `h3)` using `using cast_down h (b := 0) (by simpa`. Simplify `h4)` using `using cast_down h (b := 1) (by simpa`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gamma_le {M K : ℕ} (h : K ∣ M) : CongruenceSubgroup.Gamma M ≤ CongruenceSubgroup.Gamma K := by
   intro γ hγ
@@ -35,7 +35,7 @@ theorem gamma_le {M K : ℕ} (h : K ∣ M) : CongruenceSubgroup.Gamma M ≤ Cong
   · simpa using cast_down h (b := 1) (by simpa using h4)
 
 /- English proof (translation)
-Use `ext`. Use `show X.sl (ofSL (γ * γ')) (a : X.K) = X.sl (ofSL γ') (X.sl (ofSL γ) (a : X.K))`. Rewrite using `[map_mul, X.sl_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slU_mul (X : Tower Ω ε) (γ γ' : SL(2, ℤ)) (a : X.Kˣ) :
     slU X (ofSL (γ * γ')) a = slU X (ofSL γ') (slU X (ofSL γ) a) := by
@@ -44,7 +44,7 @@ theorem slU_mul (X : Tower Ω ε) (γ γ' : SL(2, ℤ)) (a : X.Kˣ) :
   rw [map_mul, X.sl_mul]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Conclude with `⟨φ k, by rw [map_mul, map_pow]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cgr_map {K : Type} [Field K] {m : ℕ} (φ : Kˣ →* Kˣ) {a b : Kˣ} (h : Cgr m a b) : Cgr m (φ a) (φ b) := by
   obtain ⟨k, rfl⟩ := h

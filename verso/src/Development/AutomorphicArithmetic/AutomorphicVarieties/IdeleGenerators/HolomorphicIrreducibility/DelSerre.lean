@@ -8,7 +8,7 @@ variable {K M : Type} [Field K] [IsAlgClosed K] [AddCommGroup M] [Module K M] [F
 
 omit [IsAlgClosed K] in
 /- English proof (translation)
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (S.domRestrict U)`. Rewrite `h1` using `[LinearMap.range_domRestrict]`. Establish `h2 : LinearMap.ker (S.domRestrict U) ≠ ⊥` using `(Submodule.ne_bot_iff _).mpr ⟨⟨v, hv⟩, by simpa using hS, fun h => hv0 (congrArg Subtype.val h)⟩`. Establish `h3 : finrank K (LinearMap.ker (S.domRestrict U)) ≠ 0` using `fun h => h2 (Submodule.finrank_eq_zero.mp h)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem finrank_map_lt (U : Submodule K M) (S : Module.End K M) (v : M) (hv : v ∈ U) (hv0 : v ≠ 0)
     (hS : S v = 0) : finrank K (U.map S) < finrank K U := by
@@ -25,14 +25,14 @@ section
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx (by simpa using hy))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_le_one' {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x - y‖ ≤ 1 := by
   rw [sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx (by simpa using hy))
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hx (by simpa using hy))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_lt_one' {x y : K} (hx : ‖x‖ < 1) (hy : ‖y‖ < 1) : ‖x - y‖ < 1 := by
   rw [sub_eq_add_neg]
@@ -66,15 +66,13 @@ private def bdd {I : Type} (V : Submodule K (I → K)) : Submodule K V where
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hk : ∀ k : ℕ, ∀ n, ‖(c ^ k • v).1 n‖ ≤ 1`. Introduce `k`. Proceed by induction on `k with`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using hv`. Consider the case `succ k ih`. Use `hT _ ih` as an intermediate fact. Rewrite `this` using `[map_smul, hc, smul_smul, ← pow_succ]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, v.1 n ≠ 0 := by`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h'`. Use `push Not at h'`. Conclude with `hv0 (Subtype.ext (funext h'))`. Establish `hpos : 0 < ‖v.1 n‖` using `norm_pos_iff.mpr hn`. Take `⟨k, hk'⟩` from `pow_unbounded_of_one_lt (‖v.1 n‖⁻¹) h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hk k n`. Establish `h2 : (c ^ k • v).1 n = c ^ k * v.1 n` using `by simp`. Rewrite `h1` using `[h2, norm_mul, norm_pow]`. Establish `h3` using `mul_lt_mul_of_pos_right hk' hpos`. Rewrite `h3` using `[inv_mul_cancel₀ hpos.ne']`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem eig_le_one {I : Type} {V : Submodule K (I → K)} (T : Module.End K V)
     (hT : ∀ v : V, (∀ n, ‖v.1 n‖ ≤ 1) → ∀ n, ‖(T v).1 n‖ ≤ 1) (v : V) (hv0 : v ≠ 0) (hv : ∀ n, ‖v.1 n‖ ≤ 1)
@@ -102,31 +100,29 @@ private theorem eig_le_one {I : Type} {V : Submodule K (I → K)} (T : Module.En
   linarith
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `U hd hb hT f hfU hf hf1 hfa`. Distinguish the cases in `h : ∀ j (c : K), ∀ v ∈ U, v ≠ 0 → T j v = c • v → ‖c - a j‖ < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hU : U ≠ ⊥`. Use `(Submodule.ne_bot_iff U).mpr ⟨f, hfU, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨n, hn⟩` from `hf1`. Simplify using `at hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv, hv0, hve⟩` from `UpperTheory.V.LinAlg.simEig T hc _ U rfl hU hT`. Use `choose b hbv using hve`. Take `⟨c, hc0, hcv⟩` from `hb hv`. Use `⟨c • v, b, smul_ne_zero hc0 hv0, hcv, fun j => ?_, fun j => h j (b j) v hv hv0 (hbv j)⟩` and prove the remaining obligations. Rewrite using `[map_smul, hbv j, smul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push Not at h`. Take `⟨j, c, v, hv, hv0, hcv, hca⟩` from `h`. Establish `hc1 : ‖c‖ ≤ 1`. Take `⟨e, he0, hev⟩` from `hb hv`. Use `eig_le_one (T j) (h1 j) (e • v) (smul_ne_zero he0 hv0) hev c ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, hcv, smul_comm]`. Establish `hca1 : ‖c - a j‖ = 1` using `le_antisymm (sub_le_one' hc1 (ha j)) hca`. Set `S : Module.End K V` to `T j - c • 1`. Establish `hS : ∀ x, S x = T j x - c • x` using `fun x => by simp [S]`. Establish `hcomm : ∀ i x, T i (S x) = S (T i x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i x`. Establish `h3 : T j (T i x) = T i (T j x)`. Use `congrArg (fun S : Module.End K V => S x) (hc j i)` as an intermediate fact. Simplify using `using this`. Rewrite using `[hS, hS, map_sub, map_smul, h3]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hle : U.map S ≤ U`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[hS]`. Conclude with `U.sub_mem (hT j x hx) (U.smul_mem c hx)`. Establish `hSn : ∀ (x : V) n, (S x).1 n = (T j x).1 n - c * x.1 n` using `fun x n => by rw [hS]; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `ih _ (hd ▸ finrank_map_lt U S v hv hv0 (by rw [hS, hcv, sub_self])) (U.map S) rfl (hle.trans hb) ?_ (S f) ⟨f, hfU, rfl⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `i _ ⟨x, hx, rfl⟩`. Conclude with `⟨T i x, hT i x hx, (hcomm i x).symm⟩`. Introduce `n`. Rewrite using `[hSn]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `sub_le_one' (h1 j f hf n) ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hc1 (norm_nonneg _) (hf n)`. Take `⟨n, hn⟩` from `hf1`. Use `⟨n, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hSn]`. Use `sub_le_one' (h1 j f hf n) ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hc1 (norm_nonneg _) (hf n)`. Assume the negation of the conclusion as `hlt push Not at hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4` using `sub_lt_one' (hfa j n) hlt`. Establish `h5 : (T j f).1 n - a j * f.1 n - (S f).1 n = (c - a j) * f.1 n` using `by rw [hSn]; ring`. Rewrite `h4` using `[h5, norm_mul, hca1, hn]`. Simplify using `at h4`. Introduce `i n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ n, ‖(T i f - a i • f).1 n‖ < 1` using `fun n => by simpa using hfa i n`. Establish `h6 : (T i (S f)).1 n - a i * (S f).1 n = (S (T i f - a i • f)).1 n`. Rewrite using `[map_sub, map_smul, hcomm]`. Simplify using the standard rewrite rules. Rewrite using `[h6, hSn]`.
-
-Use `sub_lt_one' (h2 j _ hg n) ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right hc1 (norm_nonneg _) (hg n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main [IsAlgClosed K] {I J : Type} (V : Submodule K (I → K)) [FiniteDimensional K V]
     (T : J → Module.End K V) (hc : ∀ i j, T i * T j = T j * T i)
@@ -203,9 +199,9 @@ private theorem main [IsAlgClosed K] {I J : Type} (V : Submodule K (I → K)) [F
 end
 
 /- English proof (translation)
-Introduce `l _ I J V hV T hc h1 h2 f a hf hf1 ha hfa`. Use `main V T hc h1 h2 a ha _ (bdd V) rfl le_rfl ?_ f ⟨1, one_ne_zero, by simpa using hf⟩ hf hf1 hfa` and prove the remaining obligations. Introduce and unpack `j x ⟨c, hc0, hx⟩`. Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 j _ hx`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.delSerre :
     UpperTheory.V.Sd.DelSerre := by

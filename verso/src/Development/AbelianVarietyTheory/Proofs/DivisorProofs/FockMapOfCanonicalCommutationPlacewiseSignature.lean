@@ -17,7 +17,7 @@ namespace GlobalTheory.CCRFock
 open MvPolynomial
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun A => GlobalTheory.RealLift.atPl (V := fun v : W => MvPolynomial (Λ v) ℂ) w A map_add' := fun A B => by unfold GlobalTheory.RealLift.atPl exact PiTensorProduct.map_update_add (fun v : W => (LinearMap.id : MvPolynomial (Λ v) ℂ →ₗ[ℂ] MvPolynomial (Λ v) ℂ)) w A B map_ …`.
+Supply the required witnesses or components.
 -/
 theorem atPl_linear_dep {W : Type} [Fintype W] [DecidableEq W] {Λ : W → Type} (w : W) :
     ∃ L : Module.End ℂ (MvPolynomial (Λ w) ℂ) →ₗ[ℂ] Module.End ℂ (⨂[ℂ] v : W, MvPolynomial (Λ v) ℂ),
@@ -33,13 +33,13 @@ theorem atPl_linear_dep {W : Type} [Fintype W] [DecidableEq W] {Λ : W → Type}
          (fun v : W => (LinearMap.id : MvPolynomial (Λ v) ℂ →ₗ[ℂ] MvPolynomial (Λ v) ℂ)) w c A }, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `V _ _ W _ _ P Q R S H hadd hsmul hcomm f₀ hf₀ hvac`. Take `⟨m, D, hm, hdm, hD0, hH⟩` from `GlobalTheory.HoweD.ccr_fock_ops_sig H hadd hsmul hcomm`. Take `⟨θ, hθ, hθ'⟩` from `GlobalTheory.CCRFock.exists_polMapD W (fun w => Ix (P w) (Q w) × Ix (R w) (S w))`. Establish `hd0 : ∀ j, D j f₀ = 0` using `fun j => hD0 j f₀ (hvac j.1 j.2.1 j.2.2)`. Establish `hD` using `GlobalTheory.CCRFock.polEval_pderiv m D hm f₀ (fun i j => by convert hdm i j) hd0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨polEval m hm f₀ ∘ₗ θ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.FockAlg.injective_of_pderiv (polEval m hm f₀) D hD (by rw [polEval_one]; exact hf₀)).comp hθ`. Introduce `c T`. Rewrite using `[hH c, Fintype.sum_sigma]`. Simplify using `only [LinearMap.comp_apply, sumPl, LinearMap.sum_apply, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Take `⟨L, hL⟩` from `atPl_linear_dep (W := W) (Λ := fun w => Ix (P w) (Q w) × Ix (R w) (S w)) w`. Rewrite using `[heisOp_eq_sum_mul_pderiv, ← hL, map_sum]`. Simplify using `only [LinearMap.sum_apply, map_sum, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply]`. Simplify using `only [hL]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Take `⟨hX, hY⟩` from `hθ' w l T`. Rewrite using `[hX, hY, polEval_X, hD]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_map_of_ccr_dep : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : W → ℕ}
     (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) → Module.End ℂ V),

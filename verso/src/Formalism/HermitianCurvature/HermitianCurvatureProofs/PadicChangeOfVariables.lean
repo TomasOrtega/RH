@@ -10,9 +10,9 @@ open scoped ComplexConjugate
 namespace Formalism.FourierDecayAlt.P.A6x9
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `zero => simp`. Consider the case `succ k`. Establish `: (k + 1) * (k + 1 + 1) = (k + 1) * (k + 1 - 1) + 2 * (k + 1)`. Simplify using `only [Nat.add_sub_cancel]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Nat.add_mul_div_left _ _ (by norm_num)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem nat_tri (m : ℕ) : m * (m + 1) / 2 = m * (m - 1) / 2 + m := by
   cases m with
@@ -23,7 +23,7 @@ theorem nat_tri (m : ℕ) : m * (m + 1) / 2 = m * (m - 1) / 2 + m := by
     rw [this, Nat.add_mul_div_left _ _ (by norm_num)]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [A5x5.modK_one]`. Consider the case `succ n ih => rw [pow_succ, A5x5.modK_mul' hd (hx.pow n) hx, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem modK_pow {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
     {ψ : AddChar K ℂ} (hd : LocalDatum K R ψ) {x : K} (hx : IsUnit x) (n : ℕ) :
@@ -37,11 +37,11 @@ section GroundTheory
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Take `⟨n, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd a (1 : K)`. Establish `hy' : a ^ (n + 1) * y = a ^ n` using `by simpa using hy`. Establish `hz : a - a ^ 2 * y = 0`. Apply `IsNilpotent.eq_zero` to reduce the goal to its premises. Use `⟨n + 1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (a - a ^ 2 * y) ^ (n + 1) = a * (a ^ n - a ^ (n + 1) * y) * (1 - a * y) ^ n`. Establish `: a - a ^ 2 * y = a * (1 - a * y)` using `by ring`. Rewrite using `[this, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hy']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨y, by linear_combination hz⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 -/
 theorem vnr [IsArtinianRing K] [IsReduced K] (a : K) : ∃ y, a = a ^ 2 * y := by
   obtain ⟨n, y, hy⟩ := IsArtinian.exists_pow_succ_smul_dvd a (1 : K)
@@ -56,7 +56,7 @@ theorem vnr [IsArtinianRing K] [IsReduced K] (a : K) : ∃ y, a = a ^ 2 * y := b
   exact ⟨y, by linear_combination hz⟩
 
 /- English proof (translation)
-Simplify using `[mulR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_mulR {R : Subring K} {a x : K} : x ∈ mulR R a ↔ ∃ r ∈ R, a * r = x := by
   simp [mulR]
@@ -64,9 +64,9 @@ theorem mem_mulR {R : Subring K} {a x : K} : x ∈ mulR R a ↔ ∃ r ∈ R, a *
 variable [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K} {ψ : AddChar K ℂ}
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Use `hn (m - n) (by omega)` as an intermediate fact. Rewrite `this` using `[Nat.cast_sub h.le]`. Establish `h2` using `this.neg`. Simplify using `using h2`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hn (n - m) (by omega)` as an intermediate fact. Rewrite `this` using `[Nat.cast_sub h.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_natSub (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) (n m : ℕ) (h : n ≠ m) :
     IsUnit ((n : K) - (m : K)) := by
@@ -79,23 +79,21 @@ theorem isUnit_natSub (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) (n m : ℕ)
     rwa [Nat.cast_sub h.le] at this
 
 /- English proof (translation)
-Use `hd.artin` as an intermediate fact. Use `hd.red` as an intermediate fact. Use `hd.t2` as an intermediate fact. Assume the negation of the conclusion as `hx0`. Take `⟨y, hy⟩` from `vnr x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩ : ∃ e, e = x * y` from `⟨_, rfl⟩`. Establish `hee : e * e = e` using `by rw [he]; linear_combination (-y) * hy`. Establish `he0 : e ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hy]`. Establish `: x ^ 2 * y = x * e` using `by rw [he]; ring`. Rewrite using `[this, h, mul_zero]`. Establish `heR : ∀ w, w * e ∈ R` using `fun w => by`. Use `hJ (w * y)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : w * e = w * y * x` using `by rw [he]; ring`. Rewrite using `[h2]` and apply the resulting hypothesis. Set `U : Ultrafilter ℕ` to `Filter.hyperfilter ℕ`. Establish `key : ∀ h : ℕ → K, (∀ n, h n ∈ R) → ∃ y ∈ R, Tendsto h U (𝓝 y)`. Introduce `h hh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, hle⟩` from `hd.isCompact.ultrafilter_le_nhds (U.map h) (by`. Rewrite using `[le_principal_iff, Ultrafilter.coe_map]`. Conclude with `Filter.mem_map.2 (Filter.univ_mem' hh))`. Conclude with `⟨y, hy, hle⟩`. Set `g : ℕ → K` to `fun n => (n : K) * e`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨y0, -, hy0⟩` from `key g (fun n => heR _)`. Use `choose c hcR hc using fun m : ℕ => key (fun n => Ring.inverse ((n : K) - (m : K)) * e) (fun n => heR _)`. Establish `h1 : ∀ m, (y0 - g m) * c m = e`. Introduce `m`. Use `tendsto_nhds_unique ((hy0.sub_const (g m)).mul (hc m)) (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hm : {n : ℕ | n ≠ m} ∈ (U : Filter ℕ)`. Apply `Filter.mem_hyperfilter_of_finite_compl` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `filter_upwards [hm] with n hnm`. Use `Ring.mul_inverse_cancel _ (isUnit_natSub hn n m hnm)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Simplify using `only [g]`. Take the linear combination `(-(e * e)) * this - hee`. Take `⟨c0, -, hc0⟩` from `key c hcR`. Establish `h2 : (y0 - y0) * c0 = e` using `tendsto_nhds_unique ((tendsto_const_nhds.sub hy0).mul hc0) (tendsto_const_nhds.congr (fun m => (h1 m).symm))`. Apply `he0` to reduce the goal to its premises.
-
-Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem no_compact_ideal (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) (x : K)
     (hJ : ∀ y, y * x ∈ R) : x = 0 := by
@@ -148,9 +146,9 @@ theorem no_compact_ideal (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 →
 variable (π : Kˣ)
 
 /- English proof (translation)
-Apply `no_compact_ideal hd hn` to reduce the goal to its premises. Introduce `y`. Take `⟨m, hm⟩` from `hπ' y`. Take `⟨r, hr, rfl⟩` from `mem_mulR.1 (hx m)`. Establish `: y * ((π : K) ^ m * r) = ((π : K) ^ m * y) * r` using `by ring`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `R.mul_mem hm hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iInter_zero (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     (hπ' : ∀ x : K, ∃ m : ℕ, (π : K) ^ m * x ∈ R) (x : K)
@@ -164,14 +162,14 @@ theorem iInter_zero (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUn
   exact R.mul_mem hm hr
 
 /- English proof (translation)
-Use `A5x5.lat_mulR hd.isOpen hd.isCompact (π ^ n)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lat_J (hd : LocalDatum K R ψ) (n : ℕ) : A5x5.Lat (mulR R ((π : K) ^ n)) := by
   have := A5x5.lat_mulR hd.isOpen hd.isCompact (π ^ n)
   simpa using this
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨r, hr, rfl⟩` from `mem_mulR.1 hx`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Conclude with `mem_mulR.2 ⟨(π : K) ^ k * r, R.mul_mem (R.pow_mem hπ k) hr, by ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem J_anti (hπ : (π : K) ∈ R) {n m : ℕ} (h : n ≤ m) :
     mulR R ((π : K) ^ m) ≤ mulR R ((π : K) ^ n) := by
@@ -181,21 +179,21 @@ theorem J_anti (hπ : (π : K) ∈ R) {n m : ℕ} (h : n ≤ m) :
   exact mem_mulR.2 ⟨(π : K) ^ k * r, R.mul_mem (R.pow_mem hπ k) hr, by ring⟩
 
 /- English proof (translation)
-Take `⟨r, hr, rfl⟩` from `mem_mulR.1 hx`. Conclude with `R.mul_mem (R.pow_mem hπ n) hr`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem J_sub_R (hπ : (π : K) ∈ R) {n : ℕ} {x : K} (hx : x ∈ mulR R ((π : K) ^ n)) : x ∈ R := by
   obtain ⟨r, hr, rfl⟩ := mem_mulR.1 hx
   exact R.mul_mem (R.pow_mem hπ n) hr
 
 /- English proof (translation)
-Take `⟨q, hq, rfl⟩` from `mem_mulR.1 hx`. Conclude with `mem_mulR.2 ⟨q * r, R.mul_mem hq hr, by ring⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mulR_mul {a x r : K} (hx : x ∈ mulR R a) (hr : r ∈ R) : x * r ∈ mulR R a := by
   obtain ⟨q, hq, rfl⟩ := mem_mulR.1 hx
   exact mem_mulR.2 ⟨q * r, R.mul_mem hq hr, by ring⟩
 
 /- English proof (translation)
-Take `⟨q, hq, rfl⟩` from `mem_mulR.1 hx`. Take `⟨r, hr, rfl⟩` from `mem_mulR.1 hy`. Conclude with `mem_mulR.2 ⟨q * r, R.mul_mem hq hr, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem J_mul {n m : ℕ} {x y : K} (hx : x ∈ mulR R ((π : K) ^ n)) (hy : y ∈ mulR R ((π : K) ^ m)) :
     x * y ∈ mulR R ((π : K) ^ (n + m)) := by
@@ -204,7 +202,7 @@ theorem J_mul {n m : ℕ} {x y : K} (hx : x ∈ mulR R ((π : K) ^ n)) (hy : y �
   exact mem_mulR.2 ⟨q * r, R.mul_mem hq hr, by ring⟩
 
 /- English proof (translation)
-Use `hd.t2` as an intermediate fact. Establish `hne` using `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed (fun n : ℕ => C ∩ F ⁻¹' (mulR R ((π : K) ^ n) : Set K)) (fun i => Set.inter_subset_inter_right _ (Set.preimage_mono (J_anti π hπ (Nat.le_succ i)))) (fun i => by obtain ⟨u, hu, hu'⟩ := h i; exact ⟨u, hu, hu'⟩) (hC.i …`. Take `⟨u, hu⟩` from `hne`. Rewrite `hu` using `[Set.mem_iInter]`. Conclude with `⟨u, (hu 0).1, iInter_zero π hd hn hπ' _ (fun n => (hu n).2)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem compact_principle (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     (hπ : (π : K) ∈ R) (hπ' : ∀ x : K, ∃ m : ℕ, (π : K) ^ m * x ∈ R)
@@ -222,11 +220,11 @@ theorem compact_principle (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 �
   exact ⟨u, (hu 0).1, iInter_zero π hd hn hπ' _ (fun n => (hu n).2)⟩
 
 /- English proof (translation)
-Use `hd.t2` as an intermediate fact. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hne` using `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed (fun n : ℕ => (mulR R ((π : K) ^ n) : Set K) ∩ (interior V)ᶜ) (fun i => Set.inter_subset_inter_left _ (J_anti π hπ (Nat.le_succ i))) (fun i => by`. Take `⟨u, hu, hu'⟩` from `Set.not_subset.1 (hcon i)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u, hu, fun h => hu' (interior_subset h)⟩)`. Use the proof step `((lat_J π hd 0).cp.inter_right isOpen_interior.isClosed_compl)`. Use the proof step `(fun i => (lat_J π hd i).cp.isClosed.inter isOpen_interior.isClosed_compl)`. Take `⟨u, hu⟩` from `hne`. Rewrite `hu` using `[Set.mem_iInter]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `iInter_zero π hd hn hπ' u (fun n => (hu n).1)`. Apply `(hu 0).2` to reduce the goal to its premises. Rewrite using `[h0]`. Conclude with `mem_interior_iff_mem_nhds.2 hV`.
+A detailed English derivation is pending.
 -/
 theorem nhds_basis (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     (hπ : (π : K) ∈ R) (hπ' : ∀ x : K, ∃ m : ℕ, (π : K) ^ m * x ∈ R) (V : Set K)
@@ -250,17 +248,17 @@ theorem nhds_basis (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUni
   exact mem_interior_iff_mem_nhds.2 hV
 
 /- English proof (translation)
-The claim follows from `(lat_J π hd n).op.mem_nhds (mulR R ((π : K) ^ n)).zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem J_nhds (hd : LocalDatum K R ψ) (n : ℕ) : (mulR R ((π : K) ^ n) : Set K) ∈ 𝓝 (0 : K) :=
   (lat_J π hd n).op.mem_nhds (mulR R ((π : K) ^ n)).zero_mem
 
 /- English proof (translation)
-Take `⟨u, hu, h⟩` from `compact_principle π hd hn hπ hπ' (fun u => (1 + a) * u - 1) (by fun_prop) (R : Set K) hd.isCompact (by`. Introduce `n`. Use `⟨∑ i ∈ Finset.range n, (-a) ^ i, R.sum_mem fun i _ => R.pow_mem (R.neg_mem (J_sub_R π hπ ha)) i, ?_⟩` and prove the remaining obligations. Establish `h1` using `geom_sum_mul (-a) n`. Establish `h2 : (1 + a) * ∑ i ∈ Finset.range n, (-a) ^ i - 1 = -(-a) ^ n`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `-h1`. Rewrite using `[h2]`. Apply `AddSubgroup.neg_mem` to reduce the goal to its premises. Take `⟨r, hr, rfl⟩` from `mem_mulR.1 ha`. Conclude with `mem_mulR.2 ⟨(-r) ^ n, R.pow_mem (R.neg_mem hr) n, by`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one, ← mul_pow]`. Use the proof step `ring⟩)`. Conclude with `⟨u, hu, by linear_combination h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem one_add_unit (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     (hπ : (π : K) ∈ R) (hπ' : ∀ x : K, ∃ m : ℕ, (π : K) ^ m * x ∈ R) (a : K)
@@ -281,9 +279,9 @@ theorem one_add_unit (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsU
   exact ⟨u, hu, by linear_combination h⟩
 
 /- English proof (translation)
-Establish `hyR : y ∈ R`. Use `R.add_mem (J_sub_R π hπ hy) R.one_mem` as an intermediate fact. Simplify using `using this`. Establish `e : x * y - 1 = (x - 1) * y + (y - 1)` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.add_mem _ (mulR_mul hx hyR) hy`.
+A detailed English derivation is pending.
 -/
 theorem sub_one_mul (hπ : (π : K) ∈ R) {n : ℕ} {x y : K} (hx : x - 1 ∈ mulR R ((π : K) ^ n))
     (hy : y - 1 ∈ mulR R ((π : K) ^ n)) : x * y - 1 ∈ mulR R ((π : K) ^ n) := by
@@ -295,7 +293,7 @@ theorem sub_one_mul (hπ : (π : K) ∈ R) {n : ℕ} {x y : K} (hx : x - 1 ∈ m
   exact AddSubgroup.add_mem _ (mulR_mul hx hyR) hy
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ]`. Conclude with `sub_one_mul π hπ ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sub_one_pow (hπ : (π : K) ∈ R) {n : ℕ} {x : K} (hx : x - 1 ∈ mulR R ((π : K) ^ n))
     (i : ℕ) : x ^ i - 1 ∈ mulR R ((π : K) ^ n) := by
@@ -304,11 +302,11 @@ theorem sub_one_pow (hπ : (π : K) ∈ R) {n : ℕ} {x : K} (hx : x - 1 ∈ mul
   | succ i ih => rw [pow_succ]; exact sub_one_mul π hπ ih hx
 
 /- English proof (translation)
-Establish `h1` using `geom_sum₂_mul (1 + a) (1 + b) s`. Take `⟨j, hj⟩ : ∃ j, j = ∑ i ∈ Finset.range s, ((1 + a) ^ i * (1 + b) ^ (s - 1 - i) - 1)` from `⟨_, rfl⟩`. Establish `hjm : j ∈ mulR R ((π : K) ^ (k + 1))`. Rewrite using `[hj]`. Apply `AddSubgroup.sum_mem` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Conclude with `sub_one_mul π hπ (sub_one_pow π hπ (by simpa using ha) i) (sub_one_pow π hπ (by simpa using hb) _)`. Establish `hj2 : ∑ i ∈ Finset.range s, (1 + a) ^ i * (1 + b) ^ (s - 1 - i) = (s : K) + j`. Rewrite using `[hj, Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨si * j, ?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr, rfl⟩` from `mem_mulR.1 hjm`. Conclude with `mem_mulR.2 ⟨(π : K) ^ k * si * r, R.mul_mem hk hr, by ring⟩`. Rewrite using `[← h1, hj2]`. Take the linear combination `(-(j * (a - b))) * hs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pow_diff (hπ : (π : K) ∈ R) {s k : ℕ} {si : K} (hs : (s : K) * si = 1)
     (hk : (π : K) ^ k * si ∈ R) {a b : K} (ha : a ∈ mulR R ((π : K) ^ (k + 1)))
@@ -333,7 +331,7 @@ theorem pow_diff (hπ : (π : K) ∈ R) {s k : ℕ} {si : K} (hs : (s : K) * si 
     linear_combination (-(j * (a - b))) * hs
 
 /- English proof (translation)
-Take `⟨e, he, h⟩` from `pow_diff π hπ hs hk ha (AddSubgroup.zero_mem _)`. Conclude with `⟨e, he, by simpa using h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pow_diff0 (hπ : (π : K) ∈ R) {s k : ℕ} {si : K} (hs : (s : K) * si = 1)
     (hk : (π : K) ^ k * si ∈ R) {a : K} (ha : a ∈ mulR R ((π : K) ^ (k + 1))) :
@@ -342,23 +340,23 @@ theorem pow_diff0 (hπ : (π : K) ∈ R) {s k : ℕ} {si : K} (hs : (s : K) * si
   exact ⟨e, he, by simpa using h⟩
 
 /- English proof (translation)
-The claim follows from `R.add_mem R.one_mem (J_sub_R π hπ he)`.
+A detailed English derivation is pending.
 -/
 theorem one_add_mem (hπ : (π : K) ∈ R) {n : ℕ} {e : K} (he : e ∈ mulR R ((π : K) ^ n)) :
     1 + e ∈ R := R.add_mem R.one_mem (J_sub_R π hπ he)
 
 /- English proof (translation)
-Establish `hF : ∀ u ∈ mulR R ((π : K) ^ (k + 1)), si * ((1 + u) ^ s - 1) - μ ∈ mulR R ((π : K) ^ (k + 1))`. Introduce `u hu`. Take `⟨e, he, h⟩` from `pow_diff0 π hπ hs hk hu`. Establish `: si * ((1 + u) ^ s - 1) - μ = u * (1 + e) - μ`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(u * (1 + e)) * hs`. Rewrite using `[this]`. Conclude with `AddSubgroup.sub_mem _ (mulR_mul hu (one_add_mem π hπ he)) hμ`. Take `⟨u, hu, h⟩` from `compact_principle π hd hn hπ hπ' (fun u => si * ((1 + u) ^ s - 1) - μ) (by fun_prop) (mulR R ((π : K) ^ (k + 1)) : Set K) (lat_J π hd (k + 1)).cp (by`. Introduce `n`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero`. Conclude with `⟨0, AddSubgroup.zero_mem _, J_anti π hπ (Nat.zero_le _) (hF 0 (AddSubgroup.zero_mem _))⟩`. Consider the case `succ n ih`. Take `⟨u, hu, hun⟩` from `ih`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu' : u - (si * ((1 + u) ^ s - 1) - μ) ∈ mulR R ((π : K) ^ (k + 1))` using `AddSubgroup.sub_mem _ hu (hF u hu)`. Use `⟨_, hu', ?_⟩` and prove the remaining obligations. Take `⟨e, he, h⟩` from `pow_diff π hπ hs hk hu' hu`. Take `⟨f, hf⟩ : ∃ f, f = si * ((1 + u) ^ s - 1) - μ` from `⟨_, rfl⟩`. Rewrite `h`, `hun`, the goal using `[← hf]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : si * ((1 + (u - f)) ^ s - 1) - μ = -(f * e)`. Take the linear combination `si * h - hf - (f * (1 + e)) * hs`. Use `show si * ((1 + (u - f)) ^ s - 1) - μ ∈ _`. Rewrite using `[e2]`. Conclude with `AddSubgroup.neg_mem _ (J_mul π hun he))`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `h : si * ((1 + u) ^ s - 1) - μ = 0` using `h`. Take the linear combination `(s : K) * h - ((1 + u) ^ s - 1) * hs`.
+A detailed English derivation is pending.
 -/
 theorem root_exists (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     (hπ : (π : K) ∈ R) (hπ' : ∀ x : K, ∃ m : ℕ, (π : K) ^ m * x ∈ R) {s k : ℕ} {si : K}
@@ -397,7 +395,7 @@ theorem root_exists (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUn
   linear_combination (s : K) * h - ((1 + u) ^ s - 1) * hs
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `: (π : K) ^ (k + j) * z = (π : K) ^ j * ((π : K) ^ k * z)` using `by ring`. Rewrite using `[this]`. Conclude with `R.mul_mem (R.pow_mem hπ j) hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_mono (hπ : (π : K) ∈ R) {k k' : ℕ} (h : k ≤ k') {z : K} (hz : (π : K) ^ k * z ∈ R) :
     (π : K) ^ k' * z ∈ R := by
@@ -407,7 +405,7 @@ theorem pow_mem_mono (hπ : (π : K) ∈ R) {k k' : ℕ} (h : k ≤ k') {z : K} 
   exact R.mul_mem (R.pow_mem hπ j) hz
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hC.elim_directed_cover (fun k : ℕ => {z | (π : K) ^ k * z ∈ R}) (fun k => hd.isOpen.preimage (by fun_prop)) (fun z _ => Set.mem_iUnion.2 (hπ' z)) (directed_of_isDirected_le (fun i j hij z hz => pow_mem_mono π hπ hij hz))`. Conclude with `⟨k, hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bdd_of_compact (hd : LocalDatum K R ψ) (hπ : (π : K) ∈ R)
     (hπ' : ∀ x : K, ∃ m : ℕ, (π : K) ^ m * x ∈ R) {C : Set K} (hC : IsCompact C) :
@@ -418,9 +416,9 @@ theorem bdd_of_compact (hd : LocalDatum K R ψ) (hπ : (π : K) ∈ R)
   exact ⟨k, hk⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, R.zero_mem, by simp⟩`. Consider the case `succ n ih`. Take `⟨p, hp, h⟩` from `ih`. Use `⟨(n : K) + p + p * x, R.add_mem (R.add_mem (natCast_mem R n) hp) (R.mul_mem hp hx), ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem binom2 (n : ℕ) {x : K} (hx : x ∈ R) : ∃ p ∈ R, (1 + x) ^ n = 1 + (n : K) * x + x ^ 2 * p := by
   induction n with
@@ -433,15 +431,13 @@ theorem binom2 (n : ℕ) {x : K} (hx : x ∈ R) : ∃ p ∈ R, (1 + x) ^ n = 1 +
     ring
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hC.elim_directed_cover (fun k : ℕ => {z | ∃ zi : K, z * zi = 1 ∧ (π : K) ^ k * zi ∈ R}) (fun k => by`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `z0 ⟨zi0, h0, h1⟩`. Establish `hnb : (fun z => zi0 * (z - z0)) ⁻¹' (mulR R ((π : K) ^ 1) : Set K) ∈ 𝓝 z0`. Apply `(show Continuous fun z => zi0 * (z - z0) by fun_prop).continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using J_nhds π hd 1`. Use `filter_upwards [hnb] with z hz`. Take `⟨u, hu, hu2⟩` from `one_add_unit π hd hn hπ hπ' _ hz`. Use `⟨zi0 * u, ?_, ?_⟩` and prove the remaining obligations. Establish `hu2 : (1 + zi0 * (z - z0)) * u = 1` using `hu2`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hu2 + u * h0`. Rewrite using `[← mul_assoc]`. Conclude with `R.mul_mem h1 hu)`. Use the proof step `(fun z hz => by`. Take `⟨u, rfl⟩` from `hU z hz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, hk⟩` from `hπ' ((u⁻¹ : Kˣ) : K)`. Conclude with `Set.mem_iUnion.2 ⟨k, _, by simp, hk⟩)`. Use the proof step `(directed_of_isDirected_le (fun i j hij z hz => by`. Take `⟨zi, h0, h1⟩` from `hz`. Conclude with `⟨zi, h0, pow_mem_mono π hπ hij h1⟩))`.
-
-Use `⟨k, fun z hz zi hzi => ?_⟩` and prove the remaining obligations. Take `⟨zi', h0, h1⟩` from `hk hz`. Establish `: zi = zi'` using `by linear_combination zi' * hzi - zi * h0`. Rewrite using `[this]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem inv_bdd (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     (hπ : (π : K) ∈ R) (hπ' : ∀ x : K, ∃ m : ℕ, (π : K) ^ m * x ∈ R) {C : Set K} (hC : IsCompact C)
@@ -481,7 +477,7 @@ variable (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
 
 include hπ hk' in
 /- English proof (translation)
-Take `⟨r, hr, rfl⟩` from `mem_mulR.1 hb`. Conclude with `mem_mulR.2 ⟨(π : K) ^ i * ((π : K) ^ k' * z0i) * r, R.mul_mem (R.mul_mem (R.pow_mem hπ i) hk') hr, by ring⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem small_quot {b : K} (hb : b ∈ mulR R ((π : K) ^ (k + 1 + k' + i))) :
     b * z0i ∈ mulR R ((π : K) ^ (k + 1)) := by
@@ -491,9 +487,9 @@ theorem small_quot {b : K} (hb : b ∈ mulR R ((π : K) ^ (k + 1 + k' + i))) :
 
 include hπ hs hk hz0 hk' in
 /- English proof (translation)
-Take `⟨e, he, h⟩` from `pow_diff0 π hπ hs hk (small_quot π hπ hk' hz)`. Use `⟨(z - z0) * (1 + e), mulR_mul hz (one_add_mem π hπ he), ?_⟩` and prove the remaining obligations. Establish `e1 : z = z0 * (1 + (z - z0) * z0i)` using `by linear_combination (z0 - z) * hz0`. Establish `e2 : z ^ (m + 1) = z0 ^ (m + 1) * (1 + (z - z0) * z0i) ^ (m + 1)`. Rewrite using `[← mul_pow, ← e1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Take the linear combination `z0 ^ (m + 1) * h + ((m + 1 : ℕ) : K) * z0 ^ m * (z - z0) * (1 + e) * hz0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hb1 {z : K} (hz : z - z0 ∈ mulR R ((π : K) ^ (k + 1 + k' + i))) :
     ∃ b ∈ mulR R ((π : K) ^ (k + 1 + k' + i)),
@@ -509,11 +505,11 @@ theorem hb1 {z : K} (hz : z - z0 ∈ mulR R ((π : K) ^ (k + 1 + k' + i))) :
 
 include hd hn hπ hπ' hs hk hz0 hk' in
 /- English proof (translation)
-Take `⟨e, he, h1⟩` from `pow_diff π hπ hs hk (small_quot π hπ hk' hz) (small_quot π hπ hk' hz')`. Take `⟨u, -, hu⟩` from `one_add_unit π hd hn hπ hπ' e he`. Establish `e1 : z = z0 * (1 + (z - z0) * z0i)` using `by linear_combination (z0 - z) * hz0`. Establish `e1' : z' = z0 * (1 + (z' - z0) * z0i)` using `by linear_combination (z0 - z') * hz0`. Establish `e2 : z ^ (m + 1) = z0 ^ (m + 1) * (1 + (z - z0) * z0i) ^ (m + 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow, ← e1]`. Establish `e2' : z' ^ (m + 1) = z0 ^ (m + 1) * (1 + (z' - z0) * z0i) ^ (m + 1)`. Rewrite using `[← mul_pow, ← e1']`. Establish `hp : z0 ^ (m + 1) * z0i ^ (m + 1) = 1` using `by rw [← mul_pow, hz0, one_pow]`. Establish `h3 : (1 + (z - z0) * z0i) ^ (m + 1) - (1 + (z' - z0) * z0i) ^ (m + 1) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `z0i ^ (m + 1) * (h - e2 + e2') - ((1 + (z - z0) * z0i) ^ (m + 1) - (1 + (z' - z0) * z0i) ^ (m + 1)) * hp`. Rewrite `h1` using `[h3]`. Establish `h4 : (z - z0) * z0i - (z' - z0) * z0i = 0`. Take the linear combination `(-(si * u)) * h1 - ((z - z0) * z0i - (z' - z0) * z0i) * (hu + (1 + e) * u * hs)`. Take the linear combination `z0 * h4 - (z - z') * hz0`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hb2 {z z' : K} (hz : z - z0 ∈ mulR R ((π : K) ^ (k + 1 + k' + i)))
     (hz' : z' - z0 ∈ mulR R ((π : K) ^ (k + 1 + k' + i))) (h : z ^ (m + 1) = z' ^ (m + 1)) :
@@ -539,11 +535,11 @@ theorem hb2 {z z' : K} (hz : z - z0 ∈ mulR R ((π : K) ^ (k + 1 + k' + i)))
 
 include hd hn hπ hπ' hs hk hz0 hk' in
 /- English proof (translation)
-Take `⟨l, hl, h⟩` from `root_exists π hd hn hπ hπ' hs hk (small_quot π hπ hk' hb)`. Take `⟨e, he, h1⟩` from `pow_diff0 π hπ hs hk hl`. Take `⟨u, hu, hu2⟩` from `one_add_unit π hd hn hπ hπ' e he`. Establish `h2 : b * z0i = l * (1 + e)`. Take the linear combination `si * (h1 - h) - (b * z0i - l * (1 + e)) * hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h3 : z0 * l = b * u`. Take the linear combination `(-(z0 * u)) * h2 - z0 * l * hu2 + b * u * hz0`. Use `⟨z0 * (1 + l), ?_, ?_⟩` and prove the remaining obligations. Establish `: z0 * (1 + l) - z0 = b * u` using `by linear_combination h3`. Rewrite using `[this]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mulR_mul hb hu`. Rewrite using `[mul_pow, h]`. Take the linear combination `((m + 1 : ℕ) : K) * z0 ^ m * b * hz0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hb3 {b : K} (hb : b ∈ mulR R ((π : K) ^ (k + 1 + k' + i))) :
     ∃ z, z - z0 ∈ mulR R ((π : K) ^ (k + 1 + k' + i)) ∧
@@ -565,7 +561,7 @@ theorem hb3 {b : K} (hb : b ∈ mulR R ((π : K) ^ (k + 1 + k' + i))) :
 end Local
 
 /- English proof (translation)
-Rewrite using `[← AddSubgroup.relIndex_bot_left, ← AddSubgroup.relIndex_comap, AddMonoidHom.comap_bot, QuotientAddGroup.ker_mk']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_map_mk (L : AddSubgroup K) :
     Nat.card (L.map (QuotientAddGroup.mk' R.toAddSubgroup)) = R.toAddSubgroup.relIndex L := by
@@ -573,31 +569,29 @@ theorem card_map_mk (L : AddSubgroup K) :
     QuotientAddGroup.ker_mk']
 
 /- English proof (translation)
-Use `set S : Set ((K ⧸ R.toAddSubgroup) × Kˣ) := {p | (p.2 : K) - z0 ∈ mulR R ((π : K) ^ (k + 1 + k' + i)) ∧ p.2 ^ (m + 1) = T * cr p.1} with hS`. Take `⟨c0, hc0⟩ : ∃ c0 : K, c0 = z0 ^ (m + 1) * ((T⁻¹ : Kˣ) : K)` from `⟨_, rfl⟩`. Establish `hTi : (T : K) * ((T⁻¹ : Kˣ) : K) = 1` using `by simp`. Establish `hai : (a : K) * ((a⁻¹ : Kˣ) : K) = 1` using `by simp`. Establish `hle : R.toAddSubgroup ≤ mulR R (a : K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Conclude with `mem_mulR.2 ⟨((a⁻¹ : Kˣ) : K) * r, R.mul_mem haR hr, by rw [← mul_assoc, hai, one_mul]⟩`. Use `set X : Set (K ⧸ R.toAddSubgroup) := (fun x => ((c0 : K) : K ⧸ R.toAddSubgroup) + x) '' ((mulR R (a : K)).map (QuotientAddGroup.mk' R.toAddSubgroup) : Set (K ⧸ R.toAddSubgroup)) with hX`. Establish `hinj : Set.InjOn Prod.fst S`. Introduce and unpack `⟨x, z⟩ ⟨h1, h2⟩ ⟨x', z'⟩ ⟨h1', h2'⟩ hxx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `only at hxx h1 h2 h1' h2'`. Substitute `hxx` using the available equality. Establish `h3 : (z : K) ^ (m + 1) = (z' : K) ^ (m + 1)`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, h2, h2']`. Use `hb2 π hd hn hπ hπ' hs hk hz0 hk' h1 h1' h3` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.ext this]`. Establish `himg : Prod.fst '' S = X`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨x, z⟩, ⟨h1, h2⟩, rfl⟩`. Simplify using `only at h1 h2 ⊢`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb, h3⟩` from `hb1 π hπ hs hk hz0 hk' h1`. Take `⟨r, hr, rfl⟩` from `mem_mulR.1 hb`. Establish `h4 : (z : K) ^ (m + 1) = (T : K) * (cr x : K)`. Rewrite using `[← Units.val_pow_eq_pow_val, h2, Units.val_mul]`. Establish `h5 : (cr x : K) = c0 + (a : K) * r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc0]`. Take the linear combination `((T⁻¹ : Kˣ) : K) * (h3 - h4 - r * ha) + ((a : K) * r - (cr x : K)) * hTi`. Use `⟨(((a : K) * r : K) : K ⧸ R.toAddSubgroup), ⟨(a : K) * r, mem_mulR.2 ⟨r, hr, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ((c0 : K) : K ⧸ R.toAddSubgroup) + (((a : K) * r : K) : K ⧸ R.toAddSubgroup) = x`. Rewrite using `[← QuotientAddGroup.mk_add, ← h5]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcr x`. Introduce and unpack `_ ⟨_, ⟨l, hl, rfl⟩, rfl⟩`. Take `⟨r, hr, rfl⟩` from `mem_mulR.1 hl`. Use `set x : K ⧸ R.toAddSubgroup := ((c0 : K) : K ⧸ R.toAddSubgroup) + (QuotientAddGroup.mk' R.toAddSubgroup) ((a : K) * r) with hx`. Establish `h1 : ((cr x : K) : K ⧸ R.toAddSubgroup) = ((c0 + (a : K) * r : K) : K ⧸ R.toAddSubgroup)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hcr x, hx]`. Both sides reduce to the same expression. Establish `h2 : -(c0 + (a : K) * r) + (cr x : K) ∈ R.toAddSubgroup` using `(QuotientAddGroup.eq).1 h1.symm`. Take `⟨r', hr', hr2⟩ : ∃ r' ∈ R, r' = -(c0 + (a : K) * r) + (cr x : K)` from `⟨_, h2, rfl⟩`. Take `⟨ρ, hρ⟩ : ∃ ρ : K, ρ = r + ((a⁻¹ : Kˣ) : K) * r'` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρR : ρ ∈ R` using `by rw [hρ]; exact R.add_mem hr (R.mul_mem haR hr')`. Take `⟨z, hz, hz2⟩` from `hb3 π hd hn hπ hπ' hs hk hz0 hk' (mem_mulR.2 ⟨ρ, hρR, rfl⟩ : (π : K) ^ (k + 1 + k' + i) * ρ ∈ _)`. Establish `h3 : z ^ (m + 1) = (T : K) * (cr x : K)`. Rewrite using `[hz2, hρ]`. Establish `e1 : (cr x : K) = c0 + (a : K) * r + r'` using `by rw [hr2]; ring`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, hc0]`. Take the linear combination `(-(r + ((a⁻¹ : Kˣ) : K) * r')) * ha + (T : K) * r' * hai - z0 ^ (m + 1) * hTi`. Establish `hzu : IsUnit z`. Establish `: IsUnit (z ^ (m + 1))` using `by rw [h3]; exact (T * cr x).isUnit`. Conclude with `(isUnit_pow_iff (by omega)).1 this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨zu, rfl⟩` from `hzu`. Use `⟨(x, zu), ⟨hz, ?_⟩, rfl⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, h3, Units.val_mul]`. Establish `hcard : X.ncard = R.toAddSubgroup.relIndex (mulR R (a : K))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX, Set.ncard_image_of_injective _ (add_right_injective _), ← card_map_mk]`. Conclude with `(Nat.card_coe_set_eq _).symm`. Establish `hne : R.toAddSubgroup.relIndex (mulR R (a : K)) ≠ 0` using `A5x5.relIndex_ne_zero hd.isOpen (A5x5.lat_mulR hd.isOpen hd.isCompact a).cp`. Establish `hXfin : X.Finite` using `Set.finite_of_ncard_ne_zero (by rw [hcard]; exact hne)`. Use `⟨Set.Finite.of_finite_image (by rw [himg]; exact hXfin) hinj, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hinj.ncard_image, himg, hcard]`. Unfold `modK`. Rewrite using `[AddSubgroup.relIndex_eq_one.2 hle]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_count (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     (hπ : (π : K) ∈ R) (hπ' : ∀ x : K, ∃ m : ℕ, (π : K) ^ m * x ∈ R) {m k k' i : ℕ} {si z0 z0i : K}
@@ -681,9 +675,9 @@ theorem loc_count (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit
   simp
 
 /- English proof (translation)
-Establish `: DiscreteTopology (K ⧸ B)` using `QuotientAddGroup.discreteTopology hB`. Take `⟨T, hT⟩` from `hOm.elim_finite_subcover (fun w : K ⧸ B => {z : K | (z : K ⧸ B) = w}) (fun w => (isOpen_discrete ({w} : Set (K ⧸ B))).preimage continuous_quot_mk) (fun z _ => Set.mem_iUnion.2 ⟨(z : K ⧸ B), rfl⟩)`. Use `T.finite_toSet.subset ?_` and prove the remaining obligations. Introduce `w hw`. Take `⟨w', hw', h⟩` from `Set.mem_iUnion₂.1 (hT hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h : ((Quotient.out w : K) : K ⧸ B) = w'` using `h`. Rewrite `h` using `[QuotientAddGroup.out_eq']`. Rewrite using `[h]`. Conclude with `hw'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_cosets {B : AddSubgroup K} (hB : IsOpen (B : Set K)) {Om : Set K}
     (hOm : IsCompact Om) : {w : K ⧸ B | (Quotient.out w : K) ∈ Om}.Finite := by
@@ -700,7 +694,7 @@ theorem finite_cosets {B : AddSubgroup K} (hB : IsOpen (B : Set K)) {Om : Set K}
   exact hw'
 
 /- English proof (translation)
-Establish `h : ((Quotient.out ((z : K) : K ⧸ B) : K) : K ⧸ B) = ((z : K) : K ⧸ B)` using `QuotientAddGroup.out_eq' _`. Use `(QuotientAddGroup.eq).1 h.symm` as an intermediate fact. Rewrite `this` using `[neg_add_eq_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem out_sub_mem' {B : AddSubgroup K} (z : K) :
     (Quotient.out ((z : K) : K ⧸ B) : K) - z ∈ B := by
@@ -718,13 +712,13 @@ namespace Formalism.FourierDecayAlt.P
 open A6x9
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hd hn`. Take `⟨π, hπ, hπ'⟩` from `hd.unif`. Take `⟨u2, hu2⟩` from `hn 2 (by norm_num)`. Take `⟨k, hk⟩` from `hπ' ((u2⁻¹ : Kˣ) : K)`. Establish `hs : ((2 : ℕ) : K) * ((u2⁻¹ : Kˣ) : K) = 1` using `by rw [← hu2]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(fun x => ((u2⁻¹ : Kˣ) : K) * x) ⁻¹' (mulR R ((π : K) ^ (k + 1)) : Set K), ?_, ?_⟩` and prove the remaining obligations. Apply `(continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using J_nhds π hd (k + 1)`. Introduce `a ha`. Take `⟨l, -, hl⟩` from `root_exists π hd hn hπ hπ' hs hk ha`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : (1 + l) ^ 2 = (a : K)`. Rewrite using `[hl]`. Take the linear combination `((a : K) - 1) * hs`. Establish `hu : IsUnit (1 + l)`. Establish `: IsUnit ((1 + l) ^ 2)` using `by rw [e]; exact a.isUnit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(isUnit_pow_iff (by norm_num)).1 this`. Take `⟨b, hb⟩` from `hu`. Use `⟨b, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, hb, e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem square_near_unit : Formalism.FourierDecayAlt.A6.SquareNear := by
   intro K _ _ _ R ψ hd hn
@@ -747,39 +741,37 @@ theorem square_near_unit : Formalism.FourierDecayAlt.A6.SquareNear := by
     rw [Units.val_pow_eq_pow_val, hb, e]
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hd hn m Om Sg hOm`. Take `⟨π, hπ, hπ'⟩` from `hd.unif`. Take `⟨su, hsu⟩` from `hn (m + 1) (by omega)`. Take `⟨si, hsi⟩ : ∃ si : K, si = ((su⁻¹ : Kˣ) : K)` from `⟨_, rfl⟩`. Establish `hs : ((m + 1 : ℕ) : K) * si = 1` using `by rw [← hsu, hsi]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k1, hk1⟩` from `bdd_of_compact π hd hπ hπ' hOm`. Take `⟨k2, hk2⟩` from `bdd_of_compact π hd hπ hπ' Sg.finite_toSet.isCompact`. Take `⟨k3, hk3⟩` from `hπ' si`. Take `⟨k, hk⟩ : ∃ k, k = k1 + k2 + k3` from `⟨_, rfl⟩`. Establish `hkz : ∀ z ∈ Om, (π : K) ^ k * z ∈ R` using `fun z hz => pow_mem_mono π hπ (by omega) (hk1 z hz)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkσ : ∀ σ ∈ Sg, (π : K) ^ k * σ ∈ R` using `fun σ hσ => pow_mem_mono π hπ (by omega) (hk2 σ (by simpa using hσ))`. Establish `hks : (π : K) ^ k * si ∈ R` using `pow_mem_mono π hπ (by omega) hk3`. Use `⟨_, J_nhds π hd (k + 1), _, J_nhds π hd (5 * k + 1), ?_⟩` and prove the remaining obligations. Introduce `t t₁ t₂ κ ht σ hσ σ' hσ' h1 h2 hκ hκE z hz`. Unfold `IsShift at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Take `⟨r, hr, htr⟩` from `mem_mulR.1 ht`. Take `⟨X1, hX1⟩ : ∃ X : K, X = ((t₁⁻¹ : Kˣ) : K)` from `⟨_, rfl⟩`. Take `⟨X2, hX2⟩ : ∃ X : K, X = ((t₂⁻¹ : Kˣ) : K)` from `⟨_, rfl⟩`. Take `⟨x, hx⟩ : ∃ X : K, X = ((t⁻¹ : Kˣ) : K)` from `⟨_, rfl⟩`. Take `⟨ε, hε⟩ : ∃ X : K, X = (κ : K) - 1` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hdd⟩ : ∃ X : K, X = σ - σ'` from `⟨_, rfl⟩`. Take `⟨δ, hδ⟩ : ∃ X : K, X = d * (t₂ : K)` from `⟨_, rfl⟩`. Establish `hκ' : (κ : K) = 1 + ε` using `by rw [hε]; ring`. Establish `hB : (t₂ : K) * X2 = 1` using `by rw [hX2]; simp`. Establish `hD : (t : K) * x = 1` using `by rw [hx]; simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hX1, ← hx]`. Rewrite `h2` using `[← hX2, ← hx]`. Establish `hkd : (π : K) ^ k * d ∈ R`. Rewrite using `[hdd, mul_sub]`. Conclude with `R.sub_mem (hkσ σ hσ) (hkσ σ' hσ')`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : σ' * (t : K) ∈ mulR R ((π : K) ^ 1)` using `mem_mulR.2 ⟨(π : K) ^ (4 * k) * ((π : K) ^ k * σ') * r, R.mul_mem (R.mul_mem (R.pow_mem hπ _) (hkσ σ' hσ')) hr, by rw [← htr]; ring⟩`. Take `⟨u, huR, hu⟩` from `one_add_unit π hd hn hπ hπ' _ ha`. Establish `ht2 : (t₂ : K) = (t : K) * u`. Take the linear combination `(-(t₂ : K)) * hu + u * (-(t₂ : K) * hD - (t : K) * (t₂ : K) * h2 + (t : K) * hB)`. Establish `hδ3 : δ = (π : K) ^ (5 * k + 1) * (d * r * u)` using `by rw [hδ, ht2, ← htr]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδR : δ ∈ R`. Establish `: δ = (π : K) ^ (4 * k + 1) * ((π : K) ^ k * d) * r * u` using `by rw [hδ3]; ring`. Rewrite using `[this]`. Conclude with `R.mul_mem (R.mul_mem (R.mul_mem (R.pow_mem hπ _) hkd) hr) huR`. Establish `hεR : ε ∈ R` using `by rw [hε]; exact J_sub_R π hπ hκE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (1 + ε) ^ (m + 1) = (1 + δ) ^ m`. Establish `h3` using `congrArg Units.val hκ`. Rewrite `h3` using `[Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, Units.val_mul, ← hX1, hκ']`. Rewrite using `[h3]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(t₂ : K) * h1 - (t₂ : K) * h2 + hB - hδ - (t₂ : K) * hdd`. Take `⟨p, hp, hp2⟩` from `binom2 (m + 1) hεR`. Take `⟨q, hq, hq2⟩` from `binom2 m hδR`. Establish `hE1 : 1 + ((m + 1 : ℕ) : K) * ε + ε ^ 2 * p = 1 + (m : K) * δ + δ ^ 2 * q`. Rewrite using `[← hp2, ← hq2, hpow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : si * ε * p ∈ mulR R ((π : K) ^ 1)`. Rewrite using `[hε]`. Take `⟨r', hr', hr2⟩` from `mem_mulR.1 hκE`. Conclude with `mem_mulR.2 ⟨(π : K) ^ k * si * r' * p, R.mul_mem (R.mul_mem hks hr') hp, by`. Rewrite using `[← hr2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `ring⟩`. Take `⟨w, hwR, hw⟩` from `one_add_unit π hd hn hπ hπ' _ ha'`. Take `⟨g, hg⟩ : ∃ g : K, g = w * ((m : K) + δ * q)` from `⟨_, rfl⟩`. Establish `hgR : g ∈ R`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `R.mul_mem hwR (R.add_mem (natCast_mem R m) (R.mul_mem hδR hq))`. Establish `hεg : ε = δ * si * g`. Rewrite using `[hg]`. Take the linear combination `(-ε) * hw + w * (si * hE1 - ε * hs)`. Establish `hd1 : X1 - X2 = d` using `by linear_combination h1 - h2 - hdd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hδ2 : δ * X2 = d` using `by linear_combination X2 * hδ + d * hB`. Establish `hT : ((m + 1 : ℕ) : K) * z * X1 - ((m + 1 : ℕ) : K) * ((κ : K) * z) * X2 - z * d = z * d * δ * (si ^ 2 * g ^ 2 * p - q)`. Establish `e1 : ((m + 1 : ℕ) : K) * z * X1 - ((m + 1 : ℕ) : K) * ((κ : K) * z) * X2 - z * d = z * X2 * ((m : K) * δ - ((m + 1 : ℕ) : K) * ε)`. Rewrite using `[hκ']`. Use `push_cast`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `((m : K) + 1) * z * hd1 - (m : K) * z * hδ2`. Establish `e2 : (m : K) * δ - ((m + 1 : ℕ) : K) * ε = ε ^ 2 * p - δ ^ 2 * q`. Take the linear combination `-hE1`. Rewrite using `[e1, e2]`. Establish `e3 : ε ^ 2 = δ ^ 2 * si ^ 2 * g ^ 2` using `by rw [hεg]; ring`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Take the linear combination `z * δ * (si ^ 2 * g ^ 2 * p - q) * hδ2`. Rewrite using `[← hX1, ← hX2, ← hdd, hT]`. Establish `hfin : z * d * δ * (si ^ 2 * g ^ 2 * p - q) = (π : K) * (((π : K) ^ k * z) * ((π : K) ^ k * d) ^ 2 * ((π : K) ^ k * si) ^ 2 * r * u * g ^ 2 * p) - (π : K) ^ (2 * k + 1) * (((π : K) ^ k * z) * ((π : K) ^ k * d) ^ 2 * r * u * q)`. Rewrite using `[hδ3]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfin]`. Establish `hZ` using `hkz z hz`. Conclude with `R.sub_mem (R.mul_mem hπ (R.mul_mem (R.mul_mem (R.mul_mem (R.mul_mem (R.mul_mem (R.mul_mem hZ (R.pow_mem hkd 2)) (R.pow_mem hks 2)) hr) huR) (R.pow_mem hgR 2)) hp)) (R.mul_mem (R.pow_mem hπ _) (R.mul_mem (R.mul_mem (R.mul_mem (R.mul_mem hZ (R.pow_mem hkd 2)) hr) huR) hq))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phase_difference_estimate : Formalism.FourierDecayAlt.A6.PhaseDiff := by
   intro K _ _ _ R ψ hd hn m Om Sg hOm
@@ -877,69 +869,65 @@ theorem phase_difference_estimate : Formalism.FourierDecayAlt.A6.PhaseDiff := by
       (R.pow_mem hkd 2)) hr) huR) hq))
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hd hn m hm Om Λ hOm hΛ hst hmod`. Take `⟨hOo, hOc, hOu, hOζ⟩` from `hOm`. Take `⟨π, hπ, hπ'⟩` from `hd.unif`. Take `⟨su, hsu⟩` from `hn (m + 1) (by omega)`. Take `⟨si, hsi⟩ : ∃ si : K, si = ((su⁻¹ : Kˣ) : K)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs : ((m + 1 : ℕ) : K) * si = 1` using `by rw [← hsu, hsi]; simp`. Take `⟨k, hk⟩` from `hπ' si`. Take `⟨k', hk'⟩` from `inv_bdd π hd hn hπ hπ' hOc hOu`. Take `⟨i, hi⟩` from `nhds_basis π hd hn hπ hπ' (Λ : Set K) (hΛ.1.mem_nhds Λ.zero_mem)`. Take `⟨j, hj⟩ : ∃ j, j = k + 1 + k' + i` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hBΛ : mulR R ((π : K) ^ j) ≤ Λ` using `fun x hx => hi (J_anti π hπ (by omega) hx)`. Take `⟨m', hm'⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Use `⟨_, J_nhds π hd (j + k + k'), ?_⟩` and prove the remaining obligations. Introduce `t cr f ht hcr hf`. Take `⟨r, hr, htr⟩` from `mem_mulR.1 ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩ : ∃ T : Kˣ, T = (-t) ^ m` from `⟨_, rfl⟩`. Establish `hTv : (T : K) = (-(t : K)) ^ m` using `by rw [hT]; simp`. Simplify using `only [← hT]`. Establish `hloc : ∀ z0 ∈ Om, {p : (K ⧸ R.toAddSubgroup) × Kˣ | (p.2 : K) - z0 ∈ mulR R ((π : K) ^ j) ∧ p.2 ^ (m + 1) = T * cr p.1}.Finite ∧ ({p : (K ⧸ R.toAddSubgroup) × Kˣ | (p.2 : K) - z0 ∈ mulR R ((π : K) ^ j) ∧ p.2 ^ (m + 1) = T * cr p.1}.ncard : ℝ) = (modK R (t : K) ^ m)⁻¹ * modK R ((m …`. Introduce `z0 hz0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨zu, rfl⟩` from `hOu z0 hz0`. Establish `hzi : (zu : K) * ((zu⁻¹ : Kˣ) : K) = 1` using `by simp`. Establish `hTi : ((T⁻¹ : Kˣ) : K) * (T : K) = 1` using `by simp`. Establish `hav : ((T⁻¹ * su * zu ^ m * π ^ j : Kˣ) : K) = ((T⁻¹ : Kˣ) : K) * ((m + 1 : ℕ) : K) * (zu : K) ^ m * (π : K) ^ j`. Simplify using `[hsu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `loc_count π hd hn hπ hπ' (i := i) hs hk hzi (hk' _ hz0 _ hzi) T cr hcr (T⁻¹ * su * zu ^ m * π ^ j) (by rw [hav, ← hj]; linear_combination ((m + 1 : ℕ) : K) * (zu : K) ^ m * (π : K) ^ j * hTi) (by`. Establish `hE : ((T⁻¹ * su * zu ^ m * π ^ j : Kˣ) : K) * ((-r) ^ m * (π : K) ^ ((j + k) * m') * ((π : K) ^ k * si) * ((π : K) ^ k' * ((zu⁻¹ : Kˣ) : K)) ^ m) = 1`. Establish `hT2 : (T : K) = (-r) ^ m * (π : K) ^ (j + (j + k) * m' + k + k' * m)`. Rewrite using `[hTv, ← htr, hm']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : ((T⁻¹ * su * zu ^ m * π ^ j : Kˣ) : K) * ((-r) ^ m * (π : K) ^ ((j + k) * m') * ((π : K) ^ k * si) * ((π : K) ^ k' * ((zu⁻¹ : Kˣ) : K)) ^ m) = (((T⁻¹ : Kˣ) : K) * ((-r) ^ m * (π : K) ^ (j + (j + k) * m' + k + k' * m))) * (((m + 1 : ℕ) : K) * si) * ((zu : K) * ((zu⁻¹ : Kˣ) : K …`. Rewrite using `[hav]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← hT2, hTi, hs, hzi]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.inv_eq_of_mul_eq_one_right hE]`. Conclude with `R.mul_mem (R.mul_mem (R.mul_mem (R.pow_mem (R.neg_mem hr) _) (R.pow_mem hπ _)) hk) (R.pow_mem (hk' _ hz0 _ hzi) _))`. Rewrite `h1` using `[← hj]`. Use `⟨h1.1, ?_⟩` and prove the remaining obligations. Rewrite using `[h1.2, hav]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `u1 : IsUnit (((T⁻¹ : Kˣ) : K))` using `Units.isUnit _`. Establish `u2 : IsUnit (((m + 1 : ℕ) : K))` using `hn _ (by omega)`. Establish `u3 : IsUnit ((zu : K) ^ m)` using `zu.isUnit.pow m`. Establish `u4 : IsUnit ((π : K) ^ j)` using `π.isUnit.pow j`. Rewrite using `[A5x5.modK_mul' hd ((u1.mul u2).mul u3) u4, A5x5.modK_mul' hd (u1.mul u2) u3, A5x5.modK_mul' hd u1 u2, modK_pow hd zu.isUnit]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 3`. Establish `h2 : modK R ((T⁻¹ : Kˣ) : K) * modK R (T : K) = 1`. Rewrite using `[← A5x5.modK_mul' hd u1 T.isUnit, hTi, A5x5.modK_one]`. Rewrite `h2` using `[hTv, modK_pow hd t.isUnit.neg, A5x5.modK_neg]`. Conclude with `eq_inv_of_mul_eq_one_left h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨B, hB⟩ : ∃ B : AddSubgroup K, B = mulR R ((π : K) ^ j)` from `⟨_, rfl⟩`. Rewrite `hBΛ` using `[← hB]`. Simplify using `only [← hB] at hloc`. Establish `hBlat : IsLat B` using `by rw [hB]; exact ⟨(lat_J π hd j).op, (lat_J π hd j).cp⟩`. Establish `hW` using `finite_cosets hBlat.1 hOc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set W : Set (K ⧸ B) := {w | (Quotient.out w : K) ∈ Om} with hWdef`. Use `set S : Set ((K ⧸ R.toAddSubgroup) × Kˣ) := {p | (p.2 : K) ∈ Om ∧ p.2 ^ (m + 1) = T * cr p.1} with hSdef`. Establish `hq : ∀ p ∈ S, (((p.2 : Kˣ) : K) : K ⧸ B) ∈ W`. Introduce `p hp`. Establish `h1` using `hst _ hp.1 _ (hBΛ (out_sub_mem' (B := B) (p.2 : K)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (p.2 : K) + ((Quotient.out (((p.2 : Kˣ) : K) : K ⧸ B) : K) - (p.2 : K)) = (Quotient.out (((p.2 : Kˣ) : K) : K ⧸ B) : K)` using `by ring`. Rewrite `h1` using `[e]`. Conclude with `h1`. Establish `hfib : ∀ w ∈ W, ∀ p : (K ⧸ R.toAddSubgroup) × Kˣ, (p ∈ S ∧ (((p.2 : Kˣ) : K) : K ⧸ B) = w) ↔ ((p.2 : K) - (Quotient.out w : K) ∈ B ∧ p.2 ^ (m + 1) = T * cr p.1)`. Introduce `w hw p`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Use `out_sub_mem' (B := B) (p.2 : K)` as an intermediate fact. Rewrite `this` using `[h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4` using `B.neg_mem this`. Rewrite `h4` using `[neg_sub]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨?_, h2⟩, ?_⟩` and prove the remaining obligations. Use `hst _ hw _ (hBΛ h1)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[← QuotientAddGroup.out_eq' w]`. Apply `(QuotientAddGroup.eq).2` to reduce the goal to its premises. Establish `h4` using `B.neg_mem h1`. Rewrite `h4` using `[neg_sub, sub_eq_neg_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h4`. Establish `hSfin : S.Finite`. Use `(hW.biUnion (fun w hw => (hloc _ hw).1)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `Set.mem_biUnion (hq p hp) ((hfib _ (hq p hp) p).1 ⟨hp, rfl⟩)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Establish `step1 : ∀ x : K ⧸ R.toAddSubgroup, (if (cr x : K) ∈ cutSet m Om t then ∑ᶠ z : Kˣ, if z ^ (m + 1) = T * cr x then f (z : K) else 0 else 0) = ∑ᶠ z : Kˣ, (fun p : (K ⧸ R.toAddSubgroup) × Kˣ => if p ∈ S then f (p.2 : K) else 0) (x, z)`. Introduce `x`. Distinguish the cases in `hc : (cr x : K) ∈ cutSet m Om t`. Rewrite using `[if_pos hc]`. Use `finsum_congr fun z => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, h⟩` and prove the remaining obligations. Take `⟨z0, hz0, h0⟩` from `hc`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨zu, rfl⟩` from `hOu z0 hz0`. Establish `h1 : zu ^ (m + 1) = T * cr x`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, h0, Units.val_mul, hTv]`. Establish `h2 : (z * zu⁻¹) ^ (m + 1) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[mul_pow, inv_pow, h, h1, mul_inv_cancel]`. Establish `h3` using `hOζ _ hz0 ((z * zu⁻¹ : Kˣ) : K) (by`. Rewrite using `[← Units.val_pow_eq_pow_val, h2, Units.val_one])`. Rewrite `h3` using `[← Units.val_mul, inv_mul_cancel_right]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `fun h => h.2`. Rewrite using `[if_neg hc]`. Use `symm`. Use `finsum_eq_zero_of_forall_eq_zero fun z => if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `hc ⟨_, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, h2, Units.val_mul, hTv]`. Establish `hsupp : Function.support (fun p : (K ⧸ R.toAddSubgroup) × Kˣ => if p ∈ S then f (p.2 : K) else 0) ⊆ (hSfin.toFinset : Set _)`. Introduce `p hp`. Rewrite using `[Set.Finite.coe_toFinset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hp (if_neg h)`. Rewrite using `[finsum_congr step1, ← finsum_curry _ (hSfin.toFinset.finite_toSet.subset hsupp), finsum_eq_sum_of_support_subset _ hsupp, ← Finset.sum_fiberwise_of_maps_to (t := hW.toFinset) (g := fun p : (K ⧸ R.toAddSubgroup) × Kˣ => (((p.2 : Kˣ) : K) : K ⧸ B)) (fun p hp => by`. Rewrite `hp`, the goal using `[Set.Finite.mem_toFinset]`. Conclude with `hq p hp)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hG : LatInv Λ Om (fun z => ((modK R z ^ m : ℝ) : ℂ) * f z)`. Introduce `z hz l hl`. Simplify using `only []`. Rewrite using `[hmod z hz l hl, hf z hz l hl]`. Rewrite using `[← integral_lattice_refinement_identity K R ψ hd Λ B Om _ hΛ hBlat hBΛ hOc hst hG]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `intLat`. Establish `hsupp2 : Function.support (fun y : K ⧸ B => if (Quotient.out y : K) ∈ Om then ((modK R (Quotient.out y : K) ^ m : ℝ) : ℂ) * f (Quotient.out y : K) else 0) ⊆ (hW.toFinset : Set _)`. Introduce `y hy`. Rewrite using `[Set.Finite.coe_toFinset]`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy (if_neg h)`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp2, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Establish `hw : (Quotient.out w : K) ∈ Om` using `hw`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[if_pos hw]`. Establish `hset : ((hSfin.toFinset.filter (fun p : (K ⧸ R.toAddSubgroup) × Kˣ => (((p.2 : Kˣ) : K) : K ⧸ B) = w) : Finset _) : Set _) = {p : (K ⧸ R.toAddSubgroup) × Kˣ | (p.2 : K) - (Quotient.out w : K) ∈ B ∧ p.2 ^ (m + 1) = T * cr p.1}`. Use extensionality with `p`. Simplify using `only [Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`. Conclude with `hfib w hw p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hconst : ∀ p ∈ hSfin.toFinset.filter (fun p : (K ⧸ R.toAddSubgroup) × Kˣ => (((p.2 : Kˣ) : K) : K ⧸ B) = w), (if p ∈ S then f (p.2 : K) else 0) = f (Quotient.out w : K)`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Rewrite using `[if_pos hp.1]`. Establish `h1` using `((hfib w hw p).1 hp).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2` using `hf _ hw _ (hBΛ h1)`. Rewrite `h2` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[Finset.sum_congr rfl hconst, Finset.sum_const, nsmul_eq_mul, ← Set.ncard_coe_finset, hset]`. Establish `h3` using `(hloc _ hw).2`. Establish `h4 : (({p : (K ⧸ R.toAddSubgroup) × Kˣ | (p.2 : K) - (Quotient.out w : K) ∈ B ∧ p.2 ^ (m + 1) = T * cr p.1}.ncard : ℕ) : ℂ) = (((modK R (t : K) ^ m)⁻¹ * modK R ((m + 1 : ℕ) : K) * modK R (Quotient.out w : K) ^ m * modK R ((π : K) ^ j) : ℝ) : ℂ)`.
-
-Rewrite using `[← h3]`. Simplify using the standard rewrite rules. Rewrite using `[h4]`. Establish `h5 : volL R B = modK R ((π : K) ^ j)` using `by rw [hB]; rfl`. Rewrite using `[h5]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem padic_change_of_variables : Formalism.FourierDecayAlt.A6.ChangeVar := by
   classical
@@ -1142,7 +1130,7 @@ theorem padic_change_of_variables : Formalism.FourierDecayAlt.A6.ChangeVar := by
   ring
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hd h m t`. Unfold `cSize`. Rewrite using `[A5x5.modK_det_pt, A5x5.modK_det_pt, A5x5.prod_addBlock, A5x5.modK_mul' hd (A5x5.isUnit_prod _) (t.isUnit.pow m), modK_pow hd t.isUnit, mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem head_size_add_block : Formalism.FourierDecayAlt.A6.CSizeAddBlock := by
   intro K _ _ _ R ψ hd h m t
@@ -1151,13 +1139,13 @@ theorem head_size_add_block : Formalism.FourierDecayAlt.A6.CSizeAddBlock := by
     A5x5.modK_mul' hd (A5x5.isUnit_prod _) (t.isUnit.pow m), modK_pow hd t.isUnit, mul_inv]
 
 /- English proof (translation)
-Introduce `hP hC hM K _ _ _ R ψ hD m h h' t t' cr hs hcr`. Establish `hsz : (addBlock h m t).1.sum = (addBlock h' m t').1.sum`. Simplify using `[addBlock, hs]`. Take `⟨_, h2⟩` from `hP K R ψ hD (addBlock h m t) (addBlock h' m t') hsz cr hcr`. Establish `e1 : ∀ x, Ns R ψ 1 (addBlock h m t) (addBlock h' m t') (cr x) (cr x) = Kp R ψ (pt2 h m t (cr x)) (pt2 h' m t' (cr x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[Ns, pt2]`. Simplify using `only [e1] at h2`. Unfold `uGram`. Simplify using `only [Set.mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, hC K R ψ hD h m t, hC K R ψ hD h' m t']`. Unfold `Ns N0`. Take `⟨ha, hab⟩` from `hM K R ψ hD t t'`. Take `⟨hb, _⟩` from `hM K R ψ hD t' t`. Rewrite using `[nat_tri m, hab]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : (modK R (t : K)) ≠ 0` using `ne_of_gt ha`. Establish `hb' : (modK R (t' : K)) ≠ 0` using `ne_of_gt hb`. Use `push_cast`. Establish `ha'' : ((modK R (t : K) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ha'`. Establish `hb'' : ((modK R (t' : K) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/

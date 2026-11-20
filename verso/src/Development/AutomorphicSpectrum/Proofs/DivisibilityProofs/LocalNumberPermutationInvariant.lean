@@ -12,7 +12,7 @@ open NumberField
 namespace GlobalTheory.CompanionTheory.Ar.Num.RootPerm
 
 /- English proof (translation)
-Unfold `classList`. Rewrite using `[← Finsupp.toMultiset_map, Multiset.map_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem classList_mapDomain {K σ τ : Type} (cls : τ → K → ℤ) (e : σ → τ) (μ : σ →₀ ℕ) :
     classList cls (Finsupp.mapDomain e μ) = classList (cls ∘ e) μ := by
@@ -20,7 +20,7 @@ theorem classList_mapDomain {K σ τ : Type} (cls : τ → K → ℤ) (e : σ �
   rw [← Finsupp.toMultiset_map, Multiset.map_map]
 
 /- English proof (translation)
-Unfold `classNum`. Rewrite using `[support_rename_of_injective he, Finset.sum_image fun a _ b _ h => Finsupp.mapDomain_injective he h]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain e he, classList_mapDomain]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem classNum_rename {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {σ τ : Type} (cls : τ → K → ℤ) (e : σ → τ) (he : Function.Injective e)
@@ -34,18 +34,18 @@ theorem classNum_rename {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} 
   rw [coeff_rename_mapDomain e he, classList_mapDomain]
 
 /- English proof (translation)
-Simplify using `[psumExpansion, map_sum, rename_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_psumExpansion {r : ℕ} (e : Equiv.Perm (Fin r)) (k : ℕ) (i : Fin r) :
     rename (Sum.map e e) (psumExpansion r k i) = psumExpansion r k (e i) := by
   simp [psumExpansion, map_sum, rename_X]
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ r e P k Q`. Use `⟨fun a x => ?_, fun T => ?_⟩` and prove the remaining obligations. Establish `h : ∀ W : Ideal (MRing ι O), classNum (x ∘ e) (psum (Fin r) ℤ (k - 1)) Q W = classNum x (psum (Fin r) ℤ (k - 1)) Q W` using `fun W => by`. Rewrite using `[← classNum_rename x e e.injective, rename_psum]`. Simplify using `only [laNum, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h : ∀ (i : Fin r) (W : Ideal (MRing ι O)), classNum (Sum.elim (T.x ∘ e) (T.x' ∘ e)) (psumExpansion r k i) Q W = classNum (Sum.elim T.x T.x') (psumExpansion r k (e i)) Q W` using `fun i W => by`. Establish `hc : Sum.elim T.x T.x' ∘ Sum.map e e = Sum.elim (T.x ∘ e) (T.x' ∘ e)`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with s | s <;> rfl`. Rewrite using `[← rename_psumExpansion, classNum_rename _ _ (Sum.map_injective.mpr ⟨e.injective, e.injective⟩), hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LocPair.ck, pairNum, LocPair.comp, Function.comp_apply, h]`. Conclude with `Equiv.sum_comp e fun j => cycEval (fun W => classNum (Sum.elim T.x T.x') (psumExpansion r k j) Q W) (ratDiv P (T.f j) (T.g j))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem root_perm : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (r : ℕ) (e : Equiv.Perm (Fin r)) (P : Ideal (MRing ι O)) (k : ℕ) (Q : List (K → ℤ)), (∀ (a : O) (x : Fin r → K → ℤ), laNum P a (x ∘ e) k Q = laNum P a x k Q) ∧ ∀ T : LocPair ι O (Fin r), (T.comp e).ck P k Q = T.ck P k Q := by
   intro O _ _ _ K _ _ ι _ r e P k Q

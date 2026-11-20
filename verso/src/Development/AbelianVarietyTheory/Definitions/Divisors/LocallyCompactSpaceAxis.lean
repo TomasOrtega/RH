@@ -59,7 +59,7 @@ structure IsFlow (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {
   comm : ∀ t, ∀ m ∈ GlobalTheory.StdPar.levi σ J X Y {0}, a t * m = m * a t
 
 /- English proof (translation)
-Simplify using `[Scales]`.
+Simplify using the standard rewrite rules.
 -/
 example (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin n) (Fin 1) E) : Scales σ J x 1 1 := by
   simp [Scales]
@@ -71,7 +71,7 @@ structure IsHt {G : Type} [Group G] [TopologicalSpace G] (K : Subgroup G) (h : G
   iw : ∀ g, ∃ k ∈ K, ∀ x, h (g * x) = h g * h (k * x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => one_pos, continuous_const, fun _ _ => rfl, fun _ => ⟨1, one_mem _, fun _ => (one_mul _).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 example {G : Type} [Group G] [TopologicalSpace G] (K : Subgroup G) : IsHt K fun _ => 1 :=
   ⟨fun _ => one_pos, continuous_const, fun _ _ => rfl, fun _ => ⟨1, one_mem _, fun _ => (one_mul _).symm⟩⟩
@@ -106,7 +106,7 @@ variable {σ : E →ₐ[F] E}
   {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin (r + 1)) E}
 
 /- English proof (translation)
-Take `⟨h1, h, h2⟩` from `GlobalTheory.IwLine.iwasawa_line F E σ hc hu n J hJ r X Y hW _ rfl L a hA`. Conclude with `⟨h, hc, hu, hJ, hW, hA, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_data (hc : IsCMExt F E σ) (hu : Algebra.Unramified (𝓞 F) (𝓞 E)) (hJ : IsHermND σ J)
     (hW : IsWittFrame σ J X Y) {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗[F] E)}
@@ -115,7 +115,7 @@ theorem exists_data (hc : IsCMExt F E σ) (hu : Algebra.Unramified (𝓞 F) (�
   exact ⟨h, hc, hu, hJ, hW, hA, h1, h2⟩
 
 /- English proof (translation)
-Take `⟨F, E, _, _, _, _, _, σ, J, X, Y, L, a, hc, hu, hJ, hW, hA⟩` from `GlobalTheory.EisLineModel.data_inhabited`. Take `⟨h, H⟩` from `exists_data hc hu hJ hW hA`. Conclude with `⟨F, E, _, _, _, _, _, σ, J, X, Y, L, a, h, H⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem data_inhabited : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ : Field E) (_ : NumberField E) (_ : Algebra F E)
     (σ : E →ₐ[F] E) (J : Matrix (Fin 2) (Fin 2) E) (X Y : Matrix (Fin 2) (Fin (0 + 1)) E) (L : Submodule (𝓞 E) (Fin 2 → E))
@@ -125,14 +125,14 @@ theorem data_inhabited : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ :
   exact ⟨F, E, _, _, _, _, _, σ, J, X, Y, L, a, h, H⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EisResLineModel.exists_reps x`.
+A detailed English derivation is pending.
 -/
 theorem exists_isReps (x : Matrix (Fin n) (Fin 1) E) : ∃ T, IsReps σ J x T := GlobalTheory.EisResLineModel.exists_reps x
 
 omit [NumberField E] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun h i) 0` as an intermediate fact. Rewrite `this` using `[mul_diagonal]`. Simplify `this` using `[Matrix.mul_apply, ResLine.col, mul_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scales_of_diag {C : Matrix (Fin n) (Fin (r + 1)) E} {p : GAd σ J} {l : Fin (r + 1) → (AF F ⊗[F] E)ˣ}
     (h : (matHom _ σ J p).1 * adMat F C = adMat F C * diagonal (fun k => ((l k : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E))) :
@@ -143,15 +143,13 @@ theorem scales_of_diag {C : Matrix (Fin n) (Fin (r + 1)) E} {p : GAd σ J} {l : 
   simpa [Matrix.mul_apply, ResLine.col, mul_comm] using this
 
 /- English proof (translation)
-Take `⟨t, htc, ht⟩` from `GlobalTheory.IdTorus.exists_continuous_isIdTorusElt hc hJ hW`. Establish `hd : (2 * (Module.finrank ℚ F : ℝ)) ≠ 0`. Use `Module.finrank_pos (R := ℚ) (M := F)` as an intermediate fact. Check the signs of the components of the expression. Set `l : ℝ → Fin (r + 1) → (AF F ⊗[F] E)ˣ` to `fun s => Pi.mulSingle 0 (archUnit F E (s / (2 * Module.finrank ℚ F)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Introduce a local definition for the expression.
 
-Establish `l0 : ∀ s, (absE F E (l s 0) : ℝ) = Real.exp s` using `fun s => by`. Simplify using `only [l, Pi.mulSingle_eq_same]`. Rewrite using `[GlobalTheory.HeckeAbsArch.absE_archUnit hc, mul_div_cancel₀ _ hd]`. Establish `cl` using `fun s => GlobalTheory.IdTorusCent.centre_levi hc hJ hW (S := {0}) (by`. Introduce `k hk i hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hk`, the goal using `[Finset.mem_singleton]`. Substitute `hk` using the available equality. Conclude with `le_antisymm hi (Fin.zero_le _))`. Use the proof step `(l := l s) (fun k hk => Pi.mulSingle_eq_of_ne (by simpa using hk) _) (ht (l s))`. Use `⟨fun s => t (l s), htc.comp ((continuous_mulSingle 0).comp (GlobalTheory.HeckeAbsArch.continuous_archUnit.comp (continuous_id.div_const _))), fun s s' => ?_, fun s => ⟨_, scales_of_diag (ht (l s)).1, l0 s⟩, fun s => ⟨_, scales_of_diag (l := fun k => (conjUnit σ (l s k))⁻¹) (ht (l …` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.IdTorus.isIdTorusElt_uniq hc hJ hW (ht _) ?_` and prove the remaining obligations. Establish `: l (s + s') = l s * l s'`. Simplify using `only [l]`. Rewrite using `[add_div, GlobalTheory.HeckeAbsArch.archUnit_add, Pi.mulSingle_mul]`. Rewrite using `[this]`.
-
-Conclude with `GlobalTheory.IdTorus.isIdTorusElt_mul (ht _) (ht _)`. Rewrite using `[map_inv, GlobalTheory.Doubling.absE_conjUnit, NNReal.coe_inv, l0, Real.exp_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isFlow (hc : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) : ∃ a, IsFlow σ J X Y a := by
   obtain ⟨t, htc, ht⟩ := GlobalTheory.IdTorus.exists_continuous_isIdTorusElt hc hJ hW
@@ -175,7 +173,7 @@ theorem exists_isFlow (hc : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFra
   · rw [map_inv, GlobalTheory.Doubling.absE_conjUnit, NNReal.coe_inv, l0, Real.exp_neg]
 
 /- English proof (translation)
-Take `⟨l, h1, h2⟩` from `hc.onX t`. Simplify `H.ht _ l h1 1 (one_mem _)` using `[h2]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ht_flow {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗[F] E)} {h : GAd σ J → ℝ}
     (H : Data σ J X Y L a h) {c : ℝ → GAd σ J} (hc : IsFlow σ J X Y c) (t : ℝ) : h (c t) = Real.exp t := by
@@ -183,21 +181,21 @@ theorem ht_flow {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗
   simpa [h2] using H.ht _ l h1 1 (one_mem _)
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.StdPar.ring_facts (F := F) (E := E)`. Use `haveI := H.adapted.lat`. Establish `hyx : cT (σ : E →+* E) (ResLine.col Y) * J * ResLine.col X = 1`. Use extensionality with `i j`. Use `congrFun (congrFun (GlobalTheory.StdPar.yx H.cm H.herm H.witt) 0) 0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify `this` using `[cT, ResLine.col, Matrix.mul_apply]`. Set `φ : GAd σ J → AF F ⊗[F] E` to `fun p => (adMat F (cT (σ : E →+* E) (ResLine.col Y) * J) * ((matHom _ σ J p).1 * adMat F (ResLine.col X))) 0 0`. Establish `hφ : ∀ p l, Scales σ J (ResLine.col X) p l → φ p = l` using `fun p l e => by`. Unfold `Scales at e`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, e, Matrix.mul_smul, adMat, ← Matrix.map_mul, hyx]`. Simplify using the standard rewrite rules. Establish `cφ : Continuous φ` using `(continuous_const.matrix_mul (GlobalTheory.StdPar.continuous_mat.matrix_mul continuous_const)).matrix_elem 0 0`. Establish `hinv : ∀ p l, Scales σ J (ResLine.col X) p l → Scales σ J (ResLine.col X) p⁻¹ l⁻¹` using `fun p l e => by`. Unfold `Scales at *`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv]`. Conclude with `GlobalTheory.IwLine.inv_mul_eq_smul _ _ _ e`. Establish `hmul : ∀ p l q m, Scales σ J (ResLine.col X) p l → Scales σ J (ResLine.col X) q m → Scales σ J (ResLine.col X) (p * q) (l * m)` using `fun p l q m e e' => by`. Unfold `Scales at *`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e', Matrix.mul_smul, e, smul_smul, Units.val_mul, mul_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `eP : lineGrp σ J (ResLine.col X) = GlobalTheory.StdPar.frameStab σ J (ResLine.col X) ⊤`. Use extensionality with `p`. Use `⟨fun ⟨l, e⟩ => ⟨Units.map (Matrix.scalar (Fin 1)).toMonoidHom l, trivial, e.trans ?_⟩, fun ⟨B, _, e⟩ => ⟨Matrix.GeneralLinearGroup.det B, e.trans ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, mul_comm, Subsingleton.elim j 0]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, mul_comm, Subsingleton.elim j 0]`. Establish `cP : IsClosed (lineGrp σ J (ResLine.col X) : Set (GAd σ J))`. Rewrite using `[eP]`. Conclude with `GlobalTheory.StdPar.isClosed_frameStab hyx isClosed_univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨(GlobalTheory.EisLineModel.pos H.iwa H.ht).1, ?_, fun k hk => by simpa using H.ht 1 1 (by simp [Scales]) k hk, fun g => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.Doubling.continuous_of_prod cP (GlobalTheory.Doubling.isCompact_levelAll H.cm _ _ _) (fun g => let ⟨p, l, e, k, hk, e'⟩ := H.iwa g; ⟨⟨p, l, e⟩, k, hk, e'⟩) ?_` and prove the remaining obligations. Set `u : lineGrp σ J (ResLine.col X) → (AF F ⊗[F] E)ˣ` to `fun p => p.2.choose`. Establish `hu : ∀ p : lineGrp σ J (ResLine.col X), Scales σ J (ResLine.col X) p (u p)` using `fun p => p.2.choose_spec`. Establish `cu : Continuous u` using `Units.continuous_iff.2 ⟨(cφ.comp continuous_subtype_val).congr fun p => hφ _ _ (hu p), (cφ.comp continuous_subtype_val.inv).congr fun p => hφ _ _ (hinv _ _ (hu p))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp (cu.comp continuous_fst))).congr fun x => (H.ht _ _ (hu x.1) _ x.2.2).symm`. Take `⟨p, l, e, k, hk, rfl⟩` from `H.iwa g`. Use `⟨k, hk, fun x => ?_⟩` and prove the remaining obligations. Take `⟨q, m, e', k', hk', e''⟩` from `H.iwa (k * x)`. Rewrite using `[mul_assoc, e'', ← mul_assoc, H.ht _ _ (hmul _ _ _ _ e e') _ hk', H.ht _ _ e _ hk, H.ht _ _ e' _ hk', map_mul, NNReal.coe_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHt_of_data {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗[F] E)} {h : GAd σ J → ℝ}
     (H : Data σ J X Y L a h) : IsHt (levelAll σ J L a) h := by
@@ -247,7 +245,7 @@ theorem isHt_of_data {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF 
       NNReal.coe_mul]
 
 /- English proof (translation)
-Take `⟨F, E, _, _, _, _, _, σ, J, X, Y, L, a, h, H⟩` from `data_inhabited`. Take `⟨c, hc⟩` from `exists_isFlow H.cm H.herm H.witt`. Take `⟨T, hT⟩` from `exists_isReps (σ := σ) (J := J) (ResLine.col X)`. Conclude with `⟨F, E, _, _, _, _, _, σ, J, X, Y, L, a, h, c, T, H, hc, hT, isHt_of_data H, ht_flow H hc⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem all_inhabited : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ : Field E) (_ : NumberField E) (_ : Algebra F E)
     (σ : E →ₐ[F] E) (J : Matrix (Fin 2) (Fin 2) E) (X Y : Matrix (Fin 2) (Fin (0 + 1)) E) (L : Submodule (𝓞 E) (Fin 2 → E))
@@ -260,12 +258,12 @@ theorem all_inhabited : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ : 
   exact ⟨F, E, _, _, _, _, _, σ, J, X, Y, L, a, h, c, T, H, hc, hT, isHt_of_data H, ht_flow H hc⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (H : Subgroup (GAd σ J)) : Countable (ratPts σ J ⊓ H : Subgroup (GAd σ J)) := inferInstance
 
 /- English proof (translation)
-Take `⟨k', hk', e⟩` from `H.iw g`. Rewrite using `[e, H.one _ (mul_mem hk' hk), mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHt_right {G : Type} [Group G] [TopologicalSpace G] {K : Subgroup G} {h : G → ℝ} (H : IsHt K h) (g : G) {k : G}
     (hk : k ∈ K) : h (g * k) = h g := by
@@ -291,12 +289,12 @@ def intPts : Subgroup Pl where
   inv_mem' := fun ha j => let ⟨m, e⟩ := ha j; ⟨-m, by simp [e]⟩
 
 /- English proof (translation)
-The claim follows from `(continuous_apply j).comp continuous_toAdd`.
+A detailed English derivation is pending.
 -/
 theorem cont_coord (j : Fin 2) : Continuous fun g : Pl => g.toAdd j := (continuous_apply j).comp continuous_toAdd
 
 /- English proof (translation)
-Establish `: (axis i : Set Pl) = ⋂ j, ⋂ (_ : j ≠ i), {g | g.toAdd j = 0}` using `by ext g; simp [axis]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (cont_coord j) continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_axis (i : Fin 2) : IsClosed (axis i : Set Pl) := by
   have : (axis i : Set Pl) = ⋂ j, ⋂ (_ : j ≠ i), {g | g.toAdd j = 0} := by ext g; simp [axis]
@@ -306,12 +304,12 @@ theorem isClosed_axis (i : Fin 2) : IsClosed (axis i : Set Pl) := by
 scoped instance locallyCompactSpace_axis (i : Fin 2) : LocallyCompactSpace (axis i) := (isClosed_axis i).locallyCompactSpace
 
 /- English proof (translation)
-Introduce `j hj` and use `by simp [hj]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem single_mem (i : Fin 2) (c : ℝ) : Multiplicative.ofAdd (Pi.single i c) ∈ axis i := fun j hj => by simp [hj]
 
 /- English proof (translation)
-Introduce `j` and use `by by_cases h : j = i · exact ⟨m, by simp [h]⟩ · exact ⟨0, by simp [h]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem single_int (i : Fin 2) (m : ℤ) : Multiplicative.ofAdd (Pi.single i (m : ℝ)) ∈ intPts := fun j => by
   by_cases h : j = i
@@ -321,13 +319,13 @@ theorem single_int (i : Fin 2) (m : ℤ) : Multiplicative.ofAdd (Pi.single i (m 
 def unitInt (i : Fin 2) : Set (axis i) := {u | u.1.toAdd i ∈ Set.Ico (0 : ℝ) 1}
 
 /- English proof (translation)
-Use `IsFundamentalDomain.mk' ?_ fun x => ?_` and prove the remaining obligations. Conclude with `(((cont_coord i).comp continuous_subtype_val).measurable measurableSet_Ico).nullMeasurableSet`. Use `⟨⟨⟨_, single_mem i ((-⌊x.1.toAdd i⌋ : ℤ) : ℝ)⟩, single_int i _⟩, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Pi.single i ((-⌊x.1.toAdd i⌋ : ℤ) : ℝ) + x.1.toAdd : Fin 2 → ℝ) i ∈ Set.Ico (0 : ℝ) 1`. Simplify using `only [Pi.add_apply, Pi.single_eq_same, Int.cast_neg]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨by linarith [Int.floor_le (x.1.toAdd i)], by linarith [Int.lt_floor_add_one (x.1.toAdd i)]⟩`. Take `⟨m, e⟩` from `g.2 i`. Express the relevant statement in the definitionally equal form `g.1.1.toAdd i + x.1.toAdd i ∈ Set.Ico (0 : ℝ) 1 at hg`. Establish `e' : g.1.1.toAdd i = m` using `e`. Rewrite `hg` using `[e']`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ⌊x.1.toAdd i⌋ = -m` using `Int.floor_eq_iff.2 ⟨by push_cast; linarith [hg.1], by push_cast; linarith [hg.2]⟩`. Use `Subtype.ext (Subtype.ext (Multiplicative.toAdd.injective (funext fun j => ?_)))` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[this, e']`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, g.1.2 j h]`.
+A detailed English derivation is pending.
 -/
 theorem isFD (i : Fin 2) (μ : Measure (axis i)) : IsFundamentalDomain (intPts.subgroupOf (axis i)) (unitInt i) μ := by
   refine IsFundamentalDomain.mk' ?_ fun x => ?_
@@ -347,9 +345,9 @@ theorem isFD (i : Fin 2) (μ : Measure (axis i)) : IsFundamentalDomain (intPts.s
       · simp [h, g.1.2 j h]
 
 /- English proof (translation)
-Establish `hc : IsCompact (Multiplicative.ofAdd '' (Set.Icc (0 : Fin 2 → ℝ) 1) : Set Pl)` using `isCompact_Icc.image continuous_ofAdd`. Use `ne_top_of_le_ne_top ((isClosed_axis i).isClosedEmbedding_subtypeVal.isCompact_preimage hc).measure_ne_top (measure_mono fun u hu => ⟨u.1.toAdd, ⟨fun j => ?_, fun j => ?_⟩, rfl⟩)` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `hu.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[u.2 j h]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `hu.2.le`. Simplify using `[u.2 j h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fin_unitInt (i : Fin 2) (μ : Measure (axis i)) [μ.IsHaarMeasure] : μ (unitInt i) ≠ ⊤ := by
   have hc : IsCompact (Multiplicative.ofAdd '' (Set.Icc (0 : Fin 2 → ℝ) 1) : Set Pl) := isCompact_Icc.image continuous_ofAdd
@@ -363,7 +361,7 @@ theorem fin_unitInt (i : Fin 2) (μ : Measure (axis i)) [μ.IsHaarMeasure] : μ 
     · simp [u.2 j h]
 
 /- English proof (translation)
-The claim follows from `Function.Injective.countable (f := fun (g : intPts) (j : Fin 2) => (g.2 j).choose) fun a b h => Subtype.ext (Multiplicative.toAdd.injective (funext fun j => by rw [(a.2 j).choose_spec, (b.2 j).choose_spec]; exact congrArg _ (congrFun h j)))`.
+A detailed English derivation is pending.
 -/
 theorem countable_intPts : Countable intPts :=
   Function.Injective.countable (f := fun (g : intPts) (j : Fin 2) => (g.2 j).choose) fun a b h =>
@@ -371,7 +369,7 @@ theorem countable_intPts : Countable intPts :=
       rw [(a.2 j).choose_spec, (b.2 j).choose_spec]; exact congrArg _ (congrFun h j)))
 
 /- English proof (translation)
-The claim follows from `isClosed_axis 0 closedM := isClosed_axis 1 norm := fun m _ u hu => by rwa [mul_comm m, mul_inv_cancel_right] disj := fun g h0 h1 => Multiplicative.toAdd.injective (funext fun j => by fin_cases j · exact h1 0 (by decide) · exact h0 1 (by decide)) dec := fun γ hγ => by obtain ⟨m, e …`.
+A detailed English derivation is pending.
 -/
 theorem semiLat_plane : SemiLat (axis 0) (axis 1) intPts Measure.haar Measure.haar (unitInt 0) (unitInt 1) where
   closedN := isClosed_axis 0
@@ -398,9 +396,7 @@ theorem semiLat_plane : SemiLat (axis 0) (axis 1) intPts Measure.haar Measure.ha
   borel := inferInstance
 
 /- English proof (translation)
-Use `haveI := H.haarN`. Use `haveI := H.count`. Use `haveI := H.topGrp`. Use `haveI := H.borel`. Use `haveI : Countable (Λ.subgroupOf N) := Function.Injective.countable (f := fun x : Λ.subgroupOf N => (⟨x.1.1, x.2⟩ : Λ)) fun a b h => Subtype.ext (Subtype.ext (congrArg (·.1) h))`.
-
-Conclude with `H.domN.measure_ne_zero (NeZero.ne ν)`.
+A detailed English derivation is pending.
 -/
 theorem semiLat_ne_zero {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     {N M Λ : Subgroup G} {ν : Measure N} {π : Measure M} {𝓝 : Set N} {𝓜 : Set M}
@@ -414,14 +410,14 @@ theorem semiLat_ne_zero {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpa
   exact H.domN.measure_ne_zero (NeZero.ne ν)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => Real.exp_pos _, Real.continuous_exp.comp continuous_toAdd, fun k hk => by rw [Subgroup.mem_bot.1 hk]; simp, fun g => ⟨1, one_mem _, fun x => by simp [Real.exp_add]⟩⟩`.
+Supply the required witnesses or components.
 -/
 example : IsHt (⊥ : Subgroup (Multiplicative ℝ)) fun g => Real.exp g.toAdd :=
   ⟨fun _ => Real.exp_pos _, Real.continuous_exp.comp continuous_toAdd,
     fun k hk => by rw [Subgroup.mem_bot.1 hk]; simp, fun g => ⟨1, one_mem _, fun x => by simp [Real.exp_add]⟩⟩
 
 /- English proof (translation)
-The claim follows from `IsFundamentalDomain.mk' (measurableSet_singleton _).nullMeasurableSet fun x => ⟨⟨x⁻¹, hΛ _⟩, inv_mul_cancel x, fun _ hy => Subtype.ext (eq_inv_of_mul_eq_one_left hy)⟩`.
+A detailed English derivation is pending.
 -/
 theorem fd_one {H : Type} [Group H] [MeasurableSpace H] [MeasurableSingletonClass H] (Λ : Subgroup H) (hΛ : ∀ g, g ∈ Λ)
     (μ : Measure H) : IsFundamentalDomain Λ ({1} : Set H) μ :=
@@ -429,7 +425,7 @@ theorem fd_one {H : Type} [Group H] [MeasurableSpace H] [MeasurableSingletonClas
     ⟨⟨x⁻¹, hΛ _⟩, inv_mul_cancel x, fun _ hy => Subtype.ext (eq_inv_of_mul_eq_one_left hy)⟩
 
 /- English proof (translation)
-The claim follows from `{ toIsFiniteMeasureOnCompacts := inferInstance, toIsMulLeftInvariant := inferInstance, open_pos := fun U _ hU h => hU.ne_empty (Measure.count_eq_zero_iff.1 h) }`.
+A detailed English derivation is pending.
 -/
 theorem haar_count {H : Type} [Group H] [Finite H] [TopologicalSpace H] [DiscreteTopology H] [MeasurableSpace H]
     [BorelSpace H] : (Measure.count : Measure H).IsHaarMeasure :=
@@ -437,7 +433,7 @@ theorem haar_count {H : Type} [Group H] [Finite H] [TopologicalSpace H] [Discret
     open_pos := fun U _ hU h => hU.ne_empty (Measure.count_eq_zero_iff.1 h) }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isClosed_discrete _, isClosed_discrete _, fun m _ u hu => hN.conj_mem u hu m, hd, fun γ _ => let ⟨u, hu, m, hm, e⟩ := hs γ; ⟨u, hu, m, hm, trivial, trivial, e⟩, haar_count, haar_count, fd_one _ (fun _ => Subgroup.mem_subgroupOf.2 (Subgroup.mem_top _)) _, fd_one _ (fun _ => Subgr …`.
+Supply the required witnesses or components.
 -/
 theorem semiLat_finite {G : Type} [Group G] [Finite G] [TopologicalSpace G] [DiscreteTopology G] [MeasurableSpace G]
     [BorelSpace G] (N M : Subgroup G) [hN : N.Normal] (hd : ∀ g ∈ N, g ∈ M → g = 1) (hs : ∀ g, ∃ u ∈ N, ∃ m ∈ M, g = u * m) :
@@ -449,9 +445,9 @@ theorem semiLat_finite {G : Type} [Group G] [Finite G] [TopologicalSpace G] [Dis
     inferInstance, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (Equiv.Perm (Fin 3)) := ⊥`. Use `letI : MeasurableSpace (Equiv.Perm (Fin 3)) := ⊤`. Use `haveI : DiscreteTopology (Equiv.Perm (Fin 3)) := ⟨rfl⟩`. Use `haveI : BorelSpace (Equiv.Perm (Fin 3)) := ⟨borel_eq_top_of_discrete.symm⟩`. Use `semiLat_finite _ _ ?_ ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Evaluate the decidable proposition.
 
-Simplify using `only [Equiv.Perm.mem_alternatingGroup, MulAction.mem_stabilizer_iff, Equiv.Perm.smul_def]`. Evaluate the decidable proposition. Simplify using `only [Equiv.Perm.mem_alternatingGroup, MulAction.mem_stabilizer_iff, Equiv.Perm.smul_def]`. Evaluate the decidable proposition.
+Simplify using the standard rewrite rules. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 example : letI : TopologicalSpace (Equiv.Perm (Fin 3)) := ⊥; letI : MeasurableSpace (Equiv.Perm (Fin 3)) := ⊤
     SemiLat (alternatingGroup (Fin 3)) (MulAction.stabilizer (Equiv.Perm (Fin 3)) (2 : Fin 3)) ⊤

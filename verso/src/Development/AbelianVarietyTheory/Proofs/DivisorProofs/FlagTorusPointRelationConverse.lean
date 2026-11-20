@@ -17,7 +17,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Substitute `hy hy'` using the available equality. Conclude with `⟨h1, χ, f, f', hs, hP, hc, hc'⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem ptRel_mk {Z : Model Xo c β} (T : Tw Z) {F : Type} [Field F] {e : F ≃+* c.F} (C C' : FlagCpt Z e) {K : Type}
     [Field K] (p : Sp K ⟶ C.Y.X) (p' : Sp K ⟶ C'.Y.X) (χ : c.F →+* K) {y y' : Sp K ⟶ Z.X}
@@ -28,7 +28,7 @@ theorem ptRel_mk {Z : Model Xo c β} (T : Tw Z) {F : Type} [Field F] {e : F ≃+
   exact ⟨h1, χ, f, f', hs, hP, hc, hc'⟩
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f, t, t', h1, h2, h3⟩` from `hp`. Conclude with `⟨y, ψ, φ₁, f, t, _, h1, h2, GlobalTheory.ShFam.FlatSec.tri_trans h3 h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem carries_of_tri {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) {K : Type} [Field K]
     {φ φ' : c.F →+* K} {x x' : Sp K ⟶ Z.X} {g : EigFrame Z φ x} {g' : EigFrame Z φ' x'}
@@ -38,17 +38,15 @@ theorem carries_of_tri {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F
   exact ⟨y, ψ, φ₁, f, t, _, h1, h2, GlobalTheory.ShFam.FlatSec.tri_trans h3 h⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z T F _ e σ N U Φ K _ _ i' p'`. Set `χ : c.F →+* K` to `(Spec.preimage (p' ≫ (Φ.C i').π ≫ genStr Z)).hom`. Establish `hχ : p' ≫ (Φ.C i').π ≫ genStr Z = spMap χ` using `(Spec.map_preimage _).symm`. Take `⟨f', hf'⟩` from `GlobalTheory.CarryAll.carry_some E H Dw l Xo c O β Z F e (Φ.C i') K χ p' hχ`. Set `x : Sp K ⟶ gen Z` to `p' ≫ (Φ.C i').π ≫ T.g.inv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hginv : T.g.inv ≫ genStr Z = genStr Z` using `(Iso.inv_comp_eq _).2 T.g_str.symm`. Establish `hx : x ≫ genStr Z = spMap χ`. Simplify using `only [x, Category.assoc, hginv]`. Conclude with `hχ`. Establish `hpull : p' ≫ (Φ.C i').π ≫ genι Z = (x ≫ genι Z) ≫ T.ρ.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [x, Category.assoc, ← T.g_ι, Iso.inv_hom_id_assoc]`. Take `⟨f, hP⟩` from `T.exists_pull f' rfl hpull`. Take `⟨q, ⟨hq1, hq2⟩, hqu⟩` from `Φ.lifts K χ x hx f`. Use `⟨q, ?_, fun r hr => hqu r ?_⟩` and prove the remaining obligations. Use `ptRel_mk T (Φ.C q.1) (Φ.C i') q.2 p' χ (by rw [← Category.assoc, hq1]) rfl f f' ?_ ?_ hP hq2 hf'` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hq1]`. Simplify using `only [x, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[← Category.assoc, hq1]`. Conclude with `hx`. Take `⟨h1, χ₁, f₁, f₁', hs₁, hP₁, hc₁, hc₁'⟩` from `hr`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr1 : r.2 ≫ (Φ.C r.1).π = x` using `by show _ = (p' ≫ (Φ.C i').π) ≫ T.g.inv`. Rewrite using `[h1, Category.assoc, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Take `⟨t', ht'⟩` from `GlobalTheory.VarFlag.tri_of_carries (Φ.C i') hc₁' hf'`. Take `⟨t, ht⟩` from `T.exists_relab t'`. Establish `htri : f₁.Tri (RingHom.id K) f t` using `(Tw.Push.tri_iff hP₁ hP ht).2 ht'`.
-
-Conclude with `⟨hr1, carries_of_tri (Φ.C r.1) htri hc₁⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_source : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (T : Tw Z) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (N : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ N) (Φ : FlagTor Z e U) (K : Type) [Field K] [IsAlgClosed K] (i' : U.Comp) (p' : Sp K ⟶ (Φ.C i').Y.X), ∃! q : Σ i : U.Comp, (Sp K ⟶ (Φ.C i).Y.X), T.PtRel (Φ.C q.1) (Φ.C i') q.2 p' := by
   intro E _ _ _ H Dw l Xo c O _ β Z T F _ e σ N U Φ K _ _ i' p'

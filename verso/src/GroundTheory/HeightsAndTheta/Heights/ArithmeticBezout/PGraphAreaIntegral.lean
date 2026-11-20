@@ -12,7 +12,7 @@ open scoped ENNReal
 noncomputable section
 
 /- English proof (translation)
-Establish `h : (fun M : E →L[ℝ] F => areaJacobian (M : E →ₗ[ℝ] F)) = fun M => √((ContinuousLinearMap.adjoint M ∘L M).det)`. Use function extensionality and compare the values at `M`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `(ContinuousLinearMap.continuous_det.comp ((ContinuousLinearMap.adjoint.continuous).clm_comp continuous_id)).sqrt`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GraphAreaIntegral.continuous_areaJacobian {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
@@ -27,17 +27,15 @@ theorem GraphAreaIntegral.continuous_areaJacobian {E F : Type*} [NormedAddCommGr
     ((ContinuousLinearMap.adjoint.continuous).clm_comp continuous_id)).sqrt
 
 /- English proof (translation)
-Introduce `d m n e Ω F hΩ hF A hAΩ hA g`. Use `set G := graphPt e F with hGdef`. Use `set μ : Measure (EuclideanSpace ℂ (Fin d)) := μH[((2 * d : ℕ) : ℝ)] with hμ`. Use `set ν : Measure (EuclideanSpace ℂ (Fin n)) := μH[((2 * d : ℕ) : ℝ)] with hν`. Use `set J : EuclideanSpace ℂ (Fin d) → ℝ≥0∞ := fun x => ENNReal.ofReal (areaJacobian (fderiv ℝ G x : EuclideanSpace ℂ (Fin d) →ₗ[ℝ] EuclideanSpace ℂ (Fin n))) with hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hJm : Measurable J` using `ENNReal.measurable_ofReal.comp (GraphAreaIntegral.continuous_areaJacobian.measurable.comp (measurable_fderiv ℝ G))`. Establish `hGc : ContinuousOn G A` using `(continuousOn_graphPt e hF.continuousOn).mono hAΩ`. Set `f : A → EuclideanSpace ℂ (Fin n)` to `fun a => G a`. Establish `hfc : Continuous f` using `hGc.domRestrict`. Establish `hf : MeasurableEmbedding f` using `{ injective := fun a b hab => Subtype.ext (graphPt_injective_of_graphBase e F hab) measurable := hfc.measurable measurableSet_image' := fun s hs => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : MeasurableSet (((↑) : A → EuclideanSpace ℂ (Fin d)) '' s)` using `MeasurableSet.subtype_image hA hs`. Establish `: f '' s = G '' (((↑) : A → EuclideanSpace ℂ (Fin d)) '' s)`. Rewrite using `[Set.image_image]`. Rewrite using `[this]`. Conclude with `hs'.image_of_continuousOn_injOn (hGc.mono (by rintro _ ⟨a, -, rfl⟩; exact a.2)) (graphPt_injective_of_graphBase e F).injOn }`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `set M : Measure A := (μ.withDensity J).comap ((↑) : A → EuclideanSpace ℂ (Fin d)) with hM`. Establish `hmeas : ν.restrict (G '' A) = M.map f` using `by ext1 S hS`. Establish `hpre : ((↑) : A → EuclideanSpace ℂ (Fin d)) '' (f ⁻¹' S) = A ∩ G ⁻¹' S`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a.2, ha⟩`. Introduce and unpack `⟨hx, hxS⟩`. Conclude with `⟨⟨x, hx⟩, hxS, rfl⟩`. Establish `hmS : MeasurableSet (A ∩ G ⁻¹' S)`.
-
-Rewrite using `[← hpre]`. Conclude with `MeasurableSet.subtype_image hA (hf.measurable hS)`. Rewrite using `[Measure.restrict_apply hS, Measure.map_apply hf.measurable hS, (MeasurableEmbedding.subtype_coe hA).comap_apply, hpre, withDensity_apply _ hmS, Set.inter_comm S, ← Set.image_inter_preimage]`. Conclude with `h d m n e Ω F hΩ hF _ (Set.inter_subset_left.trans hAΩ) hmS`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GraphAreaIntegral.proof (h : GraphAreaHolomorphic.Statement) : GraphAreaIntegral.Statement := by
   intro d m n e Ω F hΩ hF A hAΩ hA g

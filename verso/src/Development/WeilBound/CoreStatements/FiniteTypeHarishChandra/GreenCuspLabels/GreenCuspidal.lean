@@ -10,13 +10,13 @@ noncomputable section
 namespace PositivityTheory.GreenCharacters
 
 /- English proof (translation)
-Establish `hP : ∀ v : V, (∑ u : G, if u ∈ U then ρ u v else 0) = 0`. Introduce `v`. Apply `h` to reduce the goal to its premises. Introduce `u hu`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (Equiv.mulLeft u) _ _ ?_` and prove the remaining obligations. Introduce `w`. Simplify using `only [Equiv.coe_mulLeft, map_mul, Module.End.mul_apply, U.mul_mem_cancel_left hu]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hL : (∑ u : G, if u ∈ U then ρ u else 0) = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `v`. Rewrite using `[LinearMap.sum_apply, LinearMap.zero_apply, ← hP v]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Representation.character]`. Use `_ = 0 := by rw [hL, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sum_char_eq_zero {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ G V) (U : Subgroup G) [DecidablePred (· ∈ U)]
@@ -44,13 +44,11 @@ theorem sum_char_eq_zero {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Mo
     _ = 0 := by rw [hL, map_zero]
 
 /- English proof (translation)
-Set `b : Fin d → Fin 2` to `fun i => if (i : ℕ) < a then 0 else 1`. Use `hc 2 b ?_ le_rfl v fun u hu => hv u ?_` and prove the remaining obligations. Introduce `c fin_cases c`. Conclude with `⟨⟨0, by omega⟩, by simp [b, h0]⟩`. Conclude with `⟨⟨a, h1⟩, by simp [b]⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `i j`. Distinguish the cases in `hij : (i : ℕ) < a ∧ a ≤ (j : ℕ)`. Conclude with `Or.inr hij`. Use `left`. Distinguish the cases in `hi : (i : ℕ) < a`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hj : (j : ℕ) < a` using `by omega`. Conclude with `hu.2 i j (by simp [b, hi, hj])`. Distinguish the cases in `hj : (j : ℕ) < a`. Establish `hne : i ≠ j` using `by rintro rfl; exact hi hj`. Rewrite using `[if_neg hne]`.
-
-Conclude with `hu.1.1 i j (by simp [b, hi, hj])`. Conclude with `hu.2 i j (by simp [b, hi, hj])`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_eq_zero {K : Type} [Field K] [Fintype K] [DecidableEq K] {d a : ℕ} (τ : FDRep ℂ (GL (Fin d) K))
     (hc : IsCuspidal K τ) (h0 : 0 < a) (h1 : a < d) (v : τ) (hv : ∀ u ∈ stdRadical K d a, τ.ρ u v = v) : v = 0 := by
@@ -83,7 +81,7 @@ def conv (L : LabelDatum g) : LabelConv (ZMod g) where
   gen_norm d e hd he := by rw [ZMod.card]; exact L.gen_norm d e hd he
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Simplify using `[Formalism.MainNotions.ArithmeticCylinders.entN]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem entN_eq {A : Type} [Zero A] {N : ℕ} (M : Matrix (Fin N) (Fin N) A) (i j : Fin N) {a b : ℕ}
     (ha : a = i) (hb : b = j) : Formalism.MainNotions.ArithmeticCylinders.entN M a b = M i j := by
@@ -91,33 +89,31 @@ theorem entN_eq {A : Type} [Zero A] {N : ℕ} (M : Matrix (Fin N) (Fin N) A) (i 
   simp [Formalism.MainNotions.ArithmeticCylinders.entN]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, ht, hb⟩ i j`. Establish `hid` using `i.isLt`. Establish `hjd` using `j.isLt`. Distinguish the cases in `hi : (i : ℕ) < a`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : (j : ℕ) < a`. Use `left`. Use `congrFun (congrFun ht ⟨i, hi⟩) ⟨j, hj⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.ArithmeticCylinders.entN M (i : ℕ) (j : ℕ) = (1 : Matrix (Fin a) (Fin a) (ZMod g)) ⟨i, hi⟩ ⟨j, hj⟩ at this`. Rewrite `this` using `[entN_eq M i j rfl rfl, Matrix.one_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `if_congr (by simp [Fin.ext_iff]) rfl rfl`. Conclude with `Or.inr ⟨hi, not_lt.mp hj⟩`. Distinguish the cases in `hj : (j : ℕ) < a`. Use `left`.
+Prove the second alternative. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `hne : i ≠ j`. Introduce `e`. Substitute `e` using the available equality. Conclude with `hi hj`. Rewrite using `[if_neg hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hP i j hj (not_lt.mp hi)`. Use `left`. Establish `hi' : (i : ℕ) - a < d - a` using `by omega`. Establish `hj' : (j : ℕ) - a < d - a` using `by omega`. Use `congrFun (congrFun hb ⟨i - a, hi'⟩) ⟨j - a, hj'⟩` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `Formalism.MainNotions.ArithmeticCylinders.entN M (a + ((i : ℕ) - a)) (a + ((j : ℕ) - a)) = (1 : Matrix (Fin (d - a)) (Fin (d - a)) (ZMod g)) ⟨i - a, hi'⟩ ⟨j - a, hj'⟩ at this`. Rewrite `this` using `[entN_eq M i j (by omega) (by omega), Matrix.one_apply]`. Rewrite using `[this]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[Fin.ext_iff, Fin.ext_iff]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Introduce `hM`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hj hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Break down `hM i j with h | h` into its components or cases. Rewrite using `[h, if_neg]`. Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.ArithmeticCylinders.entN M (i : ℕ) (j : ℕ) = (1 : Matrix (Fin a) (Fin a) (ZMod g)) i j`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[entN_eq M ⟨i, by omega⟩ ⟨j, by omega⟩ rfl rfl, Matrix.one_apply]`. Break down `hM ⟨i, by omega⟩ ⟨j, by omega⟩ with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `if_congr (by simp [Fin.ext_iff]) rfl rfl`. It suffices to derive a contradiction.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `h.2` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `hi` using `i.isLt`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hj` using `j.isLt`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.ArithmeticCylinders.entN M (a + (i : ℕ)) (a + (j : ℕ)) = (1 : Matrix (Fin (d - a)) (Fin (d - a)) (ZMod g)) i j`. Rewrite using `[entN_eq M ⟨a + i, by omega⟩ ⟨a + j, by omega⟩ rfl rfl, Matrix.one_apply]`. Break down `hM ⟨a + i, by omega⟩ ⟨a + j, by omega⟩ with h | h` into its components or cases. Rewrite using `[h]`.
+Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Simplify using `only [Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Use `h.1` as an intermediate fact.
-
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem rad_iff {d a : ℕ} (had : a ≤ d) (M : Mt g d) :
     (InPar a M ∧ tl a M = 1 ∧ br a (d - a) M = 1) ↔
@@ -194,9 +190,9 @@ theorem rad_iff {d a : ℕ} (had : a ≤ d) (M : Mt g d) :
 open Classical in
 
 /- English proof (translation)
-Unfold `res`. Establish `hg : ((g : ℂ) ^ (a * (d - a)))⁻¹ ≠ 0` using `inv_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : g.Prime).ne_zero))`. Rewrite using `[mul_eq_zero, or_iff_right hg]`. Establish `key : ∀ x : Gn g d, (InPar a (x : Mt g d) ∧ tl a (x : Mt g d) = ((1 : Gn g a) : Mt g a) ∧ br a (d - a) (x : Mt g d) = ((1 : Gn g (d - a)) : Mt g (d - a))) ↔ x ∈ stdRadical (ZMod g) d a`. Introduce `x`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Units.val_one, Units.val_one, rad_iff had, mem_stdRadical]`. Rewrite using `[Finset.sum_congr rfl fun x _ => if_congr (key x) rfl rfl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_eq_zero_iff {d a : ℕ} (had : a ≤ d) (χ : Gn g d → ℂ) :
     res a (d - a) χ 1 1 = 0 ↔ (∑ u : Gn g d, if u ∈ stdRadical (ZMod g) d a then χ u else 0) = 0 := by
@@ -211,9 +207,9 @@ theorem res_eq_zero_iff {d a : ℕ} (had : a ≤ d) (χ : Gn g d → ℂ) :
   rw [Finset.sum_congr rfl fun x _ => if_congr (key x) rfl rfl]
 
 /- English proof (translation)
-Use `⟨hd, ⟨τ, hs, fun x => rfl⟩, fun a ha had => ?_⟩` and prove the remaining obligations. Rewrite using `[res_eq_zero_iff had.le]`. Use `sum_char_eq_zero τ.ρ (stdRadical (ZMod g) d a) (fixed_eq_zero τ hc ha had) using 1` and compare the differences between its conclusion and the goal. Use `first`. Consider the case `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [FDRep.character, Representation.character]`.
+A detailed English derivation is pending.
 -/
 theorem isCusp_character {d : ℕ} (hd : 0 < d) (τ : FDRep ℂ (Gn g d)) (hs : Simple τ) (hc : IsCuspidal (ZMod g) τ) :
     IsCusp τ.character := by
@@ -226,7 +222,7 @@ theorem isCusp_character {d : ℕ} (hd : 0 < d) (τ : FDRep ℂ (Gn g d)) (hs : 
     | simp [FDRep.character, Representation.character]
 
 /- English proof (translation)
-Use `isCuspidal_of_sum_char (ZMod g) d τ fun a ha had => ?_` and prove the remaining obligations. Use `(res_eq_zero_iff had.le τ.character).mp (h.2.2 a ha had)` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun u _ => if_congr mem_stdRadical.symm rfl rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCuspidal_of_isCusp {d : ℕ} (τ : FDRep ℂ (Gn g d)) (h : IsCusp τ.character) : IsCuspidal (ZMod g) τ := by
   classical
@@ -236,7 +232,7 @@ theorem isCuspidal_of_isCusp {d : ℕ} (τ : FDRep ℂ (Gn g d)) (h : IsCusp τ.
   exact Finset.sum_congr rfl fun u _ => if_congr mem_stdRadical.symm rfl rfl
 
 /- English proof (translation)
-Unfold `Formalism.CyclotomicNorms.rootsBar at hx`. Establish `h2 : Polynomial.eval x (P.map (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g))) = 0` using `(Polynomial.mem_roots'.mp hx).2`. Rewrite `h2` using `[Polynomial.eval_map_algebraMap]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem aeval_of_mem_rootsBar {P : (ZMod g)[X]} {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ∈ Formalism.CyclotomicNorms.rootsBar P) :
     aeval x P = 0 := by
@@ -246,11 +242,11 @@ theorem aeval_of_mem_rootsBar {P : (ZMod g)[X]} {x : Formalism.CyclotomicNorms.F
   rwa [Polynomial.eval_map_algebraMap] at h2
 
 /- English proof (translation)
-Unfold `IsPrimeLab`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hm, hi, h0, hd⟩`. Use `⟨hm, hi, ?_, hd⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `h0 (by simp)`. Introduce and unpack `⟨hm, hi, hX, hd⟩`. Use `⟨hm, hi, ?_, hd⟩` and prove the remaining obligations. Introduce `h0`. Apply `hX` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hdvd : X ∣ P` using `Polynomial.X_dvd_iff.mpr h0`. Conclude with `(Polynomial.eq_of_monic_of_associated Polynomial.monic_X hm (Polynomial.irreducible_X.associated_of_dvd hi hdvd)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPrimeLab_iff {d : ℕ} {P : (ZMod g)[X]} :
     IsPrimeLab d P ↔ P.Monic ∧ Irreducible P ∧ P ≠ X ∧ P.natDegree = d := by
@@ -269,15 +265,13 @@ theorem isPrimeLab_iff {d : ℕ} {P : (ZMod g)[X]} :
       (Polynomial.irreducible_X.associated_of_dvd hi hdvd)).symm
 
 /- English proof (translation)
-Establish `hex : ∃ n : ℕ, L.gen d ^ m = L.gen d ^ n` using `⟨m, rfl⟩`. Unfold `thetaOf`. Rewrite using `[dif_pos hex]`. Establish `hc : L.gen d ^ m = L.gen d ^ hex.choose` using `hex.choose_spec`. Establish `hg2` using `(Fact.out : g.Prime).two_le`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgd : g ≤ g ^ d` using `Nat.le_self_pow hd.ne' g`. Establish `hN : 0 < orderOf (L.gen d)`. Rewrite using `[L.gen_order d hd]`. Use linear arithmetic over natural numbers and integers. Establish `heq : hex.choose % orderOf (L.gen d) = m % orderOf (L.gen d)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `pow_injOn_Iio_orderOf (Nat.mod_lt _ hN) (Nat.mod_lt _ hN) ?_` and prove the remaining obligations. Simplify using `only [pow_mod_orderOf]`. Conclude with `hc.symm`. Establish `hmod : hex.choose ≡ m [MOD g ^ d - 1]`. Rewrite using `[← L.gen_order d hd]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `heq`. Establish `ht : L.teich x ^ (g ^ d - 1) = 1`. Rewrite using `[← map_pow, hx, map_one]`. Establish `hdvd : orderOf (L.teich x) ∣ g ^ d - 1` using `orderOf_dvd_of_pow_eq_one ht`. Rewrite using `[← pow_mod_orderOf (L.teich x) hex.choose, ← pow_mod_orderOf (L.teich x) m]`.
-
-Conclude with `congrArg _ (Nat.ModEq.of_dvd hdvd hmod)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaOf_gen_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ^ (g ^ d - 1) = 1)
     (m : ℕ) : thetaOf L d x (L.gen d ^ m) = L.teich x ^ m := by
@@ -304,19 +298,19 @@ theorem thetaOf_gen_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Formalism
   exact congrArg _ (Nat.ModEq.of_dvd hdvd hmod)
 
 /- English proof (translation)
-Take `⟨hm, hi, hX, hdeg, hlab⟩` from `hl`. Establish `hdeg' : P.natDegree = d` using `by simpa using hdeg`. Establish `hP : IsPrimeLab d P` using `isPrimeLab_iff.mpr ⟨hm, hi, hX, hdeg'⟩`. Use `⟨hP, isCusp_character hd τ hs hc, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxP` using `aeval_of_mem_rootsBar hx`. Establish `hzP` using `aeval_of_mem_rootsBar hz`. Establish `hx1 : x ^ (g ^ d - 1) = 1`. Use `root_pow_eq_one hm hi hX hxP` as an intermediate fact. Rewrite `this` using `[ZMod.card, hdeg']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hcX : (y : Matrix (Fin d) (Fin d) (ZMod g)).charpoly ≠ X`. Introduce `hE`. Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det _).mp y.isUnit`. Rewrite `hdet` using `[Matrix.det_eq_sign_charpoly_coeff, hE, Polynomial.coeff_X_zero, mul_zero]`. Conclude with `not_isUnit_zero hdet`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcdeg : (y : Matrix (Fin d) (Fin d) (ZMod g)).charpoly.natDegree = d`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hz1 : z ^ (g ^ d - 1) = 1`. Use `root_pow_eq_one (Matrix.charpoly_monic _) hy hcX hzP` as an intermediate fact. Rewrite `this` using `[ZMod.card, hcdeg]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hprim : IsPrimitiveRoot (L.gen d) (g ^ d - 1)`. Rewrite using `[← L.gen_order d hd]`. Conclude with `IsPrimitiveRoot.orderOf _`. Establish `hg2` using `(Fact.out : g.Prime).two_le`. Establish `hgd : g ≤ g ^ d` using `Nat.le_self_pow hd.ne' g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `haveI : NeZero (g ^ d - 1) := ⟨by omega⟩`. Take `⟨m, -, hmz⟩` from `hprim.eq_pow_of_pow_eq_one hz1`. Simplify using `only [Fintype.card_fin, conv, ZMod.card] at hlab`. Establish `htr` using `hlab x hxP y hy z hzP m hmz`. Rewrite using `[show τ.character y = _ from htr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hmz, ← pow_mul, thetaOf_gen_pow L hd hx1]`.
+A detailed English derivation is pending.
 -/
 theorem isCuspOf_character (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (τ : FDRep ℂ (Gn g d)) (P : (ZMod g)[X])
     (hs : Simple τ) (hc : IsCuspidal (ZMod g) τ) (hl : HasCuspLabel (conv L) τ P) : IsCuspOf L P τ.character := by
@@ -355,9 +349,7 @@ theorem isCuspOf_character (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (τ : FDRep
   rw [← hmz, ← pow_mul, thetaOf_gen_pow L hd hx1]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hl`. Use `⟨h1, h2, h3, h4, fun x hx γ hγ z hz m hm => ?_⟩` and prove the remaining obligations. Establish `hv` using `h5 x hx γ hγ z hz m hm`. Use `show τ'.character γ = _`. Rewrite using `[← congrFun h γ]`.
-
-Conclude with `hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCuspLabel_of_character {K : Type} [Field K] [Fintype K] [DecidableEq K] (C : LabelConv K) {d : ℕ}
     {τ τ' : FDRep ℂ (GL (Fin d) K)} (h : τ.character = τ'.character) {P : K[X]} (hl : HasCuspLabel C τ P) :
@@ -370,17 +362,15 @@ theorem hasCuspLabel_of_character {K : Type} [Field K] [Fintype K] [DecidableEq 
   exact hv
 
 /- English proof (translation)
-Introduce `p _ L d hd`. Establish `hd1 : 1 ≤ d` using `hd`. Take `⟨hA, hB, hC⟩` from `(GreenAll.cuspParam_all (K := ZMod p) (conv L)) d hd1`. Use `choose σ hσs hσc hσl using fun P (hP : IsPrimeLab d P) => hB P (isPrimeLab_iff.mp hP).1 (isPrimeLab_iff.mp hP).2.1 (isPrimeLab_iff.mp hP).2.2.1 (isPrimeLab_iff.mp hP).2.2.2`. Set `rep : (ZMod p)[X] → Gn p d → ℂ` to `fun P => if hP : IsPrimeLab d P then (σ P hP).character else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rep, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Simplify using `only [rep, dif_pos hP]`. Use `⟨isCuspOf_character L hd (σ P hP) P (hσs P hP) (hσc P hP) (hσl P hP), ?_⟩` and prove the remaining obligations. Rewrite using `[FDRep.char_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (Int.cast : ℤ → ℂ) (hA _ (hσs P hP) (hσc P hP)).2`. Move the coercions through the operations in `at h2`. Simplify `h2` using `[ZMod.card]`. Introduce `P P' hP hP' heq`. Simplify using `only [rep, dif_pos hP, dif_pos hP'] at heq`.
+Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl2 : HasCuspLabel (conv L) (σ P hP) P'` using `hasCuspLabel_of_character (conv L) heq.symm (hσl P' hP')`. Conclude with `(hA _ (hσs P hP) (hσc P hP)).1.unique (hσl P hP) hl2`. Introduce `χ hχ`. Take `⟨V, hVs, hVχ⟩` from `hχ.2.1`. Establish `hχV : V.character = χ` using `funext hVχ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hVc : IsCuspidal (ZMod p) V` using `isCuspidal_of_isCusp V (by rw [hχV]; exact hχ)`. Take `⟨P, hPl, -⟩` from `(hA V hVs hVc).1`. Establish `hP : IsPrimeLab d P` using `isPrimeLab_iff.mpr ⟨hPl.1, hPl.2.1, hPl.2.2.1, by simpa using hPl.2.2.2.1⟩`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Simplify using `only [rep, dif_pos hP]`.
-
-Rewrite using `[← hχV]`. Conclude with `FDRep.char_iso (hC V (σ P hP) P hVs hVc (hσs P hP) (hσc P hP) hPl (hσl P hP)).some`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem green : GlobalTheory.GLq.Green := by
   intro p _ L d hd
@@ -418,7 +408,7 @@ theorem green : GlobalTheory.GLq.Green := by
     exact FDRep.char_iso (hC V (σ P hP) P hVs hVc (hσs P hP) (hσc P hP) hPl (hσl P hP)).some
 
 /- English proof (translation)
-The claim follows from `green`.
+A detailed English derivation is pending.
 -/
 theorem greenCuspidal : GlobalTheory.Published.GreenCuspidal := green
 

@@ -34,7 +34,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 abbrev clsZ (L' : Lattice (O := O) ρ') : ↥(latticeCocycles L') →ₗ[O] LatticeCohomology L' := Submodule.mkQ _
 
 /- English proof (translation)
-Unfold `latticeFiniteCohomology`. Rewrite using `[Submodule.mem_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_H1fT_iff (x : LatticeCohomology L') :
     x ∈ latticeFiniteCohomology PD L' ↔ ∃ c : ↥(latticeCocycles L'), (c : G → V') ∈ latticeFiniteCocycles PD L' ∧ clsZ L' c = x := by
@@ -43,7 +43,7 @@ theorem mem_H1fT_iff (x : LatticeCohomology L') :
   rfl
 
 /- English proof (translation)
-Unfold `clsZ`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem clsZ_eq_zero (c : ↥(latticeCocycles L')) : clsZ L' c = 0 ↔ (c : G → V') ∈ latticeCoboundaries L' := by
   unfold clsZ
@@ -57,9 +57,9 @@ theorem H1map_clsZ (c : ↥(latticeCocycles L)) :
     F.H1map (clsZ L c) = clsZ L' ⟨F.post c, F.post_Z1T c c.2⟩ := rfl
 
 /- English proof (translation)
-Take `⟨x, hx, hxp⟩` from `h`. Take `⟨c, hc, rfl⟩` from `(mem_H1fT_iff PD x).1 hx`. Rewrite `hxp` using `[H1map_clsZ]`. Establish `h0 : clsZ L' (p - ⟨F.post c, F.post_Z1T c c.2⟩) = 0` using `by rw [map_sub, hxp, sub_self]`. Establish `h1` using `(clsZ_eq_zero _).1 h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (p : G → V') = F.post c + ((p - ⟨F.post c, F.post_Z1T c c.2⟩ : ↥(latticeCocycles L')) : G → V')`. Simplify using the standard rewrite rules. Rewrite using `[h2]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_map_of_mem hc) h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ImF_of_cls (p : ↥(latticeCocycles L')) (h : clsZ L' p ∈ (latticeFiniteCohomology PD L).map F.H1map) :
     (p : G → V') ∈ F.ImF PD := by
@@ -74,11 +74,11 @@ theorem mem_ImF_of_cls (p : ↥(latticeCocycles L')) (h : clsZ L' p ∈ (lattice
   exact Submodule.add_mem_sup (Submodule.mem_map_of_mem hc) h1
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 h`. Take `⟨c, hc, rfl⟩` from `ha`. Establish `hcZ : c ∈ latticeCocycles L` using `hc.1`. Use `⟨clsZ L ⟨c, hcZ⟩, (mem_H1fT_iff PD _).2 ⟨⟨c, hcZ⟩, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[H1map_clsZ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : clsZ L' (p - ⟨F.post c, F.post_Z1T c hcZ⟩) = 0`. Rewrite using `[clsZ_eq_zero]`. Establish `: ((p - ⟨F.post c, F.post_Z1T c hcZ⟩ : ↥(latticeCocycles L')) : G → V') = b`. Simplify using `[← hab]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `h0.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_mem_of_ImF (p : ↥(latticeCocycles L')) (h : (p : G → V') ∈ F.ImF PD) :
     clsZ L' p ∈ (latticeFiniteCohomology PD L).map F.H1map := by
@@ -99,13 +99,13 @@ def liftZ (x : LatticeCohomology L') : ↥(latticeCocycles L') :=
   if h : x ∈ latticeFiniteCohomology PD L' then ((mem_H1fT_iff PD x).1 h).choose else 0
 
 /- English proof (translation)
-Unfold `liftZ`. Rewrite using `[dif_pos h]`. Conclude with `((mem_H1fT_iff PD x).1 h).choose_spec.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftZ_mem {x : LatticeCohomology L'} (h : x ∈ latticeFiniteCohomology PD L') : ((liftZ PD x : ↥(latticeCocycles L')) : G → V') ∈ latticeFiniteCocycles PD L' := by
   unfold liftZ; rw [dif_pos h]; exact ((mem_H1fT_iff PD x).1 h).choose_spec.1
 
 /- English proof (translation)
-Unfold `liftZ`. Rewrite using `[dif_pos h]`. Conclude with `((mem_H1fT_iff PD x).1 h).choose_spec.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftZ_cls {x : LatticeCohomology L'} (h : x ∈ latticeFiniteCohomology PD L') : clsZ L' (liftZ PD x) = x := by
   unfold liftZ; rw [dif_pos h]; exact ((mem_H1fT_iff PD x).1 h).choose_spec.2
@@ -113,11 +113,11 @@ theorem liftZ_cls {x : LatticeCohomology L'} (h : x ∈ latticeFiniteCohomology 
 def liftS (A : Finset (LatticeCohomology L')) : Finset (G → V') := A.image fun x => ((liftZ PD x : ↥(latticeCocycles L')) : G → V')
 
 /- English proof (translation)
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Use `⟨liftZ PD x, Submodule.subset_span ?_, liftZ_cls PD (hA hx)⟩` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_image_of_mem _ hx)`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, map_zero _⟩`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨u, hu, rfl⟩` from `hx`. Take `⟨w, hw, rfl⟩` from `hy`. Conclude with `⟨u + w, Submodule.add_mem _ hu hw, map_add _ _ _⟩`. Consider the case `smul c x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `⟨c • u, Submodule.smul_mem _ c hu, map_smul _ _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_span (A : Finset (LatticeCohomology L')) (hA : (↑A : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L') (a : LatticeCohomology L')
     (ha : a ∈ Submodule.span O (↑A : Set (LatticeCohomology L'))) :
@@ -136,9 +136,9 @@ theorem exists_lift_span (A : Finset (LatticeCohomology L')) (hA : (↑A : Set (
     exact ⟨c • u, Submodule.smul_mem _ c hu, map_smul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hp`. Take `⟨y, hy, rfl⟩` from `exists_lift_span PD A hA a ha`. Establish `h1 : clsZ L' (p - y) ∈ (latticeFiniteCohomology PD L).map F.H1map`. Rewrite using `[map_sub, ← hab, add_sub_cancel_left]`. Conclude with `hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `mem_ImF_of_cls PD F _ h1`. Establish `h3 : (p : G → V') = (y : G → V') + ((p - y : ↥(latticeCocycles L')) : G → V')` using `by simp`. Rewrite using `[h3]`. Conclude with `Submodule.add_mem_sup hy h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_sup_ImF (A : Finset (LatticeCohomology L')) (hA : (↑A : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L')
     (p : ↥(latticeCocycles L'))
@@ -154,19 +154,17 @@ theorem mem_span_sup_ImF (A : Finset (LatticeCohomology L')) (hA : (↑A : Set (
   exact Submodule.add_mem_sup hy h2
 
 /- English proof (translation)
-Establish `hgs : (↑gens : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L'`. Rewrite using `[← hgens]`. Conclude with `Submodule.subset_span`. Establish `hsub : ∀ (A : Finset (LatticeCohomology L')), (↑A : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L' → (↑(liftS PD A) : Set (G → V')) ⊆ latticeFiniteCocycles PD L'`. Introduce `A hA p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hp)`. Conclude with `liftZ_mem PD (hA hx)`. Establish `hnat : ∀ (k : ℕ) (p : G → V'), (PD.p ^ k : ℕ) • p = (((PD.p : ℕ) : O) ^ k) • p`. Introduce `k p`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingBounds.length_quotient_le_of_two_step O (G → V') PD.p g cls.card e e' (latticeFiniteCocycles PD L') (F.ImF PD) (liftS PD gens) (liftS PD cls) hI (le_trans Finset.card_image_le hg) Finset.card_image_le (hsub cls hcls) ?_ ?_ …` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (Submodule.span_le.2 (hsub gens hgs)) hI`. Introduce `p hp`. Establish `hpZ : p ∈ latticeCocycles L'` using `hp.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_span_sup_ImF PD F gens hgs ⟨p, hpZ⟩ (Submodule.mem_sup_left ?_)` and prove the remaining obligations. Rewrite using `[hgens]`. Conclude with `(mem_H1fT_iff PD _).2 ⟨⟨p, hpZ⟩, hp, rfl⟩`. Introduce `p hp`. Establish `hpZ : p ∈ latticeCocycles L'` using `hp.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hnat]`. Use `mem_span_sup_ImF PD F cls hcls ((((PD.p : ℕ) : O) ^ e) • (⟨p, hpZ⟩ : ↥(latticeCocycles L'))) ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `h1 _ ((mem_H1fT_iff PD _).2 ⟨⟨p, hpZ⟩, hp, rfl⟩)`. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hnat]`. Establish `hle : Submodule.span O (↑(liftS PD cls) : Set (G → V')) ≤ (F.ImF PD).comap ((((PD.p : ℕ) : O) ^ e') • (LinearMap.id : (G → V') →ₗ[O] (G → V')))`. Rewrite using `[Submodule.span_le]`. Introduce `q hq`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hq)`.
-
-Use `mem_ImF_of_cls PD F ((((PD.p : ℕ) : O) ^ e') • liftZ PD x) (by` as an intermediate fact. Rewrite using `[map_smul, liftZ_cls PD (hcls hx)]`. Conclude with `h2 x hx)`. Conclude with `this`. Conclude with `hle hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_le_of_span (hI : F.ImF PD ≤ latticeFiniteCocycles PD L') (gens cls : Finset (LatticeCohomology L')) (g e e' : ℕ)
     (hgens : Submodule.span O (↑gens : Set (LatticeCohomology L')) = latticeFiniteCohomology PD L') (hg : gens.card ≤ g)
@@ -214,7 +212,7 @@ theorem col_le_of_span (hI : F.ImF PD ≤ latticeFiniteCocycles PD L') (gens cls
     exact hle hp
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `(mem_H1fT_iff PD x).1 hx`. Rewrite using `[← map_smul]`. Conclude with `cls_mem_of_ImF PD F _ (hL c hc)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_of_LiftF {e' : ℕ} (hL : F.LiftF PD e') (x : LatticeCohomology L') (hx : x ∈ latticeFiniteCohomology PD L') :
     (((PD.p : ℕ) : O) ^ e') • x ∈ (latticeFiniteCohomology PD L).map F.H1map := by
@@ -235,7 +233,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Establish `: IsTopologicalAddGroup T₁.V` using `IsModuleTopology.topologicalAddGroup LL T₁.V`. Establish `: IsTopologicalAddGroup T₂.V` using `IsModuleTopology.topologicalAddGroup LL T₂.V`. Conclude with `(finiteCocycles_properties.2.2.2 G Qp K₀ K B BdR PD LL O T₁.V T₂.V T₁.ρ T₂.ρ T₁.L T₂.L F T₂.cont).1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ImF_le (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) : F.ImF PD ≤ latticeFiniteCocycles PD T₂.L := by
@@ -244,11 +242,11 @@ theorem ImF_le (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O
   exact (finiteCocycles_properties.2.2.2 G Qp K₀ K B BdR PD LL O T₁.V T₂.V T₁.ρ T₂.ρ T₁.L T₂.L F T₂.cont).1
 
 /- English proof (translation)
-Establish `h` using `col_le_of_span PD F (ImF_le PD F) gens cls g e e' hgens hg hcls h1 h2`. Rewrite `h` using `[hk]`. Establish `h' : F.col PD ≤ (((g * e + cls.card * e') * k : ℕ) : ℕ∞)`. Rewrite using `[Nat.cast_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨mm, hmm⟩` from `ENat.ne_top_iff_exists.1 (ne_top_of_le_ne_top (ENat.natCast_ne_top _) h')`. Use `⟨mm, k, hmm.symm, hk, ?_⟩` and prove the remaining obligations. Rewrite `h'` using `[← hmm]`. Establish `h3 : mm ≤ (g * e + cls.card * e') * k` using `by exact_mod_cast h'`. Establish `h4 : (mm : ℝ) ≤ (((g * e + cls.card * e') * k : ℕ) : ℝ)` using `by exact_mod_cast h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h4`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem colLeR_of_span (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (gens cls : Finset (LatticeCohomology T₂.L)) (g e e' k : ℕ)
@@ -272,7 +270,7 @@ theorem colLeR_of_span (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G
   exact h4
 
 /- English proof (translation)
-Establish `h` using `colLeR_of_span PD F gens ∅ g e 0 k hk hgens hg (by simp) (fun x hx => Submodule.mem_sup_right (cls_of_LiftF PD F hL x hx)) (by simp)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem colLeR_of_liftF (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (gens : Finset (LatticeCohomology T₂.L)) (g e k : ℕ)
@@ -285,7 +283,7 @@ theorem colLeR_of_liftF (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat 
   simpa using h
 
 /- English proof (translation)
-Take `⟨mm, k, h1, h2, h3⟩` from `h`. Conclude with `⟨mm, k, h1, h2, le_trans h3 (mul_le_mul_of_nonneg_right hxy (Nat.cast_nonneg k))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem colLeR_mono (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) {x y : ℝ} (hxy : x ≤ y) (h : Formalism.MainNotions.TruncatedSeriesCountingBounds.ColLeR PD F x) :
@@ -332,24 +330,22 @@ section Fin
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Conclude with `IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem OL_finite (LL : FinExt l) : Module.Finite ℤ_[l] ↥(OL LL) := by
   have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   exact IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
 /- English proof (translation)
-Use `OL_finite LL` as an intermediate fact. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' ℤ_[l] ↥(OL LL)`. Set `g : (Fin n → Fin l) → (↥(OL LL) ⧸ Ideal.span {((l : ℕ) : ↥(OL LL))})` to `fun r => Ideal.Quotient.mk _ (f fun i => ((r i : ℕ) : ℤ_[l]))`. Apply `Finite.of_surjective g` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨a, rfl⟩` from `hf y`. Establish `hrep : ∀ i, ∃ b : ℤ_[l], a i = ((a i).zmodRepr : ℤ_[l]) + (l : ℤ_[l]) * b`. Introduce `i`. Establish `h` using `PadicInt.sub_zmodRepr_mem (a i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Take `⟨b, hb⟩` from `h`. Conclude with `⟨b, by rw [← hb]; ring⟩`. Use `choose b hb using hrep`. Use `⟨fun i => ⟨(a i).zmodRepr, PadicInt.zmodRepr_lt_p _⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha : a = (fun i => (((a i).zmodRepr : ℕ) : ℤ_[l])) + (l : ℕ) • b`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, Pi.smul_apply, nsmul_eq_mul]`. Conclude with `hb i`. Establish `hfa : f a = f (fun i => (((a i).zmodRepr : ℕ) : ℤ_[l])) + ((l : ℕ) : ↥(OL LL)) * f b` using `by conv_lhs => rw [ha]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_nsmul, nsmul_eq_mul]`. Use `show Ideal.Quotient.mk _ (f fun i => (((a i).zmodRepr : ℕ) : ℤ_[l])) = Ideal.Quotient.mk _ (f a)`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Use `⟨- f b, ?_⟩` and prove the remaining obligations. Rewrite using `[hfa]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem OL_quot_finite (LL : FinExt l) :
     Finite (↥(OL LL) ⧸ Ideal.span {((l : ℕ) : ↥(OL LL))}) := by
@@ -383,7 +379,7 @@ theorem OL_quot_finite (LL : FinExt l) :
   ring
 
 /- English proof (translation)
-Establish `h1 : IsFiniteLength R (R ⧸ I)` using `isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨inferInstance, inferInstance⟩`. Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.1 (Module.length_ne_top_iff.2 h1)`. Conclude with `⟨k, hk.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem len_finite_of_finite (R : Type) [CommRing R] (I : Ideal R) [Finite (R ⧸ I)] :
     ∃ k : ℕ, Module.length R (R ⧸ I) = (k : ℕ∞) := by
@@ -393,7 +389,7 @@ theorem len_finite_of_finite (R : Type) [CommRing R] (I : Ideal R) [Finite (R �
   exact ⟨k, hk.symm⟩
 
 /- English proof (translation)
-Unfold `lenOl`. Rewrite using `[P.PD_p K]`. Use `OL_quot_finite LL` as an intermediate fact. Conclude with `len_finite_of_finite _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lenOl_finite (P : LocPrime l) (K LL : FinExt l) :
     ∃ k : ℕ, lenOl (P.PD K) (O := ↥(OL LL)) = (k : ℕ∞) := by
@@ -416,7 +412,7 @@ def tyA {n : ℕ} (b η : ℕ) (up : ZMod n → Bool) (size : ZMod n → ℕ) (i
   else LT.thin
 
 /- English proof (translation)
-Unfold `tyA`. Distinguish the cases in `h : Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size i`. Apply the tactic sequence `by_cases hu : up i = true <;> simp [h, hu, LT.thick]`. Simplify using `[h, LT.thick]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem tyA_thick {n : ℕ} (b η : ℕ) (up : ZMod n → Bool) (size : ZMod n → ℕ) (i : ZMod n) :
     (tyA b η up size i).thick = true ↔ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size i := by
@@ -426,9 +422,9 @@ theorem tyA_thick {n : ℕ} (b η : ℕ) (up : ZMod n → Bool) (size : ZMod n �
   · simp [h, LT.thick]
 
 /- English proof (translation)
-Introduce `a ha k hk1 hkj hak k' hk'1 hk'j`. Break down `h a ha with h1 | ⟨d, hd1, hdj, _, h2⟩` into its components or cases. Conclude with `absurd hak (h1 k hk1 hkj)`. Establish `hkd : k = d`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Conclude with `h2 k hk1 (by omega) hne hak`. Substitute `hkd` using the available equality. Use `h2 (k + k') (by omega) (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[Nat.cast_add, ← sub_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem clusters_sep {n : ℕ} {j : ℕ} {thick : ZMod n → Prop} (h : Formalism.MainNotions.TruncatedSeriesCountingBounds.Clusters j thick) :
     ∀ a : ZMod n, thick a → ∀ k : ℕ, 1 ≤ k → k ≤ j → thick (a - k) →

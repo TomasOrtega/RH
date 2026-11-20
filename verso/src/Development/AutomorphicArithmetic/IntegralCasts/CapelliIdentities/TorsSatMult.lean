@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `M _ L N h x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact N.zero_mem⟩`. Consider the case `add y z _ _ hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `N.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `N.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `N.smul_mem a hbz`. Consider the case `smul c y _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hay⟩` from `hy`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `N.smul_mem c hay`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi35.torsSat_mult :
     ∀ {M : Type} [inst : AddCommGroup M] (L : Set M)

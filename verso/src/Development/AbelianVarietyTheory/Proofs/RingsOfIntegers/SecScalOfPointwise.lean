@@ -26,9 +26,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 variable {X X' Y Y' W W' Z : Scheme.{0}}
 
 /- English proof (translation)
-Unfold `GeneratorPullback.SecScal resTop at H`. Establish `hV : r z ∈ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))` using `⟨hJ.mem φ₁ r, hJ.mem (fun k => h ≫ φ₂ k) r⟩`. Establish `hW : h (r z) ∈ LB.wchart L φ₂ (fun k => J (r ≫ h ≫ φ₂ k))` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hV.2 k`. Establish `hc : LB.Coh L (Sum.elim φ₁ fun k => h ≫ φ₂ k) (Sum.elim (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ₂ k)))`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> simp only [Sum.elim_inl, Sum.elim_inr] at e ⊢ <;> rw [e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[sval_of s₂ (r ≫ h) z J (fun k => J (r ≫ h ≫ φ₂ k)) (fun k => by rw [Category.assoc]), sval_of s₁ r z J (fun k => J (r ≫ φ₁ k)) (fun k => rfl)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sval_of_secScal {L : LB X} {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)}
@@ -53,11 +53,11 @@ theorem sval_of_secScal {L : LB X} {K₁ K₂ : Type} [Fintype K₁] [Fintype K�
     _ = _ := congrArg₂ (· * ·) (gs_res r z _ hV _) (gs_res r z _ hV _)
 
 /- English proof (translation)
-Unfold `GeneratorPullback.SecScal resTop`. Introduce `j₁ j₂ hc`. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Take `⟨J, hJ, hJj⟩` from `exists_good L hL y (Sum.elim φ₁ fun k => h ≫ φ₂ k) (Sum.elim j₁ j₂) hc (by`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `(k | k)`. Conclude with `Set.mem_iInter.1 hy.1 k`. Conclude with `Set.mem_iInter.1 hy.2 k)`. Establish `hW : h y ∈ LB.wchart L φ₂ j₂` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 k`. Establish `e` using `H y J hJ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `e` using `[sval_of s₂ (𝟙 Y' ≫ h) y J j₂ (fun k => by simpa using hJj (Sum.inr k)), sval_of s₁ (𝟙 Y') y J j₁ (fun k => by simpa using hJj (Sum.inl k))]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem secScal_of_pointwise {L : LB X} (hL : L.IsLB) {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ}
@@ -87,7 +87,7 @@ theorem secScal_of_pointwise {L : LB X} (hL : L.IsLB) {K₁ K₂ : Type} [Fintyp
 variable {M : LB X} {M' : LB X'} {j : ℕ} {pr : Fin j → (X' ⟶ X)}
 
 /- English proof (translation)
-Establish `hq : q y ∈ LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' (fun a i => J ((q ≫ φ' a) ≫ pr i)) ⊓ LB.wchart M' φ' (fun a => J' (q ≫ φ' a))` using `⟨Good.mem (L := LB.LinComb M pr (fun _ => 1)) (J := fun ψ i => J (ψ ≫ pr i)) (fun ψ => hJ.mem pr ψ) φ' q, hJ'.mem φ' q⟩`. Establish `key` using `congrArg (gs q y _) (H (fun a i => J ((q ≫ φ' a) ≫ pr i)) (fun a => J' (q ≫ φ' a)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem box_sval (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [Fintype K] {φ' : K → (Y' ⟶ X')}
     {φ : Fin j → K → (Y ⟶ X)} {ε : K → ℤ} {ρ : Fin j → (Y' ⟶ Y)}
@@ -120,7 +120,7 @@ theorem box_sval (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [Fint
             (sval_of (s i) (q ≫ ρ i) y J _ (fun a => by simp only [Category.assoc, hφ])).symm
 
 /- English proof (translation)
-Unfold `scal`. Establish `e` using `gs_pull (𝟙 Z) r z ⊤ trivial ((Scheme.Hom.appTop p).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c))`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[← e, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_scal {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z) (c : R) :
     gs r z ⊤ (scal p c) = gs (𝟙 _) z ⊤ (scal (r ≫ p) c) := by
@@ -131,7 +131,7 @@ theorem gs_scal {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (r :
   rfl
 
 /- English proof (translation)
-Establish `hsc : (∏ i, scal p' (r i)) = scal p' (∏ i, r i)`. Simplify using `only [scal, map_prod]`. Rewrite using `[← hsc, gs_prod (𝟙 _) y ⊤ trivial Finset.univ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_scal, Category.id_comp, hρ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_scal_prod {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (p' : Y' ⟶ Spec (CommRingCat.of R))
     (ρ : Fin j → (Y' ⟶ Y)) (hρ : ∀ i, ρ i ≫ p = p') (y : Y') (r : Fin j → R) :
@@ -143,11 +143,11 @@ theorem gs_scal_prod {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R))
   rw [gs_scal, Category.id_comp, hρ]
 
 /- English proof (translation)
-Apply `secScal_of_pointwise hM'` to reduce the goal to its premises. Introduce `y J' hJ'`. Take `⟨J, hJ, -⟩` from `exists_good M hM y (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `hs` using `Hs y J J' hJ hJ'`. Establish `ht` using `Ht y J J' hJ hJ'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hci` using `hc y`. Establish `hH : ∀ i, sval (t i) (h' ≫ σ i) y J = gs (𝟙 Y' ≫ ρ i) y ⊤ (c i) * sval (s i) (𝟙 Y' ≫ ρ i) y J` using `fun i => by rw [← sval_of_secScal (H i) (𝟙 Y' ≫ ρ i) y hJ, Category.id_comp, ← e i]`. Simplify using `only [Category.id_comp] at hs hH hci ⊢`. Simplify using `only [← e'] at ht`. Use `(Units.isUnit (∏ a, bw w (φ' a) y (fun i => J (φ' a ≫ pr i)) (J' (φ' a)) ^ ε a)).mul_left_cancel ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ht, Finset.prod_congr rfl (fun i _ => hH i), Finset.prod_mul_distrib, hci, ← hs, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secScal_box (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1)))
     {K : Type} [Fintype K] {ε : K → ℤ}
@@ -184,9 +184,9 @@ end Generic
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `R _ _ I j D D' pD k Fs f r hF F' hB α'`. Establish `e1 : ∀ i, (D'.toPre.prB (FractionRing R)).left ≫ (pD.pw.pr i).left = prB pD (FractionRing R) i ≫ (D.toPre.prB (FractionRing R)).left`. Introduce `i`. Unfold `prB DegPre.prB`. Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ i, prB pD (FractionRing R) i ≫ (D.toPre.BF (FractionRing R)).hom = (D'.toPre.BF (FractionRing R)).hom` using `fun i => Over.w (TF (FractionRing R) ◁ pD.pw.pr i)`. Take `⟨hφ, hBα⟩` from `hB α'`. Take `⟨hφB, hBB⟩` from `isBoxFamB_boxFamB pD k f α'`. Conclude with `secScal_box D.toPre.P.isLB D'.toPre.P.isLB pD.w (ρ := fun i => prB pD (FractionRing R) i) (σ := fun i => (pD.pw.pr i).left) (h' := (D'.toPre.prB (FractionRing R)).left) (h := (D.toPre.prB (FractionRing R)).left) (fun a => GC.famφ_eq D'.toPre (FractionRing R) α' a) e1 (F'.s α') (f …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (j : ℕ) (D D' : DegData R I) (pD : IsPowDeg D'.toPre D.toPre j) (k : ℕ) (Fs : Fin j → Fam D.toPre (FractionRing R) k) (f : Fin j → ∀ α : D.toPre.X, D.toPre.SecB k α) (r : Fin j → R), (∀ i α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) α) (DegPre.famε k) ((Fs i).s α) (D.toPre.famφB α) (DegPre.famε k) (f i α) (DegPre.prB D.toPre (FractionRing R)).left (scal (DegPre.BF D.toPre (FractionRing R)).hom (r i))) → ∀ (F' : Fam D'.toPre (FractionRing R) k), IsBoxFam pD (FractionRing R) k F' Fs → ∀ α' : D'.toPre.X, GeneratorPullback.SecScal D'.toPre.P.L (DegPre.famφ D'.toPre (FractionRing R) α') (DegPre.famε k) (F'.s α') (D'.toPre.famφB α') (DegPre.famε k) (boxFamB pD k f α') (DegPre.prB D'.toPre (FractionRing R)).left (scal (DegPre.BF D'.toPre (FractionRing R)).hom (∏ i, r i)) := by
   intro R _ _ I j D D' pD k Fs f r hF F' hB α'

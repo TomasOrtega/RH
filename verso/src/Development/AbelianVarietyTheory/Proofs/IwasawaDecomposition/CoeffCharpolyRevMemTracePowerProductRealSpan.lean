@@ -10,17 +10,17 @@ open scoped Matrix
 namespace GlobalTheory.GoodMetric.ChernSpan
 
 /- English proof (translation)
-Unfold `TrSpan at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f h`. Take `⟨l, hl, hw, rfl⟩` from `h`. Use `Submodule.subset_span ⟨(τ, j) :: l, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `hj`. Conclude with `hl x hx`. Simplify using `[hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `A`. Simplify using `[trProd]`. Consider the case `zero`. Establish `: (fun A : Mat m S => ((A τ) ^ j).trace * (0 : Mat m S → S) A) = 0`. Use function extensionality and compare the values at `A`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add f g _ _ hf hg`. Establish `: (fun A : Mat m S => ((A τ) ^ j).trace * (f + g) A) = (fun A : Mat m S => ((A τ) ^ j).trace * f A) + (fun A : Mat m S => ((A τ) ^ j).trace * g A)`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `A`. Simplify using `[mul_add]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hf hg`. Consider the case `smul c f _ hf`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun A : Mat m S => ((A τ) ^ j).trace * (c • f) A) = c • (fun A : Mat m S => ((A τ) ^ j).trace * f A)`. Use function extensionality and compare the values at `A`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c hf`.
+A detailed English derivation is pending.
 -/
 theorem trace_pow_mul_mem_trSpan {ι : Type} (m : ι → ℕ) (S : Type) [CommRing S] [Algebra ℝ S] (τ : ι)
     (j w : ℕ) (hj : 1 ≤ j) (f : Mat m S → S) (hf : f ∈ TrSpan m w S) :
@@ -53,15 +53,15 @@ theorem trace_pow_mul_mem_trSpan {ι : Type} (m : ι → ℕ) (S : Type) [CommRi
     rw [this]; exact Submodule.smul_mem _ c hf
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Use `Submodule.subset_span ⟨[], by simp, by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `A`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[trProd, Polynomial.coeff_zero_eq_eval_zero, Matrix.eval_charpolyRev]`. Establish `hk' : (k : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `key : (fun A : Mat m S => (Matrix.charpolyRev (-(A τ))).coeff k) = (-(k : ℝ)⁻¹) • ∑ i ∈ Finset.range k, ((-1 : ℝ) ^ (i + 1)) • (fun A : Mat m S => ((A τ) ^ (i + 1)).trace * (Matrix.charpolyRev (-(A τ))).coeff (k - 1 - i))`. Use function extensionality and compare the values at `A`. Establish `h` using `GlobalTheory.natCast_mul_coeff_charpolyRev (-(A τ)) k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e : ∀ i : ℕ, ((-(A τ)) ^ (i + 1)).trace = ((-1 : ℝ) ^ (i + 1)) • ((A τ) ^ (i + 1)).trace`. Introduce `i`. Rewrite using `[← neg_one_smul ℝ (A τ), smul_pow, Matrix.trace_smul]`. Simplify using `only [e, smul_mul_assoc] at h`. Simplify using `only [Pi.smul_apply, Finset.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[neg_smul, ← smul_neg, ← h, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, inv_mul_cancel₀ hk', one_smul]`. Rewrite using `[key]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `h` using `trace_pow_mul_mem_trSpan m S τ (i + 1) (k - 1 - i) (by omega) _ (ih (k - 1 - i) (by omega))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[show i + 1 + (k - 1 - i) = k by omega]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coeff_charpolyRev_mem_trSpan {ι : Type} (m : ι → ℕ) (S : Type) [CommRing S] [Algebra ℝ S]
     (τ : ι) (k : ℕ) :

@@ -17,7 +17,7 @@ def cmp (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (x : F.M) (m : Deg k) :
   (DirectSum.decompose F.gr x m : F.M)
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Conclude with `(DirectSum.decompose F.gr x m).2`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cmp_mem (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (x : F.M) (m : Deg k) :
     cmp F h x m ∈ F.gr m := by
@@ -25,7 +25,7 @@ theorem cmp_mem (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (x : F.M) (m : 
   exact (DirectSum.decompose F.gr x m).2
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Conclude with `DirectSum.decompose_of_mem_same F.gr hx`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cmp_of_mem (F : GMod B R k) (h : DirectSum.IsInternal F.gr) {x : F.M} {m : Deg k}
     (hx : x ∈ F.gr m) : cmp F h x m = x := by
@@ -33,7 +33,7 @@ theorem cmp_of_mem (F : GMod B R k) (h : DirectSum.IsInternal F.gr) {x : F.M} {m
   exact DirectSum.decompose_of_mem_same F.gr hx
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Conclude with `DirectSum.decompose_of_mem_ne F.gr hx hn`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cmp_of_mem_ne (F : GMod B R k) (h : DirectSum.IsInternal F.gr) {x : F.M} {n m : Deg k}
     (hx : x ∈ F.gr n) (hn : n ≠ m) : cmp F h x m = 0 := by
@@ -41,7 +41,7 @@ theorem cmp_of_mem_ne (F : GMod B R k) (h : DirectSum.IsInternal F.gr) {x : F.M}
   exact DirectSum.decompose_of_mem_ne F.gr hx hn
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Simplify using `[cmp]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 -/
 theorem cmp_zero (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (m : Deg k) :
     cmp F h 0 m = 0 := by
@@ -49,7 +49,7 @@ theorem cmp_zero (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (m : Deg k) :
   simp [cmp]
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Simplify using `[cmp]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 -/
 theorem cmp_add (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (x y : F.M) (m : Deg k) :
     cmp F h (x + y) m = cmp F h x m + cmp F h y m := by
@@ -57,7 +57,7 @@ theorem cmp_add (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (x y : F.M) (m 
   simp [cmp]
 
 /- English proof (translation)
-Set `_` to `h.chooseDecomposition`. Conclude with `⟨_, DirectSum.sum_support_decompose F.gr x⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem sum_cmp (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (x : F.M) :
     ∃ S : Finset (Deg k), ∑ m ∈ S, cmp F h x m = x := by
@@ -66,9 +66,9 @@ theorem sum_cmp (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (x : F.M) :
   exact ⟨_, DirectSum.sum_support_decompose F.gr x⟩
 
 /- English proof (translation)
-Set `_` to `hG.chooseDecomposition`. Proceed by induction on `x using DirectSum.Decomposition.inductionOn G.gr with`. Consider the case `zero => rw [map_zero, cmp_zero, cmp_zero, map_zero]`. Consider the case `@homogeneous n y`. Distinguish the cases in `hn : n = m`.
+Introduce a local definition for the expression. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Substitute `hn` using the available equality. Rewrite using `[cmp_of_mem _ _ y.2, cmp_of_mem _ _ (hφ _ _ y.2)]`. Rewrite using `[cmp_of_mem_ne _ _ y.2 hn, cmp_of_mem_ne _ _ (hφ _ _ y.2) hn, map_zero]`. Consider the case `add a b ha hb => rw [map_add, cmp_add, cmp_add, map_add, ha, hb]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem hom_cmp {G H : GMod B R k} (hG : DirectSum.IsInternal G.gr)
     (hH : DirectSum.IsInternal H.gr) (φ : G.M →ₗ[R] H.M)
@@ -85,9 +85,7 @@ theorem hom_cmp {G H : GMod B R k} (hG : DirectSum.IsInternal G.gr)
   | add a b ha hb => rw [map_add, cmp_add, cmp_add, map_add, ha, hb]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨S, hS⟩` from `sum_cmp F h x`. Rewrite using `[← hS]`. Conclude with `Submodule.sum_mem _ (fun m _ => Submodule.subset_span ⟨hN x hx m, m, cmp_mem F h x m⟩)`.
-
-Conclude with `Submodule.span_le.2 (fun x hx => hx.1)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomSub_of_cmp (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (N : Submodule R F.M)
     (hN : ∀ x ∈ N, ∀ m, cmp F h x m ∈ N) : F.IsHomSub N := by
@@ -99,7 +97,7 @@ theorem isHomSub_of_cmp (F : GMod B R k) (h : DirectSum.IsInternal F.gr) (N : Su
   · exact Submodule.span_le.2 (fun x hx => hx.1)
 
 /- English proof (translation)
-Use `isHomSub_of_cmp G hG _ (fun x hx m => ?_)` and prove the remaining obligations. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← hom_cmp hG hH φ hφ, hx, cmp_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHomSub_ker {G H : GMod B R k} (hG : DirectSum.IsInternal G.gr)
     (hH : DirectSum.IsInternal H.gr) (φ : G.M →ₗ[R] H.M)
@@ -109,7 +107,7 @@ theorem isHomSub_ker {G H : GMod B R k} (hG : DirectSum.IsInternal G.gr)
   rw [← hom_cmp hG hH φ hφ, hx, cmp_zero]
 
 /- English proof (translation)
-Use `isHomSub_of_cmp H hH _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ m`. Conclude with `⟨cmp G hG x m, (hom_cmp hG hH φ hφ x m).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isHomSub_range {G H : GMod B R k} (hG : DirectSum.IsInternal G.gr)
     (hH : DirectSum.IsInternal H.gr) (φ : G.M →ₗ[R] H.M)
@@ -151,11 +149,11 @@ def sesHom {G H : GMod B R k} (hG : DirectSum.IsInternal G.gr)
       exact hφ m z hz
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil`. Introduce `F hF m`. Simplify using `only [chi]`. Rewrite using `[Module.length_eq_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Introduce `F hF m`. Simplify using `only [chi]`.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1 : Subsingleton (F.quot s).M` using `inferInstanceAs (Subsingleton (F.M ⧸ LinearMap.range (LinearMap.lsmul R F.M s)))`. Establish `h2 : Subsingleton (F.ann s d).M` using `inferInstanceAs (Subsingleton (LinearMap.ker (LinearMap.lsmul R F.M s)))`. Rewrite using `[ih _ h1, ih _ h2, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_subsingleton (ts : List (Deg k × R)) :
     ∀ (F : GMod B R k), Subsingleton F.M → ∀ m, chi ts F m = 0 := by
@@ -208,7 +206,7 @@ def quotMap {G H : GMod B R k} (φ : G.M →ₗ[R] H.M) (s : R) :
       exact ⟨φ x, (map_smul φ s x).symm⟩)
 
 /- English proof (translation)
-Introduce `m x hx` and use `hφ (m - d) x.1 hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem annMap_gr {G H : GMod B R k} (φ : G.M →ₗ[R] H.M)
     (hφ : ∀ m, ∀ x ∈ G.gr m, φ x ∈ H.gr m) (s : R) (d : Deg k) :
@@ -216,7 +214,7 @@ theorem annMap_gr {G H : GMod B R k} (φ : G.M →ₗ[R] H.M)
   fun m x hx => hφ (m - d) x.1 hx
 
 /- English proof (translation)
-Introduce and unpack `m _ ⟨x, hx, rfl⟩`. Conclude with `⟨φ x, hφ m x hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem quotMap_gr {G H : GMod B R k} (φ : G.M →ₗ[R] H.M)
     (hφ : ∀ m, ∀ x ∈ G.gr m, φ x ∈ H.gr m) (s : R) :
@@ -227,7 +225,7 @@ theorem quotMap_gr {G H : GMod B R k} (φ : G.M →ₗ[R] H.M)
 variable {F' F F'' : GMod B R k} (S : SES F' F F'') (s : R) (d : Deg k)
 
 /- English proof (translation)
-Introduce `m x hx`. Rewrite `hx` using `[S.f_gr]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem f_gr' : ∀ m, ∀ x ∈ F'.gr m, S.f x ∈ F.gr m := by
   intro m x hx
@@ -235,7 +233,7 @@ theorem f_gr' : ∀ m, ∀ x ∈ F'.gr m, S.f x ∈ F.gr m := by
   exact hx
 
 /- English proof (translation)
-Introduce `m x hx`. Rewrite using `[S.g_gr]`. Conclude with `⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem g_gr' : ∀ m, ∀ x ∈ F.gr m, S.g x ∈ F''.gr m := by
   intro m x hx
@@ -250,7 +248,7 @@ def delta : (F''.ann s d).M →ₗ[R] (F'.quot s).M :=
     S.surj S.inj
 
 /- English proof (translation)
-The claim follows from `SnakeLemma.δ'_eq _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ x y hy z hz`.
+A detailed English derivation is pending.
 -/
 theorem delta_eq (x : (F''.ann s d).M) (y : F.M) (hy : S.g y = x.1) (z : F'.M)
     (hz : S.f z = s • y) :
@@ -258,7 +256,7 @@ theorem delta_eq (x : (F''.ann s d).M) (y : F.M) (hy : S.g y = x.1) (z : F'.M)
   SnakeLemma.δ'_eq _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ x y hy z hz
 
 /- English proof (translation)
-The claim follows from `SnakeLemma.exact_δ'_right _ _ _ _ _ _ _ _ _ _ _ (LinearMap.ker (LinearMap.lsmul R F.M s)).subtype (LinearMap.exact_subtype_ker_map _) _ _ _ _ _ _ (annMap S.g s d) (by ext x; rfl) Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem exact_ann_delta : Function.Exact (annMap S.g s d) (delta S s d) :=
   SnakeLemma.exact_δ'_right _ _ _ _ _ _ _ _ _ _ _
@@ -266,7 +264,7 @@ theorem exact_ann_delta : Function.Exact (annMap S.g s d) (delta S s d) :=
     _ _ _ _ _ _ (annMap S.g s d) (by ext x; rfl) Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `SnakeLemma.exact_δ'_left _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (LinearMap.range (LinearMap.lsmul R F.M s)).mkQ (LinearMap.exact_map_mkQ_range _) _ _ (quotMap S.f s) (by ext x; rfl) (Submodule.mkQ_surjective _)`.
+A detailed English derivation is pending.
 -/
 theorem exact_delta_quot : Function.Exact (delta S s d) (quotMap S.f s) :=
   SnakeLemma.exact_δ'_left _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
@@ -274,13 +272,11 @@ theorem exact_delta_quot : Function.Exact (delta S s d) (quotMap S.f s) :=
     _ _ (quotMap S.f s) (by ext x; rfl) (Submodule.mkQ_surjective _)
 
 /- English proof (translation)
-Introduce `m x hx`. Establish `hx' : (x.1 : F''.M) ∈ F''.gr (m - d)` using `hx`. Rewrite `hx'` using `[S.g_gr]`. Take `⟨y, hy, hyx⟩` from `hx'`. Establish `hyx' : S.g y = x.1` using `hyx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : S.g (s • y) = 0`. Rewrite using `[map_smul, hyx']`. Conclude with `x.2`. Take `⟨z, hz⟩` from `(S.exact _).1 h0`. Rewrite using `[delta_eq S s d x y hyx' z hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[S.f_gr]`. Use `show S.f z ∈ F.gr m`. Rewrite using `[hz]`. Use `hs (m - d) y hy` as an intermediate fact.
-
-Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem delta_gr (hs : ∀ m, ∀ x ∈ F.gr m, s • x ∈ F.gr (d + m)) :
     ∀ m, ∀ x ∈ (F''.ann s d).gr m, delta S s d x ∈ (F'.quot s).gr m := by
@@ -302,18 +298,16 @@ theorem delta_gr (hs : ∀ m, ∀ x ∈ F.gr m, s • x ∈ F.gr (d + m)) :
   rwa [add_sub_cancel] at this
 
 /- English proof (translation)
-Introduce `x y hxy`. Conclude with `Subtype.ext (S.inj (congrArg Subtype.val hxy))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem annMap_f_inj : Function.Injective (annMap S.f s d) := by
   intro x y hxy
   exact Subtype.ext (S.inj (congrArg Subtype.val hxy))
 
 /- English proof (translation)
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : S.g x.1 = 0` using `congrArg Subtype.val hx`. Take `⟨y, hy⟩` from `(S.exact _).1 hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨y, ?_⟩, Subtype.ext hy⟩` and prove the remaining obligations. Use `show s • y = 0`. Apply `S.inj` to reduce the goal to its premises. Rewrite using `[map_smul, hy, map_zero]`. Conclude with `x.2`.
-
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `Subtype.ext ((S.exact _).2 ⟨y.1, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exact_ann : Function.Exact (annMap S.f s d) (annMap S.g s d) := by
   intro x
@@ -330,13 +324,13 @@ theorem exact_ann : Function.Exact (annMap S.f s d) (annMap S.g s d) := by
     exact Subtype.ext ((S.exact _).2 ⟨y.1, rfl⟩)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : (LinearMap.range (LinearMap.lsmul R F''.M s)).mkQ (S.g x) = 0` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨w, hw⟩` from `hx'`. Take `⟨z, rfl⟩` from `S.surj w`. Establish `hw' : s • S.g z = S.g x` using `hw`. Establish `h0 : S.g (x - s • z) = 0` using `by rw [map_sub, map_smul, hw', sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(S.exact _).1 h0`. Use `⟨(LinearMap.range (LinearMap.lsmul R F'.M s)).mkQ y, ?_⟩` and prove the remaining obligations. Use `show (LinearMap.range (LinearMap.lsmul R F.M s)).mkQ (S.f y) = _`. Rewrite using `[hy, map_sub, sub_eq_self, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨z, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Rewrite using `[← hy]`. Use `show (LinearMap.range (LinearMap.lsmul R F''.M s)).mkQ (S.g (S.f y)) = 0`. Rewrite using `[(S.exact _).2 ⟨y, rfl⟩, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_quot : Function.Exact (quotMap S.f s) (quotMap S.g s) := by
   intro x
@@ -361,7 +355,7 @@ theorem exact_quot : Function.Exact (quotMap S.f s) (quotMap S.g s) := by
     rw [(S.exact _).2 ⟨y, rfl⟩, map_zero]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Take `⟨y, rfl⟩` from `S.surj x`. Conclude with `⟨(LinearMap.range (LinearMap.lsmul R F.M s)).mkQ y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotMap_g_surj : Function.Surjective (quotMap S.g s) := by
   intro x
@@ -371,7 +365,7 @@ theorem quotMap_g_surj : Function.Surjective (quotMap S.g s) := by
 
 include S in
 /- English proof (translation)
-Introduce `a ha`. Rewrite `ha`, the goal using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Apply `S.inj` to reduce the goal to its premises. Rewrite using `[map_smul, ha, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ann_le_left : F.Ann ≤ F'.Ann := by
   intro a ha
@@ -382,7 +376,7 @@ theorem ann_le_left : F.Ann ≤ F'.Ann := by
 
 include S in
 /- English proof (translation)
-Introduce `a ha`. Rewrite `ha`, the goal using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Take `⟨y, rfl⟩` from `S.surj x`. Rewrite using `[← map_smul, ha, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ann_le_right : F.Ann ≤ F''.Ann := by
   intro a ha
@@ -392,7 +386,7 @@ theorem ann_le_right : F.Ann ≤ F''.Ann := by
   rw [← map_smul, ha, map_zero]
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `ha`, the goal using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Conclude with `Subtype.ext (ha x.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ann_le_ann (G : GMod B R k) : G.Ann ≤ (G.ann s d).Ann := by
   intro a ha
@@ -401,7 +395,7 @@ theorem ann_le_ann (G : GMod B R k) : G.Ann ≤ (G.ann s d).Ann := by
   exact Subtype.ext (ha x.1)
 
 /- English proof (translation)
-Rewrite using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Conclude with `Subtype.ext x.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_ann_ann (G : GMod B R k) : s ∈ (G.ann s d).Ann := by
   rw [GMod.Ann, Module.mem_annihilator]
@@ -409,9 +403,9 @@ theorem mem_ann_ann (G : GMod B R k) : s ∈ (G.ann s d).Ann := by
   exact Subtype.ext x.2
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `ha`, the goal using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ x`. Use `show (a • (LinearMap.range (LinearMap.lsmul R G.M s)).mkQ y : G.M ⧸ LinearMap.range (LinearMap.lsmul R G.M s)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, ha, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ann_le_quot (G : GMod B R k) : G.Ann ≤ (G.quot s).Ann := by
   intro a ha
@@ -423,9 +417,9 @@ theorem ann_le_quot (G : GMod B R k) : G.Ann ≤ (G.quot s).Ann := by
   rw [← map_smul, ha, map_zero]
 
 /- English proof (translation)
-Rewrite using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ x`. Use `show (s • (LinearMap.range (LinearMap.lsmul R G.M s)).mkQ y : G.M ⧸ LinearMap.range (LinearMap.lsmul R G.M s)) = 0`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨y, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_ann_quot (G : GMod B R k) : s ∈ (G.quot s).Ann := by
   rw [GMod.Ann, Module.mem_annihilator]
@@ -437,9 +431,9 @@ theorem mem_ann_quot (G : GMod B R k) : s ∈ (G.quot s).Ann := by
   exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Use `⟨N, hN.trans (sup_le (hJ.trans le_sup_left) ?_)⟩` and prove the remaining obligations. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `t ⟨d', ht⟩`. Break down `List.mem_cons.1 ht with h1 | h1` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2 : t = s` using `(Prod.ext_iff.1 h1).2`. Rewrite using `[h2]`. Conclude with `Ideal.mem_sup_left hs`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span ⟨d', h1⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adm_of_section_mem [IsLocalRing B] (𝒜 : Deg k → Submodule B R) {ts : List (Deg k × R)}
     {J J' : Ideal R} (h : admitted 𝒜 ((d, s) :: ts) J) (hJ : J ≤ J') (hs : s ∈ J') :
@@ -457,13 +451,13 @@ theorem adm_of_section_mem [IsLocalRing B] (𝒜 : Deg k → Submodule B R) {ts 
 include S in
 
 /- English proof (translation)
-Use `Module.length_eq_add_of_exact (LinearMap.restrict (S.f.restrictScalars B) (p := F'.gr m) (q := F.gr m) (f_gr' S m)) (LinearMap.restrict (S.g.restrictScalars B) (p := F.gr m) (q := F''.gr m) (g_gr' S m)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Conclude with `Subtype.ext (S.inj (congrArg Subtype.val hxy))`. Introduce and unpack `⟨x, hx⟩`. Rewrite `hx` using `[S.g_gr]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hyx⟩` from `hx`. Conclude with `⟨⟨y, hy⟩, Subtype.ext hyx⟩`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : S.g x.1 = 0` using `congrArg Subtype.val hx`. Take `⟨y, hy⟩` from `(S.exact _).1 hx'`. Use `⟨⟨y, ?_⟩, Subtype.ext hy⟩` and prove the remaining obligations. Rewrite using `[S.f_gr]`. Use `show S.f y ∈ F.gr m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hy]`. Conclude with `x.2`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `Subtype.ext ((S.exact _).2 ⟨y.1, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem length_add (m : Deg k) :
     Module.length B (F.gr m) = Module.length B (F'.gr m) + Module.length B (F''.gr m) := by
@@ -491,7 +485,7 @@ theorem length_add (m : Deg k) :
       exact Subtype.ext ((S.exact _).2 ⟨y.1, rfl⟩)
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Conclude with `chi_subsingleton ts _ (inferInstanceAs (Subsingleton (⊥ : Submodule R G.M))) m`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem chi_sub_bot (ts : List (Deg k × R)) (G : GMod B R k) (N : Submodule R G.M) (hN : N = ⊥)
     (m : Deg k) : chi ts (G.sub N) m = 0 := by
@@ -501,7 +495,7 @@ theorem chi_sub_bot (ts : List (Deg k × R)) (G : GMod B R k) (N : Submodule R G
 end Step
 
 /- English proof (translation)
-The claim follows from `ih _ _ _ ((hGr k X G hG).1 _ (isHomSub_ker hG.internal hH.internal φ hφ)).1 hG ((hGr k X H hH).1 _ (isHomSub_range hG.internal hH.internal φ hφ)).1 (sesHom hG.internal hH.internal φ hφ) hA`.
+A detailed English derivation is pending.
 -/
 theorem add_of_hom {k : ℕ} (X : HidaSetting k) (hGr : RuleGr) (ts : List (Deg k × X.R))
     (ih : ∀ F' F F'' : X.Mod, F'.IsGr X.𝒜 → F.IsGr X.𝒜 → F''.IsGr X.𝒜 → SES F' F F'' →
@@ -519,19 +513,19 @@ end E1
 open E1 in
 
 /- English proof (translation)
-Introduce `hGr hFin hIso k X ts`. Proceed by induction on `ts with`. Consider the case `nil`. Introduce `F' F F'' _ hF' hF hF'' S hA`. Use `filter_upwards [(hFin k X F hF).2 hA] with m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [chi]`. Rewrite `hm`, the goal using `[length_add S m]`. Rewrite using `[ENat.toNat_add (fun h => hm (by rw [h, top_add])) (fun h => hm (by rw [h, add_top]))]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Introduce `F' F F'' hV hF' hF hF'' S hA`. Establish `hs : s ∈ X.𝒜 d` using `(hV (d, s) List.mem_cons_self).2`. Establish `hV' : Valid X.𝒜 ts` using `fun p hp => hV p (List.mem_cons_of_mem _ hp)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ih'` using `fun A B C => ih A B C hV'`. Take `⟨hq', ha'⟩` from `(hGr k X F' hF').2.2 d s hs`. Take `⟨hq, ha⟩` from `(hGr k X F hF).2.2 d s hs`. Take `⟨hq'', ha''⟩` from `(hGr k X F'' hF'').2.2 d s hs`. Establish `e1` using `add_of_hom X hGr ts ih' ha' ha (annMap S.f s d) (annMap_gr _ (f_gr' S) s d) (adm_of_section_mem s d X.𝒜 hA ((ann_le_left S).trans (ann_le_ann s d F')) (mem_ann_ann s d F'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `add_of_hom X hGr ts ih' ha ha'' (annMap S.g s d) (annMap_gr _ (g_gr' S) s d) (adm_of_section_mem s d X.𝒜 hA (ann_le_ann s d F) (mem_ann_ann s d F))`. Establish `e3` using `add_of_hom X hGr ts ih' ha'' hq' (delta S s d) (delta_gr S s d (fun m x hx => hF.smul_mem hs hx)) (adm_of_section_mem s d X.𝒜 hA ((ann_le_right S).trans (ann_le_ann s d F'')) (mem_ann_ann s d F''))`. Establish `e4` using `add_of_hom X hGr ts ih' hq' hq (quotMap S.f s) (quotMap_gr _ (f_gr' S) s) (adm_of_section_mem s d X.𝒜 hA ((ann_le_left S).trans (ann_le_quot s F')) (mem_ann_quot s F'))`. Establish `e5` using `add_of_hom X hGr ts ih' hq hq'' (quotMap S.g s) (quotMap_gr _ (g_gr' S) s) (adm_of_section_mem s d X.𝒜 hA (ann_le_quot s F) (mem_ann_quot s F))`. Use `filter_upwards [e1, e2, e3, e4, e5] with m e1 e2 e3 e4 e5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [chi]`. Rewrite `e1` using `[chi_sub_bot ts _ _ (LinearMap.ker_eq_bot.2 (annMap_f_inj S s d)), zero_add, ← LinearMap.exact_iff.1 (exact_ann S s d)]`. Rewrite `e2` using `[← LinearMap.exact_iff.1 (exact_ann_delta S s d)]`. Rewrite `e3` using `[← LinearMap.exact_iff.1 (exact_delta_quot S s d)]`. Rewrite `e4` using `[← LinearMap.exact_iff.1 (exact_quot S s)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `e5` using `[hIso k X ts _ _ (topIso _ _ (LinearMap.range_eq_top.2 (quotMap_g_surj S s))) m]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem euler_additivity_of_rules : RuleGr → RuleFin → RuleIso → EulerAdditivityExactSequence := by
   intro hGr hFin hIso k X ts

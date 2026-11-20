@@ -6,7 +6,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.RadCov
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hx` using `congrFun (h (Pi.single j 1)) i`. Rewrite `hx` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Simplify using `using hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_eq_zero_of_mulVec_mulVec {p q n : ℕ} {A : Matrix (Fin p) (Fin n) ℂ}
     {B : Matrix (Fin n) (Fin q) ℂ} (h : ∀ x, A *ᵥ (B *ᵥ x) = 0) : A * B = 0 := by
@@ -16,7 +16,7 @@ theorem mul_eq_zero_of_mulVec_mulVec {p q n : ℕ} {A : Matrix (Fin p) (Fin n) �
   simpa using hx
 
 /- English proof (translation)
-Rewrite using `[hW]`. Introduce `b hb`. Rewrite using `[Matrix.mulVec_mulVec, hT.2.1 b s (by omega), Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Biorth.col_mem {n m : ℕ} {W : ℕ → Submodule ℂ (Fin n → ℂ)} {r : ℕ → ℕ}
     {T : ∀ b, Matrix (Fin n) (Fin (r b)) ℂ} {T' : ∀ b, Matrix (Fin (r b)) (Fin n) ℂ}
@@ -27,13 +27,13 @@ theorem Biorth.col_mem {n m : ℕ} {W : ℕ → Submodule ℂ (Fin n → ℂ)} {
   rw [Matrix.mulVec_mulVec, hT.2.1 b s (by omega), Matrix.zero_mulVec]
 
 /- English proof (translation)
-Establish `hAT : ∀ c, c < b → A * T c = 0` using `fun c hc => mul_eq_zero_of_mulVec_mulVec fun x => hA _ (Biorth.col_mem hT hW c b hc x)`. Establish `hTB : ∀ c, b < c → T' c * B = 0` using `fun c hc => mul_eq_zero_of_mulVec_mulVec fun x => (hW (b + 1) _).1 (hB x) c (by omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_sum, Matrix.sum_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (A * T b) * (T' b * B) := by`. Apply `Finset.sum_eq_single b` to reduce the goal to its premises. Introduce `c _ hcb`. Break down `lt_or_gt_of_ne hcb with hc | hc` into its components or cases. Rewrite using `[hAT c hc, Matrix.zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTB c hc, Matrix.mul_zero]`. Introduce `hb`. Establish `hTb : T b = 0`. Rewrite using `[← Matrix.one_mul (T b), ← hT.2.2, Matrix.sum_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Rewrite using `[Matrix.mul_assoc, hT.2.1 c b (by rintro rfl; exact hb hc), Matrix.mul_zero]`. Rewrite using `[hTb, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Biorth.mul_eq_block {n m p q : ℕ} {W : ℕ → Submodule ℂ (Fin n → ℂ)} {r : ℕ → ℕ}
     {T : ∀ b, Matrix (Fin n) (Fin (r b)) ℂ} {T' : ∀ b, Matrix (Fin (r b)) (Fin n) ℂ}
@@ -65,11 +65,9 @@ theorem Biorth.mul_eq_block {n m p q : ℕ} {W : ℕ → Submodule ℂ (Fin n �
         rw [hTb, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Use `⟨fun b => ?_, fun c Y hY b => ?_⟩` and prove the remaining obligations. Rewrite using `[← Biorth.mul_eq_block hT hWT b (fun y hy => (hWU b y).1 hy b le_rfl) (fun x => Biorth.col_mem hU hWU b (b + 1) (by omega) x)]`. Conclude with `hU.1 b`. Establish `hY' : ∀ b', ∀ y ∈ W (b' + c + 1), Y *ᵥ y ∈ W b'` using `mem_lowers.1 hY`. Establish `e1 : U' b * (Y * U (b + c + 1)) = (U' b * T b) * (T' b * (Y * U (b + c + 1)))` using `Biorth.mul_eq_block hT hWT b (fun y hy => (hWU b y).1 hy b le_rfl) (fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hY' (b + 1) _ (Biorth.col_mem hU hWU (b + c + 1) (b + 1 + c + 1) (by omega) x))`. Establish `e2 : (T' b * Y) * U (b + c + 1) = ((T' b * Y) * T (b + c + 1)) * (T' (b + c + 1) * U (b + c + 1))` using `Biorth.mul_eq_block hT hWT (b + c + 1) (fun y hy => by`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(hWT b _).1 (hY' b y hy) b le_rfl)`.
-
-Use the proof step `(fun x => Biorth.col_mem hU hWU (b + c + 1) (b + c + 1 + 1) (by omega) x)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem blockFrames_triangular (n m : ℕ) (W : ℕ → Submodule ℂ (Fin n → ℂ)) (r : ℕ → ℕ)
     (T U : ∀ b, Matrix (Fin n) (Fin (r b)) ℂ) (T' U' : ∀ b, Matrix (Fin (r b)) (Fin n) ℂ)

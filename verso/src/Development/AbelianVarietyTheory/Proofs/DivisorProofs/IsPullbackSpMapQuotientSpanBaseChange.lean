@@ -10,13 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.QuotBaseChange
 
 /- English proof (translation)
-Use `⟨⟨by ext a; exact (congr($hρ a)).symm⟩, ⟨Limits.PushoutCocone.IsColimit.mk _ (fun s => CommRingCat.ofHom (Ideal.Quotient.lift (Ideal.span {π f}) s.inl.hom ?_)) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `b hb`. Establish `e : ∀ a, s.inl.hom (π a) = s.inr.hom (Ideal.Quotient.mk _ a)` using `fun a => congr($(s.condition) a)`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Rewrite using `[map_mul, e, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self f), map_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Use extensionality with `b`. Both sides reduce to the same expression. Introduce `s`. Use extensionality with `a`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `e : s.inl.hom (π a) = s.inr.hom (Ideal.Quotient.mk _ a)` using `congr($(s.condition) a)`. Establish `e2 : ρ (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ (π a)` using `congr($hρ a)`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Rewrite using `[e2, Ideal.Quotient.lift_mk, e]`. Introduce `s m h₁ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `b`. Establish `e : m.hom (Ideal.Quotient.mk _ b) = s.inl.hom b` using `congr($h₁ b)`. Conclude with `e`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPushout_quot_span (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀) (f : R)
     (ρ : R ⧸ Ideal.span {f} →+* R₀ ⧸ Ideal.span {π f})
@@ -44,7 +44,7 @@ theorem isPushout_quot_span (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R
     exact e
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π f ρ hρ`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_quot_span R R₀ π f ρ hρ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPullback_spMap_quot : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀) (f : R) (ρ : R ⧸ Ideal.span {f} →+* R₀ ⧸ Ideal.span {π f}), ρ.comp (Ideal.Quotient.mk _) = (Ideal.Quotient.mk _).comp π → IsPullback (spMap (Ideal.Quotient.mk (Ideal.span {π f}))) (spMap ρ) (spMap π) (spMap (Ideal.Quotient.mk (Ideal.span {f}))) := by
   intro R R₀ _ _ π f ρ hρ

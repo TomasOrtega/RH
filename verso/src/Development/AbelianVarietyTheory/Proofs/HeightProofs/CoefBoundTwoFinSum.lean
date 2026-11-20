@@ -18,17 +18,17 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[], 0, by simp, fun w _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sobCont_zero_form : Sobolev₂ (lieSet ε) σ (0 : H →ₗ[ℂ] ℂ) :=
   ⟨[], 0, by simp, fun w _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨S, C, hS, hC⟩` from `h`. Take `⟨S', C', hS', hC'⟩` from `h'`. Use `⟨S ++ S', |C| + |C'|, words_append hS hS', fun w hw => ?_⟩` and prove the remaining obligations. Establish `n1` using `sobNorm_nonneg σ S w`. Establish `n2` using `sobNorm_nonneg σ S' w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1 : ‖ℓ w‖ ≤ C * sobNorm σ S w` using `hC w hw`. Establish `b2 : ‖ℓ' w‖ ≤ C' * sobNorm σ S' w` using `hC' w hw`. Use `show ‖ℓ w + ℓ' w‖ ≤ (|C| + |C'|) * sobNorm σ (S ++ S') w`. Rewrite using `[sobNorm_append]`. Establish `a1 : C * sobNorm σ S w ≤ |C| * sobNorm σ S w` using `mul_le_mul_of_nonneg_right (le_abs_self C) n1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : C' * sobNorm σ S' w ≤ |C'| * sobNorm σ S' w` using `mul_le_mul_of_nonneg_right (le_abs_self C') n2`. Establish `a3` using `abs_nonneg C`. Establish `a4` using `abs_nonneg C'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sobCont_add_form {ℓ ℓ' : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet ε) σ ℓ) (h' : Sobolev₂ (lieSet ε) σ ℓ') :
     Sobolev₂ (lieSet ε) σ (ℓ + ℓ') := by
@@ -49,9 +49,7 @@ theorem sobCont_add_form {ℓ ℓ' : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet 
     _ ≤ _ := by nlinarith
 
 /- English proof (translation)
-Take `⟨S, C, hS, hC⟩` from `h`. Use `⟨S, ‖c‖ * C, hS, fun w hw => ?_⟩` and prove the remaining obligations. Establish `b : ‖ℓ w‖ ≤ C * sobNorm σ S w` using `hC w hw`. Use `show ‖c • ℓ w‖ ≤ ‖c‖ * C * sobNorm σ S w`. Rewrite using `[norm_smul, mul_assoc]`.
-
-Conclude with `mul_le_mul_of_nonneg_left b (norm_nonneg c)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobCont_smul_form (c : ℂ) {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet ε) σ ℓ) :
     Sobolev₂ (lieSet ε) σ (c • ℓ) := by
@@ -63,7 +61,7 @@ theorem sobCont_smul_form (c : ℂ) {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (l
   exact mul_le_mul_of_nonneg_left b (norm_nonneg c)
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `using (sobCont_zero_form (ε := ε) (σ := σ) (H := H))`. Introduce `i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `sobCont_add_form (h i) ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobCont_sum_form {ι : Type} (s : Finset ι) (f : ι → H →ₗ[ℂ] ℂ) (h : ∀ i, Sobolev₂ (lieSet ε) σ (f i)) :
     Sobolev₂ (lieSet ε) σ (∑ i ∈ s, f i) := by
@@ -77,33 +75,31 @@ theorem sobCont_sum_form {ι : Type} (s : Finset ι) (f : ι → H →ₗ[ℂ] �
 end SobSum
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ h hB N`. Establish `hσ` using `h.1`. Take `⟨a, c, ha0, hc0, haK, hcK, Z, C₀, hZ, hZU, hC₀, hA⟩` from `exists_rank_one_isAvg n ε H σ h`. Establish `ha : Sm ε σ a` using `h.2.2.1 a haK`. Establish `hc : Sm ε σ c` using `h.2.2.1 c hcK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, C₁, hS, hC₁, hb2⟩` from `coefBound_two n ε H σ h hB a c ha ha0 hc hc0 N`. Take `⟨K₀, hK₀⟩` from `hZ.exists_bound_of_continuousOn (f := fun y : Mx n => (1 + hs y) ^ N) ((continuous_const.add continuous_hs).pow N).continuousOn`. Use `set K := max K₀ 0 with hKdef`. Establish `hK0 : 0 ≤ K` using `le_max_right _ _`. Establish `hK : ∀ y ∈ Z, (1 + hs y) ^ N ≤ K` using `fun y hy => ((le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hK₀ y hy)).trans (le_max_left _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S, C₁ * C₀ * K, hS, mul_nonneg (mul_nonneg hC₁ hC₀) hK0, ?_⟩` and prove the remaining obligations. Introduce `p ℓ x hℓ hx M hM hgr b w hb hw`. Set `γ : H → H → ℂ` to `fun b w => ∑ j, ⟪b, x j⟫_ℂ * ℓ j w`. Establish `h1 : ∀ b, Sm ε σ b → SobFun ε σ (γ b)`. Introduce `b _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hL` using `sobCont_sum_form (ε := ε) (σ := σ) Finset.univ (fun j => ⟪b, x j⟫_ℂ • ℓ j) (fun j => sobCont_smul_form _ (hℓ j))`. Establish `e : γ b = ⇑(∑ j, ⟪b, x j⟫_ℂ • ℓ j)`. Use function extensionality and compare the values at `w`. Simplify using `[γ, LinearMap.sum_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sobFun_of_sobCont hL`. Establish `h2 : ∀ w, Sm ε σ w → SobFun ε σ (fun b => star (γ b w))`. Introduce `w _`. Establish `hL` using `sobCont_sum_form (ε := ε) (σ := σ) Finset.univ (fun j => star (ℓ j w) • (innerSL ℂ (x j) : H →ₗ[ℂ] ℂ)) (fun j => sobCont_smul_form _ (sobCont_inner _))`. Establish `e : (fun b => star (γ b w)) = ⇑(∑ j, star (ℓ j w) • (innerSL ℂ (x j) : H →ₗ[ℂ] ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Simplify using `only [γ, star_sum, LinearMap.sum_apply, LinearMap.smul_apply, ContinuousLinearMap.coe_coe, innerSL_apply_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', mul_comm, ← inner_conj_symm, starRingEnd_apply, star_star]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sobFun_of_sobCont hL`. Establish `h3 : ∀ g ∈ UJset ε, ∀ g' ∈ UJset ε, ‖γ (σ g' c) (σ g a)‖ ≤ (C₀ * K * M) * (1 + hs g) ^ N * (1 + hs g') ^ N`. Introduce `g hg g' hg'`. Establish `hg'i` using `inv_mem_UJ hg'`. Establish `hinv : g'⁻¹⁻¹ = g'` using `Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_UJ hg'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : γ (σ g' c) (σ g a) = ∑ j, (ℓ j ∘ₗ (σ g : H →ₗ[ℂ] H)) ((fun v => ⟪c, v⟫_ℂ • a) (σ g'⁻¹ (x j)))`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hi` using `inner_sigma hσ hg'i c (x j)`. Rewrite `hi` using `[hinv]`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe, map_smul, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hi]`. Establish `P0 : 0 ≤ (1 + hs g) ^ N` using `pow_nonneg (by linarith [hs_nonneg g]) N`. Establish `P1 : 0 ≤ (1 + hs g') ^ N` using `pow_nonneg (by linarith [hs_nonneg g']) N`. Establish `hbd : ∀ y ∈ Z, ‖∑ j, (ℓ j ∘ₗ (σ g : H →ₗ[ℂ] H)) (σ y (σ g'⁻¹ (x j)))‖ ≤ M * K * (1 + hs g) ^ N * (1 + hs g') ^ N`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyU` using `hZU hy`. Establish `hm : g * y * g'⁻¹ ∈ UJset ε` using `mul_mem_UJ (mul_mem_UJ hg hyU) hg'i`. Establish `e2 : ∀ j, (ℓ j ∘ₗ (σ g : H →ₗ[ℂ] H)) (σ y (σ g'⁻¹ (x j))) = ℓ j (σ (g * y * g'⁻¹) (x j))` using `fun j => by`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[sigma_mul hσ (mul_mem_UJ hg hyU) hg'i, sigma_mul hσ hg hyU]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [e2]`. Use `(hgr _ hm).trans ?_` and prove the remaining obligations. Establish `q1` using `one_add_hs_mul_le (g * y) g'⁻¹`. Establish `q2` using `one_add_hs_mul_le g y`. Rewrite `q1` using `[hs_inv hg']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0` using `hs_nonneg y`. Establish `hgg` using `hs_nonneg g`. Establish `hgg'` using `hs_nonneg g'`. Establish `q : 1 + hs (g * y * g'⁻¹) ≤ (1 + hs g) * (1 + hs y) * (1 + hs g')` using `q1.trans (mul_le_mul_of_nonneg_right q2 (by linarith))`. Establish `qN : (1 + hs (g * y * g'⁻¹)) ^ N ≤ (1 + hs g) ^ N * (1 + hs y) ^ N * (1 + hs g') ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← mul_pow, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith [hs_nonneg (g * y * g'⁻¹)]) q N`. Establish `hKy` using `hK y hy`. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `avgBd_sobCont n ε H σ h (fun v => ⟪c, v⟫_ℂ • a) Z C₀ hZ hZU hC₀ hA (Fin p) (fun j => ℓ j ∘ₗ (σ g : H →ₗ[ℂ] H)) (fun j => σ g'⁻¹ (x j)) (fun j => sobCont_translate hσ (hℓ j) hg) (fun j => (hx j).translate hσ hg'i) (fun j => sm_iff.2 ((smooth (Jm ε) σ).smul_mem _ (sm_iff.1 ha))) (M …`.
-
-Rewrite using `[e]`. Conclude with `key.trans (le_of_eq (by ring))`. Establish `fin` using `hb2 γ h1 h2 (C₀ * K * M) (mul_nonneg (mul_nonneg hC₀ hK0) hM) h3 b w hb hw`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coefBound_two_finSum : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → CoefBound ε σ → ∀ N : ℕ, ∃ (S : List (List (Mx n))) (C : ℝ), Words (lieSet ε) S ∧ 0 ≤ C ∧ ∀ (p : ℕ) (ℓ : Fin p → (H →ₗ[ℂ] ℂ)) (x : Fin p → H), (∀ j, Sobolev₂ (lieSet ε) σ (ℓ j)) → (∀ j, Sm ε σ (x j)) → ∀ M : ℝ, 0 ≤ M → (∀ y ∈ UJset ε, ‖∑ j, ℓ j (σ y (x j))‖ ≤ M * (1 + hs y) ^ N) → ∀ b w, Sm ε σ b → Sm ε σ w → ‖∑ j, ⟪b, x j⟫_ℂ * ℓ j w‖ ≤ C * M * sobNorm σ S b * sobNorm σ S w := by
   intro n ε H _ _ _ σ h hB N

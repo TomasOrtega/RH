@@ -19,20 +19,20 @@ section Core
 variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [mat_one']`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem levi_one (H : Plane E d d₁) : IsLevi (σ := σ) (W := W) (W₁ := W₁) H 1 1 1 := by
   refine ⟨?_, ?_, ?_⟩ <;> simp [mat_one']
 
 /- English proof (translation)
-Establish `: absE F E l * absE F E l⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `left_ne_zero_of_mul_eq_one this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absE_ne (l : (AE F E)ˣ) : (absE F E l : ℝ) ≠ 0 := by
   have : absE F E l * absE F E l⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   exact_mod_cast left_ne_zero_of_mul_eq_one this
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_ne (NNReal.coe_nonneg _) (absE_ne l).symm`.
+A detailed English derivation is pending.
 -/
 theorem absE_pos (l : (AE F E)ˣ) : 0 < (absE F E l : ℝ) := lt_of_le_of_ne (NNReal.coe_nonneg _) (absE_ne l).symm
 
@@ -57,7 +57,7 @@ variable {B : Base F E} {M : Model σ X W} {om : Rep σ X W} {M₀ : Model σ X�
   {ι : (AE F E)ˣ → (AE F E)ˣ} {w : (AE F E)ˣ → ℂ} {χX χW : Chr F E} {r s r' s' r₀ s₀ r₀' s₀' : ℕ}
 
 /- English proof (translation)
-Use `congrArg (thetaSum F) (h.tor l g₁ p h₁ p' h1 h2 Ψ hΨ)` as an intermediate fact. Rewrite `this` using `[thetaSum_smul', thetaSum_smul']`. Rewrite using `[mul_comm, this, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LawsT.theta (h : LawsT B M om om₀ H H' e u w ι) {l g₁ p h₁ p'} (h1 : IsLevi H (ι l) g₁ p) (h2 : IsLevi H' 1 h₁ p') {Ψ}
     (hΨ : Ψ ∈ schA F (Fin n × Fin d)) :
@@ -69,9 +69,9 @@ theorem LawsT.theta (h : LawsT B M om om₀ H H' e u w ι) {l g₁ p h₁ p'} (h
   rfl
 
 /- English proof (translation)
-Take `⟨m, hm, g₁, p, hp1, rfl, hr⟩` from `(hD F E σ B n n₁ X X₁ H j₀ j₁ r s hp.base (Or.inl hp.herm) hH).1 δ 1 (by simpa using hx)`. Establish `hΨ` using `pair_pres hp (g, y) hΦ`. Establish `e1 : om (m * p * g, y) Φ = om (m, 1) (om (p, 1) (om (g, y) Φ))` using `by simp [om_mul, mul_assoc]`. Establish `e2` using `h.theta (l := 1) (by rwa [h.one]) (levi_one (W₁ := W₁) H') hΨ`. Establish `e3` using `((hTB F E σ B _ _ X₁ W₁ M₀ χX χW om₀ _ _ _ _ hp₀).1 _ (hs _ hΨ)).2.1 g₁ (hr hδ) 1 (one_mem _) 1 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [h.one, h.w1, map_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, mul_one, Circle.coe_one, one_pow] at e2 e3`. Unfold `thv`. Rewrite using `[e1, h.uni m hm _ (pair_pres hp _ hΨ), e2, e3]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta, ← Prod.one_eq_mk]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem LawsT.rat (h : LawsT B M om om₀ H H' e u w ι) (hD : StabDec) (hTB : ThetaBasic) (hp : IsPair B M χX χW om r s r' s')
     (hp₀ : IsPair B M₀ χX χW om₀ r₀ s₀ r₀' s₀') {j₀ j₁} (hH : H.IsAdapted σ B X X₁ j₀ j₁)
@@ -89,11 +89,11 @@ theorem LawsT.rat (h : LawsT B M om om₀ H H' e u w ι) (hD : StabDec) (hTB : T
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta, ← Prod.one_eq_mk]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h.torW t h₁ p hl`. Unfold `coneI`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← integral_mul_right_eq_self (fun l => M₀.I om₀ (e (M.co.rho B.ψ (u l) (om (k.1, 1) (om (1, y) Φ)))) h₁ * (ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z) s, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Establish `e1 : om (k.1, 1) (om (1, p * y) Φ) = om (1, p) (om (k.1, 1) (om (1, y) Φ))` using `by simp [om_mul]`. Rewrite using `[e1, hs l _ (pair_pres hp _ (pair_pres hp _ hΦ))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Model.I, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta, map_smul, thetaSum_smul', om_mul, Prod.mk_mul_mk, mul_one, one_mul, integral_const_mul, map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Laws.coneI_law [μ.IsMulRightInvariant] [MeasurableMul (AE F E)ˣ] (h : Laws B M om om₀ H H' e u ν χ z ι)
     (hp : IsPair B M χX χW om r s r' s') {K : Subgroup (UA σ X.J)} (μK : Measure K) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d))

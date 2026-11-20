@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.GradedLine
 
 /- English proof (translation)
-Establish `hM1 : (H p).submatrix f f = 1` using `by rw [h1]; exact submatrix_one f hf`. Establish `hu : IsUnit ((H p).submatrix f f).det` using `by rw [hM1, det_one]; exact isUnit_one`. Establish `hc : ∀ ζ, conn H p ζ = (mdel H p ζ)ᵀ`. Introduce `ζ`. Rewrite using `[conn, h1, transpose_one, inv_one, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ a b, mdbar H p η a b = starRingEnd ℂ (mdel H p η b a)`. Introduce `a b`. Rewrite using `[← conjTranspose_mdel hh]`. Both sides reduce to the same expression. Rewrite using `[curv_eq (h2.submatrix f f) hu, hM1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [transpose_one, inv_one, Matrix.one_mul, Matrix.mul_one, trace, diag, Matrix.sub_apply, Matrix.mul_apply, transpose_apply, Finset.sum_sub_distrib, hc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mdbar H p η (f c) (f a) * mdel H p ξ (f a) (f c) = _`. Rewrite using `[hb, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_curv_submatrix_of_eq_one {N : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] {κ : Type} [Fintype κ] [DecidableEq κ]
@@ -46,37 +46,35 @@ theorem trace_curv_submatrix_of_eq_one {N : ℕ} {E : Type} [NormedAddCommGroup 
   rw [hb, mul_comm]
 
 /- English proof (translation)
-Introduce `N E _ _ _ _ H p i h2 hpd h1 ξ η`. Establish `hh : ∀ᶠ v in 𝓝 p, (H v).IsHermitian` using `hpd.mono fun v hv => hv.isHermitian`. Establish `hinj : Function.Injective (emb i)`. Introduce `x y hxy`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [emb, Sum.elim_inl] at hxy`. Conclude with `congrArg Sum.inl (Fin.castLE_injective _ hxy)`. Simplify using `only [emb, Sum.elim_inl, Sum.elim_inr] at hxy`. Use `congrArg Fin.val hxy` as an intermediate fact. Simplify using `at this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [emb, Sum.elim_inl, Sum.elim_inr] at hxy`. Use `congrArg Fin.val hxy` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `congrArg Sum.inr (Subsingleton.elim _ _)`. Use `set S : E → Matrix (Fin i ⊕ Fin 1) (Fin i ⊕ Fin 1) ℂ := fun v => (H v).submatrix (emb i) (emb i) with hSdef`. Establish `hS1 : S p = 1` using `by simp only [S, h1]; exact submatrix_one _ hinj`. Establish `hS2 : MContDiffAt 2 S p` using `h2.submatrix _ _`. Establish `hSu : IsUnit (S p).det` using `by rw [hS1, det_one]; exact isUnit_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsu : IsUnit (subGram (S p)).det`. Establish `h11 : subGram (1 : Matrix (Fin i ⊕ Fin 1) (Fin i ⊕ Fin 1) ℂ) = 1`. Use extensionality with `a b`. Simplify using `[subGram, toBlocks₁₁, one_apply]`. Rewrite using `[hS1, h11, det_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isUnit_one`. Establish `hSh : ∀ᶠ v in 𝓝 p, (S v).IsHermitian` using `hh.mono fun v hv => hv.submatrix _`. Establish `hQh : ∀ᶠ v in 𝓝 p, (quotGram (S v)).IsHermitian` using `hSh.mono fun v hv => isHermitian_quotGram hv`. Establish `hQ2 : MContDiffAt 2 (fun v => quotGram (S v)) p` using `hS2.quotGram hsu`. Establish `hQu` using `isUnit_det_quotGram hSu hsu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : ddbar (fun v => ((-Real.log (quotGram (S v)).det.re : ℝ) : ℂ)) p ξ η = (curv (fun v => quotGram (S v)) p ξ η).trace`. Rewrite using `[trace_curv hQ2 hQh hQu, ← ContinuousLinearMap.neg_apply, ← ContinuousLinearMap.neg_apply, ← leviForm_neg]`. Both sides reduce to the same expression. Establish `e2` using `trace_curv_eq_sub_add_quot hS2 hSu hsu ξ η`. Establish `hsub : (fun v => subGram (S v)) = fun v => (H v).submatrix (emb i ∘ Sum.inl) (emb i ∘ Sum.inl)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite `e2` using `[hsub]`. Establish `tS` using `trace_curv_submatrix_of_eq_one H p (emb i) hinj h2 hh h1 ξ η`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `tT` using `trace_curv_submatrix_of_eq_one H p (emb i ∘ Sum.inl) (hinj.comp Sum.inl_injective) h2 hh h1 ξ η`. Establish `hc : ∀ ζ, conn H p ζ = (mdel H p ζ)ᵀ`. Introduce `ζ`. Rewrite using `[conn, h1, transpose_one, inv_one, Matrix.one_mul]`. Establish `hb : ∀ a b, mdbar H p η a b = starRingEnd ℂ (mdel H p η b a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[← conjTranspose_mdel hh]`. Both sides reduce to the same expression. Establish `hcurv : curv H p ξ η i i = ∑ c, conn H p ξ c i * starRingEnd ℂ (conn H p η c i) - mddbar H p ξ η i i`. Rewrite using `[curv_eq h2 (by rw [h1, det_one]; exact isUnit_one), h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [transpose_one, inv_one, Matrix.one_mul, Matrix.mul_one, Matrix.sub_apply, Matrix.mul_apply, transpose_apply, hc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hb, mul_comm]`. Establish `hI : ∀ g : Fin N → ℂ, ∑ a ∈ Finset.Iio i, g a = ∑ a : Fin i, g (Fin.castLE i.isLt.le a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `g`. Establish `hIio : Finset.Iio i = Finset.univ.map (Fin.castLEEmb i.isLt.le)`. Use extensionality with `x`. Simplify using `only [Finset.mem_Iio, Finset.mem_map, Finset.mem_univ, true_and, Fin.castLEEmb_apply]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.isLt`. Rewrite using `[hIio, Finset.sum_map]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hU : ∀ g : Fin N → ℂ, ∑ c, g c = ∑ c ∈ Finset.Iio i, g c + g i + ∑ c ∈ Finset.Ioi i, g c`. Introduce `g`. Establish `hu : (Finset.univ : Finset (Fin N)) = (Finset.Iic i).disjUnion (Finset.Ioi i) (Finset.disjoint_left.2 fun x hx hx' => by`. Simplify using `only [Finset.mem_Iic, Finset.mem_Ioi] at hx hx'; exact absurd hx (not_le.2 hx')) := by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_univ, Finset.disjUnion_eq_union, Finset.mem_union, Finset.mem_Iic, Finset.mem_Ioi, true_iff]`. Conclude with `le_or_gt x i`. Rewrite using `[hu, Finset.sum_disjUnion, Finset.Iic_eq_cons_Iio, Finset.sum_cons]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e1, ← sub_eq_of_eq_add' e2, tS, tT, hcurv, hU (fun c => conn H p ξ c i * starRingEnd ℂ (conn H p η c i)),`. Use the proof step `]`. Simplify using `only [hI, Fintype.sum_sum_type, Fin.sum_univ_one, Function.comp_apply, emb, Sum.elim_inl, Sum.elim_inr, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ddbar_neg_log_quotGram_emb : ∀ {N : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] (H : E → Matrix (Fin N) (Fin N) ℂ) (p : E) (i : Fin N), MContDiffAt 2 H p → (∀ᶠ v in 𝓝 p, (H v).PosDef) → H p = 1 → ∀ ξ η : E, ddbar (fun v => ((-Real.log (quotGram ((H v).submatrix (emb i) (emb i))).det.re : ℝ) : ℂ)) p ξ η = curv H p ξ η i i + ∑ a ∈ Finset.Iio i, conn H p ξ i a * starRingEnd ℂ (conn H p η i a) - ∑ c ∈ Finset.Ioi i, conn H p ξ c i * starRingEnd ℂ (conn H p η c i) := by
   intro N E _ _ _ _ H p i h2 hpd h1 ξ η

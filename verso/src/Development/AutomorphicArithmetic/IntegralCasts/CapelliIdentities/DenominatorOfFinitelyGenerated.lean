@@ -2,13 +2,13 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hL`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) (fun p : S × ι => (p.1 : ι → K) p.2)`. Use `⟨b, nonZeroDivisors.ne_zero b.2, ?_⟩` and prove the remaining obligations. Introduce `y hy i`. Proceed by induction on `hy using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨c, hc⟩` from `hb (⟨x, hx⟩, i)`. Conclude with `⟨c, by rw [hc, Algebra.smul_def]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc⟩` from `hx`. Take `⟨d, hd⟩` from `hy`. Conclude with `⟨c + d, by rw [map_add, hc, hd, Pi.add_apply, mul_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨c, hc⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a * c, by rw [map_mul, hc, Pi.smul_apply, Algebra.smul_def]; ring⟩`.
+Supply the required witnesses or components.
 -/
 private lemma UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.denom_of_fg {R K ι : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] [Finite ι] (L : Submodule R (ι → K)) (hL : L.FG) :
@@ -32,7 +32,7 @@ private lemma UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.den
     exact ⟨a * c, by rw [map_mul, hc, Pi.smul_apply, Algebra.smul_def]; ring⟩
 
 /- English proof (translation)
-Introduce `I`. Conclude with `UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.denom_of_fg I.L I.L_fg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator :
     ∀ (I : Formalism.MainNotions.S.AutInst),

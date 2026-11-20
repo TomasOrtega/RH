@@ -20,16 +20,16 @@ variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [M
 omit [Module K V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Use `haveI : IsNoetherian (𝓞 K) L := isNoetherian_of_fg_of_noetherian L hL`. Conclude with `isNoetherian_submodule.1 inferInstance M hM`.
+A detailed English derivation is pending.
 -/
 theorem fg_of_le (hL : L.FG) {M : Submodule (𝓞 K) V} (hM : M ≤ L) : M.FG := by
   haveI : IsNoetherian (𝓞 K) L := isNoetherian_of_fg_of_noetherian L hL
   exact isNoetherian_submodule.1 inferInstance M hM
 
 /- English proof (translation)
-Use `letI : StarRing K := starRingOfComm`. Take `⟨⟨n, ⟨b, X⟩, hG⟩⟩` from `hN`. Take `⟨hLat, -, -⟩` from `Formalism.HN.plLat K V _ b X (fun v => (hG v).1) L hL`. Take `⟨-, -, ⟨M, hM, hM0, hMs⟩, -, -⟩` from `Formalism.HN.muChar _ _ _ _ L hLat h0`. Use `⟨M, hM.1, hM0, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[slope_sq_eq hG (fg_of_le hL hM.1), (slopeMax_slopeMin_eq hG hL h0).1]`. Simplify using `only [Formalism.HN.muDef, Formalism.HN.muMaxDef, hMs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_slope_eq (hN : HasGram N) (hL : L.FG) (h0 : L ≠ ⊥) :
     ∃ M : Submodule (𝓞 K) V, M ≤ L ∧ M ≠ ⊥ ∧ slope_sq N M = slopeMax_sq N L := by
@@ -42,11 +42,11 @@ theorem exists_slope_eq (hN : HasGram N) (hL : L.FG) (h0 : L ≠ ⊥) :
   simp only [Formalism.HN.muDef, Formalism.HN.muMaxDef, hMs]
 
 /- English proof (translation)
-Use `letI : StarRing K := starRingOfComm`. Establish `h0 : L ≠ ⊥` using `fun h => hM0 (eq_bot_iff.2 (h ▸ hM))`. Take `⟨⟨n, ⟨b, X⟩, hG⟩⟩` from `hN`. Establish `l1` using `(Formalism.HN.plLat K V _ b X (fun v => (hG v).1) M (fg_of_le hL hM)).1`. Establish `l2` using `(Formalism.HN.plLat K V _ b X (fun v => (hG v).1) L hL).1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1` using `Formalism.HN.muChar _ _ _ _ _ l1 hM0`. Establish `m2` using `(Formalism.HN.muChar _ _ _ _ _ l2 h0).1`. Establish `key` using `(m1.1 _).2 fun P hP => (m2 _).1 le_rfl P (hP.trans hM)`. Use `m1.2.2.2.2` as an intermediate fact. Rewrite using `[slope_sq_eq hG (fg_of_le hL hM), (slopeMax_slopeMin_eq hG hL h0).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.HN.muDef Formalism.HN.muMaxDef`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem slope_le_slopeMax (hN : HasGram N) (hL : L.FG) {M : Submodule (𝓞 K) V} (hM : M ≤ L) (hM0 : M ≠ ⊥) :
     slope_sq N M ≤ slopeMax_sq N L := by
@@ -75,11 +75,9 @@ variable {K K' V V' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'
 omit [NumberField K] [NumberField K'] in
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => rw [map_zero]`. Conclude with `P.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `P.add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: ι (a • x) = algebraMap (𝓞 K) (𝓞 K') a • ι x`. Rewrite using `[← algebraMap_smul K a, map_smulₛₗ, ← algebraMap_smul K' (algebraMap (𝓞 K) (𝓞 K') a)]`. Both sides reduce to the same expression.
-
-Rewrite using `[this]`. Conclude with `P.smul_mem _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_of_mem_span {s : Set V} {P : Submodule (𝓞 K') V'} (hs : ∀ x ∈ s, ι x ∈ P) {x : V}
     (hx : x ∈ Submodule.span (𝓞 K) s) : ι x ∈ P := by
@@ -96,9 +94,7 @@ theorem map_mem_of_mem_span {s : Set V} {P : Submodule (𝓞 K') V'} (hs : ∀ x
 omit [NumberField K] [NumberField K'] in
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hL`. Use `Submodule.fg_def.2 ⟨ι '' s, s.finite_toSet.image _, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
-
-Conclude with `map_mem_of_mem_span ι (fun y hy => Submodule.subset_span (Set.mem_image_of_mem _ hy)) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fg_span_image {L : Submodule (𝓞 K) V} (hL : L.FG) :
     (Submodule.span (𝓞 K') (ι '' (L : Set V))).FG := by
@@ -112,7 +108,7 @@ theorem fg_span_image {L : Submodule (𝓞 K) V} (hL : L.FG) :
 omit [NumberField K] [NumberField K'] [IsScalarTower (𝓞 K) K V] [IsScalarTower (𝓞 K') K' V'] in
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Establish `h1` using `(hli 1 (fun _ => x) (linearIndependent_unique_iff.2 hx0)).ne_zero 0`. Introduce `h`. Conclude with `h1 (Submodule.span_eq_bot.1 h _ ⟨x, hx, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_image_ne_bot
     (hli : ∀ (n : ℕ) (b : Fin n → V), LinearIndependent K b → LinearIndependent K' (fun k => ι (b k)))
@@ -125,15 +121,15 @@ theorem span_image_ne_bot
 end Two
 
 /- English proof (translation)
-Establish `hs : ∀ u : Fin n → ℂ, Formalism.HermitianLatticesTheory.cnorm ((t : ℂ) • u) = t * Formalism.HermitianLatticesTheory.cnorm u` using `fun u => by`. Unfold `Formalism.HermitianLatticesTheory.cnorm`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, ← Finset.mul_sum, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq ht.le]`. Establish `key : ∀ Z : Matrix (Fin n) (Fin n) ℂ, IsUnit Z.det → (∀ x, Formalism.HermitianLatticesTheory.cnorm (Z *ᵥ fun i => τ (b.repr x i)) = Formalism.HermitianLatticesTheory.normAt b X (InfinitePlace.mk τ) x) → ∃ Y : Matrix (Fin n) (Fin n) ℂ, IsUnit Y.det ∧ ∀ x, Formalism.HermitianLattic …` using `fun Z hZ h => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit ((t : ℂ) • Z).det`. Rewrite using `[det_smul]`. Conclude with `(IsUnit.pow _ (Ne.isUnit (by exact_mod_cast ht.ne'))).mul hZ`. Use `⟨((t : ℂ) • Z)⁻¹, isUnit_nonsing_inv_det _ hu, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[nonsing_inv_nonsing_inv _ hu, smul_mulVec, hs, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi` using `isUnit_nonsing_inv_det _ (hX (InfinitePlace.mk τ))`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Use `key _ hi fun x => ?_` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`. Rewrite using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `key ((starRingEnd ℂ).mapMatrix (X (InfinitePlace.mk τ))⁻¹) ?_ fun x => ?_` and prove the remaining obligations. Rewrite using `[← RingHom.map_det]`. Conclude with `hi.map _`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt Formalism.HermitianLatticesTheory.cnorm`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.norm_conj]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frame {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] {n : ℕ}
     (b : Basis (Fin n) K V) (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hX : ∀ v, IsUnit (X v).det)
@@ -175,7 +171,7 @@ def coordExt {K V : Type} (F : Type) [Field K] [Field F] [Algebra K F] [AddCommG
   map_smul' a x := by funext i; simp
 
 /- English proof (translation)
-The claim follows from `(linearIndependent_algebraMap_comp_iff (S := F) (v := fun k => b.equivFun (e k))).2 (he.map' b.equivFun.toLinearMap b.equivFun.ker)`.
+A detailed English derivation is pending.
 -/
 theorem coordExt_li {K V : Type} (F : Type) [Field K] [Field F] [Algebra K F] [AddCommGroup V] [Module K V] {n : ℕ}
     (b : Basis (Fin n) K V) (m : ℕ) (e : Fin m → V) (he : LinearIndependent K e) :
@@ -184,27 +180,23 @@ theorem coordExt_li {K V : Type} (F : Type) [Field K] [Field F] [Algebra K F] [A
     (he.map' b.equivFun.toLinearMap b.equivFun.ker)
 
 /- English proof (translation)
-Introduce `K K' V V' _ _ _ _ _ _ _ _ _ _ _ _ _ _ N N' ι L c B hN hN' hc hli hL h0 hcB hι`. Use `haveI : IsTotallyComplex K' := isTotallyComplex_of_algebra K K'`. Use `haveI : Module.Finite K K' := Module.Finite.of_restrictScalars_finite ℚ K K'`. Use `haveI : IsAlgClosure K (AlgebraicClosure K') := ⟨inferInstance, Algebra.IsAlgebraic.trans K K' _⟩`. Set `F : Type` to `IntermediateField.normalClosure K K' (AlgebraicClosure K')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsGalois K F := inferInstance`. Use `haveI : NumberField F := NumberField.of_module_finite K F`. Establish `hL'` using `fg_span_image ι hL`. Take `⟨M, hM, hM0, hMs⟩` from `exists_slope_eq hN' hL' (span_image_ne_bot ι hli h0)`. Establish `hMfg` using `fg_of_le hL' hM`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨⟨n, ⟨b, X⟩, hG⟩⟩` from `hN'`. Use `letI : StarRing K' := starRingOfComm`. Set `N₁ : (K' →+* ℂ) → V' → ℝ` to `fun σ x => N' (InfinitePlace.mk σ).embedding x`. Establish `hG₁ : IsGram b X N₁` using `fun v => ⟨(hG v).1, fun x => by`. Simplify using `only [N₁, InfinitePlace.mk_embedding]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(hG v).2 x⟩`. Establish `hc₁ : ∀ σ x, N₁ ((starRingEnd ℂ).comp σ) x = N₁ σ x` using `fun σ x => by`. Establish `: InfinitePlace.mk ((starRingEnd ℂ).comp σ) = InfinitePlace.mk σ` using `InfinitePlace.mk_conjugate_eq σ`. Simplify using `only [N₁, this]`. Use `choose Y hY hYn using fun τ : K' →+* ℂ => exists_frame b X (fun v => (hG v).1) τ (inv_pos.2 (hcB (InfinitePlace.mk τ).embedding).1)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `N₂ : (F →+* ℂ) → (Fin n → F) → ℝ` to `fun σ y => Formalism.HermitianLatticesTheory.cnorm ((Y (σ.comp (algebraMap K' F)))⁻¹ *ᵥ fun i => σ (y i))`. Establish `hG₂ : IsGram (Pi.basisFun F (Fin n)) (fun u => Y (u.embedding.comp (algebraMap K' F))) N₂` using `fun u => ⟨hY _, fun y => by`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`. Simplify using `only [N₂, Pi.basisFun_repr]⟩`. Establish `hN₂ : HasGram N₂` using `⟨⟨n, ⟨(_, _), hG₂⟩⟩⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `φ` to `coordExt F b`. Establish `hφ : ∀ (σ : F →+* ℂ) x, N₂ σ (φ x) = (c (InfinitePlace.mk (σ.comp (algebraMap K' F))).embedding)⁻¹ * N₁ (σ.comp (algebraMap K' F)) x` using `fun σ x => (hYn _ x).trans (by rw [(hG _).2])`. Set `ψ : V →ₛₗ[algebraMap K F] (Fin n → F)` to `{ toFun := fun x => φ (ι x) map_add' := fun x y => by simp map_smul' := fun a x => by`. Rewrite using `[map_smulₛₗ, map_smulₛₗ, ← IsScalarTower.algebraMap_apply] }`. Establish `h1` using `GlobalTheory.SlopeExt.slope_sq_sub_le_slope_sq_span K' F V' (Fin n → F) N₁ N₂ φ M B ⟨⟨n, ⟨(b, X), hG₁⟩⟩⟩ hN₂ hc₁ (coordExt_li F b) hMfg hM0 (fun σ x => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ]`. Use `mul_le_mul_of_nonneg_right ?_ ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hcB (InfinitePlace.mk (σ.comp (algebraMap K' F))).embedding`. Rewrite using `[← Real.exp_log h1, ← Real.exp_neg]`. Conclude with `Real.exp_le_exp.2 ((neg_le_abs _).trans h2)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show 0 ≤ N' _ x`. Rewrite using `[← (hG _).2]`. Conclude with `Real.sqrt_nonneg _)`. Establish `h2` using `GlobalTheory.T.maxSlope_extendedLattice_galois_le K F V (Fin n → F) N N₂ ψ L hN hN₂ hc (fun m e he => coordExt_li F b m _ (hli m e he)) hL h0 (fun σ x => by show N₂ σ (φ (ι x)) = _`. Rewrite using `[hφ]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show _ * N' _ (ι x) = _`. Rewrite using `[hι, inv_mul_cancel_left₀ (hcB _).1.ne', IsScalarTower.algebraMap_eq K K' F, ← RingHom.comp_assoc]`. Break down `InfinitePlace.embedding_mk_eq (σ.comp (algebraMap K' F)) with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h]`.
-
-Conclude with `hc ((σ.comp (algebraMap K' F)).comp (algebraMap K K')) x)`. Establish `h3 : slope_sq N₂ (Submodule.span (𝓞 F) (φ '' (M : Set V'))) ≤ slopeMax_sq N₂ (Submodule.span (𝓞 F) (ψ '' (L : Set V)))`. Use `slope_le_slopeMax hN₂ (fg_span_image ψ hL) (Submodule.span_le.2 ?_) (span_image_ne_bot φ (coordExt_li F b) hM0)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `map_mem_of_mem_span φ ?_ (hM hx)` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Establish `h4 : slope_sq N₁ M = slope_sq N' M` using `by rw [slope_sq_eq hG₁ hMfg, slope_sq_eq hG hMfg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem slopeMax_sq_span_le : ∀ (K K' V V' : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field K'] [NumberField K'] [Algebra K K'] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K' V'] [Module (𝓞 K') V'] [IsScalarTower (𝓞 K') K' V'] (N : (K →+* ℂ) → V → ℝ) (N' : (K' →+* ℂ) → V' → ℝ) (ι : V →ₛₗ[algebraMap K K'] V') (L : Submodule (𝓞 K) V) (c : (K' →+* ℂ) → ℝ) (B : ℝ), HasGram N → HasGram N' → (∀ σ x, N ((starRingEnd ℂ).comp σ) x = N σ x) → (∀ (n : ℕ) (b : Fin n → V), LinearIndependent K b → LinearIndependent K' (fun k => ι (b k))) → L.FG → L ≠ ⊥ → (∀ σ', 0 < c σ' ∧ |Real.log (c σ')| ≤ B) → (∀ σ' x, N' σ' (ι x) = c σ' * N (σ'.comp (algebraMap K K')) x) → slopeMax_sq N' (Submodule.span (𝓞 K') (ι '' (L : Set V))) ≤ slopeMax_sq N L + 2 * B := by
   intro K K' V V' _ _ _ _ _ _ _ _ _ _ _ _ _ _ N N' ι L c B hN hN' hc hli hL h0 hcB hι

@@ -4,9 +4,9 @@ open GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Set `e : ((Fin n → K) × (Fin m → K)) ≃ₗ[K] (Fin (n + m) → K)` to `(LinearEquiv.sumArrowLequivProdArrow (Fin n) (Fin m) K K).symm ≪≫ₗ LinearEquiv.funCongrLeft K K finSumFinEquiv.symm`. Use `⟨{ toFun := fun g => e.conj ((ρ g).prodMap (σ g)), map_one' := ?_, map_mul' := ?_ }, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [map_one, LinearMap.prodMap_one]`. Conclude with `e.conj_id`. Introduce `g h`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Rewrite using `[← LinearMap.prodMap_mul]`. Conclude with `e.conj_comp _ _`. Simplify using `only [Representation.character] show LinearMap.trace K _ (e.conj _) = _`. Rewrite using `[LinearMap.trace_conj', LinearMap.trace_prodMap']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_representation_character_eq_add (K : Type) [Field K] (G : Type) [Group G]
     (n m : ℕ) (ρ : Representation K G (Fin n → K)) (σ : Representation K G (Fin m → K)) :
@@ -28,11 +28,11 @@ private theorem exists_representation_character_eq_add (K : Type) [Field K] (G :
     rw [LinearMap.trace_conj', LinearMap.trace_prodMap']
 
 /- English proof (translation)
-Introduce `K L _ _ _ G _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.BI.IsChar`. Use `⟨0, 1, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[Representation.character]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `a b ha hb`. Unfold `_root_.GlobalTheory.BI.IsChar at ha hb ⊢`. Take `⟨n, ρ, hρ⟩` from `ha`. Take `⟨m, σ, hσ⟩` from `hb`. Take `⟨τ, hτ⟩` from `exists_representation_character_eq_add K G n m ρ σ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n + m, τ, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, hρ g, hσ g, hτ g, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.BI.isChar_zero_and_add : ∀ (K L : Type) [Field K] [Field L] [Algebra K L]
     (G : Type) [Group G], _root_.GlobalTheory.BI.IsChar K L (0 : G → L) ∧

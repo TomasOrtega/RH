@@ -10,7 +10,7 @@ set_option autoImplicit false
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Use `haveI := (RingHom.charP_iff_charP (f.residueFieldMap x).hom (ringChar (Y.residueField (f x)))).1 (ringChar.charP _)`. Conclude with `ringChar.eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem ringChar_residueField_eq {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X) :
     ringChar (X.residueField x) = ringChar (Y.residueField (f x)) := by
@@ -19,17 +19,15 @@ theorem ringChar_residueField_eq {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X) :
   exact ringChar.eq _ _
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX T hT`. Use `set I := Scheme.IdealSheafData.vanishingIdeal T with hI`. Establish `hr : Set.range I.subschemeι = (T : Set X)`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι, hI, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Take `⟨N, j, _, hj⟩` from `hX.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hj ▸ inferInstance`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hX.finite)`. Use `set q := I.subschemeι ≫ p ≫ spMap (Int.castRingHom k) with hq`. Establish `: IsProper q` using `by rw [hq]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: LocallyQuasiFinite q`. Use `LocallyQuasiFinite.of_finite_preimage_singleton _ fun y => ?_` and prove the remaining obligations. Establish `hfin` using `hT (ringChar ((Sp ℤ).residueField y))`. Use `Set.Finite.of_finite_image (f := I.subschemeι) (hfin.subset ?_) (I.subschemeι.isClosedEmbedding.injective.injOn)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hr.le ⟨z, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ringChar _ = _`. Rewrite using `[ringChar_residueField_eq (p ≫ spMap (Int.castRingHom k)) (I.subschemeι z)]`. Establish `e : (p ≫ spMap (Int.castRingHom k)) (I.subschemeι z) = y`. Rewrite using `[← hz, hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Establish `: IsFinite q` using `IsFinite.of_isProper_of_locallyQuasiFinite q`. Establish `hA : IsAffine I.subscheme` using `isAffine_of_isAffineHom q`. Use `⟨hA, ?_⟩` and prove the remaining obligations.
-
-Establish `hf : (q.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom).Finite` using `q.finite_appTop.comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv).2)`. Rewrite `hf` using `[RingHom.ext_int (q.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom) (algebraMap ℤ Γ(I.subscheme, ⊤)), RingHom.finite_algebraMap]`. Conclude with `hf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closeds_finite_int : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (T : Closeds X), (∀ ℓ : ℕ, ((T : Set X) ∩ fib X ℓ).Finite) →

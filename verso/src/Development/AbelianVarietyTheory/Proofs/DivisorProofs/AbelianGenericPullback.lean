@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CurveRootGeometry
 
 /- English proof (translation)
-Establish `key : ∀ y : C, π (genericPoint C') = y → ∃ f : Spec (C'.presheaf.stalk (genericPoint C')) ⟶ Spec (C.presheaf.stalk y), f ≫ C.fromSpecStalk y = C'.fromSpecStalk (genericPoint C') ≫ π`. Introduce and unpack `y rfl`. Conclude with `⟨Spec.map (π.stalkMap _), Scheme.SpecMap_stalkMap_fromSpecStalk π⟩`. Conclude with `key _ h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_genPt_comp_of_generic {C C' : Scheme.{0}} [IsIntegral C] [IsIntegral C'] (π : C' ⟶ C)
     (h : π (genericPoint C') = genericPoint C) :
@@ -27,11 +27,11 @@ theorem exists_genPt_comp_of_generic {C C' : Scheme.{0}} [IsIntegral C] [IsInteg
   exact key _ h
 
 /- English proof (translation)
-Introduce `O _ c C C' _ _ π hπ G _ i G' _ i' φ hφ ⟨P, j, χ, hχ, hr⟩`. Take `⟨f, hf⟩` from `exists_genPt_comp_of_generic π hπ`. Take `⟨P', j', ψ, hψ, hr'⟩` from `GlobalTheory.TorusPart.exists_isActPull_isRosati O c _ _ f P j hr`. Establish `hc` using `hψ.comp hχ`. Rewrite `hc` using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `w : (ψ ≫ χ) ≫ G.hom = (P'.A.hom ≫ genPt C') ≫ π`. Rewrite using `[Category.assoc P'.A.hom]`. Conclude with `hc.1.1.w`. Establish `e₁` using `hφ.1.1.lift_fst _ _ w`. Establish `e₂` using `hφ.1.1.lift_snd _ _ w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P', j', hφ.1.1.lift _ _ w, ⟨IsGrpPullback.cancel hφ.1 (by rw [e₁]; exact hc.1) e₂, fun a => ?_⟩, hr'⟩` and prove the remaining obligations. Apply `hφ.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e₁, hc.2, Category.assoc _ (i'.act a).left, hφ.2, ← Category.assoc _ φ, e₁]`. Rewrite using `[Category.assoc, e₂, Category.assoc _ (i'.act a).left, Over.w, e₂, ← Category.assoc, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abGen_of_isActPull : ∀ (O : Type) [CommRing O] (c : O →+* O) (C C' : Scheme.{0}) [IsIntegral C] [IsIntegral C']
     (π : C' ⟶ C), π (genericPoint C') = genericPoint C → ∀ (G : Over C) [GrpObj G] (i : OAct O G) (G' : Over C')

@@ -10,19 +10,19 @@ section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 namespace UpperTheory.N
 /- English proof (translation)
-Introduce and unpack `i hTw ⟨h3, hs⟩ π hπ`. Establish `hl : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Establish `h2 : D.nd.l i ≠ 2` using `by omega`. Establish `hq : D.nd.l i ≠ D.host.q` using `h3 ▸ (three_ne_q D).1`. Establish `hd : D.nd.l i ≠ D.host.d` using `h3 ▸ (three_ne_q D).2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgk : ∀ k, D.nd.l i ≠ D.host.g k` using `fun k => h3 ▸ three_ne_g D k`. Establish `hg : D.nd.l i ∉ TwistedPlaces.gset D`. Simplify using `only [TwistedPlaces.gset, Finset.mem_insert, Finset.mem_singleton, not_or]`. Conclude with `⟨hgk 0, hgk 1⟩`. Establish `hle : D.nd.l i ≤ D.host.splitBound` using `by have := S.split; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hN : ¬ D.nd.l i ∣ D.host.condN` using `fun h => by`. Break down `(D.host.dvd_condN_iff_small hl).1 h with h | h | h` into its components or cases. Use `exacts [hs h, hq h, hd h]`. Establish `hL : EmbeddingTypes.hypL i` using `⟨hl.two_le, D.host.cls_splitK_or_small hl hle hq hd, fun _ v hv => GlobalTheory.HubLoc.ramIdx_eq_one D.host hl hN v hv, hgk 0, hgk 1⟩`. Establish `hj : jacobiSym (-(D.host.d : ℤ)) (D.nd.l i) = 1` using `D.host.split_small _ hl h2 hle`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨dc, -, h⟩` from `_root_.UpperTheory.N.conclusion_split_alt hP D L P nch HW F Cm X C₂ S i hg D.host.condN (cycAt_of i fun e => absurd e h2) hL (decl_split D i h2 hj) (locAll hP D HW F Cm (D.nd.l i))`. Take `⟨hB, hW, hz⟩` from `h π hπ`. Establish `hs0 : D.nd.s0 i = 1` using `UpperTheory.Small.localLevel_eq_one_of_not_mem_smallPrimes D.nd i hs`. Establish `hsl : D.nd.s0 i = RowSmall.sl D (D.nd.l i)`. Unfold `RowSmall.sl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs0, Nat.factorization_eq_zero_of_not_dvd hN]`. Both sides reduce to the same expression. Establish `hh` using `h0_le D i dc.col (fun e => absurd e h2) hs0.ge (fun u hu => (dc.cover u).1 (Or.inr hu))`. Establish `hb` using `Num.one_le_b L`. Establish `hbB : L.sc.b ≤ RowSmall.hB L` using `(Num.hB_bounds L P).1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (⌊2 * L.sc.b⌋₊ : ℝ) ≤ 2 * L.sc.b` using `Nat.floor_le (by linarith)`. Use `bound_smallPrime_of_splitBound_cyclotomic_of_level_eq L P X.ρ S.kill S.sha i hTw hsl π hπ dc _ _ _ ?_ ?_ ?_ hW (by exact_mod_cast hh) hz hB` and prove the remaining obligations. Establish `: (Formalism.MainNotions.N.hN L : ℝ) ≤ RowSmall.hB L` using `Nat.floor_le (by show 0 ≤ RowSmall.hB L linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `GlobalTheory.HubX.hOf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rowThreeAt_of_setup_alt (hP : Hypotheses₂) (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc)
     (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ) (S : _root_.GlobalTheory.NLink.SetupAlt L nch HW X C₂) :
@@ -65,7 +65,7 @@ theorem rowThreeAt_of_setup_alt (hP : Hypotheses₂) (D : D7) (L : SizeData₂ D
   · linarith
 end UpperTheory.N
 /- English proof (translation)
-Introduce `hP` and use `⟨6000, 30000, by norm_num, by norm_num, fun Fm => ⟨0, fun x _ hx i HW F Cm X C₂ S => _root_.UpperTheory.N.rowThreeAt_of_setup_alt hP _ _ (Fm.params x hx i) _ HW F Cm X C₂ S⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.N.exists_nonneg_threeC_constants_of_prints : Hypotheses₂ → ∃ A B : ℝ, 0 ≤ A ∧ 0 ≤ B ∧ _root_.UpperTheory.N.ThirdBoundCondition A B :=
   fun hP => ⟨6000, 30000, by norm_num, by norm_num, fun Fm => ⟨0, fun x _ hx i HW F Cm X C₂ S =>

@@ -8,7 +8,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h` using `congrArg Multiplicative.toAdd (GlobalTheory.GKCoh.Tests.prod_coord (M := Multiplicative ℂ) Multiplicative.ofAdd z)`. Simplify using `only [toAdd_prod, toAdd_mul, toAdd_ofAdd, Complex.add_conj] at h`. Rewrite using `[h, Finset.mul_sum, Complex.ofReal_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_coord_re {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (z : Cinf E) :
     ∑ τ : E →+* ℂ, coord τ z = ((2 * ∑ w : InfinitePlace E, (z w).re : ℝ) : ℂ) := by
@@ -18,9 +18,9 @@ private theorem sum_coord_re {E : Type} [Field E] [NumberField E] [IsTotallyComp
   rw [h, Finset.mul_sum, Complex.ofReal_sum]
 
 /- English proof (translation)
-Introduce `E _ _ _ a _ r`. Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E (r / (2 * ((a : ℝ) * Fintype.card (InfinitePlace E))))`. Use `⟨_, ⟨_, hν⟩, fun X φ => ?_⟩` and prove the remaining obligations. Rewrite using `[lie_mulChi, GlobalTheory.CuspRep.AlgExpo.dchi_eq_sum]`. Simplify using `only [(GlobalTheory.CuspRep.InfType.expo_of_infType E _).2.1 _ hν, ← Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_coord_re, ← Complex.ofReal_mul]`. Establish `e : ell E a X = (∑ w : InfinitePlace E, ((Matrix.of X).trace w).re) / ((a : ℝ) * Fintype.card (InfinitePlace E))`. Simplify using `[ell, Matrix.trace]`. Rewrite using `[e]`. Use `congr 4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -11,15 +11,15 @@ open scoped Matrix NNReal
 namespace GlobalTheory.RecOne
 
 /- English proof (translation)
-Introduce `l _ hl2 Ω _ _ _ A hA N z hz a hrel`. Establish `hlΩ : (l : Ω) ≠ 0` using `by haveI : CharZero Ω := algebraRat.charZero Ω`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Establish `hpos : 0 < l ^ N` using `pow_pos (Fact.out : l.Prime).pos N`. Establish `hz1 : (z : Ω) ^ (l ^ N) = 1` using `hz.pow_eq_one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzA : z ^ (l ^ N) = 1` using `Subtype.ext (by simpa using hz1)`. Establish `hzT : z ∈ cycAlg l A` using `mem_cycAlg_of_pow hzA`. Establish `hrel' : ∑ i : Fin 1, (fun _ => a) i • KaehlerDifferential.D (fixA A) A ((fun _ => z) i) = 0`. Simplify using `using hrel`. Take `⟨F, hF⟩` from `kaehler_rel_local (fixA A) A 1 _ _ hrel'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, tr, m, α, β, hFC, htr⟩` from `GlobalTheory.T.exists_almostDualTraceData_cyclotomicAlgebra l hl2 Ω A hA F`. Take `⟨D, hD, hDv⟩` from `GlobalTheory.T.exists_zeta_derivation_inertia_cyclotomic_algebra l Ω A hA N z hz`. Take `⟨D', hD', hD'v⟩` from `exists_derOn_ext (fixA A) A (FracA A) (cycAlg l A) C tr m α β _ htr D hD`. Establish `h` using `hF C hFC (fun _ => htr.le hzT) (FracA A) D' hD'`. Rewrite `h` using `[Fin.sum_univ_one, hD'v _ hzT, hDv, smul_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `h`. Establish `ht' : (t : Ω) = (a : Ω) * (l : Ω) ^ 3 * ((z : Ω) * (l : Ω) / (l : Ω) ^ N)`. Simplify `ht` using `[Algebra.smul_def]`. Use `⟨((t * z ^ (l ^ N - 1) : A) : Ω), (t * z ^ (l ^ N - 1)).2, ?_⟩` and prove the remaining obligations. Establish `hzz : (z : Ω) * (z : Ω) ^ (l ^ N - 1) = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_succ', Nat.sub_add_cancel hpos, hz1]`. Use `push_cast`. Rewrite using `[ht']`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-((a : Ω))) * hzz`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pow_four_mul_mem_of_smul_dA_eq_zero : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∀ (N : ℕ) (z : A), IsPrimitiveRoot (z : Ω) (l ^ N) → ∀ a : A, a • dA A z = 0 → ∃ w ∈ A, (l : Ω) ^ 4 * (a : Ω) = (l : Ω) ^ N * w := by
   intro l _ hl2 Ω _ _ _ A hA N z hz a hrel

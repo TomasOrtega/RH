@@ -10,13 +10,13 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
   Formalism.MainNotions.G.GAtP.algOK
 
 /- English proof (translation)
-Establish `hc : ∀ n, MvPolynomial.coeff n ((q : MvPolynomial σ (MvPolynomial τ ℤ)) ^ E * P) = (q : MvPolynomial τ ℤ) ^ E * MvPolynomial.coeff n P`. Introduce `n`. Establish `: (q : MvPolynomial σ (MvPolynomial τ ℤ)) ^ E = MvPolynomial.C ((q : MvPolynomial τ ℤ) ^ E)`. Rewrite using `[map_pow, map_natCast]`. Rewrite using `[this, MvPolynomial.coeff_C_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : ((q : MvPolynomial σ (MvPolynomial τ ℤ)) ^ E * P).support ⊆ P.support`. Introduce `n hn`. Rewrite `hn` using `[MvPolynomial.mem_support_iff, hc]`. Rewrite using `[MvPolynomial.mem_support_iff]`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[h0, mul_zero]`. Conclude with `hn rfl`. Unfold `applyD`. Rewrite using `[Finset.sum_subset hsub (fun n _ hn => by`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hn, map_zero, smul_zero]), Finset.smul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[hc, map_mul, map_pow, map_natCast, smul_comm]`. Use `congr 1`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ea_applyD_scale {σ τ K : Type} [Field K] (q E : ℕ) (P : MvPolynomial σ (MvPolynomial τ ℤ))
     (f : MvPowerSeries σ K) :
@@ -44,7 +44,7 @@ theorem ea_applyD_scale {σ τ K : Type} [Field K] (q E : ℕ) (P : MvPolynomial
   rw [MvPolynomial.smul_eq_C_mul, map_pow, map_natCast]
 
 /- English proof (translation)
-Unfold `applyD`. Rewrite using `[MvPolynomial.support_zero, Finset.sum_empty]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ea_applyD_zero {σ τ K : Type} [Field K] (f : MvPowerSeries σ K) :
     applyD (0 : MvPolynomial σ (MvPolynomial τ ℤ)) f = 0 := by
@@ -54,7 +54,7 @@ theorem ea_applyD_zero {σ τ K : Type} [Field K] (f : MvPowerSeries σ K) :
 variable {p : ℕ} [hp : Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Unfold `PIvS Sys.PIv`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ea_PIvS_eq (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
     PIvS X j I i0 v = (p : MvPolynomial (X.ZA j) (MvPolynomial (X.FrI j) ℤ)) ^
@@ -63,9 +63,9 @@ theorem ea_PIvS_eq (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
   simp only [Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]
 
 /- English proof (translation)
-Unfold `Function.Injective at h`. Use `push Not at h`. Take `⟨x, y, hxy, hne⟩` from `h`. Unfold `Sys.colFac`. Use `Matrix.det_zero_of_column_eq hne fun k => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show (∑ a : Fin (NN X.G.P.m X.t j), _ * MvPolynomial.X (⟨v, (s, a, I v s c x.val)⟩ : X.ZA j)) = ∑ a : Fin (NN X.G.P.m X.t j), _ * MvPolynomial.X (⟨v, (s, a, I v s c y.val)⟩ : X.ZA j)`. Establish `hxy' : I v s c x.val = I v s c y.val` using `hxy`. Rewrite using `[hxy']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ea_colFac_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v)) (c : ℕ)
     (h : ¬ Function.Injective fun i' : Fin (X.colHt v (j + 1) s c) => I v s c i'.val) : X.colFac j I v s c = 0 := by
@@ -80,9 +80,9 @@ theorem ea_colFac_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v
   rw [hxy']
 
 /- English proof (translation)
-Rewrite using `[← Finset.card_image_of_injective _ hg]`. Use `congr 1`. Use extensionality with `b`. Simplify using `only [mem_inter, mem_image, mem_filter, mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨x, rfl⟩, hb⟩`. Conclude with `⟨x, hb, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x, rfl⟩, hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ea_card_img {H N : ℕ} (g : Fin H → Fin N) (hg : Function.Injective g) (i : ℕ) :
     ((univ.image g) ∩ univ.filter (fun b : Fin N => b.val < i)).card =
@@ -98,11 +98,11 @@ theorem ea_card_img {H N : ℕ} (g : Fin H → Fin N) (hg : Function.Injective g
     exact ⟨⟨x, rfl⟩, hx⟩
 
 /- English proof (translation)
-Unfold `ea_Exp`. Use `(Fintype.sum_equiv (ea_e X v).symm _ _ fun s' => ?_).symm` and prove the remaining obligations. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun c => X.colExp j I (fun _ => i) v ((ea_e X v).symm s') c)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `e1` using `ea_card_img (ea_Ic X v j I s' c) (h ((ea_e X v).symm s') c.val) i`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `ea_card_fin (X.colHt v (j + 1) ((ea_e X v).symm s') c.val) (fun x => (I v ((ea_e X v).symm s') c.val x).val < i)`. Establish `e3 : ((univ.image (ea_Ic X v j I s' c)) ∩ univ.filter (fun b : Fin (NN X.G.P.m X.t (j + 1)) => b.val < i)).card = ((range (X.colHt v (j + 1) ((ea_e X v).symm s') c.val)).filter fun x => (I v ((ea_e X v).symm s') c.val x).val < i).card` using `e1.trans e2`. Rewrite using `[e3]`. Unfold `Sys.colExp`. Establish `hv : ((ea_e X v).symm s').val = s'.val` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Distinguish the cases in `hodd : s'.val % 2 = 0`. Rewrite using `[if_pos hodd, if_neg (by unfold IsOddPos; rw [hv]; omega)]`. Both sides reduce to the same expression. Rewrite using `[if_neg hodd, if_pos (by unfold IsOddPos; rw [hv]; omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem ea_Exp_eq (v : X.Pl) (j i : ℕ) (I : X.ColCh j)
     (h : ∀ (s : Fin (X.G.P.n' v)) (c : ℕ), Function.Injective fun i' : Fin (X.colHt v (j + 1) s c) => I v s c i'.val) :
@@ -128,19 +128,17 @@ theorem ea_Exp_eq (v : X.Pl) (j i : ℕ) (I : X.ColCh j)
   · rw [if_neg hodd, if_pos (by unfold IsOddPos; rw [hv]; omega)]
 
 /- English proof (translation)
-Introduce `v j i K' _ F I n`. Distinguish the cases in `h : ∀ (s : Fin (X.G.P.n' v)) (c : ℕ), c ∈ range (X.nuv v (j + 1) s 1).toNat → X.colFac j I v s c ≠ 0`. Distinguish the cases in `h2 : ∀ (s : Fin (X.G.P.n' v)) (c : ℕ), Function.Injective fun i' : Fin (X.colHt v (j + 1) s c) => I v s c i'.val`. Use `right`. Rewrite using `[ea_PIvS_eq, ea_applyD_scale, MvPolynomial.coeff_smul, smul_eq_mul, ea_Exp_eq X v j i I h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[ea_PIvS_eq, ea_applyD_scale, MvPolynomial.coeff_smul, smul_eq_mul]`. Use `congr 2`. Unfold `ea_Exp`. Use `(Fintype.sum_equiv (ea_e X v).symm _ _ fun s' => ?_).symm` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range (fun c => X.colExp j I (fun _ => i) v ((ea_e X v).symm s') c)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hinj : Function.Injective fun i' : Fin (X.colHt v (j + 1) ((ea_e X v).symm s') c.val) => I v ((ea_e X v).symm s') c.val i'.val`. Assume the negation of the conclusion as `hni`. Conclude with `h _ c.val (mem_range.2 c.isLt) (ea_colFac_zero X j I v _ _ hni)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `ea_card_img (ea_Ic X v j I s' c) hinj i`. Establish `e2` using `ea_card_fin (X.colHt v (j + 1) ((ea_e X v).symm s') c.val) (fun x => (I v ((ea_e X v).symm s') c.val x).val < i)`. Establish `e3 : ((univ.image (ea_Ic X v j I s' c)) ∩ univ.filter (fun b : Fin (NN X.G.P.m X.t (j + 1)) => b.val < i)).card = ((range (X.colHt v (j + 1) ((ea_e X v).symm s') c.val)).filter fun x => (I v ((ea_e X v).symm s') c.val x).val < i).card` using `e1.trans e2`. Rewrite using `[e3]`. Unfold `Sys.colExp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ((ea_e X v).symm s').val = s'.val` using `rfl`. Distinguish the cases in `hodd : s'.val % 2 = 0`. Rewrite using `[if_pos hodd, if_neg (by unfold IsOddPos; rw [hv]; omega)]`. Both sides reduce to the same expression. Rewrite using `[if_neg hodd, if_pos (by unfold IsOddPos; rw [hv]; omega)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `left push Not at h`. Take `⟨s, c, hc, h0⟩` from `h`. Establish `hz : PIvS X j I (fun _ => i) v = 0`. Unfold `PIvS`. Use `Finset.prod_eq_zero (Finset.mem_univ s) (Finset.prod_eq_zero hc ?_)` and prove the remaining obligations.
-
-Rewrite using `[h0, mul_zero]`. Rewrite using `[hz, ea_applyD_zero, MvPolynomial.coeff_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ea_brScale : ea_BrScale X := by
   intro v j i K' _ F I n

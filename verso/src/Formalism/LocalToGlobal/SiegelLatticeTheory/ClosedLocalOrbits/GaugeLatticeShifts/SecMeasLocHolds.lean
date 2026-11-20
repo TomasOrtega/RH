@@ -11,14 +11,14 @@ namespace Formalism.L2.SG.RealObj.InfCut.ProductExactness
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates
 
 /- English proof (translation)
-Simplify using `only [hJ, star_sub, sub_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem SecMeasLoc_holds_lemma {n : ℕ} (ε : Fin n → Bool) (x y v : Fin n → ℂ) :
     hJ ε (x - y) v = hJ ε x v - hJ ε y v := by
   simp only [hJ, star_sub, sub_dotProduct]
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hA, hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem SecMeasLoc_holds_lemma_3 {n : ℕ} (ε : Fin n → Bool) (A B : Matrix (Fin n) (Fin n) ℂ)
     (hA : IsIsom ε A) (hB : IsIsom ε B) : IsIsom ε (A * B) := by
@@ -26,13 +26,13 @@ private theorem SecMeasLoc_holds_lemma_3 {n : ℕ} (ε : Fin n → Bool) (A B : 
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hA, hB]
 
 /- English proof (translation)
-Establish `hpe : ∀ a b, hJ ε (p a) (e b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[hJ_cj, hep b a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Apply `tvm_isIsom` to reduce the goal to its premises. Introduce `a b hab`. Simplify using `only [hJ_add_l, hJ_add_r, hJ_smul_l, hJ_smul_r, hee, hpp, hep, hpe, if_neg hab, if_neg (Ne.symm hab)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b`. Simplify using `only [hJ_add_l, hJ_add_r, hJ_smul_l, hJ_smul_r, hee, hpp, hep, hpe, if_pos rfl, if_true, mul_one, mul_zero, zero_add, add_zero]`. Distinguish the cases in `hs : s b = 0`. Simplify using `[hs]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hc : (starRingEnd ℂ) (s b) ≠ 0` using `(map_ne_zero _).mpr hs`. Rewrite using `[map_inv₀, Complex.conj_conj]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem SecMeasLoc_holds_lemma_4 {n r : ℕ} (ε : Fin n → Bool) (e p : Fin r → Fin n → ℂ) (s : Fin r → ℂ)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hep : ∀ a b, hJ ε (e a) (p b) = if a = b then 1 else 0)
@@ -59,13 +59,13 @@ private theorem SecMeasLoc_holds_lemma_4 {n r : ℕ} (ε : Fin n → Bool) (e p 
       ring
 
 /- English proof (translation)
-Establish `hpe : ∀ a b, hJ ε (p a) (e b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[hJ_cj, hep b a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Establish `h1 : ((starRingEnd ℂ) (s a))⁻¹ * hJ ε (e a + s a • p a) (e a) = 1`. Establish `hc : (starRingEnd ℂ) (s a) ≠ 0` using `(map_ne_zero _).mpr hs`. Simplify using `only [hJ_add_l, hJ_smul_l, hee, hpe, if_pos rfl, if_true, mul_one, zero_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2 : ∀ b, b ≠ a → hJ ε (e b + s b • p b) (e a) = 0`. Introduce `b hb`. Simplify using `only [hJ_add_l, hJ_smul_l, hee, hpe, if_neg hb]`. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[tvm_one ε (fun b => e b + s b • p b) (fun b => ((starRingEnd ℂ) (s b))⁻¹) a h1 h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem SecMeasLoc_holds_lemma_5 {n r : ℕ} (ε : Fin n → Bool) (e p : Fin r → Fin n → ℂ) (s : Fin r → ℂ)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hep : ∀ a b, hJ ε (e a) (p b) = if a = b then 1 else 0)
@@ -89,7 +89,7 @@ private theorem SecMeasLoc_holds_lemma_5 {n r : ℕ} (ε : Fin n → Bool) (e p 
   abel
 
 /- English proof (translation)
-Apply `tvm_fix` to reduce the goal to its premises. Introduce `b`. Simplify using `only [hJ_add_l, hJ_smul_l, hev, hpv]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem SecMeasLoc_holds_lemma_6 {n r : ℕ} (ε : Fin n → Bool) (e p : Fin r → Fin n → ℂ) (s : Fin r → ℂ)
     (v : Fin n → ℂ) (hev : ∀ b, hJ ε (e b) v = 0) (hpv : ∀ b, hJ ε (p b) v = 0) :
@@ -100,17 +100,17 @@ private theorem SecMeasLoc_holds_lemma_6 {n r : ℕ} (ε : Fin n → Bool) (e p 
   simp
 
 /- English proof (translation)
-Establish `key : ∀ σ : ℝ, σ ^ 2 * T = T' → σ ≠ 0 → hJ ε (z' - (σ:ℂ) • z) z' ≠ 0 → ∃ σ' : ℝ, σ' ^ 2 * T = T' ∧ σ' ≠ 0 ∧ ∃ K : Matrix (Fin n) (Fin n) ℂ, IsIsom ε K ∧ (∀ b, K *ᵥ e b = e b) ∧ K *ᵥ z' = (σ':ℂ) • z`. Introduce `σ hσ hσ0 hD`. Use `⟨σ, hσ, hσ0, tv ε (z' - (σ:ℂ) • z) (hJ ε (z' - (σ:ℂ) • z) z')⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `step_isIsom` to reduce the goal to its premises. Rewrite using `[hzz', hJ_smul_l, hJ_smul_r, hzz, Complex.conj_ofReal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (σ:ℂ) ^ 2 * T = T'` using `by exact_mod_cast hσ`. Take the linear combination `h2`. Introduce `b`. Establish `h0 : hJ ε (z' - (σ:ℂ) • z) (e b) = 0`. Rewrite using `[SecMeasLoc_holds_lemma, hJ_smul_l, hJ_zero_of_cj ε (hez' b), hJ_zero_of_cj ε (hez b)]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[tv_apply, h0]`. Simplify using the standard rewrite rules. Conclude with `step_apply ε z' ((σ:ℂ) • z) hD`. Establish `hs2 : Real.sqrt (T' / T) ^ 2 * T = T'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sq_sqrt (div_nonneg hT'.le hT.le)]`. Conclude with `div_mul_cancel₀ _ hT.ne'`. Establish `hs0 : Real.sqrt (T' / T) ≠ 0` using `(Real.sqrt_pos.mpr (div_pos hT' hT)).ne'`. Distinguish the cases in `hD : hJ ε (z' - (Real.sqrt (T' / T):ℂ) • z) z' = 0`. Apply `key (-Real.sqrt (T' / T)) (by rw [neg_sq]; exact hs2) (neg_ne_zero.mpr hs0)` to reduce the goal to its premises.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hD'`. Rewrite `hD`, `hD'` using `[SecMeasLoc_holds_lemma, hJ_smul_l, Complex.conj_ofReal, hzz']`. Move the coercions through the operations in `at hD'`. Establish `h3 : (2:ℂ) * -(T':ℂ) = 0` using `by linear_combination hD + hD'`. Establish `hT'c : (T':ℂ) ≠ 0` using `by exact_mod_cast hT'.ne'`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `hT'c` to reduce the goal to its premises. Take the linear combination `-h3 / 2`. Conclude with `key _ hs2 hs0 hD`.
+A detailed English derivation is pending.
 -/
 private theorem SecMeasLoc_holds_lemma_7 {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ)
     (T T' : ℝ) (hez : ∀ a, hJ ε (e a) z = 0) (hez' : ∀ a, hJ ε (e a) z' = 0)
@@ -149,61 +149,55 @@ private theorem SecMeasLoc_holds_lemma_7 {n r : ℕ} (ε : Fin n → Bool) (e : 
   · exact key _ hs2 hs0 hD
 
 /- English proof (translation)
-Introduce `n r k ε e z z' T T' sc hF hsc`. Establish `hT` using `hF.T_pos`. Establish `hT'` using `hF.T'_pos`. Establish `hzz0 : hJ ε z z ≠ 0`. Rewrite using `[hF.zz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_ne_zero.mpr (by exact_mod_cast hT.ne')`. Take `⟨p, hep, hpp, hzp⟩` from `partner_exists ε e z hF.e_li hF.ee hF.ez hzz0`. Take `⟨w, hww, hew, hpw, hzw⟩` from `scalar_frame_w_zero_exists ε k e p z T hF.dim hF.k_pos hF.sig hF.ee hep hpp hF.ez hzp hF.zz hT`. Take `⟨σ, hσ, hσ0, K, hK, hKe, hKz⟩` from `SecMeasLoc_holds_lemma_7 ε e z z' T T' hF.ez hF.ez' hF.zz hF.zz' hT hT'`. Establish `hwz : hJ ε w z = 0` using `hJ_zero_of_cj ε hzw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσc : ((σ:ℂ)) ^ 2 * T = T'` using `by exact_mod_cast hσ`. Set `Bm : (Fin (r + 1) → ℂ) → Matrix (Fin n) (Fin n) ℂ` to `fun c => tvm ε (fun b => e b + (-lamOf sc c b) • p b) (fun b => ((starRingEnd ℂ) (-lamOf sc c b))⁻¹)`. Set `y : (Fin (r + 1) → ℂ) → Fin n → ℂ` to `fun c => alOf T c • z + beOf T T' c • w`. Set `Rm : (Fin (r + 1) → ℂ) → Matrix (Fin n) (Fin n) ℂ` to `fun c => if hJ ε (y c) (y c) = -(T':ℂ) then tv ε ((σ:ℂ) • z - y c) (hJ ε ((σ:ℂ) • z - y c) ((σ:ℂ) • z))⁻¹ else 1`. Establish `hB : ∀ c, IsIsom ε (Bm c)` using `fun c => SecMeasLoc_holds_lemma_4 ε e p _ hF.ee hep hpp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ c, IsIsom ε (Rm c)`. Introduce `c`. Simplify using `only [Rm]`. Use `split_ifs with h`. Apply `step_isIsom` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h, hJ_smul_l, hJ_smul_r, hF.zz, Complex.conj_ofReal]`. Take the linear combination `-hσc`. Introduce `x x'`. Simplify using the standard rewrite rules. Establish `hM : ∀ c, IsIsom ε (Rm c * Bm c * K)` using `fun c => SecMeasLoc_holds_lemma_3 ε _ _ (SecMeasLoc_holds_lemma_3 ε _ _ (hR c) (hB c)) hK`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun c => toUJ ε (hM c), measurable_toUJ ε (fun c => Rm c * Bm c * K) hM ?_, ?_⟩` and prove the remaining obligations. Establish `hlam : ∀ b, Measurable fun c : Fin (r + 1) → ℂ => lamOf sc c b`. Introduce `b`. Unfold `lamOf`. Conclude with `(measurable_pi_apply _).div_const _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hal : Measurable fun c : Fin (r + 1) → ℂ => alOf T c`. Unfold `alOf`. Conclude with `(measurable_pi_apply _).neg.div_const _`. Establish `hbe : Measurable fun c : Fin (r + 1) → ℂ => beOf T T' c`. Unfold `beOf`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Complex.measurable_ofReal.comp (Real.continuous_sqrt.measurable.comp ((((measurable_pi_apply _).norm.pow_const 2).div_const _).sub_const _))`. Establish `hy : ∀ l, Measurable fun c => y c l`. Introduce `l`. Simplify using `only [y, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hal.mul measurable_const).add (hbe.mul measurable_const)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : MeasurableSet {c | hJ ε (y c) (y c) = -(T':ℂ)}` using `measurableSet_eq_fun (meas_hJ ε y y hy hy) measurable_const`. Establish `hu : ∀ l, Measurable fun c => ((σ:ℂ) • z - y c) l`. Introduce `l`. Simplify using `only [Pi.sub_apply]`. Conclude with `measurable_const.sub (hy l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hxi : Measurable fun c => (hJ ε ((σ:ℂ) • z - y c) ((σ:ℂ) • z))⁻¹` using `(meas_hJ ε (fun c => (σ:ℂ) • z - y c) (fun _ => (σ:ℂ) • z) hu (fun _ => measurable_const)).inv`. Establish `hRm : ∀ i j, Measurable fun c => Rm c i j`. Introduce `i j`. Establish `h8 : (fun c => Rm c i j) = fun c => if hJ ε (y c) (y c) = -(T':ℂ) then tv ε ((σ:ℂ) • z - y c) (hJ ε ((σ:ℂ) • z - y c) ((σ:ℂ) • z))⁻¹ i j else (1 : Matrix (Fin n) (Fin n) ℂ) i j`. Use function extensionality and compare the values at `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Rm]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[h8]`. Conclude with `Measurable.ite hS (meas_tv ε (fun c => (σ:ℂ) • z - y c) _ hu hxi i j) measurable_const`. Establish `hBm : ∀ i j, Measurable fun c => Bm c i j`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i j`. Use `meas_tvm ε (fun c b => e b + (-lamOf sc c b) • p b) (fun c b => ((starRingEnd ℂ) (-lamOf sc c b))⁻¹) ?_ ?_ i j` and prove the remaining obligations. Introduce `b l`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `measurable_const.add ((hlam b).neg.mul measurable_const)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Conclude with `(Complex.continuous_conj.measurable.comp (hlam b).neg).inv`. Conclude with `meas_mul (fun c => Rm c * Bm c) (fun _ => K) (meas_mul Rm Bm hRm hBm) (fun _ _ => measurable_const)`. Introduce `c hc`. Take `⟨hc0, hG⟩` from `hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hGp` using `normSq_last_sub_pos_of_Gv_diagonal_pos T T' c hG`. Establish `hx : 0 ≤ ‖c (Fin.last r)‖ ^ 2 / T - T'`. Rewrite using `[div_sub' hT.ne']`. Conclude with `div_nonneg (by linarith) hT.le`. Establish `hb : (starRingEnd ℂ) (beOf T T' c) * beOf T T' c = ((‖c (Fin.last r)‖ ^ 2 / T - T' : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `beOf`. Rewrite using `[Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt hx]`. Establish `ha : (starRingEnd ℂ) (alOf T c) * alOf T c = ((‖c (Fin.last r)‖ ^ 2 / T ^ 2 : ℝ) : ℂ)`. Unfold `alOf`. Rewrite using `[map_div₀, map_neg, Complex.conj_ofReal, neg_div, neg_div, neg_mul_neg, div_mul_div_comm, Complex.conj_mul']`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : hJ ε (y c) (y c) = -(T:ℂ) * ((starRingEnd ℂ) (alOf T c) * alOf T c) + (starRingEnd ℂ) (beOf T T' c) * beOf T T' c`. Simplify using `only [y, hJ_add_l, hJ_add_r, hJ_smul_l, hJ_smul_r, hF.zz, hww, hzw, hwz]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hyy : hJ ε (y c) (y c) = -(T':ℂ)`. Rewrite using `[e1, ha, hb]`. Establish `hTc : (T:ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hRc : Rm c = tv ε ((σ:ℂ) • z - y c) (hJ ε ((σ:ℂ) • z - y c) ((σ:ℂ) • z))⁻¹` using `if_pos hyy`. Establish `hlam0 : ∀ b, lamOf sc c b ≠ 0`. Introduce `b`. Unfold `lamOf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hs : (sc:ℂ) ≠ 0` using `by exact_mod_cast hsc.ne'`. Conclude with `div_ne_zero (hc0 _) (mul_ne_zero (inv_ne_zero (pow_ne_zero _ hs)) (inv_ne_zero (pow_ne_zero _ hs)))`. Use `show Zhat ε (famSc sc e z) (famSc sc e z') (Rm c * Bm c * K) = diagonal c`. Apply `zhat_of_images ε e p z z' w T sc (beOf T T' c) hep hF.ez hzp hew hF.zz hzw hT.ne' hsc c` to reduce the goal to its premises. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hKe]`. Establish `hBe : Bm c *ᵥ e b = lamOf sc c b • p b`. Establish `h` using `SecMeasLoc_holds_lemma_5 ε e p (fun b => -lamOf sc c b) hF.ee hep b (neg_ne_zero.mpr (hlam0 b))`. Rewrite `h` using `[neg_smul, neg_neg]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBe, hRc, tv_apply]`. Establish `h0 : hJ ε ((σ:ℂ) • z - y c) (lamOf sc c b • p b) = 0`. Rewrite using `[SecMeasLoc_holds_lemma]`. Simplify using `only [y, hJ_add_l, hJ_smul_l, hJ_smul_r, hzp, hJ_zero_of_cj ε (hpw b)]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hKz]`. Establish `hBz : Bm c *ᵥ ((σ:ℂ) • z) = (σ:ℂ) • z`. Apply `SecMeasLoc_holds_lemma_6` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[hJ_smul_r, hF.ez b, mul_zero]`. Introduce `b`. Rewrite using `[hJ_smul_r, hJ_zero_of_cj ε (hzp b), mul_zero]`. Rewrite using `[hBz, hRc, tv_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hD : hJ ε ((σ:ℂ) • z - y c) ((σ:ℂ) • z) = 0`. Establish `hTc : (T:ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Establish `e2 : hJ ε ((σ:ℂ) • z - y c) ((σ:ℂ) • z) = (σ:ℂ) * T * ((starRingEnd ℂ) (alOf T c) - σ)`. Rewrite using `[SecMeasLoc_holds_lemma]`. Simplify using `only [y, hJ_add_l, hJ_smul_l, hJ_smul_r, hF.zz, hwz, Complex.conj_ofReal]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hca : (starRingEnd ℂ) (alOf T c) = σ`. Rewrite `hD` using `[e2]`. Establish `h5 : (σ:ℂ) * T ≠ 0` using `mul_ne_zero (by exact_mod_cast hσ0) hTc`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp hD).resolve_left h5)`.
-
-Establish `hα : alOf T c = σ`. Establish `h6` using `congrArg (starRingEnd ℂ) hca`. Rewrite `h6` using `[Complex.conj_conj, Complex.conj_ofReal]`. Then use the resulting hypothesis. Establish `hβ : beOf T T' c = 0`. Establish `h4 : (starRingEnd ℂ) (beOf T T' c) * beOf T T' c = 0`.
-
-Establish `h7` using `hyy`. Rewrite `h7` using `[e1, hα, Complex.conj_ofReal]`. Take the linear combination `h7 + hσc`. Break down `mul_eq_zero.mp h4 with h | h` into its components or cases. Conclude with `(map_eq_zero _).mp h`.
-
-Conclude with `h`. Rewrite using `[hD, _root_.inv_zero, zero_mul, zero_smul, sub_zero]`. Use `show (σ:ℂ) • z = alOf T c • z + beOf T T' c • w`. Rewrite using `[hα, hβ, zero_smul, add_zero]`. Rewrite using `[inv_mul_cancel₀ hD, one_smul, sub_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecMeasLoc_holds : SecMeasLoc := by
   intro n r k ε e z z' T T' sc hF hsc

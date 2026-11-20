@@ -2,9 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.C
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
 /- English proof (translation)
-Introduce `hN Ω _ _ _ l _ ι e M he W hirr hf hlev hcyc`. Take `⟨f, hf⟩` from `hf`. Apply the tactic sequence `refine ⟨hirr, hN (2 * e + 1) (by omega) f l Ω ι W _ hf, hlev, ⟨_, hcyc, ?_⟩, Or.inr fun i j => by fin_cases i <;> fin_cases j <;> simp <;> omega⟩`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp [Matrix.det_fin_two]), fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_mkOfDetNeZero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `((W s : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) = A`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.det_fin_two, Matrix.vecMul, dotProduct] <;> ring`.
+Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem UpperTheory.admissible_of_newform_attached :
     NewformAut → ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e M : ℕ), 1 ≤ e → ∀ W : G ℚ Ω →* GL (Fin 2) (Qbar l), IsIrr W → (∃ f : Newform (2 * e + 1), f.Att ι (tw W (cycBar ℚ Ω l ^ (-(e : ℤ))))) → Level l M ![(e : ℤ), -(e : ℤ)] W → IsCycWt l 0 (Matrix.GeneralLinearGroup.det.comp W) → AdmR ι M ![(e : ℤ), -(e : ℤ)] 0 W := by

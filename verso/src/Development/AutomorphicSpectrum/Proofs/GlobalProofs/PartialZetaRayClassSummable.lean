@@ -10,9 +10,9 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `h0 : -s ≠ 0` using `fun h => by`. Establish `: s = 0` using `neg_eq_zero.mp h`. Simplify using `[this] at hs`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : -s.re ≠ 0` using `by linarith`. Simplify using `[Complex.zero_cpow h0, Real.zero_rpow h1]`. Simplify using `using Complex.norm_natCast_cpow_of_pos hn (-s)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_natCast_cpow_neg (n : ℕ) {s : ℂ} (hs : 1 < s.re) :
     ‖(n : ℂ) ^ (-s)‖ = (n : ℝ) ^ (-s.re) := by
@@ -26,7 +26,7 @@ theorem norm_natCast_cpow_neg (n : ℕ) {s : ℂ} (hs : 1 < s.re) :
   · simpa using Complex.norm_natCast_cpow_of_pos hn (-s)
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔣 𝔞 𝔟 J _ r y v _ s hs`. Establish `h` using `(ReciprocityTheory.Cheb.summable_absNorm_rpow_ideal F hs).subtype {I : Ideal (𝓞 F) | CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I 𝔞}`. Use `Summable.of_norm (h.congr fun I => ?_)` and prove the remaining obligations. Conclude with `(norm_natCast_cpow_neg _ hs).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem classSummable : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔣 𝔞 𝔟 : Ideal (𝓞 F)) (J : Type) [Fintype J]
     (r : J → ℕ) (y : J → 𝓞 F) (v : ∀ j, Fin (r j) → 𝓞 F), ClassParam 𝔣 𝔞 𝔟 r y v → ∀ s : ℂ, 1 < s.re →

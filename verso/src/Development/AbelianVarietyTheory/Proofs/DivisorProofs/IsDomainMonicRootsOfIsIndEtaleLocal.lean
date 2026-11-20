@@ -8,7 +8,7 @@ namespace GlobalTheory.LocalIndEtAIC
 open Polynomial IsLocalRing
 
 /- English proof (translation)
-Establish `hu : ∀ y : ((maximalIdeal O).comap v).primeCompl, IsUnit (v y)` using `fun y => by`. Assume the negation of the conclusion as `hy`. Conclude with `y.2 hy`. Conclude with `⟨IsLocalization.lift hu, fun w => IsLocalization.lift_eq hu w⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_atComap {W O : Type} [CommRing W] [CommRing O] [IsLocalRing O] (v : W →+* O) :
     ∃ φ : Localization.AtPrime ((maximalIdeal O).comap v) →+* O,
@@ -19,33 +19,29 @@ theorem lift_atComap {W O : Type} [CommRing W] [CommRing O] [IsLocalRing O] (v :
   exact ⟨IsLocalization.lift hu, fun w => IsLocalization.lift_eq hu w⟩
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ h hE`. Establish `hdom : IsDomain O`. Use `@NoZeroDivisors.to_isDomain O _ _ ⟨fun {x y} hxy => ?_⟩` and prove the remaining obligations. Set `I : Ideal (MvPolynomial (Fin 2) T)` to `Ideal.span {MvPolynomial.X 0 * MvPolynomial.X 1}`. Use `haveI : Algebra.FinitePresentation T (MvPolynomial (Fin 2) T ⧸ I) := Algebra.FinitePresentation.quotient (Submodule.fg_span_singleton _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : (MvPolynomial (Fin 2) T ⧸ I) →ₐ[T] O` to `Ideal.Quotient.liftₐ I (MvPolynomial.aeval ![x, y]) (by`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Simplify using `[hxy])`. Take `⟨W, _, _, _, u, v, huv⟩` from `GlobalTheory.IndEtaleLocal.exists_etale_factor h g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `w : Fin 2 → W` to `fun i => u (Ideal.Quotient.mkₐ T I (MvPolynomial.X i))`. Establish `hw : ∀ i, v (w i) = ![x, y] i` using `fun i => by`. Use `DFunLike.congr_fun huv (Ideal.Quotient.mkₐ T I (MvPolynomial.X i))` as an intermediate fact. Conclude with `this.trans (MvPolynomial.aeval_X _ i)`. Establish `h0 : w 0 * w 1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Ideal.Quotient.mkₐ T I (MvPolynomial.X 0) * Ideal.Quotient.mkₐ T I (MvPolynomial.X 1) = 0`. Rewrite using `[← map_mul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self _)`. Simplify using `only [w, ← map_mul, this, map_zero]`. Take `⟨φ, hφ⟩` from `lift_atComap (v : W →+* O)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `haveI := (hE W ((maximalIdeal O).comap (v : W →+* O))).1`. Establish `hm : algebraMap W (Localization.AtPrime ((maximalIdeal O).comap (v : W →+* O))) (w 0) * algebraMap W _ (w 1) = 0` using `by rw [← map_mul, h0, map_zero]`. Break down `mul_eq_zero.mp hm with h1 | h1` into its components or cases. Use `left`. Establish `e` using `hφ (w 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e` using `[h1, map_zero]`. Use `hw 0` as an intermediate fact. Simplify using `only [AlgHom.coe_toRingHom] at e`. Rewrite `this` using `[← e]`. Simplify using `using this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `right`. Establish `e` using `hφ (w 1)`. Rewrite `e` using `[h1, map_zero]`. Use `hw 1` as an intermediate fact. Simplify using `only [AlgHom.coe_toRingHom] at e`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← e]`. Simplify using `using this.symm`. Use `⟨hdom, ?_⟩` and prove the remaining obligations. Introduce `p hpm hdeg`. Use `set n := p.natDegree with hn`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : MvPolynomial (Fin n) T →ₐ[T] O` to `MvPolynomial.aeval (fun i => p.coeff i)`. Take `⟨W, _, _, _, u, v, huv⟩` from `GlobalTheory.IndEtaleLocal.exists_etale_factor h g`. Set `c : Fin n → W` to `fun i => u (MvPolynomial.X i)`. Establish `hc : ∀ i, v (c i) = p.coeff i` using `fun i => by`. Use `DFunLike.congr_fun huv (MvPolynomial.X i)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `this.trans (MvPolynomial.aeval_X _ i)`. Set `p' : W[X]` to `X ^ n + ∑ i : Fin n, C (c i) * X ^ (i : ℕ)`. Establish `hp'm : p'.Monic` using `Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt _)`. Establish `hp' : p'.map (v : W →+* O) = p` using `by conv_rhs => rw [hpm.as_sum]`. Simplify using `only [p', Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => C (p.coeff i) * X ^ i)]`. Simplify using `[hc]`. Both sides reduce to the same expression. Establish `hp'd : p'.natDegree = n`. Establish `e1` using `hp'm.natDegree_map (v : W →+* O)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e1` using `[hp']`. Rewrite using `[← e1]`. Take `⟨φ, hφ⟩` from `lift_atComap (v : W →+* O)`. Use `set L := Localization.AtPrime ((maximalIdeal O).comap (v : W →+* O))`. Use `haveI := (hE W ((maximalIdeal O).comap (v : W →+* O))).1`.
-
-Establish `hL` using `(hE W ((maximalIdeal O).comap (v : W →+* O))).2`. Establish `hmL : (p'.map (algebraMap W L)).Monic` using `hp'm.map _`. Establish `hdL : 0 < (p'.map (algebraMap W L)).natDegree`. Rewrite using `[hp'm.natDegree_map, hp'd]`. Conclude with `hdeg`.
-
-Take `⟨r, hr⟩` from `hL _ hmL hdL`. Use `⟨φ r, ?_⟩` and prove the remaining obligations. Establish `hcomp : φ.comp (algebraMap W L) = (v : W →+* O)` using `RingHom.ext hφ`. Establish `hpL : p = (p'.map (algebraMap W L)).map φ` using `by rw [Polynomial.map_map, hcomp, hp']`. Rewrite using `[hpL, Polynomial.eval_map, Polynomial.eval₂_at_apply, hr, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDomain_aic_of_indEt : ∀ (T O : Type) [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O],
     IndEt T O → (∀ (E : Type) [CommRing E] [Algebra T E] [Algebra.Etale T E] (P : Ideal E) [P.IsPrime],

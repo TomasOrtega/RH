@@ -16,11 +16,11 @@ namespace GlobalTheory.Unf
 variable {D : D7}
 
 /- English proof (translation)
-Use `show LinearIndependent D.host.E (fun i : Fin ρ => fun k : Fin W.rank => d.e k i)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1 : d.e *ᵥ g = 0`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun hg k` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (d.e'ᴴ * W.gram * d.e) *ᵥ g = 0` using `by rw [← Matrix.mulVec_mulVec, h1, Matrix.mulVec_zero]`. Rewrite `h2` using `[d.e'e, Matrix.one_mulVec]`. Introduce `i`. Conclude with `congrFun h2 i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linInd_e {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) : LinearIndependent D.host.E d.e.transpose := by
   show LinearIndependent D.host.E (fun i : Fin ρ => fun k : Fin W.rank => d.e k i)
@@ -37,13 +37,13 @@ theorem linInd_e {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) : LinearInde
   intro i; exact congrFun h2 i
 
 /- English proof (translation)
-Rewrite using `[gramQ, ← Matrix.mul_assoc]`. Conclude with `d.ee`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramQ_e {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) : gramQ W d.e = 0 := by
   rw [gramQ, ← Matrix.mul_assoc]; exact d.ee
 
 /- English proof (translation)
-Take `⟨u, -, b, c, rfl⟩` from `((flag_jacobi_structure D W W₀ ρ d).1 n).1 hn`. Rewrite using `[mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.nC_j0, d.nB_j0, Matrix.mul_add, d.wittDecomp_levi_inclAnisotropic, ← Matrix.mul_assoc (mt W (d.levi u)) d.jX, d.levi_jX, Matrix.mul_add, d.p0_j0, ← Matrix.mul_assoc, ← Matrix.mul_assoc, d.p0_jX, Matrix.zero_mul, Matrix.zero_m …`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagUnipotent_anisotropic_projection_eq_one {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) {n : GA D W} (hn : n ∈ flagN d) :
     d.p0 ⬝ (mt W n ⬝ d.j0) = 1 := by
@@ -53,13 +53,13 @@ theorem flagUnipotent_anisotropic_projection_eq_one {W W₀ : HSp D} {ρ : ℕ} 
     ← Matrix.mul_assoc, d.p0_jX, Matrix.zero_mul, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Establish `dec` using `flag_jacobi_structure D W W₀ ρ d`. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hr⟩`. Establish `hs : d.levi u⁻¹ * r ∈ stabX d` using `by show mt W (d.levi u⁻¹ * r) ⬝ d.jX = d.jX`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[mt_mul, Matrix.mul_assoc, show mt W r ⬝ d.jX = d.jX ⬝ u.1 from hr, ← Matrix.mul_assoc, d.levi_jX, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Take `⟨n, hn, h, he⟩` from `(dec.2.2.1 _).1 hs`. Establish `hl : d.levi u ∈ flagN d` using `(dec.1 _).2 ⟨u, hu, 0, 0, by rw [d.nB_zero, d.nC_zero, mul_one, mul_one]⟩`. Use `(dec.2.2.2.1 r).2 ⟨d.levi u * n, mul_mem hl (Subgroup.mem_inf.1 hn).1, h, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← he, ← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hr`. Take `⟨n, hn, h, rfl⟩` from `(dec.2.2.2.1 r).1 hr`. Take `⟨u, hu, b, c, rfl⟩` from `(dec.1 n).1 hn`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Use `show mt W _ ⬝ d.jX = d.jX ⬝ u.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mt_mul, mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, d.nC_jX, d.nB_jX, d.levi_jX]`.
+A detailed English derivation is pending.
 -/
 theorem Rgrp_eq {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) : Rgrp W (rat d.e) = jacGrp d := by
   have dec := flag_jacobi_structure D W W₀ ρ d
@@ -83,11 +83,11 @@ theorem Rgrp_eq {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) : Rgrp W (rat
       d.levi_jX]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hh : h ∈ GQ W₀`. Rewrite `hg`, the goal using `[mem_GQ_iff]`. Establish `e : mt W₀ h = d.p0 ⬝ (mt W (n * d.emb0 h) ⬝ d.j0)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc (mt W n), ← Matrix.mul_assoc, flagUnipotent_anisotropic_projection_eq_one d hn, Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_mul hg (rat_mem _))`. Use `⟨?_, hh⟩` and prove the remaining obligations. Establish `: n = n * d.emb0 h * (d.emb0 h)⁻¹` using `by rw [mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_mem hg (inv_mem (d.wittDecomp_anisotropicEmbedding_mem_rationalPoints hh))`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `mul_mem h1 (d.wittDecomp_anisotropicEmbedding_mem_rationalPoints h2)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem flagUnipotent_mul_emb_mem_rational_iff {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) {n : GA D W} (hn : n ∈ flagN d) (h : GA D W₀) :
     n * d.emb0 h ∈ GQ W ↔ n ∈ GQ W ∧ h ∈ GQ W₀ := by
@@ -108,7 +108,7 @@ theorem flagUnipotent_mul_emb_mem_rational_iff {W W₀ : HSp D} {ρ : ℕ} (d : 
     exact mul_mem h1 (d.wittDecomp_anisotropicEmbedding_mem_rationalPoints h2)
 
 /- English proof (translation)
-Introduce `D W W₀ ρ d`. Use `⟨⟨linInd_e d, fun u _ => ?_⟩, gramQ_e d, rfl, Rgrp_eq d, d.continuous_embed, fun n hn h => flagUnipotent_mul_emb_mem_rational_iff d hn h⟩` and prove the remaining obligations. Rewrite using `[gramQ_e d, rat_zero, Matrix.zero_mul, Matrix.mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem base_point : ∀ (D : D7) (W W₀ : HSp D) (ρ : ℕ) (d : HypDec W W₀ ρ), IsBase W d.e ∧ gramQ W d.e = 0 ∧ xZero d = rat d.e ∧ Rgrp W (rat d.e) = jacGrp d ∧ Continuous d.emb0 ∧ ∀ n ∈ flagN d, ∀ h, n * d.emb0 h ∈ GQ W ↔ n ∈ GQ W ∧ h ∈ GQ W₀ := by
   intro D W W₀ ρ d

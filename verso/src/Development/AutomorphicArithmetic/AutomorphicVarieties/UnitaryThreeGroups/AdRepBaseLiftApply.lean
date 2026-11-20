@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open Matrix UpperTheory.V.U3
 
 /- English proof (translation)
-Simplify using `only [thetaLie, Matrix.neg_apply, Matrix.mul_apply, Jmat, Matrix.transpose_apply]`. Use `congr 1`. Simplify using `only [ite_mul, mul_ite, one_mul, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single b.rev]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x _ hx`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hx (by rw [h, Fin.rev_rev])`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.U3.theta_lie_apply {R : Type} [CommRing R] (X : Matrix (Fin 3) (Fin 3) R)
     (a b : Fin 3) : thetaLie X a b = -X b.rev a.rev := by
@@ -21,13 +21,13 @@ private theorem UpperTheory.V.U3.theta_lie_apply {R : Type} [CommRing R] (X : Ma
   · simp
 
 /- English proof (translation)
-Introduce `G R _ _ η Ψ g X a b`. Establish `hR : (r0 η Ψ g).right = η g` using `rfl`. Establish `hL : ((r0 η Ψ g).left : Matrix (Fin 3) (Fin 3) R) = diagonal fun i => ((Ψ g ^ wt1 i : Rˣ) : R)`. Rewrite using `[unitaryThreeReflection_left, tor_val]`. Establish `hLi : (((r0 η Ψ g).left⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) = diagonal fun i => (((Ψ g ^ wt1 i)⁻¹ : Rˣ) : R)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[unitaryThreeReflection_left, ← map_inv, tor_val]`. Simplify using `only [_root_.inv_zpow]`. Establish `e : adRep (r0 η Ψ) g X = (((r0 η Ψ g).left : Matrix (Fin 3) (Fin 3) R) * (if (r0 η Ψ g).right = 1 then X else thetaLie X)) * (((r0 η Ψ g).left⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)` using `rfl`. Rewrite using `[e, hR, hL, hLi, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hw : Ψ g ^ wt a b = Ψ g ^ wt1 a * (Ψ g ^ wt1 b)⁻¹`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[wt, _root_.zpow_sub]`. Rewrite using `[hw, Units.val_mul]`. Use `split_ifs with h`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[theta_lie_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.adRep_baseLift_apply :
     ∀ {G R : Type} [Group G] [CommRing R] (η : G →* ℤˣ) (Ψ : G →* Rˣ) (g : G) (X : Matrix (Fin 3) (Fin 3) R) (a b : Fin 3),

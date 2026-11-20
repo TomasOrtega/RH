@@ -14,7 +14,7 @@ namespace FunctorialResolution.EmbeddedResolution
 variable {X Y : Scheme.{u}}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih`. Rewrite using `[Finset.prod_cons, Finset.prod_cons, Scheme.IdealSheafData.comap_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_finset_prod {ι : Type*} (s : Finset ι) (F : ι → X.IdealSheafData)
     (h : Y ⟶ X) : (∏ i ∈ s, F i).comap h = ∏ i ∈ s, (F i).comap h := by
@@ -24,14 +24,14 @@ private theorem comap_finset_prod {ι : Type*} (s : Finset ι) (F : ι → X.Ide
       rw [Finset.prod_cons, Finset.prod_cons, Scheme.IdealSheafData.comap_mul, ih]
 
 /- English proof (translation)
-Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_comap_ι (h : Y ⟶ X) (J : X.IdealSheafData) (U : X.Opens) :
     (J.comap h).comap (h ⁻¹ᵁ U).ι = (J.comap U.ι).comap (h ∣_ U) := by
   rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hy' : h.base y ∈ (M.support : Set X)` using `Scheme.IdealSheafData.mem_support_comap.mp hy`. Take `⟨D, hD, hyD⟩` from `Set.mem_iUnion₂.mp (hM hy')`. Use `Set.mem_iUnion₂.mpr ⟨D.comap h, List.mem_map.mpr ⟨D, hD, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `Scheme.IdealSheafData.mem_support_comap.mpr hyD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem support_comap_subset_biUnion (h : Y ⟶ X) (E : List X.IdealSheafData)
     (M : X.IdealSheafData) (hM : (M.support : Set X) ⊆ ⋃ D ∈ E, (D.support : Set X)) :
@@ -44,11 +44,11 @@ theorem support_comap_subset_biUnion (h : Y ⟶ X) (E : List X.IdealSheafData)
   exact Scheme.IdealSheafData.mem_support_comap.mpr hyD
 
 /- English proof (translation)
-Introduce `y`. Take `⟨U, hU, a, ha⟩` from `hM (h.base y)`. Establish `hlen : (E.map (fun D : X.IdealSheafData => D.comap h)).length = E.length` using `by simp`. Use `⟨h ⁻¹ᵁ U, hU, fun i => a (Fin.cast hlen i), ?_⟩` and prove the remaining obligations. Establish `hget : ∀ i : Fin (E.map (fun D : X.IdealSheafData => D.comap h)).length, (E.map (fun D : X.IdealSheafData => D.comap h)).get i = (E.get (Fin.cast hlen i)).comap h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `[List.get_eq_getElem]`. Establish `hterm : ∀ i : Fin E.length, (((E.get i).comap U.ι) ^ a i).comap (h ∣_ U) = ((E.get i).comap h).comap (h ⁻¹ᵁ U).ι ^ a i`. Introduce `i`. Rewrite using `[Scheme.IdealSheafData.comap_pow, ← comap_comap_ι h (E.get i) U]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : (∏ i : Fin E.length, (((E.get i).comap U.ι) ^ a i).comap (h ∣_ U)) = ∏ i : Fin E.length, ((E.get i).comap h).comap (h ⁻¹ᵁ U).ι ^ a i` using `Finset.prod_congr rfl (fun i _ => hterm i)`. Rewrite using `[comap_comap_ι h M U, ha, comap_finset_prod, hprod, ← Fin.prod_congr' (fun j : Fin E.length => ((E.get j).comap h).comap (h ⁻¹ᵁ U).ι ^ a j) hlen]`. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce `i _`. Rewrite using `[hget i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsMonomialIn.comap_of_isMonomialIn {E : List X.IdealSheafData} {M : X.IdealSheafData}
     (hM : IsMonomialIn E M) (h : Y ⟶ X) :
@@ -78,25 +78,21 @@ theorem IsMonomialIn.comap_of_isMonomialIn {E : List X.IdealSheafData} {M : X.Id
   rw [hget i]
 
 /- English proof (translation)
-Introduce and unpack `D' hD' C hC hCsub hCmax hCN`. Take `⟨D, hD, hDD⟩` from `List.mem_map.mp hD'`. Establish `hDD' : D' = D.comap h` using `hDD.symm`. Substitute `hDD'` using the available equality. Establish `hCclosed : IsClosed C`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[← closure_subset_iff_isClosed]`. Conclude with `hCmax (closure C) hC.closure (closure_minimal hCsub (D.comap h).support.isClosed) subset_closure`. Take `⟨ξ, hξ⟩` from `QuasiSober.sober hC hCclosed`. Establish `hξC : ξ ∈ C`. Rewrite using `[← hξ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `subset_closure (Set.mem_singleton ξ)`. Establish `hxD : h.base ξ ∈ (D.support : Set X)` using `Scheme.IdealSheafData.mem_support_comap.mp (hCsub hξC)`. Establish `hxN : h.base ξ ∈ (N.support : Set X)` using `Scheme.IdealSheafData.mem_support_comap.mp (hCN hξC)`. Use `hN D hD (closure ({h.base ξ} : Set X)) isIrreducible_singleton.closure (closure_minimal (Set.singleton_subset_iff.mpr hxD) D.support.isClosed) ?_ (closure_minimal (Set.singleton_subset_iff.mpr hxN) N.support.isClosed)` and prove the remaining obligations. Introduce `C'' hC'' hC''sub hsub`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨η, hη⟩` from `QuasiSober.sober hC''.closure isClosed_closure`. Establish `hηmem : η ∈ closure C''`. Rewrite using `[← hη]`. Conclude with `subset_closure (Set.mem_singleton η)`. Establish `hηD : η ∈ (D.support : Set X)` using `closure_minimal hC''sub D.support.isClosed hηmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hηspec : η ⤳ h.base ξ`. Use `specializes_iff_mem_closure.mpr ?_` and prove the remaining obligations. Rewrite using `[hη]`. Conclude with `subset_closure (hsub (subset_closure (Set.mem_singleton _)))`. Take `⟨ξ', hξ'1, hξ'2⟩` from `hg hηspec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hξ'2' : h.base ξ' = η` using `hξ'2`. Establish `hξ'D : ξ' ∈ ((D.comap h).support : Set Y)`. Use `Scheme.IdealSheafData.mem_support_comap.mpr ?_` and prove the remaining obligations. Rewrite using `[hξ'2']`. Conclude with `hηD`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclos : closure ({ξ'} : Set Y) ⊆ ((D.comap h).support : Set Y)` using `closure_minimal (Set.singleton_subset_iff.mpr hξ'D) (D.comap h).support.isClosed`. Establish `hCsubξ' : C ⊆ closure ({ξ'} : Set Y)`. Rewrite using `[← hξ]`. Conclude with `closure_minimal (Set.singleton_subset_iff.mpr (specializes_iff_mem_closure.mp hξ'1)) isClosed_closure`. Establish `hclosure : closure ({ξ'} : Set Y) ⊆ C` using `hCmax (closure ({ξ'} : Set Y)) isIrreducible_singleton.closure hclos hCsubξ'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ'C : ξ' ∈ C` using `hclosure (subset_closure (Set.mem_singleton _))`. Establish `hspec : ξ ⤳ ξ'`. Use `specializes_iff_mem_closure.mpr ?_` and prove the remaining obligations. Rewrite using `[hξ]`. Conclude with `hξ'C`.
-
-Establish `hspec2 : h.base ξ ⤳ h.base ξ'` using `hspec.map h.continuous`. Establish `hηclos : η ∈ closure ({h.base ξ} : Set X)`. Rewrite using `[← hξ'2']`. Conclude with `specializes_iff_mem_closure.mp hspec2`. Introduce `z hz`.
-
-Establish `hzc : z ∈ closure C''` using `subset_closure hz`. Rewrite `hzc` using `[← hη]`. Conclude with `closure_minimal (Set.singleton_subset_iff.mpr hηclos) isClosed_closure hzc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducibleComponents_not_subset_support_comap (h : Y ⟶ X) (hg : GeneralizingMap (fun y : Y => h.base y))
     (E : List X.IdealSheafData) (N : X.IdealSheafData)
@@ -166,7 +162,7 @@ theorem irreducibleComponents_not_subset_support_comap (h : Y ⟶ X) (hg : Gener
   exact closure_minimal (Set.singleton_subset_iff.mpr hηclos) isClosed_closure hzc
 
 /- English proof (translation)
-Rewrite using `[hs.eq_mul, Scheme.IdealSheafData.comap_mul] monomial_support := support_comap_subset_biUnion h E M hs.monomial_support monomial := hs.monomial.comap_of_isMonomialIn h transversal := irreducibleComponents_not_subset_support_comap h hg E N hs.transversal`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isMonomialSplitting_comap_of_generalizingMap (h : Y ⟶ X)
     (hg : GeneralizingMap (fun y : Y => h.base y)) {E : List X.IdealSheafData}
@@ -179,14 +175,14 @@ theorem isMonomialSplitting_comap_of_generalizingMap (h : Y ⟶ X)
   transversal := irreducibleComponents_not_subset_support_comap h hg E N hs.transversal
 
 /- English proof (translation)
-The claim follows from `AlgebraicGeometry.Flat.generalizingMap h`.
+A detailed English derivation is pending.
 -/
 theorem generalizingMap_base_of_flat (h : Y ⟶ X) [AlgebraicGeometry.Flat h] :
     GeneralizingMap (fun y : Y => h.base y) :=
   AlgebraicGeometry.Flat.generalizingMap h
 
 /- English proof (translation)
-The claim follows from `isMonomialSplitting_comap_of_generalizingMap h (generalizingMap_base_of_flat h) hs`.
+A detailed English derivation is pending.
 -/
 theorem isMonomialSplitting_comap_of_flat (h : Y ⟶ X) [AlgebraicGeometry.Flat h]
     {E : List X.IdealSheafData} {I M N : X.IdealSheafData} (hs : IsMonomialSplitting E I M N) :
@@ -195,7 +191,7 @@ theorem isMonomialSplitting_comap_of_flat (h : Y ⟶ X) [AlgebraicGeometry.Flat 
   isMonomialSplitting_comap_of_generalizingMap h (generalizingMap_base_of_flat h) hs
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.Flat h` using `inferInstance`. Conclude with `isMonomialSplitting_comap_of_flat h hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMonomialSplitting_comap_of_smooth (h : Y ⟶ X) [AlgebraicGeometry.Smooth h]
     {E : List X.IdealSheafData} {I M N : X.IdealSheafData} (hs : IsMonomialSplitting E I M N) :

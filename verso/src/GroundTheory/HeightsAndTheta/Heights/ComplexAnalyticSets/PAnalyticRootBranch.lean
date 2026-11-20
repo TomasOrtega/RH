@@ -10,17 +10,15 @@ open Filter Topology
 noncomputable section
 
 /- English proof (translation)
-Introduce `d N a t₀ τ₀ ha hsep hroot`. Use `set p : Polynomial ℂ := Polynomial.X ^ N + ∑ j, Polynomial.C (a j t₀) * Polynomial.X ^ (j : ℕ) with hp`. Use `set F : (Fin d → ℂ) × ℂ → ℂ := fun v => v.2 ^ N + ∑ j, a j v.1 * v.2 ^ (j : ℕ) with hF`. Establish `hFa : AnalyticAt ℂ F (t₀, τ₀)`. Use `(analyticAt_snd.pow N).add (Finset.analyticAt_fun_sum _ fun j _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((ha j).comp (analyticAt_fst (p := (t₀, τ₀)))).mul (analyticAt_snd.pow _)`. Establish `hcd : ContDiffAt ℂ 1 F (t₀, τ₀)` using `hFa.contDiffAt`. Establish `hpe : ∀ s, p.eval s = F (t₀, s)`. Introduce `s`. Simplify using `[hp, hF, Polynomial.eval_finsetSum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpart : fderiv ℂ F (t₀, τ₀) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ = (1 : ℂ →L[ℂ] ℂ).smulRight (p.derivative.eval τ₀)`. Establish `h1 : HasFDerivAt (fun s : ℂ => F (t₀, s)) (fderiv ℂ F (t₀, τ₀) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ) τ₀` using `(hFa.differentiableAt.hasFDerivAt).comp τ₀ ((hasFDerivAt_const t₀ τ₀).prodMk (hasFDerivAt_id τ₀))`. Establish `h2 : (fun s : ℂ => F (t₀, s)) = fun s => p.eval s` using `funext fun s => (hpe s).symm`. Rewrite `h1` using `[h2]`. Conclude with `h1.unique (p.hasDerivAt τ₀).hasFDerivAt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hder : p.derivative.eval τ₀ ≠ 0`. Establish `h` using `hsep.eval₂_derivative_ne_zero (RingHom.id ℂ) (x := τ₀) (by rw [Polynomial.eval₂_id, hpe]; exact hroot)`. Rewrite `h` using `[Polynomial.eval₂_id]`. Then use the resulting hypothesis. Establish `hinv : (fderiv ℂ F (t₀, τ₀) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ).IsInvertible`. Rewrite using `[hpart]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨ContinuousLinearEquiv.unitsEquivAut ℂ (Units.mk0 _ hder), ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using the standard rewrite rules. Use `set ψ := hcd.implicitFunction one_ne_zero hinv with hψdef`. Establish `hψt : ψ t₀ = τ₀` using `hcd.implicitFunction_apply_self one_ne_zero hinv`.
-
-Establish `hψcd : ContDiffAt ℂ 1 ψ t₀` using `hcd.contDiffAt_implicitFunction one_ne_zero hinv`. Take `⟨O, hOsub, hOo, ht₀O⟩` from `eventually_nhds_iff.mp ((hcd.eventually_apply_implicitFunction one_ne_zero hinv).and (hψcd.eventually (by simp)))`. Use `⟨O, ψ, hOo, ht₀O, ?_, hψt, fun t ht => (hOsub t ht).1.trans hroot⟩` and prove the remaining obligations. Use `RiemannExtensionAnalytic.analyticOnNhd_of_differentiableOn hOo fun t ht => ?_` and prove the remaining obligations. Conclude with `((hOsub t ht).2.differentiableAt one_ne_zero).differentiableWithinAt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem AnalyticRootBranch.proof : AnalyticRootBranch.Statement := by
   intro d N a t₀ τ₀ ha hsep hroot

@@ -25,7 +25,7 @@ def Good (j : ℕ) (x : Matrix (Fin n) (Fin n) k) : Prop :=
   ∀ i l : Fin n, (j ≤ i.val ∨ j + 1 ≤ l.val) → x i l = (1 : Matrix (Fin n) (Fin n) k) i l
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Finset.sum_eq_single l]`. Rewrite using `[hY l l (Or.inr hl), one_apply_eq, mul_one]`. Introduce `b _ hb`. Rewrite using `[hY b l (Or.inr hl), one_apply_ne hb, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_col_of_good {j : ℕ} {Y : Matrix (Fin n) (Fin n) k} (hY : Good j Y) (M : Matrix (Fin n) (Fin n) k)
     {i l : Fin n} (hl : j + 1 ≤ l.val) : (M * Y) i l = M i l := by
@@ -35,7 +35,7 @@ theorem mul_col_of_good {j : ℕ} {Y : Matrix (Fin n) (Fin n) k} (hY : Good j Y)
   · simp
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hX i i (Or.inl hi), one_apply_eq, one_mul]`. Introduce `b _ hb`. Rewrite using `[hX i b (Or.inl hi), one_apply_ne (Ne.symm hb), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_row_of_good {j : ℕ} {X : Matrix (Fin n) (Fin n) k} (hX : Good j X) (M : Matrix (Fin n) (Fin n) k)
     {i l : Fin n} (hi : j ≤ i.val) : (X * M) i l = M i l := by
@@ -45,19 +45,17 @@ theorem mul_row_of_good {j : ℕ} {X : Matrix (Fin n) (Fin n) k} (hX : Good j X)
   · simp
 
 /- English proof (translation)
-Use `set X := (x : Matrix (Fin n) (Fin n) k)`. Use `set Y := ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Use `set G := (g : Matrix (Fin n) (Fin n) k)`. Establish `hXY : X * Y = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hval : ((x * g * x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = X * G * Y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Units.val_mul, X, Y, G]`. Establish `hA : ∀ i l : Fin n, l.val < j + 1 → (X * G * Y) i l = (1 : Matrix (Fin n) (Fin n) k) i l`. Introduce `i l hl`. Establish `hGY : ∀ a, (G * Y) a l = Y a l`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[mul_apply, ← one_mul Y, mul_apply, one_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b.val < j + 1`. Conclude with `congrArg (· * Y b l) (hg a b (Or.inr hb))`. Establish `h1 : Y b l = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy b l (Or.inl (by omega)), one_apply_ne]; intro h; rw [h] at hb; omega`. Rewrite using `[h1, mul_zero, mul_zero]`. Rewrite using `[Matrix.mul_assoc, mul_apply, ← hXY, mul_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [hGY]`. Establish `hB : ∀ i l : Fin n, j ≤ i.val → j + 1 ≤ l.val → (X * G * Y) i l = G i l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `i l hi hl`. Rewrite using `[mul_col_of_good hy _ hl, mul_row_of_good hx _ hi]`. Use `⟨fun i l hil => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Distinguish the cases in `hl : l.val < j + 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Conclude with `hA i l hl`. Establish `hli : l ≤ i` using `hil.resolve_right hl`. Rewrite using `[hB i l (by rw [Fin.le_iff_val_le_val] at hli; omega) (by omega)]`. Conclude with `hg i l (Or.inl hli)`. Rewrite using `[hval, sdS, sdS]`.
-
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `hB i l (by omega) h.2`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem good_conj {j : ℕ} (x : GL (Fin n) k) (hx : Good j (x : Matrix (Fin n) (Fin n) k))
     (hy : Good j ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) {g : GL (Fin n) k} (hg : g ∈ Nset (j + 1)) :

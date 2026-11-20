@@ -16,7 +16,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.resLE_eq_morphismRestrict]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_resLE_of_iso {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Opens) :
     IsIso (e.hom.resLE U ((Opens.map e.hom.base).obj U) le_rfl) := by
@@ -77,7 +77,7 @@ def OrderCertificateIsoInvariantOfMaxContact : Prop :=
     OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem coe_support_comap_iso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (Z : Y.IdealSheafData) :
     ((Z.comap e.hom).support : Set ↥X) = ⇑e.hom.base ⁻¹' (Z.support : Set ↥Y) := by
@@ -85,7 +85,7 @@ private theorem coe_support_comap_iso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (Z : 
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem preimage_comp_base {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (S : Set ↥C) :
     ⇑f.base ⁻¹' (⇑g.base ⁻¹' S) = ⇑(f ≫ g).base ⁻¹' S := by
@@ -93,14 +93,14 @@ private theorem preimage_comp_base {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶
   simp
 
 /- English proof (translation)
-Rewrite using `[preimageOpensIso_hom, Scheme.Hom.resLE_comp_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem preimageOpensIso_hom_comp_ι {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Opens) :
     (preimageOpensIso e U).hom ≫ U.ι = Scheme.Opens.ι ((Opens.map e.hom.base).obj U) ≫ e.hom := by
   rw [preimageOpensIso_hom, Scheme.Hom.resLE_comp_ι]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, preimageOpensIso_hom_comp_ι, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem preimageOpensIso_hom_comp_ι_comp {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) (U : Y.Opens) :
@@ -109,7 +109,7 @@ private theorem preimageOpensIso_hom_comp_ι_comp {k : Type u} [Field k] {X Y : 
   rw [← Category.assoc, preimageOpensIso_hom_comp_ι, Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, preimageOpensIso_hom_comp_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_preimageOpensIso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Opens) (I : Y.IdealSheafData) :
     (I.comap U.ι).comap (preimageOpensIso e U).hom =
@@ -117,7 +117,7 @@ private theorem comap_preimageOpensIso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (U :
   rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, preimageOpensIso_hom_comp_ι]
 
 /- English proof (translation)
-Rewrite using `[preimage_comp_base, preimage_comp_base, preimageOpensIso_hom_comp_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem preimage_preimageOpensIso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Opens) (Mem : Set ↥Y) :
     ⇑(preimageOpensIso e U).hom.base ⁻¹' (⇑U.ι.base ⁻¹' Mem) =
@@ -125,7 +125,7 @@ private theorem preimage_preimageOpensIso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (
   rw [preimage_comp_base, preimage_comp_base, preimageOpensIso_hom_comp_ι]
 
 /- English proof (translation)
-Substitute `hp hI hMem hZ` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem principalizationCertificate_congr {k : Type u} [Field k] {W : Scheme.{u}}
     {p p' : W ⟶ Spec (CommRingCat.of k)} {I I' : W.IdealSheafData} {m : ℕ}
@@ -136,7 +136,7 @@ private theorem principalizationCertificate_congr {k : Type u} [Field k] {W : Sc
   exact h
 
 /- English proof (translation)
-Substitute `hp hN hMem hZ` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem orderCertificate_congr {k : Type u} [Field k] {W : Scheme.{u}}
     {p p' : W ⟶ Spec (CommRingCat.of k)} {N N' : W.IdealSheafData} {μ : ℕ}
@@ -147,7 +147,7 @@ private theorem orderCertificate_congr {k : Type u} [Field k] {W : Scheme.{u}}
   exact h
 
 /- English proof (translation)
-Use `PrincipalizationCertificate.memory ?_` and prove the remaining obligations. Rewrite using `[coe_support_comap_iso_hom e Z]`. Conclude with `Set.preimage_mono h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem principalizationCertificate_comap_iso_of_support_subset {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
@@ -158,7 +158,7 @@ private theorem principalizationCertificate_comap_iso_of_support_subset {k : Typ
   exact Set.preimage_mono h
 
 /- English proof (translation)
-The claim follows from `PrincipalizationCertificate.large hm`.
+A detailed English derivation is pending.
 -/
 private theorem principalizationCertificate_comap_iso_of_two_le {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
@@ -167,9 +167,7 @@ private theorem principalizationCertificate_comap_iso_of_two_le {k : Type u} [Fi
   PrincipalizationCertificate.large hm
 
 /- English proof (translation)
-Use `PrincipalizationCertificate.toOrder (M.comap e.hom) (N.comap e.hom) μ ?_ ?_ hmu ?_ (ih W' e)` and prove the remaining obligations. Rewrite using `[hI, Scheme.IdealSheafData.comap_mul]`. Rewrite using `[coe_support_comap_iso_hom e M]`. Conclude with `Set.preimage_mono hM`. Rewrite using `[coe_support_comap_iso_hom e Z, orderAtLeastLocus_comap_iso_hom_eq_preimage e N μ]`.
-
-Conclude with `Set.preimage_mono hZ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem principalizationCertificate_comap_iso_of_orderCertificate {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
@@ -188,9 +186,7 @@ private theorem principalizationCertificate_comap_iso_of_orderCertificate {k : T
     exact Set.preimage_mono hZ
 
 /- English proof (translation)
-Use `PrincipalizationCertificate.localize (fun z' hz' => (Opens.map e.hom.base).obj (U (e.hom.base z') (by rwa [Scheme.IdealSheafData.mem_support_comap] at hz'))) (fun z' hz' => ?_) ?_` and prove the remaining obligations. Conclude with `hU (e.hom.base z') (by rwa [Scheme.IdealSheafData.mem_support_comap] at hz')`. Introduce `z' hz'`. Establish `hz : e.hom.base z' ∈ Z.support`. Rewrite `hz'` using `[Scheme.IdealSheafData.mem_support_comap]`. Then use the resulting hypothesis.
-
-Conclude with `principalizationCertificate_congr (preimageOpensIso_hom_comp_ι_comp p e (U (e.hom.base z') hz)) (comap_preimageOpensIso_hom e (U (e.hom.base z') hz) I) (preimage_preimageOpensIso_hom e (U (e.hom.base z') hz) Mem) (comap_preimageOpensIso_hom e (U (e.hom.base z') hz) Z) (ih (e.hom. …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem principalizationCertificate_comap_iso_of_opens_cover {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
@@ -220,7 +216,7 @@ private theorem principalizationCertificate_comap_iso_of_opens_cover {k : Type u
       (ih (e.hom.base z') hz _ (preimageOpensIso e (U (e.hom.base z') hz)))
 
 /- English proof (translation)
-Use `OrderCertificate.memory ?_` and prove the remaining obligations. Rewrite using `[coe_support_comap_iso_hom e Z]`. Conclude with `Set.preimage_mono h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderCertificate_comap_iso_of_support_subset {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ) (Mem : Set ↥W)
@@ -231,7 +227,7 @@ private theorem orderCertificate_comap_iso_of_support_subset {k : Type u} [Field
   exact Set.preimage_mono h
 
 /- English proof (translation)
-The claim follows from `OrderCertificate.large hmu`.
+A detailed English derivation is pending.
 -/
 private theorem orderCertificate_comap_iso_of_two_le {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ) (Mem : Set ↥W)
@@ -240,9 +236,7 @@ private theorem orderCertificate_comap_iso_of_two_le {k : Type u} [Field k] (W :
   OrderCertificate.large hmu
 
 /- English proof (translation)
-Use `OrderCertificate.localize (fun z' hz' => (Opens.map e.hom.base).obj (U (e.hom.base z') (by rwa [Scheme.IdealSheafData.mem_support_comap] at hz'))) (fun z' hz' => ?_) ?_` and prove the remaining obligations. Conclude with `hU (e.hom.base z') (by rwa [Scheme.IdealSheafData.mem_support_comap] at hz')`. Introduce `z' hz'`. Establish `hz : e.hom.base z' ∈ Z.support`. Rewrite `hz'` using `[Scheme.IdealSheafData.mem_support_comap]`. Then use the resulting hypothesis.
-
-Conclude with `orderCertificate_congr (preimageOpensIso_hom_comp_ι_comp p e (U (e.hom.base z') hz)) (comap_preimageOpensIso_hom e (U (e.hom.base z') hz) N) (preimage_preimageOpensIso_hom e (U (e.hom.base z') hz) Mem) (comap_preimageOpensIso_hom e (U (e.hom.base z') hz) Z) (ih (e.hom.base z') hz …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem orderCertificate_comap_iso_of_opens_cover {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ) (Mem : Set ↥W)
@@ -272,7 +266,7 @@ private theorem orderCertificate_comap_iso_of_opens_cover {k : Type u} [Field k]
       (ih (e.hom.base z') hz _ (preimageOpensIso e (U (e.hom.base z') hz)))
 
 /- English proof (translation)
-The claim follows from `hT k W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ih W' e`.
+A detailed English derivation is pending.
 -/
 private theorem orderCertificate_comap_iso_of_smoothDivisor_cover (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     (W : Scheme.{u})
@@ -316,7 +310,7 @@ private theorem orderCertificate_comap_iso_of_smoothDivisor_cover (hT : OrderCer
   hT k W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ih W' e
 
 /- English proof (translation)
-The claim follows from `@PrincipalizationCertificate.rec k _ (fun W p I m Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W), PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom)) (fun W p N μ Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W), OrderCertificate W' (e.hom …`.
+A detailed English derivation is pending.
 -/
 private theorem principalizationCertificate_comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ)
@@ -344,7 +338,7 @@ private theorem principalizationCertificate_comap_iso (hT : OrderCertificateIsoI
     W p I m Mem Z h
 
 /- English proof (translation)
-The claim follows from `@OrderCertificate.rec k _ (fun W p I m Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W), PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom)) (fun W p N μ Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W), OrderCertificate W' (e.hom ≫ p) (N.com …`.
+A detailed English derivation is pending.
 -/
 private theorem orderCertificate_comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ)
@@ -372,7 +366,7 @@ private theorem orderCertificate_comap_iso (hT : OrderCertificateIsoInvariantOfM
     W p N μ Mem Z h
 
 /- English proof (translation)
-The claim follows from `principalizationCertificate_comap_iso hT W p I m Mem Z h W' e`.
+A detailed English derivation is pending.
 -/
 theorem PrincipalizationCertificate.comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     {W W' : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
@@ -381,7 +375,7 @@ theorem PrincipalizationCertificate.comap_iso (hT : OrderCertificateIsoInvariant
   principalizationCertificate_comap_iso hT W p I m Mem Z h W' e
 
 /- English proof (translation)
-The claim follows from `orderCertificate_comap_iso hT W p N μ Mem Z h W' e`.
+A detailed English derivation is pending.
 -/
 theorem OrderCertificate.comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     {W W' : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
@@ -390,7 +384,7 @@ theorem OrderCertificate.comap_iso (hT : OrderCertificateIsoInvariantOfMaxContac
   orderCertificate_comap_iso hT W p N μ Mem Z h W' e
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Conclude with `PrincipalizationCertificate.comap_iso hT e h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem PrincipalizationCertificate.comap_iso_of_eq (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     {W W' : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
@@ -402,7 +396,7 @@ theorem PrincipalizationCertificate.comap_iso_of_eq (hT : OrderCertificateIsoInv
   exact PrincipalizationCertificate.comap_iso hT e h
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Conclude with `OrderCertificate.comap_iso hT e h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem OrderCertificate.comap_iso_of_eq (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     {W W' : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}

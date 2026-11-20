@@ -18,7 +18,7 @@ variable {K : Type} [Field K]
 def euler (R : PowerSeries K) : PowerSeries K := X * derivativeFun R
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp [euler]`. Consider the case `succ n`. Rewrite using `[euler, coeff_succ_X_mul, show coeff n (derivativeFun R) = coeff (n + 1) R * ((n : K) + 1) from coeff_derivative R n]`. Use `push_cast`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,7 +32,7 @@ theorem coeff_euler (R : PowerSeries K) (n : ℕ) : coeff n (euler R) = (n : K) 
     ring
 
 /- English proof (translation)
-Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => simp [coeff_euler]`. Consider the case `succ n`. Simplify using `only [coeff_euler, map_add, coeff_succ_X_mul, coeff_one]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,9 +48,9 @@ theorem euler_one_add (R : PowerSeries K) : euler (1 + X * R) = X * (R + euler R
 def inv4 (R : PowerSeries K) : PowerSeries K := PowerSeries.mk fun n => coeff n R / (4 * ((n : K) + 2))
 
 /- English proof (translation)
-Establish `h4 : (4 : PowerSeries K) = C 4` using `(map_ofNat _ 4).symm`. Establish `h2 : (2 : PowerSeries K) = C 2` using `(map_ofNat _ 2).symm`. Rewrite using `[PowerSeries.ext_iff, PowerSeries.ext_iff]`. Use `forall_congr' fun n => ?_` and prove the remaining obligations. Establish `hn : (4 * ((n : K) + 2)) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ((n : K) + 2) ≠ 0` using `by exact_mod_cast (by omega : n + 2 ≠ 0)`. Conclude with `mul_ne_zero (by norm_num) this`. Rewrite using `[inv4, coeff_mk, div_eq_iff hn, h4, h2, coeff_C_mul, map_add, coeff_C_mul, coeff_euler]`. Apply the tactic sequence `constructor <;> intro h <;> rw [h] <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem inverseShiftedEulerOperatorFour_eq_iff [CharZero K] (R S : PowerSeries K) :
     inv4 S = R ↔ S = 4 * (2 * R + euler R) := by
@@ -68,13 +68,13 @@ def rest (a b : K) (R : PowerSeries K) : PowerSeries K :=
   (euler R - R) ^ 2 - 12 * R ^ 2 - 4 * X * R ^ 3 + C a * X ^ 2 * (1 + X * R) + C b * X ^ 4
 
 /- English proof (translation)
-Establish `he : X ^ n ∣ euler x - euler y`. Rewrite `h`, the goal using `[X_pow_dvd_iff]`. Introduce `m hm`. Use `h m hm` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, coeff_euler, coeff_euler, this, sub_self]`. Take `⟨u, hu⟩` from `h`. Take `⟨v, hv⟩` from `he`. Establish `hr : X ^ (n + 1) ∣ X * rest a b x - X * rest a b y`. Use `⟨(v - u) * (euler x - x + (euler y - y)) - 12 * u * (x + y) - 4 * X * u * (x ^ 2 + x * y + y ^ 2) + C a * X ^ 3 * u, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `rest`. Take the linear combination `X * (euler x - x + (euler y - y)) * hv + X * (-(euler x - x + (euler y - y)) - 12 * (x + y) - 4 * X * (x ^ 2 + x * y + y ^ 2) + C a * X ^ 3) * hu`. Rewrite `hr`, the goal using `[X_pow_dvd_iff]`. Introduce `m hm`. Use `hr m hm` as an intermediate fact.
+Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[map_sub, inv4, inv4, coeff_mk, coeff_mk, this, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem contract (a b : K) (n : ℕ) (x y : PowerSeries K) (h : X ^ n ∣ x - y) :
     X ^ (n + 1) ∣ inv4 (X * rest a b x) - inv4 (X * rest a b y) := by
@@ -100,11 +100,11 @@ theorem contract (a b : K) (n : ℕ) (x y : PowerSeries K) (h : X ^ n ∣ x - y)
   rw [map_sub, inv4, inv4, coeff_mk, coeff_mk, this, sub_self]
 
 /- English proof (translation)
-Rewrite using `[inverseShiftedEulerOperatorFour_eq_iff]`. Establish `he` using `euler_one_add R`. Establish `hX : (X : PowerSeries K) ≠ 0` using `X_ne_zero`. Unfold `IsWpSer`. Express the relevant statement in the definitionally equal form `_ ∧ (euler (1 + X * R) - _) ^ 2 = _ ↔ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[he]`. Unfold `rest`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `h`. Introduce `h`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Take the linear combination `X * h`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isWpSer_iff [CharZero K] (a b : K) (R : PowerSeries K) :
     IsWpSer a b (1 + X * R) ↔ inv4 (X * rest a b R) = R := by
@@ -124,20 +124,20 @@ theorem isWpSer_iff [CharZero K] (a b : K) (R : PowerSeries K) :
     linear_combination X * h
 
 /- English proof (translation)
-Take `⟨R, hR⟩ : X ∣ P - 1` from `by rw [X_dvd_iff]; simp [h]`. Conclude with `⟨R, by linear_combination hR⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eq_one_add {P : PowerSeries K} (h : constantCoeff P = 1) : ∃ R, P = 1 + X * R := by
   obtain ⟨R, hR⟩ : X ∣ P - 1 := by rw [X_dvd_iff]; simp [h]
   exact ⟨R, by linear_combination hR⟩
 
 /- English proof (translation)
-Introduce `K _ _ a b`. Take `⟨R, hR⟩` from `GlobalTheory.GenusOneDatum.exists_fixed_of_contract (fun R : PowerSeries K => inv4 (X * rest a b R)) (contract a b)`. Use `⟨1 + X * R, (isWpSer_iff a b R).2 hR, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨S, rfl⟩` from `eq_one_add hP.1`. Establish `hS` using `(isWpSer_iff a b S).1 hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : ∀ n : ℕ, X ^ n ∣ S - R`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `contract a b n S R ih` as an intermediate fact. Rewrite `this` using `[hS, show inv4 (X * rest a b R) = R from hR]`. Then use the resulting hypothesis. Establish `: S = R`. Use extensionality with `n`. Use `X_pow_dvd_iff.1 (hd (n + 1)) n (by omega)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_isWpSer :
     ∀ (K : Type) [Field K] [CharZero K] (a b : K), ∃! P : PowerSeries K, IsWpSer a b P := by

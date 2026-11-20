@@ -47,7 +47,7 @@ lemma freeSheafHomEquiv_comp {U : C} {F G : Sheaf J AddCommGrpCat.{v}} (f : free
     freeSheafHomEquiv U G (f ≫ g) = g.hom.app (op U) (freeSheafHomEquiv U F f) := rfl
 
 /- English proof (translation)
-Establish `h1` using `congr(($(toSheafify_naturality J (Functor.whiskerRight (yoneda.map i) AddCommGrpCat.free)).app (op V)) (FreeAbelianGroup.of (𝟙 V)))`. Establish `h2` using `congr($((toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free)).naturality i.op) (FreeAbelianGroup.of (𝟙 U)))`. Use `h1.symm.trans (Eq.trans ?_ h2)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free)).app (op V) (FreeAbelianGroup.of (𝟙 V ≫ i)) = (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free)).app (op V) (FreeAbelianGroup.of (i ≫ 𝟙 U))`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 lemma freeSheafMap_gen {V U : C} (i : V ⟶ U) :
     (freeSheafMap J i).hom.app (op V) (freeSheafGen J V) =
@@ -62,7 +62,7 @@ lemma freeSheafMap_gen {V U : C} (i : V ⟶ U) :
   simp
 
 /- English proof (translation)
-Rewrite using `[freeSheafHomEquiv_comp, freeSheafHomEquiv_apply, freeSheafMap_gen, freeSheafHomEquiv_apply]`. Conclude with `congr($(f.hom.naturality i.op) (freeSheafGen J U))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma freeSheafHomEquiv_freeSheafMap_comp {V U : C} (i : V ⟶ U) {F : Sheaf J AddCommGrpCat.{v}}
     (f : freeSheaf J U ⟶ F) :
@@ -77,14 +77,14 @@ noncomputable def sectionsEquiv (F : Sheaf J AddCommGrpCat.{v}) (U : C) :
   (Ext.addEquiv₀ (X := freeSheaf J U) (Y := F)).trans (freeSheafHomEquiv U F)
 
 /- English proof (translation)
-The claim follows from `congrArg (freeSheafHomEquiv U F) (Ext.addEquiv₀.apply_symm_apply f)`.
+A detailed English derivation is pending.
 -/
 lemma sectionsEquiv_mk₀ {F : Sheaf J AddCommGrpCat.{v}} {U : C} (f : freeSheaf J U ⟶ F) :
     sectionsEquiv F U (Ext.mk₀ f) = freeSheafHomEquiv U F f :=
   congrArg (freeSheafHomEquiv U F) (Ext.addEquiv₀.apply_symm_apply f)
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `(Ext.mk₀_bijective (freeSheaf J U) F).2 x`. Use `(congrArg (sectionsEquiv G U) (Ext.mk₀_comp_mk₀ g f)).trans ?_` and prove the remaining obligations. Rewrite using `[sectionsEquiv_mk₀, sectionsEquiv_mk₀, freeSheafHomEquiv_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma sectionsEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (U : C) (x : F.H' 0 U) :
     sectionsEquiv G U (((Sheaf.cohomologyPresheafFunctor J 0).map f).app (op U) x) =
@@ -94,7 +94,7 @@ lemma sectionsEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (U : C) 
   rw [sectionsEquiv_mk₀, sectionsEquiv_mk₀, freeSheafHomEquiv_comp]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `(Ext.mk₀_bijective (freeSheaf J U) F).2 x`. Use `(congrArg (sectionsEquiv F V) (Ext.mk₀_comp_mk₀ (freeSheafMap J i) g)).trans ?_` and prove the remaining obligations. Rewrite using `[sectionsEquiv_mk₀, sectionsEquiv_mk₀, freeSheafHomEquiv_freeSheafMap_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma sectionsEquiv_restrict (F : Sheaf J AddCommGrpCat.{v}) {V U : C} (i : V ⟶ U)
     (x : F.H' 0 U) :
@@ -111,7 +111,7 @@ variable {J} in
 variable [HasExt.{w} (Sheaf J AddCommGrpCat.{v})] in
 
 /- English proof (translation)
-The claim follows from `Ext.subsingleton_of_injective (_root_.GlobalTheory.Flasque.freeSheaf J U) I n`.
+A detailed English derivation is pending.
 -/
 lemma _root_.GlobalTheory.Flasque.subsingleton_H'_of_injective (I : Sheaf J AddCommGrpCat.{v}) [Injective I]
     (n : ℕ) (U : C) : Subsingleton (I.H' (n + 1) U) :=
@@ -125,7 +125,7 @@ noncomputable def connecting (n : ℕ) (U : C) : S.X₃.H' n U →+ S.X₁.H' (n
   hS.extClass.postcomp (freeSheaf J U) rfl
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.ab_exact_iff_function_exact _).1 (Ext.covariant_sequence_exact₃' (freeSheaf J U) hS n (n + 1) rfl)`.
+A detailed English derivation is pending.
 -/
 lemma exact_map_connecting (n : ℕ) (U : C) :
     Function.Exact (((Sheaf.cohomologyPresheafFunctor J n).map S.g).app (op U))
@@ -134,7 +134,7 @@ lemma exact_map_connecting (n : ℕ) (U : C) :
     (Ext.covariant_sequence_exact₃' (freeSheaf J U) hS n (n + 1) rfl)
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.ab_exact_iff_function_exact _).1 (Ext.covariant_sequence_exact₁' (freeSheaf J U) hS n (n + 1) rfl)`.
+A detailed English derivation is pending.
 -/
 lemma exact_connecting_map (n : ℕ) (U : C) :
     Function.Exact (connecting hS n U)
@@ -143,7 +143,7 @@ lemma exact_connecting_map (n : ℕ) (U : C) :
     (Ext.covariant_sequence_exact₁' (freeSheaf J U) hS n (n + 1) rfl)
 
 /- English proof (translation)
-Establish `key (y : Ext (freeSheaf J U) S.X₃ n) : (y.comp (Ext.mk₀ φ.τ₃) (add_zero n)).comp hT.extClass rfl = (y.comp hS.extClass rfl).comp (Ext.mk₀ φ.τ₁) (add_zero (n + 1))`. Rewrite using `[Ext.comp_assoc_of_second_deg_zero, Ext.comp_assoc_of_third_deg_zero, hS.extClass_naturality hT φ]`. Conclude with `key x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma connecting_naturality {T : ShortComplex (Sheaf J AddCommGrpCat.{v})} (hT : T.ShortExact)
     (φ : S ⟶ T) (n : ℕ) (U : C) (x : S.X₃.H' n U) :
@@ -157,7 +157,7 @@ lemma connecting_naturality {T : ShortComplex (Sheaf J AddCommGrpCat.{v})} (hT :
   exact key x
 
 /- English proof (translation)
-The claim follows from `Ext.comp_assoc (Ext.mk₀ (freeSheafMap J i)) x hS.extClass (zero_add n) rfl (by lia)`.
+A detailed English derivation is pending.
 -/
 lemma connecting_restrict (n : ℕ) {V U : C} (i : V ⟶ U) (x : S.X₃.H' n U) :
     connecting hS n V ((S.X₃.cohomologyPresheaf n).map i.op x) =
@@ -165,7 +165,7 @@ lemma connecting_restrict (n : ℕ) {V U : C} (i : V ⟶ U) (x : S.X₃.H' n U) 
   Ext.comp_assoc (Ext.mk₀ (freeSheafMap J i)) x hS.extClass (zero_add n) rfl (by lia)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(exact_map_connecting hS n U x).1 hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma connecting_injective (n : ℕ) (U : C) (h : Subsingleton (S.X₂.H' n U)) :
     Function.Injective (connecting hS n U) := by
@@ -175,7 +175,7 @@ lemma connecting_injective (n : ℕ) (U : C) (h : Subsingleton (S.X₂.H' n U)) 
   rw [Subsingleton.elim y 0, map_zero]
 
 /- English proof (translation)
-The claim follows from `fun x ↦ (exact_connecting_map hS n U x).1 (Subsingleton.elim (h := h) _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma connecting_surjective (n : ℕ) (U : C) (h : Subsingleton (S.X₂.H' (n + 1) U)) :
     Function.Surjective (connecting hS n U) := fun x ↦
@@ -204,9 +204,9 @@ lemma connecting₀_apply (U : C) (s : S.X₃.obj.obj (op U)) :
     connecting₀ hS U s = connecting hS 0 U ((sectionsEquiv S.X₃ U).symm s) := rfl
 
 /- English proof (translation)
-Introduce `s`. Take `⟨x, rfl⟩` from `(sectionsEquiv S.X₃ U).surjective s`. Rewrite using `[connecting₀_apply, AddEquiv.symm_apply_apply, exact_map_connecting hS 0 U x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨sectionsEquiv S.X₂ U y, (sectionsEquiv_map S.g U y).symm⟩`. Introduce and unpack `⟨t, ht⟩`. Take `⟨y, rfl⟩` from `(sectionsEquiv S.X₂ U).surjective t`. Conclude with `⟨y, (sectionsEquiv S.X₃ U).injective ((sectionsEquiv_map S.g U y).trans ht)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exact_app_connecting₀ (U : C) :
     Function.Exact (S.g.hom.app (op U)) (connecting₀ hS U) := by
@@ -221,9 +221,9 @@ lemma exact_app_connecting₀ (U : C) :
     exact ⟨y, (sectionsEquiv S.X₃ U).injective ((sectionsEquiv_map S.g U y).trans ht)⟩
 
 /- English proof (translation)
-Introduce `x`. Use `(exact_connecting_map hS 0 U x).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨sectionsEquiv S.X₃ U y, by rw [connecting₀_apply, AddEquiv.symm_apply_apply]⟩`. Introduce and unpack `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma exact_connecting₀_map (U : C) :
     Function.Exact (connecting₀ hS U)
@@ -236,20 +236,20 @@ lemma exact_connecting₀_map (U : C) :
     exact ⟨_, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(connecting_surjective hS 0 U h).comp (sectionsEquiv S.X₃ U).symm.surjective`.
+A detailed English derivation is pending.
 -/
 lemma connecting₀_surjective (U : C) (h : Subsingleton (S.X₂.H' 1 U)) :
     Function.Surjective (connecting₀ hS U) :=
   (connecting_surjective hS 0 U h).comp (sectionsEquiv S.X₃ U).symm.surjective
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.ext fun s ↦ exact_app_connecting₀ hS U s`.
+A detailed English derivation is pending.
 -/
 lemma ker_connecting₀ (U : C) : (connecting₀ hS U).ker = (S.g.hom.app (op U)).hom.range :=
   AddSubgroup.ext fun s ↦ exact_app_connecting₀ hS U s
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(sectionsEquiv S.X₃ U).surjective s`. Rewrite using `[← sectionsEquiv_map, connecting₀_apply, connecting₀_apply, AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]`. Conclude with `connecting_naturality hS hT φ 0 U x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma connecting₀_naturality {T : ShortComplex (Sheaf J AddCommGrpCat.{v})} (hT : T.ShortExact)
     (φ : S ⟶ T) (U : C) (s : S.X₃.obj.obj (op U)) :
@@ -261,7 +261,7 @@ lemma connecting₀_naturality {T : ShortComplex (Sheaf J AddCommGrpCat.{v})} (h
   exact connecting_naturality hS hT φ 0 U x
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(sectionsEquiv S.X₃ U).surjective s`. Rewrite using `[← sectionsEquiv_restrict, connecting₀_apply, connecting₀_apply, AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]`. Conclude with `connecting_restrict hS 0 i x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma connecting₀_restrict {V U : C} (i : V ⟶ U) (s : S.X₃.obj.obj (op U)) :
     connecting₀ hS V (S.X₃.obj.map i.op s) =
@@ -297,7 +297,7 @@ noncomputable abbrev injectiveShortComplex [EnoughInjectives A] (F : A) : ShortC
 open CategoryTheory Abelian Opposite Limits TopologicalSpace in
 variable {A : Type u} [Category.{v} A] [Abelian A] in
 /- English proof (translation)
-The claim follows from `ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _)`.
+A detailed English derivation is pending.
 -/
 lemma _root_.GlobalTheory.Flasque.injectiveShortComplex_shortExact [EnoughInjectives A] (F : A) :
     (_root_.GlobalTheory.Flasque.injectiveShortComplex F).ShortExact where
@@ -307,9 +307,9 @@ open CategoryTheory Abelian Opposite Limits TopologicalSpace in
 variable {A : Type u} [Category.{v} A] [Abelian A] in
 
 /- English proof (translation)
-Use `hS.mono_f` as an intermediate fact. Set `τ₂ : S.X₂ ⟶ T.X₂` to `Injective.factorThru (f ≫ T.f) S.f`. Establish `h₂ : S.f ≫ τ₂ = f ≫ T.f` using `Injective.comp_factorThru _ _`. Establish `hw : S.f ≫ τ₂ ≫ T.g = 0`. Rewrite using `[reassoc_of% h₂, T.zero, comp_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `τ₃ : S.X₃ ⟶ T.X₃` to `hS.gIsCokernel.desc (CokernelCofork.ofπ _ hw)`. Establish `h₃ : S.g ≫ τ₃ = τ₂ ≫ T.g` using `hS.gIsCokernel.fac (CokernelCofork.ofπ _ hw) WalkingParallelPair.one`. Conclude with `⟨{ τ₁ := f, τ₂ := τ₂, τ₃ := τ₃, comm₁₂ := h₂.symm, comm₂₃ := h₃.symm }, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma _root_.GlobalTheory.Flasque.exists_hom_τ₁_eq {S T : ShortComplex A} (hS : S.ShortExact)
     [Injective T.X₂] (f : S.X₁ ⟶ T.X₁) : ∃ φ : S ⟶ T, φ.τ₁ = f := by
@@ -347,7 +347,7 @@ variable {C : Type u} [Category.{v} C] (J : GrothendieckTopology C)
   [HasSheafify J AddCommGrpCat.{v}] in
 variable {J} in
 /- English proof (translation)
-Rewrite using `[freeSheafHomEquiv_eq_yonedaEquiv, freeSheafHomEquiv_eq_yonedaEquiv, Adjunction.homEquiv_naturality_left]`. Use `erw [Adjunction.homEquiv_naturality_left]`. Rewrite using `[← yonedaEquiv_naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma freeSheafHomEquiv_freeSheafMap_comp' {V U : C} (i : V ⟶ U) (F : Sheaf J AddCommGrpCat.{v})
     (h : _root_.GlobalTheory.Flasque.freeSheaf J U ⟶ F) :
@@ -363,11 +363,11 @@ open CategoryTheory Abelian Opposite Limits TopologicalSpace in
 variable {X : TopCat.{u}} in
 
 /- English proof (translation)
-Set `I' : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}` to `I`. Use `haveI : Injective I' := hI`. Use `⟨fun {U V} i => ?_⟩` and prove the remaining obligations. Rewrite using `[AddCommGrpCat.epi_iff_surjective]`. Introduce `s`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `g : _root_.GlobalTheory.Flasque.freeSheaf _ (unop V) ⟶ I'` to `(_root_.GlobalTheory.Flasque.freeSheafHomEquiv (unop V) I').symm s`. Set `h : _root_.GlobalTheory.Flasque.freeSheaf _ (unop U) ⟶ I'` to `Injective.factorThru g (_root_.GlobalTheory.Flasque.freeSheafMap _ i.unop)`. Use `⟨_root_.GlobalTheory.Flasque.freeSheafHomEquiv (unop U) I' h, ?_⟩` and prove the remaining obligations. Establish `key` using `freeSheafHomEquiv_freeSheafMap_comp' i.unop I' h`. Rewrite `key` using `[Injective.comp_factorThru]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `key.symm` using `[g]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Flasque.isFlasque_of_injective (I : TopCat.Sheaf AddCommGrpCat.{u} X) [hI : Injective I] :
     I.IsFlasque := by
@@ -390,7 +390,7 @@ instance isFlasque_injectiveShortComplex_X₂ (F : TopCat.Sheaf AddCommGrpCat.{u
   isFlasque_of_injective _
 
 /- English proof (translation)
-The claim follows from `TopCat.Sheaf.IsFlasque.of_shortExact_of_isFlasque₁₂ (injectiveShortComplex_shortExact F)`.
+A detailed English derivation is pending.
 -/
 lemma isFlasque_injectiveShortComplex_X₃ (F : TopCat.Sheaf AddCommGrpCat.{u} X) [F.IsFlasque] :
     (injectiveShortComplex F).X₃.IsFlasque :=
@@ -403,7 +403,7 @@ variable {C : Type u} [Category.{v} C] (J : GrothendieckTopology C)
   [HasSheafify J AddCommGrpCat.{v}] in
 variable {J} in
 /- English proof (translation)
-Rewrite using `[freeSheafHomEquiv_eq_yonedaEquiv, freeSheafHomEquiv_eq_yonedaEquiv, Adjunction.homEquiv_naturality_right]`. Use `erw [Adjunction.homEquiv_naturality_right]`. Rewrite using `[yonedaEquiv_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma freeSheafHomEquiv_comp' (U : C) {F G : Sheaf J AddCommGrpCat.{v}}
     (h : _root_.GlobalTheory.Flasque.freeSheaf J U ⟶ F) (f : F ⟶ G) :
@@ -420,15 +420,15 @@ variable {X : TopCat.{u}} in
 variable [HasExt.{w} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})] in
 
 /- English proof (translation)
-Set `Y : TopCat.Sheaf AddCommGrpCat.{u} X` to `_root_.GlobalTheory.Flasque.freeSheaf (Opens.grothendieckTopology X) U`. Use `letI : HasExt.{w} (TopCat.Sheaf AddCommGrpCat.{u} X) := ‹HasExt.{w} (Sheaf _ _)›`. It suffices to establish `h : ∀ x : Ext.{w} Y F (n + 1), x = 0 from ⟨fun a b => (h a).trans (h b).symm⟩`. Proceed by induction on `n generalizing F with`. Consider the case `zero`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately.
 
-Introduce `x`. Establish `hS` using `_root_.GlobalTheory.Flasque.injectiveShortComplex_shortExact F`. Take `⟨x₃, rfl⟩` from `Ext.covariant_sequence_exact₁ Y hS x (Ext.eq_zero_of_injective _) rfl`. Take `⟨φ, rfl⟩` from `Ext.homEquiv₀.symm.surjective x₃`. Establish `hepi` using `TopCat.Sheaf.IsFlasque.epi_of_shortExact (U := U) hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hepi` using `[AddCommGrpCat.epi_iff_surjective]`. Take `⟨t, ht⟩` from `hepi (_root_.GlobalTheory.Flasque.freeSheafHomEquiv U _ φ)`. Set `ψ : Y ⟶ (_root_.GlobalTheory.Flasque.injectiveShortComplex F).X₂` to `(_root_.GlobalTheory.Flasque.freeSheafHomEquiv U _).symm t`. Establish `hψ : ψ ≫ (_root_.GlobalTheory.Flasque.injectiveShortComplex F).g = φ`. Apply `(_root_.GlobalTheory.Flasque.freeSheafHomEquiv U _).injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(freeSheafHomEquiv_comp' U ψ (_root_.GlobalTheory.Flasque.injectiveShortComplex F).g).trans ?_` and prove the remaining obligations. Simplify using `only [ψ, AddEquiv.apply_symm_apply]`. Conclude with `ht`. Rewrite using `[Ext.homEquiv₀_symm_apply, ← hψ, ← Ext.mk₀_comp_mk₀, Ext.comp_assoc _ _ _ (zero_add 0) (zero_add 1) (by simp), hS.comp_extClass, Ext.comp_zero]`. Consider the case `succ m ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hS` using `_root_.GlobalTheory.Flasque.injectiveShortComplex_shortExact F`. Take `⟨x₃, rfl⟩` from `Ext.covariant_sequence_exact₁ Y hS x (Ext.eq_zero_of_injective _) rfl`. Use `haveI : (_root_.GlobalTheory.Flasque.injectiveShortComplex F).X₃.IsFlasque := TopCat.Sheaf.IsFlasque.of_shortExact_of_isFlasque₁₂ hS`. Rewrite using `[ih _ x₃, Ext.zero_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Flasque.subsingleton_H'_of_isFlasque (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     [hF : F.IsFlasque] (n : ℕ) (U : Opens X) : Subsingleton (F.H' (n + 1) U) := by
@@ -466,7 +466,7 @@ open CategoryTheory Abelian Opposite Limits TopologicalSpace in
 variable {X : TopCat.{u}} in
 variable [HasExt.{w} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})] in
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hn.ne'`. Conclude with `_root_.GlobalTheory.Flasque.subsingleton_H'_of_isFlasque F m U`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Flasque.subsingleton_H'_of_isFlasque_of_pos (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     [F.IsFlasque] {n : ℕ} (hn : 0 < n) (U : Opens X) : Subsingleton (F.H' n U) := by

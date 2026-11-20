@@ -9,7 +9,7 @@ open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CompanionTheo
 open scoped ENNReal InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Cusp.maDensity_const_eq_normSq_jacobian_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FMongeAmpereDensityChangeOfVariables.lean&line=13#L13)
 -/

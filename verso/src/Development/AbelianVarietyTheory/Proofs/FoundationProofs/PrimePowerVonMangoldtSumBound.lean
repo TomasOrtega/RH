@@ -6,17 +6,15 @@ open Finset ArithmeticFunction
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨400, fun x hx p hp => ?_⟩` and prove the remaining obligations. Unfold `Formalism.HermitianLattices.GL2a2.sP`. Establish `hx0 : (0 : ℝ) < x` using `by linarith`. Establish `hz1 : (1 : ℝ) ≤ x ^ (400 : ℝ)` using `Real.one_le_rpow (by linarith) (by norm_num)`. Use `set N : ℕ := ⌊x ^ (400 : ℝ)⌋₊ with hN`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1 : 1 ≤ N` using `Nat.le_floor (by simpa using hz1)`. Establish `hNz : (N : ℝ) ≤ x ^ (400 : ℝ)` using `Nat.floor_le (by linarith)`. Establish `hp1 : 1 < p` using `hp.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hlog : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : (Icc 1 N).filter (fun i => p ^ i ≤ N) ⊆ Icc 1 (Nat.log p N)`. Introduce `i hi`. Simplify using `only [mem_filter, mem_Icc] at hi ⊢`. Conclude with `⟨hi.1.1, Nat.le_log_of_pow_le hp1 hi.2⟩`. Establish `hcard : (((Icc 1 N).filter (fun i => p ^ i ≤ N)).card : ℝ) ≤ (Nat.log p N : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `card_le_card hsub` as an intermediate fact. Simplify using `only [Nat.card_Icc, Nat.add_sub_cancel] at this`. Conclude with `this` after adjusting the coercions. Establish `hterm : ∀ i ∈ (Icc 1 N).filter (fun i => p ^ i ≤ N), Formalism.HermitianLattices.GL2PrimeSums.cn x (p ^ i) ≤ Real.log p`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [mem_filter, mem_Icc] at hi`. Unfold `Formalism.HermitianLattices.GL2PrimeSums.cn`. Rewrite using `[vonMangoldt_apply_pow (by omega), vonMangoldt_apply_prime hp]`. Conclude with `mul_le_of_le_one_right hlog (min_le_left _ _)`. Establish `hpow : ((p : ℝ)) ^ (Nat.log p N) ≤ N`.
-
-Conclude with `Nat.pow_log_le_self p (by omega : N ≠ 0)` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem prime_power_von_mangoldt_sum_bound : Formalism.HermitianLattices.GL2a2.SizeSpAll := by
   refine ⟨400, fun x hx p hp => ?_⟩

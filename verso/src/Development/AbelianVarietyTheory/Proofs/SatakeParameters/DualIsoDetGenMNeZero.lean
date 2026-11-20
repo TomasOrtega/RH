@@ -16,9 +16,9 @@ namespace GlobalTheory.ValCmp
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.MainNotions.G
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (MvPolynomial.eval fun v : Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) R) v.1 v.2) h`. Rewrite `h1` using `[RingHom.map_det, map_zero]`. Establish `h2 : (MvPolynomial.eval fun v : Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) R) v.1 v.2).mapMatrix (genM R n) = 1`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[genM]`. Rewrite `h1` using `[h2, Matrix.det_one]`. Conclude with `one_ne_zero h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualIso_det_genM_ne_zero (R : Type) [CommRing R] [Nontrivial R] (n : ℕ) : (genM R n).det ≠ 0 := by
   intro h
@@ -32,14 +32,14 @@ theorem dualIso_det_genM_ne_zero (R : Type) [CommRing R] [Nontrivial R] (n : ℕ
   exact one_ne_zero h1
 
 /- English proof (translation)
-The claim follows from `mul_left_cancel₀ (pow_ne_zero _ (dualIso_det_genM_ne_zero R (m + 1))) (h.trans h'.symm)`.
+A detailed English derivation is pending.
 -/
 theorem dualIso_cofRel_unique {R : Type} [CommRing R] [IsDomain R] {m : ℕ} {ν : Fin (m + 1) → ℕ}
     {f g g' : MP R (m + 1)} (h : CofRel R m ν f g) (h' : CofRel R m ν f g') : g = g' :=
   mul_left_cancel₀ (pow_ne_zero _ (dualIso_det_genM_ne_zero R (m + 1))) (h.trans h'.symm)
 
 /- English proof (translation)
-Unfold `CofRel at *`. Rewrite using `[mul_add, map_add, h, h']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualIso_cofRel_add {R : Type} [CommRing R] {m : ℕ} {ν : Fin (m + 1) → ℕ}
     {f g f' g' : MP R (m + 1)} (h : CofRel R m ν f g) (h' : CofRel R m ν f' g') :
@@ -48,7 +48,7 @@ theorem dualIso_cofRel_add {R : Type} [CommRing R] {m : ℕ} {ν : Fin (m + 1) �
   rw [mul_add, map_add, h, h']
 
 /- English proof (translation)
-Unfold `CofRel at *`. Rewrite using `[mul_smul_comm, map_smul, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualIso_cofRel_smul {R : Type} [CommRing R] {m : ℕ} {ν : Fin (m + 1) → ℕ}
     {f g : MP R (m + 1)} (c : R) (h : CofRel R m ν f g) : CofRel R m ν (c • f) (c • g) := by
@@ -56,7 +56,7 @@ theorem dualIso_cofRel_smul {R : Type} [CommRing R] {m : ℕ} {ν : Fin (m + 1) 
   rw [mul_smul_comm, map_smul, h]
 
 /- English proof (translation)
-Unfold `CofRel at *`. Rewrite using `[mul_smul_comm, map_zsmul, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualIso_cofRel_zsmul {R : Type} [CommRing R] {m : ℕ} {ν : Fin (m + 1) → ℕ}
     {f g : MP R (m + 1)} (c : ℤ) (h : CofRel R m ν f g) : CofRel R m ν (c • f) (c • g) := by
@@ -64,7 +64,7 @@ theorem dualIso_cofRel_zsmul {R : Type} [CommRing R] {m : ℕ} {ν : Fin (m + 1)
   rw [mul_smul_comm, map_zsmul, h]
 
 /- English proof (translation)
-Use `ext1 a b`. Simplify using `[genM]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualIso_map_genM {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (n : ℕ) :
     (MvPolynomial.map φ).mapMatrix (genM R n) = genM S n := by
@@ -72,9 +72,9 @@ theorem dualIso_map_genM {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
   simp [genM]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [cofAct]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [cofAct, aeval_X]`. Rewrite using `[← dualIso_map_genM φ n, ← RingHom.map_adjugate]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dualIso_map_cofAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (n : ℕ) (f : MP R n) :
     MvPolynomial.map φ (cofAct R n f) = cofAct S n (MvPolynomial.map φ f) := by
@@ -89,7 +89,7 @@ theorem dualIso_map_cofAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* 
     rfl
 
 /- English proof (translation)
-Unfold `CofRel at *`. Rewrite using `[← dualIso_map_cofAct, ← h, map_mul, map_pow, RingHom.map_det, dualIso_map_genM]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualIso_cofRel_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m : ℕ} {ν : Fin (m + 1) → ℕ}
     {f g : MP R (m + 1)} (h : CofRel R m ν f g) :
@@ -98,7 +98,7 @@ theorem dualIso_cofRel_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* 
   rw [← dualIso_map_cofAct, ← h, map_mul, map_pow, RingHom.map_det, dualIso_map_genM]
 
 /- English proof (translation)
-Introduce `i j hij`. Use `hν (Fin.rev_le_rev.2 hij)` as an intermediate fact. Simplify using `only [nuDual]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dualIso_nuDual_antitone {m : ℕ} {ν : Fin (m + 1) → ℕ} (hν : Antitone ν) : Antitone (nuDual ν) := by
   intro i j hij
@@ -107,13 +107,13 @@ theorem dualIso_nuDual_antitone {m : ℕ} {ν : Fin (m + 1) → ℕ} (hν : Anti
   omega
 
 /- English proof (translation)
-Simplify using `[nuDual]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualIso_nuDual_last {m : ℕ} (ν : Fin (m + 1) → ℕ) : nuDual ν (Fin.last m) = 0 := by
   simp [nuDual]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `hν (Fin.zero_le i)` as an intermediate fact. Simplify using `only [nuDual, Fin.rev_rev, Fin.rev_zero, hl]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dualIso_nuDual_nuDual {m : ℕ} {ν : Fin (m + 1) → ℕ} (hν : Antitone ν) (hl : ν (Fin.last m) = 0) :
     nuDual (nuDual ν) = ν := by
@@ -123,15 +123,15 @@ theorem dualIso_nuDual_nuDual {m : ℕ} {ν : Fin (m + 1) → ℕ} (hν : Antito
   omega
 
 /- English proof (translation)
-Rewrite using `[smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualIso_units_smul_smul {M : Type} [AddCommGroup M] (ε : ℤˣ) (x : M) : (ε : ℤ) • (ε : ℤ) • x = x := by
   rw [smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]
 
 /- English proof (translation)
-Use `choose G hG using GlobalTheory.T.exists_cofactorTwist_dualWeyl K m ν hν hl`. Set `Ψ₀ : dualWeyl K (m + 1) (m + 1) ν →ₗ[K] MP K (m + 1)` to `{ toFun := fun f => G f.1 f.2 map_add' := fun f g => dualIso_cofRel_unique (hG _ (f + g).2).2 (dualIso_cofRel_add (hG _ f.2).2 (hG _ g.2).2) map_smul' := fun c f => dualIso_cofRel_unique (hG _ (c • f).2).2 (dualIso_cofRel_smul c (hG _ f.2).2) }`. Take `⟨Ψ, hΨ⟩` from `LinearMap.exists_extend Ψ₀`. Use `⟨Ψ, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : Ψ f = G f hf` using `LinearMap.congr_fun hΨ ⟨f, hf⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(hG f hf).2`.
+A detailed English derivation is pending.
 -/
 theorem dualIso_exists_map (K : Type) [Field K] (m : ℕ) (ν : Fin (m + 1) → ℕ) (hν : Antitone ν)
     (hl : ν (Fin.last m) = 0) :
@@ -150,11 +150,11 @@ theorem dualIso_exists_map (K : Type) [Field K] (m : ℕ) (ν : Fin (m + 1) → 
   exact (hG f hf).2
 
 /- English proof (translation)
-Establish `key : ∀ f ∈ A, ∀ g, CofRel O m ν f g → Ψ (MvPolynomial.map (algebraMap O Kf) f) = MvPolynomial.map (algebraMap O Kf) g` using `fun f hf g hfg => dualIso_cofRel_unique (hΨ _ (dualWeylMap O Kf _ _ _ _ _ (hA hf))) (dualIso_cofRel_map _ hfg)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Take `⟨g, hg, hfg⟩` from `hAB f hf`. Conclude with `⟨g, hg, (key f hf g hfg).symm⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨f, hf, hgf⟩` from `hBA g hg`. Take `⟨ε, hε⟩` from `GlobalTheory.T.cofactorTwistRelation_dualWeight_involutive O m (nuDual ν) (dualIso_nuDual_antitone hν) (dualIso_nuDual_last ν)`. Establish `h1` using `hε g (hB hg) f hgf`. Rewrite `h1` using `[dualIso_nuDual_nuDual hν hl]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `dualIso_cofRel_zsmul (ε : ℤ) h1`. Rewrite `h2` using `[dualIso_units_smul_smul]`. Establish `h3 : (ε : ℤ) • f ∈ A` using `A.toAddSubgroup.zsmul_mem hf _`. Conclude with `⟨_, ⟨_, h3, rfl⟩, key _ h3 g h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem dualIso_lattice (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] (m : ℕ)
     (ν : Fin (m + 1) → ℕ) (hν : Antitone ν) (hl : ν (Fin.last m) = 0)
@@ -183,23 +183,23 @@ theorem dualIso_lattice (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Alge
     exact ⟨_, ⟨_, h3, rfl⟩, key _ h3 g h2⟩
 
 /- English proof (translation)
-Take `⟨Ψ, hΨ⟩` from `dualIso_exists_map Kf m ν hν hl`. Establish `hν'` using `dualIso_nuDual_antitone hν`. Establish `hl'` using `dualIso_nuDual_last ν`. Establish `hdd` using `dualIso_nuDual_nuDual hν hl`. Use `⟨Ψ, fun f hf h0 => ?_, ?_, fun h hh f hf => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ε, hε⟩` from `GlobalTheory.T.cofactorTwistRelation_dualWeight_involutive Kf m ν hν hl`. Establish `h1` using `hε f hf _ (hΨ f hf)`. Rewrite `h1` using `[h0]`. Establish `h2 : CofRel Kf m (nuDual ν) 0 0` using `by simp [CofRel]`. Establish `h3` using `dualIso_cofRel_unique h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← dualIso_units_smul_smul ε f, h3, smul_zero]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨g, hg, hfg⟩` from `GlobalTheory.T.exists_cofactorTwist_dualWeyl Kf m ν hν hl f hf`. Rewrite using `[dualIso_cofRel_unique (hΨ f hf) hfg]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`. Introduce `g hg`. Take `⟨f, hf, hgf⟩` from `GlobalTheory.T.exists_cofactorTwist_dualWeyl Kf m _ hν' hl' g hg`. Take `⟨ε, hε⟩` from `GlobalTheory.T.cofactorTwistRelation_dualWeight_involutive Kf m _ hν' hl'`. Establish `h1` using `hε g hg f hgf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `hf` using `[hdd]`. Establish `h2` using `dualIso_cofRel_zsmul (ε : ℤ) h1`. Rewrite `h2` using `[dualIso_units_smul_smul]`. Establish `h3 : (ε : ℤ) • f ∈ dualWeyl Kf (m + 1) (m + 1) ν` using `(dualWeyl Kf (m + 1) (m + 1) ν).toAddSubgroup.zsmul_mem hf _`. Conclude with `⟨_, h3, dualIso_cofRel_unique (hΨ _ h3) h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.cofactorTwistRelation_rowAct_equivariant Kf m ν h hh f hf _ (hΨ f hf)`. Establish `h2` using `dualIso_cofRel_unique (hΨ _ (dualWeylRowStable Kf _ _ _ h⁻¹ f hf)) h1`. Establish `h3 : (h⁻¹).transpose⁻¹ = h.transpose`. Rewrite using `[← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hh]`. Establish `h4 : (h⁻¹).transpose.det = (h.det)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Simplify using `only [rnd, LinearMap.smul_apply, map_smul, AlgHom.toLinearMap_apply, h2, h3, h4, smul_smul, inv_zpow']`. Rewrite using `[← zpow_add₀ hh.ne_zero, ← zpow_add₀ hh.ne_zero]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `dualIso_lattice O Kf m ν hν hl Ψ hΨ _ _ le_rfl le_rfl (GlobalTheory.T.exists_cofactorTwist_dualWeyl O m ν hν hl) fun g hg => ?_` and prove the remaining obligations. Use `GlobalTheory.T.exists_cofactorTwist_dualWeyl O m _ hν' hl' g hg` as an intermediate fact. Rewrite `this` using `[hdd]`. Then use the resulting hypothesis. Use `dualIso_lattice O Kf m ν hν hl Ψ hΨ _ _ (weylLeDual O _ _ _ _ hν) (weylLeDual O _ _ _ _ hν') (GlobalTheory.T.weylLattice_exists_cofactorTwist_dual O m ν hν hl) fun g hg => ?_` and prove the remaining obligations. Use `GlobalTheory.T.weylLattice_exists_cofactorTwist_dual O m _ hν' hl' g hg` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hdd]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_posOk_dual (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] (m : ℕ)
     (ν : Fin (m + 1) → ℕ) (hν : Antitone ν) (hl : ν (Fin.last m) = 0) (e c : ℤ) :

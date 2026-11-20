@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 @[simp] lemma lvl_succ (S : ℕ → Subobject P) (e : ℕ) : lvl S (e + 1) = S e := rfl
 
 /- English proof (translation)
-Consider the cases of `e with`. Consider the case `zero => exact le_top`. Consider the case `succ e => exact hS e`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 lemma lvl_succ_le {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) (e : ℕ) :
     lvl S (e + 1) ≤ lvl S e := by
@@ -39,7 +39,7 @@ def incl {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) (e : ℕ) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Subobject.ofLE_arrow _`.
+A detailed English derivation is pending.
 -/
 lemma incl_arrow {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) (e : ℕ) :
     incl hS e ≫ (lvl S e).arrow = (lvl S (e + 1)).arrow :=
@@ -54,7 +54,7 @@ def grπ {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) (e : ℕ) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `cokernel.condition _`.
+A detailed English derivation is pending.
 -/
 lemma incl_grπ {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) (e : ℕ) :
     incl hS e ≫ grπ hS e = 0 :=
@@ -69,14 +69,14 @@ def mulLvl {S : ℕ → Subobject P} {r : Γ(X, ⊤)} (hr : MapsDown S r) (e : �
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Subobject.factorThru_arrow _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma mulLvl_arrow {S : ℕ → Subobject P} {r : Γ(X, ⊤)} (hr : MapsDown S r) (e : ℕ) :
     mulLvl hr e ≫ (lvl S (e + 1)).arrow = (lvl S e).arrow ≫ GroundTheory.Arith.SchemeCoh.smulHom P r :=
   Subobject.factorThru_arrow _ _ _
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (lvl S (e + 1)).arrow]`. Simplify using `only [Category.assoc, mulLvl_arrow, incl_arrow, incl_arrow_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma incl_mulLvl {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) {r : Γ(X, ⊤)}
     (hr : MapsDown S r) (e : ℕ) :
@@ -91,7 +91,7 @@ def grT {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) {r : Γ(X, ⊤
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `cokernel.π_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma grπ_grT {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) {r : Γ(X, ⊤)}
     (hr : MapsDown S r) (e : ℕ) :
@@ -99,9 +99,9 @@ lemma grπ_grT {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) {r : Γ
   cokernel.π_desc _ _ _
 
 /- English proof (translation)
-Apply `coequalizer.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `grπ hS e ≫ _ = grπ hS e ≫ _`. Simplify using `only [grπ_grT_assoc, grπ_grT]`. Simplify using `only [← Category.assoc]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← cancel_mono (lvl S (e + 2)).arrow]`. Simplify using `only [Category.assoc, mulLvl_arrow, mulLvl_arrow_assoc]`. Rewrite using `[smulHom_comp_smulHom, smulHom_comp_smulHom, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma grT_comm {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) {r s : Γ(X, ⊤)}
     (hr : MapsDown S r) (hs : MapsDown S s) (e : ℕ) :
@@ -116,7 +116,7 @@ lemma grT_comm {S : ℕ → Subobject P} (hS : ∀ e, S (e + 1) ≤ S e) {r s : 
   rw [smulHom_comp_smulHom, smulHom_comp_smulHom, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[hS.succ e]`. Conclude with `le_sup_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma anti {A : Type} [CommRing A] [IsNoetherianRing A] {I : Ideal A} [X.Over (Spec (.of A))]
     {S : ℕ → Subobject P} (hS : ClosedSys I P S) (e : ℕ) : S (e + 1) ≤ S e := by
@@ -124,7 +124,7 @@ lemma anti {A : Type} [CommRing A] [IsNoetherianRing A] {I : Ideal A} [X.Over (S
   exact le_sup_left
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[GlobalTheory.Twist.coord_map_app, GlobalTheory.Twist.coord_smul, GroundTheory.Arith.SchemeCoh.smulHom_app_apply]`. Use `congr 1`. Conclude with `(restrictTop_restrict (homOfLE inf_le_left) r).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma twist_smulHom_app (L : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (F : X.Modules) (r : Γ(X, ⊤))
     (V : X.Opens) (s : Γ(GlobalTheory.twist F L, V)) :

@@ -4,15 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.N
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual UpperTheory.V.Sd
 
 /- English proof (translation)
-Take `⟨hp, hspan, -, -⟩` from `UpperTheory.V.Af.Nf.places w`. Use `haveI : Fact (normV w).Prime := ⟨hp⟩`. Assume the negation of the conclusion as `h`. Establish `htop : w.asIdeal ⊔ 𝔪 = ⊤`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `h (le_sup_right.trans ((w.isMaximal.eq_of_le hne le_sup_left).symm.le))`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp (htop ▸ Submodule.mem_top : (1 : 𝓞 ℚ) ∈ w.asIdeal ⊔ 𝔪)`. Establish `hne : Ideal.absNorm 𝔪 ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Rewrite `hd`, `hne` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 ℚ ⧸ 𝔪) := Nat.finite_of_card_ne_zero hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `exists_prime_addOrderOf_dvd_card' (G := 𝓞 ℚ ⧸ 𝔪) (normV w) hd`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `hpx : ((normV w : ℕ) : 𝓞 ℚ) * x ∈ 𝔪`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, map_natCast, ← nsmul_eq_mul, ← hy]`. Conclude with `addOrderOf_nsmul_eq_zero _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : x ∈ 𝔪`. Rewrite `ha` using `[hspan, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `ha`. Establish `: x = c * (((normV w : ℕ) : 𝓞 ℚ) * x) + b * x`. Rewrite using `[← mul_assoc, mul_comm c, ← add_mul, hab, one_mul]`.
-
-Rewrite using `[this]`. Conclude with `𝔪.add_mem (𝔪.mul_mem_left _ hpx) (𝔪.mul_mem_right _ hb)`. Establish `h0 : (Ideal.Quotient.mk 𝔪 x) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hx`. Rewrite `hy` using `[h0, addOrderOf_zero]`. Conclude with `hp.one_lt.ne hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_asIdeal_of_normV_dvd_absNorm (w : Pl ℚ) (𝔪 : Ideal (𝓞 ℚ)) (h𝔪 : 𝔪 ≠ ⊥)
     (hd : normV w ∣ Ideal.absNorm 𝔪) : 𝔪 ≤ w.asIdeal := by
@@ -43,13 +41,11 @@ private theorem le_asIdeal_of_normV_dvd_absNorm (w : Pl ℚ) (𝔪 : Ideal (𝓞
   exact hp.one_lt.ne hy
 
 /- English proof (translation)
-Take `⟨hp, -, hnorm, -⟩` from `UpperTheory.V.Af.Nf.places w`. Unfold `coefDiv`. Use `split_ifs with h1 h2 h2`. Establish `hc` using `h1.choose_spec`. Establish `habs : Ideal.absNorm 𝔪 = normV w * Ideal.absNorm h1.choose` using `by conv_lhs => rw [hc]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hnorm]`. Simplify using `only [UpperTheory.V.Af.Nf.icoef]`. Rewrite using `[habs, Nat.mul_div_cancel_left _ hp.pos]`. It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `h1`. Rewrite using `[hn, map_mul, hnorm]`. Conclude with `dvd_mul_right _ _`. It suffices to derive a contradiction. Conclude with `h1 (Ideal.dvd_iff_le.mpr (le_asIdeal_of_normV_dvd_absNorm w 𝔪 h𝔪 h2))`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem coefDiv_icoef_eq_ite_dvd (g : UpperHalfPlane → ℂ) (w : Pl ℚ) (𝔪 : Ideal (𝓞 ℚ)) (h𝔪 : 𝔪 ≠ ⊥) :
     coefDiv (UpperTheory.V.Af.Nf.icoef g) w.asIdeal 𝔪 =
@@ -73,11 +69,11 @@ private theorem coefDiv_icoef_eq_ite_dvd (g : UpperHalfPlane → ℂ) (w : Pl �
   · rfl
 
 /- English proof (translation)
-Establish `hirr : ∀ v : Pl ℚ, Irreducible (Associates.mk v.asIdeal)` using `fun v => Associates.irreducible_mk.mpr v.irreducible`. Unfold `chiI`. Rewrite using `[finprod_eq_single _ w]`. Simplify using `only [hc, if_true]`. Unfold `ordI`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[Associates.count_self (hirr w), pow_one]`. Introduce `v hv`. Unfold `ordI`. Rewrite using `[Associates.count_eq_zero_of_ne (hirr v) (hirr w), pow_zero]`. Introduce `he`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv` to reduce the goal to its premises. Rewrite `he` using `[Associates.mk_eq_mk_iff_associated, associated_iff_eq]`. Conclude with `HeightOneSpectrum.ext he`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chiI_eq_of_conductor_eq_zero (ω : Formalism.L2.Host.HChar ℚ) (c : Pl ℚ → ℕ) (w : Pl ℚ) (hc : c w = 0) :
     chiI ω c w.asIdeal = ↑(ω.val w) := by
@@ -98,9 +94,9 @@ private theorem chiI_eq_of_conductor_eq_zero (ω : Formalism.L2.Host.HChar ℚ) 
     exact HeightOneSpectrum.ext he
 
 /- English proof (translation)
-Introduce `k f ω w hw hω 𝔪 h𝔪`. Take `⟨hp, -, hnorm, hlev⟩` from `UpperTheory.V.Af.Nf.places w`. Establish `hl : UpperTheory.V.Af.Nf.lev f.M w = 0` using `hlev f.M f.pos hw`. Establish `hn : 1 ≤ Ideal.absNorm 𝔪` using `Nat.one_le_iff_ne_zero.mpr (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Establish `heig` using `f.eig (normV w) hp hw (Ideal.absNorm 𝔪) hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `UpperTheory.V.Sd.hkCoef`. Rewrite using `[chiI_eq_of_conductor_eq_zero ω _ w hl, coefDiv_icoef_eq_ite_dvd _ w 𝔪 h𝔪, hω]`. Simplify using `only [UpperTheory.V.Af.Nf.icoef, map_mul, hnorm, UpperTheory.V.Af.Newform.a]`. Conclude with `heig`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Nf.hkCoef :
     UpperTheory.V.Af.Nf.HkCoef := by

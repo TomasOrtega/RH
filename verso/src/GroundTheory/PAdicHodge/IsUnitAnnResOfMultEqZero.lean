@@ -18,9 +18,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   {ρ0 : Set.Ioo (0 : ℝ) 1} {σ0 : Set.Ioc (0 : ℝ) ρ0}
 
 /- English proof (translation)
-Establish `hK : IsCompact (Set.Icc (σ0 : ℝ) ρ0)` using `isCompact_Icc`. Establish `hne : (Set.Icc (σ0 : ℝ) ρ0).Nonempty` using `⟨σ0, le_rfl, σ0.2.2⟩`. Take `⟨x, hx, hmin⟩` from `hK.exists_isMinOn hne (T.continuousOn_annNormR v)`. Use `⟨T.annNormR v x, ?_, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[T.annNormR_of_mem v ⟨x, hx⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _`. Rewrite using `[← T.annNormR_of_mem v r]`. Conclude with `hmin r.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pos_le_annNorm (v : T.Ann ρ0 σ0) (hv : ∀ r, 0 < T.annNorm ρ0 σ0 r v) :
     ∃ μ > 0, ∀ r, μ ≤ T.annNorm ρ0 σ0 r v := by
@@ -32,9 +32,7 @@ theorem exists_pos_le_annNorm (v : T.Ann ρ0 σ0) (hv : ∀ r, 0 < T.annNorm ρ0
   · rw [← T.annNormR_of_mem v r]; exact hmin r.2
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, annNorm_zero]`. Conclude with `hM`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
-
-Conclude with `(T.annNorm_add_le r _ _).trans (max_le (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annNorm_sum_le {ι : Type*} (s : Finset ι) (f : ι → T.Ann ρ0 σ0) (r : AnnRad ρ0 σ0) {M : ℝ}
     (hM : 0 ≤ M) (h : ∀ i ∈ s, T.annNorm ρ0 σ0 r (f i) ≤ M) :
@@ -48,35 +46,29 @@ theorem annNorm_sum_le {ι : Type*} (s : Finset ι) (f : ι → T.Ann ρ0 σ0) (
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj)))
 
 /- English proof (translation)
-Use `set lam := max (T.annNorm ρ0 σ0 (annIn ρ0 σ0) e) (T.annNorm ρ0 σ0 (annOut ρ0 σ0) e) with hlam`. Establish `hl1 : lam < 1` using `max_lt h1 h2`. Establish `hl0 : 0 ≤ lam` using `le_max_of_le_left (T.annNorm_nonneg _ _)`. Establish `hpow : ∀ (r : AnnRad ρ0 σ0), (r = annIn ρ0 σ0 ∨ r = annOut ρ0 σ0) → ∀ n : ℕ, T.annNorm ρ0 σ0 r ((-e) ^ n) ≤ lam ^ n`. Introduce `r hr n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[annNorm_pow, annNorm_neg]`. Use `pow_le_pow_left₀ (T.annNorm_nonneg _ _) ?_ n` and prove the remaining obligations. Break down `hr with rfl | rfl` into its components or cases. Conclude with `le_max_left _ _`. Conclude with `le_max_right _ _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set S : ℕ → T.Ann ρ0 σ0 := fun n => ∑ k ∈ Finset.range n, (-e) ^ k`. Establish `hS : ∀ (r : AnnRad ρ0 σ0), (r = annIn ρ0 σ0 ∨ r = annOut ρ0 σ0) → ∀ m n, m ≤ n → T.annNorm ρ0 σ0 r (S n - S m) ≤ lam ^ m`. Introduce `r hr m n hmn`. Establish `e1 : S n - S m = ∑ k ∈ Finset.Ico m n, (-e) ^ k`. Simplify using `only [S]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_Ico_eq_sub _ hmn]`. Rewrite using `[e1]`. Use `T.annNorm_sum_le _ _ r (pow_nonneg hl0 m) fun k hk => ?_` and prove the remaining obligations. Conclude with `(hpow r hr k).trans (pow_le_pow_of_le_one hl0 hl1.le (Finset.mem_Ico.1 hk).1)`. Take `⟨g, hg⟩` from `T.exists_limit_ann (z := S) fun ε hε => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨J₀, hJ₀⟩` from `exists_pow_lt_of_lt_one hε hl1`. Use `⟨J₀, fun J hJ K hK => ?_⟩` and prove the remaining obligations. Establish `key : ∀ r : AnnRad ρ0 σ0, (r = annIn ρ0 σ0 ∨ r = annOut ρ0 σ0) → T.annNorm ρ0 σ0 r (S J - S K) ≤ ε`. Introduce `r hr`. Break down `le_total K J with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hS r hr K J h).trans ((pow_le_pow_of_le_one hl0 hl1.le hK).trans hJ₀.le)`. Rewrite using `[annNorm_sub_comm]`. Conclude with `(hS r hr J K h).trans ((pow_le_pow_of_le_one hl0 hl1.le hJ).trans hJ₀.le)`. Conclude with `⟨key _ (Or.inl rfl), key _ (Or.inr rfl)⟩`. Use `IsUnit.of_mul_eq_one g (T.eq_of_annNorm_sub ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `all_goals`. Use `le_antisymm (le_of_forall_pos_le_add fun ε hε => ?_) (T.annNorm_nonneg _ _)` and prove the remaining obligations. Rewrite using `[zero_add]`. Use `set r := annIn ρ0 σ0 set B := T.annNorm ρ0 σ0 r (1 + e) + 1`. Establish `hB : 0 < B` using `by have := T.annNorm_nonneg r (1 + e); positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨J₁, hJ₁⟩` from `eventually_atTop.1 ((hg r).eventually (gt_mem_nhds (div_pos hε hB)))`. Take `⟨J₂, hJ₂⟩` from `exists_pow_lt_of_lt_one hε hl1`. Use `set J := max J₁ J₂`. Establish `hgeom : (1 + e) * S J = 1 - (-e) ^ J`. Simplify using `only [S]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `geom_sum_mul_neg (-e) J` as an intermediate fact. Rewrite using `[mul_comm, show 1 + e = 1 - -e by ring]; exact this`. Establish `e1 : (1 + e) * g - 1 = (1 + e) * (g - S J) + -((-e) ^ J)`. Rewrite using `[mul_sub, hgeom]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Use `(T.annNorm_add_le r _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[annNorm_mul, annNorm_sub_comm]`. Establish `h3` using `(hJ₁ J (le_max_left _ _)).le`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[annNorm_neg]`. Conclude with `(hpow r (Or.inl rfl) J).trans ((pow_le_pow_of_le_one hl0 hl1.le (le_max_right _ _)).trans hJ₂.le)`. Use `set r := annOut ρ0 σ0 set B := T.annNorm ρ0 σ0 r (1 + e) + 1`. Establish `hB : 0 < B` using `by have := T.annNorm_nonneg r (1 + e); positivity`. Take `⟨J₁, hJ₁⟩` from `eventually_atTop.1 ((hg r).eventually (gt_mem_nhds (div_pos hε hB)))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨J₂, hJ₂⟩` from `exists_pow_lt_of_lt_one hε hl1`. Use `set J := max J₁ J₂`. Establish `hgeom : (1 + e) * S J = 1 - (-e) ^ J`. Simplify using `only [S]`. Use `geom_sum_mul_neg (-e) J` as an intermediate fact.
-
-Rewrite using `[mul_comm, show 1 + e = 1 - -e by ring]; exact this`. Establish `e1 : (1 + e) * g - 1 = (1 + e) * (g - S J) + -((-e) ^ J)`. Rewrite using `[mul_sub, hgeom]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
-
-Use `(T.annNorm_add_le r _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[annNorm_mul, annNorm_sub_comm]`. Establish `h3` using `(hJ₁ J (le_max_left _ _)).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[annNorm_neg]`.
-
-Conclude with `(hpow r (Or.inr rfl) J).trans ((pow_le_pow_of_le_one hl0 hl1.le (le_max_right _ _)).trans hJ₂.le)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_one_add_ann (e : T.Ann ρ0 σ0) (h1 : T.annNorm ρ0 σ0 (annIn ρ0 σ0) e < 1)
     (h2 : T.annNorm ρ0 σ0 (annOut ρ0 σ0) e < 1) : IsUnit (1 + e) := by
@@ -159,17 +151,15 @@ theorem isUnit_one_add_ann (e : T.Ann ρ0 σ0) (h1 : T.annNorm ρ0 σ0 (annIn ρ
       exact (hpow r (Or.inr rfl) J).trans ((pow_le_pow_of_le_one hl0 hl1.le (le_max_right _ _)).trans hJ₂.le)
 
 /- English proof (translation)
-Take `⟨u', rfl⟩` from `hu`. Establish `hx : x = (u' : T.Ann ρ0 σ0) * (1 + ((u'⁻¹ : (T.Ann ρ0 σ0)ˣ) : T.Ann ρ0 σ0) * (x - u'))`. Rewrite using `[mul_add, mul_one, ← mul_assoc, Units.mul_inv, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `u'.isUnit.mul (T.isUnit_one_add_ann _ ?_ ?_)` and prove the remaining obligations. Establish `hn` using `congrArg (T.annNorm ρ0 σ0 (annIn ρ0 σ0)) (Units.inv_mul u')`. Rewrite `hn` using `[annNorm_mul, annNorm_one]`. Establish `hpos : 0 < T.annNorm ρ0 σ0 (annIn ρ0 σ0) (u' : T.Ann ρ0 σ0)` using `lt_of_le_of_lt (T.annNorm_nonneg _ _) h1`. Rewrite using `[annNorm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_lt_mul_of_pos_left h1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `: T.annNorm ρ0 σ0 (annIn ρ0 σ0) ((u'⁻¹ : (T.Ann ρ0 σ0)ˣ) : T.Ann ρ0 σ0) = 0` using `le_antisymm (not_lt.1 h0) (T.annNorm_nonneg _ _)`. Rewrite `hn` using `[this, zero_mul]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hn`. Use `_ = 1 := hn`. Establish `hn` using `congrArg (T.annNorm ρ0 σ0 (annOut ρ0 σ0)) (Units.inv_mul u')`. Rewrite `hn` using `[annNorm_mul, annNorm_one]`. Rewrite using `[annNorm_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_lt_mul_of_pos_left h2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `: T.annNorm ρ0 σ0 (annOut ρ0 σ0) ((u'⁻¹ : (T.Ann ρ0 σ0)ˣ) : T.Ann ρ0 σ0) = 0` using `le_antisymm (not_lt.1 h0) (T.annNorm_nonneg _ _)`. Rewrite `hn` using `[this, zero_mul]`.
-
-Conclude with `zero_ne_one hn`. Use `_ = 1 := hn`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_annNorm_sub_lt {u x : T.Ann ρ0 σ0} (hu : IsUnit u)
     (h1 : T.annNorm ρ0 σ0 (annIn ρ0 σ0) (x - u) < T.annNorm ρ0 σ0 (annIn ρ0 σ0) u)
@@ -211,9 +201,9 @@ theorem isUnit_of_annNorm_sub_lt {u x : T.Ann ρ0 σ0} (hu : IsUnit u)
 def monoB (i : ℤ) (a : L) : T.B := ((T.piB ^ i : T.Bˣ) : T.B) * algebraMap Γ T.B (T.teich a)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Rewrite using `[monoB, coeffB_piB_zpow_mul, zcoeff_teich]`. Distinguish the cases in `h : n = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_apply, if_neg (sub_ne_zero.2 h), Pi.single_apply, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffB_monoB (i : ℤ) (a : L) : T.coeffB (T.monoB i a) = Pi.single i a := by
   funext n
@@ -223,27 +213,27 @@ theorem coeffB_monoB (i : ℤ) (a : L) : T.coeffB (T.monoB i a) = Pi.single i a 
   · rw [Pi.single_apply, if_neg (sub_ne_zero.2 h), Pi.single_apply, if_neg h]
 
 /- English proof (translation)
-Rewrite using `[monoB, monoB, monoB, T.teich_mul, map_mul, zpow_add, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem monoB_mul_monoB (i j : ℤ) (a b : L) : T.monoB i a * T.monoB j b = T.monoB (i + j) (a * b) := by
   rw [monoB, monoB, monoB, T.teich_mul, map_mul, zpow_add, Units.val_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[monoB, zpow_zero, Units.val_one, T.teich_one, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem monoB_zero_one : T.monoB 0 1 = 1 := by
   rw [monoB, zpow_zero, Units.val_one, T.teich_one, map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[mem_Econ, coeffB_monoB]`. Conclude with `convergesAt_pi_single _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monoB_mem_Econ (i : ℤ) (a : L) (ρ : Set.Ioo (0 : ℝ) 1) : T.monoB i a ∈ T.Econ ρ := by
   rw [mem_Econ, coeffB_monoB]; exact convergesAt_pi_single _ _ _
 
 /- English proof (translation)
-Rewrite using `[coeffB_monoB]`. Use `le_antisymm (gaussNorm_le fun n => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `h : n = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_apply, if_neg h, norm_zero, zero_mul]`. Check the signs of the components of the expression. Use `(convergesAt_pi_single (L := L) i a s).le_gaussNorm i` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gaussNorm_monoB (i : ℤ) (a : L) {s : ℝ} (hs : 0 < s) :
     gaussNorm (T.coeffB (T.monoB i a)) s = ‖a‖ * s ^ i := by
@@ -256,29 +246,25 @@ theorem gaussNorm_monoB (i : ℤ) (a : L) {s : ℝ} (hs : 0 < s) :
     simpa using this
 
 /- English proof (translation)
-Establish `hX` using `T.num_spec b`. Use `set N := T.den b`. Use `set X := T.num b`. Establish `hb'` using `T.coeffB_eq hX`. Establish `hiN : 0 ≤ i + N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h`. Apply `hi` to reduce the goal to its premises. Rewrite using `[hb']`. Conclude with `T.zcoeff_of_neg _ (not_le.1 h)`. Use `set k0 := (i + N).toNat with hk0def`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hk0 : (k0 : ℤ) = i + N` using `Int.toNat_of_nonneg hiN`. Use `set a := T.coeffB b i with hadef`. Establish `ha : T.coeff X k0 = a`. Rewrite using `[hadef, hb']`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk0, zcoeff_natCast]`. Use `set f : ℕ → L := Function.update (T.coeff X) k0 0`. Establish `hg : T.ofCoeff (Pi.single k0 a) = T.π ^ k0 * T.teich a` using `T.eq_of_coeff_eq (funext fun n => by`. Rewrite using `[coeff_ofCoeff, coeff_π_pow_mul_teich, Pi.single_apply])`. Establish `hXf : X = T.ofCoeff f + T.π ^ k0 * T.teich a`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hg, T.ofCoeff_add_of_disjoint (fun n => by`. Distinguish the cases in `h : n = k0`. Use `left`. Rewrite using `[h]`. Simplify using `[f]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `right`. Rewrite using `[Pi.single_apply, if_neg h])]`. Use `conv_lhs => rw [← T.ofCoeff_coeff X]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Distinguish the cases in `h : n = k0`. Substitute `h` using the available equality. Simplify using `[f, ha]`. Simplify using `[f, h]`. Establish `hd : T.monoB i a * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B (T.π ^ k0 * T.teich a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[monoB, map_mul, map_pow]`. Establish `e : ((T.piB ^ i : T.Bˣ) : T.B) * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B T.π ^ k0`. Rewrite using `[← piB_val, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← Units.val_mul, ← zpow_add, ← zpow_natCast, hk0]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : (b - T.monoB i a) * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B (T.ofCoeff f)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_mul, hX, hd, ← map_sub, hXf, add_sub_cancel_right]`. Rewrite using `[T.coeffB_eq hsub]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_self, ← hk0, zcoeff_natCast, coeff_ofCoeff]`. Simplify using `[f]`. Rewrite using `[Function.update_of_ne hk, hb']`. Simplify using `only`. Break down `lt_or_ge (k + N) 0 with hkN | hkN` into its components or cases.
-
-Rewrite using `[T.zcoeff_of_neg _ hkN, T.zcoeff_of_neg _ hkN]`. Use `lift k + N to ℕ using hkN with m hm`. Rewrite using `[zcoeff_natCast, zcoeff_natCast, coeff_ofCoeff]`. Establish `hm' : m ≠ k0`. Introduce `h`.
-
-Apply `hk` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Simplify using `[f, Function.update_of_ne hm']`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeffB_sub_monoB (b : T.B) (i : ℤ) (hi : T.coeffB b i ≠ 0) :
     T.coeffB (b - T.monoB i (T.coeffB b i)) = Function.update (T.coeffB b) i 0 := by
@@ -339,15 +325,15 @@ theorem coeffB_sub_monoB (b : T.B) (i : ℤ) (hi : T.coeffB b i ≠ 0) :
       simp [f, Function.update_of_ne hm']
 
 /- English proof (translation)
-Use `set i := lowIndex (T.coeffB b) s`. Establish `hmem` using `lowIndex_mem hs0 hb hb0`. Establish `hi : T.coeffB b i ≠ 0` using `ne_zero_of_mem_domSet hs0 hb hb0 hmem`. Establish `hpos : 0 < gaussNorm (T.coeffB b) s` using `gaussNorm_pos hs0 hb hb0`. Rewrite using `[T.coeffB_sub_monoB b i hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconv : ConvergesAt (Function.update (T.coeffB b) i 0) s` using `(convergesAt_of_norm_le hs0 (fun n => by`. Distinguish the cases in `h : n = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]) hb).1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : Function.update (T.coeffB b) i 0 = 0`. Rewrite using `[h0]`. Simplify `hpos` using `[gaussNorm]`. Take `⟨j, hj⟩` from `hconv.exists_eq_gaussNorm hs0 h0`. Rewrite using `[← hj]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hji : j ≠ i`. Introduce `h`. Substitute `h` using the available equality. Rewrite `hj` using `[Function.update_self, norm_zero, zero_mul]`. Use `gaussNorm_pos hs0 hconv h0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_of_ne hji]`. Use `lt_of_le_of_ne (hb.le_gaussNorm j) fun heq => hji ?_` and prove the remaining obligations. Establish `hjmem : j ∈ domSet (T.coeffB b) s` using `heq`. Conclude with `le_antisymm (hli ▸ le_highIndex hs0 hb hb0 hjmem) (lowIndex_le hs0 hb hb0 hjmem)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gaussNorm_sub_monoB_lt {b : T.B} {s : ℝ} (hs0 : 0 < s) (hb : ConvergesAt (T.coeffB b) s)
     (hb0 : T.coeffB b ≠ 0) (hli : lowIndex (T.coeffB b) s = highIndex (T.coeffB b) s) :
@@ -378,7 +364,7 @@ theorem gaussNorm_sub_monoB_lt {b : T.B} {s : ℝ} (hs0 : 0 < s) (hb : Converges
   exact le_antisymm (hli ▸ le_highIndex hs0 hb hb0 hjmem) (lowIndex_le hs0 hb hb0 hjmem)
 
 /- English proof (translation)
-Introduce `h0`. Establish `hc0 : c = 0` using `T.coe_injective_Econ (by rw [h0, Completion.coe_zero])`. Rewrite `hc` using `[hc0, map_zero, sub_zero]`. Conclude with `lt_irrefl _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_ne_zero_of_annNorm_sub_lt {v : T.Ann ρ0 σ0} {c : T.Econ ρ0} (r : AnnRad ρ0 σ0)
     (hc : T.annNorm ρ0 σ0 r (v - T.coeAnn c) < T.annNorm ρ0 σ0 r v) : (c : T.RobbaExt ρ0) ≠ 0 := by
@@ -388,9 +374,9 @@ theorem coe_ne_zero_of_annNorm_sub_lt {v : T.Ann ρ0 σ0} {c : T.Econ ρ0} (r : 
   exact lt_irrefl _ hc
 
 /- English proof (translation)
-Establish `h1` using `T.annNorm_sub_le r x (x - y)`. Rewrite `h1` using `[sub_sub_cancel]`. Establish `h2` using `T.annNorm_add_le r (x - y) y`. Rewrite `h2` using `[sub_add_cancel]`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h1.trans (max_le le_rfl h.le)`. Break down `le_max_iff.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 (not_le.2 h)`. Conclude with `h3`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem annNorm_eq_of_sub_lt {x y : T.Ann ρ0 σ0} {r : AnnRad ρ0 σ0}
     (h : T.annNorm ρ0 σ0 r (x - y) < T.annNorm ρ0 σ0 r x) :
@@ -406,33 +392,29 @@ theorem annNorm_eq_of_sub_lt {x y : T.Ann ρ0 σ0} {r : AnnRad ρ0 σ0}
     · exact h3
 
 /- English proof (translation)
-Establish `hc0 : (c : T.RobbaExt ρ0) ≠ 0` using `T.coe_ne_zero_of_annNorm_sub_lt (annIn ρ0 σ0) (hc _)`. Establish `ha : (0 : ℝ) < σ1` using `σ1.2.1`. Establish `hab : (σ1 : ℝ) ≤ ρ1` using `σ1.2.2`. Establish `hsum` using `T.sum_mult_breaksR hc0 ha hab h`. Establish `h0 : ∑ ρ ∈ (T.breaksR_finite hc0 ha hab h).toFinset, T.mult (c : T.RobbaExt ρ0) ρ = 0` using `Finset.sum_eq_zero fun ρ hρ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.Finite.mem_toFinset, breaksR, Set.mem_ofPred_eq] at hρ`. Conclude with `hm ρ hρ.1.1 hρ.1.2`. Establish `hma` using `hm σ1 le_rfl hab`. Establish `hmb` using `hm ρ1 hab le_rfl`. Rewrite `hma`, `hmb` using `[mult]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hia` using `T.idx_coe hc0 ⟨ha, hab.trans_lt h⟩`. Establish `hib` using `T.idx_coe hc0 ⟨ha.trans_le hab, h⟩`. Use `set a := T.coeffB (c : T.B)`. Establish `hA : ConvergesAt a σ1` using `T.convergesAt_rad ρ0 c ⟨σ1, ha, hab.trans h.le⟩`. Establish `hB : ConvergesAt a ρ1` using `T.convergesAt_rad ρ0 c ⟨ρ1, ha.trans_le hab, h.le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha0 : a ≠ 0`. Introduce `h0'`. Apply `hc0` to reduce the goal to its premises. Establish `: (c : T.B) = 0`. Take `⟨N, y, hy⟩` from `IsLocalization.Away.surj T.π (c : T.B)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy0 : y = 0`. Use `(T.zcoeff_eq_zero_iff y).1 (funext fun k => ?_)` and prove the remaining obligations. Use `congrFun h0' (k - N)` as an intermediate fact. Rewrite `this` using `[show a = T.coeffB (c : T.B) from rfl, T.coeffB_eq hy]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[hy0, map_zero]`. Conclude with `T.eq_zero_of_mul_pow hy`. Rewrite using `[show c = 0 from Subtype.ext this, Completion.coe_zero]`. Establish `e1 : lowIndex a σ1 = highIndex a σ1` using `by rw [← hia.1, ← hia.2]; omega`. Establish `e2 : lowIndex a ρ1 = highIndex a ρ1` using `by rw [← hib.1, ← hib.2]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : lowIndex a ρ1 = lowIndex a σ1` using `by rw [← hib.1, ← hia.1]; omega`. Use `set i := lowIndex a σ1`. Use `set d : T.Econ ρ0 := ⟨T.monoB i (a i), T.monoB_mem_Econ _ _ _⟩`. Use `set dinv : T.Econ ρ0 := ⟨T.monoB (-i) (a i)⁻¹, T.monoB_mem_Econ _ _ _⟩`. Establish `hai : a i ≠ 0` using `ne_zero_of_mem_domSet ha hA ha0 (lowIndex_mem ha hA ha0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdd : d * dinv = 1` using `Subtype.ext (by show T.monoB i (a i) * T.monoB (-i) (a i)⁻¹ = 1`. Rewrite using `[monoB_mul_monoB, add_neg_cancel, mul_inv_cancel₀ hai, monoB_zero_one])`. Establish `hlt1` using `T.gaussNorm_sub_monoB_lt ha hA ha0 e1`. Establish `hlt2` using `T.gaussNorm_sub_monoB_lt (ha.trans_le hab) hB ha0 e2`. Rewrite `hlt2` using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdn : ∀ s : ℝ, 0 < s → gaussNorm (T.coeffB (d : T.B)) s = ‖a i‖ * s ^ i` using `fun s hs => T.gaussNorm_monoB i (a i) hs`. Establish `hcn1 : gaussNorm a σ1 = ‖a i‖ * (σ1 : ℝ) ^ i` using `(lowIndex_mem ha hA ha0).symm`. Establish `hcn2 : gaussNorm a ρ1 = ‖a i‖ * (ρ1 : ℝ) ^ i`. Use `(lowIndex_mem (ha.trans_le hab) hB ha0).symm` as an intermediate fact. Rewrite `this` using `[e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `this`. Use `set C := T.annRes h.le hs (T.coeAnn c)`. Use `set D := T.annRes h.le hs (T.coeAnn d)`. Establish `hD : IsUnit D` using `IsUnit.of_mul_eq_one (T.annRes h.le hs (T.coeAnn dinv)) (by`. Rewrite using `[← map_mul, ← map_mul, hdd, map_one, map_one])`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hnC : ∀ r : AnnRad ρ1 σ1, T.annNorm ρ1 σ1 r C = gaussNorm a r` using `fun r => by`. Rewrite using `[T.annNorm_annRes, annNorm_coeAnn]`. Both sides reduce to the same expression. Establish `hnD : ∀ r : AnnRad ρ1 σ1, T.annNorm ρ1 σ1 r D = gaussNorm (T.coeffB (d : T.B)) r` using `fun r => by`. Rewrite using `[T.annNorm_annRes, annNorm_coeAnn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hnCD : ∀ r : AnnRad ρ1 σ1, T.annNorm ρ1 σ1 r (C - D) = gaussNorm (T.coeffB ((c : T.B) - T.monoB i (a i))) r` using `fun r => by`. Rewrite using `[← map_sub, ← map_sub, T.annNorm_annRes, annNorm_coeAnn]`. Both sides reduce to the same expression. Establish `hCu : IsUnit C`.
-
-Use `T.isUnit_of_annNorm_sub_lt hD ?_ ?_` and prove the remaining obligations. Rewrite using `[hnCD, hnD, coe_annIn, hdn _ ha, ← hcn1]`. Conclude with `hlt1`. Rewrite using `[hnCD, hnD, coe_annOut, hdn _ (ha.trans_le hab), ← hcn2]`. Conclude with `hlt2`.
-
-Use `T.isUnit_of_annNorm_sub_lt hCu ?_ ?_` and prove the remaining obligations. Use `all_goals`. Rewrite using `[← map_sub, T.annNorm_annRes, T.annNorm_annRes, annRadOf]`. Use `(hc _).trans_le (le_of_eq ?_)` and prove the remaining obligations. Conclude with `(T.annNorm_eq_of_sub_lt (hc _)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_annRes_of_mult_eq_zero (v : T.Ann ρ0 σ0) (c : T.Econ ρ0)
     (hc : ∀ r, T.annNorm ρ0 σ0 r (v - T.coeAnn c) < T.annNorm ρ0 σ0 r v)
@@ -512,7 +494,7 @@ theorem isUnit_annRes_of_mult_eq_zero (v : T.Ann ρ0 σ0) (c : T.Econ ρ0)
     exact (T.annNorm_eq_of_sub_lt (hc _)).symm
 
 /- English proof (translation)
-Rewrite using `[ptEvalB, coeffB_monoB, ptEvalSeq, tsum_eq_single i (fun n hn => by`. Rewrite using `[ptTerm, Pi.single_apply, if_neg hn, map_zero, mul_zero]), norm_ptTerm, Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptEvalB_monoB {ξ : T.int} (hξ : T.IsPrimOne ξ) (i : ℤ) (c : L) :
     ‖T.ptEvalB hξ (T.monoB i c)‖ = ‖c‖ * T.ptRad ξ ^ i := by
@@ -520,13 +502,11 @@ theorem ptEvalB_monoB {ξ : T.int} (hξ : T.IsPrimOne ξ) (i : ℤ) (c : L) :
     rw [ptTerm, Pi.single_apply, if_neg hn, map_zero, mul_zero]), norm_ptTerm, Pi.single_eq_same]
 
 /- English proof (translation)
-Establish `hr0` using `T.ptRad_pos' hξ`. Establish `hr1` using `T.ptRad_lt_one' hξ`. Use `set i := lowIndex (T.coeffB b) (T.ptRad ξ)`. Use `set m := T.monoB i (T.coeffB b i)`. Establish `hmc : ConvergesAt (T.coeffB m) (T.ptRad ξ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coeffB_monoB]`. Conclude with `convergesAt_pi_single _ _ _`. Establish `hdc : ConvergesAt (T.coeffB (b - m)) (T.ptRad ξ)`. Rewrite using `[sub_eq_add_neg]`. Conclude with `(T.convergesAt_coeffB_add hr0 hr1 hb (T.convergesAt_coeffB_neg hr0 hr1 hmc).1).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt` using `T.gaussNorm_sub_monoB_lt hr0 hb hb0 hli`. Establish `hdom : gaussNorm (T.coeffB b) (T.ptRad ξ) = ‖T.coeffB b i‖ * T.ptRad ξ ^ i` using `(lowIndex_mem hr0 hb hb0).symm`. Establish `h1 : ‖T.ptEvalB hξ m‖ = gaussNorm (T.coeffB b) (T.ptRad ξ)`. Rewrite using `[T.ptEvalB_monoB hξ, hdom]`. Establish `h2 : ‖T.ptEvalB hξ (b - m)‖ < gaussNorm (T.coeffB b) (T.ptRad ξ)` using `(T.norm_ptEvalB_le hξ hdc).trans_lt hlt`.
-
-Establish `e : b = m + (b - m)` using `by ring`. Rewrite using `[e, T.ptEvalB_add hξ hmc hdc, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [h1]; exact h2.ne'), h1, max_eq_left h2.le]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ptEvalB_of_dom {ξ : T.int} (hξ : T.IsPrimOne ξ) {b : T.B}
     (hb : ConvergesAt (T.coeffB b) (T.ptRad ξ)) (hb0 : T.coeffB b ≠ 0)
@@ -554,15 +534,15 @@ theorem norm_ptEvalB_of_dom {ξ : T.int} (hξ : T.IsPrimOne ξ) {b : T.B}
   rw [← e]
 
 /- English proof (translation)
-Establish `h : 0 < T.ptRad ξ ∧ T.ptRad ξ < ρ0` using `⟨T.ptRad_pos' hξ, hr⟩`. Establish `hc` using `T.approx_spec hu h (T.ptRadIoc hξ hr.le) le_rfl (mid_rad h).2.2.le`. Establish `hl` using `T.lowIdx_eq_approx hu h`. Establish `hh` using `T.highIdx_eq_approx hu h`. Rewrite `hm` using `[mult, hh, hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set c := T.approx hu h`. Establish `hc0 : (c : T.B) ≠ 0` using `T.coe_ne_zero_of_approx hc`. Establish `hcoeff0 : T.coeffB (c : T.B) ≠ 0`. Introduce `h0`. Take `⟨N, y, hy⟩` from `IsLocalization.Away.surj T.π (c : T.B)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : y = 0`. Use `(T.zcoeff_eq_zero_iff y).1 (funext fun k => ?_)` and prove the remaining obligations. Use `congrFun h0 (k - N)` as an intermediate fact. Rewrite `this` using `[T.coeffB_eq hy]`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hy0, map_zero]`. Conclude with `hc0 (T.eq_zero_of_mul_pow hy)`. Establish `hcv : ConvergesAt (T.coeffB (c : T.B)) (T.ptRad ξ)` using `T.convergesAt_rad ρ0 c (T.ptRadIoc hξ hr.le)`. Establish `h1 : ‖T.ptEval hξ hr.le (c : T.RobbaExt ρ0)‖ = T.extNorm ρ0 (T.ptRadIoc hξ hr.le) u`. Rewrite using `[ptEval_coe, T.norm_ptEvalB_of_dom hξ hcv hcoeff0 (by omega), ← T.extNorm_eq_of_lt hc, extNorm_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2 : ‖T.ptEval hξ hr.le (u - c)‖ < T.extNorm ρ0 (T.ptRadIoc hξ hr.le) u` using `(T.norm_ptEval_le hξ hr.le _).trans_lt hc`. Establish `e : u = (c : T.RobbaExt ρ0) + (u - c)` using `by ring`. Rewrite using `[e, map_add, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [h1]; exact h2.ne'), h1, max_eq_left h2.le, ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ptEval_of_mult_eq_zero {u : T.RobbaExt ρ0} (hu : u ≠ 0) {ξ : T.int} (hξ : T.IsPrimOne ξ)
     (hr : T.ptRad ξ < ρ0) (hm : T.mult u (T.ptRad ξ) = 0) :
@@ -598,14 +578,14 @@ theorem norm_ptEval_of_mult_eq_zero {u : T.RobbaExt ρ0} (hu : u ≠ 0) {ξ : T.
 def annLogNorm (q : T.Ann ρ0 σ0) (t : ℝ) : ℝ := Real.log (T.annNormR q (Real.exp t))
 
 /- English proof (translation)
-Rewrite using `[annLogNorm, Real.exp_log (σ0.2.1.trans_le r.2.1), T.annNormR_of_mem q r]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem annLogNorm_of_mem (q : T.Ann ρ0 σ0) (r : AnnRad ρ0 σ0) :
     T.annLogNorm q (Real.log r) = Real.log (T.annNorm ρ0 σ0 r q) := by
   rw [annLogNorm, Real.exp_log (σ0.2.1.trans_le r.2.1), T.annNormR_of_mem q r]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← Real.exp_log σ0.2.1]`. Conclude with `Real.exp_le_exp.2 ht.1`. Rewrite using `[← Real.exp_log ρ0.2.1]`. Conclude with `Real.exp_le_exp.2 ht.2`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem_of_mem_Icc {t : ℝ} (ht : t ∈ Set.Icc (Real.log σ0) (Real.log ρ0)) :
     Real.exp t ∈ Set.Icc (σ0 : ℝ) ρ0 := by
@@ -614,15 +594,15 @@ theorem exp_mem_of_mem_Icc {t : ℝ} (ht : t ∈ Set.Icc (Real.log σ0) (Real.lo
   · rw [← Real.exp_log ρ0.2.1]; exact Real.exp_le_exp.2 ht.2
 
 /- English proof (translation)
-Use `⟨convex_Icc _ _, fun x hx y hy a b ha hb hab => ?_⟩` and prove the remaining obligations. Use `set r₁ : AnnRad ρ0 σ0 := ⟨Real.exp x, exp_mem_of_mem_Icc hx⟩`. Use `set r₂ : AnnRad ρ0 σ0 := ⟨Real.exp y, exp_mem_of_mem_Icc hy⟩`. Establish `hz : a • x + b • y ∈ Set.Icc (Real.log σ0) (Real.log ρ0)` using `(convex_Icc _ _) hx hy ha hb hab`. Use `set r : AnnRad ρ0 σ0 := ⟨Real.exp (a • x + b • y), exp_mem_of_mem_Icc hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Establish `hr : (r : ℝ) = (r₁ : ℝ) ^ (1 - b) * (r₂ : ℝ) ^ b` using `by show Real.exp (a • x + b • y) = Real.exp x ^ (1 - b) * Real.exp y ^ b`. Rewrite using `[← Real.exp_mul, ← Real.exp_mul, ← Real.exp_add, smul_eq_mul, smul_eq_mul, show 1 - b = a by linarith]`. Put the polynomial expressions in normal form. Establish `hi` using `T.annNorm_interp_le r₁ r₂ r (by linarith) (by linarith) hr q`. Establish `h1` using `hq r₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hq r₂`. Establish `hlog` using `Real.log_le_log (hq r) hi`. Rewrite `hlog` using `[Real.log_mul (Real.rpow_pos_of_pos h1 _).ne' (Real.rpow_pos_of_pos h2 _).ne', Real.log_rpow h1, Real.log_rpow h2, show 1 - b = a by linarith]`. Simplify using `only [smul_eq_mul]`. Establish `e1 : T.annLogNorm q x = Real.log (T.annNorm ρ0 σ0 r₁ q)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[annLogNorm, T.annNormR_of_mem q r₁]`. Establish `e2 : T.annLogNorm q y = Real.log (T.annNorm ρ0 σ0 r₂ q)`. Rewrite using `[annLogNorm, T.annNormR_of_mem q r₂]`. Establish `e3 : T.annLogNorm q (a • x + b • y) = Real.log (T.annNorm ρ0 σ0 r q)`. Rewrite using `[annLogNorm, T.annNormR_of_mem q r]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `e3` using `[smul_eq_mul, smul_eq_mul]`. Rewrite using `[e1, e2, e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem convexOn_annLogNorm (q : T.Ann ρ0 σ0) (hq : ∀ r, 0 < T.annNorm ρ0 σ0 r q) :
     ConvexOn ℝ (Set.Icc (Real.log σ0) (Real.log ρ0)) (T.annLogNorm q) := by
@@ -654,7 +634,7 @@ theorem convexOn_annLogNorm (q : T.Ann ρ0 σ0) (hq : ∀ r, 0 < T.annNorm ρ0 �
   linarith
 
 /- English proof (translation)
-Break down `eq_or_lt_of_le hbc with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `hf.slope_mono_adjacent ha hd hab hcd`. Conclude with `(hf.slope_mono_adjacent ha hc hab h).trans (hf.slope_mono_adjacent hb hd h hcd)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem slope_le_slope_of_convexOn {f : ℝ → ℝ} {s : Set ℝ} (hf : ConvexOn ℝ s f) {a b c d : ℝ}
     (ha : a ∈ s) (hb : b ∈ s) (hc : c ∈ s) (hd : d ∈ s) (hab : a < b) (hbc : b ≤ c) (hcd : c < d) :
@@ -665,7 +645,7 @@ theorem slope_le_slope_of_convexOn {f : ℝ → ℝ} {s : Set ℝ} (hf : ConvexO
   · exact (hf.slope_mono_adjacent ha hc hab h).trans (hf.slope_mono_adjacent hb hd h hcd)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [annNorm_one]`. Consider the case `cons P l ih => rw [List.map_cons, List.prod_cons, annNorm_mul, T.annNorm_ξAnn P.2, ih, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem annNorm_list_prod_ξAnn (l : List T.Pt) (r : AnnRad ρ0 σ0) :
     T.annNorm ρ0 σ0 r (l.map fun P => T.ξAnn P.1).prod =
@@ -676,7 +656,7 @@ theorem annNorm_list_prod_ξAnn (l : List T.Pt) (r : AnnRad ρ0 σ0) :
       List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons P l ih`. Rewrite using `[List.map_cons, List.prod_cons, max_eq_left (h P List.mem_cons_self), ih fun Q hQ => h Q (List.mem_cons_of_mem _ hQ)]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem list_prod_max_eq_left (l : List T.Pt) {s : ℝ} (h : ∀ P ∈ l, s ≤ T.ptRad P.1) :
     (l.map fun P => max (T.ptRad P.1) s).prod = (l.map fun P => T.ptRad P.1).prod := by
@@ -687,7 +667,7 @@ theorem list_prod_max_eq_left (l : List T.Pt) {s : ℝ} (h : ∀ P ∈ l, s ≤ 
       ih fun Q hQ => h Q (List.mem_cons_of_mem _ hQ)]; rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons P l ih`. Rewrite using `[List.map_cons, List.prod_cons, max_eq_right (h P List.mem_cons_self), ih fun Q hQ => h Q (List.mem_cons_of_mem _ hQ), List.length_cons, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem list_prod_max_eq_right (l : List T.Pt) {s : ℝ} (h : ∀ P ∈ l, T.ptRad P.1 ≤ s) :
     (l.map fun P => max (T.ptRad P.1) s).prod = s ^ l.length := by
@@ -698,7 +678,7 @@ theorem list_prod_max_eq_right (l : List T.Pt) {s : ℝ} (h : ∀ P ∈ l, T.ptR
       ih fun Q hQ => h Q (List.mem_cons_of_mem _ hQ), List.length_cons, pow_succ]; ring
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons P l ih => rw [List.map_cons, List.prod_cons]`. Conclude with `mul_pos (T.ptRad_pos' P.2) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem list_prod_ptRad_pos (l : List T.Pt) : 0 < (l.map fun P => T.ptRad P.1).prod := by
   induction l with
@@ -706,23 +686,21 @@ theorem list_prod_ptRad_pos (l : List T.Pt) : 0 < (l.map fun P => T.ptRad P.1).p
   | cons P l ih => rw [List.map_cons, List.prod_cons]; exact mul_pos (T.ptRad_pos' P.2) ih
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `hdvd`. Use `set P := (l.map fun P => T.ξAnn P.1).prod`. Establish `hpos : ∀ r : AnnRad ρ0 σ0, 0 < T.annNorm ρ0 σ0 r P` using `fun r => by`. Rewrite using `[T.annNorm_list_prod_ξAnn]`. Conclude with `List.prod_pos fun x hx => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `lt_of_lt_of_le (T.ptRad_pos' Q.2) (le_max_left _ _)`. Establish `hqpos : ∀ r, 0 < T.annNorm ρ0 σ0 r q` using `fun r => by`. Establish `h` using `hw r`. Rewrite `h` using `[hq, annNorm_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pos_of_mul_pos_right h (hpos r).le`. Establish `hnw : ∀ r : AnnRad ρ0 σ0, Real.log (T.annNorm ρ0 σ0 r w) = Real.log (T.annNorm ρ0 σ0 r P) + Real.log (T.annNorm ρ0 σ0 r q)` using `fun r => by`. Rewrite using `[hq, annNorm_mul, Real.log_mul (hpos r).ne' (hqpos r).ne']`. Establish `hPa : T.annNorm ρ0 σ0 a P = (l.map fun P => T.ptRad P.1).prod`. Rewrite using `[T.annNorm_list_prod_ξAnn, T.list_prod_max_eq_left l fun Q hQ => hab.le.trans (hl Q hQ).1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPb : T.annNorm ρ0 σ0 b P = (l.map fun P => T.ptRad P.1).prod`. Rewrite using `[T.annNorm_list_prod_ξAnn, T.list_prod_max_eq_left l fun Q hQ => (hl Q hQ).1]`. Establish `hPc : T.annNorm ρ0 σ0 c P = (c : ℝ) ^ l.length`. Rewrite using `[T.annNorm_list_prod_ξAnn, T.list_prod_max_eq_right l fun Q hQ => (hl Q hQ).2]`. Establish `hPd : T.annNorm ρ0 σ0 d P = (d : ℝ) ^ l.length`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[T.annNorm_list_prod_ξAnn, T.list_prod_max_eq_right l fun Q hQ => (hl Q hQ).2.trans hcd.le]`. Establish `hmem : ∀ r : AnnRad ρ0 σ0, Real.log r ∈ Set.Icc (Real.log σ0) (Real.log ρ0)` using `fun r => ⟨Real.log_le_log σ0.2.1 r.2.1, Real.log_le_log (σ0.2.1.trans_le r.2.1) r.2.2⟩`. Establish `hc0 : (0 : ℝ) < c` using `σ0.2.1.trans_le c.2.1`. Establish `hd0 : (0 : ℝ) < d` using `σ0.2.1.trans_le d.2.1`. Establish `ha0 : (0 : ℝ) < a` using `σ0.2.1.trans_le a.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : (0 : ℝ) < b` using `σ0.2.1.trans_le b.2.1`. Establish `hlab : Real.log a < Real.log b` using `Real.log_lt_log ha0 hab`. Establish `hlbc : Real.log b ≤ Real.log c` using `Real.log_le_log hb0 hbc`. Establish `hlcd : Real.log c < Real.log d` using `Real.log_lt_log hc0 hcd`. Establish `key` using `slope_le_slope_of_convexOn (T.convexOn_annLogNorm q hqpos) (hmem a) (hmem b) (hmem c) (hmem d) hlab hlbc hlcd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `key` using `[T.annLogNorm_of_mem, T.annLogNorm_of_mem, T.annLogNorm_of_mem, T.annLogNorm_of_mem]`. Rewrite using `[hnw a, hnw b, hnw c, hnw d, hPa, hPb, hPc, hPd, Real.log_pow, Real.log_pow]`. Establish `e1 : (Real.log (l.map fun P => T.ptRad P.1).prod + Real.log (T.annNorm ρ0 σ0 b q) - (Real.log (l.map fun P => T.ptRad P.1).prod + Real.log (T.annNorm ρ0 σ0 a q))) / (Real.log b - Real.log a) = (Real.log (T.annNorm ρ0 σ0 b q) - Real.log (T.annNorm ρ0 σ0 a q)) / (Real.log b - Real. …`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : ((l.length : ℝ) * Real.log d + Real.log (T.annNorm ρ0 σ0 d q) - ((l.length : ℝ) * Real.log c + Real.log (T.annNorm ρ0 σ0 c q))) / (Real.log d - Real.log c) = l.length + (Real.log (T.annNorm ρ0 σ0 d q) - Real.log (T.annNorm ρ0 σ0 c q)) / (Real.log d - Real.log c)`. Establish `hne : Real.log d - Real.log c ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem length_le_of_prod_dvd (w : T.Ann ρ0 σ0) (hw : ∀ r, 0 < T.annNorm ρ0 σ0 r w)
     (a b c d : AnnRad ρ0 σ0) (hab : (a : ℝ) < b) (hbc : (b : ℝ) ≤ c) (hcd : (c : ℝ) < d)

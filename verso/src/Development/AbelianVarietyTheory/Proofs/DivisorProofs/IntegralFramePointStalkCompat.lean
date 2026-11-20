@@ -32,9 +32,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
 
 /- English proof (translation)
-Take `⟨κ, k₁, k₂, -, k₄, -, k₆, -, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Set `e : Fin (Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)` to `(Fintype.equivFin _).symm`. Take `⟨K, hKmem, hKval⟩` from `GlobalTheory.T.exists_unit_section_thetaKeyRule_weightFour κ k₁ k₂ k₆ E H Dw l Xo c _ e hL.pos`. Establish `hσ0` using `goodEmb_goodOf c c.F.val.toRingHom`. Take `⟨ρ, -⟩` from `GlobalTheory.T.exists_keySection_fourthRoot_perComponent κ k₁ k₂ k₆ k₄ E H Dw l Xo c _ e _ r (U _) K hσ0 (hL.unf _ hσ0) hL.geo hL.pos hKmem hKval`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ρ⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_keySec (hL : Laws U x) : Nonempty (KeySec Xo c) := by
   obtain ⟨κ, k₁, k₂, -, k₄, -, k₆, -, -⟩ := GlobalTheory.KeyFamClosing.keyFam_one
@@ -52,23 +52,21 @@ def unitsV (T : CDVR) : Submonoid T.Fr where
   mul_mem' := fun {a b} ha hb => ⟨mul_ne_zero ha.1 hb.1, by rw [vV_mul ha.1 hb.1, ha.2, hb.2, add_zero]⟩
 
 /- English proof (translation)
-Establish `hp : HasPts U Z` using `GlobalTheory.FlatLine.hasPts U hL.pos hL.good hL.unf Z`. Set `sF : ∀ τ, FlatSec U x Z τ` to `fun τ => (hFE.nonempty Z τ).some`. Establish `hK` using `nonempty_keySec hL`. Set `s` to `FlatSec.shift hp sF w`. Establish `hδ` using `GlobalTheory.FlatTwisting.finite_sum_flDefect (Dw := Dw) (c := c) w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨TwSec.ofConst s (by convert hδ) (GlobalTheory.FlatTwisting.mul_sig_mem_cuspOn hK hL.unf hL.pos s) fun G hG f hf => ?_, fun T io y hio hZ => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.FlatTwisting.mul_sig_mem_cuspOn hK hL.unf hL.pos (w := -w) (s.symm.copy rfl rfl) (G + wtOf Dw (parWt Dw w) 0) (Even.add hG (even_wtOf _ _)) f hf`. Rewrite `h` using `[GlobalTheory.FlatTwisting.wtOf_parWt_neg, add_neg_cancel_right]`. Conclude with `h`. Use `letI := io.toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hLies : LiesOn Z y.1`. Assume the negation of the conclusion as `hn`. Conclude with `hZ ((idem_mem_suppOn Z) T.Fr y.1 ((liesOff_iff Z y.1).2 hn))`. Establish `hid : evI y (idem Z) = 1`. Establish `e` using `evI_mul y (idem Z) (idem Z)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `e` using `[idem_mul_idem]`. Conclude with `mul_left_cancel₀ hZ (by rw [mul_one]; exact e.symm)`. Set `ev : Rul Xo c →* T.Fr` to `⟨⟨evI y, by rw [← mul_one (evI y 1), ← hid, ← evI_mul, one_mul]⟩, evI_mul y⟩`. Establish `hsig : ∀ τ, ev (sF τ).sig ∈ unitsV T` using `fun τ => by`. Establish `hn` using `GlobalTheory.FlatCore.Bdry.nval_evI_eq_zero hP hP.q2 hP.q3 E H Dw l Xo c r U x hL Z τ (ArchSec.ofConst (sF τ)) T io y hio hLies`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hev0 : evI y (sF τ).sig ≠ 0`. Introduce `h0`. Rewrite `hn` using `[show (ArchSec.ofConst (sF τ)).sig = (sF τ).sig from rfl, h0, nval_zero]`. Conclude with `EReal.top_ne_zero hn`. Use `⟨hev0, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hn` using `[show (ArchSec.ofConst (sF τ)).sig = (sF τ).sig from rfl, nval_of_ne hev0]`. Establish `: ((vV T.V (evI y (sF τ).sig) : ℝ) / ((1 : ℕ) : ℝ) : ℝ) = 0` using `by exact_mod_cast hn`. Use `show vV T.V (evI y (sF τ).sig) = 0`. Simplify using `using this`. Establish `hinv : ∀ τ, ev (sF τ).inv ∈ unitsV T` using `fun τ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ev (sF τ).sig * ev (sF τ).inv = 1`. Rewrite using `[← map_mul, (sF τ).mul_inv]`. Conclude with `hid`. Establish `h2 : ev (sF τ).inv ≠ 0` using `right_ne_zero_of_mul_eq_one e`. Use `⟨h2, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `vV_mul (V := T.V) (hsig τ).1 h2`. Rewrite `h3` using `[e, (hsig τ).2, zero_add, show vV T.V (1 : T.Fr) = 0 by simp [vV]]`. Conclude with `h3.symm`. Establish `hprod : ev s.sig ∈ unitsV T`. Rewrite using `[(FlatSec.shift_spec hp sF w).1, map_mul, map_prod]`.
-
-Use `(unitsV T).mul_mem (by rw [show ev (idem Z) = 1 from hid]; exact (unitsV T).one_mem) ((unitsV T).prod_mem fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[(ConstSec.zpow_spec (sF τ) (-w τ)).1, map_mul, map_mul, map_pow, map_pow]`. Conclude with `(unitsV T).mul_mem (by rw [show ev (idem Z) = 1 from hid]; exact (unitsV T).one_mem) ((unitsV T).mul_mem ((unitsV T).pow_mem (hsig τ) _) ((unitsV T).pow_mem (hinv τ) _))`. Conclude with `hprod.2`.
+A detailed English derivation is pending.
 -/
 theorem twSec_flat_val (hP : GlobalTheory.CovTop.Hypotheses2) (hL : Laws U x) (hFE : FlatExists U x) (Z : Comp Xo c)
     (w : Psi H → ℤ) : ∃ t : TwSec U x Z (wtOf Dw (parWt Dw w) 0), ∀ (T : CDVR) (io : c.F →+* T.Fr)
@@ -132,15 +130,15 @@ open GlobalTheory.FlatValZero
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hP hD _ hF`. Establish `F` using `GlobalTheory.CovTop.FlatVal.flat_val hF`. Unfold `Covers Lifts at *`. Use `(hD.and F).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and e2`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY Z TF y T io y' g hg hpt hZ w => ?_⟩` and prove the remaining obligations. Take `⟨-, hB⟩` from `hx0 x hx hle ι p hp`. Establish `hFE` using `(hB i hi Y hY).2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL` using `GlobalTheory.LawsDeep.laws_deep _ p.T _ Y _ _ p.fw.laws ⟨Nat.le_add_left _ _, i.2⟩ hY.1`. Take `⟨t, ht⟩` from `GlobalTheory.FlatValZero.twSec_flat_val hP hL hFE Z w`. Use `⟨t, ht T io y' (fun a ha => ?_) hZ⟩` and prove the remaining obligations. Establish `ho : ∀ a, io a ∈ (algebraMap T.V T.Fr).range` using `fun a => by`. Use `letI := io.toAlgebra`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `h1` using `ptY_str TF.X y'.1`. Rewrite `h1` using `[hpt, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, Category.assoc]`. Take `⟨b, hb⟩` from `Spec.map_surjective (Spec.map (CommRingCat.ofHom g) ≫ ((Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) ≫ flagStr TF.X)`. Rewrite `h1` using `[← hb, ← Spec.map_comp]`. Conclude with `⟨b.hom a, congrArg (fun q => CommRingCat.Hom.hom q a) (Spec.map_injective h1)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `ha' : io a ≠ 0` using `(map_ne_zero io).2 ha`. Establish `h1` using `(GlobalTheory.KeyValZero.mem_range_iff T _).1 (ho a)`. Establish `h2` using `(GlobalTheory.KeyValZero.mem_range_iff T _).1 (ho a⁻¹)`. Establish `h3` using `vV_mul (V := T.V) ha' ((map_ne_zero io).2 (inv_ne_zero ha))`. Rewrite `h3` using `[← map_mul, mul_inv_cancel₀ ha, map_one, show vV T.V (1 : T.Fr) = 0 by simp [vV]]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/

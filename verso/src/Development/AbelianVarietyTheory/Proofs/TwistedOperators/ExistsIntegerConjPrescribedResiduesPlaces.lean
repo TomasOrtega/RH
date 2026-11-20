@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SW.Lev
 
 /- English proof (translation)
-Introduce `D P b`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := P) (fun PP : Formalism.L2.DIV.Pl D.host.E => PP.asIdeal) (fun _ => 1) (fun PP _ => PP.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun PP => Classical.choose (Ideal.Quotient.mk_surjective (b PP.1)))`. Use `⟨GlobalTheory.SW.Lev.bar y, fun PP hPP => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SW.Lev.bar_bar]`. Establish `h` using `hy PP hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[pow_one]`. Establish `hc` using `Classical.choose_spec (Ideal.Quotient.mk_surjective (b PP))`. Rewrite using `[← hc]`. Conclude with `Ideal.Quotient.eq.2 h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bar_mk_eq_at_places : ∀ (D : D7) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (b : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Formalism.L2.DIV.kP PP), ∃ c : 𝓞 D.host.E, ∀ PP ∈ P, Ideal.Quotient.mk PP.asIdeal (GlobalTheory.SW.Lev.bar c) = b PP := by
   intro D P b

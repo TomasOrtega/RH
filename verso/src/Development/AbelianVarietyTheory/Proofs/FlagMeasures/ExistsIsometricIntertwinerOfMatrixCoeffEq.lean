@@ -6,7 +6,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hmul : σ h w = σ g (σ (g⁻¹ * h) w)` using `by show σ h w = (σ g * σ (g⁻¹ * h)) w`. Rewrite using `[← map_mul, mul_inv_cancel_left]`. Set `T : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ g : H →ₗ[ℂ] H), norm_map' := hσ g }`. Rewrite using `[hmul]`. Conclude with `T.inner_map_map w (σ (g⁻¹ * h) w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_translate_translate_of_norm {G : Type} [Group G] {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g x, ‖σ g x‖ = ‖x‖) (w : H)
@@ -19,33 +19,31 @@ theorem inner_translate_translate_of_norm {G : Type} [Group G] {H : Type} [Norme
   exact T.inner_map_map w (σ (g⁻¹ * h) w)
 
 /- English proof (translation)
-Introduce `G _ H _ _ _ σ Hp _ _ _ π hσ hπ w v hcyc hvw`. Take `⟨A, hA⟩ : ∃ A : (G →₀ ℂ) →ₗ[ℂ] H, A = Finsupp.linearCombination ℂ (fun g => σ g w)` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : (G →₀ ℂ) →ₗ[ℂ] Hp, B = Finsupp.linearCombination ℂ (fun g => π g v)` from `⟨_, rfl⟩`. Establish `hkey : ∀ g h : G, ⟪π g v, π h v⟫_ℂ = ⟪σ g w, σ h w⟫_ℂ`. Introduce `g h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inner_translate_translate_of_norm π hπ, inner_translate_translate_of_norm σ hσ, hvw]`. Establish `hinner : ∀ c d, ⟪B c, B d⟫_ℂ = ⟪A c, A d⟫_ℂ`. Introduce `c d`. Rewrite using `[hA, hB]`. Simplify using `only [Finsupp.linearCombination_apply, Finsupp.sum, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hkey]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hnorm : ∀ c, ‖B c‖ = ‖A c‖`. Introduce `c`. Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ) (A c), hinner]`. Establish `hker : LinearMap.ker A ≤ LinearMap.ker B`. Introduce `c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← norm_eq_zero, hnorm, hc, norm_zero]`. Take `⟨F, hF⟩ : ∃ F : LinearMap.range A →ₗ[ℂ] Hp, ∀ c, F ⟨A c, LinearMap.mem_range_self A c⟩ = B c` from `⟨(LinearMap.ker A).liftQ B hker ∘ₗ A.quotKerEquivRange.symm.toLinearMap, fun c => by simp⟩`. Establish `hFn : ∀ y, ‖F y‖ = ‖y‖`. Introduce and unpack `⟨_, c, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hF, hnorm]`. Both sides reduce to the same expression. Set `F' : LinearMap.range A →ₗᵢ[ℂ] Hp` to `{ toLinearMap := F, norm_map' := hFn }`. Establish `hclos : (LinearMap.range A).topologicalClosure = ⊤`. Rewrite using `[Submodule.topologicalClosure_eq_top_iff, Submodule.eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Use `hcyc y fun g => inner_eq_zero_symm.mp ((Submodule.mem_orthogonal _ _).mp hy _ ?_)` and prove the remaining obligations. Conclude with `⟨Finsupp.single g 1, by simp [hA]⟩`. Establish `hdense : DenseRange (LinearMap.range A).subtypeL` using `denseRange_subtype_val.mpr (Submodule.dense_iff_topologicalClosure_eq_top.mpr hclos)`. Establish `huni : IsUniformInducing (LinearMap.range A).subtypeL` using `(LinearMap.range A).subtypeₗᵢ.isometry.isUniformInducing`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨X, hXdef⟩ : ∃ X : H →L[ℂ] Hp, X = F'.toContinuousLinearMap.extend (LinearMap.range A).subtypeL` from `⟨_, rfl⟩`. Establish `hX : ∀ c, X (A c) = B c` using `fun c => by`. Rewrite using `[hXdef]`. Conclude with `(ContinuousLinearMap.extend_eq F'.toContinuousLinearMap hdense huni ⟨A c, LinearMap.mem_range_self A c⟩).trans (hF c)`. Establish `hXn : ∀ u, ‖X u‖ = ‖u‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Use `hdense.induction_on (p := fun u => ‖X u‖ = ‖u‖) u (isClosed_eq (continuous_norm.comp X.continuous) continuous_norm) ?_` and prove the remaining obligations. Introduce and unpack `⟨_, c, rfl⟩`. Use `show ‖X (A c)‖ = ‖A c‖`. Rewrite using `[hX, hnorm]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hshA : ∀ g c, σ g (A c) = A (Finsupp.mapDomain (g * ·) c)`. Introduce `g c`. Rewrite using `[hA, Finsupp.linearCombination_mapDomain]`. Express the relevant statement in the definitionally equal form `(σ g : H →ₗ[ℂ] H) _ = _`. Rewrite using `[Finsupp.apply_linearCombination]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg (fun f => Finsupp.linearCombination ℂ f c) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Simplify using `[map_mul]`. Establish `hshB : ∀ g c, π g (B c) = B (Finsupp.mapDomain (g * ·) c)`. Introduce `g c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hB, Finsupp.linearCombination_mapDomain]`. Express the relevant statement in the definitionally equal form `(π g : Hp →ₗ[ℂ] Hp) _ = _`. Rewrite using `[Finsupp.apply_linearCombination]`. Use `congrArg (fun f => Finsupp.linearCombination ℂ f c) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[map_mul]`. Establish `hXi : ∀ g u, X (σ g u) = π g (X u)`. Introduce `g u`. Use `hdense.induction_on (p := fun u => X (σ g u) = π g (X u)) u (isClosed_eq (X.continuous.comp (σ g).continuous) ((π g).continuous.comp X.continuous)) ?_` and prove the remaining obligations. Introduce and unpack `⟨_, c, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show X (σ g (A c)) = π g (X (A c))`. Rewrite using `[hshA, hX, hX, hshB]`. Establish `hw : A (Finsupp.single 1 1) = w` using `by simp [hA]`. Establish `hv : B (Finsupp.single 1 1) = v` using `by simp [hB]`. Use `⟨{ toLinearMap := (X : H →ₗ[ℂ] Hp), norm_map' := hXn }, ?_, fun g u => hXi g u⟩` and prove the remaining obligations.
-
-Use `show X w = v`. Rewrite using `[← hw, hX, hv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isometric_intertwiner_of_matrixCoeff_eq :
     ∀ (G : Type) [Group G] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]

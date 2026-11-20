@@ -8,17 +8,17 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ _ R _ M _ _ _ _ ℳ _ _ i`. Take `⟨-, h2, h3⟩` from `GlobalTheory.X_sub_one_smul_graded ι R M ℳ i`. Set `K : Submodule (MvPolynomial ι R) M` to `(X i - 1 : MvPolynomial ι R) • ⊤`. Establish `hK : ∀ y : M, y ∈ K ↔ ∃ w : M, y = (X i - 1 : MvPolynomial ι R) • w` using `fun y => by`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun ⟨w, _, h⟩ => ⟨w, h.symm⟩, fun ⟨w, h⟩ => ⟨w, trivial, h.symm⟩⟩`. Set `φ : ∀ k : ℕ, ℳ (0 + k * (({i} : Finset ι).card : ℤ)) →ₗ[R] QuotSMulTop (X i - 1 : MvPolynomial ι R) M` to `fun k => (K.mkQ.restrictScalars R) ∘ₗ (ℳ _).subtype`. Establish `hφv : ∀ k m, φ k m = Submodule.Quotient.mk (m : M)` using `fun _ _ => rfl`. Establish `hφ : ∀ (k : ℕ) (m : ℳ (0 + k * (({i} : Finset ι).card : ℤ))) (m' : ℳ (0 + (k + 1 : ℕ) * (({i} : Finset ι).card : ℤ))), (m' : M) = xProd R {i} • (m : M) → φ (k + 1) m' = φ k m`. Introduce `k m m' h`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφv, hφv, Submodule.Quotient.eq]`. Use `(hK _).2 ⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[h, sub_smul, one_smul, xProd, Finset.prod_singleton]`. Use `⟨LinearEquiv.ofBijective (homLocLift φ hφ) ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[homLocLift_injective_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `k m hm`. Rewrite `hm` using `[hφv, Submodule.Quotient.mk_eq_zero]`. Take `⟨w, hw⟩` from `(hK _).1 hm`. Take `⟨l, hl⟩` from `h2 _ _ w m.2 hw`. Conclude with `⟨l, by rwa [xProd, Finset.prod_singleton]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[homLocLift_surjective_iff]`. Introduce `t`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ t`. Take `⟨n₀, hn⟩` from `h3 y`. Take `⟨y', hy', w, hw⟩` from `hn (0 + (n₀.toNat : ℕ) * (({i} : Finset ι).card : ℤ)) (by simp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n₀.toNat, ⟨y', hy'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hφv, eq_comm, Submodule.Quotient.eq]`. Conclude with `(hK _).2 ⟨w, by rw [hw, add_sub_cancel_left]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_homLoc_singleton_equiv_quotSMulTop : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) M] (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] [Decomposition ℳ] (i : ι), Nonempty (homLoc ℳ {i} 0 ≃ₗ[R] QuotSMulTop (X i - 1 : MvPolynomial ι R) M) := by
   intro ι _ _ R _ M _ _ _ _ ℳ _ _ i

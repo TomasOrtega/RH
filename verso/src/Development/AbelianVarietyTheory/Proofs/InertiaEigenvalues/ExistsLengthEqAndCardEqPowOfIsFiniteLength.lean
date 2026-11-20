@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨I, hI, ⟨e⟩⟩` from `(isSimpleModule_iff_quot_maximal (R := O) (M := S)).mp ‹_›`. Establish `hI' : I = IsLocalRing.maximalIdeal O` using `IsLocalRing.eq_maximalIdeal hI`. Substitute `hI'` using the available equality. Conclude with `Nat.card_congr e.toEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private lemma card_eq_card_residueField_of_isSimpleModule' (O : Type) [CommRing O]
     [IsLocalRing O] (S : Type) [AddCommGroup S] [Module O S] [IsSimpleModule O S] :
@@ -14,11 +14,11 @@ private lemma card_eq_card_residueField_of_isSimpleModule' (O : Type) [CommRing 
   exact Nat.card_congr e.toEquiv
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `@of_subsingleton M _ _ _`. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using (Module.length_eq_zero_iff (R := O) (M := M)).mpr ‹_›`. Simplify using `[Nat.card_of_subsingleton (0 : M)]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Consider the case `@of_simple_quotient M _ _ N _ _ ih`. Take `⟨n, hl, hc⟩` from `ih`. Use `⟨n + 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N), hl, Module.length_eq_one_iff.mpr ‹_›]`. Use `push_cast`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup N.toAddSubgroup]`. Express the relevant statement in the definitionally equal form `Nat.card (M ⧸ N) * Nat.card N = _`. Rewrite using `[card_eq_card_residueField_of_isSimpleModule' O (M ⧸ N), hc, pow_succ, mul_comm]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.exists_length_eq_and_card_eq_pow_of_isFiniteLength (O : Type) [CommRing O] [IsLocalRing O]
     (M : Type) [AddCommGroup M] [Module O M] (h : IsFiniteLength O M) :
@@ -40,7 +40,7 @@ theorem _root_.GlobalTheory.exists_length_eq_and_card_eq_pow_of_isFiniteLength (
       rw [card_eq_card_residueField_of_isSimpleModule' O (M ⧸ N), hc, pow_succ, mul_comm]
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.exists_length_eq_and_card_eq_pow_of_isFiniteLength O M (isFiniteLength_iff_isNoetherian_isArtinian.mpr ⟨inferInstance, inferInstance⟩)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_length_eq_and_card_eq_pow (O : Type) [CommRing O] [IsLocalRing O]
     (M : Type) [AddCommGroup M] [Module O M] [Finite M] :

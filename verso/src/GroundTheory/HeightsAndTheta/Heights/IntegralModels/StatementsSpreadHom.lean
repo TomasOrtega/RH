@@ -19,7 +19,7 @@ def pullbackHomAlong (e : g ≫ h = k) {F G : Z.Modules}
     (pullbackCompIso e (Iso.refl _)).inv
 
 /- English proof (translation)
-Simplify using `[pullbackIsoAlong, pullbackHomAlong]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pullbackIsoAlong_hom (e : g ≫ h = k) {F G : Z.Modules}
     (ψ : (Scheme.Modules.pullback h).obj F ≅ (Scheme.Modules.pullback h).obj G) :
@@ -27,7 +27,7 @@ lemma pullbackIsoAlong_hom (e : g ≫ h = k) {F G : Z.Modules}
   simp [pullbackIsoAlong, pullbackHomAlong]
 
 /- English proof (translation)
-Simplify using `[pullbackHomAlong]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pullbackHomAlong_comp (e : g ≫ h = k) {F G H : Z.Modules}
     (ψ : (Scheme.Modules.pullback h).obj F ⟶ (Scheme.Modules.pullback h).obj G)
@@ -36,7 +36,7 @@ lemma pullbackHomAlong_comp (e : g ≫ h = k) {F G H : Z.Modules}
   simp [pullbackHomAlong]
 
 /- English proof (translation)
-Simplify using `[pullbackHomAlong]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pullbackHomAlong_id (e : g ≫ h = k) (F : Z.Modules) :
     pullbackHomAlong e (𝟙 ((Scheme.Modules.pullback h).obj F)) = 𝟙 _ := by

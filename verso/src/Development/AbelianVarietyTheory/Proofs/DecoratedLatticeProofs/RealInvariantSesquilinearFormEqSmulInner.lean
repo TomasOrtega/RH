@@ -22,11 +22,11 @@ open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 namespace GlobalTheory.CoefRealSchur
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T₀`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hU : ∀ a, P a → (T₀.eigenspace c).map a ≤ T₀.eigenspace c`. Introduce `a ha`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Rewrite `hv` using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[Module.End.mem_eigenspace_iff, ← Module.End.mul_apply, ← hT a ha, Module.End.mul_apply, hv, map_smul]`. Break down `hirr _ hU with h | h` into its components or cases. Conclude with `absurd h (Module.End.hasEigenvalue_iff.1 hc)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv : v ∈ T₀.eigenspace c` using `h ▸ Submodule.mem_top`. Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hv]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem scalar_of_comm {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] [Nontrivial W]
     (P : Module.End ℂ W → Prop) (hirr : ∀ U : Submodule ℂ W, (∀ a, P a → U.map a ≤ U) → U = ⊥ ∨ U = ⊤)
@@ -59,20 +59,20 @@ def repOp {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDim
     simp [InnerProductSpace.toDual_symm_apply, inner_smul_left]
 
 /- English proof (translation)
-Simplify using `[repOp, InnerProductSpace.toDual_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_repOp {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
     (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (x y : W) : ⟪repOp B x, y⟫_ℂ = B x y := by
   simp [repOp, InnerProductSpace.toDual_symm_apply]
 
 /- English proof (translation)
-Introduce `D V c hc B hB`. Establish `hirr : ∀ U : Submodule ℂ c.W, (∀ a, (∃ u ∈ GinfC V, c.ρ u = a) → U.map a ≤ U) → U = ⊥ ∨ U = ⊤`. Introduce `U hU`. Use `hc.2.2.2.2 U fun h => ?_` and prove the remaining obligations. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, hc.1 k hk, mul_one]`. Conclude with `hU _ ⟨a, ha, rfl⟩`. Use `haveI := hc.2.2.2.1`. Establish `hcomm : ∀ a, (∃ u ∈ GinfC V, c.ρ u = a) → a * repOp B = repOp B * a`. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `y`. Take `⟨y', rfl⟩ : ∃ y', y = c.ρ u y'` from `⟨c.ρ u⁻¹ y, by rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hc.2.1, inner_repOp, inner_repOp, hB u hu]`. Take `⟨z, hz⟩` from `scalar_of_comm _ hirr (repOp B) hcomm`. Use `⟨starRingEnd ℂ z, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← inner_repOp B x y, hz, LinearMap.smul_apply, Module.End.one_apply, inner_smul_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_eq_smul_inner : ∀ (D : D7) (V : HSp D) (c : CoefA V), c.Is → ∀ (B : c.W →ₗ⋆[ℂ] c.W →ₗ[ℂ] ℂ), (∀ u ∈ GinfC V, ∀ x y, B (c.ρ u x) (c.ρ u y) = B x y) → ∃ z : ℂ, ∀ x y, B x y = z * ⟪x, y⟫_ℂ := by
   intro D V c hc B hB

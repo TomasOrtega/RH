@@ -9,13 +9,13 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hint : ∀ x : 𝓞 L, algebraMap L Ω (x : L) ∈ A` using `fun x => by`. Establish `h : IsIntegral A (algebraMap L Ω (x : L))` using `(x.isIntegral_coe.map (algebraMap L Ω).toIntAlgHom).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : 𝓞 L →+* A` to `((algebraMap L Ω).comp (algebraMap (𝓞 L) L)).codRestrict A hint`. Set `P : Ideal (𝓞 L)` to `(IsLocalRing.maximalIdeal A).comap f`. Establish `hP : ∀ x : 𝓞 L, A.valuation (algebraMap L Ω (x : L)) < 1 ↔ x ∈ P` using `fun x => (A.valuation_lt_one_iff (f x)).symm`. Establish `hu : v.asIdeal = P.under (𝓞 K)`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA x, Ideal.under, Ideal.mem_comap, ← hP, IsScalarTower.algebraMap_apply K L Ω]`. Both sides reduce to the same expression. Establish `hne : P ≠ ⊥`. Introduce `h`. Apply `v.ne_bot` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `⟨⟨P, inferInstance, hne⟩, hP⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem place_between {K L Ω : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Field Ω]
     [Algebra K L] [Algebra L Ω] [Algebra K Ω] [IsScalarTower K L Ω]
@@ -43,15 +43,15 @@ private theorem place_between {K L Ω : Type} [Field K] [NumberField K] [Field L
   exact ⟨⟨P, inferInstance, hne⟩, hP⟩
 
 /- English proof (translation)
-Establish `hd` using `HeightOneSpectrum.denseRange_algebraMap K w`. Use `Dense.of_closure (hd.mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `U hU`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, hγ⟩` from `Valued.mem_nhds.1 hU`. Use `set c : WithZero (Multiplicative ℤ) := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hc`. Establish `hc0 : c ≠ 0` using `by simp [c]`. Take `⟨a, ha⟩` from `w.valuation_surjective K (c * WithZero.exp (-1 : ℤ))`. Establish `ha1 : w.valuation K a ≠ 0` using `by rw [ha]; exact mul_ne_zero hc0 WithZero.exp_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha1`. Take `⟨x, hx⟩` from `H k a ha0`. Use `⟨_, hγ ?_, x, rfl⟩` and prove the remaining obligations. Rewrite `hx` using `[map_div₀, div_le_one₀ (zero_lt_iff.2 ha1), ha]`. Simplify using `only [Set.mem_setOf_eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, ← hc, ← map_sub]`. Establish `h1 : (Valued.v (algebraMap K (w.adicCompletion K) (f x - k)) : WithZero (Multiplicative ℤ)) = w.valuation K (f x - k)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Rewrite using `[h1]`. Use `hx.trans_lt ?_` and prove the remaining obligations. Use `mul_lt_of_lt_one_right (zero_lt_iff.2 hc0) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 private theorem dense_of_approx {F K : Type} [Field F] [Field K] [NumberField K] (f : F →+* K)
     (w : HeightOneSpectrum (𝓞 K))
@@ -81,13 +81,13 @@ private theorem dense_of_approx {F K : Type} [Field F] [Field K] [NumberField K]
   rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; norm_num
 
 /- English proof (translation)
-Establish `hcomp : IsCompact (v.adicCompletionIntegers F : Set (v.adicCompletion F))` using `isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace (v.adicCompletionIntegers F)))`. Establish `hcl` using `(hcomp.image hc).isClosed`. Establish `ho : IsOpen (w.adicCompletionIntegers K : Set (w.adicCompletion K))` using `Valued.isOpen_valuationSubring _`. Establish `key : (w.adicCompletionIntegers K : Set (w.adicCompletion K)) ⊆ κ '' (v.adicCompletionIntegers F)`. Use `(Dense.open_subset_closure_inter hd ho).trans (closure_minimal ?_ hcl)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨h1, x, rfl⟩`. Use `⟨algebraMap F _ x, ?_, hκ x⟩` and prove the remaining obligations. Establish `h2 : (Valued.v (algebraMap K (w.adicCompletion K) (f x)) : WithZero (Multiplicative ℤ)) = w.valuation K (f x)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Establish `h3 : (Valued.v (algebraMap F (v.adicCompletion F) x) : WithZero (Multiplicative ℤ)) = v.valuation F x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Rewrite `h1`, the goal using `[SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `hv x (h2 ▸ h1)`. Introduce `y`. Break down `(w.adicCompletionIntegers K).mem_or_inv_mem y with h | h` into its components or cases. Take `⟨x, -, hx⟩` from `key h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx⟩`. Take `⟨x, -, hx⟩` from `key h`. Conclude with `⟨x⁻¹, by rw [map_inv₀, hx, inv_inv]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem surj_of_dense {F K : Type} [Field F] [NumberField F] [Field K] [NumberField K] (f : F →+* K)
     (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 K))
@@ -118,13 +118,11 @@ private theorem surj_of_dense {F K : Type} [Field F] [NumberField F] [Field K] [
     exact ⟨x⁻¹, by rw [map_inv₀, hx, inv_inv]⟩
 
 /- English proof (translation)
-Introduce `F K Ω _ _ _ _ _ _ _ _ _ _ _ l _ A v h O _ _ _ Bw hj hK`. Take `⟨w, hw⟩` from `place_between (L := K) h`. Take `⟨κ, hκc, hκ⟩` from `GlobalTheory.CompositumCompletion.exists_completion_map (algebraMap F K) v w (fun x => by`. Rewrite using `[← hw, ← h x]`. Use `show A.valuation (algebraMap K Ω (algebraMap F K x)) < 1 ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply])`. Establish `hd` using `dense_of_approx (algebraMap F K) w (fun k a ha => by`. Establish `hpos : 0 < ‖Bw.j (algebraMap K Ω a)‖` using `by simpa using ha`. Take `⟨_, ⟨x, rfl⟩, hx⟩` from `Metric.mem_closure_iff.1 (Bw.j_dense (hK k)) _ hpos`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TraceCompl.algebraMap_mem_iff hw, hj, map_div₀, map_div₀, norm_div, div_le_one hpos, map_sub, map_sub, ← IsScalarTower.algebraMap_apply, ← dist_eq_norm, dist_comm]`. Conclude with `hx.le)`. Establish `hs` using `surj_of_dense (algebraMap F K) v w (fun x hx => by`. Rewrite `hx` using `[← TraceCompl.algebraMap_mem_iff hw, ← IsScalarTower.algebraMap_apply, TraceCompl.algebraMap_mem_iff h]`. Conclude with `hx) hd κ hκc hκ`.
-
-Conclude with `⟨w, hw, RingEquiv.ofBijective κ ⟨κ.injective, hs⟩, fun _ => Iff.rfl, fun x => IsScalarTower.algebraMap_apply F K Ω x, hκc, hκ⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Cq.exPlaceIso :
     ∀ (F K Ω : Type) [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O),

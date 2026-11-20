@@ -10,7 +10,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec φ M v i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stratHom_map_mulVec {m n : Type} [Fintype n] {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A')
     (M : Matrix m n A) (v : n → A) : (fun i => φ ((M.mulVec v) i)) = (M.map φ).mulVec (fun i => φ (v i)) := by
@@ -18,9 +18,9 @@ theorem stratHom_map_mulVec {m n : Type} [Fintype n] {A A' : Type} [CommRing A] 
   exact RingHom.map_mulVec φ M v i
 
 /- English proof (translation)
-Rewrite using `[stratHom_map_mulVec]`. Establish `e1 : (Y.map (BK.hf g)).map r.f = Y.map (BK.hf (r.comp g))`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Establish `e2 : (fun i => r.f (V.v a g x i)) = V.v (r.comp a) (r.comp g) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `(V.v_nat r a g x i).symm`. Rewrite using `[e1, e2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stratHom_coord_nat {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d d' : ℕ} {S : Strat bk d}
     (Y : Matrix (Fin d') (Fin d) bk.S) {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A N]
@@ -35,7 +35,7 @@ theorem stratHom_coord_nat {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {
   rw [e1, e2]
 
 /- English proof (translation)
-Rewrite using `[V.v_ε a g g' x, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hY.ε]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stratHom_coord_ε {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d d' : ℕ} {S : Strat bk d}
     {S' : Strat bk d'} {Y : Matrix (Fin d') (Fin d) bk.S} (hY : IsStratHom S S' Y) {B : Obj l ↥(OL K)} {N : Type}
@@ -45,21 +45,17 @@ theorem stratHom_coord_ε {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d
   rw [V.v_ε a g g' x, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hY.ε]
 
 /- English proof (translation)
-Introduce `l _ K bk d d' S S' Y hY B N _ _ N' _ _ V V'`. Take `⟨C, h, ⟨f⟩, hc⟩` from `GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B`. Take `⟨inj, ev⟩` from `GlobalTheory.T.injective_and_range_of_prism_cover l K bk d' S' B C N' V' h f hc`. Establish `hz : ∀ x, ∀ (Q : Obj l ↥(OL K)) (p q : Hom C Q), p.comp h = q.comp h → (fun i => p.f (((Y.map (BK.hf f)).mulVec (V.v h f x)) i)) = (S'.ε (p.comp f) (q.comp f)).mulVec fun i => q.f (((Y.map (BK.hf f)).mulVec (V.v h f x)) i)`. Introduce `x Q p q hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : V.v (p.comp h) (p.comp f) x = V.v (q.comp h) (p.comp f) x` using `by rw [hpq]`. Use `(stratHom_coord_nat Y V p h f x).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (S'.ε (p.comp f) (q.comp f)).mulVec (stratHom_coord_nat Y V q h f x)).symm` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `stratHom_coord_ε hY V (q.comp h) (p.comp f) (q.comp f) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `choose w0 hw0 using fun x => ev _ (hz x)`. Set `w : N →ₗ[B.A] N'` to `{ toFun := w0 map_add' := fun x y => by`. Apply `inj` to reduce the goal to its premises. Use `show V'.v h f (w0 (x + y)) = V'.v h f (w0 x + w0 y)`. Use `(hw0 (x + y)).trans ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Eq.trans ?_ ((V'.v h f).map_add (w0 x) (w0 y)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· + ·) (hw0 x) (hw0 y)).symm` and prove the remaining obligations. Conclude with `(congrArg (Y.map (BK.hf f)).mulVec ((V.v h f).map_add x y)).trans (Matrix.mulVec_add _ _ _)`. Use the proof step `map_smul' := fun c x => by`. Apply `inj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `show V'.v h f (w0 (c • x)) = V'.v h f (c • w0 x)`. Use `(hw0 (c • x)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((V'.v h f).map_smulₛₗ c (w0 x)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (h.f c • ·) (hw0 x)).symm` and prove the remaining obligations. Conclude with `(congrArg (Y.map (BK.hf f)).mulVec ((V.v h f).map_smulₛₗ c x)).trans (Matrix.mulVec_smul _ _ _) }`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨w, fun Q a g x => ?_⟩` and prove the remaining obligations. Take `⟨Q', h', a', hcomm, hinj⟩` from `GlobalTheory.T.exists_injective_pushout_of_prismCover l K bk d S B C h hc Q a`. Establish `hw : w x = w0 x` using `rfl`. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises.
-
-Establish `lhs : (fun j => h'.f (V'.v a g (w0 x) j)) = V'.v (a'.comp h) (h'.comp g) (w0 x)`. Conclude with `(funext fun j => (V'.v_nat h' a g (w0 x) j).symm).trans (congrArg (fun t => V'.v t (h'.comp g) (w0 x)) hcomm.symm)`. Establish `rhs : (fun j => h'.f (((Y.map (BK.hf g)).mulVec (V.v a g x)) j)) = (Y.map (BK.hf (h'.comp g))).mulVec (V.v (a'.comp h) (h'.comp g) x)`. Conclude with `(stratHom_coord_nat Y V h' a g x).trans (congrArg (fun t => (Y.map (BK.hf (h'.comp g))).mulVec (V.v t (h'.comp g) x)) hcomm.symm)`. Establish `mid : V'.v (a'.comp h) (a'.comp f) (w0 x) = (Y.map (BK.hf (a'.comp f))).mulVec (V.v (a'.comp h) (a'.comp f) x)`.
-
-Conclude with `(funext fun j => V'.v_nat a' h f (w0 x) j).trans ((congrArg (fun v : Fin d' → C.A => fun j => a'.f (v j)) (hw0 x)).trans (stratHom_coord_nat Y V a' h f x))`. Use `congrFun (lhs.trans ((V'.v_ε (a'.comp h) (h'.comp g) (a'.comp f) (w0 x)).trans ((congrArg (S'.ε (h'.comp g) (a'.comp f)).mulVec mid).trans ((stratHom_coord_ε hY V (a'.comp h) (h'.comp g) (a'.comp f) x).symm.trans rhs.symm)))) i` as an intermediate fact. Rewrite using `[hw]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalHom : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d')
     (Y : Matrix (Fin d') (Fin d) bk.S), IsStratHom S S' Y → ∀ (B : Obj l ↥(OL K)) (N : Type) [AddCommGroup N]

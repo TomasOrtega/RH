@@ -11,17 +11,15 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu.EtFromConn
 
 /- English proof (translation)
-Introduce `p _ B k _ _ _ G h l l' hT y`. Use `set hp := p_eq_zero p k`. Use `letI : Algebra k k := (frobRing hp).toAlgebra`. Take `⟨hb, lb, h1, h2⟩` from `hT`. Establish `hd` using `dual_conn h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eV : (PerfdLat.dualBaseChange k G).inv ≫ dualHom G (G.baseChange k) (absFrob hp G).lift = verschiebung hp G.dual`. Use `dualHom_relFrob hp G` as an intermediate fact. Express the relevant statement in the definitionally equal form `(frobTwistDual hp G).inv ≫ dualHom G _ (relFrob hp G) = _`. Rewrite using `[← this, Iso.inv_hom_id_assoc]`. Establish `eF : B.F G.dual hd y = B.map hd hb (relFrob hp G.dual) (B.smap hb hd (G.dual.toBase k) y)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `B.smap hd hd (absFrob hp G.dual) y = B.smap hd hb (SemiHom.ofHom (relFrob hp G.dual)) (B.smap hb hd (frobProj hp G.dual) y)`. Conclude with `B.smap_comp hd hb hd (frobProj hp G.dual) (SemiHom.ofHom (relFrob hp G.dual)) (absFrob hp G.dual) (fun n a => by`. Express the relevant statement in the definitionally equal form `(absFrob hp G.dual).app n a = (relFrob hp G.dual).app n ((frobProj hp G.dual).app n a)`. Conclude with `((relFrob_app_frobProj hp n a).trans (absFrob_app hp G.dual n a).symm).symm) y`. Establish `P` using `base_functor_props p _ B k (frobTwist hp G.dual) G.dual (frobTwist hp G.dual) hb hd hb`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P'` using `base_functor_props p _ B k (frobTwist hp G.dual) (frobTwist hp G.dual) (frobTwist hp G.dual) hb hb hb`. Establish `ep : B.map hb hd (verschiebung hp G.dual) (B.map hd hb (relFrob hp G.dual) (B.smap hb hd (G.dual.toBase k) y)) = p ^ 1 • B.smap hb hd (G.dual.toBase k) y` using `by set x := B.smap hb hd (G.dual.toBase k) y`. Establish `c` using `P.2.1 (verschiebung hp G.dual) (relFrob hp G.dual)`. Rewrite `c` using `[verschiebung_comp_relFrob]`. Establish `c2` using `LinearMap.congr_fun c x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e` using `P'.2.2.2.2.1 1 (𝟙 (frobTwist hp G.dual)) x`. Simplify using `only [pow_one] at e ⊢`. Conclude with `e`. Use `_ = p ^ 1 • x := congrArg _ (LinearMap.congr_fun P'.1 x)`.
-
-Rewrite using `[h2, eV, eF, ep, map_nsmul, h1, nsmul_eq_mul, pow_one]`. Use `congr 1`. Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Use `congr 2`. Conclude with `RingHom.ext fun r => frobRing_apply hp r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isTr_absFrob_F : ∀ (p : ℕ) [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn)) (k : Type)
     [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (h : G.IsEt) (l l' : Mod B G h),

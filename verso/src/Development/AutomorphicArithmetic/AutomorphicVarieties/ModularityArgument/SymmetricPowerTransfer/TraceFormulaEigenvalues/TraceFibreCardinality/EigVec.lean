@@ -5,9 +5,9 @@ noncomputable section
 namespace UpperTheory.V.Z.Sym.Tf
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro v _ hv h; exact absurd (by simpa using h) hv`. Consider the case `succ k ih`. Introduce `v hvW hv h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : N v = 0`. Conclude with `⟨v, hvW, hv, h0⟩`. Conclude with `ih (N v) (hW v hvW) h0 (by rw [pow_succ] at h; exact h)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_ker_of_pow {M : Type} [AddCommGroup M] [Module ℂ M] (N : Module.End ℂ M) (W : Submodule ℂ M)
     (hW : ∀ w ∈ W, N w ∈ W) : ∀ (k : ℕ) (v : M), v ∈ W → v ≠ 0 → (N ^ k) v = 0 → ∃ w ∈ W, w ≠ 0 ∧ N w = 0 := by
@@ -21,21 +21,19 @@ private lemma exists_ker_of_pow {M : Type} [AddCommGroup M] [Module ℂ M] (N : 
     · exact ih (N v) (hW v hvW) h0 (by rw [pow_succ] at h; exact h)
 
 /- English proof (translation)
-Introduce `Λ M _ _ _ u hc χ`. Prove the components needed by the constructor for the conclusion. Introduce `h set E : Submodule ℂ M := ⨅ a, (u a).maxGenEigenspace (χ a) with hE`. Set `S : Set (Submodule ℂ M)` to `{W | W ≠ ⊥ ∧ W ≤ E ∧ ∀ b, ∀ w ∈ W, u b w ∈ W}`. Establish `hS : S.Nonempty`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨E, h, le_rfl, fun b w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw`, the goal using `[hE, Submodule.mem_iInf]`. Introduce `a`. Conclude with `Module.End.mapsTo_maxGenEigenspace_of_comm (hc a b) (χ a) (hw a)`. Take `⟨W, ⟨hW0, hWE, hWs⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ M)).has_min S hS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hvW, hv⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`. Use `⟨v, hv, fun a => ?_⟩` and prove the remaining obligations. Establish `key : W ⊓ (u a).eigenspace (χ a) ∈ S`. Use `⟨?_, inf_le_left.trans hWE, fun b w hw => ⟨hWs b w hw.1, ?_⟩⟩` and prove the remaining obligations. Establish `hva : v ∈ (u a).maxGenEigenspace (χ a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hWE hvW` as an intermediate fact. Rewrite `this` using `[hE, Submodule.mem_iInf]`. Conclude with `this a`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hva`. Take `⟨w, hwW, hw, hN⟩` from `exists_ker_of_pow (u a - χ a • (1 : Module.End ℂ M)) W (fun w hw => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using W.sub_mem (hWs a w hw) (W.smul_mem (χ a) hw)) k v hvW hv hk`. Use `(Submodule.ne_bot_iff _).2 ⟨w, ⟨hwW, ?_⟩, hw⟩` and prove the remaining obligations. Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations. Simplify `hN` using `[sub_eq_zero]`. Establish `h2` using `Module.End.mem_eigenspace_iff.1 hw.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations. Establish `h3 : u a (u b w) = u b (u a w)` using `congrArg (fun f : Module.End ℂ M => f w) (hc a b).eq`. Rewrite using `[h3, h2, map_smul]`. Establish `heq : W ⊓ (u a).eigenspace (χ a) = W`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hmin _ key (lt_of_le_of_ne inf_le_left hne)`. Rewrite `hvW` using `[← heq]`. Conclude with `Module.End.mem_eigenspace_iff.1 hvW.2`. Introduce and unpack `⟨v, hv, h⟩`. Use `(Submodule.ne_bot_iff _).2 ⟨v, ?_, hv⟩` and prove the remaining obligations.
-
-Rewrite using `[Submodule.mem_iInf]`. Introduce `a`. Conclude with `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, by simp [h a]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eigVec : EigVec := by
   intro Λ M _ _ _ u hc χ

@@ -13,9 +13,9 @@ def bwA_N {n : ℕ} (τv : D.what₂.Tau) (B B' : GL (Fin n) D.host.E) :
   fun τ => if τ = τv then atInf (embT D) (B'⁻¹ * B : GL (Fin n) D.host.E).1 τ else 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Unfold `bwA_N`. Use `split_ifs with h`. Simplify using `only [atInf]`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_assoc, mul_inv_cancel, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem bwA_N_mul {n : ℕ} (τv : D.what₂.Tau) (B B' : GL (Fin n) D.host.E) :
     (fun τ => bwA_N D τv B B' τ * atInf (embT D) (B⁻¹ : GL (Fin n) D.host.E).1 τ) =
@@ -51,9 +51,9 @@ def BwLocGlob (Tt : FormsTied D u) : Prop :=
     y ∈ (D.fm u).S i w
 
 /- English proof (translation)
-Introduce `w hw i hi hs v hv x hx`. Apply `h3 w hw i hi` to reduce the goal to its premises. Introduce `c`. Take `⟨⟨B, hB⟩, hB'⟩` from `h1 i hi c`. Take `⟨B', hB'⟩` from `hB' v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hxP⟩` from `((Tt.bw i hi) w hw hs v x).1 hx c B B' hB hB'`. Use `⟨B, hB, _, h2 w hw hs v hv i hi c B B' hB hB' P hP, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_tpow_smul, Pi.smul_apply, Pi.smul_apply, hxP z, ← bwA_N_mul, fnOf_mul, LinearMap.map_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bwA_bwIncl_of (Tt : FormsTied D u) (h1 : BwLocBases D u Tt) (h2 : BwSubInt D u Tt)
     (h3 : BwLocGlob D u Tt) : BwIncl D u := by
@@ -68,7 +68,7 @@ theorem bwA_bwIncl_of (Tt : FormsTied D u) (h1 : BwLocBases D u Tt) (h2 : BwSubI
   rfl
 
 /- English proof (translation)
-The claim follows from `lattice_inclusion_family_of fun D u hT _ => by obtain ⟨Tt, _⟩ := hT exact bwA_bwIncl_of D u Tt (h1 D u Tt) (h2 D u Tt) (h3 D u Tt)`.
+A detailed English derivation is pending.
 -/
 theorem lattice_inclusion_of_sub_integral
     (h1 : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwLocBases D u Tt)

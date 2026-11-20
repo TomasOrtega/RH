@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.TypeSum.CasBasis
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ h`. Take `⟨hX, hY⟩` from `GlobalTheory.T.orthonormalBases_mem_unitaryLieAlgebra n ε`. Establish `hG` using `GlobalTheory.T.casimirDifferenceOperator_equivariant n ε H σ h`. Take `⟨u, χ, hu, hu0, hχ⟩` from `GlobalTheory.T.exists_smooth_eigenvector_casimirDifferenceOperator n ε H σ _ _ (kB ε) (pB ε) h hX hY fun k hk v hv => hG k (K_le_UJ hk) v hv`. Establish `hχr : (starRingEnd ℂ) χ = χ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `inner_casOp h.1 hX hY hu hu`. Rewrite `e` using `[hχ, inner_smul_left, inner_smul_right]`. Establish `hne : ⟪u, u⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hu0`. Conclude with `(mul_right_cancel₀ hne e).symm`. Use `⟨χ, fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hws : Sm ε σ (casOp σ (kB ε) (pB ε) v - χ • v)` using `(smooth (Jm ε) σ).sub_mem (sm_casOp h.1 hX hY hv) ((smooth (Jm ε) σ).smul_mem χ hv)`. Establish `h0 : ∀ g ∈ UJset ε, ((innerSL ℂ (casOp σ (kB ε) (pB ε) v - χ • v) : H →L[ℂ] ℂ) : H →ₗ[ℂ] ℂ) (σ g u) = 0`. Introduce `g hg`. Establish `hgu` using `hu.translate h.1 hg`. Simplify using `only [ContinuousLinearMap.coe_coe, innerSL_apply_apply, inner_sub_left, inner_smul_left, hχr]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inner_casOp h.1 hX hY hv hgu, hG g hg u hu, hχ, map_smul, inner_smul_right, sub_self]`. Establish `hz` using `h.eq_zero_of_orbit (sobCont_inner _) hu hu0 h0 hws`. Simplify using `only [ContinuousLinearMap.coe_coe, innerSL_apply_apply, inner_self_eq_zero] at hz`. Simplify using `only [casOp, sub_sub, sub_eq_zero] at hz`. Rewrite using `[hz, add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem casimir_scalar : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∃ χ : ℂ, ∀ v, Sm ε σ v → ∑ b, dRep σ (pB ε b) (dRep σ (pB ε b) v) = χ • v + ∑ i, dRep σ (kB ε i) (dRep σ (kB ε i) v) := by
   intro n ε H _ _ _ σ h

@@ -12,7 +12,7 @@ variable {Φ : Type} [Fintype Φ]
 
 open Classical in
 /- English proof (translation)
-Establish `hd : ContDiffOn ℝ ∞ (fun y => fderiv ℝ f y) U` using `hf.fderiv_of_isOpen hU (by simp)`. Establish `h1 : ContDiffOn ℝ ∞ (fun y => fderiv ℝ f y (Pi.single τ 1)) U` using `hd.clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ ∞ (fun y => fderiv ℝ f y (Pi.single τ I)) U` using `hd.clm_apply contDiffOn_const`. Unfold `wirt`. Conclude with `(h1.add (contDiffOn_const.mul h2)).div_const _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wirt_contDiffOn {U : Set (Φ → ℂ)} (hU : IsOpen U) {f : (Φ → ℂ) → ℂ}
     (hf : ContDiffOn ℝ ∞ f U) (τ : Φ) (b : Bool) : ContDiffOn ℝ ∞ (wirt τ b f) U := by
@@ -26,7 +26,7 @@ theorem wirt_contDiffOn {U : Set (Φ → ℂ)} (hU : IsOpen U) {f : (Φ → ℂ)
   exact (h1.add (contDiffOn_const.mul h2)).div_const _
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simpa [wirtWord_nil] using hf`. Consider the case `cons a w ih => rw [wirtWord_cons]`. Conclude with `wirt_contDiffOn hU ih _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem wirtWord_contDiffOn {U : Set (Φ → ℂ)} (hU : IsOpen U) (w : List (Φ × Bool)) {f : (Φ → ℂ) → ℂ}
     (hf : ContDiffOn ℝ ∞ f U) : ContDiffOn ℝ ∞ (wirtWord w f) U := by
@@ -35,7 +35,7 @@ theorem wirtWord_contDiffOn {U : Set (Φ → ℂ)} (hU : IsOpen U) (w : List (Φ
   | cons a w ih => rw [wirtWord_cons]; exact wirt_contDiffOn hU ih _ _
 
 /- English proof (translation)
-Introduce `z hz`. Establish `he : f =ᶠ[nhds z] g` using `Filter.eventuallyEq_of_mem (hU.mem_nhds hz) h`. Simplify using `only [wirt, he.fderiv_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem wirt_congr {U : Set (Φ → ℂ)} (hU : IsOpen U) {f g : (Φ → ℂ) → ℂ} (h : Set.EqOn f g U)
     (τ : Φ) (b : Bool) : Set.EqOn (wirt τ b f) (wirt τ b g) U := by
@@ -44,7 +44,7 @@ theorem wirt_congr {U : Set (Φ → ℂ)} (hU : IsOpen U) {f g : (Φ → ℂ) �
   simp only [wirt, he.fderiv_eq]
 
 /- English proof (translation)
-Establish `h : fderiv ℝ (f + g) z = fderiv ℝ f z + fderiv ℝ g z` using `fderiv_add hf hg`. Simplify using `only [wirt, h, ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wirt_add {f g : (Φ → ℂ) → ℂ} {z : Φ → ℂ} (hf : DifferentiableAt ℝ f z)
     (hg : DifferentiableAt ℝ g z) (τ : Φ) (b : Bool) :
@@ -54,9 +54,9 @@ theorem wirt_add {f g : (Φ → ℂ) → ℂ} {z : Φ → ℂ} (hf : Differentia
   ring
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro z _`. Both sides reduce to the same expression. Consider the case `cons a w ih`. Introduce `z hz`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[wirtWord_cons, wirtWord_cons, wirtWord_cons, wirt_congr hU ih _ _ hz]`. Establish `hf'` using `wirtWord_contDiffOn hU w hf`. Establish `hg'` using `wirtWord_contDiffOn hU w hg`. Conclude with `wirt_add ((hf'.contDiffAt (hU.mem_nhds hz)).differentiableAt (by simp)) ((hg'.contDiffAt (hU.mem_nhds hz)).differentiableAt (by simp)) _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wirtWord_add {U : Set (Φ → ℂ)} (hU : IsOpen U) (w : List (Φ × Bool)) {f g : (Φ → ℂ) → ℂ}
     (hf : ContDiffOn ℝ ∞ f U) (hg : ContDiffOn ℝ ∞ g U) :
@@ -72,7 +72,7 @@ theorem wirtWord_add {U : Set (Φ → ℂ)} (hU : IsOpen U) (w : List (Φ × Boo
       ((hg'.contDiffAt (hU.mem_nhds hz)).differentiableAt (by simp)) _ _
 
 /- English proof (translation)
-Establish `: upperHalf F = ⋂ τ : Emb F, {z : Emb F → ℂ | 0 < (z τ).im}`. Use extensionality with `z`. Simplify using `[upperHalf]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun τ => isOpen_lt continuous_const (Complex.continuous_im.comp (continuous_apply τ))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperHalf_isOpen (F : Type) [Field F] [NumberField F] : IsOpen (upperHalf F) := by
   have : upperHalf F = ⋂ τ : Emb F, {z : Emb F → ℂ | 0 < (z τ).im} := by
@@ -84,7 +84,7 @@ theorem upperHalf_isOpen (F : Type) [Field F] [NumberField F] : IsOpen (upperHal
 end GlobalTheory.HeckeTwo.GoodAdd
 
 /- English proof (translation)
-Introduce `F _ _ P Q hP hQ`. Establish `hU` using `GlobalTheory.HeckeTwo.GoodAdd.upperHalf_isOpen F`. Use `⟨fun σ hσ => (hP.1 σ hσ).add (hQ.1 σ hσ), fun w z hz => ?_⟩` and prove the remaining obligations. Use `((hP.2 w z hz).add (hQ.2 w z hz)).congr fun σ hσ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.HeckeTwo.GoodAdd.wirtWord_add hU w (hP.1 σ hσ) (hQ.1 σ hσ) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeTwo.isGood_add : ∀ (F : Type) [Field F] [NumberField F] (P Q : ℂ → (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ) → ℂ), GlobalTheory.HeckeTwo.IsGood P → GlobalTheory.HeckeTwo.IsGood Q → GlobalTheory.HeckeTwo.IsGood (fun σ z => P σ z + Q σ z) := by
   intro F _ _ P Q hP hQ

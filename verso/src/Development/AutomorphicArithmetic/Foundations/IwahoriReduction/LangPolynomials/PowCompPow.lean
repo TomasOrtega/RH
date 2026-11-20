@@ -7,7 +7,7 @@ open GlobalTheory.Col
 namespace UpperTheory.Kd.C7
 
 /- English proof (translation)
-Establish `h` using `Polynomial.cyclotomic_mul_prime_pow_eq S (p := p) (m := 1) (by simpa using hp.out.one_lt.ne') (k := j + 1) (Nat.succ_pos j)`. Rewrite `h` using `[mul_one, Polynomial.cyclotomic_one]`. Rewrite using `[cyc, h, Polynomial.eval₂_pow]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cyc_charP (S : Type) [CommRing S] (p : ℕ) [hp : Fact p.Prime] [CharP S p] (j : ℕ) :
     cyc S p (j + 1) = PowerSeries.X ^ (p ^ (j + 1) - p ^ j) := by
@@ -17,9 +17,9 @@ private theorem cyc_charP (S : Type) [CommRing S] (p : ℕ) [hp : Fact p.Prime] 
   simp
 
 /- English proof (translation)
-Establish `: ∀ k, ∃ y : R, y * p = PowerSeries.coeff k h`. Introduce `k`. Use `congrArg (PowerSeries.coeff k) H` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_map, map_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton'.1 this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose y hy using this`. Use `⟨PowerSeries.mk y, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Rewrite using `[← map_natCast (PowerSeries.C (R := R)), PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, ← hy, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dvd_of_map {R : Type} [CommRing R] (p : ℕ) (h : PowerSeries R)
     (H : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {(p : R)})) h = 0) :
@@ -35,23 +35,21 @@ private theorem dvd_of_map {R : Type} [CommRing R] (p : ℕ) (h : PowerSeries R)
   rw [← map_natCast (PowerSeries.C (R := R)), PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, ← hy, mul_comm]
 
 /- English proof (translation)
-Use `set π := Ideal.Quotient.mk (Ideal.span {(p : R)}) with hπ`. Use `haveI : Nontrivial (R ⧸ Ideal.span {(p : R)}) := Ideal.Quotient.nontrivial_iff.2 (by rw [Ne, Ideal.span_singleton_eq_top]; exact hpr.not_isUnit)`. Establish `hp0 : ((p : ℕ) : R ⧸ Ideal.span {(p : R)}) = 0`. Rewrite using `[← map_natCast π]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : CharP (R ⧸ Ideal.span {(p : R)}) p := (CharP.charP_iff_prime_eq_zero hp.out).2 hp0`. Establish `hp1 : ((p : ℕ) : PowerSeries (R ⧸ Ideal.span {(p : R)})) = 0`. Rewrite using `[← map_natCast (PowerSeries.C (R := R ⧸ Ideal.span {(p : R)})), hp0, map_zero]`. Establish `key : ∀ j, c ≤ j → ∀ a b : PowerSeries R, h = (p : PowerSeries R) ^ (j + 1 - c) * a + cyc R p (j + 1) * b → PowerSeries.map π h = PowerSeries.X ^ (p ^ (j + 1) - p ^ j) * PowerSeries.map π b`. Introduce `j hj a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hab, map_add, map_mul, map_mul, map_pow, map_natCast, hp1, zero_pow (by omega), zero_mul, zero_add, coeffMap_cyc, cyc_charP]`. Establish `h0 : PowerSeries.map π h = 0`. Use extensionality with `k`. Take `⟨a, b, hab⟩` from `H (m₀ + c + k + 1) (by omega)`. Establish `h1` using `key (m₀ + c + k) (by omega) a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : k < p ^ (m₀ + c + k + 1) - p ^ (m₀ + c + k)`. Establish `h3 : m₀ + c + k < p ^ (m₀ + c + k)` using `Nat.lt_pow_self hp.out.one_lt`. Establish `h4 : p ^ (m₀ + c + k) * 2 ≤ p ^ (m₀ + c + k + 1)`. Rewrite using `[pow_succ]`. Conclude with `Nat.mul_le_mul_left _ hp.out.two_le`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[map_zero]`. Conclude with `PowerSeries.X_pow_dvd_iff.1 ⟨_, h1⟩ k h2`. Take `⟨h', hh'⟩` from `dvd_of_map p h h0`. Use `⟨h', hh', fun m hm => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨j, rfl⟩ : ∃ j, m = j + 1` from `⟨m - 1, by omega⟩`. Take `⟨a, b, hab⟩` from `H (j + 1) (by omega)`. Establish `h1` using `key j (by omega) a b hab`. Rewrite `h1` using `[h0]`. Establish `h2 : PowerSeries.map π b = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `k`. Use `congrArg (PowerSeries.coeff (k + (p ^ (j + 1) - p ^ j))) h1` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_X_pow_mul]`. Simplify using `using this.symm`. Take `⟨b', hb'⟩` from `dvd_of_map p b h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `⟨a, b', ?_⟩` and prove the remaining obligations. Establish `hne : ((p : ℕ) : PowerSeries R) ≠ 0`. Rewrite using `[← map_natCast (PowerSeries.C (R := R))]`. Introduce `h3`. Conclude with `hpr.ne_zero (by simpa using congrArg (PowerSeries.coeff 0) h3)`.
-
-Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Establish `e : j + 1 - c = (j + 1 - (c + 1)) + 1` using `by omega`. Rewrite using `[← hh', hab, hb', e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem step {R : Type} [CommRing R] [IsDomain R] (p : ℕ) [hp : Fact p.Prime] (hpr : Prime (p : R))
     (h : PowerSeries R) (c m₀ : ℕ)
@@ -106,9 +104,9 @@ private theorem step {R : Type} [CommRing R] [IsDomain R] (p : ℕ) [hp : Fact p
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro h _ _ _; exact ⟨h, by simp⟩`. Consider the case `succ n ih`. Introduce `h c m₀ H`. Take `⟨h', e, H'⟩` from `step p hpr h c m₀ H`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h'', e'⟩` from `ih h' (c + 1) (m₀ + c + 1) H'`. Conclude with `⟨h'', by rw [e, e']; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem allDvd {R : Type} [CommRing R] [IsDomain R] (p : ℕ) [hp : Fact p.Prime] (hpr : Prime (p : R)) (n : ℕ) :
     ∀ (h : PowerSeries R) (c m₀ : ℕ),
@@ -123,9 +121,9 @@ private theorem allDvd {R : Type} [CommRing R] [IsDomain R] (p : ℕ) [hp : Fact
     exact ⟨h'', by rw [e, e']; ring⟩
 
 /- English proof (translation)
-Proceed by induction on `m generalizing x with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ (σ : R →+* R), pow_succ' ((σ.symm : R ≃+* R) : R →+* R)]`. Simplify using `only [RingHom.mul_def, RingHom.comp_apply, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `ih x`.
+A detailed English derivation is pending.
 -/
 private theorem pow_comp_pow {R : Type} [CommRing R] (σ : R ≃+* R) (m : ℕ) (x : R) :
     ((σ : R →+* R) ^ m) ((((σ.symm : R ≃+* R) : R →+* R) ^ m) x) = x := by
@@ -137,15 +135,15 @@ private theorem pow_comp_pow {R : Type} [CommRing R] (σ : R ≃+* R) (m : ℕ) 
     exact ih x
 
 /- English proof (translation)
-Introduce `R _ p hp σ hF h c m₀ H`. Use `haveI := hF.dom`. Use `haveI := hF.complete`. Establish `H' : ∀ m, m₀ ≤ m → ∃ a b : PowerSeries R, h = (p : PowerSeries R) ^ (m - c) * a + cyc R p m * b`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `H m hm`. Rewrite `h1` using `[LC, map_zero, sub_zero]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h1`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[← map_natCast (ev R p m), ← map_pow, ← map_mul, eq_comm, Ideal.Quotient.eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `h2` using `congrArg (PowerSeries.map ((σ : R →+* R) ^ m)) hb`. Establish `h3 : PowerSeries.map ((σ : R →+* R) ^ m) (PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ m) h) = h`. Use extensionality with `k`. Rewrite using `[PowerSeries.coeff_map, PowerSeries.coeff_map, pow_comp_pow]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h2` using `[map_sub, h3, map_mul, map_mul, map_pow, map_natCast, coeffMap_cyc]`. Conclude with `⟨PowerSeries.map ((σ : R →+* R) ^ m) a, PowerSeries.map ((σ : R →+* R) ^ m) b, by linear_combination -h2⟩`. Use extensionality with `k`. Rewrite using `[map_zero]`. Use `IsHausdorff.haus (I := Ideal.span {(p : R)}) inferInstance _ fun n => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h', e⟩` from `allDvd p hF.prime n h c m₀ H'`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Use `⟨PowerSeries.coeff k h', ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← map_natCast (PowerSeries.C (R := R)), ← map_pow, PowerSeries.coeff_C_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pUniq : SUniq := by
   intro R _ p hp σ hF h c m₀ H

@@ -31,11 +31,11 @@ variable {A R N : Type} [CommRing A] [CommRing R] [Algebra R A] {_ : AddCommGrou
   [DecidableEq n]
 
 /- English proof (translation)
-Establish `hmap : ∀ h : GL n A, (∀ y ∈ Λ, (h : Matrix n n A) *ᵥ y - y ∈ Λ₀) → ∀ y ∈ Λ, (h : Matrix n n A) *ᵥ y ∈ Λ`. Introduce `h hh y hy`. Use `Λ.add_mem (h0 (hh y hy)) hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hg : g ∈ stabGL Λ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `y`. Use `⟨hmap g h1 y, fun hy => ?_⟩` and prove the remaining obligations. Use `hmap g⁻¹ h2 _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Use `⟨hg, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd` using `hf ⟨(g : Matrix n n A) *ᵥ (x : n → A) - x, Λ.sub_mem (hmap g h1 x x.2) x.2⟩ (h1 x x.2)`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `hd using 2` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_stabFun_of_sub (Λ₀ Λ : Submodule R (n → A)) (f : Λ →ₗ[R] N)
     (hf : ∀ x : Λ, (x : n → A) ∈ Λ₀ → f x = 0) (h0 : Λ₀ ≤ Λ) (g : GL n A)
@@ -64,7 +64,7 @@ section Alg
 variable {Rg : Type} [CommRing Rg] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_single_apply (M : Matrix ι ι Rg) (j : ι) (t : Rg) (r : ι) : (M *ᵥ Pi.single j t) r = M r j * t := by
   simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_zero]
@@ -72,17 +72,17 @@ theorem mulVec_single_apply (M : Matrix ι ι Rg) (j : ι) (t : Rg) (r : ι) : (
   simp
 
 /- English proof (translation)
-Establish `hsingle : ∀ (s : ι) (t : Rg), t ∈ S → (s = i0 → ∃ c ∈ S, t = π * c) → (∀ r, (Pi.single s t : ι → Rg) r ∈ S) ∧ ∃ c ∈ S, (Pi.single s t : ι → Rg) i0 = π * c`. Introduce `s t ht hs`. Use `⟨fun r => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hr : r = s`. Substitute `hr` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using ht`. Rewrite using `[Pi.single_eq_of_ne hr]`. Conclude with `S.zero_mem`. Distinguish the cases in `hs' : i0 = s`. Substitute `hs'` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hs rfl`. Conclude with `⟨0, S.zero_mem, by rw [Pi.single_eq_of_ne hs', mul_zero]⟩`. Introduce `r s`. Distinguish the cases in `hs : s = i0`. Substitute `hs` using the available equality.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hr : r = s`. Substitute `hr` using the available equality. Take `⟨-, c, hc, he⟩` from `hM _ ((hsingle r π hπ (fun _ => ⟨1, S.one_mem, (mul_one π).symm⟩)).1) ((hsingle r π hπ (fun _ => ⟨1, S.one_mem, (mul_one π).symm⟩)).2)`. Rewrite `he` using `[mulVec_single_apply]`. Establish `: (M : Matrix ι ι Rg) r r = c`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : π * (M : Matrix ι ι Rg) r r = π * c` using `by rw [← he]; ring`. Conclude with `hπu.mul_left_cancel he'`. Rewrite using `[this]`. Conclude with `hc`. Establish `h1` using `(hMi _ ((hsingle r 1 S.one_mem (fun h => absurd h hr)).1) ((hsingle r 1 S.one_mem (fun h => absurd h hr)).2)).1 s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[mulVec_single_apply, mul_one]`. Rewrite using `[hU' r s]`. Conclude with `hτ _ h1`. Establish `h1` using `(hM _ ((hsingle s 1 S.one_mem (fun h => absurd h hs)).1) ((hsingle s 1 S.one_mem (fun h => absurd h hs)).2)).1 r`. Rewrite `h1` using `[mulVec_single_apply, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem alg_int (τ : Rg →+* Rg) (S : Subring Rg) (π : Rg) (i0 : ι) (M : GL ι Rg)
     (hU' : ∀ r s, (M : Matrix ι ι Rg) r s = τ (((M⁻¹ : GL ι Rg) : Matrix ι ι Rg) s r))
@@ -124,37 +124,33 @@ theorem alg_int (τ : Rg →+* Rg) (S : Subring Rg) (π : Rg) (i0 : ι) (M : GL 
     rwa [mulVec_single_apply, mul_one] at h1
 
 /- English proof (translation)
-Use `set Mm : Matrix ι ι Rg := (M : Matrix ι ι Rg)`. Use `set Mi : Matrix ι ι Rg := ((M⁻¹ : GL ι Rg) : Matrix ι ι Rg)`. Establish `hMi : Mm * Mi = 1` using `by simp [Mm, Mi]`. Establish `hiint : ∀ r s, Mi r s ∈ S` using `fun r s => by rw [hU]; exact hτ _ (hint s r)`. Use `choose c hcS hc using hrow`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrowi : ∀ s, Mi i0 s - (1 : Matrix ι ι Rg) i0 s = π * (-∑ b, c b * Mi b s)`. Introduce `s`. Establish `e : Mi - 1 = (1 - Mm) * Mi` using `by rw [sub_mul, one_mul, hMi]`. Establish `e2` using `congrFun (congrFun e i0) s`. Rewrite `e2` using `[Matrix.sub_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e2, Matrix.mul_apply, mul_neg, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hb` using `hc b`. Rewrite using `[Matrix.sub_apply]`. Rewrite using `[show (1 : Matrix ι ι Rg) i0 b - Mm i0 b = -(Mm i0 b - (1 : Matrix ι ι Rg) i0 b) by ring, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hci : ∀ s, -∑ b, c b * Mi b s ∈ S` using `fun s => S.neg_mem (S.sum_mem fun b _ => S.mul_mem (hcS b) (hiint b s))`. Establish `hcol : ∀ r, Mm r i0 - (1 : Matrix ι ι Rg) r i0 = π' * τ (-∑ b, c b * Mi b r)`. Introduce `r`. Establish `e` using `congrArg τ (hrowi r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `e` using `[map_sub, map_mul, hτπ, ← hU' r i0]`. Rewrite using `[← e]`. Use `congr 1`. Distinguish the cases in `hr : r = i0`. Substitute `hr` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hr, Matrix.one_apply_ne (Ne.symm hr), map_zero]`. Use `set d' : ι → Rg := fun r => τ (-∑ b, c b * Mi b r) with hd'`. Establish `hd'S : ∀ r, d' r ∈ S` using `fun r => hτ _ (hci r)`. Use `set y' : ι → Rg := Function.update y i0 0 with hy'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hy'S : ∀ r, y' r ∈ S`. Introduce `r`. Distinguish the cases in `hr : r = i0`. Substitute `hr` using the available equality. Simplify using `[y', S.zero_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hy', Function.update_of_ne hr]`. Conclude with `hy r hr`. Establish `hyd : y = y' + Pi.single i0 (y i0)`. Use function extensionality and compare the values at `r`. Distinguish the cases in `hr : r = i0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Substitute `hr` using the available equality. Simplify using `[y']`. Simplify using `[y', Function.update_of_ne hr, Pi.single_eq_of_ne hr]`. Establish `hsplit : Mm *ᵥ y - y = (Mm - 1) *ᵥ y' + fun r => (Mm r i0 - (1 : Matrix ι ι Rg) r i0) * y i0`. Use function extensionality and compare the values at `r`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hyd]`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Matrix.mulVec_add, mulVec_single_apply, Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite using `[show (Pi.single i0 (y i0) : ι → Rg) r = (1 : Matrix ι ι Rg) r i0 * y i0 by`. Rewrite using `[← mulVec_single_apply, Matrix.one_mulVec]]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have hA : ∀ r, ((Mm - 1) *ᵥ y') r ∈ S := fun r => S.sum_mem fun b _ => S.mul_mem (S.sub_mem (hint r b) (by by_cases h : r = b <;> simp [Matrix.one_apply, h, S.one_mem, S.zero_mem])) (hy'S b)`. Establish `hB : ∀ r, (Mm r i0 - (1 : Matrix ι ι Rg) r i0) * y i0 = d' r * (π' * y i0)`. Introduce `r`. Rewrite using `[hcol r]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun r => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, Pi.add_apply, hB r]`. Conclude with `S.add_mem (hA r) (S.mul_mem (hd'S r) hy0)`. Take `⟨cc, hcc, dd, hdd, hcd⟩` from `hcop`. Establish `hA0 : ((Mm - 1) *ᵥ y') i0 = π * ∑ b, c b * y' b`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, hc b]`. Expand and normalize the polynomial expressions, which then agree. Use `set t := (Mm i0 i0 - (1 : Matrix ι ι Rg) i0 i0) * y i0 with ht`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `ht1 : t = d' i0 * (π' * y i0)` using `hB i0`. Establish `ht2 : t = π * (c i0 * y i0)` using `by rw [ht, hc i0]; ring`. Establish `ht3 : t = π * (t * cc + dd * c i0 * (π' * y i0))`. Combine the equalities or inequalities in the displayed calculation. Use `⟨∑ b, c b * y' b + (t * cc + dd * c i0 * (π' * y i0)), ?_, ?_⟩` and prove the remaining obligations.
-
-Use `S.add_mem (S.sum_mem fun b _ => S.mul_mem (hcS b) (hy'S b)) ?_` and prove the remaining obligations. Use `S.add_mem (S.mul_mem ?_ hcc) (S.mul_mem (S.mul_mem hdd (hcS i0)) hy0)` and prove the remaining obligations. Rewrite using `[ht1]`. Conclude with `S.mul_mem (hd'S i0) hy0`. Rewrite using `[hsplit, Pi.add_apply, hA0] show π * _ + t = _ conv_lhs => rw [ht3]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem alg_sub (τ : Rg →+* Rg) (S : Subring Rg) (π π' : Rg) (i0 : ι) (M : GL ι Rg)
     (hU : ∀ r s, ((M⁻¹ : GL ι Rg) : Matrix ι ι Rg) r s = τ ((M : Matrix ι ι Rg) s r))
@@ -256,13 +252,13 @@ section Lat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[hLb, Formalism.MainNotions.Gaps.LevGap.mem_latT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun r hr => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, hd⟩` from `h i0`. Take `⟨c, rfl⟩` from `hd hi0`. Conclude with `⟨c, by rw [hs]; push_cast; ring⟩`. Take `⟨s, hs, -⟩` from `h r`. Conclude with `⟨s, hs.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨c, hc⟩, h⟩ r`. Distinguish the cases in `hr : r = i0`. Substitute `hr` using the available equality. Conclude with `⟨t * c, by rw [hc]; push_cast; ring, fun _ => dvd_mul_right _ _⟩`. Take `⟨s, hs⟩` from `h r hr`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨s, hs.symm, fun h' => absurd (Fin.ext (by omega)) hr⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem lb_eq_latT {n : ℕ} (i0 : Fin n) (hi0 : i0.1 + 1 = n) (t : 𝓞 E) (Lb : Submodule (𝓞 E) (Fin n → E))
     (hLb : ∀ x, x ∈ Lb ↔ ∀ r : Fin n, ∃ s : 𝓞 E, x r = (s : E) ∧ (r.1 + 1 = n → t ∣ s)) :
@@ -285,13 +281,13 @@ theorem lb_eq_latT {n : ℕ} (i0 : Fin n) (hi0 : i0.1 + 1 = n) (t : 𝓞 E) (Lb 
       refine ⟨s, hs.symm, fun h' => absurd (Fin.ext (by omega)) hr⟩
 
 /- English proof (translation)
-Rewrite using `[lb_eq_latT i0 hi0 t Lb hLb]`. Use `show y ∈ latS (F := F) (v.adicCompletion F) (intV E v) (Formalism.MainNotions.Gaps.LevGap.diagLat (Formalism.MainNotions.Gaps.LevGap.vecAt i0 (t : E))) ↔ _`. Rewrite using `[Formalism.MainNotions.Gaps.LG.fm_mem_latS]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun r => ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h r`. Rewrite using `[hc]`. Distinguish the cases in `hr : r = i0`. Substitute `hr` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.MainNotions.Gaps.LevGap.vecAt_same]`. Conclude with `(intV E v).mul_mem (Formalism.MainNotions.Gaps.LG.fm_incl_mem v t) c.2`. Rewrite using `[Formalism.MainNotions.Gaps.LevGap.vecAt_ne hr, map_one, one_mul]`. Conclude with `c.2`. Take `⟨c, hc⟩` from `h i0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨c, c.2, by rw [hc, Formalism.MainNotions.Gaps.LevGap.vecAt_same]⟩`. Introduce and unpack `⟨h, c, hc, he⟩ r`. Distinguish the cases in `hr : r = i0`. Substitute `hr; exact ⟨⟨c, hc⟩, by rw [he, Formalism.MainNotions.Gaps.LevGap.vecAt_same]⟩` using the available equality. Conclude with `⟨⟨y r, h r⟩, by rw [Formalism.MainNotions.Gaps.LevGap.vecAt_ne hr, map_one, one_mul]⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_latS_lb {n : ℕ} (i0 : Fin n) (hi0 : i0.1 + 1 = n) (t : 𝓞 E) (Lb : Submodule (𝓞 E) (Fin n → E))
     (hLb : ∀ x, x ∈ Lb ↔ ∀ r : Fin n, ∃ s : 𝓞 E, x r = (s : E) ∧ (r.1 + 1 = n → t ∣ s))
@@ -317,15 +313,15 @@ theorem mem_latS_lb {n : ℕ} (i0 : Fin n) (hi0 : i0.1 + 1 = n) (t : 𝓞 E) (Lb
     · exact ⟨⟨y r, h r⟩, by rw [Formalism.MainNotions.Gaps.LevGap.vecAt_ne hr, map_one, one_mul]⟩
 
 /- English proof (translation)
-Establish `hs0 : σ (t : E) ≠ 0` using `(map_ne_zero _).2 ht`. Establish `hinv : inclE (F` using `F) (v.adicCompletion F) (σ (t : E)) * inclE (F := F) (v.adicCompletion F) (σ (t : E))⁻¹ = 1 := by`. Rewrite using `[← map_mul, mul_inv_cancel₀ hs0, map_one]`. Rewrite using `[hJ, lb_eq_latT i0 hi0 t Lb hLb, Formalism.MainNotions.Gaps.LevGap.span_dualSet_latT (σ : E →+* E) ht, Formalism.MainNotions.Gaps.LG.fm_mem_latS]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨fun r hr => ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h r`. Rewrite using `[hc, Formalism.MainNotions.Gaps.LevGap.vecAt_ne hr, map_one, one_mul]`. Conclude with `c.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `h i0`. Rewrite using `[hc, Formalism.MainNotions.Gaps.LevGap.vecAt_same]`. Use `show inclE (F := F) (v.adicCompletion F) (σ (t : E)) * (inclE (F := F) (v.adicCompletion F) ((σ : E →+* E) (t : E))⁻¹ * _) ∈ _`. Rewrite using `[← mul_assoc]`. Use `erw [hinv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[one_mul]`. Conclude with `c.2`. Introduce and unpack `⟨h, h0⟩ r`. Distinguish the cases in `hr : r = i0`. Substitute `hr` using the available equality.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨⟨_, h0⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.Gaps.LevGap.vecAt_same]`. Use `show _ = inclE (F := F) (v.adicCompletion F) ((σ (t : E))⁻¹) * (inclE (F := F) (v.adicCompletion F) (σ (t : E)) * y r)`. Rewrite using `[← mul_assoc, mul_comm (inclE (F := F) (v.adicCompletion F) (σ (t : E))⁻¹), hinv, one_mul]`. Conclude with `⟨⟨y r, h r hr⟩, by rw [Formalism.MainNotions.Gaps.LevGap.vecAt_ne hr, map_one, one_mul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_latS_ld {n : ℕ} (i0 : Fin n) (hi0 : i0.1 + 1 = n) (t : 𝓞 E) (ht : (t : E) ≠ 0) (Lb : Submodule (𝓞 E) (Fin n → E))
     (hLb : ∀ x, x ∈ Lb ↔ ∀ r : Fin n, ∃ s : 𝓞 E, x r = (s : E) ∧ (r.1 + 1 = n → t ∣ s))
@@ -357,9 +353,9 @@ theorem mem_latS_ld {n : ℕ} (i0 : Fin n) (hi0 : i0.1 + 1 = n) (t : 𝓞 E) (ht
     · exact ⟨⟨y r, h r hr⟩, by rw [Formalism.MainNotions.Gaps.LevGap.vecAt_ne hr, map_one, one_mul]⟩
 
 /- English proof (translation)
-Use `⟨inclE (F := F) (v.adicCompletion F) (ca : E), Formalism.MainNotions.Gaps.LG.fm_incl_mem v ca, inclE (F := F) (v.adicCompletion F) (cb : E), Formalism.MainNotions.Gaps.LG.fm_incl_mem v cb, ?_⟩` and prove the remaining obligations. Establish `e : (t : E) * ca + (t' : E) * cb = 1`. Use `congrArg ((↑) : 𝓞 E → E) h` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e2` using `congrArg (inclE (F := F) (E := E) (v.adicCompletion F)) e`. Rewrite `e2` using `[RingHom.map_add, RingHom.map_mul, RingHom.map_mul, RingHom.map_one]`. Rewrite using `[← ht']`. Conclude with `e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cop_local (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (t t' ca cb : 𝓞 E) (ht' : (t' : E) = σ (t : E))
     (h : ca * t + cb * t' = 1) : ∃ c ∈ intV E v, ∃ d ∈ intV E v,
@@ -376,11 +372,11 @@ theorem cop_local (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (t t' ca
   exact e2
 
 /- English proof (translation)
-Establish `hle : intV E v ≤ (intV E v).comap (sigR σ (v.adicCompletion F))` using `by show tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring ≤ _`. Unfold `tensInt`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨s, c, rfl⟩, rfl⟩ | ⟨⟨s, hs⟩, rfl⟩)`. Use `show sigR σ (v.adicCompletion F) (((algebraMap (𝓞 E) E) c) ⊗ₜ[F] (1 : v.adicCompletion F)) ∈ intV E v`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : sigR σ (v.adicCompletion F) (((algebraMap (𝓞 E) E) c) ⊗ₜ[F] (1 : v.adicCompletion F)) = inclE (F` using `F) (v.adicCompletion F) ((RingOfIntegers.mapRingHom (σ : E →+* E) c : 𝓞 E) : E) := rfl`. Rewrite using `[e]`. Conclude with `Formalism.MainNotions.Gaps.LG.fm_incl_mem v _`. Use `show sigR σ (v.adicCompletion F) ((1 : E) ⊗ₜ[F] s) ∈ intV E v`. Establish `e : sigR σ (v.adicCompletion F) ((1 : E) ⊗ₜ[F] s) = (1 : E) ⊗ₜ[F] s` using `by show (Algebra.TensorProduct.map σ (AlgHom.id F (v.adicCompletion F))) ((1 : E) ⊗ₜ[F] s) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Formalism.MainNotions.Gaps.LG.fm_one_tmul_mem v ⟨s, hs⟩`. Conclude with `hle hx`.
+A detailed English derivation is pending.
 -/
 theorem sigR_mem_intV (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) (hx : x ∈ intV E v) :
     sigR σ (v.adicCompletion F) x ∈ intV E v := by
@@ -407,13 +403,13 @@ end GlobalTheory.StabFnLev
 namespace GlobalTheory.StabFnLev
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Simplify using `only [finCongr_refl, Matrix.reindex_refl_refl]`. Establish `hb' : ∀ u : Fin m' → k, b' *ᵥ ((b * g.val * b') *ᵥ u) = g • (b' *ᵥ u)`. Introduce `u`. Express the relevant statement in the definitionally equal form `_ = g.val *ᵥ (b' *ᵥ u)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hb'b, Matrix.one_mul]`. Establish `hlat : ∀ u : Fin m' → k, b' *ᵥ u ∈ P.lat ↔ ∀ r, u r ∈ 𝒪[k]`. Introduce `u`. Rewrite using `[hP, Matrix.mulVec_mulVec, hbb, Matrix.one_mulVec]`. Establish `hu : ∀ j, (Pi.single s 1 : Fin m' → k) j ∈ 𝒪[k]` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Take `⟨s1, hs1, hv1⟩` from `hval _ hu r hr`. Establish `h1` using `hv1.gl_smul g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hg, ← hb']`. Take `⟨s2, hs2, hv2⟩` from `hval _ ((hlat _).1 h1.mem) r hr`. Use `(GlobalTheory.PairKeep.res_zero_iff c τ q hτ hc _ (s2 - s1) ?_).1 (by rw [map_sub, hv2.unique h1, sub_self])` and prove the remaining obligations. Rewrite using `[AddSubgroupClass.coe_sub, hs1, hs2, mulVec_single_apply, mul_one, Matrix.one_apply, Pi.single_apply, mul_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_lastRow (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m' m : ℕ) (hm : m' = m) (b b' : Matrix (Fin m') (Fin m') k) (hbb : b * b' = 1) (hb'b : b' * b = 1)
@@ -444,27 +440,23 @@ theorem pair_lastRow (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
   rw [AddSubgroupClass.coe_sub, hs1, hs2, mulVec_single_apply, mul_one, Matrix.one_apply, Pi.single_apply, mul_sub]
 
 /- English proof (translation)
-Rewrite using `[lev.UlocAlt v h]`. Use `⟨hlev, ?_⟩` and prove the remaining obligations. Substitute `hJ` using the available equality. Take `⟨ca, cb, hab⟩` from `hcp`. Set `i0 : Fin m` to `⟨m - 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hi0 : i0.1 + 1 = m` using `by simp only [i0]; omega`. Establish `htE : (t : E) ≠ 0` using `fun h0 => ht (RingOfIntegers.ext h0)`. Establish `hπS : Formalism.UG.inclE (F` using `F) (v.adicCompletion F) (t : E) ∈ intV E v := Formalism.MainNotions.Gaps.LG.fm_incl_mem v t`. Establish `hπu : IsUnit (Formalism.UG.inclE (F` using `F) (v.adicCompletion F) (t : E)) := (isUnit_iff_ne_zero.2 htE).map _`. Take `⟨hUJ, hst⟩` from `Subgroup.mem_inf.1 hlev`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU1 : M ∈ Formalism.UG.UJ (Formalism.UG.sigR σ (v.adicCompletion F)) 1`. Rewrite `hUJ` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Then use the resulting hypothesis. Establish `hU` using `Formalism.MainNotions.Gaps.CC.Idx.t_unit_inv _ M hU1`. Establish `hU' : ∀ r s, M.val r s = Formalism.UG.sigR σ (v.adicCompletion F) ((M⁻¹).val s r)`. Introduce `r s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Formalism.MainNotions.Gaps.CC.Idx.t_unit_inv _ M⁻¹ (inv_mem hU1) r s` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hτ` using `sigR_mem_intV σ v`. Establish `hLbV` using `mem_latS_lb i0 hi0 t lev.Lb hLb v`. Establish `hLdV` using `mem_latS_ld i0 hi0 t htE lev.Lb hLb σ 1 rfl v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint` using `alg_int _ (intV E v) _ i0 M hU' hτ hπS hπu (fun y hy hy0 => (hLbV _).1 ((hst y).1 ((hLbV y).2 ⟨hy, hy0⟩))) (fun y hy hy0 => (hLbV _).1 (((inv_mem hst : M⁻¹ ∈ _) y).1 ((hLbV y).2 ⟨hy, hy0⟩)))`. Establish `hrow : ∀ s, ∃ c ∈ intV E v, M.val i0 s - (1 : Matrix (Fin m) (Fin m) (E ⊗[F] v.adicCompletion F)) i0 s = Formalism.UG.inclE (F` using `F) (v.adicCompletion F) (t : E) * c := by`. Introduce `s`. Establish `hz : M.val i0 s - (1 : Matrix (Fin m) (Fin m) (E ⊗[F] v.adicCompletion F)) i0 s ∈ intV E v` using `sub_mem (hint i0 s) (by`. Rewrite using `[Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])`. Take `⟨c0, hc0, he0⟩` from `hrow0 i0 s hi0`. Establish `hφz : φ (M.val i0 s - (1 : Matrix (Fin m) (Fin m) (E ⊗[F] v.adicCompletion F)) i0 s) = φ (Formalism.UG.inclE (F` using `F) (v.adicCompletion F) (t : E)) * c0 := by`. Rewrite using `[← he0, ← hH, map_sub, Matrix.map_apply, Matrix.one_apply, Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Use `exacts [by rw [map_one], by rw [map_zero]]`. Take `⟨c, hc⟩` from `hπu.dvd (a := M.val i0 s - (1 : Matrix (Fin m) (Fin m) (E ⊗[F] v.adicCompletion F)) i0 s)`. Use `⟨c, (hφ c).2 ⟨?_, ?_⟩, hc⟩` and prove the remaining obligations. Rewrite `hφz` using `[hc, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hπu.map φ).mul_left_cancel hφz]`. Conclude with `hc0`. Establish `h2` using `((hφ _).1 hz).2`. Rewrite `h2` using `[hc, map_mul, map_mul, Valuation.mem_integer_iff, map_mul, hq', one_mul]`. Conclude with `(Valuation.mem_integer_iff _ _).2 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsub` using `alg_sub _ (intV E v) _ _ i0 M hU hU' hτ rfl hint (cop_local σ v t t' ca cb ht' hab) hrow`. Establish `h1 : ∀ y ∈ Formalism.UG.latS (F` using `F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) 1 lev.Lb)), M.val *ᵥ y - y ∈ Formalism.UG.latS (F := F) (v.adicCompletion F) (intV E v) lev.Lb := by`. Introduce `y hy`. Take `⟨hy1, hy2⟩` from `(hLdV y).1 hy`. Conclude with `(hLbV _).2 (hsub y hy1 hy2)`.
-
-Use `mem_stabFun_of_sub _ _ _ (lev.fT_L v h) (Submodule.span_mono (Set.image_mono fun y hy => Submodule.subset_span (lev.Lb_int y hy))) M h1 fun y hy => ?_` and prove the remaining obligations. Establish `hz` using `neg_mem (h1 y hy)`. Establish `e : (M⁻¹).val *ᵥ y - y = (M⁻¹).val *ᵥ (-(M.val *ᵥ y - y))`. Rewrite using `[neg_sub, Matrix.mulVec_sub, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e]`.
-
-Conclude with `((inv_mem hst : M⁻¹ ∈ _) _).1 hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Uloc_of_row (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (v : HeightOneSpectrum (𝓞 F)) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
@@ -545,19 +537,19 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a Ch A hA k _ _ _ _ ι p β Q L hS j hj b i g hg x hx hT hlev`. Take `⟨⟨e, he⟩, hS2⟩` from `hS`. Take `⟨hL, hS3⟩` from `hS2 j hj`. Take `⟨hLat, hVal⟩` from `hS3 i`. Take `⟨hX, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcop : IsCoprime (X.piT u) (B.fields.conjO (X.piT u))` using `hPr.piT_cop u`. Establish `hne : X.piT u ≠ 0`. Introduce `h0`. Rewrite `hcop` using `[h0, map_zero, isCoprime_zero_left]`. Conclude with `not_isUnit_zero hcop`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : X.piT u ∈ (e i).1.asIdeal` using `(Formalism.L2.Col.mem_divs hne _).1 (e i).2`. Establish `hsq : X.piT u ∉ (e i).1.asIdeal ^ 2` using `hPr.piT_notMem_sq hX u (e i).2`. Establish `hconj : B.fields.conjO (X.piT u) ∉ (e i).1.asIdeal` using `fun h => by`. Take `⟨s, t, hst⟩` from `hcop`. Establish `: (1 : 𝓞 B.fields.E) ∈ (e i).1.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hst]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hmem) (Ideal.mul_mem_left _ _ h)`. Conclude with `(e i).1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Take `⟨φ, hφ1, hφ2, hφ3, hφ4⟩` from `GlobalTheory.T.exists_splitPlace_component_ringHom_integral _ k (p i) (e i).1 (he i)`. Take `⟨⟨q, hq⟩, hc⟩` from `GlobalTheory.T.valuation_eq_uniformizer_and_unit_at_prime _ k (p i) (e i).1 (he i) (X.piT u) (B.fields.conjO (X.piT u)) hmem hsq hconj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlat` using `GlobalTheory.T.mem_integralVectors_component_iff_integral_frame_coords _ k (p i) _ _ (β j i) (L j) hL _ hLat`. Establish `hv6` using `GlobalTheory.T.functional_values_integral_vectors_of_integer_vectors _ k (p i) (e i).1 (he i) _ (β j i).b (β j i).b' (β j i).bb' (β j i).b'b (Q j i) hlat (B.fields.conjO (X.piT u)) (fun z hz r hr => hVal z ((hL z).2 hz) r hr)`. Establish `hn` using `rankN (I.rec7 l Z) j hj`. Establish `hrow` using `GlobalTheory.StabFnLev.pair_lastRow k _ _ hn (β j i).b (β j i).b' (β j i).bb' (β j i).b'b (Q j i) hlat _ (φ (Formalism.UG.inclE (F := (I.rec7 l Z).host.F) ((p i).v.adicCompletion (I.rec7 l Z).host.F) ((X.piT u : 𝓞 B.fields.E) : B.fields.E))) q ((congrArg (valuation k) (hφ2 _)).tr …`. Establish `hg1 : gramN (I.rec7 l Z) j hj = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 j hj).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hM : (Formalism.UG.bc (Formalism.UG.prV (E` using `(I.rec7 l Z).host.E) (p i).v) x.1).val.map φ = ((β j i).b * g.val * (β j i).b').reindex (finCongr hn) (finCongr hn) := by`. Rewrite using `[← (β j i).gl_mat g]`. Use extensionality with `r s`. Simplify using `only [Matrix.map_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Express the relevant statement in the definitionally equal form `φ (Formalism.UG.prV (E := (I.rec7 l Z).host.E) (p i).v (x.1.1 r s)) = _`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Simplify using `only [finM, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`. Rewrite using `[hφ1]`. Conclude with `GlobalTheory.StabFnLev.mem_Uloc_of_row _ _ (sigD (I.rec7 l Z)) (p i).v k φ hφ4 _ (B.R.N_pos j) _ hg1 _ _ _ (A.K j hj b).lev (X.piT u) (B.fields.conjO (X.piT u)) hne rfl hcop (fun y => (hA.reads j hj).lb b y) ((congrArg (valuation k) (hφ3 _)).trans hc) _ _ hM hrow hT hlev`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StabFnLev.comp_mem_Uloc : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : GlobalTheory.AdForm.TwDat I l Z u a Ch), A.Is → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))

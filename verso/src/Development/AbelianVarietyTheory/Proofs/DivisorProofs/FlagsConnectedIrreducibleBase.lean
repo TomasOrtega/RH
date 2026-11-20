@@ -13,15 +13,13 @@ namespace GlobalTheory.FlagPath
 open Scheme.Modules in
 
 /- English proof (translation)
-Establish `assoc` using `congr_arg (fun φ => φ.app E) (pseudofunctor_associativity t c s)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.whiskerLeft_app, Functor.associator_hom_app, Functor.rightUnitor_hom_app, Category.id_comp, Category.comp_id, eqToHom_app] at assoc`. Establish `key : ∀ (u : X ⟶ X) (hu : u = 𝟙 X) (w : X ⟶ B) (hw : w = u ≫ s) (v' : w = s) (P : (pullback w).obj E = (pullback (u ≫ s)).obj E), eqToHom P ≫ (pullbackComp u s).inv.app E ≫ (pullbackCongr hu).hom.app _ ≫ (pullbackId X).hom.app _ = (pullbackCongr v').hom.app E`. Introduce `u hu w hw v' P`. Substitute `hu hw` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `unit` using `congr_arg (fun φ => φ.app E) (pseudofunctor_right_unitality s)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.whiskerLeft_app, Functor.rightUnitor_hom_app, Category.comp_id, eqToHom_app] at unit`. Simplify using `only [eqToHom_refl, Category.id_comp, pullbackCongr, eqToIso_refl, Iso.refl_hom, NatTrans.id_app]`. Use `erw [Category.comp_id ((pullbackId X).hom.app ((pullback s).obj E))] at unit`. Use `erw [Category.id_comp ((pullbackId X).hom.app ((pullback s).obj E))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `erw [unit]`. Simplify using `[eqToIso.hom, eqToHom_app]`. Establish `e1 : (pullbackComp t c).hom.app ((pullback s).obj E) = (pullback t).map ((pullbackComp c s).hom.app E) ≫ (pullbackComp t (c ≫ s)).hom.app E ≫ eqToHom (by rw [Category.assoc]) ≫ (pullbackComp (t ≫ c) s).inv.app E`. Rewrite using `[← cancel_epi ((pullbackComp t (c ≫ s)).inv.app E ≫ (pullback t).map ((pullbackComp c s).inv.app E)), ← cancel_mono ((pullbackComp (t ≫ c) s).hom.app E)]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_app, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[assoc]`. Simplify using `only [← Functor.map_comp_assoc, Iso.inv_hom_id_app, Functor.map_id, Category.id_comp, Iso.inv_hom_id_app_assoc]`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Simplify using `only [Category.assoc]`.
-
-Use `congr 2`. Conclude with `key _ h _ (Category.assoc _ _ _).symm v _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coh {X T B : Scheme.{0}} (t : X ⟶ T) (c : T ⟶ X) (s : X ⟶ B) (h : t ≫ c = 𝟙 _) (v : t ≫ c ≫ s = s)
     (E : B.Modules) :
@@ -63,9 +61,9 @@ theorem coh {X T B : Scheme.{0}} (t : X ⟶ T) (c : T ⟶ X) (s : X ⟶ B) (h : 
 open Scheme.Modules in
 
 /- English proof (translation)
-Introduce `a i`. Take `⟨e, he⟩` from `hψ a i`. Use `⟨(pullbackComp t c).app _ ≪≫ (pullbackCongr h).app _ ≪≫ (pullbackId X).app _ ≪≫ e, ?_⟩` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Iso.app_hom, Category.assoc, he]`. Simplify using `only [Vert.Flag.ofIso, Vert.Flag.pull, Functor.map_comp, Category.assoc, Iso.trans_hom, Iso.app_hom]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← coh t c s h v (E a)]`. Simplify using `only [Category.assoc] at hΦ`. Rewrite using `[hΦ a, he]`. Use `erw [← NatTrans.naturality_assoc, ← NatTrans.naturality_assoc, ← NatTrans.naturality_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem carries_of {X T B : Scheme.{0}} (s : X ⟶ B) (c : T ⟶ X) (t : X ⟶ T) (h : t ≫ c = 𝟙 X) {ι : Type}
     (E : ι → B.Modules) (r : ι → ℕ) (G₁ G' : ∀ a, Vert.Flag ((pullback s).obj (E a)) (r a))
@@ -89,9 +87,9 @@ theorem carries_of {X T B : Scheme.{0}} (s : X ⟶ B) (c : T ⟶ X) (t : X ⟶ T
   rfl
 
 /- English proof (translation)
-Introduce `L _ B s ι _ E r G₁ G₂`. Use `choose φ hφ using fun a => GlobalTheory.T.field_flags_conjugate_by_automorphism L _ (r a) (G₁ a) (G₂ a)`. Take `⟨T, c, t₁, t₂, h₁, h₂, Φ, hT, hΦ₁, hΦ₂⟩` from `GlobalTheory.T.flags_over_field_irreducible_join L ι (fun a => (Scheme.Modules.pullback s).obj (E a)) r (fun a => (G₁ a).isVB_self) φ`. Establish `v₁ : t₁ ≫ c ≫ s = s` using `by rw [← Category.assoc, h₁, Category.id_comp]`. Establish `v₂ : t₂ ≫ c ≫ s = s` using `by rw [← Category.assoc, h₂, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T, c ≫ s, t₁, t₂, fun a => ((G₁ a).pull c).ofIso (Φ a ≪≫ (Scheme.Modules.pullbackComp c s).app (E a)), v₁, v₂, hT, ?_, ?_⟩` and prove the remaining obligations. Conclude with `carries_of s c t₁ h₁ E r G₁ G₁ Φ (fun _ => Iso.refl _) (fun a => by rw [hΦ₁ a]; simp) (fun _ _ => ⟨Iso.refl _, by simp⟩) v₁`. Conclude with `carries_of s c t₂ h₂ E r G₁ G₂ Φ φ hΦ₂ hφ v₂`.
+A detailed English derivation is pending.
 -/
 theorem exists_irreducible_family : ∀ (L : Type) [Field L] (B : Scheme.{0}) (s : Spec (CommRingCat.of L) ⟶ B)
     (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ)

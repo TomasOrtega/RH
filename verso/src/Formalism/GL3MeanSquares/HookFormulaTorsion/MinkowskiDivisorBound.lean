@@ -6,7 +6,7 @@ namespace Formalism.HermitianLattices.TraceIntegrality
 open Finset
 
 /- English proof (translation)
-Establish `hpos : 0 < p ^ (1 + i)` using `Nat.pow_pos (by omega)`. Rewrite using `[Nat.le_div_iff_mul_le hpos]`. Establish `h1 : n / (p ^ i * (p - 1)) * (p ^ i * (p - 1)) ≤ n` using `Nat.div_mul_le_self _ _`. Establish `h2 : p ≤ 2 * (p - 1)` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mink_term (n p i : ℕ) (hp : 2 ≤ p) :
     n / (p ^ i * (p - 1)) ≤ 2 * n / p ^ (1 + i) := by
@@ -21,11 +21,11 @@ private theorem mink_term (n p i : ℕ) (hp : 2 ≤ p) :
     _ ≤ 2 * n := Nat.mul_le_mul_left _ h1
 
 /- English proof (translation)
-Introduce `n p hp`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hlog : Nat.log p (2 * n) < 2 * n + 2` using `lt_of_le_of_lt (Nat.log_le_self _ _) (by omega)`. Rewrite using `[padicValNat_factorial hlog]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_Ico_eq_sum_range]`. Both sides reduce to the same expression. Use `_ ≤ ∑ i ∈ Ico 1 (2 * n + 2), 2 * n / p ^ i := by`. Apply `Finset.sum_le_sum_of_subset` to reduce the goal to its premises. Apply `Finset.Ico_subset_Ico le_rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem minkowski_divisor_bound : Minkowski_div := by
   intro n p hp
@@ -44,15 +44,13 @@ theorem minkowski_divisor_bound : Minkowski_div := by
         omega
 
 /- English proof (translation)
-Use `⟨12, ?_⟩` and prove the remaining obligations. Introduce `M hM`. Establish `hMr : (2 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Establish `hfac : (((4 * M).factorial : ℕ) : ℝ) ≤ ((4 * M : ℕ) : ℝ) ^ (4 * M)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.factorial_le_pow (4 * M)` after adjusting the coercions. Establish `hfpos : (0 : ℝ) < ((4 * M).factorial : ℝ)`. Conclude with `Nat.factorial_pos _` after adjusting the coercions. Establish `h1 : Real.log ((4 * M).factorial : ℝ) ≤ Real.log (((4 * M : ℕ) : ℝ) ^ (4 * M))` using `Real.log_le_log hfpos hfac`. Establish `h2 : Real.log (((4 * M : ℕ) : ℝ) ^ (4 * M)) = (4 * (M : ℝ)) * (Real.log 4 + Real.log M)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Real.log_pow]`. Use `push_cast`. Rewrite using `[Real.log_mul (by norm_num) hM0.ne']`. Establish `h4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : Real.log 2 ≤ Real.log M` using `Real.log_le_log (by norm_num) hMr`. Establish `h6 : Real.log 4 + Real.log M ≤ 3 * Real.log M` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h2]`. Conclude with `h1`.
-
-Use `_ ≤ (4 * (M : ℝ)) * (3 * Real.log M) := mul_le_mul_of_nonneg_left h6 (by linarith)`. Use `_ = 12 * M * Real.log M := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minkowski_log_bound : Minkowski_log := by
   refine ⟨12, ?_⟩
@@ -79,27 +77,25 @@ theorem minkowski_log_bound : Minkowski_log := by
     _ = 12 * M * Real.log M := by ring
 
 /- English proof (translation)
-Introduce `C₀ hC₀`. Use `⟨8 * Real.log C₀ + 31 + C₀, ?_⟩` and prove the remaining obligations. Introduce `f N v T L logg R2 logh hf hN hv hT hL hg hlf hlN hlv hR2 hh`. Establish `hfr : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hNr : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 0 ≤ Real.log C₀` using `Real.log_nonneg hC₀`. Establish `hlT : 0 ≤ Real.log T` using `Real.log_nonneg hT`. Establish `hC0' : C₀ ≠ 0` using `by positivity`. Establish `hf' : (f : ℝ) ≠ 0` using `by positivity`. Establish `hN' : (N : ℝ) ≠ 0` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : v ≠ 0` using `by positivity`. Establish `hT' : T ≠ 0` using `by positivity`. Establish `hlogR : Real.log R2 = Real.log C₀ + Real.log f + 2 * Real.log N + 2 * Real.log v + 2 * Real.log T`. Rewrite using `[hR2, Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul hC0' hf', Real.log_pow, Real.log_pow, Real.log_pow]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hR2' : R2 ≠ 0` using `by rw [hR2]; positivity`. Establish `hlogCR : Real.log (C₀ * R2) = Real.log C₀ + Real.log R2` using `Real.log_mul hC0' hR2'`. Use `set c := Real.log C₀ with hcdef`. Use `set lT := Real.log T with hlTdef`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X := L + lT + logg with hX`. Use `clear_value X c lT`. Establish `hX1 : 1 ≤ X` using `by linarith`. Establish `hcX : c ≤ c * X` using `by nlinarith`. Establish `hA : Real.log R2 ≤ (c + 5) * X`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Real.log R2 ≤ c + 5 * X` using `by rw [hlogR]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : Real.log (C₀ * R2) ≤ (2 * c + 5) * X`. Rewrite using `[hlogCR]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfN2 : 0 ≤ (f : ℝ) * (N : ℝ) ^ 2` using `by positivity`. Establish `hP : 0 ≤ (f : ℝ) * (N : ℝ) ^ 2 * X` using `by positivity`. Establish `t1 : (N : ℝ) ^ 2 * (2 * f * Real.log (C₀ * R2)) ≤ (f : ℝ) * (N : ℝ) ^ 2 * X * (2 * (2 * c + 5))`. Use `mul_le_mul_of_nonneg_left hB (by positivity : 0 ≤ 2 * ((f : ℝ) * (N : ℝ) ^ 2))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2 : 4 * f * N * ((N : ℝ) + 1) * (Real.log R2 / 2) ≤ (f : ℝ) * (N : ℝ) ^ 2 * X * (4 * (c + 5))`. Establish `h1 : 4 * f * N * ((N : ℝ) + 1) * (Real.log R2 / 2) ≤ 4 * f * N * ((N : ℝ) + 1) * ((c + 5) * X / 2)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `h2 : (N : ℝ) * ((N : ℝ) + 1) ≤ 2 * (N : ℝ) ^ 2` using `by nlinarith`. Establish `h3 : 0 ≤ 2 * (f : ℝ) * ((c + 5) * X)` using `by positivity`. Establish `h4` using `mul_le_mul_of_nonneg_left h2 h3`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `t3 : (f : ℝ) * N * lT ≤ (f : ℝ) * (N : ℝ) ^ 2 * lT`. Establish `h2 : (N : ℝ) ≤ (N : ℝ) ^ 2` using `by nlinarith`. Use `mul_le_mul_of_nonneg_left h2 (by positivity : 0 ≤ (f : ℝ) * lT)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `t3' : (f : ℝ) * (N : ℝ) ^ 2 * lT ≤ (f : ℝ) * (N : ℝ) ^ 2 * X` using `mul_le_mul_of_nonneg_left (by linarith) hfN2`. Establish `t4 : C₀ * f * (N : ℝ) ^ 2 * logg ≤ (f : ℝ) * (N : ℝ) ^ 2 * X * C₀`. Use `mul_le_mul_of_nonneg_left (by linarith : logg ≤ X) (by positivity : 0 ≤ C₀ * ((f : ℝ) * (N : ℝ) ^ 2))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : logh ≤ (f : ℝ) * (N : ℝ) ^ 2 * X * (2 * (2 * c + 5)) + (f : ℝ) * (N : ℝ) ^ 2 * X * (4 * (c + 5)) + ((f : ℝ) * (N : ℝ) ^ 2 * X + (f : ℝ) * (N : ℝ) ^ 2 * X * C₀)` using `by linarith`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem moduli_arithmetic_bound : Ms_arith := by
   intro C₀ hC₀

@@ -22,7 +22,7 @@ variable {B : Type} [Fintype B] {ι : B → Type} [∀ k, Fintype (ι k)]
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.eval (fun _ : B => (1 : Ω))).comp (mConeMap y : MRing ι →+* MvPolynomial B Ω) = eval₂Hom (Int.castRingHom Ω) y` using `MvPolynomial.ringHom_ext (fun a => by simp [mConeMap]) (fun p => by simp [mConeMap])`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eval_one_mConeMap {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (f : MRing ι) :
     MvPolynomial.eval (fun _ => (1 : Ω)) (mConeMap y f) = eval₂ (Int.castRingHom Ω) y f := by
@@ -32,7 +32,7 @@ theorem eval_one_mConeMap {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (f : 
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Establish `h : (mConeMap y : MRing ι →+* MvPolynomial B Ω) = eval₂Hom (Int.castRingHom (MvPolynomial B Ω)) (fun p => C (y p) * X p.1)` using `MvPolynomial.ringHom_ext (fun a => by simp [mConeMap]) (fun p => by simp [mConeMap])`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mConeMap_eq_eval₂ {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (f : MRing ι) :
     mConeMap y f = eval₂ (Int.castRingHom _) (fun p => C (y p) * X p.1) f := by
@@ -42,14 +42,14 @@ theorem mConeMap_eq_eval₂ {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (f 
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Rewrite using `[← eval_one_mConeMap, RingHom.mem_ker.1 hf, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_zero_of_mem {Ω : Type} [Field Ω] {z : (Σ k, ι k) → Ω} {f : MRing ι}
     (hf : f ∈ mCoordIdeal z) : eval₂ (Int.castRingHom Ω) z f = 0 := by
   rw [← eval_one_mConeMap, RingHom.mem_ker.1 hf, map_zero]
 
 /- English proof (translation)
-Establish `h : eval₂Hom (Int.castRingHom (IndefiniteRowSideFullHecke.Inter.FnField W)) (IndefiniteRowSideFullHecke.Inter.genPt W) = (algebraMap (MRing ι ⧸ W) (IndefiniteRowSideFullHecke.Inter.FnField W)).comp (Ideal.Quotient.mk W)` using `MvPolynomial.ringHom_ext (fun a => by simp) (fun p => by simp [IndefiniteRowSideFullHecke.Inter.genPt])`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aeval_genPt (W : Ideal (MRing ι)) (f : MRing ι) :
     eval₂ (Int.castRingHom _) (IndefiniteRowSideFullHecke.Inter.genPt W) f =
@@ -60,13 +60,13 @@ theorem aeval_genPt (W : Ideal (MRing ι)) (f : MRing ι) :
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Use `le_antisymm (fun f hf => ?_) ?_` and prove the remaining obligations. Rewrite using `[← IndefiniteRowSideFullHecke.Inter.ker_algebraMap_comp_mk W, RingHom.mem_ker, RingHom.comp_apply, ← aeval_genPt]`. Conclude with `aeval_eq_zero_of_mem hf`. Take `⟨S, hS, hSW⟩` from `hW`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hS s hs`. Establish `hsW : s ∈ W` using `hSW ▸ Ideal.subset_span hs`. Establish `h0 : eval₂ (Int.castRingHom _) (IndefiniteRowSideFullHecke.Inter.genPt W) s = 0`. Rewrite using `[aeval_genPt, Ideal.Quotient.eq_zero_iff_mem.2 hsW, map_zero]`. Use `show s ∈ RingHom.ker _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, mConeMap_eq_eval₂]`. Establish `h3` using `IndefiniteRowSideFullHecke.HeightsSet.CurveComplexPoint.eval₂_smul_homog s a ha (fun k => (X k : MvPolynomial B (IndefiniteRowSideFullHecke.Inter.FnField W))) (fun p => C (IndefiniteRowSideFullHecke.Inter.genPt W p))`. Establish `e2 : eval₂ (Int.castRingHom (MvPolynomial B (IndefiniteRowSideFullHecke.Inter.FnField W))) (fun p => C (IndefiniteRowSideFullHecke.Inter.genPt W p)) s = C (eval₂ (Int.castRingHom _) (IndefiniteRowSideFullHecke.Inter.genPt W) s)`. Rewrite using `[eval₂_comp_left]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h4 : eval₂ (Int.castRingHom (MvPolynomial B (IndefiniteRowSideFullHecke.Inter.FnField W))) (fun p => C (IndefiniteRowSideFullHecke.Inter.genPt W p) * X p.1) s = 0`. Rewrite using `[show (fun p : Σ k, ι k => C (IndefiniteRowSideFullHecke.Inter.genPt W p) * X p.1) = fun p => X p.1 * C (IndefiniteRowSideFullHecke.Inter.genPt W p) from funext fun _ => mul_comm _ _, h3, e2, h0, C_0, mul_zero]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_genPt (W : Ideal (MRing ι)) [W.IsPrime] (hW : IsMultiHomogIdeal W) :
     mCoordIdeal (IndefiniteRowSideFullHecke.Inter.genPt W) = W := by
@@ -97,9 +97,9 @@ theorem mCoordIdeal_genPt (W : Ideal (MRing ι)) [W.IsPrime] (hW : IsMultiHomogI
         exact h4
 
 /- English proof (translation)
-Establish `: (mCoordIdeal y).IsPrime` using `RingHom.ker_isPrime _`. Establish `hint : ∀ m : ℤ, (C m : MRing ι) ∈ mCoordIdeal y → m = 0` using `fun m hm => by`. Establish `h : m ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing ι)` using `hm`. Rewrite `h` using `[show (mCoordIdeal y).comap (C : ℤ →+* MRing ι) = ⊥ from CoordinateConeArithVar.horizontal y, Ideal.mem_bot]`. Then use the resulting hypothesis. Take `⟨-, hc, -⟩` from `ReciprocityTheory.AnForm.R.extQ_spec (mCoordIdeal y) hint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hle : ReciprocityTheory.AnForm.R.extQ (mCoordIdeal y) ≤ RingHom.ker (IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.coneMapQ y)` using `Ideal.map_le_iff_le_comap.mpr (IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.comap_ker_coneMapQ y).ge`. Use `(eq_of_le_of_not_lt hle fun hlt => ?_).symm` and prove the remaining obligations. Establish `h` using `ReciprocityTheory.AnForm.R.IntegerToRational.comap_strictMono hlt`. Simplify using `only [hc, IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.comap_ker_coneMapQ] at h`. Conclude with `lt_irrefl _ h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_coneMapQ_eq {Ω : Type} [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω) :
     RingHom.ker (IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.coneMapQ y) = ReciprocityTheory.AnForm.R.extQ (mCoordIdeal y) := by
@@ -119,15 +119,15 @@ theorem ker_coneMapQ_eq {Ω : Type} [Field Ω] [CharZero Ω] (y : (Σ k, ι k) �
 open IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree in
 
 /- English proof (translation)
-Establish `hN : ∀ m ∈ g.support, ∀ k, blockDeg m k ≤ g.totalDegree` using `fun m hm k => blockDeg_le_totalDegree hm k`. Establish `hG : homog d g.totalDegree g ∈ RingHom.ker (coneMapQ y)`. Rewrite using `[RingHom.mem_ker]`. Set `j` to `algebraMap (MvPolynomial B Ω) (FractionRing (MvPolynomial B Ω))`. Establish `hj : Function.Injective j` using `IsFractionRing.injective _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `hj` to reduce the goal to its premises. Establish `hw : ∀ k, (j ∘ fun p : Σ k, ι k => C (y p) * X p.1) ⟨k, d k⟩ ≠ 0` using `fun k => (map_ne_zero_iff j hj).mpr (mul_ne_zero (C_ne_zero.mpr (hyd k)) (X_ne_zero _))`. Rewrite using `[map_zero, coneMapQ, aeval_def, eval₂_comp_left, eval₂_homog _ d _ g hN _ hw]`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Establish `e : (fun p : Σ k, ι k => (j ∘ fun p : Σ k, ι k => C (y p) * X p.1) p / (j ∘ fun p : Σ k, ι k => C (y p) * X p.1) ⟨p.1, d p.1⟩) = (j.comp C) ∘ fun p => y p / y ⟨p.1, d p.1⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Establish `hX : j (X p.1) ≠ 0` using `(map_ne_zero_iff j hj).mpr (X_ne_zero _)`. Simplify using `only [Function.comp_apply, map_mul, RingHom.coe_comp]`. Rewrite using `[mul_div_mul_right _ _ hX, ← RingHom.comp_apply, ← RingHom.comp_apply, ← RingHom.comp_apply, map_div₀]`. Rewrite using `[e, show j.comp (algebraMap ℚ (MvPolynomial B Ω)) = (j.comp C).comp (algebraMap ℚ Ω) from RingHom.ext_rat _ _, ← eval₂_comp_left, ← aeval_def, hg0, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hGz : aeval z (homog d g.totalDegree g) = 0`. Rewrite `hG` using `[ker_coneMapQ_eq y]`. Establish `hle : ReciprocityTheory.AnForm.R.extQ (mCoordIdeal y) ≤ RingHom.ker (aeval z : MvPolynomial (Σ k, ι k) ℚ →ₐ[ℚ] L)`. Use `Ideal.map_le_iff_le_comap.mpr fun f hf => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← algebraMap_int_eq, aeval_map_algebraMap, aeval_def, algebraMap_int_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `aeval_eq_zero_of_mem (hyz hf)`. Conclude with `hle hG`. Rewrite `hGz` using `[aeval_def, eval₂_homog _ d _ g hN _ hzd]`. Rewrite using `[aeval_def]`. Conclude with `(mul_eq_zero.mp hGz).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hzd k))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_ratio_eq_zero_of_le {Ω L : Type} [Field Ω] [CharZero Ω] [Field L] [CharZero L]
     {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → L} (hyz : mCoordIdeal y ≤ mCoordIdeal z) (d : ∀ k, ι k)
@@ -169,7 +169,7 @@ theorem aeval_ratio_eq_zero_of_le {Ω L : Type} [Field Ω] [CharZero Ω] [Field 
   exact (mul_eq_zero.mp hGz).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hzd k))
 
 /- English proof (translation)
-Use `aeval_ratio_eq_zero_of_le hyz d hyd hzd (g := g) (by rw [aeval_def]; exact hg0)` as an intermediate fact. Rewrite `this` using `[aeval_def]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eval₂_ratio_eq_zero_of_le {Ω L : Type} [Field Ω] [CharZero Ω] [Field L] [CharZero L]
     {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → L} (hyz : mCoordIdeal y ≤ mCoordIdeal z) (d : ∀ k, ι k)
@@ -195,14 +195,14 @@ def linVal (w : Fin i → K) : ProjField K i :=
   algebraMap (MvPolynomial (Fin i) K) (ProjField K i) (∑ j, C (w j) * X j)
 
 /- English proof (translation)
-Simplify using `[linVal, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linVal_eq (w : Fin i → K) :
     linVal w = ∑ j, constK K i (w j) * algebraMap (MvPolynomial (Fin i) K) (ProjField K i) (X j) := by
   simp [linVal, map_sum, map_mul]
 
 /- English proof (translation)
-Rewrite using `[linVal_eq, linVal_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem linVal_smul (a : K) (w : Fin i → K) : linVal (a • w) = constK K i a * linVal w := by
   rw [linVal_eq, linVal_eq, Finset.mul_sum]
@@ -210,7 +210,7 @@ theorem linVal_smul (a : K) (w : Fin i → K) : linVal (a • w) = constK K i a 
   rw [Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[linVal_eq, Finset.sum_eq_single j (fun k _ hk => by simp [hk]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linVal_single (j : Fin i) :
     linVal (Pi.single j (1 : K)) = algebraMap (MvPolynomial (Fin i) K) (ProjField K i) (X j) := by
@@ -224,13 +224,13 @@ theorem dualLatticeCoord_eq (b : Module.Basis T ℤ (dualLattice F)) (t : T) :
     dualLatticeCoord b ⟨(), t⟩ = linVal (b t : Fin i → K) := rfl
 
 /- English proof (translation)
-Take `⟨D, hD, hmem⟩` from `exists_int_smul_mem_latticeDual F.lattice F.fg w`. Establish `hmem' : D • w ∈ dualLattice F` using `hmem`. Use `⟨D, b.repr ⟨D • w, hmem'⟩, hD, ?_⟩` and prove the remaining obligations. Establish `h : D • w = ∑ t, (b.repr ⟨D • w, hmem'⟩ t) • (b t : Fin i → K)`. Use `congrArg Subtype.val (b.sum_repr ⟨D • w, hmem'⟩)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `using this.symm`. Establish `hj : ∀ j, (D : K) * w j = ∑ t, (b.repr ⟨D • w, hmem'⟩ t : K) * (b t : Fin i → K) j` using `fun j => by`. Use `congrFun h j` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, zsmul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [linVal_eq, dualLatticeCoord_eq, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `congrArg (constK K i) (hj j)`. Simplify using `only [map_mul, map_intCast, map_sum] at h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, h2, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun t _ => mul_assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_combo (b : Module.Basis T ℤ (dualLattice F)) (w : Fin i → K) :
     ∃ (D : ℤ) (c : T → ℤ), D ≠ 0 ∧
@@ -254,9 +254,9 @@ theorem exists_combo (b : Module.Basis T ℤ (dualLattice F)) (w : Fin i → K) 
   exact Finset.sum_congr rfl fun t _ => mul_assoc _ _ _
 
 /- English proof (translation)
-Take `⟨D, c, hD, h⟩` from `exists_combo b w`. Use `⟨∑ t, C ((c t : ℚ) / D) * X ⟨(), t⟩, ?_⟩` and prove the remaining obligations. Establish `hD' : (D : ProjField K i) ≠ 0` using `Int.cast_ne_zero.mpr hD`. Establish `hl : linVal w = ∑ t, ((c t : ProjField K i) / D) * dualLatticeCoord b ⟨(), t⟩`. Rewrite using `[← mul_div_cancel_left₀ (linVal w) hD', h, Finset.sum_div]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Rewrite using `[hl, Finset.sum_div, eval₂_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[eval₂_mul, eval₂_C, eval₂_X, map_div₀, map_intCast, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_eval_eq (b : Module.Basis T ℤ (dualLattice F)) (t0 : T) (w : Fin i → K) :
     ∃ g : MvPolynomial (Σ _ : Unit, T) ℚ,
@@ -274,25 +274,23 @@ theorem exists_eval_eq (b : Module.Basis T ℤ (dualLattice F)) (t0 : T) (w : Fi
   ring
 
 /- English proof (translation)
-Establish `hu : dualLatticeCoord b ⟨(), t0⟩ ≠ 0` using `fun h0 => by`. Establish `hX : (X ⟨(), t0⟩ : MRing (dualBlocks T)) ∈ mCoordIdeal z` using `hle (IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.X_mem_of_eq_zero h0)`. Use `aeval_eq_zero_of_mem hX` as an intermediate fact. Rewrite `this` using `[eval₂_X, hz]`. Conclude with `one_ne_zero this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `ev : MvPolynomial (Σ _ : Unit, T) ℚ →+* ProjField K i` to `eval₂Hom (Rat.castHom _) fun p => dualLatticeCoord b p / dualLatticeCoord b ⟨(), t0⟩`. Set `ev2 : MvPolynomial (Σ _ : Unit, T) ℚ →+* L` to `eval₂Hom (Rat.castHom L) z`. Establish `hker : ∀ g ∈ RingHom.ker ev, ev2 g = 0` using `fun g hg => by`. Establish `h` using `eval₂_ratio_eq_zero_of_le hle (fun _ => t0) (fun _ => hu) (fun _ => by rw [hz]; exact one_ne_zero) (RingHom.mem_ker.1 hg)`. Establish `e : (fun p : Σ _ : Unit, T => z p / z ⟨p.1, (fun _ : Unit => t0) p.1⟩) = z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `⟨⟨⟩, t⟩`. Use `show z ⟨(), t⟩ / z ⟨(), t0⟩ = z ⟨(), t⟩`. Rewrite using `[hz, div_one]`. Use `show eval₂ (Rat.castHom L) z g = 0`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Set `ψ : ev.range →+* L` to `(Ideal.Quotient.lift (RingHom.ker ev) ev2 hker).comp ev.quotientKerEquivRange.symm.toRingHom`. Establish `hψ : ∀ g, ψ ⟨ev g, g, rfl⟩ = ev2 g` using `fun g => by show Ideal.Quotient.lift _ ev2 hker (ev.quotientKerEquivRange.symm ⟨ev g, g, rfl⟩) = ev2 g`. Rewrite using `[show ev.quotientKerEquivRange.symm ⟨ev g, g, rfl⟩ = Ideal.Quotient.mk _ g from (RingEquiv.symm_apply_eq _).2 rfl]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmem : ∀ w, linVal w / dualLatticeCoord b ⟨(), t0⟩ ∈ ev.range` using `fun w => by`. Take `⟨g, hg⟩` from `exists_eval_eq b t0 w`. Conclude with `⟨g, hg⟩`. Establish `hκ : ∀ a, constK K i a ∈ ev.range` using `fun a => by`. Establish `h` using `hmem (a • (b t0 : Fin i → K))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `h` using `[linVal_smul, ← dualLatticeCoord_eq, mul_div_assoc, div_self hu, mul_one]`. Then use the resulting hypothesis. Set `lam : K →+* L` to `ψ.comp ((constK K i).codRestrict ev.range hκ)`. Set `_ : Algebra K L` to `lam.toAlgebra`. Set `v : Fin i → L` to `fun j => ψ ⟨linVal (Pi.single j 1) / dualLatticeCoord b ⟨(), t0⟩, hmem _⟩`. Establish `hv : dualPointCoord b v = z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `p`. Take `⟨⟨⟩, t⟩` from `p`. Establish `e : (∑ j, (constK K i).codRestrict ev.range hκ ((b t : Fin i → K) j) * (⟨linVal (Pi.single j 1) / dualLatticeCoord b ⟨(), t0⟩, hmem _⟩ : ev.range)) = ⟨ev (X ⟨(), t⟩), X ⟨(), t⟩, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finsetSum, Subring.coe_mul, RingHom.codRestrict_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show ev (X ⟨(), t⟩) = dualLatticeCoord b ⟨(), t⟩ / dualLatticeCoord b ⟨(), t0⟩ from eval₂_X _ _ _, dualLatticeCoord_eq b t, linVal_eq (b t : Fin i → K), Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[linVal_single, mul_div_assoc]`. Establish `h2` using `congrArg ψ e`. Rewrite `h2` using `[map_sum, hψ]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [map_mul] at h2`. Rewrite `h2` using `[show ev2 (X ⟨(), t⟩) = z ⟨(), t⟩ from eval₂_X _ _ _]`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Use `⟨lam.toAlgebra, v, fun h0 => ?_, hv⟩` and prove the remaining obligations.
-
-Use `congrFun hv ⟨(), t0⟩` as an intermediate fact. Rewrite `this` using `[h0, hz]`. Simplify using `[dualPointCoord] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_point (b : Module.Basis T ℤ (dualLattice F)) {L : Type} [Field L] [CharZero L]
     (z : (Σ _ : Unit, T) → L) (t0 : T) (hz : z ⟨(), t0⟩ = 1) (hle : dualIdeal b ≤ mCoordIdeal z) :
@@ -358,13 +356,13 @@ theorem exists_point (b : Module.Basis T ℤ (dualLattice F)) {L : Type} [Field 
 end Dual
 
 /- English proof (translation)
-Establish `: W.IsPrime` using `hW.2.1.1`. Establish `hinj : Function.Injective (algebraMap ℤ (IndefiniteRowSideFullHecke.Inter.FnField W))`. Establish `e : algebraMap ℤ (IndefiniteRowSideFullHecke.Inter.FnField W) = (algebraMap (MRing (fun _ : Unit => T) ⧸ W) (IndefiniteRowSideFullHecke.Inter.FnField W)).comp (algebraMap ℤ (MRing (fun _ : Unit => T) ⧸ W))` using `RingHom.ext_int _ _`. Rewrite using `[e, RingHom.coe_comp]`. Conclude with `(IsFractionRing.injective _ _).comp (CoordinateConeArithVar.algebraMap_injective W hW.2.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: CharZero (IndefiniteRowSideFullHecke.Inter.FnField W)` using `charZero_of_injective_algebraMap hinj`. Establish `hy : mCoordIdeal (IndefiniteRowSideFullHecke.Inter.genPt W) = W` using `mCoordIdeal_genPt W hW.2.1.2.1`. Establish `hP : IsArithVar (mCoordIdeal (IndefiniteRowSideFullHecke.Inter.genPt W)) 1` using `by rw [hy]; exact hW`. Take `⟨t0, ht0⟩` from `hW.2.1.2.2 ()`. Establish `hc : ∀ k, IndefiniteRowSideFullHecke.Inter.genPt W ⟨k, (fun _ : Unit => t0) k⟩ ≠ 0` using `fun k h => ht0 (by rw [← hy]; exact IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.X_mem_of_eq_zero h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (coneRatios (IndefiniteRowSideFullHecke.Inter.genPt W) fun _ : Unit => t0)` using `(Set.finite_range _).to_subtype`. Establish `: FiniteDimensional ℚ (CoordinateConeArithVar.ratioField (IndefiniteRowSideFullHecke.Inter.genPt W) fun _ => t0)` using `IntermediateField.finiteDimensional_adjoin fun x ⟨p, hp⟩ => hp ▸ (IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.isAlgebraic_ratio hP _ hc p).isIntegral`. Establish `: CharZero (CoordinateConeArithVar.ratioField (IndefiniteRowSideFullHecke.Inter.genPt W) fun _ => t0)` using `charZero_of_injective_algebraMap (algebraMap ℚ _).injective`. Use `⟨CoordinateConeArithVar.ratioField (IndefiniteRowSideFullHecke.Inter.genPt W) fun _ => t0, inferInstance, ⟨⟩, CoordinateConeArithVar.ratioPtL (IndefiniteRowSideFullHecke.Inter.genPt W) fun _ => t0, t0, ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_self (hc ())`. Rewrite using `[CoordinateConeArithVar.mCoordIdeal_ratioPtL _ _ hc, hy]`.
+A detailed English derivation is pending.
 -/
 theorem exists_numberField_coords {T : Type} [Fintype T] (W : Ideal (MRing (fun _ : Unit => T)))
     (hW : IsArithVar W 1) :
@@ -398,7 +396,7 @@ theorem exists_numberField_coords {T : Type} [Fintype T] (W : Ideal (MRing (fun 
 end DualCurvePointAlt
 
 /- English proof (translation)
-Introduce `K _ _ i F T _ _ b W hW hle`. Take `⟨L, _, _, z, t0, hz, rfl⟩` from `DualCurvePointAlt.exists_numberField_coords W hW`. Take `⟨_, v, hv, hvz⟩` from `DualCurvePointAlt.exists_point b z t0 hz hle`. Conclude with `⟨L, inferInstance, inferInstance, inferInstance, v, hv, by rw [hvz]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem DualCurvePoint.proof : DualCurvePoint.Statement := by
   intro K _ _ i F T _ _ b W hW hle

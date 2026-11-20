@@ -3,11 +3,11 @@ import Formalism.SubspaceCounting.Statement
 namespace Formalism.G0
 
 /- English proof (translation)
-Introduce `O M _ _ _ _ π hπ M' P τ hsat`. Establish `hπτ : π ^ τ ≠ 0` using `pow_ne_zero _ hπ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨⟨_, hxT⟩, hxM'⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hxT`, the goal using `[Submodule.ideal_span_singleton_smul]`. Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hxT`. Establish `hy : y ∈ M'` using `hsat _ _ hπτ hxM'`. Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨y, hy, rfl⟩`. Use `set N := P ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule O M)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : (M' ⧸ Submodule.comap M'.subtype N) →ₗ[O] (M ⧸ N)` to `Submodule.mapQ _ _ M'.subtype le_rfl`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.ker_mapQ]`. Simplify using the standard rewrite rules. Conclude with `Module.length_le_of_injective f hf`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem saturated_member : SaturatedMember := by
   intro O M _ _ _ _ π hπ M' P τ hsat

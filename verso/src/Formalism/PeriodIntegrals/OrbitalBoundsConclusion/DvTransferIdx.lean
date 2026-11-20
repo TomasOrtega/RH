@@ -5,6 +5,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TransferIndices.DvTrans
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.DvIdxCalc
 
 /- English proof (translation)
-The claim follows from `PI.Dv.TIW.dvTransferIdx_of_idxCalc division_index_calc`.
+A detailed English derivation is pending.
 -/
 theorem division_transfer_indices : ∃ C : ℝ, PI.Dv.Conclusion4b C := PI.Dv.TIW.dvTransferIdx_of_idxCalc division_index_calc

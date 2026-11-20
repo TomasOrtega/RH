@@ -18,7 +18,7 @@ local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "jK" => algebraMap (𝓞 K) K
 
 /- English proof (translation)
-Rewrite using `[gramO, Matrix.sub_apply, Matrix.mul_apply, diagonal_apply]`. Repeatedly rewrite using `[mul_diagonal, conjTranspose_apply]`. Apply the tactic sequence `split_ifs <;> simp [jK_star, map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramO_apply {m : ℕ} (a : Fin m → 𝓞 F) (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (i j : Fin m) :
     jK (gramO a Y i j) = (∑ l, star (jK (Y l i)) * jK (ι (a l)) * jK (Y l j)) -
@@ -51,7 +51,7 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {𝔭 : I
 include horth hdiag ha hbX hloc hF h𝔭 hL
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Rewrite `hx`, the goal using `[mem_B horth hdiag ha hbX hloc h𝔭.isPrime hL]`. Introduce `k`. Rewrite using `[crd_gmap horth hdiag ha]`. Conclude with `sum_mem fun j _ => mul_mem (HU.jK_mem_SP _) (hx j)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_B (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (x : V) (hx : x ∈ locF 𝔭 L) :
     gmap h b a Y x ∈ locF 𝔭 L := by
@@ -62,9 +62,9 @@ theorem gmap_B (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (x : V) (hx : x ∈ locF �
   exact sum_mem fun j _ => mul_mem (HU.jK_mem_SP _) (hx j)
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Rewrite `hx`, the goal using `[mem_A horth hdiag ha hbX hloc hF h𝔭 hL]`. Introduce `k`. Rewrite using `[crd_gmap horth hdiag ha, Finset.mul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : jK (ι (a k) * Y k j) / jK (ι (a j)) * (jK (ι (a j)) * crd h b a x j) = jK (ι (a k)) * (jK (Y k j) * crd h b a x j)`. Rewrite using `[map_mul, div_mul_eq_mul_div, div_eq_iff (jK_ι_ne_zero (ha j))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`. Conclude with `mul_mem (hY k j) (hx j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_A (Y : Matrix (Fin m) (Fin m) (𝓞 K))
     (hY : ∀ i j, haveI := h𝔭.isPrime; jK (ι (a i) * Y i j) / jK (ι (a j)) ∈ HU.SP K 𝔭)
@@ -81,7 +81,7 @@ theorem gmap_A (Y : Matrix (Fin m) (Fin m) (𝓞 K))
   exact mul_mem (hY k j) (hx j)
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Rewrite `hx` using `[mem_B horth hdiag ha hbX hloc h𝔭.isPrime hL]`. Rewrite using `[mem_A horth hdiag ha hbX hloc hF h𝔭 hL]`. Conclude with `fun i => mul_mem (HU.jK_mem_SP _) (hx i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem B_le_A (x : V) (hx : x ∈ locF 𝔭 L) : x ∈ locF 𝔭 (dualIn h ⊤ L) := by
   have := h𝔭.isPrime
@@ -90,7 +90,7 @@ theorem B_le_A (x : V) (hx : x ∈ locF 𝔭 L) : x ∈ locF 𝔭 (dualIn h ⊤ 
   exact fun i => mul_mem (HU.jK_mem_SP _) (hx i)
 
 /- English proof (translation)
-The claim follows from `h𝔭.isPrime; h x y ∈ HU.SP K 𝔭 ∧ h y x ∈ HU.SP K 𝔭 := by have := h𝔭.isPrime rw [mem_B horth hdiag ha hbX hloc h𝔭.isPrime hL] at hy rw [mem_A horth hdiag ha hbX hloc hF h𝔭 hL] at hx rw [h_expand horth hdiag ha hbX hloc h𝔭.isPrime hL x y, h_expand horth hdiag ha hbX hloc h𝔭.isPrime …`.
+A detailed English derivation is pending.
 -/
 theorem h_AB (x y : V) (hx : x ∈ locF 𝔭 (dualIn h ⊤ L)) (hy : y ∈ locF 𝔭 L) :
     haveI := h𝔭.isPrime; h x y ∈ HU.SP K 𝔭 ∧ h y x ∈ HU.SP K 𝔭 := by
@@ -109,9 +109,9 @@ theorem h_AB (x y : V) (hx : x ∈ locF 𝔭 (dualIn h ⊤ L)) (hy : y ∈ locF 
     exact mul_mem (star_mem_SP hF (hy i)) (hx i)
 
 /- English proof (translation)
-Rewrite using `[h_expand horth hdiag ha hbX hloc h𝔭.isPrime hL x y, h_expand horth hdiag ha hbX hloc h𝔭.isPrime hL (gmap h b a Y x) (gmap h b a Y y)]`. Simplify using `only [crd_gmap horth hdiag ha, gramO_apply, mul_sub, sub_mul, Finset.sum_sub_distrib]`. Use `congr 1`. Simplify using `only [star_sum, star_mul', Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_congr rfl fun y _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem form_identity (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (x y : V) :
     h (gmap h b a Y x) (gmap h b a Y y) - h x y =

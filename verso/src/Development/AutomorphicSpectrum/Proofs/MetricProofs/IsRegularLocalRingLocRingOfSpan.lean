@@ -8,11 +8,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.Kreg
 open MvPolynomial ReciprocityTheory.AnForm.R GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Introduce `m e I t r hI hdim hspan`. Take `⟨hloc, hnoeth⟩` from `locRing_isLocalRing_isNoetherian I t hI`. Use `haveI := hloc`. Use `haveI := hnoeth`. Establish `hle : I ≤ ptIdeal t` using `(le_ptIdeal_iff' I t).2 hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Rewrite using `[maximalIdeal_locRing hle, ← hspan, hdim]`. Establish `h1 : (Set.range fun l => algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t) (r l)).ncard ≤ e`. Rewrite using `[← Set.image_univ]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `h2 : (Ideal.span (Set.range fun l => algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t) (r l))).spanFinrank ≤ e` using `(Submodule.spanFinrank_span_le_ncard_of_finite (Set.finite_range _)).trans h1`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_locRing_of_span :
     ∀ (m e : ℕ) (I : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin m → ℂ)

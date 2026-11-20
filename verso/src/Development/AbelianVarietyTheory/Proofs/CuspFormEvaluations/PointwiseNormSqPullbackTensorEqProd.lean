@@ -17,7 +17,7 @@ section General
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Unfold `GT.l2`. Rewrite using `[MeasureTheory.average_eq]`. Use `MeasureTheory.integral_nonneg_of_ae ?_ |> smul_nonneg (by positivity)` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun v => ?_` and prove the remaining obligations. Unfold `GT.ptN2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
 Check the signs of the components of the expression.
 -/
@@ -30,7 +30,7 @@ theorem l2NormSq_nonneg_gaussianTorus (Y : GT ι) (q : ℕ) (F : EuclideanSpace 
   positivity
 
 /- English proof (translation)
-Use `le_csInf ⟨‖Y.b ⟨0, by omega⟩‖, Y.b ⟨0, by omega⟩, Submodule.subset_span ⟨_, rfl⟩, Y.b.ne_zero _, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨x, hx, hx0, rfl⟩`. Conclude with `hmin x hx hx0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem le_firstMinimum_of_period_lower_bound (Y : GT ι) (hι : Fintype.card ι ≠ 0) {lam : ℝ}
     (hmin : ∀ x ∈ lat Y.b, x ≠ 0 → lam ≤ ‖x‖) : lam ≤ Y.la1 := by
@@ -40,9 +40,9 @@ theorem le_firstMinimum_of_period_lower_bound (Y : GT ι) (hι : Fintype.card ι
   exact hmin x hx hx0
 
 /- English proof (translation)
-Use `(hsup ι Y 1 le_rfl F hF v).trans (mul_le_mul_of_nonneg_right ?_ (l2NormSq_nonneg_gaussianTorus Y 1 F))` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (by norm_num), ← pow_mul, mul_comm (Fintype.card ι) 2]`. Simplify using `only [Nat.cast_one, one_pow, mul_one, one_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (by norm_num)` and prove the remaining obligations. Distinguish the cases in `hι : Fintype.card ι = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hι]`. Establish `h1` using `le_firstMinimum_of_period_lower_bound Y hι hmin`. Establish `hpi : 0 < Real.sqrt Real.pi` using `Real.sqrt_pos.mpr Real.pi_pos`. Establish `h2 : 0 < Y.la1` using `hlam.trans_le h1`. Use `gcongr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pointwiseNormSq_le_l2_of_firstMinimum (hsup : GSupStatement) (Y : GT ι) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ Y.Sec 1)
     {lam : ℝ} (hlam : 0 < lam) (hmin : ∀ x ∈ lat Y.b, x ≠ 0 → lam ≤ ‖x‖)
@@ -63,17 +63,15 @@ theorem pointwiseNormSq_le_l2_of_firstMinimum (hsup : GSupStatement) (Y : GT ι)
 open Classical in
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos q with rfl | hq` into its components or cases. Use `swap`. Conclude with `Jet.norm_polyDeriv_le q hq F hF S hS P a hP`. Simplify using `only [Nat.cast_zero, zero_mul, neg_zero, Real.exp_zero, mul_one] at hS`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `Jet.norm_polyDeriv_le 1 le_rfl F hF S (fun v => ?_) P 0 hP`. Simplify using `using h`. Use `le_trans ?_ (hS v)` and prove the remaining obligations. Use `mul_le_of_le_one_right (by positivity) (Real.exp_le_one_iff.mpr ?_)` and prove the remaining obligations. Use `Real.pi_pos` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: 0 ≤ ((1 : ℕ) : ℝ) * Real.pi * ‖v‖ ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : Bornology.IsBounded (Set.range F)`. Use `isBounded_iff_forall_norm_le.mpr ⟨Real.sqrt S, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Real.le_sqrt_of_sq_le (hS v)`. Take `⟨c, hc⟩` from `hF.exists_eq_const_of_bounded hb`. Establish `h0 : polyDeriv P (fun i => EuclideanSpace.single i (1 : ℂ)) F 0 = 0`. Unfold `polyDeriv`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hne : Multiset.card (Finsupp.toMultiset m) ≠ 0`. Rewrite using `[Jet.card_toMultiset_eq_degree, Jet.degree_eq_of_mem_support hP hm]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hc, show Function.const (EuclideanSpace ℂ ι) c = fun _ => c from rfl, iteratedFDeriv_const_of_ne hne]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[h0, norm_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem norm_polyDeriv_le (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ)
     (hF : Differentiable ℂ F) (S : ℝ)
@@ -120,11 +118,11 @@ open TensorLat
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `set G : EuclideanSpace ℂ (Fin n × Idx X.dim) → ℂ := F ∘ flat.symm with hG`. Establish `hGd : Differentiable ℂ G` using `hF.comp (flat (n := n) (ι := Idx X.dim)).symm.differentiable`. Establish `e : X.U q b F = (fun v => cexp (q * Real.pi * Hf v (flat b) - q * Real.pi * Hf (flat b) (flat b) / 2) * G (v - flat b)) ∘ flat`. Use function extensionality and compare the values at `v`. Simplify using `only [PT.U, Function.comp, hG, Hf_flat, ← map_sub, ContinuousLinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `norm_polyDeriv_le q _ (Jet.differentiable_translate q (flat b) hGd) S (fun v => by`. Rewrite using `[Jet.norm_translate]`. Establish `h1` using `hS (flat.symm (v - flat b))`. Rewrite using `[PT.ptN2, HC_self_re, ContinuousLinearEquiv.apply_symm_apply] at h1) P a hP` and apply the resulting hypothesis. Rewrite using `[e, Jet.polyDeriv_comp_equiv, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`. Rewrite using `[Function.comp_apply]`. Use `flat_dir l` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_polyDeriv_U_le (X : PT E) (q : ℕ) {n : ℕ} (F : (Fin n → Vsp X.dim) → ℂ)
     (hF : Differentiable ℂ F) (S : ℝ) (hS : ∀ v, X.ptN2 q F v ≤ S)
@@ -152,7 +150,7 @@ theorem norm_polyDeriv_U_le (X : PT E) (q : ℕ) {n : ℕ} (F : (Fin n → Vsp X
   convert flat_dir l
 
 /- English proof (translation)
-Use `⟨hs.1.comp (differentiable_pi.2 fun _ => differentiable_id), fun γ hγ v => ?_⟩` and prove the remaining obligations. Establish `e : (fun _ : Fin 1 => v + γ) = (fun _ => v) + (fun _ => γ)` using `by funext j; simp`. Simplify using `only [e]`. Rewrite using `[hs.2 (fun _ => γ) (fun _ => hγ) (fun _ => v)]`. Simplify using `[HC, gtOf]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem col_mem_Sec (X : PT E) {q : ℕ} {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec q 1) :
     (fun z => s fun _ => z) ∈ (gtOf X q).Sec q := by
@@ -163,14 +161,14 @@ theorem col_mem_Sec (X : PT E) {q : ℕ} {s : (Fin 1 → Vsp X.dim) → ℂ} (hs
   simp [HC, gtOf]
 
 /- English proof (translation)
-Simplify using `[GT.ptN2, PT.ptN2, HC, jof_Hf_self_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem oneColumn_pointwiseNorm_eq_torus (X : PT E) (q : ℕ) (s : (Fin 1 → Vsp X.dim) → ℂ) (x : Vsp X.dim) :
     (gtOf X q).ptN2 q (fun z => s fun _ => z) x = X.ptN2 q s fun _ => x := by
   simp [GT.ptN2, PT.ptN2, HC, jof_Hf_self_re]
 
 /- English proof (translation)
-Rewrite using `[l2_norm_fundamental_domain, GT.l2]`. Simplify using `only [oneColumn_pointwiseNorm_eq_torus]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem oneColumn_l2Norm_eq_torus (X : PT E) (q : ℕ) (s : (Fin 1 → Vsp X.dim) → ℂ) :
     (gtOf X q).l2 q (fun z => s fun _ => z) = X.l2 q s := by
@@ -179,7 +177,7 @@ theorem oneColumn_l2Norm_eq_torus (X : PT E) (q : ℕ) (s : (Fin 1 → Vsp X.dim
   rfl
 
 /- English proof (translation)
-Use `lt_of_le_of_ne ?_ fun h => hne (eq_zero_of_l2_eq_zero X packingCount hq hs h.symm)` and prove the remaining obligations. Rewrite using `[← oneColumn_l2Norm_eq_torus]`. Conclude with `l2NormSq_nonneg_gaussianTorus _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l2_pos_of_mem_sec_of_ne_zero (X : PT E) {q : ℕ} (hq : 1 ≤ q) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec q 1)
     (hne : s ≠ 0) : 0 < X.l2 q s := by
@@ -188,7 +186,7 @@ theorem l2_pos_of_mem_sec_of_ne_zero (X : PT E) {q : ℕ} (hq : 1 ≤ q) {s : (F
   exact l2NormSq_nonneg_gaussianTorus _ _ _
 
 /- English proof (translation)
-Rewrite using `[← oneColumn_pointwiseNorm_eq_torus, ← oneColumn_l2Norm_eq_torus]`. Conclude with `pointwiseNormSq_le_l2_of_firstMinimum sup_le_l2_principal_torus (gtOf X 1) (col_mem_Sec X hs) hlam hmin x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonal_pointwiseNormSq_le_l2 (X : PT E) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     {lam : ℝ} (hlam : 0 < lam) (hmin : ∀ x ∈ X.L, x ≠ 0 → lam ≤ ‖x‖) (x : Vsp X.dim) :
@@ -198,7 +196,7 @@ theorem diagonal_pointwiseNormSq_le_l2 (X : PT E) {s : (Fin 1 → Vsp X.dim) →
   exact pointwiseNormSq_le_l2_of_firstMinimum sup_le_l2_principal_torus (gtOf X 1) (col_mem_Sec X hs) hlam hmin x
 
 /- English proof (translation)
-Establish `hc : ContDiff ℂ (⊤ : ℕ∞) (s0 X (n` using `n) π s) := by`. Use `contDiff_prod fun k _ => (contDiff_of_diff hs).comp (contDiff_pi.2 fun _ => ?_)` and prove the remaining obligations. Conclude with `(LinearMap.toContinuousLinearMap π).contDiff.comp (contDiff_apply ℂ (Vsp X.dim) k)`. Conclude with `hc.differentiable (by simp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiable_pullback_tensor (X : PT E) {n : ℕ} (π : Vsp X.dim →ₗ[ℂ] Vsp X.dim)
     {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : Differentiable ℂ s) :
@@ -209,9 +207,9 @@ theorem differentiable_pullback_tensor (X : PT E) {n : ℕ} (π : Vsp X.dim →�
   exact hc.differentiable (by simp)
 
 /- English proof (translation)
-Unfold `PT.ptN2 s0`. Rewrite using `[norm_prod, ← Finset.prod_pow, Finset.prod_mul_distrib, ← Real.exp_sum]`. Use `congr 2`. Simplify using `only [HC, Complex.re_sum, Fin.sum_univ_one, hπ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Complex.mul_re, Complex.natCast_re, Complex.natCast_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pointwiseNormSq_pullback_tensor_eq_prod (X : PT E) {q n : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.dim}
     (hπ : ∀ v w, Hf (π v) (π w) = q * Hf v w) (s : (Fin 1 → Vsp X.dim) → ℂ)
@@ -227,9 +225,9 @@ theorem pointwiseNormSq_pullback_tensor_eq_prod (X : PT E) {q n : ℕ} {π : Vsp
   ring
 
 /- English proof (translation)
-Use `set C : ℝ := Real.sqrt 2 * (1 + 4 * Real.sqrt (2 * Fintype.card (Idx X.dim)) / (Real.sqrt Real.pi * lam)) ^ Fintype.card (Idx X.dim) with hC`. Establish `hC0 : 0 ≤ C` using `by positivity`. Establish `hl : 0 ≤ X.l2 1 s` using `by rw [← oneColumn_l2Norm_eq_torus]; exact l2NormSq_nonneg_gaussianTorus _ _ _`. Establish `h` using `norm_polyDeriv_U_le X q (s0 X π s) (differentiable_pullback_tensor X π hs.1) ((C ^ n * Real.sqrt (X.l2 1 s) ^ n) ^ 2) (fun v => by`. Rewrite using `[pointwiseNormSq_pullback_tensor_eq_prod X hπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← mul_pow, ← pow_mul, mul_comm n 2, pow_mul, mul_pow C, Real.sq_sqrt hl]) P a hP b`. Rewrite `h` using `[Real.sqrt_sq (by positivity)]`. Use `h.trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_polyDeriv_pullback_tensor_le (X : PT E) {q n : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.dim}
     (hπ : ∀ v w, Hf (π v) (π w) = q * Hf v w) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
@@ -265,11 +263,11 @@ end ThetaBound
 open Classical in
 
 /- English proof (translation)
-Use `set C : ℝ := Real.sqrt 2 * (1 + 4 * Real.sqrt (2 * Fintype.card ι) / (Real.sqrt Real.pi * lam)) ^ Fintype.card ι with hC`. Establish `hC0 : 0 ≤ C` using `by positivity`. Establish `key : ∀ j ∈ s, ‖c j * polyDeriv P (fun i => EuclideanSpace.single i 1) (U 1 (y j) F) 0‖ ≤ (∑ m ∈ P.support, ‖P.coeff m‖) * (Real.pi * Real.exp 1 * a) ^ ((a : ℝ) / 2) * C * Real.sqrt (Y.l2 1 F)`. Introduce `j hj`. Establish `h` using `translate_jet_bound U hU 1 le_rfl F hF.1 (C ^ 2 * Y.l2 1 F) (ThetaBound.pointwiseNormSq_le_l2_of_firstMinimum hsup Y hF hlam hmin) P a hP (y j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Real.sqrt_mul (by positivity), Real.sqrt_sq hC0, Nat.cast_one, one_mul]`. Rewrite using `[norm_mul]`. Use `(mul_le_of_le_one_left (norm_nonneg _) (hc j hj)).trans (h.trans_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ _ key).trans_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem theta_value_bound (hsup : GSupStatement) {ι : Type} [Fintype ι] (U : ℕ → EuclideanSpace ℂ ι → (EuclideanSpace ℂ ι → ℂ) → EuclideanSpace ℂ ι → ℂ)
     (hU : ∀ (q : ℕ) a F v, U q a F v = cexp (q * Real.pi * Hf v a - q * Real.pi * Hf a a / 2) * F (v - a))
@@ -298,7 +296,7 @@ theorem theta_value_bound (hsup : GSupStatement) {ι : Type} [Fintype ι] (U : �
   ring
 
 /- English proof (translation)
-Establish `hpos : 0 < Real.sqrt (A.T.l2 1 A.s)` using `Real.sqrt_pos.mpr (ThetaBound.l2_pos_of_mem_sec_of_ne_zero A.T le_rfl A.s_mem A.s_ne)`. Rewrite using `[thAn, norm_div, norm_pow, Complex.norm_real, Real.norm_of_nonneg hpos.le, div_le_iff₀ (pow_pos hpos n)]`. Conclude with `ThetaBound.norm_polyDeriv_pullback_tensor_le A.T hπ.2.2.1 A.s_mem hlam hmin P a hP b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_thAn_le {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ}
     {X : ReciprocityTheory.ChartRestriction.G.FD.Data E r} {x : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (A : TorusAt X x)

@@ -10,16 +10,16 @@ namespace ReciprocityTheory.ChartRestriction.DS
 namespace ChartWRAux
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.CurryModusPonens.goal1 .. | (apply Bl.CurryModusPonens.goal1 <;> assumption) | (intros; apply Bl.CurryModusPonens.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mp_curry (ι κ : Type*) [Fintype ι] [Fintype κ] :
     MeasurePreserving (Function.curry : (ι × κ → ℂ) → ι → κ → ℂ) volume volume := by
   first | exact Bl.CurryModusPonens.goal1 .. | (apply Bl.CurryModusPonens.goal1 <;> assumption) | (intros; apply Bl.CurryModusPonens.goal1 <;> assumption)
 
 /- English proof (translation)
-Establish `h1` using `measurePreserving_prodAssoc μa μb (μc.prod μd)`. Establish `h2` using `(MeasurePreserving.id μa).prod ((measurePreserving_prodAssoc μb μc μd).symm _)`. Establish `h3` using `(MeasurePreserving.id μa).prod (((Measure.measurePreserving_swap (μ := μb) (ν := μc))).prod (MeasurePreserving.id μd))`. Establish `h4` using `(MeasurePreserving.id μa).prod (measurePreserving_prodAssoc μc μb μd)`. Establish `h5` using `(measurePreserving_prodAssoc μa μc (μb.prod μd)).symm _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `(Measure.measurePreserving_swap (μ := μa) (ν := μc)).prod (MeasurePreserving.id (μb.prod μd))`. Establish `h` using `h6.comp (h5.comp (h4.comp (h3.comp (h2.comp h1))))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem mp_perm4 {α β γ δ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     [MeasurableSpace δ] (μa : Measure α) (μb : Measure β) (μc : Measure γ) (μd : Measure δ)
@@ -75,7 +75,7 @@ def rho (p : UCo N × TriCo N) : Fin N → Fin N → ℂ := fun a b =>
 def e2 (q : (Fin N → ℝ) × (Fin N → ℝ)) : Fin N → ℂ := fun a => ⟨q.1 a, q.2 a⟩
 
 /- English proof (translation)
-Establish `h1` using `(volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ (Fin N)).symm _`. Establish `h2` using `volume_preserving_pi (fun _ : Fin N => (Complex.volume_preserving_equiv_real_prod).symm _)`. Conclude with `h2.comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurePreserving_second_reorder : MeasurePreserving (e2 (N := N)) volume volume := by
   have h1 := (volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ (Fin N)).symm _
@@ -88,9 +88,9 @@ def rho0 (p : UCo N × TriCo N) : Fin N → Fin N → ℂ :=
       (e2 (p.2.1, p.1.1), (MeasurableEquiv.sumPiEquivProdPi (fun _ : Lo N ⊕ Up N => ℂ)).symm (p.1.2, p.2.2))))
 
 /- English proof (translation)
-Establish `h1` using `mp_perm4 (volume : Measure (Fin N → ℝ)) (volume : Measure (Lo N → ℂ)) (volume : Measure (Fin N → ℝ)) (volume : Measure (Up N → ℂ))`. Establish `h2` using `(measurePreserving_second_reorder (N := N)).prod (volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : Lo N ⊕ Up N => ℂ))`. Establish `h3` using `volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin N ⊕ (Lo N ⊕ Up N) => ℂ)`. Establish `h4` using `volume_measurePreserving_piCongrLeft (fun _ : Fin N × Fin N => ℂ) (idx N)`. Establish `h5` using `mp_curry (Fin N) (Fin N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h5.comp (h4.comp (h3.comp (h2.comp h1)))`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_rho_reorder : MeasurePreserving (rho0 (N := N)) volume volume := by
   have h1 := mp_perm4 (volume : Measure (Fin N → ℝ)) (volume : Measure (Lo N → ℂ))
@@ -102,11 +102,11 @@ theorem measurePreserving_rho_reorder : MeasurePreserving (rho0 (N := N)) volume
   exact h5.comp (h4.comp (h3.comp (h2.comp h1)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p a b`. Establish `key : ∀ i, rho0 p (idx N i).1 (idx N i).2 = (MeasurableEquiv.sumPiEquivProdPi (fun _ : Fin N ⊕ (Lo N ⊕ Up N) => ℂ)).symm (e2 (p.2.1, p.1.1), (MeasurableEquiv.sumPiEquivProdPi (fun _ : Lo N ⊕ Up N => ℂ)).symm (p.1.2, p.2.2)) i` using `fun i => MeasurableEquiv.piCongrLeft_apply_apply (idx N) (β := fun _ => ℂ) _ i`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Establish `k` using `key (Sum.inr (Sum.inr ⟨(a, b), h⟩))`. Simplify using `only [rho, h.ne, not_lt.2 h.le, h, if_false, dif_neg, dif_pos, not_false_eq_true]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `k`. Establish `k` using `key (Sum.inl a)`. Simplify using `only [rho, if_true]`. Use `k.trans ?_` and prove the remaining obligations. Apply the tactic sequence `apply Complex.ext <;> simp <;> rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `k` using `key (Sum.inr (Sum.inl ⟨(a, b), h⟩))`. Simplify using `only [rho, h.ne', h, if_false, dif_pos]`. Conclude with `k`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rho_reorder_eq_rho : rho0 (N := N) = rho := by
   funext p a b
@@ -127,7 +127,7 @@ theorem rho_reorder_eq_rho : rho0 (N := N) = rho := by
     exact k
 
 /- English proof (translation)
-Rewrite using `[← rho_reorder_eq_rho]`. Conclude with `measurePreserving_rho_reorder`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_rho : MeasurePreserving (rho (N := N)) volume volume := by
   rw [← rho_reorder_eq_rho]; exact measurePreserving_rho_reorder
@@ -136,11 +136,11 @@ def sh (p : UCo N × TriCo N) : UCo N × TriCo N :=
   (p.1, (p.2.1, fun ab => p.2.2 ab - star (p.1.2 ⟨(ab.1.2, ab.1.1), ab.2⟩)))
 
 /- English proof (translation)
-Establish `hc : Continuous (fun q : UCo N × TriCo N => ((0 : Fin N → ℝ), fun ab : Up N => -star (q.1.2 ⟨(ab.1.2, ab.1.1), ab.2⟩)) + q.2)`. Use `(continuous_const.prodMk (continuous_pi fun ab => ?_)).add continuous_snd` and prove the remaining obligations. Conclude with `((continuous_apply _).comp (continuous_snd.comp continuous_fst)).star.neg`. Establish `h` using `(MeasurePreserving.id (volume : Measure (UCo N))).skew_product (g := fun x (t : TriCo N) => ((0 : Fin N → ℝ), fun ab : Up N => -star (x.2 ⟨(ab.1.2, ab.1.1), ab.2⟩)) + t) (μc := (volume : Measure (TriCo N))) (μd := (volume : Measure (TriCo N))) hc.measurable (Filter.Eventually.of_ …`. Establish `e : sh (N` using `N) = fun p => (id p.1, ((0 : Fin N → ℝ), fun ab : Up N => -star (p.1.2 ⟨(ab.1.2, ab.1.1), ab.2⟩)) + p.2) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Use `Prod.ext rfl (Prod.ext ?_ ?_)` and prove the remaining obligations. Simplify using `[sh]`. Use function extensionality and compare the values at `ab`. Simplify using `[sh, sub_eq_add_neg, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem mp_sh : MeasurePreserving (sh (N := N)) volume volume := by
   have hc : Continuous (fun q : UCo N × TriCo N =>
@@ -163,9 +163,9 @@ theorem mp_sh : MeasurePreserving (sh (N := N)) volume volume := by
 def lam (p : UCo N × TriCo N) : Fin N → Fin N → ℂ := Matrix.of.symm (skMat p.1 + upMat p.2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p a b`. Simplify using `only [lam, Function.comp_apply, rho, sh, Matrix.of_symm_apply, Matrix.add_apply, skMat, upMat]`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Simplify using `[h.ne, not_lt.2 h.le, h]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h.ne', h, not_lt.2 h.le]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem lam_eq : lam (N := N) = rho ∘ sh := by
   funext p a b
@@ -176,7 +176,7 @@ theorem lam_eq : lam (N := N) = rho ∘ sh := by
   · simp [h.ne', h, not_lt.2 h.le]
 
 /- English proof (translation)
-Rewrite using `[lam_eq]`. Conclude with `mp_rho.comp mp_sh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_lam : MeasurePreserving (lam (N := N)) volume volume := by
   rw [lam_eq]; exact mp_rho.comp mp_sh
@@ -186,11 +186,11 @@ def lamInv (Z : Fin N → Fin N → ℂ) : UCo N × TriCo N :=
    (fun a => (Z a a).re, fun ab => Z ab.1.1 ab.1.2 + star (Z ab.1.2 ab.1.1)))
 
 /- English proof (translation)
-Take `⟨⟨x1, x2⟩, ⟨t1, t2⟩⟩` from `p`. Simplify using `only [lamInv, lam, Matrix.of_symm_apply, Matrix.add_apply, skMat, upMat]`. Use `Prod.ext (Prod.ext ?_ ?_) (Prod.ext ?_ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `ab`. Take `⟨⟨a, b⟩, h⟩` from `ab`. Simplify using `[h.ne', h, not_lt.2 h.le]`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `ab`. Take `⟨⟨a, b⟩, h⟩` from `ab`. Simplify using `[h.ne, h.ne', h, not_lt.2 h.le]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem lamInv_lam (p : UCo N × TriCo N) : lamInv (lam p) = p := by
   obtain ⟨⟨x1, x2⟩, ⟨t1, t2⟩⟩ := p
@@ -202,9 +202,9 @@ theorem lamInv_lam (p : UCo N × TriCo N) : lamInv (lam p) = p := by
   · funext ab; obtain ⟨⟨a, b⟩, h⟩ := ab; simp [h.ne, h.ne', h, not_lt.2 h.le]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `only [lamInv, lam, Matrix.of_symm_apply, Matrix.add_apply, skMat, upMat]`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Simplify using `[h.ne, not_lt.2 h.le, h]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h.ne', h, not_lt.2 h.le]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_lamInv (Z : Fin N → Fin N → ℂ) : lam (lamInv Z) = Z := by
   funext a b

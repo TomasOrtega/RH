@@ -31,11 +31,11 @@ noncomputable section
 namespace GlobalTheory.UT.ThetaSum
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Establish `hL` using `L.isLB`. Establish `hcube : MulPull.HasGen L.L (thφ G (x3 G)) thε` using `⟨c.t, c.isGen⟩`. Establish `hrig : MulPull.HasGen L.L (K` using `PUnit) (fun _ => eSec G) (fun _ => 1) := ⟨L.rig, L.rigGen⟩`. Establish `hsym : MulPull.HasGen L.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1] := ⟨σ, hσ⟩`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `MulPull.hasGen_pow hL hcube (𝟙 G) ((hrig.pull G.hom).of_formEq hL (fun U _ h => by`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, _root_.mul_one]`. Use the proof step `rfl))`. Use the proof step `(hsym.inv.of_formEq hL (fun U _ h => by`. Rewrite using `[Fin.prod_univ_two, Fin.prod_univ_two, Hom.inv_def, Category.id_comp, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)) m`. Use `h.of_formEq hL fun U _ h => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two, Fin.prod_univ_two, Nat.cast_pow]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gen_pow {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : RigLB G) (c : CubicalStr G L)
     (σ : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1])) (hσ : σ.IsGen) (m : ℕ) (a : G ⟶ G)
@@ -60,7 +60,7 @@ theorem exists_gen_pow {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Use `CoefBasic.coef_eq fun z J hJ => ?_` and prove the remaining obligations. Rewrite using `[h z J hJ]`. Conclude with `CoefBasic.isCoef_coef g hw χ s z J hJ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_congr {k : ℕ} (g : GtPtF D F) {w w' : Frm D F k g.b} (hw : w.IsGen)
     (h : ∀ z J, Good D.P.L z J → val w' (𝟙 _) z J = val w (𝟙 _) z J) (s : Fam D F k) (χ : D.X) :
@@ -70,7 +70,7 @@ theorem coef_congr {k : ℕ} (g : GtPtF D F) {w w' : Frm D F k g.b} (hw : w.IsGe
   exact CoefBasic.isCoef_coef g hw χ s z J hJ
 
 /- English proof (translation)
-Take `⟨hb, hv⟩` from `(isZero_iff o).1 ho`. Use `(isAdd_iff _ _ _).2 ⟨by rw [hb, _root_.one_mul], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Rewrite using `[hv χ y J hJ, hb, C.face₂, _root_.mul_one, _root_.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_isAdd {o : GtPtF D F} (ho : o.IsZero) (g : GtPtF D F) : o.IsAdd g g := by
   obtain ⟨hb, hv⟩ := (isZero_iff o).1 ho
@@ -79,19 +79,19 @@ theorem zero_isAdd {o : GtPtF D F} (ho : o.IsZero) (g : GtPtF D F) : o.IsAdd g g
   rw [hv χ y J hJ, hb, C.face₂, _root_.mul_one, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `hL R _ _ _ I hI D A G _ _ hG U F _ _ _ w₀ ρ hN th ϑ hϑ m hm p x t c hx hc w hw g' hg' κ hκ w' hw' hv`. Take `⟨α, s₁, θ, hα, hαn, htw, hθ, hact, hval⟩` from `hc`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact absurd hm (by decide)`. Establish `hm2 : 1 ≤ m ^ 2` using `Nat.one_le_pow _ _ (Nat.pos_of_ne_zero hm0)`. Establish `hbij` using `(expBijF_and_expandsF_lin hL R I hI D A G hG U).1 F (m ^ 2) hm2 w₀ hN.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ₁, hσ₁, -⟩` from `hbij.1 s₁`. Take `⟨E, hEG, hEA, hEB, hEh, hEact⟩` from `(IntEnd.exists_nsmul_and_neg hL R I hI D A G hG U).1 m`. Establish `hsm : Function.Injective fun χ : D.toPre.X => m • χ` using `fun a b h => by`. Establish `h' : (m : ℤ) • a = (m : ℤ) • b` using `by simpa only [natCast_zsmul] using h`. Conclude with `smul_right_injective D.toPre.X (Int.natCast_ne_zero.2 hm0) h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective E.h` using `fun a b h => hsm (by simpa only [hEh] using h)`. Establish `hpull` using `(GlobalTheory.T.expansion_pullback_section_endomorphism hL R I hI D A G hG U F E hinj (m ^ 2) 1 le_rfl hm2 (exists_gen_pow U.LG U.cubG U.symG U.symG_gen m E.aG hEG)).2 w₀ ρ hN (mulT A.A _ m) (snd _ A.A ^ m) (lift_snd _ _) (lift_fst _ _) (by rw [hEA, MonObj.comp_pow, Category.comp …`. Rewrite `hpull` using `[hEB]`. Take `⟨q₁, q₂⟩` from `hpull κ hκ p.g g' ((hEact F p.g g').2 hg') w w' hw.1 hw' hv`. Establish `main : ∀ s, U.ExpandsF F (m ^ 2) w₀ t s → ∀ (o : GtPtF D.toPre F) (w₁ : Frm D.toPre F (m ^ 2) o.b), o.IsZero → FrmOne w₁ → (∀ χ, coef s o w₁ (m • χ + p.y) = coef ϑ g' w' χ) ∧ ∀ β, (∀ χ, β ≠ m • χ + p.y) → coef s o w₁ β = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs o w₁ ho hw₁`. Establish `hΦ` using `GlobalTheory.T.symmetricLift_oddOrder_acts_as_expansionOperator hL R I hI D A G hG U F (m ^ 2) hm.pow p x hx θ hθ w₀ hN.1 w hw s₁ t σ₁ s hσ₁ hs hact`. Take `⟨ω₁, hω₁, hωv, hco⟩` from `CoefPhi.coef_phi hL R I hI D F (m ^ 2) hm2 p w hw.1 o p.g (zero_isAdd ho p.g) w₁ hw₁.1`. Establish `key : ∀ a, coef s o w₁ (a + p.y) = coef σ₁ p.g w a` using `fun a => (hco 1 (m ^ 2) le_rfl (Nat.mul_one _).symm p (one_nsmul _).symm rfl w w₁ ω₁ ⟨hw.1, fun _ _ _ => (pow_one _).symm⟩ ⟨hw₁.1, fun _ _ _ => (pow_one _).symm⟩ ⟨hω₁, fun _ _ _ => (pow_one _).symm⟩ σ₁ s hΦ a).trans (coef_congr p.g hw.1 (hωv ho hw₁) σ₁ a)`. Use `⟨fun χ => by rw [key, ← hEh, q₁], fun β hβ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_add_cancel β p.y, key]`. Use `q₂ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨χ, e⟩`. Conclude with `hβ χ (by rw [← hEh, e, sub_add_cancel])`. Use `⟨?_, main⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `hbij.1 t`. Take `⟨o, ho⟩` from `exists_zero_gt (D := D.toPre) (F := F)`. Take `⟨w₁, hw₁⟩` from `(CoefBasic.coef_basic R D.toPre F (m ^ 2) o).2.1 ((isZero_iff o).1 ho).1`. Take `⟨r₁, r₂⟩` from `main s hs o w₁ ho hw₁`. Establish `hsum` using `(EvalZero.value_at_origin hL R I hI D A G hG U F).2.2 w₀ ρ hN (m ^ 2) t s hs o w₁ ho hw₁ c hval`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `((AdicSum.sumF_calculus R I hI F D.toPre.X (coef s o w₁) (coef s o w₁) c c).2.2 D.toPre.X (fun χ => m • χ + p.y) (fun a b h => hsm (add_right_cancel h)) (fun β hβ => r₂ β fun χ e => hβ ⟨χ, e.symm⟩)).2 hsum` as an intermediate fact. Rewrite `this` using `[show (coef s o w₁ ∘ fun χ => m • χ + p.y) = coef ϑ g' w' from funext r₁]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem theta_const_sum : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ w₀ ρ, NormW U.toUnifPre w₀ ρ → ∀ (th : SecA A F 1) (ϑ : Fam D.toPre F 1), U.ExpandsF F 1 w₀ th ϑ → ∀ (m : ℕ), Odd m → ∀ (p : QkPt D.toPre F (m ^ 2)) x t c, QkToAkU U.toUnifPre F (m ^ 2) p x → ThC A ρ m th x t c → ∀ w, TXFrame (m ^ 2) p w → ∀ (g' : GtPtF D.toPre F), GtPtF.IsNsmul m p.g g' → ∀ (κ : LB.Gen (kapLB D.toPre (𝟙 D.toPre.P.A ^ m) (m ^ 2) 1)), Normd κ → ∀ w' : Frm D.toPre F 1 g'.b, w'.IsGen → (∀ z J, Good D.toPre.P.L z J → val w (𝟙 _) z J * val κ p.g.b.left z J = val w' (𝟙 _) z J) → SumF I F (coef ϑ g' w') c ∧ ∀ s, U.ExpandsF F (m ^ 2) w₀ t s → ∀ (o : GtPtF D.toPre F) (w₁ : Frm D.toPre F (m ^ 2) o.b), o.IsZero → FrmOne w₁ → (∀ χ, coef s o w₁ (m • χ + p.y) = coef ϑ g' w' χ) ∧ ∀ β, (∀ χ, β ≠ m • χ + p.y) → coef s o w₁ β = 0 := by
   intro hL R _ _ _ I hI D A G _ _ hG U F _ _ _ w₀ ρ hN th ϑ hϑ m hm p x t c hx hc w hw g' hg' κ hκ w' hw' hv

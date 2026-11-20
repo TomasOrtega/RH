@@ -17,9 +17,9 @@ namespace KleimanNef
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `: V.IsPrime` using `hV.1`. Use `⟨Ideal.map_isPrime_of_surjective (red_surjective p) (ker_red_le p hp), isMultiHomogIdeal_map _ hV.2.1, fun k => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hV.2.2 k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Establish `h' : red p (X ⟨k, i⟩ : MRing ι) ∈ V.map (red p)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h` using `only [red, map_X]`. Conclude with `(mem_map_red_iff p hp _).1 h'`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isMultiProjPrime_map_red (p : ℕ) {V : Ideal (MRing ι)} (hV : IsMultiProjPrime V)
     (hp : ((p : ℕ) : MRing ι) ∈ V) : IsMultiProjPrime (V.map (red p)) := by
@@ -35,7 +35,7 @@ theorem isMultiProjPrime_map_red (p : ℕ) {V : Ideal (MRing ι)} (hV : IsMultiP
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hg` using `Submodule.IsPrincipal.generator_mem (W.comap (C : ℤ →+* MRing ι))`. Establish `hdvd : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)) ∣ ((charOf W : ℕ) : ℤ)` using `Int.dvd_natAbs.mpr dvd_rfl`. Establish `hmem : ((charOf W : ℕ) : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)` using `Ideal.mem_of_dvd _ hdvd hg`. Rewrite `hmem` using `[Ideal.mem_comap, map_natCast]`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charOf_mem (W : Ideal (MRing ι)) : ((charOf W : ℕ) : MRing ι) ∈ W := by
   have hg := Submodule.IsPrincipal.generator_mem (W.comap (C : ℤ →+* MRing ι))
@@ -51,21 +51,19 @@ end KleimanNef
 open KleimanNef in
 
 /- English proof (translation)
-Introduce `K _ ι _ V n a hV hchar hdim hnef`. Establish `: V.IsPrime` using `hV.1`. Use `set p := charOf V with hpdef`. Establish `: Fact p.Prime` using `⟨HilbertSamuel.SemiampleNefAlt.charOf_prime hchar⟩`. Establish `hpV : ((p : ℕ) : MRing ι) ∈ V` using `charOf_mem V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `I : IFamily (ZMod p) ι` to `fun V _ L => NumbersDVR.intNum (ZMod p) V L`. Establish `hI : IsFieldIntersection I` using `GeoNumTarget.isFieldIntersection_intNum p`. Establish `hGeo` using `GroundTheory.Heights₂.Heights.geoNumStatement ι p I hI`. Establish `hproj : IsProjVarF (V.map (red p)) n` using `⟨isMultiProjPrime_map_red p hV hpV, by rw [ringKrullDim_red p hpV, hdim]⟩`. Establish `hnefF : ∀ j, KH.NefOnF I (V.map (red p)) (a j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j W' hW' hle`. Use `set W := W'.comap (red p) with hWdef`. Establish `hmap : W.map (red p) = W'` using `Ideal.map_comap_of_surjective _ (red_surjective p) W'`. Establish `hVW : V ≤ W` using `Ideal.map_le_iff_le_comap.mp hle`. Establish `hpW : ((p : ℕ) : MRing ι) ∈ W` using `hVW hpV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hWm : IsMultiProjPrime W`. Take `⟨⟨hW'p, hW'h, hW'r⟩, -⟩` from `hW'`. Use `⟨Ideal.comap_isPrime _ W', isMultiHomogIdeal_comap _ hW'h, fun k => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hW'r k`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hWdef, Ideal.mem_comap, map_X]`. Conclude with `hi`. Establish `hdimW : ringKrullDim (MRing ι ⧸ W) = ((1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[← ringKrullDim_red p hpW, hmap, hW'.2]`. Establish `hWp : IsProjVarF (W.map (red p)) 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hmap]`. Conclude with `hW'`. Establish `h` using `hnef j W hWm hVW hdimW`. Rewrite `h` using `[hGeo W 1 _ hWm hpW hWp, hmap]`. Use `h using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Establish `h` using `hF (ZMod p) K ι I (V.map (red p)) n a hI hproj hnefF`. Rewrite using `[hGeo V n a hV hpV hproj]`.
-
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem KleimanNef.proof (hF : KH.KleimanNefFStatement) : KH.KleimanNefIntersectionNonneg := by
   classical

@@ -26,9 +26,9 @@ section
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 
 /- English proof (translation)
-Rewrite using `[rhoH_apply, hm, Matrix.fromBlocks_mulVec]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Function.comp_def, LinearEquiv.sumArrowLequivProdArrow, Equiv.sumArrowEquivProdArrow]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Function.comp_def, LinearEquiv.sumArrowLequivProdArrow, Equiv.sumArrowEquivProdArrow, Matrix.neg_mulVec, sub_eq_neg_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhoH_eqv (B : Germ.FB R d O) (a : O) (v : (Fin d ⊕ Fin d) → R) :
     rhoH B a (eqv R d v) = eqv R d ((hm B a).mulVec v) := by
@@ -41,7 +41,7 @@ theorem rhoH_eqv (B : Germ.FB R d O) (a : O) (v : (Fin d ⊕ Fin d) → R) :
       Matrix.neg_mulVec, sub_eq_neg_add]
 
 /- English proof (translation)
-Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(eqv R d).surjective y`. Rewrite using `[rhoH_eqv, LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply, Matrix.toLin'_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_eq (B : Germ.FB R d O) (a : O) :
     (eqv R d).conj (Matrix.toLin' (hm B a)) = rhoH B a := by
@@ -50,22 +50,22 @@ theorem conj_eq (B : Germ.FB R d O) (a : O) :
   rw [rhoH_eqv, LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply, Matrix.toLin'_apply]
 
 /- English proof (translation)
-Rewrite using `[← conj_eq, LinearEquiv.charpoly_conj, Matrix.charpoly_toLin']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_eq [Nontrivial R] (B : Germ.FB R d O) (a : O) : (rhoH B a).charpoly = (hm B a).charpoly := by
   rw [← conj_eq, LinearEquiv.charpoly_conj, Matrix.charpoly_toLin']
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [hm, rho, lin, bil, h.act, h.ad, MvPowerSeries.coeff_map]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hm_map {R₂ : Type} [CommRing R₂] {f : R →+* R₂} {B : Germ.FB R d O} {B₂ : Germ.FB R₂ d O}
     (h : IsMapOf f B B₂) (a : O) : hm B₂ a = (hm B a).map f := by
   ext (i | i) (j | j) <;> simp [hm, rho, lin, bil, h.act, h.ad, MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Take `⟨ρH, hρ⟩` from `(GlobalTheory.T.formal_hermitian_action_pairing R d O B).1`. Establish `key : ∀ a, hm B a = LinearMap.toMatrix' ((eqv R d).symm.conj (ρH a))` using `fun a => by`. Rewrite using `[hρ, ← conj_eq, LinearEquiv.conj_symm_conj, LinearMap.toMatrix'_toLin']`. Use `⟨⟨⟨⟨hm B, ?_⟩, fun a b => ?_⟩, ?_, fun a b => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[key, map_one, Module.End.one_eq_id, LinearEquiv.conj_id, LinearMap.toMatrix'_id]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [key]`. Rewrite using `[map_mul, Module.End.mul_eq_comp, LinearEquiv.conj_comp, LinearMap.toMatrix'_comp]`. Simplify using `only [key, map_zero]`. Simplify using `only [key, map_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_hom (B : Germ.FB R d O) :
     ∃ ρ : O →+* Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) R, ∀ a, ρ a = hm B a := by
@@ -85,11 +85,11 @@ section
 variable {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin r → (Fin d ⊕ Fin d) → R, (LinearIndependent R (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => rhoH B (RingOfIntegers.basis E q.2) (eqv R d (x q.1))) ∧ Submodule.span R (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => rhoH B (RingOfIntege …`. Introduce `x`. Establish `e : (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => rhoH B (RingOfIntegers.basis E q.2) (eqv R d (x q.1))) = (eqv R d).toLinearMap ∘ (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => (hm B (RingOfIntegers.basis E q.2)).mulVec (x q.1))`. Use function extensionality and compare the values at `q`. Conclude with `rhoH_eqv _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, LinearMap.linearIndependent_iff _ (eqv R d).ker, Set.range_comp, ← Submodule.map_span, Submodule.map_eq_top_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, rfl⟩ : ∃ y : Fin r → (Fin d ⊕ Fin d) → R, (fun i => eqv R d (y i)) = x` from `⟨fun i => (eqv R d).symm (x i), funext fun i => (eqv R d).apply_symm_apply _⟩`. Conclude with `⟨y, (key y).1 hx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨fun i => eqv R d (x i), (key x).2 hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hfree_iff (B : Germ.FB R d (𝓞 E)) (r : ℕ) : HFree B r ↔ ∃ x : Fin r → (Fin d ⊕ Fin d) → R,
     LinearIndependent R (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) =>
@@ -123,7 +123,7 @@ theorem hfree_iff (B : Germ.FB R d (𝓞 E)) (r : ℕ) : HFree B r ↔ ∃ x : F
     exact ⟨fun i => eqv R d (x i), (key x).2 hx⟩
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[charpoly_eq, hm_map h, Matrix.charpoly_map, ← charpoly_eq, hB a, Polynomial.map_pow, Polynomial.map_map, Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom R₂)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hchar_map [Nontrivial R] {R₂ : Type} [CommRing R₂] [Nontrivial R₂] {f : R →+* R₂} {B : Germ.FB R d (𝓞 E)}
     {B₂ : Germ.FB R₂ d (𝓞 E)} (h : IsMapOf f B B₂) {r : ℕ} (hB : HChar B r) : HChar B₂ r := by
@@ -132,7 +132,7 @@ theorem hchar_map [Nontrivial R] {R₂ : Type} [CommRing R₂] [Nontrivial R₂]
     Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom R₂)]
 
 /- English proof (translation)
-Introduce `a`. Apply `Polynomial.map_injective f hf` to reduce the goal to its premises. Rewrite using `[charpoly_eq, ← Matrix.charpoly_map, ← hm_map h, ← charpoly_eq, hB a, Polynomial.map_pow, Polynomial.map_map, Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom R₂)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hchar_of_map [Nontrivial R] {R₂ : Type} [CommRing R₂] [Nontrivial R₂] {f : R →+* R₂}
     (hf : Function.Injective f) {B : Germ.FB R d (𝓞 E)}
@@ -143,9 +143,9 @@ theorem hchar_of_map [Nontrivial R] {R₂ : Type} [CommRing R₂] [Nontrivial R�
     Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom R₂)]
 
 /- English proof (translation)
-Introduce `a`. Take `⟨-, -, hb, -, hc, -⟩` from `GlobalTheory.T.formal_isomorphism_transport R d (𝓞 E) B B₂ φ ψ lam h`. Establish `e : (LinearEquiv.ofBijective (transH φ ψ lam) hb).conj (rhoH B₂ a) = rhoH B a`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(LinearEquiv.ofBijective (transH φ ψ lam) hb).surjective y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `(LinearMap.congr_fun (hc a) v).symm`. Rewrite using `[← hB a, ← e, LinearEquiv.charpoly_conj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hchar_iso [Nontrivial R] {B B₂ : Germ.FB R d (𝓞 E)} {φ ψ : Germ.Pt R 1 d} {lam : Germ.PS R 2 d}
     (h : GlobalTheory.CompanionTheory.Ar.Conj.IsIso B B₂ φ ψ lam) {r : ℕ} (hB : HChar B r) : HChar B₂ r := by
@@ -159,7 +159,7 @@ theorem hchar_iso [Nontrivial R] {B B₂ : Germ.FB R d (𝓞 E)} {φ ψ : Germ.P
   rw [← hB a, ← e, LinearEquiv.charpoly_conj]
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_hom B`. Use `GlobalTheory.T.representation_basis_linear_independent E R k f (Fin d ⊕ Fin d) r ρ` as an intermediate fact. Simplify using `only [hρ, ← hm_map h] at this`. Conclude with `(hfree_iff B r).2 (this ((hfree_iff B₂ r).1 hB))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hfree_of_map [IsLocalRing R] {k : Type} [Field k] {f : R →+* k} [IsLocalHom f] {B : Germ.FB R d (𝓞 E)}
     {B₂ : Germ.FB k d (𝓞 E)} (h : IsMapOf f B B₂) {r : ℕ} (hB : HFree B₂ r) : HFree B r := by
@@ -169,9 +169,9 @@ theorem hfree_of_map [IsLocalRing R] {k : Type} [Field k] {f : R →+* k} [IsLoc
   exact (hfree_iff B r).2 (this ((hfree_iff B₂ r).1 hB))
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_hom B`. Establish `h1` using `GlobalTheory.T.representation_basis_linear_independent E R k f (Fin d ⊕ Fin d) r ρ`. Set `ρk : 𝓞 E →+* Module.End k ((Fin d ⊕ Fin d) → k)` to `((Matrix.toLinAlgEquiv' (R := k) (n := Fin d ⊕ Fin d)).toRingEquiv.toRingHom.comp f.mapMatrix).comp ρ`. Establish `hk : ∀ a, ρk a = Matrix.toLin' ((ρ a).map f)` using `fun a => rfl`. Establish `h2` using `GlobalTheory.T.characteristic_polynomial_free_generators E k ((Fin d ⊕ Fin d) → k) r ρk (fun a => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hk, Matrix.charpoly_toLin', Matrix.charpoly_map, hρ, ← charpoly_eq, hB a, Polynomial.map_pow, Polynomial.map_map, Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom k)])`. Simplify using `only [hk, Matrix.toLin'_apply] at h2`. Establish `h3` using `h1 h2`. Simplify using `only [hρ] at h3`. Conclude with `(hfree_iff B r).2 h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hfree_char0 [IsLocalRing R] {k : Type} [Field k] [CharZero k] (f : R →+* k) [IsLocalHom f]
     {B : Germ.FB R d (𝓞 E)} {r : ℕ} (hB : HChar B r) : HFree B r := by
@@ -191,15 +191,13 @@ theorem hfree_char0 [IsLocalRing R] {k : Type} [Field k] [CharZero k] (f : R →
 end
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists (IsLocalRing.ResidueField (X.presheaf.stalk z))`. Break down `CharP.char_is_prime_or_zero (IsLocalRing.ResidueField (X.presheaf.stalk z)) p with hpp | rfl` into its components or cases. Establish `h0 : (p : IsLocalRing.ResidueField (X.presheaf.stalk z)) = 0` using `CharP.cast_eq_zero _ p`. Take `⟨k, _, _, x, rfl, hx⟩` from `hF p hpp h0`. Set `f : X.presheaf.stalk (x (IsLocalRing.closedPoint k)) →+* k` to `(Scheme.stalkClosedPointTo x).hom`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `: IsLocalHom f` using `inferInstanceAs (IsLocalHom (Scheme.stalkClosedPointTo x).hom)`. Establish `hpk : (p : k) = 0`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (f p)` using `by rw [map_natCast]; exact Ne.isUnit hne`. Establish `hu'` using `(isUnit_of_map_unit f _ hu).map (IsLocalRing.residue _)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu'` using `[map_natCast, h0]`. Conclude with `not_isUnit_zero hu'`. Establish `: Fact p.Prime` using `⟨hpp⟩`. Establish `: CharP k p` using `(CharP.charP_iff_prime_eq_zero hpp).2 hpk`. Take `⟨g₂, hm₂, -⟩` from `GlobalTheory.T.formal_germ_base_change E H hs X t _ k f _ d g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : spMap f ≫ X.fromSpecStalk (x (IsLocalRing.closedPoint k)) = x` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk x`. Establish `hx' : GeomPF t (spMap f ≫ X.fromSpecStalk (x (IsLocalRing.closedPoint k)))`. Rewrite using `[e]`. Conclude with `hx`. Conclude with `hfree_of_map hm₂ (GlobalTheory.T.height_char_free_geometric E H hs X t hP k p _ hx' d r g₂ (hchar_map hm₂ hc))`.
-
-Use `CharP.charP_to_charZero (IsLocalRing.ResidueField (X.presheaf.stalk z))` as an intermediate fact. Conclude with `hfree_char0 (IsLocalRing.residue (X.presheaf.stalk z)) hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem at_point (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)]
     (hs : ∀ a : 𝓞 E, star a = H.bar a) (X : Scheme.{0}) (t : SAB H X) (d r : ℕ) (hP : PowFns t) (z : X)
@@ -232,7 +230,7 @@ end PositivityTheory.Xgn.HodgeFreeStalk
 
 open PositivityTheory.Xgn.HodgeFreeStalk in
 /- English proof (translation)
-Introduce `E _ _ _ H _ hs X t Ω _ _ ξ d r M S hP hξ hc hF q`. Conclude with `at_point E H hs X t d r hP q.1 (S.g q) (hchar_of_map (hξ.inj q) (S.mapK q) (hchar_iso (S.iso q) hc)) (hF q)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.hodge_free_every_stalk : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Sp Ω ⟶ X) (d r : ℕ) (M : LieModel t.G ξ (Fin d → Ω)) (S : GermSys t ξ M), PowFns t → IsCptGen ξ → HChar S.g₀.B r → (∀ (q : Cpt ξ) (p : ℕ), p.Prime → (p : X.residueField q.1) = 0 → FibPF t q.1) → ∀ q : Cpt ξ, HFree (S.g q).B r := by
   intro E _ _ _ H _ hs X t Ω _ _ ξ d r M S hP hξ hc hF q

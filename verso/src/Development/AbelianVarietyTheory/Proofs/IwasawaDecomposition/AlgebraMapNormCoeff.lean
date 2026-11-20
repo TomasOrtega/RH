@@ -19,7 +19,7 @@ def normCoeff [IsDomain A] (φ : A →+* B) (hφ : φ.Finite) (b : B) (k : ℕ) 
     h.choose else 0
 
 /- English proof (translation)
-Unfold `normCoeff`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_normCoeff [IsDomain A] (φ : A →+* B) (hφ : φ.Finite) (b : B) (k : ℕ)
     (h : ∃ a : A, algebraMap A (FractionRing A) a = (charK φ hφ (FractionRing A) b).reverse.coeff k) :
@@ -30,7 +30,7 @@ theorem algebraMap_normCoeff [IsDomain A] (φ : A →+* B) (hφ : φ.Finite) (b 
   exact h.choose_spec
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `haveI : Module.Finite A B := hφ`. Conclude with `LinearMap.charpoly_monic _`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem charK_monic (φ : A →+* B) (hφ : φ.Finite) (K : Type) [Field K] [Algebra A K] (b : B) :
     (charK φ hφ K b).Monic := by

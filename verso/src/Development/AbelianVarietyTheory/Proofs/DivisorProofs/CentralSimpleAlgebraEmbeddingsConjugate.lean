@@ -22,11 +22,11 @@ section Transport
 variable {A B : Type} [Group A] [Group B]
 
 /- English proof (translation)
-Use extensionality with `b`. Simplify using `only [Subgroup.mem_map, MulEquiv.coe_toMonoidHom]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `ha' : a * δ = δ * a` using `ha`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show e a * e δ = e δ * e a`. Rewrite using `[← map_mul, ha', map_mul]`. Introduce `hb`. Establish `hb' : b * e δ = e δ * b` using `hb`. Use `⟨e.symm b, ?_, by simp⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show e.symm b * δ = δ * e.symm b`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, MulEquiv.apply_symm_apply, hb']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_twCent_id (e : A ≃* B) (δ : A) :
     (twCent (MonoidHom.id A) δ).map e.toMonoidHom = twCent (MonoidHom.id B) (e δ) := by
@@ -45,7 +45,7 @@ theorem map_twCent_id (e : A ≃* B) (δ : A) :
     rw [map_mul, map_mul, MulEquiv.apply_symm_apply, hb']
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_map, Subgroup.map_map]`. Use `congr 1`. Use extensionality with `k`. Simplify using `[MulAut.conj_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_equiv (e : A ≃* B) (K : Subgroup A) (x : A) :
     (K.map (MulAut.conj x).toMonoidHom).map e.toMonoidHom =
@@ -56,27 +56,25 @@ theorem map_conj_equiv (e : A ≃* B) (K : Subgroup A) (x : A) :
   simp [MulAut.conj_apply]
 
 /- English proof (translation)
-Unfold `orbK`. Rewrite using `[orbC_eq, orbC_eq]`. Use `set TB := twCent (MonoidHom.id B) (e δ)`. Use `set KB := K.map e.toMonoidHom`. Establish `hmemT : ∀ a ∈ TB, e.symm a ∈ twCent (MonoidHom.id A) δ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Rewrite `ha` using `[← show (twCent (MonoidHom.id A) δ).map e.toMonoidHom = TB from map_twCent_id e δ]`. Take `⟨a', ha', rfl⟩` from `Subgroup.mem_map.mp ha`. Simplify using `using ha'`. Establish `hmemK : ∀ b ∈ KB, e.symm b ∈ K`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b hb`. Take `⟨b', hb', rfl⟩` from `Subgroup.mem_map.mp hb`. Simplify using `using hb'`. Establish `hpt : ∀ x : A, oTerm (MonoidHom.id A) K (twCent (MonoidHom.id A) δ ⊓ K) δ F x = oTerm (MonoidHom.id B) KB (TB ⊓ KB) (e δ) (fun z => F (e.symm z)) (e x)`. Introduce `x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `oTerm`. Use `congr 1`. Establish `h1 : TB ⊓ KB = (twCent (MonoidHom.id A) δ ⊓ K).map e.toMonoidHom`. Rewrite using `[Subgroup.map_inf_eq _ _ _ e.injective, map_twCent_id]`. Establish `h2 : TB ⊓ KB.map (MulAut.conj (e x)).toMonoidHom = (twCent (MonoidHom.id A) δ ⊓ K.map (MulAut.conj x).toMonoidHom).map e.toMonoidHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.map_inf_eq _ _ _ e.injective, map_twCent_id, map_conj_equiv]`. Rewrite using `[h1, h2]`. Unfold `vol`. Rewrite using `[Subgroup.relIndex_map_map_of_injective _ _ e.injective, Subgroup.relIndex_map_map_of_injective _ _ e.injective]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ : DoubleCoset.Quotient (twCent (MonoidHom.id A) δ : Set A) (K : Set A) → DoubleCoset.Quotient (TB : Set B) (KB : Set B)` to `fun q => DoubleCoset.mk TB KB (e (Quotient.out q))`. Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion. Introduce `q1 q2 h`. Take `⟨a, ha, b, hb, h'⟩` from `(DoubleCoset.eq _ _ _ _).mp h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[DoubleCoset.eq]`. Use `⟨e.symm a, hmemT a ha, e.symm b, hmemK b hb, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Simplify using `[h']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = q2 := DoubleCoset.out_eq' _ _ q2`. Introduce `p`. Use `⟨DoubleCoset.mk (twCent (MonoidHom.id A) δ) K (e.symm (Quotient.out p)), ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, h'⟩` from `DoubleCoset.mk_out_eq_mul (twCent (MonoidHom.id A) δ) K (e.symm (Quotient.out p))`. Use `show DoubleCoset.mk TB KB (e (Quotient.out (DoubleCoset.mk (twCent (MonoidHom.id A) δ) K (e.symm (Quotient.out p))))) = p`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h']`. Use `conv_rhs => rw [← DoubleCoset.out_eq' TB KB p]`. Rewrite using `[DoubleCoset.eq]`. Establish `ha' : e a ∈ TB` using `by rw [← show (twCent (MonoidHom.id A) δ).map e.toMonoidHom = TB from map_twCent_id e δ]; exact Subgroup.mem_map_of_mem _ ha`. Establish `hb' : e b ∈ KB` using `Subgroup.mem_map_of_mem _ hb`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(e a)⁻¹, TB.inv_mem ha', (e b)⁻¹, KB.inv_mem hb', ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Establish `hz : ∀ q : DoubleCoset.Quotient (twCent (MonoidHom.id A) δ : Set A) (K : Set A), oTerm (MonoidHom.id A) K (twCent (MonoidHom.id A) δ ⊓ K) δ F (Quotient.out q) = oTerm (MonoidHom.id B) KB (TB ⊓ KB) (e δ) (fun z => F (e.symm z)) (Quotient.out (Equiv.ofBijective Φ hΦ q))`. Introduce `q`. Rewrite using `[hpt]`.
-
-Take `⟨a, b, ha, hb, h'⟩` from `DoubleCoset.mk_out_eq_mul TB KB (e (Quotient.out q))`. Use `show _ = oTerm (MonoidHom.id B) KB (TB ⊓ KB) (e δ) (fun z => F (e.symm z)) (Quotient.out (DoubleCoset.mk TB KB (e (Quotient.out q))))`. Rewrite using `[h', hinv a ha b hb]`. Rewrite using `[finsum_congr hz]`. Conclude with `finsum_comp_equiv (Equiv.ofBijective Φ hΦ) (f := fun q => oTerm (MonoidHom.id B) KB (TB ⊓ KB) (e δ) (fun z => F (e.symm z)) (Quotient.out q))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbK_congr_equiv (e : A ≃* B) (K : Subgroup A) (δ : A) (F : A → ℂ)
     (hinv : ∀ t ∈ twCent (MonoidHom.id B) (e δ), ∀ k ∈ K.map e.toMonoidHom, ∀ x,
@@ -156,13 +154,13 @@ variable {G₁ G₂ : Type} [Group G₁] [Group G₂] [TopologicalSpace G₁] [T
   [IsTopologicalGroup G₁] [IsTopologicalGroup G₂]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prodMap_id_eq : (MonoidHom.id G₁).prodMap (MonoidHom.id G₂) = MonoidHom.id (G₁ × G₂) := by
   ext <;> rfl
 
 /- English proof (translation)
-Introduce `t ht k hk x`. Rewrite `ht`, the goal using `[← prodMap_id_eq]`. Rewrite `ht`, the goal using `[twCent_prod]`. Rewrite `ht`, `hk` using `[Subgroup.mem_prod]`. Rewrite using `[show t * x * k = (t.1 * x.1 * k.1, t.2 * x.2 * k.2) from rfl, show x = (x.1, x.2) from rfl, oTerm_prod, oTerm_prod, oTerm_inv _ K₁ δ₁ f₁ hK₁c hK₁o hf₁ hv₁ ht.1 hk.1, oTerm_inv _ K₂ δ₂ f₂ hK₂c hK₂o hf₂ hv₂ ht.2 hk.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem oTerm_prod_inv (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (δ₁ : G₁) (δ₂ : G₂) (f₁ : G₁ → ℂ) (f₂ : G₂ → ℂ)
     (hK₁c : IsCompact (K₁ : Set G₁)) (hK₁o : IsOpen (K₁ : Set G₁))
@@ -189,13 +187,11 @@ theorem oTerm_prod_inv (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (δ₁ : G�
 end Prod
 
 /- English proof (translation)
-Use `haveI : NeZero n := ⟨hn.ne'⟩`. Set `g : L ⊗[F] C →ₐ[L] Matrix (Fin n) (Fin n) L` to `Algebra.TensorProduct.lift (Algebra.ofId L _) ι (fun l y ↦ Algebra.commute_algebraMap_left l _)`. Use `haveI : IsSimpleRing (L ⊗[F] C) := GroundTheory.Brauer.isSimpleRing_tensorProduct_of_right`. Establish `hg : Function.Injective g` using `GlobalTheory.CsaCharpoly.injective_of_isSimpleRing g.toRingHom`. Establish `eg : g ((1 : L) ⊗ₜ a) = ι a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [g]`. Use `erw [Algebra.TensorProduct.lift_tmul]`. Simplify using the standard rewrite rules. Establish `hyi : IsIntegral L ((1 : L) ⊗ₜ[F] a)` using `IsIntegral.of_finite L _`. Establish `hmin : minpoly L (ι a) = minpoly L ((1 : L) ⊗ₜ[F] a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← eg]`. Conclude with `minpoly.algHom_eq g hg _`. Establish `h1` using `GlobalTheory.CsaCharpoly.natDegree_minpoly_le_one_tmul L a hyi`. Rewrite `h1` using `[← hmin]`. Establish `h2 : (minpoly L (ι a)).natDegree ≤ (ι a).charpoly.natDegree` using `Polynomial.natDegree_le_of_dvd (Matrix.minpoly_dvd_charpoly _) (Matrix.charpoly_monic _).ne_zero`.
-
-Rewrite `h2` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_le (F L C : Type) [Field F] [Field L] [Algebra F L] [Ring C]
     [Algebra F C] [Algebra.IsCentral F C] [IsSimpleRing C] [FiniteDimensional F C] (n : ℕ) (hn : 0 < n)
@@ -218,20 +214,20 @@ theorem natDegree_minpoly_le (F L C : Type) [Field F] [Field L] [Algebra F L] [R
   omega
 
 /- English proof (translation)
-Introduce `h` and use `hirr (Polynomial.Monic.irreducible_of_irreducible_map φ p hp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_irreducible_map {F L : Type} [Field F] [Field L] (φ : F →+* L) (p : Polynomial F) (hp : p.Monic)
     (hirr : ¬ Irreducible p) : ¬ Irreducible (p.map φ) :=
   fun h => hirr (Polynomial.Monic.irreducible_of_irreducible_map φ p hp h)
 
 /- English proof (translation)
-Introduce `s hs'`. Establish `hs0 : s * γ = γ * s` using `hs'`. Establish `hfix : ∀ c ∈ twCent (MonoidHom.id _) γ ⊓ K₀, (MulAut.conj s).toMonoidHom c = c`. Introduce `c hc`. Establish `hc0 : c * γ = γ * c` using `hc.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.CentSep.centraliser_comm_of_separable k (Fin n) γ s c hs hs0 hc0` as an intermediate fact. Use `show s * c * s⁻¹ = c`. Rewrite using `[this, mul_inv_cancel_right]`. Establish `hmap : (twCent (MonoidHom.id _) γ ⊓ K₀).map (MulAut.conj s).toMonoidHom = twCent (MonoidHom.id _) γ ⊓ K₀`. Use extensionality with `c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', hc', rfl⟩`. Rewrite using `[hfix c' hc']`. Conclude with `hc'`. Introduce `hc`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c, hc, hfix c hc⟩`. Rewrite using `[hmap]`. Simplify using `[GlobalTheory.LKCount.vol, Subgroup.relIndex_self]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vol_conj_eq_one_of_separable (k : Type) [Field k] (n : ℕ) (γ : GL (Fin n) k) (K₀ : Subgroup (GL (Fin n) k))
     (hs : (γ : Matrix (Fin n) (Fin n) k).charpoly.Separable) :
@@ -256,11 +252,11 @@ theorem vol_conj_eq_one_of_separable (k : Type) [Field k] (n : ℕ) (γ : GL (Fi
   simp [GlobalTheory.LKCount.vol, Subgroup.relIndex_self]
 
 /- English proof (translation)
-Establish `hFe : (fun z => F (e.symm z)) = fun w : GL (Fin n) k × H => f₀ w.1 * f'' w.2`. Use function extensionality and compare the values at `z`. Rewrite using `[hF, MulEquiv.apply_symm_apply]`. Establish `hf₁ : ∀ c ∈ K₀, ∀ y, f₀ (c⁻¹ * y * MonoidHom.id _ c) = f₀ y` using `fun c hc y => hbi _ (K₀.inv_mem hc) _ hc y`. Establish `hv₁` using `vol_conj_eq_one_of_separable k n (e δ).1 K₀ hs`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[orbK_congr_equiv e K δ F]`. Rewrite using `[hmap, hFe, ← prodMap_id_eq]`. Use `orbK_prod (MonoidHom.id _) (MonoidHom.id H) K₀ K'' (e δ).1 (e δ).2 f₀ f'' continuous_id continuous_id h0c h0o h1c h1o hf₁ hf'' hv₁ hv` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap, hFe]`. Conclude with `oTerm_prod_inv K₀ K'' (e δ).1 (e δ).2 f₀ f'' h0c h0o h1c h1o hf₁ hf'' hv₁ hv`.
+A detailed English derivation is pending.
 -/
 theorem orbK_eq_zero_of_split {A : Type} [Group A] (k : Type) [Field k] [TopologicalSpace k] [IsTopologicalRing k]
     [T2Space k] (n : ℕ) (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H]
@@ -288,15 +284,13 @@ theorem orbK_eq_zero_of_split {A : Type} [Group A] (k : Type) [Field k] [Topolog
     exact oTerm_prod_inv K₀ K'' (e δ).1 (e δ).2 f₀ f'' h0c h0o h1c h1o hf₁ hf'' hv₁ hv
 
 /- English proof (translation)
-Introduce `p _ G k₀ _ _ _ _ _ _ _ ι₀ k₁ _ _ ι₁ H' _ _ _ _ e π₁ hc L K' K₀ K'' h0o h0c h1o h1c hmap f₀ f'' f f' hprod hsep hlc hcs hcusp hbi hf'' hvol B x t hx y hy`. Take `⟨hc0, hc1⟩` from `hc B x t hx y`. Distinguish the cases in `hs1 : ((π₁ (B.embAt x t hx y) : GL (Fin G.n) k₁) : Matrix (Fin G.n) (Fin G.n) k₁).charpoly.Separable`. Use `swap`. Conclude with `GlobalTheory.orbK_eq_zero_of_charpoly_not_separable _ k₁ G.n π₁ _ _ _ hsep hs1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs1` using `[hc1]`. Establish `hns` using `GlobalTheory.SepCharpoly.not_separable_charpoly G.F k₁ G.C G.n ι₁ ((y.1.1 : G.Cˣ) : G.C)`. Establish `hle` using `natDegree_minpoly_le G.F k₁ G.C G.n G.n_pos ι₁ ((y.1.1 : G.Cˣ) : G.C)`. Establish `hdeg : (minpoly G.F ((y.1.1 : G.Cˣ) : G.C)).natDegree = G.n`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hns (Or.inl (lt_of_le_of_ne hle h)) hs1`. Establish `hsm : (minpoly G.F ((y.1.1 : G.Cˣ) : G.C)).Separable`. Assume the negation of the conclusion as `h`. Conclude with `hns (Or.inr ⟨hdeg, h⟩) hs1`. Establish `hirr : ¬ Irreducible (minpoly G.F ((y.1.1 : G.Cˣ) : G.C))` using `fun h => hy ⟨hdeg, hsm, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc0` using `[GlobalTheory.charpoly_algHom_eq_map_minpoly G.F k₀ G.C G.n G.rankC ι₀ _ hdeg]`. Establish `hs0 : (((e (B.embAt x t hx y)).1 : GL (Fin G.n) k₀) : Matrix (Fin G.n) (Fin G.n) k₀).charpoly.Separable`. Rewrite using `[hc0]`. Conclude with `hsm.map`. Establish `hi0 : ¬ Irreducible (((e (B.embAt x t hx y)).1 : GL (Fin G.n) k₀) : Matrix (Fin G.n) (Fin G.n) k₀).charpoly`.
-
-Rewrite using `[hc0]`. Conclude with `not_irreducible_map _ _ (minpoly.monic (IsIntegral.of_finite G.F _)) hirr`. Use `haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩`. Establish `h0` using `GlobalTheory.LKCount.orbK_eq_zero_of_cusp k₀ (Fin G.n) f₀ hlc hcs hcusp _ hs0 hi0 K₀ h0o h0c hbi`. Conclude with `orbK_eq_zero_of_split k₀ G.n H' e _ K₀ K'' h0o h0c h1o h1c hmap f₀ f'' _ hprod hbi hf'' _ hs0 (hvol B x t hx y hdeg hsm) h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orbK_eq_zero_of_not_regIrr : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (k₀ : Type) [Field k₀] [ValuativeRel k₀] [TopologicalSpace k₀] [IsNonarchimedeanLocalField k₀] [MeasurableSpace k₀] [BorelSpace k₀] [Algebra G.F k₀] (ι₀ : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) k₀) (k₁ : Type) [Field k₁] [Algebra G.F k₁] (ι₁ : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) k₁) (H' : Type) [Group H'] [TopologicalSpace H'] [IsTopologicalGroup H'] [T2Space H'] (e : G.GAf × Gr G 1 ≃* GL (Fin G.n) k₀ × H') (π₁ : G.GAf × Gr G 1 →* GL (Fin G.n) k₁),
   (∀ (B : DForm G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) B.β x t) (y : GlobalTheory.LKCx.grp G B.β), (((e (B.embAt x t hx y)).1 : GL (Fin G.n) k₀) : Matrix (Fin G.n) (Fin G.n) k₀).charpoly = (ι₀ ((y.1.1 : G.Cˣ) : G.C)).charpoly ∧ ((π₁ (B.embAt x t hx y) : GL (Fin G.n) k₁) : Matrix (Fin G.n) (Fin G.n) k₁).charpoly = (ι₁ ((y.1.1 : G.Cˣ) : G.C)).charpoly) →

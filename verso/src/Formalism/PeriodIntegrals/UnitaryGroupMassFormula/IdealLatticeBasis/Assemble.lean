@@ -9,14 +9,14 @@ open NumberField
 namespace PI.IdealLatticeWork
 
 /- English proof (translation)
-Introduce `K _ _ h`. Conclude with `⟨Module.finBasisOfFinrankEq ℤ (𝓞 K) (by rw [NumberField.RingOfIntegers.rank, h])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem okBasis : OKBasis := by
   intro K _ _ h
   exact ⟨Module.finBasisOfFinrankEq ℤ (𝓞 K) (by rw [NumberField.RingOfIntegers.rank, h])⟩
 
 /- English proof (translation)
-Simplify using `only [map_add, map_mul, map_intCast, Complex.mul_im, Complex.mul_re, Complex.add_im, Complex.add_re, Complex.intCast_re, Complex.intCast_im, Complex.conj_re, Complex.conj_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem im_comb (u v : ℂ) (p q r s : ℤ) :
     ((starRingEnd ℂ) ((p : ℂ) * u + (q : ℂ) * v) * ((r : ℂ) * u + (s : ℂ) * v)).im
@@ -28,7 +28,7 @@ theorem im_comb (u v : ℂ) (p q r s : ℤ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `only [map_mul, Complex.mul_im, Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem im_scale (δ x y : ℂ) :
     ((starRingEnd ℂ) (δ * x) * (δ * y)).im = ‖δ‖ ^ 2 * ((starRingEnd ℂ) x * y).im := by
@@ -37,30 +37,28 @@ theorem im_scale (δ x y : ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `[zsmul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_comb {K : Type} [Field K] [NumberField K] (φ : K →+* ℂ) (m n : ℤ) (x y : 𝓞 K) :
     φ ((m • x + n • y : 𝓞 K) : K) = (m : ℂ) * φ (x : K) + (n : ℂ) * φ (y : K) := by
   simp [zsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `hA hI hB hL K _ _ φ h2 hcx cc δ hcc hδ`. Take `⟨b⟩` from `hB K h2`. Take `⟨c₁, hc₁, c₂, hc₂, hspan, p, q, r, s, hc1, hc2, hdet⟩` from `hI K b cc hcc`. Establish `hgen : AddSubgroup.closure {w | ∃ c ∈ cc, w = δ * φ (c : K)} = AddSubgroup.closure {δ * φ (c₁ : K), δ * φ (c₂ : K)}`. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨c, hc, rfl⟩`. Take `⟨m, n, rfl⟩` from `hspan c hc`. Rewrite using `[phi_comb φ m n c₁ c₂]`. Establish `e : δ * ((m : ℂ) * φ (c₁ : K) + (n : ℂ) * φ (c₂ : K)) = m • (δ * φ (c₁ : K)) + n • (δ * φ (c₂ : K))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `AddSubgroup.add_mem _ (AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (by simp)) m) (AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (by simp)) n)`. Rewrite using `[AddSubgroup.closure_le]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Break down `hw with rfl | rfl` into its components or cases. Conclude with `AddSubgroup.subset_closure ⟨c₁, hc₁, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨c₂, hc₂, rfl⟩`. Establish `hφc : ∀ c : 𝓞 K, ∀ x y : ℤ, c = x • b 0 + y • b 1 → φ (c : K) = (x : ℂ) * φ (b 0 : K) + (y : ℂ) * φ (b 1 : K)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `c x y rfl`. Conclude with `phi_comb φ x y (b 0) (b 1)`. Establish `him : ((starRingEnd ℂ) (δ * φ (c₁ : K)) * (δ * φ (c₂ : K))).im = ‖δ‖ ^ 2 * (((p * s - q * r : ℤ) : ℝ) * ((starRingEnd ℂ) (φ (b 0 : K)) * φ (b 1 : K)).im)`. Rewrite using `[im_scale, hφc c₁ p q hc1, hφc c₂ r s hc2, im_comb]`. Establish `hA'` using `hA K φ h2 hcx b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hd : (0 : ℝ) < Real.sqrt |(NumberField.discr K : ℝ)| / 2`. Establish `h0 : (NumberField.discr K : ℝ) ≠ 0` using `by exact_mod_cast NumberField.discr_ne_zero K`. Conclude with `div_pos (Real.sqrt_pos.mpr (abs_pos.mpr h0)) two_pos`. Establish `hn : Ideal.absNorm cc ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hδ2 : (0 : ℝ) < ‖δ‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hδ) 2`. Establish `habs : |((starRingEnd ℂ) (δ * φ (c₁ : K)) * (δ * φ (c₂ : K))).im| = ‖δ‖ ^ 2 * (Ideal.absNorm cc : ℝ) * (Real.sqrt |(NumberField.discr K : ℝ)| / 2)`. Rewrite using `[him, abs_mul, abs_mul, hA', abs_of_pos hδ2, ← hdet, Nat.cast_natAbs, Int.cast_abs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : (0 : ℝ) < ‖δ‖ ^ 2 * (Ideal.absNorm cc : ℝ) * (Real.sqrt |(NumberField.discr K : ℝ)| / 2)` using `mul_pos (mul_pos hδ2 (by exact_mod_cast Nat.pos_of_ne_zero hn)) hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : ((starRingEnd ℂ) (δ * φ (c₁ : K)) * (δ * φ (c₂ : K))).im ≠ 0`. Introduce `h0`. Rewrite `habs` using `[h0, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨⟨δ * φ (c₁ : K), δ * φ (c₂ : K), hne, hgen⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hgen]`. Express the relevant statement in the definitionally equal form `area (PI.lat2 _ _) = _`. Rewrite using `[(hL _ _ hne).1, habs]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem assemble : Assemble := by
   intro hA hI hB hL K _ _ φ h2 hcx cc δ hcc hδ
@@ -117,7 +115,7 @@ theorem assemble : Assemble := by
   ring
 
 /- English proof (translation)
-The claim follows from `assemble h1 h2 okBasis area_lattice_formula`.
+A detailed English derivation is pending.
 -/
 theorem idealLattice_of (h1 : OKArea) (h2 : IdealBasis) : PI.IdealLattice :=
   assemble h1 h2 okBasis area_lattice_formula

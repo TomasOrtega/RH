@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
 /- English proof (translation)
-Introduce `a b n`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Fin.sum_univ_four, map_add]`. Conclude with `((((hM a 0 n).mul (hN 0 b n)).add ((hM a 1 n).mul (hN 1 b n))).add ((hM a 2 n).mul (hN 2 b n))).add ((hM a 3 n).mul (hN 3 b n))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ac_mul {S A : Type} [TopologicalSpace S] [CommRing A] {I : Ideal A}
     {M N : S → M4 A} (hM : ∀ a b, AdicCont I fun s => M s a b) (hN : ∀ a b, AdicCont I fun s => N s a b) :
@@ -18,9 +18,9 @@ private theorem ac_mul {S A : Type} [TopologicalSpace S] [CommRing A] {I : Ideal
     ((hM a 3 n).mul (hN 3 b n))
 
 /- English proof (translation)
-Establish `e : r g⁻¹ * r g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `e0 : z g * (r g * z h * r h) = 0` using `hAB_mul_hAB (hz g) (hAB_mul_mul (hb g) (hz h) (hb h))`. Establish `e1 : r g * z h * r g⁻¹ * (r g * r h) = r g * z h * r h`. Rewrite using `[mul_assoc, ← mul_assoc (r g⁻¹), e, one_mul]`. Rewrite using `[coc, map_mul, ← add_assoc, add_mul, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem twist_mul {R Γ : Type} [CommRing R] [Group Γ] {r : Γ →* M4 R} (hb : ∀ g, IsBlock (r g)) {z : Γ → M4 R}
     (hz : ∀ g, z g ∈ hAB R) (coc : ∀ g h, z (g * h) = z g + r g * z h * r g⁻¹) (g h : Γ) :
@@ -34,17 +34,15 @@ private theorem twist_mul {R Γ : Type} [CommRing R] [Group Γ] {r : Γ →* M4 
     _ = _ := by noncomm_ring
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l _ S c s B hpos A _ _ _ _ r u hc hl hb`. Take `⟨hfin, hfree, hI⟩` from `uMFacts A`. Take `⟨hlat, hcc, hker⟩` from `latU S c s B hpos A r u hb`. Take `⟨z, y, hz, hne⟩` from `cocT hP S c s B hpos A (uM A) (adU hb.bg) (uPlus u) r.ker hc hl hlat (adBij A _ r hb.bg s hb.sep) hcc hker hb.unr`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `htm : t ∈ maximalIdeal A` using `ht.not_isUnit`. Establish `coc : ∀ g h, (t • z (g * h)).1 = (t • z g).1 + r g * (t • z h).1 * r g⁻¹` using `fun g h => by`. Rewrite using `[hz.coc, smul_add, ← map_smul, Submodule.coe_add, adU_val]`. Establish `z1 : z 1 = 0`. Use `hz.coc 1 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_one, map_one, Module.End.one_apply]`. Conclude with `left_eq_add.mp this`. Establish `zc : ∀ i j, AdicCont (maximalIdeal A) fun g => (1 + (t • z g).1) i j` using `fun i j n => by`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_` and prove the remaining obligations. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 (hz.cont n) g] with g' e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : z g' - z g ∈ lev A (uM A) n` using `(Submodule.Quotient.eq _).1 e`. Establish `e2` using `(hI _ _).1 (Submodule.smul_mem _ t e1) i j`. Rewrite using `[Ideal.Quotient.eq]`. Use `e2 using 1` and compare the differences between its conclusion and the goal. Simplify using `[smul_sub, mul_sub]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨MonoidHom.mk ⟨fun g => (1 + (t • z g).1) * r g, by simp [z1]⟩ (twist_mul hb.bg.blk (fun g => (t • z g).2.1) coc), fun g => (t • z g).1, (t • y).1, fun _ => rfl, ac_mul zc hb.cont, fun g => (t • z g).2, (t • y).2, fun g i j => ?_, by simp [hz.cz], fun g hg => by simp [hz.kill g h …` and prove the remaining obligations. Conclude with `Ideal.mul_mem_right _ _ htm`. Use `(uPlus u).smul_mem t (hz.loc h hh)` as an intermediate fact. Rewrite `this` using `[smul_sub, smul_sub, ← map_smul]`. Conclude with `this`.
-
-Establish `e1 : t • (z g).1 = 0` using `congrFun e g`. Conclude with `Subtype.ext ((smul_eq_zero.1 e1).resolve_left ht.ne_zero)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.cocA :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (S : Finset ℕ) (c s : G ℚ Ω) (B : ValuationSubring Ω), Pos l S c s B → ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Finite (ResidueField A)] (r : G ℚ Ω →* M4 A) (u : M4 A), IsAdicComplete (maximalIdeal A) A → (l : A) ∈ maximalIdeal A → BlockDiagonalOrdinaryGSpRep S c s B r u →

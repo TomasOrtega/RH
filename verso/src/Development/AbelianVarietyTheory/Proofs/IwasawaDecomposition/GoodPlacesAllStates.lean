@@ -19,11 +19,9 @@ variable {D : D7}
 local notation "cO" => IsCMField.ringOfIntegersComplexConj D.host.E
 
 /- English proof (translation)
-Introduce `x y hxy`. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE]`. Establish `: cO y = x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show IsCMField.complexConj D.host.E (D.host.conj (x : D.host.E)) = _`. Establish `h : D.host.conj (x : D.host.E) = IsCMField.complexConj D.host.E (x : D.host.E)` using `D.host.φ₀.injective (by`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`. Rewrite using `[h]`. Conclude with `IsCMField.complexConj_apply_apply D.host.E _`.
-
-Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConjPl_conjPlE (P : PlE D.host) : Formalism.BasicNotions.IsConjPl D.host P (GlobalTheory.SplitConjPlace.conjPlE P) := by
   intro x y hxy
@@ -39,14 +37,14 @@ theorem isConjPl_conjPlE (P : PlE D.host) : Formalism.BasicNotions.IsConjPl D.ho
   rw [this]
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.cO_cO]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjPlE_conjPlE (P : PlE D.host) : GlobalTheory.SplitConjPlace.conjPlE (GlobalTheory.SplitConjPlace.conjPlE P) = P := by
   refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
   rw [GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.cO_cO]
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.cO_algebraMap]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_conjPlE (P : PlE D.host) :
     (GlobalTheory.SplitConjPlace.conjPlE P).asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) =
@@ -55,7 +53,7 @@ theorem comap_conjPlE (P : PlE D.host) :
   rw [Ideal.mem_comap, Ideal.mem_comap, GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.cO_algebraMap]
 
 /- English proof (translation)
-Establish `h1 : Module.finrank ℚ D.host.E = 4 * D.R.ord` using `D.host.finrank_cmField`. Establish `h5 : D.R.f = 2 * D.R.ord` using `rfl`. Rewrite using `[h1, h5]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_E (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   have h1 : Module.finrank ℚ D.host.E = 4 * D.R.ord := D.host.finrank_cmField
@@ -63,17 +61,15 @@ theorem finrank_E (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   rw [h1, h5]; ring
 
 /- English proof (translation)
-Set `T : Set (PlE D.host)` to `{u | ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ u.asIdeal}`. Establish `hg : ∀ v, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `fun v => D.naut.plGw_over k v`. Set `f : D.nd.PlG k ⊕ D.nd.PlG k → T` to `Sum.elim (fun v => ⟨D.naut.plGw k v, hg v⟩) fun v => ⟨GlobalTheory.SplitConjPlace.conjPlE (D.naut.plGw k v), by show _ ∈ (GlobalTheory.SplitConjPlace.conjPlE _).asIdeal`. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE, map_natCast]`. Conclude with `hg v⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ a b, D.naut.plGw k a ≠ GlobalTheory.SplitConjPlace.conjPlE (D.naut.plGw k b)` using `fun a b e => D.naut.plGw_nconj k b a (e ▸ isConjPl_conjPlE _)`. Establish `hinj : Function.Injective f`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> have e' := congrArg Subtype.val e`. Conclude with `congrArg Sum.inl (D.naut.plGw_inj k e')`. Conclude with `absurd e' (hne a b)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `absurd e'.symm (hne b a)`. Use `congrArg GlobalTheory.SplitConjPlace.conjPlE e'` as an intermediate fact. Simplify using `only [f, Sum.elim_inr, conjPlE_conjPlE] at this`. Conclude with `congrArg Sum.inr (D.naut.plGw_inj k this)`. Establish `hT : T.ncard = 2 * D.R.f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← finrank_E D]`. Conclude with `D.nd.g_split k`. Establish `hc : Nat.card T = Nat.card (D.nd.PlG k ⊕ D.nd.PlG k)`. Rewrite using `[Nat.card_coe_set_eq, hT, Nat.card_sum, Nat.card_eq_fintype_card, D.nd.card_PlG k, two_mul]`. Use `haveI : Finite T := by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use `Nat.finite_of_card_ne_zero ?_` and prove the remaining obligations. Rewrite using `[Nat.card_coe_set_eq, hT]`. Establish `: 0 < D.R.f` using `by show 0 < 2 * D.R.ord; exact Nat.mul_pos two_pos D.R.ord_pos`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx⟩` from `((Nat.bijective_iff_injective_and_card f).2 ⟨hinj, hc.symm⟩).2 ⟨w, hw⟩`.
-
-Break down `x with v | v` into its components or cases. Conclude with `⟨v, Or.inl (congrArg Subtype.val hx).symm⟩`. Conclude with `⟨v, Or.inr (congrArg Subtype.val hx).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cover (k : Fin 2) (w : PlE D.host) (hw : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) :
     ∃ v, w = D.naut.plGw k v ∨ w = GlobalTheory.SplitConjPlace.conjPlE (D.naut.plGw k v) := by
@@ -110,11 +106,11 @@ theorem cover (k : Fin 2) (w : PlE D.host) (hw : ((D.host.g k : ℕ) : 𝓞 D.ho
 open GlobalTheory.LevCmp in
 
 /- English proof (translation)
-Use `⟨fun k v => ⟨D.naut.plGw_over k v, GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D ⟨k, v⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨w, hwu, k, hwk⟩`. Take `⟨v, hv⟩` from `cover k w hwk`. Take `⟨s, hs⟩` from `GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D ⟨k, v⟩`. Use `⟨k, v, s, HeightOneSpectrum.ext ?_, hs⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : u.asIdeal = (D.naut.plGw k v).asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E))`. Rewrite using `[← hwu]`. Break down `hv with rfl | rfl` into its components or cases. Both sides reduce to the same expression. Conclude with `comap_conjPlE _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, ← s.w_under, hs]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[← Fintype.card_pos_iff, D.nd.card_PlG 0]`. Use `show 0 < 2 * D.R.ord`. Conclude with `Nat.mul_pos two_pos D.R.ord_pos`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gPlaces (D : D7) : GPlaces D := by
   refine ⟨fun k v => ⟨D.naut.plGw_over k v, GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D ⟨k, v⟩⟩, ?_, ?_⟩
@@ -137,7 +133,7 @@ end GlobalTheory.TypePlacesCover
 open GlobalTheory.TypePlacesCover in
 
 /- English proof (translation)
-Introduce `_` and use `StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ => gPlaces (Dof x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TypePlacesCover.gPlaces_all : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => LA hL x → GPlaces (Dof x) :=
   fun _ => StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ => gPlaces (Dof x)

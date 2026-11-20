@@ -12,9 +12,9 @@ variable {L : Type*} [Field L] [NumberField L] [IsCMField L]
 local notation3 "L⁺" => maximalRealSubfield L
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℤ (x : L)` using `x.isIntegral_coe`. Establish `h1 : IsIntegral ℤ (s.i (x : L))` using `by first`. Consider the case `exact hx.map (s.i.restrictScalars ℤ)`. Consider the case `convert hx.map (s.i : L →+* s.v.adicCompletion L⁺).toIntAlgHom`. Establish `h2 : IsIntegral (Valued.v : Valuation (s.v.adicCompletion L⁺) _).integer (s.i (x : L))` using `h1.tower_top`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `(Valuation.mem_integer_iff _ _).mp ((Valuation.integer.integers _).mem_of_integral h2)`.
+A detailed English derivation is pending.
 -/
 theorem SplitPlace.split_le_one (s : SplitPlace L) (x : 𝓞 L) : Valued.v (s.i (x : L)) ≤ 1 := by
   have hx : IsIntegral ℤ (x : L) := x.isIntegral_coe
@@ -33,7 +33,7 @@ theorem split_coe_algebraMap (a : 𝓞 L⁺) :
     ((algebraMap (𝓞 L⁺) (𝓞 L) a : 𝓞 L) : L) = algebraMap L⁺ L (a : L⁺) := rfl
 
 /- English proof (translation)
-Rewrite using `[split_coe_algebraMap, s.i.commutes]`. Use `first`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' s.v (a : L⁺)`. Consider the case `simp [HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem SplitPlace.split_val_alg (s : SplitPlace L) (a : 𝓞 L⁺) :
     Valued.v (s.i ((algebraMap (𝓞 L⁺) (𝓞 L) a : 𝓞 L) : L)) = s.v.valuation L⁺ (a : L⁺) := by
@@ -59,17 +59,17 @@ def SplitPlace.ideal (s : SplitPlace L) : Ideal (𝓞 L) where
       _ < 1 := by rwa [one_mul]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem SplitPlace.split_mem_ideal (s : SplitPlace L) (x : 𝓞 L) :
     x ∈ s.ideal ↔ Valued.v (s.i (x : L)) < 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[Ideal.isPrime_iff]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Ne, Ideal.eq_top_iff_one, s.split_mem_ideal]`. Simplify using the standard rewrite rules. Introduce `x y hxy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[s.split_mem_ideal, s.split_mem_ideal]`. Rewrite `hxy` using `[s.split_mem_ideal]`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨h1, h2⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_mul] at hxy h1 h2`. Conclude with `not_lt.mpr (one_le_mul h1 h2) hxy`.
+A detailed English derivation is pending.
 -/
 theorem SplitPlace.ideal_isPrime (s : SplitPlace L) : s.ideal.IsPrime := by
   rw [Ideal.isPrime_iff]
@@ -86,7 +86,7 @@ theorem SplitPlace.ideal_isPrime (s : SplitPlace L) : s.ideal.IsPrime := by
     exact not_lt.mpr (one_le_mul h1 h2) hxy
 
 /- English proof (translation)
-Rewrite using `[s.split_mem_ideal, s.split_val_alg, RingOfIntegers.coe_eq_algebraMap]`. Conclude with `HeightOneSpectrum.valuation_lt_one_iff_mem s.v a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SplitPlace.split_alg_mem (s : SplitPlace L) (a : 𝓞 L⁺) :
     algebraMap (𝓞 L⁺) (𝓞 L) a ∈ s.ideal ↔ a ∈ s.v.asIdeal := by
@@ -94,11 +94,11 @@ theorem SplitPlace.split_alg_mem (s : SplitPlace L) (a : 𝓞 L⁺) :
   exact HeightOneSpectrum.valuation_lt_one_iff_mem s.v a
 
 /- English proof (translation)
-Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot s.v.ne_bot`. Introduce `h`. Establish `hm : algebraMap (𝓞 L⁺) (𝓞 L) a ∈ s.ideal` using `(s.split_alg_mem a).mpr ha`. Rewrite `hm` using `[h, Ideal.mem_bot]`. Apply `ha0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : ((algebraMap (𝓞 L⁺) (𝓞 L) a : 𝓞 L) : L) = 0` using `by rw [hm]; simp`. Rewrite `h2` using `[split_coe_algebraMap]`. Establish `h3 : ((a : 𝓞 L⁺) : L⁺) = 0` using `(map_eq_zero_iff _ (algebraMap L⁺ L).injective).mp h2`. Use `first`. Consider the case `exact RingOfIntegers.ext h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Subtype.ext h3`. Consider the case `exact_mod_cast h3`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem SplitPlace.ideal_ne_bot (s : SplitPlace L) : s.ideal ≠ ⊥ := by
   obtain ⟨a, ha, ha0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot s.v.ne_bot
@@ -118,7 +118,7 @@ def SplitPlace.w (s : SplitPlace L) : HeightOneSpectrum (𝓞 L) :=
   ⟨s.ideal, s.ideal_isPrime, s.ideal_ne_bot⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[Ideal.mem_comap]`. Conclude with `s.split_alg_mem a`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SplitPlace.w_under (s : SplitPlace L) :
     s.w.asIdeal.comap (algebraMap (𝓞 L⁺) (𝓞 L)) = s.v.asIdeal := by
@@ -127,13 +127,11 @@ theorem SplitPlace.w_under (s : SplitPlace L) :
   exact s.split_alg_mem a
 
 /- English proof (translation)
-Set `g` to `Ideal.quotientMap s.w.asIdeal (algebraMap (𝓞 L⁺) (𝓞 L)) s.w_under.ge`. Establish `hinj : Function.Injective g` using `Ideal.quotientMap_injective' s.w_under.le`. Establish `hsurj : Function.Surjective g`. Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `adic_exists_approx s.v (s.i (x : L)) (s.split_le_one x)`. Use `⟨Ideal.Quotient.mk _ a, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk, Ideal.Quotient.eq]`. Use `show _ ∈ s.ideal`. Rewrite using `[s.split_mem_ideal, ← Valuation.map_neg, RingOfIntegers.coe_eq_algebraMap, map_sub, map_sub, neg_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : s.i (algebraMap (𝓞 L) L (algebraMap (𝓞 L⁺) (𝓞 L) a)) = algebraMap (𝓞 L⁺) (s.v.adicCompletion L⁺) a`. Rewrite using `[← RingOfIntegers.coe_eq_algebraMap, split_coe_algebraMap, AlgHom.commutes]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ha`.
-
-Conclude with `(Nat.card_eq_of_bijective g ⟨hinj, hsurj⟩).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SplitPlace.card_quot (s : SplitPlace L) :
     Nat.card (𝓞 L ⧸ s.w.asIdeal) = Nat.card (𝓞 L⁺ ⧸ s.v.asIdeal) := by

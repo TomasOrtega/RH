@@ -19,7 +19,7 @@ section Gen
 variable {C : Type} [Field C] {σ τ ρ : Type}
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_ordGE (fun s => by unfold Formalism.BaseCaseIdentities.OrdGE intro A hA have h0 : A = 0 := by rw [← Finsupp.degree_eq_zero_iff] omega subst h0 rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply] exact ha s)`.
+A detailed English derivation is pending.
 -/
 theorem hs [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) :
     MvPowerSeries.HasSubst a := hasSubst_of_ordGE (fun s => by
@@ -33,9 +33,9 @@ theorem hs [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSerie
     exact ha s)
 
 /- English proof (translation)
-Unfold `Formalism.BaseCaseIdentities.OrdGE`. Introduce `A hA`. Establish `h0 : A = 0`. Rewrite using `[← Finsupp.degree_eq_zero_iff]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Substitute `h0` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `ha s`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem og {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (s : σ) :
     Formalism.BaseCaseIdentities.OrdGE 1 (a s) := by
@@ -49,7 +49,7 @@ theorem og {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCo
   exact ha s
 
 /- English proof (translation)
-Establish `h : Formalism.BaseCaseIdentities.OrdGE 1 (MvPowerSeries.subst a f)` using `ordGE_subst (og ha) (og (a := fun _ : Unit => f) (fun _ => hf) ())`. Establish `h0` using `h 0 (by simp)`. Rewrite `h0` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cc_subst [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     {f : MvPowerSeries σ C} (hf : MvPowerSeries.constantCoeff f = 0) :
@@ -60,14 +60,14 @@ theorem cc_subst [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowe
   rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply] at h0
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.subst_mul (hs ha) f g`.
+A detailed English derivation is pending.
 -/
 theorem subst_mul [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     (f g : MvPowerSeries σ C) :
     MvPowerSeries.subst a (f * g) = MvPowerSeries.subst a f * MvPowerSeries.subst a g := MvPowerSeries.subst_mul (hs ha) f g
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom (hs ha)]`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_one [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) :
     MvPowerSeries.subst a (1 : MvPowerSeries σ C) = 1 := by
@@ -75,7 +75,7 @@ theorem subst_one [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPow
   exact map_one _
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom (hs ha)]`. Conclude with `map_prod _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_prod [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     {ι : Type} (s : Finset ι) (F : ι → MvPowerSeries σ C) :
@@ -84,7 +84,7 @@ theorem subst_prod [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPo
   exact map_prod _ _ _
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom (hs ha)]`. Conclude with `map_sum _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_sum [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     {ι : Type} (s : Finset ι) (F : ι → MvPowerSeries σ C) :
@@ -93,7 +93,7 @@ theorem subst_sum [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPow
   exact map_sum _ _ _
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom (hs ha)]`. Conclude with `map_smul _ c f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_smul [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     (c : C) (f : MvPowerSeries σ C) :
@@ -102,14 +102,14 @@ theorem subst_smul [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPo
   exact map_smul _ c f
 
 /- English proof (translation)
-The claim follows from `subst_mvExp (og ha) (og (a := fun _ : Unit => f) (fun _ => hf) ())`.
+A detailed English derivation is pending.
 -/
 theorem subst_exp [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     {f : MvPowerSeries σ C} (hf : MvPowerSeries.constantCoeff f = 0) :
     MvPowerSeries.subst a (mvExp f) = mvExp (MvPowerSeries.subst a f) := subst_mvExp (og ha) (og (a := fun _ : Unit => f) (fun _ => hf) ())
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.subst_comp_subst_apply (hs ha) (hs hb) f`.
+A detailed English derivation is pending.
 -/
 theorem subst_subst [Finite σ] [Finite τ] {a : σ → MvPowerSeries τ C} {b : τ → MvPowerSeries ρ C}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (hb : ∀ s, MvPowerSeries.constantCoeff (b s) = 0)
@@ -118,7 +118,7 @@ theorem subst_subst [Finite σ] [Finite τ] {a : σ → MvPowerSeries τ C} {b :
       MvPowerSeries.subst (fun s => MvPowerSeries.subst b (a s)) f := MvPowerSeries.subst_comp_subst_apply (hs ha) (hs hb) f
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.subst_X (hs ha) s`.
+A detailed English derivation is pending.
 -/
 theorem subst_X [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (s : σ) :
     MvPowerSeries.subst a (MvPowerSeries.X s : MvPowerSeries σ C) = a s := MvPowerSeries.subst_X (hs ha) s
@@ -130,13 +130,13 @@ section Exp
 variable {C : Type} [Field C] [CharZero C] {n dd : ℕ}
 
 /- English proof (translation)
-Establish `hpow : ∀ (k : ℕ) (m : Fin n × Fin dd →₀ ℕ), m.degree < k → MvPowerSeries.coeff m (f ^ k) = 0`. Introduce `k m hm`. Establish `h1` using `ordGE_finsupp_prod (fun _ : Unit => f) (fun _ => og (a := fun _ : Unit => f) (fun _ => hf) ()) (Finsupp.single () k)`. Simplify using `only [Finsupp.prod_single_index, pow_zero, Finsupp.degree_single] at h1`. Conclude with `h1 m hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Rewrite using `[FB.expS, PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hf)]`. Express the relevant statement in the definitionally equal form `_ = ∑ k ∈ Finset.range (m.degree + 1), MvPowerSeries.coeff m (f ^ k) / (k.factorial : C)`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (m.degree + 1)) ?_]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.coeff_exp]`. Simplify using `only [smul_eq_mul, map_div₀, map_one, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Introduce `k hk`. Rewrite `hk` using `[Function.mem_support]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`. Conclude with `hk (by rw [hpow k m (by omega), smul_zero])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem expS_eq (f : PS C n dd) (hf : MvPowerSeries.constantCoeff f = 0) : FB.expS C f = mvExp f := by
   have hpow : ∀ (k : ℕ) (m : Fin n × Fin dd →₀ ℕ), m.degree < k → MvPowerSeries.coeff m (f ^ k) = 0 := by

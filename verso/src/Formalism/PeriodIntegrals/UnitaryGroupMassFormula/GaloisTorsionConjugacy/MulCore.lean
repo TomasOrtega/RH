@@ -13,9 +13,9 @@ section core
 variable {L L' : PeriodPair} {M₁ : IntermediateField ℚ ℂ} {ρ₁ : M₁ →ₐ[ℚ] ℂ}
 
 /- English proof (translation)
-Establish `hzP : ∀ P ∈ S, St L L' M₁ ρ₁ (z + P) (z' + f P)` using `fun P hP => st_add addLaw dblLaw hg2 hg2' hz (hf P hP)`. Establish `e0` using `conj_weierstrassP hz hU.1`. Establish `eP : ∀ P ∈ S, Cj1 M₁ ρ₁ (L.weierstrassP (z + P)) (L'.weierstrassP (z' + f P)) ∧ Cj1 M₁ ρ₁ (L.derivWeierstrassP (z + P)) (L'.derivWeierstrassP (z' + f P))` using `fun P hP => conj_weierstrassP (hzP P hP) (hU.2 P hP)`. Establish `eQ : ∀ P ∈ S, Cj1 M₁ ρ₁ (L.weierstrassP P) (L'.weierstrassP (f P))` using `fun P hP => (conj_weierstrassP (hf P hP) (hSL P hP)).1`. Unfold `veluF veluD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_image hinj, Finset.sum_image hinj]`. Conclude with `⟨conj_add_alt e0.1 (conj_sum_alt S _ _ fun P hP => conj_sub_alt (eP P hP).1 (eQ P hP)), conj_add_alt e0.2 (conj_sum_alt S _ _ fun P hP => (eP P hP).2)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem conj_velu_isogeny (hg2 : L.g₂ ∈ M₁) (hg2' : L'.g₂ = ρ₁ ⟨_, hg2⟩) {S : Finset ℂ} {f : ℂ → ℂ}
     (hf : ∀ P ∈ S, St L L' M₁ ρ₁ P (f P)) (hinj : Set.InjOn f S)
@@ -37,47 +37,45 @@ theorem conj_velu_isogeny (hg2 : L.g₂ ∈ M₁) (hg2' : L'.g₂ = ρ₁ ⟨_, 
     conj_add_alt e0.2 (conj_sum_alt S _ _ fun P hP => (eP P hP).2)⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `kerRepsExist L c hc0 hcL`. Establish `hSL : ∀ P ∈ S, P ∉ L.lattice` using `fun P hP => (hS.1 P hP).2`. Establish `hex : ∀ P ∈ S, ∃ P', St L L' M₁ ρ₁ P P'`. Introduce `P hP`. Take `⟨m, hm, hmP⟩` from `tors_of_ker hc0 hcL (hS.1 P hP).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `st_exists pOnto hg2 hg3 hg2' hg3' P (Or.inr (htors m P hm hmP (hSL P hP)))`. Use `choose! f hf using hex`. Establish `hinj : Set.InjOn f S`. Introduce `P hP Q hQ e`. Establish `h2 : St L L' M₁ ρ₁ Q (f P)` using `by rw [e]; exact hf Q hQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS.2.1 P hP Q hQ (st_inj (hf P hP) h2)`. Establish `hS'L : ∀ P' ∈ S.image f, P' ∉ L'.lattice`. Introduce `P' hP'`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hP'`. Conclude with `fun h' => hSL P hP ((st_mem_iff (hf P hP)).2 h')`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hS'd : ∀ P' ∈ S.image f, ∀ Q' ∈ S.image f, P' - Q' ∈ L'.lattice → P' = Q'`. Introduce `P' hP' Q' hQ' hd`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hP'`. Take `⟨Q, hQ, rfl⟩` from `Finset.mem_image.1 hQ'`. Establish `h2 : St L L' M₁ ρ₁ Q (f P)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `st_add_right (hf Q hQ) hd` as an intermediate fact. Rewrite `this` using `[show f Q + (f P - f Q) = f P by ring]`. Then use the resulting hypothesis. Rewrite using `[hS.2.1 P hP Q hQ (st_inj (hf P hP) h2)]`. Establish `cc : Cj1 M₁ ρ₁ c c` using `⟨hc, hρc⟩`. Establish `cg2 : Cj1 M₁ ρ₁ L.g₂ L'.g₂` using `⟨hg2, hg2'.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `cg3 : Cj1 M₁ ρ₁ L.g₃ L'.g₃` using `⟨hg3, hg3'.symm⟩`. Establish `hodeT : ∀ z' ∈ veluU L' (S.image f) ∩ {t : ℂ | ∃ n : ℕ, 0 < n ∧ (n : ℂ) * t ∈ L'.lattice}, veluD L' (S.image f) z' ^ 2 = 4 * veluF L' (S.image f) z' ^ 3 - c ^ 4 * L'.g₂ * veluF L' (S.image f) z' - c ^ 6 * L'.g₃`. Introduce and unpack `z' ⟨hU', n, hn, hnz'⟩`. Take `⟨z, -, hz⟩` from `st_onto addLaw dblLaw pOnto hg2 hg3 hg2' hg3' n hn (fun t h1 h2 => htors n t hn h1 h2) z' hnz'`. Establish `hzL : z ∉ L.lattice` using `fun h' => hU'.1 ((st_mem_iff hz).1 h')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzP : ∀ P ∈ S, z + P ∉ L.lattice` using `fun P hP h' => hU'.2 (f P) (Finset.mem_image_of_mem f hP) ((st_mem_iff (st_add addLaw dblLaw hg2 hg2' hz (hf P hP))).1 h')`. Establish `hU : z ∈ veluU L S` using `⟨hzL, hzP⟩`. Establish `hcz` using `mul_notMem hS hzL hzP`. Establish `eF : veluF L S z = c ^ 2 * L.weierstrassP (c * z)` using `(isogenyP L c S hc0 hcL hS z hcz).symm`. Establish `eD : veluD L S z = c ^ 3 * L.derivWeierstrassP (c * z)` using `(hD L c S hc0 hcL hS z hcz).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `curve` using `L.derivWeierstrassP_sq (c * z) hcz`. Establish `ode : veluD L S z ^ 2 = 4 * veluF L S z ^ 3 - c ^ 4 * L.g₂ * veluF L S z - c ^ 6 * L.g₃`. Rewrite using `[eF, eD]`. Take the linear combination `c ^ 6 * curve`. Take `⟨cF, cD⟩` from `conj_velu_isogeny hg2 hg2' hf hinj hSL hz hU`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lhs` using `conj_pow_alt cD 2`. Establish `rhs` using `conj_sub_alt (conj_sub_alt (conj_mul_alt (conj_natCast_alt 4) (conj_pow_alt cF 3)) (conj_mul_alt (conj_mul_alt (conj_pow_alt cc 4) cg2) cF)) (conj_mul_alt (conj_pow_alt cc 6) cg3)`. Establish `e` using `conj_eq_alt lhs rhs (by rw [ode]; push_cast; ring)`. Rewrite using `[e]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hode : ∀ z' ∈ veluU L' (S.image f), veluD L' (S.image f) z' ^ 2 = 4 * veluF L' (S.image f) z' ^ 3 - c ^ 4 * L'.g₂ * veluF L' (S.image f) z' - c ^ 6 * L'.g₃`. Establish `hF` using `continuousOn_veluF L' (S.image f)`. Establish `hDc` using `continuousOn_veluD L' (S.image f)`. Establish `hcont1 : ContinuousOn (fun z => veluD L' (S.image f) z ^ 2) (veluU L' (S.image f))` using `hDc.pow 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hcont2 : ContinuousOn (fun z => 4 * veluF L' (S.image f) z ^ 3 - c ^ 4 * L'.g₂ * veluF L' (S.image f) z - c ^ 6 * L'.g₃) (veluU L' (S.image f))` using `((continuousOn_const.mul (hF.pow 3)).sub (continuousOn_const.mul hF)).sub continuousOn_const`. Establish `heq` using `Set.EqOn.of_subset_closure (fun z hz => hodeT z hz) hcont1 hcont2 Set.inter_subset_left ((hDn L').open_subset_closure_inter (isOpen_veluU L' (S.image f)))`. Conclude with `fun z hz => heq hz`. Take `⟨hcL', hcS', hU'⟩` from `hO L' c (S.image f) hc0 hS'L hS'd hode`. Distinguish the cases in `ht : t ∈ L.lattice`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inl ⟨hcL t ht, hcL' t' ((st_mem_iff h).1 ht)⟩`. Distinguish the cases in `hct : c * t ∈ L.lattice`. Take `⟨Q, hQ, htQ⟩` from `hS.2.2 t hct ht`. Establish `h2 : St L L' M₁ ρ₁ t (f Q)`. Use `st_add_left (hf Q hQ) htQ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[show Q + (t - Q) = t by ring]`. Then use the resulting hypothesis. Establish `d` using `st_unique h h2`. Use `Or.inl ⟨hct, ?_⟩` and prove the remaining obligations. Use `L'.lattice.add_mem (hcL' _ d) (hcS' (f Q) (Finset.mem_image_of_mem f hQ))` as an intermediate fact. Rewrite `this` using `[show c * (t' - f Q) + c * f Q = c * t' by ring]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `htP : ∀ P ∈ S, t + P ∉ L.lattice`. Introduce `P hP h'`. Apply `hct` to reduce the goal to its premises. Use `L.lattice.sub_mem (hcL _ h') (hS.1 P hP).1` as an intermediate fact. Rewrite `this` using `[show c * (t + P) - c * P = c * t by ring]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : t ∈ veluU L S` using `⟨ht, htP⟩`. Establish `ht' : t' ∉ L'.lattice` using `fun h' => ht ((st_mem_iff h).2 h')`. Establish `hU'' : t' ∈ veluU L' (S.image f)`. Use `⟨ht', fun P' hP' h' => ?_⟩` and prove the remaining obligations. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hP'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `htP P hP ((st_mem_iff (st_add addLaw dblLaw hg2 hg2' h (hf P hP))).2 h')`. Take `⟨cF, cD⟩` from `conj_velu_isogeny hg2 hg2' hf hinj hSL h hU`. Take `⟨hct', eF', eD'⟩` from `hU' t' hU''`. Establish `eF : veluF L S t = c ^ 2 * L.weierstrassP (c * t)` using `(isogenyP L c S hc0 hcL hS t hct).symm`. Establish `eD : veluD L S t = c ^ 3 * L.derivWeierstrassP (c * t)` using `(hD L c S hc0 hcL hS t hct).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `cinv : Cj1 M₁ ρ₁ c⁻¹ c⁻¹`. Use `⟨M₁.inv_mem hc, ?_⟩` and prove the remaining obligations. Establish `e : ((⟨c, hc⟩ : M₁)⁻¹) = ⟨c⁻¹, M₁.inv_mem hc⟩` using `rfl`. Rewrite using `[← e, map_inv₀, hρc]`. Establish `qX : Cj1 M₁ ρ₁ (L.weierstrassP (c * t)) (L'.weierstrassP (c * t'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `p` using `conj_mul_alt (conj_pow_alt cinv 2) cF`. Establish `e1 : c⁻¹ ^ 2 * veluF L S t = L.weierstrassP (c * t)` using `by rw [eF]; field_simp`. Establish `e2 : c⁻¹ ^ 2 * veluF L' (S.image f) t' = L'.weierstrassP (c * t')`. Rewrite using `[← eF']`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `p` using `[e1, e2]`. Then use the resulting hypothesis. Establish `qY : Cj1 M₁ ρ₁ (L.derivWeierstrassP (c * t)) (L'.derivWeierstrassP (c * t'))`. Establish `p` using `conj_mul_alt (conj_pow_alt cinv 3) cD`. Establish `e1 : c⁻¹ ^ 3 * veluD L S t = L.derivWeierstrassP (c * t)` using `by rw [eD]; field_simp`. Establish `e2 : c⁻¹ ^ 3 * veluD L' (S.image f) t' = L'.derivWeierstrassP (c * t')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← eD']`. Clear the denominators using the available nonvanishing facts. Rewrite `p` using `[e1, e2]`. Then use the resulting hypothesis. Take `⟨hx, vx⟩` from `qX`. Take `⟨hy, vy⟩` from `qY`.
-
-Conclude with `Or.inr ⟨hct, hct', hx, hy, vx.symm, vy.symm⟩`.
+Extract witnesses or component facts from the available result. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem core (hD : IsogD) (hO : IsogODE) (hDn : TorsDense)
     (hg2 : L.g₂ ∈ M₁) (hg3 : L.g₃ ∈ M₁) (hg2' : L'.g₂ = ρ₁ ⟨_, hg2⟩) (hg3' : L'.g₃ = ρ₁ ⟨_, hg3⟩)

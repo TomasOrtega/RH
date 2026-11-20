@@ -36,16 +36,16 @@ namespace RankVal
 variable {s : Scale} {R : Ranks}
 
 /- English proof (translation)
-The claim follows from `h.1.1`.
+A detailed English derivation is pending.
 -/
 theorem n_lo (h : RankVal s R) : s.x ^ (2 + 8 * s.eps) ≤ (R.n : ℝ) := h.1.1
 /- English proof (translation)
-The claim follows from `h.1.2`.
+A detailed English derivation is pending.
 -/
 theorem n_up (h : RankVal s R) : (R.n : ℝ) ≤ 2 * s.x ^ (2 + 8 * s.eps) := h.1.2
 
 /- English proof (translation)
-Establish `h2 : s.x ^ (2 + 8 * s.eps) ≤ s.x ^ (2 + 8 * s.eps + s.eps / 100)` using `Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le (by linarith [s.eps_pos])`. Combine the linear relations using `[h.n_up]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem n_le (h : RankVal s R) : (R.n : ℝ) ≤ 2 * s.x ^ (2 + 8 * s.eps + s.eps / 100) := by
   have h2 : s.x ^ (2 + 8 * s.eps) ≤ s.x ^ (2 + 8 * s.eps + s.eps / 100) :=
@@ -53,9 +53,9 @@ theorem n_le (h : RankVal s R) : (R.n : ℝ) ≤ 2 * s.x ^ (2 + 8 * s.eps + s.ep
   linarith [h.n_up]
 
 /- English proof (translation)
-Establish `h0 : 0 < R.o`. Break down `Nat.eq_zero_or_pos R.o with h0 | h0` into its components or cases. Establish `h1` using `R.toFrame.ord_le_o_mul_two_pow`. Establish `h2` using `R.toFrame.ord_pos`. Rewrite `h1` using `[h0]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `h1 : (1 : ℝ) ≤ C` using `le_trans (by exact_mod_cast h0) hC`. Establish `h2 : 0 ≤ s.x ^ (2 + 8 * s.eps)` using `Real.rpow_nonneg (by linarith [s.one_lt_alt]) _`. Use polynomial arithmetic with `[h.n_up]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem n_le_of_o (h : RankVal s R) {C : ℝ} (hC : (R.o : ℝ) ≤ C) : (R.n : ℝ) ≤ 2 * C * s.x ^ (2 + 8 * s.eps) := by
   have h0 : 0 < R.o := by
@@ -70,7 +70,7 @@ theorem n_le_of_o (h : RankVal s R) {C : ℝ} (hC : (R.o : ℝ) ≤ C) : (R.n : 
   nlinarith [h.n_up]
 
 /- English proof (translation)
-Use `s.eps_lt` as an intermediate fact. Establish `h2 : s.x ^ (2 + 8 * s.eps + s.eps / 100) ≤ s.x ^ ((9 : ℝ) / 4)` using `Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le (by linarith)`. Combine the linear relations using `[h.n_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem n_le' (h : RankVal s R) : (R.n : ℝ) ≤ 2 * s.x ^ ((9 : ℝ) / 4) := by
   have := s.eps_lt
@@ -143,7 +143,7 @@ def SzRow (P : FC → ∀ D : D7, SizeData₂ D → Prop) : Prop :=
     ∀ (D : D7) (L : SizeData₂ D), L.sc.eps = eps → x0 ≤ L.sc.x → Val C cD ch L → P C D L
 
 /- English proof (translation)
-Use `⟨?_, le_rfl⟩` and prove the remaining obligations. Establish `h : 1 / s.J ≤ 1` using `(div_le_one (lt_of_lt_of_le one_pos s.one_le_J)).2 s.one_le_J`. Simplify using `using Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pairWin_self (s : Scale) : PairWin s s.x := by
   refine ⟨?_, le_rfl⟩
@@ -151,13 +151,13 @@ theorem pairWin_self (s : Scale) : PairWin s s.x := by
   simpa using Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le h
 
 /- English proof (translation)
-The claim follows from `(Real.one_lt_rpow s.one_lt_alt (one_div_pos.2 (lt_of_lt_of_le one_pos s.one_le_J))).trans_le h.1`.
+A detailed English derivation is pending.
 -/
 theorem PairWin.one_lt {s : Scale} {Y : ℝ} (h : PairWin s Y) : 1 < Y :=
   (Real.one_lt_rpow s.one_lt_alt (one_div_pos.2 (lt_of_lt_of_le one_pos s.one_le_J))).trans_le h.1
 
 /- English proof (translation)
-Establish `hx : 0 < s.x` using `lt_trans one_pos s.one_lt_alt`. Establish `e : s.ez / c = 1 / s.J * (s.eps / c)` using `by unfold Scale.ez; ring`. Rewrite using `[e, Real.rpow_mul hx.le]`. Conclude with `Real.rpow_le_rpow (Real.rpow_nonneg hx.le _) h.1 (div_nonneg s.eps_pos.le hc.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PairWin.rpow_ez_le {s : Scale} {Y : ℝ} (h : PairWin s Y) {c : ℝ} (hc : 0 < c) :
     s.x ^ (s.ez / c) ≤ Y ^ (s.eps / c) := by
@@ -167,19 +167,19 @@ theorem PairWin.rpow_ez_le {s : Scale} {Y : ℝ} (h : PairWin s Y) {c : ℝ} (hc
   exact Real.rpow_le_rpow (Real.rpow_nonneg hx.le _) h.1 (div_nonneg s.eps_pos.le hc.le)
 
 /- English proof (translation)
-The claim follows from `Real.rpow_le_rpow (by linarith [h.one_lt]) h.2 ha`.
+A detailed English derivation is pending.
 -/
 theorem PairWin.rpow_le {s : Scale} {Y : ℝ} (h : PairWin s Y) {a : ℝ} (ha : 0 ≤ a) : Y ^ a ≤ s.x ^ a :=
   Real.rpow_le_rpow (by linarith [h.one_lt]) h.2 ha
 
 /- English proof (translation)
-The claim follows from `Real.log_le_log (by linarith [h.one_lt]) h.2`.
+A detailed English derivation is pending.
 -/
 theorem PairWin.log_le {s : Scale} {Y : ℝ} (h : PairWin s Y) : Real.log Y ≤ Real.log s.x :=
   Real.log_le_log (by linarith [h.one_lt]) h.2
 
 /- English proof (translation)
-Establish `hx : 0 < s.x` using `lt_trans one_pos s.one_lt_alt`. Establish `h1` using `Real.log_le_log (Real.rpow_pos_of_pos hx _) h.1`. Rewrite `h1` using `[Real.log_rpow hx]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem PairWin.log_div_le {s : Scale} {Y : ℝ} (h : PairWin s Y) : Real.log s.x / s.J ≤ Real.log Y := by
   have hx : 0 < s.x := lt_trans one_pos s.one_lt_alt
@@ -189,14 +189,14 @@ theorem PairWin.log_div_le {s : Scale} {Y : ℝ} (h : PairWin s Y) : Real.log s.
     _ ≤ _ := h1
 
 /- English proof (translation)
-The claim follows from `(Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le (one_div_le_one_div_of_le (lt_of_lt_of_le one_pos s.one_le_J) hJ)).trans h.1`.
+A detailed English derivation is pending.
 -/
 theorem PairWin.rpow_inv_le {s : Scale} {Y C : ℝ} (h : PairWin s Y) (hJ : s.J ≤ C) : s.x ^ (1 / C) ≤ Y :=
   (Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le
     (one_div_le_one_div_of_le (lt_of_lt_of_le one_pos s.one_le_J) hJ)).trans h.1
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ Real.log Y` using `Real.log_nonneg h.one_lt.le`. Establish `h1` using `h.rpow_le (a := s.eps / 5) (by linarith [s.eps_pos])`. Conclude with `mul_le_mul h1 (pow_le_pow_left₀ h0 h.log_le 2) (sq_nonneg _) (Real.rpow_nonneg (by linarith [s.one_lt_alt]) _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PairWin.z_log_sq_le {s : Scale} {Y : ℝ} (h : PairWin s Y) :
     Y ^ (s.eps / 5) * Real.log Y ^ 2 ≤ s.x ^ (s.eps / 5) * Real.log s.x ^ 2 := by
@@ -206,13 +206,13 @@ theorem PairWin.z_log_sq_le {s : Scale} {Y : ℝ} (h : PairWin s Y) :
     (Real.rpow_nonneg (by linarith [s.one_lt_alt]) _)
 
 /- English proof (translation)
-The claim follows from `Nat.mul_div_cancel' (Dvd.dvd.trans ⟨2 ^ R.e, by ring⟩ H.tower_dvd)`.
+A detailed English derivation is pending.
 -/
 theorem four_mul_QS_div {R : Ranks} (H : Host R) : 4 * (H.QS / 4) = H.QS :=
   Nat.mul_div_cancel' (Dvd.dvd.trans ⟨2 ^ R.e, by ring⟩ H.tower_dvd)
 
 /- English proof (translation)
-Establish `e : (4 : ℝ) * ((H.QS / 4 : ℕ) : ℝ) = H.QS` using `by exact_mod_cast four_mul_QS_div H`. Unfold `PairRow Rowq`. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairRow_iff_rowq (Y eps : ℝ) {R : Ranks} (H : Host R) : PairRow Y eps H ↔ Rowq Y eps (H.QS / 4) H.q H.d := by
   have e : (4 : ℝ) * ((H.QS / 4 : ℕ) : ℝ) = H.QS := by exact_mod_cast four_mul_QS_div H
@@ -224,38 +224,38 @@ namespace HostVal
 variable {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R}
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem split_tie (h : HostVal s C8 H) : ⌊s.x ^ (s.ez / 5)⌋₊ ≤ H.splitBound := h.2.2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem J_le (h : HostVal s C8 H) : s.J ≤ C8 := h.2.2.2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem o_le (h : HostVal s C8 H) : (R.o : ℝ) ≤ C8 := h.2.2.2.2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem QS_le (h : HostVal s C8 H) : (H.QS : ℝ) ≤ C8 * R.n := h.2.2.2.2.2.2.2.2.2.2
 
 /- English proof (translation)
-The claim follows from `s.one_le_J.trans h.J_le`.
+A detailed English derivation is pending.
 -/
 theorem one_le (h : HostVal s C8 H) : 1 ≤ C8 := s.one_le_J.trans h.J_le
 
 /- English proof (translation)
-The claim follows from `div_le_div_of_nonneg_left s.eps_pos.le (lt_of_lt_of_le one_pos s.one_le_J) h.J_le`.
+A detailed English derivation is pending.
 -/
 theorem eps_div_le_ez (h : HostVal s C8 H) : s.eps / C8 ≤ s.ez :=
   div_le_div_of_nonneg_left s.eps_pos.le (lt_of_lt_of_le one_pos s.one_le_J) h.J_le
 
 /- English proof (translation)
-Take `⟨Y, hY, hr⟩` from `h.1`. Use `hY.z_log_sq_le` as an intermediate fact. Combine the linear relations using `[hr.2.2.2.2.2.2.2.2.2.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_cond_le (h : HostVal s C8 H) :
     Real.log ((H.QS : ℝ) * H.q * H.d) ≤ 2 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2 := by
@@ -264,14 +264,14 @@ theorem log_cond_le (h : HostVal s C8 H) :
   linarith [hr.2.2.2.2.2.2.2.2.2.2]
 
 /- English proof (translation)
-Take `⟨Y, hY, hr⟩` from `h.1`. Conclude with `hr.2.2.2.2.2.2.2.1.trans (Real.exp_le_exp.2 hY.z_log_sq_le)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem d_le (h : HostVal s C8 H) : (H.d : ℝ) ≤ GlobalTheoryTheory.X2 s.x s.eps := by
   obtain ⟨Y, hY, hr⟩ := h.1
   exact hr.2.2.2.2.2.2.2.1.trans (Real.exp_le_exp.2 hY.z_log_sq_le)
 
 /- English proof (translation)
-Take `⟨Y, hY, hr⟩` from `h.1`. Conclude with `hr.2.2.2.2.2.2.2.2.2.1 p hp (hle.trans (hY.rpow_ez_le (by norm_num)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem split (h : HostVal s C8 H) (p : ℕ) (hp : p.Prime) (hle : (p : ℝ) ≤ s.x ^ (s.ez / 5)) :
     GlobalTheoryTheory.kronSym (-(H.d : ℤ)) p = 1 := by
@@ -279,9 +279,9 @@ theorem split (h : HostVal s C8 H) (p : ℕ) (hp : p.Prime) (hle : (p : ℝ) ≤
   exact hr.2.2.2.2.2.2.2.2.2.1 p hp (hle.trans (hY.rpow_ez_le (by norm_num)))
 
 /- English proof (translation)
-Establish `hN : (1 : ℝ) ≤ (H.QS : ℝ) * H.q * H.d`. Establish `: 0 < H.QS * H.q * H.d` using `Nat.mul_pos (Nat.mul_pos H.QS_pos H.hyp.1.pos) H.hyp.2.1.pos`. Conclude with `this` after adjusting the coercions. Establish `m` using `Real.rpow_le_rpow_of_exponent_le hN hC`. Take `⟨a, b, c, ⟨d1, d2⟩, e, f, g, i, j1, j2, j3⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, b, c, ⟨d1.trans m, d2.trans m⟩, e, f, g, i, j1.trans hC, j2.trans hC, j3.trans (mul_le_mul_of_nonneg_right hC (Nat.cast_nonneg _))⟩`.
+A detailed English derivation is pending.
 -/
 theorem mono (h : HostVal s C8 H) {C8' : ℝ} (hC : C8 ≤ C8') : HostVal s C8' H := by
   have hN : (1 : ℝ) ≤ (H.QS : ℝ) * H.q * H.d := by

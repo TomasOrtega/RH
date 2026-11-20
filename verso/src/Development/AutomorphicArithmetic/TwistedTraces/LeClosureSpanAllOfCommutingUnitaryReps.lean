@@ -9,7 +9,7 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
 /- English proof (translation)
-The claim follows from `| [], _, v, h => by simpa using h | a :: l, hl, v, h => by rw [List.prod_cons] show a (l.prod v) ∈ Y have ih := prod_keep Y l (fun b hb => hl b (List.mem_cons_of_mem _ hb)) v rcases h with h | ⟨b, hb, h⟩ · exact hl a List.mem_cons_self _ (ih (Or.inl h)) · rcases List.mem_cons.1 h …`.
+A detailed English derivation is pending.
 -/
 private theorem prod_keep {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Y : Submodule ℂ H) :
     ∀ l : List (H →L[ℂ] H), (∀ a ∈ l, ∀ v ∈ Y, a v ∈ Y) → ∀ v, (v ∈ Y ∨ ∃ a ∈ l, ∀ v, a v ∈ Y) → l.prod v ∈ Y
@@ -25,7 +25,7 @@ private theorem prod_keep {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
       · exact hl a List.mem_cons_self _ (ih (Or.inr ⟨b, hb, h⟩))
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | a :: l, hl => by rw [List.prod_cons] show a (l.prod v) = v rw [prod_fix v l fun b hb => hl b (List.mem_cons_of_mem _ hb), hl a List.mem_cons_self]`.
+A detailed English derivation is pending.
 -/
 private theorem prod_fix {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (v : H) :
     ∀ l : List (H →L[ℂ] H), (∀ a ∈ l, a v = v) → l.prod v = v
@@ -37,29 +37,25 @@ private theorem prod_fix {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `r G _ _ _ _ _ _ H _ _ _ S _ _ π τ V Z hsm hirr hcm hZc hZV hZi hV hfd hne`. Establish `lev` using `UpperTheory.commuting_smooth_irreducible_fixed_vectors r G H S π τ V Z hsm hirr hcm hZc hZV hZi hV`. Establish `hX : ∀ (U : ∀ i, Subgroup (G i)) v, v ∈ Z ⊓ ⨅ i, fixU (π i) (U i) ↔ v ∈ Z ∧ ∀ i, v ∈ fixU (π i) (U i)` using `fun U v => by`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf]`. Take `⟨U₀, hU₀, h0⟩` from `UpperTheory.exists_compactOpen_family_inf_fixed_ne_bot r G H π hcm Z hZc hZi hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hmono : ∀ L U : ∀ i, Subgroup (G i), (∀ i, L i ≤ U i) → Z ⊓ ⨅ i, fixU (π i) (U i) ≤ Z ⊓ ⨅ i, fixU (π i) (L i)` using `fun L U h v hv => (hX L v).2 ⟨hv.1, fun i u hu => ((hX U v).1 hv).2 i u (h i hu)⟩`. Establish `hmS : ∀ i (L U : Subgroup (G i)), L ≤ U → fixedVectors (τ i) U ≤ fixedVectors (τ i) L` using `fun i L U h v hv => mem_fixedVectors.2 fun u hu => mem_fixedVectors.1 hv u (h hu)`. Establish `hco : ∀ U : ∀ i, Subgroup (G i), (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → ∀ i, IsCompact ((U i ⊓ U₀ i : Subgroup (G i)) : Set (G i)) ∧ IsOpen ((U i ⊓ U₀ i : Subgroup (G i)) : Set (G i))` using `fun U hU i => ⟨(hU i).1.inter (hU₀ i).1, (hU i).2.inter (hU₀ i).2⟩`. Establish `hne' : ∀ U : ∀ i, Subgroup (G i), (Z ⊓ ⨅ i, fixU (π i) (U i ⊓ U₀ i)) ≠ ⊥` using `fun U e => h0 (le_bot_iff.1 (e ▸ hmono _ U₀ fun i => inf_le_right))`. Establish `hS : ∀ U : ∀ i, Subgroup (G i), (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → ∀ i, FiniteDimensional ℂ (fixedVectors (τ i) (U i))` using `fun U hU i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((lev _ (hco U hU) (hfd _ (hco U hU)) (hne' U)).1 i).1` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (hmS i (U i ⊓ U₀ i) _ inf_le_left)`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Establish `shift : ∀ L : ∀ i, Subgroup (G i), (∀ i, IsCompact (L i : Set (G i)) ∧ IsOpen (L i : Set (G i))) → (Z ⊓ ⨅ i, fixU (π i) (L i)) ≠ ⊥ → ∃ N : ℕ, ∀ U : ∀ i, Subgroup (G i), (∀ i, L i ≤ U i) → (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → ∀ (T : Fin r → H →L[ℂ] H) (A …`. Introduce `L hL hLne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, N, hN⟩` from `lev L hL (hfd L hL) hLne`. Use `⟨N, fun U hLU hU T A B h1 h2 h3 h4 h5 h6 => ?_⟩` and prove the remaining obligations. Establish `k1 : ∀ i j (J : Subgroup (G j)), J ≤ U j → ∀ v ∈ fixU (π j) J, T i v ∈ fixU (π j) J` using `fun i j J hJ v hv u hu => by`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 i v u (hJ hu)`. Rewrite using `[← h3 i j e, hv u hu]`. Use `hfd L hL` as an intermediate fact. Use `hfd U hU` as an intermediate fact. Use `hS L hL` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `hS U hU` as an intermediate fact. Set `p : ∀ i, fixedVectors (τ i) (L i) →ₗ[ℂ] fixedVectors (τ i) (U i)` to `fun i => (A i ∘ₗ (fixedVectors (τ i) (L i)).subtype).codRestrict _ fun x => h5 i _`. Set `q : ∀ i, fixedVectors (τ i) (U i) →ₗ[ℂ] fixedVectors (τ i) (L i)` to `fun i => Submodule.inclusion (hmS i _ _ (hLU i))`. Establish `e1` using `hN T (fun i => q i ∘ₗ p i) (fun i v hv => (hX L _).2 ⟨h2 i v hv.1, fun j => k1 i j _ (hLU j) v (((hX L v).1 hv).2 j)⟩) fun i f hf x => h4 i f hf x`. Establish `e2 : ∀ i, LinearMap.trace ℂ _ (q i ∘ₗ p i) = LinearMap.trace ℂ _ (B i)` using `fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.trace_comp_comm']`. Conclude with `congrArg _ (LinearMap.ext fun x => Subtype.ext (h6 i x).symm)`. Simplify using `only [e2] at e1`. Rewrite using `[← e1]`. Use `((UpperTheory.trOn_restrict_and_eq_of_maps_into H _ _ _).2 (hmono L U hLU) fun v hv => (hX U _).2 ⟨?_, fun j => ?_⟩).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `prod_keep Z _ (fun a ha => by obtain ⟨i, rfl⟩ := List.mem_ofFn.1 ha; exact h2 i) v (Or.inl hv.1)`. Conclude with `prod_keep _ _ (fun a ha => by obtain ⟨i, rfl⟩ := List.mem_ofFn.1 ha; exact k1 i j _ le_rfl) v (Or.inr ⟨T j, List.mem_ofFn.2 ⟨j, rfl⟩, h1 j⟩)`. Establish `key : ∀ L : ∀ i, Subgroup (G i), (∀ i, L i ≤ U₀ i) → ∀ N : ℕ, (∀ U : ∀ i, Subgroup (G i), (∀ i, L i ≤ U i) → (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → ∀ (T : Fin r → H →L[ℂ] H) (A : ∀ i, S i →ₗ[ℂ] S i) (B : ∀ i, Module.End ℂ (fixedVectors (τ i) (U i))), (∀ i …`. Introduce `L hL N hN`. Use `hfd U₀ hU₀` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `hS U₀ hU₀` as an intermediate fact. Establish `e1` using `hN U₀ hL hU₀ (fun i => prj (fixU (π i) (U₀ i))) (fun i => (fixedVectors (τ i) (U₀ i)).subtype ∘ₗ fixedProj (τ i) (hsm i) (hU₀ i).1 (hU₀ i).2) (fun _ => 1) (fun i => (UpperTheory.fixedProjection_invariant_and_commuting_reps _ _ H (π i) (π i) (U₀ i) (U₀ i)).1) (fun i => (UpperTheor …`. Rewrite using `[(UpperTheory.trOn_restrict_and_eq_of_maps_into H _ (Z ⊓ ⨅ i, fixU (π i) (U₀ i)) _).1 1 fun v => (prod_fix _ _ fun a ha => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 ha`. Conclude with `(UpperTheory.fixedProjection_invariant_and_commuting_reps _ _ H (π i) (π i) (U₀ i) (U₀ i)).2.1 _ (((hX U₀ _).1 v.2).2 i)).symm] at e1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearMap.trace_one] at e1`. Conclude with `e1` after adjusting the coercions. Take `⟨N, hN⟩` from `shift U₀ hU₀ h0`. Use `hfd U₀ hU₀` as an intermediate fact. Establish `hpos : 0 < Module.finrank ℂ ↥(Z ⊓ ⨅ i, fixU (π i) (U₀ i))` using `Module.finrank_pos_iff.2 (Submodule.nontrivial_iff_ne_bot.2 h0)`.
-
-Establish `k0` using `key U₀ (fun _ => le_rfl) N hN`. Rewrite `hpos` using `[k0]`. Use `⟨N, Nat.pos_of_mul_pos_right hpos, fun U hU => ?_⟩` and prove the remaining obligations. Take `⟨N', hN'⟩` from `shift _ (hco U hU) (hne' U)`. Take `rfl : N' = N` from `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_mul_pos_left hpos) ((key _ (fun _ => inf_le_right) N' hN').symm.trans k0)`.
-
-Conclude with `hN' U (fun _ => inf_le_left) hU`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.le_closure_spanAll_of_commuting_unitaryReps :
     ∀ (r : ℕ) (G : Fin r → Type) [∀ i, Group (G i)] [∀ i, TopologicalSpace (G i)] [∀ i, IsTopologicalGroup (G i)] [∀ i, LocallyCompactSpace (G i)] [∀ i, T2Space (G i)] [∀ i, TotallyDisconnectedSpace (G i)] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)] (π : ∀ i, UnitaryRep (G i) H) (τ : ∀ i, Representation ℂ (G i) (S i)) (V Z : Submodule ℂ H), (∀ i, GroundTheory.Automorphic.IsSmooth (τ i)) → (∀ i, (τ i).IsIrreducible) → (∀ i j, i ≠ j → ∀ g h v, π i g (π j h v) = π j h (π i g v)) → IsClosed (Z : Set H) → Z ≤ V → (∀ i, (π i).IsInvariant Z) → (∀ i, V ≤ (spanAll (τ i) (π i) V).topologicalClosure) → (∀ U : ∀ i, Subgroup (G i), (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → FiniteDimensional ℂ ↥(Z ⊓ ⨅ i, fixU (π i) (U i))) → Z ≠ ⊥ → (∀ U : ∀ i, Subgroup (G i), (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → ∀ i, FiniteDimensional ℂ (fixedVectors (τ i) (U i))) ∧ ∃ N : ℕ, 0 < N ∧ ∀ U : ∀ i, Subgroup (G i), (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → ∀ (T : Fin r → H →L[ℂ] H) (A : ∀ i, S i →ₗ[ℂ] S i) (B : ∀ i, Module.End ℂ (fixedVectors (τ i) (U i))), (∀ i v, T i v ∈ fixU (π i) (U i)) → (∀ i, ∀ v ∈ Z, T i v ∈ Z) → (∀ i j, i ≠ j → ∀ h v, T i (π j h v) = π j h (T i v)) → (∀ i f, Eqv (τ i) (π i) ⊤ f → ∀ x, T i (f x) = f (A i x)) → (∀ i x, A i x ∈ fixedVectors (τ i) (U i)) → (∀ i (x : fixedVectors (τ i) (U i)), ((B i x : fixedVectors (τ i) (U i)) : S i) = A i x) → trOn (Z ⊓ ⨅ i, fixU (π i) (U i)) (List.ofFn T).prod = N * ∏ i, LinearMap.trace ℂ (fixedVectors (τ i) (U i)) (B i) := by

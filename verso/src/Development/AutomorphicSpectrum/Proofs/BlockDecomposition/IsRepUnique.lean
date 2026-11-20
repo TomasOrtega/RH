@@ -13,9 +13,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.WaveCp.RepUnique
 
 /- English proof (translation)
-Introduce `n _ _ μ _ V _ _ b b' y hb hb' h h' x hx`. Establish `hv : ∀ g : G n, g.val ∈ GLs n` using `fun g => ((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`. Establish `c1 : Continuous fun g : G n => b g.val` using `hb.comp_continuous Units.continuous_val hv`. Establish `c2 : Continuous fun g : G n => b' g.val` using `hb'.comp_continuous Units.continuous_val hv`. Establish `e : (fun g : G n => b g.val) =ᵐ[μ] fun g => b' g.val` using `h.symm.trans h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun` using `(Continuous.ae_eq_iff_eq μ c1 c2).1 e`. Conclude with `congrFun hfun (Matrix.GeneralLinearGroup.mkOfDetNeZero x hx)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRep_unique : ∀ {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (b b' : Mat n → V) (y : Lp V 2 μ), ContinuousOn b (GLs n) → ContinuousOn b' (GLs n) → IsRep μ b y → IsRep μ b' y → ∀ x ∈ GLs n, b x = b' x := by
   intro n _ _ μ _ V _ _ b b' y hb hb' h h' x hx

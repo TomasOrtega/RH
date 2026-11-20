@@ -7,9 +7,9 @@ open GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotions GlobalTheo
 namespace GlobalTheory.TrueGeo.AlgPtHom
 
 /- English proof (translation)
-Use `(Scheme.germ_stalkClosedPointTo f ⊤ trivial).trans ?_` and prove the remaining obligations. Establish `h : ∀ (p : (⊤ : (Spec R).Opens) = ⊤), (Functor.mapIso (Spec R).presheaf (eqToIso p).op).hom = 𝟙 _`. Introduce `p`. Simplify using the standard rewrite rules. Simplify using `only [Iso.trans_hom]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `erw [h rfl, Category.id_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem germTop_stalkClosedPointTo {R : CommRingCat.{0}} [IsLocalRing R] {Z : Scheme.{0}} (f : Spec R ⟶ Z) :
     Z.presheaf.germ ⊤ (f (IsLocalRing.closedPoint R)) trivial ≫ Scheme.stalkClosedPointTo f =
@@ -23,15 +23,13 @@ theorem germTop_stalkClosedPointTo {R : CommRingCat.{0}} [IsLocalRing R] {Z : Sc
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ Y V y hx`. Use `⟨(Scheme.stalkClosedPointTo (R := .of (AlgebraicClosure F)) y.1).hom.comp (Y.X.presheaf.germ V (below y.1) hx).hom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[← algebraMap_germ hx a, Base.valAt_stalk]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `b hb`. Rewrite `hb` using `[Scheme.mem_basicOpen _ _ _ hx]`. Assume the negation of the conclusion as `hne`. Conclude with `hb (isUnit_of_map_unit (Scheme.stalkClosedPointTo (R := .of (AlgebraicClosure F)) y.1).hom _ (isUnit_iff_ne_zero.mpr hne))`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : Y.X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op ≫ Y.X.presheaf.germ V (below y.1) hx = Y.X.presheaf.germ ⊤ (below y.1) trivial` using `TopCat.Presheaf.germ_res _ _ _ _`. Establish `e2` using `germTop_stalkClosedPointTo (R := .of (AlgebraicClosure F)) y.1`. Establish `e3 : Y.str.appTop ≫ y.1.appTop = (spMap (algebraMap F (AlgebraicClosure F))).appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, y.2]`. Establish `e4` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap F (AlgebraicClosure F)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : (Scheme.ΓSpecIso (CommRingCat.of F)).inv ≫ Y.str.appTop ≫ (Y.X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op ≫ Y.X.presheaf.germ V (below y.1) hx) ≫ Scheme.stalkClosedPointTo (R` using `.of (AlgebraicClosure F)) y.1 = CommRingCat.ofHom (algebraMap F (AlgebraicClosure F)) := by`. Rewrite using `[e1]`. Use `erw [e2]`. Rewrite using `[← Category.assoc Y.str.appTop]`. Use `erw [e3, e4]`.
-
-Rewrite using `[Iso.inv_hom_id_assoc]`. Rewrite using `[Var.algebraMap_Γ]`. Conclude with `congrArg (fun q => q.hom c) e5`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_evalHom : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Y.X.Opens) (y : AlgPt Y) (hx : below y.1 ∈ V),
     ∃ φ : Γ(Y.X, V) →+* AlgebraicClosure F,

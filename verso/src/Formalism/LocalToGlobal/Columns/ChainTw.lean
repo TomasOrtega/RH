@@ -23,14 +23,14 @@ def TwNF (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) (h : AutY X R j) : Prop :=
         ∀ i : Fin (cOf R j), IntAt P (((qOf P : X.E) ^ n i.1)⁻¹ * v (Fin.natAdd _ i))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, (Loc.R1 X.E (R.N j) (cOf R j)).one_mem, 1, (Jat (Pr := Pr) sharp j P).one_mem, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem twDC_refl (sharp : Bool) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) (h : AutY X R j) :
     SameDC (Pr := Pr) sharp j P h h :=
   ⟨1, (Loc.R1 X.E (R.N j) (cOf R j)).one_mem, 1, (Jat (Pr := Pr) sharp j P).one_mem, by simp⟩
 
 /- English proof (translation)
-Take `⟨r, hr, κ, hκ, rfl⟩` from `H`. Conclude with `⟨r⁻¹, inv_mem hr, κ⁻¹, inv_mem hκ, by simp [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twDC_symm {sharp : Bool} {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} {h h' : AutY X R j}
     (H : SameDC (Pr := Pr) sharp j P h h') : SameDC (Pr := Pr) sharp j P h' h := by
@@ -38,7 +38,7 @@ theorem twDC_symm {sharp : Bool} {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} {h
   exact ⟨r⁻¹, inv_mem hr, κ⁻¹, inv_mem hκ, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨r, hr, κ, hκ, rfl⟩` from `H`. Take `⟨r', hr', κ', hκ', rfl⟩` from `H'`. Conclude with `⟨r' * r, mul_mem hr' hr, κ * κ', mul_mem hκ hκ', by simp [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twDC_trans {sharp : Bool} {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} {h h' h'' : AutY X R j}
     (H : SameDC (Pr := Pr) sharp j P h h') (H' : SameDC (Pr := Pr) sharp j P h' h'') : SameDC (Pr := Pr) sharp j P h h'' := by
@@ -123,7 +123,7 @@ def twChiVal (j : ℕ) (P : rowSG Pr sel mu) (h : AutY X R j) (g : Sp X.E (R.N j
 
 variable {Ch sel mu cst} in
 /- English proof (translation)
-Take `⟨r, hr, hx⟩` from `hg`. Establish `hs` using `@Classical.epsilon_spec _ (fun r => r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j P.1) h ∧ ∀ x, r (Loc.inX X.E (R.N j) (cOf R j) x) = Loc.inX X.E (R.N j) (cOf R j) (g x)) ⟨r, hr, hx⟩`. Conclude with `⟨_, hs.1, hs.2, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem twChiVal_spec {j : ℕ} {P : rowSG Pr sel mu} {h : AutY X R j} {g : Sp X.E (R.N j) ≃ₗ[X.E] Sp X.E (R.N j)}
     (hg : g ∈ prCat (Pr := Pr) cst.sharp j P.1 h) :
@@ -137,11 +137,9 @@ theorem twChiVal_spec {j : ℕ} {P : rowSG Pr sel mu} {h : AutY X R j} {g : Sp X
 variable {Ch sel mu cst} in
 
 /- English proof (translation)
-Take `⟨r₀, hr₀, hx₀, he⟩` from `twChiVal_spec (Ch := Ch) (g := g) ⟨r, hr, hx⟩`. Establish `one` using `(Loc.Cbe (Jat (Pr := Pr) cst.sharp j P.1) h).one_mem`. Establish `h1 : chiInv Ch sel mu cst j P h 1 = 1`. Establish `e` using `hok.2 1 one 1 one 1 one (fun _ => rfl)`. Establish `ne` using `hok.1 1 one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: chiInv Ch sel mu cst j P h 1 * (chiInv Ch sel mu cst j P h 1 - 1) = 0` using `by rw [mul_sub, mul_one, ← e, sub_self]`. Break down `mul_eq_zero.1 this with h0 | h0` into its components or cases. Conclude with `absurd h0 ne`. Conclude with `sub_eq_zero.1 h0`. Establish `e` using `hok.2 r₀ hr₀ 1 one r hr (fun x => by rw [hx]; exact (hx₀ x).symm)`.
-
-Rewrite using `[he, e, h1, mul_one]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twChiVal_eq {j : ℕ} {P : rowSG Pr sel mu} {h : AutY X R j} (hok : TwChrOk Ch sel mu cst j P h)
     {g : Sp X.E (R.N j) ≃ₗ[X.E] Sp X.E (R.N j)} {r : AutY X R j} (hr : r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j P.1) h)

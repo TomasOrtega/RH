@@ -17,7 +17,7 @@ local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "jK" => algebraMap (𝓞 K) K
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dual_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (x : V) :
     x ∈ Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -25,13 +25,13 @@ theorem mem_dual_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) 
     LinearMap.restrictScalars_apply]
 
 /- English proof (translation)
-Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 K) K, IsScalarTower.algebraMap_apply (𝓞 F) F K]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem coe_iota_eq_algebraMap_coe (a : 𝓞 F) : jK (ι a) = algebraMap F K (a : F) := by
   rw [← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 K) K, IsScalarTower.algebraMap_apply (𝓞 F) F K]
 
 /- English proof (translation)
-Rewrite using `[coe_iota_eq_algebraMap_coe]`. Use `(map_ne_zero (algebraMap F K)).mpr ?_` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mpr ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem jK_iota_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : jK (ι a) ≠ 0 := by
   rw [coe_iota_eq_algebraMap_coe]
@@ -39,9 +39,9 @@ private theorem jK_iota_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : jK (ι a) ≠ 0 :=
   exact (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mpr ha
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem y hy`. Take `⟨t, ht, rfl⟩` from `hy`. Use `jK_iota_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `ht 𝔭.zero_mem`. Consider the case `one => simp`. Consider the case `mul y z _ _ hy hz => rw [map_mul]`. Conclude with `mul_ne_zero hy hz`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem jK_ne_zero_of_mem_closure_prime_compl {𝔭 : Ideal (𝓞 F)} {s : 𝓞 K}
     (hs : s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}) :
@@ -56,9 +56,9 @@ private theorem jK_ne_zero_of_mem_closure_prime_compl {𝔭 : Ideal (𝓞 F)} {s
   | mul y z _ _ hy hz => rw [map_mul]; exact mul_ne_zero hy hz
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem y hy`. Take `⟨t, _, rfl⟩` from `hy`. Conclude with `star_jK_ι hF t`. Consider the case `one => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `mul y z _ _ hy hz => rw [map_mul, star_mul', hy, hz]`.
+A detailed English derivation is pending.
 -/
 private theorem star_jK_eq_of_mem_closure_prime_compl (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} {s : 𝓞 K}
     (hs : s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}) :
@@ -71,14 +71,14 @@ private theorem star_jK_eq_of_mem_closure_prime_compl (hF : IsFixF K F) {𝔭 : 
   | mul y z _ _ hy hz => rw [map_mul, star_mul', hy, hz]
 
 /- English proof (translation)
-The claim follows from `HU.InP.conj hF ha`.
+A detailed English derivation is pending.
 -/
 private theorem star_mem_HU_SP (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {a : K}
     (ha : a ∈ HU.SP K 𝔭) : star a ∈ HU.SP K 𝔭 :=
   HU.InP.conj hF ha
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul K c v).symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq_jK (c : 𝓞 K) (v : V) : c • v = jK c • v := (algebraMap_smul K c v).symm
 
@@ -88,9 +88,9 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {X : Submodule K V} {L : Submodule (
   {n : ℕ} {b : Fin n → V} {a : Fin n → 𝓞 F}
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[hdiag]`. Introduce `i _ hik`. Rewrite using `[horth k i (Ne.symm hik), mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hk`. Conclude with `absurd (Finset.mem_univ k) hk`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem h_sum (horth : ∀ i j, i ≠ j → h (b i) (b j) = 0) (hdiag : ∀ i, h (b i) (b i) = jK (ι (a i)))
     (c : Fin n → K) (k : Fin n) : h (b k) (∑ i, c i • b i) = c k * jK (ι (a k)) := by
@@ -103,9 +103,9 @@ theorem h_sum (horth : ∀ i j, i ≠ j → h (b i) (b j) = 0) (hdiag : ∀ i, h
     exact absurd (Finset.mem_univ k) hk
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `hx`. Establish `hs0 : jK s ≠ 0` using `jK_ne_zero_of_mem_closure_prime_compl hs`. Establish `h1 : s • x ∈ Submodule.span K (Set.range b)` using `Submodule.span_le_restrictScalars (𝓞 K) K _ hsx`. Establish `h2 : (jK s)⁻¹ • (s • x) ∈ Submodule.span K (Set.range b)` using `Submodule.smul_mem _ _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← algebraMap_smul K s x, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locF_le_spanK (h𝔭 : 𝔭.IsPrime) :
     locF 𝔭 (Submodule.span (𝓞 K) (Set.range b)) ≤
@@ -125,11 +125,9 @@ variable (hbX : ∀ i, b i ∈ X) (hloc : locF 𝔭 (Submodule.span (𝓞 K) (Se
 include hbX hloc horth hdiag ha
 
 /- English proof (translation)
-Establish `hxs : x ∈ Submodule.span K (Set.range b)`. Rewrite `hx` using `[← hL.2]`. Use `(Submodule.span_le.mpr ?_) hx` and prove the remaining obligations. Introduce `y hy`. Use `haveI := h𝔭`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : y ∈ locF 𝔭 L` using `Formalism.HermitianLattices.Ext.L3.localizedQuotients.le_locF 𝔭 L hy`. Rewrite `h1` using `[← hloc]`. Conclude with `locF_le_spanK h𝔭 h1`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp hxs`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[h_sum horth (fun j => by rw [hdiag j]; exact (coe_iota_eq_algebraMap_coe (a j)).symm) c i, mul_div_cancel_right₀ _ (jK_iota_ne_zero (ha i))]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords (h𝔭 : 𝔭.IsPrime) (hL : IsLatIn X L) {x : V} (hx : x ∈ X) :
     x = ∑ i, (h (b i) x / jK (ι (a i))) • b i := by
@@ -147,19 +145,17 @@ theorem coords (h𝔭 : 𝔭.IsPrime) (hL : IsLatIn X L) {x : V} (hx : x ∈ X) 
     mul_div_cancel_right₀ _ (jK_iota_ne_zero (ha i))]
 
 /- English proof (translation)
-Use `haveI := h𝔭`. Establish `hdiag' : ∀ i, h (b i) (b i) = jK (ι (a i))` using `fun i => by`. Rewrite using `[hdiag i]`. Conclude with `(coe_iota_eq_algebraMap_coe (a i)).symm`. Establish `key : ∀ w ∈ Submodule.span (𝓞 K) (Set.range b), ∀ i, h (b i) w / jK (ι (a i)) ∈ (1 : Submodule (𝓞 K) K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw i`. Take `⟨z, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).mp hw`. Establish `e : (∑ j, z j • b j) = ∑ j, jK (z j) • b j` using `Finset.sum_congr rfl fun j _ => smul_eq_jK _ _`. Rewrite using `[e, h_sum horth hdiag' _ i, mul_div_cancel_right₀ _ (jK_iota_ne_zero (ha i))]`. Conclude with `Submodule.mem_one.mpr ⟨z i, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hloc]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hxs` using `locF_le_spanK h𝔭 hx`. Take `⟨s, hs, hsx⟩` from `hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Submodule.span_le.mpr ?_ hxs, fun i => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hbX j`. Rewrite using `[HU.mem_SP_iff_locF]`. Use `Exists.intro s ⟨hs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `e : s • (h (b i) x / jK (ι (a i))) = h (b i) (s • x) / jK (ι (a i))`. Rewrite using `[smul_eq_jK s x, map_smul, smul_eq_mul, Algebra.smul_def, mul_div_assoc]`. Rewrite using `[e]`. Conclude with `key _ hsx i`. Introduce and unpack `⟨hxX, hc⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coords hbX hloc horth hdiag ha h𝔭 hL hxX]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨s, hs, hsc⟩` from `(HU.mem_SP_iff_locF).mp (hc i)`. Take `⟨y, hy⟩` from `Submodule.mem_one.mp hsc`. Use `Exists.intro s ⟨hs, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← smul_assoc, ← hy, ← smul_eq_jK]`. Conclude with `Submodule.smul_mem _ y (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_B_iff (h𝔭 : 𝔭.IsPrime) (hL : IsLatIn X L) (x : V) :
     x ∈ locF 𝔭 L ↔ x ∈ X ∧ ∀ i, h (b i) x / jK (ι (a i)) ∈ HU.SP K 𝔭 := by
@@ -198,29 +194,25 @@ theorem mem_B_iff (h𝔭 : 𝔭.IsPrime) (hL : IsLatIn X L) (x : V) :
     exact Submodule.smul_mem _ y (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `haveI := h𝔭.isPrime`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨s, hs, hsx⟩` from `hx`. Establish `hs0 : jK s ≠ 0` using `jK_ne_zero_of_mem_closure_prime_compl hs`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hsX, hsD⟩` from `Submodule.mem_inf.mp hsx`. Rewrite `hsX` using `[Submodule.restrictScalars_mem, smul_eq_jK]`. Establish `hxX : x ∈ X`. Use `X.smul_mem (jK s)⁻¹ hsX` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hxX, fun i => ?_⟩` and prove the remaining obligations. Establish `hbi : b i ∈ locF 𝔭 L`. Rewrite using `[← hloc]`. Conclude with `Formalism.HermitianLattices.Ext.L3.localizedQuotients.le_locF 𝔭 _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨t, ht, htb⟩` from `hbi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(mem_dual_iff h L (s • x)).mp hsD _ htb`. Rewrite `h1` using `[smul_eq_jK t, smul_eq_jK s, LinearMap.map_smulₛₗ₂, map_smul, starRingEnd_apply, star_jK_eq_of_mem_closure_prime_compl hF ht, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← map_mul]`. Rewrite using `[HU.mem_SP_iff_locF]`. Use `Exists.intro (t * s) ⟨Submonoid.mul_mem _ ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `h1`. Introduce and unpack `⟨hxX, hq⟩`. Establish `hgx : ∀ y ∈ L, h y x ∈ HU.SP K 𝔭`. Introduce `y hy`. Establish `hyB : y ∈ locF 𝔭 L` using `Formalism.HermitianLattices.Ext.L3.localizedQuotients.le_locF 𝔭 L hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hyX, hc⟩` from `(mem_B_iff hbX hloc horth hdiag ha h𝔭.isPrime hL y).mp hyB`. Rewrite using `[coords hbX hloc horth hdiag ha h𝔭.isPrime hL hyX, map_sum, LinearMap.sum_apply]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ₂, starRingEnd_apply, smul_eq_mul]`. Conclude with `Subring.mul_mem _ (star_mem_HU_SP hF (hc i)) (hq i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨S, hS⟩` from `hL.1`. Establish `hex : ∀ g : S, ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∃ z : 𝓞 K, jK z = jK (ι t) * h g x` using `fun g => HU.mem_SP.mp (hgx g (hS ▸ Submodule.subset_span g.2))`. Use `choose t ht z hz using hex`. Establish `hT : (∏ g, t g) ∉ 𝔭`. Use `Finset.prod_induction t (fun c => c ∉ 𝔭) (fun c d hc hd hcd => ?_) ?_ fun g _ => ht g` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(h𝔭.isPrime.mem_or_mem hcd).elim hc hd`. Conclude with `(Ideal.ne_top_iff_one 𝔭).mp h𝔭.ne_top`. Establish `hgen : ∀ g : S, h g (ι (∏ g', t g') • x) ∈ (1 : Submodule (𝓞 K) K)`. Introduce `g`. Rewrite using `[smul_eq_jK, map_smul, smul_eq_mul, ← Finset.prod_erase_mul Finset.univ t (Finset.mem_univ g), map_mul, map_mul, mul_assoc, ← hz g, ← map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.mem_one.mpr ⟨_, rfl⟩`. Establish `hdual : ∀ y ∈ L, h y (ι (∏ g', t g') • x) ∈ (1 : Submodule (𝓞 K) K)`. Introduce `y hy`. Rewrite `hy` using `[← hS]`. Proceed by induction on `hy using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem y hy => exact hgen ⟨y, hy⟩`. Consider the case `zero => simp`. Consider the case `add y w _ _ hy hw`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ hy hw`.
-
-Consider the case `smul r y _ hy`. Take `⟨r', hr'⟩` from `star_jK r`. Rewrite using `[smul_eq_jK r, LinearMap.map_smulₛₗ₂, starRingEnd_apply, ← hr', smul_eq_mul, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ r' hy`. Use `Exists.intro (ι (∏ g, t g)) ⟨Submonoid.subset_closure ⟨_, hT, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Use `Submodule.mem_inf.mpr ⟨?_, (mem_dual_iff h L _).mpr hdual⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, smul_eq_jK]`. Conclude with `X.smul_mem _ hxX`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locF_dualIn_iff (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal) (hL : IsLatIn X L) (x : V) :
     x ∈ locF 𝔭 (dualIn h X L) ↔ x ∈ X ∧ ∀ i, h (b i) x ∈ HU.SP K 𝔭 := by

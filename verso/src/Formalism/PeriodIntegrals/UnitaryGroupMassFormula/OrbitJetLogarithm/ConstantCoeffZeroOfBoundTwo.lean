@@ -25,9 +25,9 @@ def gSub {τ : Type*} (ep : ℂ_[p]) (v : τ) : ZMod 2 → MvPowerSeries τ ℂ_
   fun s => if s = 0 then (X v : MvPowerSeries τ ℂ_[p]) else C ep * X v
 
 /- English proof (translation)
-Establish `h0 : ∀ s, constantCoeff (gSub (p` using `p) ep v s) = 0 := fun s => by`. Unfold `gSub`. Apply the tactic sequence `split_ifs <;> simp`. Use `first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero h0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ⟨fun s => by rw [h0 s]; exact IsNilpotent.zero, fun d => Set.toFinite _⟩`.
+A detailed English derivation is pending.
 -/
 theorem hs_gSub {τ : Type*} (ep : ℂ_[p]) (v : τ) : HasSubst (gSub ep v) := by
   have h0 : ∀ s, constantCoeff (gSub (p := p) ep v s) = 0 := fun s => by
@@ -38,13 +38,13 @@ theorem hs_gSub {τ : Type*} (ep : ℂ_[p]) (v : τ) : HasSubst (gSub ep v) := b
   | exact ⟨fun s => by rw [h0 s]; exact IsNilpotent.zero, fun d => Set.toFinite _⟩
 
 /- English proof (translation)
-Establish `h0 : ∀ s, constantCoeff (gSub (p` using `p) ep v s) = 0 := fun s => by`. Unfold `gSub`. Apply the tactic sequence `split_ifs <;> simp`. Use `first`. Consider the case `exact MvPowerSeries.constantCoeff_subst_eq_zero (hs_gSub ep v) h0 hbe`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.constantCoeff_subst_eq_zero (hs_gSub ep v) hbe h0`. Consider the case `(rw [MvPowerSeries.constantCoeff_subst (hs_gSub ep v)]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`. Distinguish the cases in `hd : d = 0`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hd` using the available equality. Simplify using `[hbe]`. Take `⟨s, hs⟩` from `Finsupp.ne_iff.1 hd`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply] at hs`. Rewrite using `[Finsupp.prod, map_prod, Finset.prod_eq_zero (i := s) (Finsupp.mem_support_iff.2 hs)]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[h0 s, zero_pow hs])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cc_gSub {τ : Type*} (ep : ℂ_[p]) (v : τ) (be : MvPowerSeries (ZMod 2) ℂ_[p])
     (hbe : constantCoeff be = 0) : constantCoeff (subst (gSub ep v) be) = 0 := by
@@ -67,7 +67,7 @@ theorem cc_gSub {τ : Type*} (ep : ℂ_[p]) (v : τ) (be : MvPowerSeries (ZMod 2
        · simp [h0 s, zero_pow hs])
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h0` using `h 0 (by simpa using hne)`. Simplify using `[bideg] at h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_zero_of_bound_two (be : MvPowerSeries (ZMod 2) ℂ_[p]) (h : OJ.B3 p 2 be) : constantCoeff be = 0 := by
   by_contra hne
@@ -83,18 +83,18 @@ def fAll (D : D7) (N0 N1 : ℕ) (ep sg : Pl D → ℂ_[p]) (be : Pl D → MvPowe
   ∑ z : Pl D, (sg z / 2) • ∑ a : Fin N0, ∑ b : Fin N1, subst (gSub (ep z) (z, a, b)) (be z)
 
 /- English proof (translation)
-Simplify using `[f1, cc_gSub _ _ _ hbe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_jet_series (N0 N1 : ℕ) (ep sg : ℂ_[p]) (be : MvPowerSeries (ZMod 2) ℂ_[p]) (hbe : constantCoeff be = 0) :
     constantCoeff (f1 N0 N1 ep sg be) = 0 := by
   simp [f1, cc_gSub _ _ _ hbe]
 
 /- English proof (translation)
-Simplify using `only [f1, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[rename_subst' _ (hs_gSub _ _)]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `s`. Unfold `gSub`. Use `split_ifs`. Rewrite using `[rename_X]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[rename_X] left`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rename_jet_series (D : D7) (z : Pl D) (N0 N1 : ℕ) (ep sg : ℂ_[p]) (be : MvPowerSeries (ZMod 2) ℂ_[p]) :
     rename (pEmb (ptE D z) (Fin N0 × Fin N1)) (f1 N0 N1 ep sg be) =
@@ -122,7 +122,7 @@ def T1 (N0 N1 : ℕ) (c ep sg : ℂ_[p]) (be : MvPowerSeries (ZMod 2) ℂ_[p]) (
   subst (psiA p c) (monomial j 1 * Y1 N0 N1 ep sg be)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[phiA, jetLogG_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem jetLog_eq_phiA (N0 N1 : ℕ) (c : ℂ_[p]) :
     (fun v : ZMod 1 × Fin N0 × Fin N1 => C c * jetLogG p 1 v) = phiA p c := by
@@ -130,7 +130,7 @@ theorem jetLog_eq_phiA (N0 N1 : ℕ) (c : ℂ_[p]) :
   simp [phiA, jetLogG_one]
 
 /- English proof (translation)
-Rewrite using `[jetLog_eq_phiA]`. Unfold `T1`. Conclude with `phi_psi (p := p) c hc _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem subst_log_jet_monomial (N0 N1 : ℕ) (c ep sg : ℂ_[p]) (hc : c ≠ 0) (be : MvPowerSeries (ZMod 2) ℂ_[p])
     (j : ZMod 1 × Fin N0 × Fin N1 →₀ ℕ) :

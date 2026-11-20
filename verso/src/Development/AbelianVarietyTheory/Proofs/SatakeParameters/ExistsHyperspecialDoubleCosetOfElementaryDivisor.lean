@@ -22,7 +22,7 @@ variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_smul, ← Matrix.mulVec_smul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mulVec_congr (ε : R) (M : Matrix n n R) {x y : n → R} (h : ε • x = ε • y) :
     ε • M *ᵥ x = ε • M *ᵥ y := by
@@ -30,7 +30,7 @@ theorem smul_mulVec_congr (ε : R) (M : Matrix n n R) {x y : n → R} (h : ε �
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.smul_mulVec, h, Matrix.smul_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mulVec_mat (ε : R) {A B B' : Matrix n n R} (h : ε • (A * B) = ε • B') (x : n → R) :
     ε • A *ᵥ (B *ᵥ x) = ε • B' *ᵥ x := by
@@ -39,9 +39,9 @@ theorem smul_mulVec_mat (ε : R) {A B B' : Matrix n n R} (h : ε • (A * B) = �
 omit [DecidableEq n] in
 
 /- English proof (translation)
-Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `h2 y hy`. Rewrite using `[smul_mulVec_congr ε A e, smul_mulVec_mat ε h]`. Conclude with `h1' z hz`. Take `⟨z, hz, e⟩` from `h2' y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h1 z hz, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← smul_mulVec_mat ε h]`. Apply `smul_mulVec_congr` to reduce the goal to its premises. Rewrite using `[smul_smul, hε]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_of_bases (ε : R) (hε : ε * ε = ε) (Λ Z : Set (n → R)) {A B B' : Matrix n n R}
     (h : ε • (A * B) = ε • B')
@@ -59,11 +59,11 @@ theorem stab_of_bases (ε : R) (hε : ε * ε = ε) (Λ Z : Set (n → R)) {A B 
     rw [smul_smul, hε]
 
 /- English proof (translation)
-Establish `key : ∀ y y' : n → R, ε • M' *ᵥ y' = ε • A *ᵥ (M *ᵥ y) → ε • b *ᵥ y' = ε • y`. Introduce `y y' e`. Rewrite using `[hb, ← Matrix.mulVec_mulVec, smul_mulVec_congr ε N e, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hN, Matrix.one_mulVec]`. Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `h3' y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, ew⟩` from `hu z hz`. Take `⟨y', hy', e'⟩` from `h4 w hw`. Rewrite using `[key y' y]`. Conclude with `hΛ y' hy'`. Rewrite using `[e, smul_mulVec_congr ε B' ew, smul_mulVec_congr ε A e', smul_mulVec_mat ε h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, e⟩` from `h3 y hy`. Take `⟨w, hw, ew⟩` from `hu' z hz`. Take `⟨y', hy', e'⟩` from `h4' w hw`. Use `⟨y', hy', (key y y' ?_).symm⟩` and prove the remaining obligations. Rewrite using `[e', smul_mulVec_congr ε A e, smul_mulVec_mat ε h, smul_mulVec_congr ε B' ew]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_of_div (ε : R) (Λ Z : Set (n → R)) {A B B' M M' N b : Matrix n n R}
     (t t' : n → R) (h : ε • (A * B) = ε • B') (hN : N * (A * M) = 1) (hb : b = N * M')
@@ -94,7 +94,7 @@ theorem stab_of_div (ε : R) (Λ Z : Set (n → R)) {A B B' M M' N b : Matrix n 
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Rewrite using `[← Matrix.smul_mul, h, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mul_congr_left (ε : R) {X Y : Matrix n n R} (h : ε • X = ε • Y) (Z : Matrix n n R) :
     ε • (X * Z) = ε • (Y * Z) := by
@@ -102,7 +102,7 @@ theorem smul_mul_congr_left (ε : R) {X Y : Matrix n n R} (h : ε • X = ε •
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_smul, h, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mul_congr_right (ε : R) {X Y : Matrix n n R} (h : ε • X = ε • Y) (Z : Matrix n n R) :
     ε • (Z * X) = ε • (Z * Y) := by
@@ -115,11 +115,11 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hε : finPart D e * finPart D e = finPart D e` using `by rw [← map_mul, he.1.1]`. Establish `h0 : (ϖ : D.host.E) ≠ 0`. Introduce `h`. Establish `: ϖ = 0` using `by exact_mod_cast h`. Conclude with `h2 (this ▸ zero_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => finPart D e * finPart D (incA D ((ϖ' : D.host.E) ^ k i / (ϖ : D.host.E) ^ k i)) * z i, fun i => GlobalTheory.SplitLatBasis.mul_mem_intAE D ((GlobalTheory.T.completedLattice_integrality V).2.1 P e ϖ ϖ' he h1 h2 h1' h2' (k i)) (hz i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `e1 : finPart D (incA D ((ϖ' : D.host.E) ^ k i)) = finPart D (incA D ((ϖ : D.host.E) ^ k i)) * finPart D (incA D ((ϖ' : D.host.E) ^ k i / (ϖ : D.host.E) ^ k i))`. Rewrite using `[← map_mul, ← map_mul, mul_div_cancel₀ _ (zpow_ne_zero _ h0)]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Take the linear combination `(-(finPart D (incA D ((ϖ : D.host.E) ^ k i)) * finPart D (incA D ((ϖ' : D.host.E) ^ k i / (ϖ : D.host.E) ^ k i)) * z i)) * hε`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem change_unif {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (e : Formalism.L2.Theta.AE D)
     (ϖ ϖ' : 𝓞 D.host.E) (k : Fin V.rank → ℤ) (he : IsIdemAt e P) (h1 : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2)
@@ -144,15 +144,15 @@ theorem change_unif {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E))
       finPart D (incA D ((ϖ' : D.host.E) ^ k i / (ϖ : D.host.E) ^ k i)) * z i)) * hε
 
 /- English proof (translation)
-Introduce `D V P e ϖ ϖ' d α α' he h1 h2 h1' h2' hα hα' hd hd'`. Take `⟨-, B, hB1, hB2, hB3, hB4⟩` from `hd`. Take `⟨-, B', hB1', hB2', hB3', hB4'⟩` from `hd'`. Establish `hε : finPart D e * finPart D e = finPart D e` using `by rw [← map_mul, he.1.1]`. Take `⟨C, hBC, hCB⟩` from `(GlobalTheory.T.completedLattice_integrality V).2.2 _ B hε fun y hy => (hB2 y hy).imp fun _ h => h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C', hBC', hCB'⟩` from `(GlobalTheory.T.completedLattice_integrality V).2.2 _ B' hε fun y hy => (hB2' y hy).imp fun _ h => h.2`. Establish `hinv : finPart D e • ((B' * C) * (B * C')) = finPart D e • (1 : Matrix (Fin V.rank) (Fin V.rank) _)`. Use `smul_mul_congr_right _ (smul_mul_congr_left _ hCB C') B'` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul, hBC']`. Rewrite using `[← this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Take `⟨a, haS, ha⟩` from `GlobalTheory.T.exists_adelic_unitary_split_place_component V e he.1 _ _ hinv`. Establish `hAB : finPart D e • (finMat D.sp.cm.sig V.gram a * B) = finPart D e • B'`. Rewrite using `[smul_mul_congr_left _ ha B, Matrix.mul_assoc, smul_mul_congr_right _ hCB B', Matrix.mul_one]`. Establish `hs` using `stab_of_bases (finPart D e) hε {y | y ∈ LamHat V} {z | IntVec z} hAB (fun z hz => hB1 z hz) (fun y hy => hB2 y hy) (fun z hz => hB1' z hz) (fun y hy => hB2' y hy)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haK : a ∈ KsphC V ∅` using `GlobalTheory.T.mem_hyperspecial_of_split_place_stabilizer V e a he.1 haS hs.1 hs.2`. Take `⟨hf1, hf2, -⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e (e + cA D e) (Or.inl ⟨he, rfl⟩)`. Take `⟨L, hL⟩` from `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ hf1 hf2).1`. Establish `hbS : Formalism.L2.Theta.SuppAt e V ((a * α)⁻¹ * α')` using `(hL _).1 (L.mul_mem (L.inv_mem (L.mul_mem ((hL _).2 haS) ((hL _).2 hα))) ((hL _).2 hα'))`. Establish `hN : finMat D.sp.cm.sig V.gram (a * α)⁻¹ * (finMat D.sp.cm.sig V.gram a * finMat D.sp.cm.sig V.gram α) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_mul, ← Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_mul, inv_mul_cancel, Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_one]`. Establish `ht` using `stab_of_div (finPart D e) {y | y ∈ LamHat V} {z | IntVec z} (fun i => finPart D (incA D ((ϖ : D.host.E) ^ d.getD i.1 0))) (fun i => finPart D (incA D ((ϖ' : D.host.E) ^ d.getD i.1 0))) hAB hN (Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_mul _ _ (a * α)⁻¹ α') (fun y hy …`. Establish `hbK : (a * α)⁻¹ * α' ∈ KsphC V ∅` using `GlobalTheory.T.mem_hyperspecial_of_split_place_stabilizer V e _ he.1 hbS ht.1 ht.2`. Conclude with `⟨a, ⟨haK, haS⟩, _, ⟨hbK, hbS⟩, by rw [mul_inv_cancel_left]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem split_label : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (e : Formalism.L2.Theta.AE D) (ϖ ϖ' : 𝓞 D.host.E) (d : List ℤ) (α α' : GA D V), IsIdemAt e P → ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → ϖ' ∈ P.asIdeal → ϖ' ∉ P.asIdeal ^ 2 → Formalism.L2.Theta.SuppAt e V α → Formalism.L2.Theta.SuppAt e V α' → DivAt V e (ϖ : D.host.E) d α → DivAt V e (ϖ' : D.host.E) d α' → ∃ a ∈ locPart V (KsphC V ∅) e, ∃ b ∈ locPart V (KsphC V ∅) e, α' = a * α * b := by
   intro D V P e ϖ ϖ' d α α' he h1 h2 h1' h2' hα hα' hd hd'

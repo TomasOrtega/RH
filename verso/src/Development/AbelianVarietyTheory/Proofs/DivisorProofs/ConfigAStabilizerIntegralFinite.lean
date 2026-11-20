@@ -22,11 +22,11 @@ noncomputable section
 namespace GlobalTheory.ThKOpCont
 
 /- English proof (translation)
-Establish `hin : ∀ k, Continuous fun y => ∫ l, f k l y ∂μ`. Introduce `k`. Use `continuous_iff_continuousAt.2 fun y₀ => ?_` and prove the remaining obligations. Take `⟨U, hU, G, hG, hb⟩` from `hdom y₀`. Conclude with `continuousAt_of_dominated (Eventually.of_forall fun y => hl k y) (eventually_of_mem hU fun y hy => Eventually.of_forall fun l => hb k l y hy) hG (Eventually.of_forall fun l => (hy k l).continuousAt)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hink : ∀ y, Continuous fun k => ∫ l, f k l y ∂μ`. Introduce `y`. Use `continuous_iff_continuousAt.2 fun k₀ => ?_` and prove the remaining obligations. Take `⟨U, hU, G, hG, hb⟩` from `hdom y`. Conclude with `continuousAt_of_dominated (Eventually.of_forall fun k => hl k y) (Eventually.of_forall fun k => Eventually.of_forall fun l => hb k l y (mem_of_mem_nhds hU)) hG (Eventually.of_forall fun l => (hk l y).continuousAt)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `continuous_iff_continuousAt.2 fun y₀ => ?_` and prove the remaining obligations. Take `⟨U, hU, G, hG, hb⟩` from `hdom y₀`. Use `continuousAt_of_dominated (bound := fun _ => ∫ l, G l ∂μ) (Eventually.of_forall fun y => (hink y).aestronglyMeasurable) ?_ (integrable_const _) (Eventually.of_forall fun k => (hin k).continuousAt)` and prove the remaining obligations. Use `eventually_of_mem hU fun y hy => Eventually.of_forall fun k => ?_` and prove the remaining obligations. Conclude with `norm_integral_le_of_norm_le hG (Eventually.of_forall fun l => hb k l y hy)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_iter_integral {Y Kt L : Type*} [TopologicalSpace Y] [FirstCountableTopology Y]
     [TopologicalSpace Kt] [FirstCountableTopology Kt] [MeasurableSpace Kt] [OpensMeasurableSpace Kt]
@@ -60,29 +60,23 @@ theorem continuous_iter_integral {Y Kt L : Type*} [TopologicalSpace Y] [FirstCou
   exact norm_integral_le_of_norm_le hG (Eventually.of_forall fun l => hb k l y hy)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ x`. Take `⟨c, g, hg1, hg2, hint⟩` from `GlobalTheory.T.evaluation_triple_period_case_a hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ x`. Establish `hw : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hT.weil`. Establish `hsp` using `hw.isUSplitting`. Establish `hstd : IsStd B.ψ` using `hT.base.std`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hom : ∀ k : UA σ G.V.J, om (g.1 * k, g.2) Ψ = om (g.1 * k, 1) (om (1, g.2) Ψ)`. Introduce `k`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Establish `hact : ∀ l : (AE F E)ˣ, actAB (cA σ) g (shiftA H H' l) = shiftA H H' l`. Introduce `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [actAB, shiftA, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]`. Express the relevant statement in the definitionally equal form `l.1 • Matrix.vecMulVec (mat g.1 *ᵥ incV F H.x) (mat g.2 *ᵥ incV F H'.y) = _`. Rewrite using `[hg1, hg2]`. Establish `hF : ∀ (k : UA σ G.V.J) (l : (AE F E)ˣ), om₁ x (e (G.M.co.rho B.ψ (shiftA H H' l) (om (k, 1) Ψ))) = c • e (G.M.co.rho B.ψ (shiftA H H' l) (om (g.1 * k, g.2) Ψ))`. Introduce `k l`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : om (k, 1) Ψ ∈ schA F _` using `hsp.pres _ _ hΨ`. Rewrite using `[hint _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hm), hsp.impl g _ _ hm, hact l, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [hF, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`. Use `continuous_const.mul ?_` and prove the remaining obligations. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i1, -, i3, -⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (b + 2) G.V.J`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI : FirstCountableTopology K := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Establish `hKeq : K = GlobalTheory.StabHaar.stabK (σ` using `σ) B G.V := Subgroup.ext fun k => (hK k).trans (GlobalTheory.StabHaar.isStab_stabK (σ := σ) B G.V k).symm`. Establish `hKc : IsCompact (K : Set (UA σ G.V.J))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hX` using `hT.geo.hV`. Take `⟨C, hCc, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B (b + 2) G.V _ _ hT.base hX`. Rewrite using `[hKeq]`. Conclude with `hCc.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B G.V (GlobalTheory.T.isClosed_adelic_lattice_closure F E (b + 2) G.V hX.lat)) hsub`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hμK`. Use `haveI : IsFiniteMeasure μK := inferInstance`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `set Ψ₁ := om (1, g.2) Ψ with hΨ₁`. Establish `hΨ₁m : Ψ₁ ∈ schA F _` using `hsp.pres _ _ hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : ∀ (k : UA σ G.V.J) (l : (AE F E)ˣ), e (G.M.co.rho B.ψ (shiftA H H' l) (om (k, 1) Ψ₁)) ∈ schA F (Fin b × Fin (b + a'))` using `fun k l => he.maps _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ (hsp.pres _ _ hΨ₁m))`. Simplify using `only [hom]`. Establish `hν : Continuous fun l : (AE F E)ˣ => ((X.ν l : Circle) : ℂ)`. Establish `h1` using `hT.chars.heckeα.1`. Establish `h2` using `hT.chars.heckeβ.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (fun l : (AE F E)ˣ => ((X.ν l : Circle) : ℂ)) = fun l => ((X.α l / X.β l : Circle) : ℂ)`. Use function extensionality and compare the values at `l`. Both sides reduce to the same expression. Rewrite using `[h3]`. Conclude with `continuous_subtype_val.comp (h1.div' h2)`.
-
-Establish `hab : Continuous fun l : (AE F E)ˣ => (((absE F E l : ℝ) : ℂ)) ^ ((b + 2 - a') / 2)` using `((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE))).pow _`. Use `continuous_iter_integral (μK := μK) (μ := μ) (fun (k : K) l y => e (G.M.co.rho B.ψ (shiftA H H' l) (om (g.1 * k.1, 1) Ψ₁)) y * ((X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2))) (fun k l => ?_) (fun l y => ?_) (fun k y => ?_) (fun y₀ => ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.ThKOp.continuous_of_mem_schA (hD _ l)).mul continuous_const`. Establish `h` using `GlobalTheory.T.evaluation_triple_period_case_a_second hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Ψ₁ hΨ₁m (shiftA H H' l) y`. Conclude with `(h.comp ((continuous_const.mul (continuous_subtype_val)).prodMk continuous_const)).mul continuous_const`.
-
-Establish `h` using `GlobalTheory.T.evaluation_triple_period_case_a_third hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ (om (g.1 * k.1, 1) Ψ₁) (hsp.pres (g.1 * k.1, 1) Ψ₁ hΨ₁m) y`. Conclude with `(h.mul (hν.mul hab)).aestronglyMeasurable`. Establish `hC' : IsCompact ((fun k : K => g.1 * k.1) '' Set.univ)` using `isCompact_univ.image (continuous_const.mul continuous_subtype_val)`. Take `⟨U, hU, Gf, hGf, hb⟩` from `GlobalTheory.T.evaluation_triple_period_case_a_fourth hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ μ hμ Ψ₁ hΨ₁m _ hC' y₀`. Use `⟨U, hU, Gf, hGf, fun k l y hy => ?_⟩` and prove the remaining obligations.
-
-Use `hb (g.1 * k.1) ⟨k, Set.mem_univ _, rfl⟩ l y hy` as an intermediate fact. Rewrite using `[norm_mul, norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg (NNReal.coe_nonneg _)]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_weilOp_cone : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

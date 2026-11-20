@@ -12,13 +12,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Introduce `K _ _ X s Ga _ _ ρ hs h1 hm hρ hfree`. Set `τ` to `autOfRightAction ρ h1 hm`. Use `OrbitsInAffineOpens.of_isQProjOver hs τ` as an intermediate fact. Take `⟨_, _, _⟩` from `isSeparated_finiteType_of_isQProjOver hs`. Establish `hτ : ∀ a, (τ a).hom ≫ s = s` using `fun a ↦ hρ a⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : IsFreeAction τ` using `.of_isAlgClosed fun k _ _ y a h ↦ inv_eq_one.mp (hfree k y a⁻¹ h)`. Use `⟨finiteQuotient τ, finiteQuotient.π τ, finiteQuotient.desc τ s hτ, finiteQuotient.π_desc τ s hτ, ⟨‹_›, h1, hm, fun a ↦ ?_, finiteQuotient.isFinite_π_of_isFreeAction hf, finiteQuotient.etale_π hf, inferInstance, fun k _ _ y y' e ↦ ?_⟩, inferInstance, inferInstance, inferInstance⟩` and prove the remaining obligations. Use `finiteQuotient.comp_π τ a⁻¹` as an intermediate fact. Rewrite `this` using `[autOfRightAction_hom, inv_inv]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `(finiteQuotient.comp_π_eq_iff τ y y').mp e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `ha : y ≫ ρ a⁻¹ = y'` using `ha`. Use `⟨a⁻¹, ha, fun c hc ↦ ?_⟩` and prove the remaining obligations. Establish `hc : y ≫ ρ c = y'` using `hc`. Establish `: y ≫ ρ (c * a) = y`. Rewrite using `[hm, reassoc_of% hc, ← ha, Category.assoc, ← hm, inv_mul_cancel, h1, Category.comp_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_inv_of_mul_eq_one_left (hfree k y _ this)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isGaloisCover_of_isQProjOver_noetherian :
     ∀ (K : Type) [CommRing K] [IsNoetherianRing K] (X : Scheme.{0}) (s : X ⟶ Sp K) (Ga : Type) [Group Ga] [Finite Ga] (ρ : Ga → (X ⟶ X)), IsQProjOver s → ρ 1 = 𝟙 X → (∀ a c, ρ (a * c) = ρ a ≫ ρ c) → (∀ a, ρ a ≫ s = s) → (∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ X) (a : Ga), y ≫ ρ a = y → a = 1) → ∃ (Y : Scheme.{0}) (π : X ⟶ Y) (sY : Y ⟶ Sp K), π ≫ sY = s ∧ IsGaloisCover Ga ρ π ∧ IsSeparated sY ∧ LocallyOfFiniteType sY ∧ QuasiCompact sY := by

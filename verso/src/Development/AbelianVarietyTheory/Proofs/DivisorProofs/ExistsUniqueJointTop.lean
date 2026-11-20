@@ -15,7 +15,7 @@ def JointTop (z : Fin k × Fin m → σ) (y : Fin l × Fin m → σ) (κ : Fin m
   ∀ c d, ∑ i, pderiv (z (c, i)) (pderiv (y (d, i)) P) = 0
 
 /- English proof (translation)
-Use `congrArg (coeff s) h` as an intermediate fact. Rewrite `this` using `[rowOp_apply, coeff_sum, coeff_smul]`. Simplify using `only [coeff_X_mul_pderiv, ← Finset.sum_mul, smul_eq_mul] at this`. Establish `h2` using `mul_right_cancel₀ (mem_support_iff.1 hs) this`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem row_degree (z : Fin k × Fin m → σ) {P : MvPolynomial σ ℂ} {c : Fin k} {w : ℂ}
     (h : rowOp ℂ z c c P = w • P) {s : σ →₀ ℕ} (hs : s ∈ P.support) :
@@ -27,7 +27,7 @@ theorem row_degree (z : Fin k × Fin m → σ) {P : MvPolynomial σ ℂ} {c : Fi
   exact_mod_cast h2
 
 /- English proof (translation)
-Use `congrArg (coeff s) h` as an intermediate fact. Rewrite `this` using `[mixedOp_apply, coeff_sub, coeff_sum, coeff_sum, coeff_smul]`. Simplify using `only [coeff_X_mul_pderiv, ← Finset.sum_mul, ← sub_mul, smul_eq_mul] at this`. Establish `h2` using `mul_right_cancel₀ (mem_support_iff.1 hs) this`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem col_degree (z : Fin k × Fin m → σ) (y : Fin l × Fin m → σ) {P : MvPolynomial σ ℂ}
     {i : Fin m} {w : ℂ} (h : mixedOp ℂ z y i i P = w • P) {s : σ →₀ ℕ} (hs : s ∈ P.support) :
@@ -39,7 +39,7 @@ theorem col_degree (z : Fin k × Fin m → σ) (y : Fin l × Fin m → σ) {P : 
   exact_mod_cast h2
 
 /- English proof (translation)
-Introduce `hv`. Take `⟨s, hs, hv⟩` from `(mem_vars_iff_mem_support _).1 hv`. Establish `h0 : ∑ i, s (z (c, i)) = 0` using `by exact_mod_cast row_degree z h hs`. Conclude with `Finsupp.mem_support_iff.1 hv (Finset.sum_eq_zero_iff.1 h0 i (Finset.mem_univ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem notMem_vars_of_row (z : Fin k × Fin m → σ) {P : MvPolynomial σ ℂ} {c : Fin k}
     (h : rowOp ℂ z c c P = (0 : ℂ) • P) (i : Fin m) : z (c, i) ∉ P.vars := by
@@ -50,7 +50,7 @@ theorem notMem_vars_of_row (z : Fin k × Fin m → σ) {P : MvPolynomial σ ℂ}
   exact Finsupp.mem_support_iff.1 hv (Finset.sum_eq_zero_iff.1 h0 i (Finset.mem_univ _))
 
 /- English proof (translation)
-Rewrite using `[rowOp_apply]`. Conclude with `(rowAdd_invariant_iff (fun k => z (a, k)) (fun k => z (b, k)) (fun k l e => by simpa using hz e) (fun k l e => hab.ne (congrArg Prod.fst (hz e))) P).out 2 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_invariant [DecidableEq σ] (z : Fin k × Fin m → σ) (hz : Function.Injective z)
     (P : MvPolynomial σ ℂ) {a b : Fin k} (hab : a < b) :
@@ -62,9 +62,9 @@ theorem row_invariant [DecidableEq σ] (z : Fin k × Fin m → σ) (hz : Functio
       (fun k l e => hab.ne (congrArg Prod.fst (hz e))) P).out 2 1
 
 /- English proof (translation)
-Rewrite using `[polar_apply]`. Break down `d with _ | d` into its components or cases. Use `h.totalDegree_le` as an intermediate fact. Rewrite `this` using `[Nat.le_zero, totalDegree_eq_zero_iff_eq_C]`. Rewrite using `[this, pderiv_C, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isHomogeneous_zero _ _ _`. Use `(isHomogeneous_X ℂ u).mul (h.pderiv (i := v))` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel, add_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem polar_homog (u v : σ) {d : ℕ} {P : MvPolynomial σ ℂ} (h : P.IsHomogeneous d) :
     (polar ℂ u v P).IsHomogeneous d := by
@@ -78,7 +78,7 @@ theorem polar_homog (u v : σ) {d : ℕ} {P : MvPolynomial σ ℂ} (h : P.IsHomo
     rwa [Nat.add_sub_cancel, add_comm] at this
 
 /- English proof (translation)
-Rewrite using `[colOp, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun _ _ => polar_homog _ _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colOp_homog {I J : Type} [Fintype I] (z : I × J → σ) (i j : J) {d : ℕ}
     {P : MvPolynomial σ ℂ} (h : P ∈ homogeneousSubmodule σ ℂ d) :
@@ -87,21 +87,21 @@ theorem colOp_homog {I J : Type} [Fintype I] (z : I × J → σ) (i j : J) {d : 
   exact Submodule.sum_mem _ fun _ _ => polar_homog _ _ h
 
 /- English proof (translation)
-The claim follows from `Submodule.finiteDimensional_of_le (S₂ := restrictTotalDegree σ ℂ d) fun P hP => (mem_restrictTotalDegree _ _ _).2 (IsHomogeneous.totalDegree_le hP)`.
+A detailed English derivation is pending.
 -/
 theorem finite_homog [Finite σ] (d : ℕ) : FiniteDimensional ℂ (homogeneousSubmodule σ ℂ d) :=
   Submodule.finiteDimensional_of_le (S₂ := restrictTotalDegree σ ℂ d) fun P hP =>
     (mem_restrictTotalDegree _ _ _).2 (IsHomogeneous.totalDegree_le hP)
 
 /- English proof (translation)
-Rewrite using `[pderiv_rename hf, map_mul, rename_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polar_rename (f : τ → σ) (hf : Function.Injective f) (u v : τ) (Q : MvPolynomial τ ℂ) :
     X (f u) * pderiv (f v) (rename f Q) = rename f (X u * pderiv v Q) := by
   rw [pderiv_rename hf, map_mul, rename_X]
 
 /- English proof (translation)
-Establish `hi : Function.Injective (rename f : MvPolynomial τ ℂ → MvPolynomial σ ℂ)` using `rename_injective f hf`. Establish `h0 : ∀ R : MvPolynomial τ ℂ, rename f R = 0 ↔ R = 0` using `fun R => map_eq_zero_iff _ hi`. Simplify using `only [JointTop, mixedOp_apply, rowOp_apply, Function.comp_apply, polar_rename f hf]`. Simplify using `only [pderiv_rename hf, ← map_sum, ← map_sub, ← map_smul, h0, hi.eq_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem jointTop_rename (f : τ → σ) (hf : Function.Injective f) (z : Fin k × Fin m → τ)
     (y : Fin l × Fin m → τ) (κ : Fin m → ℂ) (α : Fin k → ℂ) (β : Fin l → ℂ)
@@ -114,7 +114,7 @@ theorem jointTop_rename (f : τ → σ) (hf : Function.Injective f) (z : Fin k �
   simp only [pderiv_rename hf, ← map_sum, ← map_sub, ← map_smul, h0, hi.eq_iff]
 
 /- English proof (translation)
-The claim follows from `Fintype.sum_of_injective (Fin.castLE hp) (Fin.castLE_injective _) _ _ (fun c hc => hf c (not_lt.1 fun h => hc ⟨⟨c, h⟩, rfl⟩)) fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem sum_castLE (hp : p ≤ k) {M : Type} [AddCommMonoid M] (f : Fin k → M)
     (hf : ∀ c : Fin k, p ≤ c → f c = 0) : ∑ c : Fin p, f (Fin.castLE hp c) = ∑ c, f c :=
@@ -122,11 +122,9 @@ theorem sum_castLE (hp : p ≤ k) {M : Type} [AddCommMonoid M] (f : Fin k → M)
     (fun c hc => hf c (not_lt.1 fun h => hc ⟨⟨c, h⟩, rfl⟩)) fun _ => rfl
 
 /- English proof (translation)
-Establish `h0 : ∀ c c' : Fin k, p ≤ c' → rowOp ℂ z c c' P = 0` using `fun c c' h => by`. Rewrite using `[rowOp_apply]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [pderiv_eq_zero_of_notMem_vars (hz _ _ h), mul_zero]`. Use `⟨⟨fun h c c' hc => h (Fin.castLE hp c) (Fin.castLE hp c') hc, fun h c c' hc => ?_⟩, ⟨fun h c => h (Fin.castLE hp c), fun h c => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `h' : p ≤ c'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `h0 _ _ h'`. Establish `hc' : (c : ℕ) < c'` using `hc`. Conclude with `h ⟨c, by omega⟩ ⟨c', by omega⟩ hc`. Distinguish the cases in `h' : p ≤ c`. Rewrite using `[h0 _ _ h', hα _ h', zero_smul]`.
-
-Conclude with `h ⟨c, by omega⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_restrict (hp : p ≤ k) (z : Fin k × Fin m → σ) (α : Fin k → ℂ)
     (hα : ∀ c : Fin k, p ≤ c → α c = 0) (P : MvPolynomial σ ℂ)
@@ -149,13 +147,11 @@ theorem rows_restrict (hp : p ≤ k) (z : Fin k × Fin m → σ) (α : Fin k →
     · exact h ⟨c, by omega⟩
 
 /- English proof (translation)
-Establish `hm : ∀ i j, mixedOp ℂ (fun w => z (Fin.castLE hp w.1, w.2)) (fun w => y (Fin.castLE hq w.1, w.2)) i j P = mixedOp ℂ z y i j P` using `fun i j => by`. Rewrite using `[mixedOp_apply, mixedOp_apply]`. Use `congr 1`. Conclude with `sum_castLE hp (fun c => X (z (c, i)) * pderiv (z (c, j)) P) fun c hc => by`. Rewrite using `[pderiv_eq_zero_of_notMem_vars (hz _ _ hc), mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_castLE hq (fun c => X (y (c, j)) * pderiv (y (c, i)) P) fun c hc => by`. Rewrite using `[pderiv_eq_zero_of_notMem_vars (hy _ _ hc), mul_zero]`. Take `⟨h1, h2⟩` from `rows_restrict hp z α hα P hz`. Take `⟨h3, h4⟩` from `rows_restrict hq y β hβ P hy`. Simplify using `only [JointTop, hm, h1, h2, h3, h4]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `and_congr_right fun _ => and_congr_right fun _ => and_congr_right fun _ => and_congr_right fun _ => and_congr_right fun _ => and_congr_right fun _ => ⟨fun h c d => h _ _, fun h c d => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : p ≤ c`. Conclude with `Finset.sum_eq_zero fun i _ => by`. Rewrite using `[pderiv_swap, pderiv_eq_zero_of_notMem_vars (hz _ _ hc), map_zero]`. Distinguish the cases in `hd : q ≤ d`.
-
-Conclude with `Finset.sum_eq_zero fun i _ => by`. Rewrite using `[pderiv_eq_zero_of_notMem_vars (hy _ _ hd), map_zero]`. Conclude with `h ⟨c, by omega⟩ ⟨d, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jointTop_restrict (hp : p ≤ k) (hq : q ≤ l) (z : Fin k × Fin m → σ)
     (y : Fin l × Fin m → σ) (κ : Fin m → ℂ) (α : Fin k → ℂ) (β : Fin l → ℂ)
@@ -188,21 +184,19 @@ theorem jointTop_restrict (hp : p ≤ k) (hq : q ≤ l) (z : Fin k × Fin m → 
   exact h ⟨c, by omega⟩ ⟨d, by omega⟩
 
 /- English proof (translation)
-Use `set z : Fin p × Fin m → Var Unit p q (Fin m) := fun w => xVar () w.1 w.2 with hzd`. Use `set y : Fin q × Fin m → Var Unit p q (Fin m) := fun w => yVar () w.1 w.2 with hyd`. Establish `hz : Function.Injective z` using `fun u w e => by simpa [z, Prod.ext_iff] using e`. Establish `hy : Function.Injective y` using `fun u w e => by simpa [y, Prod.ext_iff] using e`. Establish `hzy : ∀ u w, z u ≠ y w` using `fun u w => by simp [z, y]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : Unit → Fin p → ℕ` to `fun _ => diffOf a`. Set `c' : Unit → Fin q → ℕ` to `fun _ => diffOf b`. Establish `hc : ∀ t, partOf (c t) = a` using `fun _ => partOf_diffOf ha`. Establish `hc' : ∀ t, partOf (c' t) = b` using `fun _ => partOf_diffOf hb`. Set `W : Submodule ℂ (Poly ℂ Unit p q (Fin m))` to `rowHighest ℂ c c'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : ∀ t k l, ∀ w ∈ W, colLie ℂ p q t k l w ∈ W` using `fun t k l w hw => colLie_mem_of_colAct_mem _ (fun g _ hP => colAct_mem_rowHighest g hP) t k l hw`. Take `⟨v, hv, hv0, hup, μ, hμ⟩` from `exists_highest_vector (colLie ℂ p q) colLie_diag_comm (iSup_iInf_eigenspace_colLie ℂ Unit p q (Fin m)) W hs (rowHighest_ne_bot h c c')`. Establish `hant` using `fun t => highest_weight_antitone _ (colLie_lie t) W (hs t) v hv hv0 _ (hup t) (hμ t)`. Take `⟨r₀, hr₀⟩` from `exists_eq_smul_basePoly h c c' hv μ hant (fun t k l hkl => (colLie_apply t k l v).symm.trans (hup t k l hkl)) fun t k => (colLie_apply t k k v).symm.trans (hμ t k)`. Take `⟨hh, hrx, hry, hix, hiy⟩` from `mem_rowHighest_iff_of_charZero.1 hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [rowAddX_eq_bind₁, hc] at hix hrx`. Simplify using `only [rowAddY_eq_bind₁, hc'] at hiy hry`. Establish `hh'` using `fun i j => (laplacian_apply () i j v).symm.trans (hh () i j)`. Establish `hup' : ∀ k l, k < l → mixedOp ℂ z y k l v = 0` using `fun k l hkl => (mixedOp_apply _ _ _ _ _).trans ((colLie_apply () k l v).symm.trans (hup () k l hkl))`. Establish `hμ' : ∀ k, mixedOp ℂ z y k k v = (μ () k : ℂ) • v` using `fun k => (mixedOp_apply _ _ _ _ _).trans ((colLie_apply () k k v).symm.trans (hμ () k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw` using `weight_eq_mixedWeight h z hz y hy hzy a b ha hb (hrx ()) (hry ()) (hix ()) (hiy ()) hh' (μ ()) (hant ()) hup' hμ' hv0`. Use `⟨v, hv0, ⟨hup', hw ▸ hμ', fun i j hij => (row_invariant z hz v hij).2 (hix () i j hij), fun i => by simpa using rowOp_self z (hrx () i), fun i j hij => (row_invariant y hy v hij).2 (hiy () i j hij), fun i => by simpa using rowOp_self y (hry () i), hh'⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q ⟨g1, g2, g3, g4, g5, g6, g7⟩`. Establish `hQ : Q ∈ rowHighest ℂ c c'`. Use `mem_rowHighest_iff_of_charZero.2 ⟨fun t i j => (laplacian_apply t i j Q).trans (g7 i j), fun t i s hs => ?_, fun t i s hs => ?_, fun t i j hij s => ?_, fun t i j hij s => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc t]`. Conclude with `Nat.cast_injective (R := ℂ) (row_degree z (g4 i) hs)`. Rewrite using `[hc' t]`. Conclude with `Nat.cast_injective (R := ℂ) (row_degree y (g6 i) hs)`. Rewrite using `[rowAddX_eq_bind₁]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `(row_invariant z hz Q hij).1 (g3 i j hij) s`. Rewrite using `[rowAddY_eq_bind₁]`. Conclude with `(row_invariant y hy Q hij).1 (g5 i j hij) s`. Take `⟨r, hr⟩` from `exists_eq_smul_basePoly h c c' hQ (fun _ => mixedWeight m a b) (fun _ => antitone_mixedWeight m ha hb) (fun t k l hkl => (mixedOp_apply z y k l Q).symm.trans (g1 k l hkl)) fun t k => (mixedOp_apply z y k k Q).symm.trans (g2 k)`. Establish `hr0 : r₀ ≠ 0` using `fun e => hv0 (by rw [hr₀, e, zero_smul])`.
-
-Conclude with `⟨r / r₀, by rw [hr, hr₀, smul_smul, div_mul_cancel₀ _ hr0]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unique_base (h : p + q ≤ m) (a : Fin p → ℕ) (b : Fin q → ℕ) (ha : Antitone a)
     (hb : Antitone b) :
@@ -261,11 +255,11 @@ theorem exists_unique_base (h : p + q ≤ m) (a : Fin p → ℕ) (b : Fin q → 
   exact ⟨r / r₀, by rw [hr, hr₀, smul_smul, div_mul_cancel₀ _ hr0]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mixedWeight_apply]`. Use `congr 1`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[ha0 _ (by simpa using h1)]; rfl`. Both sides reduce to the same expression. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hb0 _ (by simpa using h1)]; rfl`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mixedWeight_restrict (hp : p ≤ k) (hq : q ≤ l) (a : Fin k → ℕ) (b : Fin l → ℕ)
     (ha0 : ∀ c : Fin k, p ≤ c → a c = 0) (hb0 : ∀ d : Fin l, q ≤ d → b d = 0) :
@@ -286,21 +280,19 @@ theorem mixedWeight_restrict (hp : p ≤ k) (hq : q ≤ l) (a : Fin k → ℕ) (
     · rfl
 
 /- English proof (translation)
-Set `f : Var Unit p q (Fin m) → σ` to `fun v => Sum.elim (fun c => z (Fin.castLE hp c, v.2.2)) (fun d => y (Fin.castLE hq d, v.2.2)) v.2.1`. Establish `hf : Function.Injective f`. Introduce and unpack `⟨⟨⟩, c | c, i⟩ ⟨⟨⟩, d | d, j⟩ e`. Simplify using `using hz e`. Conclude with `absurd e (hzy _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `absurd e.symm (hzy _ _)`. Simplify using `using hy e`. Take `⟨Q₀, hQ0, hQ, hu⟩` from `exists_unique_base h (fun c => a (Fin.castLE hp c)) (fun d => b (Fin.castLE hq d)) (fun _ _ h => ha h) (fun _ _ h => hb h)`. Rewrite `hQ`, `hu` using `[mixedWeight_restrict hp hq a b ha0 hb0]`. Establish `key : ∀ Q, JointTop z y (fun i => (mixedWeight m a b i : ℂ)) (fun c => a c) (fun d => b d) (rename f Q) ↔ JointTop (fun w => xVar () w.1 w.2) (fun w => yVar () w.1 w.2) (fun i => (mixedWeight m a b i : ℂ)) (fun c => a (Fin.castLE hp c)) (fun d => b (Fin.castLE hq d)) Q` using `fun Q => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[jointTop_restrict hp hq z y _ _ _ (fun c hc => by simp [ha0 c hc]) (fun c hc => by simp [hb0 c hc]), ← jointTop_rename f hf]`. Both sides reduce to the same expression. Introduce `c i hc hv`. Take `⟨⟨⟨⟩, d | d, j⟩, -, e⟩` from `Finset.mem_image.1 (vars_rename f Q hv)`. Use `congrArg (fun w => (w.1 : ℕ)) (hz e)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `d.2` as an intermediate fact. Simplify using `at *`. Use linear arithmetic over natural numbers and integers. Conclude with `hzy _ _ e.symm`. Introduce `c i hc hv`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨⟨⟩, d | d, j⟩, -, e⟩` from `Finset.mem_image.1 (vars_rename f Q hv)`. Conclude with `hzy _ _ e`. Use `congrArg (fun w => (w.1 : ℕ)) (hy e)` as an intermediate fact. Use `d.2` as an intermediate fact. Simplify using `at *`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨rename f Q₀, fun e => hQ0 (rename_injective f hf (e.trans (map_zero _).symm)), (key _).2 hQ, fun P hP => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨Q, rfl⟩ : ∃ Q, rename f Q = P := by`. Use `exists_rename_eq_of_vars_subset_range P f hf fun s hsv => ?_` and prove the remaining obligations. Break down `hs s with ⟨⟨c, i⟩, rfl⟩ | ⟨⟨c, i⟩, rfl⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `hc : p ≤ c`. Conclude with `absurd hsv (notMem_vars_of_row z (by simpa [ha0 c hc] using hP.2.2.2.1 c) i)`. Conclude with `⟨((), .inl ⟨c, by omega⟩, i), rfl⟩`. Distinguish the cases in `hc : q ≤ c`. Conclude with `absurd hsv (notMem_vars_of_row y (by simpa [hb0 c hc] using hP.2.2.2.2.2.1 c) i)`.
-
-Conclude with `⟨((), .inr ⟨c, by omega⟩, i), rfl⟩`. Take `⟨r, rfl⟩` from `hu Q ((key Q).1 hP)`. Conclude with `⟨r, map_smul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unique_jointTop (z : Fin k × Fin m → σ) (hz : Function.Injective z)
     (y : Fin l × Fin m → σ) (hy : Function.Injective y) (hzy : ∀ u w, z u ≠ y w)
@@ -357,7 +349,7 @@ theorem exists_unique_jointTop (z : Fin k × Fin m → σ) (hz : Function.Inject
   exact ⟨r, map_smul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `support_nonempty.2 hP`. Establish `h₁` using `column_degree_le z hz P a hrz hiz Finset.univ s hs`. Simplify using `only [fun i => hrz i s hs, Finset.card_univ, Fintype.card_fin] at h₁`. Assume the negation of the conclusion as `hlt`. Use `absurd h₁ (not_le.2 (Finset.sum_lt_sum_of_subset (Finset.subset_univ _) (i := ⟨m, by omega⟩) (Finset.mem_univ _) (by simp) (ha _) fun _ _ _ => Nat.zero_le _))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem rows_le [DecidableEq σ] (z : Fin p × Fin m → σ) (hz : Function.Injective z)
     {P : MvPolynomial σ ℂ} (hP : P ≠ 0) (a : Fin p → ℕ) (ha : ∀ c, 0 < a c)
@@ -373,37 +365,35 @@ theorem rows_le [DecidableEq σ] (z : Fin p × Fin m → σ) (hz : Function.Inje
     (i := ⟨m, by omega⟩) (Finset.mem_univ _) (by simp) (ha _) fun _ _ _ => Nat.zero_le _))
 
 /- English proof (translation)
-Take `⟨hup, hwt, g3, g4, g5, g6, hharm⟩` from `hJ`. Establish `hrz : ∀ i, ∀ s ∈ P.support, ∑ k, s (z (i, k)) = a i` using `fun i s hs => Nat.cast_injective (R := ℂ) (row_degree z (g4 i) hs)`. Establish `hry : ∀ i, ∀ s ∈ P.support, ∑ k, s (y (i, k)) = b i` using `fun i s hs => Nat.cast_injective (R := ℂ) (row_degree y (g6 i) hs)`. Establish `hiz` using `fun i j hij => (row_invariant z hz P hij).1 (g3 i j hij)`. Establish `hiy` using `fun i j hij => (row_invariant y hy P hij).1 (g5 i j hij)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `rows_le z hz hP a ha0 hrz hiz`. Establish `hq` using `rows_le y hy hP b hb0 hry hiy`. Use `set A : Fin m → ℤ := fun i => if h : (i : ℕ) < p then (a ⟨i, h⟩ : ℤ) else 0 with hA`. Use `set B : Fin m → ℤ := fun i => if h : m - 1 - (i : ℕ) < q then (b ⟨m - 1 - i, h⟩ : ℤ) else 0 with hB`. Apply the tactic sequence `have hA0 : ∀ i, 0 ≤ A i := fun i => by simp only [hA]; split_ifs <;> positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `have hB0 : ∀ i, 0 ≤ B i := fun i => by simp only [hB]; split_ifs <;> positivity`. Establish `hmw : mixedWeight m a b = fun i => A i - B i` using `rfl`. Establish `c` using `casimir_mixedOp z hz y hy hzy P`. Rewrite `c` using `[casimir_on_highest _ (mixedOp_lie z hz y hy hzy) P κ hup hwt, casimir_rows z hz a hrz hiz, casimir_rows y hy b hry hiy]`. Simplify using `only [hharm, mul_zero, Finset.sum_const_zero, smul_zero, sub_zero] at c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `c` using `[← add_smul, ← Int.cast_add]`. Establish `c'` using `Int.cast_injective (smul_left_injective ℂ hP c)`. Establish `ca` using `casimir_value_mixedWeight (m := m) (q := 0) hp a Fin.elim0`. Establish `cb` using `casimir_value_mixedWeight (m := m) (p := 0) (by omega) Fin.elim0 b`. Establish `ea : mixedWeight m a (Fin.elim0 : Fin 0 → ℕ) = A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[mixedWeight_apply, hA]`. Establish `eb : mixedWeight m (Fin.elim0 : Fin 0 → ℕ) b = fun i => -B i`. Use function extensionality and compare the values at `i`. Simplify using `[mixedWeight_apply, hB]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ca` using `[ea]`. Rewrite `cb` using `[eb]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, mul_zero, add_zero, zero_add] at ca cb`. Rewrite `c'` using `[← ca, ← cb]`. Establish `hid : ∑ i : Fin m, (A i - B i) * (A i - B i + m - 1 - 2 * (i : ℕ)) = ∑ i : Fin m, κ i * (κ i + m - 1 - 2 * (i : ℕ)) - 2 * ∑ i, A i * B i`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[c', Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hAB : 0 ≤ ∑ i, A i * B i` using `Finset.sum_nonneg fun i _ => mul_nonneg (hA0 i) (hB0 i)`. Take `⟨s, hm⟩` from `support_nonempty.2 hP`. Establish `hw` using `fun k => weight_of_mem_support z y (hwt k) hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsa : ∑ k, ∑ i, (s (z (i, k)) : ℤ) = ∑ i, (a i : ℤ)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => by exact_mod_cast hrz i s hm`. Establish `hsb : ∑ k, ∑ i, (s (y (i, k)) : ℤ) = ∑ i, (b i : ℤ)`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by exact_mod_cast hry i s hm`. Establish `hκe : κ = mixedWeight m a b`. Use `casimir_value_strict κ _ hκ (antitone_mixedWeight m ha hb) (fun i => ?_) ?_ ?_` and prove the remaining obligations. Establish `h₁` using `column_degree_le z hz P a hrz hiz (Finset.univ.filter fun k : Fin m => (k : ℕ) < i) s hm`. Establish `h₂` using `column_degree_le y hy P b hry hiy (Finset.univ.filter fun k : Fin m => ¬ (k : ℕ) < i) s hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `c₁ : (Finset.univ.filter fun k : Fin m => (k : ℕ) < i).card = min m i` using `Fin.card_filter_val_lt`. Establish `c₂ : (Finset.univ.filter fun k : Fin m => ¬ (k : ℕ) < i).card = m - i`. Use `Finset.card_filter_add_card_filter_not (s := Finset.univ) (fun k : Fin m => (k : ℕ) < i)` as an intermediate fact. Rewrite `this` using `[c₁, Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁` using `[c₁, Finset.filter_congr (q := fun j : Fin p => (j : ℕ) < i) (fun j _ => by have := j.2; omega), Finset.sum_comm]`. Rewrite `h₂` using `[c₂, Finset.sum_comm]`. Rewrite `h₁`, `h₂` using `[← Nat.cast_le (α := ℤ)]`. Simplify using `only [Nat.cast_sum] at h₁ h₂`. Rewrite `h₁` using `[← sum_filter_pad hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h₂` using `[← sum_filter_pad_rev hq]`. Establish `e₁` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun k : Fin m => (k : ℕ) < i) fun k => ∑ j, (s (y (j, k)) : ℤ)`. Establish `e₂` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun k : Fin m => (k : ℕ) < i) fun k => if h : m - 1 - (k : ℕ) < q then (b ⟨m - 1 - k, h⟩ : ℤ) else 0`. Rewrite `e₂` using `[sum_dite_rev_lt hq fun i => (b i : ℤ)]`. Simplify using `only [← hw, mixedWeight_apply, Finset.sum_sub_distrib]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [mixedWeight_apply, Finset.sum_sub_distrib]`. Rewrite using `[sum_dite_lt hp fun i => (a i : ℤ), sum_dite_rev_lt hq fun i => (b i : ℤ), ← hsa, ← hsb, ← Finset.sum_sub_distrib]`. Simplify using `only [hw]`. Simplify using `only [hmw]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, hκe⟩` and prove the remaining obligations. Establish `h0 : ∑ i, A i * B i = 0`. Rewrite `hid` using `[hκe]`. Simplify using `only [hmw] at hid`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hlt`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => mul_nonneg (hA0 i) (hB0 i)).1 h0 ⟨p - 1, by omega⟩ (Finset.mem_univ _)` as an intermediate fact. Simplify using `only [hA, hB] at this`. Rewrite `this` using `[dif_pos (by omega), dif_pos (by omega)]`.
-
-Conclude with `absurd this (mul_pos (by exact_mod_cast ha0 _) (by exact_mod_cast hb0 _)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem rows_add_le (z : Fin p × Fin m → σ) (hz : Function.Injective z)
     (y : Fin q × Fin m → σ) (hy : Function.Injective y) (hzy : ∀ u w, z u ≠ y w)
@@ -503,9 +493,9 @@ theorem rows_add_le (z : Fin p × Fin m → σ) (hz : Function.Injective z)
   exact absurd this (mul_pos (by exact_mod_cast ha0 _) (by exact_mod_cast hb0 _)).ne'
 
 /- English proof (translation)
-Establish `hex : ∃ n : ℕ, ∀ c : Fin k, n ≤ c → a c = 0` using `⟨k, fun c hc => by have := c.2; omega⟩`. Use `⟨Nat.find hex, Nat.find_min' _ fun c hc => by have := c.2; omega, fun c => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `Nat.find_spec hex c (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Nat.find_min hex h push Not at this` as an intermediate fact. Take `⟨c', h1, h2⟩` from `this`. Establish `: a c' ≤ a c` using `ha h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_support_length (a : Fin k → ℕ) (ha : Antitone a) :
     ∃ p ≤ k, ∀ c : Fin k, 0 < a c ↔ (c : ℕ) < p := by
@@ -523,19 +513,19 @@ theorem exists_support_length (a : Fin k → ℕ) (ha : Antitone a) :
     omega
 
 /- English proof (translation)
-Take `⟨s, hm⟩` from `support_nonempty.2 hP`. Take `⟨a, rfl⟩ : ∃ a : Fin k → ℕ, α = fun c => (a c : ℂ)` from `⟨_, funext fun c => (row_degree z (hJ.2.2.2.1 c) hm).symm⟩`. Take `⟨b, rfl⟩ : ∃ b : Fin l → ℕ, β = fun c => (b c : ℂ)` from `⟨_, funext fun c => (row_degree y (hJ.2.2.2.2.2.1 c) hm).symm⟩`. Take `⟨κ', rfl⟩ : ∃ κ' : Fin m → ℤ, κ = fun c => (κ' c : ℂ)` from `⟨_, funext fun c => (col_degree z y (hJ.2.1 c) hm).symm⟩`. Establish `hbij : Function.Bijective (Sum.elim z y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hz.sumElim hy hzy, fun s => ?_⟩` and prove the remaining obligations. Break down `hs s with ⟨u, rfl⟩ | ⟨u, rfl⟩` into its components or cases. Conclude with `⟨.inl u, rfl⟩`. Conclude with `⟨.inr u, rfl⟩`. Establish `: Finite σ` using `Finite.of_surjective _ hbij.2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `Fintype.ofFinite σ` as an intermediate fact. Establish `hhom : P.IsHomogeneous (∑ c, a c + ∑ d, b d)`. Introduce `t ht`. Establish `ht'` using `mem_support_iff.2 ht`. Express the relevant statement in the definitionally equal form `Finsupp.weight (fun _ => 1) t = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Finsupp.degree_eq_weight_one, Finsupp.degree_eq_sum, ← hbij.sum_comp, Fintype.sum_sum_type, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => Nat.cast_injective (R := ℂ) (row_degree z (hJ.2.2.2.1 i) ht')`. Conclude with `Finset.sum_congr rfl fun i _ => Nat.cast_injective (R := ℂ) (row_degree y (hJ.2.2.2.2.2.1 i) ht')`. Use `finite_homog (σ := σ) (∑ c, a c + ∑ d, b d)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : Antitone a` using `fun i j hij => by`. Use `highest_weight_antitone (rowOp ℂ z) (rowOp_lie z hz) (homogeneousSubmodule σ ℂ _) (fun i j w hw => by rw [rowOp_eq_colOp]; exact colOp_homog _ _ _ hw) P hhom hP (fun c => a c) hJ.2.2.1 (fun c => by simpa using hJ.2.2.2.1 c) hij` as an intermediate fact. Conclude with `Int.ofNat_le.1 this`. Establish `hb : Antitone b` using `fun i j hij => by`. Use `highest_weight_antitone (rowOp ℂ y) (rowOp_lie y hy) (homogeneousSubmodule σ ℂ _) (fun i j w hw => by rw [rowOp_eq_colOp]; exact colOp_homog _ _ _ hw) P hhom hP (fun c => b c) hJ.2.2.2.2.1 (fun c => by simpa using hJ.2.2.2.2.2.1 c) hij` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Int.ofNat_le.1 this`. Establish `hκ : Antitone κ'` using `highest_weight_antitone (mixedOp ℂ z y) (mixedOp_lie z hz y hy hzy) (homogeneousSubmodule σ ℂ _) (fun i j w hw => sub_mem (colOp_homog _ _ _ hw) (colOp_homog _ _ _ hw)) P hhom hP κ' hJ.1 hJ.2.1`. Take `⟨p, hp, hpa⟩` from `exists_support_length a ha`. Take `⟨q, hq, hqb⟩` from `exists_support_length b hb`. Establish `ha0 : ∀ c : Fin k, p ≤ c → a c = 0` using `fun c hc => by have := hpa c; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb0 : ∀ c : Fin l, q ≤ c → b c = 0` using `fun c hc => by have := hqb c; omega`. Establish `hJ'` using `(jointTop_restrict hp hq z y _ _ _ (fun c hc => by simp [ha0 c hc]) (fun c hc => by simp [hb0 c hc]) P (fun c i hc => notMem_vars_of_row z (by simpa [ha0 c hc] using hJ.2.2.2.1 c) i) (fun c i hc => notMem_vars_of_row y (by simpa [hb0 c hc] using hJ.2.2.2.2.2.1 c) i)).1 hJ`. Take `⟨h1, h2⟩` from `rows_add_le _ (hz.comp ((Fin.castLE_injective hp).prodMap Function.injective_id)) _ (hy.comp ((Fin.castLE_injective hq).prodMap Function.injective_id)) (fun _ _ => hzy _ _) (fun c => a (Fin.castLE hp c)) (fun d => b (Fin.castLE hq d)) (fun _ _ h => ha h) (fun _ _ h => hb h) (fun …`. Rewrite `h2` using `[mixedWeight_restrict hp hq a b ha0 hb0]`. Conclude with `⟨a, b, p, q, h1, hp, hq, hpa, hqb, by rw [h2], rfl, rfl, hhom⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weights_of_jointTop (z : Fin k × Fin m → σ) (hz : Function.Injective z)
     (y : Fin l × Fin m → σ) (hy : Function.Injective y) (hzy : ∀ u w, z u ≠ y w)

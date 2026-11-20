@@ -24,9 +24,9 @@ section Sizes
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0), Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_subtype _ (by simp) _`. Rewrite using `[Finset.sum_subtype (p := fun τ : E →+* ℂ => ¬ τ (H.rt : E) = H.rt0) (F := inferInstance) _ (by simp)]`. Use `Fintype.sum_equiv ⟨fun τ => ⟨conjEmb τ.1, AllWt.conj_mem τ.2⟩, fun τ => ⟨conjEmb τ.1, AllWt.conj_not_mem τ⟩, fun τ => Subtype.ext (AllWt.conjEmb_conjEmb _), fun τ => Subtype.ext (AllWt.conjEmb_conjEmb _)⟩ _ _ fun τ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[AllWt.conjEmb_conjEmb]`.
+A detailed English derivation is pending.
 -/
 theorem sum_emb_eq (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {M : Type} [AddCommMonoid M] (g : (E →+* ℂ) → M) :
     ∑ τ, g τ = ∑ τ : Psi H, (g τ.1 + g (conjEmb τ.1)) := by
@@ -42,7 +42,7 @@ theorem sum_emb_eq (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {M 
   simp [AllWt.conjEmb_conjEmb]
 
 /- English proof (translation)
-Use `sum_emb_eq H (fun _ => (1 : ℕ))` as an intermediate fact. Simplify using `only [Finset.sum_const, Finset.card_univ, smul_eq_mul, NumberField.Embeddings.card] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_mul_card_psi (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : 2 * Fintype.card (Psi H) = Module.finrank ℚ E := by
   have := sum_emb_eq H (fun _ => (1 : ℕ))
@@ -50,7 +50,7 @@ theorem two_mul_card_psi (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host 
   omega
 
 /- English proof (translation)
-Rewrite using `[sum_emb_eq H, ← Finset.card_univ, ← smul_eq_mul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Datum.mult, if_pos τ.2, Datum.mult, if_neg (AllWt.conj_not_mem τ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mult : ∑ τ, Dw.mult τ = Fintype.card (Psi H) * (Dw.p + Dw.q) := by
   rw [sum_emb_eq H, ← Finset.card_univ, ← smul_eq_mul, ← Finset.sum_const]
@@ -58,13 +58,11 @@ theorem sum_mult : ∑ τ, Dw.mult τ = Fintype.card (Psi H) * (Dw.p + Dw.q) := 
   rw [Datum.mult, if_pos τ.2, Datum.mult, if_neg (AllWt.conj_not_mem τ)]
 
 /- English proof (translation)
-Establish `h1 : ((Formalism.L2.Pj.DF Dw a : ℕ) : ℝ) + ((n / 2 : ℕ) : ℝ) * (Fintype.card (Psi H) * (Dw.p + Dw.q) : ℕ) = ∑ τ : E →+* ℂ, ∑ i ∈ Finset.range (Dw.mult τ), ((a (τ, i) : ℝ) + ((n / 2 : ℕ) : ℝ))`. Rewrite using `[← sum_mult]`. Simplify using `only [Formalism.L2.Pj.DF, Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, Nat.cast_sum, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun τ _ => Fin.sum_univ_eq_sum_range (fun i => (a (τ, i) : ℝ)) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => mul_comm _ _`. Rewrite using `[h1, sum_emb_eq H, sizeK]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Datum.mult, if_pos τ.2, Datum.mult, if_neg (AllWt.conj_not_mem τ), Fin.sum_univ_add, ← Finset.sum_range_reflect _ Dw.q, ← Fin.sum_univ_eq_sum_range (fun i => (a (τ.1, i) : ℝ) + ((n / 2 : ℕ) : ℝ)), ← Fin.sum_univ_eq_sum_range (fun i => (a (conjEmb τ.1, Dw.q - 1 - i) : ℝ) + ((n / …`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [laOf, AllWt.weightOf, Fin.val_castAdd, i.2, if_true]`. Rewrite using `[Int.cast_add, Int.cast_natCast, Int.cast_natCast, abs_of_nonneg (by positivity)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [laOf, AllWt.weightOf, Fin.val_natAdd, Nat.not_lt.2 (Nat.le_add_right _ _), if_false, Nat.add_sub_cancel_left]`.
-
-Rewrite using `[Int.cast_sub, Int.cast_neg, Int.cast_natCast, Int.cast_natCast, ← neg_add', abs_neg, abs_of_nonneg (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sizeK_eq (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     sizeK Dw a n = (Formalism.L2.Pj.DF Dw a : ℕ) + ((n / 2 : ℕ) : ℝ) * (Fintype.card (Psi H) * (Dw.p + Dw.q) : ℕ) := by
@@ -92,7 +90,7 @@ theorem sizeK_eq (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
       abs_of_nonneg (by positivity)]
 
 /- English proof (translation)
-Rewrite using `[← sum_mult, Finset.sum_mul]`. Simplify using `[LtN, Formalism.L2.Pj.Letter]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_letters (n : ℕ) : Fintype.card (LtN Dw n) = Fintype.card (Psi H) * (Dw.p + Dw.q) * n := by
   rw [← sum_mult, Finset.sum_mul]
@@ -101,9 +99,9 @@ theorem card_letters (n : ℕ) : Fintype.card (LtN Dw n) = Fintype.card (Psi H) 
 end Sizes
 
 /- English proof (translation)
-Establish `: (Fintype.piFinset fun _ : ι => Finset.range (d + 1)).card = (d + 1) ^ Fintype.card ι` using `by simp`. Rewrite using `[← this]`. Use `Finset.card_le_card_of_injOn (fun m => (m : ι → ℕ)) (fun m hm => ?_) fun _ _ _ _ e => DFunLike.coe_injective e` and prove the remaining obligations. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_range]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h (MvPolynomial.mem_support_iff.1 hm)`. Establish `h2` using `Finsupp.le_degree i m`. Rewrite `h2` using `[Finsupp.degree_eq_weight_one]`. Conclude with `Nat.lt_succ_of_le (h1 ▸ h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_support_le {ι R : Type} [Fintype ι] [CommSemiring R] {P : MvPolynomial ι R} {d : ℕ}
     (h : P.IsHomogeneous d) : P.support.card ≤ (d + 1) ^ Fintype.card ι := by
@@ -119,7 +117,7 @@ theorem card_support_le {ι R : Type} [Fintype ι] [CommSemiring R] {P : MvPolyn
   exact Nat.lt_succ_of_le (h1 ▸ h2)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ThetaWeightData.polyNorm, ← Real.sqrt_mul (Nat.cast_nonneg _)]`. Use `Real.le_sqrt_of_sq_le (sq_sum_le_card_mul_sum_sq.trans (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun s : c.F →+* ℂ => ∑ m ∈ P.support, ‖s (P.coeff m)‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ σ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_coeff_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} (c : Coeff l) {n : ℕ} (P : MvPolynomial (LtN Dw n) c.F)
@@ -131,11 +129,11 @@ theorem sum_coeff_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
     (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ σ)
 
 /- English proof (translation)
-Establish `he1 : 1 ≤ e` using `by linarith`. Establish `hl0 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hl : Real.log 2 ≤ 1` using `by have := Real.log_two_lt_d9; linarith`. Use `le_min (inv_le_one_of_one_le₀ (one_le_pow₀ he1)) ?_` and prove the remaining obligations. Establish `h1 : f * w + 2 ≤ e ^ 24`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a1 : f * w ≤ e * (3 * e ^ 20)` using `by gcongr`. Establish `a2 : 1 ≤ e ^ 21` using `one_le_pow₀ he1`. Establish `a3 : 2 ^ 3 ≤ e ^ 3` using `by gcongr`. Establish `a4 : e ^ 21 * 2 ^ 3 ≤ e ^ 21 * e ^ 3` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[le_div_iff₀ (by positivity), inv_mul_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_pow_le_epStar {e M s f w : ℝ} (he : 2 ≤ e) (hM0 : 0 < M) (hM : M ≤ e ^ 30) (hs0 : 0 < s) (hs : s ≤ e ^ 3)
     (hf0 : 0 ≤ f) (hf : f ≤ e) (hw0 : 0 ≤ w) (hw : w ≤ 3 * e ^ 20) :
@@ -156,27 +154,27 @@ theorem inv_pow_le_epStar {e M s f w : ℝ} (he : 2 ≤ e) (hM0 : 0 < M) (hM : M
     _ ≤ e ^ 57 * Real.pi := by gcongr; linarith [Real.pi_gt_three]
 
 /- English proof (translation)
-Establish `hf1 : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hr.trans hrn`. Establish `hfr1 : (1 : ℝ) ≤ f * r` using `one_le_mul_of_one_le_of_one_le hf1 hr1`. Establish `hn2 : (n : ℝ) ≤ 2 * κ` using `(le_mul_of_one_le_left (by linarith) hfr1).trans hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ0 : 0 < κ` using `by linarith`. Establish `hl2 : Real.log 2 ≤ 1` using `by have := Real.log_two_lt_d9; linarith`. Establish `hl3 : Real.log 3 ≤ 2` using `by have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 by norm_num); linarith`. Establish `h1κ : Real.log (1 + κ) ≤ 22 * L`. Use `Real.log_le_log (by linarith) (show 1 + κ ≤ 3 * κ by linarith)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_mul (by norm_num) hκ0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hln : Real.log n ≤ 21 * L`. Use `Real.log_le_log (by linarith) hn2` as an intermediate fact. Rewrite `this` using `[Real.log_mul (by norm_num) hκ0.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlf : Real.log f ≤ 2 * (21 * L)`. Use `Real.log_le_log (by linarith) (le_mul_of_one_le_right (by linarith) hr1 : (f : ℝ) ≤ f * r)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK : 0 < J * p`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Break down `(mul_nonneg hJ hp0).eq_or_lt with h | h` into its components or cases. Rewrite `hv` using `[mul_assoc p, mul_assoc p, ← mul_assoc J, ← h, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h`. Establish `hlam : Real.log (1 / ((Real.exp L ^ 40)⁻¹) ^ 2) ≤ 80 * (21 * L)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_pow, one_div, inv_inv, ← pow_mul, Real.log_pow, Real.log_exp]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `GlobalTheory.log_exp_mul_le_of_generator_sup_bound f r n d (21 * L) 0 κ rd (Real.exp L ^ 40)⁻¹ t 1 (S / (J * p)) (v / (J * p)) 1 (by linarith) hf hr hrn hd (by linarith) hln hlf hrd1 (by linarith) (by positivity) hlam ht le_rfl zero_le_one (by rw [Real.exp_zero]) zero_le_one (Rea …`. Rewrite using `[div_le_iff₀ hK]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hv.trans_eq ?_` and prove the remaining obligations. Use the proof step `ring)`. Rewrite `key` using `[Real.log_le_iff_le_exp (by positivity), ← mul_div_assoc, div_le_iff₀ hK]`. Establish `hsq : Real.sqrt N ≤ Real.exp (22 * L * κ)`. Use `Real.sqrt_le_iff.2 ⟨(Real.exp_pos _).le, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : (d : ℝ) + 1 ≤ Real.exp (22 * L)`. Use `(Real.log_le_iff_le_exp (by linarith)).1 h1κ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hLsq : L ≤ ((f : ℝ) * r * L) ^ 2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `a1 : L ≤ f * r * L` using `le_mul_of_one_le_left (by linarith) hfr1`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Conclude with `hp.trans (by gcongr)`. Use `_ = J * ρ * Real.exp (10 * (21 * L) * κ + 200 * (f * r * n) * (21 * L) + 22 * L * κ) := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.exp_add _ (22 * L * κ)]`. Establish `: 0 + 10 * (21 * L) * κ + 200 * f * r * n * (21 * L) = 10 * (21 * L) * κ + 200 * (f * r * n) * (21 * L)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ ≤ _ := by gcongr J * ρ * Real.exp ?_`. Establish `a1 : 200 * ((f : ℝ) * r * n) * (21 * L) ≤ 200 * (2 * κ) * (21 * L)` using `by gcongr`. Establish `a2 : L * κ ≤ ((f : ℝ) * r * L) ^ 2 * κ` using `by gcongr`. Establish `a3 : 0 ≤ L * κ` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem numbers (f r n d N : ℕ) (L κ rd t J p ρ S v : ℝ) (hL : 1 ≤ L) (hf : 1 ≤ f) (hr : 1 ≤ r) (hrn : r ≤ n)
     (hd : (d : ℝ) ≤ κ) (hn : (f : ℝ) * r * n ≤ 2 * κ) (hκ : Real.log κ ≤ 20 * L) (hfr : Real.log (f * r) ≤ L)
@@ -250,9 +248,9 @@ theorem numbers (f r n d N : ℕ) (L κ rd t J p ρ S v : ℝ) (hL : 1 ≤ L) (h
         nlinarith
 
 /- English proof (translation)
-Establish `hM : l.M' ≠ 0`. Use `l.three_le` as an intermediate fact. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.M', hA, Nat.lcm_one_right]`. Use linear arithmetic over natural numbers and integers. Establish `hz : (⟨zeta l.M', c.zeta_mem⟩ : c.F) ^ l.M' = 1` using `Subtype.ext (by simpa [zeta] using (Complex.isPrimitiveRoot_exp l.M' hM).pow_eq_one)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1 : ‖σ ⟨zeta l.M', c.zeta_mem⟩‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hz, map_one]) hM`. Unfold `phiHat indPhi`. Rewrite using `[finsum_eq_single _ x0 (fun x hx => by simp [hx])]`. Rewrite using `[if_pos rfl, one_mul, map_zpow₀, norm_zpow, zetaM, map_pow, norm_pow, h1, one_pow, one_zpow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_phiHat_indPhi {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} (c : Coeff l) (hA : l.A = 1) {n : ℕ} (x0 : Fin n → LevQc Dw l)
@@ -272,45 +270,43 @@ theorem norm_phiHat_indPhi {E : Type} [Field E] [NumberField E] [IsCMField E] {H
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨9000, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `D T j Y e o Lb a n hH _ nab hnab ρ x0 La N P hU hT hO hP hρ y hy σ z hz`. Take `⟨hJ, -, -, -, hj, hG, hL, hM, hE, hfr, -, hDom, hev, hn, -, hsz⟩` from `hH`. Take `⟨hLw, -, -⟩` from `GlobalTheory.DeepLaws.laws_galois_pull D T j Y e o hJ hj hG hG.unit hG.modelW`. Establish `hσ : GoodEmb Y.d.c₂ (goodOf Y.d.c₂ σ)` using `goodEmb_goodOf _ σ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Generalize the expression as in `goodOf Y.d.c₂ σ = σ' at hσ z hz ⊢`. Establish `hρ0 : 0 ≤ ρ` using `(Real.sqrt_nonneg _).trans hρ`. Establish `hfin` using `GlobalTheory.SupDict.finrank_host D`. Establish `hfd : ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E = D.R.f` using `by unfold ReciprocityTheory.ChartRestriction.G.FD.fdeg; omega`. Establish `hf1 : 1 ≤ D.R.f` using `by have := Module.finrank_pos (R := ℚ) (M := D.host.E); omega`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : 1 ≤ D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hrn : D.R.r ≤ n` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hpq : D.R.r = (T.Q.Dw j).p + (T.Q.Dw j).q` using `(hLw.unf σ' hσ).1`. Establish `hcard : Fintype.card (Psi T.Q.H) = D.R.f` using `by have := two_mul_card_psi T.Q.H; omega`. Establish `hsize` using `sizeK_eq (T.Q.Dw j) a n`. Rewrite `hsize` using `[hcard, ← hpq]`. Establish `hn2 : (n : ℝ) = 2 * ((n / 2 : ℕ) : ℝ)` using `by exact_mod_cast (Nat.two_mul_div_two_of_even hev).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0 : (0 : ℝ) ≤ (Formalism.L2.Pj.DF (T.Q.Dw j) a : ℕ)` using `Nat.cast_nonneg _`. Establish `hh0 : (0 : ℝ) ≤ ((n / 2 : ℕ) : ℝ) * (D.R.f * D.R.r : ℕ)` using `by positivity`. Establish `hdκ : ((Formalism.L2.Pj.DF (T.Q.Dw j) a : ℕ) : ℝ) ≤ sizeK (T.Q.Dw j) a n` using `by linarith`. Establish `hnκ : (D.R.f : ℝ) * D.R.r * n ≤ 2 * sizeK (T.Q.Dw j) a n`. Rewrite using `[hsize]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at hh0 ⊢`. Rewrite using `[hn2]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hfrn : (0 : ℝ) < (D.R.f : ℝ) * D.R.r * n`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: 0 < D.R.f * D.R.r * n` using `Nat.mul_pos (Nat.mul_pos hf1 hr1) (hr1.trans hrn)`. Conclude with `this` after adjusting the coercions. Establish `hd1` using `GlobalTheory.SupDict.one_le_dE D.host.E`. Establish `hrd1 : 1 ≤ ReciprocityTheory.ChartRestriction.G.FD.rdE D.host.E` using `Real.one_le_rpow hd1 (by positivity)`. Establish `hrdL : Real.log (ReciprocityTheory.ChartRestriction.G.FD.rdE D.host.E) ≤ 3 * Lb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (le_of_eq ?_) ((log_rd_le_fieldSz D.host.E).trans hE)` and prove the remaining obligations. Unfold `ReciprocityTheory.ChartRestriction.G.FD.rdE`. Rewrite using `[Real.log_rpow (by linarith)]`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.dE`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hcusp` using `AllWt.mem_cuspW.1 y.2`. Establish `hsec : (y : Rul Y.d.Xo₂ Y.d.c₂) ∈ sec Y.d.Xo₂ Y.d.c₂ a n`. Use `hcusp.1` as an intermediate fact. Rewrite `this` using `[AllWt.exZ_wtZ, AllWt.secZ_nat]`. Then use the resulting hypothesis. Establish `hhol` using `hcusp.2 σ' hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `AllWt.homN`. Rewrite `hhol`, the goal using `[AllWt.modelWt_wtZ]`. Establish `hle : AllWt.ptN (laU (Y.U σ') a n) (rdU (Y.U σ') y.1) z ≤ supN (Y.U σ').X (laU (Y.U σ') a n) (rdU (Y.U σ') y.1)` using `(ENNReal.ofReal_le_iff_le_toReal (supE_ne_top _ _ hhol)).1 (le_iSup (fun q : Formalism.L2.Pj.FPt (Y.U σ').X => ENNReal.ofReal (((Y.U σ').X q.1).pnorm (laU (Y.U σ') a n q.1) (rdU (Y.U σ') y.1 q.1) q.2)) ⟨z.1, z.2, hz⟩)`. Use `(mul_le_mul_of_nonneg_left hle (AllWt.lieFacZ_pos _ _).le).trans ?_` and prove the remaining obligations. Break down `(supN_nonneg (Y.U σ').X (laU (Y.U σ') a n) (rdU (Y.U σ') y.1)).eq_or_lt with h0 | hpos` into its components or cases.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0, mul_zero]`. Check the signs of the components of the expression. Establish `hx` using `GlobalTheory.SupDict.xiR_pos D`. Establish `habs : LevGeo.absA (T.Q.Dw j) a = Formalism.L2.Pj.DF (T.Q.Dw j) a` using `rfl`. Take `⟨k, xf, hort, hhalf, hla⟩` from `half_sup_at_ortho hLw hσ (laU (Y.U σ') a n) (w := 3 * sizeK (T.Q.Dw j) a n) (by linarith) (fun k => (GlobalTheory.LamSpread.sum_spread_laU_le D j _ _ _ _ _ _ _ hLw σ' hσ a n k).trans (by`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[habs, hfd]`. Use `push_cast`. Use the proof step `linarith))`. Use the proof step `(hLw.chiTriv σ' hσ a n hDom) hhol hpos`. Establish `he2 : 2 ≤ Real.exp Lb` using `by have := Real.add_one_le_exp Lb; linarith`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : ∀ (x : ℝ) (m : ℕ), 0 < x → Real.log x ≤ m * Lb → x ≤ Real.exp Lb ^ m` using `fun x m h1 h2 => by`. Rewrite using `[← Real.exp_nat_mul]`. Conclude with `(Real.log_le_iff_le_exp h1).1 h2`. Establish `hM0 : (0 : ℝ) < Y.d.l₂.M` using `by have := Y.d.l₂.three_le; exact_mod_cast (by omega : 0 < Y.d.l₂.M)`. Establish `hdd : (0 : ℝ) < D.host.d` using `by have := D.host.qd_big.2; exact_mod_cast (by omega : 0 < D.host.d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hrde` using `hpow (ReciprocityTheory.ChartRestriction.G.FD.rdE D.host.E) 3 (by linarith) (by exact_mod_cast hrdL)`. Establish `hep : (Real.exp Lb ^ 57)⁻¹ ≤ LevGeo.epsLev D.host.E D.host.d Y.d.l₂.M (3 * sizeK (T.Q.Dw j) a n)`. Use `inv_pow_le_epStar he2 hM0 (hpow _ 30 hM0 (by exact_mod_cast hM)) (Real.sqrt_pos.2 hdd) (hpow _ 3 (Real.sqrt_pos.2 hdd) ?_) (Nat.cast_nonneg _) ?_ (by linarith) ?_` and prove the remaining obligations. Establish `h1 : Real.log D.host.d ≤ 2 * Real.log (ReciprocityTheory.ChartRestriction.G.FD.rdE D.host.E)` using `GlobalTheory.NormSum.Compare.log_d_le D`. Rewrite using `[Real.log_sqrt hdd.le]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hfd]`. Establish `h1 : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf1`. Establish `h2 : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `hpow (D.R.f * D.R.r) 1 (by positivity) (by simpa using hfr)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Use the polynomial consequences of the given equalities and inequalities. Use `hpow (sizeK (T.Q.Dw j) a n) 20 (by linarith) (by exact_mod_cast hsz)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlam : ((Real.exp Lb ^ 40)⁻¹) ^ 2 ≤ ((Y.U σ').X k).firstMinimumSq xf.1`. Use `le_trans ?_ hla` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `h1 : 1 ≤ Real.exp Lb ^ 17` using `one_le_pow₀ (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: 0 < (Real.exp Lb ^ 57)⁻¹` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv` using `norm_evR_le D.host.E _ (T.Q.Dw j) Y.d.l₂ Y.d.Xo₂ Y.d.c₂ σ' D.R.r (Formalism.L2.PjFree.Unf.ofPj (Y.U σ')) hσ (hLw.unf σ' hσ) hr1 (2 * xiR D) (by linarith) (fun k τ => congrArg (2 * ·) (hLw.xiAbs σ' hσ k τ.1)) a n hDom nab hnab La N _ (fun q => (norm_phiHat_indPhi Y.d.c₂ hLw.levA x …`. Rewrite `hv` using `[hfd]`. Establish `hrdv : rdU (Y.U σ') y.1 k xf.1 = Formalism.L2.PjFree.toC (evR Y.d.Xo₂ Y.d.c₂ y.1 ((Y.U σ').un k xf))` using `dif_pos xf.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hhalf` using `[hrdv]`. Establish `hlie : AllWt.lieFacZ (T.Q.Dw j) (xiR D) (wtZ a n) = Real.exp (-(((Formalism.L2.Pj.DF (T.Q.Dw j) a : ℕ) : ℝ) / 2) * Real.log (Real.pi * (2 * xiR D)))`. Rewrite using `[AllWt.lieFacZ_wtZ, lieFac, show 2 * Real.pi * xiR D = Real.pi * (2 * xiR D) by ring]`. Simplify using `[Formalism.L2.Pj.DF]`. Establish `hsupp` using `card_support_le ((GlobalTheory.T.exists_integralHarmonic_ne_zero_and_isHomogeneous _ _ (T.Q.Dw j) Y.d.l₂ Y.d.c₂ a n).2 P hP.1)`.
-
-Rewrite `hsupp` using `[card_letters, hcard, ← hpq]`. Rewrite using `[hlie, ← hpq]`. Conclude with `numbers D.R.f D.R.r n _ _ Lb _ _ _ _ _ ρ _ _ hL hf1 hr1 hrn hdκ hnκ hsz hfr hrd1 hrdL (by linarith) (Real.sqrt_nonneg _) (Finset.sum_nonneg fun _ _ => norm_nonneg _) hρ0 hsupp ((sum_coeff_le Y.d.c₂ P σ').trans (mul_le_mul_of_nonneg_left hρ (Real.sqrt_nonneg _))) hpos hhalf hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homN_raw_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (e : ℕ) (o Lb : ℝ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), GlobalTheory.CovGmin.Hyp D T j Y e o Lb a n → ∀ [StarRing (𝓞 D.host.E)] (nab : NabV Y.d.Xo₂ Y.d.c₂), IsNab Y.d.Xo₂ Y.d.c₂ nab → ∀ (ρ : ℝ) (x0 : Fin n → LevQc (T.Q.Dw j) Y.d.l₂) (La : GenLat D.host.E n) (N : ℕ) (P : MvPolynomial (LtN (T.Q.Dw j) n) Y.d.c₂.F), La.Unimod → La.TrivAt Y.d.l₂.M → La.LevOK N Y.d.l₂.M → P ∈ harmL Y.d.c₂ La a → GlobalTheory.IndefiniteRowSideFullHecke.ThetaWeightData.polyNorm Y.d.c₂ P ≤ ρ → ∀ y : Y.V (wtZ a n), (∀ (p : TRing Y.d.c₂.F) (y' : FrPt Y.d.Xo₂ Y.d.c₂ p.R), thLaValAt Y.d.Xo₂ Y.d.c₂ nab (phiHat Y.d.c₂ (indPhi Y.d.c₂ x0)) La N P y' ((y : Rul Y.d.Xo₂ Y.d.c₂) p y')) → ∀ (σ : Y.d.c₂.F →+* ℂ) (z : Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)).X k).Ψ D.R.r), z.2 ∈ ((Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)).X z.1).dom → AllWt.homN (Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)) (xiR D) (wtZ a n) (y : Rul Y.d.Xo₂ Y.d.c₂) z ≤ Real.sqrt (((La.Ln.toAddSubgroup.addSubgroupOf La.La.toAddSubgroup).index : ℝ) ^ ((T.Q.Dw j).p + (T.Q.Dw j).q)) * ρ * Real.exp (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 * sizeK (T.Q.Dw j) a n) := by
   refine ⟨9000, by norm_num, ?_⟩
@@ -422,7 +418,7 @@ theorem homN_raw_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D) (j : �
     ((sum_coeff_le Y.d.c₂ P σ').trans (mul_le_mul_of_nonneg_left hρ (Real.sqrt_nonneg _))) hpos hhalf hv
 
 /- English proof (translation)
-Unfold `AllWt.homN AllWt.ptN`. Rewrite using `[map_smulₛₗ, mul_left_comm]`. Conclude with `congrArg _ (pnorm_smul _ _ _ _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homN_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
@@ -433,11 +429,11 @@ theorem homN_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recipr
   exact congrArg _ (pnorm_smul _ _ _ _ _)
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `homN_raw_le`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations. Introduce `D T j Y e o Lb a n hH _ nab hnab ρ x0 La N P hU hT hO hP hρ y hy s B hB hs σ z hz`. Establish `hρ0 : 0 ≤ ρ` using `(Real.sqrt_nonneg _).trans hρ`. Establish `h1` using `h D T j Y e o Lb a n hH nab hnab ρ x0 La N P hU hT hO hP hρ y hy σ z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖goodOf Y.d.c₂ σ s‖ * Real.sqrt (((La.Ln.toAddSubgroup.addSubgroupOf La.La.toAddSubgroup).index : ℝ) ^ ((T.Q.Dw j).p + (T.Q.Dw j).q)) ≤ B`. Use `(pow_le_pow_iff_left₀ (by positivity) hB two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (by positivity)]`. Conclude with `hs _`. Rewrite using `[homN_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_le_mul_of_nonneg_left h1 (norm_nonneg _)).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homN_smul_raw_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (e : ℕ) (o Lb : ℝ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), GlobalTheory.CovGmin.Hyp D T j Y e o Lb a n → ∀ [StarRing (𝓞 D.host.E)] (nab : NabV Y.d.Xo₂ Y.d.c₂), IsNab Y.d.Xo₂ Y.d.c₂ nab → ∀ (ρ : ℝ) (x0 : Fin n → LevQc (T.Q.Dw j) Y.d.l₂) (La : GenLat D.host.E n) (N : ℕ) (P : MvPolynomial (LtN (T.Q.Dw j) n) Y.d.c₂.F), La.Unimod → La.TrivAt Y.d.l₂.M → La.LevOK N Y.d.l₂.M → P ∈ harmL Y.d.c₂ La a → GlobalTheory.IndefiniteRowSideFullHecke.ThetaWeightData.polyNorm Y.d.c₂ P ≤ ρ → ∀ y : Y.V (wtZ a n), (∀ (p : TRing Y.d.c₂.F) (y' : FrPt Y.d.Xo₂ Y.d.c₂ p.R), thLaValAt Y.d.Xo₂ Y.d.c₂ nab (phiHat Y.d.c₂ (indPhi Y.d.c₂ x0)) La N P y' ((y : Rul Y.d.Xo₂ Y.d.c₂) p y')) → ∀ (s : Y.d.c₂.F) (B : ℝ), 0 ≤ B → (∀ σ : Y.d.c₂.F →+* ℂ, ‖σ s‖ ^ 2 * ((La.Ln.toAddSubgroup.addSubgroupOf La.La.toAddSubgroup).index : ℝ) ^ ((T.Q.Dw j).p + (T.Q.Dw j).q) ≤ B ^ 2) → ∀ (σ : Y.d.c₂.F →+* ℂ) (z : Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)).X k).Ψ D.R.r), z.2 ∈ ((Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)).X z.1).dom → AllWt.homN (Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)) (xiR D) (wtZ a n) (s • (y : Rul Y.d.Xo₂ Y.d.c₂)) z ≤ B * ρ * Real.exp (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 * sizeK (T.Q.Dw j) a n) := by
   obtain ⟨C, hC, h⟩ := homN_raw_le

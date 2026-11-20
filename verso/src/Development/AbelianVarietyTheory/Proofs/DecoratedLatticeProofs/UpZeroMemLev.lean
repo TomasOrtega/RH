@@ -28,9 +28,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {s κ : ℕ} (S : _root_.GlobalTheory.SymChain.SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] in
 
 /- English proof (translation)
-Use `show _ ∈ (_root_.GlobalTheory.StepData.Level.map _ _).J ↔ _`. Rewrite using `[_root_.GlobalTheory.StepData.Level.mem_map, _root_.GlobalTheory.LevZeroGen.upZero, MulEquiv.trans_apply]`. Use `erw [MulEquiv.symm_apply_apply]`. Rewrite using `[_root_.GlobalTheory.StepData.TypeDatum.iter_zero]`. Unfold `_root_.GlobalTheory.StepData.TypeDatum.reindex`.
-
-Use `show _ ∈ (_root_.GlobalTheory.StepData.Level.map _ _).J ↔ _`. Rewrite using `[_root_.GlobalTheory.StepData.Level.mem_map, MulEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LevZeroGen.upZero_mem_lev (x : GL (Fin κ ⊕ Fin (s + 1)) k) :
     _root_.GlobalTheory.LevZeroGen.upZero S t x ∈

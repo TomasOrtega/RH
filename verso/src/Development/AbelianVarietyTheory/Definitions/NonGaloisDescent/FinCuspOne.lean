@@ -36,9 +36,9 @@ def HasType {W : Type} [AddCommGroup W] [Module ℂ W] (π : Representation ℂ 
       j (τ (GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k]) κ) w)
 
 /- English proof (translation)
-Use `⟨bot_le, fun κ _ v hv => ?_, fun S _ _ v hv => ⟨{1}, by simp, fun u hu => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[Submodule.mem_bot]`. Simplify using `[hv]`. Rewrite `hu` using `[Finset.mem_singleton]`. Substitute `hu` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `⟨one_mem _, one_mem _⟩`. Rewrite `hv` using `[Submodule.mem_bot]`. Simplify using `[hv]`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cuspOn_bot (π : Representation ℂ (GL (Fin n) k) V) : CuspOn π ⊥ := by
   refine ⟨bot_le, fun κ _ v hv => ?_, fun S _ _ v hv => ⟨{1}, by simp, fun u hu => ?_, ?_⟩⟩
@@ -47,7 +47,7 @@ theorem cuspOn_bot (π : Representation ℂ (GL (Fin n) k) V) : CuspOn π ⊥ :=
   · rw [Submodule.mem_bot] at hv; simp [hv]
 
 /- English proof (translation)
-Introduce and unpack `S ⟨i, hi⟩ hS`. Conclude with `absurd (Finset.eq_univ_iff_forall.2 fun j => Subsingleton.elim i j ▸ hi) hS`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem finCusp_one {F : Type} [Field F] {W : Type} [AddCommGroup W] [Module ℂ W]
     (τ : Representation ℂ (GL (Fin 1) F) W) : FinCusp τ := by

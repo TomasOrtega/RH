@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem realEisenstein_eq_tsum (τ : ℍ) (s : ℝ) : realEisenstein τ s = ∑' p, eisTerm τ s p := rfl
 
 /- English proof (translation)
-Unfold `eisTerm`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `div_nonneg (Real.rpow_nonneg τ.im_pos.le _) (Real.rpow_nonneg (norm_nonneg _) _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eisTerm_nonneg (τ : ℍ) (s : ℝ) (p : ℤ × ℤ) : 0 ≤ eisTerm τ s p := by
   unfold eisTerm
@@ -32,11 +32,9 @@ theorem eisTerm_nonneg (τ : ℍ) (s : ℝ) (p : ℤ × ℤ) : 0 ≤ eisTerm τ 
   · exact div_nonneg (Real.rpow_nonneg τ.im_pos.le _) (Real.rpow_nonneg (norm_nonneg _) _)
 
 /- English proof (translation)
-Establish `hk : 2 < 2 * s` using `by linarith`. Establish `hsum` using `(EisensteinSeries.summable_one_div_norm_rpow hk).mul_left (τ.im ^ s * EisensteinSeries.r τ ^ (-(2 * s)))`. Rewrite using `[← (finTwoArrowEquiv ℤ).summable_iff]`. Use `Summable.of_nonneg_of_le (fun x => eisTerm_nonneg τ s _) (fun x => ?_) hsum` and prove the remaining obligations. Establish `hr` using `EisensteinSeries.r_pos τ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, finTwoArrowEquiv_apply, eisTerm]`. Use `split_ifs with hx`. Conclude with `mul_nonneg (mul_nonneg (Real.rpow_nonneg τ.im_pos.le _) (Real.rpow_nonneg hr.le _)) (Real.rpow_nonneg (norm_nonneg _) _)`. Establish `hb` using `EisensteinSeries.summand_bound τ (by linarith : (0 : ℝ) ≤ 2 * s) x`. Rewrite using `[div_eq_mul_inv, ← Real.rpow_neg (norm_nonneg _), mul_assoc]`.
-
-Conclude with `mul_le_mul_of_nonneg_left hb (Real.rpow_nonneg τ.im_pos.le _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_eisTerm (τ : ℍ) {s : ℝ} (hs : 1 < s) : Summable (eisTerm τ s) := by
   have hk : 2 < 2 * s := by linarith
@@ -60,9 +58,9 @@ section IdealSum
 variable (K : Type) [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Global.dedekindZetaReal, ENNReal.ofReal_tsum_of_nonneg (GroundTheory.Global.dedekindZetaTerm_nonneg K s) (ZetaSevenHalvesBounds.summable_dedekindZetaTerm K hs), ← ENNReal.tsum_fiberwise (fun I : Ideal (𝓞 K) => ENNReal.ofReal ((Ideal.absNorm I : ℝ) ^ (-s))) Ideal.abs …`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Establish `hfin : (Ideal.absNorm ⁻¹' {n} : Set (Ideal (𝓞 K))).Finite` using `Ideal.finite_setOfPred_absNorm_eq n`. Use `hfin.fintype` as an intermediate fact. Rewrite using `[tsum_congr (fun I : (Ideal.absNorm ⁻¹' {n} : Set (Ideal (𝓞 K))) => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Ideal.absNorm (I : Ideal (𝓞 K)) = n from I.2]), tsum_fintype, Finset.sum_const,`. Use the proof step `Finset.card_univ, nsmul_eq_mul, GroundTheory.Global.dedekindZetaTerm,`. Use the proof step `ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ofReal_dedekindZetaReal {s : ℝ} (hs : 1 < s) :
     ENNReal.ofReal (GroundTheory.Global.dedekindZetaReal K s) =
@@ -83,9 +81,9 @@ theorem ofReal_dedekindZetaReal {s : ℝ} (hs : 1 < s) :
   rfl
 
 /- English proof (translation)
-Establish `hsupp : Function.support (fun I : Ideal (𝓞 K) => ENNReal.ofReal ((Ideal.absNorm I : ℝ) ^ (-s))) ⊆ ((Ideal (𝓞 K))⁰ : Set (Ideal (𝓞 K)))`. Introduce `I hI`. Rewrite using `[SetLike.mem_coe, mem_nonZeroDivisors_iff_ne_zero]`. Introduce and unpack `rfl`. Apply `hI` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Ideal.absNorm_bot, Real.zero_rpow (neg_ne_zero.mpr hs.ne')]`. Rewrite using `[← tsum_subtype_eq_of_support_subset hsupp]`. Express the relevant statement in the definitionally equal form `∑' x : (Ideal (𝓞 K))⁰, ENNReal.ofReal ((Ideal.absNorm (x : Ideal (𝓞 K)) : ℝ) ^ (-s)) = _`. Rewrite using `[← ENNReal.tsum_fiberwise _ (ClassGroup.mk0 : (Ideal (𝓞 K))⁰ → ClassGroup (𝓞 K)), tsum_fintype]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tsum_ideal_eq_sum_class {s : ℝ} (hs : 0 < s) :
     ∑' I : Ideal (𝓞 K), ENNReal.ofReal ((Ideal.absNorm I : ℝ) ^ (-s)) =
@@ -114,7 +112,7 @@ open FractionalIdeal EtaPeriodLatticeClass
 local notation "↑ᶠ" J => ((J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K)
 
 /- English proof (translation)
-Rewrite using `[spanSingleton_mul_le_iff]`. Introduce `z hz`. Establish `h` using `mul_mem_mul hx hz`. Rewrite `h` using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem spanSingleton_mul_inv_le_one (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {x : K}
     (hx : x ∈ (↑ᶠ J)) : spanSingleton (𝓞 K)⁰ x * (↑ᶠ J⁻¹) ≤ 1 := by
@@ -127,7 +125,7 @@ def idealOf (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {x : K} (hx : x ∈ (↑ᶠ 
   (le_one_iff_exists_coeIdeal.mp (spanSingleton_mul_inv_le_one J hx)).choose
 
 /- English proof (translation)
-The claim follows from `(le_one_iff_exists_coeIdeal.mp (spanSingleton_mul_inv_le_one J hx)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem coe_idealOf (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {x : K} (hx : x ∈ (↑ᶠ J)) :
     ((idealOf J hx : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) =
@@ -135,7 +133,7 @@ theorem coe_idealOf (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {x : K} (hx : x ∈ 
   (le_one_iff_exists_coeIdeal.mp (spanSingleton_mul_inv_le_one J hx)).choose_spec
 
 /- English proof (translation)
-Rewrite using `[mem_nonZeroDivisors_iff_ne_zero]`. Introduce `h`. Establish `h2` using `coe_idealOf J hx`. Rewrite `h2` using `[h, Ideal.zero_eq_bot, coeIdeal_bot]`. Conclude with `mul_ne_zero (spanSingleton_ne_zero_iff.mpr hx0) (Units.ne_zero _) h2.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealOf_mem (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {x : K} (hx : x ∈ (↑ᶠ J)) (hx0 : x ≠ 0) :
     idealOf J hx ∈ (Ideal (𝓞 K))⁰ := by
@@ -146,7 +144,7 @@ theorem idealOf_mem (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {x : K} (hx : x ∈ 
   exact mul_ne_zero (spanSingleton_ne_zero_iff.mpr hx0) (Units.ne_zero _) h2.symm
 
 /- English proof (translation)
-Rewrite using `[← ClassGroup.mk_mk0 K]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ClassGroup.mk_eq_one_iff, Units.val_mul, FractionalIdeal.coe_mk0, coe_idealOf, mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one, coe_spanSingleton]`. Conclude with `⟨⟨x, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem class_idealOf_eq_inv_class (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {x : K} (hx : x ∈ (↑ᶠ J)) (hx0 : x ≠ 0) :
     ClassGroup.mk0 ⟨idealOf J hx, idealOf_mem J hx hx0⟩ = (ClassGroup.mk K J)⁻¹ := by
@@ -165,7 +163,7 @@ def psi (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x : Nz J) : InvClassIdeals J :=
   ⟨⟨idealOf J x.2.1, idealOf_mem J x.2.1 x.2.2⟩, class_idealOf_eq_inv_class J x.2.1 x.2.2⟩
 
 /- English proof (translation)
-The claim follows from `coe_idealOf J x.2.1`.
+A detailed English derivation is pending.
 -/
 theorem coe_psi (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x : Nz J) :
     (((psi J x : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) =
@@ -173,11 +171,11 @@ theorem coe_psi (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x : Nz J) :
   coe_idealOf J x.2.1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `congrArg (fun t : InvClassIdeals J => (((t : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)) h`. Simplify using `only [coe_psi] at h2`. Conclude with `mul_right_cancel₀ (Units.ne_zero _) h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `coeIdeal_injective (K := K)` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((psi J x : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) = (((psi J y : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_psi, coe_psi, h]`.
+A detailed English derivation is pending.
 -/
 theorem psi_eq_iff (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x y : Nz J) :
     psi J x = psi J y ↔ spanSingleton (𝓞 K)⁰ (x : K) = spanSingleton (𝓞 K)⁰ (y : K) := by
@@ -196,19 +194,17 @@ theorem psi_eq_iff (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x y : Nz J) :
     rw [coe_psi, coe_psi, h]
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨I, hI⟩, hcl⟩`. Establish `hcl' : ClassGroup.mk0 ⟨I, hI⟩ = (ClassGroup.mk K J)⁻¹` using `hcl`. Establish `h1 : ClassGroup.mk K (FractionalIdeal.mk0 K ⟨I, hI⟩ * J) = 1`. Rewrite using `[map_mul, ClassGroup.mk_mk0, hcl', inv_mul_cancel]`. Rewrite `h1` using `[ClassGroup.mk_eq_one_iff]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set P := FractionalIdeal.mk0 K ⟨I, hI⟩ * J with hP`. Establish `hPval : (P : FractionalIdeal (𝓞 K)⁰ K) = (I : FractionalIdeal (𝓞 K)⁰ K) * (↑ᶠ J)`. Rewrite using `[hP, Units.val_mul, FractionalIdeal.coe_mk0]`. Establish `hgen` using `FractionalIdeal.eq_spanSingleton_of_principal (P : FractionalIdeal (𝓞 K)⁰ K)`. Use `set x := Submodule.IsPrincipal.generator ((P : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxP : x ∈ (P : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[hgen]`. Conclude with `mem_spanSingleton_self _ _`. Establish `hxJ : x ∈ (↑ᶠ J)`. Rewrite `hxP` using `[hPval]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : (I : FractionalIdeal (𝓞 K)⁰ K) * (↑ᶠ J) ≤ (↑ᶠ J)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[FractionalIdeal.mul_le]`. Introduce `i hi j hj`. Conclude with `mul_mem_mul (coeIdeal_le_one hi) hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = (↑ᶠ J) := one_mul _`. Conclude with `hle hxP`. Establish `hx0 : x ≠ 0`. Introduce `h0`. Establish `: (P : FractionalIdeal (𝓞 K)⁰ K) = 0` using `by rw [hgen, h0, spanSingleton_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ne_zero P this`. Use `⟨⟨x, hxJ, hx0⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `coeIdeal_injective (K := K)` to reduce the goal to its premises.
-
-Express the relevant statement in the definitionally equal form `(((psi J ⟨x, hxJ, hx0⟩ : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) = _`. Rewrite using `[coe_psi, ← hgen, hPval, mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem psi_surjective (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : Function.Surjective (psi J) := by
   rintro ⟨⟨I, hI⟩, hcl⟩
@@ -261,7 +257,7 @@ def unitMul (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x₀ : Nz J) (u : (𝓞 K)�
    mul_ne_zero ((map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr u.ne_zero) x₀.2.2⟩
 
 /- English proof (translation)
-Rewrite using `[psi_eq_iff, eq_comm, spanSingleton_eq_spanSingleton]`. Conclude with `⟨u, by rw [Units.smul_def, Algebra.smul_def]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem psi_unitMul (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x₀ : Nz J) (u : (𝓞 K)ˣ) :
     psi J (unitMul J x₀ u) = psi J x₀ := by
@@ -286,9 +282,9 @@ def fiberEquiv (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x₀ : Nz J) :
       rfl)
 
 /- English proof (translation)
-Establish `hcard` using `natCard_units hK σ hσ`. Establish `hfin : Finite (𝓞 K)ˣ` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact Units.torsionOrder_ne_zero K)`. Use `Fintype.ofFinite (𝓞 K)ˣ` as an intermediate fact. Rewrite using `[← ENNReal.tsum_fiberwise (fun x => g (psi J x)) (psi J), ← ENNReal.tsum_mul_left]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x₀, rfl⟩` from `psi_surjective J t`. Rewrite using `[tsum_congr (fun y : (psi J ⁻¹' {psi J x₀}) => by`. Rewrite using `[show psi J (y : Nz J) = psi J x₀ from y.2]),`. Use the proof step `← (fiberEquiv J x₀).tsum_eq, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul,`. Use the proof step `← Nat.card_eq_fintype_card, hcard]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_psi (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0)
     (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (g : InvClassIdeals J → ENNReal) :
@@ -317,9 +313,9 @@ open FractionalIdeal EtaPeriodLatticeClass
 local notation "↑ᶠ" J => ((J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K)
 
 /- English proof (translation)
-Establish `h1` using `congrArg FractionalIdeal.absNorm (coe_psi J x)`. Rewrite `h1` using `[coeIdeal_absNorm, map_mul, absNorm_span_singleton]`. Establish `hinv : FractionalIdeal.absNorm (↑ᶠ J⁻¹) = (FractionalIdeal.absNorm (↑ᶠ J))⁻¹`. Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hinv]`. Establish `h2` using `congrArg (fun q : ℚ => (q : ℝ)) h1`. Simplify using `only [Rat.cast_natCast, Rat.cast_mul, Rat.cast_abs, Rat.cast_inv] at h2`. Rewrite using `[h2, abs_norm_eq hK σ hσ, div_eq_mul_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_psi (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0)
     (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x : Nz J) :
@@ -336,7 +332,7 @@ theorem absNorm_psi (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : �
   rw [h2, abs_norm_eq hK σ hσ, div_eq_mul_inv]
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_neg (by positivity), ← Real.inv_rpow (by positivity)]`. Establish `h : (n ^ 2 * q / (2 * y))⁻¹ = (2 / q) * (y / n ^ 2)`. Rewrite using `[inv_div]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h, Real.mul_rpow (by positivity) (by positivity), Real.div_rpow hy.le (by positivity), show (2 : ℝ) * s = ((2 : ℕ) : ℝ) * s by norm_num, Real.rpow_natCast_mul hn.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem rpow_identity {n q y : ℝ} (hn : 0 < n) (hq : 0 < q) (hy : 0 < y) (s : ℝ) :
     (n ^ 2 * q / (2 * y)) ^ (-s) = (2 / q) ^ s * (y ^ s / n ^ (2 * s)) := by
@@ -360,11 +356,11 @@ def pairToLattice (τ : ℍ) (p : NzPair) : NzLattice τ :=
     exact Prod.ext this.2 this.1⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `p r h`. Establish `h2` using `congrArg (fun z : NzLattice τ => (z : ℂ)) h`. Simplify using `only [pairToLattice] at h2`. Use `coord_unique (τ := τ) (m := p.1.2) (n := p.1.1) (m' := r.1.2) (n' := r.1.1) (by linear_combination h2)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Prod.ext this.2 this.1)`. Introduce and unpack `⟨z, hz, hz0⟩`. Take `⟨m, n, rfl⟩` from `mem_latticeOf.mp hz`. Use `⟨⟨(n, m), fun h => hz0 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Prod.mk_eq_zero]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Simplify using `only [pairToLattice]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pairToLattice_bijective (τ : ℍ) : Function.Bijective (pairToLattice τ) := by
   constructor
@@ -390,9 +386,9 @@ def eltToLattice (σ : K →+* ℂ) (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (τ 
     mul_ne_zero hc ((map_ne_zero σ).mpr x.2.2)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Establish `h2` using `congrArg (fun z : NzLattice τ => (z : ℂ)) h`. Simplify using `only [eltToLattice] at h2`. Conclude with `Subtype.ext (σ.injective (mul_left_cancel₀ hc h2))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz, hz0⟩`. Rewrite `hz` using `[← himg]`. Take `⟨_, ⟨x, hx, rfl⟩, rfl⟩` from `hz`. Use `⟨⟨x, hx, fun h => hz0 (by simp [h])⟩, rfl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eltToLattice_bijective (σ : K →+* ℂ) (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (τ : ℍ) (c : ℂ)
     (hc : c ≠ 0) (himg : (fun z => c * z) '' (σ '' ((↑ᶠ J) : Set K)) = latticeOf (τ : ℂ)) :
@@ -408,21 +404,21 @@ theorem eltToLattice_bijective (σ : K →+* ℂ) (J : (FractionalIdeal (𝓞 K)
     refine ⟨⟨x, hx, fun h => hz0 (by simp [h])⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← tsum_psi hK σ hσ J (fun t => ENNReal.ofReal ((Ideal.absNorm ((t : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : ℝ) ^ (-s)))]`. Take `⟨hD, hcov⟩` from `discr_neg_and_absNorm_mul hK σ hσ (↑ᶠ J) τ c hc himg`. Use `set q := Real.sqrt |(discr K : ℝ)| with hqdef`. Establish `hq : 0 < q` using `Real.sqrt_pos.mpr (abs_pos.mpr hD.ne)`. Establish `hy` using `τ.im_pos`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcn : 0 < ‖c‖` using `norm_pos_iff.mpr hc`. Use `set F : NzLattice τ → ENNReal := fun z => ENNReal.ofReal ((2 / q) ^ s * (τ.im ^ s / ‖(z : ℂ)‖ ^ (2 * s))) with hF`. Establish `hterm : ∀ x : Nz J, ENNReal.ofReal ((Ideal.absNorm ((psi J x : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : ℝ) ^ (-s)) = F (eltToLattice σ J τ c hc himg x)`. Introduce `x`. Rewrite using `[absNorm_psi hK σ hσ J x, hF]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hx0 : σ (x : K) ≠ 0` using `(map_ne_zero σ).mpr x.2.2`. Establish `hN : ((FractionalIdeal.absNorm (↑ᶠ J) : ℚ) : ℝ) = 2 * τ.im / (q * ‖c‖ ^ 2)`. Rewrite using `[eq_div_iff (by positivity)]`. Rewrite `hcov` using `[eq_div_iff hq.ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `hcov`. Establish `h3 : ‖σ (x : K)‖ ^ 2 / ((FractionalIdeal.absNorm (↑ᶠ J) : ℚ) : ℝ) = ‖c * σ (x : K)‖ ^ 2 * q / (2 * τ.im)`. Rewrite using `[hN, norm_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `rpow_identity (norm_pos_iff.mpr (mul_ne_zero hc hx0)) hq hy s`. Rewrite using `[tsum_congr hterm]`. Establish `e1` using `(Equiv.ofBijective _ (eltToLattice_bijective σ J τ c hc himg)).tsum_eq F`. Simplify using `only [Equiv.ofBijective_apply] at e1`. Rewrite using `[e1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `(Equiv.ofBijective _ (pairToLattice_bijective τ)).tsum_eq F`. Simplify using `only [Equiv.ofBijective_apply] at e2`. Rewrite using `[← e2]`. Establish `hG : ∀ p : NzPair, F (pairToLattice τ p) = ENNReal.ofReal ((2 / q) ^ s * eisTerm τ s p.1)`. Introduce `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hF, pairToLattice, eisTerm, if_neg p.2]`. Rewrite using `[tsum_congr hG]`. Establish `hsupp : Function.support (fun p : ℤ × ℤ => ENNReal.ofReal ((2 / q) ^ s * eisTerm τ s p)) ⊆ {p | p ≠ 0}`. Introduce `p hp h0`. Apply `hp` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0' : p = 0` using `by simpa using h0`. Simplify using `[h0', eisTerm]`. Establish `e3` using `tsum_subtype_eq_of_support_subset hsupp`. Express the relevant statement in the definitionally equal form `∑' p : {p : ℤ × ℤ // p ≠ 0}, _ = _`. Rewrite using `[show (∑' p : {p : ℤ × ℤ // p ≠ 0}, ENNReal.ofReal ((2 / q) ^ s * eisTerm τ s p.1)) = ∑' p : ({p | p ≠ 0} : Set (ℤ × ℤ)), ENNReal.ofReal ((2 / q) ^ s * eisTerm τ s p) from rfl, e3, ← ENNReal.ofReal_tsum_of_nonneg (fun p => mul_nonneg (by positivity) (eisTerm_nonneg τ s p)) ((summ …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_sum (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0)
     (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (τ : ℍ) (c : ℂ) (hc : c ≠ 0)
@@ -487,15 +483,15 @@ end Lattice
 section Main
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Global.dedekindZeta_ofReal K (by linarith : s ≠ 0)]`. Use `congr 1`. Use `set q := Real.sqrt |(discr K : ℝ)| with hqdef`. Establish `hw : 0 < (Units.torsionOrder K : ℝ)` using `Nat.cast_pos.mpr (Units.torsionOrder_pos K)`. Establish `hcl : ∀ A : ClassGroup (𝓞 K), ∑' t : (ClassGroup.mk0 ⁻¹' {A⁻¹} : Set (Ideal (𝓞 K))⁰), ENNReal.ofReal ((Ideal.absNorm ((t : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : ℝ) ^ (-s)) = ENNReal.ofReal ((Units.torsionOrder K : ℝ)⁻¹ * ((2 / q) ^ s * realEisenstein (τ A) s))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A`. Take `⟨J, hJ, c, hc, himg⟩` from `hτ A`. Establish `h` using `class_sum hK σ hσ J (τ A) c hc himg hs`. Substitute `hJ` using the available equality. Establish `hw0 : (Units.torsionOrder K : ENNReal) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Units.torsionOrder_ne_zero K)` after adjusting the coercions. Establish `hwt : (Units.torsionOrder K : ENNReal) ≠ ⊤` using `ENNReal.natCast_ne_top _`. Rewrite using `[ENNReal.ofReal_mul (inv_nonneg.mpr hw.le), ENNReal.ofReal_inv_of_pos hw, ENNReal.ofReal_natCast, ← ENNReal.div_eq_inv_mul, ENNReal.eq_div_iff hw0 hwt]`. Conclude with `h`. Establish `hnn : ∀ A : ClassGroup (𝓞 K), 0 ≤ (Units.torsionOrder K : ℝ)⁻¹ * ((2 / q) ^ s * realEisenstein (τ A) s)` using `fun A => mul_nonneg (inv_nonneg.mpr hw.le) (mul_nonneg (by positivity) (realEisenstein_nonneg _ _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmain : ENNReal.ofReal (GroundTheory.Global.dedekindZetaReal K s) = ENNReal.ofReal ((Units.torsionOrder K : ℝ)⁻¹ * (2 / q) ^ s * ∑ A : ClassGroup (𝓞 K), realEisenstein (τ A) s)`. Rewrite using `[ofReal_dedekindZetaReal K hs, tsum_ideal_eq_sum_class K (by linarith), (Fintype.sum_equiv (Equiv.inv (ClassGroup (𝓞 K))) (fun A => ∑' t : (ClassGroup.mk0 ⁻¹' {A⁻¹} : Set (Ideal (𝓞 K))⁰), ENNReal.ofReal ((Ideal.absNorm ((t : (Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) : ℝ) ^ (-s))) (fun B => …`. Rewrite using `[Finset.sum_congr rfl (fun A _ => hcl A), ← ENNReal.ofReal_sum_of_nonneg (fun A _ => hnn A), Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : 0 ≤ GroundTheory.Global.dedekindZetaReal K s` using `tsum_nonneg (GroundTheory.Global.dedekindZetaTerm_nonneg K s)`. Establish `h1 : 0 ≤ (Units.torsionOrder K : ℝ)⁻¹ * (2 / q) ^ s * ∑ A : ClassGroup (𝓞 K), realEisenstein (τ A) s` using `mul_nonneg (mul_nonneg (inv_nonneg.mpr hw.le) (by positivity)) (Finset.sum_nonneg fun A _ => realEisenstein_nonneg _ _)`. Conclude with `(ENNReal.ofReal_eq_ofReal_iff h0 h1).mp hmain`.
+A detailed English derivation is pending.
 -/
 theorem dedekindZeta_eq_sum_realEisenstein {K : Type} [Field K] [NumberField K]
     (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0)

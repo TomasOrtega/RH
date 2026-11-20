@@ -20,23 +20,19 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.MPSmooth
 
 /- English proof (translation)
-Introduce and unpack `m n M A ⟨u, -, -, hA⟩ z₀ hz₀`. Use `choose c hc using hz₀`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Set `T : Set ((Σ k, Bk n k) → ℂ)` to `{z | ∀ k, z ⟨k, c k⟩ ≠ 0}`. Establish `hT : IsOpen T`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: T = ⋂ k, {z : (Σ k, Bk n k) → ℂ | z ⟨k, c k⟩ ≠ 0}` using `by ext; simp [T]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_ne_fun (continuous_apply _) continuous_const`. Establish `hz : z₀ ∈ T` using `hc`. Set `s` to `multiprojectivePoint (m := m) (n := n) c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨haff, hgen⟩` from `GlobalTheory.T.multiprojective_chart_holomorphic_coordinates m n c`. Establish `hmem : ∀ z ∈ T, s z ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c)` using `fun z h => (GlobalTheory.T.multiprojective_point_of_nonvanishing_coords m n c z h).2`. Take `⟨hcont, hholo⟩` from `holo_of_affine haff hT hmem hgen`. Take `⟨i, hi⟩` from `exists_mem_ptsIn M.isLB.cover (s z₀)`. Establish `hV : s z₀ ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c)` using `mem_ptsIn_inf.2 ⟨hi, hmem z₀ hz⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : CxPts (mpStr ℤ m n) σ₀ → ℝ` to `fun y => ‖CxPts.ev (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c) (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c)) y‖ * Real.exp ((M.φ σ₀).φ i y / 2)`. Establish `hF : CInfAt F (s z₀)`. Establish `h1 : CInfAt (fun y => ‖CxPts.ev (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c) (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c)) y‖) (s z₀)`. Use `⟨M.B.U i ⊓ mchart c, Unit, inferInstance, fun _ => (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c)), fun v => ‖v ()‖, {v | v () ≠ 0}, hV, isOpen_ne_fun (continuous_apply _) continuous_const, ev_ne_zero hV (u i c).isUnit, ?_, Filter.EventuallyEq.rfl⟩` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((contDiffAt_norm ℝ hv).comp v ((contDiff_apply ℝ ℂ ()).contDiffAt)).contDiffWithinAt`. Establish `h2` using `(M.cInf σ₀) i (s z₀) hi`. Conclude with `h1.comp₂ h2 (G := fun x => x.1 * Real.exp (x.2 / 2)) (contDiff_fst.mul (Real.contDiff_exp.comp (contDiff_snd.div_const 2)))`. Establish `hFs` using `GlobalTheory.T.holomorphic_section_smooth_composition hT hcont hholo hz hF`. Establish `hP : ContDiffAt ℝ ∞ (fun z : (Σ k, Bk n k) → ℂ => ∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k) z₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Use `contDiffAt_prod fun k _ => ?_` and prove the remaining obligations. Establish `hn : ContDiffAt ℝ ∞ (fun z : (Σ k, Bk n k) → ℂ => ‖z ⟨k, c k⟩‖) z₀` using `(contDiffAt_norm ℝ (hc k)).comp z₀ ((contDiff_apply ℝ ℂ (⟨k, c k⟩ : Σ k, Bk n k)).contDiffAt)`. Establish `hx : ‖z₀ ⟨k, c k⟩‖ ≠ 0` using `norm_ne_zero_iff.2 (hc k)`. Consider the cases of `h : A.a k with`. Consider the case `ofNat j`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `hn.pow j`. Consider the case `negSucc j`. Simplify using `only [zpow_negSucc]`. Conclude with `(hn.pow (j + 1)).inv (pow_ne_zero _ hx)`.
-
-Use `(hP.mul hFs).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hnb : ∀ᶠ z in nhds z₀, z ∈ T ∧ s z ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c)` using `Filter.Eventually.and (hT.mem_nhds hz) ((hcont.continuousAt (hT.mem_nhds hz)).preimage_mem_nhds ((isOpen_ptsIn _).mem_nhds hV))`. Use `filter_upwards [hnb] with z hz'`. Rewrite using `[hA i c (s z) z (GlobalTheory.T.multiprojective_point_of_nonvanishing_coords m n c z hz'.1).1 hz'.2]`. Simplify using `only [F, Function.comp_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem smooth_of_isHermRep : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n)) (A : Geo.HermLine (Bk n)),
     IsHermRep M A → Geo.IsSmoothHerm A := by

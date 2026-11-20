@@ -13,7 +13,7 @@ namespace GlobalTheory.LieCombBaseChange
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (g : A →+* B) (k : B →+* C) : spMap k ≫ spMap g = spMap (k.comp g) := by
@@ -21,7 +21,7 @@ private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] 
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Rewrite using `[spMap_comp_moduli_spaces, spMap_comp_moduli_spaces]`. Use `congr 1`. Apply the tactic sequence `refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[epsScaleR, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dualMap_epsScale (f : R →+* R') (c : R) :
     spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ spMap (epsScaleR c) =
@@ -32,7 +32,7 @@ theorem dualMap_epsScale (f : R →+* R') (c : R) :
     simp [epsScaleR, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [epsR, Over.mk_hom]`. Rewrite using `[spMap_comp_moduli_spaces, spMap_comp_moduli_spaces]`. Use `congr 1`. Apply the tactic sequence `refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dualMap_over (f : R →+* R') :
     spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ (epsR R).hom = (epsR R').hom ≫ spMap f := by
@@ -43,7 +43,7 @@ theorem dualMap_over (f : R →+* R') :
     simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Simplify using `only [epsR, Over.mk_hom]`. Rewrite using `[spMap_comp_moduli_spaces]`. Use `congr 1`. Apply the tactic sequence `refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem epsScale_over (c : R) : spMap (epsScaleR c) ≫ (epsR R).hom = (epsR R).hom := by
   simp only [epsR, Over.mk_hom]
@@ -53,17 +53,17 @@ theorem epsScale_over (c : R) : spMap (epsScaleR c) ≫ (epsR R).hom = (epsR R).
     simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `hd' : d ≫ T.hom = (Over.mk (T'.hom ≫ f)).hom` using `by simpa using hd`. Establish `hsq : φ ≫ G.hom = G'.hom ≫ f` using `h.1.w`. Establish `hone : (1 : T' ⟶ G').left ≫ φ = (1 : Over.mk (T'.hom ≫ f) ⟶ G).left`. Set `x₀ : Over.mk (T'.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T' ⟶ G').left ≫ φ) (by`. Simplify using `only [Over.mk_hom, Category.assoc, hsq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, Over.w])`. Establish `hx : x₀ * x₀ = x₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h.2 T' 1 1 x₀ x₀ rfl rfl, _root_.mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : x₀ = 1` using `by simpa using hx`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Establish `key : ∀ (m : ℕ) (u : Fin m → (T ⟶ G)) (u' : Fin m → (T' ⟶ G')), (∀ i, (u' i).left ≫ φ = d ≫ (u i).left) → (List.ofFn u').prod.left ≫ φ = ((Over.homMk d hd' : Over.mk (T'.hom ≫ f) ⟶ T) ≫ (List.ofFn u).prod).left`. Introduce `m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `u u' _`. Simplify using `only [List.ofFn_zero, List.prod_nil, MonObj.comp_one, hone]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `u u' hu`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, MonObj.comp_mul]`. Use `(h.2 T' _ _ _ _ ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[Over.comp_left]`. Conclude with `(hu 0).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(ih _ _ fun i => hu i.succ).symm`. Use `key n u u' hu` as an intermediate fact. Rewrite `this` using `[Over.comp_left]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_left_comp {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Over S} {T' : Over S'} (d : T'.left ⟶ T.left)
@@ -111,13 +111,13 @@ namespace GlobalTheory
 open LieCombBaseChange
 
 /- English proof (translation)
-Introduce `R R' _ _ f G _ G' _ φ h n v w a v' w' hv hc`. Take `⟨u, hu, rfl⟩` from `hc`. Establish `hcomp : ∀ i, (spMap (epsScaleR (f (a i))) ≫ (v' i).left) ≫ φ = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ (u i).left`. Introduce `i`. Rewrite using `[Category.assoc, hv i, hu i, ← Category.assoc, ← Category.assoc, LieCombBaseChange.dualMap_epsScale]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : ∀ u'' : Fin n → (epsR R' ⟶ G'), (∀ i, (u'' i).left = spMap (epsScaleR (f (a i))) ≫ (v' i).left) → (List.ofFn u'').prod.left ≫ φ = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ (List.ofFn u).prod.left` using `fun u'' hu'' => LieCombBaseChange.prod_left_comp h _ (LieCombBaseChange.dualMap_over f) u u'' (fun i => by rw [hu'' i]; exact hcomp i)`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Set `u' : Fin n → (epsR R' ⟶ G')` to `fun i => Over.homMk (spMap (epsScaleR (f (a i))) ≫ (v' i).left) (by`. Rewrite using `[Category.assoc, Over.w]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LieCombBaseChange.epsScale_over _)`. Use `⟨u', fun i => rfl, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hw, hprod u' fun i => rfl]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w w', Over.w]`. Introduce and unpack `⟨u'', hu'', rfl⟩`. Conclude with `hprod u'' hu''`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lieComb_baseChange : ∀ (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (G : Over (Sp R)) [GrpObj G] (G' : Over (Sp R')) [GrpObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G (spMap f) φ → ∀ (n : ℕ) (v : Fin n → (epsR R ⟶ G)) (w : epsR R ⟶ G) (a : Fin n → R) (v' : Fin n → (epsR R' ⟶ G')) (w' : epsR R' ⟶ G'), (∀ j, (v' j).left ≫ φ = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ (v j).left) → IsLieComb a v w → (w'.left ≫ φ = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ w.left ↔ IsLieComb (fun i => f (a i)) v' w') := by
   intro R R' _ _ f G _ G' _ φ h n v w a v' w' hv hc

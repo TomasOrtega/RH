@@ -5,15 +5,15 @@ namespace GlobalTheory.UnitaryCharpolyRootNorm
 open Matrix NumberField
 
 /- English proof (translation)
-Establish `hdet : (Matrix.scalar m z - A).det = 0`. Rewrite using `[← Matrix.eval_charpoly]`. Conclude with `hz`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hAv : A *ᵥ v = z • v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec_diagonal]`. Establish `h1 : star (A *ᵥ v) ⬝ᵥ (A *ᵥ v) = star v ⬝ᵥ v`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hA, Matrix.one_mulVec]`. Rewrite `h1` using `[hAv, star_smul, smul_dotProduct, dotProduct_smul, smul_smul]`. Establish `hne : star v ⬝ᵥ v ≠ 0` using `by open scoped ComplexOrder in`. Conclude with `fun h => hv0 (dotProduct_star_self_eq_zero.mp h)`. Establish `h2 : star z * z = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[one_mul]`. Conclude with `h1`. Establish `h3 : ‖z‖ * ‖z‖ = 1`. Use `congrArg norm h2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `this` using `[norm_mul, norm_star, norm_one]`. Then use the resulting hypothesis. Use polynomial arithmetic with `[norm_nonneg z]`.
+A detailed English derivation is pending.
 -/
 theorem norm_root_of_unitary {m : Type} [Fintype m] [DecidableEq m] (A : Matrix m m ℂ) (hA : Aᴴ * A = 1) (z : ℂ)
     (hz : A.charpoly.IsRoot z) : ‖z‖ = 1 := by
@@ -40,11 +40,11 @@ theorem norm_root_of_unitary {m : Type} [Fintype m] [DecidableEq m] (A : Matrix 
   nlinarith [norm_nonneg z]
 
 /- English proof (translation)
-Introduce `z hz`. Use `set g : Matrix (Fin n) (Fin n) E := ((γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) with hg`. Establish `h : (Matrix.of fun i j => IsCMField.complexConj E (g j i)) * 1 * g = 1` using `γ.2`. Rewrite `h` using `[mul_one]`. Establish `hA : (g.map τ)ᴴ * g.map τ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (g.map τ)ᴴ = (Matrix.of fun i j => IsCMField.complexConj E (g j i)).map τ`. Use extensionality with `i j`. Simplify using `[IsCMField.complexEmbedding_complexConj]`. Rewrite using `[e, ← Matrix.map_mul, h, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Apply `norm_root_of_unitary _ hA` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.charpoly_map]`. Conclude with `Polynomial.isRoot_of_mem_roots hz`.
+A detailed English derivation is pending.
 -/
 theorem norm_root_charpoly {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (γ : GlobalTheory.BCT.UE E n)
     (τ : E →+* ℂ) :

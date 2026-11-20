@@ -13,9 +13,9 @@ def GenericPrimitive.Statement : Prop :=
         IntermediateField.adjoin K {∑ j, c j • x j} = ⊤
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.re_add_im z]`. Establish `hI` using `IntermediateField.mem_adjoin_simple_self ℝ Complex.I`. Establish `hre : (z.re : ℂ) ∈ IntermediateField.adjoin ℝ {Complex.I}` using `IntermediateField.algebraMap_mem _ z.re`. Establish `him : (z.im : ℂ) ∈ IntermediateField.adjoin ℝ {Complex.I}` using `IntermediateField.algebraMap_mem _ z.im`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `add_mem hre (mul_mem him hI)`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_real_I : IntermediateField.adjoin ℝ {Complex.I} = ⊤ := by
   refine eq_top_iff.2 fun z _ => ?_
@@ -28,7 +28,7 @@ theorem adjoin_real_I : IntermediateField.adjoin ℝ {Complex.I} = ⊤ := by
   exact add_mem hre (mul_mem him hI)
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.range_cons, Matrix.range_empty, Set.union_empty]`. Conclude with `adjoin_real_I`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenericPrimitive.hypotheses_inhabited :
     IsScalarTower ℚ ℝ ℂ ∧ FiniteDimensional ℝ ℂ ∧ Algebra.IsSeparable ℝ ℂ ∧

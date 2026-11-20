@@ -13,13 +13,13 @@ def valInt (t : UCTrait X₁ p z₁) : X₁.M.Z.presheaf.stalk z₁ →+* OO p :
   (RatModel.valLoc t.y z₁ (specializes_of_eq t.cen)).comp (X₁.M.stalkEquiv z₁).toRingHom
 
 /- English proof (translation)
-The claim follows from `RatModel.val_spMap_comp (OO p).subtype t.y (specializes_of_eq t.cen) (X₁.M.stalkEquiv z₁ a)`.
+A detailed English derivation is pending.
 -/
 theorem val_eq_valInt (t : UCTrait X₁ p z₁) (a : X₁.M.Z.presheaf.stalk z₁) : t.val a = (valInt t a : PadicAlgCl p) :=
   RatModel.val_spMap_comp (OO p).subtype t.y (specializes_of_eq t.cen) (X₁.M.stalkEquiv z₁ a)
 
 /- English proof (translation)
-Rewrite using `[val_eq_valInt]`. Establish `h : Valued.v (valInt t a : PadicAlgCl p) ≤ 1` using `(valInt t a).2`. Conclude with `h` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_val_le (t : UCTrait X₁ p z₁) (a : X₁.M.Z.presheaf.stalk z₁) : ‖t.val a‖ ≤ 1 := by
   rw [val_eq_valInt]
@@ -27,11 +27,9 @@ theorem norm_val_le (t : UCTrait X₁ p z₁) (a : X₁.M.Z.presheaf.stalk z₁)
   exact_mod_cast h
 
 /- English proof (translation)
-Use `set x := algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ with hx`. Establish `h0 : x ≠ 0` using `fun h => t.T.irr.ne_zero ((map_eq_zero_iff _ (IsFractionRing.injective _ _)).1 h)`. Establish `h1 : 0 < ‖t.ι x‖` using `norm_pos_iff.2 ((map_ne_zero t.ι).2 h0)`. Establish `h2 : ‖t.ι x‖ < 1`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: ‖t.ι x⁻¹‖ ≤ 1`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (not_lt.1 h)`. Take `⟨v, hv⟩` from `(t.int _).1 this`. Use `t.T.irr.not_isUnit (IsUnit.of_mul_eq_one v (IsFractionRing.injective _ (FractionRing t.T.V) ?_))` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_one, hv, ← hx, mul_inv_cancel₀ h0]`. Conclude with `neg_pos.2 (Real.log_neg h1 h2)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_pos (t : UCTrait X₁ p z₁) : 0 < t.sc := by
   set x := algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ with hx
@@ -47,7 +45,7 @@ theorem sc_pos (t : UCTrait X₁ p z₁) : 0 < t.sc := by
   exact neg_pos.2 (Real.log_neg h1 h2)
 
 /- English proof (translation)
-Introduce `p _ z₁ t₀ e` and use `⟨1, by simp [val_eq_valInt], fun t => Or.inl (by simp [val_eq_valInt])⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem uApproxAt_zero (φ : GlobalTheory.LocM.InvFun (𝓞 E)) : UApproxAt X₁ φ 0 := fun p _ z₁ t₀ e =>
   ⟨1, by simp [val_eq_valInt], fun t => Or.inl (by simp [val_eq_valInt])⟩

@@ -17,7 +17,7 @@ namespace GramDetermines
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Simplify using `only [Fintype.linearCombination_apply, map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, hG]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sesq_linearCombination (h : HermitianForm F E W) {n : ℕ} {e e' : Fin n → W}
     (hG : ∀ a b, h.toSesq (e a) (e b) = h.toSesq (e' a) (e' b)) (c d : Fin n → E) :
@@ -29,9 +29,9 @@ theorem sesq_linearCombination (h : HermitianForm F E W) {n : ℕ} {e e' : Fin n
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `hle : AddSubgroup.closure (Set.range e) ≤ (LinearMap.range (Fintype.linearCombination E e)).toAddSubgroup`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨Pi.single a 1, by simp⟩`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hL.span_eq_top, Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Conclude with `hle hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linearCombination_surjective {n : ℕ} {e : Fin n → W}
     (hL : IsLattice E (AddSubgroup.closure (Set.range e))) :
@@ -48,7 +48,7 @@ theorem linearCombination_surjective {n : ℕ} {e : Fin n → W}
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Apply `h.nonsingular.1` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨d, rfl⟩` from `linearCombination_surjective hL' y`. Rewrite using `[sesq_linearCombination h hG, hc, map_zero, LinearMap.zero_apply, LinearMap.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem linearCombination_eq_zero (h : HermitianForm F E W) {n : ℕ} {e e' : Fin n → W}
     (hL' : IsLattice E (AddSubgroup.closure (Set.range e')))
@@ -60,13 +60,13 @@ theorem linearCombination_eq_zero (h : HermitianForm F E W) {n : ℕ} {e e' : Fi
   rw [sesq_linearCombination h hG, hc, map_zero, LinearMap.zero_apply, LinearMap.zero_apply]
 
 /- English proof (translation)
-Introduce `n e e' hL hL' hG`. Establish `hG' : ∀ a b, h.toSesq (e' a) (e' b) = h.toSesq (e a) (e b)` using `fun a b => (hG a b).symm`. Establish `hs` using `linearCombination_surjective hL`. Establish `hs'` using `linearCombination_surjective hL'`. Establish `hker : LinearMap.ker (Fintype.linearCombination E e) = LinearMap.ker (Fintype.linearCombination E e')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `c`. Simplify using `only [LinearMap.mem_ker]`. Conclude with `⟨linearCombination_eq_zero h hL' hG c, linearCombination_eq_zero h hL hG' c⟩`. Set `γ : W ≃ₗ[E] W` to `((Fintype.linearCombination E e).quotKerEquivOfSurjective hs).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans ((Fintype.linearCombination E e').quotKerEquivOfSurjective hs'))`. Establish `hγ : ∀ c, γ (Fintype.linearCombination E e c) = Fintype.linearCombination E e' c` using `fun c => by simp [γ, Submodule.quotEquivOfEq_mk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨⟨γ, fun x y => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hs x`. Take `⟨d, rfl⟩` from `hs y`. Rewrite using `[hγ, hγ]`. Conclude with `sesq_linearCombination h hG c d`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hγ (Pi.single a 1)`.
+A detailed English derivation is pending.
 -/
 theorem proof (h : HermitianForm F E W) : GramDetermines.Statement h := by
   intro n e e' hL hL' hG

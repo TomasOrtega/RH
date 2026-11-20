@@ -15,11 +15,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
 
 /- English proof (translation)
-Rewrite using `[mem_parahoric]`. Use `⟨(GlobalTheory.SplitFlip.mem_KO_iff _).2 ⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[val_diagT, diagonal_apply] split_ifs`. Conclude with `(Valuation.mem_integer_iff _ _).2 (hc i).le`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv, val_diagT, diagonal_apply] split_ifs`. Use `(Valuation.mem_integer_iff _ _).2 ?_` and prove the remaining obligations. Simplify using `[map_inv₀, hc i]`. Conclude with `zero_mem _`. Rewrite using `[val_diagT, diagonal_apply_ne _ (by simp)]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagT_mem_parahoric (c : A ⊕ D → kˣ) (hc : ∀ i, valuation k (c i : k) = 1) :
     diagT k (A ⊕ D) c ∈ parahoric k A D := by
@@ -38,7 +36,7 @@ theorem diagT_mem_parahoric (c : A ⊕ D → kˣ) (hc : ∀ i, valuation k (c i 
     simp
 
 /- English proof (translation)
-Establish `: ((diagT k (A ⊕ D) c : GL (A ⊕ D) k) : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂ = diagonal fun i => (c (.inr i) : k)`. Use extensionality with `i j`. Simplify using `[toBlocks₂₂, val_diagT, diagonal_apply]`. Rewrite using `[this, det_diagonal, Units.coe_prod]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_lower_diagT (c : A ⊕ D → kˣ) :
     ((diagT k (A ⊕ D) c : GL (A ⊕ D) k) : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂.det =
@@ -50,7 +48,7 @@ theorem det_lower_diagT (c : A ⊕ D → kˣ) :
   rw [this, det_diagonal, Units.coe_prod]
 
 /- English proof (translation)
-Break down `p with a | d` into its components or cases. Simplify using `[Pi.mulSingle_apply]`. Simplify using `[Pi.mulSingle_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_mulSingle_inr (p : A ⊕ D) (u : kˣ) :
     (∏ i : D, (Pi.mulSingle p u : A ⊕ D → kˣ) (.inr i)) = if p.isRight then u else 1 := by
@@ -66,15 +64,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨u, hu1, hu⟩ : ∃ u : kˣ, valuation k (u : k) = 1 ∧ ξ u ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hξ h`. Establish `hv : ∀ q : A ⊕ D, ∀ i, valuation k ((Pi.mulSingle q u : A ⊕ D → kˣ) i : k) = 1` using `fun q i => by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Pi.mulSingle_apply]`. Apply the tactic sequence `split_ifs <;> simp [hu1]`. Establish `hcomm : diagT k (A ⊕ D) (Pi.mulSingle p u) * m = m * diagT k (A ⊕ D) (Pi.mulSingle (τ p) u)`. Use extensionality with `x y`. Simplify using `only [Units.val_mul, val_diagT, diagonal_mul, mul_diagonal]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hy : y = τ x`. Substitute `hy` using the available equality. Simplify using `[Pi.mulSingle_apply, mul_comm]`. Simplify using `[hm x y hy]`. Establish `h1` using `(hφ _ (diagT_mem_parahoric _ (hv p)) _ (det_lower_diagT _).symm m).1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(hφ _ (diagT_mem_parahoric _ (hv (τ p))) _ (det_lower_diagT _).symm m).2`. Rewrite `h1` using `[hcomm, h2, prod_mulSingle_inr, prod_mulSingle_inr]`. Establish `hu' : (ξ u : ℂ) ≠ 1` using `fun h => hu (Units.ext (by simpa using h))`. Assume the negation of the conclusion as `h0`. Establish `h3` using `mul_right_cancel₀ h0 h1`.
-
-Apply the tactic sequence `cases h₁ : (τ p).isRight <;> cases h₂ : p.isRight <;> simp only [h₁, h₂] at h3 hp`. Conclude with `hp rfl`. Conclude with `hu' (by simpa using h3.symm)`. Conclude with `hu' (by simpa using h3)`. Conclude with `hp rfl`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mixed (ξ : kˣ →* ℂˣ) (hξ : ¬ IsUnram ξ) (φ : GL (A ⊕ D) k → ℂ) (hφ : IsBiType ξ φ)
     (m : GL (A ⊕ D) k) (τ : Equiv.Perm (A ⊕ D)) (hm : ∀ x y, y ≠ τ x → (m : Matrix (A ⊕ D) (A ⊕ D) k) x y = 0)
@@ -106,15 +102,13 @@ theorem eq_zero_of_mixed (ξ : kˣ →* ℂˣ) (hξ : ¬ IsUnram ξ) (φ : GL (A
   · exact hp rfl
 
 /- English proof (translation)
-Establish `h12 : (m : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₁₂ = 0`. Use extensionality with `a d`. Use `hm _ _ fun h => ?_` and prove the remaining obligations. Use `hτ (.inl a)` as an intermediate fact. Rewrite `this` using `[← h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Establish `h21 : (m : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₁ = 0`. Use extensionality with `d a`. Use `hm _ _ fun h => ?_` and prove the remaining obligations. Use `hτ (.inr d)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← h]`. Simplify using `at this`. Establish `hdet : (m : Matrix (A ⊕ D) (A ⊕ D) k).det = (m : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₁₁.det * (m : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂.det` using `by conv_lhs => rw [← fromBlocks_toBlocks (m : Matrix (A ⊕ D) (A ⊕ D) k), h12]`. Conclude with `det_fromBlocks_zero₁₂ _ _ _`. Establish `hm0 : (m : Matrix (A ⊕ D) (A ⊕ D) k).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 m.isUnit).ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm0` using `[hdet]`. Use `⟨nonsingInvUnit _ (isUnit_iff_ne_zero.2 (left_ne_zero_of_mul hm0)), nonsingInvUnit _ (isUnit_iff_ne_zero.2 (right_ne_zero_of_mul hm0)), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[val_emb₂]`. Simplify using `only [reindex_refl_refl]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (m : Matrix (A ⊕ D) (A ⊕ D) k), h12, h21]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_emb₂ (m : GL (A ⊕ D) k) (τ : Equiv.Perm (A ⊕ D))
     (hm : ∀ x y, y ≠ τ x → (m : Matrix (A ⊕ D) (A ⊕ D) k) x y = 0) (hτ : ∀ p, (τ p).isRight = p.isRight) :
@@ -156,7 +150,7 @@ def numE : A ⊕ D ≃ Fin (Fintype.card A + Fintype.card D) :=
   (Equiv.sumCongr (Fintype.equivFin A) (Fintype.equivFin D)).trans finSumFinEquiv
 
 /- English proof (translation)
-Simplify using `only [numE, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.lt_iff_val_lt_val, Fin.coe_castAdd, Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem numE_lt (a : A) (d : D) : numE (A := A) (D := D) (.inl a) < numE (.inr d) := by
   simp only [numE, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr,
@@ -170,23 +164,23 @@ def toAD : GL (Fin (Fintype.card A + Fintype.card D)) k →* GL (A ⊕ D) k :=
   Units.map (reindexAlgEquiv k k (numE (A := A) (D := D)).symm).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[toAD, reindexAlgEquiv_apply, reindex_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toAD_val (g : GL (Fin (Fintype.card A + Fintype.card D)) k) (x y : A ⊕ D) :
     (toAD k A D g : Matrix (A ⊕ D) (A ⊕ D) k) x y = (g : Matrix _ _ k) (numE x) (numE y) := by
   simp [toAD, reindexAlgEquiv_apply, reindex_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.map (reindexAlgEquiv k k (numE (A := A) (D := D))).toMonoidHom g, Units.ext (Matrix.ext fun x y => by rw [toAD_val]; simp [reindexAlgEquiv_apply, reindex_apply])⟩`.
+Supply the required witnesses or components.
 -/
 theorem toAD_surj (g : GL (A ⊕ D) k) : ∃ g₀, toAD k A D g₀ = g :=
   ⟨Units.map (reindexAlgEquiv k k (numE (A := A) (D := D))).toMonoidHom g,
     Units.ext (Matrix.ext fun x y => by rw [toAD_val]; simp [reindexAlgEquiv_apply, reindex_apply])⟩
 
 /- English proof (translation)
-Rewrite using `[mem_parahoric]`. Use `⟨⟨Units.map (reindexAlgEquiv 𝒪[k] 𝒪[k] (numE (A := A) (D := D)).symm).toMonoidHom u.1, ?_⟩, fun i j => ?_⟩` and prove the remaining obligations. Use extensionality with `x y`. Rewrite using `[toAD_val, GlobalTheory.TypeDim.incl_val]`. Simplify using `[reindexAlgEquiv_apply, reindex_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[toAD_val, GlobalTheory.TypeDim.incl_val]`. Establish `h` using `((mem_unipB _).1 (Subgroup.mem_comap.1 u.2)).1 _ _ (numE_lt j i)`. Rewrite `h` using `[GlobalTheory.TypeDim.red_val]`. Conclude with `(GlobalTheory.ParahoricLowerBlock.residue_eq_zero_iff_val _).1 h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toAD_incl_mem (u : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalSupportClasses.unipLevel k (Fintype.card A + Fintype.card D)) :
     toAD k A D (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalSupportClasses.incl k _ u) ∈ parahoric k A D := by
@@ -203,19 +197,19 @@ theorem toAD_incl_mem (u : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalSuppo
     exact (GlobalTheory.ParahoricLowerBlock.residue_eq_zero_iff_val _).1 h
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ξ hξt hξ φ hφ g hg`. Take `⟨g₀, rfl⟩` from `toAD_surj g`. Take `⟨u, u', w, c, e⟩` from `GlobalTheory.TypeDim.IwahoriBruhat.iwahori_bruhat k _ g₀`. Establish `hj` using `toAD_incl_mem (A := A) (D := D) u`. Establish `hj'` using `toAD_incl_mem (A := A) (D := D) u'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgm : toAD k A D g₀ = toAD k A D (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalSupportClasses.incl k _ u) * toAD k A D (GlobalTheory.Parabolic.permGL k w * diagT k _ c) * toAD k A D (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalSupportClasses.incl k _ u')`. Rewrite using `[e]`. Simplify using `only [map_mul]`. Generalize the expression as in `toAD k A D (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalSupportClasses.incl k _ u) = j at hj hgm`. Generalize the expression as in `toAD k A D (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalSupportClasses.incl k _ u') = j' at hj' hgm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Set `τ : Equiv.Perm (A ⊕ D)` to `numE.trans (w.symm.trans numE.symm)`. Establish `hm : ∀ x y, y ≠ τ x → (toAD k A D (GlobalTheory.Parabolic.permGL k w * diagT k _ c) : Matrix (A ⊕ D) (A ⊕ D) k) x y = 0`. Introduce `x y h`. Rewrite using `[toAD_val, Units.val_mul, val_diagT, mul_diagonal, GlobalTheory.Parabolic.permGL_apply, if_neg, zero_mul]`. Introduce `h'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h` to reduce the goal to its premises. Simplify using `[τ, h']`. Generalize the expression as in `toAD k A D (GlobalTheory.Parabolic.permGL k w * diagT k _ c) = m at hm hgm`. Establish `hφm : φ m ≠ 0`. Introduce `h0`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hg` to reduce the goal to its premises. Take `⟨hd, -⟩` from `GlobalTheory.ParahoricLowerBlock.lower_block_tame k A D ξ hξt j hj`. Take `⟨hd', -⟩` from `GlobalTheory.ParahoricLowerBlock.lower_block_tame k A D ξ hξt j' hj'`. Rewrite using `[hgm, (hφ j' hj' (Units.mk0 _ hd') rfl _).2, (hφ j hj (Units.mk0 _ hd) rfl _).1, h0]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hτ : ∀ p, (τ p).isRight = p.isRight`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨p, hp⟩` from `h`. Conclude with `hφm (eq_zero_of_mixed ξ hξ φ hφ m τ hm p hp)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, y, hxy⟩` from `exists_emb₂ m τ hm hτ`. Conclude with `⟨x, y, j, hj, j', hj', by rw [hgm, hxy]⟩`.
+A detailed English derivation is pending.
 -/
 theorem support_levi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ξ : kˣ →* ℂˣ), IsTame ξ → ¬ IsUnram ξ →

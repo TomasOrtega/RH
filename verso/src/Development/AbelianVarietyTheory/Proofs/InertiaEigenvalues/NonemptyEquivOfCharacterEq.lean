@@ -27,7 +27,7 @@ noncomputable def prodCongr {ρ : Representation ℂ G V} {σ : Representation �
     · exact e'.toIntertwiningMap.isIntertwining _ _ g b
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ (V × W) ((ρ g).prodMap (σ g)) = LinearMap.trace ℂ V (ρ g) + LinearMap.trace ℂ W (σ g)`. Rewrite using `[LinearMap.trace_prodMap']`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem character_prod [FiniteDimensional ℂ V] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ G V) (σ : Representation ℂ G W) :
@@ -37,11 +37,11 @@ theorem character_prod [FiniteDimensional ℂ V] [FiniteDimensional ℂ W]
   rw [LinearMap.trace_prodMap']
 
 /- English proof (translation)
-Establish `: NeZero (Nat.card G : ℂ)` using `⟨by exact_mod_cast Nat.card_pos.ne'⟩`. Take `⟨c, hc⟩` from `MonoidAlgebra.Submodule.exists_isCompl (Subrepresentation.asSubmodule p)`. Use `⟨Subrepresentation.ofSubmodule' c, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx hx'`. Conclude with `(Submodule.disjoint_def.mp hc.disjoint) x hx hx'`. Rewrite using `[codisjoint_iff, Submodule.eq_top_iff']`. Introduce `x`. Establish `hx : (show ρ.asModule from x) ∈ (Subrepresentation.asSubmodule p ⊔ c)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc.sup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hx`. Conclude with `Submodule.mem_sup.mpr ⟨y, hy, z, hz, hyz⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isCompl [Finite G] {ρ : Representation ℂ G V} (p : Subrepresentation ρ) :
     ∃ q : Subrepresentation ρ, IsCompl p.toSubmodule q.toSubmodule := by
@@ -60,15 +60,15 @@ theorem exists_isCompl [Finite G] {ρ : Representation ℂ G V} (p : Subrepresen
     exact Submodule.mem_sup.mpr ⟨y, hy, z, hz, hyz⟩
 
 /- English proof (translation)
-Set `φ : q.toSubmodule →ₗ[ℂ] f.range.toSubmodule` to `(f.toLinearMap.comp q.toSubmodule.subtype).codRestrict f.range.toSubmodule (fun v => LinearMap.mem_range_self _ _)`. Establish `hinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `ha' : f.toLinearMap (a : V) = 0` using `congrArg Subtype.val ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : (a : V) ∈ f.ker.toSubmodule` using `ha'`. Conclude with `Subtype.ext ((Submodule.disjoint_def.mp h.disjoint) _ hk a.2)`. Establish `hsurj : Function.Surjective φ`. Introduce and unpack `⟨w, v, rfl⟩`. Establish `hv : v ∈ f.ker.toSubmodule ⊔ q.toSubmodule`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.sup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨k, hk, u, hu, hku⟩` from `Submodule.mem_sup.mp hv`. Use `⟨⟨u, hu⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hk' : f.toLinearMap k = 0` using `hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `f.toLinearMap u = f.toLinearMap v`. Rewrite using `[← hku, map_add, hk', zero_add]`. Set `ψ : IntertwiningMap q.toRepresentation f.range.toRepresentation` to `φ.intertwiningMap_of_isIntertwiningMap _ _ (by`. Introduce `g v`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `f.toLinearMap (ρ g (v : V)) = σ g (f.toLinearMap v)`. Conclude with `IntertwiningMap.isIntertwining _ _ f g v)`. Conclude with `⟨ψ.ofBijective ⟨hinj, hsurj⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_range {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
     (f : IntertwiningMap ρ σ) (q : Subrepresentation ρ)
@@ -101,11 +101,11 @@ theorem nonempty_equiv_range {ρ : Representation ℂ G V} {σ : Representation 
   exact ⟨ψ.ofBijective ⟨hinj, hsurj⟩⟩
 
 /- English proof (translation)
-Use `Fintype.ofFinite G` as an intermediate fact. Establish `: Invertible (Nat.card G : ℂ)` using `invertibleOfNonzero (by exact_mod_cast Nat.card_pos.ne')`. Establish `h1` using `card_inv_mul_sum_char_mul_char_eq_finrank ρ σ`. Establish `h2` using `card_inv_mul_sum_char_mul_char_eq_finrank ρ ρ`. Rewrite `h1` using `[← h, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hid : IntertwiningMap.id ρ ≠ 0`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Introduce `h0`. Conclude with `hv (by simpa using DFunLike.congr_fun h0 v)`. Establish `hpos : 0 < finrank ℂ (IntertwiningMap ρ ρ)` using `Module.finrank_pos_iff_exists_ne_zero.mpr ⟨_, hid⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : finrank ℂ (IntertwiningMap ρ ρ) = finrank ℂ (IntertwiningMap ρ σ)`. Conclude with `h1` after adjusting the coercions. Rewrite `hpos` using `[heq]`. Conclude with `Module.finrank_pos_iff_exists_ne_zero.mp hpos`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero [Finite G] [FiniteDimensional ℂ V] [FiniteDimensional ℂ W] [Nontrivial V]
     (ρ : Representation ℂ G V) (σ : Representation ℂ G W) (h : ρ.character = σ.character) :
@@ -127,19 +127,19 @@ theorem exists_ne_zero [Finite G] [FiniteDimensional ℂ V] [FiniteDimensional �
   exact Module.finrank_pos_iff_exists_ne_zero.mp hpos
 
 /- English proof (translation)
-Use `Nat.strong_induction_on n ?_` and prove the remaining obligations. Introduce `n ih V W _ _ _ _ _ _ ρ σ hn h`. Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Establish `hW : finrank ℂ V = finrank ℂ W`. Establish `h1` using `congrFun h 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[char_one, char_one]`. Conclude with `h1` after adjusting the coercions. Use `⟨Representation.Equiv.mk (LinearEquiv.ofFinrankEq V W hW) fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[Subsingleton.elim v 0]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨f, hf⟩` from `exists_ne_zero ρ σ h`. Take `⟨q, hq⟩` from `exists_isCompl f.ker`. Take `⟨r, hr⟩` from `exists_isCompl f.range`. Take `⟨e⟩` from `nonempty_equiv_range f q hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `char_iso (prodEquivOfIsCompl q f.ker hq.symm)`. Establish `h2` using `char_iso (prodEquivOfIsCompl f.range r hr)`. Rewrite `h1`, `h2` using `[character_prod]`. Establish `h3` using `char_iso e`. Establish `hsum : q.toRepresentation.character + f.ker.toRepresentation.character = f.range.toRepresentation.character + r.toRepresentation.character`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, h]`. Rewrite `hsum` using `[h3]`. Establish `hK` using `add_left_cancel hsum`. Establish `hlt : finrank ℂ f.ker.toSubmodule < n`. Rewrite using `[← hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.finrank_lt` to reduce the goal to its premises. Introduce `htop`. Apply `hf` to reduce the goal to its premises. Use extensionality with `v`. Establish `hv : v ∈ f.ker.toSubmodule` using `htop ▸ Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : f.toLinearMap v = 0` using `hv`. Simplify using `using hv'`. Take `⟨eK⟩` from `ih _ hlt f.ker.toSubmodule r.toSubmodule f.ker.toRepresentation r.toRepresentation rfl hK`. Conclude with `⟨((prodEquivOfIsCompl q f.ker hq.symm).symm.trans (prodCongr e eK)).trans (prodEquivOfIsCompl f.range r hr)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem aux [Finite G] (n : ℕ) : ∀ (V W : Type) [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
@@ -184,7 +184,7 @@ theorem aux [Finite G] (n : ℕ) : ∀ (V W : Type) [AddCommGroup V] [Module ℂ
       (prodEquivOfIsCompl f.range r hr)⟩
 
 /- English proof (translation)
-Introduce `G V W _ _ _ _ _ _ _ _ ρ σ h`. Conclude with `aux (finrank ℂ V) V W ρ σ rfl h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_character_eq : ∀ (G V W : Type) [Group G] [Finite G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ G W), ρ.character = σ.character → Nonempty (ρ.Equiv σ) := by
   intro G V W _ _ _ _ _ _ _ _ ρ σ h

@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPair
 open GlobalTheory GlobalTheory.LogDR
 
 /- English proof (citation)
-Apply `GlobalTheory.CartierHomotopy.cartier_projector_homotopic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPublishedTheorems%2FNadelVanishingPairs%2FNadelVanishingLemmas%2FCartierProjectionProperties.lean&line=149#L149)
 -/

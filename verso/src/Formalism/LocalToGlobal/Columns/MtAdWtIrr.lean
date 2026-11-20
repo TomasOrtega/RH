@@ -28,11 +28,9 @@ def mtwPerp (lam : ι → DomWeight n) (S : Submodule ℂ (VV ℂ lam)) : Submod
   smul_mem' c x hx y hy := by rw [map_smul, LinearMap.smul_apply, hx y hy, smul_zero]
 
 /- English proof (translation)
-Introduce `g x hx y hy`. Establish `hz : rhoK lam (invTrK g) ((rhoK lam (invTrK g)⁻¹) y) = y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `e1` using `pairingBInvariantK_holds ℂ ι n lam (invTrK g) (x : Pol ℂ ι n) (((rhoK lam (invTrK g)⁻¹) y : VV ℂ lam) : Pol ℂ ι n)`. Rewrite `e1` using `[pb_invTrK_invTrK]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : actP lam (invTrK g) (((rhoK lam (invTrK g)⁻¹) y : VV ℂ lam) : Pol ℂ ι n) = (y : Pol ℂ ι n)` using `congrArg Subtype.val hz`. Rewrite `e1` using `[e2]`. Rewrite using `[pairBK_apply]`. Use `show pairB lam (actP lam g (x : Pol ℂ ι n)) (y : Pol ℂ ι n) = 0`. Rewrite using `[e1, ← pairBK_apply]`.
-
-Conclude with `hx _ (hS _ y hy)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mtwPerp_stable (lam : ι → DomWeight n) (S : Submodule ℂ (VV ℂ lam)) (hS : MtwStable lam S) :
     MtwStable lam (mtwPerp lam S) := by
@@ -50,13 +48,11 @@ theorem mtwPerp_stable (lam : ι → DomWeight n) (S : Submodule ℂ (VV ℂ lam
   exact hx _ (hS _ y hy)
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ (VV ℂ lam)` using `Module.Finite.of_basis (bVV ℂ lam)`. Take `⟨f, hf0, hfS⟩` from `Submodule.exists_le_ker_of_lt_top S (lt_top_iff_ne_top.2 hS)`. Establish `hinj : Function.Injective (pairBK (K` using `ℂ) lam) := by`. Introduce `a b hab`. Use `(pairingBNondegenerate_holds ℂ ι n lam).1 (a - b) fun y => by` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_sub, LinearMap.sub_apply, hab, sub_self]`. Conclude with `sub_eq_zero.1 this`. Establish `hsurj : Function.Surjective (pairBK (K` using `ℂ) lam) := (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hinj`. Take `⟨x, hx⟩` from `hsurj f`. Introduce `hbot`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxP : x ∈ mtwPerp lam S` using `fun y hy => by`. Rewrite using `[hx]`. Conclude with `hfS hy`. Rewrite `hxP` using `[hbot]`. Apply `hf0` to reduce the goal to its premises.
-
-Rewrite using `[← hx, (Submodule.mem_bot ℂ).1 hxP, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mtwPerp_ne_bot (lam : ι → DomWeight n) (S : Submodule ℂ (VV ℂ lam)) (hS : S ≠ ⊤) : mtwPerp lam S ≠ ⊥ := by
   have : FiniteDimensional ℂ (VV ℂ lam) := Module.Finite.of_basis (bVV ℂ lam)
@@ -78,11 +74,11 @@ theorem mtwPerp_ne_bot (lam : ι → DomWeight n) (S : Submodule ℂ (VV ℂ lam
   rw [← hx, (Submodule.mem_bot ℂ).1 hxP, map_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨h1, h2⟩` from `hc`. Establish `hw1` using `hH ι n lam S h1 hS`. Establish `hw2` using `hH ι n lam (mtwPerp lam S) (mtwPerp_ne_bot lam S h2) (mtwPerp_stable lam S hS)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : pairBK lam (mtwHw lam) (mtwHw lam) = 0` using `hw2 _ hw1`. Establish `hx` using `pairingBExtremal_holds ℂ ι n lam 1`. Establish `ha : ∀ F : Pol ℂ ι n, actP lam (1 : ι → GL (Fin n) ℂ) F = F` using `fun F => by`. Use `congrArg (fun φ : Module.End ℂ (Pol ℂ ι n) => φ F) (rhoP (K := ℂ) lam).map_one` as an intermediate fact. Simplify `this` using `[rhoP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[map_one, ha]`. Rewrite `h0` using `[pairBK_apply]`. Conclude with `one_ne_zero (hx.symm.trans h0)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mtw_bot_or_top (hH : HwInStable) (lam : ι → DomWeight n) (S : Submodule ℂ (VV ℂ lam)) (hS : MtwStable lam S) :
     S = ⊥ ∨ S = ⊤ := by
@@ -119,7 +115,7 @@ variable (emb : ι → L →+* ℂ) (hinj : Function.Injective emb)
 include hinj hcm
 
 /- English proof (translation)
-Establish `h : ∃ τ', emb τ' = emb τ` using `⟨τ, rfl⟩`. Establish `hc : h.choose = τ` using `hinj h.choose_spec`. Simplify using `only [mtwPtOf, dif_pos h, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mtwPtOf_emb (g : ι → GL (Fin n) ℂ) (τ : ι) (a b : Fin n) :
     mtwPtOf emb g (emb τ, a, b) = ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) a b := by
@@ -128,9 +124,9 @@ theorem mtwPtOf_emb (g : ι → GL (Fin n) ℂ) (τ : ι) (a b : Fin n) :
   simp only [mtwPtOf, dif_pos h, hc]
 
 /- English proof (translation)
-Establish `h : ¬ ∃ τ', emb τ' = ComplexEmbedding.conjugate (emb τ)` using `fun ⟨τ', h'⟩ => hcm τ' τ h'`. Establish `h' : ∃ τ', ComplexEmbedding.conjugate (emb τ') = ComplexEmbedding.conjugate (emb τ)` using `⟨τ, rfl⟩`. Establish `hc : h'.choose = τ`. Apply `hinj` to reduce the goal to its premises. Use `congrArg ComplexEmbedding.conjugate h'.choose_spec` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`. Simplify using `only [mtwPtOf, dif_neg h, dif_pos h', hc]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem mtwPtOf_conj (g : ι → GL (Fin n) ℂ) (τ : ι) (a b : Fin n) :
     mtwPtOf emb g (ComplexEmbedding.conjugate (emb τ), a, b) = (((g τ)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) b a := by
@@ -143,7 +139,7 @@ theorem mtwPtOf_conj (g : ι → GL (Fin n) ℂ) (τ : ι) (a b : Fin n) :
   simp only [mtwPtOf, dif_neg h, dif_pos h', hc]
 
 /- English proof (translation)
-Establish `h : ¬ ∃ τ, emb τ = σ` using `fun ⟨τ, h'⟩ => h1 τ h'`. Establish `h' : ¬ ∃ τ, ComplexEmbedding.conjugate (emb τ) = σ` using `fun ⟨τ, h''⟩ => h2 τ h''`. Simplify using `only [mtwPtOf, dif_neg h, dif_neg h', Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mtwPtOf_other (g : ι → GL (Fin n) ℂ) (σ : L →+* ℂ) (h1 : ∀ τ, emb τ ≠ σ)
     (h2 : ∀ τ, ComplexEmbedding.conjugate (emb τ) ≠ σ) (a b : Fin n) :
@@ -153,15 +149,15 @@ theorem mtwPtOf_other (g : ι → GL (Fin n) ℂ) (σ : L →+* ℂ) (h1 : ∀ �
   simp only [mtwPtOf, dif_neg h, dif_neg h', Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `σ`. Distinguish the cases in `h1 : ∃ τ, emb τ = σ`. Take `⟨τ, rfl⟩` from `h1`. Conclude with `⟨g τ, fun i j => ⟨mtwPtOf_emb emb hinj hcm g τ i j, mtwPtOf_conj emb hinj hcm g τ i j⟩⟩`. Distinguish the cases in `h2 : ∃ τ, ComplexEmbedding.conjugate (emb τ) = σ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Take `⟨τ, rfl⟩` from `h2`. Use `⟨inside₂ ℂ n (g τ), fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mtwPtOf_conj emb hinj hcm g τ i j]`. Both sides reduce to the same expression. Rewrite using `[show ComplexEmbedding.conjugate (ComplexEmbedding.conjugate (emb τ)) = emb τ by simp, mtwPtOf_emb emb hinj hcm g τ i j]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `push_neg at h1 h2`. Use `⟨1, fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mtwPtOf_other emb hinj hcm g σ h1 h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1' : ∀ τ, emb τ ≠ ComplexEmbedding.conjugate σ` using `fun τ h' => h2 τ (by`. Rewrite using `[h']`. Use the proof step `simp)`. Establish `h2' : ∀ τ, ComplexEmbedding.conjugate (emb τ) ≠ ComplexEmbedding.conjugate σ` using `fun τ h' => h1 τ (by`. Use `congrArg ComplexEmbedding.conjugate h'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this)`. Rewrite using `[mtwPtOf_other emb hinj hcm g _ h1' h2', inv_one, Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Simplify using `[eq_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mtwPtOf_inV (g : ι → GL (Fin n) ℂ) : PI.UnitaryGroupMassFormula.HwConjInf.InV (mtwPtOf emb g) := by
   intro σ
@@ -190,15 +186,15 @@ theorem mtwPtOf_inV (g : ι → GL (Fin n) ℂ) : PI.UnitaryGroupMassFormula.HwC
       simp [eq_comm]
 
 /- English proof (translation)
-Establish `hM : (fun τ => (Matrix.of fun a b => mtwPtOf emb g (emb τ, a, b))ᵀ) = fun τ => ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ`. Use function extensionality and compare the values at `τ`. Use `congr 1`. Use extensionality with `a b`. Conclude with `mtwPtOf_emb emb hinj hcm g τ a b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `htw : MvPolynomial.eval (mtwPtOf emb g) (mtwTwP emb lam) = detTwK lam g`. Simplify using `only [mtwTwP, detTwK, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hd : ((Matrix.GeneralLinearGroup.det (g τ) : ℂˣ) : ℂ) = ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).det` using `Matrix.GeneralLinearGroup.val_det_apply _`. Rewrite using `[detPow, Units.val_zpow_eq_zpow_val, hd]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with he`. Rewrite using `[map_pow, detPolynomial_eval]`. Rewrite using `[show (Matrix.of fun a b => mtwPtOf emb g (emb τ, a, b)) = ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) by`. Use extensionality with `a b`. Conclude with `mtwPtOf_emb emb hinj hcm g τ a b]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg he]`. Rewrite using `[map_pow, detPolynomial_eval]`. Rewrite using `[show (Matrix.of fun a b => mtwPtOf emb g (ComplexEmbedding.conjugate (emb τ), a, b)) = (((g τ)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ by`. Use extensionality with `a b`. Conclude with `mtwPtOf_conj emb hinj hcm g τ a b]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.det_transpose, ← Matrix.GeneralLinearGroup.val_det_apply, map_inv, Units.val_inv_eq_inv_val, Matrix.GeneralLinearGroup.val_det_apply, ← zpow_natCast, Int.toNat_of_nonneg (by omega), inv_zpow', neg_neg]`. Use extensionality with `i j`. Rewrite using `[eval_tensorCoeff, htw, hM, LinearMap.toMatrix_apply, ← mtwCoord_spec]`. Simplify using `only [rhoK, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.coe_restrict_apply, bVV_coe, actP, trAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eval_tensorCoeff_eq_toMatrix (lam : ι → DomWeight n) (g : ι → GL (Fin n) ℂ) :
     (fun i j => MvPolynomial.eval (mtwPtOf emb g) (tenP emb lam i j)) =
@@ -233,9 +229,9 @@ theorem eval_tensorCoeff_eq_toMatrix (lam : ι → DomWeight n) (g : ι → GL (
 
 omit hinj hcm in
 /- English proof (translation)
-Establish `h` using `LinearMap.toMatrix_mulVec_repr (bVV ℂ lam) (bVV ℂ lam) T x`. Use `conv_rhs => rw [← (bVV ℂ lam).sum_repr (T x)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm, ← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mtw_sum_coord (lam : ι → DomWeight n) (f : VV ℂ lam →ₗ[ℂ] ℂ) (T : Module.End ℂ (VV ℂ lam)) (x : VV ℂ lam) :
     ∑ i, f (bVV ℂ lam i) * ∑ j, LinearMap.toMatrix (bVV ℂ lam) (bVV ℂ lam) T i j * (bVV ℂ lam).repr x j = f (T x) := by
@@ -247,17 +243,15 @@ theorem mtw_sum_coord (lam : ι → DomWeight n) (f : VV ℂ lam →ₗ[ℂ] ℂ
   rfl
 
 /- English proof (translation)
-Introduce `g x hx`. Assume the negation of the conclusion as `hnot`. Establish `hq : S.mkQ (rhoK lam g x) ≠ 0`. Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hnot`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ (VV ℂ lam ⧸ S), φ (S.mkQ (rhoK lam g x)) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hq ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hall)`. Use `set f : VV ℂ lam →ₗ[ℂ] ℂ := φ.comp S.mkQ with hf`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `F : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ` to `∑ i, C (f (bVV ℂ lam i)) * ∑ j, tenP emb lam i j * C ((bVV ℂ lam).repr x j)`. Establish `hF : ∀ y, MvPolynomial.eval y F = ∑ i, f (bVV ℂ lam i) * ∑ j, MvPolynomial.eval y (tenP emb lam i j) * (bVV ℂ lam).repr x j`. Introduce `y`. Simplify using `only [F, map_sum, map_mul, MvPolynomial.eval_C]`. Establish `hrat : ∀ γ₀ ∈ GQ0 L n, MvPolynomial.eval (PI.UnitaryGroupMassFormula.HwConjInf.ratPt (γ₀ : Matrix (Fin n) (Fin n) L)) F = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ₀ hγ`. Rewrite using `[hF]`. Establish `hm` using `tenRep_toMatrix emb lam (PI.UnitaryGroupMassFormula.HwConjInf.toGQ γ₀ hγ) γ₀ (PI.UnitaryGroupMassFormula.HwConjInf.toGQ_val γ₀ hγ)`. Use `mtw_sum_coord lam f (tenRep emb lam (PI.UnitaryGroupMassFormula.HwConjInf.toGQ γ₀ hγ)) x` as an intermediate fact. Rewrite `this` using `[hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show PI.UnitaryGroupMassFormula.HwConjInf.ratPt (γ₀ : Matrix (Fin n) (Fin n) L) = fun p => p.1 ((γ₀ : Matrix (Fin n) (Fin n) L) p.2.1 p.2.2) from rfl, this, hf, LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero S).2 (hS _ x hx), map_zero]`. Establish `h0` using `PI.UnitaryGroupMassFormula.HwConjInf.density_induction L n F hrat (mtwPtOf emb g) (mtwPtOf_inV emb hinj hcm g)`. Rewrite `h0` using `[hF]`. Use `mtw_sum_coord lam f (rhoK lam g) x` as an intermediate fact. Rewrite `this` using `[← eval_tensorCoeff_eq_toMatrix emb hinj hcm lam g]`.
-
-Rewrite `h0` using `[this, hf, LinearMap.comp_apply]`. Conclude with `hφ h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mtw_stable_of_rat (lam : ι → DomWeight n) (S : Submodule ℂ (VV ℂ lam))
     (hS : ∀ γ : GQ L n, ∀ x ∈ S, tenRep emb lam γ x ∈ S) : MtwStable lam S := by
@@ -301,7 +295,7 @@ section Irr
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Introduce `a b h` and use `hinj (by have := congrArg ComplexEmbedding.conjugate h simpa [mtwConj] using this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mtwConj_injective (emb : ι → L →+* ℂ) (hinj : Function.Injective emb) : Function.Injective (mtwConj emb) :=
   fun a b h => hinj (by
@@ -309,7 +303,7 @@ theorem mtwConj_injective (emb : ι → L →+* ℂ) (hinj : Function.Injective 
     simpa [mtwConj] using this)
 
 /- English proof (translation)
-Introduce `τ τ' h` and use `hcm τ τ' (by have := congrArg ComplexEmbedding.conjugate h simpa [mtwConj] using this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mtwConj_cm (emb : ι → L →+* ℂ) (hcm : ∀ τ τ', emb τ ≠ ComplexEmbedding.conjugate (emb τ')) :
     ∀ τ τ', mtwConj emb τ ≠ ComplexEmbedding.conjugate (mtwConj emb τ') := fun τ τ' h => hcm τ τ' (by
@@ -317,13 +311,11 @@ theorem mtwConj_cm (emb : ι → L →+* ℂ) (hcm : ∀ τ τ', emb τ ≠ Comp
   simpa [mtwConj] using this)
 
 /- English proof (translation)
-Establish `hinj'` using `mtwConj_injective emb hinj`. Establish `hcm'` using `mtwConj_cm emb hcm`. Unfold `TenIrr`. Rewrite using `[mtRep_eq_tenRep]`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : mtwHw lam ∈ (⊤ : Subrepresentation (tenRep (mtwConj emb) lam))` using `Submodule.mem_top`. Rewrite `h1` using `[← h]`. Conclude with `mtwHw_ne lam ((Submodule.mem_bot ℂ).1 h1)`. Establish `hst` using `mtw_stable_of_rat (mtwConj emb) hinj' hcm' lam S.toSubmodule (fun γ x hx => S.apply_mem_toSubmodule γ hx)`. Break down `mtw_bot_or_top hH lam S.toSubmodule hst with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Conclude with `SetLike.ext fun x => by show x ∈ S.toSubmodule ↔ x ∈ (⊥ : Submodule ℂ _)`. Rewrite using `[h]`. Use `right`. Conclude with `SetLike.ext fun x => by show x ∈ S.toSubmodule ↔ x ∈ (⊤ : Submodule ℂ _)`.
-
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tenIrr_of (hH : HwInStable) (emb : ι → L →+* ℂ) (hinj : Function.Injective emb)
     (hcm : ∀ τ τ', emb τ ≠ ComplexEmbedding.conjugate (emb τ')) (lam : ι → DomWeight n) : TenIrr emb lam := by
@@ -364,9 +356,9 @@ def HwFixedLine : Prop :=
     (∀ g : ι → GL (Fin n) ℂ, MtwUni g → rhoK lam g v = v) → ∃ c : ℂ, v = c • mtwHw lam
 
 /- English proof (translation)
-Introduce `ι _ n lam S hS hst`. Take `⟨v, hv, hv0, hfix⟩` from `h1 ι n lam S hS hst`. Take `⟨c, rfl⟩` from `h2 ι n lam v hfix`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hv0 (zero_smul _ _)`. Use `S.smul_mem c⁻¹ hv` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hwInStable_of (h1 : HwFixedEx) (h2 : HwFixedLine) : HwInStable := by
   intro ι _ n lam S hS hst
@@ -379,7 +371,7 @@ theorem hwInStable_of (h1 : HwFixedEx) (h2 : HwFixedLine) : HwInStable := by
   rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at this
 
 /- English proof (translation)
-The claim follows from `tenIrr_of (hwInStable_of h1 h2) emb hinj hcm lam`.
+A detailed English derivation is pending.
 -/
 theorem tenIrr_of' (h1 : HwFixedEx) (h2 : HwFixedLine) {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {ι : Type} [Fintype ι] (emb : ι → L →+* ℂ) (hinj : Function.Injective emb)
@@ -392,7 +384,7 @@ def mtWtOf (h1 : HwFixedEx) (h2 : HwFixedLine) {L : Type} [Field L] [NumberField
   mtWt emb lam (tenIrr_of' h1 h2 emb hinj hcm lam)
 
 /- English proof (translation)
-The claim follows from `mtWt_hw_dual emb hinj hcm lam _ (tenIrr_of' h1 h2 (mtwConj emb) (mtwConj_injective emb hinj) (mtwConj_cm emb hcm) lam) τ a lam0 hd hw`.
+A detailed English derivation is pending.
 -/
 theorem mtWtOf_hw_dual (h1 : HwFixedEx) (h2 : HwFixedLine) {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {ι : Type} [Fintype ι] (emb : ι → L →+* ℂ) (hinj : Function.Injective emb)

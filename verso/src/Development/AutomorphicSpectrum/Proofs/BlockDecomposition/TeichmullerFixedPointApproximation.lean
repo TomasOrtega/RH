@@ -13,27 +13,27 @@ open GlobalTheory.CompanionTheory.LTPer.Tilt
 namespace GlobalTheory.CompanionTheory.LTPer.Tilt
 
 /- English proof (translation)
-Introduce `l _ f ρ hf hρ hρ1 c hc hcf`. Establish `hρ0 : 0 ≤ ρ` using `(norm_nonneg _).trans hρ`. Take `⟨a, ha⟩` from `exists_sh_near c hc`. Establish `ha' : ‖sh a - c‖ ≤ ρ` using `ha.trans hρ`. Establish `hq1 : 1 ≤ l ^ f` using `Nat.one_le_pow _ _ (Fact.out : l.Prime).pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : 2 ≤ l ^ f` using `Nat.one_lt_pow hf.ne' (Fact.out : l.Prime).one_lt`. Establish `h0 : ‖a ^ l ^ f - a‖ ≤ ρ`. Use `norm_sub_le_of_near hρ ?_` and prove the remaining obligations. Establish `e : sh (a ^ l ^ f) - sh a = (sh (a ^ l ^ f) - c ^ l ^ f) + ((c ^ l ^ f - c) + -(sh a - c))` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (near_pow hρ hc ha' _) ?_)` and prove the remaining obligations. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hcf ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]` and apply the resulting hypothesis. Set `u : ℕ → Tl l` to `fun n => a ^ l ^ (f * n)`. Establish `hstep : ∀ n, u (n + 1) = u n ^ l ^ f`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `n`. Use `show a ^ l ^ (f * (n + 1)) = (a ^ l ^ (f * n)) ^ l ^ f`. Rewrite using `[← pow_mul, ← pow_add, Nat.mul_succ]`. Establish `hdiff : ∀ n, ‖u (n + 1) - u n‖ ≤ ρ ^ (l ^ (f * n))`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : u (n + 1) - u n = (a ^ l ^ f) ^ l ^ (f * n) - a ^ l ^ (f * n)` using `by show a ^ l ^ (f * (n + 1)) - a ^ l ^ (f * n) = _`. Rewrite using `[← pow_mul, ← pow_add, Nat.mul_succ, Nat.add_comm]`. Rewrite using `[e, norm_sub_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h0 _`. Establish `hdiff1 : ∀ n, ‖u (n + 1) - u n‖ ≤ ρ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n`. Use `(hdiff n).trans ?_` and prove the remaining obligations. Establish `: 1 ≤ l ^ (f * n)` using `Nat.one_le_pow _ _ (Fact.out : l.Prime).pos`. Simplify using `using pow_le_pow_of_le_one hρ0 hρ1.le this`. Establish `hgeom : ∀ n, dist (u n) (u (n + 1)) ≤ 1 * ρ ^ n`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[dist_comm, dist_eq_norm, one_mul]`. Use `(hdiff n).trans (pow_le_pow_of_le_one hρ0 hρ1.le ?_)` and prove the remaining obligations. Establish `h1 : n < l ^ n` using `Nat.lt_pow_self (Fact.out : l.Prime).one_lt`. Establish `h2 : l ^ n ≤ l ^ (f * n)` using `Nat.pow_le_pow_right (Fact.out : l.Prime).pos (Nat.le_mul_of_pos_left n hf)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcau : CauchySeq u` using `cauchySeq_of_le_geometric ρ 1 hρ1 hgeom`. Take `⟨y, hy⟩` from `cauchySeq_tendsto_of_complete hcau`. Establish `hclose : ∀ n, ‖u n - a‖ ≤ ρ`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => simpa [u] using hρ0`. Consider the case `succ n ih`. Establish `e : u (n + 1) - a = (u (n + 1) - u n) + (u n - a)` using `by ring`. Rewrite using `[e]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hdiff1 n) ih)`. Establish `hya : ‖y - a‖ ≤ ρ` using `le_of_tendsto ((hy.sub_const a).norm) (Filter.Eventually.of_forall hclose)`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Filter.Tendsto (fun n => u n ^ l ^ f) Filter.atTop (nhds (y ^ l ^ f))` using `hy.pow _`. Establish `h2 : Filter.Tendsto (fun n => u n ^ l ^ f) Filter.atTop (nhds y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `(Filter.tendsto_add_atTop_iff_nat 1).2 hy` using `only [hstep]`. Conclude with `tendsto_nhds_unique h1 h2`. Establish `e : sh y - c = (sh y - sh a) + (sh a - c)` using `by ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (near_of_norm_sub_le hρ hya) ha')`.
+A detailed English derivation is pending.
 -/
 theorem exists_fixed_near : ∀ {l : ℕ} [Fact l.Prime] (f : ℕ) (ρ : ℝ), 0 < f → ‖(l : ℂ_[l])‖ ≤ ρ → ρ < 1 → ∀ c : ℂ_[l],
     ‖c‖ ≤ 1 → ‖c ^ l ^ f - c‖ ≤ ρ → ∃ y : Tl l, y ^ l ^ f = y ∧ ‖sh y - c‖ ≤ ρ := by

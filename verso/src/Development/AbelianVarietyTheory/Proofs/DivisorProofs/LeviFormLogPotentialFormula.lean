@@ -11,9 +11,9 @@ namespace GlobalTheory.LeviLogChain
 variable {e : ℕ}
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun x => f x + g x) =ᶠ[𝓝 z] fun x => fderiv ℝ f x + fderiv ℝ g x` using `by filter_upwards [hf.eventually (by simp), hg.eventually (by simp)] with x hx hy`. Conclude with `fderiv_fun_add (hx.differentiableAt (by norm_num)) (hy.differentiableAt (by norm_num))`. Establish `hf' : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hg' : DifferentiableAt ℝ (fderiv ℝ g) z` using `(hg.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Unfold `levi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1.fderiv_eq, fderiv_fun_add hf' hg']`. Simplify using `only [ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_add_of {f g : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (hf : ContDiffAt ℝ 2 f z)
     (hg : ContDiffAt ℝ 2 g z) (w : Fin e → ℂ) :
@@ -31,9 +31,9 @@ theorem levi_add_of {f g : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (hf : Co
   ring
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun x => c * f x) =ᶠ[𝓝 z] fun x => c • fderiv ℝ f x` using `by filter_upwards [hf.eventually (by simp)] with x hx`. Conclude with `fderiv_const_mul (hx.differentiableAt (by norm_num)) c`. Establish `hf' : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Unfold `levi`. Rewrite using `[h1.fderiv_eq, fderiv_fun_const_smul hf']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_const_mul_of {f : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (c : ℝ) (hf : ContDiffAt ℝ 2 f z)
     (w : Fin e → ℂ) : levi (fun x => c * f x) z w = c * levi f z w := by
@@ -48,9 +48,9 @@ theorem levi_const_mul_of {f : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (c :
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [levi]`. Conclude with `contDiffAt_const`. Consider the case `insert b s hb ih`. Establish `he : (fun x => ∑ i ∈ insert b s, f i x) = fun x => f b x + ∑ i ∈ s, f i x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_insert hb]`. Rewrite using `[he, Finset.sum_insert hb]`. Conclude with `⟨(hf b).add ih.1, by rw [levi_add_of (hf b) ih.1 w, ih.2]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levi_sum_of {m : ℕ} (f : Fin m → (Fin e → ℂ) → ℝ) {z : Fin e → ℂ}
     (hf : ∀ i, ContDiffAt ℝ 2 (f i) z) (w : Fin e → ℂ) (s : Finset (Fin m)) :
@@ -66,9 +66,9 @@ theorem levi_sum_of {m : ℕ} (f : Fin m → (Fin e → ℂ) → ℝ) {z : Fin e
     exact ⟨(hf b).add ih.1, by rw [levi_add_of (hf b) ih.1 w, ih.2]⟩
 
 /- English proof (translation)
-Establish `hz0 : r z ≠ 0` using `hz.ne'`. Establish `hr' : HasFDerivAt (fderiv ℝ r) (fderiv ℝ (fderiv ℝ r) z) z` using `((hr.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`. Establish `hinv : HasFDerivAt (fun x => (r x)⁻¹) ((ContinuousLinearMap.toSpanSingleton ℝ (-(r z ^ 2)⁻¹)).comp (fderiv ℝ r z)) z` using `(hasFDerivAt_inv hz0).comp z ((hr.differentiableAt (by norm_num)).hasFDerivAt)`. Establish `hev : fderiv ℝ (fun x => Real.log (r x)) =ᶠ[𝓝 z] fun x => (r x)⁻¹ • fderiv ℝ r x` using `by filter_upwards [hr.eventually (by simp), hr.continuousAt.eventually_ne hz0] with y hy hy0`. Establish `d1` using `(hy.differentiableAt (by norm_num)).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(d1.log hy0).fderiv]`. Establish `hD` using `((hinv.smul hr').congr_of_eventuallyEq hev).fderiv`. Unfold `levi`. Rewrite using `[hD]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.toSpanSingleton_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -96,9 +96,9 @@ theorem levi_log {r : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (hr : ContDif
   ring
 
 /- English proof (translation)
-Introduce `e m k r c z w hk hr hpos`. Establish `hlog : ∀ i, ContDiffAt ℝ 2 (fun y => Real.log (r i y)) z` using `fun i => (hr i).log (hpos i).ne'`. Establish `hS` using `levi_sum_of (fun i y => Real.log (r i y)) hlog w Finset.univ`. Rewrite using `[levi_add_of hk (contDiffAt_const.mul hS.1) w, levi_const_mul_of _ hS.1 w, hS.2]`. Simplify using `only [levi_log (hr _) (hpos _) w]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_poincare_chain : ∀ {e m : ℕ} (k : (Fin e → ℂ) → ℝ) (r : Fin m → (Fin e → ℂ) → ℝ) (c : ℝ)
     (z w : Fin e → ℂ), ContDiffAt ℝ 2 k z → (∀ i, ContDiffAt ℝ 2 (r i) z) → (∀ i, 0 < r i z) →

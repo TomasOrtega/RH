@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
     restr h N x y = h x y := rfl
 
 /- English proof (translation)
-Rewrite using `[perp, LinearMap.mem_ker, LinearMap.flip_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_perp (h : Sesq R M) (x y : M) : y ∈ perp h x ↔ h y x = 0 := by
   rw [perp, LinearMap.mem_ker, LinearMap.flip_apply]

@@ -14,9 +14,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart
 
 /- English proof (translation)
-Establish `h : (fun t => C.perExt (F.R t) y) = fun t => ∑ k, C.bas.equivFun y k • (F.R t).P (C.lam k)`. Use function extensionality and compare the values at `t`. Conclude with `Module.Basis.constr_apply_fintype ℝ C.bas _ y`. Rewrite using `[h]`. Use `DifferentiableOn.fun_sum fun k _ => ?_` and prove the remaining obligations.
-
-Conclude with `(F.hol.2 (C.lam k)).const_smul (C.bas.equivFun y k)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem perExt_differentiableOn {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ] {j j' n g : ℕ}
     {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F)
@@ -31,7 +29,7 @@ theorem perExt_differentiableOn {E : Type} [Field E] [NumberField E] [IsCMField 
   exact (F.hol.2 (C.lam k)).const_smul (C.bas.equivFun y k)
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C τ y`. Unfold `LatEmb.pPart`. Conclude with `((perExt_differentiableOn C _).sub ((perExt_differentiableOn C _).const_smul Complex.I)).const_smul (1 / 2 : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pPart_differentiableOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (τ : Ψ) (y : Fin (j + j') → ℂ), DifferentiableOn ℂ (fun t => C.pPart (F.R t) τ y) (ballDom F.q) := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F C τ y

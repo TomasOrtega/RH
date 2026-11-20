@@ -3,7 +3,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.JetI
 namespace ReciprocityTheory.ChartRestriction.G.AR
 
 /- English proof (translation)
-Simplify using `[multiLt, Finset.mem_biUnion, Finset.Nat.mem_antidiagonalTuple]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_multiLt_iff {D a : ℕ} {α : Fin D → ℕ} : α ∈ multiLt D a ↔ ∑ k, α k < a := by
   simp [multiLt, Finset.mem_biUnion, Finset.Nat.mem_antidiagonalTuple]

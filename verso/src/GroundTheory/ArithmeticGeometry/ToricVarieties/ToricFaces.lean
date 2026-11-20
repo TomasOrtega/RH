@@ -7,11 +7,11 @@ namespace GroundTheory.Arith.Toric
 open Module PointedCone TensorProduct
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hσ`. Establish `hτ' : τ.IsFaceOf (hull ℝ ((S.image ι : Finset E) : Set E))`. Rewrite using `[Finset.coe_image]` and apply the resulting hypothesis. Use `⟨S.filter (fun n => ι n ∈ τ), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [isFaceOf_eq_hull_filter _ hτ']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Take `⟨hnS, hnτ⟩` from `Finset.mem_filter.1 (Finset.mem_coe.1 hn)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_coe.2 (Finset.mem_filter.2 ⟨Finset.mem_image_of_mem _ hnS, hnτ⟩)`. Introduce `hy`. Take `⟨hy1, hy2⟩` from `Finset.mem_filter.1 (Finset.mem_coe.1 hy)`. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 hy1`. Conclude with `⟨n, Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hn, hy2⟩), rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsRationalPolyhedral.of_isFaceOf {L E : Type*} [AddCommGroup L] [AddCommGroup E]
     [Module ℝ E] {ι : L →ₗ[ℤ] E} {σ τ : PointedCone ℝ E} (hσ : IsRationalPolyhedral ι σ)
@@ -36,7 +36,7 @@ theorem IsRationalPolyhedral.of_isFaceOf {L E : Type*} [AddCommGroup L] [AddComm
 variable {N : Type*} [AddCommGroup N]
 
 /- English proof (translation)
-Introduce `m m' h`. Use `LinearMap.ext fun n => ?_` and prove the remaining obligations. Use `congrArg (fun f => f (toRealSpan N n)) h` as an intermediate fact. Simplify using `only [toRealDual_apply_toRealSpan] at this`. Conclude with `this` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toRealDual_injective : Function.Injective (toRealDual N) := by
   intro m m' h
@@ -46,7 +46,7 @@ theorem toRealDual_injective : Function.Injective (toRealDual N) := by
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `_ hm` and use `mem_dualMonoid.2 fun x hx => mem_dualMonoid.1 hm x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dualMonoid_anti {σ₁ σ₂ : PointedCone ℝ (ℝ ⊗[ℤ] N)} (h : σ₁ ≤ σ₂) :
     dualMonoid σ₂ ≤ dualMonoid σ₁ :=
@@ -55,19 +55,19 @@ theorem dualMonoid_anti {σ₁ σ₂ : PointedCone ℝ (ℝ ⊗[ℤ] N)} (h : σ
 variable [Module.Free ℤ N] [Module.Finite ℤ N]
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hσ`. Take `⟨S', rfl⟩` from `hσ'`. Take `⟨TM, hTM⟩` from `(show IsRationalPolyhedral (toRealSpan N) (hull ℝ (toRealSpan N '' ↑(S ∪ S'.image Neg.neg))) from ⟨_, rfl⟩).dual`. Rewrite `hTM` using `[dual_hull]`. Use `set SR := S.image (toRealSpan N) with hSR`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set SR' := S'.image (toRealSpan N) with hSR'`. Establish `e1 : hull ℝ (toRealSpan N '' (S : Set N)) = hull ℝ (SR : Set (ℝ ⊗[ℤ] N))`. Rewrite using `[hSR, Finset.coe_image]`. Establish `e2 : hull ℝ (toRealSpan N '' (S' : Set N)) = hull ℝ (SR' : Set (ℝ ⊗[ℤ] N))`. Rewrite using `[hSR', Finset.coe_image]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h`, `h'`, the goal using `[e1, e2]`. Use `set TR := TM.image (toRealDual N) with hTR`. Establish `hT : ∀ u : Dual ℝ (ℝ ⊗[ℤ] N), u ∈ hull ℝ (TR : Set (Dual ℝ (ℝ ⊗[ℤ] N))) ↔ (∀ x ∈ hull ℝ (SR : Set (ℝ ⊗[ℤ] N)), 0 ≤ u x) ∧ (∀ x ∈ hull ℝ (SR' : Set (ℝ ⊗[ℤ] N)), u x ≤ 0)`. Introduce `u`. Rewrite using `[hTR, Finset.coe_image, hTM]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `⟨fun x hx => nonneg_of_mem_hull (fun y hy => ?_) hx, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hy)`. Simplify using `using hu ⟨n, by simp [hn], rfl⟩`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Use `nonneg_of_mem_hull (f := -u) (s := (SR' : Set (ℝ ⊗[ℤ] N))) (fun y hy => by` as an intermediate fact. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hy)`. Simplify using `using hu ⟨-n, by simp [hn], rfl⟩) hx`. Simplify using `using this`. Introduce and unpack `⟨h1, h2⟩ y ⟨n, hn, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Finset.coe_union, Finset.coe_image, Set.mem_union, Finset.mem_coe, Set.mem_image] at hn`. Break down `hn with hn | ⟨n', hn', rfl⟩` into its components or cases. Simplify using `using h1 _ (subset_hull (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hn)))`. Simplify using `using h2 _ (subset_hull (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hn')))`. Take `⟨hu1, hu2, hE1, hE2⟩` from `separation_of_generators SR SR' TR hT h h'`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum : (∑ t ∈ TR, t) = toRealDual N (∑ t ∈ TM, t)`. Rewrite using `[hTR, Finset.sum_image (fun x _ y _ hxy => toRealDual_injective hxy), map_sum]`. Rewrite `hu1`, `hu2`, `hE1`, `hE2` using `[hsum]`. Conclude with `⟨∑ t ∈ TM, t, mem_dualMonoid.2 hu1, mem_dualMonoid.2 fun x hx => by simpa using hu2 x hx, hE1, hE2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_separating_rational {σ σ' : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) (hσ' : IsRationalPolyhedral (toRealSpan N) σ')
@@ -116,7 +116,7 @@ theorem exists_separating_rational {σ σ' : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     hE1, hE2⟩
 
 /- English proof (translation)
-Establish `hστ : σ ⊓ τ = τ` using `inf_eq_right.2 hτ.le`. Take `⟨u, hu, -, hE, -⟩` from `exists_separating_rational hσ (hσ.of_isFaceOf hτ) (by rw [hστ]; exact hτ) (by rw [hστ])`. Conclude with `⟨u, hu, by rw [hE, hστ]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_dualMonoid_eq_exposedFace {σ τ : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) (hτ : τ.IsFaceOf σ) :
@@ -129,11 +129,11 @@ theorem exists_mem_dualMonoid_eq_exposedFace {σ τ : PointedCone ℝ (ℝ ⊗[�
 omit [Module.Free ℤ N] [Module.Finite ℤ N] in
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hσ`. Rewrite `hu`, the goal using `[← Finset.coe_image]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `m hm`. Take `⟨p, -, hp⟩` from `exists_add_smul_mem_dual (S.image (toRealSpan N)) (u := toRealDual N u) (w := toRealDual N m) (mem_dualMonoid.1 hu) (mem_dualMonoid.1 hm)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hk : p ≤ ((⌈p⌉₊ : ℕ) : ℝ)` using `Nat.le_ceil p`. Rewrite using `[AddSubmonoid.mem_sup]`. Use `⟨m + ⌈p⌉₊ • u, mem_dualMonoid.2 fun x hx => ?_, ⌈p⌉₊ • (-u), AddSubmonoid.nsmul_mem _ (AddSubmonoid.subset_closure (Set.mem_singleton _)) _, by rw [smul_neg, add_neg_cancel_right]⟩` and prove the remaining obligations. Use `hp _ hk x hx` as an intermediate fact. Rewrite using `[map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `sup_le (dualMonoid_anti fun x hx => (mem_exposedFace.1 hx).1) ?_` and prove the remaining obligations. Rewrite using `[AddSubmonoid.closure_le, Set.singleton_subset_iff]`. Conclude with `mem_dualMonoid.2 fun x hx => by simp [(mem_exposedFace.1 hx).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualMonoid_exposedFace {σ : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) {u : Dual ℤ N} (hu : u ∈ dualMonoid σ) :

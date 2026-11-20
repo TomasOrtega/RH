@@ -45,7 +45,7 @@ theorem toC_Ds (B : RowsAut) (b h : ℝ) :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hDS, hw, B.tens_spec, B.haar, B.fund_spec, B.R_spec, B.Re_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem countData_of (B : RowsAut) (hDS : ∀ v, IsDS (B.I.ε v) (B.lam v) (B.σ v))
     (hw : ∀ v, IsLowUnit (B.I.ε v) (B.lam v) (B.σ v) (B.w v)) :
@@ -53,7 +53,7 @@ theorem countData_of (B : RowsAut) (hDS : ∀ v, IsDS (B.I.ε v) (B.lam v) (B.σ
   ⟨hDS, hw, B.tens_spec, B.haar, B.fund_spec, B.R_spec, B.Re_spec⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hS, countData_of B hDS hw, hG⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypB_of (B : RowsAut) {n₀ : ℕ} {A b h : ℝ} (hS : HidaSetting B.I n₀ A b B.lam B.μf B.g B.g₀ B.e)
     (hDS : ∀ v, IsDS (B.I.ε v) (B.lam v) (B.σ v)) (hw : ∀ v, IsLowUnit (B.I.ε v) (B.lam v) (B.σ v) (B.w v))
@@ -61,19 +61,19 @@ theorem hypB_of (B : RowsAut) {n₀ : ℕ} {A b h : ℝ} (hS : HidaSetting B.I n
   ⟨hS, countData_of B hDS hw, hG⟩
 
 /- English proof (translation)
-The claim follows from `(admitted_iff_cover_radius D).2 Formalism.HermitianLatticeCounting.Final.S7.coverRadius'`.
+A detailed English derivation is pending.
 -/
 theorem exists_pos_const_Lagrange_condition (D : Formalism.BasicNotions.D7) : adm5 D :=
   (admitted_iff_cover_radius D).2 Formalism.HermitianLatticeCounting.Final.S7.coverRadius'
 
 /- English proof (translation)
-The claim follows from `residue_admitted_of_known Formalism.HermitianLatticeCounting.Final.S7.residue_bound`.
+A detailed English derivation is pending.
 -/
 theorem explicit_formula_bound_holds : ∃ C : ℝ, 1 ≤ C ∧ ∀ D : Formalism.BasicNotions.D7, adm7 D C :=
   residue_admitted_of_known Formalism.HermitianLatticeCounting.Final.S7.residue_bound
 
 /- English proof (translation)
-Take `⟨c', cb, hc', hcb, h⟩` from `packet_bound_of_volume_count_geometry`. Take `⟨Cres, -, hres⟩` from `explicit_formula_bound_holds`. Use `⟨c', cb, hc', hcb, fun Cd Cq Cv A Cb cε hCd hCq hCC hCv hA hcε hcε2 => ?_⟩` and prove the remaining obligations. Take `⟨n₁, C₂, h⟩` from `h Cd Cq Cv Cres A Cb cε hCd hCq hCC hCv hA hcε hcε2`. Conclude with `⟨n₁, C₂, fun D n₀ C hn hC h2 hdec hloc hb htri hS => h D n₀ C hn hC h2 (hres D) hdec hloc hb htri hS⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem points_bound_of_volumeCountGeometryConditions : ∃ c' cb : ℝ, 0 < c' ∧ 0 < cb ∧ ∀ Cd Cq Cv A Cb cε : ℝ, 1 ≤ Cd → 0 ≤ Cq → 16 * Cq ≤ Cd →
     1 ≤ Cv → 1 ≤ A → 0 < cε → cε ≤ 1 / 90000 →
@@ -88,7 +88,7 @@ theorem points_bound_of_volumeCountGeometryConditions : ∃ c' cb : ℝ, 0 < c' 
 def eta (X : CData) (c : ℝ) : ℝ := Real.exp (-c * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))
 
 /- English proof (translation)
-Establish `h` using `(abs_le.1 hC).2`. Use `show X.Dc ≤ (1 + Real.exp (-c * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) * X.Ds`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dc_le_of_conC (X : CData) {c : ℝ} (hC : X.ConC c) : X.Dc ≤ (1 + eta X c) * X.Ds := by
   have h := (abs_le.1 hC).2
@@ -96,7 +96,7 @@ theorem dc_le_of_conC (X : CData) {c : ℝ} (hC : X.ConC c) : X.Dc ≤ (1 + eta 
   linarith
 
 /- English proof (translation)
-Establish `h` using `(abs_le.1 hC).1`. Use `show (1 - Real.exp (-c * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) * X.Ds ≤ X.Dc`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem le_dc_of_conC (X : CData) {c : ℝ} (hC : X.ConC c) : (1 - eta X c) * X.Ds ≤ X.Dc := by
   have h := (abs_le.1 hC).1
@@ -104,9 +104,9 @@ theorem le_dc_of_conC (X : CData) {c : ℝ} (hC : X.ConC c) : (1 - eta X c) * X.
   linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hfin`. Establish `h0 : X.Dc = 0` using `by show ((Module.finrank ℂ (X.I.eHom X.σs X.μf X.fund X.R X.Re) : ℕ) : ℝ) = 0`. Rewrite using `[Module.finrank_of_not_finite hfin]`. Simplify using the standard rewrite rules. Establish `h1` using `le_dc_of_conC X hC`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0]`. Use polynomial arithmetic with `[mul_pos (sub_pos.2 hη) hD]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem finDim_of_conC (X : CData) {c : ℝ} (hC : X.ConC c) (hD : 0 < X.Ds) (hη : eta X c < 1) :
     FiniteDimensional ℂ (X.I.eHom X.σs X.μf X.fund X.R X.Re) := by
@@ -123,14 +123,14 @@ def ProjCuspRows (B : RowsAut) (b h : ℝ) : Prop :=
   (toC B b h).ProjStep ∧ (toC B b h).CountedStep ∧ (toC B b h).CuspStep
 
 /- English proof (translation)
-The claim follows from `hS _ hX t1 t2`.
+A detailed English derivation is pending.
 -/
 theorem projCuspRows_of_stepsB (B : RowsAut) {n₀ : ℕ} {A C b h : ℝ} (hS : StepsB n₀ A C)
     (hX : (toC B b h).HypB n₀ A) (t1 : (toC B b h).GapAboveThreeHalvesPower) (t2 : (toC B b h).GapAboveSquareRootThreshold C) : ProjCuspRows B b h :=
   hS _ hX t1 t2
 
 /- English proof (translation)
-The claim follows from `projCuspRows_of_stepsB B (projection_facts_of_schur D n₀ A C hn₀ hC ha1 ha2 ha8 hdec hloc hE) hX t1 t2`.
+A detailed English derivation is pending.
 -/
 theorem projCuspRows_of_end (D : Formalism.BasicNotions.D7) (B : RowsAut) {n₀ : ℕ} {A C b h : ℝ} (hn₀ : 1 ≤ n₀) (hC : 46 ≤ C)
     (ha1 : adm1 D) (ha2 : adm2 D) (ha8 : adm8 D) (hdec : DiscreteSeriesDecayBound D) (hloc : LocalProjectorRealPlace D) (hE : cu_StepsEnd n₀ A C)
@@ -167,7 +167,7 @@ def FoldReady : Prop :=
 end Lat
 
 /- English proof (translation)
-Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Use `⟨(3 * Real.sqrt (X.I.n : ℝ) / (LitS.Size.tau1 X.I x * LitS.Size.tau1 X.I x)) ^ (2 * X.I.n ^ 2 * X.I.f), by have := hpos x; positivity, fun r hr S hS => ?_⟩` and prove the remaining obligations. Conclude with `hL x x (hpos x) (hpos x) r hr S hS`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem allCount_of_latCount (X : CData) (hL : LatCount X.I) (hpos : ∀ x, 0 < LitS.Size.tau1 X.I x) :
     AllCount X (2 * (X.I.n : ℝ) ^ 2) := by
@@ -177,13 +177,13 @@ theorem allCount_of_latCount (X : CData) (hL : LatCount X.I) (hpos : ∀ x, 0 < 
   exact hL x x (hpos x) (hpos x) r hr S hS
 
 /- English proof (translation)
-The claim follows from `LitS.finVol_of_borel hB X hX.2.1.2.2.2.1 hX.2.1.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem finVol_of_hypB (hB : LitS.BorelFinVol) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) : X.FinVol :=
   LitS.finVol_of_borel hB X hX.2.1.2.2.2.1 hX.2.1.2.2.2.2.1
 
 /- English proof (translation)
-Introduce `X hX`. Establish `hn : 1 ≤ X.I.n` using `le_trans hn₀ hX.1.1.1`. Conclude with `⟨finVol_of_hypB hB X hX.1, allCount_of_latCount X (hL X.I) fun x => ((hT X.I hn).2 x).1, hG X hX⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem geometric_count_of_borel (hB : LitS.BorelFinVol) (hL : ∀ I : AutInst, LatCount I) (hT : LitS.ReductionTau)
     {n₀ : ℕ} (hn₀ : 1 ≤ n₀) {A C cb cε Cv Cd Cq : ℝ}
@@ -197,13 +197,13 @@ section DistInv
 open Matrix
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.hs, norm_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dvi_hs_neg {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL.hs (-A) = Formalism.REAL.hs A := by
   simp [Formalism.REAL.hs, norm_neg]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Formalism.REAL.hs]`. Use `push_cast`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `RCLike.conj_mul _`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dvi_trace_hs {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     (Aᴴ * A).trace = ((Formalism.REAL.hs A : ℝ) : ℂ) := by
@@ -214,9 +214,9 @@ theorem dvi_trace_hs {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
   exact RCLike.conj_mul _
 
 /- English proof (translation)
-Establish `hk' : kᴴ * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← dvi_trace_hs, ← dvi_trace_hs, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Establish `e1 : k * (Xᴴ * kᴴ) * (k * X * kᴴ) = k * (Xᴴ * X) * kᴴ`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc kᴴ k, hk', Matrix.one_mul]`. Rewrite using `[e1, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hk', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dvi_hs_conj {n : ℕ} (k X : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     Formalism.REAL.hs (k * X * kᴴ) = Formalism.REAL.hs X := by
@@ -230,27 +230,25 @@ theorem dvi_hs_conj {n : ℕ} (k X : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Mat
   rw [e1, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hk', Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨k, X, hK, hX, hgm, ht⟩` from `ht`. Establish `hk1 : k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `hK.1`. Establish `hk : kᴴ * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk1`. Establish `hk2 : k * kᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hk1`. Establish `hJk : k * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * k` using `hK.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX1 : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX.1`. Establish `hX2 : X * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `hX.2`. Establish `hY1 : (-X)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * (-X) = 0`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, hX1, neg_zero]`. Establish `hY2 : (-X) * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * (-X))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.neg_mul, hX2, Matrix.mul_neg]`. Establish `hφ : ∀ A B : Matrix (Fin n) (Fin n) ℂ, (k * A * kᴴ) * (k * B * kᴴ) = k * (A * B) * kᴴ`. Introduce `A B`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc kᴴ k, hk, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hJφ : k * Formalism.REAL.Jm ε * kᴴ = Formalism.REAL.Jm ε`. Rewrite using `[hJk, Matrix.mul_assoc, hk2, Matrix.mul_one]`. Establish `hct : (k * (-X) * kᴴ)ᴴ = k * (-X)ᴴ * kᴴ`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Establish `hK' : kᴴ ∈ Formalism.REAL.Kset ε` using `by show kᴴ ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ kᴴ * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * kᴴ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Matrix.mem_unitaryGroup_iff.2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Conclude with `hk`. Combine the equalities or inequalities in the displayed calculation. Establish `hP' : Formalism.REAL.inP ε (k * (-X) * kᴴ)` using `by show ((k * (-X) * kᴴ)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * (k * (-X) * kᴴ) = 0) ∧ (k * (-X) * kᴴ) * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * (k * (-X) * kᴴ))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[hct]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJφ]`. Use `_ = k * ((-X)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * (-X)) * kᴴ := by`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hφ, hφ, Matrix.mul_add, Matrix.add_mul]`. Use `_ = 0 := by rw [hY1, Matrix.mul_zero, Matrix.zero_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hE : NormedSpace.exp X * NormedSpace.exp (-X) = 1`. Rewrite using `[← Matrix.exp_add_of_commute X (-X) (Commute.neg_right (Commute.refl X)), add_neg_cancel, NormedSpace.exp_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hku : IsUnit k` using `⟨⟨k, kᴴ, hk2, hk⟩, rfl⟩`. Establish `hkinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv hk`. Establish `hconj : NormedSpace.exp (k * (-X) * kᴴ) = k * NormedSpace.exp (-X) * kᴴ`. Rewrite using `[← hkinv]`. Conclude with `Matrix.exp_conj k (-X) hku`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinv : umat g⁻¹ * umat g = 1` using `Units.inv_mul (g : (Matrix (Fin n) (Fin n) ℂ)ˣ)`. Establish `key : k * NormedSpace.exp X * (NormedSpace.exp (-X) * kᴴ) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (NormedSpace.exp X), hE, Matrix.one_mul, hk2]`. Use `⟨kᴴ, k * (-X) * kᴴ, hK', hP', ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgm, key, Matrix.mul_one]`. Use `_ = NormedSpace.exp (-X) * kᴴ := by rw [← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Use `_ = kᴴ * NormedSpace.exp (k * (-X) * kᴴ) := by`. Rewrite using `[hconj]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Rewrite using `[← Matrix.mul_assoc kᴴ k, hk, Matrix.one_mul]`. Rewrite using `[ht, dvi_hs_conj k (-X) hk1, dvi_hs_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvi_sub {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) (t : ℝ)
     (ht : ∃ k X : Matrix (Fin n) (Fin n) ℂ, k ∈ Formalism.REAL.Kset ε ∧ Formalism.REAL.inP ε X ∧
@@ -324,9 +322,9 @@ theorem dvi_sub {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) (t : 
   · rw [ht, dvi_hs_conj k (-X) hk1, dvi_hs_neg]
 
 /- English proof (translation)
-Unfold `cartanDistance`. Use `congr 1`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `dvi_sub ε g⁻¹ t h`. Rewrite `h2` using `[inv_inv]`. Then use the resulting hypothesis. Conclude with `dvi_sub ε g t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem dV_inv {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) : cartanDistance ε g⁻¹ = cartanDistance ε g := by
   unfold cartanDistance
@@ -341,11 +339,11 @@ theorem dV_inv {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) : cart
 end DistInv
 
 /- English proof (translation)
-Break down `T.finite_or_infinite with hT | hT` into its components or cases. Establish `hS` using `h hT.toFinset (fun a ha => hT.mem_toFinset.1 ha)`. Rewrite using `[hT.encard_eq_coe_toFinset_card]`. Establish `e : (((hT.toFinset.card : ℕ∞)) : ENNReal) = ((hT.toFinset.card : ℕ) : ENNReal)` using `by simp`. Rewrite using `[e, ← ENNReal.ofReal_natCast]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_le_ofReal hS`. It suffices to derive a contradiction. Take `⟨S, hSsub, hcard⟩` from `hT.exists_subset_card_eq (⌈M⌉₊ + 1)`. Establish `h1` using `h S (fun a ha => hSsub ha)`. Rewrite `h1` using `[hcard]`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h1`. Combine the linear relations using `[Nat.le_ceil M]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem encard_le_ofReal_of_finset {α : Type*} (T : Set α) (M : ℝ)
     (h : ∀ S : Finset α, (∀ a ∈ S, a ∈ T) → (S.card : ℝ) ≤ M) :
@@ -364,23 +362,23 @@ theorem encard_le_ofReal_of_finset {α : Type*} (T : Set α) (M : ℝ)
     linarith [Nat.le_ceil M]
 
 /- English proof (translation)
-Introduce `r hr K' hK' x hx`. Establish `hbound : (3 * Real.sqrt (I.n : ℝ) / (LitS.Size.tau1 I x * LitS.Size.tau1 I x)) ^ (2 * I.n ^ 2 * I.f) * Real.exp (2 * (I.n : ℝ) ^ 2 * ∑ v, 2 * r v) = COm I r / LitS.Size.tau1 I x ^ (4 * I.n ^ 2 * I.f)`. Establish `e1 : (LitS.Size.tau1 I x * LitS.Size.tau1 I x) ^ (2 * I.n ^ 2 * I.f) = LitS.Size.tau1 I x ^ (4 * I.n ^ 2 * I.f)`. Rewrite using `[← pow_two, ← pow_mul]`. Put the polynomial expressions in normal form.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Establish `e2 : 2 * (I.n : ℝ) ^ 2 * ∑ v, 2 * r v = 4 * (I.n : ℝ) ^ 2 * ∑ v, r v`. Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_pow, e1, e2]`. Unfold `COm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `FoldBound.mult`. Use `iSup_le fun y => ?_` and prove the remaining obligations. Apply `encard_le_ofReal_of_finset` to reduce the goal to its premises. Introduce `S hS`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `S.eq_empty_or_nonempty with hS0 | ⟨γ0, hγ0S⟩` into its components or cases. Rewrite using `[hS0, Finset.card_empty, Nat.cast_zero]`. Unfold `COm`. Use `hx` as an intermediate fact. Check the signs of the components of the expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hγ0` using `hS γ0 hγ0S`. Set `F : rr_GF I → I.GFset` to `fun γ => ⟨((γ * γ0⁻¹ : rr_GF I) : I.GA), (γ * γ0⁻¹).2⟩`. Establish `hFinj : Function.Injective F`. Introduce `γ1 γ2 h`. Establish `h2 : γ1 * γ0⁻¹ = γ2 * γ0⁻¹` using `Subtype.ext (congrArg Subtype.val h)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel h2`. Establish `hc` using `hL x x hx hx (fun v => 2 * r v) (fun v => by linarith [hr v]) (S.map ⟨F, hFinj⟩) ?_`. Rewrite `hc` using `[Finset.card_map]`. Rewrite using `[← hbound]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `δ hδ`. Take `⟨γ, hγS, hδeq⟩` from `Finset.mem_map.1 hδ`. Establish `h1` using `hS γ hγS`. Establish `hδv : (δ : I.GA) = (γ : I.GA) * (γ0 : I.GA)⁻¹`. Rewrite using `[← hδeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e : x⁻¹ * ((γ : I.GA) * (γ0 : I.GA)⁻¹) * x = (x⁻¹ * ((γ : I.GA) * y)) * (x⁻¹ * ((γ0 : I.GA) * y))⁻¹` using `by group`. Rewrite using `[hδv, e]`. Prove the components needed by the constructor for the conclusion. Conclude with `hK' (K'.mul_mem h1.2 (K'.inv_mem hγ0.2))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Use `le_trans (hT _ (I.ε v) ((x⁻¹ * ((γ : I.GA) * y)).1 v) ((x⁻¹ * ((γ0 : I.GA) * y)).1 v)⁻¹) ?_` and prove the remaining obligations. Rewrite using `[dV_inv]`. Combine the linear relations using `[h1.1 v, hγ0.1 v]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem multBound_of_latCount (I : AutInst) (hL : LatCount I) (hT : DistTri) : MultBound I := by
   intro r hr K' hK' x hx
@@ -433,9 +431,7 @@ theorem multBound_of_latCount (I : AutInst) (hL : LatCount I) (hT : DistTri) : M
       linarith [h1.1 v, hγ0.1 v]
 
 /- English proof (translation)
-Use `haveI : ∀ v, (Formalism.REAL.muG (I.ε v)).IsHaarMeasure := fun v => by`. Unfold `Formalism.REAL.muG`. Use `infer_instance`. Use `haveI hpi : (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure := by infer_instance`. Unfold `AutInst.muA`.
-
-Conclude with `Measure.prod.instIsHaarMeasure _ _`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem muA_isHaar (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] :
     (I.muA μf).IsHaarMeasure := by
@@ -448,14 +444,14 @@ theorem muA_isHaar (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsH
   exact Measure.prod.instIsHaarMeasure _ _
 
 /- English proof (translation)
-Conclude with `@FoldBound.foldBound_holds I.GA _ _ _ hR.1 hR.2.1 _ hR.2.2.2.1 (I.muA μf) (muA_isHaar I μf)`.
+A detailed English derivation is pending.
 -/
 theorem foldBound_GA (I : AutInst) (hR : FoldReady I) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] :
     @FoldBound.FoldBound I.GA _ _ _ hR.1 hR.2.1 _ hR.2.2.2.1 (I.muA μf) (muA_isHaar I μf) := by
   exact @FoldBound.foldBound_holds I.GA _ _ _ hR.1 hR.2.1 _ hR.2.2.2.1 (I.muA μf) (muA_isHaar I μf)
 
 /- English proof (translation)
-Establish `h1` using `dc_le_of_conC _ hC`. Rewrite `h1` using `[toC_Dc, toC_Ds]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rows_D_le (B : RowsAut) {b h c : ℝ} (hC : (toC B b h).ConC c) :
     (B.D : ℝ) ≤ (1 + eta (toC B b h) c) * B.I.Dstar (fdegAll B.I B.σ B.w) B.μf B.fund B.e := by
@@ -463,7 +459,7 @@ theorem rows_D_le (B : RowsAut) {b h c : ℝ} (hC : (toC B b h).ConC c) :
   rwa [toC_Dc, toC_Ds] at h1
 
 /- English proof (translation)
-Take `⟨hinj, hran⟩` from `hB B.I B.μf B.fund B.fund_spec B.R B.R_spec B.e B.Re B.Re_spec B.H B.σ dv B.w hU hIrr hF hw hint T hT B.Hs B.σs B.tens B.tens_spec`. Establish `: FiniteDimensional ℂ (B.I.eHom B.σs B.μf B.fund B.R B.Re)` using `finDim_of_conC (toC B b h) hC hD hη`. Conclude with `RowsDef.finiteDimensional_HH_of_eHom hinj hran`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finDim_HH_of_conC (hB : RowsDef.RowsBij) (B : RowsAut) (dv : InfinitePlace B.I.F → ℝ)
     (hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (B.I.ε v)) (B.σ v))
@@ -479,14 +475,14 @@ theorem finDim_HH_of_conC (hB : RowsDef.RowsBij) (B : RowsAut) (dv : InfinitePla
   exact RowsDef.finiteDimensional_HH_of_eHom hinj hran
 
 /- English proof (translation)
-The claim follows from `countData_of X.B X.ds X.low`.
+A detailed English derivation is pending.
 -/
 theorem countData_setting {D : Formalism.BasicNotions.D7} (X : HidaSetting.HidaSetting D) :
     CountData X.B.I X.B.lam X.B.σ X.B.w X.B.σs X.B.tens X.B.μf X.B.fund X.B.R X.B.e X.B.Re :=
   countData_of X.B X.ds X.low
 
 /- English proof (translation)
-Introduce `_ hx` and use `hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem level_set_le_compact {D : Formalism.BasicNotions.D7} (X : HidaSetting.HidaSetting D) : X.K2 ⊆ X.B.I.Kset :=
   fun _ hx => hx.1
@@ -498,7 +494,7 @@ def levelSubgroupOfCharacter {D : Formalism.BasicNotions.D7} (X : HidaSetting.Hi
   inv_mem' := fun ha => hG.2.2.1 _ ha
 
 /- English proof (translation)
-The claim follows from `level_set_le_compact X`.
+A detailed English derivation is pending.
 -/
 theorem level_subgroup_le_compact {D : Formalism.BasicNotions.D7} (X : HidaSetting.HidaSetting D) (hG : X.LevelSubgroupCharacter) :
     ((levelSubgroupOfCharacter X hG : Subgroup X.B.I.Gf) : Set X.B.I.Gf) ⊆ X.B.I.Kset :=

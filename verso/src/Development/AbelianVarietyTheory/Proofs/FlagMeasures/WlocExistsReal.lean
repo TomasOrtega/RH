@@ -7,7 +7,7 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `scWlocExists Formalism.L2.SG.HCReprodM.hcReprodDSm`.
+A detailed English derivation is pending.
 -/
 theorem wlocExists_real : WlocExists :=
   scWlocExists Formalism.L2.SG.HCReprodM.hcReprodDSm

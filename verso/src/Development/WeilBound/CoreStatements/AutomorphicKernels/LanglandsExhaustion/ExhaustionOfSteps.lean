@@ -11,17 +11,15 @@ namespace PositivityTheory.Exh
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `A`. Proceed by induction on `A using List.reverseRecOn with`. Consider the case `nil`. Introduce `_ Δ b B hΔ hb hx`. Take `⟨σ, -, hσ⟩` from `hM x [b] B [] (by simpa using hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Δ, b, σ, hΔ, hb, by simpa using hσ⟩`. Consider the case `append_singleton A' a ih`. Introduce `hA Δ b B hΔ hb hx`. Establish `hA' : ∀ a ∈ A', a.IsCusp ∧ ρ ≠ a.nu 1` using `fun a' ha' => hA a' (List.mem_append_left _ ha')`. Establish `ha` using `hA a (by simp)`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : EmbL x (A' ++ [a, b] ++ B)` using `by simpa using hx`. Distinguish the cases in `hlk : (Segment.single a ha.1).Linked Δ`. Break down `hL a ha.1 Δ hlk with h | h` into its components or cases. Conclude with `(ha.2 (hΔ.symm.trans h)).elim`. Take `⟨σ, hσ, hxσ⟩` from `hM x A' [a, b] B hx'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hσ` using `[h]`. Break down `hJ σ b Δ hb hσ with h2 | h2` into its components or cases. Establish `hup : (up Δ).first = ρ`. Unfold `up`. Rewrite using `[Segment.first_ofFirst]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hΔ`. Conclude with `ih hA' (up Δ) σ B hup h2 hxσ`. Establish `h3` using `hR x σ A' [b, Δ.first.nu Δ.len] B h2 hxσ`. Rewrite `h3` using `[← h]`. Conclude with `ih hA' Δ b ([a] ++ B) hΔ hb (by simpa using h3)`.
-
-Establish `h3` using `hS x a b A' B _ Δ (single_spec ha.1).2.1 hb hlk hx'`. Conclude with `ih hA' Δ b ([a] ++ B) hΔ hb (by simpa using h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem move_left (hM : MidP k) (hR : RefineP k) (hS : SwapP k) (hJ : JuxtP k) (hL : LinkP k) (x ρ : IrrGL k) :
     ∀ (A : List (IrrGL k)), (∀ a ∈ A, a.IsCusp ∧ ρ ≠ a.nu 1) → ∀ (Δ : Segment k) (b : IrrGL k) (B : List (IrrGL k)), Δ.first = ρ →
@@ -55,17 +53,15 @@ theorem move_left (hM : MidP k) (hR : RefineP k) (hS : SwapP k) (hJ : JuxtP k) (
       exact ih hA' Δ b ([a] ++ B) hΔ hb (by simpa using h3)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ x`. Take `⟨hM, hR, hS, hC, hP, hJ, hL, hm, hG⟩` from `H k`. It suffices to establish `H : ∀ n : ℕ, ∀ x : IrrGL k, x.1 = n → ∃ 𝔪 : Multiset (Segment k), IsL 𝔪 x.rep from H _ x rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ n ih`. Introduce `x hn`. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Conclude with `GlobalTheory.LocGL.exh_le_one x (by omega)`. Take `⟨l, hl, hx⟩` from `hC x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : l ≠ []`. Introduce and unpack `rfl`. Take `⟨hd, -⟩` from `hx`. Simplify using `at hd`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, hmin⟩` from `hm l hne hl`. Take `⟨A, B, rfl⟩` from `List.append_of_mem hρ`. Take `⟨Γ, c, y, e, hc, hy⟩` from `move_left hM hR hS hJ hL x ρ A (fun a ha => ⟨hl a (List.mem_append_left _ ha), by simpa using hmin a (List.mem_append_left _ ha) 1 one_pos⟩) (Segment.single ρ (hl ρ hρ)) ρ B rfl (single_spec (hl ρ hρ)).2.1 (by simpa using hx)`. Take `⟨hd, f, hf⟩` from `id hy`. Establish `hdeg : Γ.deg = c.1` using `hc.deg_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos' : 0 < Γ.deg` using `Nat.mul_pos Γ.len_pos Γ.d_pos`. Establish `hd2 : c.1 + y.1 = x.1` using `(Fin.sum_univ_two fun a => ([c, y].get a).1).symm.trans hd`. Take `⟨𝔫, h𝔫⟩` from `ih y.1 (by omega) y rfl`. Use `⟨_, hG x [c, y].get hd Γ 𝔫 hc h𝔫 ⟨f, hf⟩ fun Δ' hΔ' hp => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, ej⟩` from `hp.2`.
-
-Conclude with `hmin _ (hP x c y _ 𝔫 hl hx hy h𝔫 Δ' hΔ') j hj (e.symm.trans ej)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exhaustion_of_steps
     (H : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k],

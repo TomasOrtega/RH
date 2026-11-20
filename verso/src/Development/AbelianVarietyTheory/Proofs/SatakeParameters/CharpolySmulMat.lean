@@ -25,9 +25,9 @@ namespace GlobalTheory.GalCut.SsTwist
 open Polynomial
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.charpoly_toMatrix _ (Module.finBasis ℂ V), map_smul, ← LinearMap.charpoly_toMatrix f (Module.finBasis ℂ V)]`. Generalize the expression as in `LinearMap.toMatrix (Module.finBasis ℂ V) (Module.finBasis ℂ V) f = M`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩ : ∃ y, x = c * y` from `⟨c⁻¹ * x, by rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul, smul_sub]`. Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charpoly_smul_end {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) {c : ℂ} (hc : c ≠ 0) : (c • f).charpoly = f.charpoly.scaleRoots c := by
@@ -48,7 +48,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨n, b, rfl⟩` from `x.exists_rep`. Rewrite using `[WD.lpTwist_mk, WD.charPol_mk, WD.charPol_mk, WDRep.twist_ρ, charpoly_smul_end _ (Units.ne_zero _)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem charPol_lpTwist (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) (g : Weil h) :
     (x.lpTwist ξ hξ).charPol g = (x.charPol g).scaleRoots (ξ g : ℂ) := by
@@ -56,7 +56,7 @@ theorem charPol_lpTwist (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) 
   rw [WD.lpTwist_mk, WD.charPol_mk, WD.charPol_mk, WDRep.twist_ρ, charpoly_smul_end _ (Units.ne_zero _)]
 
 /- English proof (translation)
-Use `congrArg (fun P : ℂ[X] => P.scaleRoots c⁻¹) H` as an intermediate fact. Simplify `this` using `only [← scaleRoots_mul, mul_inv_cancel₀ hc, scaleRoots_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scaleRoots_cancel {p q : ℂ[X]} {c : ℂ} (hc : c ≠ 0) (H : p.scaleRoots c = q.scaleRoots c) : p = q := by
   have := congrArg (fun P : ℂ[X] => P.scaleRoots c⁻¹) H

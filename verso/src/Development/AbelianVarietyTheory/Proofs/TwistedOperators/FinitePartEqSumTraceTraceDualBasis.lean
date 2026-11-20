@@ -10,7 +10,7 @@ namespace GlobalTheory.TwistCoords
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Establish `h1 : (r ⊗ₜ[F] x : R ⊗[F] E) = r • ((1 : R) ⊗ₜ[F] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tmul_base {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [CommRing R] [Algebra F R] (r : R) (x : E) :
@@ -21,7 +21,7 @@ theorem trace_tmul_base {F E R : Type} [Field F] [Field E] [Algebra F E] [Finite
     LinearMap.trace_baseChange, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h` using `congrArg (Algebra.traceForm F E ((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) b l)) (b.sum_repr x)`. Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, LinearMap.BilinForm.apply_dualBasis_left, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Rewrite `h` using `[Algebra.traceForm_apply]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_eq_trace {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [Algebra.IsSeparable F E] {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E)
@@ -37,11 +37,11 @@ theorem repr_eq_trace {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDime
   exact h.symm
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Use `⟨_, fun l => (Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) b l, b, ?_⟩` and prove the remaining obligations. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r x`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_tmul_base, map_mul, AlgHom.commutes, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`. Simplify using `only [repr_eq_trace]`. Use `conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[TensorProduct.tmul_sum]`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add, ← Finset.sum_add_distrib, TensorProduct.add_tmul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coords_gen (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
     [FiniteDimensional F E] [Algebra.IsSeparable F E] :
@@ -69,7 +69,7 @@ end GlobalTheory.TwistCoords
 namespace GlobalTheory.TwistCoords
 
 /- English proof (translation)
-Introduce `D`. Take `⟨d, c, e, h⟩` from `coords_gen D.host.F D.host.E`. Conclude with `⟨d, c, e, fun w => h w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finPart_eq_sum_trace :
     ∀ (D : D7), ∃ (d : ℕ) (c e : Fin d → D.host.E), ∀ w : AE D, finPart D w =

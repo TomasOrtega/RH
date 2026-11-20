@@ -13,7 +13,7 @@ namespace GlobalTheory.GalPhi
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Apply `inclW_injective` to reduce the goal to its premises. Rewrite using `[← frobW_inclW, ← galW_inclW, ← galW_inclW, ← frobW_inclW]`. Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Simplify using `[galW, frobW, mapAlgEquivW, mapEquivW, WittVector.map_coeff, frobenius_def]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem σA_frobenius (g : GQ l) (x : Ainf l) :
     Per.σA g (WittVector.frobenius x) = WittVector.frobenius (Per.σA g x) := by
@@ -23,9 +23,9 @@ theorem σA_frobenius (g : GQ l) (x : Ainf l) :
   simp [galW, frobW, mapAlgEquivW, mapEquivW, WittVector.map_coeff, frobenius_def]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `WittVector.frobenius (zlW l (OCb l) z) = zlW l (OCb l) z`. Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Simplify using `only [zlW, RingHom.comp_apply]`. Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Simplify using `only [WittVector.map_coeff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun φ : ZMod l →+* OCb l => φ (((WittVector.equiv l).symm.toRingHom z).coeff n)) (RingHom.ext_zmod ((frobenius (OCb l) l).comp (ZMod.castHom (dvd_refl l) (OCb l))) (ZMod.castHom (dvd_refl l) (OCb l)))`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_algebraMap (z : ℤ_[l]) :
     WittVector.frobenius (algebraMap ℤ_[l] (Ainf l) z) = algebraMap ℤ_[l] (Ainf l) z := by
@@ -38,13 +38,11 @@ theorem frobenius_algebraMap (z : ℤ_[l]) :
     (RingHom.ext_zmod ((frobenius (OCb l) l).comp (ZMod.castHom (dvd_refl l) (OCb l))) (ZMod.castHom (dvd_refl l) (OCb l)))
 
 /- English proof (translation)
-Establish `hz : ((ρ g).map (algebraMap ℤ_[l] (Ainf l))).map (inclW l) = zW (ρ g)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `(inclWA l).commutes _`. Establish `hσ : (Y.map (Per.σA (g : GQ l))).map (inclW l) = (Y.map (inclW l)).map (galW l (g : GQ l))`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(galW_inclW _ _).symm`. Establish `hT : (Y.map (inclW l)).map (galW l (g : GQ l)) = inclW l (Per.σA (g : GQ l) τ) ^ N • F.T.map (galW l (g : GQ l))`. Rewrite using `[hY, ← galW_inclW, ← map_pow]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply `inclW_injective` to reduce the goal to its premises. Establish `key : (τ ^ N • ((ρ g).map (algebraMap ℤ_[l] (Ainf l)) * Y.map (Per.σA (g : GQ l)))).map (inclW l) = (Per.σA (g : GQ l) τ ^ N • (Y * F.ε g)).map (inclW l)`. Rewrite using `[Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_mul, Matrix.map_mul, hz, hσ, hT, Matrix.mul_smul, F.gal, hY, Matrix.smul_mul, smul_smul, smul_smul, mul_comm]`. Simplify using `only [map_pow]`.
-
-Conclude with `congrFun (congrFun key i) j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gal_ainf {K : FinExt l} (bk : BK K) (τ : Ainf l) (N d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l])
     (F : Frame bk N d ρ) (Y : Matrix (Fin d) (Fin d) (Ainf l)) (hY : Y.map (inclW l) = inclW l τ ^ N • F.T)
@@ -72,11 +70,9 @@ end GlobalTheory.GalPhi
 open GlobalTheory.GalPhi in
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ N d ρ F Y hY g`. Establish `h` using `congrArg (fun M => M.map (WittVector.frobenius : Ainf l →+* Ainf l)) (gal_ainf bk τ N d ρ F Y hY g)`. Rewrite `h` using `[Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_mul, Matrix.map_mul, map_pow, map_pow, ← σA_frobenius, hτ.1]`. Establish `h1 : ((ρ g).map (algebraMap ℤ_[l] (Ainf l))).map (WittVector.frobenius : Ainf l →+* Ainf l) = (ρ g).map (algebraMap ℤ_[l] (Ainf l))`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `frobenius_algebraMap _`. Establish `h2 : (Y.map (Per.σA (g : GQ l))).map (WittVector.frobenius : Ainf l →+* Ainf l) = (Y.map WittVector.frobenius).map (Per.σA (g : GQ l))`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `(σA_frobenius _ _).symm`. Rewrite `h` using `[h1, h2]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GalPhi.galPhi : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (N d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (F : Frame bk N d ρ) (Y : Matrix (Fin d) (Fin d) (Ainf l)), Y.map (inclW l) = inclW l τ ^ N • F.T → ∀ g : ↥(GK K), (bk.ev bk.E * τ) ^ N • ((ρ g).map (algebraMap ℤ_[l] (Ainf l)) * (Y.map WittVector.frobenius).map (Per.σA (g : GQ l))) = Per.σA (g : GQ l) (bk.ev bk.E * τ) ^ N • (Y.map WittVector.frobenius * (F.ε g).map WittVector.frobenius) := by
   intro l _ K bk τ hτ N d ρ F Y hY g

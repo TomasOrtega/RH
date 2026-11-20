@@ -18,7 +18,7 @@ open GlobalTheory.CompanionTheory.MirPair
 namespace GlobalTheory.CompanionTheory.MirPair.Nondeg
 
 /- English proof (translation)
-Introduce `x hx j` and use `le_trans (show valuation k (x j) ≤ valuation k (s : k) from hx j) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem box_subset_of_valuation_le {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {m : ℕ} {s t : kˣ} (h : valuation k (s : k) ≤ valuation k (t : k)) :
@@ -26,11 +26,9 @@ theorem box_subset_of_valuation_le {k : Type} [Field k] [ValuativeRel k] [Topolo
   le_trans (show valuation k (x j) ≤ valuation k (s : k) from hx j) h
 
 /- English proof (translation)
-Proceed by induction on `S, hS using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨t, le_rfl, by simp⟩`. Consider the case `@insert a s _ _ ih`. Take `⟨u, h1, h2⟩` from `ih`. Break down `le_total (valuation k (u : k)) (valuation k (τ a : k)) with h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨τ a, h1.trans h, fun w hw => ?_⟩` and prove the remaining obligations. Break down `Set.mem_insert_iff.1 hw with rfl | hw` into its components or cases. Conclude with `le_rfl`. Conclude with `(h2 w hw).trans h`. Use `⟨u, h1, fun w hw => ?_⟩` and prove the remaining obligations.
-
-Break down `Set.mem_insert_iff.1 hw with rfl | hw` into its components or cases. Conclude with `h`. Conclude with `h2 w hw`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_unit_bound {k : Type} [Field k] [ValuativeRel k] {W : Type} {S : Set W} (hS : S.Finite)
     (τ : W → kˣ) (t : kˣ) :
@@ -51,11 +49,11 @@ theorem exists_unit_bound {k : Type} [Field k] [ValuativeRel k] {W : Type} {S : 
       · exact h2 w hw
 
 /- English proof (translation)
-Break down `le_total (valuation k (t₀ : k)) (valuation k ((c * r⁻¹ : kˣ) : k)) with h | h` into its components or cases. Use `⟨c * r⁻¹, h, ?_⟩` and prove the remaining obligations. Establish `e : c * (c * r⁻¹)⁻¹ = r` using `by simp`. Rewrite using `[e]`. Use `⟨t₀, le_rfl, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((c * t₀⁻¹ : kˣ) : k) = ((c * r⁻¹ : kˣ) : k) * ((t₀⁻¹ : kˣ) : k) * (r : k)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `e1 : valuation k (t₀ : k) * valuation k ((t₀⁻¹ : kˣ) : k) = 1`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_large_unit {k : Type} [Field k] [ValuativeRel k] (c r t₀ : kˣ) :
     ∃ t : kˣ, valuation k (t₀ : k) ≤ valuation k (t : k) ∧
@@ -77,7 +75,7 @@ theorem exists_large_unit {k : Type} [Field k] [ValuativeRel k] (c r t₀ : kˣ)
       _ = valuation k (r : k) := by rw [e1, one_mul]
 
 /- English proof (translation)
-Use `Continuous.mul ?_ (continuous_coef T B hT v v')` and prove the remaining obligations. Establish `h : Continuous fun x : Fin (n + 1) → k => ψ (-x (Fin.last n))` using `hψ.comp (continuous_apply _).neg`. Conclude with `continuous_subtype_val.comp h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_wt_mul_coef {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (hψ : Continuous ψ) {n : ℕ} {V V' : Type}
@@ -96,19 +94,19 @@ namespace GlobalTheory.CompanionTheory.MirPair
 open GlobalTheory.CompanionTheory.MirPair.Nondeg in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν _ ψ c n V V' _ _ _ _ T T' B s hψ hc hT hT' hinv hnd v hv`. Take `⟨r₁, hr₁, hfix⟩` from `GlobalTheory.T.smooth_vector_fixed_small_shear T hT v`. Take `⟨r₂, hr₂, hlat⟩` from `GlobalTheory.T.shear_preserves_box_membership (k := k) (n := n) 1`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr, hrr₁, hrr₂⟩ : ∃ r : kˣ, valuation k (r : k) < 1 ∧ valuation k (r : k) ≤ valuation k (r₁ : k) ∧ valuation k (r : k) ≤ valuation k (r₂ : k) := by`. Break down `le_total (valuation k (r₁ : k)) (valuation k (r₂ : k)) with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨r₁, hr₁, le_rfl, h⟩`. Conclude with `⟨r₂, hr₂, h, le_rfl⟩`. Take `⟨t₀, ht₀⟩` from `GlobalTheory.T.mirabolic_twisted_kernel_nonvanishing ν ψ T B hψ hT hnd v hv`. Take `⟨t, htt₀, htc⟩` from `exists_large_unit c r t₀`. Take `⟨v', hv'⟩` from `ht₀ t htt₀`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hev : ∀ w : V', ∃ τ : kˣ, ∀ u : kˣ, valuation k (τ : k) ≤ valuation k (u : k) → JJ ν ψ T B (box (n + 1) u : Set (Fin (n + 1) → k)) v w = 0`. Introduce `w`. Take `⟨A, hA⟩` from `GlobalTheory.T.mirabolic_pairing_exists_eventual_value ν ψ c T T' B s hψ hc hT hT' hinv v w`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : A = 0` using `hno w A hA`. Take `⟨τ, hτ⟩` from `hA`. Conclude with `⟨τ, fun u hu => (hτ u hu).trans h0⟩`. Use `choose τ hτ using hev`. Take `⟨u, htu, hu⟩` from `exists_unit_bound (GlobalTheory.T.shear_orbit_box_finite_of_isSmooth T' hT' v' r hr) τ t`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ b ∈ box (n + 1) (c * t⁻¹), ∫ x in (box (n + 1) u : Set (Fin (n + 1) → k)), ((ψ (-(b ⬝ᵥ x)) : Circle) : ℂ) * (wt ψ n x * coef T B v v' x) ∂(piHaar ν (n + 1)) = 0`. Introduce `b hb`. Establish `hbr : b ∈ (box (n + 1) r : Set (Fin (n + 1) → k))` using `box_subset_of_valuation_le htc hb`. Establish `hlast : valuation k (b (Fin.last n)) < 1` using `lt_of_le_of_lt (show valuation k (b (Fin.last n)) ≤ valuation k (r : k) from hbr _) hr`. Rewrite using `[GlobalTheory.T.mirabolic_pairing_depth_vanishing ν ψ T T' B s hψ hT hinv b _ v v' hlast (hfix b (box_subset_of_valuation_le hrr₁ hbr)) ?_]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hτ _ u (hu _ ⟨b, hbr, rfl⟩)`. Introduce `x`. Establish `h` using `hlat b (box_subset_of_valuation_le hrr₂ hbr) u x`. Simplify using `using h`. Establish `hm : MeasurableSet (box (n + 1) u : Set (Fin (n + 1) → k))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[coe_box]`. Conclude with `MeasurableSet.univ_pi fun _ => (isOpen_cball u).measurableSet`. Establish `hfin` using `setIntegral_inter_box_of_twists ν ψ c hψ hc (n + 1) t (box (n + 1) u : Set (Fin (n + 1) → k)) (fun x => wt ψ n x * coef T B v v' x) 0 (isCompact_box _ _) hm (continuous_wt_mul_coef ψ hψ T B hT v v') hz`. Rewrite `hfin` using `[Set.inter_eq_right.2 (box_subset_of_valuation_le htu)]`. Conclude with `hv' hfin`.
+A detailed English derivation is pending.
 -/
 theorem exists_evVal_ne_zero : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (c : kˣ) {n : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (T : Representation ℂ (Mir k (n + 1)) V) (T' : Representation ℂ (Mir k (n + 1)) V') (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (s : ℕ), Continuous ψ → HasConductor ψ c → IsSmooth T → IsSmooth T' → TwInv T T' B s → (∀ v, v ≠ 0 → ∃ v', B v v' ≠ 0) → ∀ v : V, v ∉ twKer T (MirUin k (n + 1)) (mirChar k ψ n) → ∃ (v' : V') (A : ℂ), EvVal ν ψ T B v v' A ∧ A ≠ 0 := by
   intro k _ _ _ _ _ _ ν _ ψ c n V V' _ _ _ _ T T' B s hψ hc hT hT' hinv hnd v hv

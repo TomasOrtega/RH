@@ -7,7 +7,7 @@ open GlobalTheory.EigenSplit
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EigenSplit.finrank_eigenSub_toModuleEnd_eq_one | exact GlobalTheory.EigenSplit.finrank_eigenSub_toModuleEnd_eq_one | (intros; apply GlobalTheory.EigenSplit.finrank_eigenSub_toModuleEnd_eq_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finrank_eigenspace_embedding_one : ∀ {E V : Type} [Field E] [NumberField E] [CommRing V] [IsDomain V] [ValuationRing V] [CharZero V]
     {ι : Type} [Fintype ι] (σ : ι → 𝓞 E →+* V), Function.Injective σ →

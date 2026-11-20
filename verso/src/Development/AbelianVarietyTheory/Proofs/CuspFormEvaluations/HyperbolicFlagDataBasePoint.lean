@@ -18,12 +18,12 @@ noncomputable section
 def ii : E4 := IsCyclotomicExtension.zeta 4 ℚ E4
 
 /- English proof (translation)
-The claim follows from `IsCyclotomicExtension.zeta_spec 4 ℚ E4`.
+A detailed English derivation is pending.
 -/
 theorem ii_prim : IsPrimitiveRoot ii 4 := IsCyclotomicExtension.zeta_spec 4 ℚ E4
 
 /- English proof (translation)
-Establish `h : IsPrimitiveRoot (ii ^ 2) 2` using `ii_prim.pow (by norm_num) (by norm_num : 4 = 2 * 2)`. Rewrite using `[← sq]`. Conclude with `h.eq_neg_one_of_two_right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ii_mul_ii : ii * ii = -1 := by
   have h : IsPrimitiveRoot (ii ^ 2) 2 := ii_prim.pow (by norm_num) (by norm_num : 4 = 2 * 2)
@@ -31,17 +31,17 @@ theorem ii_mul_ii : ii * ii = -1 := by
   exact h.eq_neg_one_of_two_right
 
 /- English proof (translation)
-The claim follows from `ii_prim.ne_zero (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem ii_ne_zero : ii ≠ 0 := ii_prim.ne_zero (by norm_num)
 
 /- English proof (translation)
-The claim follows from `ii_prim.isIntegral (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem ii_isIntegral : IsIntegral ℤ ii := ii_prim.isIntegral (by norm_num)
 
 /- English proof (translation)
-Establish `h : τ ii * τ ii = Complex.I * Complex.I`. Rewrite using `[← map_mul, ii_mul_ii, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Conclude with `mul_self_eq_mul_self_iff.1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_ii (τ : E4 →+* ℂ) : τ ii = Complex.I ∨ τ ii = -Complex.I := by
   have h : τ ii * τ ii = Complex.I * Complex.I := by
@@ -49,7 +49,7 @@ theorem emb_ii (τ : E4 →+* ℂ) : τ ii = Complex.I ∨ τ ii = -Complex.I :=
   exact mul_self_eq_mul_self_iff.1 h
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E4 →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[emb_cc, map_neg]`. Apply the tactic sequence `rcases emb_ii τ with h | h <;> simp [h]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_ii : cc ii = -ii := by
   obtain ⟨τ⟩ : Nonempty (E4 →+* ℂ) := inferInstance
@@ -58,11 +58,11 @@ theorem cc_ii : cc ii = -ii := by
   rcases emb_ii τ with h | h <;> simp [h]
 
 /- English proof (translation)
-Establish `hcl` using `IsCyclotomicExtension.Rat.isIntegralClosure_adjoin_singleton ii_prim`. Take `⟨⟨y, hy⟩, rfl⟩` from `(hcl.isIntegral_iff).1 hx`. Express the relevant statement in the definitionally equal form `∃ m n : ℤ, y = m + n * ii`. Use `clear hx`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem z hz => exact ⟨0, 1, by simpa using hz⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨m, n, rfl⟩` from `ha`. Take `⟨m', n', rfl⟩` from `hb`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m + m', n + n', by push_cast; ring⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨m, n, rfl⟩` from `ha`. Take `⟨m', n', rfl⟩` from `hb`. Conclude with `⟨m * m' - n * n', m * n' + n * m', by push_cast; linear_combination (n * n' : E4) * ii_mul_ii⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_int_of_isIntegral {x : E4} (hx : IsIntegral ℤ x) :
     ∃ m n : ℤ, x = m + n * ii := by
@@ -84,9 +84,9 @@ theorem exists_int_of_isIntegral {x : E4} (hx : IsIntegral ℤ x) :
       push_cast; linear_combination (n * n' : E4) * ii_mul_ii⟩
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E4).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨k, hk, hki⟩` from `halg.exists_integral_multiple`. Take `⟨m, n, h⟩` from `exists_int_of_isIntegral hki`. Establish `hk' : (k : E4) ≠ 0` using `Int.cast_ne_zero.2 hk`. Use `⟨m / k, n / k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[zsmul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_rat (x : E4) : ∃ p q : ℚ, x = p + q * ii := by
   have halg : IsAlgebraic ℤ x :=
@@ -101,7 +101,7 @@ theorem exists_rat (x : E4) : ∃ p q : ℚ, x = p + q * ii := by
   linear_combination h
 
 /- English proof (translation)
-Establish `h` using `trace_cc ii`. Rewrite `h` using `[cc_ii, map_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem trace_ii : Algebra.trace ℚ E4 ii = 0 := by
   have h := trace_cc ii
@@ -109,14 +109,14 @@ theorem trace_ii : Algebra.trace ℚ E4 ii = 0 := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[IsCyclotomicExtension.Rat.finrank 4 E4]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem finrank_eq : Module.finrank ℚ E4 = 2 := by
   rw [IsCyclotomicExtension.Rat.finrank 4 E4]
   decide
 
 /- English proof (translation)
-Establish `e : -(ii / 2) * ((p : E4) + q * ii) = algebraMap ℚ E4 (q / 2) + algebraMap ℚ E4 (-(p / 2)) * ii`. Simplify using `only [eq_ratCast]`. Use `push_cast`. Take the linear combination `(-(q : E4) / 2) * ii_mul_ii`. Rewrite using `[e, map_add, ← Algebra.smul_def, map_smul, trace_ii, Algebra.trace_algebraMap, finrank_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -130,7 +130,7 @@ theorem trace_eq (p q : ℚ) : Algebra.trace ℚ E4 (-(ii / 2) * (p + q * ii)) =
   ring
 
 /- English proof (translation)
-Take `⟨m, n, rfl⟩` from `exists_int_of_isIntegral ht`. Conclude with `⟨n, by simpa using trace_eq m n⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem trace_int {t : E4} (ht : IsIntegral ℤ t) :
     ∃ k : ℤ, Algebra.trace ℚ E4 (-(ii / 2) * t) = k := by
@@ -138,11 +138,11 @@ theorem trace_int {t : E4} (ht : IsIntegral ℤ t) :
   exact ⟨n, by simpa using trace_eq m n⟩
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `exists_rat t`. Take `⟨k, hk⟩` from `h 1 isIntegral_one`. Take `⟨l, hl⟩` from `h ii ii_isIntegral`. Rewrite `hk` using `[mul_one, trace_eq]`. Establish `e : ((p : E4) + q * ii) * ii = ((-q : ℚ) : E4) + p * ii`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Take the linear combination `(q : E4) * ii_mul_ii`. Rewrite `hl` using `[e, trace_eq]`. Rewrite using `[hk, hl]`. Simplify using `only [Rat.cast_intCast]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(isIntegral_intCast l).add ((isIntegral_intCast k).mul ii_isIntegral)`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_trace {t : E4}
     (h : ∀ a : E4, IsIntegral ℤ a → ∃ k : ℤ, Algebra.trace ℚ E4 (-(ii / 2) * (t * a)) = k) :
@@ -162,20 +162,20 @@ theorem isIntegral_of_trace {t : E4}
 def gm : Matrix (Fin 2) (Fin 2) E4 := !![1, 0; 0, -1]
 
 /- English proof (translation)
-Simplify using `[herm, gm, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_gm (x y : Fin 2 → E4) : herm gm x y = x 0 * cc (y 0) - x 1 * cc (y 1) := by
   simp [herm, gm, Fin.sum_univ_two]
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [gm, cc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gm_herm (a b : Fin 2) : cc (gm a b) = gm b a := by
   fin_cases a <;> fin_cases b <;> simp [gm, cc]
 
 /- English proof (translation)
-Simplify using `[gm, Matrix.det_fin_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gm_det : gm.det ≠ 0 := by
   simp [gm, Matrix.det_fin_two]
@@ -187,12 +187,12 @@ def lat : Submodule (𝓞 E4) (Fin 2 → E4) where
   smul_mem' c _ hx a := c.isIntegral_coe.mul (hx a)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lat {x : Fin 2 → E4} : x ∈ lat ↔ ∀ a, IsIntegral ℤ (x a) := Iff.rfl
 
 /- English proof (translation)
-Introduce `b`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using `using hc`. Simplify `isIntegral_zero` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem single_mem_lat (a : Fin 2) {c : E4} (hc : IsIntegral ℤ c) : Pi.single a c ∈ lat := by
   intro b
@@ -201,9 +201,9 @@ theorem single_mem_lat (a : Fin 2) {c : E4} (hc : IsIntegral ℤ c) : Pi.single 
   · simpa [h] using isIntegral_zero
 
 /- English proof (translation)
-Use `Submodule.fg_def.2 ⟨Set.range fun a : Fin 2 => (Pi.single a 1 : Fin 2 → E4), Set.finite_range _, le_antisymm ?_ fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `single_mem_lat a isIntegral_one`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a => ⟨x a, hx a⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ a, x a • (Pi.single a 1 : Fin 2 → E4) = x`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `fin_cases b <;> simp [Fin.sum_univ_two]`.
+Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lat_fg : lat.FG := by
   refine Submodule.fg_def.2 ⟨Set.range fun a : Fin 2 => (Pi.single a 1 : Fin 2 → E4),
@@ -218,9 +218,9 @@ theorem lat_fg : lat.FG := by
     fin_cases b <;> simp [Fin.sum_univ_two]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x = x 0 • (Pi.single 0 1 : Fin 2 → E4) + x 1 • (Pi.single 1 1 : Fin 2 → E4)`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `fin_cases b <;> simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hx]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_lat 0 isIntegral_one))) (Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_lat 1 isIntegral_one)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_span : Submodule.span E4 (lat : Set (Fin 2 → E4)) = ⊤ := by
   rw [eq_top_iff]
@@ -234,16 +234,16 @@ theorem lat_span : Submodule.span E4 (lat : Set (Fin 2 → E4)) = ⊤ := by
     (Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_lat 1 isIntegral_one)))
 
 /- English proof (translation)
-Rewrite using `[herm_gm]`. Conclude with `((hx 0).mul (isIntegral_cc (hy 0))).sub ((hx 1).mul (isIntegral_cc (hy 1)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_int {x y : Fin 2 → E4} (hx : x ∈ lat) (hy : y ∈ lat) : IsIntegral ℤ (herm gm x y) := by
   rw [herm_gm]
   exact ((hx 0).mul (isIntegral_cc (hy 0))).sub ((hx 1).mul (isIntegral_cc (hy 1)))
 
 /- English proof (translation)
-Establish `h0` using `h _ (single_mem_lat 0 isIntegral_one)`. Establish `h1` using `(h _ (single_mem_lat 1 isIntegral_one)).neg`. Rewrite `h0`, `h1` using `[herm_gm]`. Introduce `a`. Use `fin_cases a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[cc_one, cc_zero]`. Simplify `h1` using `[cc_one, cc_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lat_dual (x : Fin 2 → E4) (h : ∀ y ∈ lat, IsIntegral ℤ (herm gm x y)) : x ∈ lat := by
   have h0 := h _ (single_mem_lat 0 isIntegral_one)
@@ -255,9 +255,9 @@ theorem lat_dual (x : Fin 2 → E4) (h : ∀ y ∈ lat, IsIntegral ℤ (herm gm 
   · simpa [cc_one, cc_zero] using h1
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_traceFormDual]`. Use `⟨fun h => lat_dual x fun y hy => isIntegral_of_trace fun a ha => ?_, fun hx y hy => trace_int (lat_int hx hy)⟩` and prove the remaining obligations. Use `h (cc a • y) fun b => (isIntegral_cc ha).mul (hy b)` as an intermediate fact. Establish `e : herm gm x (cc a • y) = herm gm x y * a`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [herm_gm, Pi.smul_apply, smul_eq_mul, cc_mul, cc_cc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[EFf, e]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem traceFormDual_lat : traceFormDual (ii / 2) gm lat = lat := by
   ext x
@@ -275,13 +275,13 @@ def cmt : Finset (E4 →+* ℂ) := by
   exact Finset.univ.filter fun τ => τ ii = Complex.I
 
 /- English proof (translation)
-Simplify using `[cmt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cmt {τ : E4 →+* ℂ} : τ ∈ cmt ↔ τ ii = Complex.I := by
   simp [cmt]
 
 /- English proof (translation)
-Establish `hI : -Complex.I ≠ Complex.I` using `fun h => by`. Use `congrArg Complex.im h` as an intermediate fact. Evaluate the numerical expressions using `at this`. Rewrite using `[mem_cmt, mem_cmt, ComplexEmbedding.conjugate_coe_eq]`. Apply the tactic sequence `rcases emb_ii τ with h | h <;> simp [h, hI]`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cmt_cmType (τ : E4 →+* ℂ) : τ ∈ cmt ↔ ComplexEmbedding.conjugate τ ∉ cmt := by
   have hI : -Complex.I ≠ Complex.I := fun h => by
@@ -291,7 +291,7 @@ theorem cmt_cmType (τ : E4 →+* ℂ) : τ ∈ cmt ↔ ComplexEmbedding.conjuga
   rcases emb_ii τ with h | h <;> simp [h, hI]
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [gram, hermC, col, sgn, gm, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_one (τ : E4 →+* ℂ) :
     gram τ gm 1 = Matrix.diagonal fun a : Fin 2 => ((sgn 1 (a : ℕ) : ℝ) : ℂ) := by
@@ -299,14 +299,14 @@ theorem gram_one (τ : E4 →+* ℂ) :
   fin_cases a <;> fin_cases b <;> simp [gram, hermC, col, sgn, gm, Matrix.one_apply]
 
 /- English proof (translation)
-The claim follows from `div_ne_zero ii_ne_zero two_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem half_ii_ne_zero : ii / 2 ≠ 0 := div_ne_zero ii_ne_zero two_ne_zero
 
 /- English proof (translation)
-Use `FlagData.exists_data latMinkowski E4 2 1 3 3 cmt gm lat (ii / 2) (-ii) cmt_cmType gm_herm gm_det (by norm_num) (fun τ _ => ⟨1, by simp, gram_one τ⟩) lat_fg lat_span le_rfl ?_ half_ii_ne_zero (Or.inr (by ring)) (fun τ hτ => ?_) (by norm_num) fun x hx y hy => ?_` and prove the remaining obligations. Establish `h : IsCMField.complexConj E4 ii = -ii` using `cc_ii`. Simplify using `[cc, h, map_ofNat, neg_div]`. Simplify using `[mem_cmt.1 hτ]`. Rewrite using `[div_self (by norm_num), one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ii_isIntegral.neg.mul (lat_int hx hy)`.
+A detailed English derivation is pending.
 -/
 theorem exists_flagData : ∃ X : Data E4 2, X.Ψ = cmt ∧ X.Gm = gm ∧ X.p0 = 1 ∧ X.Λ = lat ∧
     X.ξ0 = ii / 2 ∧ X.κ0 = -ii ∧ X.m = 3 ∧
@@ -325,60 +325,60 @@ theorem exists_flagData : ∃ X : Data E4 2, X.Ψ = cmt ∧ X.Gm = gm ∧ X.p0 =
 def flagData : Data E4 2 := exists_flagData.choose
 
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem flagData_Ψ : flagData.Ψ = cmt := exists_flagData.choose_spec.1
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 theorem flagData_Gm : flagData.Gm = gm := exists_flagData.choose_spec.2.1
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolicFlagData_base_point : flagData.p0 = 1 := exists_flagData.choose_spec.2.2.1
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem flagData_Λ : flagData.Λ = lat := exists_flagData.choose_spec.2.2.2.1
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem flagData_ξ0 : flagData.ξ0 = ii / 2 := exists_flagData.choose_spec.2.2.2.2.1
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem flagData_κ0 : flagData.κ0 = -ii := exists_flagData.choose_spec.2.2.2.2.2.1
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem flagData_m : flagData.m = 3 := exists_flagData.choose_spec.2.2.2.2.2.2.1
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.2.2.2.2.2.2.2.1 γ`.
+A detailed English derivation is pending.
 -/
 theorem mem_flagData_Γ (γ : GL (Fin 2) E4) : γ ∈ flagData.Γ ↔ IsUStab gm lat γ ∧
     (∀ v ∈ lat, ∃ w ∈ lat, Matrix.mulVec (γ : Matrix (Fin 2) (Fin 2) E4) v = v + 3 • w) :=
   exists_flagData.choose_spec.2.2.2.2.2.2.2.1 γ
 /- English proof (translation)
-The claim follows from `exists_flagData.choose_spec.2.2.2.2.2.2.2.2 la γ`.
+A detailed English derivation is pending.
 -/
 theorem flagData_χ (la : Wt flagData.Ψ 2) (γ : GL (Fin 2) E4) : flagData.χ la γ = 1 :=
   exists_flagData.choose_spec.2.2.2.2.2.2.2.2 la γ
 
 /- English proof (translation)
-The claim follows from `mem_cmt.1 (flagData_Ψ ▸ τ.2)`.
+A detailed English derivation is pending.
 -/
 theorem emb_ii_eq (τ : flagData.Ψ) : τ.1 ii = Complex.I :=
   mem_cmt.1 (flagData_Ψ ▸ τ.2)
 
 /- English proof (translation)
-Rewrite using `[flagData_ξ0, map_div₀, emb_ii_eq, map_ofNat]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_ξ0 (τ : flagData.Ψ) : ‖τ.1 flagData.ξ0‖ = 1 / 2 := by
   rw [flagData_ξ0, map_div₀, emb_ii_eq, map_ofNat]
   simp
 
 /- English proof (translation)
-Rewrite using `[flagData_Λ, flagData_ξ0, flagData_Gm]`. Conclude with `(perfect_iff_traceFormDual_eq half_ii_ne_zero gm_det ⟨lat_fg, lat_span⟩).2 traceFormDual_lat`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perfect : (∀ x ∈ flagData.Λ, ∀ y ∈ flagData.Λ, ∃ k : ℤ,
       EFf flagData.ξ0 flagData.Gm x y = k) ∧
@@ -415,9 +415,9 @@ def cuspData : DataX E4 2 where
     exact ⟨w, hw, by rw [← Nat.cast_smul_eq_nsmul E4, ← e]; abel⟩
 
 /- English proof (translation)
-Use `⟨fun _ => (1 : Matrix (Fin 2) (Fin 2) ℂ), fun τ => ?_⟩` and prove the remaining obligations. Establish `hm : mat (Ψ` using `flagData.Ψ) (fun _ => (1 : Matrix (Fin 2) (Fin 2) ℂ)) τ = 1 := rfl`. Use `⟨by rw [hm]; simp, fun i => ?_⟩` and prove the remaining obligations. Unfold `dmin`. Rewrite using `[hm, flagData_Gm, hyperbolicFlagData_base_point, gram_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases i`. Simplify using `[lminor, psgn]`. Simplify using `[lminor, psgn, sgn]`. Simplify using `[lminor, psgn, sgn, Finset.prod_range_succ, Matrix.det_fin_two]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dom_nonempty : flagData.dom.Nonempty := by
   refine ⟨fun _ => (1 : Matrix (Fin 2) (Fin 2) ℂ), fun τ => ?_⟩
@@ -431,7 +431,7 @@ theorem dom_nonempty : flagData.dom.Nonempty := by
   · simp [lminor, psgn, sgn, Finset.prod_range_succ, Matrix.det_fin_two]
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun h => by simpa using congrFun h 0⟩` and prove the remaining obligations. Rewrite using `[flagData_Λ]`. Introduce `a`. Apply the tactic sequence `fin_cases a <;> simpa using isIntegral_one`. Rewrite using `[flagData_Gm, herm_gm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -444,7 +444,7 @@ theorem isIso_one : flagData.IsIso ![1, 1] := by
     simp
 
 /- English proof (translation)
-Establish `hc : flagData.c τ = 1` using `by rw [Data.c, norm_ξ0]; norm_num`. Use extensionality with `a k`. Simplify using `only [transvMat, Data.flowMat, Matrix.map_apply, Matrix.of_apply, hc, flagData_m, flagData_κ0, map_add, map_mul, map_sum, map_neg, emb_cc, emb_ii_eq, map_natCast, apply_ite τ.1, map_one, map_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_transvMat (v : Fin 2 → E4) (b : E4) (τ : flagData.Ψ) :
     (transvMat flagData.Gm v ((flagData.m : E4) * b * flagData.κ0)).map τ.1 =
@@ -462,7 +462,7 @@ end
 end HyperbolicCusp
 
 /- English proof (translation)
-Use `⟨HyperbolicCusp.cuspData, 3, HyperbolicCusp.hyperbolicFlagData_base_point, HyperbolicCusp.dom_nonempty, ⟨_, HyperbolicCusp.isIso_one⟩, by norm_num, HyperbolicCusp.flagData_Λ, fun la v hv hiso b hb hbi => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, e⟩` from `HyperbolicCusp.flagData.transv v (HyperbolicCusp.flagData_Λ ▸ hv) hiso b hb hbi`. Conclude with `⟨γ, hγ, HyperbolicCusp.flagData_χ la γ, fun τ => by`. Rewrite using `[e]`. Conclude with `HyperbolicCusp.map_transvMat v b τ⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cuspData_hyperbolic : ∃ (X : DataX E4 2) (M : ℝ),
     X.p0 = 1 ∧ X.dom.Nonempty ∧ (∃ ξ, X.IsIso ξ) ∧ 0 < M ∧ X.Λ = X.L' ∧

@@ -26,11 +26,11 @@ variable (L) in
 def sExp_k (e : AE F E) (b : Fin L.n → AE F E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E) :=
   Matrix.fromBlocks 1 (∑ j, (Matrix.single L.i₀ (L.em j) (b j) + Matrix.single (L.em j) L.i₀ (-(e * cA σ (b j))))) 0 1
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h]`. Use `⟨fun k => ?_, fun k l hlx hly hkx => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases k with k | k <;>`. Simplify using `[Matrix.one_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.single_apply, Matrix.sum_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L]`. Apply the tactic sequence `rcases k with k | k <;> rcases l with l | l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hk : k ≠ L.i₀` using `fun e => hkx (by rw [e])`. Simplify using `[Matrix.one_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.single_apply, Matrix.sum_apply, Ne.symm hk]`. Establish `hk : k ≠ L.i₀` using `fun e => hkx (by rw [e])`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k, Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hl : l ≠ L.i₀` using `fun e => hly (by rw [e])`. Simplify using `[Matrix.one_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.single_apply, Matrix.sum_apply, Ne.symm hl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem nq_cM_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) :
     NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d.b (cM c)) := by
@@ -55,63 +55,63 @@ Both sides reduce to the same expression.
 -/
 theorem sExp_eq_k (e : AE F E) (b : Fin L.n → AE F E) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b = Matrix.fromBlocks 1 (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k L e b) 0 1 := rfl
 /- English proof (translation)
-The claim follows from `(L.rng (L.em j)).2 ⟨j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem hne_k (j : Fin L.n) : L.em j ≠ L.i₀ := (L.rng (L.em j)).2 ⟨j, rfl⟩
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k]`.
+Simplify using the standard rewrite rules.
 -/
 theorem section_base_base_entry (e : AE F E) (b : Fin L.n → AE F E) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k L e b L.i₀ L.i₀ = 0 := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, L.inj.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem section_base_row_entry (e : AE F E) (b : Fin L.n → AE F E) (k : Fin L.n) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k L e b L.i₀ (L.em k) = b k := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, L.inj.eq_iff]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, L.inj.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem section_entry_row_base (e : AE F E) (b : Fin L.n → AE F E) (k : Fin L.n) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k L e b (L.em k) L.i₀ = -(e * cA σ (b k)) := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, L.inj.eq_iff]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k j).symm, (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k …`.
+Simplify using the standard rewrite rules.
 -/
 theorem sb_em_em_k (e : AE F E) (b : Fin L.n → AE F E) (j k : Fin L.n) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k L e b (L.em j) (L.em k) = 0 := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k j).symm, (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k k).symm]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unipotent_base_base_entry (u : Fin L.n → AE F E) : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L u L.i₀ L.i₀ = 1 := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.sum_apply, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, L.inj.eq_iff, Ne.symm (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k k)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unipotent_base_row_entry (u : Fin L.n → AE F E) (k : Fin L.n) : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L u L.i₀ (L.em k) = u k := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, L.inj.eq_iff, Ne.symm (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k k)]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, L.inj.eq_iff, (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k j).symm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uA_em_em_k (u : Fin L.n → AE F E) (j k : Fin L.n) : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L u (L.em j) (L.em k) = if j = k then 1 else 0 := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k, L.inj.eq_iff, (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k j).symm]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k]`.
+Simplify using the standard rewrite rules.
 -/
 theorem centre_base_base_entry (a : AF F) : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k L δ a L.i₀ L.i₀ = a • inclR (F := F) (AF F) δ := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k, Matrix.single_apply, Ne.symm (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k k)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem centre_base_row_entry (a : AF F) (k : Fin L.n) : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k L δ a L.i₀ (L.em k) = 0 := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k, Matrix.single_apply, Ne.symm (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.hne_k k)]
 end B
 open B in
 /- English proof (translation)
-Use `⟨fun k => ?_, fun k l hlx hly hkx => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases k with a | a <;> simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sExp_eq_k, Matrix.one_apply]`. Apply the tactic sequence `rcases k with a | a <;> rcases l with c | c`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sExp_eq_k, Matrix.one_apply]`. Establish `ha : a ≠ L.i₀` using `fun h => hkx (by rw [h])`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : c ≠ L.i₀` using `fun h => hly (by rw [h])`. Take `⟨j, rfl⟩` from `(L.rng a).1 ha`. Take `⟨k, rfl⟩` from `(L.rng c).1 hc`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sExp_eq_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_em_em_k]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sExp_eq_k]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sExp_eq_k, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nq_sExp_k (e : AE F E) (b : Fin L.n → AE F E) : NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b) := by
   refine ⟨fun k => ?_, fun k l hlx hly hkx => ?_⟩
@@ -127,17 +127,17 @@ theorem nq_sExp_k (e : AE F E) (b : Fin L.n → AE F E) : NQ (Sum.inl L.i₀) (S
     · simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sExp_eq_k, Matrix.one_apply]
 open B in
 /- English proof (translation)
-Use `set e : AE F E := ((ε : ℤ) : AE F E) with he`. Establish `hee : e * e = 1` using `by rw [he, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hce : cA σ e = e` using `by rw [he, map_intCast]`. Establish `hcc : ∀ z, cA σ (cA σ z) = z` using `cA_inv' hσ`. Unfold `M.U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b)ᵀ * kunf.jw d.n e * (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b).map (cA σ) = kunf.jw d.n e`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sExp_eq_k, kunf.nmat_form]`. Establish `h0 : e • (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k L e b).map (cA σ) + (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k L e b)ᵀ = 0`. Use extensionality with `p q`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.zero_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hp : p = L.i₀`. Substitute `hp` using the available equality. Distinguish the cases in `hq : q = L.i₀`. Substitute `hq` using the available equality. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.section_base_base_entry]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩` from `(L.rng q).1 hq`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.section_base_row_entry, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.section_entry_row_base]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨j, rfl⟩` from `(L.rng p).1 hp`. Distinguish the cases in `hq : q = L.i₀`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hq` using the available equality. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.section_entry_row_base, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.section_base_row_entry, map_neg, map_mul, hce, hcc]`. Take the linear combination `(-(b j)) * hee`. Take `⟨k, rfl⟩` from `(L.rng q).1 hq`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_em_em_k]`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h0]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem U_sExp_k {ε : ℤˣ} (hσ : ∀ a, σ (σ a) = a) (b : Fin L.n → AE F E) :
     M.U (cA σ).toRingHom (((ε : ℤ) : AE F E)) (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L (((ε : ℤ) : AE F E)) b) := by
@@ -167,11 +167,11 @@ theorem U_sExp_k {ε : ℤˣ} (hσ : ∀ a, σ (σ a) = a) (b : Fin L.n → AE F
   rw [h0]
   rfl
 /- English proof (translation)
-Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Establish `hU : M.U (cA σ).toRingHom (((ε : ℤ) : AE F E)) (inFrame d.b (cM (0, 1)))` using `kunf.frame_eq hε (cM (0, 1))`. Establish `he : (((ε : ℤ) : AE F E)) * (((ε : ℤ) : AE F E)) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hse : (cA σ).toRingHom (((ε : ℤ) : AE F E)) = ((ε : ℤ) : AE F E)` using `map_intCast _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `M.even_im_hermitian_sub (fun z => cA_inv' hσ z) he hse L.em L.inj L.rng hU (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.nq_cM_k h (0, 1))`. Rewrite `hp` using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.single_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L, Ne.symm (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L _)] at hp`. Apply `kfour.inclR_injective (F := F)` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR, map_neg, map_mul, map_intCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hp`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem delta_par_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) {ε : ℤˣ} (hε : kfour.FrameEq σ d.Y d.b ε) :
     σ δ = -(((ε : ℤ) : E) * δ) := by
@@ -188,11 +188,11 @@ theorem delta_par_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k 
   simpa using hp
 open B in
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sExp_eq_k, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.one_mul, Matrix.mul_zero, add_zero, Matrix.zero_mul, zero_add, Matrix.mul_one, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂]`. Establish `hs : ∀ q, (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.sb_k L e b * (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-u))ᵀ.map (cA σ)) L.i₀ q = ∑ k, b k * cA σ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-u) q (L.em k))`. Introduce `q`. Rewrite using `[Matrix.mul_apply, M.sum_split' L.em L.inj L.rng, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.section_base_base_entry, zero_mul, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.section_base_row_entry, Matrix.map_apply, Matrix.transpose_apply]`. Apply the tactic sequence `refine ⟨fun j => _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.unipotent_base_row_entry u j, fun j => ?_, ?_, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.unipotent_base_base_entry u⟩`. Rewrite using `[Matrix.add_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.centre_base_row_entry, zero_add, hs]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.uA_em_em_k, apply_ite (cA σ)]`. Rewrite using `[Matrix.add_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.centre_base_base_entry, hs, sub_eq_add_neg, ← Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.B.unipotent_base_row_entry, Pi.neg_apply, map_neg, mul_neg]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem row_sC_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) (e : AE F E) (b u : Fin L.n → AE F E) (a : AF F) :
     (∀ j, (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b * inFrame d.b (cM (u, a))) (Sum.inl L.i₀) (Sum.inl (L.em j)) = u j) ∧
@@ -220,7 +220,7 @@ def Wm_k (a b : AE F E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE
   1 - Matrix.single (Sum.inl L.i₀) (Sum.inl L.i₀) 1 - Matrix.single (Sum.inr L.i₀) (Sum.inr L.i₀) 1 +
     Matrix.single (Sum.inl L.i₀) (Sum.inr L.i₀) a + Matrix.single (Sum.inr L.i₀) (Sum.inl L.i₀) b
 /- English proof (translation)
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, ne_eq, reduceCtorEq, not_false_eq_true, mul_one, one_mul, …`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Wm_mul_k (a b a' b' : AE F E) (h1 : a * a' = 1) (h2 : b * b' = 1) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L a b * _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L b' a' = 1 := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one,
@@ -228,15 +228,15 @@ theorem Wm_mul_k (a b a' b' : AE F E) (h1 : a * a' = 1) (h2 : b * b' = 1) : _roo
     h1, h2]
   abel
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Ne.symm hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Wm_row_out_k (a b : AE F E) {k : Fin d.n} (hk : k ≠ L.i₀) (m : Fin d.n ⊕ Fin d.n) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L a b (Sum.inr k) m = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (Sum.inr k) m := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Ne.symm hk]
 /- English proof (translation)
-Break down `m with i | i` into its components or cases. Distinguish the cases in `hi : i = L.i₀`. Substitute `hi` using the available equality. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Matrix.one_apply, Ne.symm hi, hi]`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : i = L.i₀`. Substitute `hi` using the available equality. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Matrix.one_apply, Ne.symm hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Wm_row_y_k (a b : AE F E) (m : Fin d.n ⊕ Fin d.n) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L a b (Sum.inr L.i₀) m = if m = Sum.inl L.i₀ then b else 0 := by
@@ -248,15 +248,15 @@ theorem Wm_row_y_k (a b : AE F E) (m : Fin d.n ⊕ Fin d.n) :
     · subst hi; simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply]
     · simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Matrix.one_apply, Ne.symm hi]
 /- English proof (translation)
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Ne.symm hl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Wm_col_out_k (a b : AE F E) {l : Fin d.n} (hl : l ≠ L.i₀) (m : Fin d.n ⊕ Fin d.n) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L a b m (Sum.inl l) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) m (Sum.inl l) := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Ne.symm hl]
 /- English proof (translation)
-Break down `m with i | i` into its components or cases. Distinguish the cases in `hi : i = L.i₀`. Substitute `hi` using the available equality. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Matrix.one_apply, hi, Ne.symm hi]`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : i = L.i₀`. Substitute `hi` using the available equality. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Matrix.one_apply, hi, Ne.symm hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Wm_col_x_k (a b : AE F E) (m : Fin d.n ⊕ Fin d.n) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L a b m (Sum.inl L.i₀) = if m = Sum.inr L.i₀ then b else 0 := by
@@ -268,7 +268,7 @@ theorem Wm_col_x_k (a b : AE F E) (m : Fin d.n ⊕ Fin d.n) :
     · subst hi; simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply]
     · simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k, Matrix.single_apply, Matrix.one_apply, hi, Ne.symm hi]
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr k)]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_row_out_k a b hk, Matrix.one_apply_eq, one_mul]`. Introduce `m _ hm`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_row_out_k a b hk, Matrix.one_apply_ne (Ne.symm hm), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_row_out_k (a b : AE F E) {k : Fin d.n} (hk : k ≠ L.i₀)
     (M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (c : Fin d.n ⊕ Fin d.n) :
@@ -279,7 +279,7 @@ theorem mul_row_out_k (a b : AE F E) {k : Fin d.n} (hk : k ≠ L.i₀)
     rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_row_out_k a b hk, Matrix.one_apply_ne (Ne.symm hm), zero_mul]
   · simp
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_row_y_k, if_pos rfl]`. Introduce `m _ hm`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_row_y_k, if_neg hm, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_row_y_k (a b : AE F E) (M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))
     (c : Fin d.n ⊕ Fin d.n) : (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L a b * M) (Sum.inr L.i₀) c = b * M (Sum.inl L.i₀) c := by
@@ -289,7 +289,7 @@ theorem mul_row_y_k (a b : AE F E) (M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n �
     rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_row_y_k, if_neg hm, zero_mul]
   · simp
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inl l)]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_col_out_k a b hl, Matrix.one_apply_eq, mul_one]`. Introduce `m _ hm`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_col_out_k a b hl, Matrix.one_apply_ne hm, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_col_out_k (M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (a b : AE F E) {l : Fin d.n}
     (hl : l ≠ L.i₀) (r : Fin d.n ⊕ Fin d.n) : (M * _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L a b) r (Sum.inl l) = M r (Sum.inl l) := by
@@ -299,7 +299,7 @@ theorem mul_col_out_k (M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (A
     rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_col_out_k a b hl, Matrix.one_apply_ne hm, mul_zero]
   · simp
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr L.i₀)]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_col_x_k, if_pos rfl]`. Introduce `m _ hm`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_col_x_k, if_neg hm, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_col_x_k (M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (a b : AE F E)
     (r : Fin d.n ⊕ Fin d.n) : (M * _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L a b) r (Sum.inl L.i₀) = M r (Sum.inr L.i₀) * b := by
@@ -311,19 +311,19 @@ theorem mul_col_x_k (M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE 
 end W
 open W in
 /- English proof (translation)
-Take `⟨a₀, b₀, ha, hb, hW⟩` from `h.wf`. Establish `hW' : inFrame d.b w₁ = _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L (inclR (F` using `F) (AF F) a₀) (inclR (F := F) (AF F) b₀) := hW`. Establish `h1 : inclR (F` using `F) (AF F) a₀ * inclR (F := F) (AF F) a₀⁻¹ = 1 := by`. Rewrite using `[← map_mul, mul_inv_cancel₀ ha, map_one]`. Establish `h2 : inclR (F` using `F) (AF F) b₀ * inclR (F := F) (AF F) b₀⁻¹ = 1 := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hb, map_one]`. Establish `hWi : inFrame d.b w₁⁻¹ = _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L (inclR (F` using `F) (AF F) b₀⁻¹) (inclR (F := F) (AF F) a₀⁻¹) := by`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_inv, hW', Matrix.inv_eq_right_inv (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_mul_k _ _ _ _ h1 h2)]`. Use `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame _).2 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hW', hs, hWi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hne` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L`. Establish `hS_rl : ∀ k l, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b (Sum.inr k) (Sum.inl l) = 0` using `fun k l => by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k]`. Establish `hS_ry : ∀ k, k ≠ L.i₀ → _root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b (Sum.inr k) (Sum.inr L.i₀) = 0` using `fun k hk => by`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k, Matrix.one_apply, hk]`. Establish `hS_xl : ∀ l, l ≠ L.i₀ → _root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b (Sum.inl L.i₀) (Sum.inl l) = 0` using `fun l hl => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k, Matrix.one_apply, Ne.symm hl]`. Establish `hS_xy : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b (Sum.inl L.i₀) (Sum.inr L.i₀) = 0`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k, Matrix.sum_apply, Matrix.single_apply, hne, Ne.symm (hne _)]`. Use extensionality with `k l`. Use `show (_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L _ _ * _root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b * _root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.Wm_k L _ _) (Sum.inr k) (Sum.inl l) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : l = L.i₀`. Substitute `hl` using the available equality. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.mul_col_x_k]`. Distinguish the cases in `hk : k = L.i₀`. Substitute `hk` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.mul_row_y_k, hS_xy, mul_zero, zero_mul]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.mul_row_out_k _ _ hk, hS_ry k hk, zero_mul]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.mul_col_out_k _ _ _ hl]`. Distinguish the cases in `hk : k = L.i₀`. Substitute `hk` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.mul_row_y_k, hS_xl l hl, mul_zero]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.W.mul_row_out_k _ _ hk, hS_rl]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weyl_conjugate_exponential_parabolic (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) {e : AE F E} {b : Fin L.n → AE F E} {s : d.G}
     (hs : inFrame d.b s = _root_.PositivityTheory.SiegelWeilFormula.Act.C6.sExp_k L e b) : w₁ * s * w₁⁻¹ ∈ par2 σ d.Y := by

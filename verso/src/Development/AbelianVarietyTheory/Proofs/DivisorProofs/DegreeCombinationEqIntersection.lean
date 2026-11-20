@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.FlagDeg
 
 /- English proof (translation)
-Establish `hL` using `LB.isLB_pull (HermLB.triv p).isLB j`. Use `⟨hL, fun a b h => ?_, fun _ x _ => CartierDiv.isEqn_zero x⟩` and prove the remaining obligations. Take `rfl : a = b` from `Subsingleton.elim (α := PUnit → PUnit) _ _`. Use `congrArg (fun u : Γ(Z, _)ˣ => fnOf _ h.1 u.val) (hL.g_self a)` as an intermediate fact. Rewrite `this` using `[Units.val_one, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(this.symm.trans (fnOf_resG _ h.1 _)).trans (mul_one _).symm`.
+A detailed English derivation is pending.
 -/
 theorem presents_triv_pull {k : Type} [CommRing k] {X Z : Scheme.{0}} [IsIntegral Z] (p : X ⟶ Sp k) (j : Z ⟶ X) :
     Presents (0 : CartierDiv Z) ((HermLB.triv p).B.pull j) fun _ => 1 := by
@@ -38,9 +38,9 @@ theorem presents_triv_pull {k : Type} [CommRing k] {X Z : Scheme.{0}} [IsIntegra
   exact (this.symm.trans (fnOf_resG _ h.1 _)).trans (mul_one _).symm
 
 /- English proof (translation)
-Establish `h₁` using `TrueGeo.InducedPow.presents_pow L.B j m.toNat L.isLB hr`. Establish `h₂` using `LineNorm.Neg.presents_neg (L.pow (-m).toNat).isLB j (TrueGeo.InducedPow.presents_pow L.B j (-m).toNat L.isLB hr)`. Establish `h₃` using `LineNorm.Add.presents_tens (L.pow m.toNat).isLB (L.pow (-m).toNat).dual.isLB j h₁ h₂`. Establish `e : m.toNat • Δ + -((-m).toNat • Δ) = m • Δ` using `by conv_rhs => rw [← Int.toNat_sub_toNat_neg m]`. Rewrite using `[sub_smul, natCast_zsmul, natCast_zsmul, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h₃` using `[e]`. Conclude with `⟨_, h₃⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem presents_zp_pull {k : Type} [CommRing k] {X Z : Scheme.{0}} [IsIntegral Z] {p : X ⟶ Sp k} (L : HermLB p)
     (j : Z ⟶ X) {Δ : CartierDiv Z} {r : (L.B.pull j).ι → Z.functionFieldˣ} (hr : Presents Δ (L.B.pull j) r) (m : ℤ) :
@@ -56,7 +56,7 @@ theorem presents_zp_pull {k : Type} [CommRing k] {X Z : Scheme.{0}} [IsIntegral 
   exact ⟨_, h₃⟩
 
 /- English proof (translation)
-The claim follows from `| [] => ⟨_, presents_triv_pull p j⟩ | i :: l => by obtain ⟨s, hs⟩ := presents_foldr_pull L n j Δ hΔ l obtain ⟨r, hr⟩ := hΔ i obtain ⟨t, ht⟩ := presents_zp_pull (L i) j hr (n i) rw [List.map_cons, List.sum_cons, List.foldr_cons] exact ⟨_, LineNorm.Add.presents_tens (zp (L i) (n i) …`.
+A detailed English derivation is pending.
 -/
 theorem presents_foldr_pull {k : Type} [CommRing k] {X Z : Scheme.{0}} [IsIntegral Z] {p : X ⟶ Sp k} {κ : Type}
     (L : κ → HermLB p) (n : κ → ℤ) (j : Z ⟶ X) (Δ : κ → CartierDiv Z)
@@ -73,7 +73,7 @@ theorem presents_foldr_pull {k : Type} [CommRing k] {X Z : Scheme.{0}} [IsIntegr
       (l.foldr (fun i M => (zp (L i) (n i)).tens M) (HermLB.triv p)).isLB j ht hs⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `presents_foldr_pull L n j Δ hΔ (Finset.univ : Finset κ).toList`. Rewrite `hs` using `[Finset.sum_map_toList]`. Conclude with `⟨s, hs⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem presents_comb_pull {k : Type} [CommRing k] {X Z : Scheme.{0}} [IsIntegral Z] {p : X ⟶ Sp k} {κ : Type}
     [Fintype κ] (L : κ → HermLB p) (n : κ → ℤ) (j : Z ⟶ X) (Δ : κ → CartierDiv Z)
@@ -84,9 +84,9 @@ theorem presents_comb_pull {k : Type} [CommRing k] {X Z : Scheme.{0}} [IsIntegra
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Establish `e : spMap σ ≫ spMap (algebraMap ℤ ℚ) = spMap (σ.comp (algebraMap ℤ ℚ))`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `h₁ (z : CxPts q σ) : (z.1 ≫ j) ≫ p = spMap (σ.comp (algebraMap ℤ ℚ))`. Rewrite using `[Category.assoc, pb.w, ← Category.assoc, z.2, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₂ : Continuous fun y : CxPts p (σ.comp (algebraMap ℤ ℚ)) => pb.lift y.1 (spMap σ) (y.2.trans e.symm)`. Rewrite using `[(Points.isEmbedding_of_isPullback pb).continuous_iff]`. Use `(continuous_subtype_val.prodMk (continuous_const (y := spMap σ))).congr fun y => ?_` and prove the remaining obligations. Conclude with `(Prod.ext (pb.lift_fst _ _ _) (pb.lift_snd _ _ _)).symm`. Conclude with `⟨{ toFun := fun z => ⟨z.1 ≫ j, h₁ z⟩ invFun := fun y => ⟨pb.lift y.1 (spMap σ) (y.2.trans e.symm), pb.lift_snd _ _ _⟩ left_inv := fun z => Subtype.ext (pb.hom_ext (pb.lift_fst _ _ _) ((pb.lift_snd _ _ _).trans z.2.symm)) right_inv := fun y => Subtype.ext (pb.lift_fst _ _ _) conti …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_homeomorph_int {X Y : Scheme.{0}} (p : X ⟶ Sp ℤ) (q : Y ⟶ Sp ℚ) (j : Y ⟶ X)
     (pb : IsPullback j q p (spMap (algebraMap ℤ ℚ))) (σ : ℚ →+* ℂ) :
@@ -109,7 +109,7 @@ theorem exists_homeomorph_int {X Y : Scheme.{0}} (p : X ⟶ Sp ℤ) (q : Y ⟶ S
            continuous_invFun := h₂.subtype_mk fun y => pb.lift_snd _ _ _ }, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.X.isBasis_affineOpens (TopologicalSpace.Opens.mem_top (genericPoint Y.X))`. Establish `h₁` using `SmoothDim.ringKrullDim_affineOpen ℚ _ Y.str d h U hU ⟨_, hx⟩`. Establish `h₂` using `SmoothDim.ringKrullDim_affineOpen ℚ _ Y.str Y.dim inferInstance U hU ⟨_, hx⟩`. Conclude with `h₁.symm.trans h₂` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_eq_of_smooth (Y : Var ℚ) (d : ℕ) (h : SmoothOfRelativeDimension d Y.str) : d = Y.dim := by
   obtain ⟨U, hU, hx, -⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.X.isBasis_affineOpens
@@ -123,13 +123,11 @@ end GlobalTheory.FlagDeg
 namespace GlobalTheory.FlagDeg
 
 /- English proof (translation)
-Introduce `hd ι _ N Y j pb gr hgr n`. Take `⟨s, hs⟩` from `presents_comb_pull (GlobalTheory.FlagZ.grLine (ι := ι) (N := N)) n j gr hgr`. Take `⟨hsm, -, hav⟩` from `GlobalTheory.FlagZ.smooth_dim_isArithVar_part ι (ι × Fin (N + 1)) N Prod.fst Prod.snd`. Establish `hY : SmoothOfRelativeDimension (Nat.card (GlobalTheory.FlagZ.CellVar (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd)) Y.str`. Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} (Nat.card (GlobalTheory.FlagZ.CellVar (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension _) pb hsm`. Establish `hdim` using `dim_eq_of_smooth Y _ hY`. Rewrite `hsm` using `[hdim]`. Set `σ' : ℚ →+* ℂ` to `Rat.castHom ℂ`. Take `⟨Φ, hΦ⟩` from `exists_homeomorph_int (GlobalTheory.FlagZ.flStr ι N) Y.str j pb σ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `CxPts.secondCountableTopology_of_isProjOver (σ'.comp (algebraMap ℤ ℚ)) hav.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ' Y.isProjOver` as an intermediate fact. Take `⟨h₁, h₂⟩` from `GlobalTheory.chernInt_transfer ℤ ℚ _ _ (GlobalTheory.FlagZ.flStr ι N) Y.str _ σ' Y.dim j Φ hΦ inferInstance inferInstance _ _ ((comb (GlobalTheory.FlagZ.grLine (ι := ι) (N := N)) n).cInf _)`. Establish `h₃` using `(hd ℚ Y σ' _ _ s hs _ h₁).2`. Rewrite using `[gdeg, chInt, finsum_eq_single _ (σ'.comp (algebraMap ℤ ℚ)) fun τ hτ => absurd (RingHom.ext_int _ _) hτ]`.
-
-Conclude with `h₂.symm.trans h₃`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gdeg_comb_grLine : GlobalTheory.Published.ChernDegree → ∀ (ι : Type) [Fintype ι] (N : ℕ) (Y : GlobalTheory.ProjVar.Var ℚ)
     (j : Y.X ⟶ GlobalTheory.FlagZ.Fl ι N), IsPullback j Y.str (GlobalTheory.FlagZ.flStr ι N) (spMap (algebraMap ℤ ℚ)) →

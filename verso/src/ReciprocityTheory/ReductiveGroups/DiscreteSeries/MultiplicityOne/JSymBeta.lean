@@ -12,15 +12,15 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Establish `hSym` using `stSym h`. Take `⟨⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, hGI, hGL, -, -, -, hCl, -⟩, -⟩` from `h`. Unfold `StSymBeta`. Introduce `k r Wp _ _ _ D X hD hX γ hγ A hA hJ f F' hf hF'`. Establish `hfi` using `SymBetaA.integrable_of_inCC hGI hGL hCl D hA hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hae` using `(hJ (scalF Wp f) (SymBetaA.inCC_five_four' (SymBetaA.inCC_scalF hf))).1`. Establish `hbd : volume {q : (Fin r → ℂ) × ℂ | Complex.normSq q.2 = Tz k r D.z * Tz k r D.z} = 0` using `SymBetaA.volume_normSq_eq _`. Unfold `beta betaBig`. Apply `MeasureTheory.integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_imp_of_ae_restrict hae, measure_eq_zero_iff_ae_notMem.1 hbd] with q hq hq2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : bcWeight k r (Tz k r D.z) (Tz k r D.z') q = 0`. Simplify using `[hw]`. Establish `hQ : q ∈ Qset D` using `lt_of_le_of_ne (SymBetaA.bcWeight_nonneg _ _ q) (Ne.symm hw)`. Establish `hle : Tz k r D.z * Tz k r D.z ≤ Complex.normSq q.2`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hw` to reduce the goal to its premises. Rewrite using `[bcWeight, hD.z_eq, if_neg hc]`. Establish `hlt : Tz k r D.z * Tz k r D.z < Complex.normSq q.2` using `lt_of_le_of_ne hle (fun e => hq2 e.symm)`. Establish `hEf : Ef D (scalF Wp f) q ≠ ⊤` using `(hq hQ).2.ne`. Establish `e : JF D (scalF Wp (f ∘ th k r γ)) (bigCell k r q.1 (D.μsec q.2)) = JF D (scalF Wp f) (bigCell k r q.1 (D.μsec q.2))` using `hSym k r Wp D X hD hX γ hγ f q hfi hQ hlt hEf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`.
+A detailed English derivation is pending.
 -/
 theorem stSymBeta (h : UnitaryGroupStructuralFacts) : StSymBeta := by
   have hSym := stSym h

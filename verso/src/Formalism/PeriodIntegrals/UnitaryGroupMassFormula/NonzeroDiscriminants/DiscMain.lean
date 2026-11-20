@@ -9,9 +9,9 @@ noncomputable section
 namespace DiscrNeWork
 
 /- English proof (translation)
-Establish `h5 : bernoulli' 5 = 0`. Rewrite using `[bernoulli'_def]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, bernoulli'_zero, bernoulli'_one, bernoulli'_two, bernoulli'_three, bernoulli'_four]`. Evaluate the numerical expressions using `[Nat.choose]`. Rewrite using `[bernoulli_eq_bernoulli'_of_ne_one (by norm_num), bernoulli'_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, bernoulli'_zero, bernoulli'_one, bernoulli'_two, bernoulli'_three, bernoulli'_four, h5]`. Evaluate the numerical expressions using `[Nat.choose]`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem bern6 : bernoulli 6 = 1 / 42 := by
   have h5 : bernoulli' 5 = 0 := by
@@ -25,7 +25,7 @@ theorem bern6 : bernoulli 6 = 1 / 42 := by
   norm_num [Nat.choose]
 
 /- English proof (translation)
-Establish `h` using `riemannZeta_two_mul_nat (show (3 : ℕ) ≠ 0 by norm_num)`. Rewrite using `[show (6 : ℂ) = 2 * ((3 : ℕ) : ℂ) by norm_num, h, bern6]`. Evaluate the numerical expressions using `[Nat.factorial]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zeta6 : riemannZeta 6 = (Real.pi : ℂ) ^ 6 / 945 := by
   have h := riemannZeta_two_mul_nat (show (3 : ℕ) ≠ 0 by norm_num)
@@ -34,9 +34,9 @@ theorem zeta6 : riemannZeta 6 = (Real.pi : ℂ) ^ 6 / 945 := by
   ring
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.mem_closure_pair]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Use `⟨![n, m], ?_⟩` and prove the remaining obligations. Simplify using `[zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨v 1, v 0, by simp [zsmul_eq_mul]; ring⟩`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private lemma mem_closure_pair_iff_exists_int (a z w : ℂ) :
     w ∈ AddSubgroup.closure ({a, a * z} : Set ℂ) ↔ ∃ v : Fin 2 → ℤ, w = a * ((v 0 : ℂ) * z + v 1) := by
@@ -50,11 +50,11 @@ private lemma mem_closure_pair_iff_exists_int (a z w : ℂ) :
     exact ⟨v 1, v 0, by simp [zsmul_eq_mul]; ring⟩
 
 /- English proof (translation)
-Introduce `v w h`. Establish `him` using `congrArg Complex.im h`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.intCast_re, Complex.intCast_im, zero_mul, add_zero] at him`. Establish `h0r : ((v 0 : ℤ) : ℝ) = ((w 0 : ℤ) : ℝ)` using `mul_right_cancel₀ hz.ne' him`. Establish `h0 : v 0 = w 0` using `by exact_mod_cast h0r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre` using `congrArg Complex.re h`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.intCast_re, Complex.intCast_im, zero_mul, sub_zero] at hre`. Rewrite `hre` using `[h0r]`. Establish `h1 : v 1 = w 1`. Establish `h2 : ((v 1 : ℤ) : ℝ) = ((w 1 : ℤ) : ℝ)` using `by linarith`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2` after adjusting the coercions. Use extensionality with `i`. Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private lemma injective_int_pair_mul_add_of_im_pos (z : ℂ) (hz : 0 < z.im) :
     Function.Injective (fun v : Fin 2 → ℤ => (v 0 : ℂ) * z + v 1) := by
@@ -77,15 +77,15 @@ private lemma injective_int_pair_mul_add_of_im_pos (z : ℂ) (hz : 0 < z.im) :
   · exact h1
 
 /- English proof (translation)
-Unfold `PI.eisG PI.lat2`. Establish `hinj` using `injective_int_pair_mul_add_of_im_pos z hz`. Set `f : {v : Fin 2 → ℤ // v ≠ 0} → {w : ℂ // w ∈ AddSubgroup.closure ({a, a * z} : Set ℂ) ∧ w ≠ 0}` to `fun v => ⟨a * ((v.1 0 : ℂ) * z + v.1 1), (mem_closure_pair_iff_exists_int a z _).mpr ⟨v.1, rfl⟩, mul_ne_zero ha (fun h => v.2 (hinj (by simpa using h)))⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `v w h`. Establish `h1` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (hinj (mul_left_cancel₀ ha h1))`. Introduce and unpack `⟨w, hw, hw0⟩`. Take `⟨v, rfl⟩` from `(mem_closure_pair_iff_exists_int a z w).mp hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨v, fun hv => hw0 (by simp [hv])⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← (Equiv.ofBijective f hf).tsum_eq]`. Establish `hsupp : Function.support (fun v : Fin 2 → ℤ => EisensteinSeries.eisSummand ((2 * k : ℕ) : ℤ) v (⟨z, hz⟩ : UpperHalfPlane)) ⊆ {v | v ≠ 0}`. Introduce `v hv`. Assume the negation of the conclusion as `hv0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, not_not] at hv0`. Apply `hv` to reduce the goal to its premises. Substitute `hv0` using the available equality. Simplify using `[EisensteinSeries.eisSummand]`. Conclude with `zero_zpow _ (by omega)`.
+Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← tsum_subtype_eq_of_support_subset hsupp, ← tsum_mul_left]`. Use `tsum_congr fun v => ?_` and prove the remaining obligations. Simplify using `only [Equiv.ofBijective_apply, f, EisensteinSeries.eisSummand, UpperHalfPlane.coe_mk, zpow_natCast]`. Rewrite using `[mul_pow, one_div, mul_inv, zpow_neg, zpow_natCast]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eisG_lat2_eq_inv_pow_mul_tsum (a z : ℂ) (ha : a ≠ 0) (hz : 0 < z.im) (k : ℕ) (hk : k ≠ 0) :
     PI.eisG (PI.lat2 a (a * z)) k =
@@ -120,7 +120,7 @@ private lemma eisG_lat2_eq_inv_pow_mul_tsum (a z : ℂ) (ha : a ≠ 0) (hz : 0 <
   rw [mul_pow, one_div, mul_inv, zpow_neg, zpow_natCast]
 
 /- English proof (translation)
-Rewrite using `[eisG_lat2_eq_inv_pow_mul_tsum a τ ha τ.2 2 (by norm_num)]`. Establish `h2` using `tsum_eisSummand_eq_riemannZeta_mul_eisensteinSeries (k := 4) (by norm_num) τ`. Establish `hE : E₄ τ = 1 / 2 * _root_.eisensteinSeries (N` using `1) 0 (4 : ℕ) τ := rfl`. Rewrite using `[show ((2 * 2 : ℕ) : ℤ) = ((4 : ℕ) : ℤ) by norm_num, show (⟨(τ : ℂ), τ.2⟩ : UpperHalfPlane) = τ from rfl, h2, hE, show ((4 : ℕ) : ℂ) = 4 by norm_num, riemannZeta_four, show a ^ (2 * 2) = a ^ 4 by norm_num]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eisenstein_four_lattice_eq (a : ℂ) (ha : a ≠ 0) (τ : ℍ) :
     PI.eisG (PI.lat2 a (a * τ)) 2 = (a ^ 4)⁻¹ * ((Real.pi : ℂ) ^ 4 / 90 * (2 * E₄ τ)) := by
@@ -132,7 +132,7 @@ theorem eisenstein_four_lattice_eq (a : ℂ) (ha : a ≠ 0) (τ : ℍ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[eisG_lat2_eq_inv_pow_mul_tsum a τ ha τ.2 3 (by norm_num)]`. Establish `h2` using `tsum_eisSummand_eq_riemannZeta_mul_eisensteinSeries (k := 6) (by norm_num) τ`. Establish `hE : E₆ τ = 1 / 2 * _root_.eisensteinSeries (N` using `1) 0 (6 : ℕ) τ := rfl`. Rewrite using `[show ((2 * 3 : ℕ) : ℤ) = ((6 : ℕ) : ℤ) by norm_num, show (⟨(τ : ℂ), τ.2⟩ : UpperHalfPlane) = τ from rfl, h2, hE, show ((6 : ℕ) : ℂ) = 6 by norm_num, zeta6, show a ^ (2 * 3) = a ^ 6 by norm_num]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eisenstein_six_lattice_eq (a : ℂ) (ha : a ≠ 0) (τ : ℍ) :
     PI.eisG (PI.lat2 a (a * τ)) 3 = (a ^ 6)⁻¹ * ((Real.pi : ℂ) ^ 6 / 945 * (2 * E₆ τ)) := by
@@ -144,11 +144,11 @@ theorem eisenstein_six_lattice_eq (a : ℂ) (ha : a ≠ 0) (τ : ℍ) :
   ring
 
 /- English proof (translation)
-Establish `hΔ` using `ModularForm.discriminant_ne_zero τ`. Rewrite `hΔ` using `[discriminant_eq_E₄_cube_sub_E₆_sq]`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `key : PI.discr (PI.lat2 a (a * τ)) = (a ^ 12)⁻¹ * (64 / 27 * (Real.pi : ℂ) ^ 12) * (E₄ τ ^ 3 - E₆ τ ^ 2)`. Rewrite using `[PI.discr, PI.g2, PI.g3, eisenstein_four_lattice_eq a ha τ, eisenstein_six_lattice_eq a ha τ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `h1 : E₄ τ ^ 3 - E₆ τ ^ 2 ≠ 0`. Introduce `h`. Apply `hΔ` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Conclude with `mul_ne_zero (mul_ne_zero (inv_ne_zero (pow_ne_zero _ ha)) (mul_ne_zero (by norm_num) (pow_ne_zero _ hpi))) h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem discr_scaled (a : ℂ) (ha : a ≠ 0) (τ : ℍ) : PI.discr (PI.lat2 a (a * τ)) ≠ 0 := by
   have hΔ := ModularForm.discriminant_ne_zero τ
@@ -165,11 +165,11 @@ theorem discr_scaled (a : ℂ) (ha : a ≠ 0) (τ : ℍ) : PI.discr (PI.lat2 a (
     (mul_ne_zero (by norm_num) (pow_ne_zero _ hpi))) h1
 
 /- English proof (translation)
-Establish `hw : w₁ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `hτ : 0 < (w₂ / w₁).im`. Establish `e : (w₂ / w₁).im = ((starRingEnd ℂ) w₁ * w₂).im / Complex.normSq w₁`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.div_im]`. Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `div_pos h (Complex.normSq_pos.mpr hw)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `discr_scaled w₁ hw ⟨w₂ / w₁, hτ⟩`. Rewrite using `[show w₁ * ((⟨w₂ / w₁, hτ⟩ : UpperHalfPlane) : ℂ) = w₂ by` and apply the resulting hypothesis. Rewrite using `[UpperHalfPlane.coe_mk]`. Use the proof step `field_simp] at h3`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discr_ne_of_pos (w₁ w₂ : ℂ) (h : 0 < ((starRingEnd ℂ) w₁ * w₂).im) :
     PI.discr (PI.lat2 w₁ w₂) ≠ 0 := by
@@ -189,11 +189,11 @@ theorem discr_ne_of_pos (w₁ w₂ : ℂ) (h : 0 < ((starRingEnd ℂ) w₁ * w�
     field_simp] at h3
 
 /- English proof (translation)
-Introduce `w₁ w₂ h`. Break down `lt_or_gt_of_ne h with hlt | hgt` into its components or cases. Establish `h2 : 0 < ((starRingEnd ℂ) w₂ * w₁).im`. Establish `e : ((starRingEnd ℂ) w₂ * w₁).im = -((starRingEnd ℂ) w₁ * w₂).im`. Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hswap : PI.lat2 w₁ w₂ = PI.lat2 w₂ w₁`. Unfold `PI.lat2`. Rewrite using `[Set.pair_comm]`.
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hswap]`. Conclude with `discr_ne_of_pos w₂ w₁ h2`. Conclude with `discr_ne_of_pos w₁ w₂ hgt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discrNe_all : PI.DiscrNe := by
   intro w₁ w₂ h

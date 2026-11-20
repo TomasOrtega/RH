@@ -12,29 +12,25 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Use `set d := LinearMap.det (A : V →ₗ[ℝ] V) with hd_def`. Establish `hd : d ≠ 0` using `(LinearEquiv.isUnit_det' A.toLinearEquiv).ne_zero`. Use `set c := Real.sqrt |d| with hc_def`. Establish `hc0 : 0 < c` using `Real.sqrt_pos.2 (abs_pos.2 hd)`. Establish `hcc : c * c = |d|` using `Real.mul_self_sqrt (abs_nonneg d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcr : (ENNReal.ofReal c).toReal = c` using `ENNReal.toReal_ofReal hc0.le`. Establish `hc1 : ENNReal.ofReal c ≠ 0` using `(ENNReal.ofReal_pos.2 hc0).ne'`. Set `e : V ≃ᵐ V` to `A.toHomeomorph.toMeasurableEquiv`. Establish `he : ∀ y, e y = A y` using `fun _ => rfl`. Establish `hmap : (volume : Measure V).map e = ENNReal.ofReal |d⁻¹| • volume` using `by show (volume : Measure V).map (A : V →ₗ[ℝ] V) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Measure.map_linearMap_addHaar_eq_smul_addHaar volume hd`. Establish `hdi : (ENNReal.ofReal |d⁻¹|).toReal = |d|⁻¹`. Rewrite using `[ENNReal.toReal_ofReal (abs_nonneg _), abs_inv]`. Use `⟨Measure.IsAddHaarMeasure.smul (μ := (volume : Measure V)) hc1 ENNReal.ofReal_ne_top, fun Φ hc hs hI z => ?_⟩` and prove the remaining obligations. Establish `hT : ∀ y, ∫ x, Φ x * ((𝐞 ⟪x, A y⟫ : Circle) : ℂ) ∂(ENNReal.ofReal c • (volume : Measure V)) = (c : ℂ) * 𝓕⁻ Φ (A y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `y`. Rewrite using `[integral_smul_measure, hcr, fourierInv_eq, Complex.real_smul]`. Use `congr 1`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => by`. Simplify using `only [Circle.smul_def, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `ring)`. Simplify using `only [hT] at hI ⊢`. Establish `hI1 : Integrable (fun y => (c : ℂ) * 𝓕⁻ Φ (A y)) volume` using `(integrable_smul_measure hc1 ENNReal.ofReal_ne_top).1 hI`. Establish `hI2 : Integrable (fun y => 𝓕⁻ Φ (e y)) volume`. Use `hI1.const_mul ((c : ℂ)⁻¹)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [he]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast hc0.ne'), one_mul]`. Establish `hI3 : Integrable (𝓕⁻ Φ) volume`. Establish `h` using `(integrable_map_equiv e (𝓕⁻ Φ)).2 hI2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hmap]`. Conclude with `(integrable_smul_measure (by simp [hd]) ENNReal.ofReal_ne_top).1 h`. Establish `hF : Integrable (𝓕 Φ) volume`. Establish `h` using `hI3.comp_neg`. Use `h.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [fourierInv_eq_fourier_neg, neg_neg]`. Establish `hΦ : Integrable Φ volume` using `hc.integrable_of_hasCompactSupport hs`. Establish `hinv : 𝓕⁻ (𝓕⁻ Φ) z = Φ (-z)`. Rewrite using `[fourierInv_eq_fourier_neg]`. Conclude with `congrFun (hc.fourier_fourierInv_eq hΦ hF) (-z)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hout : ∫ y, (c : ℂ) * 𝓕⁻ Φ (A y) * ((𝐞 ⟪y, A z⟫ : Circle) : ℂ) ∂(volume : Measure V) = (c : ℂ) * (|d|⁻¹ : ℝ) * 𝓕⁻ (𝓕⁻ Φ) z`. Establish `e1 : (fun y => (c : ℂ) * 𝓕⁻ Φ (A y) * ((𝐞 ⟪y, A z⟫ : Circle) : ℂ)) = fun y => (c : ℂ) * (((𝐞 ⟪e y, z⟫ : Circle) : ℂ) * 𝓕⁻ Φ (e y))`. Use function extensionality and compare the values at `y`. Simplify using `only [he, hA y z]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∫ y, (c : ℂ) * (((𝐞 ⟪e y, z⟫ : Circle) : ℂ) * 𝓕⁻ Φ (e y)) ∂(volume : Measure V) = ∫ u, (c : ℂ) * (((𝐞 ⟪u, z⟫ : Circle) : ℂ) * 𝓕⁻ Φ u) ∂((volume : Measure V).map e)` using `(integral_map_equiv e (fun u => (c : ℂ) * (((𝐞 ⟪u, z⟫ : Circle) : ℂ) * 𝓕⁻ Φ u))).symm`. Rewrite using `[e1, key, hmap, integral_smul_measure, hdi, integral_const_mul, fourierInv_eq, Complex.real_smul]`. Simplify using `only [Circle.smul_def, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[integral_smul_measure, hcr, hout, hinv, Complex.real_smul]`. Establish `: (c : ℂ) * ((c : ℂ) * ((|d|⁻¹ : ℝ) : ℂ)) = 1`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, hcc, ← Complex.ofReal_mul, mul_inv_cancel₀ (abs_pos.2 hd).ne', Complex.ofReal_one]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = Φ (-z) := by rw [this, one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem selfDual_lin (A : V ≃L[ℝ] V) (hA : ∀ x y, ⟪x, A y⟫ = ⟪A x, y⟫) :
     SelfDual (ENNReal.ofReal (Real.sqrt |LinearMap.det (A : V →ₗ[ℝ] V)|) • (volume : Measure V))

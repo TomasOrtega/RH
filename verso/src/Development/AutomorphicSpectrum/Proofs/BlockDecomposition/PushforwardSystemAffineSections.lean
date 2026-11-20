@@ -16,9 +16,9 @@ attribute [local instance] algebraOfOver
 variable {X Z : Scheme.{0}}
 
 /- English proof (translation)
-Apply `(cancel_epi (Abelian.factorThruImage (idealSumMap ((Scheme.Modules.pullback φ).obj E) (I ^ m)))).1` to reduce the goal to its premises. Rewrite using `[comp_zero, ← Category.assoc, Abelian.image.fac]`. Apply `biproduct.hom_ext'` to reduce the goal to its premises. Introduce `k`. Rewrite using `[comp_zero, idealSumMap, biproduct.ι_desc_assoc, smulHom_comp, ← appTop_algebraMap φ hφ, ← pullback_map_smulHom_appTop, ← Functor.map_comp, ← smulHom_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, hL⟩` from `exists_smulHom_eq_comp_idealSumMap E (I ^ m) (idealGen_mem (I ^ m) k)`. Establish `hι : idealPowι I E m ≫ cokernel.π D.arrow = 0`. Establish `h` using `Subobject.ofMkLE_arrow (f := idealPowι I E m) (X := D) hD`. Rewrite using `[← h, Category.assoc, cokernel.condition, comp_zero]`. Rewrite using `[hL, ← Abelian.image.fac (idealSumMap E (I ^ m)), Category.assoc, Category.assoc, hι, comp_zero, comp_zero, Functor.map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idealPowι_comp_pullback_map_cokernel_eq_zero {A : Type} [CommRing A] [IsNoetherianRing A]
     (I : Ideal A) [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] (φ : Z ⟶ X)
@@ -41,15 +41,15 @@ theorem idealPowι_comp_pullback_map_cokernel_eq_zero {A : Type} [CommRing A] [I
     comp_zero, comp_zero, Functor.map_zero]
 
 /- English proof (translation)
-Introduce `U hU h`. Use `letI : Algebra Γ(X, V) Γ(Z, U) := (φ.appLE V U h).hom.toAlgebra`. Establish `hx'` using `hx U hU h`. Rewrite `hx'` using `[GlobalTheory.QCoh.pullback_map_app_pullbackSections]`. Use `letI := GlobalTheory.QCoh.appLEModule φ ((Scheme.Modules.pullback φ).obj (cokernel D.arrow)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure.
 
-Use `haveI := GlobalTheory.QCoh.appLE_isScalarTower φ ((Scheme.Modules.pullback φ).obj (cokernel D.arrow)) h`. Establish `hbc` using `GlobalTheory.QCoh.isBaseChange_pullbackSections φ (cokernel D.arrow) hU hV h`. Set `πl : Γ(E, V) →ₗ[Γ(X, V)] Γ(cokernel D.arrow, V)` to `{ toFun := (cokernel.π D.arrow).app V map_add' := map_add _ map_smul' := Scheme.Modules.Hom.app_smul _ }`. Establish `hsurj : Function.Surjective πl` using `surjective_cokernel_π_app D.arrow hV`. Establish `hex : Function.Exact (secsSub D V).subtype πl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Establish `hm : m ∈ Set.range (secsSub D V).subtype ↔ m ∈ Set.range (D.arrow.app V)`. Rewrite using `[Submodule.coe_subtype, Subtype.range_coe_subtype]`. Both sides reduce to the same expression. Rewrite using `[hm, mem_range_app_iff D.arrow hV m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hex'` using `rTensor_exact Γ(Z, U) hex hsurj`. Use `(hex' _).1 ?_` and prove the remaining obligations. Rewrite using `[LinearMap.rTensor_tmul]`. Establish `h1 : (1 : Γ(Z, U)) ⊗ₜ[Γ(X, V)] πl x = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hbc.equiv.injective` to reduce the goal to its premises. Rewrite using `[hbc.equiv_tmul, one_smul, map_zero]`. Conclude with `hx'`. Rewrite using `[← TensorProduct.comm_tmul, h1, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartIn_of_pullback_app_eq_zero (φ : Z ⟶ X) {E : X.Modules} [E.IsQuasicoherent]
     (D : Subobject E) [(D : X.Modules).IsQuasicoherent] (V : X.Opens) (hV : IsAffineOpen V)
@@ -87,17 +87,17 @@ theorem chartIn_of_pullback_app_eq_zero (φ : Z ⟶ X) {E : X.Modules} [E.IsQuas
   rw [← TensorProduct.comm_tmul, h1, map_zero]
 
 /- English proof (translation)
-Introduce `A _ _ I X Z _ _ _ φ hφ E hE S hS B hB V hV x hx n`. Establish `: E.IsQuasicoherent` using `hE.1`. Establish `: ((S n : Subobject E) : X.Modules).IsQuasicoherent` using `hS.qcoh n`. Apply `chartIn_of_pullback_app_eq_zero φ (S n) V hV x` to reduce the goal to its premises. Introduce `U hU h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `hx`. Use `set g := (Scheme.Modules.pullback φ).map (cokernel.π (S n).arrow) with hg`. Establish `hK : pullSys I φ E S n ≤ kernelSubobject g`. Use `sup_le (image_le_kernel _ _ ?_) (le_kernelSubobject _ _ ?_)` and prove the remaining obligations. Rewrite using `[hg, ← Functor.map_comp, cokernel.condition, Functor.map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[powSub, ← Subobject.underlyingIso_hom_comp_eq_mk, Category.assoc, idealPowι_comp_pullback_map_cokernel_eq_zero I φ hφ E (S n) (n + 1) (hS.pow_le n), comp_zero]`. Establish `hBle : B ≤ kernelSubobject g`. Rewrite `hK` using `[← hB n]`. Conclude with `le_sup_left.trans hK`. Establish `hBg : B.arrow ≫ g = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Subobject.ofLE_arrow hBle, Category.assoc, kernelSubobject_arrow_comp, comp_zero]`. Establish `h0 : (adjMap φ B).app V ((adjKer φ B).arrow.app V y) = 0`. Establish `hk : (adjKer φ B).arrow ≫ adjMap φ B = 0` using `kernelSubobject_arrow_comp _`. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, hk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (cokernel.π B.arrow).app (φ ⁻¹ᵁ V) (((Scheme.Modules.pullbackPushforwardAdjunction φ).unit.app E).app V ((adjKer φ B).arrow.app V y)) = 0`. Rewrite `h0` using `[adjMap, Adjunction.homEquiv_unit]`. Conclude with `h0`. Establish `hfac : g = cokernel.π B.arrow ≫ cokernel.desc B.arrow g hBg` using `(cokernel.π_desc _ _ _).symm`. Establish `h2 : (cokernel.π B.arrow).app U (GlobalTheory.QCoh.pullbackSections φ E h ((adjKer φ B).arrow.app V y)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.QCoh.pullbackSections_apply]`. Use `erw [GlobalTheory.QCoh.hom_app_res (cokernel.π B.arrow) h]`. Rewrite using `[h1, map_zero]`. Rewrite using `[hfac, Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply, h2, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem chartIn_adjKer : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X Z : Scheme.{0}}
     [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] [IsLocallyNoetherian X] (φ : Z ⟶ X),

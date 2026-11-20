@@ -18,14 +18,14 @@ section cAsec
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-The claim follows from `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (crv_hasDerivAt x g) (crv_zero x g).symm`.
+A detailed English derivation is pending.
 -/
 theorem cA_hasDeriv (x : Bool × B.Mat k r) {F : B.Mat k r → E} {g : B.Mat k r} (hd : DifferentiableAt ℝ F g) :
     HasDerivAt (fun t : ℝ => F (crv x g t)) (fderiv ℝ F g (dirv x g)) 0 :=
   hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (crv_hasDerivAt x g) (crv_zero x g).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[Dx_eq, dirL_apply]`. Conclude with `(cA_hasDeriv x (hd g)).deriv`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_Dx_eq (x : Bool × B.Mat k r) {F : B.Mat k r → E} (hd : Differentiable ℝ F) :
     Dx x F = fun g => fderiv ℝ F g (dirL x g) := by
@@ -34,7 +34,7 @@ theorem cA_Dx_eq (x : Bool × B.Mat k r) {F : B.Mat k r → E} (hd : Differentia
   exact (cA_hasDeriv x (hd g)).deriv
 
 /- English proof (translation)
-Rewrite using `[cA_Dx_eq x (hF.differentiable (by simp))]`. Conclude with `(hF.fderiv_right (m := ((⊤ : ℕ∞) : WithTop ℕ∞)) (by exact_mod_cast le_rfl)).clm_apply (dirL x).contDiff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_Dx_smooth (x : Bool × B.Mat k r) {F : B.Mat k r → E}
     (hF : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F) : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Dx x F) := by
@@ -42,7 +42,7 @@ theorem cA_Dx_smooth (x : Bool × B.Mat k r) {F : B.Mat k r → E}
   exact (hF.fderiv_right (m := ((⊤ : ℕ∞) : WithTop ℕ∞)) (by exact_mod_cast le_rfl)).clm_apply (dirL x).contDiff
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[Dx_eq, Dx_eq, Dx_eq, (cA_hasDeriv x (h₁ g)).deriv, (cA_hasDeriv x (h₂ g)).deriv]`. Conclude with `((cA_hasDeriv x (h₁ g)).add ((cA_hasDeriv x (h₂ g)).const_smul c)).deriv`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_Dx_lin (x : Bool × B.Mat k r) {F₁ F₂ : B.Mat k r → E} (h₁ : Differentiable ℝ F₁)
     (h₂ : Differentiable ℝ F₂) (c : ℂ) :
@@ -55,7 +55,7 @@ def Dwl (lam : Bool × B.Mat k r → ℂ) (w : List (Bool × B.Mat k r)) (F : B.
   w.foldr (fun x G => fun g => Dx x G g + lam x • G g) F
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hF`. Consider the case `cons x w ih => exact (cA_Dx_smooth x ih).add (ih.const_smul (lam x))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cA_Dwl_smooth (lam : Bool × B.Mat k r → ℂ) (w : List (Bool × B.Mat k r)) {F : B.Mat k r → E}
     (hF : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F) : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Dwl lam w F) := by
@@ -64,11 +64,9 @@ theorem cA_Dwl_smooth (lam : Bool × B.Mat k r → ℂ) (w : List (Bool × B.Mat
   | cons x w ih => exact (cA_Dx_smooth x ih).add (ih.const_smul (lam x))
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Establish `d₁` using `(cA_Dwl_smooth lam w h₁).differentiable (by simp)`. Establish `d₂` using `(cA_Dwl_smooth lam w h₂).differentiable (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (fun g => Dx x (Dwl lam w _) g + lam x • Dwl lam w _ g) = _`. Rewrite using `[ih, cA_Dx_lin x d₁ d₂ c]`. Use function extensionality and compare the values at `g`. Use `show _ = (Dx x (Dwl lam w F₁) g + lam x • Dwl lam w F₁ g) + c • (Dx x (Dwl lam w F₂) g + lam x • Dwl lam w F₂ g)`. Rewrite using `[smul_add, smul_add, smul_comm c (lam x)]`.
-
-Conclude with `add_add_add_comm _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_Dwl_lin (lam : Bool × B.Mat k r → ℂ) (w : List (Bool × B.Mat k r)) {F₁ F₂ : B.Mat k r → E}
     (h₁ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F₁) (h₂ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F₂) (c : ℂ) :
@@ -86,22 +84,20 @@ theorem cA_Dwl_lin (lam : Bool × B.Mat k r → ℂ) (w : List (Bool × B.Mat k 
     exact add_add_add_comm _ _ _ _
 
 /- English proof (translation)
-Simplify using `[Dwl, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_Dwl_append (lam : Bool × B.Mat k r → ℂ) (w : List (Bool × B.Mat k r)) (x : Bool × B.Mat k r)
     (F : B.Mat k r → E) : Dwl lam (w ++ [x]) F = Dwl lam w (fun g => Dx x F g + lam x • F g) := by
   simp [Dwl, List.foldr_append]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w using List.reverseRecOn with`. Consider the case `nil`. Introduce `F _ _ hM`. Simplify `hM [] (List.Sublist.refl _)` using `[Dwl, Dw]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `append_singleton w x ih`. Introduce `F hF hl hM`. Establish `hl' : ∀ y ∈ w, ‖lam y‖ ≤ Λ` using `fun y hy => hl y (by simp [hy])`. Establish `hx : ‖lam x‖ ≤ Λ` using `hl x (by simp)`. Rewrite using `[cA_Dwl_append, cA_Dwl_lin lam w (cA_Dx_smooth x hF) hF]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b1` using `ih (Dx x F) (cA_Dx_smooth x hF) hl' (by`. Introduce `s hs`. Use `hM (s ++ [x]) (hs.append (List.Sublist.refl _))` as an intermediate fact. Rewrite using `[Dw_append] at this)` and apply the resulting hypothesis. Establish `b2` using `ih F hF hl' (fun s hs => hM s (hs.trans (List.sublist_append_left _ _)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM [] (List.nil_sublist _))`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans (add_le_add b1 ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul hx b2 (norm_nonneg _) hΛ`.
-
-Use `_ = (1 + Λ) ^ (w ++ [x]).length * M := by simp [pow_succ]; ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_Dwl_bound (lam : Bool × B.Mat k r → ℂ) {Λ : ℝ} (hΛ : 0 ≤ Λ) (g : B.Mat k r) (M : ℝ) :
     ∀ (w : List (Bool × B.Mat k r)) (F : B.Mat k r → E), ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F →
@@ -131,15 +127,15 @@ theorem cA_Dwl_bound (lam : Bool × B.Mat k r → ℂ) {Λ : ℝ} (hΛ : 0 ≤ �
       _ = (1 + Λ) ^ (w ++ [x]).length * M := by simp [pow_succ]; ring
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro F _ _`. Both sides reduce to the same expression. Consider the case `cons x w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `F hF hh`. Establish `hh' : ∀ y ∈ w, ∀ g (t : ℝ), h (crv y g t) = Complex.exp ((t : ℂ) * lam y) * h g` using `fun y hy => hh y (by simp [hy])`. Use `show Dx x (Dw w _) = _`. Rewrite using `[ih F hF hh']`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hG` using `cA_Dwl_smooth lam w hF`. Establish `d` using `cA_hasDeriv x ((hG.differentiable (by simp)) g)`. Establish `he : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * lam x) * h g) (lam x * h g) 0`. Establish `h1 : HasDerivAt (fun t : ℝ => (t : ℂ) * lam x) (1 * lam x) 0` using `(Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const (lam x)`. Establish `h2` using `(h1.cexp).mul_const (h g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`. Establish `hs : HasDerivAt (fun t : ℝ => (Complex.exp ((t : ℂ) * lam x) * h g) • Dwl lam w F (crv x g t)) ((Complex.exp (((0 : ℝ) : ℂ) * lam x) * h g) • fderiv ℝ (Dwl lam w F) g (dirv x g) + (lam x * h g) • Dwl lam w F (crv x g 0)) 0` using `he.smul d`. Rewrite using `[Dx_eq]`. Establish `e : (fun t : ℝ => h (crv x g t) • Dwl lam w F (crv x g t)) = fun t : ℝ => (Complex.exp ((t : ℂ) * lam x) * h g) • Dwl lam w F (crv x g t)`. Use function extensionality and compare the values at `t; rw [hh x (by simp) g t]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hs.deriv, crv_zero, ← dirL_apply, ← congrFun (cA_Dx_eq x (hG.differentiable (by simp))) g]`. Use `show _ = h g • (Dx x (Dwl lam w F) g + lam x • Dwl lam w F g)`. Simplify using `only [Complex.ofReal_zero, zero_mul, Complex.exp_zero, one_mul, smul_add, smul_smul]`. Rewrite using `[mul_comm (lam x)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_Dw_expmul (lam : Bool × B.Mat k r → ℂ) (h : B.Mat k r → ℂ) :
     ∀ (w : List (Bool × B.Mat k r)) (F : B.Mat k r → E), ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F →
@@ -175,13 +171,13 @@ theorem cA_Dw_expmul (lam : Bool × B.Mat k r → ℂ) (h : B.Mat k r → ℂ) :
     rw [mul_comm (lam x)]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro g _ _`. Both sides reduce to the same expression. Consider the case `cons x w ih`. Introduce `g hg hgU`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw' : ∀ y ∈ w, B.inLie k r y.2` using `fun y hy => hw y (by simp [hy])`. Establish `hx : B.inLie k r x.2` using `hw x (by simp)`. Establish `hle : ((w.length : ℕ) : ℕ∞) ≤ ((x :: w).length : ℕ)` using `by exact_mod_cast Nat.le_succ _`. Use `show Dx x (Dw w (fun h => L (f h))) g = L (Dx x (Dw w f) g)`. Rewrite using `[Dx_congr_loc hx hU (f₂ := fun h => L (Dw w f h)) (ih hw' (sCkOn_mono hle hf)) g hg hgU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : B.CkOn 1 U (Dw w f)`. Apply `CkOn_Dw hw'` to reduce the goal to its premises. Establish `: (1 : ℕ∞) + (w.length : ℕ∞) = ((x :: w).length : ℕ)` using `by simp; ring`. Rewrite using `[this]`. Conclude with `hf`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `CkOn_diff hx hc hgU hg`. Establish `h2` using `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Rewrite using `[Dx_eq]`. Conclude with `h2.deriv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_Dw_clm {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E'] (L : E →L[ℂ] E')
     {U : Set (B.Mat k r)} (hU : IsOpen U) (w : List (Bool × B.Mat k r)) (hw : ∀ x ∈ w, B.inLie k r x.2)

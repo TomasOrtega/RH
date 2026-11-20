@@ -10,13 +10,13 @@ open GlobalTheory.Fam
 namespace GlobalTheory.StepSplit
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hP hR`. Establish `hlev` using `W.Q.charW.base.lev`. Use `⟨fun j hj => ?_, fun j h => ?_⟩` and prove the remaining obligations. Establish `hv` using `(hR.row W.P.A3.A.μ0).vP j hj`. Take `⟨dG, hG, hQ⟩` from `GlobalTheory.T.self_dual_frame_vacuum_step W u hP j (by omega) (Yc D (j + 1)) _ ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) (Or.inr (hlev.βY (j + 1) hj)) hv.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨dG, hG, fun t => ?_⟩` and prove the remaining obligations. Take `⟨dQ, hdQ, hiff⟩` from `hQ t`. Conclude with `⟨dQ, hdQ, (hiff _).1 ((hR.row t).vP j hj)⟩`. Establish `hm : D.R.m = j + 1 + 1` using `by omega`. Establish `hv` using `(hR.row W.P.A3.A.μ0).vT j h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨dG, hG, hQ⟩` from `GlobalTheory.T.self_dual_frame_vacuum_step W u hP (j + 1) (by omega) D.sp.X' _ (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) (Or.inl hlev.βX) hv.1`. Use `⟨dG, hG, fun t => ?_⟩` and prove the remaining obligations. Take `⟨dQ, hdQ, hiff⟩` from `hQ t`. Use `⟨dQ, hdQ, (hiff _).1 ?_⟩` and prove the remaining obligations. Establish `hvt` using `(hR.row t).vT j h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (pk W).chi D.R.m = (pk W).chi (j + 1 + 1)` using `congrArg _ hm`. Rewrite `hvt` using `[e]`. Conclude with `hvt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → (∀ j, j + 1 < D.R.m → ∃ dG, IsDG W j ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) dG ∧ ∀ t, ∃ dQ, IsDQ W t j ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) dQ ∧ (f.row t).vP j = comb (pk W).ψ _ _ dQ (comb (pk W).ψ _ _ dG ((pk W).vac j))) ∧ ∀ j h, ∃ dG, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) dG ∧ ∀ t, ∃ dQ, IsDQ W t (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) dQ ∧ (f.row t).vT j h = comb (pk W).ψ _ _ dQ (comb (pk W).ψ _ _ dG (vacT (pk W) j h)) := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hP hR

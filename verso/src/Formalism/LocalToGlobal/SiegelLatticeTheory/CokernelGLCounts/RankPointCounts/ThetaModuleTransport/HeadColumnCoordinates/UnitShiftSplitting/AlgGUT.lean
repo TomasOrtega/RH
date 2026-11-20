@@ -35,25 +35,21 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
 /- English proof (translation)
-Introduce `hmode V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD Z₁ Z₂ e₁ e₂ hu₂`. Take `⟨g, hs⟩` from `Option.isSome_iff_exists.1 hmode`. Establish `hg` using `hyp.1`. Establish `hr2 : IsUnit (H.Dl f₂ f₂' r)`. Apply `dl_unit_of_head hs H f₂ f₂' t₁.T t₁.T'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: headDet M Z₂ = ((HermSp.ZZplusOf M (H.Zhat f₂ f₂') t₁.T t₁.T').submatrix Fin.castSucc Fin.castSucc).det`. Unfold `headDet`. Rewrite using `[e₂]`. Rewrite using `[← this]`. Conclude with `hu₂`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrel : H.Dl t₁.f t₁.f' r * H.Dl f₂ f₂' (r + 1) = H.Dl f₂ f₂' r * H.Dl t₁.f t₁.f' (r + 1)` using `hyp.2.2.2.1.2.2.2.2.2`. Establish `hunit : IsUnit (H.Dl f₂ f₂' (r + 1))`. Establish `: IsUnit (H.Dl t₁.f t₁.f' r * H.Dl f₂ f₂' (r + 1))` using `by rw [hrel]; exact hr2.mul (dl_succ_unit hyp)`. Conclude with `isUnit_of_mul_isUnit_right this`. Establish `hzz : ∀ a b, HermSp.ZZplusOf M (H.Zhat f₂ f₂') t₁.T t₁.T' a b ∈ M.R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b`. Use `(Z₂ a b).2` as an intermediate fact. Rewrite `this` using `[show ((Z₂ a b : M.R) : E) = HermSp.ZZplusOf M (H.Zhat f₂ f₂') t₁.T t₁.T' a b from congrFun (congrFun e₂ a) b]`. Conclude with `this`. Establish `hG1 : IsUnit (H.Dl t₁.f t₁.f' (r + 1) * M.L.cj (H.Dl t₁.f t₁.f' (r + 1)) - algebraMap F E (t₁.T * t₁.T') * (H.Dl t₁.f t₁.f' r * M.L.cj (H.Dl t₁.f t₁.f' r)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hG : H.Gdet t₁.f t₁.f' t₁.T t₁.T' ≠ 0` using `hg.1.2.2.2.2.1`. Unfold `HermSp.Gdet HermSp.normE at hG`. Apply `isUnit_of_cj_fixed g _ hG` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul, M.L.cj_cj, cj_alg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1 F E M g hs r n V H hn t₁ f₂ f₂' φ φ' hyp hD hunit hzz]`. Use `h2 F E M g hs r t₁.T t₁.T' (hg.1.2.2.2.2.2 g hs).1 (hg.1.2.2.2.2.2 g hs).2.1 _ _ Z₁ Z₂ e₁ e₂ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hyp.1.1.2.1.2.2.2.1` and prove the remaining obligations. Rewrite using `[← dl_full]`. Conclude with `dl_succ_unit hyp`. Rewrite using `[← dl_full]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `hunit`. Rewrite using `[← dl_eq_det]`. Conclude with `hD`. Rewrite using `[← dl_eq_det]`. Conclude with `hr2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← dl_full, ← dl_full, ← dl_eq_det, ← dl_eq_det]`. Take the linear combination `hrel.symm`. Rewrite using `[← dl_full, ← dl_eq_det]`. Conclude with `hG1`. Rewrite using `[← dl_full, ← dl_eq_det]`.
-
-Establish `key` using `gdet_rel (M := M) (H.Dl t₁.f t₁.f' (r + 1)) (H.Dl t₁.f t₁.f' r) (H.Dl f₂ f₂' (r + 1)) (H.Dl f₂ f₂' r) (algebraMap F E (t₁.T * t₁.T')) hrel`. Establish `hA : IsUnit (H.Dl t₁.f t₁.f' (r + 1) * M.L.cj (H.Dl t₁.f t₁.f' (r + 1)))` using `(dl_succ_unit hyp).mul ((dl_succ_unit hyp).map M.L.cj)`. Establish `hB : IsUnit (H.Dl f₂ f₂' (r + 1) * M.L.cj (H.Dl f₂ f₂' (r + 1)))` using `hunit.mul (hunit.map M.L.cj)`. Establish `: IsUnit ((H.Dl f₂ f₂' (r + 1) * M.L.cj (H.Dl f₂ f₂' (r + 1)) - algebraMap F E (t₁.T * t₁.T') * (H.Dl f₂ f₂' r * M.L.cj (H.Dl f₂ f₂' r))) * (H.Dl t₁.f t₁.f' (r + 1) * M.L.cj (H.Dl t₁.f t₁.f' (r + 1))))`. Rewrite using `[key]`.
-
-Conclude with `hB.mul hG1`. Conclude with `isUnit_of_mul_isUnit_left this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaMbeG_of_coordT (h1 : CoordGU) (h2 : AlgGUT) (M : Model F E) (r n : ℕ) : ThetaMbeG M r n := by
   intro hmode V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD Z₁ Z₂ e₁ e₂ hu₂
@@ -106,7 +102,7 @@ theorem thetaMbeG_of_coordT (h1 : CoordGU) (h2 : AlgGUT) (M : Model F E) (r n : 
     exact isUnit_of_mul_isUnit_left this
 
 /- English proof (translation)
-The claim follows from `locCntUG_of (fun _ _ _ _ _ _ _ _ _ M _ r n => thetaMbeG_of_coordT coordGU_holds h M r n)`.
+A detailed English derivation is pending.
 -/
 theorem locCntUG_of_algGUT (h : AlgGUT) : Formalism.L2.SG.LocalCountModules.LocCntUG.LocCntUG :=
   locCntUG_of (fun _ _ _ _ _ _ _ _ _ M _ r n => thetaMbeG_of_coordT coordGU_holds h M r n)

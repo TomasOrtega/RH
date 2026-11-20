@@ -15,7 +15,7 @@ variable {C : Type} [Field C] (V : VF C) {σ : Type} (P : (σ →₀ ℕ) → Pr
 def IntOn (g : MvPowerSeries σ C) : Prop := ∀ μ, P μ → V.Ge 0 (coeff μ g)
 
 /- English proof (translation)
-Introduce `α _`. Rewrite using `[coeff_one]`. Use `split_ifs with h`. Conclude with `VF.Ge.one`. Conclude with `VF.Ge.zero 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intOn_one : IntOn V P (1 : MvPowerSeries σ C) := by
   intro α _
@@ -25,7 +25,7 @@ theorem intOn_one : IntOn V P (1 : MvPowerSeries σ C) := by
   · exact VF.Ge.zero 0
 
 /- English proof (translation)
-Introduce `α hα`. Rewrite using `[coeff_mul]`. Use `VF.Ge.sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Conclude with `VF.Ge.mul_int (hf _ (hP α _ (hx ▸ le_self_add) hα)) (hg _ (hP α _ (hx ▸ le_add_self) hα))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intOn_mul (hP : ∀ μ ν, ν ≤ μ → P μ → P ν) {f g : MvPowerSeries σ C}
     (hf : IntOn V P f) (hg : IntOn V P g) : IntOn V P (f * g) := by
@@ -36,14 +36,14 @@ theorem intOn_mul (hP : ∀ μ ν, ν ≤ μ → P μ → P ν) {f g : MvPowerSe
   exact VF.Ge.mul_int (hf _ (hP α _ (hx ▸ le_self_add) hα)) (hg _ (hP α _ (hx ▸ le_add_self) hα))
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (IntOn V P) (fun _ _ => intOn_mul V P hP) (intOn_one V P) h`.
+A detailed English derivation is pending.
 -/
 theorem intOn_prod (hP : ∀ μ ν, ν ≤ μ → P μ → P ν) {ι : Type*} (s : Finset ι)
     (f : ι → MvPowerSeries σ C) (h : ∀ i ∈ s, IntOn V P (f i)) : IntOn V P (∏ i ∈ s, f i) :=
   Finset.prod_induction f (IntOn V P) (fun _ _ => intOn_mul V P hP) (intOn_one V P) h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using intOn_one V P`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `intOn_mul V P hP ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intOn_pow (hP : ∀ μ ν, ν ≤ μ → P μ → P ν) {f : MvPowerSeries σ C} (hf : IntOn V P f)
     (n : ℕ) : IntOn V P (f ^ n) := by
@@ -52,9 +52,9 @@ theorem intOn_pow (hP : ∀ μ ν, ν ≤ μ → P μ → P ν) {f : MvPowerSeri
   | succ n ih => rw [pow_succ]; exact intOn_mul V P hP ih hf
 
 /- English proof (translation)
-Introduce `C _ V σ τ _ _ P hP γ T hγ hT0 hT α hα`. Establish `hs : HasSubst T` using `hasSubst_of_constantCoeff_zero hT0`. Rewrite using `[coeff_subst hs, finsum_eq_sum _ (coeff_subst_finite hs γ α)]`. Use `VF.Ge.sum fun β _ => ?_` and prove the remaining obligations. Establish `hp : IntOn V P (β.prod fun s e => T s ^ e)` using `intOn_prod V P hP _ _ fun s _ => intOn_pow V P hP (hT s) (β s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul]`. Conclude with `VF.Ge.mul_int (hγ β) (hp α hα)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_int_on_lower :
     ∀ (C : Type) [Field C] (V : VF C) (σ τ : Type) [Fintype σ] [Fintype τ] (P : (σ →₀ ℕ) → Prop), (∀ μ ν, ν ≤ μ → P μ → P ν) → ∀ (γ : MvPowerSeries τ C) (T : τ → MvPowerSeries σ C), (∀ μ, V.Ge 0 (MvPowerSeries.coeff μ γ)) → (∀ w, MvPowerSeries.constantCoeff (T w) = 0) → (∀ w μ, P μ → V.Ge 0 (MvPowerSeries.coeff μ (T w))) → ∀ μ, P μ → V.Ge 0 (MvPowerSeries.coeff μ (MvPowerSeries.subst T γ)) := by

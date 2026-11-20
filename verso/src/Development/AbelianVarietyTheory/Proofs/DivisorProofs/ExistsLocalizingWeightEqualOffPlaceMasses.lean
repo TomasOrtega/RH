@@ -27,9 +27,9 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.OffVLocalWeights
 
 /- English proof (translation)
-Introduce `F _ _ κ _ Φ hΦ μ hμ`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Establish `h` using `(GlobalTheory.WeilM.schA_memLp_two F κ μ hμ Φ hΦ).integrable_norm_pow two_ne_zero`. Establish `h2` using `h.2`. Simplify using `only [HasFiniteIntegral, enorm_pow, enorm_norm] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem sq_lintegral_lt_top : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ], ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,
     ∀ μ : @Measure (κ → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
@@ -42,15 +42,13 @@ theorem sq_lintegral_lt_top : ∀ {F : Type} [Field F] [NumberField F] {κ : Typ
   exact h2
 
 /- English proof (translation)
-Introduce `F _ _ κ _ Φ hΦ`. Set `j : Fin (Fintype.card κ) ≃ κ` to `(Fintype.equivFin κ).symm`. Establish `hd` using `GlobalTheory.SchwartzDecay.decay_of_mem_schA F _ _ (GlobalTheory.RestrSchA.mem_schA_comp_extend F j j.injective Φ hΦ)`. Establish `e : ∀ x : κ → AF F, Φ x = Φ (Function.extend j (x ∘ j) 0)` using `fun x => by`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Take `⟨k, rfl⟩` from `j.surjective i`. Rewrite using `[j.injective.extend_apply]`. Both sides reduce to the same expression. Establish `hr : Continuous (fun x : κ → AF F => x ∘ j)` using `continuous_pi fun i => continuous_apply _`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨hc, ⟨K, hK, hK0⟩, -⟩` from `hd`. Use `⟨?_, (fun u : Fin (Fintype.card κ) → Af F => u ∘ j.symm) '' K, hK.image (continuous_pi fun i => continuous_apply _), fun x hx => ?_⟩` and prove the remaining obligations. Establish `: Φ = (fun y => Φ (Function.extend j y 0)) ∘ (fun x : κ → AF F => x ∘ j)` using `funext e`. Rewrite using `[this]`. Conclude with `hc.comp hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.SWQ.fin (x ∘ j), ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx ((e x).trans (hK0 _ h))`. Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.SWQ.fin, Function.comp_apply, Equiv.apply_symm_apply]`.
-
-Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_and_compact_finite_support : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ], ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,
     Continuous Φ ∧ ∃ K : Set (κ → Af F), IsCompact K ∧ ∀ x : κ → AF F, Φ x ≠ 0 → (fun i => (x i).2) ∈ K := by
@@ -78,7 +76,7 @@ theorem continuous_and_compact_finite_support : ∀ {F : Type} [Field F] [Number
       rfl
 
 /- English proof (translation)
-Introduce `F _ _ κ _ O y hO hy`. Establish `hp : Continuous (fun q : (κ → Ainf F) × (κ → Af F) => (fun i => ((q.1 i, q.2 i) : AF F)))` using `continuous_pi fun i => ((continuous_apply i).comp continuous_fst).prodMk ((continuous_apply i).comp continuous_snd)`. Take `⟨U, V, hU, hV, hyU, hyV, hUV⟩` from `isOpen_prod_iff.1 (hO.preimage hp) (fun i => (y i).1) (fun i => (y i).2) (by exact hy)`. Conclude with `⟨U, V, hU, hV, hyU, hyV, fun x hx1 hx2 => hUV (Set.mk_mem_prod hx1 hx2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_box_nhds : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (O : Set (κ → AF F)) (y : κ → AF F),
     IsOpen O → y ∈ O → ∃ (U : Set (κ → Ainf F)) (V : Set (κ → Af F)), IsOpen U ∧ IsOpen V ∧
@@ -92,7 +90,7 @@ theorem exists_box_nhds : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [
   exact ⟨U, V, hU, hV, hyU, hyV, fun x hx1 hx2 => hUV (Set.mk_mem_prod hx1 hx2)⟩
 
 /- English proof (citation)
-Apply `GlobalTheory.T.exists_trigPolynomial_indicator_awayFromPlace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTrigPolynomialIndicatorAwayFromPlaceStatement.lean&line=25#L25)
 -/
@@ -110,7 +108,7 @@ theorem exists_finite_indicator_poly : ∀ {F : Type} [Field F] [NumberField F] 
   first | exact @GlobalTheory.T.exists_trigPolynomial_indicator_awayFromPlace | exact GlobalTheory.T.exists_trigPolynomial_indicator_awayFromPlace
 
 /- English proof (citation)
-Apply `GlobalTheory.T.archimedean_smooth_bump_with_trigonometric_expansion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanSmoothBumpWithTrigonometricExpansionStatement.lean&line=25#L25)
 -/
@@ -126,13 +124,13 @@ theorem exists_arch_bump_poly : ∀ {F : Type} [Field F] [NumberField F] {κ : T
   first | exact @GlobalTheory.T.archimedean_smooth_bump_with_trigonometric_expansion | exact GlobalTheory.T.archimedean_smooth_bump_with_trigonometric_expansion
 
 /- English proof (translation)
-Introduce `X B _ _ χ hχ s₁ s₂ c₁ c₂`. Use `⟨Finset.image (fun p : B × B => p.1 + p.2) (s₁ ×ˢ s₂), fun b => ∑ p ∈ (s₁ ×ˢ s₂).filter (fun p => p.1 + p.2 = b), c₁ p.1 * c₂ p.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.1 hb`. Take `⟨h1, h2⟩` from `Finset.mem_product.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p.1, h1, p.2, h2, rfl⟩`. Introduce `x`. Establish `hb : ∀ b, (∑ p ∈ (s₁ ×ˢ s₂).filter (fun p => p.1 + p.2 = b), c₁ p.1 * c₂ p.2) * χ b x = ∑ p ∈ (s₁ ×ˢ s₂).filter (fun p => p.1 + p.2 = b), c₁ p.1 * c₂ p.2 * χ (p.1 + p.2) x`. Introduce `b`. Rewrite using `[Finset.sum_mul]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun p hp => by rw [(Finset.mem_filter.1 hp).2]`. Repeatedly rewrite using `[hb]`. Rewrite using `[Finset.sum_fiberwise_of_maps_to (g := fun p : B × B => p.1 + p.2) (fun p hp => Finset.mem_image_of_mem _ hp), Finset.sum_mul_sum, ← Finset.sum_product']`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hχ]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_trig_prod : ∀ {X B : Type} [AddCommMonoid B] [DecidableEq B] (χ : B → X → ℂ),
     (∀ b b' x, χ (b + b') x = χ b x * χ b' x) → ∀ (s₁ s₂ : Finset B) (c₁ c₂ : B → ℂ),
@@ -159,13 +157,11 @@ theorem exists_trig_prod : ∀ {X B : Type} [AddCommMonoid B] [DecidableEq B] (�
     ring
 
 /- English proof (translation)
-Introduce `X _ μ f g h m C hf hg hm hfi hgi heq hb hlim`. Establish `key : ∀ u : X → ENNReal, Measurable u → ∫⁻ x, u x ∂μ < ⊤ → (∀ x, u x ≠ 0 → (f x ≠ 0 ∨ g x ≠ 0)) → Filter.Tendsto (fun n => ∫⁻ x, ‖m n x‖ₑ ^ 2 * u x ∂μ) Filter.atTop (nhds (∫⁻ x, h x * u x ∂μ))`. Introduce `u hu hui hsupp`. Use `tendsto_lintegral_of_dominated_convergence (fun x => ENNReal.ofReal C ^ 2 * u x) (fun n => ((hm n).enorm.pow_const 2).mul hu) (fun n => Filter.Eventually.of_forall fun x => ?_) ?_ ?_` and prove the remaining obligations. Distinguish the cases in `hx : u x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hx]`. Establish `h1 : ‖m n x‖ₑ ≤ ENNReal.ofReal C`. Rewrite using `[← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hb n x (hsupp x hx))`. Use `show ‖m n x‖ₑ ^ 2 * u x ≤ ENNReal.ofReal C ^ 2 * u x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `gcongr`. Rewrite using `[lintegral_const_mul _ hu]`. Conclude with `ENNReal.mul_ne_top (ENNReal.pow_ne_top ENNReal.ofReal_ne_top) hui.ne`. Use `filter_upwards [ae_lt_top hu hui.ne] with x hx`. Distinguish the cases in `h0 : u x = 0`.
-
-Simplify using `[h0]`. Conclude with `ENNReal.Tendsto.mul_const (hlim x (hsupp x h0)) (Or.inr hx.ne)`. Conclude with `tendsto_nhds_unique ((key f hf hfi fun x hx => Or.inl hx).congr fun n => heq n) (key g hg hgi fun x hx => Or.inr hx)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_weight_eq_of_approx : ∀ {X : Type} [MeasurableSpace X] (μ : Measure X) (f g h : X → ENNReal) (m : ℕ → X → ℂ) (C : ℝ),
     Measurable f → Measurable g → (∀ n, Measurable (m n)) → ∫⁻ x, f x ∂μ < ⊤ → ∫⁻ x, g x ∂μ < ⊤ →
@@ -196,7 +192,7 @@ theorem lintegral_weight_eq_of_approx : ∀ {X : Type} [MeasurableSpace X] (μ :
     (key g hg hgi fun x hx => Or.inr hx)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(0 : Ainf F) * a.1 = 0`. Conclude with `zero_mul _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem liftV_mul_fst {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a : AF F) :
     (GlobalTheory.LatVac.liftV v 1 * a).1 = 0 := by
@@ -204,43 +200,39 @@ theorem liftV_mul_fst {F : Type} [Field F] [NumberField F] (v : GlobalTheory.Ind
   exact zero_mul _
 
 /- English proof (translation)
-Introduce `F _ _ κ _ v ψ hψ hnt μ hμ Φ hΦ Ψ hΨ hyp y O hO hyO`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Take `⟨hΦc, KΦ, hKΦ, hΦK⟩` from `continuous_and_compact_finite_support Φ hΦ`. Take `⟨hΨc, KΨ, hKΨ, hΨK⟩` from `continuous_and_compact_finite_support Ψ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, V, hU, hV, hyU, hyV, hbox⟩` from `exists_box_nhds O y hO hyO`. Take `⟨A, sf, cf, hA, hyA, hsf, hAinv, hAV, hfK⟩` from `exists_finite_indicator_poly v ψ hψ hnt (KΦ ∪ KΨ) (hKΦ.union hKΨ) y V hV hyV`. Take `⟨β, hβc, hβ01, hβy, hβU, sa, ca, C, hsa, hCb, hlim⟩` from `exists_arch_bump_poly ψ hψ U y hU hyU`. Establish `hmul : ∀ (b b' : κ → AF F) (x : κ → AF F), ψ (x ⬝ᵥ (b + b')) = ψ (x ⬝ᵥ b) * ψ (x ⬝ᵥ b')` using `fun b b' x => by rw [dotProduct_add, AddChar.map_add_eq_mul]`. Use `choose s c hs hsc using fun n => exists_trig_prod (fun b x => ψ (x ⬝ᵥ b)) hmul sf (sa n) cf (ca n)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinc : Continuous (fun x : κ → AF F => fun i => (x i).2)` using `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`. Establish `hinfc : Continuous (fun x : κ → AF F => fun i => (x i).1)` using `continuous_pi fun i => continuous_fst.comp (continuous_apply i)`. Establish `hgc : Continuous (fun x : κ → AF F => ‖((β (fun i => (x i).1) : ℝ) : ℂ)‖ₑ ^ 2)` using `(ENNReal.continuous_pow 2).comp (continuous_enorm.comp (Complex.continuous_ofReal.comp (hβc.comp hinfc)))`. Establish `hz1 : ∀ z : κ → AF F, GlobalTheory.LatVac.liftV v 1 • z = z → ∀ i, (z i).1 = 0`. Introduce `z hz i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Prod.fst (congrFun hz i)` as an intermediate fact. Rewrite using `[← this]`. Conclude with `liftV_mul_fst v (z i)`. Establish `hβle : ∀ u, ‖((β u : ℝ) : ℂ)‖ₑ ^ 2 ≤ 1`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_le_one₀ zero_le' ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hβ01 u).1]`. Conclude with `ENNReal.ofReal_le_one.2 (hβ01 u).2`. Use `⟨fun x => if (fun i => (x i).2) ∈ A then ‖((β (fun i => (x i).1) : ℝ) : ℂ)‖ₑ ^ 2 else 0, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Measurable.ite (p := {x : κ → AF F | (fun i => (x i).2) ∈ A}) (hA.preimage hfinc).measurableSet hgc.measurable measurable_const`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Introduce `x dsimp only split_ifs`. Conclude with `hβle _`. Conclude with `zero_le'`. Introduce `x z hz dsimp only`. Establish `h1 : (fun i => ((x + z) i).1) = fun i => (x i).1`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(x i).1 + (z i).1 = (x i).1`. Rewrite using `[hz1 z hz i, add_zero]`. Simplify using `only [hAinv x z hz, h1]`. Introduce `x hx dsimp only at hx`.
+Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hxA : (fun i => (x i).2) ∈ A`. Rewrite `hx` using `[if_pos hxA]`. Establish `hβ0 : β (fun i => (x i).1) ≠ 0`. Introduce `h0`. Rewrite `hx` using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `at hx`. Apply `hbox` to reduce the goal to its premises. Establish `h1 : (fun i => ((x + (GlobalTheory.LatVac.liftV v 1 • y - GlobalTheory.LatVac.liftV v 1 • x)) i).1) = fun i => (x i).1`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(x i).1 + ((GlobalTheory.LatVac.liftV v 1 * y i).1 - (GlobalTheory.LatVac.liftV v 1 * x i).1) = (x i).1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[liftV_mul_fst, liftV_mul_fst, sub_zero, add_zero]`. Rewrite using `[h1]`. Conclude with `hβU _ hβ0`. Conclude with `hAV x hxA`. Rewrite `hx` using `[if_neg hxA]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd rfl hx`. Use `⟨{x | (fun i => (x i).2) ∈ A} ∩ {x | 1 / 2 < ‖((β (fun i => (x i).1) : ℝ) : ℂ)‖ₑ ^ 2}, (hA.preimage hfinc).inter (isOpen_lt continuous_const hgc), ⟨hyA, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show 1 / 2 < ‖((β (fun i => (y i).1) : ℝ) : ℂ)‖ₑ ^ 2`. Rewrite using `[hβy]`. Simplify using `using ENNReal.half_lt_self one_ne_zero ENNReal.one_ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `x ⟨hxA, hx⟩ - show 1 / 2 ≤ (if (fun i => (x i).2) ∈ A then ‖((β (fun i => (x i).1) : ℝ) : ℂ)‖ₑ ^ 2 else 0)`. Rewrite using `[if_pos (show (fun i => (x i).2) ∈ A from hxA)]`. Conclude with `le_of_lt hx`. Establish `hK : ∀ x : κ → AF F, (‖Ψ x‖ₑ ^ 2 ≠ 0 ∨ ‖Φ x‖ₑ ^ 2 ≠ 0) → (fun i => (x i).2) ∈ KΦ ∪ KΨ`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hx with hx | hx` into its components or cases. Use `Or.inr (hΨK x fun h0 => hx ?_)` and prove the remaining obligations. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `Or.inl (hΦK x fun h0 => hx ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hCb 0 0)`. Use `lintegral_weight_eq_of_approx μ (fun x => ‖Ψ x‖ₑ ^ 2) (fun x => ‖Φ x‖ₑ ^ 2) _ (fun n x => ∑ b ∈ s n, c n b * ψ (x ⬝ᵥ b)) C (hΨc.measurable.enorm.pow_const 2) (hΦc.measurable.enorm.pow_const 2) ?_ (sq_lintegral_lt_top Ψ hΨ μ hμ) (sq_lintegral_lt_top Φ hΦ μ hμ) ?_ ?_ ?_` and prove the remaining obligations. Introduce `n`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Continuous.measurable (continuous_finset_sum _ fun b _ => continuous_const.mul (hψ.1.comp ?_))` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun i _ => (continuous_apply i).mul continuous_const`. Introduce `n`. Establish `hoff : ∀ b ∈ s n, GlobalTheory.LatVac.liftV v 1 • b = 0`. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b₁, hb₁, b₂, hb₂, rfl⟩` from `hs n b hb`. Rewrite using `[smul_add, hsf b₁ hb₁, hsa n b₂ hb₂ v, add_zero]`. Use `hyp (s n) (c n) hoff` as an intermediate fact. Simplify using `only [enorm_mul, mul_pow] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `n x hx`. Rewrite using `[hsc n x, hfK x (hK x hx)]`. Distinguish the cases in `hxA : (fun i => (x i).2) ∈ A`. Rewrite using `[Set.indicator_of_mem hxA, one_mul]`. Conclude with `hCb n x`.
-
-Rewrite using `[Set.indicator_of_notMem hxA, zero_mul, norm_zero]`. Conclude with `hC0`. Introduce `x hx`. Simplify using `only [hsc _ x, hfK x (hK x hx)]`. Distinguish the cases in `hxA : (fun i => (x i).2) ∈ A`.
-
-Simplify using `only [Set.indicator_of_mem hxA, one_mul, if_pos hxA]`. Conclude with `((ENNReal.continuous_pow 2).tendsto _).comp ((continuous_enorm.tendsto _).comp (hlim x))`. Simplify using `only [Set.indicator_of_notMem hxA, zero_mul, if_neg hxA, enorm_zero]`. Simplify using `using tendsto_const_nhds`.
+A detailed English derivation is pending.
 -/
 theorem exists_localizing_weight : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → (∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∃ t, GlobalTheory.LatVac.psiAt ψ w t ≠ 1) →

@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.FlagBun.GenericColumns
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular u (fun i j hij => h0 _ _ hij)]`. Simplify using `[h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_eq_one {K : Type*} [Field K] {n : ℕ} (u : Matrix (Fin n) (Fin n) K)
     (h1 : ∀ k, u k k = 1) (h0 : ∀ l k, l < k → u l k = 0) : u.det = 1 := by
@@ -16,11 +16,11 @@ theorem det_eq_one {K : Type*} [Field K] {n : ℕ} (u : Matrix (Fin n) (Fin n) K
   simp [h1]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hz : ∀ l, ∑ k, u l k * g k = 0`. Apply `hv (fun l => ∑ k, u l k * g k)` to reduce the goal to its premises. Rewrite using `[← hg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by rw [mul_comm]`. Establish `hm : u.mulVec g = 0` using `funext hz`. Establish `hg0` using `Matrix.eq_zero_of_mulVec_eq_zero (by rw [det_eq_one u h1 h0]; exact one_ne_zero) hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `congrFun hg0 i`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_cols {K M : Type*} [Field K] [AddCommGroup M] [Module K M] {n : ℕ}
     (u : Matrix (Fin n) (Fin n) K) (h1 : ∀ k, u k k = 1) (h0 : ∀ l k, l < k → u l k = 0)
@@ -40,15 +40,13 @@ theorem linearIndependent_cols {K M : Type*} [Field K] [AddCommGroup M] [Module 
   exact congrFun hg0 i
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨m, rfl⟩`. Establish `hu : u * u⁻¹ = 1` using `Matrix.mul_nonsing_inv u (by rw [det_eq_one u h1 h0]; exact isUnit_one)`. Establish `hvm : v m = ∑ k, u⁻¹ k m • ∑ l, u l k • v l`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : ∀ l, ∑ k, (u⁻¹ k m * u l k) • v l = (if l = m then (1 : K) else 0) • v l`. Introduce `l`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Use `congrFun (congrFun hu l) m` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Simplify using `[hl]`. Use `show v m ∈ _`.
-
-Rewrite using `[hvm]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_cols {K M : Type*} [Field K] [AddCommGroup M] [Module K M] {n : ℕ}
     (u : Matrix (Fin n) (Fin n) K) (h1 : ∀ k, u k k = 1) (h0 : ∀ l k, l < k → u l k = 0)
@@ -78,14 +76,14 @@ theorem span_cols {K M : Type*} [Field K] [AddCommGroup M] [Module K M] {n : ℕ
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
 /- English proof (translation)
-Simplify using `[genU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genU_diag (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) (k : Fin (r s)) :
     genU Ω r s k k = 1 := by
   simp [genU]
 
 /- English proof (translation)
-Establish `h1 : ¬ k < l` using `not_lt.2 h.le`. Establish `h2 : l ≠ k` using `h.ne`. Simplify using `[genU, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem genU_zero (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) (l k : Fin (r s)) (h : l < k) :
     genU Ω r s l k = 0 := by
@@ -94,7 +92,7 @@ theorem genU_zero (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) (l k
   simp [genU, h1, h2]
 
 /- English proof (translation)
-Take `⟨s, ⟨⟨l, k⟩, h⟩⟩` from `q`. Conclude with `dif_pos h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem genU_gen (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (q : GenIx r) :
     genU Ω r q.1 q.2.1.1 q.2.1.2 =
@@ -103,7 +101,7 @@ theorem genU_gen (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (q : GenIx r)
   exact dif_pos h
 
 /- English proof (translation)
-The claim follows from `(MvPolynomial.algebraicIndependent_X (GenIx r) Ω).map' (f := IsScalarTower.toAlgHom Ω (MvPolynomial (GenIx r) Ω) (GenField Ω r)) (IsFractionRing.injective _ _)`.
+A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_gen (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) :
     AlgebraicIndependent Ω (fun q : GenIx r =>
@@ -113,7 +111,7 @@ theorem algebraicIndependent_gen (Ω : Type) [Field Ω] {S : Type} (r : S → �
     (IsFractionRing.injective _ _)
 
 /- English proof (translation)
-Use `letI a1 : Algebra Ω₀ Ω := fn.toAlgebra`. Use `letI a2 : Algebra Ω₀ K := ((algebraMap Ω K).comp fn).toAlgebra`. Use `haveI : IsScalarTower Ω₀ Ω K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `hx.restrictScalars (R := Ω₀) (K := Ω) fn.injective`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_comp {Ω₀ Ω K I : Type} [Field Ω₀] [Field Ω] [Field K] [Algebra Ω K]
     (fn : Ω₀ →+* Ω) {x : I → K} (hx : AlgebraicIndependent Ω x) :
@@ -125,13 +123,11 @@ theorem algebraicIndependent_comp {Ω₀ Ω K I : Type} [Field Ω₀] [Field Ω]
   exact hx.restrictScalars (R := Ω₀) (K := Ω) fn.injective
 
 /- English proof (translation)
-Use `letI := ((algebraMap Ω (GenField Ω r)).comp fn).toAlgebra`. Apply `le_antisymm` to reduce the goal to its premises. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨s, l, k⟩, rfl⟩`. Use `show genU Ω r s l k ∈ _`.
+Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : k < l`. Use `genU_gen Ω r ⟨s, ⟨(l, k), h⟩⟩` as an intermediate fact. Conclude with `this ▸ IntermediateField.subset_adjoin _ _ ⟨_, rfl⟩`. Distinguish the cases in `e : l = k`. Substitute `e` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[genU_diag]`. Conclude with `one_mem _`. Rewrite using `[genU_zero Ω r s l k (lt_of_le_of_ne (not_lt.1 h) e)]`. Conclude with `zero_mem _`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨q, rfl⟩`. Use `show algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) (MvPolynomial.X q) ∈ _`. Rewrite using `[← genU_gen]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨q.1, q.2.1.1, q.2.1.2⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_entries {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (fn : Ω₀ →+* Ω) {S : Type} (r : S → ℕ) :
     letI := ((algebraMap Ω (GenField Ω r)).comp fn).toAlgebra
@@ -160,11 +156,9 @@ theorem adjoin_entries {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (fn : Ω₀ �
     exact IntermediateField.subset_adjoin _ _ ⟨⟨q.1, q.2.1.1, q.2.1.2⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `Ω₀ Ω _ _ fn S r d hd hdeg E₀ E' _ _ _ _ j V₀ c hc hj hli`. Use `⟨fun s => span_cols _ (genU_diag Ω r s) (genU_zero Ω r s) _, ?_⟩` and prove the remaining obligations. Use `letI := ((algebraMap Ω (GenField Ω r)).comp fn).toAlgebra`. Use `⟨c, genU Ω r, hc, hj, hli, fun s => linearIndependent_cols _ (genU_diag Ω r s) (genU_zero Ω r s) _ (hli s), genU_diag Ω r, genU_zero Ω r, fun _ _ => rfl, ?_, hd, ?_⟩` and prove the remaining obligations. Establish `h` using `algebraicIndependent_comp fn (algebraicIndependent_gen Ω r)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he : (fun q : Σ σ, {lk : Fin (r σ) × Fin (r σ) // lk.2 < lk.1} => genU Ω r q.1 q.2.1.1 q.2.1.2) = fun q : GenIx r => algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) (MvPolynomial.X q)`. Use function extensionality and compare the values at `(genU_gen Ω r)`. Rewrite using `[he]`. Conclude with `h`. Rewrite using `[adjoin_entries fn r]`.
-
-Conclude with `hdeg`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenericFlag_columns : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] (fn : Ω₀ →+* Ω) (S : Type) (r : S → ℕ) (d : ℕ), 0 < d → (letI := ((algebraMap Ω (GenField Ω r)).comp fn).toAlgebra; Module.finrank (IntermediateField.adjoin Ω₀ (Set.range fun q : GenIx r => algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) (MvPolynomial.X q))) (GenField Ω r) = d) → ∀ (E₀ E' : Type) [AddCommGroup E₀] [Module Ω₀ E₀] [AddCommGroup E'] [Module (GenField Ω r) E'] (j : E₀ →+ E') (V₀ : S → Submodule Ω₀ E₀) (c : ∀ s, Fin (r s) → E₀), (∀ s, LinearIndependent Ω₀ (c s) ∧ Submodule.span Ω₀ (Set.range (c s)) = V₀ s) → (∀ (a : Ω₀) e, j (a • e) = algebraMap Ω (GenField Ω r) (fn a) • j e) → (∀ s, LinearIndependent (GenField Ω r) fun k => j (c s k)) → (∀ s, Submodule.span (GenField Ω r) (Set.range fun k => ∑ l, genU Ω r s l k • j (c s l)) = Submodule.span (GenField Ω r) (Set.range fun k => j (c s k))) ∧ (letI := ((algebraMap Ω (GenField Ω r)).comp fn).toAlgebra; IsGenericFlag (Ω' := GenField Ω r) j V₀ (fun s k => ∑ l, genU Ω r s l k • j (c s l)) d) := by
   intro Ω₀ Ω _ _ fn S r d hd hdeg E₀ E' _ _ _ _ j V₀ c hc hj hli

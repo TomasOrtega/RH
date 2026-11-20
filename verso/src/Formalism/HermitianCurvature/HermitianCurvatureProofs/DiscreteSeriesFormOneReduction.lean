@@ -12,19 +12,19 @@ namespace Formalism.FourierDecayAlt.P.DDSmoothness
 open Formalism.FourierDecayAlt.ThreeDimData
 
 /- English proof (translation)
-Introduce `hSch hBC hNI hBB hSh hKF hZ hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS`. Establish `hS'` using `hS`. Take `⟨hlam, hσ, -, -, hw0, -, -, -, -, hW, hN, hG, hq⟩` from `hS'`. Take `⟨hBC1, -, -, -⟩` from `hBC hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`. Take `⟨d, hd, hSd⟩` from `hSch k r ε lam H σ μG hlam hσ hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw0n : w0 ≠ 0`. Take `⟨P, -, hn1, -⟩` from `hw0`. Introduce `h0`. Rewrite `hn1` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg : ∀ x : H, x ≠ 0 → PI.BesselPeriodGGP.fdegH μG σ x = d` using `fun x hx => fdeg_eq hd hSd hx`. Establish `hmu` using `muSof_facts hW hN`. Establish `hae` using `ae_UH_of_quot hG.2.2.1 hmu.1 hmu.2 hq`. Establish `hKs : ∀ v : H, PI.UpqRep.IsKFinHpk (k` using `k) (r := r) σ v → v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ := fun v hv => hIn.2.2.1 k r ε lam H σ hlam hσ v hv`. Distinguish the cases in `hnz : ∃ x ∈ DDsp σ w0, ∃ y ∈ DDsp σ w0, be z c π σ μW μN x y ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, hx1, hid⟩` from `hSh hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS hnz`. Establish `hK` using `hKF hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS l hl hx1 hid`. Use `⟨l, hl, fun x hx v hv => ⟨hBC1 x hx v (Or.inr hv), hK v hv x hx⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx hx0 v hv`. Establish `hNv` using `(hNI hIn hSch k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS x hx v (Or.inr hv) (l v)).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hNv` using `[hK v hv v (hKs v hv)]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply] at hNv`. Rewrite `hNv` using `[hdeg w0 hw0n]`. Rewrite using `[hdeg x hx0]`. Use `l2_norm_scaling _ _ (l v) _ _ (by positivity) hNv (hae.mono fun g hg => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK v hv _ (PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε lam H σ hσ x hx _ hg)]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Use `push_neg at hnz`. Establish `h0` using `hZ hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS hnz`. Use `⟨fun _ => 0, bessel_zero, fun x hx v hv => ⟨hBC1 x hx v (Or.inr hv), ?_⟩, fun x _ _ v _ => by simp⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `show be z c π σ μW μN x v = _`. Rewrite using `[h0 v hv x hx]`. Use extensionality with `ξ`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smooth_K_finite_form_one_side : AtFormOneOfSteps := by
   intro hSch hBC hNI hBB hSh hKF hZ hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS
@@ -66,7 +66,7 @@ end Formalism.FourierDecayAlt.P.DDSmoothness
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `DDSmoothness.discrete_form_one_side`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_form_one_reduction : Formalism.FourierDecayAlt.ThreeDimData.DDFormOneOfSteps := DDSmoothness.discrete_form_one_side
 

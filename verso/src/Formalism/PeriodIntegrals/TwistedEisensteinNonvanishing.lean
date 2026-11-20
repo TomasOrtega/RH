@@ -104,9 +104,9 @@ def R1cond (r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) : Prop :=
 
 variable {k n c} in
 /- English proof (translation)
-Use `⟨fun i v hv => hr.1 i _ (hs.1 i v hv), ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show r (s _) = _`. Rewrite using `[hs.2.1, hr.2.1]`. Establish `h1 : (r * s) (eN k (n + c) (n + i)) - eN k (n + c) (n + i) = r (s (eN k (n + c) (n + i)) - eN k (n + c) (n + i)) + (r (eN k (n + c) (n + i)) - eN k (n + c) (n + i))`. Rewrite using `[map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `show r (s _) - _ = _`. Normalize the expressions using the abelian group laws. Rewrite using `[h1]`. Conclude with `add_mem (hr.1 i _ (hs.2.2 i)) (hr.2.2 i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : R1cond k n c r) (hs : R1cond k n c s) :
     R1cond k n c (r * s) := by
@@ -122,7 +122,7 @@ theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr
     exact add_mem (hr.1 i _ (hs.2.2 i)) (hr.2.2 i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ hv => hv, rfl, fun i => by show eN k (n + c) (n + i) - eN k (n + c) (n + i) ∈ _ rw [sub_self] exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem R1cond_one : R1cond k n c 1 :=
   ⟨fun _ _ hv => hv, rfl, fun i => by

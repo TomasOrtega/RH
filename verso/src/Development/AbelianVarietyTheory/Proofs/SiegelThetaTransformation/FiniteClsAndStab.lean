@@ -31,11 +31,11 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Take `⟨-, -, s₀, hs₀, hc, hstd, hΛs⟩` from `hΛ`. Establish `hφ : 0 < M.totient` using `Nat.totient_pos.2 hM`. Establish `hmod : s₀ ^ M.totient ≡ 1 [MOD M]` using `Nat.ModEq.pow_totient hc`. Establish `h1 : 1 ≤ s₀ ^ M.totient` using `Nat.one_le_pow _ _ hs₀`. Take `⟨t, ht⟩` from `(Nat.modEq_iff_dvd' h1).1 hmod.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpow : ((s₀ ^ (M.totient - 1) : ℕ) : E) * s₀ = ((s₀ ^ M.totient : ℕ) : E)`. Rewrite using `[← Nat.cast_mul, ← pow_succ, Nat.sub_add_cancel hφ]`. Use `⟨s₀ ^ M.totient, t, by rw [← ht, Nat.add_sub_cancel' h1], fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `_root_.GlobalTheory.SW.Base.nat_smul_mem _ (s₀ ^ (M.totient - 1)) (hstd v hv)` as an intermediate fact. Rewrite `this` using `[smul_smul, hpow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `_root_.GlobalTheory.SW.Base.nat_smul_mem _ (s₀ ^ (M.totient - 1)) (hΛs v hv)` as an intermediate fact. Rewrite `this` using `[smul_smul, hpow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma exists_scale_one_mod_M_of_mem_Vset (M : ℕ) (hM : 0 < M) {Λ : _root_.GlobalTheory.SW.Lt E n}
     (hΛ : Λ ∈ _root_.GlobalTheory.SW.Vset E n M) :
@@ -58,7 +58,7 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.SW.ccT]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma ccT_apply (A : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     _root_.GlobalTheory.SW.ccT A i j = _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (A j i) := by
@@ -68,9 +68,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Use extensionality with `j i`. Use `H (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[_root_.GlobalTheory.SW.Base.herm_one, _root_.GlobalTheory.SW.Base.herm_one, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [ccT_apply, Matrix.transpose_apply, Matrix.col_apply] at this ⊢`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl (fun a _ => mul_comm _ _), this]`. Simplify using `[Pi.single_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, Matrix.one_apply, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma unitary_of_hermitian_mulVec {h : Matrix (Fin n) (Fin n) E}
     (H : ∀ x y, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 (h *ᵥ x) (h *ᵥ y) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 x y) :
@@ -88,7 +88,7 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.SW.Base.mem_stdL]`. Introduce `b`. Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp [isIntegral_one, isIntegral_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma single_mem_stdL' (a : Fin n) :
     (Pi.single a 1 : Fin n → E) ∈ _root_.GlobalTheory.SW.stdL E n := by
@@ -101,25 +101,23 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Use `set h := LinearMap.toMatrix' ((γ₂ : (Fin n → E) →ₗ[E] (Fin n → E)) ∘ₗ (γ₁.symm : (Fin n → E) →ₗ[E] (Fin n → E))) with hdef`. Establish `hmv : ∀ v, h *ᵥ v = γ₂ (γ₁.symm v)` using `fun v => by`. Rewrite using `[hdef, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Establish `hu : _root_.GlobalTheory.SW.ccT h * h = 1` using `unitary_of_hermitian_mulVec fun x y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmv, hmv, hγ₂, ← hγ₁, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Use `⟨h, ⟨hu, s₁ * s₂, ?_, ?_, ?_⟩, fun v => by` and prove the remaining obligations. Rewrite using `[hmv, ← hmem₂, hmem₁, LinearEquiv.apply_symm_apply]⟩`. Rewrite using `[hst₁, hst₂]`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hst₁, hst₂]`. Conclude with `Nat.Coprime.mul (by simp) (by simp)`. Establish `hcong : ∀ a i, ∃ c : E, IsIntegral ℤ c ∧ (s₁ : E) * ((s₁ : E) * (Pi.single i (1 : E) : Fin n → E) a) - s₂ * (s₁ * h a i) = c * M`. Introduce `a i`. Establish `hv : (s₁ : E) • (Pi.single i 1 : Fin n → E) ∈ Λ₁` using `hΛs₁ _ (single_mem_stdL' i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x := γ₁.symm ((s₁ : E) • (Pi.single i 1 : Fin n → E)) with hx`. Establish `hγx : γ₁ x = (s₁ : E) • Pi.single i 1` using `γ₁.apply_symm_apply _`. Establish `hxQ : x ∈ Q` using `(hmem₁ x).2 (hγx ▸ hv)`. Establish `hγ₂x : γ₂ x = h *ᵥ ((s₁ : E) • Pi.single i 1)` using `(hmv _).symm`. Establish `hint₁ : IsIntegral ℤ ((s₁ : E) * γ₁ x a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(_root_.GlobalTheory.SW.Base.mem_stdL _).1 (hstd₁ _ ((hmem₁ x).1 hxQ)) a` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hint₂ : IsIntegral ℤ ((s₂ : E) * γ₂ x a)`. Use `(_root_.GlobalTheory.SW.Base.mem_stdL _).1 (hstd₂ _ ((hmem₂ x).1 hxQ)) a` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `heq` using `(hf₁ x hxQ a hint₁).symm.trans (hf₂ x hxQ a hint₂)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 heq)`. Use `⟨c, c.isIntegral_coe, ?_⟩` and prove the remaining obligations. Establish `hce : (c : E) * M = (s₁ : E) * γ₁ x a - s₂ * γ₂ x a`. Use `congrArg (algebraMap (𝓞 E) E) hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[map_mul, map_natCast]`. Conclude with `this`. Rewrite using `[hce, hγx, hγ₂x, Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.col_apply]`. Use `choose c hc hce using hcong`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨fun a i => -c a i + s₁ * ((t₁ : E) - t₂) * (Pi.single i (1 : E) : Fin n → E) a, ?_, ?_⟩` and prove the remaining obligations. Introduce `a i`. Use `(hc a i).neg.add (((isIntegral_natCast s₁).mul ((isIntegral_natCast t₁).sub (isIntegral_natCast t₂))).mul ?_)` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp [isIntegral_one, isIntegral_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a i`. Establish `e₁ : (s₁ : E) = 1 + M * t₁` using `by rw [hst₁]; push_cast; ring`. Establish `e₂ : (s₂ : E) = 1 + M * t₂` using `by rw [hst₂]; push_cast; ring`. Establish `hδ : (1 : Matrix (Fin n) (Fin n) E) a i = (Pi.single i (1 : E) : Fin n → E) a`. Rewrite using `[Matrix.one_apply, Pi.single_apply]`.
-
-Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, hδ, Pi.smul_apply]`. Express the relevant statement in the definitionally equal form `_ = (M : E) * (-c a i + (s₁ : E) * ((t₁ : E) - t₂) * (Pi.single i (1 : E) : Fin n → E) a)`. Use `push_cast`. Take the linear combination `(-1 : E) * hce a i + (s₁ : E) * (Pi.single i (1 : E) : Fin n → E) a * (e₁ - e₂)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma related_of_same_reduction_lemma_5 (M : ℕ) {Λ₁ Λ₂ : _root_.GlobalTheory.SW.Lt E n}
     (Q : Submodule (𝓞 E) (Fin n → E)) (q : Q →ₗ[𝓞 E] (Fin n → 𝓞 E ⧸ Ideal.span {(M : 𝓞 E)}))
@@ -193,13 +191,13 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Take `⟨S, -, hS2⟩` from `_root_.GlobalTheory.finite_classes_selfDual_level (E := E) n M hM.ne'`. Establish `key : ∀ Λ : _root_.GlobalTheory.SW.Vset E n M, ∃ P ∈ S, ∃ s t : ℕ, s = 1 + M * t ∧ (∀ v ∈ (Λ : _root_.GlobalTheory.SW.Lt E n), (s : E) • v ∈ _root_.GlobalTheory.SW.stdL E n) ∧ (∀ v ∈ _root_.GlobalTheory.SW.stdL E n, (s : E) • v ∈ (Λ : _root_.GlobalTheory.SW.Lt E n)) ∧ ∃ γ : (Fin …`. Introduce and unpack `⟨Λ, hΛ⟩`. Take `⟨s, t, hst, hstd, hΛs⟩` from `exists_scale_one_mod_M_of_mem_Vset M hM hΛ`. Take `⟨hfg, hsd, -⟩` from `hΛ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, γ, hγ, hmem, hf⟩` from `hS2 Λ hfg (fun x hx y hy => (hsd x).1 hx y hy) (fun x hx => (hsd x).2 hx) (_root_.GlobalTheory.SW.ClassFin.red M Λ s hstd)`. Conclude with `⟨P, hP, s, t, hst, hstd, hΛs, γ, hγ, hmem, fun x hx a hint => by rw [hf ⟨x, hx⟩]; rfl⟩`. Use `choose P hPS s t hst hstd hΛs γ hγ hmem hf using key`. Set `F : _root_.GlobalTheory.SW.Cls E n M → S` to `fun c => ⟨P (Quot.out c), hPS _⟩`. Use `Finite.of_injective F fun c₁ c₂ hc => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hP : P (Quot.out c₁) = P (Quot.out c₂)` using `congrArg Subtype.val hc`. Rewrite using `[← Quot.out_eq c₁, ← Quot.out_eq c₂]`. Apply `(_root_.GlobalTheory.SW.Base.cls_eq_iff _ _).2` to reduce the goal to its premises. Establish `hmem₁` using `hmem (Quot.out c₁)`. Establish `hf₁` using `hf (Quot.out c₁)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem₁`, `hf₁` using `[hP]`. Conclude with `related_of_same_reduction_lemma_5 M (P (Quot.out c₂)).1 (P (Quot.out c₂)).2 _ _ _ _ (hst _) (hst _) (hstd _) (hΛs _) (hstd _) (γ _) (γ _) (hγ _) (hγ _) hmem₁ (hmem _) hf₁ (hf _)`.
+A detailed English derivation is pending.
 -/
 private lemma finite_cls' (M : ℕ) (hM : 0 < M) : Finite (_root_.GlobalTheory.SW.Cls E n M) := by
   obtain ⟨S, -, hS2⟩ := _root_.GlobalTheory.finite_classes_selfDual_level (E := E) n M hM.ne'
@@ -232,9 +230,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Use `((NumberField.Embeddings.finite_of_norm_le E ℂ (s : ℝ)).image fun y : E => y / s).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hb⟩`. Establish `hs' : (s : E) ≠ 0` using `by exact_mod_cast hs.ne'`. Use `⟨(s : E) * x, ⟨hx, fun τ => ?_⟩, by field_simp⟩` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, map_natCast, Complex.norm_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using mul_le_mul_of_nonneg_left (hb τ) (Nat.cast_nonneg (α := ℝ) s)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma finite_integral_multiple_embeddings_bounded (s : ℕ) (hs : 0 < s) :
     {x : E | IsIntegral ℤ ((s : E) * x) ∧ ∀ τ : E →+* ℂ, ‖τ x‖ ≤ 1}.Finite := by
@@ -249,7 +247,7 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Rewrite using `[← hh, Matrix.mul_apply]`. Simplify using `[ccT_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma sum_conj_mul_eq_of_unitary {h : Matrix (Fin n) (Fin n) E}
     (hh : _root_.GlobalTheory.SW.ccT h * h = 1) (i j : Fin n) :
@@ -261,11 +259,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Establish `key` using `congrArg τ (sum_conj_mul_eq_of_unitary hh a a)`. Simplify using `only [map_sum, map_mul, _root_.GlobalTheory.SW.Base.map_cc, Matrix.one_apply_eq, map_one] at key`. Establish `hsum : ∑ b, ‖τ (h b a)‖ ^ 2 = 1`. Establish `: ((∑ b, ‖τ (h b a)‖ ^ 2 : ℝ) : ℂ) = 1`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← key]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_mul']`. Conclude with `this` after adjusting the coercions. Establish `hle : ‖τ (h k a)‖ ^ 2 ≤ 1` using `hsum ▸ Finset.single_le_sum (f := fun b => ‖τ (h b a)‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ k)`.
-
-Conclude with `(sq_le_one_iff₀ (norm_nonneg _)).1 hle`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma norm_embedding_entry_le_one_of_unitary {h : Matrix (Fin n) (Fin n) E}
     (hh : _root_.GlobalTheory.SW.ccT h * h = 1) (τ : E →+* ℂ) (k a : Fin n) : ‖τ (h k a)‖ ≤ 1 := by
@@ -286,13 +282,13 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Take `⟨-, -, s, hs, -, hstd, hΛs⟩` from `hΛ`. Establish `hT` using `finite_integral_multiple_embeddings_bounded (E := E) (s * s) (Nat.mul_pos hs hs)`. Use `(Set.Finite.pi (t := fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => _) fun _ => Set.Finite.pi fun _ => hT).subset ?_` and prove the remaining obligations. Introduce and unpack `(h : Matrix (Fin n) (Fin n) E) ⟨⟨hu, -⟩, hmov⟩`. Introduce `k _ a _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, fun τ => norm_embedding_entry_le_one_of_unitary hu τ k a⟩` and prove the remaining obligations. Establish `h1` using `hstd _ ((hmov _).1 (hΛs _ (single_mem_stdL' a)))`. Rewrite `h1` using `[_root_.GlobalTheory.SW.Base.mem_stdL]`. Establish `h2` using `h1 k`. Rewrite `h2` using `[Matrix.mulVec_smul, Pi.smul_apply, Pi.smul_apply, Matrix.mulVec_single_one, smul_eq_mul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ((s * s : ℕ) : E) * h k a = (s : E) * ((s : E) * h.col a k)`. Use `push_cast`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private lemma finite_stabiliser_DH (M : ℕ) {Λ : _root_.GlobalTheory.SW.Lt E n}
     (hΛ : Λ ∈ _root_.GlobalTheory.SW.Vset E n M) :
@@ -320,11 +316,11 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Establish `key` using `sum_conj_mul_eq_of_unitary hh`. Rewrite using `[_root_.GlobalTheory.SW.Base.herm_one, _root_.GlobalTheory.SW.Base.herm_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mulVec, dotProduct, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Establish `e : ∀ f : Fin n → Fin n → Fin n → E, ∑ a, ∑ i, ∑ j, f a i j = ∑ j, ∑ i, ∑ a, f a i j` using `fun f => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(e _).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ i, x i * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (y i) := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [key, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma herm_one_mulVec_of_unitary {h : Matrix (Fin n) (Fin n) E}
     (hh : _root_.GlobalTheory.SW.ccT h * h = 1) (x y : Fin n → E) :
@@ -352,9 +348,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Take `⟨-, s, hs, hc, y, hy, he⟩` from `hh`. Use `⟨s, hs, hc, fun k i => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun he k) i`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul] at e`. Establish `: (s : E) * h k i = M * y k i + s * (1 : Matrix (Fin n) (Fin n) E) k i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `e`. Rewrite using `[this]`. Use `((isIntegral_natCast M).mul (hy k i)).add ((isIntegral_natCast s).mul ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [isIntegral_one, isIntegral_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma exists_coprime_scale_integral_entries_of_mem_DH {M : ℕ} {h : Matrix (Fin n) (Fin n) E}
     (hh : h ∈ _root_.GlobalTheory.SW.DH E n M) :
@@ -374,9 +370,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Rewrite `hv`, the goal using `[_root_.GlobalTheory.SW.Base.mem_stdL]`. Introduce `k`. Establish `: ((s : E) • (g *ᵥ v)) k = ∑ i, (s : E) * g k i * v i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsIntegral.sum _ fun i _ => (hg k i).mul (hv i)`.
+A detailed English derivation is pending.
 -/
 private lemma smul_mulVec_mem_stdL_of_integral_scaled {g : Matrix (Fin n) (Fin n) E} {s : ℕ}
     (hg : ∀ k i, IsIntegral ℤ ((s : E) * g k i)) {v : Fin n → E}
@@ -393,21 +389,21 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 /- English proof (translation)
-Establish `hu : _root_.GlobalTheory.SW.ccT h * h = 1` using `hh.1`. Establish `hu'` using `mul_eq_one_comm.1 hu`. Establish `hinv : ∀ v, h *ᵥ (_root_.GlobalTheory.SW.ccT h *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, hu', Matrix.one_mulVec]`. Establish `hinv' : ∀ v, _root_.GlobalTheory.SW.ccT h *ᵥ (h *ᵥ v) = v` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, hu, Matrix.one_mulVec]`. Take `⟨hfg, hsd, s₁, hs₁, hc₁, hstd₁, hΛs₁⟩` from `hΛ`. Set `Λ' : _root_.GlobalTheory.SW.Lt E n` to `Λ.map ((Matrix.mulVecLin h).restrictScalars (𝓞 E))`. Establish `hmem : ∀ x, x ∈ Λ' ↔ _root_.GlobalTheory.SW.ccT h *ᵥ x ∈ Λ` using `fun x => by`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Simplify `hw` using `[hinv']`. Introduce `hx`. Conclude with `⟨_, hx, hinv x⟩`. Establish `hmov : _root_.GlobalTheory.SW.Moves h Λ Λ'` using `fun v => by rw [hmem, hinv']`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨Λ', ⟨hfg.map _, fun x => ?_, ?_⟩, hmov⟩` and prove the remaining obligations. Rewrite using `[hmem x, hsd]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Use `H _ ((hmem y).1 hy)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← herm_one_mulVec_of_unitary hu, hinv, hinv]`. Then use the resulting hypothesis. Introduce `H y hy`. Use `H _ ((hmov y).1 hy)` as an intermediate fact. Rewrite `this` using `[← hinv x, herm_one_mulVec_of_unitary hu]`. Then use the resulting hypothesis. Take `⟨s₂, hs₂, hc₂, hg₂⟩` from `exists_coprime_scale_integral_entries_of_mem_DH hh`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨s₃, hs₃, hc₃, hg₃⟩` from `exists_coprime_scale_integral_entries_of_mem_DH (_root_.GlobalTheory.SW.Base.ccT_mem_DH hh)`. Use `⟨s₁ * s₂ * s₃, by positivity, (hc₁.mul hc₂).mul hc₃, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `smul_mulVec_mem_stdL_of_integral_scaled hg₂ (hstd₁ _ ((hmem v).1 hv))`. Establish `h2` using `_root_.GlobalTheory.SW.Base.nat_smul_mem _ s₃ h1`. Rewrite `h2` using `[Matrix.mulVec_smul, hinv, smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h2 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hΛs₁ _ (smul_mulVec_mem_stdL_of_integral_scaled hg₃ hv)`. Establish `h2` using `(hmov _).1 h1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.mulVec_smul, Matrix.mulVec_smul, hinv, smul_smul]`. Establish `h3` using `_root_.GlobalTheory.SW.Base.nat_smul_mem _ s₂ h2`. Rewrite `h3` using `[smul_smul]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -462,7 +458,7 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 
 /- English proof (translation)
-Introduce `E _ _ _ n M hM`. Use `⟨finite_cls' M hM, _root_.GlobalTheory.SW.Base.stdL_mem_Vset n M, fun Λ hΛ => ⟨finite_stabiliser_DH M hΛ, ?_⟩, ⟨_root_.GlobalTheory.SW.Base.one_mem_DH M, fun h hh => ⟨_root_.GlobalTheory.SW.Base.ccT_mem_DH hh, fun h' hh' => _root_.GlobalTheory.SW.Base.mul_mem_DH hh hh'⟩⟩, fun h h …` and prove the remaining obligations. Establish `hne : {h | h ∈ _root_.GlobalTheory.SW.DH E n M ∧ _root_.GlobalTheory.SW.Moves h Λ Λ}.Nonempty` using `⟨1, _root_.GlobalTheory.SW.Base.one_mem_DH M, _root_.GlobalTheory.SW.Base.moves_one Λ⟩`. Unfold `_root_.GlobalTheory.SW.wt`. Conclude with `inv_pos.2 (Nat.cast_pos.2 ((Set.ncard_pos (finite_stabiliser_DH M hΛ)).2 hne))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SW.finite_cls_and_stab : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (n M : ℕ), 0 < M → Finite (_root_.GlobalTheory.SW.Cls E n M) ∧

@@ -11,12 +11,12 @@ private def dm (A B : M4 k) : M4 (DualNumber k) :=
   Matrix.of fun i j => TrivSqZeroExt.inl (A i j) + TrivSqZeroExt.inr (B i j)
 
 /- English proof (translation)
-Simplify using `[dm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dm_fst (A B : M4 k) (i j : Fin 4) : (dm A B i j).fst = A i j := by simp [dm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[dm, Matrix.mul_apply, TrivSqZeroExt.fst_sum]`. Simplify using `[dm, Matrix.mul_apply, TrivSqZeroExt.snd_sum, Finset.sum_add_distrib, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dm_mul (A B C D : M4 k) : dm A B * dm C D = dm (A * C) (A * D + B * C) := by
   ext i j
@@ -24,7 +24,7 @@ private theorem dm_mul (A B C D : M4 k) : dm A B * dm C D = dm (A * C) (A * D + 
   · simp [dm, Matrix.mul_apply, TrivSqZeroExt.snd_sum, Finset.sum_add_distrib, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `simp [dm, Matrix.one_apply] split_ifs <;> simp`. Apply the tactic sequence `simp [dm, Matrix.one_apply] split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dm_one : dm (1 : M4 k) 0 = 1 := by
   ext i j
@@ -34,7 +34,7 @@ private theorem dm_one : dm (1 : M4 k) 0 = 1 := by
     split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[dm, adj_apply]`. Simplify using `[dm, adj_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dm_adj (A B : M4 k) : adj (dm A B) = dm (adj A) (adj B) := by
   ext i j
@@ -42,13 +42,13 @@ private theorem dm_adj (A B : M4 k) : adj (dm A B) = dm (adj A) (adj B) := by
   · simp [dm, adj_apply, mul_comm]
 
 /- English proof (translation)
-Simplify using `[dm, hA, hB]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dm_zero {A B : M4 k} {i j : Fin 4} (hA : A i j = 0) (hB : B i j = 0) : dm A B i j = 0 := by
   simp [dm, hA, hB]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrArg (fun M => (M i j).snd) h` as an intermediate fact. Simplify `this` using `[dm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dm_inj {A B A' B' : M4 k} (h : dm A B = dm A' B') : B = B' := by
   ext i j
@@ -56,9 +56,9 @@ private theorem dm_inj {A B A' B' : M4 k} (h : dm A B = dm A' B') : B = B' := by
   simpa [dm] using this
 
 /- English proof (translation)
-Establish `hXa : adj X = -X` using `hX`. Establish `hA' : adj A * A = ν • 1` using `hA`. Establish `hadj : adj (X * A) = -(adj A * X)` using `by rw [(grp k).1, hXa, mul_neg]`. Unfold `IsGSp`. Rewrite using `[dm_adj, dm_mul, hadj, hA']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : adj A * (X * A) + -(adj A * X) * A = 0`. Rewrite using `[neg_mul, ← mul_assoc, add_neg_cancel]`. Rewrite using `[h0]`. Apply the tactic sequence `ext i j <;> by_cases hij : i = j <;> simp [dm, Matrix.one_apply, hij, h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dm_gsp {ν : k} {ν' : DualNumber k} (h1 : ν'.fst = ν) (h2 : ν'.snd = 0) {A X : M4 k}
     (hA : IsGSp ν A) (hX : X ∈ sp4 k) : IsGSp ν' (dm A (X * A)) := by
@@ -73,7 +73,7 @@ private theorem dm_gsp {ν : k} {ν' : DualNumber k} (h1 : ν'.fst = ν) (h2 : �
   ext i j <;> by_cases hij : i = j <;> simp [dm, Matrix.one_apply, hij, h1, h2]
 
 /- English proof (translation)
-Introduce `i j h` and use `by rw [Matrix.mul_apply] refine Finset.sum_eq_zero fun m _ => ?_ rcases lt_or_ge m i with hm | hm · rw [hA i m hm, zero_mul] · rw [hB m j (lt_of_lt_of_le h hm), mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem up_mul {A B : M4 k} (hA : IsUp A) (hB : IsUp B) : IsUp (A * B) := fun i j h => by
   rw [Matrix.mul_apply]
@@ -83,20 +83,20 @@ private theorem up_mul {A B : M4 k} (hA : IsUp A) (hB : IsUp B) : IsUp (A * B) :
   · rw [hB m j (lt_of_lt_of_le h hm), mul_zero]
 
 /- English proof (translation)
-Establish `h' : adj n * n = 1` using `by simpa [IsGSp] using h`. Conclude with `mul_eq_one_comm.mp h'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mul_adj {n : M4 k} (h : IsGSp 1 n) : n * adj n = 1 := by
   have h' : adj n * n = 1 := by simpa [IsGSp] using h
   exact mul_eq_one_comm.mp h'
 
 /- English proof (translation)
-Establish `key : ∀ i j, i ≤ j → (Y * n) i j = 0`. Introduce `i j hij`. Establish `e : Y * n = n * (adj n * Y * n)`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_adj hn.1, one_mul]`. Rewrite using `[e, Matrix.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge i l with hl | hl` into its components or cases. Rewrite using `[hn.2.2 i l hl, zero_mul]`. Rewrite using `[h l j (le_trans hl hij), mul_zero]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `dm_gsp (ν := 1) (ν' := 1) (by simp) (by simp) hn.1 (Submodule.neg_mem _ hY)`. Introduce `i`. Use `ext`. Simplify using `[dm, hn.2.1 i]`. Simplify using `[dm, neg_mul, key i i le_rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Use `ext`. Simplify using `[dm, hn.2.2 i j hij]`. Simplify using `[dm, neg_mul, key i j hij.le]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dm_low {n Y : M4 k} (hn : IsLow n) (hY : Y ∈ sp4 k) (h : ∀ i j, i ≤ j → (adj n * Y * n) i j = 0) :
     IsLow (dm n (-Y * n)) := by
@@ -121,13 +121,13 @@ private theorem dm_low {n Y : M4 k} (hn : IsLow n) (hY : Y ∈ sp4 k) (h : ∀ i
     · simp [dm, neg_mul, key i j hij.le]
 
 /- English proof (translation)
-Establish `hnn : n * adj n = 1` using `mul_adj hn`. Establish `hY' : adj (-Y) = Y`. Establish `: adj (-Y) = - -Y` using `Submodule.neg_mem _ hY`. Rewrite using `[this, neg_neg]`. Establish `hadjY : adj (-Y * n) = adj n * Y` using `by rw [(grp k).1, hY']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dm_adj, hadjY, dm_mul, dm_mul]`. Establish `e1 : (adj n * (X - (r * Y * r' - Y)) * n) * (adj n * r * n) = adj n * ((X - (r * Y * r' - Y)) * r) * n`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (X - (r * Y * r' - Y)) * r = X * r - r * Y * (r' * r) + Y * r` using `by noncomm_ring`. Rewrite `e1` using `[e2, hr, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : adj n * r * (-Y * n) + (adj n * (X * r) + adj n * Y * r) * n = (adj n * (X - (r * Y * r' - Y)) * n) * (adj n * r * n)`. Rewrite using `[e1]`. Use `noncomm_ring`. Introduce `i j hij`. Apply `dm_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 i j hij`. Rewrite using `[e]`. Conclude with `up_mul h2 h1 i j hij`.
+A detailed English derivation is pending.
 -/
 private theorem dm_flag {n r r' X Y : M4 k} (hn : IsGSp 1 n) (hY : Y ∈ sp4 k) (hr : r' * r = 1)
     (h1 : IsUp (adj n * r * n)) (h2 : IsUp (adj n * (X - (r * Y * r' - Y)) * n)) :
@@ -167,11 +167,11 @@ private def dRep {Γ : Type} [Group Γ] (r : Γ →* M4 k) (X : Γ → M4 k)
 end Dual
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `IsLocalRing.residue_surjective x.fst`. Establish `hal : algebraMap Λ (DualNumber (ResidueField Λ)) a = TrivSqZeroExt.inl (IsLocalRing.residue Λ a)` using `rfl`. Establish `hx : x = algebraMap Λ (DualNumber (ResidueField Λ)) a + TrivSqZeroExt.inr x.snd`. Rewrite using `[hal]`. Use `ext`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[ha]`. Simplify using the standard rewrite rules. Establish `hn : res Λ (DualNumber (ResidueField Λ)) (TrivSqZeroExt.inr x.snd) = 0`. Rewrite using `[res_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx, map_add, hn, add_zero, AlgHom.commutes, hal]`. Simplify using `[ha]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem res_dual (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsCO Λ (DualNumber (ResidueField Λ))]
     (x : DualNumber (ResidueField Λ)) : res Λ (DualNumber (ResidueField Λ)) x = x.fst := by
@@ -189,9 +189,9 @@ private theorem res_dual (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsCO Λ (Du
   simp [ha]
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hev : ∀ᶠ y in nhds x, ∀ i j, f y i j = f x i j`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(IsLocallyConstant.iff_eventually_eq _).mp (h i j) x`. Use `filter_upwards [hev] with y hy`. Use extensionality with `i j`. Conclude with `hy i j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem lc_mat {Γ k : Type} [TopologicalSpace Γ] {f : Γ → M4 k} (h : ∀ i j, IsLocallyConstant fun g => f g i j) :
     IsLocallyConstant f := by
@@ -206,43 +206,37 @@ private theorem lc_mat {Γ k : Type} [TopologicalSpace Γ] {f : Γ → M4 k} (h 
   exact hy i j
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ _ _ _ Φ l _ Λ _ _ _ _ _ a hstd hmu Γb _ _ _ _ π hquo c hc R _ _ _ P hdef rb hb hrb`. Use `haveI : IsCO Λ (DualNumber (ResidueField Λ)) := (co_res Λ).2`. Establish `hrbg : ∀ g, rb (π g) = c.r g` using `fun g => by rw [← hrb]; rfl`. Use `set T := TanC (Φ.loc π) (adSp rb hb) (fun v => bor (c.n v)) (fun v => nil (c.n v)) (π Φ.g0) (tor (ResidueField Λ)) with hT`. Establish `memZ : ∀ x : T, x.1 ∈ UpperTheory.V.Fr.Z1C (Φ.loc π) (adSp rb hb) (fun v => bor (c.n v))` using `fun x => (Submodule.mem_inf.mp x.2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memP : ∀ x : T, x.1 ∈ (Submodule.comap (LinearMap.proj (π Φ.g0)) (tor (ResidueField Λ))).prod (Submodule.pi Set.univ (fun v => nil (c.n v)))` using `fun x => (Submodule.mem_inf.mp x.2).2`. Establish `hcoc : ∀ x : T, ∀ s t, (x.1.1 (s * t)).1 = (x.1.1 s).1 + rb s * (x.1.1 t).1 * rb s⁻¹` using `fun x s t => congrArg Subtype.val ((memZ x).2.1 s t)`. Set `P' : T → PD Φ.ι Γ (DualNumber (ResidueField Λ))` to `fun x => ⟨(dRep rb (fun g => (x.1.1 g).1) (hcoc x)).comp π, fun v => dm (c.n v) (-(x.1.2 v).1 * c.n v)⟩`. Establish `hr' : ∀ x g, (P' x).r g = dm (c.r g) ((x.1.1 (π g)).1 * c.r g)`. Introduce `x g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show dm (rb (π g)) _ = _`. Rewrite using `[hrbg]`. Establish `hlift : ∀ x : T, Φ.Lifts a c (P' x)`. Introduce `x`. Establish `hZ` using `memZ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP` using `Submodule.mem_prod.mp (memP x)`. Use `⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[hr']`. Conclude with `dm_gsp rfl rfl (hc.pair.mult g) (x.1.1 (π g)).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `hπ : π g = 1`. Rewrite using `[← MonoidHom.mem_ker, hquo.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure hg)`. Establish `h0 : (x.1.1 1).1 = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h11` using `hcoc x 1 1`. Simplify using `only [mul_one, inv_one, map_one, one_mul, left_eq_add] at h11`. Conclude with `h11`. Rewrite using `[hr', ← hrbg, hπ, h0, zero_mul, map_one, dm_one]`. Rewrite using `[hr']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `i j hij`. Apply `dm_zero` to reduce the goal to its premises. Conclude with `hc.pair.nrm hij`. Establish `hX : Matrix.IsDiag (x.1.1 (π Φ.g0)).1` using `hP.1`. Rewrite using `[Matrix.mul_apply]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `hm : i = m`. Substitute `hm` using the available equality. Rewrite using `[hc.pair.nrm hij, mul_zero]`. Rewrite using `[hX hm, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Conclude with `dm_low (hc.pair.low v) (x.1.2 v).2 (Submodule.mem_pi.mp hP.2 v (Set.mem_univ v))`. Introduce `v s hs`. Rewrite using `[hr']`. Establish `hZ3` using `hZ.2.2 v ⟨s, hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr1 : rb (π s)⁻¹ * c.r s = 1` using `by rw [← hrbg, ← map_mul, inv_mul_cancel, map_one]`. Establish `h2 : IsUp (adj (c.n v) * ((x.1.1 (π s)).1 - (c.r s * (x.1.2 v).1 * rb (π s)⁻¹ - (x.1.2 v).1)) * c.n v)`. Rewrite using `[← hrbg s]`. Conclude with `hZ3`. Conclude with `dm_flag (hc.pair.low v).1 (x.1.2 v).2 hr1 (hc.pair.flag v s hs) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `v s hs`. Rewrite `hs` using `[hmu v]`. Conclude with `absurd hs (Set.notMem_empty s)`. Introduce `i j N`. Establish `hinj : Function.Injective (Ideal.Quotient.mk ((⊥ : Ideal (ResidueField Λ)) ^ 1))`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Introduce `u w huw`. Rewrite `huw` using `[Ideal.Quotient.eq, pow_one, Ideal.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hcr : IsLocallyConstant fun g => c.r g` using `lc_mat fun i j => IsLocallyConstant.desc _ _ (hc.cont i j 1) hinj`. Establish `hX : IsLocallyConstant fun g => (x.1.1 (π g)).1` using `(hZ.1.comp Subtype.val).comp_continuous hquo.cont`. Establish `hall` using `IsLocallyConstant.comp₂ hcr hX (fun A B => Ideal.Quotient.mk ((maximalIdeal (DualNumber (ResidueField Λ))) ^ N) (dm A (B * A) i j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show IsLocallyConstant fun g => Ideal.Quotient.mk _ ((P' x).r g i j)`. Simplify using `only [hr']`. Conclude with `hall`. Apply `PD.ext` to reduce the goal to its premises. Use extensionality with `g i j show res Λ _ ((P' x).r g i j) = c.r g i j`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hr', res_dual, dm_fst]`. Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Use `show res Λ _ (dm _ _ i j) = c.n v i j`. Rewrite using `[res_dual, dm_fst]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `choose f hf using fun x => (hdef.2 _ (P' x) (hlift x)).exists`. Use `⟨f, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `hP : P' x = P' y` using `by rw [← hf x, ← hf y, hxy]`. Establish `hr` using `congrArg PD.r hP`. Establish `hn` using `congrArg PD.n hP`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g'`. Take `⟨g, rfl⟩` from `hquo.onto g'`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Establish `e1 : (P' x).r g = (P' y).r g` using `DFunLike.congr_fun hr g`. Rewrite `e1` using `[hr', hr']`. Establish `e2` using `dm_inj e1`. Establish `hinv : c.r g * rb (π g)⁻¹ = 1` using `by rw [← hrbg, ← map_mul, mul_inv_cancel, map_one]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e2` using `dm_inj (congrFun hn v)`. Establish `hinv : c.n v * adj (c.n v) = 1` using `mul_adj (hc.pair.low v).1`. Establish `e3 : (x.1.2 v).1 * c.n v = (y.1.2 v).1 * c.n v`.
-
-Simplify `e2` using `only [neg_mul, neg_inj]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.X1.tanInj :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (Φ : Fr O Γ) (l : ℕ) [Fact l.Prime] {Λ : Type} [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] [Finite (ResidueField Λ)] (a : O →+* Λ), Φ.Std l a → (∀ v, Φ.Mu v = ∅) → ∀ {Γb : Type} [Group Γb] [TopologicalSpace Γb] [IsTopologicalGroup Γb] [T2Space Γb] (π : Γ →* Γb), Φ.Quo π → ∀ c : PD Φ.ι Γ (ResidueField Λ), Φ.IsRes ((residue Λ).comp a) c → ∀ (R : Type) [CommRing R] [Algebra Λ R] [IsCO Λ R] (P : PD Φ.ι Γ R), Φ.IsDef a c P → ∀ (rb : Γb →* M4 (ResidueField Λ)) (hb : ∀ g, ∃ x, IsGSp x (rb g)), rb.comp π = c.r → ∃ f : TanC (Φ.loc π) (adSp rb hb) (fun v => bor (c.n v)) (fun v => nil (c.n v)) (π Φ.g0) (tor (ResidueField Λ)) → (R →ₐ[Λ] DualNumber (ResidueField Λ)), Function.Injective f := by

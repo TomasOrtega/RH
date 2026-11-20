@@ -6,7 +6,7 @@ open UpperHalfPlane hiding I
 namespace UpperTheory.V.Af.Rs
 
 /- English proof (translation)
-Establish `h` using `ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz`. Use `z.im_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem half_le_im {z : ℍ} (hz : z ∈ ModularGroup.fd) : 1 / 2 ≤ z.im := by
   have h := ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz
@@ -14,9 +14,9 @@ private theorem half_le_im {z : ℍ} (hz : z ∈ ModularGroup.fd) : 1 / 2 ≤ z.
   nlinarith
 
 /- English proof (translation)
-Establish `him` using `half_le_im hz`. Establish `hw : 0 ≤ ‖x‖ ^ (-(2 * s))` using `Real.rpow_nonneg (norm_nonneg _) _`. Establish `hG` using `hC (cls L x) z him`. Establish `hn : 0 ≤ ‖G (cls L x) z‖` using `norm_nonneg _`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (h0 x z)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖G (cls L x) z‖ * z.im ^ 2 ≤ 2 * C`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hn (sq_nonneg z.im)) (sub_nonneg.2 him)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem norm_G_cls_mul_ker_le_of_mem_fd {L : ℕ} (G : (Fin 2 → ZMod L) → ℍ → ℂ) (C s : ℝ)
     (hC : ∀ (v : Fin 2 → ZMod L) (z : ℍ), 1 / 2 ≤ z.im → ‖G v z‖ * z.im ^ 3 ≤ C)
@@ -39,11 +39,11 @@ private theorem norm_G_cls_mul_ker_le_of_mem_fd {L : ℕ} (G : (Fin 2 → ZMod L
     _ = 8 * C * ‖x‖ ^ (-(2 * s)) := by ring
 
 /- English proof (translation)
-Establish `hc : ∀ v, Summable fun x : Fin 2 → ℤ => if cls L x = v then g v * (ker s x z : ℂ) else 0`. Introduce `v`. Use `((Complex.ofRealCLM.summable hs).mul_left (g v)).indicator {x | cls L x = v}` as an intermediate fact. Use `this.congr (fun x => ?_)` and prove the remaining obligations. Simplify using `[Set.indicator_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr (fun x => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Use `_ = ∑ v, ∑' x : Fin 2 → ℤ, if cls L x = v then g v * (ker s x z : ℂ) else 0 := Summable.tsum_finsetSum (fun v _ => hc v)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ v, g v * (Zc L v s z : ℂ) := by`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[Zc, Complex.ofReal_tsum, ← tsum_mul_left]`. Use `tsum_congr (fun x => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem sum_cls (L : ℕ) [NeZero L] (g : (Fin 2 → ZMod L) → ℂ) (s : ℝ) (z : ℍ)
     (hs : Summable fun x => ker s x z) :
@@ -70,15 +70,13 @@ end UpperTheory.V.Af.Rs
 
 open UpperTheory.V.Af.Rs in
 /- English proof (translation)
-Introduce `hfd hkb hw L _ G hG s hs`. Take `⟨hGc, C, hC⟩` from `hG`. Establish `hs' : s ∈ Icc (1:ℝ) 2` using `⟨hs.1.le, hs.2⟩`. Take `⟨hkc, hk0, -, -, -, hkb'⟩` from `hkb s hs'`. Establish `hsum : Summable fun x : Fin 2 → ℤ => ‖x‖ ^ (-(2 * s))` using `hw.1 (2 * s) (by linarith [hs.1])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbd : ∀ x : Fin 2 → ℤ, ∀ z ∈ ModularGroup.fd, ‖G (cls L x) z * (ker s x z : ℂ)‖ ≤ 8 * C * ‖x‖ ^ (-(2 * s))` using `fun x z hz => norm_G_cls_mul_ker_le_of_mem_fd G C s hC hkb' hk0 x z hz`. Establish `hint : ∀ x : Fin 2 → ℤ, IntegrableOn (fun z => G (cls L x) z * (ker s x z : ℂ)) ModularGroup.fd volume`. Introduce `x`. Conclude with `Measure.integrableOn_of_bounded hfd.2.ne ((hGc _).mul (Complex.continuous_ofReal.comp (hkc x))).aestronglyMeasurable ((ae_restrict_iff' hfd.1).2 (Filter.Eventually.of_forall (hbd x)))`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hnorm : Summable fun x : Fin 2 → ℤ => ∫ z in ModularGroup.fd, ‖G (cls L x) z * (ker s x z : ℂ)‖`. Use `Summable.of_nonneg_of_le (fun x => integral_nonneg (fun _ => norm_nonneg _)) (fun x => ?_) ((hsum.mul_left (8 * C)).mul_right (volume.real ModularGroup.fd))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setIntegral_const, smul_eq_mul, mul_comm]`. Establish `h` using `hasSum_integral_of_summable_integral_norm hint hnorm`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : TT L G s = ∫ z in ModularGroup.fd, ∑' x : Fin 2 → ℤ, G (cls L x) z * (ker s x z : ℂ)`. Unfold `TT`. Use `setIntegral_congr_fun hfd.1 (fun z hz => ?_)` and prove the remaining obligations. Establish `hsz : Summable fun x : Fin 2 → ℤ => ker s x z` using `Summable.of_nonneg_of_le (fun x => hk0 x z) (fun x => hkb' x z hz) (hsum.mul_left _)`. Conclude with `(sum_cls L (fun v => G v z) s z hsz).symm`.
-
-Rewrite using `[e]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.swap :
     UpperTheory.V.Af.Rs.FdFin → UpperTheory.V.Af.Rs.KerBd → UpperTheory.V.Af.Rs.WTop → UpperTheory.V.Af.Rs.Swap := by

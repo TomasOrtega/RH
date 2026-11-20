@@ -9,13 +9,13 @@ open QuadraticAlgebra
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ τ : K}
 
 /- English proof (translation)
-Take `⟨y, x, hx, -, -, rfl⟩` from `latCls O K Δ τ L hD Λ h`. Establish `hs : ∀ (p : O) (z : Etau K τ), p • z = algebraMap O K p • z` using `fun p z => (algebraMap_smul K p z).symm`. Establish `hn : QuadraticAlgebra.norm (y : Etau K τ) ≠ 0` using `(QuadraticAlgebra.isUnit_iff_norm_isUnit.mp y.isUnit).ne_zero`. Use `⟨y, y * x, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (y : Etau K τ) * x * star (y : Etau K τ) = x * algebraMap K _ (QuadraticAlgebra.norm (y : Etau K τ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[QuadraticAlgebra.algebraMap_norm_eq_mul_star]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, QuadraticAlgebra.im_mul]`. Simplify using the standard rewrite rules. Conclude with `⟨hx, hn⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `b`. Simplify using `only [Set.mem_image, SetLike.mem_coe, Submodule.mem_span_pair]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨p, q, rfl⟩, rfl⟩`. Use `⟨p, q, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs, hs, mul_add, mul_smul_comm, mul_smul_comm, mul_one]`. Introduce and unpack `⟨p, q, rfl⟩`. Use `⟨p • 1 + q • x, ⟨p, q, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, hs, mul_add, mul_smul_comm, mul_smul_comm, mul_one]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_basis (L : IsLoc O Δ) (hD : τ ^ 2 - 4 ≠ 0) {Λ : Set (Etau K τ)} (h : IsLat O τ Λ) :
     ∃ y₁ y₂ : Etau K τ, (y₂ * star y₁).im ≠ 0 ∧ ∀ b, b ∈ Λ ↔ ∃ p q : O, b = algebraMap O K p • y₁ + algebraMap O K q • y₂ := by
@@ -42,11 +42,11 @@ theorem lat_basis (L : IsLoc O Δ) (hD : τ ^ 2 - 4 ≠ 0) {Λ : Set (Etau K τ)
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Simplify using `only [S0, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `⟨hv _ ((h _).2 ⟨1, 0, by simp⟩), hv _ ((h _).2 ⟨0, 1, by simp⟩)⟩`. Introduce and unpack `⟨h1, h2⟩ y hy`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨p, q, rfl⟩` from `(h _).1 hy`. Take `⟨p1, q1, e1⟩` from `(h _).1 h1`. Take `⟨p2, q2, e2⟩` from `(h _).1 h2`. Use `(h _).2 ⟨p * p1 + q * p2, p * q1 + q * q2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, e1, e2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, smul_add, smul_smul, add_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem mem_S0_of_sum_eq {s : K} {β y₁ y₂ : Etau K τ} {Λ : Set (Etau K τ)} (h : ∀ b, b ∈ Λ ↔ ∃ p q : O, b = algebraMap O K p • y₁ + algebraMap O K q • y₂)
     {v : K × Etau K τ} : v ∈ S0 s β Λ ↔ psi s β v y₁ ∈ Λ ∧ psi s β v y₂ ∈ Λ := by
@@ -67,15 +67,15 @@ variable {c t s : K} {ε : Oˣ} {β : Etau K τ}
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Establish `hadd : ∀ a b, a ∈ Λ → b ∈ Λ → a + b ∈ Λ`. Introduce `a b ha hb`. Take `⟨p, q, rfl⟩` from `(h _).1 ha`. Take `⟨p', q', rfl⟩` from `(h _).1 hb`. Use `(h _).2 ⟨p + p', q + q', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, add_smul]`. Normalize the expressions using the abelian group laws. Establish `hsm : ∀ (r : O) a, a ∈ Λ → algebraMap O K r • a ∈ Λ`. Introduce `r a ha`. Take `⟨p, q, rfl⟩` from `(h _).1 ha`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(h _).2 ⟨r * p, r * q, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, smul_add, smul_smul]`. Establish `h1 : y₁ ∈ Λ` using `(h _).2 ⟨1, 0, by simp⟩`. Establish `key : (2 * Bf τ c t v w) • y₁ ∈ Λ`. Rewrite using `[← psi_anti hc hβ v w y₁]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsm ε _ (hadd _ _ (hv _ (hw _ h1)) (hw _ (hv _ h1)))`. Take `⟨p, q, e⟩` from `(h _).1 key`. Establish `e' : (2 * Bf τ c t v w) • y₁ + (0 : K) • y₂ = algebraMap O K p • y₁ + algebraMap O K q • y₂`. Rewrite using `[zero_smul, add_zero]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e1, -⟩` from `coord_uniq hg e'`. Use `⟨((L2.unit⁻¹ : Oˣ) : O) * p, ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap O K ((L2.unit⁻¹ : Oˣ) : O) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap O K) 2, ← map_mul, IsUnit.val_inv_mul, map_one]`. Rewrite using `[map_mul, ← e1, ← mul_assoc, h2, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bf_int (L2 : IsUnit (2 : O)) (hc : c = (τ ^ 2 - 4) * algebraMap O K ε * s ^ 2) (hβ : QuadraticAlgebra.norm β * algebraMap O K ε * s ^ 2 = 2 * t)
     {y₁ y₂ : Etau K τ} (hg : (y₂ * star y₁).im ≠ 0) {Λ : Set (Etau K τ)}
@@ -108,57 +108,53 @@ theorem Bf_int (L2 : IsUnit (2 : O)) (hc : c = (τ ^ 2 - 4) * algebraMap O K ε 
   rw [map_mul, ← e1, ← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Take `⟨y₁, y₂, hg, hΛ'⟩` from `lat_basis L hD hΛ`. Establish `h2K : (2 : K) ≠ 0`. Use `(L.two.map (algebraMap O K)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hεK : algebraMap O K ε ≠ 0` using `((ε.isUnit).map (algebraMap O K)).ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨e, f, k, he1, he2, hf1, hf2, hk1, hk2⟩` from `exists_efh hD h2K hs hu hg`. Establish `ev1 : ∀ a b d : K, psi s β (a • e + b • f + d • k) y₁ = (-d) • y₁ + b • y₂`. Introduce `a b d`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, he1, hf1, hk1]`. Use `module`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ev2 : ∀ a b d : K, psi s β (a • e + b • f + d • k) y₂ = a • y₁ + d • y₂`. Introduce `a b d`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, he2, hf2, hk2]`. Use `module`. Establish `dec : ∀ v : K × Etau K τ, ∃ a b d : K, v = a • e + b • f + d • k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Take `⟨α, b, h1⟩ : ∃ α b : K, psi s β v y₁ = α • y₁ + b • y₂` from `⟨_, _, coord hg _⟩`. Take `⟨a, δ, h2⟩ : ∃ a δ : K, psi s β v y₂ = a • y₁ + δ • y₂` from `⟨_, _, coord hg _⟩`. Establish `A1` using `psi_anti hc hβ v k y₁`. Establish `A2` using `psi_anti hc hβ v k y₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hk1, hk2, map_neg, h1, h2, map_add, map_smul] at A1 A2`. Establish `E1 : (algebraMap O K ε * (-2 * α)) • y₁ + (0 : K) • y₂ = (2 * Bf τ c t v k) • y₁ + (0 : K) • y₂`. Rewrite using `[← A1]`. Use `module`. Establish `E2 : (0 : K) • y₁ + (algebraMap O K ε * (2 * δ)) • y₂ = (0 : K) • y₁ + (2 * Bf τ c t v k) • y₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← A2]`. Use `module`. Take `⟨r1, -⟩` from `coord_uniq hg E1`. Take `⟨-, r2⟩` from `coord_uniq hg E2`. Establish `hδ : δ = -α`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_left_cancel₀ hεK (r2.trans r1.symm)` as an intermediate fact. Conclude with `mul_left_cancel₀ h2K (by linear_combination this)`. Use `⟨a, b, -α, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `psi_inj hD hs hu (fun y => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[coord hg y]`. Simplify using `only [map_sub, LinearMap.sub_apply, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, h1, h2, he1, he2, hf1, hf2, hk1, hk2, hδ]`. Use `module`. Establish `pair : ∀ x z : K, (∃ p q : O, x • y₁ + z • y₂ = algebraMap O K p • y₁ + algebraMap O K q • y₂) ↔ x ∈ (algebraMap O K).range ∧ z ∈ (algebraMap O K).range`. Introduce `x z`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, q, hpq⟩`. Take `⟨r1, r2⟩` from `coord_uniq hg hpq`. Conclude with `⟨RingHom.mem_range.mpr ⟨p, r1.symm⟩, RingHom.mem_range.mpr ⟨q, r2.symm⟩⟩`. Introduce and unpack `⟨hx, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, rfl⟩` from `RingHom.mem_range.mp hx`. Take `⟨q, rfl⟩` from `RingHom.mem_range.mp hz`. Conclude with `⟨p, q, rfl⟩`. Establish `memc : ∀ a b d : K, a • e + b • f + d • k ∈ S0 s β Λ ↔ a ∈ (algebraMap O K).range ∧ b ∈ (algebraMap O K).range ∧ d ∈ (algebraMap O K).range`. Introduce `a b d`.
+The claim follows by propositional logic. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_S0_of_sum_eq hΛ', ev1, ev2, hΛ', hΛ', pair, pair, neg_mem_iff]`. The claim follows by propositional logic. Establish `ind : ∀ a b d a' b' d' : K, a • e + b • f + d • k = a' • e + b' • f + d' • k → a = a' ∧ b = b' ∧ d = d'`. Introduce `a b d a' b' d' hv`. Establish `q1` using `congrArg (fun v => psi s β v y₁) hv`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `q2` using `congrArg (fun v => psi s β v y₂) hv`. Simplify using `only [ev1, ev2] at q1 q2`. Take `⟨u1, u2⟩` from `coord_uniq hg q1`. Take `⟨u3, -⟩` from `coord_uniq hg q2`. Conclude with `⟨u3, u2, neg_inj.mp u1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `gram : ∀ a b d : K, 2 * Bf τ c t e (a • e + b • f + d • k) = algebraMap O K ε * b ∧ 2 * Bf τ c t f (a • e + b • f + d • k) = algebraMap O K ε * a ∧ Bf τ c t k (a • e + b • f + d • k) = algebraMap O K ε * d`. Introduce `a b d`. Establish `Ae` using `psi_anti hc hβ e (a • e + b • f + d • k) y₂`. Establish `Af` using `psi_anti hc hβ f (a • e + b • f + d • k) y₁`. Establish `Ak` using `psi_anti hc hβ k (a • e + b • f + d • k) y₁`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `Ae` using `[ev2, he2, ev1, map_add, map_smul, map_smul, he1, he2]`. Rewrite `Af` using `[ev1, hf1, ev2, map_add, map_smul, map_smul, hf1, hf2]`. Rewrite `Ak` using `[ev1, hk1, map_neg, ev1, map_add, map_smul, map_smul, hk1, hk2]`. Establish `Ee : (0 : K) • y₁ + (algebraMap O K ε * b) • y₂ = (0 : K) • y₁ + (2 * Bf τ c t e (a • e + b • f + d • k)) • y₂`. Rewrite using `[← Ae]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `module`. Establish `Ef : (algebraMap O K ε * a) • y₁ + (0 : K) • y₂ = (2 * Bf τ c t f (a • e + b • f + d • k)) • y₁ + (0 : K) • y₂`. Rewrite using `[← Af]`. Use `module`. Establish `Ek : (2 * (algebraMap O K ε * d)) • y₁ + (0 : K) • y₂ = (2 * Bf τ c t k (a • e + b • f + d • k)) • y₁ + (0 : K) • y₂`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ak]`. Use `module`. Conclude with `⟨(coord_uniq hg Ee).2.symm, (coord_uniq hg Ef).1.symm, (mul_left_cancel₀ h2K (coord_uniq hg Ek).1).symm⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `⟨{e, f, k}, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use extensionality with `v`. Take `⟨a, b, d, rfl⟩` from `dec v`. Rewrite using `[memc]`. Simplify using `only [Finset.coe_insert, Finset.coe_singleton, SetLike.mem_coe, Submodule.mem_span_insert, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hp, hq, hr⟩`. Take `⟨p, rfl⟩` from `RingHom.mem_range.mp hp`. Take `⟨q, rfl⟩` from `RingHom.mem_range.mp hq`. Take `⟨r, rfl⟩` from `RingHom.mem_range.mp hr`. Use `⟨p, q • f + r • k, ⟨q, r • k, ⟨r, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `all_goals rw [algebraMap_smul, algebraMap_smul, algebraMap_smul, add_assoc]`. Introduce and unpack `⟨p, _, ⟨q, _, ⟨r, rfl⟩, rfl⟩, hv⟩`. Rewrite `hv` using `[← algebraMap_smul K p e, ← algebraMap_smul K q f, ← algebraMap_smul K r k, ← add_assoc]`. Take `⟨u1, u2, u3⟩` from `ind _ _ _ _ _ _ hv`. Conclude with `⟨RingHom.mem_range.mpr ⟨p, u1.symm⟩, RingHom.mem_range.mpr ⟨q, u2.symm⟩, RingHom.mem_range.mpr ⟨r, u3.symm⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Conclude with `Bf_int L.two hc hβ hg hΛ' hx hy`. Introduce `H`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, d, rfl⟩` from `dec y`. Establish `meme : e ∈ S0 s β Λ`. Use `(memc 1 0 0).2 ⟨one_mem _, zero_mem _, zero_mem _⟩` as an intermediate fact. Simplify using `using this`. Establish `memf : f ∈ S0 s β Λ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(memc 0 1 0).2 ⟨zero_mem _, one_mem _, zero_mem _⟩` as an intermediate fact. Simplify using `using this`. Establish `memk : k ∈ S0 s β Λ`. Use `(memc 0 0 1).2 ⟨zero_mem _, zero_mem _, one_mem _⟩` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g1, g2, g3⟩` from `gram a b d`. Establish `hinv : algebraMap O K ↑ε⁻¹ * algebraMap O K ↑ε = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite using `[memc]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a = algebraMap O K (↑ε⁻¹ * 2) * Bf τ c t f (a • e + b • f + d • k)`. Rewrite using `[map_mul, map_ofNat]`. Take the linear combination `(-(algebraMap O K ↑ε⁻¹)) * g2 - a * hinv`. Rewrite using `[ha]`. Conclude with `mul_mem (RingHom.mem_range_self _ _) (H f memf)`.
-
-Establish `hb : b = algebraMap O K (↑ε⁻¹ * 2) * Bf τ c t e (a • e + b • f + d • k)`. Rewrite using `[map_mul, map_ofNat]`. Take the linear combination `(-(algebraMap O K ↑ε⁻¹)) * g1 - b * hinv`. Rewrite using `[hb]`. Conclude with `mul_mem (RingHom.mem_range_self _ _) (H e meme)`.
-
-Establish `hd : d = algebraMap O K ↑ε⁻¹ * Bf τ c t k (a • e + b • f + d • k)`. Take the linear combination `(-(algebraMap O K ↑ε⁻¹)) * g3 - d * hinv`. Rewrite using `[hd]`. Conclude with `mul_mem (RingHom.mem_range_self _ _) (H k memk)`.
+A detailed English derivation is pending.
 -/
 theorem isUnimodular_cliffordLatticeStabilizer (L : IsLoc O Δ) (hD : τ ^ 2 - 4 ≠ 0) (hs : s ≠ 0) (hu : IsUnit β) (hc : c = (τ ^ 2 - 4) * algebraMap O K ε * s ^ 2)
     (hβ : QuadraticAlgebra.norm β * algebraMap O K ε * s ^ 2 = 2 * t) {Λ : Set (Etau K τ)} (hΛ : IsLat O τ Λ) : Uni O c t (S0 s β Λ) := by

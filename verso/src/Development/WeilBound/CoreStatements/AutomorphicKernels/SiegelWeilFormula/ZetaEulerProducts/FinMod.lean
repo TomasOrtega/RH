@@ -3,17 +3,15 @@ import Mathlib
 namespace PositivityTheory.Lord
 
 /- English proof (translation)
-Set `F : ι → ℂ` to `Set.mulIndicator {v | v ∉ S} f`. Set `k : ι → ℂ` to `fun v => if v ∈ T then (g v)⁻¹ * F v else 1`. Establish `hkT : HasProd k (∏ v ∈ T, k v)` using `hasProd_prod_of_ne_finset_one (fun v hv => if_neg hv)`. Establish `hgk : ∀ v, g v * k v = F v`. Introduce `v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hv : v ∈ T`. Use `show g v * (if v ∈ T then (g v)⁻¹ * F v else 1) = F v`. Rewrite using `[if_pos hv, ← mul_assoc, mul_inv_cancel₀ (hg0 v hv), one_mul]`. Establish `hvS : v ∉ S` using `fun h => hv (hST h) show g v * (if v ∈ T then (g v)⁻¹ * F v else 1) = Set.mulIndicator {v | v ∉ S} f v`. Rewrite using `[if_neg hv, mul_one, Set.mulIndicator_of_mem (show v ∈ {v | v ∉ S} from hvS), hfg v hv]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFT : ∏ v ∈ T, F v = ∏ v ∈ T \ S, f v`. Rewrite using `[Finset.sdiff_eq_filter, Finset.prod_filter]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hvS : v ∈ S`. Rewrite using `[if_neg (not_not.2 hvS)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mulIndicator_of_notMem (show v ∉ {v | v ∉ S} from not_not.2 hvS) f`. Rewrite using `[if_pos hvS]`. Conclude with `Set.mulIndicator_of_mem (show v ∈ {v | v ∉ S} from hvS) f`. Establish `hkprod : ∏ v ∈ T, k v = (∏ v ∈ T, (g v)⁻¹) * ∏ v ∈ T \ S, f v`. Rewrite using `[← hFT, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl (fun v hv => if_pos hv)`. Establish `hF : HasProd F (a * (∏ v ∈ T, (g v)⁻¹) * ∏ v ∈ T \ S, f v)`. Establish `h` using `hg.mul hkT`. Rewrite `h` using `[hkprod, ← mul_assoc]`. Use `h using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `v`. Conclude with `(hgk v).symm`. Conclude with `(hasProd_subtype_iff_mulIndicator (s := {v | v ∉ S})).2 hF`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hasProd_compl_finset {ι : Type*} [DecidableEq ι] (f g : ι → ℂ) (a : ℂ) (T S : Finset ι) (hST : S ⊆ T)
     (hg : HasProd g a) (hg0 : ∀ v ∈ T, g v ≠ 0) (hfg : ∀ v, v ∉ T → f v = g v) :

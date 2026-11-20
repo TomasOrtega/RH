@@ -12,7 +12,7 @@ variable {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Modul
   [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_third''''''.goal1 .. | (apply Bl.general_b_fact_third''''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third''''''.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_smul_mem (Λ : Submodule (𝓞 E) V) (hsp : Submodule.span E (Λ : Set V) = ⊤) (x : V) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ d • x ∈ Λ := by
@@ -21,23 +21,21 @@ theorem exists_smul_mem (Λ : Submodule (𝓞 E) V) (hsp : Submodule.span E (Λ 
 variable [StarRing E]
 
 /- English proof (translation)
-Take `⟨s, _, b, hb, hsL⟩` from `Formalism.HermitianLatticesTheory.dualLattice_basis (R := 𝓞 E) Λ hsp`. Take `⟨d, hd, hdL⟩` from `Formalism.HermitianLatticesTheory.dualLattice_denom b Λ hΛ`. Take `⟨bs, hbs⟩` from `Formalism.HermitianLatticesTheory.dualLattice_dualBasis h hnd b`. Establish `hbL : ∀ i, b i ∈ Λ` using `fun i => by rw [hb i]; exact hsL i.2`. Use `⟨∑ k, star (f ⟨b k, hbL k⟩) • bs k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set w := ∑ k, star (f ⟨b k, hbL k⟩) • bs k with hw`. Establish `e : ∀ j k, h (bs k) (b j) = if j = k then 1 else 0`. Introduce `j k`. Rewrite using `[← hs.eq (b j) (bs k), hbs]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hwb : ∀ j, h w (b j) = f ⟨b j, hbL j⟩`. Introduce `j`. Simplify using `[hw, e, starRingEnd_apply, star_star]`. Establish `hspL : Submodule.span (𝓞 E) (Set.range b) ≤ Λ`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hbL j`. Establish `hspan : ∀ u (hu : u ∈ Submodule.span (𝓞 E) (Set.range b)) (huL : u ∈ Λ), h w u = f ⟨u, huL⟩`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Introduce `_`. Conclude with `hwb j`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `huL`. Establish `: (⟨0, huL⟩ : Λ) = 0` using `rfl`. Rewrite using `[this, map_zero, map_zero]`. Consider the case `add x y hx hy ihx ihy`. Introduce `huL`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `e2 : (⟨x + y, huL⟩ : Λ) = ⟨x, hspL hx⟩ + ⟨y, hspL hy⟩` using `rfl`. Rewrite using `[e2, map_add, map_add, ihx (hspL hx), ihy (hspL hy)]`. Consider the case `smul r x hx ih`. Introduce `huL`. Establish `e2 : (⟨r • x, huL⟩ : Λ) = r • ⟨x, hspL hx⟩` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e2, f.map_smul, ← algebraMap_smul E r x, (h w).map_smul, ih (hspL hx), algebraMap_smul]`. Introduce `y hy`. Establish `h1` using `hspan (d • y) (hdL y hy) (Λ.smul_mem d hy)`. Establish `e2 : (⟨d • y, Λ.smul_mem d hy⟩ : Λ) = d • ⟨y, hy⟩` using `rfl`. Rewrite `h1` using `[e2, f.map_smul, ← algebraMap_smul E d y, (h w).map_smul, ← algebraMap_smul E d (f _), smul_eq_mul, smul_eq_mul]`.
-
-Conclude with `mul_left_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mpr hd) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem riesz [FiniteDimensional E V] (h : V →ₗ⋆[E] V →ₗ[E] E) (hs : h.IsSymm) (hnd : h.Nondegenerate)
     (Λ : Submodule (𝓞 E) V) (hΛ : Λ.FG) (hsp : Submodule.span E (Λ : Set V) = ⊤)
@@ -90,19 +88,17 @@ theorem riesz [FiniteDimensional E V] (h : V →ₗ⋆[E] V →ₗ[E] E) (hs : h
 omit [StarRing E] in
 
 /- English proof (translation)
-Set `N : Submodule (𝓞 E) Λ` to `(X.restrictScalars (𝓞 E)).comap Λ.subtype`. Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.mpr hΛ`. Establish `htf : Module.IsTorsionFree (𝓞 E) (Λ ⧸ N)`. Use `⟨fun r hr q₁ q₂ hq => ?_⟩` and prove the remaining obligations. Establish `hr0 : r ≠ 0` using `hr.ne_zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y₁, rfl⟩` from `N.mkQ_surjective q₁`. Take `⟨y₂, rfl⟩` from `N.mkQ_surjective q₂`. Establish `hq' : N.mkQ (r • (y₁ - y₂)) = 0`. Rewrite using `[map_smul, map_sub, smul_sub, sub_eq_zero]`. Conclude with `hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Establish `hmem : ((r • (y₁ - y₂) : Λ) : V) ∈ X` using `hq'`. Establish `hrE : algebraMap (𝓞 E) E r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mpr hr0`. Establish `e : ((y₁ - y₂ : Λ) : V) = (algebraMap (𝓞 E) E r)⁻¹ • ((r • (y₁ - y₂) : Λ) : V)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_smul, ← algebraMap_smul E r, smul_smul, inv_mul_cancel₀ hrE, one_smul]`. Use `show ((y₁ - y₂ : Λ) : V) ∈ X`. Rewrite using `[e]`. Conclude with `X.smul_mem _ hmem`. Establish `: Module.FinitePresentation (𝓞 E) (Λ ⧸ N)` using `Module.finitePresentation_of_finite _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `: Module.Projective (𝓞 E) (Λ ⧸ N)` using `Module.Flat.projective_of_finitePresentation`. Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id N.mkQ_surjective`. Set `ρ : Λ →ₗ[𝓞 E] Λ` to `LinearMap.id - s ∘ₗ N.mkQ`. Use `⟨ρ, fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h0 : N.mkQ (ρ y) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun φ => φ (N.mkQ y)) hs` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at this`. Simplify using `only [ρ, LinearMap.sub_apply, LinearMap.id_coe, id_eq, LinearMap.coe_comp, Function.comp_apply, map_sub, this, sub_self]`. Rewrite `h0` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h0`.
-
-Establish `h0 : N.mkQ y = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hy`. Simplify using `[ρ, h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_retract (Λ : Submodule (𝓞 E) V) (hΛ : Λ.FG) (X : Submodule E V) :
     ∃ ρ : Λ →ₗ[𝓞 E] Λ, (∀ y, ((ρ y : Λ) : V) ∈ X) ∧ ∀ y : Λ, (y : V) ∈ X → ρ y = y := by

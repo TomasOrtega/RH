@@ -20,13 +20,11 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D S S' I m fd ⟨h1, h2⟩`. Use `haveI : IsTopologicalGroup (GA D S) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : IsTopologicalGroup (GA D S') := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D S) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA D S') := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨I.kap.isHaarMeasure_map m I.continuous_kap I.continuous_kap_symm, ?_⟩` and prove the remaining obligations. Establish `hm : Measurable I.kap` using `I.continuous_kap.measurable`. Establish `hm' : Measurable I.kap.symm` using `I.continuous_kap_symm.measurable`. Establish `hq : MeasureTheory.Measure.QuasiMeasurePreserving I.kap.symm (m.map I.kap) m`. Use `⟨hm', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[MeasureTheory.Measure.map_map hm' hm]`. Establish `: (I.kap.symm : GA D S' → GA D S) ∘ I.kap = id` using `funext fun x => I.kap.symm_apply_apply x`. Rewrite using `[this, MeasureTheory.Measure.map_id]`. Set `e : GQ S ≃ GQ S'` to `{ toFun := fun γ => ⟨I.kap γ, I.kap_mem_GQ γ.2⟩ invFun := fun γ => ⟨I.kap.symm γ, I.symm.kap_mem_GQ γ.2⟩ left_inv := fun γ => Subtype.ext (I.kap.symm_apply_apply _) right_inv := fun γ => Subtype.ext (I.kap.apply_symm_apply _) }`. Use `h2.preimage_of_equiv hq (e := e) e.bijective fun γ x => ?_` and prove the remaining obligations.
-
-Use `show I.kap.symm (I.kap γ * x) = (γ : GA D S) * I.kap.symm x`. Rewrite using `[map_mul, MulEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.haar_fundamentalDomain_map_isometry_conj : ∀ {D : D7} {S S' : HSp D} (I : GlobalTheory.Mem.Isom.IsoMat S S') (m : MeasureTheory.Measure (GA D S)) (fd : Set (GA D S)),
   m.IsHaarMeasure ∧ MeasureTheory.IsFundamentalDomain (GQ S) fd m →

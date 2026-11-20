@@ -6,25 +6,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Up
 
 /- English proof (translation)
-Establish `hlift : ∀ y : LinearMap.ker e, ∃ x : C2, ∃ w : C1, r2 x = y.1 ∧ d1 x = q • w`. Introduce `y`. Take `⟨x, hx⟩` from `hs y.1`. Establish `h0 : r1 (d1 x) = 0`. Rewrite using `[← hc, hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2`. Take `⟨w, hw⟩` from `(h1 _).1 h0`. Conclude with `⟨x, w, hx, hw⟩`. Establish `hker : ∀ (x : C2) (w : C1), d1 x = q • w → d0 w = 0`. Introduce `x w h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `t0` to reduce the goal to its premises. Rewrite using `[← map_nsmul, ← h, hdd]`. Establish `hwd : ∀ (x x' : C2) (w w' : C1) (hw0 : d0 w = 0) (hw0' : d0 w' = 0), r2 x = r2 x' → d1 x = q • w → d1 x' = q • w' → cls ⟨w, LinearMap.mem_ker.2 hw0⟩ = cls ⟨w', LinearMap.mem_ker.2 hw0'⟩`. Introduce `x x' w w' hw0 hw0' hr h h'`. Take `⟨u, hu⟩` from `(h2 (x' - x)).1 (by rw [map_sub, hr, sub_self])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : d1 u ∈ LinearMap.ker d0` using `LinearMap.mem_ker.2 (hdd u)`. Establish `heq : w' = w + d1 u`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `t1` to reduce the goal to its premises. Rewrite using `[smul_sub, smul_add, ← h, ← h', ← map_nsmul, ← hu, map_sub]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `hsum : (⟨w', LinearMap.mem_ker.2 hw0'⟩ : LinearMap.ker d0) = ⟨w, LinearMap.mem_ker.2 hw0⟩ + ⟨d1 u, hd⟩` using `Subtype.ext heq`. Rewrite using `[hsum, map_add, (hz ⟨d1 u, hd⟩).2 ⟨u, rfl⟩, add_zero]`. Use `choose X W hXr hXd using hlift`. Establish `hW0 : ∀ y, d0 (W y) = 0` using `fun y => hker _ _ (hXd y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : LinearMap.ker e → H` to `fun y => cls ⟨W y, LinearMap.mem_ker.2 (hW0 y)⟩`. Establish `htor : ∀ y, f y ∈ AddCommGroup.torsion H`. Introduce `y`. Use `(AddCommGroup.mem_torsion _).2 (isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨q, hq, ?_⟩)` and prove the remaining obligations. Establish `hm : q • (⟨W y, LinearMap.mem_ker.2 (hW0 y)⟩ : LinearMap.ker d0) = ⟨d1 (X y), by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, hdd]⟩ := Subtype.ext (hXd y).symm`. Use `show q • cls _ = 0`. Rewrite using `[← map_nsmul, hm, (hz _).2 ⟨X y, rfl⟩]`. Use `⟨{ toFun := fun y => ⟨f y, htor y⟩, map_zero' := ?_, map_add' := ?_ }, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext show f 0 = 0` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h00` using `hwd (X 0) 0 (W 0) 0 (hW0 0) (map_zero _) (by simp [hXr]) (hXd 0) (by simp)`. Conclude with `h00.trans (map_zero cls)`. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show f (a + b) = f a + f b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hab` using `hwd (X (a + b)) (X a + X b) (W (a + b)) (W a + W b) (hW0 _) (by rw [map_add, hW0, hW0, add_zero]) (by rw [map_add, hXr, hXr, hXr]; rfl) (hXd _) (by rw [map_add, hXd, hXd, smul_add])`. Conclude with `hab.trans (map_add cls ⟨W a, LinearMap.mem_ker.2 (hW0 a)⟩ ⟨W b, LinearMap.mem_ker.2 (hW0 b)⟩)`. Introduce `y hy`. Establish `hy' : f y = 0` using `congrArg Subtype.val hy`. Take `⟨v, hv⟩` from `(hz _).1 hy'`.
-
-Use `⟨X y - q • v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_nsmul, hv, hXd, sub_self]`. Rewrite using `[map_sub, hXr, (h2 _).2 ⟨v, rfl⟩, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bock_abs {C2 C1 C0 D2 D1 H : Type} [AddCommGroup C2] [AddCommGroup C1] [AddCommGroup C0]
     [AddCommGroup D2] [AddCommGroup D1] [AddCommGroup H] {A : Type} [CommRing A] [Module A D2] [Module A D1]
@@ -91,9 +89,9 @@ private theorem bock_abs {C2 C1 C0 D2 D1 H : Type} [AddCommGroup C2] [AddCommGro
     · rw [map_sub, hXr, (h2 _).2 ⟨v, rfl⟩, sub_zero]
 
 /- English proof (translation)
-Use `Finsupp.ext fun a => ?_` and prove the remaining obligations. Establish `h'` using `congrArg (fun v => v a) h`. Simplify using `only [Finsupp.smul_apply, Finsupp.coe_zero, Pi.zero_apply, nsmul_eq_mul] at h'`. Break down `mul_eq_zero.1 h' with h0 | h0` into its components or cases. Establish `: q = 0` using `by exact_mod_cast h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ch_tf (q : ℕ) (hq : 0 < q) (G : Type) (m : ℕ) (w : Ch ℤ G m) (h : q • w = 0) : w = 0 := by
   refine Finsupp.ext fun a => ?_
@@ -106,7 +104,7 @@ private theorem ch_tf (q : ℕ) (hq : 0 < q) (G : Type) (m : ℕ) (w : Ch ℤ G 
     rfl
 
 /- English proof (translation)
-Establish `hv : (fun g : Fin (0 + 1) → G => (fun₀ | (fun i : Fin 0 => g i.succ) => (1 : ℤ)) + ∑ j : Fin (0 + 1), (-1 : ℤ) ^ ((j : ℕ) + 1) • (fun₀ | j.contractNth (fun x1 x2 : G => x1 * x2) g => (1 : ℤ))) = 0`. Use function extensionality and compare the values at `g`. Rewrite using `[Fin.sum_univ_one, Subsingleton.elim (Fin.contractNth (0 : Fin (0 + 1)) (fun x1 x2 : G => x1 * x2) g) (fun i : Fin 0 => g i.succ)]`. Simplify using the standard rewrite rules. Simplify using `only [bd, hv, Finsupp.linearCombination_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem bd_zero (G : Type) [Group G] (z : Ch ℤ G 1) : bd ℤ G 0 z = 0 := by
   have hv : (fun g : Fin (0 + 1) → G => (fun₀ | (fun i : Fin 0 => g i.succ) => (1 : ℤ)) +
@@ -119,9 +117,9 @@ private theorem bd_zero (G : Type) [Group G] (z : Ch ℤ G 1) : bd ℤ G 0 z = 0
   simp only [bd, hv, Finsupp.linearCombination_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Introduce `q hq G _ k`. Take `⟨f1, -, f3, f4⟩` from `rqFacts q`. Consider the cases of `k with`. Consider the case `zero`. Use `⟨0, fun y _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `f3 G 1 y.1`. Conclude with `⟨z, bd_zero G z, hz⟩`. Consider the case `succ k`. Take `⟨cls, hcls⟩` from `bridge k`. Conclude with `bock_abs q hq (bd ℤ G (k + 1)) (bd ℤ G k) (bd (ZMod q) G (k + 1)) (rq q G (k + 2)) (rq q G (k + 1)) ((sChain ℤ).1 G k) (f1 G (k + 1)) (f3 G _) (f4 G _) (f4 G _) (ch_tf q hq G _) (ch_tf q hq G _) (cls G) (hcls.zero G)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Up.bock :
     UpperTheory.V.ZK.Up.Bock := by

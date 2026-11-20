@@ -37,9 +37,9 @@ variable (S : Col.GSD K) (h : S.Ok) (c : Col.DecoPts S E n ST SG') (SG : Finset 
   (S0 : Set (HeightOneSpectrum (𝓞 E)))
 
 /- English proof (translation)
-Establish `h1 : a * b = b * a` using `hab.eq`. Use `show e.conj a * e.conj b = e.conj b * e.conj a`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `h2` using `LinearMap.congr_fun h1 (e.symm x)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `e (a (e.symm (e (b (e.symm x))))) = e (b (e.symm (e (a (e.symm x)))))`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `congrArg e h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem commute_conj_of_commute {R0 V0 W0 : Type} [CommRing R0] [AddCommGroup V0] [Module R0 V0]
     [AddCommGroup W0] [Module R0 W0] (e : V0 ≃ₗ[R0] W0) {a b : Module.End R0 V0} (hab : Commute a b) :
@@ -54,9 +54,7 @@ private theorem commute_conj_of_commute {R0 V0 W0 : Type} [CommRing R0] [AddComm
   exact congrArg e h2
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `rcases i with ⟨P, k⟩ | ⟨P, k⟩ <;> rcases j with ⟨Q, l⟩ | ⟨Q, l⟩`. Conclude with `commute_conj_of_commute _ (hc (Sum.inl _) (Sum.inl _))`. Conclude with `commute_conj_of_commute _ (hc (Sum.inl _) (Sum.inr _))`. Conclude with `commute_conj_of_commute _ (hc (Sum.inr _) (Sum.inl _))`.
-
-Conclude with `commute_conj_of_commute _ (hc (Sum.inr _) (Sum.inr _))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem heckeCSDAll_comm (hc : Col.HeckeCommAll c S0) :
     Col.PairComm (Sum.elim (heckeCSD S h c SG S0) (heckeCSDI S h c SG S0)) := by
@@ -68,17 +66,15 @@ theorem heckeCSDAll_comm (hc : Col.HeckeCommAll c S0) :
   · exact commute_conj_of_commute _ (hc (Sum.inr _) (Sum.inr _))
 
 /- English proof (translation)
-Establish `key : ∀ (μ : K0) (k : ℕ) (x : V0), ((e.conj f - μ • (1 : Module.End K0 W0)) ^ k) (e x) = e (((f - μ • (1 : Module.End K0 V0)) ^ k) x)`. Introduce `μ k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ', pow_succ']`. Express the relevant statement in the definitionally equal form `(e.conj f - μ • (1 : Module.End K0 W0)) (((e.conj f - μ • (1 : Module.End K0 W0)) ^ k) (e x)) = e ((f - μ • (1 : Module.End K0 V0)) (((f - μ • (1 : Module.End K0 V0)) ^ k) x))`. Rewrite using `[ih]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[LinearEquiv.conj_apply]`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : e.symm y ∈ ⨆ μ, f.maxGenEigenspace μ`. Rewrite using `[hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Establish `hmap : Submodule.map (e : V0 →ₗ[K0] W0) (⨆ μ, f.maxGenEigenspace μ) ≤ ⨆ μ, (e.conj f).maxGenEigenspace μ`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_mono fun μ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hx' : x ∈ f.maxGenEigenspace μ` using `hx`. Rewrite `hx'` using `[Module.End.mem_maxGenEigenspace]`. Take `⟨k, hk⟩` from `hx'`. Use `show e x ∈ (e.conj f).maxGenEigenspace μ`. Rewrite using `[Module.End.mem_maxGenEigenspace]`.
-
-Conclude with `⟨k, by rw [key, hk, map_zero]⟩`. Conclude with `hmap ⟨e.symm y, hy, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem iSup_maxGenEigenspace_conj_eq_whole {K0 V0 W0 : Type} [Field K0] [AddCommGroup V0] [Module K0 V0]
     [AddCommGroup W0] [Module K0 W0] (e : V0 ≃ₗ[K0] W0) (f : Module.End K0 V0)
@@ -114,7 +110,7 @@ private theorem iSup_maxGenEigenspace_conj_eq_whole {K0 V0 W0 : Type} [Field K0]
   exact hmap ⟨e.symm y, hy, by simp⟩
 
 /- English proof (translation)
-Introduce `i`. Conclude with `iSup_maxGenEigenspace_conj_eq_whole _ _ (hs (offSubI.lev i.1, i.2))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem heckeCSDI_split (hs : Col.HeckeFieldsInI c S0) : Col.SplitOver (heckeCSDI S h c SG S0) := by
   intro i
@@ -128,9 +124,9 @@ variable {X : Col.Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E
   (C : Col.CoefPk X n (Col.DecoSet X.E n ST SG)) (Λ : Col.LevFam X.E X.K n SG)
 
 /- English proof (translation)
-Establish `h1` using `(Col.heckeFamI_comm_trRep (C := C) (Λ := Λ) (ι := ι) (hι := hι) (S0 := S0) (y := (offSubI.lev x.1, x.2)) (a := a)).eq`. Use `show _ * _ = _ * _`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Express the relevant statement in the definitionally equal form `(Col.formGSD C Λ).res h (Col.heckeFamI (formPts C Λ) S0 (offSubI.lev x.1, x.2) (((Col.formGSD C Λ).res h).symm ((Col.formGSD C Λ).res h (Col.trRep C Λ ι hι a (((Col.formGSD C Λ).res h).symm f))))) = (Col.formGSD C Λ).res h (Col.trRep C Λ ι hι a (((Col.formGSD C Λ).res h).symm ((C …`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `congrArg _ (LinearMap.congr_fun h1 _).symm`.
+A detailed English derivation is pending.
 -/
 theorem heckeCSDI_comm_trRep (h : (Col.formGSD C Λ).Ok) {A : Type} [Group A] (ι : A →* Col.GLG X.E n SG)
     (hι : ∀ a w, (Λ w).NormBy (ι a w)) (SG0 : Finset (HeightOneSpectrum (𝓞 X.E)))
@@ -196,7 +192,7 @@ structure ColHyp3 : Prop where
   splitIL : ∀ (j : Fin R.m) (τ : TupF TU), Col.HeckeFieldsInI (liftPts W Ch sel τ.1 (j.1 + 1)) S0
 
 /- English proof (translation)
-The claim follows from `colFam_ok W Ch sel hX v0 TU Xg S0 xiVal hH.base what₂ τ := { comm := heckeCSDAll_comm _ _ _ _ _ (hH.commAllR τ) split := heckeCSDI_split _ _ _ _ _ (hH.splitIR τ) opG := fun k g => heckeCSDI_comm_trRep _ _ _ _ _ _ _ k g plI_inj := Subtype.val_injective } lifts j τ := { comm := hec …`.
+A detailed English derivation is pending.
 -/
 theorem colFam3_ok (hH : ColHyp3 W Ch sel v0 TU Xg S0) : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).Ok3 1 where
   ok2 := colFam_ok W Ch sel hX v0 TU Xg S0 xiVal hH.base
@@ -212,7 +208,7 @@ theorem colFam3_ok (hH : ColHyp3 W Ch sel v0 TU Xg S0) : (colFam3 W Ch sel hX v0
       plI_inj := Subtype.val_injective }
 
 /- English proof (translation)
-The claim follows from `(colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).typesSep3_of' (fun P => Col.SplitOff.q_ne_zero P) (fun P => heckeCSD_zero _ _ _ _ _ P) (heckeCSD_comm _ _ _ _ _ hc) hI`.
+A detailed English derivation is pending.
 -/
 theorem colFam3_typesSep (hc : Col.HeckeComm (rowPts W Ch sel (mu0 X.F X.E X.K S)) S0)
     (hI : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TrISep) :
@@ -221,7 +217,7 @@ theorem colFam3_typesSep (hc : Col.HeckeComm (rowPts W Ch sel (mu0 X.F X.E X.K S
     (fun P => heckeCSD_zero _ _ _ _ _ P) (heckeCSD_comm _ _ _ _ _ hc) hI
 
 /- English proof (translation)
-The claim follows from `colFam3_typesSep W Ch sel hX v0 TU Xg S0 xiVal trIv (hH.base.commR (mu0F TU)) hI`.
+A detailed English derivation is pending.
 -/
 theorem colFam3_typesSep' (hH : ColHyp3 W Ch sel v0 TU Xg S0)
     (hI : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TrISep) :
@@ -229,7 +225,7 @@ theorem colFam3_typesSep' (hH : ColHyp3 W Ch sel v0 TU Xg S0)
   colFam3_typesSep W Ch sel hX v0 TU Xg S0 xiVal trIv (hH.base.commR (mu0F TU)) hI
 
 /- English proof (translation)
-The claim follows from `(colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).side_well_formed (colFam3_ok W Ch sel hX v0 TU Xg S0 xiVal trIv hH) P.grp P.chr Zs hst hin (colFam3_typesSep' W Ch sel hX v0 TU Xg S0 xiVal trIv hH hI)`.
+A detailed English derivation is pending.
 -/
 theorem colSide3_WF (hH : ColHyp3 W Ch sel v0 TU Xg S0)
     (hI : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TrISep) (P : Col.LevFam X.E X.K R.r Pr.vGs)

@@ -16,9 +16,9 @@ namespace UpperTheory.TP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
   {X : Spc F E n}
 /- English proof (translation)
-Establish `hp : IsPar (e (g, g)) (g : GL (Fin n) (AE F E))`. Express the relevant statement in the definitionally equal form `mat2 (e (g, g)) * diagCols (E := AE F E) (Fin n) = diagCols (E := AE F E) (Fin n) * mat g`. Rewrite using `[he, diagCols, Matrix.fromRows_mul, Matrix.fromBlocks_mul_fromRows]`. Simplify using the standard rewrite rules. Establish `e1 : e (g, 1) = e (g, g) * e (1, g⁻¹)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, mul_inv_cancel]`. Rewrite using `[e1, ha.mul hp, GlobalTheory.WeilEx.Jac.absE_det_unitary hJ g]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hgt_swap_pk (hJ : X.J.det ≠ 0) {K : Subgroup (G2 σ X)} {a : G2 σ X → ℝ} (ha : IsHgt K a)
     {e : UA σ X.J × UA σ X.J →* G2 σ X} (he : ∀ g g', IsEmb g g' (e (g, g'))) (g : UA σ X.J) :
@@ -33,13 +33,11 @@ private theorem hgt_swap_pk (hJ : X.J.det ≠ 0) {K : Subgroup (G2 σ X)} {a : G
   simp
 end UpperTheory.TP
 /- English proof (translation)
-Introduce `T F E _ _ _ _ _ σ B n X hB hX K a e hK ha he`. Establish `cX` using `T.cpt F E σ B n X n 0 hB (.inl hX) (by simp)`. Use `haveI := cX.lc`. Use `haveI := cX.sc`. Take `⟨μ₀, D, hμ₀, -⟩` from `cX.ex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t₀, ht₀⟩` from `_root_.GlobalTheory.ThK.Dbl.hgtInt_of_k T.stab2 F E σ B n X n 0 hB (.inl hX) K a e hK ha he μ₀ hμ₀`. Use `⟨t₀, fun μ hμ t ht => ?_⟩` and prove the remaining obligations. Use `haveI := hμ`. Use `haveI := hμ₀`. Use `haveI := cX.right μ hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJ : X.J.det ≠ 0` using `GlobalTheory.ThK.Dbl.Hgt.det_ne (.inl hX)`. Establish `h1 : Integrable (fun g => a (e (1, g)) ^ t) μ`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ μ₀]`. Conclude with `(ht₀ t ht).smul_measure ENNReal.coe_ne_top`. Take `⟨c, -, hc⟩` from `inv_scale μ`.
-
-Establish `h2 : Integrable (fun g => ((a (e (g, 1)) ^ t : ℝ) : ℂ)) μ` using `(hc _).1 (by`. Simplify using `only [UpperTheory.TP.hgt_swap_pk hJ ha he, inv_inv]`. Conclude with `h1.ofReal)`. Simplify using `using h2.re`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.TP.hgtFst_k :
     _root_.UpperTheory.TP.Tools_k → _root_.UpperTheory.TP.HgtFst_k := by

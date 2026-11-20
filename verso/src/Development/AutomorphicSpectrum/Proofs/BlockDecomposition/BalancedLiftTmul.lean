@@ -42,7 +42,7 @@ def gmap {p : ∀ i, N i → M i → P} (hp : Bal R p) : (∀ i, N i ⊗[R] M i)
   ∑ i, (lift1 hp i).comp (Pi.evalAddMonoidHom _ i)
 
 /- English proof (translation)
-Unfold `gmap`. Rewrite using `[AddMonoidHom.finset_sum_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Pi.single_eq_of_ne hk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -56,7 +56,7 @@ theorem gmap_single {p : ∀ i, N i → M i → P} (hp : Bal R p) (i : ι) (t : 
   · simp
 
 /- English proof (translation)
-Use `AddMonoidHom.functions_ext _ _ _ fun i t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul n x => exact h i n x`. Consider the case `add s t hs ht => rw [Pi.single_add, map_add, map_add, hs, ht]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hom_ext {Q : Type w'} [AddCommGroup Q] {a b : (∀ i, N i ⊗[R] M i) →+ Q}
     (h : ∀ i n x, a (Pi.single i (n ⊗ₜ x)) = b (Pi.single i (n ⊗ₜ x))) : a = b := by
@@ -67,11 +67,9 @@ theorem hom_ext {Q : Type w'} [AddCommGroup Q] {a b : (∀ i, N i ⊗[R] M i) �
   | add s t hs ht => rw [Pi.single_add, map_add, map_add, hs, ht]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Establish `e : g.toAddMonoidHom = gmap hp` using `hom_ext fun i n x => by`. Rewrite using `[gmap_single, balanced_lift_tmul]`. Conclude with `hg i n x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `g.bijective`. Introduce `h`. Use `⟨AddEquiv.ofBijective (gmap hp) h, fun i n x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gmap hp _ = _`.
-
-Rewrite using `[gmap_single, balanced_lift_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_iff {p : ∀ i, N i → M i → P} (hp : Bal R p) :
     Tens R (N := N) (M := M) (M' := P) p ↔ Function.Bijective (gmap hp) := by
@@ -92,9 +90,9 @@ def tmap {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R 
   AddMonoidHom.mk' (fun t i => (a i).lTensor (N i) (t i)) fun s t => funext fun i => map_add _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `(a k).lTensor (N k) ((Pi.single i (n ⊗ₜ x) : ∀ i, N i ⊗[R] M i) k) = _`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmap_single {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)]
     (a : ∀ i, M i →ₗ[R] M₂ i) (i : ι) (n : N i) (x : M i) :
@@ -107,9 +105,9 @@ theorem tmap_single {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Establish `e` using `fun i => Module.Flat.lTensor_exact (N i) (h i)`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy'` using `fun i => (e i (y i)).1 (congrFun hy i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose t ht using hy'`. Conclude with `⟨t, funext ht⟩`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `funext fun i => (e i _).2 ⟨t i, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tmap_exact [∀ i, Module.Flat R (N i)] {M₂ M₃ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)]
     [∀ i, AddCommGroup (M₃ i)] [∀ i, Module R (M₃ i)] (a : ∀ i, M i →ₗ[R] M₂ i) (b : ∀ i, M₂ i →ₗ[R] M₃ i)
@@ -125,7 +123,7 @@ theorem tmap_exact [∀ i, Module.Flat R (N i)] {M₂ M₃ : ι → Type w} [∀
     exact funext fun i => (e i _).2 ⟨t i, rfl⟩
 
 /- English proof (translation)
-The claim follows from `hom_ext fun i n x => by simp only [AddMonoidHom.comp_apply] rw [tmap_single, gmap_single, gmap_single, balanced_lift_tmul, balanced_lift_tmul, c]`.
+A detailed English derivation is pending.
 -/
 theorem comm_gmap {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)] {P₂ : Type w'} [AddCommGroup P₂]
     {p : ∀ i, N i → M i → P} {q : ∀ i, N i → M₂ i → P₂} (hp : Bal R p) (hq : Bal R q)
@@ -135,9 +133,9 @@ theorem comm_gmap {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, 
   rw [tmap_single, gmap_single, gmap_single, balanced_lift_tmul, balanced_lift_tmul, c]
 
 /- English proof (translation)
-Rewrite `t₁` using `[tens_iff B₁]`. Rewrite `t₂` using `[tens_iff B₂]`. Rewrite `t₄` using `[tens_iff B₄]`. Rewrite `t₅` using `[tens_iff B₅]`. Rewrite using `[tens_iff B₃]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddMonoidHom.bijective_of_surjective_of_bijective_of_bijective_of_injective (tmap (N := N) a₁) (tmap (N := N) a₂) (tmap (N := N) a₃) (tmap (N := N) a₄) b₁ b₂ b₃ b₄ (gmap B₁) (gmap B₂) (gmap B₃) (gmap B₄) (gmap B₅) (comm_gmap B₁ B₂ a₁ b₁ c₁) (comm_gmap B₂ B₃ a₂ b₂ c₂) (comm_gmap B …`.
+A detailed English derivation is pending.
 -/
 theorem tens_five [∀ i, Module.Flat R (N i)] {M₁ M₂ M₃ M₄ M₅ : ι → Type w}
     [∀ i, AddCommGroup (M₁ i)] [∀ i, Module R (M₁ i)] [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)]
@@ -169,11 +167,11 @@ theorem tens_five [∀ i, Module.Flat R (N i)] {M₁ M₂ M₃ M₄ M₅ : ι �
     (tmap_exact a₁ a₂ ea₁) (tmap_exact a₂ a₃ ea₂) (tmap_exact a₃ a₄ ea₃) eb₁ eb₂ eb₃ t₁.2 t₂ t₄ t₅.1
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `t`. Use `⟨(AddEquiv.piCongrRight fun i => ((e i).lTensor (N i)).toAddEquiv).trans (g.trans b.symm), fun i n x => ?_⟩` and prove the remaining obligations. Use `b.injective ?_` and prove the remaining obligations. Simplify using `only [AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[c, ← hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tens_of_bij {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)] {P₂ : Type w'} [AddCommGroup P₂]
     {p : ∀ i, N i → M i → P} {q : ∀ i, N i → M₂ i → P₂} (hp : Bal R p) (hq : Bal R q)

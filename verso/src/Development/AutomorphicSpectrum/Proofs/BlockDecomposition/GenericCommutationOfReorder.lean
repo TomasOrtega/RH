@@ -22,7 +22,7 @@ variable {k : Type} [Field k] [TopologicalSpace k] {N : ℕ} {V W : Type} [AddCo
   [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨ψ, h1, h2, h3⟩` from `h`. Use `⟨ψ, h1, h2, nontrivial_twJacquet_of_surjective q.toLinearMap hq (fun u v => Submodule.subset_span ⟨u, q v, ?_⟩) h3⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul]`. Conclude with `congrArg (· - _) (q.isIntertwining _ _ _ v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGeneric_of_surjective {τ : Representation ℂ (GL (Fin N) k) W} {π : Representation ℂ (GL (Fin N) k) V}
     (q : τ.IntertwiningMap π) (hq : Function.Surjective q) (h : IsGeneric π) : IsGeneric τ := by

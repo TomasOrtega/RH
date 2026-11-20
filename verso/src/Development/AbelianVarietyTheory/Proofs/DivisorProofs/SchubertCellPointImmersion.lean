@@ -9,13 +9,11 @@ open GlobalTheory.ProjSpace
 namespace GlobalTheory.FlagZ
 
 /- English proof (translation)
-Use `choose t ht using hX`. Set `ψ : CommRingCat.of (MvPolynomial σ ℤ) ⟶ Γ(Y, U)` to `CommRingCat.ofHom (MvPolynomial.eval₂Hom (Int.castRingHom _) t)`. Establish `e : ψ ≫ f.appLE U ⊤ h = CommRingCat.ofHom (fnOn ⊤)` using `by ext1`. Use `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun s => ?_` and prove the remaining obligations. Rewrite using `[CommRingCat.hom_ofHom, ← ht s]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ψ]`. Establish `i₁ : IsIso (CommRingCat.ofHom (fnOn (A` using `MvPolynomial σ ℤ) ⊤)) := (ConcreteCategory.isIso_iff_bijective _).2 fnOn_top_bijective`. Establish `i₂ : IsIso (⊤ : (Sp (MvPolynomial σ ℤ)).Opens).toSpecΓ` using `(isAffineOpen_top _).isoSpec.isIso_hom`. Establish `i₃ : IsImmersion (f.resLE U ⊤ h ≫ U.toSpecΓ ≫ Spec.map ψ)`. Rewrite using `[← Scheme.Opens.toSpecΓ_SpecMap_appLE_assoc, ← Spec.map_comp, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `i₄ : IsImmersion (f.resLE U ⊤ h)` using `IsImmersion.of_comp _ (U.toSpecΓ ≫ Spec.map ψ)`. Establish `e₂ : f = (Sp (MvPolynomial σ ℤ)).topIso.inv ≫ f.resLE U ⊤ h ≫ U.ι`. Rewrite using `[Scheme.Hom.resLE_comp_ι, ← Scheme.topIso_hom, Iso.inv_hom_id_assoc]`. Rewrite using `[e₂]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isImmersion_of_X_mem_range {σ : Type} {Y : Scheme.{0}} (f : Sp (MvPolynomial σ ℤ) ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ f ⁻¹ᵁ U) (hX : ∀ s, fnOn ⊤ (MvPolynomial.X s) ∈ (f.appLE U ⊤ h).hom.range) : IsImmersion f := by
@@ -43,9 +41,9 @@ theorem isImmersion_of_X_mem_range {σ : Type} {Y : Scheme.{0}} (f : Sp (MvPolyn
 variable {N : ℕ} {A : Type} [CommRing A]
 
 /- English proof (translation)
-Set `I : Rows N l` to `⟨Finset.univ.map ⟨e, he⟩, by simp [Set.powersetCard.mem_iff]⟩`. Establish `hr : Set.range e = Set.range (subsetEnum I)`. Rewrite using `[range_subsetEnum]`. Simplify using `[I]`. Set `p : Equiv.Perm (Fin l)` to `(Equiv.ofInjective e he).trans ((Equiv.setCongr hr).trans (Equiv.ofInjective _ (subsetEnum_injective I)).symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hp : subsetEnum I ∘ p = e` using `funext fun x => Equiv.apply_ofInjective_symm (subsetEnum_injective I) _`. Use `⟨I, Equiv.Perm.sign p, ?_⟩` and prove the remaining obligations. Rewrite using `[minor, ← det_permute, submatrix_submatrix, hp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_det_eq_sign_mul_minor (g : Matrix (Fin N) (Fin N) A) (l : Fin (N + 1)) (e : Fin l → Fin N)
     (he : Function.Injective e) :
@@ -62,7 +60,7 @@ theorem exists_det_eq_sign_mul_minor (g : Matrix (Fin N) (Fin N) A) (l : Fin (N 
   rfl
 
 /- English proof (translation)
-Establish `h` using `congrFun (mulVec_cramer Mᵀ r) j`. Rewrite `h` using `[det_transpose, hM, one_smul]`. Rewrite using `[← h, ← cramer_transpose_apply]`. Simplify using `[mulVec, dotProduct, hj, one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_updateRow_of_col_eq {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n A) (hM : M.det = 1) (j : n)
     (hj : ∀ c, M c j = (1 : Matrix n n A) c j) (r : n → A) : (M.updateRow j r).det = r j := by
@@ -74,7 +72,7 @@ theorem det_updateRow_of_col_eq {n : Type} [Fintype n] [DecidableEq n] (M : Matr
 variable {ι κ : Type} (a : κ → ι) (l : κ → Fin (N + 1))
 
 /- English proof (translation)
-Establish `h {i j : Fin N} (hij : i ≤ j) : lowMat a l τ i j = (1 : Matrix _ _ _) i j` using `dif_neg fun ⟨_, _, h₁, h₂⟩ => (h₁.trans_le h₂).not_ge hij`. Establish `ht : ((lowMat a l τ).submatrix (Fin.castLE m.is_le) (Fin.castLE m.is_le)).BlockTriangular OrderDual.toDual` using `fun i j hij => (h (le_of_lt (show i < j from hij))).trans (one_apply_ne ((Fin.castLE_injective _).ne (ne_of_lt (show i < j from hij))))`. Rewrite using `[det_of_isLowerTriangular _ ht]`. Simplify using `[h le_rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_lowMat_lead (τ : ι) (m : Fin (N + 1)) :
     ((lowMat a l τ).submatrix (Fin.castLE m.is_le) (Fin.castLE m.is_le)).det = 1 := by
@@ -88,9 +86,9 @@ theorem det_lowMat_lead (τ : ι) (m : Fin (N + 1)) :
   simp [h le_rfl]
 
 /- English proof (translation)
-Take `⟨I, ε, h⟩` from `exists_det_eq_sign_mul_minor (cellGL a l w τ).1 m ((w τ).symm ∘ e) ((w τ).symm.injective.comp he)`. Use `⟨rowsEquiv N m I, ε, ?_⟩` and prove the remaining obligations. Rewrite using `[plVec_rowsEquiv, ← h]`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = lowMat a l τ (w τ ((w τ).symm (e i))) _`. Rewrite using `[Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_det_lowMat_eq (w : ι → Equiv.Perm (Fin N)) (τ : ι) (m : Fin (N + 1)) (e : Fin m → Fin N)
     (he : Function.Injective e) : ∃ (c : Fin (plDim N m + 1)) (ε : ℤˣ),
@@ -107,17 +105,15 @@ theorem exists_det_lowMat_eq (w : ι → Equiv.Perm (Fin N)) (τ : ι) (m : Fin 
   rfl
 
 /- English proof (translation)
-Take `⟨⟨τ, i, j⟩, k₀, hk₀, h₁, h₂⟩` from `x`. Take `⟨k, ⟨rfl, hj⟩, hmin⟩` from `Set.exists_min_image {k | a k = τ ∧ (j : ℕ) < l k} (fun k => (l k : ℕ)) (Set.toFinite _) ⟨k₀, hk₀, h₁⟩`. Establish `hi : (l k : ℕ) ≤ i` using `(hmin k₀ ⟨hk₀, h₁⟩).trans h₂`. Establish `hinj : Function.Injective (Function.update (Fin.castLE (l k).is_le) ⟨j, hj⟩ i)`. Introduce `s t hst`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `by_cases hs : s = ⟨j, hj⟩ <;> by_cases ht : t = ⟨j, hj⟩`. Rewrite using `[hs, ht]`. Rewrite `hst` using `[hs, Function.update_self, Function.update_of_ne ht]`. Conclude with `absurd (hi.trans_eq (congrArg Fin.val hst)) t.2.not_ge`. Rewrite `hst` using `[ht, Function.update_self, Function.update_of_ne hs]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (hi.trans_eq (congrArg Fin.val hst.symm)) s.2.not_ge`. Rewrite `hst` using `[Function.update_of_ne hs, Function.update_of_ne ht]`. Conclude with `Fin.castLE_injective _ hst`. Take `⟨c, ε, h⟩` from `exists_det_lowMat_eq a l w (a k) (l k) _ hinj`. Use `⟨k, c, ε, Eq.trans ?_ h⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hd` using `det_updateRow_of_col_eq _ (det_lowMat_lead a l (a k) (l k)) ⟨j, hj⟩ (fun c => by`. Use `(dif_neg fun ⟨k', hk', h₃, h₄⟩ => ((hmin k' ⟨hk', h₃⟩).trans h₄).not_gt c.2).trans ?_` and prove the remaining obligations. Simplify using `only [one_apply, (Fin.castLE_injective _).eq_iff]) fun c => lowMat a l (a k) i (Fin.castLE (l k).is_le c)`. Use `Eq.trans (Eq.trans ?_ hd.symm) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = lowMat a l (a k) i j`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lowMat, of_apply, dif_pos ⟨k₀, hk₀, h₁, h₂⟩]`. Use `congr 1`. Use `Matrix.ext fun s t => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s = ⟨j, hj⟩`. Simplify using `[hs]`.
-
-Simplify using `[updateRow_ne hs, Function.update_of_ne hs]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_X_eq_plVec [Finite κ] (w : ι → Equiv.Perm (Fin N)) (x : CellVar a l) :
     ∃ (k : κ) (c : Fin (plDim N (l k) + 1)) (ε : ℤˣ),
@@ -151,13 +147,13 @@ theorem exists_X_eq_plVec [Finite κ] (w : ι → Equiv.Perm (Fin N)) (x : CellV
     · simp [updateRow_ne hs, Function.update_of_ne hs]
 
 /- English proof (translation)
-Introduce `ι κ _ _ N a l w`. Use `choose b η hb using fun k => exists_det_lowMat_eq a l w (a k) (l k) _ (Fin.castLE_injective (l k).is_le)`. Simplify using `only [det_lowMat_lead] at hb`. Set `U : (Amb l).Opens` to `⟨⋂ k, (Pi.π (fun k => PSpace ℤ (plDim N (l k))) k ⁻¹ᵁ chart ℤ _ (b k)).1, isOpen_iInter_of_finite fun k => (Pi.π (fun k => PSpace ℤ (plDim N (l k))) k ⁻¹ᵁ chart ℤ _ (b k)).2⟩`. Establish `hU (k) : U ≤ Pi.π (fun k => PSpace ℤ (plDim N (l k))) k ⁻¹ᵁ chart ℤ _ (b k)` using `fun y hy => Set.mem_iInter.1 hy k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu (k) : IsUnit (plVec (cellGL a l w (a k)).1 (l k) (b k))` using `IsUnit.of_mul_eq_one_right _ (hb k).symm`. Establish `h₀ (k) : ⊤ ≤ (plPt a l (cellGL a l w) ≫ Pi.π _ k) ⁻¹ᵁ chart ℤ _ (b k)`. Rewrite using `[plPt_π, pt_preimage_chart]`. Conclude with `fun y _ => mem_spOpen.2 fun hy => y.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hy (hu k))`. Establish `h : ⊤ ≤ plPt a l (cellGL a l w) ⁻¹ᵁ U` using `fun y hy => Set.mem_iInter.2 fun k => h₀ k hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isImmersion_of_X_mem_range _ U h fun x => ?_` and prove the remaining obligations. Take `⟨k, c, ε, hx⟩` from `exists_X_eq_plVec a l w x`. Establish `e₁` using `pullRatio_pt_top_mul (Int.castRingHom _) _ (span_plVec (cellGL a l w (a k)) (l k)) (b k) c (hu k) (plPt_π a l (cellGL a l w) k ▸ h₀ k)`. Rewrite `e₁` using `[← pullRatio_of_eq (plPt_π a l (cellGL a l w) k) (h₀ k), ← appLE_pullRatio (hi := hU k) _ h]`. Establish `e₂ : plVec (cellGL a l w (a k)).1 (l k) (b k) = ((η k : ℤ) : CellRing a l)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (((η k : ℤ) : CellRing a l) * ·) (hb k)` as an intermediate fact. Simplify using `only [mul_one, ← mul_assoc, ← Int.cast_mul, Int.units_coe_mul_self, Int.cast_one, one_mul] at this`. Conclude with `this.symm`. Rewrite using `[hx, map_mul, ← e₁, e₂, map_intCast, map_intCast]`. Conclude with `mul_mem (intCast_mem _ _) (mul_mem ⟨_, rfl⟩ (intCast_mem _ _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isImmersion_plPt_cellGL : ∀ (ι κ : Type) [Fintype ι] [Finite κ] (N : ℕ) (a : κ → ι) (l : κ → Fin (N + 1))
     (w : ι → Equiv.Perm (Fin N)), IsImmersion (plPt a l (cellGL a l w)) := by

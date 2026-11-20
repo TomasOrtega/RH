@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsEqOf
 open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.LatVal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TransportProof.transport_of | exact GlobalTheory.TransportProof.transport_of | (intros; apply GlobalTheory.TransportProof.transport_of <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.hilbert_class_field_lattice_transport : GlobalTheory.Published.HilbertClassFieldJ → LatAlg → LatConj → GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport := by
   first | exact @GlobalTheory.TransportProof.transport_of | exact GlobalTheory.TransportProof.transport_of | (intros; apply GlobalTheory.TransportProof.transport_of <;> assumption)

@@ -23,13 +23,13 @@ open GlobalTheory.UU GlobalTheory.LN
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D A G _ _ U hE`. Take `⟨⟨hL, hL2, -, -, -⟩, -⟩` from `GlobalTheory.lawsAndExpansions`. Establish `hEg` using `GlobalTheory.LN.ega_holds`. Establish `hU` using `GlobalTheory.uniformisation_dvr_unconditional`. Use `hB.1.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hB.2` as an intermediate fact. Take `⟨V, _, _, _, φ, hV, hφ, hc⟩` from `GlobalTheory.PrimeUnif.exists_cdvr R (maximalIdeal R)`. Use `hV.1` as an intermediate fact. Establish `hBV : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`. Establish `hle : (maximalIdeal R).map φ ≤ maximalIdeal V` using `Ideal.map_le_iff_le_comap.2 hc.ge`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `U.gen_hom` as an intermediate fact. Take `⟨A', s, w, hw⟩` from `GlobalTheory.Mum.TraitSetting.exists_setting_of_evenOn hL U.P U.semi hE A U.gen ⟨U.wA, U.wA_gen⟩ hV φ hφ hc.ge`. Take `⟨D', U₀, hLG, -, -⟩` from `hU V A' _ s`. Take `⟨U', hU'⟩` from `(GlobalTheory.LN.PreForm.under_exists_and_expands hL hL2 V _ D' A' _ s.semi).1 U₀.toUnifPre`. Use `s.semi.smooth` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w', hw'⟩` from `GlobalTheory.PrimeUnif.isCPMap_of_eq hL.globalFns s.gen s.P U'.P (hU'.2.1.trans hLG) hw`. Take `⟨C, -⟩` from `GlobalTheory.T.exists_compare_uniformisationData_pullback hL hL2 hEg R V _ _ hB.1 hBV (maximalIdeal.isMaximal V).ne_top φ hle D D'.toPre A A' G _ U U' _ (isGrpPullback_pullback G _) w' hw'`. Conclude with `⟨V, _, _, _, φ, D', A', _, _, _, U', U₀, _, C, hV, hφ, hc, hU'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cmp_under : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G), EvenOn U.P → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (φ : R →+* V) (D' : DegData V (maximalIdeal V)) (A' : PolAV (Sp (FractionRing V))) (G' : Over (Sp V)) (_ : GrpObj G') (_ : IsCommMonObj G') (U' : GlobalTheory.UU.PreU (maximalIdeal V) D'.toPre A' G') (U₀ : Unif (maximalIdeal V) D' A' G') (F : G'.left ⟶ G.left) (_ : GlobalTheory.LN.Cmp φ U U' F), GlobalTheory.LN.CDvr V ∧ Function.Injective φ ∧ (maximalIdeal V).comap φ = maximalIdeal R ∧ GlobalTheory.LN.Under U' U₀.toUnifPre := by
   intro R _ _ _ hB D A G _ _ U hE

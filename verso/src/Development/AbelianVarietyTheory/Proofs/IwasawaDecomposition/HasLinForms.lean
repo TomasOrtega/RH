@@ -22,7 +22,7 @@ theorem InvFun.evalZ_comb [Module.Finite O X] (a : ℕ) (ψ : InvFun O) (b : ℕ
 end Vals
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[(resInt O φ).eval_eq hr]`. Conclude with `φ.eval_comp (r := r.restrictScalars ℤ) hr B`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InvFun.eval_resInt {O : Type} [CommRing O] [Module.Finite ℤ O] (φ : InvFun ℤ) {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] [Module.Finite ℤ X] (B : X → X → ℝ) : (resInt O φ).eval X B = φ.eval X B := by

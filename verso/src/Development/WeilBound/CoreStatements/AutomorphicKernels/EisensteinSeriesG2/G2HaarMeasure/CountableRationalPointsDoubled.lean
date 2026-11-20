@@ -12,7 +12,7 @@ namespace GlobalTheory.EisBL.DoubledGroupTopology
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hf : Continuous fun g : GL ι B => (g : Matrix ι ι B)ᵀ * J * (g : Matrix ι ι B).map c` using `((Units.continuous_val.matrix_transpose).matrix_mul continuous_const).matrix_mul (Units.continuous_val.matrix_map hc)`. Conclude with `isClosed_singleton.preimage hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_UG {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [TopologicalSpace B] [IsTopologicalRing B]
     [T2Space B] (c : B →ₐ[A] B) (hc : Continuous c) {ι : Type} [Fintype ι] [DecidableEq ι] (J : Matrix ι ι B) :
@@ -23,13 +23,13 @@ theorem isClosed_UG {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [Topolo
   exact isClosed_singleton.preimage hf
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cA (σ : E →ₐ[F] E) : Continuous (cA (F := F) (E := E) σ) :=
   IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap
 
 /- English proof (translation)
-The claim follows from `isClosed_UG (cA σ) (continuous_cA σ) _`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_doubled_group (σ : E →ₐ[F] E) {n : ℕ} (Y : Spc F E n) :
     IsClosed (UG (cA σ) (dbl (incM F Y.J)) : Set (GL (Fin n ⊕ Fin n) (AE F E))) :=
@@ -62,9 +62,7 @@ instance locallyCompactDoubledGroup : LocallyCompactSpace (G2 σ Y) :=
   (isClosed_doubled_group σ Y).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
 /- English proof (translation)
-Use `haveI : Countable E := Finsupp.Countable.of_moduleFinite (R := ℚ) (M := E)`. Use `haveI : Countable (Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) := inferInstanceAs (Countable (Fin n ⊕ Fin n → Fin n ⊕ Fin n → E))`. Use `haveI : Countable (GL (Fin n ⊕ Fin n) E) := Function.Injective.countable (fun a b h => Units.ext h)`. Establish `hr : (Set.range (Matrix.GeneralLinearGroup.map (n` using `Fin n ⊕ Fin n) (inclR (F := F) (E := E) (AF F)))).Countable := Set.countable_range _`. Use `haveI := hr.to_subtype`.
-
-Use `Function.Injective.countable (f := fun x : rat2 σ Y => (⟨(x.1 : GL (Fin n ⊕ Fin n) (AE F E)), x.2⟩ : Set.range (Matrix.GeneralLinearGroup.map (n := Fin n ⊕ Fin n) (inclR (F := F) (E := E) (AF F))))) ?_` and prove the remaining obligations. Introduce `a b h`. Conclude with `Subtype.ext (Subtype.ext (Subtype.mk.inj h))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem countable_rational_points_doubled (σ : E →ₐ[F] E) {n : ℕ} (Y : Spc F E n) : Countable (rat2 σ Y) := by
   haveI : Countable E := Finsupp.Countable.of_moduleFinite (R := ℚ) (M := E)

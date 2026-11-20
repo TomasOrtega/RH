@@ -34,7 +34,7 @@ variable (d : Data K ι Ω WT A)
 noncomputable def n96' : ℕ := 8 * d.n96 * ((d.D + 2) * (d.N + 1)) * (d.D + 1) * d.del
 
 /- English proof (translation)
-Unfold `Data.evc evW`. Use `congr 1`. Use function extensionality and compare the values at `v`. Apply the tactic sequence `cases v <;> rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evc_eq (c : ι) : d.evc c = evW (R := K) (D := d.D) (fun j => d.w j c) := by
   unfold Data.evc evW
@@ -43,9 +43,9 @@ theorem evc_eq (c : ι) : d.evc c = evW (R := K) (D := d.D) (fun j => d.w j c) :
   cases v <;> rfl
 
 /- English proof (translation)
-Establish `hex : ∃ a : Ω c, d.w j c = a • d.w (d.jc c) c`. Establish `h1` using `hd.finrank_one c d.wL`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨d.w (d.jc c) c, hd.w_mem _ _⟩ : 𝒜 c d.wL) (fun h => hd.w_base c (congrArg Subtype.val h))).mp h1 ⟨d.w j c, hd.w_mem _ _⟩`. Conclude with `⟨a, (congrArg Subtype.val ha).symm⟩`. Unfold `ratio`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_eq_smul (hd : d.AxH 𝒜) (c : ι) (j : Fin (d.N + 1)) :
     d.w j c = ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c) • d.w (d.jc c) c := by
@@ -59,16 +59,16 @@ theorem w_eq_smul (hd : d.AxH 𝒜) (c : ι) (j : Fin (d.N + 1)) :
   exact hex.choose_spec
 
 /- English proof (translation)
-Use `haveI := hd.graded c`. Conclude with `SetLike.pow_mem_graded k (hd.w_mem (d.jc c) c)`.
+A detailed English derivation is pending.
 -/
 theorem lineSection_pow_mem (hd : d.AxH 𝒜) (c : ι) (k : ℕ) : d.w (d.jc c) c ^ k ∈ 𝒜 c (k • d.wL) := by
   haveI := hd.graded c
   exact SetLike.pow_mem_graded k (hd.w_mem (d.jc c) c)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => haveI : Nontrivial (A c) := nontrivial_of_ne _ _ (hd.w_base c)`. Rewrite using `[pow_zero]`. Conclude with `one_ne_zero`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `hd.mul_ne_zero c (lineSection_pow_mem d hd c k) (hd.w_mem _ _) ih (hd.w_base c)`.
+A detailed English derivation is pending.
 -/
 theorem lineSection_pow_ne (hd : d.AxH 𝒜) (c : ι) (k : ℕ) : d.w (d.jc c) c ^ k ≠ 0 := by
   induction k with
@@ -81,7 +81,7 @@ theorem lineSection_pow_ne (hd : d.AxH 𝒜) (c : ι) (k : ℕ) : d.w (d.jc c) c
     exact hd.mul_ne_zero c (lineSection_pow_mem d hd c k) (hd.w_mem _ _) ih (hd.w_base c)
 
 /- English proof (translation)
-Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => rw [one_smul, pow_one, pow_one]`. Consider the case `succ k hk ih`. Rewrite using `[succ_nsmul, pow_succ, pow_succ, hd.nrm_mul c P (lineSection_pow_mem d hd c k) (hd.w_mem _ _) (lineSection_pow_ne d hd c k) (hd.w_base c), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lineSection_pow (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) (k : ℕ) (hk : 1 ≤ k) :
     d.nrm c (k • d.wL) (d.w (d.jc c) c ^ k) P = d.nrm c d.wL (d.w (d.jc c) c) P ^ k := by
@@ -92,9 +92,9 @@ theorem norm_lineSection_pow (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) (k 
       (lineSection_pow_ne d hd c k) (hd.w_base c), ih]
 
 /- English proof (translation)
-Use `haveI := hd.towerO c`. Establish `key : (MvPolynomial.map (Pi.evalRingHom A c)).comp (evW (R` using `𝓞 K) (D := d.D) d.w).toRingHom = (d.evc c).toRingHom.comp (MvPolynomial.map (algebraMap (𝓞 K) K)) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, evW, Data.evc, MvPolynomial.aeval_C, MvPolynomial.map_C, MvPolynomial.algebraMap_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Introduce `v`. Apply the tactic sequence `cases v <;> simp [evW, Data.evc]`. Conclude with `RingHom.congr_fun key Q`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem map_evW_global (hd : d.AxH 𝒜) (c : ι) (Q : MvPolynomial (UXVar d.D d.N) (𝓞 K)) :
     MvPolynomial.map (Pi.evalRingHom A c) (evW (R := 𝓞 K) (D := d.D) d.w Q) = d.evc c (mapK Q) := by
@@ -112,7 +112,7 @@ theorem map_evW_global (hd : d.AxH 𝒜) (c : ι) (Q : MvPolynomial (UXVar d.D d
   exact RingHom.congr_fun key Q
 
 /- English proof (translation)
-Unfold `meanK`. Use `gcongr with sg`. Conclude with `h sg`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem meanK_mono {f g : (K →+* ℂ) → ℝ} (h : ∀ sg, f sg ≤ g sg) : meanK f ≤ meanK g := by
   unfold meanK
@@ -120,9 +120,9 @@ theorem meanK_mono {f g : (K →+* ℂ) → ℝ} (h : ∀ sg, f sg ≤ g sg) : m
   exact h sg
 
 /- English proof (translation)
-Unfold `meanK`. Establish `hn : (Fintype.card (K →+* ℂ) : ℝ) ≠ 0`. Rewrite using `[NumberField.Embeddings.card]`. Conclude with `(Module.finrank_pos).ne'` after adjusting the coercions. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_const, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem meanK_affine (a b : (K →+* ℂ) → ℝ) (u v e : ℝ) :
     meanK (fun sg => a sg + u + v * (b sg + e)) = meanK a + u + v * (meanK b + e) := by
@@ -135,61 +135,51 @@ theorem meanK_affine (a b : (K →+* ℂ) → ℝ) (u v e : ℝ) :
   field_simp
 
 /- English proof (translation)
-Use `hd.tower c` as an intermediate fact. Use `hd.towerO c` as an intermediate fact. Establish `hn1 : 1 ≤ d.n96`. Unfold `n96`. Establish `: 0 < d.N + 1` using `Nat.succ_pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `: 0 < (d.D + 2) * (d.N + 1)` using `by positivity`. Establish `: 0 < 8 * ((d.D + 2) * (d.N + 1)) ^ 2 * (d.D + 1) * d.del * (1 + ⌈d.PO⌉₊)` using `by positivity`. Use linear arithmetic over natural numbers and integers. Use `set n := d.n96 with hn`. Use `set n' := d.n96' with hn'`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set w0 := d.w (d.jc c) c with hw0`. Use `set y : Fin (d.N + 1) → Ω c := fun j => ratio (Ω := Ω c) (d.w j c) w0 with hy`. Establish `hwy : (fun j => d.w j c) = fun j => algebraMap (Ω c) (A c) (y j) * w0`. Use function extensionality and compare the values at `fun j => by rw [← Algebra.smul_def]; exact d.w_eq_smul hd c j`. Establish `hfac : ∀ (m : ℕ) (R : MvPolynomial (UXVar d.D d.N) K), XHom m R → d.evc c R = MvPolynomial.map (algebraMap (Ω c) (A c)) (evW (R` using `K) y R) * MvPolynomial.C (w0 ^ m) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m R hR`. Rewrite using `[d.evc_eq, hwy]`. Conclude with `evW_factor y w0 R hR`. Establish `hcoef : ∀ (m : ℕ) (R : MvPolynomial (UXVar d.D d.N) K), XHom m R → ∀ β, MvPolynomial.coeff β (d.evc c R) = MvPolynomial.coeff β (evW (R` using `K) y R) • w0 ^ m := by`. Introduce `m R hR β`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[hfac m R hR, mul_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map, Algebra.smul_def, mul_comm]`. Establish `hF1 : evW (R` using `K) y F1 = 0 := by`. Establish `h0 : d.evc c F1 = 0` using `(hker deF F1 hxF).mpr dvd_rfl`. Use extensionality with `β`. Use `hcoef deF F1 hxF β` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, MvPolynomial.coeff_zero]`. Rewrite using `[MvPolynomial.coeff_zero]`. Conclude with `(smul_eq_zero.mp this.symm).resolve_right (d.lineSection_pow_ne hd c deF)`. Establish `hQk : d.evc c (mapK Q) ≠ 0` using `fun h => hQ ((hker n _ hQx).mp h)`. Take `⟨β, hβ⟩` from `MvPolynomial.ne_zero_iff.mp hQk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQxO : XHom n Q`. Introduce `s hs`. Apply `hQx s` to reduce the goal to its premises. Rewrite using `[mapK, MvPolynomial.support_map_of_injective _ (IsFractionRing.injective (𝓞 K) K)]` and apply the resulting hypothesis. Use `set g := MvPolynomial.coeff β (evW (R := 𝓞 K) (D := d.D) d.w Q) with hgdef`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : g c = MvPolynomial.coeff β (d.evc c (mapK Q))`. Rewrite using `[← d.map_evW_global hd c Q, MvPolynomial.coeff_map]`. Both sides reduce to the same expression. Use `set φ := MvPolynomial.coeff β (evW (R := K) y (mapK Q)) with hφdef`. Establish `hgφ : g c = φ • w0 ^ n` using `by rw [hgc, hcoef n _ hQx β]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hgne : g c ≠ 0` using `by rw [hgc]; exact hβ`. Establish `hφ : φ ≠ 0` using `by rintro h; apply hgne; rw [hgφ, h, zero_smul]`. Establish `hgmem : g c ∈ 𝒜 c (n • d.wL)` using `by rw [hgφ]; exact Submodule.smul_mem _ φ (d.lineSection_pow_mem hd c n)`. Apply the tactic sequence `refine ⟨g, by convert coeff_evW_mem d.w Q hQxO β <;> first | rfl | exact Module.ext' _ _ (fun r m => funext fun i => by haveI := hd.towerO i; simp only [Algebra.smul_def, Pi.smul_apply, Pi.mul_apply]; rw [IsScalarTower.algebraMap_apply (𝓞 K) K (A i) r]; rfl), hgne, ?_⟩`. Use `set S : (K →+* ℂ) → ℝ := fun sg => ⨆ j, Real.log (d.supN sg d.wL (d.w j)) with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcardpos : (0 : ℝ) < cardUX d.D d.N n n'`. Unfold `cardUX`. Conclude with `Nat.mul_pos (Nat.choose_pos (by omega)) (Nat.choose_pos (by omega))` after adjusting the coercions. Use `set Cst : (K →+* ℂ) → ℝ := fun sg => Real.sqrt (cardUX d.D d.N n n') * (((d.N + 1 : ℕ) : ℝ) * Real.exp (S sg)) ^ n with hCst`. Establish `hCpos : ∀ sg, 0 < Cst sg` using `fun sg => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hCst]`. Establish `: (0 : ℝ) < ((d.N + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.succ_pos _`. Use `Real.sqrt_pos.mpr hcardpos` as an intermediate fact. Check the signs of the components of the expression. Establish `hbound : ∀ (sg : K →+* ℂ) (P : PT (Ω` using `Ω c) sg), d.nrm c (n • d.wL) (g c) P ≤ qnorm sg F1 n n' Q * Cst sg := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `sg P`. Establish `hP : (P : Ω c →+* ℂ).comp (algebraMap K (Ω c)) = sg` using `P.2`. Establish `hwj : ∀ j, ‖(P : Ω c →+* ℂ) (y j)‖ * d.nrm c d.wL w0 P ≤ Real.exp (S sg)`. Introduce `j`. Establish `hle : ‖(P : Ω c →+* ℂ) (y j)‖ * d.nrm c d.wL w0 P = d.nrm c d.wL (d.w j c) P`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hyj : y j = 0`. Establish `: d.w j c = 0` using `by rw [d.w_eq_smul hd c j]; simp only [hy] at hyj; rw [hyj, zero_smul]`. Rewrite using `[this, hd.nrm_zero, hyj, map_zero, norm_zero, zero_mul]`. Use `conv_rhs => rw [d.w_eq_smul hd c j]`. Rewrite using `[hd.nrm_smul c P (y j) (hd.w_mem _ c) (hd.w_base c) hyj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hle]`. Establish `hmemW : d.w j ∈ d.WW` using `by rw [hd.WW_span]; exact Submodule.subset_span ⟨j, rfl⟩`. Establish `hb` using `hd.bdd sg d.wL (d.w j) (Or.inl ⟨hmemW, rfl⟩)`. Establish `h1 : d.nrm c d.wL (d.w j c) P ≤ d.supN sg d.wL (d.w j)` using `le_ciSup hb (⟨c, P⟩ : Σ c, PT (Ω := Ω c) sg)`. Distinguish the cases in `hs : d.supN sg d.wL (d.w j) ≤ 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans (hs.trans (Real.exp_pos _).le)`. Use `replace hs := not_le.mp hs`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_log hs]`. Conclude with `Real.exp_le_exp.mpr (le_ciSup (f := fun j => Real.log (d.supN sg d.wL (d.w j))) (Finite.bddAbove_range _) j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnrm0 : 0 ≤ d.nrm c d.wL w0 P` using `(hd.nrm_pos c P (hd.w_mem _ c) (hd.w_base c)).le`. Establish `hsum : (∑ j, ‖(P : Ω c →+* ℂ) (y j)‖) * d.nrm c d.wL w0 P ≤ ((d.N + 1 : ℕ) : ℝ) * Real.exp (S sg)`. Rewrite using `[Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hval : d.nrm c (n • d.wL) (g c) P = ‖MvPolynomial.coeff β (Ey (D` using `d.D) (fun j => (P : Ω c →+* ℂ) (y j)) (MvPolynomial.map sg (mapK Q)))‖ * d.nrm c d.wL w0 P ^ n := by`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hgφ, hd.nrm_smul c P φ (d.lineSection_pow_mem hd c n) (d.lineSection_pow_ne hd c n) hφ, d.norm_lineSection_pow hd c P n hn1, ← map_evW_eq (P : Ω c →+* ℂ) sg hP, MvPolynomial.coeff_map]`. Establish `hQ' : ∀ P' : {P' : MvPolynomial (UXVar d.D d.N) ℂ // XHom n (MvPolynomial.map sg F1 * P') ∧ UDegLE n' (MvPolynomial.map sg F1 * P')}, d.nrm c (n • d.wL) (g c) P / Cst sg ≤ ReciprocityTheory.MultiplicativeHeights.polyL2 (MvPolynomial.map (sg.comp (algebraMap (𝓞 K) K)) Q + MvPolyno …`. Introduce `P'`. Use `set R := MvPolynomial.map (sg.comp (algebraMap (𝓞 K) K)) Q + MvPolynomial.map sg F1 * P'.1`. Establish `hRQ : MvPolynomial.map (sg.comp (algebraMap (𝓞 K) K)) Q = MvPolynomial.map sg (mapK Q)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mapK, MvPolynomial.map_map]`. Establish `hRx : XHom n R`. Introduce `s hs`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hs) with h | h` into its components or cases. Rewrite `h` using `[hRQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hQx s (MvPolynomial.support_map_subset _ _ h)`. Conclude with `P'.2.1 s h`. Establish `hRu : UDegLE n' R`. Introduce `s hs`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hs) with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hRQ]`. Conclude with `hQu s (MvPolynomial.support_map_subset _ _ h)`. Conclude with `P'.2.2 s h`. Establish `hER : Ey (D` using `d.D) (fun j => (P : Ω c →+* ℂ) (y j)) R = Ey (D := d.D) (fun j => (P : Ω c →+* ℂ) (y j)) (MvPolynomial.map sg (mapK Q)) := by`. Simplify using `only [R, map_add, map_mul, hRQ, ← map_evW_eq (P : Ω c →+* ℂ) sg hP, hF1, map_zero, zero_mul, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hC` using `coeff_Ey_le R hRx hRu (fun j => (P : Ω c →+* ℂ) (y j)) β`. Rewrite `hC` using `[hER]`. Rewrite using `[div_le_iff₀ (hCpos sg), hval]`. Simplify using `only [hCst]`. Establish `hL2 : 0 ≤ ReciprocityTheory.MultiplicativeHeights.polyL2 R` using `by unfold ReciprocityTheory.MultiplicativeHeights.polyL2; positivity`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hpow : (∑ j, ‖(P : Ω c →+* ℂ) (y j)‖) ^ n * d.nrm c d.wL w0 P ^ n ≤ (((d.N + 1 : ℕ) : ℝ) * Real.exp (S sg)) ^ n`. Rewrite using `[← mul_pow]; exact pow_le_pow_left₀ (by positivity) hsum n`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Simplify `hC` using `[cardUX]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = ReciprocityTheory.MultiplicativeHeights.polyL2 R * Real.sqrt (cardUX d.D d.N n n') * ((∑ j, ‖(P : Ω c →+* ℂ) (y j)‖) ^ n * d.nrm c d.wL w0 P ^ n) := by ring`. Use `_ ≤ ReciprocityTheory.MultiplicativeHeights.polyL2 R * Real.sqrt (cardUX d.D d.N n n') * (((d.N + 1 : ℕ) : ℝ) * Real.exp (S sg)) ^ n := by gcongr`. Use `_ = _ := by ring`. Establish `hne : Nonempty {P' : MvPolynomial (UXVar d.D d.N) ℂ // XHom n (MvPolynomial.map sg F1 * P') ∧ UDegLE n' (MvPolynomial.map sg F1 * P')}` using `⟨⟨0, by simp [XHom], by simp [UDegLE]⟩⟩`. Use `le_ciInf hQ'` as an intermediate fact.
-
-Rewrite `this` using `[div_le_iff₀ (hCpos sg)]`. Conclude with `this`. Establish `hsg : ∀ sg : K →+* ℂ, Real.log (d.supNc c sg (n • d.wL) (g c)) ≤ Real.log (qnorm sg F1 n n' Q) + 1 / 2 * Real.log (cardUX d.D d.N n n') + n * (S sg + Real.log (d.N + 1 : ℕ))`. Introduce `sg`. Take `⟨P0, hP0⟩` from `exists_embedding_over (hd.fg c) sg`.
-
-Use `haveI : Nonempty (PT (Ω := Ω c) sg) := ⟨⟨P0, hP0⟩⟩`. Establish `hsup : d.supNc c sg (n • d.wL) (g c) ≤ qnorm sg F1 n n' Q * Cst sg` using `ciSup_le fun P => hbound sg P`. Establish `hpos0 : 0 < d.nrm c (n • d.wL) (g c) P0` using `hd.nrm_pos c P0 hgmem hgne`. Establish `hsuppos : 0 < d.supNc c sg (n • d.wL) (g c)` using `hpos0.trans_le (le_ciSup ⟨qnorm sg F1 n n' Q * Cst sg, by`. Introduce and unpack `_ ⟨P, rfl⟩`.
-
-Conclude with `hbound sg P⟩ (⟨P0, hP0⟩ : PT (Ω := Ω c) sg))`. Establish `hqpos : 0 < qnorm sg F1 n n' Q`. Assume the negation of the conclusion as `hq`. Use `replace hq := not_lt.mp hq`. Use `mul_nonpos_of_nonpos_of_nonneg hq (hCpos sg).le` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : 0 < Real.exp (S sg)` using `Real.exp_pos _`. Establish `hN : (0 : ℝ) < ((d.N + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.succ_pos _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hCst]`.
-
-Rewrite using `[Real.log_mul hqpos.ne' (hCpos sg).ne', Real.log_mul (Real.sqrt_pos.mpr hcardpos).ne' (by positivity), Real.log_sqrt hcardpos.le, Real.log_pow, Real.log_mul hN.ne' hexp.ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem up_cauchy (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) (c : ι) (F1 : MvPolynomial (UXVar d.D d.N) K)
     (deF : ℕ) (hxF : XHom deF F1)
@@ -384,9 +374,9 @@ theorem up_cauchy (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) (c : ι) (F1 : MvPolyno
     _ = _ := by rw [meanK_affine]; rfl
 
 /- English proof (translation)
-Establish `hs` using `Real.sqrt_pos.mpr hy`. Establish `h1` using `Real.log_le_sub_one_of_pos hs`. Establish `h2 : Real.log y = 2 * Real.log (Real.sqrt y)`. Rewrite using `[Real.log_sqrt hy.le]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3` using `Real.sq_sqrt hy.le`. Use polynomial arithmetic with `[sq_nonneg (Real.sqrt y - 2)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_le_half {y : ℝ} (hy : 0 < y) : Real.log y ≤ y / 2 := by
   have hs := Real.sqrt_pos.mpr hy
@@ -398,29 +388,27 @@ theorem log_le_half {y : ℝ} (hy : 0 < y) : Real.log y ≤ y / 2 := by
   nlinarith [sq_nonneg (Real.sqrt y - 2)]
 
 /- English proof (translation)
-Take `⟨M, hM⟩ : ∃ M, M = (d.D + 2) * (d.N + 1)` from `⟨_, rfl⟩`. Take `⟨t, ht⟩ : ∃ t, t = 1 + ⌈d.PO⌉₊` from `⟨_, rfl⟩`. Establish `hD` using `hd.D_ge`. Establish `hM2 : d.D + 2 ≤ M` using `by rw [hM]; exact Nat.le_mul_of_pos_right _ (Nat.succ_pos _)`. Establish `hn : d.n96 = 8 * M ^ 2 * (d.D + 1) * d.del * t` using `by rw [hM, ht]; rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : d.n96' = 8 * d.n96 * M * (d.D + 1) * d.del` using `by rw [hM]; rfl`. Establish `ht1 : 1 ≤ t` using `by omega`. Establish `hM1 : 1 ≤ M` using `by omega`. Establish `hnM : 32 * M ^ 2 * t ≤ d.n96`. Rewrite using `[hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 32 * M ^ 2 * t ≤ 8 * M ^ 2 * 4 * 1 * t` using `by ring_nf; exact le_refl _`. Combine the equalities or inequalities in the displayed calculation. Establish `hnpos : 2 ≤ d.n96` using `by nlinarith`. Use `set n := d.n96 with hnn`. Establish `hnn' : d.n96' * M ≤ n * n`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn']`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : n + d.D + 1 ≤ n ^ 2` using `by nlinarith`. Establish `hB : d.n96' + M ≤ n ^ 2` using `by nlinarith`. Establish `hcard : cardUX d.D d.N n d.n96' ≤ n ^ (4 * M)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `cardUX`. Rewrite using `[← hM]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcpos : 0 < cardUX d.D d.N n d.n96'`. Unfold `cardUX`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Nat.mul_pos (Nat.choose_pos (by omega)) (Nat.choose_pos (by omega))`. Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast (by omega : 0 < n)`. Establish `hMR : (1 : ℝ) ≤ M` using `by exact_mod_cast hM1`. Establish `htR : (1 : ℝ) ≤ t` using `by exact_mod_cast ht1`. Establish `hlog1 : Real.log (cardUX d.D d.N n d.n96') ≤ (4 * M : ℕ) * Real.log n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log (by exact_mod_cast hcpos) (by exact_mod_cast hcard)`. Establish `hlogn : Real.log n ≤ n / (16 * M) + 3 * Real.log 2 + M / 2`. Establish `h8 : (0 : ℝ) < 8 * M` using `by positivity`. Establish `e : (n : ℝ) = n / (8 * M) * (8 * M)` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Real.log_mul (by positivity) h8.ne', Real.log_mul (by norm_num) (by positivity)]`. Establish `: Real.log (8 : ℝ) = 3 * Real.log 2`. Rewrite using `[show (8 : ℝ) = 2 ^ 3 by norm_num, Real.log_pow]; norm_num`. Rewrite using `[this]`. Establish `a1` using `log_le_half (show (0 : ℝ) < n / (8 * M) by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a2` using `log_le_half (show (0 : ℝ) < M by positivity)`. Establish `: (n : ℝ) / (8 * M) / 2 = n / (8 * M) * (8 * M) / (16 * M)` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl2` using `Real.log_two_lt_d9`. Establish `hPO : d.PO ≤ t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `Nat.le_ceil d.PO` as an intermediate fact. Rewrite using `[ht]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnMR : 32 * (M : ℝ) ^ 2 * t ≤ n` using `by exact_mod_cast hnM`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : (4 * M : ℝ) * (n / (16 * M)) = n / 4` using `by field_simp; ring`. Establish `h4 : ((4 * M : ℕ) : ℝ) = 4 * M` using `by push_cast; ring`. Rewrite `hlog1` using `[h4]`. Establish `: (4 * M : ℝ) * Real.log n ≤ n / 4 + 12 * M * Real.log 2 + 2 * M ^ 2`. Use `mul_le_mul_of_nonneg_left hlogn (by positivity : (0 : ℝ) ≤ 4 * M)` as an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left htR (by positivity : (0 : ℝ) ≤ (M : ℝ) ^ 2), mul_le_mul_of_nonneg_left hMR (by positivity : (0 : ℝ) ≤ (M : ℝ))]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem up_count (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) :
     Real.log (cardUX d.D d.N d.n96 d.n96') + d.PO ≤ d.n96 := by

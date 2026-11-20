@@ -13,9 +13,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.GenCut
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hT`. Rewrite `hT` using `[not_isEmpty_iff]`. Take `⟨x⟩` from `hT`. Use `haveI : Nonempty (IrreducibleCloseds T) := ⟨⟨closure {x}, isIrreducible_singleton.closure, isClosed_closure⟩⟩`. Establish `h0 : (0 : WithBot ℕ∞) ≤ topologicalKrullDim T` using `Order.krullDim_nonneg`.
-
-Conclude with `absurd h (not_lt.mpr (by simpa using h0))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isEmpty_of_topologicalKrullDim_lt_zero (T : Type) [TopologicalSpace T]
     (h : topologicalKrullDim T < ((0 : ℕ) : WithBot ℕ∞)) : IsEmpty T := by
@@ -28,13 +26,13 @@ theorem isEmpty_of_topologicalKrullDim_lt_zero (T : Type) [TopologicalSpace T]
   exact absurd h (not_lt.mpr (by simpa using h0))
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero`. Introduce `Z _ h`. Use `isEmpty_of_topologicalKrullDim_lt_zero Z h` as an intermediate fact. Conclude with `⟨Fin.elim0, fun x hx => (this.false ⟨x, hx⟩).elim⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Consider the case `succ e ih`. Introduce `Z hZ h`. Take `⟨S, hS, hdim⟩` from `GlobalTheory.T.exists_finite_topologicalKrullDim_diff_open_lt X Z hZ`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_sec_nonzero_on_finite_of_generated' k X p L hL n u hu S hS`. Establish `hU : IsOpen ((nonzeroLocus t : X.Opens) : Set X)` using `(nonzeroLocus t).isOpen`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `ih (Z \ ((nonzeroLocus t : X.Opens) : Set X)) (hZ.sdiff hU) (hdim _ hU (fun x hx => ht x hx) e h)`. Use `⟨Fin.cons t s, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxt : x ∈ nonzeroLocus t`. Conclude with `⟨0, by simpa using hxt⟩`. Take `⟨i, hi⟩` from `hs x ⟨hx, hxt⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i.succ, by simpa using hi⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sections_cover_closed (k : Type) [Field k] [Infinite k] (X : Scheme.{0})
     [AlgebraicGeometry.IsNoetherian X] (p : X ⟶ Sp k) (L : LB X) (hL : L.IsLB)
@@ -60,9 +58,9 @@ theorem exists_sections_cover_closed (k : Type) [Field k] [Infinite k] (X : Sche
       exact ⟨i.succ, by simpa using hi⟩
 
 /- English proof (translation)
-Introduce `k _ _ X _ p L hL d hd n u hu`. Establish `h1 : topologicalKrullDim (Set.univ : Set X) ≤ topologicalKrullDim X` using `topologicalKrullDim_subspace_le X _`. Establish `h2 : ((d : ℕ) : WithBot ℕ∞) < ((d + 1 : ℕ) : WithBot ℕ∞)`. Conclude with `Nat.lt_succ_self d` after adjusting the coercions. Take `⟨s, hs⟩` from `exists_sections_cover_closed k X p L hL n u hu (d + 1) Set.univ isClosed_univ (lt_of_le_of_lt (h1.trans hd) h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨i, hi⟩` from `hs x (Set.mem_univ x)`. Conclude with `Opens.mem_iSup.mpr ⟨i, hi⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_generating_sections_of_dim_le :
     ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [AlgebraicGeometry.IsNoetherian X] (p : X ⟶ Sp k) (L : LB X), L.IsLB → ∀ d : ℕ, topologicalKrullDim X ≤ d → ∀ (n : ℕ) (u : Fin n → L.Sec), ⨆ i, nonzeroLocus (u i) = ⊤ → ∃ s : Fin (d + 1) → L.Sec, ⨆ i, nonzeroLocus (s i) = ⊤ := by

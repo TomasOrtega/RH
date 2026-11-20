@@ -10,9 +10,9 @@ open MvPolynomial
 universe u w
 
 /- English proof (translation)
-Use `⟨fun s hs => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hs' : (C (algebraMap S F s) : Poly F N) ∈ pp`. Rewrite `hs` using `[Ideal.mem_comap, map_C]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (C (algebraMap S F s) : Poly F N)` using `(IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective S F)).mpr h0)).map C`. Conclude with `Ideal.IsPrime.ne_top ‹_› (Ideal.eq_top_of_isUnit_mem _ hs' hu)`. Set `_ : Algebra (Poly S N) (Poly F N)` to `MvPolynomial.algebraMvPolynomial`. Establish `: IsLocalization ((nonZeroDivisors S).map (C : S →+* Poly S N)) (Poly F N)` using `MvPolynomial.isLocalization (nonZeroDivisors S) F`. Conclude with `IsLocalization.map_under ((nonZeroDivisors S).map (C : S →+* Poly S N)) (Poly F N) pp`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem curveClosure {S : Type u} [CommRing S] [IsDomain S] {F : Type u} [Field F] [Algebra S F]
     [IsFractionRing S F] {N : ℕ} (pp : Ideal (Poly F N)) [pp.IsPrime] :
@@ -31,11 +31,9 @@ theorem curveClosure {S : Type u} [CommRing S] [IsDomain S] {F : Type u} [Field 
     exact IsLocalization.map_under ((nonZeroDivisors S).map (C : S →+* Poly S N)) (Poly F N) pp
 
 /- English proof (translation)
-Introduce `S _ _ F _ _ _ Ω _ _ _ _ N x M 𝔪 h𝔪 hM pp _ hpp`. Establish `: pp.IsPrime` using `hpp.isPrime`. Take `⟨hconst, hmap⟩` from `curveClosure (S := S) pp`. Establish `hpp'` using `hpp`. Rewrite `hpp'` using `[← hmap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `hC S F Ω N x M 𝔪 h𝔪 _ inferInstance hconst hpp'`. Rewrite `key` using `[hmap]`. Rewrite using `[key]`. Use `finsum_nonneg fun G => ?_` and prove the remaining obligations. Use `split_ifs with hG`.
-
-Conclude with `mul_nonneg (Int.natCast_nonneg _) (hM G (le_sup_right.trans hG.1.1.2) hG.2)`. Conclude with `le_rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem NefGeneric.proof (hC : ConservationOfDegree.Statement.{u, w}) :
     NefGeneric.Statement.{u, w} := by

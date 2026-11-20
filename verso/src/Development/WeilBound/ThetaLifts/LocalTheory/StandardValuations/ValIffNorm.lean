@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {t : E →ₐ[F] Fv F v} {sec : Fv F v × Fv F v → AE F E}
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `((ValuativeRel.isEquiv (valuation (v.adicCompletion F)) (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one (x := x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem int_iff (x : Fv F v) : x ∈ v.adicCompletionIntegers F ↔ valuation (Fv F v) x ≤ 1 := by
   haveI : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
@@ -22,7 +22,7 @@ theorem int_iff (x : Fv F v) : x ∈ v.adicCompletionIntegers F ↔ valuation (F
     (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one (x := x)).symm
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Rewrite using `[(isEquiv (valuation (v.adicCompletion F)) (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one, le_antisymm_iff, le_antisymm_iff, Valued.toNormedField.norm_le_one_iff, Valued.toNormedField.one_le_norm_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_iff_norm (x : Fv F v) : valuation (Fv F v) x = 1 ↔ ‖x‖ = 1 := by
   haveI : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
@@ -31,7 +31,7 @@ theorem val_iff_norm (x : Fv F v) : valuation (Fv F v) x = 1 ↔ ‖x‖ = 1 := 
     Valued.toNormedField.norm_le_one_iff, Valued.toNormedField.one_le_norm_iff]
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.SW.ProdFormula.distribHaarChar_eq_nnnorm v (x : Fv F v) x.ne_zero` as an intermediate fact. Rewrite `this` using `[Units.mk0_val]`. Conclude with `(congrArg NNReal.toReal this).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_nabs (x : (Fv F v)ˣ) : ‖(x : Fv F v)‖ = GlobalTheory.SplitWeil.nabs _ x := by
   have := GlobalTheory.CompanionTheory.SW.ProdFormula.distribHaarChar_eq_nnnorm v (x : Fv F v) x.ne_zero

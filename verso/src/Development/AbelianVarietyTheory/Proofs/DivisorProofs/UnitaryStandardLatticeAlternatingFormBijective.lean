@@ -5,9 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory.UnitaryStd
 
 /- English proof (translation)
-Rewrite using `[form_apply, Matrix.J]`. Simplify using `only [basis_apply, dotProduct]`. Apply the tactic sequence `rcases a with k | k <;> rcases c with l | l <;>`. Simplify using `[Pi.single_apply, Prod.ext_iff, Matrix.one_apply, Finset.sum_ite_eq, Finset.sum_ite_eq', eq_comm]`. Apply the tactic sequence `all_goals simp [ite_and, Finset.mul_sum, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.sum_ite_irrel, mul_ite]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `all_goals (split_ifs <;> simp_all)`.
+A detailed English derivation is pending.
 -/
 theorem form_basis_basis {E : Type} [Field E] [NumberField E] {r : ℕ} (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ)
     (g : ℕ) (S : Matrix (Fin r) (Fin r) ℤ) (i j : Fin r) (a c : Fin g ⊕ Fin g) :
@@ -21,7 +21,7 @@ theorem form_basis_basis {E : Type} [Field E] [NumberField E] {r : ℕ} (ρ : �
   all_goals (split_ifs <;> simp_all)
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨j, c⟩`. Rewrite using `[LinearMap.toMatrix_apply, Module.Basis.dualBasis_repr, form_basis_basis]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toMatrix_basis_dualBasis_form {E : Type} [Field E] [NumberField E] {r : ℕ} (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ)
     (g : ℕ) (S : Matrix (Fin r) (Fin r) ℤ) :
@@ -32,11 +32,11 @@ theorem toMatrix_basis_dualBasis_form {E : Type} [Field E] [NumberField E] {r : 
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ r ρ g S hS`. Use `set b := basis ρ g`. Use `set M := LinearMap.toMatrix b b.dualBasis (form ρ g S) with hMdef`. Establish `hM : IsUnit M.det`. Rewrite using `[hMdef, toMatrix_basis_dualBasis_form, Matrix.det_kronecker, Matrix.det_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hS.pow _).mul ((Matrix.isUnit_det_J (Fin g) ℤ).pow _)`. Establish `h1 : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hM`. Establish `h2 : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hM`. Establish `hf : form ρ g S = Matrix.toLin b b.dualBasis M` using `by rw [hMdef, Matrix.toLin_toMatrix]`. Use `set Ψ := Matrix.toLin b.dualBasis b M⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : ∀ x, Ψ (form ρ g S x) = x` using `fun x => by`. Rewrite using `[hf, ← LinearMap.comp_apply, ← Matrix.toLin_mul, h2, Matrix.toLin_one, LinearMap.id_apply]`. Establish `hr : ∀ f, form ρ g S (Ψ f) = f` using `fun f => by`. Rewrite using `[hf, ← LinearMap.comp_apply, ← Matrix.toLin_mul, h1, Matrix.toLin_one, LinearMap.id_apply]`. Conclude with `⟨Function.LeftInverse.injective hl, Function.RightInverse.surjective hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem form_bijective_of_unimodular : ∀ {E : Type} [Field E] [NumberField E] {r : ℕ} (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ)
     (g : ℕ) (S : Matrix (Fin r) (Fin r) ℤ), IsUnit S.det → Function.Bijective (GlobalTheory.UnitaryStd.form ρ g S) := by

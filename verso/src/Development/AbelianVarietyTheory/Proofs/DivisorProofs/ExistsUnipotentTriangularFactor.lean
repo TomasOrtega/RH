@@ -13,13 +13,13 @@ open GlobalTheory.FlagFibre (Low)
 namespace GlobalTheory.FlagCell
 
 /- English proof (translation)
-Use `set c : Fin i → Fin m := Fin.castLE i.2.le with hc`. Use `set B := A.submatrix c c with hB`. Use `set x : Fin i → R := (fun j => A i (c j)) ᵥ* B⁻¹ with hx`. Establish `hxB : x ᵥ* B = fun j => A i (c j)`. Rewrite using `[hx, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ h, Matrix.vecMul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hlt : ∀ l, c l < i` using `fun l => l.2`. Use `⟨Pi.single i 1 - ∑ l, Pi.single (c l) (x l), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.single_eq_same, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_zero fun l _ => Pi.single_eq_of_ne (hlt l).ne' _, sub_zero]`. Introduce `k hk`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.sub_apply, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_zero fun l _ => Pi.single_eq_of_ne ((hlt l).trans hk).ne' _, Pi.single_eq_of_ne hk.ne', sub_zero]`. Introduce `j hj`. Establish `hj' : c ⟨j, hj⟩ = j` using `rfl`. Establish `h1` using `congrFun hxB ⟨j, hj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.vecMul, dotProduct, hB, Matrix.submatrix_apply, hj'] at h1`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Pi.single_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, one_mul]`. Rewrite using `[h1, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_elim_row {R : Type} [CommRing R] {m : ℕ} (A : Matrix (Fin m) (Fin m) R) (i : Fin m)
     (h : IsUnit (A.submatrix (Fin.castLE i.2.le) (Fin.castLE i.2.le)).det) :
@@ -48,19 +48,17 @@ theorem exists_elim_row {R : Type} [CommRing R] {m : ℕ} (A : Matrix (Fin m) (F
     rw [h1, sub_self]
 
 /- English proof (translation)
-Use `choose r h1 h0 hA using fun i : Fin m => exists_elim_row A i (h i.castSucc)`. Set `L : Matrix (Fin m) (Fin m) R` to `Matrix.of r`. Establish `hL : L.BlockTriangular OrderDual.toDual` using `fun i k hk => h0 i k hk`. Establish `hdet : L.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular L hL]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_eq_one fun i _ => h1 i`. Establish `hu : IsUnit L.det` using `hdet ▸ isUnit_one`. Establish `hAu : IsUnit A.det` using `by simpa using h (Fin.last m)`. Use `letI := L.invertibleOfIsUnitDet hu`. Establish `hLi : L⁻¹.BlockTriangular OrderDual.toDual` using `Matrix.blockTriangular_inv_of_blockTriangular hL`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : ∀ i, L⁻¹ i i = 1`. Introduce `i`. Use `congrFun (congrFun (Matrix.mul_nonsing_inv L hu) i) i` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Finset.sum_eq_single i, Matrix.one_apply_eq]`. Establish `h2 : L i i = 1` using `h1 i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[h2, one_mul]`. Then use the resulting hypothesis. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases. Rewrite using `[hLi (i := k) (j := i) hk, mul_zero]`. Rewrite using `[hL (i := i) (j := k) hk, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `⟨fun s => L⁻¹ s.1.1 s.1.2, L * A, fun i j hj => hA i j hj, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `hu.mul hAu`. Establish `: (uniR fun s : Low m => L⁻¹ s.1.1 s.1.2) = L⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `a b`. Rewrite using `[uniR_apply]`. Use `split_ifs with hab hab'`. Both sides reduce to the same expression. Rewrite using `[hab', hd]`.
-
-Conclude with `(hLi (i := a) (j := b) (show a < b from lt_of_le_of_ne (not_lt.1 hab) hab')).symm`. Rewrite using `[this, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul L hu, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lu (R : Type) [CommRing R] (m : ℕ) (A : Matrix (Fin m) (Fin m) R)
     (h : ∀ l : Fin (m + 1), IsUnit (A.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det) :

@@ -6,13 +6,11 @@ open scoped ContDiff Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k F G hG hF t`. Use `hasFDerivAt_of_continuous_partials k F G (fun i t => ?_) hG t` and prove the remaining obligations. Establish `h0 : HasDerivAt (fun s : ℝ => F (t + s • Pi.single i 1)) (G i t) (t i - t i)`. Rewrite using `[sub_self]`. Conclude with `hF i t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `h0.comp_sub_const (t i) (t i)`. Establish `hfun : (fun s : ℝ => F (Function.update t i s)) = fun s : ℝ => F (t + (s - t i) • Pi.single i 1)`. Use function extensionality and compare the values at `s`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Rewrite using `[hfun]`.
-
-Conclude with `h1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_of_continuous_coordinate_line_derivs :
     ∀ (k : ℕ) (F : (Fin k → ℝ) → ℂ) (G : Fin k → (Fin k → ℝ) → ℂ), (∀ i, Continuous (G i)) →

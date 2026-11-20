@@ -14,13 +14,11 @@ open GlobalTheory.Cont
 namespace PositivityTheory.SiegelWeilFormula.Khead
 
 /- English proof (translation)
-Use `isPreconnected_of_forall ((σ₀ + 1 : ℝ) : ℂ) fun y hy => ?_` and prove the remaining obligations. Take `⟨T, hT0, hT⟩ : ∃ T : ℝ, 0 ≤ T ∧ σ₀ < y.re + T` from `⟨|σ₀ - y.re| + 1, by positivity, by linarith [le_abs_self (σ₀ - y.re)]⟩`. Establish `hA : y + (T : ℂ) ∈ {c : ℂ | σ₀ < c.re}` using `by show σ₀ < (y + (T : ℂ)).re`. Rewrite using `[Complex.add_re, Complex.ofReal_re]`. Conclude with `hT`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : ((σ₀ + 1 : ℝ) : ℂ) ∈ {c : ℂ | σ₀ < c.re}` using `by show σ₀ < (((σ₀ + 1 : ℝ) : ℂ)).re`. Rewrite using `[Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨segment ℝ y (y + T) ∪ segment ℝ (y + T) ((σ₀ + 1 : ℝ) : ℂ), ?_, Or.inr (right_mem_segment ℝ _ _), Or.inl (left_mem_segment ℝ _ _), ?_⟩` and prove the remaining obligations. Introduce and unpack `w (hw | hw)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[segment_eq_image']`. Take `⟨θ, hθ, rfl⟩` from `hw`. Establish `e : y + θ • (y + (T : ℂ) - y) = y + ((θ * T : ℝ) : ℂ)`. Rewrite using `[add_sub_cancel_left, Complex.real_smul, Complex.ofReal_mul]`. Use `show y + θ • (y + (T : ℂ) - y) ∈ U`.
-
-Rewrite using `[e]`. Conclude with `hshift y hy _ (mul_nonneg hθ.1 hT0)`. Conclude with `hσ₀ ((convex_halfSpace_re_gt σ₀).segment_subset hA hB hw)`. Conclude with `IsPreconnected.union (y + (T : ℂ)) (right_mem_segment ℝ _ _) (left_mem_segment ℝ _ _) (convex_segment _ _).isPreconnected (convex_segment _ _).isPreconnected`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPreconnected_of_rightOf_subset_of_shift {U : Set ℂ} (σ₀ : ℝ) (hσ₀ : GlobalTheory.Cont.rightOf σ₀ ⊆ U)
     (hshift : ∀ s ∈ U, ∀ t : ℝ, 0 ≤ t → s + t ∈ U) : IsPreconnected U := by
@@ -50,23 +48,21 @@ private theorem isPreconnected_of_rightOf_subset_of_shift {U : Set ℂ} (σ₀ :
       (convex_segment _ _).isPreconnected (convex_segment _ _).isPreconnected
 
 /- English proof (translation)
-Introduce `hBL F E _ _ _ _ _ σ d hS s₁ f hf`. Take `⟨r', s', hY⟩` from `hS`. Take `⟨Ê, ⟨t, hsum, hdiff⟩, hweak⟩` from `hBL F E σ d.B d.n d.Y r' s' d.ok.good d.ok.hn hY d.χ d.ok.hecke d.m d.ok.res d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt s₁ f hf`. Establish `h1 : ∀ x : G2 σ d.Y, (1 : ℝ) ≤ (ht2 x : ℝ)` using `one_le_height_GL2`. Establish `hp : ∀ s₀ : ℂ, ∃ (k : ℕ) (H : ℂ → G2 σ d.Y → ℂ), An.Reg (fun x : G2 σ d.Y => (ht2 x : ℝ)) H s₀ ∧ ∀ᶠ s in 𝓝[≠] s₀, ∀ x, H s x = (s - s₀) ^ k * Ê s x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s₀`. Take `⟨k, U, H, hU, hH, hμ⟩` from `hweak s₀`. Use `⟨k, fun s => (H s).1, reg_of_weak hU hμ, ?_⟩` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds hU, self_mem_nhdsWithin] with s hsU hsne`. Conclude with `hH s hsU hsne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr : ∀ s : ℂ, t < s.re → An.Reg (fun x : G2 σ d.Y => (ht2 x : ℝ)) Ê s`. Introduce `s hs`. Take `⟨k, H, hreg, he⟩` from `hp s`. Conclude with `hreg.remove h1 he ((isOpen_lt continuous_const Complex.continuous_re).mem_nhds hs) hdiff`. Establish `hinv` using `GlobalTheory.T.eisenstein_hecke_functional F E σ d.B d.n d.Y r' s' d.ok.good d.ok.hn hY d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt d.χ s₁ f hf d.ok.hecke t Ê hsum`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t', hmaj⟩` from `majorant d ⟨r', s', hY⟩ hf`. Introduce `s₀`. Take `⟨U, p, G, hUo, hUr, hs₀, hp0, hreg, hGE⟩` from `strip h1 hp hr s₀`. Take `⟨hGd, hGc⟩` from `diff_cont_of_reg hreg`. Use `⟨U, p, G, max t t', hUo, hUr, hs₀, hp0, hGd, hGc, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `z hz γ hγ g`. Take `⟨⟨σ₀, hσ₀⟩, hshift⟩` from `hUr`. Take `⟨R, hR⟩ : ∃ R : ℝ, R = max σ₀ t + 1` from `⟨_, rfl⟩`. Establish `hz₀ : (R : ℂ) ∈ U` using `hσ₀ (show σ₀ < ((R : ℂ)).re by`. Rewrite using `[Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[le_max_left σ₀ t])`. Establish `hev : (fun w => G w (γ * g)) =ᶠ[𝓝 (R : ℂ)] (fun w => G w g)`. Establish `hopen : {w : ℂ | t < w.re} ∈ 𝓝 (R : ℂ)` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show t < ((R : ℂ)).re by`. Rewrite using `[Complex.ofReal_re]`. Combine the linear relations using `[le_max_right σ₀ t])`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [hopen] with w hw`. Rewrite using `[hGE w hw, hGE w hw, hinv w hw γ hγ g]`. Conclude with `((hGd (γ * g)).analyticOnNhd hUo).eqOn_of_preconnected_of_eventuallyEq ((hGd g).analyticOnNhd hUo) (isPreconnected_of_rightOf_subset_of_shift σ₀ hσ₀ hshift) hz₀ hev hz`. Introduce `z hz`. Establish `hzt : t < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `⟨hmaj z (lt_of_le_of_lt (le_max_right _ _) hz), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hGE z hzt g]`. Use `congr 1`. Rewrite using `[← (hsum z hzt g).tsum_eq]`. Unfold `PositivityTheory.SiegelWeilFormula.SD.eis GlobalTheory.Eis.cosetSum`.
-
-Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `only [GlobalTheory.Eis.term, eisTerm, flat, PositivityTheory.SiegelWeilFormula.SD.Ht, Real.coe_toNNReal _ (hgt_nonneg d.ok.hgt _)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eisStrong_of : EisBL → EisStrong := by
   intro hBL F E _ _ _ _ _ σ d hS s₁ f hf

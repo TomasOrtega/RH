@@ -14,15 +14,15 @@ section Geo
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Use `set s := (Fr.LLset j).sort (· ≤ ·) with hs`. Establish `hlen : s.length = (Fr.LLset j).card` using `Finset.length_sort _`. Establish `hpw : s.Pairwise (· ≤ ·)` using `Finset.pairwise_sort _ _`. Establish `hnd : s.Nodup` using `Finset.sort_nodup _ _`. Establish `hl' : l < s.length` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hget : llPos Fr j l = s[l]`. Unfold `llPos`. Rewrite using `[← hs, List.getD_eq_getElem _ _ hl']`. Establish `hsub : (Fr.LLset j).filter (· ≤ llPos Fr j l) ⊆ (s.take (l + 1)).toFinset`. Introduce `x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Finset.mem_filter]`. Establish `hxs : x ∈ s` using `by rw [hs, Finset.mem_sort]; exact hx.1`. Take `⟨k, hk, rfl⟩` from `List.getElem_of_mem hxs`. Rewrite using `[List.mem_toFinset]`. Establish `hkl : k ≤ l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Establish `h1 : s[l] ≤ s[k]` using `List.pairwise_iff_getElem.mp hpw l k hl' hk (by omega)`. Establish `h2 : s[k] ≤ s[l]` using `by rw [← hget]; exact hx.2`. Establish `h3 : s[k] = s[l]` using `le_antisymm h2 h1`. Use `(List.Nodup.getElem_inj_iff hnd).mp h3` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[List.mem_iff_getElem]`. Conclude with `⟨k, by simp; omega, by simp⟩`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem filt_card (j : ℤ) (l : ℕ) (_hl : l < (Fr.LLset j).card) :
     ((Fr.LLset j).filter (· ≤ llPos Fr j l)).card ≤ l + 1 := by
@@ -56,25 +56,23 @@ theorem filt_card (j : ℤ) (l : ℕ) (_hl : l < (Fr.LLset j).card) :
     _ ≤ l + 1 := by simp
 
 /- English proof (translation)
-Take `⟨-, -, hinc, hsep, hmem, -, hLL, -, -⟩` from `hV`. Establish `hcard : 0 < (Fr.LLset j).card` using `by have := (hLL j).1; omega`. Establish `hx : llPos Fr j 0 ∈ Fr.LLset j`. Unfold `llPos`. Rewrite using `[List.getD_eq_getElem _ _ (by rw [Finset.length_sort]; exact hcard)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Finset.mem_sort _).mp (List.getElem_mem _)`. Establish `hf` using `filt_card (Fr := Fr) j 0 hcard`. Establish `hmin : ∀ z ∈ Fr.LLset j, ¬ z < llPos Fr j 0`. Introduce `z hz hzx`. Establish `hsub : ({z, llPos Fr j 0} : Finset ℤ) ⊆ (Fr.LLset j).filter (· ≤ llPos Fr j 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hw`. Break down `hw with rfl | rfl` into its components or cases. Conclude with `Finset.mem_filter.mpr ⟨hz, hzx.le⟩`. Conclude with `Finset.mem_filter.mpr ⟨hx, le_rfl⟩`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `Finset.card_le_card hsub`. Rewrite `h2` using `[Finset.card_pair hzx.ne]`. Use linear arithmetic over natural numbers and integers. Establish `hgap` using `((hLL j).2.1 _ hx (Or.inl (le_trans hf (by omega)))).2`. Establish `hmono : ∀ k : ℤ, ∀ i, i < r → Fr.fr k 0 ≤ Fr.fr k i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Conclude with `le_rfl`. Consider the case `succ i ih => intro hi; exact (ih (by omega)).trans (hinc k i hi).le`.
+Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hxI` using `hx`. Unfold `Frames.LLset at hxI`. Rewrite `hxI` using `[Finset.mem_filter, Finset.mem_Ioo]`. Establish `hsep' : Fr.fr (j - 1) (r - 1) < Fr.fr j 0`. Establish `h` using `hsep (j - 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hyl : Fr.fr (j - 1) (r - 1) ∈ Fr.letters j`. Unfold `Frames.letters`. Rewrite using `[Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨hmono _ _ (by omega), hsep'.le.trans (hmono _ _ (by omega))⟩, (hmem (j - 1) (r - 1) (by omega)).1⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hfin` using `hgap _ hyl hxI.1.1 ?_`. Use linear arithmetic over natural numbers and integers. Introduce `z hz hzx`. Assume the negation of the conclusion as `hzy`. Use `push_neg at hzy`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Frames.letters at hz`. Rewrite `hz` using `[Finset.mem_filter, Finset.mem_Icc]`. Apply `hmin z _ hzx` to reduce the goal to its premises. Unfold `Frames.LLset`. Rewrite using `[Finset.mem_filter, Finset.mem_Ioo]`.
-
-Conclude with `⟨⟨hzy, hzx.trans hxI.1.2⟩, hz.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem first_gap (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) : Fr.fr (j - 1) (r - 1) + L₁ < llPos Fr j 0 := by
   classical
@@ -125,7 +123,7 @@ theorem first_gap (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) : Fr.fr (j 
   exact ⟨⟨hzy, hzx.trans hxI.1.2⟩, hz.2⟩
 
 /- English proof (translation)
-Unfold `llPos`. Rewrite using `[List.getD_eq_getElem _ _ (by rw [Finset.length_sort]; exact hl)]`. Conclude with `(Finset.mem_sort _).mp (List.getElem_mem _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem llPos_mem_LLset (j : ℤ) (l : ℕ) (hl : l < (Fr.LLset j).card) :
     llPos Fr j l ∈ Fr.LLset j := by
@@ -134,7 +132,7 @@ private theorem llPos_mem_LLset (j : ℤ) (l : ℕ) (hl : l < (Fr.LLset j).card)
   exact (Finset.mem_sort _).mp (List.getElem_mem _)
 
 /- English proof (translation)
-Unfold `llPos at h`. Rewrite `h` using `[List.getD_eq_getElem _ _ (by rw [Finset.length_sort]; exact ha), List.getD_eq_getElem _ _ (by rw [Finset.length_sort]; exact hb)]`. Conclude with `(List.Nodup.getElem_inj_iff (Finset.sort_nodup _ _)).mp h`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem llPos_injOn (j : ℤ) (a b : ℕ) (ha : a < (Fr.LLset j).card)
     (hb : b < (Fr.LLset j).card) (h : llPos Fr j a = llPos Fr j b) : a = b := by
@@ -144,11 +142,11 @@ private theorem llPos_injOn (j : ℤ) (a b : ℕ) (ha : a < (Fr.LLset j).card)
   exact (List.Nodup.getElem_inj_iff (Finset.sort_nodup _ _)).mp h
 
 /- English proof (translation)
-Introduce `z hz`. Assume the negation of the conclusion as `hzx`. Use `push_neg at hzx`. Establish `hx` using `llPos_mem_LLset (Fr := Fr) j 0 hc`. Establish `hf` using `filt_card (Fr := Fr) j 0 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ({z, llPos Fr j 0} : Finset ℤ) ⊆ (Fr.LLset j).filter (· ≤ llPos Fr j 0)`. Introduce `w hw`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hw`. Break down `hw with rfl | rfl` into its components or cases. Conclude with `Finset.mem_filter.mpr ⟨hz, hzx.le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.mem_filter.mpr ⟨hx, le_rfl⟩`. Establish `h2` using `Finset.card_le_card hsub`. Rewrite `h2` using `[Finset.card_pair hzx.ne]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem llPos_zero_le_of_mem (j : ℤ) (hc : 0 < (Fr.LLset j).card) :
     ∀ z ∈ Fr.LLset j, llPos Fr j 0 ≤ z := by
@@ -169,17 +167,17 @@ private theorem llPos_zero_le_of_mem (j : ℤ) (hc : 0 < (Fr.LLset j).card) :
   omega
 
 /- English proof (translation)
-Use `set s := S.sort (· ≤ ·) with hs`. Establish `hlen : s.length = S.card` using `Finset.length_sort _`. Establish `hSk : k ≤ S.card` using `h.trans (Finset.card_filter_le _ _)`. Establish `hpw : s.Pairwise (· ≤ ·)` using `Finset.pairwise_sort _ _`. Establish `hi : s.length - k < s.length` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.getD_eq_getElem _ _ hi]`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `hsub : S.filter (c < ·) ⊆ (s.drop (s.length - k + 1)).toFinset`. Introduce `z hz`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hz` using `[Finset.mem_filter]`. Establish `hzs : z ∈ s` using `by rw [hs, Finset.mem_sort]; exact hz.1`. Take `⟨m, hm, rfl⟩` from `List.getElem_of_mem hzs`. Rewrite using `[List.mem_toFinset]`. Establish `hmk : s.length - k < m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1 : s[m] ≤ s[s.length - k]`. Break down `hc.lt_or_eq with hlt | heq` into its components or cases. Conclude with `List.pairwise_iff_getElem.mp hpw m _ hm hi hlt`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[heq]`. Conclude with `absurd hz.2 (not_lt.mpr (h1.trans hle))`. Rewrite using `[List.mem_iff_getElem]`. Use `⟨m - (s.length - k + 1), by simp; omega, ?_⟩` and prove the remaining obligations. Simplify using `only [List.getElem_drop]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `(Finset.card_le_card hsub).trans (List.toFinset_card_le _)`. Simplify using `at h2`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem lt_sort_getD_of_le_card_filter_gt (S : Finset ℤ) (c : ℤ) (k : ℕ) (hk : 1 ≤ k)
     (h : k ≤ (S.filter (c < ·)).card) :
@@ -217,7 +215,7 @@ private theorem lt_sort_getD_of_le_card_filter_gt (S : Finset ℤ) (c : ℤ) (k 
   omega
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact le_rfl`. Consider the case `succ i ih => exact (ih (by omega)).trans (hV.2.2.1 k i hi).le`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem fr_zero_le_fr_of_valid (hV : Fr.Valid L₁ N₁) (k : ℤ) (i : ℕ) (hi : i < r) :
     Fr.fr k 0 ≤ Fr.fr k i := by
@@ -226,17 +224,17 @@ private theorem fr_zero_le_fr_of_valid (hV : Fr.Valid L₁ N₁) (k : ℤ) (i : 
   | succ i ih => exact (ih (by omega)).trans (hV.2.2.1 k i hi).le
 
 /- English proof (translation)
-Establish `hfg` using `first_gap hV hr j`. Establish `hcard : r ≤ (Fr.LLset j).card` using `(hV.2.2.2.2.2.2.1 j).1`. Establish `hsep' : Fr.fr (j - 1) (r - 1) < Fr.fr j 0`. Establish `h` using `hV.2.2.2.1 (j - 1)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Frames.oldest]`. Apply `lt_sort_getD_of_le_card_filter_gt _ _ r hr` to reduce the goal to its premises. Establish `hsub : (Finset.range r).image (llPos Fr j) ⊆ ({z ∈ Fr.letters j | Even z ∧ z < Fr.fr j i}).filter (Fr.fr (j - 1) (r - 1) + L₁ < ·)`. Introduce `z hz`. Rewrite `hz` using `[Finset.mem_image]`.
+Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨l, hl, rfl⟩` from `hz`. Rewrite `hl` using `[Finset.mem_range]`. Establish `hm` using `llPos_mem_LLset (Fr := Fr) j l (by omega)`. Establish `hev` using `((hV.2.2.2.2.2.2.1 j).2.1 _ hm (Or.inl (le_trans (filt_card (Fr := Fr) j l (by omega)) (by omega)))).1`. Establish `h0` using `llPos_zero_le_of_mem (Fr := Fr) j (by omega) _ hm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmI` using `hm`. Unfold `Frames.LLset at hmI`. Rewrite `hmI` using `[Finset.mem_filter, Finset.mem_Ioo]`. Establish `hm1` using `fr_zero_le_fr_of_valid hV (j - 1) (r - 1) (by omega)`. Establish `hm2` using `fr_zero_le_fr_of_valid hV j (r - 1) (by omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm3` using `fr_zero_le_fr_of_valid hV j i hi`. Rewrite using `[Finset.mem_filter, Finset.mem_filter]`. Use `⟨⟨?_, hev, by omega⟩, by omega⟩` and prove the remaining obligations. Unfold `Frames.letters`. Rewrite using `[Finset.mem_filter, Finset.mem_Icc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨by omega, by omega⟩, hmI.2⟩`. Use `le_trans ?_ (Finset.card_le_card hsub)` and prove the remaining obligations. Rewrite using `[Finset.card_image_of_injOn, Finset.card_range]`. Introduce `a ha b hb hab`. Conclude with `llPos_injOn (Fr := Fr) j a b (by simp at ha; omega) (by simp at hb; omega) hab`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem oldest_far (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (i : ℕ) (hi : i < r) :
     Fr.fr (j - 1) (r - 1) + L₁ < Fr.oldest j (Fr.fr j i) := by
@@ -282,19 +280,19 @@ variable {n' r K m : ℕ} [NeZero n'] (Fr : Frames n' r) (p : ℕ) (hk : m + 1 =
   (nL : ZMod J → ℕ) {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Use `set t := posOf n' (posTL Fr x) with ht`. Use `set P := lowP Fr p x with hP`. Use `set mo := l.mapDomain (castV hk) + ga with hmo`. Establish `hB` using `hb x`. Simplify using `only at hB`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hB` using `[← hP, ← ht]`. Establish `hsplit : ∑ c : Fin (r + K), rho (x, c) = ∑ a : Fin r, rho (x, Fin.castAdd K a) + ∑ b : Fin K, rho (x, Fin.natAdd r b)` using `Fin.sum_univ_add _`. Establish `htop : topDeg ga t = ∑ a : Fin r, ga (TestSideWords.plVar Fr hk nL x a)`. Unfold `topDeg`. Rewrite using `[Fintype.sum_equiv (finCongr hk) (fun c => ga (t, c)) (fun c => ga (t, Fin.cast hk.symm c)) (by intro c; simp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Fin.sum_univ_add]`. Establish `hz : ∑ b : Fin K, ga (t, Fin.cast hk.symm (Fin.natAdd r b)) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(hga _ hne).1`. Simplify using `at h1`. Rewrite using `[hz, add_zero]`. Both sides reduce to the same expression. Establish `hM : multideg (plMon Fr p hk nL mo) x = ∑ a : Fin r, mo (TestSideWords.plVar Fr hk nL x a) / P`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `multideg plMon`. Simplify using `[hP]`. Establish `hle : ∑ a : Fin r, ga (TestSideWords.plVar Fr hk nL x a) ≤ P * ∑ a : Fin r, mo (TestSideWords.plVar Fr hk nL x a) / P + ∑ a : Fin r, rho (x, Fin.castAdd K a)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _`. Rewrite using `[← hlow.1 x a, Nat.div_add_mod, hmo, Finsupp.add_apply]`. Conclude with `Nat.le_add_left _ _`. Rewrite using `[hM, Nat.mul_sub]`. Rewrite `hB` using `[Nat.mul_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 
-Generalize the expression as in `P * dPl x = A at *`. Generalize the expression as in `P * dNo x = B at *`. Generalize the expression as in `P * ∑ a : Fin r, mo (TestSideWords.plVar Fr hk nL x a) / P = C at *`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem deg_le (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card)
     (d : Fin n' → ℕ) (l : Fin n' × Fin (r + K) →₀ ℕ) (hl : IsLabel p Fr l) (ga : TV n' (m + 1) →₀ ℕ)

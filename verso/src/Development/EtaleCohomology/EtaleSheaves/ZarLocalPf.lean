@@ -14,18 +14,16 @@ def LocDiag : Prop := ∀ (S : Type) [CommRing S] (p : PrimeSpectrum S),
       ∃ r : D.obj k →+* Localization.Away f, r.comp ((D.map m).hom.comp a) = algebraMap S (Localization.Away f)
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]
 
 /- English proof (translation)
-Introduce `hB1 hB2 q S _ hS hq n i hn x p`. Take `⟨J, _, _, D, c, ⟨hc⟩, hpt, j0, a, hk⟩` from `hD S p`. Establish `hsh : SH c.pt` using `hpt (hSH S hS p)`. Use `set y := pull _ (spMap a) _ _ x with hy`. Establish `hqa : IsUnit ((q : ℕ) : D.obj j0)` using `by simpa using hq.map a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : pull _ (spMap (c.ι.app j0).hom) _ _ y = 0`. Conclude with `@Subsingleton.elim _ (hB2 (ZMod q) c.pt hsh (tw q i) n hn) _ _`. Take `⟨k, m, hm⟩` from `(hB1 q D c hc n i).2 j0 y hqa h0`. Take `⟨f, hf, r, hr⟩` from `hk k m`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hr, spMap_comp, pull_comp, spMap_comp, pull_comp, ← hy, hm, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ZarLocal_of (hSH : LocSH) (hD : LocDiag) : LateralTheory.E.t_E1Cut.ZarLocal := by
   intro hB1 hB2 q S _ hS hq n i hn x p

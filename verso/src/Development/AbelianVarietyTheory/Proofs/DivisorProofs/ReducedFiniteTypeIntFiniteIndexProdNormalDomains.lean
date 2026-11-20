@@ -8,9 +8,9 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.ReducedNormalisation
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hle : (Finset.univ.erase i).inf p ≤ p i`. Introduce `a ha`. Assume the negation of the conclusion as `hai`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, hja⟩` from `h a hai`. Conclude with `hja ((Finset.inf_le (Finset.mem_erase.2 ⟨hj, Finset.mem_univ j⟩) : _ ≤ p j) ha)`. Take `⟨j, hj, hji⟩` from `((hp i).inf_le').1 hle`. Conclude with `(Finset.mem_erase.1 hj).1 (hmin j i hji)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mem_others_not_mem {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (p : ι → Ideal R) (hp : ∀ i, (p i).IsPrime) (hmin : ∀ i j, p i ≤ p j → i = j) (i : ι) :
@@ -26,19 +26,19 @@ theorem exists_mem_others_not_mem {R : Type} [CommRing R] {ι : Type} [Fintype �
   exact (Finset.mem_erase.1 hj).1 (hmin j i hji)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := R ⧸ p) (M := integralClosure (R ⧸ p) (FractionRing (R ⧸ p)))`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (R ⧸ p)⁰ (S := FractionRing (R ⧸ p)) (s.image Subtype.val)`. Take `⟨t, ht⟩` from `Ideal.Quotient.mk_surjective (b : R ⧸ p)`. Establish `htp : t ∉ p`. Introduce `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : (b : R ⧸ p) = 0` using `by rw [← ht]; exact Ideal.Quotient.eq_zero_iff_mem.2 h`. Conclude with `nonZeroDivisors.coe_ne_zero b h0`. Use `⟨e * t, fun h => (hp.mem_or_mem h).elim hep htp, J.mul_mem_right t he, fun d => ?_⟩` and prove the remaining obligations. Establish `key : ∀ d ∈ Submodule.span (R ⧸ p) (s : Set (integralClosure (R ⧸ p) (FractionRing (R ⧸ p)))), ∃ y ∈ J, algebraMap R (FractionRing (R ⧸ p)) y = algebraMap R (FractionRing (R ⧸ p)) (e * t) * (d : FractionRing (R ⧸ p))`. Introduce `d hd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hd using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨x, hx⟩` from `hb (g : FractionRing (R ⧸ p)) (Finset.mem_image_of_mem Subtype.val hg)`. Take `⟨x', rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `⟨e * x', J.mul_mem_right x' he, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : algebraMap R (FractionRing (R ⧸ p)) x' = algebraMap R (FractionRing (R ⧸ p)) t * (g : FractionRing (R ⧸ p))`. Rewrite using `[IsScalarTower.algebraMap_apply R (R ⧸ p) (FractionRing (R ⧸ p)) x', IsScalarTower.algebraMap_apply R (R ⧸ p) (FractionRing (R ⧸ p)) t, Ideal.Quotient.algebraMap_eq, hx, ht]`. Conclude with `Algebra.smul_def _ _`. Rewrite using `[map_mul, map_mul, h1, mul_assoc]`. Consider the case `zero => exact ⟨0, J.zero_mem, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨y1, hy1, e1⟩` from `hx`. Take `⟨y2, hy2, e2⟩` from `hy`. Conclude with `⟨y1 + y2, J.add_mem hy1 hy2, by`. Rewrite using `[map_add, e1, e2, ← mul_add]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use the proof step `rfl⟩`. Consider the case `smul q x _ hx`. Take `⟨y1, hy1, e1⟩` from `hx`. Take `⟨q', rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `⟨q' * y1, J.mul_mem_left q' hy1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, e1]`. Use `show _ = _ * ((Ideal.Quotient.mk p q') • (x : FractionRing (R ⧸ p)))`. Rewrite using `[Algebra.smul_def, ← Ideal.Quotient.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key d (by rw [hs]; trivial)`.
+A detailed English derivation is pending.
 -/
 theorem exists_conductor_elem {R : Type} [CommRing R] (p : Ideal R) [hp : p.IsPrime] (J : Ideal R)
     (e : R) (he : e ∈ J) (hep : e ∉ p)
@@ -91,7 +91,7 @@ theorem exists_conductor_elem {R : Type} [CommRing R] (p : Ideal R) [hp : p.IsPr
   exact key d (by rw [hs]; trivial)
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply R (R ⧸ p) (FractionRing (R ⧸ p)), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hz, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_eq_zero_of_mem {R : Type} [CommRing R] (p : Ideal R) [p.IsPrime] {z : R}
     (hz : z ∈ p) : algebraMap R (FractionRing (R ⧸ p)) z = 0 := by
@@ -99,15 +99,13 @@ theorem algebraMap_eq_zero_of_mem {R : Type} [CommRing R] (p : Ideal R) [p.IsPri
     Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hz, map_zero]
 
 /- English proof (translation)
-Establish `hc : ∀ i, ∃ c : R, c ∉ p i ∧ c ∈ (⨅ (j : ι) (_ : j ≠ i), p j) ∧ ∀ d : integralClosure (R ⧸ p i) (FractionRing (R ⧸ p i)), ∃ y ∈ (⨅ (j : ι) (_ : j ≠ i), p j), algebraMap R (FractionRing (R ⧸ p i)) y = algebraMap R (FractionRing (R ⧸ p i)) c * (d : FractionRing (R ⧸ p i))`. Introduce `i`. Take `⟨e, hei, hej⟩` from `exists_mem_others_not_mem p hp hmin i`. Conclude with `exists_conductor_elem (p i) _ e ((Submodule.mem_iInf _).2 fun j => (Submodule.mem_iInf _).2 fun hj => hej j hj) hei`. Use `choose c hcp hcJ hcd using hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmemJ : ∀ {i k : ι} {z : R}, z ∈ (⨅ (j : ι) (_ : j ≠ i), p j) → i ≠ k → z ∈ p k` using `fun hz hik => (Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hz _) (Ne.symm hik)`. Use `⟨∑ i, c i, fun i h => hcp i ?_, fun r => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Use `(Submodule.add_mem_iff_left _ (Submodule.sum_mem _ fun j hj => ?_)).1 h` and prove the remaining obligations. Conclude with `hmemJ (hcJ j) (Finset.mem_erase.1 hj).1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `choose y hyJ hy using fun i => hcd i (r i)`. Use `⟨∑ i, y i, funext fun k => Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap R (FractionRing (R ⧸ p k)) (∑ i, y i) = algebraMap R (FractionRing (R ⧸ p k)) (∑ i, c i) * (r k : FractionRing (R ⧸ p k))`. Rewrite using `[map_sum, map_sum, Finset.sum_mul, Finset.sum_eq_single k, Finset.sum_eq_single k, hy k]`. Introduce `i _ hik`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[algebraMap_eq_zero_of_mem (p k) (hmemJ (hcJ i) hik), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Introduce `i _ hik`. Conclude with `algebraMap_eq_zero_of_mem (p k) (hmemJ (hyJ i) hik)`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_conductor {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (p : ι → Ideal R) [hp : ∀ i, (p i).IsPrime] (hmin : ∀ i j, p i ≤ p j → i = j)
@@ -148,19 +146,17 @@ end GlobalTheory.ReducedNormalisation
 namespace GlobalTheory.ReducedNormalisation
 
 /- English proof (translation)
-Introduce `R _ _ _ _`. Use `haveI : IsNoetherianRing R := Algebra.FiniteType.isNoetherianRing ℤ R`. Use `letI : Fintype (minimalPrimes R) := (minimalPrimes.finite_of_isNoetherianRing R).fintype`. Set `e` to `Fintype.equivFin (minimalPrimes R)`. Set `p : Fin (Fintype.card (minimalPrimes R)) → Ideal R` to `fun k => (e.symm k).1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI hp : ∀ k, (p k).IsPrime := fun k => Ideal.minimalPrimes_isPrime (e.symm k).2`. Establish `hmin : ∀ k l, p k ≤ p l → k = l`. Introduce `k l h`. Establish `h2 : p l ≤ p k` using `(e.symm l).2.2 ⟨hp k, bot_le⟩ h`. Conclude with `e.symm.injective (Subtype.ext (le_antisymm h h2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `haveI : ∀ k, Module.Finite (R ⧸ p k) (integralClosure (R ⧸ p k) (FractionRing (R ⧸ p k))) := fun k => by`. Establish `h : Algebra.EssFiniteType ℤ (R ⧸ p k)` using `Algebra.instEssFiniteTypeQuotientIdeal ℤ R (p k)`. Use `@GlobalTheory.finite_integralClosure_of_essFiniteType_int (R ⧸ p k) _ _ ?_` and prove the remaining obligations. Use `h` and compare the differences between its conclusion and the goal. Apply the tactic sequence `first | exact Subsingleton.elim _ _ | exact Algebra.algebra_ext _ _ fun r => (eq_intCast _ r).trans (eq_intCast _ r).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, hr⟩` from `exists_conductor p hmin`. Establish `hzero : ∀ {x : R} (k), algebraMap R (integralClosure (R ⧸ p k) (FractionRing (R ⧸ p k))) x = 0 → x ∈ p k`. Introduce `x k hx`. Establish `h1 : algebraMap R (FractionRing (R ⧸ p k)) x = 0` using `congrArg Subtype.val hx`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply R (R ⧸ p k) (FractionRing (R ⧸ p k)), Ideal.Quotient.algebraMap_eq]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 ((map_eq_zero_iff _ (IsFractionRing.injective (R ⧸ p k) (FractionRing (R ⧸ p k)))).1 h1)`. Use `⟨Fintype.card (minimalPrimes R), fun k => integralClosure (R ⧸ p k) (FractionRing (R ⧸ p k)), fun k => inferInstance, fun k => inferInstance, fun k => ⟨inferInstance, integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing (R ⧸ p k)), Module.Finite.trans (R ⧸ p k) _⟩, ? …` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `hmem : x ∈ sInf (minimalPrimes R)` using `Submodule.mem_sInf.2 fun q hq => by`. Use `hzero (e ⟨q, hq⟩) (congrFun hx (e ⟨q, hq⟩))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[p]`. Rewrite `hmem` using `[minimalPrimes, Ideal.sInf_minimalPrimes]`. Conclude with `IsReduced.eq_zero x (mem_nilradical.mp hmem)`. Introduce `h0`. Take `⟨q⟩` from `Ideal.nonempty_minimalPrimes (I := (⊥ : Ideal R)) bot_ne_top`.
-
-Apply `ha (e q)` to reduce the goal to its premises. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem exists_finiteIndex_prod_normalDomains :
     ∀ (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] [IsReduced R] [Nontrivial R],
@@ -220,7 +216,7 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ReducedNormalisation.exists_finiteIndex_prod_normalDomains`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] [IsReduced R] [Nontrivial R], ∃ (n : ℕ) (D : Fin n → Type) (_ : ∀ i, CommRing (D i)) (_ : ∀ i, Algebra R (D i)), (∀ i, IsDomain (D i) ∧ IsIntegrallyClosed (D i) ∧ Module.Finite R (D i)) ∧ Function.Injective (algebraMap R (∀ i, D i)) ∧ ∃ a : R, a ≠ 0 ∧ ∀ r : (∀ i, D i), ∃ y : R, algebraMap R (∀ i, D i) y = algebraMap R (∀ i, D i) a * r :=
   GlobalTheory.ReducedNormalisation.exists_finiteIndex_prod_normalDomains

@@ -17,11 +17,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ X _ hX L hL S hS h1 h3 i e hb1 hb3`. Take `⟨C₁, hC₁⟩` from `hb1`. Take `⟨C₃, hC₃⟩` from `hb3`. Take `⟨hP, A, hA⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB (strHom k X)).1 hX`. Establish `hf` using `algebraMap_eq_strHom k X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `F₁ : FiniteCohTwists k S.X₁` using `IsAmpleLB.finiteCohTwists hf S.X₁ hA`. Establish `F₃ : FiniteCohTwists k S.X₃` using `IsAmpleLB.finiteCohTwists hf S.X₃ hA`. Use `⟨C₁ + C₃, fun m => ?_⟩` and prove the remaining obligations. Establish `hLm : (lbPow L m).IsLB` using `isLB_lbPow hL m`. Establish `hT` using `Twist.shortExact_map hLm hS`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fin₁` using `((F₁.twist hLm).finiteCoh).finite i`. Establish `fin₃` using `((F₃.twist hLm).finiteCoh).finite i`. Establish `key` using `hdim₂_le k hT i fin₁ fin₃`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem hdim_twist_bound_of_shortExact : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (L : LB X), L.IsLB → ∀ S : ShortComplex X.Modules, S.ShortExact → IsFiniteQC S.X₁ → IsFiniteQC S.X₃ → ∀ (i : ℕ) (e : ℕ → ℕ), (∃ C : ℕ, ∀ m : ℕ, hdim k (twist S.X₁ (lbPow L m)) i ≤ C * e m) → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist S.X₃ (lbPow L m)) i ≤ C * e m) → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist S.X₂ (lbPow L m)) i ≤ C * e m) := by
   intro k _ _ X _ hX L hL S hS h1 h3 i e hb1 hb3

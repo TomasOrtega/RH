@@ -10,11 +10,11 @@ noncomputable section
 namespace Formalism.NG
 
 /- English proof (translation)
-Establish `hsub : range t ⊆ insert 0 (Ioo 0 t)`. Introduce `i hi`. Rewrite `hi` using `[mem_range]`. Break down `Nat.eq_zero_or_pos i with h | h` into its components or cases. Conclude with `mem_insert.2 (Or.inl h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `mem_insert.2 (Or.inr (mem_Ioo.2 ⟨h, hi⟩))`. Establish `h0 : (0 : ℕ) ∉ Ioo 0 t` using `by simp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_insert h0]`. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `hne : e + 1 ≠ 1`. Use `(mem_Ioo.1 he).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, Nat.add_sub_cancel]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_range_ite_le_add_sum_Ioo (t : ℕ) (a : ℕ∞) (Sha : ℕ → ℕ∞) :
     ∑ i ∈ range t, (if i + 1 = 1 then a else Sha (i + 1 - 1)) ≤ a + ∑ e ∈ Ioo 0 t, Sha e := by
@@ -38,17 +38,15 @@ lemma sum_range_ite_le_add_sum_Ioo (t : ℕ) (a : ℕ∞) (Sha : ℕ → ℕ∞)
         rw [if_neg hne, Nat.add_sub_cancel]
 
 /- English proof (translation)
-Use `set C1 : ℕ∞ := ∑ w ∈ cols, (eO * (e' w : ℕ∞) + 2 * vδ) with hC1`. Use `set A0 : ℕ∞ := ∑ w ∈ what₂, lenRow w + ∑ w ∈ cols, ((j w : ℕ∞) * (eO * (e' w : ℕ∞) + vδ) + h0 w) + s with hA0`. Use `set B : ℕ∞ := eO * (cB : ℕ∞) * ∑ w ∈ what₂, ((deg w : ℕ∞) + 2) + 4 * ((cols.card : ℕ∞) + 1) * vδ + (cols.card : ℕ∞) * H0 + ∑ w ∈ qs, vζ w with hB`. Establish `hsucc : ∀ i : Fin t, L i.succ ≤ (if (i : ℕ) + 1 = 1 then vhE + C1 else Sha ((i : ℕ) + 1 - 1)) + B`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : (i : ℕ) = 0`. Establish `hs : i.succ = ⟨1, by omega⟩` using `Fin.ext (by simp [hi])`. Rewrite using `[if_pos (by omega), hs]`. Use `(hL1.trans ?_)` and prove the remaining obligations. Rewrite using `[hB]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg (by omega)]`. Establish `h2 : 2 ≤ ((i.succ : Fin (t + 1)) : ℕ)` using `by simp [Fin.val_succ]; omega`. Use `(hLc i.succ h2).trans_eq ?_` and prove the remaining obligations. Rewrite using `[hB, Fin.val_succ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsumite : ∑ i : Fin t, (if (i : ℕ) + 1 = 1 then vhE + C1 else Sha ((i : ℕ) + 1 - 1)) ≤ (vhE + C1) + ∑ e ∈ Ioo 0 t, Sha e`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => if i + 1 = 1 then vhE + C1 else Sha (i + 1 - 1)) t]`. Conclude with `sum_range_ite_le_add_sum_Ioo t (vhE + C1) Sha`. Establish `hcol : ∑ w ∈ cols, (eO * (e' w : ℕ∞) + (j w : ℕ∞) * (eO * (e' w : ℕ∞) + vδ) + 2 * vδ + h0 w) = ∑ w ∈ cols, ((j w : ℕ∞) * (eO * (e' w : ℕ∞) + vδ) + h0 w) + C1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC1, ← sum_add_distrib]`. Conclude with `sum_congr rfl fun w _ => by ring`. Rewrite using `[hcol]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_add_distrib, sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul]`.
-
-Use `_ ≤ (A0 + 4 * N * ((cols.card : ℕ∞) + 1) * vδ) + (((vhE + C1) + ∑ e ∈ Ioo 0 t, Sha e) + (t : ℕ∞) * B) := by gcongr`. Use `_ = _ := by`. Rewrite using `[hA0, hB]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma collectAlt (t : ℕ) (ht : 1 ≤ t) (L : Fin (t + 1) → ℕ∞) (S : Finset (Fin (t + 1))) (v : ℕ∞)
     (what₂ cols qs : Finset ℕ) (lenRow vζ h0 : ℕ → ℕ∞) (e' j deg : ℕ → ℕ) (Sha : ℕ → ℕ∞)
@@ -121,9 +119,9 @@ lemma collectAlt (t : ℕ) (ht : 1 ≤ t) (L : Fin (t + 1) → ℕ∞) (S : Fins
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `O _ _ _ A T' G _ _ _ _ d _ _ ρ _ _ _`. Use `letI : Module A (d → KO O) := (inferInstance : Module A (LatQ O d ρ))`. Use `letI : SMulCommClass A O (d → KO O) := (inferInstance : SMulCommClass A O (LatQ O d ρ))`. Use `letI : Module T' (d → KO O) := (inferInstance : Module T' (LatQ O d ρ))`. Use `letI : IsScalarTower T' A (d → KO O) := (inferInstance : IsScalarTower T' A (LatQ O d ρ))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `blockRhoFull O A T' G d`.
+A detailed English derivation is pending.
 -/
 theorem blockRhoLat : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (A T' G : Type) [Ring A] [CommRing T'] [Algebra T' A] [Group G] (d : Type) [Fintype d] [DecidableEq d]
@@ -174,9 +172,9 @@ theorem blockRhoLat : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuat
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `O _ _ _ A T' G _ _ _ _ d _ _ ρ _ _ _`. Use `letI : Module A (d → KO O) := (inferInstance : Module A (LatQ O d ρ))`. Use `letI : SMulCommClass A O (d → KO O) := (inferInstance : SMulCommClass A O (LatQ O d ρ))`. Use `letI : Module T' (d → KO O) := (inferInstance : Module T' (LatQ O d ρ))`. Use `letI : IsScalarTower T' A (d → KO O) := (inferInstance : IsScalarTower T' A (LatQ O d ρ))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `hC O A T' G d`.
+A detailed English derivation is pending.
 -/
 theorem blockChiCLat (hC : StatBlockChiCFull.{0, 0, 0, 0, 0, 0}) : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (A T' G : Type) [Ring A] [CommRing T'] [Algebra T' A] [Group G] (d : Type) [Fintype d] [DecidableEq d]
@@ -224,9 +222,9 @@ theorem blockChiCLat (hC : StatBlockChiCFull.{0, 0, 0, 0, 0, 0}) : ∀ (O : Type
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `O _ _ _ A T' G _ _ _ _ d _ _ ρ _ _ _`. Use `letI : Module A (d → KO O) := (inferInstance : Module A (LatQ O d ρ))`. Use `letI : SMulCommClass A O (d → KO O) := (inferInstance : SMulCommClass A O (LatQ O d ρ))`. Use `letI : Module T' (d → KO O) := (inferInstance : Module T' (LatQ O d ρ))`. Use `letI : IsScalarTower T' A (d → KO O) := (inferInstance : IsScalarTower T' A (LatQ O d ρ))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `hOne O A T' G d`.
+A detailed English derivation is pending.
 -/
 theorem blockChiOneLat (hOne : StatBlockChiOneFull.{0, 0, 0, 0, 0, 0}) : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (A T' G : Type) [Ring A] [CommRing T'] [Algebra T' A] [Group G] (d : Type) [Fintype d] [DecidableEq d]
@@ -272,13 +270,11 @@ theorem blockChiOneLat (hOne : StatBlockChiOneFull.{0, 0, 0, 0, 0, 0}) : ∀ (O 
   exact hOne O A T' G d
 
 /- English proof (translation)
-Introduce `O _ _ _ X X' T T' Z p q b hspan hinj d _ _ R' _ hdet Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ colIdx hinjc D j e' Kc k0 hEE he₁ hpt g₀ n hn π' ρπ hρπ t ht bl hbl ρk hρk hblk _ _ _ hcard hcard1 sE tE δO ℓ cB what₂ qs lenRow deg vζ s vhE H0 Sha hE hk0 NNc cols eO vδ N h0 hE0 hδ0 hτ0 he₁iso …`. Establish `hEE' : E * E = δ • E` using `by rw [Algebra.smul_def]; exact hEE`. Establish `hG : vcc T Z (p π') ≤ ∑ k ∈ univ.image bl, Module.length O (NNc →ₗ[R'] blockRestrictedRepresentationType bl ρk k)` using `globalColumn O X X' T T' Z p q b hspan hinj d R' hdet Tc G r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 hEE he₁ hpt g₀ n hn π' ρπ hρπ (Fin (t + 1)) bl hbl ρk hρk hblk hcard`. Establish `hL0 : Module.length O (NNc →ₗ[R'] blockRestrictedRepresentationType bl ρk 0) ≤ ∑ w ∈ what₂, lenRow w + ∑ w ∈ cols, ((j w : ℕ∞) * (eO * (e' w : ℕ∞) + vδ) + h0 w) + s + 4 * N * ((cols.card : ℕ∞) + 1) * vδ`. Take `⟨F, Q, h1, h2, h3, h4⟩` from `hb0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `blockRhoLat O R' Tc G {a // bl a = 0} (ρk 0).toRingHom r χ E e₁ δ δO ι ℕ colIdx hinjc D j e' Kc k0 ℓ sE tE hE hEE' hE0 hk0 hδ0 hτ0 he₁iso hlift what₂ F lenRow Q s h1 h2 h3 h4`. Establish `hlt : 1 < t + 1` using `by omega`. Establish `hL1 : Module.length O (NNc →ₗ[R'] blockRestrictedRepresentationType bl ρk ⟨1, hlt⟩) ≤ vhE + ∑ w ∈ cols, (eO * (e' w : ℕ∞) + 2 * vδ) + eO * (cB : ℕ∞) * ∑ w ∈ what₂, ((deg w : ℕ∞) + 2) + 4 * ((cols.card : ℕ∞) + 1) * vδ + ∑ w ∈ qs, vζ w`. Take `⟨hu, he10, hEδ, hδ1, hk1, F, Q, h1, h2, h3, h4, h5⟩` from `hb1`. Establish `hc1 : Fintype.card {a // bl a = ⟨1, hlt⟩} = 1` using `hcard1 ⟨1, hlt⟩ (fun h => by simpa using congrArg Fin.val h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `blockChiOneLat hOne O R' Tc G {a // bl a = ⟨1, hlt⟩} (ρk ⟨1, hlt⟩).toRingHom r χ E e₁ δ δO ι ℕ colIdx hinjc D j e' Kc k0 ℓ cB hc1 hu he10 hEδ hδ1 hk1 what₂ qs F deg vζ Q vhE h1 h2 h3 h4 h5`. Establish `hLc : ∀ c : Fin (t + 1), 2 ≤ (c : ℕ) → Module.length O (NNc →ₗ[R'] blockRestrictedRepresentationType bl ρk c) ≤ Sha ((c : ℕ) - 1) + eO * (cB : ℕ∞) * ∑ w ∈ what₂, ((deg w : ℕ∞) + 2) + 4 * ((cols.card : ℕ∞) + 1) * vδ + (cols.card : ℕ∞) * H0 + ∑ w ∈ qs, vζ w`. Introduce `c hc`. Take `⟨he10, hEc, hδc, hτc, hH0, F, Q, h1, h2, h3, h4, h5⟩` from `hbc c hc`. Establish `hcc : Fintype.card {a // bl a = c} = 1` using `hcard1 c (fun h => by rw [h] at hc; simp at hc)`.
-
-Conclude with `blockChiCLat hC O R' Tc G {a // bl a = c} (ρk c).toRingHom r χ E e₁ δ δO ι ℕ colIdx hinjc D j Kc k0 ℓ cB sE tE hcc hE hEE' he10 hEc hk0 hδc hτc what₂ qs F deg vζ Q (Sha ((c : ℕ) - 1)) H0 hH0 h1 h2 h3 h4 h5`. Conclude with `collectAlt t ht (fun k => Module.length O (NNc →ₗ[R'] blockRestrictedRepresentationType bl ρk k)) (univ.image bl) (vcc T Z (p π')) what₂ cols qs lenRow vζ h0 e' j deg Sha eO vδ s vhE N H0 cB hG hL0 hL1 hLc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem character_column_kernels_of_block_chi_c_of_block_chi_one (hC : StatBlockChiCFull.{0, 0, 0, 0, 0, 0})
     (hOne : StatBlockChiOneFull.{0, 0, 0, 0, 0, 0}) : characterColumnKernelEqualityForm := by
@@ -326,7 +322,7 @@ theorem character_column_kernels_of_block_chi_c_of_block_chi_one (hC : StatBlock
     (vcc T Z (p π')) what₂ cols qs lenRow vζ h0 e' j deg Sha eO vδ s vhE N H0 cB hG hL0 hL1 hLc
 
 /- English proof (translation)
-The claim follows from `character_column_kernels_of_block_chi_c_of_block_chi_one blockChiCFull blockChiOneFull`.
+A detailed English derivation is pending.
 -/
 theorem n5 : characterColumnKernelEqualityForm := character_column_kernels_of_block_chi_c_of_block_chi_one blockChiCFull blockChiOneFull
 

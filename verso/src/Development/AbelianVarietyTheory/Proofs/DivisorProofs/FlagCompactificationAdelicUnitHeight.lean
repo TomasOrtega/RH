@@ -9,7 +9,7 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechP
 namespace GlobalTheory.WholeDual
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y C hm a R g p _`. Use `⟨fun k x => ?_, fun k v _ ε y => ?_⟩` and prove the remaining obligations. Use `GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.unitAt_genAt_mul _ _ ?_ x` and prove the remaining obligations. Conclude with `(congrArg (divOf Y) (GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.expo_single_neg_one _)).trans (GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.divOf_neg Y _)`. Conclude with `GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.lgOf_single_neg_one Y _ v ε y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem whole_inr_dual : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}

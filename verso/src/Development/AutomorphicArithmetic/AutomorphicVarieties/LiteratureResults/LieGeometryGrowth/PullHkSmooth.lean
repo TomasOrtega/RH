@@ -10,25 +10,21 @@ open scoped ContDiff Topology
 namespace UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `V F _ _ _ _ _ _ Y hY W hW q w hw`. Establish `hinf : (∞ : WithTop ℕ∞) + 1 ≤ ∞`. Conclude with `le_top` after adjusting the coercions. Establish `hWat : ∀ p ∈ Y, ContDiffAt ℝ ∞ W p` using `fun p hp => hW.1.contDiffAt (hY.mem_nhds hp)`. Establish `hwat : ∀ p ∈ Y, ContDiffAt ℝ ∞ w p` using `fun p hp => hw.contDiffAt (hY.mem_nhds hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : ∀ p ∈ Y, ∀ t : ℝ, fderiv ℝ (flow W t) p = ContinuousLinearMap.id ℝ V + t • fderiv ℝ W p`. Introduce `p hp t`. Establish `hd : DifferentiableAt ℝ W p` using `(hWat p hp).differentiableAt (by simp)`. Conclude with `((hasFDerivAt_id p).add (hd.hasFDerivAt.const_smul t)).fderiv`. Establish `hflowc : ∀ z : V × ℝ, z.1 ∈ Y → ContDiffAt ℝ ∞ (fun y : V × ℝ => flow W y.2 y.1) z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Conclude with `contDiffAt_fst.add (contDiffAt_snd.smul ((hWat z.1 hz).comp z contDiffAt_fst))`. Establish `hSo : IsOpen {z : V × ℝ | z.1 ∈ Y ∧ flow W z.2 z.1 ∈ Y}`. Establish `h` using `ContinuousOn.isOpen_inter_preimage (f := fun y : V × ℝ => flow W y.2 y.1) (s := Prod.fst ⁻¹' Y) (t := Y) ?_ (hY.preimage continuous_fst) hY`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z hz`. Conclude with `(hflowc z hz).continuousAt.continuousWithinAt`. Establish `hsm : ContDiffOn ℝ ∞ (fun z : V × ℝ => hk W z.2 w z.1) {z : V × ℝ | z.1 ∈ Y ∧ flow W z.2 z.1 ∈ Y}`. Introduce `z hz`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `UpperTheory.V.Lit.Dr.altSmooth (V × ℝ) V F q` to reduce the goal to its premises. Introduce `v`. Establish `hf : ContDiffAt ℝ ∞ (fun y : V × ℝ => w (flow W y.2 y.1)) z` using `(hwat _ hz.2).comp z (hflowc z hz.1)`. Establish `hu : ∀ i : Fin (q + 1), ContDiffAt ℝ ∞ ((Fin.cons (fun y : V × ℝ => W y.1) (fun (j : Fin q) (y : V × ℝ) => v j + y.2 • fderiv ℝ W y.1 (v j)) : Fin (q + 1) → V × ℝ → V) i) z`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `(hWat z.1 hz.1).comp z contDiffAt_fst`. Simplify using `only [Fin.cons_succ]`. Conclude with `contDiffAt_const.add (contDiffAt_snd.smul ((((hWat z.1 hz.1).fderiv_right hinf).comp z contDiffAt_fst).clm_apply contDiffAt_const))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `UpperTheory.V.Lit.Dr.applySmooth (V × ℝ) V F (q + 1) (fun y : V × ℝ => w (flow W y.2 y.1)) (Fin.cons (fun y : V × ℝ => W y.1) (fun (j : Fin q) (y : V × ℝ) => v j + y.2 • fderiv ℝ W y.1 (v j)) : Fin (q + 1) → V × ℝ → V) z hf hu`. Apply `h3.congr_of_eventuallyEq` to reduce the goal to its premises. Establish `hnb : {y : V × ℝ | y.1 ∈ Y} ∈ 𝓝 z` using `(hY.preimage continuous_fst).mem_nhds hz.1`. Use `filter_upwards [hnb] with y hy`. Simplify using `only [hk, ContinuousAlternatingMap.compContinuousLinearMap_apply, ContinuousAlternatingMap.curryLeft_apply_apply, hfd y.1 hy y.2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Establish `hmaps : ∀ p ∈ Y, ∀ t ∈ Set.Icc (0 : ℝ) 1, (p, t) ∈ {z : V × ℝ | z.1 ∈ Y ∧ flow W z.2 z.1 ∈ Y}` using `fun p hp t ht => ⟨hp, hW.2 p hp t ht⟩`. Use `⟨hSo, hsm, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Establish `hc : ContinuousOn ((fun z : V × ℝ => hk W z.2 w z.1) ∘ (fun t : ℝ => (p, t))) (Set.Icc 0 1)` using `hsm.continuousOn.comp (continuous_const.prodMk continuous_id).continuousOn (fun t ht => hmaps p hp t ht)`. Simplify `hc` using `[Function.comp_def]`.
-
-Establish `h4` using `UpperTheory.V.Lit.Dr.paramSmooth V (V [⋀^Fin q]→L[ℝ] F) Y {z : V × ℝ | z.1 ∈ Y ∧ flow W z.2 z.1 ∈ Y} (fun z => hk W z.2 w z.1) hY hSo (fun z hz => hmaps z.1 hz.1 z.2 hz.2) hsm`. Conclude with `h4`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hkSmooth : HkSmooth := by
   intro V F _ _ _ _ _ _ Y hY W hW q w hw

@@ -15,9 +15,9 @@ namespace GlobalTheory.VacuumCharacter
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `key : ∀ e : Bool, signBlockDeterminant ε e (diagonal fun j => Complex.exp (Complex.I * t j)) ^ x e = Complex.exp (Complex.I * ∑ j ∈ Finset.univ.filter (fun j => ε j = e), (x e : ℂ) * t j)`. Introduce `e`. Rewrite using `[signBlockDeterminant, submatrix_diagonal _ _ Subtype.val_injective, det_diagonal]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_int_mul, Finset.sum_subtype (Finset.univ.filter fun j => ε j = e) (p := fun j => ε j = e) (by simp)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `try simp only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Rewrite using `[key, key, ← Complex.exp_add, ← mul_add, ← Finset.sum_fiberwise (M := ℂ) (s := (Finset.univ : Finset (Fin n))) (g := ε) (f := fun j : Fin n => (x (ε j) : ℂ) * (t j : ℂ)), Fintype.sum_bool]`. Apply the tactic sequence `congr 3 <;> refine Finset.sum_congr rfl fun j hj => ?_ <;> rw [(Finset.mem_filter.1 hj).2]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem signBlockDeterminant_diagonalPhases_zpow {n : ℕ} (ε : Fin n → Bool) (t : Fin n → ℝ) (x : Bool → ℤ) :
     signBlockDeterminant ε true (diagonal fun j => Complex.exp (Complex.I * t j)) ^ x true *
@@ -40,11 +40,11 @@ theorem signBlockDeterminant_diagonalPhases_zpow {n : ℕ} (ε : Fin n → Bool)
   congr 3 <;> refine Finset.sum_congr rfl fun j hj => ?_ <;> rw [(Finset.mem_filter.1 hj).2]
 
 /- English proof (translation)
-Establish `hu : ∀ j, star (Complex.exp (Complex.I * t j)) * Complex.exp (Complex.I * t j) = 1`. Introduce `j`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Simplify using `only [Formalism.REAL.Kset, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `hu j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.REAL.Jm, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem diag_mem_Kset {n : ℕ} (ε : Fin n → Bool) (t : Fin n → ℝ) :
     (diagonal fun j => Complex.exp (Complex.I * t j)) ∈ Formalism.REAL.Kset ε := by
@@ -65,11 +65,11 @@ theorem diag_mem_Kset {n : ℕ} (ε : Fin n → Bool) (t : Fin n → ℝ) :
     ring
 
 /- English proof (translation)
-Take `⟨x, y, hx, hy, hK⟩` from `h`. Introduce `t t'`. Establish `hact` using `hK _ (diag_mem_Kset (M.ε τ) t) _ (diag_mem_Kset (M'.ε τ) t') 1`. Rewrite `hact` using `[map_one, GlobalTheory.IndefiniteRowSideFullHecke.VacuumFockVectors.ptOf_one]`. Rewrite using `[hact, signBlockDeterminant_diagonalPhases_zpow, signBlockDeterminant_diagonalPhases_zpow, ← Complex.exp_add, ← mul_add]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : ∀ j, ((x (M.ε τ j) : ℤ) : ℂ) = ((wtS (M'.ε τ) aT (M.ε τ j) : ℚ) : ℂ)` using `fun j => by`. Rewrite using `[← hx j]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hy' : ∀ i, ((y (M'.ε τ i) : ℤ) : ℂ) = ((wtT (M.ε τ) aS (M'.ε τ i) : ℚ) : ℂ)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hy i]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [hx', hy']`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem torusVac_of_compactFock {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar} (ψ : AddChar (AF D.host.F) ℂ)
     (θ : InfFam D) (M : DSModel V S) (M' : DSModel W S') (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))
@@ -87,13 +87,13 @@ theorem torusVac_of_compactFock {D : D7} {V W : HSp D} {S S' : D.what₂.Tau →
   simp only [hx', hy']
 
 /- English proof (translation)
-Introduce `D V W S S' M M' θ ψ χS χT ω f τ aS aT hθ hW hS hT hV`. Establish `hF` using `GlobalTheory.ChainFr.isVacF_of_isVacVec hV`. Establish `hK` using `GlobalTheory.T.compact_subgroups_act_on_fock_vectors_all_signatures D V W (GlobalTheory.ChainFr.Fr.ofModel M) (GlobalTheory.ChainFr.Fr.ofModel M') θ ψ χS χT ω f τ aS aT hθ hW hS hT hF hV.ne`. Establish `hL` using `GlobalTheory.T.lieAction_fockOperators_scalars_trace D V W (GlobalTheory.ChainFr.Fr.ofModel M) (GlobalTheory.ChainFr.Fr.ofModel M') θ ψ χS χT ω f τ aS aT hθ hW hS hT hF`. Establish `hC : CompactFock ψ θ M M' ω f τ aS aT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, y, hx, hy, hk⟩` from `hK`. Use `⟨x, y, hx, hy, fun g hg k hk' P => ?_⟩` and prove the remaining obligations. Establish `e` using `hk g hg k hk' P`. Rewrite `e` using `[GlobalTheory.ChainFr.ptF_ofModel]`. Then use the resulting hypothesis. Use `⟨torusVac_of_compactFock ψ θ M M' ω f τ aS aT hC, hC, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X hX P z`. Establish `e` using `hL.1 X hX P z`. Rewrite `e` using `[GlobalTheory.ChainFr.ptF_ofModel]`. Rewrite using `[sub_eq_add_neg, ← neg_smul]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y hY P z`. Establish `e` using `hL.2 Y hY P z`. Rewrite `e` using `[GlobalTheory.ChainFr.ptF_ofModel]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacChar : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.VacChar D := by
   intro D V W S S' M M' θ ψ χS χT ω f τ aS aT hθ hW hS hT hV

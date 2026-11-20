@@ -26,9 +26,9 @@ noncomputable section
 namespace GlobalTheory.UMin.QF
 
 /- English proof (translation)
-Use `hφ.1` as an intermediate fact. Use `⟨((ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_of_iso φ).comp hα).congr (Category.id_comp _) rfl, ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hφ.2`. Establish `h1 : LBIso P'.L (P.L.pull φ.hom.left)` using `LBIso.symm ⟨t, ht⟩`. Establish `h2 : LBIso (P.L.pull φ.hom.left) (L.pull (φ.hom.left ≫ α))` using `LBIso.chartPull (chartPullPull P.L φ.hom.left) (chartPullSame L (fun _ : PUnit => φ.hom.left ≫ α) (fun _ => α) (fun _ => 1) φ.hom.left (fun _ => rfl)) hLα`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LBIso.trans P'.isLB (pull_isLB P.isLB _) (pull_isLB hL _) h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem polFib_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} (hL : L.IsLB) {K : Type}
     [Field K] {x : Sp K ⟶ S} {P P' : PolAV (Sp K)} (φ : P'.A ≅ P.A) (hφ : IsPolIso P' P φ)
@@ -45,7 +45,7 @@ theorem polFib_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left
   exact LBIso.trans P'.isLB (pull_isLB P.isLB _) (pull_isLB hL _) h1 h2
 
 /- English proof (translation)
-Establish `f` using `(Spec.preimage t).hom`. Conclude with `(f.charZero_iff f.injective).1 inferInstance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_of_pt {F K : Type} [Field F] [CharZero F] [Field K] (t : Sp K ⟶ Sp F) : CharZero K := by
   have f := (Spec.preimage t).hom
@@ -63,13 +63,11 @@ def ThetaData (Xo : Moduli Dw l) {K : Type} [Field K] (y : Sp K ⟶ Xo.X) (g m :
     IsGrpPullback P.A Xo.univ.t.G y α ∧ LBIso P.L (Xo.univ.t.PP.L.pull α) ∧ IsThetaPt P m (levelPoint lev hg) v
 
 /- English proof (translation)
-Distinguish the cases in `hne : ∃ y₀ : Sp K ⟶ Xo.XF c, y₀ ≫ pullback.snd _ _ = x ≫ pullback.snd _ _ ∧ ThetaData Xo (y₀ ≫ pullback.fst _ _) g (3 ^ j * 81) ze v`. Take `⟨y₀, -, P₀, hg₀, -, lev₀, -, -, hθ₀⟩` from `hne`. Establish `hQ` using `GlobalTheory.T.unitaryModuli_finite_points_with_given_polarisedFibre E H Dw l Xo K P₀ (x ≫ pullback.fst _ _ ≫ Xo.s)`. Use `Set.Finite.of_finite_image (f := fun y => y ≫ pullback.fst _ _) (hQ.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨hys, P, hg, α, lev, hpb, hPL, hθ⟩, rfl⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (y ≫ pullback.fst _ _) ≫ Xo.s = x ≫ pullback.fst _ _ ≫ Xo.s`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hys, Category.assoc, ← pullback.condition]`. Take `⟨φ, hφ, -⟩` from `(GlobalTheory.T.thetaPoint_determines_and_end_determined_torsion).1 g 3 2 j 81 (3 ^ j * 81) Nat.prime_three (by decide) le_rfl (by norm_num) rfl hbig K h3 P₀ P hg₀ hg ze lev₀ lev v hθ₀ hθ`. Conclude with `⟨φ.hom.left ≫ α, polFib_transport Xo.univ.t.PP.isLB φ hφ hpb hPL⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y₁ h₁ y₂ h₂ h`. Conclude with `pullback.hom_ext h (h₁.1.trans h₂.1.symm)`. Use `Set.finite_empty` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`.
-
-Conclude with `fun h => hne ⟨y, h⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem finite_thetaData (Xo : Moduli Dw l) (c : Coeff l) (g j : ℕ) (hbig : 81 ^ g * g.factorial < 3 ^ j * 81)
     (K : Type) [Field K] [IsAlgClosed K] (h3 : ((3 : ℕ) : K) ≠ 0) (ze : Γ(Sp K, ⊤)ˣ) (x : Sp K ⟶ Xo.XF c)
@@ -102,15 +100,15 @@ namespace GlobalTheory.UMin.QF
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
 
 /- English proof (translation)
-Establish `hodd : Odd (3 ^ j * 81)` using `(Odd.pow (by decide : Odd 3)).mul (by decide : Odd 81)`. Establish `hLB` using `Xo.univ.t.PP.isLB`. Establish `hρ` using `Xo.univ.t.PP.rigGen`. Take `⟨P, α, hPg, hpb, hPL⟩` from `GlobalTheory.T.universalTriple_fibre_principallyPolarised_dimension E H Dw l Xo c K (y ≫ pullback.fst _ _)`. Rewrite `hPg` using `[← hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfib : PolFib Xo.univ.t.G Xo.univ.t.PP.L g (y ≫ pullback.fst _ _)` using `⟨P, α, hPg, hpb, hPL⟩`. Take `⟨⟨θ, hθ⟩, -⟩` from `GlobalTheory.T.principallyPolarisedFibre_exists_generator_stable _ Xo.univ.t.G Xo.univ.t.PP.L hLB g K _ hfib`. Take `⟨pt, cy, hcy⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed _ Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig hLB hρ g (3 ^ j * 81) (n + 1) K _ θ hodd hm0 hn hfib`. Establish `hH : HasTh Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (3 ^ j * 81) (y ≫ pullback.fst _ _) cy` using `⟨θ, pt, hθ, hcy⟩`. Establish `hP1 : PCrd (y ≫ f) (symTup cy)` using `hth K y cy hH`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hP1` using `[hy]`. Take `⟨a, ha0, ha⟩` from `(GlobalTheory.T.projectiveHomogeneousCoords_field_determine_descend).2.1 o K n (x ≫ f) e (symTup cy) he hP1`. Take `⟨mu, hmu0, hmuT⟩` from `hT cy a ha0 ha`. Use `haveI := P.isAb.comm`. Take `⟨rig, hrig⟩` from `P.rigid`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP : HasTh P.A P.L rig (3 ^ j * 81) (𝟙 (Sp K)) cy`. Rewrite `hH`, the goal using `[hasTh_iff]`. Use `(GlobalTheory.T.hasThetaConstantsTwoLevels_move_cartesian _ Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig hLB hρ (Sp K) P.A P.L rig (y ≫ pullback.fst _ _) α P.isLB hrig hpb hPL (3 ^ j * 81) (3 ^ j * 81) (n + 1) (n + 1) K (𝟙 _) cy cy).2 ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]` and apply the resulting hypothesis. Take `⟨lev, β, hβ⟩` from `GlobalTheory.T.exists_level_thetaPoint_of_thetaConstants_level_square K P rig g (3 ^ j * 81) (n + 1) hPg cy ze hrig hodd hm0 hze hP`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, hmuT⟩, β, P, hPg, α, lev, hpb, hPL, hβ mu hmu0⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_thetaData (Xo : Moduli Dw l) (c : Coeff l) {o : Type} [CommRing o] {n j g : ℕ}
     (hg : g = Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) (f : Xo.XF c ⟶ PSpace o n)
@@ -154,13 +152,11 @@ end GlobalTheory.UMin.QF
 namespace GlobalTheory.UMin.QF
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c o _ j n f hbig hn hth K _ _ x`. Use `haveI : CharZero K := charZero_of_pt (x ≫ pullback.snd _ _)`. Use `set g := Module.finrank ℚ E / 2 * (Dw.p + Dw.q) with hg`. Establish `hm0 : ((3 ^ j * 81 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (by positivity)`. Establish `h3 : ((3 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < (3 ^ j * 81) ^ 2` using `by positivity`. Use `haveI : NeZero (((3 ^ j * 81) ^ 2 : ℕ) : K) := ⟨Nat.cast_ne_zero.2 hpos.ne'⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K ((3 ^ j * 81) ^ 2)`. Set `eK` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm`. Establish `hz'` using `hz.map_of_injective eK.injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set ze : Γ(Sp K, ⊤)ˣ := (hz'.isUnit hpos.ne').unit with hzedef`. Establish `hze : IsPrimitiveRoot ze ((3 ^ j * 81) ^ 2)` using `hz'.isUnit_unit hpos.ne'`. Take `⟨⟨e, he⟩, -⟩` from `(GlobalTheory.T.projectiveHomogeneousCoords_basic_properties).2.2 o K n (x ≫ f)`. Take `⟨T, hT⟩` from `GlobalTheory.T.thetaSymmetricFunctionsDegreeFactorial_scaled_finite K (n + 1) e`. Use `haveI : NeZero ((3 ^ j * 81) ^ 2) := ⟨hpos.ne'⟩`.
-
-Use `(Set.finite_iUnion fun d : T × ((Fin (2 * g) → ZMod ((3 ^ j * 81) ^ 2)) → Fin (n + 1)) => finite_thetaData Xo c g j hbig K h3 ze x (fun a => GlobalTheory.ZH.fn ((d.1 : Fin (n + 1) → K) (d.2 a)))).subset ?_` and prove the remaining obligations. Introduce and unpack `y ⟨h1, h2⟩`. Take `⟨t, β, hd⟩` from `exists_thetaData Xo c hg f hn hth K hm0 ze hze x e he T hT y h2`. Conclude with `Set.mem_iUnion.2 ⟨(t, β), h1, hd⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_fibre_thMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (o : Type) [CommRing o] (j n : ℕ) (f : Xo.XF c ⟶ PSpace o n), 81 ^ (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) * (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)).factorial < 3 ^ j * 81 → n + 1 = (3 ^ j * 81) ^ (4 * (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) → ThMap Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (3 ^ j * 81) (pullback.fst _ _ : Xo.XF c ⟶ Xo.X) f → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Xo.XF c), Set.Finite {y : Sp K ⟶ Xo.XF c | y ≫ pullback.snd _ _ = x ≫ pullback.snd _ _ ∧ y ≫ f = x ≫ f} := by
   intro E _ _ _ H Dw l Xo c o _ j n f hbig hn hth K _ _ x

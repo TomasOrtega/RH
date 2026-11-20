@@ -18,15 +18,15 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.FrameUnif
 
 /- English proof (translation)
-Introduce `hSB E _ _ _ H Dw l Xo c σ r U hU a n p y ψ`. Take `⟨-, -, hWD, -, -, -, hBor⟩` from `GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hSB E H Dw l Xo c`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hSB E H Dw l Xo c p.R (CAt σ) ψ y`. Take `⟨-, -, hcov, -⟩` from `hU`. Take `⟨k, x, t, ht⟩` from `hcov z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hred : _root_.IsReduced (CAt σ)`. Unfold `CAt`. Conclude with `isReduced_of_noZeroDivisors`. Use `⟨k, x, toC (wchar (ex Dw a n) t), ?_⟩` and prove the remaining obligations. Introduce `f hf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf'` using `hf`. Unfold `sec secW at hf'`. Take `⟨hN, -⟩` from `hf'`. Establish `h1 : evR Xo c f z = ψ (f p y)`. Establish `hT : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨p, ψ, y, hz⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `evR evalAt`. Rewrite using `[dif_pos hT]`. Conclude with `hWD f hN _ _ _ _ _ _ _ _ hT.choose_spec.choose_spec.choose_spec hz`. Establish `h2 : rdU U f k x.1 = toC (evR Xo c f (U.un k x))`. Unfold `rdU`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dif_pos x.2`. Establish `h3` using `hBor (CAt σ) hred a n f hf t (U.un k x) z ht`. Rewrite using `[← h1, h2, h3]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem test_value_eq_const_mul_reading : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), IsUnf U → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (p : TRing c.F) (y : FrPt Xo c p.R) (ψ : p.R →ₐ[c.F] CAt σ), ∃ (k : U.Comp) (x : (U.X k).dom) (u : ℂ), ∀ f ∈ sec Xo c a n, toC (ψ (f p y)) = u * rdU U f k x.1 := by
   intro hSB E _ _ _ H Dw l Xo c σ r U hU a n p y ψ

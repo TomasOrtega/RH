@@ -13,17 +13,15 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.PDiv.FrobKerPrim
 
 /- English proof (translation)
-Use `haveI := FrobKerOrder.isHopfIdeal p K H`. Use `set J := frobKerIdeal p K H with hJ`. Set `π : H →ₐc[K] H ⧸ J` to `Bialgebra.Quotient.mkBialgHom J`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Use `haveI : IsCocomm K (H ⧸ J) := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hπ y`. Establish `h1` using `pullTwo_comul π x`. Simplify using `only [LinearMap.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Simplify using `only [pullbackTwo]`. Establish `h2` using `TensorProduct.map_comm (π : H →ₗ[K] H ⧸ J) (π : H →ₗ[K] H ⧸ J) (comul x)`. Rewrite `h2` using `[comm_comul]`. Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpow : ∀ a ∈ augIdeal K (H ⧸ J), a ^ p = 0`. Introduce `a ha`. Take `⟨x, rfl⟩` from `hπ a`. Establish `hx : x ∈ augIdeal K H` using `ha`. Rewrite using `[← map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (pow_mem_frobKerIdeal hx)`. Establish `hc' : cobOne K (H ⧸ J) (π b) = 0`. Rewrite using `[← pullTwo_cobOne]`. Conclude with `hc`. Establish `hd' : dUnit K (π b) = 0`.
-
-Rewrite using `[← cotMap_d, hd, map_zero]`. Establish `h0` using `GlobalTheory.T.hopf_height_one_primitive_eq_zero_of_zero_differential p K (H ⧸ J) hpow (π b) hc' hd'`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_frobKerIdeal_of_cobOne (p : ℕ) [Fact p.Prime] (K H : Type) [Field K] [CharP K p]
     [CommRing H] [HopfAlgebra K H] [IsCocomm K H] [Module.Finite K H] (b : H)

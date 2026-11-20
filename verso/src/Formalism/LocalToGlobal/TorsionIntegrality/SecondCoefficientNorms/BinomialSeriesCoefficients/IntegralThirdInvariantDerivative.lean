@@ -15,7 +15,7 @@ section Field
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[PowerSeries.coeff_subst PowerSeries.HasSubst.zero]`. Rewrite using `[finsum_eq_single _ 0 (fun d hd => by simp [zero_pow hd])]`. Apply the tactic sequence `by_cases he : e = 0 <;> simp [he, MvPowerSeries.coeff_C, MvPowerSeries.coeff_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_zero {τ : Type} (g : PowerSeries K) :
     PowerSeries.subst (0 : MvPowerSeries τ K) g =
@@ -27,17 +27,15 @@ theorem subst_zero {τ : Type} (g : PowerSeries K) :
   by_cases he : e = 0 <;> simp [he, MvPowerSeries.coeff_C, MvPowerSeries.coeff_one]
 
 /- English proof (translation)
-Establish `hX0 : MvPowerSeries.constantCoeff (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K) = 0` using `MvPowerSeries.constantCoeff_X _`. Establish `hX1 : MvPowerSeries.constantCoeff (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K) = 0` using `MvPowerSeries.constantCoeff_X _`. Establish `hX : MvPowerSeries.constantCoeff (PowerSeries.X : MvPowerSeries Unit K) = 0` using `PowerSeries.constantCoeff_X`. Establish `h10 : MvPowerSeries.pderiv K (1 : Fin 2) (MvPowerSeries.X (0 : Fin 2)) = 0` using `MvPowerSeries.pderiv_X_of_ne (by decide)`. Establish `hFc` using `Pts.constantCoeff_fadd h hX0 hX1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (MvPowerSeries.pderiv K (1 : Fin 2)) (Pts.l_fadd h hX0 hX1)`. Rewrite `e1` using `[map_add, IntegralMvPolynomialLemmas.pderiv_subst _ hFc, IntegralMvPolynomialLemmas.pderiv_subst _ hX0, IntegralMvPolynomialLemmas.pderiv_subst _ hX1, h10, MvPowerSeries.pderiv_X_self, mul_zero, zero_add, mul_one]`. Establish `ha : ∀ s : Fin 2, IsPt R ((![PowerSeries.X, 0] : Fin 2 → MvPowerSeries Unit K) s)`. Introduce `s`. Use `fin_cases s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `Pts.isPt_X`. Conclude with `⟨map_zero _, fun n => by simp⟩`. Establish `ha0 : ∀ s : Fin 2, MvPowerSeries.constantCoeff ((![PowerSeries.X, 0] : Fin 2 → MvPowerSeries Unit K) s) = 0` using `fun s => (ha s).1`. Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Establish `e2` using `congrArg (MvPowerSeries.subst (![PowerSeries.X, 0] : Fin 2 → MvPowerSeries Unit K)) e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[MvPowerSeries.subst_mul hs, Pts.substMv_subst hFc ha0, Pts.substMv_subst hX1 ha0, ← Pts.fadd_eq_substMv h hX (map_zero _), Pts.fadd_zero h hX, MvPowerSeries.subst_X hs]`. Establish `e3 : (![PowerSeries.X, 0] : Fin 2 → MvPowerSeries Unit K) 1 = 0` using `rfl`. Establish `e4 : PowerSeries.subst (PowerSeries.X : MvPowerSeries Unit K) (PowerSeries.derivative K l) = PowerSeries.derivative K l` using `PowerSeries.X_subst _`. Rewrite `e2` using `[e3, subst_zero, cc_derivative_log h, map_one, e4]`. Establish `hG : IntMv R (MvPowerSeries.subst (![PowerSeries.X, 0] : Fin 2 → MvPowerSeries Unit K) (MvPowerSeries.pderiv K (1 : Fin 2) (fadd l linv (MvPowerSeries.X (0 : Fin 2)) (MvPowerSeries.X (1 : Fin 2)))))` using `IntegralMvPolynomialLemmas.intMv_substMv (IntegralMvPolynomialLemmas.intMv_pderiv hF 1) ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG0 : MvPowerSeries.constantCoeff (MvPowerSeries.subst (![PowerSeries.X, 0] : Fin 2 → MvPowerSeries Unit K) (MvPowerSeries.pderiv K (1 : Fin 2) (fadd l linv (MvPowerSeries.X (0 : Fin 2)) (MvPowerSeries.X (1 : Fin 2))))) = 1`. Establish `e5` using `congrArg MvPowerSeries.constantCoeff e2`. Establish `e6 : MvPowerSeries.constantCoeff (PowerSeries.derivative K l : MvPowerSeries Unit K) = 1` using `cc_derivative_log h`. Rewrite `e5` using `[map_mul, e6, one_mul, map_one]`. Then use the resulting hypothesis. Use `⟨cc_derivative_log h, intPS_of_intMv (IntegralMvPolynomialLemmas.intMv_of_mul_eq_one hG hG0 ?_)⟩` and prove the remaining obligations.
-
-Rewrite using `[mul_comm]`. Conclude with `e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDeriv {R : Subring K} {l linv : PowerSeries K} (h : IsLogPair l linv)
     (hF : FGInt R l linv) : IsOneUnit R (PowerSeries.derivative K l) := by
@@ -91,7 +89,7 @@ section CharZero
 variable {K : Type} [Field K] [CharZero K] {R : Subring K}
 
 /- English proof (translation)
-The claim follows from `subst_ph_linv h ph (Pts.constantCoeff_add_l h ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem ph_fadd {σ : Type} {l linv : PowerSeries K} (h : IsLogPair l linv) (ph : PowerSeries K)
     {a b : MvPowerSeries σ K} (ha : MvPowerSeries.constantCoeff a = 0)
@@ -102,15 +100,15 @@ theorem ph_fadd {σ : Type} {l linv : PowerSeries K} (h : IsLogPair l linv) (ph 
   subst_ph_linv h ph (Pts.constantCoeff_add_l h ha hb)
 
 /- English proof (translation)
-Establish `h` using `hFr.1`. Establish `hX : ∀ i : Fin 3, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => MvPowerSeries.constantCoeff_X _`. Establish `hP : ∀ i : Fin 3, IsPt R (MvPowerSeries.X i : MvPowerSeries (Fin 3) K)` using `fun i => ⟨hX i, Pts.intMv_X i⟩`. Establish `hz : ∀ i : Fin 3, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) l) = 0` using `fun i => Pts.constantCoeff_subst_l h (hX i)`. Establish `hzz : ∀ i j : Fin 3, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) l + PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) K) l) = 0` using `fun i j => by rw [map_add, hz, hz, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzzz : MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X (0 : Fin 3) : MvPowerSeries (Fin 3) K) l + PowerSeries.subst (MvPowerSeries.X (1 : Fin 3) : MvPowerSeries (Fin 3) K) l + PowerSeries.subst (MvPowerSeries.X (2 : Fin 3) : MvPowerSeries (Fin 3) K) l) = 0`. Rewrite using `[map_add, hzz, hz, add_zero]`. Establish `h01 : MvPowerSeries.pderiv K (0 : Fin 3) (MvPowerSeries.X (1 : Fin 3)) = 0` using `MvPowerSeries.pderiv_X_of_ne (by decide)`. Establish `h02 : MvPowerSeries.pderiv K (0 : Fin 3) (MvPowerSeries.X (2 : Fin 3)) = 0` using `MvPowerSeries.pderiv_X_of_ne (by decide)`. Establish `h10 : MvPowerSeries.pderiv K (1 : Fin 3) (MvPowerSeries.X (0 : Fin 3)) = 0` using `MvPowerSeries.pderiv_X_of_ne (by decide)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12 : MvPowerSeries.pderiv K (1 : Fin 3) (MvPowerSeries.X (2 : Fin 3)) = 0` using `MvPowerSeries.pderiv_X_of_ne (by decide)`. Establish `h20 : MvPowerSeries.pderiv K (2 : Fin 3) (MvPowerSeries.X (0 : Fin 3)) = 0` using `MvPowerSeries.pderiv_X_of_ne (by decide)`. Establish `h21 : MvPowerSeries.pderiv K (2 : Fin 3) (MvPowerSeries.X (1 : Fin 3)) = 0` using `MvPowerSeries.pderiv_X_of_ne (by decide)`. Establish `hT` using `hF1 (Fin 3) _ _ _ (hP 0) (hP 1) (hP 2)`. Establish `hI` using `IntegralMvPolynomialLemmas.intMv_pderiv (IntegralMvPolynomialLemmas.intMv_pderiv (expIntegralDeriv' K R (Fin 3) _ hT 0) 1) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `be0 at hI`. Rewrite `hI` using `[ph_fadd h ph (Pts.constantCoeff_fadd h (hX 0) (hX 1)) (hX 2), Pts.l_fadd h (hX 0) (hX 1), ph_fadd h ph (hX 0) (hX 1), ph_fadd h ph (hX 0) (hX 2), ph_fadd h ph (hX 1) (hX 2)]`. Simplify using `only [IntegralMvPolynomialLemmas.pderiv_subst _ hzzz, IntegralMvPolynomialLemmas.pderiv_subst _ (hzz _ _), IntegralMvPolynomialLemmas.pderiv_subst _ (hX _), map_add, map_sub, Derivation.leibniz, MvPowerSeries.pderiv_X_self, h01, h02, h10, h12, h20, h21, smul_eq_mul, mul_zero, mul …`. Establish `e : (PowerSeries.derivative K)^[3] (PowerSeries.subst linv ph) = PowerSeries.derivative K (PowerSeries.derivative K (PowerSeries.derivative K (PowerSeries.subst linv ph)))` using `rfl`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hI using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem third {l linv ph : PowerSeries K} (hFr : Frame R l linv ph) (hF1 : F1 R l linv ph) :
     IntMv R (PowerSeries.subst
@@ -170,17 +168,17 @@ theorem third {l linv ph : PowerSeries K} (hFr : Frame R l linv ph) (hF1 : F1 R 
   ring
 
 /- English proof (translation)
-Establish `h` using `hFr.1`. Establish `hl` using `logDeriv h hFr.2.1`. Establish `hX : ∀ i : Fin 3, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => MvPowerSeries.constantCoeff_X _`. Establish `hz : ∀ i : Fin 3, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) l) = 0` using `fun i => Pts.constantCoeff_subst_l h (hX i)`. Establish `hzzz : MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X (0 : Fin 3) : MvPowerSeries (Fin 3) K) l + PowerSeries.subst (MvPowerSeries.X (1 : Fin 3) : MvPowerSeries (Fin 3) K) l + PowerSeries.subst (MvPowerSeries.X (2 : Fin 3) : MvPowerSeries (Fin 3) K) l) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_add, hz, hz, hz, add_zero, add_zero]`. Establish `ha : ∀ s : Fin 3, IsPt R ((![PowerSeries.X, 0, 0] : Fin 3 → MvPowerSeries Unit K) s)`. Introduce `s`. Use `fin_cases s`. Conclude with `Pts.isPt_X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨map_zero _, fun n => by simp⟩`. Conclude with `⟨map_zero _, fun n => by simp⟩`. Establish `ha0 : ∀ s : Fin 3, MvPowerSeries.constantCoeff ((![PowerSeries.X, 0, 0] : Fin 3 → MvPowerSeries Unit K) s) = 0` using `fun s => (ha s).1`. Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Establish `hI` using `IntegralMvPolynomialLemmas.intMv_substMv (third hFr hF1) ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a0 : (![PowerSeries.X, 0, 0] : Fin 3 → MvPowerSeries Unit K) 0 = PowerSeries.X` using `rfl`. Establish `a1 : (![PowerSeries.X, 0, 0] : Fin 3 → MvPowerSeries Unit K) 1 = 0` using `rfl`. Establish `a2 : (![PowerSeries.X, 0, 0] : Fin 3 → MvPowerSeries Unit K) 2 = 0` using `rfl`. Establish `eX : ∀ g : PowerSeries K, PowerSeries.subst (PowerSeries.X : MvPowerSeries Unit K) g = g` using `fun g => PowerSeries.X_subst g`. Rewrite `hI` using `[MvPowerSeries.subst_mul hs, MvPowerSeries.subst_mul hs, MvPowerSeries.subst_mul hs, Pts.substMv_subst hzzz ha0, Pts.substMv_subst (hX 0) ha0, Pts.substMv_subst (hX 1) ha0, Pts.substMv_subst (hX 2) ha0, MvPowerSeries.subst_add hs, MvPowerSeries.subst_add hs, Pts.substMv_subst (hX …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl0 : MvPowerSeries.constantCoeff (l : MvPowerSeries Unit K) = 0` using `h.1`. Rewrite `hI` using `[Pts.subst_subst h.2.2.1 hl0, h.2.2.2.1, eX]`. Establish `hne : PowerSeries.constantCoeff (PowerSeries.derivative K l) ≠ 0`. Rewrite using `[hl.1]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : IntPS R (PowerSeries.derivative K l)⁻¹` using `intPS_of_mul_eq_one hl.2 hl.1 (PowerSeries.mul_inv_cancel _ hne)`. Establish `e : (Dinv l)^[3] ph = ((Dinv l)^[3] ph * PowerSeries.derivative K l) * (PowerSeries.derivative K l)⁻¹`. Rewrite using `[mul_assoc, PowerSeries.mul_inv_cancel _ hne, mul_one]`. Rewrite using `[e]`. Conclude with `intPS_mul (intPS_of_intMv hI) hinv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_third_invariant_derivative {l linv ph : PowerSeries K} (hFr : Frame R l linv ph) (hF1 : F1 R l linv ph) :
     IntPS R ((Dinv l)^[3] ph) := by
@@ -237,7 +235,7 @@ end FormalGroupJetIntegrality
 
 open JetSubstitutionLemmas in
 /- English proof (translation)
-Introduce `K iF iC R l linv h hF`. Conclude with `FormalGroupJetIntegrality.logDeriv h hF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem log_derivative_integral' : LogDerivInt := by
   intro K iF iC R l linv h hF
@@ -245,11 +243,11 @@ theorem log_derivative_integral' : LogDerivInt := by
 
 open JetSubstitutionLemmas in
 /- English proof (translation)
-Introduce `K _ _ R l linv ph hFr hF1`. Establish `hl` using `FormalGroupJetIntegrality.logDeriv hFr.1 hFr.2.1`. Establish `key : ∀ j : ℕ, IntPS R ((Dinv l)^[j + 3] ph)`. Introduce `j`. Proceed by induction on `j with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact FormalGroupJetIntegrality.integral_third_invariant_derivative hFr hF1`. Consider the case `succ j ih`. Rewrite using `[show j + 1 + 3 = (j + 3) + 1 by ring, Function.iterate_succ_apply']`. Conclude with `intPS_Dinv hl (intPS_derivative ih)`. Use `⟨key 0, fun i hi => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩ : ∃ j, i = j + 3` from `⟨i - 3, by omega⟩`. Unfold `jet`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `key j 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem third_jet_integral : ThirdJetIntegral := by
   intro K _ _ R l linv ph hFr hF1
@@ -268,9 +266,9 @@ theorem third_jet_integral : ThirdJetIntegral := by
   exact key j 0
 
 /- English proof (translation)
-Introduce `K _ _ R l linv ph a b hFr hF1 hN h2 hAdj hinv hab`. Establish `hl` using `FormalGroupJetIntegrality.logDeriv hFr.1 hFr.2.1`. Establish `hj : ∀ i : ℕ, 1 ≤ i → jet l ph i ∈ R`. Introduce `i hi`. Break down `(by omega : i = 1 ∨ i = 2 ∨ 3 ≤ i) with rfl | rfl | h3` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `jetOne' K R l linv ph hFr.1 hl hFr.2.2 hN h2`. Establish `e` using `R.mul_mem hinv (jetAdjoint' K R l linv ph a b hFr.1 hFr.2.2 hAdj)`. Rewrite `e` using `[← mul_assoc, inv_mul_cancel₀ (sub_ne_zero.2 hab), one_mul]`. Then use the resulting hypothesis. Conclude with `(third_jet_integral K R l linv ph hFr hF1).2 i h3`. Conclude with `⟨hj, jetExp' K R l linv ph hFr.1 hFr.2.2 hj⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jets_unramified : JetsUnramified := by
   intro K _ _ R l linv ph a b hFr hF1 hN h2 hAdj hinv hab
@@ -285,9 +283,7 @@ theorem jets_unramified : JetsUnramified := by
   exact ⟨hj, jetExp' K R l linv ph hFr.1 hFr.2.2 hj⟩
 
 /- English proof (translation)
-Introduce `K _ _ R l linv ph hFr hF1 hN h2`. Establish `hl` using `FormalGroupJetIntegrality.logDeriv hFr.1 hFr.2.1`. Use `⟨jetExpShape' K R l linv ph hFr.1 hFr.2.2 (fun i hi hi2 => ?_), fun a b hAdj => jetAdjoint' K R l linv ph a b hFr.1 hFr.2.2 hAdj⟩` and prove the remaining obligations. Break down `(by omega : i = 1 ∨ 3 ≤ i) with rfl | h3` into its components or cases. Conclude with `jetOne' K R l linv ph hFr.1 hl hFr.2.2 hN h2`.
-
-Conclude with `(third_jet_integral K R l linv ph hFr hF1).2 i h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem jets_shape : JetsShape := by
   intro K _ _ R l linv ph hFr hF1 hN h2
@@ -299,7 +295,7 @@ theorem jets_shape : JetsShape := by
   · exact (third_jet_integral K R l linv ph hFr hF1).2 i h3
 
 /- English proof (translation)
-Introduce `A B _ _ hA hB x`. Take `⟨u1, v1, h1⟩` from `hA x.1`. Take `⟨u2, v2, h2⟩` from `hB x.2`. Conclude with `⟨MulEquiv.prodUnits.symm (u1, u2), MulEquiv.prodUnits.symm (v1, v2), Prod.ext h1 h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sum_two_units_product : SumTwoUnitsProd := by
   intro A B _ _ hA hB x

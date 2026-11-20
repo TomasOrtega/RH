@@ -14,7 +14,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Introduce `D T hM j hj a n`. Establish `hA` using `GlobalTheory.FramedBaseChange.bcEx_all _ _ _ _ (T.Q.Xo j) T.Q.c T.σ₀`. Establish `hF` using `(GlobalTheory.Frames.algebraic_laws GlobalTheory.lawsFieldsSeparately.2.1 _ _ _ _ (T.Q.Xo j) T.Q.c).2.2.2.1`. Conclude with `jInjRd_of_wt T hM hj a n hA hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem readings_independent :
     ∀ (D : D7) (T : Top D), LawsM T.toCore → ∀ j, InR D j → ∀ a n, JInjRd T j a n := by

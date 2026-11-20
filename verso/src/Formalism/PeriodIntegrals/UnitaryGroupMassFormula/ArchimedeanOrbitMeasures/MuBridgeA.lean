@@ -15,7 +15,7 @@ section Tr
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `hv : v.IsReal` using `totReal_of X v`. Establish `h` using `NumberField.ComplexEmbedding.isReal_iff.1 (InfinitePlace.isReal_iff.1 hv)`. Use `RingHom.congr_fun h a` as an intermediate fact. Simplify `this` using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem emb_real (v : InfinitePlace X.B.I.F) (a : X.B.I.F) : conj (v.embedding a) = v.embedding a := by
   have hv : v.IsReal := totReal_of X v
@@ -24,15 +24,15 @@ theorem emb_real (v : InfinitePlace X.B.I.F) (a : X.B.I.F) : conj (v.embedding a
   simpa [NumberField.ComplexEmbedding.conjugate_coe_eq] using this
 
 /- English proof (translation)
-The claim follows from `X.B.I.cm.cmUnram.2.1 _ e`.
+A detailed English derivation is pending.
 -/
 theorem phi_star (v : InfinitePlace X.B.I.F) (e : X.B.I.E) : X.B.I.φ v (star e) = conj (X.B.I.φ v e) :=
   X.B.I.cm.cmUnram.2.1 _ e
 
 /- English proof (translation)
-Introduce `h`. Establish `hr : NumberField.ComplexEmbedding.IsReal (X.B.I.φ v)`. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `e`. Simplify using `[NumberField.ComplexEmbedding.conjugate_coe_eq, h e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hc` using `X.B.I.cm.cmUnram.1.isComplex (InfinitePlace.mk (X.B.I.φ v))`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 hc) (InfinitePlace.isReal_mk_iff.2 hr)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phi_notReal (v : InfinitePlace X.B.I.F) : ¬ ∀ e : X.B.I.E, conj (X.B.I.φ v e) = X.B.I.φ v e := by
   intro h
@@ -44,13 +44,13 @@ theorem phi_notReal (v : InfinitePlace X.B.I.F) : ¬ ∀ e : X.B.I.E, conj (X.B.
   exact (InfinitePlace.not_isReal_iff_isComplex.2 hc) (InfinitePlace.isReal_mk_iff.2 hr)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `letI : Algebra X.B.I.F ℂ := v.embedding.toAlgebra`. Set `φA : X.B.I.E →ₐ[X.B.I.F] ℂ` to `{ X.B.I.φ v with commutes' := X.B.I.φ_over v }`. Set `ψA : X.B.I.E →ₐ[X.B.I.F] ℂ` to `{ (starRingEnd ℂ).comp (X.B.I.φ v) with commutes' := fun a => by show conj (X.B.I.φ v (algebraMap X.B.I.F X.B.I.E a)) = v.embedding a`. Rewrite using `[X.B.I.φ_over, emb_real] }`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : φA ≠ ψA`. Introduce `h`. Apply `phi_notReal X v` to reduce the goal to its premises. Introduce `e`. Use `congrArg (fun f : X.B.I.E →ₐ[X.B.I.F] ℂ => f e) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hcard : Fintype.card (X.B.I.E →ₐ[X.B.I.F] ℂ) = 2`. Rewrite using `[AlgHom.card X.B.I.F X.B.I.E ℂ, X.B.I.cm.deg2]`. Establish `huniv : (Finset.univ : Finset (X.B.I.E →ₐ[X.B.I.F] ℂ)) = {φA, ψA}`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.eq_of_subset_of_card_le (Finset.subset_univ _)` to reduce the goal to its premises. Rewrite using `[Finset.card_univ, hcard, Finset.card_pair hne]`. Establish `h` using `trace_eq_sum_embeddings (K := X.B.I.F) (L := X.B.I.E) ℂ (x := e)`. Rewrite `h` using `[huniv, Finset.sum_pair hne]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_trace (v : InfinitePlace X.B.I.F) (e : X.B.I.E) :
     v.embedding (Algebra.trace X.B.I.F X.B.I.E e) = X.B.I.φ v e + conj (X.B.I.φ v e) := by
@@ -80,7 +80,7 @@ theorem emb_trace (v : InfinitePlace X.B.I.F) (e : X.B.I.E) :
   exact h
 
 /- English proof (translation)
-Establish `hv : v.IsReal` using `totReal_of X v`. Use `show conj (InfinitePlace.Completion.extensionEmbedding v (a v)) = InfinitePlace.Completion.extensionEmbedding v (a v)`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv]`. Conclude with `Complex.conj_ofReal _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evInf_conj (v : InfinitePlace X.B.I.F) (a : Ainf X.B.I.F) :
     conj (PI.AprimeInfU.evInf X v a) = PI.AprimeInfU.evInf X v a := by
@@ -91,14 +91,14 @@ theorem evInf_conj (v : InfinitePlace X.B.I.F) (a : Ainf X.B.I.F) :
   exact Complex.conj_ofReal _
 
 /- English proof (translation)
-The claim follows from `evV_algebraMap X.B.I v a`.
+A detailed English derivation is pending.
 -/
 theorem evInf_alg (v : InfinitePlace X.B.I.F) (a : X.B.I.F) :
     PI.AprimeInfU.evInf X v (algebraMap X.B.I.F (Ainf X.B.I.F) a) = v.embedding a :=
   evV_algebraMap X.B.I v a
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Rewrite using `[Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_one_tmul (e : X.B.I.E) :
     Algebra.trace (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) ((1 : Ainf X.B.I.F) ⊗ₜ[X.B.I.F] e) =
@@ -107,9 +107,9 @@ theorem trace_one_tmul (e : X.B.I.E) :
   rw [Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `h1 : a ⊗ₜ[X.B.I.F] e = a • ((1 : Ainf X.B.I.F) ⊗ₜ[X.B.I.F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_smul, trace_one_tmul, smul_eq_mul, map_mul, evInf_alg, emb_trace, ← h1, thetaInf_tmul, map_mul, evInf_conj]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem evInf_trace (v : InfinitePlace X.B.I.F) (z : Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     PI.AprimeInfU.evInf X v (Algebra.trace (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) z) =
@@ -125,9 +125,9 @@ theorem evInf_trace (v : InfinitePlace X.B.I.F) (z : Ainf X.B.I.F ⊗[X.B.I.F] X
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]; ring
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `h : sigR (Ainf X.B.I.F) X.B.I.cm.sig (a ⊗ₜ[X.B.I.F] e) = a ⊗ₜ[X.B.I.F] (star e)` using `rfl`. Rewrite using `[h, thetaInf_tmul, thetaInf_tmul, map_mul, evInf_conj, phi_star]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem theta_sigR (v : InfinitePlace X.B.I.F) (t : Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     PI.AprimeInfU.thetaInf X v (sigR (Ainf X.B.I.F) X.B.I.cm.sig t) = conj (PI.AprimeInfU.thetaInf X v t) := by
@@ -139,7 +139,7 @@ theorem theta_sigR (v : InfinitePlace X.B.I.F) (t : Ainf X.B.I.F ⊗[X.B.I.F] X.
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, theta_sigR, JR, Matrix.map_apply, thetaInf_inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_hR (v : InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     PI.AprimeInfU.thetaInf X v (hR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y) =
@@ -152,14 +152,14 @@ end Tr
 section Form
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_dot {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n → ℂ) :
     ∑ i, ∑ j, conj (p i) * M i j * q j = star p ⬝ᵥ (M *ᵥ q) := by
   simp [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[form_dot, form_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_P {n : ℕ} (P A : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n → ℂ) :
     ∑ i, ∑ j, conj ((P *ᵥ p) i) * A i j * (P *ᵥ q) j = ∑ i, ∑ j, conj (p i) * (Pᴴ * A * P) i j * q j := by
@@ -167,7 +167,7 @@ theorem form_P {n : ℕ} (P A : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n → ℂ
     Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_apply, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Complex.mul_re, Complex.conj_re, Complex.conj_im]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem form_Jm {n : ℕ} (ε : Fin n → Bool) (p q : Fin n → ℂ) :
     (∑ i, ∑ j, conj (p i) * Formalism.REAL.Jm ε i j * q j).re =
@@ -184,7 +184,7 @@ section Beta
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `: (fun i => betaV X v Y i b) = (X.B.I.P v)⁻¹ *ᵥ fun j => PI.AprimeInfU.thetaInf X v (Y b j)`. Use function extensionality and compare the values at `i`. Simplify using `[betaV]`. Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_col (v : InfinitePlace X.B.I.F) (Y : TupI X) (b : Fin (D.R.rS + 1 + D.R.rS)) :
     (fun j => PI.AprimeInfU.thetaInf X v (Y b j)) = X.B.I.P v *ᵥ fun i => betaV X v Y i b := by
@@ -195,11 +195,11 @@ theorem theta_col (v : InfinitePlace X.B.I.F) (Y : TupI X) (b : Fin (D.R.rS + 1 
   rw [this, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mulVec]
 
 /- English proof (translation)
-Simplify using `only [BR, map_sum, Complex.re_sum, evInf_trace, Complex.add_re, Complex.conj_re]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[theta_hR]`. Establish `e1` using `theta_col X v Y b`. Establish `e2` using `theta_col X v Z b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : ∀ i, PI.AprimeInfU.thetaInf X v (Y b i) = (X.B.I.P v *ᵥ fun i => betaV X v Y i b) i` using `fun i => congrFun e1 i`. Establish `hZ : ∀ i, PI.AprimeInfU.thetaInf X v (Z b i) = (X.B.I.P v *ᵥ fun i => betaV X v Z i b) i` using `fun i => congrFun e2 i`. Simplify using `only [hY, hZ]`. Establish `hJ : ∀ i j, X.B.I.φ v (X.B.I.J i j) = (X.B.I.J.map (X.B.I.φ v)) i j` using `fun _ _ => rfl`. Simplify using `only [hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[form_P, X.B.I.P_spec v, form_Jm, ← two_mul, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_evInf_BR (v : InfinitePlace X.B.I.F) (Y Z : TupI X) :
     (PI.AprimeInfU.evInf X v (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J Y Z)).re =
@@ -220,7 +220,7 @@ theorem re_evInf_BR (v : InfinitePlace X.B.I.F) (Y Z : TupI X) :
   rw [form_P, X.B.I.P_spec v, form_Jm, ← two_mul, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [betaI]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `re_evInf_BR X v _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem betaI_bridge (x y : EuclideanSpace ℝ (KapI X)) :
     betaI X x y = ∑ v, ∑ b, ∑ i, 2 * ((if X.B.I.ε v i then 1 else -1 : ℝ) *

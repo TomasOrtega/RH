@@ -7,25 +7,23 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ _ ϖ hϖ n n' x V a H d hd hdiv j`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hϖi : ϖ ∈ Formalism.UG.intL L` using `by show Valued.v ϖ ≤ 1`. Rewrite using `[hϖ, ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Multiplicative.ofAdd_le]`. Evaluate the numerical expressions. Use `set c : Fin n → L := fun k => if h : 0 < a k then d ⟨k, h⟩ * ϖ ^ (a k - 1) else 0 with hc`. Establish `hcint : ∀ k, c k ∈ Formalism.UG.intL L`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k`. Simplify using `only [hc]`. Use `split_ifs`. Conclude with `mul_mem (hd _) (pow_mem hϖi _)`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ϖ • c = ∑ i : {j : Fin n // 0 < a j}, d i • Pi.single (i : Fin n) (ϖ ^ a (i : Fin n))`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hk : 0 < a k`. Rewrite using `[Finset.sum_eq_single ⟨k, hk⟩]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨m, hm⟩ : ∃ m, a k = m + 1` from `Nat.exists_eq_succ_of_ne_zero hk.ne'`. Simplify using `[hc, hk, hm]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Establish `: k ≠ (b : Fin n)` using `fun h => hb (Subtype.ext h.symm)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply, this]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero]`. Simplify using `[hc, hk]`. Introduce `i _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: k ≠ (i : Fin n)` using `fun h => hk (h ▸ i.2)`. Simplify using `[Pi.single_apply, this]`. Establish `hlin : ϖ • (x *ᵥ (V *ᵥ c)) = ∑ i : {j : Fin n // 0 < a j}, d i • (x *ᵥ (V *ᵥ Pi.single (i : Fin n) (ϖ ^ a (i : Fin n))))`. Rewrite using `[← Matrix.mulVec_smul, ← Matrix.mulVec_smul, hsum, Matrix.mulVec_sum, Matrix.mulVec_sum]`. Simplify using `[Matrix.mulVec_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hw : ∀ r, (x *ᵥ (V *ᵥ c)) r ∈ Formalism.UG.intL L`. Introduce `r`. Take `⟨b, hb, hbe⟩` from `hdiv r`. Establish `h1` using `congrFun hlin r`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hbe` using `[← h1, pow_one]`. Rewrite using `[mul_left_cancel₀ hϖ0 hbe]`. Conclude with `hb`. Take `⟨b, hb, hbe⟩` from `(H c hcint).1 hw j`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations.
-
-Take `⟨m, hm⟩ : ∃ m, a j = m + 1` from `Nat.exists_eq_succ_of_ne_zero j.2.ne'`. Simplify using `only [hc, dif_pos j.2, hm, Nat.add_sub_cancel] at hbe`. Apply `mul_right_cancel₀ (pow_ne_zero m hϖ0)` to reduce the goal to its premises. Rewrite using `[hbe]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem columns_indepMod :
     ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L),

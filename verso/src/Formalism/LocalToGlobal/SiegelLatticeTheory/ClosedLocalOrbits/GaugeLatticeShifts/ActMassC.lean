@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.Unipot
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-The claim follows from `massAC_of Formalism.L2.SG.Closed.NeatC_holds`.
+A detailed English derivation is pending.
 -/
 theorem massAC_holds : Formalism.L2.SG.NormCut.MassAC :=
   massAC_of Formalism.L2.SG.Closed.NeatC_holds

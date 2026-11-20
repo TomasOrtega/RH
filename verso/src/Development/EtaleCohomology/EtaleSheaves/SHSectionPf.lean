@@ -13,9 +13,9 @@ def EtAffNbhd : Prop := ∀ (A : CommRingCat.{0}) [Nontrivial A] {V : Scheme.{0}
     ∃ Q : Ideal R, Q.IsPrime ∧ (Q.comap f.hom).IsMaximal
 
 /- English proof (translation)
-Introduce `A hA V g _ _`. Establish `: Nontrivial A` using `by obtain ⟨hH, -⟩ := hA; infer_instance`. Take `⟨R, f, ι, hf, hι, hQ⟩` from `h2 A g`. Take `⟨σ, hσ⟩` from `h1 A R f hA hf hQ`. Use `⟨Spec.map σ ≫ ι, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hι, ← Spec.map_comp, hσ, Spec.map_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SHSection_of (h1 : SHAlgSec) (h2 : EtAffNbhd) : LateralTheory.E.t_E3Cut.SHSection := by
   intro A hA V g _ _

@@ -15,13 +15,13 @@ variable (ι) in
 def segMono (i : (k : K) → ι k) : MvPolynomial (Σ k, ι k) ℂ := ∏ k, X ⟨k, i k⟩
 
 /- English proof (translation)
-Simplify using `[segMono, segre, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_segMono (i : (k : K) → ι k) (z : (Σ k, ι k) → ℂ) : eval z (segMono ι i) = segre z i := by
   simp [segMono, segre, map_prod]
 
 /- English proof (translation)
-Use `IsWeightedHomogeneous.prod (w := blkW ι) Finset.univ (fun k => (X ⟨k, i k⟩ : MvPolynomial (Σ k, ι k) ℂ)) (fun k => blkW ι ⟨k, i k⟩) (fun k _ => isWeightedHomogeneous_X ℂ _ _)` as an intermediate fact. Unfold `segMono`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Simplify using `[blkW, Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segMono_homog (i : (k : K) → ι k) :
     IsWeightedHomogeneous (blkW ι) (segMono ι i) (fun _ => 1) := by
@@ -39,9 +39,9 @@ def psiPoly (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)
   ∑ i, C (Ψ (fun i' => if i = i' then 1 else 0) j) * segMono ι i
 
 /- English proof (translation)
-Establish `hs : segre z = ∑ i, segre z i • (fun i' => if i = i' then (1 : ℂ) else 0)`. Use function extensionality and compare the values at `i'`. Simplify using `[Finset.sum_apply]`. Simplify using `only [psiPoly, map_sum, map_mul, eval_C, eval_segMono]`. Use `conv_rhs => rw [hs]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_psiPoly (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (j : Fin (e + 1))
     (z : (Σ k, ι k) → ℂ) : eval z (psiPoly Ψ j) = Ψ (segre z) j := by
@@ -55,9 +55,7 @@ theorem eval_psiPoly (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1)
   rw [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hmem : psiPoly Ψ j ∈ weightedHomogeneousSubmodule ℂ (blkW ι) (fun _ => 1)`. Unfold `psiPoly`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[C_mul']`. Conclude with `Submodule.smul_mem _ _ ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr (segMono_homog i))`.
-
-Conclude with `(mem_weightedHomogeneousSubmodule _ _ _ _).mp hmem`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiPoly_homog (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (j : Fin (e + 1)) :
     IsWeightedHomogeneous (blkW ι) (psiPoly Ψ j) (fun _ => 1) := by
@@ -74,9 +72,7 @@ def idealC (P : Ideal (MRing ι)) : Ideal (MvPolynomial (Σ k, ι k) ℂ) :=
   Ideal.map (map (Int.castRingHom ℂ)) P
 
 /- English proof (translation)
-Establish `hle : idealC ι P ≤ RingHom.ker (eval z)`. Rewrite using `[idealC, Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Conclude with `hz.2 g hg`.
-
-Conclude with `hle hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_idealC {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) {f}
     (hf : f ∈ idealC ι P) : eval z f = 0 := by
@@ -90,9 +86,9 @@ theorem eval_idealC {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z �
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hP`. Rewrite using `[idealC, Ideal.map_span]`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨a, ha⟩` from `hS g hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_map_of_isMultiHomog ha)⟩`.
+Supply the required witnesses or components.
 -/
 theorem idealC_homog {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) :
     (idealC ι P).IsHomogeneous (weightedHomogeneousSubmodule ℂ (blkW ι)) := by
@@ -104,27 +100,25 @@ theorem idealC_homog {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) :
   exact ⟨a, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_map_of_isMultiHomog ha)⟩
 
 /- English proof (translation)
-Use `set J : Ideal (MvPolynomial (Σ k, ι k) ℂ) := idealC ι P ⊔ Ideal.span (Set.range (psiPoly Ψ)) with hJ`. Establish `hvan : segMono ι i ∈ MvPolynomial.vanishingIdeal ℂ (MvPolynomial.zeroLocus ℂ J)`. Rewrite using `[MvPolynomial.mem_vanishingIdeal_iff]`. Introduce `z hz0`. Rewrite `hz0` using `[MvPolynomial.mem_zeroLocus_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ∀ p ∈ J, eval z p = 0` using `fun p hp => hz0 p hp`. Express the relevant statement in the definitionally equal form `eval z (segMono ι i) = 0`. Assume the negation of the conclusion as `hne`. Establish `hmc : z ∈ mcPts P`. Use `⟨fun k => ⟨i k, ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eval_segMono]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) h0`. Conclude with `hz _ (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Apply `hΨ z hmc` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `hz (psiPoly Ψ j) (Ideal.mem_sup_right (Ideal.subset_span ⟨j, rfl⟩))` as an intermediate fact. Rewrite `this` using `[eval_psiPoly]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hvan` using `[MvPolynomial.vanishingIdeal_zeroLocus_eq_radical]`. Take `⟨n, hn⟩` from `hvan`. Establish `hn1 : segMono ι i ^ (n + 1) ∈ J`. Rewrite using `[pow_succ]`. Conclude with `J.mul_mem_right _ hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg, a, ha, hga⟩` from `Submodule.mem_sup.mp hn1`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.mp ha`. Establish `hcomp : ∀ j, ∃ G : MvPolynomial ((k : K) → ι k) ℂ, G.totalDegree ≤ n ∧ ∀ z : (Σ k, ι k) → ℂ, eval z (weightedHomogeneousComponent (blkW ι) (fun _ => n) (c j)) = eval (segre z) G` using `fun j => diag_of_homog n (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`. Use `choose G hG1 hG2 using hcomp`. Use `⟨n + 1, Nat.succ_pos n, G, fun j => by simpa using hG1 j, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hD : (fun _ : K => n + 1) = (fun _ : K => n) + (fun _ : K => 1)`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `hseg : weightedHomogeneousComponent (blkW ι) (fun _ : K => n + 1) (segMono ι i ^ (n + 1)) = segMono ι i ^ (n + 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh` using `(segMono_homog (ι := ι) i).pow (n + 1)`. Establish `hh' : (n + 1) • (fun _ : K => (1 : ℕ)) = fun _ : K => n + 1` using `by funext k; simp`. Rewrite `hh` using `[hh']`. Conclude with `weightedHomogeneousComponent_eq_self hh`. Establish `hgc : weightedHomogeneousComponent (blkW ι) (fun _ : K => n + 1) g ∈ idealC ι P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(idealC_homog hP) (fun _ : K => n + 1) hg`. Rewrite using `[← weightedDecomposition.decompose'_apply ℂ (blkW ι) g (fun _ : K => n + 1)]`. Conclude with `h`. Establish `hterm : ∀ j, weightedHomogeneousComponent (blkW ι) (fun _ : K => n + 1) (c j * psiPoly Ψ j) = weightedHomogeneousComponent (blkW ι) (fun _ : K => n) (c j) * psiPoly Ψ j`. Introduce `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hD]`. Conclude with `comp_mul_homog (psiPoly_homog Ψ j) (c j) _`. Establish `heq` using `congrArg (weightedHomogeneousComponent (blkW ι) (fun _ : K => n + 1)) hga`. Rewrite `heq` using `[hseg, map_add, ← hc, map_sum]`. Simplify using `only [hterm] at heq`.
-
-Establish `hev` using `congrArg (eval z) heq`. Rewrite `hev` using `[map_add, map_sum, eval_idealC hz hgc, zero_add, map_pow, eval_segMono]`. Rewrite using `[← hev]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hG2, eval_psiPoly, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segre_rel {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (hΨ : IsGoodProj P Ψ) (i : (k : K) → ι k) :
@@ -192,9 +186,9 @@ theorem segre_rel {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P)
   rw [map_mul, hG2, eval_psiPoly, mul_comm]
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ hP hΨ y`. Use `choose r hr G hG hrel using fun i => segre_rel hP.2.1.2.1 Ψ hΨ i`. Set `H : ((k : K) → ι k) → MvPolynomial ((k : K) → ι k) ℂ` to `fun i => ∑ j, C ((Fin.cons 1 y : Fin (e + 1) → ℂ) j) * G i j`. Use `(fibSys_finite r H (fun i => ?_)).subset ?_` and prove the remaining obligations. Use `lt_of_le_of_lt ((totalDegree_finsetSum _ _).trans (Finset.sup_le fun j _ => ?_)) (Nat.sub_lt (hr i) one_pos)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(totalDegree_mul _ _).trans (by simpa using hG i j)`. Introduce and unpack `w ⟨z, hz, rfl, hΨz⟩ i`. Rewrite using `[hrel i z hz, hΨz]`. Simplify using `[H]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fibreFinite : FibreFiniteStatement := by
   intro K _ ι _ P e Ψ hP hΨ y

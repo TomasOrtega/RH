@@ -33,7 +33,7 @@ namespace GlobalTheory.CovTop.ShiftGood
 variable {D : D7} {T : Core D} {j : ℕ}
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[GlobalTheory.AllWt.mem_cuspW, GlobalTheory.AllWt.mem_cuspW, h]`. Use `and_congr_right fun _ => forall₂_congr fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AllWt.modelWt_congr (Y.U σ) hσ (hY.unf σ hσ) h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cuspW_eq_of_exZ {Y : Deep T j} {e : ℕ} {o : ℝ} (hY : Y.Good e o) {G G' : WTZ D.host.E}
     (h : exZ (T.Q.Dw j) G = exZ (T.Q.Dw j) G') : Y.V G = Y.V G' := by
@@ -43,7 +43,7 @@ theorem cuspW_eq_of_exZ {Y : Deep T j} {e : ℕ} {o : ℝ} (hY : Y.Good e o) {G 
   rw [GlobalTheory.AllWt.modelWt_congr (Y.U σ) hσ (hY.unf σ hσ) h]
 
 /- English proof (translation)
-Use `⟨hasGram_nrm_of_good D T j Y e o hY G', ?_⟩` and prove the remaining obligations. Establish `key : ∀ C C' : Submodule Y.d.c₂.F (Rul Y.d.Xo₂ Y.d.c₂), C = C' → ((GlobalTheory.AllWt.supLat C).FG ∧ Submodule.span Y.d.c₂.F (GlobalTheory.AllWt.supLat C : Set C) = ⊤) → ((GlobalTheory.AllWt.supLat C').FG ∧ Submodule.span Y.d.c₂.F (GlobalTheory.AllWt.supLat C' : Set C') = ⊤)`. Introduce and unpack `C _ rfl`. Conclude with `id`. Conclude with `key _ _ (cuspW_eq_of_exZ hY h) hG.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem goodAt_of_exZ {Y : Deep T j} {e : ℕ} {o : ℝ} (hY : Y.Good e o) {G G' : WTZ D.host.E}
     (h : exZ (T.Q.Dw j) G = exZ (T.Q.Dw j) G') (hG : Y.GoodAt G) : Y.GoodAt G' := by
@@ -59,13 +59,13 @@ end GlobalTheory.CovTop.ShiftGood
 namespace GlobalTheory.CovTop.ShiftGood
 
 /- English proof (translation)
-Introduce `hP D T hT j hp hq hf hj Y e o hY a n s hn hA hg`. Take `⟨m, rfl⟩` from `hn`. Establish `hmul : ∀ k : ℕ, Y.GoodAt (wtOf _ ((k + 1) • (laOf (T.Q.Dw j) a (m + m) + s • hodgeWt (T.Q.Dw j))) 0)`. Introduce `k`. Use `(GlobalTheory.T.good_weight_antitone_gap hP D T hT j hp hq hf hj Y e o hY _ (fun τ => ?_) (fun τ => ?_)).1` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hxy`. Simplify using `only [Pi.smul_apply]`. Conclude with `nsmul_le_nsmul_right (hA τ hxy) _`. Use `hg τ` as an intermediate fact. Simplify using `only [Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `gap at this ⊢`. Use `split_ifs at this ⊢ with h1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, nsmul_eq_mul] at this ⊢`. Establish `hk : (1 : ℤ) ≤ ((k + 1 : ℕ) : ℤ)` using `by exact_mod_cast Nat.succ_pos k`. Rewrite using `[← mul_sub]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.trans (le_mul_of_one_le_left (by linarith) hk)`. Conclude with `this`. Use `goodAt_of_exZ hY ?_ ⟨hasGram_nrm_of_good D T.toCore j Y e o hY _, GlobalTheory.T.latW_fg_of_good hP D T hT j hp hq hf hj Y e o hY _ hA hg hmul m, GlobalTheory.T.weight_lattice_span_eq hP D T hT j hp hq hf hj Y e o hY _ hA hg hmul m⟩` and prove the remaining obligations. Rewrite using `[← two_mul, GlobalTheory.CovTop.Model.exZ_shiftG]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem goodAt_shiftG : Hypotheses2 → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (s : ℤ), Even n → (∀ τ, Antitone ((laOf (T.Q.Dw j) a n + s • hodgeWt (T.Q.Dw j)) τ)) → (∀ τ, 1 ≤ gap ((laOf (T.Q.Dw j) a n + s • hodgeWt (T.Q.Dw j)) τ) ((T.Q.Dw j).p - 1)) → Y.GoodAt (shiftG (T.Q.Dw j) a n s) := by
   intro hP D T hT j hp hq hf hj Y e o hY a n s hn hA hg

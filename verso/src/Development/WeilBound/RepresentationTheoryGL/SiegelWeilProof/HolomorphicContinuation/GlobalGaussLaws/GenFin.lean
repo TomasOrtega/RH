@@ -13,21 +13,21 @@ namespace PositivityTheory.Rg.Sw.Glob.GenFinH
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem blkDm_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (M : Matrix (Fin (n + n)) (Fin (n + n)) R) :
     (blkDm M).map f = blkDm (M.map f) := by
   ext i j; rfl
 
 /- English proof (translation)
-Unfold `blkDm`. Rewrite using `[Matrix.submatrix_one_equiv, ← Matrix.fromBlocks_one, Matrix.toBlocks_fromBlocks₂₂]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkDm_one {R : Type} [CommRing R] : blkDm (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = 1 := by
   unfold blkDm
   rw [Matrix.submatrix_one_equiv, ← Matrix.fromBlocks_one, Matrix.toBlocks_fromBlocks₂₂]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (M : Matrix (Fin n) (Fin n) R) :
     f M.det = (M.map f).det := by
@@ -40,15 +40,13 @@ namespace PositivityTheory.Rg.Sw.Glob
 open GenFinH
 
 /- English proof (translation)
-Introduce `D n k hk hreal`. Use `choose a I hgood using fun v => hL D n k hk v`. Take `⟨m, hm, hmv, hmr⟩` from `hGL D n a (fun v => (hgood v).1) (fun v => (hgood v).2.1)`. Take `⟨w, hw, hwv, hwr⟩` from `hGW D n I`. Establish `hmat : ∀ {S : Type} [CommRing S] (f : AE D →+* S), (mat (k * m * w)).map f = (mat k).map f * (mat m).map f * (mat w).map f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S _ f`. Use `show (mat k * mat m * mat w).map f = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Establish `hd : IsUnit (blkDm (mat (k * m * w))).det`. Apply `hUA D` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ`. Rewrite using `[det_map, blkDm_map, hmat, hreal τ, hmr τ, hwr τ, Matrix.mul_one, Matrix.mul_one, blkDm_one, Matrix.det_one]`. Conclude with `one_ne_zero`. Introduce `v`. Rewrite using `[det_map, blkDm_map, hmat, hmv v, hwv v]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hgood v).2.2`. Establish `h1 : k * m * w ∈ Subgroup.closure (genSet D n)` using `hU D n _ hd`. Establish `hm' : m ∈ Subgroup.closure (genSet D n)` using `Subgroup.subset_closure hm`. Establish `e : k = k * m * w * w⁻¹ * m⁻¹` using `by group`. Rewrite using `[e]`.
-
-Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ h1 (Subgroup.inv_mem _ hw)) (Subgroup.inv_mem _ hm')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kInFin_of (hU : UnitD) (hL : LocFin) (hGL : GlueLevi) (hGW : GlueW) (hUA : UnitAE) : KInFin := by
   intro D n k hk hreal

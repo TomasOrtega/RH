@@ -42,7 +42,7 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 def ptJ {j : ℕ} (c : Fin j → ℂ) : C.LPt := List.ofFn fun l => ((1 : ℕ), c l)
 
 /- English proof (translation)
-Unfold `ptJ`. Rewrite using `[List.ofFn_succ', List.concat_eq_append]`. Simplify using `[Fin.snoc_castSucc, Fin.snoc_last]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ptJ_snoc {j : ℕ} (c : Fin j → ℂ) (t : ℂ) :
     ptJ (Fin.snoc (α := fun _ => ℂ) c t) = ptJ c ++ [((1 : ℕ), t)] := by
@@ -51,9 +51,9 @@ theorem ptJ_snoc {j : ℕ} (c : Fin j → ℂ) (t : ℂ) :
   simp [Fin.snoc_castSucc, Fin.snoc_last]
 
 /- English proof (translation)
-Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Unfold `ptJ at hb`. Rewrite `hb` using `[List.mem_ofFn]`. Take `⟨l, rfl⟩` from `hb`. Conclude with `⟨le_rfl, hc l⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `[D.ptSize, ptJ, List.map_ofFn, List.sum_ofFn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isLocPt_ptJ {j : ℕ} (c : Fin j → ℂ) (hc : ∀ l, c l ≠ 0) : D.IsLocPt (ptJ c) j := by
   refine ⟨fun b hb => ?_, ?_⟩
@@ -64,7 +64,7 @@ theorem isLocPt_ptJ {j : ℕ} (c : Fin j → ℂ) (hc : ∀ l, c l ≠ 0) : D.Is
   · simp [D.ptSize, ptJ, List.map_ofFn, List.sum_ofFn]
 
 /- English proof (translation)
-Unfold `TBB.normC`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons a w ih => simp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem normC_one (w : List C.Letter) : TBB.normC (fun _ => 1) w = 1 := by
   unfold TBB.normC
@@ -73,9 +73,9 @@ theorem normC_one (w : List C.Letter) : TBB.normC (fun _ => 1) w = 1 := by
   | cons a w ih => simp
 
 /- English proof (translation)
-Use `ae_all_iff.2 fun l => ?_` and prove the remaining obligations. Establish `h0 : (volume : Measure (Fin j → ℂ)) (Function.eval l ⁻¹' {0}) = 0`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi_eval_preimage_null (fun _ => volume) (measure_singleton (0 : ℂ))`. Rewrite using `[ae_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono_null (fun c hc => ?_) h0` and prove the remaining obligations. Simplify using `using hc`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ae_all_ne_zero (j : ℕ) : ∀ᵐ c : Fin j → ℂ, ∀ l, c l ≠ 0 := by
   refine ae_all_iff.2 fun l => ?_
@@ -90,7 +90,7 @@ def EE (p : KB.Pl P Wp Wq) (X : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C
   TBB.Ew p (fun _ => 1) X j w (ptJ c)
 
 /- English proof (translation)
-Unfold `EE TBB.Ew TBB.NP`. Rewrite using `[Complex.re_ofReal_mul]`. Use `mul_nonneg (div_nonneg (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)) (by rw [normC_one]; exact zero_le_one)) ?_` and prove the remaining obligations. Conclude with `TBBx3.rr_top_re_nonneg p X (P.r + 1) w _ (by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem EE_top_nonneg (p : KB.Pl P Wp Wq) (X : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter)
     (c : Fin (P.r + 1) → ℂ) : 0 ≤ EE p X w (P.r + 1) c := by
@@ -101,13 +101,13 @@ theorem EE_top_nonneg (p : KB.Pl P Wp Wq) (X : B.Mat P.k P.r → (Wq →L[ℂ] W
   exact TBBx3.rr_top_re_nonneg p X (P.r + 1) w _ (by omega)
 
 /- English proof (translation)
-Establish `hl` using `isLocPt_ptJ c hc`. Establish `key : Integrable (fun t : ℂ => TBB.NP p (fun _ => 1) X (j + 1) w (ptJ c ++ [((1 : ℕ), t)]) (ptJ c ++ [((1 : ℕ), t)])) ∧ ∫ t : ℂ, TBB.NP p (fun _ => 1) X (j + 1) w (ptJ c ++ [((1 : ℕ), t)]) (ptJ c ++ [((1 : ℕ), t)]) = TBB.NP p (fun _ => 1) X j w (ptJ c) (ptJ c)`. Break down `Nat.lt_or_ge j P.r with hjr | hjr` into its components or cases. Conclude with `glFibre hA Wp Wq P p (fun _ => 1) X Y w.length Cb hCb hX (fun _ => one_pos) j hjr w hw le_rfl (ptJ c) (ptJ c) hl hl`. Establish `hje : j = P.r` using `le_antisymm hj hjr`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hje` using the available equality. Take `⟨h1, h2⟩` from `GT.top_level_fibre hA Wp Wq P p (fun _ => 1) X w Cb hCb hX hw.1 (ptJ c) (ptJ c) hl hl`. Conclude with `⟨h1, h2.symm⟩`. Take `⟨hint, heq⟩` from `key`. Establish `e : ∀ t : ℂ, EE p X w (j + 1) (Fin.snoc (α` using `fun _ => ℂ) c t) = (TBB.NP p (fun _ => 1) X (j + 1) w (ptJ c ++ [((1 : ℕ), t)]) (ptJ c ++ [((1 : ℕ), t)])).re := by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Unfold `EE TBB.Ew`. Rewrite using `[ptJ_snoc]`. Repeatedly rewrite using `[e]`. Use `⟨hint.re, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `EE TBB.Ew`. Rewrite using `[← heq]`. Conclude with `(integral_re hint).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_step (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (X : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ)
     (w : List C.Letter) (Cb : ℝ) (hCb : KB.InDDplus2 P p.l0 p.T.base Cb p.Θ) (hX : KB.CptCoef p.T.base X)
@@ -146,23 +146,23 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `j hj`. Take `rfl : j = P.r + 1` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun c _ => EE_top_nonneg p X w c, hmeas.aemeasurable.ennreal_ofReal, rfl⟩`. Consider the case `succ m ih`. Introduce `j hj`. Take `⟨hnn', hm', he'⟩` from `ih (j + 1) (by omega)`. Establish `hjr : j ≤ P.r` using `by omega`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `e : (Fin (j + 1) → ℂ) ≃ᵐ (Fin j → ℂ) × ℂ` to `(MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) (Fin.last j)).trans MeasurableEquiv.prodComm`. Establish `hmp : MeasurePreserving e volume volume` using `(Measure.measurePreserving_swap).comp (volume_preserving_piFinSuccAbove (fun _ : Fin (j + 1) => ℂ) (Fin.last j))`. Establish `he : ∀ c, e c = ((fun i => c i.castSucc), c (Fin.last j))`. Introduce `c`. Simplify using `[e, MeasurableEquiv.piFinSuccAbove]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `set g : (Fin j → ℂ) × ℂ → ENNReal := fun q => ENNReal.ofReal (EE p X w (j + 1) (Fin.snoc (α := fun _ => ℂ) q.1 q.2)) with hg`. Establish `hge : ∀ c, g (e c) = ENNReal.ofReal (EE p X w (j + 1) c)`. Introduce `c`. Rewrite using `[he c, hg]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Use `congr 2`. Conclude with `Fin.snoc_init_self c`. Establish `hgm : AEMeasurable g (volume.prod volume)`. Establish `h1 : AEMeasurable (fun q => ENNReal.ofReal (EE p X w (j + 1) (e.symm q))) volume` using `hm'.comp_quasiMeasurePreserving hmp.symm.quasiMeasurePreserving`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `h1.congr (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← hge (e.symm q), e.apply_symm_apply]`. Establish `hfib : ∀ c : Fin j → ℂ, (∀ l, c l ≠ 0) → 0 ≤ EE p X w j c ∧ ENNReal.ofReal (EE p X w j c) = ∫⁻ t, g (c, t)`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hint, heq⟩` from `fibre_step hA p X Y w Cb hCb hX hw j hjr c hc`. Establish `hnnt : 0 ≤ᵐ[volume] fun t : ℂ => EE p X w (j + 1) (Fin.snoc (α` using `fun _ => ℂ) c t) := by filter_upwards [PBL.ae_ne_zero_complex] with t ht`. Use `hnn' _ fun l => ?_` and prove the remaining obligations. Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => simpa using ht`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `cast i => simpa using hc i`. Use `⟨heq ▸ integral_nonneg_of_ae hnnt, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, ofReal_integral_eq_lintegral_ofReal hint hnnt]`. Establish `hae : (fun c : Fin j → ℂ => ENNReal.ofReal (EE p X w j c)) =ᵐ[volume] fun c => ∫⁻ t, g (c, t)` using `by filter_upwards [ae_all_ne_zero j] with c hc`. Conclude with `(hfib c hc).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun c hc => (hfib c hc).1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hgm.lintegral_prod_right').congr hae.symm`. Rewrite using `[lintegral_congr_ae hae, ← lintegral_prod _ hgm, ← he']`. Rewrite using `[show (volume.prod volume : Measure ((Fin j → ℂ) × ℂ)) = volume from rfl, ← hmp.lintegral_comp_emb e.measurableEmbedding]`. Conclude with `lintegral_congr fun c => hge c`.
+A detailed English derivation is pending.
 -/
 theorem iter_levels (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (X : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ)
     (w : List C.Letter) (Cb : ℝ) (hCb : KB.InDDplus2 P p.l0 p.T.base Cb p.Θ) (hX : KB.CptCoef p.T.base X)
@@ -226,13 +226,13 @@ theorem iter_levels (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (X : B.Mat P.k P.r 
       exact lintegral_congr fun c => hge c
 
 /- English proof (translation)
-Introduce `hA Wp Wq _ _ _ _ _ _ P p X Y w Cb hCb hX hw hmeas`. Take `⟨-, -, h0⟩` from `iter_levels hA p X Y w Cb hCb hX hw hmeas (P.r + 1) 0 (by omega)`. Establish `hc0 : ∀ c : Fin 0 → ℂ, EE p X w 0 c = (p.RR X 0 w [] []).re`. Introduce `c`. Unfold `EE ptJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[List.ofFn_zero, TBBx3.ew_zero_nil, normC_one, div_one]`. Establish `hvol : (volume : Measure (Fin 0 → ℂ)) Set.univ = 1`. Rewrite using `[volume_pi, Measure.pi_univ]`. Simplify using the standard rewrite rules. Rewrite `h0` using `[hc0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Rewrite `h0` using `[lintegral_const, hvol, mul_one]`. Establish `hnn : 0 ≤ᵐ[volume] topD p X w` using `Filter.Eventually.of_forall fun c => EE_top_nonneg p X w c`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae hnn hmeas, ← h0]`. Establish `hpos : 0 ≤ (p.RR X 0 w [] []).re`. Use `(iter_levels hA p X Y w Cb hCb hX hw hmeas (P.r + 1) 0 (by omega)).1 Fin.elim0 (fun l => l.elim0)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hc0]`. Then use the resulting hypothesis. Rewrite using `[ENNReal.toReal_ofReal hpos]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem normal_form_compact_support_holds : NFFormCpt := by
   intro hA Wp Wq _ _ _ _ _ _ P p X Y w Cb hCb hX hw hmeas
@@ -259,9 +259,9 @@ end iter2
 section assembly
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hH`. Use `⟨a1, a2, a3, a4, le_trans ?_ a5, a6⟩` and prove the remaining obligations. Establish `hX : 0 ≤ ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)`. Check the signs of the components of the expression. Establish `e : ∀ x : ℝ, x * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) = x * (((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3))` using `fun x => by ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite using `[e, e]`. Conclude with `mul_le_mul_of_nonneg_right hc hX`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nfHyp_monoC {Cb C c : ℝ} {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -278,17 +278,15 @@ theorem nfHyp_monoC {Cb C c : ℝ} {P : M.Par} {Wp Wq : Type} [NormedAddCommGrou
   exact mul_le_mul_of_nonneg_right hc hX
 
 /- English proof (translation)
-Introduce `hA Cb`. Take `⟨C1, H1⟩` from `Formalism.FourierDecayAlt.P.limit_of_module_forms Cb`. Take `⟨C2, H2⟩` from `hApx Cb`. Use `⟨max C1 C2, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH w hw hN ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH1` using `nfHyp_monoC hH (le_max_left C1 C2)`. Establish `hH2` using `nfHyp_monoC hH (le_max_right C1 C2)`. Take `⟨hχ, hCb, hf, hfA, hthr, -⟩` from `hH1`. Use `set F' := TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀ with hF'`. Establish `hF'ck : B.CkOn ⊤ (B.GV P.k P.r) F'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF', fpm_id]`. Conclude with `ckOn_Gpow_smul _ _ p₀ hf`. Take `⟨hcpt, hlim⟩` from `H1 Wp Wq P p F' χ ε (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)) N (cutN P.k P.r) hCb hχ hε hF'ck (inCC_fpm_id p p₀ hfA) hthr (fun _ _ => rfl)`. Use `set H := D.cutF p.T.base χ F' ε with hHdef`. Establish `hcpt' : ∀ n, KB.CptCoef p.T.base (apx H n)` using `hcpt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform : ∀ n, (p.RR (apx H n) 0 w [] []).re = ∫ c, topD p (apx H n) w c` using `fun n => normal_form_compact_support_holds hA Wp Wq P p (apx H n) Y w Cb hCb (hcpt' n) hw (hMeas Wp Wq P p (apx H n) w Cb hCb (hcpt' n) hw.1)`. Establish `hlim0 : Tendsto (fun n => ∫ c, topD p (apx H n) w c) atTop (𝓝 (p.RR H 0 w [] []).re)`. Use `(Complex.continuous_re.tendsto _).comp (hlim 0 w hw.1 hN [] [])` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations. Conclude with `hform n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hptw : ∀ c, Tendsto (fun n => topD p (apx H n) w c) atTop (𝓝 (topD p H w c))`. Introduce `c`. Unfold `topD TBB.Ew TBB.NP`. Conclude with `(Complex.continuous_re.tendsto _).comp (tendsto_const_nhds.mul (hlim (P.r + 1) w hw.1 hN (TBB.bigPt P.r c) (TBB.bigPt P.r c)))`. Take `⟨h, hint, hb⟩` from `H2 Wp Wq P p f A₀ p₀ χ Y N hH2 w hw hN ε hε`.
-
-Establish `hdct : Tendsto (fun n => ∫ c, topD p (apx H n) w c) atTop (𝓝 (∫ c, topD p H w c))` using `tendsto_integral_of_dominated_convergence h (fun n => hMeas Wp Wq P p (apx H n) w Cb hCb (hcpt' n) hw.1) hint hb (Filter.Eventually.of_forall hptw)`. Conclude with `tendsto_nhds_unique hlim0 hdct`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nFTopFormAll_of (hMeas : TopDMeasCpt) (hApx : NFApxDomAll) : NFTopFormAll := by
   intro hA Cb
@@ -327,15 +325,13 @@ theorem nFTopFormAll_of (hMeas : TopDMeasCpt) (hApx : NFApxDomAll) : NFTopFormAl
   exact tendsto_nhds_unique hlim0 hdct
 
 /- English proof (translation)
-Take `⟨C1, H1⟩` from `Formalism.FourierDecayAlt.P.limit_of_module_forms Cb`. Take `⟨C2, H2⟩` from `hApx Cb`. Use `⟨max C1 C2, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH w hw hN ε hε`. Establish `hH1` using `nfHyp_monoC hH (le_max_left C1 C2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hH2` using `nfHyp_monoC hH (le_max_right C1 C2)`. Take `⟨hχ, hCb, hf, hfA, hthr, -⟩` from `hH1`. Use `set F' := TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀ with hF'`. Establish `hF'ck : B.CkOn ⊤ (B.GV P.k P.r) F'`. Rewrite using `[hF', fpm_id]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `ckOn_Gpow_smul _ _ p₀ hf`. Take `⟨hcpt, hlim⟩` from `H1 Wp Wq P p F' χ ε (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)) N (cutN P.k P.r) hCb hχ hε hF'ck (inCC_fpm_id p p₀ hfA) hthr (fun _ _ => rfl)`. Use `set H := D.cutF p.T.base χ F' ε with hHdef`. Establish `hcpt' : ∀ n, KB.CptCoef p.T.base (apx H n)` using `hcpt`. Establish `hptw : ∀ c, Tendsto (fun n => topD p (apx H n) w c) atTop (𝓝 (topD p H w c))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Unfold `topD TBB.Ew TBB.NP`. Conclude with `(Complex.continuous_re.tendsto _).comp (tendsto_const_nhds.mul (hlim (P.r + 1) w hw.1 hN (TBB.bigPt P.r c) (TBB.bigPt P.r c)))`. Take `⟨h, hint, hb⟩` from `H2 Wp Wq P p f A₀ p₀ χ Y N hH2 w hw hN ε hε`. Establish `hm : AEStronglyMeasurable (topD p H w) volume` using `aestronglyMeasurable_of_tendsto_ae atTop (fun n => hMeas Wp Wq P p (apx H n) w Cb hCb (hcpt' n) hw.1) (Filter.Eventually.of_forall hptw)`.
-
-Use `hint.mono' hm ?_` and prove the remaining obligations. Establish `hb' : ∀ᵐ c, ∀ n, ‖topD p (apx H n) w c‖ ≤ h c` using `ae_all_iff.2 hb`. Use `filter_upwards [hb'] with c hc`. Conclude with `le_of_tendsto' ((continuous_norm.tendsto _).comp (hptw c)) hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nFTopInt_of (hMeas : TopDMeasCpt) (hApx : NFApxDomAll) (Cb : ℝ) : ∃ Cc : ℝ,
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]

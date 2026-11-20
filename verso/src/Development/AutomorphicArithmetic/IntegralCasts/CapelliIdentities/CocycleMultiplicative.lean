@@ -5,7 +5,7 @@ noncomputable def UpperTheory.Reformulated.B.CocycleMultiplicative.cT :
     fun {A : Type} [CommRing A] (σ : A →+* A) {m p : Type} (M : Matrix m p A) ↦ (M.map (⇑σ : A → A)).transpose
 
 /- English proof (translation)
-Unfold `UpperTheory.Reformulated.B.CocycleMultiplicative.cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.CocycleMultiplicative.cT_mul {A : Type} [CommRing A] (σ : A →+* A) {n : Type} [Fintype n]
     (P Q : Matrix n n A) :
@@ -14,7 +14,7 @@ private theorem UpperTheory.Reformulated.B.CocycleMultiplicative.cT_mul {A : Typ
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `UpperTheory.Reformulated.B.CocycleMultiplicative.cT`. Rewrite using `[Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.CocycleMultiplicative.cT_one {A : Type} [CommRing A] (σ : A →+* A) {n : Type} [Fintype n]
     [DecidableEq n] : UpperTheory.Reformulated.B.CocycleMultiplicative.cT σ (1 : Matrix n n A) = 1 := by
@@ -22,9 +22,9 @@ private theorem UpperTheory.Reformulated.B.CocycleMultiplicative.cT_one {A : Typ
   rw [Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]
 
 /- English proof (translation)
-Introduce `A _ n _ _ σ J a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[Units.val_mul, UpperTheory.Reformulated.B.CocycleMultiplicative.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = J := by rw [ha, hb]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CocycleMultiplicative.aux2 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n] (σ : A →+* A)
@@ -41,7 +41,7 @@ theorem UpperTheory.Reformulated.B.CocycleMultiplicative.aux2 :
     _ = J := by rw [ha, hb]
 
 /- English proof (translation)
-Introduce `A _ n _ _ σ J`. Rewrite using `[Units.val_one, UpperTheory.Reformulated.B.CocycleMultiplicative.cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.CocycleMultiplicative.aux3 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n] (σ : A →+* A)
@@ -50,11 +50,9 @@ theorem UpperTheory.Reformulated.B.CocycleMultiplicative.aux3 :
   rw [Units.val_one, UpperTheory.Reformulated.B.CocycleMultiplicative.cT_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `A _ n _ _ σ J g hg`. Simplify using `only [Set.mem_setOf_eq] at hg ⊢`. Establish `h1 : (↑g : Matrix n n A) * (↑(g⁻¹) : Matrix n n A) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : UpperTheory.Reformulated.B.CocycleMultiplicative.cT σ (↑(g⁻¹) : Matrix n n A) * UpperTheory.Reformulated.B.CocycleMultiplicative.cT σ (↑g : Matrix n n A) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← UpperTheory.Reformulated.B.CocycleMultiplicative.cT_mul, h1, UpperTheory.Reformulated.B.CocycleMultiplicative.cT_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg]`. Use `_ = (UpperTheory.Reformulated.B.CocycleMultiplicative.cT σ (↑(g⁻¹) : Matrix n n A) * UpperTheory.Reformulated.B.CocycleMultiplicative.cT σ (↑g : Matrix n n A)) * J * ((↑g : Matrix n n A) * (↑(g⁻¹) : Matrix n n A)) := by`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = J := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CocycleMultiplicative.aux4 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n] (σ : A →+* A)
@@ -92,7 +90,7 @@ noncomputable def UpperTheory.Reformulated.B.CocycleMultiplicative.UE :
 
 open scoped Matrix.Norms.L2Operator in
 /- English proof (translation)
-Establish `hu : A ∈ unitary (Matrix (Fin n) (Fin n) ℂ)` using `⟨h, mul_eq_one_comm.mp h⟩`. Break down `subsingleton_or_nontrivial (Matrix (Fin n) (Fin n) ℂ) with hs | hn` into its components or cases. Conclude with `absurd hz (by simp [spectrum.of_subsingleton])`. Simplify using `using spectrum.subset_circle_of_unitary hu hz`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.CocycleMultiplicative.norm_of_mem_spectrum {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ)
     (h : star A * A = 1) {z : ℂ} (hz : z ∈ spectrum ℂ A) : ‖z‖ = (1 : ℝ) := by
@@ -103,11 +101,11 @@ private theorem UpperTheory.Reformulated.B.CocycleMultiplicative.norm_of_mem_spe
   · simpa using spectrum.subset_circle_of_unitary hu hz
 
 /- English proof (translation)
-Introduce `E _ _ _ n γ τ z hz`. Establish `hγ` using `γ.2`. Take `⟨g, hg⟩` from `γ`. Simplify using `only at hz`. Establish `hg' : UpperTheory.Reformulated.B.CocycleMultiplicative.cT (NumberField.IsCMField.complexConj E).toRingEquiv.toRingHom (↑g : Matrix (Fin n) (Fin n) E) * 1 * (↑g : Matrix (Fin n) (Fin n) E) = 1` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hg'` using `[Matrix.mul_one]`. Establish `hroot : ((↑g : Matrix (Fin n) (Fin n) E).map τ).charpoly.IsRoot z`. Rewrite using `[Matrix.charpoly_map]`. Conclude with `(Polynomial.mem_roots'.mp hz).2`. Establish `hstar : star ((↑g : Matrix (Fin n) (Fin n) E).map τ) = (UpperTheory.Reformulated.B.CocycleMultiplicative.cT (NumberField.IsCMField.complexConj E).toRingEquiv.toRingHom (↑g : Matrix (Fin n) (Fin n) E)).map τ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[UpperTheory.Reformulated.B.CocycleMultiplicative.cT, Matrix.star_apply]`. Establish `hU : star ((↑g : Matrix (Fin n) (Fin n) E).map τ) * (↑g : Matrix (Fin n) (Fin n) E).map τ = 1`. Rewrite using `[hstar, ← Matrix.map_mul, hg', Matrix.map_one _ (map_zero τ) (map_one τ)]`. Conclude with `UpperTheory.Reformulated.B.CocycleMultiplicative.norm_of_mem_spectrum _ hU (Matrix.mem_spectrum_of_isRoot_charpoly hroot)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CocycleMultiplicative.norm_eq_one_of_root :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] {n : ℕ}

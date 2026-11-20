@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmRowExp
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmSkip
 
 /- English proof (translation)
-The claim follows from `PI.qmBorderFull_of quantum_minor_border_es quantum_minor_column_expansion quantum_minor_row_expansion quantum_minor_skip`.
+A detailed English derivation is pending.
 -/
 theorem quantum_minor_border_full : PI.QmBorderFull :=
   PI.qmBorderFull_of quantum_minor_border_es quantum_minor_column_expansion quantum_minor_row_expansion quantum_minor_skip

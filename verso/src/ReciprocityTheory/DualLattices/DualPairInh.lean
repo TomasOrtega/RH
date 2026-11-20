@@ -24,14 +24,14 @@ Both sides reduce to the same expression.
 lemma ev_mk (f : (R : Type)[X]) : ev R (Ideal.Quotient.mk _ f) = f.eval 0 := rfl
 
 /- English proof (translation)
-Introduce `r` and use `⟨Ideal.Quotient.mk _ (C r), by rw [ev_mk, eval_C]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma ev_surj : Function.Surjective (ev R) := fun r => ⟨Ideal.Quotient.mk _ (C r), by rw [ev_mk, eval_C]⟩
 
 def eta : DN R := Ideal.Quotient.mk _ X
 
 /- English proof (translation)
-Unfold `eta`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem, ← pow_two]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eta_sq : eta R * eta R = 0 := by
   unfold eta
@@ -39,11 +39,11 @@ lemma eta_sq : eta R * eta R = 0 := by
   exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[RingHom.mem_ker, ev_mk]`. Establish `hX : (X : (R : Type)[X]) ∣ f`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.X_dvd_iff, Polynomial.coeff_zero_eq_eval_zero]`. Conclude with `hy`. Take `⟨g, rfl⟩` from `hX`. Rewrite using `[map_mul]`. Conclude with `Ideal.mem_span_singleton.2 (dvd_mul_right (eta R) _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show ev R (eta R) = 0`. Rewrite using `[eta, ev_mk, eval_X]`.
+A detailed English derivation is pending.
 -/
 lemma ker_ev : RingHom.ker (ev R) = Ideal.span {eta R} := by
   apply le_antisymm
@@ -61,13 +61,11 @@ lemma ker_ev : RingHom.ker (ev R) = Ideal.span {eta R} := by
     rw [eta, ev_mk, eval_X]
 
 /- English proof (translation)
-Establish `hnt : Nontrivial (DN R)` using `(ev R).domain_nontrivial`. Establish `hunit : ∀ y : DN R, IsUnit (ev R y) → IsUnit y`. Introduce `y hy`. Take `⟨u, hu⟩ : ∃ u : DN R, u = Ideal.Quotient.mk _ (C (ev R y))` from `⟨_, rfl⟩`. Establish `hev : ev R u = ev R y` using `by rw [hu, ev_mk, eval_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : y - u ∈ RingHom.ker (ev R)` using `by rw [RingHom.mem_ker, map_sub, hev, sub_self]`. Rewrite `hk` using `[ker_ev, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hk`. Establish `hn : IsNilpotent (y - u)` using `⟨2, by rw [hc, mul_pow, pow_two (eta R), eta_sq, zero_mul]⟩`. Establish `hu' : IsUnit u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : u = ((Ideal.Quotient.mk _).comp Polynomial.C) (ev R y)` using `hu`. Rewrite using `[e]`. Conclude with `hy.map _`. Establish `h` using `hn.isUnit_add_left_of_commute hu' (Commute.all _ _)`. Rewrite `h` using `[add_sub_cancel]`. Then use the resulting hypothesis.
-
-Conclude with `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => (IsLocalRing.isUnit_or_isUnit_one_sub_self (ev R a)).imp (hunit a) fun h => hunit (1 - a) (by rwa [map_sub, map_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma isLocal : IsLocalRing (DN R) := by
   have hnt : Nontrivial (DN R) := (ev R).domain_nontrivial
@@ -90,7 +88,7 @@ lemma isLocal : IsLocalRing (DN R) := by
       fun h => hunit (1 - a) (by rwa [map_sub, map_one])
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.mk_algebraMap, ev_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma ev_algebraMap (r : (R : Type)) : ev R (algebraMap (R : Type) (DN R) r) = r := by
   rw [← Ideal.Quotient.mk_algebraMap, ev_mk]

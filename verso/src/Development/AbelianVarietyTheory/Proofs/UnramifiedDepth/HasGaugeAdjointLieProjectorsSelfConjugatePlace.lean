@@ -20,9 +20,9 @@ namespace GlobalTheory.ProjSelf
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hne : V.v x ≠ ⊤` using `fun e => hx ((AddValuation.top_iff _).1 e)`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.1 hne`. Take `⟨N, hN⟩` from `exists_nat_gt t`. Use `h N` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `VF.Ge at this`. Rewrite `this` using `[← ht]`. Establish `h2 : (N : ℝ) ≤ t` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_zero_of_ge {x : C} (h : ∀ N : ℕ, V.Ge N x) : x = 0 := by
   by_contra hx
@@ -36,11 +36,11 @@ theorem eq_zero_of_ge {x : C} (h : ∀ N : ℕ, V.Ge N x) : x = 0 := by
   linarith
 
 /- English proof (translation)
-Establish `h1 : ∀ x : C, ∃ m : ℕ, V.Ge (-(m : ℝ)) x`. Introduce `x`. Unfold `VF.Ge`. Proceed by induction on `V.v x using WithTop.recTopCoe with`. Consider the case `top => exact ⟨0, le_top⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Consider the case `coe t`. Take `⟨N, hN⟩` from `exists_nat_gt (-t)`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `: -(N : ℝ) ≤ t` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose f hf using fun i => h1 (v i)`. Use `⟨∑ i, f i, fun i => (hf i).mono ?_⟩` and prove the remaining obligations. Establish `: f i ≤ ∑ i, f i` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `: (f i : ℝ) ≤ ((∑ i, f i : ℕ) : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_lower {κ : Type} [Fintype κ] (v : κ → C) : ∃ m : ℕ, ∀ i, V.Ge (-(m : ℝ)) (v i) := by
   have h1 : ∀ x : C, ∃ m : ℕ, V.Ge (-(m : ℝ)) x := by
@@ -60,16 +60,16 @@ theorem exists_lower {κ : Type} [Fintype κ] (v : κ → C) : ∃ m : ℕ, ∀ 
   linarith
 
 /- English proof (translation)
-The claim follows from `VF.Ge.sum fun j _ => (hA i j).mul_int (hv j)`.
+A detailed English derivation is pending.
 -/
 theorem ge_mulVec {κ : Type} [Fintype κ] {A : Matrix κ κ C} (hA : ∀ i j, V.Ge 0 (A i j)) {m : ℝ} {v : κ → C}
     (hv : ∀ i, V.Ge m (v i)) (i : κ) : V.Ge m (A.mulVec v i) :=
   VF.Ge.sum fun j _ => (hA i j).mul_int (hv j)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using VF.Ge.one (V := V)`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Use `ih.mul (VF.ge_l (V := V))` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Conclude with `this`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem ge_l_pow (n : ℕ) : V.Ge n ((V.l : C) ^ n) := by
   induction n with
@@ -81,14 +81,14 @@ theorem ge_l_pow (n : ℕ) : V.Ge n ((V.l : C) ^ n) := by
     exact this
 
 /- English proof (translation)
-Unfold `VF.Ge at h ⊢`. Rewrite `h` using `[V.v.map_mul, hu, zero_add]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ge_of_unit_mul {u x : C} {m : ℝ} (hu : V.v u = 0) (h : V.Ge m (u * x)) : V.Ge m x := by
   unfold VF.Ge at h ⊢
   rwa [V.v.map_mul, hu, zero_add] at h
 
 /- English proof (translation)
-Establish `e : t = 1 + (t - 1)` using `by ring`. Rewrite using `[e, AddValuation.map_add_eq_of_lt_left _ (by rw [V.v.map_one]; exact h), V.v.map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem v_eq_zero_of_mm {t : C} (h : V.MM (t - 1)) : V.v t = 0 := by
   have e : t = 1 + (t - 1) := by ring
@@ -102,11 +102,11 @@ def IsLim (V : VF C) (L : O →+* Matrix κ κ C) (M : Matrix κ κ C) (a : ℕ 
   ∀ (N : ℕ) (v : κ → C) i, ∃ n0, ∀ n ≥ n0, V.Ge N (M.mulVec v i - (L (a n)).mulVec v i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_ge (V := V)` to reduce the goal to its premises. Introduce `N`. Take `⟨n0, h0⟩` from `h N w i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n1, h1⟩` from `hc N`. Establish `a1` using `h0 (n0 + n1) (by omega)`. Establish `a2` using `(hw0 i).mul_int (h1 (n0 + n1) (by omega))`. Rewrite `a1` using `[hw]`. Use `a1.sub a2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsLim.eig {M : Matrix κ κ C} {a : ℕ → O} (h : IsLim V L M a) (ψ : O →+* C) (c : C)
     (hc : ∀ N : ℕ, ∃ n0, ∀ n ≥ n0, V.Ge N (c - ψ (a n))) {w : κ → C} (hw0 : ∀ i, V.Ge 0 (w i))
@@ -126,19 +126,17 @@ theorem IsLim.eig {M : Matrix κ κ C} {a : ℕ → O} (h : IsLim V L M a) (ψ :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_ge (V := V)` to reduce the goal to its premises. Introduce `N`. Take `⟨m, hm⟩` from `exists_lower (V := V) v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n0, h0⟩` from `h N v i`. Take `⟨n1, h1⟩` from `h N (E.mulVec v) i`. Use `choose n2 h2 using hE N v`. Use `set n := n0 + n1 + (∑ j, n2 j) + N + m with hn`. Establish `a0` using `h0 n (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `h1 n (by omega)`. Establish `a2 : ∀ j, V.Ge N ((E.mulVec v - (L (e n)).mulVec v) j)` using `fun j => h2 j n (by`. Establish `: n2 j ≤ ∑ j, n2 j` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Use the proof step `omega)`. Establish `a3` using `ge_mulVec (hL (a n)) a2 i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `hae n`. Establish `a4 : V.Ge N ((V.l : C) ^ n * (L y).mulVec v i)`. Use `((ge_l_pow n).mul (ge_mulVec (hL y) hm i)).mono ?_` and prove the remaining obligations. Establish `: N + m ≤ n` using `by omega`. Establish `: (N : ℝ) + m ≤ n` using `by exact_mod_cast this`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (V.l : C) ^ n * (L y).mulVec v i = (L (a n)).mulVec ((L (e n)).mulVec v) i - (L (a n)).mulVec v i`. Establish `h3` using `congrArg (fun z => (L z).mulVec v i) hy`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast, Matrix.sub_mulVec, Pi.sub_apply] at h3`. Establish `h4 : (V.l : Matrix κ κ C) ^ n * L y = ((V.l : C) ^ n) • L y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Nat.cast_pow, ← Nat.cast_pow, ← nsmul_eq_mul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, mul_comm (a n), map_mul, h3, h4, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul]`. Rewrite `a4` using `[e1]`. Rewrite `a3` using `[Matrix.mulVec_sub, Pi.sub_apply]`. Use `((a0.sub a1).sub a3).sub a4` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsLim.absorb (hL : ∀ x i j, V.Ge 0 (L x i j)) {M E : Matrix κ κ C} {a e : ℕ → O} (h : IsLim V L M a)
     (hE : IsLim V L E e) (hae : ∀ n, ∃ y, e n * a n - a n = (V.l : O) ^ n * y) (v : κ → C) :
@@ -184,9 +182,9 @@ section Seq
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Take `⟨y, hy⟩` from `h`. Establish `e : ε ^ (k + 1 + 1) - ε = ε * (ε ^ (k + 1) - ε) + (ε * ε - ε)` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e, hy]`. Conclude with `(ih.mul_left _).add (dvd_mul_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_pow {l : ℕ} {ε : O} (h : ∃ y, ε * ε - ε = (l : O) * y) (k : ℕ) : (l : O) ∣ ε ^ (k + 1) - ε := by
   induction k with
@@ -198,13 +196,13 @@ theorem idem_pow {l : ℕ} {ε : O} (h : ∃ y, ε * ε - ε = (l : O) * y) (k :
     exact (ih.mul_left _).add (dvd_mul_right _ _)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `hP x fun a => lt_of_lt_of_le (by`. Establish `: (0 : ℝ) < ((n + 1 : ℕ) : ℝ)` using `by positivity`. Conclude with `this) (hx a)` after adjusting the coercions. Establish `hy' : ∀ a, V.Ge n (em a y)`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(hint a ε).mul_int (hx a)`. Rewrite `h1` using `[← map_mul, hy, map_mul, map_natCast]`. Use `h1.of_l_mul.mono ?_` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `ih y hy'`. Use `⟨z, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pow_kill {ι : Type} (em : ι → (O →+* C)) (hint : ∀ a x, V.Ge 0 (em a x)) {ε : O}
     (hP : ∀ x : O, (∀ a, V.MM (em a x)) → ∃ y, ε * x = (V.l : O) * y) (n : ℕ) :
@@ -236,7 +234,7 @@ section Seq2
 variable {O : Type} [CommRing O] {ι : Type} (em : ι → (O →+* C))
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h`. Establish `h1` using `dvd_sub_pow_of_dvd_sub (p := l) (a := ε * ε) (b := ε) ⟨y, hy⟩ n`. Rewrite `h1` using `[mul_pow]`. Conclude with `(pow_dvd_pow _ (Nat.le_succ n)).trans h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_lift {l : ℕ} {ε : O} (h : ∃ y, ε * ε - ε = (l : O) * y) (n : ℕ) :
     (l : O) ^ n ∣ ε ^ (l ^ n) * ε ^ (l ^ n) - ε ^ (l ^ n) := by
@@ -246,9 +244,9 @@ theorem idem_lift {l : ℕ} {ε : O} (h : ∃ y, ε * ε - ε = (l : O) * y) (n 
   exact (pow_dvd_pow _ (Nat.le_succ n)).trans h1
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero V.l_prime.ne_zero`. Establish `h0` using `idem_pow h k`. Rewrite `h0` using `[← Nat.succ_eq_add_one, ← hk]`. Establish `h1` using `dvd_sub_pow_of_dvd_sub h0 n`. Rewrite `h1` using `[← pow_mul, ← pow_succ']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_dvd_pow _ (Nat.le_succ n)).trans h1`.
+A detailed English derivation is pending.
 -/
 theorem idem_cauchy {ε : O} (h : ∃ y, ε * ε - ε = (V.l : O) * y) (n : ℕ) :
     (V.l : O) ^ n ∣ ε ^ (V.l ^ (n + 1)) - ε ^ (V.l ^ n) := by
@@ -260,9 +258,9 @@ theorem idem_cauchy {ε : O} (h : ∃ y, ε * ε - ε = (V.l : O) * y) (n : ℕ)
   exact (pow_dvd_pow _ (Nat.le_succ n)).trans h1
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `idem_lift h n`. Establish `h2` using `congrArg ψ hy`. Establish `hu : V.v (ψ (ε ^ (V.l ^ n))) = 0`. Rewrite using `[map_pow, V.v.map_pow, v_eq_zero_of_mm h1, smul_zero]`. Apply `ge_of_unit_mul hu` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h2` using `[map_sub, map_mul, map_mul, map_pow ψ (V.l : O), map_natCast]`. Rewrite using `[mul_sub, mul_one, h2]`. Simplify using `using (ge_l_pow n).mul (hint y)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem em_idem (ψ : O →+* C) (hint : ∀ x, V.Ge 0 (ψ x)) {ε : O} (h : ∃ y, ε * ε - ε = (V.l : O) * y)
     (h1 : V.MM (ψ ε - 1)) (n : ℕ) : V.Ge n (ψ (ε ^ (V.l ^ n)) - 1) := by
@@ -276,15 +274,13 @@ theorem em_idem (ψ : O →+* C) (hint : ∀ x, V.Ge 0 (ψ x)) {ε : O} (h : ∃
   simpa using (ge_l_pow n).mul (hint y)
 
 /- English proof (translation)
-Use `choose x hx using hφ`. Use `⟨fun n => ε ^ (V.l ^ n) * x n, fun n => ?_, fun n => dvd_mul_right _ _, fun a N => ⟨N, fun n hn => ?_⟩⟩` and prove the remaining obligations. Establish `h2 : (V.l : O) ^ n ∣ ε ^ n * (x (n + 1) - x n)`. Use `pow_kill em hint hP n _ fun a => ?_` and prove the remaining obligations. Use `(hx n a).sub ((hx (n + 1) a).mono (by push_cast; linarith))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : n ≤ V.l ^ n` using `(Nat.lt_pow_self V.l_prime.one_lt).le`. Establish `h4 : (V.l : O) ^ n ∣ ε ^ (V.l ^ n) * (x (n + 1) - x n)` using `h2.trans (mul_dvd_mul_right (pow_dvd_pow _ h3) _)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `((idem_cauchy h n).mul_right (x (n + 1))).add h4`. Establish `e : ε ^ (V.l ^ (n + 1)) * x (n + 1) - ε ^ (V.l ^ n) * x n = (ε ^ V.l ^ (n + 1) - ε ^ V.l ^ n) * x (n + 1) + ε ^ V.l ^ n * (x (n + 1) - x n)` using `by ring`. Use `show (V.l : O) ^ n ∣ ε ^ (V.l ^ (n + 1)) * x (n + 1) - ε ^ (V.l ^ n) * x n`. Rewrite using `[e]`. Conclude with `h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(hx n a).sub ((hint a (x n)).mul_int (em_idem (em a) (hint a) h (h1 a) n))`. Establish `hn' : (N : ℝ) ≤ n` using `by exact_mod_cast hn`. Use `VF.Ge.mono ?_ hn'` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_seq (hint : ∀ a x, V.Ge 0 (em a x)) {ε : O} (h : ∃ y, ε * ε - ε = (V.l : O) * y)
     (h1 : ∀ a, V.MM (em a ε - 1)) (hP : ∀ x : O, (∀ a, V.MM (em a x)) → ∃ y, ε * x = (V.l : O) * y)
@@ -325,9 +321,9 @@ def blk (r s : Fin 2) (M : Matrix κ κ C) : Matrix (Fin 2 × κ) (Fin 2 × κ) 
   Matrix.of fun x y : Fin 2 × κ => if x.1 = r ∧ y.1 = s then M x.2 y.2 else 0
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, blk, Matrix.of_apply, Fintype.sum_prod_type]`. Distinguish the cases in `h : x.1 = r`. Simplify using `only [h, true_and, if_true]`. Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blk_mulVec (r s : Fin 2) (M : Matrix κ κ C) (v : Fin 2 × κ → C) (x : Fin 2 × κ) :
     (blk r s M).mulVec v x = if x.1 = r then M.mulVec (fun j => v (s, j)) x.2 else 0 := by
@@ -345,7 +341,7 @@ def blks (M : Fin 2 → Fin 2 → Matrix κ κ C) : Matrix (Fin 2 × κ) (Fin 2 
   (blk 0 0 (M 0 0) + blk 0 1 (M 0 1)) + (blk 1 0 (M 1 0) + blk 1 1 (M 1 1))
 
 /- English proof (translation)
-Take `⟨r, i⟩` from `x`. Simplify using `only [blks, Matrix.add_mulVec, Pi.add_apply, blk_mulVec, Fin.sum_univ_two]`. Apply the tactic sequence `fin_cases r <;> simp`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blks_mulVec (M : Fin 2 → Fin 2 → Matrix κ κ C) (v : Fin 2 × κ → C) (x : Fin 2 × κ) :
     (blks M).mulVec v x = ∑ s, (M x.1 s).mulVec (fun j => v (s, j)) x.2 := by
@@ -360,9 +356,9 @@ section Main
 variable [CharZero C] {O : Type} [CommRing O] [StarRing O] {dd : ℕ} (Y : FBChart C V O dd)
 
 /- English proof (translation)
-Establish `e : ∀ x i j, ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dActH C Y.B x i j = MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (Y.B.A.act x i)`. Introduce `x i j`. Use `show MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (MvPowerSeries.map (algebraMap C C) (Y.B.A.act x i)) = _`. Rewrite using `[MvPowerSeries.coeff_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dActH C Y.B, fun x v => ?_, fun x i j => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, e, linAct]`. Rewrite using `[e]`. Conclude with `Y.intAct x i _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lin : ∃ L : O →+* Matrix (Fin dd) (Fin dd) C,
     (∀ x v, (L x).mulVec v = linAct (Y.B.A.act x) v) ∧ ∀ x i j, V.Ge 0 (L x i j) := by
@@ -394,9 +390,9 @@ noncomputable def rawOne : RawChart C 0 (fun _ => Empty) (Fin dd) where
   big := fun _ _ => True
 
 /- English proof (translation)
-Establish `hR` using `GlobalTheory.T.isIntegralGaugedFormalGroupLaw_selfConjugateSquare C V O dd Y d I0 p`. Establish `hb : ∀ r s, IsEnd (Y.rawSelf p) V (blk r s (M r s)) (blk s r (M' s r))` using `fun r s => GlobalTheory.T.gaugeAdjointEndPair_elementaryBlock C V O dd Y d I0 p 0 _ (rawOne Y) rfl rfl rfl r s _ _ (h r s)`. Establish `ha` using `GlobalTheory.T.isGaugeAdjointIntegralEndPair_add C V d _ _ (Y.rawSelf p) hR`. Use `ha _ _ _ _ (ha _ _ _ _ (hb 0 0) (hb 0 1)) (ha _ _ _ _ (hb 1 0) (hb 1 1))` as an intermediate fact. Establish `e : blks M' = blk 0 0 (M' 0 0) + blk 1 0 (M' 1 0) + (blk 0 1 (M' 0 1) + blk 1 1 (M' 1 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `blks`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `this`.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEnd_blks (M M' : Fin 2 → Fin 2 → Matrix (Fin dd) (Fin dd) C)
     (h : ∀ r s, IsEnd (rawOne Y) V (M r s) (M' s r)) : IsEnd (Y.rawSelf p) V (blks M) (blks M') := by
@@ -412,25 +408,21 @@ theorem isEnd_blks (M M' : Fin 2 → Fin 2 → Matrix (Fin dd) (Fin dd) C)
   exact this
 
 /- English proof (translation)
-Use `Y.algClosed` as an intermediate fact. Take `⟨L, hL, hLi⟩` from `exists_lin Y`. Take `⟨ε, h0, h1, hP⟩` from `p.em_unr`. Take `⟨E, -, -, -, hE, -⟩` from `GlobalTheory.T.exists_integralEnd_of_ladic_action_limit C V O dd Y 0 _ (rawOne Y) rfl rfl rfl (fun n => ε ^ (V.l ^ n)) (idem_cauchy h0)`. Simplify using `only [← hL] at hE`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hb : ∀ v, ∃ b : I0 → C, E.mulVec v = ∑ c, b c • p.e c`. Introduce `v`. Take `⟨w, hw, hv⟩` from `GlobalTheory.T.limitIdempotent_range_le_sum_eigenspaces C V O (Fin dd) L hLi d p.em p.em_int p.em_frob ε h0 hP E hE v`. Use `choose b _ hb using fun a => p.e_full a (w a) fun x => by rw [← hL, hw]`. Use `⟨fun c => ∑ a, b a c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Simplify using `only [Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => hb a`. Use `choose b hb using hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsd, hsl⟩` from `exists_seq p.em p.em_int h0 h1 hP φ hφ`. Take `⟨M, M', e1, e2, hM, hM'⟩` from `GlobalTheory.T.exists_integralEnd_of_ladic_action_limit C V O dd Y 0 _ (rawOne Y) rfl rfl rfl s hs`. Simplify using `only [← hL] at hM hM'`. Establish `hst : (V.l : O) ∣ ε * star ε - star ε`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨y, hy⟩` from `hP (1 - star ε) fun a => by`. Use `h1 (a + p.hd)` as an intermediate fact. Unfold `VF.MM at this ⊢`. Rewrite using `[map_sub, map_one, p.em_conj, ← V.v.map_neg, neg_sub]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨-star y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg star hy`. Simplify using `only [star_mul', star_sub, star_one, star_star, star_natCast] at h2`. Take the linear combination `-h2`. Use `⟨M, M', e1, e2, fun c => ?_, fun c => ?_, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsLim.eig L (a := s) hM (p.em (p.ty0 c)) _ (hsl _) (p.e_int c) fun x => by rw [hL, p.e_eig]`. Use `IsLim.eig L (a := fun n => star (s n)) hM' (p.em (p.ty0 c)) _ ?_ (p.e_int c) fun x => by` and prove the remaining obligations. Rewrite using `[hL, p.e_eig]`. Simplify using `only [p.em_conj]`. Conclude with `hsl _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hb]`. Use `IsLim.absorb L hLi (a := s) (e := fun n => ε ^ (V.l ^ n)) hM hE (fun n => ?_) v` and prove the remaining obligations. Take `⟨z, hz⟩` from `hsd n`. Use `show (V.l : O) ^ n ∣ ε ^ (V.l ^ n) * s n - s n`. Rewrite using `[hz, ← mul_assoc, ← sub_mul]`.
-
-Conclude with `(idem_lift h0 n).mul_right _`. Rewrite using `[← hb]`. Use `IsLim.absorb L hLi (a := fun n => star (s n)) (e := fun n => ε ^ (V.l ^ n)) hM' hE (fun n => ?_) v` and prove the remaining obligations. Take `⟨z, hz⟩` from `hsd n`. Use `show (V.l : O) ^ n ∣ ε ^ (V.l ^ n) * star (s n) - star (s n)`.
-
-Rewrite using `[hz, star_mul', star_pow, ← mul_assoc, ← sub_mul, ← mul_pow]`. Conclude with `((pow_dvd_pow _ (Nat.le_succ n)).trans (dvd_sub_pow_of_dvd_sub hst n)).mul_right _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair : ∃ b : (Fin dd → C) → I0 → C, ∀ φ : ZMod d → C,
     (∀ N : ℕ, ∃ x : O, ∀ a, V.Ge N (φ a - p.em a x)) →
@@ -489,7 +481,7 @@ theorem exists_pair : ∃ b : (Fin dd → C) → I0 → C, ∀ φ : ZMod d → C
 end Main
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨![A, B], h1, h2, Fin.forall_fin_two.2 ⟨a0, b1⟩, Fin.forall_fin_two.2 ⟨a1, b0⟩, Fin.forall_fin_two.2 ⟨ra, rb⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasProj_of {d : ℕ} {I0 κ : Type} [Fintype I0] [Fintype κ] (X : RawChart C d (fun _ => I0) κ)
     (A B : Matrix κ κ C) (h1 : IsEnd X V A B) (h2 : IsEnd X V B A)
@@ -500,33 +492,31 @@ theorem hasProj_of {d : ℕ} {I0 κ : Type} [Fintype I0] [Fintype κ] (X : RawCh
   ⟨![A, B], h1, h2, Fin.forall_fin_two.2 ⟨a0, b1⟩, Fin.forall_fin_two.2 ⟨a1, b0⟩, Fin.forall_fin_two.2 ⟨ra, rb⟩⟩
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p`. Take `⟨b, hb⟩` from `exists_pair Y p`. Establish `hgi : ∀ a r s, V.Ge 0 (p.gm a r s)`. Introduce `a r s`. Take `⟨G, hG⟩` from `p.gm_lim 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(hG a r s).add (by simpa using p.em_int a (G r s))` as an intermediate fact. Simplify using `using this`. Establish `hφ : ∀ r s : Fin 2, ∀ N : ℕ, ∃ x : O, ∀ a, V.Ge N (p.gm a r 0 * p.gm (a + p.hd) s 1 - p.em a x)`. Introduce `r s N`. Take `⟨G, hG⟩` from `p.gm_lim N`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨G r 0 * star (G s 1), fun a => ?_⟩` and prove the remaining obligations. Use `((hgi a r 0).mul_int (hG (a + p.hd) s 1)).add ((p.em_int (a + p.hd) (G s 1)).mul_int (hG a r 0))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, p.em_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `choose M M' e1 e2 hM hM' hv hv' using fun r s : Fin 2 => hb (fun a => p.gm a r 0 * p.gm (a + p.hd) s 1) (hφ r s)`. Establish `hu : ∀ g c x, (Y.rawSelf p).u g c x = p.gm (p.ty0 c) x.1 g * p.e c x.2` using `fun _ _ _ => rfl`. Establish `hcol : ∀ g c s, (fun j => (Y.rawSelf p).u g c (s, j)) = p.gm (p.ty0 c) s g • p.e c` using `fun _ _ _ => rfl`. Establish `k0 : ∀ g c, (blks M).mulVec ((Y.rawSelf p).u g c) = (if 1 = g then (0 : C) else 1) • (Y.rawSelf p).u 0 c`. Introduce `g c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[blks_mulVec, ← p.gm_hyp (p.ty0 c) 1 g, Pi.smul_apply, hu, smul_eq_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hcol, Matrix.mulVec_smul, hM]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `k1 : ∀ g c, (blks fun s r => M' r s).mulVec ((Y.rawSelf p).u g c) = (if 0 = g then (0 : C) else 1) • (Y.rawSelf p).u 1 c`. Introduce `g c`. Use function extensionality and compare the values at `x`. Rewrite using `[blks_mulVec, ← p.gm_hyp (p.ty0 c) 0 g, Pi.smul_apply, hu, smul_eq_mul, Finset.sum_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hcol, Matrix.mulVec_smul, hM', add_assoc, p.hd_two, add_zero]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `i1 : IsEnd (Y.rawSelf p) V (blks M) (blks fun s r => M' r s)` using `isEnd_blks Y p M (fun s r => M' r s) e1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : IsEnd (Y.rawSelf p) V (blks fun s r => M' r s) (blks M)` using `isEnd_blks Y p (fun s r => M' r s) M fun r s => e2 s r`. Use `hasProj_of _ _ _ i1 i2 (fun c => ?_) (fun c => ?_) (fun c => ?_) (fun c => ?_) ?_ ?_` and prove the remaining obligations. Rewrite using `[k0, if_neg (by decide), one_smul]`. Rewrite using `[k1, if_neg (by decide), one_smul]`. Rewrite using `[k0, if_pos rfl, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k1, if_pos rfl, zero_smul]`. Introduce `v`. Use `⟨fun c => ∑ s, b (fun j => v (s, j)) c * p.gm (p.ty0 c + p.hd) s 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `show (blks M).mulVec v x = (∑ c, (∑ s, b (fun j => v (s, j)) c * p.gm (p.ty0 c + p.hd) s 1) • (Y.rawSelf p).u 0 c) x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[blks_mulVec, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, hu, smul_eq_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hv, Matrix.mulVec_sum, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hM]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun c => ∑ s, b (fun j => v (s, j)) c * p.gm (p.ty0 c + p.hd) s 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `show (blks fun s r => M' r s).mulVec v x = (∑ c, (∑ s, b (fun j => v (s, j)) c * p.gm (p.ty0 c + p.hd) s 0) • (Y.rawSelf p).u 1 c) x`. Rewrite using `[blks_mulVec, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, hu, smul_eq_mul, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hv', Matrix.mulVec_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hM', add_assoc, p.hd_two, add_zero]`.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasProj_self : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I0 : Type) [Fintype I0] (p : SelfData Y d I0), HasProj (Y.rawSelf p) V := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p

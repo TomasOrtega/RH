@@ -10,9 +10,9 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `hs : (((Real.sqrt d : ℝ) : ℂ)) ^ 2 = (d : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules. Establish `hm' : (d : ℂ) + 1 = 4 * (m : ℂ)` using `by exact_mod_cast hm`. Establish `hI : Complex.I ^ 2 = -1` using `Complex.I_sq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `omegaK`. Establish `: ((1 + Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2) ^ 2 - (1 + Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2 + (m : ℂ) = (Complex.I ^ 2 * (((Real.sqrt d : ℝ) : ℂ)) ^ 2 - 1 + 4 * (m : ℂ)) / 4` using `by ring`. Rewrite using `[this, hI, hs, ← hm']`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem redOmegaK_quad (d m : ℕ) (hm : d + 1 = 4 * m) : omegaK d ^ 2 - omegaK d + (m : ℂ) = 0 := by
   have hs : (((Real.sqrt d : ℝ) : ℂ)) ^ 2 = (d : ℂ) := by
@@ -27,29 +27,23 @@ theorem redOmegaK_quad (d m : ℕ) (hm : d + 1 = 4 * m) : omegaK d ^ 2 - omegaK 
   ring
 
 /- English proof (translation)
-Take `⟨m, hm⟩ : ∃ m : ℕ, d + 1 = 4 * m` from `⟨(d + 1) / 4, by omega⟩`. Use `set w : ℂ_[l] := ι (omegaK d) with hw`. Establish `hq : w ^ 2 - w + (m : ℂ_[l]) = 0`. Use `congrArg ι (redOmegaK_quad d m hm)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hm1 : ‖(m : ℂ_[l])‖ ≤ 1`. Rewrite using `[norm_natCast_Cl]`. Conclude with `Padic.norm_int_le_one (m : ℤ)`. Establish `hd1 : ‖(d : ℂ_[l])‖ = 1` using `norm_natCast_Cl_of_not_dvd l hld`. Establish `hw1 : ‖w‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hgt`. Rewrite `hgt` using `[not_le]`. Establish `h1 : ‖w - 1‖ = ‖w‖`. Establish `hne : ‖w‖ ≠ ‖(-1 : ℂ_[l])‖` using `by rw [norm_neg, norm_one]; exact hgt.ne'`. Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne, norm_neg, norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `max_eq_left hgt.le`. Establish `h2 : w * (w - 1) = -(m : ℂ_[l])` using `by linear_combination hq`. Establish `h3 : ‖w‖ * ‖w‖ ≤ 1`. Use `congrArg norm h2` as an intermediate fact. Rewrite `this` using `[norm_mul, h1, norm_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hm1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hder : ‖2 * w - 1‖ = 1`. Establish `h2 : (2 * w - 1) ^ 2 = -(d : ℂ_[l])`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : (d : ℂ_[l]) + 1 = 4 * (m : ℂ_[l])` using `by exact_mod_cast hm`. Take the linear combination `4 * hq + hm'`. Establish `h3 : ‖2 * w - 1‖ ^ 2 = 1` using `by rw [← norm_pow, h2, norm_neg, hd1]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).mp h3`. Establish `hco : ∀ i, (Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (m : ℂ_[l]) : Polynomial ℂ_[l]).coeff i = (if i = 2 then 1 else 0) - (if 1 = i then 1 else 0) + (if i = 0 then (m : ℂ_[l]) else 0)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C, Polynomial.coeff_X]`. Use `hensel_mem l (Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (m : ℂ_[l])) ?_ ?_ w hw1 ?_ ?_` and prove the remaining obligations. Introduce `i`. Rewrite using `[hco]`. Use `(MaximalUnramifiedExtension l).add_mem ((MaximalUnramifiedExtension l).sub_mem ?_ ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `split_ifs`. Conclude with `(MaximalUnramifiedExtension l).one_mem`. Conclude with `(MaximalUnramifiedExtension l).zero_mem`. Use `split_ifs`. Conclude with `(MaximalUnramifiedExtension l).one_mem`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Conclude with `(MaximalUnramifiedExtension l).zero_mem`. Use `split_ifs`. Conclude with `natCast_mem (MaximalUnramifiedExtension l) m`. Conclude with `(MaximalUnramifiedExtension l).zero_mem`. Introduce `i`.
-
-Rewrite using `[hco]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((norm_sub_le_max_Cl l _ _).trans (max_le ?_ ?_)) ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp`. Use `split_ifs`.
-
-Conclude with `hm1`. Simplify using the standard rewrite rules. Simplify using `using hq`. Establish `hd : (Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (m : ℂ_[l]) : Polynomial ℂ_[l]).derivative.eval w = 2 * w - 1`. Simplify using the standard rewrite rules.
-
-Use `left`. Evaluate the numerical expressions. Rewrite using `[hd, hder]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omega_mem_kur (d : ℕ) (hsq : Squarefree d) (hd4 : d % 4 = 3) (l : ℕ) [Fact l.Prime] (hld : ¬ l ∣ d)
     (ι : ℂ ≃+* ℂ_[l]) : ι (omegaK d) ∈ MaximalUnramifiedExtension l := by

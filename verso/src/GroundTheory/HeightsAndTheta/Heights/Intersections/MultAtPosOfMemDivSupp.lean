@@ -14,11 +14,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `hmin` using `hW.1`. Establish `hWp : W.IsPrime` using `hmin.1.1`. Establish `hm : IsLocalRing.maximalIdeal (Localization.AtPrime W) ∈ ((P ⊔ Ideal.span {s}).map (algebraMap (MRing ι) (Localization.AtPrime W))).minimalPrimes`. Rewrite using `[IsLocalization.minimalPrimes_map W.primeCompl (Localization.AtPrime W)]`. Rewrite using `[Set.mem_preimage, Localization.AtPrime.under_maximalIdeal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmin`. Establish `hne` using `ReciprocityTheory.ChartRestriction.G.AI.I1.SwapLoc.length_quot_ne_top_of_mem_minimalPrimes _ hm`. Establish `: Nontrivial (Localization.AtPrime W ⧸ (P ⊔ Ideal.span {s}).map (algebraMap (MRing ι) (Localization.AtPrime W)))` using `Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top hm.1.2)`. Establish `hpos` using `Module.length_pos (R := Localization.AtPrime W) (M := Localization.AtPrime W ⧸ (P ⊔ Ideal.span {s}).map (algebraMap (MRing ι) (Localization.AtPrime W)))`. Rewrite using `[multAt, dif_pos hWp, ReciprocityTheory.ChartRestriction.G.AI.I1.inh_length_locQuot]`.
-
-Conclude with `ENat.toNat_pos hpos.ne' hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multAt_pos_of_mem_divSupp {P : Ideal (MRing ι)} {s : MRing ι} {W : Ideal (MRing ι)}
     (hW : W ∈ divSupp P s) : 0 < multAt (P ⊔ Ideal.span {s}) W := by

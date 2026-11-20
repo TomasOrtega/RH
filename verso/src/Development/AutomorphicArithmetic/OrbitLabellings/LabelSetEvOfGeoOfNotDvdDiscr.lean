@@ -12,11 +12,9 @@ open Formalism.IncomingBounds Formalism.L2.Pj Formalism.L2.FormalSeriesBounds Fo
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Introduce `hup E _ _ _ H Dw lv Xo c _ hstar T io y C3 C _ _ V ie hie k Y hY _ Orb _ d _ lab ha hg hdisc _ hr _ o Hc`. Use `haveI : Fact V.l.Prime := ⟨V.l_prime⟩`. Establish `hd : ¬ ((V.l : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ (𝓞 E)))`. Rewrite using `[NumberField.discr_eq_discr E (Module.Free.chooseBasis ℤ (𝓞 E))]` and apply the resulting hypothesis. Take `⟨T', φ, t', hi, hf, hG⟩` from `GlobalTheory.IntegralChartCover.cover E H Dw lv Xo c hstar T io y C3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : ¬ IsUnit ((V.l : ℕ) : T.V)` using `UpFBr.not_isUnit_l (ie.comp (algebraMap T.V T.Fr)) fun t => embIntSt_holds T C V ie hie t`. Establish `hp' : ¬ IsUnit ((V.l : ℕ) : T'.V)` using `fun h => by`. Use `letI := φ.toAlgebra`. Use `haveI : Algebra.IsIntegral T.V T'.V := ⟨hf.to_isIntegral⟩`. Use `haveI : FaithfulSMul T.V T'.V := (faithfulSMul_iff_algebraMap_injective _ _).2 hi`.
-
-Conclude with `hp (isUnit_of_map_unit (algebraMap T.V T'.V) _ (by rwa [map_natCast]))`. Establish `hL` using `GlobalTheory.UpperBoundDescent.desc V.l T T' φ hi hf hp _ _ _ _ (UpFBr.upFLaw_of_geoJ (hup V.l) Y.l_odd T'.V hp' t'.G _ _ _ hG hd)`. Conclude with `UpFBr.chStSelf_of_upChar Y (selfOfLab ha hg o) (rankHyp_ofLabS ha hg hr o) Hc (UpFBr.upCharS_chartL hL hie hd hY ha hg hr o Hc)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.labelSet_ev_of_geo_of_not_dvd_discr :
     (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) →

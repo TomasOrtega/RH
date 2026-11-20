@@ -5,17 +5,15 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ _ μ _ φ h hφ hfin T c t hT hct hh`. Establish `hmeas : ∀ (a : ℝ≥0∞) (x : G), Measurable fun g => a * φ (x⁻¹ * g)` using `fun a x => (hφ.comp (measurable_const_mul _)).const_mul a`. Establish `h1 : ∀ g, h g ≤ ∑' m : ℕ, ∑ x ∈ T (m + 1), ((m + 1 : ℕ) : ℝ≥0∞) ^ (-t) * φ (x⁻¹ * g)`. Introduce `g`. Take `⟨m, hm, x, hx, hle⟩` from `hh g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Use `hle.trans (le_trans ?_ (ENNReal.le_tsum k))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun x => ((k + 1 : ℕ) : ℝ≥0∞) ^ (-t) * φ (x⁻¹ * g)) (fun _ _ => bot_le) hx`. Establish `h2 : ∀ m : ℕ, ∫⁻ g, ∑ x ∈ T (m + 1), ((m + 1 : ℕ) : ℝ≥0∞) ^ (-t) * φ (x⁻¹ * g) ∂μ ≤ ENNReal.ofReal (((m + 1 : ℕ) : ℝ) ^ ((c : ℝ) - t)) * ∫⁻ g, φ g ∂μ`. Introduce `m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_finset_sum _ (fun x _ => hmeas _ x)]`. Establish `: ∀ x ∈ T (m + 1), ∫⁻ g, ((m + 1 : ℕ) : ℝ≥0∞) ^ (-t) * φ (x⁻¹ * g) ∂μ = ((m + 1 : ℕ) : ℝ≥0∞) ^ (-t) * ∫⁻ g, φ g ∂μ`. Introduce `x _`. Establish `hm : Measurable fun g => φ (x⁻¹ * g)` using `hφ.comp (measurable_const_mul _)`. Rewrite using `[lintegral_const_mul _ hm, lintegral_mul_left_eq_self φ x⁻¹]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, nsmul_eq_mul, ← mul_assoc]`. Use `gcongr`. Establish `hpos : (0 : ℝ) < ((m + 1 : ℕ) : ℝ)` using `by positivity`. Rewrite using `[← ENNReal.ofReal_rpow_of_pos hpos, ENNReal.ofReal_natCast, sub_eq_add_neg, ENNReal.rpow_add _ _ (by simp) (by simp), ENNReal.rpow_natCast]`. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT (m + 1) (by omega)` after adjusting the coercions. Establish `hs : Summable fun m : ℕ => ((m + 1 : ℕ) : ℝ) ^ ((c : ℝ) - t)` using `(summable_nat_add_iff (f := fun m : ℕ => (m : ℝ) ^ ((c : ℝ) - t)) 1).2 (Real.summable_nat_rpow.2 (by linarith))`. Use `ne_top_of_le_ne_top ?_ (lintegral_mono h1)` and prove the remaining obligations. Rewrite using `[lintegral_tsum (fun m => (Finset.measurable_sum _ (fun x _ => hmeas _ x)).aemeasurable)]`. Use `ne_top_of_le_ne_top ?_ (ENNReal.tsum_le_tsum h2)` and prove the remaining obligations.
-
-Rewrite using `[ENNReal.tsum_mul_right]`. Use `ENNReal.mul_ne_top ?_ hfin` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun m => by positivity) hs]`. Conclude with `ENNReal.ofReal_ne_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_ne_top_of_le_rpow_mul_translate :
     ∀ (G : Type) [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant] (φ h : G → ℝ≥0∞), Measurable φ →

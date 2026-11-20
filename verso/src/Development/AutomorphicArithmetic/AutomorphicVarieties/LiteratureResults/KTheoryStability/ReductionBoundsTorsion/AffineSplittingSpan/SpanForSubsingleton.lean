@@ -7,11 +7,11 @@ namespace PositivityTheory.KB.SplitAffineSpectral.PrismSpan
 open PositivityTheory.KB.SplitAffineSpectral
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.coe_castSucc, Fin.val_last, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Nat.even_or_odd n with h | h` into its components or cases. Establish `h' : ¬ Even (n + 1)` using `Nat.not_even_iff_odd.mpr (h.add_odd (by decide))`. Simplify using `[h, h', h.neg_one_pow]`. Establish `h' : ¬ Even n` using `Nat.not_even_iff_odd.mpr h`. Establish `h'' : Even (n + 1)` using `h.add_odd (by decide)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h', h'', h.neg_one_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altsum (n : ℕ) : ∑ i : Fin n, (-1 : ℝ) ^ (i : ℕ) = if Even n then 0 else 1 := by
   induction n with
@@ -27,15 +27,15 @@ theorem altsum (n : ℕ) : ∑ i : Fin n, (-1 : ℝ) ^ (i : ℕ) = if Even n the
       simp [h', h'', h.neg_one_pow]
 
 /- English proof (translation)
-Introduce `q c hc hd`. Take `⟨v, hv⟩ : ∃ v, ∀ y, c y = v` from `⟨c (fun _ => 1), fun y => congrArg c (Subsingleton.elim _ _)⟩`. Break down `Nat.even_or_odd q with hq | hq` into its components or cases. Establish `h3 : ¬ Even (q + 1 + 2)`. Rewrite using `[Nat.not_even_iff_odd]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `hq with ⟨r, rfl⟩` into its components or cases. Conclude with `⟨r + 1, by ring⟩`. Establish `hd1` using `congrFun hd (fun _ => 1)`. Simplify using `only [dc, hv, Pi.zero_apply] at hd1`. Rewrite `hd1` using `[← Finset.sum_mul, altsum, if_neg h3, one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨0, Fin.elim0, Fin.elim0, fun _ => 0, fun _ _ _ => rfl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `[dc, hv, hd1]`. Establish `h2 : ¬ Even (q + 2)`. Rewrite using `[Nat.not_even_iff_odd]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `hq with ⟨r, rfl⟩` into its components or cases. Conclude with `⟨r + 1, by ring⟩`. Use `⟨0, Fin.elim0, Fin.elim0, fun _ => v, fun _ _ _ => rfl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `only [dc, hv, Finset.univ_eq_empty, Finset.sum_empty, Pi.add_apply, Pi.zero_apply, zero_add]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_mul, altsum, if_neg h2, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spanFor_subsingleton (G : Type) [Group G] [Subsingleton G] : SpanFor G := by
   intro q c hc hd
@@ -61,13 +61,11 @@ theorem spanFor_subsingleton (G : Type) [Group G] [Subsingleton G] : SpanFor G :
     rw [← Finset.sum_mul, altsum, if_neg h2, one_mul]
 
 /- English proof (translation)
-Introduce `q c hc hd`. Take `⟨k, a, α, f, hf, hcf⟩` from `hB q (fun z => c (fun j => e.symm (z j))) (fun g _ y => by`. Simplify using `only [map_mul]`. Conclude with `hc _ trivial _)`. Use the proof step `(by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Use `congrFun hd (fun j => e.symm (z j))` as an intermediate fact. Simplify `this)` using `[dc]`. Use `⟨k, a, fun i j => (α i j).comp (MulEquiv.toAdditive e).toAddMonoidHom, fun y => f (fun j => e (y j)), fun g _ y => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `hf _ trivial _`. Use function extensionality and compare the values at `y`. Use `congrFun hcf (fun j => e (y j))` as an intermediate fact. Simplify using `only [MulEquiv.symm_apply_apply] at this`. Rewrite using `[this]`.
-
-Simplify using `[Finset.sum_apply, cupH, dc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spanFor_equiv {A B : Type} [Group A] [Group B] (e : A ≃* B) (hB : SpanFor B) : SpanFor A := by
   intro q c hc hd
@@ -117,7 +115,7 @@ def zdata (N : ℕ) : WData (Multiplicative (Fin N → ℤ)) (Multiplicative (Fi
       try rfl
 
 /- English proof (translation)
-The claim follows from `| 0 => spanFor_subsingleton _ | N + 1 => (zdata N).step' (spanFor_pi N)`.
+A detailed English derivation is pending.
 -/
 theorem spanFor_pi : ∀ N : ℕ, SpanFor (Multiplicative (Fin N → ℤ))
   | 0 => spanFor_subsingleton _
@@ -130,7 +128,7 @@ namespace PositivityTheory.KB.SplitAffineSpectral
 open PrismSpan
 
 /- English proof (translation)
-Introduce `A _ _ _ q c hc hd`. Set `e : Multiplicative (Additive A) ≃* Multiplicative (Fin (Module.finrank ℤ (Additive A)) → ℤ)` to `AddEquiv.toMultiplicative (Module.finBasis ℤ (Additive A)).equivFun.toAddEquiv`. Conclude with `spanFor_equiv e (spanFor_pi _) q c hc hd`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem span : Span := by
   intro A _ _ _ q c hc hd

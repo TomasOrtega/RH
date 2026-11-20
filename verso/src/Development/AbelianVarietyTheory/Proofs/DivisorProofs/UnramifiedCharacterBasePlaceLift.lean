@@ -22,13 +22,13 @@ open GlobalTheory.LFun
 namespace GlobalTheory.VPrimeActGood
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT`. Establish `hP : GlobalTheory.FunPr.Hypotheses₂` using `hKP.base`. Establish `hv : X.Good B.v₁` using `hT.chars.good`. Establish `hvT : B.v₁ ∉ X.T` using `hv.1`. Take `⟨-, -, hrα⟩` from `GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.α hT.chars.heckeα B.v₁ B.τ₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hrβ⟩` from `GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.β hT.chars.heckeβ B.v₁ B.τ₁`. Establish `hw : splitPrime B.τ₁ ∉ above E (X.T : Set (Pl F))` using `by show ¬ (splitPrime B.τ₁).under (𝓞 F) ∈ (X.T : Set (Pl F))`. Rewrite using `[splitPrime_under]`. Conclude with `hvT`. Establish `uα` using `hrα.2 (hT.chars.unrα _ hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `uβ` using `hrβ.2 (hT.chars.unrβ _ hw)`. Use `⟨chrW X.ν B.τ₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx show chrW (X.α / X.β) B.τ₁ x = 1`. Rewrite using `[GlobalTheory.KSplit.chrW_div, MonoidHom.div_apply, uα x hx, uβ x hx, div_one]`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [chrW, locChar, MonoidHom.coe_comp, Function.comp_apply]`. Apply the tactic sequence `first | exact Circle.norm_coe _ | exact Circle.abs_coe _ | simp`. Introduce `ι hι g₀`. Conclude with `(GlobalTheory.T.local_linear_functional_triple_at_good_place hP F E σ B a a' G X om om' hT B.v₁ hv B.τ₁ ι hι).2.2.1 g₀`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vact : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

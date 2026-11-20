@@ -8,15 +8,15 @@ namespace GlobalTheory.WeilDeligne
 open NumberField IsDedekindDomain Polynomial Module in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h V _ _ _ ρ hρ σ τ hdeg`. Set `x : ℕ → _root_.GlobalTheory.WeilDeligne.Weil h` to `fun k ↦ (τ ^ k)⁻¹ * σ ^ k`. Establish `hmem : ∀ k, ρ (x k) ∈ Set.range fun ι ↦ ρ (_root_.GlobalTheory.WeilDeligne.ineIncl h ι)`. Introduce `k`. Establish `h0 : _root_.GlobalTheory.WeilDeligne.deg (x k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [x, _root_.GlobalTheory.WeilDeligne.deg_mul, _root_.GlobalTheory.WeilDeligne.deg_inv, _root_.GlobalTheory.WeilDeligne.deg_pow, hdeg]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨_, _root_.GlobalTheory.WeilDeligne.deg_eq_zero_iff.mp h0⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Use `congr 1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨k, l, hkl, hρkl⟩` from `Set.Finite.exists_lt_map_eq_of_forall_mem hmem hρ.finite_range`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_lt hkl`. Establish `hx : ρ (x k) = ρ (x (k + m + 1))` using `hρkl`. Use `⟨m + 1, Nat.succ_pos m, ?_⟩` and prove the remaining obligations. Establish `key : σ ^ (m + 1) = τ ^ (k + m + 1) * x (k + m + 1) * (x k)⁻¹ * (τ ^ k)⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [x]`. Use `group`. Establish `key' : τ ^ (m + 1) = τ ^ (k + m + 1) * (τ ^ k)⁻¹` using `by group`. Establish `hinv : ρ (x k) * ρ (x k)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← map_pow, key, key']`. Simplify using `only [map_mul]`. Rewrite using `[← hx, mul_assoc (ρ _) (ρ (x k)), hinv, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WeilDeligne.exists_pow_eq_pow_of_deg_eq : ∀ (E Ω : Type) [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)

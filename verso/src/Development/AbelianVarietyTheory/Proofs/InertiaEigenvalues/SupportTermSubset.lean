@@ -20,7 +20,7 @@ def tr (y : G) (P : W) : G → W := fun x => ∑ᶠ γ, term ι ρ J χ y x P γ
 variable {ι ρ J χ}
 
 /- English proof (translation)
-Introduce `γ hγ`. Assume the negation of the conclusion as `h`. Conclude with `hγ (by unfold term; exact dif_neg (show ¬ ((ι γ * y)⁻¹ * x ∈ J) from h))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem support_term_subset (y x : G) (P : W) :
     Function.support (term ι ρ J χ y x P) ⊆ {γ | (ι γ * y)⁻¹ * x ∈ J} := by
@@ -29,9 +29,9 @@ theorem support_term_subset (y x : G) (P : W) :
   exact hγ (by unfold term; exact dif_neg (show ¬ ((ι γ * y)⁻¹ * x ∈ J) from h))
 
 /- English proof (translation)
-Break down `Set.eq_empty_or_nonempty {γ | (ι γ * y)⁻¹ * x ∈ J} with h | ⟨γ₀, h₀⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Set.finite_empty`. Establish `hs : ((Bridge.stab ι J y : Subgroup Γ) : Set Γ).Finite` using `Set.finite_coe_iff.1 hf`. Use `(hs.image fun s => γ₀ * s).subset fun γ hγ => ⟨γ₀⁻¹ * γ, ?_, by simp⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `γ₀⁻¹ * γ ∈ Bridge.stab ι J y`. Rewrite using `[Bridge.mem_stab]`. Establish `h1` using `J.mul_mem h₀ (J.inv_mem (show (ι γ * y)⁻¹ * x ∈ J from hγ))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_cond {y : G} (hf : Finite (Bridge.stab ι J y)) (x : G) : {γ | (ι γ * y)⁻¹ * x ∈ J}.Finite := by
   rcases Set.eq_empty_or_nonempty {γ | (ι γ * y)⁻¹ * x ∈ J} with h | ⟨γ₀, h₀⟩
@@ -45,18 +45,18 @@ theorem finite_cond {y : G} (hf : Finite (Bridge.stab ι J y)) (x : G) : {γ | (
     simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(finite_cond hf x).subset (support_term_subset y x P)`.
+A detailed English derivation is pending.
 -/
 theorem support_term_finite {y : G} (hf : Finite (Bridge.stab ι J y)) (x : G) (P : W) :
     (Function.support (term ι ρ J χ y x P)).Finite :=
   (finite_cond hf x).subset (support_term_subset y x P)
 
 /- English proof (translation)
-Establish `e : (ι (γ₀ * γ) * y)⁻¹ * (ι γ₀ * x * k) = (ι γ * y)⁻¹ * x * k`. Simplify using `[mul_assoc]`. Unfold `term`. Distinguish the cases in `h : (ι γ * y)⁻¹ * x ∈ J`. Establish `h' : (ι (γ₀ * γ) * y)⁻¹ * (ι γ₀ * x * k) ∈ J` using `by rw [e]; exact J.mul_mem h k.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[dif_pos h', dif_pos h]`. Establish `ek : (⟨_, h'⟩ : J) = ⟨_, h⟩ * k` using `Subtype.ext e`. Rewrite using `[ek, map_mul, map_mul, Units.val_mul, map_smul, smul_smul, mul_comm, Module.End.mul_apply]`. Establish `h' : ¬ (ι (γ₀ * γ) * y)⁻¹ * (ι γ₀ * x * k) ∈ J`. Rewrite using `[e]; intro h2; exact h (by simpa using J.mul_mem h2 (J.inv_mem k.2))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h', dif_neg h, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem term_mul (y x : G) (P : W) (γ₀ γ : Γ) (k : J) :
     term ι ρ J χ y (ι γ₀ * x * k) P (γ₀ * γ) = ((χ k : ℂˣ) : ℂ) • ρ γ₀ (term ι ρ J χ y x P γ) := by
@@ -73,9 +73,9 @@ theorem term_mul (y x : G) (P : W) (γ₀ γ : Γ) (k : J) :
     rw [dif_neg h', dif_neg h, map_zero, smul_zero]
 
 /- English proof (translation)
-Unfold `tr`. Rewrite using `[← finsum_comp_equiv (Equiv.mulLeft γ₀)]`. Simplify using `only [Equiv.coe_mulLeft, term_mul]`. Set `L : W →ₗ[ℂ] W` to `((χ k : ℂˣ) : ℂ) • ρ γ₀`. Express the relevant statement in the definitionally equal form `∑ᶠ γ, L (term ι ρ J χ y x P γ) = L (∑ᶠ γ, term ι ρ J χ y x P γ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(map_finsum L (support_term_finite hf x P)).symm`.
+A detailed English derivation is pending.
 -/
 theorem tr_law {y : G} (hf : Finite (Bridge.stab ι J y)) (P : W) (γ₀ : Γ) (x : G) (k : J) :
     tr ι ρ J χ y P (ι γ₀ * x * k) = ((χ k : ℂˣ) : ℂ) • ρ γ₀ (tr ι ρ J χ y P x) := by
@@ -87,14 +87,14 @@ theorem tr_law {y : G} (hf : Finite (Bridge.stab ι J y)) (P : W) (γ₀ : Γ) (
   exact (map_finsum L (support_term_finite hf x P)).symm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ExportSeries.mem_lawForms.2 fun γ x k => tr_law hf P γ x k`.
+A detailed English derivation is pending.
 -/
 theorem mem_lawForms_tr {y : G} (hf : Finite (Bridge.stab ι J y)) (P : W) :
     tr ι ρ J χ y P ∈ GlobalTheory.ExportSeries.lawForms ι ρ J χ :=
   GlobalTheory.ExportSeries.mem_lawForms.2 fun γ x k => tr_law hf P γ x k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `e : ∀ γ, term ι ρ J χ y x (P + Q) γ = term ι ρ J χ y x P γ + term ι ρ J χ y x Q γ` using `fun γ => by`. Apply the tactic sequence `unfold term; split_ifs <;> simp [smul_add]`. Simplify using `only [tr, Pi.add_apply, e]`. Conclude with `finsum_add_distrib (support_term_finite hf x P) (support_term_finite hf x Q)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tr_add {y : G} (hf : Finite (Bridge.stab ι J y)) (P Q : W) :
     tr ι ρ J χ y (P + Q) = tr ι ρ J χ y P + tr ι ρ J χ y Q := by
@@ -105,7 +105,7 @@ theorem tr_add {y : G} (hf : Finite (Bridge.stab ι J y)) (P Q : W) :
   exact finsum_add_distrib (support_term_finite hf x P) (support_term_finite hf x Q)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `e : ∀ γ, term ι ρ J χ y x (a • P) γ = a • term ι ρ J χ y x P γ` using `fun γ => by`. Apply the tactic sequence `unfold term; split_ifs <;> simp [smul_comm a]`. Simplify using `only [tr, Pi.smul_apply, e]`. Conclude with `(smul_finsum a _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tr_smul (y : G) (a : ℂ) (P : W) : tr ι ρ J χ y (a • P) = a • tr ι ρ J χ y P := by
   funext x
@@ -115,13 +115,13 @@ theorem tr_smul (y : G) (a : ℂ) (P : W) : tr ι ρ J χ y (a • P) = a • tr
   exact (smul_finsum a _).symm
 
 /- English proof (translation)
-Simplify using `using tr_smul (ι := ι) (ρ := ρ) (χ := χ) y (0 : ℂ) (0 : W)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tr_zero (y : G) : tr ι ρ J χ y (0 : W) = 0 := by
   simpa using tr_smul (ι := ι) (ρ := ρ) (χ := χ) y (0 : ℂ) (0 : W)
 
 /- English proof (translation)
-Unfold `tr`. Rewrite using `[finsum_eq_sum _ (support_term_finite hf x P)]`. Use `Submodule.sum_mem _ fun γ hγ => ?_` and prove the remaining obligations. Establish `h` using `support_term_subset y x P ((Set.Finite.mem_toFinset _).1 hγ)`. Conclude with `hM γ h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tr_mem {R : Type} [Semiring R] [Module R W] {y : G} (hf : Finite (Bridge.stab ι J y)) (P : W) (x : G)
     (M : Submodule R W) (hM : ∀ γ, (ι γ * y)⁻¹ * x ∈ J → term ι ρ J χ y x P γ ∈ M) : tr ι ρ J χ y P x ∈ M := by
@@ -132,15 +132,15 @@ theorem tr_mem {R : Type} [Semiring R] [Module R W] {y : G} (hf : Finite (Bridge
   exact hM γ h
 
 /- English proof (translation)
-Establish `e : ∀ γ, term ι ρ J χ y y (F y) γ = if γ ∈ Bridge.stab ι J y then F y else 0` using `fun γ => by`. Unfold `term`. Establish `hc : (ι γ * y)⁻¹ * y ∈ J ↔ γ ∈ Bridge.stab ι J y`. Rewrite using `[Bridge.mem_stab, ← J.inv_mem_iff]`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : (ι γ * y)⁻¹ * y ∈ J`. Rewrite using `[dif_pos h, if_pos (hc.1 h)]`. Use `GlobalTheory.ExportSeries.mem_lawForms.1 hF γ y ⟨_, h⟩` as an intermediate fact. Rewrite `this` using `[show ι γ * y * ((ι γ * y)⁻¹ * y) = y by group]`. Conclude with `this.symm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, if_neg fun h' => h (hc.2 h')]`. Unfold `tr`. Simplify using `only [e]`. Establish `hs : ((Bridge.stab ι J y : Subgroup Γ) : Set Γ).Finite` using `Set.finite_coe_iff.1 hf`. Establish `ei : (fun γ => if γ ∈ Bridge.stab ι J y then F y else 0) = Set.indicator ((Bridge.stab ι J y : Subgroup Γ) : Set Γ) (fun _ => F y)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `γ`. Simplify using `[Set.indicator]`. Rewrite using `[ei, ← finsum_mem_def]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hs, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.card_eq_card_finite_toFinset hs]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tr_self {y : G} (hf : Finite (Bridge.stab ι J y)) {F : G → W} (hF : F ∈ GlobalTheory.ExportSeries.lawForms ι ρ J χ) :
     tr ι ρ J χ y (F y) y = (Nat.card (Bridge.stab ι J y) : ℂ) • F y := by
@@ -169,13 +169,13 @@ theorem tr_self {y : G} (hf : Finite (Bridge.stab ι J y)) {F : G → W} (hF : F
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨i₀, ⟨γ₀, k₀, hx⟩, huniq⟩` from `hr x`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i₀]`. Establish `hne : ((Nat.card (Bridge.stab ι J (y i₀)) : ℂ)) ≠ 0` using `by haveI := hf i₀`. Conclude with `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, hx, tr_law (hf i₀), tr_self (hf i₀) hF, GlobalTheory.ExportSeries.mem_lawForms.1 hF γ₀ (y i₀) k₀, map_smul, smul_comm ((χ k₀ : ℂˣ) : ℂ) ((Nat.card (Bridge.stab ι J (y i₀)) : ℂ)), smul_smul, inv_mul_cancel₀ hne, one_smul]`. Introduce `i _ hi`. Rewrite using `[Pi.smul_apply]`. Establish `: tr ι ρ J χ (y i) (F (y i)) x = 0`. Unfold `tr`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_eq_zero_of_forall_eq_zero fun γ => ?_` and prove the remaining obligations. Unfold `term`. Rewrite using `[dif_neg]`. Introduce `h`. Conclude with `hi (huniq i ⟨γ, ⟨_, h⟩, by simp [mul_assoc]⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem eq_sum_tr {I : Type} [Fintype I] {y : I → G} (hr : Bridge.IsReps ι J y)
     (hf : ∀ i, Finite (Bridge.stab ι J (y i))) {F : G → W} (hF : F ∈ GlobalTheory.ExportSeries.lawForms ι ρ J χ) :

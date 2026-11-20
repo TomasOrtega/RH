@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.DescendIso
 
 /- English proof (translation)
-Set `t : Sp R ⟶ (overRes (T` to `baseOver (Sp K)) ⊤).left := spMap f ≫ (Sp K).topIso.inv`. Establish `ht : t ≫ (⊤ : (Sp K).Opens).ι = spMap f` using `by show (spMap f ≫ (Sp K).topIso.inv) ≫ _ = _`. Rewrite using `[Category.assoc, Scheme.toIso_inv_ι, Category.comp_id]`. Set `σ : (baseOver (Sp R)).left ⟶ (baseAt t).left` to `𝟙 (Sp R)`. Establish `: IsIso σ` using `inferInstanceAs (IsIso (𝟙 (Sp R)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `FullExtend.isCoordPt_move (T := baseOver (Sp R)) (T₀ := baseOver (Sp K)) (spMap f) hp hw σ (homAt t ≫ overResι ⊤) ((Category.id_comp _).trans ht) ((Category.comp_id _).trans (Category.id_comp _).symm) (FullExtend.isGenSec_base hS P₀ t) hx hk hz H`.
+A detailed English derivation is pending.
 -/
 theorem isCoordPt_cart (hS : SecBaseChangeSt) {K R : Type} [Field K] [CommRing R] {f : K →+* R} {P₀ : PolAV (Sp K)}
     {P : PolAV (Sp R)} {φ : P.A.left ⟶ P₀.A.left} (hp : IsGrpPullback P.A P₀.A (spMap f) φ)
@@ -41,9 +41,9 @@ theorem isCoordPt_cart (hS : SecBaseChangeSt) {K R : Type} [Field K] [CommRing R
     (FullExtend.isGenSec_base hS P₀ t) hx hk hz H
 
 /- English proof (translation)
-Distinguish the cases in `h₀ : ∀ x, v₀ x = 0`. Use `⟨1, funext fun x => f.injective ?_⟩` and prove the remaining obligations. Simplify using `[h x, h₀ x]`. Use `push Not at h₀`. Take `⟨y, hy⟩` from `h₀`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : f (v₀ y) ≠ 0` using `(map_ne_zero f).2 hy`. Establish `e : f (v y / v₀ y) = c` using `by rw [map_div₀, h y, mul_div_assoc, div_self hy', _root_.mul_one]`. Establish `hd : v y / v₀ y ≠ 0` using `fun q => c.ne_zero (by rw [← e, q, map_zero])`. Use `⟨Units.mk0 _ hd, funext fun x => f.injective ?_⟩` and prove the remaining obligations. Rewrite using `[h x, Pi.smul_apply, smul_eq_mul, map_mul, Units.val_mk0, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_smul {K C : Type} [Field K] [Field C] (f : K →+* C) {I : Type} (v₀ v : I → K) (c : Cˣ)
     (h : ∀ x, f (v x) = c * f (v₀ x)) : ∃ d : Kˣ, v = (d : K) • v₀ := by
@@ -59,9 +59,9 @@ theorem exists_unit_smul {K C : Type} [Field K] [Field C] (f : K →+* C) {I : T
     rw [h x, Pi.smul_apply, smul_eq_mul, map_mul, Units.val_mk0, e]
 
 /- English proof (translation)
-Establish `hC : (m : C) ≠ 0` using `by rw [← map_natCast f]; exact (map_ne_zero f).2 hK`. Take `⟨a₁, a₂, -⟩` from `GlobalTheory.T.thetaCoordinates_exist_unique_separate_points hL K (Sp K) P₀ (𝟙 _) m hm hK I x₀ hk₀`. Take `⟨-, b₂, -⟩` from `GlobalTheory.T.thetaCoordinates_exist_unique_separate_points hL C (Sp C) P (𝟙 _) m hm hC I x hk`. Take `⟨v₀, h₀⟩` from `a₁ z₀`. Establish `q` using `isCoordPt_cart hL.secBaseChange hp hw hx hk hz h₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [← FullExtend.fnOf_map] at q`. Take `⟨c, hc⟩` from `(b₂ z (fun i => f (v₀ i)) v' q).1 H`. Use `(a₂ z₀ v₀ v h₀).2 (exists_unit_smul f v₀ v (s * c) fun i => ?_)` and prove the remaining obligations. Rewrite using `[hv, hc, Pi.smul_apply, smul_eq_mul, Units.val_mul, _root_.mul_assoc]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCoordPt_descend (hL : Laws) {K C : Type} [Field K] [IsAlgClosed K] [Field C] [IsAlgClosed C] {f : K →+* C}
     {P₀ : PolAV (Sp K)} {P : PolAV (Sp C)} {φ : P.A.left ⟶ P₀.A.left} (hp : IsGrpPullback P.A P₀.A (spMap f) φ)
@@ -83,19 +83,17 @@ theorem isCoordPt_descend (hL : Laws) {K C : Type} [Field K] [IsAlgClosed K] [Fi
   rw [hv, hc, Pi.smul_apply, smul_eq_mul, Units.val_mul, _root_.mul_assoc]
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H D K C _ _ f o o' hext I' ζ hζ`. Take `⟨-, hz, φ, hp, hw, -, hev⟩` from `hext`. Use `haveI := o.closed`. Use `haveI := o'.closed`. Use `haveI := o.charZero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := o'.charZero`. Take `⟨g, hg⟩` from `tateIso_differ_by_similitude E H D C _ _ _ (fun n x y c c' _ _ _ => weilIs_unique_fieldPoint _ _ _ o'.P.isLB C (𝟙 _) n x y c c') o'.I I'`. Take `⟨ν, h₀, h₁, h₂⟩` from `ReZeta.exists_exponent o'.I.ζ I'.ζ o'.I.ζ_prim o'.I.ζ_pow I'.ζ_prim I'.ζ_pow`. Establish `hd : ∀ n : ℕ, 0 < n → (n : ℤ) ∣ g.ν n - ν n` using `fun n hn => by`. Rewrite using `[← (o'.I.ζ_prim n hn).zpow_eq_one_iff_dvd, zpow_sub, ← (hg n hn).2, h₀ n hn, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hν : ∀ n m : ℕ, 0 < n → 0 < m → (n : ℤ) ∣ g.ν (n * m) - g.ν n ∧ IsCoprime (g.ν n) (n : ℤ)` using `fun n m hn hm => by`. Take `⟨a, ha⟩` from `hd n hn`. Take `⟨b, hb⟩` from `hd (n * m) (Nat.mul_pos hn hm)`. Take `⟨c, hc⟩` from `h₂ n m hn hm`. Take `⟨u, w, huw⟩` from `h₁ n hn`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hb`. Conclude with `⟨⟨m * b + c - a, by linear_combination hb + hc - ha⟩, u, w - u * a, by linear_combination huw + u * ha⟩`. Set `I : FullI o` to `LevelTwist.twist o.I g hν`. Establish `hI : ∀ n, 0 < n → ∀ a, spMap f ≫ (I.ev n a).left = (I'.ev n a).left ≫ φ` using `fun n hn a => by`. Rewrite using `[(hg n hn).1 a]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(hev n _ hn).symm`. Establish `key : ∀ m, Odd m → ∀ j, 0 < j → ∀ z (v : D.La → K) (v' : D.La → C) (s : Cˣ), (∀ x, f (v x) = s * v' x) → (withI o' I').Coord m (I'.ev j z) v' → (withI o I).Coord m (I.ev j z) v` using `fun m hm j hj z v v' s hv Q => isCoordPt_descend hL hp hw hm (Nat.cast_ne_zero.2 hm.pos.ne') (hI _ (pow_pos hm.pos 2)) (tateIso_ev_pow I' (pow_pos hm.pos 2)) (tateIso_ev_pow I (pow_pos hm.pos 2)) (hI j hj z) v v' s hv Q`. Use `⟨I, fun n hn => Units.ext (f.injective ?_), fun m hm => ⟨fun v v' s hv Q => ?_, key m hm⟩⟩` and prove the remaining obligations. Rewrite using `[← hζ n hn, (hg n hn).2, Units.val_zpow_eq_zpow_val, hz n hn, ← map_zpow₀, ← Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : I.ev 1 0 = 1` using `(I.ker 1 one_pos 0).2 ⟨0, by simp⟩`. Establish `e' : I'.ev 1 0 = 1` using `(I'.ker 1 one_pos 0).2 ⟨0, by simp⟩`. Establish `k` using `key m hm 1 one_pos 0 v v' s hv`. Rewrite `k` using `[e, e']`. Take `⟨-, -, a₃, -⟩` from `GlobalTheory.T.thetaCoordinates_exist_unique_separate_points hL K (Sp K) o.P (𝟙 _) m hm (Nat.cast_ne_zero.2 hm.pos.ne') _ (I.ev (m ^ 2)) (tateIso_ev_pow I (pow_pos hm.pos 2))`.
-
-Take `⟨-, -, b₃, -⟩` from `GlobalTheory.T.thetaCoordinates_exist_unique_separate_points hL C (Sp C) o'.P (𝟙 _) m hm (Nat.cast_ne_zero.2 hm.pos.ne') _ (I'.ev (m ^ 2)) (tateIso_ev_pow I' (pow_pos hm.pos 2))`. Conclude with `(a₃ v).2 (k ((b₃ v').1 Q))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_descend : Laws → AllD fun {E} _ _ _ {H} D => ∀ (K C : Type) [Field K] [Field C] (f : K →+* C) (o : Full D K) (o' : Full D C), FullExt f o o' → ∀ (I' : FullI o') (ζ : ℕ → Kˣ), (∀ n, 0 < n → (I'.ζ n : C) = f (ζ n)) → ∃ I : FullI o, (∀ n, 0 < n → I.ζ n = ζ n) ∧ ∀ m, Odd m → (∀ (v : D.La → K) (v' : D.La → C) (s : Cˣ), (∀ x, f (v x) = s * v' x) → (withI o' I').Theta m v' → (withI o I).Theta m v) ∧ ∀ j, 0 < j → ∀ z (v : D.La → K) (v' : D.La → C) (s : Cˣ), (∀ x, f (v x) = s * v' x) → (withI o' I').Coord m (I'.ev j z) v' → (withI o I).Coord m (I.ev j z) v := by
   intro hL E _ _ _ H D K C _ _ f o o' hext I' ζ hζ

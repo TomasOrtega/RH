@@ -16,9 +16,7 @@ def segQ (P : Ideal (MRing ι)) (i : (k : K) → ι k) : MvPolynomial (Σ k, ι 
   Ideal.Quotient.mk _ (segMon i)
 
 /- English proof (translation)
-Use `conv_rhs => rw [H.as_sum]`. Use `conv_lhs => rw [H.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sum_type]`.
-
-Simplify using `only [map_mul, map_prod, map_pow, aeval_C, aeval_X, Sum.elim_inl, Sum.elim_inr, Pi.one_apply, one_pow, Finset.prod_const_one, mul_one, rename_C, rename_X, algebraMap_eq, hc m hm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma rename_inl_aeval_mul_prod_X_inr_pow_eq_of_support {r : ℕ} {S : Type} [Fintype S] (c : S → ℕ)
     (H : MvPolynomial (Fin r ⊕ S) ℚ) (hc : ∀ m ∈ H.support, ∀ s, m (Sum.inr s) = c s) :
@@ -35,7 +33,7 @@ private lemma rename_inl_aeval_mul_prod_X_inr_pow_eq_of_support {r : ℕ} {S : T
     hc m hm, mul_assoc]
 
 /- English proof (translation)
-Establish `hf : (fun i : Fin r ⊕ S => aeval a (Sum.elim (X : Fin r → MvPolynomial (Fin r) ℚ) 1 i)) = Sum.elim a (1 : S → B)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> simp`. Rewrite using `[← AlgHom.comp_apply, comp_aeval, hf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private lemma aeval_sumElim_one_eq_aeval_aeval_sumElim_X_one {r : ℕ} {S : Type} {B : Type*} [CommRing B] [Algebra ℚ B]
     (a : Fin r → B) (H : MvPolynomial (Fin r ⊕ S) ℚ) :
@@ -47,25 +45,23 @@ private lemma aeval_sumElim_one_eq_aeval_aeval_sumElim_X_one {r : ℕ} {S : Type
   rw [← AlgHom.comp_apply, comp_aeval, hf]
 
 /- English proof (translation)
-Establish `: IsDomain (MvPolynomial (Σ k, ι k) ℚ ⧸ qIdeal P)` using `isDomain_qQuot P hP hH`. Use `set b : {k // k ≠ k0} → MvPolynomial (Σ k, ι k) ℚ ⧸ qIdeal P := fun k' => Ideal.Quotient.mk (qIdeal P) (X ⟨k'.1, i0 k'.1⟩) with hbdef`. Set `yt : Fin r ⊕ {k // k ≠ k0} → MvPolynomial (Σ k, ι k) ℚ` to `Sum.elim (fun j => ∑ t, L j t • segMon t) (fun k' => X ⟨k'.1, i0 k'.1⟩)`. Establish `hyt : (fun e => Ideal.Quotient.mkₐ ℚ (qIdeal P) (yt e)) = Sum.elim (forms (segQ P) L) b`. Use function extensionality and compare the values at `e`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `e with`. Consider the case `inl j => simp [yt, forms, segQ, map_sum, Ideal.Quotient.mkₐ_eq_mk]`. Consider the case `inr k' => simp [yt, b, Ideal.Quotient.mkₐ_eq_mk]`. Establish `hhomY : ∀ e, IsWeightedHomogeneous (blkWt (ι` using `ι)) (yt e) (sWt k0 r e) := by`. Introduce and unpack `(j | k')`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hmem : (∑ t, L j t • segMon t) ∈ weightedHomogeneousSubmodule ℚ (blkWt (ι` using `ι)) oneK := Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ (segMon_isWeightedHomogeneous t)`. Conclude with `hmem`. Conclude with `isWeightedHomogeneous_X ℚ (blkWt (ι := ι)) ⟨k'.1, i0 k'.1⟩`. Establish `hb : ∀ k', b k' ≠ 0`. Introduce `k' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hbdef, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hi0 k'.1 (mem_of_qmap_mem_qIdeal P hP hH (by simpa using h))`. Establish `hev : ∀ G, aeval (Sum.elim (forms (segQ P) L) b) G = Ideal.Quotient.mk (qIdeal P) (aeval (R` using `ℚ) yt G) := by`. Introduce `G`. Rewrite using `[← hyt, ← comp_aeval, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algebraicIndependent_iff]`. Introduce `H hH0`. Establish `hmem : aeval (R` using `ℚ) yt H ∈ qIdeal P := by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← hev]`. Conclude with `hH0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ δ, weightedHomogeneousComponent (sWt k0 r) δ H = 0`. Introduce `δ`. Establish `hHd : IsWeightedHomogeneous (sWt k0 r) (weightedHomogeneousComponent (sWt k0 r) δ H) δ` using `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Establish `hcomp` using `weightedHomogeneousComponent_mem_of_mem ℚ (blkWt (ι := ι)) (qIdeal_isHomogeneous P hhom) hmem δ`. Rewrite `hcomp` using `[component_aeval (sWt k0 r) yt hhomY H δ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : aeval (Sum.elim (forms (segQ P) L) b) (weightedHomogeneousComponent (sWt k0 r) δ H) = 0`. Rewrite using `[hev, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hcomp`. Assume the negation of the conclusion as `hne`. Take `⟨n0, hn0⟩` from `Finset.nonempty_of_ne_empty (mt MvPolynomial.support_eq_empty.mp hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h0` using `[aeval_sumElim_factor k0 hHd hn0]`. Establish `hprod : (∏ k', b k' ^ n0 (Sum.inr k')) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k' _ => pow_ne_zero _ (hb k')`. Establish `h1` using `(mul_eq_zero.mp h0).resolve_left hprod`. Rewrite `h1` using `[aeval_sumElim_one_eq_aeval_aeval_sumElim_X_one]`. Establish `h2` using `algebraicIndependent_iff.mp hind _ h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← rename_inl_aeval_mul_prod_X_inr_pow_eq_of_support (fun s => n0 (Sum.inr s)) (weightedHomogeneousComponent (sWt k0 r) δ H) ?_, h2, map_zero, zero_mul]`. Introduce `m hm s`. Conclude with `inr_eq_of_weight_eq k0 ((hHd (mem_support_iff.mp hm)).trans (hHd (mem_support_iff.mp hn0)).symm) s`. Use extensionality with `n`.
-
-Use `congrArg (coeff n) (key (Finsupp.weight (sWt k0 r) n))` as an intermediate fact. Rewrite `this` using `[coeff_weightedHomogeneousComponent, if_pos rfl]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_sumElim (P : Ideal (MRing ι)) (hP : P.IsPrime) (hH : IsHorizontal P)
     (hhom : IsMultiHomogIdeal P) (k0 : K) (i0 : (k : K) → ι k)
@@ -134,13 +130,13 @@ theorem algebraicIndependent_sumElim (P : Ideal (MRing ι)) (hP : P.IsPrime) (hH
   simpa using this
 
 /- English proof (translation)
-Introduce `hind`. Take `⟨hne, ⟨hprime, hhom, hrel⟩, hH, hdim⟩` from `hP`. Take `⟨k0⟩` from `hne`. Use `choose i0 hi0 using hrel`. Establish `hall` using `algebraicIndependent_sumElim P hprime hH hhom k0 i0 hi0 L hind`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n := Fintype.card (Fin r ⊕ {k // k ≠ k0})`. Establish `hall'` using `hall.comp _ (Fintype.equivFin (Fin r ⊕ {k // k ≠ k0})).symm.injective`. Establish `hle` using `succ_le_ringKrullDim_of_algebraicIndependent P hprime hH _ hall'`. Rewrite `hle` using `[hdim]`. Establish `hle' : n + 1 ≤ e + 1 + Fintype.card K` using `by exact_mod_cast hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : n + 1 = r + Fintype.card K`. Establish `h1 : Fintype.card {k // k ≠ k0} = Fintype.card K - 1`. Simplify using `[Fintype.card_subtype_compl]`. Establish `h2 : 0 < Fintype.card K` using `Fintype.card_pos_iff.mpr ⟨k0⟩`. Simplify using `only [n, Fintype.card_sum, Fintype.card_fin, h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem forms_not_algebraicIndependent (P : Ideal (MRing ι)) (e : ℕ) (hP : IsArithVar P (e + 1))
     {r : ℕ} (hr : e + 1 < r) (L : Fin r → ((k : K) → ι k) → ℚ) :

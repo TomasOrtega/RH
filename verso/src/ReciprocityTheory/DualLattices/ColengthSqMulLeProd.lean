@@ -19,7 +19,7 @@ def blkLat {n s : ℕ} (Ls : Fin n → Lat v (Fin s)) : Lat v (Fin n × Fin s) w
     exact Finset.prod_ne_zero_iff.2 fun τ _ => (Ls τ).det_ne
 
 /- English proof (translation)
-Establish `h : (blkLat Ls).B = (Matrix.blockDiagonal fun τ => (Ls τ).B).submatrix (Equiv.prodComm _ _) (Equiv.prodComm _ _)`. Use extensionality with `x y`. Simplify using `[blkLat, Matrix.blockDiagonal_apply, eq_comm]`. Rewrite using `[h, Matrix.det_submatrix_equiv_self, Matrix.det_blockDiagonal]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma blkLat_det {n s : ℕ} (Ls : Fin n → Lat v (Fin s)) :
     (blkLat Ls).B.det = ∏ τ, (Ls τ).B.det := by
@@ -30,13 +30,13 @@ lemma blkLat_det {n s : ℕ} (Ls : Fin n → Lat v (Fin s)) :
   rw [h, Matrix.det_submatrix_equiv_self, Matrix.det_blockDiagonal]
 
 /- English proof (translation)
-Establish `hmv : ∀ c : Fin n × Fin s → C, (blkLat Ls).B *ᵥ c = fun y => ((Ls y.1).B *ᵥ fun j => c (y.1, j)) y.2`. Introduce `c`. Use extensionality with `⟨τ, i⟩`. Simplify using `only [blkLat, Matrix.mulVec, dotProduct, Matrix.of_apply, Fintype.sum_prod_type, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_eq_single τ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Use extensionality with `w`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [ReciprocityTheory.PGsh.Lat.pts, sumPts, Set.mem_setOf_eq, hmv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩ τ`. Conclude with `⟨fun j => c (τ, j), fun j => hc (τ, j), rfl⟩`. Introduce `hw choose c hc hce using hw`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun y => c y.1 y.2, fun y => hc y.1 y.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Conclude with `congrFun (hce y.1) y.2`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma blkLat_pts {n s : ℕ} (Ls : Fin n → Lat v (Fin s)) : (blkLat Ls).pts = sumPts Ls := by
   have hmv : ∀ c : Fin n × Fin s → C, (blkLat Ls).B *ᵥ c =
@@ -62,7 +62,7 @@ lemma blkLat_pts {n s : ℕ} (Ls : Fin n → Lat v (Fin s)) : (blkLat Ls).pts = 
     exact congrFun (hce y.1) y.2
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.PGsh.colen, blkLat_det, map_prod]`. Rewrite using `[Finset.prod_div_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma colen_blk {n s : ℕ} (L's Ls : Fin n → Lat v (Fin s)) :
     colen (blkLat L's) (blkLat Ls) = ∏ τ, colen (L's τ) (Ls τ) := by
@@ -70,13 +70,11 @@ lemma colen_blk {n s : ℕ} (L's Ls : Fin n → Lat v (Fin s)) :
   rw [Finset.prod_div_distrib]
 
 /- English proof (translation)
-Establish `hdet : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (L : Lat v ι), v L.B.det ≠ 0` using `fun L => (map_ne_zero v).2 L.det_ne`. Use `set S : Lat v (Fin n × Fin s) := blkLat Mτ`. Use `set S' : Lat v (Fin n × Fin s) := blkLat M'τ`. Establish `h2` using `valuation_pairwiseDifferenceProduct_pow_le_colength_sq C v n a s M S Mτ hMst hMτ (blkLat_pts Mτ)`. Establish `h3` using `colength_sq_mul_le a hinj hint s h A F M' S' M'τ hF hM' hM'τ (blkLat_pts M'τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : colen S' S = ∏ τ, colen (M'τ τ) (Mτ τ)` using `colen_blk M'τ Mτ`. Establish `hid : colen M' M * colen M S = colen M' S' * colen S' S`. Simplify using `only [ReciprocityTheory.PGsh.colen]`. Rewrite using `[div_mul_div_cancel₀ (hdet M), div_mul_div_cancel₀ (hdet S')]`. Establish `hc : 0 < colen M S ^ 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `: colen M S ≠ 0` using `div_ne_zero (hdet M) (hdet S)`. Check the signs of the components of the expression. Rewrite using `[← hP]`. Use `le_of_mul_le_mul_right ?_ hc` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[show colen M' M ^ 2 * v (discr a) ^ h * colen M S ^ 2 = (colen M' M * colen M S) ^ 2 * v (discr a) ^ h by ring, hid]; ring`. Use `_ ≤ v (discr a) ^ (2 * s) * colen S' S ^ 2 := by gcongr`. Use `_ = colen S' S ^ 2 * v (discr a) ^ s * v (discr a) ^ s := by ring`. Use `_ ≤ colen S' S ^ 2 * v (discr a) ^ s * colen M S ^ 2 := by gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colength_sq_mul_le_prod (C : Type) [Field C] [IsAlgClosed C] (v : Valuation C NNReal) (R : Type)
     [CommRing R] [Algebra R C] (hv : v.Integers R) (hnt : ∃ c : C, 0 < v c ∧ v c < 1)

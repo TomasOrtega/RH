@@ -61,7 +61,7 @@ structure AdelicDecomposition {V : Type u} [AddCommGroup V] [Module ℂ V]
   finite : AdelicGLn.TensorDecomposition K n toDecomposition.π₂
 
 /- English proof (translation)
-Take `⟨D⟩` from `Mx.nonempty_decomposition hirr hadm`. Take `⟨T⟩` from `AdelicGLn.nonempty_tensorDecomposition D.isAdmissible₂ D.isIrreducible₂`. Conclude with `⟨⟨D, T⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_adelicDecomposition {V : Type u} [AddCommGroup V] [Module ℂ V]
     (Mx : AdelicGKModule K n V) (hirr : Mx.IsIrreducible) (hadm : Mx.IsAdmissible) :
@@ -82,14 +82,14 @@ namespace AdelicDecomposition
 variable {V : Type u} [AddCommGroup V] [Module ℂ V] {Mx : AdelicGKModule K n V}
 
 /- English proof (translation)
-The claim follows from `GKLModule.Decomposition.nonempty_equiv_arch _ _`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_arch (D D' : AdelicDecomposition Mx) :
     Nonempty (D.toDecomposition.π₁.rep.Equiv D'.toDecomposition.π₁.rep) :=
   GKLModule.Decomposition.nonempty_equiv_arch _ _
 
 /- English proof (translation)
-Take `⟨E⟩` from `GKLModule.Decomposition.nonempty_equiv_fin D.toDecomposition D'.toDecomposition`. Conclude with `AdelicGLn.TensorDecomposition.nonempty_equiv D.finite (D'.finite.transport E) v`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_local (D D' : AdelicDecomposition Mx) (v : HeightOneSpectrum (𝓞 K)) :
     Nonempty ((D.finite.π v).Equiv (D'.finite.π v)) := by
@@ -130,7 +130,7 @@ abbrev toModule (π : CuspidalAutomorphicRep K n) : AdelicGKModule K n π.carrie
   cuspSubmodule K n π.carrier π.stable_ρ π.stable_σ π.stable_τ
 
 /- English proof (translation)
-The claim follows from `AutomorphicForm.nonempty_adelicDecomposition π.toModule π.isIrreducible hadm`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_adelicDecomposition (π : CuspidalAutomorphicRep K n)
     (hadm : π.toModule.IsAdmissible) : Nonempty (AdelicDecomposition π.toModule) :=

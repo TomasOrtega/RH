@@ -66,7 +66,7 @@ def twOf {R : Ranks} (H : Host R) (sc : Scale) : (@placesOf H.E _ _ H.cmStar).Pl
     (@placesOf H.E _ _ H.cmStar).resChar w ∈ ({H.d, H.g 0, H.g 1} : Finset ℕ))
 
 /- English proof (translation)
-The claim follows from `PlacesToy.prime_mem_unique (PlacesToy.conjW w) (PlacesToy.resCharW_prime _) (PlacesToy.resCharW_prime w) (PlacesToy.resCharW_mem _) (by have h := (PlacesToy.mem_conjW_pow w ((PlacesToy.resCharW w : ℕ) : 𝓞 K) 1).2 (by rw [map_natCast, pow_one]; exact PlacesToy.resCharW_mem w) rwa …`.
+A detailed English derivation is pending.
 -/
 theorem resCharW_conjW {K : Type} [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K)) :
     PlacesToy.resCharW (PlacesToy.conjW w) = PlacesToy.resCharW w :=
@@ -77,7 +77,7 @@ theorem resCharW_conjW {K : Type} [Field K] [NumberField K] [StarRing K] (w : He
       rwa [pow_one] at h)
 
 /- English proof (translation)
-Use `letI := H.cmStar`. Unfold `twOf`. Establish `h : (placesOf H.E).resChar ((placesOf H.E).conj w) = (placesOf H.E).resChar w` using `resCharW_conjW w`. Rewrite using `[h]`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem twOf_conj {R : Ranks} (H : Host R) (sc : Scale) (w) :
     twOf H sc ((@placesOf H.E _ _ H.cmStar).conj w) = twOf H sc w := by

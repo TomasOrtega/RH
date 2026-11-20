@@ -13,23 +13,21 @@ open scoped ComplexOrder
 open Matrix
 
 /- English proof (translation)
-Use `set H := hessC f z with hH`. Establish `hform : ∀ w : Fin e → ℂ, ((levi f z w : ℝ) : ℂ) = HermFrame.form H w w`. Introduce `w`. Rewrite using `[← HermFrame.leviForm_self_eq_levi hf, HermFrame.leviForm_eq_form_hessC hf]`. Establish `hpsd : H.PosSemidef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg (ReciprocityTheory.AnForm.A.hessC_isHermitian f z hf) fun x => ?_` and prove the remaining obligations. Establish `h1 : star x ⬝ᵥ (H *ᵥ x) = ((levi f z (star x) : ℝ) : ℂ)`. Rewrite using `[hform]`. Simplify using `[HermFrame.form]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hpos (star x)` after adjusting the coercions. Establish `hdiag : ∀ k, (H k k).re = levi f z (Pi.single k 1)`. Introduce `k`. Establish `h1` using `hform (Pi.single k 1)`. Establish `h2 : HermFrame.form H (Pi.single k 1) (Pi.single k 1) = H k k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[HermFrame.form, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite `h1` using `[h2]`. Rewrite using `[← h1, Complex.ofReal_re]`. Establish `hck : ∀ k, levi f z (Pi.single k 1) ≤ c k`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hle (Pi.single k 1)`. Establish `hs : ∑ j, c j * ‖(Pi.single k (1 : ℂ) : Fin e → ℂ) j‖ ^ 2 = c k`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs]`. Then use the resulting hypothesis. Establish `hdet : (H.det).re ≤ ∏ k, c k`. Establish `h` using `GlobalTheory.posSemidef_re_det_le_prod_diag hpsd`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.trans ?_` and prove the remaining obligations. Use `Finset.prod_le_prod (fun k _ => ?_) fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 ≤ (H k k).re`. Rewrite using `[hdiag]`. Conclude with `hpos _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(H k k).re ≤ c k`. Rewrite using `[hdiag]`. Conclude with `hck k`. Establish `hfac : (0 : ℝ) ≤ (e.factorial : ℝ) * (2 / Real.pi) ^ e` using `by positivity`. Unfold `maDens`.
-
-Rewrite using `[ReciprocityTheory.AnForm.A.mdisc_const]`. Conclude with `mul_le_mul_of_nonneg_left hdet hfac`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maDens_le_prod_of_levi_le_diag {e : ℕ} (f : (Fin e → ℂ) → ℝ) (z : Fin e → ℂ)
     (c : Fin e → ℝ) (hf : ContDiffAt ℝ 2 f z) (hpos : ∀ w, 0 ≤ levi f z w)

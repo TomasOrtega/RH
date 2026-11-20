@@ -14,7 +14,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Φ : FlagCpt Z e)
 
 /- English proof (translation)
-Rewrite using `[SmallSec.valAt_mul hf.regAt hg.regAt, map_mul, Real.log_mul (ε.w.ne_zero (SmallSec.valAt_ne_zero hf)) (ε.w.ne_zero (SmallSec.valAt_ne_zero hg))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem log_valuation_mul {Y : Var F} {v : HeightOneSpectrum (𝓞 F)} (ε : Ext v) (y : AlgPt Y) {f g : Y.Fn}
     (hf : UnitAt (below y.1) f) (hg : UnitAt (below y.1) g) :
@@ -23,7 +23,7 @@ private theorem log_valuation_mul {Y : Var F} {v : HeightOneSpectrum (𝓞 F)} (
     Real.log_mul (ε.w.ne_zero (SmallSec.valAt_ne_zero hf)) (ε.w.ne_zero (SmallSec.valAt_ne_zero hg))]
 
 /- English proof (translation)
-Establish `h` using `log_valuation_mul ε y (unitAt_one (below y.1)) (unitAt_one (below y.1))`. Rewrite `h` using `[mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem log_valuation_one {Y : Var F} {v : HeightOneSpectrum (𝓞 F)} (ε : Ext v) (y : AlgPt Y) :
     Real.log (ε.w (valAt y.1 (1 : Y.Fn))) = 0 := by
@@ -33,18 +33,18 @@ private theorem log_valuation_one {Y : Var F} {v : HeightOneSpectrum (𝓞 F)} (
 
 omit [NumberField F] in
 /- English proof (translation)
-The claim follows from `LineNorm.isEqn_sum _ y fun x => ((LineNorm.fr_spec Φ y).2 x.1 x.2).zsmul (n x)`.
+A detailed English derivation is pending.
 -/
 private theorem isEqn_prod (n : Letter Dw → ℤ) (y : Φ.Y.X) :
     (divOf Φ n).IsEqn y (∏ x : Letter Dw, LineNorm.dg Φ y x.1 x.2 ^ n x) :=
   LineNorm.isEqn_sum _ y fun x => ((LineNorm.fr_spec Φ y).2 x.1 x.2).zsmul (n x)
 
 /- English proof (translation)
-Establish `hq : (divOf Φ (expo Dw w)).IsEqn (below y.1) (eqn (divOf Φ (expo Dw w)) (below y.1))` using `(CartierDiv.exists_isEqn _ _).choose_spec`. Establish `u₁ : UnitAt (below y.1) (((∏ x : Letter Dw, LineNorm.dg Φ (below y.1) x.1 x.2 ^ expo Dw w x) * (eqn (divOf Φ (expo Dw w)) (below y.1))⁻¹ : Φ.Y.Fnˣ) : Φ.Y.Fn)`. Use `hq.iff_unitAt.1 (isEqn_prod Φ (expo Dw w) (below y.1))` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis. Establish `u₂ : UnitAt (below y.1) (eqn (divOf Φ (expo Dw w)) (below y.1) : Φ.Y.Fn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `h.iff_unitAt.1 hq` as an intermediate fact. Rewrite `this` using `[Units.val_one, div_one]`. Then use the resulting hypothesis. Establish `e₀ : lam (adlOf Φ hm w) v ε y = LineNorm.lgCopy Φ w v ε y + Real.log (ε.w (valAt y.1 (eqn (divOf Φ (expo Dw w)) (below y.1) : Φ.Y.Fn)))` using `rfl`. Establish `e₁` using `log_valuation_mul ε y u₁ u₂`. Rewrite `e₁` using `[← Units.val_mul, inv_mul_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e₀, LineNorm.lgCopy_eq, e₁]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem lam_eq {C : CxSt F} (hm : Mets Φ C) (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v)
     (y : AlgPt Φ.Y) (h : (divOf Φ (expo Dw w)).IsEqn (below y.1) 1) :
@@ -68,7 +68,7 @@ private theorem lam_eq {C : CxSt F} (hm : Mets Φ C) (w : Sym E →₀ ℤ) (v :
   ring
 
 /- English proof (translation)
-Unfold `expo`. Rewrite using `[Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp)]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem expo_neg (a : Sym E) (x : Letter Dw) :
     expo Dw (Finsupp.single a (-1)) x = -expo Dw (Finsupp.single a 1) x := by
@@ -79,11 +79,11 @@ private theorem expo_neg (a : Sym E) (x : Letter Dw) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Φ C hm a`. Take `⟨U, hU, h₁⟩` from `(CartierDiv.isEqn_genericPoint (divOf Φ (expo Dw (Finsupp.single a 1))) 1).exists_nhds`. Take `⟨V, hV, h₂⟩` from `(CartierDiv.isEqn_genericPoint (divOf Φ (expo Dw (Finsupp.single a (-1)))) 1).exists_nhds`. Use `⟨U ⊓ V, ⟨hU, hV⟩, fun v ε y hy => ?_⟩` and prove the remaining obligations. Establish `u₁` using `(h₁ _ hy.1).iff_unitAt.1 (isEqn_prod Φ (expo Dw (Finsupp.single a 1)) (below y.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `u₂` using `(h₂ _ hy.2).iff_unitAt.1 (isEqn_prod Φ (expo Dw (Finsupp.single a (-1))) (below y.1))`. Rewrite `u₁`, `u₂` using `[Units.val_one, div_one]`. Establish `e₁` using `log_valuation_mul ε y u₁ u₂`. Establish `e₂ : (∏ x : Letter Dw, LineNorm.dg Φ (below y.1) x.1 x.2 ^ expo Dw (Finsupp.single a 1) x) * (∏ x : Letter Dw, LineNorm.dg Φ (below y.1) x.1 x.2 ^ expo Dw (Finsupp.single a (-1)) x) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun x _ => by rw [expo_neg, zpow_neg, mul_inv_cancel]`. Rewrite `e₁` using `[← Units.val_mul, e₂, Units.val_one, log_valuation_one]`. Rewrite using `[lam_eq Φ hm _ v ε y (h₁ _ hy.1), lam_eq Φ hm _ v ε y (h₂ _ hy.2), Finsupp.support_single_ne_zero a (by norm_num), Finsupp.support_single_ne_zero a (by norm_num), Finset.sum_singleton, Finset.sum_singleton, Finsupp.single_eq_same, Finsupp.single_eq_same]`. Rewrite using `[Int.cast_neg, Int.cast_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_metric_generic_open :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Φ : FlagCpt Z e) (C : CxSt F) (hm : Mets Φ C) (a : Sym E), ∃ W : Φ.Y.X.Opens, genericPoint Φ.Y.X ∈ W ∧ ∀ (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt Φ.Y), below y.1 ∈ W → lam (adlOf Φ hm (Finsupp.single a (-1))) v ε y = -lam (adlOf Φ hm (Finsupp.single a 1)) v ε y := by

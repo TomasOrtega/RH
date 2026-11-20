@@ -8,17 +8,17 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.FlatBound
 
 /- English proof (translation)
-Set `L : ℂ →L[ℝ] (Fin n → ℂ)` to `((ContinuousLinearMap.id ℂ ℂ).smulRight e).restrictScalars ℝ`. Establish `hLw : ∀ w : ℂ, L w = w • e` using `fun _ => rfl`. Establish `hline : ∀ t : ℂ, HasFDerivAt (fun w : ℂ => z₀ + w • e) L t` using `fun t => L.hasFDerivAt.const_add z₀`. Establish `hcont : Continuous (fun t : ℂ => z₀ + t • e)` using `by fun_prop`. Establish `hU : IsOpen ((fun t : ℂ => z₀ + t • e) ⁻¹' O)` using `hO.preimage hcont`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hφ2 : ∀ y ∈ O, ContDiffAt ℝ 2 φ y := fun y hy => ((hφ y hy).contDiffAt (hO.mem_nhds hy)).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | simp)`. Establish `hlap : ∀ t ∈ (fun t : ℂ => z₀ + t • e) ⁻¹' O, Laplacian.laplacian (fun t : ℂ => φ (z₀ + t • e)) t = 0`. Introduce `t ht`. Establish `hy : z₀ + t • e ∈ O` using `ht`. Establish `h1 : fderiv ℝ (fun w : ℂ => φ (z₀ + w • e)) =ᶠ[𝓝 t] fun w : ℂ => (fderiv ℝ φ (z₀ + w • e)).comp L` using `by filter_upwards [hU.mem_nhds ht] with w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(((hφ2 _ hw).differentiableAt (by simp)).hasFDerivAt.comp w (hline w)).fderiv`. Establish `hD : HasFDerivAt (fderiv ℝ φ) (fderiv ℝ (fderiv ℝ φ) (z₀ + t • e)) (z₀ + t • e)` using `(((hφ2 _ hy).fderiv_right (m := 1) (by norm_num)).differentiableAt (by simp)).hasFDerivAt`. Establish `h2` using `((hD.comp t (hline t)).clm_comp (hasFDerivAt_const L t)).fderiv`. Simplify using `only [Function.comp_def] at h2`. Establish `hle` using `hl _ hy e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `levi at hle`. Rewrite using `[InnerProductSpace.laplacian_eq_iteratedFDeriv_complexPlane]`. Simplify using `only [iteratedFDeriv_two_apply]`. Rewrite using `[h1.fderiv_eq, h2]`. Simplify using `[hLw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t ht`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hA : ContDiffAt ℝ 2 (fun t : ℂ => z₀ + t • e) t`. Establish `: ContDiff ℝ 2 (fun t : ℂ => z₀ + L t)` using `contDiff_const.add L.contDiff`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this.contDiffAt`. Conclude with `(hφ2 _ ht).comp t hA`. Use `filter_upwards [hU.mem_nhds ht] with s hs`. Simplify using `using hlap s hs`.
+A detailed English derivation is pending.
 -/
 theorem harmonicOnNhd_line {n : ℕ} {φ : (Fin n → ℂ) → ℝ} {O : Set (Fin n → ℂ)} (hO : IsOpen O)
     (hφ : ContDiffOn ℝ ∞ φ O) (hl : ∀ z ∈ O, ∀ w, levi φ z w = 0) (z₀ e : Fin n → ℂ) :
@@ -61,19 +61,17 @@ theorem harmonicOnNhd_line {n : ℕ} {φ : (Fin n → ℂ) → ℝ} {O : Set (Fi
     simpa using hlap s hs
 
 /- English proof (translation)
-Take `⟨r, hr, hrO⟩` from `Metric.isOpen_iff.1 hO z₀ hz₀`. Use `filter_upwards [Metric.ball_mem_nhds z₀ hr] with z hz`. Use `set e : Fin n → ℂ := z - z₀ with he`. Distinguish the cases in `he0 : e = 0`. Rewrite using `[sub_eq_zero.1 he0]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hepos : 0 < ‖e‖` using `norm_pos_iff.2 he0`. Establish `hlt : ‖e‖ < r` using `by simpa [he, dist_eq_norm] using hz`. Use `set R : ℝ := r / ‖e‖ with hR`. Establish `hR1 : 1 < R` using `(one_lt_div hepos).2 hlt`. Establish `hsub : Metric.ball (0 : ℂ) R ⊆ (fun t : ℂ => z₀ + t • e) ⁻¹' O`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `t ht`. Apply `hrO` to reduce the goal to its premises. Establish `ht' : ‖t‖ < R` using `by simpa using ht`. Establish `: ‖t‖ * ‖e‖ < r` using `(lt_div_iff₀ hepos).1 ht'`. Simplify `this` using `[dist_eq_norm, norm_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh` using `(harmonicOnNhd_line hO hφ hl z₀ e).mono hsub`. Take `⟨F, hF, hre⟩` from `InnerProductSpace.HarmonicOnNhd.exists_analyticOnNhd_ball_re_eq hh`. Establish `h0 : (0 : ℂ) ∈ Metric.ball (0 : ℂ) R` using `Metric.mem_ball_self (by linarith)`. Establish `h1 : (1 : ℂ) ∈ Metric.ball (0 : ℂ) R` using `by simpa using hR1`. Establish `hnorm : ∀ t ∈ Metric.ball (0 : ℂ) R, ‖Complex.exp (F t)‖ = Real.exp (φ (z₀ + t • e))` using `fun t ht => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.norm_exp]`. Conclude with `congrArg Real.exp (hre ht)`. Establish `hdiff : DifferentiableOn ℂ (fun t => Complex.exp (F t)) (Metric.ball (0 : ℂ) R)` using `fun t ht => (hF t ht).differentiableAt.cexp.differentiableWithinAt`. Establish `hM : IsMaxOn (norm ∘ fun t => Complex.exp (F t)) (Metric.ball (0 : ℂ) R) 0`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, Function.comp_apply]`. Rewrite using `[hnorm t ht, hnorm 0 h0]`. Simplify using `using hmax _ (hsub ht)`. Establish `hEq` using `Complex.norm_eqOn_of_isPreconnected_of_isMaxOn (convex_ball (0 : ℂ) R).isPreconnected Metric.isOpen_ball hdiff h0 hM h1`. Simplify using `only [Function.comp_apply, Function.const_apply] at hEq`.
-
-Rewrite `hEq` using `[hnorm 1 h1, hnorm 0 h0]`. Use `Real.exp_injective hEq` as an intermediate fact. Simplify `this` using `[he]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eventually_eq_of_isMax {n : ℕ} {φ : (Fin n → ℂ) → ℝ} {O : Set (Fin n → ℂ)} (hO : IsOpen O)
     (hφ : ContDiffOn ℝ ∞ φ O) (hl : ∀ z ∈ O, ∀ w, levi φ z w = 0) {z₀ : Fin n → ℂ} (hz₀ : z₀ ∈ O)
@@ -116,13 +114,13 @@ theorem eventually_eq_of_isMax {n : ℕ} {φ : (Fin n → ℂ) → ℝ} {O : Set
   simpa [he] using this
 
 /- English proof (translation)
-Establish `hKo : IsOpen (connectedComponent x)` using `isOpen_connectedComponent`. Establish `hKc : IsClosed (connectedComponent x)` using `isClosed_connectedComponent`. Take `⟨m, hmK, hm⟩` from `hKc.isCompact.exists_isMaxOn ⟨x, mem_connectedComponent⟩ hv.continuousOn`. Establish `hKm : connectedComponent m = connectedComponent x` using `(connectedComponent_eq hmK).symm`. Establish `hTc : IsClosed (connectedComponent x ∩ v ⁻¹' {v m})` using `hKc.inter (isClosed_singleton.preimage hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTo : IsOpen (connectedComponent x ∩ v ⁻¹' {v m})`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `y ⟨hyK, hyv⟩`. Establish `hyv' : v y = v m` using `hyv`. Establish `hev` using `hloc y _ hKo hyK (fun z hz => by rw [hyv']; exact hm hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hev, hKo.mem_nhds hyK] with z hz hzK`. Conclude with `⟨hzK, by simp [hz, hyv']⟩`. Establish `hsub : connectedComponent m ⊆ connectedComponent x ∩ v ⁻¹' {v m}` using `IsClopen.connectedComponent_subset ⟨hTc, hTo⟩ ⟨hmK, rfl⟩`. Rewrite `hsub` using `[hKm]`. Establish `h1 : v y = v m` using `(hsub hxy).2`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : v x = v m` using `(hsub mem_connectedComponent).2`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_mem_connectedComponent {X : Type} [TopologicalSpace X] [CompactSpace X]
     [LocallyConnectedSpace X] {v : X → ℝ} (hv : Continuous v)
@@ -149,9 +147,9 @@ theorem eq_of_mem_connectedComponent {X : Type} [TopologicalSpace X] [CompactSpa
   rw [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨j, hj⟩` from `A.cover x`. Establish `hmem : (A.chart j).target ∩ (A.chart j).symm ⁻¹' Set.univ ∈ 𝓝 (A.chart j x)`. Simplify using `using (A.chart j).open_target.mem_nhds ((A.chart j).map_source hj)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j x)` using `(h j).continuousOn.continuousAt hmem`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `ContinuousAt.comp (f := A.chart j) h1 ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_of_smooth {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     {f : X → ℝ} (h : A.Smooth f) : Continuous f := by
@@ -173,7 +171,7 @@ section System
 variable {e : ℕ} {σ : Type} (S : PB.AnSys e σ) (a : σ)
 
 /- English proof (translation)
-Establish `hs` using `((S.reg a).2.2 t ht ht').1 j`. Establish `hmem : (S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' Set.univ ∈ 𝓝 y`. Simplify using `using (S.A.chart j).open_target.mem_nhds hy`. Apply the tactic sequence `exact (hs.contDiffAt hmem).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem contDiffAt_phT {t : ℝ} (ht : 0 < t) (ht' : t ≤ S.t₀) (j : Fin S.A.n) {y : Fin e → ℂ}
     (hy : y ∈ (S.A.chart j).target) : ContDiffAt ℝ 2 (S.phT a t ∘ (S.A.chart j).symm) y := by
@@ -183,13 +181,13 @@ theorem contDiffAt_phT {t : ℝ} (ht : 0 < t) (ht' : t ≤ S.t₀) (j : Fin S.A.
   exact (hs.contDiffAt hmem).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | simp)
 
 /- English proof (translation)
-Use `set p : S.X := (S.A.chart j).symm y with hp`. Establish `hU : p ∈ (S.th a).U p` using `(S.th a).mem_U p`. Establish `hth : ContDiffAt ℝ 2 ((S.th a).φ p ∘ (S.A.chart j).symm) y`. Establish `hs` using `(S.sing a).1.1 p j`. Establish `hmem : (S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (S.th a).U p ∈ 𝓝 y` using `((S.A.chart j).isOpen_inter_preimage_symm ((S.th a).isOpen_U p)).mem_nhds ⟨hy, hU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `exact (hs.contDiffAt hmem).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | simp)`. Establish `hG : ContDiffAt ℝ 2 ((S.potT a t).φ p ∘ (S.A.chart j).symm) y` using `hth.add (contDiffAt_phT S a ht ht' j hy)`. Use `⟨hG, ?_⟩` and prove the remaining obligations. Establish `hmemU : y ∈ (S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (S.potT a t).U p` using `⟨hy, hU, trivial⟩`. Establish `h1` using `(h t).2 p j y hmemU w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(h t).1 p j y hmemU w`. Establish `heq : ((S.potT a t).rsmul (-1)).φ p ∘ (S.A.chart j).symm = fun z => (fun _ => (0 : ℝ)) z + (-1) * ((S.potT a t).φ p ∘ (S.A.chart j).symm) z`. Use function extensionality and compare the values at `z`. Simplify using `[LocPot.rsmul]`. Rewrite `h2` using `[heq, levi_add_smul (-1) contDiffAt_const hG w]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : levi (fun _ : Fin e → ℂ => (0 : ℝ)) y w = 0` using `by simp [levi]`. Rewrite `h2` using `[h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levi_potT_eq_zero (h : ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ IsPsh S.A (S.potT a t))
     {t : ℝ} (ht : 0 < t) (ht' : t ≤ S.t₀) (j : Fin S.A.n) {y : Fin e → ℂ}
@@ -220,9 +218,9 @@ theorem levi_potT_eq_zero (h : ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ Is
   linarith
 
 /- English proof (translation)
-Take `⟨hG, h1⟩` from `levi_potT_eq_zero S a h ht ht₀ j hy w`. Take `⟨hG', h2⟩` from `levi_potT_eq_zero S a h ht' ht₀' j hy w`. Establish `heq : (fun x => S.phT a t x - S.phT a t' x) ∘ (S.A.chart j).symm = fun z => ((S.potT a t).φ ((S.A.chart j).symm y) ∘ (S.A.chart j).symm) z + (-1) * ((S.potT a t').φ ((S.A.chart j).symm y) ∘ (S.A.chart j).symm) z`. Use function extensionality and compare the values at `z`. Establish `e1 : ∀ s, (S.potT a s).φ ((S.A.chart j).symm y) ((S.A.chart j).symm z) = (S.th a).φ ((S.A.chart j).symm y) ((S.A.chart j).symm z) + S.phT a s ((S.A.chart j).symm z)` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, e1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq, levi_add_smul (-1) hG hG' w, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_sub_eq_zero (h : ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ IsPsh S.A (S.potT a t))
     {t t' : ℝ} (ht : 0 < t) (ht₀ : t ≤ S.t₀) (ht' : 0 < t') (ht₀' : t' ≤ S.t₀) (j : Fin S.A.n)
@@ -243,11 +241,11 @@ theorem levi_sub_eq_zero (h : ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ IsP
   ring
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `S.A.cover x`. Establish `hO : IsOpen ((S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' V)` using `(S.A.chart j).isOpen_inter_preimage_symm hV`. Establish `hxO : S.A.chart j x ∈ (S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' V` using `⟨(S.A.chart j).map_source hj, by`. Simplify `hx⟩` using `[Set.mem_preimage, (S.A.chart j).left_inv hj]`. Establish `hsm : ContDiffOn ℝ ∞ ((fun x => S.phT a t x - S.phT a t' x) ∘ (S.A.chart j).symm) ((S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `((S.reg a).2.2 t ht ht₀).1 j`. Establish `h2` using `((S.reg a).2.2 t' ht' ht₀').1 j`. Conclude with `(h1.sub h2).mono fun z hz => ⟨hz.1, trivial⟩`. Establish `hev` using `eventually_eq_of_isMax hO hsm (fun z hz w => levi_sub_eq_zero S a h ht ht₀ ht' ht₀' j hz.1 w) hxO (fun z hz => by`. Simplify `hmax _ hz.2)` using `[Function.comp_apply, (S.A.chart j).left_inv hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hev2` using `((S.A.chart j).continuousAt hj).eventually hev`. Use `filter_upwards [hev2, (S.A.chart j).open_source.mem_nhds hj] with y hy hys`. Simplify `hy` using `[Function.comp_apply, (S.A.chart j).left_inv hj, (S.A.chart j).left_inv hys]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eventually_eq_sub (h : ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ IsPsh S.A (S.potT a t))
     {t t' : ℝ} (ht : 0 < t) (ht₀ : t ≤ S.t₀) (ht' : 0 < t') (ht₀' : t' ≤ S.t₀)
@@ -276,21 +274,19 @@ theorem eventually_eq_sub (h : ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ Is
 end System
 
 /- English proof (translation)
-Introduce `e σ S a h`. Set `_ : ChartedSpace (Fin e → ℂ) S.X` to `{ atlas := Set.range S.A.chart chartAt := fun x => S.A.chart (S.A.cover x).choose mem_chart_source := fun x => (S.A.cover x).choose_spec chart_mem_atlas := fun _ => ⟨_, rfl⟩ }`. Use `haveI : LocallyConnectedSpace S.X := ChartedSpace.locallyConnectedSpace (Fin e → ℂ) S.X`. Take `⟨ht₀, -, hreg⟩` from `S.reg a`. Establish `hdense` using `(GlobalTheory.CompanionTheory.Ar.Bdry.bdry_isClosed_dense_compl e S.X S.A S.L S.s S.nb S.m S.W S.sec S.snc).2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₀ : Continuous (S.phT a S.t₀)` using `continuous_of_smooth (hreg S.t₀ ht₀ le_rfl).1`. Take `⟨M, hM⟩` from `isCompact_univ.exists_bound_of_continuousOn hc₀.continuousOn`. Establish `hM' : ∀ x, |S.phT a S.t₀ x| ≤ M` using `fun x => by simpa using hM x (Set.mem_univ x)`. Establish `hpt : ∀ x : S.X, ∃ y, y ∈ connectedComponent x ∧ y ∈ (bdry S.s)ᶜ` using `fun x => by`. Take `⟨y, hy1, hy2⟩` from `hdense.inter_open_nonempty _ isOpen_connectedComponent ⟨x, mem_connectedComponent⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy1, hy2⟩`. Use `choose y hyc hyb using hpt`. Take `⟨T, hT⟩` from `isCompact_univ.elim_finite_subcover (fun x : S.X => connectedComponent x) (fun _ => isOpen_connectedComponent) (fun x _ => Set.mem_iUnion.2 ⟨x, mem_connectedComponent⟩)`. Take `⟨B, hB⟩` from `(T.image fun x => -S.ph a (y x)).exists_le`. Use `⟨|S.C| + |B| + 2 * M, fun t ht ht' x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hM0 : 0 ≤ M` using `(abs_nonneg _).trans (hM' x)`. Choose the witnesses or unpack the hypotheses as in `⟨x₁, hx₁, hxc⟩ : ∃ x₁ ∈ T, x ∈ connectedComponent x₁ := by`. Simplify using `using hT (Set.mem_univ x)`. Establish `hcv : Continuous fun x => S.phT a t x - S.phT a S.t₀ x` using `(continuous_of_smooth (hreg t ht ht').1).sub hc₀`. Establish `hloc` using `fun (z : S.X) (V : Set S.X) (hV : IsOpen V) (hz : z ∈ V) hm => eventually_eq_sub S a h ht ht' ht₀ le_rfl z V hV hz hm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `eq_of_mem_connectedComponent hcv hloc hxc`. Establish `e2` using `eq_of_mem_connectedComponent hcv hloc (hyc x₁)`. Establish `hlow : S.ph a (y x₁) ≤ S.phT a t (y x₁)` using `(hreg t ht ht').2.2.1 _ (hyb x₁)`. Establish `hup : S.phT a t x ≤ S.C` using `(hreg t ht ht').2.1 x`. Establish `hb : -S.ph a (y x₁) ≤ B` using `hB _ (Finset.mem_image_of_mem _ hx₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `abs_le.1 (hM' x)`. Establish `b2` using `abs_le.1 (hM' (y x₁))`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use `neg_abs_le B` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_abs_self B` as an intermediate fact. Use `abs_nonneg S.C` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_abs_self S.C` as an intermediate fact. Use `abs_nonneg B` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem flat_phT_bounded : ∀ (e : ℕ) (σ : Type) (S : PB.AnSys e σ) (a : σ),
     (∀ t, ReciprocityTheory.AnForm.M.IsPsh S.A ((S.potT a t).rsmul (-1)) ∧

@@ -14,9 +14,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.notMem_empty, false_and, exists_false, iff_false, not_not]`. Rewrite using `[Scheme.basicOpen_of_isUnit Y isUnit_one]`. Conclude with `hv`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Scheme.basicOpen_mul]`. Simplify using `only [TopologicalSpace.Opens.mem_inf, not_and_or, ih, Finset.mem_insert, exists_eq_or_imp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_mem_basicOpen_prod {Y : Scheme.{0}} {U : Y.Opens} {v : Y} (hv : v ∈ U) {c : ℕ}
     (f : Fin c → Γ(Y, U)) (s : Finset (Fin c)) :
@@ -33,27 +33,25 @@ theorem not_mem_basicOpen_prod {Y : Scheme.{0}} {U : Y.Opens} {v : Y} (hv : v �
       exists_eq_or_imp]
 
 /- English proof (translation)
-Take `⟨hreg, U, hyU, c, f, J₀, hrsp, hid⟩` from `hB y`. Take `⟨V, hV, hyV, z, e, hz, hframe⟩` from `GlobalTheory.T.regular_sequence_extend_coords k Y q n y U hyU c f hrsp`. Take `⟨w₀, u₀, hinj, hw⟩` from `GlobalTheory.T.regular_sequence_prime_divisors Y y U.1 hyU c f hreg hrsp`. Establish `hwe : ∀ i, Function.extend e w₀ (fun _ => y) (e i) = w₀ i` using `fun i => e.injective.extend_apply _ _ i`. Establish `hue : ∀ i, Function.extend e u₀ (fun _ => 1) (e i) = u₀ i` using `fun i => e.injective.extend_apply _ _ i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB' : ∀ v, v ∈ U.1 → (v ∈ B ↔ ∃ i ∈ J₀, v ∉ Y.basicOpen (f i))`. Introduce `v hv`. Establish `h1 : v ∈ B ↔ v ∈ (Scheme.IdealSheafData.vanishingIdeal B).support` using `Iff.rfl`. Rewrite using `[h1, Scheme.IdealSheafData.mem_support_iff_of_mem (U := U) hv, hid, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton]`. Conclude with `not_mem_basicOpen_prod hv f J₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, hyV, z, J₀.map e, Function.extend e w₀ (fun _ => y), Function.extend e u₀ (fun _ => 1), ⟨hframe, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `j hj`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 hj`. Rewrite using `[hue, (hw i).1, hz, fnOf_resG]`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 hj`. Rewrite using `[hwe]`. Conclude with `(hw i).2.1`. Introduce `j hj`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 hj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hwe]`. Conclude with `(hw i).2.2.1`. Introduce `a ha b hb hab`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 (Finset.mem_coe.1 ha)`. Take `⟨i', -, rfl⟩` from `Finset.mem_map.1 (Finset.mem_coe.1 hb)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hab` using `[hwe, hwe]`. Rewrite using `[hinj hab]`. Introduce `j hj`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 hj`. Rewrite using `[hwe, hue]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hw i).2.2.2.2.1`. Introduce `j hj v hvy hne`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 hj`. Rewrite `hne` using `[hwe]`. Rewrite using `[hue]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : Order.coheight v = 1`. Establish `hvU : v ∈ U.1` using `hvy.mem_open U.1.isOpen hyU`. Establish `hb : v ∈ Y.basicOpen (f i)` using `(hw i).2.2.2.2.2 v hvy hc hne`. Rewrite using `[(hw i).1]`. Conclude with `UnitAt.ord_eq_zero ((unitAt_fnOf_iff hvU _ _).2 hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Scheme.ord_eq_zero_of_coheight_neq_one hc _`. Introduce `v hvy hc`. Establish `hvU : v ∈ U.1` using `hvy.mem_open U.1.isOpen hyU`. Rewrite using `[hB' v hvU]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨i, hi, hnot⟩`. Use `⟨e i, Finset.mem_map_of_mem e hi, ?_⟩` and prove the remaining obligations. Rewrite using `[hwe]`. Assume the negation of the conclusion as `hne`. Conclude with `hnot ((hw i).2.2.2.2.2 v hvy hc hne)`.
-
-Introduce and unpack `⟨j, hj, rfl⟩`. Take `⟨i, hi, rfl⟩` from `Finset.mem_map.1 hj`. Rewrite using `[hwe]`. Conclude with `⟨i, hi, (hw i).2.2.2.1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isSncChart (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y]
     [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (B : Closeds Y)

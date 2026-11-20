@@ -32,9 +32,9 @@ open GlobalTheory.SmGL GlobalTheory.LocGL
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `hq`. Set `x` to `IrrGL.of σ.ρ σ.smooth σ.irred`. Set `T : ∀ i : Fin d, (twist σ.ρ (detChar (Fin a) (absPow (w.adicCompletion E) (((d : ℂ) - 1) / 2 - (i : ℕ))))).Equiv (spehFactor x d i).rep` to `fun i => (twistEquiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred) _).trans (x.twEquiv _ (isSmoothChar_absPow _))`. Set `M` to `multiProdEquiv (stdBlocks (fun _ : Fin d => a) h) T`. Establish `hA : IsSubquotient (GlobalTheory.BCSupport.clsOf σ').rep σ'.ρ` using `IsSubquotient.of_surjective (IrrGL.equivOf σ'.ρ σ'.smooth σ'.irred).toIntertwiningMap (IrrGL.equivOf σ'.ρ σ'.smooth σ'.irred).toLinearEquiv.surjective`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : IsSubquotient σ'.ρ (spehInd h σ)` using `IsSubquotient.of_surjective q hq`. Establish `hC : IsSubquotient (spehInd h σ) (prodIrr (spehFactor x d) h)` using `IsSubquotient.of_surjective M.symm.toIntertwiningMap M.symm.toLinearEquiv.surjective`. Establish `hs : IsSubquotient (GlobalTheory.BCSupport.clsOf σ').rep (prodIrr (spehFactor x d) h)` using `hA.trans (hB.trans hC)`. Establish `h0` using `(good_toral_of_isSubquotient_prodIrr _ d (spehFactor x d) (GlobalTheory.BCSupport.clsOf σ') h hs).1 hG ⟨0, hd⟩`. Conclude with `(good_nu_iff x _).1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem good_of_isSpehQuot {a d N : ℕ} (h : ∑ _ : Fin d, a = N) {w : HeightOneSpectrum (𝓞 E)} (σ : LocIrr w a)
     (σ' : LocIrr w N) (hd : 1 ≤ d) (hq : IsSpehQuot h σ σ') (hG : Good (GlobalTheory.BCSupport.clsOf σ')) :

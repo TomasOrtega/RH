@@ -12,17 +12,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SqZeroBC
 
 /- English proof (translation)
-Introduce `R₀ R₁ _ _ _ q hq X₀ X₁ s₀ s₁ pr hp U`. Establish `hqs : Function.Surjective (q : R₁ →+* R₀)` using `fun x ↦ ⟨algebraMap R₀ R₁ x, q.commutes x⟩`. Establish `hid : spMap (q : R₁ →+* R₀) ≫ spMap (algebraMap R₀ R₁) = 𝟙 (Sp R₀)`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (q : R₁ →+* R₀).comp (algebraMap R₀ R₁) = RingHom.id R₀` using `RingHom.ext fun x ↦ q.commutes x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Spec.map_id _`. Set `σ : X₀ ⟶ X₁` to `hp.lift (𝟙 X₀) (s₀ ≫ spMap (q : R₁ →+* R₀)) (by rw [Category.id_comp, Category.assoc, hid, Category.comp_id])`. Establish `hσ : σ ≫ pr = 𝟙 X₀` using `hp.lift_fst _ _ _`. Establish `hσ2 : σ ≫ s₁ = s₀ ≫ spMap (q : R₁ →+* R₀)` using `hp.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hout : IsPullback (σ ≫ pr) s₀ s₀ (spMap (q : R₁ →+* R₀) ≫ spMap (algebraMap R₀ R₁))`. Rewrite using `[hσ, hid]; exact IsPullback.of_horiz_isIso ⟨by simp⟩`. Establish `hleft : IsPullback σ s₀ s₁ (spMap (q : R₁ →+* R₀))` using `IsPullback.of_right hout hσ2 hp`. Establish `hk2 : RingHom.ker (q : R₁ →+* R₀) ^ 2 = 0`. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb`. Rewrite using `[Ideal.mem_bot]`. Conclude with `hq a b (RingHom.mem_ker.1 ha) (RingHom.mem_ker.1 hb)`. Establish `hsurj : Surjective σ` using `surjective_of_isPullback_sqZero hk2 hqs rfl hleft`. Use `⟨σ ⁻¹ᵁ U, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `x`. Take `⟨y, rfl⟩` from `hsurj.surj x`. Establish `e : pr (σ y) = y`. Use `congrArg (fun f : X₀ ⟶ X₀ ↦ f y) hσ` as an intermediate fact. Simplify `this.trans (by simp)` using `only [Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `σ (pr (σ y)) ∈ U ↔ σ y ∈ U`. Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem preimage_surj : ∀ (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁] (q : R₁ →ₐ[R₀] R₀), (∀ y y', q y = 0 → q y' = 0 → y * y' = 0) → ∀ (X₀ X₁ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀) (s₁ : X₁ ⟶ Sp R₁) (pr : X₁ ⟶ X₀), IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁)) → ∀ U : X₁.Opens, ∃ V : X₀.Opens, pr ⁻¹ᵁ V = U := by
   intro R₀ R₁ _ _ _ q hq X₀ X₁ s₀ s₁ pr hp U

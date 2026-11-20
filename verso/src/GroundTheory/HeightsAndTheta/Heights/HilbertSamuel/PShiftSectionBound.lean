@@ -20,7 +20,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 omit [Fintype K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.one_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem shift_succ_sub_one (b : K → ℤ) (j : ℕ) :
     (b + fun _ => ((j + 1 : ℕ) : ℤ)) - 1 = b + fun _ => (j : ℤ) := by
@@ -32,9 +32,9 @@ theorem shift_succ_sub_one (b : K → ℤ) (j : ℕ) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[pow_zero, one_mul]`. Use `hs using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `succ j ih`. Rewrite `ih` using `[← shift_succ_sub_one]`. Establish `h` using `mul_mem_chartLatQ (c := c) (b + fun _ => ((j + 1 : ℕ) : ℤ)) ih`. Rewrite `h` using `[← mul_assoc, ← pow_succ']`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_mul_mem_chartLatQ (c : ∀ k, ι k) (b : K → ℤ) {s : Ω} (hs : s ∈ chartLatQ y b 1) (j : ℕ) :
     (∏ k, y ⟨k, c k⟩) ^ j * s ∈ chartLatQ y (b + fun _ => (j : ℤ)) 1 := by
@@ -50,11 +50,11 @@ theorem pow_mul_mem_chartLatQ (c : ∀ k, ι k) (b : K → ℤ) {s : Ω} (hs : s
     rwa [← mul_assoc, ← pow_succ'] at h
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hfin K ι Ω y b 1 hy`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℚ (S : Set Ω)) fun s hs => ?_` and prove the remaining obligations. Take `⟨N, hN, hNs⟩` from `ChartDenominator.proof K ι Ω y b 1 s hs`. Rewrite `hNs` using `[← hS]`. Establish `hZ : (N : Ω) * s ∈ Submodule.span ℤ (S : Set Ω)` using `(AddSubgroup.closure_le (K := (Submodule.span ℤ (S : Set Ω)).toAddSubgroup)).mpr Submodule.subset_span hNs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : (N : Ω) * s ∈ Submodule.span ℚ (S : Set Ω)` using `Submodule.span_le_restrictScalars ℤ ℚ _ hZ`. Establish `hN0 : (N : Ω) ≠ 0` using `by exact_mod_cast (show N ≠ 0 by omega)`. Establish `hs' : s = ((N : ℚ)⁻¹) • ((N : Ω) * s)`. Rewrite using `[Rat.smul_def]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hs']`. Conclude with `Submodule.smul_mem _ _ hQ`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_chartLatQ (hfin : SectionLatticeFinite.Statement) (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0)
     (b : K → ℤ) : FiniteDimensional ℚ (chartLatQ y b 1) := by
@@ -75,9 +75,9 @@ theorem finiteDimensional_chartLatQ (hfin : SectionLatticeFinite.Statement) (hy 
   exact Submodule.smul_mem _ _ hQ
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Establish `h0 : (b + fun _ => ((0 : ℕ) : ℤ)) = b` using `by funext k; simp`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ j ih`. Establish `h` using `finrank_chartLatQ_le hc (b + fun _ => ((j + 1 : ℕ) : ℤ))`. Rewrite `h` using `[shift_succ_sub_one]`. Rewrite using `[Finset.sum_range_succ]`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_shift_le (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (b : K → ℤ) (j : ℕ) :
     Module.finrank ℚ (chartLatQ y (b + fun _ => (j : ℤ)) 1) ≤ Module.finrank ℚ (chartLatQ y b 1) +
@@ -97,15 +97,13 @@ theorem finrank_shift_le (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (b
 end Shift
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D a m hD hV hB`. Establish `hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hV.2.1.2.2 k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mCoordIdeal, RingHom.mem_ker]`. Simplify using `[mConeMap, h0]`. Use `choose c hc using hy`. Establish `hC` using `fun i : ℕ => hQ K ι Ω y D a (fun _ => ((i + 1 : ℕ) : ℤ)) c hD hV hB hc`. Use `choose C hC using hC`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ i ∈ Finset.range m, C i, ((Filter.eventually_all_finset (Finset.range m)).mpr fun i _ => hC i).mono fun n hn => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `finiteDimensional_chartLatQ hfin (fun k => ⟨c k, hc k⟩) ((n : ℤ) • a + fun _ => (m : ℤ))` as an intermediate fact. Establish `hh : (∏ k, y ⟨k, c k⟩) ^ m ≠ 0` using `pow_ne_zero _ (Finset.prod_ne_zero_iff.mpr fun k _ => hc k)`. Set `φ : chartLatQ y ((n : ℤ) • a) 1 →ₗ[ℚ] chartLatQ y ((n : ℤ) • a + fun _ => (m : ℤ)) 1` to `{ toFun := fun s => ⟨(∏ k, y ⟨k, c k⟩) ^ m * s, pow_mul_mem_chartLatQ c _ s.2 m⟩ map_add' := fun s t => Subtype.ext (mul_add _ _ _) map_smul' := fun r s => Subtype.ext (mul_smul_comm r _ (s : Ω)) }`. Establish `hinj : Function.Injective φ` using `fun s t hst => Subtype.ext (mul_left_cancel₀ hh (congrArg Subtype.val hst))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LinearMap.finrank_le_finrank_of_injective hinj` after adjusting the coercions. Establish `h` using `finrank_shift_le c hc ((n : ℤ) • a) m`. Establish `h' : (Module.finrank ℚ (chartLatQ y ((n : ℤ) • a + fun _ => (m : ℤ)) 1) : ℝ) ≤ (Module.finrank ℚ (chartLatQ y ((n : ℤ) • a) 1) : ℝ) + ∑ i ∈ Finset.range m, (Module.finrank ℚ (chartLatQ y ((n : ℤ) • a + fun _ => ((i + 1 : ℕ) : ℤ)) 1 ⧸ chartDivSec y c ((n : ℤ) • a + fun _ => ((i + …`. Conclude with `h` after adjusting the coercions. Establish `hs : ∑ i ∈ Finset.range m, (Module.finrank ℚ (chartLatQ y ((n : ℤ) • a + fun _ => ((i + 1 : ℕ) : ℤ)) 1 ⧸ chartDivSec y c ((n : ℤ) • a + fun _ => ((i + 1 : ℕ) : ℤ))) : ℝ) ≤ (∑ i ∈ Finset.range m, C i) * (n : ℝ) ^ (D - 1)`.
-
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun i hi => hn i hi`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ShiftSectionBound.proof (hfin : SectionLatticeFinite.Statement) (hQ : ShiftQuotientBound.Statement) :
     ShiftSectionBound.Statement := by

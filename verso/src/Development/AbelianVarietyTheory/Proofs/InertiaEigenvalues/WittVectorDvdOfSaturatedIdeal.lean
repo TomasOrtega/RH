@@ -5,11 +5,11 @@ namespace GlobalTheory
 open WittVector
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro t j hj`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Introduce `t j hj`. Establish `h : (l : WittVector l R) ^ (m + 1) * t = verschiebung (frobenius ((l : WittVector l R) ^ m * t))`. Rewrite using `[verschiebung_frobenius]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `j with`. Consider the case `zero => exact verschiebung_coeff_zero _`. Consider the case `succ j`. Rewrite using `[verschiebung_coeff_succ, coeff_frobenius_charP, ih t j (by omega)]`. Conclude with `zero_pow hl.out.ne_zero`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittVector_coeff_pow_mul_eq_zero {l : ℕ} [hl : Fact l.Prime] {R : Type} [CommRing R]
     [CharP R l] : ∀ (m : ℕ) (t : WittVector l R) (j : ℕ), j < m →
@@ -30,9 +30,9 @@ theorem wittVector_coeff_pow_mul_eq_zero {l : ℕ} [hl : Fact l.Prime] {R : Type
       exact zero_pow hl.out.ne_zero
 
 /- English proof (translation)
-Establish `h0 : truncate m ((l : WittVector l R) ^ m * t) = 0`. Use extensionality with `i`. Rewrite using `[WittVector.coeff_truncate, TruncatedWittVector.coeff_zero]`. Conclude with `wittVector_coeff_pow_mul_eq_zero m t i i.2`. Establish `h1 : truncate m (x + (l : WittVector l R) ^ m * t) = truncate m x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, h0, add_zero]`. Use `congrArg (fun y => TruncatedWittVector.coeff ⟨j, hj⟩ y) h1` as an intermediate fact. Simplify `this` using `only [WittVector.coeff_truncate]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem wittVector_coeff_add_pow_mul {l : ℕ} [hl : Fact l.Prime] {R : Type} [CommRing R]
     [CharP R l] (x t : WittVector l R) (m j : ℕ) (hj : j < m) :
@@ -47,9 +47,9 @@ theorem wittVector_coeff_add_pow_mul {l : ℕ} [hl : Fact l.Prime] {R : Type} [C
   simpa only [WittVector.coeff_truncate] using this
 
 /- English proof (translation)
-Distinguish the cases in `h : x = 0`. Conclude with `⟨0, by rw [h, mul_zero]⟩`. Take `⟨m, b, hb, hxb⟩` from `exists_eq_pow_p_mul x h`. Consider the cases of `m with`. Consider the case `zero => rw [pow_zero, one_mul] at hxb`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `absurd (hxb ▸ hx) hb`. Consider the case `succ m => exact ⟨(l : WittVector l R) ^ m * b, by rw [hxb]; ring⟩`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem wittVector_dvd_of_coeff_zero {l : ℕ} [hl : Fact l.Prime] {R : Type} [CommRing R]
     [CharP R l] [PerfectRing R l] (x : WittVector l R) (hx : x.coeff 0 = 0) :
@@ -62,31 +62,29 @@ theorem wittVector_dvd_of_coeff_zero {l : ℕ} [hl : Fact l.Prime] {R : Type} [C
   | succ m => exact ⟨(l : WittVector l R) ^ m * b, by rw [hxb]; ring⟩
 
 /- English proof (translation)
-Introduce `l _ R _ _ _ J μ hμ hsat hdiv a ha`. Establish `step : ∀ d : J, ∃ c : WittVector l R, ∃ d' : J, (d : WittVector l R) = μ * c + (l : WittVector l R) * d'`. Introduce `d`. Take `⟨c₀, hc₀⟩` from `hdiv d d.2`. Use `set x := (d : WittVector l R) - μ * teichmuller l c₀ with hxdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx0 : x.coeff 0 = 0`. Establish `e : (d : WittVector l R) = x + μ * teichmuller l c₀` using `by rw [hxdef]; ring`. Establish `h2` using `congrArg (fun y : WittVector l R => y.coeff 0) e`. Simplify using `only [add_coeff_zero, mul_coeff_zero, teichmuller_coeff_zero] at h2`. Rewrite `h2` using `[hc₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-h2`. Take `⟨y, hy⟩` from `wittVector_dvd_of_coeff_zero x hx0`. Establish `hyJ : y ∈ J`. Apply `hsat` to reduce the goal to its premises. Rewrite using `[← hy, hxdef]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `J.sub_mem d.2 (J.mul_mem_right _ hμ)`. Use `⟨teichmuller l c₀, ⟨y, hyJ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, hxdef]`. Expand and normalize the polynomial expressions, which then agree. Use `choose cf df hcd using step`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `seq : ℕ → J` to `fun n => Nat.rec ⟨a, ha⟩ (fun _ d => df d) n`. Set `s : ℕ → WittVector l R` to `fun n => ∑ k ∈ Finset.range n, (l : WittVector l R) ^ k * cf (seq k)`. Establish `hs_succ : ∀ n, s (n + 1) = s n + (l : WittVector l R) ^ n * cf (seq n)`. Introduce `n`. Simplify using `only [s, Finset.sum_range_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hmain : ∀ n, a = μ * s n + (l : WittVector l R) ^ n * (seq n).1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [s, seq]`. Consider the case `succ n ih`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (seq (n + 1)).1 = (df (seq n)).1` using `rfl`. Rewrite using `[hs_succ, e]`. Use `hcd (seq n)` as an intermediate fact. Rewrite using `[ih, this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hstab : ∀ n m, n ≤ m → ∃ t, s m = s n + (l : WittVector l R) ^ n * t`. Introduce `n m hnm`. Proceed by induction on `m, hnm using Nat.le_induction with`. Consider the case `base => exact ⟨0, by ring⟩`. Consider the case `succ m hnm ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `ih`. Use `⟨t + (l : WittVector l R) ^ (m - n) * cf (seq m), ?_⟩` and prove the remaining obligations. Rewrite using `[hs_succ, ht, mul_add, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hnm]`. Expand and normalize the polynomial expressions, which then agree. Set `c : WittVector l R` to `WittVector.mk l (fun k => (s (k + 1)).coeff k)`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Establish `htc : truncate (k + 1) c = truncate (k + 1) (s (k + 1))`. Use extensionality with `i`. Rewrite using `[WittVector.coeff_truncate, WittVector.coeff_truncate]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hstab ((i : ℕ) + 1) (k + 1) (by omega)`. Use `show (s ((i : ℕ) + 1)).coeff i = _`. Rewrite using `[ht, wittVector_coeff_add_pow_mul _ _ _ _ (by omega)]`. Establish `hta : truncate (k + 1) a = truncate (k + 1) (μ * c)`. Establish `e` using `hmain (k + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : truncate (k + 1) ((l : WittVector l R) ^ (k + 1) * (seq (k + 1)).1) = 0`. Use extensionality with `i`. Rewrite using `[WittVector.coeff_truncate, TruncatedWittVector.coeff_zero]`. Conclude with `wittVector_coeff_pow_mul_eq_zero _ _ i i.2`. Use `conv_lhs => rw [e]`.
-
-Rewrite using `[map_add, h0, add_zero, map_mul, map_mul, htc]`. Use `congrArg (fun y => TruncatedWittVector.coeff ⟨k, Nat.lt_succ_self k⟩ y) hta` as an intermediate fact. Simplify `this` using `only [WittVector.coeff_truncate]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem wittVector_dvd_of_saturated_ideal : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R]
     [CharP R l] [PerfectRing R l] (J : Ideal (WittVector l R)) (μ : WittVector l R), μ ∈ J →

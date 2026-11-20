@@ -6,13 +6,11 @@ open scoped ENNReal NNReal Matrix Pointwise
 namespace GlobalTheory.CompanionTheory.SplitExtLat
 
 /- English proof (translation)
-Introduce `hD h𝓕`. Establish `hker : IsClosed ((π.ker : Set P))`. Rewrite using `[MonoidHom.coe_ker]`. Conclude with `isClosed_singleton.preimage hπ`. Establish `hsc : SecondCountableTopology π.ker` using `TopologicalSpace.Subtype.secondCountableTopology (π.ker : Set P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlc : LocallyCompactSpace π.ker` using `hker.locallyCompactSpace`. Establish `hσc : SigmaCompactSpace π.ker` using `sigmaCompactSpace_of_locallyCompact_secondCountable`. Establish `hνσ : SigmaFinite ν` using `Measure.IsHaarMeasure.sigmaFinite ν`. Use `set e := GlobalTheory.CompanionTheory.SplitExtLat.splitHomeo ι π hι hπ hπι with he`. Establish `hemb : MeasurableEmbedding e` using `e.measurableEmbedding`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e.image_eq_preimage_symm]`. Conclude with `(hD.nullMeasurableSet.prod h𝓕).preimage (MeasurableEquiv.quasiMeasurePreserving_symm (ν.prod μ₁) e.toMeasurableEquiv)`. Introduce `f hf`. Rewrite using `[hemb.restrict_map, Set.preimage_image_eq _ e.injective, hemb.lintegral_map, ← Measure.prod_restrict, lintegral_prod_symm']`.
-
-Both sides reduce to the same expression. Conclude with `hf.comp hemb.measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem setLIntegral_splitHomeo_image_prod
     (P G₁ : Type) [Group P] [TopologicalSpace P] [IsTopologicalGroup P] [LocallyCompactSpace P]

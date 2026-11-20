@@ -6,7 +6,7 @@ namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 open MeasureTheory Module
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qm9.det_sq_eq_one_of_preserves_bilin B hB f hf`.
+A detailed English derivation is pending.
 -/
 theorem det_sq_eq_one_of_preserves_bilin {V : Type*} [AddCommGroup V] [Module ℝ V]
     [FiniteDimensional ℝ V] (B : LinearMap.BilinForm ℝ V) (hB : B.Nondegenerate)
@@ -14,11 +14,11 @@ theorem det_sq_eq_one_of_preserves_bilin {V : Type*} [AddCommGroup V] [Module �
   _root_.UpperTheory.Reformulated.B.Qm9.det_sq_eq_one_of_preserves_bilin B hB f hf
 
 /- English proof (translation)
-Establish `h2` using `det_sq_eq_one_of_preserves_bilin B hB f hf`. Establish `hd : LinearMap.det f ≠ 0`. Introduce `h`. Rewrite `h2` using `[h]`. Evaluate the numerical expressions using `at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `habs : |LinearMap.det f| = 1`. Establish `: |LinearMap.det f| ^ 2 = 1` using `by rw [sq_abs]; exact h2`. Conclude with `(pow_eq_one_iff_of_nonneg (abs_nonneg _) two_ne_zero).1 this`. Use `⟨(LinearMap.continuous_of_finiteDimensional f).measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar μ hd, abs_inv, habs]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_of_preserves_bilin {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [MeasurableSpace V] [BorelSpace V] [FiniteDimensional ℝ V] (μ : Measure V)
@@ -37,17 +37,17 @@ theorem measurePreserving_of_preserves_bilin {V : Type*} [NormedAddCommGroup V] 
   simp
 
 /- English proof (translation)
-Establish `hφ : Measurable φ` using `φ.continuous.measurable`. Establish `key : ∀ T : V → V, MeasurePreserving T lam lam → (lam.map φ).map (φ ∘ T ∘ φ.symm) = lam.map φ`. Introduce `T hT`. Rewrite using `[Measure.map_map (hφ.comp (hT.measurable.comp φ.symm.continuous.measurable)) hφ]`. Establish `: (φ ∘ T ∘ φ.symm) ∘ φ = φ ∘ T`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this, ← Measure.map_map hφ hT.measurable, hT.map_eq]`. Establish `hinv : (lam.map φ).IsMulLeftInvariant`. Use `⟨fun n => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun x => n * x) = φ ∘ (fun x => φ.symm (n * φ x)) ∘ φ.symm`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `key _ (hL n)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsFiniteMeasureOnCompacts (lam.map φ)`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Establish `e` using `φ.toMeasurableEquiv.map_apply (μ := lam) K`. Simplify using `only [Homeomorph.toMeasurableEquiv_coe] at e`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(φ.isCompact_preimage.2 hK).measure_lt_top`. Establish `: (lam.map φ).IsOpenPosMeasure` using `φ.continuous.isOpenPosMeasure_map φ.surjective`. Establish `: (lam.map φ).IsHaarMeasure` using `{}`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ (lam.map φ), Measure.map_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : c = φ ∘ (fun x => φ.symm (c (φ x))) ∘ φ.symm`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `key _ hC`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_of_measurePreserving_coordinates {N V : Type*} [Group N] [TopologicalSpace N]
     [IsTopologicalGroup N] [LocallyCompactSpace N] [SecondCountableTopology N] [MeasurableSpace N]

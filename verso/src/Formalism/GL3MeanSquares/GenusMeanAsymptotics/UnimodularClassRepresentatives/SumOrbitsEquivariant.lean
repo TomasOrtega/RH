@@ -30,7 +30,7 @@ namespace StabilizerLattices
 open SplitBAux
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨hΛ.1, hΛ.2.1, rfl⟩, Prod.ext (by rw [← hΛ.2.2]; exact inf_perpO S Λ) rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pair_mem_of_fibG (S : VecSplit h h') {L : Submodule (𝓞 K) V} {Λ' : Submodule (𝓞 K) V'}
     {Λ : Submodule (𝓞 K) V} (hΛ : Λ ∈ fibG S L Λ') :
@@ -38,9 +38,9 @@ theorem pair_mem_of_fibG (S : VecSplit h h') {L : Submodule (𝓞 K) V} {Λ' : S
   ⟨⟨hΛ.1, hΛ.2.1, rfl⟩, Prod.ext (by rw [← hΛ.2.2]; exact inf_perpO S Λ) rfl⟩
 
 /- English proof (translation)
-Take `⟨Λ, x⟩` from `p`. Take `⟨e1, e2⟩` from `Prod.ext_iff.mp e`. Express the relevant statement in the definitionally equal form `Λ ⊓ perpO h x = emb S Λ' at e1`. Express the relevant statement in the definitionally equal form `x = S.x₀ at e2`. Substitute `e2` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Rewrite `e1` using `[inf_perpO]`. Conclude with `⟨⟨hp.1, hp.2.1, emb_injective S e1⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fibG_of_pair_mem (S : VecSplit h h') {L : Submodule (𝓞 K) V} {Λ' : Submodule (𝓞 K) V'}
     {p : Submodule (𝓞 K) V × V} (hp : p ∈ pairs h L (h S.x₀ S.x₀))
@@ -54,11 +54,9 @@ theorem fibG_of_pair_mem (S : VecSplit h h') {L : Submodule (𝓞 K) V} {Λ' : S
   exact ⟨⟨hp.1, hp.2.1, emb_injective S e1⟩, rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `hp : p ∈ pairs h L (h S.x₀ S.x₀)`. Establish `hne : p.2 ≠ 0`. Introduce `h0`. Use `hp.2.2` as an intermediate fact. Rewrite `this` using `[h0]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `S.hx₀ (by simpa using this.symm)`. Take `⟨g, hg, hgx⟩` from `exists_isom_map_of_eq hK hs hd hne hp.2.2`. Use `⟨⟨g, hg⟩, fun _ => ⟨Prod.ext rfl hgx, OrbitRepresentatives.gmap_mem_genus hs hp.1 hg, ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[← hgx]`. Conclude with `apply_mem_gmap g hp.2.1`.
-
-Conclude with `⟨1, fun h => absurd h hp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_move (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') (L : Submodule (𝓞 K) V) (p : Submodule (𝓞 K) V × V) :
@@ -78,7 +76,7 @@ theorem exists_move (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hs : h
   · exact ⟨1, fun h => absurd h hp⟩
 
 /- English proof (translation)
-Use `⟨OrbitRepresentatives.gmap_mem_genus hs hΛ.1 (extOf_mem_isom hs S hg'), ?_, ?_⟩` and prove the remaining obligations. Use `apply_mem_gmap (extOf S g') hΛ.2.1` as an intermediate fact. Rewrite `this` using `[extOf_x₀]`. Then use the resulting hypothesis. Rewrite using `[cut_gmap_extOf, hΛ.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibG_smul (hs : h.IsSymm) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     {Λ' : Submodule (𝓞 K) V'} {Λ : Submodule (𝓞 K) V} (hΛ : Λ ∈ fibG S L Λ')
@@ -90,11 +88,9 @@ theorem fibG_smul (hs : h.IsSymm) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
   · rw [cut_gmap_extOf, hΛ.2.2]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_move hK hs hd S L p`. Take `⟨hg1, hg2⟩` from `hg hp`. Establish `e : g • proj h p = (emb S (S.cut (Formalism.HermitianLatticesTheory.gmap g.1 p.1)), S.x₀)`. Rewrite using `[← proj_smul, hg1]`. Conclude with `(pair_mem_of_fibG S hg2).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlat : Submodule.IsLattice K (S.cut (Formalism.HermitianLatticesTheory.gmap g.1 p.1))` using `isLattice_cut S hg2.1.1`. Establish `f1 : Finite (Formalism.ThetaLiftIndependence.autL h' (S.cut (Formalism.HermitianLatticesTheory.gmap g.1 p.1)))` using `(Formalism.HermitianLatticesTheory.autFinite K V' h' (S.isSymm hs) (trace_pos (S.isTotPosDef hd)) _ hlat).to_subtype`. Establish `f2 : Finite (MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom h) (g • proj h p))`. Rewrite using `[e]`. Conclude with `Finite.of_equiv _ (stabPairEquiv hs S _).symm`.
-
-Establish `f3 : Finite (MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom h) (proj h p))` using `Finite.of_equiv _ (MulAction.stabilizerEquivStabilizer (g := g) (a := proj h p) rfl).symm.toEquiv`. Conclude with `Set.toFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_stab_proj (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') (L : Submodule (𝓞 K) V) {p : Submodule (𝓞 K) V × V}
@@ -119,13 +115,13 @@ end StabilizerLattices
 
 open StabilizerLattices SplitBAux in
 /- English proof (translation)
-Take `⟨sX, hsX, hX⟩` from `exists_pairReps hs hd hL (h S.x₀ S.x₀)`. Use `choose γ hγ using exists_move hK hs hd S L`. Take `⟨T, hT1, hT2⟩` from `OrbSum.exists_reps_of_cover (G := Formalism.HermitianLatticesTheory.isom h') {Λ' : Submodule (𝓞 K) V' | (fibG S L Λ').Nonempty} (fun g' Λ' ⟨Λ, hΛ⟩ => ⟨_, fibG_smul hs S hΛ g'.2⟩) ((fun p => S.cut (Formalism.HermitianLatticesTheory.gmap (γ p).1 p.1)) '' (sX : Set (Submodule (𝓞 K) …`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `⟨_, (hγ p (hsX p hp)).2⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use the proof step `(by`. Introduce and unpack `Λ' ⟨Λ, hΛ⟩`. Take `⟨t, ⟨ht, k, hk⟩, -⟩` from `hX _ (pair_mem_of_fibG S hΛ).1`. Use `⟨_, ⟨t, ht, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : (k * (γ t)⁻¹) • (Formalism.HermitianLatticesTheory.gmap (γ t).1 t.1, S.x₀) = (Λ, S.x₀)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← (hγ t (hsX t ht)).1, mul_smul, inv_smul_smul, hk]`. Take `⟨e1, e2⟩` from `Prod.ext_iff.mp e`. Use `gmap_res S (k * (γ t)⁻¹).1 (k * (γ t)⁻¹).2 e2 e1` as an intermediate fact. Rewrite `this` using `[hΛ.2.2]`. Conclude with `⟨⟨res S (k * (γ t)⁻¹).1 (k * (γ t)⁻¹).2 e2, res_mem_isom S _ _ _⟩, this⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨T, hT1, fun Λ' hΛ' => ?_⟩` and prove the remaining obligations. Use `hT2 Λ' hΛ'` as an intermediate fact. Rewrite `this` using `[exists_smul_iff]`. Conclude with `this`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibReps (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L)
@@ -158,21 +154,19 @@ theorem exists_fibReps (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hs 
 
 open StabilizerLattices SplitBAux in
 /- English proof (translation)
-Take `⟨sX, hsX, hX⟩` from `exists_pairReps hs hd hL (h S.x₀ S.x₀)`. Establish `hex` using `exists_classReps hs hd hL`. Unfold `repMass`. Rewrite using `[dif_pos hex, ← sum_pairs_eq_rep hs hd (h S.x₀ S.x₀) hex.choose_spec hsX hX]`. Establish `key` using `OrbSum.sum_orbits_on (G := Formalism.HermitianLatticesTheory.isom h) (proj h) proj_smul (pairs h L (h S.x₀ S.x₀)) (proj h '' pairs h L (h S.x₀ S.x₀)) (pairs_stable hs L _) (fun p hp => Set.mem_image_of_mem _ hp) sX (s'.image fun Λ' => (emb S Λ', S.x₀)) hsX (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u hu`. Take `⟨Λ', hΛ', rfl⟩` from `Finset.mem_image.mp hu`. Take `⟨Λ, hΛ⟩` from `hs'.1 Λ' hΛ'`. Conclude with `⟨_, (pair_mem_of_fibG S hΛ).1, (pair_mem_of_fibG S hΛ).2⟩)`. Use `hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use the proof step `(by`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Take `⟨g, hg⟩` from `exists_move hK hs hd S L p`. Take `⟨hg1, hg2⟩` from `hg hp`. Establish `hgy : g • proj h p = (emb S (S.cut (Formalism.HermitianLatticesTheory.gmap g.1 p.1)), S.x₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← proj_smul, hg1]`. Conclude with `(pair_mem_of_fibG S hg2).2`. Take `⟨Λ₀, ⟨h₀, g', hg', e'⟩, huniq⟩` from `hs'.2 _ ⟨_, hg2⟩`. Use `⟨(emb S Λ₀, S.x₀), ⟨Finset.mem_image.mpr ⟨Λ₀, h₀, rfl⟩, g⁻¹ * ⟨extOf S g', extOf_mem_isom hs S hg'⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e0 : (⟨extOf S g', extOf_mem_isom hs S hg'⟩ : Formalism.HermitianLatticesTheory.isom h) • (emb S Λ₀, S.x₀) = g • proj h p`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hgy, ← e', ← gmap_extOf_emb]`. Conclude with `Prod.ext rfl (extOf_x₀ S g')`. Rewrite using `[mul_smul, e0, inv_smul_smul]`. Introduce and unpack `t ⟨ht, k, hk⟩`. Take `⟨Λ₁, h₁, rfl⟩` from `Finset.mem_image.mp ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (g * k) • (emb S Λ₁, S.x₀) = (emb S (S.cut (Formalism.HermitianLatticesTheory.gmap g.1 p.1)), S.x₀)`. Rewrite using `[mul_smul, hk, hgy]`. Take `⟨e1, e2⟩` from `Prod.ext_iff.mp e`. Use `gmap_res S (g * k).1 (g * k).2 e2 e1` as an intermediate fact. Rewrite `this` using `[cut_emb, cut_emb]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[huniq Λ₁ ⟨h₁, _, res_mem_isom S _ _ _, this⟩])`. Use the proof step `(by`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `finite_stab_proj hK hs hd S L hp)`. Rewrite using `[key, Finset.sum_image (fun A _ B _ e => emb_injective S (Prod.ext_iff.mp e).1)]`.
-
-Use `Finset.sum_congr rfl fun Λ' _ => ?_` and prove the remaining obligations. Establish `e1 : Nat.card {p : Submodule (𝓞 K) V × V // p ∈ pairs h L (h S.x₀ S.x₀) ∧ proj h p = (emb S Λ', S.x₀)} = Nat.card (fibG S L Λ')` using `Nat.card_congr { toFun := fun p => ⟨p.1.1, (fibG_of_pair_mem S p.2.1 p.2.2).1⟩ invFun := fun Λ => ⟨(Λ.1, S.x₀), pair_mem_of_fibG S Λ.2⟩ left_inv := fun p => Subtype.ext (Prod.ext rfl (fibG_of_pair_mem S p.2.1 p.2.2).2.symm) right_inv := fun _ => rfl }`. Rewrite using `[e1, Nat.card_congr (stabPairEquiv hs S Λ')]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repMass_eq_sum_fib (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L)

@@ -22,7 +22,7 @@ variable (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountable
 end
 
 /- English proof (translation)
-The claim follows from `four_sign f (four_indep f) (four_bound f)`.
+A detailed English derivation is pending.
 -/
 theorem four_sign_holds (f : ℕ) : FOURSignStatement f :=
   four_sign f (four_indep f) (four_bound f)

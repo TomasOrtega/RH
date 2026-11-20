@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Fi
   {d : Deco E n ST SG} {a : 𝓞 E}
 
 /- English proof (translation)
-Use `sup_le (fun x hx => (hd.mem_LshKer ha P x).2 ⟨hd.L_le_Lsh hx, ((hd.mem_L x).1 hx).2 P⟩) ?_` and prove the remaining obligations. Use `Submodule.smul_le.2 fun p hp x hx => (hd.mem_LshKer ha P _).2 ⟨Submodule.smul_mem _ p hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul P p x (hd.Lsh_le_at ha P hx), Ideal.Quotient.eq_zero_iff_mem.2 hp, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem vb_sup_le_LshKer (hd : d.Ok) (ha : SepElt ST a) (P : ST) : d.L ⊔ P.1.asIdeal • d.Lsh ≤ d.LshKer P := by
   refine sup_le (fun x hx => (hd.mem_LshKer ha P x).2 ⟨hd.L_le_Lsh hx, ((hd.mem_L x).1 hx).2 P⟩) ?_
@@ -24,11 +24,11 @@ theorem vb_sup_le_LshKer (hd : d.Ok) (ha : SepElt ST a) (P : ST) : d.L ⊔ P.1.a
   rw [hd.f_smul P p x (hd.Lsh_le_at ha P hx), Ideal.Quotient.eq_zero_iff_mem.2 hp, zero_mul]
 
 /- English proof (translation)
-Take `⟨hyN, hyf⟩` from `(hd.mem_kerAt P y).1 hy`. Use `choose p hp hpP using fun Q : {Q : ST // Q ≠ P} => exists_mem_notMem (P := Q.1.1) (Q := P.1) (fun e => Q.2 (Subtype.ext e))`. Use `⟨∏ Q, p Q, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Take `⟨Q, -, hQ⟩` from `(P.1.isPrime.prod_mem_iff).1 h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hpP Q hQ`. Use `(hd.mem_L _).2 ⟨Submodule.smul_mem _ _ hyN, fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul Q _ y (hd.Lsh_le_at ha Q (hd.N_le_Lsh hyN))]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hyf, mul_zero]`. Establish `h1 : (∏ Q, p Q) ∈ Q.1.asIdeal`. Rewrite using `[← Finset.mul_prod_erase Finset.univ p (Finset.mem_univ (⟨Q, hQ⟩ : {Q : ST // Q ≠ P}))]`. Conclude with `Ideal.mul_mem_right _ _ (hp ⟨Q, hQ⟩)`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 h1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vb_exists_smul_mem_L (hd : d.Ok) (ha : SepElt ST a) (P : ST) {y : Sp E n} (hy : y ∈ d.kerAt P) :
     ∃ s : 𝓞 E, s ∉ P.1.asIdeal ∧ s • y ∈ d.L := by
@@ -51,9 +51,9 @@ theorem vb_exists_smul_mem_L (hd : d.Ok) (ha : SepElt ST a) (P : ST) {y : Sp E n
       rw [Ideal.Quotient.eq_zero_iff_mem.2 h1, zero_mul]
 
 /- English proof (translation)
-Establish `h1 : x ∈ localization₂ P.1.asIdeal (d.kerAt P)`. Rewrite using `[← hd.locP_LshKer_self ha P]`. Conclude with `le_locP _ _ hx`. Take `⟨s, hs, hsx⟩` from `(mem_locP _ _ _).1 h1`. Take `⟨t, ht, htx⟩` from `vb_exists_smul_mem_L hd ha P hsx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t * s, fun h => (P.1.isPrime.mem_or_mem h).elim ht hs, by`. Rewrite using `[mul_smul]`. Conclude with `Submodule.mem_sup_left htx⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vb_LshKer_le_at (hd : d.Ok) (ha : SepElt ST a) (P : ST) {x : Sp E n} (hx : x ∈ d.LshKer P) :
     ∃ s : 𝓞 E, s ∉ P.1.asIdeal ∧ s • x ∈ d.L ⊔ P.1.asIdeal • d.Lsh := by
@@ -66,7 +66,7 @@ theorem vb_LshKer_le_at (hd : d.Ok) (ha : SepElt ST a) (P : ST) {x : Sp E n} (hx
     rw [mul_smul]; exact Submodule.mem_sup_left htx⟩
 
 /- English proof (translation)
-The claim follows from `lattice_between hd.L_lattice hd.Lsh_lattice le_sup_left (sup_le hd.L_le_Lsh Submodule.smul_le_right)`.
+A detailed English derivation is pending.
 -/
 theorem vb_sup_lattice (hd : d.Ok) (P : ST) : Submodule.IsLattice E (d.L ⊔ P.1.asIdeal • d.Lsh) :=
   lattice_between hd.L_lattice hd.Lsh_lattice le_sup_left (sup_le hd.L_le_Lsh Submodule.smul_le_right)
@@ -83,7 +83,7 @@ include hval hPr in
 open Classical in
 
 /- English proof (translation)
-The claim follows from `hX.nonempty_Tau F ∈ localization₂ (pw w).asIdeal (BvLat W u j v d) ↔ ∀ B B' : GL (Fin (R.N j)) X.E, IsLocBasis (Pr.T u) (d.1.Lsh : Set (Fin (R.N j) → X.E)) B → IsLocBasis (Pr.T u) ((d.1.L ⊔ v.1.asIdeal • d.1.Lsh : Submodule (𝓞 X.E) (Fin (R.N j) → X.E)) : Set (Fin (R.N j) → X.E)) …`.
+A detailed English derivation is pending.
 -/
 theorem vb_mem_locP_BvLat_iff (u : Pr.Word) (j : ℕ) (lam' : X.Tau → DomWeight (R.N j))
     (hn : ∀ τ, (W.lamTrue u j τ).natW = (lam' τ).natW) (w : Pl.Pl) (hw : Pl.resChar w = Pr.T u) (hs : seenC Pr u (pw w))

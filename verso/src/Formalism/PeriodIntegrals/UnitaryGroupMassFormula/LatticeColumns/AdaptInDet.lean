@@ -25,7 +25,7 @@ def vT : IdxD D → Fin X.B.I.n → TpX X p
 def mT : Matrix (IdxD D) (IdxD D) (FpX X p) := fun j t => crd1 X p θ P (vT X hb u p t) j
 
 /- English proof (translation)
-Use extensionality with `j t`. Establish `e : (((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) * ofCols (colv (cV X u p θ) (yV X hb u p θ))) j t = (((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ colv (cV X u p θ) (yV X hb u p θ) t) j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, ofCols]`. Rewrite using `[e]`. Apply the tactic sequence `rcases t with a | ((i | v) | c) <;> rfl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mC_eq :
     ((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *
@@ -40,9 +40,7 @@ theorem mC_eq :
   rcases t with a | ((i | v) | c) <;> rfl
 
 /- English proof (translation)
-Break down `t with a | ((i | v) | c)` into its components or cases. Conclude with `adq_e_cong X hb u p a`. Use `show adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i) - adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i) ∈ gLam X p`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`.
-
-Conclude with `adq_z_cong X hb u p`. Conclude with `adq_f_cong X hb u p (Fin.rev c)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vT_cong (t : IdxD D) : vT X hb u p t - adqRef X hb u p t ∈ gLam X p := by
   rcases t with a | ((i | v) | c)
@@ -55,14 +53,14 @@ theorem vT_cong (t : IdxD D) : vT X hb u p t - adqRef X hb u p t ∈ gLam X p :=
   · exact adq_f_cong X hb u p (Fin.rev c)
 
 /- English proof (translation)
-The claim follows from `firstCoords_congruent_mod X p θ P hL _ _ (vT_cong X hb u p t) j`.
+A detailed English derivation is pending.
 -/
 theorem vT_cong1 (hL : LatBasis X p θ (reindex₂ X p P)) (t j : IdxD D) :
     InG X p (crd1 X p θ P (vT X hb u p t) j - crd1 X p θ P (adqRef X hb u p t) j) :=
   firstCoords_congruent_mod X p θ P hL _ _ (vT_cong X hb u p t) j
 
 /- English proof (translation)
-Establish `h` using `(OvA X p).add_mem _ _ (adq_inG_int X p (vT_cong1 X hb u p θ P hL t j)) (((latCrd_of X p θ P hL _).1 (adq_ref_lat X hb u p t)).1 j)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vT_int (hL : LatBasis X p θ (reindex₂ X p P)) (t j : IdxD D) :
     crd1 X p θ P (vT X hb u p t) j ∈ OvA X p := by
@@ -71,9 +69,9 @@ theorem vT_int (hL : LatBasis X p θ (reindex₂ X p P)) (t j : IdxD D) :
   rwa [sub_add_cancel] at h
 
 /- English proof (translation)
-Establish `e1 : (adqR X hb u p θ P * mT X hb u p θ P) s t = sgnV X p s * (crd2 X p θ P (adqRefR X hb u p s) ⬝ᵥ crd1 X p θ P (vT X hb u p t))`. Simplify using `only [Matrix.mul_apply, adqR, mT, dotProduct, Finset.mul_sum, mul_assoc]`. Establish `hD` using `adq_dotG X p (a := crd2 X p θ P (adqRefR X hb u p s)) (a' := crd2 X p θ P (adqRefR X hb u p s)) (b := crd1 X p θ P (vT X hb u p t)) (b' := crd1 X p θ P (adqRef X hb u p t)) (fun j => ((latCrd_of X p θ P hL _).1 (adq_refR_lat X hb u p s)).2 j) (fun j => vT_int X hb u p θ P hL t j) …`. Rewrite `hD` using `[adq_pairM X hb u p θ P hθ]`. Take `⟨y, hy⟩` from `inG_mul_int _ (sgnV_int X p s) hD`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `rc_cong X p θ P hθ hε hL s t`. Use `⟨y + z, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Use `push_cast`. Take the linear combination `hy + hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vT_RC (hθ : IsSplitEquiv X p θ) (hε : θ (epsP X p) = (1, 0)) (hL : LatBasis X p θ (reindex₂ X p P))
     (s t : IdxD D) : ∃ z : OvA X p, (adqR X hb u p θ P * mT X hb u p θ P) s t =
@@ -95,13 +93,13 @@ theorem vT_RC (hθ : IsSplitEquiv X p θ) (hε : θ (epsP X p) = (1, 0)) (hL : L
   linear_combination hy + hz
 
 /- English proof (translation)
-Rewrite using `[mC_eq X hb u p θ P]`. Use `choose N hN using fun s t => vT_RC X hb u p θ P hθ hε hL s t`. Establish `hgc : ((gA X p : OvA X p) : FpX X p) = ((gOf p : ℕ) : FpX X p)` using `by simp [gA]`. Establish `hRC : adqR X hb u p θ P * mT X hb u p θ P = 1 + ((gA X p : OvA X p) : FpX X p) • Matrix.of (fun s t => ((N s t : OvA X p) : FpX X p))`. Use extensionality with `s t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN s t, hgc]`. Simplify using the standard rewrite rules. Take `⟨c, hc⟩` from `exists_gl_of_left_inv (OvA X p) (gA X p) (PIW.MassDataColumns.gOf_nonunit X p) (mT X hb u p θ P) (adqR X hb u p θ P) _ (fun i t => vT_int X hb u p θ P hL t i) (fun s i => (OvA X p).mul_mem _ _ (sgnV_int X p s) (((latCrd_of X p θ P hL _).1 (adq_refR_lat X hb u p s)).2 i)) (fun s t …`. Use `⟨fun i t => vT_int X hb u p θ P hL t i, ((((c⁻¹ : GL (IdxD D) (OvA X p)) : Matrix (IdxD D) (IdxD D) (OvA X p)).det : OvA X p) : FpX X p), (((c⁻¹ : GL (IdxD D) (OvA X p)) : Matrix (IdxD D) (IdxD D) (OvA X p)).det : OvA X p).2, ?_⟩` and prove the remaining obligations. Establish `hdet : (mT X hb u p θ P).det = (((c : Matrix (IdxD D) (IdxD D) (OvA X p)).det : OvA X p) : FpX X p)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc]`. Conclude with `(RingHom.map_det (OvA X p).subtype (c : Matrix (IdxD D) (IdxD D) (OvA X p))).symm`. Establish `hu : (c : Matrix (IdxD D) (IdxD D) (OvA X p)).det * ((c⁻¹ : GL (IdxD D) (OvA X p)) : Matrix (IdxD D) (IdxD D) (OvA X p)).det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Rewrite using `[hdet]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun x : OvA X p => (x : FpX X p)) hu` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem adaptIn_det (hθ : IsSplitEquiv X p θ) (hε : θ (epsP X p) = (1, 0)) (hL : LatBasis X p θ (reindex₂ X p P)) :
     IntO (p.1.adicCompletionIntegers X.B.I.F).toSubring

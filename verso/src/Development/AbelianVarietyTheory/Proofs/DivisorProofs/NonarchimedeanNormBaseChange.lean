@@ -14,17 +14,17 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 namespace GlobalTheory.LocOrdUp
 
 /- English proof (translation)
-Establish `inj : Function.Injective (Matrix.vecMulLinear U)`. Use `LinearMap.ker_eq_bot.1 (LinearMap.ker_eq_bot'.2 fun b hb => ?_)` and prove the remaining obligations. Conclude with `(h 0 0 (by ext j; simp)).unique hb (Matrix.zero_vecMul _)`. Establish `tf : Module.IsTorsionFree V ((Fin n → V) ⧸ LinearMap.range (Matrix.vecMulLinear U))`. Use `Module.IsTorsionFree.of_smul_eq_zero fun r y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hy` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨b, hb⟩` from `hy`. Rewrite using `[or_iff_not_imp_left]`. Introduce `hr`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `hr' : algebraMap V K r ≠ 0` using `fun e => hr (IsFractionRing.injective V K (e.trans (map_zero _).symm))`. Take `⟨b', hb', -⟩` from `h a ((algebraMap V K r)⁻¹ • fun i => algebraMap V K (b i)) (by`. Rewrite using `[Matrix.smul_vecMul]`. Use extensionality with `j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e : ((fun i => algebraMap V K (b i)) ᵥ* U.map (algebraMap V K)) j = algebraMap V K ((b ᵥ* U) j)` using `(RingHom.map_vecMul (algebraMap V K) U b j).symm`. Establish `e' : b ᵥ* U = r • a` using `hb`. Rewrite using `[Pi.smul_apply, e, e', Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, inv_mul_cancel_left₀ hr'])`. Conclude with `⟨b', hb'⟩`. Take `⟨s, hs⟩` from `Module.projective_lifting_property (LinearMap.range (Matrix.vecMulLinear U)).mkQ LinearMap.id (Submodule.mkQ_surjective _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ex : Function.Exact (Matrix.vecMulLinear U) (LinearMap.range (Matrix.vecMulLinear U)).mkQ` using `LinearMap.exact_map_mkQ_range _`. Establish `hs' : ∃ l, (LinearMap.range (Matrix.vecMulLinear U)).mkQ ∘ₗ l = LinearMap.id` using `⟨s, hs⟩`. Establish `hg' : ∃ l, l ∘ₗ Matrix.vecMulLinear U = LinearMap.id` using `((ex.split_tfae inj (Submodule.mkQ_surjective _)).out 0 1).1 hs'`. Take `⟨g, hg⟩` from `hg'`. Use `⟨LinearMap.toMatrixRight' g, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.toLinearMapRight'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLinearMapRight'_mul, Matrix.toLinearMapRight'_one]`. Express the relevant statement in the definitionally equal form `Matrix.toLinearMapRight' (LinearMap.toMatrixRight' g) ∘ₗ Matrix.vecMulLinear U = _`. Simplify using `using hg`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_rightInverse {V K : Type} [CommRing V] [IsDomain V] [IsPrincipalIdealRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {m n : ℕ} (U : Matrix (Fin m) (Fin n) V)
@@ -65,9 +65,9 @@ theorem exists_rightInverse {V K : Type} [CommRing V] [IsDomain V] [IsPrincipalI
   simpa using hg
 
 /- English proof (translation)
-Establish `h2 : U.map φ * R.map φ = 1`. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h3 : c = fun i => φ ((a ᵥ* R) i)`. Rewrite using `[← Matrix.vecMul_one c, ← h2, ← Matrix.vecMul_vecMul, hc]`. Conclude with `funext fun i => (RingHom.map_vecMul φ R a i).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a ᵥ* R, funext fun j => hφ ?_, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_vecMul, ← congrFun hc j, h3]`. Both sides reduce to the same expression. Rewrite using `[← hb, Matrix.vecMul_vecMul, h, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_of_rightInverse {W L : Type} [CommRing W] [CommRing L] (φ : W →+* L) (hφ : Function.Injective φ)
     {m n : ℕ} {U : Matrix (Fin m) (Fin n) W} {R : Matrix (Fin n) (Fin m) W} (h : U * R = 1)
@@ -82,35 +82,33 @@ theorem existsUnique_of_rightInverse {W L : Type} [CommRing W] [CommRing L] (φ 
   · rw [← hb, Matrix.vecMul_vecMul, h, Matrix.vecMul_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ H k k' _ _ _ _ i t t' n m x x' 𝔭 𝔓 ε r hx hxx hval hr`. Take `⟨V, K, _, _, _, _, _, _, em, e₀, G, _, A, _, φ, ψ, v, u, u', M, ν, he₀, hv, hG, hφ, hψ, hxv, hu, hb, hM, hν, rfl⟩` from `hr`. Take `⟨W, L, _, _, _, _, _, _, f, g, em', e₂, d, hfg, hem, he₂, hd, hv', hvg⟩` from `GlobalTheory.T.ramification_index_valuation_compat k k' i 𝔭 𝔓 ε V K em e₀ hval he₀ hv`. Establish `hf' : (algebraMap W L).comp f = g.comp (algebraMap V K)` using `RingHom.ext hfg`. Take `⟨G₁, _, χ, h', hG₁⟩ : ∃ (G₁ : Over (Sp W)) (_ : GrpObj G₁) (χ : G₁.left ⟶ G.left), IsGrpPullback G₁ G (spMap f) χ ∧ IsSemiAbelian G₁` from `⟨_, _, _, isGrpPullback_pullback G (spMap f), IsSemiAbelian.pullback _ G hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A₁, _, ω, hω⟩ : ∃ (A₁ : Over (Sp L)) (_ : GrpObj A₁) (ω : A₁.left ⟶ A.left), IsGrpPullback A₁ A (spMap g) ω` from `⟨_, _, _, isGrpPullback_pullback A (spMap g)⟩`. Use `hG.comm` as an intermediate fact. Use `hG₁.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG₁.smooth` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PolPull.isCommMonObj_of_isGrpPullback hφ` as an intermediate fact. Use `PolPull.isCommMonObj_of_isGrpPullback hω` as an intermediate fact. Establish `n' : IsGrpPullback A₁ G (spMap (algebraMap W L) ≫ spMap f) (ω ≫ φ)` using `(hω.comp hφ).congr (by rw [spMap_comp_spMap, spMap_comp_spMap, hf']) rfl`. Establish `w : (ω ≫ φ) ≫ G.hom = (A₁.hom ≫ spMap (algebraMap W L)) ≫ spMap f` using `n'.1.w.trans (Category.assoc _ _ _).symm`. Establish `q` using `h'.1.lift_fst _ _ w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ₁` using `h'.cancel (n'.congr rfl q.symm) (h'.1.lift_snd _ _ w)`. Establish `n'' : IsGrpPullback A₁ t.G (spMap em' ≫ spMap i) (ω ≫ ψ)` using `(hω.comp hψ).congr (by rw [spMap_comp_spMap, spMap_comp_spMap, hem]) rfl`. Establish `w' : (ω ≫ ψ) ≫ t.G.hom = (A₁.hom ≫ spMap em') ≫ spMap i` using `n''.1.w.trans (Category.assoc _ _ _).symm`. Establish `q'` using `n.cart.1.lift_fst _ _ w'`. Establish `hψ₁` using `n.cart.cancel (n''.congr rfl q'.symm) (n.cart.1.lift_snd _ _ w')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tv : ∀ a, IsTangent (v a)` using `fun a => (hxv a).isTangent hψ (hx.1 a)`. Take `⟨N, e, e', -, he, he', h, -⟩` from `exists_frame hG hφ tv`. Use `choose e₁ h₁ _ using fun j => existsUnique_isVecOver h'.1 (e j)`. Establish `he₁` using `Chart.isLieBasis_baseChange f h' he h₁`. Use `choose e₁' h₂ _ using fun j => existsUnique_isVecOver hω.1 (e' j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃` using `fun j => EllComp.isVecOver_cancel h'.1 hφ₁.1 (h₁ j) (by rw [q, hf']; exact EllComp.isVecOver_comp (h j) (h₂ j))`. Establish `he₁'` using `Chart.isLieBasis_baseChange _ hφ₁ he₁ h₃`. Use `choose u₁ k₁ _ using fun j => existsUnique_isVecOver h'.1 (u j)`. Use `choose u₁' k₂ _ using fun j => existsUnique_isVecOver hω.1 (u' j)`. Establish `k₃` using `fun j => EllComp.isVecOver_cancel h'.1 hφ₁.1 (k₁ j) (by rw [q, hf']; exact EllComp.isVecOver_comp (hu j).2.1 (k₂ j))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose v₁ l₂ _ using fun j => existsUnique_isVecOver hω.1 (v j)`. Establish `l₃` using `fun j => EllComp.isVecOver_cancel n.cart.1 hψ₁.1 (hxx j) (by rw [q', hem]; exact EllComp.isVecOver_comp (hxv j) (l₂ j))`. Use `choose U₀ hU₀ _ using fun a => he.2 _ (hu a).1`. Set `U : Matrix (Fin m) (Fin N) V` to `U₀`. Establish `hU : ∀ a, IsLieComb (U a) e (u a)` using `hU₀`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU' : ∀ a, IsLieComb (U.map (algebraMap V K) a) e' (u' a)` using `fun a => (lieComb_baseChange _ _ _ G A φ hφ N e (u a) (U a) e' (u' a) h (hU a)).1 (hu a).2.1`. Establish `hU₁ : ∀ a, IsLieComb (U.map f a) e₁ (u₁ a)` using `fun a => (lieComb_baseChange _ _ _ G G₁ χ h' N e (u a) (U a) e₁ (u₁ a) h₁ (hU a)).1 (k₁ a)`. Establish `hU₁' : ∀ a, IsLieComb ((U.map f).map (algebraMap W L) a) e₁' (u₁' a)` using `fun a => (lieComb_baseChange _ _ _ G₁ A₁ _ hφ₁ N e₁ (u₁ a) (U.map f a) e₁' (u₁' a) h₃ (hU₁ a)).1 (k₃ a)`. Use `choose C₀ hC₀ using fun a => (hu a).2.2`. Set `C : Matrix (Fin m) (Fin m) K` to `C₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hC : ∀ a, IsLieComb (C a) v (u' a)` using `hC₀`. Establish `hM₁ : ∀ a, IsLieComb (M.map g a) u₁' (v₁ a)` using `fun a => (lieComb_baseChange _ _ g A A₁ ω hω m u' (v a) (M a) u₁' (v₁ a) k₂ (hM a)).1 (l₂ a)`. Establish `tu₁ : ∀ a, IsTangent (u₁ a)` using `fun a => (k₁ a).isTangent h' (hu a).1`. Establish `tu₁' : ∀ a, IsTangent (u₁' a)` using `fun a => (k₃ a).isTangent hφ₁ (tu₁ a)`. Take `⟨R, hR⟩` from `exists_rightInverse (K := K) U fun a c hc => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a₁, a₂, -⟩` from `LieComb.lieComb_algebra _ G N e he.1`. Take `⟨y, hy⟩` from `(a₁ a).exists`. Take `⟨z, hz, -⟩` from `existsUnique_isVecOver hφ.1 y`. Establish `hz'` using `(lieComb_baseChange _ _ _ G A φ hφ N e y a e' z h hy).1 hz`. Rewrite `hz'` using `[← hc, ← comb_comb he'.1 hU', comb_comb tv hC]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(existsUnique_congr fun b => ?_).1 (hb y z (a₂ _ _ hy) hz ⟨_, hz'⟩)` and prove the remaining obligations. Rewrite using `[comb_comb he.1 hU]`. Conclude with `⟨fun hb => (Indep.of_basis he).2 _ _ y hb hy, fun hb => hb ▸ hy⟩`. Establish `hR₁ : U.map f * R.map f = 1`. Rewrite using `[← Matrix.map_mul, hR, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨W, L, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, em', _, G₁, inferInstance, A₁, inferInstance, _, _, v₁, u₁, u₁', M.map g, d * ν, he₂, hv', hG₁, hφ₁, hψ₁, l₃, fun a => ⟨tu₁ a, k₃ a, _, (lieComb_baseChange _ _ g A A₁ ω hω m v (u' a) …` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `he₁.2 y hy`. Establish `hz'` using `(lieComb_baseChange _ _ _ G₁ A₁ _ hφ₁ N e₁ y a e₁' z h₃ ha).1 hz`. Rewrite `hc` using `[comb_comb tu₁' hM₁, comb_comb he₁'.1 hU₁']`. Use `(existsUnique_congr fun b => ?_).1 (existsUnique_of_rightInverse (algebraMap W L) (IsFractionRing.injective W L) hR₁ a _ ((Indep.of_basis he₁').2 _ _ z hc hz'))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[comb_comb he₁.1 hU₁]`. Conclude with `⟨fun hb => hb ▸ ha, fun hb => (Indep.of_basis he₁).2 _ _ y hb ha⟩`. Establish `: (M.map g).det = g M.det` using `(RingHom.map_det g M).symm`. Rewrite using `[this, hvg, hν, ← WithZero.exp_nsmul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using the standard rewrite rules. Establish `a₁ : (e₀ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 he₀.ne'`. Establish `a₃` using `congrArg (Nat.cast : ℕ → ℝ) hd`. Establish `a₂ : (e₂ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 he₂.ne'`. Move the coercions through the operations in `at a₃ ⊢`.
-
-Rewrite using `[← mul_div_assoc, div_eq_div_iff a₁ a₂]`. Take the linear combination `(ν : ℝ) * a₃`.
+A detailed English derivation is pending.
 -/
 theorem isLocOrd_up : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k k' : Type) [Field k] [NumberField k] [Field k'] [NumberField k'] (i : k →+* k') (t : SAB H (Sp k)) (t' : SAB H (Sp k')) (n : SABMap t' t (spMap i)) (m : ℕ) (x : Fin m → (epsR k ⟶ t.G)) (x' : Fin m → (epsR k' ⟶ t'.G)) (𝔭 : HeightOneSpectrum (𝓞 k)) (𝔓 : HeightOneSpectrum (𝓞 k')) (ε : ℕ) (r : ℝ), Indep x → (∀ a, IsVecOver i n.φ (x a) (x' a)) → (∀ z : k, 𝔓.valuation k' (i z) = 𝔭.valuation k z ^ ε) → EigenvectorLieDegree.IsLocOrd t.G x 𝔭 r → EigenvectorLieDegree.IsLocOrd t'.G x' 𝔓 (ε * r) := by
   intro E _ _ _ H k k' _ _ _ _ i t t' n m x x' 𝔭 𝔓 ε r hx hxx hval hr

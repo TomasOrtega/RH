@@ -17,11 +17,11 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 local notation "π" => (GLnLocal.uniformizer F : F)
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨S, hS, c, hc⟩` from `exists_gMat hg`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨S, hS⟩, c, ?_⟩` and prove the remaining obligations. Establish `hk : (gMat S c)⁻¹ * g ∈ integralGL F n` using `QuotientGroup.eq.1 hc`. Conclude with `⟨_, hk, by simp [smul_eq_mul]⟩`. Introduce and unpack `⟨⟨S, hS⟩, c, k', hk', rfl⟩`. Use `mul_mem_minusculeSet (gMat_mem_minusculeSet S c) (integralGL F n).one_mem hk'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul, hS]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minusculeSet_eq (k : ℕ) :
     minusculeSet F n k = ⋃ (S : {S : Finset (Fin n) // S.card = k}) (c : Pairs S.1 → 𝓀[F]),
@@ -40,21 +40,21 @@ theorem minusculeSet_eq (k : ℕ) :
     exact this
 
 /- English proof (translation)
-Rewrite using `[minusculeSet_eq]`. Conclude with `isCompact_iUnion fun S => isCompact_iUnion fun c => (isCompact_integralGL F n).smul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_minusculeSet (k : ℕ) : IsCompact (minusculeSet F n k) := by
   rw [minusculeSet_eq]
   exact isCompact_iUnion fun S => isCompact_iUnion fun c => (isCompact_integralGL F n).smul _
 
 /- English proof (translation)
-Rewrite using `[minusculeSet_eq]`. Conclude with `isOpen_iUnion fun S => isOpen_iUnion fun c => (isOpen_integralGL F n).smul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_minusculeSet (k : ℕ) : IsOpen (minusculeSet F n k) := by
   rw [minusculeSet_eq]
   exact isOpen_iUnion fun S => isOpen_iUnion fun c => (isOpen_integralGL F n).smul _
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => mul_mem_minusculeSet h ha hb⟩` and prove the remaining obligations. Use `mul_mem_minusculeSet h ((integralGL F n).inv_mem ha) ((integralGL F n).inv_mem hb)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_mem_minusculeSet_iff {k : ℕ} {a g b : GL (Fin n) F} (ha : a ∈ integralGL F n)
     (hb : b ∈ integralGL F n) : a * g * b ∈ minusculeSet F n k ↔ g ∈ minusculeSet F n k := by
@@ -96,7 +96,7 @@ def minusculeHecke (k : ℕ) : SphericalHecke μ (F := F) (n := n) :=
       by simpa using mul_mem_minusculeSet_iff (g := x) (integralGL F n).one_mem ha⟩
 
 /- English proof (translation)
-Introduce `S S' h`. Use extensionality with `i`. Use `congrFun h i` as an intermediate fact. Simplify using `only [lamS] at this`. Apply the tactic sequence `split_ifs at this <;> simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamS_injective : Function.Injective (lamS : Finset (Fin n) → Fin n → ℤ) := by
   intro S S' h
@@ -106,17 +106,17 @@ theorem lamS_injective : Function.Injective (lamS : Finset (Fin n) → Fin n →
   split_ifs at this <;> simp_all
 
 /- English proof (translation)
-Use `haveI : Fintype 𝓀[F] := Fintype.ofFinite _`. Use `set Cs : Finset (GL (Fin n) F ⧸ integralGL F n) := (Finset.univ.powersetCard k).biUnion fun S => Finset.univ.image fun c : Pairs S → 𝓀[F] => (QuotientGroup.mk (gMat S c) : _)`. Establish `hval : ∀ x, (minusculeHecke μ k : HeckeAlgebra μ) x = (minusculeSet F n k).indicator (fun _ => (1 : ℂ)) x` using `fun x => rfl`. Rewrite using `[satake_eq_sum _ Cs]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_biUnion]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Establish `hSk` using `(Finset.mem_powersetCard.1 hS).2`. Rewrite using `[Finset.sum_image fun c _ c' _ h => gMat_injective S h]`. Establish `: ∀ c : Pairs S → 𝓀[F], AddMonoidAlgebra.single (iwasawaExponent F n (QuotientGroup.mk (gMat S c) : GL (Fin n) F ⧸ integralGL F n).out) ((minusculeHecke μ k : HeckeAlgebra μ) (QuotientGroup.mk (gMat S c) : GL (Fin n) F ⧸ integralGL F n).out) = monomial (lamS S)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[iwasawaExponent_out, iwasawaExponent_gMat, apply_out, hval, Set.indicator_of_mem (hSk ▸ gMat_mem_minusculeSet S c)]`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, Nat.card_eq_fintype_card]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Introduce `S _ S' _ hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.onFun]`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hx'`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨c', -, hc'⟩` from `Finset.mem_image.1 hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun x : GL (Fin n) F ⧸ integralGL F n => iwasawaExponent F n x.out) hc'` as an intermediate fact. Simplify using `only [iwasawaExponent_out, iwasawaExponent_gMat] at this`. Conclude with `hne (lamS_injective this).symm`. Introduce `x hx`. Rewrite using `[hval]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Set.indicator_of_notMem (fun hm => hx ?_) _` and prove the remaining obligations. Take `⟨S, hS, c, hc⟩` from `exists_gMat hm`. Rewrite `hc` using `[QuotientGroup.out_eq']`. Conclude with `Finset.mem_biUnion.2 ⟨S, Finset.mem_powersetCard.2 ⟨Finset.subset_univ _, hS⟩, Finset.mem_image.2 ⟨c, Finset.mem_univ _, hc⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem satake_minusculeHecke (k : ℕ) :
     satake μ (minusculeHecke μ k) = (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) •
@@ -162,13 +162,13 @@ theorem satake_minusculeHecke (k : ℕ) :
       Finset.mem_image.2 ⟨c, Finset.mem_univ _, hc⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on_max with`. Consider the case `empty => simp`. Consider the case `insert a T haT ih`. Establish `ha : a ∉ T` using `fun h => lt_irrefl a (haT a h)`. Rewrite using `[Finset.sum_insert ha, Finset.card_insert_of_notMem ha, Nat.choose_succ_succ', Nat.choose_one_right]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((insert a T).filter fun x => a < x) = ∅`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.notMem_empty, iff_false, not_and]`. Introduce and unpack `(rfl | hx)`. Conclude with `lt_irrefl _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => lt_asymm h (haT x hx)`. Establish `h2 : ∀ b ∈ T, ((insert a T).filter fun x => b < x) = insert a (T.filter fun x => b < x)`. Introduce `b hb`. Rewrite using `[Finset.filter_insert, if_pos (haT b hb)]`. Rewrite using `[h1, Finset.card_empty, zero_add, Finset.sum_congr rfl fun b hb => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 b hb, Finset.card_insert_of_notMem (fun h => ha (Finset.mem_filter.1 h).1)],`. Use the proof step `Finset.sum_add_distrib, ih, Finset.sum_const, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_card_filter_lt (S : Finset (Fin n)) :
     ∑ b ∈ S, (S.filter fun a => b < a).card = S.card.choose 2 := by
@@ -194,13 +194,13 @@ theorem sum_card_filter_lt (S : Finset (Fin n)) :
     ring
 
 /- English proof (translation)
-Rewrite using `[show Fintype.card (Pairs S) = (Finset.univ.filter fun p : Fin n × Fin n => p.1 ∈ S ∧ p.2 ∉ S ∧ p.1 < p.2).card from Fintype.card_subtype _]`. Rewrite using `[Finset.card_filter, Fintype.sum_prod_type]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun b => b ∈ S)]`. Establish `h0 : ∑ b ∈ Finset.univ.filter (fun b => b ∉ S), ∑ a, (if b ∈ S ∧ a ∉ S ∧ b < a then 1 else 0) = 0` using `Finset.sum_eq_zero fun b hb => Finset.sum_eq_zero fun a _ => by`. Rewrite using `[if_neg fun h => (Finset.mem_filter.1 hb).2 h.1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, add_zero, Finset.filter_mem_eq_inter, Finset.univ_inter]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[Finset.card_filter]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun a => b < a)]`. Establish `h1 : ∑ a ∈ Finset.univ.filter (fun a => ¬ b < a), (if b ∈ S ∧ a ∉ S ∧ b < a then 1 else 0) = 0` using `Finset.sum_eq_zero fun a ha => by rw [if_neg fun h => (Finset.mem_filter.1 ha).2 h.2.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, add_zero]`. Establish `: Finset.univ.filter (fun a => b < a) = Finset.Ioi b`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `hba : b < a` using `Finset.mem_Ioi.1 ha`. Distinguish the cases in `haS : a ∈ S`. Rewrite using `[if_neg fun h => h.2.1 haS, if_neg fun h => h haS]`. Rewrite using `[if_pos ⟨hb, haS, hba⟩, if_pos haS]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_pairs (S : Finset (Fin n)) :
     Fintype.card (Pairs S) = ∑ b ∈ S, ((Finset.Ioi b).filter fun a => a ∉ S).card := by
@@ -232,9 +232,9 @@ theorem card_pairs (S : Finset (Fin n)) :
   · rw [if_pos ⟨hb, haS, hba⟩, if_pos haS]
 
 /- English proof (translation)
-Rewrite using `[card_pairs, ← sum_card_filter_lt, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Fin.card_Ioi b, ← Finset.card_filter_add_card_filter_not (s := Finset.Ioi b) (fun a => a ∈ S), add_comm]`. Use `congr 2`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[and_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_pairs_add_choose (S : Finset (Fin n)) :
     Fintype.card (Pairs S) + S.card.choose 2 = ∑ i ∈ S, (n - 1 - i.val) := by
@@ -248,7 +248,7 @@ theorem card_pairs_add_choose (S : Finset (Fin n)) :
   simp [and_comm]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, coe_torusPow, diagonal_mul, mul_diagonal, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusPow_const_comm (t : ℤ) (g : GL (Fin n) F) :
     torusPow F n (fun _ => t) * g = g * torusPow F n (fun _ => t) := by
@@ -261,7 +261,7 @@ def centralSet : Set (GL (Fin n) F) :=
   torusPow F n (fun _ => -1) • (integralGL F n : Set (GL (Fin n) F))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[smul_eq_mul]`. Introduce `h`. Conclude with `⟨_, h, by simp [smul_eq_mul]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_centralSet {g : GL (Fin n) F} :
     g ∈ centralSet F n ↔ (torusPow F n (fun _ => -1))⁻¹ * g ∈ integralGL F n := by
@@ -295,9 +295,9 @@ theorem centralHecke_apply (g : GL (Fin n) F) :
       (centralSet F n).indicator (fun _ => (1 : ℂ)) g := rfl
 
 /- English proof (translation)
-Use `set z := torusPow F n (fun _ => (-1 : ℤ))`. Establish `hz : z ∈ centralSet F n` using `mem_centralSet.2 (by rw [inv_mul_cancel]; exact one_mem _)`. Rewrite using `[satake_eq_sum _ {(QuotientGroup.mk z : GL (Fin n) F ⧸ integralGL F n)}]`. Rewrite using `[Finset.sum_singleton, iwasawaExponent_out, iwasawaExponent_torusPow, apply_out, centralHecke_apply, Set.indicator_of_mem hz]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[centralHecke_apply]`. Use `Set.indicator_of_notMem (fun hm => hx ?_) _` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton, ← QuotientGroup.out_eq' x]`. Conclude with `(QuotientGroup.eq.2 (mem_centralSet.1 hm)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satake_centralHecke :
     satake μ (centralHecke μ (F := F) (n := n)) =
@@ -319,7 +319,7 @@ variable (F) in
 def qF : ℕ := Nat.card 𝓀[F]
 
 /- English proof (translation)
-The claim follows from `Nat.card_pos`.
+A detailed English derivation is pending.
 -/
 theorem qF_pos : 0 < qF F := Nat.card_pos
 
@@ -328,7 +328,7 @@ variable (F) in
 def yElt (i : Fin n) : LaurentRing n := single (Pi.single i 1) ((qF F : ℂ) ^ (n - 1 - i.val))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `[Finset.sum_apply, Pi.single_apply, lamS]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_single_one (S : Finset (Fin n)) : ∑ i ∈ S, (Pi.single i 1 : Fin n → ℤ) = lamS S := by
   classical
@@ -336,7 +336,7 @@ theorem sum_single_one (S : Finset (Fin n)) : ∑ i ∈ S, (Pi.single i 1 : Fin 
   simp [Finset.sum_apply, Pi.single_apply, lamS]
 
 /- English proof (translation)
-Simplify using `only [yElt]`. Rewrite using `[AddMonoidAlgebra.prod_single, sum_single_one, Finset.prod_pow_eq_pow_sum, ← card_pairs_add_choose, AddMonoidAlgebra.smul_single', mul_one, pow_add, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_yElt (S : Finset (Fin n)) :
     ∏ i ∈ S, yElt F i = ((qF F : ℂ) ^ S.card.choose 2 * (qF F : ℂ) ^ Fintype.card (Pairs S)) •
@@ -346,9 +346,9 @@ theorem prod_yElt (S : Finset (Fin n)) :
     ← card_pairs_add_choose, AddMonoidAlgebra.smul_single', mul_one, pow_add, mul_comm]
 
 /- English proof (translation)
-Establish `hK : (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (measureReal_compactOpen_pos μ (isCompact_integralGL F n) (isOpen_integralGL F n)).ne'`. Rewrite using `[Finset.esymm_map_val]`. Establish `: ∑ S ∈ Finset.univ.powersetCard k, ∏ i ∈ S, yElt F i = ((qF F : ℂ) ^ k.choose 2 * (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ)⁻¹) • satake μ (minusculeHecke μ k)`. Rewrite using `[satake_minusculeHecke, smul_smul, mul_assoc, inv_mul_cancel₀ hK, mul_one, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prod_yElt, (Finset.mem_powersetCard.1 hS).2, smul_smul, Nat.card_fun, Nat.card_eq_fintype_card (α := Pairs S)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Subalgebra.smul_mem _ (AlgHom.mem_range_self _ _) _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem esymm_yElt_mem (k : ℕ) :
     (Finset.univ.val.map (yElt F (n := n))).esymm k ∈ (satakeHom μ (F := F) (n := n)).range := by
@@ -370,13 +370,13 @@ theorem esymm_yElt_mem (k : ℕ) :
   exact Subalgebra.smul_mem _ (AlgHom.mem_range_self _ _) _
 
 /- English proof (translation)
-Use `set A := (satakeHom μ (F := F) (n := n)).range`. Use `set s : Multiset (LaurentRing n) := Finset.univ.val.map (yElt F (n := n))`. Use `set p : (LaurentRing n)[X] := (s.map fun t => X - C t).prod`. Establish `hmonic : p.Monic` using `monic_multiset_prod_of_monic _ _ fun t _ => monic_X_sub_C t`. Establish `hlifts : p ∈ lifts (algebraMap A (LaurentRing n))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `k`. Distinguish the cases in `hk : k ≤ Multiset.card s`. Rewrite using `[Multiset.prod_X_sub_C_coeff s hk]`. Establish `hmem : (-1 : LaurentRing n) ^ (Multiset.card s - k) * s.esymm (Multiset.card s - k) ∈ A` using `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (Subalgebra.neg_mem _ (Subalgebra.one_mem _)) _) (esymm_yElt_mem _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, hmem⟩, rfl⟩`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by rw [natDegree_multiset_prod_X_sub_C_eq_card]; omega)]`. Conclude with `⟨0, map_zero _⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_natDegree_eq_and_monic hlifts hmonic`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval₂_eq_eval_map, hq, eval_multiset_prod, Multiset.map_map]`. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Rewrite using `[Multiset.mem_map]`. Conclude with `⟨yElt F i, Multiset.mem_map.2 ⟨i, Finset.mem_univ_val i, rfl⟩, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIntegral_yElt (i : Fin n) : IsIntegral (satakeHom μ (F := F) (n := n)).range (yElt F i) := by
   classical
@@ -403,15 +403,15 @@ theorem isIntegral_yElt (i : Fin n) : IsIntegral (satakeHom μ (F := F) (n := n)
   exact ⟨yElt F i, Multiset.mem_map.2 ⟨i, Finset.mem_univ_val i, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Establish `hq : ((qF F : ℂ)) ≠ 0` using `Nat.cast_ne_zero.2 (qF_pos (F := F)).ne'`. Establish `hK : (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (measureReal_compactOpen_pos μ (isCompact_integralGL F n) (isOpen_integralGL F n)).ne'`. Establish `h₁ : ∀ i, IsIntegral (satakeHom μ (F` using `F) (n := n)).range (monomial (Pi.single i 1 : Fin n → ℤ)) := by`. Introduce `i`. Establish `: monomial (Pi.single i 1 : Fin n → ℤ) = ((qF F : ℂ) ^ (n - 1 - i.val))⁻¹ • yElt F i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[yElt, AddMonoidAlgebra.smul_single', inv_mul_cancel₀ (pow_ne_zero _ hq)]`. Rewrite using `[this]`. Conclude with `(isIntegral_yElt i).smul _`. Use `isIntegral_of_forall _ h₁ fun i => ?_` and prove the remaining obligations. Establish `hc : monomial (fun _ => (-1 : ℤ)) ∈ (satakeHom μ (F` using `F) (n := n)).range := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: monomial (fun _ => (-1 : ℤ)) = (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ)⁻¹ • satake μ (centralHecke μ)`. Rewrite using `[satake_centralHecke, smul_smul, inv_mul_cancel₀ hK, one_smul]`. Rewrite using `[this]`. Conclude with `Subalgebra.smul_mem _ (AlgHom.mem_range_self _ _) _`. Establish `heq : monomial (Pi.single i (-1) : Fin n → ℤ) = monomial (fun _ => (-1 : ℤ)) * ∏ j ∈ Finset.univ.erase i, monomial (Pi.single j 1 : Fin n → ℤ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[AddMonoidAlgebra.prod_single, AddMonoidAlgebra.single_mul_single, Finset.prod_const_one, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m = i`. Substitute `hm` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Simplify using `[Finset.sum_apply, Pi.single_apply, hm]`. Rewrite using `[heq]`. Use `IsIntegral.mul (isIntegral_algebraMap (x := (⟨_, hc⟩ : (satakeHom μ).range))) ?_` and prove the remaining obligations. Conclude with `IsIntegral.prod _ fun j _ => h₁ j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIntegral_satake :
     Algebra.IsIntegral (satakeHom μ (F := F) (n := n)).range (LaurentRing n) := by

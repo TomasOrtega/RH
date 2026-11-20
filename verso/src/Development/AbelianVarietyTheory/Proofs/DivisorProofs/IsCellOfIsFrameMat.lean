@@ -25,7 +25,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 open MonObj in
 
 /- English proof (translation)
-Take `⟨u, hu, hp⟩` from `h`. Use `⟨fun j => u (p j), fun j => hu (p j), ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`. Use `letI : CommMonoid (tEpsG x0 ⟶ t.G) := Hom.commMonoid`. Conclude with `congrArg Over.Hom.left ((List.prod_ofFn (f := fun j => u (p j))).trans ((Equiv.prod_comp p u).trans (List.prod_ofFn (f := u)).symm))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isCombAtG_perm (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) {m : ℕ} (p : Equiv.Perm (Fin m))
     (v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)) (cf : Fin m → S) (w : Sp (DualNumber S) ⟶ t.G.left)
@@ -68,16 +68,16 @@ variable {TF : TorFlag Xo c} {Z : Comp Xo c} {U : TF.Y.X.affineOpens} {n : ℕ}
   {e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n} {v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun a τ i => h.2.2 a τ (p τ i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEigBasis_permE (p : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) (h : IsEigBasis TF U e v) :
     IsEigBasis TF U (permE e p) v :=
   ⟨h.1, h.2.1, fun a τ i => h.2.2 a τ (p τ i)⟩
 
 /- English proof (translation)
-Introduce `S _ z hz hU hk hx σ i`. Establish `hz₀ : ⊤ ≤ z ⁻¹ᵁ W₀` using `FlagMod.le_preimage_mono hW hz`. Establish `h1` using `h S z hz₀ hU hk hx σ i`. Establish `e1 : (fun j => ev z W₀ hz₀ (C σ i j)) = fun j => ev z W hz (((C σ).map (resG (Y₀ TF.X Z) hW)) i j)`. Use function extensionality and compare the values at `fun j => (FlagMod.ev_res z hW hz hz₀ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1` using `[e1]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrameMat_mono {W W₀ : (Y₀ TF.X Z).Opens} (hW : W ≤ W₀) {k : TF.X.F.J}
     {C : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W₀)}
@@ -92,7 +92,7 @@ theorem isFrameMat_mono {W W₀ : (Y₀ TF.X Z).Opens} (hW : W ≤ W₀) {k : TF
   exact h1
 
 /- English proof (translation)
-Introduce `S _ z hz hU hk hx σ i`. Simplify using `only [permE_apply, Matrix.submatrix_apply, id]`. Conclude with `isCombAtG_perm TF.Y.t (z ≫ toBase TF Z) (p σ) (fun j => spMap (dualMap (ev (z ≫ toBase TF Z) U.1 hU)) ≫ v (e ⟨σ, j⟩)) (fun j => ev z W hz (C σ i j)) (tv (TF.X.F.vecAt k (z ≫ inc₀ TF.X Z) hk hx σ i)).left (h S z hz hU hk hx σ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFrameMat_permE (p : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) {W : (Y₀ TF.X Z).Opens} {k : TF.X.F.J}
     {C : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W)}
@@ -105,7 +105,7 @@ theorem isFrameMat_permE (p : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ)
     (tv (TF.X.F.vecAt k (z ≫ inc₀ TF.X Z) hk hx σ i)).left (h S z hz hU hk hx σ i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hW, hWU, hWk, hL, hLd, hN, hNd, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCell_of_isFrameMat {W : (Y₀ TF.X Z).Opens} {k : TF.X.F.J}
     {L N : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W)} (hW : IsAffineOpen W)

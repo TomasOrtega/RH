@@ -16,19 +16,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Cont
 namespace PositivityTheory.SiegelWeilFormula.Khead
 /- English proof (translation)
-Introduce `hBL F E _ _ _ _ _ σ d hS s₁ f hf s₀`. Take `⟨r', s', hY⟩` from `hS`. Take `⟨Ê, ⟨t, hsum, hdiff⟩, hw⟩` from `hBL F E σ d.B d.n d.Y r' s' d.ok.good d.ok.hn hY d.χ d.ok.hecke d.m d.ok.res d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt s₁ f hf`. Establish `hp : ∀ s₀ : ℂ, ∃ (k : ℕ) (H : ℂ → d.G → ℂ), An.Reg (fun x : d.G => (ht2 x : ℝ)) H s₀ ∧ ∀ᶠ s in 𝓝[≠] s₀, ∀ x, H s x = (s - s₀) ^ k * Ê s x`. Introduce `s₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, U, H, hU, he, hd⟩` from `hw s₀`. Use `⟨k, fun s => (H s).1, reg_of_weak hU hd, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_nhdsWithin_of_eventually_nhds hU, self_mem_nhdsWithin] with s hs hne`. Conclude with `he s hs hne`. Establish `hr : ∀ s : ℂ, t < s.re → An.Reg (fun x : d.G => (ht2 x : ℝ)) Ê s` using `fun s hs => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, H, a, e⟩` from `hp s`. Conclude with `a.remove one_le_height_GL2 e ((isOpen_lt continuous_const Complex.continuous_re).mem_nhds hs) hdiff`. Take `⟨U, p, G, hUo, hUr, hs₀, hp0, hreg, heq⟩` from `strip one_le_height_GL2 hp hr s₀`. Take `⟨hGd, hGc⟩` from `diff_cont_of_reg hreg`. Take `⟨t2, hmaj⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Khead.majorant_k d ⟨r', s', hY⟩ hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinv` using `_root_.GlobalTheory.T.eisenstein_series_moderate_growth F E σ d.B d.n d.Y r' s' d.ok.good d.ok.hn hY d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt d.χ s₁ f hf d.ok.hecke t Ê hsum`. Establish `hfl : ∀ z, (fun y => ((d.Ht y : ℝ) : ℂ) ^ (z - s₁) * f y) = flat d.a f s₁ z` using `fun z => funext fun y => by`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.Ht, flat]`. Rewrite using `[Real.coe_toNNReal _ (hgt_nonneg d.ok.hgt y)]`. Establish `Heisenberg₂ : ∀ z : ℂ, t < z.re → ∀ g, d.eis f s₁ z g = Ê z g` using `fun z hz g => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.eis]`. Rewrite using `[hfl z]`. Conclude with `(hsum z hz g).tsum_eq`. Use `⟨U, p, G, max t t2, hUo, hUr, hs₀, hp0, hGd, hGc, ?_, fun z hz => ⟨hmaj z (lt_of_le_of_lt (le_max_right _ _) hz), fun g => ?_⟩⟩` and prove the remaining obligations. Introduce `z hz γ hγ g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨τ, hτ⟩` from `hUr.1`. Establish `han : ∀ x, AnalyticOnNhd ℂ (G · x) U` using `fun x => (hGd x).analyticOnNhd hUo`. Establish `hz₀ : (((max τ t + 1 : ℝ)) : ℂ) ∈ rightOf (max τ t)` using `by simp`. Use `(han (γ * g)).eqOn_of_preconnected_of_eventuallyEq (han g) hUr.isPreconnected (hτ (rightOf_subset (le_max_left _ _) hz₀)) ?_ hz` and prove the remaining obligations. Use `filter_upwards [(isOpen_rightOf _).mem_nhds hz₀] with w hw`.
-
-Establish `hw' : t < w.re` using `lt_of_le_of_lt (le_max_right _ _) hw`. Rewrite using `[heq w hw', heq w hw', hinv w hw' γ hγ g]`. Establish `hz1 : t < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`. Rewrite using `[heq z hz1, Heisenberg₂ z hz1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisStrong_of_k : _root_.GlobalTheory.ThK.Dbl.EisBL_k → _root_.PositivityTheory.SiegelWeilFormula.EisStrong_k := by
   intro hBL F E _ _ _ _ _ σ d hS s₁ f hf s₀

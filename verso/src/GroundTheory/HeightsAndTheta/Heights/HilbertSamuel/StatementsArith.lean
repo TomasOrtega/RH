@@ -97,9 +97,9 @@ def IsBoundedHOver {Ω : Type} [Field Ω] {F : Type} [Field F] [Algebra F Ω] (P
 end Objects
 
 /- English proof (translation)
-Establish `key : ((MvPolynomial.uniqueAlgEquiv Ω Unit).toAlgHom.restrictScalars ℤ).comp (mConeMap (ι` using `GlobalTheory κ) x) = coneMap ℤ x := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[mConeMap, coneMap]`. Use extensionality with `f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `show f ∈ RingHom.ker (coneMap ℤ x) ↔ f ∈ RingHom.ker (mConeMap (ι := GlobalTheory κ) x)`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker, ← key]`. Conclude with `map_eq_zero_iff _ (MvPolynomial.uniqueAlgEquiv Ω Unit).injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordIdeal_eq_mCoordIdeal {Ω : Type} [Field Ω] {κ : Type} [Fintype κ] (x : Ix κ → Ω) : coordIdeal ℤ x = mCoordIdeal (ι := GlobalTheory κ) x := by
   have key : ((MvPolynomial.uniqueAlgEquiv Ω Unit).toAlgHom.restrictScalars ℤ).comp
@@ -421,7 +421,7 @@ def NefOnGenericOfSemipos.Statement : Prop :=
     P0 ≤ P → IsSemipositiveRel P0 P A → NefOnGeneric P A
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D A P0 II _ hII har hb hP0 hs hnef hc`. Conclude with `hM K ι Ω y D A P0 II hII har hb hP0 hs hc hnef (hN K ι _ P0 A hP0 hs)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeBig.of_moriwakiBig (hN : NefOnGenericOfSemipos.Statement) (hM : MoriwakiBigStatement) :
     ArithmeticVolumeBig.Statement := by
@@ -429,21 +429,21 @@ theorem ArithmeticVolumeBig.of_moriwakiBig (hN : NefOnGenericOfSemipos.Statement
   exact hM K ι Ω y D A P0 II hII har hb hP0 hs hc hnef (hN K ι _ P0 A hP0 hs)
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D A II hD hII har hb _ hs hnef hc`. Conclude with `h K ι Ω y D A (mCoordIdeal y) II hD hII har hb le_rfl hs hnef hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeBig.arithmeticVolumeBig_smoothFibre (h : ArithmeticVolumeBig.Statement) : ArithmeticVolumeLowerBound := by
   intro K _ ι _ Ω _ _ y D A II hD hII har hb _ hs hnef hc
   exact h K ι Ω y D A (mCoordIdeal y) II hD hII har hb le_rfl hs hnef hc
 
 /- English proof (translation)
-Introduce `_ _ K _ ι _ Ω _ _ y D A II hD hII har hb hs hnef hc`. Conclude with `h K ι Ω y D A (mCoordIdeal y) II hD hII har hb le_rfl hs hnef hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeBig.arithmeticVolumeBig_resolution (h : ArithmeticVolumeBig.Statement) : SuccessiveMinimaResolution := by
   intro _ _ K _ ι _ Ω _ _ y D A II hD hII har hb hs hnef hc
   exact h K ι Ω y D A (mCoordIdeal y) II hD hII har hb le_rfl hs hnef hc
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D M P0 II hD hII har hb hM`. Conclude with `h K ι Ω y D M P0 II hD hII har hb hM.normalForm_baseLattice_le_dualSpan_sup_line hM.semipos hM.nef hM.conjInv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem G6.statementB_of_G6Prime (h : ArithmeticVolumeBig.Statement) : G6.StatementB := by
   intro K _ ι _ Ω _ _ y D M P0 II hD hII har hb hM
@@ -485,11 +485,11 @@ def LatticeWithoutBigness.Statement : Prop := SuccessiveMinimaUpperBound
 namespace ProjLine
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hX : ∏ p : (Σ k, ι k), (MvPolynomial.X p.1 : MvPolynomial K Ω) ^ m p = ∏ k, MvPolynomial.X k ^ d k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (MvPolynomial.X k : MvPolynomial K Ω) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf m hm k]`. Simplify using `only [mConeMap, aeval_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finsupp.prod_fintype _ _ (fun i => by simp), Finsupp.prod_fintype _ _ (fun i => by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mConeMap_eq_of_isMultiHomog {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {f : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d) :
@@ -511,7 +511,7 @@ theorem mConeMap_eq_of_isMultiHomog {K : Type} [Fintype K] {ι : K → Type} [�
   ring
 
 /- English proof (translation)
-Establish `hmem : f ∈ mCoordIdeal (ι` using `GlobalTheory (Fin 2)) y := by show mConeMap y f = 0`. Rewrite using `[mConeMap_eq_of_isMultiHomog y hf, h0, map_zero, zero_mul]`. Rewrite `hmem` using `[mCoordIdeal_y]`. Conclude with `(Submodule.mem_bot _).mp hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_aeval_y {f : MRing (GlobalTheory (Fin 2))} {d : Unit → ℕ} (hf : IsMultiHomog f d)
     (h0 : aeval y f = 0) : f = 0 := by
@@ -522,7 +522,7 @@ theorem eq_zero_of_aeval_y {f : MRing (GlobalTheory (Fin 2))} {d : Unit → ℕ}
   exact (Submodule.mem_bot _).mp hmem
 
 /- English proof (translation)
-Unfold `geoNum`. Apply the tactic sequence `split_ifs <;> positivity`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem geoNum_zero_nonneg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (V : Ideal (MRing ι))
     (a : Fin 0 → K → ℤ) : 0 ≤ geoNum 0 V a := by
@@ -530,9 +530,7 @@ theorem geoNum_zero_nonneg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fint
   split_ifs <;> positivity
 
 /- English proof (translation)
-Introduce `W _ _ _ _`. Rewrite using `[geoNum]`. Use `split_ifs with h`. Use `Finset.sum_nonneg fun k _ => mul_nonneg (ha k) ?_` and prove the remaining obligations. Conclude with `finsum_nonneg fun W' => finsum_nonneg fun _ => mul_nonneg (Nat.cast_nonneg _) (geoNum_zero_nonneg _ _)`.
-
-Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nefOnFibres_of_nonneg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι))
     (a : K → ℤ) (ha : ∀ k, 0 ≤ a k) : NefOnFibres P a := by
@@ -545,7 +543,7 @@ theorem nefOnFibres_of_nonneg {K : Type} [Fintype K] {ι : K → Type} [∀ k, F
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `genDeg`. Rewrite using `[mCoordIdeal_y, Ideal.map_bot]`. Establish `h` using `GroundTheory.Heights₂.Heights.FieldNumbers.intNum_projectiveSpace ℚ 1`. Apply the tactic sequence `convert h using 2 <;> first | rfl | exact Subsingleton.elim _ _ | (funext i j; rfl)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem genDeg_y : genDeg (ι := GlobalTheory (Fin 2)) (mCoordIdeal y) 1 (fun _ => 1) = 1 := by
   unfold genDeg
@@ -554,13 +552,13 @@ theorem genDeg_y : genDeg (ι := GlobalTheory (Fin 2)) (mCoordIdeal y) 1 (fun _ 
   convert h using 2 <;> first | rfl | exact Subsingleton.elim _ _ | (funext i j; rfl)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun v => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInvMat_one (J : Type) [Fintype J] [DecidableEq J] : IsInvMat (1 : Matrix J J ℚ) :=
   ⟨1, fun v => by simp⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [matActC, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Ne.symm hj]) (by simp)]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem matActC_one {J : Type} [Fintype J] [DecidableEq J] (z : J → ℂ) : matActC (1 : Matrix J J ℚ) z = z := by
   funext i
@@ -571,11 +569,11 @@ theorem matActC_one {J : Type} [Fintype J] [DecidableEq J] (z : J → ℂ) : mat
 def eP1 : Fin 2 → Ix (Fin 2) := fun k => ⟨(), k⟩
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Ideal.mem_bot]`. Establish `hc : coneMap ℤ (y ∘ eP1) f = coneMap ℤ y (rename eP1 f)`. Simplify using `only [coneMap, aeval_rename]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h1 : rename eP1 f ∈ coordIdeal ℤ y` using `by show coneMap ℤ y (rename eP1 f) = 0`. Rewrite using `[← hc]`. Conclude with `hf`. Rewrite `h1` using `[coordIdeal_y, Ideal.mem_bot]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective eP1` using `fun a b h => by`. Simplify `congrArg Sigma.snd h` using `[eP1]`. Conclude with `rename_injective eP1 hinj (by rw [h1, map_zero])`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coordIdeal_projectiveLine_eq_bot : coordIdeal ℤ (y ∘ eP1) = ⊥ := by
   rw [eq_bot_iff]
@@ -594,7 +592,7 @@ theorem coordIdeal_projectiveLine_eq_bot : coordIdeal ℤ (y ∘ eP1) = ⊥ := b
   exact rename_injective eP1 hinj (by rw [h1, map_zero])
 
 /- English proof (translation)
-Simplify `congrArg Sigma.snd h free := coordIdeal_projectiveLine_eq_bot integral i := by` using `[eP1]`. Apply `isIntegral_of_mem_subalgebra` to reduce the goal to its premises. Use `⟨X i.2, ?_⟩` and prove the remaining obligations. Take `⟨⟨⟩, j⟩` from `i`. Simplify using `[coneMap, eP1]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isProjFrame_y : IsProjFrame y eP1 where
   inj a b h := by simpa [eP1] using congrArg Sigma.snd h
@@ -606,7 +604,7 @@ theorem isProjFrame_y : IsProjFrame y eP1 where
     simp [coneMap, eP1]
 
 /- English proof (translation)
-Introduce `z _`. Express the relevant statement in the definitionally equal form `‖WithLp.toLp 2 z‖ = _`. Rewrite using `[EuclideanSpace.norm_eq]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem isPullFS_y : IsPullFS y eP1 (fsMetric (Ix (Fin 2))) := by
   intro z _
@@ -615,7 +613,7 @@ theorem isPullFS_y : IsPullFS y eP1 (fsMetric (Ix (Fin 2))) := by
   congr 1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖z p‖ ≤ ‖WithLp.toLp 2 z‖`. Rewrite using `[EuclideanSpace.norm_eq]`. Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun q => ‖(WithLp.toLp 2 z).ofLp q‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ p)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_le_fs (z : Ix (Fin 2) → ℂ) (p : Ix (Fin 2)) : ‖z p‖ ≤ (fsMetric (Ix (Fin 2))).ρ z := by
   change ‖z p‖ ≤ ‖WithLp.toLp 2 z‖
@@ -627,15 +625,15 @@ theorem norm_le_fs (z : Ix (Fin 2) → ℂ) (p : Ix (Fin 2)) : ‖z p‖ ≤ (fs
 abbrev fsLine1 : HermLine (GlobalTheory (Fin 2)) := HermLine.ofCone (fsMetric (Ix (Fin 2)))
 
 /- English proof (translation)
-Introduce `dg dh g h z hg hh hdeg he _`. Establish `hdg : dg = dh + fun _ => 1`. Use function extensionality and compare the values at `k`. Use `hdeg k` as an intermediate fact. Simplify using `only [fsLine1, HermLine.ofCone, Pi.one_apply, Nat.cast_one, mul_one] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hX : IsMultiHomog (X ⟨(), j⟩ * h : MRing (GlobalTheory (Fin 2))) dg`. Use `mhMul (isMultiHomog_X (ι := GlobalTheory (Fin 2)) ⟨(), j⟩) hh` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[hdg]`. Use function extensionality and compare the values at `k`. Simplify using `[add_comm]`. Establish `hf : IsMultiHomog (g + -(X ⟨(), j⟩ * h)) dg` using `mhAdd hg (mhNeg hX)`. Establish `h0 : aeval y (g + -(X ⟨(), j⟩ * h)) = 0`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_neg, map_mul, aeval_X, he]`. Expand and normalize the polynomial expressions, which then agree. Establish `heq : g = X ⟨(), j⟩ * h`. Use `eq_zero_of_aeval_y hf h0` as an intermediate fact. Take the linear combination `this`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[heq, map_mul, map_mul, map_X, eval_X, norm_mul, pow_one, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (norm_le_fs z ⟨(), j⟩) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmallH_coord (j : Fin 2) : IsSmallH (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) y fsLine1 1 (y ⟨(), j⟩) := by
   intro dg dh g h z hg hh hdeg he _
@@ -662,9 +660,9 @@ theorem isSmallH_coord (j : Fin 2) : IsSmallH (mCoordIdeal (ι := GlobalTheory (
   exact mul_le_mul_of_nonneg_left (norm_le_fs z ⟨(), j⟩) (norm_nonneg _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∀ c : ∀ k, GlobalTheory (Fin 2) k, (∀ k, y ⟨k, c k⟩ ≠ 0) → y ⟨(), j⟩ * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * fsLine1.a k)) ∈ chartRingZ y c`. Introduce `c _`. Establish `: y ⟨(), j⟩ * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * fsLine1.a k)) = y ⟨(), j⟩ / y ⟨(), c ()⟩`. Simplify using `[fsLine1, HermLine.ofCone, div_eq_mul_inv]`. Rewrite using `[this]`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.subset_adjoin ⟨⟨(), j⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem coord_mem_chartLat (j : Fin 2) : y ⟨(), j⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1 := by
   change ∀ c : ∀ k, GlobalTheory (Fin 2) k, (∀ k, y ⟨k, c k⟩ ≠ 0) →
@@ -676,9 +674,7 @@ theorem coord_mem_chartLat (j : Fin 2) : y ⟨(), j⟩ ∈ chartLat (ι := Globa
   exact Algebra.subset_adjoin ⟨⟨(), j⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `c hc`. Use `⟨fun j => if j = c () then 1 else 0, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `show (if j = c () then (1 : FnField) else 0) ∈ chartRingZ y c split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
-
-Rewrite using `[Finset.sum_eq_single (c ()) (fun j _ hj => by simp [hj]) (by simp)]`. Simplify using `only [if_true, one_mul, Finset.univ_unique, Finset.prod_singleton, fsLine1, HermLine.ofCone, Pi.one_apply, zpow_neg, zpow_one]`. Conclude with `mul_inv_cancel₀ (hc ())`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem generatesOn_coords : KH.GeneratesOn (ι := GlobalTheory (Fin 2)) y fsLine1.a (fun j : Fin 2 => y ⟨(), j⟩) := by
   intro c hc
@@ -693,12 +689,12 @@ theorem generatesOn_coords : KH.GeneratesOn (ι := GlobalTheory (Fin 2)) y fsLin
     exact mul_inv_cancel₀ (hc ())
 
 /- English proof (translation)
-The claim follows from `genDeg_y`.
+A detailed English derivation is pending.
 -/
 theorem genDeg_fsLine1 : genDeg (ι := GlobalTheory (Fin 2)) (mCoordIdeal y) 1 fsLine1.a = 1 := genDeg_y
 
 /- English proof (translation)
-The claim follows from `bot_le semipos := isSemipositiveRel_fs _ _ deg_pos := by rw [genDeg_fsLine1]; exact one_pos gen := ⟨2, fun j => y ⟨(), j⟩, coord_mem_chartLat, generatesOn_coords, isSmallH_coord⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSmallGeneratedDatum_fs : IsSmallGeneratedDatum (ι := GlobalTheory (Fin 2)) ⊥ y 1 fsLine1 where
   normalForm_baseLattice_le_dualSpan_sup_line := bot_le
@@ -707,7 +703,7 @@ theorem isSmallGeneratedDatum_fs : IsSmallGeneratedDatum (ι := GlobalTheory (Fi
   gen := ⟨2, fun j => y ⟨(), j⟩, coord_mem_chartLat, generatesOn_coords, isSmallH_coord⟩
 
 /- English proof (translation)
-The claim follows from `bot_le semipos := isSemipositiveRel_fs _ _ conjInv := isConjInvariantH_fs _ nef := nefOnFibres_of_nonneg _ _ fun _ => zero_le_one big := by rw [genDeg_fsLine1]; exact one_pos`.
+A detailed English derivation is pending.
 -/
 theorem isNefBigDatum_fs : IsNefBigDatum (ι := GlobalTheory (Fin 2)) ⊥ y 1 fsLine1 where
   normalForm_baseLattice_le_dualSpan_sup_line := bot_le
@@ -717,7 +713,7 @@ theorem isNefBigDatum_fs : IsNefBigDatum (ι := GlobalTheory (Fin 2)) ⊥ y 1 fs
   big := by rw [genDeg_fsLine1]; exact one_pos
 
 /- English proof (translation)
-The claim follows from `le_rfl arith := isArithVar_y indep := linearIndependent_y smooth := isSmoothMetric_fs conjInv := isConjInvariant_fs semipos := ⟨⊥, bot_le, isSemipositiveRel_fs _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem isGoodDatum_fs : IsGoodDatum 1 y (fsMetric (Ix (Fin 2))) where
   one_le := le_rfl
@@ -728,11 +724,11 @@ theorem isGoodDatum_fs : IsGoodDatum 1 y (fsMetric (Ix (Fin 2))) where
   semipos := ⟨⊥, bot_le, isSemipositiveRel_fs _ _⟩
 
 /- English proof (translation)
-Establish `hs : μ ⟨(), 0⟩ + μ ⟨(), 1⟩ = 1` using `by simpa [Fin.sum_univ_two] using hμ ()`. Establish `hp : ∏ p, z p ^ μ p = z ⟨(), 0⟩ ^ μ ⟨(), 0⟩ * z ⟨(), 1⟩ ^ μ ⟨(), 1⟩`. Rewrite using `[Fintype.prod_sigma]`. Simplify using `[Fin.prod_univ_two]`. Rewrite using `[hp, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos (μ ⟨(), 0⟩) with h0 | h0` into its components or cases. Establish `h1 : μ ⟨(), 1⟩ = 1` using `by omega`. Rewrite using `[h0, h1, pow_zero, pow_one, one_mul]`. Conclude with `norm_le_fs z _`. Establish `h0' : μ ⟨(), 0⟩ = 1` using `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : μ ⟨(), 1⟩ = 0` using `by omega`. Rewrite using `[h0', h1, pow_zero, pow_one, mul_one]`. Conclude with `norm_le_fs z _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomials_le_fs (z : Ix (Fin 2) → ℂ) (μ : Ix (Fin 2) →₀ ℕ) (hμ : ∀ k, ∑ i, μ ⟨k, i⟩ = 1) :
     ‖∏ p, z p ^ μ p‖ ≤ 1 * fsLine1.h z := by
@@ -751,19 +747,17 @@ theorem monomials_le_fs (z : Ix (Fin 2) → ℂ) (μ : Ix (Fin 2) →₀ ℕ) (h
     exact norm_le_fs z _
 
 /- English proof (translation)
-Introduce `dg dh dg' dh' g h g' h' hg hh hdeg he hg' hh' hdeg' he' z _ hz hz'`. Establish `hd : dg + dh' = dg' + dh`. Use function extensionality and compare the values at `k`. Establish `h1` using `hdeg k`. Establish `h2` using `hdeg' k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hf : IsMultiHomog (g * h' + -(g' * h)) (dg + dh')`. Use `mhAdd (mhMul hg hh') (mhNeg ?_)` and prove the remaining obligations. Rewrite using `[hd]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mhMul hg' hh`. Establish `h0 : aeval y (g * h' + -(g' * h)) = 0`. Rewrite using `[map_add, map_neg, map_mul, map_mul, he, he']`. Expand and normalize the polynomial expressions, which then agree. Establish `hpoly : g * h' = g' * h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_zero_of_aeval_y hf h0` as an intermediate fact. Take the linear combination `this`. Establish `hev : eval z (MvPolynomial.map (Int.castRingHom ℂ) g) * eval z (MvPolynomial.map (Int.castRingHom ℂ) h') = eval z (MvPolynomial.map (Int.castRingHom ℂ) g') * eval z (MvPolynomial.map (Int.castRingHom ℂ) h)`. Rewrite using `[← map_mul, ← map_mul, ← map_mul, ← map_mul, hpoly]`. Establish `hρ0 : 0 ≤ fsLine1.h z` using `norm_nonneg (WithLp.toLp 2 z)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heqr : ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) g')‖ / (‖eval z (MvPolynomial.map (Int.castRingHom ℂ) h')‖ * fsLine1.h z ^ n) = ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) g)‖ / (‖eval z (MvPolynomial.map (Int.castRingHom ℂ) h)‖ * fsLine1.h z ^ n)`. Establish `hn : ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) h)‖ ≠ 0` using `norm_ne_zero_iff.mpr hz`. Establish `hn' : ‖eval z (MvPolynomial.map (Int.castRingHom ℂ) h')‖ ≠ 0` using `norm_ne_zero_iff.mpr hz'`. Establish `hnorm` using `congrArg norm hev`. Rewrite `hnorm` using `[norm_mul, norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hr : fsLine1.h z ^ n = 0`. Simplify using `[hr]`. Clear the denominators using the available nonvanishing facts. Combine the linear relations using `[hnorm]`. Rewrite using `[heqr]`.
-
-Conclude with `le_mul_of_one_le_left (div_nonneg (norm_nonneg _) (mul_nonneg (norm_nonneg _) (pow_nonneg hρ0 _))) hc`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptBoundOn_id (n : ℕ) (U : Set (Ix (Fin 2) → ℂ)) {c : ℝ} (hc : 1 ≤ c) (f : FnField) :
     PtBoundOn (ι := GlobalTheory (Fin 2)) y fsLine1 fsLine1 n U c f f := by
@@ -804,20 +798,20 @@ theorem ptBoundOn_id (n : ℕ) (U : Set (Ix (Fin 2) → ℂ)) {c : ℝ} (hc : 1 
   exact le_mul_of_one_le_left (div_nonneg (norm_nonneg _) (mul_nonneg (norm_nonneg _) (pow_nonneg hρ0 _))) hc
 
 /- English proof (translation)
-Introduce `m hm` and use `hf m (support_smul hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mhZsmul (c : ℤ) {f : MRing (GlobalTheory (Fin 2))} {d : Unit → ℕ} (hf : IsMultiHomog f d) :
     IsMultiHomog (c • f) d :=
   fun m hm => hf m (support_smul hm)
 
 /- English proof (translation)
-Introduce `d g h θ hg hh he`. Establish `hf : IsMultiHomog ((θ.den : ℤ) • g + -(θ.num • h)) d` using `mhAdd (mhZsmul _ hg) (mhNeg (mhZsmul _ hh))`. Establish `h0 : aeval y ((θ.den : ℤ) • g + -(θ.num • h)) = 0`. Rewrite using `[map_add, map_neg, map_zsmul, map_zsmul, he, zsmul_eq_mul, zsmul_eq_mul, ← mul_assoc]`. Establish `: ((θ.den : ℤ) : FnField) * algebraMap ℚ FnField θ = (θ.num : FnField)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_intCast (algebraMap ℚ FnField), ← map_mul, ← map_intCast (algebraMap ℚ FnField) θ.num]`. Use `congr 1`. Use `push_cast`. Conclude with `Rat.den_mul_eq_num θ`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hp` using `eq_zero_of_aeval_y hf h0`. Establish `hz` using `congrArg (fun f => eval z (MvPolynomial.map (Int.castRingHom ℂ) f)) hp`. Simplify using `only [map_add, map_neg, map_zero, zsmul_eq_mul, map_mul, map_intCast] at hz`. Rewrite using `[eq_ratCast sg θ, Rat.cast_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hden : ((θ.den : ℤ) : ℂ) ≠ 0` using `by exact_mod_cast θ.den_nz`. Clear the denominators using the available nonvanishing facts. Move the coercions through the operations in `at hz ⊢`. Take the linear combination `hz`.
+Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem liesOver_rat (sg : ℚ →+* ℂ) (z : Ix (Fin 2) → ℂ) : LiesOver (ι := GlobalTheory (Fin 2)) y sg z := by
   intro d g h θ hg hh he
@@ -842,7 +836,7 @@ theorem liesOver_rat (sg : ℚ →+* ℂ) (z : Ix (Fin 2) → ℂ) : LiesOver (�
   linear_combination hz
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Rat.castHom ℂ, liesOver_rat _ z, fun _ _ => Subsingleton.elim _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_liesOver_rat (z : Ix (Fin 2) → ℂ) :
     ∃! sg : ℚ →+* ℂ, LiesOver (ι := GlobalTheory (Fin 2)) y sg z :=
@@ -881,7 +875,7 @@ section Inhabitants
 open ProjLine
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y, linearIndependent_y, isInvMat_one _, isSmoothMetric_fs, fun z => by rw [matActC_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChangeOfLattice.hyps_inhabited :
     IsArithVar (ι := GlobalTheory (Fin 2)) (coordIdeal ℤ y) (1 + 1) ∧ LinearIndependent ℤ y ∧
@@ -890,36 +884,36 @@ theorem ChangeOfLattice.hyps_inhabited :
   ⟨isArithVar_y, linearIndependent_y, isInvMat_one _, isSmoothMetric_fs, fun z => by rw [matActC_one]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hsmProjLine, isProjFrame_y, isPullFS_y⟩`.
+Supply the required witnesses or components.
 -/
 theorem ProjectionBounds.hyps_inhabited :
     ∃ d : HSMDatum 1 FnField (Fin 2), IsProjFrame d.x eP1 ∧ IsPullFS d.x eP1 d.m :=
   ⟨hsmProjLine, isProjFrame_y, isPullFS_y⟩
 
 /- English proof (translation)
-The claim follows from `coordIdeal_y`.
+A detailed English derivation is pending.
 -/
 theorem MonomialDegree.hyps_inhabited : coordIdeal ℤ (y : Ix (Fin (1 + 1)) → FnField) = ⊥ := coordIdeal_y
 
 /- English proof (translation)
-The claim follows from `ProjectionBounds.hyps_inhabited`.
+A detailed English derivation is pending.
 -/
 theorem ReductionToProjective.hyps_inhabited :
     ∃ d : HSMDatum 1 FnField (Fin 2), IsProjFrame d.x eP1 ∧ IsPullFS d.x eP1 d.m :=
   ProjectionBounds.hyps_inhabited
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hsmProjLine⟩`.
+Supply the required witnesses or components.
 -/
 theorem TheoremHSM.hyps_inhabited : Nonempty (HSMDatum 1 FnField (Fin 2)) := ⟨hsmProjLine⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hsmProjLine⟩`.
+Supply the required witnesses or components.
 -/
 theorem SlopeLowerBound.hyps_inhabited : Nonempty (HSMDatum 1 FnField (Fin 2)) := ⟨hsmProjLine⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y, rfl, isSemipositiveRel_fs _ _, fun z _ μ hμ => by simpa using monomials_le_fs z μ hμ, isConjInvariantH_fs _⟩`.
+Supply the required witnesses or components.
 -/
 theorem G1.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -929,7 +923,7 @@ theorem G1.hyps_inhabited :
     fun z _ μ hμ => by simpa using monomials_le_fs z μ hμ, isConjInvariantH_fs _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y, rfl, isSemipositiveRel_fs _ _, isConjInvariantH_fs _, fun _ => one_pos, fun z _ => existsUnique_liesOver_rat z, fun z _ _ _ μ hμ => monomials_le_fs z μ hμ⟩`.
+Supply the required witnesses or components.
 -/
 theorem SuccessiveMinimaDual.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -942,7 +936,7 @@ theorem SuccessiveMinimaDual.hyps_inhabited :
     fun z _ => existsUnique_liesOver_rat z, fun z _ _ _ μ hμ => monomials_le_fs z μ hμ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y, isNefBigDatum_fs⟩`.
+Supply the required witnesses or components.
 -/
 theorem G2.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -950,7 +944,7 @@ theorem G2.hyps_inhabited :
   ⟨isArithVar_y', birational_y, isNefBigDatum_fs⟩
 
 /- English proof (translation)
-Use `⟨isArithVar_y', birational_y, isNefBigDatum_fs, isSmallGeneratedDatum_fs, isConjInvariantH_fs _, fun n _ => ⟨fun a _ b _ h => h, fun a ha => ha⟩, fun η hη => ⟨0, Set.univ, isOpen_univ, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Set.univ_inter]`. Conclude with `subset_closure`. Introduce `n _ _ f _`. Conclude with `ptBoundOn_id n _ (Real.one_le_exp (by positivity)) f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem G3.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -972,9 +966,7 @@ theorem G3.hyps_inhabited :
     exact ptBoundOn_id n _ (Real.one_le_exp (by positivity)) f
 
 /- English proof (translation)
-Use `⟨isArithVar_y', birational_y, isNefBigDatum_fs, isSemipositiveRel_fs _ _, isConjInvariantH_fs _, by rw [genDeg_fsLine1]; exact one_pos, fun z _ => existsUnique_liesOver_rat z, fun _ => one_pos, ⟨2, fun j => y ⟨(), j⟩, coord_mem_chartLat, generatesOn_coords, fun j _ dg dh g h z a …` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `isSmallH_coord j dg dh g h z a b c d e⟩, by simp,`. Use `fun n _ => ⟨fun a _ b _ h => h, fun a ha => ha, fun _ _ => rfl⟩,`. Use `fun η hη => ⟨0, Set.univ, isOpen_univ, ?_, ?_⟩⟩`.
-
-Rewrite using `[Set.univ_inter]`. Conclude with `subset_closure`. Introduce `n _ _ f _ _`. Conclude with `ptBoundOn_id n _ (Real.one_le_exp (by positivity)) f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeMultiplicative.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -1010,7 +1002,7 @@ theorem ArithmeticVolumeMultiplicative.hyps_inhabited :
     exact ptBoundOn_id n _ (Real.one_le_exp (by positivity)) f
 
 /- English proof (translation)
-The claim follows from `G2.hyps_inhabited`.
+A detailed English derivation is pending.
 -/
 theorem G4.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -1018,7 +1010,7 @@ theorem G4.hyps_inhabited :
   G2.hyps_inhabited
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isGoodDatum_fs, isArithVar_y', birational_y, isNefBigDatum_fs⟩`.
+Supply the required witnesses or components.
 -/
 theorem G6.hyps_inhabited :
     IsGoodDatum 1 y (fsMetric (Ix (Fin 2))) ∧ IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧
@@ -1026,7 +1018,7 @@ theorem G6.hyps_inhabited :
   ⟨isGoodDatum_fs, isArithVar_y', birational_y, isNefBigDatum_fs⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y, isSemipositiveRel_fs _ _, nefOnFibres_of_nonneg _ _ fun _ => zero_le_one, isConjInvariantH_fs _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ArithmeticVolumeBig.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -1036,7 +1028,7 @@ theorem ArithmeticVolumeBig.hyps_inhabited :
     isConjInvariantH_fs _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y, isSmallGeneratedDatum_fs, isConjInvariantH_fs _⟩`.
+Supply the required witnesses or components.
 -/
 theorem G7.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -1044,7 +1036,7 @@ theorem G7.hyps_inhabited :
   ⟨isArithVar_y', birational_y, isSmallGeneratedDatum_fs, isConjInvariantH_fs _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y, isSmallGeneratedDatum_fs⟩`.
+Supply the required witnesses or components.
 -/
 theorem Perturb.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -1052,13 +1044,13 @@ theorem Perturb.hyps_inhabited :
   ⟨isArithVar_y', birational_y, isSmallGeneratedDatum_fs⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hsmBlockProjLine⟩`.
+Supply the required witnesses or components.
 -/
 theorem TheoremHSMBlock.hyps_inhabited : Nonempty (HSMBlockDatum 1 Unit (GlobalTheory (Fin 2)) FnField) :=
   ⟨hsmBlockProjLine⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y, isSmallGeneratedDatum_fs⟩`.
+Supply the required witnesses or components.
 -/
 theorem SuccessiveMinimaSpan.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -1066,7 +1058,7 @@ theorem SuccessiveMinimaSpan.hyps_inhabited :
   ⟨isArithVar_y', birational_y, isSmallGeneratedDatum_fs⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem ArithmeticVolumeNefDual.hyps_inhabited :
     (∀ sg : ℚ →+* ℂ, (fun _ : ℚ →+* ℂ => (1 : ℝ)) (NumberField.ComplexEmbedding.conjugate sg) = 1) ∧
@@ -1074,7 +1066,7 @@ theorem ArithmeticVolumeNefDual.hyps_inhabited :
   ⟨fun _ => rfl, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', bot_le, isSemipositiveRel_fs _ _, nefOnFibres_of_nonneg _ _ fun _ => zero_le_one, isConjInvariantH_fs _⟩`.
+Supply the required witnesses or components.
 -/
 theorem G5.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ ⊥ ≤ (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) ∧ IsSemipositiveRel ⊥ (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) fsLine1 ∧
@@ -1083,7 +1075,7 @@ theorem G5.hyps_inhabited :
     isConjInvariantH_fs _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y, one_pos, nefOnFibres_of_nonneg _ _ fun _ => zero_le_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem Lift.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧ (0 : ℚ) < 1 ∧
@@ -1091,7 +1083,7 @@ theorem Lift.hyps_inhabited :
   ⟨isArithVar_y', birational_y, one_pos, nefOnFibres_of_nonneg _ _ fun _ => zero_le_one⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => le_rfl, fun k => ⟨0, by cases k; simp⟩, birational_y⟩`.
+Supply the required witnesses or components.
 -/
 theorem IntegralClosureFinite.hyps_inhabited :
     (∀ _k : Unit, 1 ≤ (fun _ => 1 : Unit → ℕ) _k) ∧ (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) ∧
@@ -1099,7 +1091,7 @@ theorem IntegralClosureFinite.hyps_inhabited :
   ⟨fun _ => le_rfl, fun k => ⟨0, by cases k; simp⟩, birational_y⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by funext k; simp [fsLine1, HermLine.ofCone], isArithVar_y', birational_y, isSemipositiveRel_fs _ _, isConjInvariantH_fs _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ArithmeticVolumeResolution.hyps_inhabited :
     fsLine1.a = 1 ∧ IsArithVar (mCoordIdeal (fun p : Σ _ : Unit, Fin 2 => y ⟨(), p.2⟩)) (1 + 1) ∧

@@ -7,9 +7,9 @@ namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {Γ : Type*}
 
 /- English proof (translation)
-Introduce `g x hx`. Take `⟨g', h⟩` from `hρ g`. Rewrite `hx`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx _ (hS g' u hu)`.
+A detailed English derivation is pending.
 -/
 theorem orth_stable (ρ : Γ → H →ₗ[ℂ] H) (hρ : ∀ g, ∃ g', ∀ x y, ⟪x, ρ g y⟫_ℂ = ⟪ρ g' x, y⟫_ℂ)
     {S : Submodule ℂ H} (hS : ∀ g, ∀ x ∈ S, ρ g x ∈ S) : ∀ g, ∀ x ∈ Sᗮ, ρ g x ∈ Sᗮ := by
@@ -21,27 +21,23 @@ theorem orth_stable (ρ : Γ → H →ₗ[ℂ] H) (hρ : ∀ g, ∃ g', ∀ x y,
   exact hx _ (hS g' u hu)
 
 /- English proof (translation)
-Use `set E : Submodule ℂ H := sSup {S | S ≤ W ∧ S ≤ E₀ ∧ ∀ g, ∀ x ∈ S, ρ g x ∈ S} with hEdef`. Establish `hEW : E ≤ W` using `sSup_le fun S hS => hS.1`. Establish `hE0 : E ≤ E₀` using `sSup_le fun S hS => hS.2.1`. Establish `hEfd : FiniteDimensional ℂ E` using `Submodule.finiteDimensional_of_le hE0`. Establish `hEs : ∀ g, ∀ x ∈ E, ρ g x ∈ E` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: E ≤ E.comap (ρ g)` using `sSup_le fun S hS x hx => (le_sSup hS : S ≤ E) (hS.2.2 g x hx)`. Conclude with `this`. Use `set v' := v - E.starProjection v with hv'`. Establish `hv'E : v' ∈ Eᗮ` using `Submodule.sub_starProjection_mem_orthogonal v`. Establish `key : ∀ w ∈ W, ⟪w, v'⟫_ℂ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Take `⟨S, hSW, hSfd, hwS, hS⟩` from `hW w hw`. Use `set S₂ : Submodule ℂ H := (S ⊔ E) ⊓ Eᗮ with hS₂`. Establish `hS₂fd : FiniteDimensional ℂ S₂` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hSE : ∀ g, ∀ x ∈ S ⊔ E, ρ g x ∈ S ⊔ E` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: S ⊔ E ≤ (S ⊔ E).comap (ρ g)` using `sup_le (fun x hx => Submodule.mem_sup_left (hS g x hx)) (fun x hx => Submodule.mem_sup_right (hEs g x hx))`. Conclude with `this`. Establish `hS₂s : ∀ g, ∀ x ∈ S₂, ρ g x ∈ S₂` using `fun g x hx => ⟨hSE g x hx.1, orth_stable ρ hρ hEs g x hx.2⟩`. Use `set A : Submodule ℂ H := S₂ ⊓ Fᗮ with hA`. Establish `hAfd : FiniteDimensional ℂ A` using `Submodule.finiteDimensional_of_le inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hAs : ∀ g, ∀ x ∈ A, ρ g x ∈ A` using `fun g x hx => ⟨hS₂s g x hx.1, orth_stable ρ hρ hF g x hx.2⟩`. Use `set B : Submodule ℂ H := S₂ ⊓ Aᗮ with hB`. Establish `hBs : ∀ g, ∀ x ∈ B, ρ g x ∈ B` using `fun g x hx => ⟨hS₂s g x hx.1, orth_stable ρ hρ hAs g x hx.2⟩`. Establish `hBW : B ≤ W` using `inf_le_left.trans (inf_le_left.trans (sup_le hSW hEW))`. Establish `hBE : B ≤ E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `le_sSup ⟨hBW, hE B hBW hBs ?_, hBs⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `h1 : x ∈ A` using `⟨hx.1.1, hx.2⟩`. Conclude with `inner_self_eq_zero.1 (Submodule.inner_right_of_mem_orthogonal h1 hx.1.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS₂F : ∀ x ∈ S₂, x ∈ Fᗮ`. Introduce `x hx`. Establish `hPA : A.starProjection x ∈ A` using `Submodule.starProjection_apply_mem A x`. Establish `h1 : x - A.starProjection x ∈ B` using `⟨S₂.sub_mem hx hPA.1, Submodule.sub_starProjection_mem_orthogonal x⟩`. Establish `h2 : x - A.starProjection x = 0` using `inner_self_eq_zero.1 (Submodule.inner_right_of_mem_orthogonal (hBE h1) h1.1.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_zero.1 h2]`. Conclude with `hPA.2`. Establish `hPE : E.starProjection w ∈ E` using `Submodule.starProjection_apply_mem E w`. Establish `h3 : w - E.starProjection w ∈ S₂` using `⟨Submodule.sub_mem _ (Submodule.mem_sup_left hwS) (Submodule.mem_sup_right hPE), Submodule.sub_starProjection_mem_orthogonal w⟩`. Establish `h4 : ⟪w - E.starProjection w, v'⟫_ℂ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv', inner_sub_right, Submodule.inner_left_of_mem_orthogonal hvF (hS₂F _ h3), Submodule.inner_left_of_mem_orthogonal (Submodule.starProjection_apply_mem E v) h3.2, sub_zero]`. Establish `h5 : ⟪E.starProjection w, v'⟫_ℂ = 0` using `Submodule.inner_right_of_mem_orthogonal hPE hv'E`. Rewrite `h4` using `[inner_sub_left, h5, sub_zero]`. Conclude with `h4`. Establish `hPv : E.starProjection v ∈ W` using `hEW (Submodule.starProjection_apply_mem E v)`.
-
-Establish `hcl : v' ∈ W.topologicalClosure` using `Submodule.sub_mem _ hv (W.le_topologicalClosure hPv)`. Establish `h0 : ⟪v', v'⟫_ℂ = 0`. Establish `hc : IsClosed {x : H | ⟪x, v'⟫_ℂ = 0}` using `isClosed_eq (by fun_prop) continuous_const`. Conclude with `closure_minimal (s := (W : Set H)) key hc hcl`. Establish `: v = E.starProjection v` using `sub_eq_zero.1 (inner_self_eq_zero.1 h0)`.
-
-Rewrite using `[this]`. Conclude with `hPv`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mem_closure_of_finite (ρ : Γ → H →ₗ[ℂ] H) (hρ : ∀ g, ∃ g', ∀ x y, ⟪x, ρ g y⟫_ℂ = ⟪ρ g' x, y⟫_ℂ)
     (W F E₀ : Submodule ℂ H) [FiniteDimensional ℂ E₀] (hF : ∀ g, ∀ x ∈ F, ρ g x ∈ F)
@@ -108,13 +104,13 @@ theorem mem_of_mem_closure_of_finite (ρ : Γ → H →ₗ[ℂ] H) (hρ : ∀ g,
   exact hPv
 
 /- English proof (translation)
-Use `set D : Module.End ℂ (V ⧸ N) := N.mapQ N C hN with hD`. Establish `hint : ∀ (p : Polynomial ℂ) x, N.mkQ (Polynomial.aeval C p x) = Polynomial.aeval D p (N.mkQ x)`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => intro x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add p q hp hq => intro x`. Simplify using `only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n a h`. Introduce `x`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul (Polynomial.aeval D), Polynomial.aeval_X, Polynomial.aeval_X, Module.End.mul_apply, Module.End.mul_apply, h]`. Both sides reduce to the same expression. Use `⟨Polynomial.X * D.charpoly, Polynomial.monic_X.mul D.charpoly_monic, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.monic_X.natDegree_mul D.charpoly_monic, Polynomial.natDegree_X]`. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, hint, map_mul, LinearMap.aeval_self_charpoly, mul_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_monic_aeval_mem {V : Type*} [AddCommGroup V] [Module ℂ V] (C : Module.End ℂ V) (N : Submodule ℂ V)
     [FiniteDimensional ℂ (V ⧸ N)] (hN : ∀ x ∈ N, C x ∈ N) :

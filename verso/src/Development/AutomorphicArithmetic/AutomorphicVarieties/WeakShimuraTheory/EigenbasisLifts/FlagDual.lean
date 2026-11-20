@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Lemma
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[RingHom.comp_apply, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Establish `e : x - algebraMap K (DualNumber K) (dF K x) = TrivSqZeroExt.inr x.snd`. Apply the tactic sequence `ext <;> simp [dF, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[e, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.V.Ws.Eb.residue_dual {K : Type} [Field K] (x : DualNumber K) :
     residue (DualNumber K) x = ((residue (DualNumber K)).comp (algebraMap K (DualNumber K))) (dF K x) := by
@@ -16,17 +16,17 @@ private theorem UpperTheory.V.Ws.Eb.residue_dual {K : Type} [Field K] (x : DualN
   simp
 
 /- English proof (translation)
-Unfold `W.HasFlag W.pushRep W.pushCh at h`. Take `⟨g, hg⟩` from `h`. Establish `key : ∀ y : MonoidAlgebra A H, (∀ i j : Fin n, j < i → ((g : Matrix (Fin n) (Fin n) K) * f.mapMatrix (MonoidAlgebra.lift A (Matrix (Fin n) (Fin n) A) H ((Units.coeHom _).comp r) y) * ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) i j = 0) ∧ ∀ i, ((g : Matrix (Fin n) (Fin n) K …`. Introduce `y`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [map_add, mul_add, add_mul, Matrix.add_apply]`. Conclude with `⟨fun i j hij => by rw [hx.1 i j hij, hy.1 i j hij, add_zero], fun i => by rw [hx.2, hy.2]⟩`. Consider the case `single s a`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Establish `e : (g : Matrix (Fin n) (Fin n) K) * f.mapMatrix (MonoidAlgebra.lift A (Matrix (Fin n) (Fin n) A) H ((Units.coeHom _).comp r) (MonoidAlgebra.single s a)) * ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = f a • ((g * ((GeneralLinearGroup.map f).comp r) s * g⁻¹ : GL (Fin n) K) …`. Rewrite using `[MonoidAlgebra.lift_single]`. Establish `e' : f.mapMatrix (a • ((r s : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)) = f a • ((GeneralLinearGroup.map f (r s) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Use extensionality with `i j`. Simplify using `[GeneralLinearGroup.map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.comp_apply, Units.coeHom_apply, e', Units.val_mul, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, (hg s).1 i j hij, smul_zero]`. Rewrite using `[Matrix.smul_apply, (hg s).2 i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[MonoidAlgebra.lift_single]`. Rewrite using `[← Matrix.charpoly_map, ← Matrix.charpoly_units_conj g, ← Matrix.coe_units_inv]`. Simplify using `only [← RingHom.mapMatrix_apply]`. Rewrite using `[Matrix.charpoly_of_isUpperTriangular _ (fun i j hij => (key z).1 i j hij)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(key z).2 i]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Ws.Eb.charpoly_lift {A K H : Type} [CommRing A] [CommRing K] [Group H] {n : ℕ} (f : A →+* K)
     (r : H →* GL (Fin n) A) (κ : Fin n → H →* Aˣ) (h : W.HasFlag (W.pushRep f r) fun i => W.pushCh f (κ i))
@@ -63,15 +63,15 @@ private theorem UpperTheory.V.Ws.Eb.charpoly_lift {A K H : Type} [CommRing A] [C
   rw [(key z).2 i]
 
 /- English proof (translation)
-Introduce `K H _ _ _ n ρ' κ hinj hflag hprod`. Use `set φ : K →+* ResidueField (DualNumber K) := (residue (DualNumber K)).comp (algebraMap K (DualNumber K)) with hφ`. Establish `hres : residue (DualNumber K) = φ.comp (dF K)` using `RingHom.ext fun x => UpperTheory.V.Ws.Eb.residue_dual x`. Establish `hcard : (n : Cardinal) ≤ Cardinal.mk (ResidueField (DualNumber K))` using `by haveI : Infinite (ResidueField (DualNumber K)) := Infinite.of_injective φ φ.injective`. Conclude with `(Cardinal.nat_lt_aleph0 n).le.trans (Cardinal.infinite_iff.mp inferInstance)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj' : Function.Injective fun i => ((residue (DualNumber K) : DualNumber K →* ResidueField (DualNumber K))).comp ((Units.coeHom (DualNumber K)).comp (κ i))`. Introduce `i j hij`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `s`. Establish `hs` using `DFunLike.congr_fun hij s`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [MonoidHom.comp_apply, Units.coeHom_apply, MonoidHom.coe_coe] at hs`. Rewrite `hs` using `[hres, RingHom.comp_apply, RingHom.comp_apply]`. Use `φ.injective hs` as an intermediate fact. Simplify `this` using `[W.pushCh]`. Establish `hchar : ∀ z : MonoidAlgebra (DualNumber K) H, Polynomial.map (residue (DualNumber K)) ((MonoidAlgebra.lift (DualNumber K) (Matrix (Fin n) (Fin n) (DualNumber K)) H ((Units.coeHom _).comp ρ')) z).charpoly = ∏ i, (X - C ((residue (DualNumber K)) ((MonoidAlgebra.lift (DualNumber K) …`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Rewrite using `[hres, ← Polynomial.map_map, UpperTheory.V.Ws.Eb.charpoly_lift (dF K) ρ' κ hflag z, Polynomial.map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, RingHom.comp_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨z, g, -, -, hg⟩` from `AlgebraTools.lemma_L ρ' κ hcard hprod hinj' hchar`. Unfold `W.HasFlag`. Conclude with `⟨g, hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.flagDual :
     ∀ {K H : Type} [Field K] [Infinite K] [Group H] {n : ℕ} (ρ' : H →* GL (Fin n) (DualNumber K)) (κ : Fin n → H →* (DualNumber K)ˣ), (Function.Injective fun i => W.pushCh (dF K) (κ i)) →

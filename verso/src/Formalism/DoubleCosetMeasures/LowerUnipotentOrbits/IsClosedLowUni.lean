@@ -9,15 +9,15 @@ namespace Formalism.DoubleCosetMeasures.P
 namespace GeneralLinearIntegersOpenCompact
 
 /- English proof (translation)
-Establish `hint : (interior (K₁ : Set G)).Nonempty` using `⟨1, by rw [hKo.interior_eq]; exact K₁.one_mem⟩`. Set `K₀ : TopologicalSpace.PositiveCompacts G` to `⟨⟨K₁, hKc⟩, hint⟩`. Establish `: LocallyCompactSpace G` using `hKc.locallyCompactSpace_of_mem_nhds_of_group (hKo.mem_nhds K₁.one_mem)`. Establish `: SigmaCompactSpace G` using `⟨⟨fun m => (L m : Set G), hLc, Set.eq_univ_of_forall fun g => Set.mem_iUnion.2 (hcov g)⟩⟩`. Use `⟨haarMeasure K₀, inferInstance, ?_, inferInstance, haarMeasure_self⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `g`. Take `⟨m, hm⟩` from `hcov g`. Establish `hreg : (Measure.map (· * g) (haarMeasure K₀)).Regular` using `Regular.map (Homeomorph.mulRight g)`. Establish `e` using `isMulLeftInvariant_eq_smul_of_regular (Measure.map (· * g) (haarMeasure K₀)) (haarMeasure K₀)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Measure.map (· * g) (haarMeasure K₀) (L m) = haarMeasure K₀ (L m)`. Rewrite using `[map_apply (measurable_mul_const g) (hLo m).measurableSet]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[Set.mem_preimage, (L m).mul_mem_cancel_right hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hpos : haarMeasure K₀ (L m) ≠ 0` using `((hLo m).measure_pos _ ⟨1, (L m).one_mem⟩).ne'`. Establish `hfin : haarMeasure K₀ (L m) ≠ ⊤` using `(hLc m).measure_lt_top.ne`. Establish `hc : haarScalarFactor (Measure.map (· * g) (haarMeasure K₀)) (haarMeasure K₀) = 1`. Establish `h2` using `congrArg (fun ν : Measure G => ν (L m)) e`. Simplify using `only [hL, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : (1 : ENNReal) * haarMeasure K₀ (L m) = (haarScalarFactor (Measure.map (· * g) (haarMeasure K₀)) (haarMeasure K₀) : ENNReal) * haarMeasure K₀ (L m)` using `by rw [one_mul]; exact h2`. Establish `h4` using `(ENNReal.mul_left_inj hpos hfin).1 h3`. Conclude with `h4.symm` after adjusting the coercions. Rewrite `e` using `[hc, one_smul]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_of_cover {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [T2Space G] [MeasurableSpace G] [BorelSpace G] (K₁ : Subgroup G) (hKo : IsOpen (K₁ : Set G))
@@ -67,7 +67,7 @@ def Dg {n : ℕ} (δ : Fin n → Kˣ) : GL (Fin n) K :=
     by rw [Matrix.diagonal_mul_diagonal]; simp, by rw [Matrix.diagonal_mul_diagonal]; simp⟩
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul]`. Use `show (diagonal (fun a => (((δ a)⁻¹ : Kˣ) : K)) * (g : Matrix (Fin n) (Fin n) K) * diagonal (fun a => (δ a : K))) a b = _`. Rewrite using `[mul_diagonal, diagonal_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_entry {n : ℕ} (δ : Fin n → Kˣ) (g : GL (Fin n) K) (a b : Fin n) :
     (((Dg δ)⁻¹ * g * Dg δ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b =
@@ -78,13 +78,11 @@ theorem conj_entry {n : ℕ} (δ : Fin n → Kˣ) (g : GL (Fin n) K) (a b : Fin 
   rw [mul_diagonal, diagonal_mul]
 
 /- English proof (translation)
-Use `choose k hk using fun p : Fin n × Fin n => hx (x p.1 p.2)`. Use `⟨Finset.univ.sup k, fun m hm a b => ?_⟩` and prove the remaining obligations. Break down `hstr a b with h | ⟨rfl, h⟩ | h` into its components or cases. Simplify using `[h, R.zero_mem]`. Rewrite using `[h, mul_one, Units.inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `R.one_mem`. Take `⟨d, hd⟩ : ∃ d, e b = e a + (d + 1)` from `⟨e b - e a - 1, by omega⟩`. Establish `hk' : k (a, b) ≤ m * (d + 1)` using `le_trans (Finset.le_sup (f := k) (Finset.mem_univ (a, b))) (le_trans hm (Nat.le_mul_of_pos_right m (Nat.succ_pos d)))`. Establish `hu : (((ϖ ^ (m * e a))⁻¹ : Kˣ) : K) * ((ϖ ^ (m * e a) : Kˣ) : K) = 1` using `Units.inv_mul _`. Establish `eq : (((ϖ ^ (m * e a))⁻¹ : Kˣ) : K) * x a b * ((ϖ ^ (m * e b) : Kˣ) : K) = (ϖ : K) ^ (m * (d + 1) - k (a, b)) * ((ϖ : K) ^ k (a, b) * x a b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hd, mul_add, pow_add, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[hu, mul_one, Units.val_pow_eq_pow_val, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hk', mul_comm]`.
-
-Rewrite using `[eq]`. Conclude with `R.mul_mem (R.pow_mem hϖ _) (hk (a, b))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_int (R : Subring K) (ϖ : Kˣ) (hϖ : (ϖ : K) ∈ R)
     (hx : ∀ x : K, ∃ m : ℕ, (ϖ : K) ^ m * x ∈ R) {n : ℕ} (e : Fin n → ℕ)
@@ -114,11 +112,11 @@ theorem exists_pow_int (R : Subring K) (ϖ : Kˣ) (hϖ : (ϖ : K) ∈ R)
     exact R.mul_mem (R.pow_mem hϖ _) (hk (a, b))
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil => intro j k h`. Simplify `h` using `[revIn]`. Consider the case `cons c s ih`. Introduce `j k h`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [revIn] at h`. Apply the tactic sequence `by_cases h1 : j < c <;> by_cases h2 : k < c <;> simp only [h1, h2, if_true, if_false] at h`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use `ih (Nat.add_left_cancel h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem revIn_inj (s : List ℕ) : Function.Injective (revIn s) := by
   induction s with
@@ -133,9 +131,9 @@ theorem revIn_inj (s : List ℕ) : Function.Injective (revIn s) := by
     · have := ih (Nat.add_left_cancel h); omega
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil => intro j h`. Simplify using `at h`. Consider the case `cons c s ih`. Introduce `j h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.sum_cons] at h ⊢`. Simplify using `only [revIn]`. Use `split_ifs with h1`. Use linear arithmetic over natural numbers and integers. Use `ih (j - c) (by omega); omega` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem revIn_lt (s : List ℕ) : ∀ j, j < s.sum → revIn s j < s.sum := by
   induction s with
@@ -152,11 +150,11 @@ def ptInv (s : List ℕ) (t : ℕ → Kˣ) : Matrix (Fin s.sum) (Fin s.sum) K :=
   fun a b => if (a : ℕ) = revIn s b then (((t (blk s b))⁻¹ : Kˣ) : K) else 0
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single ⟨revIn s a, revIn_lt s a a.2⟩]`. Simplify using `only [pt, ptInv, if_true]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `: revIn s a ≠ revIn s b` using `fun h => hab (Fin.ext (revIn_inj s h))`. Simplify using `[this, hab]`. Introduce `k _ hk`. Simplify using `only [pt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (fun h => hk (Fin.ext h)), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pt_mul_ptInv (s : List ℕ) (t : ℕ → Kˣ) : pt s t * ptInv s t = (1 : Matrix _ _ K) := by
   ext a b
@@ -172,7 +170,7 @@ theorem pt_mul_ptInv (s : List ℕ) (t : ℕ → Kˣ) : pt s t * ptInv s t = (1 
   · simp
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (pt_mul_ptInv s t)`.
+A detailed English derivation is pending.
 -/
 theorem ptInv_mul_pt (s : List ℕ) (t : ℕ → Kˣ) : ptInv s t * pt s t = (1 : Matrix _ _ K) :=
   mul_eq_one_comm.1 (pt_mul_ptInv s t)
@@ -184,18 +182,18 @@ section Top
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.GLRealOpen.glR_open R hR n`.
+A detailed English derivation is pending.
 -/
 theorem glR_open (R : Subring K) (hR : IsOpen (R : Set K)) (n : ℕ) :
     IsOpen (glR R n : Set (GL (Fin n) K)) :=
   _root_.UpperTheory.Reformulated.B.GLRealOpen.glR_open R hR n
 
 /- English proof (translation)
-Set `S : Set (Matrix (Fin n) (Fin n) K)` to `Set.pi Set.univ (fun _ => Set.pi Set.univ (fun _ => (R : Set K)))`. Establish `hS : IsCompact S` using `isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => hR))`. Establish `hS' : IsCompact (MulOpposite.unop ⁻¹' S : Set (Matrix (Fin n) (Fin n) K)ᵐᵒᵖ)` using `MulOpposite.opHomeomorph.isCompact_preimage.mp hS`. Use `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hS.prod hS')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun a _ b _ => h1 a b, fun a _ b _ => h2 a b⟩`. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun a b => h1 a (Set.mem_univ _) b (Set.mem_univ _), fun a b => h2 a (Set.mem_univ _) b (Set.mem_univ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem glR_compact [T2Space K] (R : Subring K) (hR : IsCompact (R : Set K)) (n : ℕ) :
     IsCompact (glR R n : Set (GL (Fin n) K)) := by
@@ -215,7 +213,7 @@ theorem glR_compact [T2Space K] (R : Subring K) (hR : IsCompact (R : Set K)) (n 
       fun a b => h2 a (Set.mem_univ _) b (Set.mem_univ _)⟩
 
 /- English proof (translation)
-Establish `e : {x : Matrix (Fin n) (Fin n) K | IsUpUni x} = (⋂ i, ⋂ j, ⋂ (_ : j < i), {x | x i j = 0}) ∩ ⋂ a, {x | x a a = 1}`. Use extensionality with `x`. Simplify using `[IsUpUni, Matrix.IsUpperTriangular, Matrix.BlockTriangular]`. Rewrite using `[e]`. Conclude with `(isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (continuous_id.matrix_elem i j) continuous_const).inter (isClosed_iInter fun a => isClosed_eq (continuous_id.matrix_elem a a) continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_upUni [T2Space K] (n : ℕ) :
     IsClosed {x : Matrix (Fin n) (Fin n) K | IsUpUni x} := by
@@ -228,7 +226,7 @@ theorem isClosed_upUni [T2Space K] (n : ℕ) :
     (isClosed_iInter fun a => isClosed_eq (continuous_id.matrix_elem a a) continuous_const)
 
 /- English proof (translation)
-Establish `e : {x : Matrix (Fin n) (Fin n) K | IsLowUni x} = (⋂ i, ⋂ j, ⋂ (_ : i < j), {x | x i j = 0}) ∩ ⋂ a, {x | x a a = 1}`. Use extensionality with `x`. Simplify using `[IsLowUni, Matrix.IsLowerTriangular, Matrix.BlockTriangular]`. Rewrite using `[e]`. Conclude with `(isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (continuous_id.matrix_elem i j) continuous_const).inter (isClosed_iInter fun a => isClosed_eq (continuous_id.matrix_elem a a) continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_lowUni [T2Space K] (n : ℕ) :
     IsClosed {x : Matrix (Fin n) (Fin n) K | IsLowUni x} := by
@@ -245,23 +243,19 @@ end Top
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-Set `δ : ℕ → Fin n → Kˣ` to `fun m a => ϖ ^ (m * e a)`. Set `f : ℕ → GL (Fin n) K → GL (Fin n) K` to `fun m g => (Dg (δ m))⁻¹ * g * Dg (δ m)`. Establish `hf : ∀ m, Continuous (f m)` using `fun m => (continuous_const.mul continuous_id).mul continuous_const`. Set `M : ℕ → Subgroup (GL (Fin n) K)` to `fun m => (glR R n).comap (MulAut.conj (Dg (δ m))⁻¹).toMonoidHom`. Establish `hMset : ∀ m, (M m : Set (GL (Fin n) K)) = f m ⁻¹' (glR R n : Set _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `m`. Use extensionality with `g`. Use `show (MulAut.conj (Dg (δ m))⁻¹) g ∈ glR R n ↔ (Dg (δ m))⁻¹ * g * Dg (δ m) ∈ glR R n`. Rewrite using `[MulAut.conj_apply, inv_inv]`. Set `L : ℕ → Subgroup H` to `fun m => (M m).comap H.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hemb : IsClosedEmbedding (H.subtype)` using `hH.isClosedEmbedding_subtypeVal`. Establish `hK : (intSub R H : Set H) = H.subtype ⁻¹' (glR R n : Set _)` using `by ext g; rfl`. Establish `hL : ∀ m, (L m : Set H) = H.subtype ⁻¹' (M m : Set _)` using `fun m => rfl`. Use `haar_of_cover (intSub R H) ?_ ?_ L ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(glR_open R hRo n).preimage continuous_subtype_val`. Rewrite using `[hK]`. Conclude with `hemb.isCompact_preimage (glR_compact R hRc n)`. Introduce `m`. Rewrite using `[hL, hMset]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((glR_open R hRo n).preimage (hf m)).preimage continuous_subtype_val`. Introduce `m`. Rewrite using `[hL, hMset]`. Establish `hc : IsCompact (f m ⁻¹' (glR R n : Set _))`. Set `h : GL (Fin n) K ≃ₜ GL (Fin n) K` to `(Homeomorph.mulLeft (Dg (δ m))⁻¹).trans (Homeomorph.mulRight (Dg (δ m)))`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.isCompact_preimage.2 (glR_compact R hRc n)`. Conclude with `hemb.isCompact_preimage hc`. Introduce `g`. Take `⟨m1, hm1⟩` from `exists_pow_int R ϖ hϖ hx e _ (hstr g g.2)`. Take `⟨m2, hm2⟩` from `exists_pow_int R ϖ hϖ hx e _ (hstr (g : GL (Fin n) K)⁻¹ (H.inv_mem g.2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨max m1 m2, ?_⟩` and prove the remaining obligations. Establish `hmem : (g : GL (Fin n) K) ∈ (M (max m1 m2) : Set _)`. Rewrite using `[hMset]`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Use `show (((Dg (δ (max m1 m2)))⁻¹ * (g : GL (Fin n) K) * Dg (δ (max m1 m2)) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b ∈ R`.
-
-Rewrite using `[conj_entry]`. Conclude with `hm1 _ (le_max_left _ _) a b`. Establish `hinv : (f (max m1 m2) g)⁻¹ = (Dg (δ (max m1 m2)))⁻¹ * (g : GL (Fin n) K)⁻¹ * Dg (δ (max m1 m2))`. Simplify using `[f, mul_assoc]`. Use `show (((f (max m1 m2) g)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b ∈ R`.
-
-Rewrite using `[hinv, conj_entry]`. Conclude with `hm2 _ (le_max_right _ _) a b`. Conclude with `hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_closed [T2Space K] (R : Subring K) (hRo : IsOpen (R : Set K))
     (hRc : IsCompact (R : Set K)) (ϖ : Kˣ) (hϖ : (ϖ : K) ∈ R)
@@ -314,17 +308,17 @@ theorem haar_closed [T2Space K] (R : Subring K) (hRo : IsOpen (R : Set K))
     exact hmem
 
 /- English proof (translation)
-The claim follows from `(isClosed_upUni n).preimage Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 theorem upUni_closed [T2Space K] (n : ℕ) : IsClosed (upUniG K n : Set (GL (Fin n) K)) :=
   (isClosed_upUni n).preimage Units.continuous_val
 
 /- English proof (translation)
-Establish `e : (lowW K s t : Set (GL (Fin s.sum) K)) = (fun g : GL (Fin s.sum) K => (g : Matrix (Fin s.sum) (Fin s.sum) K)) ⁻¹' {x | IsLowUni x} ∩ (fun g : GL (Fin s.sum) K => ptInv s t * (g : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t) ⁻¹' {x | IsLowUni x}`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, h, hh, he⟩`. Use `⟨hg, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show IsLowUni (ptInv s t * (g : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t)`. Rewrite using `[Matrix.mul_assoc, he, ← Matrix.mul_assoc, ptInv_mul_pt, Matrix.one_mul]`. Conclude with `hh`. Introduce and unpack `⟨hg, hh⟩`. Use `⟨hg, _, hh, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, pt_mul_ptInv, Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `((isClosed_lowUni _).preimage Units.continuous_val).inter ((isClosed_lowUni _).preimage ((continuous_const.mul Units.continuous_val).mul continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem lowW_closed [T2Space K] (s : List ℕ) (t : ℕ → Kˣ) :
     IsClosed (lowW K s t : Set (GL (Fin s.sum) K)) := by
@@ -352,15 +346,11 @@ open GeneralLinearIntegersOpenCompact
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ R hRo hRc ⟨ϖ, hϖ, hx⟩ s t`. Use `⟨haar_closed R hRo hRc ϖ hϖ hx (lowW K s t) (lowW_closed s t) (fun a => s.sum - a.val) ?_, haar_closed R hRo hRc ϖ hϖ hx (upUniG K s.sum) (upUni_closed s.sum) Fin.val ?_⟩` and prove the remaining obligations. Introduce `g hg a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Use the proof step `left; exact hg.1.1 (by simpa using h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use `right`. Use `left`. Conclude with `⟨rfl, hg.1.2 a⟩`. Use `right`. Use `right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Establish `: b.val < a.val` using `h`. Use `show s.sum - a.val < s.sum - b.val`. Use linear arithmetic over natural numbers and integers.
-
-Introduce `g hg a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Use `right`. Use `right`. Conclude with `h`.
-
-Use `right`. Use `left`. Conclude with `⟨rfl, hg.2 a⟩`. Use `left`. Conclude with `hg.1 h`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem haarExists : Formalism.DoubleCosetMeasures.HaarExists := by
   intro K _ _ _ _ _ R hRo hRc ⟨ϖ, hϖ, hx⟩ s t

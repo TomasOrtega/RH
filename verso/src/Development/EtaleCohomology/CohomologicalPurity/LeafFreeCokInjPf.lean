@@ -4,7 +4,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Set `S` to `ShortComplex.mk f (cokernel.π f) (cokernel.condition f)`. Establish `hS : S.Exact` using `S.exact_of_g_is_cokernel (cokernelIsCokernel f)`. Establish `h2` using `hS.map ((evaluation _ _).obj V)`. Rewrite `h2` using `[ShortComplex.moduleCat_exact_iff]`. Conclude with `h2 m hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_app_of_π {R : Type} [CommRing R] {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : F ⟶ G)
     (V : Scheme.{0}ᵒᵖ) (m : G.obj V) (hm : (cokernel.π f).app V m = 0) : ∃ n, f.app V n = m := by
@@ -15,7 +15,7 @@ theorem exact_app_of_π {R : Type} [CommRing R] {F G : Scheme.{0}ᵒᵖ ⥤ Modu
   exact h2 m hm
 
 /- English proof (translation)
-Unfold `Finsupp.mapDomain`. Rewrite using `[Finsupp.sum_apply, Finsupp.sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapDomain_apply_eq_sum {α β M : Type*} [AddCommMonoid M] [DecidableEq β] (v : α →₀ M) (f : α → β) (t : β) :
     Finsupp.mapDomain f v t = ∑ a ∈ v.support with f a = t, v a := by
@@ -26,15 +26,15 @@ theorem mapDomain_apply_eq_sum {α β M : Type*} [AddCommMonoid M] [DecidableEq 
   rw [Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite using `[mapDomain_apply_eq_sum]`. Use `set s' := v.support.filter (fun a => r a = z)`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := s') (t := s'.image f) (g := f) (fun a ha => Finset.mem_image_of_mem f ha)]`. Use `Finset.sum_eq_zero fun t ht => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a₀, ha₀, rfl⟩` from `Finset.mem_image.1 ht`. Establish `ha₀'` using `Finset.mem_filter.1 ha₀`. Establish `hQ0 : ¬ Q (f a₀)` using `fun hq => hz (ha₀'.2 ▸ hQ a₀ hq)`. Establish `e : (s'.filter fun a => f a = f a₀) = v.support.filter (fun a => f a = f a₀)`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [s', Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, _⟩, h3⟩`. Conclude with `⟨h1, h3⟩`. Introduce and unpack `⟨h1, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨h1, ?_⟩, h3⟩` and prove the remaining obligations. Break down `h a h1 a₀ ha₀'.1 h3 with e | p` into its components or cases. Rewrite using `[e, ha₀'.2]`. Conclude with `absurd (ha₀'.2 ▸ hP a a₀ h3 p) hz`. Rewrite using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mapDomain_apply_eq_sum v f (f a₀)` as an intermediate fact. Rewrite `this` using `[hv _ hQ0]`. Use `this.symm` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem core {α β γ M : Type*} [AddCommMonoid M] (v : α →₀ M) (f : α → β) (r : α → γ)
     (Q : β → Prop) (P : γ → Prop)
@@ -69,9 +69,9 @@ theorem core {α β γ M : Type*} [AddCommMonoid M] (v : α →₀ M) (f : α �
   convert this.symm
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, Scheme.etaleTopology.top_mem T, by simp⟩`. Consider the case `insert q s hq ih`. Take `⟨S₁, h₁, H₁⟩` from `ih (fun p hp => hPr p (Finset.mem_insert_of_mem hp))`. Take `⟨S₂, h₂, H₂⟩` from `hPr q (Finset.mem_insert_self q s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨S₁ ⊓ S₂, Scheme.etaleTopology.intersection_covering h₁ h₂, ?_⟩` and prove the remaining obligations. Introduce `p hp V g hg`. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases. Conclude with `H₂ g hg.2`. Conclude with `H₁ p hp g hg.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_covering_finset {T : Scheme.{0}} {ι : Type*} (s : Finset ι)
     (Pr : ι → ∀ ⦃V : Scheme.{0}⦄, (V ⟶ T) → Prop)
@@ -90,9 +90,9 @@ theorem exists_covering_finset {T : Scheme.{0}} {ι : Type*} (s : Finset ι)
     · exact H₁ p hp g hg.1
 
 /- English proof (translation)
-Establish `hmem : w ∈ Finsupp.supported M ℕ (u '' Set.univ)`. Rewrite using `[Finsupp.mem_supported]`. Introduce `z hz`. Assume the negation of the conclusion as `hc`. Conclude with `(Finsupp.mem_support_iff.1 hz) (hw z (fun ⟨x, hx⟩ => hc ⟨x, trivial, hx⟩))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[← Finsupp.lmapDomain_supported]`. Take `⟨n, _, hn⟩` from `hmem`. Conclude with `⟨n, hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_mapDomain {α β M : Type*} [AddCommMonoid M] (u : α → β) (w : β →₀ M)
     (hw : ∀ z, (¬ ∃ x, u x = z) → w z = 0) : ∃ n : α →₀ M, Finsupp.mapDomain u n = w := by
@@ -106,27 +106,23 @@ theorem mem_range_mapDomain {α β M : Type*} [AddCommMonoid M] (u : α → β) 
   exact ⟨n, hn⟩
 
 /- English proof (translation)
-Introduce `R _ A' B' A B i' i a b w h1 h3`. Establish `key : ∀ (T : Scheme.{0}) (z : (cokernel ((freeP R).map i')).obj (op T)), (pcok R i' i a b w).app (op T) z = 0 → Presheaf.equalizerSieve z 0 ∈ Scheme.etaleTopology T`. Introduce `T z hz`. Take `⟨v, rfl⟩` from `π_app_surj R i' (op T) z`. Rewrite `hz` using `[pcok_π_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn⟩` from `exact_app_of_π _ _ _ hz`. Establish `hn' : Finsupp.mapDomain (fun x : ULift.{1} (A.obj (op T)) => ULift.up (i.app (op T) x.down)) n = Finsupp.mapDomain (fun x : ULift.{1} (B'.obj (op T)) => ULift.up (b.app (op T) x.down)) v` using `hn`. Set `Pr : (ULift.{1} (B'.obj (op T)) × ULift.{1} (B'.obj (op T))) → ∀ ⦃V : Scheme.{0}⦄, (V ⟶ T) → Prop` to `fun p V g => b.app (op T) p.1.down = b.app (op T) p.2.down → B'.map g.op p.1.down = B'.map g.op p.2.down ∨ ∃ x : A.obj (op V), i.app (op V) x = b.app (op V) (B'.map g.op p.1.down)`. Take `⟨S, hS, HS⟩` from `exists_covering_finset (v.support ×ˢ v.support) Pr (by`. Introduce `p _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `he : b.app (op T) p.1.down = b.app (op T) p.2.down`. Take `⟨S, hS, H⟩` from `h3 T p.1.down p.2.down he`. Conclude with `⟨S, hS, fun V g hg _ => H g hg⟩`. Conclude with `⟨⊤, Scheme.etaleTopology.top_mem T, fun V g _ he' => absurd he' he⟩)`. Use `Scheme.etaleTopology.superset_covering ?_ hS` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V g hg`. Use `show (cokernel ((freeP R).map i')).map g.op _ = (cokernel ((freeP R).map i')).map g.op 0`. Rewrite using `[map_zero, ← NatTrans.naturality_apply]`. Establish `hcore` using `core v (fun x : ULift.{1} (B'.obj (op T)) => (ULift.up.{1} (b.app (op T) x.down) : ULift.{1} (B.obj (op T)))) (fun x : ULift.{1} (B'.obj (op T)) => ULift.up (B'.map g.op x.down)) (fun t : ULift.{1} (B.obj (op T)) => ∃ x, i.app (op T) x = t.down) (fun z => ∃ x', i'.app (op V) x' = …`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finsupp.mapDomain_notin_range n t (by` as an intermediate fact. Introduce and unpack `⟨x, hx⟩`. Conclude with `ht ⟨x.down, congrArg ULift.down hx⟩)`. Conclude with `(DFunLike.congr_fun hn' t).symm.trans this)`. Use the proof step `(by`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a₀ ⟨x, hx⟩`. Take `⟨x', hx'⟩` from `h1 T a₀.down x hx`. Conclude with `⟨A'.map g.op x', by rw [FunctorToTypes.naturality, hx']⟩)`. Use the proof step `(by`. Introduce and unpack `a₁ a₂ he ⟨x', hx'⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `he' : b.app (op T) a₁.down = b.app (op T) a₂.down` using `congrArg ULift.down he`. Use `h1 V (B'.map g.op a₂.down) (a.app (op V) x') ?_` and prove the remaining obligations. Use `ConcreteCategory.congr_hom (NatTrans.congr_app w (op V)) x'` as an intermediate fact. Simplify using `only [NatTrans.comp_app, ConcreteCategory.comp_apply] at this`. Rewrite using `[← this, hx', FunctorToTypes.naturality, FunctorToTypes.naturality, he'])`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `a₁ ha₁ a₂ ha₂ he`. Break down `HS (a₁, a₂) (Finset.mem_product.2 ⟨ha₁, ha₂⟩) g hg (congrArg ULift.down he) with e | ⟨x, hx⟩` into its components or cases. Use `left`. Conclude with `congrArg ULift.up e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right`. Conclude with `h1 V _ x hx)`. Take `⟨n', hn''⟩` from `mem_range_mapDomain (fun x : ULift.{1} (A'.obj (op V)) => ULift.up (i'.app (op V) x.down)) _ (fun z hz => hcore z (fun ⟨x', hx'⟩ => hz ⟨ULift.up x', congrArg ULift.up hx' |>.trans rfl⟩))`. Establish `e2 : ((freeP R).obj B').map g.op v = ((freeP R).map i').app (op V) n'` using `hn''.symm`. Rewrite using `[e2]`.
-
-Conclude with `π_freeP_apply R i' (op V) n'`. Prove the components needed by the constructor for the conclusion. Introduce `X x y hxy`. Consider the cases of `X with | op T =>`. Use `Scheme.etaleTopology.superset_covering ?_ (key T (x - y) (by rw [map_sub, hxy, sub_self]))` and prove the remaining obligations.
-
-Introduce `V g hg`. Establish `hg' : (cokernel ((freeP R).map i')).map g.op (x - y) = (cokernel ((freeP R).map i')).map g.op 0` using `hg`. Rewrite `hg'` using `[map_sub, map_zero, sub_eq_zero]`. Conclude with `hg'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafFreeCokInj : LeafFreeCokInj := by
   intro R _ A' B' A B i' i a b w h1 h3
@@ -192,7 +188,7 @@ theorem leafFreeCokInj : LeafFreeCokInj := by
   exact hg'
 
 /- English proof (translation)
-The claim follows from `leafFreeCokInj`.
+A detailed English derivation is pending.
 -/
 theorem LeafFreeCokInj_of : LeafFreeCokInj := leafFreeCokInj
 

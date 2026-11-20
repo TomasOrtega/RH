@@ -10,7 +10,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `chart`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem chart_prod (f h : GA E a → ℂ) (g : GA E a) :
     chart (fun x => f x * h x) g = fun y => chart f g y * chart h g y := by
@@ -31,9 +31,9 @@ Both sides reduce to the same expression.
 private theorem mulOp_apply (u φ : Sm E a) (g : GA E a) : (mulOp u φ).1 g = u.1 g * φ.1 g := rfl
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `hv : ∀ f : GA E a → ℂ, chart f g (oneL E a) = f g` using `fun f => by`. Simplify using `using chart_val f g 1`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart (fun x => u.1 x * φ.1 x) g) (oneL E a) X = u.1 g * fderiv ℝ (chart φ.1 g) (oneL E a) X + fderiv ℝ (chart u.1 g) (oneL E a) X * φ.1 g`. Rewrite using `[chart_prod, fderiv_fun_mul (differentiableAt_chart u.2 g) (differentiableAt_chart φ.2 g), hv, hv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lie_mulOp (X : Lie E a) (u φ : Sm E a) :
     lie E a X (mulOp u φ) = mulOp u (lie E a X φ) + mulOp (lie E a X u) φ := by
@@ -46,7 +46,7 @@ private theorem lie_mulOp (X : Lie E a) (u φ : Sm E a) :
   simp [mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ v => rw [LinearMap.rTensor_tmul, ev_tmul, ev_tmul, mulOp_apply, mul_smul]`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem ev_mulOp {d : ℕ} (u : Sm E a) (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (g : GA E a) :
     ev ((mulOp u).rTensor _ m) g = u.1 g • ev m g := by
@@ -56,9 +56,9 @@ private theorem ev_mulOp {d : ℕ} (u : Sm E a) (m : Sm E a ⊗[ℂ] (Fin d → 
   | add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy, smul_add]
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ v`. Express the relevant statement in the definitionally equal form `lie E a X (mulOp u φ) ⊗ₜ[ℂ] v + mulOp u φ ⊗ₜ[ℂ] (Ξ.dmat X *ᵥ v) = (mulOp u).rTensor _ (lie E a X φ ⊗ₜ[ℂ] v + φ ⊗ₜ[ℂ] (Ξ.dmat X *ᵥ v)) + mulOp (lie E a X u) φ ⊗ₜ[ℂ] v`. Rewrite using `[lie_mulOp, map_add, LinearMap.rTensor_tmul, LinearMap.rTensor_tmul, TensorProduct.add_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Treat this case separately. Normalize the expressions using the abelian group laws.
 -/
 private theorem smLie_mulOp (Ξ : AlgRep E a) (X : Lie E a) (u : Sm E a) (m : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)) :
     smLie Ξ X ((mulOp u).rTensor _ m) =
@@ -73,9 +73,9 @@ private theorem smLie_mulOp (Ξ : AlgRep E a) (X : Lie E a) (u : Sm E a) (m : Sm
   | add x y hx hy => simp only [map_add, hx, hy]; abel
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ v`. Establish `h : act (.cpt k) (mulOp u φ) = mulOp (act (.cpt k) u) (act (.cpt k) φ)` using `rfl`. Simplify using `only [smK, LinearMap.rTensor_tmul, TensorProduct.map_tmul, h, hu]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 private theorem smK_mulOp (Ξ : AlgRep E a) (k : Kinf E a) (u : Sm E a) (hu : act (.cpt k) u = u)
     (m : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)) :
@@ -88,13 +88,11 @@ private theorem smK_mulOp (Ξ : AlgRep E a) (k : Kinf E a) (u : Sm E a) (hu : ac
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Set `c : ℝ → GL (Fin a) (Cinf E)` to `fun t => Units.map (Matrix.scalar (Fin a)).toMonoidHom (expU fun _ : InfinitePlace E => (t : ℂ))`. Establish `hc : ∀ t, infGL E a (c t) = GlobalTheory.UnitaryBC.splitCentre E a t` using `fun _ => rfl`. Establish `hval : ∀ t : ℝ, toL (c t).val = Complex.exp t • oneL E a` using `fun t => by`. Use extensionality with `i j w`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [c, expU, toL, oneL, h, Matrix.scalar_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Establish `h0 : c 0 = 1` using `Units.ext (by`. Establish `h` using `hval 0`. Rewrite `h` using `[Complex.ofReal_zero, Complex.exp_zero, one_smul]`. Conclude with `h)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : HasDerivAt (fun t => toL (c t).val) (oneL E a) 0`. Simplify using `only [hval]`. Simplify using `using ((Complex.hasDerivAt_exp ((0 : ℝ) : ℂ)).comp_ofReal).smul_const (oneL E a)`. Establish `h1` using `GlobalTheory.CuspRep.hasDerivAt_curve u g c _ h0 hd`. Simplify using `only [hc, ← CuspidalL2GL.splitCentre_comm, hu] at h1`.
-
-Conclude with `h1.unique (hasDerivAt_const _ _)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lie_one_eq_zero (u : Sm E a) (hu : ∀ t g, u.1 (GlobalTheory.UnitaryBC.splitCentre E a t * g) = u.1 g) :
     lie E a (oneL E a) u = 0 := by
@@ -117,9 +115,9 @@ private theorem lie_one_eq_zero (u : Sm E a) (hu : ∀ t g, u.1 (GlobalTheory.Un
   exact h1.unique (hasDerivAt_const _ _)
 
 /- English proof (translation)
-Use `⟨fun γ g => ?_, fun k hk => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[mulOp_apply, mulOp_apply, hu.left, hφ.1]`. Establish `h : act (.fin k) (mulOp u φ) = mulOp (act (.fin k) u) (act (.fin k) φ)` using `rfl`. Rewrite using `[h, hu.level k hk, hφ.2.1 k hk]`. Establish `h : mulOp (0 : Sm E a) φ = 0` using `Subtype.ext (funext fun x => zero_mul _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lie_mulOp, lie_one_eq_zero u hu.centre, h, add_zero, hφ.2.2 m hm, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem levelFn_mulOp {U : Subgroup (GL (Fin a) (Af E))} {Ξ : AlgRep E a} {u φ : Sm E a} (hu : IsCut U u)
     (hφ : IsLevelFn U Ξ φ) : IsLevelFn U Ξ (mulOp u φ) := by
@@ -131,7 +129,7 @@ private theorem levelFn_mulOp {U : Subgroup (GL (Fin a) (Af E))} {Ξ : AlgRep E 
     rw [lie_mulOp, lie_one_eq_zero u hu.centre, h, add_zero, hφ.2.2 m hm, map_smul]
 
 /- English proof (translation)
-Rewrite using `[dCo, AlternatingMap.alternatizeUncurryFin_apply, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Pi.smul_apply, ← Int.cast_smul_eq_zsmul ℂ]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 private theorem ev_dCo (Ξ : AlgRep E a) {q : ℕ} (ω : Co Ξ q) (X : Fin (q + 1) → Herm E a) (g : GA E a) :
     ev (dCo (smLie Ξ) ω X) g =
@@ -145,15 +143,13 @@ private theorem ev_dCo (Ξ : AlgRep E a) {q : ℕ} (ω : Co Ξ q) (X : Fin (q + 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a U Ξ q u α hu hα`. Use `⟨(((mulOp u).rTensor (Fin Ξ.d → ℂ)).restrictScalars ℝ).compAlternatingMap α, ⟨fun k => ?_, fun X i hi => ?_, fun X => ?_⟩, fun X g => ev_mulOp u (α X) g, fun X g => ?_⟩` and prove the remaining obligations. Introduce `X`. Express the relevant statement in the definitionally equal form `(mulOp u).rTensor _ (α _) = smK Ξ k ((mulOp u).rTensor _ (α X))`. Rewrite using `[smK_mulOp Ξ k u (hu.cpt k), hα.equiv k X]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(mulOp u).rTensor _ (α X) = 0`. Rewrite using `[hα.basic X i hi, map_zero]`. Express the relevant statement in the definitionally equal form `(mulOp u).rTensor _ (α X) ∈ _`. Use `Submodule.span_induction (p := fun m _ => (mulOp u).rTensor _ m ∈ _) ?_ ?_ ?_ ?_ (hα.val X)` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, v, hφ, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨_, v, levelFn_mulOp hu hφ, LinearMap.rTensor_tmul _ _ _ _⟩`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hx hy`. Introduce `c x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Rewrite using `[ev_dCo, ev_dCo, Finset.smul_sum, ← Finset.sum_add_distrib]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ • ev (smLie Ξ _ ((mulOp u).rTensor _ (α _))) g = _`. Rewrite using `[smLie_mulOp, map_add, Pi.add_apply, ev_mulOp, ev_mulOp, smul_add, smul_comm, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.mulEx :
     MulEx := by

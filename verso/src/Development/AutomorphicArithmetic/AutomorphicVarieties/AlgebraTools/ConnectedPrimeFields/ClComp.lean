@@ -9,9 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient]`. Establish `h : PrimeSpectrum.zeroLocus (nilradical R : Set R) = Set.univ`. Use extensionality with `p`. Simplify using `only [Set.mem_univ, iff_true, PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe]`. Conclude with `nilradical_le_prime p.asIdeal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `le_of_eq (Order.krullDim_eq_of_orderIso OrderIso.Set.univ).symm`.
+A detailed English derivation is pending.
 -/
 private theorem dim_le_nil {R : Type} [CommRing R] :
     ringKrullDim R ≤ ringKrullDim (R ⧸ nilradical R) := by
@@ -24,11 +24,11 @@ private theorem dim_le_nil {R : Type} [CommRing R] :
   exact le_of_eq (Order.krullDim_eq_of_orderIso OrderIso.Set.univ).symm
 
 /- English proof (translation)
-Introduce `O R _ _ _ _ _ _ _ _ hR a q h ha hq`. Use `haveI := hR.noeth`. Take `⟨s, hs, hrad⟩` from `ha`. Establish `hnil : (nilradical R).IsPrime`. Establish `hirr : IsIrreducible (PrimeSpectrum.zeroLocus ((⊥ : Ideal R) : Set R))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.bot_coe, PrimeSpectrum.zeroLocus_singleton_zero]`. Conclude with `IrreducibleSpace.isIrreducible_univ _`. Conclude with `(PrimeSpectrum.isIrreducible_zeroLocus_iff ⊥).mp hirr`. Establish `hsup : (nilradical R ⊔ Ideal.span (s : Set R)).radical = a.radical`. Rewrite using `[Ideal.radical_sup, nilradical, Ideal.radical_idem, ← Ideal.radical_sup, Submodule.zero_eq_bot, bot_sup_eq, hrad]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hq' : q ∈ (nilradical R ⊔ Ideal.span (s : Set R)).minimalPrimes`. Rewrite using `[← Ideal.radical_minimalPrimes, hsup, Ideal.radical_minimalPrimes]`. Conclude with `hq`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.clComp :
     ∀ {O R : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]

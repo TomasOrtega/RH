@@ -7,11 +7,11 @@ namespace GlobalTheory.GamMul.UnipPlaced
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite `hX`, `hY` using `[mem_unipB]`. Establish `hne : a ≠ a'` using `fun e => by have := congrArg Fin.val e; omega`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_add_of_mem a a' (Finset.mem_univ _) (Finset.mem_univ _) hne]`. Rewrite using `[hX.2 a, hY.2 a', one_mul, mul_one, add_comm]`. Introduce `c _ hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Fin.val_injective.ne hc.1`. Establish `h2` using `Fin.val_injective.ne hc.2`. Distinguish the cases in `hca : c < a`. Rewrite using `[hX.1 a c hca, zero_mul]`. Establish `: a' < c` using `by rw [Fin.lt_iff_val_lt_val] at hca ⊢; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hY.1 c a' this, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_apply_succ {n : ℕ} {X Y : GL (Fin n) R} (hX : X ∈ unipB R (Fin n)) (hY : Y ∈ unipB R (Fin n))
     {a a' : Fin n} (h : a'.val = a.val + 1) :
@@ -36,7 +36,7 @@ namespace GlobalTheory.GamMul.UnipPlaced
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `only [superDiag, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j hj => mul_apply_succ hu hv (Finset.mem_filter.1 hj).2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superDiag_mul_unip {n : ℕ} {u v : GL (Fin n) R} (hu : u ∈ unipB R (Fin n)) (hv : v ∈ unipB R (Fin n)) :
     superDiag (u * v) = superDiag u + superDiag v := by

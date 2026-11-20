@@ -17,7 +17,7 @@ section IsoZero
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Use `Vert.Model.GenIso.cls_div_trans (Iso.refl _ : Z.GenIso E E) hE hE hE (Iso.refl _)` as an intermediate fact. Rewrite `this` using `[Iso.trans_refl]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cls_div_refl_of_isVB {Z : Vert.Model O} {E : Z.X.Modules} {r : ℕ} (hE : GlobalTheory.VB.IsVB E r) :
     (Vert.Model.GenIso.div (Iso.refl _ : Z.GenIso E E) hE hE).cls = 0 := by
@@ -35,9 +35,9 @@ def flagPairOfIso {Z : Vert.Model O} {E E' : Z.X.Modules} {N : ℕ} (φ : Z.GenI
     rw [Functor.map_comp, Category.assoc, ← he, Iso.inv_hom_id, Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `h : (flagPairOfIso φ e he fl').grIso i = Iso.refl _` using `by ext1`. Establish `h1` using `(flagPairOfIso φ e he fl').π_grIso_hom i`. Rewrite using `[← cancel_epi (Z.genRes.map ((flagPairOfIso φ e he fl').fl.π i)), h1]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Unfold `Vert.Model.FlagPair.div`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `cls_div_refl_of_isVB _`.
+A detailed English derivation is pending.
 -/
 theorem cls_div_flagPairOfIso {Z : Vert.Model O} {E E' : Z.X.Modules} {N : ℕ} (φ : Z.GenIso E E')
     (e : E' ≅ E) (he : φ.inv = Z.genRes.map e.hom) (fl' : Flag E' N) (i : Fin N) :
@@ -54,11 +54,11 @@ theorem cls_div_flagPairOfIso {Z : Vert.Model O} {E E' : Z.X.Modules} {N : ℕ} 
 end IsoZero
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB P hψ k`. Use `haveI := P.iso`. Establish `hT` using `GlobalTheory.T.ck_unique_characterization O p B hB P.E P.E' (Vert.Model.GenIso.ofHom P.ψ) P.r k P.vb P.vb'`. Use `(hT.2.1 0 ?_).symm` and prove the remaining obligations. Introduce `M hM _ Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT'` using `GlobalTheory.T.ck_unique_characterization O p M.B hM _ _ ((Vert.Model.GenIso.ofHom P.ψ).pull M.π.comp_str) P.r k (P.vb.pullback _) (P.vb'.pullback _)`. Set `e` to `(Scheme.Modules.pullback M.π.f).mapIso (asIso P.ψ)`. Establish `he : ((Vert.Model.GenIso.ofHom P.ψ).pull M.π.comp_str).inv = M.B.genRes.map e.hom` using `Vert.Model.GenIso.pull_inv _ rfl`. Rewrite using `[LinearMap.zero_apply, mul_zero]`. Rewrite using `[show M.toFPair p = M.pair.toFPair p from rfl]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hT'.2.2 M.pair, hT'.2.2 (flagPairOfIso _ e he M.pair.fl')]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(M.B.toITh p).capDeg (Vert.Model.toQ ((flagPairOfIso _ e he M.pair.fl').div i).cls) _ = 0`. Rewrite using `[cls_div_flagPairOfIso, map_zero]`. Apply the tactic sequence `first | rfl | exact LinearMap.zero_apply (M := (M.B.toITh p).Ch) _ | simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pres.ck_eq_zero_of_isIso : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (P : Pres B), IsIso P.ψ → ∀ k : ℕ, P.ck p k = 0 := by
   intro O _ _ _ p _ _ _ B hB P hψ k

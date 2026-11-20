@@ -16,23 +16,23 @@ namespace GlobalTheory.TwistJumpsW
 open Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-Introduce `D T W i ι a ρ χ hρ hχ τ c hdR hc`. Set `w` to `PI.CompDegEF.plOf τ`. Establish `hw : w ∈ placesOver D.host.E (D.nd.l i)` using `PI.CompDegEF.natCast_mem_plIdeal τ`. Establish `hIW : InducesW D.nd i τ w` using `fun x => Iff.rfl`. Take `⟨hdρ, hdχ⟩` from `hdR w hIW`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hj : GlobalTheory.Pst.Induces (D.nbr i w hw)` using `D.nbr_ind i w hw`. Take `⟨L₁, hL₁, hm₁⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem (D.nd.l i) (G D.host.E D.nd.Om) a ρ hρ (D.nbr i w hw).LL`. Take `⟨L, hL, hm⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem (D.nd.l i) (G D.host.E D.nd.Om) 1 χ hχ L₁`. Establish `hBL : (D.nbr i w hw).LL.1 ≤ L.1` using `hL₁.trans hL`. Take `⟨τ', hτ'⟩` from `GlobalTheory.EmbExt.main D (D.nd.l i) w _ (D.nbr i w hw) hj τ hIW L hBL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ₁, cρ, rfl⟩` from `GlobalTheory.DeRhamRead.exists_model_of_mem ρ hρ L (fun g i j => hL (hm₁ g i j))`. Take `⟨χ₁, cχ, rfl⟩` from `GlobalTheory.DeRhamRead.exists_model_of_mem χ hχ L hm`. Take `⟨-, H⟩` from `W.loc (D.nd.l i) ι w hw _ (D.nbr i w hw) hj ((algebraMap ↥(D.nbr i w hw).LL.1 (Om (D.nd.l i))).comp (D.nbr i w hw).toLL) (fun _ => rfl)`. Set `tw₁ : G D.host.E D.nd.Om →* GL (Fin a) ↥L.1` to `GlobalTheory.TwistAbove.twGL (Matrix.GeneralLinearGroup.det.comp χ₁) ρ₁`. Establish `htw : Formalism.MainNotions.SumRepresentations.At.twGL (mapRep (algebraMap ↥L.1 (Qbar (D.nd.l i))) ρ₁) (Matrix.GeneralLinearGroup.det.comp (mapRep (algebraMap ↥L.1 (Qbar (D.nd.l i))) χ₁)) = mapRep (algebraMap ↥L.1 (Qbar (D.nd.l i))) tw₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Use extensionality with `p q`. Simplify using `[tw₁, mapRep, Formalism.MainNotions.SumRepresentations.At.twGL, Matrix.det_unique, Matrix.algebraMap_eq_diagonal, Matrix.diagonal_mul]`. Establish `ctw : Continuous (fun g => ((tw₁ g : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1))`. Establish `h1 : Continuous (fun g => ((χ₁ g : GL (Fin 1) ↥L.1) : Matrix (Fin 1) (Fin 1) ↥L.1).det)` using `cχ.matrix_det`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `continuous_matrix fun p q => ?_` and prove the remaining obligations. Use `(h1.mul (cρ.matrix_elem p q)).congr fun g => ?_` and prove the remaining obligations. Simplify using `[tw₁, GlobalTheory.TwistAbove.twGL_val, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[htw]`. Establish `Hρ` using `H L hBL a ρ₁ cρ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `Hχ` using `H L hBL 1 χ₁ cχ`. Establish `Htw` using `H L hBL a tw₁ ctw`. Establish `dρ` using `Hρ.2.1.1 hdρ`. Establish `dχ` using `Hχ.2.1.1 hdχ`. Establish `hcom` using `GlobalTheory.TwistAbove.twist_common (D.nbr i w hw) (ρ₁.comp (Dec (F := D.host.E) (D.nd.plOm.1 w)).subtype) (χ₁.comp (Dec (F := D.host.E) (D.nd.plOm.1 w)).subtype) (D.locT (D.nd.l i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dtw : (D.nbr i w hw).IsdRE (D.loc (D.nd.l i)) L (tw₁.comp (Dec (F` using `D.host.E) (D.nd.plOm.1 w)).subtype) := hcom.1 dρ dχ`. Establish `mχ : ∀ n, (D.nbr i w hw).multE (D.loc (D.nd.l i)) L (χ₁.comp (Dec (F` using `D.host.E) (D.nd.plOm.1 w)).subtype) τ' n = if n = c then 1 else 0 := by`. Introduce `n`. Rewrite using `[← (Hχ.2.2.2 τ τ' hτ').2 dχ n, hc, Multiset.count_singleton]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `n`. Establish `e1` using `(Htw.2.2.2 τ τ' hτ').2 dtw n`. Establish `e2` using `hcom.2.2.2 τ' c dχ mχ (n - c)`. Establish `e3` using `(Hρ.2.2.2 τ τ' hτ').2 dρ (n - c)`. Establish `e4` using `Multiset.count_map_eq_count' (fun x : ℤ => x + c) (W.jumpsW (D.nd.l i) ι (mapRep (algebraMap ↥L.1 (Qbar (D.nd.l i))) ρ₁) τ) (add_left_injective c) (n - c)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_add_cancel] at e2 e4`. Rewrite using `[e4]`. Conclude with `e1.trans (e2.trans e3.symm)` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jumpsW_twist : ∀ (D : D7) (T : WDTie D.nd D.naut) (W : WDSide D T) (i : D.nd.Loc) (ι : Qbar (D.nd.l i) ≃+* ℂ) (a : ℕ) (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar (D.nd.l i))) (χ : G D.host.E D.nd.Om →* GL (Fin 1) (Qbar (D.nd.l i))), Formalism.MainNotions.SumRepresentations.At.ContQ D.nd i ρ → Formalism.MainNotions.SumRepresentations.At.ContQ D.nd i χ → ∀ (τ : D.host.E →+* Qbar (D.nd.l i)) (c : ℤ), (∀ w, InducesW D.nd i τ w → W.IsdRW (D.nd.l i) ι ρ w ∧ W.IsdRW (D.nd.l i) ι χ w) → W.jumpsW (D.nd.l i) ι χ τ = {c} → W.jumpsW (D.nd.l i) ι (Formalism.MainNotions.SumRepresentations.At.twGL ρ (Matrix.GeneralLinearGroup.det.comp χ)) τ = (W.jumpsW (D.nd.l i) ι ρ τ).map (· + c) := by
   intro D T W i ι a ρ χ hρ hχ τ c hdR hc

@@ -17,11 +17,9 @@ namespace GlobalTheory
 open ThickeningDetermines in
 
 /- English proof (translation)
-Use `geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres H.hom` as an intermediate fact. Establish `key` using `isIso_of_isClosedImmersion_of_thickenings R I hI H e (fun p ↦ inferInstance)`. Use `eq_zero_of_secIdeal_eq_bot hN s ?_ j` and prove the remaining obligations. Use `key _ (secIdeal hN s).subschemeι fun n ↦ by` as an intermediate fact. Establish `: IsClosedImmersion (thick R I n)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact (fstG I n H).left` using `inferInstanceAs (QuasiCompact (pullback.fst H.hom (thick R I n)))`. Conclude with `⟨IsClosedImmersion.lift _ (fstG I n H).left (by`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `secIdeal_le_ker hN s _ (hs n)), IsClosedImmersion.lift_fac _ _ _⟩`. Rewrite using `[← Scheme.IdealSheafData.ker_subschemeι (secIdeal hN s)]`.
-
-Conclude with `IsClosedImmersion.isIso_iff_ker_eq_bot.1 this`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_zero_of_thickenings_of_section (R : Type) [CommRing R] [IsNoetherianRing R]
     (I : Ideal R) (hI : I ≤ Ideal.jacobson ⊥) (H : Over (Spec (CommRingCat.of R)))
@@ -43,9 +41,7 @@ theorem sec_eq_zero_of_thickenings_of_section (R : Type) [CommRing R] [IsNoether
   exact IsClosedImmersion.isIso_iff_ker_eq_bot.1 this
 
 /- English proof (translation)
-Apply `TopCat.Presheaf.section_ext Z.sheaf _` to reduce the goal to its premises. Introduce `z hz`. Use `choose I hI using fun χ : Z ⟶ X => exists_chart hL (χ z)`. Establish `e` using `sec_trans d r z (j := j) hz (Good.mem hI φ r)`. Establish `e' : gs r z (LB.wchart L φ j) (d.f j) = 0` using `e.trans ((congrArg _ (h z I hI)).trans (mul_zero _))`.
-
-Conclude with `((gs_eq r z _ hz _).symm.trans e').trans (map_zero _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem app_sec_eq_zero_of_sval {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type}
     [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (d : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y)
@@ -59,13 +55,13 @@ theorem app_sec_eq_zero_of_sval {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K
   exact ((gs_eq r z _ hz _).symm.trans e').trans (map_zero _).symm
 
 /- English proof (translation)
-Introduce `R _ I T B _ _ _ _ _ hI X L hL K _ φ ε d hd j`. Set `ψ : CommRingCat.of R ⟶ Γ(T.left, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ T.hom.appTop`. Establish `hψ : T.left.isoSpec.hom ≫ Spec.map ψ = T.hom`. Rewrite using `[Spec.map_comp, ← Category.assoc, Scheme.isoSpec_hom_naturality, Category.assoc, Scheme.isoSpec_Spec_hom, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.comp_id]`. Set `H : Over (Spec (CommRingCat.of Γ(T.left, ⊤)))` to `Over.mk (pullback.fst T.hom B.hom ≫ T.left.isoSpec.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: Smooth H.hom` using `inferInstanceAs (Smooth (pullback.fst T.hom B.hom ≫ T.left.isoSpec.hom))`. Establish `: GeometricallyConnected H.hom` using `MorphismProperty.of_isPullback (P := @GeometricallyConnected) (IsPullback.of_iso (IsPullback.of_hasPullback T.hom B.hom).flip (Iso.refl _) (Iso.refl _) T.left.isoSpec (Iso.refl _) (fst' := pullback.snd T.hom B.hom) (snd' := H.hom) (f' := B.hom) (g' := Spec.map ψ) (by simp) (Categ …`. Set `σ : T ⟶ T ⊗ B` to `lift (𝟙 T) (toUnit T ≫ η[B])`. Establish `hσ : σ.left ≫ pullback.fst T.hom B.hom = 𝟙 _` using `congrArg CommaMorphism.left (lift_fst (𝟙 T) (toUnit T ≫ η[B]))`. Set `e : 𝟙_ _ ⟶ H` to `Over.homMk (T.left.isoSpec.inv ≫ σ.left) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `(T.left.isoSpec.inv ≫ σ.left) ≫ pullback.fst T.hom B.hom ≫ T.left.isoSpec.hom = 𝟙 _`. Rewrite using `[Category.assoc, reassoc_of% hσ, Iso.inv_hom_id])`. Use `sec_eq_zero_of_thickenings_of_section Γ(T.left, ⊤) (I.map ψ.hom) (Ideal.map_le_iff_le_comap.2 hI) H e (LB.LinComb L φ ε) (DVR.linComb_isLB L hL φ ε) d (fun n j ↦ app_sec_eq_zero_of_sval hL d _ (hd n _ _ ⟨pullback.snd H.hom (thick _ (I.map ψ.hom) n) ≫ Spec.map (CommRingCat.ofHom ( …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = pullback.fst H.hom (thick _ (I.map ψ.hom) n) ≫ pullback.fst T.hom B.hom ≫ T.hom`. Establish `h1 : pullback.fst T.hom B.hom ≫ T.hom = H.hom ≫ Spec.map ψ` using `(congrArg (pullback.fst T.hom B.hom ≫ ·) hψ.symm).trans (Category.assoc _ _ _).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[h1, pullback.condition_assoc, Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sec_eq_zero_of_sval_finite_level : ∀ (R : Type) [CommRing R] (I : Ideal R) (T B : Over (Spec (CommRingCat.of R))) [IsAffine T.left] [IsNoetherianRing Γ(T.left, ⊤)] [GrpObj B] [Smooth B.hom] [GeometricallyConnected B.hom], (∀ r ∈ I, scal T.hom r ∈ Ideal.jacobson (⊥ : Ideal Γ(T.left, ⊤))) → ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (K : Type) [Fintype K] (φ : K → ((T ⊗ B).left ⟶ X)) (ε : K → ℤ) (d : LB.Sec (LB.LinComb L φ ε)), (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ B).left), (∃ ρ : Z ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1))), ρ ≫ thick R I e = r ≫ (T ⊗ B).hom) → ∀ (z : Z) (J), Good L z J → sval d r z J = 0) → ∀ j, d.f j = 0 := by
   intro R _ I T B _ _ _ _ _ hI X L hL K _ φ ε d hd j

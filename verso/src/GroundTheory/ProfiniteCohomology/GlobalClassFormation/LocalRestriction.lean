@@ -28,7 +28,7 @@ def globalDecomp : Gal(Ωv/Kv) →* K.1.fixingSubgroup :=
 omit [Algebra.IsIntegral Kv Ωv] in
 
 /- English proof (translation)
-The claim follows from `decompHom_apply ι σ x`.
+A detailed English derivation is pending.
 -/
 theorem globalDecomp_apply (σ : Gal(Ωv/Kv)) (x : ℚ̄) :
     ι ((globalDecomp Kv ι σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) x) = σ (ι x) :=
@@ -36,13 +36,13 @@ theorem globalDecomp_apply (σ : Gal(Ωv/Kv)) (x : ℚ̄) :
 
 omit [Algebra.IsIntegral Kv Ωv] in
 /- English proof (translation)
-The claim follows from `((continuous_restrictScalarsHom_of_tower ℚ K.1 ℚ̄).comp (continuous_decompHom ι)).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_globalDecomp : Continuous (globalDecomp Kv ι) :=
   ((continuous_restrictScalarsHom_of_tower ℚ K.1 ℚ̄).comp (continuous_decompHom ι)).subtype_mk _
 
 /- English proof (translation)
-The claim follows from `(decompHom_eq_iff j σ _).2 fun x => by rw [hj, hj, coe_restrictHom_apply, globalDecomp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem decompHom_eq_restrictHom_globalDecomp (F : FiniteSubfield) [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal]
     (j : F.1 →ₐ[K.1] Ωv) (hj : ∀ x : F.1, j x = ι x) (σ : Gal(Ωv/Kv)) :
@@ -73,7 +73,7 @@ variable {v : HeightOneSpectrum (𝓞 K.1)} (ι : ℚ̄ →ₐ[K.1] AlgebraicClo
   (F : FiniteSubfield) [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal]
 
 /- English proof (translation)
-The claim follows from `decompHom_eq_restrictHom_globalDecomp _ ι F (embedLevel ι F) (embedLevel_apply ι F) σ`.
+A detailed English derivation is pending.
 -/
 theorem coe_localDecompHom_eq_restrictHom (σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1)) :
     ((localDecompHom ι F σ : MulAction.stabilizer (F.1 ≃ₐ[K.1] F.1) (placeOfEmbedding ι F).1.asIdeal) :
@@ -81,7 +81,7 @@ theorem coe_localDecompHom_eq_restrictHom (σ : Gal(AlgebraicClosure (v.adicComp
   decompHom_eq_restrictHom_globalDecomp _ ι F (embedLevel ι F) (embedLevel_apply ι F) σ
 
 /- English proof (translation)
-The claim follows from `congrArg Additive.ofMul (Units.ext (completionEmbedding_algebraMap ι F (u.toMul : F.1)))`.
+A detailed English derivation is pending.
 -/
 theorem localUnitsMor_finiteComponentRep_levelDiag (u : Additive F.1ˣ) :
     (localUnitsMor ι F).hom ((finiteComponentRep (placeOfEmbedding ι F)).hom ((levelDiag K F).hom u)) =
@@ -91,7 +91,7 @@ theorem localUnitsMor_finiteComponentRep_levelDiag (u : Additive F.1ˣ) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `h : cohomologyMap (levelDiag K F) n ≫ finiteComponent (placeOfEmbedding ι F) n ≫ localInfl ι F n = unitsLevelInfl K F n ≫ unitsLocalRes (v.adicCompletion K.1) ι n`. Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, finiteComponent, localInfl, unitsLevelInfl, unitsLocalRes, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (MonoidHom.ext fun σ => coe_localDecompHom_eq_restrictHom ι F σ) (fun u => localUnitsMor_finiteComponentRep_levelDiag ι F u) n`. Conclude with `congrArg (fun φ => φ.hom y) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localInfl_finiteComponent_levelDiag (n : ℕ) (y : cohomology (galUnitsZ K.1 F.1) n) :
     (localInfl ι F n).hom ((finiteComponent (placeOfEmbedding ι F) n).hom
@@ -116,9 +116,9 @@ variable {v : InfinitePlace K.1} (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Comp
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hfun : ∀ σ : Gal(AlgebraicClosure v.Completion/v.Completion), ((infLocalDecompHom ι F σ : MulAction.stabilizer (F.1 ≃ₐ[K.1] F.1) (infPlaceOfEmbedding ι F : InfinitePlace F.1)) : F.1 ≃ₐ[K.1] F.1) = restrictHom (E` using `F) (globalDecomp v.Completion ι σ) := fun σ => decompHom_eq_restrictHom_globalDecomp _ ι F (infEmbedLevel ι F) (infEmbedLevel_apply ι F) σ`. Establish `hval : ∀ u : Additive F.1ˣ, (infLocalUnitsMor ι F).hom ((infiniteComponentRep (infPlaceOfEmbedding ι F)).hom ((levelDiag K F).hom u)) = (unitsLocalMor v.Completion ι).hom ((unitsLevelMor K F).hom u)` using `fun u => congrArg Additive.ofMul (Units.ext (infCompletionEmbedding_algebraMap ι F (u.toMul : F.1)))`. Use extensionality with `m c : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(infLocalUnitsMor ι F).hom ((infiniteComponentRep (infPlaceOfEmbedding ι F)).hom ((levelDiag K F).hom (c.1 fun i => ((infLocalDecompHom ι F (σ i) : MulAction.stabilizer (F.1 ≃ₐ[K.1] F.1) (infPlaceOfEmbedding ι F : InfinitePlace F.1)) : F.1 ≃ₐ[K.1] F.1)))) = (unitsLocalMor v.Compl …`. Rewrite using `[funext fun i => hfun (σ i)]`. Conclude with `hval _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelDiag_infiniteComponent_infLocalInfl_cochains :
     cochainsMap (levelDiag K F) ≫
@@ -152,9 +152,9 @@ theorem levelDiag_infiniteComponent_infLocalInfl_cochains :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `e1 : cohomologyMap (levelDiag K F) n ≫ infiniteComponent (infPlaceOfEmbedding ι F) n ≫ infLocalInfl ι F n = HomologicalComplex.homologyMap (cochainsMap (levelDiag K F) ≫ cochainsMapAlong (MulAction.stabilizer (F.1 ≃ₐ[K.1] F.1) (infPlaceOfEmbedding ι F : InfinitePlace F.1)).subtyp …`. Rewrite using `[HomologicalComplex.homologyMap_comp, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression. Establish `e2 : unitsLevelInfl K F n ≫ unitsLocalRes v.Completion ι n = HomologicalComplex.homologyMap (cochainsMapAlong restrictHom continuous_restrictHom (unitsLevelMor K F) ≫ cochainsMapAlong (globalDecomp v.Completion ι) (continuous_globalDecomp _ ι) (unitsLocalMor v.Completion ι)) n` using `(HomologicalComplex.homologyMap_comp _ _ n).symm`. Establish `h : cohomologyMap (levelDiag K F) n ≫ infiniteComponent (infPlaceOfEmbedding ι F) n ≫ infLocalInfl ι F n = unitsLevelInfl K F n ≫ unitsLocalRes v.Completion ι n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, levelDiag_infiniteComponent_infLocalInfl_cochains]`. Conclude with `congrArg (fun φ => φ.hom y) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infLocalInfl_infiniteComponent_levelDiag (n : ℕ) (y : cohomology (galUnitsZ K.1 F.1) n) :
     (infLocalInfl ι F n).hom ((infiniteComponent (infPlaceOfEmbedding ι F) n).hom
@@ -189,7 +189,7 @@ variable (ι : LocalEmbeddings K) {n : ℕ} (hn : 1 ≤ n)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨p, y, rfl⟩` from `exists_unitsLevelInfl_eq n x`. Rewrite using `[unitsToIdeles_unitsLevelInfl, idelesLimitCohomologyEquiv_levelInfl]`. Express the relevant statement in the definitionally equal form `(localInfl (ι.fin v) p.1 n).hom (ι.places.shapiro n (.inr v) p ((cohomologyMap (placeProj (.inr v)) n).hom ((cohomologyMap (levelDiag K p.1) n).hom y))) = _`. Rewrite using `[CompatiblePlaces.shapiro_placeProj_inr]`. Conclude with `localInfl_finiteComponent_levelDiag (ι.fin v) p.1 n y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idelesLimitCohomologyEquiv_unitsToIdeles_inr (v : HeightOneSpectrum (𝓞 K.1))
     (x : cohomology (unitsLimitRep K) n) :
@@ -205,7 +205,7 @@ theorem idelesLimitCohomologyEquiv_unitsToIdeles_inr (v : HeightOneSpectrum (�
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨p, y, rfl⟩` from `exists_unitsLevelInfl_eq n x`. Rewrite using `[unitsToIdeles_unitsLevelInfl, idelesLimitCohomologyEquiv_levelInfl]`. Express the relevant statement in the definitionally equal form `(infLocalInfl (ι.inf v) p.1 n).hom (ι.places.shapiro n (.inl v) p ((cohomologyMap (placeProj (.inl v)) n).hom ((cohomologyMap (levelDiag K p.1) n).hom y))) = _`. Rewrite using `[CompatiblePlaces.shapiro_placeProj_inl]`. Conclude with `infLocalInfl_infiniteComponent_levelDiag (ι.inf v) p.1 n y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idelesLimitCohomologyEquiv_unitsToIdeles_inl (v : InfinitePlace K.1)
     (x : cohomology (unitsLimitRep K) n) :
@@ -219,14 +219,14 @@ theorem idelesLimitCohomologyEquiv_unitsToIdeles_inl (v : InfinitePlace K.1)
   exact infLocalInfl_infiniteComponent_levelDiag (ι.inf v) p.1 n y
 
 /- English proof (translation)
-The claim follows from `idelesLimitCohomologyEquiv_unitsToIdeles_inr ι _ v x`.
+A detailed English derivation is pending.
 -/
 theorem brauerLocal_apply_inr (v : HeightOneSpectrum (𝓞 K.1)) (x : cohomology (unitsLimitRep K) 2) :
     brauerLocal ι x (.inr v) = (unitsLocalRes (v.adicCompletion K.1) (ι.fin v) 2).hom x :=
   idelesLimitCohomologyEquiv_unitsToIdeles_inr ι _ v x
 
 /- English proof (translation)
-The claim follows from `idelesLimitCohomologyEquiv_unitsToIdeles_inl ι _ v x`.
+A detailed English derivation is pending.
 -/
 theorem brauerLocal_apply_inl (v : InfinitePlace K.1) (x : cohomology (unitsLimitRep K) 2) :
     brauerLocal ι x (.inl v) = (unitsLocalRes v.Completion (ι.inf v) 2).hom x :=

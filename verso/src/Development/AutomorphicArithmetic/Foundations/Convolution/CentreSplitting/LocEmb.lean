@@ -9,23 +9,19 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ π V h`. Establish `hcar` using `h.carrier_eq`. Establish `hcen : ∀ ψ : Cm.carrier π, ψ.1 ∈ centralCuspForms E n` using `fun ψ => (hcar.le ψ.2).1`. Establish `hV : ∀ ψ : Cm.carrier π, clsL μ ψ.1 ∈ V` using `fun ψ => (hcar.le ψ.2).2`. Take `⟨hinj, -, heq, -⟩` from `UpperTheory.ConvolutionTheory.Dp.clsBasic E n μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hdense⟩` from `UpperTheory.ConvolutionTheory.Dp.formsIrr E n μ V h.summand`. Set `J0 : Cm.carrier π →ₗ[ℂ] V` to `((clsL μ).comp (Cm.carrier π).subtype).codRestrict V hV`. Establish `hJ0 : ∀ ψ, (J0 ψ).1 = clsL μ ψ.1` using `fun _ => rfl`. Use `⟨J0 ∘ₗ (Cm.carrierEq π).symm.toLinearMap, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hi : Function.Injective J0` using `fun a b hab => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : clsL μ (a.1 - b.1) = 0`. Rewrite using `[map_sub, ← hJ0, ← hJ0, hab, sub_self]`. Conclude with `Subtype.ext (sub_eq_zero.1 (hinj _ (Submodule.sub_mem _ (hcen a) (hcen b)) h0))`. Conclude with `hi.comp (Cm.carrierEq π).symm.injective`. Introduce `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image]`. Establish `himg : (Subtype.val '' Set.range (J0 ∘ₗ (Cm.carrierEq π).symm.toLinearMap) : Set (LL μ)) = ((formsIn μ V).map (clsL μ) : Submodule ℂ (LL μ))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨φ, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, hcar ▸ ((Cm.carrierEq π).symm φ).2, rfl⟩`. Introduce and unpack `⟨ψ, hψ, rfl⟩`. Establish `hψ' : ψ ∈ Cm.carrier π` using `hcar ▸ hψ`. Use `⟨_, ⟨Cm.carrierEq π ⟨ψ, hψ'⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[hJ0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : (v : LL μ) ∈ closure (((formsIn μ V).map (clsL μ) : Submodule ℂ (LL μ)) : Set (LL μ))` using `hdense.ge v.2`. Rewrite `hc` using `[← himg]`. Conclude with `hc`. Introduce `ψ`. Simplify using `[hJ0]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w g φ`. Take `⟨ψ, rfl⟩` from `(Cm.carrierEq π).surjective φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `set ψ' := (Cm.carrierEq π).symm (π.locRep w g (Cm.carrierEq π ψ)) with hψ'`. Establish `hx : ∀ x, ψ'.1.1 x = ψ.1.1 (x * finGL E n (locGL E n w g))` using `fun x => by`.
-
-Establish `h1 : Cm.carrierEq π ψ' = π.locRep w g (Cm.carrierEq π ψ)` using `(Cm.carrierEq π).apply_symm_apply _`. Conclude with `congrArg (fun f : π.V => f.1.1 x) h1`. Establish `h2` using `heq ψ.1 (hcen ψ) ψ'.1 (finGL E n (locGL E n w g)) hx`. Use `show clsL μ ψ'.1 = RG μ (finGL E n (locGL E n w g)) (clsL μ ((Cm.carrierEq π).symm (Cm.carrierEq π ψ)).1)`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.locEmb :
     UpperTheory.ConvolutionTheory.Dp.LocEmb := by

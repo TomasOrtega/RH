@@ -10,9 +10,9 @@ open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {l : ℕ} {σ : K →+* K}
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst, PowerSeries.subst]`. Use `first`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.HasSubst.of_constantCoeff_zero (fun _ => hu)) hb φ`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hu)) hb φ`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply ((PowerSeries.HasSubst.of_constantCoeff_zero hu).hasSubst) hb φ`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.subst_comp_subst_apply ⟨fun _ => by rw [hu]; exact IsNilpotent.zero, by simp⟩ hb φ`.
+A detailed English derivation is pending.
 -/
 theorem powerSeries_subst_subst_of_constantCoeff_zero {R : Type} [CommRing R] {α β : Type} (φ : PowerSeries R)
     {u : MvPowerSeries α R} (hu : MvPowerSeries.constantCoeff u = 0) {b : α → MvPowerSeries β R}
@@ -29,27 +29,23 @@ theorem powerSeries_subst_subst_of_constantCoeff_zero {R : Type} [CommRing R] {�
       ⟨fun _ => by rw [hu]; exact IsNilpotent.zero, by simp⟩ hb φ
 
 /- English proof (translation)
-Establish `hXs : lam.subst (X : PowerSeries K) = lam`. Establish `ha1 : PowerSeries.HasSubst (X : PowerSeries K)` using `PowerSeries.HasSubst.of_constantCoeff_zero' PowerSeries.constantCoeff_X`. Use extensionality with `m`. Rewrite using `[PowerSeries.coeff_subst' ha1]`. Rewrite using `[finsum_eq_single _ m]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.coeff_X_pow_self, smul_eq_mul, mul_one]`. Introduce `d hd`. Rewrite using `[PowerSeries.coeff_X_pow, if_neg (Ne.symm hd), smul_zero]`. Proceed by induction on `n with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Use `⟨0, map_zero _, by unfold IntegralPS; intro k; simp, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Rewrite using `[PowerSeries.coeff_subst' (PowerSeries.HasSubst.of_constantCoeff_zero' (map_zero _)), Nat.cast_zero, map_zero, zero_mul, map_zero]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, h.lam0, zero_smul]`. Rewrite using `[zero_pow hd.ne', map_zero, smul_zero]`. Consider the case `succ n ih`. Take `⟨e, he0, he, hlog⟩` from `ih`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hP0 : ∀ s, MvPowerSeries.constantCoeff ((![e, X] : Fin 2 → PowerSeries K) s) = 0`. Introduce `s`. Use `fin_cases s`. Conclude with `he0`. Conclude with `PowerSeries.constantCoeff_X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hPint : ∀ s, IntegralMv ((![e, X] : Fin 2 → PowerSeries K) s)`. Introduce `s`. Use `fin_cases s`. Conclude with `(integralPS_iff_mv e).mp he`. Conclude with `(integralPS_iff_mv _).mp integralPS_X`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : MvPowerSeries.HasSubst (![e, X] : Fin 2 → PowerSeries K)` using `⟨fun s => by rw [hP0 s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Use `⟨Φ.subst (![e, X] : Fin 2 → PowerSeries K), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : MvPowerSeries.constantCoeff (Φ.subst (![e, X] : Fin 2 → PowerSeries K)) = 0`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_subst ha]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Introduce `d`. Distinguish the cases in `hd : d = 0`. Rewrite using `[hd, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.Φ0, zero_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, d s ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hc`. Conclude with `hd (Finsupp.ext hc)`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, Finsupp.prod, map_prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by rw [map_pow, hP0 s, zero_pow hs]), smul_zero]`. Conclude with `h0`. Conclude with `(integralPS_iff_mv _).mpr (integralMv_subst2 h.Φint hP0 hPint)`.
-
-Rewrite using `[← powerSeries_subst_subst_of_constantCoeff_zero lam h.Φ0 ha, h.log]`. Unfold `atX atY`. Use `first`. Consider the case `rw [MvPowerSeries.subst_add ha]`. Consider the case `rw [← MvPowerSeries.coe_substAlgHom ha, map_add, MvPowerSeries.coe_substAlgHom]`.
-
-Rewrite using `[powerSeries_subst_subst_of_constantCoeff_zero lam (MvPowerSeries.constantCoeff_X 0) ha, powerSeries_subst_subst_of_constantCoeff_zero lam (MvPowerSeries.constantCoeff_X 1) ha, MvPowerSeries.subst_X ha, MvPowerSeries.subst_X ha]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Rewrite using `[hlog, hXs, Nat.cast_succ, map_add, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mulN_integral {lam : PowerSeries K} {Φ : MvPowerSeries (Fin 2) K} (h : LawD lam Φ) (n : ℕ) :
     ∃ e : PowerSeries K, constantCoeff e = 0 ∧ IntegralPS e ∧ lam.subst e = C (n : K) * lam := by

@@ -18,13 +18,13 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThKIwasawa
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ`. Distinguish the cases in `hg : B.IsGood σ ∧ G.IsGood B ∧ G₁.IsGood B`. Use `swap`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `X om om' om₁ om₁' hT hT₁`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd ⟨hT.base, hT.geo, hT₁.geo⟩ hg`. Take `⟨m, hm⟩` from `GlobalTheory.T.levi_embedding_exists_doubling_configuration F E σ B b a' G G₁ H H' hC hg.1 hg.2.1 hg.2.2`. Take `⟨C, hC0, hCf⟩` from `GlobalTheory.T.doubling_configuration_haar_integral_unfolding F E σ B b a' G G₁ H H' hC hg.1 hg.2.1 hg.2.2 K μK μ hK hμK hμ m hm`. Use `⟨C, hC0, ?_⟩` and prove the remaining obligations. Introduce `X om om' om₁ om₁' hT hT₁ 𝓓 h𝓓 Φ hΦ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hCf 𝓓 h𝓓 _ (GlobalTheory.T.doubling_eigen_intertwiner_triple_compatible F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ h) (GlobalTheory.T.doubling_eigen_intertwiner_local_factor hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ h) (GlobalTheory.T.dou …`. Use `congr 1`. Rewrite using `[← GlobalTheory.T.doubling_configuration_eigen_integral hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Φ hΦ h]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `l`. Use `congr 1`. Use function extensionality and compare the values at `g₀`. Rewrite using `[GlobalTheory.T.doubling_eigen_intertwiner_unramified hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ h l g₀ _ (hm l g₀) k.1]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawaConeTerm : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

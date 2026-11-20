@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.PolForm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Take `⟨J, hJ⟩` from `GlobalTheory.Avoid.exists_orderEmbedding_minor_ne_zero (⇑(Module.finBasis K V).dualBasis) (Module.finBasis K V).dualBasis.span_eq z hz`. Conclude with `hJ (h _)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wedge_two_eq_zero {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (z : ⋀[K]^2 V)
@@ -25,7 +25,7 @@ theorem wedge_two_eq_zero {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
   exact hJ (h _)
 
 /- English proof (translation)
-Rewrite using `[exteriorPower.pairingDual_ιMulti_ιMulti, Matrix.det_fin_two]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairingDual_ιMulti_two {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (f : Fin 2 → Module.Dual K V) (u v : V) :
@@ -36,7 +36,7 @@ theorem pairingDual_ιMulti_two {K V : Type*} [Field K] [AddCommGroup V] [Module
   ring
 
 /- English proof (translation)
-Establish `e : (![v, u] ∘ Equiv.swap (0 : Fin 2) 1) = ![u, v]`. Apply the tactic sequence `ext i; fin_cases i <;> rfl`. Rewrite using `[← e, AlternatingMap.map_swap _ _ (by decide)]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιMulti_two_swap {K V : Type*} [CommRing K] [AddCommGroup V] [Module K V] (u v : V) :
     exteriorPower.ιMulti K 2 ![u, v] = -exteriorPower.ιMulti K 2 ![v, u] := by
@@ -47,39 +47,37 @@ theorem ιMulti_two_swap {K V : Type*} [CommRing K] [AddCommGroup V] [Module K V
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `H K _ A _ g hA hg L hL ψ hψ`. Take `⟨hFree, hHodge, -, -, hDual⟩` from `H`. Take `⟨-, hfin, -, -, e, he⟩` from `hFree K A g hA hg`. Take `⟨-, ⟨N, hN⟩, -⟩` from `hHodge K A g hA hg`. Establish `hiso` using `(hDual K A g hA hg L hL ψ hψ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, a, b, hch, rfl⟩` from `hψ`. Set `pF` to `Submodule.projectionOnto (PrimitiveSubmodule A) N hN`. Set `pN` to `Submodule.projectionOnto N (PrimitiveSubmodule A) hN.symm`. Establish `hsplit : ∀ c : primDR A, ((pF c : primDR A)) + (pN c : primDR A) = c` using `Submodule.projection_add_projection_eq_self hN`. Establish `hpN : ∀ c ∈ PrimitiveSubmodule A, pN c = 0` using `fun c hc ↦ (Submodule.projectionOnto_apply_eq_zero_iff hN.symm).2 hc`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvan : ∀ x y : Module.Dual K (primDR A), ∑ k, (x (pN (a k)) * y (pN (b k)) - x (pN (b k)) * y (pN (a k))) = 0`. Introduce `x y`. Establish `hmem : ∀ z : Module.Dual K (primDR A), z ∘ₗ N.subtype ∘ₗ pN ∈ Fil A` using `fun z ↦ (Submodule.mem_dualAnnihilator _).2 fun c hc ↦ by simp [hpN c hc]`. Use `hiso _ (hmem x) _ (hmem y)` as an intermediate fact. Rewrite `this` using `[wedgeForm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `h0 : ∑ k, exteriorPower.ιMulti K 2 ![((pN (a k) : primDR A) : FirstDeRham (A.hom ≫ 𝟙 (Sp K))), ((pN (b k) : primDR A) : FirstDeRham _)] = 0` using `by haveI : FiniteDimensional K (FirstDeRham (A.hom ≫ 𝟙 (Sp K))) := hfin`. Apply `wedge_two_eq_zero` to reduce the goal to its premises. Introduce `f`. Rewrite using `[map_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pairingDual_ιMulti_two]`. Conclude with `hvan (f 0 ∘ₗ (primDR A).subtype) (f 1 ∘ₗ (primDR A).subtype)`. Establish `hform : ∀ c : PrimitiveSubmodule A, ∃ w : Form (A.hom ≫ 𝟙 (Sp K)), Form.cl _ w = ((c : primDR A) : FirstDeRham (A.hom ≫ 𝟙 (Sp K)))` using `fun c ↦ by`. Establish `hc` using `c.2`. Express the relevant statement in the definitionally equal form `((c : primDR A) : FirstDeRham (A.hom ≫ 𝟙 (Sp K))) ∈ F1 _ at hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[hodgeFiltration_eq_range]`. Conclude with `hc`. Use `choose form hform using hform`. Establish `hanti : ∀ u v : FirstDeRham (A.hom ≫ 𝟙 (Sp K)), cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) u v = -cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) v u` using `fun u v ↦ by`. Rewrite using `[← he, ← he, ← map_neg, ιMulti_two_swap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ a₁ a₂ b₁ b₂ : FirstDeRham (A.hom ≫ 𝟙 (Sp K)), cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (a₁ + a₂) (b₁ + b₂) = cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (a₁ + a₂) b₁ + cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (-b₂) a₁ + cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) a₂ b₂`. Introduce `a₁ a₂ b₁ b₂`. Simplify using `only [map_add, LinearMap.add_apply, map_neg, LinearMap.neg_apply]`. Rewrite using `[hanti a₁ b₂]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hZ : ∑ k, cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (pN (a k) : primDR A).1 (pN (b k) : primDR A).1 = 0`. Rewrite using `[← map_zero e, ← h0, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ (he _ _).symm`. Take `⟨ω, hωdef⟩ : ∃ ω : Fin n ⊕ Fin n → Form (A.hom ≫ 𝟙 (Sp K)), ω = Sum.elim (fun k ↦ form (pF (b k))) (fun k ↦ form (pF (a k)))` from `⟨_, rfl⟩`. Take `⟨c, hcdef⟩ : ∃ c : Fin n ⊕ Fin n → primDR A, c = Sum.elim a (fun k ↦ -(pN (b k) : primDR A))` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hωl : ∀ k, Form.cl (A.hom ≫ 𝟙 (Sp K)) (ω (Sum.inl k)) = (pF (b k) : primDR A).1` using `fun k ↦ by`. Rewrite using `[hωdef, Sum.elim_inl, hform]`. Establish `hωr : ∀ k, Form.cl (A.hom ≫ 𝟙 (Sp K)) (ω (Sum.inr k)) = (pF (a k) : primDR A).1` using `fun k ↦ by`. Rewrite using `[hωdef, Sum.elim_inr, hform]`. Establish `hcl : ∀ k, c (Sum.inl k) = a k` using `fun k ↦ by rw [hcdef, Sum.elim_inl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hcr : ∀ k, c (Sum.inr k) = -(pN (b k) : primDR A)` using `fun k ↦ by rw [hcdef, Sum.elim_inr]`. Establish `hω : ∀ k, Form.cl (A.hom ≫ 𝟙 (Sp K)) (ω k) ∈ primDR A` using `fun k ↦ by`. Break down `k with k | k` into its components or cases. Rewrite using `[hωl]`. Conclude with `Subtype.property _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hωr]`. Conclude with `Subtype.property _`. Establish `hsum : ∑ k, cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (c k).1 (Form.cl _ (ω k)) = ∑ k, cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (a k).1 (b k).1`. Establish `e3 : ∀ k, cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (a k).1 (b k).1 = cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (a k).1 (pF (b k) : primDR A).1 + cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (-(pN (b k) : primDR A).1) (pF (a k) : primDR A).1 + cup (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (pN (a k) : primDR A).1 ( …` using `fun k ↦ by`. Establish `ha` using `congrArg Subtype.val (hsplit (a k))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `congrArg Subtype.val (hsplit (b k))`. Rewrite `ha`, `hb` using `[Submodule.coe_add]`. Rewrite using `[← ha, ← hb]`. Conclude with `key _ _ _ _`. Rewrite using `[Fintype.sum_sum_type]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hcl, hcr, hωl, hωr, Submodule.coe_neg]`. Rewrite using `[Finset.sum_congr rfl fun k _ ↦ e3 k, Finset.sum_add_distrib, Finset.sum_add_distrib, hZ, add_zero]`. Use `⟨Fin n ⊕ Fin n, inferInstance, c, ω, hω, by rw [hsum]; exact hch, ?_⟩` and prove the remaining obligations. Introduce `f hf x`. Rewrite `hf` using `[Fil, Submodule.mem_dualAnnihilator]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfF : ∀ c : PrimitiveSubmodule A, f c = 0` using `fun c ↦ hf _ c.2`. Establish `hfa : ∀ k, f (a k) = f (pN (a k))` using `fun k ↦ by conv_lhs => rw [← hsplit (a k)]`. Rewrite using `[map_add, hfF, zero_add]`. Establish `hfb : ∀ k, f (b k) = f (pN (b k))` using `fun k ↦ by conv_lhs => rw [← hsplit (b k)]`. Rewrite using `[map_add, hfF, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxa : ∀ k, x (a k) = x (pF (a k)) + x (pN (a k))` using `fun k ↦ by conv_lhs => rw [← hsplit (a k)]`. Rewrite using `[map_add]`. Establish `hxb : ∀ k, x (b k) = x (pF (b k)) + x (pN (b k))` using `fun k ↦ by conv_lhs => rw [← hsplit (b k)]`. Rewrite using `[map_add]`. Establish `hxl : ∀ k, x ⟨_, hω (Sum.inl k)⟩ = x (pF (b k))` using `fun k ↦ congrArg x (Subtype.ext (hωl k))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxr : ∀ k, x ⟨_, hω (Sum.inr k)⟩ = x (pF (a k))` using `fun k ↦ congrArg x (Subtype.ext (hωr k))`. Establish `hv` using `hvan f x`. Rewrite using `[wedgeForm_apply, Fintype.sum_sum_type]`. Simplify using `only [hxl, hxr, hcl, hcr, map_neg]`. Simplify using `only [hfa, hfb, hxa, hxb]`.
-
-Rewrite using `[← Finset.sum_add_distrib, ← sub_eq_zero, ← Finset.sum_sub_distrib, ← hv]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chern_eq_sum_cup_form : GlobalTheory.Published.AbelianDeRham → ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (L : LB A.left), L.IsLB → ∀ ψ : LinearMap.BilinForm K (HdR A), IsPolForm (dp0 K) (𝟙 _) A L ψ → ∃ (I : Type) (_ : Fintype I) (c : I → primDR A) (ω : I → Form (A.hom ≫ 𝟙 (Sp K))) (hω : ∀ k, Form.cl _ (ω k) ∈ primDR A), IsChern (dp0 K) (A.hom ≫ 𝟙 (Sp K)) L (∑ k, cup _ (c k).1 (Form.cl _ (ω k))) ∧ ∀ f ∈ Fil A, ∀ x : HdR A, ψ f x = ∑ k, f (c k) * x ⟨_, hω k⟩ := by
   intro H K _ A _ g hA hg L hL ψ hψ

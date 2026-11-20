@@ -3,12 +3,12 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.RgBcC.Cxd2
 
 /- English proof (translation)
-The claim follows from `Alg.atTrace'`.
+A detailed English derivation is pending.
 -/
 theorem atTrace : AtTrace := Alg.atTrace'
 
 /- English proof (translation)
-The claim follows from `Alg.atTraceT'`.
+A detailed English derivation is pending.
 -/
 theorem atTraceT : AtTraceT := Alg.atTraceT'
 

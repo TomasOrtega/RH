@@ -6,13 +6,13 @@ import Formalism.LocalToGlobal.GlobalTheory.GL3.PSelfDual
 namespace Formalism.L2.PairingIndexBounds.Rec
 
 /- English proof (translation)
-The claim follows from `modelXi_of_parts Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.self_dual_lattice D`.
+A detailed English derivation is pending.
 -/
 theorem model_at_split_places_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.GL3Theta.modelXi D :=
   modelXi_of_parts Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.self_dual_lattice D
 
 /- English proof (translation)
-The claim follows from `movesCompose_of_parts Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.self_dual_lattice D`.
+A detailed English derivation is pending.
 -/
 theorem split_place_moves_compose (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.GL3Theta.movesCompose D :=
   movesCompose_of_parts Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.self_dual_lattice D

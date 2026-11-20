@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 namespace GlobalTheory.RootFactor
 
 /- English proof (translation)
-Establish `hCH : aeval D (X - C r) * aeval D q = 0`. Rewrite using `[← map_mul, ← h, Matrix.aeval_self_charpoly]`. Take `⟨s, hs⟩ : ∃ s : K[X], q = s * (X - C r) + C (q.eval r)` from `⟨q /ₘ (X - C r), by`. Establish `hmd` using `Polynomial.modByMonic_add_div q (X - C r)`. Rewrite `hmd` using `[Polynomial.modByMonic_X_sub_C_eq_C_eval]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_comm, add_comm]`. Conclude with `hmd.symm⟩`. Use `conv_lhs => arg 1`. Rewrite using `[hs]`. Rewrite using `[map_add, map_mul, aeval_C, add_mul, Matrix.mul_assoc, hCH, Matrix.mul_zero, zero_add, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_sq {K : Type} [Field K] {t : ℕ} (D : Matrix (Fin t) (Fin t) K) (r : K) (q : K[X])
     (h : D.charpoly = (X - C r) * q) : aeval D q * aeval D q = q.eval r • aeval D q := by
@@ -27,19 +27,15 @@ theorem aeval_sq {K : Type} [Field K] {t : ℕ} (D : Matrix (Fin t) (Fin t) K) (
     Algebra.smul_def]
 
 /- English proof (translation)
-Establish `hCH : aeval D (X - C r) * aeval D q = 0`. Rewrite using `[← map_mul, ← h, Matrix.aeval_self_charpoly]`. Establish `hDP : D * aeval D q = r • aeval D q`. Rewrite `hCH` using `[map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one, Matrix.sub_mul, sub_eq_zero, Matrix.smul_mul, Matrix.one_mul]`. Conclude with `hCH`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hchar : LinearMap.charpoly (Matrix.toLinAlgEquiv' D) = (X - C r) * q`. Rewrite using `[← h]`. Conclude with `Matrix.charpoly_toLin' D`. Establish `hmult : (LinearMap.charpoly (Matrix.toLinAlgEquiv' D)).rootMultiplicity r = 1`. Rewrite using `[hchar, Polynomial.rootMultiplicity_mul, Polynomial.rootMultiplicity_X_sub_C_self, Polynomial.rootMultiplicity_eq_zero (by simpa [Polynomial.IsRoot] using hq)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Conclude with `(Matrix.charpoly_monic D).ne_zero`. Establish `hle : LinearMap.range (aeval D q).mulVecLin ≤ Module.End.eigenspace (Matrix.toLinAlgEquiv' D) r`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Module.End.mem_eigenspace_iff, Matrix.toLinAlgEquiv'_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hDP, Matrix.smul_mulVec]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hEig : Module.End.HasEigenvalue (Matrix.toLinAlgEquiv' D) r`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, hchar]`. Simplify using `[Polynomial.IsRoot]`. Take `⟨v, hv⟩` from `hEig.exists_hasEigenvector`. Establish `hPv : Matrix.mulVec (aeval D q) v = q.eval r • v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.toLinAlgEquiv'_apply, ← Polynomial.aeval_algHom_apply]`. Conclude with `Module.End.aeval_apply_of_hasEigenvector hv`. Use `show Module.finrank K (LinearMap.range (aeval D q).mulVecLin) = 1`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Submodule.finrank_mono hle).trans (hmult ▸ LinearMap.finrank_eigenspace_le _ r)`.
-
-Rewrite using `[Nat.one_le_iff_ne_zero]`. Introduce `h0`. Rewrite `h0` using `[Submodule.finrank_eq_zero]`. Establish `hmem : Matrix.mulVec (aeval D q) v ∈ LinearMap.range (aeval D q).mulVecLin` using `⟨v, rfl⟩`. Rewrite `hmem` using `[h0, Submodule.mem_bot, hPv]`.
-
-Conclude with `smul_ne_zero hq hv.2 hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_rank {K : Type} [Field K] {t : ℕ} (D : Matrix (Fin t) (Fin t) K) (r : K) (q : K[X])
     (h : D.charpoly = (X - C r) * q) (hq : q.eval r ≠ 0) : (aeval D q).rank = 1 := by
@@ -78,9 +74,9 @@ theorem aeval_rank {K : Type} [Field K] {t : ℕ} (D : Matrix (Fin t) (Fin t) K)
     exact smul_ne_zero hq hv.2 hmem
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons c l ih`. Establish `key : b * (a * D * b - ρ c • (a * b)) = (D - ρ c • 1) * b`. Simplify using `only [Matrix.mul_sub, Matrix.mul_smul, ← Matrix.mul_assoc, hba, Matrix.one_mul, Matrix.sub_mul, Matrix.smul_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[List.map_cons, List.prod_cons, List.map_cons, List.prod_cons, map_mul, ← Matrix.mul_assoc, key, Matrix.mul_assoc, ih, ← Matrix.mul_assoc]`. Use `congr 2`. Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem aeval_list_prod_X_sub_C_mul_comm {K : Type} [Field K] {n t : ℕ} (a : Matrix (Fin n) (Fin t) K)
     (b : Matrix (Fin t) (Fin n) K) (hba : b * a = 1) (D : Matrix (Fin t) (Fin t) K) (ρ : ℕ → K)
@@ -99,7 +95,7 @@ private theorem aeval_list_prod_X_sub_C_mul_comm {K : Type} [Field K] {n t : ℕ
     simp [Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, aeval_list_prod_X_sub_C_mul_comm a b hba D ρ l, ← Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_eq {K : Type} [Field K] {n t : ℕ} (a : Matrix (Fin n) (Fin t) K) (b : Matrix (Fin t) (Fin n) K)
     (hba : b * a = 1) (D : Matrix (Fin t) (Fin t) K) (ρ : ℕ → K) (l : List ℕ) :
@@ -108,7 +104,7 @@ theorem prod_eq {K : Type} [Field K] {n t : ℕ} (a : Matrix (Fin n) (Fin t) K) 
   rw [Matrix.mul_assoc, aeval_list_prod_X_sub_C_mul_comm a b hba D ρ l, ← Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_multiset_prod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem prod_Ioc_one_eq_list_range'_prod {M : Type} [CommMonoid M] (f : ℕ → M) (t : ℕ) :
     ∏ c ∈ Finset.Ioc 1 t, f c = ((List.range' 2 (t - 1)).map f).prod := by
@@ -116,23 +112,23 @@ private theorem prod_Ioc_one_eq_list_range'_prod {M : Type} [CommMonoid M] (f : 
   rfl
 
 /- English proof (translation)
-Take `⟨a, b, hba, hab, hM⟩` from `GlobalTheory.BlockCharpoly.blockPol_eq_charpoly e he rfl`. Establish `hX : e * X₀ * e = X₀` using `by rw [h1, h2]`. Establish `hX' : a * (b * X₀ * a) * b = X₀` using `by conv_rhs => rw [← hX, ← hab]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hcp : (b * X₀ * a).charpoly = (X - C (ρ 1)) * ((List.range' 2 (t - 1)).map fun c => X - C (ρ c)).prod`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hM, hX, ← hP, Finset.Icc_eq_cons_Ioc (by omega : 1 ≤ t), Finset.prod_cons, prod_Ioc_one_eq_list_range'_prod]`. Establish `hev : (((List.range' 2 (t - 1)).map fun c => X - C (ρ c)).prod).eval (ρ 1) = ∏ c ∈ Finset.Ioc 1 t, (ρ 1 - ρ c)`. Rewrite using `[prod_Ioc_one_eq_list_range'_prod, Polynomial.eval_list_prod, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Simplify using the standard rewrite rules. Establish `hne : (((List.range' 2 (t - 1)).map fun c => X - C (ρ c)).prod).eval (ρ 1) ≠ 0`. Rewrite using `[hev, Finset.prod_ne_zero_iff]`. Introduce `c hc hzero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[Finset.mem_Ioc]`. Use `hρ (by simp only [Finset.coe_Icc, Set.mem_Icc]; omega) (by simp only [Finset.coe_Icc, Set.mem_Icc]; omega) (sub_eq_zero.mp hzero)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `heE : e * ((List.range' 2 (t - 1)).map fun c => X₀ - ρ c • e).prod = ((List.range' 2 (t - 1)).map fun c => X₀ - ρ c • e).prod`. Take `⟨k, hk⟩ : ∃ k, t - 1 = k + 1` from `⟨t - 2, by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk, List.range'_succ, List.map_cons, List.prod_cons, ← Matrix.mul_assoc, Matrix.mul_sub, Matrix.mul_smul, h1, he]`. Establish `hE : ((List.range' 2 (t - 1)).map fun c => X₀ - ρ c • e).prod = a * aeval (b * X₀ * a) ((List.range' 2 (t - 1)).map fun c => X - C (ρ c)).prod * b`. Rewrite using `[← heE, ← prod_eq a b hba (b * X₀ * a) ρ, hab]`. Use `congr 2`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Rewrite using `[hX']`. Establish `hsq` using `aeval_sq (b * X₀ * a) (ρ 1) _ hcp`. Establish `hrk` using `aeval_rank (b * X₀ * a) (ρ 1) _ hcp hne`. Rewrite using `[hE, ← hev]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `aeval (b * X₀ * a) ((List.range' 2 (t - 1)).map fun c => X - C (ρ c)).prod = R at hsq hrk`. Prove the components needed by the constructor for the conclusion. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `((Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)).trans hrk.le`. Establish `hR : R = b * (a * R * b) * a`.
+Replace the chosen expression with an arbitrary variable. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Matrix.mul_assoc, hba, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hba, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc b a, hba, Matrix.one_mul]`. Use `_ = _ := by rw [hsq, Matrix.mul_smul, Matrix.smul_mul]`.
+A detailed English derivation is pending.
 -/
 theorem field_case {K : Type} [Field K] (n t : ℕ) (e X₀ : Matrix (Fin n) (Fin n) K) (ρ : ℕ → K) (ht : 2 ≤ t)
     (he : e * e = e) (h1 : e * X₀ = X₀) (h2 : X₀ * e = X₀) (hρ : Set.InjOn ρ (Finset.Icc 1 t : Set ℕ))
@@ -196,7 +192,7 @@ theorem field_case {K : Type} [Field K] (n t : ℕ) (e X₀ : Matrix (Fin n) (Fi
       _ = _ := by rw [hsq, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Unfold `blockPol`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockPol_map {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B)
     (e M : Matrix (Fin n) (Fin n) A) : (blockPol e M).map f = blockPol (e.map f) (M.map f) := by
@@ -207,9 +203,9 @@ theorem blockPol_map {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →
   by_cases hij : i = j <;> simp [hij]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons c l ih`. Rewrite using `[List.map_cons, List.prod_cons, Matrix.map_mul, ih, List.map_cons, List.prod_cons]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_list_prod' {O K : Type} [CommRing O] [CommRing K] (f : O →+* K) {n : ℕ}
     (e X₀ : Matrix (Fin n) (Fin n) O) (ρ : ℕ → O) (l : List ℕ) :
@@ -223,7 +219,7 @@ private theorem map_list_prod' {O K : Type} [CommRing O] [CommRing K] (f : O →
     simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_smul_eq_smul_map {O K : Type} [CommRing O] [CommRing K] (f : O →+* K) {n : ℕ}
     (s : O) (M : Matrix (Fin n) (Fin n) O) : (s • M).map f = f s • M.map f := by
@@ -231,9 +227,9 @@ private theorem map_smul_eq_smul_map {O K : Type} [CommRing O] [CommRing K] (f :
   simp
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (toFr O)` using `IsFractionRing.injective O (FractionRing O)`. Take `⟨hr, hsq⟩` from `field_case (K := FractionRing O) n t (e.map (toFr O)) (X₀.map (toFr O)) (fun c => toFr O (ρ c)) ht (by rw [← Matrix.map_mul, he]) (by rw [← Matrix.map_mul, h1]) (by rw [← Matrix.map_mul, h2]) (fun x hx y hy hxy => hρ hx hy (hinj hxy)) (by rw [← blockPol_map, ← hP, Polynomial.map_ …`. Use `⟨by rw [map_list_prod']; exact hr, ?_⟩` and prove the remaining obligations. Establish `hmap : (((List.range' 2 (t - 1)).map fun c => X₀ - ρ c • e).prod * ((List.range' 2 (t - 1)).map fun c => X₀ - ρ c • e).prod).map (toFr O) = ((∏ c ∈ Finset.Ioc 1 t, (ρ 1 - ρ c)) • ((List.range' 2 (t - 1)).map fun c => X₀ - ρ c • e).prod).map (toFr O)`. Rewrite using `[Matrix.map_mul, map_smul_eq_smul_map, map_list_prod', hsq, map_prod]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_sub]`. Use extensionality with `i j`. Conclude with `hinj (congrFun (congrFun hmap i) j)`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem rank_one_and_sq {O : Type} [CommRing O] [IsDomain O] (n t : ℕ) (e X₀ : Matrix (Fin n) (Fin n) O)
     (ρ : ℕ → O) (ht : 2 ≤ t)

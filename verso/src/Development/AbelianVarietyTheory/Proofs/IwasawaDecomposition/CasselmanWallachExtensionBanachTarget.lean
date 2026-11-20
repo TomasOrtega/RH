@@ -15,7 +15,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Introduce `X hX`. Take `⟨Y, -, rfl⟩` from `List.mem_map.1 hX`. Conclude with `Y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cwb_val_mem (l : List (lie (Jm ε))) : ∀ X ∈ l.map Subtype.val, X ∈ lieSet ε := by
   intro X hX
@@ -23,7 +23,7 @@ theorem cwb_val_mem (l : List (lie (Jm ε))) : ∀ X ∈ l.map Subtype.val, X �
   exact Y.2
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hv`. Consider the case `cons X l ih`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieSet ε` using `fun Y hY => hl Y (List.mem_cons_of_mem X hY)`. Conclude with `isKFin_dRep n ε H σ h _ (ih hl') X (hl X (by simp))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cwb_isKFin_Dw (h : Std ε σ) {v : H} (hv : IsKFin ε σ v) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) :
     IsKFin ε σ (Dw σ l v) := by
@@ -34,7 +34,7 @@ theorem cwb_isKFin_Dw (h : Std ε σ) {v : H} (hv : IsKFin ε σ v) {l : List (M
     exact isKFin_dRep n ε H σ h _ (ih hl') X (hl X (by simp))
 
 /- English proof (translation)
-Establish `hG : IsUnit (Formalism.REAL.Jm ε)` using `GlobalTheory.SmVec.gram_unit (ε := ε) (P := 1) isUnit_one (by simp)`. Establish `hh : (Formalism.REAL.Jm ε).IsHermitian` using `GlobalTheory.SmVec.gram_herm (ε := ε) (P := 1) (by simp)`. Establish `hd : (Formalism.REAL.Jm ε).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp hG).ne_zero`. Conclude with `GlobalTheory.HolDict.LieAct.dRep_lin hh hd h.1 hw a hX hY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cwb_dRep_lin (h : Std ε σ) {w : H} (hw : Sm ε σ w) (a : ℝ) {X Y : Mx n} (hX : X ∈ lieSet ε)
     (hY : Y ∈ lieSet ε) : dRep σ (a • X + Y) w = (a : ℂ) • dRep σ X w + dRep σ Y w := by
@@ -44,9 +44,9 @@ theorem cwb_dRep_lin (h : Std ε σ) {w : H} (hw : Sm ε σ w) (a : ℝ) {X Y : 
   exact GlobalTheory.HolDict.LieAct.dRep_lin hh hd h.1 hw a hX hY
 
 /- English proof (translation)
-Establish `hG : IsUnit (Formalism.REAL.Jm ε)` using `GlobalTheory.SmVec.gram_unit (ε := ε) (P := 1) isUnit_one (by simp)`. Establish `hxy : x - y ∈ GlobalTheory.SmVec.smSub (Formalism.REAL.Jm ε) σ` using `Submodule.sub_mem _ hx hy`. Establish `e` using `GlobalTheory.SmVec.word_add hG h.1 hl hy hxy`. Establish `e' : Dw σ l x = GlobalTheory.SmVec.word σ l (y + (x - y))` using `by rw [add_sub_cancel]; rfl`. Rewrite using `[e', e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.SmVec.word σ l y + GlobalTheory.SmVec.word σ l (x - y) - GlobalTheory.SmVec.word σ l y = GlobalTheory.SmVec.word σ l (x - y)`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws.
 -/
 theorem cwb_Dw_sub (h : Std ε σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) {x y : H} (hx : Sm ε σ x)
     (hy : Sm ε σ y) : Dw σ l x - Dw σ l y = Dw σ l (x - y) := by
@@ -61,17 +61,17 @@ theorem cwb_Dw_sub (h : Std ε σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ li
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {ρ : Mx n → (E →L[ℂ] E)}
 
 /- English proof (translation)
-Establish `hG : IsUnit (Formalism.REAL.Jm ε)` using `GlobalTheory.SmVec.gram_unit (ε := ε) (P := 1) isUnit_one (by simp)`. Establish `happ : ∀ (L₁ L₂ : List (Mx n)) (x : H), Dw σ (L₁ ++ L₂) x = Dw σ L₁ (Dw σ L₂ x)` using `fun L₁ L₂ x => GlobalTheory.SmVec.word_append (π := σ) L₁ L₂ x`. Establish `hcons : ∀ (Z : Mx n) (L : List (Mx n)) (x : H), Dw σ (Z :: L) x = dRep σ Z (Dw σ L x)` using `fun _ _ _ => rfl`. Establish `hK : ∀ l : List (lie (Jm ε)), IsKFin ε σ (Dw σ (l.map Subtype.val) v)` using `fun l => cwb_isKFin_Dw h hv (cwb_val_mem l)`. Establish `hS : ∀ l : List (lie (Jm ε)), Sm ε σ (Dw σ (l.map Subtype.val) v)` using `fun l => h.2.2.1 _ (hK l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ X : lie (Jm ε), (X : Mx n) ∈ lieSet ε` using `fun X => cwb_val_mem [X] _ (by simp)`. Unfold `Fam`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l X`. Conclude with `hd X (hmem X) _ (hK l)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l₁ l₂ a X Y`. Establish `hc : ((a • X + Y : lie (Jm ε)) : Mx n) = a • (X : Mx n) + (Y : Mx n)` using `rfl`. Simplify using `only [List.map_append, List.map_cons, happ, hcons, hc]`. Establish `hw` using `hS l₂`. Rewrite using `[cwb_dRep_lin h hw a (hmem X) (hmem Y)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : dRep σ (X : Mx n) (Dw σ (l₂.map Subtype.val) v) ∈ GlobalTheory.SmVec.smSub (Formalism.REAL.Jm ε) σ` using `GlobalTheory.SmVec.dRep_mem hG h.1 hw (hmem X)`. Establish `h2 : dRep σ (Y : Mx n) (Dw σ (l₂.map Subtype.val) v) ∈ GlobalTheory.SmVec.smSub (Formalism.REAL.Jm ε) σ` using `GlobalTheory.SmVec.dRep_mem hG h.1 hw (hmem Y)`. Establish `e1` using `GlobalTheory.SmVec.word_add hG h.1 (cwb_val_mem l₁) (Submodule.smul_mem _ (a : ℂ) h1) h2`. Establish `e2` using `GlobalTheory.SmVec.word_smul hG h.1 (cwb_val_mem l₁) (a : ℂ) h1`. Express the relevant statement in the definitionally equal form `T₀ (GlobalTheory.SmVec.word σ _ _) = _ • T₀ (GlobalTheory.SmVec.word σ _ _) + T₀ (GlobalTheory.SmVec.word σ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, map_add, map_smul]`. Introduce `l₁ l₂ X Y Z hZ`. Simplify using `only [List.map_append, List.map_cons, happ, hcons]`. Establish `hw` using `hS l₂`. Establish `h1 : dRep σ (X : Mx n) (dRep σ (Y : Mx n) (Dw σ (l₂.map Subtype.val) v)) ∈ GlobalTheory.SmVec.smSub (Formalism.REAL.Jm ε) σ` using `GlobalTheory.SmVec.dRep_mem hG h.1 (GlobalTheory.SmVec.dRep_mem hG h.1 hw (hmem Y)) (hmem X)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : dRep σ (Y : Mx n) (dRep σ (X : Mx n) (Dw σ (l₂.map Subtype.val) v)) ∈ GlobalTheory.SmVec.smSub (Formalism.REAL.Jm ε) σ` using `GlobalTheory.SmVec.dRep_mem hG h.1 (GlobalTheory.SmVec.dRep_mem hG h.1 hw (hmem X)) (hmem Y)`. Rewrite using `[← map_sub, cwb_Dw_sub h (cwb_val_mem l₁) h1 h2, dRep_bracket n ε H σ h _ hw _ (hmem X) _ (hmem Y), ← hZ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cwb_mem_Fam (h : Std ε σ) {T₀ : H →ₗ[ℂ] E}
     (hd : ∀ X ∈ lieSet ε, ∀ v, IsKFin ε σ v →
@@ -117,9 +117,9 @@ theorem cwb_mem_Fam (h : Std ε σ) {T₀ : H →ₗ[ℂ] E}
       dRep_bracket n ε H σ h _ hw _ (hmem X) _ (hmem Y), ← hZ]
 
 /- English proof (translation)
-Take `⟨S, hS, hvS, hSK⟩` from `hv`. Take `⟨S', hS', hwS, hSK'⟩` from `hw`. Use `⟨S ⊔ S', ?_, Submodule.add_mem_sup hvS hwS, ?_⟩` and prove the remaining obligations. Use `haveI := hS haveI := hS' infer_instance`. Unfold `IsKStableOn at hSK hSK' ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hSK g hg y hy) (hSK' g hg z hz)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isKFin_add {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {σ : Mx n → (H →L[ℂ] H)} {v w : H} (hv : IsKFin ε σ v) (hw : IsKFin ε σ w) :
@@ -137,7 +137,7 @@ private theorem isKFin_add {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAdd
     exact Submodule.add_mem_sup (hSK g hg y hy) (hSK' g hg z hz)
 
 /- English proof (translation)
-Take `⟨S, hS, hvS, hSK⟩` from `hv`. Conclude with `⟨S, hS, S.smul_mem c hvS, hSK⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isKFin_smul {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {σ : Mx n → (H →L[ℂ] H)} (c : ℂ) {v : H} (hv : IsKFin ε σ v) :
@@ -146,9 +146,9 @@ private theorem isKFin_smul {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAd
   exact ⟨S, hS, S.smul_mem c hvS, hSK⟩
 
 /- English proof (translation)
-Use `⟨⊥, inferInstance, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Unfold `IsKStableOn`. Introduce `g _ x hx`. Rewrite `hx` using `[Submodule.mem_bot]`. Rewrite using `[hx, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 private theorem isKFin_zero {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {σ : Mx n → (H →L[ℂ] H)} : IsKFin ε σ (0 : H) := by
@@ -160,7 +160,7 @@ private theorem isKFin_zero {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAd
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hk`. Establish `hu' : star k * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hu`. Use `show kᴴ * Jm ε * k = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, show kᴴ * k = 1 from hu', Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_UJset_of_mem_Kset_iwasawa_decomposition {n : ℕ} {ε : Fin n → Bool} {k : Mx n} (hk : k ∈ Kset ε) : k ∈ UJset ε := by
   obtain ⟨hu, hc⟩ := hk
@@ -169,11 +169,11 @@ private theorem mem_UJset_of_mem_Kset_iwasawa_decomposition {n : ℕ} {ε : Fin 
   rw [Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, show kᴴ * k = 1 from hu', Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hG : IsUnit (Formalism.REAL.Jm ε)` using `GlobalTheory.SmVec.gram_unit (ε := ε) (P := 1) isUnit_one (by simp)`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieSet ε` using `fun Y hY => hl Y (List.mem_cons_of_mem X hY)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hX : X ∈ lieSet ε` using `hl X (by simp)`. Express the relevant statement in the definitionally equal form `dRep σ X (Dw σ l (σ g w)) = σ g (dRep σ (g⁻¹ * X * g) (Dw σ (l.map fun X => g⁻¹ * X * g) w))`. Rewrite using `[ih hl']`. Establish `hs : Dw σ (l.map fun X => g⁻¹ * X * g) w ∈ GlobalTheory.SmVec.smSub (Formalism.REAL.Jm ε) σ`. Establish `hl'' : ∀ Y ∈ l.map (fun X => g⁻¹ * X * g), Y ∈ GlobalTheory.SmVec.lieG (Formalism.REAL.Jm ε)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y hY`. Take `⟨Z, hZ, rfl⟩` from `List.mem_map.1 hY`. Conclude with `GlobalTheory.SmVec.conj_mem_lieG hG hg (hl' Z hZ)`. Conclude with `GlobalTheory.SmVec.word_mem hG h.1 hl'' hw`. Conclude with `GlobalTheory.SmVec.dRep_rep hG h.1 hs hg hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem dw_apply_sigma_eq_sigma_dw_conj {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (h : Std ε σ) {g : Mx n}
@@ -199,31 +199,27 @@ private theorem dw_apply_sigma_eq_sigma_dw_conj {n : ℕ} {ε : Fin n → Bool} 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hCW n ε H _ _ _ σ hσ E _ _ _ ρ hρ T₀ hK hd`. Unfold `GlobalTheory.Published.CasselmanWallach at hCW`. Take `⟨hcl, p, π, dπ, hsm, hπ, hdπ, hp0⟩` from `GlobalTheory.T.smooth_vectors_moderate_growth_smooth_frechet_rep n ε E ρ hρ`. Use `haveI : IsUniformAddGroup (Fam ε ρ) := (Fam ε ρ).toAddSubgroup.isUniformAddGroup`. Use `haveI : CompleteSpace (Fam ε ρ) := hcl.completeSpace_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : IsUnit (Formalism.REAL.Jm ε)` using `GlobalTheory.SmVec.gram_unit (ε := ε) (P := 1) isUnit_one (by simp)`. Establish `happ : ∀ (L₁ L₂ : List (Mx n)) (x : H), Dw σ (L₁ ++ L₂) x = Dw σ L₁ (Dw σ L₂ x)` using `fun L₁ L₂ x => GlobalTheory.SmVec.word_append (π := σ) L₁ L₂ x`. Establish `hcons : ∀ (Z : Mx n) (L : List (Mx n)) (x : H), Dw σ (Z :: L) x = dRep σ Z (Dw σ L x)` using `fun _ _ _ => rfl`. Establish `hnil : ∀ x : H, Dw σ [] x = x` using `fun _ => rfl`. Set `KF : Submodule ℂ H` to `{ carrier := {v | IsKFin ε σ v} add_mem' := fun ha hb => isKFin_add ha hb zero_mem' := isKFin_zero smul_mem' := fun c _ hv => isKFin_smul c hv }`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `J : KF →ₗ[ℂ] Fam ε ρ` to `{ toFun := fun v => ⟨fun l => T₀ (Dw σ (l.map Subtype.val) v.1), cwb_mem_Fam hσ hd v.2⟩ map_add' := fun v w => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `l`. Establish `e` using `GlobalTheory.SmVec.word_add hG hσ.1 (cwb_val_mem l) (hσ.2.2.1 _ v.2) (hσ.2.2.1 _ w.2)`. Use `show T₀ (Dw σ _ (v.1 + w.1)) = T₀ (Dw σ _ v.1) + T₀ (Dw σ _ w.1)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← map_add]`. Conclude with `congrArg T₀ e`. Use the proof step `map_smul' := fun c v => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.SmVec.word_smul hG hσ.1 (cwb_val_mem l) c (hσ.2.2.1 _ v.2)`. Use `show T₀ (Dw σ _ (c • v.1)) = c • T₀ (Dw σ _ v.1)`. Rewrite using `[← map_smul]`. Conclude with `congrArg T₀ e }`. Take `⟨T₁, hT₁⟩` from `LinearMap.exists_extend J`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT₁v : ∀ (v : H) (hv : IsKFin ε σ v), T₁ v = J ⟨v, hv⟩` using `fun v hv => LinearMap.congr_fun hT₁ ⟨v, hv⟩`. Establish `hJ : ∀ (v : H) (hv : IsKFin ε σ v) (l : List (lie (Jm ε))), (J ⟨v, hv⟩).1 l = T₀ (Dw σ (l.map Subtype.val) v)` using `fun _ _ _ => rfl`. Establish `hGK : IsGKMap ε σ π dπ T₁`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `k hk v hv`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hk' : k ∈ UJset ε` using `mem_UJset_of_mem_Kset_iwasawa_decomposition hk`. Establish `hkv : IsKFin ε σ (σ k v)`. Take `⟨S, hS, hvS, hSK⟩` from `hv`. Conclude with `⟨S, hS, hSK k hk v hvS, hSK⟩`. Rewrite using `[hT₁v _ hkv, hT₁v _ hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `l`. Rewrite using `[hπ k hk' (J ⟨v, hv⟩) l, hJ, hJ, dw_apply_sigma_eq_sigma_dw_conj hσ hk' _ (cwb_val_mem l) (hσ.2.2.1 _ hv)]`. Establish `hl : (l.map Subtype.val).map (fun X => k⁻¹ * X * k) = (l.map (adInv hk')).map Subtype.val`. Simplify using `only [List.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[hl, hK k hk _ (cwb_isKFin_Dw hσ hv (cwb_val_mem _))]`. Introduce `X hX v hv`. Establish `hXv : IsKFin ε σ (dRep σ X v)` using `isKFin_dRep n ε H σ hσ v hv X hX`. Rewrite using `[hT₁v _ hXv, hT₁v _ hv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `l`. Rewrite using `[show (dπ X (J ⟨v, hv⟩)).1 l = (J ⟨v, hv⟩).1 (l ++ [⟨X, hX⟩]) from hdπ ⟨X, hX⟩ _ l, hJ, hJ]`. Simplify using `only [List.map_append, List.map_cons, List.map_nil, happ, hcons, hnil]`. Apply the tactic sequence `try rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T', hT'0, hSG, -⟩` from `hCW n ε H σ hσ.1 hσ.2.1 (Fam ε ρ) p π dπ hsm T₁ hGK`. Unfold `IsSmoothGMap at hSG`. Take `⟨hTeq, hTbd⟩` from `hSG`. Use `⟨(GlobalTheory.TypeSum.SmoothFrechet.ev ρ []).comp T', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv show (T' v).1 [] = T₀ v`.
-
-Rewrite using `[hT'0 v hv, hT₁v v hv]`. Both sides reduce to the same expression. Introduce `g hg w hw show (T' (σ g w)).1 [] = ρ g ((T' w).1 [])`. Rewrite using `[hTeq g hg w hw, hπ g hg (T' w) []]`. Both sides reduce to the same expression.
-
-Take `⟨S, C, hS, hSC⟩` from `hTbd 0`. Conclude with `⟨S, C, hS, fun w hw => (hp0 (T' w)).trans (hSC w hw)⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem casselmanWallach_banach : GlobalTheory.Published.CasselmanWallach → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (ρ : Mx n → (E →L[ℂ] E)), ModRep ε ρ → ∀ T₀ : H →ₗ[ℂ] E, (∀ k ∈ Kset ε, ∀ v, IsKFin ε σ v → T₀ (σ k v) = ρ k (T₀ v)) → (∀ X ∈ lieSet ε, ∀ v, IsKFin ε σ v → HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • X)) (T₀ v)) (T₀ (dRep σ X v)) 0) → ∃ T : H →ₗ[ℂ] E, (∀ v, IsKFin ε σ v → T v = T₀ v) ∧ (∀ g ∈ UJset ε, ∀ w, Sm ε σ w → T (σ g w) = ρ g (T w)) ∧ ∃ (S : List (List (Mx n))) (C : ℝ), Words (lieSet ε) S ∧ ∀ w, Sm ε σ w → ‖T w‖ ≤ C * sobNorm σ S w := by
   intro hCW n ε H _ _ _ σ hσ E _ _ _ ρ hρ T₀ hK hd

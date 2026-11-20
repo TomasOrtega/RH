@@ -24,13 +24,11 @@ def sw (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
 variable (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `(Subring.closure_le (t := (locOrder v).toSubring.comap (sw v).toRingHom)).2 ?_ hz` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨_, x, rfl⟩, rfl⟩ | ⟨a, rfl⟩)`. Conclude with `locEmb_mem_locOrder v x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(locOrder v).algebraMap_mem ⟨a.1, a.2⟩`. Introduce `hz`. Establish `key : ∀ y ∈ locOrder v, (sw v).symm y ∈ intV E v`. Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨a, a, rfl⟩, rfl⟩)`. Consider the case `algebraMap r => exact Subring.subset_closure (Or.inr ⟨⟨r.1, r.2⟩, rfl⟩)`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Simplify using `using key _ hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_intV_iff (z : E ⊗[maximalRealSubfield E] v.adicCompletion (maximalRealSubfield E)) :
     z ∈ intV E v ↔ sw v z ∈ locOrder v := by
@@ -54,21 +52,19 @@ theorem mem_intV_iff (z : E ⊗[maximalRealSubfield E] v.adicCompletion (maximal
     simpa using key _ hz
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `(locLattice v N).zero_mem`. Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy` as an intermediate fact.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`. Use `smul_mem_locLattice v ((mem_intV_iff v _).1 c.2) hx` as an intermediate fact.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `map_mul (sw v) _ _`. Introduce `hx`. Establish `key : ∀ y ∈ locLattice v N, (fun i => (sw v).symm (y i)) ∈ latS (F` using `maximalRealSubfield E) (v.adicCompletion (maximalRealSubfield E)) (intV E v) N := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`. Establish `hc : (sw v).symm (algebraMap _ (LocAlg v) c) ∈ intV E v` using `(mem_intV_iff v _).2 (by simpa using (locOrder v).algebraMap_mem c)`. Use `Submodule.smul_mem _ (⟨_, hc⟩ : intV E v) hx` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Conclude with `map_mul (sw v).symm _ _`. Simplify using `using key _ hx`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_latS_iff {r : ℕ} (N : Submodule (𝓞 E) (Fin r → E))
     (x : Fin r → E ⊗[maximalRealSubfield E] v.adicCompletion (maximalRealSubfield E)) :
@@ -117,7 +113,7 @@ theorem mem_latS_iff {r : ℕ} (N : Submodule (𝓞 E) (Fin r → E))
     simpa using key _ hx
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sw_sigR (hc : CMData (maximalRealSubfield E) E)
     (z : E ⊗[maximalRealSubfield E] v.adicCompletion (maximalRealSubfield E)) :
@@ -128,7 +124,7 @@ theorem sw_sigR (hc : CMData (maximalRealSubfield E) E)
   | tmul a e => rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Pj.unramBridge_holds E fun P hP => by obtain ⟨θ, t, e1, e2⟩ := hc.cmUnram.2.2 P hP refine ⟨θ, ?_⟩ have : RingOfIntegers.mapRingEquiv (IsCMField.complexConj E : E ≃+* E) θ = t := RingOfIntegers.ext e1.symm rwa [this]`.
+A detailed English derivation is pending.
 -/
 theorem unramified (hc : CMData (maximalRealSubfield E) E) :
     Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) :=
@@ -140,23 +136,21 @@ theorem unramified (hc : CMData (maximalRealSubfield E) E) :
     rwa [this]
 
 /- English proof (translation)
-Use `unramified hc` as an intermediate fact. Establish `hG : ∀ a b, ReciprocityTheory.ChartRestriction.G.FD.cc (Jᵀ a b) = Jᵀ b a` using `fun a b => congrFun (congrFun hJ a) b`. Establish `hd' : Jᵀ.det ≠ 0`. Rewrite using `[Matrix.det_transpose]`. Conclude with `hd.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh : ∀ x y, ReciprocityTheory.ChartRestriction.G.FD.herm Jᵀ x y = hform (hc.sig : E →+* E) J y x`. Introduce `x y`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.herm hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `x j * J i j * ReciprocityTheory.ChartRestriction.G.FD.cc (y i) = ReciprocityTheory.ChartRestriction.G.FD.cc (y i) * J i j * x j`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∀ a : E, a ∈ (algebraMap (𝓞 E) E).range ↔ IsIntegral ℤ a`. Introduce `a`. Prove the components needed by the constructor for the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, rfl⟩`. Conclude with `b.isIntegral_coe`. Introduce `h`. Conclude with `⟨⟨a, h⟩, rfl⟩`. Establish `hsd : ∀ x, x ∈ N ↔ ∀ y ∈ N, IsIntegral ℤ (ReciprocityTheory.ChartRestriction.G.FD.herm Jᵀ x y)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `: x ∈ dualSet (hc.sig : E →+* E) J N ↔ x ∈ N` using `by rw [hN.2.2]; rfl`. Rewrite using `[← this]`. Simplify using `only [hh, ← hint]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, h1, h2⟩` from `exists_orthonormal_frame hG hd' ⟨Module.Finite.iff_fg.1 hN.1, hN.2.1⟩ hsd v`. Establish `h3` using `congrArg Matrix.transpose h1`. Rewrite `h3` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc, Matrix.transpose_one]`. Establish `hb : ∀ g : GL (Fin r) (LocAlg v), (bc (sw v).symm.toRingHom g).1.map (sw v) = g.1`. Introduce `g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Conclude with `(sw v).apply_symm_apply _`. Use `⟨bc (sw v).symm.toRingHom h, ?_, fun x => ?_⟩` and prove the remaining obligations. Apply `Matrix.map_injective (f := (sw v).toRingHom) (sw v).injective beta_reduce` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), ← h3]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use `congr 1`. Use extensionality with `i j`. Conclude with `(sw_sigR v hc _).trans (congrArg (locConj v) ((sw v).apply_symm_apply _))`. Conclude with `hb h`.
-
-Rewrite using `[mem_latS_iff, h2, ← map_inv]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[mem_intV_iff, ← hb h⁻¹]`. Use `RingHom.map_mulVec (sw v).toRingHom (bc (sw v).symm.toRingHom h⁻¹).1 x i` as an intermediate fact. Conclude with `Iff.of_eq (congrArg (· ∈ locOrder v) this.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_frame_cm (hc : CMData (maximalRealSubfield E) E) {r : ℕ}
     (J : Matrix (Fin r) (Fin r) E) (hJ : IsHerm (hc.sig : E →+* E) J) (hd : IsUnit J.det)
@@ -218,7 +212,7 @@ theorem exists_frame_cm (hc : CMData (maximalRealSubfield E) E) {r : ℕ}
 end CM
 
 /- English proof (translation)
-Introduce `D N v hN`. Use `letI := D.host.cmStar`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Conclude with `exists_frame_cm v D.sp.cm D.sp.gram0 D.sp.baseGram_isHermitian (GlobalTheory.OverCompare.gram_matrix_det_unit D.sp) N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_frame : ∀ (D : D7) (N : Submodule (𝓞 D.host.E) (Fin D.R.k → D.host.E)) (v : HeightOneSpectrum (𝓞 D.host.F)), letI := D.host.cmStar; GlobalTheory.IndefiniteRowSideFullHecke.SelfDualStabiliserIndex.IsSelfDualLat (D.sp.cm.sig : D.host.E →+* D.host.E) D.sp.gram0 N → ∃ b : GL (Fin D.R.k) (D.host.E ⊗[D.host.F] v.adicCompletion D.host.F), cT (Formalism.UG.sigR D.sp.cm.sig (v.adicCompletion D.host.F)) b.1 * D.sp.gram0.map (inclE (F := D.host.F) (v.adicCompletion D.host.F)) * b.1 = 1 ∧ ∀ x, x ∈ latS (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) N ↔ ∀ i, ((b⁻¹).1 *ᵥ x) i ∈ intV D.host.E v := by
   intro D N v hN

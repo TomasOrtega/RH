@@ -21,17 +21,15 @@ namespace Tw.SchrTestVec
 open _root_.GlobalTheory
 
 /- English proof (translation)
-Use `⟨(B : Set (κ → K)).indicator fun _ => (1 : ℂ), ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ (B : Set (κ → K))`. Use `filter_upwards [hBo.mem_nhds hx] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hy]`. Use `filter_upwards [hBc.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]`. Conclude with `HasCompactSupport.intro hBc fun x hx => Set.indicator_of_notMem hx _`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun h 0` as an intermediate fact. Rewrite `this` using `[Set.indicator_of_mem (show (0 : κ → K) ∈ (B : Set (κ → K)) from B.zero_mem)]`. Conclude with `one_ne_zero this`. Establish `hc : Continuous fun z : ((κ → K) × (κ → K)) × (κ → K) => z.2 ⬝ᵥ z.1.2 + ⅟(2 : K) * (z.1.1 ⬝ᵥ z.1.2)` using `(continuous_snd.dotProduct continuous_fst.snd).add (continuous_const.mul (continuous_fst.fst.dotProduct continuous_fst.snd))`. Establish `h1 : ∀ᶠ w : (κ → K) × (κ → K) in nhds 0, ∀ x ∈ (B : Set (κ → K)), x ⬝ᵥ w.2 + ⅟(2 : K) * (w.1 ⬝ᵥ w.2) ∈ U₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hBc.eventually_forall_of_forall_eventually (P := fun (w : (κ → K) × (κ → K)) (x : κ → K) => x ⬝ᵥ w.2 + ⅟(2 : K) * (w.1 ⬝ᵥ w.2) ∈ U₀) fun x _ => ?_` and prove the remaining obligations. Use `(hU₀.preimage hc).mem_nhds ?_` and prove the remaining obligations. Simplify using `using h0`. Establish `h2 : ∀ᶠ w : (κ → K) × (κ → K) in nhds 0, w.1 ∈ (B : Set (κ → K))` using `(hBo.preimage continuous_fst).mem_nhds B.zero_mem`. Use `⟨_, h1.and h2, fun w hw => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hw1, hw2⟩` from `hw`. Use function extensionality and compare the values at `x`. Use `show ψ (x ⬝ᵥ w.2 + ⅟(2 : K) * (w.1 ⬝ᵥ w.2)) * (B : Set (κ → K)).indicator (fun _ => (1 : ℂ)) (x + w.1) = _`. Distinguish the cases in `hx : x ∈ (B : Set (κ → K))`. Rewrite using `[hψ _ (hw1 x hx), one_mul, Set.indicator_of_mem hx, Set.indicator_of_mem (show x + w.1 ∈ (B : Set (κ → K)) from B.add_mem hx hw2)]`.
-
-Establish `hx' : x + w.1 ∉ (B : Set (κ → K))` using `fun h => hx (by simpa using B.sub_mem h hw2)`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx', mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_of_subgroup {K : Type} [CommRing K] [Invertible (2 : K)] [TopologicalSpace K] [IsTopologicalRing K]
     [T2Space K] {κ : Type} [Fintype κ] (ψ : AddChar K ℂ) (U₀ : Set K) (hU₀ : IsOpen U₀) (h0 : (0 : K) ∈ U₀)
@@ -75,7 +73,7 @@ theorem exists_fixed_of_subgroup {K : Type} [CommRing K] [Invertible (2 : K)] [T
       rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem hx', mul_zero]
 
 /- English proof (translation)
-Introduce `F _ _ v ψ hψ κ _`. Take `⟨U₀, hU₀⟩` from `Tw.HeisLatVac.lc_exists_open_ker ψ hψ`. Use `exists_fixed_of_subgroup ψ U₀ U₀.isOpen U₀.zero_mem hU₀ (AddSubgroup.pi Set.univ fun _ => (v.adicCompletionIntegers F).toSubring.toAddSubgroup) ?_ ?_` and prove the remaining obligations. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _`. Conclude with `isCompact_univ_pi fun _ => isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fixed : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (ψ : AddChar (Fv F v) ℂ),
     Continuous ψ → ∀ {κ : Type} [Fintype κ], ∃ φ₁ ∈ GlobalTheory.WeilM.SB (κ → Fv F v), φ₁ ≠ 0 ∧

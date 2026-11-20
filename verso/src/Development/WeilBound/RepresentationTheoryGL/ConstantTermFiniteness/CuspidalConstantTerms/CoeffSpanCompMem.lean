@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Rg
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨ℓ, w, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨ℓ, w, rfl⟩`. Consider the case `zero => exact (GlobalTheory.Published.AutFin.coeffSpan (ρ.comp j)).zero_mem`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => exact (GlobalTheory.Published.AutFin.coeffSpan (ρ.comp j)).add_mem ha hb`. Consider the case `smul a b _ hb => exact (GlobalTheory.Published.AutFin.coeffSpan (ρ.comp j)).smul_mem a hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeffSpan_comp_mem {K K' W : Type} [Group K] [Group K'] [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ K W) (j : K' →* K) {f : K → ℂ} (hf : f ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) :
@@ -37,29 +37,25 @@ theorem coeffSpan_comp_mem {K K' W : Type} [Group K] [Group K'] [AddCommGroup W]
   | smul a b _ hb => exact (GlobalTheory.Published.AutFin.coeffSpan (ρ.comp j)).smul_mem a hb
 
 /- English proof (translation)
-Introduce `D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c m X Y hXY T _hT hAd`. Take `⟨V', ι, hι, hran⟩` from `GlobalTheory.T.exists_orthogonal_hermitian_subspace D V m X Y hXY T`. Take `⟨s, hsc, hsrel, hsq⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D V V' ι hι`. Establish `hs : ∀ h, EmbRel V V' ι (s h) h` using `fun h => (hsrel h (s h)).2 rfl`. Take `⟨hsu, hsurj, hsf⟩` from `GlobalTheory.T.orthogonal_subspace_unitary_embedding D V m X Y hXY T V' ι hι hran s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ε', fr', j, hfr', hj, hk⟩` from `GlobalTheory.T.frame_adapted_subspace_unitary_group D θ hθ V ε fr hfr m X Y hXY T hAd V' ι hι hran s hs`. Take `⟨A, hA⟩` from `GlobalTheory.T.constant_term_parabolic_eigenfunction D θ hθ V U ε fr W ρ c m X Y hXY T V' ι hι hran s hs`. Set `U' : Subgroup (GA D V')` to `U.comap s`. Establish `hU' : IsOpen (U' : Set (GA D V'))` using `hU.preimage hsc`. Set `ρ' : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε' τ)) (W τ)` to `fun τ => (ρ τ).comp (j τ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hρ' : ∀ τ, IsContRep (ρ' τ)` using `fun τ ℓ w => (hρ τ ℓ w).comp (hj τ)`. Set `B : Set (GA D V' → ℂ)` to `{φ | IsAutFunSm θ V' φ ∧ (∀ u ∈ U', u ∈ GfC V' → ∀ g, φ (g * u) = φ g) ∧ (∀ τ, HasTypeAt θ V' τ (ε' τ) (fr' τ) (ρ' τ) φ) ∧ IsCuspFun V' φ ∧ ∀ τ, (A τ 1).foldr (fun a f => gelf θ V' τ 1 f - a • f) φ = 0}`. Establish `hfin : FiniteDimensional ℂ (Submodule.span ℂ B)` using `GlobalTheory.T.constant_term_parabolic_finite_type D θ hθ V' U' hU' ε' fr' hfr' W ρ' hρ' (fun τ => A τ 1)`. Establish `hmem : ∀ ψ ∈ cuspOn θ V X Y T U ε fr ρ c, ∀ y ∈ levi D.sp.cm.sig V.gram X Y T, (∀ t ∈ uPart D.sp.cm.sig V.gram X Y T, t * y = y * t) → (fun h => ψ (s h * y)) ∈ B`. Introduce `ψ hψ y hy hyc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2, h3, _⟩` from `hψ.1`. Establish `hcomm : ∀ h, s h * y = y * s h` using `fun h => hyc _ (hsu h)`. Take `⟨hsm, hgr⟩` from `GlobalTheory.T.constant_term_restrict_smooth_moderate D θ hθ V V' ι hι s hs _ ψ h1 y hcomm`. Establish `hAF : IsAutFun V' (fun h => ψ (s h * y))` using `{ left := fun γ hγ g => by`. Establish `hm : s γ ∈ leftSub V X Y T` using `Subgroup.mem_sup_right ⟨hsq γ hγ, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.uPart_le_levi D V m X Y T (hsu γ)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul]`. Rewrite using `[mul_assoc]`. Conclude with `h1.left _ hm _`. Use `level := ⟨U', hU', fun k hk hk' g => by`. Simplify using `only [map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, hcomm k, ← mul_assoc]`. Conclude with `h2 _ hk (hsf k hk') _⟩`. Use `cont := h1.cont.comp (hsc.mul continuous_const) }`. Use `⟨GlobalTheory.T.smooth_automorphic_derivative_growth D θ hθ V' _ hAF hsm hgr (fun τ k => ⟨A τ k, hA ψ hψ.1 y hy hyc τ k⟩), ?_, fun τ x => ?_, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.isCuspFun_slice D θ V U ε fr W ρ c m X Y hXY T V' ι hι hran s hs ψ hψ y hy h …` and prove the remaining obligations. Introduce `k hk hk' g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [map_mul]`. Rewrite using `[mul_assoc, hcomm k, ← mul_assoc]`. Conclude with `h2 _ hk (hsf k hk') _`. Establish `e : (fun k => ψ (s (x * kAt θ V' τ (ε' τ) (fr' τ) k) * y)) = (fun k0 => ψ ((s x * y) * kAt θ V τ (ε τ) (fr τ) k0)) ∘ j τ`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Function.comp, map_mul]`. Rewrite using `[mul_assoc, hcomm, ← mul_assoc, ← hk τ k]`. Rewrite using `[e]`. Conclude with `coeffSpan_comp_mem (ρ τ) (j τ) (h3 τ (s x * y))`. Set `s' : GA D V' → uPart D.sp.cm.sig V.gram X Y T` to `fun h => ⟨s h, hsu h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : Function.Surjective s'` using `fun g => by`. Take `⟨h, hh⟩` from `hsurj g.1 g.2`. Conclude with `⟨h, Subtype.ext hh⟩`. Set `Φ` to `LinearMap.funLeft ℂ ℂ s'`. Establish `hΦ : Function.Injective Φ` using `LinearMap.funLeft_injective_of_surjective _ _ _ hs'`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `set P := Submodule.span ℂ (sliceSet (cuspOn θ V X Y T U ε fr ρ c) (uPart D.sp.cm.sig V.gram X Y T) (levi D.sp.cm.sig V.gram X Y T) 1)`. Establish `hle : P.map Φ ≤ Submodule.span ℂ B`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `f ⟨ψ, hψ, y, hy, hyc, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
-
-Use `hmem ψ hψ y hy hyc` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `h`. Simplify using `[Φ, s', LinearMap.funLeft]`. Use `haveI : FiniteDimensional ℂ (P.map Φ) := Submodule.finiteDimensional_of_le hle`.
-
-Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective Φ hΦ P).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_slices_core : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)), (∀ τ, IsContRep (ρ τ)) → ∀ (c : D.what₂.Tau → ℕ → ℂ) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ T : Finset (Fin m), T.Nonempty → GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.IsAdapted V X Y T ε fr → FiniteDimensional ℂ (Submodule.span ℂ (sliceSet (cuspOn θ V X Y T U ε fr ρ c) (uPart D.sp.cm.sig V.gram X Y T) (levi D.sp.cm.sig V.gram X Y T) 1)) := by
   intro D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c m X Y hXY T _hT hAd

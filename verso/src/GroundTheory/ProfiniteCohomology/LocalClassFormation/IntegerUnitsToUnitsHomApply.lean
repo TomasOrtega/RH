@@ -48,7 +48,7 @@ noncomputable def unitsValuationSES : ShortComplex (Rep ℤ Gal(L/K)) :=
     exact ord_unit (K := L) x.toMul)
 
 /- English proof (translation)
-The claim follows from `GroundTheory.GroupCoh.shortComplex_exact_of_forall fun x hx => (exact_unitsIncl_unitsOrd (L := L) x).1 hx mono_f := (Rep.mono_iff_injective _).2 fun _ _ h => Additive.toMul.injective (unitsIncl_injective (K := L) (congrArg Additive.toMul h)) epi_g := (Rep.epi_iff_surjective _).2 …`.
+A detailed English derivation is pending.
 -/
 theorem unitsValuationSES_shortExact : (unitsValuationSES K L).ShortExact where
   exact := GroundTheory.GroupCoh.shortComplex_exact_of_forall fun x hx =>

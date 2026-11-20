@@ -6,13 +6,11 @@ open scoped ENNReal
 namespace GlobalTheory.UnipAvg
 
 /- English proof (translation)
-Establish `key : ∀ (q : A ⧸ S) (s : S), (QuotientGroup.mk (q.out * s) : A ⧸ S) = q` using `fun q s => by`. Rewrite using `[QuotientGroup.mk_mul_of_mem _ s.2, QuotientGroup.out_eq']`. Set `e : (A ⧸ S) × S → A` to `fun p => p.1.out * p.2`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨q, s⟩ ⟨q', s'⟩ h`. Simplify using `only [e] at h`. Establish `hq : q = q'` using `by rw [← key q s, ← key q' s', h]`. Substitute `hq` using the available equality. Simplify using `only [Prod.mk.injEq, true_and]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext (mul_left_cancel h)`. Introduce `a`. Use `⟨(QuotientGroup.mk a, ⟨(QuotientGroup.mk a : A ⧸ S).out⁻¹ * a, ?_⟩), ?_⟩` and prove the remaining obligations. Conclude with `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Simplify using `[e]`.
-
-Rewrite using `[← (Equiv.ofBijective e he).tsum_eq]`. Conclude with `ENNReal.tsum_prod (f := fun (q : A ⧸ S) (s : S) => f (q.out * s))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_eq_tsum_quotient {A : Type*} [Group A] (S : Subgroup A) (f : A → ℝ≥0∞) :
     ∑' a, f a = ∑' q : A ⧸ S, ∑' s : S, f (q.out * s) := by
@@ -39,11 +37,9 @@ section Unimodular
 variable {U : Type*} [Group U] [MeasurableSpace U] [MeasurableMul₂ U] [MeasurableInv U]
 
 /- English proof (translation)
-Use `haveI : SMulInvariantMeasure U₀ U ν := ⟨fun γ s _ => measure_preimage_mul ν (γ : U) s⟩`. Use `⟨fun u => ?_⟩` and prove the remaining obligations. Establish `hD' : IsFundamentalDomain U₀ ((· * u) ⁻¹' D) ν` using `hD.preimage_of_equiv (quasiMeasurePreserving_mul_right ν u) (e := id) Function.bijective_id (fun g x => mul_assoc (g : U) x u)`. Establish `h1 : (ν.map (· * u)) D = 1`. Use `(MeasurableEquiv.mulRight u).map_apply (μ := ν) D` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MeasurableEquiv.coe_mulRight] at this`. Rewrite using `[this, hD'.measure_eq hD, hνD]`. Use `haveI : SigmaFinite (ν.map (· * u)) := (MeasurableEquiv.mulRight u).sigmaFinite_map`. Establish `h` using `measure_eq_div_smul (ν.map (· * u)) ν (s := D) (by rw [hνD]; exact one_ne_zero) (by rw [hνD]; exact ENNReal.one_ne_top)`. Rewrite using `[h, h1, hνD]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_covolume_one (ν : Measure U) [SigmaFinite ν] [ν.IsMulLeftInvariant]
     (U₀ : Subgroup U) [Countable U₀] {D : Set U} (hD : IsFundamentalDomain U₀ D ν) (hνD : ν D = 1) :
@@ -63,13 +59,11 @@ theorem isMulRightInvariant_of_covolume_one (ν : Measure U) [SigmaFinite ν] [�
   rw [h, h1, hνD]; simp
 
 /- English proof (translation)
-Use `haveI := isMulRightInvariant_of_covolume_one ν U₀ hD hνD`. Establish `h` using `measure_eq_div_smul ν.inv ν (s := D) (by rw [hνD]; exact one_ne_zero) (by rw [hνD]; exact ENNReal.one_ne_top)`. Rewrite `h` using `[hνD, div_one]`. Use `set c := ν.inv D with hc`. Establish `h2 : ν = (c * c) • ν`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : c * c = 1`. Use `congrArg (fun m : Measure U => m D) h2` as an intermediate fact. Simplify `this.symm` using `[hνD]`. Establish `h4 : c = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `lt_trichotomy c 1 with hlt | heq | hgt` into its components or cases. Establish `: c * c < 1` using `lt_of_le_of_lt (by simpa using mul_le_mul_right hlt.le c) hlt`. Conclude with `absurd h3 this.ne`. Conclude with `heq`. Establish `: 1 < c * c` using `lt_of_lt_of_le hgt (by simpa using mul_le_mul_right hgt.le c)`.
-
-Conclude with `absurd h3 this.ne'`. Conclude with `⟨by rw [h, h4, one_smul]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isInvInvariant_of_covolume_one (ν : Measure U) [SigmaFinite ν] [ν.IsMulLeftInvariant]
     (U₀ : Subgroup U) [Countable U₀] {D : Set U} (hD : IsFundamentalDomain U₀ D ν) (hνD : ν D = 1) :
@@ -99,9 +93,9 @@ theorem isInvInvariant_of_covolume_one (ν : Measure U) [SigmaFinite ν] [ν.IsM
 omit [MeasurableInv U] in
 
 /- English proof (translation)
-Use `haveI : SMulInvariantMeasure U₀ U ν := ⟨fun γ s _ => measure_preimage_mul ν (γ : U) s⟩`. Rewrite using `[tsum_eq_tsum_quotient (U₀.subgroupOf L)]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_mul_left_eq_self ψ ((q.out : L) : U), hD.lintegral_eq_tsum'', ← (Subgroup.subgroupOfEquivOfLe hle).toEquiv.tsum_eq]`. Use `tsum_congr fun b => lintegral_congr fun u => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `mul_assoc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem tsum_setLIntegral_eq_index (ν : Measure U) [ν.IsMulLeftInvariant]
     (U₀ L : Subgroup U) [Countable U₀] (hle : U₀ ≤ L) {D : Set U} (hD : IsFundamentalDomain U₀ D ν)
@@ -126,11 +120,11 @@ variable {G U : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [Measu
 omit [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G] [MeasurableInv U] in
 
 /- English proof (translation)
-Rewrite using `[tsum_eq_tsum_quotient (ι.range.subgroupOf Γ)]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← tsum_setLIntegral_eq_index ν U₀ _ hle hD (fun u => φ ((q.out : Γ) * ι u))]`. Set `e : Γ.comap ι → ι.range.subgroupOf Γ` to `fun l => ⟨⟨ι l, l.2⟩, ⟨l, rfl⟩⟩`. Establish `he : Function.Bijective e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `l l' h`. Conclude with `Subtype.ext (hι (congrArg (fun s : ι.range.subgroupOf Γ => ((s : Γ) : G)) h))`. Introduce and unpack `⟨⟨γ, hγ⟩, ⟨l, hl⟩⟩`. Establish `hl' : ι l = γ` using `hl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hl'` using the available equality. Conclude with `⟨⟨l, hγ⟩, rfl⟩`. Rewrite using `[← (Equiv.ofBijective e he).tsum_eq]`. Use `tsum_congr fun l => lintegral_congr fun u => ?_` and prove the remaining obligations. Simplify using `[e, mul_assoc]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_setLIntegral_eq_cosets (ι : U →* G) (hι : Function.Injective ι) (ν : Measure U) [ν.IsMulLeftInvariant]
     (Γ : Subgroup G) (U₀ : Subgroup U) [Countable U₀] (hle : U₀ ≤ Γ.comap ι) {D : Set U}
@@ -155,19 +149,15 @@ theorem tsum_setLIntegral_eq_cosets (ι : U →* G) (hι : Function.Injective ι
   simp [e, mul_assoc]
 
 /- English proof (translation)
-Use `haveI : (ι.range.subgroupOf Γ).Normal := ⟨by`. Introduce and unpack `⟨n, hn⟩ ⟨u, hu⟩ g`. Take `⟨c, -, hc⟩` from `hconj (g : G)⁻¹ (Γ.inv_mem g.2)`. Establish `hu' : ι u = n` using `hu`. Conclude with `⟨c u, by rw [hc, hu']; simp⟩⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : ∑' γ : Γ, ∫⁻ u in D, φ ((ι u)⁻¹ * γ) ∂ν = ∑' γ : Γ, ∫⁻ u in D, (fun x => φ x⁻¹) (γ * ι u) ∂ν`. Rewrite using `[← (Equiv.inv Γ).tsum_eq]`. Simplify using the standard rewrite rules. Rewrite using `[h1, tsum_setLIntegral_eq_cosets ι hι ν Γ U₀ hle hD (fun x => φ x⁻¹), tsum_setLIntegral_eq_cosets ι hι ν Γ U₀ hle hD, ← (Equiv.inv (Γ ⧸ ι.range.subgroupOf Γ)).tsum_eq]`. Use `tsum_congr fun q => tsum_congr fun _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set t : Γ := (Equiv.inv (Γ ⧸ ι.range.subgroupOf Γ) q).out with ht`. Establish `hmem : t * q.out ∈ ι.range.subgroupOf Γ`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_mul, ht]`. Simplify using the standard rewrite rules. Take `⟨v, hv⟩` from `hmem`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hv' : ι v = (t : G) * (q.out : Γ)` using `hv`. Take `⟨c, hcm, hc⟩` from `hconj (t : G)⁻¹ (Γ.inv_mem t.2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_inv_eq_self (μ := ν) (fun u => φ (ι u * (t : G)⁻¹))]`. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ u, φ ((t : G)⁻¹ * ι (c u)) ∂ν := by`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[hc]`. Use `congr 1`. Use `group`.
-
-Use `_ = ∫⁻ u, φ ((t : G)⁻¹ * ι u) ∂ν := hcm.lintegral_comp (f := fun u => φ ((t : G)⁻¹ * ι u)) (hφ.comp (hιm.const_mul _))`. Use `_ = ∫⁻ u, φ ((t : G)⁻¹ * ι (v * u)) ∂ν := (lintegral_mul_left_eq_self (fun u => φ ((t : G)⁻¹ * ι u)) v).symm`. Use `_ = _ := by`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hv']`.
-
-Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tsum_setLIntegral_inv (ι : U →* G) (hι : Function.Injective ι) (hιm : Measurable ι) (ν : Measure U)
     [ν.IsMulLeftInvariant] [ν.IsInvInvariant]
@@ -212,9 +202,9 @@ theorem tsum_setLIntegral_inv (ι : U →* G) (hι : Function.Injective ι) (hι
 omit [MeasurableInv G] in
 
 /- English proof (translation)
-Use `haveI : SMulInvariantMeasure Γ G μ := ⟨fun γ s _ => measure_preimage_mul μ (γ : G) s⟩`. Repeatedly rewrite using `[← ENNReal.tsum_mul_left]`. Rewrite using `[lintegral_tsum (f := fun (γ : Γ) g => ρ g * β (γ * w * g)) fun γ => (hρ.mul (hβm.comp (measurable_const_mul _))).aemeasurable, ← lintegral_mul_left_eq_self ρ w⁻¹, h𝓕.lintegral_eq_tsum']`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[hβ, ← lintegral_mul_left_eq_self _ ((γ : G) * w)⁻¹]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_inv_cancel_left]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `_ = w⁻¹ * (((γ⁻¹ : Γ) : G) * g)`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_mul_tsum_weight (μ : Measure G) [μ.IsMulLeftInvariant] (Γ : Subgroup G) [Countable Γ] {𝓕 : Set G}
     (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {β : G → ℝ≥0∞} (hβm : Measurable β)
@@ -234,19 +224,17 @@ theorem lintegral_mul_tsum_weight (μ : Measure G) [μ.IsMulLeftInvariant] (Γ :
   simp [mul_assoc]
 
 /- English proof (translation)
-Use `haveI : Countable U₀ := (show Function.Injective (fun b : U₀ => (⟨ι b, hle b b.2⟩ : Γ)) from fun b b' h => Subtype.ext (hι (congrArg Subtype.val h))).countable`. Use `haveI := isMulRightInvariant_of_covolume_one ν U₀ hD hνD`. Use `haveI := isInvInvariant_of_covolume_one ν U₀ hD hνD`. Use `haveI : SMulInvariantMeasure Γ G μ := ⟨fun γ s _ => measure_preimage_mul μ (γ : G) s⟩`. Establish `hconj' : ∀ γ ∈ Γ, ∃ c : U → U, MeasurePreserving c ν ν ∧ ∀ u, ι (c u) = γ⁻¹ * ι u * γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ hγ`. Take `⟨a, ha, b, -, rfl⟩` from `hcov γ hγ`. Take `⟨c, hcm, hc⟩` from `hconj a ha`. Use `⟨fun u => b⁻¹ * c u * b, (measurePreserving_mul_right ν b).comp ((measurePreserving_mul_left ν b⁻¹).comp hcm), fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, hc]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Choose the witnesses or unpack the hypotheses as in `⟨β, hβm, hβ⟩ : ∃ β : G → ℝ≥0∞, Measurable β ∧ ∀ f : G → ℝ≥0∞, ∫⁻ g in 𝓕, f g ∂μ = ∫⁻ g, β g * f g ∂μ := by`. Use `⟨(toMeasurable μ 𝓕).indicator 1, measurable_one.indicator (measurableSet_toMeasurable μ 𝓕), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← restrict_congr_set h𝓕.nullMeasurableSet.toMeasurable_ae_eq, ← lintegral_indicator (measurableSet_toMeasurable μ 𝓕)]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases hg : g ∈ toMeasurable μ 𝓕 <;> simp [hg]`. Establish `hA : ∀ w : G, ∫⁻ g in 𝓕, F (w * g) ∂μ = ∫⁻ g in 𝓕, F g * ∑' γ : Γ, β (w⁻¹ * γ * g) ∂μ`. Introduce `w`. Repeatedly rewrite using `[← ENNReal.tsum_mul_left]`. Rewrite using `[lintegral_tsum (f := fun (γ : Γ) g => F g * β (w⁻¹ * γ * g)) fun γ => (hF.mul (hβm.comp (measurable_const_mul _))).aemeasurable, hβ, ← lintegral_mul_left_eq_self _ w⁻¹, h𝓕.lintegral_eq_tsum'']`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `tsum_congr fun γ => lintegral_congr fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `β (w⁻¹ * (γ * g)) * F (w * (w⁻¹ * (γ * g))) = _`. Rewrite using `[mul_inv_cancel_left, hinv _ γ.2, mul_comm, mul_assoc]`. Establish `hm1 : Measurable fun p : G × U => ∑' γ : Γ, β ((ι p.2)⁻¹ * γ * p.1)` using `Measurable.ennreal_tsum fun γ => hβm.comp (((hιm.comp measurable_snd).inv.mul_const _).mul measurable_fst)`. Establish `hm2 : Measurable fun p : G × U => ∑' γ : Γ, β (γ * ι p.2 * p.1)` using `Measurable.ennreal_tsum fun γ => hβm.comp (((hιm.comp measurable_snd).const_mul _).mul measurable_fst)`.
+Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul (F g) (f := fun u => ∑' γ : Γ, β ((ι u)⁻¹ * γ * g)) (hm1.comp measurable_prodMk_left), lintegral_const_mul (F g) (f := fun u => ∑' γ : Γ, β (γ * ι u * g)) (hm2.comp measurable_prodMk_left), lintegral_tsum (f := fun (γ : Γ) u => β ((ι u)⁻¹ * γ * g)) fun γ => ( …`. Use `_ = ∫⁻ u in D, ∫⁻ g in 𝓕, F g * ∑' γ : Γ, β (γ * ι u * g) ∂μ ∂ν := lintegral_lintegral_swap ((hF.comp measurable_fst).mul hm2).aemeasurable`.
-
-Use `_ = ∫⁻ _u in D, ∫⁻ g in 𝓕, F g ∂μ ∂ν := by`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[hβ, hβ F, ← lintegral_mul_tsum_weight μ Γ h𝓕 hβm hβ (fun g => β g * F g) (hβm.mul hF) (ι u)]`. Repeatedly rewrite using `[mul_assoc]`. Use `_ = ∫⁻ g in 𝓕, F g ∂μ := by simp [hνD]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_average (ι : U →* G) (hι : Function.Injective ι) (hιm : Measurable ι)
     (μ : Measure G) [SFinite μ] [μ.IsMulLeftInvariant] (ν : Measure U) [SigmaFinite ν] [ν.IsMulLeftInvariant]

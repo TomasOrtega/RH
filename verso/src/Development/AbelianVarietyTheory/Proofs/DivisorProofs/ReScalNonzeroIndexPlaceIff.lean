@@ -22,37 +22,37 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem isLev_reScal (R : RealDat D A Ks) (lam : type_of% R.lam) (kap : ℝ) (h : R.toLevCh.Is A.μ0) :
     (reScal R lam kap).toLevCh.Is A.μ0 := h
 
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem isGrp_reScal (R : RealDat D A Ks) (F : Face D A) (lam : type_of% R.lam) (kap : ℝ) (h : R.IsGrp F) :
     (reScal R lam kap).IsGrp F := { h with }
 
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem isFam_reScal (R : RealDat D A Ks) (lam : type_of% R.lam) (kap : ℝ) (h : R.IsFam) :
     (reScal R lam kap).IsFam := { h with }
 
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem isModels_reScal (R : RealDat D A Ks) (lam : type_of% R.lam) (kap : ℝ) (h : R.IsModels) :
     (reScal R lam kap).IsModels := { h with }
 
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem isChain_reScal (R : RealDat D A Ks) (lam : type_of% R.lam) (kap : ℝ) (h : R.IsChain) :
     (reScal R lam kap).IsChain := { h with }
 
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem isThP_rescale (R : RealDat D A Ks) (lam : type_of% R.lam) (kap : ℝ) (h : R.IsThP) :
     (reScal R lam kap).IsThP := { h with }
@@ -70,7 +70,7 @@ theorem liftMatC_reScalCx {K : Type} [Field K] [NumberField K] [StarRing K] {Bs 
     (reScalCx X lam κ).liftMatC cr b j t = X.liftMatC cr b j t := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (kMat Bs.v0.embedding) (liftMatC_reScalCx X lam κ cr b j t)`.
+A detailed English derivation is pending.
 -/
 theorem liftMat_reScalCx {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {B : DefAmb Bs} (X : CxData B)
     (lam : Bs.J → Bs.Tup → Bs.Ix → InfinitePlace K → ℝ) (κ : InfinitePlace K → ℝ) {fc : DefSub B → DefFace Bs} (cr : Crd B fc)
@@ -79,7 +79,7 @@ theorem liftMat_reScalCx {K : Type} [Field K] [NumberField K] [StarRing K] {Bs :
   congrArg (kMat Bs.v0.embedding) (liftMatC_reScalCx X lam κ cr b j t)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j t w`. Conclude with `congrArg (fun θ => idx w (X.M b j) (matLat θ ((lv (fc X.zs) b).Tl j t))) (liftMat_reScalCx X lam κ cr b j t)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem iw_reScalCx {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {B : DefAmb Bs} (X : CxData B)
     (lam : Bs.J → Bs.Tup → Bs.Ix → InfinitePlace K → ℝ) (κ : InfinitePlace K → ℝ) {fc : DefSub B → DefFace Bs} (cr : Crd B fc)
@@ -101,7 +101,7 @@ theorem toCx_reScal (R : RealDat D A Ks) (F : Face D A) (lam : type_of% R.lam) (
     (reScal R lam kap).toCx F = reScalCx (R.toCx F) lam (fun _ => kap) := rfl
 
 /- English proof (translation)
-Unfold `RealDat.NonzeroIndexPlace`. Rewrite using `[toCx_reScal, iw_reScalCx, zs_reScalCx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem reScal_nonzeroIndexPlace_iff (R : RealDat D A Ks) (F : Face D A) (lam : type_of% R.lam) (kap : ℝ)
     (w : HeightOneSpectrum (𝓞 D.what₂.LL)) : (reScal R lam kap).NonzeroIndexPlace F w ↔ R.NonzeroIndexPlace F w := by
@@ -109,7 +109,7 @@ theorem reScal_nonzeroIndexPlace_iff (R : RealDat D A Ks) (F : Face D A) (lam : 
   rw [toCx_reScal, iw_reScalCx, zs_reScalCx]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w hw => h.tw w ((reScal_nonzeroIndexPlace_iff R F lam kap w).1 hw), h.mu_off, h.mu_used, h.mu_ne, h.mu_conj, h.mu_on⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTup_reScal (R : RealDat D A Ks) (F : Face D A) (lam : type_of% R.lam) (kap : ℝ) (h : R.IsTup F) :
     (reScal R lam kap).IsTup F :=
@@ -118,7 +118,7 @@ theorem isTup_reScal (R : RealDat D A Ks) (F : Face D A) (lam : type_of% R.lam) 
 end
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F h1 h2 h3 h4 h5 h6 h7`. Take `⟨lam, kap, hs⟩` from `GlobalTheory.ScalChoice.exists_isScal D G Pl0 T0 A Ks R F`. Establish `hex : ∃ q : (type_of% R.lam) × ℝ, (reScal R q.1 q.2).Char F` using `⟨(lam, kap), isLev_reScal R lam kap h1, isGrp_reScal R F lam kap h2, isFam_reScal R lam kap h3, isModels_reScal R lam kap h4, isChain_reScal R lam kap h5, isThP_rescale R lam kap h6, hs, isTup_reScal R F lam kap h7⟩`. Conclude with `Classical.epsilon_spec hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem char_charOf : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsChain → R.IsThP → R.IsTup F → (charOf R F).Char F := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F h1 h2 h3 h4 h5 h6 h7

@@ -20,7 +20,7 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Gul4.xMem`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.xMem :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K 2)) [μ.IsHaarMeasure] (τ : Submodule ℂ (L2 μ)) (κ : Measure (archCompact K 2)) (p : archCompact K 2 → ℂ), IdemA κ p → (∀ S φ, φ ∈ Xs μ τ κ p S ↔ IsX μ τ κ p S φ) ∧ (CuspIrr μ τ →

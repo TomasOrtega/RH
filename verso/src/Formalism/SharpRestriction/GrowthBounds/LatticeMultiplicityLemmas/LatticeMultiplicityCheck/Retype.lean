@@ -67,9 +67,9 @@ def LatticeMultiplicityComparison : Prop :=
     {cX : ExtraC} (E : Extra D L hT Gi Gl K Dx cX) (T : TwistedUnitaryExtraData E), WeilJacquetShalikaLaw.CmpV E.cmp Dx E.tw (Pk.reW Gl T.LC)
 
 /- English proof (translation)
-Take `⟨a, ha, hP⟩` from `h`. Use `⟨a, ha, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hP e he hle`. Use `⟨K, fun Fm CH hcl hL => ?_⟩` and prove the remaining obligations. Take `⟨x0, h0⟩` from `hK Fm CH hcl hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨x0, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Take `⟨T, hT⟩` from `h0 x hx hx1 i`. Conclude with `⟨T.LC, hV _ T, hT⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twU_of_tied (𝒞 : FamClass) (hV : LatticeMultiplicityComparison) (h : TwistedUnitaryFamilyClosed 𝒞) :
     Closed 𝒞 fun Fm _ => ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x),
@@ -85,7 +85,7 @@ theorem twU_of_tied (𝒞 : FamClass) (hV : LatticeMultiplicityComparison) (h : 
   exact ⟨T.LC, hV _ T, hT⟩
 
 /- English proof (translation)
-The claim follows from `(h u w hg).1`.
+A detailed English derivation is pending.
 -/
 theorem mm_of_latTied {D : D7} {L : SizeData₂ D} (hT : GatTies D) (X : G.Inst D L) (Y : G.LatInst D) (h : G.LatTied hT X Y)
     (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :

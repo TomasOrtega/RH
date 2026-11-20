@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S A _ L hL T ψ m hm a b α hα s`. Take `⟨s₀, hs₀⟩` from `ThetaPtExist.exists_isTwistPull hL ψ m hm a b α hα s`. Use `⟨s₀, hs₀, fun s₁ hs₁ => ?_⟩` and prove the remaining obligations. Establish `hf : ∀ j, s₁.f j = s₀.f j` using `sec_ext_val (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) hL (fun y J hJ => (twist_val hs₁ (𝟙 _) y hJ).trans (twist_val hs₀ (𝟙 _) y hJ).symm)`. Take `⟨f₁, c₁⟩` from `s₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f₀, c₀⟩` from `s₀`. Take `rfl : f₁ = f₀` from `funext hf`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem existsUnique_isTwistPull : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (L : LB A.left), L.IsLB → ∀ (T : Over S) (ψ : T ⊗ A ⟶ T ⊗ A) (m : T ⊗ A ⟶ A) (hm : ψ ≫ snd T A = m) (a b : ℤ) (α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b])), α.IsGen → ∀ s : LB.Sec (LPow A L b T), ∃! s' : LB.Sec (LPow A L a T), IsTwistPull A L ψ m hm a b α s s' := by
   intro S A _ L hL T ψ m hm a b α hα s

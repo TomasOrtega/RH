@@ -33,9 +33,7 @@ open NumberField IsDedekindDomain Formalism.L2.Pj
 variable {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K R]
 
 /- English proof (translation)
-Distinguish the cases in `ha : (a : K) = 0`. Rewrite using `[ha, zero_smul, hv.zero]`. Conclude with `le_top`. Rewrite using `[hv.smul _ _ ha]`. Use `add_nonneg ?_ h` and prove the remaining obligations.
-
-Conclude with `vAdd_int_nonneg la ha` after adjusting the coercions.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_smul_nonneg {la : HeightOneSpectrum (𝓞 K)} {v : R → EReal} (hv : IsVal la v) (a : 𝓞 K) {f : R}
     (h : 0 ≤ v f) : 0 ≤ v ((a : K) • f) := by
@@ -46,9 +44,9 @@ theorem val_smul_nonneg {la : HeightOneSpectrum (𝓞 K)} {v : R → EReal} (hv 
     exact_mod_cast vAdd_int_nonneg la ha
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Rewrite `h0` using `[not_le]`. Use `absurd h (not_le.2 ?_)` and prove the remaining obligations. Use `clear h`. Proceed by induction on `k with`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using h0`. Consider the case `succ k ih`. Rewrite using `[pow_succ, hv.mul]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem val_nonneg_of_pow {la : HeightOneSpectrum (𝓞 K)} {v : R → EReal} (hv : IsVal la v) {f : R} (k : ℕ)
     (h : 0 ≤ v (f ^ (k + 1))) : 0 ≤ v f := by
@@ -71,7 +69,7 @@ def Den (P : HeightOneSpectrum (𝓞 K) → Prop) (f : R) : Prop :=
 variable {Vs} (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) {P P' : HeightOneSpectrum (𝓞 K) → Prop}
 
 /- English proof (translation)
-The claim follows from `let ⟨t, h0, h1⟩ := h ⟨t, h0, fun la hl => h1 la (hP la hl)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Den.mono {f : R} (h : Den Vs P f) (hP : ∀ la, P' la → P la) : Den Vs P' f :=
   let ⟨t, h0, h1⟩ := h
@@ -80,13 +78,13 @@ theorem Den.mono {f : R} (h : Den Vs P f) (hP : ∀ la, P' la → P la) : Den Vs
 include hV
 
 /- English proof (translation)
-Take `⟨s, hs, h1⟩` from `h`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) t`. Establish `hb0 : (b : K) ≠ 0`. Use `nonZeroDivisors.ne_zero hb` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ht`. Use `⟨s * a, mul_ne_zero hs ha, fun la hl v hv => ?_⟩` and prove the remaining obligations. Use `val_smul_nonneg (hV la v hv) b (h1 la hl v hv)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[smul_smul, smul_smul]`. Use `this using 3` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K (s * a) = algebraMap (𝓞 K) K b * algebraMap (𝓞 K) K s * _`. Establish `hb1 : algebraMap (𝓞 K) K b ≠ 0` using `hb0`. Rewrite using `[map_mul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem den_of_smul {f : R} {t : K} (ht : t ≠ 0) (h : Den Vs P (t • f)) : Den Vs P f := by
   obtain ⟨s, hs, h1⟩ := h
@@ -107,15 +105,15 @@ theorem den_of_smul {f : R} {t : K} (ht : t ≠ 0) (h : Den Vs P (t • f)) : De
   field_simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_ne_zero, fun la _ v hv => by rw [smul_zero, (hV la v hv).zero]; exact le_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem den_zero : Den Vs P (0 : R) :=
   ⟨1, one_ne_zero, fun la _ v hv => by rw [smul_zero, (hV la v hv).zero]; exact le_top⟩
 
 /- English proof (translation)
-Take `⟨s, hs, h1⟩` from `hf`. Take `⟨t, ht, h2⟩` from `hg`. Use `⟨s * t, mul_ne_zero hs ht, fun la hl v hv => ?_⟩` and prove the remaining obligations. Establish `a1` using `val_smul_nonneg (hV la v hv) t (h1 la hl v hv)`. Establish `a2` using `val_smul_nonneg (hV la v hv) s (h2 la hl v hv)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a1`, `a2` using `[smul_smul]`. Rewrite using `[smul_add, show ((s * t : 𝓞 K) : K) = (s : K) * (t : K) from map_mul (algebraMap (𝓞 K) K) s t]`. Rewrite `a1` using `[mul_comm]`. Conclude with `(le_min a1 a2).trans ((hV la v hv).add _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Den.add {f g : R} (hf : Den Vs P f) (hg : Den Vs P g) : Den Vs P (f + g) := by
   obtain ⟨s, hs, h1⟩ := hf
@@ -129,7 +127,7 @@ theorem Den.add {f g : R} (hf : Den Vs P f) (hg : Den Vs P g) : Den Vs P (f + g)
   exact (le_min a1 a2).trans ((hV la v hv).add _ _)
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, zero_smul]`. Conclude with `den_zero hV`. Use `den_of_smul hV (inv_ne_zero ha) ?_` and prove the remaining obligations. Rewrite using `[smul_smul, inv_mul_cancel₀ ha, one_smul]` and apply the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Den.smul {f : R} (hf : Den Vs P f) (a : K) : Den Vs P (a • f) := by
   by_cases ha : a = 0
@@ -138,7 +136,7 @@ theorem Den.smul {f : R} (hf : Den Vs P f) (a : K) : Den Vs P (a • f) := by
     rwa [smul_smul, inv_mul_cancel₀ ha, one_smul]
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => exact den_zero hV`. Consider the case `add x y _ _ hx hy => exact hx.add hV hy`. Consider the case `smul a x _ hx => exact hx.smul hV a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem den_of_span {S : Set R} (hS : ∀ g ∈ S, Den Vs P g) {f : R} (hf : f ∈ Submodule.span K S) : Den Vs P f := by
   induction hf using Submodule.span_induction with
@@ -148,9 +146,9 @@ theorem den_of_span {S : Set R} (hS : ∀ g ∈ S, Den Vs P g) {f : R} (hf : f �
   | smul a x _ hx => exact hx.smul hV a
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => exact ⟨1, one_ne_zero, den_zero hV⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨M, hM, hx⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hy⟩` from `hy`. Use `⟨M * N, mul_ne_zero hM hN, (hx.mono fun la hl h => hl (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ h)).add hV (hy.mono fun la hl h => hl (by rw [Nat.cast_mul]; exact Ideal.mul_mem_left _ _ h))⟩` and prove the remaining obligations. Consider the case `smul a x _ hx`. Take `⟨N, hN, hx⟩` from `hx`. Conclude with `⟨N, hN, hx.smul hV a⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_den_of_span {S : Set R}
     (hS : ∀ g ∈ S, ∃ N : ℕ, N ≠ 0 ∧ Den Vs (fun la => (N : 𝓞 K) ∉ la.asIdeal) g) {f : R}
@@ -168,9 +166,9 @@ theorem exists_den_of_span {S : Set R}
     exact ⟨N, hN, hx.smul hV a⟩
 
 /- English proof (translation)
-Take `⟨s, hs, h1⟩` from `h`. Take `⟨t, ht, h2⟩` from `h'`. Use `⟨s * t, mul_ne_zero hs ht, fun la _ v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[show ((s * t : 𝓞 K) : K) = (s : K) * (t : K) from map_mul (algebraMap (𝓞 K) K) s t]`. Distinguish the cases in `hl : P la`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `val_smul_nonneg (hV la v hv) t (h1 la hl v hv)`. Rewrite using `[mul_smul]`. Conclude with `val_smul_nonneg (hV la v hv) s (h2 la hl v hv)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Den.union {f : R} (h : Den Vs P f) (h' : Den Vs (fun la => ¬ P la) f) : Den Vs (fun _ => True) f := by
   obtain ⟨s, hs, h1⟩ := h
@@ -184,7 +182,7 @@ theorem Den.union {f : R} (h : Den Vs P f) (h' : Den Vs (fun la => ¬ P la) f) :
     exact val_smul_nonneg (hV la v hv) s (h2 la hl v hv)
 
 /- English proof (translation)
-Take `⟨t, ht, h1⟩` from `h`. Use `⟨t, ht, fun la hl v hv => val_nonneg_of_pow (hV la v hv) k ?_⟩` and prove the remaining obligations. Use `val_smul_nonneg (hV la v hv) (t ^ k) (h1 la hl v hv)` as an intermediate fact. Rewrite `this` using `[smul_smul, show ((t ^ k : 𝓞 K) : K) = (t : K) ^ k from map_pow (algebraMap (𝓞 K) K) t k]`. Rewrite using `[smul_pow, pow_succ (t : K)]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem Den.of_pow {f : R} {k : ℕ} (h : Den Vs P (f ^ (k + 1))) : Den Vs P f := by
   obtain ⟨t, ht, h1⟩ := h
@@ -194,9 +192,9 @@ theorem Den.of_pow {f : R} {k : ℕ} (h : Den Vs P (f ^ (k + 1))) : Den Vs P f :
   rwa [smul_pow, pow_succ (t : K)]
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations. Take `⟨t, ht, h1⟩` from `h f.1 f.2`. Establish `ht0 : (t : K) ≠ 0` using `by exact_mod_cast ht`. Establish `h2 : (t : K) • f ∈ Submodule.span K (latOf C Vs hV : Set C)` using `Submodule.subset_span fun la v hv => h1 la trivial v hv`. Establish `h3` using `Submodule.smul_mem _ (t : K)⁻¹ h2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ ht0, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem span_latOf_eq_top [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) K R] (C : Submodule K R)
     (h : ∀ f ∈ C, Den Vs (fun _ => True) f) : Submodule.span K (latOf C Vs hV : Set C) = ⊤ := by
@@ -209,7 +207,7 @@ theorem span_latOf_eq_top [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) K R] (C :
   rwa [smul_smul, inv_mul_cancel₀ ht0, one_smul] at h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.IntCuspLat.fg_latOf_of_lowerBound C Vs hV N hN B hB, span_latOf_eq_top hV C h⟩`.
+Supply the required witnesses or components.
 -/
 theorem fullLat_of [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) K R] (C : Submodule K R) [FiniteDimensional K C]
     (N : (K →+* ℂ) → R → ℝ) (hN : ∀ σ, IsNormOn C σ (N σ)) (B : ℝ)
@@ -219,9 +217,9 @@ theorem fullLat_of [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) K R] (C : Submod
 
 omit hV in
 /- English proof (translation)
-Proceed by induction on `N using induction_on_primes with`. Consider the case `zero => exact absurd rfl h0`. Consider the case `one => exact absurd ((Ideal.eq_top_iff_one _).2 (by simpa using h)) la.isPrime.ne_top`. Consider the case `prime_mul p a hp ih`. Rewrite `h` using `[Nat.cast_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `la.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `⟨p, hp, dvd_mul_right _ _, h⟩`. Take `⟨ℓ, h1, h2, h3⟩` from `ih (right_ne_zero_of_mul h0) h`. Conclude with `⟨ℓ, h1, h2.mul_left _, h3⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_prime_mem (la : HeightOneSpectrum (𝓞 K)) {N : ℕ} (h0 : N ≠ 0) (h : (N : 𝓞 K) ∈ la.asIdeal) :
     ∃ ℓ : ℕ, ℓ.Prime ∧ ℓ ∣ N ∧ (ℓ : 𝓞 K) ∈ la.asIdeal := by
@@ -237,7 +235,7 @@ theorem exists_prime_mem (la : HeightOneSpectrum (𝓞 K)) {N : ℕ} (h0 : N ≠
 
 omit hV in
 /- English proof (translation)
-Use `IsIntegral.of_pow hm ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, ← pow_mul, mul_comm, pow_mul, h, one_pow, one_zpow]`. Conclude with `isIntegral_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_zpow_of_pow_eq_one {x : K} {m : ℕ} (hm : 0 < m) (h : x ^ m = 1) (e : ℕ) (z : ℤ) :
     IsIntegral ℤ ((x ^ e) ^ z) := by
@@ -254,13 +252,13 @@ open NumberField Formalism.L2.Pj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use `⟨N, h, Submodule.smul_le.2 fun r hr v hv => ?_, hL.2.2.trans inf_le_left⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Rewrite using `[mul_smul]`. Use `Submodule.smul_mem _ _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (Pi.single i 1 : Fin n → E) ∈ stdLat E n` using `fun j _ => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Rewrite using `[Pi.single_eq_of_ne hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Establish `h2 : (N : 𝓞 E) • (Pi.single i 1 : Fin n → E) ∈ Λ.La` using `(hL.2.2 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) h1)).1`. Take `⟨y, hy⟩` from `(hU v).1 hv _ h2`. Rewrite `hy` using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]`. Establish `h3 : IsIntegral ℤ (IsCMField.complexConj E (algebraMap (𝓞 E) E y))` using `map_isIntegral_int (IsCMField.complexConj E : E →+* E) (RingOfIntegers.isIntegral_coe y)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Submodule.mem_one.2 ⟨⟨_, h3⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsCMField.complexConj E (algebraMap (𝓞 E) E y) = _`. Rewrite using `[hy]`. Simplify using `[Algebra.smul_def, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trivAt_of_coprime {Λ : GenLat E n} {N M ℓ : ℕ} (hU : Λ.Unimod) (hL : Λ.LevOK N M) (h : N.Coprime ℓ) :
     Λ.TrivAt ℓ := by
@@ -297,11 +295,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level
 open Formalism.L2.Pj Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Dict
 
 /- English proof (translation)
-Establish `hz : ∀ (l : Geo.Tor.Level H) (c : Coeff l), 0 < l.M' ∧ (⟨zeta l.M', c.zeta_mem⟩ : c.F) ^ l.M' = 1` using `fun l c => by`. Establish `h0 : 0 < l.M'` using `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`. Establish `h1 : zeta l.M' ^ l.M' = 1` using `(Complex.isPrimitiveRoot_exp l.M' h0.ne').pow_eq_one`. Conclude with `⟨h0, Subtype.ext (by simpa using h1)⟩`. Use `haveI : Subsingleton (LaJ Xo c d) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.subsingleton_iff, hI, Ideal.map_top, Submodule.top_smul]`. Take `⟨-, -, -, h1, -, h2⟩` from `h`. Establish `h3` using `h2 q`. Rewrite `h3` using `[finsum_eq_single _ x₀ (fun x hx => absurd (Subsingleton.elim x x₀) hx), h1, map_one, one_mul]`. Unfold `DeltaDat.w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, h3]`. Use `_root_.IsIntegral.mul ?_ (isIntegral_zpow_of_pow_eq_one (hz _ d.c₂).1 (hz _ d.c₂).2 _ _)` and prove the remaining obligations. Conclude with `map_isIntegral_int (d.eF : c.F →+* d.c₂.F) (isIntegral_zpow_of_pow_eq_one (hz _ c).1 (hz _ c).2 _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIntegral_w {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (hI : d.I = ⊤)
@@ -324,35 +322,33 @@ theorem isIntegral_w {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hC` using `GlobalTheory.chartIndependence_unconditional`. Establish `hU` using `h.unf j hj T.toCore.σ₀ T.toCore.good_σ₀`. Establish `hrk : D.R.r = (T.Q.Dw j).p + (T.Q.Dw j).q` using `hU.1`. Establish `hr : 1 ≤ D.R.r`. Establish `h3` using `D.R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `hrk ▸ hr`. Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hB : Out.SecBaseChangeSt` using `hL.secBaseChange`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnr : (T.Q.Dw j).p + (T.Q.Dw j).q ≤ n`. Establish `h0 : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Establish `: D.R.r ≤ Module.finrank ℚ D.host.E * D.R.r` using `Nat.le_mul_of_pos_left _ h0`. Use linear arithmetic over natural numbers and integers. Establish `hd : ∃ d : DeltaDat (T.Q.Xo j) T.Q.c n, d.IsLev ∧ (∃ _ : StarRing (𝓞 D.host.E), IsNab d.Xo₂ d.c₂ d.nab₂) ∧ d.cδ = 1 ∧ d.pd = 1 ∧ d.I = ⊤ ∧ d.l₂.A = T.Q.l.A ∧ d.l₂.M = T.Q.l.M ∧ ∃ ph x₀, d.PhiPin ph 1 x₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨d, e1, e0, e2, -, -, hδ, hlev, hnab⟩` from `GlobalTheory.LevelCover.exists_deltaDat_isLev _ _ (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c h1 n 1 ⊤ T.Q.l (T.Q.Xo j) T.Q.c rfl ⟨dvd_rfl, le_rfl, dvd_rfl⟩ (Nat.mul_one _).symm (Nat.coprime_one_left _) (Ideal.mul_top _).symm (top_sup_eq _)`. Take `⟨g, ph, x₀, hpin⟩` from `GlobalTheory.exists_phiPin_of_character _ _ _ _ _ _ n d hlev hnr 1`. Conclude with `⟨{ d with φδ := g }, hlev, hnab, hδ, e1, e0, congrArg (·.A) e2, congrArg (·.M) e2, ph, x₀, hpin⟩`. Take `⟨d, hlev, hnab, hδ, hpe, hI, hAe, hMe, ph, x₀, hpin⟩` from `hd`. Establish `hT : AllTest d.Xo₂ d.c₂` using `GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ d.l₂ d.Xo₂ d.c₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, nab, -⟩` from `GlobalTheory.CanonConn.exists_isNab hL _ _ (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c`. Establish `hone : ∀ (k : Type) [Field k] [Algebra d.c₂.F k] (z : FrPt d.Xo₂ d.c₂ k), evR d.Xo₂ d.c₂ d.cδ z = 1` using `fun k _ _ z => by`. Rewrite using `[hδ]`. Conclude with `evalAt_one _ _ _ (hT _ _)`. Establish `hunit : UnitC d` using `fun A y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: evR d.Xo₂ d.c₂ d.cδ y = 1`. Rewrite using `[hδ]`. Conclude with `evalAt_one _ _ _ (hT _ _)`. Rewrite using `[this, norm_one]`. Establish `h3 : ¬ 3 ∣ d.pd` using `by rw [hpe]; decide`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htie : d.PsiTie 1`. Introduce `k g ρ _ _ _ _ K _ _ _ y y' _`. Express the relevant statement in the definitionally equal form `evR d.Xo₂ d.c₂ d.cδ y' = algebraMap d.c₂.F K (d.eF ((1 : T.Q.c.Fˣ) : T.Q.c.F)) * evR d.Xo₂ d.c₂ d.cδ y`. Rewrite using `[hone K y, hone K y']`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsf : Squarefree d.l₂.M`. Rewrite using `[hMe, h.pins.2.1.1, Nat.squarefree_mul ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)]`. Conclude with `⟨(D.host.g_prime 0).squarefree, (D.host.g_prime 1).squarefree⟩`. Establish `hspan : ∀ bad : ℕ, 0 < bad → f ∈ Submodule.span T.Q.c.F (shortGen (T.Q.Xo j) T.Q.c nab bad 0 a n d)`. Introduce `bad hbad`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htot : ShortValTot (T.Q.Xo j) T.Q.c nab bad 0 a n d` using `GlobalTheory.shortValTot_of_pinned hL hC _ _ _ _ _ _ n d (GlobalTheory.levelMaps_closed hL _ _ _ h1) (GlobalTheory.Frames.algebraic_laws hB _ _ _ _ (T.Q.Xo j) T.Q.c).2.2.1 (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ (T.Q.Xo j) T.Q.c) (GlobalTheory.Frames.algebraic_la …`. Take `⟨hr0, hm⟩` from `h.modelW j hj T.toCore.σ₀ T.toCore.good_σ₀`. Establish `hsp` using `GlobalTheory.Dict.holSub0_le_span_shortGen hC _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c n d T.toCore.σ₀ D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j T.toCore.σ₀)) T.toCore.good_σ₀ hU hr h.pins.2.1.2 (fun k k' => ⟨(hm k).1.trans (hm k').1.symm, (hm k).2.trans (hm k').2.symm⟩) (fun k …`. Take `⟨u, hu, he⟩` from `hv x hx`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he, Nat.cast_smul_eq_nsmul]`. Conclude with `add_sub_cancel_left _ _)`. Use `hlev hnab hunit h3 (fun _ => ⟨ph, 1, x₀, hpin⟩) nab bad 0 a hbad hdom hn`. Use the proof step `(fun k => h.chiTriv j hj _ T.toCore.good_σ₀ _ _ hdom k) htot`. Establish `hf'` using `(Formalism.L2.Pj.mem_cusp _ _ _ a n f).1 hf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hind` using `(GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.lawsFieldsSeparately.2.1 _ _ _ _ (T.Q.Xo j) T.Q.c T.toCore.σ₀ D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j T.toCore.σ₀)) hU a n).1`. Use `mem_span_of_map_mem_span_image (Formalism.L2.PjFree.rdU (Formalism.L2.PjFree.Unf.ofPj (T.U j T.toCore.σ₀))) (sec (T.Q.Xo j) T.Q.c a n) hind _ (fun g hg => hg.1) hf'.1 (hsp ?_)` and prove the remaining obligations. Conclude with `⟨hf'.2 _ T.toCore.good_σ₀, fun k x hx => dif_neg hx⟩`. Take `⟨st, hnab⟩` from `hnab`. Establish `hV : ∀ la, ∀ v ∈ T.toCore.Vs j la, IsVal la v` using `fun la => isVal_valSet la`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `key : ∀ bad : ℕ, ∀ g ∈ shortGen (T.Q.Xo j) T.Q.c nab bad 0 a n d, ∃ (Λ : GenLat D.host.E n) (N : ℕ), Λ.Unimod ∧ Λ.TrivAt bad ∧ Λ.LevOK N d.l₂.M ∧ Den (T.toCore.Vs j) (fun la => ∃ ℓ : ℕ, ℓ.Prime ∧ (ℓ : 𝓞 T.Q.c.F) ∈ la.asIdeal ∧ Λ.TrivAt ℓ) g`. Introduce and unpack `bad g ⟨hsec, Λ, N, x0, P, a1, a2, a3, a4, -, a6, a7⟩`. Take `⟨t, ht, hb⟩` from `GlobalTheory.IntCuspLat.exists_smul_nonneg_of_shortRule D _ _ _ _ _ n d hlev hnab (fun k _ _ z => by rw [hone k z, one_pow]) (isIntegral_w d hI hpin) hsf Λ N a1 a3 a4 a P a6 x0 g hsec a7`. Use `⟨Λ, N, a1, a2, a4, den_of_smul hV ht ⟨1, one_ne_zero, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `la ⟨ℓ, b1, b2, b3⟩ v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `val_smul_nonneg (hV la v hv) 1 (hb la ℓ b1 b2 b3 v hv)`. Take `⟨N, hN, hden⟩` from `exists_den_of_span hV (fun g hg => by`. Take `⟨Λ, N, a1, -, a4, hg⟩` from `key 1 g hg`. Use `⟨N, a4.1.pos.ne', hg.mono fun la hl => ?_⟩` and prove the remaining obligations. Take `⟨ℓ, b1, -, b3⟩` from `exists_prime_mem la (N := Ideal.absNorm la.asIdeal) (fun h0 => la.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)) (Ideal.absNorm_mem _)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨ℓ, b1, b3, trivAt_of_coprime a1 a4 ((Nat.Prime.coprime_iff_not_dvd b1).2 ?_).symm⟩` and prove the remaining obligations. Introduce and unpack `⟨m, rfl⟩`. Conclude with `hl (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ b3)) (hspan 1 Nat.one_pos)`. Use `hden.union hV (den_of_span hV (fun g hg => ?_) (hspan N (Nat.pos_of_ne_zero hN)))` and prove the remaining obligations. Take `⟨Λ, N', -, ⟨k, a2, a3⟩, -, hg⟩` from `key N g hg`.
-
-Use `hg.mono fun la hl => ?_` and prove the remaining obligations. Take `⟨ℓ, b1, b2, b3⟩` from `exists_prime_mem la hN (not_not.1 hl)`. Conclude with `⟨ℓ, b1, b3, k, a2.coprime_dvd_right b2, a3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem den_of_large (D : D7) (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D j) (a : (D.host.E →+* ℂ) × ℕ → ℕ)
     (n : ℕ) (hdom : Dom a n) (hn : 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ n) (f : T.toCore.R j)
@@ -453,9 +449,9 @@ theorem den_of_large (D : D7) (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D 
   exact ⟨ℓ, b1, b3, k, a2.coprime_dvd_right b2, a3⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨a, by simpa using hdom, by simpa using hf⟩`. Consider the case `succ k ih`. Take `⟨a', h1, h2⟩` from `ih`. Establish `hm : CuspMul (T.Q.Xo j) T.Q.c (T.U j)` using `(Formalism.L2.PjFree.cuspMul_ofPj (T.U j)).1 (GlobalTheory.CuspProduct.cuspMul_holds _ _ _ _ _ _ _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨a' + a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.succ_mul]`. Conclude with `⟨fun τ => (h1.1 τ).add (hdom.1 τ), h1.2.add hdom.2⟩`. Rewrite using `[Nat.succ_mul, pow_succ]`. Conclude with `hm a' a _ n _ f h1 hdom h2 hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_cusp (D : D7) (T : Core D) (j : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hdom : Dom a n)
     (f : T.R j) (hf : f ∈ T.cuspA j a n) (k : ℕ) :
@@ -476,7 +472,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional T.Q.c.F (T.toCore.C j w) := h.cuspFD j hj _ _ (dom_wtA w)`. Take `⟨B, hB⟩` from `GlobalTheory.IntCuspLat.exists_lowerBound D T.toCore h.toLawsM j hj w`. Use `fullLat_of _ _ (T.toCore.Ns j w) (fun σ => (isNormOn_supC _ (h.supDef j hj) (dom_wtA w) (goodEmb_goodOf _ σ)).of_goodOf) B hB fun f hf => ?_` and prove the remaining obligations. Take `⟨a', h1, h2⟩` from `pow_mem_cusp D T.toCore j _ _ (dom_wtA w) f hf (4 * (Module.finrank ℚ D.host.E * D.R.r) + 3)`. Conclude with `(den_of_large D T h j hj a' _ h1 (Nat.le_mul_of_pos_right _ hw) _ h2).of_pow fun la => isVal_valSet la`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLattice_latOf (D : D7) (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (hw : 0 < w.n) :
     Formalism.IndefR.FWT.FullLat (T.toCore.C j w) (T.toCore.Vs j) fun la => isVal_valSet la := by
@@ -494,9 +490,9 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ _ _ ht _ i`. Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `Fintype.card_pos_iff.1 (by`. Rewrite using `[D.what₂.card_Tau]`. Unfold `Ranks.f Ranks.n`. Use the proof step `positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `isLattice_latOf D T ht.laws _ (inR i) (κ i) ?_` and prove the remaining obligations. Rewrite using `[(ht.kap i τ).2.2]`. Use `D.R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.nV`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem latFull_of_tieIn : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsModels → TieIn T R κ v₀ → T.pb = R.C.P.pb → LatFull T κ := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ _ _ ht _ i

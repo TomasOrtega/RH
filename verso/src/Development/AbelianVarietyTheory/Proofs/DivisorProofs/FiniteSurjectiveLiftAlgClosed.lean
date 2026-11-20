@@ -10,13 +10,13 @@ open GlobalTheory.FlagCls
 namespace GlobalTheory.FlagCls
 
 /- English proof (translation)
-Introduce `Bg S πB hfin K _ _ x hx`. Take `⟨b, hb⟩` from `hx`. Take `⟨⟨s, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K S).symm.surjective x`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hb`. Establish `hs : (Spec.map φ ≫ S.fromSpecResidueField s) (IsLocalRing.closedPoint K) = s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Scheme.Hom.comp_base, TopCat.hom_comp, ContinuousMap.coe_comp, Function.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Rewrite `hb` using `[hs]`. Substitute `hb` using the available equality. Use `letI : Algebra (S.residueField (πB b)) (Bg.residueField b) := (πB.residueFieldMap b).hom.toAlgebra`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Module.Finite (S.residueField (πB b)) (Bg.residueField b) := GlobalTheory.residueFieldMap_finite_of_locallyQuasiFinite πB b`. Use `haveI : Algebra.IsAlgebraic (S.residueField (πB b)) (Bg.residueField b) := Algebra.IsAlgebraic.of_finite _ _`. Use `letI : Algebra (S.residueField (πB b)) K := φ.hom.toAlgebra`. Set `ψ : Bg.residueField b →ₐ[S.residueField (πB b)] K` to `IsAlgClosed.lift`. Use `⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ Bg.fromSpecResidueField b, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Category.assoc, ← Spec.map_comp]`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply]`. Use `congr 2`. Use extensionality with `c`. Conclude with `ψ.commutes c`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem finite_exists_lift_algClosed_point : ∀ (Bg S : Scheme.{0}) (πB : Bg ⟶ S), IsFinite πB → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S), x (IsLocalRing.closedPoint K) ∈ Set.range πB → ∃ xb : Sp K ⟶ Bg, xb ≫ πB = x := by
   intro Bg S πB hfin K _ _ x hx

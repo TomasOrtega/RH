@@ -17,11 +17,11 @@ def LZProper : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] [HenselianLoc
   (r : X ⟶ Spec (CommRingCat.of A)), IsProper r → ConnectedSpace X → PreconnectedSpace ↑(pullback r (cpt A))
 
 /- English proof (translation)
-Introduce `A _ _ X p hp hX`. Take `⟨x⟩` from `hX`. Establish `hc : IsClosed (Set.range p.base)` using `p.isClosedMap.isClosed_range`. Establish `h1 : IsLocalRing.closedPoint A ∈ Set.range p.base`. Establish `: IsLocalRing.closedPoint A ∈ closure {p.base x}` using `(PrimeSpectrum.le_iff_mem_closure _ _).1 (IsLocalRing.le_maximalIdeal (p.base x).isPrime.ne_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `closure_minimal (by simp) hc this`. Take `⟨z, hz⟩` from `h1`. Establish `h2 : (cpt A) (IsLocalRing.closedPoint (IsLocalRing.ResidueField A)) = IsLocalRing.closedPoint A`. Establish `: IsLocalHom (CommRingCat.Hom.hom (CommRingCat.ofHom (IsLocalRing.residue A)))` using `(inferInstance : IsLocalHom (IsLocalRing.residue A))`. Use `Spec_closedPoint`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p) (g := cpt A) z (IsLocalRing.closedPoint (IsLocalRing.ResidueField A)) (by rw [hz, h2])`. Conclude with `⟨w⟩`.
+A detailed English derivation is pending.
 -/
 theorem lzNonempty : LZNonempty := by
   intro A _ _ X p hp hX
@@ -41,11 +41,11 @@ theorem lzNonempty : LZNonempty := by
   exact ⟨w⟩
 
 /- English proof (translation)
-Introduce `A _ _ hSH Z p hIL hZ`. Take `⟨hH, -⟩` from `hSH`. Take `⟨L, u, l, hu, hl, rfl⟩` from `hIL`. Use `hl.1` as an intermediate fact. Use `hZ.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Nonempty ↑(pullback (u ≫ l) (cpt A))` using `lzNonempty A (u ≫ l) inferInstance inferInstance`. Establish `hpre : PreconnectedSpace ↑(pullback (u ≫ l) (cpt A))`. Assume the negation of the conclusion as `hn`. Take `⟨Y, v, r, hr, hv, -, hY⟩` from `h2 A u l hu hl.1 hn`. Establish `hZc : ConnectedSpace Z` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hYc : ConnectedSpace Y` using `hv.surj.connectedSpace v.continuous`. Conclude with `hY (h3 A r hr hYc)`. Conclude with `{ toPreconnectedSpace := hpre, toNonempty := hne }`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goal_of (h2 : LZDescend) (h3 : LZProper) : LateralTheory.E.t_E2Cut.LineZero := by
   intro A _ _ hSH Z p hIL hZ

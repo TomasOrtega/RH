@@ -38,19 +38,17 @@ open GlobalTheory.Models GlobalTheory.ZM
 namespace GlobalTheory.AmpUniq
 
 /- English proof (translation)
-Use `(isNoetherianRing_iff_ideal_fg B).2 fun J => ?_` and prove the remaining obligations. Establish `e : (J.comap f).map f = J`. Use `le_antisymm Ideal.map_comap_le fun b hb => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `hne : ((J.comap f).map f).colon {b} ≠ ⊤` using `fun h => hn (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : (1 : B) ∈ ((J.comap f).map f).colon {b}` using `h ▸ Submodule.mem_top`. Simplify using `using Submodule.mem_colon_singleton.1 h1)`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨x, r, c, hc, hr, hx⟩` from `RingHom.surjectiveOnStalks_iff_forall_maximal'.1 hf P hP b`. Set `p : PrimeSpectrum B` to `⟨P, hP.isPrime⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨U, hU, hUc⟩` from `hi.isOpen_iff.1 (PrimeSpectrum.basicOpen c).isOpen`. Establish `hpU : PrimeSpectrum.comap f p ∈ U`. Establish `: p ∈ PrimeSpectrum.comap f ⁻¹' U` using `hUc ▸ hc`. Conclude with `this`. Take `⟨_, ⟨a, rfl⟩, ha, haU⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hpU hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hac : PrimeSpectrum.basicOpen (f a) ≤ PrimeSpectrum.basicOpen c` using `fun q hq => by`. Establish `: q ∈ PrimeSpectrum.comap f ⁻¹' U` using `haU hq`. Conclude with `hUc.subset this`. Take `⟨n, hn⟩` from `(PrimeSpectrum.basicOpen_le_basicOpen_iff _ _).1 hac`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : f (a ^ n * r) * b = f (a ^ n * x)`. Rewrite using `[map_mul, map_mul, map_pow, ← hd]`. Take the linear combination `d * hx`. Establish `hmem : f (a ^ n * r) ∈ P` using `hle (Submodule.mem_colon_singleton.2 (by`. Rewrite using `[smul_eq_mul, key]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Ideal.mem_map_of_mem f (Ideal.mem_comap.2 (key ▸ J.mul_mem_left _ hb))))`. Rewrite `hmem` using `[map_mul, map_pow]`. Break down `hP.isPrime.mem_or_mem hmem with h | h` into its components or cases. Conclude with `ha (hP.isPrime.mem_of_pow_mem n h)`. Conclude with `hr h`.
-
-Rewrite using `[← e]`. Conclude with `Ideal.FG.map (IsNoetherian.noetherian _) f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_of_isInducing {A B : Type*} [CommRing A] [CommRing B] [IsNoetherianRing A]
     (f : A →+* B) (hi : Topology.IsInducing (PrimeSpectrum.comap f)) (hf : f.SurjectiveOnStalks) :
@@ -89,11 +87,11 @@ theorem isNoetherianRing_of_isInducing {A B : Type*} [CommRing A] [CommRing B] [
   exact Ideal.FG.map (IsNoetherian.noetherian _) f
 
 /- English proof (translation)
-Establish `H (w : W) : ∃ V : W.affineOpens, w ∈ V.1 ∧ IsNoetherianRing Γ(W, V)`. Take `⟨_, ⟨U, hU, rfl⟩, hw, -⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (j w)) isOpen_univ`. Take `⟨_, ⟨V, hV, rfl⟩, hwV, hVU⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (show w ∈ (j ⁻¹ᵁ U : Set W) from hw) (j ⁻¹ᵁ U).isOpen`. Establish `hU' : IsAffineOpen U` using `hU`. Establish `hV' : IsAffineOpen V` using `hV`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec j hU' hV' hVU`. Establish `: IsPreimmersion (Spec.map (j.appLE U V hVU) ≫ hU'.fromSpec)`. Rewrite using `[e]`. Use `infer_instance`. Establish `h` using `(IsPreimmersion.SpecMap_iff _).1 (IsPreimmersion.of_comp (Spec.map (j.appLE U V hVU)) hU'.fromSpec)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing Γ(Z, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Conclude with `⟨⟨V, hV⟩, hwV, isNoetherianRing_of_isInducing _ h.1.isInducing h.2⟩`. Use `choose V hV hN using H`. Conclude with `isLocallyNoetherian_of_affine_cover (S := V) (top_le_iff.1 fun w _ => TopologicalSpace.Opens.mem_iSup.2 ⟨w, hV w⟩) hN`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_of_isPreimmersion {W Z : Scheme.{0}} (j : W ⟶ Z) [IsPreimmersion j]
     [IsLocallyNoetherian Z] : IsLocallyNoetherian W := by
@@ -115,7 +113,7 @@ theorem isLocallyNoetherian_of_isPreimmersion {W Z : Scheme.{0}} (j : W ⟶ Z) [
     (top_le_iff.1 fun w _ => TopologicalSpace.Opens.mem_iSup.2 ⟨w, hV w⟩) hN
 
 /- English proof (translation)
-The claim follows from `SurjectiveOnStalks.of_comp u p isEmbedding := Topology.IsEmbedding.of_comp u.continuous p.continuous (u ≫ p).isEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem isPreimmersion_of_comp {W Z Y : Scheme.{0}} (u : W ⟶ Z) (p : Z ⟶ Y) [IsPreimmersion (u ≫ p)] :
     IsPreimmersion u where
@@ -123,13 +121,13 @@ theorem isPreimmersion_of_comp {W Z Y : Scheme.{0}} (u : W ⟶ Z) (p : Z ⟶ Y) 
   isEmbedding := Topology.IsEmbedding.of_comp u.continuous p.continuous (u ≫ p).isEmbedding
 
 /- English proof (translation)
-Use `Flat.of_stalkMap u fun w => RingHom.Flat.of_bijective ⟨?_, u.stalkMap_surjective w⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨V, hV, s, rfl⟩` from `Z.presheaf.exists_germ_eq a`. Rewrite `ha` using `[Scheme.Hom.germ_stalkMap_apply]`. Take `⟨T, hT, iT, iT', hs⟩` from `W.presheaf.germ_eq (U := u ⁻¹ᵁ V) (V := u ⁻¹ᵁ V) w hV hV (u.app V s) 0 (by rw [ha, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨T', hT', hTT'⟩` from `u.isEmbedding.isInducing.isOpen_iff.1 T.isOpen`. Set `V' : Z.Opens` to `V ⊓ ⟨T', hT'⟩`. Establish `hw : u w ∈ V'` using `⟨hV, by`. Establish `: w ∈ u ⁻¹' T'` using `hTT' ▸ hT`. Conclude with `this⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : u ⁻¹ᵁ V' ≤ T` using `fun x hx => by`. Establish `: x ∈ u ⁻¹' T'` using `hx.2`. Conclude with `hTT'.subset this`. Establish `h0 : Z.presheaf.map (homOfLE (inf_le_left : V' ≤ V)).op s = 0`. Apply `u.app_injective V'` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero, ← CommRingCat.comp_apply, u.naturality, CommRingCat.comp_apply]`. Use `congrArg (W.presheaf.map (homOfLE hle).op) hs` as an intermediate fact. Rewrite `this` using `[map_zero, map_zero, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Conclude with `this`. Rewrite using `[← Z.presheaf.germ_res_apply (homOfLE (inf_le_left : V' ≤ V)) (u w) hw, h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_isPreimmersion {W Z : Scheme.{0}} (u : W ⟶ Z) [IsPreimmersion u] [QuasiCompact u]
     [IsSchemeTheoreticallyDominant u] : Flat u := by
@@ -167,9 +165,9 @@ def chartPullPowSingle {X : Scheme.{0}} (L : LB X) (n : ℕ) :
     simp
 
 /- English proof (translation)
-Take `⟨d, s, -, hx, hs⟩` from `ha (q x)`. Establish `hq` using `pull_isLB hA q`. Establish `e₁` using `nonzeroLocus_chartSec_id (chartPullPowSingle A d) s fun y J hJ => ⟨fun _ => J 0, mem_powChart.2 (Set.mem_iInter.1 hJ 0)⟩`. Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_linComb hq _ _) (isLB_lbPow (pull_isLB hq _) d) (lbIso_lbPow_finPow hq (𝟙 X) d).symm (secPowPull (secPowPull (chartSec (chartPullPowSingle A d) s) q) (𝟙 X))`. Rewrite `ht` using `[nonzeroLocus_secPowPull, nonzeroLocus_secPowPull, e₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨d, t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Conclude with `hx`. Rewrite using `[ht]`. Conclude with `hs.preimage q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_affine_locus_pull {X Y : Scheme.{0}} {A : LB Y} (hA : A.IsLB)
     (ha : ∀ y : Y, ∃ (d : ℕ) (s : Out.H0 A d), 1 ≤ d ∧ y ∈ Out.nonzeroLocus s ∧ IsAffineOpen (Out.nonzeroLocus s))
@@ -191,19 +189,19 @@ theorem exists_affine_locus_pull {X Y : Scheme.{0}} {A : LB Y} (hA : A.IsLB)
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `: LocallyQuasiFinite (ν ≫ pullback.fst s₁ s₂)`. Use `(IsZariskiLocalAtTarget.iff_of_openCover (P := @LocallyQuasiFinite) Z₁.affineCover).2 fun i => ?_` and prove the remaining obligations. Set `g` to `Z₁.affineCover.f i`. Set `p` to `ν ≫ pullback.fst s₁ s₂`. Set `q` to `pullback.fst p g ≫ ν ≫ pullback.snd s₁ s₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `LocallyQuasiFinite (pullback.snd p g)`. Establish `hq : IsAffineHom q`. Set `m : pullback (g ≫ s₁) s₂ ⟶ pullback s₁ s₂` to `pullback.map _ _ _ _ g (𝟙 _) (𝟙 _) (by simp) (by simp)`. Establish `hm : IsPullback m (pullback.fst _ _) (pullback.fst s₁ s₂) g`. Use `IsPullback.of_right (h₁₂ := pullback.snd s₁ s₂) (v₁₃ := s₂) (h₂₂ := s₁) ?_ (by simp [m]) (IsPullback.of_hasPullback s₁ s₂).flip` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: m ≫ pullback.snd s₁ s₂ = pullback.snd _ _` using `by simp [m]`. Rewrite using `[this]`. Conclude with `(IsPullback.of_hasPullback (g ≫ s₁) s₂).flip`. Set `l : pullback p g ⟶ pullback (g ≫ s₁) s₂` to `hm.lift (pullback.fst p g ≫ ν) (pullback.snd p g) (by simpa [p] using pullback.condition (f := p) (g := g))`. Establish `hl : IsPullback (pullback.fst p g) l ν m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_bot ?_ (by simp [l]) hm` and prove the remaining obligations. Establish `: l ≫ pullback.fst (g ≫ s₁) s₂ = pullback.snd p g` using `by simp [l]`. Rewrite using `[this]`. Conclude with `IsPullback.of_hasPullback p g`. Establish `: IsFinite l` using `MorphismProperty.of_isPullback hl inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffineHom (pullback.snd (g ≫ s₁) s₂)` using `MorphismProperty.pullback_snd (P := @IsAffineHom) _ _ (inferInstance : IsAffineHom (g ≫ s₁))`. Establish `e : q = l ≫ pullback.snd (g ≫ s₁) s₂`. Establish `: pullback.snd (g ≫ s₁) s₂ = m ≫ pullback.snd s₁ s₂` using `by simp [m]`. Rewrite using `[this, ← hl.w_assoc]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `infer_instance`. Use `GlobalTheory.AmpleFibre.locallyQuasiFinite_of_trivial_on_fibres _ _ (pullback.snd p g) (A₂.pull q) inferInstance (pull_isLB h₂ q) (exists_affine_locus_pull h₂ ha q) fun k _ _ y C _ c _ => ?_` and prove the remaining obligations. Set `a` to `c ≫ pullback.fst (pullback.snd p g) y`. Establish `e : a ≫ pullback.fst p g ≫ p = (c ≫ pullback.snd (pullback.snd p g) y) ≫ y ≫ g`. Simplify using `only [a, Category.assoc, pullback.condition, pullback.condition_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `DVR.exists_gen_of_local (V := k) A₁ h₁ (K := PUnit) (fun _ => y ≫ g) (fun _ => 1)`. Establish `g₁ : ∃ t : (A₁.pull ((c ≫ pullback.snd (pullback.snd p g) y) ≫ y ≫ g)).Gen, t.IsGen` using `⟨_, DVR.pullGen_isGen _ _ _ t ht _⟩`. Establish `i₁ : LBIso (A₁.pull ((c ≫ pullback.snd (pullback.snd p g) y) ≫ y ≫ g)) (A₂.pull (a ≫ q))` using `GenSpread.lbIso_pull_comp (a ≫ pullback.fst p g) (e.symm.trans (Category.assoc _ _ _).symm) (by simp [q]) H`. Conclude with `GlobalTheory.SiegelDescent.exists_gen_of_lbIso (pull_isLB h₂ _) (pull_isLB (pull_isLB h₂ _) _) (GenSpread.lbIso_pull_pull h₂ a rfl) (GlobalTheory.SiegelDescent.exists_gen_of_lbIso (pull_isLB h₁ _) (pull_isLB h₂ _) i₁ g₁)`. Conclude with `IsFinite.of_isProper_of_locallyQuasiFinite _`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_fst {Z Z₁ Z₂ S : Scheme.{0}} [IsAffine S] (s₁ : Z₁ ⟶ S) (s₂ : Z₂ ⟶ S) [IsProper s₂]
     (ν : Z ⟶ pullback s₁ s₂) [IsFinite ν] {A₁ : LB Z₁} {A₂ : LB Z₂} (h₁ : A₁.IsLB) (h₂ : A₂.IsLB)
@@ -255,11 +253,9 @@ theorem isFinite_fst {Z Z₁ Z₂ S : Scheme.{0}} [IsAffine S] (s₁ : Z₁ ⟶ 
   exact IsFinite.of_isProper_of_locallyQuasiFinite _
 
 /- English proof (translation)
-Use `isFinite_fromNormalization_of_genericPoints (o := CommRingCat.of R) f g (fun x hx => ?_) fun x _ => ?_` and prove the remaining obligations. Establish `hsp : genericPoint (Sp R) ⤳ (f ≫ g) x` using `(genericPoint_spec (Sp R)).specializes trivial`. Take `⟨x', hx', e⟩` from `Flat.generalizingMap (f ≫ g) hsp`. Take `rfl` from `eq_of_specializes_of_mem_genericPoints hx hx'`. Establish `: CharZero ((Sp R).residueField ((f ≫ g) x'))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `: Nonempty (⊤ : (Sp R).Opens)` using `⟨⟨genericPoint (Sp R), trivial⟩⟩`. Establish `: CharZero (Sp R).functionField` using `charZero_of_injective_ringHom (R := R) (f := ((Scheme.ΓSpecIso (.of R)).inv ≫ (Sp R).germToFunctionField ⊤).hom) (((Sp R).germToFunctionField_injective ⊤).comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of R)).inv).1)`. Conclude with `charZero_of_injective_ringHom (R := (Sp R).functionField) ((Sp R).residue (genericPoint (Sp R))).hom.injective`. Conclude with `charZero_of_injective_ringHom ((f ≫ g).residueFieldMap x').hom.injective`.
-
-Conclude with `(RingHom.FiniteType.of_surjective _ (f.stalkMap_surjective x)).essFiniteType.residueFieldMap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFinite_fromNormalization_graph {R : Type} [CommRing R] [IsDedekindDomain R] [CharZero R]
     {W Y : Scheme.{0}} (f : W ⟶ Y) [QuasiCompact f] [QuasiSeparated f] [SurjectiveOnStalks f]
@@ -283,9 +279,9 @@ theorem isFinite_fromNormalization_graph {R : Type} [CommRing R] [IsDedekindDoma
   · exact (RingHom.FiniteType.of_surjective _ (f.stalkMap_surjective x)).essFiniteType.residueFieldMap
 
 /- English proof (translation)
-Introduce `z hz K _ _ t ht`. Take `⟨w, rfl⟩` from `genericPoints_subset_range_of_isDominant u hz`. Take `⟨y, rfl⟩` from `HomExt.exists_lift_of_range_subset u t (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨p', hp'⟩` from `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, hp'.symm.trans (congrArg t (Subsingleton.elim _ _))⟩)`. Establish `P` using `(IsPullback.of_hasPullback G'.hom y).paste_horiz h`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso @IsProper P.isoPullback.hom _).1 (by rw [P.isoPullback_hom_snd]; infer_instance)`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genericPoints_subset_abLocus {W Z : Scheme.{0}} (u : W ⟶ Z) [IsPreimmersion u] [Flat u] [IsDominant u]
     [QuasiCompact u] {G : Over Z} {G' : Over W} {φ : G'.left ⟶ G.left} (h : IsPullback φ G'.hom G.hom u)
@@ -301,25 +297,25 @@ theorem genericPoints_subset_abLocus {W Z : Scheme.{0}} (u : W ⟶ Z) [IsPreimme
     (by rw [P.isoPullback_hom_snd]; infer_instance)
 
 /- English proof (translation)
-Introduce `hE E _ _ _ H R _ Z₁ Z₂ W s₁ s₂ t₁ t₂ tW j j' m₁ m₂ N A₁ A₂ _ _ _ hn hp₁ hp₂ _ _ _ _ _ _ _ _ _ _ w hr hs`. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver hp₁` as an intermediate fact. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver hp₂` as an intermediate fact. Establish `: IsLocallyNoetherian Z₁` using `LocallyOfFiniteType.isLocallyNoetherian s₁`. Use `GlobalTheory.IsNormalScheme.of_pred hn` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks j` as an intermediate fact. Establish `: GlobalTheory.IsNormalScheme W` using `GlobalTheory.IsNormalScheme.of_isIso_stalkMap j`. Establish `: IsLocallyNoetherian W` using `isLocallyNoetherian_of_isPreimmersion j`. Set `f : W ⟶ pullback s₁ s₂` to `pullback.lift j j' w`. Establish `hf₁ : f ≫ pullback.fst s₁ s₂ = j` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf₂ : f ≫ pullback.snd s₁ s₂ = j'` using `pullback.lift_snd _ _ _`. Establish `: IsPreimmersion (f ≫ pullback.fst s₁ s₂)` using `hf₁ ▸ inferInstance`. Establish `: QuasiCompact (f ≫ pullback.fst s₁ s₂)` using `hf₁ ▸ inferInstance`. Establish `: IsPreimmersion f` using `isPreimmersion_of_comp f (pullback.fst s₁ s₂)`. Establish `: QuasiCompact f` using `.of_comp f (pullback.fst s₁ s₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Flat (f ≫ pullback.fst s₁ s₂ ≫ s₁)`. Rewrite using `[reassoc_of% hf₁]`. Use `infer_instance`. Establish `: IsFinite f.fromNormalization` using `isFinite_fromNormalization_graph f (pullback.fst s₁ s₂ ≫ s₁)`. Set `u` to `f.toNormalization`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `p₁` to `f.fromNormalization ≫ pullback.fst s₁ s₂`. Set `p₂` to `f.fromNormalization ≫ pullback.snd s₁ s₂`. Establish `hu₁ : u ≫ p₁ = j` using `by simp [u, p₁, hf₁]`. Establish `hu₂ : u ≫ p₂ = j'` using `by simp [u, p₂, hf₂]`. Establish `: IsPreimmersion (u ≫ p₁)` using `hu₁ ▸ inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsPreimmersion u` using `isPreimmersion_of_comp u p₁`. Establish `: Flat u` using `flat_of_isPreimmersion u`. Establish `hZ` using `GlobalTheory.IsNormalScheme.pred f.normalization`. Establish `: IsLocallyNoetherian f.normalization` using `LocallyOfFiniteType.isLocallyNoetherian p₁`. Set `z₀ : Sp R ⟶ Sp ℤ` to `spMap (algebraMap ℤ R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType z₀` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 ‹_›)`. Establish `: Flat z₀` using `Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `: Flat (f.toNormalization ≫ p₁ ≫ s₁)`. Rewrite using `[reassoc_of% hu₁]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Flat (p₁ ≫ s₁)` using `flat_normalization f (p₁ ≫ s₁)`. Take `⟨_, _, _, _, _, n₁, -⟩` from `sabPull Out.CubePf.cubePull p₁ t₁`. Take `⟨_, _, _, _, _, n₂, -⟩` from `sabPull Out.CubePf.cubePull p₂ t₂`. Take `⟨a₁, -⟩` from `ObjMaps.exists_sab_cancel n₁ (hu₁ ▸ m₁ : SABMap tW t₁ (u ≫ p₁))`. Take `⟨a₂, -⟩` from `ObjMaps.exists_sab_cancel n₂ (hu₂ ▸ m₂ : SABMap tW t₂ (u ≫ p₂))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, -⟩` from `GlobalTheory.exists_sabMap_id_of_common_generic hE E H _ W u ⟨hZ, (p₁ ≫ s₁) ≫ z₀, inferInstance, inferInstance⟩ inferInstance inferInstance inferInstance inferInstance tW _ _ a₁ a₂ inferInstance`. Take `⟨n₂', -⟩` from `ObjMaps.exists_sab_comp n₂ b`. Rewrite `n₂'` using `[Category.id_comp]`. Establish `hA` using `GlobalTheory.T.lineBundleIso_of_ampleDeterminantFrames E H _ Z₁ Z₂ ((p₁ ≫ s₁) ≫ z₀) _ t₁ t₂ p₁ p₂ n₁ n₂' N A₁ A₂ hZ inferInstance (genericPoints_subset_abLocus u a₁.cart.1) hr hs`. Establish `: IsFinite p₁` using `isFinite_fst s₁ s₂ f.fromNormalization A₁.isLB A₂.isLB A₂.ample hA`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h, ⟨h₁, -⟩, -⟩` from `existsUnique_lift_of_densePart Z₁ W Z₁ f.normalization j hn inferInstance inferInstance inferInstance inferInstance p₁ (𝟙 _) u inferInstance (by rw [hu₁, Category.comp_id])`. Conclude with `⟨h ≫ p₂, by rw [reassoc_of% h₁, hu₂]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom_of_ampFrames : GlobalTheory.LN.HomExtSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (Z₁ Z₂ W : Scheme.{0}) (s₁ : Z₁ ⟶ Sp R) (s₂ : Z₂ ⟶ Sp R) (t₁ : SAB H Z₁) (t₂ : SAB H Z₂) (tW : SAB H W) (j : W ⟶ Z₁) (j' : W ⟶ Z₂) (_ : SABMap tW t₁ j) (_ : SABMap tW t₂ j') (N : ℕ) (A₁ : GlobalTheory.LN.AmpFrames t₁.G t₁.PP.L N) (A₂ : GlobalTheory.LN.AmpFrames t₂.G t₂.PP.L N), IsDedekindDomain R → CharZero R → Algebra.FiniteType ℤ R → Geo.Tor.IsNormalScheme Z₁ → IsProjOver s₁ → IsProjOver s₂ → Flat s₁ → IsPreimmersion j → Flat j → IsDominant j → QuasiCompact j → IsPreimmersion j' → Flat j' → IsDominant j' → QuasiCompact j' → IsProper tW.G.hom → j ≫ s₁ = j' ≫ s₂ → A₁.r = A₂.r → A₁.s = A₂.s → ∃ ρ : Z₁ ⟶ Z₂, j ≫ ρ = j' := by
   intro hE E _ _ _ H R _ Z₁ Z₂ W s₁ s₂ t₁ t₂ tW j j' m₁ m₂ N A₁ A₂ _ _ _ hn hp₁ hp₂ _ _ _ _ _ _ _ _ _ _ w hr hs

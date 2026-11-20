@@ -15,13 +15,13 @@ def divPoint (n : ℕ+) (a : ℕ) (τ : ℍ) : ℍ :=
   (⟨(n : ℝ)⁻¹, by positivity⟩ : {x : ℝ // 0 < x}) • ((a : ℝ) +ᵥ τ)
 
 /- English proof (translation)
-Simplify using `[mulPoint, coe_pos_real_smul, Complex.real_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_mulPoint (n : ℕ+) (τ : ℍ) : (mulPoint n τ : ℂ) = (n : ℂ) * τ := by
   simp [mulPoint, coe_pos_real_smul, Complex.real_smul]
 
 /- English proof (translation)
-Simplify using `[divPoint, coe_pos_real_smul, coe_vadd, Complex.real_smul, div_eq_inv_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coe_divPoint (n : ℕ+) (a : ℕ) (τ : ℍ) : (divPoint n a τ : ℂ) = ((a : ℂ) + τ) / n := by
   simp [divPoint, coe_pos_real_smul, coe_vadd, Complex.real_smul, div_eq_inv_mul]
@@ -37,7 +37,7 @@ def HasIntegralLaurentQExpansion (f : ℍ → ℂ) : Prop :=
       (Function.Periodic.qParam 1 τ ^ N * f τ)
 
 /- English proof (translation)
-Use `⟨0, fun n ↦ if n = 0 then m else 0, 0, fun τ _ ↦ ?_⟩` and prove the remaining obligations. Use `hasSum_ite_eq 0 ((m : ℂ) * Function.Periodic.qParam 1 τ ^ 0) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext n; split_ifs <;> simp_all`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem hasIntegralLaurentQExpansion_const (m : ℤ) :
     HasIntegralLaurentQExpansion fun _ ↦ (m : ℂ) := by

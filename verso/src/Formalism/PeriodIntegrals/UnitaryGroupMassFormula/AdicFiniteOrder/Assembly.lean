@@ -8,7 +8,7 @@ namespace PI
 open NumberField IsDedekindDomain TensorProduct Matrix
 
 /- English proof (translation)
-Set `_` to `tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Introduce `C hC hmem`. Take `⟨N, hN, hNC⟩` from `hT F E C hC`. Conclude with `hP E k γ N hN (fun n i j => hNC _ (hmem n i j))`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem charpoly_int_of_powers_in_compact (hT : TensCpctDen) (hP : PowBddInt)
     (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (k : ℕ)
@@ -23,11 +23,11 @@ theorem charpoly_int_of_powers_in_compact (hT : TensCpctDen) (hP : PowBddInt)
   exact hP E k γ N hN (fun n i j => hNC _ (hmem n i j))
 
 /- English proof (translation)
-Set `_` to `tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Set `: Algebra (FiniteAdeleRing (𝓞 F) F) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)` to `Algebra.TensorProduct.rightAlgebra`. Establish `: IsModuleTopology (FiniteAdeleRing (𝓞 F) F) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)` using `⟨rfl⟩`. Establish `: ContinuousAdd (E ⊗[F] FiniteAdeleRing (𝓞 F) F)` using `IsModuleTopology.toContinuousAdd (FiniteAdeleRing (𝓞 F) F) _`. Establish `hmul : ∀ c d : E ⊗[F] FiniteAdeleRing (𝓞 F) F, Continuous (fun z => c * z * d)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c d`. Use `IsModuleTopology.continuous_of_linearMap (R := FiniteAdeleRing (𝓞 F) F) ((LinearMap.mulRight (FiniteAdeleRing (𝓞 F) F) d).comp (LinearMap.mulLeft (FiniteAdeleRing (𝓞 F) F) c))` as an intermediate fact. Conclude with `this`. Establish `he : ∀ a b : Fin k, Continuous (fun u : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) => (u : Matrix (Fin k) (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b)` using `fun a b => Units.continuous_val.matrix_elem a b`. Establish `hfun : (fun u : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) => ((y * u * y⁻¹ : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin k) (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) i j) = fun u : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) => ∑ b, ∑ a, (y : Matrix (Fin k) (Fin …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[hfun]`. Conclude with `continuous_finsetSum _ fun b _ => continuous_finsetSum _ fun a _ => (hmul _ _).comp (he a b)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_conj_entry (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (k : ℕ)
     (y : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (i j : Fin k) :
@@ -62,13 +62,11 @@ theorem continuous_conj_entry (F E : Type) [Field F] [NumberField F] [Field E] [
   exact continuous_finsetSum _ fun b _ => continuous_finsetSum _ fun a _ => (hmul _ _).comp (he a b)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ hreal σ k J hH hDef U _hUle hUc y _hy γ hγ hbc`. Set `_` to `tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Conclude with `isOfFinOrder_iff_pow_eq_one.mpr ⟨1, one_pos, Units.ext (Matrix.ext fun i _ => Fin.elim0 i)⟩`. Take `⟨hc, hdef⟩` from `hD F E hreal σ k J hk hH hDef`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hyu⟩` from `Subgroup.mem_map.mp hbc`. Apply the tactic sequence `have hint := charpoly_int_of_powers_in_compact hT hP F E k (γ : Matrix (Fin k) (Fin k) E) (⋃ (i : Fin k) (j : Fin k), (fun u : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) => ((y * u * y⁻¹ : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin k) (Fin k) (E ⊗[F] FiniteAdeleR …`. Introduce `n i j`. Establish `h1 : bc (inclE (F` using `F) (E := E) (FiniteAdeleRing (𝓞 F) F)) (γ ^ n) = y * u ^ n * y⁻¹ := by`. Rewrite using `[map_pow, ← hyu, ← map_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `Set.mem_iUnion.mpr ⟨i, Set.mem_iUnion.mpr ⟨j, u ^ n, U.pow_mem hu n, ?_⟩⟩` and prove the remaining obligations. Use `show ((y * u ^ n * y⁻¹ : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin k) (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) i j = _`. Rewrite using `[← h1, ← Units.val_pow_eq_pow_val]`. Use the proof step `rfl)`.
-
-Establish `hγ' : ((γ : Matrix (Fin k) (Fin k) E).map (σ : E →+* E))ᵀ * J * (γ : Matrix (Fin k) (Fin k) E) = J` using `hγ`. Take `⟨n, hn, hpow⟩` from `hU E (σ : E →+* E) hc k J γ hdef hγ' hint`. Conclude with `isOfFinOrder_iff_pow_eq_one.mpr ⟨n, hn, Units.ext (by rw [Units.val_pow_eq_pow_val, hpow]; simp)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finOrdAd_of (hU : UnitKron) (hP : PowBddInt) (hT : TensCpctDen) (hD : DefPosDef) : FinOrdAd := by
   intro F E _ _ _ _ _ hreal σ k J hH hDef U _hUle hUc y _hy γ hγ hbc

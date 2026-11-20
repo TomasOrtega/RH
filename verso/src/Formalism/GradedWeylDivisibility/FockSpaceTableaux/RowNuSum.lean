@@ -5,13 +5,13 @@ namespace Formalism.GradedWeylDivisibility
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `r n ν hn k`. Set `g : ℕ → ℕ` to `fun i => if i < k then (if h : i < n then ν ⟨i, h⟩ else 0) else 0`. Establish `hL : ∑ a : Fin r with a.val < k, rowNu (r` using `r) ν a = ∑ i ∈ Finset.range r, g i := by`. Rewrite using `[Finset.sum_filter, ← Fin.sum_univ_eq_sum_range g r]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [g, rowNu]`. Establish `hR : ∑ t : Fin n with t.val < k, ν t = ∑ i ∈ Finset.range n, g i`. Rewrite using `[Finset.sum_filter, ← Fin.sum_univ_eq_sum_range g n]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [g, dif_pos t.isLt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hL, hR]`. Use `(Finset.sum_subset (fun i hi => ?_) (fun i hi hni => ?_)).symm` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_range] at hi hni`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, dif_neg hni, ite_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowPartSum : RowNuSum := by
   classical

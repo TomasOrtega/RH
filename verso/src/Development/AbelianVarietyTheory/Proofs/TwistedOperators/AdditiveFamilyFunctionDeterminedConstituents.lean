@@ -17,9 +17,7 @@ variable {G : Type} [Group G] [TopologicalSpace G]
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `jhMult_self c.rep.irr`. Assume the negation of the conclusion as `h0`. Take `⟨φ⟩` from `(jhMult_ne_zero_iff.1 h0).nonempty_equiv c.rep.irr d.rep.irr`.
-
-Conclude with `h (c.cl_rep.symm.trans ((IrrRep.cl_eq_iff.2 ⟨φ.symm⟩).trans d.cl_rep))`.
+Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jhMult_rep_rep (c d : IrrCl G) : jhMult c.rep.ρ d.rep.ρ = if c = d then 1 else 0 := by
   split_ifs with h
@@ -46,7 +44,7 @@ def quo (B : SmRep G) (S T : Subrepresentation B.ρ) : SmRep G :=
 include h0 hadd
 
 /- English proof (translation)
-Establish `hs : Subsingleton (sub B ⊥).V` using `inferInstanceAs (Subsingleton (⊥ : Submodule ℂ B.V))`. Use `hadd B (sub B ⊥) B' ⟨Submodule.subtype _, fun _ => rfl⟩ e.toIntertwiningMap Subtype.val_injective e.surjective (fun u => by rw [Subsingleton.elim u 0, map_zero, map_zero]) (fun v hv => ⟨0, by` as an intermediate fact. Rewrite using `[map_zero]`. Conclude with `(e.injective (hv.trans (map_zero e).symm)).symm⟩)`. Rewrite using `[this, h0 _ hs, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congr_equiv {B B' : SmRep G} (e : B.ρ.Equiv B'.ρ) : φ B = φ B' := by
   have hs : Subsingleton (sub B ⊥).V := inferInstanceAs (Subsingleton (⊥ : Submodule ℂ B.V))
@@ -59,19 +57,19 @@ theorem congr_equiv {B B' : SmRep G} (e : B.ρ.Equiv B'.ρ) : φ B = φ B' := by
   rw [this, h0 _ hs, zero_add]
 
 /- English proof (translation)
-Establish `ψ` using `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := B.ρ)`. Take `⟨_, _⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 h`. Establish `: WellFoundedGT (Subrepresentation B.ρ)` using `ψ.toOrderEmbedding.wellFoundedGT`. Establish `: WellFoundedLT (Subrepresentation B.ρ)` using `ψ.toOrderEmbedding.wellFoundedLT`. Establish `key : ∀ S : Subrepresentation B.ρ, (∀ c ∉ T, jhMult c.rep.ρ S.toRepresentation = 0) → φ (sub B S) = ∑ c ∈ T, jhMult c.rep.ρ S.toRepresentation * φ (SmRep.ofIrr c.rep)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S`. Proceed by induction on `S using WellFoundedLT.induction with`. Consider the case `ind S ih`. Introduce `hS'`. Break down `eq_or_ne S ⊥ with rfl | hS` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hs : Subsingleton (⊥ : Subrepresentation B.ρ).toSubmodule` using `inferInstanceAs (Subsingleton (⊥ : Submodule ℂ B.V))`. Rewrite using `[h0 _ hs]`. Conclude with `(Finset.sum_eq_zero fun c _ => by`. Rewrite using `[jhMult_of_subsingleton c.rep.irr, zero_mul]).symm`. Take `⟨R, -, hR⟩` from `exists_le_covBy_of_lt (bot_lt_iff_ne_bot.2 hS)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `σ : IrrRep G` to `⟨_, subQuot S R, (quo B S R).smooth, isIrreducible_subQuot hR⟩`. Take `⟨e⟩` from `σ.nonempty_equiv_rep`. Establish `hm : ∀ c : IrrCl G, jhMult c.rep.ρ S.toRepresentation = jhMult c.rep.ρ R.toRepresentation + if c = σ.cl then 1 else 0` using `fun c => by`. Rewrite using `[jhMult_of_le c.rep.irr hR.le, ← jhMult_rep_rep, jhMult_congr_right _ e]`. Establish `hp : ∀ v : S.toSubmodule, (Submodule.Quotient.mk v : (quo B S R).V) = 0 ↔ v.1 ∈ R.toSubmodule` using `fun v => Submodule.Quotient.mk_eq_zero _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hadd (sub B S) (sub B R) (quo B S R) ⟨Submodule.inclusion hR.le, fun _ => rfl⟩ ⟨Submodule.mkQ _, fun _ => rfl⟩ (Submodule.inclusion_injective hR.le) (Submodule.Quotient.mk_surjective _) (fun u => (hp _).2 u.2) fun v hv => ⟨⟨v.1, (hp v).1 hv⟩, rfl⟩`. Establish `h2 : φ (quo B S R) = φ (SmRep.ofIrr σ.cl.rep)` using `(congr_equiv φ h0 hadd (B := SmRep.ofIrr σ.cl.rep) (B' := quo B S R) e).symm`. Establish `h3 : σ.cl ∈ T`. Assume the negation of the conclusion as `hn`. Use `hS' _ hn` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hm]`. Simplify using `at this`. Rewrite using `[h1, h2, ih R hR.lt fun c hc => (add_eq_zero.1 ((hm c).symm.trans (hS' c hc))).1]`. Simplify using `only [hm, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', if_pos h3]`. Establish `h4` using `key ⊤ (by simpa only [jhMult_congr_right _ (topEquiv B.ρ)] using hT)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← congr_equiv φ h0 hadd (B := sub B ⊤) (B' := B) (topEquiv B.ρ), h4]`. Simplify using `only [jhMult_congr_right _ (topEquiv B.ρ)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_coord₂ (B : SmRep G) (h : HasFiniteLength B.ρ) (T : Finset (IrrCl G))
     (hT : ∀ c ∉ T, jhMult c.rep.ρ B.ρ = 0) :
@@ -124,31 +122,27 @@ end AdditiveExpand
 open AdditiveExpand in
 
 /- English proof (translation)
-Introduce `α _ _ Γ _ _ _ Φ h0 hadd`. Establish `key : ∀ s : Finset α, ∀ A : ∀ i, SmRep (Γ i), (∀ i ∉ s, ∃ c : IrrCl (Γ i), A i = SmRep.ofIrr c.rep) → (∀ i, HasFiniteLength (A i).ρ) → ∀ T : Finset (∀ i, IrrCl (Γ i)), (∀ t ∉ T, ∃ i, jhMult (t i).rep.ρ (A i).ρ = 0) → Φ A = ∑ t ∈ T, (∏ i, jhMult (t i).rep.ρ (A i).ρ) * Φ (fun i => …`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `A hA _ T hT`. Use `choose c hc using fun i => hA i (Finset.notMem_empty i)`. Take `rfl : A = fun i => SmRep.ofIrr (c i).rep` from `funext hc`. Establish `hm : ∀ t : ∀ i, IrrCl (Γ i), (∏ i, jhMult (t i).rep.ρ (SmRep.ofIrr (c i).rep).ρ) = if t = c then 1 else 0` using `fun t => by`. Establish `: ∀ i, jhMult (t i).rep.ρ (SmRep.ofIrr (c i).rep).ρ = if t i = c i then 1 else 0` using `fun i => jhMult_rep_rep _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, Finset.prod_ite_zero, Finset.prod_const_one, Finset.mem_univ, forall_const, funext_iff]`. Establish `h3 : c ∈ T`. Assume the negation of the conclusion as `hn`. Take `⟨i, hi⟩` from `hT c hn`. Conclude with `one_ne_zero ((jhMult_self (c i).rep.irr).symm.trans hi)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [hm, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', if_pos h3]`. Consider the case `insert i s his ih`. Introduce `A hA hl T hT`. Set `μ : ∀ j, IrrCl (Γ j) → SmRep (Γ j) → ℕ∞` to `fun j c B => jhMult c.rep.ρ B.ρ`. Establish `hC` using `finite_constituents (hl i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `one_coord₂ (fun B => Φ (Function.update A i B)) (fun B hB => h0 _ i (by rw [Function.update_self]; exact hB)) (hadd A i) (A i) (hl i) hC.toFinset (fun c hc => by simpa using hc)`. Simplify using `only [Function.update_eq_self] at h1`. Establish `h2 : ∀ c ∈ hC.toFinset, Φ (Function.update A i (SmRep.ofIrr c.rep)) = ∑ t ∈ T, ((if t i = c then 1 else 0) * ∏ j ∈ Finset.univ.erase i, μ j (t j) (A j)) * Φ (fun i => SmRep.ofIrr (t i).rep)`. Introduce `c hc`. Rewrite using `[ih (Function.update A i (SmRep.ofIrr c.rep)) ?_ ?_ T ?_]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `∏ j, μ j (t j) (Function.update A i (SmRep.ofIrr c.rep) j) = _`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), Function.update_self]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `jhMult_rep_rep _ _`. Conclude with `Finset.prod_congr rfl fun j hj => by`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`. Introduce `j hj`. Break down `eq_or_ne j i with rfl | hji` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨c, Function.update_self ..⟩`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hA j (by simp [hji, hj])`. Introduce `j`. Break down `eq_or_ne j i with rfl | hji` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_self]`. Conclude with `c.rep.hasFiniteLength`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hl j`. Introduce `t ht`.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨j, hj⟩` from `hT t ht`. Use `⟨j, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `μ j (t j) (Function.update A i (SmRep.ofIrr c.rep) j) = 0`. Break down `eq_or_ne j i with rfl | hji` into its components or cases. Rewrite using `[Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(jhMult_rep_rep _ _).trans (if_neg ?_)` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `(hC.mem_toFinset.1 hc) hj`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hj`.
-
-Rewrite using `[h1, Finset.sum_congr rfl fun c hc => by rw [h2 c hc, Finset.mul_sum], Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (∏ j, μ j (t j) (A j)) * _`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Simplify using `only [ite_mul, one_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq]`.
-
-Use `split_ifs with h`. Conclude with `(mul_assoc _ _ _).symm`. Establish `: μ i (t i) (A i) = 0` using `by simpa using h`. Rewrite using `[this, zero_mul, zero_mul]`. Conclude with `fun A hl T hT => key Finset.univ A (fun i hi => absurd (Finset.mem_univ i) hi) hl T hT`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem additive_family_expand : ∀ (α : Type) [Fintype α] [DecidableEq α] (Γ : α → Type) [∀ i, Group (Γ i)] [∀ i, TopologicalSpace (Γ i)] [∀ i, IsTopologicalGroup (Γ i)] (Φ : (∀ i, GlobalTheory.SmGL.SmRep (Γ i)) → ℕ∞), (∀ (A : ∀ i, GlobalTheory.SmGL.SmRep (Γ i)) (i : α), Subsingleton (A i).V → Φ A = 0) → (∀ (A : ∀ i, GlobalTheory.SmGL.SmRep (Γ i)) (i : α) (B B₁ B₂ : GlobalTheory.SmGL.SmRep (Γ i)) (ι : B₁.ρ.IntertwiningMap B.ρ) (p : B.ρ.IntertwiningMap B₂.ρ), Function.Injective ι → Function.Surjective p → (∀ u, p (ι u) = 0) → (∀ v, p v = 0 → ∃ u, ι u = v) → Φ (Function.update A i B) = Φ (Function.update A i B₁) + Φ (Function.update A i B₂)) → ∀ (A : ∀ i, GlobalTheory.SmGL.SmRep (Γ i)), (∀ i, GlobalTheory.SmGL.HasFiniteLength (A i).ρ) → ∀ T : Finset (∀ i, GlobalTheory.SmGL.IrrCl (Γ i)), (∀ t ∉ T, ∃ i, GlobalTheory.SmGL.jhMult (t i).rep.ρ (A i).ρ = 0) → Φ A = ∑ t ∈ T, (∏ i, GlobalTheory.SmGL.jhMult (t i).rep.ρ (A i).ρ) * Φ (fun i => GlobalTheory.SmGL.SmRep.ofIrr (t i).rep) := by
   intro α _ _ Γ _ _ _ Φ h0 hadd

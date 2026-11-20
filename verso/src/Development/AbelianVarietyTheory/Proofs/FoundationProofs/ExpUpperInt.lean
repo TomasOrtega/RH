@@ -6,9 +6,9 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory.KZ
 
 /- English proof (translation)
-Establish `hdet : (0 : ℤ) < (!![a, b; 0, d] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`. Check the signs of the components of the expression. Establish `e : ∀ i j, ent (toGQ !![a, b; 0, d]) i j = ((!![a, b; 0, d] : Matrix (Fin 2) (Fin 2) ℤ) i j : ℚ)`. Introduce `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ent, toGQ, dif_pos hdet]`. Both sides reduce to the same expression. Establish `h` using `X.exp_upper (toGQ !![a, b; 0, d]) (by rw [e]; simp) f r`. Simplify `h` using `[e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Tower.exp_upper_int {Ω : Type} [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (a b d : ℤ)
     (ha : 0 < a) (hd : 0 < d) (f : X.K) (r : ℚ) :

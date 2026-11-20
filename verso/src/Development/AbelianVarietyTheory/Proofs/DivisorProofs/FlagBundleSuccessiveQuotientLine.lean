@@ -13,9 +13,7 @@ open scoped Classical
 namespace GlobalTheory.OmitStep
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p d D hq hp π w ι _ E r hE fl hfl a i i' hi`. Use `haveI : IsNoetherianRing k := by haveI := hq.finite`. Conclude with `isNoetherian_of_tower ℤ (inferInstance : IsNoetherian ℤ k)`. Take `⟨Y₁, σ, ρ, wσ, S, P, E₁, s, j, t, wst, fl₁, A₀, A₁, u, v, hpr, hfb, hrest⟩` from `GlobalTheory.T.flag_bundle_successive_projection k B q hq.isProjOver Y π ι E r hE fl hfl a i i' hi`. Establish `hE₁ : GlobalTheory.VB.IsVB E₁ 2` using `hrest.2.2.2.2.2.1`.
-
-Use `⟨Y₁, σ, ρ, wσ, S, P, E₁, s, j, t, wst, fl₁, A₀, A₁, u, v, GlobalTheory.T.flag_bundle_integral_base Y Y₁ ρ E₁ fl₁ hp.isIntegral hE₁ hfb, hpr, ⟨GlobalTheory.FlagSurj.isFlagBundle_surjective Y₁ Y ρ Unit (fun _ => E₁) (fun _ => 2) (fun _ => fl₁) (fun _ => hE₁) hfb⟩, GlobalTheory.T.fl …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem omitStep_bundle : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k)
     (d D : ℕ), IsArithVar q d → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι]

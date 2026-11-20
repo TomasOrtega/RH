@@ -9,14 +9,14 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Rewrite using `[xp, PowerSeries.coeff_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_xp {R : Type*} [CommRing R] (k : ℕ) (f : PowerSeries R) (n : ℕ) :
     PowerSeries.coeff n (xp k f) = if k ∣ n then PowerSeries.coeff (n / k) f else 0 := by
   rw [xp, PowerSeries.coeff_mk]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_xp, PowerSeries.coeff_expand]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_eq_expand {R : Type*} [CommRing R] {k : ℕ} (hk : k ≠ 0) (f : PowerSeries R) :
     xp k f = PowerSeries.expand k hk f := by
@@ -24,7 +24,7 @@ theorem xp_eq_expand {R : Type*} [CommRing R] {k : ℕ} (hk : k ≠ 0) (f : Powe
   rw [coeff_xp, PowerSeries.coeff_expand]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_xp, map_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xp_add {R : Type*} [CommRing R] (k : ℕ) (f g : PowerSeries R) : xp k (f + g) = xp k f + xp k g := by
   ext n
@@ -32,7 +32,7 @@ theorem xp_add {R : Type*} [CommRing R] (k : ℕ) (f g : PowerSeries R) : xp k (
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_xp, map_sub]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xp_sub {R : Type*} [CommRing R] (k : ℕ) (f g : PowerSeries R) : xp k (f - g) = xp k f - xp k g := by
   ext n
@@ -40,21 +40,21 @@ theorem xp_sub {R : Type*} [CommRing R] (k : ℕ) (f g : PowerSeries R) : xp k (
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[xp_eq_expand hk, xp_eq_expand hk, xp_eq_expand hk, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_mul {R : Type*} [CommRing R] {k : ℕ} (hk : k ≠ 0) (f g : PowerSeries R) :
     xp k (f * g) = xp k f * xp k g := by
   rw [xp_eq_expand hk, xp_eq_expand hk, xp_eq_expand hk, map_mul]
 
 /- English proof (translation)
-Rewrite using `[xp_eq_expand hk, xp_eq_expand hk, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_pow {R : Type*} [CommRing R] {k : ℕ} (hk : k ≠ 0) (f : PowerSeries R) (n : ℕ) :
     xp k (f ^ n) = xp k f ^ n := by
   rw [xp_eq_expand hk, xp_eq_expand hk, map_pow]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_xp, PowerSeries.coeff_C_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xp_C_mul {R : Type*} [CommRing R] (k : ℕ) (c : R) (f : PowerSeries R) :
     xp k (PowerSeries.C c * f) = PowerSeries.C c * xp k f := by
@@ -63,7 +63,7 @@ theorem xp_C_mul {R : Type*} [CommRing R] (k : ℕ) (c : R) (f : PowerSeries R) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_xp, PowerSeries.coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xp_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) (k : ℕ) (f : PowerSeries R) :
     xp k (f.map φ) = (xp k f).map φ := by
@@ -72,7 +72,7 @@ theorem xp_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) (k : ℕ
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_map, eq_intCast]`. Conclude with `intCast_mem R _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.map_int (R : Subring ℂ) (f : PowerSeries ℤ) : CoeffIn R (f.map (Int.castRingHom ℂ)) := by
   intro n
@@ -80,7 +80,7 @@ theorem CoeffIn.map_int (R : Subring ℂ) (f : PowerSeries ℤ) : CoeffIn R (f.m
   exact intCast_mem R _
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[map_add]`. Conclude with `add_mem (hf n) (hg n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.add {R : Subring ℂ} {f g : PowerSeries ℂ} (hf : CoeffIn R f) (hg : CoeffIn R g) :
     CoeffIn R (f + g) := by
@@ -89,7 +89,7 @@ theorem CoeffIn.add {R : Subring ℂ} {f g : PowerSeries ℂ} (hf : CoeffIn R f)
   exact add_mem (hf n) (hg n)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[map_sub]`. Conclude with `sub_mem (hf n) (hg n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.sub {R : Subring ℂ} {f g : PowerSeries ℂ} (hf : CoeffIn R f) (hg : CoeffIn R g) :
     CoeffIn R (f - g) := by
@@ -98,7 +98,7 @@ theorem CoeffIn.sub {R : Subring ℂ} {f g : PowerSeries ℂ} (hf : CoeffIn R f)
   exact sub_mem (hf n) (hg n)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_mul]`. Conclude with `sum_mem fun p _ => mul_mem (hf _) (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.mul {R : Subring ℂ} {f g : PowerSeries ℂ} (hf : CoeffIn R f) (hg : CoeffIn R g) :
     CoeffIn R (f * g) := by
@@ -107,7 +107,7 @@ theorem CoeffIn.mul {R : Subring ℂ} {f g : PowerSeries ℂ} (hf : CoeffIn R f)
   exact sum_mem fun p _ => mul_mem (hf _) (hg _)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_one]`. Use `split_ifs`. Conclude with `one_mem R`. Conclude with `zero_mem R`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.one (R : Subring ℂ) : CoeffIn R 1 := by
   intro n
@@ -117,9 +117,9 @@ theorem CoeffIn.one (R : Subring ℂ) : CoeffIn R 1 := by
   · exact zero_mem R
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `ReciprocityTheory.ChartRestriction.L1.CoeffIn.one R`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `ReciprocityTheory.ChartRestriction.L1.CoeffIn.mul ih hf`.
+A detailed English derivation is pending.
 -/
 theorem CoeffIn.pow {R : Subring ℂ} {f : PowerSeries ℂ} (hf : CoeffIn R f) (n : ℕ) : CoeffIn R (f ^ n) := by
   induction n with
@@ -131,14 +131,14 @@ theorem CoeffIn.pow {R : Subring ℂ} {f : PowerSeries ℂ} (hf : CoeffIn R f) (
     exact ReciprocityTheory.ChartRestriction.L1.CoeffIn.mul ih hf
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (ReciprocityTheory.ChartRestriction.L1.CoeffIn R) (fun a b ha hb => ReciprocityTheory.ChartRestriction.L1.CoeffIn.mul ha hb) (ReciprocityTheory.ChartRestriction.L1.CoeffIn.one R) hf`.
+A detailed English derivation is pending.
 -/
 theorem CoeffIn.prod {R : Subring ℂ} {α : Type*} (s : Finset α) (f : α → PowerSeries ℂ)
     (hf : ∀ t ∈ s, CoeffIn R (f t)) : CoeffIn R (∏ t ∈ s, f t) := Finset.prod_induction f (ReciprocityTheory.ChartRestriction.L1.CoeffIn R)
     (fun a b ha hb => ReciprocityTheory.ChartRestriction.L1.CoeffIn.mul ha hb) (ReciprocityTheory.ChartRestriction.L1.CoeffIn.one R) hf
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[coeff_xp]`. Use `split_ifs`. Conclude with `hf _`. Conclude with `zero_mem R`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.xp {R : Subring ℂ} {f : PowerSeries ℂ} (hf : CoeffIn R f) (k : ℕ) : CoeffIn R (xp k f) := by
   intro n
@@ -148,7 +148,7 @@ theorem CoeffIn.xp {R : Subring ℂ} {f : PowerSeries ℂ} (hf : CoeffIn R f) (k
   · exact zero_mem R
 
 /- English proof (translation)
-Establish `hr : ReciprocityTheory.ChartRestriction.L1.CoeffIn R (PowerSeries.rescale c f)` using `fun m => by`. Rewrite using `[PowerSeries.coeff_rescale]`. Conclude with `mul_mem (pow_mem hc m) (hf m)`. Conclude with `ReciprocityTheory.ChartRestriction.L1.CoeffIn.xp hr k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.sub1 {R : Subring ℂ} {f : PowerSeries ℂ} (hf : CoeffIn R f) {c : ℂ} (hc : c ∈ R) (k : ℕ) :
     CoeffIn R (sub1 c k f) := by
@@ -158,15 +158,15 @@ theorem CoeffIn.sub1 {R : Subring ℂ} {f : PowerSeries ℂ} (hf : CoeffIn R f) 
   exact ReciprocityTheory.ChartRestriction.L1.CoeffIn.xp hr k
 
 /- English proof (translation)
-Take `⟨hu, hui, hu0, hlow, hc⟩` from `hf`. Take `⟨hu', hui', hu0', hlow', hc'⟩` from `hg`. Use `⟨mul_mem hu hu', by rw [mul_inv]; exact mul_mem hui hui', mul_ne_zero hu0 hu0', ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm`. Rewrite using `[PowerSeries.coeff_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h1 : p.1 < n`. Rewrite using `[hlow _ h1, zero_mul]`. Rewrite using `[hlow' _ (by omega), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.coeff_mul, Finset.sum_eq_single (n, n')]`. Rewrite using `[hc, hc']`. Introduce `p hp hne`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h1 : p.1 < n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hlow _ h1, zero_mul]`. Establish `h2 : p.2 < n'`. Assume the negation of the conclusion as `h2`. Conclude with `hne (Prod.ext (by show p.1 = n; omega) (by show p.2 = n'; omega))`. Rewrite using `[hlow' _ h2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.HasAntidiagonal.mem_antidiagonal.mpr (rfl : n + n' = n + n')) h`.
+A detailed English derivation is pending.
 -/
 theorem LowUnit.mul {R : Subring ℂ} {f g : PowerSeries ℂ} {n n' : ℕ} {u u' : ℂ} (hf : LowUnit R f n u)
     (hg : LowUnit R g n' u') : LowUnit R (f * g) (n + n') (u * u') := by
@@ -194,7 +194,7 @@ theorem LowUnit.mul {R : Subring ℂ} {f g : PowerSeries ℂ} {n n' : ℕ} {u u'
       exact absurd (Finset.HasAntidiagonal.mem_antidiagonal.mpr (rfl : n + n' = n + n')) h
 
 /- English proof (translation)
-Use `⟨one_mem R, by rw [inv_one]; exact one_mem R, one_ne_zero, fun n hn => absurd hn (Nat.not_lt_zero n), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem LowUnit.one (R : Subring ℂ) : LowUnit R 1 0 1 := by
   refine ⟨one_mem R, by rw [inv_one]; exact one_mem R, one_ne_zero,
@@ -202,7 +202,7 @@ theorem LowUnit.one (R : Subring ℂ) : LowUnit R 1 0 1 := by
   simp
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (fun g => ∃ n u, ReciprocityTheory.ChartRestriction.L1.LowUnit R g n u) (fun a b ⟨n, u, ha⟩ ⟨n', u', hb⟩ => ⟨n + n', u * u', ReciprocityTheory.ChartRestriction.L1.LowUnit.mul ha hb⟩) ⟨0, 1, ReciprocityTheory.ChartRestriction.L1.LowUnit.one R⟩ hf`.
+A detailed English derivation is pending.
 -/
 theorem LowUnit.prod {R : Subring ℂ} {α : Type*} (s : Finset α) (f : α → PowerSeries ℂ)
     (hf : ∀ t ∈ s, ∃ n u, LowUnit R (f t) n u) : ∃ n u, LowUnit R (∏ t ∈ s, f t) n u := Finset.prod_induction f (fun g => ∃ n u, ReciprocityTheory.ChartRestriction.L1.LowUnit R g n u)

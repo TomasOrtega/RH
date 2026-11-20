@@ -19,7 +19,7 @@ open GlobalTheory.Mem.Col2.ClsZero
 variable {B : Base} {X : PreX B.toPre} {I : TC B X}
 
 /- English proof (translation)
-Take `⟨⟨q, Y⟩, hY⟩` from `p`. Rewrite `hY` using `[ys0 a]`. Conclude with `hY`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_empty (a : I.ι) (u : B.Word) {b : (I.stp u a 0).β} (p : (I.stp u a 0).D b) : p.1.2 = ∅ := by
   obtain ⟨⟨q, Y⟩, hY⟩ := p
@@ -27,21 +27,17 @@ theorem idx_empty (a : I.ι) (u : B.Word) {b : (I.stp u a 0).β} (p : (I.stp u a
   exact hY
 
 /- English proof (translation)
-Take `⟨b⟩` from `stepZero_chartIndex_nonempty h a`. Take `⟨c', rfl⟩` from `(bij0 h u a b).2 c`. Establish `hd` using `stepZero_corresponding_representatives_same_deco h u a b c'`. Use `set p := (I.stp u a 0).rep (I.cl0 u a b c') with hp`. Use `set p0 := (I.stp u I.mu0 0).rep c' with hp0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : _ = _` using `s.2`. Establish `hsd : ((s.1.1, (s.1.2.1.1 : GLG B.fields.E (B.R.N 0) (B.primes X).vGs)) : UF B.fields.E (B.R.N 0) × GLG B.fields.E (B.R.N 0) (B.primes X).vGs) • p.1.1.deco = p.1.1.deco` using `congrArg (fun x => DecoF.deco x.1.1) hs`. Rewrite `hsd` using `[hd]`. Establish `hγ : ∀ (P : HeightOneSpectrum (𝓞 B.fields.E)) (z : Sp B.fields.E (B.R.N 0)), s.1.1.1 z ∈ p0.1.1.deco.1.at P ↔ z ∈ p0.1.1.deco.1.at P`. Introduce `P z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrArg (fun d : DecoSet B.fields.E (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs => s.1.1.1 z ∈ d.1.at P) hsd`. Simplify using `only at e`. Rewrite using `[← e]`. Use `show s.1.1.1 z ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.HermitianLatticesTheory.gmap s.1.1.1 _) ↔ _`. Rewrite using `[mem_localization_gmap, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ P, ((p0.1.1.1.2 P)⁻¹ * (s.1.1.1 * p0.1.1.1.2 P)) ∈ GLint B.fields.E (B.R.N 0) P.1`. Introduce `P x`. Use `show (p0.1.1.1.2 P).symm (s.1.1.1 (p0.1.1.1.2 P x)) ∈ stdAt _ _ P.1 ↔ x ∈ stdAt _ _ P.1`. Rewrite using `[← p0.1.1.2 P, LinearEquiv.apply_symm_apply, ← p0.1.1.2 P x]`. Conclude with `hγ P.1 _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `t : (I.stp u I.mu0 0).G c'.1` to `(s.1.1, ⟨s.1.2.1.1, by`. Establish `e1` using `levelTypePrimes_stepZero_eq_colLev h I.mu0 c'.1`. Establish `e2` using `levelTypePrimes_stepZero_eq_colLev h a b`. Rewrite using `[e1, ← e2]`. Conclude with `s.1.2.1.2⟩,`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `⟨fun P => ⟨(p0.1.1.1.2 P)⁻¹ * (s.1.1.1 * p0.1.1.1.2 P), hc P⟩, by`. Rewrite using `[chartIndexLevelTwistPrimes_stepZero_eq_top h I.mu0 c'.1]`. Introduce `P _`. Use the proof step `trivial⟩)`. Set `st : (I.stp u I.mu0 0).Stab c'` to `⟨t, by show _ = _`.
-
-Use `Subtype.ext (Prod.ext (Subtype.ext (Prod.ext hsd ?_)) ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `P show s.1.1.1 * p0.1.1.1.2 P * (⟨(p0.1.1.1.2 P)⁻¹ * (s.1.1.1 * p0.1.1.1.2 P), hc P⟩⁻¹ : ↥(GLint B.fields.E (B.R.N 0) P.1)).1 = p0.1.1.1.2 P`. Simplify using `only [Subgroup.coe_inv]`. Use `group`. Use `show (fun v => s.1.1.1 v) '' p0.1.2 = p0.1.2`.
-
-Rewrite using `[idx_empty I.mu0 u p0, Set.image_empty]⟩`. Establish `hsub` using `(Nat.card_eq_one_iff_unique.1 (hm c')).1`. Establish `e : st = 1` using `Subsingleton.elim _ _`. Conclude with `congrArg (fun x : (I.stp u I.mu0 0).Stab c' => x.1.1) e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gam_eq_one (h : I.Ok) (u : B.Word) (a : I.ι)
     (hm : ∀ c' : (I.stp u I.mu0 0).Cl, Nat.card ((I.stp u I.mu0 0).Stab c') = 1)
@@ -92,7 +88,7 @@ theorem gam_eq_one (h : I.Ok) (u : B.Word) (a : I.ι)
   exact congrArg (fun x : (I.stp u I.mu0 0).Stab c' => x.1.1) e
 
 /- English proof (translation)
-Establish `e : ∀ s : (I.stp u a 0).Stab c, s = 1` using `fun s => Subtype.ext (((l.ch u a).step 0).stab_inj c.1 s.1 _ s.2 (by`. Express the relevant statement in the definitionally equal form `(ufGL _ _) s.1.1 = 1`. Rewrite using `[gam_eq_one h u a hm c s, map_one]))`. Conclude with `Nat.card_eq_one_iff_unique.2 ⟨⟨fun s s' => (e s).trans (e s').symm⟩, ⟨1⟩⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stab_zero (h : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι)
     (hm : ∀ c' : (I.stp u I.mu0 0).Cl, Nat.card ((I.stp u I.mu0 0).Stab c') = 1) (c : (I.stp u a 0).Cl) :
@@ -110,7 +106,7 @@ namespace GlobalTheory.Pdv
 open GlobalTheory.Pdv.StabZero
 
 /- English proof (translation)
-Introduce `B X I h _ l Z lev`. Conclude with `⟨Formalism.L2.G.StabilizerCardinality.card_stab0_mem _ lev, fun u μ _ c => card_stab_zero h l u μ (fun c' => Formalism.L2.G.StabilizerCardinality.card_stab0_mem _ lev u c') c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem stepZero_trivial_stabilisers_trueColumns : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)),
     LevelData (I.rec7 l Z) → OrbitPlaces.Stab0 (I.rec7 l Z) := by

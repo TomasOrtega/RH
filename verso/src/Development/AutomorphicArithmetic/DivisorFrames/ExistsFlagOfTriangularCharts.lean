@@ -33,11 +33,11 @@ private def UpperTheory.vanishingCoordinates (ch : ι → VB.Chart M r) (n : ℕ
     rw [← (ch k).isFrame.repr_resM, resM_resM, this, map_zero]
 
 /- English proof (translation)
-Use `⟨fun hs a ha => ?_, fun hs k' W h₁ h₂ a ha => ?_⟩` and prove the remaining obligations. Use `hs k V le_rfl h a ha` as an intermediate fact. Rewrite `this` using `[resM_self]`. Then use the resulting hypothesis. Rewrite using `[← ((ch k).isFrame.basis (h₁.trans h)).sum_repr (resM M h₁ s)]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, IsFrame.basis_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : n ≤ (b : ℕ)`. Rewrite using `[(ch k).isFrame.repr_resM h h₁, hs b hb, map_zero, zero_mul]`. Establish `hW : W ≤ (ch k').U ⊓ (ch k).U` using `le_inf h₂ (h₁.trans h)`. Establish `h0 : trS (ch k') (ch k) a b = 0` using `H k' k a b (by rw [Fin.lt_def]; omega)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(ch k').isFrame.repr_resM inf_le_left hW (resM M inf_le_right ((ch k).e b)) a`. Rewrite `h1` using `[resM_resM]`. Rewrite `h0` using `[trS, of_apply]`. Rewrite using `[h1, h0, map_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.mem_vanishing_coordinates (ch : ι → VB.Chart M r) (H : ∀ k k', IsTri (trS (ch k) (ch k'))) (n : ℕ) (k : ι)
     (V : X.Opens) (h : V ≤ (ch k).U) (s : Γ(M, V)) :
@@ -59,21 +59,19 @@ private theorem UpperTheory.mem_vanishing_coordinates (ch : ι → VB.Chart M r)
       rw [h1, h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hmem (V : X.Opens) (h : V ≤ c.U) (a : Fin r) (ha : (a : ℕ) < n) : resM M h (c.e a) ∈ N.sec V`. Use `(hN V h _).2 fun b hb => ?_` and prove the remaining obligations. Rewrite using `[← c.isFrame.basis_apply, Module.Basis.repr_self, Finsupp.single_eq_of_ne]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Establish `hm (a : Fin r) (ha : (a : ℕ) < n) : c.e a ∈ N.sec c.U`. Use `hmem _ le_rfl a ha` as an intermediate fact. Rewrite `this` using `[resM_self]`. Then use the resulting hypothesis. Establish `hsplit (V : X.Opens) (h : V ≤ c.U) (s : Γ(M, V)) : s = ∑ a : {a : Fin r // (a : ℕ) < n}, (c.isFrame.basis h).repr s a • resM M h (c.e a) + ∑ a : {a : Fin r // ¬ (a : ℕ) < n}, (c.isFrame.basis h).repr s a • resM M h (c.e a)`. Rewrite using `[Fintype.sum_subtype_add_sum_subtype (fun a : Fin r => (a : ℕ) < n) (fun a => (c.isFrame.basis h).repr s a • resM M h (c.e a))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← c.isFrame.basis_apply h]`. Conclude with `((c.isFrame.basis h).sum_repr s).symm`. Use `⟨hm, ⟨fun a => N.mkSec (c.e a) (hm a a.2), fun V h => ⟨?_, fun t => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Establish `h0` using `congrArg (N.incl.app V) ha`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.linearCombination_apply, map_sum, Scheme.Modules.Hom.app_smul, app_resM, VB.Sub.incl_app_mkSec, map_zero] at h0`. Establish `hli` using `((VB.isFrame_iff.1 c.isFrame V h).1).comp (Subtype.val : {a : Fin r // (a : ℕ) < n} → _) Subtype.val_injective`. Conclude with `funext (Fintype.linearIndependent_iff.1 hli a h0)`. Use `⟨fun a => (c.isFrame.basis h).repr (N.incl.app V t) a, N.incl_app_injective V ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.linearCombination_apply, map_sum, Scheme.Modules.Hom.app_smul, app_resM, VB.Sub.incl_app_mkSec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.symm ((hsplit V h _).trans ?_)` and prove the remaining obligations. Rewrite using `[add_eq_left]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[(hN V h _).1 (N.incl_app_mem t) a (not_lt.1 a.2), zero_smul]`. Use `CokerFrame.isFrame_of_injective_of_local (fun V h => ?_) (fun V h s x hx => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Simplify using `only [Fintype.linearCombination_apply, ← app_resM, ← Scheme.Modules.Hom.app_smul, ← map_sum] at ha`. Use function extensionality and compare the values at `b`. Establish `h1` using `(hN V h _).1 (N.cokernel_π_app_eq_zero_iff.1 ha) b (not_lt.1 b.2)`. Simplify using `only [← c.isFrame.basis_apply h, map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, Subtype.val_inj, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Take `⟨W, hWV, hxW, t, ht⟩` from `VB.exists_app_eq_of_epi (cokernel.π N.incl) s hx`. Use `⟨W, hWV, hxW, fun a => (c.isFrame.basis (hWV.trans h)).repr t a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht, Fintype.linearCombination_apply]`. Use `conv_rhs => rw [hsplit W (hWV.trans h) t]`.
-
-Rewrite using `[map_add, N.cokernel_π_app_eq_zero_iff.2 (Submodule.sum_mem _ fun (a : {a : Fin r // (a : ℕ) < n}) _ => Submodule.smul_mem _ _ (hmem W (hWV.trans h) a.1 a.2)), zero_add, map_sum]`. Simplify using `only [Scheme.Modules.Hom.app_smul, app_resM]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.flag_charts_frames (N : VB.Sub M) (n : ℕ) (c : VB.Chart M r)
     (hN : ∀ (V : X.Opens) (h : V ≤ c.U) (s : Γ(M, V)),
@@ -134,13 +132,11 @@ private theorem UpperTheory.flag_charts_frames (N : VB.Sub M) (n : ℕ) (c : VB.
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `X M r ι ch hc H`. Set `N : Fin (r + 1) → VB.Sub M` to `fun i => UpperTheory.vanishingCoordinates ch i`. Establish `hF (i : Fin (r + 1)) (k : ι)` using `UpperTheory.flag_charts_frames (N i) i (ch k) (UpperTheory.mem_vanishing_coordinates ch H i k)`. Establish `hstep : ∀ (i : Fin r) V s, (N i.castSucc).incl.app V s ∈ (N i.succ).sec V` using `fun i V s k W h₁ h₂ a ha => (N i.castSucc).incl_app_mem s k W h₁ h₂ a (by`. Simplify using `only [Fin.val_succ, Fin.val_castSucc] at ha ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `omega)`. Use `⟨{ F := fun i => (N i).toMod ι := fun i => (N i).incl isSubbundle := fun i => ⟨inferInstance, _, VB.isVB_of_frames (ι := {a : Fin r // ¬ (a : ℕ) < i}) rfl fun x => ?_⟩ isVB := fun i => VB.isVB_of_frames (ι := {a : Fin r // (a : ℕ) < i}) ?_ fun x => ?_ step := fun i => (N i.succ). …` and prove the remaining obligations. Take `⟨k, hk⟩` from `hc x`. Conclude with `⟨_, _, hk, (hF i k).2.2⟩`. Conclude with `Fintype.card_fin_lt_of_le i.is_le`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hc x`. Take `⟨f, hf⟩` from `(hF i k).2.1`. Conclude with `⟨_, f, hk, hf⟩`. Use `Twist.isIso_of_bijective _ fun V => ⟨(N _).incl_app_injective V, fun s => ?_⟩` and prove the remaining obligations. Conclude with `(N _).mem_sec_iff.1 fun k W h₁ h₂ a ha => absurd a.2 (not_lt.2 ha)`.
-
-Conclude with `(N _).mem_sec_iff.1 ((hF i.succ k).1 i (Nat.lt_succ_self _))`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_flag_of_triangular_charts :
     ∀ (X : Scheme.{0}) (M : X.Modules) (r : ℕ) (ι : Type) (ch : ι → Chart M r), (∀ x : X, ∃ k, x ∈ (ch k).U) → (∀ k k', IsTri (trS (ch k) (ch k'))) → ∃ fl : Vert.Flag M r, ∀ k, IsAdapted fl (ch k) := by

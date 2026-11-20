@@ -8,7 +8,7 @@ namespace Formalism.FourierDecayAlt.P
 open C2x2
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [div_self (hy 0)]`. Consider the case `succ n ih`. Rewrite using `[Finset.prod_range_succ, ih, div_mul_div_comm, mul_comm (y n) (y (n + 1)), mul_div_mul_right _ _ (hy n)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma c2x3_tel (y : ℕ → ℝ) (hy : ∀ i, y i ≠ 0) :
     ∀ n, ∏ l ∈ Finset.range n, y (l + 1) / y l = y n / y 0 := by
@@ -20,11 +20,11 @@ lemma c2x3_tel (y : ℕ → ℝ) (hy : ∀ i, y i ≠ 0) :
       mul_div_mul_right _ _ (hy n)]
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => simp [h0]`. Consider the case `succ r ih`. Establish `hsplit : ∀ l ∈ Finset.range (r + 1), (y (l + 1) / y l) ^ (4 * (r + 1 - l) + K) = (y (l + 1) / y l) ^ 4 * (y (l + 1) / y l) ^ (4 * (r - l) + K)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range]`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.prod_congr rfl hsplit, Finset.prod_mul_distrib, Finset.prod_pow, c2x3_tel y (fun i => (hy i).ne') (r + 1), h0, div_one, Finset.prod_range_succ (fun l => (y (l + 1) / y l) ^ (4 * (r - l) + K)), ih, Nat.sub_self, mul_zero, zero_add, Finset.prod_range_succ (fun l => y (l + 1 …`. Establish `hr0` using `(hy r).ne'`. Establish `hq : y r ^ K * (y (r + 1) / y r) ^ K = y (r + 1) ^ K`. Rewrite using `[div_pow, mul_div_cancel₀ _ (pow_ne_zero K hr0)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma c2x3_w2core (y : ℕ → ℝ) (hy : ∀ i, 0 < y i) (h0 : y 0 = 1) (K : ℕ) : ∀ r : ℕ,
     ∏ l ∈ Finset.range r, (y (l + 1) / y l) ^ (4 * (r - l) + K) =
@@ -50,13 +50,13 @@ lemma c2x3_w2core (y : ℕ → ℝ) (hy : ∀ i, 0 < y i) (h0 : y 0 = 1) (K : �
       _ = y (r + 1) ^ K * ((∏ l ∈ Finset.range r, y (l + 1) ^ 4) * y (r + 1) ^ 4) := by rw [hq]; ring
 
 /- English proof (translation)
-Introduce `k r x Gv hk hx0 hxpos hG`. Take `⟨y, hyx, hypos⟩ : ∃ y : ℕ → ℝ, (∀ i (h : i < r + 1), y i = x ⟨i, h⟩) ∧ ∀ i, 0 < y i` from `⟨fun i => if h : i < r + 1 then x ⟨i, h⟩ else 1, fun i h => dif_pos h, fun i => by dsimp only; split_ifs; exacts [hxpos _, one_pos]⟩`. Establish `hy0 : y 0 = 1`. Rewrite using `[hyx 0 (Nat.succ_pos r)]`. Establish `: (⟨0, Nat.succ_pos r⟩ : Fin (r + 1)) = 0` using `Fin.ext (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hx0]`. Establish `hsucc : ∀ l : Fin r, x l.succ = y (l.val + 1)`. Introduce `l; rw [hyx _ (by omega)]; rfl`. Establish `hcast : ∀ l : Fin r, x l.castSucc = y l.val`. Introduce `l; rw [hyx _ (by omega)]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlast : x (Fin.last r) = y r` using `by rw [hyx _ (Nat.lt_succ_self r)]; rfl`. Establish `hexp : ∀ l : Fin r, 2 * (C2.Ml k r (l.val + 1) - 2) = 4 * (r - l.val) + 2 * (k - 1)`. Introduce `l`. Unfold `C2.Ml`. Use `l.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [hsucc, hcast, hexp, hlast]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun l => (y (l + 1) / y l) ^ (4 * (r - l) + 2 * (k - 1))) r, Fin.prod_univ_eq_prod_range (fun l => y (l + 1) ^ 4) r, c2x3_w2core y hypos hy0 (2 * (k - 1)) r]`. Use `(hypos r).ne'` as an intermediate fact. Rewrite using `[div_pow, pow_mul]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -84,29 +84,29 @@ theorem gram_product_identity : C2.GramProductIdentity := by
   field_simp
 
 /- English proof (translation)
-Unfold `C2.iSet`. Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma c2x3_iSet_card {m a : ℕ} (h : a ≤ m) : (C2.iSet m a).card = a := by
   unfold C2.iSet
   rw [Fin.card_filter_val_lt]; omega
 
 /- English proof (translation)
-Unfold `C2.wSet`. Rewrite using `[Finset.card_image_of_injective _ w.injective, c2x3_iSet_card h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma c2x3_wSet_card {m a : ℕ} (w : Equiv.Perm (Fin m)) (h : a ≤ m) : (C2.wSet w a).card = a := by
   unfold C2.wSet
   rw [Finset.card_image_of_injective _ w.injective, c2x3_iSet_card h]
 
 /- English proof (translation)
-Apply `IsUnit.ne_zero` to reduce the goal to its premises. Apply `Matrix.isUnit_det_of_left_inverse (B := Matrix.of fun j i => if e i = w (f j) then (d (f j))⁻¹ else 0)` to reduce the goal to its premises. Use extensionality with `j j'`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.submatrix_apply, C2.monoP]`. Take `⟨i0, hi0⟩` from `hs j`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[if_pos hi0]`. Distinguish the cases in `hjj : j = j'`. Substitute `hjj` using the available equality. Rewrite using `[if_pos hi0, Matrix.one_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Clear denominators, using `[hd (f j)]` for the nonvanishing conditions. Rewrite using `[if_neg, mul_zero, Matrix.one_apply_ne hjj]`. Introduce `e'`. Apply `hjj` to reduce the goal to its premises. Rewrite `e'` using `[hi0]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hf (w.injective e')`. Introduce `i _ hi`. Rewrite using `[if_neg, zero_mul]`. Introduce `e'`. Apply `hi` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `he (e'.trans hi0.symm)`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma c2x3_det_mono_ne {m k : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin m → ℂ) (hd : ∀ a, d a ≠ 0)
     (e f : Fin k → Fin m) (he : Function.Injective e) (hf : Function.Injective f)
@@ -129,11 +129,11 @@ lemma c2x3_det_mono_ne {m k : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin m → ℂ) 
   · simp
 
 /- English proof (translation)
-Introduce `m w d hd a ha`. Establish `hI` using `c2x3_wSet_card w ha`. Establish `hJ` using `c2x3_iSet_card ha`. Unfold `C2.minorS`. Rewrite using `[dif_pos (hI.trans hJ.symm)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `c2x3_det_mono_ne w d hd _ _ (RelEmbedding.injective _) (RelEmbedding.injective _)` to reduce the goal to its premises. Introduce `j`. Establish `hmem : w ((C2.iSet m a).orderEmbOfFin (hI.trans hJ.symm).symm j) ∈ C2.wSet w a` using `Finset.mem_image_of_mem w (Finset.orderEmbOfFin_mem _ _ j)`. Establish `hr` using `Finset.range_orderEmbOfFin (C2.wSet w a) (rfl : (C2.wSet w a).card = (C2.wSet w a).card)`. Rewrite `hmem` using `[← Finset.mem_coe, ← hr]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hmem`.
+A detailed English derivation is pending.
 -/
 theorem minor_C_nonzero : C2.MinorCNonzero := by
   intro m w d hd a ha
@@ -150,11 +150,11 @@ theorem minor_C_nonzero : C2.MinorCNonzero := by
   exact hmem
 
 /- English proof (translation)
-Introduce `s l u t hu ht`. Establish `hW` using `c2x2_antiW_sq s`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : l * C2.antiW s * u = C2.antiW s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: t • (l * C2.antiW s * u) = t • C2.antiW s`. Rewrite using `[← h]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_right_injective _ ht this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc (l * C2.antiW s) u, Matrix.mul_nonsing_inv _ (ut_unit hu), Matrix.mul_one, Matrix.mul_assoc, hW, Matrix.mul_one]`. Use `_ = C2.antiW s * u⁻¹ * C2.antiW s := by rw [h1]`. Introduce and unpack `rfl`. Conclude with `(stabilizer_antidiagonal s u t hu ht).2.1`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem stabilizer_antidiagonal_exact : C2.StabAntidiagExact := by
   intro s l u t hu ht
@@ -173,21 +173,21 @@ theorem stabilizer_antidiagonal_exact : C2.StabAntidiagExact := by
     exact (stabilizer_antidiagonal s u t hu ht).2.1
 
 /- English proof (translation)
-Establish `hnn : ∀ v ∈ U, 0 ≤ (herm H v v).re`. Introduce `v hv`. Distinguish the cases in `h0 : v = 0`. Substitute `h0` using the available equality. Simplify using `[herm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `le_of_lt (hpos v hv h0)`. Establish `hreal : ∀ v, (herm H v v).im = 0`. Introduce `v`. Use `ggHerm_swap H hH v v` as an intermediate fact. Establish `h2` using `congrArg Complex.im this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.star_def, Complex.conj_im] at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hb0 : b = 0`. Substitute `hb0` using the available equality. Simplify using `[herm]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hbpos` using `hpos b hb hb0`. Use `set β := herm H a b with hβ`. Use `set q : ℝ := (herm H b b).re with hq`. Establish `hbb : herm H b b = (q : ℂ)` using `Complex.ext rfl (by rw [hreal]; simp)`. Establish `hba : herm H b a = conj β` using `by rw [ggHerm_swap H hH b a]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set s : ℂ := β / (q : ℂ) with hs`. Establish `hx : a - s • b ∈ U` using `U.sub_mem ha (U.smul_mem s hb)`. Establish `hexp : herm H (a - s • b) (a - s • b) = herm H a a - conj s * β - s * herm H b a + s * conj s * herm H b b`. Simplify using `only [herm, Matrix.mulVec_sub, Matrix.mulVec_smul, star_sub, star_smul, dotProduct_sub, sub_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul, hβ]`. Simplify using `only [Complex.star_def]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hqne : (q : ℂ) ≠ 0` using `by exact_mod_cast hbpos.ne'`. Establish `hkey : herm H (a - s • b) (a - s • b) = herm H a a - ((Complex.normSq β / q : ℝ) : ℂ)`. Rewrite using `[hexp, hba, hbb, hs]`. Establish `hn : ((Complex.normSq β : ℝ) : ℂ) = conj β * β` using `Complex.normSq_eq_conj_mul_self`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[map_div₀, Complex.conj_ofReal]`. Use `push_cast`. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hnn _ hx`. Rewrite `h1` using `[hkey, Complex.sub_re, Complex.ofReal_re]`. Establish `: Complex.normSq β / q ≤ (herm H a a).re` using `by linarith`. Rewrite `this` using `[div_le_iff₀ hbpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma c2x3_cs {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (U : Submodule ℂ (Fin n → ℂ))
     (hpos : ∀ v ∈ U, v ≠ 0 → 0 < (herm H v v).re) (a b : Fin n → ℂ) (ha : a ∈ U) (hb : b ∈ U) :
@@ -234,29 +234,25 @@ lemma c2x3_cs {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (U : Su
   linarith
 
 /- English proof (translation)
-Introduce `n H P U c hH hH2 hpos hPU horth hc hPn v hv`. Establish `hE : ∀ x : Fin n → ℂ, star x ⬝ᵥ x = ((∑ i, Complex.normSq (x i) : ℝ) : ℂ)`. Introduce `x`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]`. Establish `hEnn : ∀ x : Fin n → ℂ, 0 ≤ ∑ i, Complex.normSq (x i)` using `fun x => Finset.sum_nonneg (fun i _ => Complex.normSq_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hHv : ∀ u : Fin n → ℂ, herm H (H *ᵥ v) u = star u ⬝ᵥ v`. Introduce `u`. Simplify using `only [herm, Matrix.mulVec_mulVec, hH2, Matrix.one_mulVec]`. Use `set w := P *ᵥ (H *ᵥ v) with hw`. Establish `hwU : w ∈ U` using `hPU _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwu : ∀ u ∈ U, herm H w u = star u ⬝ᵥ v`. Introduce `u hu`. Use `horth (H *ᵥ v) u hu` as an intermediate fact. Simplify using `only [herm, Matrix.mulVec_sub, dotProduct_sub, sub_eq_zero] at this`. Rewrite using `[← hHv u]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [herm]`. Conclude with `this.symm`. Establish `hEH : ∑ i, Complex.normSq ((H *ᵥ v) i) = ∑ i, Complex.normSq (v i)`. Establish `h1` using `hE (H *ᵥ v)`. Establish `h2` using `hE v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hH, hH2, Matrix.one_mulVec, h2]`. Conclude with `h1.symm` after adjusting the coercions. Use `set Ev := ∑ i, Complex.normSq (v i) with hEv`. Use `set Ew := ∑ i, Complex.normSq (w i) with hEw`. Establish `hw2 : Ew ≤ c ^ 2 * Ev` using `by rw [← hEH]; exact hPn _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcsU` using `c2x3_cs H hH U hpos w v hwU hv`. Rewrite `hcsU` using `[hwu v hv, hE v, Complex.normSq_ofReal]`. Establish `hpos1 : ∀ x ∈ (⊤ : Submodule ℂ (Fin n → ℂ)), x ≠ 0 → 0 < (herm 1 x x).re`. Introduce `x _ hx0`. Simplify using `only [herm, Matrix.one_mulVec, hE, Complex.ofReal_re]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hx0`. Conclude with `lt_of_lt_of_le (Complex.normSq_pos.mpr hi) (Finset.single_le_sum (fun j _ => Complex.normSq_nonneg (x j)) (Finset.mem_univ i))`. Establish `hcs1` using `c2x3_cs 1 (by simp) ⊤ hpos1 v w Submodule.mem_top Submodule.mem_top`. Simplify using `only [herm, Matrix.one_mulVec, hE, Complex.ofReal_re] at hcs1`. Use `set ρ := (herm H w w).re with hρ`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ2 : ρ ^ 2 ≤ (c * Ev) ^ 2`. Establish `h1 : ρ ^ 2 ≤ Complex.normSq (herm H w w)`. Rewrite using `[hρ, Complex.normSq_apply]`. Use polynomial arithmetic with `[sq_nonneg (herm H w w).im]`. Rewrite `h1` using `[hwu w hwU]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Complex.normSq (star w ⬝ᵥ v) ≤ Ev * Ew` using `hcs1`. Establish `h3 : Ev * Ew ≤ Ev * (c ^ 2 * Ev)` using `mul_le_mul_of_nonneg_left hw2 (hEnn v)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcE : 0 ≤ c * Ev` using `mul_nonneg hc (hEnn v)`. Establish `hρle : ρ ≤ c * Ev` using `by nlinarith`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hvv` using `hcsU`. Establish `hhv : 0 ≤ (herm H v v).re`. Distinguish the cases in `h0 : v = 0`. Substitute `h0` using the available equality. Simplify using `[herm]`.
-
-Conclude with `le_of_lt (hpos v hv h0)`. Distinguish the cases in `hE0 : Ev = 0`. Rewrite using `[hE0]`. Conclude with `mul_nonneg hc hhv`. Establish `hEpos : 0 < Ev` using `lt_of_le_of_ne (hEnn v) (Ne.symm hE0)`.
-
-Establish `: Ev * Ev ≤ c * Ev * (herm H v v).re` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem projection_property : C2.ProjClaim := by
   intro n H P U c hH hH2 hpos hPU horth hc hPn v hv

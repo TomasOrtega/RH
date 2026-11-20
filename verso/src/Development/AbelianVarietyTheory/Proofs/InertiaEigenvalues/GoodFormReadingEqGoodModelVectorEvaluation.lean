@@ -24,7 +24,7 @@ def jH (j : Fin D.R.m) : S.WL ((j : ℕ) + 1) →+ (Rl.HW j (sg0 D A3.A)).H wher
   map_add' x y := by rw [map_add, map_add]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Rl.FW j).j (sg0 D A3.A) ((YS.fi j).e (c • x)) = _`. Rewrite using `[map_smul, map_smulₛₗ, show sg0 D A3.A c = D.what₂.embLL c from congrArg (fun f : D.what₂.LL →+* ℂ => f c) (sgAt_mk _ Rl.hv0)]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jH_smul (j : Fin D.R.m) (c : D.what₂.LL) (x : S.WL ((j : ℕ) + 1)) :
     jH YS j (c • x) = D.what₂.embLL c • jH YS j x := by
@@ -57,9 +57,9 @@ theorem evH_tmul (a : NX.KB S i b) (f : NX.FmK S ((j : ℕ) + 1)) :
     evH YS hρ i j b (a ⊗ₜ f) = ρ.e i b a • jH YS j (Subtype.val f) := rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `tmul a f => rw [evK_tmul, evH_tmul, map_smul]`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem evK_eq (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec)
     (t : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) :
@@ -70,9 +70,9 @@ theorem evK_eq (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW
   | tmul a f => rw [evK_tmul, evH_tmul, map_smul]; rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero, map_zero, smul_zero]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`. Consider the case `tmul a f`. Rewrite using `[TensorProduct.smul_tmul', evH_tmul, evH_tmul, smul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· • _) (map_mul (ρ.e i b) c a)`.
+A detailed English derivation is pending.
 -/
 theorem evH_smul (c : NX.KB S i b) (t : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) :
     evH YS hρ i j b (c • t) = ρ.e i b c • evH YS hρ i j b t := by
@@ -87,17 +87,15 @@ def mv (y : D.nexp.Fm i ((j : ℕ) + 1) b) : (Rl.HW j (sg0 D A3.A)).H :=
   evH YS hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 y)
 
 /- English proof (translation)
-Unfold `mv`. Rewrite using `[YS.act]`. Generalize the expression as in `YS.eF i _ b (Nat.le_add_left _ _) j.2 y = t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => erw [LinearEquiv.map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Simplify using `only [map_zero]`. Conclude with `(congrArg (Rl.HW j (sg0 D A3.A)).e ((evH YS hρ i j b).map_zero)).trans (map_zero _)`. Consider the case `add y z hy hz => erw [LinearEquiv.map_add, map_add, map_add, hy, hz, map_add, map_add, map_add]`. Consider the case `tmul a f0`. Establish `e1 : (NX.actG S i ((j : ℕ) + 1) b (YS.rho _ (Nat.le_add_left _ _) j.2) (YS.chi _ (Nat.le_add_left _ _) j.2) g) (a ⊗ₜ f0) = ((NX.readLL0 S i b (NX.chiL S _ (YS.chi _ (Nat.le_add_left _ _) j.2) (S.eG.symm g)))⁻¹ * a) ⊗ₜ (NX.rhoKG S _ (YS.rho _ (Nat.le_add_left _ _) j.2) (S.eG.symm …`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(NX.readLL0 S i b (NX.chiL S _ _ (S.eG.symm g)))⁻¹ • (a ⊗ₜ[S.Ks] (NX.rhoKG S _ (YS.rho _ (Nat.le_add_left _ _) j.2) (S.eG.symm g) f0)) = _`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`. Use `erw [e1]`. Rewrite using `[evH_tmul, evH_tmul]`. Establish `hgeq : Rl.eG ((YS.fi j).eG (S.eG.symm g)) = cG.symm g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `YS.geq j (S.eG.symm g)`. Rewrite `h0` using `[MulEquiv.apply_symm_apply]`. Conclude with `((MulEquiv.symm_apply_eq cG).2 h0.symm).symm`. Establish `he : ρ.e i b (NX.readLL0 S i b (NX.chiL S _ (YS.chi _ (Nat.le_add_left _ _) j.2) (S.eG.symm g))) = D.what₂.embLL (((S.A ((j : ℕ) + 1)).chi (S.eG.symm g) : D.what₂.LLˣ) : D.what₂.LL)` using `hρ.e_LL0 i b _`. Establish `hne : D.what₂.embLL (((S.A ((j : ℕ) + 1)).chi (S.eG.symm g) : D.what₂.LLˣ) : D.what₂.LL) ≠ 0` using `(map_ne_zero _).2 (Units.ne_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : sg0 D A3.A = D.what₂.embLL` using `GlobalTheory.SeriesTie.ActProof.sg0_eq_embLL Rl`. Express the relevant statement in the definitionally equal form `(Rl.HW j (sg0 D A3.A)).e (ρ.e i b _ • (Rl.FW j).j (sg0 D A3.A) ((YS.fi j).e ((S.A ((j : ℕ) + 1)).ρ (S.eG.symm g) (Subtype.val f0)))) = _`. Rewrite using `[map_smul, map_smul, map_smul, (YS.fi j).rho, (hU j _).2.2, (YS.fi j).chi, hgeq, smul_smul]`. Use `congr 1`. Use `erw [map_mul, map_inv₀, he, hs]`.
-
-Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mv_act (hU : Rl.toRealDat.LUnif) (g : G0g D.nd) (y : D.nexp.Fm i ((j : ℕ) + 1) b) :
     (Rl.HW j (sg0 D A3.A)).e (mv YS hρ i j b (D.nexp.actG i _ b g y)) =
@@ -139,7 +137,7 @@ theorem mv_act (hU : Rl.toRealDat.LUnif) (g : G0g D.nd) (y : D.nexp.Fm i ((j : �
     field_simp
 
 /- English proof (translation)
-Unfold `mv`. Rewrite using `[map_smul]`. Conclude with `evH_smul YS hρ i j b c _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_smul (c : FractionRing (D.ntw.O i)) (y : D.nexp.Fm i ((j : ℕ) + 1) b) :
     mv YS hρ i j b (c • y) = ρ.e i b c • mv YS hρ i j b y := by
@@ -148,7 +146,7 @@ theorem mv_smul (c : FractionRing (D.ntw.O i)) (y : D.nexp.Fm i ((j : ℕ) + 1) 
   exact evH_smul YS hρ i j b c _
 
 /- English proof (translation)
-Unfold `mv`. Rewrite using `[map_sum]`. Conclude with `map_sum (evH YS hρ i j b) _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_sum {ι : Type} (s : Finset ι) (y : ι → D.nexp.Fm i ((j : ℕ) + 1) b) :
     mv YS hρ i j b (∑ k ∈ s, y k) = ∑ k ∈ s, mv YS hρ i j b (y k) := by
@@ -157,7 +155,7 @@ theorem mv_sum {ι : Type} (s : Finset ι) (y : ι → D.nexp.Fm i ((j : ℕ) + 
   exact map_sum (evH YS hρ i j b) _ _
 
 /- English proof (translation)
-Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [RealDat.eWf, gaL, postOn, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.compMultilinearMap_apply, LinearMap.sum_apply, LinearMap.smul_apply, MultilinearMap.sum_apply, MultilinearMap.smul_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem postOn_eWf_sum (σ : D.what₂.LL →+* ℂ) (M : MMap (Rl.MW j σ)) :
     postOn (Rl.MW j σ) (Rl.toRealDat.eWf j σ) M = ∑ γ : Γ, RealDat.eC (A := A3.A) σ γ •
@@ -168,13 +166,13 @@ theorem postOn_eWf_sum (σ : D.what₂.LL →+* ℂ) (M : MMap (Rl.MW j σ)) :
   rfl
 
 /- English proof (translation)
-Use `letI : Fintype (G0g D.nd) := Fintype.ofEquiv Γ (Rl.eG.trans cG).toEquiv`. Establish `h1 : Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i _ b y = ∑ g, (D.nexp.eAlg i b).coeff g • D.nexp.actG i _ b g y`. Unfold `Formalism.MainNotions.IntegralHeckeForms.eG`. Rewrite using `[MonoidAlgebra.lift_apply, Finsupp.sum_fintype]`. Rewrite using `[LinearMap.sum_apply]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `intro`. Conclude with `zero_smul _ _`. Establish `hc : ∀ g, ρ.e i b ((D.nexp.eAlg i b).coeff g) = D.ntypes.e0.coeff g` using `fun g => by`. Establish `h : (D.nexp.eAlg i b).coeff g = NX.readLL0 S i b (D.nexp.eLL0 g)` using `by rw [D.nexp.eAlg_def]; rfl`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(hρ.e_LL0 i b _).trans (D.nStage_trivialCharacter_coeff_eq g)`. Establish `hs : sg0 D A3.A = D.what₂.embLL` using `GlobalTheory.SeriesTie.ActProof.sg0_eq_embLL Rl`. Rewrite using `[h1, mv_sum, map_sum, postOn_eWf_sum]`. Use `(Fintype.sum_equiv (Rl.eG.trans cG).toEquiv _ _ fun γ => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mv_smul, map_smul, mv_act YS hρ i j b hU, hc]`. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulEquiv.trans_apply, MulEquiv.symm_apply_apply]`. Use `congr 1`. Conclude with `(congrArg (fun f : D.what₂.LL →+* ℂ => f ((idemOf A3.A.X).coeff γ)) hs).trans (hid γ)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mv_eG (hU : Rl.toRealDat.LUnif)
     (hid : ∀ γ : Γ, D.what₂.embLL ((idemOf A3.A.X).coeff γ) = D.ntypes.e0.coeff ((Rl.eG.trans cG) γ))
@@ -204,11 +202,9 @@ end GlobalTheory.SeriesTie.ModelGood
 
 open GlobalTheory.SeriesTie.ModelGood in
 /- English proof (translation)
-Introduce `D X E Y i j b x hx`. Take `⟨f, -, rfl⟩` from `hx`. Establish `hidem : ∀ z, Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i _ b (Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i _ b z) = Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i ((j : ℕ) + 1) b z` using `fun z => by rw [← Module.End.mul_apply, Formalism.MainNotions.IntegralHeckeForms.eG, ← map_mul, D.nexp.eAlg_idem]`. Use `⟨mv Y.YS Y.Z.good i j b (Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i _ b f), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.mem_range_self (X.R.HW j (sg0 D X.A3.A)).e (mv Y.YS Y.Z.good i j b (Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i _ b f))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[(X.char.models.HW j _).2.1]`. Conclude with `h`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.id_apply]`. Rewrite using `[← mv_eG Y.YS Y.Z.good i j b X.unif X.idem, hidem]`. Express the relevant statement in the definitionally equal form `(Y.Z.ν i j b)⁻¹ • evK Y.YS X.geo.v₀ Y.Z.good i j b _ = _`.
-
-Conclude with `congrArg _ (evK_eq Y.YS Y.Z.good i j b X.geo.v₀ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeriesTie.rd_good_model : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool),
     ∀ x ∈ V0 D.nexp i ((j : ℕ) + 1) b, ∃ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.goodModel X.R.toRealDat j,

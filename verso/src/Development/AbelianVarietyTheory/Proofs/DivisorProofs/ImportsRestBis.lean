@@ -11,9 +11,9 @@ attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 namespace GlobalTheory.IntegralChartCover
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw lv Xo c inst hstar T io y C3`. Take `rfl : inst = H.starRing` from `GlobalTheory.PowGerm.starRing_ext_of_star inst H.starRing hstar`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Take `⟨T', φ, t', m, hi, hf, ⟨P⟩⟩` from `GlobalTheory.ChartCharacters.exists_finite_ext_pelUnif Xo T C3.I.G C3.I.t' C3.I.m2 _ C3.I.m1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨F', x', act', hF, hA, hx, ha⟩` from `GlobalTheory.integralChart_baseChange E H Dw lv Xo c T io y C3 T' φ t' m`. Conclude with `⟨T', φ, t', hi, hf, P.D, P.A, P.U.toUnifPre, F', x', _, t'.act.toRingAct, P.oD, P.oA, act', hF, funext hA, fun _ => rfl, hx, P.lin, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C3 : IntChart T io y), ∃ (T' : CDVR) (φ : T.V →+* T'.V) (t' : SAB H (Sp T'.V)), Function.Injective φ ∧ φ.Finite ∧ UpFBr.GeoJ T'.V t'.G (𝓞 E) (fun a => t'.act.act a) (chD C3.ch) (fun i => MvPowerSeries.map φ (C3.FT i)) (fun a i => MvPowerSeries.map φ (C3.actT a i)) := by
   intro E _ _ _ H Dw lv Xo c inst hstar T io y C3

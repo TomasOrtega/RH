@@ -8,7 +8,7 @@ open scoped ComplexConjugate
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `|∑ k, f k * Δ k| ≤ ((⨆ k, f k) - ⨅ k, f k) * ∑ k, |Δ k| := by have hb : BddAbove (Set.range f) := (Set.finite_range f).bddAbove have hb' : BddBelow (Set.range f) := (Set.finite_range f).bddBelow have hc : ∑ k, (⨅ j, f j) * Δ k = 0 := by rw [← Finset.mul_sum, h0, mul_zero] have ke …`.
+A detailed English derivation is pending.
 -/
 lemma spread_bound {n : ℕ} (f Δ : Fin n → ℝ) (h0 : ∑ k, Δ k = 0) :
     |∑ k, f k * Δ k| ≤ ((⨆ k, f k) - ⨅ k, f k) * ∑ k, |Δ k| := by
@@ -30,7 +30,7 @@ lemma spread_bound {n : ℕ} (f Δ : Fin n → ℝ) (h0 : ∑ k, Δ k = 0) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `h : dOf X y τ k = ((dOf X y τ k).re : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [dOf_real X hy τ k]`. Rewrite using `[h, Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_dOf {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) (k : Fin r) :
     ‖dOf X y τ k‖ = |(dOf X y τ k).re| := by
@@ -39,9 +39,9 @@ lemma norm_dOf {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) (k : Fin r) :
   rw [h, Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hd0 : dmin X.Gm y τ k.castSucc ≠ 0`. Introduce `h0`. Establish `h` using `(hy τ).2 k.castSucc`. Rewrite `h` using `[h0]`. Simplify using `at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dmin_succ X hy τ k]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma ratio_eq {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) (k : Fin r) :
     dmin X.Gm y τ k.succ / dmin X.Gm y τ k.castSucc = dOf X y τ k := by
@@ -51,11 +51,11 @@ lemma ratio_eq {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) (k : Fin r) :
   field_simp
 
 /- English proof (translation)
-Unfold `Data.nfac`. Establish `hpos : ∀ τ k, 0 < ‖dOf X y τ k‖` using `fun τ k => by`. Rewrite using `[norm_dOf X hy τ k]`. Apply `abs_pos.2` to reduce the goal to its premises. Establish `h` using `sgn_dOf_pos X hy τ k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h` using `[h0, mul_zero]`. Conclude with `lt_irrefl _ h`. Rewrite using `[Real.log_prod (fun τ _ => (Finset.prod_pos fun k _ => Real.rpow_pos_of_pos (by`. Rewrite using `[ratio_eq X hy τ k]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hpos τ k) _).ne')]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_prod (fun k _ => (Real.rpow_pos_of_pos (by rw [ratio_eq X hy τ k]; exact hpos τ k) _).ne')]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ratio_eq X hy τ k, Real.log_rpow (hpos τ k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nfac_log {y : Frame X.Ψ r} (hy : y ∈ X.dom) (la : Wt X.Ψ r) :
     Real.log (X.nfac la y) = ∑ τ, ∑ k : Fin r, (-(la τ k : ℝ) / 2) * Real.log ‖dOf X y τ k‖ := by
@@ -73,15 +73,15 @@ lemma nfac_log {y : Frame X.Ψ r} (hy : y ∈ X.dom) (la : Wt X.Ψ r) :
   rw [ratio_eq X hy τ k, Real.log_rpow (hpos τ k)]
 
 /- English proof (translation)
-Establish `hy` using `xZ_mem_dom X hx ho hZ`. Establish `hpos : ∀ k, ‖dOf X (X.xZ x Z) τ k‖ ≠ 0` using `fun k => by`. Rewrite using `[norm_dOf X hy τ k]`. Apply `(abs_pos.2 _).ne'` to reduce the goal to its premises. Establish `h` using `sgn_dOf_pos X hy τ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h` using `[h0, mul_zero]`. Conclude with `lt_irrefl _ h`. Rewrite using `[← Real.log_prod (fun k _ => hpos k), ← norm_prod]`. Establish `hp : ∏ k : Fin r, dOf X (X.xZ x Z) τ k = dmin X.Gm (X.xZ x Z) τ (Fin.last r)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dmin_prod X hy τ (Fin.last r)]`. Both sides reduce to the same expression. Rewrite using `[hp]`. Unfold `dmin`. Rewrite using `[gram_xZ X ho Z τ, lminor_last]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Gp`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, det_lowBlock, Matrix.det_diagonal, one_mul]`. Rewrite using `[show ((X.lowBlock Z τ).map (starRingEnd ℂ)).det = (starRingEnd ℂ) (X.lowBlock Z τ).det from (RingHom.map_det _ _).symm, det_lowBlock, map_one, mul_one, norm_prod]`. Rewrite using `[Finset.prod_eq_one fun k _ => ?_, Real.log_one]`. Unfold `sgn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 lemma sum_log_dOf {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) {Z : X.Coord} (hZ : X.zN Z < 1)
     (τ : X.Ψ) : ∑ k : Fin r, Real.log ‖dOf X (X.xZ x Z) τ k‖ = 0 := by
@@ -107,11 +107,11 @@ lemma sum_log_dOf {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) {Z : 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hy` using `xZ_mem_dom X hx ho hZ`. Take `⟨h1, h2⟩` from `pivot_pos X hx ho hZ τ k hk`. Establish `h0 : 0 ≤ X.zN Z` using `le_trans (opN_nonneg _) (opN_le_zN X Z τ)`. Establish `hu : X.zN Z ^ 2 < 1` using `by nlinarith`. Establish `htpos : 0 < (dOf X (X.xZ x Z) τ k).re` using `by linarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_dOf X hy τ k, abs_of_pos htpos]`. Use `⟨Real.log_nonpos htpos.le h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.log_inv]`. Establish `h3` using `Real.log_le_sub_one_of_pos (inv_pos.2 htpos)`. Establish `h4 : (dOf X (X.xZ x Z) τ k).re⁻¹ ≤ (1 - X.zN Z ^ 2)⁻¹` using `inv_anti₀ (by linarith) h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (1 - X.zN Z ^ 2) ≠ 0` using `(by linarith : (0:ℝ) < 1 - X.zN Z ^ 2).ne'`. Establish `h5 : (1 - X.zN Z ^ 2)⁻¹ - 1 = X.zN Z ^ 2 / (1 - X.zN Z ^ 2)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma log_dOf_pos_bound {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) {Z : X.Coord} (hZ : X.zN Z < 1)
     (τ : X.Ψ) (k : Fin r) (hk : (k : ℕ) < X.p0) :
@@ -134,9 +134,9 @@ lemma log_dOf_pos_bound {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x)
   linarith
 
 /- English proof (translation)
-Establish `hy` using `xZ_mem_dom X hx ho hZ`. Establish `hk' : k = nI X ⟨(k : ℕ) - X.p0, by have` using `k.isLt; omega⟩ := by`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [nI]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h` using `pivot_neg X hx ho hZ τ ⟨(k : ℕ) - X.p0, by have := k.isLt; omega⟩`. Rewrite `h` using `[← hk']`. Rewrite using `[norm_dOf X hy τ k, abs_of_neg (by linarith)]`. Conclude with `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma log_dOf_neg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) {Z : X.Coord} (hZ : X.zN Z < 1)
     (τ : X.Ψ) (k : Fin r) (hk : X.p0 ≤ (k : ℕ)) : 0 ≤ Real.log ‖dOf X (X.xZ x Z) τ k‖ := by
@@ -149,7 +149,7 @@ lemma log_dOf_neg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) {Z : 
   exact Real.log_nonneg (by linarith)
 
 /- English proof (translation)
-Unfold `Data.spread`. Break down `isEmpty_or_nonempty (Fin r) with h | h` into its components or cases. Simplify using `[Real.iSup_of_isEmpty, Real.iInf_of_isEmpty]`. Conclude with `sub_nonneg.mpr (ciInf_le_ciSup (Set.finite_range _).bddBelow (Set.finite_range _).bddAbove)`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma spread_nonneg (la : Wt X.Ψ r) (τ : X.Ψ) : 0 ≤ X.spread la τ := by
   unfold Data.spread
@@ -158,7 +158,7 @@ lemma spread_nonneg (la : Wt X.Ψ r) (τ : X.Ψ) : 0 ≤ X.spread la τ := by
   · exact sub_nonneg.mpr (ciInf_le_ciSup (Set.finite_range _).bddBelow (Set.finite_range _).bddAbove)
 
 /- English proof (translation)
-The claim follows from `|Real.log (X.nfac la (X.xZ x Z)) - Real.log (X.nfac la x)| ≤ 4 * w * r * X.zN Z ^ 2 := by have hZ1 : X.zN Z < 1 := by linarith have hy := xZ_mem_dom X hx ho hZ1 have hx1 : Real.log (X.nfac la x) = 0 := by have hn : ∀ τ (i : Fin (r + 1)), ‖dmin X.Gm x τ i‖ = 1 := by intro τ i unfo …`.
+A detailed English derivation is pending.
 -/
 theorem nfac_xZ {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ : ρ ≤ 1 / 10)
     {Z : X.Coord} (hZ : X.zN Z ≤ ρ) (la : Wt X.Ψ r) (w : ℝ) (hw : (∑ τ, X.spread la τ) ≤ w) :

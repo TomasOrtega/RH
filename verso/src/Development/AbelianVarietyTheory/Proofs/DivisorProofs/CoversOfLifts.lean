@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.CovTop.CovSz
 
 /- English proof (translation)
-Use `(Formalism.MainNotions.Closed.and h h').imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨⟨C, hC, a, ha⟩, ⟨C', hC', b, hb⟩⟩` from `hh`. Conclude with `⟨C, hC, max a b, fun x hx hle ι p hp i hi Y hY => ⟨ha x hx ((le_max_left _ _).trans hle) ι p hp i hi Y hY, hb x hx ((le_max_right _ _).trans hle) ι p hp i hi Y hY⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem covers_and
     {Q Q' : ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
@@ -40,7 +40,7 @@ theorem covers_and
     ⟨ha x hx ((le_max_left _ _).trans hle) ι p hp i hi Y hY, hb x hx ((le_max_right _ _).trans hle) ι p hp i hi Y hY⟩⟩
 
 /- English proof (translation)
-Use `h.imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨C, hC, a, ha⟩` from `hh`. Conclude with `⟨C, hC, a, fun x hx hle ι p hp i hi Y hY => hQ Fm x hx ι p i C hp (ha x hx hle ι p hp i) hi Y hY⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem covers_of_lifts
     {P : ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
@@ -57,7 +57,7 @@ theorem covers_of_lifts
   exact ⟨C, hC, a, fun x hx hle ι p hp i hi Y hY => hQ Fm x hx ι p i C hp (ha x hx hle ι p hp i) hi Y hY⟩
 
 /- English proof (translation)
-Use `h.imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨C, hC, a, ha⟩` from `hh`. Conclude with `⟨C, hC, a, fun x hx hle ι p hp i hi Y hY => hQ Fm x hx ι p i Y _ (ha x hx hle ι p hp i hi Y hY)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem covers_imp
     {Q R : ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)

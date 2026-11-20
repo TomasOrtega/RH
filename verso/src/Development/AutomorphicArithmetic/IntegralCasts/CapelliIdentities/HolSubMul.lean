@@ -117,9 +117,9 @@ noncomputable def UpperTheory.Reformulated.B.Qe28.holSub :
           @UpperTheory.Reformulated.B.Qe28.IsHolCusp E inst inst_1 inst_2 r Comp X la P)
 
 /- English proof (translation)
-Introduce `E _ _ _ r h5 Comp X la la' P Q hP hQ`. Establish `key : ∀ (l : (k : Comp) → ReciprocityTheory.ChartRestriction.G.FD.Wt (X k).Ψ r) (R : UpperTheory.Reformulated.B.Qe28.FDSec X), R ∈ UpperTheory.Reformulated.B.Qe28.holSub X l → UpperTheory.Reformulated.B.Qe28.IsHolCusp X l R`. Introduce `l R hR`. Proceed by induction on `hR using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact fun c => (h5 r (X c) (l c) (l c) 0).1.1`. Consider the case `add x y _ _ hx hy => exact fun c => (h5 r (X c) (l c) (l c) 0).1.2.1 _ (hx c) _ (hy c)`. Consider the case `smul a x _ hx => exact fun c => (h5 r (X c) (l c) (l c) 0).1.2.2 a _ (hx c)`. Conclude with `Submodule.subset_span fun c => (h5 r (X c) (la c) (la' c) 0).2.1 _ (key la P hP c) _ (key la' Q hQ c).1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe28.holSub_mul :
     ∀ {E : Type} [inst : Field E] [inst_1 : @NumberField E inst]

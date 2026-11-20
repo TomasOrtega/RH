@@ -8,11 +8,9 @@ open NumberField IsDedekindDomain AlgebraicGeometry CategoryTheory ReciprocityTh
 namespace GlobalTheory.FlatLine.DefinitePoint
 
 /- English proof (translation)
-Establish `: LocallyQuasiFinite f`. Use `⟨fun {U} hU {V} hV e => ?_⟩` and prove the remaining obligations. Establish `h₁` using `f.formallyUnramified_appLE hU hV e`. Establish `h₂` using `f.finiteType_appLE hU hV e`. Use `algebraize [(f.appLE U V e).hom]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `inferInstanceAs (Algebra.QuasiFinite _ _)`. Take `⟨o⟩ : Nonempty (Sp K)` from `⟨IsLocalRing.closedPoint K⟩`. Establish `hd` using `f.isDiscrete_preimage_singleton o`. Establish `hu : f ⁻¹' {o} = Set.univ` using `Set.eq_univ_of_forall fun x => Subsingleton.elim (α := PrimeSpectrum K) _ _`. Establish `: DiscreteTopology X` using `isDiscrete_univ_iff.mp (hu ▸ hd)`.
-
-Conclude with `hZ.isPreirreducible.subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_etale {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ Sp K) [Etale f] {Z : Set X}
     (hZ : IsIrreducible Z) : Z.Subsingleton := by
@@ -30,7 +28,7 @@ theorem subsingleton_of_etale {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ S
   exact hZ.isPreirreducible.subsingleton
 
 /- English proof (translation)
-Use `haveI : MorphismProperty.HasOfPostcompProperty @IsOpenImmersion (MorphismProperty.diagonal @IsOpenImmersion) := MorphismProperty.hasOfPostcompProperty_iff_le_diagonal.2 le_rfl`. Conclude with `MorphismProperty.of_postcomp (W := @IsOpenImmersion) (W' := MorphismProperty.diagonal @IsOpenImmersion) s f (inferInstanceAs (IsOpenImmersion (Limits.pullback.diagonal f))) (by rw [hs]; infer_instance)`.
+A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_of_section {X Y : Scheme.{0}} (f : X ⟶ Y) [Etale f] (s : Y ⟶ X) (hs : s ≫ f = 𝟙 _) :
     IsOpenImmersion s := by
@@ -45,7 +43,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `h0 : Dw.dim = 0` using `by rw [Datum.dim, hq, mul_zero]`. Establish `hs : SmoothOfRelativeDimension 0 Xo.s` using `h0 ▸ Xo.smooth`. Establish `he : Etale Xo.s` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 hs`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_strK (Xo : Moduli Dw l) (c : Coeff l) (hq : Dw.q = 0) : Etale (strK (Xo := Xo) (c := c)) := by
   have h0 : Dw.dim = 0 := by rw [Datum.dim, hq, mul_zero]
@@ -54,17 +52,17 @@ theorem etale_strK (Xo : Moduli Dw l) (c : Coeff l) (hq : Dw.q = 0) : Etale (str
   infer_instance
 
 /- English proof (translation)
-The claim follows from `(Spec.map_preimage _).symm`.
+A detailed English derivation is pending.
 -/
 theorem genSp_strK (Z : Comp Xo c) : genSp Z ≫ strK = spMap (algebraMap c.F (kap Z)) :=
   (Spec.map_preimage _).symm
 
 /- English proof (translation)
-Take `⟨L, _, _, j, g, hg, hgZ⟩` from `exists_numberField_point Z`. Take `⟨⟨p, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField L (Xo.XF c)).symm.surjective g`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hg hgZ`. Establish `hp : p = genPt Z`. Use `hZ ?_ (CompSplitPfB.cspB_genPt_mem Z)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨o⟩ : Nonempty (Sp L)` from `⟨IsLocalRing.closedPoint L⟩`. Use `hgZ o` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Then use the resulting hypothesis. Substitute `hp` using the available equality. Establish `: CharZero (kap Z)` using `charZero_of_injective_algebraMap (algebraMap c.F (kap Z)).injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `ha : Algebra.IsAlgebraic ℚ (kap Z)` using `Algebra.IsAlgebraic.of_injective (φ.hom.toRatAlgHom) φ.hom.injective`. Conclude with `Algebra.IsAlgebraic.tower_top (K := ℚ) c.F`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_kap (Z : Comp Xo c) (hZ : (Z : Set (Xo.XF c)).Subsingleton) :
     Algebra.IsAlgebraic c.F (kap Z) := by
@@ -83,19 +81,17 @@ theorem isAlgebraic_kap (Z : Comp Xo c) (hZ : (Z : Set (Xo.XF c)).Subsingleton) 
   exact Algebra.IsAlgebraic.tower_top (K := ℚ) c.F
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hq hac Z`. Use `etale_strK Xo c hq` as an intermediate fact. Establish `hZ` using `subsingleton_of_etale (strK (Xo := Xo) (c := c)) (Z.2.1 : IsIrreducible (Z : Set (Xo.XF c)))`. Establish `halg` using `isAlgebraic_kap Z hZ`. Establish `hsurj : Function.Surjective (algebraMap c.F (kap Z))` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `hac Z (algebraMap (kap Z) (Om Z) a) ((halg.isAlgebraic a).algebraMap)`. Use `⟨b, (algebraMap (kap Z) (Om Z)).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, ← IsScalarTower.algebraMap_apply]`. Set `e : c.F ≃+* kap Z` to `RingEquiv.ofBijective _ ⟨(algebraMap c.F (kap Z)).injective, hsurj⟩`. Set `g₀ : Sp c.F ⟶ Xo.XF c` to `spMap e.symm.toRingHom ≫ genSp Z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg₀ : g₀ ≫ strK = spMap (algebraMap c.F c.F)`. Rewrite using `[Category.assoc, genSp_strK, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext fun x => e.symm_apply_apply x)`. Establish `hid : spMap (algebraMap c.F c.F) = 𝟙 _` using `Spec.map_id _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ s, g₀ s = genPt Z` using `fun s => by`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Use `isOpenImmersion_of_section strK g₀ (hg₀.trans hid)` as an intermediate fact. Take `⟨y₀, hy₀⟩` from `exists_frPt_local (c := c) GlobalTheory.abelianSchemeLaws_all.2.secTwist _ (prX_over hg₀)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y₀, fun s => ?_, fun S _ _ y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[ptF_eq hg₀ hy₀, hpt]`. Conclude with `CompSplitPfB.cspB_genPt_mem Z`. Establish `hr : Set.range (ptF y) ⊆ Set.range g₀`. Introduce and unpack `_ ⟨s, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨IsLocalRing.closedPoint c.F, (hpt _).trans (hZ (CompSplitPfB.cspB_genPt_mem Z) (hy s))⟩`. Establish `h1` using `IsOpenImmersion.lift_fac g₀ (ptF y) hr`. Establish `h2 : IsOpenImmersion.lift g₀ (ptF y) hr = spMap (algebraMap c.F S)`. Establish `h3` using `congrArg (· ≫ strK) h1`. Simplify using `only [Category.assoc, hg₀, hid, Category.comp_id] at h3`.
-
-Rewrite using `[h3, ptF, Limits.pullback.lift_snd]`. Rewrite using `[hy₀, ← Category.assoc, ← h2, h1, ptF, Limits.pullback.lift_fst]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), Dw.q = 0 → FnAlgClosed Xo c → ∀ Z : Comp Xo c, ∃ y₀ : FrPt Xo c c.F, LiesOn Z y₀ ∧ ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y → y.x = spMap (algebraMap c.F S) ≫ y₀.x := by
   intro E _ _ _ H Dw l Xo c hq hac Z

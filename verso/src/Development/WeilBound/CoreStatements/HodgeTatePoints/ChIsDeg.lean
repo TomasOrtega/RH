@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace PositivityTheory.HtPt.Ch
 
 /- English proof (translation)
-Establish `key : ∀ {s t : Ω}, Λ.IsGenAt p s → Λ.IsGenAt p t → s / t ∈ regAt ξ p`. Introduce `s t hs ht`. Establish `: s ∈ Submodule.span (regAt ξ p) {t}`. Rewrite using `[← ht.2, hs.2]`. Conclude with `Submodule.mem_span_singleton_self s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 this`. Establish `ha' : (a : Ω) * t = s` using `ha`. Rewrite using `[← ha', mul_div_cancel_right₀ _ ht.1]`. Conclude with `a.2`. Conclude with `⟨div_ne_zero hs.1 ht.1, key hs ht, by rw [inv_div]; exact key ht hs⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unitAt_div {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {Λ : Lat ξ Ω} {p : Cpt ξ} {s t : Ω} (hs : Λ.IsGenAt p s) (ht : Λ.IsGenAt p t) :
@@ -29,21 +29,21 @@ theorem unitAt_div {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingC
   exact ⟨div_ne_zero hs.1 ht.1, key hs ht, by rw [inv_div]; exact key ht hs⟩
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ C z Y Λ n n' hξ ⟨h₀, h, s₀, s, r, g₀, g, hr, hf, e⟩ ⟨h₀', h', s₀', s', r', g₀', g', hr', hf', e'⟩`. Take `⟨φ, hφ, hu⟩` from `ValHom.exists_valAt_hom X Ω ξ K z h₀ hξ`. Establish `u₀` using `unitAt_div g₀' g₀`. Set `c : K` to `φ ⟨s₀' / s₀, u₀.2.1⟩`. Establish `hc : c ≠ 0` using `((hu ⟨_, u₀.2.1⟩).2 u₀).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ i, C.v i (r i) = C.v i (r' i) * C.v i c`. Introduce `i`. Take `⟨ψ, hψ, hv⟩` from `ValHom.exists_valAt_hom X Ω ξ _ (Y.x i) (h i) hξ`. Establish `u` using `unitAt_div (g i) (g' i)`. Establish `hun : IsUnit (ψ ⟨_, u.2.1⟩)` using `(hv ⟨_, u.2.1⟩).2 u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval` using `GlobalTheory.T.valAt_comp_local_hom X Ω ξ _ K (C.v i).valuationSubring.subtype (Y.x i) _ _ ((hψ _ _).2 ⟨u.2.1, rfl⟩) (by rw [Y.gen i]; exact h₀)`. Rewrite `hval` using `[Y.gen i]`. Take `⟨m1, e1⟩` from `(hφ _ _).1 hval`. Take `⟨m2, e2⟩` from `(hφ _ _).1 (hr i).2`. Take `⟨m3, e3⟩` from `(hφ _ _).1 (hr' i).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hone : C.v i ((C.v i).valuationSubring.subtype (ψ ⟨_, u.2.1⟩)) = 1`. Take `⟨w, hw⟩` from `hun.exists_right_inv`. Establish `h1 : C.v i ((ψ ⟨_, u.2.1⟩ : (C.v i).valuationSubring) : K) * C.v i (w : K) = 1`. Rewrite using `[← map_mul, ← MulMemClass.coe_mul, hw]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `le_antisymm (ψ ⟨_, u.2.1⟩).2 (h1 ▸ mul_le_of_le_one_right' w.2)`. Establish `: r i = (C.v i).valuationSubring.subtype (ψ ⟨_, u.2.1⟩) * (r' i * c)`. Rewrite using `[← e1, ← e2, ← e3, ← map_mul, ← map_mul]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(g' i).1` as an intermediate fact. Use `g₀'.1` as an intermediate fact. Use `g₀.1` as an intermediate fact. Simplify using `only [MulMemClass.coe_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_mul, hone, one_mul, map_mul]`. Establish `h2 : ∀ i, (C.w i : ℤ) * WithZero.log (C.v i (r i)) = (C.w i : ℤ) * WithZero.log (C.v i (r' i)) + (C.w i : ℤ) * WithZero.log (C.v i c)`. Introduce `i`. Rewrite using `[key, WithZero.log_mul ((Valuation.ne_zero_iff _).2 (hr' i).1) ((Valuation.ne_zero_iff _).2 hc), mul_add]`. Rewrite using `[e, e']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h2]`. Rewrite using `[finsum_add_distrib (hf'.subset fun i hi h1 => hi (by simp [h1])) ((C.fin c hc).subset fun i hi h1 => hi (by simp [h1])), C.prod c hc, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isdeg_unique : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Field K] (C : ACurve K) (z : Spec (CommRingCat.of K) ⟶ X) (Y : CurveIn C z) (Λ : Lat ξ Ω) (n n' : ℤ), IsCptGen ξ → Y.IsDeg Λ n → Y.IsDeg Λ n' → n = n' := by
   intro X Ω _ ξ K _ C z Y Λ n n' hξ ⟨h₀, h, s₀, s, r, g₀, g, hr, hf, e⟩

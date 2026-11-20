@@ -9,17 +9,15 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ T q hq U hU x hx`. Assume the negation of the conclusion as `hxU`. Use `set c : Sp R := closedPoint R`. Establish `hc : IsClosed ({c} : Set (Sp R))` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal _).2 (IsLocalRing.maximalIdeal.isMaximal R)`. Establish `hft : LocallyOfFiniteType (q.fiberToSpecResidueField c)` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: JacobsonSpace (q.fiber c)` using `LocallyOfFiniteType.jacobsonSpace (q.fiberToSpecResidueField c)`. Set `e` to `q.fiberι c`. Establish `hemb : Topology.IsClosedEmbedding e`. Use `⟨IsPreimmersion.isEmbedding e, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.range_fiberι]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hc.preimage q.continuous`. Set `Z : Set T` to `closure {x} ∩ (U : Set T)ᶜ`. Establish `hZ : IsClosed Z` using `isClosed_closure.inter U.isOpen.isClosed_compl`. Choose the witnesses or unpack the hypotheses as in `⟨x', hx'⟩ : x ∈ Set.range e := by`. Rewrite using `[Scheme.Hom.range_fiberι]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hne : (e ⁻¹' Z).Nonempty` using `⟨x', by show e x' ∈ Z`. Rewrite using `[hx']`. Conclude with `⟨subset_closure rfl, hxU⟩⟩`. Take `⟨y, hyZ, hyc⟩` from `nonempty_inter_closedPoints hne (hZ.preimage e.continuous).isLocallyClosed`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyc' : IsClosed ({e y} : Set T)`. Rewrite using `[← Set.image_singleton]`. Conclude with `hemb.isClosedMap _ hyc`. Establish `hqy : q (e y) = c`. Establish `: e y ∈ Set.range e` using `⟨y, rfl⟩`.
-
-Rewrite `this` using `[Scheme.Hom.range_fiberι]`. Conclude with `this`. Conclude with `hyZ.2 (hU _ hyc' hqy)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_closedPoints_closedFibre_mem : ∀ (R : Type) [CommRing R] [IsLocalRing R] (T : Scheme.{0}) (q : T ⟶ Sp R),
     LocallyOfFiniteType q → ∀ U : T.Opens, (∀ x : T, IsClosed ({x} : Set T) → q x = closedPoint R → x ∈ U) →

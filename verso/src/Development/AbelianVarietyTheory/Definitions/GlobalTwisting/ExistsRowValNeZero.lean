@@ -17,7 +17,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (P : LevFam X.E X.K R.r Pr.vGs)
 
 /- English proof (translation)
-Use `(GSD.mem_intNab_iff _ (mtildeOk W Ch sel mu hX P) (PeriodOnStep.rowSec W Ch sel mu P hd) z).trans ?_` and prove the remaining obligations. Rewrite using `[(PeriodOnStep.clEquiv W Ch sel mu P hd).surjective.forall]`. Use `forall_congr' fun c => ?_` and prove the remaining obligations. Rewrite using `[PeriodOnStep.rowSec_rep]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_MtildeL_iff (hX : X.Ok) (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K))) (z : MtildeV W Ch sel mu P) :
     z ∈ MtildeL W Ch sel mu P ↔ ∀ c : (stepX Ch sel mu P).Cl,
@@ -29,7 +29,7 @@ theorem mem_MtildeL_iff (hX : X.Ok) (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F 
   exact Iff.rfl
 
 /- English proof (translation)
-Use `toCForm_span_of_span σ W.sgTrue _ _ hX (φ := fun z : MtildeL W Ch sel mu P => z.1) ?_` and prove the remaining obligations. Conclude with `(congrArg (Submodule.span X.K) Subtype.range_coe).trans (MtildeH_good W Ch hX sel mu P).2.2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_toMtP_gen (hX : X.Ok) (σ : X.K →+* ℂ) :
     Submodule.span ℂ (Set.range fun z : MtildeL W Ch sel mu P => toMtP W Ch sel mu P σ z.1) = ⊤ := by
@@ -43,7 +43,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws)
 
 /- English proof (translation)
-Introduce `c` and use `by obtain ⟨y, hy, e⟩ := h c obtain ⟨y', hy', e'⟩ := h' c refine ⟨y + y', add_mem hy hy', ?_⟩ exact (congrArg₂ (· + ·) e e').trans (map_add (MvPolynomial.map B.embLL) y.1 y'.1).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rowVal_add {u : B.Word} {a : I.ι} {G G' : (I.per l u a).Mt} (h : RowVal I l u a G) (h' : RowVal I l u a G') :
     RowVal I l u a (G + G') := fun c => by
@@ -53,7 +53,7 @@ theorem rowVal_add {u : B.Word} {a : I.ι} {G G' : (I.per l u a).Mt} (h : RowVal
   exact (congrArg₂ (· + ·) e e').trans (map_add (MvPolynomial.map B.embLL) y.1 y'.1).symm
 
 /- English proof (translation)
-Introduce `c` and use `by obtain ⟨y, hy, e⟩ := h c refine ⟨r • y, Submodule.smul_mem _ r hy, ?_⟩ exact (congrArg (B.embLL (r : B.LL) • ·) e).trans ((mapS B.embLL).map_smulₛₗ (r : B.LL) y.1).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rowVal_smul {u : B.Word} {a : I.ι} (r : 𝓞 B.LL) {G : (I.per l u a).Mt} (h : RowVal I l u a G) :
     RowVal I l u a (B.embLL (r : B.LL) • G) := fun c => by
@@ -62,9 +62,9 @@ theorem rowVal_smul {u : B.Word} {a : I.ι} (r : 𝓞 B.LL) {G : (I.per l u a).M
   exact (congrArg (B.embLL (r : B.LL) • ·) e).trans ((mapS B.embLL).map_smulₛₗ (r : B.LL) y.1).symm
 
 /- English proof (translation)
-Use `Iff.trans (forall_congr' fun c => ?_) (mem_MtildeL_iff (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps (base_fields_primes_ok B X).1 (tilOk I h u a).2.2 z).symm` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Establish `e2 : z.1 (PeriodOnStep.rowPt (Pr` using `B.primes X) I.Ch I.sel (I.tup a) I.Ps c) = y := Subtype.ext (MvPolynomial.map_injective B.embLL B.embLL.injective e)`. Rewrite using `[e2]`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Introduce `H`. Conclude with `⟨_, H, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rowVal_rowForm_iff (h : I.Ok) (u : B.Word) (a : I.ι) (z : MtildeV (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps) :
     RowVal I l u a (rowForm I l h u a z) ↔ z ∈ MtildeL (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps := by
@@ -91,14 +91,14 @@ theorem mtE_toMtP (h : I.Ok) (u : B.Word) (a : I.ι) (z : MtildeV (Pr := B.prime
     mtE I l h u a (toMtP (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps B.embLL z) = rowForm I l h u a z := rfl
 
 /- English proof (translation)
-The claim follows from `span_toMtP_gen (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps (base_fields_primes_ok B X).1 B.embLL`.
+A detailed English derivation is pending.
 -/
 theorem span_toMtP (a : I.ι) : Submodule.span ℂ (Set.range fun z : MtildeL (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps =>
     toMtP (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps B.embLL z.1) = ⊤ :=
   span_toMtP_gen (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps (base_fields_primes_ok B X).1 B.embLL
 
 /- English proof (translation)
-Establish `h1` using `congrArg (Submodule.map (mtE I l h u a).toLinearMap) (span_toMtP I a)`. Rewrite `h1` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range]`. Use `eq_top_iff.2 (h1.ge.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨z, rfl⟩, rfl⟩`. Conclude with `(rowVal_rowForm_iff I l h u a z.1).2 z.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_rowVal (h : I.Ok) (u : B.Word) (a : I.ι) : Submodule.span ℂ {G | RowVal I l u a G} = ⊤ := by
   have h1 := congrArg (Submodule.map (mtE I l h u a).toLinearMap) (span_toMtP I a)
@@ -108,11 +108,11 @@ theorem span_rowVal (h : I.Ok) (u : B.Word) (a : I.ι) : Submodule.span ℂ {G |
   exact (rowVal_rowForm_iff I l h u a z.1).2 z.2
 
 /- English proof (translation)
-Introduce `H`. Take `⟨c, hc⟩` from `Function.ne_iff.1 h0`. Take `⟨y, -, e⟩` from `hG c`. Take `⟨y', -, e'⟩` from `H c`. Establish `e2 : t • MvPolynomial.map B.embLL y.1 = MvPolynomial.map B.embLL y'.1` using `(congrArg (t • ·) e).symm.trans e'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : MvPolynomial.map B.embLL y.1 ≠ 0` using `fun h1 => hc (e.trans h1)`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.1 hy`. Establish `e3` using `congrArg (MvPolynomial.coeff m) e2`. Rewrite `e3` using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Rewrite `hm` using `[MvPolynomial.coeff_map]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_map]`. Conclude with `ht ⟨_ / _, by rw [map_div₀, div_eq_iff hm, e3]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_rowVal_smul {u : B.Word} {a : I.ι} {G : (I.per l u a).Mt} (hG : RowVal I l u a G)
     (h0 : (I.perIn u a).rd B.fields.emb B.embLL G ≠ 0) {t : ℂ} (ht : t ∉ Set.range B.embLL) : ¬ RowVal I l u a (t • G) := by
@@ -130,7 +130,7 @@ theorem not_rowVal_smul {u : B.Word} {a : I.ι} {G : (I.per l u a).Mt} (hG : Row
   exact ht ⟨_ / _, by rw [map_div₀, div_eq_iff hm, e3]⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[map_sum]`. Use `Finset.sum_induction _ (RowVal I l u a) (fun _ _ => rowVal_add I l) (rowVal_zero I l u a) fun v hv => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `rowVal_smul I l ⟨B.OtoLL (c v), (I.rec7 l Z).O_int (c v)⟩ (H v hv)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowVal_carrier (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) {V : Type} [AddCommGroup V] [Module ℂ V]
     (M : Rows.OLat B.O (B.embLL.comp B.OtoLL) V) (e : (I.per l u a).Mt ≃ₗ[ℂ] V) (H : ∀ v ∈ M.gen, RowVal I l u a (e.symm v)) :
@@ -158,7 +158,7 @@ def reRows {C : Cols B} (W : RowsRest B C) (M : ∀ μ, Rows.OLat B.O (B.embLL.c
     perCol_tie := fun u μ h φ F => dif_neg h }
 
 /- English proof (translation)
-Take `⟨N, -⟩` from `GaloisStage.exists_nStage_of_rows B (I.cols l) (reRows Z.W M e0 eT) Z.N.toLocStage (fun _ _ => rfl) (fun _ _ _ _ => rfl) (fun _ => rfl) (fun _ _ => rfl)`. Conclude with `⟨⟨reRows Z.W M e0 eT, { Z.V with }, { Z.S with }, N, Z.G⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_later (Z : TC.Later B (I.cols l)) (M : ∀ μ, Rows.OLat B.O (B.embLL.comp B.OtoLL) (Z.W.Amb μ))
     (e0 : ∀ u, ((I.cols l).mem u).P.Mt ≃ₗ[ℂ] Z.W.Amb (I.cols l).mu0) (eT : ∀ u μ, ((I.cols l).PTw u μ).Mt ≃ₗ[ℂ] Z.W.Amb μ) :
@@ -168,7 +168,7 @@ theorem exists_later (Z : TC.Later B (I.cols l)) (M : ∀ μ, Rows.OLat B.O (B.e
   exact ⟨⟨reRows Z.W M e0 eT, { Z.V with }, { Z.S with }, N, Z.G⟩, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.1, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowInt_iff (Z : TC.Later B (I.cols l)) : RowInt I l Z ↔
     (∀ u, ∀ F ∈ (Z.W.Mtilde (I.cols l).mu0).carrier, RowVal I l u I.mu0 ((Z.W.eMt0 u).symm F)) ∧
@@ -176,11 +176,11 @@ theorem rowInt_iff (Z : TC.Later B (I.cols l)) : RowInt I l Z ↔
   ⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.1, h.2⟩⟩
 
 /- English proof (translation)
-Set `f : ∀ a : (I.cols l).Tup, MtP (Pr` to `B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps B.embLL ≃ₗ[ℂ] Z.W.Amb a := fun a => (mtE I l h B.u₀ a).trans (Z.W.eMtTw B.u₀ a)`. Establish `hg : ∀ a : (I.cols l).Tup, ∃ s : Finset (Z.W.Amb a), Submodule.span ℂ (s : Set (Z.W.Amb a)) = ⊤ ∧ ∀ v ∈ s, ∀ u, RowVal I l u a (mtE I l h u a ((f a).symm v))` using `fun a => by`. Establish `h1` using `congrArg (Submodule.map (f a).toLinearMap) (span_toMtP I a)`. Rewrite `h1` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range]`. Take `⟨s, hs, e⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 (h1 ▸ Module.Finite.fg_top)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨s, e.symm.trans h1, fun v hv u => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨z, rfl⟩, rfl⟩` from `hs hv`. Rewrite using `[LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Conclude with `(rowVal_rowForm_iff I l h u a z.1).2 z.2`. Use `choose s hs hv using hg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Z', hZ⟩` from `exists_later I l Z (fun a => ⟨s a, hs a⟩) (fun u => (mtE I l h u I.mu0).symm.trans (f (I.cols l).mu0)) (fun u a => (mtE I l h u a).symm.trans (f a))`. Use `⟨Z', (rowInt_iff I l Z').2 ?_, by rw [hZ]; rfl, by rw [hZ]; rfl⟩` and prove the remaining obligations. Rewrite using `[hZ]`. Conclude with `⟨fun u => rowVal_carrier I l Z u I.mu0 ⟨s _, hs _⟩ ((mtE I l h u I.mu0).symm.trans (f (I.cols l).mu0)) fun v h' => hv _ v h' u, fun u a => rowVal_carrier I l Z u a ⟨s a, hs a⟩ ((mtE I l h u a).symm.trans (f a)) fun v h' => hv a v h' u⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rowInt (h : I.Ok) (Z : TC.Later B (I.cols l)) :
     ∃ Z' : TC.Later B (I.cols l), RowInt I l Z' ∧ Z'.W.Amb = Z.W.Amb ∧ Z'.W.Drows = Z.W.Drows := by
@@ -205,9 +205,9 @@ theorem exists_rowInt (h : I.Ok) (Z : TC.Later B (I.cols l)) :
     fun u a => rowVal_carrier I l Z u a ⟨s a, hs a⟩ ((mtE I l h u a).symm.trans (f a)) fun v h' => hv a v h' u⟩
 
 /- English proof (translation)
-Introduce `H`. Use `h0 (Subtype.ext (funext fun b => funext fun d => ?_))` and prove the remaining obligations. Establish `h1` using `(G.2 b ((I.stX a).rep ((I.stX a).cl b d))).2 ((I.stX a).mv b d) trivial`. Establish `h2 : G.1 b ((I.stX a).rep ((I.stX a).cl b d)) = 0` using `congrFun H ((I.stX a).cl b d)`. Rewrite `h1` using `[h2, map_zero, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrArg (G.1 b) ((I.stX a).mv_smul b d)).symm.trans h1`.
+A detailed English derivation is pending.
 -/
 theorem rd_ne_zero {u : B.Word} {a : I.ι} {G : (I.per l u a).Mt} (h0 : G ≠ 0) : (I.perIn u a).rd B.fields.emb B.embLL G ≠ 0 := by
   intro H
@@ -218,9 +218,7 @@ theorem rd_ne_zero {u : B.Word} {a : I.ι} {G : (I.per l u a).Mt} (h0 : G ≠ 0)
   exact (congrArg (G.1 b) ((I.stX a).mv_smul b d)).symm.trans h1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `h1 : ∀ v ∈ M.gen, v = 0` using `fun v hv => H v ⟨fun x => if x = v then 1 else 0, by`. Rewrite using `[Finset.sum_eq_single v (fun x _ hx => by simp [hx]) (fun h => absurd hv h)]`. Use the proof step `simp⟩`.
-
-Establish `h2 : Submodule.span ℂ (M.gen : Set V) = ⊥` using `Submodule.span_eq_bot.2 h1`. Conclude with `bot_ne_top (h2.symm.trans M.span_top)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [AddCommGroup V] [Module ℂ V] [Nontrivial V]
     (M : Rows.OLat O φ V) : ∃ v ∈ M.carrier, v ≠ 0 := by
@@ -234,7 +232,7 @@ theorem exists_ne_zero {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [Ad
   exact bot_ne_top (h2.symm.trans M.span_top)
 
 /- English proof (translation)
-Take `⟨v, hv, h0⟩` from `exists_ne_zero (Z.W.Mtilde a)`. Conclude with `⟨_, fun h => h0 ((Z.W.eMtTw u a).symm.map_eq_zero_iff.1 h), ((rowInt_iff I l Z).1 hZ).2 u a v hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rowVal_ne_zero {Z : TC.Later B (I.cols l)} (hZ : RowInt I l Z) (u : B.Word) (a : (I.cols l).Tup)
     [Nontrivial (Z.W.Amb a)] : ∃ G : (I.per l u a).Mt, G ≠ 0 ∧ RowVal I l u a G := by
@@ -242,11 +240,11 @@ theorem exists_rowVal_ne_zero {Z : TC.Later B (I.cols l)} (hZ : RowInt I l Z) (u
   exact ⟨_, fun h => h0 ((Z.W.eMtTw u a).symm.map_eq_zero_iff.1 h), ((rowInt_iff I l Z).1 hZ).2 u a v hv⟩
 
 /- English proof (translation)
-Use `haveI : Countable B.LL := (Module.finBasis ℚ B.LL).equivFun.toEquiv.countable_iff.2 inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : ℂ, t ∉ Set.range B.embLL := by`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Conclude with `not_countable_complex ((Set.countable_range B.embLL).mono fun t _ => H t)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `t0 : t ≠ 0` using `fun h => ht ⟨0, by rw [h, map_zero]⟩`. Take `⟨Z', hZ'⟩` from `exists_later I l Z Z.W.Mtilde Z.W.eMt0 fun u μ => (Z.W.eMtTw u μ).trans (LinearEquiv.smulOfNeZero ℂ _ t t0).symm`. Use `⟨Z', fun H => ?_, by rw [hZ']; rfl⟩` and prove the remaining obligations. Establish `H2` using `((rowInt_iff I l Z').1 H).2`. Rewrite `H2` using `[hZ']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv, h0⟩` from `exists_ne_zero (Z.W.Mtilde a)`. Establish `h1 : RowVal I l B.u₀ a ((Z.W.eMtTw B.u₀ a).symm (t • v))` using `H2 B.u₀ a v hv`. Rewrite `h1` using `[map_smul]`. Conclude with `not_rowVal_smul I l (((rowInt_iff I l Z).1 hZ).2 B.u₀ a v hv) (rd_ne_zero I l fun h => h0 ((Z.W.eMtTw B.u₀ a).symm.map_eq_zero_iff.1 h)) ht h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_not_rowInt {Z : TC.Later B (I.cols l)} (hZ : RowInt I l Z) (a : (I.cols l).Tup) [Nontrivial (Z.W.Amb a)] :
     ∃ Z' : TC.Later B (I.cols l), ¬ RowInt I l Z' ∧ Z'.W.Amb = Z.W.Amb := by

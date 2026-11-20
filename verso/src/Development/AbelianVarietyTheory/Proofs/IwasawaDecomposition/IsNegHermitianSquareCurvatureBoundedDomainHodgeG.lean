@@ -15,7 +15,7 @@ section Sqrt
 open scoped MatrixOrder
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ T` using `Matrix.nonneg_iff_posSemidef.mpr hT`. Establish `hs : (CFC.sqrt T).PosSemidef` using `Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg T)`. Conclude with `⟨CFC.sqrt T, by rw [hs.1.eq, CFC.sqrt_mul_sqrt_self T h0]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_eq_conjTranspose_mul_self {k : ℕ} {T : Matrix (Fin k) (Fin k) ℂ}
     (hT : T.PosSemidef) : ∃ B : Matrix (Fin k) (Fin k) ℂ, T = Bᴴ * B := by
@@ -36,7 +36,7 @@ Both sides reduce to the same expression.
 theorem domGram_eq (x : Fin m → Fin r → ℂ) : domGram m r x = ((domForm m r x)⁻¹)ᵀ := rfl
 
 /- English proof (translation)
-Introduce `a b` and use `by show ContDiffAt ℝ k (fun x : Fin m → Fin r → ℂ => x a b) y exact ((contDiff_apply ℝ ℂ b).comp (contDiff_apply ℝ (Fin r → ℂ) a)).contDiffAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mContDiffAt_of (k : WithTop ℕ∞) (y : Fin m → Fin r → ℂ) :
     MContDiffAt k (fun y : Fin m → Fin r → ℂ => Matrix.of y) y := fun a b => by
@@ -44,7 +44,7 @@ theorem mContDiffAt_of (k : WithTop ℕ∞) (y : Fin m → Fin r → ℂ) :
   exact ((contDiff_apply ℝ ℂ b).comp (contDiff_apply ℝ (Fin r → ℂ) a)).contDiffAt
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `show del (fun x : Fin m → Fin r → ℂ => x a b) y ξ = ξ a b`. Establish `e : (fun x : Fin m → Fin r → ℂ => x a b) = ⇑((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin r => ℂ) b).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin m => Fin r → ℂ) a)) := rfl`. Rewrite using `[e, del_eq_fderiv (ContinuousLinearMap.differentiableAt _), ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mdel_of (y ξ : Fin m → Fin r → ℂ) :
     mdel (fun y : Fin m → Fin r → ℂ => Matrix.of y) y ξ = Matrix.of ξ := by
@@ -57,7 +57,7 @@ theorem mdel_of (y ξ : Fin m → Fin r → ℂ) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `show dbar (fun x : Fin m → Fin r → ℂ => x a b) y η = 0`. Establish `e : (fun x : Fin m → Fin r → ℂ => x a b) = ⇑((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin r => ℂ) b).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin m => Fin r → ℂ) a)) := rfl`. Rewrite using `[e, dbar_eq_zero (ContinuousLinearMap.differentiableAt _)]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mdbar_of (y η : Fin m → Fin r → ℂ) :
     mdbar (fun y : Fin m → Fin r → ℂ => Matrix.of y) y η = 0 := by
@@ -70,20 +70,20 @@ theorem mdbar_of (y η : Fin m → Fin r → ℂ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(mContDiffAt_const 1).sub ((mContDiffAt_of k y).mul (mContDiffAt_of k y).conjTranspose)`.
+A detailed English derivation is pending.
 -/
 theorem mContDiffAt_domForm (k : WithTop ℕ∞) (y : Fin m → Fin r → ℂ) :
     MContDiffAt k (domForm m r) y :=
   (mContDiffAt_const 1).sub ((mContDiffAt_of k y).mul (mContDiffAt_of k y).conjTranspose)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[domForm, sub_eq_add_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem domForm_eq_fun : domForm m r = fun y => 1 + -(Matrix.of y * (Matrix.of y)ᴴ) := by
   funext y; simp [domForm, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `h1` using `mContDiffAt_of (m := m) (r := r) 1 y`. Rewrite using `[domForm_eq_fun, mdel_add (mContDiffAt_const _) (h1.mul h1.conjTranspose).neg, mdel_const, mdel_neg, mdel_mul h1 h1.conjTranspose, mdel_conjTranspose, mdbar_of, mdel_of]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mdel_domForm (y ξ : Fin m → Fin r → ℂ) :
     mdel (domForm m r) y ξ = -(Matrix.of ξ * (Matrix.of y)ᴴ) := by
@@ -93,7 +93,7 @@ theorem mdel_domForm (y ξ : Fin m → Fin r → ℂ) :
   simp
 
 /- English proof (translation)
-Establish `h1` using `mContDiffAt_of (m := m) (r := r) 1 y`. Rewrite using `[domForm_eq_fun, mdbar_add (mContDiffAt_const _) (h1.mul h1.conjTranspose).neg, mdbar_const, mdbar_neg, mdbar_mul h1 h1.conjTranspose, mdbar_conjTranspose, mdbar_of, mdel_of]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mdbar_domForm (y η : Fin m → Fin r → ℂ) :
     mdbar (domForm m r) y η = -(Matrix.of y * (Matrix.of η)ᴴ) := by
@@ -103,9 +103,9 @@ theorem mdbar_domForm (y η : Fin m → Fin r → ℂ) :
   simp
 
 /- English proof (translation)
-Establish `e : (fun x => (domGram m r x)ᵀ) = fun x => (domForm m r x)⁻¹`. Use function extensionality and compare the values at `x`. Rewrite using `[domGram_eq, transpose_transpose]`. Establish `e2 : (domGram m r y)ᵀ = (domForm m r y)⁻¹` using `congrFun e y`. Rewrite using `[conn, e2, ← mdel_transpose, e, mdel_inv (mContDiffAt_domForm 1 y) hu, mdel_domForm, nonsing_inv_nonsing_inv _ hu]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conn_domGram {y : Fin m → Fin r → ℂ} (hu : IsUnit (domForm m r y).det)
     (ξ : Fin m → Fin r → ℂ) :
@@ -119,9 +119,9 @@ theorem conn_domGram {y : Fin m → Fin r → ℂ} (hu : IsUnit (domForm m r y).
     mul_nonsing_inv_cancel_left _ _ hu]
 
 /- English proof (translation)
-Establish `hev` using `(mContDiffAt_domForm (m := m) (r := r) 1 x).eventually_isUnit hx`. Establish `he : (fun y => conn (domGram m r) y ξ) =ᶠ[𝓝 x] fun y => Matrix.of ξ * ((Matrix.of y)ᴴ * (domForm m r y)⁻¹)` using `hev.mono fun y hy => conn_domGram hy ξ`. Establish `hZ` using `mContDiffAt_of (m := m) (r := r) 1 x`. Establish `hM` using `(mContDiffAt_domForm (m := m) (r := r) 1 x).inv hx`. Rewrite using `[curv, mdbar_congr he, mdbar_mul (mContDiffAt_const (Matrix.of ξ)) (hZ.conjTranspose.mul hM), mdbar_const, mdbar_mul hZ.conjTranspose hM, mdbar_inv (mContDiffAt_domForm 1 x) hx, mdbar_domForm, mdbar_conjTranspose, mdel_of]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.zero_mul, add_zero, Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_add]`. Rewrite using `[add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem curv_domGram_eq {x : Fin m → Fin r → ℂ} (hx : IsUnit (domForm m r x).det)
     (ξ η : Fin m → Fin r → ℂ) :
@@ -147,13 +147,13 @@ namespace GlobalTheory.PointFormSign
 open DomCurv in
 
 /- English proof (translation)
-Establish `hxA : (domForm m r x).PosDef` using `hx`. Establish `hu : IsUnit (domForm m r x).det` using `(isUnit_iff_isUnit_det _).1 hxA.isUnit`. Establish `hM` using `hxA.inv`. Take `⟨B, hB⟩` from `exists_eq_conjTranspose_mul_self hM.posSemidef`. Establish `hQ : (1 + (Matrix.of x)ᴴ * (domForm m r x)⁻¹ * Matrix.of x).PosSemidef` using `(PosDef.one.add_posSemidef (hM.posSemidef.conjTranspose_mul_mul_same (Matrix.of x))).posSemidef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `exists_eq_conjTranspose_mul_self hQ`. Establish `hBu : IsUnit B.det`. Establish `h1 : IsUnit (Bᴴ * B).det` using `by rw [← hB]; exact (isUnit_iff_isUnit_det _).1 hM.isUnit`. Rewrite `h1` using `[det_mul]`. Conclude with `isUnit_of_mul_isUnit_right h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `T : (Fin m → Fin r → ℂ) →ₗ[ℂ] Matrix (Fin m) (Fin r) ℂ` to `{ toFun := fun ξ => B * Matrix.of ξ * Cᴴ map_add' := fun ξ ξ' => by show B * Matrix.of (ξ + ξ') * Cᴴ = B * Matrix.of ξ * Cᴴ + B * Matrix.of ξ' * Cᴴ`. Rewrite using `[← Matrix.of_add_of, Matrix.mul_add, Matrix.add_mul]`. Use the proof step `map_smul' := fun c ξ => by show B * (c • Matrix.of ξ) * Cᴴ = c • (B * Matrix.of ξ * Cᴴ)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul] }`. Use `⟨B, T, hBu, fun ξ η => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[curv_domGram_eq hu, hC, hB]`. Use `show -(Matrix.of ξ * ((Cᴴ * C) * ((Matrix.of η)ᴴ * (Bᴴ * B)))) = B⁻¹ * (-((B * Matrix.of ξ * Cᴴ) * (B * Matrix.of η * Cᴴ)ᴴ)) * B`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ hBu]`.
+A detailed English derivation is pending.
 -/
 theorem curv_domGram_isNegSq (m r : ℕ) (x : Fin m → Fin r → ℂ)
     (hx : (1 - Matrix.of x * (Matrix.of x)ᴴ).PosDef) : IsNegSq (curv (domGram m r) x) r := by

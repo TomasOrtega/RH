@@ -8,7 +8,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace PositivityTheory.Pf1.LocalLanglands.LDual
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _` and use `GlobalTheory.LocGL.LExist.main k hS (PositivityTheory.Exh.exists_class_isLSeg k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lExists_of_cosocle (hS : GlobalTheory.Published.StandardCosocleGL) :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k],
@@ -16,7 +16,7 @@ theorem lExists_of_cosocle (hS : GlobalTheory.Published.StandardCosocleGL) :
   fun k _ _ _ _ _ => GlobalTheory.LocGL.LExist.main k hS (PositivityTheory.Exh.exists_class_isLSeg k)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _` and use `⟨lExists_of_cosocle hS k, hD k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem langlandsDataDualGL_of_clauses (hS : GlobalTheory.Published.StandardCosocleGL)
     (hD : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
@@ -26,7 +26,7 @@ theorem langlandsDataDualGL_of_clauses (hS : GlobalTheory.Published.StandardCoso
   fun k _ _ _ _ _ => ⟨lExists_of_cosocle hS k, hD k⟩
 
 /- English proof (translation)
-The claim follows from `langlandsDataDualGL_of_clauses hS PositivityTheory.Pf1.LDual2.langlandsDataDualGL_dual`.
+A detailed English derivation is pending.
 -/
 theorem langlandsDataDualGL_of_cosocle (hS : GlobalTheory.Published.StandardCosocleGL) : GlobalTheory.Published.LanglandsDataDualGL :=
   langlandsDataDualGL_of_clauses hS PositivityTheory.Pf1.LDual2.langlandsDataDualGL_dual

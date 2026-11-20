@@ -97,9 +97,9 @@ private theorem dualExactSequence_mapdR_eq {K LL : _root_.Formalism.BasicNotions
 open Module TensorProduct in
 variable {l : ℕ} [Fact l.Prime] (P : _root_.Formalism.BasicNotions.LocPrime l) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.Strict _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.OverGood _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.StrictAt _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequ …`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.Strictness _root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.StrictCore`. Introduce `K s LL hg T₀ T₁ T₂ f g hf hg' hi he hs h₀ h₁ h₂ τ a`. Take `⟨k₁, k₂, k₃⟩` from `h K s LL hg T₀ T₁ T₂ f g ⟨hf, hg', hi, he, hs⟩ h₀ h₁ h₂ τ a`. Simplify using `only [dualExactSequence_mapdR_eq] at k₁ k₂ k₃`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨k₁, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify `k₂ y` using `[Submodule.mem_inf]`. Use extensionality with `z`. Simplify using `using k₃ z`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem strictness_of_dualExactSequence_strict
     (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.Strict l P) : _root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.Strictness l P := by
@@ -119,11 +119,11 @@ private theorem strictness_of_dualExactSequence_strict
 open Module TensorProduct in
 variable {l : ℕ} [Fact l.Prime] (P : _root_.Formalism.BasicNotions.LocPrime l) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.Strictness _root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.StrictCore at h`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.Strict _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.OverGood _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.StrictAt _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequ …`. Introduce `K s LL hg T₀ T₁ T₂ f g hfg h₀ h₁ h₂ τ a`. Take `⟨hf, hg', hi, he, hs⟩` from `hfg`. Establish `k` using `h K s LL hg T₀ T₁ T₂ f g`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k'` using `k hf hg' hi he hs`. Establish `k''` using `k' h₀ h₁ h₂`. Establish `k3` using `k'' τ`. Establish `k4` using `k3 a`. Take `⟨k₁, k₂, k₃⟩` from `k4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨k₁, fun y => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `SetLike.ext_iff.mp k₂ y` as an intermediate fact. Simplify `this` using `[Submodule.mem_inf, dualExactSequence_mapdR_eq]`. Use `SetLike.ext_iff.mp k₃ z` as an intermediate fact. Simplify `this` using `[dualExactSequence_mapdR_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dualExactSequence_strict_of_strictness
     (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.Strictness l P) : _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.Strict l P := by
@@ -148,7 +148,7 @@ private theorem dualExactSequence_strict_of_strictness
 open Module TensorProduct in
 variable {l : ℕ} [Fact l.Prime] (P : _root_.Formalism.BasicNotions.LocPrime l) in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨strictness_of_dualExactSequence_strict P, dualExactSequence_strict_of_strictness P⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.DeRhamCompare.strict_iff :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.Strict l P ↔ _root_.GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.Strictness l P :=

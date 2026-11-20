@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverMorphism
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProjBlowup.lbIso_pull_O1_of_proportional | exact GlobalTheory.ProjBlowup.lbIso_pull_O1_of_proportional | (intros; apply GlobalTheory.ProjBlowup.lbIso_pull_O1_of_proportional <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.pullback_O1_iso_blowup_twist_dual : ∀ (R : Type) [CommRing R] (X W : Scheme.{0}) (J : X.IdealSheafData) (L₀ : LB X) (m : ℕ)
     (σ : Fin (m + 1) → L₀.Sec) (g : W ⟶ X) (ψ : W ⟶ PSpace R m) (D : GlobalTheory.EffCartierData W), L₀.IsLB →

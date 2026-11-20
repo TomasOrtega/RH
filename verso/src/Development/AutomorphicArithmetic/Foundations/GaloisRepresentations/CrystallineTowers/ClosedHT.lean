@@ -13,22 +13,22 @@ open UpperTheory.Gal.Seam
 open CrystallineSemistableComparison UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Introduce `l _ K _` and use `Top.etSide_sm_holds l K`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem etSideS : EtSideS := fun l _ K _ => Top.etSide_sm_holds l K
 
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.HT.hodgeTate_of_etale_side etSideS`.
+A detailed English derivation is pending.
 -/
 theorem hodgeTate_comparison_smooth_projective : CrystallineSemistableComparison.HT.HodgeTateMapExists := CrystallineSemistableComparison.HT.hodgeTate_of_etale_side etSideS
 
 /- English proof (translation)
-The claim follows from `Onto.htBij_of hodgeTate_comparison_smooth_projective G.sqEx3 Top.diagEt3_holds Top.etFin_holds`.
+A detailed English derivation is pending.
 -/
 theorem htBij : Onto.HTBij := Onto.htBij_of hodgeTate_comparison_smooth_projective G.sqEx3 Top.diagEt3_holds Top.etFin_holds
 
 /- English proof (translation)
-The claim follows from `Spec.htSpecGood_of htBij CrystallineSemistableComparison.Om.Nt2F.hodge_iso_natural_cech Top.etFin_holds`.
+A detailed English derivation is pending.
 -/
 theorem htSpecGood : HTSpecB.HTSpecGood := Spec.htSpecGood_of htBij CrystallineSemistableComparison.Om.Nt2F.hodge_iso_natural_cech Top.etFin_holds
 

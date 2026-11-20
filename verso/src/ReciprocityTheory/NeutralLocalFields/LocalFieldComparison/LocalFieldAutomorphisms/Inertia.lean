@@ -9,13 +9,13 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDom
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `PadicAlgCl.isNonarchimedean p x y`.
+A detailed English derivation is pending.
 -/
 theorem norm_add_le_max_padic (x y : PadicAlgCl p) : ‖x + y‖ ≤ max ‖x‖ ‖y‖ :=
   PadicAlgCl.isNonarchimedean p x y
 
 /- English proof (translation)
-Simplify `norm_add_le_max_padic x (-y)` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem padicAlgCl_norm_sub_le_max (x y : PadicAlgCl p) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   simpa [sub_eq_add_neg] using norm_add_le_max_padic x (-y)
@@ -23,9 +23,9 @@ theorem padicAlgCl_norm_sub_le_max (x y : PadicAlgCl p) : ‖x - y‖ ≤ max �
 variable (F) in
 include F in
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(Metric.denseRange_iff.mp (denseRange F ι)) x 1 one_pos`. Rewrite `hb` using `[dist_eq_norm]`. Use `⟨b, (h b).2 ?_, hb⟩` and prove the remaining obligations. Establish `e : ι b = x - (x - ι b)` using `by ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(padicAlgCl_norm_sub_le_max _ _).trans (max_le hx hb.le)`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_approx {A : ValuationSubring Ω} {ι : Ω →+* PadicAlgCl p} (h : Compat p A ι)
     (x : PadicAlgCl p) (hx : ‖x‖ ≤ 1) : ∃ b : Ω, b ∈ A ∧ ‖x - ι b‖ < 1 := by
@@ -37,11 +37,11 @@ theorem exists_integral_approx {A : ValuationSubring Ω} {ι : Ω →+* PadicAlg
   exact (padicAlgCl_norm_sub_le_max _ _).trans (max_le hx hb.le)
 
 /- English proof (translation)
-Take `⟨b, hb, hxb⟩` from `exists_integral_approx F h x hx`. Establish `hyb : ‖ι b‖ ≤ 1` using `(h b).1 hb`. Establish `e : σ x - g x = σ (x - ι b) + ((σ (ι b) - g (ι b)) + (g (ι b) - g x))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Establish `h1 : ‖σ (x - ι b)‖ < 1` using `by rw [norm_map_GK]; exact hxb`. Establish `h3 : ‖g (ι b) - g x‖ < 1`. Use `(hg _ _ hyb hx).trans_lt ?_` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxb`. Use `(norm_add_le_max_padic _ _).trans_lt (max_lt h1 ?_)` and prove the remaining obligations. Conclude with `(norm_add_le_max_padic _ _).trans_lt (max_lt (H b hb) h3)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_sub_lt_one_of_dense {A : ValuationSubring Ω} {ι : Ω →+* PadicAlgCl p} (h : Compat p A ι) (σ : GK F ι)
     (g : PadicAlgCl p → PadicAlgCl p)
@@ -61,9 +61,9 @@ theorem norm_sub_lt_one_of_dense {A : ValuationSubring Ω} {ι : Ω →+* PadicA
   exact (norm_add_le_max_padic _ _).trans_lt (max_lt (H b hb) h3)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Use `norm_sub_lt_one_of_dense h σ id (fun x y _ _ => le_rfl) ?_` and prove the remaining obligations. Introduce `b hb`. Use `(h.valuation_lt_one_iff _).1 (h2 b ((A.valuation_le_one_iff b).2 hb))` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, res_spec]`. Then use the resulting hypothesis. Introduce `H`. Use `⟨res_mem_dec h σ, fun b hb => (h.valuation_lt_one_iff _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, res_spec]`. Conclude with `H _ ((h b).1 ((A.valuation_le_one_iff b).1 hb))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mem_ine_iff {A : ValuationSubring Ω} {ι : Ω →+* PadicAlgCl p} (h : Compat p A ι) (σ : GK F ι) :
     res ι σ ∈ Ine (F := F) A ↔ ∀ x : PadicAlgCl p, ‖x‖ ≤ 1 → ‖σ x - x‖ < 1 := by
@@ -79,13 +79,13 @@ theorem res_mem_ine_iff {A : ValuationSubring Ω} {ι : Ω →+* PadicAlgCl p} (
     exact H _ ((h b).1 ((A.valuation_le_one_iff b).1 hb))
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `: NeZero (l : Ω)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero⟩`. Establish `: NeZero (l : ℚ_[p])` using `⟨Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero⟩`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(cyclotomicCharacter Ω l (MulSemiringAction.toRingAut _ Ω (res ι σ))).val.toZModPow n = _`. Rewrite using `[cyclotomicCharacter.toZModPow]`. Use `(modularCyclotomicCharacter.unique _ _ _ ?_).symm` and prove the remaining obligations. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ι.injective` to reduce the goal to its premises. Establish `ht' : (t : Ω) ^ l ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 ht, Units.val_one]`. Establish `h1 : ι (t : Ω) ^ l ^ n = 1` using `by rw [← map_pow, ht', map_one]`. Use `cyclotomicCharacter.spec (L := PadicAlgCl p) l (σ : PadicAlgCl p ≃+* PadicAlgCl p) (ι t) h1` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_pow]`. Express the relevant statement in the definitionally equal form `ι (res ι σ t) = _`. Rewrite using `[res_spec]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycZ_res (ι : Ω →+* PadicAlgCl p) (l : ℕ) [Fact l.Prime] (σ : GK F ι) :
     cycZ F Ω l (res ι σ) = cyclotomicCharacter (PadicAlgCl p) l (σ : PadicAlgCl p ≃+* PadicAlgCl p) := by
@@ -110,17 +110,17 @@ theorem cycZ_res (ι : Ω →+* PadicAlgCl p) (l : ℕ) [Fact l.Prime] (σ : GK 
   exact this
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ_[p] x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Establish `hm` using `minpoly.monic hint`. Express the relevant statement in the definitionally equal form `spectralValue (minpoly ℚ_[p] x) ≤ 1 ↔ _`. Rewrite using `[spectralValue_le_one_iff hm]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hc`. Establish `hl : minpoly ℚ_[p] x ∈ Polynomial.lifts (PadicInt.subring p).subtype`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Conclude with `⟨⟨_, hc n⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hm`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap (PadicInt.subring p) (PadicAlgCl p) = (algebraMap ℚ_[p] (PadicAlgCl p)).comp (PadicInt.subring p).subtype` using `rfl`. Rewrite using `[e, ← Polynomial.eval₂_map, hq]`. Conclude with `minpoly.aeval ℚ_[p] x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨q, hqm, he⟩ set P := q.map (PadicInt.subring p).subtype`. Establish `hPm : P.Monic` using `hqm.map _`. Establish `hP : Polynomial.aeval x P = 0`. Establish `e : algebraMap (PadicInt.subring p) (PadicAlgCl p) = (algebraMap ℚ_[p] (PadicAlgCl p)).comp (PadicInt.subring p).subtype` using `rfl`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, ← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `he`. Establish `h1 : spectralNorm ℚ_[p] (PadicAlgCl p) x ≤ spectralValue P` using `norm_root_le_spectralValue (f := spectralAlgNorm ℚ_[p] (PadicAlgCl p)) spectralAlgNorm_isPowMul isNonarchimedean_spectralNorm hPm hP`. Establish `h2 : spectralValue P ≤ 1`. Rewrite using `[spectralValue_le_one_iff hPm]`. Introduce `n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.coeff_map]`. Conclude with `(q.coeff n).2`. Establish `h3 : spectralValue (minpoly ℚ_[p] x) ≤ 1` using `h1.trans h2`. Conclude with `(spectralValue_le_one_iff hm).1 h3`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_iff_isIntegral (x : PadicAlgCl p) : ‖x‖ ≤ 1 ↔ IsIntegral (PadicInt.subring p) x := by
   have hint : IsIntegral ℚ_[p] x := (Algebra.IsAlgebraic.isAlgebraic x).isIntegral

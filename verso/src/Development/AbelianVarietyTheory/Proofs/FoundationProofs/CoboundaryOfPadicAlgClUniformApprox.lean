@@ -4,11 +4,11 @@ open scoped Matrix
 namespace GlobalTheory.UniformCoboundary
 
 /- English proof (translation)
-Set `W : Finset Γ → Submodule K (Fin 2 → K)` to `fun T => ⨅ t ∈ T, LinearMap.ker (Matrix.toLin' (M t) - LinearMap.id)`. Establish `hW : ∀ (T : Finset Γ) (v : Fin 2 → K), v ∈ W T ↔ ∀ t ∈ T, M t *ᵥ v = v`. Introduce `T v`. Simplify using `only [W, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, Matrix.toLin'_apply, LinearMap.id_apply, sub_eq_zero]`. Take `⟨_, ⟨T, hTS, rfl⟩, hmin⟩` from `(wellFounded_lt (α := Submodule K (Fin 2 → K))).has_min {P | ∃ T : Finset Γ, ↑T ⊆ S ∧ W T = P} ⟨_, ∅, by simp, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨T, hTS, fun v hv s hs => ?_⟩` and prove the remaining obligations. Establish `hle : W (insert s T) ≤ W T`. Introduce `w hw`. Rewrite `hw`, the goal using `[hW]`. Conclude with `fun t ht => hw t (Finset.mem_insert_of_mem ht)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hnlt : ¬ W (insert s T) < W T` using `hmin _ ⟨insert s T, by rw [Finset.coe_insert]; exact Set.insert_subset hs hTS, rfl⟩`. Establish `heq : W (insert s T) = W T` using `(hle.lt_or_eq).resolve_left hnlt`. Establish `hv' : v ∈ W (insert s T)` using `by rw [heq, hW]; exact hv`. Conclude with `(hW _ _).1 hv' s (Finset.mem_insert_self s T)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finset_fixed {K : Type} [Field K] {Γ : Type} (S : Set Γ)
     (M : Γ → Matrix (Fin 2) (Fin 2) K) :
@@ -36,11 +36,11 @@ theorem exists_finset_fixed {K : Type} [Field K] {Γ : Type} (S : Set Γ)
   exact (hW _ _).1 hv' s (Finset.mem_insert_self s T)
 
 /- English proof (translation)
-Use `⟨∑ k, ∑ p, ‖L (Pi.single p 1) k‖, by positivity, fun w ε hε hw k => ?_⟩` and prove the remaining obligations. Establish `h1 : w = ∑ p, w p • (Pi.single p 1 : ι → K)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h2 : L w k = ∑ p, w p * L (Pi.single p 1) k` using `by conv_lhs => rw [h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[map_sum, Finset.sum_apply]`. Establish `h3 : ‖L w k‖ ≤ (∑ p, ‖L (Pi.single p 1) k‖) * ε`. Rewrite using `[h2, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hw p) (norm_nonneg _)`. Use `h3.trans (mul_le_mul_of_nonneg_right ?_ hε)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => ∑ p, ‖L (Pi.single p 1) k‖) (fun k _ => by positivity) (Finset.mem_univ k)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bound {K : Type} [NormedField K] {ι : Type} [Fintype ι]
     (L : (ι → K) →ₗ[K] (Fin 2 → K)) :
@@ -63,33 +63,31 @@ theorem exists_bound {K : Type} [NormedField K] {ι : Type} [Fintype ι]
     (fun k _ => by positivity) (Finset.mem_univ k)
 
 /- English proof (translation)
-Take `⟨T, hTS, hT⟩` from `exists_finset_fixed S M`. Set `e : (Fin 2 → K) →ₗ[K] (T × Fin 2 → K)` to `LinearMap.pi fun p => (LinearMap.proj p.2).comp (Matrix.toLin' (M p.1) - LinearMap.id)`. Establish `he : ∀ v (p : T × Fin 2), e v p = (M p.1 *ᵥ v - v) p.2`. Introduce `v p`. Simplify using `[e, Matrix.toLin'_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective e.rangeRestrict (LinearMap.range_rangeRestrict e)`. Take `⟨L, hL⟩` from `LinearMap.exists_extend g`. Establish `heL : ∀ v, e (L (e v)) = e v`. Introduce `v`. Establish `h1 : L (e v) = g (e.rangeRestrict v)` using `LinearMap.congr_fun hL (e.rangeRestrict v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : e.rangeRestrict (g (e.rangeRestrict v)) = e.rangeRestrict v` using `LinearMap.congr_fun hg (e.rangeRestrict v)`. Rewrite using `[h1]`. Conclude with `congrArg Subtype.val h2`. Establish `hSL : ∀ v, ∀ s ∈ S, M s *ᵥ (L (e v)) - L (e v) = M s *ᵥ v - v`. Introduce `v s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : e (L (e v) - v) = 0` using `by rw [map_sub, heL, sub_self]`. Establish `h1 : ∀ t ∈ T, M t *ᵥ (L (e v) - v) = L (e v) - v`. Introduce `t ht`. Rewrite using `[← sub_eq_zero]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h0 (⟨t, ht⟩, i)` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `this`. Establish `h2` using `hT _ h1 s hs`. Rewrite `h2` using `[Matrix.mulVec_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sub_eq_sub_iff_sub_eq_sub]`. Conclude with `h2`. Take `⟨C, hC, hCb⟩` from `exists_bound L`. Set `Y : T × Fin 2 → K` to `fun p => y p.1 p.2`. Use `⟨L Y, fun s hs => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero, ← norm_le_zero_iff]`. Establish `key : ∀ r : ℕ, ‖y s i - (M s *ᵥ L Y - L Y) i‖ ≤ (1 + 3 * C) * ‖q‖ ^ r`. Introduce `r`. Take `⟨vr, hvr⟩` from `hf r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hε : 0 ≤ ‖q‖ ^ r` using `by positivity`. Establish `hu : ∀ k, ‖L (Y - e vr) k‖ ≤ C * ‖q‖ ^ r`. Use `hCb _ _ hε fun p => ?_` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, he, ← hvr p.1 (hTS p.1.2), ← norm_pow]`. Conclude with `hy r p.1 p.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : L Y = L (e vr) + L (Y - e vr)` using `by simp [map_sub]`. Generalize the expression as in `L (Y - e vr) = u at hu hv`. Establish `hid : M s *ᵥ L Y - L Y = f r s + (M s *ᵥ u - u)`. Rewrite using `[hvr s hs, ← hSL vr s hs, hv, Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hMu : ‖(M s *ᵥ u) i‖ ≤ 2 * (C * ‖q‖ ^ r)`. Establish `: (M s *ᵥ u) i = M s i 0 * u 0 + M s i 1 * u 1`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Rewrite using `[this]`. Establish `hb : ∀ k, ‖M s i k * u k‖ ≤ C * ‖q‖ ^ r` using `fun k => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hM s i k)).trans (hu k)`. Use `norm_add_le (M s i 0 * u 0) (M s i 1 * u 1)` as an intermediate fact. Combine the linear relations using `[hb 0, hb 1]`. Establish `h1 : y s i - (M s *ᵥ L Y - L Y) i = (y s i - f r s i) - ((M s *ᵥ u) i - u i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hid]`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hy r s i`. Rewrite `h2` using `[norm_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[h1]`. Establish `h3` using `norm_sub_le (y s i - f r s i) ((M s *ᵥ u) i - u i)`. Establish `h4` using `norm_sub_le ((M s *ᵥ u) i) (u i)`. Establish `h5` using `hu i`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hlim : Filter.Tendsto (fun r : ℕ => (1 + 3 * C) * ‖q‖ ^ r) Filter.atTop (nhds 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg q) hq).const_mul (1 + 3 * C)`. Conclude with `ge_of_tendsto' hlim key`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coboundary_of_approx {K : Type} [NormedField K] (q : K) (hq : ‖q‖ < 1) (Γ : Type)
     (S : Set Γ) (M : Γ → Matrix (Fin 2) (Fin 2) K) (f : ℕ → Γ → Fin 2 → K) (y : Γ → Fin 2 → K)
@@ -171,9 +169,9 @@ theorem coboundary_of_approx {K : Type} [NormedField K] (q : K) (hq : ‖q‖ < 
   exact ge_of_tendsto' hlim key
 
 /- English proof (translation)
-Introduce `l _ Γ S M f y hM hf hy`. Use `coboundary_of_approx ((l : ℕ) : PadicAlgCl l) ?_ Γ S M f y hM hf hy` and prove the remaining obligations. Establish `h : ((l : ℕ) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])`. Rewrite using `[map_natCast]`. Establish `h0 : ‖algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])‖ = ‖(l : ℚ_[l])‖` using `PadicAlgCl.norm_extends l _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, h0]`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coboundary_of_padic_approx : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) (S : Set Γ) (M : Γ → Matrix (Fin 2) (Fin 2) (PadicAlgCl l)) (f : ℕ → Γ → Fin 2 → PadicAlgCl l) (y : Γ → Fin 2 → PadicAlgCl l), (∀ s i j, ‖M s i j‖ ≤ 1) → (∀ r, ∃ v : Fin 2 → PadicAlgCl l, ∀ s ∈ S, f r s = M s *ᵥ v - v) → (∀ r s i, ‖y s i - f r s i‖ ≤ ‖((l : ℕ) : PadicAlgCl l) ^ r‖) → ∃ v : Fin 2 → PadicAlgCl l, ∀ s ∈ S, y s = M s *ᵥ v - v := by
   intro l _ Γ S M f y hM hf hy

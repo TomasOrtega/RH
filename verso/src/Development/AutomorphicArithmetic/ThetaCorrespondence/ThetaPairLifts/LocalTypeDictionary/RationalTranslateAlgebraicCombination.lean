@@ -17,21 +17,21 @@ open GlobalTheory.RowEx MeasureTheory
 noncomputable section
 namespace GlobalTheory.RatMovedAlg
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX t γ hγ a ha γ' hγ' a' ha' h1 h2 κ F hF e`. Take `⟨k, hk⟩` from `_root_.GlobalTheory.T.jet_of_moved_vacuum_nonvanishing hP hI hL hX t γ hγ a ha γ' hγ' a' ha' h1 h2`. Take `⟨Ω, hΩ, hJ⟩` from `_root_.GlobalTheory.T.bottom_translate_jets_algebraic hP hI hL hX (Finsupp.mapDomain Prod.fst k)`. Take `⟨n', c', k', hc', hk', he'⟩` from `_root_.GlobalTheory.T.moved_vacuum_jet_algebraic_combination hP hI hL hX t γ hγ a ha γ' hγ' a' ha' h1 h2 k`. Establish `hψ : IsStdChar D W.ψ (-1)` using `(hX.is.weil t).std`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hθ : IsInfFam W.θ` using `hX.is.isVac.2.inf`. Establish `hv : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW X.vac` using `hX.is.isVac.2.theta`. Establish `h0 : heisO W.ψ (GlobalTheory.Grid.neg A) WW 0 X.vac = X.vac`. Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, symplO, hO]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `alg : ∀ x : ℂ, IsAlgebraic ℚ x ↔ x ∈ algebraicClosure ℚ ℂ` using `fun x => (mem_algebraicClosure_iff).symm`. Establish `hg : IsAlgebraic ℚ (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.ω t (γ, γ') X.vac) (MvPolynomial.monomial k 1) 0 / Ω)`. Rewrite using `[he', Finset.sum_div, alg]`. Use `sum_mem fun p _ => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem ((alg _).1 (hc' p)) ((alg _).1 ?_)` and prove the remaining obligations. Use `hJ 0 (by simp) (k' p) (hk' p)` as an intermediate fact. Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Take `⟨n, c, w, hc, hw, rfl⟩` from `hF`. Establish `hsum : pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac) (MvPolynomial.monomial k 1) 0 = ∑ p, c p * pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW. …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.SpecFac.pureTensorO_sum hψ hθ _ _ _ _ Finset.univ c _ (fun p _ => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hv (w p))]`. Simplify using `[Finset.sum_apply]`. Establish `hF' : IsAlgebraic ℚ (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac) (MvPolynomial.monomial k 1) 0 / Ω)`. Rewrite using `[hsum, Finset.sum_div, alg]`. Use `sum_mem fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_div_assoc]`. Conclude with `mul_mem ((alg _).1 (hc p)) ((alg _).1 (hJ (w p) (hw p) k rfl))`. Establish `hsm : pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.ω t (γ, γ') X.vac) (MvPolynomial.monomial k 1) 0 = κ * pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (∑ p, c p • heisO W.ψ (GlobalTheor …`. Rewrite using `[e, GlobalTheory.FiniteFock.pureTensorO_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hne : pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac) (MvPolynomial.monomial k 1) 0 ≠ 0`. Introduce `h0'`. Rewrite `hsm` using `[h0', mul_zero]`. Conclude with `hk hsm`. Establish `hκ : κ = (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.ω t (γ, γ') X.vac) (MvPolynomial.monomial k 1) 0 / Ω) / (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (∑ p, c p • heisO W.ψ (Globa …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hsm]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hκ, alg]`. Conclude with `div_mem ((alg _).1 hg) ((alg _).1 hF')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rational_moved_scalar_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -76,7 +76,7 @@ theorem rational_moved_scalar_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L 
   rw [hκ, alg]
   exact div_mem ((alg _).1 hg) ((alg _).1 hF')
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX t γ hγ a ha γ' hγ' a' ha' h1 h2`. Take `⟨κ, F, hF, e⟩` from `_root_.GlobalTheory.T.rational_vacuum_algebraic_combination hP hI hL hX t γ hγ a ha γ' hγ' a' ha' h1 h2`. Establish `hk` using `_root_.GlobalTheory.RatMovedAlg.rational_moved_scalar_algebraic hP hI hL hX t γ hγ a ha γ' hγ' a' ha' h1 h2 κ F hF e`. Take `⟨n, c, w, hc, hw, he⟩` from `hF.smul hk`. Conclude with `⟨n, c, w, hc, hw, e.trans he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rational_translate_algebraic_combination : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -103,7 +103,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RatMovedAlg.rational_translate_algebraic_combination | exact _root_.GlobalTheory.RatMovedAlg.rational_translate_algebraic_combination | (intros; apply _root_.GlobalTheory.RatMovedAlg.rational_translate_algebraic_combination <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.rationally_moved_vector_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

@@ -11,13 +11,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer lastPai
 open GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `D ψ σ J B s LV LW v hLV hLW hv hu f hf n hn hnv x κ hκ`. Establish `hmul : s.om (1, n * x * κ) f = s.om (1, n) (s.om (1, x) (s.om (1, κ) f))`. Establish `: ((1 : GA D J.W), n * x * κ) = (1, n) * (1, x) * (1, κ)` using `by simp`. Rewrite using `[this, map_mul, map_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hκf : s.om (1, κ) f = f`. Use `GlobalTheory.T.selfDualLatticeStabilizers_fix_weilVacuum_on_placeSet D ψ J.W B.V s.χV s.χW s.om s.weil LV LW hLV hLW (· = v) ?_ f hf 1 κ ?_ hκ` and prove the remaining obligations. Introduce and unpack `w rfl`. Conclude with `⟨hv, hu.1, hu.2⟩`. Use `⟨one_mem _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y _`. Simplify using the standard rewrite rules. Establish `hth : IsThetaFunO ψ J.W B.V (s.om (1, x) f)` using `s.weil.om_pres _ _ hf.1`. Establish `h` using `((GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D ψ (· = v)).2 σ J B s).equiv _ hth n hn hnv 1 (one_mem _)`. Establish `he : B.o.emb (1, 1) = 1` using `map_one B.o.emb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he₀ : s.om₀ ((1 : GA D J.W₀), (1 : GA D B.V₀)) = 1` using `map_one s.om₀`. Rewrite `h` using `[map_one, mul_one, he, he₀, Module.End.one_apply]`. Rewrite using `[hmul, hκf, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.FinPl.flatFB_om_shift : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B) (LV : Lat J.W) (LW : Lat B.V) (v : Pl D), IsSelfDualC J.W LV → IsSelfDualC B.V LW → Tame D v → UnrAt s v → ∀ f, Vac ψ J.W B.V LV LW (· = v) f → ∀ n ∈ flagN B.d, n ∈ grpAt B.V (· = v) → ∀ (x : GA D B.V) (κ : GA D B.V), InK B.V LW (· = v) κ → flatFB s (s.om (1, n * x * κ) f) = star (psiBes ψ B.d 1 (vecB B.o B.ζ) n) • flatFB s (s.om (1, x) f) := by
   intro D ψ σ J B s LV LW v hLV hLW hv hu f hf n hn hnv x κ hκ

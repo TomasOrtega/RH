@@ -10,11 +10,11 @@ open NormedSpace Set MeasureTheory
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Establish `hmp` using `volume_preserving_piFinSuccAbove (fun _ : Fin (d + 1) => ℝ) 0`. Establish `h1` using `hmp.symm.integral_comp' F`. Establish `hint : Integrable (fun p : ℝ × (Fin d → ℝ) => F ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (d + 1) => ℝ) 0).symm p)) ((volume : Measure ℝ).prod (Measure.pi fun _ : Fin d => (volume : Measure ℝ)))` using `(hmp.symm.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 hF`. Rewrite using `[← h1]`. Use `(integral_prod _ hint).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Use `congr 1`. Use function extensionality and compare the values at `t'`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[MeasurableEquiv.piFinSuccAbove]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem integral_fin_succ_cons {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {d : ℕ}
     {F : (Fin (d + 1) → ℝ) → E} (hF : Integrable F) :
@@ -33,7 +33,7 @@ theorem integral_fin_succ_cons {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   rfl
 
 /- English proof (translation)
-The claim follows from `(ha.comp (contDiff_apply ℝ ℝ 0)).mul (hK.comp (contDiff_pi.2 fun j => contDiff_apply ℝ ℝ j.succ))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_cons_kernel {d : ℕ} {a : ℝ → ℂ} {K : (Fin d → ℝ) → ℂ} (ha : ContDiff ℝ ∞ a)
     (hK : ContDiff ℝ ∞ K) : ContDiff ℝ ∞ (fun t : Fin (d + 1) → ℝ => a (t 0) * K (Fin.tail t)) :=
@@ -41,11 +41,11 @@ theorem contDiff_cons_kernel {d : ℕ} {a : ℝ → ℂ} {K : (Fin d → ℝ) �
     (hK.comp (contDiff_pi.2 fun j => contDiff_apply ℝ ℝ j.succ))
 
 /- English proof (translation)
-Introduce `t ht`. Establish `h1` using `tsupport_mul_subset_left ht`. Establish `h2` using `tsupport_mul_subset_right ht`. Establish `h1' : t 0 ∈ tsupport a` using `tsupport_comp_subset_preimage a (f := fun t : Fin (d + 1) → ℝ => t 0) (continuous_apply 0) h1`. Establish `h2' : Fin.tail t ∈ tsupport K` using `tsupport_comp_subset_preimage K (f := fun t : Fin (d + 1) → ℝ => Fin.tail t) (continuous_pi fun j => continuous_apply j.succ) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'` using `has h1'`. Establish `hK'` using `hKs h2'`. Rewrite `hK'`, the goal using `[mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg hε).2 fun j => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.norm_eq_abs, abs_le]`. Conclude with `ha'`. Conclude with `(norm_le_pi_norm (Fin.tail t) j).trans hK'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsupport_cons_kernel {d : ℕ} {ε : ℝ} (hε : 0 ≤ ε) {a : ℝ → ℂ} {K : (Fin d → ℝ) → ℂ}
     (has : tsupport a ⊆ Icc (-ε) ε)
@@ -78,20 +78,20 @@ noncomputable def revProdExp {d : ℕ} (X : Fin d → 𝔤) (t : Fin d → ℝ) 
   (List.ofFn fun i => h.expG (t i • X i)).reverse.prod
 
 /- English proof (translation)
-Simplify using `[revProdExp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem revProdExp_zero (X : Fin 0 → 𝔤) (t : Fin 0 → ℝ) : h.revProdExp X t = 1 := by
   simp [revProdExp]
 
 /- English proof (translation)
-Simplify using `[revProdExp, List.ofFn_succ, Fin.tail]`.
+Simplify using the standard rewrite rules.
 -/
 theorem revProdExp_succ {d : ℕ} (X : Fin (d + 1) → 𝔤) (t : Fin (d + 1) → ℝ) :
     h.revProdExp X t = h.revProdExp (Fin.tail X) (Fin.tail t) * h.expG (t 0 • X 0) := by
   simp [revProdExp, List.ofFn_succ, Fin.tail]
 
 /- English proof (translation)
-The claim follows from `| 0, X => by have : h.revProdExp X = fun _ => 1 := funext (h.revProdExp_zero X) rw [this]; exact continuous_const | d + 1, X => by have : h.revProdExp X = fun t => h.revProdExp (Fin.tail X) (Fin.tail t) * h.expG (t 0 • X 0) := funext (h.revProdExp_succ X) rw [this] exact ((contin …`.
+A detailed English derivation is pending.
 -/
 theorem continuous_revProdExp : ∀ {d : ℕ} (X : Fin d → 𝔤), Continuous (h.revProdExp X)
   | 0, X => by
@@ -107,7 +107,7 @@ theorem continuous_revProdExp : ∀ {d : ℕ} (X : Fin d → 𝔤), Continuous (
       (h.continuous_expG.comp ((continuous_apply 0).smul continuous_const))
 
 /- English proof (translation)
-Rewrite using `[revProdExp, List.prod_inv_reverse, List.map_reverse, List.reverse_reverse, prodExp, List.map_ofFn]`. Use `congrArg List.prod (congrArg List.ofFn (funext fun i => ?_))` and prove the remaining obligations. Simplify using `[neg_smul, h.expG_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem revProdExp_inv {d : ℕ} (X : Fin d → 𝔤) (t : Fin d → ℝ) :
     (h.revProdExp X t)⁻¹ = h.prodExp X (-t) := by
@@ -117,9 +117,9 @@ theorem revProdExp_inv {d : ℕ} (X : Fin d → 𝔤) (t : Fin d → ℝ) :
   simp [neg_smul, h.expG_neg]
 
 /- English proof (translation)
-Establish `hint : Integrable (fun t : Fin (d + 1) → ℝ => a (t 0) * K (Fin.tail t) * F (h.revProdExp X t * x))`. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Conclude with `((ha.comp (continuous_apply 0)).mul (hK.comp (continuous_pi fun j => continuous_apply j.succ))).mul (hF.comp ((h.continuous_revProdExp X).mul continuous_const))`. Conclude with `HasCompactSupport.mul_right (f := fun t : Fin (d + 1) → ℝ => a (t 0) * K (Fin.tail t)) ((isCompact_closedBall 0 ε).of_isClosed_subset (isClosed_tsupport _) (tsupport_cons_kernel hε has hKs))`. Rewrite using `[integral_fin_succ_cons hint]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Use `congr 1`. Use function extensionality and compare the values at `t'`. Simplify using `only [Fin.cons_zero, Fin.tail_cons, h.revProdExp_succ, mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_cons_kernel {d : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} (hε : 0 ≤ ε) {a : ℝ → ℂ}
     (ha : Continuous a) (has : tsupport a ⊆ Icc (-ε) ε) {K : (Fin d → ℝ) → ℂ}
@@ -141,9 +141,9 @@ theorem integral_cons_kernel {d : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} (h�
   simp only [Fin.cons_zero, Fin.tail_cons, h.revProdExp_succ, mul_assoc]
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : ℝ × (Fin d → ℝ) => a p.1 * (K p.2 * F (h.revProdExp (Fin.tail X) p.2 * (h.expG (p.1 • X 0) * x))))` using `(ha.comp continuous_fst).mul ((hK.comp continuous_snd).mul (hF.comp (((h.continuous_revProdExp (Fin.tail X)).comp continuous_snd).mul ((h.continuous_expG.comp (continuous_fst.smul continuous_const)).mul continuous_const))))`. Establish `hs : HasCompactSupport (fun p : ℝ × (Fin d → ℝ) => a p.1 * (K p.2 * F (h.revProdExp (Fin.tail X) p.2 * (h.expG (p.1 • X 0) * x))))`. Use `HasCompactSupport.intro ((isCompact_Icc (a := -ε) (b := ε)).prod (isCompact_closedBall (0 : Fin d → ℝ) ε)) ?_` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Set.mem_prod, not_and_or]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hp with hp | hp` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h' => hp (has h')), zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h' => hp (hKs h')), zero_mul, mul_zero]`. Conclude with `(hc.integrable_of_hasCompactSupport hs).integral_prod_left`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_integral_cons_kernel {d : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} {a : ℝ → ℂ}
     (ha : Continuous a) (has : tsupport a ⊆ Icc (-ε) ε) {K : (Fin d → ℝ) → ℂ}
@@ -168,9 +168,9 @@ theorem integrable_integral_cons_kernel {d : ℕ} (X : Fin (d + 1) → 𝔤) {ε
   exact (hc.integrable_of_hasCompactSupport hs).integral_prod_left
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_congr rfl fun i _ => h.integral_cons_kernel X hε ha has (hK i) (hKs i) (hF i) x, ← integral_finsetSum _ fun i _ => h.integrable_integral_cons_kernel X ha has (hK i) (hKs i) (hF i) x]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[hd, Finset.mul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_integral_cons_kernel {d m : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} (hε : 0 ≤ ε)
     {a : ℝ → ℂ} (ha : Continuous a) (has : tsupport a ⊆ Icc (-ε) ε)

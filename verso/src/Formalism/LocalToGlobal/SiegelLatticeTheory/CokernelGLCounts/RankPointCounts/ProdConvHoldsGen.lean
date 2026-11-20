@@ -10,7 +10,7 @@ namespace Formalism.L2.SG.Pf.ProdConvCut2
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocVol
 
 /- English proof (translation)
-The claim follows from `prodConvNew_holds_gen X hb ψ hψ hs hloc u u'`.
+A detailed English derivation is pending.
 -/
 theorem prodConv_holds_gen {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (hψ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF X.B.I.F ψ) (hs : IsStdChar ψ)
@@ -18,19 +18,19 @@ theorem prodConv_holds_gen {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.Ad
   prodConvNew_holds_gen X hb ψ hψ hs hloc u u'
 
 /- English proof (translation)
-The claim follows from `prodConv_holds_gen T.X T.hb T.ψ T.ψ_char T.ψ_std T.locCompat u u'`.
+A detailed English derivation is pending.
 -/
 theorem prodConv_holds {D : D7} (T : Formalism.L2.SG.SpectralTiesReal.STies D) (u u' : D.what₂.Word) : ProdConv T.X u u' T.ψ :=
   prodConv_holds_gen T.X T.hb T.ψ T.ψ_char T.ψ_std T.locCompat u u'
 
 /- English proof (translation)
-Introduce `_ T u u' _ _` and use `prodConv_holds T u u'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prodConvAll_holds : Formalism.L2.SG.PoincareAmplitudeLowerBounds.ProdConvAll :=
   fun _ T u u' _ _ => prodConv_holds T u u'
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' _ hb X0 ψ hT`. Conclude with `prodConv_holds_gen X hb ψ hT.2.1 hT.2.2.1 hT.2.2.2.2.1 u u'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prodConv_onTied :
     Formalism.L2.SG.NGAnalytic.MassDataLemmas.OnTied fun _ X _ _ u u' _ ψ => ProdConv X u u' ψ := by

@@ -18,17 +18,15 @@ namespace BranchSheetAE
 variable {d : ℕ}
 
 /- English proof (translation)
-Establish `hFa` using `SheetOnlyNull.analyticOnNhd_of_differentiableOn hG hF`. Establish `hequiv : ∀ w ∈ G, ∃ e : (Fin d → ℂ) ≃L[ℂ] (Fin d → ℂ), HasStrictFDerivAt F (e : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)) w`. Introduce `w hw`. Establish `hinj : Function.Injective (fderiv ℂ F w)` using `(SheetOnlyNull.injective_iff_det_ne_zero _).2 (by rw [← ReciprocityTheory.AnForm.A.det_jacC]; exact hdet w hw)`. Use `⟨(LinearEquiv.ofInjectiveEndo _ hinj).toContinuousLinearEquiv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hFa w hw).hasStrictFDerivAt.congr_fderiv (ContinuousLinearMap.ext fun v => rfl)`. Apply `measure_null_of_locally_null` to reduce the goal to its premises. Introduce and unpack `x ⟨hxG, -⟩`. Take `⟨e, he⟩` from `hequiv x hxG`. Use `set φ := he.toOpenPartialHomeomorph F with hφdef`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : ∀ w, φ w = F w` using `fun w => by rw [hφdef, HasStrictFDerivAt.toOpenPartialHomeomorph_coe]`. Establish `hsymd : DifferentiableOn ℝ φ.symm (φ.target ∩ φ.symm ⁻¹' G)`. Introduce and unpack `z ⟨hzT, hzG⟩`. Take `⟨e', he'⟩` from `hequiv _ hzG`. Establish `hd : HasFDerivAt φ.symm _ z` using `φ.hasFDerivAt_symm hzT (f' := e') (by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (φ : (Fin d → ℂ) → Fin d → ℂ) = F` using `funext hφ`. Rewrite using `[this]`. Conclude with `he'.hasFDerivAt)`. Conclude with `(hd.differentiableAt.restrictScalars ℝ).differentiableWithinAt`. Use `⟨{t | t ∈ G ∧ F t ∈ N} ∩ φ.source, inter_mem_nhdsWithin _ (φ.open_source.mem_nhds he.mem_toOpenPartialHomeomorph_source), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `measure_mono_null ?_ (addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero (μ := volume) (hsymd.mono Set.inter_subset_left) (measure_mono_null Set.inter_subset_right hN))` and prove the remaining obligations. Introduce and unpack `t ⟨⟨htG, htN⟩, hts⟩`. Use `⟨φ t, ⟨⟨φ.map_source hts, ?_⟩, ?_⟩, φ.left_inv hts⟩` and prove the remaining obligations. Use `show φ.symm (φ t) ∈ G`. Rewrite using `[φ.left_inv hts]`.
-
-Conclude with `htG`. Rewrite using `[hφ]`. Conclude with `htN`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_preimage_null {G : Set (Fin d → ℂ)} {F : (Fin d → ℂ) → Fin d → ℂ} (hG : IsOpen G)
     (hF : DifferentiableOn ℂ F G) (hdet : ∀ w ∈ G, (ReciprocityTheory.AnForm.A.jacC F w).det ≠ 0)
@@ -68,19 +66,17 @@ theorem volume_preimage_null {G : Set (Fin d → ℂ)} {F : (Fin d → ℂ) → 
 end BranchSheetAE
 
 /- English proof (translation)
-Introduce `n d J A p γ hJ hdim hA`. Use `set Δ := Metric.ball (0 : Fin d → ℂ) γ.radius with hΔ`. Use `set τ : (Fin d → ℂ) → Fin d → ℂ := fun t => A *ᵥ γ.toFun t with hτdef`. Establish `hΔo : IsOpen Δ` using `Metric.isOpen_ball`. Establish `hτd : DifferentiableOn ℂ τ Δ` using `SheetOnlyNull.differentiableOn_mulVec A γ.differentiableOn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeta` using `SheetOnlyNull.analyticOnNhd_det_jacC hΔo hτd`. Establish `hne : ∃ z ∈ Δ, (ReciprocityTheory.AnForm.A.jacC τ z).det ≠ 0`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Take `⟨y, hy⟩` from `h₁ d d Δ τ hΔo ⟨0, Metric.mem_ball_self γ.radius_pos⟩ hτd fun v hv hinj => (SheetOnlyNull.injective_iff_det_ne_zero _).1 hinj (by rw [← ReciprocityTheory.AnForm.A.det_jacC]; exact hall v hv)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hinf : (γ.toFun '' {t | t ∈ Δ ∧ τ t = y}).Infinite` using `(Set.infinite_image_iff (γ.injOn.mono fun t ht => ht.1)).2 hy`. Use `hinf ((h₂ n d J A hJ hdim hA y).2.1.subset ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨htΔ, hty⟩, rfl⟩`. Conclude with `⟨γ.mapsTo htΔ, hty⟩`. Establish `hZ` using `ReciprocityTheory.AnForm.volume_zero_set_of_analyticOnNhd hΔo (convex_ball _ _).isPreconnected hdeta hne`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, U, D, N, s, -, hUD, -, -, hnull, hfib⟩` from `h₃ n d J A hJ hdim hA`. Use `set G := Δ ∩ (fun t => (ReciprocityTheory.AnForm.A.jacC τ t).det) ⁻¹' {0}ᶜ with hGdef`. Establish `hG : IsOpen G` using `hdeta.continuousOn.isOpen_inter_preimage hΔo isOpen_compl_singleton`. Establish `hS` using `BranchSheetAE.volume_preimage_null hG (hτd.mono Set.inter_subset_left) (fun w hw => hw.2) hnull`. Rewrite using `[ae_restrict_iff' hΔo.measurableSet, ae_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `measure_mono_null ?_ (measure_union_null hZ hS)` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Set.mem_ofPred_eq, Classical.not_imp] at ht`. Take `⟨htΔ, hno⟩` from `ht`. Distinguish the cases in `hdt : (ReciprocityTheory.AnForm.A.jacC τ t).det = 0`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inl ⟨htΔ, hdt⟩`. Use `Or.inr ⟨⟨htΔ, hdt⟩, fun hD => hno ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 hD`. Take `⟨hfibk, -, hsh⟩` from `hfib k (τ t) ((hUD k).2.2.1 hk)`. Establish `hmem : γ.toFun t ∈ fibre J A (τ t)` using `⟨γ.mapsTo htΔ, rfl⟩`.
-
-Rewrite `hmem` using `[hfibk]`. Take `⟨j, hj⟩` from `hmem`. Conclude with `⟨s k j, hj ▸ hsh j⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BranchSheetAE.proof (h₁ : IndefiniteRowSideFullHecke.ComplexSets.RankDeficientFibreInfinite.Statement)
     (h₂ : ComplexSets.FibreBound.Statement) (h₃ : DiscriminantSheetCover.Statement) :

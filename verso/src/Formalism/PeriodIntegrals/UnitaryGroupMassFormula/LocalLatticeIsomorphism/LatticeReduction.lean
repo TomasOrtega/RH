@@ -7,15 +7,13 @@ open NumberField
 namespace PI.KLW
 
 /- English proof (translation)
-Introduce `hLat K E _ _ _ _ _ cj n _ I p hK hc hp hs hI hg0`. Take `⟨g₀, hg⟩` from `hg0`. Use `set c := conjK cj hc.2.1 with hcdef`. Take `⟨u, hu, huL⟩` from `hLat K c p (Fin 4 × n) (Lset I p g₀) hK (conjK_invol cj hc) hp (splitK_of cj hc hs) (lset_unimod cj hc I p g₀ hI hg) (lset_spans cj hc I p g₀ hI)`. Use `⟨g₀.trans u, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[sum_conj cj hc.2.1, ← hg x y, sum_conj cj hc.2.1]`. Use `congr 1`. Conclude with `hu (g₀ x) (g₀ y)`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : g₀ x ∈ Lset I p g₀` using `⟨1, Nat.coprime_one_left p, fun a => by`. Rewrite using `[Nat.cast_one, one_mul, LinearEquiv.symm_apply_apply]`. Conclude with `hx a⟩`. Take `⟨s, hs', hsx⟩` from `Rp_fintype (p := p) _ ((huL _).1 hmem)`. Conclude with `⟨s, hs', fun w => hsx w⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Establish `hmem : u.symm v ∈ Lset I p g₀` using `(huL _).2 fun i => by`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Take `⟨y, hy⟩` from `hv i`. Conclude with `⟨1, Nat.coprime_one_left p, ⟨y, by rw [Nat.cast_one, one_mul]; exact hy⟩⟩`.
-
-Take `⟨s, hs', hsv⟩` from `hmem`. Conclude with `⟨s, hs', fun a => hsv a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lattice_reduction : LocalIsoOfLatticeIso := by
   intro hLat K E _ _ _ _ _ cj n _ I p hK hc hp hs hI hg0

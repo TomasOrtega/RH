@@ -12,9 +12,9 @@ open GlobalTheory.KS
 namespace GlobalTheory.KS
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hc : Countable Λ` using `TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Establish `hinj : Function.Injective (fun t : ℂ => (⟨t • v, hv t⟩ : Λ))`. Introduce `s t hst`. Conclude with `smul_left_injective ℂ h (congrArg Subtype.val hst)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Countable ℂ` using `hinj.countable`. Establish `: Countable ℝ` using `Complex.ofReal_injective.countable`. Conclude with `not_countable this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_line_subset_discrete {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (v : Fin g → ℂ) (hv : ∀ t : ℂ, t • v ∈ Λ) : v = 0 := by
@@ -28,9 +28,9 @@ theorem eq_zero_of_line_subset_discrete {g : ℕ} (Λ : Submodule ℤ (Fin g →
   exact not_countable this
 
 /- English proof (translation)
-Establish `hd` using `u.discrete`. Establish `hm : ∀ z, F z - F' z ∈ u.Λ`. Introduce `z`. Rewrite using `[← u.ker]`. Establish `h1` using `u.ex_add (F z - F' z) (F' z)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[sub_add_cancel, h z]`. Conclude with `(mul_eq_right.mp h1.symm)`. Use `LinearMap.ext fun z => sub_eq_zero.mp (eq_zero_of_line_subset_discrete u.Λ _ fun t => ?_)` and prove the remaining obligations. Use `hm (t • z)` as an intermediate fact. Rewrite `this` using `[map_smul, map_smul, ← smul_sub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem linear_eq_of_ex_eq {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (u : HolUnif A L g)
     (F F' : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (h : ∀ z, u.ex (F z) = u.ex (F' z)) : F = F' := by
@@ -46,9 +46,9 @@ theorem linear_eq_of_ex_eq {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.le
   rwa [map_smul, map_smul, ← smul_sub] at this
 
 /- English proof (translation)
-Introduce `P₀ u Hm χ hu`. Use `⟨fun f F F' h h' => linear_eq_of_ex_eq u F F' fun z => (h z).trans (h' z).symm, ?_⟩` and prove the remaining obligations. Introduce `O _ act`. Use `choose F hF using fun a => hu.endo (act.act a) (act.hom a)`. Establish `hone : F 1 = (1 : Module.End ℂ (Fin P₀.g → ℂ))` using `linear_eq_of_ex_eq u _ _ fun z => by rw [hF, act.one, Category.comp_id]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ a b, F (a * b) = (F a : Module.End ℂ (Fin P₀.g → ℂ)) * F b` using `fun a b => linear_eq_of_ex_eq u _ _ fun z => by`. Rewrite using `[hF, mul_comm a b, act.mul, Module.End.mul_apply, hF, hF, Category.assoc]`. Establish `hadd : ∀ a b, F (a + b) = F a + F b` using `fun a b => linear_eq_of_ex_eq u _ _ fun z => by`. Rewrite using `[hF, act.add, LinearMap.add_apply, u.ex_add, hF, hF, MonObj.comp_mul]`. Conclude with `⟨RingHom.mk' ⟨⟨F, hone⟩, hmul⟩ hadd, hF⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linear_lift_action : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → (∀ (f : P₀.A ⟶ P₀.A) (F F' : (Fin P₀.g → ℂ) →ₗ[ℂ] (Fin P₀.g → ℂ)), (∀ z, u.ex (F z) = u.ex z ≫ f) → (∀ z, u.ex (F' z) = u.ex z ≫ f) → F = F') ∧ ∀ (O : Type) [CommRing O] (act : OAct O P₀.A), ∃ F : O →+* Module.End ℂ (Fin P₀.g → ℂ), ∀ a z, u.ex (F a z) = u.ex z ≫ act.act a := by
   intro P₀ u Hm χ hu

@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ d hd W hW v hv i hi`. Establish `step : ∀ (c : K), ∀ w ∈ W, (fun l => (d l - c) * w l) ∈ W`. Introduce `c w hw`. Establish `h` using `W.sub_mem (hW w hw) (W.smul_mem c hw)`. Establish `e : (fun l => (d l - c) * w l) = (Matrix.diagonal d).mulVec w - c • w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Matrix.mulVec_diagonal, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `iter : ∀ s : Finset (Fin 3), (fun l => (∏ j ∈ s, (d l - d j)) * v l) ∈ W`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `e : (fun l => (∏ j ∈ (∅ : Finset (Fin 3)), (d l - d j)) * v l) = v`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hv`. Consider the case `insert a s ha ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `step (d a) _ ih`. Establish `e : (fun l => (∏ j ∈ insert a s, (d l - d j)) * v l) = fun l => (d l - d a) * ((∏ j ∈ s, (d l - d j)) * v l)`. Use function extensionality and compare the values at `l`. Rewrite using `[Finset.prod_insert ha, mul_assoc]`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Establish `hc : (∏ j ∈ Finset.univ.erase i, (d i - d j)) * v i ≠ 0`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.mpr ?_) hi` and prove the remaining obligations. Introduce `j hj`. Conclude with `sub_ne_zero.mpr fun h => (Finset.ne_of_mem_erase hj) (hd h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `W.smul_mem ((∏ j ∈ Finset.univ.erase i, (d i - d j)) * v i)⁻¹ (iter (Finset.univ.erase i))`. Establish `e : (Pi.single i (1 : K) : Fin 3 → K) = ((∏ j ∈ Finset.univ.erase i, (d i - d j)) * v i)⁻¹ • (fun l => (∏ j ∈ Finset.univ.erase i, (d l - d j)) * v l)`. Use function extensionality and compare the values at `l`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hl : l = i`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hl` using the available equality. Rewrite using `[Pi.single_eq_same, inv_mul_cancel₀ hc]`. Establish `hz : ∏ j ∈ Finset.univ.erase i, (d l - d j) = 0` using `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hl, Finset.mem_univ l⟩) (sub_self _)`. Rewrite using `[Pi.single_eq_of_ne hl, hz, zero_mul, mul_zero]`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SingleMemSubmodule.single_mem :
     ∀ {K : Type} [inst : Field K] (d : Fin (3 : ℕ) → K),

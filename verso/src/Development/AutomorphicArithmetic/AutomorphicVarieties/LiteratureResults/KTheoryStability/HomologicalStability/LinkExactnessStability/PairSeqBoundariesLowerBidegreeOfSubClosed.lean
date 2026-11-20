@@ -8,7 +8,7 @@ namespace GlobalTheory.SeqCx
 open Finsupp
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← Finsupp.sum_single x, Finsupp.sum, map_sum]`. Use `Submodule.sum_mem _ fun a ha => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.smul_single_one, map_zsmul]`. Conclude with `P.smul_mem _ (h a (hx ha))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_supported_mem {α β : Type} {S : Set α}
     (f : (α →₀ ℤ) →ₗ[ℤ] (β →₀ ℤ)) (P : Submodule ℤ (β →₀ ℤ)) (h : ∀ z ∈ S, f (Finsupp.single z 1) ∈ P) :
@@ -20,7 +20,7 @@ theorem map_supported_mem {α β : Type} {S : Set α}
   exact P.smul_mem _ (h a (hx ha))
 
 /- English proof (translation)
-Simplify using `only [hbd, bd, Finsupp.linearCombination_single, one_smul, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_smul, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hbd_single (V W : Type) (z : List V × List W) :
     hbd V W (Finsupp.single z 1) =
@@ -29,7 +29,7 @@ theorem hbd_single (V W : Type) (z : List V × List W) :
     Finsupp.mapDomain_smul, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Simplify using `only [vbd, bd, Finsupp.linearCombination_single, one_smul, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_smul, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vbd_single (V W : Type) (z : List V × List W) :
     vbd V W (Finsupp.single z 1) =
@@ -38,15 +38,15 @@ theorem vbd_single (V W : Type) (z : List V × List W) :
     Finsupp.mapDomain_smul, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Introduce `V W D hD`. Use `⟨fun a b => ?_, fun a b => ?_, fun b => ?_⟩` and prove the remaining obligations. Use `map_supported_mem (hbd V W) _ ?_` and prove the remaining obligations. Introduce and unpack `z ⟨hz, h1, h2⟩`. Rewrite using `[hbd_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `Finsupp.single_mem_supported ℤ _ ?_` and prove the remaining obligations. Establish `hi' : i < z.1.length` using `Finset.mem_range.mp hi`. Use `⟨hD z hz _ _ (List.eraseIdx_sublist _ _) (List.Sublist.refl _), ?_, h2⟩` and prove the remaining obligations. Rewrite using `[List.length_eraseIdx_of_lt hi', h1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `map_supported_mem (vbd V W) _ ?_` and prove the remaining obligations. Introduce and unpack `z ⟨hz, h1, h2⟩`. Rewrite using `[vbd_single]`. Use `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.single_mem_supported ℤ _ ?_` and prove the remaining obligations. Establish `hi' : i < z.2.length` using `Finset.mem_range.mp hi`. Use `⟨hD z hz _ _ (List.Sublist.refl _) (List.eraseIdx_sublist _ _), h1, ?_⟩` and prove the remaining obligations. Rewrite using `[List.length_eraseIdx_of_lt hi', h2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `x hx`. Use `map_supported_mem (hbd V W) (⊥ : Submodule ℤ _) ?_ x hx` as an intermediate fact. Simplify using `using this`. Introduce and unpack `z ⟨_, h1, _⟩`. Rewrite using `[hbd_single, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -88,7 +88,7 @@ end
 section
 open GlobalTheory.SeqCx
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SeqCx.bd_chains2`. Consider the case `exact @GlobalTheory.SeqCx.vbd_single`. Consider the case `exact @GlobalTheory.SeqCx.hbd_single`. Consider the case `exact @GlobalTheory.SeqCx.map_supported_mem`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.pairSeqBoundaries_lower_bidegree_of_subClosed : ∀ (V W : Type) (D : Set (List V × List W)), SubClosed2 D → (∀ a b, ∀ x ∈ chains2 D (a + 1) b, hbd V W x ∈ chains2 D a b) ∧ (∀ a b, ∀ x ∈ chains2 D a (b + 1), vbd V W x ∈ chains2 D a b) ∧ (∀ b, ∀ x ∈ chains2 D 0 b, hbd V W x = 0) := by
   first

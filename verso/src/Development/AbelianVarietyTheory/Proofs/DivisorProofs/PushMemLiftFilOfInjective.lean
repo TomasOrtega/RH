@@ -10,23 +10,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SqLift
 
 /- English proof (translation)
-Introduce `H R _ I h R₀ _ π hπ hI S _ σ hσ J hJ S₀ _ πS hπS hJk ι₀ hι g A₀ _ A _ i hA AS₀ _ AS _ iS hAS hAab hAg hASab hASg φA ψA hφA hψA hiA g' B₀ _ B _ j hB BS₀ _ BS _ jS hBS hBab hBg hBSab hBSg φB ψB hφB hψB hjB f₀ _ fS₀ _ hf hyp d hd`. Take `⟨_, _, HBC, HR, _⟩` from `H`. Use `letI : Algebra S R := σ.toAlgebra`. Establish `hJI : ∀ a ∈ J, σ a ∈ I` using `fun a ha ↦ by`. Rewrite using `[← hI, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: πS a = 0` using `by rw [← RingHom.mem_ker, hJk]; exact ha`. Rewrite using `[← RingHom.comp_apply, ← hι, RingHom.comp_apply, this, map_zero]`. Establish `hdp : IsDPMorphism (divided₂ hJ) (divided₂ h) σ` using `isDPMorphism_sqDP hJ h σ hJI`. Establish `hbase : spMap ι₀ ≫ spMap πS = spMap π ≫ spMap σ`. Rewrite using `[← Cris.spMap_comp, ← Cris.spMap_comp, hι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `mA` using `GrpMor.of_isGrpPullback hdp hbase hψA`. Establish `mB` using `GrpMor.of_isGrpPullback hdp hbase hψB`. Establish `nA` using `GlobalTheory.Published.AbelianDeRham.bcMor (R := S) (R' := R) hφA`. Establish `nB` using `GlobalTheory.Published.AbelianDeRham.bcMor (R := S) (R' := R) hφB`. Establish `hBCA` using `HBC S AS g hASab hASg R A φA hφA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hBCA.1.exists (crysToDR (divided₂ hJ) hAS d)`. Take `⟨d', rfl⟩` from `(GlobalTheory.Published.AbelianDeRham.Rigid.crysToDR_bijective HR hAab hAg (isDPNilpotent_squareZero h) hπ hI hA).2 y`. Establish `hsurj` using `(HR S AS g hASab hASg J (divided₂ hJ) (isDPNilpotent_squareZero hJ) S₀ πS hπS hJk AS₀ iS hAS).2`. Establish `hm : mA.Corr d d'` using `fun c ↦ by`. Take `⟨c0, rfl⟩` from `hsurj c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `k` using `(liftMor (divided₂ hJ) hAS).comp mA`. Rewrite using `[GrpMor.pull_pull (liftMor (divided₂ hJ) hAS) mA k (fun _ ↦ rfl) rfl c0, ← GrpMor.pull_pull nA (liftMor (divided₂ h) hA) k (fun _ ↦ rfl) hiA c0]`. Conclude with `(crysToDR_apply _ hA d' _).symm.trans ((hy c0).trans (congrArg σ (crysToDR_apply _ hAS d c0)))`. Establish `hd' : d' ∈ liftFil (divided₂ h) hA`. Establish `hle : PrimitiveSubmodule A ≤ LinearMap.ker (crysToDR (divided₂ h) hA d')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBCA.2, Submodule.span_le]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hy c]`. Rewrite `hd` using `[liftFil, Submodule.mem_comap, Fil, Submodule.mem_dualAnnihilator]`. Rewrite using `[hd c hc, map_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ hle hc`. Establish `hpush` using `hyp d' hd'`. Establish `hcorr` using `GrpMor.Corr.push (m := mA) mB fS₀ f₀ hf.symm hm`. Establish `hx` using `crysToDR_corr (divided₂ hJ) hBS hB mB nB hjB hcorr`. Rewrite using `[liftFil, Submodule.mem_comap, Fil, Submodule.mem_dualAnnihilator]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hpush` using `[liftFil, Submodule.mem_comap, Fil, Submodule.mem_dualAnnihilator]`. Introduce `c hc`. Apply `hσ` to reduce the goal to its premises. Use `show σ _ = σ 0`. Rewrite using `[map_zero]`.
-
-Conclude with `(hx c).symm.trans (hpush _ (nB.isMor.pullback1_mem_hodgeFiltration hc))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_mem_liftFil_of_injective : AbelianDeRham →
   ∀ (R : Type) [CommRing R] (I : Ideal R) (h : I ^ 2 = 0) (R₀ : Type) [CommRing R₀] (π : R →+* R₀),

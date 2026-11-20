@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 noncomputable section
 
 /- English proof (translation)
-Establish `hcs : HasCompactSupport ρ.toFun`. Use `HasCompactSupport.of_support_subset_isCompact (isCompact_closedBall (0 : Fin D → ℂ) 1) ?_` and prove the remaining obligations. Conclude with `ρ.support_subset.trans ball_subset_closedBall`. Take `⟨b, hb⟩` from `ρ.contDiff.continuous.bounded_above_of_compact_support hcs`. Conclude with `⟨b, fun w => (le_abs_self _).trans (hb w)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma mollifier_bdd {D : ℕ} (ρ : ReciprocityTheory.AnForm.A.Mollifier D) : ∃ b : ℝ, ∀ w, ρ.toFun w ≤ b := by
   have hcs : HasCompactSupport ρ.toFun := by
@@ -22,13 +22,11 @@ lemma mollifier_bdd {D : ℕ} (ρ : ReciprocityTheory.AnForm.A.Mollifier D) : �
   exact ⟨b, fun w => (le_abs_self _).trans (hb w)⟩
 
 /- English proof (translation)
-Establish `hR'0 : 0 < R'` using `hs.trans hsR`. Establish `hconv` using `(ReciprocityTheory.AnForm.A.polyMaxLogConvex_thm D (ball 0 R) w z R' isOpen_ball hW1 hR'0 hR').1`. Use `set g : ℝ → ℝ := fun σ => ReciprocityTheory.AnForm.A.polyMax w z (Real.exp σ) with hg`. Establish `hconv' : ConvexOn ℝ (Set.Iio (Real.log R')) g` using `hconv.subset Set.Iio_subset_Iic_self (convex_Iio _)`. Establish `hcont : ContinuousOn g (Set.Iio (Real.log R'))` using `hconv'.continuousOn isOpen_Iio`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : Real.log s < Real.log R'` using `Real.log_lt_log hs hsR`. Establish `hca : ContinuousAt g (Real.log s)` using `hcont.continuousAt (Iio_mem_nhds hlog)`. Establish `hsub : closedBall z s ⊆ ball 0 R` using `(closedBall_subset_closedBall hsR.le).trans hR'`. Establish `hle : ∀ σ ∈ Set.Iio (Real.log s), g σ ≤ max (RegularChartScaling.pmoff S u z s) (-κ)`. Introduce `σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlt : Real.exp σ < s`. Use `Real.exp_lt_exp.2 (Set.mem_Iio.1 hσ)` as an intermediate fact. Rewrite `this` using `[Real.exp_log hs]`. Then use the resulting hypothesis. Conclude with `RegularChartScaling.polyMax_le_pmo hub hW3 (Real.exp_pos σ).le hlt hsub`. Establish `hfin : g (Real.log s) ≤ max (RegularChartScaling.pmoff S u z s) (-κ)` using `le_of_tendsto (hca.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Iio (Real.log s)))) (by filter_upwards [self_mem_nhdsWithin] with σ hσ using hle σ hσ)`.
-
-Simplify `hfin` using `only [hg, Real.exp_log hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma polyMax_le_pmoff_same {D : ℕ} {S : Finset (Fin D)} {u w : (Fin D → ℂ) → ℝ} {R B κ : ℝ}
     (hub : ∀ x ∈ ball (0 : Fin D → ℂ) R \ ReciprocityTheory.AnForm.A.coordDiv S, u x ≤ B)
@@ -59,35 +57,31 @@ lemma polyMax_le_pmoff_same {D : ℕ} {S : Finset (Fin D)} {u w : (Fin D → ℂ
   simpa only [hg, Real.exp_log hs] using hfin
 
 /- English proof (translation)
-Introduce `D S m u C₅ ρ hc hp hb`. Establish `hC₅ : 0 ≤ C₅` using `RegularChartScaling.fifth_volume_constant_nonneg m (by norm_num) (by norm_num) hb`. Establish `hub : ∀ x ∈ ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S, u x ≤ C₅` using `fun x hx => (hb x hx).2`. Take `⟨C₀, ℓ₀, hC₀, hosc⟩` from `RegularChartScaling.oscGen m (R := 3 / 2) (by norm_num) (by norm_num) hc hp hb (C₁ := 2) (by norm_num)`. Take `⟨b, hbρ⟩` from `mollifier_bdd ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb0 : 0 ≤ b` using `(ρ.nonneg 0).trans (hbρ 0)`. Use `set K : ℝ := Real.pi ^ D * (3 / 2 : ℝ) ^ (2 * D) * b with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `set C : ℝ := C₀ * (K + 1) with hC`. Establish `hCC₀ : C₀ ≤ C` using `by rw [hC]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKC : K * C₀ ≤ C` using `by rw [hC]; nlinarith`. Establish `hC1 : 1 ≤ C` using `hC₀.trans hCC₀`. Use `⟨C, min (min (Real.exp (-ℓ₀)) (Real.exp (-Real.exp 1))) (1 / 8), fun t => RegularChartScaling.extT S (3 / 2) u (C * Real.log (Real.log (1 / t))), hC1, lt_min (lt_min (Real.exp_pos _) (Real.exp_pos _)) (by norm_num), (min_le_left _ _).trans (min_le_right _ _), min_le_right _ _, fu …` and prove the remaining obligations. Use `beta_reduce`. Establish `ht₁ : t ≤ Real.exp (-ℓ₀)` using `htt.trans ((min_le_left _ _).trans (min_le_left _ _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓ₀ : ℓ₀ ≤ Real.log (1 / t)`. Establish `h1 : Real.log t ≤ -ℓ₀`. Use `Real.log_le_log ht ht₁` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Rewrite using `[one_div, Real.log_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨he, hCt, hz⟩` from `hosc t ht hℓ₀`. Use `set ℓ := Real.log (1 / t) with hℓ`. Establish `hlℓ : 1 ≤ Real.log ℓ`. Rewrite using `[← Real.log_exp 1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Real.log_le_log (Real.exp_pos 1) he`. Establish `hℓ0 : 0 < ℓ` using `(Real.exp_pos 1).trans_le he`. Use `set κ : ℝ := C * Real.log ℓ with hκ`. Take `⟨w, hwe, hW1, hW2, hW3⟩` from `RegularChartScaling.ext_exists S (R := 3 / 2) (by norm_num) hC₅ hc hp hub κ`. Rewrite using `[← hwe]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwu : ∀ x ∈ ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S, u x ≤ w x` using `fun x hx => by rw [hW2 x hx]; exact le_max_left _ _`. Establish `ht2 : 2 * t ≤ 1 / 8` using `by linarith`. Take `⟨-, hsm, hps, hbd⟩` from `(ReciprocityTheory.AnForm.A.mollify_thm D ρ _ w isOpen_ball hW1).1 t ht`. Establish `hsh : ball (0 : Fin D → ℂ) (5 / 4) ⊆ ReciprocityTheory.AnForm.A.shrink (ball (0 : Fin D → ℂ) (3 / 2)) t` using `fun z hz' => RegularChartScaling.closedBall_sub_of hz' (by linarith)`. Establish `hsm'` using `hsm.mono hsh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun z hz' => by rw [neg_mul]; exact hW2 z hz', hsm', ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(ReciprocityTheory.AnForm.A.isPsh_iff_isLeviPsh_thm D _ _ isOpen_ball (hsm'.of_le (by norm_cast))).1 (RegularChartScaling.isPsh_mono hps hsh)`. Introduce `z hz'`. Establish `hzB : z ∈ ball (0 : Fin D → ℂ) (3 / 2)` using `ball_subset_ball (by norm_num) hz'.1`. Conclude with `(hwu z ⟨hzB, hz'.2⟩).trans (hbd z (hsh hz'.1)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `z hzB`. Take `⟨h16, hgap⟩` from `hz z hzB`. Establish `hsubR : ∀ s, s ≤ 1 / 4 → closedBall z s ⊆ ball 0 (3 / 2)` using `fun s hs => RegularChartScaling.closedBall_sub_of hzB (by linarith)`. Establish `hs16 : 0 < t / (8 * 2)` using `by positivity`. Establish `hmono : ∀ s s', 0 < s → s ≤ s' → s' ≤ 1 / 4 → RegularChartScaling.pmoff S u z s ≤ RegularChartScaling.pmoff S u z s'` using `fun s s' h0 h1 h2 => RegularChartScaling.pmo_mono hub h0 h1 (hsubR s' h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hκ' : -κ ≤ RegularChartScaling.pmoff S u z (t / (8 * 2))`. Establish `: C₀ * Real.log ℓ ≤ κ` using `mul_le_mul_of_nonneg_right hCC₀ (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : ∀ s, t / (8 * 2) ≤ s → s ≤ 1 / 4 → -κ ≤ RegularChartScaling.pmoff S u z s` using `fun s h1 h2 => hκ'.trans (hmono _ _ hs16 h1 h2)`. Establish `hPM : ∀ s, t / (8 * 2) ≤ s → s ≤ 1 / 8 → ReciprocityTheory.AnForm.A.polyMax w z s ≤ RegularChartScaling.pmoff S u z s` using `fun s h1 h2 => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `polyMax_le_pmoff_same hub hW1 hW3 (hs16.trans_le h1) (by linarith : s < 1 / 4) (hsubR _ le_rfl)` as an intermediate fact. Rewrite `this` using `[max_eq_left (hlow s h1 (by linarith))]`. Then use the resulting hypothesis. Establish `hMP : ∀ s, 0 < s → s ≤ 1 / 4 → RegularChartScaling.pmoff S u z s ≤ ReciprocityTheory.AnForm.A.polyMax w z s` using `fun s h0 h1 => RegularChartScaling.pmo_le_polyMax hW1.1 hwu h0 (hsubR s h1)`. Take `⟨-, hmp⟩` from `hbd z (hsh hzB)`. Establish `hlb` using `GroundTheory.Heights₂.Heights.Regular.MollifiedLowerBound.closed D ρ b _ w z t isOpen_ball hW1 ht (hsubR _ (by linarith)) hbρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht16 : t ≤ 1 / 16` using `by linarith`. Establish `hA` using `hPM (2 * t) (by rw [div_le_iff₀ (by norm_num)]; linarith) ht2`. Establish `hB : RegularChartScaling.pmoff S u z (t / (4 * 2)) ≤ ReciprocityTheory.AnForm.A.polyMax w z (t / 4)` using `(hmono _ _ (by positivity) (by linarith) (by linarith)).trans (hMP _ (by positivity) (by linarith))`. Establish `hPA : RegularChartScaling.pmoff S u z t ≤ ReciprocityTheory.AnForm.A.polyMax w z (2 * t)` using `(hmono _ _ ht (by linarith) (by linarith)).trans (hMP _ (by positivity) (by linarith))`. Establish `hP2` using `hMP (2 * t) (by positivity) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : 0 ≤ Real.log ℓ / ℓ` using `div_nonneg (by linarith) hℓ0.le`. Establish `heps : K * epsT C₀ t ≤ epsT C t`. Simplify using `only [epsT, ← hℓ, mul_div_assoc]`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hKC hq`.
-
-Establish `hgap' : ReciprocityTheory.AnForm.A.polyMax w z (2 * t) - ReciprocityTheory.AnForm.A.polyMax w z (t / 4) ≤ epsT C₀ t` using `by linarith`. Establish `hKg` using `mul_le_mul_of_nonneg_left hgap' hK0`. Establish `hup` using `hPM t (by rw [div_le_iff₀ (by norm_num)]; linarith) (by linarith)`. Use `show -C * Real.log ℓ ≤ RegularChartScaling.pmoff S u z t ∧ RegularChartScaling.pmoff S u z t - epsT C t ≤ _ ∧ _ ≤ RegularChartScaling.pmoff S u z t`. Use `⟨?_, ?_, hmp.trans hup⟩` and prove the remaining obligations.
-
-Rewrite using `[neg_mul]`. Conclude with `hlow t (by rw [div_le_iff₀ (by norm_num)]; linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem molli_trunc_near_polyMax :
     ∀ (D : ℕ) (S : Finset (Fin D)) (m : Fin D → ℕ) (u : (Fin D → ℂ) → ℝ) (C₅ : ℝ) (ρ : ReciprocityTheory.AnForm.A.Mollifier D), ContinuousOn u (ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S) → ReciprocityTheory.AnForm.A.IsPsh (ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S) u → (∀ z ∈ ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S, -C₅ * Real.log (rLoc S m z) ≤ u z ∧ u z ≤ C₅) → ∃ (C t₀ : ℝ) (w : ℝ → (Fin D → ℂ) → ℝ), 1 ≤ C ∧ 0 < t₀ ∧ t₀ ≤ Real.exp (-Real.exp 1) ∧ t₀ ≤ 1 / 8 ∧ ∀ t, 0 < t → t ≤ t₀ → (∀ z ∈ ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S, w t z = max (u z) (-C * Real.log (Real.log (1 / t)))) ∧ ContDiffOn ℝ ∞ (ReciprocityTheory.AnForm.A.molli ρ t (w t)) (ball (0 : Fin D → ℂ) (5 / 4)) ∧ ReciprocityTheory.AnForm.A.IsLeviPsh (ball (0 : Fin D → ℂ) (5 / 4)) (ReciprocityTheory.AnForm.A.molli ρ t (w t)) ∧ (∀ z ∈ ball (0 : Fin D → ℂ) (5 / 4) \ ReciprocityTheory.AnForm.A.coordDiv S, u z ≤ ReciprocityTheory.AnForm.A.molli ρ t (w t) z) ∧ ∀ z ∈ ball (0 : Fin D → ℂ) (5 / 4), -C * Real.log (Real.log (1 / t)) ≤ polyMaxOff S u z t ∧ polyMaxOff S u z t - epsT C t ≤ ReciprocityTheory.AnForm.A.molli ρ t (w t) z ∧ ReciprocityTheory.AnForm.A.molli ρ t (w t) z ≤ polyMaxOff S u z t := by

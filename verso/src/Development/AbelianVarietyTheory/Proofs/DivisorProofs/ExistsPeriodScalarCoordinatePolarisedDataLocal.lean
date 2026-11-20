@@ -21,13 +21,11 @@ open GlobalTheory.Mum.TensPos GlobalTheory.PsiScalUnit GlobalTheory.Mum.TensPol
 namespace GlobalTheory.Mum.TensPol
 
 /- English proof (translation)
-Introduce `R _ _ _ Q a b`. Take `⟨u, hu⟩` from `DVR.exists_gen_of_local (V := R) Q.M.L Q.M.isLB (lamPts (Q.c a) (Q.c b)) negε`. Establish `e : ∀ i, (toUnit (TK R)).left ≫ lamPts (Q.c a) (Q.c b) i = lamPts (toUnit (TK R) ≫ Q.c a) (toUnit (TK R) ≫ Q.c b) i`. Introduce `i`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Conclude with `congrArg (fun q : TK R ⟶ Q.B => q.left) (MonObj.comp_mul (toUnit (TK R)) (Q.c a) (Q.c b))`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `congrArg (fun q : TK R ⟶ Q.B => q.left) (MonObj.comp_one (toUnit (TK R)))`. Take `⟨t, ht, hv⟩` from `exists_gen Q.M.isLB (φ' := fun i => (toUnit (TK R)).left ≫ lamPts (Q.c a) (Q.c b) i) (ε' := negε) (fun U _ h => by simp only [e]) (Q.tau a b) (Q.tau_gen a b)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `exists_unit_val_eq_mul Q.M.isLB ht (DVR.pullGen_isGen Q.M.L _ _ u hu (toUnit (TK R)).left)`. Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom.toMonoidHom c, u, hu, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `ec : unitOn (Units.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom.toMonoidHom c) = c` using `Units.ext (Iso.hom_inv_id_apply (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))) _)`. Rewrite using `[ec, ← hv _ _ z J hJ]`. Use `Units.ext ((hc _ (𝟙 _) z J hJ).trans ?_)` and prove the remaining obligations.
-
-Use `congrArg₂ (· * ·) (gs_unit _ z ⊤ trivial _) (congrArg Units.val ((val_pull hJ u _ (𝟙 _)).trans ?_))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tauCoord : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (Q : GlobalTheory.PolDeg.Data R) (a b : Q.X),
     ∃ k, Q.TauCoord a b k := by

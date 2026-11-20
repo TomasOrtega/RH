@@ -61,7 +61,7 @@ def _root_.GlobalTheory.Mem.R3.SameGrp.back (s : SameGrp a b) : (Σ k : Fin 2, b
 variable {b} in
 
 /- English proof (translation)
-The claim follows from `s.symm.pl kv.1 kv.2`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.R3.SameGrp.pl_back (s : SameGrp a b) (kv : Σ k : Fin 2, b.D.nd.PlG k) :
     (a.D.naut.plGw kv.1 ((s.e kv.1).symm kv.2) : HeightOneSpectrum (𝓞 B.host.E)) = b.D.naut.plGw kv.1 kv.2 := s.symm.pl kv.1 kv.2
@@ -76,9 +76,7 @@ def GrpCl (D : D7) (Pg : Finset (Pl D.host.E)) (c : G → ℂ) (Dv : Fin 2 → P
 omit [Fintype G] in
 
 /- English proof (translation)
-Take `⟨plg, iso, h1, h2, h3, h4⟩` from `h`. Use `⟨(by with_unfolding_all exact ((s.back.trans plg) :)), fun kv => (by with_unfolding_all exact ((iso (s.back kv)) :)), fun kv => ?_, fun g => ?_, fun kv => ?_, fun g kv => ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (((h1 (s.back kv)).trans (s.pl_back kv)) :))`. Conclude with `(by with_unfolding_all exact (((h2 g).trans (s.e0 (eR g)).symm) :))`. Conclude with `(by with_unfolding_all exact ((h3 (s.back kv)) :))`.
-
-Conclude with `(by with_unfolding_all exact ((h4 g (s.back kv)) :))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem grpCl_tr (s : SameGrp a b) {Pg c Dv eG} {eR : G ≃* G0g a.D.nd} (h : GrpCl a.D Pg c Dv eG eR) :
     GrpCl b.D ((Pg)) c ((Dv)) ((eG)) (eR.trans s.iso) := by
@@ -92,11 +90,11 @@ theorem grpCl_tr (s : SameGrp a b) {Pg c Dv eG} {eR : G ≃* G0g a.D.nd} (h : Gr
 omit [Fintype G] in
 
 /- English proof (translation)
-Take `⟨Pg, pl, res, ψ, eC, h1, h2⟩` from `h`. Use `⟨(by with_unfolding_all exact (Pg :)), (by with_unfolding_all exact ((s.back.trans pl) :)), fun kv => (by with_unfolding_all exact ((res (s.back kv)) :)), (by with_unfolding_all exact (ψ :)), (by with_unfolding_all exact (eC :)), ?_, fun kv => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Use `case place => intro kv; exact (by with_unfolding_all exact (((h1.place (s.back kv)).trans (s.pl_back kv)) :))`. Use `case comp => intro g kv; exact (by with_unfolding_all exact ((h1.comp g (s.back kv)) :))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately.
 
-Use `case gen => exact (by with_unfolding_all exact (h1.gen :))`. Use `case p0 => exact (by with_unfolding_all exact (h1.p0 :))`. Use `case chi0 => exact (by with_unfolding_all exact (h1.chi0 :))`. Use `case ps => exact (by with_unfolding_all exact (h1.ps :))`. Use `case chis => exact (by with_unfolding_all exact (h1.chis :))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(by with_unfolding_all exact ((h2 (s.back kv)) :))`.
+A detailed English derivation is pending.
 -/
 theorem psiPPTie_transport (s : SameGrp a b) {P0 P1 : Subgroup G} {ψ0 ψ1} {eR : G ≃* G0g a.D.nd} (h : PsiPPTie a.D P0 ψ0 P1 ψ1 eR) :
     PsiPPTie b.D P0 ((ψ0)) P1 ((ψ1)) (eR.trans s.iso) := by
@@ -119,7 +117,7 @@ section Two
 variable {A : FamIn a.D.what₂.LL G Pl0 T a.D.R.m} {R : RealDat a.D A Ks} {F : Face a.D A}
 
 /- English proof (translation)
-Take `⟨eR, plg, iso, h2, h3, h4⟩` from `h`. Use `⟨eR.trans s.iso, (by with_unfolding_all exact ((s.back.trans plg) :)), fun kv => (by with_unfolding_all exact ((iso (s.back kv)) :)), fun g => ?_, fun kv => ?_, fun g kv => ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (((h2 g).trans (s.e0 (eR g)).symm) :))`. Conclude with `(by with_unfolding_all exact ((h3 (s.back kv)) :))`. Conclude with `(by with_unfolding_all exact ((h4 g (s.back kv)) :))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem grpRecord_tr (s : SameGrp a b) (h : R.grp_record) : letI := alg b iK; (real b R).grp_record := by
   obtain ⟨eR, plg, iso, h2, h3, h4⟩ := h
@@ -129,9 +127,9 @@ theorem grpRecord_tr (s : SameGrp a b) (h : R.grp_record) : letI := alg b iK; (r
   · exact (by with_unfolding_all exact ((h4 g (s.back kv)) :))
 
 /- English proof (translation)
-Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case red_R => exact (by with_unfolding_all exact (h.red_R :))`. Use `case red_L => exact (by with_unfolding_all exact (h.red_L :))`. Use `case levels => exact (by with_unfolding_all exact (h.levels :))`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case record => exact (by with_unfolding_all exact ((grpRecord_tr b s h.record) :))`. Use `case chiW => exact (by with_unfolding_all exact (h.chiW :))`.
+Treat this case separately. Treat this case separately.
 -/
 theorem isGrp_tr (s : SameGrp a b) (h : R.IsGrp F) : letI := alg b iK; (real b R).IsGrp (face b F) := by
   letI := alg b iK
@@ -143,9 +141,9 @@ theorem isGrp_tr (s : SameGrp a b) (h : R.IsGrp F) : letI := alg b iK; (real b R
   case chiW => exact (by with_unfolding_all exact (h.chiW :))
 
 /- English proof (translation)
-Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case lev => exact (by with_unfolding_all exact ((levIs_tr b h.lev) :))`. Use `case grp => exact (by with_unfolding_all exact ((isGrp_tr b s h.grp) :))`. Use `case fam => exact (by with_unfolding_all exact ((isFam_tr b h.fam) :))`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case models => exact (by with_unfolding_all exact ((isModels_tr b h.models) :))`. Use `case chain => exact (by with_unfolding_all exact ((isChainW_tr b h.chain) :))`. Use `case thP => exact (by with_unfolding_all exact ((isThPW_tr b h.thP) :))`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem baseW_tr (s : SameGrp a b) (h : R.BaseW F) : letI := alg b iK; (real b R).BaseW (face b F) := by
   letI := alg b iK
@@ -166,11 +164,11 @@ section Kept
 variable {R : RealDat a.D A.A Ks} {F : Face a.D A.A}
 
 /- English proof (translation)
-Apply `(config := { synthAssignedInstances := false }) Keep.mk` to reduce the goal to its premises. Use `case grp => exact (by with_unfolding_all exact ((grpCl_tr b s (Pg := R.Pg) (c := fun g => a.D.what₂.embLL ((idemOf A.A.X).coeff g)) (Dv := R.C.P.Div) (eG := R.eG) (eR := R.eG.trans cG) ((h.grp))) : _))`. Use `case psi => exact (by with_unfolding_all exact ((psiPPTie_transport b s h.psi) :))`. Use `case std => exact (by with_unfolding_all exact (h.std :))`. Use `case signs => exact (by with_unfolding_all exact (h.signs :))`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case frames => kexactB h.frames`. Use `case beta => exact (by with_unfolding_all exact (h.beta :))`. Use `case prX => exact (by with_unfolding_all exact (h.prX :))`. Use `case guard => exact (by with_unfolding_all exact (h.guard :))`. Use `case valKs => exact (by with_unfolding_all exact (h.valKs :))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case frameKs => exact (by with_unfolding_all exact (h.frameKs :))`. Use `case levKs => exact (by with_unfolding_all exact (h.levKs :))`.
+Treat this case separately. Treat this case separately.
 -/
 theorem keep_tr (s : SameGrp a b) {cG : G0 R.Pg a.D.R.r ≃* G0g a.D.nd} (h : Keep (A3 := A) R F cG) :
     @Keep b.D G _ _ Pl0 I0 T (famInThreeCoefficientChange b A) Ks _ _ (alg b iK) ((by with_unfolding_all exact ((real b R) :))) ((by with_unfolding_all exact ((face b F) :))) ((by with_unfolding_all exact ((cG.trans s.iso) :))) := by
@@ -189,11 +187,11 @@ theorem keep_tr (s : SameGrp a b) {cG : G0 R.Pg a.D.R.r ≃* G0g a.D.nd} (h : Ke
   case levKs => exact (by with_unfolding_all exact (h.levKs :))
 
 /- English proof (translation)
-Set `` to `alg b iK`. Apply `(config := { synthAssignedInstances := false }) Keep.mk` to reduce the goal to its premises. Use `case grp => exact (by with_unfolding_all exact ((grpCl_tr a s (Pg := (real b R).Pg) (c := fun g => a.D.what₂.embLL ((idemOf A.A.X).coeff g)) (Dv := (real b R).C.P.Div) (eG := (real b R).eG) (eR := (real b R).eG.trans ((cG))) ((h.grp))) : _))`. Use `case psi => exact (by with_unfolding_all exact ((psiPPTie_transport a s h.psi) :))`. Use `case std => exact (by with_unfolding_all exact (h.std :))`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case signs => exact (by with_unfolding_all exact (h.signs :))`. Use `case frames => kexactB h.frames`. Use `case beta => exact (by with_unfolding_all exact (h.beta :))`. Use `case prX => exact (by with_unfolding_all exact (h.prX :))`. Use `case guard => exact (by with_unfolding_all exact (h.guard :))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case valKs => exact (by with_unfolding_all exact (h.valKs :))`. Use `case frameKs => exact (by with_unfolding_all exact (h.frameKs :))`. Use `case levKs => exact (by with_unfolding_all exact (h.levKs :))`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem keep_back (s : SameGrp b a) {cG : G0 (levCh b R.toLevCh).Pg b.D.R.r ≃* G0g b.D.nd}
     (h : @Keep b.D G _ _ Pl0 I0 T (famInThreeCoefficientChange b A) Ks _ _ (alg b iK) ((by with_unfolding_all exact ((real b R) :))) ((by with_unfolding_all exact ((face b F) :))) ((by with_unfolding_all exact (cG :)))) :
@@ -220,11 +218,11 @@ variable {R : RealDat3 a.D A Ks} {F : Face3 a.D A}
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case base => exact (by with_unfolding_all exact ((baseW_tr b s h.base) :))`. Use `case inert => exact (by with_unfolding_all exact ((isInert_tr b h.inert) :))`. Use `case fullY => tr_clause a b h.fullY`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case fullX => tr_clause a b h.fullX`. Use `case fullP => tr_clause a b h.fullP`. Use `case scal => exact (by with_unfolding_all exact ((isScal_tr b h.scal) :))`. Use `case tup => exact (by with_unfolding_all exact ((isTup_tr b h.tup) :))`. Use `case phase => exact (by with_unfolding_all exact (h.phase :))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case allPl => exact (by with_unfolding_all exact (h.allPl :))`.
+Treat this case separately.
 -/
 theorem weakCharInertPart_realAdelicDataTransport (s : SameGrp a b) (h : R.WeakCharacterisation F) : letI := alg b iK; (real3 b R).WeakCharacterisation (face3 b F) := by
   letI := alg b iK
@@ -240,9 +238,9 @@ theorem weakCharInertPart_realAdelicDataTransport (s : SameGrp a b) (h : R.WeakC
   case allPl => exact (by with_unfolding_all exact (h.allPl :))
 
 /- English proof (translation)
-Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case char => exact (by with_unfolding_all exact ((weakCharInertPart_realAdelicDataTransport b s h.char) :))`. Use `case keep => exact (by with_unfolding_all exact ((keep_tr b s h.keep) :))`. Use `case phs => exact (by with_unfolding_all exact (h.phs :))`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case trSem => tr_via (fun P : type_of% (R.TrISem F) => (∃ tr, P tr ∧ SepWith A tr) → P A.trI ∧ A.fam3.TrISep) (trISem_eq b R F) h.trSem`.
+Treat this case separately.
 -/
 theorem pins_tr (s : SameGrp a b) {cG : G0 R.Pg a.D.R.r ≃* G0g a.D.nd} (h : Pins R F cG) : letI := alg b iK; Pins (real3 b R) (face3 b F) ((by with_unfolding_all exact ((cG.trans s.iso) :))) := by
   letI := alg b iK
@@ -253,9 +251,9 @@ theorem pins_tr (s : SameGrp a b) {cG : G0 R.Pg a.D.R.r ≃* G0g a.D.nd} (h : Pi
   case trSem => tr_via (fun P : type_of% (R.TrISem F) => (∃ tr, P tr ∧ SepWith A tr) → P A.trI ∧ A.fam3.TrISep) (trISem_eq b R F) h.trSem
 
 /- English proof (translation)
-Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case prim => exact (by with_unfolding_all exact ((primRows3_tr b h.prim) :))`. Use `case aux => exact (by with_unfolding_all exact ((realAdelicInertTransport_furtherRows b h.aux) :))`. Use `case ok => exact (by with_unfolding_all exact (h.ok :))`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case sep => exact (by with_unfolding_all exact (h.sep :))`.
+Treat this case separately.
 -/
 theorem holds_tr (h : Holds R F) : letI := alg b iK; Holds (real3 b R) (face3 b F) := by
   letI := alg b iK
@@ -266,7 +264,7 @@ theorem holds_tr (h : Holds R F) : letI := alg b iK; Holds (real3 b R) (face3 b 
   case sep => exact (by with_unfolding_all exact (h.sep :))
 
 /- English proof (translation)
-Use `tr_via (fun X : Cx.CxData A.fam3.amb3 => ∀ w j, (X.data F.cr false).err0 w j = errOf (X.data F.cr false) (F.fc X.zs).Z.F0 w) (toCx3_eq b R F) h`.
+A detailed English derivation is pending.
 -/
 theorem errEq_tr (h : ErrEq R F) : letI := alg b iK; ErrEq (real3 b R) (face3 b F) := by
   tr_via (fun X : Cx.CxData A.fam3.amb3 => ∀ w j, (X.data F.cr false).err0 w j = errOf (X.data F.cr false) (F.fc X.zs).Z.F0 w)

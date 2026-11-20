@@ -16,9 +16,9 @@ variable {p n' r k : ℕ} [Fact p.Prime] [NeZero n'] {O : Type} [CommRing O] [Is
 local notation "PP" => MvPolynomial (TV n' k) (KK O)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h m hm`. Rewrite using `[weight_eq_normal_degree]`. Conclude with `h m (mem_support_iff.2 hm)`. Introduce `h m hm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← weight_eq_normal_degree]`. Conclude with `h (mem_support_iff.1 hm)`.
+A detailed English derivation is pending.
 -/
 theorem hom_iff {R : Type*} [CommRing R] (P : MvPolynomial (TV n' k) R) (o : ℕ) :
     (∀ m ∈ P.support, normDeg r m = o) ↔ IsWeightedHomogeneous (normalVariableWeight n' k r) P o := by
@@ -29,9 +29,9 @@ theorem hom_iff {R : Type*} [CommRing R] (P : MvPolynomial (TV n' k) R) (o : ℕ
 variable {w Fr Q g}
 
 /- English proof (translation)
-Use `⟨(hom_iff _ _).2 (((hom_iff _ _).1 h1.1).mul ((hom_iff _ _).1 h2.1)), ?_⟩` and prove the remaining obligations. Use `bc_gr_mul (bc_agen_mul w Fr Q g) h1.2 h2.2` as an intermediate fact. Establish `e : C (algebraMap O (KK O) (w ^ (o1 + o2))) * (P1 * P2) = (C (algebraMap O (KK O) (w ^ o1)) * P1) * (C (algebraMap O (KK O) (w ^ o2)) * P2)`. Rewrite using `[pow_add, map_mul, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Sy_mul {o1 o2 : ℕ} {P1 P2 : PP} (h1 : Sy w Fr Q g o1 P1) (h2 : Sy w Fr Q g o2 P2) :
     Sy w Fr Q g (o1 + o2) (P1 * P2) := by
@@ -43,9 +43,9 @@ theorem Sy_mul {o1 o2 : ℕ} {P1 P2 : PP} (h1 : Sy w Fr Q g o1 P1) (h2 : Sy w Fr
   rw [e]; simpa using this
 
 /- English proof (translation)
-Take `⟨h0, h1, _, rfl⟩` from `h`. Rewrite using `[← hom_iff]`. Introduce `m hm`. Establish `hm' : m ∈ h0.support` using `support_map_subset _ _ hm`. Unfold `normDeg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_eq_zero fun v hv => ?_` and prove the remaining obligations. Rewrite using `[if_neg (h1 v ((mem_vars v).2 ⟨m, hm', hv⟩))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IT_hom {H : PP} (h : bc_IT Fr H) : IsWeightedHomogeneous (normalVariableWeight n' k r) H 0 := by
   obtain ⟨h0, h1, _, rfl⟩ := h
@@ -57,20 +57,20 @@ theorem IT_hom {H : PP} (h : bc_IT Fr H) : IsWeightedHomogeneous (normalVariable
   rw [if_neg (h1 v ((mem_vars v).2 ⟨m, hm', hv⟩))]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(hom_iff _ _).2 (IT_hom h), AddSubmonoid.subset_closure ⟨1, H, isKeyProduct_one w Fr Q g, h, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Sy_IT {H : PP} (h : bc_IT Fr H) : Sy w Fr Q g 0 H :=
   ⟨(hom_iff _ _).2 (IT_hom h), AddSubmonoid.subset_closure ⟨1, H, isKeyProduct_one w Fr Q g, h, by simp⟩⟩
 
 /- English proof (translation)
-The claim follows from `AddSubmonoid.subset_closure ⟨o, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem SyS_of_Sy {o : ℕ} {P : PP} (h : Sy w Fr Q g o P) : P ∈ SyS w Fr Q g := AddSubmonoid.subset_closure ⟨o, h⟩
 
 /- English proof (translation)
-Establish `h` using `AddSubmonoid.mul_mem_mul ha hb`. Unfold `SyS at h`. Rewrite `h` using `[AddSubmonoid.closure_mul_closure]`. Use `AddSubmonoid.closure_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨o1, h1⟩, y, ⟨o2, h2⟩, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨o1 + o2, Sy_mul h1 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem SyS_mul {a b : PP} (ha : a ∈ SyS w Fr Q g) (hb : b ∈ SyS w Fr Q g) : a * b ∈ SyS w Fr Q g := by
   have h := AddSubmonoid.mul_mem_mul ha hb
@@ -81,7 +81,7 @@ theorem SyS_mul {a b : PP} (ha : a ∈ SyS w Fr Q g) (hb : b ∈ SyS w Fr Q g) :
   exact ⟨o1 + o2, Sy_mul h1 h2⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using SyS_of_Sy (Sy_IT (w := w) (Q := Q) (g := g) (bc_IT_one (Fr := Fr)))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `SyS_mul (h a (Finset.mem_insert_self a s)) (ih fun t ht => h t (Finset.mem_insert_of_mem ht))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SyS_prod {κ : Type*} (s : Finset κ) (f : κ → PP) (h : ∀ t ∈ s, f t ∈ SyS w Fr Q g) :
     ∏ t ∈ s, f t ∈ SyS w Fr Q g := by
@@ -92,19 +92,19 @@ theorem SyS_prod {κ : Type*} (s : Finset κ) (f : κ → PP) (h : ∀ t ∈ s, 
     exact SyS_mul (h a (Finset.mem_insert_self a s)) (ih fun t ht => h t (Finset.mem_insert_of_mem ht))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C c, fun v hv => by simp at hv, fun v hv => by simp at hv, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IT_C (c : O) : bc_IT Fr (C (algebraMap O (KK O) c) : PP) :=
   ⟨C c, fun v hv => by simp at hv, fun v hv => by simp at hv, by simp⟩
 
 /- English proof (translation)
-Unfold `SyS at hZ`. Proceed by induction on `hZ using AddSubmonoid.closure_induction with`. Consider the case `mem P hP`. Take `⟨o', h1, h2⟩` from `hP`. Establish `hh : IsWeightedHomogeneous (normalVariableWeight n' k r) (P * H0) o'`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `((hom_iff _ _).1 h1).mul hH0` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `e : o = o'`. Substitute `e` using the available equality. Conclude with `⟨_, h2, by rw [hh.weightedHomogeneousComponent_same]; ring⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨0, zero_mem _, by rw [hh.weightedHomogeneousComponent_ne o e]; simp⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨W1, a1, b1⟩` from `hx`. Take `⟨W2, a2, b2⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨W1 + W2, add_mem a1 a2, by rw [add_mul, map_add, mul_add, b1, b2, add_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem SyS_comp {H0 : PP} (hH0 : IsWeightedHomogeneous (normalVariableWeight n' k r) H0 0) {Z : PP} (hZ : Z ∈ SyS w Fr Q g) (o : ℕ) :
     ∃ W ∈ AddSubmonoid.closure (bc_agen w Fr Q g o 0),
@@ -127,7 +127,7 @@ theorem SyS_comp {H0 : PP} (hH0 : IsWeightedHomogeneous (normalVariableWeight n'
     exact ⟨W1 + W2, add_mem a1 a2, by rw [add_mul, map_add, mul_add, b1, b2, add_mul]⟩
 
 /- English proof (translation)
-Introduce `m` and use `by rw [coeff_weightedHomogeneousComponent] split_ifs · exact hP m · exact ⟨0, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inWj_compN {w : O} (o : ℕ) {P : PP} {j : ℕ} (hP : InWj w P j) :
     InWj w (weightedHomogeneousComponent (normalVariableWeight n' k r) o P) j := fun m => by
@@ -146,11 +146,11 @@ variable {p n' r K : ℕ} [Fact p.Prime] [NeZero n'] [NeZero r] [NeZero K] {O : 
 local notation "PP" => MvPolynomial (TV n' (r + K)) (KK O)
 
 /- English proof (translation)
-Establish `hn` using `X.hH.2.2.2.2`. Establish `hr : 1 ≤ r` using `by have := X.hH.2.1; omega`. Unfold `Ctx.fixedSymbolFactor Ctx.sb`. Use `bc_IT_mul (bc_IT_mul (bc_IT_pow ?_ _) (bc_IT_prod _ _ fun j _ => bc_IT_pow (bc_IT_Del X.S.w X.Fr X.hV hn X.hH.2.2.1 X.hg j) _)) ?_` and prove the remaining obligations. Unfold `R0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_prod]`. Use `bc_IT_prod _ _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `bc_IT_pow (bc_IT_Del X.S.w X.Fr X.hV hn X.hH.2.2.1 X.hg j) _`. Unfold `DtopProd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Use `bc_IT_prod _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `bc_IT_pow (bc_IT_Dtop X.S.w X.Fr X.hV hn hr X.hH.2.2.1 X.hg _) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_symbol_factor_integral (c' : ℕ) : bc_IT X.Fr (X.fixedSymbolFactor c') := by
   have hn := X.hH.2.2.2.2
@@ -170,15 +170,15 @@ theorem fixed_symbol_factor_integral (c' : ℕ) : bc_IT X.Fr (X.fixedSymbolFacto
     exact bc_IT_pow (bc_IT_Dtop X.S.w X.Fr X.hV hn hr X.hH.2.2.1 X.hg _) _
 
 /- English proof (translation)
-Proceed by induction on `hW using AddSubmonoid.closure_induction with`. Consider the case `mem P hP`. Take `⟨A1, H, h1, h2, rfl⟩` from `hP`. Take `⟨τ, t1, t2, t3, t4⟩` from `bc_sym_of_KP X.S.w X.Fr X.Q X.g X.hH.2.2.1 c' ((2 * X.Q + 3) * c') c' 0 h1 h2`. Use `⟨[τ], ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `τ' hτ'`. Rewrite `hτ'` using `[List.mem_singleton]`. Substitute `hτ'` using the available equality. Conclude with `⟨t1, t2, by omega⟩`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Rewrite using `[t4]`. Unfold `Ctx.fixedSymbolFactor Ctx.sb`. Simplify using `only [pow_zero, map_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨[], by simp, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨l1, a1, b1⟩` from `hx`. Take `⟨l2, a2, b2⟩` from `hy`. Use `⟨l1 ++ l2, ?_, by rw [add_mul, b1, b2, List.map_append, List.sum_append]⟩` and prove the remaining obligations. Introduce `τ hτ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `List.mem_append.1 hτ with h | h` into its components or cases. Conclude with `a1 τ h`. Conclude with `a2 τ h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem terms_of_agen (c' o : ℕ) {W : PP} (hW : W ∈ AddSubmonoid.closure (bc_agen X.S.w X.Fr X.Q X.g o 0)) :
     ∃ l : List (Term n' (r + K) O), (∀ τ ∈ l, τ.Valid p n' X.S.w n' r X.Q X.g ∧ τ.InTops X.Fr ∧ o ≤ τ.level) ∧
@@ -208,25 +208,23 @@ theorem terms_of_agen (c' o : ℕ) {W : PP} (hW : W ∈ AddSubmonoid.closure (bc
     · exact a2 τ h
 
 /- English proof (translation)
-Take `⟨W, hW, hWe⟩` from `SyS_comp (IT_hom (fixed_symbol_factor_integral X c')) hZ o`. Take `⟨l, hl, hle⟩` from `terms_of_agen X c' o hW`. Establish `hTo` using `((hom_iff _ _).1 ho).weightedHomogeneousComponent_same`. Establish `hdiff : InWj X.S.w (C (algebraMap O (KK O) (X.S.w ^ o)) * T - W * X.fixedSymbolFactor c') (o + c')`. Establish `e1 : T = weightedHomogeneousComponent (normalVariableWeight n' (r + K) r) o (Z * X.fixedSymbolFactor c') + C (algebraMap O (KK O) ((p : O) ^ c')) * weightedHomogeneousComponent (normalVariableWeight n' (r + K) r) o Y'` using `by conv_lhs => rw [← hTo, hT]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_add, C_mul', C_mul', map_smul]`. Establish `e2 : C (algebraMap O (KK O) (X.S.w ^ o)) * T - W * X.fixedSymbolFactor c' = C (algebraMap O (KK O) (X.S.w ^ (o + c') * X.S.w ^ c')) * weightedHomogeneousComponent (normalVariableWeight n' (r + K) r) o Y'`. Rewrite using `[← hWe]`. Use `conv_lhs => rw [e1]`. Establish `hp : (p : O) ^ c' = X.S.w ^ c' * X.S.w ^ c'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← X.hO.1, ← pow_mul, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hp, pow_add]`. Simplify using `only [map_mul, C_mul]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `inWj_mul (inWj_C (σ := TV n' (r + K)) (w := X.S.w) (o + c') (X.S.w ^ c')) (inWj_compN (r := r) o hY)` as an intermediate fact. Simplify using `using this`. Take `⟨F0, hA, _, hW0, hG⟩` from `clean_symbol_order D (symbol_order_ge_level D) (raw_term_order_ge_off_plane D (localiser_vanishing_off_plane D) (bs_restRawTops D)) (order_claim_of_residue_form D (bc_claim' D)) p n' r (r + K) O X.S X.hO X.hH X.Fr X.L₁ X.N₁ X.hV X.Q X.hT X.g X.hg c' o l.length (fun i => l[i.1]) ( …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hW0` using `[Fin.sum_univ_fun_getElem l (fun τ => τ.sym p n' X.S.w X.Fr X.hH.2.2.1 X.g c' ((2 * X.Q + 3) * c') c'), ← hle]`. Establish `hF0 : InWj X.S.w (subst p n' O X.S.w n' r X.g F0 - C (algebraMap O (KK O) (X.S.w ^ o)) * T) (o + c')`. Use `inWj_sub hW0 hdiff` as an intermediate fact. Establish `e : subst p n' O X.S.w n' r X.g F0 - C (algebraMap O (KK O) (X.S.w ^ o)) * T = (subst p n' O X.S.w n' r X.g F0 - W * X.fixedSymbolFactor c') - (C (algebraMap O (KK O) (X.S.w ^ o)) * T - W * X.fixedSymbolFactor c')` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `this`. Distinguish the cases in `h0 : T = 0`. Use `⟨0, (inA_iff_inWj0 (w := X.S.w) _).2 (inWj_zero 0), fun d' _ => Submodule.zero_mem _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h0, map_zero, mul_zero, sub_zero]`. Conclude with `inWj_zero _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `g' _ _ show InWj X.S.w (subst p n' O X.S.w n' r g' 0) (o + c')`. Rewrite using `[map_zero]`. Conclude with `inWj_zero _`. Distinguish the cases in `hd : ∃ d, HasMultideg T d`. Take `⟨d, hd⟩` from `hd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨weightedHomogeneousComponent (coordinatePositionWeight n' (r + K)) d F0, (integral_iff_order_zero X.S.w _).2 (inWPow_weighted_component d ((integral_iff_order_zero X.S.w _).1 hA)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `d' hd'`. Rewrite using `[multideg_unique h0 hd hd']`. Conclude with `(hasMultideg_iff_weighted_homog _ _).2 (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`. Establish `hs : IsWeightedHomogeneous (coordinatePositionWeight n' (r + K)) (C (algebraMap O (KK O) (X.S.w ^ o)) * T) d` using `((hasMultideg_iff_weighted_homog _ _).1 hd).C_mul _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `inWPow_weighted_component d hF0` as an intermediate fact. Rewrite `this` using `[map_sub, weighted_component_substitute_comm, hs.weightedHomogeneousComponent_same]`. Conclude with `this`. Introduce `g' hg' hne`. Use `inWPow_weighted_component d (hG g' hg' hne)` as an intermediate fact.
-
-Use `show InWj X.S.w (subst p n' O X.S.w n' r g' _) _`. Rewrite using `[← weighted_component_substitute_comm]`. Conclude with `this`. Conclude with `⟨F0, hA, fun d h => absurd ⟨d, h⟩ hd, hF0, hG⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core (D : Formalism.BasicNotions.D7) (c' o : ℕ) (T Z Y' : PP) (hZ : Z ∈ X.SyS) (hY : InWj X.S.w Y' 0)
     (hT : T = Z * X.fixedSymbolFactor c' + C (algebraMap O (KK O) ((p : O) ^ c')) * Y')

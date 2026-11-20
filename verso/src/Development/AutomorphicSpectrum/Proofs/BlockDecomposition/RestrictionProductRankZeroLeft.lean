@@ -45,7 +45,7 @@ def evalTop (H : Subgroup G) (hH : ∀ g, g ∈ H) (σ : Representation ℂ H W)
     rw [show (⟨1, hH 1⟩ : H) = 1 from rfl, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Conclude with `⟨{1}, isCompact_singleton, fun g _ => ⟨g, hH g, 1, Set.mem_singleton 1, (mul_one g).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_cIndSpace_top (H : Subgroup G) (hH : ∀ g, g ∈ H) (σ : Representation ℂ H W) (f : smoothPart (ind H σ)) :
     f ∈ cIndSpace H σ := by
@@ -63,15 +63,13 @@ def cTop (H : Subgroup G) (hH : ∀ g, g ∈ H) (σ : Representation ℂ H W) :
 variable {P W₂ : Type} [Group P] [TopologicalSpace P] [IsTopologicalGroup P] [AddCommGroup W₂] [Module ℂ W₂]
 
 /- English proof (translation)
-Establish `hτ : IsSmooth τ`. Introduce `w`. Take `⟨v, rfl⟩` from `E.surjective w`. Establish `hset : {h : H | τ h (E v) = E v} = (fun h : H => (⟨ι h, hQ _⟩ : Q)) ⁻¹' {q : Q | σ q v = v}`. Use extensionality with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `show τ h (E v) = E v ↔ σ ⟨ι h, hQ _⟩ v = v`. Rewrite using `[hE h v]`. Conclude with `E.injective.eq_iff`. Rewrite using `[hset]`. Conclude with `(hσ v).preimage ((hι.comp continuous_subtype_val).subtype_mk _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Set `L : smoothPart (ind Q σ) ≃ₗ[ℂ] cIndSpace H τ` to `((evalTop Q hQ σ hσ).trans E).trans ((evalTop H hH τ hτ).symm.trans (cTop H hH τ).symm)`. Use `⟨Representation.Equiv.mk L fun p => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun x => ?_)))` and prove the remaining obligations. Use `show τ ⟨x, hH x⟩ (E (f.1.1 (1 * ι p))) = τ ⟨x * p, hH _⟩ (E (f.1.1 1))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : f.1.1 (ι p) = σ ⟨ι p, hQ _⟩ (f.1.1 1)`. Use `f.1.2 ⟨ι p, hQ _⟩ 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this`. Rewrite using `[one_mul, hf, show E (σ ⟨ι p, hQ _⟩ (f.1.1 1)) = τ ⟨p, hH p⟩ (E (f.1.1 1)) from (hE ⟨p, hH p⟩ _).symm, ← Module.End.mul_apply, ← map_mul]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem equiv_of_top (ι : P →* G) (hι : Continuous ι) (Q : Subgroup G) (H : Subgroup P) (hQ : ∀ g, g ∈ Q)
     (hH : ∀ p, p ∈ H) (σ : Representation ℂ Q W) (τ : Representation ℂ H W₂) (E : W ≃ₗ[ℂ] W₂) (hσ : IsSmooth σ)
@@ -110,17 +108,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `set L := leviProj k (two (stdSum (rfl : m + (j + 1) = m + j + 1))) ⟨_, hq⟩ with hL`. Establish `hL2 : leviTwo k (Fin m) (Fin (j + 1)) (L false, L true) = L`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `cases b <;> rfl`. Establish `hδ` using `GlobalTheory.SmGL.deltaHalf_two (k := k) (a := Fin m) (b := Fin (j + 1)) (L false, L true)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hδ` using `[hL2]`. Establish `hc : (((dpow m (((j + 1 : ℕ) : ℝ) / 2)) (L false) : ℂˣ) : ℂ) * (((dpow (j + 1) (-((m : ℕ) : ℝ) / 2)) (L true) : ℂˣ) : ℂ) = ((deltaHalf k (Two (Fin m) (Fin (j + 1))) L : ℂˣ) : ℂ)`. Rewrite using `[hδ, Units.val_mul]`. Simplify using `only [dpow, GlobalTheory.SmGL.detChar_apply, Fintype.card_fin]`. Apply the tactic sequence `congr 4 <;> push_cast <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `key : ∀ x : (b : Bool) → TwoT V W b, ((extTensor (GRep.tw (⟨V, π₁⟩ : GRep k m) (((j + 1 : ℕ) : ℝ) / 2)).ρ (mtw (gres (⟨W, π₂⟩ : GRep k (j + 1))) (-((m : ℕ) : ℝ) / 2)).ρ).comp (gpProj k m j)) g (tE V W (PiTensorProduct.tprod ℂ x)) = tE V W (sQ (rfl : m + (j + 1) = m + j + 1) π₁ π₂ …`. Introduce `x`. Establish `e1 : tE V W (PiTensorProduct.tprod ℂ x) = x false ⊗ₜ[ℂ] x true` using `GlobalTheory.SmGL.Exponents.boolTensorEquiv_tprod x`. Establish `e2 : sQ (rfl : m + (j + 1) = m + j + 1) π₁ π₂ ⟨_, hq⟩ (PiTensorProduct.tprod ℂ x) = ((deltaHalf k (Two (Fin m) (Fin (j + 1))) L : ℂˣ) : ℂ) • PiTensorProduct.tprod ℂ (fun b => twoRep π₁ π₂ b (L b) (x b))` using `by show ((deltaHalf k (Two (Fin m) (Fin (j + 1))) L : ℂˣ) : ℂ) • (piTensor (twoRep π₁ π₂) L) (PiTensorProduct.tprod ℂ x) = _`. Rewrite using `[GlobalTheory.SmGL.piTensor_tprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : tE V W (PiTensorProduct.tprod ℂ (fun b => twoRep π₁ π₂ b (L b) (x b))) = π₁ (L false) (x false) ⊗ₜ[ℂ] π₂ (L true) (x true)` using `GlobalTheory.SmGL.Exponents.boolTensorEquiv_tprod _`. Rewrite using `[e1, e2, map_smul, e3, MonoidHom.comp_apply]`. Use `erw [GlobalTheory.SmGL.extTensor_tmul]`. Use `show ((((dpow m (((j + 1 : ℕ) : ℝ) / 2)) (L false) : ℂˣ) : ℂ) • π₁ (L false) (x false)) ⊗ₜ[ℂ] ((((dpow (j + 1) (-((m : ℕ) : ℝ) / 2)) (L true) : ℂˣ) : ℂ) • π₂ (L true) (x true)) = _`. Rewrite using `[← TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_smul, hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[LinearEquiv.map_smul (tE V W) r, LinearMap.map_smul (sQ (rfl : m + (j + 1) = m + j + 1) π₁ π₂ ⟨_, hq⟩) r, LinearEquiv.map_smul (tE V W), ← key x]`. Conclude with `LinearMap.map_smul _ _ _`. Consider the case `add a b ha hb`.
-
-Rewrite using `[LinearEquiv.map_add (tE V W) a b, LinearMap.map_add (sQ (rfl : m + (j + 1) = m + j + 1) π₁ π₂ ⟨_, hq⟩) a b, LinearEquiv.map_add (tE V W), ← ha, ← hb]`. Conclude with `LinearMap.map_add _ _ _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hgp_twist_tE {m j : ℕ}
     (π₁ : Representation ℂ (GL (Fin m) k) V) (π₂ : Representation ℂ (GL (Fin (j + 1)) k) W) (g : MirabolicParabolic k m j)
@@ -177,9 +173,9 @@ theorem hgp_twist_tE {m j : ℕ}
     exact LinearMap.map_add _ _ _
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `key : ∀ x : Fin (0 + j + 1), GlobalTheory.SmGL.blk (two (stdSum (rfl : 0 + (j + 1) = 0 + j + 1))) x = true`. Introduce `x`. Unfold `GlobalTheory.SmGL.blk`. Break down `(two (stdSum (rfl : 0 + (j + 1) = 0 + j + 1))).symm x with ⟨b, y⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Consider the cases of `b`. Conclude with `Fin.elim0 y`. Both sides reduce to the same expression. Rewrite `hab` using `[key, key]`. Conclude with `absurd hab (lt_irrefl _)`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_parab_zero {j : ℕ} (g : GL (Fin (0 + j + 1)) k) :
     g ∈ parab k (two (stdSum (rfl : 0 + (j + 1) = 0 + j + 1))) := by
@@ -195,9 +191,9 @@ theorem mem_parab_zero {j : ℕ} (g : GL (Fin (0 + j + 1)) k) :
   exact absurd hab (lt_irrefl _)
 
 /- English proof (translation)
-Use `GlobalTheory.SmGL.isSmooth_comp (GlobalTheory.SmGL.isSmooth_twist (GlobalTheory.SmGL.isSmooth_piTensor fun b => ?_) (GlobalTheory.SmGL.isSmoothChar_deltaHalf k)) _ ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `h₁`. Conclude with `h₂`. Use `continuous_pi fun b => Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_submatrix (fun i => (two (stdSum h)) ⟨b, i⟩) (fun i => (two (stdSum h)) ⟨b, i⟩)`. Establish `hinv : Continuous fun p : parab k (two (stdSum h)) => (((p⁻¹ : parab k (two (stdSum h))) : GL (Fin N) k) : Matrix (Fin N) (Fin N) k)` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_inv`. Use `(hinv.matrix_submatrix (fun i => (two (stdSum h)) ⟨b, i⟩) (fun i => (two (stdSum h)) ⟨b, i⟩)).congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← Pi.inv_apply, ← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isSmooth_sQ {r t N : ℕ} (h : r + t = N) {π₁ : Representation ℂ (GL (Fin r) k) V}
     {π₂ : Representation ℂ (GL (Fin t) k) W} (h₁ : IsSmooth π₁) (h₂ : IsSmooth π₂) : IsSmooth (sQ h π₁ π₂) := by
@@ -218,7 +214,7 @@ theorem isSmooth_sQ {r t N : ℕ} (h : r + t = N) {π₁ : Representation ℂ (G
       rfl
 
 /- English proof (translation)
-Substitute `h'` using the available equality. Conclude with `equiv_of_top (Mir k (0 + j)).subtype continuous_subtype_val (parab k (two (stdSum (rfl : 0 + (j + 1) = 0 + j + 1)))) (MirabolicParabolic k 0 j) (fun g => mem_parab_zero g) (fun p => mem_parab_zero (p : GL (Fin (0 + j + 1)) k)) (sQ (rfl : 0 + (j + 1) = 0 + j + 1) π₁.ρ π₂.ρ) ((extT …`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem gres_prod_zero_left (j n : ℕ) (π₁ : GRep k 0) (π₂ : GRep k (j + 1)) (h : 0 + (j + 1) = n + 1) (h' : 0 + j = n)
     (h₁ : IsSmooth π₁.ρ) (h₂ : IsSmooth π₂.ρ) :
@@ -233,7 +229,7 @@ theorem gres_prod_zero_left (j n : ℕ) (π₁ : GRep k 0) (π₂ : GRep k (j + 
     (fun hh v => hgp_twist_tE π₁.ρ π₂.ρ hh (mem_parab_zero _) v)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ j n π₁ π₂ h h' h₁ h₂`. Conclude with `gres_prod_zero_left j n π₁ π₂ h h' h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gres_prod_zero_left' : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (j n : ℕ) (π₁ : GRep k 0) (π₂ : GRep k (j + 1)) (h : 0 + (j + 1) = n + 1) (h' : 0 + j = n),

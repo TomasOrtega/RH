@@ -13,9 +13,9 @@ namespace GlobalTheory.StrictDom
 open Topology Filter
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SmallIntegerVanishing.main`. Consider the case `exact _root_.GlobalTheory.SmallIntegerVanishing.main`. Consider the case `(apply _root_.GlobalTheory.SmallIntegerVanishing.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SmallIntegerVanishing.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SmallIntegerVanishing.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SmallIntegerVanishing.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_small_eq_zero (E : Type) [Field E] [NumberField E] (j : ℕ)
     (Λ : Submodule (𝓞 E) (Fin j → E)) (hΛ : Λ.FG) :
@@ -29,17 +29,17 @@ theorem exists_small_eq_zero (E : Type) [Field E] [NumberField E] (j : ℕ)
   | (intros; exact _root_.GlobalTheory.SmallIntegerVanishing.main ..)
 
 /- English proof (translation)
-Take `⟨δ, hδ, hsmall⟩` from `exists_small_eq_zero E j Λ hΛ.fg`. Take `⟨s, hs⟩` from `hΛ.fg`. Establish `hev : ∀ᶠ h in 𝓝 x, ∀ y ∈ s, ∀ (w : InfinitePlace E) (a : Fin j), ‖((Matrix.of (h w) * (Matrix.of (x w))⁻¹) *ᵥ (fun b => w.embedding (y b))) a - w.embedding (y a)‖ < δ`. Use `(Filter.eventually_all_finset s).2 fun y _ => Filter.eventually_all.2 fun w => Filter.eventually_all.2 fun a => ?_` and prove the remaining obligations. Establish `hc : Continuous fun h : InfinitePlace E → Fin j → Fin j → ℂ => ‖((Matrix.of (h w) * (Matrix.of (x w))⁻¹) *ᵥ (fun b => w.embedding (y b))) a - w.embedding (y a)‖`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun h : InfinitePlace E → Fin j → Fin j → ℂ => Matrix.of (h w)` using `continuous_apply w`. Conclude with `(((continuous_apply a).comp ((h1.matrix_mul continuous_const).matrix_mulVec continuous_const)).sub continuous_const).norm`. Use `hc.continuousAt.eventually_lt continuousAt_const ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hx w)), Matrix.one_mulVec]`. Simplify using `using hδ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `filter_upwards [hev] with h hh γ hγ hw`. Establish `hfix : ∀ y ∈ s, γ *ᵥ y = y` using `fun y hy => by`. Establish `hyΛ : y ∈ Λ` using `hs ▸ Submodule.subset_span hy`. Use `sub_eq_zero.1 (hsmall _ (Λ.sub_mem (hγ y hyΛ) hyΛ) fun w a => ?_)` and prove the remaining obligations. Use `hh y hy w a` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hw w, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hx w)), Matrix.mul_one]`. Rewrite using `[← InfinitePlace.norm_embedding_eq, Pi.sub_apply, map_sub, RingHom.map_mulVec]`. Conclude with `this`. Establish `hspan : Submodule.span E (s : Set (Fin j → E)) = ⊤`. Use `hΛ.span_eq_top` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hs, Submodule.span_span_of_tower]`. Then use the resulting hypothesis. Establish `hall : ∀ y, γ *ᵥ y = y` using `fun y => by`. Establish `hy : y ∈ Submodule.span E (s : Set (Fin j → E))` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hfix y hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y y' _ _ h h' => rw [Matrix.mulVec_add, h, h']`. Consider the case `smul c y _ h => rw [Matrix.mulVec_smul, h]`. Conclude with `Matrix.ext_of_mulVec_single fun i => by rw [hall, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem eventually_eq_one (E : Type) [Field E] [NumberField E] (j : ℕ)
     (Λ : Submodule (𝓞 E) (Fin j → E)) (hΛ : Submodule.IsLattice E Λ)
@@ -86,23 +86,21 @@ theorem eventually_eq_one (E : Type) [Field E] [NumberField E] (j : ℕ)
   exact Matrix.ext_of_mulVec_single fun i => by rw [hall, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `E _ _ j Λ hΛ e he S hS`. Establish `hof : ∀ γ w, Matrix.of (e γ w) = (γ : Matrix (Fin j) (Fin j) E).map w.embedding` using `fun γ w => by ext a b; exact he γ w a b`. Establish `hpos : ∀ γ (g : MatInf E j), 0 < detNorm E j g → 0 < detNorm E j (e γ * g)` using `fun γ g hg => by`. Rewrite using `[MeanDual.detNorm_mul]`. Use `mul_pos ((MeanDual.detNorm_pos_iff E j _).2 fun w => ?_) hg` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hof, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 (Matrix.GeneralLinearGroup.det_ne_zero γ)`. Establish `hone : ∀ g : MatInf E j, e 1 * g = g` using `fun g => MeanDual.matInf_ext E j fun w => by`. Rewrite using `[MeanDual.of_mul, hof]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmul : ∀ γ γ' (g : MatInf E j), e (γ * γ') * g = e γ * (e γ' * g)` using `fun γ γ' g => MeanDual.matInf_ext E j fun w => by`. Simplify using `only [MeanDual.of_mul, hof, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`. Establish `hcont : ∀ γ, Continuous fun g : InfinitePlace E → Fin j → Fin j → ℂ => (show InfinitePlace E → Fin j → Fin j → ℂ from (e γ * (show MatInf E j from g) : MatInf E j))` using `fun γ => continuous_pi fun w => (continuous_const.matrix_mul (show Continuous fun h : InfinitePlace E → Fin j → Fin j → ℂ => Matrix.of (h w) from continuous_apply w) : Continuous fun h : InfinitePlace E → Fin j → Fin j → ℂ => Matrix.of (e γ w) * Matrix.of (h w))`. Use `haveI : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`. Use `haveI : Countable (Matrix (Fin j) (Fin j) E) := inferInstanceAs (Countable (Fin j → Fin j → E))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Countable (GL (Fin j) E) := Units.val_injective.countable`. Set `U : Set (InfinitePlace E → Fin j → Fin j → ℂ)` to `{g | 0 < detNorm E j g}`. Establish `hU : MeasurableSet U` using `MeanDual.measurableSet_detNorm_pos E j`. Use `letI : MulAction S U := { smul := fun γ g => ⟨(e γ * (show MatInf E j from g.1) : MatInf E j), hpos γ g.1 g.2⟩ one_smul := fun g => Subtype.ext (hone g.1) mul_smul := fun γ γ' g => Subtype.ext (hmul γ γ' g.1) }`. Establish `hsm : ∀ (γ : S) (g : U), (γ • g).1 = (e γ * (show MatInf E j from g.1) : MatInf E j)` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ γ : S, Continuous fun g : U => γ • g` using `fun γ => ((hcont γ).comp continuous_subtype_val).subtype_mk _`. Use `haveI : MeasurableConstSMul S U := ⟨fun γ => (hc γ).measurable⟩`. Establish `hdisc : ∀ x : U, ∃ V ∈ 𝓝 x, ∀ γ : S, γ • x ∈ V → γ = 1` using `fun x => by`. Establish `h` using `eventually_eq_one E j Λ hΛ x.1 ((MeanDual.detNorm_pos_iff E j _).1 x.2)`. Use `⟨_, continuous_subtype_val.continuousAt.eventually h, fun γ hγ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Subtype.ext (Units.ext (hγ _ (fun y hy => (hS γ γ.2 y).2 hy) fun w => ?_))` and prove the remaining obligations. Rewrite using `[← hof]`. Both sides reduce to the same expression. Establish `hfree : ∀ (γ : S) (x : U), γ • x = x → γ = 1` using `fun γ x h => by`. Take `⟨V, hV, hV'⟩` from `hdisc x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hV' γ (h.symm ▸ mem_of_mem_nhds hV)`. Take `⟨D, hD, hcov, hu⟩` from `exists_measurableSet_orbitSection_of_discreteOrbits (G := S) (X := U) (fun γ => (isClosed_eq (hc γ) continuous_id).measurableSet) (fun x => by`. Take `⟨V, hV, hV'⟩` from `hdisc x`. Conclude with `⟨V, hV, fun γ hγ => by rw [hV' γ hγ, one_smul]⟩)`. Use `⟨Subtype.val '' D, hU.subtype_image hD, ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Take `⟨γ, hγ⟩` from `hcov ⟨g, hg⟩`. Use `⟨γ, ⟨γ.2, _, hγ, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `k ⟨hk, x, hx, hxe⟩`.
-
-Establish `hx' : x = (⟨k, hk⟩ : S) • (⟨g, hg⟩ : U)` using `Subtype.ext hxe`. Use `hu _ hγ (⟨k, hk⟩ * γ⁻¹) (by rw [mul_smul, inv_smul_smul, ← hx']; exact hx)` as an intermediate fact. Conclude with `congrArg Subtype.val (mul_inv_eq_one.1 (hfree _ _ this))`.
+A detailed English derivation is pending.
 -/
 theorem exists_strictDomain : ∀ (E : Type) [Field E] [NumberField E] (j : ℕ) (Λ : Submodule (𝓞 E) (Fin j → E)), Submodule.IsLattice E Λ → ∀ e : GL (Fin j) E → MatInf E j, (∀ γ w a b, e γ w a b = w.embedding ((γ : Matrix (Fin j) (Fin j) E) a b)) → ∀ S : Subgroup (GL (Fin j) E), (∀ γ ∈ S, ∀ y, (γ : Matrix (Fin j) (Fin j) E) *ᵥ y ∈ Λ ↔ y ∈ Λ) → ∃ D : Set (MatInf E j), MeasurableSet D ∧ D ⊆ {g | 0 < detNorm E j g} ∧ ∀ g, 0 < detNorm E j g → ∃! γ : GL (Fin j) E, γ ∈ S ∧ e γ * g ∈ D := by
   intro E _ _ j Λ hΛ e he S hS

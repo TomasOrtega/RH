@@ -24,9 +24,9 @@ def IsPullQk (hD : IsPullDeg φ D D') {k : ℕ} (p : QkPt D (FractionRing R) k) 
       p'.y = hD.xe.symm q.y ∧ IsPullGtF φ hD (FractionRing R') q.g p'.g
 
 /- English proof (translation)
-Take `⟨_, hK, q₀, e₀, hy, hg⟩` from `h`. Establish `hc : (algebraMap (FractionRing R') F).comp (algebraMap (FractionRing R) (FractionRing R')) = algebraMap (FractionRing R) F` using `IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun r => (congrArg (algebraMap (FractionRing R') F) (hK r)).trans (hF r).symm)`. Establish `hs : spMap (algebraMap (FractionRing R) F) = spMap (algebraMap (FractionRing R') F) ≫ spMap (algebraMap (FractionRing R) (FractionRing R'))`. Rewrite using `[← hc, spMap_comp]`. Establish `e₁ : QkExt (algebraMap (FractionRing R') F) q₀ q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hq.1.trans e₀.1.symm, ?_, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hq.2.1, e₀.2.1, hs, Category.assoc]`. Use `(val_corr hJ (hq.2.2 χ) _).trans ((val_pull hJ _ _ _).trans (Eq.trans ?_ ((val_pull hJ _ _ _).trans ((val_corr hJ (e₀.2.2 χ) _).trans (val_pull hJ _ _ _))).symm))` and prove the remaining obligations. Conclude with `congrArg (fun r => val (p.g.s χ) r y J) ((congrArg (𝟙 _ ≫ ·) hs).trans (Category.assoc _ _ _).symm)`. Conclude with `⟨by rw [hq'.1, hy, e₁.1], isPullGtF_ext hD hF _ (RingHom.comp_id _) hg e₁ hq'⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsPullQk.ext {hD : IsPullDeg φ D D'} {k : ℕ} {p : QkPt D (FractionRing R) k} {p' : QkPt D' (FractionRing R') k}
     (h : IsPullQk hD p p') {F : Type} [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing R') F]
@@ -48,7 +48,7 @@ theorem IsPullQk.ext {hD : IsPullDeg φ D D'} {k : ℕ} {p : QkPt D (FractionRin
   exact ⟨by rw [hq'.1, hy, e₁.1], isPullGtF_ext hD hF _ (RingHom.comp_id _) hg e₁ hq'⟩
 
 /- English proof (translation)
-Use `letI : Algebra (FractionRing R) (FractionRing R') := (fracMap hφ).toAlgebra`. Establish `hK : Compat φ (FractionRing R')` using `fracMap_algebraMap hφ`. Establish `hB'` using `TauPull.tauBimult_pull hG hD hB`. Take `⟨q, hq, -⟩` from `existsUnique_qkExt (F' := FractionRing R') hB (algebraMap (FractionRing R) (FractionRing R')) (RingHom.comp_id _) p`. Conclude with `⟨pullQk hD hG hK hB hB' q, _, hK, q, hq, rfl, isPullGtF_pullGt hD hG hK _⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isPullQk (hG : GlobalFnsSt) (hφ : Function.Injective φ) (hD : IsPullDeg φ D D') (hB : D.TauBimult)
     {k : ℕ} (p : QkPt D (FractionRing R) k) : ∃ p', IsPullQk hD p p' := by
@@ -111,7 +111,7 @@ variable (hG : GlobalFnsSt) {f : O' →+* O''} (hf : Function.Injective f) (a : 
 @[reducible] def pullModule : Module (𝓞 E) D'.X := hD.xe.module (𝓞 E)
 
 /- English proof (translation)
-The claim follows from `hD.xe.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem pullModule_smul (x : 𝓞 E) (y : D'.X) : letI := pullModule a hD; hD.xe (x • y) = x • hD.xe y :=
   hD.xe.apply_symm_apply _
@@ -166,7 +166,7 @@ Both sides reduce to the same expression.
 theorem pullArc_D₀ : (pullArc hG hf a hD).D₀ = D' := rfl
 
 /- English proof (translation)
-The claim follows from `letI := H.starRing letI := pullModule a hD { xe_smul := pullModule_smul a hD be_eq := fun _ _ => rfl act := (exists_oAct hD hG hf a.oa (pullModule_smul a hD)).choose_spec eta := fun v => (exists_isPullQk hG hf hD a.bimult (a.eta v)).choose_spec etaA := fun v => (exists_isPullQk h …`.
+A detailed English derivation is pending.
 -/
 theorem isBC_pullArc : IsBC f a (pullArc hG hf a hD) hD :=
   letI := H.starRing
@@ -178,7 +178,7 @@ theorem isBC_pullArc : IsBC f a (pullArc hG hf a hD) hD :=
     etaA := fun v => (exists_isPullQk hG hf hD a.bimult (a.etaA v)).choose_spec }
 
 /- English proof (translation)
-Take `⟨D', hD, -, hg⟩` from `DegPull.exists_isPullDeg hP O' O'' f a.D₀ ⊤ (nonempty_psiOn_top _ a.gen) trivial`. Conclude with `⟨pullArc hG hf a hD, hD, isBC_pullArc hG hf a hD, hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isBC (hP : PolBaseChangeSt) (hG : GlobalFnsSt) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} {D : Datum H} {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {O' O'' : Type}

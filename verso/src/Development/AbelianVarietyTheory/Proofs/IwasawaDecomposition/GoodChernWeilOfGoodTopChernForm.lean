@@ -25,7 +25,7 @@ namespace GlobalTheory.GoodMetric
 variable {F : Type} [Field F] {X : Var F} {σ : F →+* ℂ}
 
 /- English proof (translation)
-Take `⟨W, hW, a, rfl⟩` from `hg.exists_fnOf`. Use `filter_upwards [(isOpen_ptsIn W).mem_nhds (mem_ptsIn.2 hW)] with z hz`. Conclude with `regAt_fnOf (mem_ptsIn.1 hz) _ a`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_regAt_under {y : CxPts X.str σ} {g : X.Fn} (hg : RegAt (under y) g) :
     ∀ᶠ z in 𝓝 y, RegAt (under z) g := by
@@ -34,9 +34,7 @@ theorem eventually_regAt_under {y : CxPts X.str σ} {g : X.Fn} (hg : RegAt (unde
   exact regAt_fnOf (mem_ptsIn.1 hz) _ a
 
 /- English proof (translation)
-Take `⟨U, B, hU, hB, hS⟩` from `S.loc (under y)`. Establish `hP` using `(hS _ hU A).1 hA`. Establish `hU' : ∀ᶠ z in 𝓝 y, under z ∈ U` using `by filter_upwards [(isOpen_ptsIn U).mem_nhds (mem_ptsIn.2 hU)] with z hz`. Conclude with `mem_ptsIn.1 hz`. Establish `h1 : ∀ᶠ z in 𝓝 y, ∀ τ, (∀ i j, RegAt (under z) ((A * B⁻¹) τ i j)) ∧ RegAt (under z) ((A * B⁻¹) τ).det⁻¹` using `Filter.eventually_all.2 fun τ => (Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_regAt_under (mem_O_ratOf.1 ((hP τ).1 i j))).and (eventually_regAt_under (mem_O_ratOf.1 (hP τ).2.2.1))`.
-
-Use `filter_upwards [hU', h1] with z hz hz1`. Conclude with `(hS _ hz A).2 fun τ => ⟨fun i j => mem_O_ratOf.2 ((hz1 τ).1 i j), (hP τ).2.1, mem_O_ratOf.2 (hz1 τ).2, fun i j hi => absurd hi (by simp)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_mem_frames {ι : Type} [Finite ι] {m : ι → ℕ} {S : Fr (ratOf X) m 0} {y : CxPts X.str σ}
     {A : Mat m X.Fn} (hA : A ∈ S.S (under y)) : ∀ᶠ z in 𝓝 y, A ∈ S.S (under z) := by
@@ -53,11 +51,9 @@ theorem eventually_mem_frames {ι : Type} [Finite ι] {m : ι → ℕ} {S : Fr (
     fun i j hi => absurd hi (by simp)⟩
 
 /- English proof (translation)
-Take `⟨W, κ, _, g, G, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `ho` using `isOpen_over e (isOpen_ptsIn (p := X.str) (σ := σ) W)`. Establish `hl` using `e.left_inv hy`. Establish `hg : ContDiffAt ℝ ∞ (fun w a => ev X.str σ W (g a) (e.symm w)) (e y)` using `contDiffAt_pi.2 fun a => (contDiffOn_real ho (he W (g a))).contDiffAt (ho.mem_nhds (mem_over e hy h₁))`. Establish `h₆ : ContDiffAt ℝ ∞ G (fun a => ev X.str σ W (g a) (e.symm (e y)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hl]`. Conclude with `h₄.contDiffAt (h₂.mem_nhds h₃)`. Use `(h₆.comp (e y) hg).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `e.continuousAt_symm (e.map_source hy)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hl]`.
-
-Conclude with `this.eventually h₅`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CInfAt.contDiffAt_holoChart {f : CxPts X.str σ → ℝ} {y : CxPts X.str σ} (h : CInfAt f y)
     {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)} (he : IsHoloChart e) (hy : y ∈ e.source) :
@@ -75,7 +71,7 @@ theorem CInfAt.contDiffAt_holoChart {f : CxPts X.str σ → ℝ} {y : CxPts X.st
   exact this.eventually h₅
 
 /- English proof (translation)
-Introduce `i j` and use `by obtain ⟨hre, him⟩ := hH.smooth y hy A hA τ i j have h1 : ContDiffAt ℝ 2 (fun v => (H A (e.symm v) τ i j).re) (e y) := (CInfAt.contDiffAt_holoChart hre he hye).of_le (by norm_cast) have h2 : ContDiffAt ℝ 2 (fun v => (H A (e.symm v) τ i j).im) (e y) := (CInfAt.contDiffAt_holoCha …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsMetricOn.mContDiffAt_two {ι : Type} {m : ι → ℕ} {E : Fr (ratOf X) m 0} {O : X.X.Opens}
     {H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ} (hH : IsMetricOn E O H) {y : CxPts X.str σ}
@@ -94,11 +90,11 @@ theorem IsMetricOn.mContDiffAt_two {ι : Type} {m : ι → ℕ} {E : Fr (ratOf X
   exact (Complex.re_add_im _).symm
 
 /- English proof (translation)
-Establish `hG2 : ∀ τ, MContDiffAt 2 (fun v => H A (e.symm v) τ) (e y)` using `hH.mContDiffAt_two hy hA he hye`. Establish `hdet : ∀ τ, (H A (e.symm (e y)) τ).det ≠ 0` using `fun τ => by`. Rewrite using `[e.left_inv hye]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (hH.posDef y hy A hA τ).isUnit).ne_zero`. Take `⟨-, hc⟩` from `GlobalTheory.T.chernConnection_curvature_polyRep_eval ι m ρ X.dim (fun v => H A (e.symm v)) (e y) hG2 hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc]`. Establish `ht : Tendsto e.symm (𝓝 (e y)) (𝓝 y)`. Use `e.continuousAt_symm (e.map_source hye)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, e.left_inv hye]`. Then use the resulting hypothesis. Establish `heq : (fun v => H' (fun _ => ρ.ev A) (e.symm v) ()) =ᶠ[𝓝 (e y)] fun v => ρ.ev (H A (e.symm v))` using `by filter_upwards [ht.eventually ((isOpen_ptsIn O).mem_nhds hy), ht.eventually (eventually_mem_frames hA)] with v h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hρ _ h1 A h2`. Simplify using `only [curvPoly, curv_congr heq]`.
+A detailed English derivation is pending.
 -/
 theorem curvPoly_polyRep {ι : Type} [Fintype ι] {m : ι → ℕ} (ρ : PolyRep m) {E : Fr (ratOf X) m 0}
     {O : X.X.Opens} {H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ}
@@ -131,17 +127,15 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric
 
 /- English proof (translation)
-Introduce `F _ σ X ι _ m ρ E E' O H H' hS hH hρ hG y hy`. Take `⟨e, S, he, hye, hS0, hSO, A, hA, c, N, hev⟩` from `hG y hy`. Take `⟨c', N', hgood⟩` from `GlobalTheory.T.mumfordGoodGrowth_polynomialRepresentation ι m ρ c N`. Use `⟨e, S, he, hye, hS0, hSO, fun _ => ρ.ev A, hS _ A hA, c', N', ?_⟩` and prove the remaining obligations. Take `⟨a₀, ha₀S, ha₀⟩` from `(hSO y hye).1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ContinuousAt (fun z => e z a₀) y` using `(EuclideanSpace.proj (𝕜 := ℂ) a₀).continuous.continuousAt.comp (e.continuousAt hye)`. Establish `hsmall : ∀ᶠ z in 𝓝 y, ‖e z a₀‖ < Real.exp (-1)`. Establish `h0 : Tendsto (fun z => e z a₀) (𝓝 y) (𝓝 0)`. Use `hcont.tendsto` as an intermediate fact. Rewrite `this` using `[ha₀]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `h0.norm.eventually (gt_mem_nhds (by rw [norm_zero]; positivity))`. Use `filter_upwards [hev, self_mem_nhdsWithin, nhdsWithin_le_nhds (e.open_source.mem_nhds hye), nhdsWithin_le_nhds (eventually_mem_frames hA), nhdsWithin_le_nhds hsmall] with z hz hzO hzs hzA hzsm`. Introduce and unpack `⟨⟩`. Establish `hz2 : ∀ τ, MContDiffAt 2 (fun v => H A (e.symm v) τ) (e z)` using `hH.mContDiffAt_two hzO hzA he hzs`. Establish `hdet : ∀ τ, (H A (e.symm (e z)) τ).det ≠ 0` using `fun τ => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e.left_inv hzs]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (hH.posDef z hzO A hzA τ).isUnit).ne_zero`. Establish `hne : e z a₀ ≠ 0` using `fun h0 => ((hSO z hzs).2 ⟨a₀, ha₀S, h0⟩) hzO`. Establish `hpos : 0 < ‖e z a₀‖` using `norm_pos_iff.2 hne`. Establish `hlt : Real.log ‖e z a₀‖ < -1` using `by rw [Real.log_lt_iff_lt_exp hpos]; exact hzsm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ |Real.log ‖e z a₀‖|` using `by rw [abs_of_neg (by linarith)]; linarith`. Establish `hlog : 1 ≤ ∑ a ∈ S, |Real.log ‖e z a‖|` using `h1.trans (Finset.single_le_sum (f := fun a => |Real.log ‖e z a‖|) (fun a _ => abs_nonneg _) ha₀S)`. Establish `hb` using `hgood X.dim S (fun v => H A (e.symm v)) (e z) hz2 hdet hlog hz`. Use `goodBound_congr_nhds X.dim (Fin ρ.M) S c' N' _ _ (e z) ?_ hb` and prove the remaining obligations. Establish `ht : Tendsto e.symm (𝓝 (e z)) (𝓝 z)`.
-
-Use `e.continuousAt_symm (e.map_source hzs)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, e.left_inv hzs]`. Then use the resulting hypothesis. Use `filter_upwards [ht.eventually ((isOpen_ptsIn O).mem_nhds hzO), ht.eventually (eventually_mem_frames hzA)] with v h1 h2`. Conclude with `(hρ _ h1 A h2).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodMetric.isGood_polyRep : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ)
     (ρ : PolyRep m) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf X) (fun _ : Unit => ρ.M) 0) (O : X.X.Opens)
@@ -185,17 +179,15 @@ theorem _root_.GlobalTheory.GoodMetric.isGood_polyRep : ∀ (F : Type) [Field F]
   exact (hρ _ h1 A h2).symm
 
 /- English proof (translation)
-Introduce `hT hCW hP`. Use `⟨?_, hP⟩` and prove the remaining obligations. Introduce `F _ σ X Y ι _ m E E' φ f gr hRef hGr O H hH hG R`. Take `⟨J, _, ρ, a, hAlg⟩` from `GlobalTheory.T.topDegreeFormCoeff_chernPoly_eq_sum_representations ι m X.dim R`. Take `⟨H₀, hH₀⟩` from `GlobalTheory.T.exists_smooth_hermitianMetric_projective_variety F σ X ι m E`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose Eb hEbS hEbH using fun j => GlobalTheory.T.exists_polyRep_inducedBundle_and_metric F X ι m (ρ j) E`. Use `choose H' hH' hH'eq using fun j => hEbH j σ O H hH`. Use `choose H₀' hH₀' hH₀'eq using fun j => hEbH j σ ⊤ H₀ hH₀`. Use `choose t ht using fun j => GlobalTheory.T.chernForm_integrable_complexPoints_of_chernWeil hCW F σ X Unit (fun _ => (ρ j).M) (Eb j) (H₀' j) (hH₀' j) (MvPolynomial.X ((), X.dim))`. Establish `htO : ∀ j, HasChernIntegral (Eb j) O (H' j) (MvPolynomial.X ((), X.dim)) (t j)` using `fun j => hT F σ X (ρ j).M (Eb j) O (H' j) (H₀' j) (hH' j) (isGood_polyRep F σ X ι m (ρ j) E (Eb j) O H (H' j) (hEbS j) hH (hH'eq j) hG) (hH₀' j) (t j) (ht j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdens : ∀ (O : X.X.Opens) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ) (H' : ∀ j, Mat (fun _ : Unit => (ρ j).M) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => (ρ j).M) ℂ), IsMetricOn E O H → (∀ j, ∀ y ∈ ptsIn X.str σ O, ∀ A ∈ E.S (under y), H' j (fun _ => (ρ j).ev A) y () = (ρ j).ev ( …`. Introduce `O H H' hH hH'eq y hy c hc`. Take `⟨A, hA⟩` from `E.nonempty (under y)`. Use `⟨A, hA, fun j _ => (ρ j).ev A, fun j => hEbS j _ A hA, ?_⟩` and prove the remaining obligations. Establish `hcurv : ∀ j, curvPoly (fun v => H' j (fun _ => (ρ j).ev A) (c.e.symm v) ()) (c.e y) = (ρ j).lie (fun τ => curvPoly (fun v => H A (c.e.symm v) τ) (c.e y))` using `fun j => curvPoly_polyRep (ρ j) hH (hH'eq j) hy hA c.holo hc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hhom : ∀ τ i j, ((fun τ => curvPoly (fun v => H A (c.e.symm v) τ) (c.e y)) τ i j).IsHomogeneous 1` using `fun τ i j => by`. Simplify using `only [curvPoly, Matrix.of_apply]`. Conclude with `IsHomogeneous.sum _ _ _ fun a _ => IsHomogeneous.sum _ _ _ fun b _ => isHomogeneous_C_mul_X _ _`. Establish `key` using `hAlg _ hhom`. Simplify using `only [chernTop, chernPoly, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key]`. Simplify using `only [hcurv, Complex.re_sum, Complex.re_ofReal_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hlinO` using `GlobalTheory.T.hasChernIntegral_linear_of_density_eq_sum F σ X ι m E O H R J (fun j => (ρ j).M) Eb H' (MvPolynomial.X ((), X.dim)) a t hH hH' (hdens O H H' hH hH'eq) htO`. Establish `hlinT` using `GlobalTheory.T.hasChernIntegral_linear_of_density_eq_sum F σ X ι m E ⊤ H₀ R J (fun j => (ρ j).M) Eb H₀' (MvPolynomial.X ((), X.dim)) a t hH₀ hH₀' (hdens ⊤ H₀ H₀' hH₀ hH₀'eq) ht`.
-
-Establish `hs` using `hCW F σ X Y ι m E E' φ f gr hRef hGr H₀ hH₀ R`. Rewrite using `[hs.2.symm.trans hlinT.2]`. Conclude with `hlinO`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodMetric.goodChernWeil_of_goodTopChernForm :
     GlobalTheory.Published.GoodTopChernForm → GlobalTheory.Published.ChernWeilNumbers → GlobalTheory.Published.FlagPushForward → GlobalTheory.Published.GoodChernWeil := by

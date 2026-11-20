@@ -36,13 +36,13 @@ end Fock
 section Norm
 variable {D : D7} {δ t0 : ℂ} {Q : ℕ} {P : Pair D ⊤ δ t0 Q} {X : Data P} {r : D.host.E}
 /- English proof (translation)
-Use `(GlobalTheory.T.exists_thetaDoublingPairData_identity_cartan P X hX ha had).elim fun cA h1 => h1.elim fun a h2 => h2.elim fun ν h3 => h3.elim fun 𝓕 hPair => ?_` and prove the remaining obligations. Establish `hfd` using `finite_data hI h hm hstd ho`. Use `hfd.1.elim fun LB hLB => ?_` and prove the remaining obligations. Establish `hn` using `(hfd.2 ν 𝓕 hPair.covol).1`. Establish `hs` using `(hfd.2 ν 𝓕 hPair.covol).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlev` using `fun x => GlobalTheory.T.standardLattice_selfDual_and_integral_iff_stabilizes X.A P.a (X.ιA x) x h.std.frame.gramA X.rkA (h.std.ptA x)`. Establish `hsph : IsSphOff X.ψ X.A X.B (stdLat X.A) LB Sf (X.fock T)` using `isSphOff_pure hX.2.inf hLB.2 _ _ _ _ _`. Establish `hU : GlobalTheory.Core.Rk.IP.Unram X.ψ X.A X.B X.χB (stdLat X.A) LB Sf (X.fock T) (X.fock T)` using `⟨(hlev 1).1, hLB.1, fun v _ h2 => GlobalTheory.Core.Rk.IP.Model.isSplit_two v h2, hu, hsph, hsph⟩`. Establish `hint` using `GlobalTheory.T.doublingIntegrand_integrable_of_coefficient_const_compact P X hX (hlev 1).1 (fun x => (hlev x).2) a ν 𝓕 hPair.maj Sf (X.fock T) (ip X.A X.B ν 𝓕 (X.fock T) (X.fock T)) (fun x hx k hk => (wcoef_fock hX ν 𝓕 T _ hk).trans (by rw [hX.2.fixA x hx T])) (fun x hx hx' k hk …`. Use `hK.meas.elim fun 𝓕₀ h𝓕₀ => hX.1.measA.elim fun 𝓕A h𝓕A => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hX.1.haarA`. Use `haveI : μ₀.IsHaarMeasure := h𝓕₀.1.1`. Establish `hA : GlobalTheory.Cusp.wittIndex X.A = 0` using `GlobalTheory.Cusp.wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.Mem.ColAd.isAniso_of_gram hX.1.gramA)`. Establish `hB : GlobalTheory.Cusp.wittIndex X.B = 0` using `GlobalTheory.Cusp.wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.Mem.ColAd.isAniso_of_gram hX.1.gramB)`. Establish `key` using `_root_.GlobalTheory.BottomRallis.rallis_inner_product_bottom_norm_eq hP hPair hA hB (isFockVec_fock hX T) hU X.m μ₀ ⟨((P.d - P.a : ℕ) : ℝ) / 2 - 1, by linarith, hint.1 _⟩ (fun i => Λ (((P.d - P.a : ℕ) : ℂ) / 2 + (X.A.rank : ℂ) / 2 - i)) fun i _ => hΛ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vA` using `volQ_eq_mass X.A P.a X.ιA X.KA X.m 𝓕A hX.1.defA hX.1.injA hX.1.rangeA hX.1.ratA hX.1.levA hX.1.levA_iff h𝓕A`. Establish `vB` using `volQ_eq_mass X.B P.d X.ιB K₀ μ₀ 𝓕₀ hX.1.defB hX.1.injB hX.1.rangeB hX.1.ratB hK.lev hK.mem_iff h𝓕₀`. Establish `e1` using `hint.2.trans ((ip_fock hX hPair.covol T).trans (congrArg _ hn))`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[vA, vB, e1, X.rkA, X.rkB]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_lift_petersson_norm_eq_rallis_integral (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hI : GlobalTheory.NormSum.Inp D) (h : IsExact P X r) (hX : IsDict P X)
     {K₀ : Subgroup (GL (Fin X.B.rank) (Lev.EAf D))} {μ₀ : Measure (GA D X.B)} (hK : IsMaxLevel X.toFrame K₀ μ₀)
@@ -81,19 +81,19 @@ theorem theta_lift_petersson_norm_eq_rallis_integral (hP : _root_.GlobalTheory.F
   refine key.trans ?_
   rw [vA, vB, e1, X.rkA, X.rkB]
 /- English proof (translation)
-Establish `hm` using `goodMod_modT hL (GlobalTheory.SqTop.BotT.pde_ne_q hR).1 (GlobalTheory.SqTop.BotT.pde_ne_q hR).2 G t`. Establish `hrk` using `GlobalTheory.FunObj.SqNum.Model.bot_ranks (D := D) i j`. Establish `hPa` using `hb.rank.1`. Establish `hPd` using `hb.rank.2.2.1`. Establish `hdict` using `exact_dictionary P hI (isCongLevel_of_isBlockLevel hm.1 hb.lev.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hdict.2.1.elim fun X h1 => h1.elim fun r h2 => h2.elim fun K₀ h3 => h3.elim fun μ₀ h4 => ?_` and prove the remaining obligations. Establish `h5` using `hdict.2.2 X r K₀ μ₀ h4.1 h4.2`. Establish `hX` using `h5.1.1`. Establish `hχ` using `GlobalTheory.T.heckeCharEq_of_finitePart_power_inverse X.χB P.W.chV' P.W.ep' (nuH G t i j) hX.2.weil.hecT h4.1.chB hb.chars.2`. Establish `hl` using `GlobalTheory.T.squareNu_unramified_off_pair_partial_L_primitive hL hR.hF G t i j X.χB hχ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `_root_.GlobalTheory.NormRatio.theta_lift_petersson_norm_eq_rallis_integral hP hI h4.1 hX h4.2 hm hb.std (by rw [zero_add]; exact P.a_le) (by omega) (by omega) hl.1 Λ (hl.2 Λ hΛ)`. Establish `hidx : ((P.J.relIndex (intG D P.d) : ℕ) : ℝ) = locIdx D (modT G t) P.a (P.d - P.a)` using `GlobalTheory.StdLoc.relIndex_blockLevel P (modT G t) P.a hm.1 hm.2.1 P.a_le (hPa.symm ▸ hb.lev.1)`. Establish `hidx' : ((P.J.relIndex (intG D P.d) : ℕ) : ℂ) = (locIdx D (modT G t) P.a (P.d - P.a) : ℂ)`. Rewrite using `[← hidx]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hd` using `GlobalTheory.T.localIndex_localNorm_normalizingFactor_eq_partial D (modT G t) (sfB G t) hm P.a (P.d - P.a) (by omega)`. Rewrite `hd` using `[Nat.add_sub_cancel' P.a_le]`. Establish `hre : 0 < (((P.d - P.a : ℕ) : ℂ) / 2).re`. Establish `: (0 : ℝ) < ((P.d - P.a : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 0 < P.d - P.a)`. Rewrite using `[show (((P.d - P.a : ℕ) : ℂ) / 2) = ((((P.d - P.a : ℕ) : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Establish `hprod : ∏ k ∈ Finset.range P.a, Λ (((P.d - P.a : ℕ) : ℂ) / 2 + (P.a : ℂ) / 2 - k) = ∏ s ∈ Finset.Icc (1 - (GlobalTheory.SqTop.e0 D i j : ℤ)) (GlobalTheory.SqTop.h0 D i j : ℤ), Λ s`. Take `⟨u, hu⟩` from `hrk.2.2.1`. Establish `e1 : P.d = 2 * GlobalTheory.SqTop.h0 D i j` using `by unfold GlobalTheory.SqTop.h0; omega`. Rewrite using `[← GlobalTheory.BottomRallis.prod_range_sub_eq_prod_Icc (fun s => Λ s) P.a (GlobalTheory.SqTop.h0 D i j) (GlobalTheory.SqTop.e0 D i j) (by unfold GlobalTheory.SqTop.h0 GlobalTheory.SqTop.e0; omega)]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => congrArg Λ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub P.a_le, e1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `h5.2.2.2.2.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_congr rfl fun T _ => hT T, ← Finset.mul_sum, ← Finset.sum_mul, hidx', hprod]`. Conclude with `collect hd (GlobalTheory.LFun.dSfun_ne_zero_of_re_pos _ _ _ hre) (GlobalTheory.LFun.dSfun_ne_zero_of_re_pos _ _ _ hre)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem petersson_norm_bottom_theta_lift_eq (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hI : GlobalTheory.NormSum.Inp D) {large₂ : SizeData₂ D} (hR : GlobalTheory.SqTop.Rec large₂) {T : Type}
     {L : LevCh D T} {sc : Consts} {μ : T} (hL : L.Is μ) (G : GridData L sc) {t : T} {i j : Fin D.R.m}
@@ -137,9 +137,9 @@ theorem petersson_norm_bottom_theta_lift_eq (hP : _root_.GlobalTheory.FunPr.Thet
   exact collect hd (GlobalTheory.LFun.dSfun_ne_zero_of_re_pos _ _ _ hre) (GlobalTheory.LFun.dSfun_ne_zero_of_re_pos _ _ _ hre)
 end Norm
 /- English proof (translation)
-Introduce `hP hI _`. Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `δ t0 i j t t' Q Q' P P' P₁ P₁' Λ Λ' hb hb' hΛ hΛ'`. Establish `h1` using `_root_.GlobalTheory.NormRatio.petersson_norm_bottom_theta_lift_eq hP (hI D) hR hL G hb hΛ`. Establish `h2` using `_root_.GlobalTheory.NormRatio.petersson_norm_bottom_theta_lift_eq hP (hI D) hR hL G hb' hΛ'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.BottomReal.bottom_real_eq G hL hb hb').1`. Establish `h4 : normFactor D δ t0 P.a P.d P.n = normFactor D δ t0 P₁.a P₁.d P₁.n`. Use `congr (congr (congrArg (normFactor D δ t0) h3.1) h3.2.1) h3.2.2.1`. Rewrite using `[h1, h2, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem big_theta_petersson_norm_ratio_eq : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.LNe → GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ =>
   ∀ (δ t0 : ℂ) (i j : Fin D.R.m) (t t' : T) (Q Q' : ℕ) (P P' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q) (P₁ P₁' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q')
@@ -166,7 +166,7 @@ section
 open GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.NormRatio.big_theta_petersson_norm_ratio_eq | exact _root_.GlobalTheory.NormRatio.big_theta_petersson_norm_ratio_eq | (intros; apply _root_.GlobalTheory.NormRatio.big_theta_petersson_norm_ratio_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_lift_petersson_norm_ratio_formula : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.LNe → GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ =>
   ∀ (δ t0 : ℂ) (i j : Fin D.R.m) (t t' : T) (Q Q' : ℕ) (P P' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q) (P₁ P₁' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q')

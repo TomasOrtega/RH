@@ -22,13 +22,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.ChainTw
 
 /- English proof (translation)
-Introduce `D _ c w hw k hk s s' hs hs' _ _`. Take `⟨hr, -, hfl⟩` from `hs`. Take `⟨hr', -, hfl'⟩` from `hs'`. Establish `h1 : s.V.rank = D.R.rankY k` using `hfl.rank`. Establish `h2 : s'.V.rank = D.R.rankY k + D.R.t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : s'.V.rank = D.R.rankY (k + 1)` using `hfl'.rank`. Rewrite using `[h]`. Simplify using `only [Formalism.BasicNotions.Ranks.rankY]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : D.R.rankY k + D.R.t = D.R.r + (k + 1) * D.R.t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.rankY]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hL, hL₀⟩` from `GlobalTheory.T.twistEulerFactors_restore_quotientLValues D c w hw k hk`. Take `⟨hd0, hd⟩` from `GlobalTheory.T.twistEulerFactors_restore_normalizingFactor D c w hw (D.R.rankY k)`. Use `⟨hL, hL₀, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `dS`. Rewrite using `[h1, h2]`. Conclude with `hd0`. Unfold `dS`. Rewrite using `[h1, h2, hd, h3]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restore_holds : ∀ D : D7, Restore D := by
   intro D _ c w hw k hk s s' hs hs' _ _

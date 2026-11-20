@@ -22,21 +22,19 @@ noncomputable section
 namespace GlobalTheory.ArDegIndep.MixLimit
 
 /- English proof (translation)
-Use `choose C hC using hT`. Use `set S : ℝ := M.κ * ∑ σ, (3 * K) ^ e * |C σ| with hS`. Establish `hS0 : 0 ≤ S` using `mul_nonneg M.κ_pos.le (Finset.sum_nonneg fun σ _ => by positivity)`. Establish `bound : ∀ δ ℓ : ℝ, 0 < δ → Real.exp 1 ≤ ℓ → ∀ᶠ R in atTop, |M.int (P R) (g R)| ≤ S * δ + S * (a * (Real.log ℓ ^ (e + 1) / ℓ))`. Introduce `δ ℓ hδ hℓ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hP, hg, hlog, hsmall ℓ δ hδ] with R h1 h2 h3 h4`. Establish `hℓ0 : 0 < ℓ` using `(Real.exp_pos 1).trans_le hℓ`. Establish `hL0 : 0 ≤ Real.log ℓ ^ (e + 1) / ℓ` using `div_nonneg (pow_nonneg (Real.log_nonneg (by linarith [Real.add_one_le_exp 1])) _) hℓ0.le`. Establish `term : ∀ σ, |mInt (M.A σ) (fun i => P R i σ) (g R σ)| ≤ (3 * K) ^ e * |C σ| * δ + (3 * K) ^ e * |C σ| * (a * (Real.log ℓ ^ (e + 1) / ℓ))`. Introduce `σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.Mean4O.CombInt.abs_mInt_comb_le e (M.X σ) (M.A σ) (M.Z σ) (M.r σ) (M.Om σ) (M.bd σ) K (C σ) hK (hC σ) (fun i => P R i σ) (g R σ) δ a ℓ (fun i => h1 i σ) (h2 σ) hδ.le ha hℓ (fun x hx hr => h4 σ x hx hr) (fun x hx _ => h3 σ x hx)).trans ?_` and prove the remaining obligations. Establish `e1 : δ * C σ ≤ δ * |C σ|` using `mul_le_mul_of_nonneg_left (le_abs_self _) hδ.le`. Establish `e2 : a * (C σ * Real.log ℓ ^ (e + 1) / ℓ) ≤ a * (|C σ| * (Real.log ℓ ^ (e + 1) / ℓ))`. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (le_abs_self _) hL0) ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : (0 : ℝ) ≤ (3 * K) ^ e` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Unfold `Man.int`. Rewrite using `[abs_mul, abs_of_pos M.κ_pos]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hL : Tendsto (fun ℓ : ℝ => Real.log ℓ ^ (e + 1) / (1 * ℓ + 0)) atTop (𝓝 0)` using `Real.tendsto_pow_log_div_mul_add_atTop 1 0 (e + 1) one_ne_zero`. Establish `hSa : 0 ≤ S * a` using `mul_nonneg hS0 ha`. Take `⟨ℓ, hℓ1, hℓ2⟩` from `((hL.eventually (gt_mem_nhds (show (0 : ℝ) < ε / (2 * (S * a + 1)) by positivity))).and (eventually_ge_atTop (Real.exp 1))).exists`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [one_mul, add_zero] at hℓ1`. Use `filter_upwards [bound (ε / (2 * (S + 1))) ℓ (by positivity) hℓ2] with R hR`. Rewrite using `[Real.dist_eq, sub_zero]`. Use `lt_of_le_of_lt hR ?_` and prove the remaining obligations. Establish `f1 : S * (ε / (2 * (S + 1))) < ε / 2`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_assoc', div_lt_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hLn : 0 ≤ Real.log ℓ ^ (e + 1) / ℓ` using `div_nonneg (pow_nonneg (Real.log_nonneg (by linarith [Real.add_one_le_exp 1])) _) ((Real.exp_pos 1).trans_le hℓ2).le`. Establish `f2 : S * (a * (Real.log ℓ ^ (e + 1) / ℓ)) < ε / 2`. Rewrite using `[← mul_assoc]`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem int_tendsto_zero {e : ℕ} (M : Man e) (K : ℝ) (hK : 0 ≤ K)
     (hT : ∀ σ, ∃ C : ℝ, Tail (M.A σ) (M.Z σ) (M.r σ) (M.Om σ) K C)
@@ -110,9 +108,9 @@ namespace GlobalTheory.ArDegIndep.MixLimit
 open GlobalTheory.Mean4O.InterpFam
 
 /- English proof (translation)
-Establish `lev : LeviEq ((T.M c).A σ) ((T.K B c).c1 (T.L B c u + (T.K B c).ar g) σ) ((T.F c).th u σ + (LocPot.ofFun fun _ => (0 : ℝ)).rsmul 0 + LocPot.ofFun (g σ))`. Introduce `j y hy w`. Establish `pot` using `fun v => twice_differentiable_of_potential ((T.K B c).firstChern_isPotential v σ) hy`. Establish `ht` using `twice_differentiable_of_potential (T.th_pot c u σ) hy`. Establish `h0` using `twice_differentiable_of_potential (isPotential_ofFun ((T.M c).A σ) (fun _ => (0 : ℝ)) fun _ => contDiffOn_const) hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc` using `twice_differentiable_of_potential (isPotential_ofFun ((T.M c).A σ) _ (hg σ)) hy`. Rewrite using `[(T.K B c).isOneCochain_add _ _ σ j y hy w, lv_add (pot _) (pot _), T.c1_L B c u σ j y hy w, (T.K B c).c1_ar g hg σ j y hy w, lv_add (ht.add (h0.rsmul 0)) hgc, lv_add ht (h0.rsmul 0), lv_rsmul h0, zero_mul, add_zero]`. Take `⟨-, T', cc, h1, h2⟩` from `h`. Conclude with `⟨(T.K B c).firstChern_isPotential _ σ, T', cc, h1, fun j y hy hz w => (lev j y hy w).trans (h2 j y hy hz w)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comb_c1 {D : D7} {Y : ShimX D.what₂.Tau} (T : Real0 Y) (B : ℝ) (c : Y.Comp) (u : Wt Y) (g : (T.M c).Fun)
     (hg : (T.M c).Smooth g) (σ : Fin ((T.M c).n + 1)) {K : ℝ}
@@ -133,33 +131,27 @@ theorem comb_c1 {D : D7} {Y : ShimX D.what₂.Tau} (T : Real0 Y) (B : ℝ) (c : 
   exact ⟨(T.K B c).firstChern_isPotential _ σ, T', cc, h1, fun j y hy hz w => (lev j y hy w).trans (h2 j y hy hz w)⟩
 
 /- English proof (translation)
-Introduce `hP2 hPH D O hcore hf A T H h x' B _ u hu c i _`. Take `⟨hSize, hInR⟩` from `GlobalTheory.T.fibre_size_and_range_bound hP2 hPH D O hcore hf A T H h c`. Establish `hDomL : DomL O.Y.j u` using `fun τ a b hab _ => (hu τ (show a < b by rw [Fin.lt_def]; omega)).le`. Take `⟨-, -, -, C₁, hC₁⟩` from `hSize`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.T.green_correction_log_growth hP2 hPH D O hcore hf A T H h x' c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose b p hbp Cr hCr using hInR`. Use `choose b' p' hbp' t' ht' using GlobalTheory.T.poincare_potential_psh_limit hP2 hPH D O hcore hf A T H h x' c u hu`. Establish `smψ : ∀ R : ℝ, 2 ≤ R → (T.M c).Smooth (psiOf h x' R u c)` using `fun R hR => GlobalTheory.T.smooth_potential_truncation hP2 hPH D O hcore hf A T H h x' R hR u c`. Establish `smφ : ∀ R : ℝ, 2 ≤ R → (T.M c).Smooth ((T.F c).phR R u)` using `fun R hR σ => ((hCr σ) u R hR).1`. Establish `hlogr : ∀ σ (x : (T.M c).X σ), x ∉ (T.M c).Z σ → 0 ≤ Real.log ((T.M c).r σ x)` using `fun σ x hx => zero_le_one.trans (one_le_log ((T.M c).bd σ).2.2.2.2.2.1 hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bφ : ∀ R : ℝ, 2 ≤ R → ∀ σ x, x ∉ (T.M c).Z σ → |(T.F c).phR R u σ x| ≤ |C₁| * ‖u‖ * Real.log ((T.M c).r σ x)` using `fun R hR σ x hx => ((hC₁ u σ x hx).2 R hR).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) (norm_nonneg _)) (hlogr σ x hx))`. Establish `bψ : ∀ R : ℝ, 2 ≤ R → ∀ σ x, x ∉ (T.M c).Z σ → |psiOf h x' R u c σ x| ≤ |C₂| * ‖u‖ * Real.log ((T.M c).r σ x)` using `fun R hR σ x hx => (hC₂ u σ x hx R hR).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) (norm_nonneg _)) (hlogr σ x hx))`. Establish `key : ∀ σ, ∃ K₁ : ℝ, ∀ K, K₁ ≤ K → ∀ R : ℝ, 2 ≤ R → Comb ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) ((T.M c).Om σ) K ((T.F c).th u σ + (LocPot.ofFun fun _ => (0 : ℝ)).rsmul 0 + LocPot.ofFun ((T.F c).phR R u σ))`. Introduce `σ`. Establish `hbd` using `(T.M c).bd σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K₀, hK₀, hth⟩` from `exists_lvBd hbd.2.2.1 hbd.2.2.2.1 (T.th_pot c u σ)`. Establish `h0 : ((T.M c).A σ).Smooth fun _ => (0 : ℝ)` using `fun _ => contDiffOn_const`. Take `⟨K₁, hK₁⟩` from `comb_one hbd (isPotential_ofFun _ _ h0) (fun _ j y _ w => (lv_zero (A := (T.M c).A σ) j y w).ge) (hbp σ) K₀ (|C₁| * ‖u‖) (|Cr σ| * ‖u‖) hK₀ (by positivity) (by positivity)`. Use `⟨K₁, fun K hK R hR => hK₁ K hK _ _ _ (T.th_pot c u σ) hth (smφ R hR σ) (bφ R hR σ) (mul_le_mul_of_nonneg_right (le_abs_self _) (norm_nonneg _)) (((hCr σ) u R hR).2.1 hDomL) 0 ⟨le_rfl, zero_le_one⟩⟩` and prove the remaining obligations. Establish `key' : ∀ σ, ∃ K₁ : ℝ, ∀ K, K₁ ≤ K → ∀ᶠ R in atTop, Comb ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) ((T.M c).Om σ) K ((T.F c).th u σ + (LocPot.ofFun fun _ => (0 : ℝ)).rsmul 0 + LocPot.ofFun (psiOf h x' R u c σ))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ`. Establish `hbd` using `(T.M c).bd σ`. Take `⟨K₀, hK₀, hth⟩` from `exists_lvBd hbd.2.2.1 hbd.2.2.2.1 (T.th_pot c u σ)`. Establish `h0 : ((T.M c).A σ).Smooth fun _ => (0 : ℝ)` using `fun _ => contDiffOn_const`. Take `⟨K₁, hK₁⟩` from `comb_one hbd (isPotential_ofFun _ _ h0) (fun _ j y _ w => (lv_zero (A := (T.M c).A σ) j y w).ge) (hbp' σ) K₀ (|C₂| * ‖u‖) |t' σ| hK₀ (by positivity) (abs_nonneg _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨K₁, fun K hK => ?_⟩` and prove the remaining obligations. Use `filter_upwards [ht' σ, eventually_ge_atTop 2] with R hR hR2`. Conclude with `hK₁ K hK _ _ _ (T.th_pot c u σ) hth (smψ R hR2 σ) (bψ R hR2 σ) (le_abs_self _) hR 0 ⟨le_rfl, zero_le_one⟩`. Use `choose K₁ hK₁ using key`. Use `choose K₂ hK₂ using key'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set K : ℝ := ∑ σ, (|K₁ σ| + |K₂ σ|) with hK`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun σ _ => by positivity`. Establish `hle : ∀ σ, |K₁ σ| + |K₂ σ| ≤ K` using `fun σ => Finset.single_le_sum (f := fun σ => |K₁ σ| + |K₂ σ|) (fun _ _ => by positivity) (Finset.mem_univ σ)`. Establish `hle1 : ∀ σ, K₁ σ ≤ K` using `fun σ => by linarith [le_abs_self (K₁ σ), abs_nonneg (K₂ σ), hle σ]`. Establish `hle2 : ∀ σ, K₂ σ ≤ K` using `fun σ => by linarith [le_abs_self (K₂ σ), abs_nonneg (K₁ σ), hle σ]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `int_tendsto_zero (T.M c) K hK0 (fun σ => GlobalTheory.T.mixed_integral_tail_bound_exists _ _ ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) ((T.M c).Om σ) ((T.M c).bd σ) K) _ _ ((|C₁| + |C₂|) * ‖u‖) (by positivity) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 2, Filter.eventually_all.2 fun σ => hK₂ σ K (hle2 σ)] with R hR hψ`. Introduce `k σ`. Use `split_ifs`. Conclude with `comb_c1 T B c u _ (smφ R hR) σ (hK₁ σ K (hle1 σ) R hR)`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `comb_c1 T B c u _ (smψ R hR) σ (hψ σ)`. Use `filter_upwards [eventually_ge_atTop 2] with R hR`. Introduce `σ`. Conclude with `st_smooth_continuous _ (fun l => ContDiffOn.sub (smφ R hR σ l) (smψ R hR σ l))`. Use `filter_upwards [eventually_ge_atTop 2] with R hR`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ x hx`. Use `show |(T.F c).phR R u σ x - psiOf h x' R u c σ x| ≤ _`. Use `(abs_sub _ _).trans ?_` and prove the remaining obligations. Use `bφ R hR σ x hx` as an intermediate fact. Use `bψ R hR σ x hx` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `ℓ δ hδ`. Establish `hS : Tendsto (fun R : ℝ => (∑ σ, |Cr σ|) * ‖u‖ / R) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop tendsto_id`. Use `filter_upwards [GlobalTheory.T.green_correction_converges_locally hP2 hPH D O hcore hf A T H h x' c u ℓ (δ / 2) (by positivity), (tendsto_order.1 hS).2 (δ / 2) (by positivity), eventually_ge_atTop (max 2 (ℓ ^ 2))] with R hψ hR hR2`. Introduce `σ x hx hr`.
-
-Establish `hR2' : 2 ≤ R` using `(le_max_left _ _).trans hR2`. Establish `hsq : (T.M c).r σ x ≤ Real.sqrt R`. Use `hr.trans ((le_abs_self ℓ).trans ?_)` and prove the remaining obligations. Rewrite using `[← Real.sqrt_sq_eq_abs]`. Conclude with `Real.sqrt_le_sqrt ((le_max_right _ _).trans hR2)`.
-
-Establish `e1` using `((hCr σ) u R hR2').2.2 x hx |>.2 hsq`. Establish `e2` using `hψ σ x hx hr`. Establish `hR0 : 0 < R` using `by linarith`. Establish `e3 : Cr σ * ‖u‖ / R ≤ (∑ σ, |Cr σ|) * ‖u‖ / R` using `by gcongr`. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun σ => |Cr σ|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ))`.
-
-Use `show |(T.F c).phR R u σ x - psiOf h x' R u c σ x| ≤ δ`. Establish `: (T.F c).phR R u σ x - psiOf h x' R u c σ x = ((T.F c).phR R u σ x - (T.F c).ph u σ x) - (psiOf h x' R u c σ x - (T.F c).ph u σ x)` using `by ring`. Rewrite using `[this]`. Use `(abs_sub _ _).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mixed_limit : Hypotheses2 → HypothesesH → OnObj fun D O A T H h => ∀ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ B : ℝ, 2 ≤ B → ∀ u : Wt O.Y, (∀ τ, StrictAnti (u τ)) → ∀ (c : O.Y.Comp) (i : ℕ), i ≤ dimY O.Y → Tendsto (fun R : ℝ => (T.M c).int (fun k : Fin (dimY O.Y) => (T.K B c).c1 (if (k : ℕ) < i then T.L B c u + (T.K B c).ar ((T.F c).phR R u) else T.L B c u + (T.K B c).ar (psiOf h x' R u c))) ((T.F c).phR R u - psiOf h x' R u c)) atTop (𝓝 0) := by
   intro hP2 hPH D O hcore hf A T H h x' B _ u hu c i _

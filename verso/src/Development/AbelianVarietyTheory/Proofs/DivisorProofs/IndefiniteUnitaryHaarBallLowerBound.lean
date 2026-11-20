@@ -22,11 +22,11 @@ theorem phiL_apply {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B) (M
     phiL ι E M = ∑ a, ∑ b, ι (M a b) * E a b := rfl
 
 /- English proof (translation)
-Establish `h : ∀ a' b', E c a * (ι (M a' b') * E a' b') * E d e = if a = a' then (if b' = d then ι (M a d) * E c e else 0) else 0`. Introduce `a' b'`. Rewrite using `[← mul_assoc, ← (hc (M a' b') (E c a)).eq]`. Simplify using `only [mul_assoc, hE, mul_ite, mul_zero]`. Use `split_ifs with h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h1 h2` using the available equality. Rewrite using `[mul_assoc, hE, if_pos rfl]`. Rewrite using `[mul_assoc, hE, if_neg h2, mul_zero]`. Rewrite using `[zero_mul]`. Simplify using `only [phiL_apply, Finset.mul_sum, Finset.sum_mul, h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+A detailed English derivation is pending.
 -/
 theorem core {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B)
     (hc : ∀ z x, Commute (ι z) x)
@@ -46,7 +46,7 @@ theorem core {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B)
   simp [Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Simplify using `only [core ι E hc hE, ← Finset.mul_sum, h1, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extract {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B)
     (hc : ∀ z x, Commute (ι z) x)
@@ -56,7 +56,7 @@ theorem extract {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B)
   simp only [core ι E hc hE, ← Finset.mul_sum, h1, mul_one]
 
 /- English proof (translation)
-Introduce `M N h`. Use extensionality with `a b`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← extract ι E hc hE h1 M a b, ← extract ι E hc hE h1 N a b, h]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiL_injective {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B)
     (hi : Function.Injective ι) (hc : ∀ z x, Commute (ι z) x)
@@ -68,18 +68,18 @@ theorem phiL_injective {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B
   rw [← extract ι E hc hE h1 M a b, ← extract ι E hc hE h1 N a b, h]
 
 /- English proof (translation)
-Simplify using `[phiL_apply, Matrix.one_apply, h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiL_one {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B)
     (h1 : ∑ a, E a a = 1) : phiL ι E 1 = 1 := by
   simp [phiL_apply, Matrix.one_apply, h1]
 
 /- English proof (translation)
-Establish `h : ∀ a b c d, ι (M a b) * E a b * (ι (N c d) * E c d) = if b = c then ι (M a b * N b d) * E a d else 0`. Introduce `a b c d`. Rewrite using `[mul_assoc, ← mul_assoc (E a b), ← (hc (N c d) (E a b)).eq, mul_assoc, hE, ← mul_assoc, ← map_mul]`. Use `split_ifs with hbc`. Substitute `hbc` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[mul_zero]`. Simplify using `only [phiL_apply, Finset.sum_mul, Finset.mul_sum, h, Matrix.mul_apply, map_sum]`. Simplify using `only [Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+A detailed English derivation is pending.
 -/
 theorem phiL_mul {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B)
     (hc : ∀ z x, Commute (ι z) x)
@@ -102,11 +102,11 @@ theorem phiL_mul {n : ℕ} (ι : K →ₐ[k] B) (E : Fin n → Fin n → B)
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Introduce `k K B _ _ _ _ _ _ n ι hi hc hdim E hE h1`. Use `haveI : FiniteDimensional k K := FiniteDimensional.of_injective (ι : K →ₐ[k] B).toLinearMap hi`. Establish `hinj` using `phiL_injective ι E hi hc hE h1`. Establish `hrank : Module.finrank k (Matrix (Fin n) (Fin n) K) = Module.finrank k B`. Rewrite using `[Module.finrank_matrix, hdim]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Fintype.card_fin, sq]`. Establish `hsurj : Function.Surjective (phiL ι E)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrank).mp hinj`. Set `f : Matrix (Fin n) (Fin n) K →+* B` to `{ toFun := phiL ι E map_one' := phiL_one ι E h1 map_mul' := phiL_mul ι E hc hE map_zero' := map_zero _ map_add' := map_add _ }`. Set `Φ : Matrix (Fin n) (Fin n) K ≃+* B` to `RingEquiv.ofBijective f ⟨hinj, hsurj⟩`. Use `⟨Φ, fun M => rfl, fun x a b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨M, rfl⟩` from `hsurj x`. Establish `hx : Φ.symm (phiL ι E M) = M` using `Φ.symm_apply_apply M`. Rewrite using `[hx]`. Conclude with `(extract ι E hc hE h1 M a b).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrixRingEquiv_of_matrixUnits : ∀ (k K B : Type) [Field k] [CommRing K] [Ring B] [Algebra k K] [Algebra k B] [FiniteDimensional k B] (n : ℕ) (ι : K →ₐ[k] B), Function.Injective ι → (∀ z x, Commute (ι z) x) → Module.finrank k B = n ^ 2 * Module.finrank k K → ∀ E : Fin n → Fin n → B, (∀ a b c d, E a b * E c d = if b = c then E a d else 0) → ∑ a, E a a = 1 → ∃ Φ : Matrix (Fin n) (Fin n) K ≃+* B, (∀ M, Φ M = ∑ a, ∑ b, ι (M a b) * E a b) ∧ ∀ x a b, ι (Φ.symm x a b) = ∑ c, E c a * x * E b c := by
   intro k K B _ _ _ _ _ _ n ι hi hc hdim E hE h1

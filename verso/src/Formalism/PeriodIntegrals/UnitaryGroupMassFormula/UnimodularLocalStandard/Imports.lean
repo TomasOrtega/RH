@@ -7,65 +7,57 @@ namespace PI.UnitaryGroupMassFormula.UnimodLocStd
 open PI.ULS
 
 /- English proof (translation)
-Introduce `a b c d ha hd lam hlam hok m _ _ Λa g hθ l hl hiso h1 hl1 h2`. Use `set θ := cmTheta b d with hθdef`. Use `set S := stdLat (cmL a b d ha hd lam hlam) m with hSdef`. Use `set X := imgLat (g : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa with hXdef`. Establish `hθn : θ * ((b : ℂ) - θ) = (a : ℂ) * c` using `theta_norm hok.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hθθ : θ * θ = (b : ℂ) * θ - (a : ℂ) * c` using `by linear_combination -hθn`. Establish `hXθ : ∀ x ∈ X, θ • x ∈ X`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨θ • y, hθ y hy, by simp⟩`. Establish `hlin : ∀ p q : ℤ, ∀ x ∈ X, ((p : ℂ) + (q : ℂ) * θ) • x ∈ X`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `p q x hx`. Rewrite using `[add_smul, mul_smul, Int.cast_smul_eq_zsmul ℂ p, Int.cast_smul_eq_zsmul ℂ q]`. Conclude with `X.add_mem (X.zsmul_mem hx p) (X.zsmul_mem (hXθ x hx) q)`. Take `⟨β, hβ⟩ : ∃ β : ℕ → ℂ, ∀ u, β u = 1 + ((u * l : ℕ) : ℂ) * θ` from `⟨_, fun _ => rfl⟩`. Take `⟨βb, hβb⟩ : ∃ βb : ℕ → ℂ, ∀ u, βb u = 1 + ((u * l : ℕ) : ℂ) * ((b : ℂ) - θ)` from `⟨_, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨K, hKdef⟩ : ∃ K : ℕ → ℤ, ∀ u, K u = 1 + ((u * l : ℕ) : ℤ) * b + ((u * l : ℕ) : ℤ) ^ 2 * a * c` from `⟨_, fun _ => rfl⟩`. Establish `hconj : ∀ u, (starRingEnd ℂ) (β u) = βb u`. Introduce `u`. Rewrite using `[hβ, hβb, map_add, map_one, map_mul, map_natCast, hθdef, theta_conj]`. Establish `hK : ∀ u, β u * βb u = ((K u : ℤ) : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `u`. Rewrite using `[hβ, hβb, hKdef]`. Use `push_cast`. Take the linear combination `((u : ℂ) * l) ^ 2 * hθn`. Establish `hKpos : ∀ u, 0 < K u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Rewrite using `[hKdef]`. Use `set U : ℤ := ((u * l : ℕ) : ℤ) with hU`. Establish `h4` using `hok.1`. Establish `hd1 : (1 : ℤ) ≤ d` using `by exact_mod_cast hd`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `key : 4 * (1 + U * b + U ^ 2 * a * c) = (2 + U * b) ^ 2 + U ^ 2 * d`. Take the linear combination `U ^ 2 * h4`. Break down `eq_or_ne U 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hU2 : 1 ≤ U ^ 2`. Use `pow_pos (abs_pos.2 h0) 2` as an intermediate fact. Rewrite `this` using `[sq_abs]`. Use linear arithmetic over natural numbers and integers. Use polynomial arithmetic with `[sq_nonneg (2 + U * b)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ0 : ∀ u, β u ≠ 0` using `fun u h => by`. Use `hK u` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `(hKpos u).ne' (by exact_mod_cast this.symm)`. Establish `hβb0 : ∀ u, βb u ≠ 0` using `fun u h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hK u` as an intermediate fact. Rewrite `this` using `[h, mul_zero]`. Conclude with `(hKpos u).ne' (by exact_mod_cast this.symm)`. Establish `hinj : Function.Injective (fun u => (β u / βb u)⁻¹)`. Introduce `u v huv`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `only [inv_inj] at huv`. Rewrite `huv` using `[div_eq_div_iff (hβb0 u) (hβb0 v), hβ, hβ, hβb, hβb]`. Establish `h2θ : 2 * θ - b ≠ 0` using `two_theta_sub b hd`. Establish `hmul : (((u * l : ℕ) : ℂ) - ((v * l : ℕ) : ℂ)) * (2 * θ - b) = 0`. Take the linear combination `huv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 hmul with h | h` into its components or cases. Establish `h' : u * l = v * l` using `Nat.cast_injective (sub_eq_zero.1 h)`. Conclude with `Nat.eq_of_mul_eq_mul_right hl.pos h'`. Conclude with `absurd h h2θ`. Establish `hfin` using `Module.End.finite_hasEigenvalue (g : Module.End ℂ (m → ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Take `⟨_, ⟨u, rfl⟩, hu⟩` from `(Set.infinite_range_of_injective hinj).exists_notMem_finite hfin`. Use `set w := β u / βb u with hwdef`. Establish `hw0 : w ≠ 0` using `div_ne_zero (hβ0 u) (hβb0 u)`. Set `δ : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)` to `g.trans (LinearEquiv.smulOfNeZero ℂ (m → ℂ) w hw0)`. Establish `hδ : ∀ x, δ x = w • g x` using `fun x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hcb : (starRingEnd ℂ) (βb u) = β u` using `by rw [← hconj u, Complex.conj_conj]`. Establish `hww : (starRingEnd ℂ) w * w = 1`. Rewrite using `[hwdef, map_div₀, hconj u, hcb]`. Clear denominators, using `[hβ0 u, hβb0 u]` for the nonvanishing conditions. Establish `hisoδ : IsIsom (stdH (cmL a b d ha hd lam hlam) m) (stdH (cmL a b d ha hd lam hlam) m) (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Use `show stdH (cmL a b d ha hd lam hlam) m (w • g x) (w • g y) = stdH (cmL a b d ha hd lam hlam) m x y`. Rewrite using `[LinearMap.map_smul (stdH (cmL a b d ha hd lam hlam) m) w (g x), LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul, ← mul_assoc, mul_comm w, hww, one_mul]`. Conclude with `hiso x y`. Establish `himg : imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa = X.map (smulHom w)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXdef]`. Unfold `imgLat`. Rewrite using `[AddSubgroup.map_map]`. Use `congr 1`. Use `set Nn := (K u).toNat with hNndef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hNnZ : ((Nn : ℕ) : ℤ) = K u` using `Int.toNat_of_nonneg (hKpos u).le`. Establish `hNn : ((Nn : ℕ) : ℂ) = β u * βb u`. Rewrite using `[hK u, ← hNnZ, Int.cast_natCast]`. Establish `hN0 : Nn ≠ 0` using `by have := hKpos u; omega`. Establish `ha' : ∀ x ∈ X, (Nn : ℂ) • w • x ∈ X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `heq : (Nn : ℂ) * w = (((1 - ((u * l : ℕ) : ℤ) ^ 2 * a * c : ℤ)) : ℂ) + (((2 * ((u * l : ℕ) : ℤ) + ((u * l : ℕ) : ℤ) ^ 2 * b : ℤ)) : ℂ) * θ`. Rewrite using `[hNn, hwdef]`. Establish `: β u * βb u * (β u / βb u) = β u * β u` using `by field_simp [hβb0 u]`. Rewrite using `[this, hβ]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Take the linear combination `((u : ℂ) * l) ^ 2 * hθθ`. Rewrite using `[smul_smul, heq]`. Conclude with `hlin _ _ x hx`. Establish `hb' : ∀ x ∈ X, (Nn : ℂ) • w⁻¹ • x ∈ X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx`. Establish `heq : (Nn : ℂ) * w⁻¹ = ((((1 + ((u * l : ℕ) : ℤ) * b) ^ 2 - ((u * l : ℕ) : ℤ) ^ 2 * a * c : ℤ)) : ℂ) + ((((u * l : ℕ) : ℤ) ^ 2 * b - 2 * (1 + ((u * l : ℕ) : ℤ) * b) * ((u * l : ℕ) : ℤ) : ℤ) : ℂ) * θ`. Rewrite using `[hNn, hwdef, inv_div]`. Establish `: β u * βb u * (βb u / β u) = βb u * βb u` using `by field_simp [hβ0 u]`. Rewrite using `[this, hβb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `push_cast`. Take the linear combination `((u : ℂ) * l) ^ 2 * hθθ`. Rewrite using `[smul_smul, heq]`. Conclude with `hlin _ _ x hx`. Take `⟨hi1, hi2⟩` from `comm_smul (S := S) (X := X) hw0 hN0 (stdLat_smul_idx _ m hN0) h1 h2 ha' hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hM : ∀ x ∈ X, (S.relIndex X) • x ∈ S`. Introduce `x hx`. Use `AddSubgroup.nsmul_index_mem (S.addSubgroupOf X) ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[AddSubgroup.mem_addSubgroupOf]`. Simplify `this` using `[AddSubgroup.relIndex]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hNl : ¬ l ∣ Nn`. Introduce `hdiv`. Establish `h1' : (l : ℤ) ∣ K u`. Use `Int.natCast_dvd_natCast.2 hdiv` as an intermediate fact. Rewrite `this` using `[hNnZ]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2' : (l : ℤ) ∣ K u - 1` using `⟨(u : ℤ) * (b + ((u * l : ℕ) : ℤ) * a * c), by rw [hKdef]; push_cast; ring⟩`. Establish `h3 : (l : ℤ) ∣ 1`. Use `Int.dvd_sub h1' h2'` as an intermediate fact. Simplify using `using this`. Establish `h4 : (l : ℤ) = 1` using `Int.eq_one_of_dvd_one (by positivity) h3`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Conclude with `hl.one_lt.ne' (by exact_mod_cast h4)`. Establish `hln : ¬ l ∣ S.relIndex X * Nn` using `fun h => ((Nat.Prime.dvd_mul hl).1 h).elim hl1 hNl`. Establish `hdvd` using `not_dvd_relIndex (A := S) (B := X.map (smulHom w)) (l := l) (n := S.relIndex X * Nn) hl hi1 (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[smulHom_apply, mul_smul, ← Nat.cast_smul_eq_nsmul ℂ Nn]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM _ (ha' x hx)) hln`. Use `⟨δ, hisoδ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Apply `hu` to reduce the goal to its premises.
-
-Establish `hgx : (g : Module.End ℂ (m → ℂ)) x = w⁻¹ • x`. Rewrite `hx` using `[hδ]`. Combine the equalities or inequalities in the displayed calculation. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := x) ?_` and prove the remaining obligations. Use `first`.
-
-Consider the case `exact Module.End.hasEigenvector_iff.2 ⟨Module.End.mem_eigenspace_iff.2 hgx, hx0⟩`. Consider the case `exact ⟨Module.End.mem_eigenspace_iff.2 hgx, hx0⟩`. Unfold `relIdx`. Rewrite using `[himg]`. Conclude with `hi1`.
-
-Unfold `relIdx`. Rewrite using `[himg]`. Conclude with `hdvd`. Unfold `relIdx`. Rewrite using `[himg]`.
-
-Conclude with `hi2`.
+A detailed English derivation is pending.
 -/
 theorem stepC : StepC := by
   intro a b c d ha hd lam hlam hok m _ _ Λa g hθ l hl hiso h1 hl1 h2

@@ -7,17 +7,15 @@ open Filter Topology Asymptotics
 universe u
 
 /- English proof (translation)
-Introduce `n M z u R δ hR hdeg k w`. Establish `hfin : (z ⁻¹' {w}).Finite` using `Set.finite_of_encard_le_coe (hdeg w)`. Establish `hcard : hfin.toFinset.card ≤ δ`. Use `hdeg w` as an intermediate fact. Rewrite `this` using `[← hfin.coe_toFinset, Set.encard_coe_eq_coe_finsetCard]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Unfold `fiberSymm fiberVals`. Rewrite using `[dif_pos hfin, Finset.esymm_map_val]`. Establish `hB : 0 ≤ max (R w) 0` using `le_max_right _ _`. Establish `hu : ∀ y ∈ hfin.toFinset, ‖u y‖ ≤ max (R w) 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy` using `[Set.Finite.mem_toFinset]`. Establish `hy' : z y = w` using `hy`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[Finset.mem_powersetCard]`. Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((hfin.toFinset.powersetCard k).card : ℝ) * (max (R w) 0) ^ k := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ 2 ^ δ * (max (R w) 0) ^ k := by`. Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg hB k)` to reduce the goal to its premises. Rewrite using `[Finset.card_powersetCard]`.
-
-Establish `h1` using `Nat.choose_le_two_pow hfin.toFinset.card k`. Establish `h2 : 2 ^ hfin.toFinset.card ≤ 2 ^ δ` using `Nat.pow_le_pow_right (by norm_num) hcard`. Conclude with `h1.trans h2` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem symmGrowth : symmGrowthStatement.{u} := by
   intro n M z u R δ hR hdeg k w

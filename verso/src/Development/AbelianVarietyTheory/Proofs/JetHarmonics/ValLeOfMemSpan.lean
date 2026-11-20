@@ -18,9 +18,9 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory.DepthBound
 
 /- English proof (translation)
-Establish `hS : minorsP k col m ∈ MvPolynomial.supported k {x : (Σ τ : T, Fin (r τ)) × Fin n | Z x.1.1 ∧ ∃ i, col x.1.1 i = x.2}`. Use `Subalgebra.prod_mem _ fun τ _ => Subalgebra.prod_mem _ fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : Z τ`. Conclude with `Subalgebra.pow_mem _ (LeadingMinors.det_X_mem_supported _ _ fun a i => by exact ⟨hz, _, rfl⟩) _`. Rewrite using `[hm τ hz, pow_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subalgebra.one_mem _`. Rewrite `hS` using `[MvPolynomial.mem_supported]`. Conclude with `hS (Finset.mem_coe.2 ((MvPolynomial.mem_vars_iff_mem_support (l, b)).2 ⟨mo, hmo, Finsupp.mem_support_iff.2 h⟩))`.
+A detailed English derivation is pending.
 -/
 theorem minorMonomial_support {k : Type} [CommRing k] {T : Type} [Fintype T] [DecidableEq T] {r : T → ℕ} {n : ℕ}
     (col : ∀ τ, Fin (r τ) → Fin n) (m : ∀ τ, Fin (r τ) → ℕ) (Z : T → Prop) (hm : ∀ t, ¬ Z t → ∀ s, m t s = 0)
@@ -37,7 +37,7 @@ theorem minorMonomial_support {k : Type} [CommRing k] {T : Type} [Fintype T] [De
     ⟨mo, hmo, Finsupp.mem_support_iff.2 h⟩))
 
 /- English proof (translation)
-Simplify using `only [minorsP, map_prod, map_pow, RingHom.map_det]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `ext1 a i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_minorsP {k k' : Type} [CommRing k] [CommRing k'] (φ : k →+* k') {T : Type} [Fintype T] [DecidableEq T]
     {r : T → ℕ} {n : ℕ} (col : ∀ τ, Fin (r τ) → Fin n) (m : ∀ τ, Fin (r τ) → ℕ) :
@@ -49,7 +49,7 @@ theorem map_minorsP {k k' : Type} [CommRing k] [CommRing k'] (φ : k →+* k') {
   simp
 
 /- English proof (translation)
-Simplify using `only [minorsP, map_prod, map_pow, RingHom.map_det]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `ext1 a i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_minorsP {k : Type} [CommRing k] {T : Type} [Fintype T] [DecidableEq T]
     {r : T → ℕ} {n : ℕ} (col : ∀ τ, Fin (r τ) → Fin n) (m : ∀ τ, Fin (r τ) → ℕ)
@@ -63,7 +63,7 @@ theorem eval_minorsP {k : Type} [CommRing k] {T : Type} [Fintype T] [DecidableEq
   simp
 
 /- English proof (translation)
-Simplify using `only [minorsP, pow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem minorMonomial_add (k : Type) [CommRing k] {T : Type} [Fintype T] [DecidableEq T]
     {r : T → ℕ} {n : ℕ} (col : ∀ τ, Fin (r τ) → Fin n) (m m' : ∀ τ, Fin (r τ) → ℕ) :
@@ -71,9 +71,9 @@ theorem minorMonomial_add (k : Type) [CommRing k] {T : Type} [Fintype T] [Decida
   simp only [minorsP, pow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun mo hmo => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (h1 mo hmo), Finset.prod_subset (Finset.subset_univ S)]`. Introduce `b _ hb`. Establish `: colM mo b = 0` using `Finsupp.ext fun l => by`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hb (hP mo hmo l b h)`. Rewrite using `[this, h0 b hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_prod_restrict {k ι : Type} [CommRing k] [Fintype ι] {n : ℕ} (S : Finset (Fin n))
     (P : MvPolynomial (ι × Fin n) k) (hP : ∀ mo ∈ P.support, ∀ l b, mo (l, b) ≠ 0 → b ∈ S)
@@ -95,7 +95,7 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] 
   [Algebra R k] (B : FB R d O) (h : PS k 2 d)
 
 /- English proof (translation)
-Unfold `FB.nabVal`. Rewrite using `[PullbackColumn.dpolyOf_monomial_one, PullbackColumn.dpolyOf_monomial_one, DirScale.dmonOf_smul_dir, map_mul, constantCoeff_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabVal_smul_dir (w0 : O) (q : ℕ) (f : PS k 1 d) {ι : Type} [Fintype ι] (c : ι → k) (u : ι → Fin d → k)
     (mo : ι →₀ ℕ) : B.nabVal k h w0 q f (fun l => c l • u l) (MvPolynomial.monomial mo 1) =
@@ -105,7 +105,7 @@ theorem nabVal_smul_dir (w0 : O) (q : ℕ) (f : PS k 1 d) {ι : Type} [Fintype �
     constantCoeff_C]
 
 /- English proof (translation)
-Unfold `FB.nabVal`. Rewrite using `[mul_assoc, GE.dpolyOf_Cmul_f, map_mul, constantCoeff_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabVal_C_mul (w0 : O) (q : ℕ) (c : k) (f : PS k 1 d) {ι : Type} [Fintype ι] (u : ι → Fin d → k)
     (P : MvPolynomial ι k) : B.nabVal k h w0 q (C c * f) u P = c * B.nabVal k h w0 q f u P := by
@@ -113,14 +113,14 @@ theorem nabVal_C_mul (w0 : O) (q : ℕ) (c : k) (f : PS k 1 d) {ι : Type} [Fint
   rw [mul_assoc, GE.dpolyOf_Cmul_f, map_mul, constantCoeff_C]
 
 /- English proof (translation)
-Use `congrArg constantCoeff hh.ax0` as an intermediate fact. Rewrite `this` using `[WickVanishing.gt_const_ev_eq _ (WickVanishing.pair_points_zero_constant WickVanishing.gp_zero₂ (WickVanishing.gp_pt 0)), map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem const_of_canon (hh : B.IsCanonGauge k h) : constantCoeff h = 0 := by
   have := congrArg constantCoeff hh.ax0
   rwa [WickVanishing.gt_const_ev_eq _ (WickVanishing.pair_points_zero_constant WickVanishing.gp_zero₂ (WickVanishing.gp_pt 0)), map_zero] at this
 
 /- English proof (translation)
-Establish `hA : ∀ b : O, WickVanishing.GP (B.actK k b)` using `fun b => QuadDeriv.constantCoeff_mapP_eq_zero _ _ (B.A.const b)`. Establish `cL : constantCoeff (B.hL k h w0) = 0` using `WickVanishing.gt_const_ev _ (WickVanishing.pair_points_zero_constant (WickVanishing.gp_pt 0) (WickVanishing.gp_comp1 _ _ (hA w0) (WickVanishing.gp_pt 0))) h (const_of_canon B h hh)`. Unfold `FB.nabVal`. Rewrite using `[PullbackColumn.dpolyOf_monomial_one, ColumnValue.dmonOf_zero_index, map_mul, CrudeValue.constantCoeff_expS _ (by rw [WickVanishing.nt_const_smul, cL, mul_zero]), mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabVal_zero (hh : B.IsCanonGauge k h) (w0 : O) (q : ℕ) (f : PS k 1 d) {ι : Type} [Fintype ι]
     (u : ι → Fin d → k) : B.nabVal k h w0 q f u (MvPolynomial.monomial 0 1) = constantCoeff f := by
@@ -137,7 +137,7 @@ include hφ
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-Use extensionality with `mo`. Simplify using `only [coeff_map, ← hφ, RingHom.comp_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toK_map {n : ℕ} (f : PS R n d) : FB.toK k (MvPowerSeries.map φ f) = FB.toK k f := by
   ext mo
@@ -145,20 +145,18 @@ theorem toK_map {n : ℕ} (f : PS R n d) : FB.toK k (MvPowerSeries.map φ f) = F
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-The claim follows from `funext fun _ => toK_map φ hφ _`.
+A detailed English derivation is pending.
 -/
 theorem FK_map : (FBMap.mapFB φ B).FK k = B.FK k := funext fun _ => toK_map φ hφ _
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-The claim follows from `funext fun _ => funext fun _ => toK_map φ hφ _`.
+A detailed English derivation is pending.
 -/
 theorem actK_map : (FBMap.mapFB φ B).actK k = B.actK k := funext fun _ => funext fun _ => toK_map φ hφ _
 
 /- English proof (translation)
-Use `⟨hh.ax0, hh.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[FK_map B φ hφ]`. Conclude with `(toK_map φ hφ _).trans hh.ph1`. Rewrite using `[FK_map B φ hφ]`. Conclude with `(toK_map φ hφ _).trans hh.ph2`.
-
-Conclude with `(toK_map φ hφ _).trans hh.sy`. Rewrite using `[actK_map B φ hφ]`. Conclude with `(toK_map φ hφ _).trans (hh.ad a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCanonGauge_map (hh : B.IsCanonGauge k h) : (FBMap.mapFB φ B).IsCanonGauge k h := by
   refine ⟨hh.ax0, hh.ax1, ?_, ?_, ?_, fun a => ?_⟩
@@ -169,20 +167,20 @@ theorem isCanonGauge_map (hh : B.IsCanonGauge k h) : (FBMap.mapFB φ B).IsCanonG
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `w0`. Unfold `FB.hL`. Rewrite using `[actK_map B φ hφ]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hL_map : (FBMap.mapFB φ B).hL k h = B.hL k h := by
   funext w0; unfold FB.hL; rw [actK_map B φ hφ]
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Unfold `dAct`. Rewrite using `[actK_map B φ hφ]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dAct_map : dAct k (FBMap.mapFB φ B) = dAct k B := by
   funext a; unfold dAct; rw [actK_map B φ hφ]
 
 /- English proof (translation)
-Unfold `FB.nabVal`. Rewrite using `[FK_map B φ hφ, hL_map B h φ hφ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabVal_map (w0 : O) (q : ℕ) (f : PS k 1 d) {ι : Type} [Fintype ι] (u : ι → Fin d → k)
     (P : MvPolynomial ι k) : (FBMap.mapFB φ B).nabVal k h w0 q f u P = B.nabVal k h w0 q f u P := by
@@ -195,9 +193,9 @@ section Val
 variable {F : Type} [Field F] (v : AddValuation F (WithTop ℚ))
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ v ((y : F) / x)`. Assume the negation of the conclusion as `hlt`. Establish `e : v (y : F) = v ((y : F) / x) + v (x : F)` using `by rw [← v.map_mul, div_mul_cancel₀ _ hx]`. Establish `hne : v (x : F) ≠ ⊤` using `fun e' => hx (v.top_iff.1 e')`. Use `WithTop.add_lt_add_right hne (not_le.1 hlt)` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← e, zero_add]`. Conclude with `absurd h (not_le.2 this)`. Use `Ideal.mem_span_singleton'.2 ⟨⟨(y : F) / x, h0⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `div_mul_cancel₀ _ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_span_of_val_le (x y : TWO.Ov v) (hx : (x : F) ≠ 0) (h : v (x : F) ≤ v (y : F)) : y ∈ Ideal.span {x} := by
   have h0 : 0 ≤ v ((y : F) / x) := by
@@ -211,7 +209,7 @@ theorem mem_span_of_val_le (x y : TWO.Ov v) (hx : (x : F) ≠ 0) (h : v (x : F) 
   exact div_mul_cancel₀ _ hx
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 h`. Rewrite using `[Subring.coe_mul, v.map_mul]`. Conclude with `le_add_of_nonneg_left (TWO.v_nonneg v c)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_of_mem_span {x y : TWO.Ov v} (h : y ∈ Ideal.span {x}) : v (x : F) ≤ v (y : F) := by
   obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 h
@@ -219,7 +217,7 @@ theorem val_le_of_mem_span {x y : TWO.Ov v} (h : y ∈ Ideal.span {x}) : v (x : 
   exact le_add_of_nonneg_left (TWO.v_nonneg v c)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k S hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk, v.map_mul, WithTop.coe_add]`. Conclude with `add_le_add (h k (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_prod_le {κ : Type} (S : Finset κ) (x : κ → F) (r : κ → ℚ) (h : ∀ k ∈ S, v (x k) ≤ (r k : ℚ)) :
     v (∏ k ∈ S, x k) ≤ ((∑ k ∈ S, r k : ℚ) : WithTop ℚ) := by
@@ -233,53 +231,43 @@ theorem val_prod_le {κ : Type} (S : Finset κ) (x : κ → F) (r : κ → ℚ) 
 end Val
 
 /- English proof (translation)
-Establish `hpF : ((p : TWO.Ov v) : F) = p` using `map_natCast (TWO.Ov v).subtype p`. Establish `hmax : ∀ x ∈ Ideal.span {(p : TWO.Ov v)}, x ∈ IsLocalRing.maximalIdeal (TWO.Ov v)` using `fun x hx => (Ideal.span_singleton_le_iff_mem _).2 hp hx`. Set `e₁ : (Σ t, Fin (rk t)) → Fin d → TWO.Ov v` to `fun l => if Z l.1 then e l else 0`. Set `α : (Σ t, Fin (rk t)) → TWO.Ov v` to `fun l => if Z l.1 then τ l.1 a else 0`. Set `y₁ : (Σ t, Fin (rk t)) × Fin n → TWO.Ov v` to `fun x => if Z x.1.1 ∧ x.2 ∈ S then yy x else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f₁ : Fin n → PS (TWO.Ov v) 1 d` to `fun b => if b ∈ S then f b else 1`. Establish `hB'` using `isCanonGauge_map B h φ hφ hh`. Take `⟨ρ, hρ, hval⟩` from `nabVal_columns_congr (TWO.Ov v) d O F (FBMap.mapFB φ B) h hB' w0 a p k (MvPowerSeries.map φ ω) (by rw [toK_map φ hφ, actK_map B φ hφ, hL_map B h φ hφ, hω]) (Ideal.span {(p : TWO.Ov v)}) _ e₁ α (fun l => by`. Distinguish the cases in `hl : Z l.1`. Simplify `hZ _ hl` using `only [α, if_pos hl]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [α, if_neg hl]`. Conclude with `Ideal.zero_mem _)`. Use the proof step `(fun l => by`. Rewrite using `[dAct_map B φ hφ]`. Distinguish the cases in `hl : Z l.1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [e₁, α, if_pos hl]`. Conclude with `he a l`. Simplify using `only [e₁, α, if_neg hl, Pi.zero_apply, map_zero, zero_smul]`. Conclude with `Matrix.mulVec_zero _)`. Use the proof step `(fun l l' => by`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[dAct_map B φ hφ]`. Distinguish the cases in `hl : Z l.1`. Distinguish the cases in `hl' : Z l'.1`. Simplify using `only [e₁, if_pos hl, if_pos hl']`. Take `⟨u, u', huu⟩` from `hcop`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : τ l'.1 (star a) ∉ IsLocalRing.maximalIdeal (TWO.Ov v)` using `fun hx => by`. Use `congrArg (τ l'.1) huu` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, map_one]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 (this ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ (hmax _ (hZ _ hl'))) (Ideal.mul_mem_left _ _ hx)))`. Establish `h2 : IsUnit (τ l.1 a - τ l'.1 (star a))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Assume the negation of the conclusion as `hx`. Use `Ideal.sub_mem _ (hmax _ (hZ _ hl)) ((IsLocalRing.mem_maximalIdeal _).2 hx)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Conclude with `h1 this`. Establish `h3` using `bilinPart_eigen_mem_range (TWO.Ov v) d O F _ h hB' a (e l) (e l') _ _ (by rw [dAct_map B φ hφ]; exact he a l) (by rw [dAct_map B φ hφ]; exact he (star a) l') h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `he w0 l'`. Express the relevant statement in the definitionally equal form `(dAct F B w0).mulVec (fun i => algebraMap (TWO.Ov v) F (e l' i)) = algebraMap (TWO.Ov v) F (τ l'.1 w0) • fun i => algebraMap (TWO.Ov v) F (e l' i) at h4`. Rewrite using `[h4, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Conclude with `Subring.mul_mem _ ⟨_, rfl⟩ h3`. Simplify using `only [e₁, if_neg hl', Pi.zero_apply, map_zero]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (fun _ : Fin d => (0 : F)) = 0 from rfl, Matrix.mulVec_zero, Matrix.mulVec_zero, dotProduct_zero]`. Conclude with `Subring.zero_mem _`. Simplify using `only [e₁, if_neg hl, Pi.zero_apply, map_zero]`. Rewrite using `[show (fun _ : Fin d => (0 : F)) = 0 from rfl, zero_dotProduct]`. Conclude with `Subring.zero_mem _)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `n f₁ y₁`. Use the proof step `(fun l b mo => by`. Distinguish the cases in `hl : Z l.1`. Distinguish the cases in `hb : b ∈ S`. Use `mem_span_of_val_le v _ _ (by rw [hpF]; exact_mod_cast hp0) ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpF]`. Use `(hf b hb l hl mo).trans_eq (congrArg v ?_)` and prove the remaining obligations. Simplify using `only [e₁, f₁, y₁, if_pos hl, if_pos hb, if_pos (And.intro hl hb)]`. Express the relevant statement in the definitionally equal form `_ = algebraMap (TWO.Ov v) F (coeff mo (Dof (FBMap.mapFB φ B).G.F (e l) (f b) - C (yy (l, b)) * f b))`. Rewrite using `[← coeff_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `congrArg (coeff mo) (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_C, InvDerMap.map_Dof, ← FK_map B φ hφ]`. Both sides reduce to the same expression. Simplify using `[f₁, y₁, hb, Dof]`. Simplify using `[e₁, y₁, hl, Dof])`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(minorsP (TWO.Ov v) col m)`. Establish `hinj : Function.Injective (algebraMap (TWO.Ov v) F)` using `Subtype.val_injective`. Rewrite using `[sum_prod_restrict S (minorsP F col m) (fun mo hmo l b hb => by`. Take `⟨hz, i, rfl⟩` from `minorMonomial_support col m Z hm hmo l b hb`. Conclude with `hS _ i hz)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun b mo => B.nabVal F h w0 (k * p) (FB.toK F (f b) * FB.toK F ω ^ k) (fun l i => (e l i : F)) (MvPolynomial.monomial mo 1))`. Use the proof step `(fun b mo => (FBMap.mapFB φ B).nabVal F h w0 (p * k) (FB.toK F (f₁ b * MvPowerSeries.map φ ω ^ k)) (fun l i => algebraMap (TWO.Ov v) F (e₁ l i)) (MvPolynomial.monomial mo 1))`. Use the proof step `(fun mo hmo b hb => by`. Establish `e1 : (fun l i => algebraMap (TWO.Ov v) F (e₁ l i)) = fun l => (if Z l.1 then (1 : F) else 0) • fun i => (e l i : F)`. Use function extensionality and compare the values at `l i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases hl : Z l.1 <;> simp [e₁, hl]`. Establish `e2 : ∏ l, (if Z l.1 then (1 : F) else 0) ^ colM mo b l = 1` using `Finset.prod_eq_one fun l _ => by`. Distinguish the cases in `hl : Z l.1`. Rewrite using `[if_pos hl, one_pow]`. Establish `: colM mo b l = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx`. Conclude with `hl (minorMonomial_support col m Z hm hmo l b hx).1`. Rewrite using `[this, pow_zero]`. Use `beta_reduce`. Rewrite using `[nabVal_map B h φ hφ, e1, nabVal_smul_dir, e2, one_mul, mul_comm p k, FB.toK, FB.toK, FB.toK, map_mul, map_pow, ← FB.toK, ← FB.toK, ← FB.toK, ← FB.toK, toK_map φ hφ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [f₁, if_pos hb])`. Use the proof step `(fun b hb => by beta_reduce`. Rewrite using `[nabVal_zero _ h hB']`. Simplify using `[f₁, hb, hω1])]`. Rewrite using `[← map_minorsP (algebraMap (TWO.Ov v) F), MvPolynomial.support_map_of_injective _ hinj]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [MvPolynomial.coeff_map]`. Rewrite using `[hval, map_add]`. Establish `hmain : v (algebraMap (TWO.Ov v) F (MvPolynomial.eval y₁ (minorsP (TWO.Ov v) col m) * ∏ b, constantCoeff (f₁ b))) ≤ ((∑ t, ∑ s : Fin (rk t), m t s * (s.val + 1) : ℕ) * γ : ℚ)`. Rewrite using `[map_mul, v.map_mul, map_prod, eval_minorsP, map_prod]`. Use `(add_le_add (val_prod_le v _ _ (fun t => ∑ s : Fin (rk t), (m t s * (s.val + 1) : ℕ) * γ) fun t _ => ?_) (val_prod_le v _ _ (fun _ => 0) fun b _ => ?_)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_prod]`. Use `val_prod_le v _ _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, v.map_pow]`. Distinguish the cases in `ht : Z t`. Establish `e3 : (Matrix.of fun a i : Fin (s.val + 1) => y₁ (⟨t, Fin.castLE s.isLt a⟩, col t (Fin.castLE s.isLt i))) = Matrix.of fun a i : Fin (s.val + 1) => yy (⟨t, Fin.castLE s.isLt a⟩, col t (Fin.castLE s.isLt i))` using `by ext1 a i`.
-
-Conclude with `if_pos ⟨ht, hS _ _ ht⟩`. Rewrite using `[e3]`. Use `(nsmul_le_nsmul_right (hy t ht s) _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← WithTop.coe_nsmul]`. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hm t ht]`. Distinguish the cases in `hb : b ∈ S`. Use `hf0 b hb` as an intermediate fact.
-
-Rewrite `this` using `[constantCoeff_map]`. Simplify using `only [f₁, if_pos hb, this]`. Both sides reduce to the same expression. Simplify using `[f₁, hb]`. Rewrite using `[← WithTop.coe_add]`.
-
-Use `congr 1`. Simplify using `[Finset.sum_mul]`. Establish `hρ' : ((ep : ℚ) : WithTop ℚ) ≤ v (algebraMap (TWO.Ov v) F ρ)`. Rewrite using `[← hep, ← hpF]`. Conclude with `val_le_of_mem_span v hρ`.
-
-Rewrite using `[v.map_add_eq_of_lt_left (lt_of_le_of_lt hmain (lt_of_lt_of_le (by exact_mod_cast hD) hρ'))]`. Conclude with `hmain`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eigen_columns {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] {F : Type} [Field F]
     [CharZero F] [Algebra R F] (v : AddValuation F (WithTop ℚ)) (φ : R →+* TWO.Ov v)
@@ -438,9 +426,9 @@ theorem val_eigen_columns {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing
   exact hmain
 
 /- English proof (translation)
-Establish `h1 : IsCoprime ((n.factorial : ℤ) : TWO.Ov v) ((p : ℤ) : TWO.Ov v)` using `(Nat.isCoprime_iff_coprime.2 (hp.coprime_factorial_of_lt hn).symm).intCast`. Take `⟨a, b, hab⟩` from `h1`. Establish `h2 : IsUnit ((n.factorial : ℕ) : TWO.Ov v)`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hab with h | h` into its components or cases. Conclude with `isUnit_of_mul_isUnit_right h` after adjusting the coercions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `absurd (by exact_mod_cast isUnit_of_mul_isUnit_right h) hpu`. Establish `h3` using `TWO.v_unit v h2.unit`. Rewrite `h3` using `[IsUnit.unit_spec, show (((n.factorial : ℕ) : TWO.Ov v) : F) = n.factorial from map_natCast (TWO.Ov v).subtype _]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_factorial {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {p n : ℕ} (hp : p.Prime)
     (hpu : ¬ IsUnit (p : TWO.Ov v)) (hn : n < p) : v (n.factorial : F) = 0 := by
@@ -456,27 +444,25 @@ theorem val_factorial {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {p
     map_natCast (TWO.Ov v).subtype _] at h3
 
 /- English proof (translation)
-Set `sc : (Σ t, Fin (rk t)) → (TWO.Ov v)ˣ` to `fun l => if hl : Z l.1 then (hZ _ hl).unit else 1`. Set `lam' : (Σ t, Fin (rk t)) → Fin d → TWO.Ov v` to `fun l i => ((sc l)⁻¹ : (TWO.Ov v)ˣ) * lam l i`. Set `u' : (Σ t, Fin (rk t)) → Fin d → F` to `fun l => ((sc l : TWO.Ov v) : F) • fun i => (e l i : F)`. Take `⟨al, hal⟩ : ∃ al : (Σ t, Fin (rk t)) × Fin n →₀ ℕ, al = ∑ τ, ∑ s : Fin (rk τ), m τ s • ∑ a : Fin (s.val + 1), Finsupp.single ((⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (rk τ)), col τ (Fin.castLE s.isLt a)) 1` from `⟨_, rfl⟩`. Take `⟨hc1, -, hdeg, -⟩` from `LeadingMinors.coeff_prod_leading_minors F T rk n col m hcol (minorsP F col m) al rfl hal`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsup : al ∈ (minorsP F col m).support` using `MvPolynomial.mem_support_iff.2 (by rw [hc1]; exact one_ne_zero)`. Establish `hcols : ∀ mo ∈ (minorsP F col m).support, ∀ l b, mo (l, b) ≠ 0 → b ∈ S` using `fun mo hmo l b hb => by`. Take `⟨hz, i, rfl⟩` from `minorMonomial_support col m Z hm hmo l b hb`. Conclude with `hS _ i hz`. Set `g : Fin n → PS F 1 d` to `fun b => ∏ l, (∑ i, C (lam' l i : F) * (X ((0 : Fin 1), i) : PS F 1 d)) ^ al (l, b)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, fun b => (colM al b).degree, fun b mo => ?_, (SymbolCols.sum_degree_colM al).trans hdeg, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: g b = MvPowerSeries.map (algebraMap (TWO.Ov v) F) (∏ l, (∑ i, C (lam' l i) * (X ((0 : Fin 1), i) : PS (TWO.Ov v) 1 d)) ^ al (l, b))`. Simplify using `only [map_prod, map_pow, map_sum, map_mul, map_C, map_X]`. Both sides reduce to the same expression. Rewrite using `[this, coeff_map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `TWO.v_nonneg v _`. Set `f₂ : Fin n → PS F 1 d` to `fun b => if b ∈ S then f b else g b`. Establish `key` using `sum_prod_nabVal_leading_minors_of_column_jets R d O F B h (const_of_canon B h hh) w0 k T rk n col m hcol (minorsP F col m) al rfl hal u' (fun _ l i => (lam' l i : F)) (fun b l l' _ _ => by`. Establish `h1 : ∑ i, lam' l i * ((sc l' : TWO.Ov v) * e l' i) = if l = l' then 1 else 0`. Establish `: ∀ i, lam' l i * ((sc l' : TWO.Ov v) * e l' i) = (((sc l)⁻¹ : (TWO.Ov v)ˣ) * (sc l' : TWO.Ov v)) * (lam l i * e l' i)` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [lam']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this]`. Rewrite using `[← Finset.mul_sum, hlam]`. Use `split_ifs with hl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl, Units.inv_mul, mul_one]`. Rewrite using `[mul_zero]`. Establish `h2` using `congrArg (algebraMap (TWO.Ov v) F) h1`. Rewrite `h2` using `[map_sum, apply_ite (algebraMap (TWO.Ov v) F), map_one, map_zero]`. Conclude with `h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun _ => 1) f₂ (fun b mo hmo => by`. Rewrite using `[one_mul]`. Distinguish the cases in `hb : b ∈ S`. Simplify using `only [f₂, if_pos hb]`. Conclude with `hf b hb mo hmo`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [f₂, if_neg hb]`. Use the proof step `rfl)`. Rewrite using `[sum_prod_restrict S (minorsP F col m) hcols (fun b mo => B.nabVal F h w0 (k * p) (ev (n := 1) ![B.actK F a] (f b) * FB.toK F ω ^ k) (fun l i => (e l i : F)) (MvPolynomial.monomial mo 1)) (fun b mo => B.nabVal F h w0 k (f₂ b) u' (MvPolynomial.monomial mo 1)) (fun mo hmo b hb => b …`. Rewrite using `[mul_comm k p, nabVal_pullback_monomial R d O F B h hh w0 a p k ω hω _ _ (fun l => (τ l.1 a : F)) he, nabVal_smul_dir]`. Simplify using `only [f₂, if_pos hb]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : Z l.1`. Simplify using `only [sc, dif_pos hl, IsUnit.unit_spec]`. Establish `: colM mo b l = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hx`. Conclude with `hl (minorMonomial_support col m Z hm hmo l b hx).1`. Rewrite using `[this, pow_zero, pow_zero])`. Use the proof step `(fun b hb => by beta_reduce`. Establish `h0 : ∀ l, al (l, b) = 0` using `fun l => by`.
-
-Assume the negation of the conclusion as `hx`. Conclude with `hb (hcols al hsup l b hx)`. Rewrite using `[nabVal_zero _ h hh]`. Simplify using `only [f₂, if_neg hb, g, h0, pow_zero, Finset.prod_const_one, map_one]), key, Finset.prod_const_one, one_mul]`. Use `Finset.prod_induction _ (fun x => v x = 0) (fun x x' hx hx' => by rw [v.map_mul, hx, hx', add_zero]) v.map_one fun x _ => val_factorial v hp' hp (lt_of_le_of_lt (Finsupp.le_degree x al) (hdeg ▸ hD))` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem val_unit_columns {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] {F : Type} [Field F]
     [CharZero F] [Algebra R F] (v : AddValuation F (WithTop ℚ)) (B : FB R d O) (h : PS F 2 d)

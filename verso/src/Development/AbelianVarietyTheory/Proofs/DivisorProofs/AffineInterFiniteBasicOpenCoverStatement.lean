@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineInterFiniteBa
 open AlgebraicGeometry
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.affine_inter_finite_basicOpen_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAffineInterFiniteBasicOpenCover.lean&line=7#L7)
 -/

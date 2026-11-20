@@ -12,14 +12,14 @@ lemma jm_eq {n : ℕ} (ε : Fin n → Bool) :
     Formalism.REAL.Jm ε = Matrix.diagonal (fun a => if ε a then (1 : ℂ) else -1) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases ε a <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_mul_self {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     (if ε a then (1 : ℂ) else -1) * (if ε a then (1 : ℂ) else -1) = 1 := by
   cases ε a <;> simp
 
 /- English proof (translation)
-Rewrite using `[jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `sgn_mul_self ε a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma jm_mul_jm {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   rw [jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -28,27 +28,27 @@ lemma jm_mul_jm {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formali
   exact sgn_mul_self ε a
 
 /- English proof (translation)
-Rewrite using `[jm_eq, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma jm_mul_apply {n : ℕ} (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     (Formalism.REAL.Jm ε * k) a b = (if ε a then (1 : ℂ) else -1) * k a b := by
   rw [jm_eq, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Rewrite using `[jm_eq, Matrix.mul_diagonal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mul_jm_apply {n : ℕ} (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     (k * Formalism.REAL.Jm ε) a b = k a b * (if ε b then (1 : ℂ) else -1) := by
   rw [jm_eq, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b hab`. Establish `e` using `congrFun (congrFun h a) b`. Rewrite `e` using `[jm_mul_apply, mul_jm_apply]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd (ha.trans hb.symm) hab`. Simplify using `only [ha, hb, Bool.false_eq_true, ↓reduceIte] at e`. Establish `h2 : (2 : ℂ) * k a b = 0` using `by linear_combination -e`. Simplify using `using h2`. Simplify using `only [ha, hb, Bool.false_eq_true, ↓reduceIte] at e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (2 : ℂ) * k a b = 0` using `by linear_combination e`. Simplify using `using h2`. Conclude with `absurd (ha.trans hb.symm) hab`. Introduce `h`. Use extensionality with `a b`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[jm_mul_apply, mul_jm_apply]`. Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[hab, mul_comm]`. Rewrite using `[h a b hab]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma comm_iff {n : ℕ} (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.Jm ε * k = k * Formalism.REAL.Jm ε ↔ ∀ a b, ε a ≠ ε b → k a b = 0 := by
@@ -73,9 +73,9 @@ lemma comm_iff {n : ℕ} (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) 
     · rw [h a b hab]; simp
 
 /- English proof (translation)
-Introduce `n ε k hk`. Unfold `Formalism.REAL.inUJ at hk`. Rewrite using `[← comm_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu' : k * kᴴ = 1` using `mul_eq_one_comm.mp hu`. Combine the equalities or inequalities in the displayed calculation. Introduce `hc`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 theorem realK : PI.AdBridgeSteps.RealK := by
   intro n ε k hk

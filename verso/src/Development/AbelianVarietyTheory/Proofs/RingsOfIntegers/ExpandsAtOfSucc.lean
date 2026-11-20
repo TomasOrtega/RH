@@ -19,7 +19,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
 omit [IsDomain R] [GrpObj G] [IsCommMonObj G] in
 
 /- English proof (translation)
-Unfold `thickMap fGl fstG`. Simplify using `only [Over.homMk_left, pullback.map]`. Conclude with `pullback.lift_fst _ _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thickMap_comp_fGl (I : Ideal R) (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     thickMap R I e G ≫ fGl I G (e + 1) = fGl I G e := by
@@ -28,7 +28,7 @@ theorem thickMap_comp_fGl (I : Ideal R) (e : ℕ) (G : Over (Spec (CommRingCat.o
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Unfold `LB.pull LB.LinComb`. Simplify using `only [LB.wchart]`. Simplify using `using fun i : PUnit => (show i = ⟨⟩ from rfl) ▸ h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma mem_pull_U_of_mem_U {X Y : Scheme.{0}} {M : LB X} (f : Y ⟶ X) (j : PUnit → M.ι) (y : Y)
     (h : f y ∈ M.U (j ⟨⟩)) : y ∈ (M.pull f).U j := by
@@ -37,7 +37,7 @@ private lemma mem_pull_U_of_mem_U {X Y : Scheme.{0}} {M : LB X} (f : Y ⟶ X) (j
   simpa using fun i : PUnit => (show i = ⟨⟩ from rfl) ▸ h
 
 /- English proof (translation)
-Rewrite using `[← gm_rp₁ (𝟙 Z) z W V h hz x]`. Unfold `pullU`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 private lemma gm_res_eq_gm {Z : Scheme.{0}} (z : Z) {V W : Z.Opens} (h : V ≤ W) (hz : z ∈ V) (x : Γ(Z, W)ˣ) :
     gm (𝟙 Z) z V (res h x) = gm (𝟙 Z) z W x := by
@@ -46,11 +46,11 @@ private lemma gm_res_eq_gm {Z : Scheme.{0}} (z : Z) {V W : Z.Opens} (h : V ≤ W
   congr 2
 
 /- English proof (translation)
-Establish `hq` using `U.gt_q e`. Establish `hf` using `thickMap_comp_fGl I e G`. Establish `h3 : (pGl U (e + 1)) ((thickMap R I e G) y) = (pGl U e) y` using `congrArg (fun g => g.base y) hq`. Establish `h4 : (fGl I G (e + 1)) ((thickMap R I e G) y) = (fGl I G e) y` using `congrArg (fun g => g.base y) hf`. Establish `hy : y ∈ ((D.toPre.P.L.pull (pGl U e)).U fun _ => jM) ⊓ (U.LG.L.pull (fGl I G e)).U fun _ => jL` using `⟨mem_pull_U_of_mem_U _ _ _ hM, mem_pull_U_of_mem_U _ _ _ hL⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : y ∈ thickMap R I e G ⁻¹ᵁ (((D.toPre.P.L.pull (pGl U (e + 1))).U fun _ => jM) ⊓ (U.LG.L.pull (fGl I G (e + 1))).U fun _ => jL)` using `⟨mem_pull_U_of_mem_U _ _ _ (h3 ▸ hM), mem_pull_U_of_mem_U _ _ _ (h4 ▸ hL)⟩`. Establish `hle : thickMap R I e G ⁻¹ᵁ (((D.toPre.P.L.pull (pGl U (e + 1))).U fun _ => jM) ⊓ (U.LG.L.pull (fGl I G (e + 1))).U fun _ => jL) ⊓ (((D.toPre.P.L.pull (pGl U e)).U fun _ => jM) ⊓ (U.LG.L.pull (fGl I G e)).U fun _ => jL) ≤ thickMap R I e G ⁻¹ᵁ (((D.toPre.P.L.pull (pGl U (e + 1))).U …` using `inf_le_left`. Establish `hV : y ∈ (thickMap R I e G ⁻¹ᵁ (((D.toPre.P.L.pull (pGl U (e + 1))).U fun _ => jM) ⊓ (U.LG.L.pull (fGl I G (e + 1))).U fun _ => jL)) ⊓ (((D.toPre.P.L.pull (pGl U e)).U fun _ => jM) ⊓ (U.LG.L.pull (fGl I G e)).U fun _ => jL)` using `⟨hy', hy⟩`. Unfold `wv`. Use `(gm_rp₁ (thickMap R I e G) y _ _ hle hV ((U.w (e + 1)).s (fun _ => jM, fun _ => jL))).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (gm (𝟙 _) y _) (U.w_compat e (fun _ => jM, fun _ => jL) _ hle inf_le_right)).trans (gm_res_eq_gm y (inf_le_right : (thickMap R I e G ⁻¹ᵁ (((D.toPre.P.L.pull (pGl U (e + 1))).U fun _ => jM) ⊓ (U.LG.L.pull (fGl I G (e + 1))).U fun _ => jL)) ⊓ (((D.toPre.P.L.pull (pGl U e) …`.
+A detailed English derivation is pending.
 -/
 theorem wv_thickMap (e : ℕ) (y : (thickObj R I e G).left) (jM : D.toPre.P.L.ι) (jL : U.LG.L.ι)
     (hM : pGl U e y ∈ D.toPre.P.L.U jM) (hL : fGl I G e y ∈ U.LG.L.U jL) :

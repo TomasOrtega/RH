@@ -21,13 +21,13 @@ namespace GlobalTheory.CompanionTheory.ThTot.OneRow
 variable {D : D7}
 
 /- English proof (translation)
-Establish `coord : ∀ k : D.what₂.Tau × Fin m × Fin n × Bool, Function.HasTemperateGrowth (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => if k.2.2.2 then conj (z k.1 k.2.1 k.2.2.1) else z k.1 k.2.1 k.2.2.1)`. Introduce and unpack `⟨τ, i, j, b⟩`. Set `L : (D.what₂.Tau → Fin m → Fin n → ℂ) →L[ℝ] ℂ` to `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) j).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) i).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : D.what₂.Tau => Fin m → Fin n → ℂ) τ))`. Consider the cases of `b`. Conclude with `L.hasTemperateGrowth`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Split into cases according to the possible forms of the given data. Proceed by induction.
 
-Conclude with `(Complex.conjCLE.toContinuousLinearMap.comp L).hasTemperateGrowth`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa [evalPoly] using Function.HasTemperateGrowth.const a`. Consider the case `add p q hp hq`. Establish `: (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p + q) (fun τ => Matrix.of (z τ))) = (fun z => evalPoly p (fun τ => Matrix.of (z τ))) + fun z => evalPoly q (fun τ => Matrix.of (z τ))`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Simplify using `[evalPoly]`. Rewrite using `[this]`. Conclude with `hp.add hq`. Consider the case `mul_X p k hp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p * MvPolynomial.X k) (fun τ => Matrix.of (z τ))) = (fun z => evalPoly p (fun τ => Matrix.of (z τ))) * fun z => if k.2.2.2 then conj (z k.1 k.2.1 k.2.2.1) else z k.1 k.2.1 k.2.2.1`. Use function extensionality and compare the values at `z`. Simplify using `[evalPoly]`. Rewrite using `[this]`. Conclude with `hp.mul (coord k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalPoly_temperate {m n : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     Function.HasTemperateGrowth
@@ -58,7 +58,7 @@ theorem evalPoly_temperate {m n : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m
     rw [this]; exact hp.mul (coord k)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_gauss D n V l hl s hs`. Use `⟨SchwartzMap.smulLeftCLM (𝕜 := ℂ) ℂ (fun z : D.what₂.Tau → Fin V.rank → Fin n → ℂ => evalPoly p (fun τ => Matrix.of (z τ))) f, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply (evalPoly_temperate p)]`. Simplify using `[hf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_schwartz_poly_gauss (n : ℕ) (V : HSp D) (l : D.what₂.Tau → ℝ) (hl : ∀ τ, l τ ≠ 0)
     (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hs : ∀ τ, IsCartanInv (gramAt D V τ) (s τ))
@@ -72,9 +72,9 @@ theorem exists_schwartz_poly_gauss (n : ℕ) (V : HSp D) (l : D.what₂.Tau → 
   simp [hf]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨p, g, hg, rfl⟩`. Take `⟨f, hf⟩` from `exists_schwartz_poly_gauss n V l hl s hs p`. Use `Submodule.subset_span ⟨f, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fockA_le_schwartzA (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.Tau → ℝ) (hl : ∀ τ, l τ ≠ 0)
     (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hs : ∀ τ, IsCartanInv (gramAt D V τ) (s τ)) :
@@ -88,7 +88,7 @@ theorem fockA_le_schwartzA (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.
   rfl
 
 /- English proof (translation)
-Use `Matrix.ext fun (i j : Fin 1) => ?_` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Use `show ∑ k : Fin 1, star ((Pi.basisFun D.host.E (Fin 1)) 0 k) * Formalism.BasicNotions.Examples₂.sgn false * (Pi.basisFun D.host.E (Fin 1)) 0 k = (1 : Matrix (Fin 1) (Fin 1) D.host.E) 0 0`. Simplify using `[Formalism.BasicNotions.Examples₂.sgn]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_rank_one_one : (V1 D).gram = 1 := by
   refine Matrix.ext fun (i j : Fin 1) => ?_
@@ -99,7 +99,7 @@ theorem gram_rank_one_one : (V1 D).gram = 1 := by
   simp [Formalism.BasicNotions.Examples₂.sgn]
 
 /- English proof (translation)
-Unfold `gramAt`. Rewrite using `[gram_rank_one_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_at_place_rank_one (τ : D.what₂.Tau) : gramAt D (V1 D) τ = 1 := by
   unfold gramAt
@@ -107,7 +107,7 @@ theorem gram_at_place_rank_one (τ : D.what₂.Tau) : gramAt D (V1 D) τ = 1 := 
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[gram_at_place_rank_one]`. Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one]`. Conclude with `Matrix.PosDef.one`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartan_involution_rank_one (τ : D.what₂.Tau) : IsCartanInv (gramAt D (V1 D) τ) 1 := by
   rw [gram_at_place_rank_one]
@@ -116,7 +116,7 @@ theorem cartan_involution_rank_one (τ : D.what₂.Tau) : IsCartanInv (gramAt D 
   exact Matrix.PosDef.one
 
 /- English proof (translation)
-Unfold `gA rat`. Rewrite using `[gram_rank_one_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_rank_one_eq_one : gA (V1 D) = (1 : Mx D (V1 D).rank (V1 D).rank) := by
   unfold gA rat
@@ -125,7 +125,7 @@ theorem gram_rank_one_eq_one : gA (V1 D) = (1 : Mx D (V1 D).rank (V1 D).rank) :=
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Use `show (1 : AF D.host.F) ⊗ₜ[D.host.F] (algebraMap D.host.F D.host.E c) = (algebraMap D.host.F (AF D.host.F) c) • ((1 : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E))`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incA_algebraMap (c : D.host.F) :
     incA D (algebraMap D.host.F D.host.E c) = (algebraMap D.host.F (AF D.host.F) c) • (1 : AE D) := by
@@ -135,11 +135,9 @@ theorem incA_algebraMap (c : D.host.F) :
     Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Establish `h1 : b₀.1.map (incA D) = (algebraMap D.host.F (AF D.host.F) c) • (1 : Mx D 1 1)`. Use `Matrix.ext fun (i j : Fin 1) => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[← hc, incA_algebraMap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2 : (inner (V1 D) x y : Mx D p p) = HMul.hMul (adj x) y`. Unfold `GlobalTheory.StdUnn.inner`. Rewrite using `[gram_rank_one_eq_one]`. Conclude with `congrArg (fun t : Mx D 1 p => (HMul.hMul (adj x) t : Mx D p p)) (Matrix.one_mul y)`. Rewrite using `[h2]`.
-
-Unfold `pr`. Rewrite using `[h1, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_eq {p : ℕ} (b₀ : HermE D 1) (c : D.host.F) (hc : algebraMap D.host.F D.host.E c = b₀.1 0 0)
     (x y : Mx D 1 p) :
@@ -157,19 +155,19 @@ theorem pr_eq {p : ℕ} (b₀ : HermE D 1) (c : D.host.F) (hc : algebraMap D.hos
   rw [h1, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]
 
 /- English proof (translation)
-Simplify using `[trA, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trA_smul (a : AF D.host.F) (z : AE D) : trA (a • z) = a * trA z := by
   simp [trA, map_smul]
 
 /- English proof (translation)
-Simplify using `only [halfTr, trA_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem halfTr_smul (a : AF D.host.F) (z : AE D) : halfTr (a • z) = a * halfTr z := by
   simp only [halfTr, trA_smul]; ring
 
 /- English proof (translation)
-Establish `h0 : b₀.1 0 0 ≠ 0` using `by simpa [Matrix.det_fin_one] using h`. Establish `hfix : star (b₀.1 0 0) = b₀.1 0 0` using `congrFun (congrFun b₀.2 0) 0`. Establish `hF : b₀.1 0 0 ∈ D.host.F` using `(NumberField.IsCMField.complexConj_eq_self_iff D.host.E _).1 hfix`. Conclude with `⟨⟨_, hF⟩, fun e => h0 (by simpa using congrArg (fun u : D.host.F => (u : D.host.E)) e), rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_base (b₀ : HermE D 1) (h : b₀.1.det ≠ 0) :
     ∃ c : D.host.F, c ≠ 0 ∧ algebraMap D.host.F D.host.E c = b₀.1 0 0 := by
@@ -180,13 +178,13 @@ theorem exists_base (b₀ : HermE D 1) (h : b₀.1.det ≠ 0) :
   exact ⟨⟨_, hF⟩, fun e => h0 (by simpa using congrArg (fun u : D.host.F => (u : D.host.E)) e), rfl⟩
 
 /- English proof (translation)
-Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `haE : algebraMap D.host.F D.host.E a ≠ 0` using `(map_ne_zero _).2 ha`. Establish `hst : star (algebraMap D.host.F D.host.E a) = algebraMap D.host.F D.host.E a` using `(NumberField.IsCMField.complexConj_eq_self_iff D.host.E _).2 a.2`. Establish `hsk : IsSkew (-D.host.xi0 / algebraMap D.host.F D.host.E a)`. Use `⟨div_ne_zero (neg_ne_zero.2 hxi) haE, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[star_div₀, star_neg, hst, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D, neg_div]`. Take `⟨lam, hlam, hc, l, hp, habs⟩` from `shift_char_realPar D ψ₀ h₀ θ hθ _ hsk`. Establish `: lam = a`. Apply `(algebraMap D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[hlam]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Substitute `this` using the available equality. Use `⟨hc, l, hp, fun τ h => ?_⟩` and prove the remaining obligations. Use `habs τ` as an intermediate fact. Rewrite `this` using `[h, abs_zero]`.
+Clear the denominators using the available nonvanishing facts. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : tauE D τ D.host.xi0 ≠ 0` using `(map_ne_zero _).2 hxi`. Establish `h2 : tauE D τ (-D.host.xi0 / algebraMap D.host.F D.host.E lam) ≠ 0` using `(map_ne_zero _).2 hsk.1`. Conclude with `(div_ne_zero (norm_ne_zero_iff.2 h1) (norm_ne_zero_iff.2 h2)) this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_par (ψ₀ : AddChar (AF D.host.F) ℂ) (h₀ : IsStdChar D ψ₀ (-1)) (θ : InfFam D) (hθ : IsInfFam θ)
     (a : D.host.F) (ha : a ≠ 0) :
@@ -212,19 +210,17 @@ theorem exists_par (ψ₀ : AddChar (AF D.host.F) ℂ) (h₀ : IsStdChar D ψ₀
   exact (div_ne_zero (norm_ne_zero_iff.2 h1) (norm_ne_zero_iff.2 h2)) this.symm
 
 /- English proof (translation)
-Introduce `hC hM hF D p μ 𝓕 hμ ψ hψ b₀ hdet χ hχ hr θ hθ`. Take `⟨c, hc0, hc⟩` from `exists_base b₀ hdet`. Take `⟨ψ₀, h₀, lam, hlam0, hlam⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Establish `hne : lam * c ≠ 0` using `mul_ne_zero hlam0 hc0`. Take `⟨hψ₁, l, hpar, hl⟩` from `exists_par ψ₀ h₀ θ hθ (lam * c) hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : ∀ t, shift ψ₀ (lam * c) t = ψ (algebraMap D.host.F (AF D.host.F) c * t)`. Introduce `t`. Rewrite using `[hlam]`. Simplify using `[shift, AddChar.mulShift_apply, map_mul, mul_assoc]`. Take `⟨ω, hω⟩` from `GlobalTheory.StdUnn.Inhab.weil_exists D p (V1 D) ψ₀ h₀ (lam * c) hne χ hχ hr θ hθ μ 𝓕 hμ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `u huc hub hu`. Use `hF D p θ hθ l hl μ 𝓕 hμ u huc hub fun φ hφ => ?_` and prove the remaining obligations. Establish `hφS` using `fockA_le_schwartzA θ (V1 D) p l hl _ (fun τ => cartan_involution_rank_one τ) hφ`. Set `Φ : schwartzA θ (V1 D).rank p` to `⟨φ, hφS⟩`. Establish `e : ∀ g h : G D p, ω (g * h) Φ = ω g (ω h Φ)` using `fun g h => by rw [map_mul]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : IsTh ψ χ θ b₀ μ (fun h => (ω h Φ).1)` using `{ mem := fun h => (ω h Φ).2 cont := hC D p (V1 D) _ hψ₁ χ hχ hr θ hθ μ 𝓕 hμ ω hω Φ maj := hM D p _ hψ₁ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hpar hl Φ hφ levi := by`. Introduce `g a hg h y`. Use `show (ω (g * h) Φ).1 y = _`. Rewrite using `[e]`. Conclude with `hω.levi g a hg _ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `unip := by`. Introduce `g b hg h y`. Use `show (ω (g * h) Φ).1 y = _`. Rewrite using `[e, hω.unip g b hg _ y, hs, pr_eq b₀ c hc, Matrix.mul_smul, Matrix.trace_smul, halfTr_smul]`. Use `weyl := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg h x`. Use `show (ω (g * h) Φ).1 x = _`. Rewrite using `[e, hω.weyl g hg _ x]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show _ * shift ψ₀ (lam * c) _ = _ * ψ _`.
-
-Rewrite using `[hs, pr_eq b₀ c hc x y, Matrix.trace_smul, trA_smul] }`. Establish `h1 : ∫ y, u y * conj ((ω 1 Φ).1 y) ∂μ = 0` using `hu _ hT`. Establish `h2 : (ω 1 Φ).1 = φ` using `by rw [map_one]; rfl`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneTotal : WeilCont → FockTranslateSchwartzMajorant → FockTotal → OneTotal := by
   intro hC hM hF D p μ 𝓕 hμ ψ hψ b₀ hdet χ hχ hr θ hθ

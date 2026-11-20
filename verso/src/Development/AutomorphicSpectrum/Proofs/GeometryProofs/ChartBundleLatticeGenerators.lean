@@ -8,7 +8,7 @@ open GlobalTheory.CompanionTheory.Ar.Num (dotDual)
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Xgn.hodge_dual_lattice_overlap`.
+A detailed English derivation is pending.
 -/
 theorem dotDual_overlap : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (ι : Type) (x : ι → Ω) (r : ℕ)
     (L : ι → AddSubgroup (Fin r → Ω)),

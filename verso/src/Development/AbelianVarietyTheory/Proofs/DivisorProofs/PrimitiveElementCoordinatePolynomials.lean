@@ -4,15 +4,15 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, by simp⟩`. Consider the case `insert a F ha ih`. Take `⟨Δ₀, hΔ₀, hF₀⟩` from `ih (fun y hy => hF y (Finset.mem_insert_of_mem hy))`. Take `⟨r, s, hrs⟩` from `(IntermediateField.mem_adjoin_range_iff k t a).1 (hF a (Finset.mem_insert_self a F))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hs : MvPolynomial.aeval t s = 0`. Use `⟨Δ₀, hΔ₀, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hrs, hs, div_zero]`. Simplify using the standard rewrite rules. Conclude with `hF₀ y hy`. Use `⟨Δ₀ * s, by simp [hΔ₀, hs], ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Use `⟨Δ₀ * r, ?_⟩` and prove the remaining obligations. Rewrite using `[hrs, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Take `⟨r', hr'⟩` from `hF₀ y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r' * s, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hr']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem commonDenom_finset {k C : Type} [Field k] [Field C] [Algebra k C] {d : ℕ}
     (t : Fin d → C) (F : Finset C)
@@ -44,19 +44,17 @@ theorem commonDenom_finset {k C : Type} [Field k] [Field C] [Algebra k C] {d : �
         rw [map_mul, map_mul, hr']; ring
 
 /- English proof (translation)
-Introduce `k C _ _ _ d m t θ x hθ hx`. Use `set K0 := IntermediateField.adjoin k (Set.range t) with hK0`. Establish `hp : ∀ j, ∃ p : K0[X], Polynomial.aeval θ p = x j`. Introduce `j`. Establish `h` using `hx j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hθ, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `h`. Conclude with `⟨p, hp⟩`. Use `choose p hpx using hp`. Set `F : Finset C` to `Finset.univ.biUnion (fun j => (p j).support.image (fun i => (((p j).coeff i : K0) : C)))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF : ∀ y ∈ F, y ∈ K0`. Introduce `y hy`. Simplify using `only [F, Finset.mem_biUnion, Finset.mem_image] at hy`. Take `⟨j, -, i, -, rfl⟩` from `hy`. Conclude with `((p j).coeff i).2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Δ, hΔ, hΔF⟩` from `commonDenom_finset t F hF`. Establish `hQ : ∀ j, ∃ Q : Polynomial (MvPolynomial (Fin d) k), Q.map (MvPolynomial.aeval t).toRingHom = Polynomial.C (MvPolynomial.aeval t Δ) * (p j).map K0.val.toRingHom`. Introduce `j`. Rewrite using `[← Polynomial.mem_lifts, Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Polynomial.coeff_C_mul, Polynomial.coeff_map]`. Distinguish the cases in `hn : n ∈ (p j).support`. Take `⟨r, hr⟩` from `hΔF _ (Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, Finset.mem_image.2 ⟨n, hn, rfl⟩⟩)`. Conclude with `⟨r, by simpa using hr⟩`. Rewrite using `[Polynomial.notMem_support_iff.1 hn]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨0, by simp⟩`. Use `choose Q hQ using hQ`. Use `⟨Δ, Q, hΔ, ?_⟩` and prove the remaining obligations. Introduce `j`. Rewrite using `[← Polynomial.eval_map, hQ j, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_map, ← hpx j, Polynomial.aeval_def]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem commonDenominator :
     ∀ (k C : Type) [Field k] [Field C] [Algebra k C] (d m : ℕ) (t : Fin d → C) (θ : C)

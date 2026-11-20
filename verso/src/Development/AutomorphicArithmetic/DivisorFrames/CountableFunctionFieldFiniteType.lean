@@ -6,15 +6,11 @@ open CategoryTheory AlgebraicGeometry IsLocalRing GlobalTheory GlobalTheory.ValC
 open scoped Classical
 
 /- English proof (translation)
-Introduce `R _ _ X _ p _`. Take `⟨x⟩ : Nonempty X` from `inferInstance`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨x, hxU⟩⟩`. Establish `hft : (p.appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) p inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Countable Γ(Spec (.of R), ⊤) := (Scheme.ΓSpecIso (.of R)).commRingCatIsoToRingEquiv.toEquiv.injective.countable`. Use `haveI : Countable Γ(X, U) := by`. Use `letI := (p.appLE ⊤ U le_top).hom.toAlgebra`. Establish `h : Algebra.FiniteType Γ(Spec (.of R), ⊤) Γ(X, U)` using `hft`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `haveI : Countable (MvPolynomial (Fin n) Γ(Spec (.of R), ⊤)) := by`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `MvPolynomial.cardinalMk_le_max.trans ?_` and prove the remaining obligations. Simplify using `[Cardinal.mk_le_aleph0]`. Conclude with `hf.countable`.
-
-Use `haveI := functionField_isFractionRing_of_isAffineOpen X U hU`. Establish `hs : Function.Surjective (fun ab : Γ(X, U) × Γ(X, U) => (algebraMap Γ(X, U) X.functionField ab.1 / algebraMap Γ(X, U) X.functionField ab.2))`. Introduce `z`. Take `⟨a, b, -, h⟩` from `IsFractionRing.div_surjective (A := Γ(X, U)) z`. Conclude with `⟨(a, b), h⟩`.
-
-Conclude with `hs.countable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.countable_functionField_finiteType :
     ∀ (R : Type) [CommRing R] [Countable R] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Spec (.of R)) [LocallyOfFiniteType p], Countable X.functionField := by

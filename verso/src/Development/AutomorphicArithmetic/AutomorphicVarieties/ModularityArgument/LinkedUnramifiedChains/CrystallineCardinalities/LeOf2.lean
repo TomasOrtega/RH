@@ -11,13 +11,13 @@ private noncomputable def isoOf {D D' : Type} [Group D] [TopologicalSpace D] [Co
       (Continuous.homeoOfEquivCompactToT2 (f := (MulEquiv.ofBijective f hb).toEquiv) hc).symm.continuous }
 
 /- English proof (translation)
-Introduce `hP l _ κ _ Φ F Ω _ _ _ _ _ S K π ι A pl e c hL v`. Establish `hrange` using `hL.loc.range v`. Set `f : Φ.Gv v →* Dec (A v)` to `(ι v).codRestrict (Dec (A v)) (fun s => hrange ▸ (MonoidHom.mem_range.2 ⟨s, rfl⟩))`. Establish `hfc : Continuous f` using `(hL.loc.cont v).subtype_mk _`. Establish `hfb : Function.Bijective f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Conclude with `hL.loc.ι_inj v (congrArg Subtype.val hab)`. Introduce and unpack `⟨g, hg⟩`. Rewrite `hg` using `[← hrange]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `hg`. Conclude with `⟨s, rfl⟩`. Establish `hl` using `(hL.loc.mem (pl v)).1 ⟨v, rfl⟩`. Establish `h0` using `leOf hP.lf hP.lt hP.le l F Ω (A v) (pl v) (hL.loc.isOver v) hl`. Establish `h1` using `leTrans l (Φ.Gv v) (Dec (A v)) (isoOf f hfc hfb) _ _ h0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL.dv v]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `s`. Simplify using `[hL.loc_eq, hL.eps]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.leOf2 :
     GC.Hypotheses₂ → ∀ (l : ℕ) [Fact l.Prime] (κ : Type) [Field κ] (Φ : Frame l κ) (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] S K π ι A pl e c, GC.FLink (F := F) (Ω := Ω) l Φ S K π ι A pl e c → LocE Φ := by

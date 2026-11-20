@@ -14,13 +14,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH.PsiForm
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ p _ y₀ u l`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible u.V`. Use `choose Q hQ using DVR.QForm.exists_QVal hϖ u.D`. Establish `hj : (u.j ϖ : PadicAlgCl p) = algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) ϖ)` using `rfl`. Use `⟨ϖ, Q, hϖ, hQ, ?_, fun χ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj]`. Conclude with `norm_lt_one_of_irreducible u.norm_le hϖ`. Establish `hc` using `u.D.toPre.P.isLB.cover`. Set `x : Sp u.V` to `IsLocalRing.closedPoint u.V`. Establish `hx : (u.D.toPre.c χ).left x ∈ ⨆ i, u.D.toPre.P.L.U i` using `by rw [hc]; trivial`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `htop : ⊤ ≤ (u.D.toPre.c χ).left ⁻¹ᵁ u.D.toPre.P.L.U i` using `((IsLocalRing.closedPoint_mem_iff (R := u.V) _).1 hi).ge`. Establish `h1` using `l.q_eq χ (fun _ => i) htop`. Establish `h2` using `norm_of_hasVal u.norm_le hϖ (hasVal_valF u.D.toPre.P.L _ _ (DVR.QForm.ptK_eq u.D.toPre χ) (-1) _ (hQ χ) (fun _ => i) htop)`. Establish `h3` using `neg_injective (Real.exp_injective (h1.symm.trans h2))`.
-
-Rewrite using `[hj, h3, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_eq_val_mul : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab), ∃ (ϖ : u.V) (Q : u.D.toPre.X → ℤ), Irreducible ϖ ∧ DVR.QForm.IsQ u.D.toPre ϖ Q ∧ ‖(u.j ϖ : PadicAlgCl p)‖ < 1 ∧ ∀ χ, l.q χ = Q χ * (-Real.log ‖(u.j ϖ : PadicAlgCl p)‖) := by
   intro o Ω _ _ _ _ S ρ p _ y₀ u l

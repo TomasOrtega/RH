@@ -18,9 +18,9 @@ def dblG {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Matrix (Fin (n + n)) (Fin (n
   Matrix.reindex finSumFinEquiv finSumFinEquiv (dbl J)
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp only [dblG, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply] <;>`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[dbl, h.1 i j]`. Rewrite using `[dblG, Matrix.det_reindex_self, dbl, Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg]`. Simplify using `[h.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isHermND_dblG {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : IsHermND σ J) :
     IsHermND σ (dblG J) := by
@@ -34,9 +34,9 @@ theorem isHermND_dblG {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n)
     simp [h.2]
 
 /- English proof (translation)
-Substitute `hA` using the available equality. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`.
+Substitute using the available equality. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [dblG, incM, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.transpose_apply, Matrix.map_apply] <;> simp [dbl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reindex_dbl_incM {n : ℕ} {J JA : Matrix (Fin n) (Fin n) E} (hA : JA = Jᵀ) :
     Matrix.reindex finSumFinEquiv finSumFinEquiv (dbl (incM F JA)) = incM F (dblG J)ᵀ := by
@@ -55,9 +55,9 @@ abbrev coDbl {σ : E →ₐ[F] E} {nS nT : ℕ} {JT JA : Matrix (Fin nT) (Fin nT
   reindexRows finSumFinEquiv (dblRows co) _ (reindex_dbl_incM hA)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y₁, z₁, h₁⟩` from `hrat (x.submatrix (finSumFinEquiv ∘ Sum.inl) id)`. Take `⟨y₂, z₂, h₂⟩` from `hrat (x.submatrix (finSumFinEquiv ∘ Sum.inr) id)`. Use `⟨Sum.elim y₁ y₂, Sum.elim z₁ (-z₂), ?_⟩` and prove the remaining obligations. Establish `e₁ : ((incM F x).submatrix finSumFinEquiv id).submatrix Sum.inl id = incM F (x.submatrix (finSumFinEquiv ∘ Sum.inl) id)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₂ : ((incM F x).submatrix finSumFinEquiv id).submatrix Sum.inr id = incM F (x.submatrix (finSumFinEquiv ∘ Sum.inr) id)` using `rfl`. Rewrite using `[coDbl, reindexRows_e, dblRows_e, e₁, e₂, h₁, h₂]`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> rcases i with i | i <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coDbl_rat {σ : E →ₐ[F] E} {nS nT : ℕ} {JT JA : Matrix (Fin nT) (Fin nT) E} {JB : Matrix (Fin nS) (Fin nS) E}
     {ξ : AF F ⊗[F] E} (hA : JA = JTᵀ) {κ : Type} [Fintype κ]
@@ -78,13 +78,13 @@ theorem coDbl_rat {σ : E →ₐ[F] E} {nS nT : ℕ} {JT JA : Matrix (Fin nT) (F
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> rcases i with i | i <;> simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeCharF_one : Formalism.IndefR.DatumF.IsHeckeCharF (1 : (AF F ⊗[F] E)ˣ →* Circle) :=
   ⟨continuous_const, fun _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hr.1, fun η hη a => by have h4 := hη.2.2.1 (Formalism.IndefR.DatumF.idFF F E a) have h5 : Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Formalism.IndefR.DatumF.idFF F E a) = a ^ 2 := Units.ext (by change Algebra.norm (AF F) (algebraMap (AF F) (AF F ⊗[F] E) a.1) = _ have …`.
+Supply the required witnesses or components.
 -/
 theorem resEtaF_one_dbl (h2 : Module.finrank F E = 2) {χ : (AF F ⊗[F] E)ˣ →* Circle} {n : ℕ}
     (hr : Formalism.IndefR.DatumF.ResEtaF χ n) : Formalism.IndefR.DatumF.ResEtaF (1 : (AF F ⊗[F] E)ˣ →* Circle) (n + n) :=

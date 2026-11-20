@@ -6,13 +6,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [Set.mem_setOf_eq] at hy ⊢`. Establish `hw : ∀ z : G.left, G.hom ((ι[G]).left z) = G.hom z`. Introduce `z`. Establish `h` using `Over.w (ι[G])`. Rewrite using `[← Scheme.Hom.comp_apply, h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hη : ∀ s : S, (ι[G]).left ((η[G]).left s) = (η[G]).left s`. Introduce `s`. Establish `h : (η[G] ≫ ι[G]).left = (η[G]).left` using `by rw [GrpObj.one_inv]`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, h]`. Rewrite using `[hw]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set F := G.hom ⁻¹' {G.hom y}`. Use `set e := (η[G]).left (G.hom y)`. Establish `heF : e ∈ F` using `(connectedComponentIn_nonempty_iff.mp ⟨y, hy⟩)`. Establish `hsub : (ι[G]).left '' connectedComponentIn F e ⊆ connectedComponentIn F e`. Use `(isPreconnected_connectedComponentIn.image _ (ι[G]).left.continuous.continuousOn).subset_connectedComponentIn ⟨e, mem_connectedComponentIn heF, hη _⟩ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `hzF : z ∈ F` using `connectedComponentIn_subset _ _ hz`. Simplify using `only [F, Set.mem_preimage, Set.mem_singleton_iff] at hzF ⊢`. Rewrite using `[hw, hzF]`. Conclude with `hsub ⟨y, hy, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_connectedComponentIn_fibre (S : Scheme.{0}) (G : Over S) [GrpObj G] (y : G.left)
     (hy : y ∈ {x : G.left | x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x))}) :

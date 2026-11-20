@@ -19,14 +19,14 @@ open Classical
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullback_map_left_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) (F : G ⟶ G) :
     ((Over.pullback f).map F).left ≫ pullback.fst G.hom f = pullback.fst G.hom f ≫ F.left :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullback_map_left_snd {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) (F : G ⟶ G) :
     ((Over.pullback f).map F).left ≫ pullback.snd G.hom f = pullback.snd G.hom f :=
@@ -36,23 +36,19 @@ set_option maxHeartbeats 1000000 in
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `X₁ Y U₀ EE O V _ _ _ hc hch ξ e he hab`. Take `⟨D, A, U, hl, -⟩` from `O.unif V inferInstance inferInstance hc ξ hab`. Use `haveI := U.gen_hom`. Use `haveI : IsMonHom U.gen.symm.hom := inferInstanceAs (IsMonHom U.gen.inv)`. Set `κ : A.A.left ⟶ ((Over.pullback ξ).obj O.G).left` to `U.gen.inv.left ≫ pullback.fst ((Over.pullback ξ).obj O.G).hom (jK V)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ : IsGrpPullback A.A ((Over.pullback ξ).obj O.G) (jK V) κ` using `((ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback ((Over.pullback ξ).obj O.G) (jK V))).congr (Category.id_comp _) rfl`. Establish `hm : IsGrpPullback A.A O.G (spMap e ≫ Y.pt) (κ ≫ pullback.fst O.G.hom ξ)` using `(hκ.comp (isGrpPullback_pullback O.G ξ)).congr he rfl`. Establish `hp` using `isGrpPullback_pullback O.G Y.pt`. Establish `w : (κ ≫ pullback.fst O.G.hom ξ) ≫ O.G.hom = (A.A.hom ≫ spMap e) ≫ Y.pt` using `hm.1.w.trans (Category.assoc _ _ _).symm`. Set `β : A.A.left ⟶ pullback O.G.hom Y.pt` to `pullback.lift _ _ w`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβf : β ≫ pullback.fst O.G.hom Y.pt = κ ≫ pullback.fst O.G.hom ξ` using `pullback.lift_fst _ _ _`. Establish `hβs : β ≫ pullback.snd O.G.hom Y.pt = A.A.hom ≫ spMap e` using `pullback.lift_snd _ _ _`. Establish `hio : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 A.A.left`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hoi : U.gen.hom.left ≫ U.gen.inv.left = 𝟙 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Over.comp_left, Iso.hom_inv_id, Over.id_left]`. Use `⟨D, A, U, β, hp.cancel (hm.congr rfl hβf.symm) hβs, ?_, fun F hF => ?_⟩` and prove the remaining obligations. Establish `h₁ : LBIso A.L (A.L.pull (𝟙 A.A.left))` using `(GlobalTheory.PolBaseChange.lbIso_refl A.isLB).chartPull (chartPullId A.L) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull A.L _ _ rfl)`. Establish `h₂ : LBIso (A.L.pull (𝟙 A.A.left)) (U.LG.L.pull κ)` using `GlobalTheory.GenSpread.lbIso_pull_comp U.gen.inv.left hio.symm rfl U.ext`. Establish `h₃ : LBIso (U.LG.L.pull κ) (O.L.L.pull (κ ≫ pullback.fst O.G.hom ξ))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso hl κ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h₄ : LBIso (O.L.L.pull (κ ≫ pullback.fst O.G.hom ξ)) ((O.L.L.pull (pullback.fst O.G.hom Y.pt)).pull β)` using `GlobalTheory.GenSpread.lbIso_pull_pull O.L.isLB β hβf.symm`. Conclude with `LBIso.trans A.isLB (pull_isLB A.isLB _) (pull_isLB (pull_isLB O.L.isLB _) _) h₁ (LBIso.trans (pull_isLB A.isLB _) (pull_isLB U.LG.isLB _) (pull_isLB (pull_isLB O.L.isLB _) _) h₂ (LBIso.trans (pull_isLB U.LG.isLB _) (pull_isLB O.L.isLB _) (pull_isLB (pull_isLB O.L.isLB _) _) h₃ h₄ …`. Take `⟨E, -, hE⟩` from `exists_degenerationEndomorphism_of_admissibleBase V _ ⟨inferInstance, inferInstance, inferInstance, hc⟩ D A _ (IsSemiAbelian.pullback _ _ O.semi) U ((Over.pullback ξ).map F) (U.gen.inv ≫ (Over.pullback (jK V)).map ((Over.pullback ξ).map F) ≫ U.gen.hom) inferInstance inferInstance …`. Use `⟨E, ?_⟩` and prove the remaining obligations. Establish `n₁` using `pullback_map_left_fst (jK V) ((Over.pullback ξ).obj O.G) ((Over.pullback ξ).map F)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n₂` using `pullback_map_left_fst ξ O.G F`. Establish `n₃` using `pullback_map_left_fst Y.pt O.G F`. Establish `n₄` using `pullback_map_left_snd Y.pt O.G F`. Establish `a₁ : E.aA.left ≫ κ = κ ≫ ((Over.pullback ξ).map F).left`. Rewrite using `[hE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Use `show (U.gen.inv.left ≫ ((Over.pullback (jK V)).map ((Over.pullback ξ).map F)).left ≫ U.gen.hom.left) ≫ U.gen.inv.left ≫ pullback.fst ((Over.pullback ξ).obj O.G).hom (jK V) = (U.gen.inv.left ≫ pullback.fst ((Over.pullback ξ).obj O.G).hom (jK V)) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, ← Category.assoc U.gen.hom.left, hoi, Category.id_comp, n₁, Category.assoc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `(Category.assoc _ _ _).trans ((congrArg (E.aA.left ≫ ·) hβf).trans (Category.assoc _ _ _).symm)`.
-
-Use `_ = (κ ≫ pullback.fst O.G.hom ξ) ≫ F.left := by`. Rewrite using `[a₁]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (κ ≫ ·) n₂).trans (Category.assoc _ _ _).symm)`. Use `_ = (β ≫ ((Over.pullback Y.pt).map F).left) ≫ pullback.fst O.G.hom Y.pt := by`. Rewrite using `[← hβf]`.
-
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (β ≫ ·) n₃.symm).trans (Category.assoc _ _ _).symm)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, hβs, ← Category.assoc, Over.w]`. Use `_ = (β ≫ ((Over.pullback Y.pt).map F).left) ≫ pullback.snd O.G.hom Y.pt := by`. Conclude with `hβs.symm.trans ((congrArg (β ≫ ·) n₄.symm).trans (Category.assoc _ _ _).symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif_trait : ∀ (X₁ : GlobalTheory.GSep.GSet) (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (O : ZHOut X₁.ρ Y U₀ EE) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V], IsAdicComplete (maximalIdeal V) V → CharZero V → ∀ (ξ : Sp V ⟶ Y.Z) (e : X₁.Ω₁ →+* FractionRing V), jK V ≫ ξ = spMap e ≫ Y.pt → (ξ ⁻¹' abLocus O.G).Nonempty → ∃ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (U : Unif (maximalIdeal V) D A ((Over.pullback ξ).obj O.G)) (β : A.A.left ⟶ ((Over.pullback Y.pt).obj O.G).left), IsGrpPullback A.A ((Over.pullback Y.pt).obj O.G) (spMap e) β ∧ LBIso A.L ((O.L.L.pull (pullback.fst O.G.hom Y.pt)).pull β) ∧ ∀ F : O.G ⟶ O.G, IsMonHom F → ∃ E : EndU U.toUnifPre, E.aA.left ≫ β = β ≫ ((Over.pullback Y.pt).map F).left := by
   intro X₁ Y U₀ EE O V _ _ _ hc hch ξ e he hab

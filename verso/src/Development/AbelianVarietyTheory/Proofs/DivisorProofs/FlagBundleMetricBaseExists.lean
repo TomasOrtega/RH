@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.FlagBaseEx
 
 /- English proof (translation)
-Introduce `p1 p2 p3 p4 D O hO B hB R hR c`. Take `⟨Bs, iB, q, aq, nB, E, h, H, hL⟩` from `GlobalTheory.ArLieBase.exists_lieBase D O hO B R hR c`. Take `⟨Y, iY, π, fl, hfb, ar, nY⟩` from `GlobalTheory.T.exists_normal_isFlagBundle_isArithVar (𝓞 D.what₂.LL) Bs q _ aq nB (D.what₂.Tau × Bool) E (rkB D.what₂.Tau O.N O.j) (fun a => (h a).isVB)`. Establish `ar' : IsArithVar (π ≫ q) (O.var c).dim`. Rewrite using `[← GlobalTheory.FlagBlockDim.dim_eq_dimGr_add O c]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ar` and compare the differences between its conclusion and the goal. Conclude with `⟨Bs, iB, q, aq, nB, E, h, H, Y, iY, π, fl, hfb, ar', nY, GlobalTheory.FlagCov.flagInduces_of_lieBase p1 p2 p3 p4 D O hO B hB R hR c Bs q aq nB E h H hL Y π fl hfb ar' nY⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Supply the required witnesses or components.
 -/
 theorem exists_base_flagInduces : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
   ∀ (D : D7) (O : Setup D), O.Core → ∀ B : ℝ, 2 ≤ B → ∀ R : ℝ, 2 ≤ R → ∀ c : O.s.Comp,

@@ -16,22 +16,22 @@ open Formalism.QuantumDeterminants
 namespace TransportInt
 
 /- English proof (translation)
-The claim follows from `TransportIntA.cayley_signature' hP`.
+A detailed English derivation is pending.
 -/
 theorem cayley_signature {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r}
     (hP : Formalism.MainNotions.S.IsCayley k r ε P) : pOf ε = k + r ∧ qOf ε = r + 1 :=
   TransportIntA.cayley_signature' hP
 
 /- English proof (translation)
-Use `letI : SeminormedAddCommGroup (Mat k r) := Matrix.frobeniusSeminormedAddCommGroup`. Establish `hF : ∀ A : Mat k r, frob A = ‖A‖`. Introduce `A`. Unfold `frob`. Rewrite using `[Matrix.frobenius_norm_def]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Real.sqrt_eq_rpow, Real.rpow_two]`. Establish `hG : ∀ A : Mat k r, Formalism.FourierDecayAlt.B.gN A = ‖A‖`. Introduce `A`. Rewrite using `[← hF]`. Unfold `Formalism.FourierDecayAlt.B.gN frob`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Complex.normSq_eq_norm_sq]`. Establish `hinv2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`. Establish `hK0 : 0 ≤ ‖P⁻¹‖ * ‖P‖` using `mul_nonneg (norm_nonneg _) (norm_nonneg _)`. Establish `hK1 : (0 : ℝ) < ‖P⁻¹‖ * ‖P‖ + 1` using `by linarith`. Use `⟨1 / (‖P⁻¹‖ * ‖P‖ + 1), div_pos one_pos hK1, fun g => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hG, hF]`. Establish `hg : P⁻¹ * (P * g * P⁻¹) * P = g`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hinv2, Matrix.one_mul, Matrix.mul_assoc, hinv2, Matrix.mul_one]`. Establish `hle : ‖g‖ ≤ ‖P⁻¹‖ * ‖P‖ * ‖P * g * P⁻¹‖`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Matrix.frobenius_norm_mul _ _`. Use `_ = ‖P⁻¹‖ * ‖P‖ * ‖P * g * P⁻¹‖ := by ring`. Establish `hX : 0 ≤ ‖P * g * P⁻¹‖` using `norm_nonneg _`. Rewrite using `[div_mul_eq_mul_div, one_mul, div_le_iff₀ hK1]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem frob_conj_ge {k r : ℕ} {P : Mat k r} (hP : IsUnit P.det) :
     ∃ c : ℝ, 0 < c ∧ ∀ g : Mat k r, c * Formalism.FourierDecayAlt.B.gN g ≤ frob (P * g * P⁻¹) := by
@@ -66,7 +66,7 @@ theorem frob_conj_ge {k r : ℕ} {P : Mat k r} (hP : IsUnit P.det) :
   nlinarith
 
 /- English proof (translation)
-Introduce `h hh ξ`. Take `⟨g, hg, hρ⟩` from `hπ`. Take `⟨h₀, hh₀, rfl⟩` from `TransportGeo.uw_eq_frame hT hg hh`. Conclude with `hρ.2.2.1.2.1 h₀ hh₀ ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pi_isometry {k r : ℕ} {u : Fin k → ℝ} {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp]
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mat k r → (Vp →L[ℂ] Vp)} (hz : inWb k r z) (hT : 0 < Tz k r z)
@@ -77,33 +77,29 @@ theorem pi_isometry {k r : ℕ} {u : Fin k → ℝ} {Vp : Type*} [NormedAddCommG
   exact hρ.2.2.1.2.1 h₀ hh₀ ξ
 
 /- English proof (translation)
-Take `⟨hz, hT, hc, hπ, hW, hN⟩` from `hB`. Take `⟨g, hg, hρ⟩` from `hπ`. Establish `hgd : IsUnit g.det` using `TransportGeo.uh_det hg.1`. Set `β : Mat k r → Matrix (Fin k) (Fin k) ℂ` to `fun h i j => (g⁻¹ * h * g) ⟨r + i.val, by omega⟩ ⟨r + j.val, by omega⟩`. Establish `hβc : Continuous β`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply _).comp ((continuous_apply _).comp ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const))`. Establish `hblk : ∀ h₀ : Matrix (Fin k) (Fin k) ℂ, β (g * Formalism.MainNotions.S.blockW k r h₀ * g⁻¹) = h₀`. Introduce `h₀`. Establish `e : g⁻¹ * (g * Formalism.MainNotions.S.blockW k r h₀ * g⁻¹) * g = Formalism.MainNotions.S.blockW k r h₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hgd, Matrix.nonsing_inv_mul _ hgd, Matrix.mul_one]`. Use function extensionality and compare the values at `i j`. Simplify using `only [β, e, Formalism.MainNotions.S.blockW]`. Simplify using the standard rewrite rules. Establish `hβπ : ∀ h ∈ UWset k r z, β h ∈ Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k) ∧ π h = π (g * Formalism.MainNotions.S.blockW k r (β h) * g⁻¹)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Take `⟨h₀, hh₀, rfl⟩` from `TransportGeo.uw_eq_frame hT hg hh`. Rewrite using `[hblk]`. Conclude with `⟨hh₀, rfl⟩`. Establish `hUWc` using `Transport.uw_closedSubgroup k r z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNc` using `Transport.n_closedSubgroup k r`. Use `set A : Set (Mt k r × Mt k r) := {p | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r} with hA`. Establish `hfst : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r))` using `continuous_fst`. Establish `hsnd : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mat k r))` using `continuous_snd`. Establish `hAm : MeasurableSet A` using `((hUWc.closed.preimage hfst).inter (hNc.closed.preimage hsnd)).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SigmaFinite μW` using `hW.1`. Establish `: SigmaFinite μN` using `hN.1`. Establish `hWae : ∀ᵐ y ∂μW, Matrix.of y ∈ UWset k r z`. Rewrite using `[ae_iff]`. Simplify using `using hW.2.2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNae : ∀ᵐ y ∂μN, Matrix.of y ∈ Nset k r`. Rewrite using `[ae_iff]`. Simplify using `using hN.2.2.1`. Establish `hpae : ∀ᵐ p ∂(μW.prod μN), p ∈ A` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hpae]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ContinuousOn.aestronglyMeasurable ?_ hAm` and prove the remaining obligations. Establish `h12 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r) * Matrix.of p.2)` using `hfst.matrix_mul hsnd`. Establish `hm : Continuous (fun p : Mt k r × Mt k r => P * (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x)) * P⁻¹)` using `(continuous_const.matrix_mul (continuous_const.matrix_mul (h12.matrix_mul continuous_const))).matrix_mul continuous_const`. Establish `hPs : ContinuousOn (fun p : Mt k r × Mt k r => S7.PsiM T μ (P * (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x)) * P⁻¹)) A`. Use `(S7.psiM_continuousOn T μ hμ).comp hm.continuousOn fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Matrix.of p.1 * Matrix.of p.2 * x ∈ UH (Hpk k r)` using `Transport.uh_mul (Transport.uh_mul hp.1.1 hp.2.1) hx`. Conclude with `(Transport.uh_facts hP (Transport.uh_mul (Transport.uh_facts hP hx₀).2.1 hs)).2.2`. Establish `hf1 : ContinuousOn (fun p : Mt k r × Mt k r => psiCoef T μ P v₁ v₂ (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x))) A`. Unfold `psiCoef`. Conclude with `continuousOn_const.inner (hPs.clm_apply continuousOn_const)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hψc : Continuous (Formalism.MainNotions.S.psiGen k r z c)`. Unfold `Formalism.MainNotions.S.psiGen`. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_finset_sum _ fun a _ => continuous_const.mul ?_))))` and prove the remaining obligations. Distinguish the cases in `hcond : a.val + 1 < r`. Simplify using `only [Formalism.MainNotions.S.ellA, dif_pos hcond]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_apply _).comp (continuous_apply _)`. Simplify using `only [Formalism.MainNotions.S.ellA, dif_neg hcond]`. Conclude with `(continuous_apply (Formalism.QuantumDeterminants.eI k r a)).comp (continuous_id.matrix_mulVec (continuous_const (y := z)))`. Establish `hinvc : ContinuousOn (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r)⁻¹) A`. Establish `hc : Continuous (fun p : Mt k r × Mt k r => Hpk k r * (Matrix.of p.1 : Mat k r)ᴴ * Hpk k r)` using `(continuous_const.matrix_mul hfst.matrix_conjTranspose).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hc.continuousOn.congr fun p hp => ?_` and prove the remaining obligations. Conclude with `Matrix.inv_eq_left_inv (TransportGeo.uh_inv_eq hp.1.1)`. Establish `hρc : ContinuousOn (fun h₀ => π (g * Formalism.MainNotions.S.blockW k r h₀ * g⁻¹) ξ) (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k))` using `hρ.2.2.1.2.2 ξ`. Establish `hf2' : ContinuousOn (fun p : Mt k r × Mt k r => π (g * Formalism.MainNotions.S.blockW k r (β (Matrix.of p.1 : Mat k r)⁻¹) * g⁻¹) ξ) A` using `hρc.comp (hβc.comp_continuousOn hinvc) fun p hp => (hβπ _ (hUWc.inv_mem _ hp.1)).1`. Establish `hf2 : ContinuousOn (fun p : Mt k r × Mt k r => chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of p.1) (Matrix.of p.2) ξ) A`.
-
-Establish `e : Set.EqOn (fun p : Mt k r × Mt k r => chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of p.1) (Matrix.of p.2) ξ) (fun p => star (Formalism.MainNotions.S.psiGen k r z c (Matrix.of p.2)) • π (g * Formalism.MainNotions.S.blockW k r (β (Matrix.of p.1 : Mat k r)⁻¹) * g⁻¹) …`. Introduce `p hp`. Simplify using `only [chiInv]`. Rewrite using `[(hβπ _ (hUWc.inv_mem _ hp.1)).2]`. Use `ContinuousOn.congr ?_ e` and prove the remaining obligations.
-
-Conclude with `((continuous_star.comp (hψc.comp hsnd)).continuousOn).smul hf2'`. Conclude with `hf1.smul hf2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrand_aesm {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {u : Fin k → ℝ} {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
@@ -207,37 +203,35 @@ theorem integrand_aesm {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fi
   exact hf1.smul hf2
 
 /- English proof (translation)
-Take `⟨hz, hT, hc, hπ, hW, hN⟩` from `hB`. Take `⟨hp, hq⟩` from `cayley_signature hP`. Establish `hq0 : 1 ≤ S7.q0 ε`. Unfold `S7.q0`. Rewrite using `[hp, hq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hHC : S7.IsHCParam lam`. Use `⟨hgap.1, fun a => ⟨μ a + ((a : ℕ) : ℤ) - ((2 * r + k + 1 : ℕ) : ℤ) + 1, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hμ a`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.rho] at h1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at h1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨C, hC⟩` from `hDD _ ε lam h T μ hHC hgap.2.1 hgap.2.2 hq0 hμ [] v₁ v₂`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`. Take `⟨c0, hc0, hcg⟩` from `frob_conj_ge hPd`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set a := h / (8 * Real.sqrt (2 * (S7.q0 ε : ℝ))) with ha`. Establish `hq0' : ((S7.q0 ε : ℕ) : ℝ) = (r : ℝ) + 1`. Unfold `S7.q0`. Rewrite using `[hp, hq, min_eq_right (by omega)]`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsp : 0 < Real.sqrt (2 * ((r : ℝ) + 1))` using `Real.sqrt_pos.mpr (by positivity)`. Establish `hb : S0.bS k r < a`. Establish `h3 : 8 * Real.sqrt (2 * (min (pOf ε) (qOf ε) : ℝ)) * (4 * max (2 * ((2 * r + k + 1 : ℕ) : ℝ) * (min (pOf ε) (qOf ε) : ℝ)) (2 * ((qOf ε : ℝ) - 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2) + 1) ≤ hNeed ε`. Unfold `hNeed`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_trans (le_max_right _ _) (le_max_right _ _)`. Rewrite `h3` using `[hp, hq]`. Establish `hmin : (min ((k + r : ℕ) : ℝ) ((r + 1 : ℕ) : ℝ)) = (r : ℝ) + 1`. Rewrite using `[min_eq_right]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr1 : ((r + 1 : ℕ) : ℝ) - 1 = (r : ℝ)` using `by push_cast; ring`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[hmin, hr1]`. Use `set M := max (2 * ((2 * r + k + 1 : ℕ) : ℝ) * ((r : ℝ) + 1)) (2 * (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2) with hM`. Establish `hM1 : 2 * (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 ≤ M` using `le_max_right _ _`. Establish `h0 : 0 ≤ 2 * (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `by positivity`. Establish `hM2 : 2 * (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 ≤ 4 * M + 1` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hlt : 8 * Real.sqrt (2 * ((r : ℝ) + 1)) * (4 * M + 1) < h` using `lt_of_le_of_lt h3 hgap.2.2`. Rewrite using `[ha, hq0', lt_div_iff₀ (by positivity)]`. Unfold `S0.bS S0.nS`. Combine the equalities or inequalities in the displayed calculation. Establish `ha0 : 0 ≤ a`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 0 ≤ S0.bS k r` using `by unfold S0.bS S0.nS; positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hI` using `hIS k r z μW μN hz hT hW hN x₀ hx₀ x hx a hb`. Establish `: SigmaFinite μW` using `hW.1`. Establish `: SigmaFinite μN` using `hN.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hWae : ∀ᵐ y ∂μW, Matrix.of y ∈ UWset k r z`. Rewrite using `[ae_iff]`. Simplify using `using hW.2.2.1`. Establish `hNae : ∀ᵐ y ∂μN, Matrix.of y ∈ Nset k r`. Rewrite using `[ae_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hN.2.2.1`. Establish `hpae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Use `Integrable.mono' (hI.const_mul (C * c0 ^ (-a) * ‖ξ‖)) (integrand_aesm T hμ hP ⟨hz, hT, hc, hπ, hW, hN⟩ v₁ v₂ ξ hx₀ hx) ?_` and prove the remaining obligations. Use `filter_upwards [hpae] with p hp'`. Establish `hgU : x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x) ∈ UH (Hpk k r)` using `Transport.uh_mul (Transport.uh_facts hP hx₀).2.1 (Transport.uh_mul (Transport.uh_mul hp'.1.1 hp'.2.1) hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x) with hg`. Establish `hgJ` using `(Transport.uh_facts hP hgU).2.2`. Establish `hCg` using `hC (P * g * P⁻¹) hgJ`. Establish `hgN : 1 ≤ Formalism.FourierDecayAlt.B.gN g` using `S0.Dec.one_le_gN k r g hgU`. Establish `hfr : c0 * Formalism.FourierDecayAlt.B.gN g ≤ frob (P * g * P⁻¹)` using `hcg g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < c0 * Formalism.FourierDecayAlt.B.gN g` using `mul_pos hc0 (by linarith)`. Establish `hfrpos : 0 < frob (P * g * P⁻¹)` using `lt_of_lt_of_le hpos hfr`. Establish `hpow : frob (P * g * P⁻¹) ^ (-a) ≤ c0 ^ (-a) * Formalism.FourierDecayAlt.B.gN g ^ (-a)`. Rewrite using `[← Real.mul_rpow hc0.le (by linarith)]`. Conclude with `Real.rpow_le_rpow_of_nonpos hpos hfr (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hC0 : 0 ≤ C`. Establish `hX : 0 < frob (P * g * P⁻¹) ^ (-a)` using `Real.rpow_pos_of_pos hfrpos _`. Use `le_trans (norm_nonneg _) hCg` as an intermediate fact. Conclude with `(mul_nonneg_iff_of_pos_right hX).mp this`. Establish `hcoef : ‖psiCoef T μ P v₁ v₂ g‖ ≤ C * (c0 ^ (-a) * Formalism.FourierDecayAlt.B.gN g ^ (-a))` using `le_trans hCg (mul_le_mul_of_nonneg_left hpow hC0)`.
-
-Establish `hchi : ‖chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of p.1) (Matrix.of p.2) ξ‖ = ‖ξ‖`. Unfold `chiInv Formalism.MainNotions.S.psiGen`. Apply the tactic sequence `rw [norm_smul, norm_star, Complex.norm_exp_I_mul_ofReal, one_mul, pi_isometry hz hT hπ _ ((Transport.uw_closedSubgroup k r z).inv_mem _ hp'.1)]`. Rewrite using `[norm_smul, hchi]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrable_coef_of (hIS : S0.IntSStatement) (hDD : DecDerivStatement)
     {k r : ℕ} (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1) → Bool}
@@ -345,14 +339,14 @@ theorem integrable_coef_of (hIS : S0.IntSStatement) (hDD : DecDerivStatement)
     _ = C * c0 ^ (-a) * ‖ξ‖ * Formalism.FourierDecayAlt.B.gN g ^ (-a) := by ring
 
 /- English proof (translation)
-Introduce `k r hk ε lam h hgap u Vp _ _ _ T μ hμ P hP z c π μW μN hB v₁ v₂ ξ x₀ x hx₀ hx`. Conclude with `integrable_coef_of hIS hDD hk hgap T hμ hP hB v₁ v₂ ξ hx₀ hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intCoef_of (hIS : S0.IntSStatement) (hDD : DecDerivStatement) : Transport.IntCoefStatement := by
   intro k r hk ε lam h hgap u Vp _ _ _ T μ hμ P hP z c π μW μN hB v₁ v₂ ξ x₀ x hx₀ hx
   exact integrable_coef_of hIS hDD hk hgap T hμ hP hB v₁ v₂ ξ hx₀ hx
 
 /- English proof (translation)
-The claim follows from `Transport.transport (intCoef_of hIS hDD) hk hgap`.
+A detailed English derivation is pending.
 -/
 theorem transport_of (hIS : S0.IntSStatement) (hDD : DecDerivStatement) {k r : ℕ} (hk : 1 ≤ k)
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k → ℝ} {h : ℝ}

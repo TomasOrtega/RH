@@ -8,11 +8,11 @@ noncomputable section
 namespace GlobalTheory.JSW.LogPos
 
 /- English proof (translation)
-Proceed by induction on `S using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a S ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.map_cons, Multiset.sum_cons, exp_add, ih fun w hw => h w (Multiset.mem_cons_of_mem hw)]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `ha : 1 - a ≠ 0`. Introduce `h0`. Establish `e : a = 1` using `by linear_combination -h0`. Use `h a (Multiset.mem_cons_self a S)` as an intermediate fact. Simplify using `[e] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[exp_neg, exp_log ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_inv_one_sub_eq_exp (S : Multiset ℂ) (h : ∀ w ∈ S, ‖w‖ < 1) :
     (S.map fun w => (1 - w)⁻¹).prod = exp (S.map fun w => -log (1 - w)).sum := by
@@ -30,7 +30,7 @@ theorem prod_inv_one_sub_eq_exp (S : Multiset ℂ) (h : ∀ w ∈ S, ‖w‖ < 1
     rw [exp_neg, exp_log ha]
 
 /- English proof (translation)
-Proceed by induction on `S using Multiset.induction_on with`. Consider the case `empty => simpa using hasSum_zero`. Consider the case `cons a S ih`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons, add_div]`. Conclude with `(hasSum_taylorSeries_neg_log (h a (Multiset.mem_cons_self a S))).add (ih fun w hw => h w (Multiset.mem_cons_of_mem hw))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_log (S : Multiset ℂ) (h : ∀ w ∈ S, ‖w‖ < 1) :
     HasSum (fun n : ℕ => (S.map fun w => w ^ n).sum / n) (S.map fun w => -log (1 - w)).sum := by
@@ -42,9 +42,9 @@ theorem hasSum_log (S : Multiset ℂ) (h : ∀ w ∈ S, ‖w‖ < 1) :
       (ih fun w hw => h w (Multiset.mem_cons_of_mem hw))
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.cons_product, Multiset.map_add, Multiset.sum_add, ih, Multiset.map_map]`. Simplify using `only [Function.comp_def, mul_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Multiset.sum_map_mul_right, Multiset.sum_map_mul_left, Multiset.map_cons, Multiset.sum_cons]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_pow_product (x : ℂ) (n : ℕ) (s t : Multiset ℂˣ) :
     ((s ×ˢ t).map fun p : ℂˣ × ℂˣ => ((p.1 : ℂ) * p.2 * x) ^ n).sum =
@@ -58,7 +58,7 @@ theorem sum_pow_product (x : ℂ) (n : ℕ) (s t : Multiset ℂˣ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[map_multiset_sum, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[Units.coe_star, star_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_pow_star (n : ℕ) (B : Multiset ℂˣ) :
     ((B.map star).map fun b : ℂˣ => (b : ℂ) ^ n).sum = conj (B.map fun b : ℂˣ => (b : ℂ) ^ n).sum := by
@@ -68,15 +68,15 @@ theorem sum_pow_star (n : ℕ) (B : Multiset ℂˣ) :
   simp [Units.coe_star, star_pow]
 
 /- English proof (translation)
-Rewrite using `[ofReal_cpow (Nat.cast_nonneg _), ofReal_natCast, ofReal_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_neg_eq (q : ℕ) (σ : ℝ) : (q : ℂ) ^ (-(σ : ℂ)) = (((q : ℝ) ^ (-σ) : ℝ) : ℂ) := by
   rw [ofReal_cpow (Nat.cast_nonneg _), ofReal_natCast, ofReal_neg]
 
 /- English proof (translation)
-Rewrite `hp` using `[Multiset.mem_product]`. Take `⟨b', hb', hpb⟩` from `Multiset.mem_map.1 hp.2`. Establish `h1` using `hM _ hp.1`. Establish `h2` using `hM _ hb'`. Establish `e2 : ‖(p.2 : ℂ)‖ = ‖(b' : ℂ)‖` using `by rw [← hpb, Units.coe_star, norm_star]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Use polynomial arithmetic with `[sq_nonneg (‖(p.1 : ℂ)‖ - ‖(b' : ℂ)‖)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_pair_le {B : Multiset ℂˣ} {M : ℝ} (hM : ∀ b ∈ B, ‖(b : ℂ)‖ ^ 2 ≤ M) {p : ℂˣ × ℂˣ}
     (hp : p ∈ B ×ˢ B.map star) : ‖(p.1 : ℂ)‖ * ‖(p.2 : ℂ)‖ ≤ M := by
@@ -89,17 +89,15 @@ theorem norm_pair_le {B : Multiset ℂˣ} {M : ℝ} (hM : ∀ b ∈ B, ‖(b : �
   nlinarith [sq_nonneg (‖(p.1 : ℂ)‖ - ‖(b' : ℂ)‖)]
 
 /- English proof (translation)
-Use `set x : ℝ := (q : ℝ) ^ (-σ) with hxdef`. Establish `hx0 : 0 ≤ x` using `Real.rpow_nonneg (Nat.cast_nonneg _) _`. Use `set S := (B ×ˢ B.map star).map fun p : ℂˣ × ℂˣ => (p.1 : ℂ) * p.2 * x with hSdef`. Establish `hS : ∀ w ∈ S, ‖w‖ < 1`. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp, rfl⟩` from `Multiset.mem_map.1 hw`. Use `norm_pair_le hM hp` as an intermediate fact. Rewrite using `[norm_mul, norm_mul, norm_real, Real.norm_of_nonneg hx0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this hx0]`. Establish `hloc : locL q B (B.map star) σ = (S.map fun w => (1 - w)⁻¹).prod`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [locL, cpow_neg_eq, ← hxdef, hSdef, Multiset.map_map, Function.comp_def]`. Establish `hterm : ∀ n : ℕ, (S.map fun w => w ^ n).sum / n = ((x ^ n * normSq (B.map fun b : ℂˣ => (b : ℂ) ^ n).sum / n : ℝ) : ℂ)`. Introduce `n`. Simplify using `only [hSdef, Multiset.map_map, Function.comp_def]`. Rewrite using `[sum_pow_product, sum_pow_star, mul_assoc, mul_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hL` using `hasSum_log S hS`. Simplify using `only [hterm] at hL`. Establish `hre` using `Complex.hasSum_re hL`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `him` using `Complex.hasSum_im hL`. Simplify using `only [ofReal_re, ofReal_im] at hre him`. Establish `hLim` using `him.unique hasSum_zero`. Use `⟨_, hre, ?_⟩` and prove the remaining obligations. Rewrite using `[hloc, prod_inv_one_sub_eq_exp S hS, ofReal_exp]`.
-
-Use `congr 1`. Conclude with `Complex.ext (by rw [ofReal_re]) (by rw [ofReal_im, hLim])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem locL_conj_eq_exp (q : ℕ) (B : Multiset ℂˣ) (M : ℝ) (hM : ∀ b ∈ B, ‖(b : ℂ)‖ ^ 2 ≤ M) (σ : ℝ)
     (hσ : M * (q : ℝ) ^ (-σ) < 1) :

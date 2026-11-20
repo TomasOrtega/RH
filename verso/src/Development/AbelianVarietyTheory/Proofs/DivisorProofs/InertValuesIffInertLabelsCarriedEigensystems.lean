@@ -24,17 +24,17 @@ noncomputable section
 namespace GlobalTheory.InertValLab
 
 /- English proof (translation)
-Establish `hpow : ∀ (k : ℕ) x, ((U - σ μ • (1 : Module.End ℂ W)) ^ k) (j x) = j (((op - μ • (1 : Module.End K V)) ^ k) x)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ, Module.End.mul_apply, pow_succ, Module.End.mul_apply]`. Establish `: (U - σ μ • (1 : Module.End ℂ W)) (j x) = j ((op - μ • (1 : Module.End K V)) x)`. Simplify using `[hU, LinearMap.map_smulₛₗ]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, ih]`. Establish `hle : Submodule.span ℂ (j '' (S : Set V)) ≤ U.maxGenEigenspace (σ μ)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 (hS hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨k, by rw [hpow, hk, map_zero]⟩`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 (hle hv)`. Establish `hpv : ∀ k : ℕ, ((U - σ μ • (1 : Module.End ℂ W)) ^ k) v = (l - σ μ) ^ k • v`. Introduce `k`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, pow_succ]`. Establish `: (U - σ μ • (1 : Module.End ℂ W)) v = (l - σ μ) • v` using `by simp [hl, sub_smul]`. Rewrite using `[this, LinearMap.map_smul, ih, smul_smul, mul_comm]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[hpv]`. Use `(smul_eq_zero.1 hk).resolve_right hv0` as an intermediate fact. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff'.1 this).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eig_eq_of_mem_span {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     (σ : K →+* ℂ) (j : V →ₛₗ[σ] W) (op : Module.End K V) (U : Module.End ℂ W) (μ : K) (S : Submodule K V)
@@ -69,7 +69,7 @@ theorem eig_eq_of_mem_span {K V W : Type} [Field K] [AddCommGroup V] [Module K V
   exact sub_eq_zero.1 (pow_eq_zero_iff'.1 this).1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hd` using `Module.End.disjoint_genEigenspace f h ⊤ ⊤`. Conclude with `hS (eq_bot_iff.2 fun x hx => by`. Use `hd.le_bot ⟨ha hx, hb hx⟩` as an intermediate fact. Simplify using `using this)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_of_le_maxGen {K V : Type} [Field K] [AddCommGroup V] [Module K V] (f : Module.End K V) (a b : K)
     (S : Submodule K V) (hS : S ≠ ⊥) (ha : S ≤ f.maxGenEigenspace a) (hb : S ≤ f.maxGenEigenspace b) : a = b := by
@@ -80,7 +80,7 @@ theorem eq_of_le_maxGen {K V : Type} [Field K] [AddCommGroup V] [Module K V] (f 
     simpa using this)
 
 /- English proof (translation)
-Unfold `InertDat3.inertTypeEigenspaceSum Formalism.L2.Col.eigSum`. Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations. Use `Formalism.L2.Col.eigAt_le Dd.opAll x (Sum.inr k)` as an intermediate fact. Rewrite `this` using `[hx.2 k]`. Conclude with `this`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertPartition_le_partF {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty : Type}
     {B : BlockDat K G Pl0} (Dd : InertDat3 B I0 Ty) (p : Typ3 K Pl0 I0 Ty) (k : Dd.PlI × Ty) :
@@ -92,7 +92,7 @@ theorem inertPartition_le_partF {K : Type} [Field K] [NumberField K] [StarRing K
   exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `[GlobalTheory.Hk3.hkF, GlobalTheory.Hk3.rep, hd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem hkF_single_of_not {D : D7} (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : Pl D.host.E) (d : List ℤ)
     (hd : ¬ IsLab V P d) (F : Bridge.Gf V → W) : GlobalTheory.Hk3.hkF V P (Finsupp.single d 1) F = 0 := by
@@ -100,7 +100,7 @@ theorem hkF_single_of_not {D : D7} (V : HSp D) {W : Type} [AddCommGroup W] [Modu
   simp [GlobalTheory.Hk3.hkF, GlobalTheory.Hk3.rep, hd]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Use `conv_rhs => rw [Finsupp.sum, Finset.sum_apply]`. Simplify using `only [GlobalTheory.Hk3.hkF, Pi.smul_apply, zero_smul, Finsupp.sum_single_index, one_smul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hkF_eq_sum {D : D7} (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : Pl D.host.E) (c : List ℤ →₀ ℂ)
     (F : Bridge.Gf V → W) : GlobalTheory.Hk3.hkF V P c F = c.sum fun d z => z • GlobalTheory.Hk3.hkF V P (Finsupp.single d 1) F := by
@@ -110,13 +110,13 @@ theorem hkF_eq_sum {D : D7} (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ 
   rfl
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.Hk3.labIn_selfDual_iff n (labIn n y)).2 ⟨y, hy.2.2, hy.1, hy.2.1, rfl⟩).2.1`.
+A detailed English derivation is pending.
 -/
 theorem labIn_pw {n : ℕ} {y : List ℕ} (hy : Formalism.L2.Col.InertTypeOk n y) : (labIn n y).Pairwise (fun a b => b ≤ a) :=
   ((GlobalTheory.Hk3.labIn_selfDual_iff n (labIn n y)).2 ⟨y, hy.2.2, hy.1, hy.2.1, rfl⟩).2.1
 
 /- English proof (translation)
-Take `⟨hl, hpw, hdu⟩` from `(GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing V P d).1 hd`. Take `⟨y, h1, h2, h3, h4⟩` from `(GlobalTheory.Hk3.labIn_selfDual_iff _ d).1 ⟨hl, hpw, hdu hc⟩`. Conclude with `⟨y, ⟨h2, h3, h1⟩, h4⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem labs {D : D7} (V : HSp D) (P : Pl D.host.E) (d : List ℤ) (hd : IsLab V P d) (hc : conjPl P = P) :
     ∃ y, Formalism.L2.Col.InertTypeOk V.rank y ∧ d = labIn V.rank y := by
@@ -125,7 +125,7 @@ theorem labs {D : D7} (V : HSp D) (P : Pl D.host.E) (d : List ℤ) (hd : IsLab V
   exact ⟨y, ⟨h2, h3, h1⟩, h4⟩
 
 /- English proof (translation)
-Rewrite `h1` using `[lin, Finsupp.sum]`. Simplify using `only [h2, smul_smul] at h1`. Rewrite `h1` using `[← Finset.sum_smul]`. Conclude with `(smul_left_injective ℂ hv0 h1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_generic {H : Type} [AddCommGroup H] [Module ℂ H] (hXP : (List ℤ →₀ ℂ) → Module.End ℂ H)
     (lin : ∀ cX x, hXP cX x = cX.sum fun d z => z • hXP (Finsupp.single d 1) x) (μ : List ℤ → ℂ) (v : H) (hv0 : v ≠ 0)
@@ -137,11 +137,11 @@ theorem key_generic {H : Type} [AddCommGroup H] [Module ℂ H] (hXP : (List ℤ 
   exact (smul_left_injective ℂ hv0 h1).symm
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.conjIdeal`. Establish `hs : {r : 𝓞 D.host.E | ∃ s ∈ P.asIdeal, algebraMap (𝓞 D.host.E) D.host.E r = star (algebraMap (𝓞 D.host.E) D.host.E s)} = ((conjPl P).asIdeal : Set (𝓞 D.host.E))`. Use extensionality with `r`. Rewrite using `[SetLike.mem_coe]`. Use `show _ ↔ r ∈ P.asIdeal.map (Formalism.DivisionValues.cO D.host.E)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_map_of_equiv]`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hr⟩`. Conclude with `⟨s, hs, RingOfIntegers.ext hr.symm⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `⟨s, hs, rfl⟩`. Rewrite using `[hs, Ideal.span_eq]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjIdeal_eq_conjPl {D : D7} (P : Pl D.host.E) :
     Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal = (conjPl P).asIdeal := by
@@ -161,9 +161,9 @@ theorem conjIdeal_eq_conjPl {D : D7} (P : Pl D.host.E) :
   rw [hs, Ideal.span_eq]
 
 /- English proof (translation)
-Establish `hle : PP.asIdeal ≤ P.asIdeal`. Introduce `a ha`. Take `⟨c', hc', he⟩` from `h a ha`. Establish `h2 : a ∈ (conjPl P).asIdeal` using `by show a ∈ P.asIdeal.map (Formalism.DivisionValues.cO D.host.E)`. Rewrite using `[Ideal.mem_map_of_equiv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c', hc', RingOfIntegers.ext ?_⟩` and prove the remaining obligations. Use `show star (c' : D.host.E) = (a : D.host.E)`. Rewrite using `[he, star_star]`. Rewrite `h2` using `[hc]`. Then use the resulting hypothesis. Conclude with `HeightOneSpectrum.ext (PP.isMaximal.eq_of_le P.isPrime.ne_top hle)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_of_isConj {D : D7} {P PP : Pl D.host.E} (hc : conjPl P = P) (h : Formalism.IndefR.Lev.IsConjPl PP P) : PP = P := by
   have hle : PP.asIdeal ≤ P.asIdeal := by
@@ -184,11 +184,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hPg : P ∉ R.Pg` using `fun h => (hP P (Or.inl h)).1 rfl`. Establish `hPQ : P ∉ R.Q A3.A.μ0` using `fun h => (hP P (Or.inr h)).1 rfl`. Establish `hcj : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal = P.asIdeal := by rw [conjIdeal_eq_conjPl, hc]`. Establish `hSb : P ∉ (R.Sb : Set (Pl D.host.E))`. Rewrite using `[Finset.mem_coe, show R.Sb = R.Pg from hAll]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hPg`. Take `⟨Q0, hQ0⟩` from `hIn.onto P ⟨hcj, hSb⟩`. Use `⟨⟨Q0, (hIn.tie.okI A3.A.μ0 Q0).2 ?_⟩, hQ0⟩` and prove the remaining obligations. Rewrite using `[hQ0]`. Use `⟨hcj, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(h | h)`. Conclude with `hSb h`. Conclude with `hPQ h`.
+A detailed English derivation is pending.
 -/
 theorem tie1 (R : RealDat3 D A3 Ks) (hIn : R.IsInert) (hAll : R.AllPlaces) (P : Pl D.host.E)
     (hP : Good R.toRealDat A3.A.μ0 P) (hc : conjPl P = P) : ∃ Q : A3.okI A3.A.μ0, R.plI Q.1 = P := by
@@ -206,11 +206,9 @@ theorem tie1 (R : RealDat3 D A3 Ks) (hIn : R.IsInert) (hAll : R.AllPlaces) (P : 
   · exact hPQ h
 
 /- English proof (translation)
-Take `⟨hcj, hn⟩` from `(hIn.tie.okI A3.A.μ0 Q.1).1 Q.2`. Establish `hc : conjPl (R.plI Q.1) = R.plI Q.1` using `HeightOneSpectrum.ext (by rw [← conjIdeal_eq_conjPl, hcj])`. Use `⟨fun PP hPP => ?_, hc⟩` and prove the remaining obligations. Establish `hmem : PP ∈ ((R.Sb : Set (Pl D.host.E)) ∪ (R.Q A3.A.μ0 : Set (Pl D.host.E)))`. Break down `hPP with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Rewrite using `[Finset.mem_coe, show R.Sb = R.Pg from hAll]`. Conclude with `h`. Use `right`. Conclude with `h`.
-
-Establish `hne : PP ≠ R.plI Q.1` using `fun h => hn (h ▸ hmem)`. Conclude with `⟨hne, fun h => hne (eq_of_isConj hc h)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tie2 (R : RealDat3 D A3 Ks) (hIn : R.IsInert) (hAll : R.AllPlaces) (Q : A3.okI A3.A.μ0) :
     Good R.toRealDat A3.A.μ0 (R.plI Q.1) ∧ conjPl (R.plI Q.1) = R.plI Q.1 := by
@@ -234,9 +232,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `he1 : R.EEc e ≠ ⊥` using `he.1`. Establish `he2 : (R.EEc e).map (LinearMap.adjoint (R.Th A3.A.μ0)) ≤ Submodule.span ℂ (R.jX A3.A.μ0 '' ((A3.rowI A3.A.μ0).inertTypeEigenspaceSum q.1 : Set (A3.A.fam.R A3.A.μ0).S.Forms))` using `he.2`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot he1`. Use `⟨LinearMap.adjoint (R.Th A3.A.μ0) w, ?_, he2 (Submodule.mem_map_of_mem hw), ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : R.EEc e ≤ R.EEp3 q` using `le_iSup₂_of_le (f := fun c (_ : R.Carries q c) => R.EEc c) e he le_rfl`. Conclude with `hw0 (hInj q w (hle hw) h0)`. Introduce `P hP cX c0 hM`. Conclude with `(GlobalTheory.T.matched_spherical_pairs_commute_composite_lift R.toRealDat F.lv2 hCore hSchur R.SF hSF A3.A.μ0 P hP cX c0 hM hX hXops).2 e w (by rw [← hEEc]; exact hw)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ev_lemma (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hCore : Core R.toRealDat F.lv2) (hSchur : SchurAll R.toRealDat)
     (hSF : IsSF R.toRealDat R.SF) (hEEc : ∀ c, R.EEc c = EEc R.toRealDat R.SF c)
@@ -260,7 +258,7 @@ theorem ev_lemma (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hCore : Core R.toRealD
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Apply `heInj` to reduce the goal to its premises. Rewrite using `[hXops P hP, map_finsuppSum]`. Simplify using `only [map_smul, hXops P hP]`. Conclude with `hkF_eq_sum _ _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_lemma (R : RealDat3 D A3 Ks) (hX : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HX A3.A.μ0).H)
     (hXops : GlobalTheory.Hk3.IsOpsX R.toRealDat A3.A.μ0 hX) (heInj : Function.Injective (R.HX A3.A.μ0).e)
@@ -273,7 +271,7 @@ theorem lin_lemma (R : RealDat3 D A3 Ks) (hX : Pl D.host.E → (List ℤ →₀ 
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Apply `heInj` to reduce the goal to its premises. Rewrite using `[hXops P hP, map_zero, hkF_single_of_not _ _ _ hd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem zer_lemma (R : RealDat3 D A3 Ks) (hX : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HX A3.A.μ0).H)
     (hXops : GlobalTheory.Hk3.IsOpsX R.toRealDat A3.A.μ0 hX) (heInj : Function.Injective (R.HX A3.A.μ0).e)
@@ -284,7 +282,7 @@ theorem zer_lemma (R : RealDat3 D A3 Ks) (hX : Pl D.host.E → (List ℤ →₀ 
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.T.inertHeckeOperators_rows_rational_selfAdjoint_labels R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models A3.A.μ0 (A3.okI A3.A.μ0 × List ℕ) (fun k => R.plI k.1) (fun k => labIn D.sp.X'.rank k.2) (A3.heckeRI A3.A.μ0) (fun k => Formalism.L2.Col.InertTypeOk D.sp.X'.rank …`. Conclude with `eig_eq_of_mem_span D.what₂.embLL (R.jX A3.A.μ0) (A3.heckeRI A3.A.μ0 (Q, y)) _ (q.1.2 (Q.1, y)) _ (fun f => (hT.2.2.2 hX hXops f).symm) (inertPartition_le_partF (A3.rowI A3.A.μ0) q.1 (Q, y)) v hv l hl hv0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem opv_lemma (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hCore : Core R.toRealDat F.lv2) (hIn : R.IsInert)
     (hAll : R.AllPlaces) (hX : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HX A3.A.μ0).H)
@@ -317,11 +315,9 @@ def muQ (Q : A3.okI A3.A.μ0) (q : A3.fam3.base3.Ix) (d : List ℤ) : ℂ :=
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Unfold `muQ`. Use `split_ifs with h`. Take `⟨c0', hM'⟩` from `hTS.1.1 (Finsupp.single d' 1)`. Establish `h3` using `hvE _ _ hM'`. Rewrite using `[h3]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `opv_lemma R F hCore hIn hAll hX hXops q Q h.choose h.choose_spec.1 v hvs _ ?_ hv0` and prove the remaining obligations. Rewrite using `[← h.choose_spec.2]`. Conclude with `h3`. Rewrite using `[zero_smul]`.
-
-Conclude with `zer_lemma R hX hXops heInj _ (tie2 R hIn hAll Q).1 d' (fun hl => h (labs _ _ _ hl (tie2 R hIn hAll Q).2)) v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_lemma (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hCore : Core R.toRealDat F.lv2) (hIn : R.IsInert)
     (hAll : R.AllPlaces) (hX : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HX A3.A.μ0).H)
@@ -346,15 +342,13 @@ theorem mu_lemma (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hCore : Core R.toRealD
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `tie1 R hIn hAll P hP hconj`. Substitute `hQ` using the available equality. Establish `hdY : IsLab (Yc D 0) (R.plI Q.1) d` using `((GlobalTheory.T.isLabel_thetaLiftSpace_iff_dual R.toRealDat F.lv2 (s := s) hCore i _ d hP).2).1 hd`. Establish `hdd : dualLab d = d` using `((GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Yc D 0) _ d).1 hdY).2.2 hconj`. Take `⟨cX, hM⟩` from `(hTS _ hP hconj).1.2 (Finsupp.single d 1)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hev : ∀ a : Pl D.host.E → List ℤ → ℂ, GlobalTheory.Hk3.evC (Yc D 0) (R.plI Q.1) (fun e => a (R.plI Q.1) (dualLab e)) (Finsupp.single d 1) = a (R.plI Q.1) d`. Introduce `a`. Simplify using `[GlobalTheory.Hk3.evC, hdY, hdd]`. Establish `key : ∀ (q : A3.fam3.base3.Ix) (e : Pl D.host.E → List ℤ → ℂ), R.Carries q e → e (R.plI Q.1) d = cX.sum fun d' z => z * muQ Q q d'`. Introduce `q e he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv0, hvs, hvE⟩` from `ev_lemma R F hCore hSchur hSF hEEc hInj hX hXops q e he`. Establish `h1` using `hvE _ hP cX _ hM`. Rewrite `h1` using `[hev]`. Conclude with `key_generic (hX (R.plI Q.1)) (lin_lemma R hX hXops heInj _ hP) (muQ Q q) v hv0 (mu_lemma R F hCore hIn hAll hX hXops heInj Q (hTS _ hP hconj) q e v hv0 hvs (hvE _ hP)) cX _ h1`. Rewrite using `[key p c hc, key p' c' hc']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.sum_congr fun d' _ => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `muQ`. Use `split_ifs with h`. Conclude with `congrArg D.what₂.embLL (hp (Q, h.choose))`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dir1 (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hCore : Core R.toRealDat F.lv2)
     (hSchur : SchurAll R.toRealDat) (hSF : IsSF R.toRealDat R.SF) (hEEc : ∀ c, R.EEc c = EEc R.toRealDat R.SF c)
@@ -393,23 +387,21 @@ theorem dir1 (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hCore : Core R.t
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨Q, y⟩` from `k`. Take `⟨hPg, hPc⟩` from `tie2 R hIn hAll Q`. Establish `eqv : ∀ (q : A3.fam3.base3.Ix) (e : Pl D.host.E → List ℤ → ℂ), R.Carries q e → ∀ y', Formalism.L2.Col.InertTypeOk D.sp.X'.rank y' → ∀ c0, GlobalTheory.Hk3.MatchE R.toRealDat A3.A.μ0 (R.plI Q.1) (Finsupp.single (labIn D.sp.X'.rank y') 1) c0 → D.what₂.embLL (q.1.2 (Q.1, y')) = Glob …`. Introduce `q e he y' hy' c0 hM`. Take `⟨v, hv0, hvs, hvE⟩` from `ev_lemma R F hCore hSchur hSF hEEc hInj hX hXops q e he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(opv_lemma R F hCore hIn hAll hX hXops q Q y' hy' v hvs _ (hvE _ hPg _ _ hM) hv0).symm`. Establish `nb : ∀ (q : A3.fam3.base3.Ix) (e : Pl D.host.E → List ℤ → ℂ), R.Carries q e → (A3.rowI A3.A.μ0).inertTypeEigenspaceSum q.1 ≠ ⊥`. Introduce `q e he hb`. Take `⟨v, hv0, hvs, -⟩` from `ev_lemma R F hCore hSchur hSF hEEc hInj hX hXops q e he`. Rewrite `hvs` using `[hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hvs`. Conclude with `hv0 hvs`. Establish `evEq : ∀ c0, GlobalTheory.Hk3.evC (Yc D 0) (R.plI Q.1) (fun d => c (R.plI Q.1) (dualLab d)) c0 = GlobalTheory.Hk3.evC (Yc D 0) (R.plI Q.1) (fun d => c' (R.plI Q.1) (dualLab d)) c0`. Introduce `c0`. Unfold `GlobalTheory.Hk3.evC`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations. Use `split_ifs with hd`. Establish `hdd : dualLab d = d` using `((GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Yc D 0) _ d).1 hd).2.2 hPc show c0 d * c (R.plI Q.1) (dualLab d) = c0 d * c' (R.plI Q.1) (dualLab d)`. Rewrite using `[hdd, hcc _ d hPg hPc (((GlobalTheory.T.isLabel_thetaLiftSpace_iff_dual R.toRealDat F.lv2 (s := s) hCore i _ d hPg).2).2 hd)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `valid : ∀ y', Formalism.L2.Col.InertTypeOk D.sp.X'.rank y' → p.1.2 (Q.1, y') = p'.1.2 (Q.1, y')`. Introduce `y' hy'`. Take `⟨c0, hM⟩` from `(hTS _ hPg hPc).1.1 (Finsupp.single (labIn D.sp.X'.rank y') 1)`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[eqv p c hc y' hy' c0 hM, eqv p' c' hc' y' hy' c0 hM, evEq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hrank : (A3.A.fam.R A3.A.μ0).n = D.sp.X'.rank` using `R.B.rankR.symm`. Break down `hJunk A3.A.μ0 (Q, y) with h0 | ⟨y', hy', hop⟩` into its components or cases. Establish `z : ∀ (q : A3.fam3.base3.Ix) (e : Pl D.host.E → List ℤ → ℂ), R.Carries q e → q.1.2 (Q.1, y) = 0`. Introduce `q e he`. Use `eq_of_le_maxGen (A3.heckeRI A3.A.μ0 (Q, y)) _ _ _ (nb q e he) (inertPartition_le_partF (A3.rowI A3.A.μ0) q.1 (Q, y)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Introduce `x _`. Conclude with `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, by simp⟩`. Use `show p.1.2 (Q.1, y) = p'.1.2 (Q.1, y)`. Rewrite using `[z p c hc, z p' c' hc']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `w : ∀ (q : A3.fam3.base3.Ix) (e : Pl D.host.E → List ℤ → ℂ), R.Carries q e → q.1.2 (Q.1, y) = q.1.2 (Q.1, y')`. Introduce `q e he`. Use `eq_of_le_maxGen (A3.heckeRI A3.A.μ0 (Q, y)) _ _ _ (nb q e he) (inertPartition_le_partF (A3.rowI A3.A.μ0) q.1 (Q, y)) ?_` and prove the remaining obligations. Rewrite using `[hop]`. Conclude with `inertPartition_le_partF (A3.rowI A3.A.μ0) q.1 (Q, y')`.
-
-Use `show p.1.2 (Q.1, y) = p'.1.2 (Q.1, y)`. Rewrite using `[w p c hc, w p' c' hc']`. Conclude with `valid y' (hrank ▸ hy')`.
+A detailed English derivation is pending.
 -/
 theorem dir2 (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hCore : Core R.toRealDat F.lv2)
     (hSchur : SchurAll R.toRealDat) (hSF : IsSF R.toRealDat R.SF) (hEEc : ∀ c, R.EEc c = EEc R.toRealDat R.SF c)
@@ -478,7 +470,7 @@ end Ctx3
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hCW hEx hSchur hTS hJunk hInj i p p' c c' hc hc'`. Take `⟨hCore, hSF, hEEc, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hCW hEx`. Take `⟨hX, hXops, -⟩` from `(GlobalTheory.T.realization_family_normal_operators R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models).1 A3.A.μ0`. Establish `heInj : Function.Injective (R.HX A3.A.μ0).e` using `(hCore.models.HX A3.A.μ0).1`. Conclude with `⟨fun hp P d hP hconj hd => dir1 R F (s := s) hCore hSchur hSF hEEc hInj hCW.inert hCW.allPl hX hXops heInj hTS i p p' c c' hc hc' hp P d hP hconj hd, fun hcc k => dir2 R F (s := s) hCore hSchur hSF hEEc hInj hCW.inert hCW.allPl hX hXops hTS hJunk.1 i p p' c c' hc hc' hcc k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem inert_vals_iff_labels : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → (∀ P, Good R.toRealDat A3.A.μ0 P → conjPl P = P → TwoSided R.toRealDat A3.A.μ0 P) → ((∀ t (k : A3.okI t × List ℕ), A3.heckeRI t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.R t).n y ∧ A3.heckeRI t k = A3.heckeRI t (k.1, y)) ∧ ∀ j t (k : A3.okI t × List ℕ), A3.heckeLI j t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.L j t).n y ∧ A3.heckeLI j t k = A3.heckeLI j t (k.1, y)) → (∀ p, ∀ w ∈ R.EEp3 p, LinearMap.adjoint (R.Th A3.A.μ0) w = 0 → w = 0) → ∀ (i : Fin D.R.m) (p p' : A3.fam3.base3.Ix) c c', R.Carries p c → R.Carries p' c' → ((∀ k : A3.okI A3.A.μ0 × List ℕ, p.1.2 (k.1.1, k.2) = p'.1.2 (k.1.1, k.2)) ↔ (∀ P d, Good R.toRealDat A3.A.μ0 P → conjPl P = P → IsLab (Wc D i) P d → c P d = c' P d)) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hCW hEx hSchur hTS hJunk hInj i p p' c c' hc hc'

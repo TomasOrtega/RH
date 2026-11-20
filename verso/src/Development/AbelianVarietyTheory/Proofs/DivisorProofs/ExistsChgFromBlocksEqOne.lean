@@ -18,9 +18,9 @@ variable {m l n : Type} [Fintype m] [Fintype l] [Fintype n] [DecidableEq m] [Dec
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hH.transpose.posSemidef.nonneg`. Establish `hd : Hᵀ.det ≠ 0` using `hH.transpose.det_pos.ne'`. Establish `hu : IsUnit B.det`. Rewrite `hd` using `[hB, det_mul]`. Conclude with `(right_ne_zero_of_mul hd).isUnit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B⁻¹, isUnit_nonsing_inv_det _ hu, ?_⟩` and prove the remaining obligations. Apply `transpose_injective` to reduce the goal to its premises. Establish `e : (chg B⁻¹ H)ᵀ = (B⁻¹)ᴴ * Hᵀ * B⁻¹`. Simplify using `only [chg, transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[e, hB, star_eq_conjTranspose, conjTranspose_nonsing_inv, Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.mul_one, nonsing_inv_mul _ (by rw [det_conjTranspose]; exact hu.star), transpose_one]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chg_eq_one {H : Matrix n n ℂ} (hH : H.PosDef) :
     ∃ R : Matrix n n ℂ, IsUnit R.det ∧ chg R H = 1 := by
@@ -38,17 +38,15 @@ theorem exists_chg_eq_one {H : Matrix n n ℂ} (hH : H.PosDef) :
     nonsing_inv_mul _ (by rw [det_conjTranspose]; exact hu.star), transpose_one]
 
 /- English proof (translation)
-Take `⟨A, hA, hA1⟩` from `exists_chg_eq_one (posDef_subGram hH)`. Establish `hs : IsUnit H.toBlocks₁₁.det` using `(posDef_subGram hH).det_pos.ne'.isUnit`. Use `set B : Matrix m l ℂ := -(orthCoeff H * R) with hBdef`. Establish `hBt : Bᵀ = -(Rᵀ * (H.toBlocks₂₁ * H.toBlocks₁₁⁻¹))`. Simplify using `[hBdef, orthCoeff, transpose_mul, transpose_nonsing_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hW : Bᵀ * H.toBlocks₁₁ + Rᵀ * H.toBlocks₂₁ = 0`. Rewrite using `[hBt, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, nonsing_inv_mul _ hs, Matrix.mul_one, neg_add_cancel]`. Establish `hZ : Bᵀ * H.toBlocks₁₂ + Rᵀ * H.toBlocks₂₂ = Rᵀ * quotGram H`. Rewrite using `[hBt, quotGram, Matrix.mul_sub, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hherm : (chg (fromBlocks A B 0 R) H).IsHermitian`. Use `isHermitian_mul_mul_conjTranspose (fromBlocks A B 0 R)ᵀ hH.isHermitian` as an intermediate fact. Rewrite `this` using `[show (fromBlocks A B 0 R)ᵀᴴ = (fromBlocks A B 0 R)ᴴᵀ from rfl]`. Then use the resulting hypothesis. Establish `e21 : (chg (fromBlocks A B 0 R) H).toBlocks₂₁ = 0`. Rewrite using `[chg_fromBlocks, toBlocks_fromBlocks₂₁, hW, Matrix.zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e12 : (chg (fromBlocks A B 0 R) H).toBlocks₁₂ = 0`. Use `conjTranspose_toBlocks₁₂ hherm` as an intermediate fact. Rewrite `this` using `[e21]`. Simplify using `using congrArg conjTranspose this`. Establish `e11 : (chg (fromBlocks A B 0 R) H).toBlocks₁₁ = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chg_fromBlocks, toBlocks_fromBlocks₁₁]`. Conclude with `hA1`. Establish `e22 : (chg (fromBlocks A B 0 R) H).toBlocks₂₂ = 1`. Rewrite using `[chg_fromBlocks, toBlocks_fromBlocks₂₂, hW, hZ, Matrix.zero_mul, zero_add]`. Conclude with `hR`.
-
-Use `⟨A, B, hA, ?_⟩` and prove the remaining obligations. Rewrite using `[← fromBlocks_toBlocks (chg (fromBlocks A B 0 R) H), e11, e12, e21, e22, fromBlocks_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chg_fromBlocks_eq_one {H : Matrix (m ⊕ l) (m ⊕ l) ℂ} (hH : H.PosDef)
     {R : Matrix l l ℂ} (hR : chg R (quotGram H) = 1) :
@@ -81,7 +79,7 @@ theorem exists_chg_fromBlocks_eq_one {H : Matrix (m ⊕ l) (m ⊕ l) ℂ} (hH : 
   rw [← fromBlocks_toBlocks (chg (fromBlocks A B 0 R) H), e11, e12, e21, e22, fromBlocks_one]
 
 /- English proof (translation)
-Establish `hQ` using `posDef_quotGram hH`. Take `⟨A₃, h₃, e₃⟩` from `exists_chg_eq_one (posDef_quotGram hQ)`. Take `⟨A₂, C, h₂, e₂⟩` from `exists_chg_fromBlocks_eq_one hQ e₃`. Take `⟨A₁, B, h₁, e₁⟩` from `exists_chg_fromBlocks_eq_one hH e₂`. Conclude with `⟨A₁, B, A₂, C, A₃, h₁, h₂, h₃, e₁⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_triangular_chg_eq_one {H : Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕ n)) ℂ} (hH : H.PosDef) :
     ∃ (A₁ : Matrix m m ℂ) (B : Matrix m (l ⊕ n) ℂ) (A₂ : Matrix l l ℂ) (C : Matrix l n ℂ)
@@ -94,9 +92,9 @@ theorem exists_triangular_chg_eq_one {H : Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕
   exact ⟨A₁, B, A₂, C, A₃, h₁, h₂, h₃, e₁⟩
 
 /- English proof (translation)
-Use `set J : Matrix (m ⊕ (l ⊕ n)) (m ⊕ l) ℂ := (1 : Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕ n)) ℂ).submatrix id (Sum.map id Sum.inl) with hJ`. Establish `h0 : ∀ T : Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕ n)) ℂ, chg (T.submatrix id (Sum.map id Sum.inl)) H = (chg T H).submatrix (Sum.map id Sum.inl) (Sum.map id Sum.inl)` using `fun T => by`. Use `chg_submatrix T H (Equiv.refl _) (Sum.map id Sum.inl : m ⊕ l → m ⊕ (l ⊕ n))` as an intermediate fact. Simplify using `using this`. Establish `h1 : H.submatrix (Sum.map id Sum.inl) (Sum.map id Sum.inl) = chg J H`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ, h0, chg_one]`. Establish `h2 : (fromBlocks A₁ B 0 (fromBlocks A₂ C 0 A₃)).submatrix id (Sum.map id Sum.inl) = J * fromBlocks A₁ (B.submatrix id Sum.inl) 0 A₂`. Apply the tactic sequence `ext (a | a | a) (b | b) <;>`. Simplify using `[hJ, mul_apply, Fintype.sum_sum_type, one_apply]`. Rewrite using `[h1, chg_chg, ← h2, h0]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chg_submatrix_first (A₁ : Matrix m m ℂ) (B : Matrix m (l ⊕ n) ℂ) (A₂ : Matrix l l ℂ)
     (C : Matrix l n ℂ) (A₃ : Matrix n n ℂ) (H : Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕ n)) ℂ) :
@@ -128,13 +126,13 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ 
   [DecidableEq l] [DecidableEq n]
 
 /- English proof (translation)
-Establish `hs : subGram (1 : Matrix (m ⊕ l) (m ⊕ l) ℂ) = 1`. Use extensionality with `a b`. Simplify using `[subGram, toBlocks₁₁, one_apply]`. Establish `hq : quotGram (1 : Matrix (m ⊕ l) (m ⊕ l) ℂ) = 1`. Establish `e1 : (1 : Matrix (m ⊕ l) (m ⊕ l) ℂ).toBlocks₂₁ = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[toBlocks₂₁, one_apply]`. Establish `e2 : (1 : Matrix (m ⊕ l) (m ⊕ l) ℂ).toBlocks₂₂ = 1`. Use extensionality with `a b`. Simplify using `[toBlocks₂₂, one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[quotGram, e1, e2]`. Simplify using the standard rewrite rules. Establish `hb : ∀ ξ, secondForm K z ξ = (mdel K z ξ).toBlocks₁₂ᵀ` using `fun ξ => by`. Rewrite using `[secondForm_eq, conn, h1, transpose_one, inv_one, Matrix.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[extTrace_eq h hp, secondFormAdj, h1, hs, hq, hb, hb, adj]`. Simplify using `only [transpose_one, inv_one, Matrix.one_mul, Matrix.mul_one, trace, diag_apply, mul_apply, transpose_apply, conjTranspose_apply, toBlocks₁₂, of_apply]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extTrace_eq_sum_of_eq_one {K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : E}
     (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (h1 : K z = 1) (ξ η : E) :
@@ -156,13 +154,13 @@ theorem extTrace_eq_sum_of_eq_one {K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hu : IsUnit (subGram (K z)).det`. Establish `: subGram (K z) = 1` using `by rw [h1]; ext a b; simp [subGram, toBlocks₁₁, one_apply]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `e12 : (K z).toBlocks₁₂ = 0` using `by rw [h1]; ext a b; simp [toBlocks₁₂, one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e21 : (K z).toBlocks₂₁ = 0` using `by rw [h1]; ext a b; simp [toBlocks₂₁, one_apply]`. Establish `h21 : MContDiffAt 1 (fun x => (K x).toBlocks₂₁) z` using `h.submatrix Sum.inr Sum.inl`. Establish `h12 : MContDiffAt 1 (fun x => (K x).toBlocks₁₂) z` using `h.submatrix Sum.inl Sum.inr`. Establish `h22 : MContDiffAt 1 (fun x => (K x).toBlocks₂₂) z` using `h.submatrix Sum.inr Sum.inr`. Establish `h11 : MContDiffAt 1 (fun x => (K x).toBlocks₁₁⁻¹) z` using `h.subGram.inv hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `h21.mul h11`. Establish `e : (fun x => quotGram (K x)) = fun x => (K x).toBlocks₂₂ + -((K x).toBlocks₂₁ * (K x).toBlocks₁₁⁻¹ * (K x).toBlocks₁₂)`. Use function extensionality and compare the values at `x`. Rewrite using `[quotGram, sub_eq_add_neg]`. Rewrite using `[e, mdel_add h22 (hP.mul h12).neg, mdel_neg, mdel_mul hP h12, e12, e21]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, add_zero, neg_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mdel_quotGram_of_eq_one {K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : E}
     (h : MContDiffAt 1 K z) (h1 : K z = 1) (ξ : E) :
@@ -185,11 +183,11 @@ theorem mdel_quotGram_of_eq_one {K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : 
   rfl
 
 /- English proof (translation)
-Establish `hf : Function.Injective (Sum.map id Sum.inl : m ⊕ l → m ⊕ (l ⊕ n))` using `Function.injective_id.sumMap Sum.inl_injective`. Establish `he` using `(Equiv.sumAssoc m l n).injective`. Establish `hsub : subGram (K z) = 1` using `by rw [h1]; ext a b; simp [subGram, toBlocks₁₁, one_apply]`. Establish `hu : IsUnit (subGram (K z)).det` using `by rw [hsub]; simp`. Establish `hq : quotGram (K z) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (K z).toBlocks₂₁ = 0` using `by rw [h1]; ext a b; simp [toBlocks₂₁, one_apply]`. Establish `e2 : (K z).toBlocks₂₂ = 1` using `by rw [h1]; ext a b; simp [toBlocks₂₂, one_apply]`. Rewrite using `[quotGram, e1, e2]`. Simplify using the standard rewrite rules. Rewrite using `[extTrace_eq_sum_of_eq_one (h.submatrix _ _) (hp.mono fun x hx => hx.submatrix hf) (by rw [h1]; exact submatrix_one _ hf), extTrace_eq_sum_of_eq_one (h.submatrix _ _) (hp.mono fun x hx => hx.submatrix he) (by rw [h1]; exact submatrix_one _ he), extTrace_eq_sum_of_eq_one h hp h1, …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.sum_sum_type, Finset.sum_add_distrib, mdel_apply, submatrix_apply, Sum.map_inl, Sum.map_inr, id, Equiv.sumAssoc_apply_inl_inl, Equiv.sumAssoc_apply_inl_inr, Equiv.sumAssoc_apply_inr, toBlocks₂₂, of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem extTrace_add_of_eq_one {K : E → Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕ n)) ℂ} {z : E}
     (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (h1 : K z = 1) (ξ η : E) :
@@ -220,15 +218,15 @@ theorem extTrace_add_of_eq_one {K : E → Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕
 variable {K : E → Matrix (m ⊕ (l ⊕ n)) (m ⊕ (l ⊕ n)) ℂ} {z : E}
 
 /- English proof (translation)
-Introduce `A`. Establish `hf : Function.Injective (Sum.map id Sum.inl : m ⊕ l → m ⊕ (l ⊕ n))` using `Function.injective_id.sumMap Sum.inl_injective`. Establish `he` using `(Equiv.sumAssoc m l n).injective`. Establish `hA₂ : IsUnit (fromBlocks A₂ C 0 A₃).det`. Rewrite using `[det_fromBlocks_zero₂₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₂.mul h₃`. Establish `hA : IsUnit A.det`. Simplify using `only [A]`. Rewrite using `[det_fromBlocks_zero₂₁]`. Conclude with `h₁.mul hA₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : IsUnit (subGram (K z)).det` using `(posDef_subGram hp.self_of_nhds).det_pos.ne'.isUnit`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun x => (chg A (K x)).submatrix (Sum.map id Sum.inl) (Sum.map id Sum.inl)) = fun x => chg (fromBlocks A₁ (B.submatrix id Sum.inl) 0 A₂) ((K x).submatrix (Sum.map id Sum.inl) (Sum.map id Sum.inl))`. Use function extensionality and compare the values at `fun x => chg_submatrix_first A₁ B A₂ C A₃ (K x)`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `extTrace_chg (A := fun _ => fromBlocks A₁ (B.submatrix id Sum.inl) 0 A₂) (h.submatrix _ _) (hp.mono fun x hx => hx.submatrix hf) (mContDiffAt_const _) (by rw [det_fromBlocks_zero₂₁]; exact h₁.mul h₂) (fun η => mdbar_const _ _ _) (.of_forall fun _ => toBlocks_fromBlocks₂₁ _ _ _ _)` and prove the remaining obligations. Establish `e : (fun x => (chg A (K x)).submatrix (Equiv.sumAssoc m l n) (Equiv.sumAssoc m l n)) = fun x => chg (A.submatrix (Equiv.sumAssoc m l n) (Equiv.sumAssoc m l n)) ((K x).submatrix (Equiv.sumAssoc m l n) (Equiv.sumAssoc m l n))`. Use function extensionality and compare the values at `fun x => (chg_submatrix A (K x) (Equiv.sumAssoc m l n) (Equiv.sumAssoc m l n)).symm`. Rewrite using `[e]`. Use `extTrace_chg (A := fun _ => A.submatrix (Equiv.sumAssoc m l n) (Equiv.sumAssoc m l n)) (h.submatrix _ _) (hp.mono fun x hx => hx.submatrix he) (mContDiffAt_const _) (by rw [det_submatrix_equiv_self]; exact hA) (fun η => mdbar_const _ _ _) (.of_forall fun _ => ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext a (b | b) <;> simp [A, toBlocks₂₁]`. Conclude with `extTrace_chg (A := fun _ => A) h hp (mContDiffAt_const _) hA (fun η => mdbar_const _ _ _) (.of_forall fun _ => toBlocks_fromBlocks₂₁ _ _ _ _)`. Rewrite using `[extTrace_congr (K' := fun x => chg (fromBlocks A₂ C 0 A₃) (quotGram (K x))) (hp.mono fun x hx => quotGram_chg B _ h₁ (posDef_subGram hx).det_pos.ne'.isUnit)]`. Conclude with `extTrace_chg (A := fun _ => fromBlocks A₂ C 0 A₃) (h.quotGram hs) (hp.mono fun x hx => posDef_quotGram hx) (mContDiffAt_const _) hA₂ (fun η => mdbar_const _ _ _) (.of_forall fun _ => toBlocks_fromBlocks₂₁ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem extTrace_add_chg (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef)
     {A₁ : Matrix m m ℂ} (B : Matrix m (l ⊕ n) ℂ) {A₂ : Matrix l l ℂ} (C : Matrix l n ℂ)
@@ -280,9 +278,9 @@ theorem extTrace_add_chg (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x)
 end Forms
 
 /- English proof (translation)
-Introduce `E _ _ _ _ m l n _ _ _ _ _ _ K z ξ η h hp`. Take `⟨A₁, B, A₂, C, A₃, h₁, h₂, h₃, e⟩` from `exists_triangular_chg_eq_one hp.self_of_nhds`. Take `⟨t₁, t₂, t₃, t₄⟩` from `extTrace_add_chg h hp B C h₁ h₂ h₃`. Establish `hA : IsUnit (fromBlocks A₁ B 0 (fromBlocks A₂ C 0 A₃)).det`. Rewrite using `[det_fromBlocks_zero₂₁, det_fromBlocks_zero₂₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₁.mul (h₂.mul h₃)`. Use `extTrace_add_of_eq_one (K := fun x => chg (fromBlocks A₁ B 0 (fromBlocks A₂ C 0 A₃)) (K x)) (((mContDiffAt_const _).mul h).mul (mContDiffAt_const _)) (hp.mono fun x hx => posDef_chg ((isUnit_iff_isUnit_det _).2 hA) hx) e ξ η` as an intermediate fact. Rewrite `this` using `[t₁, t₂, t₃, t₄]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem extTrace_add_extTrace :
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]

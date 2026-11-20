@@ -7,15 +7,15 @@ set_option autoImplicit false
 namespace GlobalTheory.TriFrame
 
 /- English proof (translation)
-Unfold `matNorm`. Use `congr 1`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨cf, h1, h2, h3, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨cf ∘ Fin.succ, h1, fun k hk => h2 k.succ (Fin.succ_lt_succ_iff.2 hk), fun l => ?_, rfl⟩` and prove the remaining obligations. Use `h3 l.succ` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_succ, hcol l, mul_zero, zero_add]`. Simplify `this` using `[Matrix.submatrix_apply]`. Introduce and unpack `⟨cf', h1, h2, h3, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Use `⟨Fin.cons (-(∑ k, cf' k * N 0 k.succ) / N 0 0) cf', by simpa using h1, fun k hk => ?_, fun l => ?_, by simp⟩` and prove the remaining obligations. Consider the cases of `k using Fin.cases with`. Consider the case `zero => exact absurd hk (not_lt.2 (Fin.zero_le _))`. Consider the case `succ k => simpa using h2 k (Fin.succ_lt_succ_iff.1 hk)`. Consider the cases of `l using Fin.cases with`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[div_mul_cancel₀ _ h0, neg_add_cancel, norm_zero]`. Conclude with `zero_le_one`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ l`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hcol l, mul_zero, zero_add]`. Simplify `h3 l` using `[Matrix.submatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem matNorm_succ_of_blockTri {C : Type} [NormedField C] {r : ℕ} (N : Matrix (Fin (r+1)) (Fin (r+1)) C)
     (h0 : N 0 0 ≠ 0) (hcol : ∀ l : Fin r, N l.succ 0 = 0) (i : Fin r) :

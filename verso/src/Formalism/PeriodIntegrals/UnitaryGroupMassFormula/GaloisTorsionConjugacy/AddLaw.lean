@@ -12,7 +12,7 @@ open Filter Topology
 namespace OriginCoordinatesAdd
 
 /- English proof (translation)
-Establish `h` using `((L.analyticOnNhd_weierstrassP z hz).differentiableAt).hasDerivAt`. Rewrite `h` using `[PeriodPair.deriv_weierstrassP]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma hasDerivAt_wp (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
     HasDerivAt L.weierstrassP (L.derivWeierstrassP z) z := by
@@ -20,7 +20,7 @@ lemma hasDerivAt_wp (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
   rwa [PeriodPair.deriv_weierstrassP] at h
 
 /- English proof (translation)
-The claim follows from `hf.preimage_mem_nhds (L.isClosed_lattice.isOpen_compl.mem_nhds h)`.
+A detailed English derivation is pending.
 -/
 lemma ev_notMem (L : PeriodPair) {f : ℂ → ℂ} {z : ℂ} (hf : ContinuousAt f z)
     (h : f z ∉ L.lattice) : ∀ᶠ z' in 𝓝 z, f z' ∉ L.lattice :=
@@ -30,7 +30,7 @@ def lam (L : PeriodPair) (w z : ℂ) : ℂ :=
   (L.derivWeierstrassP z - L.derivWeierstrassP w) / (L.weierstrassP z - L.weierstrassP w)
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun z' => L.derivWeierstrassP z' - L.derivWeierstrassP w) (6 * L.weierstrassP z ^ 2 - L.g₂ / 2) z` using `(pSecond L z hz).sub_const _`. Establish `h2 : HasDerivAt (fun z' => L.weierstrassP z' - L.weierstrassP w) (L.derivWeierstrassP z) z` using `(hasDerivAt_wp L hz).sub_const _`. Conclude with `h1.div h2 hne`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_lam (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice)
     (hne : L.weierstrassP z - L.weierstrassP w ≠ 0) :
@@ -45,7 +45,7 @@ lemma hasDerivAt_lam (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice)
   exact h1.div h2 hne
 
 /- English proof (translation)
-Introduce `h`. Break down `(pInjective L z w hz hw).1 (sub_eq_zero.1 h) with h' | h'` into its components or cases. Conclude with `hm h'`. Conclude with `hp h'`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma wp_ne (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.lattice)
     (hm : z - w ∉ L.lattice) (hp : z + w ∉ L.lattice) :
@@ -56,7 +56,7 @@ lemma wp_ne (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.la
   · exact hp h'
 
 /- English proof (translation)
-Establish `h1` using `ev_notMem L (f := fun z' => z') continuousAt_id hz`. Establish `h2` using `ev_notMem L (f := fun z' => z' - w) (continuousAt_id.sub continuousAt_const) hm`. Establish `h3` using `ev_notMem L (f := fun z' => z' + w) (continuousAt_id.add continuousAt_const) hp`. Use `filter_upwards [h1, h2, h3] with z' a b c using ⟨a, b, c⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma ev_adm (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice) (hm : z - w ∉ L.lattice)
     (hp : z + w ∉ L.lattice) :
@@ -67,9 +67,9 @@ lemma ev_adm (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice) (hm : z - w ∉
   filter_upwards [h1, h2, h3] with z' a b c using ⟨a, b, c⟩
 
 /- English proof (translation)
-Establish `hne` using `wp_ne L hz hw hm hp`. Establish `hF : HasDerivAt (fun z' => wZeta L (z' + w)) (-(L.weierstrassP (z + w))) z` using `HasDerivAt.comp_add_const z w (zetaHasDeriv L (z + w) hp)`. Establish `hG` using `((zetaHasDeriv L z hz).add_const (wZeta L w)).add ((hasDerivAt_lam L hz hne).div_const 2)`. Establish `hEq : (fun z' => wZeta L (z' + w)) =ᶠ[𝓝 z] (fun z' => wZeta L z' + wZeta L w + lam L w z' / 2)` using `by filter_upwards [ev_adm L hz hm hp] with z' ⟨h1, h2, h3⟩`. Rewrite using `[zetaAdd L z' w h1 hw h3 h2, ← div_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `lam`. Expand and normalize the polynomial expressions, which then agree. Establish `hD` using `hF.unique (hG.congr_of_eventuallyEq hEq)`. Take the linear combination `-hD`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma stepA (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.lattice)
     (hm : z - w ∉ L.lattice) (hp : z + w ∉ L.lattice) :
@@ -91,7 +91,7 @@ lemma stepA (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.la
   linear_combination -hD
 
 /- English proof (translation)
-Unfold `addX`. Clear the denominators using the available nonvanishing facts. Take the linear combination `4 * hy - 4 * hy₂`.
+Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma chord_alg (x y x₂ y₂ g g' : ℂ) (hd : x - x₂ ≠ 0)
     (hy : y ^ 2 = 4 * x ^ 3 - g * x - g') (hy₂ : y₂ ^ 2 = 4 * x₂ ^ 3 - g * x₂ - g') :
@@ -102,7 +102,7 @@ lemma chord_alg (x y x₂ y₂ g g' : ℂ) (hd : x - x₂ ≠ 0)
   linear_combination 4 * hy - 4 * hy₂
 
 /- English proof (translation)
-Rewrite using `[stepA L hz hw hm hp]`. Conclude with `chord_alg _ _ _ _ L.g₂ L.g₃ (wp_ne L hz hw hm hp) (L.derivWeierstrassP_sq z hz) (L.derivWeierstrassP_sq w hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma stepB (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.lattice)
     (hm : z - w ∉ L.lattice) (hp : z + w ∉ L.lattice) :
@@ -117,11 +117,11 @@ end OriginCoordinatesAdd
 open OriginCoordinatesAdd in
 
 /- English proof (translation)
-Introduce `L z w hz hw hm hp`. Establish `hB` using `stepB L hz hw hm hp`. Use `⟨hB, ?_⟩` and prove the remaining obligations. Establish `hA` using `stepA L hz hw hm hp`. Establish `hne` using `wp_ne L hz hw hm hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : HasDerivAt (fun z' => L.weierstrassP (z' + w)) (L.derivWeierstrassP (z + w)) z` using `HasDerivAt.comp_add_const z w (hasDerivAt_wp L hp)`. Establish `hG` using `((((hasDerivAt_lam L hz hne).pow 2).div_const 4).sub (hasDerivAt_wp L hz)).sub_const (L.weierstrassP w)`. Establish `hEq : (fun z' => L.weierstrassP (z' + w)) =ᶠ[𝓝 z] (fun z' => lam L w z' ^ 2 / 4 - L.weierstrassP z' - L.weierstrassP w)` using `by filter_upwards [ev_adm L hz hm hp] with z' ⟨h1, h2, h3⟩`. Rewrite using `[stepB L h1 hw h2 h3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hD` using `hF.unique (hG.congr_of_eventuallyEq hEq)`. Rewrite using `[hD]`. Unfold `addY`. Rewrite using `[← hB, hA]`. Unfold `lam`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
 Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/

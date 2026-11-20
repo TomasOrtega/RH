@@ -31,28 +31,28 @@ def asm (g : InfinitePlace F → GL (Fin 2) ℝ) : GL (Fin 2) (TR.Rinf F) where
 
 omit [NumberField F] [IsTotallyReal F] in
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem gv_asm (g : InfinitePlace F → GL (Fin 2) ℝ) (v : InfinitePlace F) : gv v (asm g) = g v :=
   Units.ext (Matrix.ext fun _ _ => rfl)
 
 omit [NumberField F] [IsTotallyReal F] in
 /- English proof (translation)
-Use `choose h _ _ hh using fun v => hc.2.2.2.2.2 (z v)`. Conclude with `⟨asm h, funext fun v => by rw [gv_asm, hh]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_g (hc : B1c) (z : X (InfinitePlace F)) : ∃ g : GL (Fin 2) (TR.Rinf F), (fun v => gv v g • iP) = z := by
   choose h _ _ hh using fun v => hc.2.2.2.2.2 (z v)
   exact ⟨asm h, funext fun v => by rw [gv_asm, hh]⟩
 
 /- English proof (translation)
-Rewrite using `[map_mul, TR.pInf_infGL, TR.pInf_finGL, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inf_of (g : GL (Fin 2) (TR.Rinf F)) (x : GF F) :
     Matrix.GeneralLinearGroup.map (TR.pInf F) (TR.infGL F 2 g * finGL F 2 x) = g := by
   rw [map_mul, TR.pInf_infGL, TR.pInf_finGL, mul_one]
 
 /- English proof (translation)
-Rewrite using `[map_mul, TR.pFin_infGL, pFin_finGL, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_of (g : GL (Fin 2) (TR.Rinf F)) (x : GF F) :
     Matrix.GeneralLinearGroup.map (pFin F) (TR.infGL F 2 g * finGL F 2 x) = x := by
@@ -62,13 +62,13 @@ end UpperTheory.Esk.HeckeRelationLemmas
 
 open UpperTheory.Esk in
 /- English proof (translation)
-Introduce `hb hc F _ _ _ k`. Establish `hne : ∀ g : GL (Fin 2) (TR.Rinf F), ∏ v, j1 (k v) (gv v g) iP ≠ 0` using `fun g => Finset.prod_ne_zero_iff.2 fun v _ => hb.2.1 _ _ _`. Use `⟨fun f => ⟨fun a => f (fun v => gv v (Matrix.GeneralLinearGroup.map (TR.pInf F) a) • iP, Matrix.GeneralLinearGroup.map (pFin F) a) / ∏ v, j1 (k v) (gv v (Matrix.GeneralLinearGroup.map (TR.pInf F) a)) iP, fun g x => ?_⟩, fun f φ φ' h h' => ?_, fun f f' φ h h' => ?_, fun f f' φ φ' …` and prove the remaining obligations. Simplify using `only [HeckeRelationLemmas.inf_of, HeckeRelationLemmas.fin_of]`. Conclude with `div_mul_cancel₀ _ (hne g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[← TR.infGL_mul_finGL a]`. Conclude with `mul_right_cancel₀ (hne _) ((h _ _).trans (h' _ _).symm)`. Use function extensionality and compare the values at `p`. Take `⟨z, x⟩` from `p`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, rfl⟩` from `HeckeRelationLemmas.exists_g hc z`. Rewrite using `[← h g x, ← h' g x]`. Introduce `g x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, mul_assoc, h g x, h' g x]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g x`. Simplify using `only [Dat.Op, LinearMap.coe_mk, AddHom.coe_mk, Submodule.coe_sum, Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (TR.infGL F 2 g * finGL F 2 x * finGL F 2 (a i)) * _ = _`. Rewrite using `[mul_assoc, ← map_mul, h g (x * a i)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.pf_HRel : UpperTheory.Esk.B1b → UpperTheory.Esk.B1c → UpperTheory.Esk.HRel := by
   intro hb hc F _ _ _ k

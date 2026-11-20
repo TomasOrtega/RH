@@ -6,11 +6,11 @@ namespace DualFramesAlt.BlockProductRing
 open PowerSeries
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[mul_add_one, Finset.prod_range_add, ih, Finset.prod_range_succ]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hc : ∀ x ∈ Finset.range m, g ((m * e + x) / m) = g e`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_range]`. Use `congr 1`. Rewrite using `[Nat.add_comm, Nat.add_mul_div_left _ _ hm, Nat.div_eq_of_lt hx, zero_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl hc, Finset.prod_const, Finset.card_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_div_block {M : Type*} [CommMonoid M] (m : ℕ) (hm : 0 < m) (g : ℕ → M) (e : ℕ) :
     ∏ k ∈ Finset.range (m * e), g (k / m) = ∏ j ∈ Finset.range e, g j ^ m := by
@@ -27,13 +27,13 @@ theorem prod_div_block {M : Type*} [CommMonoid M] (m : ℕ) (hm : 0 < m) (g : �
     rw [Finset.prod_congr rfl hc, Finset.prod_const, Finset.card_range]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const]`. Use `congr 1`. Establish `hset : Finset.filter (fun i => i / m = k / m) (Finset.range k) = Finset.Ico (m * (k / m)) k`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hik, hd⟩`. Use `⟨?_, hik⟩` and prove the remaining obligations. Rewrite using `[← hd]`. Conclude with `Nat.mul_div_le i m`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hle, hik⟩`. Use `⟨hik, le_antisymm (Nat.div_le_div_right hik.le) ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.le_div_iff_mul_le hm, mul_comm]`. Conclude with `hle`. Rewrite using `[hset, Nat.card_Ico]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `h` using `Nat.mod_add_div k m`. Generalize the expression as in `m * (k / m) = q at h ⊢`. Generalize the expression as in `k % m = r at h ⊢`. Use linear arithmetic over natural numbers and integers.
+Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem prod_ite_block {M : Type*} [CommMonoid M] (m : ℕ) (hm : 0 < m) (x : M) (k : ℕ) :
     ∏ i ∈ Finset.range k, (if i / m = k / m then x else 1) = x ^ (k % m) := by
@@ -58,7 +58,7 @@ theorem prod_ite_block {M : Type*} [CommMonoid M] (m : ℕ) (hm : 0 < m) (x : M)
   omega
 
 /- English proof (translation)
-Take `⟨H, hH⟩` from `Ideal.mem_span_singleton.mp (Ideal.Quotient.eq.mp h)`. Conclude with `⟨H, hH⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dvd_of_mk_eq {O : Type*} [CommRing O] {y c : O} {F : PowerSeries O}
     (h : Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia y) F = Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia y) (C c)) :
@@ -67,14 +67,14 @@ theorem dvd_of_mk_eq {O : Type*} [CommRing O] {y c : O} {F : PowerSeries O}
   exact ⟨H, hH⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq.mpr h`.
+A detailed English derivation is pending.
 -/
 theorem mk_eq_of_mem {O : Type*} [CommRing O] {y : O} {F G : PowerSeries O} (h : F - G ∈ DualFramesAlt.eigenRingInvariants.Ia y) :
     Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia y) F = Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia y) G :=
   Ideal.Quotient.eq.mpr h
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_span_singleton.mpr (dvd_mul_right _ _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_factor {O : Type*} [CommRing O] (y : O) (F : PowerSeries O) :
     (X - C y) * F ∈ DualFramesAlt.eigenRingInvariants.Ia y :=

@@ -12,7 +12,7 @@ open ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Geo.Tor Recipro
 open GlobalTheory.FGDepth GlobalTheory.CharDepth GlobalTheory.FactorDepth GlobalTheory.LawLog GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns
 
 /- English proof (translation)
-Simplify using `only [mv, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ℓ _ => Finset.sum_congr rfl fun e' _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mv_sum_smul_X {C : Type} [Field C] {d : ℕ} {σ : Type} [Fintype σ] (A : Matrix (Fin d) (Fin d) C)
     (s : σ → C) (g : σ → Fin d → C) (e : Fin d) :
@@ -24,11 +24,11 @@ theorem mv_sum_smul_X {C : Type} [Field C] {d : ℕ} {σ : Type} [Fintype σ] (A
   rw [mul_left_comm]
 
 /- English proof (translation)
-Establish `ht : HasSubst (fun q : Fin n × Fin d => expPt G (w q.1) q.2)` using `hasSubst_of_constantCoeff_zero fun q => cc_expPt G (hw q.1) q.2`. Establish `hl : ∀ b e, constantCoeff (lgPt G (fun e => (MvPowerSeries.X (r b, e) : MvPowerSeries (Fin n × Fin d) C)) e) = 0` using `fun b => cc_lgPt G (by simp)`. Rewrite using `[subst_expPt G ht (fun e => by`. Rewrite using `[Finset.sum_apply, map_sum]`. Conclude with `Finset.sum_eq_zero fun b _ => cc_mv _ (hl b) e)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `e`. Rewrite using `[Finset.sum_apply, ← coe_substAlgHom ht, map_sum, coe_substAlgHom]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[subst_mv ht]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `e'`. Rewrite using `[subst_lgPt G ht (by simp)]`. Simplify using `only [subst_X ht]`. Conclude with `congrFun (lgPt_expPt G (hw (r b))) e'`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_expPt_sum_mv {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d n : ℕ} {σ κ : Type} [Fintype κ]
     (G : LogFGL v d) (w : Fin n → Fin d → MvPowerSeries σ C) (hw : ∀ j e, constantCoeff (w j e) = 0)
@@ -55,27 +55,25 @@ theorem subst_expPt_sum_mv {C : Type} [Field C] {v : AddValuation C (WithTop ℝ
   exact congrFun (lgPt_expPt G (hw (r b))) e'
 
 /- English proof (translation)
-Introduce `hAct hPt hInv E _ _ _ H Dw l Xo c _ hstar T io y Ch p _ X cx n B hB`. Take `⟨blk, hblk⟩` from `hB`. Establish `key : ∀ f : {f : Lt1 Dw // cx f ≠ 0}, ∃ ρf : Fin (rk f.1) → Fin (chD Ch.ch) → PS X.C n (chD Ch.ch), (∀ β i, constantCoeff (ρf β i) = 0) ∧ (∀ β i, MvIsInt (vX_vp X) (ρf β i)) ∧ ∀ β i, subst (colPt Ch X cx B) (ρf β i) = expH Ch X cx ⟨⟨f, β⟩, i⟩`. Introduce `f`. Take `⟨hS, ⟨r, hr⟩, hx⟩` from `hblk f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `GlobalTheory.IsoCols.exists_lift T (io.comp (embK c f.1.1))`. Establish `inj` using `IsFractionRing.injective T.V T.Fr`. Establish `hp0 : (p : T.V) ≠ 0` using `fun h => by`. Establish `h1` using `congrArg (jX X) h`. Rewrite `h1` using `[map_natCast, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast h1)`. Establish `hM : ∀ b b' (N : ℕ), ∃ a z, φ a = (Matrix.of fun b b' => B f.1 b (r b')) b b' + φ (p : 𝓞 E) ^ N * z` using `fun b b' N => by`. Take `⟨x, -, hx2, -⟩` from `hx N`. Take `⟨z, hz⟩` from `hx2 b (r b')`. Conclude with `⟨x b (r b'), z, inj (by rw [hφ, map_natCast φ]; exact hz)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨M', hMM', hM'⟩` from `hInv (𝓞 E) T.V φ (p : 𝓞 E) (by rw [map_natCast]; exact hp0) (by rw [map_natCast]; exact not_isUnit_p X) (rk f.1) _ hr hM`. Take `⟨ε, hε⟩` from `hAct E H Dw l Xo c hstar T io y Ch p X f.1.1`. Use `choose x z hxz using hM'`. Use `choose A hA1 hA2 using fun β' β => hε (M' β' β) (x β' β) fun N => ⟨z β' β N, by rw [← map_natCast φ p, ← hxz, hφ]; rfl⟩`. Establish `hint : ∀ β, IntLog (fgl Ch X) (∑ β', mv (A β' β) (lgPt (fgl Ch X) fun e => (MvPowerSeries.X (r β', e) : PS X.C n (chD Ch.ch))))` using `fun β => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := io.toAlgebra`. Use `letI : Algebra T.Fr X.C := X.ιF.toAlgebra`. Conclude with `hPt X.C (vX_vp X) _ T.Fr (𝓞 E) Ch.ch.B (isIntFB_chart Ch X) _ (Fin (rk f.1)) _ (fun β' => intLog_lgPt_X (fgl Ch X) fun e => (r β', e)) (fun β' => A β' β) (fun N β' => ε N * x β' β N) fun N β' => hA1 β' β N`. Establish `hz : ∀ f' : {f : Lt1 Dw // cx f ≠ 0}, f' ≠ f → ∀ b β', B f'.1 b (r β') = 0` using `fun f' hf b β' => by`. Use `(hblk f').1 b _ fun ⟨j', hj'⟩ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hm : r β' ∈ Set.range fun j => blk ⟨f, j⟩`. Take `⟨j, hj⟩` from `hm`. Conclude with `hf (congrArg Sigma.fst (blk.injective (hj'.trans hj.symm)))`. Rewrite `hr` using `[Matrix.det_eq_zero_of_column_eq_zero β' fun b => hS b _ hm]`. Conclude with `not_isUnit_zero hr`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨fun β => expPt (fgl Ch X) _, fun β => cc_expPt _ (hint β).1, fun β => (hint β).2, fun β i => ?_⟩` and prove the remaining obligations. Use `(subst_expPt_sum_mv (fgl Ch X) (fun j e => ∑ ℓ : Let cx, (jX X (B ℓ.1.1.1 ℓ.1.2 j) * frame Ch X ℓ.1.1.1 ℓ.2 e) • (MvPowerSeries.X ℓ : MvPowerSeries (Let cx) X.C)) (fun j e => by simp) r (fun β' => A β' β) i).trans ?_` and prove the remaining obligations. Use `show expPt _ _ i = expPt (fgl Ch X) (fun e => ∑ a, frame Ch X f.1 a e • (MvPowerSeries.X ⟨⟨f, β⟩, a⟩ : MvPowerSeries (Let cx) X.C)) i`. Use `congr 1`. Use function extensionality and compare the values at `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [mv_sum_smul_X]`. Establish `hc : ∀ (b : Fin (rk f.1)) (a : Fin (rk f.1)), ∑ β', jX X (B f.1 b (r β')) * (A β' β).mulVec (frame Ch X f.1 a) e = if b = β then frame Ch X f.1 a e else 0` using `fun b a => by`. Establish `h1` using `congrArg (jX X) (congrFun (congrFun hMM' b) β)`. Rewrite `h1` using `[Matrix.mul_apply, map_sum, Matrix.one_apply]`. Simplify using `only [frame, hA2, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← Finset.sum_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show ∑ β', jX X (B f.1 b (r β') * M' β' β) = _ from h1]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_comm, Fintype.sum_sigma, Finset.sum_eq_single (⟨f, β⟩ : Col cx)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, hc, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨f', b⟩ - hne`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Distinguish the cases in `hf : f' = f`. Substitute `hf` using the available equality.
-
-Rewrite using `[hc, if_neg fun h => hne (by rw [show b = β from h]), zero_smul]`. Simplify using `[hz f' hf]`. Conclude with `fun h => absurd (Finset.mem_univ _) h`. Use `choose ρf h1 h2 h3 using key`. Conclude with `⟨fun q => ρf q.1.1 q.1.2 q.2, fun q => h1 _ _ _, fun q => h2 _ _ _, fun q => h3 _ _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem retrSt_of : LimActSt → LimPtSt → InvSt → RetrSt := by
   intro hAct hPt hInv E _ _ _ H Dw l Xo c _ hstar T io y Ch p _ X cx n B hB

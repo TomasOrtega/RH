@@ -20,11 +20,9 @@ noncomputable section
 namespace GlobalTheory.LN.Cmp
 
 /- English proof (translation)
-Establish `hb : h ≫ T.hom = T'.hom ≫ spMap φ`. Rewrite using `[← Over.w p, ← Category.assoc, ← hp, Category.assoc, pb.1.w, ← Category.assoc, Over.w]`. Set `U : Over.mk (T'.hom ≫ spMap φ) ⟶ T` to `Over.homMk h hb`. Establish `e : pushPt pb.1.w p' = U ≫ p` using `Over.OverMorphism.ext hp`. Establish `c : pushPt pb.1.w (toUnit T' ≫ D'.c x') = toUnit _ ≫ D.c x` using `Over.OverMorphism.ext (by show (T'.hom ≫ (D'.c x').left) ≫ β = (T'.hom ≫ spMap φ) ≫ (D.c x).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hc, ← Category.assoc])`. Use `Eq.trans ?_ (WeightPf.Oφ_comp U p x κ).symm` and prove the remaining obligations. Rewrite using `[← e]`. Use `fin_cases κ`. Conclude with `congrArg (fun q => q.left) ((map_mul (pushHom pb T') p' (toUnit T' ≫ D'.c x')).trans (congrArg (pushPt pb.1.w p' * ·) c))`.
-
-Conclude with `congrArg (fun q => q.left) c`. Both sides reduce to the same expression. Conclude with `congrArg (fun q => q.left) (map_one (pushHom pb T'))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Oφ_baseChange {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {φ : R →+* V} {D : DegPre R}
     {D' : DegPre V} {β : D'.P.A.left ⟶ D.P.A.left} (pb : IsGrpPullback D'.P.A D.P.A (spMap φ) β) {x' : D'.X} {x : D.X}
@@ -49,23 +47,21 @@ theorem Oφ_baseChange {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDo
   · exact congrArg (fun q => q.left) (map_one (pushHom pb T'))
 
 /- English proof (translation)
-Introduce `R V _ _ _ _ I I' φ D D₁ D' A A₁ A' G _ _ G' _ _ U U₁ U' F C₁ C₂ wL hmap hw`. Establish `g₁` using `(isGen_iff _).1 C₁.v_gen`. Establish `g₂` using `(isGen_iff _).1 C₂.v_gen`. Take `⟨v, T⟩` from `exists_comp D₁.P.isLB C₁.v C₂.v g₁ g₂ D.P.isLB D'.P.isLB`. Establish `pbB : IsGrpPullback D'.P.A D.P.A (spMap φ) (C₂.β ≫ C₁.β)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `C₂.pbB.comp C₁.pbB`. Rewrite `h` using `[spMap_ringHom_id, Category.id_comp]`. Then use the resulting hypothesis. Use `⟨{ pb := C₁.pb wL := wL wL_map := hmap β := C₂.β ≫ C₁.β pbB := pbB v := v v_gen := (isGen_iff _).2 (T.pgen_comp D₁.P.isLB g₁ g₂) xe := C₂.xe.trans C₁.xe c_pr := fun x => by` and prove the remaining obligations. Rewrite using `[← Category.assoc, C₂.c_pr, spMap_ringHom_id, Category.id_comp, C₁.c_pr]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `lev := fun e Z x' x hx => ?_`. Use `map_le := C₁.map_le }, rfl⟩`. Take `⟨a₁, b₁⟩` from `C₁.lev e Z x' x hx`. Take `⟨a₂, b₂⟩` from `C₂.lev e Z x' x' (by rw [Category.comp_id])`. Use `⟨by rw [← a₁, reassoc_of% a₂], fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J₁, hJ₁⟩` from `exists_good_pt D₁.P.isLB z`. Take `⟨c₁, d₁⟩` from `b₁ z J J₁ hJ hJ₁`. Take `⟨c₂, d₂⟩` from `b₂ z J₁ J' hJ₁ hJ'`. Establish `tri : ∀ f : Z ⟶ D'.P.A.left, gw v f z (J (f ≫ C₂.β ≫ C₁.β)) (J' f) = gw C₁.v (f ≫ C₂.β) z (J (f ≫ C₂.β ≫ C₁.β)) (J₁ (f ≫ C₂.β)) * gw C₂.v f z (J₁ (f ≫ C₂.β)) (J' f)` using `fun f => T Z f z _ _ _ (hJ (f ≫ C₂.β ≫ C₁.β)) (hJ₁ (f ≫ C₂.β)) (hJ' f)`. Use `⟨fun χ => ?_, fun k k' hk hk' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (U'.gt e).pG.left ≫ C₂.β = 𝟙 _ ≫ (U₁.gt e).pG.left`. Use `(C₂.lev e _ (𝟙 _) (𝟙 _) (by rw [Category.comp_id])).1` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `o : ∀ κ, D'.Oφ (U'.gt e).pG χ κ ≫ C₂.β = D₁.Oφ (U₁.gt e).pG (C₂.xe χ) κ` using `fun κ => (Oφ_baseChange C₂.pbB (C₂.c_pr χ) _ _ _ hp κ).trans (Category.id_comp _)`. Use `(c₁ (C₂.xe χ)).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[c₂ χ, _root_.mul_assoc, ← Finset.prod_mul_distrib]`. Use `congrArg _ (Finset.prod_congr rfl fun κ _ => ?_)` and prove the remaining obligations. Establish `t` using `tri (x' ≫ D'.Oφ (U'.gt e).pG χ κ)`. Simplify using `only [Category.assoc] at t`. Rewrite using `[t, mul_zpow, mul_comm, ← o κ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Category.assoc]`. Take `⟨i, hi⟩` from `exists_chart U₁.P.L.isLB ((fstG I' e G').left (x' z))`. Establish `t` using `tri (x' ≫ (U'.gt e).pG.left)`. Simplify using `only [Category.assoc] at t`. Establish `a : x' ≫ (U'.gt e).pG.left ≫ C₂.β ≫ C₁.β = x ≫ (U.gt e).pG.left` using `by rw [← a₁, reassoc_of% a₂]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `t` using `[a, a₂]`. Establish `hk₂ : F ((x' ≫ (fstG I' e G').left) z) ∈ U.P.L.L.U k`. Establish `: F ((x' ≫ (fstG I' e G').left) z) = (fstG I e G).left (x z)` using `(congrArg (fun q : Z ⟶ G.left => q z) hx).symm`. Rewrite using `[this]`. Conclude with `hk`.
-
-Rewrite using `[t, hw Z (x' ≫ (fstG I' e G').left) z k i k' hk₂ hi hk', _root_.mul_assoc, d₂ i k' hi hk', ← _root_.mul_assoc, d₁ k i hk hi, _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comp_id : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (I : Ideal R) (I' : Ideal V) (φ : R →+* V) (D : DegPre R) (D₁ D' : DegPre V) (A : PolAV (Sp (FractionRing R))) (A₁ A' : PolAV (Sp (FractionRing V))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (G' : Over (Spec (CommRingCat.of V))) [GrpObj G'] [IsCommMonObj G'] (U : PreU I D A G) (U₁ : PreU I' D₁ A₁ G') (U' : PreU I' D' A' G') (F : G'.left ⟶ G.left) (C₁ : Cmp φ U U₁ F) (C₂ : Cmp (RingHom.id V) U₁ U' (𝟙 G'.left)) (wL : LB.Iso U'.P.L.L (U.P.L.L.pull F)), IsCPMap U'.P U.P (spMap φ) F C₁.pb.1.w wL → (∀ (Z : Scheme.{0}) (r : Z ⟶ G'.left) (z : Z) (j : U.P.L.L.ι) (i : U₁.P.L.L.ι) (k : U'.P.L.L.ι), F (r z) ∈ U.P.L.L.U j → r z ∈ U₁.P.L.L.U i → r z ∈ U'.P.L.L.U k → gw wL r z j k = gw C₁.wL r z j i * gw C₂.wL r z i k) → ∃ C : Cmp φ U U' F, C.wL = wL := by
   intro R V _ _ _ _ I I' φ D D₁ D' A A₁ A' G _ _ G' _ _ U U₁ U' F C₁ C₂ wL hmap hw

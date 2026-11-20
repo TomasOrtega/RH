@@ -1,17 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `M Ω C _ _ _ _ _ _ _ j f`. Establish `key : ∀ x : M, f x ∈ j.fieldRange`. Introduce `x`. Establish `hx : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Establish `hs : ((minpoly ℚ x).map (algebraMap ℚ Ω)).Splits` using `IsAlgClosed.splits _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ((minpoly ℚ x).map (algebraMap ℚ Ω)).map j = (minpoly ℚ x).map (algebraMap ℚ C)`. Rewrite using `[Polynomial.map_map]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Establish `hne : ((minpoly ℚ x).map (algebraMap ℚ Ω)).map j ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `((minpoly.monic hx).map _).ne_zero`. Establish `hr : f x ∈ (((minpoly ℚ x).map (algebraMap ℚ Ω)).map j).roots`. Rewrite using `[Polynomial.mem_roots hne, hm, Polynomial.IsRoot.def, Polynomial.eval_map_algebraMap]`. Establish `h` using `Polynomial.aeval_algHom_apply f.toRatAlgHom x (minpoly ℚ x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[minpoly.aeval, map_zero]`. Conclude with `h`. Rewrite `hr` using `[hs.roots_map, Multiset.mem_map]`. Take `⟨y, -, hy⟩` from `hr`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose g hg using fun x => RingHom.mem_fieldRange.mp (key x)`. Use `⟨{ toFun := g, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hg⟩` and prove the remaining obligations. Conclude with `j.injective (by simp [hg])`. Introduce `a b`. Conclude with `j.injective (by simp [hg])`.
-
-Conclude with `j.injective (by simp [hg])`. Introduce `a b`. Conclude with `j.injective (by simp [hg])`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj6.ex_lift :
     ∀ {M Ω C : Type} [inst : Field M] [NumberField M] [inst_2 : Field Ω]

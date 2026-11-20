@@ -13,7 +13,7 @@ section co
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
 
 /- English proof (translation)
-The claim follows from `IsTotallyComplex.isComplex w`.
+A detailed English derivation is pending.
 -/
 private theorem cpx (w : InfinitePlace K) : IsComplex w := IsTotallyComplex.isComplex w
 
@@ -24,9 +24,9 @@ private def co (τ : K →+* ℂ) : mixedSpace K →+* ℂ :=
   else (starRingEnd ℂ).comp (complexComp ⟨mk τ, cpx _⟩)
 
 /- English proof (translation)
-Distinguish the cases in `h : (mk τ).embedding = τ`. Use `left`. Introduce `a`. Simplify using `[co, h]`. Use `right`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a`. Simplify using `[co, h]`.
+A detailed English derivation is pending.
 -/
 private theorem co_cases (τ : K →+* ℂ) :
     (∀ a, co τ a = a.2 ⟨mk τ, cpx _⟩) ∨ (∀ a, co τ a = conj (a.2 ⟨mk τ, cpx _⟩)) := by
@@ -35,7 +35,7 @@ private theorem co_cases (τ : K →+* ℂ) :
   · right; intro a; simp [co, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : (mk τ).embedding = τ`. Simplify using `[co, h, along]`. Simplify using `[co, h, along]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem co_along (τ : K →+* ℂ) (z : ℂ) : co τ (along τ z) = z := by
   by_cases h : (mk τ).embedding = τ
@@ -43,9 +43,9 @@ private theorem co_along (τ : K →+* ℂ) (z : ℂ) : co τ (along τ z) = z :
   · simp [co, h, along]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[along]`. Use function extensionality and compare the values at `⟨w, hw⟩`. Distinguish the cases in `h : w = mk τ`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : (mk τ).embedding = τ`. Simplify using `[co, h, along]`. Simplify using `[co, h, along]`. Simplify using `[along, h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem along_mul (τ : K →+* ℂ) (a : mixedSpace K) : along τ 1 * a = along τ (co τ a) := by
   refine Prod.ext ?_ ?_
@@ -59,7 +59,7 @@ private theorem along_mul (τ : K →+* ℂ) (a : mixedSpace K) : along τ 1 * a
     · simp [along, h]
 
 /- English proof (translation)
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `⟨w, hw⟩`. Simplify using `[along]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem along_zero (τ : K →+* ℂ) : along τ 0 = 0 := by
   refine Prod.ext rfl ?_
@@ -67,11 +67,11 @@ private theorem along_zero (τ : K →+* ℂ) : along τ 0 = 0 := by
   simp [along]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `ha` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `⟨w, hw⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `absurd hw (not_isReal_iff_isComplex.2 (cpx w))`. Use function extensionality and compare the values at `⟨w, hw⟩`. Establish `h` using `hc w.embedding`. Establish `hm : mk w.embedding = w` using `mk_embedding w`. Break down `co_cases w.embedding with h1 | h1` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[h1]`. Simplify `h` using `[hm]`. Rewrite `h` using `[h1]`. Simplify `h` using `[hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem ne_zero_co {a : mixedSpace K} (ha : a ≠ 0) : ∃ τ : K →+* ℂ, co τ a ≠ 0 := by
   by_contra hc
@@ -90,7 +90,7 @@ private theorem ne_zero_co {a : mixedSpace K} (ha : a ≠ 0) : ∃ τ : K →+* 
       simpa [hm] using h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises. Apply the tactic sequence `rcases co_cases τ with h1 | h1 <;> simp [h1, along, hc]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mk_eq_of_co_along {τ τ₀ : K →+* ℂ} {z : ℂ} (h : co τ (along τ₀ z) ≠ 0) : mk τ = mk τ₀ := by
   by_contra hc
@@ -104,7 +104,7 @@ private def cc (w : InfinitePlace K) (τ : K →+* ℂ) : w.Completion →+* ℂ
   else (starRingEnd ℂ).comp (Completion.extensionEmbedding w)
 
 /- English proof (translation)
-Establish `h0 : Continuous (Completion.extensionEmbedding w)` using `(Completion.isometry_extensionEmbedding w).continuous`. Distinguish the cases in `h : w.embedding = τ`. Simplify `h0` using `[cc, h]`. Simplify `Complex.continuous_conj.comp h0` using `[cc, h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem continuous_cc (w : InfinitePlace K) (τ : K →+* ℂ) : Continuous (cc w τ) := by
   have h0 : Continuous (Completion.extensionEmbedding w) := (Completion.isometry_extensionEmbedding w).continuous
@@ -113,9 +113,9 @@ private theorem continuous_cc (w : InfinitePlace K) (τ : K →+* ℂ) : Continu
   · simpa [cc, h] using Complex.continuous_conj.comp h0
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : Completion.extensionEmbedding (mk τ) (algebraMap K _ x) = (mk τ).embedding x`. Rewrite using `[Completion.algebraMap_apply]`. Conclude with `Completion.extensionEmbedding_coe _ _`. Distinguish the cases in `h1 : (mk τ).embedding = τ`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cc, if_pos h1, e, h1]`. Establish `h` using `(embedding_mk_eq τ).resolve_left h1`. Rewrite using `[cc, if_neg h1, RingHom.comp_apply, e, h]`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cc_alg (τ : K →+* ℂ) (w : InfinitePlace K) (h : mk τ = w) (x : K) :
     cc w τ (algebraMap K w.Completion x) = τ x := by
@@ -130,7 +130,7 @@ private theorem cc_alg (τ : K →+* ℂ) (w : InfinitePlace K) (h : mk τ = w) 
     simp [ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Distinguish the cases in `h : (mk τ).embedding = τ`. Simplify using `[co, cc, h, InfiniteAdeleRing.ringEquiv_mixedSpace_apply, complexComp]`. Simplify using `[co, cc, h, InfiniteAdeleRing.ringEquiv_mixedSpace_apply, complexComp]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem co_psi (τ : K →+* ℂ) (y : InfiniteAdeleRing K) :
     co τ (InfiniteAdeleRing.ringEquiv_mixedSpace K y) = cc (mk τ) τ (y (mk τ)) := by
@@ -139,7 +139,7 @@ private theorem co_psi (τ : K →+* ℂ) (y : InfiniteAdeleRing K) :
   · simp [co, cc, h, InfiniteAdeleRing.ringEquiv_mixedSpace_apply, complexComp]
 
 /- English proof (translation)
-Establish `hd : DenseRange (algebraMap K w.Completion)`. Use `Dense.mono ?_ (Completion.denseRange_coe w)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨WithAbs.equiv _ x, Completion.algebraMap_apply _ _⟩`. Conclude with `DFunLike.coe_injective (hd.equalizer hf hg (funext h))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cc_unique (w : InfinitePlace K) (f g : w.Completion →+* ℂ) (hf : Continuous f) (hg : Continuous g)
     (h : ∀ x : K, f (algebraMap K _ x) = g (algebraMap K _ x)) : f = g := by
@@ -150,9 +150,9 @@ private theorem cc_unique (w : InfinitePlace K) (f g : w.Completion →+* ℂ) (
   exact DFunLike.coe_injective (hd.equalizer hf hg (funext h))
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_unitaryGroup_iff]`. Establish `h2` using `congrArg (RingHom.mapMatrix (starRingEnd ℂ)) h`. Rewrite `h2` using `[map_mul, map_one]`. Establish `e : star (M.map (starRingEnd ℂ)) = RingHom.mapMatrix (starRingEnd ℂ) (star M)`. Use extensionality with `i j`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.star_apply]`. Rewrite using `[e]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_unitary {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : M ∈ unitaryGroup (Fin n) ℂ) :
     M.map (starRingEnd ℂ) ∈ unitaryGroup (Fin n) ℂ := by
@@ -166,9 +166,9 @@ private theorem conj_unitary {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : M �
   exact h2
 
 /- English proof (translation)
-Break down `co_cases τ with h1 | h1` into its components or cases. Establish `e : M.map (co τ) = M.map (complexComp ⟨mk τ, cpx _⟩)` using `by ext i j; simp [h1]`. Rewrite using `[e]`. Establish `e : M.map (co τ) = (M.map (complexComp ⟨mk τ, cpx _⟩)).map (starRingEnd ℂ)` using `by ext i j; simp [h1]`. Establish `e2 : M.map (complexComp ⟨mk τ, cpx _⟩) = (M.map (co τ)).map (starRingEnd ℂ)` using `by ext i j; simp [h1]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨fun h => e2 ▸ conj_unitary h, fun h => e ▸ conj_unitary h⟩`.
+Supply the required witnesses or components.
 -/
 private theorem co_unitary {n : ℕ} (τ : K →+* ℂ) (M : Matrix (Fin n) (Fin n) (mixedSpace K)) :
     M.map (co τ) ∈ unitaryGroup (Fin n) ℂ ↔ M.map (complexComp ⟨mk τ, cpx _⟩) ∈ unitaryGroup (Fin n) ℂ := by
@@ -180,7 +180,7 @@ private theorem co_unitary {n : ℕ} (τ : K →+* ℂ) (M : Matrix (Fin n) (Fin
     exact ⟨fun h => e2 ▸ conj_unitary h, fun h => e ▸ conj_unitary h⟩
 
 /- English proof (translation)
-Establish `e : (⟨mk τ, cpx _⟩ : {w : InfinitePlace K // IsComplex w}) = ⟨mk τ₀, cpx _⟩` using `Subtype.ext h`. Rewrite using `[co_unitary, co_unitary, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem co_unitary_of_mk {n : ℕ} {τ τ₀ : K →+* ℂ} (h : mk τ = mk τ₀) (M : Matrix (Fin n) (Fin n) (mixedSpace K)) :
     M.map (co τ) ∈ unitaryGroup (Fin n) ℂ ↔ M.map (co τ₀) ∈ unitaryGroup (Fin n) ℂ := by
@@ -188,9 +188,9 @@ private theorem co_unitary_of_mk {n : ℕ} {τ τ₀ : K →+* ℂ} (h : mk τ =
   rw [co_unitary, co_unitary, e]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx τ`. Rewrite using `[co_unitary]`. Conclude with `complexCompM_mem_unitaryGroup hx ⟨mk τ, cpx _⟩`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_archCompact_of_unitary x (fun v => absurd v.2 (not_isReal_iff_isComplex.2 (cpx _))) fun v => ?_` and prove the remaining obligations. Establish `h1` using `(co_unitary _ _).1 (h v.1.embedding)`. Establish `e : (⟨mk v.1.embedding, cpx _⟩ : {w : InfinitePlace K // IsComplex w}) = v` using `Subtype.ext (mk_embedding _)`. Rewrite `h1` using `[e]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem archC_iff {n : ℕ} (x : archGroup K n) :
     x ∈ archCompact K n ↔
@@ -212,7 +212,7 @@ section ext
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex F]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => by rw [← not_isReal_iff_isComplex] intro h have h1 := isReal_iff.1 h have h2 := ComplexEmbedding.IsReal.comp (algebraMap F E) h1 exact not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (mk (w.embedding.comp (algebraMap F E)))) (isReal_mk_iff.2 h2)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem totC (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex F] :
     IsTotallyComplex E := ⟨fun w => by
@@ -226,11 +226,11 @@ private theorem totC (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Rewrite using `[co_psi, co_psi]`. Establish `key : ∀ (v : InfinitePlace F), mk (τ.comp (algebraMap F E)) = v → cc (mk (τ.comp (algebraMap F E))) (τ.comp (algebraMap F E)) (y (mk (τ.comp (algebraMap F E)))) = cc v (τ.comp (algebraMap F E)) (y v)`. Introduce and unpack `_ rfl`. Both sides reduce to the same expression. Establish `hv : mk (τ.comp (algebraMap F E)) = (mk τ).comap (algebraMap F E)` using `(comap_mk _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[key _ hv, GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_apply]`. Establish `hcont : Continuous (algebraMap ((mk τ).comap (algebraMap F E)).Completion (mk τ).Completion)` using `NumberField.LiesOver.continuous_completionMap (v := (mk τ).comap (algebraMap F E)) (w := mk τ)`. Establish `h : (cc (mk τ) τ).comp (algebraMap ((mk τ).comap (algebraMap F E)).Completion (mk τ).Completion) = cc ((mk τ).comap (algebraMap F E)) (τ.comp (algebraMap F E))`. Use `cc_unique _ _ _ ((continuous_cc _ _).comp hcont) (continuous_cc _ _) fun x => ?_` and prove the remaining obligations. Rewrite using `[cc_alg _ _ hv, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply F E, cc_alg _ _ rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `congrArg (fun f => f (y ((mk τ).comap (algebraMap F E)))) h`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem co_iota (τ : E →+* ℂ) (y : InfiniteAdeleRing F) :
     co τ (InfiniteAdeleRing.ringEquiv_mixedSpace E (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E) y)) =
@@ -270,26 +270,26 @@ private theorem cq_apply (τ : K →+* ℂ) (x : InfiniteAdeleRing K) :
     cq τ x = co τ (InfiniteAdeleRing.ringEquiv_mixedSpace K x) := rfl
 
 /- English proof (translation)
-Rewrite using `[cq_apply, P, RingEquiv.apply_symm_apply, co_along]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cq_P (τ : K →+* ℂ) (z : ℂ) : cq τ (P τ z) = z := by
   rw [cq_apply, P, RingEquiv.apply_symm_apply, co_along]
 
 /- English proof (translation)
-Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace K).injective` to reduce the goal to its premises. Rewrite using `[map_mul, P, P, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, along_mul, cq_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem twoPow_mul_twoPow (τ : K →+* ℂ) (x : InfiniteAdeleRing K) : P τ 1 * x = P τ (cq τ x) := by
   apply (InfiniteAdeleRing.ringEquiv_mixedSpace K).injective
   rw [map_mul, P, P, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, along_mul, cq_apply]
 
 /- English proof (translation)
-Rewrite using `[P, along_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem P_zero (τ : K →+* ℂ) : P τ 0 = 0 := by
   rw [P, along_zero, map_zero]
 
 /- English proof (translation)
-Introduce `h`. Use `cq_P τ 1` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem P_one_ne (τ : K →+* ℂ) : P τ 1 ≠ 0 := by
   intro h
@@ -298,9 +298,9 @@ private theorem P_one_ne (τ : K →+* ℂ) : P τ 1 ≠ 0 := by
   exact zero_ne_one this
 
 /- English proof (translation)
-Establish `hc : cq τ x * cq τ x = cq τ x` using `by rw [← map_mul, hi]`. Establish `e : x = P τ (cq τ x)` using `by rw [← twoPow_mul_twoPow, hx]`. Break down `IsIdempotentElem.iff_eq_zero_or_one.1 hc with h | h` into its components or cases. Rewrite `e` using `[h, P_zero]`. Conclude with `absurd e h0`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `e` using `[h]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem idem_eq (τ : K →+* ℂ) {x : InfiniteAdeleRing K} (hx : P τ 1 * x = x) (hi : x * x = x) (h0 : x ≠ 0) :
     x = P τ 1 := by
@@ -318,30 +318,28 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [IsTotallyComplex E] {σ : E ≃ₐ[F] E} {m : ℕ}
 
 /- English proof (translation)
-The claim follows from `co_iota τ y`.
+A detailed English derivation is pending.
 -/
 private theorem cq_iota (τ : E →+* ℂ) (y : InfiniteAdeleRing F) :
     cq τ (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E) y) = cq (τ.comp (algebraMap F E)) y :=
   co_iota τ y
 
 /- English proof (translation)
-Use `set τ' := τ.comp (algebraMap F E) with hτ'`. Use `set π : InfiniteAdeleRing E := P τ 1 with hπ`. Use `set πF : InfiniteAdeleRing F := P τ' 1 with hπF`. Establish `hidem : π * π = π` using `by rw [hπ, twoPow_mul_twoPow, cq_P]`. Establish `hidemF : πF * πF = πF` using `by rw [hπF, twoPow_mul_twoPow, cq_P]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : π * GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K` using `F) (L := E) πF = π := by`. Rewrite using `[hπ, twoPow_mul_twoPow, cq_iota, ← hτ', hπF, cq_P]`. Establish `h2 : ∀ i, πF * D.e π i = D.e π i`. Introduce `i`. Establish `h` using `congrFun (congrArg D.e h1) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_mul, Pi.mul_apply, D.map_diag, mul_comm]`. Conclude with `h`. Establish `hne : D.e π ≠ 0` using `fun h => P_one_ne τ (D.e.injective (h.trans (map_zero _).symm))`. Take `⟨k, hk⟩` from `Function.ne_iff.1 hne`. Establish `hidemk : D.e π k * D.e π k = D.e π k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrFun (congrArg D.e hidem) k`. Rewrite `h` using `[map_mul, Pi.mul_apply]`. Then use the resulting hypothesis. Establish `hk1 : D.e π k = πF` using `idem_eq τ' (h2 k) hidemk hk`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hs : D.e.symm (Pi.single k πF) = π`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `idem_eq τ ?_ ?_ ?_` and prove the remaining obligations. Apply `D.e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, RingEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hj` using the available equality. Establish `hk1' : D.e (P τ 1) j = πF` using `hk1`. Simplify using `[hk1', hidemF]`. Simplify using `[Pi.single_eq_of_ne hj]`. Apply `D.e.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[map_mul, RingEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[hidemF]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Pi.single_eq_of_ne hj]`. Introduce `h`. Establish `h'` using `congrArg D.e h`. Rewrite `h'` using `[RingEquiv.apply_symm_apply, map_zero]`. Use `congrFun h' k` as an intermediate fact.
-
-Simplify using `only [Pi.single_eq_same, Pi.zero_apply] at this`. Conclude with `P_one_ne τ' this`. Rewrite using `[← hs, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_continuousLinearMap_tens_update (D : InfD σ m) (τ : E →+* ℂ) :
     ∃ k : Fin (m + 1), D.e (P τ 1) = Pi.single k (P (τ.comp (algebraMap F E)) 1) := by
@@ -390,9 +388,9 @@ private theorem exists_continuousLinearMap_tens_update (D : InfD σ m) (τ : E �
   rw [← hs, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `h : P τ z = P τ 1 * GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K` using `F) (L := E) (P (τ.comp (algebraMap F E)) z) := by`. Rewrite using `[twoPow_mul_twoPow, cq_iota, cq_P]`. Rewrite using `[h, map_mul, hk]`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Rewrite using `[Pi.mul_apply, D.map_diag, Pi.single_eq_same, Pi.single_eq_same, twoPow_mul_twoPow, cq_P]`. Simplify using `[Pi.single_eq_of_ne hj]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem position_P (D : InfD σ m) (τ : E →+* ℂ) (k : Fin (m + 1))
     (hk : D.e (P τ 1) = Pi.single k (P (τ.comp (algebraMap F E)) 1)) (z : ℂ) :
@@ -407,7 +405,7 @@ private theorem position_P (D : InfD σ m) (τ : E →+* ℂ) (k : Fin (m + 1))
   · simp [Pi.single_eq_of_ne hj]
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrArg D.e (twoPow_mul_twoPow τ x)) k`. Rewrite `h` using `[map_mul, Pi.mul_apply, hk, position_P D τ k hk (cq τ x), Pi.single_eq_same, Pi.single_eq_same, twoPow_mul_twoPow]`. Establish `h'` using `congrArg (cq (τ.comp (algebraMap F E))) h`. Rewrite `h'` using `[cq_P, cq_P]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem position_cq (D : InfD σ m) (τ : E →+* ℂ) (k : Fin (m + 1))
     (hk : D.e (P τ 1) = Pi.single k (P (τ.comp (algebraMap F E)) 1)) (x : InfiniteAdeleRing E) :
@@ -418,15 +416,15 @@ private theorem position_cq (D : InfD σ m) (τ : E →+* ℂ) (k : Fin (m + 1))
   rwa [cq_P, cq_P] at h'
 
 /- English proof (translation)
-Use `set e : InfiniteAdeleRing E := D.e.symm (Pi.single i (P τ₀ 1)) with he`. Establish `hDe : D.e e = Pi.single i (P τ₀ 1)` using `RingEquiv.apply_symm_apply _ _`. Establish `hne : InfiniteAdeleRing.ringEquiv_mixedSpace E e ≠ 0`. Introduce `h`. Establish `h0 : e = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace E).injective (h.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hDe` using `[h0, map_zero]`. Use `congrFun hDe i` as an intermediate fact. Simplify using `only [Pi.single_eq_same, Pi.zero_apply] at this`. Conclude with `P_one_ne τ₀ this.symm`. Take `⟨τ, hτ⟩` from `ne_zero_co hne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `exists_continuousLinearMap_tens_update D τ`. Establish `h1` using `position_cq D τ k hk e`. Rewrite `h1` using `[hDe]`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨τ, hk, ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[Pi.single_eq_same]`. Use `mk_eq_of_co_along (z := 1) ?_` and prove the remaining obligations. Establish `h2 : co (τ.comp (algebraMap F E)) (along τ₀ 1) = cq (τ.comp (algebraMap F E)) (P τ₀ 1)`. Rewrite using `[cq_apply, P, RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2, h1]`. Conclude with `hτ`. Rewrite `h1` using `[Pi.single_eq_of_ne hki, map_zero]`. Conclude with `absurd h1.symm hτ`.
+A detailed English derivation is pending.
 -/
 private theorem exists_over (D : InfD σ m) (i : Fin (m + 1)) (τ₀ : F →+* ℂ) :
     ∃ τ : E →+* ℂ, D.e (P τ 1) = Pi.single i (P (τ.comp (algebraMap F E)) 1) ∧ mk (τ.comp (algebraMap F E)) = mk τ₀ := by
@@ -458,15 +456,15 @@ private theorem exists_over (D : InfD σ m) (i : Fin (m + 1)) (τ₀ : F →+* �
 end main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ m D`. Use `haveI : IsTotallyComplex E := totC F E`. Apply the tactic sequence `have entry : ∀ (n : ℕ) (g : archGroup E n) (i : Fin (m + 1)) (τ : E →+* ℂ), D.e (P τ 1) = Pi.single i (P (τ.comp (algebraMap F E)) 1) → (mat (((compA D n i g : archGroup F n) : (ArchMatrix F n)ˣ) : ArchMatrix F n)).map (co (τ.comp (algebraMap F E))) = (mat ((g : (ArchMatrix E n)ˣ …`. Introduce `n g i τ hk`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h` using `position_cq D τ i hk ((InfiniteAdeleRing.ringEquiv_mixedSpace E).symm (mat ((g : (ArchMatrix E n)ˣ) : ArchMatrix E n) a b))`. Rewrite `h` using `[cq_apply, cq_apply, RingEquiv.apply_symm_apply]`. Conclude with `h`. Use `⟨fun τ => ?_, fun n g => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_continuousLinearMap_tens_update D τ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨k, fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `position_P D τ k hk z`. Conclude with `(D.e.symm_apply_apply (P τ z)).symm.trans (congrArg D.e.symm h)`. Rewrite using `[archC_iff]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i`. Rewrite using `[archC_iff]`. Introduce `τ₀`. Take `⟨τ, hτ, hm⟩` from `exists_over D i τ₀`. Apply the tactic sequence `rw [← co_unitary_of_mk hm, entry n g i τ hτ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h τ`. Introduce `h τ`. Take `⟨k, hk⟩` from `exists_continuousLinearMap_tens_update D τ`. Establish `h1` using `(archC_iff _).1 (h k) (τ.comp (algebraMap F E))`. Apply the tactic sequence `rwa [entry n g k τ hk] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.ConvolutionTheory.L1.positionOf :
     UpperTheory.ConvolutionTheory.L1.PositionOf := by

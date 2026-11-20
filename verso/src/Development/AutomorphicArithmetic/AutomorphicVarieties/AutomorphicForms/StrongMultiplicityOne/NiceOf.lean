@@ -10,9 +10,9 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
 /- English proof (translation)
-Introduce `E _ _ n φ`. Establish `hl : ∃ V : OpenSubgroup (GL (Fin n) (Af E)), ∀ g, ∀ v ∈ V, φ.1 (g * finGL E n v) = φ.1 g`. Take `⟨W, -, hW⟩` from `exists_openSubgroup_rightInvariant φ.2.1.isSmooth φ.2.1.isKFinite`. Use `⟨W, fun g v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← Fb.finEmb_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hW g v hv`. Conclude with `⟨hl, fun h => ⟨φ.2.1.continuous, exists_norm_le_of_mem_centralCuspForms h, φ.2.1.isLeftInvariant, φ.2.2, hl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.niceOf :
     UpperTheory.V.Af.StrongMultiplicityOne.NiceOf := by

@@ -15,9 +15,9 @@ section read
 variable {k : ℕ}
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Rewrite `hz`, `hz'` using `[Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]`. Substitute `hz hz'` using the available equality. Simplify using `only [Fin.cast_eq_self, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`. Rewrite using `[hΦ _ ((PBH.domR_iota ht zs zs' y.1 y.2).2 hy)]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `resG_consC ht J y.1 y.2`.
+A detailed English derivation is pending.
 -/
 theorem pic_read {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {n ρ : ℕ} (hn : 1 + ρ = n)
     {z z' : Fin (2 * n + k + 1) → ℂ} {zs zs' : Fin (2 * ρ + k + 1) → ℂ}
@@ -58,13 +58,13 @@ def HeadPicNil : Prop :=
             (B.JF (p.T.bs (j + 1)) (KB.slv p.T F (j + 1) hj [] (h ++ [(1, t)]) ht.2 e)) y.1 y.2
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj h hh L Φ hF hΦ t ht e y hy`. Establish `ht0 : t ≠ 0` using `(ht.1 (1, t) (List.mem_append_right _ (List.mem_singleton_self _))).2`. Establish `hn : 1 + (P.r - (j + 1)) = P.r - j` using `by omega`. Establish `hact : P5.act (P5.bTl L (⟨0, by change 0 < P.r - j; omega⟩ : Fin (JC.parLev P j).r) (D.positionted [])) Φ = Φ` using `Formalism.FourierDecayAlt.P.PBF.polyAction_one₂ Φ`. Rewrite using `[hact]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hread` using `pic_read (k := P.k) hn (PBH.levTower_bs_z_eq_castV_liftVec p.T j hj) (PBH.levTower_bs_z'_eq_castV_liftVec p.T j hj) (Subtype.val (Φ e)) (B.JF (p.T.bs j) (KB.slv p.T F j (by omega) [] h hh.2 e)) (hΦ e) ht0 y hy`. Use `hread.trans ?_` and prove the remaining obligations. Use `congr 1`. Unfold `resG`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hc : ∀ a, y.1 a ≠ 0` using `hy.1`. Establish `hγ` using `Formalism.FourierDecayAlt.P.PBF.wCell_mul_GV (i := Fin.last _) hc hy.2.1`. Establish `hΩ` using `Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus (p.T.bs (j + 1)).z_mem (p.T.bs (j + 1)).z'_mem hy.1 hy.2.1 hy.2.2`. Establish `he : e = fun a => a.elim0` using `funext fun a => a.elim0`. Substitute `he` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `(hS Wp Wq P p F j hj h t hh ht hF _ hγ hΩ).symm`.
+A detailed English derivation is pending.
 -/
 theorem headPic_nil (hS : KB.SliceStep) : HeadPicNil := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj h hh L Φ hF hΦ t ht e y hy
@@ -93,7 +93,7 @@ end Formalism.FourierDecayAlt.P.PBP
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `PBP.headPic_nil slice_induction_level`.
+A detailed English derivation is pending.
 -/
 theorem head_picture_empty_word : PBP.HeadPicNil := PBP.headPic_nil slice_induction_level
 
